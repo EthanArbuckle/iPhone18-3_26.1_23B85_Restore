@@ -1,87 +1,87 @@
 @interface IMDaemonAnyRequestHandler
-- (BOOL)_shouldContinueDownloadingPurgedAttachments:(unint64_t)a3;
+- (BOOL)_shouldContinueDownloadingPurgedAttachments:(unint64_t)attachments;
 - (IMDaemonAnyRequestHandler)init;
-- (id)_pinnedChatIdentifiersFromContext:(id)a3;
-- (id)_setupInfoForCapabilities:(unint64_t)a3 context:(id)a4;
-- (id)valueOfPersistentProperty:(id)a3;
-- (id)valueOfProperty:(id)a3;
-- (int64_t)_numberOfChatsToLoadDuringInitialSetupFromContext:(id)a3;
-- (int64_t)_precacheChatCountWithCapabilities:(unint64_t)a3;
-- (unint64_t)_broadcastedUncachedAttachmentCountForChatWithGUID:(id)a3 chatIdentifiers:(id)a4 services:(id)a5 broadcaster:(id)a6;
-- (void)_addAccountsToSetupInfo:(id)a3 capabilities:(unint64_t)a4 context:(id)a5;
-- (void)_addApprovedCapabilitiesToSetupInfo:(id)a3 capabilities:(unint64_t)a4 context:(id)a5;
-- (void)_addChatBotToSetupInfo:(id)a3;
-- (void)_addChatCountsToSetupInfo:(id)a3 capabilities:(unint64_t)a4 context:(id)a5;
-- (void)_addChatsToSetupInfo:(id)a3 capabilities:(unint64_t)a4 context:(id)a5;
-- (void)_addFeatureStatusToSetupInfo:(id)a3 capabilities:(unint64_t)a4 context:(id)a5;
-- (void)_addGroupPhotoTransfersToSetupInfo:(id)a3 capabilities:(unint64_t)a4 context:(id)a5;
-- (void)_addKeyTransparencyToSetupInfo:(id)a3 capabilities:(unint64_t)a4 context:(id)a5;
-- (void)_addTransfersToSetupInfo:(id)a3 capabilities:(unint64_t)a4 context:(id)a5;
-- (void)_cacheChatsWithPinningIdentifiers:(id)a3;
-- (void)acceptPendingNicknameForHandleID:(id)a3 updateType:(unint64_t)a4;
-- (void)clearPendingNicknamePhotoUpdateForHandleIDs:(id)a3;
-- (void)clearPendingNicknameUpdatesForHandleIDs:(id)a3;
-- (void)conference:(id)a3 account:(id)a4 notifyInvitationCancelledFromPerson:(id)a5;
-- (void)consumeCodeWithMessageGUID:(id)a3;
-- (void)denyHandleIDsForNicknameSharing:(id)a3;
-- (void)downloadStickerPackWithGUID:(id)a3 isIncomingMessage:(BOOL)a4 ignoreCache:(BOOL)a5;
-- (void)downloadStickerWithGUID:(id)a3;
-- (void)eagerUploadCancel:(id)a3;
-- (void)eagerUploadTransfer:(id)a3 recipients:(id)a4;
-- (void)fetchActiveNicknamesWithReply:(id)a3;
-- (void)fetchAutoDeletionPreferenceWithReply:(id)a3;
-- (void)fetchGroupPhotoPathsForChatsWithGroupIDs:(id)a3 completionHandler:(id)a4;
-- (void)fetchHandleSharingStateWithReply:(id)a3;
-- (void)fetchIgnoredNicknameHandlesWithReply:(id)a3;
-- (void)fetchNicknamesWithReply:(id)a3;
-- (void)fetchPersonalNicknameWithReply:(id)a3;
-- (void)fetchTransitionedNicknameHandlesWithReply:(id)a3;
-- (void)fetchUnknownSenderRecordsWithReply:(id)a3;
-- (void)forceReloadChatRegistryWithQueryID:(id)a3;
-- (void)holdBuddyUpdatesAccount:(id)a3;
-- (void)ignorePendingNicknameUpdatesForHandleIDs:(id)a3;
+- (id)_pinnedChatIdentifiersFromContext:(id)context;
+- (id)_setupInfoForCapabilities:(unint64_t)capabilities context:(id)context;
+- (id)valueOfPersistentProperty:(id)property;
+- (id)valueOfProperty:(id)property;
+- (int64_t)_numberOfChatsToLoadDuringInitialSetupFromContext:(id)context;
+- (int64_t)_precacheChatCountWithCapabilities:(unint64_t)capabilities;
+- (unint64_t)_broadcastedUncachedAttachmentCountForChatWithGUID:(id)d chatIdentifiers:(id)identifiers services:(id)services broadcaster:(id)broadcaster;
+- (void)_addAccountsToSetupInfo:(id)info capabilities:(unint64_t)capabilities context:(id)context;
+- (void)_addApprovedCapabilitiesToSetupInfo:(id)info capabilities:(unint64_t)capabilities context:(id)context;
+- (void)_addChatBotToSetupInfo:(id)info;
+- (void)_addChatCountsToSetupInfo:(id)info capabilities:(unint64_t)capabilities context:(id)context;
+- (void)_addChatsToSetupInfo:(id)info capabilities:(unint64_t)capabilities context:(id)context;
+- (void)_addFeatureStatusToSetupInfo:(id)info capabilities:(unint64_t)capabilities context:(id)context;
+- (void)_addGroupPhotoTransfersToSetupInfo:(id)info capabilities:(unint64_t)capabilities context:(id)context;
+- (void)_addKeyTransparencyToSetupInfo:(id)info capabilities:(unint64_t)capabilities context:(id)context;
+- (void)_addTransfersToSetupInfo:(id)info capabilities:(unint64_t)capabilities context:(id)context;
+- (void)_cacheChatsWithPinningIdentifiers:(id)identifiers;
+- (void)acceptPendingNicknameForHandleID:(id)d updateType:(unint64_t)type;
+- (void)clearPendingNicknamePhotoUpdateForHandleIDs:(id)ds;
+- (void)clearPendingNicknameUpdatesForHandleIDs:(id)ds;
+- (void)conference:(id)conference account:(id)account notifyInvitationCancelledFromPerson:(id)person;
+- (void)consumeCodeWithMessageGUID:(id)d;
+- (void)denyHandleIDsForNicknameSharing:(id)sharing;
+- (void)downloadStickerPackWithGUID:(id)d isIncomingMessage:(BOOL)message ignoreCache:(BOOL)cache;
+- (void)downloadStickerWithGUID:(id)d;
+- (void)eagerUploadCancel:(id)cancel;
+- (void)eagerUploadTransfer:(id)transfer recipients:(id)recipients;
+- (void)fetchActiveNicknamesWithReply:(id)reply;
+- (void)fetchAutoDeletionPreferenceWithReply:(id)reply;
+- (void)fetchGroupPhotoPathsForChatsWithGroupIDs:(id)ds completionHandler:(id)handler;
+- (void)fetchHandleSharingStateWithReply:(id)reply;
+- (void)fetchIgnoredNicknameHandlesWithReply:(id)reply;
+- (void)fetchNicknamesWithReply:(id)reply;
+- (void)fetchPersonalNicknameWithReply:(id)reply;
+- (void)fetchTransitionedNicknameHandlesWithReply:(id)reply;
+- (void)fetchUnknownSenderRecordsWithReply:(id)reply;
+- (void)forceReloadChatRegistryWithQueryID:(id)d;
+- (void)holdBuddyUpdatesAccount:(id)account;
+- (void)ignorePendingNicknameUpdatesForHandleIDs:(id)ds;
 - (void)initiateQuickSwitch;
-- (void)locationUpdateDelivered:(id)a3;
+- (void)locationUpdateDelivered:(id)delivered;
 - (void)locationUpdateSent;
 - (void)markAllNicknamesAsPending;
-- (void)markMessageAsReadWithGUID:(id)a3 callerOrigin:(int64_t)a4 reply:(id)a5;
-- (void)markPlayedForIDs:(id)a3 style:(unsigned __int8)a4 onServices:(id)a5 message:(id)a6;
-- (void)markPlayedForMessageGUID:(id)a3;
-- (void)markProfileRecordsAsIgnored:(id)a3;
-- (void)markReadForMessageGUID:(id)a3 callerOrigin:(int64_t)a4 queryID:(id)a5;
-- (void)markUnreadForMessageGUID:(id)a3 IDs:(id)a4 style:(unsigned __int8)a5 services:(id)a6;
+- (void)markMessageAsReadWithGUID:(id)d callerOrigin:(int64_t)origin reply:(id)reply;
+- (void)markPlayedForIDs:(id)ds style:(unsigned __int8)style onServices:(id)services message:(id)message;
+- (void)markPlayedForMessageGUID:(id)d;
+- (void)markProfileRecordsAsIgnored:(id)ignored;
+- (void)markReadForMessageGUID:(id)d callerOrigin:(int64_t)origin queryID:(id)iD;
+- (void)markUnreadForMessageGUID:(id)d IDs:(id)ds style:(unsigned __int8)style services:(id)services;
 - (void)nicknamePreferencesDidChange;
-- (void)onboardDeleteVerificationCodesIfNeededWithMessage:(id)a3 reply:(id)a4;
-- (void)onboardDeleteVerificationCodesIfNeededWithReply:(id)a3;
-- (void)openStewieChatWithContext:(id)a3;
-- (void)playSendSoundForMessageGUID:(id)a3 callerOrigin:(int64_t)a4;
+- (void)onboardDeleteVerificationCodesIfNeededWithMessage:(id)message reply:(id)reply;
+- (void)onboardDeleteVerificationCodesIfNeededWithReply:(id)reply;
+- (void)openStewieChatWithContext:(id)context;
+- (void)playSendSoundForMessageGUID:(id)d callerOrigin:(int64_t)origin;
 - (void)preWarm;
-- (void)processReceivedEmergencyMessageFromIMTool:(int64_t)a3 message:(id)a4;
-- (void)requestBuddyPicturesAndPropertiesForAccount:(id)a3;
-- (void)requestGroupsAccount:(id)a3;
+- (void)processReceivedEmergencyMessageFromIMTool:(int64_t)tool message:(id)message;
+- (void)requestBuddyPicturesAndPropertiesForAccount:(id)account;
+- (void)requestGroupsAccount:(id)account;
 - (void)requestNetworkDataAvailability;
 - (void)requestOneTimeCodeStatus;
 - (void)requestPendingACInvites;
 - (void)requestPendingVCInvites;
-- (void)requestProperty:(id)a3 ofPerson:(id)a4 account:(id)a5;
-- (void)requestQOSClassWhileServicingRequestsWithID:(id)a3;
-- (void)requestSetupWithClientID:(id)a3 capabilities:(unint64_t)a4 context:(id)a5 reply:(id)a6;
-- (void)requestSetupXPCObjectWithClientID:(id)a3 capabilities:(unint64_t)a4 context:(id)a5 reply:(id)a6;
-- (void)resumeBuddyUpdatesAccount:(id)a3;
-- (void)sendClearNotice:(id)a3 toHandles:(id)a4 reply:(id)a5;
-- (void)sendEmergencyQuestionnaire:(id)a3;
-- (void)sendNameOnlyToHandleIDs:(id)a3 fromHandleID:(id)a4;
-- (void)sendNotice:(id)a3 toHandles:(id)a4 fromHandle:(id)a5 reply:(id)a6;
-- (void)sendNotificationMessageToUniqueID:(id)a3 withCommand:(int64_t)a4;
-- (void)sendQuestionnaire:(id)a3;
-- (void)setNewPersonalNickname:(id)a3;
-- (void)setValue:(id)a3 ofPersistentProperty:(id)a4;
-- (void)setValue:(id)a3 ofProperty:(id)a4;
-- (void)setValue:(id)a3 ofProperty:(id)a4 ofPerson:(id)a5 account:(id)a6;
-- (void)simulateOneTimeCodeArriving:(id)a3;
-- (void)startWatchingBuddy:(id)a3 account:(id)a4;
-- (void)stopWatchingBuddy:(id)a3 account:(id)a4;
-- (void)terminateForcingIfNeeded:(BOOL)a3;
+- (void)requestProperty:(id)property ofPerson:(id)person account:(id)account;
+- (void)requestQOSClassWhileServicingRequestsWithID:(id)d;
+- (void)requestSetupWithClientID:(id)d capabilities:(unint64_t)capabilities context:(id)context reply:(id)reply;
+- (void)requestSetupXPCObjectWithClientID:(id)d capabilities:(unint64_t)capabilities context:(id)context reply:(id)reply;
+- (void)resumeBuddyUpdatesAccount:(id)account;
+- (void)sendClearNotice:(id)notice toHandles:(id)handles reply:(id)reply;
+- (void)sendEmergencyQuestionnaire:(id)questionnaire;
+- (void)sendNameOnlyToHandleIDs:(id)ds fromHandleID:(id)d;
+- (void)sendNotice:(id)notice toHandles:(id)handles fromHandle:(id)handle reply:(id)reply;
+- (void)sendNotificationMessageToUniqueID:(id)d withCommand:(int64_t)command;
+- (void)sendQuestionnaire:(id)questionnaire;
+- (void)setNewPersonalNickname:(id)nickname;
+- (void)setValue:(id)value ofPersistentProperty:(id)property;
+- (void)setValue:(id)value ofProperty:(id)property;
+- (void)setValue:(id)value ofProperty:(id)property ofPerson:(id)person account:(id)account;
+- (void)simulateOneTimeCodeArriving:(id)arriving;
+- (void)startWatchingBuddy:(id)buddy account:(id)account;
+- (void)stopWatchingBuddy:(id)buddy account:(id)account;
+- (void)terminateForcingIfNeeded:(BOOL)needed;
 @end
 
 @implementation IMDaemonAnyRequestHandler
@@ -101,14 +101,14 @@
   return v2;
 }
 
-- (void)requestSetupXPCObjectWithClientID:(id)a3 capabilities:(unint64_t)a4 context:(id)a5 reply:(id)a6
+- (void)requestSetupXPCObjectWithClientID:(id)d capabilities:(unint64_t)capabilities context:(id)context reply:(id)reply
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(reply);
   sub_100054134();
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
-  v11 = a3;
-  v12 = self;
+  dCopy = d;
+  selfCopy = self;
   isa = sub_100054114().super.isa;
 
   v14 = swift_allocObject();
@@ -122,20 +122,20 @@
   v16[3] = &unk_100082D90;
   v15 = _Block_copy(v16);
 
-  [(IMDaemonAnyRequestHandler *)v12 requestSetupWithClientID:v11 capabilities:a4 context:isa reply:v15];
+  [(IMDaemonAnyRequestHandler *)selfCopy requestSetupWithClientID:dCopy capabilities:capabilities context:isa reply:v15];
 
   _Block_release(v15);
 }
 
-- (void)requestSetupWithClientID:(id)a3 capabilities:(unint64_t)a4 context:(id)a5 reply:(id)a6
+- (void)requestSetupWithClientID:(id)d capabilities:(unint64_t)capabilities context:(id)context reply:(id)reply
 {
-  v8 = _Block_copy(a6);
+  v8 = _Block_copy(reply);
   v9 = sub_100054164();
   v11 = v10;
   v12 = sub_100054134();
   _Block_copy(v8);
-  v13 = self;
-  sub_100002A7C(v9, v11, a4, v12, v13, v8);
+  selfCopy = self;
+  sub_100002A7C(v9, v11, capabilities, v12, selfCopy, v8);
   _Block_release(v8);
   _Block_release(v8);
 }
@@ -153,56 +153,56 @@
   }
 
   v3 = +[IMDBroadcastController sharedProvider];
-  v4 = [v3 broadcasterForAllListeners];
+  broadcasterForAllListeners = [v3 broadcasterForAllListeners];
   v5 = +[IMDAccountController sharedAccountController];
-  [v4 networkDataAvailabilityChanged:{objc_msgSend(v5, "networkDataAvailable")}];
+  [broadcasterForAllListeners networkDataAvailabilityChanged:{objc_msgSend(v5, "networkDataAvailable")}];
 }
 
-- (id)_setupInfoForCapabilities:(unint64_t)a3 context:(id)a4
+- (id)_setupInfoForCapabilities:(unint64_t)capabilities context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v7 = objc_alloc_init(NSMutableDictionary);
   v8 = objc_autoreleasePoolPush();
-  [(IMDaemonAnyRequestHandler *)self _addAccountsToSetupInfo:v7 capabilities:a3 context:v6];
-  [(IMDaemonAnyRequestHandler *)self _addGroupPhotoTransfersToSetupInfo:v7 capabilities:a3 context:v6];
-  [(IMDaemonAnyRequestHandler *)self _addTransfersToSetupInfo:v7 capabilities:a3 context:v6];
-  [(IMDaemonAnyRequestHandler *)self _addChatCountsToSetupInfo:v7 capabilities:a3 context:v6];
-  [(IMDaemonAnyRequestHandler *)self _addChatsToSetupInfo:v7 capabilities:a3 context:v6];
-  [(IMDaemonAnyRequestHandler *)self _addKeyTransparencyToSetupInfo:v7 capabilities:a3 context:v6];
-  [(IMDaemonAnyRequestHandler *)self _addApprovedCapabilitiesToSetupInfo:v7 capabilities:a3 context:v6];
-  [(IMDaemonAnyRequestHandler *)self _addFeatureStatusToSetupInfo:v7 capabilities:a3 context:v6];
+  [(IMDaemonAnyRequestHandler *)self _addAccountsToSetupInfo:v7 capabilities:capabilities context:contextCopy];
+  [(IMDaemonAnyRequestHandler *)self _addGroupPhotoTransfersToSetupInfo:v7 capabilities:capabilities context:contextCopy];
+  [(IMDaemonAnyRequestHandler *)self _addTransfersToSetupInfo:v7 capabilities:capabilities context:contextCopy];
+  [(IMDaemonAnyRequestHandler *)self _addChatCountsToSetupInfo:v7 capabilities:capabilities context:contextCopy];
+  [(IMDaemonAnyRequestHandler *)self _addChatsToSetupInfo:v7 capabilities:capabilities context:contextCopy];
+  [(IMDaemonAnyRequestHandler *)self _addKeyTransparencyToSetupInfo:v7 capabilities:capabilities context:contextCopy];
+  [(IMDaemonAnyRequestHandler *)self _addApprovedCapabilitiesToSetupInfo:v7 capabilities:capabilities context:contextCopy];
+  [(IMDaemonAnyRequestHandler *)self _addFeatureStatusToSetupInfo:v7 capabilities:capabilities context:contextCopy];
   [(IMDaemonAnyRequestHandler *)self _addChatBotToSetupInfo:v7];
   objc_autoreleasePoolPop(v8);
 
   return v7;
 }
 
-- (void)_addChatBotToSetupInfo:(id)a3
+- (void)_addChatBotToSetupInfo:(id)info
 {
-  theDict = a3;
+  theDict = info;
   v3 = +[IMCTSubscriptionUtilities sharedInstance];
-  v4 = [v3 allowedChatBotExtensions];
+  allowedChatBotExtensions = [v3 allowedChatBotExtensions];
 
-  if (v4 && [v4 count])
+  if (allowedChatBotExtensions && [allowedChatBotExtensions count])
   {
     v5 = +[IMCTSubscriptionUtilities sharedInstance];
-    v6 = [v5 allowedChatBotExtensions];
+    allowedChatBotExtensions2 = [v5 allowedChatBotExtensions];
 
-    if (v6)
+    if (allowedChatBotExtensions2)
     {
-      CFDictionarySetValue(theDict, IMSetupAllowedChatBotExtensions, v6);
+      CFDictionarySetValue(theDict, IMSetupAllowedChatBotExtensions, allowedChatBotExtensions2);
     }
   }
 }
 
-- (void)_addApprovedCapabilitiesToSetupInfo:(id)a3 capabilities:(unint64_t)a4 context:(id)a5
+- (void)_addApprovedCapabilitiesToSetupInfo:(id)info capabilities:(unint64_t)capabilities context:(id)context
 {
-  v6 = a3;
+  infoCopy = info;
   v7 = +[IMDeviceUtilities isMessagesInstalled];
-  v8 = [NSNumber numberWithUnsignedLongLong:a4];
+  v8 = [NSNumber numberWithUnsignedLongLong:capabilities];
   if (v8)
   {
-    CFDictionarySetValue(v6, IMSetupInfoApprovedClientCapabilitiesKey, v8);
+    CFDictionarySetValue(infoCopy, IMSetupInfoApprovedClientCapabilitiesKey, v8);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -213,7 +213,7 @@
   v9 = [NSNumber numberWithBool:v7];
   if (v9)
   {
-    CFDictionarySetValue(v6, IMSetupInfoIsMessagesInstalledKey, v9);
+    CFDictionarySetValue(infoCopy, IMSetupInfoIsMessagesInstalledKey, v9);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -222,56 +222,56 @@
   }
 }
 
-- (void)_addAccountsToSetupInfo:(id)a3 capabilities:(unint64_t)a4 context:(id)a5
+- (void)_addAccountsToSetupInfo:(id)info capabilities:(unint64_t)capabilities context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  infoCopy = info;
+  contextCopy = context;
   v10 = +[IMDServiceController sharedController];
-  v11 = [v10 allServices];
+  allServices = [v10 allServices];
 
   v12 = objc_alloc_init(NSMutableArray);
-  if ([(IMDaemonAnyRequestHandler *)self _clientCapabilitiesSupportAccounts:a4])
+  if ([(IMDaemonAnyRequestHandler *)self _clientCapabilitiesSupportAccounts:capabilities])
   {
-    v13 = [v11 arrayByApplyingSelector:"internalName"];
+    v13 = [allServices arrayByApplyingSelector:"internalName"];
     if (v13)
     {
-      CFDictionarySetValue(v8, IMSetupInfoServiceNamesKey, v13);
+      CFDictionarySetValue(infoCopy, IMSetupInfoServiceNamesKey, v13);
     }
 
     v67 = v12;
 
     v14 = +[IMDDaemonPropertyManager sharedManager];
-    v15 = [v14 properties];
-    v16 = [v15 count];
+    properties = [v14 properties];
+    v16 = [properties count];
 
     if (v16)
     {
       v17 = IMSetupInfoPropertiesKey;
       v18 = +[IMDDaemonPropertyManager sharedManager];
-      v19 = [v18 properties];
-      CFDictionarySetValue(v8, v17, v19);
+      properties2 = [v18 properties];
+      CFDictionarySetValue(infoCopy, v17, properties2);
     }
 
-    v63 = v9;
+    v63 = contextCopy;
     v20 = +[IMDDaemonPropertyManager sharedManager];
-    v21 = [v20 persistentProperties];
-    v22 = [v21 count];
+    persistentProperties = [v20 persistentProperties];
+    v22 = [persistentProperties count];
 
     if (v22)
     {
       v23 = IMSetupInfoPersistentPropertiesKey;
       v24 = +[IMDDaemonPropertyManager sharedManager];
-      v25 = [v24 persistentProperties];
-      CFDictionarySetValue(v8, v23, v25);
+      persistentProperties2 = [v24 persistentProperties];
+      CFDictionarySetValue(infoCopy, v23, persistentProperties2);
     }
 
-    v64 = v8;
+    v64 = infoCopy;
     v77 = 0u;
     v78 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v62 = v11;
-    obj = v11;
+    v62 = allServices;
+    obj = allServices;
     v68 = [obj countByEnumeratingWithState:&v75 objects:v80 count:16];
     if (v68)
     {
@@ -288,45 +288,45 @@
 
           v28 = *(*(&v75 + 1) + 8 * i);
           context = objc_autoreleasePoolPush();
-          v29 = [v26[15] sharedAccountController];
-          v30 = [v29 accountsForService:v28];
+          sharedAccountController = [v26[15] sharedAccountController];
+          v30 = [sharedAccountController accountsForService:v28];
 
           v31 = [v30 arrayByApplyingSelector:"accountID"];
           v32 = objc_alloc_init(NSMutableDictionary);
-          v33 = [v28 internalName];
-          if (v33)
+          internalName = [v28 internalName];
+          if (internalName)
           {
-            CFDictionarySetValue(v32, IMServiceInfoInternalNameKey, v33);
+            CFDictionarySetValue(v32, IMServiceInfoInternalNameKey, internalName);
           }
 
-          v34 = [v28 serviceProperties];
-          v35 = [v34 count];
+          serviceProperties = [v28 serviceProperties];
+          v35 = [serviceProperties count];
 
           if (v35)
           {
             v36 = IMServiceInfoPropertiesKey;
-            v37 = [v28 serviceProperties];
-            CFDictionarySetValue(v32, v36, v37);
+            serviceProperties2 = [v28 serviceProperties];
+            CFDictionarySetValue(v32, v36, serviceProperties2);
           }
 
-          v38 = [v28 serviceDefaultsForSetup];
-          v39 = [v38 count];
+          serviceDefaultsForSetup = [v28 serviceDefaultsForSetup];
+          v39 = [serviceDefaultsForSetup count];
 
           if (v39)
           {
             v40 = IMServiceInfoDefaultsKey;
-            v41 = [v28 serviceDefaultsForSetup];
-            CFDictionarySetValue(v32, v40, v41);
+            serviceDefaultsForSetup2 = [v28 serviceDefaultsForSetup];
+            CFDictionarySetValue(v32, v40, serviceDefaultsForSetup2);
           }
 
-          v42 = [v28 defaultAccountSettings];
-          v43 = [v42 count];
+          defaultAccountSettings = [v28 defaultAccountSettings];
+          v43 = [defaultAccountSettings count];
 
           if (v43)
           {
             v44 = IMServiceInfoDefaultAccountSettingsKey;
-            v45 = [v28 defaultAccountSettings];
-            CFDictionarySetValue(v32, v44, v45);
+            defaultAccountSettings2 = [v28 defaultAccountSettings];
+            CFDictionarySetValue(v32, v44, defaultAccountSettings2);
           }
 
           if ([v31 count])
@@ -335,8 +335,8 @@
           }
 
           v69 = v31;
-          v46 = [v26[15] sharedAccountController];
-          v47 = [v46 activeAccountsForService:v28];
+          sharedAccountController2 = [v26[15] sharedAccountController];
+          v47 = [sharedAccountController2 activeAccountsForService:v28];
           [v47 arrayByApplyingSelector:"accountID"];
           v49 = v48 = v26;
           v50 = [v49 count];
@@ -344,8 +344,8 @@
           if (v50)
           {
             v51 = IMServiceInfoActiveAccountsKey;
-            v52 = [v48[15] sharedAccountController];
-            v53 = [v52 activeAccountsForService:v28];
+            sharedAccountController3 = [v48[15] sharedAccountController];
+            v53 = [sharedAccountController3 activeAccountsForService:v28];
             v54 = [v53 arrayByApplyingSelector:"accountID"];
             CFDictionarySetValue(v32, v51, v54);
           }
@@ -371,10 +371,10 @@
                   objc_enumerationMutation(v56);
                 }
 
-                v61 = [*(*(&v71 + 1) + 8 * j) accountInfoToPost];
-                if ([v61 count])
+                accountInfoToPost = [*(*(&v71 + 1) + 8 * j) accountInfoToPost];
+                if ([accountInfoToPost count])
                 {
-                  [v55 addObject:v61];
+                  [v55 addObject:accountInfoToPost];
                 }
               }
 
@@ -400,9 +400,9 @@
     }
 
     v12 = v67;
-    v9 = v63;
-    v8 = v64;
-    v11 = v62;
+    contextCopy = v63;
+    infoCopy = v64;
+    allServices = v62;
     if ([v67 count])
     {
       CFDictionarySetValue(v64, IMSetupInfoServicesKey, v67);
@@ -410,27 +410,27 @@
   }
 }
 
-- (void)_addGroupPhotoTransfersToSetupInfo:(id)a3 capabilities:(unint64_t)a4 context:(id)a5
+- (void)_addGroupPhotoTransfersToSetupInfo:(id)info capabilities:(unint64_t)capabilities context:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  if ((v5 & 0x1000000) != 0)
+  capabilitiesCopy = capabilities;
+  infoCopy = info;
+  if ((capabilitiesCopy & 0x1000000) != 0)
   {
     v7 = +[IMDFileTransferCenter sharedInstance];
-    v8 = [v7 _allFileTransfers];
+    _allFileTransfers = [v7 _allFileTransfers];
 
-    v9 = [v8 allValues];
-    if ([v9 count])
+    allValues = [_allFileTransfers allValues];
+    if ([allValues count])
     {
-      v22 = v8;
-      theDict = v6;
+      v22 = _allFileTransfers;
+      theDict = infoCopy;
       v24 = +[NSMutableDictionary dictionary];
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v21 = v9;
-      v10 = v9;
+      v21 = allValues;
+      v10 = allValues;
       v11 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v11)
       {
@@ -466,86 +466,86 @@
         while (v12);
       }
 
-      v6 = theDict;
+      infoCopy = theDict;
       if ([v24 count] && v24)
       {
         CFDictionarySetValue(theDict, IMSetupInfoGroupPhotoFileTransfersKey, v24);
       }
 
-      v9 = v21;
-      v8 = v22;
+      allValues = v21;
+      _allFileTransfers = v22;
     }
   }
 }
 
-- (void)_addTransfersToSetupInfo:(id)a3 capabilities:(unint64_t)a4 context:(id)a5
+- (void)_addTransfersToSetupInfo:(id)info capabilities:(unint64_t)capabilities context:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  if ((v5 & 0x1000100) == 0x100)
+  capabilitiesCopy = capabilities;
+  infoCopy = info;
+  if ((capabilitiesCopy & 0x1000100) == 0x100)
   {
-    theDict = v6;
+    theDict = infoCopy;
     v7 = +[IMDFileTransferCenter sharedInstance];
-    v8 = [v7 contextStamp];
+    contextStamp = [v7 contextStamp];
 
     v9 = +[IMDFileTransferCenter sharedInstance];
-    v10 = [v9 _allFileTransfers];
+    _allFileTransfers = [v9 _allFileTransfers];
 
-    if (v10)
+    if (_allFileTransfers)
     {
-      CFDictionarySetValue(theDict, IMSetupInfoFileTransfersKey, v10);
+      CFDictionarySetValue(theDict, IMSetupInfoFileTransfersKey, _allFileTransfers);
     }
 
-    if (v8)
+    if (contextStamp)
     {
-      CFDictionarySetValue(theDict, IMSetupInfoFileTransfersStampKey, v8);
+      CFDictionarySetValue(theDict, IMSetupInfoFileTransfersStampKey, contextStamp);
     }
 
-    v6 = theDict;
+    infoCopy = theDict;
   }
 }
 
-- (void)_addChatCountsToSetupInfo:(id)a3 capabilities:(unint64_t)a4 context:(id)a5
+- (void)_addChatCountsToSetupInfo:(id)info capabilities:(unint64_t)capabilities context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
-  if ((v6 & 0x8004) != 0)
+  capabilitiesCopy = capabilities;
+  infoCopy = info;
+  contextCopy = context;
+  if ((capabilitiesCopy & 0x8004) != 0)
   {
     v9 = +[IMDMessageStore sharedInstance];
     v10 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v9 unreadMessagesCount]);
 
     if (v10)
     {
-      CFDictionarySetValue(v7, IMSetupInfoUnreadMessageCountKey, v10);
+      CFDictionarySetValue(infoCopy, IMSetupInfoUnreadMessageCountKey, v10);
     }
 
     v11 = +[IMFeatureFlags sharedFeatureFlags];
-    v12 = [v11 isUnreadCountRefactorEnabled];
+    isUnreadCountRefactorEnabled = [v11 isUnreadCountRefactorEnabled];
 
-    if (v12)
+    if (isUnreadCountRefactorEnabled)
     {
       v13 = +[IMDMessageStore sharedInstance];
-      v14 = [v13 unreadCountReportDeltaForSetupInfo];
+      unreadCountReportDeltaForSetupInfo = [v13 unreadCountReportDeltaForSetupInfo];
 
-      v15 = [v14 updatedReports];
-      v16 = [v15 arrayByApplyingSelector:"dictionary"];
+      updatedReports = [unreadCountReportDeltaForSetupInfo updatedReports];
+      v16 = [updatedReports arrayByApplyingSelector:"dictionary"];
 
       if (v16)
       {
-        CFDictionarySetValue(v7, IMSetupInfoUnreadReportsKey, v16);
+        CFDictionarySetValue(infoCopy, IMSetupInfoUnreadReportsKey, v16);
       }
 
-      v17 = [v14 fromStamp];
-      if (v17)
+      fromStamp = [unreadCountReportDeltaForSetupInfo fromStamp];
+      if (fromStamp)
       {
-        CFDictionarySetValue(v7, IMSetupInfoUnreadReportsLastStampKey, v17);
+        CFDictionarySetValue(infoCopy, IMSetupInfoUnreadReportsLastStampKey, fromStamp);
       }
 
-      v18 = [v14 toStamp];
-      if (v18)
+      toStamp = [unreadCountReportDeltaForSetupInfo toStamp];
+      if (toStamp)
       {
-        CFDictionarySetValue(v7, IMSetupInfoUnreadReportsCurrentStampKey, v18);
+        CFDictionarySetValue(infoCopy, IMSetupInfoUnreadReportsCurrentStampKey, toStamp);
       }
     }
 
@@ -554,7 +554,7 @@
 
     if (v20)
     {
-      CFDictionarySetValue(v7, IMSetupInfoLastFailedMessageDateKey, v20);
+      CFDictionarySetValue(infoCopy, IMSetupInfoLastFailedMessageDateKey, v20);
     }
 
     if (IMOSLoggingEnabled())
@@ -562,8 +562,8 @@
       v21 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
-        v22 = [(__CFDictionary *)v7 valueForKey:@"unreadMessageCount"];
-        v23 = [(__CFDictionary *)v7 valueForKey:@"lastFailedMessageDate"];
+        v22 = [(__CFDictionary *)infoCopy valueForKey:@"unreadMessageCount"];
+        v23 = [(__CFDictionary *)infoCopy valueForKey:@"lastFailedMessageDate"];
         v24 = 134218240;
         v25 = v22;
         v26 = 2048;
@@ -588,11 +588,11 @@ LABEL_21:
   }
 }
 
-- (void)_addChatsToSetupInfo:(id)a3 capabilities:(unint64_t)a4 context:(id)a5
+- (void)_addChatsToSetupInfo:(id)info capabilities:(unint64_t)capabilities context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  if ((a4 & 0x4000000) == 0 && (((a4 & 0x2400000) != 0) & (a4 >> 2)) == 0)
+  infoCopy = info;
+  contextCopy = context;
+  if ((capabilities & 0x4000000) == 0 && (((capabilities & 0x2400000) != 0) & (capabilities >> 2)) == 0)
   {
     if (IMOSLoggingEnabled())
     {
@@ -607,28 +607,28 @@ LABEL_21:
     goto LABEL_41;
   }
 
-  v11 = [(IMDaemonAnyRequestHandler *)self _pinnedChatIdentifiersFromContext:v9];
+  v11 = [(IMDaemonAnyRequestHandler *)self _pinnedChatIdentifiersFromContext:contextCopy];
   [(IMDaemonAnyRequestHandler *)self _cacheChatsWithPinningIdentifiers:v11];
   v12 = +[IMDCKSyncController sharedInstance];
   [v12 resumeSyncOnLaunchIfNeeded];
 
-  v13 = [(IMDaemonAnyRequestHandler *)self _numberOfChatsToLoadDuringInitialSetupFromContext:v9];
+  v13 = [(IMDaemonAnyRequestHandler *)self _numberOfChatsToLoadDuringInitialSetupFromContext:contextCopy];
   if (v13 <= 0)
   {
-    if ((a4 & 0x100000000) != 0)
+    if ((capabilities & 0x100000000) != 0)
     {
       v13 = IMDChatPrecacheCountClientRemote;
     }
 
     else
     {
-      if ((a4 & 0x2400000) == 0)
+      if ((capabilities & 0x2400000) == 0)
       {
         [v11 count];
         goto LABEL_13;
       }
 
-      v13 = [(IMDaemonAnyRequestHandler *)self _precacheChatCountWithCapabilities:a4];
+      v13 = [(IMDaemonAnyRequestHandler *)self _precacheChatCountWithCapabilities:capabilities];
     }
   }
 
@@ -652,14 +652,14 @@ LABEL_13:
     }
   }
 
-  if ((a4 & 0x4000000) != 0)
+  if ((capabilities & 0x4000000) != 0)
   {
     v16 = +[IMDChatRegistry sharedInstance];
     v17 = [v16 _blackholedChatInfoForNumberOfChats:0x7FFFFFFFFFFFFFFFLL];
 
     if (v17)
     {
-      CFDictionarySetValue(v8, IMSetupInfoChatsKey, v17);
+      CFDictionarySetValue(infoCopy, IMSetupInfoChatsKey, v17);
     }
 
     v18 = +[IMDChatRegistry sharedInstance];
@@ -673,22 +673,22 @@ LABEL_13:
     v22 = v21;
     if (v20)
     {
-      v23 = [v21 chats];
+      chats = [v21 chats];
 
       v24 = +[IMDChatRegistry sharedInstance];
-      v25 = [v24 personCentricGroupedChatsArrayWithMaximumNumberOfChats:v13 skipsLastMessageLoading:(a4 >> 24) & 1 usingChats:v23 useCachedChatGroups:1 includingPinnedChatIdentifiers:v11 repairInconsistentMergedChats:1];
+      v25 = [v24 personCentricGroupedChatsArrayWithMaximumNumberOfChats:v13 skipsLastMessageLoading:(capabilities >> 24) & 1 usingChats:chats useCachedChatGroups:1 includingPinnedChatIdentifiers:v11 repairInconsistentMergedChats:1];
 
       if (v25)
       {
-        CFDictionarySetValue(v8, IMSetupInfoPersonMergedChatsKey, v25);
+        CFDictionarySetValue(infoCopy, IMSetupInfoPersonMergedChatsKey, v25);
       }
 
       v26 = +[IMDChatRegistry sharedInstance];
-      v27 = [v26 aliasToCNIDMap];
+      aliasToCNIDMap = [v26 aliasToCNIDMap];
 
-      if (v27)
+      if (aliasToCNIDMap)
       {
-        CFDictionarySetValue(v8, IMSetupInfoAliasToCNIDMapKey, v27);
+        CFDictionarySetValue(infoCopy, IMSetupInfoAliasToCNIDMapKey, aliasToCNIDMap);
       }
 
       v28 = +[IMDChatRegistry sharedInstance];
@@ -696,17 +696,17 @@ LABEL_13:
 
       if (v29)
       {
-        CFDictionarySetValue(v8, IMSetupInfoFilteredIMessageChatsExistKey, v29);
+        CFDictionarySetValue(infoCopy, IMSetupInfoFilteredIMessageChatsExistKey, v29);
       }
     }
 
     else
     {
-      v23 = [v21 _chatInfoForNumberOfChats:v13];
+      chats = [v21 _chatInfoForNumberOfChats:v13];
 
-      if (v23)
+      if (chats)
       {
-        CFDictionarySetValue(v8, IMSetupInfoChatsKey, v23);
+        CFDictionarySetValue(infoCopy, IMSetupInfoChatsKey, chats);
       }
     }
 
@@ -716,38 +716,38 @@ LABEL_13:
 
   if (v19)
   {
-    CFDictionarySetValue(v8, IMSetupInfoBlackholedChatsExistKey, v19);
+    CFDictionarySetValue(infoCopy, IMSetupInfoBlackholedChatsExistKey, v19);
   }
 
   v31 = +[IMDMessageStore sharedInstance];
-  v32 = [v31 modificationStamp];
+  modificationStamp = [v31 modificationStamp];
 
-  if (v32)
+  if (modificationStamp)
   {
-    CFDictionarySetValue(v8, IMSetupInfoDBModificationStampKey, v32);
+    CFDictionarySetValue(infoCopy, IMSetupInfoDBModificationStampKey, modificationStamp);
   }
 
   v33 = +[IMHandleOffGridStateManager sharedInstance];
-  v34 = [v33 cachedOverrideDatesByHandleID];
+  cachedOverrideDatesByHandleID = [v33 cachedOverrideDatesByHandleID];
 
-  if (v34)
+  if (cachedOverrideDatesByHandleID)
   {
-    CFDictionarySetValue(v8, IMSetupInfoOffGridStatusOverrideDatesKey, v34);
+    CFDictionarySetValue(infoCopy, IMSetupInfoOffGridStatusOverrideDatesKey, cachedOverrideDatesByHandleID);
   }
 
 LABEL_41:
 }
 
-- (void)_addKeyTransparencyToSetupInfo:(id)a3 capabilities:(unint64_t)a4 context:(id)a5
+- (void)_addKeyTransparencyToSetupInfo:(id)info capabilities:(unint64_t)capabilities context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
-  if ((v6 & 0x204) != 0)
+  capabilitiesCopy = capabilities;
+  infoCopy = info;
+  contextCopy = context;
+  if ((capabilitiesCopy & 0x204) != 0)
   {
     v9 = +[IMDKeyTransparencyController sharedController];
-    v10 = [v9 setupInfo];
-    [v7 setObject:v10 forKeyedSubscript:IMSetupInfoKeyTransparencyInfoKey];
+    setupInfo = [v9 setupInfo];
+    [infoCopy setObject:setupInfo forKeyedSubscript:IMSetupInfoKeyTransparencyInfoKey];
   }
 
   else
@@ -768,9 +768,9 @@ LABEL_41:
 LABEL_4:
 }
 
-- (void)_addFeatureStatusToSetupInfo:(id)a3 capabilities:(unint64_t)a4 context:(id)a5
+- (void)_addFeatureStatusToSetupInfo:(id)info capabilities:(unint64_t)capabilities context:(id)context
 {
-  theDict = a3;
+  theDict = info;
   v5 = +[IMFeatureFlags sharedFeatureFlags];
   v6 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v5 isOneChatEnabled] ^ 1);
 
@@ -780,10 +780,10 @@ LABEL_4:
   }
 }
 
-- (int64_t)_precacheChatCountWithCapabilities:(unint64_t)a3
+- (int64_t)_precacheChatCountWithCapabilities:(unint64_t)capabilities
 {
   v3 = &IMDChatPrecacheCountClientVeryRecent;
-  if ((a3 & 0x2000000) == 0)
+  if ((capabilities & 0x2000000) == 0)
   {
     v3 = &IMDChatPrecacheCountClientRecent;
   }
@@ -792,14 +792,14 @@ LABEL_4:
   return IMGetCachedDomainIntForKeyWithDefaultValue();
 }
 
-- (void)_cacheChatsWithPinningIdentifiers:(id)a3
+- (void)_cacheChatsWithPinningIdentifiers:(id)identifiers
 {
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v22 count:16];
+  identifiersCopy = identifiers;
+  v4 = [identifiersCopy countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v4)
   {
     v6 = *v15;
@@ -812,7 +812,7 @@ LABEL_4:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(identifiersCopy);
         }
 
         v8 = *(*(&v14 + 1) + 8 * v7);
@@ -837,16 +837,16 @@ LABEL_4:
       }
 
       while (v4 != v7);
-      v4 = [v3 countByEnumeratingWithState:&v14 objects:v22 count:16];
+      v4 = [identifiersCopy countByEnumeratingWithState:&v14 objects:v22 count:16];
     }
 
     while (v4);
   }
 }
 
-- (int64_t)_numberOfChatsToLoadDuringInitialSetupFromContext:(id)a3
+- (int64_t)_numberOfChatsToLoadDuringInitialSetupFromContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -856,86 +856,86 @@ LABEL_4:
   v6[2] = sub_100014800;
   v6[3] = &unk_100081A20;
   v6[4] = &v7;
-  [v3 enumerateKeysAndObjectsUsingBlock:v6];
+  [contextCopy enumerateKeysAndObjectsUsingBlock:v6];
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
 
   return v4;
 }
 
-- (id)_pinnedChatIdentifiersFromContext:(id)a3
+- (id)_pinnedChatIdentifiersFromContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001493C;
   v7[3] = &unk_100081A48;
   v8 = objc_alloc_init(NSMutableArray);
   v4 = v8;
-  [v3 enumerateKeysAndObjectsUsingBlock:v7];
+  [contextCopy enumerateKeysAndObjectsUsingBlock:v7];
 
   v5 = [v4 copy];
 
   return v5;
 }
 
-- (void)setValue:(id)a3 ofProperty:(id)a4
+- (void)setValue:(id)value ofProperty:(id)property
 {
-  v5 = a4;
-  v6 = a3;
+  propertyCopy = property;
+  valueCopy = value;
   v7 = +[IMDDaemonPropertyManager sharedManager];
-  [v7 setValue:v6 ofProperty:v5];
+  [v7 setValue:valueCopy ofProperty:propertyCopy];
 }
 
-- (id)valueOfProperty:(id)a3
+- (id)valueOfProperty:(id)property
 {
-  v3 = a3;
+  propertyCopy = property;
   v4 = +[IMDDaemonPropertyManager sharedManager];
-  v5 = [v4 valueOfProperty:v3];
+  v5 = [v4 valueOfProperty:propertyCopy];
 
   return v5;
 }
 
-- (void)setValue:(id)a3 ofPersistentProperty:(id)a4
+- (void)setValue:(id)value ofPersistentProperty:(id)property
 {
-  v5 = a4;
-  v6 = a3;
+  propertyCopy = property;
+  valueCopy = value;
   v7 = +[IMDDaemonPropertyManager sharedManager];
-  [v7 setValue:v6 ofPersistentProperty:v5];
+  [v7 setValue:valueCopy ofPersistentProperty:propertyCopy];
 }
 
-- (id)valueOfPersistentProperty:(id)a3
+- (id)valueOfPersistentProperty:(id)property
 {
-  v3 = a3;
+  propertyCopy = property;
   v4 = +[IMDDaemonPropertyManager sharedManager];
-  v5 = [v4 valueOfPersistentProperty:v3];
+  v5 = [v4 valueOfPersistentProperty:propertyCopy];
 
   return v5;
 }
 
-- (void)markUnreadForMessageGUID:(id)a3 IDs:(id)a4 style:(unsigned __int8)a5 services:(id)a6
+- (void)markUnreadForMessageGUID:(id)d IDs:(id)ds style:(unsigned __int8)style services:(id)services
 {
-  v8 = a3;
-  v32 = a4;
-  v30 = a6;
+  dCopy = d;
+  dsCopy = ds;
+  servicesCopy = services;
   if (IMOSLoggingEnabled())
   {
     v9 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [IMDClientRequestContext currentContext:v30];
-      v11 = [v10 listenerID];
+      v10 = [IMDClientRequestContext currentContext:servicesCopy];
+      listenerID = [v10 listenerID];
       *buf = 138412546;
-      v39 = v11;
+      v39 = listenerID;
       v40 = 2112;
-      v41 = v8;
+      v41 = dCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Request from %@ to mark message as unread with GUID %@", buf, 0x16u);
     }
   }
 
   v12 = objc_alloc_init(IMTimingCollection);
   [v12 startTimingForKey:@"total-time-to-mark-unread"];
-  if (![v8 length])
+  if (![dCopy length])
   {
     [v12 startTimingForKey:@"search-for-guid"];
     v13 = objc_alloc_init(NSMutableSet);
@@ -943,7 +943,7 @@ LABEL_4:
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v14 = v32;
+    v14 = dsCopy;
     v15 = 0;
     v16 = [v14 countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v16)
@@ -959,7 +959,7 @@ LABEL_4:
           }
 
           v19 = *(*(&v33 + 1) + 8 * i);
-          if (([v13 containsObject:{v19, v30}] & 1) == 0)
+          if (([v13 containsObject:{v19, servicesCopy}] & 1) == 0)
           {
             [v13 addObject:v19];
             MessageForChatIdentifier = IMDMessageRecordCopyLastReadMessageForChatIdentifier();
@@ -999,14 +999,14 @@ LABEL_4:
       }
 
       [v15 guid];
-      v8 = v14 = v8;
+      dCopy = v14 = dCopy;
     }
 
 LABEL_26:
-    [v12 stopTimingForKey:{@"search-for-guid", v30}];
+    [v12 stopTimingForKey:{@"search-for-guid", servicesCopy}];
   }
 
-  if ([v8 length])
+  if ([dCopy length])
   {
     if (IMOSLoggingEnabled())
     {
@@ -1014,20 +1014,20 @@ LABEL_26:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v39 = v8;
+        v39 = dCopy;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "Marking message as unread %@", buf, 0xCu);
       }
     }
 
     v25 = +[IMDMessageStore sharedInstance];
-    [v25 markMessageGUIDUnread:v8];
+    [v25 markMessageGUIDUnread:dCopy];
 
     v26 = +[IMDAccountController sharedAccountController];
     v27 = [v26 anySessionForServiceName:IMServiceNameiMessage];
 
     if (v27)
     {
-      [v27 reflectMarkUnreadToPeerDevicesForMessageGUID:v8];
+      [v27 reflectMarkUnreadToPeerDevicesForMessageGUID:dCopy];
     }
 
     else if (IMOSLoggingEnabled())
@@ -1055,41 +1055,41 @@ LABEL_26:
   }
 }
 
-- (void)markMessageAsReadWithGUID:(id)a3 callerOrigin:(int64_t)a4 reply:(id)a5
+- (void)markMessageAsReadWithGUID:(id)d callerOrigin:(int64_t)origin reply:(id)reply
 {
-  v31 = a3;
-  v29 = a5;
+  dCopy = d;
+  replyCopy = reply;
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = +[IMDClientRequestContext currentContext];
-      v8 = [v7 listenerID];
+      listenerID = [v7 listenerID];
       v9 = @"NO";
       *buf = 138412802;
-      v42 = v8;
+      v42 = listenerID;
       v43 = 2112;
-      if (a4 == 1)
+      if (origin == 1)
       {
         v9 = @"YES";
       }
 
-      v44 = v31;
+      v44 = dCopy;
       v45 = 2112;
       v46 = v9;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Request from %@ to mark message as read with GUID: %@ isFromSiri %@", buf, 0x20u);
     }
   }
 
-  if (![v31 length])
+  if (![dCopy length])
   {
-    v29[2](v29, 0);
+    replyCopy[2](replyCopy, 0);
     goto LABEL_25;
   }
 
   v10 = +[IMDMessageStore sharedInstance];
-  v11 = [v10 chatsForMessageGUID:v31];
+  v11 = [v10 chatsForMessageGUID:dCopy];
 
   v35 = 0u;
   v36 = 0u;
@@ -1114,24 +1114,24 @@ LABEL_26:
       }
 
       v16 = *(*(&v33 + 1) + 8 * i);
-      v17 = [v16 serviceName];
-      if ([v17 length])
+      serviceName = [v16 serviceName];
+      if ([serviceName length])
       {
-        v18 = [v16 chatIdentifier];
-        v19 = [v18 length] == 0;
+        chatIdentifier = [v16 chatIdentifier];
+        v19 = [chatIdentifier length] == 0;
 
         if (!v19)
         {
-          v20 = [v16 chatIdentifier];
-          v39 = v20;
+          chatIdentifier2 = [v16 chatIdentifier];
+          v39 = chatIdentifier2;
           v21 = [NSArray arrayWithObjects:&v39 count:1];
-          v22 = [v16 style];
-          v23 = [v16 serviceName];
-          v38 = v23;
+          style = [v16 style];
+          serviceName2 = [v16 serviceName];
+          v38 = serviceName2;
           v24 = [NSArray arrayWithObjects:&v38 count:1];
-          v37 = v31;
+          v37 = dCopy;
           v25 = [NSArray arrayWithObjects:&v37 count:1];
-          sub_100003D50(v21, v22, v24, v25, 0, a4, 0);
+          sub_100003D50(v21, style, v24, v25, 0, origin, 0);
 
           v12 = 1;
           continue;
@@ -1147,14 +1147,14 @@ LABEL_26:
         v26 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
         {
-          v27 = [v16 chatIdentifier];
-          v28 = [v16 serviceName];
+          chatIdentifier3 = [v16 chatIdentifier];
+          serviceName3 = [v16 serviceName];
           *buf = 138412802;
           v42 = v16;
           v43 = 2112;
-          v44 = v27;
+          v44 = chatIdentifier3;
           v45 = 2112;
-          v46 = v28;
+          v46 = serviceName3;
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "Empty IDs or services for chat: %@ (IDs: %@  Services: %@)", buf, 0x20u);
         }
       }
@@ -1166,46 +1166,46 @@ LABEL_26:
   while (v13);
 LABEL_23:
 
-  v29[2](v29, v12 & 1);
+  replyCopy[2](replyCopy, v12 & 1);
 LABEL_25:
 }
 
-- (void)markReadForMessageGUID:(id)a3 callerOrigin:(int64_t)a4 queryID:(id)a5
+- (void)markReadForMessageGUID:(id)d callerOrigin:(int64_t)origin queryID:(id)iD
 {
-  v8 = a3;
+  dCopy = d;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000155CC;
   v11[3] = &unk_100081A70;
-  v12 = a5;
-  v13 = v8;
-  v9 = v8;
-  v10 = v12;
-  [(IMDaemonAnyRequestHandler *)self markMessageAsReadWithGUID:v9 callerOrigin:a4 reply:v11];
+  iDCopy = iD;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = iDCopy;
+  [(IMDaemonAnyRequestHandler *)self markMessageAsReadWithGUID:v9 callerOrigin:origin reply:v11];
 }
 
-- (void)markPlayedForMessageGUID:(id)a3
+- (void)markPlayedForMessageGUID:(id)d
 {
-  v23 = a3;
+  dCopy = d;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v5 = +[IMDClientRequestContext currentContext];
-      v6 = [v5 listenerID];
+      listenerID = [v5 listenerID];
       *buf = 138412546;
-      v29 = v6;
+      v29 = listenerID;
       v30 = 2112;
-      v31 = v23;
+      v31 = dCopy;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Request from %@ to mark message as played with GUID: %@", buf, 0x16u);
     }
   }
 
-  if ([v23 length])
+  if ([dCopy length])
   {
     v7 = +[IMDMessageStore sharedInstance];
-    v8 = [v7 chatsForMessageGUID:v23];
+    v8 = [v7 chatsForMessageGUID:dCopy];
 
     v26 = 0u;
     v27 = 0u;
@@ -1228,16 +1228,16 @@ LABEL_25:
           }
 
           v14 = *(*(&v24 + 1) + 8 * i);
-          v15 = [v14 chatIdentifier];
+          chatIdentifier = [v14 chatIdentifier];
           v16 = IMSingleObjectArray();
 
-          v17 = [v14 serviceName];
+          serviceName = [v14 serviceName];
           v18 = IMSingleObjectArray();
 
           if ([v18 count] && objc_msgSend(v16, "count"))
           {
             v19 = +[IMDMessageStore sharedInstance];
-            v20 = [v19 messageWithGUID:v23];
+            v20 = [v19 messageWithGUID:dCopy];
 
             -[IMDaemonAnyRequestHandler markPlayedForIDs:style:onServices:message:](self, "markPlayedForIDs:style:onServices:message:", v16, [v14 style], v18, v20);
           }
@@ -1266,37 +1266,37 @@ LABEL_25:
   }
 }
 
-- (void)markPlayedForIDs:(id)a3 style:(unsigned __int8)a4 onServices:(id)a5 message:(id)a6
+- (void)markPlayedForIDs:(id)ds style:(unsigned __int8)style onServices:(id)services message:(id)message
 {
-  v62 = a4;
-  v65 = a3;
-  v64 = a5;
-  v8 = a6;
+  styleCopy = style;
+  dsCopy = ds;
+  servicesCopy = services;
+  messageCopy = message;
   if (IMOSLoggingEnabled())
   {
     v9 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = +[IMDClientRequestContext currentContext];
-      v11 = [v10 listenerID];
+      listenerID = [v10 listenerID];
       *buf = 138412802;
-      v74 = v11;
+      v74 = listenerID;
       v75 = 2112;
-      v76 = v65;
+      v76 = dsCopy;
       v77 = 2112;
-      v78 = v64;
+      v78 = servicesCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Request from %@ to mark message as played with IDs: %@  services: %@", buf, 0x20u);
     }
   }
 
-  if ([v65 count] && objc_msgSend(v64, "count"))
+  if ([dsCopy count] && objc_msgSend(servicesCopy, "count"))
   {
-    v12 = [v65 count];
-    if (v12 == [v64 count])
+    v12 = [dsCopy count];
+    if (v12 == [servicesCopy count])
     {
       v13 = +[IMDMessageStore sharedInstance];
-      v14 = [v8 guid];
-      v15 = [v13 messageWithGUID:v14];
+      guid = [messageCopy guid];
+      v15 = [v13 messageWithGUID:guid];
 
       if (v15)
       {
@@ -1325,20 +1325,20 @@ LABEL_25:
       }
 
       v63 = objc_alloc_init(NSMutableSet);
-      if ([v65 count])
+      if ([dsCopy count])
       {
         v20 = 0;
         do
         {
-          v21 = [v65 objectAtIndex:v20];
-          v22 = [v64 objectAtIndex:v20];
+          v21 = [dsCopy objectAtIndex:v20];
+          v22 = [servicesCopy objectAtIndex:v20];
           v23 = IMCopyGUIDForChat();
 
           [v63 addObject:v23];
           ++v20;
         }
 
-        while (v20 < [v65 count]);
+        while (v20 < [dsCopy count]);
       }
 
       if (v67)
@@ -1347,7 +1347,7 @@ LABEL_25:
         v66 = [v24 chatForMessage:v67];
 
         v25 = [v66 style] == 45;
-        v26 = [v65 count];
+        v26 = [dsCopy count];
         if (v25)
         {
           if (v26)
@@ -1355,8 +1355,8 @@ LABEL_25:
             v27 = 0;
             do
             {
-              v28 = [v65 objectAtIndex:v27];
-              v29 = [v64 objectAtIndex:v27];
+              v28 = [dsCopy objectAtIndex:v27];
+              v29 = [servicesCopy objectAtIndex:v27];
               v30 = +[IMDChatStore sharedInstance];
               v31 = [v30 chatsWithHandle:v28 onService:v29];
 
@@ -1366,7 +1366,7 @@ LABEL_25:
               ++v27;
             }
 
-            while (v27 < [v65 count]);
+            while (v27 < [dsCopy count]);
           }
         }
 
@@ -1375,8 +1375,8 @@ LABEL_25:
           v33 = 0;
           do
           {
-            v34 = [v65 objectAtIndex:v33];
-            v35 = [v64 objectAtIndex:v33];
+            v34 = [dsCopy objectAtIndex:v33];
+            v35 = [servicesCopy objectAtIndex:v33];
             v36 = +[IMDChatStore sharedInstance];
             v37 = [v36 chatsWithRoomname:v34 onService:v35];
 
@@ -1386,10 +1386,10 @@ LABEL_25:
             ++v33;
           }
 
-          while (v33 < [v65 count]);
+          while (v33 < [dsCopy count]);
         }
 
-        v39 = [v67 guid];
+        guid2 = [v67 guid];
         v70 = 0u;
         v71 = 0u;
         v68 = 0u;
@@ -1412,9 +1412,9 @@ LABEL_25:
               v45 = +[IMDChatRegistry sharedInstance];
               v46 = [v45 existingChatWithGUID:v44];
 
-              v47 = [v46 lastMessage];
-              v48 = [v47 guid];
-              LODWORD(v45) = [v48 isEqualToString:v39];
+              lastMessage = [v46 lastMessage];
+              guid3 = [lastMessage guid];
+              LODWORD(v45) = [guid3 isEqualToString:guid2];
 
               if (v45)
               {
@@ -1429,9 +1429,9 @@ LABEL_25:
           while (v41);
         }
 
-        v50 = [v67 accountID];
+        accountID = [v67 accountID];
         v51 = +[IMDAccountController sharedInstance];
-        v52 = [v51 sessionForAccount:v50];
+        v52 = [v51 sessionForAccount:accountID];
 
         if (IMOSLoggingEnabled())
         {
@@ -1444,15 +1444,15 @@ LABEL_25:
           }
         }
 
-        v54 = [v66 chatIdentifier];
-        [v52 sendPlayedReceiptForMessage:v67 toChatID:0 identifier:v54 style:{objc_msgSend(v66, "style")}];
+        chatIdentifier = [v66 chatIdentifier];
+        [v52 sendPlayedReceiptForMessage:v67 toChatID:0 identifier:chatIdentifier style:{objc_msgSend(v66, "style")}];
 
         v55 = +[IMDMessageStore sharedInstance];
-        v56 = [v67 guid];
-        v8 = [v55 messageWithGUID:v56];
+        guid4 = [v67 guid];
+        messageCopy = [v55 messageWithGUID:guid4];
 
         v57 = +[IMDBroadcastController sharedProvider];
-        v58 = [v57 broadcasterForChatListeners];
+        broadcasterForChatListeners = [v57 broadcasterForChatListeners];
 
         if (IMOSLoggingEnabled())
         {
@@ -1460,17 +1460,17 @@ LABEL_25:
           if (os_log_type_enabled(v59, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v74 = v8;
+            v74 = messageCopy;
             _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_INFO, "Notifying about message: %@", buf, 0xCu);
           }
         }
 
-        [v58 account:v50 chat:0 style:0 messageUpdated:v8];
+        [broadcasterForChatListeners account:accountID chat:0 style:0 messageUpdated:messageCopy];
       }
 
       else
       {
-        v8 = 0;
+        messageCopy = 0;
       }
 
       if (IMMessageItemShouldAutomaticallySave())
@@ -1481,15 +1481,15 @@ LABEL_25:
           if (os_log_type_enabled(v60, OS_LOG_TYPE_INFO))
           {
             *buf = 138412546;
-            v74 = v65;
+            v74 = dsCopy;
             v75 = 2112;
-            v76 = v64;
+            v76 = servicesCopy;
             _os_log_impl(&_mh_execute_header, v60, OS_LOG_TYPE_INFO, "Automatically marking played messages as saved with IDs: %@  services: %@", buf, 0x16u);
           }
         }
 
         v61 = objc_alloc_init(IMDaemonChatModifyReadStateRequestHandler);
-        [(IMDaemonChatModifyReadStateRequestHandler *)v61 markSavedForIDs:v65 style:v62 onServices:v64 message:v8];
+        [(IMDaemonChatModifyReadStateRequestHandler *)v61 markSavedForIDs:dsCopy style:styleCopy onServices:servicesCopy message:messageCopy];
       }
     }
 
@@ -1499,31 +1499,31 @@ LABEL_25:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v74 = v65;
+        v74 = dsCopy;
         v75 = 2112;
-        v76 = v64;
+        v76 = servicesCopy;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Mismatched IDs and serviceNames array to mark as played (IDs: %@   Service names: %@)", buf, 0x16u);
       }
     }
   }
 }
 
-- (void)playSendSoundForMessageGUID:(id)a3 callerOrigin:(int64_t)a4
+- (void)playSendSoundForMessageGUID:(id)d callerOrigin:(int64_t)origin
 {
-  v5 = a3;
+  dCopy = d;
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = @"NO";
-      if (a4 == 1)
+      if (origin == 1)
       {
         v7 = @"YES";
       }
 
       v11 = 138412546;
-      v12 = v5;
+      v12 = dCopy;
       v13 = 2112;
       v14 = v7;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Request to play send sound for message with GUID: %@ isFromSiri %@", &v11, 0x16u);
@@ -1531,7 +1531,7 @@ LABEL_25:
   }
 
   v8 = +[IMDMessageStore sharedInstance];
-  v9 = [v8 messageWithGUID:v5];
+  v9 = [v8 messageWithGUID:dCopy];
 
   if (v9)
   {
@@ -1544,19 +1544,19 @@ LABEL_25:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = 138412290;
-      v12 = v5;
+      v12 = dCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Could not find message item matching guid, not playing send sound. GUID: %@", &v11, 0xCu);
     }
   }
 }
 
-- (void)requestBuddyPicturesAndPropertiesForAccount:(id)a3
+- (void)requestBuddyPicturesAndPropertiesForAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = +[IMDAccountController sharedAccountController];
-  v5 = [v4 accountForAccountID:v3];
+  v5 = [v4 accountForAccountID:accountCopy];
 
-  v6 = [v5 session];
+  session = [v5 session];
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
@@ -1565,7 +1565,7 @@ LABEL_25:
       v13 = 138412802;
       v14 = v5;
       v15 = 2112;
-      v16 = v6;
+      v16 = session;
       v17 = 2112;
       v18 = v5;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "requestBuddyPicturesAndPropertiesForAccount: %@   session: %@  account: %@", &v13, 0x20u);
@@ -1573,17 +1573,17 @@ LABEL_25:
   }
 
   v8 = +[IMDBroadcastController sharedProvider];
-  v9 = [v6 service];
-  v10 = [v8 broadcasterForListenersSupportingService:v9];
+  service = [session service];
+  v10 = [v8 broadcasterForListenersSupportingService:service];
 
-  v11 = [v6 buddyProperties];
-  v12 = [v6 buddyPictures];
-  [v10 account:v3 buddyProperties:v11 buddyPictures:v12];
+  buddyProperties = [session buddyProperties];
+  buddyPictures = [session buddyPictures];
+  [v10 account:accountCopy buddyProperties:buddyProperties buddyPictures:buddyPictures];
 }
 
-- (void)forceReloadChatRegistryWithQueryID:(id)a3
+- (void)forceReloadChatRegistryWithQueryID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
@@ -1597,11 +1597,11 @@ LABEL_25:
   v5 = +[IMDChatRegistry sharedInstance];
   [v5 _forceReloadChats:1];
 
-  if (v3)
+  if (dCopy)
   {
     v6 = +[IMDClientRequestContext currentContext];
-    v7 = [v6 replyProxy];
-    [v7 forcedReloadingChatRegistryWithQueryID:v3];
+    replyProxy = [v6 replyProxy];
+    [replyProxy forcedReloadingChatRegistryWithQueryID:dCopy];
   }
 }
 
@@ -1621,31 +1621,31 @@ LABEL_25:
   [v3 broadcastCodeStatusToClients];
 }
 
-- (void)consumeCodeWithMessageGUID:(id)a3
+- (void)consumeCodeWithMessageGUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = dCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Request to consume code with message guid: %@", &v8, 0xCu);
     }
   }
 
-  [(IMDaemonAnyRequestHandler *)self markReadForMessageGUID:v4 callerOrigin:0 queryID:0];
+  [(IMDaemonAnyRequestHandler *)self markReadForMessageGUID:dCopy callerOrigin:0 queryID:0];
   v6 = +[IMDOneTimeCodeManager sharedInstance];
-  [v6 consumeCodeWithGuid:v4];
+  [v6 consumeCodeWithGuid:dCopy];
 
   v7 = +[IMMetricsCollector sharedInstance];
   [v7 trackEvent:IMMetricsCollecterEventConsumedOTC];
 }
 
-- (void)onboardDeleteVerificationCodesIfNeededWithReply:(id)a3
+- (void)onboardDeleteVerificationCodesIfNeededWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
@@ -1657,32 +1657,32 @@ LABEL_25:
   }
 
   v5 = +[IMDOneTimeCodeManager sharedInstance];
-  [v5 onboardDeleteVerificationCodesIfNeededWithCompletionHandler:v3];
+  [v5 onboardDeleteVerificationCodesIfNeededWithCompletionHandler:replyCopy];
 }
 
-- (void)onboardDeleteVerificationCodesIfNeededWithMessage:(id)a3 reply:(id)a4
+- (void)onboardDeleteVerificationCodesIfNeededWithMessage:(id)message reply:(id)reply
 {
-  v5 = a4;
-  v6 = a3;
+  replyCopy = reply;
+  messageCopy = message;
   v7 = +[IMDOneTimeCodeManager sharedInstance];
-  [v7 onboardDeleteVerificationCodesIfNeededWithMessage:v6 completionHandler:v5];
+  [v7 onboardDeleteVerificationCodesIfNeededWithMessage:messageCopy completionHandler:replyCopy];
 }
 
-- (void)fetchAutoDeletionPreferenceWithReply:(id)a3
+- (void)fetchAutoDeletionPreferenceWithReply:(id)reply
 {
-  if (a3)
+  if (reply)
   {
-    v5 = a3;
+    replyCopy = reply;
     v3 = +[IMDOneTimeCodeManager sharedInstance];
-    v4 = [v3 autoDeletionPreference];
+    autoDeletionPreference = [v3 autoDeletionPreference];
 
-    v5[2](v5, v4);
+    replyCopy[2](replyCopy, autoDeletionPreference);
   }
 }
 
-- (void)simulateOneTimeCodeArriving:(id)a3
+- (void)simulateOneTimeCodeArriving:(id)arriving
 {
-  v3 = a3;
+  arrivingCopy = arriving;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
@@ -1694,7 +1694,7 @@ LABEL_25:
   }
 
   v5 = +[IMDOneTimeCodeManager sharedInstance];
-  [v5 startTrackingCode:v3];
+  [v5 startTrackingCode:arrivingCopy];
 }
 
 - (void)preWarm
@@ -1710,51 +1710,51 @@ LABEL_25:
   _objc_release_x2();
 }
 
-- (BOOL)_shouldContinueDownloadingPurgedAttachments:(unint64_t)a3
+- (BOOL)_shouldContinueDownloadingPurgedAttachments:(unint64_t)attachments
 {
   v4 = [IDSServerBag sharedInstanceForBagType:1];
   v5 = [v4 objectForKey:@"ck-client-download-purged-attachments-max-retry-count"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v5 intValue] >= 1)
   {
-    v6 = [v5 intValue];
+    intValue = [v5 intValue];
   }
 
   else
   {
-    v6 = 5;
+    intValue = 5;
   }
 
-  if (v6 <= a3 && IMOSLoggingEnabled())
+  if (intValue <= attachments && IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [NSNumber numberWithUnsignedInteger:v6];
+      v8 = [NSNumber numberWithUnsignedInteger:intValue];
       v10 = 138412290;
       v11 = v8;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Cannot continue downloading purged attachments becaused reach max retry count of %@", &v10, 0xCu);
     }
   }
 
-  return v6 > a3;
+  return intValue > attachments;
 }
 
-- (unint64_t)_broadcastedUncachedAttachmentCountForChatWithGUID:(id)a3 chatIdentifiers:(id)a4 services:(id)a5 broadcaster:(id)a6
+- (unint64_t)_broadcastedUncachedAttachmentCountForChatWithGUID:(id)d chatIdentifiers:(id)identifiers services:(id)services broadcaster:(id)broadcaster
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  identifiersCopy = identifiers;
+  servicesCopy = services;
+  broadcasterCopy = broadcaster;
   v13 = +[IMDCKUtilities sharedInstance];
-  v14 = [v13 cloudKitSyncingEnabled];
+  cloudKitSyncingEnabled = [v13 cloudKitSyncingEnabled];
 
-  if (v14)
+  if (cloudKitSyncingEnabled)
   {
     v15 = +[IMDCKAttachmentSyncController sharedInstance];
-    v16 = [v15 purgedAttachmentsCountForChatsWithChatIdentifiers:v10 services:v11];
+    v16 = [v15 purgedAttachmentsCountForChatsWithChatIdentifiers:identifiersCopy services:servicesCopy];
     v17 = [NSNumber numberWithUnsignedInteger:v16];
-    [v12 chat:v9 uncachedAttachmentCountUpdated:v17];
+    [broadcasterCopy chat:dCopy uncachedAttachmentCountUpdated:v17];
   }
 
   else
@@ -1765,9 +1765,9 @@ LABEL_25:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
         v20 = 138412546;
-        v21 = v10;
+        v21 = identifiersCopy;
         v22 = 2112;
-        v23 = v11;
+        v23 = servicesCopy;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "CloudKit syncing disabled, not broadcasting uncached attachment count for %@ on %@", &v20, 0x16u);
       }
     }
@@ -1784,19 +1784,19 @@ LABEL_25:
   [v2 dummyMethod];
 }
 
-- (void)requestQOSClassWhileServicingRequestsWithID:(id)a3
+- (void)requestQOSClassWhileServicingRequestsWithID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = qos_class_self();
   v6 = +[IMDBroadcastController sharedProvider];
-  v5 = [v6 broadcasterForChatListeners];
-  [v5 qosClassWhileServicingRequestsResponse:v4 identifier:v3];
+  broadcasterForChatListeners = [v6 broadcasterForChatListeners];
+  [broadcasterForChatListeners qosClassWhileServicingRequestsResponse:v4 identifier:dCopy];
 }
 
-- (void)fetchGroupPhotoPathsForChatsWithGroupIDs:(id)a3 completionHandler:(id)a4
+- (void)fetchGroupPhotoPathsForChatsWithGroupIDs:(id)ds completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
@@ -1812,82 +1812,82 @@ LABEL_25:
   v10[1] = 3221225472;
   v10[2] = sub_100017E00;
   v10[3] = &unk_1000819A8;
-  v11 = v6;
-  v9 = v6;
-  [v8 fetchGroupPhotoPathsForChatsWithGroupIDs:v5 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [v8 fetchGroupPhotoPathsForChatsWithGroupIDs:dsCopy completionHandler:v10];
 }
 
-- (void)fetchNicknamesWithReply:(id)a3
+- (void)fetchNicknamesWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = +[IMDNicknameController sharedInstance];
-  v9 = [v4 pendingNicknameUpdates];
+  pendingNicknameUpdates = [v4 pendingNicknameUpdates];
 
   v5 = +[IMDNicknameController sharedInstance];
-  v6 = [v5 handledNicknames];
+  handledNicknames = [v5 handledNicknames];
 
   v7 = +[IMDNicknameController sharedInstance];
-  v8 = [v7 archivedNicknames];
+  archivedNicknames = [v7 archivedNicknames];
 
-  v3[2](v3, v9, v6, v8);
+  replyCopy[2](replyCopy, pendingNicknameUpdates, handledNicknames, archivedNicknames);
 }
 
-- (void)fetchHandleSharingStateWithReply:(id)a3
+- (void)fetchHandleSharingStateWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = +[IMDNicknameController sharedInstance];
-  v7 = [v4 allowListedHandlesForSharing];
+  allowListedHandlesForSharing = [v4 allowListedHandlesForSharing];
 
   v5 = +[IMDNicknameController sharedInstance];
-  v6 = [v5 denyListedHandlesForSharing];
+  denyListedHandlesForSharing = [v5 denyListedHandlesForSharing];
 
-  v3[2](v3, v7, v6);
+  replyCopy[2](replyCopy, allowListedHandlesForSharing, denyListedHandlesForSharing);
 }
 
-- (void)fetchTransitionedNicknameHandlesWithReply:(id)a3
+- (void)fetchTransitionedNicknameHandlesWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = +[IMDNicknameController sharedInstance];
-  v5 = [v4 transitionedHandles];
+  transitionedHandles = [v4 transitionedHandles];
 
-  v3[2](v3, v5);
+  replyCopy[2](replyCopy, transitionedHandles);
 }
 
-- (void)fetchActiveNicknamesWithReply:(id)a3
+- (void)fetchActiveNicknamesWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = +[IMDNicknameController sharedInstance];
-  v5 = [v4 activeRecords];
+  activeRecords = [v4 activeRecords];
 
-  v3[2](v3, v5);
+  replyCopy[2](replyCopy, activeRecords);
 }
 
-- (void)fetchIgnoredNicknameHandlesWithReply:(id)a3
+- (void)fetchIgnoredNicknameHandlesWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = +[IMDNicknameController sharedInstance];
-  v5 = [v4 ignoredRecords];
+  ignoredRecords = [v4 ignoredRecords];
 
-  v3[2](v3, v5);
+  replyCopy[2](replyCopy, ignoredRecords);
 }
 
-- (void)fetchUnknownSenderRecordsWithReply:(id)a3
+- (void)fetchUnknownSenderRecordsWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = +[IMDNicknameController sharedInstance];
-  v5 = [v4 unknownSenderRecordInfo];
+  unknownSenderRecordInfo = [v4 unknownSenderRecordInfo];
 
-  v3[2](v3, v5);
+  replyCopy[2](replyCopy, unknownSenderRecordInfo);
 }
 
-- (void)clearPendingNicknameUpdatesForHandleIDs:(id)a3
+- (void)clearPendingNicknameUpdatesForHandleIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [dsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1899,7 +1899,7 @@ LABEL_25:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dsCopy);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
@@ -1910,21 +1910,21 @@ LABEL_25:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [dsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)ignorePendingNicknameUpdatesForHandleIDs:(id)a3
+- (void)ignorePendingNicknameUpdatesForHandleIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [dsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1936,7 +1936,7 @@ LABEL_25:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dsCopy);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
@@ -1947,28 +1947,28 @@ LABEL_25:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [dsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)acceptPendingNicknameForHandleID:(id)a3 updateType:(unint64_t)a4
+- (void)acceptPendingNicknameForHandleID:(id)d updateType:(unint64_t)type
 {
-  v5 = a3;
+  dCopy = d;
   v6 = +[IMDNicknameController sharedInstance];
-  [v6 acceptPendingNicknameForHandleID:v5 updateType:a4];
+  [v6 acceptPendingNicknameForHandleID:dCopy updateType:type];
 }
 
-- (void)clearPendingNicknamePhotoUpdateForHandleIDs:(id)a3
+- (void)clearPendingNicknamePhotoUpdateForHandleIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [dsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1980,7 +1980,7 @@ LABEL_25:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dsCopy);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
@@ -1991,25 +1991,25 @@ LABEL_25:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [dsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)denyHandleIDsForNicknameSharing:(id)a3
+- (void)denyHandleIDsForNicknameSharing:(id)sharing
 {
-  v3 = a3;
+  sharingCopy = sharing;
   v4 = +[IMDNicknameController sharedInstance];
-  [v4 denyHandlesForSharing:v3];
+  [v4 denyHandlesForSharing:sharingCopy];
 }
 
-- (void)markProfileRecordsAsIgnored:(id)a3
+- (void)markProfileRecordsAsIgnored:(id)ignored
 {
-  v3 = a3;
+  ignoredCopy = ignored;
   v4 = +[IMDNicknameController sharedInstance];
-  [v4 markProfileRecordsAsIgnored:v3 broadcastUpdates:1];
+  [v4 markProfileRecordsAsIgnored:ignoredCopy broadcastUpdates:1];
 }
 
 - (void)nicknamePreferencesDidChange
@@ -2018,28 +2018,28 @@ LABEL_25:
   [v2 sendNicknamePreferencesDidChange];
 }
 
-- (void)setNewPersonalNickname:(id)a3
+- (void)setNewPersonalNickname:(id)nickname
 {
-  v3 = a3;
+  nicknameCopy = nickname;
   v4 = +[IMDNicknameController sharedInstance];
-  [v4 setPersonalNickname:v3 completionBlock:&stru_100081B00];
+  [v4 setPersonalNickname:nicknameCopy completionBlock:&stru_100081B00];
 }
 
-- (void)sendNameOnlyToHandleIDs:(id)a3 fromHandleID:(id)a4
+- (void)sendNameOnlyToHandleIDs:(id)ds fromHandleID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  dsCopy = ds;
   v7 = +[IMDNicknameController sharedInstance];
-  [v7 sendNameOnlyToHandleIDs:v6 fromHandleID:v5];
+  [v7 sendNameOnlyToHandleIDs:dsCopy fromHandleID:dCopy];
 }
 
-- (void)fetchPersonalNicknameWithReply:(id)a3
+- (void)fetchPersonalNicknameWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = +[IMDNicknameController sharedInstance];
-  v5 = [v4 personalNickname];
+  personalNickname = [v4 personalNickname];
 
-  v3[2](v3, v5);
+  replyCopy[2](replyCopy, personalNickname);
 }
 
 - (void)markAllNicknamesAsPending
@@ -2048,28 +2048,28 @@ LABEL_25:
   [v2 markAllNicknamesAsPending];
 }
 
-- (void)eagerUploadTransfer:(id)a3 recipients:(id)a4
+- (void)eagerUploadTransfer:(id)transfer recipients:(id)recipients
 {
-  v5 = a4;
-  v6 = a3;
+  recipientsCopy = recipients;
+  transferCopy = transfer;
   v7 = +[IMDAccountController sharedAccountController];
   v8 = [v7 anySessionForServiceName:IMServiceNameiMessage];
 
-  [v8 eagerUploadTransfer:v6 recipients:v5];
+  [v8 eagerUploadTransfer:transferCopy recipients:recipientsCopy];
 }
 
-- (void)eagerUploadCancel:(id)a3
+- (void)eagerUploadCancel:(id)cancel
 {
-  v3 = a3;
+  cancelCopy = cancel;
   v4 = +[IMDAccountController sharedAccountController];
   v5 = [v4 anySessionForServiceName:IMServiceNameiMessage];
 
-  [v5 eagerUploadCancel:v3];
+  [v5 eagerUploadCancel:cancelCopy];
 }
 
-- (void)downloadStickerWithGUID:(id)a3
+- (void)downloadStickerWithGUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
@@ -2077,7 +2077,7 @@ LABEL_25:
     {
       v5 = +[IMDStickerRegistry sharedInstance];
       v6 = 138412546;
-      v7 = v3;
+      v7 = dCopy;
       v8 = 2112;
       v9 = v5;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Got a request to download sticker with GUID %@ stickerStore %@", &v6, 0x16u);
@@ -2085,9 +2085,9 @@ LABEL_25:
   }
 }
 
-- (void)downloadStickerPackWithGUID:(id)a3 isIncomingMessage:(BOOL)a4 ignoreCache:(BOOL)a5
+- (void)downloadStickerPackWithGUID:(id)d isIncomingMessage:(BOOL)message ignoreCache:(BOOL)cache
 {
-  v5 = a3;
+  dCopy = d;
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
@@ -2095,7 +2095,7 @@ LABEL_25:
     {
       v7 = +[IMDStickerRegistry sharedInstance];
       v8 = 138412546;
-      v9 = v5;
+      v9 = dCopy;
       v10 = 2112;
       v11 = v7;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Got a request to download sticker pack with GUID %@ stickerStore %@", &v8, 0x16u);
@@ -2103,13 +2103,13 @@ LABEL_25:
   }
 }
 
-- (void)sendEmergencyQuestionnaire:(id)a3
+- (void)sendEmergencyQuestionnaire:(id)questionnaire
 {
-  v3 = a3;
+  questionnaireCopy = questionnaire;
   v4 = +[IMFeatureFlags sharedFeatureFlags];
-  v5 = [v4 stewieEnabled];
+  stewieEnabled = [v4 stewieEnabled];
 
-  if (v5)
+  if (stewieEnabled)
   {
     if (IMOSLoggingEnabled())
     {
@@ -2122,29 +2122,29 @@ LABEL_25:
     }
 
     v7 = +[IMDChorosController sharedController];
-    [v7 sendEmergencyQuestionnaire:v3];
+    [v7 sendEmergencyQuestionnaire:questionnaireCopy];
   }
 }
 
-- (void)processReceivedEmergencyMessageFromIMTool:(int64_t)a3 message:(id)a4
+- (void)processReceivedEmergencyMessageFromIMTool:(int64_t)tool message:(id)message
 {
-  v8 = a4;
+  messageCopy = message;
   v5 = +[IMFeatureFlags sharedFeatureFlags];
-  v6 = [v5 stewieEnabled];
+  stewieEnabled = [v5 stewieEnabled];
 
-  if (v6)
+  if (stewieEnabled)
   {
     v7 = +[IMDChorosController sharedController];
-    [v7 processReceivedEmergencyMessageFromIMTool:a3 message:v8];
+    [v7 processReceivedEmergencyMessageFromIMTool:tool message:messageCopy];
   }
 }
 
 - (void)locationUpdateSent
 {
   v2 = +[IMFeatureFlags sharedFeatureFlags];
-  v3 = [v2 stewieEnabled];
+  stewieEnabled = [v2 stewieEnabled];
 
-  if (v3)
+  if (stewieEnabled)
   {
     if (IMOSLoggingEnabled())
     {
@@ -2161,13 +2161,13 @@ LABEL_25:
   }
 }
 
-- (void)sendQuestionnaire:(id)a3
+- (void)sendQuestionnaire:(id)questionnaire
 {
-  v3 = a3;
+  questionnaireCopy = questionnaire;
   v4 = +[IMFeatureFlags sharedFeatureFlags];
-  v5 = [v4 stewieEnabled];
+  stewieEnabled = [v4 stewieEnabled];
 
-  if (v5)
+  if (stewieEnabled)
   {
     if (IMOSLoggingEnabled())
     {
@@ -2180,17 +2180,17 @@ LABEL_25:
     }
 
     v7 = +[IMDChorosController sharedController];
-    [v7 sendQuestionnaire:v3];
+    [v7 sendQuestionnaire:questionnaireCopy];
   }
 }
 
-- (void)locationUpdateDelivered:(id)a3
+- (void)locationUpdateDelivered:(id)delivered
 {
-  v3 = a3;
+  deliveredCopy = delivered;
   v4 = +[IMFeatureFlags sharedFeatureFlags];
-  v5 = [v4 stewieEnabled];
+  stewieEnabled = [v4 stewieEnabled];
 
-  if (v5)
+  if (stewieEnabled)
   {
     if (IMOSLoggingEnabled())
     {
@@ -2203,17 +2203,17 @@ LABEL_25:
     }
 
     v7 = +[IMDChorosController sharedController];
-    [v7 locationUpdateDelivered:v3];
+    [v7 locationUpdateDelivered:deliveredCopy];
   }
 }
 
-- (void)openStewieChatWithContext:(id)a3
+- (void)openStewieChatWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = +[IMFeatureFlags sharedFeatureFlags];
-  v5 = [v4 stewieEnabled];
+  stewieEnabled = [v4 stewieEnabled];
 
-  if (v5)
+  if (stewieEnabled)
   {
     if (IMOSLoggingEnabled())
     {
@@ -2226,15 +2226,15 @@ LABEL_25:
     }
 
     v7 = +[IMDChorosController sharedController];
-    [v7 openStewieChatWithContext:v3];
+    [v7 openStewieChatWithContext:contextCopy];
   }
 }
 
-- (void)holdBuddyUpdatesAccount:(id)a3
+- (void)holdBuddyUpdatesAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = +[IMDAccountController sharedAccountController];
-  v5 = [v4 sessionForAccount:v3];
+  v5 = [v4 sessionForAccount:accountCopy];
 
   if (v5)
   {
@@ -2247,17 +2247,17 @@ LABEL_25:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = v3;
+      v14 = accountCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "FIND_SESSION: No session found for account, attempting to find ANYTHING for the service: %@", &v13, 0xCu);
     }
   }
 
   v7 = +[IMDAccountController sharedAccountController];
   v8 = +[IMDAccountController sharedAccountController];
-  v9 = [v8 accountForAccountID:v3];
-  v10 = [v9 service];
-  v11 = [v10 internalName];
-  v5 = [v7 anySessionForServiceName:v11];
+  v9 = [v8 accountForAccountID:accountCopy];
+  service = [v9 service];
+  internalName = [service internalName];
+  v5 = [v7 anySessionForServiceName:internalName];
 
   if (v5)
   {
@@ -2271,17 +2271,17 @@ LABEL_7:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = v3;
+      v14 = accountCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "FIND_SESSION: No session ever found for account: %@", &v13, 0xCu);
     }
   }
 }
 
-- (void)resumeBuddyUpdatesAccount:(id)a3
+- (void)resumeBuddyUpdatesAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = +[IMDAccountController sharedAccountController];
-  v5 = [v4 sessionForAccount:v3];
+  v5 = [v4 sessionForAccount:accountCopy];
 
   if (v5)
   {
@@ -2294,17 +2294,17 @@ LABEL_7:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = v3;
+      v14 = accountCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "FIND_SESSION: No session found for account, attempting to find ANYTHING for the service: %@", &v13, 0xCu);
     }
   }
 
   v7 = +[IMDAccountController sharedAccountController];
   v8 = +[IMDAccountController sharedAccountController];
-  v9 = [v8 accountForAccountID:v3];
-  v10 = [v9 service];
-  v11 = [v10 internalName];
-  v5 = [v7 anySessionForServiceName:v11];
+  v9 = [v8 accountForAccountID:accountCopy];
+  service = [v9 service];
+  internalName = [service internalName];
+  v5 = [v7 anySessionForServiceName:internalName];
 
   if (v5)
   {
@@ -2318,18 +2318,18 @@ LABEL_7:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = v3;
+      v14 = accountCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "FIND_SESSION: No session ever found for account: %@", &v13, 0xCu);
     }
   }
 }
 
-- (void)startWatchingBuddy:(id)a3 account:(id)a4
+- (void)startWatchingBuddy:(id)buddy account:(id)account
 {
-  v5 = a3;
-  v6 = a4;
+  buddyCopy = buddy;
+  accountCopy = account;
   v7 = +[IMDAccountController sharedAccountController];
-  v8 = [v7 sessionForAccount:v6];
+  v8 = [v7 sessionForAccount:accountCopy];
 
   if (v8)
   {
@@ -2342,22 +2342,22 @@ LABEL_7:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v16 = 138412290;
-      v17 = v6;
+      v17 = accountCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "FIND_SESSION: No session found for account, attempting to find ANYTHING for the service: %@", &v16, 0xCu);
     }
   }
 
   v10 = +[IMDAccountController sharedAccountController];
   v11 = +[IMDAccountController sharedAccountController];
-  v12 = [v11 accountForAccountID:v6];
-  v13 = [v12 service];
-  v14 = [v13 internalName];
-  v8 = [v10 anySessionForServiceName:v14];
+  v12 = [v11 accountForAccountID:accountCopy];
+  service = [v12 service];
+  internalName = [service internalName];
+  v8 = [v10 anySessionForServiceName:internalName];
 
   if (v8)
   {
 LABEL_7:
-    [v8 startWatchingBuddy:v5];
+    [v8 startWatchingBuddy:buddyCopy];
   }
 
   else if (IMOSLoggingEnabled())
@@ -2366,18 +2366,18 @@ LABEL_7:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v16 = 138412290;
-      v17 = v6;
+      v17 = accountCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "FIND_SESSION: No session ever found for account: %@", &v16, 0xCu);
     }
   }
 }
 
-- (void)stopWatchingBuddy:(id)a3 account:(id)a4
+- (void)stopWatchingBuddy:(id)buddy account:(id)account
 {
-  v5 = a3;
-  v6 = a4;
+  buddyCopy = buddy;
+  accountCopy = account;
   v7 = +[IMDAccountController sharedAccountController];
-  v8 = [v7 sessionForAccount:v6];
+  v8 = [v7 sessionForAccount:accountCopy];
 
   if (v8)
   {
@@ -2390,22 +2390,22 @@ LABEL_7:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v16 = 138412290;
-      v17 = v6;
+      v17 = accountCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "FIND_SESSION: No session found for account, attempting to find ANYTHING for the service: %@", &v16, 0xCu);
     }
   }
 
   v10 = +[IMDAccountController sharedAccountController];
   v11 = +[IMDAccountController sharedAccountController];
-  v12 = [v11 accountForAccountID:v6];
-  v13 = [v12 service];
-  v14 = [v13 internalName];
-  v8 = [v10 anySessionForServiceName:v14];
+  v12 = [v11 accountForAccountID:accountCopy];
+  service = [v12 service];
+  internalName = [service internalName];
+  v8 = [v10 anySessionForServiceName:internalName];
 
   if (v8)
   {
 LABEL_7:
-    [v8 stopWatchingBuddy:v5];
+    [v8 stopWatchingBuddy:buddyCopy];
   }
 
   else if (IMOSLoggingEnabled())
@@ -2414,19 +2414,19 @@ LABEL_7:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v16 = 138412290;
-      v17 = v6;
+      v17 = accountCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "FIND_SESSION: No session ever found for account: %@", &v16, 0xCu);
     }
   }
 }
 
-- (void)requestProperty:(id)a3 ofPerson:(id)a4 account:(id)a5
+- (void)requestProperty:(id)property ofPerson:(id)person account:(id)account
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  propertyCopy = property;
+  personCopy = person;
+  accountCopy = account;
   v10 = +[IMDAccountController sharedAccountController];
-  v11 = [v10 sessionForAccount:v9];
+  v11 = [v10 sessionForAccount:accountCopy];
 
   if (v11)
   {
@@ -2439,22 +2439,22 @@ LABEL_7:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v19 = 138412290;
-      v20 = v9;
+      v20 = accountCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "FIND_SESSION: No session found for account, attempting to find ANYTHING for the service: %@", &v19, 0xCu);
     }
   }
 
   v13 = +[IMDAccountController sharedAccountController];
   v14 = +[IMDAccountController sharedAccountController];
-  v15 = [v14 accountForAccountID:v9];
-  v16 = [v15 service];
-  v17 = [v16 internalName];
-  v11 = [v13 anySessionForServiceName:v17];
+  v15 = [v14 accountForAccountID:accountCopy];
+  service = [v15 service];
+  internalName = [service internalName];
+  v11 = [v13 anySessionForServiceName:internalName];
 
   if (v11)
   {
 LABEL_7:
-    [v11 requestProperty:v7 ofPerson:v8];
+    [v11 requestProperty:propertyCopy ofPerson:personCopy];
   }
 
   else if (IMOSLoggingEnabled())
@@ -2463,20 +2463,20 @@ LABEL_7:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       v19 = 138412290;
-      v20 = v9;
+      v20 = accountCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "FIND_SESSION: No session ever found for account: %@", &v19, 0xCu);
     }
   }
 }
 
-- (void)setValue:(id)a3 ofProperty:(id)a4 ofPerson:(id)a5 account:(id)a6
+- (void)setValue:(id)value ofProperty:(id)property ofPerson:(id)person account:(id)account
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  valueCopy = value;
+  propertyCopy = property;
+  personCopy = person;
+  accountCopy = account;
   v13 = +[IMDAccountController sharedAccountController];
-  v14 = [v13 sessionForAccount:v12];
+  v14 = [v13 sessionForAccount:accountCopy];
 
   if (v14)
   {
@@ -2489,22 +2489,22 @@ LABEL_7:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v22 = 138412290;
-      v23 = v12;
+      v23 = accountCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "FIND_SESSION: No session found for account, attempting to find ANYTHING for the service: %@", &v22, 0xCu);
     }
   }
 
   v16 = +[IMDAccountController sharedAccountController];
   v17 = +[IMDAccountController sharedAccountController];
-  v18 = [v17 accountForAccountID:v12];
-  v19 = [v18 service];
-  v20 = [v19 internalName];
-  v14 = [v16 anySessionForServiceName:v20];
+  v18 = [v17 accountForAccountID:accountCopy];
+  service = [v18 service];
+  internalName = [service internalName];
+  v14 = [v16 anySessionForServiceName:internalName];
 
   if (v14)
   {
 LABEL_7:
-    [v14 setValue:v9 ofProperty:v10 ofPerson:v11];
+    [v14 setValue:valueCopy ofProperty:propertyCopy ofPerson:personCopy];
   }
 
   else if (IMOSLoggingEnabled())
@@ -2513,17 +2513,17 @@ LABEL_7:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
       v22 = 138412290;
-      v23 = v12;
+      v23 = accountCopy;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "FIND_SESSION: No session ever found for account: %@", &v22, 0xCu);
     }
   }
 }
 
-- (void)requestGroupsAccount:(id)a3
+- (void)requestGroupsAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = +[IMDAccountController sharedAccountController];
-  v5 = [v4 sessionForAccount:v3];
+  v5 = [v4 sessionForAccount:accountCopy];
 
   if (v5)
   {
@@ -2536,17 +2536,17 @@ LABEL_7:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = v3;
+      v14 = accountCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "FIND_SESSION: No session found for account, attempting to find ANYTHING for the service: %@", &v13, 0xCu);
     }
   }
 
   v7 = +[IMDAccountController sharedAccountController];
   v8 = +[IMDAccountController sharedAccountController];
-  v9 = [v8 accountForAccountID:v3];
-  v10 = [v9 service];
-  v11 = [v10 internalName];
-  v5 = [v7 anySessionForServiceName:v11];
+  v9 = [v8 accountForAccountID:accountCopy];
+  service = [v9 service];
+  internalName = [service internalName];
+  v5 = [v7 anySessionForServiceName:internalName];
 
   if (v5)
   {
@@ -2560,23 +2560,23 @@ LABEL_7:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = v3;
+      v14 = accountCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "FIND_SESSION: No session ever found for account: %@", &v13, 0xCu);
     }
   }
 }
 
-- (void)sendNotificationMessageToUniqueID:(id)a3 withCommand:(int64_t)a4
+- (void)sendNotificationMessageToUniqueID:(id)d withCommand:(int64_t)command
 {
-  v5 = a3;
+  dCopy = d;
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [NSNumber numberWithInteger:a4];
+      v7 = [NSNumber numberWithInteger:command];
       v9 = 138412546;
-      v10 = v5;
+      v10 = dCopy;
       v11 = 2112;
       v12 = v7;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Calling sendNotificationMessageToUniqueID with uniqueId %@ and command %@", &v9, 0x16u);
@@ -2584,7 +2584,7 @@ LABEL_7:
   }
 
   v8 = +[IMMessageNotificationController sharedInstance];
-  [v8 sendNotificationMessageToUniqueID:v5 withCommmand:a4];
+  [v8 sendNotificationMessageToUniqueID:dCopy withCommmand:command];
 }
 
 - (void)requestPendingVCInvites
@@ -2615,11 +2615,11 @@ LABEL_7:
   }
 }
 
-- (void)conference:(id)a3 account:(id)a4 notifyInvitationCancelledFromPerson:(id)a5
+- (void)conference:(id)conference account:(id)account notifyInvitationCancelledFromPerson:(id)person
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  conferenceCopy = conference;
+  accountCopy = account;
+  personCopy = person;
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
@@ -2632,7 +2632,7 @@ LABEL_7:
   }
 }
 
-- (void)terminateForcingIfNeeded:(BOOL)a3
+- (void)terminateForcingIfNeeded:(BOOL)needed
 {
   if (IMOSLoggingEnabled())
   {
@@ -2646,57 +2646,57 @@ LABEL_7:
   }
 }
 
-- (void)sendNotice:(id)a3 toHandles:(id)a4 fromHandle:(id)a5 reply:(id)a6
+- (void)sendNotice:(id)notice toHandles:(id)handles fromHandle:(id)handle reply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  noticeCopy = notice;
+  handlesCopy = handles;
+  handleCopy = handle;
+  replyCopy = reply;
   if (IMOSLoggingEnabled())
   {
     v13 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v16 = 138412802;
-      v17 = v9;
+      v17 = noticeCopy;
       v18 = 2112;
-      v19 = v10;
+      v19 = handlesCopy;
       v20 = 2112;
-      v21 = v11;
+      v21 = handleCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Client request to send notice %@ toHandles %@ fromHandle: %@", &v16, 0x20u);
     }
   }
 
   v14 = +[IMDCollaborationNoticeController sharedController];
-  v15 = [v14 noticeDispatcher];
-  [v15 sendNotice:v9 toHandles:v10 fromHandle:v11];
+  noticeDispatcher = [v14 noticeDispatcher];
+  [noticeDispatcher sendNotice:noticeCopy toHandles:handlesCopy fromHandle:handleCopy];
 
-  v12[2](v12, 1);
+  replyCopy[2](replyCopy, 1);
 }
 
-- (void)sendClearNotice:(id)a3 toHandles:(id)a4 reply:(id)a5
+- (void)sendClearNotice:(id)notice toHandles:(id)handles reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  noticeCopy = notice;
+  handlesCopy = handles;
+  replyCopy = reply;
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v13 = 138412546;
-      v14 = v7;
+      v14 = noticeCopy;
       v15 = 2112;
-      v16 = v8;
+      v16 = handlesCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Client request to send clear notice %@ toHandles %@", &v13, 0x16u);
     }
   }
 
   v11 = +[IMDCollaborationNoticeController sharedController];
-  v12 = [v11 noticeDispatcher];
-  [v12 sendClearNotice:v7 toHandles:v8];
+  noticeDispatcher = [v11 noticeDispatcher];
+  [noticeDispatcher sendClearNotice:noticeCopy toHandles:handlesCopy];
 
-  v9[2](v9, 1);
+  replyCopy[2](replyCopy, 1);
 }
 
 @end

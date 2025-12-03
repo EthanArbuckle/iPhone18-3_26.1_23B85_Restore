@@ -2,15 +2,15 @@
 - (NSArray)merged;
 - (id)describeMergeTable;
 - (id)description;
-- (id)mergeSource:(id)a3 andDestination:(id)a4;
+- (id)mergeSource:(id)source andDestination:(id)destination;
 - (void)_calculate;
 - (void)_calculateLCSSTable;
 - (void)_calculateMerge;
 - (void)_calculatePrefixAndSuffix;
 - (void)_reset;
 - (void)dealloc;
-- (void)setDestination:(id)a3;
-- (void)setSource:(id)a3;
+- (void)setDestination:(id)destination;
+- (void)setSource:(id)source;
 @end
 
 @implementation _UIVisualEffectDifferenceEngine
@@ -208,11 +208,11 @@
 
 - (void)_calculateMerge
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v52 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v52 = array;
   if (self->_prefixCount < 1)
   {
-    v6 = 0;
+    copyForTransitionOut4 = 0;
     v5 = 0;
     v4 = 0;
     prefixCount = 0;
@@ -222,7 +222,7 @@
   {
     v4 = 0;
     v5 = 0;
-    v6 = 0;
+    copyForTransitionOut4 = 0;
     v7 = 0;
     do
     {
@@ -235,26 +235,26 @@
       if ([v4 canTransitionToEffect:v5])
       {
         v10 = [v4 copyForTransitionToEffect:v5];
-        v11 = v6;
+        copyForTransitionOut = copyForTransitionOut4;
       }
 
       else
       {
-        v11 = [v4 copyForTransitionOut];
+        copyForTransitionOut = [v4 copyForTransitionOut];
 
-        [v52 addObject:v11];
+        [v52 addObject:copyForTransitionOut];
         v10 = [v5 copyWithZone:0];
       }
 
-      v6 = v10;
+      copyForTransitionOut4 = v10;
 
-      [v52 addObject:v6];
+      [v52 addObject:copyForTransitionOut4];
       ++v7;
       prefixCount = self->_prefixCount;
     }
 
     while (v7 < prefixCount);
-    v3 = v52;
+    array = v52;
   }
 
   innerSourceCount = self->_innerSourceCount;
@@ -265,7 +265,7 @@
     {
       v15 = prefixCount - 1 + innerSourceCount;
       v16 = innerDestinationCount + prefixCount - 1;
-      v17 = [v3 count];
+      v17 = [array count];
       v18 = [(NSArray *)self->_source objectAtIndexedSubscript:v15];
 
       v19 = [(NSArray *)self->_destination objectAtIndexedSubscript:v16];
@@ -296,7 +296,7 @@
           v19 = 0;
           v18 = 0;
 LABEL_34:
-          if (v6)
+          if (copyForTransitionOut4)
           {
             goto LABEL_49;
           }
@@ -306,7 +306,7 @@ LABEL_34:
         {
           if ([v18 canTransitionToEffect:v19])
           {
-            v20 = [v18 copyForTransitionToEffect:v19];
+            copyForTransitionOut2 = [v18 copyForTransitionToEffect:v19];
           }
 
           else
@@ -314,10 +314,10 @@ LABEL_34:
             v37 = [v19 copyWithZone:0];
             [v52 insertObject:v37 atIndex:v17];
 
-            v20 = [v18 copyForTransitionOut];
+            copyForTransitionOut2 = [v18 copyForTransitionOut];
           }
 
-          v21 = v20;
+          copyForTransitionOut3 = copyForTransitionOut2;
 
           if (v15 < 1)
           {
@@ -367,7 +367,7 @@ LABEL_47:
                 if (mergeTable[v26 + v15] < v35)
                 {
 LABEL_18:
-                  v21 = [v18 copyForTransitionOut];
+                  copyForTransitionOut3 = [v18 copyForTransitionOut];
 
                   if (v15 < 1)
                   {
@@ -391,7 +391,7 @@ LABEL_18:
           }
         }
 
-        v21 = [v19 copyWithZone:0];
+        copyForTransitionOut3 = [v19 copyWithZone:0];
 
         if (v16 < 1)
         {
@@ -407,12 +407,12 @@ LABEL_18:
         v22 = v18;
 LABEL_48:
 
-        v6 = v21;
+        copyForTransitionOut4 = copyForTransitionOut3;
         v18 = v22;
-        if (v21)
+        if (copyForTransitionOut3)
         {
 LABEL_49:
-          [v52 insertObject:v6 atIndex:v17];
+          [v52 insertObject:copyForTransitionOut4 atIndex:v17];
         }
       }
     }
@@ -422,12 +422,12 @@ LABEL_49:
       v43 = 0;
       do
       {
-        v44 = v6;
+        v44 = copyForTransitionOut4;
         v45 = v4;
         v4 = [(NSArray *)self->_source objectAtIndexedSubscript:prefixCount + v43];
 
-        v6 = [v4 copyForTransitionOut];
-        [v52 addObject:v6];
+        copyForTransitionOut4 = [v4 copyForTransitionOut];
+        [v52 addObject:copyForTransitionOut4];
         ++v43;
       }
 
@@ -443,12 +443,12 @@ LABEL_49:
     v40 = 0;
     do
     {
-      v41 = v6;
+      v41 = copyForTransitionOut4;
       v42 = v5;
       v5 = [(NSArray *)self->_destination objectAtIndexedSubscript:prefixCount + v40];
 
-      v6 = [v5 copyWithZone:0];
-      [v52 addObject:v6];
+      copyForTransitionOut4 = [v5 copyWithZone:0];
+      [v52 addObject:copyForTransitionOut4];
       ++v40;
     }
 
@@ -461,7 +461,7 @@ LABEL_49:
 LABEL_60:
   if (self->_suffixCount < 1)
   {
-    v49 = v6;
+    v49 = copyForTransitionOut4;
     v48 = v5;
     v47 = v4;
   }
@@ -480,7 +480,7 @@ LABEL_60:
       ++v46;
       v4 = v47;
       v5 = v48;
-      v6 = v49;
+      copyForTransitionOut4 = v49;
     }
 
     while (v46 < self->_suffixCount);
@@ -499,26 +499,26 @@ LABEL_60:
   [(_UIVisualEffectDifferenceEngine *)&v3 dealloc];
 }
 
-- (void)setSource:(id)a3
+- (void)setSource:(id)source
 {
-  if (self->_source != a3)
+  if (self->_source != source)
   {
-    v5 = a3;
+    sourceCopy = source;
     [(_UIVisualEffectDifferenceEngine *)self _reset];
-    v6 = [v5 copy];
+    v6 = [sourceCopy copy];
 
     source = self->_source;
     self->_source = v6;
   }
 }
 
-- (void)setDestination:(id)a3
+- (void)setDestination:(id)destination
 {
-  if (self->_destination != a3)
+  if (self->_destination != destination)
   {
-    v5 = a3;
+    destinationCopy = destination;
     [(_UIVisualEffectDifferenceEngine *)self _reset];
-    v6 = [v5 copy];
+    v6 = [destinationCopy copy];
 
     destination = self->_destination;
     self->_destination = v6;
@@ -537,17 +537,17 @@ LABEL_60:
   return merged;
 }
 
-- (id)mergeSource:(id)a3 andDestination:(id)a4
+- (id)mergeSource:(id)source andDestination:(id)destination
 {
-  v6 = a4;
-  v7 = a3;
+  destinationCopy = destination;
+  sourceCopy = source;
   [(_UIVisualEffectDifferenceEngine *)self _reset];
-  v8 = [v7 copy];
+  v8 = [sourceCopy copy];
 
   source = self->_source;
   self->_source = v8;
 
-  v10 = [v6 copy];
+  v10 = [destinationCopy copy];
   destination = self->_destination;
   self->_destination = v10;
 
@@ -559,25 +559,25 @@ LABEL_60:
 
 - (id)describeMergeTable
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   if (self->_innerDestinationCount >= 1)
   {
     v4 = 0;
     v5 = 0;
     do
     {
-      [v3 appendFormat:@"{%li", self->_mergeTable[self->_innerSourceCount * v5]];
+      [string appendFormat:@"{%li", self->_mergeTable[self->_innerSourceCount * v5]];
       innerSourceCount = self->_innerSourceCount;
       if (innerSourceCount >= 2)
       {
         for (i = 1; i < innerSourceCount; ++i)
         {
-          [v3 appendFormat:@", %li", *(&self->_mergeTable[i] + v4 * innerSourceCount)];
+          [string appendFormat:@", %li", *(&self->_mergeTable[i] + v4 * innerSourceCount)];
           innerSourceCount = self->_innerSourceCount;
         }
       }
 
-      [v3 appendString:{@"}, \n"}];
+      [string appendString:{@"}, \n"}];
       ++v5;
       v4 += 8;
     }
@@ -585,9 +585,9 @@ LABEL_60:
     while (v5 < self->_innerDestinationCount);
   }
 
-  [v3 appendString:@"}"];
+  [string appendString:@"}"];
 
-  return v3;
+  return string;
 }
 
 - (id)description

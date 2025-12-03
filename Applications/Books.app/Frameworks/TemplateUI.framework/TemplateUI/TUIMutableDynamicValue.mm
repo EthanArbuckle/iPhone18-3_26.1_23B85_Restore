@@ -1,76 +1,76 @@
 @interface TUIMutableDynamicValue
-- (void)updateWithTransaction:(id)a3 value:(id)a4;
-- (void)updateWithTransaction:(id)a3 valueIfChanged:(id)a4;
-- (void)updateWithValue:(id)a3;
-- (void)updateWithValueIfChanged:(id)a3;
+- (void)updateWithTransaction:(id)transaction value:(id)value;
+- (void)updateWithTransaction:(id)transaction valueIfChanged:(id)changed;
+- (void)updateWithValue:(id)value;
+- (void)updateWithValueIfChanged:(id)changed;
 @end
 
 @implementation TUIMutableDynamicValue
 
-- (void)updateWithTransaction:(id)a3 valueIfChanged:(id)a4
+- (void)updateWithTransaction:(id)transaction valueIfChanged:(id)changed
 {
-  v8 = a3;
-  v6 = a4;
+  transactionCopy = transaction;
+  changedCopy = changed;
   value = self->super._value;
-  if (value != v6 && ([value isEqual:v6] & 1) == 0)
+  if (value != changedCopy && ([value isEqual:changedCopy] & 1) == 0)
   {
-    [(TUIMutableDynamicValue *)self updateWithTransaction:v8 value:v6];
+    [(TUIMutableDynamicValue *)self updateWithTransaction:transactionCopy value:changedCopy];
   }
 }
 
-- (void)updateWithTransaction:(id)a3 value:(id)a4
+- (void)updateWithTransaction:(id)transaction value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  transactionCopy = transaction;
+  valueCopy = value;
+  if (!transactionCopy)
   {
-    v6 = +[TUITransaction currentOrImplicitTransaction];
+    transactionCopy = +[TUITransaction currentOrImplicitTransaction];
   }
 
-  v8 = [v6 tx];
-  v9 = [[_TUIDynamicValueUpdate alloc] initWithValue:v7 transaction:v8];
+  v8 = [transactionCopy tx];
+  v9 = [[_TUIDynamicValueUpdate alloc] initWithValue:valueCopy transaction:v8];
   v10 = TUITransactionLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(TUIDynamicValue *)self debugName];
+    debugName = [(TUIDynamicValue *)self debugName];
     WeakRetained = objc_loadWeakRetained(&self->super._lastTransactionToken);
     v16 = 134219010;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
-    v19 = v11;
+    v19 = debugName;
     v20 = 2112;
-    v21 = v6;
+    v21 = transactionCopy;
     v22 = 2112;
     v23 = WeakRetained;
     v24 = 2112;
-    v25 = v7;
+    v25 = valueCopy;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "[%p] %{public}@: DynamicValue: updateWithValue (tx=%@, lastToken=%@) value=%@", &v16, 0x34u);
   }
 
   v13 = objc_loadWeakRetained(&self->super._lastTransactionToken);
-  [v6 dependentOn:v13];
+  [transactionCopy dependentOn:v13];
 
-  v14 = [(TUIDynamicValue *)self transactionCategory];
-  [v6 addCategory:v14];
+  transactionCategory = [(TUIDynamicValue *)self transactionCategory];
+  [transactionCopy addCategory:transactionCategory];
 
-  v15 = [v6 dependencyToken];
-  objc_storeWeak(&self->super._lastTransactionToken, v15);
+  dependencyToken = [transactionCopy dependencyToken];
+  objc_storeWeak(&self->super._lastTransactionToken, dependencyToken);
 
   [(TUIDynamicValue *)self _enqueueUpdate:v9];
 }
 
-- (void)updateWithValue:(id)a3
+- (void)updateWithValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = +[TUITransaction currentOrImplicitTransaction];
-  [(TUIMutableDynamicValue *)self updateWithTransaction:v5 value:v4];
+  [(TUIMutableDynamicValue *)self updateWithTransaction:v5 value:valueCopy];
 }
 
-- (void)updateWithValueIfChanged:(id)a3
+- (void)updateWithValueIfChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = +[TUITransaction currentOrImplicitTransaction];
-  [(TUIMutableDynamicValue *)self updateWithTransaction:v5 valueIfChanged:v4];
+  [(TUIMutableDynamicValue *)self updateWithTransaction:v5 valueIfChanged:changedCopy];
 }
 
 @end

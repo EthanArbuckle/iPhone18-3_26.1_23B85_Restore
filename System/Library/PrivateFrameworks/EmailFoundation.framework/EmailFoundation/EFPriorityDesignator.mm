@@ -12,107 +12,107 @@
 
 + (void)destroyCurrentDesignator
 {
-  v3 = [MEMORY[0x1E696AF00] currentThread];
-  v7 = [v3 threadDictionary];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  [v7 removeObjectForKey:@"EFThreadPriorityDesignator"];
-  v4 = [a1 currentDesignatorStackIfExists];
-  v5 = v4;
-  if (v4)
+  [threadDictionary removeObjectForKey:@"EFThreadPriorityDesignator"];
+  currentDesignatorStackIfExists = [self currentDesignatorStackIfExists];
+  v5 = currentDesignatorStackIfExists;
+  if (currentDesignatorStackIfExists)
   {
-    v6 = [v4 lastObject];
-    [v7 setObject:v6 forKeyedSubscript:@"EFThreadPriorityDesignator"];
+    lastObject = [currentDesignatorStackIfExists lastObject];
+    [threadDictionary setObject:lastObject forKeyedSubscript:@"EFThreadPriorityDesignator"];
 
     [v5 removeLastObject];
     if (![v5 count])
     {
-      [v7 setObject:0 forKeyedSubscript:@"EFThreadPriorityDesignatorStack"];
+      [threadDictionary setObject:0 forKeyedSubscript:@"EFThreadPriorityDesignatorStack"];
     }
   }
 }
 
 + (id)currentDesignatorStackIfExists
 {
-  v2 = [MEMORY[0x1E696AF00] currentThread];
-  v3 = [v2 threadDictionary];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v4 = [v3 objectForKeyedSubscript:@"EFThreadPriorityDesignatorStack"];
+  v4 = [threadDictionary objectForKeyedSubscript:@"EFThreadPriorityDesignatorStack"];
 
   return v4;
 }
 
 + (EFPriorityDesignator)currentDesignator
 {
-  v3 = [a1 currentDesignatorIfExists];
-  v4 = v3;
-  if (v3)
+  currentDesignatorIfExists = [self currentDesignatorIfExists];
+  v4 = currentDesignatorIfExists;
+  if (currentDesignatorIfExists)
   {
-    v5 = v3;
+    installNewDesignator = currentDesignatorIfExists;
   }
 
   else
   {
-    v5 = [a1 installNewDesignator];
+    installNewDesignator = [self installNewDesignator];
   }
 
-  v6 = v5;
+  v6 = installNewDesignator;
 
   return v6;
 }
 
 + (id)currentDesignatorIfExists
 {
-  v2 = [MEMORY[0x1E696AF00] currentThread];
-  v3 = [v2 threadDictionary];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v4 = [v3 objectForKeyedSubscript:@"EFThreadPriorityDesignator"];
+  v4 = [threadDictionary objectForKeyedSubscript:@"EFThreadPriorityDesignator"];
 
   return v4;
 }
 
 + (id)installNewDesignator
 {
-  v2 = objc_alloc_init(a1);
-  v3 = [MEMORY[0x1E696AF00] currentThread];
-  v4 = [v3 threadDictionary];
+  v2 = objc_alloc_init(self);
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  [v4 setObject:v2 forKeyedSubscript:@"EFThreadPriorityDesignator"];
+  [threadDictionary setObject:v2 forKeyedSubscript:@"EFThreadPriorityDesignator"];
 
   return v2;
 }
 
 + (id)currentDesignatorStack
 {
-  v2 = [a1 currentDesignatorStackIfExists];
-  if (!v2)
+  currentDesignatorStackIfExists = [self currentDesignatorStackIfExists];
+  if (!currentDesignatorStackIfExists)
   {
-    v3 = [MEMORY[0x1E696AF00] currentThread];
-    v4 = [v3 threadDictionary];
+    currentThread = [MEMORY[0x1E696AF00] currentThread];
+    threadDictionary = [currentThread threadDictionary];
 
-    v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [v4 setObject:v2 forKeyedSubscript:@"EFThreadPriorityDesignatorStack"];
+    currentDesignatorStackIfExists = objc_alloc_init(MEMORY[0x1E695DF70]);
+    [threadDictionary setObject:currentDesignatorStackIfExists forKeyedSubscript:@"EFThreadPriorityDesignatorStack"];
   }
 
-  return v2;
+  return currentDesignatorStackIfExists;
 }
 
 + (id)pushNewDesignator
 {
-  v3 = [a1 currentDesignatorIfExists];
-  if (v3)
+  currentDesignatorIfExists = [self currentDesignatorIfExists];
+  if (currentDesignatorIfExists)
   {
-    v4 = [a1 currentDesignatorStack];
-    [v4 addObject:v3];
+    currentDesignatorStack = [self currentDesignatorStack];
+    [currentDesignatorStack addObject:currentDesignatorIfExists];
 
-    v5 = [a1 installNewDesignator];
+    installNewDesignator = [self installNewDesignator];
   }
 
   else
   {
-    v5 = [a1 currentDesignator];
+    installNewDesignator = [self currentDesignator];
   }
 
-  return v5;
+  return installNewDesignator;
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface VNANFDDetectorCompoundRequest
-+ (id)compoundRequestsForOriginalRequests:(id)a3 withPerformingContext:(id)a4 error:(id *)a5;
-+ (int64_t)compoundRequestRevisionForRequest:(id)a3;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (VNANFDDetectorCompoundRequest)initWithDetectorType:(id)a3 configuration:(id)a4;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4;
-- (void)assignOriginalRequestsResultsFromObservations:(id)a3 obtainedInPerformingContext:(id)a4;
++ (id)compoundRequestsForOriginalRequests:(id)requests withPerformingContext:(id)context error:(id *)error;
++ (int64_t)compoundRequestRevisionForRequest:(id)request;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (VNANFDDetectorCompoundRequest)initWithDetectorType:(id)type configuration:(id)configuration;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session;
+- (void)assignOriginalRequestsResultsFromObservations:(id)observations obtainedInPerformingContext:(id)context;
 @end
 
 @implementation VNANFDDetectorCompoundRequest
 
-- (void)assignOriginalRequestsResultsFromObservations:(id)a3 obtainedInPerformingContext:(id)a4
+- (void)assignOriginalRequestsResultsFromObservations:(id)observations obtainedInPerformingContext:(id)context
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  observationsCopy = observations;
+  contextCopy = context;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -47,10 +47,10 @@
           [MEMORY[0x1E695DF30] raise:v10 format:{@"The request class %@ shall have it's results populated in the results array", objc_opt_class()}];
         }
 
-        v15 = [v6 objectAtIndexedSubscript:{objc_msgSend(v14, "originalRequestResultsIndex")}];
+        v15 = [observationsCopy objectAtIndexedSubscript:{objc_msgSend(v14, "originalRequestResultsIndex")}];
         [v12 setResults:v15];
 
-        [v7 cacheObservationsOfRequest:v12];
+        [contextCopy cacheObservationsOfRequest:v12];
       }
 
       v8 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -60,12 +60,12 @@
   }
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
-  v8 = a4;
-  v9 = [v8 session];
-  v10 = [v8 imageBufferAndReturnError:a5];
-  if (v10 && [(VNRequest *)self validateImageBuffer:v10 ofNonZeroWidth:0 andHeight:0 error:a5])
+  contextCopy = context;
+  session = [contextCopy session];
+  v10 = [contextCopy imageBufferAndReturnError:error];
+  if (v10 && [(VNRequest *)self validateImageBuffer:v10 ofNonZeroWidth:0 andHeight:0 error:error])
   {
     v25 = 0;
     v26 = &v25;
@@ -77,15 +77,15 @@
     v16 = 3221225472;
     v17 = __73__VNANFDDetectorCompoundRequest_internalPerformRevision_inContext_error___block_invoke;
     v18 = &unk_1E77B66D0;
-    v19 = self;
-    v24 = a3;
-    v20 = v9;
+    selfCopy = self;
+    revisionCopy = revision;
+    v20 = session;
     v21 = v10;
     v23 = &v25;
-    v11 = v8;
+    v11 = contextCopy;
     v22 = v11;
     v12 = _Block_copy(&v15);
-    v13 = VNExecuteBlock(v12, a5);
+    v13 = VNExecuteBlock(v12, error);
     if (v13)
     {
       [(VNCompoundRequest *)self recordWarningsInOriginalRequests:v15];
@@ -133,38 +133,38 @@ BOOL __73__VNANFDDetectorCompoundRequest_internalPerformRevision_inContext_error
   return v11;
 }
 
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session
 {
   v9.receiver = self;
   v9.super_class = VNANFDDetectorCompoundRequest;
-  v5 = [(VNRequest *)&v9 newDefaultDetectorOptionsForRequestRevision:a3 session:a4];
-  v6 = [(VNRequest *)self configuration];
-  v7 = [v6 detectorConfigurationOptions];
-  [v5 addEntriesFromDictionary:v7];
+  v5 = [(VNRequest *)&v9 newDefaultDetectorOptionsForRequestRevision:revision session:session];
+  configuration = [(VNRequest *)self configuration];
+  detectorConfigurationOptions = [configuration detectorConfigurationOptions];
+  [v5 addEntriesFromDictionary:detectorConfigurationOptions];
 
   return v5;
 }
 
-- (VNANFDDetectorCompoundRequest)initWithDetectorType:(id)a3 configuration:(id)a4
+- (VNANFDDetectorCompoundRequest)initWithDetectorType:(id)type configuration:(id)configuration
 {
   v35 = *MEMORY[0x1E69E9840];
-  v26 = a3;
-  v28 = a4;
-  [v28 originalRequests];
+  typeCopy = type;
+  configurationCopy = configuration;
+  [configurationCopy originalRequests];
   v33.receiver = self;
   v27 = v33.super_class = VNANFDDetectorCompoundRequest;
   v6 = [(VNCompoundRequest *)&v33 initWithOriginalRequests:?];
   if (v6)
   {
     v25 = v6;
-    v7 = [(VNRequest *)v6 configuration];
-    [v7 setResolvedRevision:{objc_msgSend(v28, "resolvedRevision")}];
-    v8 = [v26 copy];
-    [v7 setDetectorType:v8];
+    configuration = [(VNRequest *)v6 configuration];
+    [configuration setResolvedRevision:{objc_msgSend(configurationCopy, "resolvedRevision")}];
+    v8 = [typeCopy copy];
+    [configuration setDetectorType:v8];
 
-    v9 = [v28 detectorConfigurationOptions];
-    v10 = [v9 copy];
-    [v7 setDetectorConfigurationOptions:v10];
+    detectorConfigurationOptions = [configurationCopy detectorConfigurationOptions];
+    v10 = [detectorConfigurationOptions copy];
+    [configuration setDetectorConfigurationOptions:v10];
 
     v31 = 0u;
     v32 = 0u;
@@ -192,8 +192,8 @@ BOOL __73__VNANFDDetectorCompoundRequest_internalPerformRevision_inContext_error
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v16 = [v15 precisionRecallThresholdOverride];
-          [v7 setDetectorConfigurationOption:@"VNANFDMultiDetectorProcessingOption_HumanFacePrecisionRecallThresholdOverride" value:v16];
+          precisionRecallThresholdOverride = [v15 precisionRecallThresholdOverride];
+          [configuration setDetectorConfigurationOption:@"VNANFDMultiDetectorProcessingOption_HumanFacePrecisionRecallThresholdOverride" value:precisionRecallThresholdOverride];
 LABEL_11:
 
           goto LABEL_12;
@@ -202,27 +202,27 @@ LABEL_11:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v16 = [v15 precisionRecallThresholdOverride];
-          [v7 setDetectorConfigurationOption:@"VNANFDMultiDetectorProcessingOption_HumanHeadPrecisionRecallThresholdOverride" value:v16];
+          precisionRecallThresholdOverride = [v15 precisionRecallThresholdOverride];
+          [configuration setDetectorConfigurationOption:@"VNANFDMultiDetectorProcessingOption_HumanHeadPrecisionRecallThresholdOverride" value:precisionRecallThresholdOverride];
           goto LABEL_11;
         }
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v16 = v15;
-          v17 = [v16 upperBodyOnly];
-          v18 = [v16 upperBodyOnly];
-          if (v17)
+          precisionRecallThresholdOverride = v15;
+          upperBodyOnly = [precisionRecallThresholdOverride upperBodyOnly];
+          upperBodyOnly2 = [precisionRecallThresholdOverride upperBodyOnly];
+          if (upperBodyOnly)
           {
             v19 = [MEMORY[0x1E696AD98] numberWithBool:1];
-            [v7 setDetectorConfigurationOption:@"VNANFDMultiDetectorProcessingOption_HumanDetectorUpperBody" value:v19];
+            [configuration setDetectorConfigurationOption:@"VNANFDMultiDetectorProcessingOption_HumanDetectorUpperBody" value:v19];
           }
 
-          if ((v18 & 1) == 0)
+          if ((upperBodyOnly2 & 1) == 0)
           {
             v20 = [MEMORY[0x1E696AD98] numberWithBool:1];
-            [v7 setDetectorConfigurationOption:@"VNANFDMultiDetectorProcessingOption_HumanDetectorFullBody" value:v20];
+            [configuration setDetectorConfigurationOption:@"VNANFDMultiDetectorProcessingOption_HumanDetectorFullBody" value:v20];
           }
 
           goto LABEL_11;
@@ -251,38 +251,38 @@ LABEL_20:
   return v23;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  v6 = [(VNRequest *)self configuration];
-  v7 = [v6 detectorType];
-  v8 = v7;
-  if (v7)
+  configuration = [(VNRequest *)self configuration];
+  detectorType = [configuration detectorType];
+  v8 = detectorType;
+  if (detectorType)
   {
-    v9 = v7;
+    v9 = detectorType;
   }
 
-  else if (a4)
+  else if (error)
   {
     v10 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v11 = [(VNRequest *)self specifier];
-    v12 = [v10 initWithFormat:@"detector type has not been configured for %@", v11];
+    specifier = [(VNRequest *)self specifier];
+    v12 = [v10 initWithFormat:@"detector type has not been configured for %@", specifier];
 
-    *a4 = [VNError errorForInternalErrorWithLocalizedDescription:v12];
+    *error = [VNError errorForInternalErrorWithLocalizedDescription:v12];
   }
 
   return v8;
 }
 
-+ (id)compoundRequestsForOriginalRequests:(id)a3 withPerformingContext:(id)a4 error:(id *)a5
++ (id)compoundRequestsForOriginalRequests:(id)requests withPerformingContext:(id)context error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v23 = a3;
+  requestsCopy = requests;
   v25 = objc_alloc_init(VNANFDDetectorCompoundRequestConfigurationGroups);
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v23;
+  obj = requestsCopy;
   v6 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v6)
   {
@@ -304,13 +304,13 @@ LABEL_20:
           v12 = [(objc_class *)v11 requestInfoForRequest:v10];
           if (!v12)
           {
-            [MEMORY[0x1E695DF30] raise:v8 format:{@"The request info is not found for request class %@", objc_opt_class(), v23}];
+            [MEMORY[0x1E695DF30] raise:v8 format:{@"The request info is not found for request class %@", objc_opt_class(), requestsCopy}];
           }
 
           v13 = [(VNANFDDetectorCompoundRequestConfigurationGroups *)v25 configurationForRequest:v10];
-          v14 = [v12 originatingRequestSpecifierKey];
-          v15 = [v10 specifier];
-          [v13 setDetectorConfigurationOption:v14 value:v15];
+          originatingRequestSpecifierKey = [v12 originatingRequestSpecifierKey];
+          specifier = [v10 specifier];
+          [v13 setDetectorConfigurationOption:originatingRequestSpecifierKey value:specifier];
         }
       }
 
@@ -339,7 +339,7 @@ LABEL_20:
           objc_enumerationMutation(v17);
         }
 
-        v21 = [[a1 alloc] initWithDetectorType:@"VNANFDMultiDetectorType" configuration:*(*(&v26 + 1) + 8 * j)];
+        v21 = [[self alloc] initWithDetectorType:@"VNANFDMultiDetectorType" configuration:*(*(&v26 + 1) + 8 * j)];
         [v16 addObject:v21];
       }
 
@@ -352,38 +352,38 @@ LABEL_20:
   return v16;
 }
 
-+ (int64_t)compoundRequestRevisionForRequest:(id)a3
++ (int64_t)compoundRequestRevisionForRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   if (+[VNANFDDetectorCompoundRequest compoundRequestRevisionForRequest:]::onceToken != -1)
   {
     dispatch_once(&+[VNANFDDetectorCompoundRequest compoundRequestRevisionForRequest:]::onceToken, &__block_literal_global_36842);
   }
 
-  v4 = [+[VNANFDDetectorCompoundRequest compoundRequestRevisionForRequest:]::requestClassToDictionaryRequestRevisionToCompoundRequestRevision objectForKey:{objc_msgSend(v3, "frameworkClass")}];
+  v4 = [+[VNANFDDetectorCompoundRequest compoundRequestRevisionForRequest:]::requestClassToDictionaryRequestRevisionToCompoundRequestRevision objectForKey:{objc_msgSend(requestCopy, "frameworkClass")}];
   if (v4)
   {
-    v5 = [v3 resolvedRevision];
-    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v5];
+    resolvedRevision = [requestCopy resolvedRevision];
+    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:resolvedRevision];
     v7 = [v4 objectForKey:v6];
 
     if (v7)
     {
-      v8 = [v7 unsignedIntegerValue];
+      unsignedIntegerValue = [v7 unsignedIntegerValue];
     }
 
     else
     {
-      v8 = 0;
+      unsignedIntegerValue = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v8;
+  return unsignedIntegerValue;
 }
 
 void __67__VNANFDDetectorCompoundRequest_compoundRequestRevisionForRequest___block_invoke()

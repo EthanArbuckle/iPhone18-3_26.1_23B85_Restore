@@ -1,25 +1,25 @@
 @interface ASAuthorizationPublicKeyCredentialPRFRegistrationInput
 + (ASAuthorizationPublicKeyCredentialPRFRegistrationInput)checkForSupport;
 - (ASAuthorizationPublicKeyCredentialPRFRegistrationInput)init;
-- (ASAuthorizationPublicKeyCredentialPRFRegistrationInput)initWithInputValues:(id)a3;
+- (ASAuthorizationPublicKeyCredentialPRFRegistrationInput)initWithInputValues:(id)values;
 @end
 
 @implementation ASAuthorizationPublicKeyCredentialPRFRegistrationInput
 
 + (ASAuthorizationPublicKeyCredentialPRFRegistrationInput)checkForSupport
 {
-  v2 = [objc_allocWithZone(ASAuthorizationPublicKeyCredentialPRFRegistrationInput) initWithInputValues_];
+  initWithInputValues_ = [objc_allocWithZone(ASAuthorizationPublicKeyCredentialPRFRegistrationInput) initWithInputValues_];
 
-  return v2;
+  return initWithInputValues_;
 }
 
-- (ASAuthorizationPublicKeyCredentialPRFRegistrationInput)initWithInputValues:(id)a3
+- (ASAuthorizationPublicKeyCredentialPRFRegistrationInput)initWithInputValues:(id)values
 {
   *(&self->super.isa + OBJC_IVAR___ASAuthorizationPublicKeyCredentialPRFRegistrationInput_shouldCheckForSupport) = 1;
-  *(&self->super.isa + OBJC_IVAR___ASAuthorizationPublicKeyCredentialPRFRegistrationInput_inputValues) = a3;
+  *(&self->super.isa + OBJC_IVAR___ASAuthorizationPublicKeyCredentialPRFRegistrationInput_inputValues) = values;
   v5.receiver = self;
   v5.super_class = ASAuthorizationPublicKeyCredentialPRFRegistrationInput;
-  v3 = a3;
+  valuesCopy = values;
   return [(ASAuthorizationPublicKeyCredentialPRFRegistrationInput *)&v5 init];
 }
 

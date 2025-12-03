@@ -1,21 +1,21 @@
 @interface NSMutableArray
-- (void)addTVElement:(id)a3;
-- (void)addTVElements:(id)a3;
+- (void)addTVElement:(id)element;
+- (void)addTVElements:(id)elements;
 @end
 
 @implementation NSMutableArray
 
-- (void)addTVElement:(id)a3
+- (void)addTVElement:(id)element
 {
-  if (a3)
+  if (element)
   {
     [(NSMutableArray *)self addObject:?];
   }
 }
 
-- (void)addTVElements:(id)a3
+- (void)addTVElements:(id)elements
 {
-  if (a3)
+  if (elements)
   {
     [(NSMutableArray *)self addObjectsFromArray:?];
   }

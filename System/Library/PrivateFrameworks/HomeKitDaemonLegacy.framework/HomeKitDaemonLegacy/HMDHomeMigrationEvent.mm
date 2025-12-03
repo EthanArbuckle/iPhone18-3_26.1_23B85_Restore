@@ -1,5 +1,5 @@
 @interface HMDHomeMigrationEvent
-- (HMDHomeMigrationEvent)initWithModel:(id)a3 reason:(id)a4;
+- (HMDHomeMigrationEvent)initWithModel:(id)model reason:(id)reason;
 - (NSDictionary)coreAnalyticsEventDictionary;
 - (id)attributeDescriptions;
 @end
@@ -10,12 +10,12 @@
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDHomeMigrationEvent *)self model];
-  v5 = [v3 initWithName:@"model" value:v4];
+  model = [(HMDHomeMigrationEvent *)self model];
+  v5 = [v3 initWithName:@"model" value:model];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDHomeMigrationEvent *)self reason];
-  v8 = [v6 initWithName:@"reason" value:v7];
+  reason = [(HMDHomeMigrationEvent *)self reason];
+  v8 = [v6 initWithName:@"reason" value:reason];
   v12[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
 
@@ -28,11 +28,11 @@
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v8[0] = @"modelClass";
-  v3 = [(HMDHomeMigrationEvent *)self model];
+  model = [(HMDHomeMigrationEvent *)self model];
   v8[1] = @"reason";
-  v9[0] = v3;
-  v4 = [(HMDHomeMigrationEvent *)self reason];
-  v9[1] = v4;
+  v9[0] = model;
+  reason = [(HMDHomeMigrationEvent *)self reason];
+  v9[1] = reason;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -40,18 +40,18 @@
   return v5;
 }
 
-- (HMDHomeMigrationEvent)initWithModel:(id)a3 reason:(id)a4
+- (HMDHomeMigrationEvent)initWithModel:(id)model reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  modelCopy = model;
+  reasonCopy = reason;
+  if (!modelCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = reasonCopy;
+  if (!reasonCopy)
   {
 LABEL_7:
     v14 = _HMFPreconditionFailure();
@@ -67,7 +67,7 @@ LABEL_7:
   if (v11)
   {
     objc_storeStrong(&v11->_model, v10);
-    objc_storeStrong(&v12->_reason, a4);
+    objc_storeStrong(&v12->_reason, reason);
   }
 
   return v12;

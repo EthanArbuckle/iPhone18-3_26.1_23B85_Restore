@@ -1,41 +1,41 @@
 @interface EKUIFocusBannerViewModern
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (EKUIFocusBannerViewModern)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (EKUIFocusBannerViewModern)initWithFrame:(CGRect)frame;
 - (id)_focusFilterButtonConfiguration;
 - (id)largeContentImage;
 - (id)largeContentTitle;
 - (void)_tapped;
 - (void)_updateView;
-- (void)largeContentViewerInteraction:(id)a3 didEndOnItem:(id)a4 atPoint:(CGPoint)a5;
-- (void)setDisallowAccessibilityTextSizes:(BOOL)a3;
-- (void)setLayout:(unint64_t)a3;
-- (void)setOn:(BOOL)a3;
-- (void)setShowDividers:(BOOL)a3;
+- (void)largeContentViewerInteraction:(id)interaction didEndOnItem:(id)item atPoint:(CGPoint)point;
+- (void)setDisallowAccessibilityTextSizes:(BOOL)sizes;
+- (void)setLayout:(unint64_t)layout;
+- (void)setOn:(BOOL)on;
+- (void)setShowDividers:(BOOL)dividers;
 @end
 
 @implementation EKUIFocusBannerViewModern
 
-- (EKUIFocusBannerViewModern)initWithFrame:(CGRect)a3
+- (EKUIFocusBannerViewModern)initWithFrame:(CGRect)frame
 {
   v32[4] = *MEMORY[0x1E69E9840];
   v31.receiver = self;
   v31.super_class = EKUIFocusBannerViewModern;
-  v3 = [(EKUIFocusBannerViewModern *)&v31 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(EKUIFocusBannerViewModern *)&v31 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DCC18]) initWithDelegate:v3];
     [(EKUIFocusBannerViewModern *)v3 addInteraction:v4];
 
-    v5 = [MEMORY[0x1E69DC888] systemIndigoColor];
-    [(EKUIFocusBannerViewModern *)v3 setTintColor:v5];
+    systemIndigoColor = [MEMORY[0x1E69DC888] systemIndigoColor];
+    [(EKUIFocusBannerViewModern *)v3 setTintColor:systemIndigoColor];
 
     [(EKUIFocusBannerViewModern *)v3 setPreservesSuperviewLayoutMargins:1];
     v6 = [MEMORY[0x1E69DC738] buttonWithType:1];
     focusFilterToggleButton = v3->_focusFilterToggleButton;
     v3->_focusFilterToggleButton = v6;
 
-    v8 = [(EKUIFocusBannerViewModern *)v3 _focusFilterButtonConfiguration];
-    [(UIButton *)v3->_focusFilterToggleButton setConfiguration:v8];
+    _focusFilterButtonConfiguration = [(EKUIFocusBannerViewModern *)v3 _focusFilterButtonConfiguration];
+    [(UIButton *)v3->_focusFilterToggleButton setConfiguration:_focusFilterButtonConfiguration];
 
     objc_initWeak(&location, v3);
     v28[0] = MEMORY[0x1E69E9820];
@@ -48,21 +48,21 @@
     [(EKUIFocusBannerViewModern *)v3 addSubview:v3->_focusFilterToggleButton];
     [(UIButton *)v3->_focusFilterToggleButton setTranslatesAutoresizingMaskIntoConstraints:0];
     v22 = MEMORY[0x1E696ACD8];
-    v27 = [(UIButton *)v3->_focusFilterToggleButton centerXAnchor];
-    v26 = [(EKUIFocusBannerViewModern *)v3 centerXAnchor];
-    v25 = [v27 constraintEqualToAnchor:v26];
+    centerXAnchor = [(UIButton *)v3->_focusFilterToggleButton centerXAnchor];
+    centerXAnchor2 = [(EKUIFocusBannerViewModern *)v3 centerXAnchor];
+    v25 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v32[0] = v25;
-    v24 = [(UIButton *)v3->_focusFilterToggleButton centerYAnchor];
-    v23 = [(EKUIFocusBannerViewModern *)v3 centerYAnchor];
-    v9 = [v24 constraintEqualToAnchor:v23];
+    centerYAnchor = [(UIButton *)v3->_focusFilterToggleButton centerYAnchor];
+    centerYAnchor2 = [(EKUIFocusBannerViewModern *)v3 centerYAnchor];
+    v9 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v32[1] = v9;
-    v10 = [(EKUIFocusBannerViewModern *)v3 widthAnchor];
-    v11 = [(UIButton *)v3->_focusFilterToggleButton widthAnchor];
-    v12 = [v10 constraintGreaterThanOrEqualToAnchor:v11];
+    widthAnchor = [(EKUIFocusBannerViewModern *)v3 widthAnchor];
+    widthAnchor2 = [(UIButton *)v3->_focusFilterToggleButton widthAnchor];
+    v12 = [widthAnchor constraintGreaterThanOrEqualToAnchor:widthAnchor2];
     v32[2] = v12;
-    v13 = [(EKUIFocusBannerViewModern *)v3 heightAnchor];
-    v14 = [(UIButton *)v3->_focusFilterToggleButton heightAnchor];
-    v15 = [v13 constraintGreaterThanOrEqualToAnchor:v14];
+    heightAnchor = [(EKUIFocusBannerViewModern *)v3 heightAnchor];
+    heightAnchor2 = [(UIButton *)v3->_focusFilterToggleButton heightAnchor];
+    v15 = [heightAnchor constraintGreaterThanOrEqualToAnchor:heightAnchor2];
     v32[3] = v15;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:4];
     [v22 activateConstraints:v16];
@@ -94,10 +94,10 @@ void __43__EKUIFocusBannerViewModern_initWithFrame___block_invoke(uint64_t a1, v
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(EKUIFocusBannerViewModern *)self directionalLayoutMargins:a3.width];
+  width = fits.width;
+  [(EKUIFocusBannerViewModern *)self directionalLayoutMargins:fits.width];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -119,47 +119,47 @@ void __43__EKUIFocusBannerViewModern_initWithFrame___block_invoke(uint64_t a1, v
 - (void)_tapped
 {
   [(EKUIFocusBannerViewModern *)self setOn:[(EKUIFocusBannerViewModern *)self on]^ 1];
-  v3 = [(EKUIFocusBannerView *)self delegate];
+  delegate = [(EKUIFocusBannerView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(EKUIFocusBannerView *)self delegate];
-    [v5 focusBannerViewToggled:self];
+    delegate2 = [(EKUIFocusBannerView *)self delegate];
+    [delegate2 focusBannerViewToggled:self];
   }
 }
 
-- (void)setOn:(BOOL)a3
+- (void)setOn:(BOOL)on
 {
-  if (self->_on != a3)
+  if (self->_on != on)
   {
-    self->_on = a3;
+    self->_on = on;
     [(EKUIFocusBannerViewModern *)self _updateView];
   }
 }
 
-- (void)setShowDividers:(BOOL)a3
+- (void)setShowDividers:(BOOL)dividers
 {
-  if (self->_showDividers != a3)
+  if (self->_showDividers != dividers)
   {
-    self->_showDividers = a3;
+    self->_showDividers = dividers;
   }
 }
 
-- (void)setLayout:(unint64_t)a3
+- (void)setLayout:(unint64_t)layout
 {
-  if (self->_layout != a3)
+  if (self->_layout != layout)
   {
-    self->_layout = a3;
+    self->_layout = layout;
     [(EKUIFocusBannerViewModern *)self _updateView];
   }
 }
 
-- (void)setDisallowAccessibilityTextSizes:(BOOL)a3
+- (void)setDisallowAccessibilityTextSizes:(BOOL)sizes
 {
-  if (self->_disallowAccessibilityTextSizes != a3)
+  if (self->_disallowAccessibilityTextSizes != sizes)
   {
-    self->_disallowAccessibilityTextSizes = a3;
+    self->_disallowAccessibilityTextSizes = sizes;
     [(EKUIFocusBannerViewModern *)self _updateView];
   }
 }
@@ -221,26 +221,26 @@ void __43__EKUIFocusBannerViewModern_initWithFrame___block_invoke(uint64_t a1, v
 - (id)largeContentTitle
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(UIButton *)self->_focusFilterToggleButton titleLabel];
-  v4 = [v3 text];
-  v5 = [v2 stringWithFormat:@"%@", v4];
+  titleLabel = [(UIButton *)self->_focusFilterToggleButton titleLabel];
+  text = [titleLabel text];
+  v5 = [v2 stringWithFormat:@"%@", text];
 
   return v5;
 }
 
 - (id)largeContentImage
 {
-  v2 = [(UIButton *)self->_focusFilterToggleButton imageView];
-  v3 = [v2 image];
+  imageView = [(UIButton *)self->_focusFilterToggleButton imageView];
+  image = [imageView image];
 
-  return v3;
+  return image;
 }
 
-- (void)largeContentViewerInteraction:(id)a3 didEndOnItem:(id)a4 atPoint:(CGPoint)a5
+- (void)largeContentViewerInteraction:(id)interaction didEndOnItem:(id)item atPoint:(CGPoint)point
 {
-  if (a4 == self)
+  if (item == self)
   {
-    [(EKUIFocusBannerViewModern *)self _tapped:a3];
+    [(EKUIFocusBannerViewModern *)self _tapped:interaction];
   }
 }
 

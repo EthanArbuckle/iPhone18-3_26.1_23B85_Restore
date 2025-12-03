@@ -1,8 +1,8 @@
 @interface PTParameterRecordsPersistenceManager
 - (PTParameterRecordsPersistenceManager)init;
 - (id)createParameterRecordsFromArchiveDictionary;
-- (void)_writeToDiskWithParameterRecords:(id)a3;
-- (void)writeToDisk:(id)a3;
+- (void)_writeToDiskWithParameterRecords:(id)records;
+- (void)writeToDisk:(id)disk;
 @end
 
 @implementation PTParameterRecordsPersistenceManager
@@ -29,9 +29,9 @@
 {
   v20 = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CBEA90];
-  v3 = [(PTParameterRecordsPersistenceManager *)self path];
+  path = [(PTParameterRecordsPersistenceManager *)self path];
   v16 = 0;
-  v4 = [v2 dataWithContentsOfFile:v3 options:0 error:&v16];
+  v4 = [v2 dataWithContentsOfFile:path options:0 error:&v16];
   v5 = v16;
 
   if (v5)
@@ -75,17 +75,17 @@
   return v13;
 }
 
-- (void)_writeToDiskWithParameterRecords:(id)a3
+- (void)_writeToDiskWithParameterRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   parameterRecordsArchiveQueue = self->_parameterRecordsArchiveQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__PTParameterRecordsPersistenceManager__writeToDiskWithParameterRecords___block_invoke;
   v7[3] = &unk_27835EC80;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = recordsCopy;
+  selfCopy = self;
+  v6 = recordsCopy;
   dispatch_async(parameterRecordsArchiveQueue, v7);
 }
 
@@ -118,16 +118,16 @@ void __73__PTParameterRecordsPersistenceManager__writeToDiskWithParameterRecords
   *(v12 + 8) = 0;
 }
 
-- (void)writeToDisk:(id)a3
+- (void)writeToDisk:(id)disk
 {
-  v4 = a3;
+  diskCopy = disk;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__PTParameterRecordsPersistenceManager_writeToDisk___block_invoke;
   v6[3] = &unk_27835EC80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = diskCopy;
+  v5 = diskCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 

@@ -1,10 +1,10 @@
 @interface ATXUserEducationSuggestionClient
 + (id)sharedInstance;
 - (ATXUserEducationSuggestionClient)init;
-- (void)logUserEducationSuggestionFeedback:(id)a3;
-- (void)notifyObserversOfSuggestionEvent:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)logUserEducationSuggestionFeedback:(id)feedback;
+- (void)notifyObserversOfSuggestionEvent:(id)event;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation ATXUserEducationSuggestionClient
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __50__ATXUserEducationSuggestionClient_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken7_10 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken7_10, block);
@@ -57,36 +57,36 @@ void __50__ATXUserEducationSuggestionClient_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v4 = self->_observers;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_observers addObject:v5];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v4 = self->_observers;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_observers removeObject:v5];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)logUserEducationSuggestionFeedback:(id)a3
+- (void)logUserEducationSuggestionFeedback:(id)feedback
 {
   connector = self->_connector;
-  v4 = a3;
-  v5 = [(ATXUserEducationSuggestionConnector *)connector remoteObjectProxy];
-  [v5 logUserEducationSuggestionFeedback:v4];
+  feedbackCopy = feedback;
+  remoteObjectProxy = [(ATXUserEducationSuggestionConnector *)connector remoteObjectProxy];
+  [remoteObjectProxy logUserEducationSuggestionFeedback:feedbackCopy];
 }
 
-- (void)notifyObserversOfSuggestionEvent:(id)a3
+- (void)notifyObserversOfSuggestionEvent:(id)event
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v5 = self->_observers;
   objc_sync_enter(v5);
   v10 = 0u;
@@ -108,7 +108,7 @@ void __50__ATXUserEducationSuggestionClient_sharedInstance__block_invoke()
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) didReceiveUserEducationSuggestionEvent:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) didReceiveUserEducationSuggestionEvent:{eventCopy, v10}];
       }
 
       while (v7 != v9);

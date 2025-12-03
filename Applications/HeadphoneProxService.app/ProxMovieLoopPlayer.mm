@@ -1,6 +1,6 @@
 @interface ProxMovieLoopPlayer
 + (Class)layerClass;
-- (_TtC20HeadphoneProxService19ProxMovieLoopPlayer)initWithFrame:(CGRect)a3;
+- (_TtC20HeadphoneProxService19ProxMovieLoopPlayer)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -15,11 +15,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10003078C();
 }
 
-- (_TtC20HeadphoneProxService19ProxMovieLoopPlayer)initWithFrame:(CGRect)a3
+- (_TtC20HeadphoneProxService19ProxMovieLoopPlayer)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

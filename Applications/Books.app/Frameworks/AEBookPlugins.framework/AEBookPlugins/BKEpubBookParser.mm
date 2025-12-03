@@ -1,44 +1,44 @@
 @interface BKEpubBookParser
-+ (BOOL)canParse:(id)a3;
-+ (BOOL)isValidMimeType:(id)a3;
-+ (BOOL)recomputeFixedLayoutDimensionsForBook:(id)a3;
-+ (CGSize)_computeFixedLayoutDimensionsFrom:(id)a3 forBook:(id)a4;
-+ (id)bookCachedDataPathForBookWithKey:(id)a3;
++ (BOOL)canParse:(id)parse;
++ (BOOL)isValidMimeType:(id)type;
++ (BOOL)recomputeFixedLayoutDimensionsForBook:(id)book;
++ (CGSize)_computeFixedLayoutDimensionsFrom:(id)from forBook:(id)book;
++ (id)bookCachedDataPathForBookWithKey:(id)key;
 + (id)bookExtraInfoCacheDirectory;
-+ (id)cachedDataForBookDatabaseKey:(id)a3 cacheKey:(id)a4;
-- (BOOL)isDifferentParserVersion:(id)a3;
-- (BOOL)isLegalCompression:(id)a3;
-- (BOOL)isLegalEncryption:(id)a3;
++ (id)cachedDataForBookDatabaseKey:(id)key cacheKey:(id)cacheKey;
+- (BOOL)isDifferentParserVersion:(id)version;
+- (BOOL)isLegalCompression:(id)compression;
+- (BOOL)isLegalEncryption:(id)encryption;
 - (id)createBookExtraInfoCacheDirectoryIfNecessary;
-- (id)mediaOverlayHrefForManifestInfo:(__CFDictionary *)a3 readable:(BKReadableFormat *)a4;
+- (id)mediaOverlayHrefForManifestInfo:(__CFDictionary *)info readable:(BKReadableFormat *)readable;
 - (int)_fullParse;
 - (int)_touchUpParse;
-- (int)constructEntity:(id)a3 withNavPoint:(void *)a4 absoluteOrder:(int)a5 indentationLevel:(int)a6 withAnchorInfo:(id)a7 createdObjects:(id)a8;
-- (int)parse:(BOOL)a3;
-- (void)constructBKDocumentWithReadable:(BKReadableFormat *)a3 chapters:(id)a4 landmarks:(id)a5 physicalPages:(id)a6;
-- (void)constructBKIdCfiMappingsWithEpub:(void *)a3;
-- (void)constructBKLandmarkInfoWithReadable:(BKReadableFormat *)a3 withAnchorInfo:(id)a4;
-- (void)constructBKNavigationInfoWithReadable:(BKReadableFormat *)a3 withAnchorInfo:(id)a4;
-- (void)constructBKPhysicalPageWithReadable:(BKReadableFormat *)a3 withAnchorInfo:(id)a4;
-- (void)constructBKProtectionInfoWithReadable:(BKReadableFormat *)a3;
-- (void)createEpubParser:(int)a3 errorCode:(int *)a4;
+- (int)constructEntity:(id)entity withNavPoint:(void *)point absoluteOrder:(int)order indentationLevel:(int)level withAnchorInfo:(id)info createdObjects:(id)objects;
+- (int)parse:(BOOL)parse;
+- (void)constructBKDocumentWithReadable:(BKReadableFormat *)readable chapters:(id)chapters landmarks:(id)landmarks physicalPages:(id)pages;
+- (void)constructBKIdCfiMappingsWithEpub:(void *)epub;
+- (void)constructBKLandmarkInfoWithReadable:(BKReadableFormat *)readable withAnchorInfo:(id)info;
+- (void)constructBKNavigationInfoWithReadable:(BKReadableFormat *)readable withAnchorInfo:(id)info;
+- (void)constructBKPhysicalPageWithReadable:(BKReadableFormat *)readable withAnchorInfo:(id)info;
+- (void)constructBKProtectionInfoWithReadable:(BKReadableFormat *)readable;
+- (void)createEpubParser:(int)parser errorCode:(int *)code;
 - (void)resetItunesMetadata;
-- (void)setAppleDisplayOptionsFromParser:(BKReadableFormat *)a3;
-- (void)setArtworkTemplateFromPlist:(id)a3;
-- (void)setCoverWritingModeFromPlist:(id)a3;
-- (void)setEndOfBookExperienceFromPlist:(id)a3;
-- (void)setLanguageFromPlist:(id)a3;
-- (void)setObeyPageBreaksFromPlist:(id)a3;
-- (void)setPublisherInfoFromParser:(BKReadableFormat *)a3;
-- (void)setScrollAxisModeFromPlist:(id)a3;
-- (void)tryEmbeddedHrefForCoverArtHref:(id)a3;
+- (void)setAppleDisplayOptionsFromParser:(BKReadableFormat *)parser;
+- (void)setArtworkTemplateFromPlist:(id)plist;
+- (void)setCoverWritingModeFromPlist:(id)plist;
+- (void)setEndOfBookExperienceFromPlist:(id)plist;
+- (void)setLanguageFromPlist:(id)plist;
+- (void)setObeyPageBreaksFromPlist:(id)plist;
+- (void)setPublisherInfoFromParser:(BKReadableFormat *)parser;
+- (void)setScrollAxisModeFromPlist:(id)plist;
+- (void)tryEmbeddedHrefForCoverArtHref:(id)href;
 @end
 
 @implementation BKEpubBookParser
 
-+ (BOOL)canParse:(id)a3
++ (BOOL)canParse:(id)parse
 {
-  v3 = a3;
+  parseCopy = parse;
   if (BookFormatByFilePath())
   {
     v5 = 0;
@@ -46,24 +46,24 @@
 
   else
   {
-    v5 = ITEpubFolder::isMimeCorrect(v3, 0, 0, v4) != 0;
+    v5 = ITEpubFolder::isMimeCorrect(parseCopy, 0, 0, v4) != 0;
   }
 
   return v5;
 }
 
-- (void)createEpubParser:(int)a3 errorCode:(int *)a4
+- (void)createEpubParser:(int)parser errorCode:(int *)code
 {
-  v5 = [(BKBookParser *)self book];
-  [v5 bookBundlePath];
+  book = [(BKBookParser *)self book];
+  [book bookBundlePath];
 
   v6 = +[BLLibrary defaultBookLibrary];
-  v7 = [(BKBookParser *)self book];
-  v8 = [v7 bookBundlePath];
-  v9 = [NSURL fileURLWithPath:v8];
+  book2 = [(BKBookParser *)self book];
+  bookBundlePath = [book2 bookBundlePath];
+  v9 = [NSURL fileURLWithPath:bookBundlePath];
   v10 = [v6 _perUserBookURLForBookURL:v9];
-  v11 = [v10 path];
-  v12 = [v11 mutableCopy];
+  path = [v10 path];
+  v12 = [path mutableCopy];
 
   if (([v12 hasSuffix:@"/"] & 1) == 0)
   {
@@ -79,21 +79,21 @@
   v3 = [(BKEpubBookParser *)self createEpubParser:0 errorCode:&v196];
   if (!v196)
   {
-    v7 = [(BKBookParser *)self book];
-    [v7 resetAsNewlyDownloaded];
+    book = [(BKBookParser *)self book];
+    [book resetAsNewlyDownloaded];
 
     v8 = (*(*v3 + 136))(v3);
-    v9 = [(BKBookParser *)self book];
-    v10 = [v9 bookBundlePath];
-    v11 = [v8 stringByReplacingOccurrencesOfString:v10 withString:&stru_1E7188];
-    v12 = [(BKBookParser *)self book];
-    [v12 setBookContentSubpath:v11];
+    book2 = [(BKBookParser *)self book];
+    bookBundlePath = [book2 bookBundlePath];
+    v11 = [v8 stringByReplacingOccurrencesOfString:bookBundlePath withString:&stru_1E7188];
+    book3 = [(BKBookParser *)self book];
+    [book3 setBookContentSubpath:v11];
 
-    v13 = [(BKBookParser *)self book];
-    v14 = [v13 bookAuthor];
-    LODWORD(v9) = v14 == 0;
+    book4 = [(BKBookParser *)self book];
+    bookAuthor = [book4 bookAuthor];
+    LODWORD(book2) = bookAuthor == 0;
 
-    if (!v9)
+    if (!book2)
     {
       goto LABEL_23;
     }
@@ -111,24 +111,24 @@
     }
 
     v17 = v16;
-    v18 = [(BKBookParser *)self book];
-    v19 = [v18 bookAuthor];
-    if ([v19 length])
+    book5 = [(BKBookParser *)self book];
+    bookAuthor2 = [book5 bookAuthor];
+    if ([bookAuthor2 length])
     {
-      v20 = [(BKBookParser *)self book];
-      v21 = [v20 bookAuthor];
-      v22 = [v17 isEqualToString:v21];
+      book6 = [(BKBookParser *)self book];
+      bookAuthor3 = [book6 bookAuthor];
+      v22 = [v17 isEqualToString:bookAuthor3];
 
       if (v22)
       {
         goto LABEL_18;
       }
 
-      v18 = _ITEpubParsingLog();
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+      book5 = _ITEpubParsingLog();
+      if (os_log_type_enabled(book5, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [(BKBookParser *)self book];
-        v24 = [v23 bookAuthor];
+        book7 = [(BKBookParser *)self book];
+        bookAuthor4 = [book7 bookAuthor];
         *buf = 138544386;
         v198 = @"self.book.bookAuthor";
         v199 = 2160;
@@ -138,8 +138,8 @@
         v203 = 2160;
         v204 = 1752392040;
         v205 = 2112;
-        v206 = v24;
-        _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "Parsed value for '%{public}@': '%{mask.hash}@' != current stored value: '%{mask.hash}@'", buf, 0x34u);
+        v206 = bookAuthor4;
+        _os_log_impl(&dword_0, book5, OS_LOG_TYPE_DEFAULT, "Parsed value for '%{public}@': '%{mask.hash}@' != current stored value: '%{mask.hash}@'", buf, 0x34u);
       }
     }
 
@@ -149,22 +149,22 @@
 
 LABEL_18:
     v25 = v3[4];
-    if (v25 && (CFRetain(v25), (v26 = v3[4]) != 0))
+    if (v25 && (CFRetain(v25), (book9 = v3[4]) != 0))
     {
-      v27 = [(BKBookParser *)self book];
-      [v27 setBookAuthor:v26];
+      book8 = [(BKBookParser *)self book];
+      [book8 setBookAuthor:book9];
     }
 
     else
     {
-      v26 = [(BKBookParser *)self book];
-      [v26 setBookAuthor:0];
+      book9 = [(BKBookParser *)self book];
+      [book9 setBookAuthor:0];
     }
 
 LABEL_23:
-    v28 = [(BKBookParser *)self book];
-    v29 = [v28 bookTitle];
-    v30 = v29 == 0;
+    book10 = [(BKBookParser *)self book];
+    bookTitle = [book10 bookTitle];
+    v30 = bookTitle == 0;
 
     if (!v30)
     {
@@ -184,24 +184,24 @@ LABEL_23:
     }
 
     v33 = v32;
-    v34 = [(BKBookParser *)self book];
-    v35 = [v34 bookTitle];
-    if ([v35 length])
+    book11 = [(BKBookParser *)self book];
+    bookTitle2 = [book11 bookTitle];
+    if ([bookTitle2 length])
     {
-      v36 = [(BKBookParser *)self book];
-      v37 = [v36 bookTitle];
-      v38 = [v33 isEqualToString:v37];
+      book12 = [(BKBookParser *)self book];
+      bookTitle3 = [book12 bookTitle];
+      v38 = [v33 isEqualToString:bookTitle3];
 
       if (v38)
       {
         goto LABEL_33;
       }
 
-      v34 = _ITEpubParsingLog();
-      if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
+      book11 = _ITEpubParsingLog();
+      if (os_log_type_enabled(book11, OS_LOG_TYPE_DEFAULT))
       {
-        v39 = [(BKBookParser *)self book];
-        v40 = [v39 bookTitle];
+        book13 = [(BKBookParser *)self book];
+        bookTitle4 = [book13 bookTitle];
         *buf = 138544386;
         v198 = @"self.book.bookTitle";
         v199 = 2160;
@@ -211,8 +211,8 @@ LABEL_23:
         v203 = 2160;
         v204 = 1752392040;
         v205 = 2112;
-        v206 = v40;
-        _os_log_impl(&dword_0, v34, OS_LOG_TYPE_DEFAULT, "Parsed value for '%{public}@': '%{mask.hash}@' != current stored value: '%{mask.hash}@'", buf, 0x34u);
+        v206 = bookTitle4;
+        _os_log_impl(&dword_0, book11, OS_LOG_TYPE_DEFAULT, "Parsed value for '%{public}@': '%{mask.hash}@' != current stored value: '%{mask.hash}@'", buf, 0x34u);
       }
     }
 
@@ -222,16 +222,16 @@ LABEL_23:
 
 LABEL_33:
     v41 = v3[5];
-    if (v41 && (CFRetain(v41), (v42 = v3[5]) != 0))
+    if (v41 && (CFRetain(v41), (book15 = v3[5]) != 0))
     {
-      v43 = [(BKBookParser *)self book];
-      [v43 setBookTitle:v42];
+      book14 = [(BKBookParser *)self book];
+      [book14 setBookTitle:book15];
     }
 
     else
     {
-      v42 = [(BKBookParser *)self book];
-      [v42 setBookTitle:0];
+      book15 = [(BKBookParser *)self book];
+      [book15 setBookTitle:0];
     }
 
 LABEL_38:
@@ -248,29 +248,29 @@ LABEL_38:
     }
 
     v46 = v45;
-    v47 = [(BKBookParser *)self book];
-    v48 = [v47 bookLanguage];
-    if ([v48 length])
+    book16 = [(BKBookParser *)self book];
+    bookLanguage = [book16 bookLanguage];
+    if ([bookLanguage length])
     {
-      v49 = [(BKBookParser *)self book];
-      v50 = [v49 bookLanguage];
-      v51 = [v46 isEqualToString:v50];
+      book17 = [(BKBookParser *)self book];
+      bookLanguage2 = [book17 bookLanguage];
+      v51 = [v46 isEqualToString:bookLanguage2];
 
       if (v51)
       {
 LABEL_47:
 
         v54 = v3[6];
-        if (v54 && (CFRetain(v54), (v55 = v3[6]) != 0))
+        if (v54 && (CFRetain(v54), (book19 = v3[6]) != 0))
         {
-          v56 = [(BKBookParser *)self book];
-          [v56 setBookLanguage:v55];
+          book18 = [(BKBookParser *)self book];
+          [book18 setBookLanguage:book19];
         }
 
         else
         {
-          v55 = [(BKBookParser *)self book];
-          [v55 setBookLanguage:0];
+          book19 = [(BKBookParser *)self book];
+          [book19 setBookLanguage:0];
         }
 
         v57 = v3[7];
@@ -286,29 +286,29 @@ LABEL_47:
         }
 
         v59 = v58;
-        v60 = [(BKBookParser *)self book];
-        v61 = [v60 genre];
-        if ([v61 length])
+        book20 = [(BKBookParser *)self book];
+        genre = [book20 genre];
+        if ([genre length])
         {
-          v62 = [(BKBookParser *)self book];
-          v63 = [v62 genre];
-          v64 = [v59 isEqualToString:v63];
+          book21 = [(BKBookParser *)self book];
+          genre2 = [book21 genre];
+          v64 = [v59 isEqualToString:genre2];
 
           if (v64)
           {
 LABEL_60:
 
             v67 = v3[7];
-            if (v67 && (CFRetain(v67), (v68 = v3[7]) != 0))
+            if (v67 && (CFRetain(v67), (book23 = v3[7]) != 0))
             {
-              v69 = [(BKBookParser *)self book];
-              [v69 setGenre:v68];
+              book22 = [(BKBookParser *)self book];
+              [book22 setGenre:book23];
             }
 
             else
             {
-              v68 = [(BKBookParser *)self book];
-              [v68 setGenre:0];
+              book23 = [(BKBookParser *)self book];
+              [book23 setGenre:0];
             }
 
             v70 = v3[8];
@@ -324,29 +324,29 @@ LABEL_60:
             }
 
             v72 = v71;
-            v73 = [(BKBookParser *)self book];
-            v74 = [v73 bookEpubId];
-            if ([v74 length])
+            book24 = [(BKBookParser *)self book];
+            bookEpubId = [book24 bookEpubId];
+            if ([bookEpubId length])
             {
-              v75 = [(BKBookParser *)self book];
-              v76 = [v75 bookEpubId];
-              v77 = [v72 isEqualToString:v76];
+              book25 = [(BKBookParser *)self book];
+              bookEpubId2 = [book25 bookEpubId];
+              v77 = [v72 isEqualToString:bookEpubId2];
 
               if (v77)
               {
 LABEL_73:
 
                 v80 = v3[8];
-                if (v80 && (CFRetain(v80), (v81 = v3[8]) != 0))
+                if (v80 && (CFRetain(v80), (book27 = v3[8]) != 0))
                 {
-                  v82 = [(BKBookParser *)self book];
-                  [v82 setBookEpubId:v81];
+                  book26 = [(BKBookParser *)self book];
+                  [book26 setBookEpubId:book27];
                 }
 
                 else
                 {
-                  v81 = [(BKBookParser *)self book];
-                  [v81 setBookEpubId:0];
+                  book27 = [(BKBookParser *)self book];
+                  [book27 setBookEpubId:0];
                 }
 
                 v83 = v3[9];
@@ -362,42 +362,42 @@ LABEL_73:
                 }
 
                 v85 = v84;
-                v86 = [(BKBookParser *)self book];
-                v87 = [v86 bookEpubIdWithUUIDScheme];
-                if ([v87 length])
+                book28 = [(BKBookParser *)self book];
+                bookEpubIdWithUUIDScheme = [book28 bookEpubIdWithUUIDScheme];
+                if ([bookEpubIdWithUUIDScheme length])
                 {
-                  v88 = [(BKBookParser *)self book];
-                  v89 = [v88 bookEpubIdWithUUIDScheme];
-                  v90 = [v85 isEqualToString:v89];
+                  book29 = [(BKBookParser *)self book];
+                  bookEpubIdWithUUIDScheme2 = [book29 bookEpubIdWithUUIDScheme];
+                  v90 = [v85 isEqualToString:bookEpubIdWithUUIDScheme2];
 
                   if (v90)
                   {
 LABEL_86:
 
                     v93 = v3[9];
-                    if (v93 && (CFRetain(v93), (v94 = v3[9]) != 0))
+                    if (v93 && (CFRetain(v93), (book31 = v3[9]) != 0))
                     {
-                      v95 = [(BKBookParser *)self book];
-                      [v95 setBookEpubIdWithUUIDScheme:v94];
+                      book30 = [(BKBookParser *)self book];
+                      [book30 setBookEpubIdWithUUIDScheme:book31];
                     }
 
                     else
                     {
-                      v94 = [(BKBookParser *)self book];
-                      [v94 setBookEpubIdWithUUIDScheme:0];
+                      book31 = [(BKBookParser *)self book];
+                      [book31 setBookEpubIdWithUUIDScheme:0];
                     }
 
                     v96 = ITEpubFolder::dcTermsModified(v3);
-                    v97 = [(BKBookParser *)self book];
-                    [v97 setDcTermsModified:v96];
+                    book32 = [(BKBookParser *)self book];
+                    [book32 setDcTermsModified:v96];
 
                     v98 = ITEpubFolder::readingDirection(v3);
-                    v99 = [(BKBookParser *)self book];
-                    [v99 setReadingDirection:v98];
+                    book33 = [(BKBookParser *)self book];
+                    [book33 setReadingDirection:v98];
 
                     active = ITEpubFolder::mediaActiveClass(v3);
-                    v101 = [(BKBookParser *)self book];
-                    [v101 setMediaActiveClass:active];
+                    book34 = [(BKBookParser *)self book];
+                    [book34 setMediaActiveClass:active];
 
                     v102 = ITEpubFolder::pageProgressionDirection(v3);
                     if (v102)
@@ -410,35 +410,35 @@ LABEL_86:
                       v103 = @"default";
                     }
 
-                    v104 = [(BKBookParser *)self book];
-                    [v104 setPageProgressionDirection:v103];
+                    book35 = [(BKBookParser *)self book];
+                    [book35 setPageProgressionDirection:v103];
 
                     v105 = ITEpubFolder::dcTermsContributor(v3);
-                    v106 = [(BKBookParser *)self book];
-                    [v106 setDcTermsContributor:v105];
+                    book36 = [(BKBookParser *)self book];
+                    [book36 setDcTermsContributor:v105];
 
-                    v107 = [(BKBookParser *)self book];
-                    v108 = [v107 bookLanguage];
-                    if (([IMLanguageUtilities languageIsArabic:v108]& 1) != 0)
+                    book37 = [(BKBookParser *)self book];
+                    bookLanguage3 = [book37 bookLanguage];
+                    if (([IMLanguageUtilities languageIsArabic:bookLanguage3]& 1) != 0)
                     {
                       v109 = 1;
                     }
 
                     else
                     {
-                      v110 = [(BKBookParser *)self book];
-                      v111 = [v110 bookLanguage];
-                      v109 = [IMLanguageUtilities languageIsHebrew:v111];
+                      book38 = [(BKBookParser *)self book];
+                      bookLanguage4 = [book38 bookLanguage];
+                      v109 = [IMLanguageUtilities languageIsHebrew:bookLanguage4];
                     }
 
-                    v112 = [(BKBookParser *)self book];
-                    v113 = [v112 pageProgressionDirection];
-                    v114 = [v113 isEqualToString:@"default"];
+                    book39 = [(BKBookParser *)self book];
+                    pageProgressionDirection = [book39 pageProgressionDirection];
+                    v114 = [pageProgressionDirection isEqualToString:@"default"];
 
                     if ((v114 & v109) != 0)
                     {
-                      v115 = [(BKBookParser *)self book];
-                      [v115 setPageProgressionDirection:@"rtl"];
+                      book40 = [(BKBookParser *)self book];
+                      [book40 setPageProgressionDirection:@"rtl"];
                     }
 
                     v116 = ITEpubFolder::coverWritingMode(v3);
@@ -452,8 +452,8 @@ LABEL_86:
                       v117 = @"default";
                     }
 
-                    v118 = [(BKBookParser *)self book];
-                    [v118 setCoverWritingModeString:v117];
+                    book41 = [(BKBookParser *)self book];
+                    [book41 setCoverWritingModeString:v117];
 
                     v119 = ITEpubFolder::scrollDirection(v3);
                     if (v119)
@@ -466,33 +466,33 @@ LABEL_86:
                       v120 = @"default";
                     }
 
-                    v121 = [(BKBookParser *)self book];
-                    [v121 setScrollDirection:v120];
+                    book42 = [(BKBookParser *)self book];
+                    [book42 setScrollDirection:v120];
 
                     if (ITEpubFolder::ebpajGuideVersion(v3))
                     {
-                      v122 = [(BKBookParser *)self book];
-                      v123 = [v122 bookLanguage];
-                      v124 = [v123 caseInsensitiveCompare:@"ja"] == 0;
+                      book43 = [(BKBookParser *)self book];
+                      bookLanguage5 = [book43 bookLanguage];
+                      v124 = [bookLanguage5 caseInsensitiveCompare:@"ja"] == 0;
 
                       if (v124 || (-[BKBookParser book](self, "book"), v125 = objc_claimAutoreleasedReturnValue(), [v125 bookLanguage], v126 = objc_claimAutoreleasedReturnValue(), v127 = objc_msgSend(v126, "rangeOfString:options:", @"ja", 9) == 0, v126, v125, v127) && ((-[BKBookParser book](self, "book"), v128 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v128, "bookLanguage"), v129 = objc_claimAutoreleasedReturnValue(), v130 = objc_msgSend(v129, "characterAtIndex:", 2), v129, v128, v130 == 95) || v130 == 45))
                       {
-                        v131 = [(BKBookParser *)self book];
-                        [v131 setRespectImageSizeClass:@"gaiji"];
+                        book44 = [(BKBookParser *)self book];
+                        [book44 setRespectImageSizeClass:@"gaiji"];
 
-                        v132 = [(BKBookParser *)self book];
-                        [v132 setRespectImageSizeClassIsPrefix:1];
+                        book45 = [(BKBookParser *)self book];
+                        [book45 setRespectImageSizeClassIsPrefix:1];
                       }
                     }
 
                     [(BKEpubBookParser *)self setPublisherInfoFromParser:v3];
                     [(BKEpubBookParser *)self setAppleDisplayOptionsFromParser:v3];
                     [(BKEpubBookParser *)self resetItunesMetadata];
-                    v133 = [(BKBookParser *)self book];
-                    v134 = [v133 bookLanguage];
-                    v135 = [NSLocale canonicalLanguageIdentifierFromString:v134];
-                    v136 = [(BKBookParser *)self book];
-                    [v136 setBookLanguage:v135];
+                    book46 = [(BKBookParser *)self book];
+                    bookLanguage6 = [book46 bookLanguage];
+                    v135 = [NSLocale canonicalLanguageIdentifierFromString:bookLanguage6];
+                    book47 = [(BKBookParser *)self book];
+                    [book47 setBookLanguage:v135];
 
                     v137 = ITEpubFolder::spineIndexInPackage(v3);
                     if ((v137 & 0x80000000) != 0)
@@ -505,8 +505,8 @@ LABEL_86:
                       v138 = [NSNumber numberWithInt:v137];
                     }
 
-                    v139 = [(BKBookParser *)self book];
-                    [v139 setSpineIndexInPackage:v138];
+                    book48 = [(BKBookParser *)self book];
+                    [book48 setSpineIndexInPackage:v138];
 
                     if (v137 >= 0)
                     {
@@ -519,28 +519,28 @@ LABEL_86:
                       CFRelease(v140);
                     }
 
-                    v141 = [(BKBookParser *)self book];
-                    [v141 setDateLastOpened:0];
+                    book49 = [(BKBookParser *)self book];
+                    [book49 setDateLastOpened:0];
 
                     v142 = (*(*v3 + 152))(v3);
-                    v143 = [(BKBookParser *)self book];
-                    v144 = [v143 parserOPFPath];
-                    if ([v144 length])
+                    book50 = [(BKBookParser *)self book];
+                    parserOPFPath = [book50 parserOPFPath];
+                    if ([parserOPFPath length])
                     {
-                      v145 = [(BKBookParser *)self book];
-                      v146 = [v145 parserOPFPath];
-                      v147 = [v142 isEqualToString:v146];
+                      book51 = [(BKBookParser *)self book];
+                      parserOPFPath2 = [book51 parserOPFPath];
+                      v147 = [v142 isEqualToString:parserOPFPath2];
 
                       if (v147)
                       {
                         goto LABEL_123;
                       }
 
-                      v143 = _ITEpubParsingLog();
-                      if (os_log_type_enabled(v143, OS_LOG_TYPE_DEFAULT))
+                      book50 = _ITEpubParsingLog();
+                      if (os_log_type_enabled(book50, OS_LOG_TYPE_DEFAULT))
                       {
-                        v148 = [(BKBookParser *)self book];
-                        v149 = [v148 parserOPFPath];
+                        book52 = [(BKBookParser *)self book];
+                        parserOPFPath3 = [book52 parserOPFPath];
                         *buf = 138544386;
                         v198 = @"self.book.parserOPFPath";
                         v199 = 2160;
@@ -550,8 +550,8 @@ LABEL_86:
                         v203 = 2160;
                         v204 = 1752392040;
                         v205 = 2112;
-                        v206 = v149;
-                        _os_log_impl(&dword_0, v143, OS_LOG_TYPE_DEFAULT, "Parsed value for '%{public}@': '%{mask.hash}@' != current stored value: '%{mask.hash}@'", buf, 0x34u);
+                        v206 = parserOPFPath3;
+                        _os_log_impl(&dword_0, book50, OS_LOG_TYPE_DEFAULT, "Parsed value for '%{public}@': '%{mask.hash}@' != current stored value: '%{mask.hash}@'", buf, 0x34u);
                       }
                     }
 
@@ -573,24 +573,24 @@ LABEL_123:
                     }
 
                     v152 = (*(*v3 + 160))(v3);
-                    v153 = [(BKBookParser *)self book];
-                    v154 = [v153 parserNCXPath];
-                    if ([v154 length])
+                    book53 = [(BKBookParser *)self book];
+                    parserNCXPath = [book53 parserNCXPath];
+                    if ([parserNCXPath length])
                     {
-                      v155 = [(BKBookParser *)self book];
-                      v156 = [v155 parserNCXPath];
-                      v157 = [v152 isEqualToString:v156];
+                      book54 = [(BKBookParser *)self book];
+                      parserNCXPath2 = [book54 parserNCXPath];
+                      v157 = [v152 isEqualToString:parserNCXPath2];
 
                       if (v157)
                       {
                         goto LABEL_132;
                       }
 
-                      v153 = _ITEpubParsingLog();
-                      if (os_log_type_enabled(v153, OS_LOG_TYPE_DEFAULT))
+                      book53 = _ITEpubParsingLog();
+                      if (os_log_type_enabled(book53, OS_LOG_TYPE_DEFAULT))
                       {
-                        v158 = [(BKBookParser *)self book];
-                        v159 = [v158 parserNCXPath];
+                        book55 = [(BKBookParser *)self book];
+                        parserNCXPath3 = [book55 parserNCXPath];
                         *buf = 138544386;
                         v198 = @"self.book.parserNCXPath";
                         v199 = 2160;
@@ -600,8 +600,8 @@ LABEL_123:
                         v203 = 2160;
                         v204 = 1752392040;
                         v205 = 2112;
-                        v206 = v159;
-                        _os_log_impl(&dword_0, v153, OS_LOG_TYPE_DEFAULT, "Parsed value for '%{public}@': '%{mask.hash}@' != current stored value: '%{mask.hash}@'", buf, 0x34u);
+                        v206 = parserNCXPath3;
+                        _os_log_impl(&dword_0, book53, OS_LOG_TYPE_DEFAULT, "Parsed value for '%{public}@': '%{mask.hash}@' != current stored value: '%{mask.hash}@'", buf, 0x34u);
                       }
                     }
 
@@ -623,24 +623,24 @@ LABEL_132:
                     }
 
                     v162 = (*(*v3 + 80))(v3);
-                    v163 = [(BKBookParser *)self book];
-                    v164 = [v163 firstDocumentHref];
-                    if ([v164 length])
+                    book56 = [(BKBookParser *)self book];
+                    firstDocumentHref = [book56 firstDocumentHref];
+                    if ([firstDocumentHref length])
                     {
-                      v165 = [(BKBookParser *)self book];
-                      v166 = [v165 firstDocumentHref];
-                      v167 = [v162 isEqualToString:v166];
+                      book57 = [(BKBookParser *)self book];
+                      firstDocumentHref2 = [book57 firstDocumentHref];
+                      v167 = [v162 isEqualToString:firstDocumentHref2];
 
                       if (v167)
                       {
                         goto LABEL_141;
                       }
 
-                      v163 = _ITEpubParsingLog();
-                      if (os_log_type_enabled(v163, OS_LOG_TYPE_DEFAULT))
+                      book56 = _ITEpubParsingLog();
+                      if (os_log_type_enabled(book56, OS_LOG_TYPE_DEFAULT))
                       {
-                        v168 = [(BKBookParser *)self book];
-                        v169 = [v168 firstDocumentHref];
+                        book58 = [(BKBookParser *)self book];
+                        firstDocumentHref3 = [book58 firstDocumentHref];
                         *buf = 138544386;
                         v198 = @"self.book.firstDocumentHref";
                         v199 = 2160;
@@ -650,8 +650,8 @@ LABEL_132:
                         v203 = 2160;
                         v204 = 1752392040;
                         v205 = 2112;
-                        v206 = v169;
-                        _os_log_impl(&dword_0, v163, OS_LOG_TYPE_DEFAULT, "Parsed value for '%{public}@': '%{mask.hash}@' != current stored value: '%{mask.hash}@'", buf, 0x34u);
+                        v206 = firstDocumentHref3;
+                        _os_log_impl(&dword_0, book56, OS_LOG_TYPE_DEFAULT, "Parsed value for '%{public}@': '%{mask.hash}@' != current stored value: '%{mask.hash}@'", buf, 0x34u);
                       }
                     }
 
@@ -673,13 +673,13 @@ LABEL_141:
                     }
 
                     v172 = (*(*v3 + 104))(v3);
-                    v173 = [(BKBookParser *)self book];
-                    v174 = [v173 tocPageHref];
-                    if ([v174 length])
+                    book59 = [(BKBookParser *)self book];
+                    tocPageHref = [book59 tocPageHref];
+                    if ([tocPageHref length])
                     {
-                      v175 = [(BKBookParser *)self book];
-                      v176 = [v175 tocPageHref];
-                      v177 = [v172 isEqualToString:v176];
+                      book60 = [(BKBookParser *)self book];
+                      tocPageHref2 = [book60 tocPageHref];
+                      v177 = [v172 isEqualToString:tocPageHref2];
 
                       if (v177)
                       {
@@ -707,40 +707,40 @@ LABEL_150:
                         [(BKEpubBookParser *)self constructBKDocumentWithReadable:v3 chapters:v182 landmarks:v183 physicalPages:v184];
                         [(BKEpubBookParser *)self constructBKProtectionInfoWithReadable:v3];
 
-                        v185 = [(BKBookParser *)self book];
-                        LODWORD(v183) = [BKEpubBookParser recomputeFixedLayoutDimensionsForBook:v185];
+                        book61 = [(BKBookParser *)self book];
+                        LODWORD(v183) = [BKEpubBookParser recomputeFixedLayoutDimensionsForBook:book61];
 
                         if (v183)
                         {
                           v196 = -998;
-                          v6 = [(BKBookParser *)self book];
-                          [v6 resetAsNewlyDownloaded];
+                          book62 = [(BKBookParser *)self book];
+                          [book62 resetAsNewlyDownloaded];
                         }
 
                         else
                         {
                           illegalEncryptionAlgorithm = self->_illegalEncryptionAlgorithm;
-                          v187 = [(BKBookParser *)self book];
-                          v6 = v187;
+                          book63 = [(BKBookParser *)self book];
+                          book62 = book63;
                           if (illegalEncryptionAlgorithm)
                           {
-                            [v187 setParserVersion:@"BKEpubBookParser - IllegalEncryption - 10.04.2011"];
+                            [book63 setParserVersion:@"BKEpubBookParser - IllegalEncryption - 10.04.2011"];
                           }
 
                           else
                           {
-                            [v187 setParserVersion:@"BookEPUB Parser - 2024.09.26"];
+                            [book63 setParserVersion:@"BookEPUB Parser - 2024.09.26"];
                           }
                         }
 
                         goto LABEL_158;
                       }
 
-                      v173 = _ITEpubParsingLog();
-                      if (os_log_type_enabled(v173, OS_LOG_TYPE_DEFAULT))
+                      book59 = _ITEpubParsingLog();
+                      if (os_log_type_enabled(book59, OS_LOG_TYPE_DEFAULT))
                       {
-                        v178 = [(BKBookParser *)self book];
-                        v179 = [v178 tocPageHref];
+                        book64 = [(BKBookParser *)self book];
+                        tocPageHref3 = [book64 tocPageHref];
                         *buf = 138544386;
                         v198 = @"self.book.tocPageHref";
                         v199 = 2160;
@@ -750,8 +750,8 @@ LABEL_150:
                         v203 = 2160;
                         v204 = 1752392040;
                         v205 = 2112;
-                        v206 = v179;
-                        _os_log_impl(&dword_0, v173, OS_LOG_TYPE_DEFAULT, "Parsed value for '%{public}@': '%{mask.hash}@' != current stored value: '%{mask.hash}@'", buf, 0x34u);
+                        v206 = tocPageHref3;
+                        _os_log_impl(&dword_0, book59, OS_LOG_TYPE_DEFAULT, "Parsed value for '%{public}@': '%{mask.hash}@' != current stored value: '%{mask.hash}@'", buf, 0x34u);
                       }
                     }
 
@@ -762,11 +762,11 @@ LABEL_150:
                     goto LABEL_150;
                   }
 
-                  v86 = _ITEpubParsingLog();
-                  if (os_log_type_enabled(v86, OS_LOG_TYPE_DEFAULT))
+                  book28 = _ITEpubParsingLog();
+                  if (os_log_type_enabled(book28, OS_LOG_TYPE_DEFAULT))
                   {
-                    v91 = [(BKBookParser *)self book];
-                    v92 = [v91 bookEpubIdWithUUIDScheme];
+                    book65 = [(BKBookParser *)self book];
+                    bookEpubIdWithUUIDScheme3 = [book65 bookEpubIdWithUUIDScheme];
                     *buf = 138544386;
                     v198 = @"self.book.bookEpubIdWithUUIDScheme";
                     v199 = 2160;
@@ -776,8 +776,8 @@ LABEL_150:
                     v203 = 2160;
                     v204 = 1752392040;
                     v205 = 2112;
-                    v206 = v92;
-                    _os_log_impl(&dword_0, v86, OS_LOG_TYPE_DEFAULT, "Parsed value for '%{public}@': '%{mask.hash}@' != current stored value: '%{mask.hash}@'", buf, 0x34u);
+                    v206 = bookEpubIdWithUUIDScheme3;
+                    _os_log_impl(&dword_0, book28, OS_LOG_TYPE_DEFAULT, "Parsed value for '%{public}@': '%{mask.hash}@' != current stored value: '%{mask.hash}@'", buf, 0x34u);
                   }
                 }
 
@@ -788,11 +788,11 @@ LABEL_150:
                 goto LABEL_86;
               }
 
-              v73 = _ITEpubParsingLog();
-              if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
+              book24 = _ITEpubParsingLog();
+              if (os_log_type_enabled(book24, OS_LOG_TYPE_DEFAULT))
               {
-                v78 = [(BKBookParser *)self book];
-                v79 = [v78 bookEpubId];
+                book66 = [(BKBookParser *)self book];
+                bookEpubId3 = [book66 bookEpubId];
                 *buf = 138544386;
                 v198 = @"self.book.bookEpubId";
                 v199 = 2160;
@@ -802,8 +802,8 @@ LABEL_150:
                 v203 = 2160;
                 v204 = 1752392040;
                 v205 = 2112;
-                v206 = v79;
-                _os_log_impl(&dword_0, v73, OS_LOG_TYPE_DEFAULT, "Parsed value for '%{public}@': '%{mask.hash}@' != current stored value: '%{mask.hash}@'", buf, 0x34u);
+                v206 = bookEpubId3;
+                _os_log_impl(&dword_0, book24, OS_LOG_TYPE_DEFAULT, "Parsed value for '%{public}@': '%{mask.hash}@' != current stored value: '%{mask.hash}@'", buf, 0x34u);
               }
             }
 
@@ -814,11 +814,11 @@ LABEL_150:
             goto LABEL_73;
           }
 
-          v60 = _ITEpubParsingLog();
-          if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
+          book20 = _ITEpubParsingLog();
+          if (os_log_type_enabled(book20, OS_LOG_TYPE_DEFAULT))
           {
-            v65 = [(BKBookParser *)self book];
-            v66 = [v65 genre];
+            book67 = [(BKBookParser *)self book];
+            genre3 = [book67 genre];
             *buf = 138544386;
             v198 = @"self.book.genre";
             v199 = 2160;
@@ -828,8 +828,8 @@ LABEL_150:
             v203 = 2160;
             v204 = 1752392040;
             v205 = 2112;
-            v206 = v66;
-            _os_log_impl(&dword_0, v60, OS_LOG_TYPE_DEFAULT, "Parsed value for '%{public}@': '%{mask.hash}@' != current stored value: '%{mask.hash}@'", buf, 0x34u);
+            v206 = genre3;
+            _os_log_impl(&dword_0, book20, OS_LOG_TYPE_DEFAULT, "Parsed value for '%{public}@': '%{mask.hash}@' != current stored value: '%{mask.hash}@'", buf, 0x34u);
           }
         }
 
@@ -840,11 +840,11 @@ LABEL_150:
         goto LABEL_60;
       }
 
-      v47 = _ITEpubParsingLog();
-      if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
+      book16 = _ITEpubParsingLog();
+      if (os_log_type_enabled(book16, OS_LOG_TYPE_DEFAULT))
       {
-        v52 = [(BKBookParser *)self book];
-        v53 = [v52 bookLanguage];
+        book68 = [(BKBookParser *)self book];
+        bookLanguage7 = [book68 bookLanguage];
         *buf = 138544386;
         v198 = @"self.book.bookLanguage";
         v199 = 2160;
@@ -854,8 +854,8 @@ LABEL_150:
         v203 = 2160;
         v204 = 1752392040;
         v205 = 2112;
-        v206 = v53;
-        _os_log_impl(&dword_0, v47, OS_LOG_TYPE_DEFAULT, "Parsed value for '%{public}@': '%{mask.hash}@' != current stored value: '%{mask.hash}@'", buf, 0x34u);
+        v206 = bookLanguage7;
+        _os_log_impl(&dword_0, book16, OS_LOG_TYPE_DEFAULT, "Parsed value for '%{public}@': '%{mask.hash}@' != current stored value: '%{mask.hash}@'", buf, 0x34u);
       }
     }
 
@@ -886,12 +886,12 @@ LABEL_150:
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "%s %s:%d", buf, 0x1Cu);
   }
 
-  v6 = BCIMLog();
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+  book62 = BCIMLog();
+  if (os_log_type_enabled(book62, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
     LODWORD(v198) = v196;
-    _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "@createEpubParser error: %d", buf, 8u);
+    _os_log_impl(&dword_0, book62, OS_LOG_TYPE_INFO, "@createEpubParser error: %d", buf, 8u);
   }
 
 LABEL_158:
@@ -910,18 +910,18 @@ LABEL_158:
       v189 = _ITEpubParsingLog();
       if (os_log_type_enabled(v189, OS_LOG_TYPE_ERROR))
       {
-        v190 = [(BKBookParser *)self book];
-        v191 = [v190 assetLogID];
-        v192 = [(BKBookParser *)self book];
-        v193 = [v192 bookBundlePath];
-        v194 = [(BKBookParser *)self book];
-        v195 = [v194 assetID];
+        book69 = [(BKBookParser *)self book];
+        assetLogID = [book69 assetLogID];
+        book70 = [(BKBookParser *)self book];
+        bookBundlePath2 = [book70 bookBundlePath];
+        book71 = [(BKBookParser *)self book];
+        assetID = [book71 assetID];
         *buf = 138543874;
-        v198 = v191;
+        v198 = assetLogID;
         v199 = 2112;
-        v200 = v193;
+        v200 = bookBundlePath2;
         v201 = 2112;
-        v202 = v195;
+        v202 = assetID;
         _os_log_impl(&dword_0, v189, OS_LOG_TYPE_ERROR, "Illegal encryption for book %{public}@ %@:%@", buf, 0x20u);
       }
 
@@ -937,14 +937,14 @@ LABEL_158:
   return result;
 }
 
-- (BOOL)isDifferentParserVersion:(id)a3
+- (BOOL)isDifferentParserVersion:(id)version
 {
-  v3 = a3;
-  v4 = [v3 parserVersion];
-  if (v4)
+  versionCopy = version;
+  parserVersion = [versionCopy parserVersion];
+  if (parserVersion)
   {
-    v5 = [v3 parserVersion];
-    v6 = [@"BookEPUB Parser - 2024.09.26" isEqualToString:v5] ^ 1;
+    parserVersion2 = [versionCopy parserVersion];
+    v6 = [@"BookEPUB Parser - 2024.09.26" isEqualToString:parserVersion2] ^ 1;
   }
 
   else
@@ -957,21 +957,21 @@ LABEL_158:
 
 - (int)_touchUpParse
 {
-  v3 = [(BKBookParser *)self book];
-  v4 = [(BKEpubBookParser *)self isDifferentParserVersion:v3];
+  book = [(BKBookParser *)self book];
+  v4 = [(BKEpubBookParser *)self isDifferentParserVersion:book];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(BKBookParser *)self book];
-  v6 = [v5 parserVersion];
-  if (v6)
+  book2 = [(BKBookParser *)self book];
+  parserVersion = [book2 parserVersion];
+  if (parserVersion)
   {
-    v7 = [(BKBookParser *)self book];
-    v8 = [v7 parserVersion];
-    v9 = [@"BKEpubBookParser - IllegalEncryption - 10.04.2011" isEqualToString:v8];
+    book3 = [(BKBookParser *)self book];
+    parserVersion2 = [book3 parserVersion];
+    v9 = [@"BKEpubBookParser - IllegalEncryption - 10.04.2011" isEqualToString:parserVersion2];
 
     if (v9)
     {
@@ -986,58 +986,58 @@ LABEL_158:
   return [(BKEpubBookParser *)self _fullParse];
 }
 
-- (int)parse:(BOOL)a3
+- (int)parse:(BOOL)parse
 {
-  if (a3)
+  if (parse)
   {
-    v4 = _ITEpubParsingLog();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    book4 = _ITEpubParsingLog();
+    if (os_log_type_enabled(book4, OS_LOG_TYPE_ERROR))
     {
-      v5 = [(BKBookParser *)self book];
-      v6 = [v5 assetLogID];
-      v7 = [(BKBookParser *)self book];
-      v8 = [v7 bookBundlePath];
-      v9 = [(BKBookParser *)self book];
-      v10 = [v9 assetID];
+      book = [(BKBookParser *)self book];
+      assetLogID = [book assetLogID];
+      book2 = [(BKBookParser *)self book];
+      bookBundlePath = [book2 bookBundlePath];
+      book3 = [(BKBookParser *)self book];
+      assetID = [book3 assetID];
       v43 = 138543874;
-      v44 = v6;
+      v44 = assetLogID;
       v45 = 2112;
-      v46 = v8;
+      v46 = bookBundlePath;
       v47 = 2112;
-      v48 = v10;
-      _os_log_impl(&dword_0, v4, OS_LOG_TYPE_ERROR, "Skipping all parsing for %{public}@ - %@:%@ -- Why would we do this?", &v43, 0x20u);
+      v48 = assetID;
+      _os_log_impl(&dword_0, book4, OS_LOG_TYPE_ERROR, "Skipping all parsing for %{public}@ - %@:%@ -- Why would we do this?", &v43, 0x20u);
     }
 
     goto LABEL_28;
   }
 
-  v4 = [(BKBookParser *)self book];
-  v11 = [(BKBookParser *)self book];
-  v12 = [v11 bookBundlePath];
+  book4 = [(BKBookParser *)self book];
+  book5 = [(BKBookParser *)self book];
+  bookBundlePath2 = [book5 bookBundlePath];
 
-  if (!v12)
+  if (!bookBundlePath2)
   {
     v23 = _ITEpubParsingLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v24 = [v4 databaseKey];
-      v25 = [v4 bookAuthor];
-      v26 = [v4 bookTitle];
-      v27 = [v4 assetLogID];
-      v28 = [v4 bookBundlePath];
-      v29 = [v4 assetID];
+      databaseKey = [book4 databaseKey];
+      bookAuthor = [book4 bookAuthor];
+      bookTitle = [book4 bookTitle];
+      assetLogID2 = [book4 assetLogID];
+      bookBundlePath3 = [book4 bookBundlePath];
+      assetID2 = [book4 assetID];
       v43 = 138413570;
-      v44 = v24;
+      v44 = databaseKey;
       v45 = 2112;
-      v46 = v25;
+      v46 = bookAuthor;
       v47 = 2112;
-      v48 = v26;
+      v48 = bookTitle;
       v49 = 2114;
-      v50 = v27;
+      v50 = assetLogID2;
       v51 = 2112;
-      v52 = v28;
+      v52 = bookBundlePath3;
       v53 = 2112;
-      v54 = v29;
+      v54 = assetID2;
       _os_log_impl(&dword_0, v23, OS_LOG_TYPE_ERROR, "Parsing Not Possible -- No Bundle Path: [%@] {%@ - %@} - %{public}@ - %@:%@", &v43, 0x3Eu);
     }
 
@@ -1056,56 +1056,56 @@ LABEL_158:
     v21 = BCIMLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
-      v31 = [v4 databaseKey];
-      v32 = [v4 bookAuthor];
-      v33 = [v4 bookTitle];
+      databaseKey2 = [book4 databaseKey];
+      bookAuthor2 = [book4 bookAuthor];
+      bookTitle2 = [book4 bookTitle];
       v43 = 138412802;
-      v44 = v31;
+      v44 = databaseKey2;
       v45 = 2112;
-      v46 = v32;
+      v46 = bookAuthor2;
       v47 = 2112;
-      v48 = v33;
+      v48 = bookTitle2;
       _os_log_impl(&dword_0, v21, OS_LOG_TYPE_INFO, "@Parsing Not Possible -- No Bundle Path: [%@] {%@ - %@}", &v43, 0x20u);
     }
 
-    v18 = -1000;
+    _fullParse = -1000;
     goto LABEL_26;
   }
 
-  if (![v4 wasParsed])
+  if (![book4 wasParsed])
   {
     goto LABEL_9;
   }
 
-  v13 = [v4 isDirty];
-  if ([v13 BOOLValue] & 1) != 0 || (-[NSObject needsReparsing](v4, "needsReparsing"))
+  isDirty = [book4 isDirty];
+  if ([isDirty BOOLValue] & 1) != 0 || (-[NSObject needsReparsing](book4, "needsReparsing"))
   {
 
 LABEL_9:
     v14 = _ITEpubParsingLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v4 assetLogID];
-      v16 = [v4 bookBundlePath];
-      v17 = [v4 assetID];
+      assetLogID3 = [book4 assetLogID];
+      bookBundlePath4 = [book4 bookBundlePath];
+      assetID3 = [book4 assetID];
       v43 = 138543874;
-      v44 = v15;
+      v44 = assetLogID3;
       v45 = 2112;
-      v46 = v16;
+      v46 = bookBundlePath4;
       v47 = 2112;
-      v48 = v17;
+      v48 = assetID3;
       _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "Performing full parse on %{public}@ - %@:%@", &v43, 0x20u);
     }
 
-    v18 = [(BKEpubBookParser *)self _fullParse];
-    if (!v18)
+    _fullParse = [(BKEpubBookParser *)self _fullParse];
+    if (!_fullParse)
     {
       v34 = +[NSDate date];
-      [v4 setParseDate:v34];
+      [book4 setParseDate:v34];
 
-      [v4 setIsDirty:&__kCFBooleanFalse];
+      [book4 setIsDirty:&__kCFBooleanFalse];
 LABEL_28:
-      v18 = 0;
+      _fullParse = 0;
       goto LABEL_29;
     }
 
@@ -1113,7 +1113,7 @@ LABEL_28:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       v43 = 67109120;
-      LODWORD(v44) = v18;
+      LODWORD(v44) = _fullParse;
       _os_log_impl(&dword_0, v19, OS_LOG_TYPE_ERROR, "Full parse failure: %d", &v43, 8u);
     }
 
@@ -1136,7 +1136,7 @@ LABEL_28:
     }
 
     v43 = 67109120;
-    LODWORD(v44) = v18;
+    LODWORD(v44) = _fullParse;
     v22 = "@_fullParse: %d";
     goto LABEL_18;
   }
@@ -1151,26 +1151,26 @@ LABEL_28:
   v37 = _ITEpubParsingLog();
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
   {
-    v38 = [v4 assetLogID];
-    v39 = [v4 bookBundlePath];
-    v40 = [v4 assetID];
+    assetLogID4 = [book4 assetLogID];
+    bookBundlePath5 = [book4 bookBundlePath];
+    assetID4 = [book4 assetID];
     v43 = 138543874;
-    v44 = v38;
+    v44 = assetLogID4;
     v45 = 2112;
-    v46 = v39;
+    v46 = bookBundlePath5;
     v47 = 2112;
-    v48 = v40;
+    v48 = assetID4;
     _os_log_impl(&dword_0, v37, OS_LOG_TYPE_DEFAULT, "Performing touchup parse on %{public}@ - %@:%@", &v43, 0x20u);
   }
 
-  v18 = [(BKEpubBookParser *)self _touchUpParse];
-  if (v18)
+  _fullParse = [(BKEpubBookParser *)self _touchUpParse];
+  if (_fullParse)
   {
     v41 = _ITEpubParsingLog();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
     {
       v43 = 67109120;
-      LODWORD(v44) = v18;
+      LODWORD(v44) = _fullParse;
       _os_log_impl(&dword_0, v41, OS_LOG_TYPE_ERROR, "Touch up parse failure: %d", &v43, 8u);
     }
 
@@ -1193,7 +1193,7 @@ LABEL_28:
     }
 
     v43 = 67109120;
-    LODWORD(v44) = v18;
+    LODWORD(v44) = _fullParse;
     v22 = "@_touchUpParse: %d";
 LABEL_18:
     _os_log_impl(&dword_0, v21, OS_LOG_TYPE_INFO, v22, &v43, 8u);
@@ -1202,110 +1202,110 @@ LABEL_26:
 
 LABEL_29:
 
-  return v18;
+  return _fullParse;
 }
 
-- (void)tryEmbeddedHrefForCoverArtHref:(id)a3
+- (void)tryEmbeddedHrefForCoverArtHref:(id)href
 {
-  v4 = a3;
-  if (v4)
+  hrefCopy = href;
+  if (hrefCopy)
   {
-    v14 = v4;
-    v5 = v4;
-    v6 = [(BKBookParser *)self book];
-    v7 = [v6 bookContentSubpath];
-    v8 = [v7 length];
+    v14 = hrefCopy;
+    v5 = hrefCopy;
+    book = [(BKBookParser *)self book];
+    bookContentSubpath = [book bookContentSubpath];
+    v8 = [bookContentSubpath length];
 
     v9 = v5;
     if (v8)
     {
-      v10 = [(BKBookParser *)self book];
-      v11 = [v10 bookContentSubpath];
-      v9 = [v11 stringByAppendingPathComponent:v5];
+      book2 = [(BKBookParser *)self book];
+      bookContentSubpath2 = [book2 bookContentSubpath];
+      v9 = [bookContentSubpath2 stringByAppendingPathComponent:v5];
     }
 
-    v12 = [(BKBookParser *)self book];
-    [v12 setEmbeddedArtHref:v9];
+    book3 = [(BKBookParser *)self book];
+    [book3 setEmbeddedArtHref:v9];
 
-    v13 = [(BKBookParser *)self book];
-    [v13 setEmbeddedArtHrefRejected:0];
+    book4 = [(BKBookParser *)self book];
+    [book4 setEmbeddedArtHrefRejected:0];
 
-    v4 = v14;
+    hrefCopy = v14;
   }
 }
 
-- (void)constructBKProtectionInfoWithReadable:(BKReadableFormat *)a3
+- (void)constructBKProtectionInfoWithReadable:(BKReadableFormat *)readable
 {
-  if (!a3)
+  if (!readable)
   {
     return;
   }
 
-  v21 = [(BKBookParser *)self book];
-  v5 = [v21 sinfInfo];
-  v6 = [v5 allObjects];
-  v7 = [v6 count];
+  book = [(BKBookParser *)self book];
+  sinfInfo = [book sinfInfo];
+  allObjects = [sinfInfo allObjects];
+  v7 = [allObjects count];
 
   if (v7)
   {
-    v22 = [(BKBookParser *)self book];
-    v8 = [(BKBookParser *)self book];
-    v9 = [v8 sinfInfo];
-    [v22 removeSinfInfo:v9];
+    book2 = [(BKBookParser *)self book];
+    book3 = [(BKBookParser *)self book];
+    sinfInfo2 = [book3 sinfInfo];
+    [book2 removeSinfInfo:sinfInfo2];
   }
 
   if (self->_illegalEncryptionAlgorithm)
   {
-    v10 = [(BKBookParser *)self book];
-    v23 = [v10 managedObjectContext];
+    book4 = [(BKBookParser *)self book];
+    managedObjectContext = [book4 managedObjectContext];
 
-    v20 = [BKProtectionInfo newEmptyProtectionInfo:v23];
-    v11 = [[NSNumber alloc] initWithInt:0xFFFFFFFFLL];
-    [(__CFDictionary *)v20 setSinfNumber:v11];
-    v12 = [(BKBookParser *)self book];
-    [v12 addSinfInfoObject:v20];
+    v20 = [BKProtectionInfo newEmptyProtectionInfo:managedObjectContext];
+    managedObjectContext2 = [[NSNumber alloc] initWithInt:0xFFFFFFFFLL];
+    [(__CFDictionary *)v20 setSinfNumber:managedObjectContext2];
+    book5 = [(BKBookParser *)self book];
+    [book5 addSinfInfoObject:v20];
   }
 
   else
   {
-    v23 = a3->var17;
-    v20 = a3->var16;
+    managedObjectContext = readable->var17;
+    v20 = readable->var16;
     if (!v20)
     {
       goto LABEL_7;
     }
 
-    v13 = [(BKBookParser *)self book];
-    v11 = [v13 managedObjectContext];
+    book6 = [(BKBookParser *)self book];
+    managedObjectContext2 = [book6 managedObjectContext];
 
-    v12 = [(__CFDictionary *)v23 keyEnumerator];
-    for (i = 0; ; i = v15)
+    book5 = [(__CFDictionary *)managedObjectContext keyEnumerator];
+    for (i = 0; ; i = nextObject)
     {
-      v15 = [v12 nextObject];
+      nextObject = [book5 nextObject];
 
-      if (!v15)
+      if (!nextObject)
       {
         break;
       }
 
-      v16 = [(__CFDictionary *)v23 objectForKey:v15];
-      v17 = [BKProtectionInfo newEmptyProtectionInfo:v11];
-      v18 = [[NSNumber alloc] initWithInt:{objc_msgSend(v15, "intValue")}];
+      v16 = [(__CFDictionary *)managedObjectContext objectForKey:nextObject];
+      v17 = [BKProtectionInfo newEmptyProtectionInfo:managedObjectContext2];
+      v18 = [[NSNumber alloc] initWithInt:{objc_msgSend(nextObject, "intValue")}];
       [v17 setSinfNumber:v18];
       [v17 setSinfBlob:v16];
-      v19 = [(BKBookParser *)self book];
-      [v19 addSinfInfoObject:v17];
+      book7 = [(BKBookParser *)self book];
+      [book7 addSinfInfoObject:v17];
     }
   }
 
 LABEL_7:
 }
 
-- (BOOL)isLegalEncryption:(id)a3
+- (BOOL)isLegalEncryption:(id)encryption
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3 || ([v3 rangeOfString:@".apple.com"], v5) || (objc_msgSend(v4, "rangeOfString:", BEAdobeFontManglingAlgorithm), v6) || (objc_msgSend(v4, "rangeOfString:", BEIDPFFontManglingAlgorithm), v7))
+  encryptionCopy = encryption;
+  v4 = encryptionCopy;
+  if (!encryptionCopy || ([encryptionCopy rangeOfString:@".apple.com"], v5) || (objc_msgSend(v4, "rangeOfString:", BEAdobeFontManglingAlgorithm), v6) || (objc_msgSend(v4, "rangeOfString:", BEIDPFFontManglingAlgorithm), v7))
   {
     v8 = 1;
   }
@@ -1338,10 +1338,10 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)isLegalCompression:(id)a3
+- (BOOL)isLegalCompression:(id)compression
 {
-  v3 = a3;
-  if ([v3 length] && (objc_msgSend(v3, "isEqualToString:", @"none") & 1) == 0)
+  compressionCopy = compression;
+  if ([compressionCopy length] && (objc_msgSend(compressionCopy, "isEqualToString:", @"none") & 1) == 0)
   {
     v5 = BCIMLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -1359,7 +1359,7 @@ LABEL_7:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v8 = 138412290;
-      v9 = v3;
+      v9 = compressionCopy;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "@***** Unrecognized Compression Algorithm: %@", &v8, 0xCu);
     }
 
@@ -1374,21 +1374,21 @@ LABEL_7:
   return v4;
 }
 
-- (id)mediaOverlayHrefForManifestInfo:(__CFDictionary *)a3 readable:(BKReadableFormat *)a4
+- (id)mediaOverlayHrefForManifestInfo:(__CFDictionary *)info readable:(BKReadableFormat *)readable
 {
-  Value = CFDictionaryGetValue(a3, @"media-overlay");
-  if (Value && (v6 = (*(a4->var0 + 6))(a4, Value)) != 0)
+  Value = CFDictionaryGetValue(info, @"media-overlay");
+  if (Value && (v6 = (*(readable->var0 + 6))(readable, Value)) != 0)
   {
     v7 = v6;
     v8 = CFDictionaryGetValue(v6, @"unescaped_href");
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 stringByRemovingPercentEncoding];
-      v11 = v10;
-      if (v10)
+      stringByRemovingPercentEncoding = [v8 stringByRemovingPercentEncoding];
+      v11 = stringByRemovingPercentEncoding;
+      if (stringByRemovingPercentEncoding)
       {
-        v12 = v10;
+        v12 = stringByRemovingPercentEncoding;
       }
 
       else
@@ -1415,35 +1415,35 @@ LABEL_7:
   return v13;
 }
 
-- (void)constructBKDocumentWithReadable:(BKReadableFormat *)a3 chapters:(id)a4 landmarks:(id)a5 physicalPages:(id)a6
+- (void)constructBKDocumentWithReadable:(BKReadableFormat *)readable chapters:(id)chapters landmarks:(id)landmarks physicalPages:(id)pages
 {
-  v10 = a4;
-  v60 = a5;
-  v59 = a6;
-  v69 = a3;
-  if (a3)
+  chaptersCopy = chapters;
+  landmarksCopy = landmarks;
+  pagesCopy = pages;
+  readableCopy = readable;
+  if (readable)
   {
-    v11 = [(BKBookParser *)self book];
-    v65 = [v11 managedObjectContext];
+    book = [(BKBookParser *)self book];
+    managedObjectContext = [book managedObjectContext];
 
-    LODWORD(v11) = (*(a3->var0 + 4))(a3);
-    v12 = a3->var16;
+    LODWORD(book) = (*(readable->var0 + 4))(readable);
+    v12 = readable->var16;
     v64 = [[NSNumber alloc] initWithInt:0xFFFFFFFFLL];
     v13 = [[NSNumber alloc] initWithBool:1];
     v14 = [[NSNumber alloc] initWithBool:0];
     v55 = [[NSNumber alloc] initWithBool:1];
-    v68 = [[NSMutableDictionary alloc] initWithCapacity:v11];
+    v68 = [[NSMutableDictionary alloc] initWithCapacity:book];
     v57 = objc_alloc_init(NSMutableDictionary);
     context = objc_autoreleasePoolPush();
-    v15 = [(BKBookParser *)self book];
-    v56 = v10;
-    v63 = [v15 databaseKey];
+    book2 = [(BKBookParser *)self book];
+    v56 = chaptersCopy;
+    databaseKey = [book2 databaseKey];
 
-    v16 = (v11 - 1);
+    v16 = (book - 1);
     v61 = v14;
     v62 = v12;
     v67 = v13;
-    v70 = self;
+    selfCopy = self;
     do
     {
       if (v16 == -1)
@@ -1451,7 +1451,7 @@ LABEL_7:
         break;
       }
 
-      v17 = (*(v69->var0 + 5))(v69, v16);
+      v17 = (*(readableCopy->var0 + 5))(readableCopy, v16);
       Value = CFDictionaryGetValue(v17, @"unescaped_href");
       if (v12)
       {
@@ -1461,9 +1461,9 @@ LABEL_7:
         {
           v21 = [v19 objectForKey:@"encryptionAlgorithm"];
           v22 = [v20 objectForKey:@"compressionAlgorithm"];
-          if (![(BKEpubBookParser *)v70 isLegalEncryption:v21]|| ![(BKEpubBookParser *)v70 isLegalCompression:v22])
+          if (![(BKEpubBookParser *)selfCopy isLegalEncryption:v21]|| ![(BKEpubBookParser *)selfCopy isLegalCompression:v22])
           {
-            v70->_illegalEncryptionAlgorithm = 1;
+            selfCopy->_illegalEncryptionAlgorithm = 1;
           }
         }
       }
@@ -1473,15 +1473,15 @@ LABEL_7:
         v20 = 0;
       }
 
-      if (!v70->_illegalEncryptionAlgorithm)
+      if (!selfCopy->_illegalEncryptionAlgorithm)
       {
-        v23 = [(BKEpubBookParser *)v70 mediaOverlayHrefForManifestInfo:v17 readable:v69];
-        v24 = [BKDocument newEmptyDocument:v65];
-        v25 = [Value stringByRemovingPercentEncoding];
-        v66 = v25;
-        if (v25)
+        v23 = [(BKEpubBookParser *)selfCopy mediaOverlayHrefForManifestInfo:v17 readable:readableCopy];
+        v24 = [BKDocument newEmptyDocument:managedObjectContext];
+        stringByRemovingPercentEncoding = [Value stringByRemovingPercentEncoding];
+        v66 = stringByRemovingPercentEncoding;
+        if (stringByRemovingPercentEncoding)
         {
-          v26 = v25;
+          v26 = stringByRemovingPercentEncoding;
         }
 
         else
@@ -1496,7 +1496,7 @@ LABEL_7:
         [v24 setFallbackId:{CFDictionaryGetValue(v17, @"fallback"}];
         [v24 setManifestProperties:{CFDictionaryGetValue(v17, @"properties"}];
         [v24 setDocumentOrdinal:v64];
-        [v24 setBookDatabaseKey:v63];
+        [v24 setBookDatabaseKey:databaseKey];
         if (v20)
         {
           v27 = [v20 objectForKey:@"encryptionAlgorithm"];
@@ -1525,33 +1525,33 @@ LABEL_7:
         CFRelease(v17);
       }
 
-      illegalEncryptionAlgorithm = v70->_illegalEncryptionAlgorithm;
-      self = v70;
+      illegalEncryptionAlgorithm = selfCopy->_illegalEncryptionAlgorithm;
+      self = selfCopy;
 
       v16 = (v16 - 1);
     }
 
     while (!illegalEncryptionAlgorithm);
 
-    v10 = v56;
+    chaptersCopy = v56;
     objc_autoreleasePoolPop(context);
     if (!self->_illegalEncryptionAlgorithm)
     {
-      v32 = (*(v69->var0 + 7))(v69);
+      v32 = (*(readableCopy->var0 + 7))(readableCopy);
       if (v32)
       {
         v33 = (v32 - 1);
         do
         {
-          v34 = (*(v69->var0 + 8))(v69, v33);
+          v34 = (*(readableCopy->var0 + 8))(readableCopy, v33);
           if ([v34 length])
           {
             v35 = [[NSNumber alloc] initWithInt:v33];
             v36 = [v68 objectForKey:v34];
-            v37 = [v36 documentOrdinal];
-            v38 = [v37 integerValue];
+            documentOrdinal = [v36 documentOrdinal];
+            integerValue = [documentOrdinal integerValue];
 
-            if (v38 != -1)
+            if (integerValue != -1)
             {
               v39 = [BKDocument documentKeyWithHref:v34 documentOrdinal:v35];
               v40 = [v68 objectForKey:v39];
@@ -1568,21 +1568,21 @@ LABEL_7:
                 }
 
                 [v41 addObject:v39];
-                v43 = [BKDocument newEmptyDocument:v65];
+                v43 = [BKDocument newEmptyDocument:managedObjectContext];
                 [v43 copyPropertiesFrom:v36];
                 v44 = [NSNumber numberWithBool:0];
                 [v43 setNonlinearElement:v44];
 
                 [v68 setObject:v43 forKey:v39];
                 v36 = v43;
-                v10 = v56;
+                chaptersCopy = v56;
               }
             }
 
             if (v36)
             {
               [v36 setDocumentOrdinal:v35];
-              v45 = (*(v69->var0 + 9))(v69, v33);
+              v45 = (*(readableCopy->var0 + 9))(readableCopy, v33);
               v46 = v45;
               if (v45)
               {
@@ -1594,21 +1594,21 @@ LABEL_7:
                 CFRelease(v46);
               }
 
-              v47 = [v10 objectForKey:v34];
+              v47 = [chaptersCopy objectForKey:v34];
 
               if (v47)
               {
                 [v36 setHasTocElements:v67];
               }
 
-              v48 = [v60 objectForKey:v34];
+              v48 = [landmarksCopy objectForKey:v34];
 
               if (v48)
               {
                 [v36 setHasLandmarkElements:v67];
               }
 
-              v49 = [v59 objectForKey:v34];
+              v49 = [pagesCopy objectForKey:v34];
 
               if (v49)
               {
@@ -1626,7 +1626,7 @@ LABEL_7:
       }
     }
 
-    v50 = [v57 allValues];
+    allValues = [v57 allValues];
     v71[0] = _NSConcreteStackBlock;
     v71[1] = 3221225472;
     v71[2] = sub_A05F4;
@@ -1637,17 +1637,17 @@ LABEL_7:
     v73 = v52;
     v53 = v67;
     v74 = v53;
-    [v50 enumerateObjectsUsingBlock:v71];
+    [allValues enumerateObjectsUsingBlock:v71];
   }
 }
 
-- (int)constructEntity:(id)a3 withNavPoint:(void *)a4 absoluteOrder:(int)a5 indentationLevel:(int)a6 withAnchorInfo:(id)a7 createdObjects:(id)a8
+- (int)constructEntity:(id)entity withNavPoint:(void *)point absoluteOrder:(int)order indentationLevel:(int)level withAnchorInfo:(id)info createdObjects:(id)objects
 {
-  v13 = a3;
-  v14 = a7;
-  v15 = a8;
-  v45 = a5;
-  if (a5 < 0)
+  entityCopy = entity;
+  infoCopy = info;
+  objectsCopy = objects;
+  orderCopy = order;
+  if (order < 0)
   {
     v23 = 0;
     v24 = 0;
@@ -1655,26 +1655,26 @@ LABEL_7:
 
   else
   {
-    v16 = [(BKBookParser *)self book];
-    v17 = [v16 managedObjectContext];
+    book = [(BKBookParser *)self book];
+    managedObjectContext = [book managedObjectContext];
 
-    v40 = v17;
-    v18 = [NSEntityDescription insertNewObjectForEntityForName:v13 inManagedObjectContext:v17];
-    v19 = ITNavPoint::contentFileIncludingHash(a4);
-    v39 = *(a4 + 11);
+    v40 = managedObjectContext;
+    v18 = [NSEntityDescription insertNewObjectForEntityForName:entityCopy inManagedObjectContext:managedObjectContext];
+    v19 = ITNavPoint::contentFileIncludingHash(point);
+    v39 = *(point + 11);
     v38 = [NSURL URLWithString:?];
-    v43 = [v38 path];
-    v20 = [(BKBookParser *)self book];
-    v21 = [v20 basePlusContentPath];
+    path = [v38 path];
+    book2 = [(BKBookParser *)self book];
+    basePlusContentPath = [book2 basePlusContentPath];
 
-    v37 = v21;
-    v22 = [NSString pathRelativeToContentBase:v21 forRelativePath:v19 startingFromAbsoluteFolderPath:v43];
+    v37 = basePlusContentPath;
+    v22 = [NSString pathRelativeToContentBase:basePlusContentPath forRelativePath:v19 startingFromAbsoluteFolderPath:path];
 
     v42 = v22;
-    v41 = [v22 stringByRemovingPercentEncoding];
-    if ([v41 length])
+    stringByRemovingPercentEncoding = [v22 stringByRemovingPercentEncoding];
+    if ([stringByRemovingPercentEncoding length])
     {
-      [v18 setValue:v41 forKey:@"href"];
+      [v18 setValue:stringByRemovingPercentEncoding forKey:@"href"];
     }
 
     else
@@ -1682,12 +1682,12 @@ LABEL_7:
       [v18 setValue:&stru_1E7188 forKey:@"href"];
     }
 
-    v44 = [v22 stringByRemovingURLFragment];
-    if ([v44 length])
+    stringByRemovingURLFragment = [v22 stringByRemovingURLFragment];
+    if ([stringByRemovingURLFragment length])
     {
-      [v18 setValue:v44 forKey:@"baseHref"];
+      [v18 setValue:stringByRemovingURLFragment forKey:@"baseHref"];
       v25 = [NSNumber numberWithBool:1];
-      [v14 setObject:v25 forKey:v44];
+      [infoCopy setObject:v25 forKey:stringByRemovingURLFragment];
     }
 
     else
@@ -1695,7 +1695,7 @@ LABEL_7:
       [v18 setValue:&stru_1E7188 forKey:@"baseHref"];
     }
 
-    v26 = *(a4 + 10);
+    v26 = *(point + 10);
     if (![(__CFString *)v26 length])
     {
 
@@ -1703,7 +1703,7 @@ LABEL_7:
     }
 
     [v18 setValue:v26 forKey:@"name"];
-    v27 = *(a4 + 12);
+    v27 = *(point + 12);
     if (![(__CFString *)v27 length])
     {
 
@@ -1711,25 +1711,25 @@ LABEL_7:
     }
 
     [v18 setValue:v27 forKey:@"htmlName"];
-    v28 = [NSNumber numberWithInt:a6];
+    v28 = [NSNumber numberWithInt:level];
     [v18 setValue:v28 forKey:@"indentationLevel"];
 
-    v29 = [NSNumber numberWithInt:v45];
+    v29 = [NSNumber numberWithInt:orderCopy];
     [v18 setValue:v29 forKey:@"absoluteOrder"];
 
-    v30 = *(a4 + 7);
+    v30 = *(point + 7);
     if ([v30 length])
     {
       [v18 setValue:v30 forKey:@"type"];
     }
 
-    [v15 addObject:v18];
-    v23 = (a6 + 1);
+    [objectsCopy addObject:v18];
+    v23 = (level + 1);
 
-    v24 = v45 + 1;
+    v24 = orderCopy + 1;
   }
 
-  v31 = *(a4 + 3) - *(a4 + 2);
+  v31 = *(point + 3) - *(point + 2);
   if (v31)
   {
     v32 = 0;
@@ -1746,10 +1746,10 @@ LABEL_7:
 
     do
     {
-      v35 = ITNavPoint::childAtIndex(a4);
+      v35 = ITNavPoint::childAtIndex(point);
       if (v35)
       {
-        v24 = [(BKEpubBookParser *)self constructEntity:v13 withNavPoint:v35 absoluteOrder:v24 indentationLevel:v23 withAnchorInfo:v14 createdObjects:v15];
+        v24 = [(BKEpubBookParser *)self constructEntity:entityCopy withNavPoint:v35 absoluteOrder:v24 indentationLevel:v23 withAnchorInfo:infoCopy createdObjects:objectsCopy];
       }
 
       ++v32;
@@ -1761,57 +1761,57 @@ LABEL_7:
   return v24;
 }
 
-- (void)constructBKNavigationInfoWithReadable:(BKReadableFormat *)a3 withAnchorInfo:(id)a4
+- (void)constructBKNavigationInfoWithReadable:(BKReadableFormat *)readable withAnchorInfo:(id)info
 {
-  v10 = a4;
-  if (a3)
+  infoCopy = info;
+  if (readable)
   {
-    var13 = a3->var13;
+    var13 = readable->var13;
     if (var13)
     {
       v7 = objc_autoreleasePoolPush();
       v8 = objc_opt_new();
-      [(BKEpubBookParser *)self constructEntity:@"BKNavigationInfo" withNavPoint:var13 absoluteOrder:0xFFFFFFFFLL indentationLevel:0xFFFFFFFFLL withAnchorInfo:v10 createdObjects:v8];
-      v9 = [(BKBookParser *)self book];
-      [v9 addChapters:v8];
+      [(BKEpubBookParser *)self constructEntity:@"BKNavigationInfo" withNavPoint:var13 absoluteOrder:0xFFFFFFFFLL indentationLevel:0xFFFFFFFFLL withAnchorInfo:infoCopy createdObjects:v8];
+      book = [(BKBookParser *)self book];
+      [book addChapters:v8];
 
       objc_autoreleasePoolPop(v7);
     }
   }
 }
 
-- (void)constructBKLandmarkInfoWithReadable:(BKReadableFormat *)a3 withAnchorInfo:(id)a4
+- (void)constructBKLandmarkInfoWithReadable:(BKReadableFormat *)readable withAnchorInfo:(id)info
 {
-  v10 = a4;
-  if (a3)
+  infoCopy = info;
+  if (readable)
   {
-    var14 = a3->var14;
+    var14 = readable->var14;
     if (var14)
     {
       v7 = objc_autoreleasePoolPush();
       v8 = objc_opt_new();
-      [(BKEpubBookParser *)self constructEntity:@"BKLandmarkInfo" withNavPoint:var14 absoluteOrder:0xFFFFFFFFLL indentationLevel:0xFFFFFFFFLL withAnchorInfo:v10 createdObjects:v8];
-      v9 = [(BKBookParser *)self book];
-      [v9 addLandmarks:v8];
+      [(BKEpubBookParser *)self constructEntity:@"BKLandmarkInfo" withNavPoint:var14 absoluteOrder:0xFFFFFFFFLL indentationLevel:0xFFFFFFFFLL withAnchorInfo:infoCopy createdObjects:v8];
+      book = [(BKBookParser *)self book];
+      [book addLandmarks:v8];
 
       objc_autoreleasePoolPop(v7);
     }
   }
 }
 
-- (void)constructBKPhysicalPageWithReadable:(BKReadableFormat *)a3 withAnchorInfo:(id)a4
+- (void)constructBKPhysicalPageWithReadable:(BKReadableFormat *)readable withAnchorInfo:(id)info
 {
-  v10 = a4;
-  if (a3)
+  infoCopy = info;
+  if (readable)
   {
-    var15 = a3->var15;
+    var15 = readable->var15;
     if (var15)
     {
       v7 = objc_autoreleasePoolPush();
       v8 = objc_opt_new();
-      [(BKEpubBookParser *)self constructEntity:@"BKPhysicalPage" withNavPoint:var15 absoluteOrder:0xFFFFFFFFLL indentationLevel:0xFFFFFFFFLL withAnchorInfo:v10 createdObjects:v8];
-      v9 = [(BKBookParser *)self book];
-      [v9 addPhysicalPages:v8];
+      [(BKEpubBookParser *)self constructEntity:@"BKPhysicalPage" withNavPoint:var15 absoluteOrder:0xFFFFFFFFLL indentationLevel:0xFFFFFFFFLL withAnchorInfo:infoCopy createdObjects:v8];
+      book = [(BKBookParser *)self book];
+      [book addPhysicalPages:v8];
 
       objc_autoreleasePoolPop(v7);
     }
@@ -1821,45 +1821,45 @@ LABEL_7:
 + (id)bookExtraInfoCacheDirectory
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  v4 = [v3 stringByAppendingPathComponent:@"BookCachedData"];
+  v4 = [lastObject stringByAppendingPathComponent:@"BookCachedData"];
 
   return v4;
 }
 
 - (id)createBookExtraInfoCacheDirectoryIfNecessary
 {
-  v2 = [objc_opt_class() bookExtraInfoCacheDirectory];
-  v3 = [NSURL fileURLWithPath:v2 isDirectory:1];
+  bookExtraInfoCacheDirectory = [objc_opt_class() bookExtraInfoCacheDirectory];
+  v3 = [NSURL fileURLWithPath:bookExtraInfoCacheDirectory isDirectory:1];
   v4 = +[NSFileManager defaultManager];
-  v5 = [v3 relativePath];
-  [v4 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:0];
+  relativePath = [v3 relativePath];
+  [v4 createDirectoryAtPath:relativePath withIntermediateDirectories:1 attributes:0 error:0];
 
-  return v2;
+  return bookExtraInfoCacheDirectory;
 }
 
-+ (id)bookCachedDataPathForBookWithKey:(id)a3
++ (id)bookCachedDataPathForBookWithKey:(id)key
 {
-  v4 = a3;
-  v5 = [a1 bookExtraInfoCacheDirectory];
-  v6 = [v4 stringByAppendingPathExtension:@"plist"];
-  v7 = [v5 stringByAppendingPathComponent:v6];
+  keyCopy = key;
+  bookExtraInfoCacheDirectory = [self bookExtraInfoCacheDirectory];
+  v6 = [keyCopy stringByAppendingPathExtension:@"plist"];
+  v7 = [bookExtraInfoCacheDirectory stringByAppendingPathComponent:v6];
 
   return v7;
 }
 
-- (void)constructBKIdCfiMappingsWithEpub:(void *)a3
+- (void)constructBKIdCfiMappingsWithEpub:(void *)epub
 {
-  v4 = (*(*a3 + 176))(a3, a2);
+  v4 = (*(*epub + 176))(epub, a2);
   if (v4)
   {
     v5 = v4;
-    v6 = [(BKEpubBookParser *)self createBookExtraInfoCacheDirectoryIfNecessary];
+    createBookExtraInfoCacheDirectoryIfNecessary = [(BKEpubBookParser *)self createBookExtraInfoCacheDirectoryIfNecessary];
     v7 = objc_opt_class();
-    v8 = [(BKBookParser *)self book];
-    v9 = [v8 databaseKey];
-    v10 = [v7 bookCachedDataPathForBookWithKey:v9];
+    book = [(BKBookParser *)self book];
+    databaseKey = [book databaseKey];
+    v10 = [v7 bookCachedDataPathForBookWithKey:databaseKey];
 
     v15 = @"tocCfiIdMap";
     v16 = v5;
@@ -1876,81 +1876,81 @@ LABEL_7:
   }
 }
 
-+ (id)cachedDataForBookDatabaseKey:(id)a3 cacheKey:(id)a4
++ (id)cachedDataForBookDatabaseKey:(id)key cacheKey:(id)cacheKey
 {
-  v6 = a4;
-  v7 = [a1 bookCachedDataPathForBookWithKey:a3];
+  cacheKeyCopy = cacheKey;
+  v7 = [self bookCachedDataPathForBookWithKey:key];
   v8 = [NSDictionary dictionaryWithContentsOfFile:v7];
-  v9 = [v8 objectForKey:v6];
+  v9 = [v8 objectForKey:cacheKeyCopy];
 
   return v9;
 }
 
-+ (CGSize)_computeFixedLayoutDimensionsFrom:(id)a3 forBook:(id)a4
++ (CGSize)_computeFixedLayoutDimensionsFrom:(id)from forBook:(id)book
 {
-  v5 = a3;
-  v6 = a4;
+  fromCopy = from;
+  bookCopy = book;
   width = CGSizeZero.width;
   height = CGSizeZero.height;
-  if (v5)
+  if (fromCopy)
   {
-    v9 = [v5 sinfNumber];
-    if (v9)
+    sinfNumber = [fromCopy sinfNumber];
+    if (sinfNumber)
     {
-      v10 = [v5 sinfNumber];
-      v11 = [v10 intValue];
+      sinfNumber2 = [fromCopy sinfNumber];
+      intValue = [sinfNumber2 intValue];
 
-      if (v11 < 1)
+      if (intValue < 1)
       {
-        v9 = 0;
+        sinfNumber = 0;
       }
 
       else
       {
-        v12 = [v5 sinfNumber];
-        v13 = [NSPredicate predicateWithFormat:@"sinfNumber ==[n] %@", v12];
+        sinfNumber3 = [fromCopy sinfNumber];
+        v13 = [NSPredicate predicateWithFormat:@"sinfNumber ==[n] %@", sinfNumber3];
 
-        v14 = [v6 sinfInfo];
-        v15 = [v14 filteredSetUsingPredicate:v13];
+        sinfInfo = [bookCopy sinfInfo];
+        v15 = [sinfInfo filteredSetUsingPredicate:v13];
 
         if ([v15 count] == &dword_0 + 1)
         {
-          v9 = [v15 anyObject];
+          sinfNumber = [v15 anyObject];
         }
 
         else
         {
-          v16 = [v6 bookBundlePath];
-          [NSException raise:@"NSIllegalState" format:@"Book sinf information appears invalid: %@", v16];
+          bookBundlePath = [bookCopy bookBundlePath];
+          [NSException raise:@"NSIllegalState" format:@"Book sinf information appears invalid: %@", bookBundlePath];
 
-          v9 = 0;
+          sinfNumber = 0;
         }
       }
     }
 
-    v17 = [v6 bookBundlePath];
-    v18 = [v6 bookContentSubpath];
-    v19 = [v18 length];
+    bookBundlePath2 = [bookCopy bookBundlePath];
+    bookContentSubpath = [bookCopy bookContentSubpath];
+    v19 = [bookContentSubpath length];
 
     if (v19)
     {
-      v20 = [v6 bookContentSubpath];
-      v21 = [v17 stringByAppendingPathComponent:v20];
+      bookContentSubpath2 = [bookCopy bookContentSubpath];
+      v21 = [bookBundlePath2 stringByAppendingPathComponent:bookContentSubpath2];
     }
 
     else
     {
-      v21 = v17;
+      v21 = bookBundlePath2;
     }
 
-    v22 = [v5 href];
-    v23 = [v21 stringByAppendingPathComponent:v22];
+    href = [fromCopy href];
+    v23 = [v21 stringByAppendingPathComponent:href];
 
     v24 = objc_autoreleasePoolPush();
     v38 = 0;
-    v25 = [v9 sinfBlob];
+    sinfBlob = [sinfNumber sinfBlob];
     v37 = 0;
-    v26 = [ft9cupR7u6OrU4m1pyhB pK0gFZ9QOdm17E9p9cpP:v23 sinfData:v25 refetch:&v38 error:&v37];
+    v26 = [ft9cupR7u6OrU4m1pyhB pK0gFZ9QOdm17E9p9cpP:v23 sinfData:sinfBlob refetch:&v38 error:&v37];
     v27 = v37;
 
     if (v26)
@@ -2032,20 +2032,20 @@ LABEL_30:
   return result;
 }
 
-+ (BOOL)recomputeFixedLayoutDimensionsForBook:(id)a3
++ (BOOL)recomputeFixedLayoutDimensionsForBook:(id)book
 {
-  v53 = a3;
-  if ([v53 isFixedLayout])
+  bookCopy = book;
+  if ([bookCopy isFixedLayout])
   {
     if ((BEAlwaysFullParseEPUB() & 1) == 0)
     {
-      v3 = [v53 hasComputedFixedLayoutSize];
-      if ([v3 BOOLValue])
+      hasComputedFixedLayoutSize = [bookCopy hasComputedFixedLayoutSize];
+      if ([hasComputedFixedLayoutSize BOOLValue])
       {
-        v4 = [v53 isDirty];
-        v5 = [v4 BOOLValue];
+        isDirty = [bookCopy isDirty];
+        bOOLValue = [isDirty BOOLValue];
 
-        if (!v5)
+        if (!bOOLValue)
         {
           goto LABEL_45;
         }
@@ -2056,9 +2056,9 @@ LABEL_30:
       }
     }
 
-    v6 = [v53 firstDocumentLocation];
-    v7 = [v53 documentContainingLocation:v6];
-    [a1 _computeFixedLayoutDimensionsFrom:v7 forBook:v53];
+    firstDocumentLocation = [bookCopy firstDocumentLocation];
+    v7 = [bookCopy documentContainingLocation:firstDocumentLocation];
+    [self _computeFixedLayoutDimensionsFrom:v7 forBook:bookCopy];
     v9 = v8;
     v11 = v10;
 
@@ -2078,7 +2078,7 @@ LABEL_30:
 
     v56 = 0uLL;
     v57 = 0uLL;
-    obj = [v53 sortedDocuments];
+    obj = [bookCopy sortedDocuments];
     v14 = [obj countByEnumeratingWithState:&v54 objects:v64 count:16];
     if (v14)
     {
@@ -2097,26 +2097,26 @@ LABEL_30:
           }
 
           v18 = *(*(&v54 + 1) + 8 * v17);
-          [a1 _computeFixedLayoutDimensionsFrom:v18 forBook:{v53, v49}];
+          [self _computeFixedLayoutDimensionsFrom:v18 forBook:{bookCopy, v49}];
           v21 = v19;
           v22 = v20;
           if (v19 == CGSizeZero.width && v20 == CGSizeZero.height)
           {
-            v28 = [v18 href];
-            v29 = [v53 tocPageHref];
-            v30 = [v28 isEqualToString:v29];
+            href = [v18 href];
+            tocPageHref = [bookCopy tocPageHref];
+            v30 = [href isEqualToString:tocPageHref];
 
             if (v30)
             {
               v31 = _ITEpubParsingLog();
               if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
               {
-                v32 = [v18 href];
+                href2 = [v18 href];
                 v67.width = v9;
                 v67.height = v11;
                 v33 = NSStringFromCGSize(v67);
                 *buf = 138412546;
-                v59 = v32;
+                v59 = href2;
                 v60 = 2112;
                 v61 = v33;
                 _os_log_impl(&dword_0, v31, OS_LOG_TYPE_ERROR, "Book document (%@) size computed from epub was 0, setting size to %@ and ignoring error because it's the TOC.", buf, 0x16u);
@@ -2128,12 +2128,12 @@ LABEL_30:
               v34 = _ITEpubParsingLog();
               if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
               {
-                v35 = [v18 href];
+                href3 = [v18 href];
                 v68.width = v9;
                 v68.height = v11;
                 v36 = NSStringFromCGSize(v68);
                 *buf = 138412546;
-                v59 = v35;
+                v59 = href3;
                 v60 = 2112;
                 v61 = v36;
                 _os_log_impl(&dword_0, v34, OS_LOG_TYPE_ERROR, "Book document (%@) size computed from epub was 0, setting size to %@ and marking book info as dirty.", buf, 0x16u);
@@ -2154,7 +2154,7 @@ LABEL_30:
               v22 = round(v11 * (v21 / v9));
               if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
               {
-                v25 = [v18 href];
+                href4 = [v18 href];
                 v65.width = v21;
                 v65.height = v22;
                 v26 = NSStringFromCGSize(v65);
@@ -2162,7 +2162,7 @@ LABEL_30:
                 v66.height = v11;
                 v27 = NSStringFromCGSize(v66);
                 *buf = v49;
-                v59 = v25;
+                v59 = href4;
                 v60 = 2114;
                 v61 = v26;
                 v62 = 2114;
@@ -2181,7 +2181,7 @@ LABEL_23:
               v21 = round(v9 * (v22 / v11));
               if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
               {
-                v42 = [v18 href];
+                href5 = [v18 href];
                 v70.width = v21;
                 v70.height = v22;
                 v43 = NSStringFromCGSize(v70);
@@ -2189,7 +2189,7 @@ LABEL_23:
                 v71.height = v11;
                 v44 = NSStringFromCGSize(v71);
                 *buf = v49;
-                v59 = v42;
+                v59 = href5;
                 v60 = 2114;
                 v61 = v43;
                 v62 = 2114;
@@ -2208,12 +2208,12 @@ LABEL_32:
           v37 = _ITEpubParsingLog();
           if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
           {
-            v38 = [v18 href];
+            href6 = [v18 href];
             v69.width = v21;
             v69.height = v22;
             v39 = NSStringFromCGSize(v69);
             *buf = 138412546;
-            v59 = v38;
+            v59 = href6;
             v60 = 2114;
             v61 = v39;
             _os_log_impl(&dword_0, v37, OS_LOG_TYPE_INFO, "Book document (%@) validated size: %{public}@", buf, 0x16u);
@@ -2243,7 +2243,7 @@ LABEL_32:
 LABEL_44:
 
     v47 = [NSNumber numberWithBool:v46];
-    [v53 setHasComputedFixedLayoutSize:v47];
+    [bookCopy setHasComputedFixedLayoutSize:v47];
   }
 
 LABEL_45:
@@ -2251,13 +2251,13 @@ LABEL_45:
   return 0;
 }
 
-- (void)setPublisherInfoFromParser:(BKReadableFormat *)a3
+- (void)setPublisherInfoFromParser:(BKReadableFormat *)parser
 {
-  var10 = a3->var10;
+  var10 = parser->var10;
   if (var10)
   {
     CFRetain(var10);
-    v6 = a3->var10;
+    v6 = parser->var10;
   }
 
   else
@@ -2266,21 +2266,21 @@ LABEL_45:
   }
 
   v7 = v6;
-  v8 = [(BKBookParser *)self book];
-  v9 = [v8 publisherName];
-  if ([v9 length])
+  book = [(BKBookParser *)self book];
+  publisherName = [book publisherName];
+  if ([publisherName length])
   {
-    v10 = [(BKBookParser *)self book];
-    v11 = [v10 publisherName];
-    v12 = [(__CFString *)v7 isEqualToString:v11];
+    book2 = [(BKBookParser *)self book];
+    publisherName2 = [book2 publisherName];
+    v12 = [(__CFString *)v7 isEqualToString:publisherName2];
 
     if ((v12 & 1) == 0)
     {
       v13 = _ITEpubParsingLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(BKBookParser *)self book];
-        v15 = [v14 publisherName];
+        book3 = [(BKBookParser *)self book];
+        publisherName3 = [book3 publisherName];
         v57 = 138544386;
         v58 = @"self.book.publisherName";
         v59 = 2160;
@@ -2290,7 +2290,7 @@ LABEL_45:
         v63 = 2160;
         v64 = 1752392040;
         v65 = 2112;
-        v66 = v15;
+        v66 = publisherName3;
         _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "Parsed value for '%{public}@': '%{mask.hash}@' != current stored value: '%{mask.hash}@'", &v57, 0x34u);
       }
     }
@@ -2300,24 +2300,24 @@ LABEL_45:
   {
   }
 
-  v16 = a3->var10;
-  if (v16 && (CFRetain(v16), (v17 = a3->var10) != 0))
+  v16 = parser->var10;
+  if (v16 && (CFRetain(v16), (book5 = parser->var10) != 0))
   {
-    v18 = [(BKBookParser *)self book];
-    [v18 setPublisherName:v17];
+    book4 = [(BKBookParser *)self book];
+    [book4 setPublisherName:book5];
   }
 
   else
   {
-    v17 = [(BKBookParser *)self book];
-    [v17 setPublisherName:0];
+    book5 = [(BKBookParser *)self book];
+    [book5 setPublisherName:0];
   }
 
-  var11 = a3->var11;
+  var11 = parser->var11;
   if (var11)
   {
     CFRetain(var11);
-    v20 = a3->var11;
+    v20 = parser->var11;
   }
 
   else
@@ -2326,26 +2326,26 @@ LABEL_45:
   }
 
   v21 = v20;
-  v22 = [(BKBookParser *)self book];
-  v23 = [v22 publisherLocation];
-  if (![v23 length])
+  book6 = [(BKBookParser *)self book];
+  publisherLocation = [book6 publisherLocation];
+  if (![publisherLocation length])
   {
 
 LABEL_22:
     goto LABEL_23;
   }
 
-  v24 = [(BKBookParser *)self book];
-  v25 = [v24 publisherLocation];
-  v26 = [(__CFString *)v21 isEqualToString:v25];
+  book7 = [(BKBookParser *)self book];
+  publisherLocation2 = [book7 publisherLocation];
+  v26 = [(__CFString *)v21 isEqualToString:publisherLocation2];
 
   if ((v26 & 1) == 0)
   {
-    v22 = _ITEpubParsingLog();
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    book6 = _ITEpubParsingLog();
+    if (os_log_type_enabled(book6, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [(BKBookParser *)self book];
-      v28 = [v27 publisherLocation];
+      book8 = [(BKBookParser *)self book];
+      publisherLocation3 = [book8 publisherLocation];
       v57 = 138544386;
       v58 = @"self.book.publisherLocation";
       v59 = 2160;
@@ -2355,8 +2355,8 @@ LABEL_22:
       v63 = 2160;
       v64 = 1752392040;
       v65 = 2112;
-      v66 = v28;
-      _os_log_impl(&dword_0, v22, OS_LOG_TYPE_DEFAULT, "Parsed value for '%{public}@': '%{mask.hash}@' != current stored value: '%{mask.hash}@'", &v57, 0x34u);
+      v66 = publisherLocation3;
+      _os_log_impl(&dword_0, book6, OS_LOG_TYPE_DEFAULT, "Parsed value for '%{public}@': '%{mask.hash}@' != current stored value: '%{mask.hash}@'", &v57, 0x34u);
     }
 
     goto LABEL_22;
@@ -2364,24 +2364,24 @@ LABEL_22:
 
 LABEL_23:
 
-  v29 = a3->var11;
-  if (v29 && (CFRetain(v29), (v30 = a3->var11) != 0))
+  v29 = parser->var11;
+  if (v29 && (CFRetain(v29), (book10 = parser->var11) != 0))
   {
-    v31 = [(BKBookParser *)self book];
-    [v31 setPublisherLocation:v30];
+    book9 = [(BKBookParser *)self book];
+    [book9 setPublisherLocation:book10];
   }
 
   else
   {
-    v30 = [(BKBookParser *)self book];
-    [v30 setPublisherLocation:0];
+    book10 = [(BKBookParser *)self book];
+    [book10 setPublisherLocation:0];
   }
 
-  var12 = a3->var12;
+  var12 = parser->var12;
   if (var12)
   {
     CFRetain(var12);
-    v33 = a3->var12;
+    v33 = parser->var12;
   }
 
   else
@@ -2390,26 +2390,26 @@ LABEL_23:
   }
 
   v34 = v33;
-  v35 = [(BKBookParser *)self book];
-  v36 = [v35 publisherYear];
-  if (![v36 length])
+  book11 = [(BKBookParser *)self book];
+  publisherYear = [book11 publisherYear];
+  if (![publisherYear length])
   {
 
 LABEL_35:
     goto LABEL_36;
   }
 
-  v37 = [(BKBookParser *)self book];
-  v38 = [v37 publisherYear];
-  v39 = [(__CFString *)v34 isEqualToString:v38];
+  book12 = [(BKBookParser *)self book];
+  publisherYear2 = [book12 publisherYear];
+  v39 = [(__CFString *)v34 isEqualToString:publisherYear2];
 
   if ((v39 & 1) == 0)
   {
-    v35 = _ITEpubParsingLog();
-    if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
+    book11 = _ITEpubParsingLog();
+    if (os_log_type_enabled(book11, OS_LOG_TYPE_DEFAULT))
     {
-      v40 = [(BKBookParser *)self book];
-      v41 = [v40 publisherYear];
+      book13 = [(BKBookParser *)self book];
+      publisherYear3 = [book13 publisherYear];
       v57 = 138544386;
       v58 = @"self.book.publisherYear";
       v59 = 2160;
@@ -2419,8 +2419,8 @@ LABEL_35:
       v63 = 2160;
       v64 = 1752392040;
       v65 = 2112;
-      v66 = v41;
-      _os_log_impl(&dword_0, v35, OS_LOG_TYPE_DEFAULT, "Parsed value for '%{public}@': '%{mask.hash}@' != current stored value: '%{mask.hash}@'", &v57, 0x34u);
+      v66 = publisherYear3;
+      _os_log_impl(&dword_0, book11, OS_LOG_TYPE_DEFAULT, "Parsed value for '%{public}@': '%{mask.hash}@' != current stored value: '%{mask.hash}@'", &v57, 0x34u);
     }
 
     goto LABEL_35;
@@ -2428,60 +2428,60 @@ LABEL_35:
 
 LABEL_36:
 
-  v42 = a3->var12;
-  if (v42 && (CFRetain(v42), (v43 = a3->var12) != 0))
+  v42 = parser->var12;
+  if (v42 && (CFRetain(v42), (book15 = parser->var12) != 0))
   {
-    v44 = [(BKBookParser *)self book];
-    [v44 setPublisherYear:v43];
+    book14 = [(BKBookParser *)self book];
+    [book14 setPublisherYear:book15];
   }
 
   else
   {
-    v43 = [(BKBookParser *)self book];
-    [v43 setPublisherYear:0];
+    book15 = [(BKBookParser *)self book];
+    [book15 setPublisherYear:0];
   }
 
-  v45 = [(BKBookParser *)self book];
-  v46 = [v45 publisherName];
-  v47 = v46 == 0;
+  book16 = [(BKBookParser *)self book];
+  publisherName4 = [book16 publisherName];
+  v47 = publisherName4 == 0;
 
   if (v47)
   {
-    v48 = [(BKBookParser *)self book];
-    [v48 setPublisherName:&stru_1E7188];
+    book17 = [(BKBookParser *)self book];
+    [book17 setPublisherName:&stru_1E7188];
   }
 
-  v49 = [(BKBookParser *)self book];
-  v50 = [v49 publisherLocation];
-  v51 = v50 == 0;
+  book18 = [(BKBookParser *)self book];
+  publisherLocation4 = [book18 publisherLocation];
+  v51 = publisherLocation4 == 0;
 
   if (v51)
   {
-    v52 = [(BKBookParser *)self book];
-    [v52 setPublisherLocation:&stru_1E7188];
+    book19 = [(BKBookParser *)self book];
+    [book19 setPublisherLocation:&stru_1E7188];
   }
 
-  v53 = [(BKBookParser *)self book];
-  v54 = [v53 publisherYear];
-  v55 = v54 == 0;
+  book20 = [(BKBookParser *)self book];
+  publisherYear4 = [book20 publisherYear];
+  v55 = publisherYear4 == 0;
 
   if (v55)
   {
-    v56 = [(BKBookParser *)self book];
-    [v56 setPublisherYear:&stru_1E7188];
+    book21 = [(BKBookParser *)self book];
+    [book21 setPublisherYear:&stru_1E7188];
   }
 }
 
-- (void)setAppleDisplayOptionsFromParser:(BKReadableFormat *)a3
+- (void)setAppleDisplayOptionsFromParser:(BKReadableFormat *)parser
 {
-  v5 = [(BKBookParser *)self book];
+  book = [(BKBookParser *)self book];
 
-  if (!v5)
+  if (!book)
   {
     return;
   }
 
-  v34 = (*(a3->var0 + 14))(a3);
+  v34 = (*(parser->var0 + 14))(parser);
   if (v34)
   {
     objc_opt_class();
@@ -2490,8 +2490,8 @@ LABEL_36:
 
     if ([v7 isEqualToString:@"true"])
     {
-      v8 = [(BKBookParser *)self book];
-      [v8 setFixedLayout:1];
+      book2 = [(BKBookParser *)self book];
+      [book2 setFixedLayout:1];
     }
 
     v9 = [v34 valueForKey:@"interactive"];
@@ -2499,8 +2499,8 @@ LABEL_36:
 
     if (v10)
     {
-      v11 = [(BKBookParser *)self book];
-      [v11 setInteractive:1];
+      book3 = [(BKBookParser *)self book];
+      [book3 setInteractive:1];
     }
 
     objc_opt_class();
@@ -2509,8 +2509,8 @@ LABEL_36:
 
     if ([v13 isEqualToString:@"true"])
     {
-      v14 = [(BKBookParser *)self book];
-      [v14 setHasBuiltInFonts:1];
+      book4 = [(BKBookParser *)self book];
+      [book4 setHasBuiltInFonts:1];
     }
 
     objc_opt_class();
@@ -2519,21 +2519,21 @@ LABEL_36:
 
     if ([v16 isEqualToString:@"false"])
     {
-      v17 = [(BKBookParser *)self book];
-      [v17 setHidesSpine:1];
+      book5 = [(BKBookParser *)self book];
+      [book5 setHidesSpine:1];
     }
 
     objc_opt_class();
     v18 = [v34 valueForKey:@"spread"];
     v19 = BUDynamicCast();
-    v20 = [(BKBookParser *)self book];
-    [v20 setFixedLayoutSpread:v19];
+    book6 = [(BKBookParser *)self book];
+    [book6 setFixedLayoutSpread:v19];
 
     objc_opt_class();
     v21 = [v34 valueForKey:@"flow"];
     v22 = BUDynamicCast();
-    v23 = [(BKBookParser *)self book];
-    [v23 setFixedLayoutFlow:v22];
+    book7 = [(BKBookParser *)self book];
+    [book7 setFixedLayoutFlow:v22];
 
     objc_opt_class();
     v24 = [v34 valueForKey:@"open-to-spread"];
@@ -2543,21 +2543,21 @@ LABEL_36:
     {
       if ([v25 isEqualToString:@"true"])
       {
-        v26 = [(BKBookParser *)self book];
-        [v26 setOpenToSpread:1];
+        book8 = [(BKBookParser *)self book];
+        [book8 setOpenToSpread:1];
       }
 
       else
       {
-        v26 = [(BKBookParser *)self book];
-        [v26 setOpenToSpread:0];
+        book8 = [(BKBookParser *)self book];
+        [book8 setOpenToSpread:0];
       }
     }
 
     else
     {
-      v26 = [(BKBookParser *)self book];
-      [v26 setOpenToSpread:0x7FFFFFFFFFFFFFFFLL];
+      book8 = [(BKBookParser *)self book];
+      [book8 setOpenToSpread:0x7FFFFFFFFFFFFFFFLL];
     }
 
     objc_opt_class();
@@ -2571,8 +2571,8 @@ LABEL_36:
 
     if ([v28 isEqualToString:@"portrait-only"])
     {
-      v29 = [(BKBookParser *)self book];
-      [v29 setLandscapeProhibited:1];
+      book9 = [(BKBookParser *)self book];
+      [book9 setLandscapeProhibited:1];
     }
 
     else
@@ -2586,18 +2586,18 @@ LABEL_23:
 
         if ([v31 length])
         {
-          v32 = [(BKBookParser *)self book];
-          [v32 setRespectImageSizeClass:v31];
+          book10 = [(BKBookParser *)self book];
+          [book10 setRespectImageSizeClass:v31];
 
-          v33 = [(BKBookParser *)self book];
-          [v33 setRespectImageSizeClassIsPrefix:0];
+          book11 = [(BKBookParser *)self book];
+          [book11 setRespectImageSizeClassIsPrefix:0];
         }
 
         goto LABEL_26;
       }
 
-      v29 = [(BKBookParser *)self book];
-      [v29 setPortraitProhibited:1];
+      book9 = [(BKBookParser *)self book];
+      [book9 setPortraitProhibited:1];
     }
 
     goto LABEL_23;
@@ -2606,39 +2606,39 @@ LABEL_23:
 LABEL_26:
 }
 
-- (void)setObeyPageBreaksFromPlist:(id)a3
+- (void)setObeyPageBreaksFromPlist:(id)plist
 {
-  v6 = [a3 valueForKey:@"obeyPageBreaks"];
+  v6 = [plist valueForKey:@"obeyPageBreaks"];
   if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v4 = &dword_0 + 1;
+    bOOLValue = &dword_0 + 1;
   }
 
-  v5 = [(BKBookParser *)self book];
-  [v5 setObeyPageBreaks:v4];
+  book = [(BKBookParser *)self book];
+  [book setObeyPageBreaks:bOOLValue];
 }
 
-- (void)setArtworkTemplateFromPlist:(id)a3
+- (void)setArtworkTemplateFromPlist:(id)plist
 {
-  v7 = [a3 valueForKey:@"artwork-template-name"];
+  v7 = [plist valueForKey:@"artwork-template-name"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v7;
+    stringValue = v7;
 LABEL_5:
-    v5 = v4;
+    v5 = stringValue;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v7 stringValue];
+    stringValue = [v7 stringValue];
     goto LABEL_5;
   }
 
@@ -2646,55 +2646,55 @@ LABEL_5:
 LABEL_7:
   if ([v5 length])
   {
-    v6 = [(BKBookParser *)self book];
-    [v6 setGenericCoverTemplate:v5];
+    book = [(BKBookParser *)self book];
+    [book setGenericCoverTemplate:v5];
   }
 }
 
-- (void)setLanguageFromPlist:(id)a3
+- (void)setLanguageFromPlist:(id)plist
 {
-  v5 = [IMLibraryPlist languageFromPlistEntry:a3];
+  v5 = [IMLibraryPlist languageFromPlistEntry:plist];
   if (v5)
   {
-    v4 = [(BKBookParser *)self book];
-    [v4 setBookLanguage:v5];
+    book = [(BKBookParser *)self book];
+    [book setBookLanguage:v5];
   }
 }
 
-- (void)setCoverWritingModeFromPlist:(id)a3
+- (void)setCoverWritingModeFromPlist:(id)plist
 {
-  v4 = [IMLibraryPlist coverWritingModeFromPlistEntry:a3];
-  v5 = v4;
-  if (v4)
+  imIsDefaultWritingMode = [IMLibraryPlist coverWritingModeFromPlistEntry:plist];
+  v5 = imIsDefaultWritingMode;
+  if (imIsDefaultWritingMode)
   {
-    v7 = v4;
-    v4 = [v4 imIsDefaultWritingMode];
+    v7 = imIsDefaultWritingMode;
+    imIsDefaultWritingMode = [imIsDefaultWritingMode imIsDefaultWritingMode];
     v5 = v7;
-    if ((v4 & 1) == 0)
+    if ((imIsDefaultWritingMode & 1) == 0)
     {
-      v6 = [(BKBookParser *)self book];
-      [v6 setCoverWritingModeString:v7];
+      book = [(BKBookParser *)self book];
+      [book setCoverWritingModeString:v7];
 
       v5 = v7;
     }
   }
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(imIsDefaultWritingMode, v5);
 }
 
-- (void)setScrollAxisModeFromPlist:(id)a3
+- (void)setScrollAxisModeFromPlist:(id)plist
 {
-  v5 = [IMLibraryPlist scrollDirectionFromPlistEntry:a3];
+  v5 = [IMLibraryPlist scrollDirectionFromPlistEntry:plist];
   if (v5 && (([v5 isEqualToString:@"horizontal"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"vertical")))
   {
-    v4 = [(BKBookParser *)self book];
-    [v4 setScrollDirection:v5];
+    book = [(BKBookParser *)self book];
+    [book setScrollDirection:v5];
   }
 }
 
-- (void)setEndOfBookExperienceFromPlist:(id)a3
+- (void)setEndOfBookExperienceFromPlist:(id)plist
 {
-  [IMLibraryPlist endOfBookExperiencesFromItunesMetadataEntry:a3];
+  [IMLibraryPlist endOfBookExperiencesFromItunesMetadataEntry:plist];
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
@@ -2720,19 +2720,19 @@ LABEL_7:
           v20 = [IMLibraryPlist experienceLocationTypeFromExperienceEntry:v4];
           if ([v20 isEqualToString:@"cfi"])
           {
-            v5 = [(BKBookParser *)self book];
-            [v5 setEndOfBookLocation:v23];
+            book = [(BKBookParser *)self book];
+            [book setEndOfBookLocation:v23];
 
-            v6 = [(BKBookParser *)self book];
-            [v6 setEndOfBookConfidence:&off_1F1880];
+            book2 = [(BKBookParser *)self book];
+            [book2 setEndOfBookConfidence:&off_1F1880];
 
-            v7 = [(BKBookParser *)self book];
-            [v7 setEndOfBookValidRange:0];
+            book3 = [(BKBookParser *)self book];
+            [book3 setEndOfBookValidRange:0];
           }
 
           v24 = [IMLibraryPlist experienceVersionFromExperienceEntry:v4];
-          v8 = [(BKBookParser *)self book];
-          [v8 setEndOfBookVersion:v24];
+          book4 = [(BKBookParser *)self book];
+          [book4 setEndOfBookVersion:v24];
 
           v9 = [IMLibraryPlist experienceParamsFromExperienceEntry:v4];
           v29 = 0u;
@@ -2769,8 +2769,8 @@ LABEL_7:
                   }
 
                   v17 = [NSNumber numberWithFloat:v16];
-                  v18 = [(BKBookParser *)self book];
-                  [v18 setEndOfBookConfidence:v17];
+                  book5 = [(BKBookParser *)self book];
+                  [book5 setEndOfBookConfidence:v17];
                 }
               }
 
@@ -2791,9 +2791,9 @@ LABEL_7:
 
 - (void)resetItunesMetadata
 {
-  v3 = [(BKBookParser *)self book];
-  v4 = [v3 bookBundlePath];
-  v6 = [v4 stringByAppendingPathComponent:@"iTunesMetadata.plist"];
+  book = [(BKBookParser *)self book];
+  bookBundlePath = [book bookBundlePath];
+  v6 = [bookBundlePath stringByAppendingPathComponent:@"iTunesMetadata.plist"];
 
   if (v6)
   {
@@ -2812,14 +2812,14 @@ LABEL_7:
   _objc_release_x2();
 }
 
-+ (BOOL)isValidMimeType:(id)a3
++ (BOOL)isValidMimeType:(id)type
 {
-  v3 = a3;
-  v4 = [v3 UTF8String];
-  v5 = [v3 length];
-  LOBYTE(v4) = ITEpubFolder::isMimetypeFileContentsValid(v4, v5, 0, 0, v6) != 0;
+  typeCopy = type;
+  uTF8String = [typeCopy UTF8String];
+  v5 = [typeCopy length];
+  LOBYTE(uTF8String) = ITEpubFolder::isMimetypeFileContentsValid(uTF8String, v5, 0, 0, v6) != 0;
 
-  return v4;
+  return uTF8String;
 }
 
 @end

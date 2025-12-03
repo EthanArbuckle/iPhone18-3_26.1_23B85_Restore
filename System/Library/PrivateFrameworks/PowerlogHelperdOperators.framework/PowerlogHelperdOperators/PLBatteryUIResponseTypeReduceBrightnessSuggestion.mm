@@ -1,13 +1,13 @@
 @interface PLBatteryUIResponseTypeReduceBrightnessSuggestion
 - (BOOL)shouldShowSuggestionThroughOverrides;
 - (id)result;
-- (void)configure:(id)a3;
+- (void)configure:(id)configure;
 - (void)run;
 @end
 
 @implementation PLBatteryUIResponseTypeReduceBrightnessSuggestion
 
-- (void)configure:(id)a3
+- (void)configure:(id)configure
 {
   v4 = +[PLUtilities isALSCurveHigherThanDefault];
 
@@ -28,24 +28,24 @@
   {
     if ([(PLBatteryUIResponseTypeReduceBrightnessSuggestion *)self isALSCurveHigherThanDefault])
     {
-      v4 = [(PLBatteryUIResponseTypeReduceBrightnessSuggestion *)self batteryBreakdown_Last24hrs];
+      batteryBreakdown_Last24hrs = [(PLBatteryUIResponseTypeReduceBrightnessSuggestion *)self batteryBreakdown_Last24hrs];
 
-      if (!v4)
+      if (!batteryBreakdown_Last24hrs)
       {
         v5 = PLBatteryUsageUIKeyFromConfiguration();
-        v6 = [(PLBatteryUIResponseTypeReduceBrightnessSuggestion *)self responderService];
-        v7 = [v6 responseCache];
-        v8 = [v7 objectForKeyedSubscript:&unk_287146048];
+        responderService = [(PLBatteryUIResponseTypeReduceBrightnessSuggestion *)self responderService];
+        responseCache = [responderService responseCache];
+        v8 = [responseCache objectForKeyedSubscript:&unk_287146048];
         v9 = [v8 objectForKeyedSubscript:v5];
         v10 = [v9 objectForKeyedSubscript:@"result"];
         v11 = [v10 objectForKeyedSubscript:@"PLBatteryUIBreakdownKey"];
-        v12 = [v11 firstObject];
-        [(PLBatteryUIResponseTypeReduceBrightnessSuggestion *)self setBatteryBreakdown_Last24hrs:v12];
+        firstObject = [v11 firstObject];
+        [(PLBatteryUIResponseTypeReduceBrightnessSuggestion *)self setBatteryBreakdown_Last24hrs:firstObject];
       }
 
-      v13 = [(PLBatteryUIResponseTypeReduceBrightnessSuggestion *)self batteryBreakdown_Last24hrs];
+      batteryBreakdown_Last24hrs2 = [(PLBatteryUIResponseTypeReduceBrightnessSuggestion *)self batteryBreakdown_Last24hrs];
 
-      if (!v13)
+      if (!batteryBreakdown_Last24hrs2)
       {
         v14 = PLLogCommon();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -54,16 +54,16 @@
           _os_log_impl(&dword_25EE51000, v14, OS_LOG_TYPE_DEFAULT, "Reduce Brightness Suggestion: 24h breakdown cache unavailable, retry with 15 days", buf, 2u);
         }
 
-        v15 = [(PLBatteryUIResponseTypeReduceBrightnessSuggestion *)self responderService];
-        v16 = [v15 getBreakdownForLength:86400 fromCachedLength:1296000 forBucketSize:86400];
+        responderService2 = [(PLBatteryUIResponseTypeReduceBrightnessSuggestion *)self responderService];
+        v16 = [responderService2 getBreakdownForLength:86400 fromCachedLength:1296000 forBucketSize:86400];
         [(PLBatteryUIResponseTypeReduceBrightnessSuggestion *)self setBatteryBreakdown_Last24hrs:v16];
       }
 
-      v17 = [(PLBatteryUIResponseTypeReduceBrightnessSuggestion *)self batteryBreakdown_Last24hrs];
+      batteryBreakdown_Last24hrs3 = [(PLBatteryUIResponseTypeReduceBrightnessSuggestion *)self batteryBreakdown_Last24hrs];
 
       v18 = PLLogCommon();
       v19 = v18;
-      if (v17)
+      if (batteryBreakdown_Last24hrs3)
       {
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
         {
@@ -74,8 +74,8 @@
         v38 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v20 = [(PLBatteryUIResponseTypeReduceBrightnessSuggestion *)self batteryBreakdown_Last24hrs];
-        v21 = [v20 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+        batteryBreakdown_Last24hrs4 = [(PLBatteryUIResponseTypeReduceBrightnessSuggestion *)self batteryBreakdown_Last24hrs];
+        v21 = [batteryBreakdown_Last24hrs4 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
 
         v22 = [v21 countByEnumeratingWithState:&v35 objects:v40 count:16];
         if (v22)
@@ -178,9 +178,9 @@
   if (v2)
   {
     v3 = [PLUtilities powerlogDefaultForKey:@"BUI_REDUCEBRIGHTNESS_SUGGESTION_SHOW"];
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(v2) = bOOLValue;
   }
 
   return v2;

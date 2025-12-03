@@ -1,21 +1,21 @@
 @interface MSParsecSearchSessionInstantAnswer
-- (MSParsecSearchSessionInstantAnswer)initWithIdentifier:(id)a3 date:(id)a4 inlineCard:(id)a5 isInstantAnswerUpdated:(BOOL)a6;
+- (MSParsecSearchSessionInstantAnswer)initWithIdentifier:(id)identifier date:(id)date inlineCard:(id)card isInstantAnswerUpdated:(BOOL)updated;
 - (id)feedbackResult;
 @end
 
 @implementation MSParsecSearchSessionInstantAnswer
 
-- (MSParsecSearchSessionInstantAnswer)initWithIdentifier:(id)a3 date:(id)a4 inlineCard:(id)a5 isInstantAnswerUpdated:(BOOL)a6
+- (MSParsecSearchSessionInstantAnswer)initWithIdentifier:(id)identifier date:(id)date inlineCard:(id)card isInstantAnswerUpdated:(BOOL)updated
 {
-  v11 = a5;
+  cardCopy = card;
   v15.receiver = self;
   v15.super_class = MSParsecSearchSessionInstantAnswer;
-  v12 = [(MSParsecSearchSessionMessageResult *)&v15 initResultWithIdentifier:a3 date:a4];
+  v12 = [(MSParsecSearchSessionMessageResult *)&v15 initResultWithIdentifier:identifier date:date];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(v12 + 5, a5);
-    v13->_isInstantAnswerUpdated = a6;
+    objc_storeStrong(v12 + 5, card);
+    v13->_isInstantAnswerUpdated = updated;
   }
 
   return v13;
@@ -25,19 +25,19 @@
 {
   v6.receiver = self;
   v6.super_class = MSParsecSearchSessionInstantAnswer;
-  v3 = [(MSParsecSearchSessionMessageResult *)&v6 feedbackResult];
-  [v3 setIsInstantAnswer:1];
-  [v3 setResultBundleId:@"com.apple.mail.search.instantanswer"];
-  [v3 setSectionBundleIdentifier:@"instantanswer"];
-  [v3 setInlineCard:self->_inlineCard];
+  feedbackResult = [(MSParsecSearchSessionMessageResult *)&v6 feedbackResult];
+  [feedbackResult setIsInstantAnswer:1];
+  [feedbackResult setResultBundleId:@"com.apple.mail.search.instantanswer"];
+  [feedbackResult setSectionBundleIdentifier:@"instantanswer"];
+  [feedbackResult setInlineCard:self->_inlineCard];
   NSSelectorFromString(&cfstr_Ismailinstanta.isa);
   if (objc_opt_respondsToSelector())
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_isInstantAnswerUpdated];
-    [v3 setValue:v4 forKey:@"isMailInstantAnswerUpdated"];
+    [feedbackResult setValue:v4 forKey:@"isMailInstantAnswerUpdated"];
   }
 
-  return v3;
+  return feedbackResult;
 }
 
 @end

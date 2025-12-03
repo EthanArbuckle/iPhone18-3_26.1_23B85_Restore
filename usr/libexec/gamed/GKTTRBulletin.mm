@@ -1,15 +1,15 @@
 @interface GKTTRBulletin
-+ (id)packFakeTTRBulletinWithInfo:(id)a3;
-- (GKTTRBulletin)initWithPushNotification:(id)a3;
++ (id)packFakeTTRBulletinWithInfo:(id)info;
+- (GKTTRBulletin)initWithPushNotification:(id)notification;
 - (void)assembleBulletin;
-- (void)handleAction:(id)a3;
+- (void)handleAction:(id)action;
 @end
 
 @implementation GKTTRBulletin
 
-+ (id)packFakeTTRBulletinWithInfo:(id)a3
++ (id)packFakeTTRBulletinWithInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   if (!os_log_GKGeneral)
   {
     v4 = GKOSLoggers();
@@ -24,11 +24,11 @@
 
   v6 = objc_alloc_init(NSMutableDictionary);
   v7 = GKTTRBulletinKeyType;
-  v8 = [v3 objectForKeyedSubscript:GKTTRBulletinKeyType];
+  v8 = [infoCopy objectForKeyedSubscript:GKTTRBulletinKeyType];
   [v6 setObject:v8 forKeyedSubscript:v7];
 
   v9 = GKTTRBulletinKeyURL;
-  v10 = [v3 objectForKeyedSubscript:GKTTRBulletinKeyURL];
+  v10 = [infoCopy objectForKeyedSubscript:GKTTRBulletinKeyURL];
   [v6 setObject:v10 forKeyedSubscript:v9];
 
   v11 = [v6 copy];
@@ -36,9 +36,9 @@
   return v11;
 }
 
-- (GKTTRBulletin)initWithPushNotification:(id)a3
+- (GKTTRBulletin)initWithPushNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -48,24 +48,24 @@
   if (os_log_type_enabled(os_log_GKTrace, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "GKTTRBulletin: packFakeTTRBulletinWithInfo: %@", buf, 0xCu);
   }
 
   v13.receiver = self;
   v13.super_class = GKTTRBulletin;
-  v7 = [(GKBulletin *)&v13 initWithPushNotification:v4];
+  v7 = [(GKBulletin *)&v13 initWithPushNotification:notificationCopy];
   if (v7)
   {
-    v8 = [v4 objectForKeyedSubscript:GKTTRBulletinKeySubtitle];
+    v8 = [notificationCopy objectForKeyedSubscript:GKTTRBulletinKeySubtitle];
     v9 = [NSString stringWithFormat:@"[Internal Only] %@", v8];
     [(GKBulletin *)v7 setMessage:v9];
 
     [(GKBulletin *)v7 setTitle:@"Game Center Tap-to-Radar"];
-    v10 = [v4 objectForKeyedSubscript:GKTTRBulletinKeyType];
+    v10 = [notificationCopy objectForKeyedSubscript:GKTTRBulletinKeyType];
     -[GKTTRBulletin setTtrBulletinType:](v7, "setTtrBulletinType:", [v10 integerValue]);
 
-    v11 = [v4 objectForKeyedSubscript:GKTTRBulletinKeyURL];
+    v11 = [notificationCopy objectForKeyedSubscript:GKTTRBulletinKeyURL];
     [(GKTTRBulletin *)v7 setTtrURLString:v11];
   }
 
@@ -88,8 +88,8 @@
 
   v5 = objc_alloc_init(GKBulletinAction);
   [(GKBulletinAction *)v5 setType:0];
-  v6 = [(GKTTRBulletin *)self ttrURLString];
-  [(GKBulletinAction *)v5 setInfo:v6];
+  ttrURLString = [(GKTTRBulletin *)self ttrURLString];
+  [(GKBulletinAction *)v5 setInfo:ttrURLString];
 
   v7 = objc_alloc_init(GKBulletinAction);
   [(GKBulletinAction *)v7 setType:0];
@@ -113,9 +113,9 @@
   [(GKBulletin *)self setBulletinType:2];
 }
 
-- (void)handleAction:(id)a3
+- (void)handleAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -130,11 +130,11 @@
 
   v16.receiver = self;
   v16.super_class = GKTTRBulletin;
-  [(GKBulletin *)&v16 handleAction:v4];
-  if ([v4 isEqualToString:@"GKAccepted"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"GKDefault"))
+  [(GKBulletin *)&v16 handleAction:actionCopy];
+  if ([actionCopy isEqualToString:@"GKAccepted"] & 1) != 0 || (objc_msgSend(actionCopy, "isEqualToString:", @"GKDefault"))
   {
-    v7 = [(GKTTRBulletin *)self ttrURLString];
-    v8 = [NSURL URLWithString:v7];
+    ttrURLString = [(GKTTRBulletin *)self ttrURLString];
+    v8 = [NSURL URLWithString:ttrURLString];
 
     if (v8)
     {

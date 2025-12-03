@@ -1,80 +1,80 @@
 @interface CHTransformedTextLine
-+ ($196E0A09E4C4E138EEBEC6372622051A)derivePrincipalLinesFromPoints:(SEL)a3 strokes:(id)a4;
-+ ($196E0A09E4C4E138EEBEC6372622051A)principalLinesFromSegments:(SEL)a3;
-+ (BOOL)validateCountMatchTranscriptions:(id)a3 strokeIndexes:(id)a4;
-+ (id)addNonTextSegmentsAndLines:(id)a3 nontextGroups:(id)a4 outNonTextStrokes:(id *)a5;
-+ (id)createTextLineWithStrokes:(id)a3 tokens:(id)a4 locale:(id)a5 classification:(int64_t)a6 principalLines:(id *)a7 principalPoints:(id)a8 shouldCancel:(id)a9;
-+ (id)createTokensFromTranscriptions:(id)a3 strokeIndexes:(id)a4 fullText:(id)a5 locale:(id)a6;
-+ (id)drawingForTransformedTextLines:(id)a3;
-+ (id)extractStrokesFromDrawing:(id)a3 classification:(int64_t)a4;
-+ (id)textLineCandidate:(id)a3 tokens:(id)a4 locale:(id)a5 strokeClassification:(int64_t)a6 string:(id)a7 points:(const void *)a8 strokePoints:(const void *)a9 alphaShape:(const void *)a10 initialOrientationEstimate:(double)a11 useAltString:(BOOL)a12 outFitScore:(double *)a13 shouldCancel:(id)a14;
-+ (id)textLineForDrawing:(id)a3 transcriptions:(id)a4 strokeIndexes:(id)a5 fullText:(id)a6 principalLines:(id *)a7 locale:(id)a8 strokeClassification:(int64_t)a9 shouldCancel:(id)a10;
-+ (id)textLineForDrawing:(id)a3 transcriptions:(id)a4 strokeIndexes:(id)a5 fullText:(id)a6 principalPoints:(id)a7 locale:(id)a8 strokeClassification:(int64_t)a9 shouldCancel:(id)a10;
-+ (id)textLineForReflowableSynthesisResultToken:(id)a3 locale:(id)a4;
-+ (id)textLineForStrokes:(id)a3 tokens:(id)a4 locale:(id)a5 strokeClassification:(int64_t)a6 initialOrientationEstimate:(double)a7 shouldCancel:(id)a8;
-+ (id)textLineForTokens:(id)a3 locale:(id)a4 strokeGroup:(id)a5 strokes:(id)a6 strokeProvider:(id)a7 skipLineOrientationEstimate:(BOOL)a8 useCache:(BOOL)a9 shouldCancel:(id)a10;
-+ (id)textLineForTokensWithPrincipalLines:(id)a3 strokes:(id)a4 locale:(id)a5 strokeClassification:(int64_t)a6;
-+ (id)textLineFromCachedResults:(id)a3 tokens:(id)a4 strokes:(id)a5 estimatedOrientation:(double)a6 locale:(id)a7 strokeClassification:(int64_t)a8;
-+ (id)textLineFromTextResult:(id)a3 principalLineResult:(id)a4 shouldUseRefinablePath:(BOOL)a5 strokeProvider:(id)a6 shouldCancel:(id)a7;
-+ (id)textLinesFromContext:(id)a3 strokeGroupingResult:(id)a4 contextStrokes:(id)a5 initialStrokes:(id)a6 strokeProvider:(id)a7 relatedNonTextStrokes:(id)a8 excludedStrokeTypes:(id)a9 skipLineOrientationEstimate:(BOOL)a10 useCache:(BOOL)a11 progress:(id)a12 shouldCancel:(id)a13;
-+ (unint64_t)determineTokenProperties:(id)a3 fullText:(id)a4 tokenRange:(_NSRange)a5;
-+ (void)assignNontextGroups:(id)a3 toTextLines:(id)a4;
++ ($196E0A09E4C4E138EEBEC6372622051A)derivePrincipalLinesFromPoints:(SEL)points strokes:(id)strokes;
++ ($196E0A09E4C4E138EEBEC6372622051A)principalLinesFromSegments:(SEL)segments;
++ (BOOL)validateCountMatchTranscriptions:(id)transcriptions strokeIndexes:(id)indexes;
++ (id)addNonTextSegmentsAndLines:(id)lines nontextGroups:(id)groups outNonTextStrokes:(id *)strokes;
++ (id)createTextLineWithStrokes:(id)strokes tokens:(id)tokens locale:(id)locale classification:(int64_t)classification principalLines:(id *)lines principalPoints:(id)points shouldCancel:(id)cancel;
++ (id)createTokensFromTranscriptions:(id)transcriptions strokeIndexes:(id)indexes fullText:(id)text locale:(id)locale;
++ (id)drawingForTransformedTextLines:(id)lines;
++ (id)extractStrokesFromDrawing:(id)drawing classification:(int64_t)classification;
++ (id)textLineCandidate:(id)candidate tokens:(id)tokens locale:(id)locale strokeClassification:(int64_t)classification string:(id)string points:(const void *)points strokePoints:(const void *)strokePoints alphaShape:(const void *)self0 initialOrientationEstimate:(double)self1 useAltString:(BOOL)self2 outFitScore:(double *)self3 shouldCancel:(id)self4;
++ (id)textLineForDrawing:(id)drawing transcriptions:(id)transcriptions strokeIndexes:(id)indexes fullText:(id)text principalLines:(id *)lines locale:(id)locale strokeClassification:(int64_t)classification shouldCancel:(id)self0;
++ (id)textLineForDrawing:(id)drawing transcriptions:(id)transcriptions strokeIndexes:(id)indexes fullText:(id)text principalPoints:(id)points locale:(id)locale strokeClassification:(int64_t)classification shouldCancel:(id)self0;
++ (id)textLineForReflowableSynthesisResultToken:(id)token locale:(id)locale;
++ (id)textLineForStrokes:(id)strokes tokens:(id)tokens locale:(id)locale strokeClassification:(int64_t)classification initialOrientationEstimate:(double)estimate shouldCancel:(id)cancel;
++ (id)textLineForTokens:(id)tokens locale:(id)locale strokeGroup:(id)group strokes:(id)strokes strokeProvider:(id)provider skipLineOrientationEstimate:(BOOL)estimate useCache:(BOOL)cache shouldCancel:(id)self0;
++ (id)textLineForTokensWithPrincipalLines:(id)lines strokes:(id)strokes locale:(id)locale strokeClassification:(int64_t)classification;
++ (id)textLineFromCachedResults:(id)results tokens:(id)tokens strokes:(id)strokes estimatedOrientation:(double)orientation locale:(id)locale strokeClassification:(int64_t)classification;
++ (id)textLineFromTextResult:(id)result principalLineResult:(id)lineResult shouldUseRefinablePath:(BOOL)path strokeProvider:(id)provider shouldCancel:(id)cancel;
++ (id)textLinesFromContext:(id)context strokeGroupingResult:(id)result contextStrokes:(id)strokes initialStrokes:(id)initialStrokes strokeProvider:(id)provider relatedNonTextStrokes:(id)textStrokes excludedStrokeTypes:(id)types skipLineOrientationEstimate:(BOOL)self0 useCache:(BOOL)self1 progress:(id)self2 shouldCancel:(id)self3;
++ (unint64_t)determineTokenProperties:(id)properties fullText:(id)text tokenRange:(_NSRange)range;
++ (void)assignNontextGroups:(id)groups toTextLines:(id)lines;
 - ($196E0A09E4C4E138EEBEC6372622051A)principalLines;
 - (BoundingBox)boundingBox;
-- (CHTransformedTextLine)initWithSegment:(id)a3;
-- (CHTransformedTextLine)initWithSegments:(id)a3;
-- (CHTransformedTextLine)initWithStrokes:(id)a3 tokens:(id)a4 locale:(id)a5 strokeClassification:(int64_t)a6 principalLines:(id *)a7 principalPoints:(id)a8 transform:(CGAffineTransform *)a9;
-- (CHTransformedTextLine)initWithStrokes:(id)a3 tokens:(id)a4 points:(const void *)a5 strokePoints:(const void *)a6 locale:(id)a7 strokeClassification:(int64_t)a8 principalLines:(id *)a9 principalPoints:(id)a10 transform:(CGAffineTransform *)a11;
+- (CHTransformedTextLine)initWithSegment:(id)segment;
+- (CHTransformedTextLine)initWithSegments:(id)segments;
+- (CHTransformedTextLine)initWithStrokes:(id)strokes tokens:(id)tokens locale:(id)locale strokeClassification:(int64_t)classification principalLines:(id *)lines principalPoints:(id)points transform:(CGAffineTransform *)transform;
+- (CHTransformedTextLine)initWithStrokes:(id)strokes tokens:(id)tokens points:(const void *)points strokePoints:(const void *)strokePoints locale:(id)locale strokeClassification:(int64_t)classification principalLines:(id *)lines principalPoints:(id)self0 transform:(CGAffineTransform *)self1;
 - (id).cxx_construct;
-- (id)addRelatedNontextStrokes:(id)a3 tokenRangesForNonTextStrokes:(id)a4 strokeProvider:(id)a5 groupIndex:(id)a6;
+- (id)addRelatedNontextStrokes:(id)strokes tokenRangesForNonTextStrokes:(id)textStrokes strokeProvider:(id)provider groupIndex:(id)index;
 - (id)locale;
 - (id)principalPoints;
 - (id)splitIntoTokens;
 - (id)string;
 - (id)textSize;
 - (id)textStrokes;
-- (id)tokenDistanceSizes:(BOOL)a3;
+- (id)tokenDistanceSizes:(BOOL)sizes;
 - (id)tokens;
-- (vector<CGPoint,)clippedPoints:(CHTransformedTextLine *)self min:(SEL)a3 max:(CGSize)a4;
+- (vector<CGPoint,)clippedPoints:(CHTransformedTextLine *)self min:(SEL)min max:(CGSize)max;
 - (vector<CGPoint,)filteredPoints:(CHTransformedTextLine *)self;
 - (vector<CGPoint,)points;
 - (vector<std::vector<CGPoint>,)strokePoints;
-- (void)_addTextLineSegment:(id)a3;
-- (void)addSupportStroke:(id)a3;
-- (void)addSupportStroke:(id)a3 tokenRange:(_NSRange)a4;
-- (void)addTransform:(CGAffineTransform *)a3;
-- (void)mergeTransformedText:(id)a3;
+- (void)_addTextLineSegment:(id)segment;
+- (void)addSupportStroke:(id)stroke;
+- (void)addSupportStroke:(id)stroke tokenRange:(_NSRange)range;
+- (void)addTransform:(CGAffineTransform *)transform;
+- (void)mergeTransformedText:(id)text;
 @end
 
 @implementation CHTransformedTextLine
 
-- (CHTransformedTextLine)initWithStrokes:(id)a3 tokens:(id)a4 locale:(id)a5 strokeClassification:(int64_t)a6 principalLines:(id *)a7 principalPoints:(id)a8 transform:(CGAffineTransform *)a9
+- (CHTransformedTextLine)initWithStrokes:(id)strokes tokens:(id)tokens locale:(id)locale strokeClassification:(int64_t)classification principalLines:(id *)lines principalPoints:(id)points transform:(CGAffineTransform *)transform
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
+  strokesCopy = strokes;
+  tokensCopy = tokens;
+  localeCopy = locale;
+  pointsCopy = points;
   v24 = objc_msgSend_init(self, v19, v20, v21, v22, v23);
   if (v24)
   {
     v25 = [CHTransformedTextSegment alloc];
-    var1 = a7->var2.var1;
-    v40[4] = a7->var2.var0;
+    var1 = lines->var2.var1;
+    v40[4] = lines->var2.var0;
     v40[5] = var1;
-    v27 = a7->var3.var1;
-    v40[6] = a7->var3.var0;
+    v27 = lines->var3.var1;
+    v40[6] = lines->var3.var0;
     v40[7] = v27;
-    v28 = a7->var0.var1;
-    v40[0] = a7->var0.var0;
+    v28 = lines->var0.var1;
+    v40[0] = lines->var0.var0;
     v40[1] = v28;
-    v29 = a7->var1.var1;
-    v40[2] = a7->var1.var0;
+    v29 = lines->var1.var1;
+    v40[2] = lines->var1.var0;
     v40[3] = v29;
-    v30 = *&a9->c;
-    v39[0] = *&a9->a;
+    v30 = *&transform->c;
+    v39[0] = *&transform->a;
     v39[1] = v30;
-    v39[2] = *&a9->tx;
-    v32 = objc_msgSend_initWithStrokes_tokens_locale_strokeClassification_principalLines_principalPoints_transform_(v25, v31, v15, v16, v17, a6, v40, v18, v39);
+    v39[2] = *&transform->tx;
+    v32 = objc_msgSend_initWithStrokes_tokens_locale_strokeClassification_principalLines_principalPoints_transform_(v25, v31, strokesCopy, tokensCopy, localeCopy, classification, v40, pointsCopy, v39);
     v37 = objc_msgSend_initWithSegment_(v24, v33, v32, v34, v35, v36);
   }
 
@@ -86,33 +86,33 @@
   return v37;
 }
 
-- (CHTransformedTextLine)initWithStrokes:(id)a3 tokens:(id)a4 points:(const void *)a5 strokePoints:(const void *)a6 locale:(id)a7 strokeClassification:(int64_t)a8 principalLines:(id *)a9 principalPoints:(id)a10 transform:(CGAffineTransform *)a11
+- (CHTransformedTextLine)initWithStrokes:(id)strokes tokens:(id)tokens points:(const void *)points strokePoints:(const void *)strokePoints locale:(id)locale strokeClassification:(int64_t)classification principalLines:(id *)lines principalPoints:(id)self0 transform:(CGAffineTransform *)self1
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = a10;
+  strokesCopy = strokes;
+  tokensCopy = tokens;
+  localeCopy = locale;
+  principalPointsCopy = principalPoints;
   v24 = objc_msgSend_init(self, v19, v20, v21, v22, v23);
   if (v24)
   {
     v25 = [CHTransformedTextSegment alloc];
-    var1 = a9->var2.var1;
-    v40[4] = a9->var2.var0;
+    var1 = lines->var2.var1;
+    v40[4] = lines->var2.var0;
     v40[5] = var1;
-    v27 = a9->var3.var1;
-    v40[6] = a9->var3.var0;
+    v27 = lines->var3.var1;
+    v40[6] = lines->var3.var0;
     v40[7] = v27;
-    v28 = a9->var0.var1;
-    v40[0] = a9->var0.var0;
+    v28 = lines->var0.var1;
+    v40[0] = lines->var0.var0;
     v40[1] = v28;
-    v29 = a9->var1.var1;
-    v40[2] = a9->var1.var0;
+    v29 = lines->var1.var1;
+    v40[2] = lines->var1.var0;
     v40[3] = v29;
-    v30 = *&a11->c;
-    v39[0] = *&a11->a;
+    v30 = *&transform->c;
+    v39[0] = *&transform->a;
     v39[1] = v30;
-    v39[2] = *&a11->tx;
-    v32 = objc_msgSend_initWithStrokes_tokens_locale_strokeClassification_principalLines_principalPoints_transform_(v25, v31, v15, v16, v17, a8, v40, v18, v39);
+    v39[2] = *&transform->tx;
+    v32 = objc_msgSend_initWithStrokes_tokens_locale_strokeClassification_principalLines_principalPoints_transform_(v25, v31, strokesCopy, tokensCopy, localeCopy, classification, v40, principalPointsCopy, v39);
     v37 = objc_msgSend_initWithSegment_(v24, v33, v32, v34, v35, v36);
   }
 
@@ -124,22 +124,22 @@
   return v37;
 }
 
-- (CHTransformedTextLine)initWithSegment:(id)a3
+- (CHTransformedTextLine)initWithSegment:(id)segment
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  segmentCopy = segment;
   v13 = objc_msgSend_init(self, v5, v6, v7, v8, v9);
   if (v13)
   {
-    v40[0] = v4;
+    v40[0] = segmentCopy;
     v14 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v10, v40, 1, v11, v12);
     v15 = *(v13 + 496);
     *(v13 + 496) = v14;
 
-    *(v13 + 480) = objc_msgSend_strokeClassification(v4, v16, v17, v18, v19, v20);
-    if (v4)
+    *(v13 + 480) = objc_msgSend_strokeClassification(segmentCopy, v16, v17, v18, v19, v20);
+    if (segmentCopy)
     {
-      objc_msgSend_principalLines(v4, v21, v22, v23, v24, v25);
+      objc_msgSend_principalLines(segmentCopy, v21, v22, v23, v24, v25);
     }
 
     else
@@ -177,19 +177,19 @@
   return v13;
 }
 
-- (CHTransformedTextLine)initWithSegments:(id)a3
+- (CHTransformedTextLine)initWithSegments:(id)segments
 {
   v76 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  segmentsCopy = segments;
   v11 = objc_msgSend_init(self, v6, v7, v8, v9, v10);
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong((v11 + 496), a3);
+    objc_storeStrong((v11 + 496), segments);
     v13 = objc_opt_class();
     if (v13)
     {
-      objc_msgSend_principalLinesFromSegments_(v13, v14, v5, v16, v17, v18);
+      objc_msgSend_principalLinesFromSegments_(v13, v14, segmentsCopy, v16, v17, v18);
     }
 
     else
@@ -223,7 +223,7 @@
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v26 = v5;
+    v26 = segmentsCopy;
     v34 = objc_msgSend_countByEnumeratingWithState_objects_count_(v26, v27, &v63, v75, 16, v28);
     if (v34)
     {
@@ -275,15 +275,15 @@
   return v12;
 }
 
-+ (id)textLineForTokens:(id)a3 locale:(id)a4 strokeGroup:(id)a5 strokes:(id)a6 strokeProvider:(id)a7 skipLineOrientationEstimate:(BOOL)a8 useCache:(BOOL)a9 shouldCancel:(id)a10
++ (id)textLineForTokens:(id)tokens locale:(id)locale strokeGroup:(id)group strokes:(id)strokes strokeProvider:(id)provider skipLineOrientationEstimate:(BOOL)estimate useCache:(BOOL)cache shouldCancel:(id)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v96 = a7;
-  v23 = a10;
-  if (a8)
+  tokensCopy = tokens;
+  localeCopy = locale;
+  groupCopy = group;
+  strokesCopy = strokes;
+  providerCopy = provider;
+  cancelCopy = cancel;
+  if (estimate)
   {
     v24 = 1.79769313e308;
 LABEL_9:
@@ -298,7 +298,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v25 = v17;
+  v25 = groupCopy;
   v31 = objc_msgSend_writingDirectionSortedSubstrokes(v25, v26, v27, v28, v29, v30);
   v37 = objc_msgSend_count(v31, v32, v33, v34, v35, v36);
 
@@ -328,22 +328,22 @@ LABEL_10:
   v98[3] = &unk_1E6DDECA0;
   v98[4] = &v103;
   v98[5] = &v99;
-  objc_msgSend_enumerateObjectsUsingBlock_(v15, v19, v98, v20, v21, v22);
+  objc_msgSend_enumerateObjectsUsingBlock_(tokensCopy, v19, v98, v20, v21, v22);
   if (*(v100 + 24) == 1)
   {
     v53 = objc_opt_class();
-    v58 = objc_msgSend_changeTokensToVisualOrder_(v53, v54, v15, v55, v56, v57);
+    v58 = objc_msgSend_changeTokensToVisualOrder_(v53, v54, tokensCopy, v55, v56, v57);
     v64 = objc_msgSend_mutableCopy(v58, v59, v60, v61, v62, v63);
 
-    v15 = v64;
+    tokensCopy = v64;
   }
 
   if (*(v104 + 24) == 1)
   {
-    v65 = v96;
+    v65 = providerCopy;
     v66 = objc_opt_class();
-    v72 = objc_msgSend_classification(v17, v67, v68, v69, v70, v71);
-    v74 = objc_msgSend_textLineForTokensWithPrincipalLines_strokes_locale_strokeClassification_(v66, v73, v15, v18, v16, v72);
+    v72 = objc_msgSend_classification(groupCopy, v67, v68, v69, v70, v71);
+    v74 = objc_msgSend_textLineForTokensWithPrincipalLines_strokes_locale_strokeClassification_(v66, v73, tokensCopy, strokesCopy, localeCopy, v72);
     if (v74)
     {
       if (qword_1EA84DC48 != -1)
@@ -380,15 +380,15 @@ LABEL_39:
     goto LABEL_32;
   }
 
-  v65 = v96;
-  if (v44 || !a9)
+  v65 = providerCopy;
+  if (v44 || !cache)
   {
     goto LABEL_34;
   }
 
   v77 = objc_opt_class();
-  v83 = objc_msgSend_classification(v17, v78, v79, v80, v81, v82);
-  v74 = objc_msgSend_textLineFromCachedResults_tokens_strokes_estimatedOrientation_locale_strokeClassification_(v77, v84, v96, v15, v18, v16, v83, v24);
+  v83 = objc_msgSend_classification(groupCopy, v78, v79, v80, v81, v82);
+  v74 = objc_msgSend_textLineFromCachedResults_tokens_strokes_estimatedOrientation_locale_strokeClassification_(v77, v84, providerCopy, tokensCopy, strokesCopy, localeCopy, v83, v24);
   if (!v74)
   {
     if (qword_1EA84DC48 != -1)
@@ -410,8 +410,8 @@ LABEL_33:
 
 LABEL_34:
     v87 = objc_opt_class();
-    v93 = objc_msgSend_classification(v17, v88, v89, v90, v91, v92);
-    v74 = objc_msgSend_textLineForStrokes_tokens_locale_strokeClassification_initialOrientationEstimate_shouldCancel_(v87, v94, v18, v15, v16, v93, v23, v24);
+    v93 = objc_msgSend_classification(groupCopy, v88, v89, v90, v91, v92);
+    v74 = objc_msgSend_textLineForStrokes_tokens_locale_strokeClassification_initialOrientationEstimate_shouldCancel_(v87, v94, strokesCopy, tokensCopy, localeCopy, v93, cancelCopy, v24);
     if (v74)
     {
       if (qword_1EA84DC48 != -1)
@@ -469,18 +469,18 @@ LABEL_45:
   return v74;
 }
 
-+ (id)textLineForTokensWithPrincipalLines:(id)a3 strokes:(id)a4 locale:(id)a5 strokeClassification:(int64_t)a6
++ (id)textLineForTokensWithPrincipalLines:(id)lines strokes:(id)strokes locale:(id)locale strokeClassification:(int64_t)classification
 {
   v191 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v153 = a4;
-  v151 = a5;
+  linesCopy = lines;
+  strokesCopy = strokes;
+  localeCopy = locale;
   v152 = objc_msgSend_array(MEMORY[0x1E695DF70], v9, v10, v11, v12, v13);
   v187 = 0u;
   v188 = 0u;
   v185 = 0u;
   v186 = 0u;
-  obj = v8;
+  obj = linesCopy;
   v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v14, &v185, v190, 16, v15);
   if (v21)
   {
@@ -497,7 +497,7 @@ LABEL_45:
 
         v23 = *(*(&v185 + 1) + 8 * v22);
         v24 = objc_msgSend_strokeIndexes(v23, v16, v17, v18, v19, v20);
-        v29 = objc_msgSend_objectsAtIndexes_(v153, v25, v24, v26, v27, v28);
+        v29 = objc_msgSend_objectsAtIndexes_(strokesCopy, v25, v24, v26, v27, v28);
 
         objc_msgSend_originalBounds(v23, v30, v31, v32, v33, v34);
         x = v193.origin.x;
@@ -507,7 +507,7 @@ LABEL_45:
         if (CGRectIsNull(v193))
         {
           v44 = objc_msgSend_strokeIndexes(v23, v39, v40, v41, v42, v43);
-          v49 = objc_msgSend_objectsAtIndexes_(v153, v45, v44, v46, v47, v48);
+          v49 = objc_msgSend_objectsAtIndexes_(strokesCopy, v45, v44, v46, v47, v48);
 
           objc_msgSend_boundsForStrokes_(CHStrokeUtilities, v50, v49, v51, v52, v53);
           x = v54;
@@ -633,7 +633,7 @@ LABEL_45:
         v168[0] = *MEMORY[0x1E695EFD0];
         v168[1] = v95;
         v168[2] = *(MEMORY[0x1E695EFD0] + 32);
-        v97 = objc_msgSend_initWithStrokes_tokens_locale_strokeClassification_principalLines_principalPoints_transform_(v90, v96, v29, v94, v151, a6, &v169, v89, v168);
+        v97 = objc_msgSend_initWithStrokes_tokens_locale_strokeClassification_principalLines_principalPoints_transform_(v90, v96, v29, v94, localeCopy, classification, &v169, v89, v168);
 
         objc_msgSend_addObject_(v152, v98, v97, v99, v100, v101);
         ++v22;
@@ -662,19 +662,19 @@ LABEL_45:
   return v142;
 }
 
-+ (id)textLineFromCachedResults:(id)a3 tokens:(id)a4 strokes:(id)a5 estimatedOrientation:(double)a6 locale:(id)a7 strokeClassification:(int64_t)a8
++ (id)textLineFromCachedResults:(id)results tokens:(id)tokens strokes:(id)strokes estimatedOrientation:(double)orientation locale:(id)locale strokeClassification:(int64_t)classification
 {
   v247 = *MEMORY[0x1E69E9840];
-  v199 = a3;
-  v11 = a4;
-  v201 = a5;
-  v198 = a7;
+  resultsCopy = results;
+  tokensCopy = tokens;
+  strokesCopy = strokes;
+  localeCopy = locale;
   v200 = objc_msgSend_array(MEMORY[0x1E695DF70], v12, v13, v14, v15, v16);
   v242 = 0u;
   v243 = 0u;
   v240 = 0u;
   v241 = 0u;
-  obj = v11;
+  obj = tokensCopy;
   v24 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v17, &v240, v246, 16, v18);
   if (v24)
   {
@@ -692,7 +692,7 @@ LABEL_45:
 
         v26 = *(*(&v240 + 1) + 8 * v25);
         v27 = objc_msgSend_strokeIndexes(v26, v19, v20, v21, v22, v23);
-        v217 = objc_msgSend_objectsAtIndexes_(v201, v28, v27, v29, v30, v31);
+        v217 = objc_msgSend_objectsAtIndexes_(strokesCopy, v28, v27, v29, v30, v31);
 
         v32 = MEMORY[0x1E695DF70];
         v38 = objc_msgSend_count(v217, v33, v34, v35, v36, v37);
@@ -726,7 +726,7 @@ LABEL_45:
         }
 
         v64 = objc_msgSend_setWithArray_(MEMORY[0x1E695DFD8], v60, v43, v61, v62, v63);
-        v218 = objc_msgSend_cachedTranscriptionForStrokeGroup_(v199, v65, v64, v66, v67, v68);
+        v218 = objc_msgSend_cachedTranscriptionForStrokeGroup_(resultsCopy, v65, v64, v66, v67, v68);
 
         if (!v218)
         {
@@ -791,7 +791,7 @@ LABEL_45:
         v213 = v235;
         v214 = v92 + v227 * v103;
         v215 = v92 + v225 * v103;
-        if (vabdd_f64(-atan2(v214 - v215, v105 - v104), a6) > 0.04)
+        if (vabdd_f64(-atan2(v214 - v215, v105 - v104), orientation) > 0.04)
         {
 
 LABEL_34:
@@ -854,7 +854,7 @@ LABEL_34:
         v219[0] = *MEMORY[0x1E695EFD0];
         v219[1] = v144;
         v219[2] = *(MEMORY[0x1E695EFD0] + 32);
-        v146 = objc_msgSend_initWithStrokes_tokens_locale_strokeClassification_principalLines_principalPoints_transform_(v139, v145, v44, v143, v198, a8, &v220, v138, v219);
+        v146 = objc_msgSend_initWithStrokes_tokens_locale_strokeClassification_principalLines_principalPoints_transform_(v139, v145, v44, v143, localeCopy, classification, &v220, v138, v219);
 
         objc_msgSend_addObject_(v200, v147, v146, v148, v149, v150);
         ++v25;
@@ -883,18 +883,18 @@ LABEL_35:
   return v191;
 }
 
-+ (id)textLineCandidate:(id)a3 tokens:(id)a4 locale:(id)a5 strokeClassification:(int64_t)a6 string:(id)a7 points:(const void *)a8 strokePoints:(const void *)a9 alphaShape:(const void *)a10 initialOrientationEstimate:(double)a11 useAltString:(BOOL)a12 outFitScore:(double *)a13 shouldCancel:(id)a14
++ (id)textLineCandidate:(id)candidate tokens:(id)tokens locale:(id)locale strokeClassification:(int64_t)classification string:(id)string points:(const void *)points strokePoints:(const void *)strokePoints alphaShape:(const void *)self0 initialOrientationEstimate:(double)self1 useAltString:(BOOL)self2 outFitScore:(double *)self3 shouldCancel:(id)self4
 {
   v394 = *MEMORY[0x1E69E9840];
-  v342 = a3;
-  v18 = a4;
-  v340 = a5;
-  v339 = a7;
-  v341 = a14;
+  candidateCopy = candidate;
+  tokensCopy = tokens;
+  localeCopy = locale;
+  stringCopy = string;
+  cancelCopy = cancel;
   v19 = objc_autoreleasePoolPush();
-  v338 = v18;
-  v334 = objc_msgSend_count(v18, v20, v21, v22, v23, v24);
-  if (a11 == 1.79769313e308)
+  v338 = tokensCopy;
+  v334 = objc_msgSend_count(tokensCopy, v20, v21, v22, v23, v24);
+  if (estimate == 1.79769313e308)
   {
     v335 = &unk_1EF1EC5C8;
   }
@@ -902,17 +902,17 @@ LABEL_35:
   else
   {
     v29 = objc_opt_class();
-    v335 = objc_msgSend_checkAvailableInterceptsForString_skipAmbiguousCharacters_(v29, v30, v339, v334 > 4, v31, v32);
+    v335 = objc_msgSend_checkAvailableInterceptsForString_skipAmbiguousCharacters_(v29, v30, stringCopy, v334 > 4, v31, v32);
   }
 
   v33 = MEMORY[0x1E695EFF8];
   context = v19;
-  if (*(a10 + 1) == *a10)
+  if (*(shape + 1) == *shape)
   {
     goto LABEL_18;
   }
 
-  if (a11 == 1.79769313e308)
+  if (estimate == 1.79769313e308)
   {
     goto LABEL_6;
   }
@@ -926,9 +926,9 @@ LABEL_35:
     if (v83)
     {
 LABEL_18:
-      if (a11 == 1.79769313e308)
+      if (estimate == 1.79769313e308)
       {
-        a11 = 0.0;
+        estimate = 0.0;
       }
 
       *__p = 0u;
@@ -936,7 +936,7 @@ LABEL_18:
       v84 = objc_opt_class();
       if (v84)
       {
-        objc_msgSend_principalLinesFromTokens_strokes_strokePoints_orientation_useAltString_(v84, v85, v338, v342, a9, a12, a11);
+        objc_msgSend_principalLinesFromTokens_strokes_strokePoints_orientation_useAltString_(v84, v85, v338, candidateCopy, strokePoints, altString, estimate);
       }
 
       else
@@ -946,7 +946,7 @@ LABEL_18:
       }
 
       v100 = MEMORY[0x1E695DF70];
-      v101 = objc_msgSend_count(v342, v85, v86, v87, v88, v89);
+      v101 = objc_msgSend_count(candidateCopy, v85, v86, v87, v88, v89);
       v106 = objc_msgSend_arrayWithCapacity_(v100, v102, v101, v103, v104, v105);
       v359 = 0u;
       v360 = 0u;
@@ -975,7 +975,7 @@ LABEL_18:
             if (CGRectIsNull(v396))
             {
               v128 = objc_msgSend_strokeIndexes(v118, v123, v124, v125, v126, v127);
-              v133 = objc_msgSend_objectsAtIndexes_(v342, v129, v128, v130, v131, v132);
+              v133 = objc_msgSend_objectsAtIndexes_(candidateCopy, v129, v128, v130, v131, v132);
 
               objc_msgSend_boundsForStrokes_(CHStrokeUtilities, v134, v133, v135, v136, v137);
               x = v138;
@@ -1021,7 +1021,7 @@ LABEL_18:
       v164.n128_u64[0] = *MEMORY[0x1E695EFF8];
       v165.n128_u64[0] = *(MEMORY[0x1E695EFF8] + 8);
       v166 = *__p == *MEMORY[0x1E695EFF8] && *&__p[1] == v165.n128_f64[0];
-      if (v166 && ((v161.n128_u64[0] = *&v374[24], v162.n128_u64[0] = *&v374[32], *v374 == v164.n128_f64[0]) ? (v167 = *&v374[8] == v165.n128_f64[0]) : (v167 = 0), v167 ? (v168 = *&v374[16] == v164.n128_f64[0]) : (v168 = 0), v168 ? (v169 = *&v374[24] == v165.n128_f64[0]) : (v169 = 0), v169 ? (v170 = *&v374[32] == v164.n128_f64[0]) : (v170 = 0), v170 ? (v171 = *&v374[40] == v165.n128_f64[0]) : (v171 = 0), v171 ? (v172 = *&v374[48] == v164.n128_f64[0]) : (v172 = 0), v172 ? (v173 = *&v374[56] == v165.n128_f64[0]) : (v173 = 0), v173 ? (v174 = *&v374[64] == v164.n128_f64[0]) : (v174 = 0), v174 ? (v175 = *&v374[72] == v165.n128_f64[0]) : (v175 = 0), v175 ? (v176 = *&v374[80] == v164.n128_f64[0]) : (v176 = 0), v176 ? (v177 = *&v374[88] == v165.n128_f64[0]) : (v177 = 0), v177 && ((v162.n128_u64[0] = *&v374[104], v161.n128_u64[0] = *&v374[96], *&v374[104] == v165.n128_f64[0]) ? (v331 = *&v374[96] == v164.n128_f64[0]) : (v331 = 0), !v331 ? (v332 = 0) : (v332 = 1), v332)) || v341 && (v341[2](v163, v164, v165, v161, v162) & 1) != 0)
+      if (v166 && ((v161.n128_u64[0] = *&v374[24], v162.n128_u64[0] = *&v374[32], *v374 == v164.n128_f64[0]) ? (v167 = *&v374[8] == v165.n128_f64[0]) : (v167 = 0), v167 ? (v168 = *&v374[16] == v164.n128_f64[0]) : (v168 = 0), v168 ? (v169 = *&v374[24] == v165.n128_f64[0]) : (v169 = 0), v169 ? (v170 = *&v374[32] == v164.n128_f64[0]) : (v170 = 0), v170 ? (v171 = *&v374[40] == v165.n128_f64[0]) : (v171 = 0), v171 ? (v172 = *&v374[48] == v164.n128_f64[0]) : (v172 = 0), v172 ? (v173 = *&v374[56] == v165.n128_f64[0]) : (v173 = 0), v173 ? (v174 = *&v374[64] == v164.n128_f64[0]) : (v174 = 0), v174 ? (v175 = *&v374[72] == v165.n128_f64[0]) : (v175 = 0), v175 ? (v176 = *&v374[80] == v164.n128_f64[0]) : (v176 = 0), v176 ? (v177 = *&v374[88] == v165.n128_f64[0]) : (v177 = 0), v177 && ((v162.n128_u64[0] = *&v374[104], v161.n128_u64[0] = *&v374[96], *&v374[104] == v165.n128_f64[0]) ? (v331 = *&v374[96] == v164.n128_f64[0]) : (v331 = 0), !v331 ? (v332 = 0) : (v332 = 1), v332)) || cancelCopy && (cancelCopy[2](v163, v164, v165, v161, v162) & 1) != 0)
       {
 
         v92 = 0;
@@ -1042,7 +1042,7 @@ LABEL_18:
       v365 = *MEMORY[0x1E695EFD0];
       v366 = v180;
       v367 = *(MEMORY[0x1E695EFD0] + 32);
-      v92 = objc_msgSend_initWithStrokes_tokens_points_strokePoints_locale_strokeClassification_principalLines_principalPoints_transform_(v179, v181, v342, v107, a8, a9, v340, a6, buf, v106, &v365);
+      v92 = objc_msgSend_initWithStrokes_tokens_points_strokePoints_locale_strokeClassification_principalLines_principalPoints_transform_(v179, v181, candidateCopy, v107, points, strokePoints, localeCopy, classification, buf, v106, &v365);
       if (qword_1EA84DC48 != -1)
       {
         dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -1051,11 +1051,11 @@ LABEL_18:
       v182 = qword_1EA84DCA0;
       if (os_log_type_enabled(v182, OS_LOG_TYPE_DEBUG))
       {
-        v188 = objc_msgSend_length(v339, v183, v184, v185, v186, v187);
+        v188 = objc_msgSend_length(stringCopy, v183, v184, v185, v186, v187);
         *buf = 134218240;
         *&buf[4] = v188;
         *&buf[12] = 2048;
-        *&buf[14] = a11;
+        *&buf[14] = estimate;
         _os_log_impl(&dword_18366B000, v182, OS_LOG_TYPE_DEBUG, "Created initial transformed text line of length %lu and orientation %4.2f using initial orientation estimate.", buf, 0x16u);
       }
 
@@ -1070,7 +1070,7 @@ LABEL_18:
   }
 
 LABEL_6:
-  sub_1838CCD64(v339, 100, __p);
+  sub_1838CCD64(stringCopy, 100, __p);
   v34 = __p[0];
   v35 = __p[1];
   v380 = *&v374[72];
@@ -1103,12 +1103,12 @@ LABEL_6:
   *&v374[40] = v378;
   *&v374[56] = v379;
   v36 = objc_opt_class();
-  if (objc_msgSend_shouldDeformRenderedAscendersDescenders_(v36, v37, v340, v38, v39, v40))
+  if (objc_msgSend_shouldDeformRenderedAscendersDescenders_(v36, v37, localeCopy, v38, v39, v40))
   {
     v41 = objc_opt_class();
-    objc_msgSend_blindAscenderDeformValue_(v41, v42, v340, v43, v44, v45);
+    objc_msgSend_blindAscenderDeformValue_(v41, v42, localeCopy, v43, v44, v45);
     v46 = objc_opt_class();
-    objc_msgSend_blindDescenderDeformValue_(v46, v47, v340, v48, v49, v50);
+    objc_msgSend_blindDescenderDeformValue_(v46, v47, localeCopy, v48, v49, v50);
     sub_1838C3F04(__p, buf);
     if (__p[0])
     {
@@ -1132,7 +1132,7 @@ LABEL_6:
   v51 = objc_opt_class();
   if (v51)
   {
-    objc_msgSend_principalLinesForPoints_writtenAlphaShape_imgPointsAndPrincipalLines_shouldCancel_(v51, v52, a8, a10, __p, v341);
+    objc_msgSend_principalLinesForPoints_writtenAlphaShape_imgPointsAndPrincipalLines_shouldCancel_(v51, v52, points, shape, __p, cancelCopy);
     v61 = *&buf[8];
     v62 = *&buf[40];
     v63 = *&buf[32];
@@ -1195,7 +1195,7 @@ LABEL_122:
   }
 
 LABEL_38:
-  if (v341 && ((v341[2])(v53, v54, v55, v56, v57, v58, v59, v60) & 1) != 0)
+  if (cancelCopy && ((cancelCopy[2])(v53, v54, v55, v56, v57, v58, v59, v60) & 1) != 0)
   {
     goto LABEL_40;
   }
@@ -1211,7 +1211,7 @@ LABEL_38:
   v364[3] = *&buf[48];
   if (v94)
   {
-    objc_msgSend_flipPrincipalLine_points_string_outWasFlipped_(v94, v95, v364, a8, v339, 0);
+    objc_msgSend_flipPrincipalLine_points_string_outWasFlipped_(v94, v95, v364, points, stringCopy, 0);
   }
 
   else
@@ -1235,9 +1235,9 @@ LABEL_38:
   *&buf[32] = v367;
   *&buf[48] = v368;
   v189 = MEMORY[0x1E695DF70];
-  v190 = objc_msgSend_count(v342, v95, v96, v97, v98, v99);
+  v190 = objc_msgSend_count(candidateCopy, v95, v96, v97, v98, v99);
   v200 = objc_msgSend_arrayWithCapacity_(v189, v191, v190, v192, v193, v194);
-  for (k = 0; k < objc_msgSend_count(v342, v195, v196, v197, v198, v199); ++k)
+  for (k = 0; k < objc_msgSend_count(candidateCopy, v195, v196, v197, v198, v199); ++k)
   {
     objc_msgSend_addObject_(v200, v202, &unk_1EF1EC5E0, v203, v204, v205);
   }
@@ -1256,7 +1256,7 @@ LABEL_38:
   *v385 = *MEMORY[0x1E695EFD0];
   *&v385[16] = v208;
   v386 = *(MEMORY[0x1E695EFD0] + 32);
-  v210 = objc_msgSend_initWithStrokes_tokens_points_strokePoints_locale_strokeClassification_principalLines_principalPoints_transform_(v206, v209, v342, v338, a8, a9, v340, a6, &v365, v200, v385);
+  v210 = objc_msgSend_initWithStrokes_tokens_points_strokePoints_locale_strokeClassification_principalLines_principalPoints_transform_(v206, v209, candidateCopy, v338, points, strokePoints, localeCopy, classification, &v365, v200, v385);
   v371 = 0u;
   v372 = 0u;
   v369 = 0u;
@@ -1268,7 +1268,7 @@ LABEL_38:
   v211 = objc_opt_class();
   if (v211)
   {
-    objc_msgSend_fixPrincipalLinesOrientation_useAltString_skipAmbiguousCharacters_(v211, v212, v210, a12, v334 > 4, v213);
+    objc_msgSend_fixPrincipalLinesOrientation_useAltString_skipAmbiguousCharacters_(v211, v212, v210, altString, v334 > 4, v213);
   }
 
   else
@@ -1296,7 +1296,7 @@ LABEL_38:
   *v361 = *v207;
   v362 = v215;
   v363 = v207[2];
-  v92 = objc_msgSend_initWithStrokes_tokens_points_strokePoints_locale_strokeClassification_principalLines_principalPoints_transform_(v214, v216, v342, v338, a8, a9, v340, a6, v385, v200, v361);
+  v92 = objc_msgSend_initWithStrokes_tokens_points_strokePoints_locale_strokeClassification_principalLines_principalPoints_transform_(v214, v216, candidateCopy, v338, points, strokePoints, localeCopy, classification, v385, v200, v361);
 
   if (qword_1EA84DC48 != -1)
   {
@@ -1306,7 +1306,7 @@ LABEL_38:
   v217 = qword_1EA84DCA0;
   if (os_log_type_enabled(v217, OS_LOG_TYPE_DEBUG))
   {
-    v228 = objc_msgSend_length(v339, v218, v219, v220, v221, v222);
+    v228 = objc_msgSend_length(stringCopy, v218, v219, v220, v221, v222);
     if (v92)
     {
       objc_msgSend_orientation(v92, v223, v224, v225, v226, v227);
@@ -1339,7 +1339,7 @@ LABEL_123:
 
 LABEL_124:
   v230 = objc_opt_class();
-  objc_msgSend_textLineFitScore_useAltString_(v230, v231, v92, a12, v232, v233);
+  objc_msgSend_textLineFitScore_useAltString_(v230, v231, v92, altString, v232, v233);
   v235 = v234;
   *__p = 0u;
   memset(v374, 0, 112);
@@ -1370,7 +1370,7 @@ LABEL_124:
   v352 = v379;
   if (v237)
   {
-    objc_msgSend_refinedPrincipalLinesForTextLine_points_alphaShape_renderedTextPointsAndLines_useAltString_shouldCancel_(v237, v236, v92, a8, a10, &v346, a12, v341);
+    objc_msgSend_refinedPrincipalLinesForTextLine_points_alphaShape_renderedTextPointsAndLines_useAltString_shouldCancel_(v237, v236, v92, points, shape, &v346, altString, cancelCopy);
     if (v346)
     {
       v347 = v346;
@@ -1404,7 +1404,7 @@ LABEL_124:
       if (v249)
       {
 LABEL_148:
-        objc_msgSend_flipPrincipalLine_points_string_outWasFlipped_(v249, v244, &v365, v385, v339, 0);
+        objc_msgSend_flipPrincipalLine_points_string_outWasFlipped_(v249, v244, &v365, v385, stringCopy, 0);
 LABEL_152:
         *&v374[48] = *&buf[64];
         *&v374[64] = *&buf[80];
@@ -1497,7 +1497,7 @@ LABEL_152:
         v296 = objc_opt_class();
         if (v296)
         {
-          objc_msgSend_fixPrincipalLinesOrientation_useAltString_skipAmbiguousCharacters_(v296, v297, v289, a12, v334 > 4, v298);
+          objc_msgSend_fixPrincipalLinesOrientation_useAltString_skipAmbiguousCharacters_(v296, v297, v289, altString, v334 > 4, v298);
         }
 
         else
@@ -1519,7 +1519,7 @@ LABEL_152:
         *v361 = *v286;
         v362 = v306;
         v363 = v286[2];
-        v308 = objc_msgSend_initWithStrokes_tokens_points_strokePoints_locale_strokeClassification_principalLines_principalPoints_transform_(v299, v307, v342, v338, a8, a9, v340, a6, v385, v305, v361);
+        v308 = objc_msgSend_initWithStrokes_tokens_points_strokePoints_locale_strokeClassification_principalLines_principalPoints_transform_(v299, v307, candidateCopy, v338, points, strokePoints, localeCopy, classification, v385, v305, v361);
 
         if (qword_1EA84DC48 != -1)
         {
@@ -1529,7 +1529,7 @@ LABEL_152:
         v309 = qword_1EA84DCA0;
         if (os_log_type_enabled(v309, OS_LOG_TYPE_DEBUG))
         {
-          v320 = objc_msgSend_length(v339, v310, v311, v312, v313, v314);
+          v320 = objc_msgSend_length(stringCopy, v310, v311, v312, v313, v314);
           if (v92)
           {
             objc_msgSend_orientation(v92, v315, v316, v317, v318, v319);
@@ -1548,7 +1548,7 @@ LABEL_152:
         }
 
         v322 = objc_opt_class();
-        objc_msgSend_textLineFitScore_useAltString_(v322, v323, v308, a12, v324, v325);
+        objc_msgSend_textLineFitScore_useAltString_(v322, v323, v308, altString, v324, v325);
         v327 = v326;
         if (v326 < v235)
         {
@@ -1576,7 +1576,7 @@ LABEL_152:
   }
 
 LABEL_180:
-  if (!v92 || v341 && ((v341[2])(v240) & 1) != 0)
+  if (!v92 || cancelCopy && ((cancelCopy[2])(v240) & 1) != 0)
   {
 LABEL_183:
     v178 = 0;
@@ -1588,9 +1588,9 @@ LABEL_183:
     goto LABEL_184;
   }
 
-  if (a13)
+  if (score)
   {
-    *a13 = v235;
+    *score = v235;
   }
 
   v178 = 1;
@@ -1616,13 +1616,13 @@ LABEL_185:
   return v329;
 }
 
-+ (id)textLineForStrokes:(id)a3 tokens:(id)a4 locale:(id)a5 strokeClassification:(int64_t)a6 initialOrientationEstimate:(double)a7 shouldCancel:(id)a8
++ (id)textLineForStrokes:(id)strokes tokens:(id)tokens locale:(id)locale strokeClassification:(int64_t)classification initialOrientationEstimate:(double)estimate shouldCancel:(id)cancel
 {
   v175 = *MEMORY[0x1E69E9840];
-  v136 = a3;
-  v12 = a4;
-  v135 = a5;
-  v137 = a8;
+  strokesCopy = strokes;
+  tokensCopy = tokens;
+  localeCopy = locale;
+  cancelCopy = cancel;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -1660,7 +1660,7 @@ LABEL_185:
   v167 = 0u;
   v164 = 0u;
   v165 = 0u;
-  obj = v12;
+  obj = tokensCopy;
   v24 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v17, &v164, v172, 16, v18);
   if (v24)
   {
@@ -1707,14 +1707,14 @@ LABEL_185:
   v41 = v26;
   v42 = objc_opt_class();
   v52 = v41;
-  if (objc_msgSend_shouldTryAlternativeStringRender_(v42, v43, v135, v44, v45, v46))
+  if (objc_msgSend_shouldTryAlternativeStringRender_(v42, v43, localeCopy, v44, v45, v46))
   {
     v53 = objc_opt_class();
     v52 = objc_msgSend_stringForRendering_useAltChars_(v53, v54, v41, 0, v55, v56);
   }
 
   v134 = v52;
-  if (!v137 || (v137[2]() & 1) == 0)
+  if (!cancelCopy || (cancelCopy[2]() & 1) == 0)
   {
     v161 = 0;
     v162 = 0;
@@ -1722,7 +1722,7 @@ LABEL_185:
     v158 = 0;
     v159 = 0;
     v160 = 0;
-    v57 = objc_msgSend_count(v136, v47, v48, v49, v50, v51);
+    v57 = objc_msgSend_count(strokesCopy, v47, v48, v49, v50, v51);
     if (v57)
     {
       if (v57 <= 0xAAAAAAAAAAAAAAALL)
@@ -1740,7 +1740,7 @@ LABEL_185:
     v152 = 0u;
     v153 = 0u;
     v154 = 0u;
-    v58 = v136;
+    v58 = strokesCopy;
     v64 = objc_msgSend_countByEnumeratingWithState_objects_count_(v58, v59, &v151, v171, 16, v60);
     v142 = v41;
     if (v64)
@@ -1855,8 +1855,8 @@ LABEL_185:
 
     v150[3] = 0;
     objc_msgSend_boundsForStrokes_(CHStrokeUtilities, v84, v58, v85, v86, v87);
-    v88 = -a7;
-    if (a7 == 1.79769313e308)
+    v88 = -estimate;
+    if (estimate == 1.79769313e308)
     {
       v88 = 1.79769313e308;
     }
@@ -2233,13 +2233,13 @@ LABEL_117:
   return 0;
 }
 
-+ (BOOL)validateCountMatchTranscriptions:(id)a3 strokeIndexes:(id)a4
++ (BOOL)validateCountMatchTranscriptions:(id)transcriptions strokeIndexes:(id)indexes
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v12 = objc_msgSend_count(v5, v7, v8, v9, v10, v11);
-  v18 = objc_msgSend_count(v6, v13, v14, v15, v16, v17);
+  transcriptionsCopy = transcriptions;
+  indexesCopy = indexes;
+  v12 = objc_msgSend_count(transcriptionsCopy, v7, v8, v9, v10, v11);
+  v18 = objc_msgSend_count(indexesCopy, v13, v14, v15, v16, v17);
   if (v12 != v18)
   {
     if (qword_1EA84DC48 != -1)
@@ -2251,9 +2251,9 @@ LABEL_117:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       v31 = 134218240;
-      v32 = objc_msgSend_count(v5, v20, v21, v22, v23, v24);
+      v32 = objc_msgSend_count(transcriptionsCopy, v20, v21, v22, v23, v24);
       v33 = 2048;
-      v34 = objc_msgSend_count(v6, v25, v26, v27, v28, v29);
+      v34 = objc_msgSend_count(indexesCopy, v25, v26, v27, v28, v29);
       _os_log_impl(&dword_18366B000, v19, OS_LOG_TYPE_ERROR, "Unable to build textLineForDrawing because the number of transcriptions (%lu) does not equal the number of index sets (%lu)", &v31, 0x16u);
     }
   }
@@ -2261,12 +2261,12 @@ LABEL_117:
   return v12 == v18;
 }
 
-+ (id)extractStrokesFromDrawing:(id)a3 classification:(int64_t)a4
++ (id)extractStrokesFromDrawing:(id)drawing classification:(int64_t)classification
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  drawingCopy = drawing;
   v6 = objc_opt_class();
-  v10 = objc_msgSend_strokesFromDrawing_classification_(v6, v7, v5, a4, v8, v9);
+  v10 = objc_msgSend_strokesFromDrawing_classification_(v6, v7, drawingCopy, classification, v8, v9);
   if (objc_msgSend_count(v10, v11, v12, v13, v14, v15))
   {
     v16 = v10;
@@ -2283,7 +2283,7 @@ LABEL_117:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       v24 = 134217984;
-      v25 = objc_msgSend_strokeCount(v5, v18, v19, v20, v21, v22);
+      v25 = objc_msgSend_strokeCount(drawingCopy, v18, v19, v20, v21, v22);
       _os_log_impl(&dword_18366B000, v17, OS_LOG_TYPE_ERROR, "Unable to create reflowable text line from drawing, drawing has %ld strokes, no extracted strokes.", &v24, 0xCu);
     }
 
@@ -2293,23 +2293,23 @@ LABEL_117:
   return v16;
 }
 
-+ (id)createTokensFromTranscriptions:(id)a3 strokeIndexes:(id)a4 fullText:(id)a5 locale:(id)a6
++ (id)createTokensFromTranscriptions:(id)transcriptions strokeIndexes:(id)indexes fullText:(id)text locale:(id)locale
 {
-  v83 = a3;
-  v82 = a4;
-  v9 = a5;
-  v79 = a6;
+  transcriptionsCopy = transcriptions;
+  indexesCopy = indexes;
+  textCopy = text;
+  localeCopy = locale;
   v80 = objc_msgSend_array(MEMORY[0x1E695DF70], v10, v11, v12, v13, v14);
   v20 = 0;
   v21 = 0;
-  while (v20 < objc_msgSend_count(v83, v15, v16, v17, v18, v19))
+  while (v20 < objc_msgSend_count(transcriptionsCopy, v15, v16, v17, v18, v19))
   {
-    v27 = objc_msgSend_objectAtIndexedSubscript_(v83, v22, v20, v24, v25, v26);
-    v32 = objc_msgSend_objectAtIndexedSubscript_(v82, v28, v20, v29, v30, v31);
-    v38 = objc_msgSend_length(v9, v33, v34, v35, v36, v37);
-    v40 = objc_msgSend_rangeOfString_options_range_(v9, v39, v27, 0, v21, v38 - v21);
+    v27 = objc_msgSend_objectAtIndexedSubscript_(transcriptionsCopy, v22, v20, v24, v25, v26);
+    v32 = objc_msgSend_objectAtIndexedSubscript_(indexesCopy, v28, v20, v29, v30, v31);
+    v38 = objc_msgSend_length(textCopy, v33, v34, v35, v36, v37);
+    v40 = objc_msgSend_rangeOfString_options_range_(textCopy, v39, v27, 0, v21, v38 - v21);
     v42 = v41;
-    v43 = objc_msgSend_determineTokenProperties_fullText_tokenRange_(a1, v41, v27, v9, v40, v41);
+    v43 = objc_msgSend_determineTokenProperties_fullText_tokenRange_(self, v41, v27, textCopy, v40, v41);
     if (objc_msgSend_hasPrefix_(v27, v44, @" ", v45, v46, v47))
     {
       v53 = objc_msgSend_whitespaceCharacterSet(MEMORY[0x1E696AB08], v48, v49, v50, v51, v52);
@@ -2322,7 +2322,7 @@ LABEL_117:
     {
       v59 = [CHTokenizedTextResultToken alloc];
       v65 = objc_msgSend_count(v32, v60, v61, v62, v63, v64);
-      v67 = objc_msgSend_initWithString_strokeIndexes_wordID_modelScore_recognitionScore_combinedScore_alignmentScore_properties_recognizerSourceLocale_inputSources_substrokeCount_bounds_(v59, v66, v27, v32, 0, v43, v79, 1, 1.0, 1.0, 1.0, 1.0, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), v65);
+      v67 = objc_msgSend_initWithString_strokeIndexes_wordID_modelScore_recognitionScore_combinedScore_alignmentScore_properties_recognizerSourceLocale_inputSources_substrokeCount_bounds_(v59, v66, v27, v32, 0, v43, localeCopy, 1, 1.0, 1.0, 1.0, 1.0, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), v65);
       objc_msgSend_addObject_(v80, v68, v67, v69, v70, v71);
     }
 
@@ -2362,11 +2362,11 @@ LABEL_117:
   return v77;
 }
 
-+ (unint64_t)determineTokenProperties:(id)a3 fullText:(id)a4 tokenRange:(_NSRange)a5
++ (unint64_t)determineTokenProperties:(id)properties fullText:(id)text tokenRange:(_NSRange)range
 {
-  location = a5.location;
-  v7 = a4;
-  if (objc_msgSend_hasPrefix_(a3, v8, @" ", v9, v10, v11))
+  location = range.location;
+  textCopy = text;
+  if (objc_msgSend_hasPrefix_(properties, v8, @" ", v9, v10, v11))
   {
     v16 = 33;
 LABEL_3:
@@ -2380,7 +2380,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v18 = objc_msgSend_composedCharacterAtIndex_(v7, v12, location - 1, v13, v14, v15);
+  v18 = objc_msgSend_composedCharacterAtIndex_(textCopy, v12, location - 1, v13, v14, v15);
   v24 = objc_msgSend_whitespaceCharacterSet(MEMORY[0x1E696AB08], v19, v20, v21, v22, v23);
   v25 = sub_1837A4F0C(v18, v24);
 
@@ -2397,14 +2397,14 @@ LABEL_3:
   return v26;
 }
 
-+ ($196E0A09E4C4E138EEBEC6372622051A)derivePrincipalLinesFromPoints:(SEL)a3 strokes:(id)a4
++ ($196E0A09E4C4E138EEBEC6372622051A)derivePrincipalLinesFromPoints:(SEL)points strokes:(id)strokes
 {
-  v7 = a4;
+  strokesCopy = strokes;
   v13 = a5;
-  if (v7 && (v14 = objc_msgSend_count(v7, v8, v9, v10, v11, v12), v14 == objc_msgSend_count(v13, v15, v16, v17, v18, v19)))
+  if (strokesCopy && (v14 = objc_msgSend_count(strokesCopy, v8, v9, v10, v11, v12), v14 == objc_msgSend_count(v13, v15, v16, v17, v18, v19)))
   {
     sub_1838C3014(v13, &v30);
-    v20 = sub_18381A760(v7);
+    v20 = sub_18381A760(strokesCopy);
     v21 = objc_opt_class();
     __p = 0;
     v28 = 0;
@@ -2464,42 +2464,42 @@ LABEL_3:
   return result;
 }
 
-+ (id)createTextLineWithStrokes:(id)a3 tokens:(id)a4 locale:(id)a5 classification:(int64_t)a6 principalLines:(id *)a7 principalPoints:(id)a8 shouldCancel:(id)a9
++ (id)createTextLineWithStrokes:(id)strokes tokens:(id)tokens locale:(id)locale classification:(int64_t)classification principalLines:(id *)lines principalPoints:(id)points shouldCancel:(id)cancel
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  v23 = a9;
-  if (v15 && objc_msgSend_count(v15, v18, v19, v20, v21, v22))
+  strokesCopy = strokes;
+  tokensCopy = tokens;
+  localeCopy = locale;
+  pointsCopy = points;
+  cancelCopy = cancel;
+  if (tokensCopy && objc_msgSend_count(tokensCopy, v18, v19, v20, v21, v22))
   {
     v24 = *MEMORY[0x1E695EFF8];
     v25 = *(MEMORY[0x1E695EFF8] + 8);
-    v26 = a7->var0.var0.x == *MEMORY[0x1E695EFF8] && a7->var0.var0.y == v25;
-    if (v26 && (a7->var0.var1.x == v24 ? (v27 = a7->var0.var1.y == v25) : (v27 = 0), v27 ? (v28 = a7->var1.var0.x == v24) : (v28 = 0), v28 ? (v29 = a7->var1.var0.y == v25) : (v29 = 0), v29 ? (v30 = a7->var1.var1.x == v24) : (v30 = 0), v30 ? (v31 = a7->var1.var1.y == v25) : (v31 = 0), v31 ? (v32 = a7->var2.var0.x == v24) : (v32 = 0), v32 ? (v33 = a7->var2.var0.y == v25) : (v33 = 0), v33 ? (v34 = a7->var2.var1.x == v24) : (v34 = 0), v34 ? (v35 = a7->var2.var1.y == v25) : (v35 = 0), v35 ? (v36 = a7->var3.var0.x == v24) : (v36 = 0), v36 ? (v37 = a7->var3.var0.y == v25) : (v37 = 0), v37 ? (v38 = a7->var3.var1.x == v24) : (v38 = 0), v38 ? (v39 = a7->var3.var1.y == v25) : (v39 = 0), v39))
+    v26 = lines->var0.var0.x == *MEMORY[0x1E695EFF8] && lines->var0.var0.y == v25;
+    if (v26 && (lines->var0.var1.x == v24 ? (v27 = lines->var0.var1.y == v25) : (v27 = 0), v27 ? (v28 = lines->var1.var0.x == v24) : (v28 = 0), v28 ? (v29 = lines->var1.var0.y == v25) : (v29 = 0), v29 ? (v30 = lines->var1.var1.x == v24) : (v30 = 0), v30 ? (v31 = lines->var1.var1.y == v25) : (v31 = 0), v31 ? (v32 = lines->var2.var0.x == v24) : (v32 = 0), v32 ? (v33 = lines->var2.var0.y == v25) : (v33 = 0), v33 ? (v34 = lines->var2.var1.x == v24) : (v34 = 0), v34 ? (v35 = lines->var2.var1.y == v25) : (v35 = 0), v35 ? (v36 = lines->var3.var0.x == v24) : (v36 = 0), v36 ? (v37 = lines->var3.var0.y == v25) : (v37 = 0), v37 ? (v38 = lines->var3.var1.x == v24) : (v38 = 0), v38 ? (v39 = lines->var3.var1.y == v25) : (v39 = 0), v39))
     {
       v52 = objc_opt_class();
-      v48 = objc_msgSend_textLineForStrokes_tokens_locale_strokeClassification_initialOrientationEstimate_shouldCancel_(v52, v53, v14, v15, v16, a6, v23, 1.79769313e308);
+      v48 = objc_msgSend_textLineForStrokes_tokens_locale_strokeClassification_initialOrientationEstimate_shouldCancel_(v52, v53, strokesCopy, tokensCopy, localeCopy, classification, cancelCopy, 1.79769313e308);
     }
 
     else
     {
       v40 = [CHTransformedTextLine alloc];
-      var1 = a7->var2.var1;
-      var0 = a7->var2.var0;
+      var1 = lines->var2.var1;
+      var0 = lines->var2.var0;
       v60 = var1;
-      v43 = a7->var3.var1;
-      v61 = a7->var3.var0;
+      v43 = lines->var3.var1;
+      v61 = lines->var3.var0;
       v62 = v43;
-      v44 = a7->var0.var1;
-      *buf = a7->var0.var0;
+      v44 = lines->var0.var1;
+      *buf = lines->var0.var0;
       v56 = v44;
-      v45 = a7->var1.var1;
-      v57 = a7->var1.var0;
+      v45 = lines->var1.var1;
+      v57 = lines->var1.var0;
       v58 = v45;
-      if (v17)
+      if (pointsCopy)
       {
-        v46 = v17;
+        v46 = pointsCopy;
       }
 
       else
@@ -2511,7 +2511,7 @@ LABEL_3:
       v54[0] = *MEMORY[0x1E695EFD0];
       v54[1] = v47;
       v54[2] = *(MEMORY[0x1E695EFD0] + 32);
-      v48 = objc_msgSend_initWithStrokes_tokens_locale_strokeClassification_principalLines_principalPoints_transform_(v40, v41, v14, v15, v16, a6, buf, v46, v54);
+      v48 = objc_msgSend_initWithStrokes_tokens_locale_strokeClassification_principalLines_principalPoints_transform_(v40, v41, strokesCopy, tokensCopy, localeCopy, classification, buf, v46, v54);
     }
 
     v49 = v48;
@@ -2537,22 +2537,22 @@ LABEL_3:
   return v49;
 }
 
-+ (id)textLineForDrawing:(id)a3 transcriptions:(id)a4 strokeIndexes:(id)a5 fullText:(id)a6 principalPoints:(id)a7 locale:(id)a8 strokeClassification:(int64_t)a9 shouldCancel:(id)a10
++ (id)textLineForDrawing:(id)drawing transcriptions:(id)transcriptions strokeIndexes:(id)indexes fullText:(id)text principalPoints:(id)points locale:(id)locale strokeClassification:(int64_t)classification shouldCancel:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a10;
-  if (objc_msgSend_validateCountMatchTranscriptions_strokeIndexes_(a1, v23, v17, v18, v24, v25))
+  drawingCopy = drawing;
+  transcriptionsCopy = transcriptions;
+  indexesCopy = indexes;
+  textCopy = text;
+  pointsCopy = points;
+  localeCopy = locale;
+  cancelCopy = cancel;
+  if (objc_msgSend_validateCountMatchTranscriptions_strokeIndexes_(self, v23, transcriptionsCopy, indexesCopy, v24, v25))
   {
-    v38 = v16;
-    v30 = objc_msgSend_extractStrokesFromDrawing_classification_(a1, v26, v16, a9, v27, v28);
+    v38 = drawingCopy;
+    v30 = objc_msgSend_extractStrokesFromDrawing_classification_(self, v26, drawingCopy, classification, v27, v28);
     if (v30)
     {
-      v31 = objc_msgSend_createTokensFromTranscriptions_strokeIndexes_fullText_locale_(a1, v29, v17, v18, v19, v21);
+      v31 = objc_msgSend_createTokensFromTranscriptions_strokeIndexes_fullText_locale_(self, v29, transcriptionsCopy, indexesCopy, textCopy, localeCopy);
       v46 = 0u;
       v47 = 0u;
       v44 = 0u;
@@ -2561,7 +2561,7 @@ LABEL_3:
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      objc_msgSend_derivePrincipalLinesFromPoints_strokes_(a1, v32, v20, v30, v33, v34);
+      objc_msgSend_derivePrincipalLinesFromPoints_strokes_(self, v32, pointsCopy, v30, v33, v34);
       v39[4] = v44;
       v39[5] = v45;
       v39[6] = v46;
@@ -2570,7 +2570,7 @@ LABEL_3:
       v39[1] = v41;
       v39[2] = v42;
       v39[3] = v43;
-      v36 = objc_msgSend_createTextLineWithStrokes_tokens_locale_classification_principalLines_principalPoints_shouldCancel_(a1, v35, v30, v31, v21, a9, v39, v20, v22);
+      v36 = objc_msgSend_createTextLineWithStrokes_tokens_locale_classification_principalLines_principalPoints_shouldCancel_(self, v35, v30, v31, localeCopy, classification, v39, pointsCopy, cancelCopy);
     }
 
     else
@@ -2578,7 +2578,7 @@ LABEL_3:
       v36 = 0;
     }
 
-    v16 = v38;
+    drawingCopy = v38;
   }
 
   else
@@ -2589,34 +2589,34 @@ LABEL_3:
   return v36;
 }
 
-+ (id)textLineForDrawing:(id)a3 transcriptions:(id)a4 strokeIndexes:(id)a5 fullText:(id)a6 principalLines:(id *)a7 locale:(id)a8 strokeClassification:(int64_t)a9 shouldCancel:(id)a10
++ (id)textLineForDrawing:(id)drawing transcriptions:(id)transcriptions strokeIndexes:(id)indexes fullText:(id)text principalLines:(id *)lines locale:(id)locale strokeClassification:(int64_t)classification shouldCancel:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a8;
-  v21 = a10;
-  if (objc_msgSend_validateCountMatchTranscriptions_strokeIndexes_(a1, v22, v17, v18, v23, v24))
+  drawingCopy = drawing;
+  transcriptionsCopy = transcriptions;
+  indexesCopy = indexes;
+  textCopy = text;
+  localeCopy = locale;
+  cancelCopy = cancel;
+  if (objc_msgSend_validateCountMatchTranscriptions_strokeIndexes_(self, v22, transcriptionsCopy, indexesCopy, v23, v24))
   {
-    v38 = v16;
-    v29 = objc_msgSend_extractStrokesFromDrawing_classification_(a1, v25, v16, a9, v26, v27);
+    v38 = drawingCopy;
+    v29 = objc_msgSend_extractStrokesFromDrawing_classification_(self, v25, drawingCopy, classification, v26, v27);
     if (v29)
     {
-      v30 = objc_msgSend_createTokensFromTranscriptions_strokeIndexes_fullText_locale_(a1, v28, v17, v18, v19, v20);
-      var1 = a7->var2.var1;
-      v39[4] = a7->var2.var0;
+      v30 = objc_msgSend_createTokensFromTranscriptions_strokeIndexes_fullText_locale_(self, v28, transcriptionsCopy, indexesCopy, textCopy, localeCopy);
+      var1 = lines->var2.var1;
+      v39[4] = lines->var2.var0;
       v39[5] = var1;
-      v32 = a7->var3.var1;
-      v39[6] = a7->var3.var0;
+      v32 = lines->var3.var1;
+      v39[6] = lines->var3.var0;
       v39[7] = v32;
-      v33 = a7->var0.var1;
-      v39[0] = a7->var0.var0;
+      v33 = lines->var0.var1;
+      v39[0] = lines->var0.var0;
       v39[1] = v33;
-      v34 = a7->var1.var1;
-      v39[2] = a7->var1.var0;
+      v34 = lines->var1.var1;
+      v39[2] = lines->var1.var0;
       v39[3] = v34;
-      v36 = objc_msgSend_createTextLineWithStrokes_tokens_locale_classification_principalLines_principalPoints_shouldCancel_(a1, v35, v29, v30, v20, a9, v39, 0, v21);
+      v36 = objc_msgSend_createTextLineWithStrokes_tokens_locale_classification_principalLines_principalPoints_shouldCancel_(self, v35, v29, v30, localeCopy, classification, v39, 0, cancelCopy);
     }
 
     else
@@ -2624,7 +2624,7 @@ LABEL_3:
       v36 = 0;
     }
 
-    v16 = v38;
+    drawingCopy = v38;
   }
 
   else
@@ -2635,18 +2635,18 @@ LABEL_3:
   return v36;
 }
 
-+ (id)textLineForReflowableSynthesisResultToken:(id)a3 locale:(id)a4
++ (id)textLineForReflowableSynthesisResultToken:(id)token locale:(id)locale
 {
   v117 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  tokenCopy = token;
+  localeCopy = locale;
   v7 = objc_opt_class();
-  v13 = objc_msgSend_drawing(v5, v8, v9, v10, v11, v12);
+  v13 = objc_msgSend_drawing(tokenCopy, v8, v9, v10, v11, v12);
   v17 = objc_msgSend_strokesFromDrawing_classification_(v7, v14, v13, 1, v15, v16);
 
   if (objc_msgSend_count(v17, v18, v19, v20, v21, v22))
   {
-    if (objc_msgSend_hasPrecedingSpace(v5, v23, v24, v25, v26, v27))
+    if (objc_msgSend_hasPrecedingSpace(tokenCopy, v23, v24, v25, v26, v27))
     {
       v28 = 32;
     }
@@ -2657,16 +2657,16 @@ LABEL_3:
     }
 
     v29 = [CHTokenizedTextResultToken alloc];
-    v35 = objc_msgSend_string(v5, v30, v31, v32, v33, v34);
+    v35 = objc_msgSend_string(tokenCopy, v30, v31, v32, v33, v34);
     v36 = MEMORY[0x1E696AC90];
     v42 = objc_msgSend_count(v17, v37, v38, v39, v40, v41);
     v46 = objc_msgSend_indexSetWithIndexesInRange_(v36, v43, 0, v42, v44, v45);
     v52 = objc_msgSend_count(v17, v47, v48, v49, v50, v51);
-    v54 = objc_msgSend_initWithString_strokeIndexes_wordID_modelScore_recognitionScore_combinedScore_alignmentScore_properties_recognizerSourceLocale_inputSources_substrokeCount_bounds_(v29, v53, v35, v46, 0, v28, v6, 1, 1.0, 1.0, 1.0, 1.0, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), v52);
+    v54 = objc_msgSend_initWithString_strokeIndexes_wordID_modelScore_recognitionScore_combinedScore_alignmentScore_properties_recognizerSourceLocale_inputSources_substrokeCount_bounds_(v29, v53, v35, v46, 0, v28, localeCopy, 1, 1.0, 1.0, 1.0, 1.0, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), v52);
 
-    if (v5)
+    if (tokenCopy)
     {
-      objc_msgSend_principalLines(v5, v55, v56, v57, v58, v59);
+      objc_msgSend_principalLines(tokenCopy, v55, v56, v57, v58, v59);
     }
 
     else
@@ -2681,7 +2681,7 @@ LABEL_3:
       v110 = 0u;
     }
 
-    v72 = objc_msgSend_drawing(v5, v55, v56, v57, v58, v59);
+    v72 = objc_msgSend_drawing(tokenCopy, v55, v56, v57, v58, v59);
     objc_msgSend_bounds(v72, v73, v74, v75, v76, v77);
     v81 = v80;
     v83 = v82;
@@ -2742,7 +2742,7 @@ LABEL_3:
     v107[0] = *MEMORY[0x1E695EFD0];
     v107[1] = v95;
     v107[2] = *(MEMORY[0x1E695EFD0] + 32);
-    v71 = objc_msgSend_initWithStrokes_tokens_locale_strokeClassification_principalLines_principalPoints_transform_(v90, v96, v17, v94, v6, 1, buf, MEMORY[0x1E695E0F0], v107);
+    v71 = objc_msgSend_initWithStrokes_tokens_locale_strokeClassification_principalLines_principalPoints_transform_(v90, v96, v17, v94, localeCopy, 1, buf, MEMORY[0x1E695E0F0], v107);
   }
 
   else
@@ -2755,7 +2755,7 @@ LABEL_3:
     v54 = qword_1EA84DCA0;
     if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
     {
-      v65 = objc_msgSend_drawing(v5, v60, v61, v62, v63, v64);
+      v65 = objc_msgSend_drawing(tokenCopy, v60, v61, v62, v63, v64);
       *buf = 134217984;
       *&buf[4] = objc_msgSend_strokeCount(v65, v66, v67, v68, v69, v70);
       _os_log_impl(&dword_18366B000, v54, OS_LOG_TYPE_ERROR, "Unable to create reflowable text line from drawing, drawing has %ld strokes, no extracted strokes.", buf, 0xCu);
@@ -2813,12 +2813,12 @@ LABEL_3:
   return v12;
 }
 
-- (void)addSupportStroke:(id)a3 tokenRange:(_NSRange)a4
+- (void)addSupportStroke:(id)stroke tokenRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v167 = *MEMORY[0x1E69E9840];
-  v158 = a3;
+  strokeCopy = stroke;
   v159 = 0;
   v12 = 0;
   v13 = 0;
@@ -2907,7 +2907,7 @@ LABEL_3:
     self->_segments = v48;
 
     v109 = v157;
-    v108 = v158;
+    v108 = strokeCopy;
     if (!v80)
     {
       goto LABEL_32;
@@ -2971,11 +2971,11 @@ LABEL_18:
   if (v16 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v80 = 0;
-    v108 = v158;
+    v108 = strokeCopy;
     goto LABEL_32;
   }
 
-  v108 = v158;
+  v108 = strokeCopy;
   v80 = objc_msgSend_objectAtIndexedSubscript_(self->_segments, v7, v16, v9, v10, v11);
   v109 = v157;
   if (v80)
@@ -2986,17 +2986,17 @@ LABEL_18:
 LABEL_32:
 }
 
-- (void)addSupportStroke:(id)a3
+- (void)addSupportStroke:(id)stroke
 {
-  v139 = a3;
+  strokeCopy = stroke;
   if (objc_msgSend_count(self->_segments, v4, v5, v6, v7, v8) == 1)
   {
     v14 = objc_msgSend_objectAtIndexedSubscript_(self->_segments, v9, 0, v11, v12, v13);
-    objc_msgSend_addSupportStroke_(v14, v15, v139, v16, v17, v18);
+    objc_msgSend_addSupportStroke_(v14, v15, strokeCopy, v16, v17, v18);
     goto LABEL_22;
   }
 
-  objc_msgSend_bounds(v139, v9, v10, v11, v12, v13);
+  objc_msgSend_bounds(strokeCopy, v9, v10, v11, v12, v13);
   v141 = v19;
   v142 = v20;
   rect = v21;
@@ -3033,7 +3033,7 @@ LABEL_32:
     segments = self->_segments;
     Index = objc_msgSend_firstIndex(v14, v65, v66, v67, v68, v69);
     v76 = objc_msgSend_objectAtIndexedSubscript_(segments, v72, Index, v73, v74, v75);
-    objc_msgSend_addSupportStroke_(v76, v77, v139, v78, v79, v80);
+    objc_msgSend_addSupportStroke_(v76, v77, strokeCopy, v78, v79, v80);
   }
 
   else
@@ -3065,7 +3065,7 @@ LABEL_32:
 
     v129 = objc_msgSend_firstIndex(v14, v99, v100, v101, v102, v103);
     v134 = objc_msgSend_objectAtIndexedSubscript_(v97, v130, v129, v131, v132, v133);
-    objc_msgSend_addSupportStroke_(v134, v135, v139, v136, v137, v138);
+    objc_msgSend_addSupportStroke_(v134, v135, strokeCopy, v136, v137, v138);
 
     v76 = self->_segments;
     self->_segments = v97;
@@ -3137,14 +3137,14 @@ LABEL_22:
   return v7;
 }
 
-- (void)mergeTransformedText:(id)a3
+- (void)mergeTransformedText:(id)text
 {
   v22 = *MEMORY[0x1E69E9840];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = objc_msgSend_segments(a3, a2, a3, v3, v4, v5, 0);
+  v7 = objc_msgSend_segments(text, a2, text, v3, v4, v5, 0);
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v17, v21, 16, v9);
   if (v14)
   {
@@ -3170,13 +3170,13 @@ LABEL_22:
   }
 }
 
-- (void)_addTextLineSegment:(id)a3
+- (void)_addTextLineSegment:(id)segment
 {
-  v4 = a3;
-  v10 = v4;
-  if (v4)
+  segmentCopy = segment;
+  v10 = segmentCopy;
+  if (segmentCopy)
   {
-    objc_msgSend_transform(v4, v5, v6, v7, v8, v9);
+    objc_msgSend_transform(segmentCopy, v5, v6, v7, v8, v9);
   }
 
   else
@@ -3255,7 +3255,7 @@ LABEL_22:
   self->_boundingBox.y_max = MaxY;
 }
 
-+ ($196E0A09E4C4E138EEBEC6372622051A)principalLinesFromSegments:(SEL)a3
++ ($196E0A09E4C4E138EEBEC6372622051A)principalLinesFromSegments:(SEL)segments
 {
   v66 = *MEMORY[0x1E69E9840];
   memset(v64, 0, sizeof(v64));
@@ -3335,12 +3335,12 @@ LABEL_22:
   return result;
 }
 
-- (id)tokenDistanceSizes:(BOOL)a3
+- (id)tokenDistanceSizes:(BOOL)sizes
 {
-  v6 = a3;
+  sizesCopy = sizes;
   v111 = *MEMORY[0x1E69E9840];
-  v8 = objc_msgSend_firstObject(self->_segments, a2, a3, v3, v4, v5);
-  v13 = objc_msgSend_tokenDistanceSizes_(v8, v9, v6, v10, v11, v12);
+  v8 = objc_msgSend_firstObject(self->_segments, a2, sizes, v3, v4, v5);
+  v13 = objc_msgSend_tokenDistanceSizes_(v8, v9, sizesCopy, v10, v11, v12);
   v19 = objc_msgSend_mutableCopy(v13, v14, v15, v16, v17, v18);
 
   v108 = 0u;
@@ -3395,7 +3395,7 @@ LABEL_22:
         v60 = objc_msgSend_firstObject(v54, v55, v56, v57, v58, v59);
         v66 = objc_msgSend_properties(v60, v61, v62, v63, v64, v65);
 
-        if (!v6 || (v66 & 0x20) != 0)
+        if (!sizesCopy || (v66 & 0x20) != 0)
         {
           if (v53)
           {
@@ -3414,7 +3414,7 @@ LABEL_22:
           objc_msgSend_addObject_(v19, v75, v74, v76, v77, v78);
         }
 
-        v79 = objc_msgSend_tokenDistanceSizes_(v53, v67, v6, v69, v70, v71);
+        v79 = objc_msgSend_tokenDistanceSizes_(v53, v67, sizesCopy, v69, v70, v71);
         objc_msgSend_addObjectsFromArray_(v19, v80, v79, v81, v82, v83);
         if (v53)
         {
@@ -3513,7 +3513,7 @@ LABEL_22:
   return v43;
 }
 
-- (void)addTransform:(CGAffineTransform *)a3
+- (void)addTransform:(CGAffineTransform *)transform
 {
   v56 = *MEMORY[0x1E69E9840];
   v51 = 0u;
@@ -3535,10 +3535,10 @@ LABEL_22:
         }
 
         v15 = *(*(&v51 + 1) + 8 * i);
-        v16 = *&a3->c;
-        v43 = *&a3->a;
+        v16 = *&transform->c;
+        v43 = *&transform->a;
         v44 = v16;
-        v45 = *&a3->tx;
+        v45 = *&transform->tx;
         objc_msgSend_addTransform_(v15, v8, &v43, v9, v10, v11);
       }
 
@@ -3556,7 +3556,7 @@ LABEL_22:
   v44 = 0;
   v45 = 0;
   v43 = 0;
-  sub_1838CA7E4(&self->_principalLines.descender.start.x, &a3->a, &v43.x);
+  sub_1838CA7E4(&self->_principalLines.descender.start.x, &transform->a, &v43.x);
   v17 = v48;
   self->_principalLines.median.start = v47;
   self->_principalLines.median.end = v17;
@@ -3964,14 +3964,14 @@ LABEL_31:
   return result;
 }
 
-- (vector<CGPoint,)clippedPoints:(CHTransformedTextLine *)self min:(SEL)a3 max:(CGSize)a4
+- (vector<CGPoint,)clippedPoints:(CHTransformedTextLine *)self min:(SEL)min max:(CGSize)max
 {
   y = a6.y;
   x = a6.x;
   v8 = a5.y;
   v9 = a5.x;
-  height = a4.height;
-  width = a4.width;
+  height = max.height;
+  width = max.width;
   v43 = *MEMORY[0x1E69E9840];
   retstr->__begin_ = 0;
   retstr->__end_ = 0;
@@ -4093,12 +4093,12 @@ LABEL_31:
 
 - (BoundingBox)boundingBox
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  p_boundingBox = &v2->_boundingBox;
-  if (v2->_boundingBox.x_max - v2->_boundingBox.x_min == 0.0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  p_boundingBox = &selfCopy->_boundingBox;
+  if (selfCopy->_boundingBox.x_max - selfCopy->_boundingBox.x_min == 0.0)
   {
-    objc_msgSend_points(v2, v3, v4, v5, v6, v7);
+    objc_msgSend_points(selfCopy, v3, v4, v5, v6, v7);
     if (v28 == v29)
     {
       v12 = xmmword_1839CE920;
@@ -4149,15 +4149,15 @@ LABEL_31:
     v12 = v27;
 LABEL_7:
     *p_boundingBox = v12;
-    *&v2->_boundingBox.y_min = v13;
+    *&selfCopy->_boundingBox.y_min = v13;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v22 = *p_boundingBox->i64;
-  x_max = v2->_boundingBox.x_max;
-  y_min = v2->_boundingBox.y_min;
-  y_max = v2->_boundingBox.y_max;
+  x_max = selfCopy->_boundingBox.x_max;
+  y_min = selfCopy->_boundingBox.y_min;
+  y_max = selfCopy->_boundingBox.y_max;
   result.y_max = y_max;
   result.y_min = y_min;
   result.x_max = x_max;
@@ -4305,22 +4305,22 @@ LABEL_7:
   return v18;
 }
 
-- (id)addRelatedNontextStrokes:(id)a3 tokenRangesForNonTextStrokes:(id)a4 strokeProvider:(id)a5 groupIndex:(id)a6
+- (id)addRelatedNontextStrokes:(id)strokes tokenRangesForNonTextStrokes:(id)textStrokes strokeProvider:(id)provider groupIndex:(id)index
 {
   v182 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v172 = a4;
-  v168 = a5;
-  v173 = a6;
-  v174 = v10;
+  strokesCopy = strokes;
+  textStrokesCopy = textStrokes;
+  providerCopy = provider;
+  indexCopy = index;
+  v174 = strokesCopy;
   v11 = MEMORY[0x1E695DFA8];
-  v17 = objc_msgSend_count(v10, v12, v13, v14, v15, v16);
+  v17 = objc_msgSend_count(strokesCopy, v12, v13, v14, v15, v16);
   v165 = objc_msgSend_setWithCapacity_(v11, v18, v17, v19, v20, v21);
   for (i = 0; i < objc_msgSend_count(v174, v22, v23, v24, v25, v26, v165); ++i)
   {
-    v175 = objc_msgSend_objectAtIndexedSubscript_(v172, v27, i, v28, v29, v30);
+    v175 = objc_msgSend_objectAtIndexedSubscript_(textStrokesCopy, v27, i, v28, v29, v30);
     v36 = objc_msgSend_firstObject(v175, v31, v32, v33, v34, v35);
-    if (objc_msgSend_isEqualToNumber_(v36, v37, v173, v38, v39, v40))
+    if (objc_msgSend_isEqualToNumber_(v36, v37, indexCopy, v38, v39, v40))
     {
       v46 = objc_msgSend_count(v175, v41, v42, v43, v44, v45) == 3;
 
@@ -4342,7 +4342,7 @@ LABEL_7:
       }
 
       v54 = v53;
-      v36 = objc_msgSend_strokeForIdentifier_inStrokeProvider_(CHStrokeUtilities, v55, v54, v168, v56, v57);
+      v36 = objc_msgSend_strokeForIdentifier_inStrokeProvider_(CHStrokeUtilities, v55, v54, providerCopy, v56, v57);
 
       objc_msgSend_bounds(v36, v58, v59, v60, v61, v62);
       v170 = v64;
@@ -4448,16 +4448,16 @@ LABEL_25:
   return v165;
 }
 
-+ (id)drawingForTransformedTextLines:(id)a3
++ (id)drawingForTransformedTextLines:(id)lines
 {
   v64 = *MEMORY[0x1E69E9840];
-  v48 = a3;
+  linesCopy = lines;
   v3 = objc_alloc_init(CHDrawing);
   v60 = 0u;
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  obj = v48;
+  obj = linesCopy;
   v51 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v4, &v58, v63, 16, v5);
   if (v51)
   {
@@ -4527,18 +4527,18 @@ LABEL_25:
   return v3;
 }
 
-+ (id)addNonTextSegmentsAndLines:(id)a3 nontextGroups:(id)a4 outNonTextStrokes:(id *)a5
++ (id)addNonTextSegmentsAndLines:(id)lines nontextGroups:(id)groups outNonTextStrokes:(id *)strokes
 {
   v358 = *MEMORY[0x1E69E9840];
-  v308 = a3;
-  v309 = a4;
-  v324 = objc_msgSend_mutableCopy(v308, v6, v7, v8, v9, v10);
+  linesCopy = lines;
+  groupsCopy = groups;
+  v324 = objc_msgSend_mutableCopy(linesCopy, v6, v7, v8, v9, v10);
   v318 = objc_msgSend_set(MEMORY[0x1E695DFA8], v11, v12, v13, v14, v15);
   v353 = 0u;
   v354 = 0u;
   v351 = 0u;
   v352 = 0u;
-  obj = v309;
+  obj = groupsCopy;
   v313 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v16, &v351, v357, 16, v17);
   if (v313)
   {
@@ -4904,26 +4904,26 @@ LABEL_62:
   }
 
   v305 = v318;
-  if (a5)
+  if (strokes)
   {
     v306 = v318;
     v305 = v318;
-    *a5 = v318;
+    *strokes = v318;
   }
 
   return v324;
 }
 
-+ (void)assignNontextGroups:(id)a3 toTextLines:(id)a4
++ (void)assignNontextGroups:(id)groups toTextLines:(id)lines
 {
   v81 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  groupsCopy = groups;
+  linesCopy = lines;
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
-  obj = v5;
+  obj = groupsCopy;
   v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v7, &v75, v80, 16, v8);
   if (v9)
   {
@@ -4948,9 +4948,9 @@ LABEL_62:
         v28 = v23 * v25 + 1.0e-10;
         v29 = 0.0;
         v30 = 0x7FFFFFFFFFFFFFFFLL;
-        while (v27 < objc_msgSend_count(v6, v16, v17, v18, v19, v20))
+        while (v27 < objc_msgSend_count(linesCopy, v16, v17, v18, v19, v20))
         {
-          v31 = objc_msgSend_objectAtIndexedSubscript_(v6, v10, v27, v11, v12, v13);
+          v31 = objc_msgSend_objectAtIndexedSubscript_(linesCopy, v10, v27, v11, v12, v13);
           v37 = objc_msgSend_textStrokes(v31, v32, v33, v34, v35, v36);
           objc_msgSend_boundsForStrokes_(CHStrokeUtilities, v38, v37, v39, v40, v41);
           v43 = v42;
@@ -4997,7 +4997,7 @@ LABEL_62:
                 }
 
                 v60 = *(*(&v71 + 1) + 8 * j);
-                v61 = objc_msgSend_objectAtIndexedSubscript_(v6, v53, v30, v54, v55, v56);
+                v61 = objc_msgSend_objectAtIndexedSubscript_(linesCopy, v53, v30, v54, v55, v56);
                 objc_msgSend_addSupportStroke_(v61, v62, v60, v63, v64, v65);
               }
 
@@ -5016,26 +5016,26 @@ LABEL_62:
   }
 }
 
-+ (id)textLineFromTextResult:(id)a3 principalLineResult:(id)a4 shouldUseRefinablePath:(BOOL)a5 strokeProvider:(id)a6 shouldCancel:(id)a7
++ (id)textLineFromTextResult:(id)result principalLineResult:(id)lineResult shouldUseRefinablePath:(BOOL)path strokeProvider:(id)provider shouldCancel:(id)cancel
 {
-  v9 = a5;
+  pathCopy = path;
   v158 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v124 = a4;
-  v126 = a6;
-  v125 = a7;
-  v127 = objc_msgSend_inputStrokeIdentifiers(v11, v12, v13, v14, v15, v16);
+  resultCopy = result;
+  lineResultCopy = lineResult;
+  providerCopy = provider;
+  cancelCopy = cancel;
+  v127 = objc_msgSend_inputStrokeIdentifiers(resultCopy, v12, v13, v14, v15, v16);
   v20 = 0;
-  if (v11 && v126 && v127)
+  if (resultCopy && providerCopy && v127)
   {
-    if (v125 && (v125[2]() & 1) != 0)
+    if (cancelCopy && (cancelCopy[2]() & 1) != 0)
     {
       v20 = 0;
     }
 
     else
     {
-      v21 = objc_msgSend_strokesForIdentifiers_inStrokeProvider_(CHStrokeUtilities, v17, v127, v126, v18, v19);
+      v21 = objc_msgSend_strokesForIdentifiers_inStrokeProvider_(CHStrokeUtilities, v17, v127, providerCopy, v18, v19);
       v22 = v21;
       v28 = objc_msgSend_count(v21, v23, v24, v25, v26, v27);
       if (v28 == objc_msgSend_count(v127, v29, v30, v31, v32, v33))
@@ -5045,17 +5045,17 @@ LABEL_62:
         v146 = &v145;
         v147 = 0x2020000000;
         v148 = 0;
-        if (v9)
+        if (pathCopy)
         {
-          objc_msgSend_refinableTranscriptionPath(v11, v39, v40, v41, v42, v43);
+          objc_msgSend_refinableTranscriptionPath(resultCopy, v39, v40, v41, v42, v43);
         }
 
         else
         {
-          objc_msgSend_topModelTranscriptionPath(v11, v39, v40, v41, v42, v43);
+          objc_msgSend_topModelTranscriptionPath(resultCopy, v39, v40, v41, v42, v43);
         }
         v121 = ;
-        v59 = objc_msgSend_tokensFromTranscriptionPath_(v11, v55, v121, v56, v57, v58);
+        v59 = objc_msgSend_tokensFromTranscriptionPath_(resultCopy, v55, v121, v56, v57, v58);
         v142[0] = MEMORY[0x1E69E9820];
         v142[1] = 3221225472;
         v142[2] = sub_183820C90;
@@ -5157,7 +5157,7 @@ LABEL_62:
           while (v90);
         }
 
-        v96 = sub_18381A760(v124);
+        v96 = sub_18381A760(lineResultCopy);
         v154 = 0u;
         v155 = 0u;
         v152 = 0u;
@@ -5209,7 +5209,7 @@ LABEL_62:
         else
         {
           v103 = [CHTransformedTextLine alloc];
-          v109 = objc_msgSend_locale(v11, v104, v105, v106, v107, v108);
+          v109 = objc_msgSend_locale(resultCopy, v104, v105, v106, v107, v108);
           v129[4] = v152;
           v129[5] = v153;
           v129[6] = v154;
@@ -5222,7 +5222,7 @@ LABEL_62:
           v128[0] = *MEMORY[0x1E695EFD0];
           v128[1] = v110;
           v128[2] = *(MEMORY[0x1E695EFD0] + 32);
-          v112 = objc_msgSend_initWithStrokes_tokens_points_strokePoints_locale_strokeClassification_principalLines_principalPoints_transform_(v103, v111, v84, v60, &v140, &v137, v109, v120, v129, v124, v128);
+          v112 = objc_msgSend_initWithStrokes_tokens_points_strokePoints_locale_strokeClassification_principalLines_principalPoints_transform_(v103, v111, v84, v60, &v140, &v137, v109, v120, v129, lineResultCopy, v128);
 
           v44 = v112;
         }
@@ -5292,29 +5292,29 @@ LABEL_62:
   return v20;
 }
 
-+ (id)textLinesFromContext:(id)a3 strokeGroupingResult:(id)a4 contextStrokes:(id)a5 initialStrokes:(id)a6 strokeProvider:(id)a7 relatedNonTextStrokes:(id)a8 excludedStrokeTypes:(id)a9 skipLineOrientationEstimate:(BOOL)a10 useCache:(BOOL)a11 progress:(id)a12 shouldCancel:(id)a13
++ (id)textLinesFromContext:(id)context strokeGroupingResult:(id)result contextStrokes:(id)strokes initialStrokes:(id)initialStrokes strokeProvider:(id)provider relatedNonTextStrokes:(id)textStrokes excludedStrokeTypes:(id)types skipLineOrientationEstimate:(BOOL)self0 useCache:(BOOL)self1 progress:(id)self2 shouldCancel:(id)self3
 {
   v358 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v314 = a4;
-  v315 = a5;
-  v320 = a6;
-  v327 = a7;
-  v317 = a8;
-  v325 = a9;
-  v322 = a12;
-  v330 = a13;
-  v331 = v18;
+  contextCopy = context;
+  resultCopy = result;
+  strokesCopy = strokes;
+  initialStrokesCopy = initialStrokes;
+  providerCopy = provider;
+  textStrokesCopy = textStrokes;
+  typesCopy = types;
+  progressCopy = progress;
+  cancelCopy = cancel;
+  v331 = contextCopy;
   v321 = objc_msgSend_array(MEMORY[0x1E695DF70], v19, v20, v21, v22, v23);
   v29 = MEMORY[0x1E695E0F0];
-  if (v18 && v327 && (!v330 || ((v330[2])() & 1) == 0))
+  if (contextCopy && providerCopy && (!cancelCopy || ((cancelCopy[2])() & 1) == 0))
   {
-    if (v322)
+    if (progressCopy)
     {
       v31 = MEMORY[0x1E696AE38];
-      v32 = objc_msgSend_textResults(v18, v24, v25, v26, v27, v28);
+      v32 = objc_msgSend_textResults(contextCopy, v24, v25, v26, v27, v28);
       v38 = objc_msgSend_count(v32, v33, v34, v35, v36, v37);
-      v319 = objc_msgSend_progressWithTotalUnitCount_parent_pendingUnitCount_(v31, v39, v38, v322, 50, v40);
+      v319 = objc_msgSend_progressWithTotalUnitCount_parent_pendingUnitCount_(v31, v39, v38, progressCopy, 50, v40);
     }
 
     else
@@ -5322,14 +5322,14 @@ LABEL_62:
       v319 = 0;
     }
 
-    v313 = objc_msgSend_tokenSupportRangesForNonTextStrokes_initialStrokes_strokeProvider_(v18, v24, v317, v320, v327, v28);
+    v313 = objc_msgSend_tokenSupportRangesForNonTextStrokes_initialStrokes_strokeProvider_(contextCopy, v24, textStrokesCopy, initialStrokesCopy, providerCopy, v28);
     v41 = objc_alloc(MEMORY[0x1E695DFA8]);
-    v46 = objc_msgSend_initWithArray_(v41, v42, v315, v43, v44, v45);
+    v46 = objc_msgSend_initWithArray_(v41, v42, strokesCopy, v43, v44, v45);
     v350 = 0u;
     v351 = 0u;
     v348 = 0u;
     v349 = 0u;
-    v47 = v317;
+    v47 = textStrokesCopy;
     v50 = objc_msgSend_countByEnumeratingWithState_objects_count_(v47, v48, &v348, v357, 16, v49);
     if (v50)
     {
@@ -5371,7 +5371,7 @@ LABEL_62:
         break;
       }
 
-      if (v330 && v330[2]())
+      if (cancelCopy && cancelCopy[2]())
       {
         objc_msgSend_removeAllObjects(v321, v75, v76, v77, v78, v79);
         goto LABEL_59;
@@ -5396,11 +5396,11 @@ LABEL_62:
             v120 = MEMORY[0x1E696AD98];
             v121 = objc_msgSend_classification(v332, v114, v115, v116, v117, v118);
             v126 = objc_msgSend_numberWithInteger_(v120, v122, v121, v123, v124, v125);
-            v131 = objc_msgSend_containsObject_(v325, v127, v126, v128, v129, v130);
+            v131 = objc_msgSend_containsObject_(typesCopy, v127, v126, v128, v129, v130);
 
             if ((v131 & 1) == 0)
             {
-              v324 = objc_msgSend_strokesForIdentifiers_inStrokeProvider_(CHStrokeUtilities, v132, v119, v327, v133, v134);
+              v324 = objc_msgSend_strokesForIdentifiers_inStrokeProvider_(CHStrokeUtilities, v132, v119, providerCopy, v133, v134);
               v140 = objc_msgSend_count(v324, v135, v136, v137, v138, v139);
               if (v140 != objc_msgSend_count(v119, v141, v142, v143, v144, v145))
               {
@@ -5446,7 +5446,7 @@ LABEL_62:
               }
               v323 = ;
 
-              v168 = objc_msgSend_tokensAlignedWithStrokes_transcriptionPath_strokeProvider_(v107, v166, v320, v323, v327, v167);
+              v168 = objc_msgSend_tokensAlignedWithStrokes_transcriptionPath_strokeProvider_(v107, v166, initialStrokesCopy, v323, providerCopy, v167);
               v340[0] = MEMORY[0x1E69E9820];
               v340[1] = 3221225472;
               v340[2] = sub_183821AE4;
@@ -5466,7 +5466,7 @@ LABEL_62:
                 v329 = v189;
               }
 
-              if (a11)
+              if (cache)
               {
                 v190 = objc_msgSend_locale(v107, v173, v174, v175, v176, v177);
                 shouldUseOriginalTokensForLocale = objc_msgSend_shouldUseOriginalTokensForLocale_(CHRecognizerConfiguration, v191, v190, v192, v193, v194);
@@ -5482,12 +5482,12 @@ LABEL_62:
               v197 = objc_opt_class();
               v203 = objc_msgSend_locale(v107, v198, v199, v200, v201, v202);
               LOBYTE(v312) = v196;
-              v326 = objc_msgSend_textLineForTokens_locale_strokeGroup_strokes_strokeProvider_skipLineOrientationEstimate_useCache_shouldCancel_(v197, v204, v329, v203, v332, v324, v327, a10, v312, v330);
+              v326 = objc_msgSend_textLineForTokens_locale_strokeGroup_strokes_strokeProvider_skipLineOrientationEstimate_useCache_shouldCancel_(v197, v204, v329, v203, v332, v324, providerCopy, estimate, v312, cancelCopy);
 
               if (v326)
               {
                 v210 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v205, v66, v207, v208, v209);
-                v316 = objc_msgSend_addRelatedNontextStrokes_tokenRangesForNonTextStrokes_strokeProvider_groupIndex_(v326, v211, v47, v313, v327, v210);
+                v316 = objc_msgSend_addRelatedNontextStrokes_tokenRangesForNonTextStrokes_strokeProvider_groupIndex_(v326, v211, v47, v313, providerCopy, v210);
 
                 objc_msgSend_minusSet_(v46, v212, v316, v213, v214, v215);
                 objc_msgSend_addObject_(v321, v216, v326, v217, v218, v219);
@@ -5522,7 +5522,7 @@ LABEL_62:
                 v67 = v220;
               }
 
-              if (v322)
+              if (progressCopy)
               {
                 v231 = objc_msgSend_completedUnitCount(v319, v205, v206, v207, v208, v209);
                 objc_msgSend_setCompletedUnitCount_(v319, v232, v231 + 1, v233, v234, v235);
@@ -5551,13 +5551,13 @@ LABEL_62:
       ++v66;
     }
 
-    if (!v330)
+    if (!cancelCopy)
     {
       goto LABEL_61;
     }
 
 LABEL_59:
-    if (v330[2]())
+    if (cancelCopy[2]())
     {
       objc_msgSend_removeAllObjects(v321, v75, v76, v77, v78, v79);
     }
@@ -5566,8 +5566,8 @@ LABEL_61:
     if (objc_msgSend_count(v321, v75, v76, v77, v78, v79) && objc_msgSend_count(v46, v261, v262, v263, v264, v265))
     {
       v266 = objc_opt_class();
-      v272 = objc_msgSend_nontextStrokeGroups(v314, v267, v268, v269, v270, v271);
-      v275 = objc_msgSend_remainingGroupStrokes_remainingStrokes_strokeProvider_(v266, v273, v272, v46, v327, v274);
+      v272 = objc_msgSend_nontextStrokeGroups(resultCopy, v267, v268, v269, v270, v271);
+      v275 = objc_msgSend_remainingGroupStrokes_remainingStrokes_strokeProvider_(v266, v273, v272, v46, providerCopy, v274);
 
       v276 = *(v67 + 1912);
       v335 = 0;
@@ -5583,8 +5583,8 @@ LABEL_61:
       v334 = v287;
       objc_msgSend_enumerateObjectsUsingBlock_(v280, v288, v333, v289, v290, v291);
       v292 = objc_opt_class();
-      v298 = objc_msgSend_nontextStrokeGroups(v314, v293, v294, v295, v296, v297);
-      v301 = objc_msgSend_remainingGroupStrokes_remainingStrokes_strokeProvider_(v292, v299, v298, v287, v327, v300);
+      v298 = objc_msgSend_nontextStrokeGroups(resultCopy, v293, v294, v295, v296, v297);
+      v301 = objc_msgSend_remainingGroupStrokes_remainingStrokes_strokeProvider_(v292, v299, v298, v287, providerCopy, v300);
 
       v302 = objc_opt_class();
       objc_msgSend_assignNontextGroups_toTextLines_(v302, v303, v301, v286, v304, v305);

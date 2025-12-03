@@ -21,7 +21,7 @@
   v7 = a3[7];
   v9[6] = a3[6];
   v9[7] = v7;
-  return [a1 encodeBytes:v9 length:128 forKey:a4];
+  return [self encodeBytes:v9 length:128 forKey:a4];
 }
 
 - (uint64_t)_vl_decodeSimdDouble4x4:()VisualLocalizationExtras forKey:
@@ -29,7 +29,7 @@
   v25[1] = *MEMORY[0x277D85DE8];
   v6 = a4;
   v23 = 0;
-  v7 = [a1 decodeBytesForKey:v6 returnedLength:&v23];
+  v7 = [self decodeBytesForKey:v6 returnedLength:&v23];
   if (v7)
   {
     v8 = v23 == 128;
@@ -72,7 +72,7 @@
     v25[0] = v19;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     v21 = [v17 errorWithDomain:v18 code:4864 userInfo:v20];
-    [a1 failWithError:v21];
+    [self failWithError:v21];
   }
 
   return v9;
@@ -83,7 +83,7 @@
   v18[1] = *MEMORY[0x277D85DE8];
   v6 = a4;
   v16 = 0;
-  v7 = [a1 decodeBytesForKey:v6 returnedLength:&v16];
+  v7 = [self decodeBytesForKey:v6 returnedLength:&v16];
   if (v7)
   {
     v8 = v16 == 144;
@@ -147,7 +147,7 @@
     v18[0] = v12;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v14 = [v10 errorWithDomain:v11 code:4864 userInfo:v13];
-    [a1 failWithError:v14];
+    [self failWithError:v14];
   }
 
   return v9;

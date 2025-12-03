@@ -1,7 +1,7 @@
 @interface SBActionHardwareButtonSettings
 + (id)settingsControllerModule;
 - (SBActionButtonParameters)actionButtonParameters;
-- (void)setActionButtonParameters:(id)a3;
+- (void)setActionButtonParameters:(id)parameters;
 - (void)setDefaultValues;
 @end
 
@@ -25,10 +25,10 @@
   v3 = [MEMORY[0x277D431E8] rowWithTitle:@"In-pocket long press time" valueKeyPath:@"longPressTimeWhenSuppressed"];
   v4 = [v3 between:0.0 and:10.0];
 
-  v5 = [MEMORY[0x277CBEB18] array];
-  [v5 addObject:v17];
-  [v5 addObject:v4];
-  v6 = [MEMORY[0x277D43210] sectionWithRows:v5];
+  array = [MEMORY[0x277CBEB18] array];
+  [array addObject:v17];
+  [array addObject:v4];
+  v6 = [MEMORY[0x277D43210] sectionWithRows:array];
   v7 = MEMORY[0x277D43210];
   v8 = MEMORY[0x277D431B0];
   v9 = [MEMORY[0x277D43240] actionWithSettingsKeyPath:0];
@@ -55,13 +55,13 @@
   return v3;
 }
 
-- (void)setActionButtonParameters:(id)a3
+- (void)setActionButtonParameters:(id)parameters
 {
-  v4 = a3;
-  self->_longPressTime = [(SBActionButtonParameters *)v4 longPressTime];
-  v5 = [(SBActionButtonParameters *)v4 longPressTimeWhenSuppressed];
+  parametersCopy = parameters;
+  self->_longPressTime = [(SBActionButtonParameters *)parametersCopy longPressTime];
+  longPressTimeWhenSuppressed = [(SBActionButtonParameters *)parametersCopy longPressTimeWhenSuppressed];
 
-  self->_longPressTimeWhenSuppressed = v5;
+  self->_longPressTimeWhenSuppressed = longPressTimeWhenSuppressed;
 }
 
 @end

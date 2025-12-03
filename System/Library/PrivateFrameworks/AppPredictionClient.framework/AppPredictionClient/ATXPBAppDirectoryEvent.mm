@@ -2,15 +2,15 @@
 - (BOOL)hasBlendingCacheId;
 - (BOOL)hasBundleId;
 - (BOOL)hasMetadata;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (double)date;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)engagedSuggestionIdsAtIndex:(id *)a1;
-- (id)shownSuggestionIdsAtIndex:(id *)a1;
-- (uint64_t)addEngagedSuggestionIds:(uint64_t)a1;
-- (uint64_t)addShownSuggestionIds:(uint64_t)a1;
+- (id)engagedSuggestionIdsAtIndex:(id *)index;
+- (id)shownSuggestionIdsAtIndex:(id *)index;
+- (uint64_t)addEngagedSuggestionIds:(uint64_t)ids;
+- (uint64_t)addShownSuggestionIds:(uint64_t)ids;
 - (uint64_t)blendingCacheId;
 - (uint64_t)bundleId;
 - (uint64_t)bundleIndex;
@@ -48,14 +48,14 @@
 - (uint64_t)shownSuggestionIds;
 - (uint64_t)shownSuggestionIdsCount;
 - (unint64_t)hash;
-- (void)copyTo:(uint64_t)a1;
-- (void)mergeFrom:(uint64_t)a1;
-- (void)setBlendingCacheId:(uint64_t)a1;
-- (void)setBundleId:(uint64_t)a1;
-- (void)setEngagedSuggestionIds:(uint64_t)a1;
-- (void)setMetadata:(uint64_t)a1;
-- (void)setShownSuggestionIds:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(uint64_t)to;
+- (void)mergeFrom:(uint64_t)from;
+- (void)setBlendingCacheId:(uint64_t)id;
+- (void)setBundleId:(uint64_t)id;
+- (void)setEngagedSuggestionIds:(uint64_t)ids;
+- (void)setMetadata:(uint64_t)metadata;
+- (void)setShownSuggestionIds:(uint64_t)ids;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBAppDirectoryEvent
@@ -66,20 +66,20 @@
   v8.receiver = self;
   v8.super_class = ATXPBAppDirectoryEvent;
   v4 = [(ATXPBAppDirectoryEvent *)&v8 description];
-  v5 = [(ATXPBAppDirectoryEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBAppDirectoryEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithDouble:self->_date];
-    [v3 setObject:v15 forKey:@"date"];
+    [dictionary setObject:v15 forKey:@"date"];
 
     has = self->_has;
     if ((has & 0x10) == 0)
@@ -100,7 +100,7 @@ LABEL_3:
   }
 
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_eventType];
-  [v3 setObject:v16 forKey:@"eventType"];
+  [dictionary setObject:v16 forKey:@"eventType"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -116,27 +116,27 @@ LABEL_4:
 
 LABEL_25:
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_categoryID];
-  [v3 setObject:v17 forKey:@"categoryID"];
+  [dictionary setObject:v17 forKey:@"categoryID"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_5:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_categoryIndex];
-    [v3 setObject:v5 forKey:@"categoryIndex"];
+    [dictionary setObject:v5 forKey:@"categoryIndex"];
   }
 
 LABEL_6:
   bundleId = self->_bundleId;
   if (bundleId)
   {
-    [v3 setObject:bundleId forKey:@"bundleId"];
+    [dictionary setObject:bundleId forKey:@"bundleId"];
   }
 
   v7 = self->_has;
   if (v7)
   {
     v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_bundleIndex];
-    [v3 setObject:v18 forKey:@"bundleIndex"];
+    [dictionary setObject:v18 forKey:@"bundleIndex"];
 
     v7 = self->_has;
     if ((v7 & 0x20) == 0)
@@ -157,48 +157,48 @@ LABEL_10:
   }
 
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_searchQueryLength];
-  [v3 setObject:v19 forKey:@"searchQueryLength"];
+  [dictionary setObject:v19 forKey:@"searchQueryLength"];
 
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_11:
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_searchTab];
-    [v3 setObject:v8 forKey:@"searchTab"];
+    [dictionary setObject:v8 forKey:@"searchTab"];
   }
 
 LABEL_12:
   blendingCacheId = self->_blendingCacheId;
   if (blendingCacheId)
   {
-    [v3 setObject:blendingCacheId forKey:@"blendingCacheId"];
+    [dictionary setObject:blendingCacheId forKey:@"blendingCacheId"];
   }
 
   shownSuggestionIds = self->_shownSuggestionIds;
   if (shownSuggestionIds)
   {
-    [v3 setObject:shownSuggestionIds forKey:@"shownSuggestionIds"];
+    [dictionary setObject:shownSuggestionIds forKey:@"shownSuggestionIds"];
   }
 
   engagedSuggestionIds = self->_engagedSuggestionIds;
   if (engagedSuggestionIds)
   {
-    [v3 setObject:engagedSuggestionIds forKey:@"engagedSuggestionIds"];
+    [dictionary setObject:engagedSuggestionIds forKey:@"engagedSuggestionIds"];
   }
 
   metadata = self->_metadata;
   if (metadata)
   {
-    v13 = [(ATXPBAppDirectoryEventMetadata *)metadata dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"metadata"];
+    dictionaryRepresentation = [(ATXPBAppDirectoryEventMetadata *)metadata dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"metadata"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -345,10 +345,10 @@ LABEL_12:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 8) != 0)
@@ -398,7 +398,7 @@ LABEL_5:
   }
 
 LABEL_6:
-  v8 = [(NSString *)self->_bundleId copyWithZone:a3];
+  v8 = [(NSString *)self->_bundleId copyWithZone:zone];
   v9 = *(v6 + 72);
   *(v6 + 72) = v8;
 
@@ -435,7 +435,7 @@ LABEL_9:
   }
 
 LABEL_10:
-  v11 = [(NSString *)self->_blendingCacheId copyWithZone:a3];
+  v11 = [(NSString *)self->_blendingCacheId copyWithZone:zone];
   v12 = *(v6 + 64);
   *(v6 + 64) = v11;
 
@@ -458,7 +458,7 @@ LABEL_10:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v32 + 1) + 8 * i) copyWithZone:a3];
+        v18 = [*(*(&v32 + 1) + 8 * i) copyWithZone:zone];
         [(ATXPBAppDirectoryEvent *)v6 addShownSuggestionIds:v18];
       }
 
@@ -487,7 +487,7 @@ LABEL_10:
           objc_enumerationMutation(v19);
         }
 
-        v24 = [*(*(&v28 + 1) + 8 * j) copyWithZone:{a3, v28}];
+        v24 = [*(*(&v28 + 1) + 8 * j) copyWithZone:{zone, v28}];
         [(ATXPBAppDirectoryEvent *)v6 addEngagedSuggestionIds:v24];
       }
 
@@ -497,17 +497,17 @@ LABEL_10:
     while (v21);
   }
 
-  v25 = [(ATXPBAppDirectoryEventMetadata *)self->_metadata copyWithZone:a3];
+  v25 = [(ATXPBAppDirectoryEventMetadata *)self->_metadata copyWithZone:zone];
   v26 = *(v6 + 88);
   *(v6 + 88) = v25;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_48;
   }
@@ -515,58 +515,58 @@ LABEL_10:
   has = self->_has;
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 104) & 8) == 0 || self->_date != *(v4 + 4))
+    if ((*(equalCopy + 104) & 8) == 0 || self->_date != *(equalCopy + 4))
     {
       goto LABEL_48;
     }
   }
 
-  else if ((*(v4 + 104) & 8) != 0)
+  else if ((*(equalCopy + 104) & 8) != 0)
   {
     goto LABEL_48;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 104) & 0x10) == 0 || self->_eventType != *(v4 + 5))
+    if ((*(equalCopy + 104) & 0x10) == 0 || self->_eventType != *(equalCopy + 5))
     {
       goto LABEL_48;
     }
   }
 
-  else if ((*(v4 + 104) & 0x10) != 0)
+  else if ((*(equalCopy + 104) & 0x10) != 0)
   {
     goto LABEL_48;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 104) & 2) == 0 || self->_categoryID != *(v4 + 2))
+    if ((*(equalCopy + 104) & 2) == 0 || self->_categoryID != *(equalCopy + 2))
     {
       goto LABEL_48;
     }
   }
 
-  else if ((*(v4 + 104) & 2) != 0)
+  else if ((*(equalCopy + 104) & 2) != 0)
   {
     goto LABEL_48;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 104) & 4) == 0 || self->_categoryIndex != *(v4 + 3))
+    if ((*(equalCopy + 104) & 4) == 0 || self->_categoryIndex != *(equalCopy + 3))
     {
       goto LABEL_48;
     }
   }
 
-  else if ((*(v4 + 104) & 4) != 0)
+  else if ((*(equalCopy + 104) & 4) != 0)
   {
     goto LABEL_48;
   }
 
   bundleId = self->_bundleId;
-  if (bundleId | *(v4 + 9))
+  if (bundleId | *(equalCopy + 9))
   {
     if (![(NSString *)bundleId isEqual:?])
     {
@@ -580,51 +580,51 @@ LABEL_48:
 
   if (has)
   {
-    if ((*(v4 + 104) & 1) == 0 || self->_bundleIndex != *(v4 + 1))
+    if ((*(equalCopy + 104) & 1) == 0 || self->_bundleIndex != *(equalCopy + 1))
     {
       goto LABEL_48;
     }
   }
 
-  else if (*(v4 + 104))
+  else if (*(equalCopy + 104))
   {
     goto LABEL_48;
   }
 
   if ((has & 0x20) != 0)
   {
-    if ((*(v4 + 104) & 0x20) == 0 || self->_searchQueryLength != *(v4 + 6))
+    if ((*(equalCopy + 104) & 0x20) == 0 || self->_searchQueryLength != *(equalCopy + 6))
     {
       goto LABEL_48;
     }
   }
 
-  else if ((*(v4 + 104) & 0x20) != 0)
+  else if ((*(equalCopy + 104) & 0x20) != 0)
   {
     goto LABEL_48;
   }
 
   if ((has & 0x40) != 0)
   {
-    if ((*(v4 + 104) & 0x40) == 0 || self->_searchTab != *(v4 + 7))
+    if ((*(equalCopy + 104) & 0x40) == 0 || self->_searchTab != *(equalCopy + 7))
     {
       goto LABEL_48;
     }
   }
 
-  else if ((*(v4 + 104) & 0x40) != 0)
+  else if ((*(equalCopy + 104) & 0x40) != 0)
   {
     goto LABEL_48;
   }
 
   blendingCacheId = self->_blendingCacheId;
-  if (blendingCacheId | *(v4 + 8) && ![(NSString *)blendingCacheId isEqual:?])
+  if (blendingCacheId | *(equalCopy + 8) && ![(NSString *)blendingCacheId isEqual:?])
   {
     goto LABEL_48;
   }
 
   shownSuggestionIds = self->_shownSuggestionIds;
-  if (shownSuggestionIds | *(v4 + 12))
+  if (shownSuggestionIds | *(equalCopy + 12))
   {
     if (![(NSMutableArray *)shownSuggestionIds isEqual:?])
     {
@@ -633,7 +633,7 @@ LABEL_48:
   }
 
   engagedSuggestionIds = self->_engagedSuggestionIds;
-  if (engagedSuggestionIds | *(v4 + 10))
+  if (engagedSuggestionIds | *(equalCopy + 10))
   {
     if (![(NSMutableArray *)engagedSuggestionIds isEqual:?])
     {
@@ -642,7 +642,7 @@ LABEL_48:
   }
 
   metadata = self->_metadata;
-  if (metadata | *(v4 + 11))
+  if (metadata | *(equalCopy + 11))
   {
     v11 = [(ATXPBAppDirectoryEventMetadata *)metadata isEqual:?];
   }
@@ -1079,19 +1079,19 @@ LABEL_23:
   return result;
 }
 
-- (uint64_t)addShownSuggestionIds:(uint64_t)a1
+- (uint64_t)addShownSuggestionIds:(uint64_t)ids
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (ids)
   {
     v5 = OUTLINED_FUNCTION_7_2();
     v10 = v6;
     if (!v5)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v8 = *(a1 + 96);
-      *(a1 + 96) = v7;
+      v8 = *(ids + 96);
+      *(ids + 96) = v7;
 
       v5 = OUTLINED_FUNCTION_7_2();
     }
@@ -1113,15 +1113,15 @@ LABEL_23:
   return result;
 }
 
-- (id)shownSuggestionIdsAtIndex:(id *)a1
+- (id)shownSuggestionIdsAtIndex:(id *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [a1[12] objectAtIndex:a2];
+    index = [index[12] objectAtIndex:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
 - (uint64_t)clearEngagedSuggestionIds
@@ -1134,19 +1134,19 @@ LABEL_23:
   return result;
 }
 
-- (uint64_t)addEngagedSuggestionIds:(uint64_t)a1
+- (uint64_t)addEngagedSuggestionIds:(uint64_t)ids
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (ids)
   {
     v5 = OUTLINED_FUNCTION_8_0();
     v10 = v6;
     if (!v5)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v8 = *(a1 + 80);
-      *(a1 + 80) = v7;
+      v8 = *(ids + 80);
+      *(ids + 80) = v7;
 
       v5 = OUTLINED_FUNCTION_8_0();
     }
@@ -1168,15 +1168,15 @@ LABEL_23:
   return result;
 }
 
-- (id)engagedSuggestionIdsAtIndex:(id *)a1
+- (id)engagedSuggestionIdsAtIndex:(id *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [a1[10] objectAtIndex:a2];
+    index = [index[10] objectAtIndex:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
 - (BOOL)hasMetadata
@@ -1189,18 +1189,18 @@ LABEL_23:
   return result;
 }
 
-- (void)copyTo:(uint64_t)a1
+- (void)copyTo:(uint64_t)to
 {
   v3 = a2;
-  if (!a1)
+  if (!to)
   {
     goto LABEL_29;
   }
 
-  v4 = *(a1 + 104);
+  v4 = *(to + 104);
   if ((v4 & 8) != 0)
   {
-    v3[4] = *(a1 + 32);
+    v3[4] = *(to + 32);
     v3 = OUTLINED_FUNCTION_3_5(v3, 104);
     if ((v4 & 0x10) == 0)
     {
@@ -1214,7 +1214,7 @@ LABEL_4:
     }
   }
 
-  else if ((*(a1 + 104) & 0x10) == 0)
+  else if ((*(to + 104) & 0x10) == 0)
   {
     goto LABEL_4;
   }
@@ -1243,7 +1243,7 @@ LABEL_6:
   }
 
 LABEL_7:
-  v7 = *(a1 + 72);
+  v7 = *(to + 72);
   v32 = v3;
   if (v7)
   {
@@ -1251,10 +1251,10 @@ LABEL_7:
     v3 = v32;
   }
 
-  v8 = *(a1 + 104);
+  v8 = *(to + 104);
   if ((v8 & 1) == 0)
   {
-    if ((*(a1 + 104) & 0x20) == 0)
+    if ((*(to + 104) & 0x20) == 0)
     {
       goto LABEL_11;
     }
@@ -1286,7 +1286,7 @@ LABEL_12:
   }
 
 LABEL_13:
-  v12 = *(a1 + 64);
+  v12 = *(to + 64);
   if (v12)
   {
     [(ATXPBAppDirectoryEvent *)v32 setBlendingCacheId:v12];
@@ -1305,7 +1305,7 @@ LABEL_13:
       v14 = v13;
       for (i = 0; i != v14; ++i)
       {
-        v16 = [(ATXPBAppDirectoryEvent *)a1 shownSuggestionIdsAtIndex:?];
+        v16 = [(ATXPBAppDirectoryEvent *)to shownSuggestionIdsAtIndex:?];
         [(ATXPBAppDirectoryEvent *)v32 addShownSuggestionIds:v16];
       }
     }
@@ -1324,13 +1324,13 @@ LABEL_13:
       v18 = v17;
       for (j = 0; j != v18; ++j)
       {
-        v20 = [(ATXPBAppDirectoryEvent *)a1 engagedSuggestionIdsAtIndex:?];
+        v20 = [(ATXPBAppDirectoryEvent *)to engagedSuggestionIdsAtIndex:?];
         [(ATXPBAppDirectoryEvent *)v32 addEngagedSuggestionIds:v20];
       }
     }
   }
 
-  v21 = *(a1 + 88);
+  v21 = *(to + 88);
   v3 = v32;
   if (v21)
   {
@@ -1341,36 +1341,36 @@ LABEL_13:
 LABEL_29:
 }
 
-- (void)setBundleId:(uint64_t)a1
+- (void)setBundleId:(uint64_t)id
 {
-  if (a1)
+  if (id)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 72);
+    OUTLINED_FUNCTION_2(id, a2, 72);
   }
 }
 
-- (void)setBlendingCacheId:(uint64_t)a1
+- (void)setBlendingCacheId:(uint64_t)id
 {
-  if (a1)
+  if (id)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 64);
+    OUTLINED_FUNCTION_2(id, a2, 64);
   }
 }
 
-- (void)setMetadata:(uint64_t)a1
+- (void)setMetadata:(uint64_t)metadata
 {
-  if (a1)
+  if (metadata)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 88);
+    OUTLINED_FUNCTION_2(metadata, a2, 88);
   }
 }
 
-- (void)mergeFrom:(uint64_t)a1
+- (void)mergeFrom:(uint64_t)from
 {
   v41 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (!a1)
+  if (!from)
   {
     goto LABEL_41;
   }
@@ -1378,7 +1378,7 @@ LABEL_29:
   v5 = v3[104];
   if ((v5 & 8) != 0)
   {
-    *(a1 + 32) = *(v3 + 4);
+    *(from + 32) = *(v3 + 4);
     OUTLINED_FUNCTION_4_4(104);
     if ((v5 & 0x10) == 0)
     {
@@ -1417,14 +1417,14 @@ LABEL_34:
   {
 LABEL_6:
     OUTLINED_FUNCTION_2_4();
-    *(a1 + v7) = v6 | 4;
+    *(from + v7) = v6 | 4;
   }
 
 LABEL_7:
   v8 = *(v4 + 9);
   if (v8)
   {
-    [(ATXPBAppDirectoryEvent *)a1 setBundleId:v8];
+    [(ATXPBAppDirectoryEvent *)from setBundleId:v8];
   }
 
   v9 = *(v4 + 104);
@@ -1458,14 +1458,14 @@ LABEL_11:
   {
 LABEL_12:
     OUTLINED_FUNCTION_2_4();
-    *(a1 + v11) = v10 | 0x40;
+    *(from + v11) = v10 | 0x40;
   }
 
 LABEL_13:
   v12 = *(v4 + 8);
   if (v12)
   {
-    [(ATXPBAppDirectoryEvent *)a1 setBlendingCacheId:v12];
+    [(ATXPBAppDirectoryEvent *)from setBlendingCacheId:v12];
   }
 
   v37 = 0u;
@@ -1487,7 +1487,7 @@ LABEL_13:
           objc_enumerationMutation(v13);
         }
 
-        [(ATXPBAppDirectoryEvent *)a1 addShownSuggestionIds:?];
+        [(ATXPBAppDirectoryEvent *)from addShownSuggestionIds:?];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v35 objects:v40 count:16];
@@ -1515,7 +1515,7 @@ LABEL_13:
           objc_enumerationMutation(v18);
         }
 
-        [(ATXPBAppDirectoryEvent *)a1 addEngagedSuggestionIds:?];
+        [(ATXPBAppDirectoryEvent *)from addEngagedSuggestionIds:?];
       }
 
       v20 = [v18 countByEnumeratingWithState:&v31 objects:v39 count:16];
@@ -1524,7 +1524,7 @@ LABEL_13:
     while (v20);
   }
 
-  v23 = *(a1 + 88);
+  v23 = *(from + 88);
   v24 = *(v4 + 11);
   if (v23)
   {
@@ -1536,7 +1536,7 @@ LABEL_13:
 
   else if (v24)
   {
-    [(ATXPBAppDirectoryEvent *)a1 setMetadata:v24];
+    [(ATXPBAppDirectoryEvent *)from setMetadata:v24];
   }
 
 LABEL_41:
@@ -1544,9 +1544,9 @@ LABEL_41:
 
 - (double)date
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 32);
+    return *(self + 32);
   }
 
   else
@@ -1645,11 +1645,11 @@ LABEL_41:
   return result;
 }
 
-- (void)setShownSuggestionIds:(uint64_t)a1
+- (void)setShownSuggestionIds:(uint64_t)ids
 {
-  if (a1)
+  if (ids)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 96);
+    OUTLINED_FUNCTION_2(ids, a2, 96);
   }
 }
 
@@ -1663,11 +1663,11 @@ LABEL_41:
   return result;
 }
 
-- (void)setEngagedSuggestionIds:(uint64_t)a1
+- (void)setEngagedSuggestionIds:(uint64_t)ids
 {
-  if (a1)
+  if (ids)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 80);
+    OUTLINED_FUNCTION_2(ids, a2, 80);
   }
 }
 

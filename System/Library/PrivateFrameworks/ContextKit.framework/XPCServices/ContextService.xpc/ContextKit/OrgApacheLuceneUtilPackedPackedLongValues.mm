@@ -1,20 +1,20 @@
 @interface OrgApacheLuceneUtilPackedPackedLongValues
 + (void)initialize;
-- (OrgApacheLuceneUtilPackedPackedLongValues)initWithInt:(int)a3 withInt:(int)a4 withOrgApacheLuceneUtilPackedPackedInts_ReaderArray:(id)a5 withLong:(int64_t)a6 withLong:(int64_t)a7;
+- (OrgApacheLuceneUtilPackedPackedLongValues)initWithInt:(int)int withInt:(int)withInt withOrgApacheLuceneUtilPackedPackedInts_ReaderArray:(id)array withLong:(int64_t)long withLong:(int64_t)withLong;
 - (id)iterator;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilPackedPackedLongValues
 
-- (OrgApacheLuceneUtilPackedPackedLongValues)initWithInt:(int)a3 withInt:(int)a4 withOrgApacheLuceneUtilPackedPackedInts_ReaderArray:(id)a5 withLong:(int64_t)a6 withLong:(int64_t)a7
+- (OrgApacheLuceneUtilPackedPackedLongValues)initWithInt:(int)int withInt:(int)withInt withOrgApacheLuceneUtilPackedPackedInts_ReaderArray:(id)array withLong:(int64_t)long withLong:(int64_t)withLong
 {
   OrgApacheLuceneUtilLongValues_init(self);
-  self->pageShift_ = a3;
-  self->pageMask_ = a4;
-  JreStrongAssign(&self->values_, a5);
-  self->size_ = a6;
-  self->ramBytesUsed_ = a7;
+  self->pageShift_ = int;
+  self->pageMask_ = withInt;
+  JreStrongAssign(&self->values_, array);
+  self->size_ = long;
+  self->ramBytesUsed_ = withLong;
   return self;
 }
 
@@ -35,7 +35,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = OrgApacheLuceneUtilPackedPackedLongValues_class_();
     qword_1005544B0 = OrgApacheLuceneUtilRamUsageEstimator_shallowSizeOfInstanceWithIOSClass_(v2);

@@ -1,11 +1,11 @@
 @interface REShortcutFilter
 - (REShortcutFilter)init;
-- (id)identifierForIntent:(id)a3 bundleIdentifier:(id)a4;
-- (id)identifierForUserActivity:(id)a3 bundleIdentifier:(id)a4;
-- (id)intentByFilteringIntent:(id)a3 withLevel:(unint64_t)a4;
-- (id)userActivityByFilteringUserActivity:(id)a3 withLevel:(unint64_t)a4;
-- (unint64_t)_actionIdentifierForIntent:(id)a3;
-- (unint64_t)_actionIdentifierForUserActivity:(id)a3;
+- (id)identifierForIntent:(id)intent bundleIdentifier:(id)identifier;
+- (id)identifierForUserActivity:(id)activity bundleIdentifier:(id)identifier;
+- (id)intentByFilteringIntent:(id)intent withLevel:(unint64_t)level;
+- (id)userActivityByFilteringUserActivity:(id)activity withLevel:(unint64_t)level;
+- (unint64_t)_actionIdentifierForIntent:(id)intent;
+- (unint64_t)_actionIdentifierForUserActivity:(id)activity;
 @end
 
 @implementation REShortcutFilter
@@ -17,83 +17,83 @@
   return [(REShortcutFilter *)&v3 init];
 }
 
-- (id)intentByFilteringIntent:(id)a3 withLevel:(unint64_t)a4
+- (id)intentByFilteringIntent:(id)intent withLevel:(unint64_t)level
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  intentCopy = intent;
+  v6 = intentCopy;
+  if (level)
   {
-    v7 = v5;
-    if (a4 != 1)
+    v7 = intentCopy;
+    if (level != 1)
     {
       goto LABEL_6;
     }
 
-    v8 = [v5 _emptyCopy];
+    _emptyCopy = [intentCopy _emptyCopy];
   }
 
   else
   {
-    v8 = REIntentBySimplifyingParametersForIntent(v5);
+    _emptyCopy = REIntentBySimplifyingParametersForIntent(intentCopy);
   }
 
-  v7 = v8;
+  v7 = _emptyCopy;
 
 LABEL_6:
 
   return v7;
 }
 
-- (id)userActivityByFilteringUserActivity:(id)a3 withLevel:(unint64_t)a4
+- (id)userActivityByFilteringUserActivity:(id)activity withLevel:(unint64_t)level
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 == 1)
+  activityCopy = activity;
+  v6 = activityCopy;
+  if (level == 1)
   {
     v7 = objc_alloc(MEMORY[0x277CC1EF0]);
-    v8 = [v5 activityType];
-    v6 = [v7 initWithActivityType:v8];
+    activityType = [activityCopy activityType];
+    v6 = [v7 initWithActivityType:activityType];
   }
 
   return v6;
 }
 
-- (unint64_t)_actionIdentifierForIntent:(id)a3
+- (unint64_t)_actionIdentifierForIntent:(id)intent
 {
-  v3 = REParametersForIntent(a3);
-  v4 = [v3 re_actionIdentifierHashValue];
+  v3 = REParametersForIntent(intent);
+  re_actionIdentifierHashValue = [v3 re_actionIdentifierHashValue];
 
-  return v4;
+  return re_actionIdentifierHashValue;
 }
 
-- (id)identifierForIntent:(id)a3 bundleIdentifier:(id)a4
+- (id)identifierForIntent:(id)intent bundleIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(REShortcutFilter *)self _actionIdentifierForIntent:a3];
+  identifierCopy = identifier;
+  v7 = [(REShortcutFilter *)self _actionIdentifierForIntent:intent];
   v8 = MEMORY[0x277CCACA8];
   v9 = MEMORY[0x277CCABB0];
-  v10 = v6;
+  v10 = identifierCopy;
   v11 = [v9 numberWithUnsignedLongLong:v7];
   v12 = [v8 stringWithFormat:@"%@-%@", v10, v11];
 
   return v12;
 }
 
-- (unint64_t)_actionIdentifierForUserActivity:(id)a3
+- (unint64_t)_actionIdentifierForUserActivity:(id)activity
 {
-  v3 = REExtractUserActivity(a3);
-  v4 = [v3 re_actionIdentifierHashValue];
+  v3 = REExtractUserActivity(activity);
+  re_actionIdentifierHashValue = [v3 re_actionIdentifierHashValue];
 
-  return v4;
+  return re_actionIdentifierHashValue;
 }
 
-- (id)identifierForUserActivity:(id)a3 bundleIdentifier:(id)a4
+- (id)identifierForUserActivity:(id)activity bundleIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(REShortcutFilter *)self _actionIdentifierForUserActivity:a3];
+  identifierCopy = identifier;
+  v7 = [(REShortcutFilter *)self _actionIdentifierForUserActivity:activity];
   v8 = MEMORY[0x277CCACA8];
   v9 = MEMORY[0x277CCABB0];
-  v10 = v6;
+  v10 = identifierCopy;
   v11 = [v9 numberWithUnsignedLongLong:v7];
   v12 = [v8 stringWithFormat:@"%@-%@", v10, v11];
 

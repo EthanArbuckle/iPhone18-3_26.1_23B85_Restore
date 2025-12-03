@@ -8,23 +8,23 @@
 
 - (id)localizedStatusDisplayString
 {
-  v1 = [a1 status];
-  v2 = [v1 localizedPreferredName];
+  status = [self status];
+  localizedPreferredName = [status localizedPreferredName];
 
-  return v2;
+  return localizedPreferredName;
 }
 
 - (id)displayItems
 {
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [a1 recordItem];
-  [v2 hk_addNonNilObject:v3];
+  recordItem = [self recordItem];
+  [v2 hk_addNonNilObject:recordItem];
 
-  v4 = [a1 valueItem];
-  [v2 hk_addNonNilObject:v4];
+  valueItem = [self valueItem];
+  [v2 hk_addNonNilObject:valueItem];
 
-  v5 = [a1 statusItem];
-  [v2 hk_addNonNilObject:v5];
+  statusItem = [self statusItem];
+  [v2 hk_addNonNilObject:statusItem];
 
   v6 = [v2 copy];
 
@@ -33,26 +33,26 @@
 
 - (id)valueItem
 {
-  v2 = [a1 value];
-  v3 = [v2 inspectableValue];
-  v4 = [v3 stringValue];
-  v5 = v4;
-  if (v4)
+  value = [self value];
+  inspectableValue = [value inspectableValue];
+  stringValue = [inspectableValue stringValue];
+  v5 = stringValue;
+  if (stringValue)
   {
-    v6 = v4;
+    localizedPreferredName = stringValue;
   }
 
   else
   {
-    v7 = [a1 value];
-    v8 = [v7 inspectableValue];
-    v9 = [v8 ontologyConcept];
-    v6 = [v9 localizedPreferredName];
+    value2 = [self value];
+    inspectableValue2 = [value2 inspectableValue];
+    ontologyConcept = [inspectableValue2 ontologyConcept];
+    localizedPreferredName = [ontologyConcept localizedPreferredName];
   }
 
   v10 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v11 = [v10 localizedStringForKey:@"DETAIL_VIEW_RECORDS_VALUE_TITLE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Pasadena"];
-  v12 = [HKVerifiableClinicalRecordDisplayItem subtitleItemWithTitleText:v11 detailText:v6 style:1];
+  v12 = [HKVerifiableClinicalRecordDisplayItem subtitleItemWithTitleText:v11 detailText:localizedPreferredName style:1];
 
   return v12;
 }

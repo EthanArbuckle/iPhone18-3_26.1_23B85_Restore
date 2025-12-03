@@ -1,24 +1,24 @@
 @interface WFEvernoteAccessResourceUserInterface
-- (WFEvernoteAccessResourceUserInterface)initWithUserInterfaceType:(id)a3 attribution:(id)a4;
-- (void)authorizeWithCompletionHandler:(id)a3;
+- (WFEvernoteAccessResourceUserInterface)initWithUserInterfaceType:(id)type attribution:(id)attribution;
+- (void)authorizeWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFEvernoteAccessResourceUserInterface
 
-- (void)authorizeWithCompletionHandler:(id)a3
+- (void)authorizeWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   _Block_copy(v4);
-  v5 = self;
-  sub_23E354628(v5, v4);
+  selfCopy = self;
+  sub_23E354628(selfCopy, v4);
   _Block_release(v4);
 }
 
-- (WFEvernoteAccessResourceUserInterface)initWithUserInterfaceType:(id)a3 attribution:(id)a4
+- (WFEvernoteAccessResourceUserInterface)initWithUserInterfaceType:(id)type attribution:(id)attribution
 {
-  v5 = a3;
-  v6 = a4;
-  return sub_23E354C98(v5, a4);
+  typeCopy = type;
+  attributionCopy = attribution;
+  return sub_23E354C98(typeCopy, attribution);
 }
 
 @end

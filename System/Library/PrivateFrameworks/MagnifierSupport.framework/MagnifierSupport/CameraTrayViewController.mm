@@ -1,82 +1,82 @@
 @interface CameraTrayViewController
-- (_TtC16MagnifierSupport24CameraTrayViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (_TtC16MagnifierSupport24CameraTrayViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (uint64_t)detectionMenuActionTriggered:;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
-- (void)didTapActivitiesButton:(id)a3;
-- (void)didTapBackButton:(id)a3;
-- (void)didTapDetectionModeButton:(id)a3;
-- (void)didTapReaderButton:(id)a3;
-- (void)didTapRedoDocumentButton:(id)a3;
-- (void)didTapSettingsButton:(id)a3;
-- (void)didTapShareButton:(id)a3;
-- (void)didTapSnapshotButton:(id)a3;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
+- (void)didTapActivitiesButton:(id)button;
+- (void)didTapBackButton:(id)button;
+- (void)didTapDetectionModeButton:(id)button;
+- (void)didTapReaderButton:(id)button;
+- (void)didTapRedoDocumentButton:(id)button;
+- (void)didTapSettingsButton:(id)button;
+- (void)didTapShareButton:(id)button;
+- (void)didTapSnapshotButton:(id)button;
 - (void)switchToDetectionModeControls;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CameraTrayViewController
 
-- (void)didTapActivitiesButton:(id)a3
+- (void)didTapActivitiesButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
+  buttonCopy = button;
+  selfCopy = self;
   sub_257C7E070();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_257D85A48();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_257D88594(a3);
+  selfCopy = self;
+  sub_257D88594(appear);
 }
 
-- (void)didTapSettingsButton:(id)a3
+- (void)didTapSettingsButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
+  buttonCopy = button;
+  selfCopy = self;
   sub_257D98DCC();
 }
 
-- (void)didTapShareButton:(id)a3
+- (void)didTapShareButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
-  sub_257D90C60(v4, sub_257BE0880);
+  buttonCopy = button;
+  selfCopy = self;
+  sub_257D90C60(buttonCopy, sub_257BE0880);
 }
 
-- (void)didTapReaderButton:(id)a3
+- (void)didTapReaderButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
-  sub_257D90C60(v4, sub_257BE1DC0);
+  buttonCopy = button;
+  selfCopy = self;
+  sub_257D90C60(buttonCopy, sub_257BE1DC0);
 }
 
-- (void)didTapSnapshotButton:(id)a3
+- (void)didTapSnapshotButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
-  sub_257D90DA0(v4);
+  buttonCopy = button;
+  selfCopy = self;
+  sub_257D90DA0(buttonCopy);
 }
 
-- (void)didTapDetectionModeButton:(id)a3
+- (void)didTapDetectionModeButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
+  buttonCopy = button;
+  selfCopy = self;
   sub_257D98F30();
 }
 
-- (void)didTapRedoDocumentButton:(id)a3
+- (void)didTapRedoDocumentButton:(id)button
 {
   v3 = qword_281544FE0;
-  v4 = self;
+  selfCopy = self;
   if (v3 != -1)
   {
     swift_once();
@@ -89,22 +89,22 @@
   sub_257D98B04(2);
 }
 
-- (void)didTapBackButton:(id)a3
+- (void)didTapBackButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
+  buttonCopy = button;
+  selfCopy = self;
   sub_257D9968C();
 }
 
 - (void)switchToDetectionModeControls
 {
-  v2 = self;
+  selfCopy = self;
   sub_257D839A4();
 }
 
-- (_TtC16MagnifierSupport24CameraTrayViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MagnifierSupport24CameraTrayViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_257ECF500();
     v7 = v6;
@@ -116,35 +116,35 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_257D91FB0(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_257D91FB0(v5, v7, bundle);
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
-  v6 = self;
+  interactionCopy = interaction;
+  selfCopy = self;
   v7 = sub_257D99954();
 
   return v7;
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = a3;
-  v8 = a4;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  v9 = self;
+  selfCopy = self;
   sub_257D99BF0();
 
   swift_unknownObjectRelease();
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
   v6 = OBJC_IVAR____TtC16MagnifierSupport24CameraTrayViewController_captureButtonContextMenuTimer;
   v7 = *(&self->super.super.super.isa + OBJC_IVAR____TtC16MagnifierSupport24CameraTrayViewController_captureButtonContextMenuTimer);
-  v8 = self;
+  selfCopy = self;
   if (v7)
   {
     [v7 invalidate];

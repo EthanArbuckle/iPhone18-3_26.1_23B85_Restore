@@ -1,31 +1,31 @@
 @interface _FBServiceFacilityServerPendingConnection
-+ (id)pendingConnectionToFacility:(id)a3 completion:(id)a4;
-- (_FBServiceFacilityServerPendingConnection)initWithFacility:(id)a3 completion:(id)a4;
++ (id)pendingConnectionToFacility:(id)facility completion:(id)completion;
+- (_FBServiceFacilityServerPendingConnection)initWithFacility:(id)facility completion:(id)completion;
 @end
 
 @implementation _FBServiceFacilityServerPendingConnection
 
-+ (id)pendingConnectionToFacility:(id)a3 completion:(id)a4
++ (id)pendingConnectionToFacility:(id)facility completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_FBServiceFacilityServerPendingConnection alloc] initWithFacility:v6 completion:v5];
+  completionCopy = completion;
+  facilityCopy = facility;
+  v7 = [[_FBServiceFacilityServerPendingConnection alloc] initWithFacility:facilityCopy completion:completionCopy];
 
   return v7;
 }
 
-- (_FBServiceFacilityServerPendingConnection)initWithFacility:(id)a3 completion:(id)a4
+- (_FBServiceFacilityServerPendingConnection)initWithFacility:(id)facility completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  facilityCopy = facility;
+  completionCopy = completion;
   v14.receiver = self;
   v14.super_class = _FBServiceFacilityServerPendingConnection;
   v9 = [(_FBServiceFacilityServerPendingConnection *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_facility, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_facility, facility);
+    v11 = [completionCopy copy];
     completion = v10->_completion;
     v10->_completion = v11;
   }

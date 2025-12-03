@@ -2,19 +2,19 @@
 - (_LTLanguageAvailability)init;
 - (_LTLanguageAvailabilityDelegate)delegate;
 - (_LTTextSessionLocaleProviding)localeProvider;
-- (id)_uniqueLocalesFromSupportedPairs:(id)a3;
-- (void)_cachedLocaleStatusWithCompletion:(id)a3;
-- (void)_checkStatusWithSourceLanguage:(id)a3 targetLanguage:(id)a4 sourceSample:(id)a5 completion:(id)a6;
+- (id)_uniqueLocalesFromSupportedPairs:(id)pairs;
+- (void)_cachedLocaleStatusWithCompletion:(id)completion;
+- (void)_checkStatusWithSourceLanguage:(id)language targetLanguage:(id)targetLanguage sourceSample:(id)sample completion:(id)completion;
 - (void)_didUpdateCachedValues;
-- (void)_installedLocalesWithCompletion:(id)a3;
-- (void)_supportedLocalePairsWithCompletion:(id)a3;
+- (void)_installedLocalesWithCompletion:(id)completion;
+- (void)_supportedLocalePairsWithCompletion:(id)completion;
 - (void)_updateCachedValues;
-- (void)currentlyInstalledLocalesWithCompletion:(id)a3;
-- (void)localeProviderSupportedLocalePairsWithCompletion:(id)a3;
-- (void)preflightChecker:(id)a3 continueCheckingFromStep:(int64_t)a4 forConfiguration:(id)a5 completion:(id)a6;
-- (void)setLocaleProvider:(id)a3;
-- (void)statusFromLanguage:(id)a3 toLanguage:(id)a4 completion:(id)a5;
-- (void)supportedLanguagesWithCompletion:(id)a3;
+- (void)currentlyInstalledLocalesWithCompletion:(id)completion;
+- (void)localeProviderSupportedLocalePairsWithCompletion:(id)completion;
+- (void)preflightChecker:(id)checker continueCheckingFromStep:(int64_t)step forConfiguration:(id)configuration completion:(id)completion;
+- (void)setLocaleProvider:(id)provider;
+- (void)statusFromLanguage:(id)language toLanguage:(id)toLanguage completion:(id)completion;
+- (void)supportedLanguagesWithCompletion:(id)completion;
 @end
 
 @implementation _LTLanguageAvailability
@@ -54,16 +54,16 @@
   return v3;
 }
 
-- (void)supportedLanguagesWithCompletion:(id)a3
+- (void)supportedLanguagesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __60___LTLanguageAvailability_supportedLanguagesWithCompletion___block_invoke;
   v6[3] = &unk_278B6CDD0;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v7 = v5;
   [(_LTLanguageAvailability *)self _supportedLocalePairsWithCompletion:v6];
 
@@ -71,37 +71,37 @@
   objc_destroyWeak(&location);
 }
 
-- (void)statusFromLanguage:(id)a3 toLanguage:(id)a4 completion:(id)a5
+- (void)statusFromLanguage:(id)language toLanguage:(id)toLanguage completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __68___LTLanguageAvailability_statusFromLanguage_toLanguage_completion___block_invoke;
   v10[3] = &unk_278B6CDF8;
-  v11 = v8;
-  v9 = v8;
-  [(_LTLanguageAvailability *)self _checkStatusWithSourceLanguage:a3 targetLanguage:a4 sourceSample:0 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(_LTLanguageAvailability *)self _checkStatusWithSourceLanguage:language targetLanguage:toLanguage sourceSample:0 completion:v10];
 }
 
-- (void)_checkStatusWithSourceLanguage:(id)a3 targetLanguage:(id)a4 sourceSample:(id)a5 completion:(id)a6
+- (void)_checkStatusWithSourceLanguage:(id)language targetLanguage:(id)targetLanguage sourceSample:(id)sample completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  languageCopy = language;
+  targetLanguageCopy = targetLanguage;
+  sampleCopy = sample;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __97___LTLanguageAvailability__checkStatusWithSourceLanguage_targetLanguage_sourceSample_completion___block_invoke;
   v18[3] = &unk_278B6CEC0;
   objc_copyWeak(&v23, &location);
-  v14 = v12;
+  v14 = sampleCopy;
   v19 = v14;
-  v15 = v10;
+  v15 = languageCopy;
   v20 = v15;
-  v16 = v11;
+  v16 = targetLanguageCopy;
   v21 = v16;
-  v17 = v13;
+  v17 = completionCopy;
   v22 = v17;
   [(_LTLanguageAvailability *)self _supportedLocalePairsWithCompletion:v18];
 
@@ -109,9 +109,9 @@
   objc_destroyWeak(&location);
 }
 
-- (void)setLocaleProvider:(id)a3
+- (void)setLocaleProvider:(id)provider
 {
-  objc_storeWeak(&self->_localeProvider, a3);
+  objc_storeWeak(&self->_localeProvider, provider);
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __45___LTLanguageAvailability_setLocaleProvider___block_invoke;
@@ -136,7 +136,7 @@
   v10[1] = 3221225472;
   v11 = __46___LTLanguageAvailability__updateCachedValues__block_invoke;
   v12 = &unk_278B6CD80;
-  v13 = self;
+  selfCopy = self;
   v14 = &v15;
   v3 = v10;
   os_unfair_lock_assert_not_owner(&self->_lock);
@@ -179,7 +179,7 @@
   v6[1] = 3221225472;
   v7 = __49___LTLanguageAvailability__didUpdateCachedValues__block_invoke;
   v8 = &unk_278B6CF60;
-  v9 = self;
+  selfCopy = self;
   v10 = &v18;
   v11 = &v12;
   v3 = v6;
@@ -204,16 +204,16 @@
   _Block_object_dispose(&v18, 8);
 }
 
-- (id)_uniqueLocalesFromSupportedPairs:(id)a3
+- (id)_uniqueLocalesFromSupportedPairs:(id)pairs
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  pairsCopy = pairs;
   v4 = [MEMORY[0x277CBEB58] set];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = pairsCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -229,11 +229,11 @@
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 sourceLocale];
-        [v4 addObject:v11];
+        sourceLocale = [v10 sourceLocale];
+        [v4 addObject:sourceLocale];
 
-        v12 = [v10 targetLocale];
-        [v4 addObject:v12];
+        targetLocale = [v10 targetLocale];
+        [v4 addObject:targetLocale];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -242,16 +242,16 @@
     while (v7);
   }
 
-  v13 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return allObjects;
 }
 
-- (void)_supportedLocalePairsWithCompletion:(id)a3
+- (void)_supportedLocalePairsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -262,7 +262,7 @@
   v13[1] = 3221225472;
   v14 = __63___LTLanguageAvailability__supportedLocalePairsWithCompletion___block_invoke;
   v15 = &unk_278B6CD80;
-  v16 = self;
+  selfCopy = self;
   v17 = &v18;
   v5 = v13;
   os_unfair_lock_assert_not_owner(&self->_lock);
@@ -272,7 +272,7 @@
   os_unfair_lock_unlock(&self->_lock);
   if (v19[5])
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
   else
@@ -283,7 +283,7 @@
     v8 = __63___LTLanguageAvailability__supportedLocalePairsWithCompletion___block_invoke_2;
     v9 = &unk_278B6CFB0;
     objc_copyWeak(&v11, &location);
-    v10 = v4;
+    v10 = completionCopy;
     v6 = v7;
     os_unfair_lock_assert_not_owner(&self->_lock);
     os_unfair_lock_lock(&self->_lock);
@@ -297,9 +297,9 @@
   _Block_object_dispose(&v18, 8);
 }
 
-- (void)_cachedLocaleStatusWithCompletion:(id)a3
+- (void)_cachedLocaleStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -310,7 +310,7 @@
   v13[1] = 3221225472;
   v14 = __61___LTLanguageAvailability__cachedLocaleStatusWithCompletion___block_invoke;
   v15 = &unk_278B6CD80;
-  v16 = self;
+  selfCopy = self;
   v17 = &v18;
   v5 = v13;
   os_unfair_lock_assert_not_owner(&self->_lock);
@@ -320,7 +320,7 @@
   os_unfair_lock_unlock(&self->_lock);
   if (v19[5])
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
   else
@@ -331,7 +331,7 @@
     v8 = __61___LTLanguageAvailability__cachedLocaleStatusWithCompletion___block_invoke_2;
     v9 = &unk_278B6CFB0;
     objc_copyWeak(&v11, &location);
-    v10 = v4;
+    v10 = completionCopy;
     v6 = v7;
     os_unfair_lock_assert_not_owner(&self->_lock);
     os_unfair_lock_lock(&self->_lock);
@@ -345,9 +345,9 @@
   _Block_object_dispose(&v18, 8);
 }
 
-- (void)_installedLocalesWithCompletion:(id)a3
+- (void)_installedLocalesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -358,7 +358,7 @@
   v14[1] = 3221225472;
   v15 = __59___LTLanguageAvailability__installedLocalesWithCompletion___block_invoke;
   v16 = &unk_278B6CD80;
-  v17 = self;
+  selfCopy = self;
   v18 = &v19;
   v5 = v14;
   os_unfair_lock_assert_not_owner(&self->_lock);
@@ -375,7 +375,7 @@
   v8[3] = &unk_278B6D000;
   objc_copyWeak(&v10, &from);
   objc_copyWeak(&v11, &location);
-  v7 = v4;
+  v7 = completionCopy;
   v9 = v7;
   [v6 currentlyInstalledLocalesWithCompletion:v8];
 
@@ -386,28 +386,28 @@
   _Block_object_dispose(&v19, 8);
 }
 
-- (void)localeProviderSupportedLocalePairsWithCompletion:(id)a3
+- (void)localeProviderSupportedLocalePairsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __76___LTLanguageAvailability_localeProviderSupportedLocalePairsWithCompletion___block_invoke;
   v5[3] = &unk_278B6D028;
-  v6 = v3;
-  v4 = v3;
+  v6 = completionCopy;
+  v4 = completionCopy;
   [_LTTranslator availableLocalePairsForTask:5 useDedicatedMachPort:1 completion:v5];
 }
 
-- (void)currentlyInstalledLocalesWithCompletion:(id)a3
+- (void)currentlyInstalledLocalesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67___LTLanguageAvailability_currentlyInstalledLocalesWithCompletion___block_invoke;
   v6[3] = &unk_278B6CDD0;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v7 = v5;
   [(_LTLanguageAvailability *)self _cachedLocaleStatusWithCompletion:v6];
 
@@ -415,12 +415,12 @@
   objc_destroyWeak(&location);
 }
 
-- (void)preflightChecker:(id)a3 continueCheckingFromStep:(int64_t)a4 forConfiguration:(id)a5 completion:(id)a6
+- (void)preflightChecker:(id)checker continueCheckingFromStep:(int64_t)step forConfiguration:(id)configuration completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  if (a4 == 2)
+  checkerCopy = checker;
+  configurationCopy = configuration;
+  completionCopy = completion;
+  if (step == 2)
   {
     v14 = _LTOSLogTextAPI();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -429,9 +429,9 @@
     }
 
     v15 = MEMORY[0x277CCA9B8];
-    v16 = [v10 effectiveSourceLocale];
-    v17 = [v10 effectiveTargetLocale];
-    v13 = [v15 lt_unsupportedPairingErrorWithSource:v16 target:v17];
+    effectiveSourceLocale = [configurationCopy effectiveSourceLocale];
+    effectiveTargetLocale = [configurationCopy effectiveTargetLocale];
+    v13 = [v15 lt_unsupportedPairingErrorWithSource:effectiveSourceLocale target:effectiveTargetLocale];
 
     if (v13)
     {
@@ -439,11 +439,11 @@
     }
 
 LABEL_10:
-    v11[2](v11, v10, 0);
+    completionCopy[2](completionCopy, configurationCopy, 0);
     goto LABEL_11;
   }
 
-  if (a4)
+  if (step)
   {
     goto LABEL_10;
   }
@@ -461,7 +461,7 @@ LABEL_10:
   }
 
 LABEL_6:
-  (v11)[2](v11, 0, v13);
+  (completionCopy)[2](completionCopy, 0, v13);
 
 LABEL_11:
 }

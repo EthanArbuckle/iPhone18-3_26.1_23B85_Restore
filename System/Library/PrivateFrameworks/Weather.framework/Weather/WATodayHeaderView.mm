@@ -3,13 +3,13 @@
 - (void)_setupConstraints;
 - (void)_setupSubviews;
 - (void)_updateContent;
-- (void)setConditionsImage:(id)a3;
-- (void)setConditionsLine1:(id)a3;
-- (void)setConditionsLine2:(id)a3;
-- (void)setLocationName:(id)a3;
-- (void)setTemperature:(id)a3;
-- (void)setTemperatureHigh:(id)a3;
-- (void)setTemperatureLow:(id)a3;
+- (void)setConditionsImage:(id)image;
+- (void)setConditionsLine1:(id)line1;
+- (void)setConditionsLine2:(id)line2;
+- (void)setLocationName:(id)name;
+- (void)setTemperature:(id)temperature;
+- (void)setTemperatureHigh:(id)high;
+- (void)setTemperatureLow:(id)low;
 @end
 
 @implementation WATodayHeaderView
@@ -28,12 +28,12 @@
   return v3;
 }
 
-- (void)setConditionsLine1:(id)a3
+- (void)setConditionsLine1:(id)line1
 {
-  v6 = a3;
+  line1Copy = line1;
   if (![(NSString *)self->_conditionsLine1 isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [line1Copy copy];
     conditionsLine1 = self->_conditionsLine1;
     self->_conditionsLine1 = v4;
 
@@ -41,12 +41,12 @@
   }
 }
 
-- (void)setConditionsLine2:(id)a3
+- (void)setConditionsLine2:(id)line2
 {
-  v6 = a3;
+  line2Copy = line2;
   if (![(NSString *)self->_conditionsLine2 isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [line2Copy copy];
     conditionsLine2 = self->_conditionsLine2;
     self->_conditionsLine2 = v4;
 
@@ -54,12 +54,12 @@
   }
 }
 
-- (void)setConditionsImage:(id)a3
+- (void)setConditionsImage:(id)image
 {
-  v6 = a3;
+  imageCopy = image;
   if (([(UIImage *)self->_conditionsImage isEqual:?]& 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [imageCopy copy];
     conditionsImage = self->_conditionsImage;
     self->_conditionsImage = v4;
 
@@ -67,12 +67,12 @@
   }
 }
 
-- (void)setTemperature:(id)a3
+- (void)setTemperature:(id)temperature
 {
-  v6 = a3;
+  temperatureCopy = temperature;
   if (![(NSString *)self->_temperature isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [temperatureCopy copy];
     temperature = self->_temperature;
     self->_temperature = v4;
 
@@ -80,12 +80,12 @@
   }
 }
 
-- (void)setTemperatureLow:(id)a3
+- (void)setTemperatureLow:(id)low
 {
-  v6 = a3;
+  lowCopy = low;
   if (![(NSString *)self->_temperatureLow isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [lowCopy copy];
     temperatureLow = self->_temperatureLow;
     self->_temperatureLow = v4;
 
@@ -93,12 +93,12 @@
   }
 }
 
-- (void)setTemperatureHigh:(id)a3
+- (void)setTemperatureHigh:(id)high
 {
-  v6 = a3;
+  highCopy = high;
   if (![(NSString *)self->_temperatureHigh isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [highCopy copy];
     temperatureHigh = self->_temperatureHigh;
     self->_temperatureHigh = v4;
 
@@ -106,12 +106,12 @@
   }
 }
 
-- (void)setLocationName:(id)a3
+- (void)setLocationName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   if (![(NSString *)self->_locationName isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [nameCopy copy];
     locationName = self->_locationName;
     self->_locationName = v4;
 
@@ -121,43 +121,43 @@
 
 - (void)_updateContent
 {
-  v3 = [(WATodayHeaderView *)self locationName];
-  v4 = [(WATodayHeaderView *)self locationLabel];
-  [v4 setText:v3];
+  locationName = [(WATodayHeaderView *)self locationName];
+  locationLabel = [(WATodayHeaderView *)self locationLabel];
+  [locationLabel setText:locationName];
 
-  v5 = [(WATodayHeaderView *)self temperature];
-  v6 = WATodayHeaderViewDegreeAttributedStringWithTemperatureObject(0, v5);
-  v7 = [(WATodayHeaderView *)self temperatureLabel];
-  [v7 setAttributedText:v6];
+  temperature = [(WATodayHeaderView *)self temperature];
+  v6 = WATodayHeaderViewDegreeAttributedStringWithTemperatureObject(0, temperature);
+  temperatureLabel = [(WATodayHeaderView *)self temperatureLabel];
+  [temperatureLabel setAttributedText:v6];
 
-  v8 = [(WATodayHeaderView *)self temperatureHigh];
-  if (v8 && (v9 = v8, [(WATodayHeaderView *)self temperatureLow], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
+  temperatureHigh = [(WATodayHeaderView *)self temperatureHigh];
+  if (temperatureHigh && (v9 = temperatureHigh, [(WATodayHeaderView *)self temperatureLow], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
   {
     v11 = MEMORY[0x277CCACA8];
-    v12 = [(WATodayHeaderView *)self temperatureHigh];
-    v13 = [(WATodayHeaderView *)self temperatureLow];
-    v14 = [v11 stringWithFormat:@"%@ / %@", v12, v13];
-    v15 = [(WATodayHeaderView *)self temperatureHighLowLabel];
-    [v15 setText:v14];
+    temperatureHigh2 = [(WATodayHeaderView *)self temperatureHigh];
+    temperatureLow = [(WATodayHeaderView *)self temperatureLow];
+    v14 = [v11 stringWithFormat:@"%@ / %@", temperatureHigh2, temperatureLow];
+    temperatureHighLowLabel = [(WATodayHeaderView *)self temperatureHighLowLabel];
+    [temperatureHighLowLabel setText:v14];
   }
 
   else
   {
-    v12 = [(WATodayHeaderView *)self temperatureHighLowLabel];
-    [v12 setText:&stru_2882270E8];
+    temperatureHigh2 = [(WATodayHeaderView *)self temperatureHighLowLabel];
+    [temperatureHigh2 setText:&stru_2882270E8];
   }
 
-  v16 = [(WATodayHeaderView *)self conditionsLine1];
-  v17 = [(WATodayHeaderView *)self conditionsLabel1];
-  [v17 setText:v16];
+  conditionsLine1 = [(WATodayHeaderView *)self conditionsLine1];
+  conditionsLabel1 = [(WATodayHeaderView *)self conditionsLabel1];
+  [conditionsLabel1 setText:conditionsLine1];
 
-  v18 = [(WATodayHeaderView *)self conditionsLine2];
-  v19 = [(WATodayHeaderView *)self conditionsLabel2];
-  [v19 setText:v18];
+  conditionsLine2 = [(WATodayHeaderView *)self conditionsLine2];
+  conditionsLabel2 = [(WATodayHeaderView *)self conditionsLabel2];
+  [conditionsLabel2 setText:conditionsLine2];
 
-  v21 = [(WATodayHeaderView *)self conditionsImage];
-  v20 = [(WATodayHeaderView *)self conditionsImageView];
-  [v20 setImage:v21];
+  conditionsImage = [(WATodayHeaderView *)self conditionsImage];
+  conditionsImageView = [(WATodayHeaderView *)self conditionsImageView];
+  [conditionsImageView setImage:conditionsImage];
 }
 
 - (void)_setupSubviews
@@ -332,11 +332,11 @@
   v37 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v49];
   [(WATodayHeaderView *)self setWeatherInformationVisualEffectView:v37];
 
-  v38 = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
-  [v38 setTranslatesAutoresizingMaskIntoConstraints:0];
+  weatherInformationVisualEffectView = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
+  [weatherInformationVisualEffectView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v39 = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
-  [(WATodayHeaderView *)self addSubview:v39];
+  weatherInformationVisualEffectView2 = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
+  [(WATodayHeaderView *)self addSubview:weatherInformationVisualEffectView2];
 
   v60 = 0u;
   v61 = 0u;
@@ -363,9 +363,9 @@
         }
 
         v45 = *(*(&v58 + 1) + 8 * n);
-        v46 = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
-        v47 = [v46 contentView];
-        [v47 addSubview:v45];
+        weatherInformationVisualEffectView3 = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
+        contentView = [weatherInformationVisualEffectView3 contentView];
+        [contentView addSubview:v45];
       }
 
       v42 = [v40 countByEnumeratingWithState:&v58 objects:v79 count:16];
@@ -390,215 +390,215 @@
   v170 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
   v4 = MEMORY[0x277CCAAD0];
-  v5 = [(WATodayHeaderView *)self conditionsImageView];
-  v6 = [(WATodayHeaderView *)self conditionsImageView];
-  v7 = [v4 constraintWithItem:v5 attribute:8 relatedBy:0 toItem:v6 attribute:7 multiplier:1.0 constant:0.0];
+  conditionsImageView = [(WATodayHeaderView *)self conditionsImageView];
+  conditionsImageView2 = [(WATodayHeaderView *)self conditionsImageView];
+  v7 = [v4 constraintWithItem:conditionsImageView attribute:8 relatedBy:0 toItem:conditionsImageView2 attribute:7 multiplier:1.0 constant:0.0];
   [v3 addObject:v7];
 
-  v8 = [(WATodayHeaderView *)self conditionsImageView];
+  conditionsImageView3 = [(WATodayHeaderView *)self conditionsImageView];
   LODWORD(v9) = 1132068864;
-  [v8 setContentCompressionResistancePriority:0 forAxis:v9];
+  [conditionsImageView3 setContentCompressionResistancePriority:0 forAxis:v9];
 
-  v10 = [(WATodayHeaderView *)self conditionsImageView];
+  conditionsImageView4 = [(WATodayHeaderView *)self conditionsImageView];
   LODWORD(v11) = 1132068864;
-  [v10 setContentCompressionResistancePriority:1 forAxis:v11];
+  [conditionsImageView4 setContentCompressionResistancePriority:1 forAxis:v11];
 
-  v12 = [(WATodayHeaderView *)self locationLabel];
+  locationLabel = [(WATodayHeaderView *)self locationLabel];
   LODWORD(v13) = 1132068864;
-  [v12 setContentCompressionResistancePriority:0 forAxis:v13];
+  [locationLabel setContentCompressionResistancePriority:0 forAxis:v13];
 
-  v14 = [(WATodayHeaderView *)self conditionsLabel1];
+  conditionsLabel1 = [(WATodayHeaderView *)self conditionsLabel1];
   LODWORD(v15) = 1144750080;
-  [v14 setContentCompressionResistancePriority:0 forAxis:v15];
+  [conditionsLabel1 setContentCompressionResistancePriority:0 forAxis:v15];
 
-  v16 = [(WATodayHeaderView *)self conditionsLabel2];
+  conditionsLabel2 = [(WATodayHeaderView *)self conditionsLabel2];
   LODWORD(v17) = 1144750080;
-  [v16 setContentCompressionResistancePriority:0 forAxis:v17];
+  [conditionsLabel2 setContentCompressionResistancePriority:0 forAxis:v17];
 
-  v18 = [(WATodayHeaderView *)self temperatureLabel];
+  temperatureLabel = [(WATodayHeaderView *)self temperatureLabel];
   LODWORD(v19) = 1144750080;
-  [v18 setContentCompressionResistancePriority:0 forAxis:v19];
+  [temperatureLabel setContentCompressionResistancePriority:0 forAxis:v19];
 
-  v20 = [(WATodayHeaderView *)self temperatureHighLowLabel];
+  temperatureHighLowLabel = [(WATodayHeaderView *)self temperatureHighLowLabel];
   LODWORD(v21) = 1144750080;
-  [v20 setContentCompressionResistancePriority:0 forAxis:v21];
+  [temperatureHighLowLabel setContentCompressionResistancePriority:0 forAxis:v21];
 
-  v22 = [(WATodayHeaderView *)self conditionsImageView];
-  v23 = [v22 widthAnchor];
-  v24 = [v23 constraintGreaterThanOrEqualToConstant:30.0];
+  conditionsImageView5 = [(WATodayHeaderView *)self conditionsImageView];
+  widthAnchor = [conditionsImageView5 widthAnchor];
+  v24 = [widthAnchor constraintGreaterThanOrEqualToConstant:30.0];
   [v3 addObject:v24];
 
-  v25 = [(WATodayHeaderView *)self conditionsImageView];
-  v26 = [v25 heightAnchor];
-  v27 = [v26 constraintGreaterThanOrEqualToConstant:30.0];
+  conditionsImageView6 = [(WATodayHeaderView *)self conditionsImageView];
+  heightAnchor = [conditionsImageView6 heightAnchor];
+  v27 = [heightAnchor constraintGreaterThanOrEqualToConstant:30.0];
   [v3 addObject:v27];
 
-  v28 = [(WATodayHeaderView *)self conditionsImageView];
-  v29 = [v28 leadingAnchor];
-  v30 = [(WATodayHeaderView *)self leadingAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30 constant:2.0];
+  conditionsImageView7 = [(WATodayHeaderView *)self conditionsImageView];
+  leadingAnchor = [conditionsImageView7 leadingAnchor];
+  leadingAnchor2 = [(WATodayHeaderView *)self leadingAnchor];
+  v31 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:2.0];
   [v3 addObject:v31];
 
-  v32 = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
-  v33 = [v32 leadingAnchor];
-  v34 = [(WATodayHeaderView *)self conditionsImageView];
-  v35 = [v34 trailingAnchor];
-  v36 = [v33 constraintEqualToAnchor:v35 constant:5.0];
+  weatherInformationVisualEffectView = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
+  leadingAnchor3 = [weatherInformationVisualEffectView leadingAnchor];
+  conditionsImageView8 = [(WATodayHeaderView *)self conditionsImageView];
+  trailingAnchor = [conditionsImageView8 trailingAnchor];
+  v36 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:5.0];
   [v3 addObject:v36];
 
-  v37 = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
-  v38 = [v37 trailingAnchor];
-  v39 = [(WATodayHeaderView *)self trailingAnchor];
-  v40 = [v38 constraintEqualToAnchor:v39 constant:-16.0];
+  weatherInformationVisualEffectView2 = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
+  trailingAnchor2 = [weatherInformationVisualEffectView2 trailingAnchor];
+  trailingAnchor3 = [(WATodayHeaderView *)self trailingAnchor];
+  v40 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-16.0];
   [v3 addObject:v40];
 
-  v41 = [(WATodayHeaderView *)self locationLabel];
-  v42 = [v41 leadingAnchor];
-  v43 = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
-  v44 = [v43 leadingAnchor];
-  v45 = [v42 constraintEqualToAnchor:v44];
+  locationLabel2 = [(WATodayHeaderView *)self locationLabel];
+  leadingAnchor4 = [locationLabel2 leadingAnchor];
+  weatherInformationVisualEffectView3 = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
+  leadingAnchor5 = [weatherInformationVisualEffectView3 leadingAnchor];
+  v45 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
   [v3 addObject:v45];
 
-  v46 = [(WATodayHeaderView *)self conditionsLabel1];
-  v47 = [v46 leadingAnchor];
-  v48 = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
-  v49 = [v48 leadingAnchor];
-  v50 = [v47 constraintEqualToAnchor:v49];
+  conditionsLabel12 = [(WATodayHeaderView *)self conditionsLabel1];
+  leadingAnchor6 = [conditionsLabel12 leadingAnchor];
+  weatherInformationVisualEffectView4 = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
+  leadingAnchor7 = [weatherInformationVisualEffectView4 leadingAnchor];
+  v50 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
   [v3 addObject:v50];
 
-  v51 = [(WATodayHeaderView *)self conditionsLabel2];
-  v52 = [v51 leadingAnchor];
-  v53 = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
-  v54 = [v53 leadingAnchor];
-  v55 = [v52 constraintEqualToAnchor:v54];
+  conditionsLabel22 = [(WATodayHeaderView *)self conditionsLabel2];
+  leadingAnchor8 = [conditionsLabel22 leadingAnchor];
+  weatherInformationVisualEffectView5 = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
+  leadingAnchor9 = [weatherInformationVisualEffectView5 leadingAnchor];
+  v55 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9];
   [v3 addObject:v55];
 
-  v56 = [(WATodayHeaderView *)self locationLabel];
-  v57 = [v56 widthAnchor];
-  v58 = [v57 constraintGreaterThanOrEqualToConstant:140.0];
+  locationLabel3 = [(WATodayHeaderView *)self locationLabel];
+  widthAnchor2 = [locationLabel3 widthAnchor];
+  v58 = [widthAnchor2 constraintGreaterThanOrEqualToConstant:140.0];
   [v3 addObject:v58];
 
-  v59 = [(WATodayHeaderView *)self conditionsLabel1];
-  v60 = [v59 widthAnchor];
-  v61 = [v60 constraintGreaterThanOrEqualToConstant:140.0];
+  conditionsLabel13 = [(WATodayHeaderView *)self conditionsLabel1];
+  widthAnchor3 = [conditionsLabel13 widthAnchor];
+  v61 = [widthAnchor3 constraintGreaterThanOrEqualToConstant:140.0];
   [v3 addObject:v61];
 
-  v62 = [(WATodayHeaderView *)self conditionsLabel2];
-  v63 = [v62 widthAnchor];
-  v64 = [v63 constraintGreaterThanOrEqualToConstant:140.0];
+  conditionsLabel23 = [(WATodayHeaderView *)self conditionsLabel2];
+  widthAnchor4 = [conditionsLabel23 widthAnchor];
+  v64 = [widthAnchor4 constraintGreaterThanOrEqualToConstant:140.0];
   [v3 addObject:v64];
 
-  v65 = [(WATodayHeaderView *)self locationLabel];
-  v66 = [v65 trailingAnchor];
-  v67 = [(WATodayHeaderView *)self temperatureLabel];
-  v68 = [v67 leadingAnchor];
-  v69 = [v66 constraintEqualToAnchor:v68 constant:-7.0];
+  locationLabel4 = [(WATodayHeaderView *)self locationLabel];
+  trailingAnchor4 = [locationLabel4 trailingAnchor];
+  temperatureLabel2 = [(WATodayHeaderView *)self temperatureLabel];
+  leadingAnchor10 = [temperatureLabel2 leadingAnchor];
+  v69 = [trailingAnchor4 constraintEqualToAnchor:leadingAnchor10 constant:-7.0];
   [v3 addObject:v69];
 
-  v70 = [(WATodayHeaderView *)self temperatureLabel];
-  v71 = [v70 leadingAnchor];
-  v72 = [(WATodayHeaderView *)self temperatureHighLowLabel];
-  v73 = [v72 leadingAnchor];
-  v74 = [v71 constraintEqualToAnchor:v73];
+  temperatureLabel3 = [(WATodayHeaderView *)self temperatureLabel];
+  leadingAnchor11 = [temperatureLabel3 leadingAnchor];
+  temperatureHighLowLabel2 = [(WATodayHeaderView *)self temperatureHighLowLabel];
+  leadingAnchor12 = [temperatureHighLowLabel2 leadingAnchor];
+  v74 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
   [v3 addObject:v74];
 
-  v75 = [(WATodayHeaderView *)self temperatureLabel];
-  v76 = [v75 trailingAnchor];
-  v77 = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
-  v78 = [v77 trailingAnchor];
-  v79 = [v76 constraintEqualToAnchor:v78];
+  temperatureLabel4 = [(WATodayHeaderView *)self temperatureLabel];
+  trailingAnchor5 = [temperatureLabel4 trailingAnchor];
+  weatherInformationVisualEffectView6 = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
+  trailingAnchor6 = [weatherInformationVisualEffectView6 trailingAnchor];
+  v79 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   [v3 addObject:v79];
 
-  v80 = [(WATodayHeaderView *)self temperatureHighLowLabel];
-  v81 = [v80 trailingAnchor];
-  v82 = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
-  v83 = [v82 trailingAnchor];
-  v84 = [v81 constraintEqualToAnchor:v83];
+  temperatureHighLowLabel3 = [(WATodayHeaderView *)self temperatureHighLowLabel];
+  trailingAnchor7 = [temperatureHighLowLabel3 trailingAnchor];
+  weatherInformationVisualEffectView7 = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
+  trailingAnchor8 = [weatherInformationVisualEffectView7 trailingAnchor];
+  v84 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
   [v3 addObject:v84];
 
-  v85 = [(WATodayHeaderView *)self temperatureLabel];
-  v86 = [v85 widthAnchor];
-  v87 = [v86 constraintGreaterThanOrEqualToConstant:60.0];
+  temperatureLabel5 = [(WATodayHeaderView *)self temperatureLabel];
+  widthAnchor5 = [temperatureLabel5 widthAnchor];
+  v87 = [widthAnchor5 constraintGreaterThanOrEqualToConstant:60.0];
   [v3 addObject:v87];
 
-  v88 = [(WATodayHeaderView *)self temperatureHighLowLabel];
-  v89 = [v88 widthAnchor];
-  v90 = [v89 constraintGreaterThanOrEqualToConstant:60.0];
+  temperatureHighLowLabel4 = [(WATodayHeaderView *)self temperatureHighLowLabel];
+  widthAnchor6 = [temperatureHighLowLabel4 widthAnchor];
+  v90 = [widthAnchor6 constraintGreaterThanOrEqualToConstant:60.0];
   [v3 addObject:v90];
 
-  v91 = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
-  v92 = [v91 topAnchor];
-  v93 = [(WATodayHeaderView *)self topAnchor];
-  v94 = [v92 constraintEqualToAnchor:v93];
+  weatherInformationVisualEffectView8 = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
+  topAnchor = [weatherInformationVisualEffectView8 topAnchor];
+  topAnchor2 = [(WATodayHeaderView *)self topAnchor];
+  v94 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v3 addObject:v94];
 
-  v95 = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
-  v96 = [v95 bottomAnchor];
-  v97 = [(WATodayHeaderView *)self bottomAnchor];
-  v98 = [v96 constraintEqualToAnchor:v97];
+  weatherInformationVisualEffectView9 = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
+  bottomAnchor = [weatherInformationVisualEffectView9 bottomAnchor];
+  bottomAnchor2 = [(WATodayHeaderView *)self bottomAnchor];
+  v98 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v3 addObject:v98];
 
   v99 = MEMORY[0x277CCAAD0];
-  v100 = [(WATodayHeaderView *)self conditionsImageView];
-  v101 = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
-  v102 = [v99 constraintWithItem:v100 attribute:10 relatedBy:0 toItem:v101 attribute:10 multiplier:1.0 constant:0.0];
+  conditionsImageView9 = [(WATodayHeaderView *)self conditionsImageView];
+  weatherInformationVisualEffectView10 = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
+  v102 = [v99 constraintWithItem:conditionsImageView9 attribute:10 relatedBy:0 toItem:weatherInformationVisualEffectView10 attribute:10 multiplier:1.0 constant:0.0];
   [v3 addObject:v102];
 
-  v103 = [(WATodayHeaderView *)self locationLabel];
-  v104 = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
-  v105 = [(WATodayHeaderView *)self locationLabel];
-  v106 = [v105 font];
-  v107 = [v106 _scaledValueForValue:32.0];
-  __38__WATodayHeaderView__setupConstraints__block_invoke_2(v109, v107, v103, v108, v104, 3, v3);
+  locationLabel5 = [(WATodayHeaderView *)self locationLabel];
+  weatherInformationVisualEffectView11 = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
+  locationLabel6 = [(WATodayHeaderView *)self locationLabel];
+  font = [locationLabel6 font];
+  v107 = [font _scaledValueForValue:32.0];
+  __38__WATodayHeaderView__setupConstraints__block_invoke_2(v109, v107, locationLabel5, v108, weatherInformationVisualEffectView11, 3, v3);
 
-  v110 = [(WATodayHeaderView *)self conditionsLabel1];
-  v111 = [(WATodayHeaderView *)self locationLabel];
-  v112 = [(WATodayHeaderView *)self conditionsLabel1];
-  v113 = [v112 font];
-  v114 = [v113 _scaledValueForValue:20.0];
-  __38__WATodayHeaderView__setupConstraints__block_invoke_2(v116, v114, v110, v115, v111, 11, v3);
+  conditionsLabel14 = [(WATodayHeaderView *)self conditionsLabel1];
+  locationLabel7 = [(WATodayHeaderView *)self locationLabel];
+  conditionsLabel15 = [(WATodayHeaderView *)self conditionsLabel1];
+  font2 = [conditionsLabel15 font];
+  v114 = [font2 _scaledValueForValue:20.0];
+  __38__WATodayHeaderView__setupConstraints__block_invoke_2(v116, v114, conditionsLabel14, v115, locationLabel7, 11, v3);
 
-  v117 = [(WATodayHeaderView *)self conditionsLabel2];
-  v118 = [(WATodayHeaderView *)self conditionsLabel1];
-  v119 = [(WATodayHeaderView *)self conditionsLabel2];
-  v120 = [v119 font];
-  v121 = [v120 _scaledValueForValue:16.0];
-  __38__WATodayHeaderView__setupConstraints__block_invoke_2(v123, v121, v117, v122, v118, 11, v3);
+  conditionsLabel24 = [(WATodayHeaderView *)self conditionsLabel2];
+  conditionsLabel16 = [(WATodayHeaderView *)self conditionsLabel1];
+  conditionsLabel25 = [(WATodayHeaderView *)self conditionsLabel2];
+  font3 = [conditionsLabel25 font];
+  v121 = [font3 _scaledValueForValue:16.0];
+  __38__WATodayHeaderView__setupConstraints__block_invoke_2(v123, v121, conditionsLabel24, v122, conditionsLabel16, 11, v3);
 
-  v124 = [(WATodayHeaderView *)self conditionsLabel2];
-  v125 = [v124 lastBaselineAnchor];
-  v126 = [(WATodayHeaderView *)self temperatureHighLowLabel];
-  v127 = [v126 lastBaselineAnchor];
-  __38__WATodayHeaderView__setupConstraints__block_invoke(0.0, v127, v125, v127, v3);
+  conditionsLabel26 = [(WATodayHeaderView *)self conditionsLabel2];
+  lastBaselineAnchor = [conditionsLabel26 lastBaselineAnchor];
+  temperatureHighLowLabel5 = [(WATodayHeaderView *)self temperatureHighLowLabel];
+  lastBaselineAnchor2 = [temperatureHighLowLabel5 lastBaselineAnchor];
+  __38__WATodayHeaderView__setupConstraints__block_invoke(0.0, lastBaselineAnchor2, lastBaselineAnchor, lastBaselineAnchor2, v3);
 
-  v128 = [(WATodayHeaderView *)self temperatureHighLowLabel];
-  v129 = [v128 widthAnchor];
-  v130 = [(WATodayHeaderView *)self temperatureLabel];
-  v131 = [v130 widthAnchor];
-  v132 = [v129 constraintEqualToAnchor:v131];
+  temperatureHighLowLabel6 = [(WATodayHeaderView *)self temperatureHighLowLabel];
+  widthAnchor7 = [temperatureHighLowLabel6 widthAnchor];
+  temperatureLabel6 = [(WATodayHeaderView *)self temperatureLabel];
+  widthAnchor8 = [temperatureLabel6 widthAnchor];
+  v132 = [widthAnchor7 constraintEqualToAnchor:widthAnchor8];
   [v3 addObject:v132];
 
-  v133 = [(WATodayHeaderView *)self conditionsLabel1];
-  v134 = [(WATodayHeaderView *)self temperatureLabel];
-  __38__WATodayHeaderView__setupConstraints__block_invoke_2(0.0, v134, v133, v135, v134, 11, v3);
+  conditionsLabel17 = [(WATodayHeaderView *)self conditionsLabel1];
+  temperatureLabel7 = [(WATodayHeaderView *)self temperatureLabel];
+  __38__WATodayHeaderView__setupConstraints__block_invoke_2(0.0, temperatureLabel7, conditionsLabel17, v135, temperatureLabel7, 11, v3);
 
-  v136 = [(WATodayHeaderView *)self conditionsLabel2];
-  v137 = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
-  v138 = [(WATodayHeaderView *)self conditionsLabel1];
-  v139 = [v138 font];
-  v140 = [v139 _scaledValueForValue:20.0];
-  __38__WATodayHeaderView__setupConstraints__block_invoke_2(-v141, v140, v136, v142, v137, 4, v3);
+  conditionsLabel27 = [(WATodayHeaderView *)self conditionsLabel2];
+  weatherInformationVisualEffectView12 = [(WATodayHeaderView *)self weatherInformationVisualEffectView];
+  conditionsLabel18 = [(WATodayHeaderView *)self conditionsLabel1];
+  font4 = [conditionsLabel18 font];
+  v140 = [font4 _scaledValueForValue:20.0];
+  __38__WATodayHeaderView__setupConstraints__block_invoke_2(-v141, v140, conditionsLabel27, v142, weatherInformationVisualEffectView12, 4, v3);
 
   v166 = 0u;
   v167 = 0u;
   v164 = 0u;
   v165 = 0u;
-  v143 = [(WATodayHeaderView *)self locationLabel];
-  v168[0] = v143;
-  v144 = [(WATodayHeaderView *)self conditionsLabel1];
-  v168[1] = v144;
-  v145 = [(WATodayHeaderView *)self conditionsLabel2];
-  v168[2] = v145;
+  locationLabel8 = [(WATodayHeaderView *)self locationLabel];
+  v168[0] = locationLabel8;
+  conditionsLabel19 = [(WATodayHeaderView *)self conditionsLabel1];
+  v168[1] = conditionsLabel19;
+  conditionsLabel28 = [(WATodayHeaderView *)self conditionsLabel2];
+  v168[2] = conditionsLabel28;
   v146 = [MEMORY[0x277CBEA60] arrayWithObjects:v168 count:3];
 
   v147 = [v146 countByEnumeratingWithState:&v164 objects:v169 count:16];
@@ -616,10 +616,10 @@
           objc_enumerationMutation(v146);
         }
 
-        v151 = [*(*(&v164 + 1) + 8 * v150) trailingAnchor];
-        v152 = [(WATodayHeaderView *)self temperatureLabel];
-        v153 = [v152 leadingAnchor];
-        v154 = [v151 constraintLessThanOrEqualToAnchor:v153 constant:-8.0];
+        trailingAnchor9 = [*(*(&v164 + 1) + 8 * v150) trailingAnchor];
+        temperatureLabel8 = [(WATodayHeaderView *)self temperatureLabel];
+        leadingAnchor13 = [temperatureLabel8 leadingAnchor];
+        v154 = [trailingAnchor9 constraintLessThanOrEqualToAnchor:leadingAnchor13 constant:-8.0];
         [v3 addObject:v154];
 
         ++v150;
@@ -632,16 +632,16 @@
     while (v148);
   }
 
-  v155 = [(WATodayHeaderView *)self conditionsImageView];
-  v156 = [v155 widthAnchor];
-  v157 = [(WATodayHeaderView *)self conditionsImageView];
-  v158 = [v157 heightAnchor];
-  v159 = [v156 constraintEqualToAnchor:v158];
+  conditionsImageView10 = [(WATodayHeaderView *)self conditionsImageView];
+  widthAnchor9 = [conditionsImageView10 widthAnchor];
+  conditionsImageView11 = [(WATodayHeaderView *)self conditionsImageView];
+  heightAnchor2 = [conditionsImageView11 heightAnchor];
+  v159 = [widthAnchor9 constraintEqualToAnchor:heightAnchor2];
   [v3 addObject:v159];
 
-  v160 = [(WATodayHeaderView *)self conditionsImageView];
-  v161 = [v160 widthAnchor];
-  v162 = [v161 constraintEqualToConstant:100.0];
+  conditionsImageView12 = [(WATodayHeaderView *)self conditionsImageView];
+  widthAnchor10 = [conditionsImageView12 widthAnchor];
+  v162 = [widthAnchor10 constraintEqualToConstant:100.0];
   [v3 addObject:v162];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v3];

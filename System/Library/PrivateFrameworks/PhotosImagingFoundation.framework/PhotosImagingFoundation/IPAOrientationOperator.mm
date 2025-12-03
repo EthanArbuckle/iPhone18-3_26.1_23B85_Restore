@@ -1,7 +1,7 @@
 @interface IPAOrientationOperator
-+ (id)operatorWithIdentifier:(id)a3 orientation:(int64_t)a4;
++ (id)operatorWithIdentifier:(id)identifier orientation:(int64_t)orientation;
 - (id)description;
-- (id)transformForGeometry:(id)a3;
+- (id)transformForGeometry:(id)geometry;
 @end
 
 @implementation IPAOrientationOperator
@@ -23,10 +23,10 @@
   return v8;
 }
 
-- (id)transformForGeometry:(id)a3
+- (id)transformForGeometry:(id)geometry
 {
-  v4 = a3;
-  [v4 extent];
+  geometryCopy = geometry;
+  [geometryCopy extent];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -55,18 +55,18 @@
   PA::operator*(v20, &v28, &v21);
   v13 = PA::Quad2d::boundingRect(v20);
   v17 = [[IPAImageGeometry alloc] initWithIdentifier:@"oriented" extent:v13, v14, v15, v16];
-  v18 = [[IPAAffineImageTransform alloc] initWithInputGeometry:v4 intrinsicGeometry:v17 matrix:&v28 canAlignToPixelsExactly:1];
+  v18 = [[IPAAffineImageTransform alloc] initWithInputGeometry:geometryCopy intrinsicGeometry:v17 matrix:&v28 canAlignToPixelsExactly:1];
 
   return v18;
 }
 
-+ (id)operatorWithIdentifier:(id)a3 orientation:(int64_t)a4
++ (id)operatorWithIdentifier:(id)identifier orientation:(int64_t)orientation
 {
-  v5 = a3;
-  if (a4)
+  identifierCopy = identifier;
+  if (orientation)
   {
-    v6 = [(IPAGeometryOperator *)[IPAOrientationOperator alloc] initWithIdentifier:v5];
-    v6->_orientation = a4;
+    v6 = [(IPAGeometryOperator *)[IPAOrientationOperator alloc] initWithIdentifier:identifierCopy];
+    v6->_orientation = orientation;
 
     return v6;
   }

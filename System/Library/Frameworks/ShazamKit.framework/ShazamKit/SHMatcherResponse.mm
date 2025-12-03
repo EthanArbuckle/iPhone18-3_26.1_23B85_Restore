@@ -1,63 +1,63 @@
 @interface SHMatcherResponse
-+ (id)errorResponseForSignature:(id)a3 error:(id)a4;
-+ (id)matchWithRecordingIntermission:(double)a3 recordingSignatureOffset:(double)a4 retrySeconds:(double)a5 match:(id)a6;
-+ (id)noMatchWithRecordingIntermission:(double)a3 recordingSignatureOffset:(double)a4 retrySeconds:(double)a5 signature:(id)a6;
++ (id)errorResponseForSignature:(id)signature error:(id)error;
++ (id)matchWithRecordingIntermission:(double)intermission recordingSignatureOffset:(double)offset retrySeconds:(double)seconds match:(id)match;
++ (id)noMatchWithRecordingIntermission:(double)intermission recordingSignatureOffset:(double)offset retrySeconds:(double)seconds signature:(id)signature;
 - (BOOL)isStillRunningAssociatedRequest;
-- (SHMatcherResponse)initWithCoder:(id)a3;
-- (SHMatcherResponse)initWithRecordingIntermission:(double)a3 recordingSignatureOffset:(double)a4 retrySeconds:(double)a5 match:(id)a6 signature:(id)a7 associatedRequestID:(id)a8 result:(int64_t)a9 error:(id)a10;
+- (SHMatcherResponse)initWithCoder:(id)coder;
+- (SHMatcherResponse)initWithRecordingIntermission:(double)intermission recordingSignatureOffset:(double)offset retrySeconds:(double)seconds match:(id)match signature:(id)signature associatedRequestID:(id)d result:(int64_t)result error:(id)self0;
 - (SHSignature)signature;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SHMatcherResponse
 
-+ (id)errorResponseForSignature:(id)a3 error:(id)a4
++ (id)errorResponseForSignature:(id)signature error:(id)error
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SHMatcherResponse alloc] initWithRecordingIntermission:0 recordingSignatureOffset:v6 retrySeconds:0 match:3 signature:v5 associatedRequestID:0.0 result:0.0 error:0.0];
+  errorCopy = error;
+  signatureCopy = signature;
+  v7 = [[SHMatcherResponse alloc] initWithRecordingIntermission:0 recordingSignatureOffset:signatureCopy retrySeconds:0 match:3 signature:errorCopy associatedRequestID:0.0 result:0.0 error:0.0];
 
   return v7;
 }
 
-+ (id)noMatchWithRecordingIntermission:(double)a3 recordingSignatureOffset:(double)a4 retrySeconds:(double)a5 signature:(id)a6
++ (id)noMatchWithRecordingIntermission:(double)intermission recordingSignatureOffset:(double)offset retrySeconds:(double)seconds signature:(id)signature
 {
-  v9 = a6;
-  v10 = [[SHMatcherResponse alloc] initWithRecordingIntermission:0 recordingSignatureOffset:v9 retrySeconds:0 match:2 signature:0 associatedRequestID:a3 result:a4 error:a5];
+  signatureCopy = signature;
+  v10 = [[SHMatcherResponse alloc] initWithRecordingIntermission:0 recordingSignatureOffset:signatureCopy retrySeconds:0 match:2 signature:0 associatedRequestID:intermission result:offset error:seconds];
 
   return v10;
 }
 
-+ (id)matchWithRecordingIntermission:(double)a3 recordingSignatureOffset:(double)a4 retrySeconds:(double)a5 match:(id)a6
++ (id)matchWithRecordingIntermission:(double)intermission recordingSignatureOffset:(double)offset retrySeconds:(double)seconds match:(id)match
 {
-  v9 = a6;
+  matchCopy = match;
   v10 = [SHMatcherResponse alloc];
-  v11 = [v9 querySignature];
-  v12 = [(SHMatcherResponse *)v10 initWithRecordingIntermission:v9 recordingSignatureOffset:v11 retrySeconds:0 match:1 signature:0 associatedRequestID:a3 result:a4 error:a5];
+  querySignature = [matchCopy querySignature];
+  v12 = [(SHMatcherResponse *)v10 initWithRecordingIntermission:matchCopy recordingSignatureOffset:querySignature retrySeconds:0 match:1 signature:0 associatedRequestID:intermission result:offset error:seconds];
 
   return v12;
 }
 
-- (SHMatcherResponse)initWithRecordingIntermission:(double)a3 recordingSignatureOffset:(double)a4 retrySeconds:(double)a5 match:(id)a6 signature:(id)a7 associatedRequestID:(id)a8 result:(int64_t)a9 error:(id)a10
+- (SHMatcherResponse)initWithRecordingIntermission:(double)intermission recordingSignatureOffset:(double)offset retrySeconds:(double)seconds match:(id)match signature:(id)signature associatedRequestID:(id)d result:(int64_t)result error:(id)self0
 {
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a10;
+  matchCopy = match;
+  signatureCopy = signature;
+  dCopy = d;
+  errorCopy = error;
   v26.receiver = self;
   v26.super_class = SHMatcherResponse;
   v23 = [(SHMatcherResponse *)&v26 init];
   v24 = v23;
   if (v23)
   {
-    v23->_recordingSignatureOffset = a4;
-    v23->_recordingIntermission = a3;
-    v23->_retrySeconds = a5;
-    objc_storeStrong(&v23->_match, a6);
-    objc_storeStrong(&v24->_signature, a7);
-    objc_storeStrong(&v24->_runningAssociatedRequestID, a8);
-    v24->_result = a9;
-    objc_storeStrong(&v24->_error, a10);
+    v23->_recordingSignatureOffset = offset;
+    v23->_recordingIntermission = intermission;
+    v23->_retrySeconds = seconds;
+    objc_storeStrong(&v23->_match, match);
+    objc_storeStrong(&v24->_signature, signature);
+    objc_storeStrong(&v24->_runningAssociatedRequestID, d);
+    v24->_result = result;
+    objc_storeStrong(&v24->_error, error);
     [(SHMatcherResponse *)v24 validate];
   }
 
@@ -66,8 +66,8 @@
 
 - (BOOL)isStillRunningAssociatedRequest
 {
-  v2 = [(SHMatcherResponse *)self runningAssociatedRequestID];
-  v3 = v2 != 0;
+  runningAssociatedRequestID = [(SHMatcherResponse *)self runningAssociatedRequestID];
+  v3 = runningAssociatedRequestID != 0;
 
   return v3;
 }
@@ -77,50 +77,50 @@
   signature = self->_signature;
   if (signature)
   {
-    v3 = signature;
+    querySignature = signature;
   }
 
   else
   {
-    v3 = [(SHMatch *)self->_match querySignature];
+    querySignature = [(SHMatch *)self->_match querySignature];
   }
 
-  return v3;
+  return querySignature;
 }
 
-- (SHMatcherResponse)initWithCoder:(id)a3
+- (SHMatcherResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"recordingIntermission"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"recordingIntermission"];
   v6 = v5;
-  [v4 decodeDoubleForKey:@"recordingSignatureOffset"];
+  [coderCopy decodeDoubleForKey:@"recordingSignatureOffset"];
   v8 = v7;
-  [v4 decodeDoubleForKey:@"retrySeconds"];
+  [coderCopy decodeDoubleForKey:@"retrySeconds"];
   v10 = v9;
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"match"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"associatedRequestID"];
-  v15 = [v4 decodeIntegerForKey:@"resultType"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"match"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"associatedRequestID"];
+  v15 = [coderCopy decodeIntegerForKey:@"resultType"];
 
   v16 = [(SHMatcherResponse *)self initWithRecordingIntermission:v11 recordingSignatureOffset:v12 retrySeconds:v14 match:v15 signature:v13 associatedRequestID:v6 result:v8 error:v10];
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   match = self->_match;
-  v6 = a3;
-  [v6 encodeObject:match forKey:@"match"];
-  [v6 encodeObject:self->_signature forKey:@"signature"];
+  coderCopy = coder;
+  [coderCopy encodeObject:match forKey:@"match"];
+  [coderCopy encodeObject:self->_signature forKey:@"signature"];
   v5 = [SHError normalizedError:self->_error];
-  [v6 encodeObject:v5 forKey:@"error"];
+  [coderCopy encodeObject:v5 forKey:@"error"];
 
-  [v6 encodeDouble:@"recordingIntermission" forKey:self->_recordingIntermission];
-  [v6 encodeDouble:@"recordingSignatureOffset" forKey:self->_recordingSignatureOffset];
-  [v6 encodeDouble:@"retrySeconds" forKey:self->_retrySeconds];
-  [v6 encodeObject:self->_runningAssociatedRequestID forKey:@"associatedRequestID"];
-  [v6 encodeInteger:self->_result forKey:@"resultType"];
+  [coderCopy encodeDouble:@"recordingIntermission" forKey:self->_recordingIntermission];
+  [coderCopy encodeDouble:@"recordingSignatureOffset" forKey:self->_recordingSignatureOffset];
+  [coderCopy encodeDouble:@"retrySeconds" forKey:self->_retrySeconds];
+  [coderCopy encodeObject:self->_runningAssociatedRequestID forKey:@"associatedRequestID"];
+  [coderCopy encodeInteger:self->_result forKey:@"resultType"];
 }
 
 @end

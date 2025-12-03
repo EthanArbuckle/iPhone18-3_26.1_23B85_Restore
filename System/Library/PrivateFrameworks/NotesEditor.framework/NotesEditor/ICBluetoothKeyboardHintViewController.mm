@@ -4,8 +4,8 @@
 - (BOOL)hasEditedNote;
 - (BOOL)hasShownHint;
 - (BOOL)shouldShow;
-- (ICBluetoothKeyboardHintViewController)initWithRootViewController:(id)a3;
-- (ICBluetoothKeyboardHintViewController)initWithRootViewController:(id)a3 userDefaults:(id)a4 buttonAction:(id)a5;
+- (ICBluetoothKeyboardHintViewController)initWithRootViewController:(id)controller;
+- (ICBluetoothKeyboardHintViewController)initWithRootViewController:(id)controller userDefaults:(id)defaults buttonAction:(id)action;
 - (void)didEditNote;
 - (void)show;
 - (void)showIfNeeded;
@@ -15,17 +15,17 @@
 
 @implementation ICBluetoothKeyboardHintViewController
 
-- (ICBluetoothKeyboardHintViewController)initWithRootViewController:(id)a3
+- (ICBluetoothKeyboardHintViewController)initWithRootViewController:(id)controller
 {
   v4 = MEMORY[0x277CBEBD0];
-  v5 = a3;
-  v6 = [v4 standardUserDefaults];
+  controllerCopy = controller;
+  standardUserDefaults = [v4 standardUserDefaults];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __68__ICBluetoothKeyboardHintViewController_initWithRootViewController___block_invoke;
   v9[3] = &unk_2781ABCF8;
-  v10 = self;
-  v7 = [(ICBluetoothKeyboardHintViewController *)v10 initWithRootViewController:v5 userDefaults:v6 buttonAction:v9];
+  selfCopy = self;
+  v7 = [(ICBluetoothKeyboardHintViewController *)selfCopy initWithRootViewController:controllerCopy userDefaults:standardUserDefaults buttonAction:v9];
 
   return v7;
 }
@@ -38,25 +38,25 @@ uint64_t __68__ICBluetoothKeyboardHintViewController_initWithRootViewController_
   return [v2 hide];
 }
 
-- (ICBluetoothKeyboardHintViewController)initWithRootViewController:(id)a3 userDefaults:(id)a4 buttonAction:(id)a5
+- (ICBluetoothKeyboardHintViewController)initWithRootViewController:(id)controller userDefaults:(id)defaults buttonAction:(id)action
 {
-  v20 = a4;
+  defaultsCopy = defaults;
   v9 = MEMORY[0x277CCA8D8];
-  v10 = a5;
-  v11 = a3;
-  v12 = [v9 mainBundle];
-  v13 = [v12 localizedStringForKey:@"Connect a Keyboard" value:&stru_282757698 table:0];
-  v14 = [MEMORY[0x277CCA8D8] mainBundle];
-  v15 = [v14 localizedStringForKey:@"Pair a Bluetooth keyboard or trackpad to make quick edits." value:&stru_282757698 table:0];
-  v16 = [MEMORY[0x277CCA8D8] mainBundle];
-  v17 = [v16 localizedStringForKey:@"Go to Settings" value:&stru_282757698 table:0];
+  actionCopy = action;
+  controllerCopy = controller;
+  mainBundle = [v9 mainBundle];
+  v13 = [mainBundle localizedStringForKey:@"Connect a Keyboard" value:&stru_282757698 table:0];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v15 = [mainBundle2 localizedStringForKey:@"Pair a Bluetooth keyboard or trackpad to make quick edits." value:&stru_282757698 table:0];
+  mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+  v17 = [mainBundle3 localizedStringForKey:@"Go to Settings" value:&stru_282757698 table:0];
   v21.receiver = self;
   v21.super_class = ICBluetoothKeyboardHintViewController;
-  v18 = [(ICHintViewController *)&v21 initWithRootViewController:v11 showsCloseButton:1 hintTitle:v13 hintSubtitle:v15 buttonTitle:v17 buttonAction:v10];
+  v18 = [(ICHintViewController *)&v21 initWithRootViewController:controllerCopy showsCloseButton:1 hintTitle:v13 hintSubtitle:v15 buttonTitle:v17 buttonAction:actionCopy];
 
   if (v18)
   {
-    objc_storeStrong(&v18->_userDefaults, a4);
+    objc_storeStrong(&v18->_userDefaults, defaults);
   }
 
   return v18;
@@ -68,40 +68,40 @@ uint64_t __68__ICBluetoothKeyboardHintViewController_initWithRootViewController_
   v4.super_class = ICBluetoothKeyboardHintViewController;
   [(ICHintViewController *)&v4 viewDidLoad];
   [(ICBluetoothKeyboardHintViewController *)self updateHardwareKeyboardMode];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_keyboardDidChangeFrame_ name:*MEMORY[0x277D76B98] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_keyboardDidChangeFrame_ name:*MEMORY[0x277D76B98] object:0];
 }
 
 - (void)didEditNote
 {
   [(ICBluetoothKeyboardHintViewController *)self updateHardwareKeyboardMode];
   [(ICBluetoothKeyboardHintViewController *)self showIfNeeded];
-  v3 = [(ICBluetoothKeyboardHintViewController *)self userDefaults];
-  [v3 setBool:1 forKey:@"bluetoothKeyboardHintDidEditNote"];
+  userDefaults = [(ICBluetoothKeyboardHintViewController *)self userDefaults];
+  [userDefaults setBool:1 forKey:@"bluetoothKeyboardHintDidEditNote"];
 }
 
 - (BOOL)shouldShow
 {
   if ([(ICBluetoothKeyboardHintViewController *)self forceShow])
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(hasEditedNote) = 1;
   }
 
   else if ([(ICBluetoothKeyboardHintViewController *)self hasAttachedHardwareKeyboard]|| [(ICBluetoothKeyboardHintViewController *)self isInHardwareKeyboardMode])
   {
-    LOBYTE(v3) = 0;
+    LOBYTE(hasEditedNote) = 0;
   }
 
   else
   {
-    v3 = [(ICBluetoothKeyboardHintViewController *)self hasEditedNote];
-    if (v3)
+    hasEditedNote = [(ICBluetoothKeyboardHintViewController *)self hasEditedNote];
+    if (hasEditedNote)
     {
-      LOBYTE(v3) = ![(ICBluetoothKeyboardHintViewController *)self hasShownHint];
+      LOBYTE(hasEditedNote) = ![(ICBluetoothKeyboardHintViewController *)self hasShownHint];
     }
   }
 
-  return v3;
+  return hasEditedNote;
 }
 
 - (void)showIfNeeded
@@ -142,38 +142,38 @@ uint64_t __68__ICBluetoothKeyboardHintViewController_initWithRootViewController_
   v4.receiver = self;
   v4.super_class = ICBluetoothKeyboardHintViewController;
   [(ICPillOrnamentViewController *)&v4 show];
-  v3 = [(ICBluetoothKeyboardHintViewController *)self userDefaults];
-  [v3 setBool:1 forKey:@"bluetoothKeyboardHintDidShow"];
+  userDefaults = [(ICBluetoothKeyboardHintViewController *)self userDefaults];
+  [userDefaults setBool:1 forKey:@"bluetoothKeyboardHintDidShow"];
 }
 
 - (BOOL)forceShow
 {
-  v2 = [(ICBluetoothKeyboardHintViewController *)self userDefaults];
-  v3 = [v2 BOOLForKey:@"bluetoothKeyboardForceShow"];
+  userDefaults = [(ICBluetoothKeyboardHintViewController *)self userDefaults];
+  v3 = [userDefaults BOOLForKey:@"bluetoothKeyboardForceShow"];
 
   return v3;
 }
 
 - (BOOL)hasAttachedBluetoothKeyboard
 {
-  v2 = [(ICBluetoothKeyboardHintViewController *)self userDefaults];
-  v3 = [v2 BOOLForKey:@"bluetoothKeyboardHintHasAttachedHardwareKeyboard"];
+  userDefaults = [(ICBluetoothKeyboardHintViewController *)self userDefaults];
+  v3 = [userDefaults BOOLForKey:@"bluetoothKeyboardHintHasAttachedHardwareKeyboard"];
 
   return v3;
 }
 
 - (BOOL)hasEditedNote
 {
-  v2 = [(ICBluetoothKeyboardHintViewController *)self userDefaults];
-  v3 = [v2 BOOLForKey:@"bluetoothKeyboardHintDidEditNote"];
+  userDefaults = [(ICBluetoothKeyboardHintViewController *)self userDefaults];
+  v3 = [userDefaults BOOLForKey:@"bluetoothKeyboardHintDidEditNote"];
 
   return v3;
 }
 
 - (BOOL)hasShownHint
 {
-  v2 = [(ICBluetoothKeyboardHintViewController *)self userDefaults];
-  v3 = [v2 BOOLForKey:@"bluetoothKeyboardHintDidShow"];
+  userDefaults = [(ICBluetoothKeyboardHintViewController *)self userDefaults];
+  v3 = [userDefaults BOOLForKey:@"bluetoothKeyboardHintDidShow"];
 
   return v3;
 }
@@ -183,8 +183,8 @@ uint64_t __68__ICBluetoothKeyboardHintViewController_initWithRootViewController_
   -[ICBluetoothKeyboardHintViewController setIsInHardwareKeyboardMode:](self, "setIsInHardwareKeyboardMode:", [MEMORY[0x277D75658] isInHardwareKeyboardMode]);
   if ([(ICBluetoothKeyboardHintViewController *)self isInHardwareKeyboardMode])
   {
-    v3 = [(ICBluetoothKeyboardHintViewController *)self userDefaults];
-    [v3 setBool:1 forKey:@"bluetoothKeyboardHintHasAttachedHardwareKeyboard"];
+    userDefaults = [(ICBluetoothKeyboardHintViewController *)self userDefaults];
+    [userDefaults setBool:1 forKey:@"bluetoothKeyboardHintHasAttachedHardwareKeyboard"];
   }
 }
 

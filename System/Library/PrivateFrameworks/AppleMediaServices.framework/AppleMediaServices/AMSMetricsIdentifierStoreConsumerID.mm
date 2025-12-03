@@ -1,44 +1,44 @@
 @interface AMSMetricsIdentifierStoreConsumerID
-+ (id)_accountForAltDSID:(id)a3;
-+ (id)_applyExpiryForKey:(id)a3 inNamespace:(id)a4 accountID:(id)a5 bag:(id)a6 at:(id)a7 consumerIDResetInterval:(double)a8;
-+ (id)_identifierInfoForKey:(id)a3 storeInfo:(id)a4 inDatabase:(id)a5 setValue:(id)a6 needsToSync:(BOOL *)a7 serverProvidedAt:(id)a8 resetInterval:(double)a9 error:(id *)a10;
-+ (id)_identifierStoreInfoForKeys:(id)a3 inDatabase:(id)a4 date:(id)a5 started:(id)a6 updateStarted:(BOOL)a7 needsToSync:(BOOL *)a8 account:(id)a9 clientInfo:(id)a10 domain:(id)a11 resetInterval:(double)a12 error:(id *)a13;
-+ (id)_promiseOfSunsetIdentifier:(id)a3 withStartedDate:(id)a4 lastSyncDate:(id)a5 forKey:(id)a6 database:(id)a7 account:(id)a8 clientInfo:(id)a9 domain:(id)a10 resetInterval:(double)a11 consumerIDResetInterval:(double)a12;
-+ (id)_removeStoreForNamespace:(id)a3 accountID:(id)a4 bag:(id)a5;
-+ (id)_setConsumerIdentifier:(id)a3 forKey:(id)a4 inNamespace:(id)a5 accountID:(id)a6 bag:(id)a7 at:(id)a8 serverProvidedAt:(id)a9 skipSync:(BOOL)a10;
-+ (id)_setIdentifier:(id)a3 withStartedDate:(id)a4 forKey:(id)a5 database:(id)a6 account:(id)a7 clientInfo:(id)a8 domain:(id)a9 resetInterval:(double)a10 serverProvidedAt:(id)a11 skipSync:(BOOL)a12;
-+ (id)_sunsetIdentifierInfoForKey:(id)a3 storeInfo:(id)a4 inDatabase:(id)a5 needsToSync:(BOOL *)a6 resetInterval:(double)a7 consumerIDResetInterval:(double)a8 error:(id *)a9;
++ (id)_accountForAltDSID:(id)d;
++ (id)_applyExpiryForKey:(id)key inNamespace:(id)namespace accountID:(id)d bag:(id)bag at:(id)at consumerIDResetInterval:(double)interval;
++ (id)_identifierInfoForKey:(id)key storeInfo:(id)info inDatabase:(id)database setValue:(id)value needsToSync:(BOOL *)sync serverProvidedAt:(id)at resetInterval:(double)interval error:(id *)self0;
++ (id)_identifierStoreInfoForKeys:(id)keys inDatabase:(id)database date:(id)date started:(id)started updateStarted:(BOOL)updateStarted needsToSync:(BOOL *)sync account:(id)account clientInfo:(id)self0 domain:(id)self1 resetInterval:(double)self2 error:(id *)self3;
++ (id)_promiseOfSunsetIdentifier:(id)identifier withStartedDate:(id)date lastSyncDate:(id)syncDate forKey:(id)key database:(id)database account:(id)account clientInfo:(id)info domain:(id)self0 resetInterval:(double)self1 consumerIDResetInterval:(double)self2;
++ (id)_removeStoreForNamespace:(id)namespace accountID:(id)d bag:(id)bag;
++ (id)_setConsumerIdentifier:(id)identifier forKey:(id)key inNamespace:(id)namespace accountID:(id)d bag:(id)bag at:(id)at serverProvidedAt:(id)providedAt skipSync:(BOOL)self0;
++ (id)_setIdentifier:(id)identifier withStartedDate:(id)date forKey:(id)key database:(id)database account:(id)account clientInfo:(id)info domain:(id)domain resetInterval:(double)self0 serverProvidedAt:(id)self1 skipSync:(BOOL)self2;
++ (id)_sunsetIdentifierInfoForKey:(id)key storeInfo:(id)info inDatabase:(id)database needsToSync:(BOOL *)sync resetInterval:(double)interval consumerIDResetInterval:(double)resetInterval error:(id *)error;
 @end
 
 @implementation AMSMetricsIdentifierStoreConsumerID
 
-+ (id)_setConsumerIdentifier:(id)a3 forKey:(id)a4 inNamespace:(id)a5 accountID:(id)a6 bag:(id)a7 at:(id)a8 serverProvidedAt:(id)a9 skipSync:(BOOL)a10
++ (id)_setConsumerIdentifier:(id)identifier forKey:(id)key inNamespace:(id)namespace accountID:(id)d bag:(id)bag at:(id)at serverProvidedAt:(id)providedAt skipSync:(BOOL)self0
 {
   v48 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = [a6 altDSID];
-  v23 = [AMSMetricsIdentifierStoreConsumerID _accountForAltDSID:v22];
+  identifierCopy = identifier;
+  keyCopy = key;
+  namespaceCopy = namespace;
+  bagCopy = bag;
+  atCopy = at;
+  providedAtCopy = providedAt;
+  altDSID = [d altDSID];
+  v23 = [AMSMetricsIdentifierStoreConsumerID _accountForAltDSID:altDSID];
 
   if (v23)
   {
-    v24 = [AMSMetricsIdentifierStore identifierStoreWithAccount:v23 bagNamespace:v18 bag:v19];
+    v24 = [AMSMetricsIdentifierStore identifierStoreWithAccount:v23 bagNamespace:namespaceCopy bag:bagCopy];
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __124__AMSMetricsIdentifierStoreConsumerID__setConsumerIdentifier_forKey_inNamespace_accountID_bag_at_serverProvidedAt_skipSync___block_invoke;
     v33[3] = &unk_1E73B9F00;
-    v40 = a1;
-    v34 = v18;
-    v35 = v16;
-    v36 = v20;
-    v37 = v17;
+    selfCopy = self;
+    v34 = namespaceCopy;
+    v35 = identifierCopy;
+    v36 = atCopy;
+    v37 = keyCopy;
     v38 = v23;
-    v39 = v21;
-    v41 = a10;
+    v39 = providedAtCopy;
+    syncCopy = sync;
     v25 = [v24 continueWithBlock:v33];
 
     v26 = v34;
@@ -46,15 +46,15 @@
 
   else
   {
-    v32 = v16;
+    v32 = identifierCopy;
     v27 = +[AMSLogConfig sharedMetricsConfig];
     if (!v27)
     {
       v27 = +[AMSLogConfig sharedConfig];
     }
 
-    v28 = [v27 OSLogObject];
-    if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v27 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v29 = objc_opt_class();
       v30 = AMSLogKey();
@@ -63,13 +63,13 @@
       v44 = 2114;
       v45 = v30;
       v46 = 2114;
-      v47 = v18;
-      _os_log_impl(&dword_192869000, v28, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Metrics Identifier Store not updated for namespace %{public}@ because we can't find the account", buf, 0x20u);
+      v47 = namespaceCopy;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Metrics Identifier Store not updated for namespace %{public}@ because we can't find the account", buf, 0x20u);
     }
 
     v26 = AMSError(7, @"No account provided", 0, 0);
     v24 = [AMSPromise promiseWithError:v26];
-    v16 = v32;
+    identifierCopy = v32;
   }
 
   return v24;
@@ -127,23 +127,23 @@ id __124__AMSMetricsIdentifierStoreConsumerID__setConsumerIdentifier_forKey_inNa
   return v13;
 }
 
-+ (id)_removeStoreForNamespace:(id)a3 accountID:(id)a4 bag:(id)a5
++ (id)_removeStoreForNamespace:(id)namespace accountID:(id)d bag:(id)bag
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 altDSID];
-  v11 = [AMSMetricsIdentifierStoreConsumerID _accountForAltDSID:v10];
+  namespaceCopy = namespace;
+  bagCopy = bag;
+  altDSID = [d altDSID];
+  v11 = [AMSMetricsIdentifierStoreConsumerID _accountForAltDSID:altDSID];
 
   if (v11)
   {
-    v12 = [AMSMetricsIdentifierStore identifierStoreWithAccount:v11 bagNamespace:v8 bag:v9];
+    v12 = [AMSMetricsIdentifierStore identifierStoreWithAccount:v11 bagNamespace:namespaceCopy bag:bagCopy];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __78__AMSMetricsIdentifierStoreConsumerID__removeStoreForNamespace_accountID_bag___block_invoke;
     v20[3] = &unk_1E73B9F28;
-    v23 = a1;
-    v21 = v8;
+    selfCopy = self;
+    v21 = namespaceCopy;
     v22 = v11;
     v13 = [v12 continueWithBlock:v20];
 
@@ -158,8 +158,8 @@ id __124__AMSMetricsIdentifierStoreConsumerID__setConsumerIdentifier_forKey_inNa
       v15 = +[AMSLogConfig sharedConfig];
     }
 
-    v16 = [v15 OSLogObject];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v15 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v17 = objc_opt_class();
       v18 = AMSLogKey();
@@ -168,8 +168,8 @@ id __124__AMSMetricsIdentifierStoreConsumerID__setConsumerIdentifier_forKey_inNa
       v26 = 2114;
       v27 = v18;
       v28 = 2114;
-      v29 = v8;
-      _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Metrics Identifier Store not updated for namespace %{public}@ because we can't find the account", buf, 0x20u);
+      v29 = namespaceCopy;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Metrics Identifier Store not updated for namespace %{public}@ because we can't find the account", buf, 0x20u);
     }
 
     v14 = AMSError(7, @"No account provided", 0, 0);
@@ -226,70 +226,70 @@ id __78__AMSMetricsIdentifierStoreConsumerID__removeStoreForNamespace_accountID_
   return v13;
 }
 
-+ (id)_applyExpiryForKey:(id)a3 inNamespace:(id)a4 accountID:(id)a5 bag:(id)a6 at:(id)a7 consumerIDResetInterval:(double)a8
++ (id)_applyExpiryForKey:(id)key inNamespace:(id)namespace accountID:(id)d bag:(id)bag at:(id)at consumerIDResetInterval:(double)interval
 {
   v48 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = [v16 altDSID];
-  v20 = [AMSMetricsIdentifierStoreConsumerID _accountForAltDSID:v19];
+  keyCopy = key;
+  namespaceCopy = namespace;
+  dCopy = d;
+  bagCopy = bag;
+  atCopy = at;
+  altDSID = [dCopy altDSID];
+  v20 = [AMSMetricsIdentifierStoreConsumerID _accountForAltDSID:altDSID];
 
   if (v20)
   {
-    v21 = [AMSMetricsIdentifierStore identifierStoreWithAccount:v20 bagNamespace:v15 bag:v17];
+    v21 = [AMSMetricsIdentifierStore identifierStoreWithAccount:v20 bagNamespace:namespaceCopy bag:bagCopy];
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __111__AMSMetricsIdentifierStoreConsumerID__applyExpiryForKey_inNamespace_accountID_bag_at_consumerIDResetInterval___block_invoke;
     v35[3] = &unk_1E73B9F50;
-    v40 = a1;
-    v36 = v15;
-    v37 = v18;
-    v38 = v14;
+    selfCopy = self;
+    v36 = namespaceCopy;
+    v37 = atCopy;
+    v38 = keyCopy;
     v39 = v20;
-    v41 = a8;
+    intervalCopy = interval;
     v22 = [v21 continueWithBlock:v35];
 
-    v23 = v36;
+    namespaceCopy = v36;
   }
 
   else
   {
-    v34 = v14;
-    v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Metrics Identifier Store not updated for namespace %@", v15];
-    v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"No Account found for %@", v16];
-    v24 = AMSError(107, v23, v33, 0);
+    v34 = keyCopy;
+    namespaceCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Metrics Identifier Store not updated for namespace %@", namespaceCopy];
+    dCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"No Account found for %@", dCopy];
+    v24 = AMSError(107, namespaceCopy, dCopy, 0);
     v25 = +[AMSLogConfig sharedMetricsConfig];
     if (!v25)
     {
       v25 = +[AMSLogConfig sharedConfig];
     }
 
-    v26 = [v25 OSLogObject];
-    if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v25 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v27 = objc_opt_class();
       AMSLogKey();
-      v28 = v31 = v18;
+      v28 = v31 = atCopy;
       AMSLogableError(v24);
-      v29 = v32 = v17;
+      v29 = v32 = bagCopy;
       *buf = 138543874;
       v43 = v27;
       v44 = 2114;
       v45 = v28;
       v46 = 2114;
       v47 = v29;
-      _os_log_impl(&dword_192869000, v26, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error: %{public}@", buf, 0x20u);
 
-      v17 = v32;
-      v18 = v31;
+      bagCopy = v32;
+      atCopy = v31;
     }
 
     v21 = [AMSPromise promiseWithError:v24];
 
-    v14 = v34;
+    keyCopy = v34;
   }
 
   return v21;
@@ -345,11 +345,11 @@ id __111__AMSMetricsIdentifierStoreConsumerID__applyExpiryForKey_inNamespace_acc
   return v13;
 }
 
-+ (id)_accountForAltDSID:(id)a3
++ (id)_accountForAltDSID:(id)d
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-  v5 = [v4 ams_iTunesAccountWithAltDSID:v3];
+  dCopy = d;
+  ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+  v5 = [ams_sharedAccountStore ams_iTunesAccountWithAltDSID:dCopy];
   v6 = v5;
   if (v5)
   {
@@ -358,13 +358,13 @@ id __111__AMSMetricsIdentifierStoreConsumerID__applyExpiryForKey_inNamespace_acc
 
   else
   {
-    v8 = [v4 ams_activeiCloudAccount];
-    v9 = [v8 ams_altDSID];
-    v10 = [v9 isEqualToString:v3];
+    ams_activeiCloudAccount = [ams_sharedAccountStore ams_activeiCloudAccount];
+    ams_altDSID = [ams_activeiCloudAccount ams_altDSID];
+    v10 = [ams_altDSID isEqualToString:dCopy];
 
     if (v10)
     {
-      v11 = [v4 ams_iTunesAccountForAccount:v8];
+      v11 = [ams_sharedAccountStore ams_iTunesAccountForAccount:ams_activeiCloudAccount];
       v12 = v11;
       if (v11)
       {
@@ -373,7 +373,7 @@ id __111__AMSMetricsIdentifierStoreConsumerID__applyExpiryForKey_inNamespace_acc
 
       else
       {
-        v13 = v8;
+        v13 = ams_activeiCloudAccount;
       }
 
       v7 = v13;
@@ -388,16 +388,16 @@ id __111__AMSMetricsIdentifierStoreConsumerID__applyExpiryForKey_inNamespace_acc
   return v7;
 }
 
-+ (id)_promiseOfSunsetIdentifier:(id)a3 withStartedDate:(id)a4 lastSyncDate:(id)a5 forKey:(id)a6 database:(id)a7 account:(id)a8 clientInfo:(id)a9 domain:(id)a10 resetInterval:(double)a11 consumerIDResetInterval:(double)a12
++ (id)_promiseOfSunsetIdentifier:(id)identifier withStartedDate:(id)date lastSyncDate:(id)syncDate forKey:(id)key database:(id)database account:(id)account clientInfo:(id)info domain:(id)self0 resetInterval:(double)self1 consumerIDResetInterval:(double)self2
 {
-  v36 = a3;
-  v20 = a4;
-  v35 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  v24 = a9;
-  v25 = a10;
+  identifierCopy = identifier;
+  dateCopy = date;
+  syncDateCopy = syncDate;
+  keyCopy = key;
+  databaseCopy = database;
+  accountCopy = account;
+  infoCopy = info;
+  domainCopy = domain;
   v52 = 0;
   v53 = &v52;
   v54 = 0x2020000000;
@@ -407,28 +407,28 @@ id __111__AMSMetricsIdentifierStoreConsumerID__applyExpiryForKey_inNamespace_acc
   v38 = 3221225472;
   v39 = __175__AMSMetricsIdentifierStoreConsumerID__promiseOfSunsetIdentifier_withStartedDate_lastSyncDate_forKey_database_account_clientInfo_domain_resetInterval_consumerIDResetInterval___block_invoke;
   v40 = &unk_1E73B9F78;
-  v27 = v23;
+  v27 = accountCopy;
   v41 = v27;
-  v49 = a1;
-  v28 = v21;
+  selfCopy = self;
+  v28 = keyCopy;
   v42 = v28;
-  v29 = v22;
+  v29 = databaseCopy;
   v43 = v29;
-  v30 = v20;
+  v30 = dateCopy;
   v44 = v30;
   v48 = &v52;
-  v31 = v24;
+  v31 = infoCopy;
   v45 = v31;
-  v32 = v25;
-  v50 = a11;
-  v51 = a12;
+  v32 = domainCopy;
+  intervalCopy = interval;
+  resetIntervalCopy = resetInterval;
   v46 = v32;
   v47 = 0;
   dispatch_sync(v26, &block);
 
   if (*(v53 + 24) == 1)
   {
-    v33 = [AMSMetricsIdentifierStore _sync:v35];
+    v33 = [AMSMetricsIdentifierStore _sync:syncDateCopy];
   }
 
   _Block_object_dispose(&v52, 8);
@@ -574,18 +574,18 @@ LABEL_16:
 LABEL_17:
 }
 
-+ (id)_sunsetIdentifierInfoForKey:(id)a3 storeInfo:(id)a4 inDatabase:(id)a5 needsToSync:(BOOL *)a6 resetInterval:(double)a7 consumerIDResetInterval:(double)a8 error:(id *)a9
++ (id)_sunsetIdentifierInfoForKey:(id)key storeInfo:(id)info inDatabase:(id)database needsToSync:(BOOL *)sync resetInterval:(double)interval consumerIDResetInterval:(double)resetInterval error:(id *)error
 {
-  v16 = a5;
-  v17 = [AMSMetricsIdentifierStore _generateIdentifierKey:a3 storeInfo:a4 period:0 resetInterval:a7];
+  databaseCopy = database;
+  v17 = [AMSMetricsIdentifierStore _generateIdentifierKey:key storeInfo:info period:0 resetInterval:interval];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __144__AMSMetricsIdentifierStoreConsumerID__sunsetIdentifierInfoForKey_storeInfo_inDatabase_needsToSync_resetInterval_consumerIDResetInterval_error___block_invoke;
   v20[3] = &__block_descriptor_56_e9_B16__0__8l;
-  v20[4] = a1;
-  *&v20[5] = a8;
-  v20[6] = a6;
-  v18 = [v16 identifierForKey:v17 updateMaybe:v20 error:a9];
+  v20[4] = self;
+  *&v20[5] = resetInterval;
+  v20[6] = sync;
+  v18 = [databaseCopy identifierForKey:v17 updateMaybe:v20 error:error];
 
   return v18;
 }
@@ -653,16 +653,16 @@ BOOL __144__AMSMetricsIdentifierStoreConsumerID__sunsetIdentifierInfoForKey_stor
   return v9;
 }
 
-+ (id)_setIdentifier:(id)a3 withStartedDate:(id)a4 forKey:(id)a5 database:(id)a6 account:(id)a7 clientInfo:(id)a8 domain:(id)a9 resetInterval:(double)a10 serverProvidedAt:(id)a11 skipSync:(BOOL)a12
++ (id)_setIdentifier:(id)identifier withStartedDate:(id)date forKey:(id)key database:(id)database account:(id)account clientInfo:(id)info domain:(id)domain resetInterval:(double)self0 serverProvidedAt:(id)self1 skipSync:(BOOL)self2
 {
-  v41 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  v24 = a9;
-  v25 = a11;
+  identifierCopy = identifier;
+  dateCopy = date;
+  keyCopy = key;
+  databaseCopy = database;
+  accountCopy = account;
+  infoCopy = info;
+  domainCopy = domain;
+  atCopy = at;
   v55 = 0;
   v56 = &v55;
   v57 = 0x2020000000;
@@ -673,30 +673,30 @@ BOOL __144__AMSMetricsIdentifierStoreConsumerID__sunsetIdentifierInfoForKey_stor
   block[1] = 3221225472;
   block[2] = __152__AMSMetricsIdentifierStoreConsumerID__setIdentifier_withStartedDate_forKey_database_account_clientInfo_domain_resetInterval_serverProvidedAt_skipSync___block_invoke;
   block[3] = &unk_1E73B9FC0;
-  v28 = v22;
+  v28 = accountCopy;
   v43 = v28;
-  v53 = a1;
-  v40 = v20;
+  selfCopy = self;
+  v40 = keyCopy;
   v44 = v40;
-  v29 = v21;
+  v29 = databaseCopy;
   v45 = v29;
-  v30 = v19;
+  v30 = dateCopy;
   v46 = v30;
   v52 = &v55;
-  v31 = v23;
+  v31 = infoCopy;
   v47 = v31;
-  v32 = v24;
+  v32 = domainCopy;
   v48 = v32;
-  v54 = a10;
+  intervalCopy = interval;
   v33 = v26;
   v49 = v33;
-  v34 = v41;
+  v34 = identifierCopy;
   v50 = v34;
-  v35 = v25;
+  v35 = atCopy;
   v51 = v35;
   dispatch_sync(v27, block);
 
-  if (*(v56 + 24) == 1 && !a12)
+  if (*(v56 + 24) == 1 && !sync)
   {
     v36 = +[AMSMetricsIdentifierStore _sync];
   }
@@ -841,31 +841,31 @@ void __152__AMSMetricsIdentifierStoreConsumerID__setIdentifier_withStartedDate_f
   }
 }
 
-+ (id)_identifierInfoForKey:(id)a3 storeInfo:(id)a4 inDatabase:(id)a5 setValue:(id)a6 needsToSync:(BOOL *)a7 serverProvidedAt:(id)a8 resetInterval:(double)a9 error:(id *)a10
++ (id)_identifierInfoForKey:(id)key storeInfo:(id)info inDatabase:(id)database setValue:(id)value needsToSync:(BOOL *)sync serverProvidedAt:(id)at resetInterval:(double)interval error:(id *)self0
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a6;
-  v20 = a8;
-  v21 = a5;
-  v22 = [AMSMetricsIdentifierStore _generateIdentifierKey:v17 storeInfo:v18 period:0 resetInterval:a9];
+  keyCopy = key;
+  infoCopy = info;
+  valueCopy = value;
+  atCopy = at;
+  databaseCopy = database;
+  v22 = [AMSMetricsIdentifierStore _generateIdentifierKey:keyCopy storeInfo:infoCopy period:0 resetInterval:interval];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __140__AMSMetricsIdentifierStoreConsumerID__identifierInfoForKey_storeInfo_inDatabase_setValue_needsToSync_serverProvidedAt_resetInterval_error___block_invoke;
   v30[3] = &unk_1E73B9FE8;
-  v31 = v17;
+  v31 = keyCopy;
   v32 = v22;
-  v33 = v18;
-  v34 = v19;
-  v35 = v20;
-  v36 = a1;
-  v37 = a7;
-  v23 = v20;
-  v24 = v19;
-  v25 = v18;
+  v33 = infoCopy;
+  v34 = valueCopy;
+  v35 = atCopy;
+  selfCopy = self;
+  syncCopy = sync;
+  v23 = atCopy;
+  v24 = valueCopy;
+  v25 = infoCopy;
   v26 = v22;
-  v27 = v17;
-  v28 = [v21 identifierForKey:v26 updateMaybe:v30 error:a10];
+  v27 = keyCopy;
+  v28 = [databaseCopy identifierForKey:v26 updateMaybe:v30 error:error];
 
   return v28;
 }
@@ -1052,42 +1052,42 @@ LABEL_33:
   return v37;
 }
 
-+ (id)_identifierStoreInfoForKeys:(id)a3 inDatabase:(id)a4 date:(id)a5 started:(id)a6 updateStarted:(BOOL)a7 needsToSync:(BOOL *)a8 account:(id)a9 clientInfo:(id)a10 domain:(id)a11 resetInterval:(double)a12 error:(id *)a13
++ (id)_identifierStoreInfoForKeys:(id)keys inDatabase:(id)database date:(id)date started:(id)started updateStarted:(BOOL)updateStarted needsToSync:(BOOL *)sync account:(id)account clientInfo:(id)self0 domain:(id)self1 resetInterval:(double)self2 error:(id *)self3
 {
-  v17 = a5;
-  v18 = a6;
-  v19 = a10;
-  v20 = a11;
-  v21 = a9;
-  v22 = a4;
-  v23 = a3;
-  v24 = [AMSMetricsIdentifierStore _accountIdentifierForAccount:v21];
-  v25 = [AMSMetricsIdentifierStore _generateStoreKeyForAccount:v21 domain:v20 clientInfo:v19];
+  dateCopy = date;
+  startedCopy = started;
+  infoCopy = info;
+  domainCopy = domain;
+  accountCopy = account;
+  databaseCopy = database;
+  keysCopy = keys;
+  v24 = [AMSMetricsIdentifierStore _accountIdentifierForAccount:accountCopy];
+  v25 = [AMSMetricsIdentifierStore _generateStoreKeyForAccount:accountCopy domain:domainCopy clientInfo:infoCopy];
 
-  v26 = [v23 ac_firstObjectPassingTest:&__block_literal_global_98];
+  v26 = [keysCopy ac_firstObjectPassingTest:&__block_literal_global_98];
 
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __163__AMSMetricsIdentifierStoreConsumerID__identifierStoreInfoForKeys_inDatabase_date_started_updateStarted_needsToSync_account_clientInfo_domain_resetInterval_error___block_invoke_2;
   v38[3] = &unk_1E73BA010;
-  v44 = v17;
-  v45 = a1;
+  v44 = dateCopy;
+  selfCopy = self;
   v39 = v24;
   v40 = v25;
   v48 = v26 != 0;
-  v41 = v18;
-  v42 = v19;
-  v46 = a12;
-  v49 = a7;
-  v43 = v20;
-  v47 = a8;
-  v27 = v17;
-  v28 = v20;
-  v29 = v19;
-  v30 = v18;
+  v41 = startedCopy;
+  v42 = infoCopy;
+  intervalCopy = interval;
+  updateStartedCopy = updateStarted;
+  v43 = domainCopy;
+  syncCopy = sync;
+  v27 = dateCopy;
+  v28 = domainCopy;
+  v29 = infoCopy;
+  v30 = startedCopy;
   v31 = v25;
   v32 = v24;
-  v33 = [v22 identifierStoreForKey:v31 updateMaybe:v38 error:a13];
+  v33 = [databaseCopy identifierStoreForKey:v31 updateMaybe:v38 error:error];
 
   return v33;
 }

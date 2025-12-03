@@ -1,12 +1,12 @@
 @interface MapViewDragSource
-- (BOOL)_isValidLabelMarkerForDragging:(id)a3;
-- (BOOL)shouldBeginDragFromLocation:(CGPoint)a3;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (void)dragAndDropPreviewDidUpdate:(id)a3;
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5;
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4;
+- (BOOL)_isValidLabelMarkerForDragging:(id)dragging;
+- (BOOL)shouldBeginDragFromLocation:(CGPoint)location;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (void)dragAndDropPreviewDidUpdate:(id)update;
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation;
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin;
 - (void)reset;
 - (void)updatePreviewDrag;
 @end
@@ -42,51 +42,51 @@
 {
   if (self->_currentDragSession && (previewView = self->_previewView) != 0)
   {
-    v4 = [(DragAndDropPreview *)previewView renderPreviewImage];
-    [v4 dragPreview];
+    renderPreviewImage = [(DragAndDropPreview *)previewView renderPreviewImage];
+    [renderPreviewImage dragPreview];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100C5CC94;
     v13 = v12[3] = &unk_10164EFF0;
     currentDragSession = self->_currentDragSession;
     v6 = v13;
-    v7 = [(UIDragSession *)currentDragSession items];
-    v8 = [v7 firstObject];
-    [v8 setPreviewProvider:v12];
+    items = [(UIDragSession *)currentDragSession items];
+    firstObject = [items firstObject];
+    [firstObject setPreviewProvider:v12];
   }
 
   else if (self->_liftPreview)
   {
-    v11 = [(DragAndDropPreview *)self->_previewView renderPreviewImage];
-    v9 = [(UITargetedDragPreview *)self->_liftPreview view];
-    v10 = [v11 image];
-    [v9 setImage:v10];
+    renderPreviewImage2 = [(DragAndDropPreview *)self->_previewView renderPreviewImage];
+    view = [(UITargetedDragPreview *)self->_liftPreview view];
+    image = [renderPreviewImage2 image];
+    [view setImage:image];
   }
 }
 
-- (void)dragAndDropPreviewDidUpdate:(id)a3
+- (void)dragAndDropPreviewDidUpdate:(id)update
 {
-  v4 = [a3 item];
+  item = [update item];
   dragItem = self->_dragItem;
 
-  if (v4 == dragItem)
+  if (item == dragItem)
   {
 
     [(MapViewDragSource *)self updatePreviewDrag];
   }
 }
 
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default
 {
-  v7 = a5;
-  v8 = [a4 localObject];
+  defaultCopy = default;
+  localObject = [item localObject];
   mapView = self->_mapView;
-  [v8 sourceCoordinate];
+  [localObject sourceCoordinate];
   [(MKMapView *)mapView convertCoordinate:self->_mapView toPointToView:?];
   v11 = v10;
   v13 = v12;
-  v14 = [v8 sourceView];
-  [v14 frame];
+  sourceView = [localObject sourceView];
+  [sourceView frame];
   v21.x = v11;
   v21.y = v13;
   LODWORD(mapView) = CGRectContainsPoint(v22, v21);
@@ -94,10 +94,10 @@
   if (mapView)
   {
     v15 = [UIDragPreviewTarget alloc];
-    v16 = [v8 sourceView];
-    v17 = [v15 initWithContainer:v16 center:{v11, v13}];
+    sourceView2 = [localObject sourceView];
+    v17 = [v15 initWithContainer:sourceView2 center:{v11, v13}];
 
-    v18 = [v7 retargetedPreviewWithTarget:v17];
+    v18 = [defaultCopy retargetedPreviewWithTarget:v17];
   }
 
   else
@@ -108,7 +108,7 @@
   return v18;
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation
 {
   currentDragSession = self->_currentDragSession;
   self->_currentDragSession = 0;
@@ -117,15 +117,15 @@
   [v8 setDragSession:0];
 
   [(VKLabelMarker *)self->_labelMarker setIsDragged:0];
-  v13 = [(DragAndDropMapItem *)self->_dragItem analyticsHelper];
-  if (a5 == 2)
+  analyticsHelper = [(DragAndDropMapItem *)self->_dragItem analyticsHelper];
+  if (operation == 2)
   {
     v9 = 17003;
   }
 
   else
   {
-    if (a5)
+    if (operation)
     {
       goto LABEL_6;
     }
@@ -134,71 +134,71 @@
   }
 
   v10 = +[MKMapService sharedService];
-  v11 = [v13 eventValue];
-  v12 = [v13 actionDetails];
-  [v10 captureUserAction:v9 onTarget:1 eventValue:v11 placeActionDetails:v12];
+  eventValue = [analyticsHelper eventValue];
+  actionDetails = [analyticsHelper actionDetails];
+  [v10 captureUserAction:v9 onTarget:1 eventValue:eventValue placeActionDetails:actionDetails];
 
 LABEL_6:
   [(MapViewDragSource *)self reset];
 }
 
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin
 {
-  v5 = a4;
+  beginCopy = begin;
   v6 = [MapsDragLocalContext alloc];
-  v7 = [(MapViewDragSource *)self mapView];
-  v8 = [v7 window];
-  v9 = [v8 windowScene];
-  v10 = [(MapsDragLocalContext *)v6 initWithWindowScene:v9];
-  [v5 setLocalContext:v10];
+  mapView = [(MapViewDragSource *)self mapView];
+  window = [mapView window];
+  windowScene = [window windowScene];
+  v10 = [(MapsDragLocalContext *)v6 initWithWindowScene:windowScene];
+  [beginCopy setLocalContext:v10];
 
   currentDragSession = self->_currentDragSession;
-  self->_currentDragSession = v5;
-  v12 = v5;
+  self->_currentDragSession = beginCopy;
+  v12 = beginCopy;
 
   v13 = +[MapsDragAndDropManager sharedManager];
   [v13 setDragSession:v12];
 
   [(MapViewDragSource *)self updatePreviewDrag];
   [(VKLabelMarker *)self->_labelMarker setIsDragged:1];
-  v17 = [(DragAndDropMapItem *)self->_dragItem analyticsHelper];
+  analyticsHelper = [(DragAndDropMapItem *)self->_dragItem analyticsHelper];
   v14 = +[MKMapService sharedService];
 
-  v15 = [v17 eventValue];
-  v16 = [v17 actionDetails];
-  [v14 captureUserAction:17001 onTarget:1 eventValue:v15 placeActionDetails:v16];
+  eventValue = [analyticsHelper eventValue];
+  actionDetails = [analyticsHelper actionDetails];
+  [v14 captureUserAction:17001 onTarget:1 eventValue:eventValue placeActionDetails:actionDetails];
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
   previewView = self->_previewView;
-  v7 = a4;
-  v8 = [(DragAndDropPreview *)previewView renderPreviewImage];
-  v9 = [v7 localObject];
+  itemCopy = item;
+  renderPreviewImage = [(DragAndDropPreview *)previewView renderPreviewImage];
+  localObject = [itemCopy localObject];
 
   mapView = self->_mapView;
-  [v9 sourceCoordinate];
+  [localObject sourceCoordinate];
   [(MKMapView *)mapView convertCoordinate:self->_mapView toPointToView:?];
   v12 = v11;
   v14 = v13;
   v15 = [UIDragPreviewTarget alloc];
-  v16 = [v9 sourceView];
-  v17 = [v15 initWithContainer:v16 center:{v12, v14}];
+  sourceView = [localObject sourceView];
+  v17 = [v15 initWithContainer:sourceView center:{v12, v14}];
 
-  v18 = [v8 targetedDragPreviewWithTarget:v17];
+  v18 = [renderPreviewImage targetedDragPreviewWithTarget:v17];
   objc_storeStrong(&self->_liftPreview, v18);
 
   return v18;
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  interactionCopy = interaction;
+  sessionCopy = session;
   v8 = +[MapsDragAndDropManager sharedManager];
-  v9 = [v8 canStartNewDrag];
+  canStartNewDrag = [v8 canStartNewDrag];
 
-  if (v9 && ([v6 view], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "locationInView:", v10), v12 = v11, v14 = v13, v10, -[MapViewDragSource shouldBeginDragFromLocation:](self, "shouldBeginDragFromLocation:", v12, v14)) && ((p_labelMarker = &self->_labelMarker, self->_labelMarker) || (p_labelMarker = &self->_searchResult, self->_searchResult)))
+  if (canStartNewDrag && ([interactionCopy view], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(sessionCopy, "locationInView:", v10), v12 = v11, v14 = v13, v10, -[MapViewDragSource shouldBeginDragFromLocation:](self, "shouldBeginDragFromLocation:", v12, v14)) && ((p_labelMarker = &self->_labelMarker, self->_labelMarker) || (p_labelMarker = &self->_searchResult, self->_searchResult)))
   {
     v16 = [DragAndDropMapItem dragAndDropItemWithObject:?];
     dragItem = self->_dragItem;
@@ -212,14 +212,14 @@ LABEL_6:
     [(DragAndDropMapItem *)self->_dragItem setSourceCoordinate:v21.latitude, v21.longitude];
     v22 = [DragAndDropPreview alloc];
     v23 = self->_dragItem;
-    v24 = [(MKMapView *)self->_mapView traitCollection];
-    v25 = [(DragAndDropPreview *)v22 initWithDragAndDropMapItem:v23 traitCollection:v24];
+    traitCollection = [(MKMapView *)self->_mapView traitCollection];
+    v25 = [(DragAndDropPreview *)v22 initWithDragAndDropMapItem:v23 traitCollection:traitCollection];
     previewView = self->_previewView;
     self->_previewView = v25;
 
     [(DragAndDropPreview *)self->_previewView setContentUpdateDelegate:self];
-    v27 = [(DragAndDropMapItem *)self->_dragItem itemProvider];
-    v28 = [[UIDragItem alloc] initWithItemProvider:v27];
+    itemProvider = [(DragAndDropMapItem *)self->_dragItem itemProvider];
+    v28 = [[UIDragItem alloc] initWithItemProvider:itemProvider];
     [v28 setLocalObject:self->_dragItem];
     v31 = v28;
     v29 = [NSArray arrayWithObjects:&v31 count:1];
@@ -233,21 +233,21 @@ LABEL_6:
   return v29;
 }
 
-- (BOOL)_isValidLabelMarkerForDragging:(id)a3
+- (BOOL)_isValidLabelMarkerForDragging:(id)dragging
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3 || ([v3 isTransitLine] & 1) != 0 || (objc_msgSend(v4, "isFlyoverTour") & 1) != 0 || (objc_msgSend(v4, "isTrafficIncident") & 1) != 0 || (objc_msgSend(v4, "isOneWayArrow") & 1) != 0 || (objc_msgSend(v4, "isRouteAnnotation") & 1) != 0)
+  draggingCopy = dragging;
+  v4 = draggingCopy;
+  if (!draggingCopy || ([draggingCopy isTransitLine] & 1) != 0 || (objc_msgSend(v4, "isFlyoverTour") & 1) != 0 || (objc_msgSend(v4, "isTrafficIncident") & 1) != 0 || (objc_msgSend(v4, "isOneWayArrow") & 1) != 0 || (objc_msgSend(v4, "isRouteAnnotation") & 1) != 0)
   {
     v5 = 0;
   }
 
   else
   {
-    v7 = [v4 featureType];
-    if (v7 <= 6)
+    featureType = [v4 featureType];
+    if (featureType <= 6)
     {
-      v5 = 0x68u >> v7;
+      v5 = 0x68u >> featureType;
     }
 
     else
@@ -259,10 +259,10 @@ LABEL_6:
   return v5 & 1;
 }
 
-- (BOOL)shouldBeginDragFromLocation:(CGPoint)a3
+- (BOOL)shouldBeginDragFromLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v6 = [(MKMapView *)self->_mapView hitTest:0 withEvent:?];
   v7 = [(MKMapView *)self->_mapView calloutViewContainsPoint:x, y];
   self->_draggingCallout = 0;
@@ -275,20 +275,20 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v14 = [(MKMapView *)self->_mapView _annotationAtPoint:0 avoidCurrent:x, y];
+    _selectedLabelMarker = [(MKMapView *)self->_mapView _annotationAtPoint:0 avoidCurrent:x, y];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [(SearchResult *)v14 annotation];
+      annotation = [(SearchResult *)_selectedLabelMarker annotation];
 
-      v14 = v15;
+      _selectedLabelMarker = annotation;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       searchResult = self->_searchResult;
-      self->_searchResult = v14;
+      self->_searchResult = _selectedLabelMarker;
     }
 
     else
@@ -309,32 +309,32 @@ LABEL_20:
     goto LABEL_22;
   }
 
-  v8 = [(MKMapView *)self->_mapView selectedAnnotations];
-  v9 = [v8 count];
+  selectedAnnotations = [(MKMapView *)self->_mapView selectedAnnotations];
+  v9 = [selectedAnnotations count];
 
   if (v9 != 1)
   {
 LABEL_13:
-    v14 = [(MKMapView *)self->_mapView _selectedLabelMarker];
-    if ([(MapViewDragSource *)self _isValidLabelMarkerForDragging:v14])
+    _selectedLabelMarker = [(MKMapView *)self->_mapView _selectedLabelMarker];
+    if ([(MapViewDragSource *)self _isValidLabelMarkerForDragging:_selectedLabelMarker])
     {
       v13 = self->_labelMarker;
-      self->_labelMarker = v14;
+      self->_labelMarker = _selectedLabelMarker;
       goto LABEL_15;
     }
 
     goto LABEL_20;
   }
 
-  v10 = [(MKMapView *)self->_mapView selectedAnnotations];
-  v11 = [v10 firstObject];
+  selectedAnnotations2 = [(MKMapView *)self->_mapView selectedAnnotations];
+  firstObject = [selectedAnnotations2 firstObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [(SearchResult *)v11 annotation];
+    annotation2 = [(SearchResult *)firstObject annotation];
 
-    v11 = v12;
+    firstObject = annotation2;
   }
 
   objc_opt_class();
@@ -345,7 +345,7 @@ LABEL_13:
   }
 
   v13 = self->_searchResult;
-  self->_searchResult = v11;
+  self->_searchResult = firstObject;
 LABEL_15:
 
   v17 = 1;

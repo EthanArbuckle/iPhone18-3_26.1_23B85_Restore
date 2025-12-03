@@ -1,28 +1,28 @@
 @interface TKTokenSession
-+ (id)_localizedString:(id)a3 value:(id)a4;
++ (id)_localizedString:(id)string value:(id)value;
 - ($115C4C562B26FF47E01F9F4EA65B5887)creatorAuditToken;
-- (BOOL)checkOperation:(int64_t)a3 usingKey:(id)a4 algorithm:(id)a5 parameters:(id)a6;
+- (BOOL)checkOperation:(int64_t)operation usingKey:(id)key algorithm:(id)algorithm parameters:(id)parameters;
 - (TKTokenSession)initWithToken:(TKToken *)token;
 - (id)delegate;
-- (id)errorWithResult:(id)a3 operation:(id)a4 forError:(id)a5;
-- (void)attestKey:(id)a3 usingKey:(id)a4 nonce:(id)a5 reply:(id)a6;
-- (void)beginAuthForOperation:(int64_t)a3 constraint:(id)a4 reply:(id)a5;
-- (void)bumpKey:(id)a3 reply:(id)a4;
-- (void)commitKey:(id)a3 reply:(id)a4;
-- (void)createObjectWithAttributes:(id)a3 reply:(id)a4;
-- (void)decapsulateSharedKey:(id)a3 usingKey:(id)a4 algorithm:(id)a5 reply:(id)a6;
-- (void)decryptData:(id)a3 usingKey:(id)a4 algorithm:(id)a5 parameters:(id)a6 reply:(id)a7;
-- (void)deleteObject:(id)a3 reply:(id)a4;
-- (void)evaluateAccessControl:(id)a3 forOperation:(id)a4 reply:(id)a5;
-- (void)evaluateAuthOperation:(id)a3 tokenOperation:(int64_t)a4 reply:(id)a5;
-- (void)evaluateAuthOperation:(id)a3 tokenOperation:(int64_t)a4 retry:(BOOL)a5 reply:(id)a6;
-- (void)finalizeAuthOperation:(id)a3 evaluatedAuthOperation:(id)a4 reply:(id)a5;
-- (void)getAdvertisedItemsWithReply:(id)a3;
-- (void)getAttributesOfObject:(id)a3 isCertificate:(BOOL)a4 reply:(id)a5;
-- (void)objectID:(id)a3 operation:(int64_t)a4 inputData:(id)a5 algorithms:(id)a6 parameters:(id)a7 reply:(id)a8;
-- (void)performKeyExchangeWithPublicKey:(id)a3 usingKey:(id)a4 algorithm:(id)a5 parameters:(id)a6 reply:(id)a7;
-- (void)setCreatorAuditToken:(id *)a3;
-- (void)signData:(id)a3 usingKey:(id)a4 algorithm:(id)a5 reply:(id)a6;
+- (id)errorWithResult:(id)result operation:(id)operation forError:(id)error;
+- (void)attestKey:(id)key usingKey:(id)usingKey nonce:(id)nonce reply:(id)reply;
+- (void)beginAuthForOperation:(int64_t)operation constraint:(id)constraint reply:(id)reply;
+- (void)bumpKey:(id)key reply:(id)reply;
+- (void)commitKey:(id)key reply:(id)reply;
+- (void)createObjectWithAttributes:(id)attributes reply:(id)reply;
+- (void)decapsulateSharedKey:(id)key usingKey:(id)usingKey algorithm:(id)algorithm reply:(id)reply;
+- (void)decryptData:(id)data usingKey:(id)key algorithm:(id)algorithm parameters:(id)parameters reply:(id)reply;
+- (void)deleteObject:(id)object reply:(id)reply;
+- (void)evaluateAccessControl:(id)control forOperation:(id)operation reply:(id)reply;
+- (void)evaluateAuthOperation:(id)operation tokenOperation:(int64_t)tokenOperation reply:(id)reply;
+- (void)evaluateAuthOperation:(id)operation tokenOperation:(int64_t)tokenOperation retry:(BOOL)retry reply:(id)reply;
+- (void)finalizeAuthOperation:(id)operation evaluatedAuthOperation:(id)authOperation reply:(id)reply;
+- (void)getAdvertisedItemsWithReply:(id)reply;
+- (void)getAttributesOfObject:(id)object isCertificate:(BOOL)certificate reply:(id)reply;
+- (void)objectID:(id)d operation:(int64_t)operation inputData:(id)data algorithms:(id)algorithms parameters:(id)parameters reply:(id)reply;
+- (void)performKeyExchangeWithPublicKey:(id)key usingKey:(id)usingKey algorithm:(id)algorithm parameters:(id)parameters reply:(id)reply;
+- (void)setCreatorAuditToken:(id *)token;
+- (void)signData:(id)data usingKey:(id)key algorithm:(id)algorithm reply:(id)reply;
 - (void)terminate;
 @end
 
@@ -44,8 +44,8 @@
     }
 
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [(TKToken *)v5 tokenID];
-    v10 = [v8 stringWithFormat:@"session:%@", v9];
+    tokenID = [(TKToken *)v5 tokenID];
+    v10 = [v8 stringWithFormat:@"session:%@", tokenID];
     v11 = dispatch_queue_create([v10 UTF8String], 0);
     queue = v7->_queue;
     v7->_queue = v11;
@@ -54,44 +54,44 @@
   return v7;
 }
 
-+ (id)_localizedString:(id)a3 value:(id)a4
++ (id)_localizedString:(id)string value:(id)value
 {
   v5 = MEMORY[0x1E696AAE8];
-  v6 = a4;
-  v7 = a3;
+  valueCopy = value;
+  stringCopy = string;
   v8 = [v5 bundleWithIdentifier:@"com.apple.CryptoTokenKit"];
-  v9 = [v8 localizedStringForKey:v7 value:v6 table:0];
+  v9 = [v8 localizedStringForKey:stringCopy value:valueCopy table:0];
 
   return v9;
 }
 
-- (void)getAttributesOfObject:(id)a3 isCertificate:(BOOL)a4 reply:(id)a5
+- (void)getAttributesOfObject:(id)object isCertificate:(BOOL)certificate reply:(id)reply
 {
-  v6 = a4;
+  certificateCopy = certificate;
   v55 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(TKTokenSession *)self privateDelegate];
+  objectCopy = object;
+  replyCopy = reply;
+  privateDelegate = [(TKTokenSession *)self privateDelegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(TKTokenSession *)self privateDelegate];
+    privateDelegate2 = [(TKTokenSession *)self privateDelegate];
     v52 = 0;
-    v13 = [v12 tokenSession:self attributesOfObject:v8 error:&v52];
-    v14 = v52;
+    v13 = [privateDelegate2 tokenSession:self attributesOfObject:objectCopy error:&v52];
+    keychainItems = v52;
     v15 = [v13 mutableCopy];
 
     if (v15)
     {
-      if (v6)
+      if (certificateCopy)
       {
-        [TKTokenID encodedCertificateID:v8];
+        [TKTokenID encodedCertificateID:objectCopy];
       }
 
       else
       {
-        [TKTokenID encodedKeyID:v8];
+        [TKTokenID encodedKeyID:objectCopy];
       }
       v36 = ;
       [v15 setObject:v36 forKeyedSubscript:*MEMORY[0x1E697AEE8]];
@@ -111,23 +111,23 @@
       }
     }
 
-    v9[2](v9, v15, v14);
+    replyCopy[2](replyCopy, v15, keychainItems);
   }
 
   else
   {
-    v42 = self;
-    v43 = v9;
-    v16 = v8;
+    selfCopy = self;
+    v43 = replyCopy;
+    v16 = objectCopy;
     v50 = 0u;
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v17 = [(TKTokenSession *)self token];
-    v18 = [v17 configuration];
-    v14 = [v18 keychainItems];
+    token = [(TKTokenSession *)self token];
+    configuration = [token configuration];
+    keychainItems = [configuration keychainItems];
 
-    v19 = [v14 countByEnumeratingWithState:&v48 objects:v54 count:16];
+    v19 = [keychainItems countByEnumeratingWithState:&v48 objects:v54 count:16];
     if (v19)
     {
       v20 = v19;
@@ -138,35 +138,35 @@
         {
           if (*v49 != v21)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(keychainItems);
           }
 
           v23 = *(*(&v48 + 1) + 8 * i);
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) == 0 || v6)
+          if ((objc_opt_isKindOfClass() & 1) == 0 || certificateCopy)
           {
             objc_opt_class();
-            if ((objc_opt_isKindOfClass() & 1) == 0 || !v6)
+            if ((objc_opt_isKindOfClass() & 1) == 0 || !certificateCopy)
             {
               continue;
             }
           }
 
-          v24 = [v23 objectID];
-          v25 = [v24 isEqual:v16];
+          objectID = [v23 objectID];
+          v25 = [objectID isEqual:v16];
 
           if (v25)
           {
-            v35 = [v23 keychainAttributes];
-            v9 = v43;
-            v43[2](v43, v35, 0);
+            keychainAttributes = [v23 keychainAttributes];
+            replyCopy = v43;
+            v43[2](v43, keychainAttributes, 0);
 
-            v8 = v16;
+            objectCopy = v16;
             goto LABEL_36;
           }
         }
 
-        v20 = [v14 countByEnumeratingWithState:&v48 objects:v54 count:16];
+        v20 = [keychainItems countByEnumeratingWithState:&v48 objects:v54 count:16];
         if (v20)
         {
           continue;
@@ -176,18 +176,18 @@
       }
     }
 
-    v8 = v16;
-    if (!v6)
+    objectCopy = v16;
+    if (!certificateCopy)
     {
       v46 = 0u;
       v47 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v26 = [(TKTokenSession *)v42 token];
-      v27 = [v26 configuration];
-      v14 = [v27 keychainItems];
+      token2 = [(TKTokenSession *)selfCopy token];
+      configuration2 = [token2 configuration];
+      keychainItems = [configuration2 keychainItems];
 
-      v28 = [v14 countByEnumeratingWithState:&v44 objects:v53 count:16];
+      v28 = [keychainItems countByEnumeratingWithState:&v44 objects:v53 count:16];
       if (v28)
       {
         v29 = v28;
@@ -198,28 +198,28 @@
           {
             if (*v45 != v30)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(keychainItems);
             }
 
             v32 = *(*(&v44 + 1) + 8 * j);
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v33 = [v32 objectID];
-              v34 = [v33 isEqual:v8];
+              objectID2 = [v32 objectID];
+              v34 = [objectID2 isEqual:objectCopy];
 
               if (v34)
               {
-                v41 = [v32 keychainAttributes];
-                v9 = v43;
-                v43[2](v43, v41, 0);
+                keychainAttributes2 = [v32 keychainAttributes];
+                replyCopy = v43;
+                v43[2](v43, keychainAttributes2, 0);
 
                 goto LABEL_36;
               }
             }
           }
 
-          v29 = [v14 countByEnumeratingWithState:&v44 objects:v53 count:16];
+          v29 = [keychainItems countByEnumeratingWithState:&v44 objects:v53 count:16];
           if (v29)
           {
             continue;
@@ -230,9 +230,9 @@
       }
     }
 
-    v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-6 userInfo:0];
-    v9 = v43;
-    v43[2](v43, 0, v14);
+    keychainItems = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-6 userInfo:0];
+    replyCopy = v43;
+    v43[2](v43, 0, keychainItems);
   }
 
 LABEL_36:
@@ -240,21 +240,21 @@ LABEL_36:
   v40 = *MEMORY[0x1E69E9840];
 }
 
-- (void)beginAuthForOperation:(int64_t)a3 constraint:(id)a4 reply:(id)a5
+- (void)beginAuthForOperation:(int64_t)operation constraint:(id)constraint reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(TKTokenSession *)self delegate];
+  constraintCopy = constraint;
+  replyCopy = reply;
+  delegate = [(TKTokenSession *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(TKTokenSession *)self delegate];
+    delegate2 = [(TKTokenSession *)self delegate];
     v16 = 0;
-    v13 = [v12 tokenSession:self beginAuthForOperation:a3 constraint:v8 error:&v16];
+    v13 = [delegate2 tokenSession:self beginAuthForOperation:operation constraint:constraintCopy error:&v16];
     v14 = v16;
 
-    v9[2](v9, v13, v14);
+    replyCopy[2](replyCopy, v13, v14);
   }
 
   else
@@ -262,31 +262,31 @@ LABEL_36:
     v15 = TK_LOG_token_4();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [TKTokenSession beginAuthForOperation:v8 constraint:v15 reply:?];
+      [TKTokenSession beginAuthForOperation:constraintCopy constraint:v15 reply:?];
     }
 
     v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-5 userInfo:0];
-    v9[2](v9, 0, v13);
+    replyCopy[2](replyCopy, 0, v13);
   }
 }
 
-- (BOOL)checkOperation:(int64_t)a3 usingKey:(id)a4 algorithm:(id)a5 parameters:(id)a6
+- (BOOL)checkOperation:(int64_t)operation usingKey:(id)key algorithm:(id)algorithm parameters:(id)parameters
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(TKTokenSession *)self privateDelegate];
+  keyCopy = key;
+  algorithmCopy = algorithm;
+  parametersCopy = parameters;
+  privateDelegate = [(TKTokenSession *)self privateDelegate];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v15 = [(TKTokenSession *)self privateDelegate];
-    v16 = [v15 tokenSession:self supportsOperation:a3 usingKey:v10 algorithm:v11 parameters:v12];
+    privateDelegate2 = [(TKTokenSession *)self privateDelegate];
+    v16 = [privateDelegate2 tokenSession:self supportsOperation:operation usingKey:keyCopy algorithm:algorithmCopy parameters:parametersCopy];
   }
 
   else
   {
-    v17 = [(TKTokenSession *)self delegate];
+    delegate = [(TKTokenSession *)self delegate];
     v18 = objc_opt_respondsToSelector();
 
     if ((v18 & 1) == 0)
@@ -295,8 +295,8 @@ LABEL_36:
       goto LABEL_7;
     }
 
-    v15 = [(TKTokenSession *)self delegate];
-    v16 = [v15 tokenSession:self supportsOperation:a3 usingKey:v10 algorithm:v11];
+    privateDelegate2 = [(TKTokenSession *)self delegate];
+    v16 = [privateDelegate2 tokenSession:self supportsOperation:operation usingKey:keyCopy algorithm:algorithmCopy];
   }
 
   v19 = v16;
@@ -305,24 +305,24 @@ LABEL_7:
   return v19;
 }
 
-- (void)signData:(id)a3 usingKey:(id)a4 algorithm:(id)a5 reply:(id)a6
+- (void)signData:(id)data usingKey:(id)key algorithm:(id)algorithm reply:(id)reply
 {
   v26 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(TKTokenSession *)self delegate];
+  dataCopy = data;
+  keyCopy = key;
+  algorithmCopy = algorithm;
+  replyCopy = reply;
+  delegate = [(TKTokenSession *)self delegate];
   v15 = objc_opt_respondsToSelector();
 
   if (v15)
   {
-    v16 = [(TKTokenSession *)self delegate];
+    delegate2 = [(TKTokenSession *)self delegate];
     v23 = 0;
-    v17 = [v16 tokenSession:self signData:v10 usingKey:v11 algorithm:v12 error:&v23];
+    v17 = [delegate2 tokenSession:self signData:dataCopy usingKey:keyCopy algorithm:algorithmCopy error:&v23];
     v18 = v23;
 
-    v13[2](v13, v17, v18);
+    replyCopy[2](replyCopy, v17, v18);
   }
 
   else
@@ -330,52 +330,52 @@ LABEL_7:
     v19 = TK_LOG_token_4();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(TKTokenSession *)self token];
-      v21 = [v20 tokenID];
+      token = [(TKTokenSession *)self token];
+      tokenID = [token tokenID];
       *buf = 138543362;
-      v25 = v21;
+      v25 = tokenID;
       _os_log_impl(&dword_1DF413000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: does not implement sign", buf, 0xCu);
     }
 
     v17 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:0];
-    v13[2](v13, 0, v17);
+    replyCopy[2](replyCopy, 0, v17);
   }
 
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)decryptData:(id)a3 usingKey:(id)a4 algorithm:(id)a5 parameters:(id)a6 reply:(id)a7
+- (void)decryptData:(id)data usingKey:(id)key algorithm:(id)algorithm parameters:(id)parameters reply:(id)reply
 {
   v33 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(TKTokenSession *)self privateDelegate];
+  dataCopy = data;
+  keyCopy = key;
+  algorithmCopy = algorithm;
+  parametersCopy = parameters;
+  replyCopy = reply;
+  privateDelegate = [(TKTokenSession *)self privateDelegate];
   v18 = objc_opt_respondsToSelector();
 
   if (v18)
   {
-    v19 = [(TKTokenSession *)self privateDelegate];
+    privateDelegate2 = [(TKTokenSession *)self privateDelegate];
     v30 = 0;
-    v20 = [v19 tokenSession:self decryptData:v12 usingKey:v13 algorithm:v14 parameters:v15 error:&v30];
+    v20 = [privateDelegate2 tokenSession:self decryptData:dataCopy usingKey:keyCopy algorithm:algorithmCopy parameters:parametersCopy error:&v30];
     v21 = v30;
 LABEL_5:
     v24 = v21;
 
-    v16[2](v16, v20, v24);
+    replyCopy[2](replyCopy, v20, v24);
     goto LABEL_9;
   }
 
-  v22 = [(TKTokenSession *)self delegate];
+  delegate = [(TKTokenSession *)self delegate];
   v23 = objc_opt_respondsToSelector();
 
   if (v23)
   {
-    v19 = [(TKTokenSession *)self delegate];
+    privateDelegate2 = [(TKTokenSession *)self delegate];
     v29 = 0;
-    v20 = [v19 tokenSession:self decryptData:v12 usingKey:v13 algorithm:v14 error:&v29];
+    v20 = [privateDelegate2 tokenSession:self decryptData:dataCopy usingKey:keyCopy algorithm:algorithmCopy error:&v29];
     v21 = v29;
     goto LABEL_5;
   }
@@ -383,39 +383,39 @@ LABEL_5:
   v25 = TK_LOG_token_4();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
-    v26 = [(TKTokenSession *)self token];
-    v27 = [v26 tokenID];
+    token = [(TKTokenSession *)self token];
+    tokenID = [token tokenID];
     *buf = 138543362;
-    v32 = v27;
+    v32 = tokenID;
     _os_log_impl(&dword_1DF413000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@: does not implement decrypt", buf, 0xCu);
   }
 
   v20 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:0];
-  v16[2](v16, 0, v20);
+  replyCopy[2](replyCopy, 0, v20);
 LABEL_9:
 
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performKeyExchangeWithPublicKey:(id)a3 usingKey:(id)a4 algorithm:(id)a5 parameters:(id)a6 reply:(id)a7
+- (void)performKeyExchangeWithPublicKey:(id)key usingKey:(id)usingKey algorithm:(id)algorithm parameters:(id)parameters reply:(id)reply
 {
   v29 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(TKTokenSession *)self delegate];
+  keyCopy = key;
+  usingKeyCopy = usingKey;
+  algorithmCopy = algorithm;
+  parametersCopy = parameters;
+  replyCopy = reply;
+  delegate = [(TKTokenSession *)self delegate];
   v18 = objc_opt_respondsToSelector();
 
   if (v18)
   {
-    v19 = [(TKTokenSession *)self delegate];
+    delegate2 = [(TKTokenSession *)self delegate];
     v26 = 0;
-    v20 = [v19 tokenSession:self performKeyExchangeWithPublicKey:v12 usingKey:v13 algorithm:v14 parameters:v15 error:&v26];
+    v20 = [delegate2 tokenSession:self performKeyExchangeWithPublicKey:keyCopy usingKey:usingKeyCopy algorithm:algorithmCopy parameters:parametersCopy error:&v26];
     v21 = v26;
 
-    v16[2](v16, v20, v21);
+    replyCopy[2](replyCopy, v20, v21);
   }
 
   else
@@ -423,38 +423,38 @@ LABEL_9:
     v22 = TK_LOG_token_4();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [(TKTokenSession *)self token];
-      v24 = [v23 tokenID];
+      token = [(TKTokenSession *)self token];
+      tokenID = [token tokenID];
       *buf = 138543362;
-      v28 = v24;
+      v28 = tokenID;
       _os_log_impl(&dword_1DF413000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@: does not implement key exchange", buf, 0xCu);
     }
 
     v20 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:0];
-    v16[2](v16, 0, v20);
+    replyCopy[2](replyCopy, 0, v20);
   }
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)decapsulateSharedKey:(id)a3 usingKey:(id)a4 algorithm:(id)a5 reply:(id)a6
+- (void)decapsulateSharedKey:(id)key usingKey:(id)usingKey algorithm:(id)algorithm reply:(id)reply
 {
   v26 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(TKTokenSession *)self privateDelegate];
+  keyCopy = key;
+  usingKeyCopy = usingKey;
+  algorithmCopy = algorithm;
+  replyCopy = reply;
+  privateDelegate = [(TKTokenSession *)self privateDelegate];
   v15 = objc_opt_respondsToSelector();
 
   if (v15)
   {
-    v16 = [(TKTokenSession *)self privateDelegate];
+    privateDelegate2 = [(TKTokenSession *)self privateDelegate];
     v23 = 0;
-    v17 = [v16 tokenSession:self decapsulateSharedKey:v10 usingKey:v11 algorithm:v12 error:&v23];
+    v17 = [privateDelegate2 tokenSession:self decapsulateSharedKey:keyCopy usingKey:usingKeyCopy algorithm:algorithmCopy error:&v23];
     v18 = v23;
 
-    v13[2](v13, v17, v18);
+    replyCopy[2](replyCopy, v17, v18);
   }
 
   else
@@ -462,38 +462,38 @@ LABEL_9:
     v19 = TK_LOG_token_4();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(TKTokenSession *)self token];
-      v21 = [v20 tokenID];
+      token = [(TKTokenSession *)self token];
+      tokenID = [token tokenID];
       *buf = 138543362;
-      v25 = v21;
+      v25 = tokenID;
       _os_log_impl(&dword_1DF413000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: does not implement decapsulate", buf, 0xCu);
     }
 
     v17 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:0];
-    v13[2](v13, 0, v17);
+    replyCopy[2](replyCopy, 0, v17);
   }
 
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)attestKey:(id)a3 usingKey:(id)a4 nonce:(id)a5 reply:(id)a6
+- (void)attestKey:(id)key usingKey:(id)usingKey nonce:(id)nonce reply:(id)reply
 {
   v26 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(TKTokenSession *)self privateDelegate];
+  keyCopy = key;
+  usingKeyCopy = usingKey;
+  nonceCopy = nonce;
+  replyCopy = reply;
+  privateDelegate = [(TKTokenSession *)self privateDelegate];
   v15 = objc_opt_respondsToSelector();
 
   if (v15)
   {
-    v16 = [(TKTokenSession *)self privateDelegate];
+    privateDelegate2 = [(TKTokenSession *)self privateDelegate];
     v23 = 0;
-    v17 = [v16 tokenSession:self attestKey:v10 usingKey:v11 nonce:v12 error:&v23];
+    v17 = [privateDelegate2 tokenSession:self attestKey:keyCopy usingKey:usingKeyCopy nonce:nonceCopy error:&v23];
     v18 = v23;
 
-    v13[2](v13, v17, v18);
+    replyCopy[2](replyCopy, v17, v18);
   }
 
   else
@@ -501,36 +501,36 @@ LABEL_9:
     v19 = TK_LOG_token_4();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(TKTokenSession *)self token];
-      v21 = [v20 tokenID];
+      token = [(TKTokenSession *)self token];
+      tokenID = [token tokenID];
       *buf = 138543362;
-      v25 = v21;
+      v25 = tokenID;
       _os_log_impl(&dword_1DF413000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: does not implement attestation", buf, 0xCu);
     }
 
     v17 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:0];
-    v13[2](v13, 0, v17);
+    replyCopy[2](replyCopy, 0, v17);
   }
 
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)bumpKey:(id)a3 reply:(id)a4
+- (void)bumpKey:(id)key reply:(id)reply
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TKTokenSession *)self privateDelegate];
+  keyCopy = key;
+  replyCopy = reply;
+  privateDelegate = [(TKTokenSession *)self privateDelegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(TKTokenSession *)self privateDelegate];
+    privateDelegate2 = [(TKTokenSession *)self privateDelegate];
     v18 = 0;
-    v11 = [v10 tokenSession:self bumpKey:v6 error:&v18];
+    v11 = [privateDelegate2 tokenSession:self bumpKey:keyCopy error:&v18];
     v12 = v18;
 
-    v7[2](v7, v11, v12);
+    replyCopy[2](replyCopy, v11, v12);
   }
 
   else
@@ -538,38 +538,38 @@ LABEL_9:
     v13 = TK_LOG_token_4();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(TKTokenSession *)self token];
-      v15 = [v14 tokenID];
+      token = [(TKTokenSession *)self token];
+      tokenID = [token tokenID];
       *buf = 138543362;
-      v20 = v15;
+      v20 = tokenID;
       _os_log_impl(&dword_1DF413000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: does not implement key bumping", buf, 0xCu);
     }
 
     v16 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:0];
-    v7[2](v7, 0, v16);
-    v12 = v7;
-    v7 = v16;
+    replyCopy[2](replyCopy, 0, v16);
+    v12 = replyCopy;
+    replyCopy = v16;
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)commitKey:(id)a3 reply:(id)a4
+- (void)commitKey:(id)key reply:(id)reply
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TKTokenSession *)self privateDelegate];
+  keyCopy = key;
+  replyCopy = reply;
+  privateDelegate = [(TKTokenSession *)self privateDelegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(TKTokenSession *)self privateDelegate];
+    privateDelegate2 = [(TKTokenSession *)self privateDelegate];
     v18 = 0;
-    v11 = [v10 tokenSession:self commitKey:v6 error:&v18];
+    v11 = [privateDelegate2 tokenSession:self commitKey:keyCopy error:&v18];
     v12 = v18;
 
-    v7[2](v7, v11, v12);
+    replyCopy[2](replyCopy, v11, v12);
   }
 
   else
@@ -577,38 +577,38 @@ LABEL_9:
     v13 = TK_LOG_token_4();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(TKTokenSession *)self token];
-      v15 = [v14 tokenID];
+      token = [(TKTokenSession *)self token];
+      tokenID = [token tokenID];
       *buf = 138543362;
-      v20 = v15;
+      v20 = tokenID;
       _os_log_impl(&dword_1DF413000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: does not implement key committing", buf, 0xCu);
     }
 
     v16 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:0];
-    v7[2](v7, 0, v16);
-    v12 = v7;
-    v7 = v16;
+    replyCopy[2](replyCopy, 0, v16);
+    v12 = replyCopy;
+    replyCopy = v16;
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)createObjectWithAttributes:(id)a3 reply:(id)a4
+- (void)createObjectWithAttributes:(id)attributes reply:(id)reply
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TKTokenSession *)self privateDelegate];
+  attributesCopy = attributes;
+  replyCopy = reply;
+  privateDelegate = [(TKTokenSession *)self privateDelegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(TKTokenSession *)self privateDelegate];
+    privateDelegate2 = [(TKTokenSession *)self privateDelegate];
     v17 = 0;
-    v11 = [v10 tokenSession:self createObjectWithAttributes:v6 error:&v17];
+    v11 = [privateDelegate2 tokenSession:self createObjectWithAttributes:attributesCopy error:&v17];
     v12 = v17;
 
-    v7[2](v7, v11, v12);
+    replyCopy[2](replyCopy, v11, v12);
   }
 
   else
@@ -616,36 +616,36 @@ LABEL_9:
     v13 = TK_LOG_token_4();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [(TKTokenSession *)self token];
-      v15 = [v14 tokenID];
+      token = [(TKTokenSession *)self token];
+      tokenID = [token tokenID];
       *buf = 138543362;
-      v19 = v15;
+      v19 = tokenID;
       _os_log_impl(&dword_1DF413000, v13, OS_LOG_TYPE_INFO, "%{public}@: is read-only token", buf, 0xCu);
     }
 
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:0];
-    v7[2](v7, 0, v11);
+    replyCopy[2](replyCopy, 0, v11);
   }
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteObject:(id)a3 reply:(id)a4
+- (void)deleteObject:(id)object reply:(id)reply
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TKTokenSession *)self privateDelegate];
+  objectCopy = object;
+  replyCopy = reply;
+  privateDelegate = [(TKTokenSession *)self privateDelegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(TKTokenSession *)self privateDelegate];
+    privateDelegate2 = [(TKTokenSession *)self privateDelegate];
     v18 = 0;
-    v11 = [v10 tokenSession:self deleteObject:v6 error:&v18];
+    v11 = [privateDelegate2 tokenSession:self deleteObject:objectCopy error:&v18];
     v12 = v18;
 
-    v7[2](v7, v11, v12);
+    replyCopy[2](replyCopy, v11, v12);
   }
 
   else
@@ -653,53 +653,53 @@ LABEL_9:
     v13 = TK_LOG_token_4();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [(TKTokenSession *)self token];
-      v15 = [v14 tokenID];
+      token = [(TKTokenSession *)self token];
+      tokenID = [token tokenID];
       *buf = 138543362;
-      v20 = v15;
+      v20 = tokenID;
       _os_log_impl(&dword_1DF413000, v13, OS_LOG_TYPE_INFO, "%{public}@: is read-only token", buf, 0xCu);
     }
 
     v16 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:0];
-    v7[2](v7, 0, v16);
-    v12 = v7;
-    v7 = v16;
+    replyCopy[2](replyCopy, 0, v16);
+    v12 = replyCopy;
+    replyCopy = v16;
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)evaluateAuthOperation:(id)a3 tokenOperation:(int64_t)a4 reply:(id)a5
+- (void)evaluateAuthOperation:(id)operation tokenOperation:(int64_t)tokenOperation reply:(id)reply
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v10 = a3;
-  v11 = objc_alloc_init([v10 baseClassForUI]);
+  replyCopy = reply;
+  operationCopy = operation;
+  v11 = objc_alloc_init([operationCopy baseClassForUI]);
   v12 = v11;
   if (v11)
   {
-    [v11 importOperation:v10];
+    [v11 importOperation:operationCopy];
 
     v24 = &unk_1F5A851C8;
     v25[0] = v12;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
-    v10 = [v13 mutableCopy];
+    operationCopy = [v13 mutableCopy];
 
-    v14 = [(TKTokenSession *)self callerPID];
+    callerPID = [(TKTokenSession *)self callerPID];
 
-    if (v14)
+    if (callerPID)
     {
-      v15 = [(TKTokenSession *)self callerPID];
-      [v10 setObject:v15 forKeyedSubscript:&unk_1F5A851E0];
+      callerPID2 = [(TKTokenSession *)self callerPID];
+      [operationCopy setObject:callerPID2 forKeyedSubscript:&unk_1F5A851E0];
     }
 
-    if (a4 == 1)
+    if (tokenOperation == 1)
     {
       v16 = @"READ_DATA";
       v17 = @"read data";
     }
 
-    else if (a4 == 2)
+    else if (tokenOperation == 2)
     {
       v16 = @"SIGN_DATA";
       v17 = @"sign data";
@@ -707,18 +707,18 @@ LABEL_9:
 
     else
     {
-      if ((a4 - 3) > 1)
+      if ((tokenOperation - 3) > 1)
       {
 LABEL_12:
-        v19 = [(TKTokenSession *)self LAContext];
+        lAContext = [(TKTokenSession *)self LAContext];
         v21[0] = MEMORY[0x1E69E9820];
         v21[1] = 3221225472;
         v21[2] = __61__TKTokenSession_evaluateAuthOperation_tokenOperation_reply___block_invoke;
         v21[3] = &unk_1E86B8218;
-        v22 = v9;
+        v22 = replyCopy;
         v23 = a2;
         v21[4] = self;
-        [v19 evaluatePolicy:1009 options:v10 reply:v21];
+        [lAContext evaluatePolicy:1009 options:operationCopy reply:v21];
 
         goto LABEL_13;
       }
@@ -728,12 +728,12 @@ LABEL_12:
     }
 
     v18 = [TKTokenSession _localizedString:v16 value:v17];
-    [v10 setObject:v18 forKeyedSubscript:&unk_1F5A851F8];
+    [operationCopy setObject:v18 forKeyedSubscript:&unk_1F5A851F8];
 
     goto LABEL_12;
   }
 
-  (*(v9 + 2))(v9, v10, 0);
+  (*(replyCopy + 2))(replyCopy, operationCopy, 0);
 LABEL_13:
 
   v20 = *MEMORY[0x1E69E9840];
@@ -761,21 +761,21 @@ void __61__TKTokenSession_evaluateAuthOperation_tokenOperation_reply___block_inv
   }
 }
 
-- (void)finalizeAuthOperation:(id)a3 evaluatedAuthOperation:(id)a4 reply:(id)a5
+- (void)finalizeAuthOperation:(id)operation evaluatedAuthOperation:(id)authOperation reply:(id)reply
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v8 importOperation:v9];
+  operationCopy = operation;
+  authOperationCopy = authOperation;
+  replyCopy = reply;
+  [operationCopy importOperation:authOperationCopy];
   v36 = 0;
-  v11 = [v8 finishWithError:&v36];
+  v11 = [operationCopy finishWithError:&v36];
   v12 = v36;
-  v13 = [(TKTokenSession *)self caller];
-  v14 = v13;
-  if (v13)
+  caller = [(TKTokenSession *)self caller];
+  v14 = caller;
+  if (caller)
   {
-    [v13 auditToken];
+    [caller auditToken];
   }
 
   else
@@ -783,27 +783,27 @@ void __61__TKTokenSession_evaluateAuthOperation_tokenOperation_reply___block_inv
     memset(v35, 0, sizeof(v35));
   }
 
-  [(TKTokenSession *)self auditAuthOperation:v8 auditToken:v35 success:v11];
+  [(TKTokenSession *)self auditAuthOperation:operationCopy auditToken:v35 success:v11];
 
   if (v11)
   {
-    v10[2](v10, 1, 0);
+    replyCopy[2](replyCopy, 1, 0);
     goto LABEL_25;
   }
 
-  v15 = [v12 domain];
-  if (![v15 isEqual:@"CryptoTokenKit"])
+  domain = [v12 domain];
+  if (![domain isEqual:@"CryptoTokenKit"])
   {
     goto LABEL_19;
   }
 
-  v16 = [v12 code];
-  if (!v9)
+  code = [v12 code];
+  if (!authOperationCopy)
   {
     goto LABEL_19;
   }
 
-  if (v16 != -7)
+  if (code != -7)
   {
     goto LABEL_19;
   }
@@ -814,20 +814,20 @@ void __61__TKTokenSession_evaluateAuthOperation_tokenOperation_reply___block_inv
     goto LABEL_19;
   }
 
-  v17 = [(TKTokenSession *)self LAContext];
-  v18 = [v17 isCredentialSet:-3];
+  lAContext = [(TKTokenSession *)self LAContext];
+  v18 = [lAContext isCredentialSet:-3];
 
   if ((v18 & 1) == 0)
   {
-    v15 = v9;
-    v19 = [v15 PIN];
+    domain = authOperationCopy;
+    v19 = [domain PIN];
     if (v19)
     {
       v20 = v19;
-      v34 = [v15 smartCard];
-      v33 = [v34 slot];
-      v21 = [v33 name];
-      if ([v21 isEqualToString:@"Built-in NFC Slot"])
+      smartCard = [domain smartCard];
+      slot = [smartCard slot];
+      name = [slot name];
+      if ([name isEqualToString:@"Built-in NFC Slot"])
       {
 
 LABEL_15:
@@ -837,10 +837,10 @@ LABEL_15:
           [TKTokenSession finalizeAuthOperation:v24 evaluatedAuthOperation:? reply:?];
         }
 
-        v25 = [(TKTokenSession *)self LAContext];
-        v26 = [v15 PIN];
+        lAContext2 = [(TKTokenSession *)self LAContext];
+        v26 = [domain PIN];
         v27 = [v26 dataUsingEncoding:4];
-        [v25 setCredential:v27 type:-3];
+        [lAContext2 setCredential:v27 type:-3];
 
         goto LABEL_18;
       }
@@ -876,29 +876,29 @@ LABEL_19:
     v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-8 userInfo:0];
   }
 
-  [v8 setAuthenticationError:v12];
-  (v10)[2](v10, 0, v12);
+  [operationCopy setAuthenticationError:v12];
+  (replyCopy)[2](replyCopy, 0, v12);
 LABEL_25:
 
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)evaluateAuthOperation:(id)a3 tokenOperation:(int64_t)a4 retry:(BOOL)a5 reply:(id)a6
+- (void)evaluateAuthOperation:(id)operation tokenOperation:(int64_t)tokenOperation retry:(BOOL)retry reply:(id)reply
 {
-  v10 = a3;
-  v11 = a6;
+  operationCopy = operation;
+  replyCopy = reply;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __67__TKTokenSession_evaluateAuthOperation_tokenOperation_retry_reply___block_invoke;
   v14[3] = &unk_1E86B8268;
   v14[4] = self;
-  v15 = v10;
-  v18 = a5;
-  v16 = v11;
-  v17 = a4;
-  v12 = v10;
-  v13 = v11;
-  [(TKTokenSession *)self evaluateAuthOperation:v12 tokenOperation:a4 reply:v14];
+  v15 = operationCopy;
+  retryCopy = retry;
+  v16 = replyCopy;
+  tokenOperationCopy = tokenOperation;
+  v12 = operationCopy;
+  v13 = replyCopy;
+  [(TKTokenSession *)self evaluateAuthOperation:v12 tokenOperation:tokenOperation reply:v14];
 }
 
 void __67__TKTokenSession_evaluateAuthOperation_tokenOperation_retry_reply___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1025,15 +1025,15 @@ LABEL_17:
 LABEL_22:
 }
 
-- (void)evaluateAccessControl:(id)a3 forOperation:(id)a4 reply:(id)a5
+- (void)evaluateAccessControl:(id)control forOperation:(id)operation reply:(id)reply
 {
-  v8 = a5;
+  replyCopy = reply;
   v23 = 0;
-  v9 = a4;
-  v10 = a3;
+  operationCopy = operation;
+  controlCopy = control;
   v11 = +[TKTokenKeychainItem operationMap];
-  v12 = [v11 objectForKey:v9];
-  v13 = [v12 integerValue];
+  v12 = [v11 objectForKey:operationCopy];
+  integerValue = [v12 integerValue];
 
   v14 = SecAccessControlCreateFromData();
   v15 = SecAccessControlGetConstraint();
@@ -1042,25 +1042,25 @@ LABEL_22:
   {
     if ([v15 isEqual:MEMORY[0x1E695E118]])
     {
-      v8[2](v8, 1, 0);
+      replyCopy[2](replyCopy, 1, 0);
       goto LABEL_4;
     }
 
-    v17 = [(TKTokenSession *)self LAContext];
+    lAContext = [(TKTokenSession *)self LAContext];
 
-    if (v17)
+    if (lAContext)
     {
-      v18 = [(TKTokenSession *)self queue];
-      dispatch_suspend(v18);
+      queue = [(TKTokenSession *)self queue];
+      dispatch_suspend(queue);
 
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __59__TKTokenSession_evaluateAccessControl_forOperation_reply___block_invoke;
       v20[3] = &unk_1E86B8290;
       v20[4] = self;
-      v21 = v8;
-      v22 = v13;
-      [(TKTokenSession *)self beginAuthForOperation:v13 constraint:v15 reply:v20];
+      v21 = replyCopy;
+      v22 = integerValue;
+      [(TKTokenSession *)self beginAuthForOperation:integerValue constraint:v15 reply:v20];
 
       goto LABEL_4;
     }
@@ -1073,7 +1073,7 @@ LABEL_22:
   }
 
   v16 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-5 userInfo:0];
-  (v8)[2](v8, 0, v16);
+  (replyCopy)[2](replyCopy, 0, v16);
 
 LABEL_4:
 }
@@ -1104,30 +1104,30 @@ void __59__TKTokenSession_evaluateAccessControl_forOperation_reply___block_invok
   }
 }
 
-- (id)errorWithResult:(id)a3 operation:(id)a4 forError:(id)a5
+- (id)errorWithResult:(id)result operation:(id)operation forError:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (!a3)
+  operationCopy = operation;
+  errorCopy = error;
+  v9 = errorCopy;
+  if (!result)
   {
-    v10 = [v8 domain];
-    if ([v10 isEqualToString:@"CryptoTokenKit"] && objc_msgSend(v9, "code") == -9)
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:@"CryptoTokenKit"] && objc_msgSend(v9, "code") == -9)
     {
-      v11 = [v9 userInfo];
-      v12 = [v11 objectForKeyedSubscript:@"operation"];
+      userInfo = [v9 userInfo];
+      v12 = [userInfo objectForKeyedSubscript:@"operation"];
 
       if (v12)
       {
         goto LABEL_7;
       }
 
-      v13 = [v9 userInfo];
-      v10 = [v13 mutableCopy];
+      userInfo2 = [v9 userInfo];
+      domain = [userInfo2 mutableCopy];
 
-      [v10 setObject:v7 forKeyedSubscript:@"operation"];
+      [domain setObject:operationCopy forKeyedSubscript:@"operation"];
       v14 = MEMORY[0x1E696ABC0];
-      v15 = [v10 copy];
+      v15 = [domain copy];
       v16 = [v14 errorWithDomain:@"CryptoTokenKit" code:-9 userInfo:v15];
 
       v9 = v16;
@@ -1139,153 +1139,153 @@ LABEL_7:
   return v9;
 }
 
-- (void)objectID:(id)a3 operation:(int64_t)a4 inputData:(id)a5 algorithms:(id)a6 parameters:(id)a7 reply:(id)a8
+- (void)objectID:(id)d operation:(int64_t)operation inputData:(id)data algorithms:(id)algorithms parameters:(id)parameters reply:(id)reply
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = a6;
-  v20 = [[TKTokenKeyAlgorithm alloc] initWithAlgorithmsArray:v19];
+  dCopy = d;
+  dataCopy = data;
+  parametersCopy = parameters;
+  replyCopy = reply;
+  algorithmsCopy = algorithms;
+  v20 = [[TKTokenKeyAlgorithm alloc] initWithAlgorithmsArray:algorithmsCopy];
 
-  if ([(TKTokenSession *)self checkOperation:a4 usingKey:v15 algorithm:v20 parameters:v17])
+  if ([(TKTokenSession *)self checkOperation:operation usingKey:dCopy algorithm:v20 parameters:parametersCopy])
   {
-    if (v16)
+    if (dataCopy)
     {
-      if (a4 > 999)
+      if (operation > 999)
       {
-        if (a4 <= 1001)
+        if (operation <= 1001)
         {
-          if (a4 != 1000)
+          if (operation != 1000)
           {
             v35[0] = MEMORY[0x1E69E9820];
             v35[1] = 3221225472;
             v35[2] = __75__TKTokenSession_objectID_operation_inputData_algorithms_parameters_reply___block_invoke_6;
             v35[3] = &unk_1E86B82E0;
             v35[4] = self;
-            v36 = v18;
-            [(TKTokenSession *)self bumpKey:v15 reply:v35];
+            v36 = replyCopy;
+            [(TKTokenSession *)self bumpKey:dCopy reply:v35];
             v21 = v36;
 LABEL_22:
 
             goto LABEL_26;
           }
 
-          v27 = [(TKTokenSession *)self token];
-          v28 = [v27 tokenID];
+          token = [(TKTokenSession *)self token];
+          tokenID = [token tokenID];
           v39 = 0;
-          v29 = [v28 decodedKeyID:v16 error:&v39];
+          v29 = [tokenID decodedKeyID:dataCopy error:&v39];
           v26 = v39;
 
           if (v29)
           {
-            v30 = [v17 objectForKeyedSubscript:@"nonce"];
+            v30 = [parametersCopy objectForKeyedSubscript:@"nonce"];
             v37[0] = MEMORY[0x1E69E9820];
             v37[1] = 3221225472;
             v37[2] = __75__TKTokenSession_objectID_operation_inputData_algorithms_parameters_reply___block_invoke_5;
             v37[3] = &unk_1E86B82B8;
             v37[4] = self;
-            v38 = v18;
-            [(TKTokenSession *)self attestKey:v29 usingKey:v15 nonce:v30 reply:v37];
+            v38 = replyCopy;
+            [(TKTokenSession *)self attestKey:v29 usingKey:dCopy nonce:v30 reply:v37];
           }
 
           else
           {
-            (*(v18 + 2))(v18, 0, v26);
+            (*(replyCopy + 2))(replyCopy, 0, v26);
           }
 
 LABEL_25:
           goto LABEL_26;
         }
 
-        if (a4 == 1002)
+        if (operation == 1002)
         {
           v33[0] = MEMORY[0x1E69E9820];
           v33[1] = 3221225472;
           v33[2] = __75__TKTokenSession_objectID_operation_inputData_algorithms_parameters_reply___block_invoke_7;
           v33[3] = &unk_1E86B82E0;
           v33[4] = self;
-          v34 = v18;
-          [(TKTokenSession *)self commitKey:v15 reply:v33];
+          v34 = replyCopy;
+          [(TKTokenSession *)self commitKey:dCopy reply:v33];
           v21 = v34;
           goto LABEL_22;
         }
 
-        if (a4 == 1003)
+        if (operation == 1003)
         {
           v40[0] = MEMORY[0x1E69E9820];
           v40[1] = 3221225472;
           v40[2] = __75__TKTokenSession_objectID_operation_inputData_algorithms_parameters_reply___block_invoke_4;
           v40[3] = &unk_1E86B82B8;
           v40[4] = self;
-          v41 = v18;
-          [(TKTokenSession *)self decapsulateSharedKey:v16 usingKey:v15 algorithm:v20 reply:v40];
+          v41 = replyCopy;
+          [(TKTokenSession *)self decapsulateSharedKey:dataCopy usingKey:dCopy algorithm:v20 reply:v40];
           v21 = v41;
           goto LABEL_22;
         }
 
 LABEL_17:
-        v32 = [MEMORY[0x1E696AAA8] currentHandler];
-        v24 = [(TKTokenSession *)self token];
-        v25 = [v24 tokenID];
-        v31 = a4;
-        v26 = v32;
-        [v32 handleFailureInMethod:a2 object:self file:@"TKTokenSession.m" lineNumber:583 description:{@"invalid objectOperation %d on token %@", v31, v25}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        token2 = [(TKTokenSession *)self token];
+        tokenID2 = [token2 tokenID];
+        operationCopy = operation;
+        v26 = currentHandler;
+        [currentHandler handleFailureInMethod:a2 object:self file:@"TKTokenSession.m" lineNumber:583 description:{@"invalid objectOperation %d on token %@", operationCopy, tokenID2}];
 
         goto LABEL_25;
       }
 
-      if (a4 == 2)
+      if (operation == 2)
       {
         v46[0] = MEMORY[0x1E69E9820];
         v46[1] = 3221225472;
         v46[2] = __75__TKTokenSession_objectID_operation_inputData_algorithms_parameters_reply___block_invoke;
         v46[3] = &unk_1E86B82B8;
         v46[4] = self;
-        v47 = v18;
-        [(TKTokenSession *)self signData:v16 usingKey:v15 algorithm:v20 reply:v46];
+        v47 = replyCopy;
+        [(TKTokenSession *)self signData:dataCopy usingKey:dCopy algorithm:v20 reply:v46];
         v21 = v47;
         goto LABEL_22;
       }
 
-      if (a4 == 3)
+      if (operation == 3)
       {
         v44[0] = MEMORY[0x1E69E9820];
         v44[1] = 3221225472;
         v44[2] = __75__TKTokenSession_objectID_operation_inputData_algorithms_parameters_reply___block_invoke_2;
         v44[3] = &unk_1E86B82B8;
         v44[4] = self;
-        v45 = v18;
-        [(TKTokenSession *)self decryptData:v16 usingKey:v15 algorithm:v20 parameters:v17 reply:v44];
+        v45 = replyCopy;
+        [(TKTokenSession *)self decryptData:dataCopy usingKey:dCopy algorithm:v20 parameters:parametersCopy reply:v44];
         v21 = v45;
         goto LABEL_22;
       }
 
-      if (a4 != 4)
+      if (operation != 4)
       {
         goto LABEL_17;
       }
 
-      v23 = [[TKTokenKeyExchangeParameters alloc] initWithParameters:v17];
+      v23 = [[TKTokenKeyExchangeParameters alloc] initWithParameters:parametersCopy];
       v42[0] = MEMORY[0x1E69E9820];
       v42[1] = 3221225472;
       v42[2] = __75__TKTokenSession_objectID_operation_inputData_algorithms_parameters_reply___block_invoke_3;
       v42[3] = &unk_1E86B82B8;
       v42[4] = self;
-      v43 = v18;
-      [(TKTokenSession *)self performKeyExchangeWithPublicKey:v16 usingKey:v15 algorithm:v20 parameters:v23 reply:v42];
+      v43 = replyCopy;
+      [(TKTokenSession *)self performKeyExchangeWithPublicKey:dataCopy usingKey:dCopy algorithm:v20 parameters:v23 reply:v42];
     }
 
     else
     {
-      (*(v18 + 2))(v18, MEMORY[0x1E695E118], 0);
+      (*(replyCopy + 2))(replyCopy, MEMORY[0x1E695E118], 0);
     }
   }
 
   else
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
-    (*(v18 + 2))(v18, v22, 0);
+    null = [MEMORY[0x1E695DFB0] null];
+    (*(replyCopy + 2))(replyCopy, null, 0);
   }
 
 LABEL_26:
@@ -1372,20 +1372,20 @@ void __75__TKTokenSession_objectID_operation_inputData_algorithms_parameters_rep
   (*(v6 + 16))(v6, v5, v7);
 }
 
-- (void)getAdvertisedItemsWithReply:(id)a3
+- (void)getAdvertisedItemsWithReply:(id)reply
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  replyCopy = reply;
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(TKTokenSession *)self token];
-  v7 = [v6 configuration];
-  v8 = [v7 keychainItems];
+  token = [(TKTokenSession *)self token];
+  configuration = [token configuration];
+  keychainItems = [configuration keychainItems];
 
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v9 = [keychainItems countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1397,38 +1397,38 @@ void __75__TKTokenSession_objectID_operation_inputData_algorithms_parameters_rep
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(keychainItems);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) keychainAttributes];
-        [v5 addObject:v13];
+        keychainAttributes = [*(*(&v15 + 1) + 8 * v12) keychainAttributes];
+        [array addObject:keychainAttributes];
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [keychainItems countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
   }
 
-  v4[2](v4, v5);
+  replyCopy[2](replyCopy, array);
   v14 = *MEMORY[0x1E69E9840];
 }
 
 - (void)terminate
 {
-  v3 = [(TKTokenSession *)self token];
-  v4 = [v3 delegate];
+  token = [(TKTokenSession *)self token];
+  delegate = [token delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v8 = [(TKTokenSession *)self token];
-    v6 = [v8 delegate];
-    v7 = [(TKTokenSession *)self token];
-    [v6 token:v7 terminateSession:self];
+    token2 = [(TKTokenSession *)self token];
+    delegate2 = [token2 delegate];
+    token3 = [(TKTokenSession *)self token];
+    [delegate2 token:token3 terminateSession:self];
   }
 }
 
@@ -1447,10 +1447,10 @@ void __75__TKTokenSession_objectID_operation_inputData_algorithms_parameters_rep
   return self;
 }
 
-- (void)setCreatorAuditToken:(id *)a3
+- (void)setCreatorAuditToken:(id *)token
 {
-  v3 = *a3->var0;
-  *&self->_creatorAuditToken.val[4] = *&a3->var0[4];
+  v3 = *token->var0;
+  *&self->_creatorAuditToken.val[4] = *&token->var0[4];
   *self->_creatorAuditToken.val = v3;
 }
 

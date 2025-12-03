@@ -3,8 +3,8 @@
 - (BOOL)_isFullColor;
 - (BOOL)_isFullScreen;
 - (id)_brightnessCappedPrimary;
-- (id)_colorWithBrightnessCappedPrimaryFallback:(id)a3;
-- (id)_colorWithPrimaryFallback:(id)a3;
+- (id)_colorWithBrightnessCappedPrimaryFallback:(id)fallback;
+- (id)_colorWithPrimaryFallback:(id)fallback;
 - (id)_tritiatedBrightnessCappedPrimary;
 - (id)_tritiatedPrimary;
 - (id)backgroundColor;
@@ -12,8 +12,8 @@
 - (id)compassHourHandInlayColor;
 - (id)compassHourHandStrokeColor;
 - (id)compassMarkerColor;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)editingPaletteForEditMode:(int64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)editingPaletteForEditMode:(int64_t)mode;
 - (id)gpsRingBackgroundColor;
 - (id)gpsRingDotColor;
 - (id)gpsRingTextColor;
@@ -46,23 +46,23 @@
 - (id)secondaryCornerComplicationColor;
 - (id)signalStrengthColor;
 - (id)simpleTextComplicationColor;
-- (id)swatchImageForSize:(CGSize)a3;
+- (id)swatchImageForSize:(CGSize)size;
 - (id)timeHourHandInlayColor;
 - (id)timeHourHandStrokeColor;
-- (void)configurationDidChange:(id)a3;
-- (void)setCompassMode:(unint64_t)a3;
-- (void)setEditMode:(int64_t)a3;
-- (void)setLowPowerMode:(BOOL)a3;
-- (void)setNightMode:(BOOL)a3;
+- (void)configurationDidChange:(id)change;
+- (void)setCompassMode:(unint64_t)mode;
+- (void)setEditMode:(int64_t)mode;
+- (void)setLowPowerMode:(BOOL)mode;
+- (void)setNightMode:(BOOL)mode;
 @end
 
 @implementation NTKGalleonFaceColorPalette
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30.receiver = self;
   v30.super_class = NTKGalleonFaceColorPalette;
-  v4 = [(NTKFaceColorPalette *)&v30 copyWithZone:a3];
+  v4 = [(NTKFaceColorPalette *)&v30 copyWithZone:zone];
   v8 = objc_msgSend_compassMode(self, v5, v6, v7);
   objc_msgSend_setCompassMode_(v4, v9, v8, v10);
   v14 = objc_msgSend_nightMode(self, v11, v12, v13);
@@ -82,12 +82,12 @@
     v4 = MEMORY[0x277CCACA8];
     v18.receiver = self;
     v18.super_class = NTKGalleonFaceColorPalette;
-    v5 = [(NTKFaceColorPalette *)&v18 identifier];
+    identifier = [(NTKFaceColorPalette *)&v18 identifier];
     compassMode = self->_compassMode;
     nightMode = self->_nightMode;
     lowPowerMode = self->_lowPowerMode;
     v12 = objc_msgSend_editMode(self, v9, v10, v11);
-    v15 = objc_msgSend_stringWithFormat_(v4, v13, @"%@-%lu-%lu-%lu-%lu", v14, v5, compassMode, nightMode, lowPowerMode, v12);
+    v15 = objc_msgSend_stringWithFormat_(v4, v13, @"%@-%lu-%lu-%lu-%lu", v14, identifier, compassMode, nightMode, lowPowerMode, v12);
     v16 = self->_identifier;
     self->_identifier = v15;
 
@@ -97,50 +97,50 @@
   return identifier;
 }
 
-- (void)configurationDidChange:(id)a3
+- (void)configurationDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = NTKGalleonFaceColorPalette;
-  [(NTKFaceColorPalette *)&v5 configurationDidChange:a3];
+  [(NTKFaceColorPalette *)&v5 configurationDidChange:change];
   identifier = self->_identifier;
   self->_identifier = 0;
 }
 
-- (void)setCompassMode:(unint64_t)a3
+- (void)setCompassMode:(unint64_t)mode
 {
-  if (self->_compassMode != a3)
+  if (self->_compassMode != mode)
   {
-    self->_compassMode = a3;
+    self->_compassMode = mode;
     self->_identifier = 0;
     MEMORY[0x2821F96F8]();
   }
 }
 
-- (void)setNightMode:(BOOL)a3
+- (void)setNightMode:(BOOL)mode
 {
-  if (self->_nightMode != a3)
+  if (self->_nightMode != mode)
   {
-    self->_nightMode = a3;
+    self->_nightMode = mode;
     self->_identifier = 0;
     MEMORY[0x2821F96F8]();
   }
 }
 
-- (void)setEditMode:(int64_t)a3
+- (void)setEditMode:(int64_t)mode
 {
-  if (self->_editMode != a3)
+  if (self->_editMode != mode)
   {
-    self->_editMode = a3;
+    self->_editMode = mode;
     self->_identifier = 0;
     MEMORY[0x2821F96F8]();
   }
 }
 
-- (void)setLowPowerMode:(BOOL)a3
+- (void)setLowPowerMode:(BOOL)mode
 {
-  if (self->_lowPowerMode != a3)
+  if (self->_lowPowerMode != mode)
   {
-    self->_lowPowerMode = a3;
+    self->_lowPowerMode = mode;
     self->_identifier = 0;
     MEMORY[0x2821F96F8]();
   }
@@ -185,18 +185,18 @@
   return v12;
 }
 
-- (id)_colorWithPrimaryFallback:(id)a3
+- (id)_colorWithPrimaryFallback:(id)fallback
 {
-  v4 = a3;
-  v8 = v4;
-  if (!v4 || *MEMORY[0x277D2BF30] == v4)
+  fallbackCopy = fallback;
+  v8 = fallbackCopy;
+  if (!fallbackCopy || *MEMORY[0x277D2BF30] == fallbackCopy)
   {
     v9 = objc_msgSend__tritiatedPrimary(self, v5, v6, v7);
   }
 
   else
   {
-    v9 = v4;
+    v9 = fallbackCopy;
   }
 
   v10 = v9;
@@ -204,18 +204,18 @@
   return v10;
 }
 
-- (id)_colorWithBrightnessCappedPrimaryFallback:(id)a3
+- (id)_colorWithBrightnessCappedPrimaryFallback:(id)fallback
 {
-  v4 = a3;
-  v8 = v4;
-  if (!v4 || *MEMORY[0x277D2BF30] == v4)
+  fallbackCopy = fallback;
+  v8 = fallbackCopy;
+  if (!fallbackCopy || *MEMORY[0x277D2BF30] == fallbackCopy)
   {
     v9 = objc_msgSend__tritiatedBrightnessCappedPrimary(self, v5, v6, v7);
   }
 
   else
   {
-    v9 = v4;
+    v9 = fallbackCopy;
   }
 
   v10 = v9;
@@ -851,10 +851,10 @@ LABEL_10:
   return isEqualToString;
 }
 
-- (id)editingPaletteForEditMode:(int64_t)a3
+- (id)editingPaletteForEditMode:(int64_t)mode
 {
-  v5 = objc_msgSend_copy(self, a2, a3, v3);
-  v5[14] = a3;
+  v5 = objc_msgSend_copy(self, a2, mode, v3);
+  v5[14] = mode;
 
   return v5;
 }
@@ -957,10 +957,10 @@ LABEL_10:
   return isEqualToString;
 }
 
-- (id)swatchImageForSize:(CGSize)a3
+- (id)swatchImageForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   isFullScreen = objc_msgSend__isFullScreen(self, a2, v3, v4);
   isBlack = objc_msgSend__isBlack(self, v9, v10, v11);
   if ((isFullScreen & 1) != 0 || isBlack)
@@ -978,8 +978,8 @@ LABEL_10:
     v23 = NSStringFromCGSize(v41);
     v26 = objc_msgSend_stringWithFormat_(v17, v24, @"%@-%@", v25, v22, v23);
 
-    v16 = objc_msgSend_objectForKey_(qword_27E1DD8C0, v27, v26, v28);
-    if (!v16)
+    height = objc_msgSend_objectForKey_(qword_27E1DD8C0, v27, v26, v28);
+    if (!height)
     {
       v35 = objc_msgSend_primaryColor(self, v29, v30, v31);
       if (isFullScreen)
@@ -992,8 +992,8 @@ LABEL_10:
         objc_msgSend_softBlack(self, v32, v33, v34);
       }
       v36 = ;
-      v16 = NTKSwatchTwoColorImage();
-      objc_msgSend_setObject_forKey_(qword_27E1DD8C0, v37, v16, v26);
+      height = NTKSwatchTwoColorImage();
+      objc_msgSend_setObject_forKey_(qword_27E1DD8C0, v37, height, v26);
     }
   }
 
@@ -1001,10 +1001,10 @@ LABEL_10:
   {
     v39.receiver = self;
     v39.super_class = NTKGalleonFaceColorPalette;
-    v16 = [(NTKFaceColorPalette *)&v39 swatchImageForSize:width, height];
+    height = [(NTKFaceColorPalette *)&v39 swatchImageForSize:width, height];
   }
 
-  return v16;
+  return height;
 }
 
 - (id)hasDropShadow

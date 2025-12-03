@@ -1,30 +1,30 @@
 @interface IDSRelayLinkProvider
-- (void)setLocalCandidates:(id)a3;
-- (void)setRemoteCandidates:(id)a3 withRelaySessionID:(id)a4;
+- (void)setLocalCandidates:(id)candidates;
+- (void)setRemoteCandidates:(id)candidates withRelaySessionID:(id)d;
 @end
 
 @implementation IDSRelayLinkProvider
 
-- (void)setLocalCandidates:(id)a3
+- (void)setLocalCandidates:(id)candidates
 {
   sub_1A7CC79C8(0, &qword_1EB2B28F0);
   v4 = sub_1A7E22530();
   if (*(&self->super.isa + OBJC_IVAR___IDSRelayLinkProvider_provider))
   {
-    v5 = self;
+    selfCopy = self;
 
     _IDSRelayLinkProvider.setLocalCandidates(_:)(v4);
   }
 }
 
-- (void)setRemoteCandidates:(id)a3 withRelaySessionID:(id)a4
+- (void)setRemoteCandidates:(id)candidates withRelaySessionID:(id)d
 {
   sub_1A7CC79C8(0, &qword_1EB2B28F0);
   v6 = sub_1A7E22530();
-  if (a4)
+  if (d)
   {
     v7 = sub_1A7E22290();
-    a4 = v8;
+    d = v8;
   }
 
   else
@@ -34,10 +34,10 @@
 
   if (*(&self->super.isa + OBJC_IVAR___IDSRelayLinkProvider_provider))
   {
-    v9 = self;
+    selfCopy = self;
 
     v10.value._countAndFlagsBits = v7;
-    v10.value._object = a4;
+    v10.value._object = d;
     _IDSRelayLinkProvider.setRemoteCandidates(_:withRelaySessionID:)(v6, v10);
   }
 }

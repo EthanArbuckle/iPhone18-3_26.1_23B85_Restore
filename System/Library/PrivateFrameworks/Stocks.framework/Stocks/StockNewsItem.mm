@@ -1,20 +1,20 @@
 @interface StockNewsItem
-+ (id)localizedStringForDate:(id)a3;
++ (id)localizedStringForDate:(id)date;
 - (NSString)localizedDateString;
-- (StockNewsItem)initWithArchiveDictionary:(id)a3;
+- (StockNewsItem)initWithArchiveDictionary:(id)dictionary;
 - (id)archiveDictionary;
 - (id)description;
-- (int64_t)chronologicalComparisonWithNewsItem:(id)a3;
+- (int64_t)chronologicalComparisonWithNewsItem:(id)item;
 - (void)resetLocale;
-- (void)setDate:(id)a3;
+- (void)setDate:(id)date;
 @end
 
 @implementation StockNewsItem
 
-+ (id)localizedStringForDate:(id)a3
++ (id)localizedStringForDate:(id)date
 {
-  v3 = a3;
-  if (v3)
+  dateCopy = date;
+  if (dateCopy)
   {
     if (!dateFormatter_0)
     {
@@ -28,11 +28,11 @@
 
     v4 = objc_alloc(MEMORY[0x277CBEA80]);
     v5 = [v4 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
-    v6 = [MEMORY[0x277CBEBB0] systemTimeZone];
-    [v5 setTimeZone:v6];
+    systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+    [v5 setTimeZone:systemTimeZone];
 
-    v7 = [v5 isDateInToday:v3];
-    StringWithDate = CFDateFormatterCreateStringWithDate(0, timeFormatter, v3);
+    v7 = [v5 isDateInToday:dateCopy];
+    StringWithDate = CFDateFormatterCreateStringWithDate(0, timeFormatter, dateCopy);
     v9 = StringWithDate;
     if (v7)
     {
@@ -44,7 +44,7 @@
       v11 = MEMORY[0x277CCACA8];
       v12 = [StocksBundles getBundle:1];
       v13 = [v12 localizedStringForKey:@"%@ at %@" value:&stru_287C73C90 table:@"Localizable"];
-      v14 = CFDateFormatterCreateStringWithDate(0, dateFormatter_0, v3);
+      v14 = CFDateFormatterCreateStringWithDate(0, dateFormatter_0, dateCopy);
       v10 = [v11 stringWithFormat:v13, v14, v9];
     }
   }
@@ -75,19 +75,19 @@
   self->_localizedDateString = 0;
 }
 
-- (StockNewsItem)initWithArchiveDictionary:(id)a3
+- (StockNewsItem)initWithArchiveDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = StockNewsItem;
   v5 = [(StockNewsItem *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"nih"];
-    v7 = [v4 objectForKey:@"nisum"];
-    v8 = [v4 objectForKey:@"nis"];
-    v9 = [v4 objectForKey:@"nid"];
-    v10 = [v4 objectForKey:@"nil"];
+    v6 = [dictionaryCopy objectForKey:@"nih"];
+    v7 = [dictionaryCopy objectForKey:@"nisum"];
+    v8 = [dictionaryCopy objectForKey:@"nis"];
+    v9 = [dictionaryCopy objectForKey:@"nid"];
+    v10 = [dictionaryCopy objectForKey:@"nil"];
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_opt_class(), (objc_opt_isKindOfClass()) && (v11 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v10]) != 0)
     {
@@ -126,34 +126,34 @@
   v5 = MEMORY[0x277CBEAC0];
   headline = self->_headline;
   summary = self->_summary;
-  v8 = [(NSURL *)self->_link absoluteString];
-  v9 = [v5 dictionaryWithObjectsAndKeys:{headline, @"nih", summary, @"nisum", v4, @"nid", v8, @"nil", self->_source, @"nis", 0}];
+  absoluteString = [(NSURL *)self->_link absoluteString];
+  v9 = [v5 dictionaryWithObjectsAndKeys:{headline, @"nih", summary, @"nisum", v4, @"nid", absoluteString, @"nil", self->_source, @"nis", 0}];
 
   return v9;
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   p_date = &self->_date;
-  if (self->_date != v5)
+  if (self->_date != dateCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_date, a3);
+    v8 = dateCopy;
+    objc_storeStrong(p_date, date);
     localizedDateString = self->_localizedDateString;
     self->_localizedDateString = 0;
 
-    v5 = v8;
+    dateCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](p_date, v5);
+  MEMORY[0x2821F96F8](p_date, dateCopy);
 }
 
-- (int64_t)chronologicalComparisonWithNewsItem:(id)a3
+- (int64_t)chronologicalComparisonWithNewsItem:(id)item
 {
-  v4 = [a3 date];
-  v5 = [(StockNewsItem *)self date];
-  v6 = [v4 compare:v5];
+  date = [item date];
+  date2 = [(StockNewsItem *)self date];
+  v6 = [date compare:date2];
 
   return v6;
 }
@@ -176,9 +176,9 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(StockNewsItem *)self headline];
-  v5 = [(StockNewsItem *)self date];
-  v6 = [v3 stringWithFormat:@"<StockNewsItem: %p, headline: %@, date: %@>", self, v4, v5];
+  headline = [(StockNewsItem *)self headline];
+  date = [(StockNewsItem *)self date];
+  v6 = [v3 stringWithFormat:@"<StockNewsItem: %p, headline: %@, date: %@>", self, headline, date];
 
   return v6;
 }

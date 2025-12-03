@@ -1,20 +1,20 @@
 @interface CRXFKeychainAccess
-- (BOOL)deleteASAKeyWithName:(id)a3 error:(id *)a4;
-- (BOOL)deleteAllASAKeysWithError:(id *)a3;
-- (CRXFKeychainAccess)initWithDeviceModel:(id)a3;
-- (id)createASAKeyWithError:(id *)a3;
-- (id)createErrorForStatus:(int)a3 fromFunction:(id)a4;
-- (id)derivePublicKeyFromPrivateKey:(id)a3 error:(id *)a4;
-- (id)insertASAKey:(id)a3 withName:(id)a4 error:(id *)a5;
+- (BOOL)deleteASAKeyWithName:(id)name error:(id *)error;
+- (BOOL)deleteAllASAKeysWithError:(id *)error;
+- (CRXFKeychainAccess)initWithDeviceModel:(id)model;
+- (id)createASAKeyWithError:(id *)error;
+- (id)createErrorForStatus:(int)status fromFunction:(id)function;
+- (id)derivePublicKeyFromPrivateKey:(id)key error:(id *)error;
+- (id)insertASAKey:(id)key withName:(id)name error:(id *)error;
 - (void)dealloc;
-- (void)fetchASAKeysWithCompletion:(id)a3;
+- (void)fetchASAKeysWithCompletion:(id)completion;
 @end
 
 @implementation CRXFKeychainAccess
 
-- (CRXFKeychainAccess)initWithDeviceModel:(id)a3
+- (CRXFKeychainAccess)initWithDeviceModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v32.receiver = self;
   v32.super_class = CRXFKeychainAccess;
   v5 = [(CRXFKeychainAccess *)&v32 init];
@@ -24,7 +24,7 @@
     log = v5->_log;
     v5->_log = v6;
 
-    v8 = [v4 copy];
+    v8 = [modelCopy copy];
     deviceModel = v5->_deviceModel;
     v5->_deviceModel = v8;
 
@@ -49,7 +49,7 @@
     CFDictionarySetValue(v13, *MEMORY[0x277CDBFE0], *MEMORY[0x277CDBFF0]);
     CFDictionarySetValue(v13, v11, v5->_keyType);
     CFDictionarySetValue(v13, v12, v5->_keySizeInBits);
-    v30 = v4;
+    v30 = modelCopy;
     v18 = *MEMORY[0x277CDBFD0];
     v19 = *MEMORY[0x277CBED28];
     CFDictionarySetValue(v13, *MEMORY[0x277CDBFD0], *MEMORY[0x277CBED28]);
@@ -67,7 +67,7 @@
     CFDictionarySetValue(v22, key, v5->_keyType);
     CFDictionarySetValue(v22, v27, v5->_keySizeInBits);
     v23 = v18;
-    v4 = v30;
+    modelCopy = v30;
     CFDictionarySetValue(v22, v23, v19);
     CFDictionarySetValue(v22, v20, v19);
     CFDictionarySetValue(v22, v21, @"com.apple.RealityDevice");
@@ -98,17 +98,17 @@
   [(CRXFKeychainAccess *)&v3 dealloc];
 }
 
-- (void)fetchASAKeysWithCompletion:(id)a3
+- (void)fetchASAKeysWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__CRXFKeychainAccess_fetchASAKeysWithCompletion___block_invoke;
   v7[3] = &unk_278EA0300;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(CRXUDispatchQueue *)queue dispatchAsync:v7];
 }
 
@@ -301,13 +301,13 @@ LABEL_41:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (id)insertASAKey:(id)a3 withName:(id)a4 error:(id *)a5
+- (id)insertASAKey:(id)key withName:(id)name error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(CRXFKeychainAccess *)self prefixedNameForName:v9];
+  keyCopy = key;
+  nameCopy = name;
+  v10 = [(CRXFKeychainAccess *)self prefixedNameForName:nameCopy];
   MutableCopy = CFDictionaryCreateMutableCopy(0, 0, self->_addQuery);
-  CFDictionarySetValue(MutableCopy, *MEMORY[0x277CDC5E8], v8);
+  CFDictionarySetValue(MutableCopy, *MEMORY[0x277CDC5E8], keyCopy);
   CFDictionarySetValue(MutableCopy, *MEMORY[0x277CDC080], v10);
   v12 = [v10 dataUsingEncoding:4];
   CFDictionarySetValue(MutableCopy, *MEMORY[0x277CDBF28], v12);
@@ -316,10 +316,10 @@ LABEL_41:
   CFRelease(MutableCopy);
   if (v13)
   {
-    *a5 = [(CRXFKeychainAccess *)self createErrorForStatus:v13 fromFunction:@"SecItemAdd"];
+    *error = [(CRXFKeychainAccess *)self createErrorForStatus:v13 fromFunction:@"SecItemAdd"];
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
-      [CRXFKeychainAccess insertASAKey:a5 withName:? error:?];
+      [CRXFKeychainAccess insertASAKey:error withName:? error:?];
     }
 
 LABEL_4:
@@ -334,10 +334,10 @@ LABEL_4:
     v16 = SecKeyCopyPublicKey(result);
     if (!v16)
     {
-      *a5 = 0;
+      *error = 0;
       if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
       {
-        [CRXFKeychainAccess insertASAKey:a5 withName:? error:?];
+        [CRXFKeychainAccess insertASAKey:error withName:? error:?];
       }
 
       goto LABEL_4;
@@ -359,19 +359,19 @@ LABEL_4:
     v18 = 0;
   }
 
-  v14 = [[CRXFASAKey alloc] initWithName:v9 privateKey:v8 publicKey:v18 creationDate:0];
+  v14 = [[CRXFASAKey alloc] initWithName:nameCopy privateKey:keyCopy publicKey:v18 creationDate:0];
 
 LABEL_12:
 
   return v14;
 }
 
-- (BOOL)deleteASAKeyWithName:(id)a3 error:(id *)a4
+- (BOOL)deleteASAKeyWithName:(id)name error:(id *)error
 {
   deleteOrUpdateQuery = self->_deleteOrUpdateQuery;
-  v7 = a3;
+  nameCopy = name;
   MutableCopy = CFDictionaryCreateMutableCopy(0, 0, deleteOrUpdateQuery);
-  v9 = [(CRXFKeychainAccess *)self prefixedNameForName:v7];
+  v9 = [(CRXFKeychainAccess *)self prefixedNameForName:nameCopy];
 
   v10 = [v9 dataUsingEncoding:4];
   CFDictionarySetValue(MutableCopy, *MEMORY[0x277CDBF28], v10);
@@ -379,17 +379,17 @@ LABEL_12:
   CFRelease(MutableCopy);
   if (v11)
   {
-    *a4 = [(CRXFKeychainAccess *)self createErrorForStatus:v11 fromFunction:@"SecItemDelete"];
+    *error = [(CRXFKeychainAccess *)self createErrorForStatus:v11 fromFunction:@"SecItemDelete"];
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
-      [CRXFKeychainAccess deleteASAKeyWithName:a4 error:?];
+      [CRXFKeychainAccess deleteASAKeyWithName:error error:?];
     }
   }
 
   return v11 == 0;
 }
 
-- (BOOL)deleteAllASAKeysWithError:(id *)a3
+- (BOOL)deleteAllASAKeysWithError:(id *)error
 {
   v5 = SecItemDelete(self->_deleteOrUpdateQuery);
   if (!v5)
@@ -409,18 +409,18 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *a3 = [(CRXFKeychainAccess *)self createErrorForStatus:v5 fromFunction:@"SecItemDelete"];
+  *error = [(CRXFKeychainAccess *)self createErrorForStatus:v5 fromFunction:@"SecItemDelete"];
   v6 = os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR);
   if (v6)
   {
-    [CRXFKeychainAccess deleteAllASAKeysWithError:a3];
+    [CRXFKeychainAccess deleteAllASAKeysWithError:error];
     LOBYTE(v6) = 0;
   }
 
   return v6;
 }
 
-- (id)createASAKeyWithError:(id *)a3
+- (id)createASAKeyWithError:(id *)error
 {
   error = 0;
   v5 = SecKeyCreateRandomKey(self->_createQuery, &error);
@@ -430,10 +430,10 @@ LABEL_5:
     v7 = SecKeyCopyExternalRepresentation(v5, &error);
     if (!v7)
     {
-      *a3 = error;
+      *error = error;
       if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
       {
-        [CRXFKeychainAccess createASAKeyWithError:a3];
+        [CRXFKeychainAccess createASAKeyWithError:error];
       }
     }
 
@@ -442,10 +442,10 @@ LABEL_5:
 
   else
   {
-    *a3 = error;
+    *error = error;
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
-      [CRXFKeychainAccess createASAKeyWithError:a3];
+      [CRXFKeychainAccess createASAKeyWithError:error];
     }
 
     v7 = 0;
@@ -454,20 +454,20 @@ LABEL_5:
   return v7;
 }
 
-- (id)derivePublicKeyFromPrivateKey:(id)a3 error:(id *)a4
+- (id)derivePublicKeyFromPrivateKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   Mutable = CFDictionaryCreateMutable(0, 0, 0, 0);
   CFDictionarySetValue(Mutable, *MEMORY[0x277CDC028], self->_keyType);
   CFDictionarySetValue(Mutable, *MEMORY[0x277CDBFE0], *MEMORY[0x277CDBFF0]);
   error = 0;
-  v8 = SecKeyCreateWithData(v6, Mutable, &error);
+  v8 = SecKeyCreateWithData(keyCopy, Mutable, &error);
 
   CFRelease(Mutable);
   if (error)
   {
     v9 = 0;
-    *a4 = error;
+    *error = error;
     goto LABEL_11;
   }
 
@@ -495,7 +495,7 @@ LABEL_9:
   }
 
   v9 = 0;
-  *a4 = error;
+  *error = error;
 LABEL_10:
 
 LABEL_11:
@@ -503,19 +503,19 @@ LABEL_11:
   return v9;
 }
 
-- (id)createErrorForStatus:(int)a3 fromFunction:(id)a4
+- (id)createErrorForStatus:(int)status fromFunction:(id)function
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = SecCopyErrorMessageString(a3, 0);
+  functionCopy = function;
+  v6 = SecCopyErrorMessageString(status, 0);
   v7 = MEMORY[0x277CCA9B8];
   v8 = *MEMORY[0x277CCA590];
   v13[0] = *MEMORY[0x277CCA450];
   v13[1] = @"keychainFunction";
   v14[0] = v6;
-  v14[1] = v5;
+  v14[1] = functionCopy;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
-  v10 = [v7 errorWithDomain:v8 code:a3 userInfo:v9];
+  v10 = [v7 errorWithDomain:v8 code:status userInfo:v9];
 
   v11 = *MEMORY[0x277D85DE8];
 

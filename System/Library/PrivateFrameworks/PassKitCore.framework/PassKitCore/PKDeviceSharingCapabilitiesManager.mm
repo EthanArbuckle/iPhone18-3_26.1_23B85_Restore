@@ -1,14 +1,14 @@
 @interface PKDeviceSharingCapabilitiesManager
 - (PKDeviceSharingCapabilitiesManager)init;
-- (id)currentFetchStatusForAppleID:(id)a3;
-- (void)_accessObserversWithHandler:(id)a3;
-- (void)_sendDeviceSharingCapabilitiesUpdated:(id)a3 maximumPossibleDevices:(int64_t)a4 forAppleID:(id)a5;
-- (void)_sendDeviceSharingCapabilitiesUpdated:(id)a3 newSharingCapabilties:(id)a4 forAppleID:(id)a5;
+- (id)currentFetchStatusForAppleID:(id)d;
+- (void)_accessObserversWithHandler:(id)handler;
+- (void)_sendDeviceSharingCapabilitiesUpdated:(id)updated maximumPossibleDevices:(int64_t)devices forAppleID:(id)d;
+- (void)_sendDeviceSharingCapabilitiesUpdated:(id)updated newSharingCapabilties:(id)capabilties forAppleID:(id)d;
 - (void)dealloc;
-- (void)didReceiveDeviceSharingCapabilities:(id)a3 forHandle:(id)a4;
-- (void)fetchDeviceCapabilitesForAppleIDs:(id)a3 associatedFamilyMembers:(id)a4;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)didReceiveDeviceSharingCapabilities:(id)capabilities forHandle:(id)handle;
+- (void)fetchDeviceCapabilitesForAppleIDs:(id)ds associatedFamilyMembers:(id)members;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation PKDeviceSharingCapabilitiesManager
@@ -34,9 +34,9 @@
     familyMembers = v2->_familyMembers;
     v2->_familyMembers = v7;
 
-    v9 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+    pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
     observers = v2->_observers;
-    v2->_observers = v9;
+    v2->_observers = pk_weakObjectsHashTableUsingPointerPersonality;
 
     v11 = dispatch_queue_create("com.apple.passkit.PKDeviceSharingCapabilitiesManager.reply", 0);
     replyQueue = v2->_replyQueue;
@@ -54,16 +54,16 @@
   [(PKDeviceSharingCapabilitiesManager *)&v3 dealloc];
 }
 
-- (void)fetchDeviceCapabilitesForAppleIDs:(id)a3 associatedFamilyMembers:(id)a4
+- (void)fetchDeviceCapabilitesForAppleIDs:(id)ds associatedFamilyMembers:(id)members
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  membersCopy = members;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v21 objects:v27 count:16];
+  v8 = [dsCopy countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v8)
   {
     v9 = v8;
@@ -74,12 +74,12 @@
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(dsCopy);
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
         os_unfair_lock_lock(&self->_lock);
-        [(NSMutableArray *)self->_familyMembers addObjectsFromArray:v7];
+        [(NSMutableArray *)self->_familyMembers addObjectsFromArray:membersCopy];
         v13 = [(NSMutableDictionary *)self->_fetchStatusByAppleID objectForKey:v12];
         v14 = PKLogFacilityTypeGetObject(7uLL);
         v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
@@ -105,8 +105,8 @@
           }
 
           v16 = [PKDeviceSharingCapabilitiesFetchStatus alloc];
-          v17 = [MEMORY[0x1E695DF00] date];
-          v18 = [(PKDeviceSharingCapabilitiesFetchStatus *)v16 initWithAppleID:v12 fetchStartDate:v17];
+          date = [MEMORY[0x1E695DF00] date];
+          v18 = [(PKDeviceSharingCapabilitiesFetchStatus *)v16 initWithAppleID:v12 fetchStartDate:date];
 
           [(PKDeviceSharingCapabilitiesFetchStatus *)v18 setDeviceCountFetchInProgress:1];
           [(NSMutableDictionary *)self->_fetchStatusByAppleID setObject:v18 forKey:v12];
@@ -123,7 +123,7 @@
         }
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v21 objects:v27 count:16];
+      v9 = [dsCopy countByEnumeratingWithState:&v21 objects:v27 count:16];
     }
 
     while (v9);
@@ -145,13 +145,13 @@ void __96__PKDeviceSharingCapabilitiesManager_fetchDeviceCapabilitesForAppleIDs_
   [*(a1 + 32) _sendDeviceSharingCapabilitiesUpdated:v7 maximumPossibleDevices:a2 forAppleID:*(a1 + 40)];
 }
 
-- (id)currentFetchStatusForAppleID:(id)a3
+- (id)currentFetchStatusForAppleID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v4 = a3;
+    dCopy = d;
     os_unfair_lock_lock(&self->_lock);
-    v5 = [(NSMutableDictionary *)self->_fetchStatusByAppleID objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_fetchStatusByAppleID objectForKey:dCopy];
 
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -164,22 +164,22 @@ void __96__PKDeviceSharingCapabilitiesManager_fetchDeviceCapabilitesForAppleIDs_
   return v5;
 }
 
-- (void)didReceiveDeviceSharingCapabilities:(id)a3 forHandle:(id)a4
+- (void)didReceiveDeviceSharingCapabilities:(id)capabilities forHandle:(id)handle
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  capabilitiesCopy = capabilities;
+  handleCopy = handle;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(NSMutableDictionary *)self->_fetchStatusByAppleID objectForKey:v7];
+  v8 = [(NSMutableDictionary *)self->_fetchStatusByAppleID objectForKey:handleCopy];
   if (v8)
   {
 LABEL_33:
-    [v8 addDeviceSharingCapabilities:v6];
+    [v8 addDeviceSharingCapabilities:capabilitiesCopy];
     v24 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v36 = v7;
+      v36 = handleCopy;
       v37 = 2112;
       v38 = v8;
       _os_log_impl(&dword_1AD337000, v24, OS_LOG_TYPE_DEFAULT, "Updating device capabilities for appleID %@, %@", buf, 0x16u);
@@ -201,7 +201,7 @@ LABEL_33:
   }
 
   v11 = v10;
-  v25 = v6;
+  v25 = capabilitiesCopy;
   obj = v9;
   v8 = 0;
   v12 = *v32;
@@ -215,21 +215,21 @@ LABEL_33:
       }
 
       v14 = *(*(&v31 + 1) + 8 * i);
-      v15 = [v14 appleID];
-      v16 = v7;
+      appleID = [v14 appleID];
+      v16 = handleCopy;
       v17 = v16;
-      if (v15 == v16)
+      if (appleID == v16)
       {
 
 LABEL_14:
         [(NSMutableDictionary *)self->_fetchStatusByAppleID objectForKey:v17];
-        v8 = v15 = v8;
+        v8 = appleID = v8;
         goto LABEL_16;
       }
 
-      if (v7 && v15)
+      if (handleCopy && appleID)
       {
-        v18 = [v15 isEqualToString:v16];
+        v18 = [appleID isEqualToString:v16];
 
         if (!v18)
         {
@@ -249,7 +249,7 @@ LABEL_16:
       {
 LABEL_32:
 
-        v6 = v25;
+        capabilitiesCopy = v25;
         goto LABEL_33;
       }
 
@@ -258,8 +258,8 @@ LABEL_17:
       v30 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v19 = [v14 appleIDAliases];
-      v20 = [v19 countByEnumeratingWithState:&v27 objects:v39 count:16];
+      appleIDAliases = [v14 appleIDAliases];
+      v20 = [appleIDAliases countByEnumeratingWithState:&v27 objects:v39 count:16];
       if (v20)
       {
         v21 = v20;
@@ -271,7 +271,7 @@ LABEL_17:
           {
             if (*v28 != v22)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(appleIDAliases);
             }
 
             if (!v8)
@@ -280,7 +280,7 @@ LABEL_17:
             }
           }
 
-          v21 = [v19 countByEnumeratingWithState:&v27 objects:v39 count:16];
+          v21 = [appleIDAliases countByEnumeratingWithState:&v27 objects:v39 count:16];
         }
 
         while (v21);
@@ -301,7 +301,7 @@ LABEL_17:
     break;
   }
 
-  v6 = v25;
+  capabilitiesCopy = v25;
   if (v8)
   {
     goto LABEL_33;
@@ -312,7 +312,7 @@ LABEL_36:
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v36 = v7;
+    v36 = handleCopy;
     _os_log_impl(&dword_1AD337000, v24, OS_LOG_TYPE_DEFAULT, "Not responding to device capabilities for appleID %@", buf, 0xCu);
   }
 
@@ -320,24 +320,24 @@ LABEL_36:
 LABEL_39:
 
   os_unfair_lock_unlock(&self->_lock);
-  [(PKDeviceSharingCapabilitiesManager *)self _sendDeviceSharingCapabilitiesUpdated:v8 newSharingCapabilties:v6 forAppleID:v7];
+  [(PKDeviceSharingCapabilitiesManager *)self _sendDeviceSharingCapabilitiesUpdated:v8 newSharingCapabilties:capabilitiesCopy forAppleID:handleCopy];
 }
 
-- (void)_sendDeviceSharingCapabilitiesUpdated:(id)a3 newSharingCapabilties:(id)a4 forAppleID:(id)a5
+- (void)_sendDeviceSharingCapabilitiesUpdated:(id)updated newSharingCapabilties:(id)capabilties forAppleID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  updatedCopy = updated;
+  capabiltiesCopy = capabilties;
+  dCopy = d;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __109__PKDeviceSharingCapabilitiesManager__sendDeviceSharingCapabilitiesUpdated_newSharingCapabilties_forAppleID___block_invoke;
   v14[3] = &unk_1E79D9548;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = updatedCopy;
+  v16 = capabiltiesCopy;
+  v17 = dCopy;
+  v11 = dCopy;
+  v12 = capabiltiesCopy;
+  v13 = updatedCopy;
   [(PKDeviceSharingCapabilitiesManager *)self _accessObserversWithHandler:v14];
 }
 
@@ -350,19 +350,19 @@ void __109__PKDeviceSharingCapabilitiesManager__sendDeviceSharingCapabilitiesUpd
   }
 }
 
-- (void)_sendDeviceSharingCapabilitiesUpdated:(id)a3 maximumPossibleDevices:(int64_t)a4 forAppleID:(id)a5
+- (void)_sendDeviceSharingCapabilitiesUpdated:(id)updated maximumPossibleDevices:(int64_t)devices forAppleID:(id)d
 {
-  v8 = a3;
-  v9 = a5;
+  updatedCopy = updated;
+  dCopy = d;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __110__PKDeviceSharingCapabilitiesManager__sendDeviceSharingCapabilitiesUpdated_maximumPossibleDevices_forAppleID___block_invoke;
   v12[3] = &unk_1E79D9570;
-  v14 = v9;
-  v15 = a4;
-  v13 = v8;
-  v10 = v9;
-  v11 = v8;
+  v14 = dCopy;
+  devicesCopy = devices;
+  v13 = updatedCopy;
+  v10 = dCopy;
+  v11 = updatedCopy;
   [(PKDeviceSharingCapabilitiesManager *)self _accessObserversWithHandler:v12];
 }
 
@@ -375,48 +375,48 @@ void __110__PKDeviceSharingCapabilitiesManager__sendDeviceSharingCapabilitiesUpd
   }
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = v4;
+    v5 = observerCopy;
     os_unfair_lock_lock(&self->_lockObservers);
     [(NSHashTable *)self->_observers addObject:v5];
     os_unfair_lock_unlock(&self->_lockObservers);
-    v4 = v5;
+    observerCopy = v5;
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = v4;
+    v5 = observerCopy;
     os_unfair_lock_lock(&self->_lockObservers);
     [(NSHashTable *)self->_observers removeObject:v5];
     os_unfair_lock_unlock(&self->_lockObservers);
-    v4 = v5;
+    observerCopy = v5;
   }
 }
 
-- (void)_accessObserversWithHandler:(id)a3
+- (void)_accessObserversWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     os_unfair_lock_lock(&self->_lockObservers);
-    v5 = [(NSHashTable *)self->_observers allObjects];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
     os_unfair_lock_unlock(&self->_lockObservers);
     replyQueue = self->_replyQueue;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __66__PKDeviceSharingCapabilitiesManager__accessObserversWithHandler___block_invoke;
     v8[3] = &unk_1E79C4A40;
-    v9 = v5;
-    v10 = v4;
-    v7 = v5;
+    v9 = allObjects;
+    v10 = handlerCopy;
+    v7 = allObjects;
     dispatch_async(replyQueue, v8);
   }
 }

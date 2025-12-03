@@ -1,8 +1,8 @@
 @interface CKOperationCallbackProxyEndpoint
-- (CKOperationCallbackProxyEndpoint)initWithClass:(Class)a3 protocol:(id)a4 endpoint:(id)a5;
-- (CKOperationCallbackProxyEndpoint)initWithCoder:(id)a3;
+- (CKOperationCallbackProxyEndpoint)initWithClass:(Class)class protocol:(id)protocol endpoint:(id)endpoint;
+- (CKOperationCallbackProxyEndpoint)initWithCoder:(id)coder;
 - (NSXPCInterface)interface;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKOperationCallbackProxyEndpoint
@@ -38,13 +38,13 @@
   return v16;
 }
 
-- (CKOperationCallbackProxyEndpoint)initWithClass:(Class)a3 protocol:(id)a4 endpoint:(id)a5
+- (CKOperationCallbackProxyEndpoint)initWithClass:(Class)class protocol:(id)protocol endpoint:(id)endpoint
 {
-  v10 = a4;
-  v13 = a5;
-  if (a3)
+  protocolCopy = protocol;
+  endpointCopy = endpoint;
+  if (class)
   {
-    if (v10)
+    if (protocolCopy)
     {
       goto LABEL_3;
     }
@@ -53,7 +53,7 @@ LABEL_8:
     v22 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v11, v12);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v22, v23, a2, self, @"CKOperationCallbackProxy.m", 36, @"Invalid parameter not satisfying: %@", @"protocol");
 
-    if (v13)
+    if (endpointCopy)
     {
       goto LABEL_4;
     }
@@ -64,13 +64,13 @@ LABEL_8:
   v20 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v11, v12);
   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v20, v21, a2, self, @"CKOperationCallbackProxy.m", 35, @"Invalid parameter not satisfying: %@", @"cls");
 
-  if (!v10)
+  if (!protocolCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v13)
+  if (endpointCopy)
   {
     goto LABEL_4;
   }
@@ -86,18 +86,18 @@ LABEL_4:
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_cls, a3);
-    objc_storeStrong(&v15->_protocol, a4);
-    objc_storeStrong(&v15->_endpoint, a5);
+    objc_storeStrong(&v14->_cls, class);
+    objc_storeStrong(&v15->_protocol, protocol);
+    objc_storeStrong(&v15->_endpoint, endpoint);
     v18 = objc_msgSend_interface(v15, v16, v17);
   }
 
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v26 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -111,25 +111,25 @@ LABEL_4:
   v10 = sub_1884264BC(v6, v9);
   v12 = objc_msgSend_CKMap_(v10, v11, &unk_1EFA2F2A8);
 
-  objc_msgSend_encodeObject_forKey_(v26, v13, v12, @"CK.classNames");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v13, v12, @"CK.classNames");
   v16 = objc_msgSend_protocol(self, v14, v15);
   v17 = NSStringFromProtocol(v16);
-  objc_msgSend_encodeObject_forKey_(v26, v18, v17, @"CK.protocolName");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v18, v17, @"CK.protocolName");
 
   v21 = objc_msgSend_endpoint(self, v19, v20);
-  objc_msgSend_encodeObject_forKey_(v26, v22, v21, @"CK.endpoint");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v22, v21, @"CK.endpoint");
 }
 
-- (CKOperationCallbackProxyEndpoint)initWithCoder:(id)a3
+- (CKOperationCallbackProxyEndpoint)initWithCoder:(id)coder
 {
   v37[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v37[0] = objc_opt_class();
   v37[1] = objc_opt_class();
   v7 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v6, v37, 2);
   v9 = objc_msgSend_setWithArray_(v5, v8, v7);
-  v11 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v10, v9, @"CK.classNames");
+  v11 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v10, v9, @"CK.classNames");
 
   v13 = objc_msgSend_CKCompactMap_(v11, v12, &unk_1EFA2F2C8);
   Object = objc_msgSend_lastObject(v13, v14, v15);
@@ -151,7 +151,7 @@ LABEL_4:
   }
 
   v18 = objc_opt_class();
-  v20 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v19, v18, @"CK.protocolName");
+  v20 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v19, v18, @"CK.protocolName");
   v21 = NSProtocolFromString(v20);
   if (!v21)
   {
@@ -169,7 +169,7 @@ LABEL_4:
   }
 
   v23 = objc_opt_class();
-  v26 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v24, v23, @"CK.endpoint");
+  v26 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v24, v23, @"CK.endpoint");
   if (!Object)
   {
     Object = objc_opt_class();

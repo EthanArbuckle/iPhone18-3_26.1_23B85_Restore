@@ -1,90 +1,90 @@
 @interface _UISplitViewControllerAdaptiveTransitionView
-- (_UISplitViewControllerAdaptiveTransitionView)initWithFrame:(CGRect)a3;
-- (void)animateTransition:(id *)a1;
-- (void)completeTransition:(uint64_t)a1;
+- (_UISplitViewControllerAdaptiveTransitionView)initWithFrame:(CGRect)frame;
+- (void)animateTransition:(id *)transition;
+- (void)completeTransition:(uint64_t)transition;
 @end
 
 @implementation _UISplitViewControllerAdaptiveTransitionView
 
-- (_UISplitViewControllerAdaptiveTransitionView)initWithFrame:(CGRect)a3
+- (_UISplitViewControllerAdaptiveTransitionView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v10.receiver = self;
   v10.super_class = _UISplitViewControllerAdaptiveTransitionView;
-  v5 = [(UIView *)&v10 initWithFrame:a3.origin.x, a3.origin.y];
+  v5 = [(UIView *)&v10 initWithFrame:frame.origin.x, frame.origin.y];
   if (v5)
   {
     v6 = [_UITouchPassthroughView alloc];
-    v7 = [(UIView *)v6 initWithFrame:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), width, height];
-    [(UIView *)v7 setAutoresizingMask:18];
-    [(UIView *)v5 addSubview:v7];
+    height = [(UIView *)v6 initWithFrame:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), width, height];
+    [(UIView *)height setAutoresizingMask:18];
+    [(UIView *)v5 addSubview:height];
     barButtonItemContainerView = v5->_barButtonItemContainerView;
-    v5->_barButtonItemContainerView = &v7->super;
+    v5->_barButtonItemContainerView = &height->super;
   }
 
   return v5;
 }
 
-- (void)animateTransition:(id *)a1
+- (void)animateTransition:(id *)transition
 {
-  if (a1)
+  if (transition)
   {
-    v4 = [a2 previousLayoutSnapshotView];
-    if (v4)
+    previousLayoutSnapshotView = [a2 previousLayoutSnapshotView];
+    if (previousLayoutSnapshotView)
     {
-      v48 = v4;
-      if (a1[53] != a2)
+      v48 = previousLayoutSnapshotView;
+      if (transition[53] != a2)
       {
-        objc_storeStrong(a1 + 53, a2);
-        v5 = a1[51];
-        v6 = a1[52];
+        objc_storeStrong(transition + 53, a2);
+        v5 = transition[51];
+        v6 = transition[52];
         v7 = v5;
         [v7 removeFromSuperview];
         [v6 removeFromSuperview];
-        v8 = a1[51];
-        a1[51] = 0;
+        v8 = transition[51];
+        transition[51] = 0;
 
-        v9 = a1[52];
-        a1[52] = 0;
+        v9 = transition[52];
+        transition[52] = 0;
 
-        v10 = [a2 containerView];
+        containerView = [a2 containerView];
 
-        [v10 _removeAllAnimationsIncludingSubviewsTrackingForAnimationRestoration];
+        [containerView _removeAllAnimationsIncludingSubviewsTrackingForAnimationRestoration];
         v11 = [[_UISplitViewControllerAdaptiveTransitionAnimationView alloc] initWithContentView:v48];
-        v12 = a1[51];
-        a1[51] = v11;
+        v12 = transition[51];
+        transition[51] = v11;
         v13 = v11;
 
         v14 = [_UIPortalView alloc];
-        v15 = [a2 containerView];
+        containerView2 = [a2 containerView];
 
-        v16 = [(_UIPortalView *)v14 initWithSourceView:v15];
+        v16 = [(_UIPortalView *)v14 initWithSourceView:containerView2];
         [(_UIPortalView *)v16 setAllowsHitTesting:1];
         [(_UIPortalView *)v16 setHidesSourceView:1];
         v17 = [[_UISplitViewControllerAdaptiveTransitionAnimationView alloc] initWithContentView:v16];
-        v18 = a1[52];
-        a1[52] = v17;
+        v18 = transition[52];
+        transition[52] = v17;
         v19 = v17;
 
-        [a1 addSubview:v13];
-        [a1 addSubview:v19];
+        [transition addSubview:v13];
+        [transition addSubview:v19];
       }
 
       v20 = *MEMORY[0x1E695EFF8];
       v21 = *(MEMORY[0x1E695EFF8] + 8);
-      v22 = [a2 previousLayout];
-      [v22 contentSize];
+      previousLayout = [a2 previousLayout];
+      [previousLayout contentSize];
       v24 = v23;
       v26 = v25;
 
-      v27 = [a2 newLayout];
-      [v27 contentSize];
+      newLayout = [a2 newLayout];
+      [newLayout contentSize];
       v29 = v28;
       v31 = v30;
 
-      v32 = [a1 traitCollection];
-      [v32 displayScale];
+      traitCollection = [transition traitCollection];
+      [traitCollection displayScale];
       v47 = v33;
 
       v65.origin.x = v20;
@@ -127,8 +127,8 @@
 
       memset(&v63, 0, sizeof(v63));
       CGAffineTransformMakeScale(&v63, v35, v34);
-      v38 = a1[51];
-      v39 = a1[52];
+      v38 = transition[51];
+      v39 = transition[52];
       if (+[UIView _isInAnimationBlockWithAnimationsEnabled])
       {
         v50[0] = MEMORY[0x1E69E9820];
@@ -154,11 +154,11 @@
       v49 = v63;
       [v38 setTransform:&v49];
       v40 = _UISplitViewControllerResizeMeshTransform(v20, v21, v24, v26, 0.0, 0.0, 0.0, 0.0, v20, v21, v29, v31, 0.0, 0.0, 0.0, 0.0);
-      v41 = [v38 layer];
-      [v41 setMeshTransform:v40];
+      layer = [v38 layer];
+      [layer setMeshTransform:v40];
 
-      v42 = [v38 layer];
-      [v42 setRasterizationScale:v47];
+      layer2 = [v38 layer];
+      [layer2 setRasterizationScale:v47];
 
       [v39 setAlpha:1.0];
       [v39 setCenter:{v20 + v29 * 0.5, v21 + v31 * 0.5}];
@@ -168,36 +168,36 @@
       *&v49.tx = *(MEMORY[0x1E695EFD0] + 32);
       [v39 setTransform:&v49];
       v44 = _UISplitViewControllerResizeMeshTransform(v20, v21, v29, v31, 0.0, 0.0, 0.0, 0.0, v20, v21, v29, v31, 0.0, 0.0, 0.0, 0.0);
-      v45 = [v39 layer];
-      [v45 setMeshTransform:v44];
+      layer3 = [v39 layer];
+      [layer3 setMeshTransform:v44];
 
-      v46 = [v39 layer];
-      [v46 setRasterizationScale:v47];
+      layer4 = [v39 layer];
+      [layer4 setRasterizationScale:v47];
 
-      v4 = v48;
+      previousLayoutSnapshotView = v48;
     }
   }
 }
 
-- (void)completeTransition:(uint64_t)a1
+- (void)completeTransition:(uint64_t)transition
 {
-  if (a1)
+  if (transition)
   {
-    v4 = *(a1 + 424);
+    v4 = *(transition + 424);
     if (v4 == a2)
     {
-      *(a1 + 424) = 0;
+      *(transition + 424) = 0;
 
-      v5 = [a2 containerView];
-      [v5 _finishTrackingForAnimationRestoration];
+      containerView = [a2 containerView];
+      [containerView _finishTrackingForAnimationRestoration];
 
-      [*(a1 + 408) removeFromSuperview];
-      [*(a1 + 416) removeFromSuperview];
-      v6 = *(a1 + 408);
-      *(a1 + 408) = 0;
+      [*(transition + 408) removeFromSuperview];
+      [*(transition + 416) removeFromSuperview];
+      v6 = *(transition + 408);
+      *(transition + 408) = 0;
 
-      v7 = *(a1 + 416);
-      *(a1 + 416) = 0;
+      v7 = *(transition + 416);
+      *(transition + 416) = 0;
     }
   }
 }

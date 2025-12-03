@@ -1,6 +1,6 @@
 @interface JSArcadeObject
 - (_TtC27AppStoreComponentsDaemonKit14JSArcadeObject)init;
-- (id)getRecentlyPlayedGamesWithTimeout:(id)a3;
+- (id)getRecentlyPlayedGamesWithTimeout:(id)timeout;
 @end
 
 @implementation JSArcadeObject
@@ -12,7 +12,7 @@
   return [(JSArcadeObject *)&v3 init];
 }
 
-- (id)getRecentlyPlayedGamesWithTimeout:(id)a3
+- (id)getRecentlyPlayedGamesWithTimeout:(id)timeout
 {
   sub_22262E364(0, &qword_281312B48, 0x277CD4640);
   v3 = sub_2227396EC();

@@ -3,12 +3,12 @@
 - (id)keyCommands;
 - (int64_t)behavior;
 - (void)addListItems;
-- (void)addListItemsCalculatorCompact:(BOOL)a3;
+- (void)addListItemsCalculatorCompact:(BOOL)compact;
 - (void)addListItemsiOS;
 - (void)addListItemsvisionOS;
 - (void)applyAccessibilityInfo;
-- (void)choiceSelected:(unint64_t)a3;
-- (void)continueAction:(id)a3;
+- (void)choiceSelected:(unint64_t)selected;
+- (void)continueAction:(id)action;
 - (void)setupChoiceViews;
 - (void)startIndicatorAnimation;
 - (void)stopIndicatorAnimation;
@@ -26,28 +26,28 @@
   v3 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
   [(ICStartupViewController *)self setActivityIndicatorView:v3];
 
-  v4 = [(ICStartupViewController *)self activityIndicatorView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  activityIndicatorView = [(ICStartupViewController *)self activityIndicatorView];
+  [activityIndicatorView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(ICStartupViewController *)self view];
-  v6 = [(ICStartupViewController *)self activityIndicatorView];
-  [v5 addSubview:v6];
+  view = [(ICStartupViewController *)self view];
+  activityIndicatorView2 = [(ICStartupViewController *)self activityIndicatorView];
+  [view addSubview:activityIndicatorView2];
 
   v7 = +[NSMutableArray array];
-  v8 = [(ICStartupViewController *)self activityIndicatorView];
-  v9 = [v8 bottomAnchor];
-  v10 = [(ICStartupViewController *)self view];
-  v11 = [v10 layoutMarginsGuide];
-  v12 = [v11 bottomAnchor];
-  v13 = [v9 constraintEqualToAnchor:v12 constant:-40.0];
+  activityIndicatorView3 = [(ICStartupViewController *)self activityIndicatorView];
+  bottomAnchor = [activityIndicatorView3 bottomAnchor];
+  view2 = [(ICStartupViewController *)self view];
+  layoutMarginsGuide = [view2 layoutMarginsGuide];
+  bottomAnchor2 = [layoutMarginsGuide bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-40.0];
   [v7 addObject:v13];
 
-  v14 = [(ICStartupViewController *)self activityIndicatorView];
-  v15 = [v14 centerXAnchor];
-  v16 = [(ICStartupViewController *)self view];
-  v17 = [v16 layoutMarginsGuide];
-  v18 = [v17 centerXAnchor];
-  v19 = [v15 constraintEqualToAnchor:v18];
+  activityIndicatorView4 = [(ICStartupViewController *)self activityIndicatorView];
+  centerXAnchor = [activityIndicatorView4 centerXAnchor];
+  view3 = [(ICStartupViewController *)self view];
+  layoutMarginsGuide2 = [view3 layoutMarginsGuide];
+  centerXAnchor2 = [layoutMarginsGuide2 centerXAnchor];
+  v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v7 addObject:v19];
 
   [NSLayoutConstraint activateConstraints:v7];
@@ -55,10 +55,10 @@
 
 - (int64_t)behavior
 {
-  v2 = [(ICStartupViewController *)self navigationController];
-  v3 = [v2 ic_behavior];
+  navigationController = [(ICStartupViewController *)self navigationController];
+  ic_behavior = [navigationController ic_behavior];
 
-  return v3;
+  return ic_behavior;
 }
 
 - (void)addListItems
@@ -83,14 +83,14 @@
   }
 }
 
-- (void)addListItemsCalculatorCompact:(BOOL)a3
+- (void)addListItemsCalculatorCompact:(BOOL)compact
 {
-  v3 = a3;
+  compactCopy = compact;
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"Solve Math" value:&stru_100661CF0 table:0];
   v7 = +[NSBundle mainBundle];
   v8 = v7;
-  if (v3)
+  if (compactCopy)
   {
     v9 = @"Type math expressions to instantly see results inline in your Math Notes.";
   }
@@ -111,7 +111,7 @@
   v16 = [UIImage ic_systemImageNamed:@"x.squareroot"];
   [(ICStartupViewController *)self addBulletedListItemWithTitle:v13 description:v15 image:v16];
 
-  if (!v3)
+  if (!compactCopy)
   {
     v17 = +[NSBundle mainBundle];
     v18 = [v17 localizedStringForKey:@"Plot Graphs" value:&stru_100661CF0 table:0];
@@ -221,15 +221,15 @@
   [(ICStartupViewController *)self addBulletedListItemWithTitle:v21 description:v23 symbolName:@"sparkles"];
 }
 
-- (void)choiceSelected:(unint64_t)a3
+- (void)choiceSelected:(unint64_t)selected
 {
-  v5 = [(ICStartupViewController *)self choiceBlocks];
-  v6 = [v5 count];
+  choiceBlocks = [(ICStartupViewController *)self choiceBlocks];
+  v6 = [choiceBlocks count];
 
-  if (v6 > a3)
+  if (v6 > selected)
   {
-    v7 = [(ICStartupViewController *)self choiceBlocks];
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    choiceBlocks2 = [(ICStartupViewController *)self choiceBlocks];
+    v8 = [choiceBlocks2 objectAtIndexedSubscript:selected];
 
     v8[2]();
   }
@@ -248,16 +248,16 @@
   return v5;
 }
 
-- (void)continueAction:(id)a3
+- (void)continueAction:(id)action
 {
-  v3 = [(ICStartupBaseViewController *)self startupNavigationController];
-  [v3 continueAction];
+  startupNavigationController = [(ICStartupBaseViewController *)self startupNavigationController];
+  [startupNavigationController continueAction];
 }
 
 - (void)setupChoiceViews
 {
-  v3 = [(ICStartupBaseViewController *)self startupNavigationController];
-  v4 = [v3 getStartupMigrationType];
+  startupNavigationController = [(ICStartupBaseViewController *)self startupNavigationController];
+  getStartupMigrationType = [startupNavigationController getStartupMigrationType];
 
   objc_initWeak(&location, self);
   v36[0] = _NSConcreteStackBlock;
@@ -304,11 +304,11 @@
   v13 = +[NSBundle mainBundle];
   v14 = [v13 localizedStringForKey:@"Upgrade Notes" value:&stru_100661CF0 table:0];
 
-  if (v4 > 4)
+  if (getStartupMigrationType > 4)
   {
-    if (v4 > 7)
+    if (getStartupMigrationType > 7)
     {
-      if (v4 == 8)
+      if (getStartupMigrationType == 8)
       {
         v40 = v14;
         v22 = [NSArray arrayWithObjects:&v40 count:1];
@@ -321,7 +321,7 @@
         goto LABEL_19;
       }
 
-      if (v4 == 9)
+      if (getStartupMigrationType == 9)
       {
         v50 = v10;
         v20 = [NSArray arrayWithObjects:&v50 count:1];
@@ -337,7 +337,7 @@
 
     else
     {
-      if ((v4 - 6) < 2)
+      if ((getStartupMigrationType - 6) < 2)
       {
         v48 = v12;
         v18 = [NSArray arrayWithObjects:&v48 count:1];
@@ -350,7 +350,7 @@
         goto LABEL_19;
       }
 
-      if (v4 == 5)
+      if (getStartupMigrationType == 5)
       {
         v42 = v10;
         v21 = [NSArray arrayWithObjects:&v42 count:1];
@@ -367,7 +367,7 @@
 
   else
   {
-    if (v4 > 2)
+    if (getStartupMigrationType > 2)
     {
       v44 = v14;
       v19 = [NSArray arrayWithObjects:&v44 count:1];
@@ -380,9 +380,9 @@
       goto LABEL_19;
     }
 
-    if (v4)
+    if (getStartupMigrationType)
     {
-      if (v4 == 1)
+      if (getStartupMigrationType == 1)
       {
         v52 = v10;
         v23 = [NSArray arrayWithObjects:&v52 count:1];
@@ -395,7 +395,7 @@
         goto LABEL_19;
       }
 
-      if (v4 == 2)
+      if (getStartupMigrationType == 2)
       {
         v46 = v10;
         v15 = [NSArray arrayWithObjects:&v46 count:1];
@@ -427,9 +427,9 @@ LABEL_19:
 
 - (BOOL)didFailToDownloadDeviceList
 {
-  v2 = [(ICStartupBaseViewController *)self startupNavigationController];
-  v3 = [v2 primaryAccountDevices];
-  v4 = v3 == 0;
+  startupNavigationController = [(ICStartupBaseViewController *)self startupNavigationController];
+  primaryAccountDevices = [startupNavigationController primaryAccountDevices];
+  v4 = primaryAccountDevices == 0;
 
   return v4;
 }
@@ -437,21 +437,21 @@ LABEL_19:
 - (void)startIndicatorAnimation
 {
   [(ICStartupBaseViewController *)self hideChoices];
-  v3 = [(ICStartupViewController *)self activityIndicatorView];
-  [v3 startAnimating];
+  activityIndicatorView = [(ICStartupViewController *)self activityIndicatorView];
+  [activityIndicatorView startAnimating];
 }
 
 - (void)stopIndicatorAnimation
 {
   [(ICStartupViewController *)self setupChoiceViews];
-  v3 = [(ICStartupViewController *)self activityIndicatorView];
-  [v3 stopAnimating];
+  activityIndicatorView = [(ICStartupViewController *)self activityIndicatorView];
+  [activityIndicatorView stopAnimating];
 }
 
 - (void)applyAccessibilityInfo
 {
-  v2 = [(ICStartupViewController *)self view];
-  [v2 setAccessibilityViewIsModal:1];
+  view = [(ICStartupViewController *)self view];
+  [view setAccessibilityViewIsModal:1];
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface MSDCodeEntryAlertController
-- (MSDCodeEntryAlertController)initWithVerificationCode:(id)a3 completion:(id)a4;
+- (MSDCodeEntryAlertController)initWithVerificationCode:(id)code completion:(id)completion;
 @end
 
 @implementation MSDCodeEntryAlertController
 
-- (MSDCodeEntryAlertController)initWithVerificationCode:(id)a3 completion:(id)a4
+- (MSDCodeEntryAlertController)initWithVerificationCode:(id)code completion:(id)completion
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  codeCopy = code;
+  completionCopy = completion;
   v8 = [(MSDCodeEntryAlertController *)self initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    [(MSDCodeEntryAlertController *)v8 setCompletion:v7];
+    [(MSDCodeEntryAlertController *)v8 setCompletion:completionCopy];
     [(MSDCodeEntryAlertController *)v9 setPreferredStyle:1];
     v25 = [MSDSetupUILocalization localizedStringForKey:@"DDL_AUTHENTICATION_TITLE"];
     v10 = [MSDSetupUILocalization localizedStringForKey:@"DDL_AUTHENTICATION_DESCRIPTION"];
@@ -32,7 +32,7 @@
       [v12 addAttributes:v18 range:{v15, v16}];
     }
 
-    v19 = [[MSDCodeEntryContentViewController alloc] initWithTitle:v25 message:v12 verificationCode:v6 verificationErrorMesssage:v24 andDelegate:v9];
+    v19 = [[MSDCodeEntryContentViewController alloc] initWithTitle:v25 message:v12 verificationCode:codeCopy verificationErrorMesssage:v24 andDelegate:v9];
     [(MSDCodeEntryAlertController *)v9 setContentViewController:v19];
     objc_initWeak(&location, v9);
     v20 = MEMORY[0x277D750F8];

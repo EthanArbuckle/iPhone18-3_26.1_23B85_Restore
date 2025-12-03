@@ -9,15 +9,15 @@
 - (BOOL)canProvideContextualViewController
 {
   v2 = +[PXDiagnosticsSettings sharedInstance];
-  v3 = [v2 enableGenericService];
+  enableGenericService = [v2 enableGenericService];
 
-  return v3;
+  return enableGenericService;
 }
 
 - (id)consoleDescription
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -43,8 +43,8 @@
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v6 = [v5 registeredIdentifiers];
-        v7 = [v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        registeredIdentifiers = [v5 registeredIdentifiers];
+        v7 = [registeredIdentifiers countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v7)
         {
           v8 = v7;
@@ -55,20 +55,20 @@
             {
               if (*v19 != v9)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(registeredIdentifiers);
               }
 
               v11 = *(*(&v18 + 1) + 8 * i);
               v12 = [v5 itemForIdentifier:v11];
-              if ([v3 length])
+              if ([string length])
               {
-                [v3 appendString:@"\n"];
+                [string appendString:@"\n"];
               }
 
-              [v3 appendFormat:@"%@: %@\n", v11, v12];
+              [string appendFormat:@"%@: %@\n", v11, v12];
             }
 
-            v8 = [v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
+            v8 = [registeredIdentifiers countByEnumeratingWithState:&v18 objects:v26 count:16];
           }
 
           while (v8);
@@ -84,15 +84,15 @@
     while (v16);
   }
 
-  return v3;
+  return string;
 }
 
 - (BOOL)canProvideConsoleDescription
 {
   v2 = +[PXDiagnosticsSettings sharedInstance];
-  v3 = [v2 enableGenericService];
+  enableGenericService = [v2 enableGenericService];
 
-  return v3;
+  return enableGenericService;
 }
 
 @end

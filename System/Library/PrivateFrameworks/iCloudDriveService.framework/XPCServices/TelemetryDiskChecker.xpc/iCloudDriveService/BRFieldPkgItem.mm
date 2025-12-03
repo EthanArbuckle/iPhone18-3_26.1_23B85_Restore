@@ -1,7 +1,7 @@
 @interface BRFieldPkgItem
-+ (id)directoryAtPath:(id)a3;
-+ (id)fileAtPath:(id)a3 mtime:(int64_t)a4 mode:(char)a5;
-+ (id)symlinkAtPath:(id)a3 content:(id)a4;
++ (id)directoryAtPath:(id)path;
++ (id)fileAtPath:(id)path mtime:(int64_t)mtime mode:(char)mode;
++ (id)symlinkAtPath:(id)path content:(id)content;
 - (char)mode;
 @end
 
@@ -9,32 +9,32 @@
 
 - (char)mode
 {
-  v3 = [(BRFieldPkgItem *)self isWritable];
+  isWritable = [(BRFieldPkgItem *)self isWritable];
   if ([(BRFieldPkgItem *)self isExecutable])
   {
-    return v3 | 2;
+    return isWritable | 2;
   }
 
   else
   {
-    return v3;
+    return isWritable;
   }
 }
 
-+ (id)fileAtPath:(id)a3 mtime:(int64_t)a4 mode:(char)a5
++ (id)fileAtPath:(id)path mtime:(int64_t)mtime mode:(char)mode
 {
-  v7 = a3;
+  pathCopy = path;
   v8 = objc_alloc_init(objc_opt_class());
   [v8 setType:2];
-  [v8 setPath:v7];
+  [v8 setPath:pathCopy];
 
-  [v8 setMtime:a4];
-  if (a5)
+  [v8 setMtime:mtime];
+  if (mode)
   {
     [v8 setIsWritable:1];
   }
 
-  if ((a5 & 2) != 0)
+  if ((mode & 2) != 0)
   {
     [v8 setIsExecutable:1];
   }
@@ -42,25 +42,25 @@
   return v8;
 }
 
-+ (id)directoryAtPath:(id)a3
++ (id)directoryAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setType:1];
-  [v4 setPath:v3];
+  [v4 setPath:pathCopy];
 
   return v4;
 }
 
-+ (id)symlinkAtPath:(id)a3 content:(id)a4
++ (id)symlinkAtPath:(id)path content:(id)content
 {
-  v5 = a4;
-  v6 = a3;
+  contentCopy = content;
+  pathCopy = path;
   v7 = objc_alloc_init(objc_opt_class());
   [v7 setType:3];
-  [v7 setPath:v6];
+  [v7 setPath:pathCopy];
 
-  [v7 setSymlinkContent:v5];
+  [v7 setSymlinkContent:contentCopy];
 
   return v7;
 }

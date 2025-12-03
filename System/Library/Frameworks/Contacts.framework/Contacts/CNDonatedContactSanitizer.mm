@@ -1,19 +1,19 @@
 @interface CNDonatedContactSanitizer
-+ (id)mutableCopyOfDonatedContact:(id)a3 withCustomIdentifier:(id)a4;
-+ (id)sanitizeDonatedContact:(id)a3 matchingPredicate:(id)a4;
-+ (id)storeInfoByMergingStoreInfos:(id)a3;
-+ (id)storeInfoFromPredicate:(id)a3;
-+ (void)markContactAndMultiValuesAsDonated:(id)a3 usingStoreInfo:(id)a4 andStoreIdentifier:(id)a5;
++ (id)mutableCopyOfDonatedContact:(id)contact withCustomIdentifier:(id)identifier;
++ (id)sanitizeDonatedContact:(id)contact matchingPredicate:(id)predicate;
++ (id)storeInfoByMergingStoreInfos:(id)infos;
++ (id)storeInfoFromPredicate:(id)predicate;
++ (void)markContactAndMultiValuesAsDonated:(id)donated usingStoreInfo:(id)info andStoreIdentifier:(id)identifier;
 @end
 
 @implementation CNDonatedContactSanitizer
 
-+ (id)sanitizeDonatedContact:(id)a3 matchingPredicate:(id)a4
++ (id)sanitizeDonatedContact:(id)contact matchingPredicate:(id)predicate
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  contactCopy = contact;
+  predicateCopy = predicate;
+  if (contactCopy)
   {
     goto LABEL_5;
   }
@@ -27,7 +27,7 @@
   if (os_log_type_enabled(CNGuardOSLog_cn_once_object_0_6, OS_LOG_TYPE_FAULT))
   {
     [CNDonatedContactSanitizer sanitizeDonatedContact:v8 matchingPredicate:?];
-    if (v7)
+    if (predicateCopy)
     {
       goto LABEL_10;
     }
@@ -36,7 +36,7 @@
   else
   {
 LABEL_5:
-    if (v7)
+    if (predicateCopy)
     {
       goto LABEL_10;
     }
@@ -54,18 +54,18 @@ LABEL_5:
   }
 
 LABEL_10:
-  v10 = [a1 mutableCopyOfDonatedContact:v6 withCustomIdentifier:@"2D0447ED-BB88-45F9-909B-EB36C6920675"];
-  v11 = [v6 storeInfo];
-  v12 = v11;
+  v10 = [self mutableCopyOfDonatedContact:contactCopy withCustomIdentifier:@"2D0447ED-BB88-45F9-909B-EB36C6920675"];
+  storeInfo = [contactCopy storeInfo];
+  v12 = storeInfo;
   v13 = MEMORY[0x1E695E0F8];
-  if (v11)
+  if (storeInfo)
   {
-    v13 = v11;
+    v13 = storeInfo;
   }
 
   v23[0] = v13;
   objc_opt_class();
-  v14 = v7;
+  v14 = predicateCopy;
   if (objc_opt_isKindOfClass())
   {
     v15 = v14;
@@ -78,13 +78,13 @@ LABEL_10:
 
   v16 = v15;
 
-  v17 = [a1 storeInfoFromPredicate:v16];
+  v17 = [self storeInfoFromPredicate:v16];
   v23[1] = v17;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
-  v19 = [a1 storeInfoByMergingStoreInfos:v18];
+  v19 = [self storeInfoByMergingStoreInfos:v18];
 
   v20 = +[CNDonationMapper mapperIdentifier];
-  [a1 markContactAndMultiValuesAsDonated:v10 usingStoreInfo:v19 andStoreIdentifier:v20];
+  [self markContactAndMultiValuesAsDonated:v10 usingStoreInfo:v19 andStoreIdentifier:v20];
   [v10 setPreferredForName:0];
   [v10 setFrozenSelfAsSnapshot];
   v21 = [v10 copy];
@@ -92,12 +92,12 @@ LABEL_10:
   return v21;
 }
 
-+ (id)mutableCopyOfDonatedContact:(id)a3 withCustomIdentifier:(id)a4
++ (id)mutableCopyOfDonatedContact:(id)contact withCustomIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [(CNContact *)[CNMutableContact alloc] initWithIdentifier:v6];
+  contactCopy = contact;
+  identifierCopy = identifier;
+  v7 = [(CNContact *)[CNMutableContact alloc] initWithIdentifier:identifierCopy];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -119,11 +119,11 @@ LABEL_10:
 
         v13 = *(*(&v18 + 1) + 8 * i);
         v14 = [v13 key];
-        v15 = [v5 isKeyAvailable:v14];
+        v15 = [contactCopy isKeyAvailable:v14];
 
         if (v15)
         {
-          v16 = [v13 CNValueForContact:v5];
+          v16 = [v13 CNValueForContact:contactCopy];
           [v13 setCNValue:v16 onContact:v7];
         }
       }
@@ -137,14 +137,14 @@ LABEL_10:
   return v7;
 }
 
-+ (void)markContactAndMultiValuesAsDonated:(id)a3 usingStoreInfo:(id)a4 andStoreIdentifier:(id)a5
++ (void)markContactAndMultiValuesAsDonated:(id)donated usingStoreInfo:(id)info andStoreIdentifier:(id)identifier
 {
   v36 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  [v7 setStoreIdentifier:v9];
-  [v7 setStoreInfo:v8];
+  donatedCopy = donated;
+  infoCopy = info;
+  identifierCopy = identifier;
+  [donatedCopy setStoreIdentifier:identifierCopy];
+  [donatedCopy setStoreInfo:infoCopy];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
@@ -168,7 +168,7 @@ LABEL_10:
 
         v14 = *(*(&v30 + 1) + 8 * v13);
         v15 = [v14 key];
-        v16 = [v7 isKeyAvailable:v15];
+        v16 = [donatedCopy isKeyAvailable:v15];
 
         if (v16)
         {
@@ -176,8 +176,8 @@ LABEL_10:
           v29 = 0u;
           v26 = 0u;
           v27 = 0u;
-          v17 = v7;
-          v18 = [v14 CNValueForContact:v7];
+          v17 = donatedCopy;
+          v18 = [v14 CNValueForContact:donatedCopy];
           v19 = [v18 countByEnumeratingWithState:&v26 objects:v34 count:16];
           if (v19)
           {
@@ -193,8 +193,8 @@ LABEL_10:
                 }
 
                 v23 = *(*(&v26 + 1) + 8 * i);
-                [v23 setStoreIdentifier:v9];
-                [v23 addStoreInfo:v8];
+                [v23 setStoreIdentifier:identifierCopy];
+                [v23 addStoreInfo:infoCopy];
               }
 
               v20 = [v18 countByEnumeratingWithState:&v26 objects:v34 count:16];
@@ -203,7 +203,7 @@ LABEL_10:
             while (v20);
           }
 
-          v7 = v17;
+          donatedCopy = v17;
           v11 = v24;
         }
 
@@ -218,12 +218,12 @@ LABEL_10:
   }
 }
 
-+ (id)storeInfoByMergingStoreInfos:(id)a3
++ (id)storeInfoByMergingStoreInfos:(id)infos
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
-  v5 = [v3 dictionary];
-  v6 = [v4 _cn_reduce:&__block_literal_global_93 initialValue:v5];
+  infosCopy = infos;
+  dictionary = [v3 dictionary];
+  v6 = [infosCopy _cn_reduce:&__block_literal_global_93 initialValue:dictionary];
 
   return v6;
 }
@@ -236,13 +236,13 @@ id __58__CNDonatedContactSanitizer_storeInfoByMergingStoreInfos___block_invoke(u
   return v4;
 }
 
-+ (id)storeInfoFromPredicate:(id)a3
++ (id)storeInfoFromPredicate:(id)predicate
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  predicateCopy = predicate;
   v4 = *MEMORY[0x1E6996530];
-  v5 = [v3 mainStoreContactIdentifiers];
-  LOBYTE(v4) = (*(v4 + 16))(v4, v5);
+  mainStoreContactIdentifiers = [predicateCopy mainStoreContactIdentifiers];
+  LOBYTE(v4) = (*(v4 + 16))(v4, mainStoreContactIdentifiers);
 
   if (v4)
   {
@@ -252,9 +252,9 @@ id __58__CNDonatedContactSanitizer_storeInfoByMergingStoreInfos___block_invoke(u
   else
   {
     v10 = @"CNContactMainStoreLinkedIdentifier";
-    v7 = [v3 mainStoreContactIdentifiers];
-    v8 = [v7 firstObject];
-    v11[0] = v8;
+    mainStoreContactIdentifiers2 = [predicateCopy mainStoreContactIdentifiers];
+    firstObject = [mainStoreContactIdentifiers2 firstObject];
+    v11[0] = firstObject;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   }
 

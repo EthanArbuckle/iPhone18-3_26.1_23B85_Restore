@@ -2,8 +2,8 @@
 - (id)_init;
 - (id)isConnectedToAudioBluetoothDeviceQuery;
 - (id)isConnectedToCarQuery;
-- (void)registerForQuery:(id)a3 updateBlock:(id)a4;
-- (void)unregisterForQuery:(id)a3;
+- (void)registerForQuery:(id)query updateBlock:(id)block;
+- (void)unregisterForQuery:(id)query;
 @end
 
 @implementation REDuetContextStore
@@ -12,8 +12,8 @@
 {
   v10.receiver = self;
   v10.super_class = REDuetContextStore;
-  v2 = [(RESingleton *)&v10 _init];
-  if (v2 && CoreDuetContextLibraryCore())
+  _init = [(RESingleton *)&v10 _init];
+  if (_init && CoreDuetContextLibraryCore())
   {
     v12 = 0;
     v13 = &v12;
@@ -33,16 +33,16 @@
 
     v4 = v3;
     _Block_object_dispose(&v12, 8);
-    v5 = [v3 userContext];
-    v6 = v2[1];
-    v2[1] = v5;
+    userContext = [v3 userContext];
+    v6 = _init[1];
+    _init[1] = userContext;
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
-    v8 = v2[2];
-    v2[2] = v7;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v8 = _init[2];
+    _init[2] = dictionary;
   }
 
-  return v2;
+  return _init;
 }
 
 - (id)isConnectedToCarQuery
@@ -50,26 +50,26 @@
   v18[2] = *MEMORY[0x277D85DE8];
   if (CoreDuetContextLibraryCore())
   {
-    v2 = [get_CDContextQueriesClass() keyPathForCarConnectedStatus];
-    v3 = [get_CDContextQueriesClass() keyPathForCarplayConnectedStatus];
-    v4 = [get_CDContextualPredicateClass() predicateForChangeAtKeyPath:v2];
-    v5 = [get_CDContextualPredicateClass() predicateForChangeAtKeyPath:v3];
+    keyPathForCarConnectedStatus = [get_CDContextQueriesClass() keyPathForCarConnectedStatus];
+    keyPathForCarplayConnectedStatus = [get_CDContextQueriesClass() keyPathForCarplayConnectedStatus];
+    v4 = [get_CDContextualPredicateClass() predicateForChangeAtKeyPath:keyPathForCarConnectedStatus];
+    v5 = [get_CDContextualPredicateClass() predicateForChangeAtKeyPath:keyPathForCarplayConnectedStatus];
     v18[0] = v4;
     v18[1] = v5;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
     v7 = [get_CDContextualPredicateClass() orPredicateWithSubpredicates:v6];
 
-    v8 = [get_CDMDCSContextualPredicateClass() predicateForIsConnectedToCar];
+    predicateForIsConnectedToCar = [get_CDMDCSContextualPredicateClass() predicateForIsConnectedToCar];
     v9 = [REDuetContextQuery alloc];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __43__REDuetContextStore_isConnectedToCarQuery__block_invoke;
     v15[3] = &unk_2785FACE8;
-    v16 = v2;
-    v17 = v3;
-    v10 = v3;
-    v11 = v2;
-    v12 = [(REDuetContextQuery *)v9 initWithPredicate:v7 remotePredicate:v8 name:@"connectedToCar" evaluationBlock:v15];
+    v16 = keyPathForCarConnectedStatus;
+    v17 = keyPathForCarplayConnectedStatus;
+    v10 = keyPathForCarplayConnectedStatus;
+    v11 = keyPathForCarConnectedStatus;
+    v12 = [(REDuetContextQuery *)v9 initWithPredicate:v7 remotePredicate:predicateForIsConnectedToCar name:@"connectedToCar" evaluationBlock:v15];
   }
 
   else
@@ -108,10 +108,10 @@ uint64_t __43__REDuetContextStore_isConnectedToCarQuery__block_invoke(uint64_t a
   v17[2] = *MEMORY[0x277D85DE8];
   if (CoreDuetContextLibraryCore())
   {
-    v2 = [get_CDContextQueriesClass() keyPathForBluetoothDataDictionary];
-    v3 = [get_CDContextQueriesClass() bluetoothDeviceTypeKey];
-    v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"self.%@.value.%@ in %@", v2, v3, &unk_283BBD998];
-    v5 = [get_CDContextualPredicateClass() predicateForKeyPath:v2 withPredicate:v4];
+    keyPathForBluetoothDataDictionary = [get_CDContextQueriesClass() keyPathForBluetoothDataDictionary];
+    bluetoothDeviceTypeKey = [get_CDContextQueriesClass() bluetoothDeviceTypeKey];
+    v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"self.%@.value.%@ in %@", keyPathForBluetoothDataDictionary, bluetoothDeviceTypeKey, &unk_283BBD998];
+    v5 = [get_CDContextualPredicateClass() predicateForKeyPath:keyPathForBluetoothDataDictionary withPredicate:v4];
     v6 = [get_CDContextQueriesClass() predicateForBluetoothConnectionStatus:1];
     v7 = [get_CDContextQueriesClass() predicateForBluetoothConnectionStatus:0];
     v17[0] = v6;
@@ -124,8 +124,8 @@ uint64_t __43__REDuetContextStore_isConnectedToCarQuery__block_invoke(uint64_t a
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
     v11 = [get_CDContextualPredicateClass() andPredicateWithSubpredicates:v10];
 
-    v12 = [get_CDMDCSContextualPredicateClass() predicateForIsConnectedToAudioBluetoothDevice];
-    v13 = [[REDuetContextQuery alloc] initWithPredicate:v11 remotePredicate:v12 name:@"connectedToAudioBluetooth" evaluationBlock:&__block_literal_global_16];
+    predicateForIsConnectedToAudioBluetoothDevice = [get_CDMDCSContextualPredicateClass() predicateForIsConnectedToAudioBluetoothDevice];
+    v13 = [[REDuetContextQuery alloc] initWithPredicate:v11 remotePredicate:predicateForIsConnectedToAudioBluetoothDevice name:@"connectedToAudioBluetooth" evaluationBlock:&__block_literal_global_16];
   }
 
   else
@@ -138,37 +138,37 @@ uint64_t __43__REDuetContextStore_isConnectedToCarQuery__block_invoke(uint64_t a
   return v13;
 }
 
-- (void)registerForQuery:(id)a3 updateBlock:(id)a4
+- (void)registerForQuery:(id)query updateBlock:(id)block
 {
-  if (a3 && a4)
+  if (query && block)
   {
-    v6 = a4;
-    v7 = a3;
+    blockCopy = block;
+    queryCopy = query;
     os_unfair_lock_lock(&REContextRegistrationLock);
-    v9 = [[_REContextRegistration alloc] initWithQuery:v7];
+    v9 = [[_REContextRegistration alloc] initWithQuery:queryCopy];
 
-    [(_REContextRegistration *)v9 setCallback:v6];
+    [(_REContextRegistration *)v9 setCallback:blockCopy];
     [(_REContextRegistration *)v9 setContext:self->_context];
-    v8 = [(_REContextRegistration *)v9 uuid];
-    [(NSMutableDictionary *)self->_registrations setObject:v9 forKeyedSubscript:v8];
+    uuid = [(_REContextRegistration *)v9 uuid];
+    [(NSMutableDictionary *)self->_registrations setObject:v9 forKeyedSubscript:uuid];
     os_unfair_lock_unlock(&REContextRegistrationLock);
     [(_REContextRegistration *)v9 registerWithContext];
     [(_REContextRegistration *)v9 evaluateQuery];
   }
 }
 
-- (void)unregisterForQuery:(id)a3
+- (void)unregisterForQuery:(id)query
 {
-  if (a3)
+  if (query)
   {
-    v4 = a3;
+    queryCopy = query;
     os_unfair_lock_lock(&REContextRegistrationLock);
-    v6 = [v4 uuid];
+    uuid = [queryCopy uuid];
 
-    v5 = [(NSMutableDictionary *)self->_registrations objectForKeyedSubscript:v6];
+    v5 = [(NSMutableDictionary *)self->_registrations objectForKeyedSubscript:uuid];
     if (v5)
     {
-      [(NSMutableDictionary *)self->_registrations removeObjectForKey:v6];
+      [(NSMutableDictionary *)self->_registrations removeObjectForKey:uuid];
     }
 
     os_unfair_lock_unlock(&REContextRegistrationLock);

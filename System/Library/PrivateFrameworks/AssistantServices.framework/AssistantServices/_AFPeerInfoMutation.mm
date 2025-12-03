@@ -3,7 +3,7 @@
 - (BOOL)getIsDeviceOwnedByCurrentUser;
 - (BOOL)getIsLocationSharingDevice;
 - (BOOL)getIsSiriCloudSyncEnabled;
-- (_AFPeerInfoMutation)initWithBase:(id)a3;
+- (_AFPeerInfoMutation)initWithBase:(id)base;
 - (id)getAceVersion;
 - (id)getAssistantIdentifier;
 - (id)getBuildVersion;
@@ -27,105 +27,105 @@
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_assistantIdentifier;
+    assistantIdentifier = self->_assistantIdentifier;
   }
 
   else
   {
-    v2 = [(AFPeerInfo *)self->_base assistantIdentifier];
+    assistantIdentifier = [(AFPeerInfo *)self->_base assistantIdentifier];
   }
 
-  return v2;
+  return assistantIdentifier;
 }
 
 - (id)getSharedUserIdentifier
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_sharedUserIdentifier;
+    sharedUserIdentifier = self->_sharedUserIdentifier;
   }
 
   else
   {
-    v2 = [(AFPeerInfo *)self->_base sharedUserIdentifier];
+    sharedUserIdentifier = [(AFPeerInfo *)self->_base sharedUserIdentifier];
   }
 
-  return v2;
+  return sharedUserIdentifier;
 }
 
 - (id)getIdsIdentifier
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_idsIdentifier;
+    idsIdentifier = self->_idsIdentifier;
   }
 
   else
   {
-    v2 = [(AFPeerInfo *)self->_base idsIdentifier];
+    idsIdentifier = [(AFPeerInfo *)self->_base idsIdentifier];
   }
 
-  return v2;
+  return idsIdentifier;
 }
 
 - (id)getIdsDeviceUniqueIdentifier
 {
   if ((*&self->_mutationFlags & 0x20) != 0)
   {
-    v2 = self->_idsDeviceUniqueIdentifier;
+    idsDeviceUniqueIdentifier = self->_idsDeviceUniqueIdentifier;
   }
 
   else
   {
-    v2 = [(AFPeerInfo *)self->_base idsDeviceUniqueIdentifier];
+    idsDeviceUniqueIdentifier = [(AFPeerInfo *)self->_base idsDeviceUniqueIdentifier];
   }
 
-  return v2;
+  return idsDeviceUniqueIdentifier;
 }
 
 - (id)getRapportEffectiveIdentifier
 {
   if ((*&self->_mutationFlags & 0x40) != 0)
   {
-    v2 = self->_rapportEffectiveIdentifier;
+    rapportEffectiveIdentifier = self->_rapportEffectiveIdentifier;
   }
 
   else
   {
-    v2 = [(AFPeerInfo *)self->_base rapportEffectiveIdentifier];
+    rapportEffectiveIdentifier = [(AFPeerInfo *)self->_base rapportEffectiveIdentifier];
   }
 
-  return v2;
+  return rapportEffectiveIdentifier;
 }
 
 - (id)getMediaSystemIdentifier
 {
   if (*(&self->_mutationFlags + 1))
   {
-    v2 = self->_mediaSystemIdentifier;
+    mediaSystemIdentifier = self->_mediaSystemIdentifier;
   }
 
   else
   {
-    v2 = [(AFPeerInfo *)self->_base mediaSystemIdentifier];
+    mediaSystemIdentifier = [(AFPeerInfo *)self->_base mediaSystemIdentifier];
   }
 
-  return v2;
+  return mediaSystemIdentifier;
 }
 
 - (id)getMediaRouteIdentifier
 {
   if ((*(&self->_mutationFlags + 1) & 2) != 0)
   {
-    v2 = self->_mediaRouteIdentifier;
+    mediaRouteIdentifier = self->_mediaRouteIdentifier;
   }
 
   else
   {
-    v2 = [(AFPeerInfo *)self->_base mediaRouteIdentifier];
+    mediaRouteIdentifier = [(AFPeerInfo *)self->_base mediaRouteIdentifier];
   }
 
-  return v2;
+  return mediaRouteIdentifier;
 }
 
 - (BOOL)getIsCommunalDevice
@@ -145,45 +145,45 @@
 {
   if ((*(&self->_mutationFlags + 1) & 0x10) != 0)
   {
-    v2 = self->_name;
+    name = self->_name;
   }
 
   else
   {
-    v2 = [(AFPeerInfo *)self->_base name];
+    name = [(AFPeerInfo *)self->_base name];
   }
 
-  return v2;
+  return name;
 }
 
 - (id)getBuildVersion
 {
   if ((*(&self->_mutationFlags + 1) & 0x40) != 0)
   {
-    v2 = self->_buildVersion;
+    buildVersion = self->_buildVersion;
   }
 
   else
   {
-    v2 = [(AFPeerInfo *)self->_base buildVersion];
+    buildVersion = [(AFPeerInfo *)self->_base buildVersion];
   }
 
-  return v2;
+  return buildVersion;
 }
 
 - (id)getUserInterfaceIdiom
 {
   if ((*(&self->_mutationFlags + 1) & 0x80) != 0)
   {
-    v2 = self->_userInterfaceIdiom;
+    userInterfaceIdiom = self->_userInterfaceIdiom;
   }
 
   else
   {
-    v2 = [(AFPeerInfo *)self->_base userInterfaceIdiom];
+    userInterfaceIdiom = [(AFPeerInfo *)self->_base userInterfaceIdiom];
   }
 
-  return v2;
+  return userInterfaceIdiom;
 }
 
 - (BOOL)getIsLocationSharingDevice
@@ -203,30 +203,30 @@
 {
   if ((*(&self->_mutationFlags + 2) & 8) != 0)
   {
-    v2 = self->_myriadTrialTreatment;
+    myriadTrialTreatment = self->_myriadTrialTreatment;
   }
 
   else
   {
-    v2 = [(AFPeerInfo *)self->_base myriadTrialTreatment];
+    myriadTrialTreatment = [(AFPeerInfo *)self->_base myriadTrialTreatment];
   }
 
-  return v2;
+  return myriadTrialTreatment;
 }
 
 - (id)getHomeKitAccessoryIdentifier
 {
   if ((*&self->_mutationFlags & 0x80) != 0)
   {
-    v2 = self->_homeKitAccessoryIdentifier;
+    homeKitAccessoryIdentifier = self->_homeKitAccessoryIdentifier;
   }
 
   else
   {
-    v2 = [(AFPeerInfo *)self->_base homeKitAccessoryIdentifier];
+    homeKitAccessoryIdentifier = [(AFPeerInfo *)self->_base homeKitAccessoryIdentifier];
   }
 
-  return v2;
+  return homeKitAccessoryIdentifier;
 }
 
 - (BOOL)getIsDeviceOwnedByCurrentUser
@@ -246,45 +246,45 @@
 {
   if ((*(&self->_mutationFlags + 1) & 8) != 0)
   {
-    v2 = self->_roomName;
+    roomName = self->_roomName;
   }
 
   else
   {
-    v2 = [(AFPeerInfo *)self->_base roomName];
+    roomName = [(AFPeerInfo *)self->_base roomName];
   }
 
-  return v2;
+  return roomName;
 }
 
 - (id)getProductType
 {
   if ((*(&self->_mutationFlags + 1) & 0x20) != 0)
   {
-    v2 = self->_productType;
+    productType = self->_productType;
   }
 
   else
   {
-    v2 = [(AFPeerInfo *)self->_base productType];
+    productType = [(AFPeerInfo *)self->_base productType];
   }
 
-  return v2;
+  return productType;
 }
 
 - (id)getAceVersion
 {
   if (*(&self->_mutationFlags + 2))
   {
-    v2 = self->_aceVersion;
+    aceVersion = self->_aceVersion;
   }
 
   else
   {
-    v2 = [(AFPeerInfo *)self->_base aceVersion];
+    aceVersion = [(AFPeerInfo *)self->_base aceVersion];
   }
 
-  return v2;
+  return aceVersion;
 }
 
 - (BOOL)getIsSiriCloudSyncEnabled
@@ -300,16 +300,16 @@
   }
 }
 
-- (_AFPeerInfoMutation)initWithBase:(id)a3
+- (_AFPeerInfoMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFPeerInfoMutation;
   v6 = [(_AFPeerInfoMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

@@ -1,11 +1,11 @@
 @interface SBIconLabelViewDefaultFactory
 + (id)sharedInstance;
-+ (void)configureLabelImageParametersBuilder:(id)a3;
-- (BOOL)canUseIconLabelView:(id)a3 toDisplayLabelWithSettings:(id)a4 imageParameters:(id)a5 forIconView:(id)a6;
-- (BOOL)canUseIconSimpleLabelViewToDisplayLabelWithSettings:(id)a3 imageParameters:(id)a4 forIconView:(id)a5;
-- (SBIconLabelViewDefaultFactory)initWithFactoryIdentifier:(id)a3;
-- (id)iconLabelViewWithSettings:(id)a3 imageParameters:(id)a4 forIconView:(id)a5;
-- (void)prewarmForSettings:(id)a3 maxSize:(CGSize)a4 minSize:(CGSize)a5 scale:(double)a6;
++ (void)configureLabelImageParametersBuilder:(id)builder;
+- (BOOL)canUseIconLabelView:(id)view toDisplayLabelWithSettings:(id)settings imageParameters:(id)parameters forIconView:(id)iconView;
+- (BOOL)canUseIconSimpleLabelViewToDisplayLabelWithSettings:(id)settings imageParameters:(id)parameters forIconView:(id)view;
+- (SBIconLabelViewDefaultFactory)initWithFactoryIdentifier:(id)identifier;
+- (id)iconLabelViewWithSettings:(id)settings imageParameters:(id)parameters forIconView:(id)view;
+- (void)prewarmForSettings:(id)settings maxSize:(CGSize)size minSize:(CGSize)minSize scale:(double)scale;
 @end
 
 @implementation SBIconLabelViewDefaultFactory
@@ -31,15 +31,15 @@ uint64_t __47__SBIconLabelViewDefaultFactory_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (SBIconLabelViewDefaultFactory)initWithFactoryIdentifier:(id)a3
+- (SBIconLabelViewDefaultFactory)initWithFactoryIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = SBIconLabelViewDefaultFactory;
   v5 = [(SBIconLabelViewDefaultFactory *)&v14 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     v7 = v6;
     if (v6)
     {
@@ -54,7 +54,7 @@ uint64_t __47__SBIconLabelViewDefaultFactory_sharedInstance__block_invoke()
     objc_storeStrong(&v5->_factoryIdentifier, v8);
 
     v9 = objc_alloc(MEMORY[0x1E69D4580]);
-    v10 = [v4 stringByAppendingString:@"-LegibilityEngine"];
+    v10 = [identifierCopy stringByAppendingString:@"-LegibilityEngine"];
     v11 = [v9 initWithEngineIdentifier:v10];
     engine = v5->_engine;
     v5->_engine = v11;
@@ -65,89 +65,89 @@ uint64_t __47__SBIconLabelViewDefaultFactory_sharedInstance__block_invoke()
   return v5;
 }
 
-- (void)prewarmForSettings:(id)a3 maxSize:(CGSize)a4 minSize:(CGSize)a5 scale:(double)a6
+- (void)prewarmForSettings:(id)settings maxSize:(CGSize)size minSize:(CGSize)minSize scale:(double)scale
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a4.height;
-  v10 = a4.width;
-  v17 = a3;
-  v12 = [v17 _UILegibilitySettings];
-  if (v12)
+  height = minSize.height;
+  width = minSize.width;
+  v9 = size.height;
+  v10 = size.width;
+  settingsCopy = settings;
+  _UILegibilitySettings = [settingsCopy _UILegibilitySettings];
+  if (_UILegibilitySettings)
   {
-    v13 = v12;
-    v14 = [v17 legibilityDescriptor];
+    v13 = _UILegibilitySettings;
+    legibilityDescriptor = [settingsCopy legibilityDescriptor];
 
-    if (!v14)
+    if (!legibilityDescriptor)
     {
       engine = self->_engine;
-      v16 = [v17 _UILegibilitySettings];
-      [(SBUILegibilityEngine *)engine prewarmForSettings:v16 maxSize:v10 minSize:v9 scale:width, height, a6];
+      _UILegibilitySettings2 = [settingsCopy _UILegibilitySettings];
+      [(SBUILegibilityEngine *)engine prewarmForSettings:_UILegibilitySettings2 maxSize:v10 minSize:v9 scale:width, height, scale];
     }
   }
 }
 
-- (BOOL)canUseIconSimpleLabelViewToDisplayLabelWithSettings:(id)a3 imageParameters:(id)a4 forIconView:(id)a5
+- (BOOL)canUseIconSimpleLabelViewToDisplayLabelWithSettings:(id)settings imageParameters:(id)parameters forIconView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 style] || +[SBHLegibilitySettings needsLegibilityImageForParameters:](SBHLegibilitySettings, "needsLegibilityImageForParameters:", v7))
+  settingsCopy = settings;
+  parametersCopy = parameters;
+  if ([settingsCopy style] || +[SBHLegibilitySettings needsLegibilityImageForParameters:](SBHLegibilitySettings, "needsLegibilityImageForParameters:", parametersCopy))
   {
     v8 = 0;
   }
 
   else
   {
-    v10 = [v6 legibilityDescriptor];
-    v8 = v10 == 0;
+    legibilityDescriptor = [settingsCopy legibilityDescriptor];
+    v8 = legibilityDescriptor == 0;
   }
 
   return v8;
 }
 
-- (id)iconLabelViewWithSettings:(id)a3 imageParameters:(id)a4 forIconView:(id)a5
+- (id)iconLabelViewWithSettings:(id)settings imageParameters:(id)parameters forIconView:(id)view
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  if ([(SBIconLabelViewDefaultFactory *)self canUseIconSimpleLabelViewToDisplayLabelWithSettings:v8 imageParameters:v10 forIconView:v9])
+  settingsCopy = settings;
+  viewCopy = view;
+  parametersCopy = parameters;
+  if ([(SBIconLabelViewDefaultFactory *)self canUseIconSimpleLabelViewToDisplayLabelWithSettings:settingsCopy imageParameters:parametersCopy forIconView:viewCopy])
   {
-    v11 = [[SBIconSimpleLabelView alloc] initWithSettings:v8];
+    v11 = [[SBIconSimpleLabelView alloc] initWithSettings:settingsCopy];
 LABEL_5:
     v13 = v11;
     goto LABEL_6;
   }
 
-  v12 = [v8 legibilityDescriptor];
+  legibilityDescriptor = [settingsCopy legibilityDescriptor];
 
-  if (v12)
+  if (legibilityDescriptor)
   {
     v11 = objc_opt_new();
     goto LABEL_5;
   }
 
-  v13 = [[SBIconLegibilityLabelView alloc] initWithSettings:v8 legibilityEngine:self->_engine];
+  v13 = [[SBIconLegibilityLabelView alloc] initWithSettings:settingsCopy legibilityEngine:self->_engine];
   [(SBUILegibilityView *)v13 setBackfillTemplateResults:1];
 LABEL_6:
   [(SBIconLegibilityLabelView *)v13 setUserInteractionEnabled:0];
-  [(SBIconLegibilityLabelView *)v13 setIconView:v9];
+  [(SBIconLegibilityLabelView *)v13 setIconView:viewCopy];
 
-  [(SBIconLegibilityLabelView *)v13 updateIconLabelWithSettings:v8 imageParameters:v10];
+  [(SBIconLegibilityLabelView *)v13 updateIconLabelWithSettings:settingsCopy imageParameters:parametersCopy];
 
   return v13;
 }
 
-- (BOOL)canUseIconLabelView:(id)a3 toDisplayLabelWithSettings:(id)a4 imageParameters:(id)a5 forIconView:(id)a6
+- (BOOL)canUseIconLabelView:(id)view toDisplayLabelWithSettings:(id)settings imageParameters:(id)parameters forIconView:(id)iconView
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v11 legibilityDescriptor];
+  viewCopy = view;
+  settingsCopy = settings;
+  parametersCopy = parameters;
+  iconViewCopy = iconView;
+  legibilityDescriptor = [settingsCopy legibilityDescriptor];
 
-  if (!v14)
+  if (!legibilityDescriptor)
   {
-    [(SBIconLabelViewDefaultFactory *)self canUseIconSimpleLabelViewToDisplayLabelWithSettings:v11 imageParameters:v12 forIconView:v13];
+    [(SBIconLabelViewDefaultFactory *)self canUseIconSimpleLabelViewToDisplayLabelWithSettings:settingsCopy imageParameters:parametersCopy forIconView:iconViewCopy];
   }
 
   v15 = objc_opt_self();
@@ -156,12 +156,12 @@ LABEL_6:
   return isKindOfClass & 1;
 }
 
-+ (void)configureLabelImageParametersBuilder:(id)a3
++ (void)configureLabelImageParametersBuilder:(id)builder
 {
   v3 = MEMORY[0x1E69DC888];
-  v4 = a3;
-  v5 = [v3 whiteColor];
-  [v4 setFallbackTextColor:v5];
+  builderCopy = builder;
+  whiteColor = [v3 whiteColor];
+  [builderCopy setFallbackTextColor:whiteColor];
 }
 
 @end

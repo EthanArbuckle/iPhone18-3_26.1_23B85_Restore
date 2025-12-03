@@ -1,24 +1,24 @@
 @interface KTVerifyMapHeadMMDOperation
-- (BOOL)handlePendingMapHeadMMDs:(id)a3 error:(id *)a4;
-- (KTVerifyMapHeadMMDOperation)initWithDependencies:(id)a3 opId:(id)a4;
-- (id)verifyMapHeadMMDs:(id)a3 application:(id)a4 error:(id *)a5;
+- (BOOL)handlePendingMapHeadMMDs:(id)ds error:(id *)error;
+- (KTVerifyMapHeadMMDOperation)initWithDependencies:(id)dependencies opId:(id)id;
+- (id)verifyMapHeadMMDs:(id)ds application:(id)application error:(id *)error;
 - (void)groupStart;
 @end
 
 @implementation KTVerifyMapHeadMMDOperation
 
-- (KTVerifyMapHeadMMDOperation)initWithDependencies:(id)a3 opId:(id)a4
+- (KTVerifyMapHeadMMDOperation)initWithDependencies:(id)dependencies opId:(id)id
 {
-  v7 = a3;
-  v8 = a4;
+  dependenciesCopy = dependencies;
+  idCopy = id;
   v14.receiver = self;
   v14.super_class = KTVerifyMapHeadMMDOperation;
   v9 = [(KTGroupOperation *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_deps, a3);
-    [(KTVerifyMapHeadMMDOperation *)v10 setBackgroundOpId:v8];
+    objc_storeStrong(&v9->_deps, dependencies);
+    [(KTVerifyMapHeadMMDOperation *)v10 setBackgroundOpId:idCopy];
     v11 = +[NSMutableDictionary dictionary];
     [(KTVerifyMapHeadMMDOperation *)v10 setErrors:v11];
 
@@ -120,24 +120,24 @@
     v12 = 0;
   }
 
-  v14 = [(KTVerifyMapHeadMMDOperation *)self errors];
-  v15 = [v14 count];
+  errors = [(KTVerifyMapHeadMMDOperation *)self errors];
+  v15 = [errors count];
 
   if (v15)
   {
     v47 = v12;
-    v16 = [(KTVerifyMapHeadMMDOperation *)self errors];
-    v17 = [v16 allKeys];
+    errors2 = [(KTVerifyMapHeadMMDOperation *)self errors];
+    allKeys = [errors2 allKeys];
 
-    v46 = v17;
-    v18 = [v17 componentsJoinedByString:{@", "}];
+    v46 = allKeys;
+    v18 = [allKeys componentsJoinedByString:{@", "}];
     v19 = [NSString stringWithFormat:@"SMH MMDs failed for applications: %@", v18];
 
     v63[0] = NSMultipleUnderlyingErrorsKey;
-    v20 = [(KTVerifyMapHeadMMDOperation *)self errors];
-    v21 = [v20 allValues];
+    errors3 = [(KTVerifyMapHeadMMDOperation *)self errors];
+    allValues = [errors3 allValues];
     v63[1] = NSLocalizedDescriptionKey;
-    v64[0] = v21;
+    v64[0] = allValues;
     v45 = v19;
     v64[1] = v19;
     v22 = [NSDictionary dictionaryWithObjects:v64 forKeys:v63 count:2];
@@ -172,9 +172,9 @@
           v53 = 0u;
           v50 = 0u;
           v51 = 0u;
-          v29 = self;
-          v30 = [(KTVerifyMapHeadMMDOperation *)self failedSMHs];
-          v31 = [v30 objectForKeyedSubscript:v28];
+          selfCopy = self;
+          failedSMHs = [(KTVerifyMapHeadMMDOperation *)self failedSMHs];
+          v31 = [failedSMHs objectForKeyedSubscript:v28];
 
           v32 = [v31 countByEnumeratingWithState:&v50 objects:v61 count:16];
           if (v32)
@@ -200,7 +200,7 @@
             while (v33);
           }
 
-          self = v29;
+          self = selfCopy;
         }
 
         v26 = [obj countByEnumeratingWithState:&v54 objects:v62 count:16];
@@ -209,13 +209,13 @@
       while (v26);
     }
 
-    v37 = [(KTVerifyMapHeadMMDOperation *)self backgroundOpId];
-    v38 = [(KTVerifyMapHeadMMDOperation *)self deps];
-    [v38 smDataStore];
+    backgroundOpId = [(KTVerifyMapHeadMMDOperation *)self backgroundOpId];
+    deps = [(KTVerifyMapHeadMMDOperation *)self deps];
+    [deps smDataStore];
     v40 = v39 = self;
-    v41 = [(KTVerifyMapHeadMMDOperation *)v39 name];
-    v42 = [(KTResultOperation *)v39 error];
-    [KTBackgroundSystemValidationOperation addErrorToBackgroundOp:v37 smDataStore:v40 failureDataString:v24 type:v41 serverHint:0 failure:v42];
+    name = [(KTVerifyMapHeadMMDOperation *)v39 name];
+    error = [(KTResultOperation *)v39 error];
+    [KTBackgroundSystemValidationOperation addErrorToBackgroundOp:backgroundOpId smDataStore:v40 failureDataString:v24 type:name serverHint:0 failure:error];
 
     v12 = v47;
   }
@@ -233,9 +233,9 @@
   }
 }
 
-- (BOOL)handlePendingMapHeadMMDs:(id)a3 error:(id *)a4
+- (BOOL)handlePendingMapHeadMMDs:(id)ds error:(id *)error
 {
-  v6 = a3;
+  dsCopy = ds;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -243,24 +243,24 @@
   v21 = sub_10003F0B4;
   v22 = 0;
   objc_initWeak(&location, self);
-  v7 = [(KTVerifyMapHeadMMDOperation *)self deps];
-  v8 = [v7 dataStore];
+  deps = [(KTVerifyMapHeadMMDOperation *)self deps];
+  dataStore = [deps dataStore];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10003F0BC;
   v12[3] = &unk_10031A030;
   objc_copyWeak(&v15, &location);
-  v9 = v6;
+  v9 = dsCopy;
   v13 = v9;
   v14 = &v17;
-  [v8 performForSMHsWithUnverifiedMMD:v9 error:a4 block:v12];
+  [dataStore performForSMHsWithUnverifiedMMD:v9 error:error block:v12];
 
-  if (a4)
+  if (error)
   {
     v10 = v18[5];
     if (v10)
     {
-      *a4 = v10;
+      *error = v10;
     }
   }
 
@@ -271,24 +271,24 @@
   return 0;
 }
 
-- (id)verifyMapHeadMMDs:(id)a3 application:(id)a4 error:(id *)a5
+- (id)verifyMapHeadMMDs:(id)ds application:(id)application error:(id *)error
 {
-  v41 = a5;
-  v7 = a3;
-  v8 = a4;
+  errorCopy = error;
+  dsCopy = ds;
+  applicationCopy = application;
   v9 = +[NSMutableArray array];
   v44 = +[NSMutableArray array];
-  v47 = self;
-  v10 = [(KTVerifyMapHeadMMDOperation *)self deps];
-  v11 = [v10 publicKeyStore];
-  v42 = v8;
-  v45 = [v11 applicationPublicKeyStore:v8];
+  selfCopy = self;
+  deps = [(KTVerifyMapHeadMMDOperation *)self deps];
+  publicKeyStore = [deps publicKeyStore];
+  v42 = applicationCopy;
+  v45 = [publicKeyStore applicationPublicKeyStore:applicationCopy];
 
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = v7;
+  obj = dsCopy;
   v12 = [obj countByEnumeratingWithState:&v51 objects:v59 count:16];
   if (v12)
   {
@@ -313,9 +313,9 @@
 
         if (v18)
         {
-          v20 = [v45 appSthKeyStore];
-          v21 = [v20 signatureVerifier];
-          [v18 setVerifier:v21];
+          appSthKeyStore = [v45 appSthKeyStore];
+          signatureVerifier = [appSthKeyStore signatureVerifier];
+          [v18 setVerifier:signatureVerifier];
 
           [v15 receiptTime];
           v49 = v19;
@@ -332,10 +332,10 @@
           }
 
           v25 = v9;
-          v26 = [(KTVerifyMapHeadMMDOperation *)v47 deps];
-          v27 = [v26 dataStore];
+          deps2 = [(KTVerifyMapHeadMMDOperation *)selfCopy deps];
+          dataStore = [deps2 dataStore];
           v48 = v23;
-          v28 = [v27 persistAndRefaultObject:v15 error:&v48];
+          v28 = [dataStore persistAndRefaultObject:v15 error:&v48];
           v19 = v48;
 
           if (v28)
@@ -363,9 +363,9 @@ LABEL_16:
             goto LABEL_19;
           }
 
-          v30 = [(KTVerifyMapHeadMMDOperation *)v47 deps];
-          v31 = [v30 dataStore];
-          [v31 reportCoreDataPersistEventForLocation:@"verifyMapHeadMMDs" underlyingError:v19];
+          deps3 = [(KTVerifyMapHeadMMDOperation *)selfCopy deps];
+          dataStore2 = [deps3 dataStore];
+          [dataStore2 reportCoreDataPersistEventForLocation:@"verifyMapHeadMMDs" underlyingError:v19];
 
           v9 = v25;
           v32 = v25;
@@ -376,14 +376,14 @@ LABEL_16:
           v33 = [v15 sth];
           [v44 addObject:v33];
 
-          v34 = [(KTVerifyMapHeadMMDOperation *)v47 deps];
-          v35 = [v34 dataStore];
-          [v35 deleteObject:v15];
+          deps4 = [(KTVerifyMapHeadMMDOperation *)selfCopy deps];
+          dataStore3 = [deps4 dataStore];
+          [dataStore3 deleteObject:v15];
 
           v32 = v9;
         }
 
-        [v32 addObject:{v19, v41}];
+        [v32 addObject:{v19, errorCopy}];
 LABEL_19:
 
         objc_autoreleasePoolPop(v16);
@@ -403,10 +403,10 @@ LABEL_19:
     v56 = v9;
     v36 = [NSDictionary dictionaryWithObjects:&v56 forKeys:&v55 count:1];
     v37 = [NSError errorWithDomain:@"TransparencyErrorVerify" code:-383 userInfo:v36];
-    if (v41 && v37)
+    if (errorCopy && v37)
     {
       v37 = v37;
-      *v41 = v37;
+      *errorCopy = v37;
     }
   }
 

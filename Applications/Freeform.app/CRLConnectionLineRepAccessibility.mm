@@ -1,61 +1,61 @@
 @interface CRLConnectionLineRepAccessibility
-+ (id)crlaxCastFrom:(id)a3;
-- (BOOL)crlaxIsAParallelConnectionLineOfLayout:(id)a3;
-- (id)_crlaxConnectionDescriptionForHead:(BOOL)a3;
++ (id)crlaxCastFrom:(id)from;
+- (BOOL)crlaxIsAParallelConnectionLineOfLayout:(id)layout;
+- (id)_crlaxConnectionDescriptionForHead:(BOOL)head;
 - (id)_crlaxConnectionLineLayout;
-- (id)_crlaxCustomActionForNavigatingToRepWithLayout:(id)a3 inRotorCategory:(id)a4 disambiguatedDescriptions:(id)a5;
-- (id)_crlaxCustomEdgeConnectionFormatStringForHead:(BOOL)a3;
+- (id)_crlaxCustomActionForNavigatingToRepWithLayout:(id)layout inRotorCategory:(id)category disambiguatedDescriptions:(id)descriptions;
+- (id)_crlaxCustomEdgeConnectionFormatStringForHead:(BOOL)head;
 - (id)_crlaxStrokeDescription;
 - (id)accessibilityCustomActions;
 - (id)accessibilityCustomContent;
 - (id)accessibilityUserInputLabels;
 - (id)crlaxConnectionDescription;
-- (id)crlaxCustomNavigationActionWithName:(id)a3 inCategory:(id)a4 handlerBody:(id)a5;
-- (id)crlaxDescriptionForLayout:(id)a3;
+- (id)crlaxCustomNavigationActionWithName:(id)name inCategory:(id)category handlerBody:(id)body;
+- (id)crlaxDescriptionForLayout:(id)layout;
 - (id)crlaxLabel;
 @end
 
 @implementation CRLConnectionLineRepAccessibility
 
-- (id)crlaxCustomNavigationActionWithName:(id)a3 inCategory:(id)a4 handlerBody:(id)a5
+- (id)crlaxCustomNavigationActionWithName:(id)name inCategory:(id)category handlerBody:(id)body
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  bodyCopy = body;
+  categoryCopy = category;
+  nameCopy = name;
   v10 = [UIAccessibilityCustomAction alloc];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10014C96C;
   v14[3] = &unk_101840280;
-  v15 = v7;
-  v11 = v7;
-  v12 = [v10 initWithName:v9 actionHandler:v14];
+  v15 = bodyCopy;
+  v11 = bodyCopy;
+  v12 = [v10 initWithName:nameCopy actionHandler:v14];
 
-  [v12 setLocalizedActionRotorCategory:v8];
+  [v12 setLocalizedActionRotorCategory:categoryCopy];
 
   return v12;
 }
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
 - (id)crlaxLabel
 {
-  v3 = [(CRLConnectionLineRepAccessibility *)self crlaxTarget];
-  v4 = [v3 shapeInfo];
+  crlaxTarget = [(CRLConnectionLineRepAccessibility *)self crlaxTarget];
+  shapeInfo = [crlaxTarget shapeInfo];
 
-  v5 = [v4 localizedName];
+  localizedName = [shapeInfo localizedName];
   v48 = 0;
-  v6 = [v4 pathSource];
+  pathSource = [shapeInfo pathSource];
   v7 = objc_opt_class();
-  v8 = __CRLAccessibilityCastAsClass(v7, v6, 1, &v48);
-  if (v48 == 1 || (v9 = v8, v6, v47 = 0, [(CRLConnectionLineRepAccessibility *)self crlaxTarget], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_opt_class(), __CRLAccessibilityCastAsClass(v11, v10, 1, &v47), v12 = objc_claimAutoreleasedReturnValue(), v47 == 1))
+  v8 = __CRLAccessibilityCastAsClass(v7, pathSource, 1, &v48);
+  if (v48 == 1 || (v9 = v8, pathSource, v47 = 0, [(CRLConnectionLineRepAccessibility *)self crlaxTarget], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_opt_class(), __CRLAccessibilityCastAsClass(v11, v10, 1, &v47), v12 = objc_claimAutoreleasedReturnValue(), v47 == 1))
   {
     abort();
   }
@@ -65,8 +65,8 @@
   v14 = 0;
   if (v9 && v13)
   {
-    v15 = [v9 type];
-    if (v15 == 1)
+    type = [v9 type];
+    if (type == 1)
     {
       v16 = v13;
       v18 = +[NSBundle mainBundle];
@@ -76,17 +76,17 @@
 
     else
     {
-      if (v15)
+      if (type)
       {
         v14 = 0;
         goto LABEL_13;
       }
 
       v16 = v13;
-      v17 = [v13 crlaxIsStraightLine];
+      crlaxIsStraightLine = [v13 crlaxIsStraightLine];
       v18 = +[NSBundle mainBundle];
       v19 = v18;
-      if (v17)
+      if (crlaxIsStraightLine)
       {
         v20 = @"straight";
       }
@@ -103,7 +103,7 @@
   }
 
 LABEL_13:
-  if (![v4 isLine])
+  if (![shapeInfo isLine])
   {
     v27 = 0;
     v28 = 0;
@@ -111,21 +111,21 @@ LABEL_13:
   }
 
   v45 = v13;
-  v46 = v5;
+  v46 = localizedName;
   v21 = objc_opt_class();
-  v22 = [v4 headLineEnd];
-  v23 = __CRLAccessibilityCastAsSafeCategory(v21, v22, 0, 0);
+  headLineEnd = [shapeInfo headLineEnd];
+  v23 = __CRLAccessibilityCastAsSafeCategory(v21, headLineEnd, 0, 0);
 
   v24 = objc_opt_class();
-  v25 = [v4 tailLineEnd];
-  v26 = __CRLAccessibilityCastAsSafeCategory(v24, v25, 0, 0);
+  tailLineEnd = [shapeInfo tailLineEnd];
+  v26 = __CRLAccessibilityCastAsSafeCategory(v24, tailLineEnd, 0, 0);
 
   if (v26 && ([v26 crlaxIsTypeNone] & 1) == 0)
   {
     v29 = +[NSBundle mainBundle];
     v30 = [v29 localizedStringForKey:@"Start: %@" value:0 table:0];
-    v31 = [v26 crlaxStyleInfoDescription];
-    v27 = [NSString localizedStringWithFormat:v30, v31];
+    crlaxStyleInfoDescription = [v26 crlaxStyleInfoDescription];
+    v27 = [NSString localizedStringWithFormat:v30, crlaxStyleInfoDescription];
 
     if (!v23)
     {
@@ -146,8 +146,8 @@ LABEL_13:
   {
     v44 = +[NSBundle mainBundle];
     v32 = [v44 localizedStringForKey:@"End: %@" value:0 table:0];
-    v33 = [v23 crlaxStyleInfoDescription];
-    v28 = [NSString localizedStringWithFormat:v32, v33];
+    crlaxStyleInfoDescription2 = [v23 crlaxStyleInfoDescription];
+    v28 = [NSString localizedStringWithFormat:v32, crlaxStyleInfoDescription2];
 
     goto LABEL_23;
   }
@@ -157,24 +157,24 @@ LABEL_21:
 LABEL_23:
 
   v13 = v45;
-  v5 = v46;
+  localizedName = v46;
 LABEL_24:
-  v34 = [v4 accessibilityDescription];
-  v35 = [(CRLConnectionLineRepAccessibility *)self crlaxConnectionDescription];
-  v42 = __CRLAccessibilityStringForVariables(1, v5, v36, v37, v38, v39, v40, v41, v35);
+  accessibilityDescription = [shapeInfo accessibilityDescription];
+  crlaxConnectionDescription = [(CRLConnectionLineRepAccessibility *)self crlaxConnectionDescription];
+  v42 = __CRLAccessibilityStringForVariables(1, localizedName, v36, v37, v38, v39, v40, v41, crlaxConnectionDescription);
 
   return v42;
 }
 
 - (id)accessibilityUserInputLabels
 {
-  v2 = [(CRLConnectionLineRepAccessibility *)self crlaxTarget];
-  v3 = [v2 shapeInfo];
+  crlaxTarget = [(CRLConnectionLineRepAccessibility *)self crlaxTarget];
+  shapeInfo = [crlaxTarget shapeInfo];
 
-  if ([v3 isLine])
+  if ([shapeInfo isLine])
   {
-    v4 = [v3 crlaxLocalizedName];
-    v7 = v4;
+    crlaxLocalizedName = [shapeInfo crlaxLocalizedName];
+    v7 = crlaxLocalizedName;
     v5 = [NSArray arrayWithObjects:&v7 count:1];
   }
 
@@ -190,46 +190,46 @@ LABEL_24:
 {
   v51.receiver = self;
   v51.super_class = CRLConnectionLineRepAccessibility;
-  v3 = [(CRLCanvasRepAccessibility *)&v51 accessibilityCustomActions];
-  v42 = [NSMutableArray arrayWithArray:v3];
+  accessibilityCustomActions = [(CRLCanvasRepAccessibility *)&v51 accessibilityCustomActions];
+  v42 = [NSMutableArray arrayWithArray:accessibilityCustomActions];
 
   if (+[CRLAccessibility isVoiceOverEnabled])
   {
-    v4 = [(CRLConnectionLineRepAccessibility *)self _crlaxConnectionLineLayout];
-    v5 = [v4 connectedTo];
-    v6 = [v4 connectedFrom];
+    _crlaxConnectionLineLayout = [(CRLConnectionLineRepAccessibility *)self _crlaxConnectionLineLayout];
+    connectedTo = [_crlaxConnectionLineLayout connectedTo];
+    connectedFrom = [_crlaxConnectionLineLayout connectedFrom];
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"Connected Items" value:0 table:0];
 
     v9 = +[NSMutableArray array];
-    [v9 crl_addNonNilObject:v5];
-    [v9 crl_addNonNilObject:v6];
+    [v9 crl_addNonNilObject:connectedTo];
+    [v9 crl_addNonNilObject:connectedFrom];
     v39 = v9;
     v38 = [NSSet setWithArray:v9];
     v10 = [CRLCanvasRepAccessibility crlaxDisambiguatedConnectionDescriptionsForSet:?];
-    v11 = [(CRLConnectionLineRepAccessibility *)self _crlaxCustomActionForNavigatingToRepWithLayout:v5 inRotorCategory:v8 disambiguatedDescriptions:v10];
+    v11 = [(CRLConnectionLineRepAccessibility *)self _crlaxCustomActionForNavigatingToRepWithLayout:connectedTo inRotorCategory:v8 disambiguatedDescriptions:v10];
     [v42 crl_addNonNilObject:v11];
 
     v40 = v8;
     v37 = v10;
-    v12 = [(CRLConnectionLineRepAccessibility *)self _crlaxCustomActionForNavigatingToRepWithLayout:v6 inRotorCategory:v8 disambiguatedDescriptions:v10];
+    v12 = [(CRLConnectionLineRepAccessibility *)self _crlaxCustomActionForNavigatingToRepWithLayout:connectedFrom inRotorCategory:v8 disambiguatedDescriptions:v10];
     [v42 crl_addNonNilObject:v12];
 
     v13 = +[NSBundle mainBundle];
     v14 = [v13 localizedStringForKey:@"Parallel Connections" value:0 table:0];
 
-    if (v5 && v6)
+    if (connectedTo && connectedFrom)
     {
-      v34 = v6;
-      v36 = v4;
+      v34 = connectedFrom;
+      v36 = _crlaxConnectionLineLayout;
       v41 = +[NSMutableArray array];
       v47 = 0u;
       v48 = 0u;
       v49 = 0u;
       v50 = 0u;
-      v35 = v5;
-      v15 = [v5 connectedLayouts];
-      v16 = [v15 countByEnumeratingWithState:&v47 objects:v53 count:16];
+      v35 = connectedTo;
+      connectedLayouts = [connectedTo connectedLayouts];
+      v16 = [connectedLayouts countByEnumeratingWithState:&v47 objects:v53 count:16];
       if (v16)
       {
         v17 = v16;
@@ -240,14 +240,14 @@ LABEL_24:
           {
             if (*v48 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(connectedLayouts);
             }
 
             v20 = *(*(&v47 + 1) + 8 * i);
-            v21 = [(CRLCanvasRepAccessibility *)self crlaxLayout];
-            v22 = [v21 crlaxTarget];
-            v23 = v22;
-            if (v20 == v22)
+            crlaxLayout = [(CRLCanvasRepAccessibility *)self crlaxLayout];
+            crlaxTarget = [crlaxLayout crlaxTarget];
+            v23 = crlaxTarget;
+            if (v20 == crlaxTarget)
             {
             }
 
@@ -262,7 +262,7 @@ LABEL_24:
             }
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v47 objects:v53 count:16];
+          v17 = [connectedLayouts countByEnumeratingWithState:&v47 objects:v53 count:16];
         }
 
         while (v17);
@@ -300,9 +300,9 @@ LABEL_24:
         while (v29);
       }
 
-      v5 = v35;
-      v4 = v36;
-      v6 = v34;
+      connectedTo = v35;
+      _crlaxConnectionLineLayout = v36;
+      connectedFrom = v34;
     }
   }
 
@@ -313,30 +313,30 @@ LABEL_24:
 {
   v10.receiver = self;
   v10.super_class = CRLConnectionLineRepAccessibility;
-  v3 = [(CRLCanvasRepAccessibility *)&v10 accessibilityCustomContent];
-  v4 = [v3 mutableCopy];
+  accessibilityCustomContent = [(CRLCanvasRepAccessibility *)&v10 accessibilityCustomContent];
+  v4 = [accessibilityCustomContent mutableCopy];
 
-  v5 = [(CRLConnectionLineRepAccessibility *)self _crlaxStrokeDescription];
-  if ([v5 length])
+  _crlaxStrokeDescription = [(CRLConnectionLineRepAccessibility *)self _crlaxStrokeDescription];
+  if ([_crlaxStrokeDescription length])
   {
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:@"Stroke" value:0 table:0];
-    v8 = [AXCustomContent customContentWithLabel:v7 value:v5];
+    v8 = [AXCustomContent customContentWithLabel:v7 value:_crlaxStrokeDescription];
     [v4 addObject:v8];
   }
 
   return v4;
 }
 
-- (id)crlaxDescriptionForLayout:(id)a3
+- (id)crlaxDescriptionForLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(CRLCanvasRepAccessibility *)self crlaxCanvas];
-  v6 = [v5 crlaxInteractiveCanvasController];
-  v7 = [v6 crlaxTarget];
+  layoutCopy = layout;
+  crlaxCanvas = [(CRLCanvasRepAccessibility *)self crlaxCanvas];
+  crlaxInteractiveCanvasController = [crlaxCanvas crlaxInteractiveCanvasController];
+  crlaxTarget = [crlaxInteractiveCanvasController crlaxTarget];
 
   v14 = 0;
-  v8 = [v7 repForLayout:v4];
+  v8 = [crlaxTarget repForLayout:layoutCopy];
   v9 = objc_opt_class();
   v10 = __CRLAccessibilityCastAsSafeCategory(v9, v8, 1, &v14);
   if (v14 == 1)
@@ -346,28 +346,28 @@ LABEL_24:
 
   v11 = v10;
 
-  v12 = [v11 crlaxDescriptionForConnections];
+  crlaxDescriptionForConnections = [v11 crlaxDescriptionForConnections];
 
-  return v12;
+  return crlaxDescriptionForConnections;
 }
 
-- (BOOL)crlaxIsAParallelConnectionLineOfLayout:(id)a3
+- (BOOL)crlaxIsAParallelConnectionLineOfLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(CRLConnectionLineRepAccessibility *)self _crlaxConnectionLineLayout];
-  v6 = [v5 connectedTo];
-  v7 = [v5 connectedFrom];
-  v8 = v7;
+  layoutCopy = layout;
+  _crlaxConnectionLineLayout = [(CRLConnectionLineRepAccessibility *)self _crlaxConnectionLineLayout];
+  connectedTo = [_crlaxConnectionLineLayout connectedTo];
+  connectedFrom = [_crlaxConnectionLineLayout connectedFrom];
+  v8 = connectedFrom;
   v9 = 0;
-  if (v6 && v7)
+  if (connectedTo && connectedFrom)
   {
-    v10 = [v4 connectedTo];
-    v11 = [v5 connectedTo];
-    if (v10 == v11)
+    connectedTo2 = [layoutCopy connectedTo];
+    connectedTo3 = [_crlaxConnectionLineLayout connectedTo];
+    if (connectedTo2 == connectedTo3)
     {
-      v13 = [v4 connectedFrom];
-      v14 = [v5 connectedFrom];
-      v12 = v13 == v14;
+      connectedFrom2 = [layoutCopy connectedFrom];
+      connectedFrom3 = [_crlaxConnectionLineLayout connectedFrom];
+      v12 = connectedFrom2 == connectedFrom3;
     }
 
     else
@@ -375,13 +375,13 @@ LABEL_24:
       v12 = 0;
     }
 
-    v15 = [v4 connectedFrom];
-    v16 = [v5 connectedTo];
-    if (v15 == v16)
+    connectedFrom4 = [layoutCopy connectedFrom];
+    connectedTo4 = [_crlaxConnectionLineLayout connectedTo];
+    if (connectedFrom4 == connectedTo4)
     {
-      v18 = [v4 connectedTo];
-      v19 = [v5 connectedFrom];
-      v17 = v18 == v19;
+      connectedTo5 = [layoutCopy connectedTo];
+      connectedFrom5 = [_crlaxConnectionLineLayout connectedFrom];
+      v17 = connectedTo5 == connectedFrom5;
     }
 
     else
@@ -438,11 +438,11 @@ LABEL_8:
 - (id)_crlaxConnectionLineLayout
 {
   v8 = 0;
-  v2 = [(CRLCanvasRepAccessibility *)self crlaxLayout];
-  v3 = [v2 crlaxTarget];
+  crlaxLayout = [(CRLCanvasRepAccessibility *)self crlaxLayout];
+  crlaxTarget = [crlaxLayout crlaxTarget];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsClass(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsClass(v4, crlaxTarget, 1, &v8);
   if (v8 == 1)
   {
     abort();
@@ -456,42 +456,42 @@ LABEL_8:
 - (id)_crlaxStrokeDescription
 {
   v15 = 0;
-  v2 = [(CRLCanvasRepAccessibility *)self crlaxLayout];
-  v3 = [v2 crlaxTarget];
+  crlaxLayout = [(CRLCanvasRepAccessibility *)self crlaxLayout];
+  crlaxTarget = [crlaxLayout crlaxTarget];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsClass(v4, v3, 1, &v15);
-  if (v15 == 1 || (v6 = v5, v3, v14 = 0, [v6 styledInfo], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "stroke"), v8 = objc_claimAutoreleasedReturnValue(), v7, v9 = objc_opt_class(), __CRLAccessibilityCastAsSafeCategory(v9, v8, 1, &v14), v10 = objc_claimAutoreleasedReturnValue(), v14 == 1))
+  v5 = __CRLAccessibilityCastAsClass(v4, crlaxTarget, 1, &v15);
+  if (v15 == 1 || (v6 = v5, crlaxTarget, v14 = 0, [v6 styledInfo], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "stroke"), v8 = objc_claimAutoreleasedReturnValue(), v7, v9 = objc_opt_class(), __CRLAccessibilityCastAsSafeCategory(v9, v8, 1, &v14), v10 = objc_claimAutoreleasedReturnValue(), v14 == 1))
   {
     abort();
   }
 
   v11 = v10;
 
-  v12 = [v11 crlaxStrokeFullDescription];
+  crlaxStrokeFullDescription = [v11 crlaxStrokeFullDescription];
 
-  return v12;
+  return crlaxStrokeFullDescription;
 }
 
-- (id)_crlaxConnectionDescriptionForHead:(BOOL)a3
+- (id)_crlaxConnectionDescriptionForHead:(BOOL)head
 {
-  v3 = a3;
-  v5 = [(CRLConnectionLineRepAccessibility *)self _crlaxConnectionLineLayout];
-  v6 = v5;
-  if (v3)
+  headCopy = head;
+  _crlaxConnectionLineLayout = [(CRLConnectionLineRepAccessibility *)self _crlaxConnectionLineLayout];
+  v6 = _crlaxConnectionLineLayout;
+  if (headCopy)
   {
-    v7 = [v5 connectedTo];
-    v8 = [v6 headMagnetType];
+    connectedTo = [_crlaxConnectionLineLayout connectedTo];
+    headMagnetType = [v6 headMagnetType];
   }
 
   else
   {
-    v7 = [v5 connectedFrom];
-    v8 = [v6 tailMagnetType];
+    connectedTo = [_crlaxConnectionLineLayout connectedFrom];
+    headMagnetType = [v6 tailMagnetType];
   }
 
-  v9 = v8;
-  v10 = [(CRLConnectionLineRepAccessibility *)self crlaxDescriptionForLayout:v7];
+  v9 = headMagnetType;
+  v10 = [(CRLConnectionLineRepAccessibility *)self crlaxDescriptionForLayout:connectedTo];
   v11 = 0;
   if ([v10 length])
   {
@@ -501,7 +501,7 @@ LABEL_8:
       {
         if (v9 == 6)
         {
-          v13 = [(CRLConnectionLineRepAccessibility *)self _crlaxCustomEdgeConnectionFormatStringForHead:v3];
+          v13 = [(CRLConnectionLineRepAccessibility *)self _crlaxCustomEdgeConnectionFormatStringForHead:headCopy];
           v11 = [NSString localizedStringWithFormat:v13, v10];
           goto LABEL_21;
         }
@@ -574,25 +574,25 @@ LABEL_22:
   return v11;
 }
 
-- (id)_crlaxCustomEdgeConnectionFormatStringForHead:(BOOL)a3
+- (id)_crlaxCustomEdgeConnectionFormatStringForHead:(BOOL)head
 {
-  v3 = a3;
-  v4 = [(CRLConnectionLineRepAccessibility *)self _crlaxConnectionLineLayout];
-  v5 = v4;
-  if (!v4)
+  headCopy = head;
+  _crlaxConnectionLineLayout = [(CRLConnectionLineRepAccessibility *)self _crlaxConnectionLineLayout];
+  v5 = _crlaxConnectionLineLayout;
+  if (!_crlaxConnectionLineLayout)
   {
     v6 = 0;
     goto LABEL_26;
   }
 
-  if (v3)
+  if (headCopy)
   {
-    [v4 headMagnetNormalizedPosition];
+    [_crlaxConnectionLineLayout headMagnetNormalizedPosition];
   }
 
   else
   {
-    [v4 tailMagnetNormalizedPosition];
+    [_crlaxConnectionLineLayout tailMagnetNormalizedPosition];
   }
 
   v7 = [CRLCanvasKnobAccessibility crlaxEdgePositionTypeFromNormalizedPosition:?];
@@ -683,29 +683,29 @@ LABEL_26:
   return v6;
 }
 
-- (id)_crlaxCustomActionForNavigatingToRepWithLayout:(id)a3 inRotorCategory:(id)a4 disambiguatedDescriptions:(id)a5
+- (id)_crlaxCustomActionForNavigatingToRepWithLayout:(id)layout inRotorCategory:(id)category disambiguatedDescriptions:(id)descriptions
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+  layoutCopy = layout;
+  categoryCopy = category;
+  descriptionsCopy = descriptions;
+  if (layoutCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v11 = +[NSBundle mainBundle];
     v12 = [v11 localizedStringForKey:@"Go to %@" value:0 table:0];
 
-    v13 = [CRLCanvasRepAccessibility crlaxBoardItemIDForLayout:v8];
+    v13 = [CRLCanvasRepAccessibility crlaxBoardItemIDForLayout:layoutCopy];
     if (v13)
     {
-      v14 = [v10 objectForKeyedSubscript:v13];
+      v14 = [descriptionsCopy objectForKeyedSubscript:v13];
       v15 = [NSString localizedStringWithFormat:v12, v14];
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
       v19[2] = sub_1005B6158;
       v19[3] = &unk_10185A938;
-      v20 = v8;
-      v21 = self;
+      v20 = layoutCopy;
+      selfCopy = self;
       v16 = objc_retainBlock(v19);
-      v17 = [(CRLConnectionLineRepAccessibility *)self crlaxCustomNavigationActionWithName:v15 inCategory:v9 handlerBody:v16];
+      v17 = [(CRLConnectionLineRepAccessibility *)self crlaxCustomNavigationActionWithName:v15 inCategory:categoryCopy handlerBody:v16];
     }
 
     else

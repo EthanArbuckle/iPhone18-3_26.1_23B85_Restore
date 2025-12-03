@@ -1,9 +1,9 @@
 @interface SXScrollObserverManager
 - (SXScrollObserverManager)init;
-- (void)addScrollObserver:(id)a3;
+- (void)addScrollObserver:(id)observer;
 - (void)didScroll;
-- (void)removeScrollObserver:(id)a3;
-- (void)setScrolling:(BOOL)a3;
+- (void)removeScrollObserver:(id)observer;
+- (void)setScrolling:(BOOL)scrolling;
 @end
 
 @implementation SXScrollObserverManager
@@ -15,26 +15,26 @@
   v2 = [(SXScrollObserverManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
   }
 
   return v2;
 }
 
-- (void)addScrollObserver:(id)a3
+- (void)addScrollObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SXScrollObserverManager *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(SXScrollObserverManager *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeScrollObserver:(id)a3
+- (void)removeScrollObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SXScrollObserverManager *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(SXScrollObserverManager *)self observers];
+  [observers removeObject:observerCopy];
 }
 
 - (void)didScroll
@@ -46,8 +46,8 @@
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v3 = [(SXScrollObserverManager *)self observers];
-    v4 = [v3 copy];
+    observers = [(SXScrollObserverManager *)self observers];
+    v4 = [observers copy];
 
     v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
@@ -76,19 +76,19 @@
   }
 }
 
-- (void)setScrolling:(BOOL)a3
+- (void)setScrolling:(BOOL)scrolling
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (self->_scrolling != a3)
+  if (self->_scrolling != scrolling)
   {
-    v3 = a3;
-    self->_scrolling = a3;
+    scrollingCopy = scrolling;
+    self->_scrolling = scrolling;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [(SXScrollObserverManager *)self observers];
-    v5 = [v4 copy];
+    observers = [(SXScrollObserverManager *)self observers];
+    v5 = [observers copy];
 
     v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
@@ -106,7 +106,7 @@
           }
 
           v10 = *(*(&v11 + 1) + 8 * v9);
-          if (v3)
+          if (scrollingCopy)
           {
             [v10 scrollingWillStart];
           }

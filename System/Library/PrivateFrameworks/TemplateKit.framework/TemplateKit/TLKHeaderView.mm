@@ -3,19 +3,19 @@
 - (id)hasImage;
 - (id)roundedCornerLabelText;
 - (id)setupContentView;
-- (void)containerView:(id)a3 willMeasureArrangedSubviewsFittingSize:(CGSize)a4 forReason:(int64_t)a5;
+- (void)containerView:(id)view willMeasureArrangedSubviewsFittingSize:(CGSize)size forReason:(int64_t)reason;
 - (void)didMoveToWindow;
 - (void)observedPropertiesChanged;
-- (void)setAxis:(int64_t)a3;
-- (void)setFootnote:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setRoundedBorderText:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setSubtitleImage:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTrailingText:(id)a3;
-- (void)tlk_updateForAppearance:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAxis:(int64_t)axis;
+- (void)setFootnote:(id)footnote;
+- (void)setImage:(id)image;
+- (void)setRoundedBorderText:(id)text;
+- (void)setSubtitle:(id)subtitle;
+- (void)setSubtitleImage:(id)image;
+- (void)setTitle:(id)title;
+- (void)setTrailingText:(id)text;
+- (void)tlk_updateForAppearance:(id)appearance;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation TLKHeaderView
@@ -51,15 +51,15 @@
   [(TLKHeaderView *)self setFootnoteLabel:v7];
   v9 = objc_opt_new();
   [(TLKHeaderView *)self setTrailingTextLabel:v9];
-  v10 = [(TLKHeaderView *)self trailingTextLabel];
-  [v10 setTextAlignment:2];
+  trailingTextLabel = [(TLKHeaderView *)self trailingTextLabel];
+  [trailingTextLabel setTextAlignment:2];
 
   v11 = [MEMORY[0x1E69DB878] _thinSystemFontOfSize:60.0];
-  v12 = [(TLKHeaderView *)self trailingTextLabel];
-  [v12 setFont:v11];
+  trailingTextLabel2 = [(TLKHeaderView *)self trailingTextLabel];
+  [trailingTextLabel2 setFont:v11];
 
-  v13 = [(TLKHeaderView *)self trailingTextLabel];
-  [TLKLayoutUtilities requireIntrinsicSizeForView:v13];
+  trailingTextLabel3 = [(TLKHeaderView *)self trailingTextLabel];
+  [TLKLayoutUtilities requireIntrinsicSizeForView:trailingTextLabel3];
 
   v14 = [TLKStackView alloc];
   v25[0] = v21;
@@ -86,10 +86,10 @@
   return v19;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  titleCopy = title;
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_title setObserver:0];
@@ -100,7 +100,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v5;
+      v23 = titleCopy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -133,11 +133,11 @@
         while (v8);
       }
 
-      v5 = v23;
+      titleCopy = v23;
     }
   }
 
-  objc_storeStrong(&self->_title, a3);
+  objc_storeStrong(&self->_title, title);
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_title setObserver:self];
@@ -182,25 +182,25 @@
     }
   }
 
-  v18 = [(TLKView *)self observer];
-  if (v18)
+  observer = [(TLKView *)self observer];
+  if (observer)
   {
-    v19 = v18;
-    v20 = [(TLKView *)self observer];
-    v21 = [v20 batchUpdateCount];
+    v19 = observer;
+    observer2 = [(TLKView *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v21)
+    if (!batchUpdateCount)
     {
-      v22 = [(TLKView *)self observer];
-      [v22 propertiesDidChange];
+      observer3 = [(TLKView *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  subtitleCopy = subtitle;
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_subtitle setObserver:0];
@@ -211,7 +211,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v5;
+      v23 = subtitleCopy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -244,11 +244,11 @@
         while (v8);
       }
 
-      v5 = v23;
+      subtitleCopy = v23;
     }
   }
 
-  objc_storeStrong(&self->_subtitle, a3);
+  objc_storeStrong(&self->_subtitle, subtitle);
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_subtitle setObserver:self];
@@ -293,25 +293,25 @@
     }
   }
 
-  v18 = [(TLKView *)self observer];
-  if (v18)
+  observer = [(TLKView *)self observer];
+  if (observer)
   {
-    v19 = v18;
-    v20 = [(TLKView *)self observer];
-    v21 = [v20 batchUpdateCount];
+    v19 = observer;
+    observer2 = [(TLKView *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v21)
+    if (!batchUpdateCount)
     {
-      v22 = [(TLKView *)self observer];
-      [v22 propertiesDidChange];
+      observer3 = [(TLKView *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }
 
-- (void)setFootnote:(id)a3
+- (void)setFootnote:(id)footnote
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  footnoteCopy = footnote;
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_footnote setObserver:0];
@@ -322,7 +322,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v5;
+      v23 = footnoteCopy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -355,11 +355,11 @@
         while (v8);
       }
 
-      v5 = v23;
+      footnoteCopy = v23;
     }
   }
 
-  objc_storeStrong(&self->_footnote, a3);
+  objc_storeStrong(&self->_footnote, footnote);
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_footnote setObserver:self];
@@ -404,25 +404,25 @@
     }
   }
 
-  v18 = [(TLKView *)self observer];
-  if (v18)
+  observer = [(TLKView *)self observer];
+  if (observer)
   {
-    v19 = v18;
-    v20 = [(TLKView *)self observer];
-    v21 = [v20 batchUpdateCount];
+    v19 = observer;
+    observer2 = [(TLKView *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v21)
+    if (!batchUpdateCount)
     {
-      v22 = [(TLKView *)self observer];
-      [v22 propertiesDidChange];
+      observer3 = [(TLKView *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }
 
-- (void)setTrailingText:(id)a3
+- (void)setTrailingText:(id)text
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  textCopy = text;
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_trailingText setObserver:0];
@@ -433,7 +433,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v5;
+      v23 = textCopy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -466,11 +466,11 @@
         while (v8);
       }
 
-      v5 = v23;
+      textCopy = v23;
     }
   }
 
-  objc_storeStrong(&self->_trailingText, a3);
+  objc_storeStrong(&self->_trailingText, text);
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_trailingText setObserver:self];
@@ -515,103 +515,103 @@
     }
   }
 
-  v18 = [(TLKView *)self observer];
-  if (v18)
+  observer = [(TLKView *)self observer];
+  if (observer)
   {
-    v19 = v18;
-    v20 = [(TLKView *)self observer];
-    v21 = [v20 batchUpdateCount];
+    v19 = observer;
+    observer2 = [(TLKView *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v21)
+    if (!batchUpdateCount)
     {
-      v22 = [(TLKView *)self observer];
-      [v22 propertiesDidChange];
+      observer3 = [(TLKView *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v10 = a3;
-  if (self->_image != v10)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    objc_storeStrong(&self->_image, a3);
-    v5 = [(TLKView *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_image, image);
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKView *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKView *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setSubtitleImage:(id)a3
+- (void)setSubtitleImage:(id)image
 {
-  v10 = a3;
-  if (self->_subtitleImage != v10)
+  imageCopy = image;
+  if (self->_subtitleImage != imageCopy)
   {
-    objc_storeStrong(&self->_subtitleImage, a3);
-    v5 = [(TLKView *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_subtitleImage, image);
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKView *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKView *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setRoundedBorderText:(id)a3
+- (void)setRoundedBorderText:(id)text
 {
-  v10 = a3;
-  if (self->_roundedBorderText != v10)
+  textCopy = text;
+  if (self->_roundedBorderText != textCopy)
   {
-    objc_storeStrong(&self->_roundedBorderText, a3);
-    v5 = [(TLKView *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_roundedBorderText, text);
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKView *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKView *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setAxis:(int64_t)a3
+- (void)setAxis:(int64_t)axis
 {
-  if (self->_axis != a3)
+  if (self->_axis != axis)
   {
-    self->_axis = a3;
-    v4 = [(TLKView *)self observer];
-    if (v4)
+    self->_axis = axis;
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v5 = v4;
-      v6 = [(TLKView *)self observer];
-      v7 = [v6 batchUpdateCount];
+      v5 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v7)
+      if (!batchUpdateCount)
       {
-        v8 = [(TLKView *)self observer];
-        [v8 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
@@ -619,8 +619,8 @@
 
 - (void)observedPropertiesChanged
 {
-  v3 = [(TLKHeaderView *)self axis];
-  if (v3 == 1)
+  axis = [(TLKHeaderView *)self axis];
+  if (axis == 1)
   {
     v115 = 1;
     v4 = 1;
@@ -628,101 +628,101 @@
 
   else
   {
-    v5 = [(TLKHeaderView *)self trailingText];
-    v6 = [v5 text];
-    v115 = v6 == 0;
+    trailingText = [(TLKHeaderView *)self trailingText];
+    text = [trailingText text];
+    v115 = text == 0;
 
     v4 = 4;
   }
 
-  v7 = [(TLKHeaderView *)self footnote];
-  v114 = v7 == 0;
+  footnote = [(TLKHeaderView *)self footnote];
+  v114 = footnote == 0;
 
-  v8 = [(TLKHeaderView *)self innerStackView];
-  v9 = v8;
-  if (v3 != 1)
+  innerStackView = [(TLKHeaderView *)self innerStackView];
+  v9 = innerStackView;
+  if (axis != 1)
   {
-    [v8 setAlignment:1];
+    [innerStackView setAlignment:1];
 
-    v22 = [(TLKHeaderView *)self innerStackView];
-    v23 = [v22 arrangedSubviews];
-    v24 = [(TLKHeaderView *)self imageView];
-    v25 = [v23 containsObject:v24];
+    innerStackView2 = [(TLKHeaderView *)self innerStackView];
+    arrangedSubviews = [innerStackView2 arrangedSubviews];
+    imageView = [(TLKHeaderView *)self imageView];
+    v25 = [arrangedSubviews containsObject:imageView];
 
     if (v25)
     {
-      v26 = [(TLKHeaderView *)self innerStackView];
-      v27 = [(TLKHeaderView *)self imageView];
-      [v26 removeArrangedSubview:v27];
+      innerStackView3 = [(TLKHeaderView *)self innerStackView];
+      imageView2 = [(TLKHeaderView *)self imageView];
+      [innerStackView3 removeArrangedSubview:imageView2];
     }
 
-    v28 = [(TLKView *)self contentView];
-    v29 = [v28 arrangedSubviews];
-    v30 = [(TLKHeaderView *)self imageView];
-    v31 = [v29 containsObject:v30];
+    contentView = [(TLKView *)self contentView];
+    arrangedSubviews2 = [contentView arrangedSubviews];
+    imageView3 = [(TLKHeaderView *)self imageView];
+    v31 = [arrangedSubviews2 containsObject:imageView3];
 
     if ((v31 & 1) == 0)
     {
-      v32 = [(TLKView *)self contentView];
-      v33 = [(TLKHeaderView *)self imageView];
-      [v32 insertArrangedSubview:v33 atIndex:0];
+      contentView2 = [(TLKView *)self contentView];
+      imageView4 = [(TLKHeaderView *)self imageView];
+      [contentView2 insertArrangedSubview:imageView4 atIndex:0];
     }
 
-    v20 = [(TLKView *)self contentView];
-    v21 = [(TLKHeaderView *)self imageView];
-    [v20 setAlignment:1 forView:v21 inAxis:1];
+    contentView3 = [(TLKView *)self contentView];
+    imageView5 = [(TLKHeaderView *)self imageView];
+    [contentView3 setAlignment:1 forView:imageView5 inAxis:1];
     goto LABEL_14;
   }
 
-  [v8 setAlignment:3];
+  [innerStackView setAlignment:3];
 
-  v10 = [(TLKView *)self contentView];
-  v11 = [v10 arrangedSubviews];
-  v12 = [(TLKHeaderView *)self imageView];
-  v13 = [v11 containsObject:v12];
+  contentView4 = [(TLKView *)self contentView];
+  arrangedSubviews3 = [contentView4 arrangedSubviews];
+  imageView6 = [(TLKHeaderView *)self imageView];
+  v13 = [arrangedSubviews3 containsObject:imageView6];
 
   if (v13)
   {
-    v14 = [(TLKView *)self contentView];
-    v15 = [(TLKHeaderView *)self imageView];
-    [v14 removeArrangedSubview:v15];
+    contentView5 = [(TLKView *)self contentView];
+    imageView7 = [(TLKHeaderView *)self imageView];
+    [contentView5 removeArrangedSubview:imageView7];
   }
 
-  v16 = [(TLKHeaderView *)self innerStackView];
-  v17 = [v16 arrangedSubviews];
-  v18 = [(TLKHeaderView *)self imageView];
-  v19 = [v17 containsObject:v18];
+  innerStackView4 = [(TLKHeaderView *)self innerStackView];
+  arrangedSubviews4 = [innerStackView4 arrangedSubviews];
+  imageView8 = [(TLKHeaderView *)self imageView];
+  v19 = [arrangedSubviews4 containsObject:imageView8];
 
   if ((v19 & 1) == 0)
   {
-    v20 = [(TLKHeaderView *)self innerStackView];
-    v21 = [(TLKHeaderView *)self imageView];
-    [v20 insertArrangedSubview:v21 atIndex:0];
+    contentView3 = [(TLKHeaderView *)self innerStackView];
+    imageView5 = [(TLKHeaderView *)self imageView];
+    [contentView3 insertArrangedSubview:imageView5 atIndex:0];
 LABEL_14:
   }
 
-  v34 = [(TLKHeaderView *)self footnoteLabel];
-  [v34 setTextAlignment:v4];
+  footnoteLabel = [(TLKHeaderView *)self footnoteLabel];
+  [footnoteLabel setTextAlignment:v4];
 
-  v35 = [(TLKHeaderView *)self subtitleLabel];
-  [v35 setTextAlignment:v4];
+  subtitleLabel = [(TLKHeaderView *)self subtitleLabel];
+  [subtitleLabel setTextAlignment:v4];
 
-  v36 = [(TLKHeaderView *)self titleLabel];
-  [v36 setTextAlignment:v4];
+  titleLabel = [(TLKHeaderView *)self titleLabel];
+  [titleLabel setTextAlignment:v4];
 
-  v37 = [(TLKHeaderView *)self image];
-  LOBYTE(v36) = v37 == 0;
+  image = [(TLKHeaderView *)self image];
+  LOBYTE(titleLabel) = image == 0;
 
-  v38 = [(TLKHeaderView *)self imageView];
+  imageView9 = [(TLKHeaderView *)self imageView];
   v125[0] = MEMORY[0x1E69E9820];
   v125[1] = 3221225472;
   v125[2] = __42__TLKHeaderView_observedPropertiesChanged__block_invoke;
   v125[3] = &unk_1E7FD8F38;
   v125[4] = self;
-  v126 = v36;
-  [v38 performBatchUpdates:v125];
+  v126 = titleLabel;
+  [imageView9 performBatchUpdates:v125];
 
-  if (v3 == 1)
+  if (axis == 1)
   {
     v39 = *MEMORY[0x1E69DDDC0];
     v40 = MEMORY[0x1E69DDD40];
@@ -747,17 +747,17 @@ LABEL_14:
   }
 
   v44 = *v40;
-  v45 = [(TLKHeaderView *)self titleIsEquation];
+  titleIsEquation = [(TLKHeaderView *)self titleIsEquation];
   v46 = MEMORY[0x1E695E0F0];
-  if (v45)
+  if (titleIsEquation)
   {
     v46 = &unk_1F3AA8310;
   }
 
   v47 = v46;
-  v48 = [(TLKHeaderView *)self subtitleIsEmphasized];
+  subtitleIsEmphasized = [(TLKHeaderView *)self subtitleIsEmphasized];
   v49 = +[TLKUtilities isMacOS];
-  if (v48)
+  if (subtitleIsEmphasized)
   {
     v50 = v39;
   }
@@ -767,7 +767,7 @@ LABEL_14:
     v50 = v44;
   }
 
-  if (v48)
+  if (subtitleIsEmphasized)
   {
     v51 = v44;
   }
@@ -780,7 +780,7 @@ LABEL_14:
   v52 = [TLKFontUtilities cachedFontForTextStyle:v50 isBold:0 isMacStyle:v49];
   v53 = +[TLKFontUtilities cachedFontForTextStyle:isShort:isBold:useCustomWeight:customFontWeight:isMacStyle:fontFeatures:](TLKFontUtilities, "cachedFontForTextStyle:isShort:isBold:useCustomWeight:customFontWeight:isMacStyle:fontFeatures:", v51, 0, 0, 0, +[TLKUtilities isMacOS], v47, *MEMORY[0x1E69DB978]);
 
-  v54 = [(TLKHeaderView *)self titleLabel];
+  titleLabel2 = [(TLKHeaderView *)self titleLabel];
   v123[0] = MEMORY[0x1E69E9820];
   v123[1] = 3221225472;
   v123[2] = __42__TLKHeaderView_observedPropertiesChanged__block_invoke_2;
@@ -788,17 +788,17 @@ LABEL_14:
   v123[4] = self;
   v113 = v53;
   v124 = v113;
-  [v54 performBatchUpdates:v123];
+  [titleLabel2 performBatchUpdates:v123];
 
-  v55 = [(TLKHeaderView *)self subtitleImageView];
+  subtitleImageView = [(TLKHeaderView *)self subtitleImageView];
   v122[0] = MEMORY[0x1E69E9820];
   v122[1] = 3221225472;
   v122[2] = __42__TLKHeaderView_observedPropertiesChanged__block_invoke_3;
   v122[3] = &unk_1E7FD8E98;
   v122[4] = self;
-  [v55 performBatchUpdates:v122];
+  [subtitleImageView performBatchUpdates:v122];
 
-  v56 = [(TLKHeaderView *)self subtitleLabel];
+  subtitleLabel2 = [(TLKHeaderView *)self subtitleLabel];
   v120[0] = MEMORY[0x1E69E9820];
   v120[1] = 3221225472;
   v120[2] = __42__TLKHeaderView_observedPropertiesChanged__block_invoke_4;
@@ -806,10 +806,10 @@ LABEL_14:
   v120[4] = self;
   v112 = v52;
   v121 = v112;
-  [v56 performBatchUpdates:v120];
+  [subtitleLabel2 performBatchUpdates:v120];
 
   v57 = 1.5;
-  if (v3 != 1)
+  if (axis != 1)
   {
     v58 = +[TLKUtilities isMacOS];
     v57 = 4.0;
@@ -821,122 +821,122 @@ LABEL_14:
 
   [TLKLayoutUtilities deviceScaledRoundedValue:self forView:v57];
   v60 = v59;
-  v61 = [(TLKHeaderView *)self innerStackView];
-  [v61 setSpacing:v60];
+  innerStackView5 = [(TLKHeaderView *)self innerStackView];
+  [innerStackView5 setSpacing:v60];
 
-  v62 = [(TLKHeaderView *)self roundedBorderText];
-  v63 = v62 == 0;
-  v64 = [(TLKHeaderView *)self roundedCornerLabel];
-  [v64 setHidden:v63];
+  roundedBorderText = [(TLKHeaderView *)self roundedBorderText];
+  roundedCornerLabel6 = roundedBorderText == 0;
+  roundedCornerLabel = [(TLKHeaderView *)self roundedCornerLabel];
+  [roundedCornerLabel setHidden:roundedCornerLabel6];
 
-  v65 = [(TLKHeaderView *)self roundedBorderText];
+  roundedBorderText2 = [(TLKHeaderView *)self roundedBorderText];
 
-  if (v65)
+  if (roundedBorderText2)
   {
-    v66 = [(TLKHeaderView *)self roundedCornerLabel];
+    roundedCornerLabel2 = [(TLKHeaderView *)self roundedCornerLabel];
 
-    if (!v66)
+    if (!roundedCornerLabel2)
     {
       v67 = [[TLKRoundedCornerLabel alloc] initWithProminence:1];
       [(TLKHeaderView *)self setRoundedCornerLabel:v67];
 
-      v68 = [(TLKHeaderView *)self roundedCornerLabel];
-      [v68 setSizeConfiguration:1];
+      roundedCornerLabel3 = [(TLKHeaderView *)self roundedCornerLabel];
+      [roundedCornerLabel3 setSizeConfiguration:1];
 
-      v69 = [(TLKHeaderView *)self roundedCornerLabel];
-      [TLKLayoutUtilities requireIntrinsicSizeForView:v69];
+      roundedCornerLabel4 = [(TLKHeaderView *)self roundedCornerLabel];
+      [TLKLayoutUtilities requireIntrinsicSizeForView:roundedCornerLabel4];
 
-      v70 = [(TLKHeaderView *)self subtitleStackView];
-      v71 = [(TLKHeaderView *)self roundedCornerLabel];
-      [v70 addArrangedSubview:v71];
+      subtitleStackView = [(TLKHeaderView *)self subtitleStackView];
+      roundedCornerLabel5 = [(TLKHeaderView *)self roundedCornerLabel];
+      [subtitleStackView addArrangedSubview:roundedCornerLabel5];
     }
 
-    v72 = [(TLKHeaderView *)self roundedBorderText];
-    v63 = [(TLKHeaderView *)self roundedCornerLabel];
-    v73 = [v63 label];
-    [v73 setText:v72];
+    roundedBorderText3 = [(TLKHeaderView *)self roundedBorderText];
+    roundedCornerLabel6 = [(TLKHeaderView *)self roundedCornerLabel];
+    label = [roundedCornerLabel6 label];
+    [label setText:roundedBorderText3];
   }
 
-  v74 = [(TLKHeaderView *)self subtitle];
-  if (v74)
+  subtitle = [(TLKHeaderView *)self subtitle];
+  if (subtitle)
   {
     v75 = 0;
   }
 
   else
   {
-    v63 = [(TLKHeaderView *)self subtitleImage];
-    v75 = v63 == 0;
+    roundedCornerLabel6 = [(TLKHeaderView *)self subtitleImage];
+    v75 = roundedCornerLabel6 == 0;
   }
 
-  v76 = [(TLKHeaderView *)self subtitleStackView];
-  [v76 setHidden:v75];
+  subtitleStackView2 = [(TLKHeaderView *)self subtitleStackView];
+  [subtitleStackView2 setHidden:v75];
 
-  if (!v74)
+  if (!subtitle)
   {
   }
 
-  v77 = [(TLKHeaderView *)self footnoteLabel];
+  footnoteLabel2 = [(TLKHeaderView *)self footnoteLabel];
   v118[0] = MEMORY[0x1E69E9820];
   v118[1] = 3221225472;
   v118[2] = __42__TLKHeaderView_observedPropertiesChanged__block_invoke_5;
   v118[3] = &unk_1E7FD8F38;
   v118[4] = self;
   v119 = v114;
-  [v77 performBatchUpdates:v118];
+  [footnoteLabel2 performBatchUpdates:v118];
 
-  v78 = [(TLKHeaderView *)self trailingTextLabel];
+  trailingTextLabel = [(TLKHeaderView *)self trailingTextLabel];
   v116[0] = MEMORY[0x1E69E9820];
   v116[1] = 3221225472;
   v116[2] = __42__TLKHeaderView_observedPropertiesChanged__block_invoke_6;
   v116[3] = &unk_1E7FD8F38;
   v116[4] = self;
   v117 = v115;
-  [v78 performBatchUpdates:v116];
+  [trailingTextLabel performBatchUpdates:v116];
 
-  v79 = [(TLKHeaderView *)self innerStackView];
-  v80 = [v79 viewForFirstBaselineLayout];
-  v81 = [(TLKHeaderView *)self titleLabel];
-  if (v80 == v81)
+  innerStackView6 = [(TLKHeaderView *)self innerStackView];
+  viewForFirstBaselineLayout = [innerStackView6 viewForFirstBaselineLayout];
+  titleLabel3 = [(TLKHeaderView *)self titleLabel];
+  if (viewForFirstBaselineLayout == titleLabel3)
   {
-    v83 = [(TLKHeaderView *)self titleLabel];
-    v82 = [v83 font];
+    titleLabel4 = [(TLKHeaderView *)self titleLabel];
+    font = [titleLabel4 font];
   }
 
   else
   {
-    v82 = 0;
+    font = 0;
   }
 
-  v84 = [(TLKHeaderView *)self innerStackView];
-  v85 = [v84 viewForLastBaselineLayout];
+  innerStackView7 = [(TLKHeaderView *)self innerStackView];
+  viewForLastBaselineLayout = [innerStackView7 viewForLastBaselineLayout];
 
-  v86 = [(TLKHeaderView *)self subtitleLabel];
-  v87 = [v86 font];
+  subtitleLabel3 = [(TLKHeaderView *)self subtitleLabel];
+  font2 = [subtitleLabel3 font];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v88 = [v85 font];
+    font3 = [viewForLastBaselineLayout font];
 
-    v87 = v88;
+    font2 = font3;
   }
 
-  [v82 ascender];
+  [font ascender];
   v90 = v89;
-  [v82 capHeight];
+  [font capHeight];
   v92 = v90 - v91;
-  [v87 descender];
+  [font2 descender];
   [TLKLayoutUtilities deviceScaledFlooredValue:self forView:?];
   v94 = -v93;
-  v95 = [(TLKHeaderView *)self innerStackView];
-  [v95 setCustomAlignmentRectInsets:{v92, 0.0, v94, 0.0}];
+  innerStackView8 = [(TLKHeaderView *)self innerStackView];
+  [innerStackView8 setCustomAlignmentRectInsets:{v92, 0.0, v94, 0.0}];
 
   [objc_opt_class() defaultLayoutMargins];
   v97 = v96;
   v99 = v98;
   v100 = 25.0;
-  if (v3 != 1)
+  if (axis != 1)
   {
     if (+[TLKUtilities isMacOS])
     {
@@ -961,8 +961,8 @@ LABEL_14:
   v106 = v105;
   v108 = v107;
   v110 = v109;
-  v111 = [(TLKView *)self contentView];
-  [v111 setLayoutMargins:{v104, v106, v108, v110}];
+  contentView6 = [(TLKView *)self contentView];
+  [contentView6 setLayoutMargins:{v104, v106, v108, v110}];
 
   [(UIView *)self tlk_updateWithCurrentAppearance];
 }
@@ -1081,24 +1081,24 @@ void __42__TLKHeaderView_observedPropertiesChanged__block_invoke_6(uint64_t a1)
   [v4 setMultilineText:v5];
 }
 
-- (void)containerView:(id)a3 willMeasureArrangedSubviewsFittingSize:(CGSize)a4 forReason:(int64_t)a5
+- (void)containerView:(id)view willMeasureArrangedSubviewsFittingSize:(CGSize)size forReason:(int64_t)reason
 {
-  if (![TLKUtilities isMacOS:a3])
+  if (![TLKUtilities isMacOS:view])
   {
-    v6 = [(TLKHeaderView *)self imageView];
+    imageView = [(TLKHeaderView *)self imageView];
     if ([(TLKHeaderView *)self axis]== 1)
     {
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __80__TLKHeaderView_containerView_willMeasureArrangedSubviewsFittingSize_forReason___block_invoke;
       v7[3] = &unk_1E7FD8E98;
-      v8 = v6;
+      v8 = imageView;
       [v8 performBatchUpdates:v7];
     }
 
     else
     {
-      [TLKLayoutUtilities applyRowBoundedSizingToImageView:v6 isCompactWidth:[(TLKHeaderView *)self useCompactWidth]];
+      [TLKLayoutUtilities applyRowBoundedSizingToImageView:imageView isCompactWidth:[(TLKHeaderView *)self useCompactWidth]];
     }
   }
 }
@@ -1113,14 +1113,14 @@ uint64_t __80__TLKHeaderView_containerView_willMeasureArrangedSubviewsFittingSiz
   return [v4 setMaximumLayoutSize:{v2, v3}];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = TLKHeaderView;
-  [(TLKHeaderView *)&v9 traitCollectionDidChange:v4];
-  v5 = [(TLKHeaderView *)self traitCollection];
-  if ([v5 hasDifferentColorAppearanceComparedToTraitCollection:v4])
+  [(TLKHeaderView *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(TLKHeaderView *)self traitCollection];
+  if ([traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy])
   {
 
 LABEL_4:
@@ -1128,11 +1128,11 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [(TLKHeaderView *)self traitCollection];
-  v7 = [v6 _vibrancy];
-  v8 = [v4 _vibrancy];
+  traitCollection2 = [(TLKHeaderView *)self traitCollection];
+  _vibrancy = [traitCollection2 _vibrancy];
+  _vibrancy2 = [changeCopy _vibrancy];
 
-  if (v7 != v8)
+  if (_vibrancy != _vibrancy2)
   {
     goto LABEL_4;
   }
@@ -1148,11 +1148,11 @@ LABEL_5:
   [(UIView *)self tlk_updateWithCurrentAppearance];
 }
 
-- (void)tlk_updateForAppearance:(id)a3
+- (void)tlk_updateForAppearance:(id)appearance
 {
   v6.receiver = self;
   v6.super_class = TLKHeaderView;
-  [(UIView *)&v6 tlk_updateForAppearance:a3];
+  [(UIView *)&v6 tlk_updateForAppearance:appearance];
   if ([TLKAppearance viewHasOverriddenAppearance:self])
   {
     v4 = 0;
@@ -1163,43 +1163,43 @@ LABEL_5:
     v4 = [(TLKHeaderView *)self subtitleIsEmphasized]^ 1;
   }
 
-  v5 = [(TLKHeaderView *)self subtitleLabel];
-  [v5 setProminence:v4];
+  subtitleLabel = [(TLKHeaderView *)self subtitleLabel];
+  [subtitleLabel setProminence:v4];
 }
 
 - (id)footnoteLabelText
 {
-  v2 = [(TLKHeaderView *)self footnoteLabel];
-  v3 = [v2 text];
+  footnoteLabel = [(TLKHeaderView *)self footnoteLabel];
+  text = [footnoteLabel text];
 
-  return v3;
+  return text;
 }
 
 - (id)hasImage
 {
-  v2 = [(TLKHeaderView *)self imageView];
-  v3 = [v2 tlkImage];
-  v4 = [v3 uiImage];
+  imageView = [(TLKHeaderView *)self imageView];
+  tlkImage = [imageView tlkImage];
+  uiImage = [tlkImage uiImage];
 
-  return v4;
+  return uiImage;
 }
 
 - (id)roundedCornerLabelText
 {
-  v3 = [(TLKHeaderView *)self roundedCornerLabel];
-  if ([v3 isHidden])
+  roundedCornerLabel = [(TLKHeaderView *)self roundedCornerLabel];
+  if ([roundedCornerLabel isHidden])
   {
-    v4 = 0;
+    text = 0;
   }
 
   else
   {
-    v5 = [(TLKHeaderView *)self roundedCornerLabel];
-    v6 = [v5 label];
-    v4 = [v6 text];
+    roundedCornerLabel2 = [(TLKHeaderView *)self roundedCornerLabel];
+    label = [roundedCornerLabel2 label];
+    text = [label text];
   }
 
-  return v4;
+  return text;
 }
 
 @end

@@ -1,38 +1,38 @@
 @interface AppStoreApplicationAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityFirstElementForFocus;
 - (id)_axVisibleViewController;
 @end
 
 @implementation AppStoreApplicationAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AppInstallExtension.ActivityViewController"];
-  [v3 validateClass:@"AppInstallExtension.ActivityViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"AppInstallExtension.AppDelegate" hasSwiftField:@"tabBarController" withSwiftType:"Optional<StoreTabBarController>"];
-  [v3 validateClass:@"AppInstallExtension.StoreTabBarController" isKindOfClass:@"UITabBarController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AppInstallExtension.ActivityViewController"];
+  [validationsCopy validateClass:@"AppInstallExtension.ActivityViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"AppInstallExtension.AppDelegate" hasSwiftField:@"tabBarController" withSwiftType:"Optional<StoreTabBarController>"];
+  [validationsCopy validateClass:@"AppInstallExtension.StoreTabBarController" isKindOfClass:@"UITabBarController"];
 }
 
 - (id)_accessibilityFirstElementForFocus
 {
   v3 = accessibilityAppStorePrefixForTarget();
-  v4 = [(AppStoreApplicationAccessibility *)self _axVisibleViewController];
+  _axVisibleViewController = [(AppStoreApplicationAccessibility *)self _axVisibleViewController];
   v5 = [v3 stringByAppendingString:@".ActivityViewController"];
   MEMORY[0x29C2C8630]();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v4 safeUIViewForKey:@"view"];
-    [v7 _accessibilityFirstDescendant];
+    defaultVoiceOverOptions = [_axVisibleViewController safeUIViewForKey:@"view"];
+    [defaultVoiceOverOptions _accessibilityFirstDescendant];
   }
 
   else
   {
-    v7 = [MEMORY[0x29EDC7328] defaultVoiceOverOptions];
-    [(AppStoreApplicationAccessibility *)self _accessibilityFirstElementForFocusWithOptions:v7];
+    defaultVoiceOverOptions = [MEMORY[0x29EDC7328] defaultVoiceOverOptions];
+    [(AppStoreApplicationAccessibility *)self _accessibilityFirstElementForFocusWithOptions:defaultVoiceOverOptions];
   }
   v8 = ;
 
@@ -41,24 +41,24 @@
 
 - (id)_axVisibleViewController
 {
-  v2 = [MEMORY[0x29EDC7938] sharedApplication];
-  v3 = [v2 delegate];
+  mEMORY[0x29EDC7938] = [MEMORY[0x29EDC7938] sharedApplication];
+  delegate = [mEMORY[0x29EDC7938] delegate];
 
-  v4 = [v3 safeSwiftValueForKey:@"tabBarController"];
+  v4 = [delegate safeSwiftValueForKey:@"tabBarController"];
   v5 = [v4 safeValueForKey:@"selectedViewController"];
   v6 = v5;
   if (v5 && ([v5 presentedViewController], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v8 = v7;
-    v9 = [v7 presentedViewController];
+    presentedViewController = [v7 presentedViewController];
   }
 
   else
   {
-    v9 = 0;
+    presentedViewController = 0;
   }
 
-  return v9;
+  return presentedViewController;
 }
 
 @end

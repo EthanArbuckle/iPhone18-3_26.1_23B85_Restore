@@ -1,10 +1,10 @@
 @interface TSDMSGService
 + (id)sharedMSGService;
-- (BOOL)checkExtSyncSessionRegistered:(unsigned int)a3;
-- (BOOL)deregisterExtSyncSession:(unsigned int)a3 pid:(int)a4;
+- (BOOL)checkExtSyncSessionRegistered:(unsigned int)registered;
+- (BOOL)deregisterExtSyncSession:(unsigned int)session pid:(int)pid;
 - (TSDMSGService)init;
-- (int)getPidForSyncSession:(id)a3;
-- (int)registerExtSyncSession:(id *)a3 pid:(int)a4 callback:(id)a5;
+- (int)getPidForSyncSession:(id)session;
+- (int)registerExtSyncSession:(id *)session pid:(int)pid callback:(id)callback;
 @end
 
 @implementation TSDMSGService
@@ -47,9 +47,9 @@
   return v2;
 }
 
-- (int)getPidForSyncSession:(id)a3
+- (int)getPidForSyncSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -89,9 +89,9 @@
                 objc_enumerationMutation(v11);
               }
 
-              if (*(*(&v18 + 1) + 8 * j) == v4)
+              if (*(*(&v18 + 1) + 8 * j) == sessionCopy)
               {
-                v15 = [v9 intValue];
+                intValue = [v9 intValue];
 
                 v5 = v17;
                 goto LABEL_19;
@@ -112,7 +112,7 @@
       }
 
       v6 = [(NSMutableDictionary *)v17 countByEnumeratingWithState:&v22 objects:v27 count:16];
-      v15 = -1;
+      intValue = -1;
     }
 
     while (v6);
@@ -120,15 +120,15 @@
 
   else
   {
-    v15 = -1;
+    intValue = -1;
   }
 
 LABEL_19:
 
-  return v15;
+  return intValue;
 }
 
-- (BOOL)checkExtSyncSessionRegistered:(unsigned int)a3
+- (BOOL)checkExtSyncSessionRegistered:(unsigned int)registered
 {
   v23 = 0u;
   v24 = 0u;
@@ -179,7 +179,7 @@ LABEL_19:
                 v15 = 0;
               }
 
-              if (v15 == a3)
+              if (v15 == registered)
               {
 
                 v16 = 1;
@@ -215,21 +215,21 @@ LABEL_22:
   return v16;
 }
 
-- (int)registerExtSyncSession:(id *)a3 pid:(int)a4 callback:(id)a5
+- (int)registerExtSyncSession:(id *)session pid:(int)pid callback:(id)callback
 {
-  v8 = a5;
-  v9 = [NSNumber numberWithInteger:a4];
-  v10 = objc_retainBlock(v8);
+  callbackCopy = callback;
+  v9 = [NSNumber numberWithInteger:pid];
+  v10 = objc_retainBlock(callbackCopy);
   extSyncCallbackHandlers = self->_extSyncCallbackHandlers;
-  v12 = [NSNumber numberWithUnsignedInt:a3->var1];
+  v12 = [NSNumber numberWithUnsignedInt:session->var1];
   [(NSMutableDictionary *)extSyncCallbackHandlers setObject:v10 forKeyedSubscript:v12];
 
-  v13 = [TSDMSGExtSyncSession withConfig:a3 andCallback:&stru_10004C848];
-  v14 = [v13 start];
-  if (v14)
+  v13 = [TSDMSGExtSyncSession withConfig:session andCallback:&stru_10004C848];
+  start = [v13 start];
+  if (start)
   {
     v15 = self->_extSyncCallbackHandlers;
-    v16 = [NSNumber numberWithUnsignedInt:a3->var1];
+    v16 = [NSNumber numberWithUnsignedInt:session->var1];
     [(NSMutableDictionary *)v15 removeObjectForKey:v16];
   }
 
@@ -245,12 +245,12 @@ LABEL_22:
     [v16 addObject:v13];
   }
 
-  return v14;
+  return start;
 }
 
-- (BOOL)deregisterExtSyncSession:(unsigned int)a3 pid:(int)a4
+- (BOOL)deregisterExtSyncSession:(unsigned int)session pid:(int)pid
 {
-  v6 = [NSNumber numberWithInteger:a4];
+  v6 = [NSNumber numberWithInteger:pid];
   [(NSMutableDictionary *)self->_activeExtSyncSessionsByPid objectForKeyedSubscript:v6];
   v23 = 0u;
   v24 = 0u;
@@ -281,7 +281,7 @@ LABEL_3:
         v12 = 0;
       }
 
-      if (v12 == a3)
+      if (v12 == session)
       {
         break;
       }

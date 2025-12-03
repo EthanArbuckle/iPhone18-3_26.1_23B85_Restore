@@ -1,19 +1,19 @@
 @interface IMDAskToParser
 - (BOOL)isValid;
 - (IMDAskToParser)init;
-- (IMDAskToParser)initWithUrl:(id)a3;
+- (IMDAskToParser)initWithUrl:(id)url;
 - (NSString)notificationText;
 @end
 
 @implementation IMDAskToParser
 
-- (IMDAskToParser)initWithUrl:(id)a3
+- (IMDAskToParser)initWithUrl:(id)url
 {
   v4 = sub_1B7C107FC(&qword_1EBA51FA0, &qword_1B7D0A6D0);
   v5 = *(*(v4 - 8) + 64);
   MEMORY[0x1EEE9AC00](v4 - 8);
   v7 = &v11 - v6;
-  if (a3)
+  if (url)
   {
     sub_1B7CFDFB0();
     v8 = sub_1B7CFDFF0();
@@ -50,7 +50,7 @@
   else
   {
     (*(v8 + 32))(v11, v6, v7);
-    v13 = self;
+    selfCopy = self;
     v12 = sub_1B7CFE4E0();
 
     (*(v8 + 8))(v11, v7);

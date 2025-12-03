@@ -1,17 +1,17 @@
 @interface SKUISimpleCollectionViewCell
 - (UIEdgeInsets)contentInsets;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setContentChildView:(id)a3;
-- (void)setContentInsets:(UIEdgeInsets)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setContentChildView:(id)view;
+- (void)setContentInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation SKUISimpleCollectionViewCell
 
-- (void)setContentChildView:(id)a3
+- (void)setContentChildView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -25,36 +25,36 @@
   }
 
   contentChildView = self->_contentChildView;
-  if (contentChildView != v5)
+  if (contentChildView != viewCopy)
   {
     if ([(UIView *)contentChildView isDescendantOfView:self])
     {
       [(UIView *)self->_contentChildView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_contentChildView, a3);
+    objc_storeStrong(&self->_contentChildView, view);
     [(SKUISimpleCollectionViewCell *)self setNeedsLayout];
     contentChildView = self->_contentChildView;
   }
 
   if (contentChildView && ![(UIView *)contentChildView isDescendantOfView:self])
   {
-    v15 = [(SKUISimpleCollectionViewCell *)self contentView];
+    contentView = [(SKUISimpleCollectionViewCell *)self contentView];
     v16 = self->_contentChildView;
-    v17 = [(SKUISimpleCollectionViewCell *)self backgroundColor];
-    [(UIView *)v16 setBackgroundColor:v17];
+    backgroundColor = [(SKUISimpleCollectionViewCell *)self backgroundColor];
+    [(UIView *)v16 setBackgroundColor:backgroundColor];
 
-    [v15 addSubview:self->_contentChildView];
+    [contentView addSubview:self->_contentChildView];
     [(SKUISimpleCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setContentInsets:(UIEdgeInsets)a3
+- (void)setContentInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  left = a3.left;
-  bottom = a3.bottom;
-  top = a3.top;
+  right = insets.right;
+  left = insets.left;
+  bottom = insets.bottom;
+  top = insets.top;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -81,9 +81,9 @@
   }
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -96,12 +96,12 @@
     }
   }
 
-  v13 = [v4 backgroundColor];
-  [(SKUISimpleCollectionViewCell *)self setBackgroundColor:v13];
+  backgroundColor = [attributesCopy backgroundColor];
+  [(SKUISimpleCollectionViewCell *)self setBackgroundColor:backgroundColor];
 
   v14.receiver = self;
   v14.super_class = SKUISimpleCollectionViewCell;
-  [(SKUISimpleCollectionViewCell *)&v14 applyLayoutAttributes:v4];
+  [(SKUISimpleCollectionViewCell *)&v14 applyLayoutAttributes:attributesCopy];
 }
 
 - (void)layoutSubviews
@@ -121,8 +121,8 @@
   v20.receiver = self;
   v20.super_class = SKUISimpleCollectionViewCell;
   [(SKUISimpleCollectionViewCell *)&v20 layoutSubviews];
-  v11 = [(SKUISimpleCollectionViewCell *)self contentView];
-  [v11 bounds];
+  contentView = [(SKUISimpleCollectionViewCell *)self contentView];
+  [contentView bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -131,9 +131,9 @@
   [(UIView *)self->_contentChildView setFrame:v13 + self->_contentInsets.left, v15 + self->_contentInsets.top, v17 - (self->_contentInsets.left + self->_contentInsets.right), v19 - (self->_contentInsets.top + self->_contentInsets.bottom)];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -146,10 +146,10 @@
     }
   }
 
-  [(UIView *)self->_contentChildView setBackgroundColor:v4];
+  [(UIView *)self->_contentChildView setBackgroundColor:colorCopy];
   v13.receiver = self;
   v13.super_class = SKUISimpleCollectionViewCell;
-  [(SKUISimpleCollectionViewCell *)&v13 setBackgroundColor:v4];
+  [(SKUISimpleCollectionViewCell *)&v13 setBackgroundColor:colorCopy];
 }
 
 - (UIEdgeInsets)contentInsets

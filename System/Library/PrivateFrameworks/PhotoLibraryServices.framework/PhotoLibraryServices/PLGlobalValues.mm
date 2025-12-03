@@ -1,10 +1,10 @@
 @interface PLGlobalValues
-+ (id)searchIndexSpotlightClientStateDataWithDictionary:(id)a3;
-+ (id)searchIndexSpotlightClientStateDictionaryWithIdentifier:(id)a3 timestamp:(id)a4;
-+ (id)searchIndexSpotlightClientStateWithData:(id)a3;
-+ (void)setJournalRebuildRequired:(BOOL)a3 managedObjectContext:(id)a4;
-+ (void)setLibraryCreateOptions:(unint64_t)a3 managedObjectContext:(id)a4;
-- (BOOL)_isNewLibraryOrRebuildWithPathManager:(id)a3;
++ (id)searchIndexSpotlightClientStateDataWithDictionary:(id)dictionary;
++ (id)searchIndexSpotlightClientStateDictionaryWithIdentifier:(id)identifier timestamp:(id)timestamp;
++ (id)searchIndexSpotlightClientStateWithData:(id)data;
++ (void)setJournalRebuildRequired:(BOOL)required managedObjectContext:(id)context;
++ (void)setLibraryCreateOptions:(unint64_t)options managedObjectContext:(id)context;
+- (BOOL)_isNewLibraryOrRebuildWithPathManager:(id)manager;
 - (BOOL)backgroundJobServiceNeedsProcessing;
 - (BOOL)didImportFileSystemAssets;
 - (BOOL)hasCloudInitialUploadCompleted;
@@ -12,9 +12,9 @@
 - (BOOL)isInitialDuplicateDetectorProcessingCompleted;
 - (BOOL)isJournalRebuildRequired;
 - (BOOL)isRebuildComplete;
-- (BOOL)markRebuildPhaseCompleted:(unint64_t)a3;
-- (BOOL)rebuildWorkIsRequiredForEntity:(unint64_t)a3;
-- (BOOL)shouldDropGlobalSpotlightIndexForLibraryIdentifier:(int64_t)a3;
+- (BOOL)markRebuildPhaseCompleted:(unint64_t)completed;
+- (BOOL)rebuildWorkIsRequiredForEntity:(unint64_t)entity;
+- (BOOL)shouldDropGlobalSpotlightIndexForLibraryIdentifier:(int64_t)identifier;
 - (BOOL)shouldPrefetchWidgetResources;
 - (NSDate)_deprecated_lastFullIndexSyndicationSyncDate;
 - (NSDate)dateOfLastExternalAvailabilitySignal;
@@ -66,92 +66,92 @@
 - (NSString)searchIndexLocaleIdentifier;
 - (NSString)searchIndexRebuildResumeMarker;
 - (NSString)searchIndexSceneTaxonomySHA;
-- (PLGlobalValues)initWithManagedObjectContext:(id)a3;
+- (PLGlobalValues)initWithManagedObjectContext:(id)context;
 - (char)duplicateProcessingStatus;
-- (double)searchIndexRebuildTimeIsRebuildInProgress:(BOOL *)a3;
-- (double)searchIndexUptimeIsRebuildInProgress:(BOOL *)a3;
+- (double)searchIndexRebuildTimeIsRebuildInProgress:(BOOL *)progress;
+- (double)searchIndexUptimeIsRebuildInProgress:(BOOL *)progress;
 - (double)syndicationSyncRangeDenominator;
-- (id)_getValueUsingPerformBlockAndWait:(id)a3;
-- (id)_lastKnownTransactionTokenWithTransactionNumberKey:(id)a3 andStoreUUIDKey:(id)a4;
+- (id)_getValueUsingPerformBlockAndWait:(id)wait;
+- (id)_lastKnownTransactionTokenWithTransactionNumberKey:(id)key andStoreUUIDKey:(id)dKey;
 - (id)searchIndexSpotlightClientStateData;
 - (int64_t)importFilesystemAssetsState;
 - (unint64_t)libraryCreateOptions;
-- (unint64_t)searchIndexRebuildReasonsWithSceneTaxonomyDigests:(id)a3 spotlightRequestedRebuild:(BOOL)a4 pathManager:(id)a5;
+- (unint64_t)searchIndexRebuildReasonsWithSceneTaxonomyDigests:(id)digests spotlightRequestedRebuild:(BOOL)rebuild pathManager:(id)manager;
 - (unint64_t)searchIndexingEntityToRebuild;
 - (unint64_t)unpackedSearchIndexFeatureSettings;
 - (unint64_t)unpackedSearchIndexRebuildCoalescedReasons;
 - (unint64_t)unpackedSearchIndexRebuildRequiredExternalReasons;
 - (unint64_t)unpackedSearchIndexStatus;
-- (void)_setBackgroundJobServiceNeedsProcessing:(BOOL)a3;
-- (void)_setImportFilesystemAssetsState:(int64_t)a3;
-- (void)_setLastKnownTransactionToken:(id)a3 withTransactionNumberKey:(id)a4 andStoreUUIDKey:(id)a5;
+- (void)_setBackgroundJobServiceNeedsProcessing:(BOOL)processing;
+- (void)_setImportFilesystemAssetsState:(int64_t)state;
+- (void)_setLastKnownTransactionToken:(id)token withTransactionNumberKey:(id)key andStoreUUIDKey:(id)dKey;
 - (void)_setRebuildComplete;
-- (void)_setValueUsingPerformBlockAndWait:(id)a3 responsibleCaller:(const char *)a4;
-- (void)addRebuildRequiredExternalReasons:(unint64_t)a3;
-- (void)addSearchIndexRebuildCoalescedReasons:(unint64_t)a3;
+- (void)_setValueUsingPerformBlockAndWait:(id)wait responsibleCaller:(const char *)caller;
+- (void)addRebuildRequiredExternalReasons:(unint64_t)reasons;
+- (void)addSearchIndexRebuildCoalescedReasons:(unint64_t)reasons;
 - (void)clearRebuildFinishedFlags;
 - (void)dontImportFileSystemDataIntoDatabase;
 - (void)incrementSpotlightClientStateMismatchedCount;
 - (void)incrementSpotlightClientStateMissingCount;
-- (void)resetSearchIndexRebuildMetadataWithSceneTaxonomyDigests:(id)a3;
-- (void)setBackgroundJobServiceNeedsProcessing:(BOOL)a3;
-- (void)setCloudInitialUploadCompleted:(BOOL)a3;
-- (void)setCloudTrackerLastKnownCloudVersion:(id)a3;
-- (void)setDateOfLastExternalAvailabilitySignal:(id)a3;
-- (void)setDuplicateProcessingStatus:(char)a3;
-- (void)setFeatureAvailability:(id)a3;
-- (void)setFeatureAvailabilityJobDidFail:(id)a3;
-- (void)setGreenTeaContactsAuthorization:(id)a3;
-- (void)setGreenValues:(id)a3;
-- (void)setGuestAssetInitialSyncResumeMarker:(id)a3;
-- (void)setGuestAssetSyncStatus:(id)a3;
-- (void)setImportFilesystemAssetsState:(int64_t)a3;
-- (void)setInProgressFullIndexSyndicationSyncDate:(id)a3;
-- (void)setJournalRebuildRequired:(BOOL)a3;
-- (void)setLastAttachmentSyndicationSyncDate:(id)a3;
-- (void)setLastChatSyndicationSyncDate:(id)a3;
-- (void)setLastCompletePrefetchDate:(id)a3;
-- (void)setLastDeleteSyndicationSyncDate:(id)a3;
-- (void)setLastFullIndexSyndicationSyncStartDate:(id)a3;
-- (void)setLastGuestAssetSyncTargetLibraryPath:(id)a3;
-- (void)setLastGuestAssetSyncToken:(id)a3;
-- (void)setLastInitialDuplicateDetectorProcessingCompletedDate:(id)a3;
-- (void)setLastUpdatedGraphLabelsAgainstPLSImageUUID:(id)a3;
-- (void)setLibraryReadyForAnalysisDate:(id)a3;
-- (void)setLocaleIdentifier:(id)a3;
-- (void)setLocationOfInterestUpdateDate:(id)a3;
-- (void)setMediaAnalysisEmbeddingVersion:(id)a3;
-- (void)setMediaAnalysisEmbeddingVersionBumpDate:(id)a3;
-- (void)setMemoriesCreationPreviewAvailableDate:(id)a3;
-- (void)setOrphanedSceneClassificationsCount:(id)a3;
-- (void)setPersonSyncResumeMarker:(id)a3;
-- (void)setPersonSyncState:(id)a3;
+- (void)resetSearchIndexRebuildMetadataWithSceneTaxonomyDigests:(id)digests;
+- (void)setBackgroundJobServiceNeedsProcessing:(BOOL)processing;
+- (void)setCloudInitialUploadCompleted:(BOOL)completed;
+- (void)setCloudTrackerLastKnownCloudVersion:(id)version;
+- (void)setDateOfLastExternalAvailabilitySignal:(id)signal;
+- (void)setDuplicateProcessingStatus:(char)status;
+- (void)setFeatureAvailability:(id)availability;
+- (void)setFeatureAvailabilityJobDidFail:(id)fail;
+- (void)setGreenTeaContactsAuthorization:(id)authorization;
+- (void)setGreenValues:(id)values;
+- (void)setGuestAssetInitialSyncResumeMarker:(id)marker;
+- (void)setGuestAssetSyncStatus:(id)status;
+- (void)setImportFilesystemAssetsState:(int64_t)state;
+- (void)setInProgressFullIndexSyndicationSyncDate:(id)date;
+- (void)setJournalRebuildRequired:(BOOL)required;
+- (void)setLastAttachmentSyndicationSyncDate:(id)date;
+- (void)setLastChatSyndicationSyncDate:(id)date;
+- (void)setLastCompletePrefetchDate:(id)date;
+- (void)setLastDeleteSyndicationSyncDate:(id)date;
+- (void)setLastFullIndexSyndicationSyncStartDate:(id)date;
+- (void)setLastGuestAssetSyncTargetLibraryPath:(id)path;
+- (void)setLastGuestAssetSyncToken:(id)token;
+- (void)setLastInitialDuplicateDetectorProcessingCompletedDate:(id)date;
+- (void)setLastUpdatedGraphLabelsAgainstPLSImageUUID:(id)d;
+- (void)setLibraryReadyForAnalysisDate:(id)date;
+- (void)setLocaleIdentifier:(id)identifier;
+- (void)setLocationOfInterestUpdateDate:(id)date;
+- (void)setMediaAnalysisEmbeddingVersion:(id)version;
+- (void)setMediaAnalysisEmbeddingVersionBumpDate:(id)date;
+- (void)setMemoriesCreationPreviewAvailableDate:(id)date;
+- (void)setOrphanedSceneClassificationsCount:(id)count;
+- (void)setPersonSyncResumeMarker:(id)marker;
+- (void)setPersonSyncState:(id)state;
 - (void)setRebuildComplete;
-- (void)setSearchFeatureReadyDate:(id)a3;
-- (void)setSearchFeatureReadyFraction:(id)a3;
-- (void)setSearchIndexEmbeddingModelVersion:(id)a3;
-- (void)setSearchIndexFeatureSettings:(id)a3;
-- (void)setSearchIndexLocaleIdentifier:(id)a3;
-- (void)setSearchIndexRebuildCoalescedReasons:(id)a3;
-- (void)setSearchIndexRebuildEndDate:(id)a3;
-- (void)setSearchIndexRebuildRequiredExternalReasons:(id)a3;
-- (void)setSearchIndexRebuildResumeMarker:(id)a3;
-- (void)setSearchIndexRebuildResumeObjectID:(id)a3;
-- (void)setSearchIndexRebuildStartDate:(id)a3;
-- (void)setSearchIndexSceneTaxonomySHA:(id)a3;
-- (void)setSearchIndexSpotlightClientState:(id)a3;
-- (void)setSearchIndexSpotlightClientStateMismatchedCount:(id)a3;
-- (void)setSearchIndexSpotlightClientStateMissingCount:(id)a3;
-- (void)setSearchIndexStatus:(id)a3;
-- (void)setSearchIndexUtilityTypeClassifierVersion:(id)a3;
-- (void)setSearchIndexVersion:(id)a3;
-- (void)setStableHashProcessingCompleted:(BOOL)a3;
-- (void)setStableHashResumeObjectID:(id)a3;
-- (void)setSyndicationPrefetchDownloadThrottlingDate:(id)a3;
-- (void)setSyndicationStartDate:(id)a3;
-- (void)setSyndicationSyncRangeDenominator:(double)a3;
-- (void)setTimeOfLastFeatureAvailabilityJob:(id)a3;
-- (void)setWidgetTimelineGeneratedForDisplaySize:(CGSize)a3;
+- (void)setSearchFeatureReadyDate:(id)date;
+- (void)setSearchFeatureReadyFraction:(id)fraction;
+- (void)setSearchIndexEmbeddingModelVersion:(id)version;
+- (void)setSearchIndexFeatureSettings:(id)settings;
+- (void)setSearchIndexLocaleIdentifier:(id)identifier;
+- (void)setSearchIndexRebuildCoalescedReasons:(id)reasons;
+- (void)setSearchIndexRebuildEndDate:(id)date;
+- (void)setSearchIndexRebuildRequiredExternalReasons:(id)reasons;
+- (void)setSearchIndexRebuildResumeMarker:(id)marker;
+- (void)setSearchIndexRebuildResumeObjectID:(id)d;
+- (void)setSearchIndexRebuildStartDate:(id)date;
+- (void)setSearchIndexSceneTaxonomySHA:(id)a;
+- (void)setSearchIndexSpotlightClientState:(id)state;
+- (void)setSearchIndexSpotlightClientStateMismatchedCount:(id)count;
+- (void)setSearchIndexSpotlightClientStateMissingCount:(id)count;
+- (void)setSearchIndexStatus:(id)status;
+- (void)setSearchIndexUtilityTypeClassifierVersion:(id)version;
+- (void)setSearchIndexVersion:(id)version;
+- (void)setStableHashProcessingCompleted:(BOOL)completed;
+- (void)setStableHashResumeObjectID:(id)d;
+- (void)setSyndicationPrefetchDownloadThrottlingDate:(id)date;
+- (void)setSyndicationStartDate:(id)date;
+- (void)setSyndicationSyncRangeDenominator:(double)denominator;
+- (void)setTimeOfLastFeatureAvailabilityJob:(id)job;
+- (void)setWidgetTimelineGeneratedForDisplaySize:(CGSize)size;
 @end
 
 @implementation PLGlobalValues
@@ -176,22 +176,22 @@
   v5[3] = &unk_1E75787F8;
   v5[4] = self;
   v2 = [(PLGlobalValues *)self _getValueUsingPerformBlockAndWait:v5];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (void)_setValueUsingPerformBlockAndWait:(id)a3 responsibleCaller:(const char *)a4
+- (void)_setValueUsingPerformBlockAndWait:(id)wait responsibleCaller:(const char *)caller
 {
-  v6 = a3;
+  waitCopy = wait;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __70__PLGlobalValues__setValueUsingPerformBlockAndWait_responsibleCaller___block_invoke;
   v8[3] = &unk_1E7575338;
   v8[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = waitCopy;
+  callerCopy = caller;
+  v7 = waitCopy;
   [PLManagedObjectContext _pl_megamoc_runWithPerformWarningsSuppressed:v8];
 }
 
@@ -237,9 +237,9 @@ void __70__PLGlobalValues__setValueUsingPerformBlockAndWait_responsibleCaller___
   }
 }
 
-- (id)_getValueUsingPerformBlockAndWait:(id)a3
+- (id)_getValueUsingPerformBlockAndWait:(id)wait
 {
-  v4 = a3;
+  waitCopy = wait;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -252,7 +252,7 @@ void __70__PLGlobalValues__setValueUsingPerformBlockAndWait_responsibleCaller___
   v8[3] = &unk_1E7577918;
   v8[4] = self;
   v10 = &v11;
-  v5 = v4;
+  v5 = waitCopy;
   v9 = v5;
   [PLManagedObjectContext _pl_megamoc_runWithPerformWarningsSuppressed:v8];
   v6 = v12[5];
@@ -295,18 +295,18 @@ void __52__PLGlobalValues__getValueUsingPerformBlockAndWait___block_invoke_2(uin
   return v2;
 }
 
-- (void)setLocationOfInterestUpdateDate:(id)a3
+- (void)setLocationOfInterestUpdateDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __50__PLGlobalValues_setLocationOfInterestUpdateDate___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = dateCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = dateCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setLocationOfInterestUpdateDate:]"];
 }
 
@@ -322,18 +322,18 @@ void __52__PLGlobalValues__getValueUsingPerformBlockAndWait___block_invoke_2(uin
   return v2;
 }
 
-- (void)setLibraryReadyForAnalysisDate:(id)a3
+- (void)setLibraryReadyForAnalysisDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __49__PLGlobalValues_setLibraryReadyForAnalysisDate___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = dateCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = dateCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setLibraryReadyForAnalysisDate:]"];
 }
 
@@ -349,18 +349,18 @@ void __52__PLGlobalValues__getValueUsingPerformBlockAndWait___block_invoke_2(uin
   return v2;
 }
 
-- (void)setMediaAnalysisEmbeddingVersionBumpDate:(id)a3
+- (void)setMediaAnalysisEmbeddingVersionBumpDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __59__PLGlobalValues_setMediaAnalysisEmbeddingVersionBumpDate___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = dateCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = dateCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setMediaAnalysisEmbeddingVersionBumpDate:]"];
 }
 
@@ -376,18 +376,18 @@ void __52__PLGlobalValues__getValueUsingPerformBlockAndWait___block_invoke_2(uin
   return v2;
 }
 
-- (void)setMediaAnalysisEmbeddingVersion:(id)a3
+- (void)setMediaAnalysisEmbeddingVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __51__PLGlobalValues_setMediaAnalysisEmbeddingVersion___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = versionCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = versionCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setMediaAnalysisEmbeddingVersion:]"];
 }
 
@@ -403,18 +403,18 @@ void __52__PLGlobalValues__getValueUsingPerformBlockAndWait___block_invoke_2(uin
   return v2;
 }
 
-- (void)setDateOfLastExternalAvailabilitySignal:(id)a3
+- (void)setDateOfLastExternalAvailabilitySignal:(id)signal
 {
-  v4 = a3;
+  signalCopy = signal;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __58__PLGlobalValues_setDateOfLastExternalAvailabilitySignal___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = signalCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = signalCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setDateOfLastExternalAvailabilitySignal:]"];
 }
 
@@ -430,18 +430,18 @@ void __52__PLGlobalValues__getValueUsingPerformBlockAndWait___block_invoke_2(uin
   return v2;
 }
 
-- (void)setMemoriesCreationPreviewAvailableDate:(id)a3
+- (void)setMemoriesCreationPreviewAvailableDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __58__PLGlobalValues_setMemoriesCreationPreviewAvailableDate___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = dateCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = dateCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setMemoriesCreationPreviewAvailableDate:]"];
 }
 
@@ -457,18 +457,18 @@ void __52__PLGlobalValues__getValueUsingPerformBlockAndWait___block_invoke_2(uin
   return v2;
 }
 
-- (void)setSearchFeatureReadyFraction:(id)a3
+- (void)setSearchFeatureReadyFraction:(id)fraction
 {
-  v4 = a3;
+  fractionCopy = fraction;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48__PLGlobalValues_setSearchFeatureReadyFraction___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = fractionCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = fractionCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setSearchFeatureReadyFraction:]"];
 }
 
@@ -484,18 +484,18 @@ void __52__PLGlobalValues__getValueUsingPerformBlockAndWait___block_invoke_2(uin
   return v2;
 }
 
-- (void)setSearchFeatureReadyDate:(id)a3
+- (void)setSearchFeatureReadyDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __44__PLGlobalValues_setSearchFeatureReadyDate___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = dateCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = dateCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setSearchFeatureReadyDate:]"];
 }
 
@@ -511,18 +511,18 @@ void __52__PLGlobalValues__getValueUsingPerformBlockAndWait___block_invoke_2(uin
   return v2;
 }
 
-- (void)setFeatureAvailabilityJobDidFail:(id)a3
+- (void)setFeatureAvailabilityJobDidFail:(id)fail
 {
-  v4 = a3;
+  failCopy = fail;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __51__PLGlobalValues_setFeatureAvailabilityJobDidFail___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = failCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = failCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setFeatureAvailabilityJobDidFail:]"];
 }
 
@@ -538,33 +538,33 @@ void __52__PLGlobalValues__getValueUsingPerformBlockAndWait___block_invoke_2(uin
   return v2;
 }
 
-- (void)setTimeOfLastFeatureAvailabilityJob:(id)a3
+- (void)setTimeOfLastFeatureAvailabilityJob:(id)job
 {
-  v4 = a3;
+  jobCopy = job;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54__PLGlobalValues_setTimeOfLastFeatureAvailabilityJob___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = jobCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = jobCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setTimeOfLastFeatureAvailabilityJob:]"];
 }
 
-- (void)setFeatureAvailability:(id)a3
+- (void)setFeatureAvailability:(id)availability
 {
-  v4 = a3;
+  availabilityCopy = availability;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __41__PLGlobalValues_setFeatureAvailability___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = availabilityCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = availabilityCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setFeatureAvailability:]"];
 }
 
@@ -580,33 +580,33 @@ void __52__PLGlobalValues__getValueUsingPerformBlockAndWait___block_invoke_2(uin
   return v2;
 }
 
-- (void)setLastUpdatedGraphLabelsAgainstPLSImageUUID:(id)a3
+- (void)setLastUpdatedGraphLabelsAgainstPLSImageUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __63__PLGlobalValues_setLastUpdatedGraphLabelsAgainstPLSImageUUID___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = dCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = dCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setLastUpdatedGraphLabelsAgainstPLSImageUUID:]"];
 }
 
-- (void)setSearchIndexRebuildCoalescedReasons:(id)a3
+- (void)setSearchIndexRebuildCoalescedReasons:(id)reasons
 {
-  v4 = a3;
+  reasonsCopy = reasons;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__PLGlobalValues_setSearchIndexRebuildCoalescedReasons___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = reasonsCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = reasonsCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setSearchIndexRebuildCoalescedReasons:]"];
 }
 
@@ -622,18 +622,18 @@ void __52__PLGlobalValues__getValueUsingPerformBlockAndWait___block_invoke_2(uin
   return v2;
 }
 
-- (void)setSearchIndexRebuildRequiredExternalReasons:(id)a3
+- (void)setSearchIndexRebuildRequiredExternalReasons:(id)reasons
 {
-  v4 = a3;
+  reasonsCopy = reasons;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __63__PLGlobalValues_setSearchIndexRebuildRequiredExternalReasons___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = reasonsCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = reasonsCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setSearchIndexRebuildRequiredExternalReasons:]"];
 }
 
@@ -649,18 +649,18 @@ void __52__PLGlobalValues__getValueUsingPerformBlockAndWait___block_invoke_2(uin
   return v2;
 }
 
-- (void)setSearchIndexRebuildEndDate:(id)a3
+- (void)setSearchIndexRebuildEndDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __47__PLGlobalValues_setSearchIndexRebuildEndDate___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = dateCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = dateCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setSearchIndexRebuildEndDate:]"];
 }
 
@@ -676,18 +676,18 @@ void __52__PLGlobalValues__getValueUsingPerformBlockAndWait___block_invoke_2(uin
   return v2;
 }
 
-- (void)setSearchIndexRebuildStartDate:(id)a3
+- (void)setSearchIndexRebuildStartDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __49__PLGlobalValues_setSearchIndexRebuildStartDate___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = dateCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = dateCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setSearchIndexRebuildStartDate:]"];
 }
 
@@ -703,18 +703,18 @@ void __52__PLGlobalValues__getValueUsingPerformBlockAndWait___block_invoke_2(uin
   return v2;
 }
 
-- (void)setSearchIndexSpotlightClientStateMismatchedCount:(id)a3
+- (void)setSearchIndexSpotlightClientStateMismatchedCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __68__PLGlobalValues_setSearchIndexSpotlightClientStateMismatchedCount___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = countCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = countCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setSearchIndexSpotlightClientStateMismatchedCount:]"];
 }
 
@@ -730,18 +730,18 @@ void __52__PLGlobalValues__getValueUsingPerformBlockAndWait___block_invoke_2(uin
   return v2;
 }
 
-- (void)setSearchIndexSpotlightClientStateMissingCount:(id)a3
+- (void)setSearchIndexSpotlightClientStateMissingCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __65__PLGlobalValues_setSearchIndexSpotlightClientStateMissingCount___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = countCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = countCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setSearchIndexSpotlightClientStateMissingCount:]"];
 }
 
@@ -757,18 +757,18 @@ void __52__PLGlobalValues__getValueUsingPerformBlockAndWait___block_invoke_2(uin
   return v2;
 }
 
-- (void)setSearchIndexSpotlightClientState:(id)a3
+- (void)setSearchIndexSpotlightClientState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __53__PLGlobalValues_setSearchIndexSpotlightClientState___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = stateCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = stateCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setSearchIndexSpotlightClientState:]"];
 }
 
@@ -784,18 +784,18 @@ void __52__PLGlobalValues__getValueUsingPerformBlockAndWait___block_invoke_2(uin
   return v2;
 }
 
-- (void)setSearchIndexRebuildResumeMarker:(id)a3
+- (void)setSearchIndexRebuildResumeMarker:(id)marker
 {
-  v4 = a3;
+  markerCopy = marker;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __52__PLGlobalValues_setSearchIndexRebuildResumeMarker___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = markerCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = markerCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setSearchIndexRebuildResumeMarker:]"];
 }
 
@@ -811,18 +811,18 @@ void __52__PLGlobalValues__getValueUsingPerformBlockAndWait___block_invoke_2(uin
   return v2;
 }
 
-- (void)setSearchIndexStatus:(id)a3
+- (void)setSearchIndexStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __39__PLGlobalValues_setSearchIndexStatus___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = statusCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = statusCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setSearchIndexStatus:]"];
 }
 
@@ -838,18 +838,18 @@ void __52__PLGlobalValues__getValueUsingPerformBlockAndWait___block_invoke_2(uin
   return v2;
 }
 
-- (void)setSearchIndexFeatureSettings:(id)a3
+- (void)setSearchIndexFeatureSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48__PLGlobalValues_setSearchIndexFeatureSettings___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = settingsCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = settingsCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setSearchIndexFeatureSettings:]"];
 }
 
@@ -865,18 +865,18 @@ void __52__PLGlobalValues__getValueUsingPerformBlockAndWait___block_invoke_2(uin
   return v2;
 }
 
-- (void)setSearchIndexSceneTaxonomySHA:(id)a3
+- (void)setSearchIndexSceneTaxonomySHA:(id)a
 {
-  v4 = a3;
+  aCopy = a;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __49__PLGlobalValues_setSearchIndexSceneTaxonomySHA___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = aCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = aCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setSearchIndexSceneTaxonomySHA:]"];
 }
 
@@ -892,18 +892,18 @@ void __52__PLGlobalValues__getValueUsingPerformBlockAndWait___block_invoke_2(uin
   return v2;
 }
 
-- (void)setSearchIndexLocaleIdentifier:(id)a3
+- (void)setSearchIndexLocaleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __49__PLGlobalValues_setSearchIndexLocaleIdentifier___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = identifierCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = identifierCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setSearchIndexLocaleIdentifier:]"];
 }
 
@@ -931,33 +931,33 @@ void __52__PLGlobalValues__getValueUsingPerformBlockAndWait___block_invoke_2(uin
   return v2;
 }
 
-- (void)setSearchIndexUtilityTypeClassifierVersion:(id)a3
+- (void)setSearchIndexUtilityTypeClassifierVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __61__PLGlobalValues_setSearchIndexUtilityTypeClassifierVersion___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = versionCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = versionCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setSearchIndexUtilityTypeClassifierVersion:]"];
 }
 
-- (void)setSearchIndexEmbeddingModelVersion:(id)a3
+- (void)setSearchIndexEmbeddingModelVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54__PLGlobalValues_setSearchIndexEmbeddingModelVersion___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = versionCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = versionCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setSearchIndexEmbeddingModelVersion:]"];
 }
 
@@ -973,18 +973,18 @@ void __52__PLGlobalValues__getValueUsingPerformBlockAndWait___block_invoke_2(uin
   return v2;
 }
 
-- (void)setSearchIndexVersion:(id)a3
+- (void)setSearchIndexVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __40__PLGlobalValues_setSearchIndexVersion___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = versionCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = versionCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setSearchIndexVersion:]"];
 }
 
@@ -1000,18 +1000,18 @@ void __52__PLGlobalValues__getValueUsingPerformBlockAndWait___block_invoke_2(uin
   return v2;
 }
 
-- (void)setLastCompletePrefetchDate:(id)a3
+- (void)setLastCompletePrefetchDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __46__PLGlobalValues_setLastCompletePrefetchDate___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = dateCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = dateCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setLastCompletePrefetchDate:]"];
 }
 
@@ -1027,14 +1027,14 @@ void __52__PLGlobalValues__getValueUsingPerformBlockAndWait___block_invoke_2(uin
   return v2;
 }
 
-- (void)setCloudInitialUploadCompleted:(BOOL)a3
+- (void)setCloudInitialUploadCompleted:(BOOL)completed
 {
   v5 = self->_moc;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__PLGlobalValues_setCloudInitialUploadCompleted___block_invoke;
   v7[3] = &unk_1E7576F80;
-  v9 = a3;
+  completedCopy = completed;
   v8 = v5;
   v6 = v5;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v7 responsibleCaller:"[PLGlobalValues setCloudInitialUploadCompleted:]"];
@@ -1064,9 +1064,9 @@ void __49__PLGlobalValues_setCloudInitialUploadCompleted___block_invoke(uint64_t
   v5[3] = &unk_1E75787F8;
   v5[4] = self;
   v2 = [(PLGlobalValues *)self _getValueUsingPerformBlockAndWait:v5];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 void *__48__PLGlobalValues_hasCloudInitialUploadCompleted__block_invoke(uint64_t a1)
@@ -1087,18 +1087,18 @@ void *__48__PLGlobalValues_hasCloudInitialUploadCompleted__block_invoke(uint64_t
   return v2;
 }
 
-- (void)setStableHashResumeObjectID:(id)a3
+- (void)setStableHashResumeObjectID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __46__PLGlobalValues_setStableHashResumeObjectID___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = dCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = dCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setStableHashResumeObjectID:]"];
 }
 
@@ -1138,20 +1138,20 @@ void __46__PLGlobalValues_setStableHashResumeObjectID___block_invoke(uint64_t a1
     v5 = 0;
   }
 
-  v6 = [(NSManagedObjectContext *)v4 persistentStoreCoordinator];
-  v7 = [v6 managedObjectIDForURIRepresentation:v5];
+  persistentStoreCoordinator = [(NSManagedObjectContext *)v4 persistentStoreCoordinator];
+  v7 = [persistentStoreCoordinator managedObjectIDForURIRepresentation:v5];
 
   return v7;
 }
 
-- (void)setStableHashProcessingCompleted:(BOOL)a3
+- (void)setStableHashProcessingCompleted:(BOOL)completed
 {
   v5 = self->_moc;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__PLGlobalValues_setStableHashProcessingCompleted___block_invoke;
   v7[3] = &unk_1E7576F80;
-  v9 = a3;
+  completedCopy = completed;
   v8 = v5;
   v6 = v5;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v7 responsibleCaller:"[PLGlobalValues setStableHashProcessingCompleted:]"];
@@ -1181,9 +1181,9 @@ void __51__PLGlobalValues_setStableHashProcessingCompleted___block_invoke(uint64
   v5[3] = &unk_1E75787F8;
   v5[4] = self;
   v2 = [(PLGlobalValues *)self _getValueUsingPerformBlockAndWait:v5];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 void *__50__PLGlobalValues_hasStableHashProcessingCompleted__block_invoke(uint64_t a1)
@@ -1204,18 +1204,18 @@ void *__50__PLGlobalValues_hasStableHashProcessingCompleted__block_invoke(uint64
   return v2;
 }
 
-- (void)setCloudTrackerLastKnownCloudVersion:(id)a3
+- (void)setCloudTrackerLastKnownCloudVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__PLGlobalValues_setCloudTrackerLastKnownCloudVersion___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = versionCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = versionCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setCloudTrackerLastKnownCloudVersion:]"];
 }
 
@@ -1231,18 +1231,18 @@ void *__50__PLGlobalValues_hasStableHashProcessingCompleted__block_invoke(uint64
   return v2;
 }
 
-- (void)setOrphanedSceneClassificationsCount:(id)a3
+- (void)setOrphanedSceneClassificationsCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__PLGlobalValues_setOrphanedSceneClassificationsCount___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = countCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = countCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setOrphanedSceneClassificationsCount:]"];
 }
 
@@ -1258,18 +1258,18 @@ void *__50__PLGlobalValues_hasStableHashProcessingCompleted__block_invoke(uint64
   return v2;
 }
 
-- (void)setLastInitialDuplicateDetectorProcessingCompletedDate:(id)a3
+- (void)setLastInitialDuplicateDetectorProcessingCompletedDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __73__PLGlobalValues_setLastInitialDuplicateDetectorProcessingCompletedDate___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = dateCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = dateCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setLastInitialDuplicateDetectorProcessingCompletedDate:]"];
 }
 
@@ -1287,20 +1287,20 @@ void *__50__PLGlobalValues_hasStableHashProcessingCompleted__block_invoke(uint64
 
 - (BOOL)isInitialDuplicateDetectorProcessingCompleted
 {
-  v2 = [(PLGlobalValues *)self lastInitialDuplicateDetectorProcessingCompletedDate];
-  v3 = v2 != 0;
+  lastInitialDuplicateDetectorProcessingCompletedDate = [(PLGlobalValues *)self lastInitialDuplicateDetectorProcessingCompletedDate];
+  v3 = lastInitialDuplicateDetectorProcessingCompletedDate != 0;
 
   return v3;
 }
 
-- (void)setDuplicateProcessingStatus:(char)a3
+- (void)setDuplicateProcessingStatus:(char)status
 {
   v5 = self->_moc;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__PLGlobalValues_setDuplicateProcessingStatus___block_invoke;
   v7[3] = &unk_1E7576F80;
-  v9 = a3;
+  statusCopy = status;
   v8 = v5;
   v6 = v5;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v7 responsibleCaller:"[PLGlobalValues setDuplicateProcessingStatus:]"];
@@ -1320,23 +1320,23 @@ void __47__PLGlobalValues_setDuplicateProcessingStatus___block_invoke(uint64_t a
   v5[3] = &unk_1E75787F8;
   v5[4] = self;
   v2 = [(PLGlobalValues *)self _getValueUsingPerformBlockAndWait:v5];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
-- (void)setPersonSyncResumeMarker:(id)a3
+- (void)setPersonSyncResumeMarker:(id)marker
 {
-  v4 = a3;
+  markerCopy = marker;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __44__PLGlobalValues_setPersonSyncResumeMarker___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = markerCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = markerCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setPersonSyncResumeMarker:]"];
 }
 
@@ -1352,18 +1352,18 @@ void __47__PLGlobalValues_setDuplicateProcessingStatus___block_invoke(uint64_t a
   return v2;
 }
 
-- (void)setPersonSyncState:(id)a3
+- (void)setPersonSyncState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __37__PLGlobalValues_setPersonSyncState___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = stateCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = stateCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setPersonSyncState:]"];
 }
 
@@ -1379,18 +1379,18 @@ void __47__PLGlobalValues_setDuplicateProcessingStatus___block_invoke(uint64_t a
   return v2;
 }
 
-- (void)setLastGuestAssetSyncTargetLibraryPath:(id)a3
+- (void)setLastGuestAssetSyncTargetLibraryPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __57__PLGlobalValues_setLastGuestAssetSyncTargetLibraryPath___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = pathCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = pathCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setLastGuestAssetSyncTargetLibraryPath:]"];
 }
 
@@ -1406,18 +1406,18 @@ void __47__PLGlobalValues_setDuplicateProcessingStatus___block_invoke(uint64_t a
   return v2;
 }
 
-- (void)setGuestAssetInitialSyncResumeMarker:(id)a3
+- (void)setGuestAssetInitialSyncResumeMarker:(id)marker
 {
-  v4 = a3;
+  markerCopy = marker;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__PLGlobalValues_setGuestAssetInitialSyncResumeMarker___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = markerCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = markerCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setGuestAssetInitialSyncResumeMarker:]"];
 }
 
@@ -1433,18 +1433,18 @@ void __47__PLGlobalValues_setDuplicateProcessingStatus___block_invoke(uint64_t a
   return v2;
 }
 
-- (void)setGuestAssetSyncStatus:(id)a3
+- (void)setGuestAssetSyncStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __42__PLGlobalValues_setGuestAssetSyncStatus___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = statusCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = statusCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setGuestAssetSyncStatus:]"];
 }
 
@@ -1460,18 +1460,18 @@ void __47__PLGlobalValues_setDuplicateProcessingStatus___block_invoke(uint64_t a
   return v2;
 }
 
-- (void)setLastGuestAssetSyncToken:(id)a3
+- (void)setLastGuestAssetSyncToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __45__PLGlobalValues_setLastGuestAssetSyncToken___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = tokenCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = tokenCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setLastGuestAssetSyncToken:]"];
 }
 
@@ -1487,16 +1487,16 @@ void __47__PLGlobalValues_setDuplicateProcessingStatus___block_invoke(uint64_t a
   return v2;
 }
 
-- (void)setSyndicationSyncRangeDenominator:(double)a3
+- (void)setSyndicationSyncRangeDenominator:(double)denominator
 {
-  if (a3 >= 1.0)
+  if (denominator >= 1.0)
   {
-    v4 = a3;
+    denominatorCopy = denominator;
   }
 
   else
   {
-    v4 = 1.0;
+    denominatorCopy = 1.0;
   }
 
   v5 = self->_moc;
@@ -1504,7 +1504,7 @@ void __47__PLGlobalValues_setDuplicateProcessingStatus___block_invoke(uint64_t a
   v7[1] = 3221225472;
   v7[2] = __53__PLGlobalValues_setSyndicationSyncRangeDenominator___block_invoke;
   v7[3] = &unk_1E7577B90;
-  v9 = v4;
+  v9 = denominatorCopy;
   v8 = v5;
   v6 = v5;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v7 responsibleCaller:"[PLGlobalValues setSyndicationSyncRangeDenominator:]"];
@@ -1539,18 +1539,18 @@ void __53__PLGlobalValues_setSyndicationSyncRangeDenominator___block_invoke(uint
   return v5;
 }
 
-- (void)setSyndicationPrefetchDownloadThrottlingDate:(id)a3
+- (void)setSyndicationPrefetchDownloadThrottlingDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __63__PLGlobalValues_setSyndicationPrefetchDownloadThrottlingDate___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = dateCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = dateCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setSyndicationPrefetchDownloadThrottlingDate:]"];
 }
 
@@ -1566,18 +1566,18 @@ void __53__PLGlobalValues_setSyndicationSyncRangeDenominator___block_invoke(uint
   return v2;
 }
 
-- (void)setSyndicationStartDate:(id)a3
+- (void)setSyndicationStartDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __42__PLGlobalValues_setSyndicationStartDate___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = dateCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = dateCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setSyndicationStartDate:]"];
 }
 
@@ -1593,18 +1593,18 @@ void __53__PLGlobalValues_setSyndicationSyncRangeDenominator___block_invoke(uint
   return v2;
 }
 
-- (void)setLastDeleteSyndicationSyncDate:(id)a3
+- (void)setLastDeleteSyndicationSyncDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __51__PLGlobalValues_setLastDeleteSyndicationSyncDate___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = dateCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = dateCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setLastDeleteSyndicationSyncDate:]"];
 }
 
@@ -1620,18 +1620,18 @@ void __53__PLGlobalValues_setSyndicationSyncRangeDenominator___block_invoke(uint
   return v2;
 }
 
-- (void)setLastChatSyndicationSyncDate:(id)a3
+- (void)setLastChatSyndicationSyncDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __49__PLGlobalValues_setLastChatSyndicationSyncDate___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = dateCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = dateCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setLastChatSyndicationSyncDate:]"];
 }
 
@@ -1647,18 +1647,18 @@ void __53__PLGlobalValues_setSyndicationSyncRangeDenominator___block_invoke(uint
   return v2;
 }
 
-- (void)setLastAttachmentSyndicationSyncDate:(id)a3
+- (void)setLastAttachmentSyndicationSyncDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__PLGlobalValues_setLastAttachmentSyndicationSyncDate___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = dateCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = dateCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setLastAttachmentSyndicationSyncDate:]"];
 }
 
@@ -1674,18 +1674,18 @@ void __53__PLGlobalValues_setSyndicationSyncRangeDenominator___block_invoke(uint
   return v2;
 }
 
-- (void)setInProgressFullIndexSyndicationSyncDate:(id)a3
+- (void)setInProgressFullIndexSyndicationSyncDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __60__PLGlobalValues_setInProgressFullIndexSyndicationSyncDate___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = dateCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = dateCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setInProgressFullIndexSyndicationSyncDate:]"];
 }
 
@@ -1701,18 +1701,18 @@ void __53__PLGlobalValues_setSyndicationSyncRangeDenominator___block_invoke(uint
   return v2;
 }
 
-- (void)setLastFullIndexSyndicationSyncStartDate:(id)a3
+- (void)setLastFullIndexSyndicationSyncStartDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __59__PLGlobalValues_setLastFullIndexSyndicationSyncStartDate___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = dateCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = dateCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setLastFullIndexSyndicationSyncStartDate:]"];
 }
 
@@ -1774,10 +1774,10 @@ void __47__PLGlobalValues_shouldPrefetchWidgetResources__block_invoke(uint64_t a
   *(*(*(a1 + 40) + 8) + 24) = v8;
 }
 
-- (void)setWidgetTimelineGeneratedForDisplaySize:(CGSize)a3
+- (void)setWidgetTimelineGeneratedForDisplaySize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -1816,18 +1816,18 @@ void __59__PLGlobalValues_setWidgetTimelineGeneratedForDisplaySize___block_invok
   }
 }
 
-- (void)setGreenTeaContactsAuthorization:(id)a3
+- (void)setGreenTeaContactsAuthorization:(id)authorization
 {
-  v4 = a3;
+  authorizationCopy = authorization;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __51__PLGlobalValues_setGreenTeaContactsAuthorization___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = authorizationCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = authorizationCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setGreenTeaContactsAuthorization:]"];
 }
 
@@ -1843,18 +1843,18 @@ void __59__PLGlobalValues_setWidgetTimelineGeneratedForDisplaySize___block_invok
   return v2;
 }
 
-- (void)setLocaleIdentifier:(id)a3
+- (void)setLocaleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __38__PLGlobalValues_setLocaleIdentifier___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = identifierCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = identifierCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setLocaleIdentifier:]"];
 }
 
@@ -1870,18 +1870,18 @@ void __59__PLGlobalValues_setWidgetTimelineGeneratedForDisplaySize___block_invok
   return v2;
 }
 
-- (void)setGreenValues:(id)a3
+- (void)setGreenValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v5 = self->_moc;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __33__PLGlobalValues_setGreenValues___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
+  v9 = valuesCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = valuesCopy;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v8 responsibleCaller:"[PLGlobalValues setGreenValues:]"];
 }
 
@@ -1897,13 +1897,13 @@ void __59__PLGlobalValues_setWidgetTimelineGeneratedForDisplaySize___block_invok
   return v2;
 }
 
-- (void)_setBackgroundJobServiceNeedsProcessing:(BOOL)a3
+- (void)_setBackgroundJobServiceNeedsProcessing:(BOOL)processing
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:processing];
   [PLGlobalKeyValue setGlobalValue:v4 forKey:@"BackgroundJobServiceNeedsProcessing" managedObjectContext:self->_moc];
 }
 
-- (void)setBackgroundJobServiceNeedsProcessing:(BOOL)a3
+- (void)setBackgroundJobServiceNeedsProcessing:(BOOL)processing
 {
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x1E69E9820];
@@ -1911,7 +1911,7 @@ void __59__PLGlobalValues_setWidgetTimelineGeneratedForDisplaySize___block_invok
   v5[2] = __57__PLGlobalValues_setBackgroundJobServiceNeedsProcessing___block_invoke;
   v5[3] = &unk_1E756CEE8;
   objc_copyWeak(&v6, &location);
-  v7 = a3;
+  processingCopy = processing;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v5 responsibleCaller:"[PLGlobalValues setBackgroundJobServiceNeedsProcessing:]"];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -1931,9 +1931,9 @@ void __57__PLGlobalValues_setBackgroundJobServiceNeedsProcessing___block_invoke(
   v5[3] = &unk_1E75787F8;
   v5[4] = self;
   v2 = [(PLGlobalValues *)self _getValueUsingPerformBlockAndWait:v5];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)_setRebuildComplete
@@ -1996,14 +1996,14 @@ id __35__PLGlobalValues_isRebuildComplete__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setJournalRebuildRequired:(BOOL)a3
+- (void)setJournalRebuildRequired:(BOOL)required
 {
   v5 = self->_moc;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__PLGlobalValues_setJournalRebuildRequired___block_invoke;
   v7[3] = &unk_1E7576F80;
-  v9 = a3;
+  requiredCopy = required;
   v8 = v5;
   v6 = v5;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v7 responsibleCaller:"[PLGlobalValues setJournalRebuildRequired:]"];
@@ -2017,9 +2017,9 @@ id __35__PLGlobalValues_isRebuildComplete__block_invoke(uint64_t a1)
   v5[3] = &unk_1E75787F8;
   v5[4] = self;
   v2 = [(PLGlobalValues *)self _getValueUsingPerformBlockAndWait:v5];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)dontImportFileSystemDataIntoDatabase
@@ -2042,15 +2042,15 @@ void __54__PLGlobalValues_dontImportFileSystemDataIntoDatabase__block_invoke(uin
   [WeakRetained _setRebuildComplete];
 }
 
-- (void)_setImportFilesystemAssetsState:(int64_t)a3
+- (void)_setImportFilesystemAssetsState:(int64_t)state
 {
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:?];
   [PLGlobalKeyValue setGlobalValue:v5 forKey:@"ImportedFileSystemAssets" managedObjectContext:self->_moc];
 
-  if (a3 == 1)
+  if (state == 1)
   {
-    v7 = [MEMORY[0x1E695DF00] date];
-    [PLGlobalKeyValue setGlobalValue:v7 forKey:@"ImportedFileSystemAssetsDate" managedObjectContext:self->_moc];
+    date = [MEMORY[0x1E695DF00] date];
+    [PLGlobalKeyValue setGlobalValue:date forKey:@"ImportedFileSystemAssetsDate" managedObjectContext:self->_moc];
   }
 
   else
@@ -2061,7 +2061,7 @@ void __54__PLGlobalValues_dontImportFileSystemDataIntoDatabase__block_invoke(uin
   }
 }
 
-- (void)setImportFilesystemAssetsState:(int64_t)a3
+- (void)setImportFilesystemAssetsState:(int64_t)state
 {
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x1E69E9820];
@@ -2069,7 +2069,7 @@ void __54__PLGlobalValues_dontImportFileSystemDataIntoDatabase__block_invoke(uin
   v5[2] = __49__PLGlobalValues_setImportFilesystemAssetsState___block_invoke;
   v5[3] = &unk_1E756CE10;
   objc_copyWeak(v6, &location);
-  v6[1] = a3;
+  v6[1] = state;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v5 responsibleCaller:"[PLGlobalValues setImportFilesystemAssetsState:]"];
   objc_destroyWeak(v6);
   objc_destroyWeak(&location);
@@ -2089,9 +2089,9 @@ void __49__PLGlobalValues_setImportFilesystemAssetsState___block_invoke(uint64_t
   v5[3] = &unk_1E75787F8;
   v5[4] = self;
   v2 = [(PLGlobalValues *)self _getValueUsingPerformBlockAndWait:v5];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)didImportFileSystemAssets
@@ -2102,9 +2102,9 @@ void __49__PLGlobalValues_setImportFilesystemAssetsState___block_invoke(uint64_t
   v5[3] = &unk_1E75787F8;
   v5[4] = self;
   v2 = [(PLGlobalValues *)self _getValueUsingPerformBlockAndWait:v5];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 id __43__PLGlobalValues_didImportFileSystemAssets__block_invoke(uint64_t a1)
@@ -2115,33 +2115,33 @@ id __43__PLGlobalValues_didImportFileSystemAssets__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (PLGlobalValues)initWithManagedObjectContext:(id)a3
+- (PLGlobalValues)initWithManagedObjectContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = PLGlobalValues;
   v6 = [(PLGlobalValues *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_moc, a3);
-    v8 = [v5 photoLibrary];
+    objc_storeStrong(&v6->_moc, context);
+    photoLibrary = [contextCopy photoLibrary];
     photoLibrary = v7->_photoLibrary;
-    v7->_photoLibrary = v8;
+    v7->_photoLibrary = photoLibrary;
   }
 
   return v7;
 }
 
-- (void)_setLastKnownTransactionToken:(id)a3 withTransactionNumberKey:(id)a4 andStoreUUIDKey:(id)a5
+- (void)_setLastKnownTransactionToken:(id)token withTransactionNumberKey:(id)key andStoreUUIDKey:(id)dKey
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v10)
+  tokenCopy = token;
+  keyCopy = key;
+  dKeyCopy = dKey;
+  v12 = dKeyCopy;
+  if (keyCopy)
   {
-    if (v11)
+    if (dKeyCopy)
     {
       goto LABEL_3;
     }
@@ -2149,8 +2149,8 @@ id __43__PLGlobalValues_didImportFileSystemAssets__block_invoke(uint64_t a1)
 
   else
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PLGlobalValues.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"transactionNumberKey"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGlobalValues.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"transactionNumberKey"}];
 
     if (v12)
     {
@@ -2158,31 +2158,31 @@ id __43__PLGlobalValues_didImportFileSystemAssets__block_invoke(uint64_t a1)
     }
   }
 
-  v25 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"PLGlobalValues.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"storeUUIDKey"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLGlobalValues.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"storeUUIDKey"}];
 
 LABEL_3:
   v13 = self->_moc;
-  if (v9)
+  if (tokenCopy)
   {
-    v14 = [v9 storeTokens];
-    if ([v14 count] != 1)
+    storeTokens = [tokenCopy storeTokens];
+    if ([storeTokens count] != 1)
     {
-      v26 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v26 handleFailureInMethod:a2 object:self file:@"PLGlobalValues.m" lineNumber:62 description:@"unexpected number of tokens"];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLGlobalValues.m" lineNumber:62 description:@"unexpected number of tokens"];
     }
 
-    v15 = [v14 allKeys];
-    v16 = [v15 firstObject];
+    allKeys = [storeTokens allKeys];
+    firstObject = [allKeys firstObject];
 
-    v17 = [v14 allValues];
-    v18 = [v17 firstObject];
+    allValues = [storeTokens allValues];
+    firstObject2 = [allValues firstObject];
   }
 
   else
   {
-    v18 = 0;
-    v16 = 0;
+    firstObject2 = 0;
+    firstObject = 0;
   }
 
   v27[0] = MEMORY[0x1E69E9820];
@@ -2191,12 +2191,12 @@ LABEL_3:
   v27[3] = &unk_1E75730F8;
   v28 = v12;
   v29 = v13;
-  v30 = v16;
-  v31 = v18;
-  v32 = v10;
-  v19 = v10;
-  v20 = v18;
-  v21 = v16;
+  v30 = firstObject;
+  v31 = firstObject2;
+  v32 = keyCopy;
+  v19 = keyCopy;
+  v20 = firstObject2;
+  v21 = firstObject;
   v22 = v13;
   v23 = v12;
   [(PLGlobalValues *)self _setValueUsingPerformBlockAndWait:v27 responsibleCaller:"[PLGlobalValues _setLastKnownTransactionToken:withTransactionNumberKey:andStoreUUIDKey:]"];
@@ -2213,14 +2213,14 @@ void __89__PLGlobalValues__setLastKnownTransactionToken_withTransactionNumberKey
   [PLGlobalKeyValue setGlobalValue:a1[7] forKey:a1[8] managedObjectContext:a1[5]];
 }
 
-- (id)_lastKnownTransactionTokenWithTransactionNumberKey:(id)a3 andStoreUUIDKey:(id)a4
+- (id)_lastKnownTransactionTokenWithTransactionNumberKey:(id)key andStoreUUIDKey:(id)dKey
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  keyCopy = key;
+  dKeyCopy = dKey;
+  v9 = dKeyCopy;
+  if (keyCopy)
   {
-    if (v8)
+    if (dKeyCopy)
     {
       goto LABEL_3;
     }
@@ -2228,8 +2228,8 @@ void __89__PLGlobalValues__setLastKnownTransactionToken_withTransactionNumberKey
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PLGlobalValues.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"transactionNumberKey"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGlobalValues.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"transactionNumberKey"}];
 
     if (v9)
     {
@@ -2237,8 +2237,8 @@ void __89__PLGlobalValues__setLastKnownTransactionToken_withTransactionNumberKey
     }
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"PLGlobalValues.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"storeUUIDKey"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLGlobalValues.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"storeUUIDKey"}];
 
 LABEL_3:
   v16[0] = MEMORY[0x1E69E9820];
@@ -2246,9 +2246,9 @@ LABEL_3:
   v16[2] = __85__PLGlobalValues__lastKnownTransactionTokenWithTransactionNumberKey_andStoreUUIDKey___block_invoke;
   v16[3] = &unk_1E7565A80;
   v17 = v9;
-  v18 = self;
-  v19 = v7;
-  v10 = v7;
+  selfCopy = self;
+  v19 = keyCopy;
+  v10 = keyCopy;
   v11 = v9;
   v12 = [(PLGlobalValues *)self _getValueUsingPerformBlockAndWait:v16];
 
@@ -2282,63 +2282,63 @@ id __85__PLGlobalValues__lastKnownTransactionTokenWithTransactionNumberKey_andSt
   return v5;
 }
 
-+ (void)setLibraryCreateOptions:(unint64_t)a3 managedObjectContext:(id)a4
++ (void)setLibraryCreateOptions:(unint64_t)options managedObjectContext:(id)context
 {
-  if (a3)
+  if (options)
   {
     v5 = MEMORY[0x1E696AD98];
-    v6 = a4;
-    v7 = [v5 numberWithUnsignedInteger:a3];
-    [PLGlobalKeyValue setGlobalValue:v7 forKey:@"LibraryCreateOptions" managedObjectContext:v6];
+    contextCopy = context;
+    v7 = [v5 numberWithUnsignedInteger:options];
+    [PLGlobalKeyValue setGlobalValue:v7 forKey:@"LibraryCreateOptions" managedObjectContext:contextCopy];
   }
 }
 
-+ (void)setJournalRebuildRequired:(BOOL)a3 managedObjectContext:(id)a4
++ (void)setJournalRebuildRequired:(BOOL)required managedObjectContext:(id)context
 {
-  if (a3)
+  if (required)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = a4;
+    contextCopy = context;
     v6 = [v4 numberWithBool:1];
-    [PLGlobalKeyValue setGlobalValue:v6 forKey:@"JournalRebuildRequired" managedObjectContext:v5];
+    [PLGlobalKeyValue setGlobalValue:v6 forKey:@"JournalRebuildRequired" managedObjectContext:contextCopy];
 
     v7 = @"RebuildCompleteDate";
-    v8 = v5;
+    contextCopy2 = contextCopy;
   }
 
   else
   {
-    v8 = a4;
+    contextCopy2 = context;
     v7 = @"JournalRebuildRequired";
   }
 
-  [PLGlobalKeyValue setGlobalValue:0 forKey:v7 managedObjectContext:v8];
+  [PLGlobalKeyValue setGlobalValue:0 forKey:v7 managedObjectContext:contextCopy2];
 }
 
 - (void)incrementSpotlightClientStateMismatchedCount
 {
-  v3 = [(PLGlobalValues *)self searchIndexSpotlightClientStateMismatchedCount];
-  v4 = [v3 unsignedIntegerValue];
+  searchIndexSpotlightClientStateMismatchedCount = [(PLGlobalValues *)self searchIndexSpotlightClientStateMismatchedCount];
+  unsignedIntegerValue = [searchIndexSpotlightClientStateMismatchedCount unsignedIntegerValue];
 
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v4 + 1];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue + 1];
   [(PLGlobalValues *)self setSearchIndexSpotlightClientStateMismatchedCount:v5];
 }
 
 - (void)incrementSpotlightClientStateMissingCount
 {
-  v3 = [(PLGlobalValues *)self searchIndexSpotlightClientStateMissingCount];
-  v4 = [v3 unsignedIntegerValue];
+  searchIndexSpotlightClientStateMissingCount = [(PLGlobalValues *)self searchIndexSpotlightClientStateMissingCount];
+  unsignedIntegerValue = [searchIndexSpotlightClientStateMissingCount unsignedIntegerValue];
 
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v4 + 1];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue + 1];
   [(PLGlobalValues *)self setSearchIndexSpotlightClientStateMissingCount:v5];
 }
 
 - (id)searchIndexSpotlightClientStateData
 {
-  v2 = [(PLGlobalValues *)self searchIndexSpotlightClientState];
-  if (v2)
+  searchIndexSpotlightClientState = [(PLGlobalValues *)self searchIndexSpotlightClientState];
+  if (searchIndexSpotlightClientState)
   {
-    v3 = [objc_opt_class() searchIndexSpotlightClientStateDataWithDictionary:v2];
+    v3 = [objc_opt_class() searchIndexSpotlightClientStateDataWithDictionary:searchIndexSpotlightClientState];
   }
 
   else
@@ -2349,21 +2349,21 @@ id __85__PLGlobalValues__lastKnownTransactionTokenWithTransactionNumberKey_andSt
   return v3;
 }
 
-- (double)searchIndexUptimeIsRebuildInProgress:(BOOL *)a3
+- (double)searchIndexUptimeIsRebuildInProgress:(BOOL *)progress
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = [(PLGlobalValues *)self searchIndexRebuildStartDate];
-  v6 = [(PLGlobalValues *)self searchIndexRebuildEndDate];
-  v7 = [(PLGlobalValues *)self isSearchIndexRebuildFinished];
-  if (v7)
+  searchIndexRebuildStartDate = [(PLGlobalValues *)self searchIndexRebuildStartDate];
+  searchIndexRebuildEndDate = [(PLGlobalValues *)self searchIndexRebuildEndDate];
+  isSearchIndexRebuildFinished = [(PLGlobalValues *)self isSearchIndexRebuildFinished];
+  if (isSearchIndexRebuildFinished)
   {
-    [v6 timeIntervalSinceReferenceDate];
+    [searchIndexRebuildEndDate timeIntervalSinceReferenceDate];
     v9 = v8;
-    [v5 timeIntervalSinceReferenceDate];
+    [searchIndexRebuildStartDate timeIntervalSinceReferenceDate];
     if (v9 > v10)
     {
       v11 = [MEMORY[0x1E695DF00] now];
-      [v11 timeIntervalSinceDate:v6];
+      [v11 timeIntervalSinceDate:searchIndexRebuildEndDate];
       v13 = v12;
 
       goto LABEL_13;
@@ -2372,9 +2372,9 @@ id __85__PLGlobalValues__lastKnownTransactionTokenWithTransactionNumberKey_andSt
     goto LABEL_7;
   }
 
-  [v5 timeIntervalSinceReferenceDate];
+  [searchIndexRebuildStartDate timeIntervalSinceReferenceDate];
   v15 = v14;
-  [v6 timeIntervalSinceReferenceDate];
+  [searchIndexRebuildEndDate timeIntervalSinceReferenceDate];
   if (v15 <= v16)
   {
 LABEL_7:
@@ -2382,7 +2382,7 @@ LABEL_7:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       v19 = @"YES";
-      if (v7)
+      if (isSearchIndexRebuildFinished)
       {
         v19 = @"NO";
       }
@@ -2391,18 +2391,18 @@ LABEL_7:
       v22 = 138543874;
       v23 = v20;
       v24 = 2114;
-      v25 = v5;
+      v25 = searchIndexRebuildStartDate;
       v26 = 2114;
-      v27 = v6;
+      v27 = searchIndexRebuildEndDate;
       _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "Failed to get search index uptime. Invalid index rebuild completion status [%{public}@], start date [%{public}@], end date [%{public}@]", &v22, 0x20u);
     }
 
     goto LABEL_12;
   }
 
-  if (v6)
+  if (searchIndexRebuildEndDate)
   {
-    [v5 timeIntervalSinceDate:v6];
+    [searchIndexRebuildStartDate timeIntervalSinceDate:searchIndexRebuildEndDate];
     v13 = v17;
     goto LABEL_13;
   }
@@ -2410,30 +2410,30 @@ LABEL_7:
 LABEL_12:
   v13 = 0.0;
 LABEL_13:
-  if (a3)
+  if (progress)
   {
-    *a3 = !v7;
+    *progress = !isSearchIndexRebuildFinished;
   }
 
   return v13;
 }
 
-- (double)searchIndexRebuildTimeIsRebuildInProgress:(BOOL *)a3
+- (double)searchIndexRebuildTimeIsRebuildInProgress:(BOOL *)progress
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = [(PLGlobalValues *)self searchIndexRebuildStartDate];
-  v6 = [(PLGlobalValues *)self searchIndexRebuildEndDate];
-  v7 = [(PLGlobalValues *)self isSearchIndexRebuildFinished];
-  if (v7)
+  searchIndexRebuildStartDate = [(PLGlobalValues *)self searchIndexRebuildStartDate];
+  searchIndexRebuildEndDate = [(PLGlobalValues *)self searchIndexRebuildEndDate];
+  isSearchIndexRebuildFinished = [(PLGlobalValues *)self isSearchIndexRebuildFinished];
+  if (isSearchIndexRebuildFinished)
   {
-    [v6 timeIntervalSinceReferenceDate];
+    [searchIndexRebuildEndDate timeIntervalSinceReferenceDate];
     v9 = v8;
-    [v5 timeIntervalSinceReferenceDate];
+    [searchIndexRebuildStartDate timeIntervalSinceReferenceDate];
     if (v9 > v10)
     {
-      if (v5)
+      if (searchIndexRebuildStartDate)
       {
-        [v6 timeIntervalSinceDate:v5];
+        [searchIndexRebuildEndDate timeIntervalSinceDate:searchIndexRebuildStartDate];
         v12 = v11;
         goto LABEL_13;
       }
@@ -2444,13 +2444,13 @@ LABEL_13:
 
   else
   {
-    [v5 timeIntervalSinceReferenceDate];
+    [searchIndexRebuildStartDate timeIntervalSinceReferenceDate];
     v14 = v13;
-    [v6 timeIntervalSinceReferenceDate];
+    [searchIndexRebuildEndDate timeIntervalSinceReferenceDate];
     if (v14 > v15)
     {
       v16 = [MEMORY[0x1E695DF00] now];
-      [v16 timeIntervalSinceDate:v5];
+      [v16 timeIntervalSinceDate:searchIndexRebuildStartDate];
       v12 = v17;
 
       goto LABEL_13;
@@ -2461,7 +2461,7 @@ LABEL_13:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
     v19 = @"YES";
-    if (v7)
+    if (isSearchIndexRebuildFinished)
     {
       v19 = @"NO";
     }
@@ -2470,58 +2470,58 @@ LABEL_13:
     v22 = 138543874;
     v23 = v20;
     v24 = 2114;
-    v25 = v5;
+    v25 = searchIndexRebuildStartDate;
     v26 = 2114;
-    v27 = v6;
+    v27 = searchIndexRebuildEndDate;
     _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "Failed to get search index rebuild time. Invalid index rebuild completion status [%{public}@], start date [%{public}@], end date [%{public}@]", &v22, 0x20u);
   }
 
 LABEL_12:
   v12 = 0.0;
 LABEL_13:
-  if (a3)
+  if (progress)
   {
-    *a3 = !v7;
+    *progress = !isSearchIndexRebuildFinished;
   }
 
   return v12;
 }
 
-- (void)addSearchIndexRebuildCoalescedReasons:(unint64_t)a3
+- (void)addSearchIndexRebuildCoalescedReasons:(unint64_t)reasons
 {
-  v5 = [(PLGlobalValues *)self unpackedSearchIndexRebuildCoalescedReasons];
-  if (v5 != (v5 | a3))
+  unpackedSearchIndexRebuildCoalescedReasons = [(PLGlobalValues *)self unpackedSearchIndexRebuildCoalescedReasons];
+  if (unpackedSearchIndexRebuildCoalescedReasons != (unpackedSearchIndexRebuildCoalescedReasons | reasons))
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
     [(PLGlobalValues *)self setSearchIndexRebuildCoalescedReasons:v6];
   }
 }
 
-- (void)addRebuildRequiredExternalReasons:(unint64_t)a3
+- (void)addRebuildRequiredExternalReasons:(unint64_t)reasons
 {
-  v5 = [(PLGlobalValues *)self unpackedSearchIndexRebuildRequiredExternalReasons];
-  if (v5 != (v5 | a3))
+  unpackedSearchIndexRebuildRequiredExternalReasons = [(PLGlobalValues *)self unpackedSearchIndexRebuildRequiredExternalReasons];
+  if (unpackedSearchIndexRebuildRequiredExternalReasons != (unpackedSearchIndexRebuildRequiredExternalReasons | reasons))
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
     [(PLGlobalValues *)self setSearchIndexRebuildRequiredExternalReasons:v6];
   }
 }
 
-- (BOOL)shouldDropGlobalSpotlightIndexForLibraryIdentifier:(int64_t)a3
+- (BOOL)shouldDropGlobalSpotlightIndexForLibraryIdentifier:(int64_t)identifier
 {
   result = 0;
-  if ([PLSpotlightDonationUtilities shouldUseSpotlightPrivateIndexForLibraryIdentifier:a3])
+  if ([PLSpotlightDonationUtilities shouldUseSpotlightPrivateIndexForLibraryIdentifier:identifier])
   {
-    v4 = [(PLGlobalValues *)self searchIndexVersion];
-    if (!v4)
+    searchIndexVersion = [(PLGlobalValues *)self searchIndexVersion];
+    if (!searchIndexVersion)
     {
       return 1;
     }
 
-    v5 = v4;
-    v6 = [v4 integerValue];
+    v5 = searchIndexVersion;
+    integerValue = [searchIndexVersion integerValue];
 
-    if (v6 < 18004)
+    if (integerValue < 18004)
     {
       return 1;
     }
@@ -2530,12 +2530,12 @@ LABEL_13:
   return result;
 }
 
-- (unint64_t)searchIndexRebuildReasonsWithSceneTaxonomyDigests:(id)a3 spotlightRequestedRebuild:(BOOL)a4 pathManager:(id)a5
+- (unint64_t)searchIndexRebuildReasonsWithSceneTaxonomyDigests:(id)digests spotlightRequestedRebuild:(BOOL)rebuild pathManager:(id)manager
 {
-  v6 = a4;
+  rebuildCopy = rebuild;
   v57 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if ([(PLGlobalValues *)self _isNewLibraryOrRebuildWithPathManager:a5])
+  digestsCopy = digests;
+  if ([(PLGlobalValues *)self _isNewLibraryOrRebuildWithPathManager:manager])
   {
     v9 = 1024;
   }
@@ -2545,37 +2545,37 @@ LABEL_13:
     v9 = 0;
   }
 
-  v10 = [(PLGlobalValues *)self searchIndexVersion];
-  v11 = [v10 unsignedIntegerValue];
+  searchIndexVersion = [(PLGlobalValues *)self searchIndexVersion];
+  unsignedIntegerValue = [searchIndexVersion unsignedIntegerValue];
 
   v12 = v9;
-  if (v11 != 19008)
+  if (unsignedIntegerValue != 19008)
   {
     v12 = v9 | 1;
     v13 = PLSearchBackendIndexRebuildGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(PLGlobalValues *)self searchIndexVersion];
+      searchIndexVersion2 = [(PLGlobalValues *)self searchIndexVersion];
       v53 = 134218240;
-      v54 = [v14 unsignedIntegerValue];
+      unsignedIntegerValue2 = [searchIndexVersion2 unsignedIntegerValue];
       v55 = 1024;
       LODWORD(v56) = 19008;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "searchIndexVersion: %tu != SEARCH_INDEX_VERSION: %d", &v53, 0x12u);
     }
 
-    v15 = [(PLGlobalValues *)self searchIndexVersion];
-    v16 = [v15 unsignedIntegerValue];
+    searchIndexVersion3 = [(PLGlobalValues *)self searchIndexVersion];
+    unsignedIntegerValue3 = [searchIndexVersion3 unsignedIntegerValue];
 
-    if (v16 <= 0x4653)
+    if (unsignedIntegerValue3 <= 0x4653)
     {
       v12 = v9 | 0x21;
       v17 = PLSearchBackendIndexRebuildGetLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [(PLGlobalValues *)self searchIndexVersion];
-        v19 = [v18 unsignedIntegerValue];
+        searchIndexVersion4 = [(PLGlobalValues *)self searchIndexVersion];
+        unsignedIntegerValue4 = [searchIndexVersion4 unsignedIntegerValue];
         v53 = 134218240;
-        v54 = v19;
+        unsignedIntegerValue2 = unsignedIntegerValue4;
         v55 = 1024;
         LODWORD(v56) = 18004;
         _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_DEFAULT, "searchIndexVersion: %tu != LAST_DROP_INDEX_VERSION: %d", &v53, 0x12u);
@@ -2584,51 +2584,51 @@ LABEL_13:
   }
 
   v20 = +[PLSearchIndexConfiguration currentEmbeddingModelVersion];
-  v21 = [(PLGlobalValues *)self searchIndexEmbeddingModelVersion];
-  v22 = [v21 unsignedIntegerValue];
+  searchIndexEmbeddingModelVersion = [(PLGlobalValues *)self searchIndexEmbeddingModelVersion];
+  unsignedIntegerValue5 = [searchIndexEmbeddingModelVersion unsignedIntegerValue];
 
-  if (v20 != v22)
+  if (v20 != unsignedIntegerValue5)
   {
     v12 |= 0x40uLL;
     v23 = PLSearchBackendIndexRebuildGetLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       v24 = +[PLSearchIndexConfiguration currentEmbeddingModelVersion];
-      v25 = [(PLGlobalValues *)self searchIndexEmbeddingModelVersion];
-      v26 = [v25 unsignedIntegerValue];
+      searchIndexEmbeddingModelVersion2 = [(PLGlobalValues *)self searchIndexEmbeddingModelVersion];
+      unsignedIntegerValue6 = [searchIndexEmbeddingModelVersion2 unsignedIntegerValue];
       v53 = 134218240;
-      v54 = v24;
+      unsignedIntegerValue2 = v24;
       v55 = 2048;
-      v56 = v26;
+      v56 = unsignedIntegerValue6;
       _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_DEFAULT, "currentEmbeddingModelVersion: %tu != searchIndexEmbeddingModelVersion: %tu", &v53, 0x16u);
     }
   }
 
   v27 = +[PLSearchIndexConfiguration currentUtilityTypeClassifierVersion];
-  v28 = [(PLGlobalValues *)self searchIndexUtilityTypeClassifierVersion];
-  v29 = [v28 unsignedIntegerValue];
+  searchIndexUtilityTypeClassifierVersion = [(PLGlobalValues *)self searchIndexUtilityTypeClassifierVersion];
+  unsignedIntegerValue7 = [searchIndexUtilityTypeClassifierVersion unsignedIntegerValue];
 
-  if (v27 != v29)
+  if (v27 != unsignedIntegerValue7)
   {
     v12 |= 0x80uLL;
     v30 = PLSearchBackendIndexRebuildGetLog();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       v31 = +[PLSearchIndexConfiguration currentUtilityTypeClassifierVersion];
-      v32 = [(PLGlobalValues *)self searchIndexUtilityTypeClassifierVersion];
-      v33 = [v32 unsignedIntegerValue];
+      searchIndexUtilityTypeClassifierVersion2 = [(PLGlobalValues *)self searchIndexUtilityTypeClassifierVersion];
+      unsignedIntegerValue8 = [searchIndexUtilityTypeClassifierVersion2 unsignedIntegerValue];
       v53 = 134218240;
-      v54 = v31;
+      unsignedIntegerValue2 = v31;
       v55 = 2048;
-      v56 = v33;
+      v56 = unsignedIntegerValue8;
       _os_log_impl(&dword_19BF1F000, v30, OS_LOG_TYPE_DEFAULT, "currentUtilityTypeClassifierVersion: %tu != searchIndexUtilityTypeClassifierVersion: %tu", &v53, 0x16u);
     }
   }
 
   v34 = +[PLSearchIndexConfiguration locale];
-  v35 = [v34 localeIdentifier];
-  v36 = [(PLGlobalValues *)self searchIndexLocaleIdentifier];
-  v37 = [v35 isEqualToString:v36];
+  localeIdentifier = [v34 localeIdentifier];
+  searchIndexLocaleIdentifier = [(PLGlobalValues *)self searchIndexLocaleIdentifier];
+  v37 = [localeIdentifier isEqualToString:searchIndexLocaleIdentifier];
 
   if ((v37 & 1) == 0)
   {
@@ -2637,32 +2637,32 @@ LABEL_13:
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
     {
       v39 = +[PLSearchIndexConfiguration locale];
-      v40 = [v39 localeIdentifier];
-      v41 = [(PLGlobalValues *)self searchIndexLocaleIdentifier];
+      localeIdentifier2 = [v39 localeIdentifier];
+      searchIndexLocaleIdentifier2 = [(PLGlobalValues *)self searchIndexLocaleIdentifier];
       v53 = 138543618;
-      v54 = v40;
+      unsignedIntegerValue2 = localeIdentifier2;
       v55 = 2114;
-      v56 = v41;
+      v56 = searchIndexLocaleIdentifier2;
       _os_log_impl(&dword_19BF1F000, v38, OS_LOG_TYPE_DEFAULT, "localeIdentifier: %{public}@ != searchIndexLocaleIdentifier: %{public}@", &v53, 0x16u);
     }
   }
 
-  v42 = [(PLGlobalValues *)self searchIndexSceneTaxonomySHA];
-  if (v42 != v8 && ([v8 isEqualToString:v42] & 1) == 0)
+  searchIndexSceneTaxonomySHA = [(PLGlobalValues *)self searchIndexSceneTaxonomySHA];
+  if (searchIndexSceneTaxonomySHA != digestsCopy && ([digestsCopy isEqualToString:searchIndexSceneTaxonomySHA] & 1) == 0)
   {
     v12 |= 4uLL;
     v43 = PLSearchBackendIndexRebuildGetLog();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
     {
       v53 = 138543618;
-      v54 = v8;
+      unsignedIntegerValue2 = digestsCopy;
       v55 = 2114;
-      v56 = v42;
+      v56 = searchIndexSceneTaxonomySHA;
       _os_log_impl(&dword_19BF1F000, v43, OS_LOG_TYPE_DEFAULT, "sceneTaxonomyDigests: %{public}@ != searchIndexSceneTaxonomySHA: %{public}@", &v53, 0x16u);
     }
   }
 
-  v44 = [(PLGlobalValues *)self unpackedSearchIndexStatus];
+  unpackedSearchIndexStatus = [(PLGlobalValues *)self unpackedSearchIndexStatus];
   v45 = 0;
   v46 = 1;
   do
@@ -2683,7 +2683,7 @@ LABEL_13:
   }
 
   while (!v48);
-  if ((v45 & ~v44) != 0)
+  if ((v45 & ~unpackedSearchIndexStatus) != 0)
   {
     v49 = v12 | 0x10;
   }
@@ -2693,27 +2693,27 @@ LABEL_13:
     v49 = v12;
   }
 
-  v50 = [(PLGlobalValues *)self unpackedSearchIndexRebuildRequiredExternalReasons];
-  if (v6)
+  unpackedSearchIndexRebuildRequiredExternalReasons = [(PLGlobalValues *)self unpackedSearchIndexRebuildRequiredExternalReasons];
+  if (rebuildCopy)
   {
-    v51 = v49 | v50 | 8;
+    v51 = v49 | unpackedSearchIndexRebuildRequiredExternalReasons | 8;
   }
 
   else
   {
-    v51 = v49 | v50;
+    v51 = v49 | unpackedSearchIndexRebuildRequiredExternalReasons;
   }
 
   return v51;
 }
 
-- (BOOL)_isNewLibraryOrRebuildWithPathManager:(id)a3
+- (BOOL)_isNewLibraryOrRebuildWithPathManager:(id)manager
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLGlobalValues *)self searchIndexVersion];
+  managerCopy = manager;
+  searchIndexVersion = [(PLGlobalValues *)self searchIndexVersion];
 
-  if (v5)
+  if (searchIndexVersion)
   {
     v6 = 0;
   }
@@ -2721,9 +2721,9 @@ LABEL_13:
   else
   {
     v18 = 0;
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
-    v8 = [v4 searchIndexSystemInfoFilePath];
-    v9 = [v7 fileExistsAtPath:v8 isDirectory:&v18];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    searchIndexSystemInfoFilePath = [managerCopy searchIndexSystemInfoFilePath];
+    v9 = [defaultManager fileExistsAtPath:searchIndexSystemInfoFilePath isDirectory:&v18];
 
     if (v9)
     {
@@ -2737,10 +2737,10 @@ LABEL_13:
         }
       }
 
-      v11 = [MEMORY[0x1E696AC08] defaultManager];
-      v12 = [v4 searchIndexSystemInfoFilePath];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      searchIndexSystemInfoFilePath2 = [managerCopy searchIndexSystemInfoFilePath];
       v17 = 0;
-      v13 = [v11 removeItemAtPath:v12 error:&v17];
+      v13 = [defaultManager2 removeItemAtPath:searchIndexSystemInfoFilePath2 error:&v17];
       v14 = v17;
 
       if ((v13 & 1) == 0)
@@ -2761,14 +2761,14 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)markRebuildPhaseCompleted:(unint64_t)a3
+- (BOOL)markRebuildPhaseCompleted:(unint64_t)completed
 {
-  v5 = [(PLGlobalValues *)self unpackedSearchIndexStatus];
-  v6 = v5 & a3;
-  if ((v5 & a3) != a3)
+  unpackedSearchIndexStatus = [(PLGlobalValues *)self unpackedSearchIndexStatus];
+  v6 = unpackedSearchIndexStatus & completed;
+  if ((unpackedSearchIndexStatus & completed) != completed)
   {
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v5 | a3];
-    [(PLGlobalValues *)self setSearchIndexStatus:v7];
+    completed = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:unpackedSearchIndexStatus | completed];
+    [(PLGlobalValues *)self setSearchIndexStatus:completed];
 
     [(PLGlobalValues *)self setSearchIndexRebuildResumeMarker:0];
     if ([(PLGlobalValues *)self isSearchIndexRebuildFinished])
@@ -2778,12 +2778,12 @@ LABEL_13:
     }
   }
 
-  return v6 != a3;
+  return v6 != completed;
 }
 
-- (void)resetSearchIndexRebuildMetadataWithSceneTaxonomyDigests:(id)a3
+- (void)resetSearchIndexRebuildMetadataWithSceneTaxonomyDigests:(id)digests
 {
-  v4 = a3;
+  digestsCopy = digests;
   [(PLGlobalValues *)self clearRebuildFinishedFlags];
   [(PLGlobalValues *)self setSearchIndexRebuildResumeMarker:0];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{+[PLSearchIndexConfiguration currentSearchIndexVersion](PLSearchIndexConfiguration, "currentSearchIndexVersion")}];
@@ -2796,10 +2796,10 @@ LABEL_13:
   [(PLGlobalValues *)self setSearchIndexUtilityTypeClassifierVersion:v7];
 
   v8 = +[PLSearchIndexConfiguration locale];
-  v9 = [v8 localeIdentifier];
-  [(PLGlobalValues *)self setSearchIndexLocaleIdentifier:v9];
+  localeIdentifier = [v8 localeIdentifier];
+  [(PLGlobalValues *)self setSearchIndexLocaleIdentifier:localeIdentifier];
 
-  [(PLGlobalValues *)self setSearchIndexSceneTaxonomySHA:v4];
+  [(PLGlobalValues *)self setSearchIndexSceneTaxonomySHA:digestsCopy];
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{+[PLSearchIndexConfiguration featureSettings](PLSearchIndexConfiguration, "featureSettings")}];
   [(PLGlobalValues *)self setSearchIndexFeatureSettings:v10];
 
@@ -2810,38 +2810,38 @@ LABEL_13:
 
 - (void)clearRebuildFinishedFlags
 {
-  v3 = [(PLGlobalValues *)self unpackedSearchIndexStatus];
-  if ((v3 & 0xFFFFFFFFFFFFFFC0) != v3)
+  unpackedSearchIndexStatus = [(PLGlobalValues *)self unpackedSearchIndexStatus];
+  if ((unpackedSearchIndexStatus & 0xFFFFFFFFFFFFFFC0) != unpackedSearchIndexStatus)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
     [(PLGlobalValues *)self setSearchIndexStatus:v4];
   }
 }
 
-- (void)setSearchIndexRebuildResumeObjectID:(id)a3
+- (void)setSearchIndexRebuildResumeObjectID:(id)d
 {
-  v5 = [a3 URIRepresentation];
-  v4 = [v5 absoluteString];
-  [(PLGlobalValues *)self setSearchIndexRebuildResumeMarker:v4];
+  uRIRepresentation = [d URIRepresentation];
+  absoluteString = [uRIRepresentation absoluteString];
+  [(PLGlobalValues *)self setSearchIndexRebuildResumeMarker:absoluteString];
 }
 
 - (NSManagedObjectID)searchIndexRebuildResumeObjectID
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(PLGlobalValues *)self searchIndexRebuildResumeMarker];
-  if (v3)
+  searchIndexRebuildResumeMarker = [(PLGlobalValues *)self searchIndexRebuildResumeMarker];
+  if (searchIndexRebuildResumeMarker)
   {
     v4 = [(PLGlobalValues *)self moc];
-    v5 = [v4 persistentStoreCoordinator];
-    v6 = [MEMORY[0x1E695DFF8] URLWithString:v3];
-    v7 = [v5 managedObjectIDForURIRepresentation:v6];
+    persistentStoreCoordinator = [v4 persistentStoreCoordinator];
+    v6 = [MEMORY[0x1E695DFF8] URLWithString:searchIndexRebuildResumeMarker];
+    v7 = [persistentStoreCoordinator managedObjectIDForURIRepresentation:v6];
 
-    v8 = [(PLGlobalValues *)self searchIndexingEntityToRebuild];
-    v9 = [v7 entity];
-    v10 = [v9 name];
-    v11 = PLSearchIndexingEntityForEntityName(v10);
+    searchIndexingEntityToRebuild = [(PLGlobalValues *)self searchIndexingEntityToRebuild];
+    entity = [v7 entity];
+    name = [entity name];
+    v11 = PLSearchIndexingEntityForEntityName(name);
 
-    if (v11 == v8)
+    if (v11 == searchIndexingEntityToRebuild)
     {
       goto LABEL_10;
     }
@@ -2849,14 +2849,14 @@ LABEL_13:
     v12 = PLSearchBackendIndexRebuildGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      if (v8 > 9)
+      if (searchIndexingEntityToRebuild > 9)
       {
         v13 = @"invalid";
       }
 
       else
       {
-        v13 = off_1E7571300[v8];
+        v13 = off_1E7571300[searchIndexingEntityToRebuild];
       }
 
       v14 = v13;
@@ -2874,22 +2874,22 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)rebuildWorkIsRequiredForEntity:(unint64_t)a3
+- (BOOL)rebuildWorkIsRequiredForEntity:(unint64_t)entity
 {
-  if (a3 > 9 || ((0x105uLL >> a3) & 1) != 0)
+  if (entity > 9 || ((0x105uLL >> entity) & 1) != 0)
   {
     return 0;
   }
 
-  v3 = qword_19C60FB90[a3];
+  v3 = qword_19C60FB90[entity];
   return ([(PLGlobalValues *)self unpackedSearchIndexStatus]& v3) == 0;
 }
 
 - (unint64_t)searchIndexingEntityToRebuild
 {
-  v2 = [(PLGlobalValues *)self unpackedSearchIndexStatus];
+  unpackedSearchIndexStatus = [(PLGlobalValues *)self unpackedSearchIndexStatus];
   result = 0;
-  while (((0x105uLL >> result) & 1) != 0 || (qword_19C60FB90[result] & ~v2) == 0)
+  while (((0x105uLL >> result) & 1) != 0 || (qword_19C60FB90[result] & ~unpackedSearchIndexStatus) == 0)
   {
     if (++result == 10)
     {
@@ -2902,77 +2902,77 @@ LABEL_10:
 
 - (unint64_t)unpackedSearchIndexRebuildCoalescedReasons
 {
-  v3 = [(PLGlobalValues *)self searchIndexRebuildCoalescedReasons];
-  if (v3)
+  searchIndexRebuildCoalescedReasons = [(PLGlobalValues *)self searchIndexRebuildCoalescedReasons];
+  if (searchIndexRebuildCoalescedReasons)
   {
-    v4 = [(PLGlobalValues *)self searchIndexRebuildCoalescedReasons];
-    v5 = [v4 unsignedIntegerValue];
+    searchIndexRebuildCoalescedReasons2 = [(PLGlobalValues *)self searchIndexRebuildCoalescedReasons];
+    unsignedIntegerValue = [searchIndexRebuildCoalescedReasons2 unsignedIntegerValue];
   }
 
   else
   {
-    v5 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)unpackedSearchIndexRebuildRequiredExternalReasons
 {
-  v3 = [(PLGlobalValues *)self searchIndexRebuildRequiredExternalReasons];
-  if (v3)
+  searchIndexRebuildRequiredExternalReasons = [(PLGlobalValues *)self searchIndexRebuildRequiredExternalReasons];
+  if (searchIndexRebuildRequiredExternalReasons)
   {
-    v4 = [(PLGlobalValues *)self searchIndexRebuildRequiredExternalReasons];
-    v5 = [v4 unsignedIntegerValue];
+    searchIndexRebuildRequiredExternalReasons2 = [(PLGlobalValues *)self searchIndexRebuildRequiredExternalReasons];
+    unsignedIntegerValue = [searchIndexRebuildRequiredExternalReasons2 unsignedIntegerValue];
   }
 
   else
   {
-    v5 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)unpackedSearchIndexFeatureSettings
 {
-  v3 = [(PLGlobalValues *)self searchIndexFeatureSettings];
-  if (v3)
+  searchIndexFeatureSettings = [(PLGlobalValues *)self searchIndexFeatureSettings];
+  if (searchIndexFeatureSettings)
   {
-    v4 = [(PLGlobalValues *)self searchIndexFeatureSettings];
-    v5 = [v4 unsignedIntegerValue];
+    searchIndexFeatureSettings2 = [(PLGlobalValues *)self searchIndexFeatureSettings];
+    unsignedIntegerValue = [searchIndexFeatureSettings2 unsignedIntegerValue];
   }
 
   else
   {
-    v5 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)unpackedSearchIndexStatus
 {
-  v3 = [(PLGlobalValues *)self searchIndexStatus];
-  if (v3)
+  searchIndexStatus = [(PLGlobalValues *)self searchIndexStatus];
+  if (searchIndexStatus)
   {
-    v4 = [(PLGlobalValues *)self searchIndexStatus];
-    v5 = [v4 unsignedIntegerValue];
+    searchIndexStatus2 = [(PLGlobalValues *)self searchIndexStatus];
+    unsignedIntegerValue = [searchIndexStatus2 unsignedIntegerValue];
   }
 
   else
   {
-    v5 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
-+ (id)searchIndexSpotlightClientStateWithData:(id)a3
++ (id)searchIndexSpotlightClientStateWithData:(id)data
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v11 = 0;
-  v3 = [MEMORY[0x1E696AE40] propertyListWithData:a3 options:0 format:0 error:&v11];
+  v3 = [MEMORY[0x1E696AE40] propertyListWithData:data options:0 format:0 error:&v11];
   v4 = v11;
   if (v3)
   {
@@ -3000,10 +3000,10 @@ LABEL_6:
   return v5;
 }
 
-+ (id)searchIndexSpotlightClientStateDataWithDictionary:(id)a3
++ (id)searchIndexSpotlightClientStateDataWithDictionary:(id)dictionary
 {
   v6 = 0;
-  v3 = [MEMORY[0x1E696AE40] dataWithPropertyList:a3 format:200 options:0 error:&v6];
+  v3 = [MEMORY[0x1E696AE40] dataWithPropertyList:dictionary format:200 options:0 error:&v6];
   if (v3)
   {
     [MEMORY[0x1E69BF2D0] successWithResult:v3];
@@ -3018,15 +3018,15 @@ LABEL_6:
   return v4;
 }
 
-+ (id)searchIndexSpotlightClientStateDictionaryWithIdentifier:(id)a3 timestamp:(id)a4
++ (id)searchIndexSpotlightClientStateDictionaryWithIdentifier:(id)identifier timestamp:(id)timestamp
 {
   v17[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
-  if ([v5 length] >= 0x25)
+  identifierCopy = identifier;
+  timestampCopy = timestamp;
+  v7 = identifierCopy;
+  if ([identifierCopy length] >= 0x25)
   {
-    v8 = [v5 substringToIndex:33];
+    v8 = [identifierCopy substringToIndex:33];
     v7 = [v8 stringByAppendingString:@"..."];
   }
 
@@ -3035,7 +3035,7 @@ LABEL_6:
   v17[0] = v9;
   v16[1] = @"t";
   v10 = MEMORY[0x1E696AD98];
-  [v6 timeIntervalSinceReferenceDate];
+  [timestampCopy timeIntervalSinceReferenceDate];
   v12 = v11;
 
   v13 = [v10 numberWithDouble:v12];

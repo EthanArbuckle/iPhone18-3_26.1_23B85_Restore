@@ -1,27 +1,27 @@
 @interface CIFilterClassAttributes
-+ (id)_attributesWithClass:(Class)a3;
++ (id)_attributesWithClass:(Class)class;
 + (id)cache;
-+ (id)classAttributesForClass:(Class)a3;
-+ (id)classAttributesForName:(id)a3;
++ (id)classAttributesForClass:(Class)class;
++ (id)classAttributesForName:(id)name;
 + (void)clearCache;
 @end
 
 @implementation CIFilterClassAttributes
 
-+ (id)_attributesWithClass:(Class)a3
++ (id)_attributesWithClass:(Class)class
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  if (![(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  if (![(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
     return 0;
   }
 
-  CustomAttributes = getCustomAttributes(a3);
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v37 = NSStringFromClass(a3);
+  CustomAttributes = getCustomAttributes(class);
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v37 = NSStringFromClass(class);
   v6 = bundleForCIFilter();
-  v35 = [MEMORY[0x1E696AAE8] bundleForClass:a3];
-  IsBuiltinFilter = classIsBuiltinFilter(a3);
+  v35 = [MEMORY[0x1E696AAE8] bundleForClass:class];
+  IsBuiltinFilter = classIsBuiltinFilter(class);
   if (IsBuiltinFilter)
   {
     IsSystemFilter = 1;
@@ -29,7 +29,7 @@
 
   else
   {
-    IsSystemFilter = classIsSystemFilter(a3);
+    IsSystemFilter = classIsSystemFilter(class);
   }
 
   v8 = [CustomAttributes valueForKey:@"CIAttributeFilterName"];
@@ -43,7 +43,7 @@
     v9 = v37;
   }
 
-  [v5 setValue:v9 forKey:@"CIAttributeFilterName"];
+  [dictionary setValue:v9 forKey:@"CIAttributeFilterName"];
   v10 = [CustomAttributes valueForKey:@"CIAttributeFilterDisplayName"];
   v11 = IsBuiltinFilter ^ 1;
   if (v10)
@@ -71,29 +71,29 @@
     v12 = v37;
   }
 
-  [v5 setValue:v12 forKey:@"CIAttributeFilterDisplayName"];
+  [dictionary setValue:v12 forKey:@"CIAttributeFilterDisplayName"];
   v13 = [CustomAttributes valueForKey:?];
   if (v13)
   {
-    [v5 setValue:v13 forKey:@"CIAttributeDescription"];
+    [dictionary setValue:v13 forKey:@"CIAttributeDescription"];
   }
 
-  v14 = [CIFilterClassCategories classCategoriesForClass:a3];
+  v14 = [CIFilterClassCategories classCategoriesForClass:class];
   if (v14)
   {
-    [v5 setValue:v14 forKey:@"CIAttributeFilterCategories"];
+    [dictionary setValue:v14 forKey:@"CIAttributeFilterCategories"];
   }
 
   v15 = [CustomAttributes valueForKey:@"CIAttributeFilterAvailable_iOS"];
   if (((v15 != 0) & IsSystemFilter) == 1)
   {
-    [v5 setValue:v15 forKey:@"CIAttributeFilterAvailable_iOS"];
+    [dictionary setValue:v15 forKey:@"CIAttributeFilterAvailable_iOS"];
   }
 
   v16 = [CustomAttributes valueForKey:@"CIAttributeFilterAvailable_Mac"];
   if (((v16 != 0) & IsSystemFilter) == 1)
   {
-    [v5 setValue:v16 forKey:@"CIAttributeFilterAvailable_Mac"];
+    [dictionary setValue:v16 forKey:@"CIAttributeFilterAvailable_Mac"];
   }
 
   v17 = [CustomAttributes valueForKey:@"CIAttributeReferenceDocumentation"];
@@ -105,10 +105,10 @@
 
   if (v17)
   {
-    [v5 setValue:v17 forKey:@"CIAttributeReferenceDocumentation"];
+    [dictionary setValue:v17 forKey:@"CIAttributeReferenceDocumentation"];
   }
 
-  v19 = [CIFilterClassInfo classInfoForClass:a3];
+  v19 = [CIFilterClassInfo classInfoForClass:class];
   if ([objc_msgSend(v19 "inputKeys")])
   {
     v20 = 0;
@@ -117,11 +117,11 @@
     while (1)
     {
       v21 = [objc_msgSend(v19 "inputKeys")];
-      v22 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
       StdAttrsForKey = getStdAttrsForKey(v21);
       if (StdAttrsForKey)
       {
-        [v22 addEntriesFromDictionary:StdAttrsForKey];
+        [dictionary2 addEntriesFromDictionary:StdAttrsForKey];
       }
 
       v24 = [objc_msgSend(v19 "inputClasses")];
@@ -132,7 +132,7 @@
           v24 = @"NSNumber";
         }
 
-        [v22 setValue:v24 forKey:@"CIAttributeClass"];
+        [dictionary2 setValue:v24 forKey:@"CIAttributeClass"];
       }
 
       if (IsBuiltinFilter)
@@ -143,19 +143,19 @@
       v29 = [(NSString *)v21 substringFromIndex:5];
       if ((IsSystemFilter & 1) == 0)
       {
-        v27 = v22;
+        v27 = dictionary2;
         v28 = v29;
         v31 = @"CIAttributeDisplayName";
         goto LABEL_51;
       }
 
-      [v22 setValue:objc_msgSend(v35 forKey:{"localizedStringForKey:value:table:", objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@.%@", v37, v21), v29, @"Filters", @"CIAttributeDisplayName"}];
+      [dictionary2 setValue:objc_msgSend(v35 forKey:{"localizedStringForKey:value:table:", objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@.%@", v37, v21), v29, @"Filters", @"CIAttributeDisplayName"}];
       IsBuiltinFilter = v34;
       v30 = [v35 localizedStringForKey:objc_msgSend(MEMORY[0x1E696AEC0] value:"stringWithFormat:" table:{@"%@.%@.description", v37, v21), 0, @"Filters"}];
       if (v30)
       {
         v28 = v30;
-        v27 = v22;
+        v27 = dictionary2;
         goto LABEL_49;
       }
 
@@ -163,10 +163,10 @@ LABEL_52:
       v32 = [CustomAttributes valueForKey:v21];
       if (v32)
       {
-        [v22 addEntriesFromDictionary:v32];
+        [dictionary2 addEntriesFromDictionary:v32];
       }
 
-      [v5 setValue:v22 forKey:v21];
+      [dictionary setValue:dictionary2 forKey:v21];
       ++v20;
       v19 = v38;
       if ([objc_msgSend(v38 "inputKeys")] <= v20)
@@ -175,20 +175,20 @@ LABEL_52:
       }
     }
 
-    if (![v22 objectForKey:@"CIAttributeType"])
+    if (![dictionary2 objectForKey:@"CIAttributeType"])
     {
       if ([(__CFString *)v24 isEqual:@"CIColor"])
       {
-        [v22 setValue:@"CIAttributeTypeColor" forKey:@"CIAttributeType"];
+        [dictionary2 setValue:@"CIAttributeTypeColor" forKey:@"CIAttributeType"];
       }
 
       if ([(__CFString *)v24 isEqual:@"CIImage"])
       {
-        [v22 setValue:@"CIAttributeTypeImage" forKey:@"CIAttributeType"];
+        [dictionary2 setValue:@"CIAttributeTypeImage" forKey:@"CIAttributeType"];
       }
     }
 
-    [v22 setValue:objc_msgSend(v6 forKey:{"localizedStringForKey:value:table:", v21, -[NSString substringFromIndex:](v21, "substringFromIndex:", 5), @"Keys", @"CIAttributeDisplayName"}];
+    [dictionary2 setValue:objc_msgSend(v6 forKey:{"localizedStringForKey:value:table:", v21, -[NSString substringFromIndex:](v21, "substringFromIndex:", 5), @"Keys", @"CIAttributeDisplayName"}];
     v25 = [v6 localizedStringForKey:v21 value:@"<none>" table:@"Descriptions"];
     v26 = [v6 localizedStringForKey:objc_msgSend(MEMORY[0x1E696AEC0] value:"stringWithFormat:" table:{@"%@.%@", v37, v21), v25, @"Descriptions"}];
     if ([v26 isEqual:@"<none>"])
@@ -196,7 +196,7 @@ LABEL_52:
       goto LABEL_52;
     }
 
-    v27 = v22;
+    v27 = dictionary2;
     v28 = v26;
 LABEL_49:
     v31 = @"CIAttributeDescription";
@@ -206,13 +206,13 @@ LABEL_51:
   }
 
 LABEL_55:
-  if ((IsSystemFilter & 1) != 0 && ![v5 valueForKey:@"CIAttributeFilterCategories"])
+  if ((IsSystemFilter & 1) != 0 && ![dictionary valueForKey:@"CIAttributeFilterCategories"])
   {
     v39[0] = @"CICategoryApplePrivate";
-    [v5 setValue:objc_msgSend(MEMORY[0x1E695DEC8] forKey:{"arrayWithObjects:count:", v39, 1), @"CIAttributeFilterCategories"}];
+    [dictionary setValue:objc_msgSend(MEMORY[0x1E695DEC8] forKey:{"arrayWithObjects:count:", v39, 1), @"CIAttributeFilterCategories"}];
   }
 
-  return v5;
+  return dictionary;
 }
 
 + (id)cache
@@ -237,40 +237,40 @@ uint64_t __32__CIFilterClassAttributes_cache__block_invoke()
 
 + (void)clearCache
 {
-  v2 = [a1 cache];
+  cache = [self cache];
 
-  [v2 removeAllObjects];
+  [cache removeAllObjects];
 }
 
-+ (id)classAttributesForClass:(Class)a3
++ (id)classAttributesForClass:(Class)class
 {
-  v4 = [a1 cache];
+  cache = [self cache];
   v5 = objc_opt_class();
-  if (![(objc_class *)a3 isSubclassOfClass:v5])
+  if (![(objc_class *)class isSubclassOfClass:v5])
   {
     return 0;
   }
 
-  if (v5 == a3)
+  if (v5 == class)
   {
     return MEMORY[0x1E695E0F8];
   }
 
-  v6 = [v4 objectForKey:a3];
+  v6 = [cache objectForKey:class];
   if (!v6)
   {
-    v6 = [CIFilterClassAttributes _attributesWithClass:a3];
-    [v4 setObject:v6 forKey:a3];
+    v6 = [CIFilterClassAttributes _attributesWithClass:class];
+    [cache setObject:v6 forKey:class];
   }
 
   return v6;
 }
 
-+ (id)classAttributesForName:(id)a3
++ (id)classAttributesForName:(id)name
 {
-  v4 = NSClassFromString(a3);
+  v4 = NSClassFromString(name);
 
-  return [a1 classAttributesForClass:v4];
+  return [self classAttributesForClass:v4];
 }
 
 @end

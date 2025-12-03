@@ -1,27 +1,27 @@
 @interface HKLegendPointAnnotationStyle
-+ (HKLegendPointAnnotationStyle)annotationStyleWithLabelStyle:(id)a3 localizedLabelKey:(id)a4 leftOfSeries:(BOOL)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (HKLegendPointAnnotationStyle)annotationStyleWithLabelStyle:(id)style localizedLabelKey:(id)key leftOfSeries:(BOOL)series;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HKLegendPointAnnotationStyle
 
-+ (HKLegendPointAnnotationStyle)annotationStyleWithLabelStyle:(id)a3 localizedLabelKey:(id)a4 leftOfSeries:(BOOL)a5
++ (HKLegendPointAnnotationStyle)annotationStyleWithLabelStyle:(id)style localizedLabelKey:(id)key leftOfSeries:(BOOL)series
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = a3;
+  seriesCopy = series;
+  keyCopy = key;
+  styleCopy = style;
   v9 = objc_opt_new();
-  [v9 setLabelStyle:v8];
+  [v9 setLabelStyle:styleCopy];
 
-  [v9 setLeftOfSeries:v5];
-  [v9 setLocalizedLabelKey:v7];
+  [v9 setLeftOfSeries:seriesCopy];
+  [v9 setLocalizedLabelKey:keyCopy];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(HKAxisLabelStyle *)self->_labelStyle copy];
   v6 = *(v4 + 16);
   *(v4 + 16) = v5;

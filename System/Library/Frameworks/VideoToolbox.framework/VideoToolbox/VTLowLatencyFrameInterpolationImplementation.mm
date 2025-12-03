@@ -1,9 +1,9 @@
 @interface VTLowLatencyFrameInterpolationImplementation
-- (BOOL)processWithParams:(id)a3 error:(id *)a4;
-- (BOOL)startSessionWithConfiguration:(id)a3 error:(id *)a4;
+- (BOOL)processWithParams:(id)params error:(id *)error;
+- (BOOL)startSessionWithConfiguration:(id)configuration error:(id *)error;
 - (VTLowLatencyFrameInterpolationImplementation)init;
 - (void)dealloc;
-- (void)processWithParameters:(id)a3 frameOutputHandler:(id)a4;
+- (void)processWithParameters:(id)parameters frameOutputHandler:(id)handler;
 @end
 
 @implementation VTLowLatencyFrameInterpolationImplementation
@@ -15,12 +15,12 @@
   return [(VTLowLatencyFrameInterpolationImplementation *)&v3 init];
 }
 
-- (BOOL)startSessionWithConfiguration:(id)a3 error:(id *)a4
+- (BOOL)startSessionWithConfiguration:(id)configuration error:(id *)error
 {
   VCPFrameworkOnce = loadVCPFrameworkOnce();
   if (VCPFrameworkOnce)
   {
-    self->_vcpFrameInterpolationProcessor = [objc_alloc(NSClassFromString(&cfstr_Vcpvideointerp_0.isa)) initWithConfiguration:objc_msgSend(a3 error:{"vcpConfiguration"), a4}];
+    self->_vcpFrameInterpolationProcessor = [objc_alloc(NSClassFromString(&cfstr_Vcpvideointerp_0.isa)) initWithConfiguration:objc_msgSend(configuration error:{"vcpConfiguration"), error}];
   }
 
   else
@@ -31,7 +31,7 @@
   return VCPFrameworkOnce;
 }
 
-- (BOOL)processWithParams:(id)a3 error:(id *)a4
+- (BOOL)processWithParams:(id)params error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
   v34 = 0;
@@ -39,7 +39,7 @@
   v31 = &v30;
   v32 = 0x2020000000;
   v33 = 0;
-  v7 = [objc_msgSend(a3 "sourceFrame")];
+  v7 = [objc_msgSend(params "sourceFrame")];
   if (v7)
   {
     v8 = CFRetain(v7);
@@ -50,7 +50,7 @@
     v8 = 0;
   }
 
-  v9 = [objc_msgSend(a3 "previousFrame")];
+  v9 = [objc_msgSend(params "previousFrame")];
   if (v9)
   {
     v10 = CFRetain(v9);
@@ -61,11 +61,11 @@
     v10 = 0;
   }
 
-  v11 = [a3 destinationFrames];
+  destinationFrames = [params destinationFrames];
   if (v8)
   {
-    v12 = v11;
-    v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v11, "count")}];
+    v12 = destinationFrames;
+    v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(destinationFrames, "count")}];
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
@@ -92,22 +92,22 @@
       while (v14);
     }
 
-    dispatch_group_enter([a3 parameterDispatchGroup]);
+    dispatch_group_enter([params parameterDispatchGroup]);
     vcpFrameInterpolationProcessor = self->_vcpFrameInterpolationProcessor;
-    v18 = [a3 interpolationPhase];
+    interpolationPhase = [params interpolationPhase];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __72__VTLowLatencyFrameInterpolationImplementation_processWithParams_error___block_invoke;
     v25[3] = &unk_1E72C9630;
-    v25[4] = a3;
+    v25[4] = params;
     v25[5] = &v30;
-    [(VCPVideoInterpolationSession *)vcpFrameInterpolationProcessor processWithPreviousFrame:v10 currentFrame:v8 interpolationPhases:v18 outputBuffers:v13 error:&v34 frameCompletionHandler:v25];
+    [(VCPVideoInterpolationSession *)vcpFrameInterpolationProcessor processWithPreviousFrame:v10 currentFrame:v8 interpolationPhases:interpolationPhase outputBuffers:v13 error:&v34 frameCompletionHandler:v25];
     if (v34)
     {
-      dispatch_group_leave([a3 parameterDispatchGroup]);
+      dispatch_group_leave([params parameterDispatchGroup]);
     }
 
-    dispatch_group_wait([a3 parameterDispatchGroup], 0xFFFFFFFFFFFFFFFFLL);
+    dispatch_group_wait([params parameterDispatchGroup], 0xFFFFFFFFFFFFFFFFLL);
     v19 = v34;
     if (!v34)
     {
@@ -127,7 +127,7 @@
     }
 
     v23 = v19 == 0;
-    if (a4)
+    if (error)
     {
       goto LABEL_22;
     }
@@ -138,10 +138,10 @@
     v19 = 0;
     v13 = 0;
     v23 = 0;
-    if (a4)
+    if (error)
     {
 LABEL_22:
-      *a4 = v19;
+      *error = v19;
     }
   }
 
@@ -170,11 +170,11 @@ void __72__VTLowLatencyFrameInterpolationImplementation_processWithParams_error_
   }
 }
 
-- (void)processWithParameters:(id)a3 frameOutputHandler:(id)a4
+- (void)processWithParameters:(id)parameters frameOutputHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
   v27 = 0;
-  v7 = [objc_msgSend(a3 "sourceFrame")];
+  v7 = [objc_msgSend(parameters "sourceFrame")];
   if (v7)
   {
     v8 = CFRetain(v7);
@@ -185,7 +185,7 @@ void __72__VTLowLatencyFrameInterpolationImplementation_processWithParams_error_
     v8 = 0;
   }
 
-  v9 = [objc_msgSend(a3 "previousFrame")];
+  v9 = [objc_msgSend(parameters "previousFrame")];
   if (v9)
   {
     v10 = CFRetain(v9);
@@ -196,18 +196,18 @@ void __72__VTLowLatencyFrameInterpolationImplementation_processWithParams_error_
     v10 = 0;
   }
 
-  v11 = [a3 destinationFrames];
+  destinationFrames = [parameters destinationFrames];
   if (!v8)
   {
     v27 = [MEMORY[0x1E696ABC0] errorWithDomain:@"VTFrameProcessorErrorDomain" code:-19741 userInfo:0];
   }
 
-  v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v11, "count")}];
+  v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(destinationFrames, "count")}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v13 = [v11 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  v13 = [destinationFrames countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v13)
   {
     v14 = v13;
@@ -219,35 +219,35 @@ void __72__VTLowLatencyFrameInterpolationImplementation_processWithParams_error_
       {
         if (*v24 != v15)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(destinationFrames);
         }
 
         [v12 addObject:{objc_msgSend(*(*(&v23 + 1) + 8 * v16++), "buffer")}];
       }
 
       while (v14 != v16);
-      v14 = [v11 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v14 = [destinationFrames countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v14);
   }
 
   vcpFrameInterpolationProcessor = self->_vcpFrameInterpolationProcessor;
-  v18 = [a3 interpolationPhase];
+  interpolationPhase = [parameters interpolationPhase];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __89__VTLowLatencyFrameInterpolationImplementation_processWithParameters_frameOutputHandler___block_invoke;
   v22[3] = &unk_1E72C9658;
-  v22[5] = a3;
-  v22[6] = a4;
-  v22[4] = v11;
-  [(VCPVideoInterpolationSession *)vcpFrameInterpolationProcessor processWithPreviousFrame:v10 currentFrame:v8 interpolationPhases:v18 outputBuffers:v12 error:&v27 frameCompletionHandler:v22];
+  v22[5] = parameters;
+  v22[6] = handler;
+  v22[4] = destinationFrames;
+  [(VCPVideoInterpolationSession *)vcpFrameInterpolationProcessor processWithPreviousFrame:v10 currentFrame:v8 interpolationPhases:interpolationPhase outputBuffers:v12 error:&v27 frameCompletionHandler:v22];
   if (v27)
   {
-    v19 = *(a4 + 2);
+    v19 = *(handler + 2);
     v20 = *MEMORY[0x1E6960C70];
     v21 = *(MEMORY[0x1E6960C70] + 16);
-    v19(a4, a3, &v20, 1);
+    v19(handler, parameters, &v20, 1);
   }
 
   if (v8)

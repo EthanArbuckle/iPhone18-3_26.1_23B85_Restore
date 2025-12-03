@@ -14,12 +14,12 @@
 
 - (uint64_t)CP_maxCapacity_GuidanceManeuver
 {
-  if (![a1 maxCapacity_GuidanceManeuver])
+  if (![self maxCapacity_GuidanceManeuver])
   {
     return 1000;
   }
 
-  return [a1 maxCapacity_GuidanceManeuver];
+  return [self maxCapacity_GuidanceManeuver];
 }
 
 + (uint64_t)CP_ignoreMaxLength
@@ -38,9 +38,9 @@
   v6 = a3;
   if ([v6 count])
   {
-    if (a4 && ![a1 CP_ignoreMaxLength])
+    if (a4 && ![self CP_ignoreMaxLength])
     {
-      v8 = [v6 firstObject];
+      firstObject = [v6 firstObject];
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
@@ -63,17 +63,17 @@
             v14 = *(*(&v19 + 1) + 8 * i);
             if ([v14 length] <= a4)
             {
-              v7 = v14;
+              firstObject2 = v14;
 
               goto LABEL_18;
             }
 
             v15 = [v14 length];
-            if (v15 < [v8 length])
+            if (v15 < [firstObject length])
             {
               v16 = v14;
 
-              v8 = v16;
+              firstObject = v16;
             }
           }
 
@@ -87,32 +87,32 @@
         }
       }
 
-      v8 = v8;
-      v7 = v8;
+      firstObject = firstObject;
+      firstObject2 = firstObject;
 LABEL_18:
     }
 
     else
     {
-      v7 = [v6 firstObject];
+      firstObject2 = [v6 firstObject];
     }
   }
 
   else
   {
-    v7 = 0;
+    firstObject2 = 0;
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return firstObject2;
 }
 
 - (id)CP_variantFittingCurrentRoadName:()CarPlay
 {
   v4 = MEMORY[0x277CE82D0];
   v5 = a3;
-  v6 = [v4 CP_variant:v5 fittingMaxLength:{objc_msgSend(a1, "maxLength_CurrentRoadName")}];
+  v6 = [v4 CP_variant:v5 fittingMaxLength:{objc_msgSend(self, "maxLength_CurrentRoadName")}];
 
   return v6;
 }
@@ -121,7 +121,7 @@ LABEL_18:
 {
   v4 = MEMORY[0x277CE82D0];
   v5 = a3;
-  v6 = [v4 CP_variant:v5 fittingMaxLength:{objc_msgSend(a1, "maxLength_DestinationRoadName")}];
+  v6 = [v4 CP_variant:v5 fittingMaxLength:{objc_msgSend(self, "maxLength_DestinationRoadName")}];
 
   return v6;
 }
@@ -130,7 +130,7 @@ LABEL_18:
 {
   v4 = MEMORY[0x277CE82D0];
   v5 = a3;
-  v6 = [v4 CP_variant:v5 fittingMaxLength:{objc_msgSend(a1, "maxLength_PostManeuverRoadName")}];
+  v6 = [v4 CP_variant:v5 fittingMaxLength:{objc_msgSend(self, "maxLength_PostManeuverRoadName")}];
 
   return v6;
 }
@@ -139,7 +139,7 @@ LABEL_18:
 {
   v4 = MEMORY[0x277CE82D0];
   v5 = a3;
-  v6 = [v4 CP_variant:v5 fittingMaxLength:{objc_msgSend(a1, "maxLength_ManeuverDescription")}];
+  v6 = [v4 CP_variant:v5 fittingMaxLength:{objc_msgSend(self, "maxLength_ManeuverDescription")}];
 
   return v6;
 }
@@ -148,19 +148,19 @@ LABEL_18:
 {
   v4 = MEMORY[0x277CE82D0];
   v5 = a3;
-  v6 = [v4 CP_variant:v5 fittingMaxLength:{objc_msgSend(a1, "maxLength_LaneGuidanceDescription")}];
+  v6 = [v4 CP_variant:v5 fittingMaxLength:{objc_msgSend(self, "maxLength_LaneGuidanceDescription")}];
 
   return v6;
 }
 
 - (uint64_t)CP_maxCapacity_LaneGuidance
 {
-  if (![a1 maxCapacity_LaneGuidance])
+  if (![self maxCapacity_LaneGuidance])
   {
     return 1000;
   }
 
-  return [a1 maxCapacity_LaneGuidance];
+  return [self maxCapacity_LaneGuidance];
 }
 
 @end

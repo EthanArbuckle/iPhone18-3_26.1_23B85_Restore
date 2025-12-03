@@ -1,6 +1,6 @@
 @interface HMDRemoveAccessoryPairingSharedUserOperation
 + (id)logCategory;
-- (BOOL)mainWithError:(id *)a3;
+- (BOOL)mainWithError:(id *)error;
 - (id)logIdentifier;
 @end
 
@@ -8,23 +8,23 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDBackgroundOperation *)self operationUUID];
-  v3 = [v2 UUIDString];
+  operationUUID = [(HMDBackgroundOperation *)self operationUUID];
+  uUIDString = [operationUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (BOOL)mainWithError:(id *)a3
+- (BOOL)mainWithError:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
   v34.receiver = self;
   v34.super_class = HMDRemoveAccessoryPairingSharedUserOperation;
   v5 = [(HMDRemoveAccessoryPairingOperation *)&v34 mainWithError:?];
-  v6 = [(HMDBackgroundOperation *)self userData];
-  v7 = [v6 objectForKeyedSubscript:@"sharedUserUUIDKey"];
+  userData = [(HMDBackgroundOperation *)self userData];
+  v7 = [userData objectForKeyedSubscript:@"sharedUserUUIDKey"];
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   v11 = v10;
   if (v5)
@@ -32,16 +32,16 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [(HMDAccessoryBackgroundOperation *)v9 accessoryUUID];
-      v14 = [(HMDAccessoryBackgroundOperation *)v9 accessoryIdentifier];
+      accessoryUUID = [(HMDAccessoryBackgroundOperation *)selfCopy accessoryUUID];
+      accessoryIdentifier = [(HMDAccessoryBackgroundOperation *)selfCopy accessoryIdentifier];
       *buf = 138544130;
       *&buf[4] = v12;
       *&buf[12] = 2112;
       *&buf[14] = v7;
       *&buf[22] = 2112;
-      v36 = v13;
+      v36 = accessoryUUID;
       LOWORD(v37) = 2112;
-      *(&v37 + 2) = v14;
+      *(&v37 + 2) = accessoryIdentifier;
       _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@Successfully removed pairing for the shared user: %@ on the accessory : %@/%@", buf, 0x2Au);
     }
 
@@ -57,23 +57,23 @@
     *&v37 = __Block_byref_object_dispose__266420;
     *(&v37 + 1) = 0;
     v15 = +[HMDCoreData sharedInstance];
-    v16 = [(HMDAccessoryBackgroundOperation *)v9 homeUUID];
-    v17 = [v15 contextWithHomeUUID:v16];
+    homeUUID = [(HMDAccessoryBackgroundOperation *)selfCopy homeUUID];
+    v17 = [v15 contextWithHomeUUID:homeUUID];
 
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __62__HMDRemoveAccessoryPairingSharedUserOperation_mainWithError___block_invoke;
     v25[3] = &unk_278687D38;
-    v25[4] = v9;
+    v25[4] = selfCopy;
     v28 = buf;
     v26 = v7;
     v29 = &v30;
     v18 = v17;
     v27 = v18;
     [v18 unsafeSynchronousBlock:v25];
-    if (a3)
+    if (error)
     {
-      *a3 = *(*&buf[8] + 40);
+      *error = *(*&buf[8] + 40);
     }
 
     v19 = *(v31 + 24);
@@ -87,16 +87,16 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v20 = HMFGetLogIdentifier();
-      v21 = [(HMDAccessoryBackgroundOperation *)v9 accessoryUUID];
-      v22 = [(HMDAccessoryBackgroundOperation *)v9 accessoryIdentifier];
+      accessoryUUID2 = [(HMDAccessoryBackgroundOperation *)selfCopy accessoryUUID];
+      accessoryIdentifier2 = [(HMDAccessoryBackgroundOperation *)selfCopy accessoryIdentifier];
       *buf = 138544130;
       *&buf[4] = v20;
       *&buf[12] = 2112;
       *&buf[14] = v7;
       *&buf[22] = 2112;
-      v36 = v21;
+      v36 = accessoryUUID2;
       LOWORD(v37) = 2112;
-      *(&v37 + 2) = v22;
+      *(&v37 + 2) = accessoryIdentifier2;
       _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_ERROR, "%{public}@Unable to remove pairing for shared user : %@ for accessory: %@/%@", buf, 0x2Au);
     }
 

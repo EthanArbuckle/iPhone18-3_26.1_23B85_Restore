@@ -1,7 +1,7 @@
 @interface HIDLibElement
-- (BOOL)isEqual:(id)a3;
-- (HIDLibElement)initWithElementRef:(__IOHIDElement *)a3;
-- (HIDLibElement)initWithElementStruct:(IOHIDElementStruct *)a3 parent:(__IOHIDElement *)a4 index:(unsigned int)a5;
+- (BOOL)isEqual:(id)equal;
+- (HIDLibElement)initWithElementRef:(__IOHIDElement *)ref;
+- (HIDLibElement)initWithElementStruct:(IOHIDElementStruct *)struct parent:(__IOHIDElement *)parent index:(unsigned int)index;
 - (NSData)dataValue;
 - (__IOHIDValue)valueRef;
 - (id)description;
@@ -17,23 +17,23 @@
 - (unsigned)usage;
 - (unsigned)usagePage;
 - (void)dealloc;
-- (void)setDataValue:(id)a3;
-- (void)setDefaultValueRef:(__IOHIDValue *)a3;
-- (void)setElementRef:(__IOHIDElement *)a3;
-- (void)setIntegerValue:(int64_t)a3;
-- (void)setValueRef:(__IOHIDValue *)a3;
+- (void)setDataValue:(id)value;
+- (void)setDefaultValueRef:(__IOHIDValue *)ref;
+- (void)setElementRef:(__IOHIDElement *)ref;
+- (void)setIntegerValue:(int64_t)value;
+- (void)setValueRef:(__IOHIDValue *)ref;
 @end
 
 @implementation HIDLibElement
 
-- (HIDLibElement)initWithElementRef:(__IOHIDElement *)a3
+- (HIDLibElement)initWithElementRef:(__IOHIDElement *)ref
 {
   v8.receiver = self;
   v8.super_class = HIDLibElement;
   v4 = [(HIDLibElement *)&v8 init];
   if (v4)
   {
-    v5 = a3 == 0;
+    v5 = ref == 0;
   }
 
   else
@@ -48,15 +48,15 @@
 
   else
   {
-    CFRetain(a3);
-    v4->_element = a3;
+    CFRetain(ref);
+    v4->_element = ref;
     v6 = v4;
   }
 
   return v6;
 }
 
-- (HIDLibElement)initWithElementStruct:(IOHIDElementStruct *)a3 parent:(__IOHIDElement *)a4 index:(unsigned int)a5
+- (HIDLibElement)initWithElementStruct:(IOHIDElementStruct *)struct parent:(__IOHIDElement *)parent index:(unsigned int)index
 {
   v11.receiver = self;
   v11.super_class = HIDLibElement;
@@ -69,7 +69,7 @@
 
   v6->_element = 0;
   Mutable = CFDataCreateMutable(*MEMORY[0x29EDB8ED8], 1);
-  memmove(&v7->_elementStruct, a3, 0x60uLL);
+  memmove(&v7->_elementStruct, struct, 0x60uLL);
   if (Mutable)
   {
     v7->_element = _IOHIDElementCreateWithParentAndData();
@@ -121,10 +121,10 @@ LABEL_6:
   return objc_msgSend_stringWithFormat_(v4, v19, @"element: %p type: %d uP: 0x%02x u: 0x%02x cookie: %d val: %ld", element, v6, v9, v12, v15, v18);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqualToHIDLibElement = 1;
   }
@@ -134,7 +134,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      isEqualToHIDLibElement = objc_msgSend_isEqualToHIDLibElement_(self, v5, v4);
+      isEqualToHIDLibElement = objc_msgSend_isEqualToHIDLibElement_(self, v5, equalCopy);
     }
 
     else
@@ -146,22 +146,22 @@ LABEL_6:
   return isEqualToHIDLibElement;
 }
 
-- (void)setElementRef:(__IOHIDElement *)a3
+- (void)setElementRef:(__IOHIDElement *)ref
 {
   element = self->_element;
-  if (element != a3)
+  if (element != ref)
   {
     if (element)
     {
       CFRelease(element);
     }
 
-    if (a3)
+    if (ref)
     {
-      CFRetain(a3);
+      CFRetain(ref);
     }
 
-    self->_element = a3;
+    self->_element = ref;
   }
 }
 
@@ -176,7 +176,7 @@ LABEL_6:
   return result;
 }
 
-- (void)setValueRef:(__IOHIDValue *)a3
+- (void)setValueRef:(__IOHIDValue *)ref
 {
   if (self->_element)
   {
@@ -184,22 +184,22 @@ LABEL_6:
   }
 }
 
-- (void)setDefaultValueRef:(__IOHIDValue *)a3
+- (void)setDefaultValueRef:(__IOHIDValue *)ref
 {
   defaultValue = self->_defaultValue;
-  if (defaultValue != a3)
+  if (defaultValue != ref)
   {
     if (defaultValue)
     {
       CFRelease(defaultValue);
     }
 
-    if (a3)
+    if (ref)
     {
-      CFRetain(a3);
+      CFRetain(ref);
     }
 
-    self->_defaultValue = a3;
+    self->_defaultValue = ref;
   }
 }
 
@@ -216,12 +216,12 @@ LABEL_6:
   return result;
 }
 
-- (void)setIntegerValue:(int64_t)a3
+- (void)setIntegerValue:(int64_t)value
 {
   v5 = *MEMORY[0x29EDB8ED8];
   element = self->_element;
   v7 = mach_absolute_time();
-  v8 = IOHIDValueCreateWithIntegerValue(v5, element, v7, a3);
+  v8 = IOHIDValueCreateWithIntegerValue(v5, element, v7, value);
   objc_msgSend_setValueRef_(self, v9, v8);
   if (v8)
   {
@@ -246,14 +246,14 @@ LABEL_6:
   return v4;
 }
 
-- (void)setDataValue:(id)a3
+- (void)setDataValue:(id)value
 {
   v5 = *MEMORY[0x29EDB8ED8];
   element = self->_element;
-  v7 = a3;
-  v8 = a3;
-  v11 = objc_msgSend_bytes(v8, v9, v10);
-  v14 = objc_msgSend_length(v8, v12, v13);
+  valueCopy = value;
+  valueCopy2 = value;
+  v11 = objc_msgSend_bytes(valueCopy2, v9, v10);
+  v14 = objc_msgSend_length(valueCopy2, v12, v13);
 
   v15 = IOHIDValueCreateWithBytes(v5, element, 0, v11, v14);
   objc_msgSend_setValueRef_(self, v16, v15);

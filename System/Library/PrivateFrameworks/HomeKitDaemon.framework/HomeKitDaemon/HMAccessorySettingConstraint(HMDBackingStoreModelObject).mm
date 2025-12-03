@@ -9,13 +9,13 @@
 {
   v4 = a3;
   v5 = [HMDAccessorySettingConstraintModel alloc];
-  v6 = [a1 identifier];
-  v7 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:0 uuid:v6 parentUUID:v4];
+  identifier = [self identifier];
+  v7 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:0 uuid:identifier parentUUID:v4];
 
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(a1, "type")}];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(self, "type")}];
   [(HMDAccessorySettingConstraintModel *)v7 setType:v8];
 
-  v9 = [a1 value];
+  value = [self value];
   v10 = encodeRootObject();
   [(HMDAccessorySettingConstraintModel *)v7 setValue:v10];
 
@@ -32,12 +32,12 @@
     goto LABEL_19;
   }
 
-  v6 = [v4 type];
+  type = [v4 type];
 
-  if (!v6)
+  if (!type)
   {
     v30 = objc_autoreleasePoolPush();
-    v31 = a1;
+    selfCopy = self;
     v32 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
     {
@@ -53,12 +53,12 @@
     [v35 submitLogEvent:v34];
   }
 
-  v7 = [v5 type];
+  type2 = [v5 type];
 
-  if (!v7)
+  if (!type2)
   {
     v24 = objc_autoreleasePoolPush();
-    a1 = a1;
+    self = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
@@ -74,19 +74,19 @@ LABEL_18:
 
     objc_autoreleasePoolPop(v24);
 LABEL_19:
-    v23 = 0;
+    selfCopy4 = 0;
     goto LABEL_20;
   }
 
-  v8 = [v5 type];
-  v9 = [v8 integerValue];
+  type3 = [v5 type];
+  integerValue = [type3 integerValue];
 
-  v10 = [v5 value];
+  value = [v5 value];
 
-  if (!v10)
+  if (!value)
   {
     v36 = objc_autoreleasePoolPush();
-    v37 = a1;
+    selfCopy2 = self;
     v38 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_FAULT))
     {
@@ -102,12 +102,12 @@ LABEL_19:
     [v41 submitLogEvent:v40];
   }
 
-  v11 = [v5 value];
+  value2 = [v5 value];
 
-  if (!v11)
+  if (!value2)
   {
     v24 = objc_autoreleasePoolPush();
-    a1 = a1;
+    self = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
@@ -122,16 +122,16 @@ LABEL_19:
   }
 
   v12 = MEMORY[0x277CCAAC8];
-  v13 = [objc_opt_class() supportedValueClasses];
-  v14 = [v5 value];
+  supportedValueClasses = [objc_opt_class() supportedValueClasses];
+  value3 = [v5 value];
   v42 = 0;
-  v15 = [v12 unarchivedObjectOfClasses:v13 fromData:v14 error:&v42];
+  v15 = [v12 unarchivedObjectOfClasses:supportedValueClasses fromData:value3 error:&v42];
   v16 = v42;
 
   if (!v15)
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = a1;
+    selfCopy3 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -146,20 +146,20 @@ LABEL_19:
     objc_autoreleasePoolPop(v17);
   }
 
-  v21 = [a1 initWithType:v9 value:v15];
+  v21 = [self initWithType:integerValue value:v15];
   if (v21)
   {
-    v22 = [v5 uuid];
-    [v22 getUUIDBytes:&v21[*MEMORY[0x277CD1F70]]];
+    uuid = [v5 uuid];
+    [uuid getUUIDBytes:&v21[*MEMORY[0x277CD1F70]]];
   }
 
-  a1 = v21;
+  self = v21;
 
-  v23 = a1;
+  selfCopy4 = self;
 LABEL_20:
 
   v28 = *MEMORY[0x277D85DE8];
-  return v23;
+  return selfCopy4;
 }
 
 @end

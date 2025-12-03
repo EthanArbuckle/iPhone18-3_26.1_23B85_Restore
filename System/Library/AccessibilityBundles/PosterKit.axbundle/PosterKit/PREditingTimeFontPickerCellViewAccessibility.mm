@@ -1,7 +1,7 @@
 @interface PREditingTimeFontPickerCellViewAccessibility
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
-- (id)axFontWeight:(id)a3;
+- (id)axFontWeight:(id)weight;
 @end
 
 @implementation PREditingTimeFontPickerCellViewAccessibility
@@ -9,9 +9,9 @@
 - (id)accessibilityLabel
 {
   v2 = [(PREditingTimeFontPickerCellViewAccessibility *)self safeValueForKey:@"contentLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
@@ -20,23 +20,23 @@
   v3 = [(PREditingTimeFontPickerCellViewAccessibility *)self safeValueForKey:@"contentLabel"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 font];
-  v6 = [v5 fontName];
-  v7 = [v6 componentsSeparatedByString:@"-"];
+  font = [v4 font];
+  fontName = [font fontName];
+  v7 = [fontName componentsSeparatedByString:@"-"];
 
-  v8 = [v4 font];
-  v9 = [v8 familyName];
-  v10 = [v7 lastObject];
-  v13 = [(PREditingTimeFontPickerCellViewAccessibility *)self axFontWeight:v10];
+  font2 = [v4 font];
+  familyName = [font2 familyName];
+  lastObject = [v7 lastObject];
+  v13 = [(PREditingTimeFontPickerCellViewAccessibility *)self axFontWeight:lastObject];
   v11 = __UIAXStringForVariables();
 
   return v11;
 }
 
-- (id)axFontWeight:(id)a3
+- (id)axFontWeight:(id)weight
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Medium"])
+  weightCopy = weight;
+  if ([weightCopy isEqualToString:@"Medium"])
   {
     v4 = @"time.font.medium";
 LABEL_9:
@@ -44,19 +44,19 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v3 isEqualToString:@"Semibold"])
+  if ([weightCopy isEqualToString:@"Semibold"])
   {
     v4 = @"time.font.bold";
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:@"Light"])
+  if ([weightCopy isEqualToString:@"Light"])
   {
     v4 = @"time.font.light";
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:@"Heavy"])
+  if ([weightCopy isEqualToString:@"Heavy"])
   {
     v4 = @"time.font.heavy";
     goto LABEL_9;

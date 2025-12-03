@@ -1,13 +1,13 @@
 @interface CLIndoorMaintenance
-- (void)doSynchronousXPC:(id)a3 description:(const char *)a4 waitForever:(BOOL)a5;
+- (void)doSynchronousXPC:(id)c description:(const char *)description waitForever:(BOOL)forever;
 - (void)eraseEverything;
-- (void)numFloors:(id)a3;
-- (void)onQueueEraseEverything:(id)a3;
-- (void)onQueueNumFloors:(id)a3;
+- (void)numFloors:(id)floors;
+- (void)onQueueEraseEverything:(id)everything;
+- (void)onQueueNumFloors:(id)floors;
 - (void)onQueueShutdown;
-- (void)prefetch:(id)a3;
-- (void)prefetchSynchronous:(id)a3;
-- (void)retrieveLocationRelevancyDurationWithCompletionHandler:(id)a3;
+- (void)prefetch:(id)prefetch;
+- (void)prefetchSynchronous:(id)synchronous;
+- (void)retrieveLocationRelevancyDurationWithCompletionHandler:(id)handler;
 - (void)shutdown;
 - (void)withinQueueReinitializeRemoteState;
 @end
@@ -20,24 +20,24 @@
   objc_exception_throw(v2);
 }
 
-- (void)retrieveLocationRelevancyDurationWithCompletionHandler:(id)a3
+- (void)retrieveLocationRelevancyDurationWithCompletionHandler:(id)handler
 {
   frameworkQueue = self->super._frameworkQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3321888768;
   v8[2] = sub_10001D1EC;
   v8[3] = &unk_100432558;
-  v5 = self;
-  v6 = objc_retainBlock(a3);
-  v9 = v5;
-  v7 = v5;
+  selfCopy = self;
+  v6 = objc_retainBlock(handler);
+  v9 = selfCopy;
+  v7 = selfCopy;
   v10 = objc_retainBlock(v6);
   dispatch_async(frameworkQueue, v8);
 }
 
-- (void)prefetch:(id)a3
+- (void)prefetch:(id)prefetch
 {
-  v4 = a3;
+  prefetchCopy = prefetch;
   if (qword_10045B060 != -1)
   {
     sub_100382820();
@@ -47,7 +47,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349056;
-    v14 = [v4 count];
+    v14 = [prefetchCopy count];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Sending request to prefetch %{public}zu venues", buf, 0xCu);
   }
 
@@ -55,9 +55,9 @@
   v10[1] = 3321888768;
   v10[2] = sub_10001D508;
   v10[3] = &unk_100432588;
-  v6 = self;
-  v7 = v4;
-  v8 = v6;
+  selfCopy = self;
+  v7 = prefetchCopy;
+  v8 = selfCopy;
   v11 = v8;
   v12 = v7;
   [(CLIndoorMaintenance *)v8 doSynchronousXPC:v10 description:"prefetch:" waitForever:0];
@@ -75,9 +75,9 @@
   }
 }
 
-- (void)prefetchSynchronous:(id)a3
+- (void)prefetchSynchronous:(id)synchronous
 {
-  v4 = a3;
+  synchronousCopy = synchronous;
   if (qword_10045B060 != -1)
   {
     sub_100382820();
@@ -87,7 +87,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v14 = [v4 count];
+    v14 = [synchronousCopy count];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Sending request to prefetch %zu venues synchronously", buf, 0xCu);
   }
 
@@ -95,9 +95,9 @@
   v10[1] = 3321888768;
   v10[2] = sub_10001D890;
   v10[3] = &unk_1004325B8;
-  v6 = self;
-  v7 = v4;
-  v8 = v6;
+  selfCopy = self;
+  v7 = synchronousCopy;
+  v8 = selfCopy;
   v11 = v8;
   v12 = v7;
   [(CLIndoorMaintenance *)v8 doSynchronousXPC:v10 description:"prefetch:" waitForever:1];
@@ -115,21 +115,21 @@
   }
 }
 
-- (void)doSynchronousXPC:(id)a3 description:(const char *)a4 waitForever:(BOOL)a5
+- (void)doSynchronousXPC:(id)c description:(const char *)description waitForever:(BOOL)forever
 {
-  v8 = a3;
+  cCopy = c;
   v9 = dispatch_semaphore_create(0);
   frameworkQueue = self->super._frameworkQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10001DACC;
   v15[3] = &unk_100432620;
-  v11 = v8;
+  v11 = cCopy;
   v17 = v11;
   v12 = v9;
   v16 = v12;
   dispatch_async(frameworkQueue, v15);
-  if (a5)
+  if (forever)
   {
     if (!dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL))
     {
@@ -155,7 +155,7 @@
   if (os_log_type_enabled(qword_10045B068, OS_LOG_TYPE_ERROR))
   {
     *buf = 136315138;
-    v19 = a4;
+    descriptionCopy = description;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Timeout trying to do XPC %{publci}s", buf, 0xCu);
   }
 
@@ -189,9 +189,9 @@ LABEL_4:
   v6[1] = 3321888768;
   v6[2] = sub_10001DD4C;
   v6[3] = &unk_100432640;
-  v4 = self;
-  v7 = v4;
-  [(CLIndoorMaintenance *)v4 doSynchronousXPC:v6 description:"eraseEverything" waitForever:0];
+  selfCopy = self;
+  v7 = selfCopy;
+  [(CLIndoorMaintenance *)selfCopy doSynchronousXPC:v6 description:"eraseEverything" waitForever:0];
 
   if (qword_10045B060 != -1)
   {
@@ -216,9 +216,9 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)onQueueEraseEverything:(id)a3
+- (void)onQueueEraseEverything:(id)everything
 {
-  v4 = a3;
+  everythingCopy = everything;
   if (qword_10045B060 != -1)
   {
     sub_100382820();
@@ -243,7 +243,7 @@ LABEL_4:
   connection = self->super._connection;
   v7 = [(CLIndoorXPCProvider *)self _defaultErrHandlerForCaller:@"eraseAllData"];
   v8 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v7];
-  [v8 eraseAllData:v4];
+  [v8 eraseAllData:everythingCopy];
 }
 
 - (void)shutdown
@@ -274,8 +274,8 @@ LABEL_4:
   block[1] = 3321888768;
   block[2] = sub_10001DFCC;
   block[3] = &unk_100432670;
-  v7 = self;
-  v5 = v7;
+  selfCopy = self;
+  v5 = selfCopy;
   dispatch_sync(frameworkQueue, block);
 }
 
@@ -308,9 +308,9 @@ LABEL_4:
   [v6 shutdown];
 }
 
-- (void)numFloors:(id)a3
+- (void)numFloors:(id)floors
 {
-  v4 = a3;
+  floorsCopy = floors;
   if (qword_10045B060 != -1)
   {
     sub_100382820();
@@ -336,17 +336,17 @@ LABEL_4:
   v9[1] = 3321888768;
   v9[2] = sub_10001E288;
   v9[3] = &unk_1004326A0;
-  v6 = self;
-  v7 = objc_retainBlock(v4);
-  v8 = v6;
+  selfCopy = self;
+  v7 = objc_retainBlock(floorsCopy);
+  v8 = selfCopy;
   v10 = v8;
   v11 = objc_retainBlock(v7);
   [(CLIndoorMaintenance *)v8 doSynchronousXPC:v9 description:"numFloors" waitForever:0];
 }
 
-- (void)onQueueNumFloors:(id)a3
+- (void)onQueueNumFloors:(id)floors
 {
-  v4 = a3;
+  floorsCopy = floors;
   if (qword_10045B060 != -1)
   {
     sub_100382820();
@@ -371,7 +371,7 @@ LABEL_4:
   connection = self->super._connection;
   v7 = [(CLIndoorXPCProvider *)self _defaultErrHandlerForCaller:@"numFloors"];
   v8 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v7];
-  [v8 numFloors:v4];
+  [v8 numFloors:floorsCopy];
 }
 
 @end

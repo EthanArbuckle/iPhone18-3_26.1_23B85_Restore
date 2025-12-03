@@ -1,28 +1,28 @@
 @interface RBSymbolLayer
 - ($A37143018C4D5433AE0D7FFC21A1DA3D)symbolTransform;
-- ($C28CD4A45FD07A4F97CC9D5F91F25271)resolveStyle:(unsigned int)a3 colorName:(id)a4;
-- (BOOL)resolveFill:(id)a3 alignmentRect:(CGRect)a4 style:(unsigned int)a5 colorName:(id)a6;
+- ($C28CD4A45FD07A4F97CC9D5F91F25271)resolveStyle:(unsigned int)style colorName:(id)name;
+- (BOOL)resolveFill:(id)fill alignmentRect:(CGRect)rect style:(unsigned int)style colorName:(id)name;
 - (RBSymbolLayer)init;
-- (RBSymbolLayer)initWithCoder:(id)a3;
-- (RBSymbolLayer)initWithLayer:(id)a3;
+- (RBSymbolLayer)initWithCoder:(id)coder;
+- (RBSymbolLayer)initWithLayer:(id)layer;
 - (id).cxx_construct;
-- (id)RBLayerDefaultDevice:(id)a3;
-- (id)actionForKey:(id)a3;
+- (id)RBLayerDefaultDevice:(id)device;
+- (id)actionForKey:(id)key;
 - (void)clearContents;
-- (void)configureSublayer:(id)a3 type:(unsigned int)a4;
+- (void)configureSublayer:(id)sublayer type:(unsigned int)type;
 - (void)dealloc;
 - (void)display;
 - (void)drawingContents;
-- (void)layerDidBecomeVisible:(BOOL)a3;
+- (void)layerDidBecomeVisible:(BOOL)visible;
 - (void)layoutSublayers;
-- (void)renderInContext:(CGContext *)a3;
-- (void)setAnimator:(id)a3;
-- (void)setFillResolver:(id)a3;
+- (void)renderInContext:(CGContext *)context;
+- (void)setAnimator:(id)animator;
+- (void)setFillResolver:(id)resolver;
 - (void)setNeedsLayout;
-- (void)setStyleResolver:(id)a3;
-- (void)setSymbolTransform:(id)a3;
-- (void)symbolAnimatorDidChange:(id)a3;
-- (void)updateForTime:(uint64_t)a1;
+- (void)setStyleResolver:(id)resolver;
+- (void)setSymbolTransform:(id)transform;
+- (void)symbolAnimatorDidChange:(id)change;
+- (void)updateForTime:(uint64_t)time;
 @end
 
 @implementation RBSymbolLayer
@@ -44,11 +44,11 @@
   return result;
 }
 
-- (RBSymbolLayer)initWithCoder:(id)a3
+- (RBSymbolLayer)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = RBSymbolLayer;
-  result = [(RBSymbolLayer *)&v9 initWithCoder:a3];
+  result = [(RBSymbolLayer *)&v9 initWithCoder:coder];
   if (result)
   {
     __asm { FMOV            V0.2D, #1.0 }
@@ -61,7 +61,7 @@
   return result;
 }
 
-- (RBSymbolLayer)initWithLayer:(id)a3
+- (RBSymbolLayer)initWithLayer:(id)layer
 {
   v14.receiver = self;
   v14.super_class = RBSymbolLayer;
@@ -69,7 +69,7 @@
   v5 = v4;
   if (v4)
   {
-    v6 = *(a3 + 6);
+    v6 = *(layer + 6);
     v7 = *(v4 + 6);
     if (v7 != v6)
     {
@@ -77,11 +77,11 @@
       *(v5 + 6) = v6;
     }
 
-    v8 = *(a3 + 120);
-    *(v5 + 104) = *(a3 + 104);
+    v8 = *(layer + 120);
+    *(v5 + 104) = *(layer + 104);
     *(v5 + 120) = v8;
-    *(v5 + 25) = *(a3 + 25);
-    v9 = *(a3 + 7);
+    *(v5 + 25) = *(layer + 25);
+    v9 = *(layer + 7);
     v10 = *(v5 + 7);
     if (v10 != v9)
     {
@@ -89,7 +89,7 @@
       *(v5 + 7) = v9;
     }
 
-    v11 = *(a3 + 8);
+    v11 = *(layer + 8);
     v12 = *(v5 + 8);
     if (v12 != v11)
     {
@@ -110,11 +110,11 @@
   [(RBSymbolLayer *)&v3 dealloc];
 }
 
-- (void)setAnimator:(id)a3
+- (void)setAnimator:(id)animator
 {
   os_unfair_lock_lock(self + 22);
   v5 = *(self + 6);
-  if (v5 == a3)
+  if (v5 == animator)
   {
     v5 = 0;
   }
@@ -122,28 +122,28 @@
   else
   {
     *(self + 6) = 0;
-    if (a3)
+    if (animator)
     {
 
-      *(self + 6) = a3;
+      *(self + 6) = animator;
     }
   }
 
   os_unfair_lock_unlock(self + 22);
-  if (v5 != a3)
+  if (v5 != animator)
   {
     [(RBSymbolAnimator *)v5 removeObserver:?];
-    [(RBSymbolAnimator *)a3 addObserver:?];
+    [(RBSymbolAnimator *)animator addObserver:?];
     [(RBSymbolLayer *)self setNeedsLayout];
   }
 }
 
-- (void)setSymbolTransform:(id)a3
+- (void)setSymbolTransform:(id)transform
 {
-  dy = a3.var1.dy;
-  dx = a3.var1.dx;
-  v5 = a3.var0.dy;
-  v6 = a3.var0.dx;
+  dy = transform.var1.dy;
+  dx = transform.var1.dx;
+  v5 = transform.var0.dy;
+  v6 = transform.var0.dx;
   os_unfair_lock_lock(self + 22);
   if (v6 == *(self + 13) && v5 == *(self + 14) && dx == *(self + 15) && dy == *(self + 16))
   {
@@ -163,10 +163,10 @@
   }
 }
 
-- (void)setStyleResolver:(id)a3
+- (void)setStyleResolver:(id)resolver
 {
   os_unfair_lock_lock(self + 22);
-  if (*(self + 7) == a3)
+  if (*(self + 7) == resolver)
   {
 
     os_unfair_lock_unlock(self + 22);
@@ -174,7 +174,7 @@
 
   else
   {
-    v5 = [a3 copy];
+    v5 = [resolver copy];
 
     *(self + 7) = v5;
     os_unfair_lock_unlock(self + 22);
@@ -183,10 +183,10 @@
   }
 }
 
-- (void)setFillResolver:(id)a3
+- (void)setFillResolver:(id)resolver
 {
   os_unfair_lock_lock(self + 22);
-  if (*(self + 8) == a3)
+  if (*(self + 8) == resolver)
   {
 
     os_unfair_lock_unlock(self + 22);
@@ -194,7 +194,7 @@
 
   else
   {
-    v5 = [a3 copy];
+    v5 = [resolver copy];
 
     *(self + 8) = v5;
     os_unfair_lock_unlock(self + 22);
@@ -203,12 +203,12 @@
   }
 }
 
-- ($C28CD4A45FD07A4F97CC9D5F91F25271)resolveStyle:(unsigned int)a3 colorName:(id)a4
+- ($C28CD4A45FD07A4F97CC9D5F91F25271)resolveStyle:(unsigned int)style colorName:(id)name
 {
   v4 = *(self + 7);
   if (v4)
   {
-    (*(v4 + 16))(v4, *&a3, a4);
+    (*(v4 + 16))(v4, *&style, name);
   }
 
   else
@@ -226,32 +226,32 @@
   return result;
 }
 
-- (BOOL)resolveFill:(id)a3 alignmentRect:(CGRect)a4 style:(unsigned int)a5 colorName:(id)a6
+- (BOOL)resolveFill:(id)fill alignmentRect:(CGRect)rect style:(unsigned int)style colorName:(id)name
 {
-  v7 = *&a5;
+  v7 = *&style;
   v10 = *(self + 8);
-  if (v10 && ((*(v10 + 16))(v10, a3, *&a5, a6, a4.origin, *&a4.origin.y, a4.size, *&a4.size.height) & 1) != 0)
+  if (v10 && ((*(v10 + 16))(v10, fill, *&style, name, rect.origin, *&rect.origin.y, rect.size, *&rect.size.height) & 1) != 0)
   {
     return 1;
   }
 
-  [(RBSymbolLayer *)self resolveStyle:v7 colorName:a6, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(RBSymbolLayer *)self resolveStyle:v7 colorName:name, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   if (v12 == -32768.0)
   {
     return 0;
   }
 
   v11 = 1;
-  [a3 setColor:1 colorSpace:?];
+  [fill setColor:1 colorSpace:?];
   return v11;
 }
 
-- (void)symbolAnimatorDidChange:(id)a3
+- (void)symbolAnimatorDidChange:(id)change
 {
   [(RBSymbolLayer *)self setNeedsLayout];
-  v4 = [(RBSymbolLayer *)self superlayer];
+  superlayer = [(RBSymbolLayer *)self superlayer];
 
-  [v4 setNeedsLayout];
+  [superlayer setNeedsLayout];
 }
 
 - (void)setNeedsLayout
@@ -265,14 +265,14 @@
   }
 }
 
-- (void)layerDidBecomeVisible:(BOOL)a3
+- (void)layerDidBecomeVisible:(BOOL)visible
 {
-  v3 = a3;
-  *(self + 97) = a3;
+  visibleCopy = visible;
+  *(self + 97) = visible;
   [(RBSymbolLayer *)self setNeedsLayout];
   v5.receiver = self;
   v5.super_class = RBSymbolLayer;
-  [(RBSymbolLayer *)&v5 layerDidBecomeVisible:v3];
+  [(RBSymbolLayer *)&v5 layerDidBecomeVisible:visibleCopy];
 }
 
 - (void)layoutSublayers
@@ -282,46 +282,46 @@
   [(RBSymbolLayer *)self updateForTime:v3];
 }
 
-- (void)updateForTime:(uint64_t)a1
+- (void)updateForTime:(uint64_t)time
 {
   v63[5] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (time)
   {
-    os_unfair_lock_lock((a1 + 88));
-    *(a1 + 92) = 1;
-    if (*(a1 + 80) > a2)
+    os_unfair_lock_lock((time + 88));
+    *(time + 92) = 1;
+    if (*(time + 80) > a2)
     {
-      a2 = *(a1 + 80);
+      a2 = *(time + 80);
     }
 
-    *(a1 + 80) = a2;
-    v4 = *(a1 + 48);
-    if (!v4 || (*(a1 + 97) & 1) == 0)
+    *(time + 80) = a2;
+    v4 = *(time + 48);
+    if (!v4 || (*(time + 97) & 1) == 0)
     {
-      [(RBSymbolLayer *)a1 clearContents];
+      [(RBSymbolLayer *)time clearContents];
 LABEL_60:
-      *(a1 + 92) = 0;
-      os_unfair_lock_unlock((a1 + 88));
+      *(time + 92) = 0;
+      os_unfair_lock_unlock((time + 88));
       return;
     }
 
-    v5 = [(RBAnimation *)v4 rb_animation];
-    RB::Symbol::Animator::set_current_time(v5, a2);
+    rb_animation = [(RBAnimation *)v4 rb_animation];
+    RB::Symbol::Animator::set_current_time(rb_animation, a2);
     if (v58 == 1)
     {
-      [(RBSymbolLayer *)a1 clearContents];
+      [(RBSymbolLayer *)time clearContents];
 LABEL_59:
       v39 = v57 * v52;
-      [(CALayer *)a1 scheduleAnimation:a1 atTime:v51 maxVelocityInPixels:v39];
-      [(RBSymbolAnimator *)*(a1 + 48) unblockObservers];
+      [(CALayer *)time scheduleAnimation:time atTime:v51 maxVelocityInPixels:v39];
+      [(RBSymbolAnimator *)*(time + 48) unblockObservers];
       RB::Symbol::Presentation::~Presentation(v47);
       goto LABEL_60;
     }
 
-    v6 = [(RB::Symbol::Model *)v46[0] drawingOptions];
-    v7 = v6;
+    drawingOptions = [(RB::Symbol::Model *)v46[0] drawingOptions];
+    v7 = drawingOptions;
     v8 = vandq_s8(vandq_s8(vceqq_f64(v54, xmmword_195E42770), vceqq_f64(v53, xmmword_195E42760)), vceqzq_f64(v55));
-    if ((vandq_s8(vdupq_laneq_s64(v8, 1), v8).u64[0] & 0x8000000000000000) != 0 && (v6 & 2) == 0 && (RB::Symbol::Presentation::style_mask(v47) & 0x1000) == 0)
+    if ((vandq_s8(vdupq_laneq_s64(v8, 1), v8).u64[0] & 0x8000000000000000) != 0 && (drawingOptions & 2) == 0 && (RB::Symbol::Presentation::style_mask(v47) & 0x1000) == 0)
     {
       RB::Symbol::Presentation::template_image(v47, &v59);
       v9 = v59.n128_u64[0];
@@ -407,8 +407,8 @@ LABEL_59:
           v24 = v16[6];
         }
 
-        v40 = [v12 contentsMultiplyColor];
-        if (!v40 || (v41 = RBColorFromCGColor(v40, 0), v23 != *&v41) || v22 != v42 || v24 != v43 || v17 != v44)
+        contentsMultiplyColor = [v12 contentsMultiplyColor];
+        if (!contentsMultiplyColor || (v41 = RBColorFromCGColor(contentsMultiplyColor, 0), v23 != *&v41) || v22 != v42 || v24 != v43 || v17 != v44)
         {
           v45 = RBColorCopyCGColor(1, v23, v22, v24, v17);
           [v12 setContentsMultiplyColor:v45];
@@ -459,9 +459,9 @@ LABEL_55:
               State = RBDisplayListGetState(v33);
               RB::Symbol::Presentation::draw(v47, State, 0, v63, 1.0);
               v37 = v46[0];
-              v38 = [v33 moveContents];
+              moveContents = [v33 moveContents];
 
-              *(v37 + 9) = v38;
+              *(v37 + 9) = moveContents;
               [(CALayer *)v27 setNeedsDisplay];
             }
 
@@ -537,12 +537,12 @@ LABEL_55:
 
 - (void)drawingContents
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 88));
-    *a2 = *(a1 + 72);
+    os_unfair_lock_lock((self + 88));
+    *a2 = *(self + 72);
 
-    os_unfair_lock_unlock((a1 + 88));
+    os_unfair_lock_unlock((self + 88));
   }
 
   else
@@ -551,16 +551,16 @@ LABEL_55:
   }
 }
 
-- (id)actionForKey:(id)a3
+- (id)actionForKey:(id)key
 {
-  if ([a3 isEqualToString:@"sublayers"])
+  if ([key isEqualToString:@"sublayers"])
   {
     return 0;
   }
 
   v6.receiver = self;
   v6.super_class = RBSymbolLayer;
-  return [(RBSymbolLayer *)&v6 actionForKey:a3];
+  return [(RBSymbolLayer *)&v6 actionForKey:key];
 }
 
 - (void)display
@@ -570,13 +570,13 @@ LABEL_55:
   [(RBSymbolLayer *)self setContents:0];
 }
 
-- (void)renderInContext:(CGContext *)a3
+- (void)renderInContext:(CGContext *)context
 {
   v25 = *MEMORY[0x1E69E9840];
   v4 = *(self + 6);
   if (v4)
   {
-    v6 = [(RBAnimation *)v4 rb_animation];
+    rb_animation = [(RBAnimation *)v4 rb_animation];
     if (v24[252])
     {
       v15 = v7;
@@ -588,7 +588,7 @@ LABEL_55:
       v22[4] = self;
       v20 = 0;
       v21 = 1.0;
-      v9 = RBDrawingStateFromCGContext(a3, &v21, &v20);
+      v9 = RBDrawingStateFromCGContext(context, &v21, &v20);
       v10 = v9;
       if (v9)
       {
@@ -611,7 +611,7 @@ LABEL_55:
         [v12 concat:&v17];
         State = RBDisplayListGetState(v12);
         RB::Symbol::Presentation::draw(v24, State, 0, v22, 1.0);
-        [v12 renderInContext:a3 options:0];
+        [v12 renderInContext:context options:0];
       }
     }
 
@@ -619,36 +619,36 @@ LABEL_55:
   }
 }
 
-- (void)configureSublayer:(id)a3 type:(unsigned int)a4
+- (void)configureSublayer:(id)sublayer type:(unsigned int)type
 {
-  v4 = *&a4;
-  v7 = [(RBSymbolLayer *)self delegate];
-  if (v7)
+  v4 = *&type;
+  delegate = [(RBSymbolLayer *)self delegate];
+  if (delegate)
   {
-    v8 = v7;
+    v8 = delegate;
     if (objc_opt_respondsToSelector())
     {
 
-      [v8 rbSymbolLayer:self configureSublayer:a3 type:v4];
+      [v8 rbSymbolLayer:self configureSublayer:sublayer type:v4];
     }
   }
 }
 
-- (id)RBLayerDefaultDevice:(id)a3
+- (id)RBLayerDefaultDevice:(id)device
 {
-  v4 = [(RBSymbolLayer *)self delegate];
-  if (!v4)
+  delegate = [(RBSymbolLayer *)self delegate];
+  if (!delegate)
   {
     return 0;
   }
 
-  v5 = v4;
+  v5 = delegate;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  return [v5 RBLayerDefaultDevice:a3];
+  return [v5 RBLayerDefaultDevice:device];
 }
 
 - ($A37143018C4D5433AE0D7FFC21A1DA3D)symbolTransform
@@ -677,14 +677,14 @@ LABEL_55:
 
 - (void)clearContents
 {
-  if (a1 && *(a1 + 96))
+  if (self && *(self + 96))
   {
-    [a1 setSublayers:0];
+    [self setSublayers:0];
 
-    *(a1 + 72) = 0;
-    if (*(a1 + 96))
+    *(self + 72) = 0;
+    if (*(self + 96))
     {
-      *(a1 + 96) = 0;
+      *(self + 96) = 0;
     }
   }
 }

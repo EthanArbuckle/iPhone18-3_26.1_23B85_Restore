@@ -1,27 +1,27 @@
 @interface APFilesEnumerator
-- (APFilesEnumerator)initWithObjectsIterator:(id)a3 fileManager:(id)a4 extension:(id)a5;
+- (APFilesEnumerator)initWithObjectsIterator:(id)iterator fileManager:(id)manager extension:(id)extension;
 - (id)nextObject;
 @end
 
 @implementation APFilesEnumerator
 
-- (APFilesEnumerator)initWithObjectsIterator:(id)a3 fileManager:(id)a4 extension:(id)a5
+- (APFilesEnumerator)initWithObjectsIterator:(id)iterator fileManager:(id)manager extension:(id)extension
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  iteratorCopy = iterator;
+  managerCopy = manager;
+  extensionCopy = extension;
   v11 = [(APFilesEnumerator *)self init];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [extensionCopy copy];
     extension = v11->_extension;
     v11->_extension = v12;
 
-    v14 = [v8 copy];
+    v14 = [iteratorCopy copy];
     objectsIterator = v11->_objectsIterator;
     v11->_objectsIterator = v14;
 
-    objc_storeStrong(&v11->_fileManager, a4);
+    objc_storeStrong(&v11->_fileManager, manager);
   }
 
   return v11;
@@ -29,8 +29,8 @@
 
 - (id)nextObject
 {
-  v3 = [(APFilesEnumerator *)self objectsIterator];
-  v4 = v3[2]();
+  objectsIterator = [(APFilesEnumerator *)self objectsIterator];
+  v4 = objectsIterator[2]();
 
   if (!v4)
   {
@@ -41,13 +41,13 @@ LABEL_7:
 
   while (1)
   {
-    v5 = [(APFilesEnumerator *)self extension];
-    if (v5)
+    extension = [(APFilesEnumerator *)self extension];
+    if (extension)
     {
-      v6 = v5;
-      v7 = [v4 pathExtension];
-      v8 = [(APFilesEnumerator *)self extension];
-      v9 = [v7 isEqualToString:v8];
+      v6 = extension;
+      pathExtension = [v4 pathExtension];
+      extension2 = [(APFilesEnumerator *)self extension];
+      v9 = [pathExtension isEqualToString:extension2];
 
       if ((v9 & 1) == 0)
       {
@@ -62,8 +62,8 @@ LABEL_7:
     }
 
 LABEL_6:
-    v11 = [(APFilesEnumerator *)self objectsIterator];
-    v12 = v11[2]();
+    objectsIterator2 = [(APFilesEnumerator *)self objectsIterator];
+    v12 = objectsIterator2[2]();
 
     v4 = v12;
     if (!v12)
@@ -73,8 +73,8 @@ LABEL_6:
   }
 
   v14 = [APFileSystemItemInfo alloc];
-  v15 = [(APFilesEnumerator *)self fileManager];
-  v13 = sub_10039550C(&v14->super.isa, v10, v4, v15);
+  fileManager = [(APFilesEnumerator *)self fileManager];
+  v13 = sub_10039550C(&v14->super.isa, v10, v4, fileManager);
 
 LABEL_9:
 

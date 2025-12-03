@@ -1,24 +1,24 @@
 @interface MUGroupedExternalActionController
 - (BOOL)hasMultipleVendorsForAnalytics;
-- (MUGroupedExternalActionController)initWithGroupedExternalAction:(id)a3 amsResultProvider:(id)a4 supportsMultipleVendorSelection:(BOOL)a5 actionHandler:(id)a6 analyticsHandler:(id)a7;
+- (MUGroupedExternalActionController)initWithGroupedExternalAction:(id)action amsResultProvider:(id)provider supportsMultipleVendorSelection:(BOOL)selection actionHandler:(id)handler analyticsHandler:(id)analyticsHandler;
 - (id)_viewModelsWithSortApplied;
-- (int)resolvedAnalyticsTargetWithPresentationOptions:(id)a3;
-- (void)_executeBestIntegrationForProvider:(id)a3 index:(unint64_t)a4 presentationOptions:(id)a5;
-- (void)_openMapsExtensionUsingExtensionParams:(id)a3 handlingOptions:(id)a4;
-- (void)captureGroupedMenuRevealAnalyticsIfNeededWithEnvironment:(id)a3;
-- (void)fetchProviderLockupsWithCompletion:(id)a3;
-- (void)openFirstPartnerActionWithPresentationOptions:(id)a3;
-- (void)openPartnerActionUsingViewModel:(id)a3 withPresentationOptions:(id)a4;
+- (int)resolvedAnalyticsTargetWithPresentationOptions:(id)options;
+- (void)_executeBestIntegrationForProvider:(id)provider index:(unint64_t)index presentationOptions:(id)options;
+- (void)_openMapsExtensionUsingExtensionParams:(id)params handlingOptions:(id)options;
+- (void)captureGroupedMenuRevealAnalyticsIfNeededWithEnvironment:(id)environment;
+- (void)fetchProviderLockupsWithCompletion:(id)completion;
+- (void)openFirstPartnerActionWithPresentationOptions:(id)options;
+- (void)openPartnerActionUsingViewModel:(id)model withPresentationOptions:(id)options;
 @end
 
 @implementation MUGroupedExternalActionController
 
-- (void)captureGroupedMenuRevealAnalyticsIfNeededWithEnvironment:(id)a3
+- (void)captureGroupedMenuRevealAnalyticsIfNeededWithEnvironment:(id)environment
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(GEOPlaceExternalAction *)self->_externalAction actionProviders];
-  v6 = [v5 count];
+  environmentCopy = environment;
+  actionProviders = [(GEOPlaceExternalAction *)self->_externalAction actionProviders];
+  v6 = [actionProviders count];
 
   if (v6 >= 2)
   {
@@ -52,7 +52,7 @@
       while (v9);
     }
 
-    if ([v4 isActionBar])
+    if ([environmentCopy isActionBar])
     {
       if ([(MUGroupedExternalActionController *)self hasMultipleVendorsForAnalytics])
       {
@@ -65,7 +65,7 @@
       }
     }
 
-    else if ([v4 isQuickAction])
+    else if ([environmentCopy isQuickAction])
     {
       v12 = 30;
     }
@@ -76,18 +76,18 @@
     }
 
     v13 = objc_opt_new();
-    [v13 setIsForActionBar:{objc_msgSend(v4, "isActionBar")}];
-    [v13 setIsForActionBarMoreMenu:{objc_msgSend(v4, "isActionBarMoreMenu")}];
-    if ([v4 isActionBarMoreMenu])
+    [v13 setIsForActionBar:{objc_msgSend(environmentCopy, "isActionBar")}];
+    [v13 setIsForActionBarMoreMenu:{objc_msgSend(environmentCopy, "isActionBarMoreMenu")}];
+    if ([environmentCopy isActionBarMoreMenu])
     {
       v14 = @"SECONDARY";
     }
 
     else
     {
-      v15 = [v4 isActionBar];
+      isActionBar = [environmentCopy isActionBar];
       v14 = @"PRIMARY";
-      if (!v15)
+      if (!isActionBar)
       {
         v14 = 0;
       }
@@ -101,15 +101,15 @@
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (int)resolvedAnalyticsTargetWithPresentationOptions:(id)a3
+- (int)resolvedAnalyticsTargetWithPresentationOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(MUGroupedExternalActionController *)self hasMultipleVendorsForAnalytics];
-  v6 = [v4 isForActionBar];
+  optionsCopy = options;
+  hasMultipleVendorsForAnalytics = [(MUGroupedExternalActionController *)self hasMultipleVendorsForAnalytics];
+  isForActionBar = [optionsCopy isForActionBar];
 
-  if (v5)
+  if (hasMultipleVendorsForAnalytics)
   {
-    if (v6)
+    if (isForActionBar)
     {
       return 204;
     }
@@ -121,7 +121,7 @@
     }
   }
 
-  else if (v6)
+  else if (isForActionBar)
   {
     return 203;
   }
@@ -135,25 +135,25 @@
 
 - (BOOL)hasMultipleVendorsForAnalytics
 {
-  v3 = [(MUGroupedExternalActionController *)self supportsMultipleVendorSelection];
-  if (v3)
+  supportsMultipleVendorSelection = [(MUGroupedExternalActionController *)self supportsMultipleVendorSelection];
+  if (supportsMultipleVendorSelection)
   {
-    LOBYTE(v3) = [(NSArray *)self->_viewModels count]> 1;
+    LOBYTE(supportsMultipleVendorSelection) = [(NSArray *)self->_viewModels count]> 1;
   }
 
-  return v3;
+  return supportsMultipleVendorSelection;
 }
 
-- (void)_openMapsExtensionUsingExtensionParams:(id)a3 handlingOptions:(id)a4
+- (void)_openMapsExtensionUsingExtensionParams:(id)params handlingOptions:(id)options
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  paramsCopy = params;
+  optionsCopy = options;
   extensionDiscoveryManager = self->_extensionDiscoveryManager;
   if (!extensionDiscoveryManager)
   {
     v9 = [MUPlaceExtensionDiscoveryManager alloc];
-    v28[0] = v6;
+    v28[0] = paramsCopy;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
     v11 = [(MUPlaceExtensionDiscoveryManager *)v9 initWithExtensionDataItems:v10 amsResultProvider:self->_amsResultProvider];
     v12 = self->_extensionDiscoveryManager;
@@ -162,20 +162,20 @@
     extensionDiscoveryManager = self->_extensionDiscoveryManager;
   }
 
-  v13 = [(MUPlaceExtensionDiscoveryManager *)extensionDiscoveryManager discoveryResultForDataItem:v6];
+  v13 = [(MUPlaceExtensionDiscoveryManager *)extensionDiscoveryManager discoveryResultForDataItem:paramsCopy];
   if (v13)
   {
     WeakRetained = objc_loadWeakRetained(&self->_actionHandler);
-    v15 = [v13 extension];
-    v16 = [v13 appStoreApp];
-    [(MUAMSResultProviderFetchOptions *)WeakRetained handleMapsExtension:v15 usingAppStoreApp:v16 options:v7 parameters:v6];
+    extension = [v13 extension];
+    appStoreApp = [v13 appStoreApp];
+    [(MUAMSResultProviderFetchOptions *)WeakRetained handleMapsExtension:extension usingAppStoreApp:appStoreApp options:optionsCopy parameters:paramsCopy];
   }
 
   else
   {
     v17 = [MUAMSResultProviderFetchOptions alloc];
-    v18 = [MEMORY[0x1E696F3B8] sharedInstance];
-    [v18 screenScale];
+    mEMORY[0x1E696F3B8] = [MEMORY[0x1E696F3B8] sharedInstance];
+    [mEMORY[0x1E696F3B8] screenScale];
     WeakRetained = [(MUAMSResultProviderFetchOptions *)v17 initWithDisplayScale:[(MUGroupedExternalActionController *)self source] artworkSize:v19 source:40.0, 40.0];
 
     objc_initWeak(&location, self);
@@ -186,8 +186,8 @@
     v23[2] = __92__MUGroupedExternalActionController__openMapsExtensionUsingExtensionParams_handlingOptions___block_invoke;
     v23[3] = &unk_1E8219370;
     objc_copyWeak(&v26, &location);
-    v24 = v7;
-    v25 = v6;
+    v24 = optionsCopy;
+    v25 = paramsCopy;
     [(MUPlaceExtensionDiscoveryManager *)v20 performExtensionDiscoveryWithOptions:WeakRetained callbackQueue:MEMORY[0x1E69E96A0] completion:v23];
 
     objc_destroyWeak(&v26);
@@ -229,11 +229,11 @@ void __92__MUGroupedExternalActionController__openMapsExtensionUsingExtensionPar
 
     v7 = objc_alloc_init(MUVendorLinkSortParameters);
     [(MUVendorLinkSortParameters *)v7 setSortAlphabetically:1];
-    v8 = [(GEOPlaceExternalAction *)self->_externalAction winningAdamId];
-    [(MUVendorLinkSortParameters *)v7 setWinningAdamId:v8];
+    winningAdamId = [(GEOPlaceExternalAction *)self->_externalAction winningAdamId];
+    [(MUVendorLinkSortParameters *)v7 setWinningAdamId:winningAdamId];
 
-    v9 = [(GEOPlaceExternalAction *)self->_externalAction actionProviders];
-    v10 = MUMap(v9, &__block_literal_global_8152);
+    actionProviders = [(GEOPlaceExternalAction *)self->_externalAction actionProviders];
+    v10 = MUMap(actionProviders, &__block_literal_global_8152);
 
     [(MUVendorLinkSortParameters *)v7 setPreferredOrdering:v10];
     v11 = [(MUVendorLinkSorter *)self->_vendorLinkSorter sortedViewModelsForParameters:v7];
@@ -247,41 +247,41 @@ void __92__MUGroupedExternalActionController__openMapsExtensionUsingExtensionPar
   return v11;
 }
 
-- (void)_executeBestIntegrationForProvider:(id)a3 index:(unint64_t)a4 presentationOptions:(id)a5
+- (void)_executeBestIntegrationForProvider:(id)provider index:(unint64_t)index presentationOptions:(id)options
 {
   v65[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 supportedIntegrations];
-  v11 = [v10 count];
+  providerCopy = provider;
+  optionsCopy = options;
+  supportedIntegrations = [providerCopy supportedIntegrations];
+  v11 = [supportedIntegrations count];
 
-  if (v11 <= a4)
+  if (v11 <= index)
   {
     goto LABEL_28;
   }
 
-  v12 = [v8 supportedIntegrations];
-  v13 = [v12 objectAtIndex:a4];
+  supportedIntegrations2 = [providerCopy supportedIntegrations];
+  v13 = [supportedIntegrations2 objectAtIndex:index];
 
-  v14 = [v13 type];
-  v15 = [(MUGroupedExternalActionController *)self hasMultipleVendorsForAnalytics];
-  if ((v14 - 1) < 2)
+  type = [v13 type];
+  hasMultipleVendorsForAnalytics = [(MUGroupedExternalActionController *)self hasMultipleVendorsForAnalytics];
+  if ((type - 1) < 2)
   {
     goto LABEL_5;
   }
 
-  if (v14 == 3)
+  if (type == 3)
   {
-    v16 = !v15;
+    v16 = !hasMultipleVendorsForAnalytics;
     v17 = 6036;
     v18 = 318;
     goto LABEL_7;
   }
 
-  if (v14 == 4)
+  if (type == 4)
   {
 LABEL_5:
-    v16 = !v15;
+    v16 = !hasMultipleVendorsForAnalytics;
     v17 = 6074;
     v18 = 283;
 LABEL_7:
@@ -296,13 +296,13 @@ LABEL_7:
 
   v52 = 0;
 LABEL_10:
-  v19 = [(MUGroupedExternalActionController *)self resolvedAnalyticsTargetWithPresentationOptions:v9];
+  v19 = [(MUGroupedExternalActionController *)self resolvedAnalyticsTargetWithPresentationOptions:optionsCopy];
   v20 = objc_alloc_init(MEMORY[0x1E69A24B0]);
-  v21 = [(GEOPlaceExternalAction *)self->_externalAction categoryId];
-  [v20 setMetadata:v21];
+  categoryId = [(GEOPlaceExternalAction *)self->_externalAction categoryId];
+  [v20 setMetadata:categoryId];
 
-  v22 = [v8 appAdamId];
-  [v20 setVendor:v22];
+  appAdamId = [providerCopy appAdamId];
+  [v20 setVendor:appAdamId];
 
   v23 = [v13 type] - 1;
   if (v23 > 3)
@@ -321,98 +321,98 @@ LABEL_10:
   v53 = [MEMORY[0x1E695DEC8] arrayWithObjects:v65 count:1];
   v25 = objc_alloc_init(MUExternalActionHandlingOptions);
   [(MUExternalActionHandlingOptions *)v25 setAnalyticsTarget:v19];
-  v26 = [v13 type];
-  if (v26 > 2)
+  type2 = [v13 type];
+  if (type2 > 2)
   {
-    if (v26 == 3)
+    if (type2 == 3)
     {
       WeakRetained = objc_loadWeakRetained(&self->_analyticsHandler);
-      [WeakRetained instrumentExternalActionUsingAnalyticsAction:v52 target:v19 eventValue:0 sharedStateButtonList:v53 presentationOptions:v9 classification:0];
+      [WeakRetained instrumentExternalActionUsingAnalyticsAction:v52 target:v19 eventValue:0 sharedStateButtonList:v53 presentationOptions:optionsCopy classification:0];
 
-      v50 = [v13 siriExtensionParams];
-      [(MUGroupedExternalActionController *)self _openMapsExtensionUsingExtensionParams:v50 handlingOptions:v25];
+      siriExtensionParams = [v13 siriExtensionParams];
+      [(MUGroupedExternalActionController *)self _openMapsExtensionUsingExtensionParams:siriExtensionParams handlingOptions:v25];
     }
 
-    else if (v26 == 4)
+    else if (type2 == 4)
     {
-      v36 = [v13 webLinkParams];
-      v37 = [v36 url];
+      webLinkParams = [v13 webLinkParams];
+      v37 = [webLinkParams url];
 
-      v38 = [v37 absoluteString];
-      [(MUExternalActionHandlingOptions *)v25 setAnalyticsEventValue:v38];
+      absoluteString = [v37 absoluteString];
+      [(MUExternalActionHandlingOptions *)v25 setAnalyticsEventValue:absoluteString];
 
       v39 = MUGetMUGroupedExternalActionControllerLog();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
       {
-        v40 = [v37 absoluteString];
+        absoluteString2 = [v37 absoluteString];
         *buf = 138412290;
-        v64 = v40;
+        v64 = absoluteString2;
         _os_log_impl(&dword_1C5620000, v39, OS_LOG_TYPE_INFO, "Opening flexible action link with url %@", buf, 0xCu);
       }
 
       v41 = objc_loadWeakRetained(&self->_analyticsHandler);
-      v42 = [(MUExternalActionHandlingOptions *)v25 analyticsEventValue];
-      [v41 instrumentExternalActionUsingAnalyticsAction:v52 target:v19 eventValue:v42 sharedStateButtonList:v53 presentationOptions:v9 classification:0];
+      analyticsEventValue = [(MUExternalActionHandlingOptions *)v25 analyticsEventValue];
+      [v41 instrumentExternalActionUsingAnalyticsAction:v52 target:v19 eventValue:analyticsEventValue sharedStateButtonList:v53 presentationOptions:optionsCopy classification:0];
 
-      v43 = [v13 webLinkParams];
-      -[MUExternalActionHandlingOptions setForcePunchout:](v25, "setForcePunchout:", [v43 supportsEmbeddedWebBrowser] ^ 1);
+      webLinkParams2 = [v13 webLinkParams];
+      -[MUExternalActionHandlingOptions setForcePunchout:](v25, "setForcePunchout:", [webLinkParams2 supportsEmbeddedWebBrowser] ^ 1);
 
       v44 = objc_loadWeakRetained(&self->_actionHandler);
       [v44 handleWebLink:v37 options:v25];
     }
   }
 
-  else if (v26 == 1)
+  else if (type2 == 1)
   {
-    v45 = [v13 appClipRepresentedAsQuickLink];
-    v46 = [v45 URLString];
-    [(MUExternalActionHandlingOptions *)v25 setAnalyticsEventValue:v46];
+    appClipRepresentedAsQuickLink = [v13 appClipRepresentedAsQuickLink];
+    uRLString = [appClipRepresentedAsQuickLink URLString];
+    [(MUExternalActionHandlingOptions *)v25 setAnalyticsEventValue:uRLString];
 
     objc_initWeak(buf, self);
-    v47 = [MEMORY[0x1E696F1B0] sharedInstance];
-    v48 = [v13 appClipRepresentedAsQuickLink];
+    mEMORY[0x1E696F1B0] = [MEMORY[0x1E696F1B0] sharedInstance];
+    appClipRepresentedAsQuickLink2 = [v13 appClipRepresentedAsQuickLink];
     v54[0] = MEMORY[0x1E69E9820];
     v54[1] = 3221225472;
     v54[2] = __98__MUGroupedExternalActionController__executeBestIntegrationForProvider_index_presentationOptions___block_invoke;
     v54[3] = &unk_1E8219328;
     objc_copyWeak(v60, buf);
     v55 = v13;
-    v56 = v8;
-    v60[1] = a4;
-    v57 = v9;
+    v56 = providerCopy;
+    v60[1] = index;
+    v57 = optionsCopy;
     v61 = v52;
     v62 = v19;
     v58 = v25;
     v59 = v53;
-    [v47 appClipWithQuickLink:v48 completion:v54];
+    [mEMORY[0x1E696F1B0] appClipWithQuickLink:appClipRepresentedAsQuickLink2 completion:v54];
 
     objc_destroyWeak(v60);
     objc_destroyWeak(buf);
   }
 
-  else if (v26 == 2)
+  else if (type2 == 2)
   {
-    v27 = [v13 quickLink];
-    v28 = [v27 URLString];
-    [(MUExternalActionHandlingOptions *)v25 setAnalyticsEventValue:v28];
+    quickLink = [v13 quickLink];
+    uRLString2 = [quickLink URLString];
+    [(MUExternalActionHandlingOptions *)v25 setAnalyticsEventValue:uRLString2];
 
     v29 = MUGetMUGroupedExternalActionControllerLog();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
     {
-      v30 = [v13 quickLink];
-      v31 = [v30 URLString];
+      quickLink2 = [v13 quickLink];
+      uRLString3 = [quickLink2 URLString];
       *buf = 138412290;
-      v64 = v31;
+      v64 = uRLString3;
       _os_log_impl(&dword_1C5620000, v29, OS_LOG_TYPE_INFO, "Opening quick link with url %@", buf, 0xCu);
     }
 
     v32 = objc_loadWeakRetained(&self->_analyticsHandler);
-    v33 = [(MUExternalActionHandlingOptions *)v25 analyticsEventValue];
-    [v32 instrumentExternalActionUsingAnalyticsAction:v52 target:v19 eventValue:v33 sharedStateButtonList:v53 presentationOptions:v9 classification:0];
+    analyticsEventValue2 = [(MUExternalActionHandlingOptions *)v25 analyticsEventValue];
+    [v32 instrumentExternalActionUsingAnalyticsAction:v52 target:v19 eventValue:analyticsEventValue2 sharedStateButtonList:v53 presentationOptions:optionsCopy classification:0];
 
     v34 = objc_loadWeakRetained(&self->_actionHandler);
-    v35 = [v13 quickLink];
-    [v34 handleQuickLink:v35 options:v25];
+    quickLink3 = [v13 quickLink];
+    [v34 handleQuickLink:quickLink3 options:v25];
   }
 
 LABEL_28:
@@ -475,11 +475,11 @@ void __98__MUGroupedExternalActionController__executeBestIntegrationForProvider_
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)openFirstPartnerActionWithPresentationOptions:(id)a3
+- (void)openFirstPartnerActionWithPresentationOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(GEOPlaceExternalAction *)self->_externalAction actionProviders];
-  v6 = [v5 count];
+  optionsCopy = options;
+  actionProviders = [(GEOPlaceExternalAction *)self->_externalAction actionProviders];
+  v6 = [actionProviders count];
 
   if (!v6)
   {
@@ -500,16 +500,16 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v7 = [(GEOPlaceExternalAction *)self->_externalAction actionProviders];
-  v8 = [v7 count];
+  actionProviders2 = [(GEOPlaceExternalAction *)self->_externalAction actionProviders];
+  v8 = [actionProviders2 count];
 
   if (v8 != 1)
   {
     if ([(NSArray *)self->_viewModels count])
     {
-      v9 = [(MUGroupedExternalActionController *)self _viewModelsWithSortApplied];
-      v10 = [v9 firstObject];
-      [(MUGroupedExternalActionController *)self openPartnerActionUsingViewModel:v10 withPresentationOptions:v4];
+      _viewModelsWithSortApplied = [(MUGroupedExternalActionController *)self _viewModelsWithSortApplied];
+      firstObject = [_viewModelsWithSortApplied firstObject];
+      [(MUGroupedExternalActionController *)self openPartnerActionUsingViewModel:firstObject withPresentationOptions:optionsCopy];
       goto LABEL_8;
     }
 
@@ -527,28 +527,28 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v9 = [(GEOPlaceExternalAction *)self->_externalAction actionProviders];
-  v10 = [v9 firstObject];
-  [(MUGroupedExternalActionController *)self _executeBestIntegrationForProvider:v10 index:0 presentationOptions:v4];
+  _viewModelsWithSortApplied = [(GEOPlaceExternalAction *)self->_externalAction actionProviders];
+  firstObject = [_viewModelsWithSortApplied firstObject];
+  [(MUGroupedExternalActionController *)self _executeBestIntegrationForProvider:firstObject index:0 presentationOptions:optionsCopy];
 LABEL_8:
 
 LABEL_13:
 }
 
-- (void)openPartnerActionUsingViewModel:(id)a3 withPresentationOptions:(id)a4
+- (void)openPartnerActionUsingViewModel:(id)model withPresentationOptions:(id)options
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  modelCopy = model;
+  optionsCopy = options;
+  if (modelCopy)
   {
     externalAction = self->_externalAction;
-    v9 = [v6 partnerId];
-    v10 = [(GEOPlaceExternalAction *)externalAction partnerActionForPartnerId:v9];
+    partnerId = [modelCopy partnerId];
+    v10 = [(GEOPlaceExternalAction *)externalAction partnerActionForPartnerId:partnerId];
 
     if (v10)
     {
-      [(MUGroupedExternalActionController *)self _executeBestIntegrationForProvider:v10 index:0 presentationOptions:v7];
+      [(MUGroupedExternalActionController *)self _executeBestIntegrationForProvider:v10 index:0 presentationOptions:optionsCopy];
     }
 
     else
@@ -556,12 +556,12 @@ LABEL_13:
       v11 = MUGetMUGroupedExternalActionControllerLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v12 = [v6 uniqueIdentifier];
-        v13 = [v6 appAdamId];
+        uniqueIdentifier = [modelCopy uniqueIdentifier];
+        appAdamId = [modelCopy appAdamId];
         v15 = 138412546;
-        v16 = v12;
+        v16 = uniqueIdentifier;
         v17 = 2112;
-        v18 = v13;
+        v18 = appAdamId;
         _os_log_impl(&dword_1C5620000, v11, OS_LOG_TYPE_ERROR, "Unable to find a matching provider for a view model with identifier %@ and adam id %@.  Early return", &v15, 0x16u);
       }
 
@@ -582,22 +582,22 @@ LABEL_13:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchProviderLockupsWithCompletion:(id)a3
+- (void)fetchProviderLockupsWithCompletion:(id)completion
 {
   v101 = *MEMORY[0x1E69E9840];
-  v55 = a3;
+  completionCopy = completion;
   if ([(NSArray *)self->_viewModels count])
   {
-    v4 = [(MUGroupedExternalActionController *)self _viewModelsWithSortApplied];
-    v5 = v55;
-    (*(v55 + 2))(v55, v4, 0);
+    _viewModelsWithSortApplied = [(MUGroupedExternalActionController *)self _viewModelsWithSortApplied];
+    v5 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, _viewModelsWithSortApplied, 0);
 
     goto LABEL_39;
   }
 
   val = self;
-  v6 = [MEMORY[0x1E696F3B8] sharedInstance];
-  [v6 screenScale];
+  mEMORY[0x1E696F3B8] = [MEMORY[0x1E696F3B8] sharedInstance];
+  [mEMORY[0x1E696F3B8] screenScale];
   v8 = v7;
 
   v66 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -613,8 +613,8 @@ LABEL_13:
   v96 = 0u;
   v97 = 0u;
   v98 = 0u;
-  v9 = [(GEOPlaceExternalAction *)val->_externalAction actionProviders];
-  v10 = [v9 countByEnumeratingWithState:&v95 objects:v100 count:16];
+  actionProviders = [(GEOPlaceExternalAction *)val->_externalAction actionProviders];
+  v10 = [actionProviders countByEnumeratingWithState:&v95 objects:v100 count:16];
   if (!v10)
   {
     goto LABEL_22;
@@ -627,78 +627,78 @@ LABEL_13:
     {
       if (*v96 != v11)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(actionProviders);
       }
 
       v13 = *(*(&v95 + 1) + 8 * i);
-      v14 = [v13 supportedIntegrations];
-      v15 = [v14 firstObject];
+      supportedIntegrations = [v13 supportedIntegrations];
+      firstObject = [supportedIntegrations firstObject];
 
-      if (v15)
+      if (firstObject)
       {
-        [v66 addObject:v15];
+        [v66 addObject:firstObject];
       }
 
-      v16 = [v13 appAdamId];
-      v17 = [v15 type];
-      if (v17 > 2)
+      appAdamId = [v13 appAdamId];
+      type = [firstObject type];
+      if (type > 2)
       {
-        if (v17 == 3)
+        if (type == 3)
         {
-          v22 = [v15 siriExtensionParams];
-          v23 = [v15 attributionAppForMapsExtension];
-          v24 = [v23 appBundleIdentifier];
-          [v60 setObject:v22 forKey:v24];
+          siriExtensionParams = [firstObject siriExtensionParams];
+          attributionAppForMapsExtension = [firstObject attributionAppForMapsExtension];
+          appBundleIdentifier = [attributionAppForMapsExtension appBundleIdentifier];
+          [v60 setObject:siriExtensionParams forKey:appBundleIdentifier];
 
-          v18 = [v13 identifier];
-          [v57 setObject:v18 forKey:v16];
+          identifier = [v13 identifier];
+          [v57 setObject:identifier forKey:appAdamId];
         }
 
         else
         {
-          if (v17 != 4)
+          if (type != 4)
           {
             goto LABEL_20;
           }
 
-          v18 = [v15 webLinkParams];
-          v19 = [v13 identifier];
-          [v67 setObject:v18 forKey:v19];
+          identifier = [firstObject webLinkParams];
+          identifier2 = [v13 identifier];
+          [v67 setObject:identifier forKey:identifier2];
         }
       }
 
-      else if (v17 == 1)
+      else if (type == 1)
       {
-        v18 = [v15 appClipRepresentedAsQuickLink];
-        [v61 addObject:v18];
-        v20 = [v18 URLString];
-        [v59 setObject:v16 forKey:v20];
+        identifier = [firstObject appClipRepresentedAsQuickLink];
+        [v61 addObject:identifier];
+        uRLString = [identifier URLString];
+        [v59 setObject:appAdamId forKey:uRLString];
 
-        v21 = [v13 identifier];
-        [v58 setObject:v21 forKey:v16];
+        identifier3 = [v13 identifier];
+        [v58 setObject:identifier3 forKey:appAdamId];
       }
 
       else
       {
-        if (v17 != 2)
+        if (type != 2)
         {
           goto LABEL_20;
         }
 
-        v18 = [v13 identifier];
-        [v62 setObject:v18 forKey:v16];
+        identifier = [v13 identifier];
+        [v62 setObject:identifier forKey:appAdamId];
       }
 
 LABEL_20:
     }
 
-    v10 = [v9 countByEnumeratingWithState:&v95 objects:v100 count:16];
+    v10 = [actionProviders countByEnumeratingWithState:&v95 objects:v100 count:16];
   }
 
   while (v10);
 LABEL_22:
 
-  v65 = [(GEOPlaceExternalAction *)val->_externalAction actionName];
+  actionName = [(GEOPlaceExternalAction *)val->_externalAction actionName];
   group = dispatch_group_create();
   v64 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if ([v67 count])
@@ -724,15 +724,15 @@ LABEL_22:
 
           v28 = *(*(&v91 + 1) + 8 * j);
           v29 = [v67 objectForKeyedSubscript:v28];
-          v30 = [v29 icon];
+          icon = [v29 icon];
           v31 = [MEMORY[0x1E69A21D8] defaultPhotoOptionsWithAllowSmaller:1];
-          v32 = [v30 bestPhotoForFrameSize:v31 displayScale:40.0 options:{40.0, v8}];
+          v32 = [icon bestPhotoForFrameSize:v31 displayScale:40.0 options:{40.0, v8}];
           v33 = [v32 url];
 
           v34 = [MUVendorLinkViewModel alloc];
-          v35 = [v29 displayName];
-          v36 = [v29 displayName];
-          v37 = [(MUVendorLinkViewModel *)v34 initWithPartnerId:v28 linkType:4 artworkURL:v33 providerName:v35 appAdamId:0 appShortName:v36 actionName:v65 fallbackSymbolName:@"safari"];
+          displayName = [v29 displayName];
+          displayName2 = [v29 displayName];
+          v37 = [(MUVendorLinkViewModel *)v34 initWithPartnerId:v28 linkType:4 artworkURL:v33 providerName:displayName appAdamId:0 appShortName:displayName2 actionName:actionName fallbackSymbolName:@"safari"];
 
           [v64 addObject:v37];
         }
@@ -749,7 +749,7 @@ LABEL_22:
   if ([v61 count])
   {
     dispatch_group_enter(group);
-    v38 = [MEMORY[0x1E696F1B0] sharedInstance];
+    mEMORY[0x1E696F1B0] = [MEMORY[0x1E696F1B0] sharedInstance];
     v39 = [v61 copy];
     v85[0] = MEMORY[0x1E69E9820];
     v85[1] = 3221225472;
@@ -757,26 +757,26 @@ LABEL_22:
     v85[3] = &unk_1E82192B0;
     v86 = v59;
     v87 = v58;
-    v88 = v65;
+    v88 = actionName;
     v89 = v64;
     v90 = group;
-    [v38 appClipsFromQuickLinks:v39 completion:v85];
+    [mEMORY[0x1E696F1B0] appClipsFromQuickLinks:v39 completion:v85];
   }
 
   if ([v62 count] && val->_amsResultProvider)
   {
     dispatch_group_enter(group);
     amsResultProvider = val->_amsResultProvider;
-    v41 = [v62 allKeys];
+    allKeys = [v62 allKeys];
     v80[0] = MEMORY[0x1E69E9820];
     v80[1] = 3221225472;
     v80[2] = __72__MUGroupedExternalActionController_fetchProviderLockupsWithCompletion___block_invoke_3;
     v80[3] = &unk_1E82192D8;
     v81 = v62;
-    v82 = v65;
+    v82 = actionName;
     v83 = v64;
     v84 = group;
-    [(MUAMSResultProvider *)amsResultProvider fetchResultsForAdamIds:v41 options:v53 callbackQueue:MEMORY[0x1E69E96A0] completion:v80];
+    [(MUAMSResultProvider *)amsResultProvider fetchResultsForAdamIds:allKeys options:v53 callbackQueue:MEMORY[0x1E69E96A0] completion:v80];
   }
 
   if ([v60 count])
@@ -787,10 +787,10 @@ LABEL_22:
     location[2] = 0x2020000000;
     v79 = 0;
     v42 = [MUPlaceExtensionDiscoveryManager alloc];
-    v43 = [v60 allValues];
-    v44 = [v43 reverseObjectEnumerator];
-    v45 = [v44 allObjects];
-    v46 = [(MUPlaceExtensionDiscoveryManager *)v42 initWithExtensionDataItems:v45 amsResultProvider:val->_amsResultProvider];
+    allValues = [v60 allValues];
+    reverseObjectEnumerator = [allValues reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
+    v46 = [(MUPlaceExtensionDiscoveryManager *)v42 initWithExtensionDataItems:allObjects amsResultProvider:val->_amsResultProvider];
     extensionDiscoveryManager = val->_extensionDiscoveryManager;
     val->_extensionDiscoveryManager = v46;
 
@@ -802,7 +802,7 @@ LABEL_22:
     v72[2] = __72__MUGroupedExternalActionController_fetchProviderLockupsWithCompletion___block_invoke_4;
     v72[3] = &unk_1E8219300;
     v73 = v57;
-    v74 = v65;
+    v74 = actionName;
     v75 = v64;
     v77 = location;
     v76 = group;
@@ -818,14 +818,14 @@ LABEL_22:
   block[3] = &unk_1E82194C8;
   objc_copyWeak(&v71, location);
   v69 = v64;
-  v70 = v55;
+  v70 = completionCopy;
   v51 = v64;
   dispatch_group_notify(group, MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v71);
   objc_destroyWeak(location);
 
-  v5 = v55;
+  v5 = completionCopy;
 LABEL_39:
 
   v52 = *MEMORY[0x1E69E9840];
@@ -1020,23 +1020,23 @@ void __72__MUGroupedExternalActionController_fetchProviderLockupsWithCompletion_
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (MUGroupedExternalActionController)initWithGroupedExternalAction:(id)a3 amsResultProvider:(id)a4 supportsMultipleVendorSelection:(BOOL)a5 actionHandler:(id)a6 analyticsHandler:(id)a7
+- (MUGroupedExternalActionController)initWithGroupedExternalAction:(id)action amsResultProvider:(id)provider supportsMultipleVendorSelection:(BOOL)selection actionHandler:(id)handler analyticsHandler:(id)analyticsHandler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  actionCopy = action;
+  providerCopy = provider;
+  handlerCopy = handler;
+  analyticsHandlerCopy = analyticsHandler;
   v20.receiver = self;
   v20.super_class = MUGroupedExternalActionController;
   v17 = [(MUGroupedExternalActionController *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_externalAction, a3);
-    objc_storeWeak(&v18->_actionHandler, v15);
-    objc_storeWeak(&v18->_analyticsHandler, v16);
-    objc_storeStrong(&v18->_amsResultProvider, a4);
-    v18->_supportsMultipleVendorSelection = a5;
+    objc_storeStrong(&v17->_externalAction, action);
+    objc_storeWeak(&v18->_actionHandler, handlerCopy);
+    objc_storeWeak(&v18->_analyticsHandler, analyticsHandlerCopy);
+    objc_storeStrong(&v18->_amsResultProvider, provider);
+    v18->_supportsMultipleVendorSelection = selection;
   }
 
   return v18;

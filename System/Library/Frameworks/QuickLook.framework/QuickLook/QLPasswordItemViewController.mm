@@ -1,9 +1,9 @@
 @interface QLPasswordItemViewController
 - (void)invalidate;
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5;
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler;
 - (void)loadView;
-- (void)previewDidAppear:(BOOL)a3;
-- (void)userDidEnterPassword:(id)a3 forPasswordView:(id)a4;
+- (void)previewDidAppear:(BOOL)appear;
+- (void)userDidEnterPassword:(id)password forPasswordView:(id)view;
 @end
 
 @implementation QLPasswordItemViewController
@@ -11,25 +11,25 @@
 - (void)loadView
 {
   v3 = objc_alloc(MEMORY[0x277D75450]);
-  v4 = [(QLPreviewContext *)self->_context previewTitle];
-  v5 = [v3 initWithDocumentName:v4];
+  previewTitle = [(QLPreviewContext *)self->_context previewTitle];
+  v5 = [v3 initWithDocumentName:previewTitle];
 
   [v5 setPasswordDelegate:self];
   [(QLPasswordItemViewController *)self setView:v5];
 }
 
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler
 {
-  objc_storeStrong(&self->_context, a4);
-  v11 = a4;
-  v8 = a5;
-  v9 = _Block_copy(v8);
+  objc_storeStrong(&self->_context, context);
+  contextCopy = context;
+  handlerCopy = handler;
+  v9 = _Block_copy(handlerCopy);
 
   completionBlock = self->_completionBlock;
   self->_completionBlock = v9;
 }
 
-- (void)previewDidAppear:(BOOL)a3
+- (void)previewDidAppear:(BOOL)appear
 {
   v4 = dispatch_time(0, 10000000);
   block[0] = MEMORY[0x277D85DD0];
@@ -54,9 +54,9 @@ void __49__QLPasswordItemViewController_previewDidAppear___block_invoke(uint64_t
   MEMORY[0x2821F96F8]();
 }
 
-- (void)userDidEnterPassword:(id)a3 forPasswordView:(id)a4
+- (void)userDidEnterPassword:(id)password forPasswordView:(id)view
 {
-  [(QLPreviewContext *)self->_context setPassword:a3, a4];
+  [(QLPreviewContext *)self->_context setPassword:password, view];
   completionBlock = self->_completionBlock;
   if (completionBlock)
   {

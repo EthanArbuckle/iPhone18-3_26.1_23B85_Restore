@@ -1,21 +1,21 @@
 @interface HMDRemoteEventRouterServerMessageReceiver
 - (NSUUID)messageTargetUUID;
 - (OS_dispatch_queue)messageReceiveQueue;
-- (void)handleRequestMessage:(id)a3;
+- (void)handleRequestMessage:(id)message;
 @end
 
 @implementation HMDRemoteEventRouterServerMessageReceiver
 
-- (void)handleRequestMessage:(id)a3
+- (void)handleRequestMessage:(id)message
 {
-  v6 = a3;
+  messageCopy = message;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_server);
     if (WeakRetained)
     {
       v5 = WeakRetained;
-      [WeakRetained _handleRequestMessage:v6 connectionMode:1];
+      [WeakRetained _handleRequestMessage:messageCopy connectionMode:1];
     }
   }
 }

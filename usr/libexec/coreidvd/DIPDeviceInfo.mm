@@ -1,14 +1,14 @@
 @interface DIPDeviceInfo
-- (void)phoneNumberChanged:(id)a3;
+- (void)phoneNumberChanged:(id)changed;
 @end
 
 @implementation DIPDeviceInfo
 
-- (void)phoneNumberChanged:(id)a3
+- (void)phoneNumberChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  sub_100594FC8(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  sub_100594FC8(changedCopy);
 }
 
 @end

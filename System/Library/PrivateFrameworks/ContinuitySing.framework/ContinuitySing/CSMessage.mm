@@ -1,5 +1,5 @@
 @interface CSMessage
-- (CSMessage)initWithMessage:(id)a3;
+- (CSMessage)initWithMessage:(id)message;
 - (NSString)identifier;
 - (id)description;
 - (id)dictionaryRepresentation;
@@ -7,9 +7,9 @@
 
 @implementation CSMessage
 
-- (CSMessage)initWithMessage:(id)a3
+- (CSMessage)initWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v31.receiver = self;
   v31.super_class = CSMessage;
   v5 = [(CSMessage *)&v31 init];
@@ -35,7 +35,7 @@
           }
 
           v11 = *(*(&v27 + 1) + 8 * i);
-          v12 = [v4 objectForKey:v11];
+          v12 = [messageCopy objectForKey:v11];
 
           if (!v12)
           {
@@ -49,7 +49,7 @@
               v20 = 2112;
               v21 = v17;
               v22 = 2112;
-              v23 = v4;
+              v23 = messageCopy;
               v24 = 2112;
               v25 = v11;
               _os_log_error_impl(&dword_2441FB000, v14, OS_LOG_TYPE_ERROR, "%s: %@ Invalid message %@ missing required key: %@", &v18, 0x2Au);
@@ -80,17 +80,17 @@ LABEL_15:
 - (id)dictionaryRepresentation
 {
   v3 = objc_opt_new();
-  v4 = [(CSMessage *)self identifier];
-  [v3 setObject:v4 forKey:@"CSMessageIDKey"];
+  identifier = [(CSMessage *)self identifier];
+  [v3 setObject:identifier forKey:@"CSMessageIDKey"];
 
   return v3;
 }
 
 - (NSString)identifier
 {
-  v2 = [objc_opt_class() messageID];
+  messageID = [objc_opt_class() messageID];
 
-  return CSIdentifierForMessageID(v2);
+  return CSIdentifierForMessageID(messageID);
 }
 
 - (id)description
@@ -98,8 +98,8 @@ LABEL_15:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(CSMessage *)self dictionaryRepresentation];
-  v7 = [v3 stringWithFormat:@"<%@: %@>", v5, v6];
+  dictionaryRepresentation = [(CSMessage *)self dictionaryRepresentation];
+  v7 = [v3 stringWithFormat:@"<%@: %@>", v5, dictionaryRepresentation];
 
   return v7;
 }

@@ -6,18 +6,18 @@
 
 - (GKAvatarArtwork)internalRepresentation
 {
-  v3 = [(GKCDAvatarArtwork *)self type];
+  type = [(GKCDAvatarArtwork *)self type];
 
-  if (v3)
+  if (type)
   {
-    v4 = [(GKCDAvatarArtwork *)self artwork];
-    v5 = [v4 internalRepresentation];
+    artwork = [(GKCDAvatarArtwork *)self artwork];
+    internalRepresentation = [artwork internalRepresentation];
 
-    if (v5)
+    if (internalRepresentation)
     {
       v6 = [GKAvatarArtwork alloc];
-      v7 = [(GKCDAvatarArtwork *)self type];
-      v8 = [v6 initWithType:v7 metadata:v5];
+      type2 = [(GKCDAvatarArtwork *)self type];
+      v8 = [v6 initWithType:type2 metadata:internalRepresentation];
     }
 
     else

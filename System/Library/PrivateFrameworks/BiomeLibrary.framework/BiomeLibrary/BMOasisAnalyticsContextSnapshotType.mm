@@ -1,26 +1,26 @@
 @interface BMOasisAnalyticsContextSnapshotType
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMOasisAnalyticsContextSnapshotType)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMOasisAnalyticsContextSnapshotType)initWithLuxLevel:(id)a3 smudgeLevel:(id)a4 prewittLevel:(id)a5 imuAcceleration:(id)a6 imuAngularVelocityX:(id)a7 imuAngularVelocityY:(id)a8 imuAngularVelocityZ:(id)a9 environmentType:(int)a10;
-- (BOOL)isEqual:(id)a3;
+- (BMOasisAnalyticsContextSnapshotType)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMOasisAnalyticsContextSnapshotType)initWithLuxLevel:(id)level smudgeLevel:(id)smudgeLevel prewittLevel:(id)prewittLevel imuAcceleration:(id)acceleration imuAngularVelocityX:(id)x imuAngularVelocityY:(id)y imuAngularVelocityZ:(id)z environmentType:(int)self0;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMOasisAnalyticsContextSnapshotType
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMOasisAnalyticsContextSnapshotType hasLuxLevel](self, "hasLuxLevel") || [v5 hasLuxLevel])
     {
       if (![(BMOasisAnalyticsContextSnapshotType *)self hasLuxLevel])
@@ -128,8 +128,8 @@
 
     if ((!-[BMOasisAnalyticsContextSnapshotType hasImuAngularVelocityY](self, "hasImuAngularVelocityY") && ![v5 hasImuAngularVelocityY] || -[BMOasisAnalyticsContextSnapshotType hasImuAngularVelocityY](self, "hasImuAngularVelocityY") && objc_msgSend(v5, "hasImuAngularVelocityY") && (-[BMOasisAnalyticsContextSnapshotType imuAngularVelocityY](self, "imuAngularVelocityY"), v22 = v21, objc_msgSend(v5, "imuAngularVelocityY"), v22 == v23)) && (!-[BMOasisAnalyticsContextSnapshotType hasImuAngularVelocityZ](self, "hasImuAngularVelocityZ") && !objc_msgSend(v5, "hasImuAngularVelocityZ") || -[BMOasisAnalyticsContextSnapshotType hasImuAngularVelocityZ](self, "hasImuAngularVelocityZ") && objc_msgSend(v5, "hasImuAngularVelocityZ") && (-[BMOasisAnalyticsContextSnapshotType imuAngularVelocityZ](self, "imuAngularVelocityZ"), v25 = v24, objc_msgSend(v5, "imuAngularVelocityZ"), v25 == v26)))
     {
-      v27 = [(BMOasisAnalyticsContextSnapshotType *)self environmentType];
-      v28 = v27 == [v5 environmentType];
+      environmentType = [(BMOasisAnalyticsContextSnapshotType *)self environmentType];
+      v28 = environmentType == [v5 environmentType];
     }
 
     else
@@ -243,77 +243,77 @@ LABEL_39:
 
   v24 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMOasisAnalyticsContextSnapshotType environmentType](self, "environmentType")}];
   v44[0] = @"luxLevel";
-  v25 = v5;
+  null = v5;
   if (!v5)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v43 = v5;
-  v39 = v25;
-  v45[0] = v25;
+  v39 = null;
+  v45[0] = null;
   v44[1] = @"smudgeLevel";
-  v26 = v8;
+  null2 = v8;
   if (!v8)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
   v42 = v8;
-  v38 = v26;
-  v45[1] = v26;
+  v38 = null2;
+  v45[1] = null2;
   v44[2] = @"prewittLevel";
-  v27 = v11;
+  null3 = v11;
   if (!v11)
   {
-    v27 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
   v41 = v11;
-  v37 = v27;
-  v45[2] = v27;
+  v37 = null3;
+  v45[2] = null3;
   v44[3] = @"imuAcceleration";
-  v28 = v14;
+  null4 = v14;
   if (!v14)
   {
-    v28 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v40 = v14;
-  v45[3] = v28;
+  v45[3] = null4;
   v44[4] = @"imuAngularVelocityX";
-  v29 = v17;
+  null5 = v17;
   if (!v17)
   {
-    v29 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
   v30 = v17;
-  v45[4] = v29;
+  v45[4] = null5;
   v44[5] = @"imuAngularVelocityY";
-  v31 = v20;
+  null6 = v20;
   if (!v20)
   {
-    v31 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v45[5] = v31;
+  v45[5] = null6;
   v44[6] = @"imuAngularVelocityZ";
-  v32 = v23;
+  null7 = v23;
   if (!v23)
   {
-    v32 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v45[6] = v32;
+  v45[6] = null7;
   v44[7] = @"environmentType";
-  v33 = v24;
+  null8 = v24;
   if (!v24)
   {
-    v33 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v45[7] = v33;
+  v45[7] = null8;
   v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:v44 count:8];
   if (v24)
   {
@@ -371,11 +371,11 @@ LABEL_48:
   return v34;
 }
 
-- (BMOasisAnalyticsContextSnapshotType)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMOasisAnalyticsContextSnapshotType)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v91[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"luxLevel"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"luxLevel"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
@@ -387,19 +387,19 @@ LABEL_48:
   {
     v8 = v7;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"smudgeLevel"];
-    v69 = a4;
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"smudgeLevel"];
+    errorCopy = error;
     if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v10 = 0;
 LABEL_7:
-      v11 = [v6 objectForKeyedSubscript:@"prewittLevel"];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"prewittLevel"];
       if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v30 = 0;
             goto LABEL_69;
@@ -413,8 +413,8 @@ LABEL_7:
           v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v87 forKeys:&v86 count:1];
           v36 = [v74 initWithDomain:v34 code:2 userInfo:v35];
           v30 = 0;
-          a4 = 0;
-          *v69 = v36;
+          error = 0;
+          *errorCopy = v36;
           goto LABEL_68;
         }
 
@@ -422,7 +422,7 @@ LABEL_7:
         v12 = v10;
         v13 = v8;
         v14 = v9;
-        v15 = self;
+        selfCopy2 = self;
         v72 = v11;
       }
 
@@ -433,21 +433,21 @@ LABEL_7:
         v12 = v10;
         v13 = v8;
         v14 = v9;
-        v15 = self;
+        selfCopy2 = self;
       }
 
-      v16 = [v6 objectForKeyedSubscript:@"imuAcceleration"];
+      v16 = [dictionaryCopy objectForKeyedSubscript:@"imuAcceleration"];
       v66 = v11;
       if (v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v75 = 0;
             v35 = v16;
-            self = v15;
+            self = selfCopy2;
             v9 = v14;
             v8 = v13;
             v10 = v12;
@@ -466,9 +466,9 @@ LABEL_7:
           v35 = v16;
           v41 = [v38 initWithDomain:v40 code:2 userInfo:v17];
           v75 = 0;
-          a4 = 0;
-          *v69 = v41;
-          self = v15;
+          error = 0;
+          *errorCopy = v41;
+          self = selfCopy2;
           v9 = v14;
           v8 = v13;
           v10 = v12;
@@ -485,8 +485,8 @@ LABEL_7:
         v75 = 0;
       }
 
-      v17 = [v6 objectForKeyedSubscript:@"imuAngularVelocityX"];
-      self = v15;
+      v17 = [dictionaryCopy objectForKeyedSubscript:@"imuAngularVelocityX"];
+      self = selfCopy2;
       if (!v17)
       {
         v70 = 0;
@@ -503,7 +503,7 @@ LABEL_23:
         v8 = v13;
 LABEL_24:
         v10 = v12;
-        v18 = [v6 objectForKeyedSubscript:@"imuAngularVelocityY"];
+        v18 = [dictionaryCopy objectForKeyedSubscript:@"imuAngularVelocityY"];
         v7 = v73;
         v64 = v10;
         v65 = v8;
@@ -512,27 +512,27 @@ LABEL_24:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!a4)
+            if (!error)
             {
               v67 = 0;
-              a4 = 0;
+              error = 0;
               goto LABEL_65;
             }
 
             v68 = objc_alloc(MEMORY[0x1E696ABC0]);
-            v48 = self;
+            selfCopy3 = self;
             v49 = *MEMORY[0x1E698F240];
             v80 = *MEMORY[0x1E696A578];
             v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"imuAngularVelocityY"];
             v81 = v21;
             v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v81 forKeys:&v80 count:1];
             v50 = v49;
-            self = v48;
+            self = selfCopy3;
             v7 = v73;
             v51 = [v68 initWithDomain:v50 code:2 userInfo:v19];
             v67 = 0;
-            a4 = 0;
-            *v69 = v51;
+            error = 0;
+            *errorCopy = v51;
 LABEL_64:
 
             v10 = v64;
@@ -550,20 +550,20 @@ LABEL_65:
           v67 = 0;
         }
 
-        v19 = [v6 objectForKeyedSubscript:@"imuAngularVelocityZ"];
+        v19 = [dictionaryCopy objectForKeyedSubscript:@"imuAngularVelocityZ"];
         if (v19 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!a4)
+            if (!error)
             {
               v21 = 0;
-              a4 = 0;
+              error = 0;
               goto LABEL_64;
             }
 
-            v20 = self;
+            errorCopy2 = self;
             v61 = objc_alloc(MEMORY[0x1E696ABC0]);
             v52 = *MEMORY[0x1E698F240];
             v78 = *MEMORY[0x1E696A578];
@@ -572,22 +572,22 @@ LABEL_65:
             v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v79 forKeys:&v78 count:1];
             v53 = [v61 initWithDomain:v52 code:2 userInfo:v22];
             v21 = 0;
-            a4 = 0;
-            *v69 = v53;
+            error = 0;
+            *errorCopy = v53;
             goto LABEL_63;
           }
 
-          v20 = self;
+          errorCopy2 = self;
           v21 = v19;
         }
 
         else
         {
-          v20 = self;
+          errorCopy2 = self;
           v21 = 0;
         }
 
-        v22 = [v6 objectForKeyedSubscript:@"environmentType"];
+        v22 = [dictionaryCopy objectForKeyedSubscript:@"environmentType"];
         if (v22 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           objc_opt_class();
@@ -601,7 +601,7 @@ LABEL_65:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (a4)
+              if (error)
               {
                 v62 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v60 = *MEMORY[0x1E698F240];
@@ -609,11 +609,11 @@ LABEL_65:
                 v56 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"environmentType"];
                 v77 = v56;
                 v57 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v77 forKeys:&v76 count:1];
-                *v69 = [v62 initWithDomain:v60 code:2 userInfo:v57];
+                *errorCopy = [v62 initWithDomain:v60 code:2 userInfo:v57];
               }
 
               v23 = 0;
-              a4 = 0;
+              error = 0;
               goto LABEL_63;
             }
 
@@ -629,11 +629,11 @@ LABEL_65:
         }
 
         LODWORD(v59) = [v23 intValue];
-        a4 = [(BMOasisAnalyticsContextSnapshotType *)v20 initWithLuxLevel:v65 smudgeLevel:v64 prewittLevel:v72 imuAcceleration:v75 imuAngularVelocityX:v70 imuAngularVelocityY:v67 imuAngularVelocityZ:v21 environmentType:v59];
-        v20 = a4;
+        error = [(BMOasisAnalyticsContextSnapshotType *)errorCopy2 initWithLuxLevel:v65 smudgeLevel:v64 prewittLevel:v72 imuAcceleration:v75 imuAngularVelocityX:v70 imuAngularVelocityY:v67 imuAngularVelocityZ:v21 environmentType:v59];
+        errorCopy2 = error;
 LABEL_63:
 
-        self = v20;
+        self = errorCopy2;
         v7 = v73;
         goto LABEL_64;
       }
@@ -647,12 +647,12 @@ LABEL_63:
       }
 
       v10 = v12;
-      if (a4)
+      if (error)
       {
         v71 = objc_alloc(MEMORY[0x1E696ABC0]);
         v42 = *MEMORY[0x1E698F240];
         v82 = *MEMORY[0x1E696A578];
-        v43 = a4;
+        errorCopy3 = error;
         v44 = v10;
         v45 = objc_alloc(MEMORY[0x1E696AEC0]);
         v58 = objc_opt_class();
@@ -663,8 +663,8 @@ LABEL_63:
         v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v83 forKeys:&v82 count:1];
         v47 = [v71 initWithDomain:v42 code:2 userInfo:v18];
         v70 = 0;
-        a4 = 0;
-        *v43 = v47;
+        error = 0;
+        *errorCopy3 = v47;
         v35 = v63;
         v7 = v73;
 LABEL_66:
@@ -691,7 +691,7 @@ LABEL_75:
       goto LABEL_7;
     }
 
-    if (a4)
+    if (error)
     {
       v28 = objc_alloc(MEMORY[0x1E696ABC0]);
       v29 = *MEMORY[0x1E698F240];
@@ -703,8 +703,8 @@ LABEL_75:
       v11 = v31;
       v33 = [v28 initWithDomain:v32 code:2 userInfo:v31];
       v10 = 0;
-      a4 = 0;
-      *v69 = v33;
+      error = 0;
+      *errorCopy = v33;
 LABEL_69:
 
       goto LABEL_70;
@@ -716,9 +716,9 @@ LABEL_70:
     goto LABEL_71;
   }
 
-  if (a4)
+  if (error)
   {
-    v24 = a4;
+    errorCopy4 = error;
     v25 = objc_alloc(MEMORY[0x1E696ABC0]);
     v26 = *MEMORY[0x1E698F240];
     v90 = *MEMORY[0x1E696A578];
@@ -727,8 +727,8 @@ LABEL_70:
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v91 forKeys:&v90 count:1];
     v27 = [v25 initWithDomain:v26 code:2 userInfo:v9];
     v8 = 0;
-    a4 = 0;
-    *v24 = v27;
+    error = 0;
+    *errorCopy4 = v27;
     goto LABEL_70;
   }
 
@@ -736,21 +736,21 @@ LABEL_70:
 LABEL_71:
 
   v54 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMOasisAnalyticsContextSnapshotType *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if (self->_hasLuxLevel)
   {
     luxLevel = self->_luxLevel;
@@ -797,9 +797,9 @@ LABEL_71:
   PBDataWriterWriteUint32Field();
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v49.receiver = self;
   v49.super_class = BMOasisAnalyticsContextSnapshotType;
   v5 = [(BMEventBase *)&v49 init];
@@ -808,12 +808,12 @@ LABEL_71:
     goto LABEL_83;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_81;
       }
@@ -824,18 +824,18 @@ LABEL_71:
       while (1)
       {
         LOBYTE(v50) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v50 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v50 & 0x7F) << v7;
@@ -852,9 +852,9 @@ LABEL_71:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_81;
       }
@@ -868,18 +868,18 @@ LABEL_16:
           {
             v5->_hasPrewittLevel = 1;
             v50 = 0;
-            v33 = [v4 position] + 4;
-            if (v33 >= [v4 position] && (v34 = objc_msgSend(v4, "position") + 4, v34 <= objc_msgSend(v4, "length")))
+            v33 = [fromCopy position] + 4;
+            if (v33 >= [fromCopy position] && (v34 = objc_msgSend(fromCopy, "position") + 4, v34 <= objc_msgSend(fromCopy, "length")))
             {
-              v41 = [v4 data];
-              [v41 getBytes:&v50 range:{objc_msgSend(v4, "position"), 4}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v38 = v50;
@@ -895,18 +895,18 @@ LABEL_16:
 
             v5->_hasImuAcceleration = 1;
             v50 = 0;
-            v20 = [v4 position] + 4;
-            if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 4, v21 <= objc_msgSend(v4, "length")))
+            v20 = [fromCopy position] + 4;
+            if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 4, v21 <= objc_msgSend(fromCopy, "length")))
             {
-              v45 = [v4 data];
-              [v45 getBytes:&v50 range:{objc_msgSend(v4, "position"), 4}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v38 = v50;
@@ -918,18 +918,18 @@ LABEL_16:
         {
           v5->_hasLuxLevel = 1;
           v50 = 0;
-          v29 = [v4 position] + 4;
-          if (v29 >= [v4 position] && (v30 = objc_msgSend(v4, "position") + 4, v30 <= objc_msgSend(v4, "length")))
+          v29 = [fromCopy position] + 4;
+          if (v29 >= [fromCopy position] && (v30 = objc_msgSend(fromCopy, "position") + 4, v30 <= objc_msgSend(fromCopy, "length")))
           {
-            v37 = [v4 data];
-            [v37 getBytes:&v50 range:{objc_msgSend(v4, "position"), 4}];
+            data4 = [fromCopy data];
+            [data4 getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v38 = v50;
@@ -945,18 +945,18 @@ LABEL_16:
 
           v5->_hasSmudgeLevel = 1;
           v50 = 0;
-          v16 = [v4 position] + 4;
-          if (v16 >= [v4 position] && (v17 = objc_msgSend(v4, "position") + 4, v17 <= objc_msgSend(v4, "length")))
+          v16 = [fromCopy position] + 4;
+          if (v16 >= [fromCopy position] && (v17 = objc_msgSend(fromCopy, "position") + 4, v17 <= objc_msgSend(fromCopy, "length")))
           {
-            v43 = [v4 data];
-            [v43 getBytes:&v50 range:{objc_msgSend(v4, "position"), 4}];
+            data5 = [fromCopy data];
+            [data5 getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v38 = v50;
@@ -975,18 +975,18 @@ LABEL_16:
       {
         v5->_hasImuAngularVelocityZ = 1;
         v50 = 0;
-        v35 = [v4 position] + 4;
-        if (v35 >= [v4 position] && (v36 = objc_msgSend(v4, "position") + 4, v36 <= objc_msgSend(v4, "length")))
+        v35 = [fromCopy position] + 4;
+        if (v35 >= [fromCopy position] && (v36 = objc_msgSend(fromCopy, "position") + 4, v36 <= objc_msgSend(fromCopy, "length")))
         {
-          v42 = [v4 data];
-          [v42 getBytes:&v50 range:{objc_msgSend(v4, "position"), 4}];
+          data6 = [fromCopy data];
+          [data6 getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v38 = v50;
@@ -1013,18 +1013,18 @@ LABEL_59:
       while (1)
       {
         LOBYTE(v50) = 0;
-        v25 = [v4 position] + 1;
-        if (v25 >= [v4 position] && (v26 = objc_msgSend(v4, "position") + 1, v26 <= objc_msgSend(v4, "length")))
+        v25 = [fromCopy position] + 1;
+        if (v25 >= [fromCopy position] && (v26 = objc_msgSend(fromCopy, "position") + 1, v26 <= objc_msgSend(fromCopy, "length")))
         {
-          v27 = [v4 data];
-          [v27 getBytes:&v50 range:{objc_msgSend(v4, "position"), 1}];
+          data7 = [fromCopy data];
+          [data7 getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v24 |= (v50 & 0x7F) << v22;
@@ -1040,7 +1040,7 @@ LABEL_59:
         }
       }
 
-      if (([v4 hasError] & 1) != 0 || v24 > 0x1F)
+      if (([fromCopy hasError] & 1) != 0 || v24 > 0x1F)
       {
 LABEL_63:
         LODWORD(v24) = 0;
@@ -1048,8 +1048,8 @@ LABEL_63:
 
       v5->_environmentType = v24;
 LABEL_80:
-      v46 = [v4 position];
-      if (v46 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_81;
       }
@@ -1059,18 +1059,18 @@ LABEL_80:
     {
       v5->_hasImuAngularVelocityX = 1;
       v50 = 0;
-      v31 = [v4 position] + 4;
-      if (v31 >= [v4 position] && (v32 = objc_msgSend(v4, "position") + 4, v32 <= objc_msgSend(v4, "length")))
+      v31 = [fromCopy position] + 4;
+      if (v31 >= [fromCopy position] && (v32 = objc_msgSend(fromCopy, "position") + 4, v32 <= objc_msgSend(fromCopy, "length")))
       {
-        v40 = [v4 data];
-        [v40 getBytes:&v50 range:{objc_msgSend(v4, "position"), 4}];
+        data8 = [fromCopy data];
+        [data8 getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v38 = v50;
@@ -1086,18 +1086,18 @@ LABEL_80:
 
       v5->_hasImuAngularVelocityY = 1;
       v50 = 0;
-      v18 = [v4 position] + 4;
-      if (v18 >= [v4 position] && (v19 = objc_msgSend(v4, "position") + 4, v19 <= objc_msgSend(v4, "length")))
+      v18 = [fromCopy position] + 4;
+      if (v18 >= [fromCopy position] && (v19 = objc_msgSend(fromCopy, "position") + 4, v19 <= objc_msgSend(fromCopy, "length")))
       {
-        v44 = [v4 data];
-        [v44 getBytes:&v50 range:{objc_msgSend(v4, "position"), 4}];
+        data9 = [fromCopy data];
+        [data9 getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v38 = v50;
@@ -1108,7 +1108,7 @@ LABEL_80:
   }
 
 LABEL_81:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_82:
     v47 = 0;
@@ -1153,25 +1153,25 @@ LABEL_83:
   return v19;
 }
 
-- (BMOasisAnalyticsContextSnapshotType)initWithLuxLevel:(id)a3 smudgeLevel:(id)a4 prewittLevel:(id)a5 imuAcceleration:(id)a6 imuAngularVelocityX:(id)a7 imuAngularVelocityY:(id)a8 imuAngularVelocityZ:(id)a9 environmentType:(int)a10
+- (BMOasisAnalyticsContextSnapshotType)initWithLuxLevel:(id)level smudgeLevel:(id)smudgeLevel prewittLevel:(id)prewittLevel imuAcceleration:(id)acceleration imuAngularVelocityX:(id)x imuAngularVelocityY:(id)y imuAngularVelocityZ:(id)z environmentType:(int)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
+  levelCopy = level;
+  smudgeLevelCopy = smudgeLevel;
+  prewittLevelCopy = prewittLevel;
+  accelerationCopy = acceleration;
+  xCopy = x;
+  yCopy = y;
+  zCopy = z;
   v32.receiver = self;
   v32.super_class = BMOasisAnalyticsContextSnapshotType;
   v23 = [(BMEventBase *)&v32 init];
   if (v23)
   {
     v23->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v16)
+    if (levelCopy)
     {
       v23->_hasLuxLevel = 1;
-      [v16 floatValue];
+      [levelCopy floatValue];
     }
 
     else
@@ -1181,10 +1181,10 @@ LABEL_83:
     }
 
     v23->_luxLevel = v24;
-    if (v17)
+    if (smudgeLevelCopy)
     {
       v23->_hasSmudgeLevel = 1;
-      [v17 floatValue];
+      [smudgeLevelCopy floatValue];
     }
 
     else
@@ -1194,10 +1194,10 @@ LABEL_83:
     }
 
     v23->_smudgeLevel = v25;
-    if (v18)
+    if (prewittLevelCopy)
     {
       v23->_hasPrewittLevel = 1;
-      [v18 floatValue];
+      [prewittLevelCopy floatValue];
     }
 
     else
@@ -1207,10 +1207,10 @@ LABEL_83:
     }
 
     v23->_prewittLevel = v26;
-    if (v19)
+    if (accelerationCopy)
     {
       v23->_hasImuAcceleration = 1;
-      [v19 floatValue];
+      [accelerationCopy floatValue];
     }
 
     else
@@ -1220,10 +1220,10 @@ LABEL_83:
     }
 
     v23->_imuAcceleration = v27;
-    if (v20)
+    if (xCopy)
     {
       v23->_hasImuAngularVelocityX = 1;
-      [v20 floatValue];
+      [xCopy floatValue];
     }
 
     else
@@ -1233,10 +1233,10 @@ LABEL_83:
     }
 
     v23->_imuAngularVelocityX = v28;
-    if (v21)
+    if (yCopy)
     {
       v23->_hasImuAngularVelocityY = 1;
-      [v21 floatValue];
+      [yCopy floatValue];
     }
 
     else
@@ -1246,10 +1246,10 @@ LABEL_83:
     }
 
     v23->_imuAngularVelocityY = v29;
-    if (v22)
+    if (zCopy)
     {
       v23->_hasImuAngularVelocityZ = 1;
-      [v22 floatValue];
+      [zCopy floatValue];
     }
 
     else
@@ -1259,7 +1259,7 @@ LABEL_83:
     }
 
     v23->_imuAngularVelocityZ = v30;
-    v23->_environmentType = a10;
+    v23->_environmentType = type;
   }
 
   return v23;
@@ -1317,9 +1317,9 @@ LABEL_83:
   return v10;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1327,8 +1327,8 @@ LABEL_83:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMOasisAnalyticsContextSnapshotType alloc] initByReadFrom:v7];
     v4 = v8;

@@ -1,33 +1,33 @@
 @interface HMDeviceSetupSession
 + (id)logCategory;
 + (id)messageDestinationToHomeManager;
-- (BOOL)_moveToState:(int64_t)a3;
+- (BOOL)_moveToState:(int64_t)state;
 - (BOOL)_needsClosing;
 - (HMDeviceSetupSession)init;
-- (HMDeviceSetupSession)initWithRole:(int64_t)a3 context:(id)a4 identifier:(id)a5 delegate:(id)a6;
-- (HMDeviceSetupSession)initWithRole:(int64_t)a3 identifier:(id)a4 delegate:(id)a5;
+- (HMDeviceSetupSession)initWithRole:(int64_t)role context:(id)context identifier:(id)identifier delegate:(id)delegate;
+- (HMDeviceSetupSession)initWithRole:(int64_t)role identifier:(id)identifier delegate:(id)delegate;
 - (HMDeviceSetupSessionDelegate)delegate;
 - (NSDictionary)userInfo;
 - (id)closeSetupSessionHMDHomeManagerMessage;
 - (id)logIdentifier;
 - (id)messageDestinationForOpenedSessions;
 - (id)responseHandlerForOpenMessage;
-- (id)responseHandlerForReceiveDataMessageWithCompletionHandler:(id)a3;
-- (void)_closeWithError:(id)a3;
-- (void)_handleDeviceSetupSessionReceiveDataMessage:(id)a3;
+- (id)responseHandlerForReceiveDataMessageWithCompletionHandler:(id)handler;
+- (void)_closeWithError:(id)error;
+- (void)_handleDeviceSetupSessionReceiveDataMessage:(id)message;
 - (void)_handleOpenedSession;
-- (void)cleanUpSessionWithError:(id)a3;
+- (void)cleanUpSessionWithError:(id)error;
 - (void)close;
 - (void)configure;
 - (void)dealloc;
-- (void)handleDeviceSetupSessionCloseMessage:(id)a3;
-- (void)handleDeviceSetupSessionReceiveDataMessage:(id)a3;
-- (void)handleHomeKitDaemonInterruptedNotification:(id)a3;
+- (void)handleDeviceSetupSessionCloseMessage:(id)message;
+- (void)handleDeviceSetupSessionReceiveDataMessage:(id)message;
+- (void)handleHomeKitDaemonInterruptedNotification:(id)notification;
 - (void)open;
 - (void)registerForMessages;
 - (void)registerForNotifications;
-- (void)sendExchangeData:(id)a3 qualityOfService:(int64_t)a4 completionHandler:(id)a5;
-- (void)setUserInfo:(id)a3;
+- (void)sendExchangeData:(id)data qualityOfService:(int64_t)service completionHandler:(id)handler;
+- (void)setUserInfo:(id)info;
 @end
 
 @implementation HMDeviceSetupSession
@@ -43,7 +43,7 @@
 {
   v14 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -54,14 +54,14 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 removeObserver:v4];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 
-  v8 = [(HMDeviceSetupSession *)v4 context];
-  v9 = [v8 messageDispatcher];
-  [v9 deregisterReceiver:v4];
+  context = [(HMDeviceSetupSession *)selfCopy context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher deregisterReceiver:selfCopy];
 
-  v11.receiver = v4;
+  v11.receiver = selfCopy;
   v11.super_class = HMDeviceSetupSession;
   [(HMDeviceSetupSession *)&v11 dealloc];
   v10 = *MEMORY[0x1E69E9840];
@@ -69,17 +69,17 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDeviceSetupSession *)self identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(HMDeviceSetupSession *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)setUserInfo:(id)a3
+- (void)setUserInfo:(id)info
 {
-  v6 = a3;
+  infoCopy = info;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [infoCopy copy];
   userInfo = self->_userInfo;
   self->_userInfo = v4;
 
@@ -95,12 +95,12 @@
   return v3;
 }
 
-- (BOOL)_moveToState:(int64_t)a3
+- (BOOL)_moveToState:(int64_t)state
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = [(HMDeviceSetupSession *)self context];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  context = [(HMDeviceSetupSession *)self context];
+  queue = [context queue];
+  dispatch_assert_queue_V2(queue);
 
   state = self->_state;
   if (state > 1)
@@ -109,24 +109,24 @@
     {
       if (state == 3)
       {
-        if (a3 < 2)
+        if (state < 2)
         {
           goto LABEL_18;
         }
 
-        if ((a3 - 2) >= 2)
+        if ((state - 2) >= 2)
         {
           goto LABEL_21;
         }
 
 LABEL_24:
         v21 = objc_autoreleasePoolPush();
-        v22 = self;
+        selfCopy = self;
         v23 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
         {
           v24 = HMFGetLogIdentifier();
-          v25 = HMDeviceSetupSessionStateAsString(a3);
+          v25 = HMDeviceSetupSessionStateAsString(state);
           v26 = HMDeviceSetupSessionStateAsString(state);
           v28 = 138543874;
           v29 = v24;
@@ -148,7 +148,7 @@ LABEL_21:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
         v18 = HMFGetLogIdentifier();
-        v19 = HMDeviceSetupSessionStateAsString(a3);
+        v19 = HMDeviceSetupSessionStateAsString(state);
         v20 = HMDeviceSetupSessionStateAsString(state);
         v28 = 138543874;
         v29 = v18;
@@ -163,8 +163,8 @@ LABEL_21:
       goto LABEL_24;
     }
 
-    v8 = a3 == 3;
-    if (a3 < 3)
+    v8 = state == 3;
+    if (state < 3)
     {
       goto LABEL_24;
     }
@@ -180,12 +180,12 @@ LABEL_16:
 
   if (!state)
   {
-    if ((a3 - 2) < 2 || !a3)
+    if ((state - 2) < 2 || !state)
     {
       goto LABEL_24;
     }
 
-    v8 = a3 == 1;
+    v8 = state == 1;
     goto LABEL_16;
   }
 
@@ -194,24 +194,24 @@ LABEL_16:
     goto LABEL_21;
   }
 
-  if (a3 < 2)
+  if (state < 2)
   {
     goto LABEL_24;
   }
 
-  if ((a3 - 2) >= 2)
+  if ((state - 2) >= 2)
   {
     goto LABEL_21;
   }
 
 LABEL_18:
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy2 = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = HMDeviceSetupSessionStateAsString(a3);
+    v13 = HMDeviceSetupSessionStateAsString(state);
     v14 = HMDeviceSetupSessionStateAsString(state);
     v28 = 138543874;
     v29 = v12;
@@ -223,7 +223,7 @@ LABEL_18:
   }
 
   objc_autoreleasePoolPop(v9);
-  self->_state = a3;
+  self->_state = state;
   result = 1;
 LABEL_27:
   v27 = *MEMORY[0x1E69E9840];
@@ -232,9 +232,9 @@ LABEL_27:
 
 - (BOOL)_needsClosing
 {
-  v3 = [(HMDeviceSetupSession *)self context];
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  context = [(HMDeviceSetupSession *)self context];
+  queue = [context queue];
+  dispatch_assert_queue_V2(queue);
 
   state = self->_state;
   if (state)
@@ -250,16 +250,16 @@ LABEL_27:
   return !v6;
 }
 
-- (id)responseHandlerForReceiveDataMessageWithCompletionHandler:(id)a3
+- (id)responseHandlerForReceiveDataMessageWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __82__HMDeviceSetupSession_responseHandlerForReceiveDataMessageWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E754DE00;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = handlerCopy;
+  v5 = handlerCopy;
   v6 = _Block_copy(v8);
 
   return v6;
@@ -321,24 +321,24 @@ void __82__HMDeviceSetupSession_responseHandlerForReceiveDataMessageWithCompleti
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendExchangeData:(id)a3 qualityOfService:(int64_t)a4 completionHandler:(id)a5
+- (void)sendExchangeData:(id)data qualityOfService:(int64_t)service completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(HMDeviceSetupSession *)self context];
-  v11 = [v10 queue];
+  dataCopy = data;
+  handlerCopy = handler;
+  context = [(HMDeviceSetupSession *)self context];
+  queue = [context queue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __76__HMDeviceSetupSession_sendExchangeData_qualityOfService_completionHandler___block_invoke;
   v15[3] = &unk_1E754E0D0;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = a4;
-  v12 = v9;
-  v13 = v8;
+  v16 = dataCopy;
+  selfCopy = self;
+  v18 = handlerCopy;
+  serviceCopy = service;
+  v12 = handlerCopy;
+  v13 = dataCopy;
   v14 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v15);
-  dispatch_async(v11, v14);
+  dispatch_async(queue, v14);
 }
 
 void __76__HMDeviceSetupSession_sendExchangeData_qualityOfService_completionHandler___block_invoke(uint64_t a1)
@@ -448,18 +448,18 @@ LABEL_17:
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_closeWithError:(id)a3
+- (void)_closeWithError:(id)error
 {
   v61 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMDeviceSetupSession *)self context];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  errorCopy = error;
+  context = [(HMDeviceSetupSession *)self context];
+  queue = [context queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(HMDeviceSetupSession *)self _moveToState:3])
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -467,15 +467,15 @@ LABEL_17:
       v11 = @" due to error: ";
       *buf = 138543874;
       v56 = v10;
-      if (!v4)
+      if (!errorCopy)
       {
         v11 = &stru_1F0E92498;
       }
 
       v57 = 2112;
-      if (v4)
+      if (errorCopy)
       {
-        v12 = v4;
+        v12 = errorCopy;
       }
 
       else
@@ -491,32 +491,32 @@ LABEL_17:
 
     objc_autoreleasePoolPop(v7);
     v13 = MEMORY[0x1E69A2A10];
-    v14 = [(HMDeviceSetupSession *)v8 messageDestinationForOpenedSessions];
-    v15 = [v13 messageWithName:@"HMDSS.cl" qualityOfService:9 destination:v14 payload:0];
+    messageDestinationForOpenedSessions = [(HMDeviceSetupSession *)selfCopy messageDestinationForOpenedSessions];
+    v15 = [v13 messageWithName:@"HMDSS.cl" qualityOfService:9 destination:messageDestinationForOpenedSessions payload:0];
 
     v51[0] = MEMORY[0x1E69E9820];
     v51[1] = 3221225472;
     v51[2] = __40__HMDeviceSetupSession__closeWithError___block_invoke;
     v51[3] = &unk_1E754CD98;
-    v51[4] = v8;
+    v51[4] = selfCopy;
     [v15 setResponseHandler:v51];
-    v16 = [(HMDeviceSetupSession *)v8 context];
-    v17 = [v16 messageDispatcher];
-    [v17 sendMessage:v15];
+    context2 = [(HMDeviceSetupSession *)selfCopy context];
+    messageDispatcher = [context2 messageDispatcher];
+    [messageDispatcher sendMessage:v15];
 
-    [(HMFActivity *)v8->_activity markWithReason:@"HMDeviceSetupSession.closeWithError"];
-    activity = v8->_activity;
+    [(HMFActivity *)selfCopy->_activity markWithReason:@"HMDeviceSetupSession.closeWithError"];
+    activity = selfCopy->_activity;
     v53[0] = @"code";
     v19 = MEMORY[0x1E696AD98];
     v20 = activity;
-    v21 = [v19 numberWithInteger:{-[__CFString code](v4, "code")}];
+    v21 = [v19 numberWithInteger:{-[__CFString code](errorCopy, "code")}];
     v53[1] = @"domain";
     v54[0] = v21;
-    v22 = [(__CFString *)v4 domain];
-    v23 = v22;
-    if (v22)
+    domain = [(__CFString *)errorCopy domain];
+    v23 = domain;
+    if (domain)
     {
-      v24 = v22;
+      v24 = domain;
     }
 
     else
@@ -527,10 +527,10 @@ LABEL_17:
     v54[1] = v24;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v54 forKeys:v53 count:2];
 
-    if ([(HMDeviceSetupSession *)v8 _moveToState:0])
+    if ([(HMDeviceSetupSession *)selfCopy _moveToState:0])
     {
       v26 = objc_autoreleasePoolPush();
-      v27 = v8;
+      v27 = selfCopy;
       v28 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
       {
@@ -538,19 +538,19 @@ LABEL_17:
         *buf = 138543618;
         v56 = v29;
         v57 = 2112;
-        v58 = v4;
+        v58 = errorCopy;
         _os_log_impl(&dword_19BB39000, v28, OS_LOG_TYPE_INFO, "%{public}@Notifying clients of did close with error: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v26);
-      v30 = [(HMDeviceSetupSession *)v27 delegate];
-      [v30 setupSession:v27 didCloseWithError:v4];
+      delegate = [(HMDeviceSetupSession *)v27 delegate];
+      [delegate setupSession:v27 didCloseWithError:errorCopy];
 
-      v31 = [(HMDeviceSetupSession *)v27 pendingExchangeDataRequests];
-      v32 = [v31 copy];
+      pendingExchangeDataRequests = [(HMDeviceSetupSession *)v27 pendingExchangeDataRequests];
+      v32 = [pendingExchangeDataRequests copy];
 
-      v33 = [(HMDeviceSetupSession *)v27 pendingExchangeDataRequests];
-      [v33 removeAllObjects];
+      pendingExchangeDataRequests2 = [(HMDeviceSetupSession *)v27 pendingExchangeDataRequests];
+      [pendingExchangeDataRequests2 removeAllObjects];
 
       v34 = objc_autoreleasePoolPush();
       v35 = v27;
@@ -586,9 +586,9 @@ LABEL_17:
               objc_enumerationMutation(v39);
             }
 
-            v44 = [*(*(&v47 + 1) + 8 * i) completionHandler];
+            completionHandler = [*(*(&v47 + 1) + 8 * i) completionHandler];
             v45 = [MEMORY[0x1E696ABC0] hmPrivateErrorWithCode:9012];
-            (v44)[2](v44, 0, v45);
+            (completionHandler)[2](completionHandler, 0, v45);
           }
 
           v41 = [v39 countByEnumeratingWithState:&v47 objects:v52 count:16];
@@ -671,12 +671,12 @@ LABEL_11:
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E69A2A10];
-  v4 = [objc_opt_class() messageDestinationToHomeManager];
+  messageDestinationToHomeManager = [objc_opt_class() messageDestinationToHomeManager];
   v11 = @"id";
-  v5 = [(HMDeviceSetupSession *)self identifier];
-  v12[0] = v5;
+  identifier = [(HMDeviceSetupSession *)self identifier];
+  v12[0] = identifier;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-  v7 = [v3 messageWithName:@"HMDSS.cl.homeManager" qualityOfService:9 destination:v4 payload:v6];
+  v7 = [v3 messageWithName:@"HMDSS.cl.homeManager" qualityOfService:9 destination:messageDestinationToHomeManager payload:v6];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -744,15 +744,15 @@ LABEL_6:
 
 - (void)close
 {
-  v3 = [(HMDeviceSetupSession *)self context];
-  v4 = [v3 queue];
+  context = [(HMDeviceSetupSession *)self context];
+  queue = [context queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __29__HMDeviceSetupSession_close__block_invoke;
   block[3] = &unk_1E754E2A8;
   block[4] = self;
   v5 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INITIATED, 0, block);
-  dispatch_async(v4, v5);
+  dispatch_async(queue, v5);
 }
 
 uint64_t __29__HMDeviceSetupSession_close__block_invoke(uint64_t a1)
@@ -763,20 +763,20 @@ uint64_t __29__HMDeviceSetupSession_close__block_invoke(uint64_t a1)
   return [v2 _closeWithError:0];
 }
 
-- (void)cleanUpSessionWithError:(id)a3
+- (void)cleanUpSessionWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(HMDeviceSetupSession *)self context];
-  v6 = [v5 queue];
+  errorCopy = error;
+  context = [(HMDeviceSetupSession *)self context];
+  queue = [context queue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __48__HMDeviceSetupSession_cleanUpSessionWithError___block_invoke;
   v9[3] = &unk_1E754E5C0;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = errorCopy;
+  v7 = errorCopy;
   v8 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INITIATED, 0, v9);
-  dispatch_async(v6, v8);
+  dispatch_async(queue, v8);
 }
 
 uint64_t __48__HMDeviceSetupSession_cleanUpSessionWithError___block_invoke(uint64_t a1)
@@ -820,8 +820,8 @@ uint64_t __48__HMDeviceSetupSession_cleanUpSessionWithError___block_invoke(uint6
 - (id)messageDestinationForOpenedSessions
 {
   v3 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v4 = [(HMDeviceSetupSession *)self identifier];
-  v5 = [v3 initWithTarget:v4];
+  identifier = [(HMDeviceSetupSession *)self identifier];
+  v5 = [v3 initWithTarget:identifier];
 
   return v5;
 }
@@ -829,15 +829,15 @@ uint64_t __48__HMDeviceSetupSession_cleanUpSessionWithError___block_invoke(uint6
 - (void)_handleOpenedSession
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = [(HMDeviceSetupSession *)self context];
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  context = [(HMDeviceSetupSession *)self context];
+  queue = [context queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(HMDeviceSetupSession *)self _moveToState:2])
   {
-    v5 = [(HMDeviceSetupSession *)self delegate];
+    delegate = [(HMDeviceSetupSession *)self delegate];
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -845,24 +845,24 @@ uint64_t __48__HMDeviceSetupSession_cleanUpSessionWithError___block_invoke(uint6
       *buf = 138543618;
       v34 = v9;
       v35 = 2112;
-      v36 = v5;
+      v36 = delegate;
       _os_log_impl(&dword_19BB39000, v8, OS_LOG_TYPE_INFO, "%{public}@Notifying client of did open session with delegate: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v6);
     if (objc_opt_respondsToSelector())
     {
-      [v5 setupSessionDidOpen:v7];
+      [delegate setupSessionDidOpen:selfCopy];
     }
 
-    v10 = [(HMDeviceSetupSession *)v7 pendingExchangeDataRequests];
-    v11 = [v10 copy];
+    pendingExchangeDataRequests = [(HMDeviceSetupSession *)selfCopy pendingExchangeDataRequests];
+    v11 = [pendingExchangeDataRequests copy];
 
-    v12 = [(HMDeviceSetupSession *)v7 pendingExchangeDataRequests];
-    [v12 removeAllObjects];
+    pendingExchangeDataRequests2 = [(HMDeviceSetupSession *)selfCopy pendingExchangeDataRequests];
+    [pendingExchangeDataRequests2 removeAllObjects];
 
     v13 = objc_autoreleasePoolPush();
-    v14 = v7;
+    v14 = selfCopy;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -896,10 +896,10 @@ uint64_t __48__HMDeviceSetupSession_cleanUpSessionWithError___block_invoke(uint6
           }
 
           v23 = *(*(&v28 + 1) + 8 * i);
-          v24 = [v23 exchangeData];
+          exchangeData = [v23 exchangeData];
           v25 = [v23 qos];
-          v26 = [v23 completionHandler];
-          [(HMDeviceSetupSession *)v14 sendExchangeData:v24 qualityOfService:v25 completionHandler:v26];
+          completionHandler = [v23 completionHandler];
+          [(HMDeviceSetupSession *)v14 sendExchangeData:exchangeData qualityOfService:v25 completionHandler:completionHandler];
         }
 
         v20 = [v18 countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -1005,15 +1005,15 @@ uint64_t __53__HMDeviceSetupSession_responseHandlerForOpenMessage__block_invoke_
 
 - (void)open
 {
-  v3 = [(HMDeviceSetupSession *)self context];
-  v4 = [v3 queue];
+  context = [(HMDeviceSetupSession *)self context];
+  queue = [context queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __28__HMDeviceSetupSession_open__block_invoke;
   block[3] = &unk_1E754E2A8;
   block[4] = self;
   v5 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
-  dispatch_async(v4, v5);
+  dispatch_async(queue, v5);
 }
 
 void __28__HMDeviceSetupSession_open__block_invoke(uint64_t a1)
@@ -1085,12 +1085,12 @@ void __28__HMDeviceSetupSession_open__block_invoke(uint64_t a1)
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleHomeKitDaemonInterruptedNotification:(id)a3
+- (void)handleHomeKitDaemonInterruptedNotification:(id)notification
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1098,37 +1098,37 @@ void __28__HMDeviceSetupSession_open__block_invoke(uint64_t a1)
     v11 = 138543618;
     v12 = v8;
     v13 = 2112;
-    v14 = v4;
+    v14 = notificationCopy;
     _os_log_impl(&dword_19BB39000, v7, OS_LOG_TYPE_INFO, "%{public}@Handling homed interrupted notification: %@", &v11, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   v9 = [MEMORY[0x1E696ABC0] hmErrorWithCode:-1];
-  [(HMDeviceSetupSession *)v6 cleanUpSessionWithError:v9];
+  [(HMDeviceSetupSession *)selfCopy cleanUpSessionWithError:v9];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
 - (void)registerForNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_handleHomeKitDaemonInterruptedNotification_ name:@"HMDaemonReconnectedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handleHomeKitDaemonInterruptedNotification_ name:@"HMDaemonReconnectedNotification" object:0];
 }
 
-- (void)_handleDeviceSetupSessionReceiveDataMessage:(id)a3
+- (void)_handleDeviceSetupSessionReceiveDataMessage:(id)message
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMDeviceSetupSession *)self context];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  messageCopy = message;
+  context = [(HMDeviceSetupSession *)self context];
+  queue = [context queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [v4 dataForKey:@"da"];
+  v7 = [messageCopy dataForKey:@"da"];
   if (v7)
   {
-    v8 = [(HMDeviceSetupSession *)self delegate];
+    delegate = [(HMDeviceSetupSession *)self delegate];
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -1138,19 +1138,19 @@ void __28__HMDeviceSetupSession_open__block_invoke(uint64_t a1)
       v23 = 2112;
       v24 = v7;
       v25 = 2112;
-      v26 = v8;
+      v26 = delegate;
       _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_INFO, "%{public}@Notifying client of did receive exchange data: %@ delegate: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v9);
-    objc_initWeak(buf, v10);
+    objc_initWeak(buf, selfCopy);
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __68__HMDeviceSetupSession__handleDeviceSetupSessionReceiveDataMessage___block_invoke;
     v18[3] = &unk_1E754CD40;
     objc_copyWeak(&v20, buf);
-    v19 = v4;
-    [v8 setupSession:v10 didReceiveExchangeData:v7 completionHandler:v18];
+    v19 = messageCopy;
+    [delegate setupSession:selfCopy didReceiveExchangeData:v7 completionHandler:v18];
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(buf);
@@ -1159,7 +1159,7 @@ void __28__HMDeviceSetupSession_open__block_invoke(uint64_t a1)
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -1167,14 +1167,14 @@ void __28__HMDeviceSetupSession_open__block_invoke(uint64_t a1)
       *buf = 138543618;
       v22 = v16;
       v23 = 2112;
-      v24 = v4;
+      v24 = messageCopy;
       _os_log_impl(&dword_19BB39000, v15, OS_LOG_TYPE_ERROR, "%{public}@Failed to get exchange data for message: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v13);
-    v8 = [MEMORY[0x1E696ABC0] hmfErrorWithCode:15];
-    [v4 respondWithError:v8];
-    [(HMDeviceSetupSession *)v14 cleanUpSessionWithError:v8];
+    delegate = [MEMORY[0x1E696ABC0] hmfErrorWithCode:15];
+    [messageCopy respondWithError:delegate];
+    [(HMDeviceSetupSession *)selfCopy2 cleanUpSessionWithError:delegate];
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -1242,80 +1242,80 @@ void __68__HMDeviceSetupSession__handleDeviceSetupSessionReceiveDataMessage___bl
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleDeviceSetupSessionReceiveDataMessage:(id)a3
+- (void)handleDeviceSetupSessionReceiveDataMessage:(id)message
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [v4 shortDescription];
+    shortDescription = [messageCopy shortDescription];
     *buf = 138543618;
     v18 = v8;
     v19 = 2112;
-    v20 = v9;
+    v20 = shortDescription;
     _os_log_impl(&dword_19BB39000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@Handling device setup session receive data message: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v10 = [(HMDeviceSetupSession *)v6 context];
-  v11 = [v10 queue];
+  context = [(HMDeviceSetupSession *)selfCopy context];
+  queue = [context queue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __67__HMDeviceSetupSession_handleDeviceSetupSessionReceiveDataMessage___block_invoke;
   v15[3] = &unk_1E754E5C0;
-  v15[4] = v6;
-  v16 = v4;
-  v12 = v4;
+  v15[4] = selfCopy;
+  v16 = messageCopy;
+  v12 = messageCopy;
   v13 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INITIATED, 0, v15);
-  dispatch_async(v11, v13);
+  dispatch_async(queue, v13);
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleDeviceSetupSessionCloseMessage:(id)a3
+- (void)handleDeviceSetupSessionCloseMessage:(id)message
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [v4 shortDescription];
+    shortDescription = [messageCopy shortDescription];
     v13 = 138543618;
     v14 = v8;
     v15 = 2112;
-    v16 = v9;
+    v16 = shortDescription;
     _os_log_impl(&dword_19BB39000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@Handling device setup session close message: %@", &v13, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v10 = [v4 dictionaryForKey:@"ui"];
+  v10 = [messageCopy dictionaryForKey:@"ui"];
   if (v10)
   {
-    [(HMDeviceSetupSession *)v6 setUserInfo:v10];
+    [(HMDeviceSetupSession *)selfCopy setUserInfo:v10];
   }
 
-  v11 = [v4 errorForKey:@"er"];
-  [(HMDeviceSetupSession *)v6 cleanUpSessionWithError:v11];
+  v11 = [messageCopy errorForKey:@"er"];
+  [(HMDeviceSetupSession *)selfCopy cleanUpSessionWithError:v11];
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
 - (void)registerForMessages
 {
-  v3 = [(HMDeviceSetupSession *)self context];
-  v4 = [v3 messageDispatcher];
-  [v4 registerForMessage:@"HMDSS.rc" receiver:self selector:sel_handleDeviceSetupSessionReceiveDataMessage_];
+  context = [(HMDeviceSetupSession *)self context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher registerForMessage:@"HMDSS.rc" receiver:self selector:sel_handleDeviceSetupSessionReceiveDataMessage_];
 
-  v6 = [(HMDeviceSetupSession *)self context];
-  v5 = [v6 messageDispatcher];
-  [v5 registerForMessage:@"HMDSS.cl" receiver:self selector:sel_handleDeviceSetupSessionCloseMessage_];
+  context2 = [(HMDeviceSetupSession *)self context];
+  messageDispatcher2 = [context2 messageDispatcher];
+  [messageDispatcher2 registerForMessage:@"HMDSS.cl" receiver:self selector:sel_handleDeviceSetupSessionCloseMessage_];
 }
 
 - (void)configure
@@ -1325,19 +1325,19 @@ void __68__HMDeviceSetupSession__handleDeviceSetupSessionReceiveDataMessage___bl
   [(HMDeviceSetupSession *)self registerForNotifications];
 }
 
-- (HMDeviceSetupSession)initWithRole:(int64_t)a3 context:(id)a4 identifier:(id)a5 delegate:(id)a6
+- (HMDeviceSetupSession)initWithRole:(int64_t)role context:(id)context identifier:(id)identifier delegate:(id)delegate
 {
   v46 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (a3 >= 2)
+  contextCopy = context;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
+  if (role >= 2)
   {
     _HMFPreconditionFailure();
   }
 
-  v15 = v14;
-  if (v12 && v14)
+  v15 = delegateCopy;
+  if (contextCopy && delegateCopy)
   {
     v37.receiver = self;
     v37.super_class = HMDeviceSetupSession;
@@ -1347,13 +1347,13 @@ void __68__HMDeviceSetupSession__handleDeviceSetupSessionReceiveDataMessage___bl
     {
       v16->_lock._os_unfair_lock_opaque = 0;
       v16->_state = 0;
-      v16->_role = a3;
+      v16->_role = role;
       objc_storeWeak(&v16->_delegate, v15);
-      v18 = [v13 copy];
+      v18 = [identifierCopy copy];
       identifier = v17->_identifier;
       v17->_identifier = v18;
 
-      objc_storeStrong(&v17->_context, a4);
+      objc_storeStrong(&v17->_context, context);
       v20 = objc_alloc(MEMORY[0x1E69A29C0]);
       v21 = MEMORY[0x1E696AEC0];
       v22 = MEMORY[0x19EAEB2A0](v17, a2);
@@ -1362,17 +1362,17 @@ void __68__HMDeviceSetupSession__handleDeviceSetupSessionReceiveDataMessage___bl
       activity = v17->_activity;
       v17->_activity = v24;
 
-      v26 = [MEMORY[0x1E695DF20] dictionary];
+      dictionary = [MEMORY[0x1E695DF20] dictionary];
       userInfo = v17->_userInfo;
-      v17->_userInfo = v26;
+      v17->_userInfo = dictionary;
 
-      v28 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       pendingExchangeDataRequests = v17->_pendingExchangeDataRequests;
-      v17->_pendingExchangeDataRequests = v28;
+      v17->_pendingExchangeDataRequests = array;
     }
 
     self = v17;
-    v30 = self;
+    selfCopy = self;
   }
 
   else
@@ -1382,32 +1382,32 @@ void __68__HMDeviceSetupSession__handleDeviceSetupSessionReceiveDataMessage___bl
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
       v33 = HMFGetLogIdentifier();
-      v34 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v34 = [MEMORY[0x1E696AD98] numberWithInteger:role];
       *buf = 138544130;
       v39 = v33;
       v40 = 2112;
       v41 = v34;
       v42 = 2112;
-      v43 = v12;
+      v43 = contextCopy;
       v44 = 2112;
       v45 = v15;
       _os_log_impl(&dword_19BB39000, v32, OS_LOG_TYPE_ERROR, "%{public}@[HMDeviceSetupSession] Invalid init parameters role: %@ context: %@ delegate: %@", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v31);
-    v30 = 0;
+    selfCopy = 0;
   }
 
   v35 = *MEMORY[0x1E69E9840];
-  return v30;
+  return selfCopy;
 }
 
-- (HMDeviceSetupSession)initWithRole:(int64_t)a3 identifier:(id)a4 delegate:(id)a5
+- (HMDeviceSetupSession)initWithRole:(int64_t)role identifier:(id)identifier delegate:(id)delegate
 {
-  v8 = a5;
-  v9 = a4;
+  delegateCopy = delegate;
+  identifierCopy = identifier;
   v10 = [[_HMContext alloc] initWithName:@"com.apple.HomeKit.DeviceSetupSession"];
-  v11 = [(HMDeviceSetupSession *)self initWithRole:a3 context:v10 identifier:v9 delegate:v8];
+  v11 = [(HMDeviceSetupSession *)self initWithRole:role context:v10 identifier:identifierCopy delegate:delegateCopy];
 
   return v11;
 }

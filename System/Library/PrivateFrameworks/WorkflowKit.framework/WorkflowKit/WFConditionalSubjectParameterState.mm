@@ -1,37 +1,37 @@
 @interface WFConditionalSubjectParameterState
 + (id)subjectClasses;
-- (BOOL)isEqual:(id)a3;
-- (WFConditionalSubjectParameterState)initWithHomeIdentifier:(id)a3;
-- (WFConditionalSubjectParameterState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
-- (WFConditionalSubjectParameterState)initWithVariable:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WFConditionalSubjectParameterState)initWithHomeIdentifier:(id)identifier;
+- (WFConditionalSubjectParameterState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
+- (WFConditionalSubjectParameterState)initWithVariable:(id)variable;
 - (WFPropertyListObject)serializedRepresentation;
 - (id)supportedComparisonOperators;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFConditionalSubjectParameterState
 
 - (id)supportedComparisonOperators
 {
-  v3 = [(WFConditionalSubjectParameterState *)self contentType];
-  v4 = [(WFConditionalSubjectParameterState *)self isEnumeration];
-  v5 = [(WFConditionalSubjectParameterState *)self isIrrational];
-  v6 = [(WFConditionalSubjectParameterState *)self tense];
+  contentType = [(WFConditionalSubjectParameterState *)self contentType];
+  isEnumeration = [(WFConditionalSubjectParameterState *)self isEnumeration];
+  isIrrational = [(WFConditionalSubjectParameterState *)self isIrrational];
+  tense = [(WFConditionalSubjectParameterState *)self tense];
 
-  return WFSupportedContentOperatorsForContentType(v3, v4, v5, v6);
+  return WFSupportedContentOperatorsForContentType(contentType, isEnumeration, isIrrational, tense);
 }
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v7 = a5;
+  valueHandlerCopy = valueHandler;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __95__WFConditionalSubjectParameterState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke;
   v9[3] = &unk_1E837DAB0;
   v9[4] = self;
-  v10 = v7;
-  v8 = v7;
-  [(WFConditionalSubjectParameterState *)self getContentWithContext:a3 completionHandler:v9];
+  v10 = valueHandlerCopy;
+  v8 = valueHandlerCopy;
+  [(WFConditionalSubjectParameterState *)self getContentWithContext:context completionHandler:v9];
 }
 
 void __95__WFConditionalSubjectParameterState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -58,16 +58,16 @@ void __95__WFConditionalSubjectParameterState_processWithContext_userInputRequir
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     isKindOfClass = 1;
   }
 
   else
   {
-    v3 = a3;
+    equalCopy = equal;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -78,29 +78,29 @@ void __95__WFConditionalSubjectParameterState_processWithContext_userInputRequir
 - (WFPropertyListObject)serializedRepresentation
 {
   v3 = objc_opt_new();
-  v4 = [objc_opt_class() subjectType];
-  if (v4)
+  subjectType = [objc_opt_class() subjectType];
+  if (subjectType)
   {
-    [v3 setObject:v4 forKeyedSubscript:@"Type"];
+    [v3 setObject:subjectType forKeyedSubscript:@"Type"];
   }
 
-  v5 = [(WFConditionalSubjectParameterState *)self homeIdentifier];
-  if (v5)
+  homeIdentifier = [(WFConditionalSubjectParameterState *)self homeIdentifier];
+  if (homeIdentifier)
   {
-    [v3 setObject:v5 forKeyedSubscript:@"HomeIdentifier"];
+    [v3 setObject:homeIdentifier forKeyedSubscript:@"HomeIdentifier"];
   }
 
   return v3;
 }
 
-- (WFConditionalSubjectParameterState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
+- (WFConditionalSubjectParameterState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
   v42 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  representationCopy = representation;
+  providerCopy = provider;
+  parameterCopy = parameter;
   v11 = objc_opt_class();
-  v12 = v8;
+  v12 = representationCopy;
   if (v12)
   {
     if (objc_opt_isKindOfClass())
@@ -111,13 +111,13 @@ void __95__WFConditionalSubjectParameterState_processWithContext_userInputRequir
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v15 = [objc_opt_class() subjectClasses];
-      v16 = [v15 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      subjectClasses = [objc_opt_class() subjectClasses];
+      v16 = [subjectClasses countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v16)
       {
         v26 = v14;
-        v27 = v9;
-        v28 = self;
+        v27 = providerCopy;
+        selfCopy = self;
         v17 = *v30;
         while (2)
         {
@@ -125,23 +125,23 @@ void __95__WFConditionalSubjectParameterState_processWithContext_userInputRequir
           {
             if (*v30 != v17)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(subjectClasses);
             }
 
             v19 = *(*(&v29 + 1) + 8 * i);
-            v20 = [v19 subjectType];
-            v21 = [v20 isEqualToString:v13];
+            subjectType = [v19 subjectType];
+            v21 = [subjectType isEqualToString:v13];
 
             if (v21)
             {
-              v9 = v27;
-              v16 = [[v19 alloc] initWithSerializedRepresentation:v12 variableProvider:v27 parameter:v10];
-              self = v28;
+              providerCopy = v27;
+              v16 = [[v19 alloc] initWithSerializedRepresentation:v12 variableProvider:v27 parameter:parameterCopy];
+              self = selfCopy;
               goto LABEL_17;
             }
           }
 
-          v16 = [v15 countByEnumeratingWithState:&v29 objects:v33 count:16];
+          v16 = [subjectClasses countByEnumeratingWithState:&v29 objects:v33 count:16];
           if (v16)
           {
             continue;
@@ -150,8 +150,8 @@ void __95__WFConditionalSubjectParameterState_processWithContext_userInputRequir
           break;
         }
 
-        v9 = v27;
-        self = v28;
+        providerCopy = v27;
+        self = selfCopy;
 LABEL_17:
         v14 = v26;
       }
@@ -202,13 +202,13 @@ LABEL_17:
   return v16;
 }
 
-- (WFConditionalSubjectParameterState)initWithHomeIdentifier:(id)a3
+- (WFConditionalSubjectParameterState)initWithHomeIdentifier:(id)identifier
 {
-  v6 = a3;
-  if (!v6)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"WFConditionalSubjectParameterState.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"homeIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFConditionalSubjectParameterState.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"homeIdentifier"}];
 
     if (!self)
     {
@@ -221,8 +221,8 @@ LABEL_17:
   if (self)
   {
 LABEL_3:
-    objc_storeStrong(&self->_homeIdentifier, a3);
-    v7 = self;
+    objc_storeStrong(&self->_homeIdentifier, identifier);
+    selfCopy = self;
   }
 
 LABEL_4:
@@ -230,10 +230,10 @@ LABEL_4:
   return self;
 }
 
-- (WFConditionalSubjectParameterState)initWithVariable:(id)a3
+- (WFConditionalSubjectParameterState)initWithVariable:(id)variable
 {
-  v4 = a3;
-  v5 = [[WFVariableConditionalSubjectState alloc] initWithVariable:v4];
+  variableCopy = variable;
+  v5 = [[WFVariableConditionalSubjectState alloc] initWithVariable:variableCopy];
 
   return &v5->super;
 }

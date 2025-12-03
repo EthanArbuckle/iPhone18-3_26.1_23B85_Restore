@@ -1,72 +1,72 @@
 @interface SUUIVerticalInfoListPageSection
-- (CGSize)cellSizeForIndexPath:(id)a3;
-- (SUUIVerticalInfoListPageSection)initWithPageComponent:(id)a3;
-- (UIEdgeInsets)_contentInsetForIndexPath:(id)a3;
+- (CGSize)cellSizeForIndexPath:(id)path;
+- (SUUIVerticalInfoListPageSection)initWithPageComponent:(id)component;
+- (UIEdgeInsets)_contentInsetForIndexPath:(id)path;
 - (UIEdgeInsets)sectionContentInset;
 - (id)_reloadColumnDataIfNecessary;
-- (id)backgroundColorForIndexPath:(id)a3;
-- (id)cellForIndexPath:(id)a3;
-- (int64_t)_numberOfColumnsForWidth:(double)a3;
+- (id)backgroundColorForIndexPath:(id)path;
+- (id)cellForIndexPath:(id)path;
+- (int64_t)_numberOfColumnsForWidth:(double)width;
 - (int64_t)numberOfCells;
-- (void)_enumerateVisibleIndexPathsUsingBlock:(id)a3;
+- (void)_enumerateVisibleIndexPathsUsingBlock:(id)block;
 - (void)_requestCellLayout;
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
-- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)a3;
-- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)a3;
-- (void)entityProvider:(id)a3 didInvalidateWithContext:(id)a4;
-- (void)reloadCellWithIndexPath:(id)a3 reason:(int64_t)a4;
-- (void)willAppearInContext:(id)a3;
-- (void)willTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
+- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)path;
+- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)path;
+- (void)entityProvider:(id)provider didInvalidateWithContext:(id)context;
+- (void)reloadCellWithIndexPath:(id)path reason:(int64_t)reason;
+- (void)willAppearInContext:(id)context;
+- (void)willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SUUIVerticalInfoListPageSection
 
-- (SUUIVerticalInfoListPageSection)initWithPageComponent:(id)a3
+- (SUUIVerticalInfoListPageSection)initWithPageComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   v11.receiver = self;
   v11.super_class = SUUIVerticalInfoListPageSection;
-  v5 = [(SUUIStorePageSection *)&v11 initWithPageComponent:v4];
+  v5 = [(SUUIStorePageSection *)&v11 initWithPageComponent:componentCopy];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     columns = v5->_columns;
     v5->_columns = v6;
 
-    v8 = [v4 viewElement];
+    viewElement = [componentCopy viewElement];
     infoList = v5->_infoList;
-    v5->_infoList = v8;
+    v5->_infoList = viewElement;
   }
 
   return v5;
 }
 
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session
 {
-  v5 = a4;
-  v7 = [(SUUIStorePageSection *)self pageComponent];
-  v6 = [v7 viewElement];
-  [v5 addItemViewElement:v6];
+  sessionCopy = session;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  [sessionCopy addItemViewElement:viewElement];
 }
 
-- (id)backgroundColorForIndexPath:(id)a3
+- (id)backgroundColorForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIInfoListViewElement *)self->_infoList style];
-  v6 = [v5 ikBackgroundColor];
-  v7 = [v6 color];
+  pathCopy = path;
+  style = [(SUUIInfoListViewElement *)self->_infoList style];
+  ikBackgroundColor = [style ikBackgroundColor];
+  color = [ikBackgroundColor color];
 
-  if (v7)
+  if (color)
   {
-    v8 = v7;
+    v8 = color;
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = SUUIVerticalInfoListPageSection;
-    v8 = [(SUUIStorePageSection *)&v11 backgroundColorForIndexPath:v4];
+    v8 = [(SUUIStorePageSection *)&v11 backgroundColorForIndexPath:pathCopy];
   }
 
   v9 = v8;
@@ -74,31 +74,31 @@
   return v9;
 }
 
-- (id)cellForIndexPath:(id)a3
+- (id)cellForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self context];
-  v6 = [v5 collectionView];
+  pathCopy = path;
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
 
-  v7 = [v6 dequeueReusableCellWithReuseIdentifier:0x286AF9800 forIndexPath:v4];
-  [(SUUIVerticalInfoListPageSection *)self _contentInsetForIndexPath:v4];
+  v7 = [collectionView dequeueReusableCellWithReuseIdentifier:0x286AF9800 forIndexPath:pathCopy];
+  [(SUUIVerticalInfoListPageSection *)self _contentInsetForIndexPath:pathCopy];
   [v7 setContentInset:?];
-  v8 = [(SUUIVerticalInfoListPageSection *)self _reloadColumnDataIfNecessary];
-  v9 = [v4 item];
+  _reloadColumnDataIfNecessary = [(SUUIVerticalInfoListPageSection *)self _reloadColumnDataIfNecessary];
+  item = [pathCopy item];
 
-  v10 = [v8 objectAtIndex:v9];
+  v10 = [_reloadColumnDataIfNecessary objectAtIndex:item];
   [v7 reloadWithViewElements:v10 width:self->_cellLayoutContext context:self->_columnWidth];
 
   return v7;
 }
 
-- (CGSize)cellSizeForIndexPath:(id)a3
+- (CGSize)cellSizeForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIVerticalInfoListPageSection *)self _reloadColumnDataIfNecessary];
+  pathCopy = path;
+  _reloadColumnDataIfNecessary = [(SUUIVerticalInfoListPageSection *)self _reloadColumnDataIfNecessary];
   columnWidth = self->_columnWidth;
   columnHeight = self->_columnHeight;
-  [(SUUIVerticalInfoListPageSection *)self _contentInsetForIndexPath:v4];
+  [(SUUIVerticalInfoListPageSection *)self _contentInsetForIndexPath:pathCopy];
   v9 = v8;
   v11 = v10;
 
@@ -109,65 +109,65 @@
   return result;
 }
 
-- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)a3
+- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
+  pathCopy = path;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v7 = [(SUUIStorePageSection *)self context];
-  v8 = [v7 activeMetricsImpressionSession];
-  [v8 beginActiveImpressionForViewElement:v6];
+  context = [(SUUIStorePageSection *)self context];
+  activeMetricsImpressionSession = [context activeMetricsImpressionSession];
+  [activeMetricsImpressionSession beginActiveImpressionForViewElement:viewElement];
 
   v9.receiver = self;
   v9.super_class = SUUIVerticalInfoListPageSection;
-  [(SUUIStorePageSection *)&v9 collectionViewWillDisplayCellForItemAtIndexPath:v4];
+  [(SUUIStorePageSection *)&v9 collectionViewWillDisplayCellForItemAtIndexPath:pathCopy];
 }
 
-- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)a3
+- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
+  pathCopy = path;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v7 = [(SUUIStorePageSection *)self context];
-  v8 = [v7 activeMetricsImpressionSession];
-  [v8 endActiveImpressionForViewElement:v6];
+  context = [(SUUIStorePageSection *)self context];
+  activeMetricsImpressionSession = [context activeMetricsImpressionSession];
+  [activeMetricsImpressionSession endActiveImpressionForViewElement:viewElement];
 
   v9.receiver = self;
   v9.super_class = SUUIVerticalInfoListPageSection;
-  [(SUUIStorePageSection *)&v9 collectionViewDidEndDisplayingCellForItemAtIndexPath:v4];
+  [(SUUIStorePageSection *)&v9 collectionViewDidEndDisplayingCellForItemAtIndexPath:pathCopy];
 }
 
-- (void)entityProvider:(id)a3 didInvalidateWithContext:(id)a4
+- (void)entityProvider:(id)provider didInvalidateWithContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  providerCopy = provider;
   [(SUUIVerticalInfoListPageSection *)self _requestCellLayout];
   v8.receiver = self;
   v8.super_class = SUUIVerticalInfoListPageSection;
-  [(SUUIStorePageSection *)&v8 entityProvider:v7 didInvalidateWithContext:v6];
+  [(SUUIStorePageSection *)&v8 entityProvider:providerCopy didInvalidateWithContext:contextCopy];
 }
 
 - (int64_t)numberOfCells
 {
-  v2 = [(SUUIVerticalInfoListPageSection *)self _reloadColumnDataIfNecessary];
-  v3 = [v2 count];
+  _reloadColumnDataIfNecessary = [(SUUIVerticalInfoListPageSection *)self _reloadColumnDataIfNecessary];
+  v3 = [_reloadColumnDataIfNecessary count];
 
   return v3;
 }
 
-- (void)reloadCellWithIndexPath:(id)a3 reason:(int64_t)a4
+- (void)reloadCellWithIndexPath:(id)path reason:(int64_t)reason
 {
-  v10 = a3;
-  v5 = [(SUUIStorePageSection *)self context];
-  v6 = [v5 collectionView];
-  v7 = [v6 cellForItemAtIndexPath:v10];
+  pathCopy = path;
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  v7 = [collectionView cellForItemAtIndexPath:pathCopy];
 
   if (v7)
   {
-    v8 = [(SUUIVerticalInfoListPageSection *)self _reloadColumnDataIfNecessary];
-    v9 = [v8 objectAtIndex:{objc_msgSend(v10, "item")}];
+    _reloadColumnDataIfNecessary = [(SUUIVerticalInfoListPageSection *)self _reloadColumnDataIfNecessary];
+    v9 = [_reloadColumnDataIfNecessary objectAtIndex:{objc_msgSend(pathCopy, "item")}];
     [v7 reloadWithViewElements:v9 width:self->_cellLayoutContext context:self->_columnWidth];
   }
 }
@@ -181,9 +181,9 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SUUIStorePageSection *)self isTopSection];
+  isTopSection = [(SUUIStorePageSection *)self isTopSection];
   v12 = 12.0;
-  if (!v11)
+  if (!isTopSection)
   {
     v12 = v4;
   }
@@ -198,13 +198,13 @@
   return result;
 }
 
-- (void)willAppearInContext:(id)a3
+- (void)willAppearInContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 collectionView];
-  [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AF9800];
+  contextCopy = context;
+  collectionView = [contextCopy collectionView];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AF9800];
   v6 = self->_cellLayoutContext;
-  v7 = [[SUUIViewElementLayoutContext alloc] initWithStorePageSectionContext:v4 previousLayoutContext:v6];
+  v7 = [[SUUIViewElementLayoutContext alloc] initWithStorePageSectionContext:contextCopy previousLayoutContext:v6];
   cellLayoutContext = self->_cellLayoutContext;
   self->_cellLayoutContext = v7;
 
@@ -213,40 +213,40 @@
   [(SUUIVerticalInfoListPageSection *)self _requestCellLayout];
   v9.receiver = self;
   v9.super_class = SUUIVerticalInfoListPageSection;
-  [(SUUIStorePageSection *)&v9 willAppearInContext:v4];
+  [(SUUIStorePageSection *)&v9 willAppearInContext:contextCopy];
 }
 
-- (void)willTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   cellLayoutContext = self->_cellLayoutContext;
-  v8 = a4;
+  coordinatorCopy = coordinator;
   [(SUUIViewElementLayoutContext *)cellLayoutContext setActivePageWidth:width];
   [(SUUIVerticalInfoListPageSection *)self _requestCellLayout];
   v9.receiver = self;
   v9.super_class = SUUIVerticalInfoListPageSection;
-  [(SUUIStorePageSection *)&v9 willTransitionToSize:v8 withTransitionCoordinator:width, height];
+  [(SUUIStorePageSection *)&v9 willTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUUIStorePageSection *)self context];
-  v9 = [v8 collectionView];
+  requestCopy = request;
+  imageCopy = image;
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __63__SUUIVerticalInfoListPageSection_artworkRequest_didLoadImage___block_invoke;
   v13[3] = &unk_2798FC070;
-  v14 = v9;
-  v15 = v7;
-  v16 = v6;
-  v17 = self;
-  v10 = v6;
-  v11 = v7;
-  v12 = v9;
+  v14 = collectionView;
+  v15 = imageCopy;
+  v16 = requestCopy;
+  selfCopy = self;
+  v10 = requestCopy;
+  v11 = imageCopy;
+  v12 = collectionView;
   [(SUUIVerticalInfoListPageSection *)self _enumerateVisibleIndexPathsUsingBlock:v13];
 }
 
@@ -256,15 +256,15 @@ void __63__SUUIVerticalInfoListPageSection_artworkRequest_didLoadImage___block_i
   [v3 setImage:*(a1 + 40) forArtworkRequest:*(a1 + 48) context:*(*(a1 + 56) + 88)];
 }
 
-- (UIEdgeInsets)_contentInsetForIndexPath:(id)a3
+- (UIEdgeInsets)_contentInsetForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIVerticalInfoListPageSection *)self _reloadColumnDataIfNecessary];
-  v6 = [v4 item];
+  pathCopy = path;
+  _reloadColumnDataIfNecessary = [(SUUIVerticalInfoListPageSection *)self _reloadColumnDataIfNecessary];
+  item = [pathCopy item];
 
-  v7 = [v5 count];
+  v7 = [_reloadColumnDataIfNecessary count];
   v8 = 11.0;
-  if (v6 == v7 - 1)
+  if (item == v7 - 1)
   {
     v9 = 15.0;
   }
@@ -274,7 +274,7 @@ void __63__SUUIVerticalInfoListPageSection_artworkRequest_didLoadImage___block_i
     v9 = 11.0;
   }
 
-  if (v6)
+  if (item)
   {
     v10 = 11.0;
   }
@@ -284,7 +284,7 @@ void __63__SUUIVerticalInfoListPageSection_artworkRequest_didLoadImage___block_i
     v10 = 15.0;
   }
 
-  if (v6)
+  if (item)
   {
     v8 = v9;
   }
@@ -320,22 +320,22 @@ void __63__SUUIVerticalInfoListPageSection_artworkRequest_didLoadImage___block_i
   return result;
 }
 
-- (void)_enumerateVisibleIndexPathsUsingBlock:(id)a3
+- (void)_enumerateVisibleIndexPathsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self context];
-  v6 = [v5 collectionView];
+  blockCopy = block;
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
 
-  v7 = [v6 indexPathsForVisibleItems];
-  v8 = [(SUUIStorePageSection *)self sectionIndex];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
+  sectionIndex = [(SUUIStorePageSection *)self sectionIndex];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __73__SUUIVerticalInfoListPageSection__enumerateVisibleIndexPathsUsingBlock___block_invoke;
   v10[3] = &unk_2798FC098;
-  v11 = v4;
-  v12 = v8;
-  v9 = v4;
-  [v7 enumerateObjectsUsingBlock:v10];
+  v11 = blockCopy;
+  v12 = sectionIndex;
+  v9 = blockCopy;
+  [indexPathsForVisibleItems enumerateObjectsUsingBlock:v10];
 }
 
 void __73__SUUIVerticalInfoListPageSection__enumerateVisibleIndexPathsUsingBlock___block_invoke(uint64_t a1, void *a2)
@@ -347,17 +347,17 @@ void __73__SUUIVerticalInfoListPageSection__enumerateVisibleIndexPathsUsingBlock
   }
 }
 
-- (int64_t)_numberOfColumnsForWidth:(double)a3
+- (int64_t)_numberOfColumnsForWidth:(double)width
 {
-  v3 = fmax(a3 / 160.0, 1.0);
+  v3 = fmax(width / 160.0, 1.0);
   if (v3 > 3.0)
   {
     v3 = 3.0;
   }
 
   v4 = v3;
-  v5 = [(SUUIViewElement *)self->_infoList flattenedChildren];
-  v6 = [v5 count];
+  flattenedChildren = [(SUUIViewElement *)self->_infoList flattenedChildren];
+  v6 = [flattenedChildren count];
 
   if (v6 >= v4)
   {
@@ -374,8 +374,8 @@ void __73__SUUIVerticalInfoListPageSection__enumerateVisibleIndexPathsUsingBlock
 {
   if (![(NSMutableArray *)self->_columns count]&& self->_numberOfColumns >= 1)
   {
-    v26 = [(SUUIViewElement *)self->_infoList flattenedChildren];
-    v25 = [v26 count];
+    flattenedChildren = [(SUUIViewElement *)self->_infoList flattenedChildren];
+    v25 = [flattenedChildren count];
     v3 = malloc_type_malloc(8 * self->_numberOfColumns, 0x100004000313F17uLL);
     bzero(v3, 8 * self->_numberOfColumns);
     numberOfColumns = self->_numberOfColumns;
@@ -405,7 +405,7 @@ void __73__SUUIVerticalInfoListPageSection__enumerateVisibleIndexPathsUsingBlock
 LABEL_18:
         if (v7 >= v8)
         {
-          v16 = [v26 objectAtIndex:v8];
+          v16 = [flattenedChildren objectAtIndex:v8];
           v17 = [(NSMutableArray *)self->_columns objectAtIndex:0];
           [v17 addObject:v16];
 
@@ -446,7 +446,7 @@ LABEL_17:
 
       while (v3[v9] < v3[v11 - 2])
       {
-        v12 = [v26 objectAtIndex:v10];
+        v12 = [flattenedChildren objectAtIndex:v10];
         v13 = [(NSMutableArray *)self->_columns objectAtIndex:v9];
         [v13 insertObject:v12 atIndex:0];
 
@@ -508,8 +508,8 @@ LABEL_22:
 
 - (void)_requestCellLayout
 {
-  v3 = [(SUUIStorePageSection *)self context];
-  [v3 activePageWidth];
+  context = [(SUUIStorePageSection *)self context];
+  [context activePageWidth];
   v5 = v4;
 
   self->_columnWidth = v5 + -30.0;

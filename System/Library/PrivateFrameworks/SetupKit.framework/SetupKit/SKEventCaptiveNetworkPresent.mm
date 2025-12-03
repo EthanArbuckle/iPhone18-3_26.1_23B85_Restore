@@ -1,13 +1,13 @@
 @interface SKEventCaptiveNetworkPresent
-- (SKEventCaptiveNetworkPresent)initWithCaptiveURL:(id)a3 interfaceIdentifier:(id)a4 ssid:(id)a5;
-- (id)descriptionWithLevel:(int)a3;
+- (SKEventCaptiveNetworkPresent)initWithCaptiveURL:(id)l interfaceIdentifier:(id)identifier ssid:(id)ssid;
+- (id)descriptionWithLevel:(int)level;
 @end
 
 @implementation SKEventCaptiveNetworkPresent
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }
@@ -42,23 +42,23 @@
   return v9;
 }
 
-- (SKEventCaptiveNetworkPresent)initWithCaptiveURL:(id)a3 interfaceIdentifier:(id)a4 ssid:(id)a5
+- (SKEventCaptiveNetworkPresent)initWithCaptiveURL:(id)l interfaceIdentifier:(id)identifier ssid:(id)ssid
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  identifierCopy = identifier;
+  ssidCopy = ssid;
   v11 = [(SKEvent *)self initWithEventType:200];
   if (v11)
   {
-    v12 = [v9 copy];
+    v12 = [identifierCopy copy];
     captiveInterfaceIdentifier = v11->_captiveInterfaceIdentifier;
     v11->_captiveInterfaceIdentifier = v12;
 
-    v14 = [v10 copy];
+    v14 = [ssidCopy copy];
     captiveSSID = v11->_captiveSSID;
     v11->_captiveSSID = v14;
 
-    v16 = [v8 copy];
+    v16 = [lCopy copy];
     captiveURL = v11->_captiveURL;
     v11->_captiveURL = v16;
 

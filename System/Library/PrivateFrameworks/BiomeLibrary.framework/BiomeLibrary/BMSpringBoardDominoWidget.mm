@@ -1,38 +1,38 @@
 @interface BMSpringBoardDominoWidget
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSpringBoardDominoWidget)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMSpringBoardDominoWidget)initWithUniqueId:(id)a3 extensionBundleId:(id)a4 kind:(id)a5 containerBundleId:(id)a6 intent:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (BMSpringBoardDominoWidget)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMSpringBoardDominoWidget)initWithUniqueId:(id)id extensionBundleId:(id)bundleId kind:(id)kind containerBundleId:(id)containerBundleId intent:(id)intent;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSpringBoardDominoWidget
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSpringBoardDominoWidget *)self uniqueId];
-    v7 = [v5 uniqueId];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    uniqueId = [(BMSpringBoardDominoWidget *)self uniqueId];
+    uniqueId2 = [v5 uniqueId];
+    v8 = uniqueId2;
+    if (uniqueId == uniqueId2)
     {
     }
 
     else
     {
-      v9 = [(BMSpringBoardDominoWidget *)self uniqueId];
-      v10 = [v5 uniqueId];
-      v11 = [v9 isEqual:v10];
+      uniqueId3 = [(BMSpringBoardDominoWidget *)self uniqueId];
+      uniqueId4 = [v5 uniqueId];
+      v11 = [uniqueId3 isEqual:uniqueId4];
 
       if (!v11)
       {
@@ -40,18 +40,18 @@
       }
     }
 
-    v13 = [(BMSpringBoardDominoWidget *)self extensionBundleId];
-    v14 = [v5 extensionBundleId];
-    v15 = v14;
-    if (v13 == v14)
+    extensionBundleId = [(BMSpringBoardDominoWidget *)self extensionBundleId];
+    extensionBundleId2 = [v5 extensionBundleId];
+    v15 = extensionBundleId2;
+    if (extensionBundleId == extensionBundleId2)
     {
     }
 
     else
     {
-      v16 = [(BMSpringBoardDominoWidget *)self extensionBundleId];
-      v17 = [v5 extensionBundleId];
-      v18 = [v16 isEqual:v17];
+      extensionBundleId3 = [(BMSpringBoardDominoWidget *)self extensionBundleId];
+      extensionBundleId4 = [v5 extensionBundleId];
+      v18 = [extensionBundleId3 isEqual:extensionBundleId4];
 
       if (!v18)
       {
@@ -59,18 +59,18 @@
       }
     }
 
-    v19 = [(BMSpringBoardDominoWidget *)self kind];
-    v20 = [v5 kind];
-    v21 = v20;
-    if (v19 == v20)
+    kind = [(BMSpringBoardDominoWidget *)self kind];
+    kind2 = [v5 kind];
+    v21 = kind2;
+    if (kind == kind2)
     {
     }
 
     else
     {
-      v22 = [(BMSpringBoardDominoWidget *)self kind];
-      v23 = [v5 kind];
-      v24 = [v22 isEqual:v23];
+      kind3 = [(BMSpringBoardDominoWidget *)self kind];
+      kind4 = [v5 kind];
+      v24 = [kind3 isEqual:kind4];
 
       if (!v24)
       {
@@ -78,18 +78,18 @@
       }
     }
 
-    v25 = [(BMSpringBoardDominoWidget *)self containerBundleId];
-    v26 = [v5 containerBundleId];
-    v27 = v26;
-    if (v25 == v26)
+    containerBundleId = [(BMSpringBoardDominoWidget *)self containerBundleId];
+    containerBundleId2 = [v5 containerBundleId];
+    v27 = containerBundleId2;
+    if (containerBundleId == containerBundleId2)
     {
     }
 
     else
     {
-      v28 = [(BMSpringBoardDominoWidget *)self containerBundleId];
-      v29 = [v5 containerBundleId];
-      v30 = [v28 isEqual:v29];
+      containerBundleId3 = [(BMSpringBoardDominoWidget *)self containerBundleId];
+      containerBundleId4 = [v5 containerBundleId];
+      v30 = [containerBundleId3 isEqual:containerBundleId4];
 
       if (!v30)
       {
@@ -101,18 +101,18 @@ LABEL_23:
       }
     }
 
-    v31 = [(BMSpringBoardDominoWidget *)self intent];
-    v32 = [v5 intent];
-    if (v31 == v32)
+    intent = [(BMSpringBoardDominoWidget *)self intent];
+    intent2 = [v5 intent];
+    if (intent == intent2)
     {
       v12 = 1;
     }
 
     else
     {
-      v33 = [(BMSpringBoardDominoWidget *)self intent];
-      v34 = [v5 intent];
-      v12 = [v33 isEqual:v34];
+      intent3 = [(BMSpringBoardDominoWidget *)self intent];
+      intent4 = [v5 intent];
+      v12 = [intent3 isEqual:intent4];
     }
 
     goto LABEL_23;
@@ -127,58 +127,58 @@ LABEL_24:
 - (id)jsonDictionary
 {
   v24[5] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSpringBoardDominoWidget *)self uniqueId];
-  v4 = [(BMSpringBoardDominoWidget *)self extensionBundleId];
-  v5 = [(BMSpringBoardDominoWidget *)self kind];
-  v6 = [(BMSpringBoardDominoWidget *)self containerBundleId];
-  v7 = [(BMSpringBoardDominoWidget *)self intent];
-  v8 = [v7 base64EncodedStringWithOptions:0];
+  uniqueId = [(BMSpringBoardDominoWidget *)self uniqueId];
+  extensionBundleId = [(BMSpringBoardDominoWidget *)self extensionBundleId];
+  kind = [(BMSpringBoardDominoWidget *)self kind];
+  containerBundleId = [(BMSpringBoardDominoWidget *)self containerBundleId];
+  intent = [(BMSpringBoardDominoWidget *)self intent];
+  v8 = [intent base64EncodedStringWithOptions:0];
 
   v19 = @"uniqueId";
-  v9 = v3;
-  if (!v3)
+  null = uniqueId;
+  if (!uniqueId)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17 = v9;
-  v24[0] = v9;
+  v17 = null;
+  v24[0] = null;
   v20 = @"extensionBundleId";
-  v10 = v4;
-  if (!v4)
+  null2 = extensionBundleId;
+  if (!extensionBundleId)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[1] = v10;
+  v24[1] = null2;
   v21 = @"kind";
-  v11 = v5;
-  if (!v5)
+  null3 = kind;
+  if (!kind)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[2] = v11;
+  v24[2] = null3;
   v22 = @"containerBundleId";
-  v12 = v6;
-  if (!v6)
+  null4 = containerBundleId;
+  if (!containerBundleId)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[3] = v12;
+  v24[3] = null4;
   v23 = @"intent";
-  v13 = v8;
+  null5 = v8;
   if (!v8)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[4] = v13;
+  v24[4] = null5;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v19 count:{5, v17}];
   if (v8)
   {
-    if (v6)
+    if (containerBundleId)
     {
       goto LABEL_13;
     }
@@ -187,10 +187,10 @@ LABEL_24:
   else
   {
 
-    if (v6)
+    if (containerBundleId)
     {
 LABEL_13:
-      if (v5)
+      if (kind)
       {
         goto LABEL_14;
       }
@@ -199,17 +199,17 @@ LABEL_13:
     }
   }
 
-  if (v5)
+  if (kind)
   {
 LABEL_14:
-    if (v4)
+    if (extensionBundleId)
     {
       goto LABEL_15;
     }
 
 LABEL_22:
 
-    if (v3)
+    if (uniqueId)
     {
       goto LABEL_16;
     }
@@ -219,13 +219,13 @@ LABEL_22:
 
 LABEL_21:
 
-  if (!v4)
+  if (!extensionBundleId)
   {
     goto LABEL_22;
   }
 
 LABEL_15:
-  if (v3)
+  if (uniqueId)
   {
     goto LABEL_16;
   }
@@ -238,29 +238,29 @@ LABEL_16:
   return v14;
 }
 
-- (BMSpringBoardDominoWidget)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSpringBoardDominoWidget)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v53[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"uniqueId"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"uniqueId"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"extensionBundleId"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"extensionBundleId"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v41 = 0;
           v16 = 0;
           goto LABEL_20;
         }
 
-        v35 = a4;
+        errorCopy = error;
         v22 = objc_alloc(MEMORY[0x1E696ABC0]);
         v23 = *MEMORY[0x1E698F240];
         v50 = *MEMORY[0x1E696A578];
@@ -269,7 +269,7 @@ LABEL_4:
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v51 forKeys:&v50 count:1];
         v41 = 0;
         v16 = 0;
-        *v35 = [v22 initWithDomain:v23 code:2 userInfo:v10];
+        *errorCopy = [v22 initWithDomain:v23 code:2 userInfo:v10];
         goto LABEL_19;
       }
 
@@ -281,22 +281,22 @@ LABEL_4:
       v41 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"kind"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"kind"];
     v38 = v8;
-    v40 = self;
+    selfCopy = self;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v39 = 0;
           v16 = 0;
           goto LABEL_19;
         }
 
-        v24 = a4;
+        errorCopy2 = error;
         v25 = objc_alloc(MEMORY[0x1E696ABC0]);
         v26 = *MEMORY[0x1E698F240];
         v48 = *MEMORY[0x1E696A578];
@@ -305,10 +305,10 @@ LABEL_4:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
         v39 = 0;
         v16 = 0;
-        *v24 = [v25 initWithDomain:v26 code:2 userInfo:v11];
+        *errorCopy2 = [v25 initWithDomain:v26 code:2 userInfo:v11];
 LABEL_18:
 
-        self = v40;
+        self = selfCopy;
         v8 = v38;
 LABEL_19:
 
@@ -323,14 +323,14 @@ LABEL_19:
       v39 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"containerBundleId"];
-    v12 = a4;
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"containerBundleId"];
+    errorCopy3 = error;
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v13 = 0;
           v16 = 0;
@@ -346,7 +346,7 @@ LABEL_19:
         v28 = [v36 initWithDomain:v27 code:2 userInfo:v14];
         v13 = 0;
         v16 = 0;
-        *v12 = v28;
+        *errorCopy3 = v28;
         goto LABEL_17;
       }
 
@@ -358,13 +358,13 @@ LABEL_19:
       v13 = 0;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"intent"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"intent"];
     if (!v14 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v15 = 0;
 LABEL_16:
-      v16 = [(BMSpringBoardDominoWidget *)v40 initWithUniqueId:v38 extensionBundleId:v41 kind:v39 containerBundleId:v13 intent:v15];
-      v40 = v16;
+      v16 = [(BMSpringBoardDominoWidget *)selfCopy initWithUniqueId:v38 extensionBundleId:v41 kind:v39 containerBundleId:v13 intent:v15];
+      selfCopy = v16;
 LABEL_17:
 
       goto LABEL_18;
@@ -386,7 +386,7 @@ LABEL_17:
         goto LABEL_16;
       }
 
-      if (v12)
+      if (errorCopy3)
       {
         v37 = objc_alloc(MEMORY[0x1E696ABC0]);
         v34 = *MEMORY[0x1E698F240];
@@ -398,11 +398,11 @@ LABEL_17:
         v32 = &v44;
 LABEL_49:
         v33 = [v30 dictionaryWithObjects:v31 forKeys:v32 count:1];
-        *v12 = [v37 initWithDomain:v34 code:2 userInfo:v33];
+        *errorCopy3 = [v37 initWithDomain:v34 code:2 userInfo:v33];
       }
     }
 
-    else if (v12)
+    else if (errorCopy3)
     {
       v37 = objc_alloc(MEMORY[0x1E696ABC0]);
       v34 = *MEMORY[0x1E698F240];
@@ -427,14 +427,14 @@ LABEL_49:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v16 = 0;
     goto LABEL_21;
   }
 
-  v19 = a4;
+  errorCopy4 = error;
   v20 = objc_alloc(MEMORY[0x1E696ABC0]);
   v21 = *MEMORY[0x1E698F240];
   v52 = *MEMORY[0x1E696A578];
@@ -443,7 +443,7 @@ LABEL_49:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:&v52 count:1];
   v8 = 0;
   v16 = 0;
-  *v19 = [v20 initWithDomain:v21 code:2 userInfo:v9];
+  *errorCopy4 = [v20 initWithDomain:v21 code:2 userInfo:v9];
 LABEL_20:
 
 LABEL_21:
@@ -455,49 +455,49 @@ LABEL_21:
 {
   v3 = objc_opt_new();
   [(BMSpringBoardDominoWidget *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_uniqueId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_extensionBundleId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_kind)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_containerBundleId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_intent)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v23.receiver = self;
   v23.super_class = BMSpringBoardDominoWidget;
   v5 = [(BMEventBase *)&v23 init];
@@ -506,12 +506,12 @@ LABEL_21:
     goto LABEL_36;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -522,18 +522,18 @@ LABEL_21:
       while (1)
       {
         v24 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v24 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v24 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v24 & 0x7F) << v7;
@@ -550,9 +550,9 @@ LABEL_21:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -605,13 +605,13 @@ LABEL_29:
       }
 
 LABEL_30:
-      v20 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v20 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_35:
     v21 = 0;
@@ -629,34 +629,34 @@ LABEL_36:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMSpringBoardDominoWidget *)self uniqueId];
-  v5 = [(BMSpringBoardDominoWidget *)self extensionBundleId];
-  v6 = [(BMSpringBoardDominoWidget *)self kind];
-  v7 = [(BMSpringBoardDominoWidget *)self containerBundleId];
-  v8 = [(BMSpringBoardDominoWidget *)self intent];
-  v9 = [v3 initWithFormat:@"BMSpringBoardDominoWidget with uniqueId: %@, extensionBundleId: %@, kind: %@, containerBundleId: %@, intent: %@", v4, v5, v6, v7, v8];
+  uniqueId = [(BMSpringBoardDominoWidget *)self uniqueId];
+  extensionBundleId = [(BMSpringBoardDominoWidget *)self extensionBundleId];
+  kind = [(BMSpringBoardDominoWidget *)self kind];
+  containerBundleId = [(BMSpringBoardDominoWidget *)self containerBundleId];
+  intent = [(BMSpringBoardDominoWidget *)self intent];
+  v9 = [v3 initWithFormat:@"BMSpringBoardDominoWidget with uniqueId: %@, extensionBundleId: %@, kind: %@, containerBundleId: %@, intent: %@", uniqueId, extensionBundleId, kind, containerBundleId, intent];
 
   return v9;
 }
 
-- (BMSpringBoardDominoWidget)initWithUniqueId:(id)a3 extensionBundleId:(id)a4 kind:(id)a5 containerBundleId:(id)a6 intent:(id)a7
+- (BMSpringBoardDominoWidget)initWithUniqueId:(id)id extensionBundleId:(id)bundleId kind:(id)kind containerBundleId:(id)containerBundleId intent:(id)intent
 {
-  v19 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  idCopy = id;
+  bundleIdCopy = bundleId;
+  kindCopy = kind;
+  containerBundleIdCopy = containerBundleId;
+  intentCopy = intent;
   v20.receiver = self;
   v20.super_class = BMSpringBoardDominoWidget;
   v17 = [(BMEventBase *)&v20 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v17->_uniqueId, a3);
-    objc_storeStrong(&v17->_extensionBundleId, a4);
-    objc_storeStrong(&v17->_kind, a5);
-    objc_storeStrong(&v17->_containerBundleId, a6);
-    objc_storeStrong(&v17->_intent, a7);
+    objc_storeStrong(&v17->_uniqueId, id);
+    objc_storeStrong(&v17->_extensionBundleId, bundleId);
+    objc_storeStrong(&v17->_kind, kind);
+    objc_storeStrong(&v17->_containerBundleId, containerBundleId);
+    objc_storeStrong(&v17->_intent, intent);
   }
 
   return v17;
@@ -701,9 +701,9 @@ LABEL_36:
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -711,8 +711,8 @@ LABEL_36:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSpringBoardDominoWidget alloc] initByReadFrom:v7];
     v4 = v8;

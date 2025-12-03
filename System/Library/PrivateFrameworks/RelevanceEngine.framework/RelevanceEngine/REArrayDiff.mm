@@ -1,28 +1,28 @@
 @interface REArrayDiff
-+ (id)_createSetFromElementArray:(id)a3 equalComparator:(id)a4 hashGenerator:(id)a5;
-+ (id)_indexSetFromSet:(id)a3;
-+ (id)diffFromElements:(id)a3 toElements:(id)a4 equalComparator:(id)a5 hashGenerator:(id)a6 changeComparator:(id)a7;
-- (void)enumerateOperationsUsingBlock:(id)a3;
++ (id)_createSetFromElementArray:(id)array equalComparator:(id)comparator hashGenerator:(id)generator;
++ (id)_indexSetFromSet:(id)set;
++ (id)diffFromElements:(id)elements toElements:(id)toElements equalComparator:(id)comparator hashGenerator:(id)generator changeComparator:(id)changeComparator;
+- (void)enumerateOperationsUsingBlock:(id)block;
 @end
 
 @implementation REArrayDiff
 
-+ (id)diffFromElements:(id)a3 toElements:(id)a4 equalComparator:(id)a5 hashGenerator:(id)a6 changeComparator:(id)a7
++ (id)diffFromElements:(id)elements toElements:(id)toElements equalComparator:(id)comparator hashGenerator:(id)generator changeComparator:(id)changeComparator
 {
   v129 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v92 = a7;
+  elementsCopy = elements;
+  toElementsCopy = toElements;
+  comparatorCopy = comparator;
+  generatorCopy = generator;
+  changeComparatorCopy = changeComparator;
   v83 = objc_opt_new();
-  v75 = v12;
-  v16 = [a1 _createSetFromElementArray:v12 equalComparator:v14 hashGenerator:v15];
-  v73 = a1;
-  v79 = v14;
-  v81 = v13;
-  v77 = v15;
-  v17 = [a1 _createSetFromElementArray:v13 equalComparator:v14 hashGenerator:v15];
+  v75 = elementsCopy;
+  v16 = [self _createSetFromElementArray:elementsCopy equalComparator:comparatorCopy hashGenerator:generatorCopy];
+  selfCopy = self;
+  v79 = comparatorCopy;
+  v81 = toElementsCopy;
+  v77 = generatorCopy;
+  v17 = [self _createSetFromElementArray:toElementsCopy equalComparator:comparatorCopy hashGenerator:generatorCopy];
   v18 = [MEMORY[0x277CBEB58] set];
   v19 = [MEMORY[0x277CBEB58] set];
   v122 = 0u;
@@ -111,9 +111,9 @@
   v84 = v27;
   v82 = v20;
 
-  v91 = [MEMORY[0x277CCAB58] indexSet];
-  v88 = [MEMORY[0x277CBEB38] dictionary];
-  v90 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  indexSet2 = [MEMORY[0x277CCAB58] indexSet];
   v114 = 0u;
   v115 = 0u;
   v116 = 0u;
@@ -139,25 +139,25 @@
         if (!v41)
         {
           v42 = MEMORY[0x277CBEAD8];
-          v43 = [v40 object];
-          [v42 raise:v86 format:{@"Missing object %@ in toSet", v43}];
+          object = [v40 object];
+          [v42 raise:v86 format:{@"Missing object %@ in toSet", object}];
         }
 
-        v44 = [v40 object];
-        v45 = [v41 object];
-        v46 = v92[2](v92, v44, v45);
+        object2 = [v40 object];
+        object3 = [v41 object];
+        v46 = changeComparatorCopy[2](changeComparatorCopy, object2, object3);
 
-        v47 = [v40 index];
+        index = [v40 index];
         if (v46)
         {
-          [v91 addIndex:v47];
+          [indexSet addIndex:index];
           v48 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v40, "index")}];
-          [v88 setObject:v41 forKeyedSubscript:v48];
+          [dictionary setObject:v41 forKeyedSubscript:v48];
         }
 
         else
         {
-          [v90 addIndex:v47];
+          [indexSet2 addIndex:index];
         }
       }
 
@@ -169,8 +169,8 @@
 
   v72 = v35;
 
-  v49 = [v73 _indexSetFromSet:v85];
-  v69 = [v73 _indexSetFromSet:v84];
+  v49 = [selfCopy _indexSetFromSet:v85];
+  v69 = [selfCopy _indexSetFromSet:v84];
   v50 = [MEMORY[0x277CBEB58] set];
   v51 = [v49 mutableCopy];
   v52 = [v69 mutableCopy];
@@ -193,18 +193,18 @@
   v78 = v77;
   v80 = v79;
   v55 = MEMORY[0x22AABC5E0](v106);
-  [v91 enumerateIndexesUsingBlock:v55];
-  [v90 enumerateIndexesUsingBlock:v55];
-  v56 = [MEMORY[0x277CBEB18] array];
+  [indexSet enumerateIndexesUsingBlock:v55];
+  [indexSet2 enumerateIndexesUsingBlock:v55];
+  array = [MEMORY[0x277CBEB18] array];
   v103[0] = MEMORY[0x277D85DD0];
   v103[1] = 3221225472;
   v103[2] = __90__REArrayDiff_diffFromElements_toElements_equalComparator_hashGenerator_changeComparator___block_invoke_2;
   v103[3] = &unk_2785FD580;
-  v104 = v88;
-  v57 = v56;
+  v104 = dictionary;
+  v57 = array;
   v105 = v57;
-  v89 = v88;
-  [v91 enumerateIndexesUsingBlock:v103];
+  v89 = dictionary;
+  [indexSet enumerateIndexesUsingBlock:v103];
   v100[0] = MEMORY[0x277D85DD0];
   v100[1] = 3221225472;
   v100[2] = __90__REArrayDiff_diffFromElements_toElements_equalComparator_hashGenerator_changeComparator___block_invoke_3;
@@ -214,8 +214,8 @@
   v102 = v58;
   v71 = v53;
   [v49 enumerateIndexesWithOptions:2 usingBlock:v100];
-  v59 = [v54 allObjects];
-  v60 = [v59 sortedArrayUsingComparator:&__block_literal_global_108];
+  allObjects = [v54 allObjects];
+  v60 = [allObjects sortedArrayUsingComparator:&__block_literal_global_108];
   v97[0] = MEMORY[0x277D85DD0];
   v97[1] = 3221225472;
   v97[2] = __90__REArrayDiff_diffFromElements_toElements_equalComparator_hashGenerator_changeComparator___block_invoke_5;
@@ -314,16 +314,16 @@ void __90__REArrayDiff_diffFromElements_toElements_equalComparator_hashGenerator
   [v4 addObject:v5];
 }
 
-- (void)enumerateOperationsUsingBlock:(id)a3
+- (void)enumerateOperationsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   allOperations = self->_allOperations;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__REArrayDiff_enumerateOperationsUsingBlock___block_invoke;
   v7[3] = &unk_2785FD5F0;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSArray *)allOperations enumerateObjectsUsingBlock:v7];
 }
 
@@ -339,16 +339,16 @@ void __45__REArrayDiff_enumerateOperationsUsingBlock___block_invoke(uint64_t a1,
   (*(v2 + 16))(v2, v4, v7, v5, v6);
 }
 
-+ (id)_indexSetFromSet:(id)a3
++ (id)_indexSetFromSet:(id)set
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAB58] indexSet];
+  setCopy = set;
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = setCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -363,7 +363,7 @@ void __45__REArrayDiff_enumerateOperationsUsingBlock___block_invoke(uint64_t a1,
           objc_enumerationMutation(v5);
         }
 
-        [v4 addIndex:{objc_msgSend(*(*(&v12 + 1) + 8 * i), "index", v12)}];
+        [indexSet addIndex:{objc_msgSend(*(*(&v12 + 1) + 8 * i), "index", v12)}];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -374,30 +374,30 @@ void __45__REArrayDiff_enumerateOperationsUsingBlock___block_invoke(uint64_t a1,
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return indexSet;
 }
 
-+ (id)_createSetFromElementArray:(id)a3 equalComparator:(id)a4 hashGenerator:(id)a5
++ (id)_createSetFromElementArray:(id)array equalComparator:(id)comparator hashGenerator:(id)generator
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  arrayCopy = array;
+  comparatorCopy = comparator;
+  generatorCopy = generator;
   v10 = [MEMORY[0x277CBEB58] set];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __72__REArrayDiff__createSetFromElementArray_equalComparator_hashGenerator___block_invoke;
   v24[3] = &unk_2785FD618;
-  v26 = v8;
-  v27 = v9;
+  v26 = comparatorCopy;
+  v27 = generatorCopy;
   v11 = v10;
   v25 = v11;
-  v12 = v9;
-  v13 = v8;
-  [v7 enumerateObjectsUsingBlock:v24];
+  v12 = generatorCopy;
+  v13 = comparatorCopy;
+  [arrayCopy enumerateObjectsUsingBlock:v24];
   v14 = [v11 count];
-  if (v14 != [v7 count])
+  if (v14 != [arrayCopy count])
   {
-    RERaiseInternalException(*MEMORY[0x277CBE658], @"Items in array are not unique: %@", v15, v16, v17, v18, v19, v20, v7);
+    RERaiseInternalException(*MEMORY[0x277CBE658], @"Items in array are not unique: %@", v15, v16, v17, v18, v19, v20, arrayCopy);
   }
 
   v21 = v25;

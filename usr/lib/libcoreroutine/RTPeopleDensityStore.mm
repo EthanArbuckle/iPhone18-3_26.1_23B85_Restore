@@ -1,45 +1,45 @@
 @interface RTPeopleDensityStore
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5;
-- (void)_fetchPeopleDensityFromDate:(id)a3 endDate:(id)a4 handler:(id)a5;
-- (void)_purgePeopleDensityPredating:(id)a3 handler:(id)a4;
-- (void)_storePeopleDensity:(id)a3 handler:(id)a4;
-- (void)clearWithHandler:(id)a3;
-- (void)fetchPeopleDensityFromDate:(id)a3 endDate:(id)a4 handler:(id)a5;
-- (void)purgePeopleDensityPredating:(id)a3 handler:(id)a4;
-- (void)storePeopleDensity:(id)a3 handler:(id)a4;
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error;
+- (void)_fetchPeopleDensityFromDate:(id)date endDate:(id)endDate handler:(id)handler;
+- (void)_purgePeopleDensityPredating:(id)predating handler:(id)handler;
+- (void)_storePeopleDensity:(id)density handler:(id)handler;
+- (void)clearWithHandler:(id)handler;
+- (void)fetchPeopleDensityFromDate:(id)date endDate:(id)endDate handler:(id)handler;
+- (void)purgePeopleDensityPredating:(id)predating handler:(id)handler;
+- (void)storePeopleDensity:(id)density handler:(id)handler;
 @end
 
 @implementation RTPeopleDensityStore
 
-- (void)fetchPeopleDensityFromDate:(id)a3 endDate:(id)a4 handler:(id)a5
+- (void)fetchPeopleDensityFromDate:(id)date endDate:(id)endDate handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(RTNotifier *)self queue];
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __67__RTPeopleDensityStore_fetchPeopleDensityFromDate_endDate_handler___block_invoke;
   v15[3] = &unk_2788C5530;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = dateCopy;
+  v17 = endDateCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = endDateCopy;
+  v14 = dateCopy;
+  dispatch_async(queue, v15);
 }
 
-- (void)_fetchPeopleDensityFromDate:(id)a3 endDate:(id)a4 handler:(id)a5
+- (void)_fetchPeopleDensityFromDate:(id)date endDate:(id)endDate handler:(id)handler
 {
   v40 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  if (dateCopy)
   {
-    if (v10)
+    if (endDateCopy)
     {
       goto LABEL_3;
     }
@@ -57,10 +57,10 @@
       _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: startDate (in %s:%d)", buf, 0x12u);
     }
 
-    if (v10)
+    if (endDateCopy)
     {
 LABEL_3:
-      if (v11)
+      if (handlerCopy)
       {
         goto LABEL_14;
       }
@@ -79,7 +79,7 @@ LABEL_3:
     _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: endDate (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v11)
+  if (!handlerCopy)
   {
 LABEL_11:
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -94,19 +94,19 @@ LABEL_11:
   }
 
 LABEL_14:
-  if ([v9 compare:v10] == 1)
+  if ([dateCopy compare:endDateCopy] == 1)
   {
     v15 = MEMORY[0x277CCA9B8];
     v16 = *MEMORY[0x277D01448];
     v34 = *MEMORY[0x277CCA450];
     v17 = MEMORY[0x277CCACA8];
-    v18 = [v9 getFormattedDateString];
-    v19 = [v10 getFormattedDateString];
-    v20 = [v17 stringWithFormat:@"startDate, %@, endDate, %@", v18, v19];
+    getFormattedDateString = [dateCopy getFormattedDateString];
+    getFormattedDateString2 = [endDateCopy getFormattedDateString];
+    v20 = [v17 stringWithFormat:@"startDate, %@, endDate, %@", getFormattedDateString, getFormattedDateString2];
     v35 = v20;
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
     v22 = [v15 errorWithDomain:v16 code:7 userInfo:v21];
-    v11[2](v11, MEMORY[0x277CBEBF8], v22);
+    handlerCopy[2](handlerCopy, MEMORY[0x277CBEBF8], v22);
   }
 
   else
@@ -116,11 +116,11 @@ LABEL_14:
     aBlock[1] = 3221225472;
     aBlock[2] = __68__RTPeopleDensityStore__fetchPeopleDensityFromDate_endDate_handler___block_invoke;
     aBlock[3] = &unk_2788CB520;
-    v29 = v10;
-    v30 = v9;
-    v31 = self;
+    v29 = endDateCopy;
+    v30 = dateCopy;
+    selfCopy = self;
     v33 = a2;
-    v24 = v11;
+    v24 = handlerCopy;
     v32 = v24;
     v25 = _Block_copy(aBlock);
     v26[0] = MEMORY[0x277D85DD0];
@@ -214,76 +214,76 @@ void __68__RTPeopleDensityStore__fetchPeopleDensityFromDate_endDate_handler___bl
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)storePeopleDensity:(id)a3 handler:(id)a4
+- (void)storePeopleDensity:(id)density handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  densityCopy = density;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__RTPeopleDensityStore_storePeopleDensity_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = densityCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = densityCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_storePeopleDensity:(id)a3 handler:(id)a4
+- (void)_storePeopleDensity:(id)density handler:(id)handler
 {
   v11 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  densityCopy = density;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v10 count:1];
+  handlerCopy = handler;
+  densityCopy2 = density;
+  v9 = [v6 arrayWithObjects:&densityCopy count:1];
 
-  [(RTStore *)self storeWritableObjects:v9 handler:v7, v10, v11];
+  [(RTStore *)self storeWritableObjects:v9 handler:handlerCopy, densityCopy, v11];
 }
 
-- (void)clearWithHandler:(id)a3
+- (void)clearWithHandler:(id)handler
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = objc_opt_class();
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  [(RTStore *)self removeAll:v5 handler:v4];
+  [(RTStore *)self removeAll:v5 handler:handlerCopy];
 }
 
-- (void)purgePeopleDensityPredating:(id)a3 handler:(id)a4
+- (void)purgePeopleDensityPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  predatingCopy = predating;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__RTPeopleDensityStore_purgePeopleDensityPredating_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = predatingCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = predatingCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_purgePeopleDensityPredating:(id)a3 handler:(id)a4
+- (void)_purgePeopleDensityPredating:(id)predating handler:(id)handler
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v11 = @"endDate";
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  predatingCopy = predating;
   v10 = objc_opt_class();
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v10 count:1];
   v12[0] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
-  [(RTStore *)self purgePredating:v7 predicateMappings:v9 handler:v6];
+  [(RTStore *)self purgePredating:predatingCopy predicateMappings:v9 handler:handlerCopy];
 }
 
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCA9B8];
@@ -293,10 +293,10 @@ void __68__RTPeopleDensityStore__fetchPeopleDensityFromDate_endDate_handler___bl
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   v9 = [v6 errorWithDomain:v7 code:7 userInfo:v8];
 
-  if (a5)
+  if (error)
   {
     v10 = v9;
-    *a5 = v9;
+    *error = v9;
   }
 
   return 0;

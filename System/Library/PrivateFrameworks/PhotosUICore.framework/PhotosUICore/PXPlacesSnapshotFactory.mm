@@ -1,27 +1,27 @@
 @interface PXPlacesSnapshotFactory
-- (BOOL)_imageExistsWithLocalIdentifier:(id)a3;
+- (BOOL)_imageExistsWithLocalIdentifier:(id)identifier;
 - (PHFetchResult)placesAssetsFetchResult;
 - (PXPlacesSnapshotFactory)init;
-- (PXPlacesSnapshotFactory)initWithPhotoLibrary:(id)a3;
+- (PXPlacesSnapshotFactory)initWithPhotoLibrary:(id)library;
 - (PXPlacesSnapshotFactoryDelegate)delegate;
-- (id)_placeHolderImageForExtendedTraitCollection:(id)a3;
+- (id)_placeHolderImageForExtendedTraitCollection:(id)collection;
 - (id)_representativeAsset;
-- (int64_t)assetCountWithForcedRefresh:(BOOL)a3;
+- (int64_t)assetCountWithForcedRefresh:(BOOL)refresh;
 - (int64_t)currentUserInterfaceStyle;
-- (void)_fetchImageOfAsset:(id)a3 withSnapshotOptions:(id)a4 snapshotTraitCollection:(id)a5 andCompletion:(id)a6;
-- (void)_handleAsyncPlacesLibraryAlbumSnapshotWithSnapshotOptions:(id)a3 snapshotTraitCollection:(id)a4 andCompletion:(id)a5;
-- (void)_saveImage:(id)a3 ofAsset:(id)a4 atPath:(id)a5;
+- (void)_fetchImageOfAsset:(id)asset withSnapshotOptions:(id)options snapshotTraitCollection:(id)collection andCompletion:(id)completion;
+- (void)_handleAsyncPlacesLibraryAlbumSnapshotWithSnapshotOptions:(id)options snapshotTraitCollection:(id)collection andCompletion:(id)completion;
+- (void)_saveImage:(id)image ofAsset:(id)asset atPath:(id)path;
 - (void)dealloc;
-- (void)photoLibraryDidChange:(id)a3;
+- (void)photoLibraryDidChange:(id)change;
 - (void)removePreviousCachedImages;
-- (void)requestAssetCountWithForcedRefresh:(BOOL)a3 completion:(id)a4;
-- (void)requestMapSnapshotOfRegion:(id *)a3 snapshotOptions:(id)a4 snapshotTraitCollection:(id)a5 completion:(id)a6;
-- (void)requestMapSnapshotWithAssets:(id)a3 snapshotOptions:(id)a4 snapshotTraitCollection:(id)a5 popoverImageOptions:(unint64_t)a6 completion:(id)a7;
-- (void)requestPlacesImageOfAsset:(id)a3 withSnapshotOptions:(id)a4 snapshotTraitCollection:(id)a5 andCompletion:(id)a6;
-- (void)requestPlacesLibraryAlbumSnapshotWithSnapshotOptions:(id)a3 snapshotTraitCollection:(id)a4 andCompletion:(id)a5;
-- (void)setCurrentUserInterfaceStyle:(int64_t)a3;
-- (void)setupCacheAtFilepath:(id)a3;
-- (void)tickAssetCountChangedTimer:(id)a3;
+- (void)requestAssetCountWithForcedRefresh:(BOOL)refresh completion:(id)completion;
+- (void)requestMapSnapshotOfRegion:(id *)region snapshotOptions:(id)options snapshotTraitCollection:(id)collection completion:(id)completion;
+- (void)requestMapSnapshotWithAssets:(id)assets snapshotOptions:(id)options snapshotTraitCollection:(id)collection popoverImageOptions:(unint64_t)imageOptions completion:(id)completion;
+- (void)requestPlacesImageOfAsset:(id)asset withSnapshotOptions:(id)options snapshotTraitCollection:(id)collection andCompletion:(id)completion;
+- (void)requestPlacesLibraryAlbumSnapshotWithSnapshotOptions:(id)options snapshotTraitCollection:(id)collection andCompletion:(id)completion;
+- (void)setCurrentUserInterfaceStyle:(int64_t)style;
+- (void)setupCacheAtFilepath:(id)filepath;
+- (void)tickAssetCountChangedTimer:(id)timer;
 @end
 
 @implementation PXPlacesSnapshotFactory
@@ -33,69 +33,69 @@
   return WeakRetained;
 }
 
-- (void)tickAssetCountChangedTimer:(id)a3
+- (void)tickAssetCountChangedTimer:(id)timer
 {
-  v4 = a3;
-  if (v4)
+  timerCopy = timer;
+  if (timerCopy)
   {
-    v5 = v4;
-    [v4 invalidate];
+    v5 = timerCopy;
+    [timerCopy invalidate];
   }
 
   [(PXPlacesSnapshotFactory *)self setCountCacheInvalidated:1];
-  v6 = [(PXPlacesSnapshotFactory *)self delegate];
-  [v6 placesSnapshotCountDidChange];
+  delegate = [(PXPlacesSnapshotFactory *)self delegate];
+  [delegate placesSnapshotCountDidChange];
 }
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(PXPlacesSnapshotFactory *)self placesAssetsFetchResult];
+  changeCopy = change;
+  placesAssetsFetchResult = [(PXPlacesSnapshotFactory *)self placesAssetsFetchResult];
 
-  if (v5)
+  if (placesAssetsFetchResult)
   {
-    v6 = [(PXPlacesSnapshotFactory *)self placesAssetsFetchResult];
-    v7 = [v4 changeDetailsForFetchResult:v6];
+    placesAssetsFetchResult2 = [(PXPlacesSnapshotFactory *)self placesAssetsFetchResult];
+    v7 = [changeCopy changeDetailsForFetchResult:placesAssetsFetchResult2];
 
     if (v7)
     {
-      v8 = [(PXPlacesSnapshotFactory *)self placesAssetsFetchResult];
-      v9 = [v7 fetchResultAfterChanges];
-      v10 = v9;
-      if (v9)
+      placesAssetsFetchResult3 = [(PXPlacesSnapshotFactory *)self placesAssetsFetchResult];
+      fetchResultAfterChanges = [v7 fetchResultAfterChanges];
+      v10 = fetchResultAfterChanges;
+      if (fetchResultAfterChanges)
       {
-        v11 = v9;
+        placesAssetsFetchResult4 = fetchResultAfterChanges;
       }
 
       else
       {
-        v11 = [(PXPlacesSnapshotFactory *)self placesAssetsFetchResult];
+        placesAssetsFetchResult4 = [(PXPlacesSnapshotFactory *)self placesAssetsFetchResult];
       }
 
-      v16 = v11;
+      v16 = placesAssetsFetchResult4;
 
       [(PXPlacesSnapshotFactory *)self setPlacesAssetsFetchResult:v16];
-      v17 = [v8 firstObject];
-      v18 = [v16 firstObject];
-      v19 = v18;
-      v20 = v17 != v18 || [v18 pk_isContentEqualTo:v17] != 2;
+      firstObject = [placesAssetsFetchResult3 firstObject];
+      firstObject2 = [v16 firstObject];
+      v19 = firstObject2;
+      v20 = firstObject != firstObject2 || [firstObject2 pk_isContentEqualTo:firstObject] != 2;
       v28 = v20;
-      v21 = [v7 removedObjects];
-      v22 = [v7 insertedObjects];
-      if ([v21 count])
+      removedObjects = [v7 removedObjects];
+      insertedObjects = [v7 insertedObjects];
+      if ([removedObjects count])
       {
         v23 = 1;
       }
 
       else
       {
-        v23 = [v22 count] != 0;
+        v23 = [insertedObjects count] != 0;
       }
 
       if (v28)
       {
-        v24 = [(PXPlacesSnapshotFactory *)self delegate];
-        [v24 placesSnapshotDidChange];
+        delegate = [(PXPlacesSnapshotFactory *)self delegate];
+        [delegate placesSnapshotDidChange];
 
         if (!v23)
         {
@@ -103,12 +103,12 @@
         }
 
 LABEL_19:
-        v25 = [(PXPlacesSnapshotFactory *)self assetCountChangedTimer];
+        assetCountChangedTimer = [(PXPlacesSnapshotFactory *)self assetCountChangedTimer];
 
-        if (v25)
+        if (assetCountChangedTimer)
         {
-          v26 = [(PXPlacesSnapshotFactory *)self assetCountChangedTimer];
-          [v26 invalidate];
+          assetCountChangedTimer2 = [(PXPlacesSnapshotFactory *)self assetCountChangedTimer];
+          [assetCountChangedTimer2 invalidate];
 
           assetCountChangedTimer = self->_assetCountChangedTimer;
           self->_assetCountChangedTimer = 0;
@@ -126,17 +126,17 @@ LABEL_19:
 
   else
   {
-    v12 = [(PXPlacesSnapshotFactory *)self snapshottedAsset];
+    snapshottedAsset = [(PXPlacesSnapshotFactory *)self snapshottedAsset];
 
-    if (v12)
+    if (snapshottedAsset)
     {
-      v13 = [(PXPlacesSnapshotFactory *)self snapshottedAsset];
-      v14 = [v4 changeDetailsForObject:v13];
+      snapshottedAsset2 = [(PXPlacesSnapshotFactory *)self snapshottedAsset];
+      v14 = [changeCopy changeDetailsForObject:snapshottedAsset2];
 
       if (v14)
       {
-        v15 = [(PXPlacesSnapshotFactory *)self delegate];
-        [v15 placesSnapshotDidChange];
+        delegate2 = [(PXPlacesSnapshotFactory *)self delegate];
+        [delegate2 placesSnapshotDidChange];
       }
     }
   }
@@ -151,17 +151,17 @@ void __49__PXPlacesSnapshotFactory_photoLibraryDidChange___block_invoke(uint64_t
   [v1 setAssetCountChangedTimer:v2];
 }
 
-- (BOOL)_imageExistsWithLocalIdentifier:(id)a3
+- (BOOL)_imageExistsWithLocalIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E6978630];
-  v13 = a3;
+  identifierCopy = identifier;
   v5 = MEMORY[0x1E695DEC8];
-  v6 = a3;
-  v7 = [v5 arrayWithObjects:&v13 count:1];
-  v8 = [(PXPlacesSnapshotFactory *)self photoLibrary:v13];
-  v9 = [v8 librarySpecificFetchOptions];
-  v10 = [v4 fetchAssetsWithLocalIdentifiers:v7 options:v9];
+  identifierCopy2 = identifier;
+  v7 = [v5 arrayWithObjects:&identifierCopy count:1];
+  v8 = [(PXPlacesSnapshotFactory *)self photoLibrary:identifierCopy];
+  librarySpecificFetchOptions = [v8 librarySpecificFetchOptions];
+  v10 = [v4 fetchAssetsWithLocalIdentifiers:v7 options:librarySpecificFetchOptions];
 
   if (v10)
   {
@@ -176,20 +176,20 @@ void __49__PXPlacesSnapshotFactory_photoLibraryDidChange___block_invoke(uint64_t
   return v11;
 }
 
-- (void)_saveImage:(id)a3 ofAsset:(id)a4 atPath:(id)a5
+- (void)_saveImage:(id)image ofAsset:(id)asset atPath:(id)path
 {
-  v7 = a5;
-  v8 = a4;
-  v16 = UIImageJPEGRepresentation(a3, 1.0);
+  pathCopy = path;
+  assetCopy = asset;
+  v16 = UIImageJPEGRepresentation(image, 1.0);
   v9 = [objc_alloc(MEMORY[0x1E695F658]) initWithData:v16];
-  v10 = [v9 properties];
+  properties = [v9 properties];
   v11 = *MEMORY[0x1E696D9B0];
-  v12 = [v10 objectForKey:*MEMORY[0x1E696D9B0]];
-  v13 = [v8 localIdentifier];
+  v12 = [properties objectForKey:*MEMORY[0x1E696D9B0]];
+  localIdentifier = [assetCopy localIdentifier];
 
   v14 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v12];
-  [v14 setObject:v13 forKey:*MEMORY[0x1E696DB40]];
-  v15 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v10];
+  [v14 setObject:localIdentifier forKey:*MEMORY[0x1E696DB40]];
+  v15 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:properties];
   [v15 setObject:v14 forKey:v11];
   CGImageWriteEXIFJPEGToPath();
 }
@@ -202,35 +202,35 @@ void __49__PXPlacesSnapshotFactory_photoLibraryDidChange___block_invoke(uint64_t
   os_unfair_lock_unlock(&self->_cachedIvarLock);
   if (v6)
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    [v4 removeItemAtPath:v6 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager removeItemAtPath:v6 error:0];
   }
 
   if (v3)
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    [v5 removeItemAtPath:v3 error:0];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager2 removeItemAtPath:v3 error:0];
   }
 }
 
 - (id)_representativeAsset
 {
-  v2 = [(PXPlacesSnapshotFactory *)self placesAssetsFetchResult];
-  v3 = [v2 firstObject];
+  placesAssetsFetchResult = [(PXPlacesSnapshotFactory *)self placesAssetsFetchResult];
+  firstObject = [placesAssetsFetchResult firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (id)_placeHolderImageForExtendedTraitCollection:(id)a3
+- (id)_placeHolderImageForExtendedTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   os_unfair_lock_lock(&self->_cachedIvarLock);
   v5 = self->_cachedPlaceholderImage;
   os_unfair_lock_unlock(&self->_cachedIvarLock);
   if (!v5)
   {
     v6 = +[PXPlacesPopoverImageFactory sharedInstance];
-    v5 = [v6 createAlbumPlaceHolderImageUsingTraitCollection:v4];
+    v5 = [v6 createAlbumPlaceHolderImageUsingTraitCollection:collectionCopy];
 
     os_unfair_lock_lock(&self->_cachedIvarLock);
     objc_storeStrong(&self->_cachedPlaceholderImage, v5);
@@ -246,25 +246,25 @@ void __49__PXPlacesSnapshotFactory_photoLibraryDidChange___block_invoke(uint64_t
   placesAssetsFetchResult = self->_placesAssetsFetchResult;
   if (!placesAssetsFetchResult)
   {
-    v4 = [(PXPlacesSnapshotFactory *)self photoLibrary];
-    v5 = [v4 librarySpecificFetchOptions];
+    photoLibrary = [(PXPlacesSnapshotFactory *)self photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
     v6 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"creationDate" ascending:0];
     v15[0] = v6;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-    [v5 setSortDescriptors:v7];
+    [librarySpecificFetchOptions setSortDescriptors:v7];
 
-    [v5 setFetchLimit:1];
+    [librarySpecificFetchOptions setFetchLimit:1];
     v8 = *MEMORY[0x1E6978C08];
     v14[0] = *MEMORY[0x1E6978C78];
     v14[1] = v8;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
-    [v5 setFetchPropertySets:v9];
+    [librarySpecificFetchOptions setFetchPropertySets:v9];
 
-    v10 = [(PXPlacesSnapshotFactory *)self libraryFilterState];
-    [v5 setSharingFilter:{objc_msgSend(v10, "sharingFilter")}];
+    libraryFilterState = [(PXPlacesSnapshotFactory *)self libraryFilterState];
+    [librarySpecificFetchOptions setSharingFilter:{objc_msgSend(libraryFilterState, "sharingFilter")}];
 
-    v11 = [MEMORY[0x1E6978630] pk_fetchPlacesAssetsInAssetCollection:self->_placesCollection shouldMergeOptionFetchPropertySets:1 options:v5];
+    v11 = [MEMORY[0x1E6978630] pk_fetchPlacesAssetsInAssetCollection:self->_placesCollection shouldMergeOptionFetchPropertySets:1 options:librarySpecificFetchOptions];
     v12 = self->_placesAssetsFetchResult;
     self->_placesAssetsFetchResult = v11;
 
@@ -274,18 +274,18 @@ void __49__PXPlacesSnapshotFactory_photoLibraryDidChange___block_invoke(uint64_t
   return placesAssetsFetchResult;
 }
 
-- (void)requestAssetCountWithForcedRefresh:(BOOL)a3 completion:(id)a4
+- (void)requestAssetCountWithForcedRefresh:(BOOL)refresh completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   concurrentQueue = self->_concurrentQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __73__PXPlacesSnapshotFactory_requestAssetCountWithForcedRefresh_completion___block_invoke;
   block[3] = &unk_1E774A940;
-  v11 = a3;
+  refreshCopy = refresh;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(concurrentQueue, block);
 }
 
@@ -297,27 +297,27 @@ uint64_t __73__PXPlacesSnapshotFactory_requestAssetCountWithForcedRefresh_comple
   return v2();
 }
 
-- (int64_t)assetCountWithForcedRefresh:(BOOL)a3
+- (int64_t)assetCountWithForcedRefresh:(BOOL)refresh
 {
-  if (a3 || [(PXPlacesSnapshotFactory *)self countCacheInvalidated])
+  if (refresh || [(PXPlacesSnapshotFactory *)self countCacheInvalidated])
   {
-    v4 = [(PXPlacesSnapshotFactory *)self photoLibrary];
-    v5 = [v4 librarySpecificFetchOptions];
+    photoLibrary = [(PXPlacesSnapshotFactory *)self photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    v6 = [MEMORY[0x1E69BE520] predicateForAssetWithLocation];
-    [v5 setInternalPredicate:v6];
+    predicateForAssetWithLocation = [MEMORY[0x1E69BE520] predicateForAssetWithLocation];
+    [librarySpecificFetchOptions setInternalPredicate:predicateForAssetWithLocation];
 
-    [v5 setInternalSortDescriptors:MEMORY[0x1E695E0F0]];
+    [librarySpecificFetchOptions setInternalSortDescriptors:MEMORY[0x1E695E0F0]];
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:{*MEMORY[0x1E6978C68], 0}];
-    [v5 setFetchPropertySets:v7];
+    [librarySpecificFetchOptions setFetchPropertySets:v7];
 
-    [v5 setShouldPrefetchCount:1];
-    [v5 setWantsIncrementalChangeDetails:0];
-    [v5 setIncludeAssetSourceTypes:5];
-    v8 = [(PXPlacesSnapshotFactory *)self libraryFilterState];
-    [v5 setSharingFilter:{objc_msgSend(v8, "sharingFilter")}];
+    [librarySpecificFetchOptions setShouldPrefetchCount:1];
+    [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
+    [librarySpecificFetchOptions setIncludeAssetSourceTypes:5];
+    libraryFilterState = [(PXPlacesSnapshotFactory *)self libraryFilterState];
+    [librarySpecificFetchOptions setSharingFilter:{objc_msgSend(libraryFilterState, "sharingFilter")}];
 
-    v9 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:v5];
+    v9 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:librarySpecificFetchOptions];
     cachedCount = [v9 count];
     os_unfair_lock_lock(&self->_cachedIvarLock);
     self->_cachedCount = cachedCount;
@@ -336,26 +336,26 @@ uint64_t __73__PXPlacesSnapshotFactory_requestAssetCountWithForcedRefresh_comple
   return cachedCount;
 }
 
-- (void)requestMapSnapshotOfRegion:(id *)a3 snapshotOptions:(id)a4 snapshotTraitCollection:(id)a5 completion:(id)a6
+- (void)requestMapSnapshotOfRegion:(id *)region snapshotOptions:(id)options snapshotTraitCollection:(id)collection completion:(id)completion
 {
   v12 = v9;
   v13 = v8;
   v14 = v7;
   v15 = v6;
-  v17 = a3;
-  v18 = a5;
-  v19 = a4;
+  regionCopy = region;
+  collectionCopy = collection;
+  optionsCopy = options;
   [PXPlacesMapView MKMapRectForCoordinateRegion:v15, v14, v13, v12];
   v21 = v20;
   v23 = v22;
   v25 = v24;
   v27 = v26;
   v28 = objc_alloc_init(MEMORY[0x1E696F2B0]);
-  [($2BD6E2315BC9B3DA5D3AD3507E7082AC *)v17 viewSize];
+  [($2BD6E2315BC9B3DA5D3AD3507E7082AC *)regionCopy viewSize];
   [v28 setSize:?];
   [v28 setMapRect:{v21, v23, v25, v27}];
-  [v28 _setShowsPointLabels:{-[$2BD6E2315BC9B3DA5D3AD3507E7082AC showsPointLabels](v17, "showsPointLabels")}];
-  [v28 setTraitCollection:v19];
+  [v28 _setShowsPointLabels:{-[$2BD6E2315BC9B3DA5D3AD3507E7082AC showsPointLabels](regionCopy, "showsPointLabels")}];
+  [v28 setTraitCollection:optionsCopy];
 
   concurrentQueue = self->_concurrentQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -363,10 +363,10 @@ uint64_t __73__PXPlacesSnapshotFactory_requestAssetCountWithForcedRefresh_comple
   block[2] = __105__PXPlacesSnapshotFactory_requestMapSnapshotOfRegion_snapshotOptions_snapshotTraitCollection_completion___block_invoke;
   block[3] = &unk_1E774A0E0;
   v34 = v28;
-  v35 = v17;
-  v36 = v18;
-  v30 = v18;
-  v31 = v17;
+  v35 = regionCopy;
+  v36 = collectionCopy;
+  v30 = collectionCopy;
+  v31 = regionCopy;
   v32 = v28;
   dispatch_async(concurrentQueue, block);
 }
@@ -394,13 +394,13 @@ void __105__PXPlacesSnapshotFactory_requestMapSnapshotOfRegion_snapshotOptions_s
   }
 }
 
-- (void)requestPlacesImageOfAsset:(id)a3 withSnapshotOptions:(id)a4 snapshotTraitCollection:(id)a5 andCompletion:(id)a6
+- (void)requestPlacesImageOfAsset:(id)asset withSnapshotOptions:(id)options snapshotTraitCollection:(id)collection andCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v54 = a6;
-  [v10 locationCoordinate];
+  assetCopy = asset;
+  optionsCopy = options;
+  collectionCopy = collection;
+  completionCopy = completion;
+  [assetCopy locationCoordinate];
   latitude = v96.latitude;
   longitude = v96.longitude;
   if (!CLLocationCoordinate2DIsValid(v96))
@@ -409,20 +409,20 @@ void __105__PXPlacesSnapshotFactory_requestMapSnapshotOfRegion_snapshotOptions_s
   }
 
   v15 = MEMORY[0x1E69BE520];
-  v16 = [v10 coarseLocationProperties];
-  [v16 gpsHorizontalAccuracy];
+  coarseLocationProperties = [assetCopy coarseLocationProperties];
+  [coarseLocationProperties gpsHorizontalAccuracy];
   LODWORD(v15) = [v15 horizontalAccuracyIsCoarse:?];
 
   v17 = v15;
-  v18 = [v11 extendedTraitCollection];
+  extendedTraitCollection = [optionsCopy extendedTraitCollection];
   v19 = +[PXPlacesPopoverImageFactory sharedInstance];
-  [v19 thumbnailImageSizeForImageType:v17 usingTraitCollection:v18 includeScale:1];
+  [v19 thumbnailImageSizeForImageType:v17 usingTraitCollection:extendedTraitCollection includeScale:1];
   v21 = v20;
   v23 = v22;
 
   v24 = +[PXPlacesPopoverImageFactory sharedInstance];
   v53 = v17;
-  [v24 backgroundImageSizeForType:v17 usingTraitCollection:v18];
+  [v24 backgroundImageSizeForType:v17 usingTraitCollection:extendedTraitCollection];
   v26 = v25;
   v28 = v27;
 
@@ -435,9 +435,9 @@ void __105__PXPlacesSnapshotFactory_requestMapSnapshotOfRegion_snapshotOptions_s
   v37 = objc_alloc_init(MEMORY[0x1E696F2B0]);
   [v37 setSize:{v26, v28}];
   [v37 setMapRect:{v30, v32, v34, v36}];
-  [v37 _setShowsPointLabels:{objc_msgSend(v11, "showsPointLabels")}];
-  v55 = v12;
-  [v37 setTraitCollection:v12];
+  [v37 _setShowsPointLabels:{objc_msgSend(optionsCopy, "showsPointLabels")}];
+  v55 = collectionCopy;
+  [v37 setTraitCollection:collectionCopy];
   v94[0] = 0;
   v94[1] = v94;
   v94[2] = 0x2020000000;
@@ -448,7 +448,7 @@ void __105__PXPlacesSnapshotFactory_requestMapSnapshotOfRegion_snapshotOptions_s
   v91 = __Block_byref_object_copy__208106;
   v92 = __Block_byref_object_dispose__208107;
   v93 = 0;
-  v56 = v10;
+  v56 = assetCopy;
   v86[0] = 0;
   v86[1] = v86;
   v86[2] = 0x3032000000;
@@ -476,7 +476,7 @@ void __105__PXPlacesSnapshotFactory_requestMapSnapshotOfRegion_snapshotOptions_s
   block[3] = &unk_1E7744B00;
   v41 = v37;
   v77 = v41;
-  v42 = v11;
+  v42 = optionsCopy;
   v78 = v42;
   v80 = buf;
   v81 = v86;
@@ -503,24 +503,24 @@ void __105__PXPlacesSnapshotFactory_requestMapSnapshotOfRegion_snapshotOptions_s
   v48 = v43;
   v70 = v48;
   dispatch_async(v44, v66);
-  v49 = [v45 queue];
+  queue = [v45 queue];
   v57[0] = MEMORY[0x1E69E9820];
   v57[1] = 3221225472;
   v57[2] = __111__PXPlacesSnapshotFactory_requestPlacesImageOfAsset_withSnapshotOptions_snapshotTraitCollection_andCompletion___block_invoke_5;
   v57[3] = &unk_1E7744B78;
-  v60 = v54;
+  v60 = completionCopy;
   v61 = v86;
   v62 = v83;
   v63 = buf;
   v64 = v85;
   v65[1] = v53;
   v58 = v46;
-  v59 = v18;
-  v50 = v18;
+  v59 = extendedTraitCollection;
+  v50 = extendedTraitCollection;
   v51 = v46;
-  v52 = v54;
+  v52 = completionCopy;
   objc_copyWeak(v65, &location);
-  dispatch_group_notify(v48, v49, v57);
+  dispatch_group_notify(v48, queue, v57);
 
   objc_destroyWeak(v65);
   objc_destroyWeak(&location);
@@ -662,26 +662,26 @@ void __111__PXPlacesSnapshotFactory_requestPlacesImageOfAsset_withSnapshotOption
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)_fetchImageOfAsset:(id)a3 withSnapshotOptions:(id)a4 snapshotTraitCollection:(id)a5 andCompletion:(id)a6
+- (void)_fetchImageOfAsset:(id)asset withSnapshotOptions:(id)options snapshotTraitCollection:(id)collection andCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  assetCopy = asset;
+  optionsCopy = options;
+  collectionCopy = collection;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __104__PXPlacesSnapshotFactory__fetchImageOfAsset_withSnapshotOptions_snapshotTraitCollection_andCompletion___block_invoke;
   v18[3] = &unk_1E7744AB0;
-  v14 = v12;
+  v14 = collectionCopy;
   v19 = v14;
-  v15 = v10;
+  v15 = assetCopy;
   v20 = v15;
-  v21 = self;
+  selfCopy = self;
   objc_copyWeak(&v24, &location);
-  v16 = v13;
+  v16 = completionCopy;
   v23 = v16;
-  v17 = v11;
+  v17 = optionsCopy;
   v22 = v17;
   [(PXPlacesSnapshotFactory *)self requestPlacesImageOfAsset:v15 withSnapshotOptions:v17 snapshotTraitCollection:v14 andCompletion:v18];
 
@@ -744,11 +744,11 @@ void __104__PXPlacesSnapshotFactory__fetchImageOfAsset_withSnapshotOptions_snaps
 LABEL_9:
 }
 
-- (void)_handleAsyncPlacesLibraryAlbumSnapshotWithSnapshotOptions:(id)a3 snapshotTraitCollection:(id)a4 andCompletion:(id)a5
+- (void)_handleAsyncPlacesLibraryAlbumSnapshotWithSnapshotOptions:(id)options snapshotTraitCollection:(id)collection andCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  optionsCopy = options;
+  collectionCopy = collection;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v27 = 0;
   v28 = &v27;
@@ -761,7 +761,7 @@ LABEL_9:
   block[3] = &unk_1E7744A38;
   block[4] = self;
   v26 = &v27;
-  v12 = v10;
+  v12 = completionCopy;
   v25 = v12;
   dispatch_sync(serialQueue, block);
   if (*(v28 + 24) == 1)
@@ -773,20 +773,20 @@ LABEL_9:
     aBlock[4] = self;
     objc_copyWeak(&v23, &location);
     v13 = _Block_copy(aBlock);
-    v14 = [(PXPlacesSnapshotFactory *)self currentUserInterfaceStyle];
-    v15 = [v8 queue];
+    currentUserInterfaceStyle = [(PXPlacesSnapshotFactory *)self currentUserInterfaceStyle];
+    queue = [optionsCopy queue];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __123__PXPlacesSnapshotFactory__handleAsyncPlacesLibraryAlbumSnapshotWithSnapshotOptions_snapshotTraitCollection_andCompletion___block_invoke_4;
     v17[3] = &unk_1E7744A88;
     objc_copyWeak(v21, &location);
     v17[4] = self;
-    v18 = v9;
-    v21[1] = v14;
-    v19 = v8;
+    v18 = collectionCopy;
+    v21[1] = currentUserInterfaceStyle;
+    v19 = optionsCopy;
     v20 = v13;
     v16 = v13;
-    dispatch_async(v15, v17);
+    dispatch_async(queue, v17);
 
     objc_destroyWeak(v21);
     objc_destroyWeak(&v23);
@@ -1015,21 +1015,21 @@ uint64_t __123__PXPlacesSnapshotFactory__handleAsyncPlacesLibraryAlbumSnapshotWi
   return [v5 removeAllObjects];
 }
 
-- (void)requestPlacesLibraryAlbumSnapshotWithSnapshotOptions:(id)a3 snapshotTraitCollection:(id)a4 andCompletion:(id)a5
+- (void)requestPlacesLibraryAlbumSnapshotWithSnapshotOptions:(id)options snapshotTraitCollection:(id)collection andCompletion:(id)completion
 {
   v51 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  optionsCopy = options;
+  collectionCopy = collection;
+  completionCopy = completion;
   if (![(PXPlacesSnapshotFactory *)self hasCacheFilepaths])
   {
-    v11 = [v8 cacheDirectoryPath];
-    [(PXPlacesSnapshotFactory *)self setupCacheAtFilepath:v11];
+    cacheDirectoryPath = [optionsCopy cacheDirectoryPath];
+    [(PXPlacesSnapshotFactory *)self setupCacheAtFilepath:cacheDirectoryPath];
   }
 
-  v12 = [v9 userInterfaceStyle];
-  v13 = v12;
-  if (v12 == 2)
+  userInterfaceStyle = [collectionCopy userInterfaceStyle];
+  v13 = userInterfaceStyle;
+  if (userInterfaceStyle == 2)
   {
     os_unfair_lock_lock(&self->_cachedIvarLock);
     cachedSnapshotImageDark = self->_cachedSnapshotImageDark;
@@ -1037,12 +1037,12 @@ uint64_t __123__PXPlacesSnapshotFactory__handleAsyncPlacesLibraryAlbumSnapshotWi
 
   else
   {
-    if (v12 != 1 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
+    if (userInterfaceStyle != 1 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
       *location = 134218498;
       *&location[4] = v13;
       v47 = 2112;
-      v48 = v8;
+      v48 = optionsCopy;
       v49 = 2080;
       v50 = "[PXPlacesSnapshotFactory requestPlacesLibraryAlbumSnapshotWithSnapshotOptions:snapshotTraitCollection:andCompletion:]";
       _os_log_fault_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "User interface style not expected here: %li\n with options: %@\n function: %s", location, 0x20u);
@@ -1133,9 +1133,9 @@ LABEL_37:
 
         if (v15 && v40 && [(PXPlacesSnapshotFactory *)self _imageExistsWithLocalIdentifier:?])
         {
-          if (v10)
+          if (completionCopy)
           {
-            v10[2](v10, v15, cachedCount, 0);
+            completionCopy[2](completionCopy, v15, cachedCount, 0);
           }
 
 LABEL_25:
@@ -1144,10 +1144,10 @@ LABEL_25:
         }
 
 LABEL_20:
-        v24 = [v8 shouldSkipPlaceholder];
-        if (v10)
+        shouldSkipPlaceholder = [optionsCopy shouldSkipPlaceholder];
+        if (completionCopy)
         {
-          v25 = v24;
+          v25 = shouldSkipPlaceholder;
         }
 
         else
@@ -1157,9 +1157,9 @@ LABEL_20:
 
         if ((v25 & 1) == 0)
         {
-          v26 = [v8 extendedTraitCollection];
-          v27 = [(PXPlacesSnapshotFactory *)self _placeHolderImageForExtendedTraitCollection:v26];
-          v10[2](v10, v27, cachedCount, 0);
+          extendedTraitCollection = [optionsCopy extendedTraitCollection];
+          v27 = [(PXPlacesSnapshotFactory *)self _placeHolderImageForExtendedTraitCollection:extendedTraitCollection];
+          completionCopy[2](completionCopy, v27, cachedCount, 0);
         }
 
         goto LABEL_25;
@@ -1170,30 +1170,30 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (v10)
+  if (completionCopy)
   {
     os_unfair_lock_lock(&self->_cachedIvarLock);
     v16 = self->_cachedCount;
     os_unfair_lock_unlock(&self->_cachedIvarLock);
     [(PXPlacesSnapshotFactory *)self setCurrentUserInterfaceStyle:v13];
-    v10[2](v10, v15, v16, 0);
+    completionCopy[2](completionCopy, v15, v16, 0);
   }
 
 LABEL_26:
   objc_initWeak(location, self);
-  v28 = [v8 queue];
+  queue = [optionsCopy queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __118__PXPlacesSnapshotFactory_requestPlacesLibraryAlbumSnapshotWithSnapshotOptions_snapshotTraitCollection_andCompletion___block_invoke;
   block[3] = &unk_1E774B1F8;
   objc_copyWeak(&v45, location);
-  v42 = v8;
-  v43 = v9;
-  v44 = v10;
-  v29 = v10;
-  v30 = v9;
-  v31 = v8;
-  dispatch_async(v28, block);
+  v42 = optionsCopy;
+  v43 = collectionCopy;
+  v44 = completionCopy;
+  v29 = completionCopy;
+  v30 = collectionCopy;
+  v31 = optionsCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v45);
   objc_destroyWeak(location);
@@ -1205,29 +1205,29 @@ void __118__PXPlacesSnapshotFactory_requestPlacesLibraryAlbumSnapshotWithSnapsho
   [WeakRetained _handleAsyncPlacesLibraryAlbumSnapshotWithSnapshotOptions:*(a1 + 32) snapshotTraitCollection:*(a1 + 40) andCompletion:*(a1 + 48)];
 }
 
-- (void)requestMapSnapshotWithAssets:(id)a3 snapshotOptions:(id)a4 snapshotTraitCollection:(id)a5 popoverImageOptions:(unint64_t)a6 completion:(id)a7
+- (void)requestMapSnapshotWithAssets:(id)assets snapshotOptions:(id)options snapshotTraitCollection:(id)collection popoverImageOptions:(unint64_t)imageOptions completion:(id)completion
 {
-  v68 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  v70 = self;
+  assetsCopy = assets;
+  optionsCopy = options;
+  collectionCopy = collection;
+  completionCopy = completion;
+  selfCopy = self;
   if (![(PXPlacesSnapshotFactory *)self hasCacheFilepaths])
   {
-    v15 = [v12 cacheDirectoryPath];
-    [(PXPlacesSnapshotFactory *)self setupCacheAtFilepath:v15];
+    cacheDirectoryPath = [optionsCopy cacheDirectoryPath];
+    [(PXPlacesSnapshotFactory *)self setupCacheAtFilepath:cacheDirectoryPath];
   }
 
-  [v12 viewSize];
+  [optionsCopy viewSize];
   v65 = v17;
   v66 = v16;
-  [v12 additionalInsets];
+  [optionsCopy additionalInsets];
   v64 = v18;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  v25 = [v12 shouldRenderThumbnailForNoLocation];
-  v26 = [v12 popoverImageType];
+  shouldRenderThumbnailForNoLocation = [optionsCopy shouldRenderThumbnailForNoLocation];
+  popoverImageType = [optionsCopy popoverImageType];
   v111[0] = 0;
   v111[1] = v111;
   v111[2] = 0x3032000000;
@@ -1246,8 +1246,8 @@ void __118__PXPlacesSnapshotFactory_requestPlacesLibraryAlbumSnapshotWithSnapsho
   v107[3] = __Block_byref_object_copy__208106;
   v107[4] = __Block_byref_object_dispose__208107;
   v108 = 0;
-  v27 = [v12 queue];
-  qos_class = dispatch_queue_get_qos_class(v27, 0);
+  queue = [optionsCopy queue];
+  qos_class = dispatch_queue_get_qos_class(queue, 0);
 
   v29 = dispatch_queue_attr_make_with_autorelease_frequency(MEMORY[0x1E69E96A8], DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v30 = dispatch_queue_attr_make_with_qos_class(v29, qos_class, 0);
@@ -1257,18 +1257,18 @@ void __118__PXPlacesSnapshotFactory_requestPlacesLibraryAlbumSnapshotWithSnapsho
   v33 = dispatch_queue_attr_make_with_qos_class(v32, qos_class, 0);
   v63 = dispatch_queue_create("placesSnapshotSerialQueue", v33);
 
-  v34 = [v12 extendedTraitCollection];
+  extendedTraitCollection = [optionsCopy extendedTraitCollection];
   v35 = +[PXPlacesPopoverImageFactory sharedInstance];
-  [v35 backgroundImageSizeForType:v26 usingTraitCollection:v34];
+  [v35 backgroundImageSizeForType:popoverImageType usingTraitCollection:extendedTraitCollection];
   v37 = v36;
   v39 = v38;
-  [v35 thumbnailImageSizeForImageType:v26 usingTraitCollection:v34 includeScale:1];
+  [v35 thumbnailImageSizeForImageType:popoverImageType usingTraitCollection:extendedTraitCollection includeScale:1];
   v41 = v40;
   v43 = v42;
-  v62 = v25;
-  v44 = [v12 showsPointLabels];
+  v62 = shouldRenderThumbnailForNoLocation;
+  showsPointLabels = [optionsCopy showsPointLabels];
   v61 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v60 = v14;
+  v60 = completionCopy;
   v105[0] = 0;
   v105[1] = v105;
   v105[2] = 0x3032000000;
@@ -1276,21 +1276,21 @@ void __118__PXPlacesSnapshotFactory_requestPlacesLibraryAlbumSnapshotWithSnapsho
   v105[4] = __Block_byref_object_dispose__208107;
   v106 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v45 = [PXPlacesPhotoAssetsStore alloc];
-  v46 = [(PXPlacesSnapshotFactory *)v70 photoLibrary];
-  v47 = [(PXPlacesPhotoAssetsStore *)v45 initWithFetchResults:v68 photoLibrary:v46];
+  photoLibrary = [(PXPlacesSnapshotFactory *)selfCopy photoLibrary];
+  v47 = [(PXPlacesPhotoAssetsStore *)v45 initWithFetchResults:assetsCopy photoLibrary:photoLibrary];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __127__PXPlacesSnapshotFactory_requestMapSnapshotWithAssets_snapshotOptions_snapshotTraitCollection_popoverImageOptions_completion___block_invoke;
   aBlock[3] = &unk_1E7744A10;
-  v48 = v12;
+  v48 = optionsCopy;
   v75 = v48;
   v49 = v47;
   v76 = v49;
-  v50 = v34;
+  v50 = extendedTraitCollection;
   v77 = v50;
-  v90 = v26;
-  v91 = a6;
+  v90 = popoverImageType;
+  imageOptionsCopy = imageOptions;
   v92 = 0;
   v93 = v66;
   v94 = v65;
@@ -1298,17 +1298,17 @@ void __118__PXPlacesSnapshotFactory_requestPlacesLibraryAlbumSnapshotWithSnapsho
   v96 = v20;
   v97 = v22;
   v98 = v24;
-  v69 = v68;
+  v69 = assetsCopy;
   v78 = v69;
   v51 = v31;
   v79 = v51;
   v86 = v109;
   v87 = v107;
-  v103 = v44;
+  v103 = showsPointLabels;
   v88 = v111;
-  v67 = v13;
+  v67 = collectionCopy;
   v80 = v67;
-  v81 = v70;
+  v81 = selfCopy;
   v52 = v61;
   v82 = v52;
   v53 = v63;
@@ -1324,7 +1324,7 @@ void __118__PXPlacesSnapshotFactory_requestPlacesLibraryAlbumSnapshotWithSnapsho
   v101 = v37;
   v102 = v39;
   v56 = _Block_copy(aBlock);
-  v57 = [v48 queue];
+  queue2 = [v48 queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __127__PXPlacesSnapshotFactory_requestMapSnapshotWithAssets_snapshotOptions_snapshotTraitCollection_popoverImageOptions_completion___block_invoke_13;
@@ -1333,7 +1333,7 @@ void __118__PXPlacesSnapshotFactory_requestPlacesLibraryAlbumSnapshotWithSnapsho
   v73 = v56;
   v58 = v56;
   v59 = v49;
-  dispatch_async(v57, block);
+  dispatch_async(queue2, block);
 
   _Block_object_dispose(v105, 8);
   _Block_object_dispose(v107, 8);
@@ -1873,11 +1873,11 @@ void __127__PXPlacesSnapshotFactory_requestMapSnapshotWithAssets_snapshotOptions
   }
 }
 
-- (void)setupCacheAtFilepath:(id)a3
+- (void)setupCacheAtFilepath:(id)filepath
 {
-  v4 = a3;
-  v5 = [v4 stringByAppendingPathComponent:@"PXPlacesAlbumImageCached.jpg"];
-  v6 = [v4 stringByAppendingPathComponent:@"PXPlacesAlbumImageCached_Dark.jpg"];
+  filepathCopy = filepath;
+  v5 = [filepathCopy stringByAppendingPathComponent:@"PXPlacesAlbumImageCached.jpg"];
+  v6 = [filepathCopy stringByAppendingPathComponent:@"PXPlacesAlbumImageCached_Dark.jpg"];
 
   os_unfair_lock_lock(&self->_cachedIvarLock);
   cachedFilePathLight = self->_cachedFilePathLight;
@@ -1892,20 +1892,20 @@ void __127__PXPlacesSnapshotFactory_requestMapSnapshotWithAssets_snapshotOptions
   [(PXPlacesSnapshotFactory *)self setHasCacheFilepaths:1];
 }
 
-- (void)setCurrentUserInterfaceStyle:(int64_t)a3
+- (void)setCurrentUserInterfaceStyle:(int64_t)style
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_currentUserInterfaceStyle = a3;
+  obj->_currentUserInterfaceStyle = style;
   objc_sync_exit(obj);
 }
 
 - (int64_t)currentUserInterfaceStyle
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  currentUserInterfaceStyle = v2->_currentUserInterfaceStyle;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  currentUserInterfaceStyle = selfCopy->_currentUserInterfaceStyle;
+  objc_sync_exit(selfCopy);
 
   return currentUserInterfaceStyle;
 }
@@ -1914,8 +1914,8 @@ void __127__PXPlacesSnapshotFactory_requestMapSnapshotWithAssets_snapshotOptions
 {
   if (self->_isRegisteredForPhotoLibraryChanges)
   {
-    v3 = [(PXPlacesSnapshotFactory *)self photoLibrary];
-    [v3 unregisterChangeObserver:self];
+    photoLibrary = [(PXPlacesSnapshotFactory *)self photoLibrary];
+    [photoLibrary unregisterChangeObserver:self];
   }
 
   v4.receiver = self;
@@ -1923,13 +1923,13 @@ void __127__PXPlacesSnapshotFactory_requestMapSnapshotWithAssets_snapshotOptions
   [(PXPlacesSnapshotFactory *)&v4 dealloc];
 }
 
-- (PXPlacesSnapshotFactory)initWithPhotoLibrary:(id)a3
+- (PXPlacesSnapshotFactory)initWithPhotoLibrary:(id)library
 {
-  v6 = a3;
-  if (!v6)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PXPlacesSnapshotFactory.m" lineNumber:145 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPlacesSnapshotFactory.m" lineNumber:145 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
   v19.receiver = self;
@@ -1938,7 +1938,7 @@ void __127__PXPlacesSnapshotFactory_requestMapSnapshotWithAssets_snapshotOptions
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_photoLibrary, a3);
+    objc_storeStrong(&v7->_photoLibrary, library);
     if (PFProcessIsLaunchedToExecuteTests())
     {
       v9 = objc_alloc_init(PXLibraryFilterState);
@@ -1973,8 +1973,8 @@ void __127__PXPlacesSnapshotFactory_requestMapSnapshotWithAssets_snapshotOptions
 
 - (PXPlacesSnapshotFactory)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPlacesSnapshotFactory.m" lineNumber:140 description:{@"%s is not available as initializer", "-[PXPlacesSnapshotFactory init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPlacesSnapshotFactory.m" lineNumber:140 description:{@"%s is not available as initializer", "-[PXPlacesSnapshotFactory init]"}];
 
   abort();
 }

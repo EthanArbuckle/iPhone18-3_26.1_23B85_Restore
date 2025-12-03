@@ -1,31 +1,31 @@
 @interface ICQTileView
-- (BOOL)_launchFlowManagerWithLink:(id)a3;
-- (BOOL)handleActionFromLink:(id)a3;
-- (ICQTileView)initWithPremiumOffer:(id)a3;
-- (id)createLabelWithText:(id)a3;
+- (BOOL)_launchFlowManagerWithLink:(id)link;
+- (BOOL)handleActionFromLink:(id)link;
+- (ICQTileView)initWithPremiumOffer:(id)offer;
+- (id)createLabelWithText:(id)text;
 - (void)_startOnDeviceJourneyForSystemUpgrade;
-- (void)actionButtonTapped:(id)a3;
+- (void)actionButtonTapped:(id)tapped;
 - (void)configureSubviews;
 - (void)createActionButtons;
 - (void)createActionButtonsStack;
-- (void)createButtonsFromBubbleDetails:(id)a3;
-- (void)createOrUpdateImageViewFromImageDetails:(id)a3;
-- (void)createOrUpdateMessageLabelWithMessage:(id)a3;
-- (void)createOrUpdateTitleLabelWithTitle:(id)a3;
+- (void)createButtonsFromBubbleDetails:(id)details;
+- (void)createOrUpdateImageViewFromImageDetails:(id)details;
+- (void)createOrUpdateMessageLabelWithMessage:(id)message;
+- (void)createOrUpdateTitleLabelWithTitle:(id)title;
 - (void)createSeparator;
-- (void)dismissButtonTapped:(id)a3;
-- (void)setPremiumOffer:(id)a3;
-- (void)updateDismissButtonWithAction:(id)a3;
-- (void)updatePrimaryButtonWithAction:(id)a3;
-- (void)updateSecondaryButtonWithAction:(id)a3;
-- (void)updateTileViewWithOffer:(id)a3;
+- (void)dismissButtonTapped:(id)tapped;
+- (void)setPremiumOffer:(id)offer;
+- (void)updateDismissButtonWithAction:(id)action;
+- (void)updatePrimaryButtonWithAction:(id)action;
+- (void)updateSecondaryButtonWithAction:(id)action;
+- (void)updateTileViewWithOffer:(id)offer;
 @end
 
 @implementation ICQTileView
 
-- (ICQTileView)initWithPremiumOffer:(id)a3
+- (ICQTileView)initWithPremiumOffer:(id)offer
 {
-  v4 = a3;
+  offerCopy = offer;
   v13.receiver = self;
   v13.super_class = ICQTileView;
   v5 = [(ICQTileView *)&v13 init];
@@ -36,12 +36,12 @@
   }
 
   [(ICQTileView *)v5 configureSubviews];
-  if (v4)
+  if (offerCopy)
   {
-    [(ICQTileView *)v6 setPremiumOffer:v4];
-    v7 = [v4 opportunityBubble];
-    v8 = [v7 reportingDetails];
-    [(ICQTileView *)v6 setReportingDetails:v8];
+    [(ICQTileView *)v6 setPremiumOffer:offerCopy];
+    opportunityBubble = [offerCopy opportunityBubble];
+    reportingDetails = [opportunityBubble reportingDetails];
+    [(ICQTileView *)v6 setReportingDetails:reportingDetails];
 
     [(ICQTileView *)v6 _startOnDeviceJourneyForSystemUpgrade];
 LABEL_4:
@@ -64,18 +64,18 @@ LABEL_8:
 
 - (void)_startOnDeviceJourneyForSystemUpgrade
 {
-  v3 = [(ICQTileView *)self reportingDetails];
-  if ([v3 displayRuleType] == 1)
+  reportingDetails = [(ICQTileView *)self reportingDetails];
+  if ([reportingDetails displayRuleType] == 1)
   {
-    v4 = [(ICQTileView *)self premiumOffer];
-    v5 = [v4 shouldStartOnDeviceJourney];
+    premiumOffer = [(ICQTileView *)self premiumOffer];
+    shouldStartOnDeviceJourney = [premiumOffer shouldStartOnDeviceJourney];
 
-    if (v5)
+    if (shouldStartOnDeviceJourney)
     {
       v6 = MEMORY[0x277D7F350];
-      v7 = [(ICQTileView *)self premiumOffer];
-      v8 = [v7 bundleIdentifier];
-      [v6 sendEventFor:2 withBundleID:v8 link:0];
+      premiumOffer2 = [(ICQTileView *)self premiumOffer];
+      bundleIdentifier = [premiumOffer2 bundleIdentifier];
+      [v6 sendEventFor:2 withBundleID:bundleIdentifier link:0];
 
       v9 = _ICQGetLogSystem();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -108,33 +108,33 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setPremiumOffer:(id)a3
+- (void)setPremiumOffer:(id)offer
 {
-  v5 = a3;
-  if (self->_premiumOffer != v5)
+  offerCopy = offer;
+  if (self->_premiumOffer != offerCopy)
   {
-    objc_storeStrong(&self->_premiumOffer, a3);
+    objc_storeStrong(&self->_premiumOffer, offer);
     if ([MEMORY[0x277D7F398] shouldEnableUnifiedMessaging])
     {
       v6 = MEMORY[0x277D7F350];
-      v7 = [(ICQPremiumOffer *)v5 bundleIdentifier];
+      bundleIdentifier = [(ICQPremiumOffer *)offerCopy bundleIdentifier];
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __31__ICQTileView_setPremiumOffer___block_invoke;
       v11[3] = &unk_27A65B0A0;
       v11[4] = self;
-      v12 = v5;
-      [v6 fetchBubbleContentWithBundleID:v7 completion:v11];
+      v12 = offerCopy;
+      [v6 fetchBubbleContentWithBundleID:bundleIdentifier completion:v11];
     }
 
     else
     {
-      v8 = [(ICQPremiumOffer *)v5 opportunityBubble];
-      v9 = [v8 reportingDetails];
+      opportunityBubble = [(ICQPremiumOffer *)offerCopy opportunityBubble];
+      reportingDetails = [opportunityBubble reportingDetails];
       reportingDetails = self->_reportingDetails;
-      self->_reportingDetails = v9;
+      self->_reportingDetails = reportingDetails;
 
-      [(ICQTileView *)self updateTileViewWithOffer:v5];
+      [(ICQTileView *)self updateTileViewWithOffer:offerCopy];
     }
   }
 }
@@ -161,15 +161,15 @@ uint64_t __31__ICQTileView_setPremiumOffer___block_invoke(uint64_t a1, uint64_t 
 - (void)configureSubviews
 {
   v106[22] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-  [(ICQTileView *)self setBackgroundColor:v3];
+  secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+  [(ICQTileView *)self setBackgroundColor:secondarySystemBackgroundColor];
 
-  v4 = [(ICQTileView *)self layer];
-  [v4 setCornerRadius:12.0];
+  layer = [(ICQTileView *)self layer];
+  [layer setCornerRadius:12.0];
 
   v5 = *MEMORY[0x277CDA138];
-  v6 = [(ICQTileView *)self layer];
-  [v6 setCornerCurve:v5];
+  layer2 = [(ICQTileView *)self layer];
+  [layer2 setCornerCurve:v5];
 
   [(ICQTileView *)self createOrUpdateTitleLabelWithTitle:0];
   [(ICQTileView *)self createOrUpdateMessageLabelWithMessage:0];
@@ -177,131 +177,131 @@ uint64_t __31__ICQTileView_setPremiumOffer___block_invoke(uint64_t a1, uint64_t 
   [(ICQTileView *)self createSeparator];
   [(ICQTileView *)self createActionButtons];
   [(ICQTileView *)self createActionButtonsStack];
-  v7 = [(ICQTileView *)self titleLabel];
-  v8 = [v7 trailingAnchor];
-  v9 = [(ICQTileView *)self trailingAnchor];
-  v10 = [v8 constraintLessThanOrEqualToAnchor:v9 constant:-14.0];
+  titleLabel = [(ICQTileView *)self titleLabel];
+  trailingAnchor = [titleLabel trailingAnchor];
+  trailingAnchor2 = [(ICQTileView *)self trailingAnchor];
+  v10 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2 constant:-14.0];
   titleLabelTrailingConstraint = self->_titleLabelTrailingConstraint;
   self->_titleLabelTrailingConstraint = v10;
 
   LODWORD(v12) = 1144750080;
   [(NSLayoutConstraint *)self->_titleLabelTrailingConstraint setPriority:v12];
-  v13 = [(ICQTileView *)self titleLabel];
-  v14 = [v13 trailingAnchor];
-  v15 = [(ICQTileView *)self dismissButton];
-  v16 = [v15 leadingAnchor];
-  v17 = [v14 constraintLessThanOrEqualToAnchor:v16 constant:-10.0];
+  titleLabel2 = [(ICQTileView *)self titleLabel];
+  trailingAnchor3 = [titleLabel2 trailingAnchor];
+  dismissButton = [(ICQTileView *)self dismissButton];
+  leadingAnchor = [dismissButton leadingAnchor];
+  v17 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:leadingAnchor constant:-10.0];
   titleLabelDismissButtonSpacingConstraint = self->_titleLabelDismissButtonSpacingConstraint;
   self->_titleLabelDismissButtonSpacingConstraint = v17;
 
   LODWORD(v19) = 1144913920;
   [(NSLayoutConstraint *)self->_titleLabelTrailingConstraint setPriority:v19];
   v71 = MEMORY[0x277CCAAD0];
-  v105 = [(ICQTileView *)self iconImageView];
-  v104 = [v105 leadingAnchor];
-  v103 = [(ICQTileView *)self leadingAnchor];
-  v102 = [v104 constraintEqualToAnchor:v103 constant:14.0];
+  iconImageView = [(ICQTileView *)self iconImageView];
+  leadingAnchor2 = [iconImageView leadingAnchor];
+  leadingAnchor3 = [(ICQTileView *)self leadingAnchor];
+  v102 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3 constant:14.0];
   v106[0] = v102;
-  v101 = [(ICQTileView *)self iconImageView];
-  v99 = [v101 topAnchor];
-  v100 = [(ICQTileView *)self messageLabel];
-  v98 = [v100 topAnchor];
-  v97 = [v99 constraintEqualToAnchor:v98];
+  iconImageView2 = [(ICQTileView *)self iconImageView];
+  topAnchor = [iconImageView2 topAnchor];
+  messageLabel = [(ICQTileView *)self messageLabel];
+  topAnchor2 = [messageLabel topAnchor];
+  v97 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v106[1] = v97;
-  v96 = [(ICQTileView *)self iconImageView];
-  v95 = [v96 widthAnchor];
-  v94 = [v95 constraintEqualToConstant:60.0];
+  iconImageView3 = [(ICQTileView *)self iconImageView];
+  widthAnchor = [iconImageView3 widthAnchor];
+  v94 = [widthAnchor constraintEqualToConstant:60.0];
   v106[2] = v94;
-  v93 = [(ICQTileView *)self iconImageView];
-  v92 = [v93 heightAnchor];
-  v91 = [v92 constraintEqualToConstant:60.0];
+  iconImageView4 = [(ICQTileView *)self iconImageView];
+  heightAnchor = [iconImageView4 heightAnchor];
+  v91 = [heightAnchor constraintEqualToConstant:60.0];
   v106[3] = v91;
-  v90 = [(ICQTileView *)self titleLabel];
-  v88 = [v90 leadingAnchor];
-  v89 = [(ICQTileView *)self iconImageView];
-  v87 = [v89 trailingAnchor];
-  v86 = [v88 constraintEqualToAnchor:v87 constant:10.0];
+  titleLabel3 = [(ICQTileView *)self titleLabel];
+  leadingAnchor4 = [titleLabel3 leadingAnchor];
+  iconImageView5 = [(ICQTileView *)self iconImageView];
+  trailingAnchor4 = [iconImageView5 trailingAnchor];
+  v86 = [leadingAnchor4 constraintEqualToAnchor:trailingAnchor4 constant:10.0];
   v106[4] = v86;
-  v85 = [(ICQTileView *)self titleLabel];
-  v84 = [v85 topAnchor];
-  v83 = [(ICQTileView *)self topAnchor];
-  v82 = [v84 constraintEqualToAnchor:v83 constant:14.0];
+  titleLabel4 = [(ICQTileView *)self titleLabel];
+  topAnchor3 = [titleLabel4 topAnchor];
+  topAnchor4 = [(ICQTileView *)self topAnchor];
+  v82 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:14.0];
   v20 = self->_titleLabelTrailingConstraint;
   v106[5] = v82;
   v106[6] = v20;
   v106[7] = self->_titleLabelDismissButtonSpacingConstraint;
-  v81 = [(ICQTileView *)self messageLabel];
-  v79 = [v81 leadingAnchor];
-  v80 = [(ICQTileView *)self titleLabel];
-  v78 = [v80 leadingAnchor];
-  v77 = [v79 constraintEqualToAnchor:v78];
+  messageLabel2 = [(ICQTileView *)self messageLabel];
+  leadingAnchor5 = [messageLabel2 leadingAnchor];
+  titleLabel5 = [(ICQTileView *)self titleLabel];
+  leadingAnchor6 = [titleLabel5 leadingAnchor];
+  v77 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v106[8] = v77;
-  v76 = [(ICQTileView *)self messageLabel];
-  v74 = [v76 topAnchor];
-  v75 = [(ICQTileView *)self titleLabel];
-  v73 = [v75 bottomAnchor];
-  v72 = [v74 constraintEqualToAnchor:v73 constant:5.0];
+  messageLabel3 = [(ICQTileView *)self messageLabel];
+  topAnchor5 = [messageLabel3 topAnchor];
+  titleLabel6 = [(ICQTileView *)self titleLabel];
+  bottomAnchor = [titleLabel6 bottomAnchor];
+  v72 = [topAnchor5 constraintEqualToAnchor:bottomAnchor constant:5.0];
   v106[9] = v72;
-  v70 = [(ICQTileView *)self messageLabel];
-  v69 = [v70 trailingAnchor];
-  v68 = [(ICQTileView *)self trailingAnchor];
-  v67 = [v69 constraintEqualToAnchor:v68 constant:-14.0];
+  messageLabel4 = [(ICQTileView *)self messageLabel];
+  trailingAnchor5 = [messageLabel4 trailingAnchor];
+  trailingAnchor6 = [(ICQTileView *)self trailingAnchor];
+  v67 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-14.0];
   v106[10] = v67;
-  v66 = [(ICQTileView *)self separator];
-  v64 = [v66 leadingAnchor];
-  v65 = [(ICQTileView *)self titleLabel];
-  v63 = [v65 leadingAnchor];
-  v62 = [v64 constraintEqualToAnchor:v63];
+  separator = [(ICQTileView *)self separator];
+  leadingAnchor7 = [separator leadingAnchor];
+  titleLabel7 = [(ICQTileView *)self titleLabel];
+  leadingAnchor8 = [titleLabel7 leadingAnchor];
+  v62 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   v106[11] = v62;
-  v61 = [(ICQTileView *)self separator];
-  v59 = [v61 topAnchor];
-  v60 = [(ICQTileView *)self messageLabel];
-  v58 = [v60 bottomAnchor];
-  v57 = [v59 constraintEqualToAnchor:v58 constant:10.0];
+  separator2 = [(ICQTileView *)self separator];
+  topAnchor6 = [separator2 topAnchor];
+  messageLabel5 = [(ICQTileView *)self messageLabel];
+  bottomAnchor2 = [messageLabel5 bottomAnchor];
+  v57 = [topAnchor6 constraintEqualToAnchor:bottomAnchor2 constant:10.0];
   v106[12] = v57;
-  v56 = [(ICQTileView *)self separator];
-  v55 = [v56 trailingAnchor];
-  v54 = [(ICQTileView *)self trailingAnchor];
-  v53 = [v55 constraintEqualToAnchor:v54];
+  separator3 = [(ICQTileView *)self separator];
+  trailingAnchor7 = [separator3 trailingAnchor];
+  trailingAnchor8 = [(ICQTileView *)self trailingAnchor];
+  v53 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
   v106[13] = v53;
-  v52 = [(ICQTileView *)self separator];
-  v51 = [v52 heightAnchor];
-  v50 = [v51 constraintEqualToConstant:0.5];
+  separator4 = [(ICQTileView *)self separator];
+  heightAnchor2 = [separator4 heightAnchor];
+  v50 = [heightAnchor2 constraintEqualToConstant:0.5];
   v106[14] = v50;
-  v49 = [(ICQTileView *)self actionButtonsStack];
-  v47 = [v49 leadingAnchor];
-  v48 = [(ICQTileView *)self titleLabel];
-  v46 = [v48 leadingAnchor];
-  v45 = [v47 constraintEqualToAnchor:v46];
+  actionButtonsStack = [(ICQTileView *)self actionButtonsStack];
+  leadingAnchor9 = [actionButtonsStack leadingAnchor];
+  titleLabel8 = [(ICQTileView *)self titleLabel];
+  leadingAnchor10 = [titleLabel8 leadingAnchor];
+  v45 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
   v106[15] = v45;
-  v44 = [(ICQTileView *)self actionButtonsStack];
-  v42 = [v44 topAnchor];
-  v43 = [(ICQTileView *)self separator];
-  v41 = [v43 bottomAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41 constant:10.0];
+  actionButtonsStack2 = [(ICQTileView *)self actionButtonsStack];
+  topAnchor7 = [actionButtonsStack2 topAnchor];
+  separator5 = [(ICQTileView *)self separator];
+  bottomAnchor3 = [separator5 bottomAnchor];
+  v40 = [topAnchor7 constraintEqualToAnchor:bottomAnchor3 constant:10.0];
   v106[16] = v40;
-  v39 = [(ICQTileView *)self actionButtonsStack];
-  v38 = [v39 trailingAnchor];
-  v37 = [(ICQTileView *)self trailingAnchor];
-  v36 = [v38 constraintLessThanOrEqualToAnchor:v37 constant:-14.0];
+  actionButtonsStack3 = [(ICQTileView *)self actionButtonsStack];
+  trailingAnchor9 = [actionButtonsStack3 trailingAnchor];
+  trailingAnchor10 = [(ICQTileView *)self trailingAnchor];
+  v36 = [trailingAnchor9 constraintLessThanOrEqualToAnchor:trailingAnchor10 constant:-14.0];
   v106[17] = v36;
-  v35 = [(ICQTileView *)self actionButtonsStack];
-  v34 = [v35 bottomAnchor];
-  v33 = [(ICQTileView *)self bottomAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33 constant:-14.0];
+  actionButtonsStack4 = [(ICQTileView *)self actionButtonsStack];
+  bottomAnchor4 = [actionButtonsStack4 bottomAnchor];
+  bottomAnchor5 = [(ICQTileView *)self bottomAnchor];
+  v32 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:-14.0];
   v106[18] = v32;
-  v31 = [(ICQTileView *)self widthAnchor];
-  v21 = [v31 constraintLessThanOrEqualToConstant:400.0];
+  widthAnchor2 = [(ICQTileView *)self widthAnchor];
+  v21 = [widthAnchor2 constraintLessThanOrEqualToConstant:400.0];
   v106[19] = v21;
-  v22 = [(ICQTileView *)self dismissButton];
-  v23 = [v22 topAnchor];
-  v24 = [(ICQTileView *)self topAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24 constant:14.0];
+  dismissButton2 = [(ICQTileView *)self dismissButton];
+  topAnchor8 = [dismissButton2 topAnchor];
+  topAnchor9 = [(ICQTileView *)self topAnchor];
+  v25 = [topAnchor8 constraintEqualToAnchor:topAnchor9 constant:14.0];
   v106[20] = v25;
-  v26 = [(ICQTileView *)self dismissButton];
-  v27 = [v26 trailingAnchor];
-  v28 = [(ICQTileView *)self trailingAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28 constant:-14.0];
+  dismissButton3 = [(ICQTileView *)self dismissButton];
+  trailingAnchor11 = [dismissButton3 trailingAnchor];
+  trailingAnchor12 = [(ICQTileView *)self trailingAnchor];
+  v29 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12 constant:-14.0];
   v106[21] = v29;
   v30 = [MEMORY[0x277CBEA60] arrayWithObjects:v106 count:22];
   [v71 activateConstraints:v30];
@@ -309,14 +309,14 @@ uint64_t __31__ICQTileView_setPremiumOffer___block_invoke(uint64_t a1, uint64_t 
 
 - (void)createSeparator
 {
-  v3 = [(ICQTileView *)self separator];
+  separator = [(ICQTileView *)self separator];
 
-  if (!v3)
+  if (!separator)
   {
     v4 = objc_alloc(MEMORY[0x277D75D18]);
     v6 = [v4 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-    v5 = [MEMORY[0x277D75348] tertiaryLabelColor];
-    [v6 setBackgroundColor:v5];
+    tertiaryLabelColor = [MEMORY[0x277D75348] tertiaryLabelColor];
+    [v6 setBackgroundColor:tertiaryLabelColor];
 
     [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(ICQTileView *)self addSubview:v6];
@@ -326,14 +326,14 @@ uint64_t __31__ICQTileView_setPremiumOffer___block_invoke(uint64_t a1, uint64_t 
 
 - (void)createActionButtons
 {
-  v3 = [(ICQTileView *)self dismissButton];
+  dismissButton = [(ICQTileView *)self dismissButton];
 
-  if (!v3)
+  if (!dismissButton)
   {
     v4 = [ICQPremiumButton buttonWithType:1 link:0];
     [v4 setAccessibilityLabel:@"Dismiss bubble"];
-    v5 = [MEMORY[0x277D75348] tertiaryLabelColor];
-    [v4 setTintColor:v5];
+    tertiaryLabelColor = [MEMORY[0x277D75348] tertiaryLabelColor];
+    [v4 setTintColor:tertiaryLabelColor];
 
     v6 = [MEMORY[0x277D755B8] systemImageNamed:@"xmark"];
     [v4 setImage:v6 forState:0];
@@ -347,18 +347,18 @@ uint64_t __31__ICQTileView_setPremiumOffer___block_invoke(uint64_t a1, uint64_t 
     [(ICQTileView *)self setDismissButton:v4];
   }
 
-  v9 = [(ICQTileView *)self primaryButton];
+  primaryButton = [(ICQTileView *)self primaryButton];
 
-  if (!v9)
+  if (!primaryButton)
   {
     v10 = [ICQPremiumButton buttonWithType:1 link:0];
     [v10 addTarget:self action:sel_actionButtonTapped_ forControlEvents:64];
     [(ICQTileView *)self setPrimaryButton:v10];
   }
 
-  v11 = [(ICQTileView *)self secondaryButton];
+  secondaryButton = [(ICQTileView *)self secondaryButton];
 
-  if (!v11)
+  if (!secondaryButton)
   {
     v12 = [ICQPremiumButton buttonWithType:1 link:0];
     [v12 addTarget:self action:sel_actionButtonTapped_ forControlEvents:64];
@@ -368,9 +368,9 @@ uint64_t __31__ICQTileView_setPremiumOffer___block_invoke(uint64_t a1, uint64_t 
 
 - (void)createActionButtonsStack
 {
-  v3 = [(ICQTileView *)self actionButtonsStack];
+  actionButtonsStack = [(ICQTileView *)self actionButtonsStack];
 
-  if (!v3)
+  if (!actionButtonsStack)
   {
     v4 = objc_alloc(MEMORY[0x277D75A68]);
     v5 = [v4 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -382,130 +382,130 @@ uint64_t __31__ICQTileView_setPremiumOffer___block_invoke(uint64_t a1, uint64_t 
   }
 }
 
-- (void)updateTileViewWithOffer:(id)a3
+- (void)updateTileViewWithOffer:(id)offer
 {
-  v11 = [a3 opportunityBubble];
-  v4 = [v11 bubbleDetails];
-  v5 = [v4 title];
-  [(ICQTileView *)self createOrUpdateTitleLabelWithTitle:v5];
+  opportunityBubble = [offer opportunityBubble];
+  bubbleDetails = [opportunityBubble bubbleDetails];
+  title = [bubbleDetails title];
+  [(ICQTileView *)self createOrUpdateTitleLabelWithTitle:title];
 
-  v6 = [v11 bubbleDetails];
-  v7 = [v6 message];
-  [(ICQTileView *)self createOrUpdateMessageLabelWithMessage:v7];
+  bubbleDetails2 = [opportunityBubble bubbleDetails];
+  message = [bubbleDetails2 message];
+  [(ICQTileView *)self createOrUpdateMessageLabelWithMessage:message];
 
-  v8 = [v11 bubbleDetails];
-  v9 = [v8 imageDetails];
-  [(ICQTileView *)self createOrUpdateImageViewFromImageDetails:v9];
+  bubbleDetails3 = [opportunityBubble bubbleDetails];
+  imageDetails = [bubbleDetails3 imageDetails];
+  [(ICQTileView *)self createOrUpdateImageViewFromImageDetails:imageDetails];
 
-  v10 = [v11 bubbleDetails];
-  [(ICQTileView *)self createButtonsFromBubbleDetails:v10];
+  bubbleDetails4 = [opportunityBubble bubbleDetails];
+  [(ICQTileView *)self createButtonsFromBubbleDetails:bubbleDetails4];
 }
 
-- (void)createOrUpdateImageViewFromImageDetails:(id)a3
+- (void)createOrUpdateImageViewFromImageDetails:(id)details
 {
   v4 = MEMORY[0x277D759A0];
-  v5 = a3;
-  v6 = [v4 mainScreen];
-  [v6 scale];
+  detailsCopy = details;
+  mainScreen = [v4 mainScreen];
+  [mainScreen scale];
   v8 = v7;
 
-  v11 = [v5 getURLForScale:v8];
+  v11 = [detailsCopy getURLForScale:v8];
 
-  v9 = [(ICQTileView *)self iconImageView];
+  iconImageView = [(ICQTileView *)self iconImageView];
 
-  if (v9)
+  if (iconImageView)
   {
-    v10 = [(ICQTileView *)self iconImageView];
-    [(ICQAsyncImageView *)v10 updateToImageFromURL:v11];
+    iconImageView2 = [(ICQTileView *)self iconImageView];
+    [(ICQAsyncImageView *)iconImageView2 updateToImageFromURL:v11];
   }
 
   else
   {
-    v10 = [[ICQAsyncImageView alloc] initWithURL:v11];
-    [(ICQAsyncImageView *)v10 setContentMode:1];
-    [(ICQAsyncImageView *)v10 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(ICQTileView *)self addSubview:v10];
-    [(ICQTileView *)self setIconImageView:v10];
+    iconImageView2 = [[ICQAsyncImageView alloc] initWithURL:v11];
+    [(ICQAsyncImageView *)iconImageView2 setContentMode:1];
+    [(ICQAsyncImageView *)iconImageView2 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(ICQTileView *)self addSubview:iconImageView2];
+    [(ICQTileView *)self setIconImageView:iconImageView2];
   }
 }
 
-- (id)createLabelWithText:(id)a3
+- (id)createLabelWithText:(id)text
 {
   v3 = MEMORY[0x277D756B8];
-  v4 = a3;
+  textCopy = text;
   v5 = [v3 alloc];
   v6 = [v5 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [v6 setAdjustsFontForContentSizeCategory:1];
-  [v6 setText:v4];
+  [v6 setText:textCopy];
 
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   return v6;
 }
 
-- (void)createOrUpdateTitleLabelWithTitle:(id)a3
+- (void)createOrUpdateTitleLabelWithTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(ICQTileView *)self titleLabel];
+  titleCopy = title;
+  titleLabel = [(ICQTileView *)self titleLabel];
 
-  if (v5)
+  if (titleLabel)
   {
-    v7 = [(ICQTileView *)self titleLabel];
-    [v7 setText:v4];
+    titleLabel2 = [(ICQTileView *)self titleLabel];
+    [titleLabel2 setText:titleCopy];
   }
 
   else
   {
-    v7 = [(ICQTileView *)self createLabelWithText:v4];
-    [v7 setText:v4];
+    titleLabel2 = [(ICQTileView *)self createLabelWithText:titleCopy];
+    [titleLabel2 setText:titleCopy];
 
-    [v7 setNumberOfLines:0];
+    [titleLabel2 setNumberOfLines:0];
     v6 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
-    [v7 setFont:v6];
+    [titleLabel2 setFont:v6];
 
-    [(ICQTileView *)self addSubview:v7];
-    [(ICQTileView *)self setTitleLabel:v7];
+    [(ICQTileView *)self addSubview:titleLabel2];
+    [(ICQTileView *)self setTitleLabel:titleLabel2];
   }
 }
 
-- (void)createOrUpdateMessageLabelWithMessage:(id)a3
+- (void)createOrUpdateMessageLabelWithMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(ICQTileView *)self messageLabel];
+  messageCopy = message;
+  messageLabel = [(ICQTileView *)self messageLabel];
 
-  if (v5)
+  if (messageLabel)
   {
-    v8 = [(ICQTileView *)self messageLabel];
-    [v8 setText:v4];
+    messageLabel2 = [(ICQTileView *)self messageLabel];
+    [messageLabel2 setText:messageCopy];
   }
 
   else
   {
-    v8 = [(ICQTileView *)self createLabelWithText:v4];
-    [v8 setText:v4];
+    messageLabel2 = [(ICQTileView *)self createLabelWithText:messageCopy];
+    [messageLabel2 setText:messageCopy];
 
-    [v8 setNumberOfLines:0];
+    [messageLabel2 setNumberOfLines:0];
     v6 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76920]];
-    [v8 setFont:v6];
+    [messageLabel2 setFont:v6];
 
-    v7 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [v8 setTextColor:v7];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [messageLabel2 setTextColor:secondaryLabelColor];
 
-    [(ICQTileView *)self addSubview:v8];
-    [(ICQTileView *)self setMessageLabel:v8];
+    [(ICQTileView *)self addSubview:messageLabel2];
+    [(ICQTileView *)self setMessageLabel:messageLabel2];
   }
 }
 
-- (void)createButtonsFromBubbleDetails:(id)a3
+- (void)createButtonsFromBubbleDetails:(id)details
 {
   v39 = *MEMORY[0x277D85DE8];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v29 = a3;
-  v4 = [v29 actions];
-  v5 = [v4 countByEnumeratingWithState:&v32 objects:v38 count:16];
+  detailsCopy = details;
+  actions = [detailsCopy actions];
+  v5 = [actions countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v5)
   {
     v6 = v5;
@@ -519,16 +519,16 @@ uint64_t __31__ICQTileView_setPremiumOffer___block_invoke(uint64_t a1, uint64_t 
       {
         if (*v33 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actions);
         }
 
         v10 = *(*(&v32 + 1) + 8 * i);
-        v11 = [v10 parameters];
+        parameters = [v10 parameters];
 
-        if (v11)
+        if (parameters)
         {
-          v12 = [v10 parameters];
-          v13 = [v12 objectForKeyedSubscript:v8];
+          parameters2 = [v10 parameters];
+          v13 = [parameters2 objectForKeyedSubscript:v8];
 
           if ([v13 isEqualToString:@"closeBtnId"])
           {
@@ -572,7 +572,7 @@ uint64_t __31__ICQTileView_setPremiumOffer___block_invoke(uint64_t a1, uint64_t 
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v32 objects:v38 count:16];
+      v6 = [actions countByEnumeratingWithState:&v32 objects:v38 count:16];
     }
 
     while (v6);
@@ -584,115 +584,115 @@ uint64_t __31__ICQTileView_setPremiumOffer___block_invoke(uint64_t a1, uint64_t 
     v31 = 0;
   }
 
-  v15 = [(ICQTileView *)self dismissButton];
-  [v15 setHidden:(v31 & 1) == 0];
+  dismissButton = [(ICQTileView *)self dismissButton];
+  [dismissButton setHidden:(v31 & 1) == 0];
 
-  v16 = [(ICQTileView *)self titleLabelDismissButtonSpacingConstraint];
-  [v16 setActive:v31 & 1];
+  titleLabelDismissButtonSpacingConstraint = [(ICQTileView *)self titleLabelDismissButtonSpacingConstraint];
+  [titleLabelDismissButtonSpacingConstraint setActive:v31 & 1];
 
-  v17 = [(ICQTileView *)self primaryButton];
-  if (!v17)
+  primaryButton = [(ICQTileView *)self primaryButton];
+  if (!primaryButton)
   {
     [ICQTileView createButtonsFromBubbleDetails:];
   }
 
-  v18 = [(ICQTileView *)self primaryButton];
-  v19 = v18;
+  primaryButton2 = [(ICQTileView *)self primaryButton];
+  actionButtonsStack = primaryButton2;
   if ((v30 & 0x100000000) != 0)
   {
-    v20 = [v18 superview];
+    superview = [primaryButton2 superview];
 
     v21 = v30;
-    if (v20)
+    if (superview)
     {
-      v22 = [(ICQTileView *)self primaryButton];
-      [v22 removeFromSuperview];
+      primaryButton3 = [(ICQTileView *)self primaryButton];
+      [primaryButton3 removeFromSuperview];
     }
 
-    v19 = [(ICQTileView *)self actionButtonsStack];
-    v23 = [(ICQTileView *)self primaryButton];
-    [v19 addArrangedSubview:v23];
+    actionButtonsStack = [(ICQTileView *)self actionButtonsStack];
+    primaryButton4 = [(ICQTileView *)self primaryButton];
+    [actionButtonsStack addArrangedSubview:primaryButton4];
   }
 
   else
   {
-    [v18 removeFromSuperview];
+    [primaryButton2 removeFromSuperview];
     v21 = v30;
   }
 
-  v24 = [(ICQTileView *)self secondaryButton];
-  v25 = v24;
+  secondaryButton = [(ICQTileView *)self secondaryButton];
+  actionButtonsStack2 = secondaryButton;
   if (v21)
   {
-    v26 = [v24 superview];
+    superview2 = [secondaryButton superview];
 
-    if (v26)
+    if (superview2)
     {
-      v27 = [(ICQTileView *)self secondaryButton];
-      [v27 removeFromSuperview];
+      secondaryButton2 = [(ICQTileView *)self secondaryButton];
+      [secondaryButton2 removeFromSuperview];
     }
 
-    v25 = [(ICQTileView *)self actionButtonsStack];
-    v28 = [(ICQTileView *)self secondaryButton];
-    [v25 addArrangedSubview:v28];
+    actionButtonsStack2 = [(ICQTileView *)self actionButtonsStack];
+    secondaryButton3 = [(ICQTileView *)self secondaryButton];
+    [actionButtonsStack2 addArrangedSubview:secondaryButton3];
   }
 
   else
   {
-    [v24 removeFromSuperview];
+    [secondaryButton removeFromSuperview];
   }
 }
 
-- (void)updateDismissButtonWithAction:(id)a3
+- (void)updateDismissButtonWithAction:(id)action
 {
-  v7 = a3;
-  v4 = [(ICQTileView *)self dismissButton];
+  actionCopy = action;
+  dismissButton = [(ICQTileView *)self dismissButton];
 
-  if (v4)
+  if (dismissButton)
   {
-    v5 = [(ICQTileView *)self dismissButton];
-    [v5 setLink:v7];
+    dismissButton2 = [(ICQTileView *)self dismissButton];
+    [dismissButton2 setLink:actionCopy];
 
-    v6 = [(ICQTileView *)self dismissButton];
-    [v6 setHidden:v7 == 0];
+    dismissButton3 = [(ICQTileView *)self dismissButton];
+    [dismissButton3 setHidden:actionCopy == 0];
   }
 }
 
-- (void)updatePrimaryButtonWithAction:(id)a3
+- (void)updatePrimaryButtonWithAction:(id)action
 {
-  v8 = a3;
-  v4 = [(ICQTileView *)self primaryButton];
+  actionCopy = action;
+  primaryButton = [(ICQTileView *)self primaryButton];
 
-  if (v4)
+  if (primaryButton)
   {
-    v5 = [(ICQTileView *)self primaryButton];
-    v6 = [v8 text];
-    [v5 setTitle:v6 forState:0];
+    primaryButton2 = [(ICQTileView *)self primaryButton];
+    text = [actionCopy text];
+    [primaryButton2 setTitle:text forState:0];
 
-    v7 = [(ICQTileView *)self primaryButton];
-    [v7 setLink:v8];
+    primaryButton3 = [(ICQTileView *)self primaryButton];
+    [primaryButton3 setLink:actionCopy];
   }
 }
 
-- (void)updateSecondaryButtonWithAction:(id)a3
+- (void)updateSecondaryButtonWithAction:(id)action
 {
-  v8 = a3;
-  v4 = [(ICQTileView *)self secondaryButton];
+  actionCopy = action;
+  secondaryButton = [(ICQTileView *)self secondaryButton];
 
-  if (v4)
+  if (secondaryButton)
   {
-    v5 = [(ICQTileView *)self secondaryButton];
-    v6 = [v8 text];
-    [v5 setTitle:v6 forState:0];
+    secondaryButton2 = [(ICQTileView *)self secondaryButton];
+    text = [actionCopy text];
+    [secondaryButton2 setTitle:text forState:0];
 
-    v7 = [(ICQTileView *)self secondaryButton];
-    [v7 setLink:v8];
+    secondaryButton3 = [(ICQTileView *)self secondaryButton];
+    [secondaryButton3 setLink:actionCopy];
   }
 }
 
-- (void)dismissButtonTapped:(id)a3
+- (void)dismissButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -700,69 +700,69 @@ uint64_t __31__ICQTileView_setPremiumOffer___block_invoke(uint64_t a1, uint64_t 
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "Dismiss button was tapped", v20, 2u);
   }
 
-  v6 = [(ICQLegacyBannerView *)self delegate];
-  [v6 tileView:self performAction:1 parameters:0];
+  delegate = [(ICQLegacyBannerView *)self delegate];
+  [delegate tileView:self performAction:1 parameters:0];
 
   v7 = MEMORY[0x277D7F370];
-  v8 = [v4 link];
-  v9 = [v8 parameters];
-  [v7 performAction:123 parameters:v9 options:0];
+  link = [tappedCopy link];
+  parameters = [link parameters];
+  [v7 performAction:123 parameters:parameters options:0];
 
   reportingDetails = self->_reportingDetails;
   if (reportingDetails && [(_ICQOpportunityBubbleReportingSpecification *)reportingDetails dismissRuleType]== 2)
   {
     v11 = MEMORY[0x277D7F370];
-    v12 = [(_ICQOpportunityBubbleReportingSpecification *)self->_reportingDetails dimissServerParam];
-    [v11 performAction:123 parameters:v12 options:0];
+    dimissServerParam = [(_ICQOpportunityBubbleReportingSpecification *)self->_reportingDetails dimissServerParam];
+    [v11 performAction:123 parameters:dimissServerParam options:0];
   }
 
   else
   {
     v13 = MEMORY[0x277D7F350];
-    v12 = [(ICQPremiumOffer *)self->_premiumOffer bundleIdentifier];
-    v14 = [v4 link];
-    v15 = [v14 serverUIURL];
-    [v13 sendEventFor:1 withBundleID:v12 link:v15];
+    dimissServerParam = [(ICQPremiumOffer *)self->_premiumOffer bundleIdentifier];
+    link2 = [tappedCopy link];
+    serverUIURL = [link2 serverUIURL];
+    [v13 sendEventFor:1 withBundleID:dimissServerParam link:serverUIURL];
   }
 
-  v16 = [(ICQTileView *)self premiumOffer];
-  [v16 setDismissed:1];
+  premiumOffer = [(ICQTileView *)self premiumOffer];
+  [premiumOffer setDismissed:1];
 
-  v17 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v18 = *MEMORY[0x277D7F2A8];
-  v19 = [(ICQTileView *)self premiumOffer];
-  [v17 postNotificationName:v18 object:v19];
+  premiumOffer2 = [(ICQTileView *)self premiumOffer];
+  [defaultCenter postNotificationName:v18 object:premiumOffer2];
 }
 
-- (void)actionButtonTapped:(id)a3
+- (void)actionButtonTapped:(id)tapped
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 link];
-    v7 = [v6 text];
+    link = [tappedCopy link];
+    text = [link text];
     v13 = 138412290;
-    v14 = v7;
+    v14 = text;
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "Button with label %@ was tapped", &v13, 0xCu);
   }
 
-  v8 = [v4 link];
-  [(ICQTileView *)self handleActionFromLink:v8];
+  link2 = [tappedCopy link];
+  [(ICQTileView *)self handleActionFromLink:link2];
 
   v9 = MEMORY[0x277D7F350];
-  v10 = [(ICQPremiumOffer *)self->_premiumOffer bundleIdentifier];
-  v11 = [v4 link];
-  v12 = [v11 serverUIURL];
-  [v9 sendEventFor:2 withBundleID:v10 link:v12];
+  bundleIdentifier = [(ICQPremiumOffer *)self->_premiumOffer bundleIdentifier];
+  link3 = [tappedCopy link];
+  serverUIURL = [link3 serverUIURL];
+  [v9 sendEventFor:2 withBundleID:bundleIdentifier link:serverUIURL];
 }
 
-- (BOOL)handleActionFromLink:(id)a3
+- (BOOL)handleActionFromLink:(id)link
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  linkCopy = link;
+  if (!linkCopy)
   {
     v11 = _ICQGetLogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -774,17 +774,17 @@ uint64_t __31__ICQTileView_setPremiumOffer___block_invoke(uint64_t a1, uint64_t 
     goto LABEL_10;
   }
 
-  v5 = [(ICQLegacyBannerView *)self delegate];
+  delegate = [(ICQLegacyBannerView *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
-  if ((v6 & 1) == 0 || (v7 = -[ICQTileView _delegateActionForAction:](self, "_delegateActionForAction:", [v4 action]), -[ICQLegacyBannerView delegate](self, "delegate"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "parameters"), v9 = objc_claimAutoreleasedReturnValue(), LOBYTE(v7) = objc_msgSend(v8, "tileView:performAction:parameters:", self, v7, v9), v9, v8, (v7 & 1) == 0))
+  if ((v6 & 1) == 0 || (v7 = -[ICQTileView _delegateActionForAction:](self, "_delegateActionForAction:", [linkCopy action]), -[ICQLegacyBannerView delegate](self, "delegate"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(linkCopy, "parameters"), v9 = objc_claimAutoreleasedReturnValue(), LOBYTE(v7) = objc_msgSend(v8, "tileView:performAction:parameters:", self, v7, v9), v9, v8, (v7 & 1) == 0))
   {
-    if (([(ICQTileView *)self _performLink:v4]& 1) == 0)
+    if (([(ICQTileView *)self _performLink:linkCopy]& 1) == 0)
     {
       v11 = _ICQGetLogSystem();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        [v4 action];
+        [linkCopy action];
         v12 = _ICQStringForAction();
         v14 = 138543362;
         v15 = v12;
@@ -804,11 +804,11 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)_launchFlowManagerWithLink:(id)a3
+- (BOOL)_launchFlowManagerWithLink:(id)link
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICQLegacyBannerView *)self delegate];
+  linkCopy = link;
+  delegate = [(ICQLegacyBannerView *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if ((v6 & 1) == 0)
@@ -822,8 +822,8 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  v7 = [(ICQLegacyBannerView *)self delegate];
-  v8 = [v7 presentingViewControllerForTileView:self];
+  delegate2 = [(ICQLegacyBannerView *)self delegate];
+  v8 = [delegate2 presentingViewControllerForTileView:self];
 
   v9 = _ICQGetLogSystem();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -832,7 +832,7 @@ LABEL_11:
     if (v10)
     {
 LABEL_9:
-      [v4 action];
+      [linkCopy action];
       v18 = _ICQStringForAction();
       v20 = 138543362;
       v21 = v18;
@@ -846,7 +846,7 @@ LABEL_10:
 
   if (v10)
   {
-    [v4 action];
+    [linkCopy action];
     v11 = _ICQStringForAction();
     v20 = 138543362;
     v21 = v11;
@@ -854,15 +854,15 @@ LABEL_10:
   }
 
   v12 = [ICQPremiumFlowManager alloc];
-  v13 = [(ICQTileView *)self premiumOffer];
-  v14 = [(ICQUpgradeFlowManager *)v12 initWithOffer:v13];
+  premiumOffer = [(ICQTileView *)self premiumOffer];
+  v14 = [(ICQUpgradeFlowManager *)v12 initWithOffer:premiumOffer];
 
   [(ICQUpgradeFlowManager *)v14 setDelegate:self];
-  v15 = [(ICQLegacyBannerView *)self flowOptions];
-  [(ICQUpgradeFlowManager *)v14 setFlowOptions:v15];
+  flowOptions = [(ICQLegacyBannerView *)self flowOptions];
+  [(ICQUpgradeFlowManager *)v14 setFlowOptions:flowOptions];
 
-  v16 = [v4 serverUIURL];
-  [(ICQPremiumFlowManager *)v14 beginPremiumFlowWithURL:v16];
+  serverUIURL = [linkCopy serverUIURL];
+  [(ICQPremiumFlowManager *)v14 beginPremiumFlowWithURL:serverUIURL];
 
   [(ICQTileView *)self setLocalFlowManager:v14];
   v17 = 1;

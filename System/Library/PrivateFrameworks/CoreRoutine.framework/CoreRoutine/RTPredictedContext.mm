@@ -1,87 +1,87 @@
 @interface RTPredictedContext
-+ (unint64_t)maskForSources:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (RTPredictedContext)initWithCoder:(id)a3;
-- (RTPredictedContext)initWithPredictedContextDateInterval:(id)a3 predictionSources:(id)a4 probability:(double)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (unint64_t)maskForSources:(id)sources;
+- (BOOL)isEqual:(id)equal;
+- (RTPredictedContext)initWithCoder:(id)coder;
+- (RTPredictedContext)initWithPredictedContextDateInterval:(id)interval predictionSources:(id)sources probability:(double)probability;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTPredictedContext
 
-- (RTPredictedContext)initWithPredictedContextDateInterval:(id)a3 predictionSources:(id)a4 probability:(double)a5
+- (RTPredictedContext)initWithPredictedContextDateInterval:(id)interval predictionSources:(id)sources probability:(double)probability
 {
-  v9 = a3;
-  v10 = a4;
+  intervalCopy = interval;
+  sourcesCopy = sources;
   v14.receiver = self;
   v14.super_class = RTPredictedContext;
   v11 = [(RTPredictedContext *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_dateInterval, a3);
-    objc_storeStrong(&v12->_predictionSources, a4);
-    v12->_probability = a5;
+    objc_storeStrong(&v11->_dateInterval, interval);
+    objc_storeStrong(&v12->_predictionSources, sources);
+    v12->_probability = probability;
   }
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   dateInterval = self->_dateInterval;
-  v5 = a3;
-  [v5 encodeObject:dateInterval forKey:@"dateInterval"];
-  [v5 encodeObject:self->_predictionSources forKey:@"predictionSources"];
-  [v5 encodeDouble:@"probability" forKey:self->_probability];
+  coderCopy = coder;
+  [coderCopy encodeObject:dateInterval forKey:@"dateInterval"];
+  [coderCopy encodeObject:self->_predictionSources forKey:@"predictionSources"];
+  [coderCopy encodeDouble:@"probability" forKey:self->_probability];
 }
 
-- (RTPredictedContext)initWithCoder:(id)a3
+- (RTPredictedContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = RTPredictedContext;
   v5 = [(RTPredictedContext *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
     dateInterval = v5->_dateInterval;
     v5->_dateInterval = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"predictionSources"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"predictionSources"];
     predictionSources = v5->_predictionSources;
     v5->_predictionSources = v11;
 
-    [v4 decodeDoubleForKey:@"probability"];
+    [coderCopy decodeDoubleForKey:@"probability"];
     v5->_probability = v13;
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(RTPredictedContext *)self dateInterval];
-    v8 = [(RTPredictedContext *)v6 dateInterval];
-    if ([v7 isEqual:v8])
+    dateInterval = [(RTPredictedContext *)self dateInterval];
+    dateInterval2 = [(RTPredictedContext *)v6 dateInterval];
+    if ([dateInterval isEqual:dateInterval2])
     {
-      v9 = [(RTPredictedContext *)self predictionSources];
-      v10 = [(RTPredictedContext *)self predictionSources];
-      if ([v9 isEqualToArray:v10])
+      predictionSources = [(RTPredictedContext *)self predictionSources];
+      predictionSources2 = [(RTPredictedContext *)self predictionSources];
+      if ([predictionSources isEqualToArray:predictionSources2])
       {
         [(RTPredictedContext *)self probability];
         v12 = v11;
@@ -109,7 +109,7 @@
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [RTPredictedContext alloc];
   dateInterval = self->_dateInterval;
@@ -122,19 +122,19 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(RTPredictedContext *)self dateInterval];
+  dateInterval = [(RTPredictedContext *)self dateInterval];
   [(RTPredictedContext *)self probability];
   v6 = v5;
-  v7 = [(RTPredictedContext *)self predictionSources];
-  v8 = [v3 stringWithFormat:@"dateInterval, %@, probability, %.2f, predictionSources, %@", v4, v6, v7];
+  predictionSources = [(RTPredictedContext *)self predictionSources];
+  v8 = [v3 stringWithFormat:@"dateInterval, %@, probability, %.2f, predictionSources, %@", dateInterval, v6, predictionSources];
 
   return v8;
 }
 
-+ (unint64_t)maskForSources:(id)a3
++ (unint64_t)maskForSources:(id)sources
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sourcesCopy = sources;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
@@ -148,7 +148,7 @@
       *&buf[12] = 2112;
       *&buf[14] = v12;
       *&buf[22] = 2117;
-      v25 = v4;
+      v25 = sourcesCopy;
       _os_log_debug_impl(&dword_1BF1C4000, v5, OS_LOG_TYPE_DEBUG, "%@, %@, %{sensitive}@", buf, 0x20u);
     }
   }
@@ -162,7 +162,7 @@
   v17[2] = __37__RTPredictedContext_maskForSources___block_invoke;
   v17[3] = &unk_1E80B4C80;
   v17[4] = buf;
-  [v4 enumerateObjectsUsingBlock:v17];
+  [sourcesCopy enumerateObjectsUsingBlock:v17];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);

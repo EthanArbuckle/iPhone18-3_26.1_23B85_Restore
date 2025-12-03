@@ -1,10 +1,10 @@
 @interface STUIStatusBarIndicatorLiquidDetectionItem
-- (id)systemImageNameForUpdate:(id)a3;
+- (id)systemImageNameForUpdate:(id)update;
 @end
 
 @implementation STUIStatusBarIndicatorLiquidDetectionItem
 
-- (id)systemImageNameForUpdate:(id)a3
+- (id)systemImageNameForUpdate:(id)update
 {
   if ([(STUIStatusBarIndicatorLiquidDetectionItem *)self useFullColorIndicator])
   {

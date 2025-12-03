@@ -1,32 +1,32 @@
 @interface CCSetChangeXPCListener
-- (BOOL)handlesUpdateForSet:(id)a3;
-- (CCSetChangeXPCListener)initWithIdentifier:(id)a3 queue:(id)a4 handlerBlock:(id)a5 batchHandlerBlock:(id)a6 useCase:(id)a7;
+- (BOOL)handlesUpdateForSet:(id)set;
+- (CCSetChangeXPCListener)initWithIdentifier:(id)identifier queue:(id)queue handlerBlock:(id)block batchHandlerBlock:(id)handlerBlock useCase:(id)case;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation CCSetChangeXPCListener
 
-- (CCSetChangeXPCListener)initWithIdentifier:(id)a3 queue:(id)a4 handlerBlock:(id)a5 batchHandlerBlock:(id)a6 useCase:(id)a7
+- (CCSetChangeXPCListener)initWithIdentifier:(id)identifier queue:(id)queue handlerBlock:(id)block batchHandlerBlock:(id)handlerBlock useCase:(id)case
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  blockCopy = block;
+  handlerBlockCopy = handlerBlock;
+  caseCopy = case;
   v28.receiver = self;
   v28.super_class = CCSetChangeXPCListener;
   v18 = [(CCSetChangeXPCListener *)&v28 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_identifier, a3);
-    objc_storeStrong(&v19->_queue, a4);
-    v20 = _Block_copy(v15);
+    objc_storeStrong(&v18->_identifier, identifier);
+    objc_storeStrong(&v19->_queue, queue);
+    v20 = _Block_copy(blockCopy);
     handlerBlock = v19->_handlerBlock;
     v19->_handlerBlock = v20;
 
-    v22 = _Block_copy(v16);
+    v22 = _Block_copy(handlerBlockCopy);
     batchHandlerBlock = v19->_batchHandlerBlock;
     v19->_batchHandlerBlock = v22;
 
@@ -37,7 +37,7 @@
       v19->_setChangeQueue = v24;
     }
 
-    objc_storeStrong(&v19->_useCase, a7);
+    objc_storeStrong(&v19->_useCase, case);
     v26 = +[CCSetChangeXPCEventHandler sharedInstance];
     [v26 addListener:v19];
   }
@@ -45,9 +45,9 @@
   return v19;
 }
 
-- (BOOL)handlesUpdateForSet:(id)a3
+- (BOOL)handlesUpdateForSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   if ([(NSString *)self->_useCase isEqualToString:*MEMORY[0x1E698E948]])
   {
     v5 = 1;
@@ -57,9 +57,9 @@
   {
     if (!self->_listeningProcess || !self->_readableSetIdentifiers)
     {
-      v6 = [MEMORY[0x1E698E9D8] current];
+      current = [MEMORY[0x1E698E9D8] current];
       listeningProcess = self->_listeningProcess;
-      self->_listeningProcess = v6;
+      self->_listeningProcess = current;
 
       v8 = [MEMORY[0x1E698E970] policyForProcess:self->_listeningProcess connectionFlags:0 useCase:self->_useCase];
       v9 = [v8 explicitlyAuthorizedResourcesOfType:4 withAccessMode:1];
@@ -68,7 +68,7 @@
     }
 
     v11 = CCTypeIdentifierRegistryBridge();
-    v12 = [v11 setIdentifierForItemType:{objc_msgSend(v4, "itemType")}];
+    v12 = [v11 setIdentifierForItemType:{objc_msgSend(setCopy, "itemType")}];
 
     if (v12)
     {

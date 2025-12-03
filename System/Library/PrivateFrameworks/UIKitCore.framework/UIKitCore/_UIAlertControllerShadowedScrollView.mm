@@ -1,18 +1,18 @@
 @interface _UIAlertControllerShadowedScrollView
-- (CGRect)_boundsForPinningToBottomWithNewBounds:(CGRect)a3;
+- (CGRect)_boundsForPinningToBottomWithNewBounds:(CGRect)bounds;
 - (void)_updateScrollabilityAndShadow;
-- (void)setBounds:(CGRect)a3;
-- (void)setContentSize:(CGSize)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContentSize:(CGSize)size;
 @end
 
 @implementation _UIAlertControllerShadowedScrollView
 
-- (CGRect)_boundsForPinningToBottomWithNewBounds:(CGRect)a3
+- (CGRect)_boundsForPinningToBottomWithNewBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self bounds];
   if (v10 != width || v9 != height)
   {
@@ -40,12 +40,12 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if ([(_UIAlertControllerShadowedScrollView *)self shouldPinToBottomOnResize])
   {
     [(_UIAlertControllerShadowedScrollView *)self _boundsForPinningToBottomWithNewBounds:x, y, width, height];
@@ -61,11 +61,11 @@
   [(_UIAlertControllerShadowedScrollView *)self _updateScrollabilityAndShadow];
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
   v4.receiver = self;
   v4.super_class = _UIAlertControllerShadowedScrollView;
-  [(UIScrollView *)&v4 setContentSize:a3.width, a3.height];
+  [(UIScrollView *)&v4 setContentSize:size.width, size.height];
   [(_UIAlertControllerShadowedScrollView *)self _updateScrollabilityAndShadow];
 }
 
@@ -79,10 +79,10 @@
   v10 = v9;
   [(UIScrollView *)self contentSize];
   v12 = v11;
-  v13 = [(UIScrollView *)self isScrollEnabled];
+  isScrollEnabled = [(UIScrollView *)self isScrollEnabled];
   if (v12 > v10)
   {
-    if (!v13)
+    if (!isScrollEnabled)
     {
       [(UIScrollView *)self setScrollEnabled:1];
     }
@@ -183,7 +183,7 @@
     goto LABEL_23;
   }
 
-  if (v13)
+  if (isScrollEnabled)
   {
     [(UIScrollView *)self setScrollEnabled:0];
   }

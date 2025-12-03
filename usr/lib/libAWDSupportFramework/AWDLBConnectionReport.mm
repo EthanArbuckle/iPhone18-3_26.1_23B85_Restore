@@ -1,31 +1,31 @@
 @interface AWDLBConnectionReport
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)resumptionFailureErrorsAtIndex:(unint64_t)a3;
-- (int64_t)connectionReadyTimesAtIndex:(unint64_t)a3;
-- (int64_t)resumptionFailureTimesAtIndex:(unint64_t)a3;
-- (int64_t)resumptionSuccessTimesAtIndex:(unint64_t)a3;
+- (int)resumptionFailureErrorsAtIndex:(unint64_t)index;
+- (int64_t)connectionReadyTimesAtIndex:(unint64_t)index;
+- (int64_t)resumptionFailureTimesAtIndex:(unint64_t)index;
+- (int64_t)resumptionSuccessTimesAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBytesSent:(BOOL)a3;
-- (void)setHasClientConnectionCount:(BOOL)a3;
-- (void)setHasConnectionAttemptCount:(BOOL)a3;
-- (void)setHasConnectionCellularFallbackCount:(BOOL)a3;
-- (void)setHasConnectionDuration:(BOOL)a3;
-- (void)setHasConnectionFailureCount:(BOOL)a3;
-- (void)setHasConnectionSuccessMptcpCount:(BOOL)a3;
-- (void)setHasConnectionSuccessTcpCount:(BOOL)a3;
-- (void)setHasResumptionFailureCount:(BOOL)a3;
-- (void)setHasResumptionSuccessCount:(BOOL)a3;
-- (void)setHasSuspensionCount:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasUpgradeSuccessAndNotNeededCount:(BOOL)a3;
-- (void)setHasUpgradeSuccessAndPrimaryCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasBytesSent:(BOOL)sent;
+- (void)setHasClientConnectionCount:(BOOL)count;
+- (void)setHasConnectionAttemptCount:(BOOL)count;
+- (void)setHasConnectionCellularFallbackCount:(BOOL)count;
+- (void)setHasConnectionDuration:(BOOL)duration;
+- (void)setHasConnectionFailureCount:(BOOL)count;
+- (void)setHasConnectionSuccessMptcpCount:(BOOL)count;
+- (void)setHasConnectionSuccessTcpCount:(BOOL)count;
+- (void)setHasResumptionFailureCount:(BOOL)count;
+- (void)setHasResumptionSuccessCount:(BOOL)count;
+- (void)setHasSuspensionCount:(BOOL)count;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasUpgradeSuccessAndNotNeededCount:(BOOL)count;
+- (void)setHasUpgradeSuccessAndPrimaryCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDLBConnectionReport
@@ -41,9 +41,9 @@
   [(AWDLBConnectionReport *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 16;
   }
@@ -56,9 +56,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasConnectionAttemptCount:(BOOL)a3
+- (void)setHasConnectionAttemptCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 32;
   }
@@ -71,9 +71,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasConnectionSuccessMptcpCount:(BOOL)a3
+- (void)setHasConnectionSuccessMptcpCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 256;
   }
@@ -86,9 +86,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasConnectionSuccessTcpCount:(BOOL)a3
+- (void)setHasConnectionSuccessTcpCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 512;
   }
@@ -101,9 +101,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasConnectionFailureCount:(BOOL)a3
+- (void)setHasConnectionFailureCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 128;
   }
@@ -116,9 +116,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasConnectionCellularFallbackCount:(BOOL)a3
+- (void)setHasConnectionCellularFallbackCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 64;
   }
@@ -131,21 +131,21 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (int64_t)connectionReadyTimesAtIndex:(unint64_t)a3
+- (int64_t)connectionReadyTimesAtIndex:(unint64_t)index
 {
   p_connectionReadyTimes = &self->_connectionReadyTimes;
   count = self->_connectionReadyTimes.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_connectionReadyTimes->list[a3];
+  return p_connectionReadyTimes->list[index];
 }
 
-- (void)setHasSuspensionCount:(BOOL)a3
+- (void)setHasSuspensionCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4096;
   }
@@ -158,9 +158,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasResumptionSuccessCount:(BOOL)a3
+- (void)setHasResumptionSuccessCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2048;
   }
@@ -173,9 +173,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasResumptionFailureCount:(BOOL)a3
+- (void)setHasResumptionFailureCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 1024;
   }
@@ -188,45 +188,45 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (int)resumptionFailureErrorsAtIndex:(unint64_t)a3
+- (int)resumptionFailureErrorsAtIndex:(unint64_t)index
 {
   p_resumptionFailureErrors = &self->_resumptionFailureErrors;
   count = self->_resumptionFailureErrors.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_resumptionFailureErrors->list[a3];
+  return p_resumptionFailureErrors->list[index];
 }
 
-- (int64_t)resumptionSuccessTimesAtIndex:(unint64_t)a3
+- (int64_t)resumptionSuccessTimesAtIndex:(unint64_t)index
 {
   p_resumptionSuccessTimes = &self->_resumptionSuccessTimes;
   count = self->_resumptionSuccessTimes.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_resumptionSuccessTimes->list[a3];
+  return p_resumptionSuccessTimes->list[index];
 }
 
-- (int64_t)resumptionFailureTimesAtIndex:(unint64_t)a3
+- (int64_t)resumptionFailureTimesAtIndex:(unint64_t)index
 {
   p_resumptionFailureTimes = &self->_resumptionFailureTimes;
   count = self->_resumptionFailureTimes.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_resumptionFailureTimes->list[a3];
+  return p_resumptionFailureTimes->list[index];
 }
 
-- (void)setHasUpgradeSuccessAndPrimaryCount:(BOOL)a3
+- (void)setHasUpgradeSuccessAndPrimaryCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x4000;
   }
@@ -239,9 +239,9 @@
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasUpgradeSuccessAndNotNeededCount:(BOOL)a3
+- (void)setHasUpgradeSuccessAndNotNeededCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x2000;
   }
@@ -254,9 +254,9 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasConnectionDuration:(BOOL)a3
+- (void)setHasConnectionDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 8;
   }
@@ -269,9 +269,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasBytesSent:(BOOL)a3
+- (void)setHasBytesSent:(BOOL)sent
 {
-  if (a3)
+  if (sent)
   {
     v3 = 2;
   }
@@ -284,9 +284,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasClientConnectionCount:(BOOL)a3
+- (void)setHasClientConnectionCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -308,11 +308,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -331,7 +331,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_connectionAttemptCount), @"connection_attempt_count"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_connectionAttemptCount), @"connection_attempt_count"}];
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -345,7 +345,7 @@ LABEL_4:
   }
 
 LABEL_22:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_connectionSuccessMptcpCount), @"connection_success_mptcp_count"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_connectionSuccessMptcpCount), @"connection_success_mptcp_count"}];
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -359,7 +359,7 @@ LABEL_5:
   }
 
 LABEL_23:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_connectionSuccessTcpCount), @"connection_success_tcp_count"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_connectionSuccessTcpCount), @"connection_success_tcp_count"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -373,19 +373,19 @@ LABEL_6:
   }
 
 LABEL_24:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_connectionFailureCount), @"connection_failure_count"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_connectionFailureCount), @"connection_failure_count"}];
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_7:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_connectionCellularFallbackCount), @"connection_cellular_fallback_count"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_connectionCellularFallbackCount), @"connection_cellular_fallback_count"}];
   }
 
 LABEL_8:
-  [v3 setObject:PBRepeatedInt64NSArray() forKey:@"connection_ready_times"];
+  [dictionary setObject:PBRepeatedInt64NSArray() forKey:@"connection_ready_times"];
   v5 = self->_has;
   if ((v5 & 0x1000) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_suspensionCount), @"suspension_count"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_suspensionCount), @"suspension_count"}];
     v5 = self->_has;
     if ((v5 & 0x800) == 0)
     {
@@ -404,21 +404,21 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_resumptionSuccessCount), @"resumption_success_count"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_resumptionSuccessCount), @"resumption_success_count"}];
   if ((*&self->_has & 0x400) != 0)
   {
 LABEL_11:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_resumptionFailureCount), @"resumption_failure_count"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_resumptionFailureCount), @"resumption_failure_count"}];
   }
 
 LABEL_12:
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"resumption_failure_errors"];
-  [v3 setObject:PBRepeatedInt64NSArray() forKey:@"resumption_success_times"];
-  [v3 setObject:PBRepeatedInt64NSArray() forKey:@"resumption_failure_times"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"resumption_failure_errors"];
+  [dictionary setObject:PBRepeatedInt64NSArray() forKey:@"resumption_success_times"];
+  [dictionary setObject:PBRepeatedInt64NSArray() forKey:@"resumption_failure_times"];
   v6 = self->_has;
   if ((v6 & 0x4000) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_upgradeSuccessAndPrimaryCount), @"upgrade_success_and_primary_count"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_upgradeSuccessAndPrimaryCount), @"upgrade_success_and_primary_count"}];
     v6 = self->_has;
     if ((v6 & 0x2000) == 0)
     {
@@ -437,7 +437,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_upgradeSuccessAndNotNeededCount), @"upgrade_success_and_not_needed_count"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_upgradeSuccessAndNotNeededCount), @"upgrade_success_and_not_needed_count"}];
   v6 = self->_has;
   if ((v6 & 8) == 0)
   {
@@ -451,7 +451,7 @@ LABEL_15:
   }
 
 LABEL_31:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_connectionDuration), @"connection_duration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_connectionDuration), @"connection_duration"}];
   v6 = self->_has;
   if ((v6 & 2) == 0)
   {
@@ -462,17 +462,17 @@ LABEL_16:
     }
 
 LABEL_33:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_bytesReceived), @"bytes_received"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_bytesReceived), @"bytes_received"}];
     if ((*&self->_has & 4) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_18;
   }
 
 LABEL_32:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_bytesSent), @"bytes_sent"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_bytesSent), @"bytes_sent"}];
   v6 = self->_has;
   if (v6)
   {
@@ -483,13 +483,13 @@ LABEL_17:
   if ((v6 & 4) != 0)
   {
 LABEL_18:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_clientConnectionCount), @"client_connection_count"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_clientConnectionCount), @"client_connection_count"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 0x10) != 0)
@@ -758,13 +758,13 @@ LABEL_38:
   PBDataWriterWriteInt64Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    *(a3 + 17) = self->_timestamp;
-    *(a3 + 92) |= 0x10u;
+    *(to + 17) = self->_timestamp;
+    *(to + 92) |= 0x10u;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -783,8 +783,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 36) = self->_connectionAttemptCount;
-  *(a3 + 92) |= 0x20u;
+  *(to + 36) = self->_connectionAttemptCount;
+  *(to + 92) |= 0x20u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -798,8 +798,8 @@ LABEL_4:
   }
 
 LABEL_38:
-  *(a3 + 39) = self->_connectionSuccessMptcpCount;
-  *(a3 + 92) |= 0x100u;
+  *(to + 39) = self->_connectionSuccessMptcpCount;
+  *(to + 92) |= 0x100u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -810,8 +810,8 @@ LABEL_5:
     }
 
 LABEL_40:
-    *(a3 + 38) = self->_connectionFailureCount;
-    *(a3 + 92) |= 0x80u;
+    *(to + 38) = self->_connectionFailureCount;
+    *(to + 92) |= 0x80u;
     if ((*&self->_has & 0x40) == 0)
     {
       goto LABEL_8;
@@ -821,8 +821,8 @@ LABEL_40:
   }
 
 LABEL_39:
-  *(a3 + 40) = self->_connectionSuccessTcpCount;
-  *(a3 + 92) |= 0x200u;
+  *(to + 40) = self->_connectionSuccessTcpCount;
+  *(to + 92) |= 0x200u;
   has = self->_has;
   if ((has & 0x80) != 0)
   {
@@ -833,21 +833,21 @@ LABEL_6:
   if ((has & 0x40) != 0)
   {
 LABEL_7:
-    *(a3 + 37) = self->_connectionCellularFallbackCount;
-    *(a3 + 92) |= 0x40u;
+    *(to + 37) = self->_connectionCellularFallbackCount;
+    *(to + 92) |= 0x40u;
   }
 
 LABEL_8:
   if ([(AWDLBConnectionReport *)self connectionReadyTimesCount])
   {
-    [a3 clearConnectionReadyTimes];
-    v6 = [(AWDLBConnectionReport *)self connectionReadyTimesCount];
-    if (v6)
+    [to clearConnectionReadyTimes];
+    connectionReadyTimesCount = [(AWDLBConnectionReport *)self connectionReadyTimesCount];
+    if (connectionReadyTimesCount)
     {
-      v7 = v6;
+      v7 = connectionReadyTimesCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addConnectionReadyTimes:{-[AWDLBConnectionReport connectionReadyTimesAtIndex:](self, "connectionReadyTimesAtIndex:", i)}];
+        [to addConnectionReadyTimes:{-[AWDLBConnectionReport connectionReadyTimesAtIndex:](self, "connectionReadyTimesAtIndex:", i)}];
       }
     }
   }
@@ -861,8 +861,8 @@ LABEL_8:
     }
 
 LABEL_43:
-    *(a3 + 42) = self->_resumptionSuccessCount;
-    *(a3 + 92) |= 0x800u;
+    *(to + 42) = self->_resumptionSuccessCount;
+    *(to + 92) |= 0x800u;
     if ((*&self->_has & 0x400) == 0)
     {
       goto LABEL_16;
@@ -871,8 +871,8 @@ LABEL_43:
     goto LABEL_15;
   }
 
-  *(a3 + 43) = self->_suspensionCount;
-  *(a3 + 92) |= 0x1000u;
+  *(to + 43) = self->_suspensionCount;
+  *(to + 92) |= 0x1000u;
   v9 = self->_has;
   if ((v9 & 0x800) != 0)
   {
@@ -883,49 +883,49 @@ LABEL_14:
   if ((v9 & 0x400) != 0)
   {
 LABEL_15:
-    *(a3 + 41) = self->_resumptionFailureCount;
-    *(a3 + 92) |= 0x400u;
+    *(to + 41) = self->_resumptionFailureCount;
+    *(to + 92) |= 0x400u;
   }
 
 LABEL_16:
   if ([(AWDLBConnectionReport *)self resumptionFailureErrorsCount])
   {
-    [a3 clearResumptionFailureErrors];
-    v10 = [(AWDLBConnectionReport *)self resumptionFailureErrorsCount];
-    if (v10)
+    [to clearResumptionFailureErrors];
+    resumptionFailureErrorsCount = [(AWDLBConnectionReport *)self resumptionFailureErrorsCount];
+    if (resumptionFailureErrorsCount)
     {
-      v11 = v10;
+      v11 = resumptionFailureErrorsCount;
       for (j = 0; j != v11; ++j)
       {
-        [a3 addResumptionFailureErrors:{-[AWDLBConnectionReport resumptionFailureErrorsAtIndex:](self, "resumptionFailureErrorsAtIndex:", j)}];
+        [to addResumptionFailureErrors:{-[AWDLBConnectionReport resumptionFailureErrorsAtIndex:](self, "resumptionFailureErrorsAtIndex:", j)}];
       }
     }
   }
 
   if ([(AWDLBConnectionReport *)self resumptionSuccessTimesCount])
   {
-    [a3 clearResumptionSuccessTimes];
-    v13 = [(AWDLBConnectionReport *)self resumptionSuccessTimesCount];
-    if (v13)
+    [to clearResumptionSuccessTimes];
+    resumptionSuccessTimesCount = [(AWDLBConnectionReport *)self resumptionSuccessTimesCount];
+    if (resumptionSuccessTimesCount)
     {
-      v14 = v13;
+      v14 = resumptionSuccessTimesCount;
       for (k = 0; k != v14; ++k)
       {
-        [a3 addResumptionSuccessTimes:{-[AWDLBConnectionReport resumptionSuccessTimesAtIndex:](self, "resumptionSuccessTimesAtIndex:", k)}];
+        [to addResumptionSuccessTimes:{-[AWDLBConnectionReport resumptionSuccessTimesAtIndex:](self, "resumptionSuccessTimesAtIndex:", k)}];
       }
     }
   }
 
   if ([(AWDLBConnectionReport *)self resumptionFailureTimesCount])
   {
-    [a3 clearResumptionFailureTimes];
-    v16 = [(AWDLBConnectionReport *)self resumptionFailureTimesCount];
-    if (v16)
+    [to clearResumptionFailureTimes];
+    resumptionFailureTimesCount = [(AWDLBConnectionReport *)self resumptionFailureTimesCount];
+    if (resumptionFailureTimesCount)
     {
-      v17 = v16;
+      v17 = resumptionFailureTimesCount;
       for (m = 0; m != v17; ++m)
       {
-        [a3 addResumptionFailureTimes:{-[AWDLBConnectionReport resumptionFailureTimesAtIndex:](self, "resumptionFailureTimesAtIndex:", m)}];
+        [to addResumptionFailureTimes:{-[AWDLBConnectionReport resumptionFailureTimesAtIndex:](self, "resumptionFailureTimesAtIndex:", m)}];
       }
     }
   }
@@ -933,8 +933,8 @@ LABEL_16:
   v19 = self->_has;
   if ((v19 & 0x4000) != 0)
   {
-    *(a3 + 45) = self->_upgradeSuccessAndPrimaryCount;
-    *(a3 + 92) |= 0x4000u;
+    *(to + 45) = self->_upgradeSuccessAndPrimaryCount;
+    *(to + 92) |= 0x4000u;
     v19 = self->_has;
     if ((v19 & 0x2000) == 0)
     {
@@ -953,8 +953,8 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  *(a3 + 44) = self->_upgradeSuccessAndNotNeededCount;
-  *(a3 + 92) |= 0x2000u;
+  *(to + 44) = self->_upgradeSuccessAndNotNeededCount;
+  *(to + 92) |= 0x2000u;
   v19 = self->_has;
   if ((v19 & 8) == 0)
   {
@@ -968,8 +968,8 @@ LABEL_31:
   }
 
 LABEL_47:
-  *(a3 + 16) = self->_connectionDuration;
-  *(a3 + 92) |= 8u;
+  *(to + 16) = self->_connectionDuration;
+  *(to + 92) |= 8u;
   v19 = self->_has;
   if ((v19 & 2) == 0)
   {
@@ -983,8 +983,8 @@ LABEL_32:
   }
 
 LABEL_48:
-  *(a3 + 14) = self->_bytesSent;
-  *(a3 + 92) |= 2u;
+  *(to + 14) = self->_bytesSent;
+  *(to + 92) |= 2u;
   v19 = self->_has;
   if ((v19 & 1) == 0)
   {
@@ -998,21 +998,21 @@ LABEL_33:
   }
 
 LABEL_49:
-  *(a3 + 13) = self->_bytesReceived;
-  *(a3 + 92) |= 1u;
+  *(to + 13) = self->_bytesReceived;
+  *(to + 92) |= 1u;
   if ((*&self->_has & 4) == 0)
   {
     return;
   }
 
 LABEL_34:
-  *(a3 + 15) = self->_clientConnectionCount;
-  *(a3 + 92) |= 4u;
+  *(to + 15) = self->_clientConnectionCount;
+  *(to + 92) |= 4u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if ((has & 0x10) != 0)
@@ -1209,16 +1209,16 @@ LABEL_18:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  IsEqual = [a3 isMemberOfClass:objc_opt_class()];
+  IsEqual = [equal isMemberOfClass:objc_opt_class()];
   if (IsEqual)
   {
     has = self->_has;
-    v7 = *(a3 + 92);
+    v7 = *(equal + 92);
     if ((has & 0x10) != 0)
     {
-      if ((v7 & 0x10) == 0 || self->_timestamp != *(a3 + 17))
+      if ((v7 & 0x10) == 0 || self->_timestamp != *(equal + 17))
       {
         goto LABEL_80;
       }
@@ -1233,7 +1233,7 @@ LABEL_80:
 
     if ((has & 0x20) != 0)
     {
-      if ((v7 & 0x20) == 0 || self->_connectionAttemptCount != *(a3 + 36))
+      if ((v7 & 0x20) == 0 || self->_connectionAttemptCount != *(equal + 36))
       {
         goto LABEL_80;
       }
@@ -1246,33 +1246,33 @@ LABEL_80:
 
     if ((*&self->_has & 0x100) != 0)
     {
-      if ((*(a3 + 92) & 0x100) == 0 || self->_connectionSuccessMptcpCount != *(a3 + 39))
+      if ((*(equal + 92) & 0x100) == 0 || self->_connectionSuccessMptcpCount != *(equal + 39))
       {
         goto LABEL_80;
       }
     }
 
-    else if ((*(a3 + 92) & 0x100) != 0)
+    else if ((*(equal + 92) & 0x100) != 0)
     {
       goto LABEL_80;
     }
 
     if ((*&self->_has & 0x200) != 0)
     {
-      if ((*(a3 + 92) & 0x200) == 0 || self->_connectionSuccessTcpCount != *(a3 + 40))
+      if ((*(equal + 92) & 0x200) == 0 || self->_connectionSuccessTcpCount != *(equal + 40))
       {
         goto LABEL_80;
       }
     }
 
-    else if ((*(a3 + 92) & 0x200) != 0)
+    else if ((*(equal + 92) & 0x200) != 0)
     {
       goto LABEL_80;
     }
 
     if ((has & 0x80) != 0)
     {
-      if ((v7 & 0x80) == 0 || self->_connectionFailureCount != *(a3 + 38))
+      if ((v7 & 0x80) == 0 || self->_connectionFailureCount != *(equal + 38))
       {
         goto LABEL_80;
       }
@@ -1285,7 +1285,7 @@ LABEL_80:
 
     if ((has & 0x40) != 0)
     {
-      if ((v7 & 0x40) == 0 || self->_connectionCellularFallbackCount != *(a3 + 37))
+      if ((v7 & 0x40) == 0 || self->_connectionCellularFallbackCount != *(equal + 37))
       {
         goto LABEL_80;
       }
@@ -1299,42 +1299,42 @@ LABEL_80:
     IsEqual = PBRepeatedInt64IsEqual();
     if (IsEqual)
     {
-      v8 = *(a3 + 92);
+      v8 = *(equal + 92);
       if ((*&self->_has & 0x1000) != 0)
       {
-        if ((*(a3 + 92) & 0x1000) == 0 || self->_suspensionCount != *(a3 + 43))
+        if ((*(equal + 92) & 0x1000) == 0 || self->_suspensionCount != *(equal + 43))
         {
           goto LABEL_80;
         }
       }
 
-      else if ((*(a3 + 92) & 0x1000) != 0)
+      else if ((*(equal + 92) & 0x1000) != 0)
       {
         goto LABEL_80;
       }
 
       if ((*&self->_has & 0x800) != 0)
       {
-        if ((*(a3 + 92) & 0x800) == 0 || self->_resumptionSuccessCount != *(a3 + 42))
+        if ((*(equal + 92) & 0x800) == 0 || self->_resumptionSuccessCount != *(equal + 42))
         {
           goto LABEL_80;
         }
       }
 
-      else if ((*(a3 + 92) & 0x800) != 0)
+      else if ((*(equal + 92) & 0x800) != 0)
       {
         goto LABEL_80;
       }
 
       if ((*&self->_has & 0x400) != 0)
       {
-        if ((*(a3 + 92) & 0x400) == 0 || self->_resumptionFailureCount != *(a3 + 41))
+        if ((*(equal + 92) & 0x400) == 0 || self->_resumptionFailureCount != *(equal + 41))
         {
           goto LABEL_80;
         }
       }
 
-      else if ((*(a3 + 92) & 0x400) != 0)
+      else if ((*(equal + 92) & 0x400) != 0)
       {
         goto LABEL_80;
       }
@@ -1349,36 +1349,36 @@ LABEL_80:
           if (IsEqual)
           {
             v9 = self->_has;
-            v10 = *(a3 + 92);
+            v10 = *(equal + 92);
             if ((v9 & 0x4000) != 0)
             {
-              if ((*(a3 + 92) & 0x4000) == 0 || self->_upgradeSuccessAndPrimaryCount != *(a3 + 45))
+              if ((*(equal + 92) & 0x4000) == 0 || self->_upgradeSuccessAndPrimaryCount != *(equal + 45))
               {
                 goto LABEL_80;
               }
             }
 
-            else if ((*(a3 + 92) & 0x4000) != 0)
+            else if ((*(equal + 92) & 0x4000) != 0)
             {
               goto LABEL_80;
             }
 
             if ((*&self->_has & 0x2000) != 0)
             {
-              if ((*(a3 + 92) & 0x2000) == 0 || self->_upgradeSuccessAndNotNeededCount != *(a3 + 44))
+              if ((*(equal + 92) & 0x2000) == 0 || self->_upgradeSuccessAndNotNeededCount != *(equal + 44))
               {
                 goto LABEL_80;
               }
             }
 
-            else if ((*(a3 + 92) & 0x2000) != 0)
+            else if ((*(equal + 92) & 0x2000) != 0)
             {
               goto LABEL_80;
             }
 
             if ((v9 & 8) != 0)
             {
-              if ((v10 & 8) == 0 || self->_connectionDuration != *(a3 + 16))
+              if ((v10 & 8) == 0 || self->_connectionDuration != *(equal + 16))
               {
                 goto LABEL_80;
               }
@@ -1391,7 +1391,7 @@ LABEL_80:
 
             if ((v9 & 2) != 0)
             {
-              if ((v10 & 2) == 0 || self->_bytesSent != *(a3 + 14))
+              if ((v10 & 2) == 0 || self->_bytesSent != *(equal + 14))
               {
                 goto LABEL_80;
               }
@@ -1404,7 +1404,7 @@ LABEL_80:
 
             if (v9)
             {
-              if ((v10 & 1) == 0 || self->_bytesReceived != *(a3 + 13))
+              if ((v10 & 1) == 0 || self->_bytesReceived != *(equal + 13))
               {
                 goto LABEL_80;
               }
@@ -1418,7 +1418,7 @@ LABEL_80:
             LOBYTE(IsEqual) = (v10 & 4) == 0;
             if ((v9 & 4) != 0)
             {
-              if ((v10 & 4) == 0 || self->_clientConnectionCount != *(a3 + 15))
+              if ((v10 & 4) == 0 || self->_clientConnectionCount != *(equal + 15))
               {
                 goto LABEL_80;
               }
@@ -1636,14 +1636,14 @@ LABEL_27:
   return v23 ^ v24 ^ v22 ^ v21 ^ v20 ^ v4 ^ v6 ^ v7 ^ v8 ^ v5 ^ v9 ^ v10 ^ v11 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 92);
+  v5 = *(from + 92);
   if ((v5 & 0x10) != 0)
   {
-    self->_timestamp = *(a3 + 17);
+    self->_timestamp = *(from + 17);
     *&self->_has |= 0x10u;
-    v5 = *(a3 + 92);
+    v5 = *(from + 92);
     if ((v5 & 0x20) == 0)
     {
 LABEL_3:
@@ -1661,9 +1661,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_connectionAttemptCount = *(a3 + 36);
+  self->_connectionAttemptCount = *(from + 36);
   *&self->_has |= 0x20u;
-  v5 = *(a3 + 92);
+  v5 = *(from + 92);
   if ((v5 & 0x100) == 0)
   {
 LABEL_4:
@@ -1676,9 +1676,9 @@ LABEL_4:
   }
 
 LABEL_34:
-  self->_connectionSuccessMptcpCount = *(a3 + 39);
+  self->_connectionSuccessMptcpCount = *(from + 39);
   *&self->_has |= 0x100u;
-  v5 = *(a3 + 92);
+  v5 = *(from + 92);
   if ((v5 & 0x200) == 0)
   {
 LABEL_5:
@@ -1691,9 +1691,9 @@ LABEL_5:
   }
 
 LABEL_35:
-  self->_connectionSuccessTcpCount = *(a3 + 40);
+  self->_connectionSuccessTcpCount = *(from + 40);
   *&self->_has |= 0x200u;
-  v5 = *(a3 + 92);
+  v5 = *(from + 92);
   if ((v5 & 0x80) == 0)
   {
 LABEL_6:
@@ -1706,32 +1706,32 @@ LABEL_6:
   }
 
 LABEL_36:
-  self->_connectionFailureCount = *(a3 + 38);
+  self->_connectionFailureCount = *(from + 38);
   *&self->_has |= 0x80u;
-  if ((*(a3 + 92) & 0x40) != 0)
+  if ((*(from + 92) & 0x40) != 0)
   {
 LABEL_7:
-    self->_connectionCellularFallbackCount = *(a3 + 37);
+    self->_connectionCellularFallbackCount = *(from + 37);
     *&self->_has |= 0x40u;
   }
 
 LABEL_8:
-  v6 = [a3 connectionReadyTimesCount];
-  if (v6)
+  connectionReadyTimesCount = [from connectionReadyTimesCount];
+  if (connectionReadyTimesCount)
   {
-    v7 = v6;
+    v7 = connectionReadyTimesCount;
     for (i = 0; i != v7; ++i)
     {
-      -[AWDLBConnectionReport addConnectionReadyTimes:](self, "addConnectionReadyTimes:", [a3 connectionReadyTimesAtIndex:i]);
+      -[AWDLBConnectionReport addConnectionReadyTimes:](self, "addConnectionReadyTimes:", [from connectionReadyTimesAtIndex:i]);
     }
   }
 
-  v9 = *(a3 + 92);
+  v9 = *(from + 92);
   if ((v9 & 0x1000) != 0)
   {
-    self->_suspensionCount = *(a3 + 43);
+    self->_suspensionCount = *(from + 43);
     *&self->_has |= 0x1000u;
-    v9 = *(a3 + 92);
+    v9 = *(from + 92);
     if ((v9 & 0x800) == 0)
     {
 LABEL_13:
@@ -1744,57 +1744,57 @@ LABEL_13:
     }
   }
 
-  else if ((*(a3 + 92) & 0x800) == 0)
+  else if ((*(from + 92) & 0x800) == 0)
   {
     goto LABEL_13;
   }
 
-  self->_resumptionSuccessCount = *(a3 + 42);
+  self->_resumptionSuccessCount = *(from + 42);
   *&self->_has |= 0x800u;
-  if ((*(a3 + 92) & 0x400) != 0)
+  if ((*(from + 92) & 0x400) != 0)
   {
 LABEL_14:
-    self->_resumptionFailureCount = *(a3 + 41);
+    self->_resumptionFailureCount = *(from + 41);
     *&self->_has |= 0x400u;
   }
 
 LABEL_15:
-  v10 = [a3 resumptionFailureErrorsCount];
-  if (v10)
+  resumptionFailureErrorsCount = [from resumptionFailureErrorsCount];
+  if (resumptionFailureErrorsCount)
   {
-    v11 = v10;
+    v11 = resumptionFailureErrorsCount;
     for (j = 0; j != v11; ++j)
     {
-      -[AWDLBConnectionReport addResumptionFailureErrors:](self, "addResumptionFailureErrors:", [a3 resumptionFailureErrorsAtIndex:j]);
+      -[AWDLBConnectionReport addResumptionFailureErrors:](self, "addResumptionFailureErrors:", [from resumptionFailureErrorsAtIndex:j]);
     }
   }
 
-  v13 = [a3 resumptionSuccessTimesCount];
-  if (v13)
+  resumptionSuccessTimesCount = [from resumptionSuccessTimesCount];
+  if (resumptionSuccessTimesCount)
   {
-    v14 = v13;
+    v14 = resumptionSuccessTimesCount;
     for (k = 0; k != v14; ++k)
     {
-      -[AWDLBConnectionReport addResumptionSuccessTimes:](self, "addResumptionSuccessTimes:", [a3 resumptionSuccessTimesAtIndex:k]);
+      -[AWDLBConnectionReport addResumptionSuccessTimes:](self, "addResumptionSuccessTimes:", [from resumptionSuccessTimesAtIndex:k]);
     }
   }
 
-  v16 = [a3 resumptionFailureTimesCount];
-  if (v16)
+  resumptionFailureTimesCount = [from resumptionFailureTimesCount];
+  if (resumptionFailureTimesCount)
   {
-    v17 = v16;
+    v17 = resumptionFailureTimesCount;
     for (m = 0; m != v17; ++m)
     {
-      -[AWDLBConnectionReport addResumptionFailureTimes:](self, "addResumptionFailureTimes:", [a3 resumptionFailureTimesAtIndex:m]);
+      -[AWDLBConnectionReport addResumptionFailureTimes:](self, "addResumptionFailureTimes:", [from resumptionFailureTimesAtIndex:m]);
     }
   }
 
-  v19 = *(a3 + 92);
+  v19 = *(from + 92);
   if ((v19 & 0x4000) != 0)
   {
-    self->_upgradeSuccessAndPrimaryCount = *(a3 + 45);
+    self->_upgradeSuccessAndPrimaryCount = *(from + 45);
     *&self->_has |= 0x4000u;
-    v19 = *(a3 + 92);
+    v19 = *(from + 92);
     if ((v19 & 0x2000) == 0)
     {
 LABEL_26:
@@ -1807,14 +1807,14 @@ LABEL_26:
     }
   }
 
-  else if ((*(a3 + 92) & 0x2000) == 0)
+  else if ((*(from + 92) & 0x2000) == 0)
   {
     goto LABEL_26;
   }
 
-  self->_upgradeSuccessAndNotNeededCount = *(a3 + 44);
+  self->_upgradeSuccessAndNotNeededCount = *(from + 44);
   *&self->_has |= 0x2000u;
-  v19 = *(a3 + 92);
+  v19 = *(from + 92);
   if ((v19 & 8) == 0)
   {
 LABEL_27:
@@ -1827,9 +1827,9 @@ LABEL_27:
   }
 
 LABEL_43:
-  self->_connectionDuration = *(a3 + 16);
+  self->_connectionDuration = *(from + 16);
   *&self->_has |= 8u;
-  v19 = *(a3 + 92);
+  v19 = *(from + 92);
   if ((v19 & 2) == 0)
   {
 LABEL_28:
@@ -1842,9 +1842,9 @@ LABEL_28:
   }
 
 LABEL_44:
-  self->_bytesSent = *(a3 + 14);
+  self->_bytesSent = *(from + 14);
   *&self->_has |= 2u;
-  v19 = *(a3 + 92);
+  v19 = *(from + 92);
   if ((v19 & 1) == 0)
   {
 LABEL_29:
@@ -1857,15 +1857,15 @@ LABEL_29:
   }
 
 LABEL_45:
-  self->_bytesReceived = *(a3 + 13);
+  self->_bytesReceived = *(from + 13);
   *&self->_has |= 1u;
-  if ((*(a3 + 92) & 4) == 0)
+  if ((*(from + 92) & 4) == 0)
   {
     return;
   }
 
 LABEL_30:
-  self->_clientConnectionCount = *(a3 + 15);
+  self->_clientConnectionCount = *(from + 15);
   *&self->_has |= 4u;
 }
 

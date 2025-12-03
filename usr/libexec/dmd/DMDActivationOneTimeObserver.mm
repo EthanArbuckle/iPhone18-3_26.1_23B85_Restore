@@ -1,23 +1,23 @@
 @interface DMDActivationOneTimeObserver
-- (BOOL)_extractComponentsFromPredicate:(id)a3;
-- (DMDActivationOneTimeObserver)initWithDelegate:(id)a3 uniqueIdentifier:(id)a4 oneTimePredicate:(id)a5;
-- (id)evaluatePredicateWithError:(id *)a3;
+- (BOOL)_extractComponentsFromPredicate:(id)predicate;
+- (DMDActivationOneTimeObserver)initWithDelegate:(id)delegate uniqueIdentifier:(id)identifier oneTimePredicate:(id)predicate;
+- (id)evaluatePredicateWithError:(id *)error;
 - (void)_registerPredicateObserver;
 - (void)invalidate;
 @end
 
 @implementation DMDActivationOneTimeObserver
 
-- (DMDActivationOneTimeObserver)initWithDelegate:(id)a3 uniqueIdentifier:(id)a4 oneTimePredicate:(id)a5
+- (DMDActivationOneTimeObserver)initWithDelegate:(id)delegate uniqueIdentifier:(id)identifier oneTimePredicate:(id)predicate
 {
-  v8 = a5;
+  predicateCopy = predicate;
   v13.receiver = self;
   v13.super_class = DMDActivationOneTimeObserver;
-  v9 = [(DMDActivationPredicateObserver *)&v13 initWithDelegate:a3 uniqueIdentifier:a4 predicate:v8];
+  v9 = [(DMDActivationPredicateObserver *)&v13 initWithDelegate:delegate uniqueIdentifier:identifier predicate:predicateCopy];
   v10 = v9;
   if (v9)
   {
-    if (![(DMDActivationOneTimeObserver *)v9 _extractComponentsFromPredicate:v8])
+    if (![(DMDActivationOneTimeObserver *)v9 _extractComponentsFromPredicate:predicateCopy])
     {
       v11 = 0;
       goto LABEL_6;
@@ -32,27 +32,27 @@ LABEL_6:
   return v11;
 }
 
-- (id)evaluatePredicateWithError:(id *)a3
+- (id)evaluatePredicateWithError:(id *)error
 {
   v4 = objc_opt_new();
-  v5 = [(DMDActivationOneTimeObserver *)self endDate];
-  -[DMDActivationPredicateObserver setLastPredicateEvaluationValue:](self, "setLastPredicateEvaluationValue:", [v4 compare:v5] == -1);
+  endDate = [(DMDActivationOneTimeObserver *)self endDate];
+  -[DMDActivationPredicateObserver setLastPredicateEvaluationValue:](self, "setLastPredicateEvaluationValue:", [v4 compare:endDate] == -1);
 
   v6 = DMFConfigurationEngineLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(DMDActivationPredicateObserver *)self predicateType];
-    v8 = [(DMDActivationPredicateObserver *)self uniqueIdentifier];
-    v9 = [(DMDActivationPredicateObserver *)self lastPredicateEvaluationValue];
-    v10 = [(DMDActivationOneTimeObserver *)self endDate];
+    predicateType = [(DMDActivationPredicateObserver *)self predicateType];
+    uniqueIdentifier = [(DMDActivationPredicateObserver *)self uniqueIdentifier];
+    lastPredicateEvaluationValue = [(DMDActivationPredicateObserver *)self lastPredicateEvaluationValue];
+    endDate2 = [(DMDActivationOneTimeObserver *)self endDate];
     v13 = 138544386;
-    v14 = v7;
+    v14 = predicateType;
     v15 = 2114;
-    v16 = v8;
+    v16 = uniqueIdentifier;
     v17 = 1024;
-    v18 = v9;
+    v18 = lastPredicateEvaluationValue;
     v19 = 2114;
-    v20 = v10;
+    v20 = endDate2;
     v21 = 2114;
     v22 = v4;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Predicate type: %{public}@ with unique identifier: %{public}@ evaluated predicate: %d, end date: %{public}@, now: %{public}@", &v13, 0x30u);
@@ -66,8 +66,8 @@ LABEL_6:
 - (void)invalidate
 {
   [@"com.apple.alarm" UTF8String];
-  v3 = [(DMDActivationPredicateObserver *)self uniqueIdentifier];
-  [v3 UTF8String];
+  uniqueIdentifier = [(DMDActivationPredicateObserver *)self uniqueIdentifier];
+  [uniqueIdentifier UTF8String];
   xpc_set_event();
 
   v4.receiver = self;
@@ -75,13 +75,13 @@ LABEL_6:
   [(DMDActivationPredicateObserver *)&v4 invalidate];
 }
 
-- (BOOL)_extractComponentsFromPredicate:(id)a3
+- (BOOL)_extractComponentsFromPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = objc_opt_new();
-  v6 = [v4 payloadDateTime];
+  payloadDateTime = [predicateCopy payloadDateTime];
 
-  if (!v6)
+  if (!payloadDateTime)
   {
     v7 = DMFConfigurationEngineLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -94,12 +94,12 @@ LABEL_6:
 
   v7 = objc_opt_new();
   [v7 setFormatOptions:1907];
-  v8 = [v7 dateFromString:v6];
+  v8 = [v7 dateFromString:payloadDateTime];
   [(DMDActivationOneTimeObserver *)self setEndDate:v8];
 
-  v9 = [(DMDActivationOneTimeObserver *)self endDate];
+  endDate = [(DMDActivationOneTimeObserver *)self endDate];
 
-  if (!v9)
+  if (!endDate)
   {
     v14 = DMFConfigurationEngineLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -116,19 +116,19 @@ LABEL_10:
   v10 = 1;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v11 = [(DMDActivationPredicateObserver *)self predicateType];
-    v12 = [(DMDActivationPredicateObserver *)self uniqueIdentifier];
-    v13 = [(DMDActivationOneTimeObserver *)self endDate];
+    predicateType = [(DMDActivationPredicateObserver *)self predicateType];
+    uniqueIdentifier = [(DMDActivationPredicateObserver *)self uniqueIdentifier];
+    endDate2 = [(DMDActivationOneTimeObserver *)self endDate];
     v16 = 138544642;
-    v17 = v11;
+    v17 = predicateType;
     v18 = 2114;
-    v19 = v12;
+    v19 = uniqueIdentifier;
     v20 = 2048;
     v21 = 0;
     v22 = 2114;
-    v23 = v6;
+    v23 = payloadDateTime;
     v24 = 2114;
-    v25 = v13;
+    v25 = endDate2;
     v26 = 2114;
     v27 = v5;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Predicate type: %{public}@ with unique identifier: %{public}@ extracted seconds: %f, end time string: %{public}@, end date: %{public}@, now: %{public}@", &v16, 0x3Eu);
@@ -142,11 +142,11 @@ LABEL_11:
 - (void)_registerPredicateObserver
 {
   v3 = objc_opt_new();
-  v4 = [(DMDActivationPredicateObserver *)self uniqueIdentifier];
-  v5 = [NSString stringWithFormat:@"%@.%@", @"com.apple.dmd.alarm", v4];
+  uniqueIdentifier = [(DMDActivationPredicateObserver *)self uniqueIdentifier];
+  v5 = [NSString stringWithFormat:@"%@.%@", @"com.apple.dmd.alarm", uniqueIdentifier];
 
-  v6 = [(DMDActivationOneTimeObserver *)self endDate];
-  [v6 timeIntervalSinceDate:v3];
+  endDate = [(DMDActivationOneTimeObserver *)self endDate];
+  [endDate timeIntervalSinceDate:v3];
   v8 = v7;
 
   if (v8 <= 0.0)
@@ -160,24 +160,24 @@ LABEL_11:
 
   else
   {
-    v9 = [(DMDActivationOneTimeObserver *)self endDate];
-    [v9 timeIntervalSince1970];
+    endDate2 = [(DMDActivationOneTimeObserver *)self endDate];
+    [endDate2 timeIntervalSince1970];
     v11 = (v10 * 1000000000.0);
 
     v12 = DMFConfigurationEngineLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(DMDActivationPredicateObserver *)self predicateType];
-      v14 = [(DMDActivationPredicateObserver *)self uniqueIdentifier];
-      v15 = [(DMDActivationOneTimeObserver *)self endDate];
+      predicateType = [(DMDActivationPredicateObserver *)self predicateType];
+      uniqueIdentifier2 = [(DMDActivationPredicateObserver *)self uniqueIdentifier];
+      endDate3 = [(DMDActivationOneTimeObserver *)self endDate];
       *buf = 138544642;
-      v18 = v13;
+      v18 = predicateType;
       v19 = 2114;
-      v20 = v14;
+      v20 = uniqueIdentifier2;
       v21 = 2114;
       v22 = v5;
       v23 = 2114;
-      v24 = v15;
+      v24 = endDate3;
       v25 = 2048;
       v26 = v11;
       v27 = 2114;

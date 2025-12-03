@@ -1,13 +1,13 @@
 @interface VCPBlurAnalyzer
-- (float)computeRegionSharpness:(char *)a3 width:(int)a4 height:(int)a5 stride:(int64_t)a6;
-- (int)computeSharpnessScore:(float *)a3 forObjects:(id)a4 inImage:(__CVBuffer *)a5;
+- (float)computeRegionSharpness:(char *)sharpness width:(int)width height:(int)height stride:(int64_t)stride;
+- (int)computeSharpnessScore:(float *)score forObjects:(id)objects inImage:(__CVBuffer *)image;
 @end
 
 @implementation VCPBlurAnalyzer
 
-- (float)computeRegionSharpness:(char *)a3 width:(int)a4 height:(int)a5 stride:(int64_t)a6
+- (float)computeRegionSharpness:(char *)sharpness width:(int)width height:(int)height stride:(int64_t)stride
 {
-  if (a5 < 3)
+  if (height < 3)
   {
     v11 = 0;
     v10 = 0;
@@ -23,13 +23,13 @@
     v9 = 0;
     v10 = 0;
     v11 = 0;
-    v12 = &a3[a6];
-    v13 = a5 - 2;
+    v12 = &sharpness[stride];
+    v13 = height - 2;
     v14 = 1;
-    v15 = &a3[2 * a6];
+    v15 = &sharpness[2 * stride];
     do
     {
-      if (a4 >= 3)
+      if (width >= 3)
       {
         v16 = 1;
         do
@@ -59,7 +59,7 @@
             ++v10;
           }
 
-          v21 = a3[v16];
+          v21 = sharpness[v16];
           v22 = v15[v16];
           v23 = v21 - v22;
           if (v21 - v22 < 0)
@@ -87,12 +87,12 @@
           ++v16;
         }
 
-        while (a4 - 1 != v16);
+        while (width - 1 != v16);
       }
 
-      v12 += a6;
-      a3 += a6;
-      v15 += a6;
+      v12 += stride;
+      sharpness += stride;
+      v15 += stride;
     }
 
     while (v14++ != v13);
@@ -136,29 +136,29 @@
   return 1.0 - (((v26 * v31) + (v27 * v30)) / (v30 + v31));
 }
 
-- (int)computeSharpnessScore:(float *)a3 forObjects:(id)a4 inImage:(__CVBuffer *)a5
+- (int)computeSharpnessScore:(float *)score forObjects:(id)objects inImage:(__CVBuffer *)image
 {
   v56 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  pixelBuffer = a5;
+  objectsCopy = objects;
+  pixelBuffer = image;
   unlockFlags = 1;
-  if (a5)
+  if (image)
   {
-    v9 = CVPixelBufferLockBaseAddress(a5, 1uLL);
+    v9 = CVPixelBufferLockBaseAddress(image, 1uLL);
     v51 = v9;
     if (!v9 || os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR) && (LODWORD(buf.a) = 134218240, *(&buf.a + 4) = pixelBuffer, WORD2(buf.b) = 1024, *(&buf.b + 6) = v9, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", &buf, 0x12u), (v9 = v51) == 0))
     {
-      Width = CVPixelBufferGetWidth(a5);
-      Height = CVPixelBufferGetHeight(a5);
-      BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a5, 0);
-      v42 = a3;
-      BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a5, 0);
+      Width = CVPixelBufferGetWidth(image);
+      Height = CVPixelBufferGetHeight(image);
+      BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(image, 0);
+      scoreCopy = score;
+      BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(image, 0);
       v49 = 0u;
       v50 = 0u;
       v47 = 0u;
       v48 = 0u;
-      v43 = v8;
-      obj = v8;
+      v43 = objectsCopy;
+      obj = objectsCopy;
       v13 = [obj countByEnumeratingWithState:&v47 objects:v55 count:16];
       if (v13)
       {
@@ -310,11 +310,11 @@
         v17 = 0.0;
       }
 
-      v8 = v43;
+      objectsCopy = v43;
       v9 = CVPixelBufferLock::Unlock(&v51);
       if (!v9)
       {
-        *v42 = roundf((v17 / v16) * 100.0) / 100.0;
+        *scoreCopy = roundf((v17 / v16) * 100.0) / 100.0;
       }
     }
   }

@@ -1,5 +1,5 @@
 @interface SRFaceMetricsPacketV2
-+ (id)packetWithHAFacialMetricsPacket:(id *)a3;
++ (id)packetWithHAFacialMetricsPacket:(id *)packet;
 - (NSArray)gaze;
 - (NSArray)partialFaceExpressions;
 - (NSArray)rotation;
@@ -11,9 +11,9 @@
 
 @implementation SRFaceMetricsPacketV2
 
-+ (id)packetWithHAFacialMetricsPacket:(id *)a3
++ (id)packetWithHAFacialMetricsPacket:(id *)packet
 {
-  if (a3->var0 != 2)
+  if (packet->var0 != 2)
   {
     v12 = _MergedGlobals_4;
     if (!os_log_type_enabled(_MergedGlobals_4, OS_LOG_TYPE_FAULT))
@@ -29,7 +29,7 @@ LABEL_25:
     return 0;
   }
 
-  v4 = [MEMORY[0x1E696AFB0] sr_UUIDWithUint32_t:a3->var1];
+  v4 = [MEMORY[0x1E696AFB0] sr_UUIDWithUint32_t:packet->var1];
   if (!v4)
   {
     v12 = _MergedGlobals_4;
@@ -62,8 +62,8 @@ LABEL_25:
     return 0;
   }
 
-  v6 = *(&a3->var2 + 1);
-  if (!v6 && (v6 = *(&a3->var4 + 4)) == 0 || (v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", v6]) == 0)
+  v6 = *(&packet->var2 + 1);
+  if (!v6 && (v6 = *(&packet->var4 + 4)) == 0 || (v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", v6]) == 0)
   {
     v12 = _MergedGlobals_4;
     if (os_log_type_enabled(_MergedGlobals_4, OS_LOG_TYPE_FAULT))
@@ -82,15 +82,15 @@ LABEL_25:
   v10 = v9;
   if (v9)
   {
-    v9->_packet = a3;
+    v9->_packet = packet;
     v9->_faceIdentifier = v5;
     v10->_sessionIdentifier = v8;
-    if (*(&a3->var2 + 1))
+    if (*(&packet->var2 + 1))
     {
       v10->_context |= 1uLL;
     }
 
-    if (*(&a3->var4 + 4))
+    if (*(&packet->var4 + 4))
     {
       v10->_context |= 2uLL;
     }

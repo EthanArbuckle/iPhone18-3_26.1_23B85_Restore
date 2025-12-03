@@ -1,12 +1,12 @@
 @interface STRemoteUIPinService
-- (void)presentRemotePINControllerWithCompletionHandler:(id)a3;
+- (void)presentRemotePINControllerWithCompletionHandler:(id)handler;
 @end
 
 @implementation STRemoteUIPinService
 
-- (void)presentRemotePINControllerWithCompletionHandler:(id)a3
+- (void)presentRemotePINControllerWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v7[0] = SBSUIRemoteAlertOptionViewControllerClass;
   v7[1] = SBSUIRemoteAlertOptionDismissWithHomeButton;
   v8[0] = @"STRemoteServiceViewController";
@@ -17,7 +17,7 @@
   v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [UIApp activeInterfaceOrientation]);
   v8[3] = v4;
   [NSDictionary dictionaryWithObjects:v8 forKeys:v7 count:4];
-  v6 = v3;
+  v6 = handlerCopy;
   v5 = v6;
   SBSUIActivateRemoteAlertWithLifecycleNotifications();
 }

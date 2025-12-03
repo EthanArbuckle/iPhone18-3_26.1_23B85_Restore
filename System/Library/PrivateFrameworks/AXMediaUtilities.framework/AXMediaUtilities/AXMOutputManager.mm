@@ -1,53 +1,53 @@
 @interface AXMOutputManager
-- (AXMOutputManager)initWithComponents:(unint64_t)a3 options:(unint64_t)a4;
-- (AXMOutputManager)initWithConfiguration:(id)a3;
+- (AXMOutputManager)initWithComponents:(unint64_t)components options:(unint64_t)options;
+- (AXMOutputManager)initWithConfiguration:(id)configuration;
 - (NSString)description;
-- (id)dispatchRequest:(id)a3;
-- (id)playActiveSound:(id)a3;
+- (id)dispatchRequest:(id)request;
+- (id)playActiveSound:(id)sound;
 - (void)disable;
-- (void)dispatcher:(id)a3 handleTask:(id)a4;
-- (void)enableWithCompletion:(id)a3;
-- (void)interrupt:(id)a3;
+- (void)dispatcher:(id)dispatcher handleTask:(id)task;
+- (void)enableWithCompletion:(id)completion;
+- (void)interrupt:(id)interrupt;
 - (void)interruptImmediately;
 - (void)interruptPolitely;
-- (void)playSound:(id)a3;
-- (void)speak:(id)a3;
+- (void)playSound:(id)sound;
+- (void)speak:(id)speak;
 @end
 
 @implementation AXMOutputManager
 
-- (AXMOutputManager)initWithComponents:(unint64_t)a3 options:(unint64_t)a4
+- (AXMOutputManager)initWithComponents:(unint64_t)components options:(unint64_t)options
 {
   v7 = objc_opt_new();
-  [v7 setComponents:a3];
-  [v7 setUsesPrivateAudioSession:a4 & 1];
-  [v7 setHapticEngineUsesAutoShutdown:(a4 >> 1) & 1];
+  [v7 setComponents:components];
+  [v7 setUsesPrivateAudioSession:options & 1];
+  [v7 setHapticEngineUsesAutoShutdown:(options >> 1) & 1];
   [v7 setHapticEngineAutoShutdownTimeout:-1.0];
   v8 = [(AXMOutputManager *)self initWithConfiguration:v7];
 
   return v8;
 }
 
-- (AXMOutputManager)initWithConfiguration:(id)a3
+- (AXMOutputManager)initWithConfiguration:(id)configuration
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   v26.receiver = self;
   v26.super_class = AXMOutputManager;
   v5 = [(AXMOutputManager *)&v26 init];
   v6 = v5;
   if (v5)
   {
-    [(AXMOutputManager *)v5 setConfiguration:v4];
+    [(AXMOutputManager *)v5 setConfiguration:configurationCopy];
     v7 = AXMediaLogOutput();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v28 = v4;
+      v28 = configurationCopy;
       _os_log_impl(&dword_1AE37B000, v7, OS_LOG_TYPE_DEFAULT, "Initializing output manager with config: %@", buf, 0xCu);
     }
 
-    if ([v4 usesPrivateAudioSession])
+    if ([configurationCopy usesPrivateAudioSession])
     {
       v8 = objc_alloc_init(AXMAudioSession);
       audioSession = v6->_audioSession;
@@ -64,47 +64,47 @@
     queue = v6->_queue;
     v6->_queue = v13;
 
-    v15 = [v4 components];
-    v16 = [MEMORY[0x1E695DF70] array];
-    if ((v15 & 2) != 0 && +[AXMSoundComponent isSupported])
+    components = [configurationCopy components];
+    array = [MEMORY[0x1E695DF70] array];
+    if ((components & 2) != 0 && +[AXMSoundComponent isSupported])
     {
       v17 = objc_alloc_init(AXMSoundComponent);
       queue_soundComponent = v6->_queue_soundComponent;
       v6->_queue_soundComponent = v17;
 
-      if ([v4 usesPrivateAudioSession])
+      if ([configurationCopy usesPrivateAudioSession])
       {
-        v19 = [(AXMAudioSession *)v6->_audioSession session];
-        [(AXMSoundComponent *)v6->_queue_soundComponent setAudioSession:v19];
+        session = [(AXMAudioSession *)v6->_audioSession session];
+        [(AXMSoundComponent *)v6->_queue_soundComponent setAudioSession:session];
       }
 
-      [(NSArray *)v16 addObject:v6->_queue_soundComponent];
+      [(NSArray *)array addObject:v6->_queue_soundComponent];
     }
 
-    if ((v15 & 1) != 0 && +[AXMSpeechComponent isSupported])
+    if ((components & 1) != 0 && +[AXMSpeechComponent isSupported])
     {
       v20 = objc_alloc_init(AXMSpeechComponent);
       queue_speechComponent = v6->_queue_speechComponent;
       v6->_queue_speechComponent = v20;
 
-      [(NSArray *)v16 addObject:v6->_queue_speechComponent];
+      [(NSArray *)array addObject:v6->_queue_speechComponent];
     }
 
-    if ((v15 & 4) != 0 && +[AXMHapticComponent isSupported])
+    if ((components & 4) != 0 && +[AXMHapticComponent isSupported])
     {
       v22 = objc_alloc_init(AXMHapticComponent);
       queue_hapticComponent = v6->_queue_hapticComponent;
       v6->_queue_hapticComponent = v22;
 
-      -[AXMHapticComponent setAutoShutdownEnabled:](v6->_queue_hapticComponent, "setAutoShutdownEnabled:", [v4 hapticEngineUsesAutoShutdown]);
-      [v4 hapticEngineAutoShutdownTimeout];
+      -[AXMHapticComponent setAutoShutdownEnabled:](v6->_queue_hapticComponent, "setAutoShutdownEnabled:", [configurationCopy hapticEngineUsesAutoShutdown]);
+      [configurationCopy hapticEngineAutoShutdownTimeout];
       [(AXMHapticComponent *)v6->_queue_hapticComponent setAutoShutdownTimeout:?];
-      -[AXMHapticComponent setUsesHapticsOnly:](v6->_queue_hapticComponent, "setUsesHapticsOnly:", [v4 hapticEngineUsesHapticsOnly]);
-      [(NSArray *)v16 addObject:v6->_queue_hapticComponent];
+      -[AXMHapticComponent setUsesHapticsOnly:](v6->_queue_hapticComponent, "setUsesHapticsOnly:", [configurationCopy hapticEngineUsesHapticsOnly]);
+      [(NSArray *)array addObject:v6->_queue_hapticComponent];
     }
 
     queue_activeComponents = v6->_queue_activeComponents;
-    v6->_queue_activeComponents = v16;
+    v6->_queue_activeComponents = array;
   }
 
   return v6;
@@ -164,12 +164,12 @@ void __27__AXMOutputManager_disable__block_invoke(uint64_t a1)
   }
 }
 
-- (void)enableWithCompletion:(id)a3
+- (void)enableWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = v4;
+    v5 = completionCopy;
     v6 = MEMORY[0x1B2700900]();
     v7 = MEMORY[0x1B2700900]();
   }
@@ -313,21 +313,21 @@ LABEL_9:
   return (*(*(a1 + 40) + 16))();
 }
 
-- (id)dispatchRequest:(id)a3
+- (id)dispatchRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if (self->_state == 2)
   {
     v5 = objc_alloc_init(_AXMOutputRequestTask);
-    [(_AXMOutputRequestTask *)v5 setRequest:v4];
-    if ([v4 interruptsAndClearsQueue])
+    [(_AXMOutputRequestTask *)v5 setRequest:requestCopy];
+    if ([requestCopy interruptsAndClearsQueue])
     {
-      v6 = [(AXMTaskDispatcher *)self->_outputRequests unscheduleAllTasks];
+      unscheduleAllTasks = [(AXMTaskDispatcher *)self->_outputRequests unscheduleAllTasks];
       [(AXMSpeechComponent *)self->_queue_speechComponent stopSpeakingAtNextWord];
     }
 
     [(AXMTaskDispatcher *)self->_outputRequests scheduleTask:v5];
-    v7 = [v4 handle];
+    handle = [requestCopy handle];
   }
 
   else
@@ -339,34 +339,34 @@ LABEL_9:
       _os_log_impl(&dword_1AE37B000, v8, OS_LOG_TYPE_DEFAULT, "Ignoring dispatch request. Output manager not ready", v10, 2u);
     }
 
-    v7 = 0;
+    handle = 0;
   }
 
-  return v7;
+  return handle;
 }
 
-- (void)speak:(id)a3
+- (void)speak:(id)speak
 {
-  v4 = a3;
+  speakCopy = speak;
   v6 = objc_alloc_init(AXMOutputRequest);
-  [(AXMOutputRequest *)v6 addSpeechItem:v4];
+  [(AXMOutputRequest *)v6 addSpeechItem:speakCopy];
 
   v5 = [(AXMOutputManager *)self dispatchRequest:v6];
 }
 
-- (void)interrupt:(id)a3
+- (void)interrupt:(id)interrupt
 {
-  v4 = a3;
+  interruptCopy = interrupt;
   v6 = objc_alloc_init(AXMOutputRequest);
   [(AXMOutputRequest *)v6 setInterruptsAndClearsQueue:1];
-  [(AXMOutputRequest *)v6 addSpeechItem:v4];
+  [(AXMOutputRequest *)v6 addSpeechItem:interruptCopy];
 
   v5 = [(AXMOutputManager *)self dispatchRequest:v6];
 }
 
 - (void)interruptImmediately
 {
-  v3 = [(AXMTaskDispatcher *)self->_outputRequests unscheduleAllTasks];
+  unscheduleAllTasks = [(AXMTaskDispatcher *)self->_outputRequests unscheduleAllTasks];
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -386,7 +386,7 @@ uint64_t __40__AXMOutputManager_interruptImmediately__block_invoke(uint64_t a1)
 
 - (void)interruptPolitely
 {
-  v3 = [(AXMTaskDispatcher *)self->_outputRequests unscheduleAllTasks];
+  unscheduleAllTasks = [(AXMTaskDispatcher *)self->_outputRequests unscheduleAllTasks];
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -404,39 +404,39 @@ uint64_t __37__AXMOutputManager_interruptPolitely__block_invoke(uint64_t a1)
   return [v2 stopCurrentHaptics];
 }
 
-- (void)playSound:(id)a3
+- (void)playSound:(id)sound
 {
-  v4 = a3;
+  soundCopy = sound;
   v6 = objc_alloc_init(AXMOutputRequest);
-  [(AXMOutputRequest *)v6 addSoundItemWithID:v4];
+  [(AXMOutputRequest *)v6 addSoundItemWithID:soundCopy];
 
   v5 = [(AXMOutputManager *)self dispatchRequest:v6];
 }
 
-- (id)playActiveSound:(id)a3
+- (id)playActiveSound:(id)sound
 {
-  v4 = a3;
+  soundCopy = sound;
   v5 = objc_alloc_init(AXMOutputRequest);
-  [(AXMOutputRequest *)v5 addActiveSoundItemWithID:v4];
+  [(AXMOutputRequest *)v5 addActiveSoundItemWithID:soundCopy];
 
   v6 = [(AXMOutputManager *)self dispatchRequest:v5];
-  v7 = [v6 actionHandles];
-  v8 = [v7 firstObject];
+  actionHandles = [v6 actionHandles];
+  firstObject = [actionHandles firstObject];
 
-  return v8;
+  return firstObject;
 }
 
-- (void)dispatcher:(id)a3 handleTask:(id)a4
+- (void)dispatcher:(id)dispatcher handleTask:(id)task
 {
-  v5 = a4;
+  taskCopy = task;
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __42__AXMOutputManager_dispatcher_handleTask___block_invoke;
   v8[3] = &unk_1E7A1CB30;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = taskCopy;
+  selfCopy = self;
+  v7 = taskCopy;
   dispatch_async(queue, v8);
 }
 

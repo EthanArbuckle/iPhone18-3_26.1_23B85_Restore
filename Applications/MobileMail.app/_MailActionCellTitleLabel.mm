@@ -1,37 +1,37 @@
 @interface _MailActionCellTitleLabel
 + (id)preferredFontForDefaultTitle;
-- (CGSize)sizeThatFits:(CGSize)a3 sizeCategory:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits sizeCategory:(id)category;
 - (void)_updateStyle;
-- (void)setText:(id)a3;
-- (void)setUseActionSheetStyle:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateFontWithSizeCategory:(id)a3;
+- (void)setText:(id)text;
+- (void)setUseActionSheetStyle:(BOOL)style;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateFontWithSizeCategory:(id)category;
 @end
 
 @implementation _MailActionCellTitleLabel
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  v5 = [(_MailActionCellTitleLabel *)self text];
-  v6 = [v5 isEqualToString:v4];
+  textCopy = text;
+  text = [(_MailActionCellTitleLabel *)self text];
+  v6 = [text isEqualToString:textCopy];
 
   if ((v6 & 1) == 0)
   {
     v9.receiver = self;
     v9.super_class = _MailActionCellTitleLabel;
-    [(_MailActionCellTitleLabel *)&v9 setText:v4];
-    v7 = [(_MailActionCellTitleLabel *)self traitCollection];
-    v8 = [v7 preferredContentSizeCategory];
-    [(_MailActionCellTitleLabel *)self updateFontWithSizeCategory:v8];
+    [(_MailActionCellTitleLabel *)&v9 setText:textCopy];
+    traitCollection = [(_MailActionCellTitleLabel *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    [(_MailActionCellTitleLabel *)self updateFontWithSizeCategory:preferredContentSizeCategory];
   }
 }
 
-- (void)setUseActionSheetStyle:(BOOL)a3
+- (void)setUseActionSheetStyle:(BOOL)style
 {
-  if (self->_useActionSheetStyle != a3)
+  if (self->_useActionSheetStyle != style)
   {
-    self->_useActionSheetStyle = a3;
+    self->_useActionSheetStyle = style;
     [(_MailActionCellTitleLabel *)self _updateStyle];
   }
 }
@@ -40,9 +40,9 @@
 {
   if ([(_MailActionCellTitleLabel *)self useActionSheetStyle])
   {
-    v3 = [(_MailActionCellTitleLabel *)self traitCollection];
-    v4 = [v3 preferredContentSizeCategory];
-    v5 = !UIContentSizeCategoryIsAccessibilityCategory(v4);
+    traitCollection = [(_MailActionCellTitleLabel *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    v5 = !UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     v6 = 4;
   }
@@ -58,11 +58,11 @@
   [(_MailActionCellTitleLabel *)self setLineBreakMode:v6];
 }
 
-- (void)updateFontWithSizeCategory:(id)a3
+- (void)updateFontWithSizeCategory:(id)category
 {
-  v4 = [(_MailActionCellTitleLabel *)self isHorizontalTitle];
+  isHorizontalTitle = [(_MailActionCellTitleLabel *)self isHorizontalTitle];
   v5 = objc_opt_class();
-  if (v4)
+  if (isHorizontalTitle)
   {
     [v5 preferredFontForHorizontalTitle];
   }
@@ -77,32 +77,32 @@
   [(_MailActionCellTitleLabel *)self setNeedsDisplay];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v11.receiver = self;
   v11.super_class = _MailActionCellTitleLabel;
-  [(_MailActionCellTitleLabel *)&v11 traitCollectionDidChange:v4];
-  v5 = [(_MailActionCellTitleLabel *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
-  v8 = [v6 isEqualToString:v7];
+  [(_MailActionCellTitleLabel *)&v11 traitCollectionDidChange:changeCopy];
+  traitCollection = [(_MailActionCellTitleLabel *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+  v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
   if ((v8 & 1) == 0)
   {
     [(_MailActionCellTitleLabel *)self _updateStyle];
-    v9 = [(_MailActionCellTitleLabel *)self traitCollection];
-    v10 = [v9 preferredContentSizeCategory];
-    [(_MailActionCellTitleLabel *)self updateFontWithSizeCategory:v10];
+    traitCollection2 = [(_MailActionCellTitleLabel *)self traitCollection];
+    preferredContentSizeCategory3 = [traitCollection2 preferredContentSizeCategory];
+    [(_MailActionCellTitleLabel *)self updateFontWithSizeCategory:preferredContentSizeCategory3];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 sizeCategory:(id)a4
+- (CGSize)sizeThatFits:(CGSize)fits sizeCategory:(id)category
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  [(_MailActionCellTitleLabel *)self updateFontWithSizeCategory:v7];
+  height = fits.height;
+  width = fits.width;
+  categoryCopy = category;
+  [(_MailActionCellTitleLabel *)self updateFontWithSizeCategory:categoryCopy];
   v14.receiver = self;
   v14.super_class = _MailActionCellTitleLabel;
   [(_MailActionCellTitleLabel *)&v14 sizeThatFits:width, height];

@@ -1,22 +1,22 @@
 @interface SSVMutableMediaContentTasteItem
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setPlaylistGlobalID:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setPlaylistGlobalID:(id)d;
 @end
 
 @implementation SSVMutableMediaContentTasteItem
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
 
   return [(SSVMediaContentTasteItem *)self _copyWithMediaContentTasteItemClass:v4];
 }
 
-- (void)setPlaylistGlobalID:(id)a3
+- (void)setPlaylistGlobalID:(id)d
 {
-  if (self->super._playlistGlobalID != a3)
+  if (self->super._playlistGlobalID != d)
   {
-    v5 = [a3 copy];
+    v5 = [d copy];
     playlistGlobalID = self->super._playlistGlobalID;
     self->super._playlistGlobalID = v5;
   }

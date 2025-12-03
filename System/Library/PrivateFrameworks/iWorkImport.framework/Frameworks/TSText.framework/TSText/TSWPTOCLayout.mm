@@ -1,27 +1,27 @@
 @interface TSWPTOCLayout
 - (BOOL)isLastLayoutInTOC;
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4;
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size;
 - (CGRect)boundsForStandardKnobs;
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3;
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout;
 - (CGSize)maxSize;
-- (TSWPTOCLayout)initWithInfo:(id)a3;
-- (TSWPTOCLayout)initWithInfo:(id)a3 initialCharIndex:(unint64_t)a4 textIsVertical:(BOOL)a5 maxSize:(CGSize)a6;
+- (TSWPTOCLayout)initWithInfo:(id)info;
+- (TSWPTOCLayout)initWithInfo:(id)info initialCharIndex:(unint64_t)index textIsVertical:(BOOL)vertical maxSize:(CGSize)size;
 - (TSWPTOCLayoutHint)hint;
-- (UIEdgeInsets)adjustedInsetsForTarget:(id)a3;
-- (double)maxAutoGrowBlockHeightForTextLayout:(id)a3;
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 target:(id)a5 outWidth:(double *)a6 outGap:(double *)a7;
-- (double)widthForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4;
-- (id)commandToClampModelToLayoutSizeWithAdditionalTransform:(CGAffineTransform *)a3;
+- (UIEdgeInsets)adjustedInsetsForTarget:(id)target;
+- (double)maxAutoGrowBlockHeightForTextLayout:(id)layout;
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width target:(id)target outWidth:(double *)outWidth outGap:(double *)gap;
+- (double)widthForColumnIndex:(unint64_t)index bodyWidth:(double)width;
+- (id)commandToClampModelToLayoutSizeWithAdditionalTransform:(CGAffineTransform *)transform;
 - (id)computeLayoutGeometry;
 - (unint64_t)initialCharIndex;
-- (void)invalidateForAutosizingTextLayout:(id)a3;
+- (void)invalidateForAutosizingTextLayout:(id)layout;
 @end
 
 @implementation TSWPTOCLayout
 
-- (TSWPTOCLayout)initWithInfo:(id)a3
+- (TSWPTOCLayout)initWithInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSWPTOCLayout initWithInfo:]");
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPTOCLayout.m");
@@ -37,24 +37,24 @@
   objc_exception_throw(v17);
 }
 
-- (TSWPTOCLayout)initWithInfo:(id)a3 initialCharIndex:(unint64_t)a4 textIsVertical:(BOOL)a5 maxSize:(CGSize)a6
+- (TSWPTOCLayout)initWithInfo:(id)info initialCharIndex:(unint64_t)index textIsVertical:(BOOL)vertical maxSize:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
-  v11 = a3;
+  height = size.height;
+  width = size.width;
+  infoCopy = info;
   v20.receiver = self;
   v20.super_class = TSWPTOCLayout;
-  v12 = [(TSWPShapeLayout *)&v20 initWithInfo:v11];
+  v12 = [(TSWPShapeLayout *)&v20 initWithInfo:infoCopy];
   v15 = v12;
   if (v12)
   {
-    v12->_initialCharIndex = a4;
+    v12->_initialCharIndex = index;
     v12->_maxSize.width = width;
     v12->_maxSize.height = height;
-    v16 = objc_msgSend_textStorage(v11, v13, v14);
+    v16 = objc_msgSend_textStorage(infoCopy, v13, v14);
     v15->_storageChangeCount = objc_msgSend_changeCount(v16, v17, v18);
 
-    v15->_textIsVertical = a5;
+    v15->_textIsVertical = vertical;
   }
 
   return v15;
@@ -230,7 +230,7 @@
   return result;
 }
 
-- (id)commandToClampModelToLayoutSizeWithAdditionalTransform:(CGAffineTransform *)a3
+- (id)commandToClampModelToLayoutSizeWithAdditionalTransform:(CGAffineTransform *)transform
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPTOCLayout commandToClampModelToLayoutSizeWithAdditionalTransform:]");
@@ -247,10 +247,10 @@
   objc_exception_throw(v15);
 }
 
-- (void)invalidateForAutosizingTextLayout:(id)a3
+- (void)invalidateForAutosizingTextLayout:(id)layout
 {
   storageChangeCount = self->_storageChangeCount;
-  v5 = objc_msgSend_info(self, a2, a3);
+  v5 = objc_msgSend_info(self, a2, layout);
   v8 = objc_msgSend_textStorage(v5, v6, v7);
   v11 = objc_msgSend_changeCount(v8, v9, v10);
 
@@ -260,9 +260,9 @@
   }
 }
 
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout
 {
-  v3 = objc_msgSend_info(self, a2, a3);
+  v3 = objc_msgSend_info(self, a2, layout);
   v6 = objc_msgSend_geometry(v3, v4, v5);
   objc_msgSend_size(v6, v7, v8);
   TSURectWithSize();
@@ -282,7 +282,7 @@
   return result;
 }
 
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size
 {
   objc_opt_class();
   v7 = objc_msgSend_parent(self, v5, v6);
@@ -312,10 +312,10 @@
   return result;
 }
 
-- (double)maxAutoGrowBlockHeightForTextLayout:(id)a3
+- (double)maxAutoGrowBlockHeightForTextLayout:(id)layout
 {
   textIsVertical = self->_textIsVertical;
-  objc_msgSend_maxSize(self, a2, a3);
+  objc_msgSend_maxSize(self, a2, layout);
   if (!textIsVertical)
   {
     return v5;
@@ -324,7 +324,7 @@
   return result;
 }
 
-- (UIEdgeInsets)adjustedInsetsForTarget:(id)a3
+- (UIEdgeInsets)adjustedInsetsForTarget:(id)target
 {
   v3 = *MEMORY[0x277D81428];
   v4 = *(MEMORY[0x277D81428] + 8);
@@ -337,9 +337,9 @@
   return result;
 }
 
-- (double)widthForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4
+- (double)widthForColumnIndex:(unint64_t)index bodyWidth:(double)width
 {
-  if (a3 != 1)
+  if (index != 1)
   {
     v5 = MEMORY[0x277D81150];
     v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPTOCLayout widthForColumnIndex:bodyWidth:]");
@@ -349,19 +349,19 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v10, v11);
   }
 
-  return a4;
+  return width;
 }
 
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 target:(id)a5 outWidth:(double *)a6 outGap:(double *)a7
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width target:(id)target outWidth:(double *)outWidth outGap:(double *)gap
 {
-  if (a6)
+  if (outWidth)
   {
-    *a6 = a4;
+    *outWidth = width;
   }
 
-  if (a7)
+  if (gap)
   {
-    *a7 = 0.0;
+    *gap = 0.0;
   }
 
   return 0.0;

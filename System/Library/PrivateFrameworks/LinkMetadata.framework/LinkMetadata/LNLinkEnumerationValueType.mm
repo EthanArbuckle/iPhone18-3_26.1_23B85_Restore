@@ -1,10 +1,10 @@
 @interface LNLinkEnumerationValueType
 + (id)objectClassesForCoding;
-- (BOOL)isEqual:(id)a3;
-- (LNLinkEnumerationValueType)initWithCoder:(id)a3;
-- (LNLinkEnumerationValueType)initWithEnumerationIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNLinkEnumerationValueType)initWithCoder:(id)coder;
+- (LNLinkEnumerationValueType)initWithEnumerationIdentifier:(id)identifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNLinkEnumerationValueType
@@ -17,27 +17,27 @@
   return [v2 arrayWithObject:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
     goto LABEL_13;
   }
 
-  v6 = v4;
+  v6 = equalCopy;
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v14.receiver = self;
     v14.super_class = LNLinkEnumerationValueType;
     if ([(LNValueType *)&v14 isEqual:v6])
     {
-      v7 = [(LNLinkEnumerationValueType *)self enumerationIdentifier];
-      v8 = [(LNLinkEnumerationValueType *)v6 enumerationIdentifier];
-      v9 = v7;
-      v10 = v8;
+      enumerationIdentifier = [(LNLinkEnumerationValueType *)self enumerationIdentifier];
+      enumerationIdentifier2 = [(LNLinkEnumerationValueType *)v6 enumerationIdentifier];
+      v9 = enumerationIdentifier;
+      v10 = enumerationIdentifier2;
       v11 = v10;
       if (v9 == v10)
       {
@@ -75,38 +75,38 @@ LABEL_13:
   v7.receiver = self;
   v7.super_class = LNLinkEnumerationValueType;
   v3 = [(LNValueType *)&v7 hash];
-  v4 = [(LNLinkEnumerationValueType *)self enumerationIdentifier];
-  v5 = [v4 hash];
+  enumerationIdentifier = [(LNLinkEnumerationValueType *)self enumerationIdentifier];
+  v5 = [enumerationIdentifier hash];
 
   return v5 ^ v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = LNLinkEnumerationValueType;
-  v4 = a3;
-  [(LNValueType *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(LNValueType *)&v6 encodeWithCoder:coderCopy];
   v5 = [(LNLinkEnumerationValueType *)self enumerationIdentifier:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"enumerationIdentifier"];
+  [coderCopy encodeObject:v5 forKey:@"enumerationIdentifier"];
 }
 
-- (LNLinkEnumerationValueType)initWithCoder:(id)a3
+- (LNLinkEnumerationValueType)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"enumerationIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"enumerationIdentifier"];
 
   v6 = [(LNLinkEnumerationValueType *)self initWithEnumerationIdentifier:v5];
   return v6;
 }
 
-- (LNLinkEnumerationValueType)initWithEnumerationIdentifier:(id)a3
+- (LNLinkEnumerationValueType)initWithEnumerationIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"LNLinkEnumerationValueType.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"enumerationIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNLinkEnumerationValueType.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"enumerationIdentifier"}];
   }
 
   v12.receiver = self;
@@ -114,7 +114,7 @@ LABEL_13:
   v6 = [(LNValueType *)&v12 initWithContentType:0];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [identifierCopy copy];
     enumerationIdentifier = v6->_enumerationIdentifier;
     v6->_enumerationIdentifier = v7;
 

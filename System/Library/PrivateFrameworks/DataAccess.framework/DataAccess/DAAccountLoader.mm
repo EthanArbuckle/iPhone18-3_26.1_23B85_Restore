@@ -1,16 +1,16 @@
 @interface DAAccountLoader
 + (id)sharedInstance;
 + (void)_findPrivateFrameworks;
-- (BOOL)_loadFrameworkAtSubpath:(id)a3;
-- (Class)agentClassForACAccount:(id)a3;
-- (Class)clientAccountClassForACAccount:(id)a3;
-- (Class)daemonAccountClassForACAccount:(id)a3;
-- (Class)daemonAppropriateAccountClassForACAccount:(id)a3;
+- (BOOL)_loadFrameworkAtSubpath:(id)subpath;
+- (Class)agentClassForACAccount:(id)account;
+- (Class)clientAccountClassForACAccount:(id)account;
+- (Class)daemonAccountClassForACAccount:(id)account;
+- (Class)daemonAppropriateAccountClassForACAccount:(id)account;
 - (DAAccountLoader)init;
-- (id)_classNamesDictionaryForAccount:(id)a3;
-- (void)_addAccountInfo:(id)a3 forFrameworkNamed:(id)a4;
-- (void)loadDaemonBundleForACAccountType:(id)a3;
-- (void)loadFrameworkForACAccountType:(id)a3;
+- (id)_classNamesDictionaryForAccount:(id)account;
+- (void)_addAccountInfo:(id)info forFrameworkNamed:(id)named;
+- (void)loadDaemonBundleForACAccountType:(id)type;
+- (void)loadFrameworkForACAccountType:(id)type;
 @end
 
 @implementation DAAccountLoader
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __33__DAAccountLoader_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -40,27 +40,27 @@ uint64_t __33__DAAccountLoader_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_addAccountInfo:(id)a3 forFrameworkNamed:(id)a4
+- (void)_addAccountInfo:(id)info forFrameworkNamed:(id)named
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"ACAccountType"];
-  v9 = [v6 objectForKeyedSubscript:@"ACParentAccountType"];
-  v10 = [v6 objectForKeyedSubscript:@"ACTopLevelAccountType"];
+  infoCopy = info;
+  namedCopy = named;
+  v8 = [infoCopy objectForKeyedSubscript:@"ACAccountType"];
+  v9 = [infoCopy objectForKeyedSubscript:@"ACParentAccountType"];
+  v10 = [infoCopy objectForKeyedSubscript:@"ACTopLevelAccountType"];
   if (v8)
   {
     v11 = objc_opt_new();
-    v12 = [v6 objectForKeyedSubscript:@"DAAccountClass"];
+    v12 = [infoCopy objectForKeyedSubscript:@"DAAccountClass"];
     [v11 setAccountClassName:v12];
 
-    v13 = [v6 objectForKeyedSubscript:@"DAClientAccountClass"];
+    v13 = [infoCopy objectForKeyedSubscript:@"DAClientAccountClass"];
     [v11 setClientAccountClassName:v13];
 
-    v14 = [v6 objectForKeyedSubscript:@"DADaemonAccountClass"];
+    v14 = [infoCopy objectForKeyedSubscript:@"DADaemonAccountClass"];
     [v11 setDaemonAccountClassName:v14];
 
-    v15 = [v6 objectForKeyedSubscript:@"DAAgentClass"];
+    v15 = [infoCopy objectForKeyedSubscript:@"DAAgentClass"];
     [v11 setAgentClassName:v15];
 
     v16 = DALoggingwithCategory();
@@ -68,11 +68,11 @@ uint64_t __33__DAAccountLoader_sharedInstance__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v16, v17))
     {
       v25 = 138412290;
-      v26 = v6;
+      v26 = infoCopy;
       _os_log_impl(&dword_24844D000, v16, v17, "Handling account info mapping %@", &v25, 0xCu);
     }
 
-    [(NSMutableDictionary *)self->_acAccountTypeToAccountFrameworkSubpath setObject:v7 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_acAccountTypeToAccountFrameworkSubpath setObject:namedCopy forKeyedSubscript:v8];
     if (v10)
     {
       v18 = [(NSMutableDictionary *)self->_classNamesForTopLevelAccountTypes objectForKeyedSubscript:v10];
@@ -92,10 +92,10 @@ LABEL_10:
       if (!v9)
       {
         [(NSMutableDictionary *)self->_defaultClassNamesForAccountTypes setObject:v11 forKeyedSubscript:v8];
-        v18 = [v6 objectForKeyedSubscript:@"DAAgentClassBundle"];
+        v18 = [infoCopy objectForKeyedSubscript:@"DAAgentClassBundle"];
         if (v18)
         {
-          v23 = [v7 stringByAppendingPathComponent:v18];
+          v23 = [namedCopy stringByAppendingPathComponent:v18];
           v24 = [v23 stringByAppendingPathExtension:@"bundle"];
 
           if (v24)
@@ -148,7 +148,7 @@ LABEL_12:
     v7 = objc_opt_new();
     [(DAAccountLoader *)v2 setClassNamesForTopLevelAccountTypes:v7];
 
-    v8 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v9 = privateFrameworksPath;
     v10 = MEMORY[0x277CBEAC0];
     v11 = [v9 stringByAppendingPathComponent:@"AccountInfo.plist"];
@@ -210,7 +210,7 @@ LABEL_12:
         _os_log_impl(&dword_24844D000, v14, v15, "Going to the disk for our account info providers", buf, 2u);
       }
 
-      [v8 contentsOfDirectoryAtPath:v9 error:0];
+      [defaultManager contentsOfDirectoryAtPath:v9 error:0];
       v52 = 0u;
       v53 = 0u;
       v54 = 0u;
@@ -220,7 +220,7 @@ LABEL_12:
       {
         v42 = 0;
         v43 = v12;
-        v44 = v8;
+        v44 = defaultManager;
         v24 = *v53;
         v25 = 0x277CCA000uLL;
         v26 = v23;
@@ -242,12 +242,12 @@ LABEL_12:
 
             if (v31)
             {
-              v32 = [v31 infoDictionary];
-              v33 = v32;
-              if (v32)
+              infoDictionary = [v31 infoDictionary];
+              v33 = infoDictionary;
+              if (infoDictionary)
               {
                 v34 = v24;
-                v35 = [v32 objectForKeyedSubscript:@"DAAccountInfo"];
+                v35 = [infoDictionary objectForKeyedSubscript:@"DAAccountInfo"];
                 v48 = 0u;
                 v49 = 0u;
                 v50 = 0u;
@@ -291,7 +291,7 @@ LABEL_12:
 
         while (v26);
         v12 = v43;
-        v8 = v44;
+        defaultManager = v44;
         v13 = v42;
       }
     }
@@ -303,17 +303,17 @@ LABEL_12:
 
 + (void)_findPrivateFrameworks
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  [v5 handleFailureInMethod:a2 object:a1 file:@"DAAccountLoader.m" lineNumber:168 description:{@"Could not find the frameworks directory for bundle %@", v4}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"DAAccountLoader.m" lineNumber:168 description:{@"Could not find the frameworks directory for bundle %@", v4}];
 }
 
-- (BOOL)_loadFrameworkAtSubpath:(id)a3
+- (BOOL)_loadFrameworkAtSubpath:(id)subpath
 {
-  v4 = a3;
-  if (v4)
+  subpathCopy = subpath;
+  if (subpathCopy)
   {
-    v5 = [privateFrameworksPath stringByAppendingPathComponent:v4];
+    v5 = [privateFrameworksPath stringByAppendingPathComponent:subpathCopy];
     v6 = [MEMORY[0x277CCA8D8] bundleWithPath:v5];
   }
 
@@ -322,21 +322,21 @@ LABEL_12:
     v6 = 0;
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [v6 load];
-  objc_sync_exit(v7);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  load = [v6 load];
+  objc_sync_exit(selfCopy);
 
-  return v8;
+  return load;
 }
 
-- (void)loadFrameworkForACAccountType:(id)a3
+- (void)loadFrameworkForACAccountType:(id)type
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   acAccountTypeToAccountFrameworkSubpath = self->_acAccountTypeToAccountFrameworkSubpath;
-  v6 = [v4 identifier];
-  v7 = [(NSMutableDictionary *)acAccountTypeToAccountFrameworkSubpath objectForKeyedSubscript:v6];
+  identifier = [typeCopy identifier];
+  v7 = [(NSMutableDictionary *)acAccountTypeToAccountFrameworkSubpath objectForKeyedSubscript:identifier];
 
   if (![(DAAccountLoader *)self _loadFrameworkAtSubpath:v7])
   {
@@ -344,9 +344,9 @@ LABEL_12:
     v9 = *(MEMORY[0x277D03988] + 3);
     if (os_log_type_enabled(v8, v9))
     {
-      v10 = [v4 identifier];
+      identifier2 = [typeCopy identifier];
       v12 = 138412290;
-      v13 = v10;
+      v13 = identifier2;
       _os_log_impl(&dword_24844D000, v8, v9, "We don't know of any bundles for account type %@", &v12, 0xCu);
     }
   }
@@ -354,32 +354,32 @@ LABEL_12:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)loadDaemonBundleForACAccountType:(id)a3
+- (void)loadDaemonBundleForACAccountType:(id)type
 {
   acAccountTypeToAccountDaemonBundleSubpath = self->_acAccountTypeToAccountDaemonBundleSubpath;
-  v5 = [a3 identifier];
-  v6 = [(NSMutableDictionary *)acAccountTypeToAccountDaemonBundleSubpath objectForKeyedSubscript:v5];
+  identifier = [type identifier];
+  v6 = [(NSMutableDictionary *)acAccountTypeToAccountDaemonBundleSubpath objectForKeyedSubscript:identifier];
 
   [(DAAccountLoader *)self _loadFrameworkAtSubpath:v6];
 }
 
-- (id)_classNamesDictionaryForAccount:(id)a3
+- (id)_classNamesDictionaryForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [v4 parentAccount];
+  accountCopy = account;
+  parentAccount = [accountCopy parentAccount];
 
-  if (v5)
+  if (parentAccount)
   {
-    v6 = [v4 calTopLevelAccount];
-    v7 = [v6 accountType];
-    v8 = [v7 identifier];
+    calTopLevelAccount = [accountCopy calTopLevelAccount];
+    accountType = [calTopLevelAccount accountType];
+    identifier = [accountType identifier];
 
-    v9 = [(NSMutableDictionary *)self->_classNamesForTopLevelAccountTypes objectForKeyedSubscript:v8];
+    v9 = [(NSMutableDictionary *)self->_classNamesForTopLevelAccountTypes objectForKeyedSubscript:identifier];
     if (v9)
     {
-      v10 = [v4 accountType];
-      v11 = [v10 identifier];
-      v12 = [(NSMutableDictionary *)v9 objectForKeyedSubscript:v11];
+      accountType2 = [accountCopy accountType];
+      identifier2 = [accountType2 identifier];
+      v12 = [(NSMutableDictionary *)v9 objectForKeyedSubscript:identifier2];
 
       if (v12)
       {
@@ -389,16 +389,16 @@ LABEL_12:
     }
 
     classNamesForDirectlyNestedAccountTypes = self->_classNamesForDirectlyNestedAccountTypes;
-    v14 = [v4 parentAccount];
-    v15 = [v14 accountType];
-    v16 = [v15 identifier];
-    v17 = [(NSMutableDictionary *)classNamesForDirectlyNestedAccountTypes objectForKeyedSubscript:v16];
+    parentAccount2 = [accountCopy parentAccount];
+    accountType3 = [parentAccount2 accountType];
+    identifier3 = [accountType3 identifier];
+    v17 = [(NSMutableDictionary *)classNamesForDirectlyNestedAccountTypes objectForKeyedSubscript:identifier3];
 
     if (v17)
     {
-      v18 = [v4 accountType];
-      v19 = [v18 identifier];
-      v20 = [(NSMutableDictionary *)v17 objectForKeyedSubscript:v19];
+      accountType4 = [accountCopy accountType];
+      identifier4 = [accountType4 identifier];
+      v20 = [(NSMutableDictionary *)v17 objectForKeyedSubscript:identifier4];
 
       if (v20)
       {
@@ -415,46 +415,46 @@ LABEL_10:
   return v9;
 }
 
-- (Class)clientAccountClassForACAccount:(id)a3
+- (Class)clientAccountClassForACAccount:(id)account
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 accountType];
-  [(DAAccountLoader *)self loadFrameworkForACAccountType:v5];
+  accountCopy = account;
+  accountType = [accountCopy accountType];
+  [(DAAccountLoader *)self loadFrameworkForACAccountType:accountType];
 
-  v6 = [(DAAccountLoader *)self _classNamesDictionaryForAccount:v4];
-  v7 = [v4 accountType];
-  v8 = [v7 identifier];
-  v9 = [v6 objectForKeyedSubscript:v8];
-  v10 = [v9 clientAccountClassName];
+  v6 = [(DAAccountLoader *)self _classNamesDictionaryForAccount:accountCopy];
+  accountType2 = [accountCopy accountType];
+  identifier = [accountType2 identifier];
+  v9 = [v6 objectForKeyedSubscript:identifier];
+  clientAccountClassName = [v9 clientAccountClassName];
 
-  if (!v10)
+  if (!clientAccountClassName)
   {
-    v11 = [v4 accountType];
-    v12 = [v11 identifier];
-    v13 = [v6 objectForKeyedSubscript:v12];
-    v10 = [v13 accountClassName];
+    accountType3 = [accountCopy accountType];
+    identifier2 = [accountType3 identifier];
+    v13 = [v6 objectForKeyedSubscript:identifier2];
+    clientAccountClassName = [v13 accountClassName];
   }
 
-  v14 = NSClassFromString(v10);
+  v14 = NSClassFromString(clientAccountClassName);
   if (!v14)
   {
-    v15 = [v4 parentAccount];
+    parentAccount = [accountCopy parentAccount];
 
     v16 = DALoggingwithCategory();
     v17 = *(MEMORY[0x277D03988] + 3);
     v18 = os_log_type_enabled(v16, v17);
-    if (v15)
+    if (parentAccount)
     {
       if (v18)
       {
-        v19 = [v4 parentAccount];
+        parentAccount2 = [accountCopy parentAccount];
         v23 = 138412802;
-        v24 = v10;
+        v24 = clientAccountClassName;
         v25 = 2112;
-        v26 = v4;
+        v26 = accountCopy;
         v27 = 2112;
-        v28 = v19;
+        v28 = parentAccount2;
         _os_log_impl(&dword_24844D000, v16, v17, "Could not come up with a client account class (name %@) for account %@ parent account %@", &v23, 0x20u);
       }
     }
@@ -462,9 +462,9 @@ LABEL_10:
     else if (v18)
     {
       v23 = 138412546;
-      v24 = v10;
+      v24 = clientAccountClassName;
       v25 = 2112;
-      v26 = v4;
+      v26 = accountCopy;
       _os_log_impl(&dword_24844D000, v16, v17, "Could not come up with a client account class (name %@) for account %@", &v23, 0x16u);
     }
   }
@@ -475,55 +475,55 @@ LABEL_10:
   return v14;
 }
 
-- (Class)daemonAccountClassForACAccount:(id)a3
+- (Class)daemonAccountClassForACAccount:(id)account
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 accountType];
-  [(DAAccountLoader *)self loadFrameworkForACAccountType:v5];
+  accountCopy = account;
+  accountType = [accountCopy accountType];
+  [(DAAccountLoader *)self loadFrameworkForACAccountType:accountType];
 
-  v6 = [(DAAccountLoader *)self _classNamesDictionaryForAccount:v4];
-  v7 = [v4 accountType];
-  v8 = [v7 identifier];
-  v9 = [v6 objectForKeyedSubscript:v8];
-  v10 = [v9 daemonAccountClassName];
+  v6 = [(DAAccountLoader *)self _classNamesDictionaryForAccount:accountCopy];
+  accountType2 = [accountCopy accountType];
+  identifier = [accountType2 identifier];
+  v9 = [v6 objectForKeyedSubscript:identifier];
+  daemonAccountClassName = [v9 daemonAccountClassName];
 
-  if (!v10)
+  if (!daemonAccountClassName)
   {
-    v11 = [v4 accountType];
-    v12 = [v11 identifier];
-    v13 = [v6 objectForKeyedSubscript:v12];
-    v10 = [v13 accountClassName];
+    accountType3 = [accountCopy accountType];
+    identifier2 = [accountType3 identifier];
+    v13 = [v6 objectForKeyedSubscript:identifier2];
+    daemonAccountClassName = [v13 accountClassName];
 
-    if (!v10)
+    if (!daemonAccountClassName)
     {
       goto LABEL_4;
     }
   }
 
-  v14 = [v4 accountType];
-  [(DAAccountLoader *)self loadDaemonBundleForACAccountType:v14];
+  accountType4 = [accountCopy accountType];
+  [(DAAccountLoader *)self loadDaemonBundleForACAccountType:accountType4];
 
-  v15 = NSClassFromString(v10);
+  v15 = NSClassFromString(daemonAccountClassName);
   if (!v15)
   {
 LABEL_4:
-    v16 = [v4 parentAccount];
+    parentAccount = [accountCopy parentAccount];
 
     v17 = DALoggingwithCategory();
     v18 = *(MEMORY[0x277D03988] + 3);
     v19 = os_log_type_enabled(v17, v18);
-    if (v16)
+    if (parentAccount)
     {
       if (v19)
       {
-        v20 = [v4 parentAccount];
+        parentAccount2 = [accountCopy parentAccount];
         v24 = 138412802;
-        v25 = v10;
+        v25 = daemonAccountClassName;
         v26 = 2112;
-        v27 = v4;
+        v27 = accountCopy;
         v28 = 2112;
-        v29 = v20;
+        v29 = parentAccount2;
         _os_log_impl(&dword_24844D000, v17, v18, "Could not come up with a daemon account class (name %@) for account %@ parent account %@", &v24, 0x20u);
       }
     }
@@ -531,9 +531,9 @@ LABEL_4:
     else if (v19)
     {
       v24 = 138412546;
-      v25 = v10;
+      v25 = daemonAccountClassName;
       v26 = 2112;
-      v27 = v4;
+      v27 = accountCopy;
       _os_log_impl(&dword_24844D000, v17, v18, "Could not come up with a daemon account class (name %@) for account %@", &v24, 0x16u);
     }
 
@@ -546,34 +546,34 @@ LABEL_4:
   return v15;
 }
 
-- (Class)agentClassForACAccount:(id)a3
+- (Class)agentClassForACAccount:(id)account
 {
-  v5 = a3;
-  v6 = [v5 accountType];
-  [(DAAccountLoader *)self loadDaemonBundleForACAccountType:v6];
+  accountCopy = account;
+  accountType = [accountCopy accountType];
+  [(DAAccountLoader *)self loadDaemonBundleForACAccountType:accountType];
 
-  v7 = [(DAAccountLoader *)self _classNamesDictionaryForAccount:v5];
-  v8 = [v5 accountType];
-  v9 = [v8 identifier];
-  v10 = [v7 objectForKeyedSubscript:v9];
-  v11 = [v10 agentClassName];
+  v7 = [(DAAccountLoader *)self _classNamesDictionaryForAccount:accountCopy];
+  accountType2 = [accountCopy accountType];
+  identifier = [accountType2 identifier];
+  v10 = [v7 objectForKeyedSubscript:identifier];
+  agentClassName = [v10 agentClassName];
 
-  v12 = NSClassFromString(v11);
+  v12 = NSClassFromString(agentClassName);
   if (!v12)
   {
-    v13 = [v5 parentAccount];
+    parentAccount = [accountCopy parentAccount];
 
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    v15 = v14;
-    if (v13)
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    v15 = currentHandler;
+    if (parentAccount)
     {
-      v16 = [v5 parentAccount];
-      [v15 handleFailureInMethod:a2 object:self file:@"DAAccountLoader.m" lineNumber:273 description:{@"Could not come up with an agent class (name %@) for account %@ parent account %@", v11, v5, v16}];
+      parentAccount2 = [accountCopy parentAccount];
+      [v15 handleFailureInMethod:a2 object:self file:@"DAAccountLoader.m" lineNumber:273 description:{@"Could not come up with an agent class (name %@) for account %@ parent account %@", agentClassName, accountCopy, parentAccount2}];
     }
 
     else
     {
-      [v14 handleFailureInMethod:a2 object:self file:@"DAAccountLoader.m" lineNumber:275 description:{@"Could not come up with an agent class (name %@) for account %@", v11, v5}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"DAAccountLoader.m" lineNumber:275 description:{@"Could not come up with an agent class (name %@) for account %@", agentClassName, accountCopy}];
     }
   }
 
@@ -582,17 +582,17 @@ LABEL_4:
   return v12;
 }
 
-- (Class)daemonAppropriateAccountClassForACAccount:(id)a3
+- (Class)daemonAppropriateAccountClassForACAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   if (DAIsRunningInDataAccessD())
   {
-    [(DAAccountLoader *)self daemonAccountClassForACAccount:v4];
+    [(DAAccountLoader *)self daemonAccountClassForACAccount:accountCopy];
   }
 
   else
   {
-    [(DAAccountLoader *)self clientAccountClassForACAccount:v4];
+    [(DAAccountLoader *)self clientAccountClassForACAccount:accountCopy];
   }
   v5 = ;
 

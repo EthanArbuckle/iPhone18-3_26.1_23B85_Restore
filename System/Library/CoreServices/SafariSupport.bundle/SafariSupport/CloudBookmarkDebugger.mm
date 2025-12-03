@@ -1,31 +1,31 @@
 @interface CloudBookmarkDebugger
-- (CloudBookmarkDebugger)initWithStore:(id)a3 databaseAccessor:(id)a4;
-- (id)_dataTreeAsPlistWithRecords:(id)a3 deletedRecordIDs:(id)a4 includingDeletedBookmarks:(BOOL)a5;
-- (id)_dictionaryRepresentationForCKShare:(id)a3;
-- (id)_dictionaryRepresentationForEncryptionRecord:(id)a3;
-- (id)_dictionaryRepresentationForGenericRecord:(id)a3;
-- (id)_dictionaryRepresentationForMigrationRecord:(id)a3;
-- (id)_dictionaryRepresentationForPresenceRecord:(id)a3;
-- (id)_dictionaryRepresentationForRecord:(id)a3;
-- (id)_dictionaryRepresentationForRecordWrapper:(id)a3;
-- (id)_dictionaryRepresentationForSyncRequirementsRecord:(id)a3;
-- (id)_dictionaryRepresentationForTabGroupParticipantPositionRecord:(id)a3;
-- (id)_dictionaryRepresentationForTabGroupTabParticipantStatusRecord:(id)a3;
-- (id)_namesByUserRecordIDsForShare:(id)a3;
-- (void)_enumerateRecordTreeWithRecords:(id)a3 deletedRecordIDs:(id)a4 usingBlock:(id)a5;
-- (void)_fetchAllChangesInDatabase:(id)a3 recordWasChangedBlock:(id)a4 recordWithIDWasDeletedBlock:(id)a5 completionHandler:(id)a6;
-- (void)_printOrderedRecords:(id)a3 deletedRecordIDs:(id)a4 targetFileDescriptor:(int)a5;
-- (void)_printToFile:(id)a3 usingBlock:(id)a4;
-- (void)_printTreeWithRecords:(id)a3 deletedRecordIDs:(id)a4 includingDeletedBookmarks:(BOOL)a5 targetFileDescriptor:(int)a6;
-- (void)dumpCloudKitDataPrintByDates:(BOOL)a3 liveOnly:(BOOL)a4 printTree:(BOOL)a5 printPlist:(BOOL)a6 writeToFile:(BOOL)a7 atFileURL:(id)a8 completionHandler:(id)a9;
+- (CloudBookmarkDebugger)initWithStore:(id)store databaseAccessor:(id)accessor;
+- (id)_dataTreeAsPlistWithRecords:(id)records deletedRecordIDs:(id)ds includingDeletedBookmarks:(BOOL)bookmarks;
+- (id)_dictionaryRepresentationForCKShare:(id)share;
+- (id)_dictionaryRepresentationForEncryptionRecord:(id)record;
+- (id)_dictionaryRepresentationForGenericRecord:(id)record;
+- (id)_dictionaryRepresentationForMigrationRecord:(id)record;
+- (id)_dictionaryRepresentationForPresenceRecord:(id)record;
+- (id)_dictionaryRepresentationForRecord:(id)record;
+- (id)_dictionaryRepresentationForRecordWrapper:(id)wrapper;
+- (id)_dictionaryRepresentationForSyncRequirementsRecord:(id)record;
+- (id)_dictionaryRepresentationForTabGroupParticipantPositionRecord:(id)record;
+- (id)_dictionaryRepresentationForTabGroupTabParticipantStatusRecord:(id)record;
+- (id)_namesByUserRecordIDsForShare:(id)share;
+- (void)_enumerateRecordTreeWithRecords:(id)records deletedRecordIDs:(id)ds usingBlock:(id)block;
+- (void)_fetchAllChangesInDatabase:(id)database recordWasChangedBlock:(id)block recordWithIDWasDeletedBlock:(id)deletedBlock completionHandler:(id)handler;
+- (void)_printOrderedRecords:(id)records deletedRecordIDs:(id)ds targetFileDescriptor:(int)descriptor;
+- (void)_printToFile:(id)file usingBlock:(id)block;
+- (void)_printTreeWithRecords:(id)records deletedRecordIDs:(id)ds includingDeletedBookmarks:(BOOL)bookmarks targetFileDescriptor:(int)descriptor;
+- (void)dumpCloudKitDataPrintByDates:(BOOL)dates liveOnly:(BOOL)only printTree:(BOOL)tree printPlist:(BOOL)plist writeToFile:(BOOL)file atFileURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation CloudBookmarkDebugger
 
-- (CloudBookmarkDebugger)initWithStore:(id)a3 databaseAccessor:(id)a4
+- (CloudBookmarkDebugger)initWithStore:(id)store databaseAccessor:(id)accessor
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  accessorCopy = accessor;
   v16.receiver = self;
   v16.super_class = CloudBookmarkDebugger;
   v9 = [(CloudBookmarkDebugger *)&v16 init];
@@ -37,23 +37,23 @@
     nullRecordID = v9->_nullRecordID;
     v9->_nullRecordID = v12;
 
-    objc_storeStrong(&v9->_store, a3);
-    objc_storeStrong(&v9->_databaseAccessor, a4);
+    objc_storeStrong(&v9->_store, store);
+    objc_storeStrong(&v9->_databaseAccessor, accessor);
     v14 = v9;
   }
 
   return v9;
 }
 
-- (void)dumpCloudKitDataPrintByDates:(BOOL)a3 liveOnly:(BOOL)a4 printTree:(BOOL)a5 printPlist:(BOOL)a6 writeToFile:(BOOL)a7 atFileURL:(id)a8 completionHandler:(id)a9
+- (void)dumpCloudKitDataPrintByDates:(BOOL)dates liveOnly:(BOOL)only printTree:(BOOL)tree printPlist:(BOOL)plist writeToFile:(BOOL)file atFileURL:(id)l completionHandler:(id)handler
 {
-  v138 = a7;
-  v172 = a6;
-  v134 = a5;
-  v135 = a4;
-  v133 = a3;
-  v141 = a8;
-  v139 = a9;
+  fileCopy = file;
+  plistCopy = plist;
+  treeCopy = tree;
+  onlyCopy = only;
+  datesCopy = dates;
+  lCopy = l;
+  handlerCopy = handler;
   dsema = dispatch_semaphore_create(0);
   v142 = +[NSDate date];
   v9 = dispatch_group_create();
@@ -92,15 +92,15 @@
   v13 = +[NSCountedSet set];
   [v171 setObject:v13 forKeyedSubscript:&off_10013C3F8];
 
-  v14 = [(CloudBookmarkStore *)self->_store cloudBookmarkItemConfigurations];
-  v157 = [v14 copy];
+  cloudBookmarkItemConfigurations = [(CloudBookmarkStore *)self->_store cloudBookmarkItemConfigurations];
+  v157 = [cloudBookmarkItemConfigurations copy];
 
-  v15 = [(CloudBookmarkStore *)self->_store container];
-  v16 = [v15 privateCloudDatabase];
-  v293[0] = v16;
-  v17 = [(CloudBookmarkStore *)self->_store container];
-  v18 = [v17 sharedCloudDatabase];
-  v293[1] = v18;
+  container = [(CloudBookmarkStore *)self->_store container];
+  privateCloudDatabase = [container privateCloudDatabase];
+  v293[0] = privateCloudDatabase;
+  container2 = [(CloudBookmarkStore *)self->_store container];
+  sharedCloudDatabase = [container2 sharedCloudDatabase];
+  v293[1] = sharedCloudDatabase;
   v19 = [NSArray arrayWithObjects:v293 count:2];
 
   v291[0] = &off_10013C3F8;
@@ -192,31 +192,31 @@
     v129 = v30;
     WBSPrintf();
     v143 = +[NSMutableSet set];
-    v31 = [v169 allKeys];
-    [v143 addObjectsFromArray:v31];
+    allKeys = [v169 allKeys];
+    [v143 addObjectsFromArray:allKeys];
 
-    v32 = [v170 allKeys];
-    [v143 addObjectsFromArray:v32];
+    allKeys2 = [v170 allKeys];
+    [v143 addObjectsFromArray:allKeys2];
 
-    v33 = [v143 allObjects];
+    allObjects = [v143 allObjects];
     v241[0] = _NSConcreteStackBlock;
     v241[1] = 3221225472;
     v241[2] = sub_100043020;
     v241[3] = &unk_100133228;
     v175 = v166;
     v242 = v175;
-    v132 = [v33 sortedArrayUsingComparator:v241];
+    v132 = [allObjects sortedArrayUsingComparator:v241];
 
     v34 = [v169 objectForKeyedSubscript:@"TabGroupTabParticipantPresence"];
     v136 = [v34 sortedArrayUsingComparator:&stru_100133268];
 
-    if (!v172)
+    if (!plistCopy)
     {
       v83 = &CPSharedResourcesDirectory_ptr;
       goto LABEL_61;
     }
 
-    v35 = [(CloudBookmarkDebugger *)self _dataTreeAsPlistWithRecords:v165 deletedRecordIDs:v164 includingDeletedBookmarks:!v135];
+    v35 = [(CloudBookmarkDebugger *)self _dataTreeAsPlistWithRecords:v165 deletedRecordIDs:v164 includingDeletedBookmarks:!onlyCopy];
     v146 = [v35 mutableCopy];
 
     v36 = +[NSMutableDictionary dictionary];
@@ -313,7 +313,7 @@
     v227[3] = &unk_100133338;
     v150 = v55;
     v228 = v150;
-    v229 = self;
+    selfCopy = self;
     v56 = [v144 safari_mapObjectsUsingBlock:v227];
     [v146 setObject:v56 forKeyedSubscript:@"Shares"];
 
@@ -344,9 +344,9 @@
 
           v61 = *(*(&v223 + 1) + 8 * m);
           v62 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForPresenceRecord:v61];
-          v63 = [v61 recordID];
-          v64 = [v63 recordName];
-          v65 = [v64 isEqualToString:@"UserTabGroupPresence"];
+          recordID = [v61 recordID];
+          recordName = [recordID recordName];
+          v65 = [recordName isEqualToString:@"UserTabGroupPresence"];
 
           if (v65)
           {
@@ -356,26 +356,26 @@
 
           v66 = [v62 mutableCopy];
           v67 = [v61 objectForKeyedSubscript:@"Participant"];
-          v68 = [v67 recordID];
+          recordID2 = [v67 recordID];
 
-          v69 = [v150 objectForKeyedSubscript:v68];
+          v69 = [v150 objectForKeyedSubscript:recordID2];
           [v66 setObject:v69 forKeyedSubscript:@"UserName"];
 
-          if (!v68)
+          if (!recordID2)
           {
 LABEL_41:
             v72 = &__kCFBooleanFalse;
             goto LABEL_42;
           }
 
-          v70 = [v68 recordName];
-          if ([v70 isEqualToString:CKCurrentUserDefaultName])
+          recordName2 = [recordID2 recordName];
+          if ([recordName2 isEqualToString:CKCurrentUserDefaultName])
           {
           }
 
           else
           {
-            v71 = [v68 isEqual:v276[5]];
+            v71 = [recordID2 isEqual:v276[5]];
 
             if (!v71)
             {
@@ -407,7 +407,7 @@ LABEL_45:
     v220[2] = sub_1000433C8;
     v73 = v220[3] = &unk_1001333A8;
     v221 = v73;
-    v222 = self;
+    selfCopy2 = self;
     [v161 enumerateKeysAndObjectsUsingBlock:v220];
     [v146 setObject:v73 forKeyedSubscript:@"RecordsByZones"];
     +[NSMutableDictionary dictionary];
@@ -418,7 +418,7 @@ LABEL_45:
     v219 = v74;
     [v160 enumerateKeysAndObjectsUsingBlock:v218];
     [v146 setObject:v74 forKeyedSubscript:@"DeletedRecordIDsByZones"];
-    if (!v138)
+    if (!fileCopy)
     {
       v217 = 0;
       v75 = [NSPropertyListSerialization dataWithPropertyList:v146 format:100 options:0 error:&v217];
@@ -438,7 +438,7 @@ LABEL_45:
 LABEL_60:
 
       v83 = &CPSharedResourcesDirectory_ptr;
-      if (!v138)
+      if (!fileCopy)
       {
 LABEL_98:
 
@@ -454,8 +454,8 @@ LABEL_61:
       v284[2] = v86;
       v87 = [NSArray arrayWithObjects:v284 count:3];
 
-      v88 = [v171 allKeys];
-      v151 = [v88 sortedArrayUsingSelector:"compare:"];
+      allKeys3 = [v171 allKeys];
+      v151 = [allKeys3 sortedArrayUsingSelector:"compare:"];
 
       v89 = [v151 safari_mapObjectsUsingBlock:&stru_100133450];
       v90 = [v87 arrayByAddingObjectsFromArray:v89];
@@ -479,8 +479,8 @@ LABEL_61:
               objc_enumerationMutation(v92);
             }
 
-            v96 = [*(*(&v211 + 1) + 8 * n) firstObject];
-            v97 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v96 length]);
+            firstObject = [*(*(&v211 + 1) + 8 * n) firstObject];
+            v97 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [firstObject length]);
             [v91 addObject:v97];
           }
 
@@ -521,13 +521,13 @@ LABEL_61:
             (v174[2])(v174, v98, 0);
             v99 = [v169 objectForKeyedSubscript:v98];
             v100 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v99 count]);
-            v101 = [v100 stringValue];
-            (v174[2])(v174, v101, 1);
+            stringValue = [v100 stringValue];
+            (v174[2])(v174, stringValue, 1);
 
             v102 = [v170 objectForKeyedSubscript:v98];
             v103 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v102 count]);
-            v104 = [v103 stringValue];
-            (v174[2])(v174, v104, 2);
+            stringValue2 = [v103 stringValue];
+            (v174[2])(v174, stringValue2, 2);
 
             v202 = 0u;
             v203 = 0u;
@@ -549,15 +549,15 @@ LABEL_61:
                   }
 
                   v110 = *(*(&v200 + 1) + 8 * jj);
-                  v111 = &stru_100137BA8;
+                  stringValue3 = &stru_100137BA8;
                   if ([v175 containsObject:v98])
                   {
                     v112 = [v171 objectForKeyedSubscript:v110];
                     v113 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v112 countForObject:v98]);
-                    v111 = [v113 stringValue];
+                    stringValue3 = [v113 stringValue];
                   }
 
-                  (v174[2])(v174, v111, v108);
+                  (v174[2])(v174, stringValue3, v108);
 
                   ++v108;
                 }
@@ -618,20 +618,20 @@ LABEL_61:
       v190 = v170;
       v191 = v148;
       v192 = v169;
-      v193 = self;
+      selfCopy3 = self;
       v194 = v136;
       v195 = &v275;
       v126 = objc_retainBlock(v189);
-      if (v134)
+      if (treeCopy)
       {
-        if (v138)
+        if (fileCopy)
         {
-          v127 = [NSString stringWithFormat:@"CloudKitData-Tree-%@.txt", v137];
+          v137 = [NSString stringWithFormat:@"CloudKitData-Tree-%@.txt", v137];
         }
 
         else
         {
-          v127 = 0;
+          v137 = 0;
         }
 
         v182[0] = _NSConcreteStackBlock;
@@ -641,23 +641,23 @@ LABEL_61:
         v182[4] = self;
         v183 = v165;
         v184 = v164;
-        v187 = v135;
+        v187 = onlyCopy;
         v186 = v126;
-        v188 = v138;
+        v188 = fileCopy;
         v185 = v114;
-        [(CloudBookmarkDebugger *)self _printToFile:v127 usingBlock:v182];
+        [(CloudBookmarkDebugger *)self _printToFile:v137 usingBlock:v182];
       }
 
-      if (v133)
+      if (datesCopy)
       {
-        if (v138)
+        if (fileCopy)
         {
-          v128 = [NSString stringWithFormat:@"CloudKitData-Dates-%@.txt", v137];
+          v1372 = [NSString stringWithFormat:@"CloudKitData-Dates-%@.txt", v137];
         }
 
         else
         {
-          v128 = 0;
+          v1372 = 0;
         }
 
         v176[0] = _NSConcreteStackBlock;
@@ -668,9 +668,9 @@ LABEL_61:
         v177 = v165;
         v178 = v164;
         v180 = v126;
-        v181 = v138;
+        v181 = fileCopy;
         v179 = v114;
-        [(CloudBookmarkDebugger *)self _printToFile:v128 usingBlock:v176];
+        [(CloudBookmarkDebugger *)self _printToFile:v1372 usingBlock:v176];
       }
 
       WBSPrintf();
@@ -681,28 +681,28 @@ LABEL_61:
     v216 = 0;
     v75 = [NSPropertyListSerialization dataWithPropertyList:v146 format:200 options:0 error:&v216];
     v76 = v216;
-    if (!v141)
+    if (!lCopy)
     {
       v77 = +[NSFileManager defaultManager];
-      v78 = [v77 currentDirectoryPath];
-      v79 = [NSString stringWithFormat:@"CloudKitData-Full-%@.plist", v137];
-      v80 = [v78 stringByAppendingPathComponent:v79];
-      v141 = [NSURL fileURLWithPath:v80];
+      currentDirectoryPath = [v77 currentDirectoryPath];
+      v1373 = [NSString stringWithFormat:@"CloudKitData-Full-%@.plist", v137];
+      v80 = [currentDirectoryPath stringByAppendingPathComponent:v1373];
+      lCopy = [NSURL fileURLWithPath:v80];
     }
 
     if (v75)
     {
       v215 = v76;
-      v81 = [v75 writeToURL:v141 options:0 error:&v215];
+      v81 = [v75 writeToURL:lCopy options:0 error:&v215];
       v82 = v215;
 
       if (v81)
       {
-        v130 = [v141 path];
+        path = [lCopy path];
         WBSPrintf();
 
 LABEL_59:
-        v139[2](v139, v82);
+        handlerCopy[2](handlerCopy, v82);
         goto LABEL_60;
       }
     }
@@ -722,19 +722,19 @@ LABEL_99:
   _Block_object_dispose(&v275, 8);
 }
 
-- (void)_enumerateRecordTreeWithRecords:(id)a3 deletedRecordIDs:(id)a4 usingBlock:(id)a5
+- (void)_enumerateRecordTreeWithRecords:(id)records deletedRecordIDs:(id)ds usingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recordsCopy = records;
+  dsCopy = ds;
+  blockCopy = block;
   v57[0] = WBSCloudBookmarkListRecordNameFavoritesBar;
   v57[1] = WBSCloudBookmarkListRecordNameBookmarksMenu;
   v57[2] = WBSCloudBookmarkListRecordNameReadingList;
   v11 = [NSArray arrayWithObjects:v57 count:3];
   v12 = [NSOrderedSet orderedSetWithArray:v11];
 
-  v41 = v9;
-  v13 = [NSSet setWithArray:v9];
+  v41 = dsCopy;
+  v13 = [NSSet setWithArray:dsCopy];
   v14 = +[NSMutableDictionary dictionary];
   v15 = +[NSMutableDictionary dictionary];
   v52[0] = _NSConcreteStackBlock;
@@ -753,7 +753,7 @@ LABEL_99:
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v18 = v8;
+  v18 = recordsCopy;
   v19 = [v18 countByEnumeratingWithState:&v48 objects:v56 count:16];
   if (v19)
   {
@@ -788,26 +788,26 @@ LABEL_99:
   v45 = v38;
   v24 = v23;
   v46 = v24;
-  v47 = self;
+  selfCopy = self;
   [v42 enumerateKeysAndObjectsUsingBlock:v43];
   v37 = v24;
   v25 = [NSMutableArray arrayWithObject:v24];
-  v26 = [v25 lastObject];
-  if (v26)
+  lastObject = [v25 lastObject];
+  if (lastObject)
   {
-    v27 = v26;
+    v27 = lastObject;
     do
     {
-      v28 = [v27 firstObject];
-      if (v28)
+      firstObject = [v27 firstObject];
+      if (firstObject)
       {
-        v29 = v28;
+        v29 = firstObject;
         while (1)
         {
           [v27 removeObjectAtIndex:0];
-          v10[2](v10, v29, [v25 count] - 1);
-          v30 = [v29 recordID];
-          v31 = [v42 objectForKeyedSubscript:v30];
+          blockCopy[2](blockCopy, v29, [v25 count] - 1);
+          recordID = [v29 recordID];
+          v31 = [v42 objectForKeyedSubscript:recordID];
           v32 = [v31 mutableCopy];
 
           if (v32)
@@ -815,10 +815,10 @@ LABEL_99:
             break;
           }
 
-          v33 = [v27 firstObject];
+          firstObject2 = [v27 firstObject];
 
-          v29 = v33;
-          if (!v33)
+          v29 = firstObject2;
+          if (!firstObject2)
           {
             goto LABEL_16;
           }
@@ -828,38 +828,38 @@ LABEL_99:
       }
 
 LABEL_16:
-      v34 = [v25 lastObject];
-      v35 = [v34 count];
+      lastObject2 = [v25 lastObject];
+      v35 = [lastObject2 count];
 
       if (!v35)
       {
         [v25 removeLastObject];
       }
 
-      v36 = [v25 lastObject];
+      lastObject3 = [v25 lastObject];
 
-      v27 = v36;
+      v27 = lastObject3;
     }
 
-    while (v36);
+    while (lastObject3);
   }
 }
 
-- (void)_printToFile:(id)a3 usingBlock:(id)a4
+- (void)_printToFile:(id)file usingBlock:(id)block
 {
-  v13 = a3;
-  if (v13)
+  fileCopy = file;
+  if (fileCopy)
   {
-    v5 = a4;
+    blockCopy = block;
     v6 = +[NSFileManager defaultManager];
-    v7 = [v6 currentDirectoryPath];
-    v8 = [v7 stringByAppendingPathComponent:v13];
+    currentDirectoryPath = [v6 currentDirectoryPath];
+    blockCopy2 = [currentDirectoryPath stringByAppendingPathComponent:fileCopy];
 
     v9 = +[NSData data];
-    [v9 writeToFile:v8 options:0 error:0];
+    [v9 writeToFile:blockCopy2 options:0 error:0];
 
-    v10 = [NSFileHandle fileHandleForWritingAtPath:v8];
-    v5[2](v5, [v10 fileDescriptor]);
+    v10 = [NSFileHandle fileHandleForWritingAtPath:blockCopy2];
+    blockCopy[2](blockCopy, [v10 fileDescriptor]);
 
     [v10 closeFile];
     WBSPrintf();
@@ -868,16 +868,16 @@ LABEL_16:
   else
   {
     v11 = __stdoutp;
-    v8 = a4;
+    blockCopy2 = block;
     v12 = fileno(v11);
-    (*(a4 + 2))(v8, v12);
+    (*(block + 2))(blockCopy2, v12);
   }
 }
 
-- (void)_printTreeWithRecords:(id)a3 deletedRecordIDs:(id)a4 includingDeletedBookmarks:(BOOL)a5 targetFileDescriptor:(int)a6
+- (void)_printTreeWithRecords:(id)records deletedRecordIDs:(id)ds includingDeletedBookmarks:(BOOL)bookmarks targetFileDescriptor:(int)descriptor
 {
-  v10 = a3;
-  v11 = a4;
+  recordsCopy = records;
+  dsCopy = ds;
   WBSDPrintf();
   v15 = 0;
   v16 = &v15;
@@ -887,10 +887,10 @@ LABEL_16:
   v12[1] = 3221225472;
   v12[2] = sub_100045258;
   v12[3] = &unk_1001335D8;
-  v14 = a5;
-  v13 = a6;
+  bookmarksCopy = bookmarks;
+  descriptorCopy = descriptor;
   v12[4] = &v15;
-  [(CloudBookmarkDebugger *)self _enumerateRecordTreeWithRecords:v10 deletedRecordIDs:v11 usingBlock:v12];
+  [(CloudBookmarkDebugger *)self _enumerateRecordTreeWithRecords:recordsCopy deletedRecordIDs:dsCopy usingBlock:v12];
   if ((v16[3] & 1) == 0)
   {
     WBSDPrintf();
@@ -899,11 +899,11 @@ LABEL_16:
   _Block_object_dispose(&v15, 8);
 }
 
-- (void)_printOrderedRecords:(id)a3 deletedRecordIDs:(id)a4 targetFileDescriptor:(int)a5
+- (void)_printOrderedRecords:(id)records deletedRecordIDs:(id)ds targetFileDescriptor:(int)descriptor
 {
-  v71 = a4;
-  v7 = [a3 sortedArrayUsingComparator:&stru_1001335F8];
-  v87 = [(WBSBookmarkDBAccess *)self->_databaseAccessor createDatabase];
+  dsCopy = ds;
+  v7 = [records sortedArrayUsingComparator:&stru_1001335F8];
+  createDatabase = [(WBSBookmarkDBAccess *)self->_databaseAccessor createDatabase];
   WBSDPrintf();
   WBSDPrintf();
   WBSDPrintf();
@@ -913,7 +913,7 @@ LABEL_16:
   v95 = 0u;
   obj = v7;
   v75 = [obj countByEnumeratingWithState:&v94 objects:v99 count:16];
-  v76 = self;
+  selfCopy = self;
   if (v75)
   {
     v74 = *v95;
@@ -931,32 +931,32 @@ LABEL_16:
         v9 = *(*(&v94 + 1) + 8 * v8);
         v83 = [(CloudBookmarkStore *)self->_store cloudBookmarkItemConfigurationForRecord:v9, v59, v60, v61, v62, v63, v64, v65, v66, v67, v68, v69, v70];
         v10 = [[CloudBookmarkRecordWrapper alloc] initWithRecord:v9 configuration:v83];
-        v11 = [v9 safari_state];
+        safari_state = [v9 safari_state];
         v12 = @" ";
-        if (v11 != 1)
+        if (safari_state != 1)
         {
           v12 = @"/";
         }
 
         v88 = v12;
         databaseAccessor = self->_databaseAccessor;
-        v14 = [(CloudBookmarkRecordWrapper *)v10 recordName];
-        v15 = [(WBSBookmarkDBAccess *)databaseAccessor copyItemWithServerId:v14 database:v87];
+        recordName = [(CloudBookmarkRecordWrapper *)v10 recordName];
+        v15 = [(WBSBookmarkDBAccess *)databaseAccessor copyItemWithServerId:recordName database:createDatabase];
 
         if (v15)
         {
           v16 = [(WBSBookmarkDBAccess *)self->_databaseAccessor copySyncDataWithItem:v15];
           v17 = [WBBookmarkSyncData syncDataWithContentsOfData:v16];
 
-          v18 = [v17 record];
-          if (v18)
+          record = [v17 record];
+          if (record)
           {
-            v19 = [v17 record];
-            v20 = [v19 recordChangeTag];
-            v21 = [v9 recordChangeTag];
-            v22 = [v20 isEqualToString:v21];
+            record2 = [v17 record];
+            recordChangeTag = [record2 recordChangeTag];
+            recordChangeTag2 = [v9 recordChangeTag];
+            v22 = [recordChangeTag isEqualToString:recordChangeTag2];
 
-            self = v76;
+            self = selfCopy;
             v23 = @" ";
             if (!v22)
             {
@@ -982,12 +982,12 @@ LABEL_16:
         }
 
         v25 = @"D";
-        if (v11 != 1)
+        if (safari_state != 1)
         {
           v25 = @"L";
         }
 
-        if ((v11 != 1) != (v15 != 0))
+        if ((safari_state != 1) != (v15 != 0))
         {
           v26 = v24;
         }
@@ -999,26 +999,26 @@ LABEL_16:
 
         v27 = v25;
         v28 = v26;
-        v29 = [(CloudBookmarkRecordWrapper *)v10 isFolderRecord];
-        v79 = [(CloudBookmarkRecordWrapper *)v10 minimumAPIVersion];
-        v30 = [(CloudBookmarkRecordWrapper *)v10 recordName];
-        v31 = [v9 modificationDate];
-        v32 = [v9 recordChangeTag];
-        v33 = [(CloudBookmarkRecordWrapper *)v10 parentRecordName];
-        v34 = [(CloudBookmarkRecordWrapper *)v10 title];
-        v81 = v32;
-        v77 = v31;
-        if (v29)
+        isFolderRecord = [(CloudBookmarkRecordWrapper *)v10 isFolderRecord];
+        minimumAPIVersion = [(CloudBookmarkRecordWrapper *)v10 minimumAPIVersion];
+        recordName2 = [(CloudBookmarkRecordWrapper *)v10 recordName];
+        modificationDate = [v9 modificationDate];
+        recordChangeTag3 = [v9 recordChangeTag];
+        parentRecordName = [(CloudBookmarkRecordWrapper *)v10 parentRecordName];
+        title = [(CloudBookmarkRecordWrapper *)v10 title];
+        v81 = recordChangeTag3;
+        v77 = modificationDate;
+        if (isFolderRecord)
         {
-          v35 = [(CloudBookmarkRecordWrapper *)v10 position];
-          v67 = v34;
-          v68 = v35;
-          v65 = v32;
-          v66 = v33;
-          v63 = v30;
-          v64 = v31;
+          position = [(CloudBookmarkRecordWrapper *)v10 position];
+          v67 = title;
+          v68 = position;
+          v65 = recordChangeTag3;
+          v66 = parentRecordName;
+          v63 = recordName2;
+          v64 = modificationDate;
           v61 = v27;
-          v62 = v79;
+          v62 = minimumAPIVersion;
           v36 = v88;
           v59 = v28;
           v60 = v88;
@@ -1027,29 +1027,29 @@ LABEL_16:
 
         else
         {
-          v35 = [(CloudBookmarkRecordWrapper *)v10 url];
-          v37 = [(CloudBookmarkRecordWrapper *)v10 isPinned];
+          position = [(CloudBookmarkRecordWrapper *)v10 url];
+          isPinned = [(CloudBookmarkRecordWrapper *)v10 isPinned];
           v38 = @"NO";
-          if (v37)
+          if (isPinned)
           {
             v38 = @"YES";
           }
 
           v73 = v28;
-          v39 = v34;
-          v40 = v33;
-          v41 = v30;
+          v39 = title;
+          v40 = parentRecordName;
+          v41 = recordName2;
           v42 = v38;
           [(CloudBookmarkRecordWrapper *)v10 position];
           v70 = v69 = v42;
           v67 = v39;
-          v68 = v35;
-          v65 = v32;
+          v68 = position;
+          v65 = recordChangeTag3;
           v66 = v40;
           v63 = v41;
-          v64 = v31;
+          v64 = modificationDate;
           v61 = v27;
-          v62 = v79;
+          v62 = minimumAPIVersion;
           v43 = v27;
           v36 = v88;
           v27 = v73;
@@ -1057,12 +1057,12 @@ LABEL_16:
           v60 = v88;
           WBSDPrintf();
 
-          v30 = v41;
-          v33 = v40;
-          v34 = v39;
+          recordName2 = v41;
+          parentRecordName = v40;
+          title = v39;
 
           v28 = v70;
-          self = v76;
+          self = selfCopy;
         }
 
         v8 = v85 + 1;
@@ -1080,7 +1080,7 @@ LABEL_16:
   v93 = 0u;
   v90 = 0u;
   v91 = 0u;
-  v80 = v71;
+  v80 = dsCopy;
   v44 = [v80 countByEnumeratingWithState:&v90 objects:v98 count:16];
   if (v44)
   {
@@ -1097,8 +1097,8 @@ LABEL_16:
           objc_enumerationMutation(v80);
         }
 
-        v47 = [*(*(&v90 + 1) + 8 * v46) recordName];
-        v48 = [(WBSBookmarkDBAccess *)self->_databaseAccessor copyItemWithServerId:v47 database:v87];
+        recordName3 = [*(*(&v90 + 1) + 8 * v46) recordName];
+        v48 = [(WBSBookmarkDBAccess *)self->_databaseAccessor copyItemWithServerId:recordName3 database:createDatabase];
         if (v48)
         {
           v49 = v48;
@@ -1107,42 +1107,42 @@ LABEL_16:
 
           v89 = [(WBSBookmarkDBAccess *)self->_databaseAccessor copyParentServerIdWithItem:v49];
           v86 = [(WBSBookmarkDBAccess *)self->_databaseAccessor copyValueForKey:@"Title" item:v49];
-          v52 = [v51 record];
-          v53 = [v52 objectForKeyedSubscript:@"MinimumAPIVersion"];
-          v84 = [v53 integerValue];
+          record3 = [v51 record];
+          v53 = [record3 objectForKeyedSubscript:@"MinimumAPIVersion"];
+          integerValue = [v53 integerValue];
 
           v54 = [(WBSBookmarkDBAccess *)self->_databaseAccessor itemTypeWithItem:v49];
-          v55 = [v52 modificationDate];
-          v56 = [v52 recordChangeTag];
+          modificationDate2 = [record3 modificationDate];
+          recordChangeTag4 = [record3 recordChangeTag];
           if (v54 == 1)
           {
-            v57 = [v51 position];
+            position2 = [v51 position];
             v64 = v86;
-            v65 = v57;
-            v62 = v56;
+            v65 = position2;
+            v62 = recordChangeTag4;
             v63 = v89;
-            v60 = v47;
-            v61 = v55;
-            v59 = v84;
+            v60 = recordName3;
+            v61 = modificationDate2;
+            v59 = integerValue;
             WBSDPrintf();
           }
 
           else
           {
-            v57 = [(WBSBookmarkDBAccess *)self->_databaseAccessor copyValueForKey:@"URL" item:v49];
+            position2 = [(WBSBookmarkDBAccess *)self->_databaseAccessor copyValueForKey:@"URL" item:v49];
             v58 = [(WBSBookmarkDBAccess *)self->_databaseAccessor copyValueForKey:@"IsPinned" item:v49];
             [v51 position];
             v67 = v66 = v58;
             v64 = v86;
-            v65 = v57;
-            v62 = v56;
+            v65 = position2;
+            v62 = recordChangeTag4;
             v63 = v89;
-            v60 = v47;
-            v61 = v55;
-            v59 = v84;
+            v60 = recordName3;
+            v61 = modificationDate2;
+            v59 = integerValue;
             WBSDPrintf();
 
-            self = v76;
+            self = selfCopy;
             v45 = v78;
           }
 
@@ -1159,14 +1159,14 @@ LABEL_16:
     while (v45);
   }
 
-  [(WBSBookmarkDBAccess *)self->_databaseAccessor closeDatabase:v87 shouldSave:0];
-  CFRelease(v87);
+  [(WBSBookmarkDBAccess *)self->_databaseAccessor closeDatabase:createDatabase shouldSave:0];
+  CFRelease(createDatabase);
 }
 
-- (id)_dataTreeAsPlistWithRecords:(id)a3 deletedRecordIDs:(id)a4 includingDeletedBookmarks:(BOOL)a5
+- (id)_dataTreeAsPlistWithRecords:(id)records deletedRecordIDs:(id)ds includingDeletedBookmarks:(BOOL)bookmarks
 {
-  v8 = a4;
-  v9 = a3;
+  dsCopy = ds;
+  recordsCopy = records;
   v10 = +[NSMutableDictionary dictionary];
   v11 = +[NSMutableArray array];
   v12 = +[NSMutableArray array];
@@ -1177,13 +1177,13 @@ LABEL_16:
   v19[1] = 3221225472;
   v19[2] = sub_100045F9C;
   v19[3] = &unk_100133620;
-  v22 = a5;
+  bookmarksCopy = bookmarks;
   v19[4] = self;
   v20 = v10;
   v21 = v11;
   v14 = v11;
   v15 = v10;
-  [(CloudBookmarkDebugger *)self _enumerateRecordTreeWithRecords:v9 deletedRecordIDs:v8 usingBlock:v19];
+  [(CloudBookmarkDebugger *)self _enumerateRecordTreeWithRecords:recordsCopy deletedRecordIDs:dsCopy usingBlock:v19];
 
   v23[0] = @"Root";
   v16 = [v15 objectForKeyedSubscript:v13];
@@ -1195,32 +1195,32 @@ LABEL_16:
   return v17;
 }
 
-- (id)_dictionaryRepresentationForRecord:(id)a3
+- (id)_dictionaryRepresentationForRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(CloudBookmarkStore *)self->_store cloudBookmarkItemConfigurationForRecord:v4];
+  recordCopy = record;
+  v5 = [(CloudBookmarkStore *)self->_store cloudBookmarkItemConfigurationForRecord:recordCopy];
   if (v5)
   {
-    v6 = [[CloudBookmarkRecordWrapper alloc] initWithRecord:v4 configuration:v5];
+    v6 = [[CloudBookmarkRecordWrapper alloc] initWithRecord:recordCopy configuration:v5];
     v7 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForRecordWrapper:v6];
 LABEL_3:
 
     goto LABEL_19;
   }
 
-  if ([v4 safari_isEncryptionInfoRecord])
+  if ([recordCopy safari_isEncryptionInfoRecord])
   {
-    v8 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForEncryptionRecord:v4];
+    v8 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForEncryptionRecord:recordCopy];
   }
 
-  else if ([v4 safari_isMigrationStateRecord])
+  else if ([recordCopy safari_isMigrationStateRecord])
   {
-    v8 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForMigrationRecord:v4];
+    v8 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForMigrationRecord:recordCopy];
   }
 
-  else if ([v4 safari_isSyncRequirementsRecord])
+  else if ([recordCopy safari_isSyncRequirementsRecord])
   {
-    v8 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForSyncRequirementsRecord:v4];
+    v8 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForSyncRequirementsRecord:recordCopy];
   }
 
   else
@@ -1228,43 +1228,43 @@ LABEL_3:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForCKShare:v4];
+      v8 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForCKShare:recordCopy];
     }
 
     else
     {
-      v9 = [v4 recordType];
-      v10 = [v9 isEqualToString:@"TabGroupTabParticipantStatus"];
+      recordType = [recordCopy recordType];
+      v10 = [recordType isEqualToString:@"TabGroupTabParticipantStatus"];
 
       if (v10)
       {
-        v8 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForTabGroupTabParticipantStatusRecord:v4];
+        v8 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForTabGroupTabParticipantStatusRecord:recordCopy];
       }
 
       else
       {
-        v11 = [v4 recordType];
-        v12 = [v11 isEqualToString:@"TabGroupParticipantPosition"];
+        recordType2 = [recordCopy recordType];
+        v12 = [recordType2 isEqualToString:@"TabGroupParticipantPosition"];
 
         if (v12)
         {
-          v8 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForTabGroupParticipantPositionRecord:v4];
+          v8 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForTabGroupParticipantPositionRecord:recordCopy];
         }
 
         else
         {
-          v13 = [v4 recordType];
-          v14 = [v13 isEqualToString:@"TabGroupTabParticipantPresence"];
+          recordType3 = [recordCopy recordType];
+          v14 = [recordType3 isEqualToString:@"TabGroupTabParticipantPresence"];
 
           if (!v14)
           {
-            v6 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForGenericRecord:v4];
+            v6 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForGenericRecord:recordCopy];
             v24[0] = @"AllKeys";
-            v16 = [v4 allKeys];
-            v17 = v16;
-            if (v16)
+            allKeys = [recordCopy allKeys];
+            v17 = allKeys;
+            if (allKeys)
             {
-              v18 = v16;
+              v18 = allKeys;
             }
 
             else
@@ -1274,12 +1274,12 @@ LABEL_3:
 
             v24[1] = @"AllEncryptedKeys";
             v25[0] = v18;
-            v19 = [v4 encryptedValues];
-            v20 = [v19 allKeys];
-            v21 = v20;
-            if (v20)
+            encryptedValues = [recordCopy encryptedValues];
+            allKeys2 = [encryptedValues allKeys];
+            v21 = allKeys2;
+            if (allKeys2)
             {
-              v22 = v20;
+              v22 = allKeys2;
             }
 
             else
@@ -1294,7 +1294,7 @@ LABEL_3:
             goto LABEL_3;
           }
 
-          v8 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForPresenceRecord:v4];
+          v8 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForPresenceRecord:recordCopy];
         }
       }
     }
@@ -1306,22 +1306,22 @@ LABEL_19:
   return v7;
 }
 
-- (id)_dictionaryRepresentationForGenericRecord:(id)a3
+- (id)_dictionaryRepresentationForGenericRecord:(id)record
 {
   v31[0] = @"RecordID";
-  v3 = a3;
-  v30 = [v3 recordID];
-  v29 = [v30 ckShortDescription];
-  v32[0] = v29;
+  recordCopy = record;
+  recordID = [recordCopy recordID];
+  ckShortDescription = [recordID ckShortDescription];
+  v32[0] = ckShortDescription;
   v31[1] = @"RecordType";
-  v28 = [v3 recordType];
-  v32[1] = v28;
+  recordType = [recordCopy recordType];
+  v32[1] = recordType;
   v31[2] = @"CreationDate";
-  v4 = [v3 creationDate];
-  v5 = v4;
-  if (v4)
+  creationDate = [recordCopy creationDate];
+  v5 = creationDate;
+  if (creationDate)
   {
-    v6 = v4;
+    v6 = creationDate;
   }
 
   else
@@ -1331,12 +1331,12 @@ LABEL_19:
 
   v32[2] = v6;
   v31[3] = @"CreatorUserRecordID";
-  v27 = [v3 creatorUserRecordID];
-  v7 = [v27 ckShortDescription];
-  v8 = v7;
-  if (v7)
+  creatorUserRecordID = [recordCopy creatorUserRecordID];
+  ckShortDescription2 = [creatorUserRecordID ckShortDescription];
+  v8 = ckShortDescription2;
+  if (ckShortDescription2)
   {
-    v9 = v7;
+    v9 = ckShortDescription2;
   }
 
   else
@@ -1346,11 +1346,11 @@ LABEL_19:
 
   v32[3] = v9;
   v31[4] = @"ModificationDate";
-  v10 = [v3 modificationDate];
-  v11 = v10;
-  if (v10)
+  modificationDate = [recordCopy modificationDate];
+  v11 = modificationDate;
+  if (modificationDate)
   {
-    v12 = v10;
+    v12 = modificationDate;
   }
 
   else
@@ -1360,12 +1360,12 @@ LABEL_19:
 
   v32[4] = v12;
   v31[5] = @"LastModifiedUserRecordID";
-  v13 = [v3 lastModifiedUserRecordID];
-  v14 = [v13 ckShortDescription];
-  v15 = v14;
-  if (v14)
+  lastModifiedUserRecordID = [recordCopy lastModifiedUserRecordID];
+  ckShortDescription3 = [lastModifiedUserRecordID ckShortDescription];
+  v15 = ckShortDescription3;
+  if (ckShortDescription3)
   {
-    v16 = v14;
+    v16 = ckShortDescription3;
   }
 
   else
@@ -1375,11 +1375,11 @@ LABEL_19:
 
   v32[5] = v16;
   v31[6] = @"ModifiedByDevice";
-  v17 = [v3 modifiedByDevice];
-  v18 = v17;
-  if (v17)
+  modifiedByDevice = [recordCopy modifiedByDevice];
+  v18 = modifiedByDevice;
+  if (modifiedByDevice)
   {
-    v19 = v17;
+    v19 = modifiedByDevice;
   }
 
   else
@@ -1389,11 +1389,11 @@ LABEL_19:
 
   v32[6] = v19;
   v31[7] = @"ExpirationDate";
-  v20 = [v3 expirationDate];
-  v21 = v20;
-  if (v20)
+  expirationDate = [recordCopy expirationDate];
+  v21 = expirationDate;
+  if (expirationDate)
   {
-    v22 = v20;
+    v22 = expirationDate;
   }
 
   else
@@ -1403,49 +1403,49 @@ LABEL_19:
 
   v32[7] = v22;
   v31[8] = @"IsExpired";
-  v23 = [v3 isExpired];
+  isExpired = [recordCopy isExpired];
 
-  v24 = [NSNumber numberWithBool:v23];
+  v24 = [NSNumber numberWithBool:isExpired];
   v32[8] = v24;
   v25 = [NSDictionary dictionaryWithObjects:v32 forKeys:v31 count:9];
 
   return v25;
 }
 
-- (id)_dictionaryRepresentationForRecordWrapper:(id)a3
+- (id)_dictionaryRepresentationForRecordWrapper:(id)wrapper
 {
-  v4 = a3;
-  if ([v4 isPlaceholder])
+  wrapperCopy = wrapper;
+  if ([wrapperCopy isPlaceholder])
   {
     v58[0] = @"IsTombstone";
-    v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 isTombstone]);
+    v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [wrapperCopy isTombstone]);
     v58[1] = @"RecordID";
     v59[0] = v5;
-    v6 = [v4 record];
-    nullRecordID = [v6 recordID];
+    record = [wrapperCopy record];
+    nullRecordID = [record recordID];
     v8 = nullRecordID;
     if (!nullRecordID)
     {
       nullRecordID = self->_nullRecordID;
     }
 
-    v9 = [nullRecordID ckShortDescription];
-    v59[1] = v9;
+    ckShortDescription = [nullRecordID ckShortDescription];
+    v59[1] = ckShortDescription;
     v10 = [NSDictionary dictionaryWithObjects:v59 forKeys:v58 count:2];
 
     goto LABEL_50;
   }
 
-  v11 = [v4 record];
-  v12 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForGenericRecord:v11];
+  record2 = [wrapperCopy record];
+  v12 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForGenericRecord:record2];
   v5 = [v12 mutableCopy];
 
   v56[0] = @"Title";
-  v13 = [v4 title];
-  v14 = v13;
-  if (v13)
+  title = [wrapperCopy title];
+  v14 = title;
+  if (title)
   {
-    v15 = v13;
+    v15 = title;
   }
 
   else
@@ -1455,12 +1455,12 @@ LABEL_19:
 
   v57[0] = v15;
   v56[1] = @"ParentRecordID";
-  v16 = [v4 parentRecordID];
-  v17 = [v16 ckShortDescription];
-  v18 = v17;
-  if (v17)
+  parentRecordID = [wrapperCopy parentRecordID];
+  ckShortDescription2 = [parentRecordID ckShortDescription];
+  v18 = ckShortDescription2;
+  if (ckShortDescription2)
   {
-    v19 = v17;
+    v19 = ckShortDescription2;
   }
 
   else
@@ -1470,8 +1470,8 @@ LABEL_19:
 
   v57[1] = v19;
   v56[2] = @"Position";
-  v20 = [v4 position];
-  v21 = [v20 description];
+  position = [wrapperCopy position];
+  v21 = [position description];
   v22 = v21;
   if (v21)
   {
@@ -1485,30 +1485,30 @@ LABEL_19:
 
   v57[2] = v23;
   v56[3] = @"State";
-  v24 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 state]);
+  v24 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [wrapperCopy state]);
   v57[3] = v24;
   v56[4] = @"MinimumAPIVersion";
-  v25 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 minimumAPIVersion]);
+  v25 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [wrapperCopy minimumAPIVersion]);
   v57[4] = v25;
   v26 = [NSDictionary dictionaryWithObjects:v57 forKeys:v56 count:5];
   [v5 addEntriesFromDictionary:v26];
 
-  if ([v4 isFolderRecord])
+  if ([wrapperCopy isFolderRecord])
   {
-    v27 = [v4 objectForKeyedSubscript:@"IsSelectedFavoritesFolder"];
+    v27 = [wrapperCopy objectForKeyedSubscript:@"IsSelectedFavoritesFolder"];
     if (v27)
     {
       [v5 setObject:v27 forKeyedSubscript:@"IsSelectedFavoritesFolder"];
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"IsTabGroup"];
+    v28 = [wrapperCopy objectForKeyedSubscript:@"IsTabGroup"];
 
     if (v28)
     {
       [v5 setObject:v28 forKeyedSubscript:@"IsTabGroup"];
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"ShowIconOnly"];
+    v29 = [wrapperCopy objectForKeyedSubscript:@"ShowIconOnly"];
 
     v30 = &off_10013C950;
     if (!v29)
@@ -1519,7 +1519,7 @@ LABEL_19:
 
   else
   {
-    v31 = [v4 url];
+    v31 = [wrapperCopy url];
     v32 = v31;
     if (v31)
     {
@@ -1542,56 +1542,56 @@ LABEL_19:
     v55[6] = @"ImageURL";
     v55[7] = @"ShowIconOnly";
     v30 = [NSArray arrayWithObjects:v55 count:8];
-    v34 = [v4 objectForKeyedSubscript:@"DateAdded"];
+    v34 = [wrapperCopy objectForKeyedSubscript:@"DateAdded"];
     if (v34)
     {
       [v5 setObject:v34 forKeyedSubscript:@"DateAdded"];
     }
 
-    v35 = [v4 objectForKeyedSubscript:@"DateLastViewed"];
+    v35 = [wrapperCopy objectForKeyedSubscript:@"DateLastViewed"];
 
     if (v35)
     {
       [v5 setObject:v35 forKeyedSubscript:@"DateLastViewed"];
     }
 
-    v36 = [v4 objectForKeyedSubscript:@"HasUserDefinedPreviewText"];
+    v36 = [wrapperCopy objectForKeyedSubscript:@"HasUserDefinedPreviewText"];
 
     if (v36)
     {
       [v5 setObject:v36 forKeyedSubscript:@"HasUserDefinedPreviewText"];
     }
 
-    v37 = [v4 objectForKeyedSubscript:@"ImageURL"];
+    v37 = [wrapperCopy objectForKeyedSubscript:@"ImageURL"];
 
     if (v37)
     {
-      v38 = [v37 absoluteString];
-      [v5 setObject:v38 forKeyedSubscript:@"ImageURL"];
+      absoluteString = [v37 absoluteString];
+      [v5 setObject:absoluteString forKeyedSubscript:@"ImageURL"];
     }
 
-    v39 = [v4 objectForKeyedSubscript:@"PreviewText"];
+    v39 = [wrapperCopy objectForKeyedSubscript:@"PreviewText"];
 
     if (v39)
     {
       [v5 setObject:v39 forKeyedSubscript:@"PreviewText"];
     }
 
-    v40 = [v4 objectForKeyedSubscript:@"SymbolImageName"];
+    v40 = [wrapperCopy objectForKeyedSubscript:@"SymbolImageName"];
 
     if (v40)
     {
       [v5 setObject:v40 forKeyedSubscript:@"SymbolImageName"];
     }
 
-    v41 = [v4 objectForKeyedSubscript:@"CustomFavoritesFolderServerID"];
+    v41 = [wrapperCopy objectForKeyedSubscript:@"CustomFavoritesFolderServerID"];
 
     if (v41)
     {
       [v5 setObject:v41 forKeyedSubscript:@"CustomFavoritesFolderServerID"];
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"ShowIconOnly"];
+    v29 = [wrapperCopy objectForKeyedSubscript:@"ShowIconOnly"];
 
     if (!v29)
     {
@@ -1607,8 +1607,8 @@ LABEL_40:
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v6 = v30;
-  v42 = [v6 countByEnumeratingWithState:&v50 objects:v54 count:16];
+  record = v30;
+  v42 = [record countByEnumeratingWithState:&v50 objects:v54 count:16];
   if (v42)
   {
     v43 = v42;
@@ -1619,11 +1619,11 @@ LABEL_40:
       {
         if (*v51 != v44)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(record);
         }
 
         v46 = *(*(&v50 + 1) + 8 * i);
-        v47 = [v4 generationForKey:{v46, v50}];
+        v47 = [wrapperCopy generationForKey:{v46, v50}];
         if ([v47 isValid])
         {
           v48 = [v47 description];
@@ -1631,7 +1631,7 @@ LABEL_40:
         }
       }
 
-      v43 = [v6 countByEnumeratingWithState:&v50 objects:v54 count:16];
+      v43 = [record countByEnumeratingWithState:&v50 objects:v54 count:16];
     }
 
     while (v43);
@@ -1644,38 +1644,38 @@ LABEL_50:
   return v10;
 }
 
-- (id)_dictionaryRepresentationForEncryptionRecord:(id)a3
+- (id)_dictionaryRepresentationForEncryptionRecord:(id)record
 {
-  v4 = a3;
-  v5 = [[WBSHashGenerator alloc] initWithEncryptionInfoRecord:v4];
-  v6 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForGenericRecord:v4];
+  recordCopy = record;
+  v5 = [[WBSHashGenerator alloc] initWithEncryptionInfoRecord:recordCopy];
+  v6 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForGenericRecord:recordCopy];
 
   v12[0] = @"Key";
   v7 = [v5 key];
   v12[1] = @"KeyID";
   v13[0] = v7;
-  v8 = [v5 keyID];
-  v13[1] = v8;
+  keyID = [v5 keyID];
+  v13[1] = keyID;
   v9 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:2];
   v10 = [v6 safari_dictionaryByMergingWithDictionary:v9];
 
   return v10;
 }
 
-- (id)_dictionaryRepresentationForMigrationRecord:(id)a3
+- (id)_dictionaryRepresentationForMigrationRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForGenericRecord:v4];
+  recordCopy = record;
+  v5 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForGenericRecord:recordCopy];
   v12[0] = @"MigrationState";
-  v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 safari_migrationState]);
+  v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [recordCopy safari_migrationState]);
   v12[1] = @"MigratorDeviceIdentifier";
   v13[0] = v6;
-  v7 = [v4 safari_migratorDeviceIdentifier];
+  safari_migratorDeviceIdentifier = [recordCopy safari_migratorDeviceIdentifier];
 
   v8 = @"(null)";
-  if (v7)
+  if (safari_migratorDeviceIdentifier)
   {
-    v8 = v7;
+    v8 = safari_migratorDeviceIdentifier;
   }
 
   v13[1] = v8;
@@ -1685,14 +1685,14 @@ LABEL_50:
   return v10;
 }
 
-- (id)_dictionaryRepresentationForSyncRequirementsRecord:(id)a3
+- (id)_dictionaryRepresentationForSyncRequirementsRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForGenericRecord:v4];
+  recordCopy = record;
+  v5 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForGenericRecord:recordCopy];
   v11 = @"MinimumSyncAPIVersion";
-  v6 = [v4 safari_minimumSyncAPIVersion];
+  safari_minimumSyncAPIVersion = [recordCopy safari_minimumSyncAPIVersion];
 
-  v7 = [NSNumber numberWithInteger:v6];
+  v7 = [NSNumber numberWithInteger:safari_minimumSyncAPIVersion];
   v12 = v7;
   v8 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
   v9 = [v5 safari_dictionaryByMergingWithDictionary:v8];
@@ -1700,17 +1700,17 @@ LABEL_50:
   return v9;
 }
 
-- (id)_namesByUserRecordIDsForShare:(id)a3
+- (id)_namesByUserRecordIDsForShare:(id)share
 {
-  v3 = a3;
+  shareCopy = share;
   +[NSMutableDictionary dictionary];
-  v20 = v19 = v3;
+  v20 = v19 = shareCopy;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = [v3 participants];
-  v5 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  participants = [shareCopy participants];
+  v5 = [participants countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1721,20 +1721,20 @@ LABEL_50:
       {
         if (*v22 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(participants);
         }
 
-        v9 = [*(*(&v21 + 1) + 8 * i) userIdentity];
-        v10 = [v9 userRecordID];
-        if (v10)
+        userIdentity = [*(*(&v21 + 1) + 8 * i) userIdentity];
+        userRecordID = [userIdentity userRecordID];
+        if (userRecordID)
         {
-          v11 = [v9 lookupInfo];
-          v12 = [v11 emailAddress];
+          lookupInfo = [userIdentity lookupInfo];
+          emailAddress = [lookupInfo emailAddress];
 
-          v13 = [v9 nameComponents];
-          if (v13)
+          nameComponents = [userIdentity nameComponents];
+          if (nameComponents)
           {
-            v14 = [NSPersonNameComponentsFormatter localizedStringFromPersonNameComponents:v13 style:3 options:0];
+            v14 = [NSPersonNameComponentsFormatter localizedStringFromPersonNameComponents:nameComponents style:3 options:0];
           }
 
           else
@@ -1743,9 +1743,9 @@ LABEL_50:
           }
 
           v15 = [(__CFString *)v14 length];
-          if (v12)
+          if (emailAddress)
           {
-            v16 = v12;
+            v16 = emailAddress;
           }
 
           else
@@ -1763,11 +1763,11 @@ LABEL_50:
             v17 = v16;
           }
 
-          [v20 setObject:v17 forKeyedSubscript:v10];
+          [v20 setObject:v17 forKeyedSubscript:userRecordID];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v6 = [participants countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v6);
@@ -1776,18 +1776,18 @@ LABEL_50:
   return v20;
 }
 
-- (id)_dictionaryRepresentationForCKShare:(id)a3
+- (id)_dictionaryRepresentationForCKShare:(id)share
 {
-  v3 = a3;
-  v48 = [v3 owner];
-  v47 = [v3 currentUserParticipant];
+  shareCopy = share;
+  owner = [shareCopy owner];
+  currentUserParticipant = [shareCopy currentUserParticipant];
   v46 = +[NSMutableArray array];
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v43 = v3;
-  obj = [v3 participants];
+  v43 = shareCopy;
+  obj = [shareCopy participants];
   v49 = [obj countByEnumeratingWithState:&v58 objects:v66 count:16];
   if (v49)
   {
@@ -1802,18 +1802,18 @@ LABEL_50:
         }
 
         v5 = *(*(&v58 + 1) + 8 * i);
-        v6 = [v5 userIdentity];
-        v7 = [v6 lookupInfo];
-        v8 = [v7 emailAddress];
+        userIdentity = [v5 userIdentity];
+        lookupInfo = [userIdentity lookupInfo];
+        emailAddress = [lookupInfo emailAddress];
 
-        v9 = [v6 lookupInfo];
-        v10 = [v9 phoneNumber];
+        lookupInfo2 = [userIdentity lookupInfo];
+        phoneNumber = [lookupInfo2 phoneNumber];
 
-        v11 = [v6 nameComponents];
-        v56 = v11;
-        if (v11)
+        nameComponents = [userIdentity nameComponents];
+        v56 = nameComponents;
+        if (nameComponents)
         {
-          v12 = [NSPersonNameComponentsFormatter localizedStringFromPersonNameComponents:v11 style:3 options:0];
+          v12 = [NSPersonNameComponentsFormatter localizedStringFromPersonNameComponents:nameComponents style:3 options:0];
         }
 
         else
@@ -1822,13 +1822,13 @@ LABEL_50:
         }
 
         v50 = v12;
-        v55 = [v6 userRecordID];
+        userRecordID = [userIdentity userRecordID];
         v64[0] = @"UserRecordID";
-        v13 = [v55 ckShortDescription];
-        v54 = v13;
-        if (v13)
+        ckShortDescription = [userRecordID ckShortDescription];
+        v54 = ckShortDescription;
+        if (ckShortDescription)
         {
-          v14 = v13;
+          v14 = ckShortDescription;
         }
 
         else
@@ -1838,11 +1838,11 @@ LABEL_50:
 
         v65[0] = v14;
         v64[1] = @"ParticipantID";
-        v15 = [v5 participantID];
-        v16 = v15;
-        if (v15)
+        participantID = [v5 participantID];
+        v16 = participantID;
+        if (participantID)
         {
-          v17 = v15;
+          v17 = participantID;
         }
 
         else
@@ -1858,9 +1858,9 @@ LABEL_50:
         v65[3] = v12;
         v64[3] = @"Name";
         v64[4] = @"Email";
-        if (v8)
+        if (emailAddress)
         {
-          v18 = v8;
+          v18 = emailAddress;
         }
 
         else
@@ -1868,9 +1868,9 @@ LABEL_50:
           v18 = &stru_100137BA8;
         }
 
-        if (v10)
+        if (phoneNumber)
         {
-          v19 = v10;
+          v19 = phoneNumber;
         }
 
         else
@@ -1890,18 +1890,18 @@ LABEL_50:
         v21 = CKStringFromParticipantAcceptanceStatus();
         v65[7] = v21;
         v64[8] = @"IsCurrentUser";
-        v51 = v10;
-        v52 = v8;
+        v51 = phoneNumber;
+        v52 = emailAddress;
         v22 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v5 isCurrentUser]);
         v65[8] = v22;
         v64[9] = @"IsOrgAdminUser";
         v23 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v5 isOrgAdminUser]);
         v65[9] = v23;
         v64[10] = @"IsOwner";
-        v24 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v48 isEqual:v5]);
+        v24 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [owner isEqual:v5]);
         v65[10] = v24;
         v64[11] = @"IsCurrentUserParticipant";
-        v25 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v47 isEqual:v5]);
+        v25 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [currentUserParticipant isEqual:v5]);
         v65[11] = v25;
         v26 = [NSDictionary dictionaryWithObjects:v65 forKeys:v64 count:12];
         [v46 addObject:v26];
@@ -1916,11 +1916,11 @@ LABEL_50:
   v27 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForGenericRecord:v43];
   v62[0] = @"URL";
   v57 = [v43 URL];
-  v28 = [v57 absoluteString];
-  v29 = v28;
-  if (v28)
+  absoluteString = [v57 absoluteString];
+  v29 = absoluteString;
+  if (absoluteString)
   {
-    v30 = v28;
+    v30 = absoluteString;
   }
 
   else
@@ -1973,18 +1973,18 @@ LABEL_50:
   return v40;
 }
 
-- (id)_dictionaryRepresentationForTabGroupTabParticipantStatusRecord:(id)a3
+- (id)_dictionaryRepresentationForTabGroupTabParticipantStatusRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForGenericRecord:v4];
+  recordCopy = record;
+  v5 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForGenericRecord:recordCopy];
   v18[0] = @"TabGroupTab";
-  v6 = [v4 objectForKeyedSubscript:?];
-  v7 = [v6 recordID];
-  v8 = [v7 ckShortDescription];
-  v9 = v8;
-  if (v8)
+  v6 = [recordCopy objectForKeyedSubscript:?];
+  recordID = [v6 recordID];
+  ckShortDescription = [recordID ckShortDescription];
+  v9 = ckShortDescription;
+  if (ckShortDescription)
   {
-    v10 = v8;
+    v10 = ckShortDescription;
   }
 
   else
@@ -1994,7 +1994,7 @@ LABEL_50:
 
   v18[1] = @"ReadStatus";
   v19[0] = v10;
-  v11 = [v4 safari_generationForKey:?];
+  v11 = [recordCopy safari_generationForKey:?];
 
   v12 = [v11 description];
   v13 = v12;
@@ -2015,18 +2015,18 @@ LABEL_50:
   return v16;
 }
 
-- (id)_dictionaryRepresentationForTabGroupParticipantPositionRecord:(id)a3
+- (id)_dictionaryRepresentationForTabGroupParticipantPositionRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForGenericRecord:v4];
+  recordCopy = record;
+  v5 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForGenericRecord:recordCopy];
   v24[0] = @"TabGroup";
-  v23 = [v4 objectForKeyedSubscript:?];
-  v22 = [v23 recordID];
-  v6 = [v22 ckShortDescription];
-  v7 = v6;
-  if (v6)
+  v23 = [recordCopy objectForKeyedSubscript:?];
+  recordID = [v23 recordID];
+  ckShortDescription = [recordID ckShortDescription];
+  v7 = ckShortDescription;
+  if (ckShortDescription)
   {
-    v8 = v6;
+    v8 = ckShortDescription;
   }
 
   else
@@ -2036,13 +2036,13 @@ LABEL_50:
 
   v25[0] = v8;
   v24[1] = @"LastSelectedTab";
-  v9 = [v4 objectForKeyedSubscript:?];
-  v10 = [v9 recordID];
-  v11 = [v10 ckShortDescription];
-  v12 = v11;
-  if (v11)
+  v9 = [recordCopy objectForKeyedSubscript:?];
+  recordID2 = [v9 recordID];
+  ckShortDescription2 = [recordID2 ckShortDescription];
+  v12 = ckShortDescription2;
+  if (ckShortDescription2)
   {
-    v13 = v11;
+    v13 = ckShortDescription2;
   }
 
   else
@@ -2053,7 +2053,7 @@ LABEL_50:
   v25[1] = v13;
   v24[2] = @"Position";
   v14 = +[CloudBookmarkItemConfiguration encryptedPositionAttributeValueTransformer];
-  v15 = [v4 safari_defaultPositionUsingValueTransformer:v14];
+  v15 = [recordCopy safari_defaultPositionUsingValueTransformer:v14];
 
   v16 = [v15 description];
   v17 = v16;
@@ -2074,51 +2074,51 @@ LABEL_50:
   return v20;
 }
 
-- (void)_fetchAllChangesInDatabase:(id)a3 recordWasChangedBlock:(id)a4 recordWithIDWasDeletedBlock:(id)a5 completionHandler:(id)a6
+- (void)_fetchAllChangesInDatabase:(id)database recordWasChangedBlock:(id)block recordWithIDWasDeletedBlock:(id)deletedBlock completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  databaseCopy = database;
+  blockCopy = block;
+  deletedBlockCopy = deletedBlock;
+  handlerCopy = handler;
   store = self->_store;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100047DC0;
   v19[3] = &unk_1001336B0;
-  v20 = v10;
-  v21 = self;
-  v22 = v13;
-  v23 = v11;
-  v24 = v12;
-  v15 = v12;
-  v16 = v11;
-  v17 = v13;
-  v18 = v10;
+  v20 = databaseCopy;
+  selfCopy = self;
+  v22 = handlerCopy;
+  v23 = blockCopy;
+  v24 = deletedBlockCopy;
+  v15 = deletedBlockCopy;
+  v16 = blockCopy;
+  v17 = handlerCopy;
+  v18 = databaseCopy;
   [(CloudBookmarkStore *)store fetchChangesSinceServerChangeToken:0 inDatabase:v18 operationGroup:0 completionHandler:v19];
 }
 
-- (id)_dictionaryRepresentationForPresenceRecord:(id)a3
+- (id)_dictionaryRepresentationForPresenceRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 recordID];
-  v6 = [v5 recordName];
-  v7 = [v6 isEqualToString:@"UserTabGroupPresence"];
+  recordCopy = record;
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
+  v7 = [recordName isEqualToString:@"UserTabGroupPresence"];
 
-  v8 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForGenericRecord:v4];
+  v8 = [(CloudBookmarkDebugger *)self _dictionaryRepresentationForGenericRecord:recordCopy];
   if (v7)
   {
     v27[0] = @"CurrentUser";
     v26[0] = @"UserName";
     v26[1] = @"TabGroupTab";
-    v9 = [v4 objectForKeyedSubscript:@"TabGroupTab"];
+    v9 = [recordCopy objectForKeyedSubscript:@"TabGroupTab"];
 
-    v10 = [v9 recordID];
-    v11 = [v10 ckShortDescription];
-    v12 = v11;
+    recordID2 = [v9 recordID];
+    ckShortDescription = [recordID2 ckShortDescription];
+    v12 = ckShortDescription;
     v13 = @"(null)";
-    if (v11)
+    if (ckShortDescription)
     {
-      v13 = v11;
+      v13 = ckShortDescription;
     }
 
     v26[2] = @"Type";
@@ -2131,13 +2131,13 @@ LABEL_50:
   else
   {
     v24[0] = @"UserRecordID";
-    v9 = [v4 objectForKeyedSubscript:@"Participant"];
-    v10 = [v9 recordID];
-    v16 = [v10 recordName];
-    v12 = v16;
-    if (v16)
+    v9 = [recordCopy objectForKeyedSubscript:@"Participant"];
+    recordID2 = [v9 recordID];
+    recordName2 = [recordID2 recordName];
+    v12 = recordName2;
+    if (recordName2)
     {
-      v17 = v16;
+      v17 = recordName2;
     }
 
     else
@@ -2147,14 +2147,14 @@ LABEL_50:
 
     v25[0] = v17;
     v24[1] = @"TabGroupTab";
-    v14 = [v4 objectForKeyedSubscript:@"TabGroupTab"];
+    v14 = [recordCopy objectForKeyedSubscript:@"TabGroupTab"];
 
-    v18 = [v14 recordID];
-    v19 = [v18 ckShortDescription];
-    v20 = v19;
-    if (v19)
+    recordID3 = [v14 recordID];
+    ckShortDescription2 = [recordID3 ckShortDescription];
+    v20 = ckShortDescription2;
+    if (ckShortDescription2)
     {
-      v21 = v19;
+      v21 = ckShortDescription2;
     }
 
     else

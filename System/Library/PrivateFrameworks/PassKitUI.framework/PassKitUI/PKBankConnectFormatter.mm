@@ -1,15 +1,15 @@
 @interface PKBankConnectFormatter
-+ (id)formatAsOfDate:(id)a3 hasMultipleBalance:(BOOL)a4;
++ (id)formatAsOfDate:(id)date hasMultipleBalance:(BOOL)balance;
 @end
 
 @implementation PKBankConnectFormatter
 
-+ (id)formatAsOfDate:(id)a3 hasMultipleBalance:(BOOL)a4
++ (id)formatAsOfDate:(id)date hasMultipleBalance:(BOOL)balance
 {
-  v4 = a4;
-  v5 = a3;
+  balanceCopy = balance;
+  dateCopy = date;
   v6 = objc_alloc_init(_TtC9PassKitUI20BankConnectFormatter);
-  v7 = [(BankConnectFormatter *)v6 formatAsOfDate:v5 hasMultipleBalances:v4];
+  v7 = [(BankConnectFormatter *)v6 formatAsOfDate:dateCopy hasMultipleBalances:balanceCopy];
 
   return v7;
 }

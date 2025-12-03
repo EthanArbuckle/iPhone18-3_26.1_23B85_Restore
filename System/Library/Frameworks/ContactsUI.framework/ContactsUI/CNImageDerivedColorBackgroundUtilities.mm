@@ -1,20 +1,20 @@
 @interface CNImageDerivedColorBackgroundUtilities
-+ (BOOL)backgroundColorPrefersWhiteForegroundText:(id)a3;
-+ (BOOL)backgroundColorsPreferWhiteForegroundText:(id)a3;
-+ (id)averageColorForBackgroundColors:(id)a3;
++ (BOOL)backgroundColorPrefersWhiteForegroundText:(id)text;
++ (BOOL)backgroundColorsPreferWhiteForegroundText:(id)text;
++ (id)averageColorForBackgroundColors:(id)colors;
 @end
 
 @implementation CNImageDerivedColorBackgroundUtilities
 
-+ (id)averageColorForBackgroundColors:(id)a3
++ (id)averageColorForBackgroundColors:(id)colors
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  colorsCopy = colors;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v4 = [colorsCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v4)
   {
     v5 = v4;
@@ -29,7 +29,7 @@
       {
         if (*v21 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(colorsCopy);
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
@@ -44,7 +44,7 @@
         v7 = v7 + v16;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v5 = [colorsCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v5);
@@ -58,21 +58,21 @@
     v10 = 0.0;
   }
 
-  v13 = [v3 count];
+  v13 = [colorsCopy count];
   v14 = [MEMORY[0x1E69DC888] colorWithRed:v10 / v13 green:v9 / v13 blue:v8 / v13 alpha:v7 / v13];
 
   return v14;
 }
 
-+ (BOOL)backgroundColorPrefersWhiteForegroundText:(id)a3
++ (BOOL)backgroundColorPrefersWhiteForegroundText:(id)text
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  textCopy = text;
   v4 = CNUILogContactCard();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [MEMORY[0x1E69DC888] whiteColor];
-    [v3 _colorDifferenceFromColor:v9];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [textCopy _colorDifferenceFromColor:whiteColor];
     v11 = 134218240;
     v12 = v10;
     v13 = 2048;
@@ -80,17 +80,17 @@
     _os_log_debug_impl(&dword_199A75000, v4, OS_LOG_TYPE_DEBUG, "colorDifference %.2f > %.2f", &v11, 0x16u);
   }
 
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  [v3 _colorDifferenceFromColor:v5];
+  whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+  [textCopy _colorDifferenceFromColor:whiteColor2];
   v7 = v6 > 0.45;
 
   return v7;
 }
 
-+ (BOOL)backgroundColorsPreferWhiteForegroundText:(id)a3
++ (BOOL)backgroundColorsPreferWhiteForegroundText:(id)text
 {
-  v3 = a3;
-  v4 = [objc_opt_class() averageColorForBackgroundColors:v3];
+  textCopy = text;
+  v4 = [objc_opt_class() averageColorForBackgroundColors:textCopy];
 
   v5 = [objc_opt_class() backgroundColorPrefersWhiteForegroundText:v4];
   return v5;

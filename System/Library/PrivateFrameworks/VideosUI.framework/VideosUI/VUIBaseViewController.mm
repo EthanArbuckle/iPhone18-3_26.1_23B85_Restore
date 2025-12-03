@@ -1,16 +1,16 @@
 @interface VUIBaseViewController
 - (BOOL)isViewInTopMostVisibleViewController;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)loadView;
 - (void)updateViewConstraints;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation VUIBaseViewController
@@ -39,40 +39,40 @@
   [(VUIBaseViewController *)self vui_updateViewConstraints];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = VUIBaseViewController;
   [(VUIBaseViewController *)&v5 viewWillAppear:?];
-  [(VUIBaseViewController *)self vui_viewWillAppear:v3];
+  [(VUIBaseViewController *)self vui_viewWillAppear:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = VUIBaseViewController;
   [(VUIBaseViewController *)&v5 viewDidAppear:?];
-  [(VUIBaseViewController *)self vui_viewDidAppear:v3];
+  [(VUIBaseViewController *)self vui_viewDidAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = VUIBaseViewController;
   [(VUIBaseViewController *)&v5 viewWillDisappear:?];
-  [(VUIBaseViewController *)self vui_viewWillDisappear:v3];
+  [(VUIBaseViewController *)self vui_viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = VUIBaseViewController;
   [(VUIBaseViewController *)&v5 viewDidDisappear:?];
-  [(VUIBaseViewController *)self vui_viewDidDisappear:v3];
+  [(VUIBaseViewController *)self vui_viewDidDisappear:disappearCopy];
 }
 
 - (void)viewWillLayoutSubviews
@@ -91,33 +91,33 @@
   [(VUIBaseViewController *)self vui_viewDidLayoutSubviews];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = VUIBaseViewController;
-  v4 = a3;
-  [(VUIBaseViewController *)&v5 willMoveToParentViewController:v4];
-  [(VUIBaseViewController *)self vui_willMoveToParentViewController:v4, v5.receiver, v5.super_class];
+  controllerCopy = controller;
+  [(VUIBaseViewController *)&v5 willMoveToParentViewController:controllerCopy];
+  [(VUIBaseViewController *)self vui_willMoveToParentViewController:controllerCopy, v5.receiver, v5.super_class];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = VUIBaseViewController;
-  v4 = a3;
-  [(VUIBaseViewController *)&v5 didMoveToParentViewController:v4];
-  [(VUIBaseViewController *)self vui_didMoveToParentViewController:v4, v5.receiver, v5.super_class];
+  controllerCopy = controller;
+  [(VUIBaseViewController *)&v5 didMoveToParentViewController:controllerCopy];
+  [(VUIBaseViewController *)self vui_didMoveToParentViewController:controllerCopy, v5.receiver, v5.super_class];
 }
 
 - (BOOL)isViewInTopMostVisibleViewController
 {
   v3 = +[VUIApplicationRouter topMostVisibleViewController];
-  v4 = [v3 vuiView];
+  vuiView = [v3 vuiView];
 
-  if (v4)
+  if (vuiView)
   {
-    v5 = [(VUIBaseViewController *)self vuiView];
-    v6 = [v5 vui_isDescendantOfView:v4];
+    vuiView2 = [(VUIBaseViewController *)self vuiView];
+    v6 = [vuiView2 vui_isDescendantOfView:vuiView];
   }
 
   else

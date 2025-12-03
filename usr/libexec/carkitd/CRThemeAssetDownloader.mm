@@ -3,22 +3,22 @@
 - (CRThemeAssetDownloadObserving)downloadObserver;
 - (CRThemeAssetDownloader)init;
 - (id)_assetQueue_installedAssets;
-- (id)_assetQueue_nextRequiredCompatibilityVersionToMatchAssetRequest:(id)a3 inAssets:(id)a4;
+- (id)_assetQueue_nextRequiredCompatibilityVersionToMatchAssetRequest:(id)request inAssets:(id)assets;
 - (void)_assetQueue_cancelUnusedDownloads;
-- (void)_assetQueue_matchAssetRequests:(id)a3 withAssets:(id)a4 completion:(id)a5;
-- (void)_assetQueue_notifyObserverOfAsset:(id)a3 forAssetRequest:(id)a4;
-- (void)_assetQueue_notifyObserverOfDownloadAttemptForAssetRequest:(id)a3 version:(id)a4 progress:(id)a5;
-- (void)_assetQueue_notifyObserverOfFailedDownloadForAssetRequest:(id)a3 version:(id)a4 error:(id)a5;
-- (void)_assetQueue_notifyObserverOfFoundNoAssetForAssetRequest:(id)a3 nextRequiredCompatibilityVersion:(id)a4;
-- (void)_assetQueue_queryInstalledAssetsForAssetRequests:(id)a3;
-- (void)_assetQueue_queryUpdatedAssetsForRequests:(id)a3;
-- (void)_assetQueue_removeAssets:(id)a3;
-- (void)_assetQueue_removeAssetsBeforeVersion:(id)a3;
+- (void)_assetQueue_matchAssetRequests:(id)requests withAssets:(id)assets completion:(id)completion;
+- (void)_assetQueue_notifyObserverOfAsset:(id)asset forAssetRequest:(id)request;
+- (void)_assetQueue_notifyObserverOfDownloadAttemptForAssetRequest:(id)request version:(id)version progress:(id)progress;
+- (void)_assetQueue_notifyObserverOfFailedDownloadForAssetRequest:(id)request version:(id)version error:(id)error;
+- (void)_assetQueue_notifyObserverOfFoundNoAssetForAssetRequest:(id)request nextRequiredCompatibilityVersion:(id)version;
+- (void)_assetQueue_queryInstalledAssetsForAssetRequests:(id)requests;
+- (void)_assetQueue_queryUpdatedAssetsForRequests:(id)requests;
+- (void)_assetQueue_removeAssets:(id)assets;
+- (void)_assetQueue_removeAssetsBeforeVersion:(id)version;
 - (void)_assetQueue_removeUnusedAssets;
 - (void)_assetQueue_requestAssetCatalogDownload;
-- (void)handleDownloadHintForAssetRequest:(id)a3;
-- (void)removeAssetsBeforeVersion:(id)a3;
-- (void)setAssetRequests:(id)a3;
+- (void)handleDownloadHintForAssetRequest:(id)request;
+- (void)removeAssetsBeforeVersion:(id)version;
+- (void)setAssetRequests:(id)requests;
 @end
 
 @implementation CRThemeAssetDownloader
@@ -72,65 +72,65 @@
   return v2;
 }
 
-- (void)setAssetRequests:(id)a3
+- (void)setAssetRequests:(id)requests
 {
-  v4 = a3;
-  v5 = [(CRThemeAssetDownloader *)self assetQueue];
+  requestsCopy = requests;
+  assetQueue = [(CRThemeAssetDownloader *)self assetQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006D430;
   v7[3] = &unk_1000DD580;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = requestsCopy;
+  selfCopy = self;
+  v6 = requestsCopy;
+  dispatch_async(assetQueue, v7);
 }
 
-- (void)handleDownloadHintForAssetRequest:(id)a3
+- (void)handleDownloadHintForAssetRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(CRThemeAssetDownloader *)self assetQueue];
+  requestCopy = request;
+  assetQueue = [(CRThemeAssetDownloader *)self assetQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006D68C;
   v7[3] = &unk_1000DD580;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = requestCopy;
+  selfCopy = self;
+  v6 = requestCopy;
+  dispatch_async(assetQueue, v7);
 }
 
-- (void)removeAssetsBeforeVersion:(id)a3
+- (void)removeAssetsBeforeVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(CRThemeAssetDownloader *)self assetQueue];
+  versionCopy = version;
+  assetQueue = [(CRThemeAssetDownloader *)self assetQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006D868;
   v7[3] = &unk_1000DD580;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = versionCopy;
+  v6 = versionCopy;
+  dispatch_async(assetQueue, v7);
 }
 
-- (void)_assetQueue_queryInstalledAssetsForAssetRequests:(id)a3
+- (void)_assetQueue_queryInstalledAssetsForAssetRequests:(id)requests
 {
-  v4 = a3;
-  v5 = [(CRThemeAssetDownloader *)self assetQueue];
-  dispatch_assert_queue_V2(v5);
+  requestsCopy = requests;
+  assetQueue = [(CRThemeAssetDownloader *)self assetQueue];
+  dispatch_assert_queue_V2(assetQueue);
 
   v6 = CarThemeAssetsLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v12 = v4;
+    v12 = requestsCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "checking already installed assets for %{public}@", buf, 0xCu);
   }
 
-  v7 = [(CRThemeAssetDownloader *)self _assetQueue_installedAssets];
-  v8 = v7;
-  if (!v7)
+  _assetQueue_installedAssets = [(CRThemeAssetDownloader *)self _assetQueue_installedAssets];
+  v8 = _assetQueue_installedAssets;
+  if (!_assetQueue_installedAssets)
   {
     v9 = CarThemeAssetsLogging();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -141,7 +141,7 @@
     goto LABEL_10;
   }
 
-  if (![v7 count])
+  if (![_assetQueue_installedAssets count])
   {
     v9 = CarThemeAssetsLogging();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -160,14 +160,14 @@ LABEL_10:
   v10[2] = sub_10006DA30;
   v10[3] = &unk_1000DFDF0;
   v10[4] = self;
-  [(CRThemeAssetDownloader *)self _assetQueue_matchAssetRequests:v4 withAssets:v8 completion:v10];
+  [(CRThemeAssetDownloader *)self _assetQueue_matchAssetRequests:requestsCopy withAssets:v8 completion:v10];
 LABEL_11:
 }
 
 - (void)_assetQueue_requestAssetCatalogDownload
 {
-  v3 = [(CRThemeAssetDownloader *)self assetQueue];
-  dispatch_assert_queue_V2(v3);
+  assetQueue = [(CRThemeAssetDownloader *)self assetQueue];
+  dispatch_assert_queue_V2(assetQueue);
 
   v4 = CarThemeAssetsLogging();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -178,27 +178,27 @@ LABEL_11:
 
   v5 = objc_alloc_init(MADownloadOptions);
   [v5 setAllowsCellularAccess:1];
-  v6 = [objc_opt_class() assetType];
+  assetType = [objc_opt_class() assetType];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006DC78;
   v7[3] = &unk_1000DFE40;
   v7[4] = self;
-  [MAAsset startCatalogDownload:v6 options:v5 completionWithError:v7];
+  [MAAsset startCatalogDownload:assetType options:v5 completionWithError:v7];
 }
 
-- (void)_assetQueue_queryUpdatedAssetsForRequests:(id)a3
+- (void)_assetQueue_queryUpdatedAssetsForRequests:(id)requests
 {
-  v4 = a3;
-  v5 = [(CRThemeAssetDownloader *)self assetQueue];
-  dispatch_assert_queue_V2(v5);
+  requestsCopy = requests;
+  assetQueue = [(CRThemeAssetDownloader *)self assetQueue];
+  dispatch_assert_queue_V2(assetQueue);
 
-  if ([v4 count])
+  if ([requestsCopy count])
   {
-    v6 = [(CRThemeAssetDownloader *)self assetQueue_queryInProgress];
+    assetQueue_queryInProgress = [(CRThemeAssetDownloader *)self assetQueue_queryInProgress];
     v7 = CarThemeAssetsLogging();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-    if (v6)
+    if (assetQueue_queryInProgress)
     {
       if (v8)
       {
@@ -214,22 +214,22 @@ LABEL_7:
       if (v8)
       {
         *buf = 138412290;
-        v27 = v4;
+        v27 = requestsCopy;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "starting asset query for %@", buf, 0xCu);
       }
 
       [(CRThemeAssetDownloader *)self setAssetQueue_queryInProgress:1];
       v10 = [MAAssetQuery alloc];
-      v11 = [objc_opt_class() assetType];
-      v7 = [v10 initWithType:v11];
+      assetType = [objc_opt_class() assetType];
+      v7 = [v10 initWithType:assetType];
 
       [v7 returnTypes:2];
       [v7 setDoNotBlockBeforeFirstUnlock:1];
-      v12 = [v7 queryMetaDataSync];
-      v13 = [v7 results];
-      if (v12)
+      queryMetaDataSync = [v7 queryMetaDataSync];
+      results = [v7 results];
+      if (queryMetaDataSync)
       {
-        if (v12 == 2)
+        if (queryMetaDataSync == 2)
         {
           v14 = CarThemeAssetsLogging();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -264,22 +264,22 @@ LABEL_7:
         }
 
         objc_initWeak(buf, self);
-        v16 = [(CRThemeAssetDownloader *)self assetRequests];
+        assetRequests = [(CRThemeAssetDownloader *)self assetRequests];
         v18 = _NSConcreteStackBlock;
         v19 = 3221225472;
         v20 = sub_10006E1C0;
         v21 = &unk_1000DFEE0;
-        v22 = self;
-        v23 = v13;
-        v24 = v4;
+        selfCopy = self;
+        v23 = results;
+        v24 = requestsCopy;
         objc_copyWeak(&v25, buf);
-        [(CRThemeAssetDownloader *)self _assetQueue_matchAssetRequests:v16 withAssets:v23 completion:&v18];
+        [(CRThemeAssetDownloader *)self _assetQueue_matchAssetRequests:assetRequests withAssets:v23 completion:&v18];
 
         objc_destroyWeak(&v25);
         objc_destroyWeak(buf);
       }
 
-      [(CRThemeAssetDownloader *)self setAssetQueue_queryInProgress:0, v18, v19, v20, v21, v22];
+      [(CRThemeAssetDownloader *)self setAssetQueue_queryInProgress:0, v18, v19, v20, v21, selfCopy];
     }
   }
 
@@ -297,43 +297,43 @@ LABEL_7:
 
 - (id)_assetQueue_installedAssets
 {
-  v2 = [(CRThemeAssetDownloader *)self assetQueue];
-  dispatch_assert_queue_V2(v2);
+  assetQueue = [(CRThemeAssetDownloader *)self assetQueue];
+  dispatch_assert_queue_V2(assetQueue);
 
   v3 = [MAAssetQuery alloc];
-  v4 = [objc_opt_class() assetType];
-  v5 = [v3 initWithType:v4];
+  assetType = [objc_opt_class() assetType];
+  v5 = [v3 initWithType:assetType];
 
   [v5 returnTypes:1];
   [v5 setDoNotBlockBeforeFirstUnlock:1];
   if ([v5 queryMetaDataSync])
   {
-    v6 = 0;
+    results = 0;
   }
 
   else
   {
-    v6 = [v5 results];
+    results = [v5 results];
   }
 
-  return v6;
+  return results;
 }
 
 - (void)_assetQueue_cancelUnusedDownloads
 {
-  v3 = [(CRThemeAssetDownloader *)self assetQueue];
-  dispatch_assert_queue_V2(v3);
+  assetQueue = [(CRThemeAssetDownloader *)self assetQueue];
+  dispatch_assert_queue_V2(assetQueue);
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v24 = self;
-  v4 = [(CRThemeAssetDownloader *)self assetQueue_currentlyDownloadingAssets];
-  v5 = [v4 objectEnumerator];
+  selfCopy = self;
+  assetQueue_currentlyDownloadingAssets = [(CRThemeAssetDownloader *)self assetQueue_currentlyDownloadingAssets];
+  objectEnumerator = [assetQueue_currentlyDownloadingAssets objectEnumerator];
 
-  obj = v5;
-  v6 = [v5 countByEnumeratingWithState:&v30 objects:v39 count:16];
+  obj = objectEnumerator;
+  v6 = [objectEnumerator countByEnumeratingWithState:&v30 objects:v39 count:16];
   if (v6)
   {
     v8 = v6;
@@ -350,17 +350,17 @@ LABEL_7:
         }
 
         v10 = *(*(&v30 + 1) + 8 * i);
-        v11 = [v10 cr_assetVersion];
-        v12 = [v11 identifier];
+        cr_assetVersion = [v10 cr_assetVersion];
+        identifier = [cr_assetVersion identifier];
 
-        if (v12)
+        if (identifier)
         {
           v28 = 0u;
           v29 = 0u;
           v26 = 0u;
           v27 = 0u;
-          v13 = [(CRThemeAssetDownloader *)v24 assetRequests];
-          v14 = [v13 countByEnumeratingWithState:&v26 objects:v38 count:16];
+          assetRequests = [(CRThemeAssetDownloader *)selfCopy assetRequests];
+          v14 = [assetRequests countByEnumeratingWithState:&v26 objects:v38 count:16];
           if (v14)
           {
             v15 = v14;
@@ -371,11 +371,11 @@ LABEL_7:
               {
                 if (*v27 != v16)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(assetRequests);
                 }
 
-                v18 = [*(*(&v26 + 1) + 8 * j) assetIdentifier];
-                v19 = [v12 isEqualToString:v18];
+                assetIdentifier = [*(*(&v26 + 1) + 8 * j) assetIdentifier];
+                v19 = [identifier isEqualToString:assetIdentifier];
 
                 if (v19)
                 {
@@ -384,7 +384,7 @@ LABEL_7:
                   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
                   {
                     *buf = v22;
-                    v35 = v12;
+                    v35 = identifier;
                     v36 = 2112;
                     v37 = v10;
                     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "still need ongoing download for assetID %@: %@", buf, 0x16u);
@@ -394,7 +394,7 @@ LABEL_7:
                 }
               }
 
-              v15 = [v13 countByEnumeratingWithState:&v26 objects:v38 count:16];
+              v15 = [assetRequests countByEnumeratingWithState:&v26 objects:v38 count:16];
               if (v15)
               {
                 continue;
@@ -408,7 +408,7 @@ LABEL_7:
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
             *buf = v22;
-            v35 = v12;
+            v35 = identifier;
             v36 = 2112;
             v37 = v10;
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "cancelling download for assetID %@: %@", buf, 0x16u);
@@ -427,17 +427,17 @@ LABEL_21:
   }
 }
 
-- (void)_assetQueue_removeAssets:(id)a3
+- (void)_assetQueue_removeAssets:(id)assets
 {
-  v4 = a3;
-  v5 = [(CRThemeAssetDownloader *)self assetQueue];
-  dispatch_assert_queue_V2(v5);
+  assetsCopy = assets;
+  assetQueue = [(CRThemeAssetDownloader *)self assetQueue];
+  dispatch_assert_queue_V2(assetQueue);
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v4;
+  v6 = assetsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v7)
   {
@@ -456,9 +456,9 @@ LABEL_21:
         v12 = CarThemeAssetsLogging();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          v13 = [v11 cr_assetVersion];
+          cr_assetVersion = [v11 cr_assetVersion];
           *buf = 138543618;
-          v19 = v13;
+          v19 = cr_assetVersion;
           v20 = 2112;
           v21 = v11;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Removing asset %{public}@: %@", buf, 0x16u);
@@ -476,12 +476,12 @@ LABEL_21:
 
 - (void)_assetQueue_removeUnusedAssets
 {
-  v3 = [(CRThemeAssetDownloader *)self assetQueue];
-  dispatch_assert_queue_V2(v3);
+  assetQueue = [(CRThemeAssetDownloader *)self assetQueue];
+  dispatch_assert_queue_V2(assetQueue);
 
   [(CRThemeAssetDownloader *)self _assetQueue_cancelUnusedDownloads];
-  v4 = [(CRThemeAssetDownloader *)self _assetQueue_installedAssets];
-  if (v4)
+  _assetQueue_installedAssets = [(CRThemeAssetDownloader *)self _assetQueue_installedAssets];
+  if (_assetQueue_installedAssets)
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
@@ -489,47 +489,47 @@ LABEL_21:
     v7[3] = &unk_1000DFF08;
     v7[4] = self;
     v5 = [NSPredicate predicateWithBlock:v7];
-    v6 = [v4 filteredArrayUsingPredicate:v5];
+    v6 = [_assetQueue_installedAssets filteredArrayUsingPredicate:v5];
 
     [(CRThemeAssetDownloader *)self _assetQueue_removeAssets:v6];
   }
 }
 
-- (void)_assetQueue_removeAssetsBeforeVersion:(id)a3
+- (void)_assetQueue_removeAssetsBeforeVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(CRThemeAssetDownloader *)self assetQueue];
-  dispatch_assert_queue_V2(v5);
+  versionCopy = version;
+  assetQueue = [(CRThemeAssetDownloader *)self assetQueue];
+  dispatch_assert_queue_V2(assetQueue);
 
-  v6 = [(CRThemeAssetDownloader *)self _assetQueue_installedAssets];
-  v7 = [v4 identifier];
-  v8 = [MAAsset cr_themeAsset_filteredAssets:v6 matchingAssetIdentifier:v7 maximumSDKVersion:0 maximumCompatibilityVersion:0];
+  _assetQueue_installedAssets = [(CRThemeAssetDownloader *)self _assetQueue_installedAssets];
+  identifier = [versionCopy identifier];
+  v8 = [MAAsset cr_themeAsset_filteredAssets:_assetQueue_installedAssets matchingAssetIdentifier:identifier maximumSDKVersion:0 maximumCompatibilityVersion:0];
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10006F1C4;
   v12[3] = &unk_1000DFF08;
-  v13 = v4;
-  v9 = v4;
+  v13 = versionCopy;
+  v9 = versionCopy;
   v10 = [NSPredicate predicateWithBlock:v12];
   v11 = [v8 filteredArrayUsingPredicate:v10];
 
   [(CRThemeAssetDownloader *)self _assetQueue_removeAssets:v11];
 }
 
-- (void)_assetQueue_matchAssetRequests:(id)a3 withAssets:(id)a4 completion:(id)a5
+- (void)_assetQueue_matchAssetRequests:(id)requests withAssets:(id)assets completion:(id)completion
 {
-  v8 = a3;
-  v23 = a4;
-  v9 = a5;
-  v10 = [(CRThemeAssetDownloader *)self assetQueue];
-  dispatch_assert_queue_V2(v10);
+  requestsCopy = requests;
+  assetsCopy = assets;
+  completionCopy = completion;
+  assetQueue = [(CRThemeAssetDownloader *)self assetQueue];
+  dispatch_assert_queue_V2(assetQueue);
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v8;
+  obj = requestsCopy;
   v24 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v24)
   {
@@ -545,28 +545,28 @@ LABEL_21:
         }
 
         v12 = *(*(&v25 + 1) + 8 * v11);
-        v13 = [v12 assetIdentifier];
-        v14 = [v12 maximumSDKVersion];
+        assetIdentifier = [v12 assetIdentifier];
+        maximumSDKVersion = [v12 maximumSDKVersion];
         v15 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v12 maximumCompatibilityVersion]);
-        v16 = [MAAsset cr_themeAsset_filteredAssets:v23 matchingAssetIdentifier:v13 maximumSDKVersion:v14 maximumCompatibilityVersion:v15];
+        v16 = [MAAsset cr_themeAsset_filteredAssets:assetsCopy matchingAssetIdentifier:assetIdentifier maximumSDKVersion:maximumSDKVersion maximumCompatibilityVersion:v15];
 
         v17 = [MAAsset cr_themeAsset_highestVersionAssetInAssets:v16];
         v18 = [MAAsset cr_installedAssetsInAssets:v16];
         v19 = [MAAsset cr_themeAsset_highestVersionAssetInAssets:v18];
         if (v17 != v19)
         {
-          if (!v9)
+          if (!completionCopy)
           {
             goto LABEL_9;
           }
 
 LABEL_8:
-          v9[2](v9, v12, v19, v17);
+          completionCopy[2](completionCopy, v12, v19, v17);
           goto LABEL_9;
         }
 
         v17 = 0;
-        if (v9)
+        if (completionCopy)
         {
           goto LABEL_8;
         }
@@ -585,17 +585,17 @@ LABEL_9:
   }
 }
 
-- (id)_assetQueue_nextRequiredCompatibilityVersionToMatchAssetRequest:(id)a3 inAssets:(id)a4
+- (id)_assetQueue_nextRequiredCompatibilityVersionToMatchAssetRequest:(id)request inAssets:(id)assets
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRThemeAssetDownloader *)self assetQueue];
-  dispatch_assert_queue_V2(v8);
+  requestCopy = request;
+  assetsCopy = assets;
+  assetQueue = [(CRThemeAssetDownloader *)self assetQueue];
+  dispatch_assert_queue_V2(assetQueue);
 
-  v9 = [v6 assetIdentifier];
-  v10 = [v6 maximumSDKVersion];
-  v22 = v7;
-  v11 = [MAAsset cr_themeAsset_filteredAssets:v7 matchingAssetIdentifier:v9 maximumSDKVersion:v10 maximumCompatibilityVersion:0];
+  assetIdentifier = [requestCopy assetIdentifier];
+  maximumSDKVersion = [requestCopy maximumSDKVersion];
+  v22 = assetsCopy;
+  v11 = [MAAsset cr_themeAsset_filteredAssets:assetsCopy matchingAssetIdentifier:assetIdentifier maximumSDKVersion:maximumSDKVersion maximumCompatibilityVersion:0];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -615,9 +615,9 @@ LABEL_9:
           objc_enumerationMutation(v11);
         }
 
-        v17 = [*(*(&v23 + 1) + 8 * i) cr_themeAsset_minimumCompatibilityVersion];
-        v18 = v17;
-        if (v17 && (!v14 || [v17 compare:v14] == -1))
+        cr_themeAsset_minimumCompatibilityVersion = [*(*(&v23 + 1) + 8 * i) cr_themeAsset_minimumCompatibilityVersion];
+        v18 = cr_themeAsset_minimumCompatibilityVersion;
+        if (cr_themeAsset_minimumCompatibilityVersion && (!v14 || [cr_themeAsset_minimumCompatibilityVersion compare:v14] == -1))
         {
           v19 = v18;
 
@@ -641,16 +641,16 @@ LABEL_9:
   return v14;
 }
 
-- (void)_assetQueue_notifyObserverOfFoundNoAssetForAssetRequest:(id)a3 nextRequiredCompatibilityVersion:(id)a4
+- (void)_assetQueue_notifyObserverOfFoundNoAssetForAssetRequest:(id)request nextRequiredCompatibilityVersion:(id)version
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRThemeAssetDownloader *)self assetQueue];
-  dispatch_assert_queue_V2(v8);
+  requestCopy = request;
+  versionCopy = version;
+  assetQueue = [(CRThemeAssetDownloader *)self assetQueue];
+  dispatch_assert_queue_V2(assetQueue);
 
   v9 = CarThemeAssetsLogging();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_ERROR);
-  if (v7)
+  if (versionCopy)
   {
     if (v10)
     {
@@ -663,52 +663,52 @@ LABEL_9:
     sub_10008964C();
   }
 
-  v11 = [(CRThemeAssetDownloader *)self downloadObserver];
+  downloadObserver = [(CRThemeAssetDownloader *)self downloadObserver];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(CRThemeAssetDownloader *)self downloadObserver];
-    [v13 assetDownloader:self foundNoAssetForAssetRequest:v6 nextRequiredCompatibilityVersion:v7];
+    downloadObserver2 = [(CRThemeAssetDownloader *)self downloadObserver];
+    [downloadObserver2 assetDownloader:self foundNoAssetForAssetRequest:requestCopy nextRequiredCompatibilityVersion:versionCopy];
   }
 }
 
-- (void)_assetQueue_notifyObserverOfDownloadAttemptForAssetRequest:(id)a3 version:(id)a4 progress:(id)a5
+- (void)_assetQueue_notifyObserverOfDownloadAttemptForAssetRequest:(id)request version:(id)version progress:(id)progress
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CRThemeAssetDownloader *)self assetQueue];
-  dispatch_assert_queue_V2(v11);
+  requestCopy = request;
+  versionCopy = version;
+  progressCopy = progress;
+  assetQueue = [(CRThemeAssetDownloader *)self assetQueue];
+  dispatch_assert_queue_V2(assetQueue);
 
   v12 = CarThemeAssetsLogging();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v16 = 138412546;
-    v17 = v8;
+    v17 = requestCopy;
     v18 = 2112;
-    v19 = v9;
+    v19 = versionCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "download attempt for asset request: %@ version: %@", &v16, 0x16u);
   }
 
-  v13 = [(CRThemeAssetDownloader *)self downloadObserver];
+  downloadObserver = [(CRThemeAssetDownloader *)self downloadObserver];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v15 = [(CRThemeAssetDownloader *)self downloadObserver];
-    [v15 assetDownloader:self attemptingDownloadForAssetRequest:v8 version:v9 progress:v10];
+    downloadObserver2 = [(CRThemeAssetDownloader *)self downloadObserver];
+    [downloadObserver2 assetDownloader:self attemptingDownloadForAssetRequest:requestCopy version:versionCopy progress:progressCopy];
   }
 }
 
-- (void)_assetQueue_notifyObserverOfAsset:(id)a3 forAssetRequest:(id)a4
+- (void)_assetQueue_notifyObserverOfAsset:(id)asset forAssetRequest:(id)request
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRThemeAssetDownloader *)self assetQueue];
-  dispatch_assert_queue_V2(v8);
+  requestCopy = request;
+  assetCopy = asset;
+  assetQueue = [(CRThemeAssetDownloader *)self assetQueue];
+  dispatch_assert_queue_V2(assetQueue);
 
-  v9 = [CARThemeAsset themeAssetFromAsset:v7];
+  v9 = [CARThemeAsset themeAssetFromAsset:assetCopy];
 
   if (v9)
   {
@@ -720,44 +720,44 @@ LABEL_9:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "notifying observer of asset: %{public}@", &v14, 0xCu);
     }
 
-    v11 = [(CRThemeAssetDownloader *)self downloadObserver];
+    downloadObserver = [(CRThemeAssetDownloader *)self downloadObserver];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v13 = [(CRThemeAssetDownloader *)self downloadObserver];
-      [v13 assetDownloader:self hasAsset:v9 forAssetRequest:v6];
+      downloadObserver2 = [(CRThemeAssetDownloader *)self downloadObserver];
+      [downloadObserver2 assetDownloader:self hasAsset:v9 forAssetRequest:requestCopy];
     }
   }
 }
 
-- (void)_assetQueue_notifyObserverOfFailedDownloadForAssetRequest:(id)a3 version:(id)a4 error:(id)a5
+- (void)_assetQueue_notifyObserverOfFailedDownloadForAssetRequest:(id)request version:(id)version error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CRThemeAssetDownloader *)self assetQueue];
-  dispatch_assert_queue_V2(v11);
+  requestCopy = request;
+  versionCopy = version;
+  errorCopy = error;
+  assetQueue = [(CRThemeAssetDownloader *)self assetQueue];
+  dispatch_assert_queue_V2(assetQueue);
 
   v12 = CarThemeAssetsLogging();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
     v16 = 138543874;
-    v17 = v8;
+    v17 = requestCopy;
     v18 = 2114;
-    v19 = v9;
+    v19 = versionCopy;
     v20 = 2112;
-    v21 = v10;
+    v21 = errorCopy;
     _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "download failed for asset request: %{public}@ version: %{public}@ error: %@", &v16, 0x20u);
   }
 
-  v13 = [(CRThemeAssetDownloader *)self downloadObserver];
+  downloadObserver = [(CRThemeAssetDownloader *)self downloadObserver];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v15 = [(CRThemeAssetDownloader *)self downloadObserver];
-    [v15 assetDownloader:self failedDownloadForAssetRequest:v8 version:v9 error:v10];
+    downloadObserver2 = [(CRThemeAssetDownloader *)self downloadObserver];
+    [downloadObserver2 assetDownloader:self failedDownloadForAssetRequest:requestCopy version:versionCopy error:errorCopy];
   }
 }
 

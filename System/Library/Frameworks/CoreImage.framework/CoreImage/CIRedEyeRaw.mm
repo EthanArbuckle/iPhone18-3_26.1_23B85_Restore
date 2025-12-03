@@ -1,13 +1,13 @@
 @interface CIRedEyeRaw
-- (id)irisProtectionMaskWithThresholdIris:(float)a3 thresholdSclera:(float)a4 thresholdSkin:(float)a5;
+- (id)irisProtectionMaskWithThresholdIris:(float)iris thresholdSclera:(float)sclera thresholdSkin:(float)skin;
 - (id)outputImage;
-- (id)skinProtectionMaskWithThreshold:(float)a3;
+- (id)skinProtectionMaskWithThreshold:(float)threshold;
 - (void)outputImage;
 @end
 
 @implementation CIRedEyeRaw
 
-- (id)irisProtectionMaskWithThresholdIris:(float)a3 thresholdSclera:(float)a4 thresholdSkin:(float)a5
+- (id)irisProtectionMaskWithThresholdIris:(float)iris thresholdSclera:(float)sclera thresholdSkin:(float)skin
 {
   v22[6] = *MEMORY[0x1E69E9840];
   v9 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_drr_extract_iris];
@@ -19,16 +19,16 @@
   v22[0] = [(CIRedEyeRaw *)self inputIrisMask];
   v22[1] = [(CIRedEyeRaw *)self inputScleraMask];
   v22[2] = [(CIRedEyeRaw *)self inputSkinMask];
-  *&v18 = a3;
+  *&v18 = iris;
   v22[3] = [MEMORY[0x1E696AD98] numberWithFloat:v18];
-  *&v19 = a4;
+  *&v19 = sclera;
   v22[4] = [MEMORY[0x1E696AD98] numberWithFloat:v19];
-  *&v20 = a5;
+  *&v20 = skin;
   v22[5] = [MEMORY[0x1E696AD98] numberWithFloat:v20];
   return -[CIColorKernel applyWithExtent:arguments:](v9, "applyWithExtent:arguments:", [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:6], v11, v13, v15, v17);
 }
 
-- (id)skinProtectionMaskWithThreshold:(float)a3
+- (id)skinProtectionMaskWithThreshold:(float)threshold
 {
   v16[2] = *MEMORY[0x1E69E9840];
   v5 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_drr_extract_skin];
@@ -38,7 +38,7 @@
   v11 = v10;
   v13 = v12;
   v16[0] = [(CIRedEyeRaw *)self inputSkinMask];
-  *&v14 = a3;
+  *&v14 = threshold;
   v16[1] = [MEMORY[0x1E696AD98] numberWithFloat:v14];
   return -[CIColorKernel applyWithExtent:arguments:](v5, "applyWithExtent:arguments:", [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2], v7, v9, v11, v13);
 }
@@ -314,7 +314,7 @@
     v80 = [(CIRedEyeRaw *)self skinProtectionMaskWithThreshold:v195];
     if ([(NSNumber *)self->inputShowMask intValue]== 14)
     {
-      v136 = [(CIImage *)v81 imageByCroppingToRect:v574.origin.x, v571, v572, v573];
+      v573 = [(CIImage *)v81 imageByCroppingToRect:v574.origin.x, v571, v572, v573];
       v137 = v81;
       v170 = v568;
 LABEL_108:
@@ -326,7 +326,7 @@ LABEL_108:
 
     if ([(NSNumber *)self->inputShowMask intValue]== 15)
     {
-      v136 = [(CIImage *)v194 imageByCroppingToRect:v574.origin.x, v571, v572, v573];
+      v573 = [(CIImage *)v194 imageByCroppingToRect:v574.origin.x, v571, v572, v573];
       v137 = v194;
 LABEL_111:
       v170 = v568;
@@ -338,7 +338,7 @@ LABEL_111:
 
     if ([(NSNumber *)self->inputShowMask intValue]== 16)
     {
-      v136 = [(CIImage *)v80 imageByCroppingToRect:v574.origin.x, v571, v572, v573];
+      v573 = [(CIImage *)v80 imageByCroppingToRect:v574.origin.x, v571, v572, v573];
       v137 = v80;
       goto LABEL_111;
     }
@@ -358,9 +358,9 @@ LABEL_111:
   v83 = dbl_19CF260B0[v20 == 35] * v532;
   v84 = v528 * 0.015 * v82 * v527;
   v85 = v524 * 0.1;
-  v86 = [(NSNumber *)self->inputRepairSource integerValue];
+  integerValue = [(NSNumber *)self->inputRepairSource integerValue];
   v87 = &OBJC_IVAR___CIRedEyeRaw_inputSecondary;
-  if (!v86)
+  if (!integerValue)
   {
     v87 = &OBJC_IVAR___CIRedEyeRaw_inputPrimary;
   }
@@ -383,14 +383,14 @@ LABEL_111:
     inputPrimary = self->inputPrimary;
     [(NSNumber *)self->inputDetectWhite floatValue];
     v100 = v101;
-    v98 = self;
+    selfCopy2 = self;
     [(NSNumber *)self->inputDetectRed floatValue];
     v554 = v102;
   }
 
   else
   {
-    v98 = self;
+    selfCopy2 = self;
     if (v20 == 35)
     {
       v99 = v96 + 0.3;
@@ -429,7 +429,7 @@ LABEL_111:
     }
 
     v112 = v111 * 0.0;
-    [(NSNumber *)v98->inputFlooding floatValue];
+    [(NSNumber *)selfCopy2->inputFlooding floatValue];
     v114 = (v113 + v113) * 0.5 * v111;
     v115 = v112 * 3.14159265 * v112;
     v116 = llroundf(v115);
@@ -494,9 +494,9 @@ LABEL_111:
     v125 = RRmultiplyRh(v125, v525);
   }
 
-  if ([(NSNumber *)v98->inputShowMask intValue]== 1)
+  if ([(NSNumber *)selfCopy2->inputShowMask intValue]== 1)
   {
-    v136 = [(CIImage *)v125 imageByCroppingToRect:v574.origin.x, v571, v572, v573];
+    v573 = [(CIImage *)v125 imageByCroppingToRect:v574.origin.x, v571, v572, v573];
     v137 = v125;
 LABEL_77:
     v170 = v126;
@@ -504,18 +504,18 @@ LABEL_77:
     v171 = v570;
     v173 = v545;
 LABEL_148:
-    v297 = [v137 imageByCroppingToRect:{v170, v171, v172, v173}];
-    v298 = v136;
-    return [v298 imageByCompositingOverImage:v297];
+    v545 = [v137 imageByCroppingToRect:{v170, v171, v172, v173}];
+    v298 = v573;
+    return [v298 imageByCompositingOverImage:v545];
   }
 
-  [(NSNumber *)v98->inputCentroidIterations floatValue];
+  [(NSNumber *)selfCopy2->inputCentroidIterations floatValue];
   v138 = (*&v139 * 5.0);
   *&v139 = v551;
   v140 = v125;
   if (v551 > 0.0)
   {
-    v141 = RRspecularMask(v98->inputPrimary, v98->inputSecondary, v551, v515);
+    v141 = RRspecularMask(selfCopy2->inputPrimary, selfCopy2->inputSecondary, v551, v515);
     v142 = v141;
     if (fabs(v517 + -1.0) > 0.01)
     {
@@ -529,13 +529,13 @@ LABEL_148:
   v518 = v121;
   v495 = v120;
   v533 = v125;
-  [(NSNumber *)v98->inputSearchLong floatValue];
+  [(NSNumber *)selfCopy2->inputSearchLong floatValue];
   v555 = v143;
-  [(NSNumber *)v98->inputSearchShort floatValue];
+  [(NSNumber *)selfCopy2->inputSearchShort floatValue];
   v552 = v144;
   v145 = &v590;
   v146 = 1;
-  v147 = v98;
+  v147 = selfCopy2;
   v148 = v138;
   do
   {
@@ -647,7 +647,7 @@ LABEL_148:
   v169 = v589;
   if ([(NSNumber *)v147->inputShowMask intValue]== 2)
   {
-    v136 = [(CIImage *)v168 imageByCroppingToRect:v574.origin.x, v571, v572, v573];
+    v573 = [(CIImage *)v168 imageByCroppingToRect:v574.origin.x, v571, v572, v573];
     v137 = v169;
     goto LABEL_77;
   }
@@ -766,7 +766,7 @@ LABEL_148:
   v221 = v587;
   if ([(NSNumber *)v147->inputShowMask intValue]== 3)
   {
-    v136 = [(CIImage *)v220 imageByCroppingToRect:v574.origin.x, v571, v572, v573];
+    v573 = [(CIImage *)v220 imageByCroppingToRect:v574.origin.x, v571, v572, v573];
     v137 = v221;
     v170 = v568;
     goto LABEL_108;
@@ -775,9 +775,9 @@ LABEL_148:
   v561 = v220;
   [(NSNumber *)v147->inputRadiusSpecular floatValue];
   v223 = v222;
-  v224 = [(NSNumber *)v147->inputRepairSource integerValue];
+  integerValue2 = [(NSNumber *)v147->inputRepairSource integerValue];
   v225 = v500;
-  if (!v224)
+  if (!integerValue2)
   {
     v225 = v147->inputPrimary;
   }
@@ -833,9 +833,9 @@ LABEL_148:
     v647[0] = v229;
     v646[0] = @"inputCenter";
     v646[1] = @"inputExtent";
-    v234 = [CIVector vectorWithCGRect:v230, v231, v232, v233];
+    v233 = [CIVector vectorWithCGRect:v230, v231, v232, v233];
     inputFalloffSpecular = v147->inputFalloffSpecular;
-    v647[1] = v234;
+    v647[1] = v233;
     v647[2] = inputFalloffSpecular;
     v646[2] = @"inputFalloff";
     v646[3] = @"inputRadius";
@@ -890,7 +890,7 @@ LABEL_148:
 
   if ([(NSNumber *)v147->inputShowMask intValue]== 6)
   {
-    v136 = [(CIImage *)v242 imageByCroppingToRect:v574.origin.x, v571, v572, v573];
+    v573 = [(CIImage *)v242 imageByCroppingToRect:v574.origin.x, v571, v572, v573];
     v137 = v243;
     v170 = v568;
     v171 = v248;
@@ -927,7 +927,7 @@ LABEL_147:
   *&v583.tx = *v649;
   v258 = [(CIImage *)v533 imageByApplyingTransform:&v583];
   v259 = v572;
-  v260 = [(CIImage *)RRcombineRGBA(v561 imageByCroppingToRect:v242, v256, v257), "imageByCroppingToRect:", v574.origin.x, v571, v572, v573];
+  v5732 = [(CIImage *)RRcombineRGBA(v561 imageByCroppingToRect:v242, v256, v257), "imageByCroppingToRect:", v574.origin.x, v571, v572, v573];
   v644[0] = @"inputPercentileRepair";
   *&v261 = v541;
   v645[0] = [MEMORY[0x1E696AD98] numberWithFloat:v261];
@@ -993,7 +993,7 @@ LABEL_147:
   inputParam2 = v147->inputParam2;
   v645[22] = v275;
   v645[23] = inputParam2;
-  v277 = -[CIImage imageByApplyingFilter:withInputParameters:](v260, "imageByApplyingFilter:withInputParameters:", @"HistoClip_RGBA8_CPU", [*(v252 + 3872) dictionaryWithObjects:v645 forKeys:v644 count:24]);
+  v277 = -[CIImage imageByApplyingFilter:withInputParameters:](v5732, "imageByApplyingFilter:withInputParameters:", @"HistoClip_RGBA8_CPU", [*(v252 + 3872) dictionaryWithObjects:v645 forKeys:v644 count:24]);
   v278 = RRextractR8(v277);
   v279 = RRextractG8(v277);
   v280 = RRextractB8(v277);
@@ -1019,7 +1019,7 @@ LABEL_147:
 
   if ([v526[15]._priv intValue] == 7)
   {
-    v136 = [(CIImage *)v279 imageByCroppingToRect:v574.origin.x, v571, v572, v573];
+    v573 = [(CIImage *)v279 imageByCroppingToRect:v574.origin.x, v571, v572, v573];
     v137 = v283;
 LABEL_146:
     v170 = v568;
@@ -1048,7 +1048,7 @@ LABEL_146:
 
   if ([v526[15]._priv intValue] == 4)
   {
-    v136 = [(CIImage *)v278 imageByCroppingToRect:v574.origin.x, v571, v259, v573];
+    v573 = [(CIImage *)v278 imageByCroppingToRect:v574.origin.x, v571, v259, v573];
     v137 = v567;
     goto LABEL_146;
   }
@@ -1070,24 +1070,24 @@ LABEL_146:
     v308 = &v640;
 LABEL_154:
     v310 = -[CIImage imageByApplyingFilter:withInputParameters:](v303, "imageByApplyingFilter:withInputParameters:", @"CIAreaAverage", [v306 dictionaryWithObjects:v307 forKeys:v308 count:1]);
-    v311 = [(CIImage *)v305 imageByUnpremultiplyingAlpha];
-    v312 = [(CIImage *)v310 imageByUnpremultiplyingAlpha];
-    [(CIImage *)v311 extent];
-    v313 = [(CIImage *)v311 imageBySettingAlphaOneInExtent:?];
-    [(CIImage *)v312 extent];
-    v314 = [(CIImage *)v312 imageBySettingAlphaOneInExtent:?];
-    v315 = [(CIImage *)v313 imageByClampingToExtent];
-    v316 = [(CIImage *)v314 imageByClampingToExtent];
-    v317 = v315;
+    imageByUnpremultiplyingAlpha = [(CIImage *)v305 imageByUnpremultiplyingAlpha];
+    imageByUnpremultiplyingAlpha2 = [(CIImage *)v310 imageByUnpremultiplyingAlpha];
+    [(CIImage *)imageByUnpremultiplyingAlpha extent];
+    v313 = [(CIImage *)imageByUnpremultiplyingAlpha imageBySettingAlphaOneInExtent:?];
+    [(CIImage *)imageByUnpremultiplyingAlpha2 extent];
+    v314 = [(CIImage *)imageByUnpremultiplyingAlpha2 imageBySettingAlphaOneInExtent:?];
+    imageByClampingToExtent = [(CIImage *)v313 imageByClampingToExtent];
+    imageByClampingToExtent2 = [(CIImage *)v314 imageByClampingToExtent];
+    v317 = imageByClampingToExtent;
     v318 = v304;
     v319 = v571;
     v320 = v301;
     v321 = v300;
 LABEL_155:
     v322 = [v317 imageByCroppingToRect:{v318, v319, v320, v321}];
-    v297 = [(CIImage *)v316 imageByCroppingToRect:v568, v248, v569, v545];
+    v545 = [(CIImage *)imageByClampingToExtent2 imageByCroppingToRect:v568, v248, v569, v545];
     v298 = v322;
-    return [v298 imageByCompositingOverImage:v297];
+    return [v298 imageByCompositingOverImage:v545];
   }
 
   if ([v526[15]._priv intValue] == 11)
@@ -1128,7 +1128,7 @@ LABEL_155:
     v330 = v633;
     v331 = v632;
 LABEL_160:
-    v316 = -[objc_class imageByApplyingFilter:withInputParameters:](v328, "imageByApplyingFilter:withInputParameters:", @"CIBlendWithRedMask", [v329 dictionaryWithObjects:v330 forKeys:v331 count:2]);
+    imageByClampingToExtent2 = -[objc_class imageByApplyingFilter:withInputParameters:](v328, "imageByApplyingFilter:withInputParameters:", @"CIBlendWithRedMask", [v329 dictionaryWithObjects:v330 forKeys:v331 count:2]);
     v317 = v327;
     v318 = v574.origin.x;
     v319 = v571;
@@ -1280,9 +1280,9 @@ LABEL_165:
     }
 
     v266 = v553;
-    v357 = [(CIImage *)v353 imageByCroppingToRect:v342, v343, v344, v345];
+    v345 = [(CIImage *)v353 imageByCroppingToRect:v342, v343, v344, v345];
     v340 = 0;
-    *v339 = v357;
+    *v339 = v345;
     v339 = &v581;
     v267 = v569;
     v248 = v570;
@@ -1418,7 +1418,7 @@ LABEL_165:
   v397 = v570;
   if ([v526[15]._priv intValue] == 5)
   {
-    v136 = [(CIImage *)v393 imageByCroppingToRect:v574.origin.x, v571, v572, v573];
+    v573 = [(CIImage *)v393 imageByCroppingToRect:v574.origin.x, v571, v572, v573];
     v137 = v394;
 LABEL_226:
     v170 = v568;
@@ -1499,7 +1499,7 @@ LABEL_227:
   v417 = RRmultiplyRh(v415, v394);
   if ([v526[15]._priv intValue] == 8)
   {
-    v136 = [(CIImage *)v416 imageByCroppingToRect:v574.origin.x, v571, v572, v573];
+    v573 = [(CIImage *)v416 imageByCroppingToRect:v574.origin.x, v571, v572, v573];
     v137 = v417;
     goto LABEL_226;
   }
@@ -1619,7 +1619,7 @@ LABEL_227:
   v443 = v579;
   if ([v526[15]._priv intValue] == 9)
   {
-    v136 = [v442 imageByCroppingToRect:{v574.origin.x, v571, v572, v573}];
+    v573 = [v442 imageByCroppingToRect:{v574.origin.x, v571, v572, v573}];
     v137 = v443;
     v170 = v568;
     goto LABEL_227;
@@ -1713,8 +1713,8 @@ LABEL_227:
     v576 = *&v583.tx;
     v475 = RRmultiplyRh(v563, [(CIImage *)v394 imageByApplyingTransform:&v574.size]);
     v595 = @"inputExtent";
-    v596 = [CIVector vectorWithCGRect:v574.origin.x, v571, v572, v573];
-    v476 = -[CIImage imageByClampingToExtent](-[CIImage imageByApplyingFilter:withInputParameters:](v475, "imageByApplyingFilter:withInputParameters:", @"CIAreaAverage", [MEMORY[0x1E695DF20] dictionaryWithObjects:&v596 forKeys:&v595 count:1]), "imageByClampingToExtent");
+    v5733 = [CIVector vectorWithCGRect:v574.origin.x, v571, v572, v573];
+    v476 = -[CIImage imageByClampingToExtent](-[CIImage imageByApplyingFilter:withInputParameters:](v475, "imageByApplyingFilter:withInputParameters:", @"CIAreaAverage", [MEMORY[0x1E695DF20] dictionaryWithObjects:&v5733 forKeys:&v595 count:1]), "imageByClampingToExtent");
     v477 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_drr_threshold];
     [(CIImage *)v471 extent];
     v479 = v478;
@@ -1751,7 +1751,7 @@ LABEL_227:
   v5 = 2048;
   v6 = a3;
   v7 = 2112;
-  v8 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_19CC36000, a2, OS_LOG_TYPE_ERROR, "%{public}s Eye size: major axis %.0f -> %@", &v3, 0x20u);
 }
 

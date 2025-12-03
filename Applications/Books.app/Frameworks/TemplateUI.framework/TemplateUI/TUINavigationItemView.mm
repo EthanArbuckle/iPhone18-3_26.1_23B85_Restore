@@ -1,23 +1,23 @@
 @interface TUINavigationItemView
 - (CGSize)intrinsicContentSize;
-- (TUINavigationItemView)initWithCoder:(id)a3;
-- (TUINavigationItemView)initWithFrame:(CGRect)a3;
+- (TUINavigationItemView)initWithCoder:(id)coder;
+- (TUINavigationItemView)initWithFrame:(CGRect)frame;
 - (TUIViewFactory)factory;
-- (void)_buttonPressed:(id)a3;
-- (void)_configureWithAXAttributes:(id)a3;
+- (void)_buttonPressed:(id)pressed;
+- (void)_configureWithAXAttributes:(id)attributes;
 - (void)addDefaultButton;
 - (void)addSubviewButton;
-- (void)configureWithModel:(id)a3;
-- (void)setFactory:(id)a3;
+- (void)configureWithModel:(id)model;
+- (void)setFactory:(id)factory;
 @end
 
 @implementation TUINavigationItemView
 
-- (TUINavigationItemView)initWithFrame:(CGRect)a3
+- (TUINavigationItemView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = TUINavigationItemView;
-  result = [(TUINavigationItemView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(TUINavigationItemView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_intrinsicContentSize.width = UIViewNoIntrinsicMetric;
@@ -27,11 +27,11 @@
   return result;
 }
 
-- (TUINavigationItemView)initWithCoder:(id)a3
+- (TUINavigationItemView)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = TUINavigationItemView;
-  result = [(TUINavigationItemView *)&v4 initWithCoder:a3];
+  result = [(TUINavigationItemView *)&v4 initWithCoder:coder];
   if (result)
   {
     result->_intrinsicContentSize.width = UIViewNoIntrinsicMetric;
@@ -50,9 +50,9 @@
   return result;
 }
 
-- (void)setFactory:(id)a3
+- (void)setFactory:(id)factory
 {
-  obj = a3;
+  obj = factory;
   WeakRetained = objc_loadWeakRetained(&self->_factory);
 
   v5 = obj;
@@ -63,15 +63,15 @@
   }
 }
 
-- (void)configureWithModel:(id)a3
+- (void)configureWithModel:(id)model
 {
-  v5 = a3;
-  if (self->_renderModel != v5)
+  modelCopy = model;
+  if (self->_renderModel != modelCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_renderModel, a3);
-    v6 = [(TUIRenderModelNavigationItem *)self->_renderModel subviewsModel];
-    if (v6)
+    v8 = modelCopy;
+    objc_storeStrong(&self->_renderModel, model);
+    subviewsModel = [(TUIRenderModelNavigationItem *)self->_renderModel subviewsModel];
+    if (subviewsModel)
     {
       [(TUINavigationItemView *)self addSubviewButton];
     }
@@ -81,13 +81,13 @@
       [(TUINavigationItemView *)self addDefaultButton];
     }
 
-    v7 = [(TUIRenderModelNavigationItem *)v8 axAttributes];
-    if (v7)
+    axAttributes = [(TUIRenderModelNavigationItem *)v8 axAttributes];
+    if (axAttributes)
     {
-      [(TUINavigationItemView *)self _configureWithAXAttributes:v7];
+      [(TUINavigationItemView *)self _configureWithAXAttributes:axAttributes];
     }
 
-    v5 = v8;
+    modelCopy = v8;
   }
 }
 
@@ -106,17 +106,17 @@
   v19 = [TUIUIKitButton buttonWithType:v3];
   [v19 setRole:{+[TUIControlView uiButtonRoleFromTUIButtonRole:](TUIControlView, "uiButtonRoleFromTUIButtonRole:", -[TUIRenderModelNavigationItem buttonRole](self->_renderModel, "buttonRole"))}];
   [v19 addTarget:self action:"_buttonPressed:" forControlEvents:64];
-  v4 = [(TUIRenderModelNavigationItem *)self->_renderModel title];
-  [v19 setTitle:v4 forState:0];
+  title = [(TUIRenderModelNavigationItem *)self->_renderModel title];
+  [v19 setTitle:title forState:0];
 
-  v5 = [(TUIRenderModelNavigationItem *)self->_renderModel attributedTitle];
-  [v19 setAttributedTitle:v5 forState:0];
+  attributedTitle = [(TUIRenderModelNavigationItem *)self->_renderModel attributedTitle];
+  [v19 setAttributedTitle:attributedTitle forState:0];
 
-  v6 = [(TUIRenderModelNavigationItem *)self->_renderModel image];
-  [v19 setImage:v6 forState:0];
+  image = [(TUIRenderModelNavigationItem *)self->_renderModel image];
+  [v19 setImage:image forState:0];
 
-  v7 = [(TUIRenderModelNavigationItem *)self->_renderModel menu];
-  [v19 setTui_menu:v7];
+  menu = [(TUIRenderModelNavigationItem *)self->_renderModel menu];
+  [v19 setTui_menu:menu];
 
   [v19 setEnabled:{-[TUIRenderModelNavigationItem isEnabled](self->_renderModel, "isEnabled")}];
   [v19 setClipsToBounds:{-[TUINavigationItemView clipsToBounds](self, "clipsToBounds")}];
@@ -158,8 +158,8 @@
 
 - (void)addSubviewButton
 {
-  v3 = [(TUIRenderModelNavigationItem *)self->_renderModel subviewsModel];
-  [v3 size];
+  subviewsModel = [(TUIRenderModelNavigationItem *)self->_renderModel subviewsModel];
+  [subviewsModel size];
   v5 = v4;
   v7 = v6;
   [(TUINavigationItemView *)self setFrame:0.0, 0.0, v4, v6];
@@ -168,16 +168,16 @@
   WeakRetained = objc_loadWeakRetained(&self->_factory);
   [WeakRetained viewFactoryPrepareToReuseHost:self];
 
-  if (v3)
+  if (subviewsModel)
   {
     v9 = objc_loadWeakRetained(&self->_factory);
 
     if (v9)
     {
-      [v3 prepare];
+      [subviewsModel prepare];
       v21 = 0;
       v10 = objc_loadWeakRetained(&self->_factory);
-      v11 = [v3 configureSubviewsWithFactory:v10 outsets:self host:0 overrides:&v21 usedOverrides:0 UUID:0 uid:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
+      v11 = [subviewsModel configureSubviewsWithFactory:v10 outsets:self host:0 overrides:&v21 usedOverrides:0 UUID:0 uid:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
 
       v19 = 0u;
       v20 = 0u;
@@ -213,64 +213,64 @@
   }
 }
 
-- (void)_buttonPressed:(id)a3
+- (void)_buttonPressed:(id)pressed
 {
-  v4 = [(TUINavigationItemView *)self renderModel];
-  v3 = [v4 actionHandler];
-  [v3 invoke:@"press" arguments:0];
+  renderModel = [(TUINavigationItemView *)self renderModel];
+  actionHandler = [renderModel actionHandler];
+  [actionHandler invoke:@"press" arguments:0];
 }
 
-- (void)_configureWithAXAttributes:(id)a3
+- (void)_configureWithAXAttributes:(id)attributes
 {
-  v22 = a3;
-  -[TUINavigationItemView setIsAccessibilityElement:](self, "setIsAccessibilityElement:", [v22 isAXElement]);
-  v4 = [v22 axIdentifier];
+  attributesCopy = attributes;
+  -[TUINavigationItemView setIsAccessibilityElement:](self, "setIsAccessibilityElement:", [attributesCopy isAXElement]);
+  axIdentifier = [attributesCopy axIdentifier];
 
-  if (v4)
+  if (axIdentifier)
   {
-    v5 = [v22 axIdentifier];
-    [(TUINavigationItemView *)self setAccessibilityIdentifier:v5];
+    axIdentifier2 = [attributesCopy axIdentifier];
+    [(TUINavigationItemView *)self setAccessibilityIdentifier:axIdentifier2];
   }
 
-  v6 = [v22 axLabel];
+  axLabel = [attributesCopy axLabel];
 
-  if (v6)
+  if (axLabel)
   {
-    v7 = [v22 axLabel];
-    [(TUINavigationItemView *)self setAccessibilityLabel:v7];
+    axLabel2 = [attributesCopy axLabel];
+    [(TUINavigationItemView *)self setAccessibilityLabel:axLabel2];
   }
 
-  v8 = [v22 axValue];
+  axValue = [attributesCopy axValue];
 
-  if (v8)
+  if (axValue)
   {
-    v9 = [v22 axValue];
-    [(TUINavigationItemView *)self setAccessibilityValue:v9];
+    axValue2 = [attributesCopy axValue];
+    [(TUINavigationItemView *)self setAccessibilityValue:axValue2];
   }
 
-  v10 = [v22 axHint];
+  axHint = [attributesCopy axHint];
 
-  if (v10)
+  if (axHint)
   {
-    v11 = [v22 axHint];
-    [(TUINavigationItemView *)self setAccessibilityHint:v11];
+    axHint2 = [attributesCopy axHint];
+    [(TUINavigationItemView *)self setAccessibilityHint:axHint2];
   }
 
-  v12 = [(TUINavigationItemView *)self accessibilityTraits];
-  if ([v22 axTouchContainer])
+  accessibilityTraits = [(TUINavigationItemView *)self accessibilityTraits];
+  if ([attributesCopy axTouchContainer])
   {
     [(TUINavigationItemView *)self setAccessibilityContainerType:4];
   }
 
-  v13 = [v22 axButton];
+  axButton = [attributesCopy axButton];
   v14 = UIAccessibilityTraitButton;
-  if (!v13)
+  if (!axButton)
   {
     v14 = 0;
   }
 
-  v15 = v14 | v12;
-  if ([v22 axImage])
+  v15 = v14 | accessibilityTraits;
+  if ([attributesCopy axImage])
   {
     v16 = UIAccessibilityTraitImage;
   }
@@ -280,17 +280,17 @@
     v16 = 0;
   }
 
-  v17 = [v22 axHeading];
+  axHeading = [attributesCopy axHeading];
   v18 = UIAccessibilityTraitHeader;
-  if (!v17)
+  if (!axHeading)
   {
     v18 = 0;
   }
 
   v19 = v15 | v16 | v18;
-  v20 = [v22 axToggle];
+  axToggle = [attributesCopy axToggle];
   v21 = UIAccessibilityTraitToggleButton;
-  if (!v20)
+  if (!axToggle)
   {
     v21 = 0;
   }

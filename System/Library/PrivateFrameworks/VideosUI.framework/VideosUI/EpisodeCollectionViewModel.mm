@@ -1,7 +1,7 @@
 @interface EpisodeCollectionViewModel
-- (id)seasonCanonicalIdForSeasonIndex:(int64_t)a3;
+- (id)seasonCanonicalIdForSeasonIndex:(int64_t)index;
 - (id)tvShowCanonicalId;
-- (int64_t)episodeCountForSeasonIndex:(int64_t)a3;
+- (int64_t)episodeCountForSeasonIndex:(int64_t)index;
 - (int64_t)totalEpisodeCount;
 - (int64_t)totalSeasonCount;
 @end
@@ -36,23 +36,23 @@
   return v2;
 }
 
-- (id)seasonCanonicalIdForSeasonIndex:(int64_t)a3
+- (id)seasonCanonicalIdForSeasonIndex:(int64_t)index
 {
 
-  sub_1E3CCB428(a3);
+  sub_1E3CCB428(index);
 
   v4 = sub_1E4205ED4();
 
   return v4;
 }
 
-- (int64_t)episodeCountForSeasonIndex:(int64_t)a3
+- (int64_t)episodeCountForSeasonIndex:(int64_t)index
 {
 
-  sub_1E3CCB580(a3);
+  sub_1E3CCB580(index);
   OUTLINED_FUNCTION_12_1();
 
-  return a3;
+  return index;
 }
 
 @end

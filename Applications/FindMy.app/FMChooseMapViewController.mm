@@ -1,30 +1,30 @@
 @interface FMChooseMapViewController
-- (_TtC6FindMy25FMChooseMapViewController)initWithCoder:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC6FindMy25FMChooseMapViewController)initWithCoder:(id)coder;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewLayoutMarginsDidChange;
 @end
 
 @implementation FMChooseMapViewController
 
-- (_TtC6FindMy25FMChooseMapViewController)initWithCoder:(id)a3
+- (_TtC6FindMy25FMChooseMapViewController)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   v4 = v8.receiver;
-  v5 = a3;
-  [(FMBaseContentViewController *)&v8 traitCollectionDidChange:v5];
-  v6 = [*&v4[OBJC_IVAR____TtC6FindMy25FMChooseMapViewController_hostingViewController] view];
-  if (v6)
+  changeCopy = change;
+  [(FMBaseContentViewController *)&v8 traitCollectionDidChange:changeCopy];
+  view = [*&v4[OBJC_IVAR____TtC6FindMy25FMChooseMapViewController_hostingViewController] view];
+  if (view)
   {
-    v7 = v6;
-    [v6 invalidateIntrinsicContentSize];
+    v7 = view;
+    [view invalidateIntrinsicContentSize];
   }
 
   else

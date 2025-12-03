@@ -1,16 +1,16 @@
 @interface RTLearnedPlaceTypeInferenceMO
-+ (id)initWithLearnedPlaceTypeInference:(id)a3 managedObjectContext:(id)a4;
-+ (id)managedObjectWithIdentifier:(id)a3 sessionId:(id)a4 learnedPlaceIdentifier:(id)a5 placeType:(unint64_t)a6 metricSource:(unint64_t)a7 creationDate:(id)a8 managedObjectContext:(id)a9;
++ (id)initWithLearnedPlaceTypeInference:(id)inference managedObjectContext:(id)context;
++ (id)managedObjectWithIdentifier:(id)identifier sessionId:(id)id learnedPlaceIdentifier:(id)placeIdentifier placeType:(unint64_t)type metricSource:(unint64_t)source creationDate:(id)date managedObjectContext:(id)context;
 @end
 
 @implementation RTLearnedPlaceTypeInferenceMO
 
-+ (id)initWithLearnedPlaceTypeInference:(id)a3 managedObjectContext:(id)a4
++ (id)initWithLearnedPlaceTypeInference:(id)inference managedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  inferenceCopy = inference;
+  contextCopy = context;
+  v7 = contextCopy;
+  if (!inferenceCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -26,15 +26,15 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (v6)
+  if (contextCopy)
   {
-    v8 = [v5 identifier];
-    v9 = [v5 sessionId];
-    v10 = [v5 learnedPlaceIdentifier];
-    v11 = [v5 placeType];
-    v12 = [v5 metricSource];
-    v13 = [v5 creationDate];
-    v14 = [RTLearnedPlaceTypeInferenceMO managedObjectWithIdentifier:v8 sessionId:v9 learnedPlaceIdentifier:v10 placeType:v11 metricSource:v12 creationDate:v13 managedObjectContext:v7];
+    identifier = [inferenceCopy identifier];
+    sessionId = [inferenceCopy sessionId];
+    learnedPlaceIdentifier = [inferenceCopy learnedPlaceIdentifier];
+    placeType = [inferenceCopy placeType];
+    metricSource = [inferenceCopy metricSource];
+    creationDate = [inferenceCopy creationDate];
+    v14 = [RTLearnedPlaceTypeInferenceMO managedObjectWithIdentifier:identifier sessionId:sessionId learnedPlaceIdentifier:learnedPlaceIdentifier placeType:placeType metricSource:metricSource creationDate:creationDate managedObjectContext:v7];
 
     goto LABEL_8;
   }
@@ -56,15 +56,15 @@ LABEL_8:
   return v14;
 }
 
-+ (id)managedObjectWithIdentifier:(id)a3 sessionId:(id)a4 learnedPlaceIdentifier:(id)a5 placeType:(unint64_t)a6 metricSource:(unint64_t)a7 creationDate:(id)a8 managedObjectContext:(id)a9
++ (id)managedObjectWithIdentifier:(id)identifier sessionId:(id)id learnedPlaceIdentifier:(id)placeIdentifier placeType:(unint64_t)type metricSource:(unint64_t)source creationDate:(id)date managedObjectContext:(id)context
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  v18 = a9;
-  v19 = v18;
-  if (v18)
+  identifierCopy = identifier;
+  idCopy = id;
+  placeIdentifierCopy = placeIdentifier;
+  dateCopy = date;
+  contextCopy = context;
+  v19 = contextCopy;
+  if (contextCopy)
   {
     v31 = 0;
     v32 = &v31;
@@ -77,13 +77,13 @@ LABEL_8:
     v22[2] = __151__RTLearnedPlaceTypeInferenceMO_managedObjectWithIdentifier_sessionId_learnedPlaceIdentifier_placeType_metricSource_creationDate_managedObjectContext___block_invoke;
     v22[3] = &unk_2788C5E90;
     v28 = &v31;
-    v23 = v18;
-    v24 = v14;
-    v25 = v15;
-    v26 = v16;
-    v29 = a6;
-    v30 = a7;
-    v27 = v17;
+    v23 = contextCopy;
+    v24 = identifierCopy;
+    v25 = idCopy;
+    v26 = placeIdentifierCopy;
+    typeCopy = type;
+    sourceCopy = source;
+    v27 = dateCopy;
     [v23 performBlockAndWait:v22];
     v20 = v32[5];
 

@@ -1,5 +1,5 @@
 @interface SBReusableSnapshotItemContainerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)_accessibilitySceneIdentifier;
 - (unint64_t)accessibilityTraits;
@@ -7,22 +7,22 @@
 
 @implementation SBReusableSnapshotItemContainerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBReusableSnapshotItemContainer" isKindOfClass:@"SBFluidSwitcherItemContainer"];
-  [v3 validateClass:@"SBFluidSwitcherItemContainer" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFluidSwitcherItemContainer" hasInstanceMethod:@"appLayout" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBAppLayout" hasInstanceMethod:@"allItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBDisplayItem" hasInstanceMethod:@"uniqueIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"didSelectContainer:modifierFlags:" withFullSignature:{"v", "@", "q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBReusableSnapshotItemContainer" isKindOfClass:@"SBFluidSwitcherItemContainer"];
+  [validationsCopy validateClass:@"SBFluidSwitcherItemContainer" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherItemContainer" hasInstanceMethod:@"appLayout" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBAppLayout" hasInstanceMethod:@"allItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBDisplayItem" hasInstanceMethod:@"uniqueIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"didSelectContainer:modifierFlags:" withFullSignature:{"v", "@", "q", 0}];
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(SBReusableSnapshotItemContainerAccessibility *)self _accessibilitySceneIdentifier];
-  v3 = [MEMORY[0x29EDBDFA8] server];
-  v4 = [v3 focusedOccludedAppScenes];
+  _accessibilitySceneIdentifier = [(SBReusableSnapshotItemContainerAccessibility *)self _accessibilitySceneIdentifier];
+  server = [MEMORY[0x29EDBDFA8] server];
+  focusedOccludedAppScenes = [server focusedOccludedAppScenes];
 
   v10 = 0;
   v11 = &v10;
@@ -32,14 +32,14 @@
   v7[1] = 3221225472;
   v7[2] = __70__SBReusableSnapshotItemContainerAccessibility_isAccessibilityElement__block_invoke;
   v7[3] = &unk_29F2FBA18;
-  v5 = v2;
+  v5 = _accessibilitySceneIdentifier;
   v8 = v5;
   v9 = &v10;
-  [v4 enumerateObjectsUsingBlock:v7];
-  LOBYTE(v3) = *(v11 + 24);
+  [focusedOccludedAppScenes enumerateObjectsUsingBlock:v7];
+  LOBYTE(server) = *(v11 + 24);
 
   _Block_object_dispose(&v10, 8);
-  return v3;
+  return server;
 }
 
 void __70__SBReusableSnapshotItemContainerAccessibility_isAccessibilityElement__block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -71,8 +71,8 @@ void __69__SBReusableSnapshotItemContainerAccessibility_accessibilityActivate__b
 {
   v2 = [(SBReusableSnapshotItemContainerAccessibility *)self safeValueForKey:@"appLayout"];
   v3 = [v2 safeArrayForKey:@"allItems"];
-  v4 = [v3 firstObject];
-  v5 = [v4 safeStringForKey:@"uniqueIdentifier"];
+  firstObject = [v3 firstObject];
+  v5 = [firstObject safeStringForKey:@"uniqueIdentifier"];
 
   return v5;
 }

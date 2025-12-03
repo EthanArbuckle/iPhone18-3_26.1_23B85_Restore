@@ -1,29 +1,29 @@
 @interface ASDTDeviceList
 - (ASDTDeviceList)init;
-- (BOOL)addAudioDeviceWithCheck:(id)a3;
+- (BOOL)addAudioDeviceWithCheck:(id)check;
 - (NSArray)audioDevices;
-- (id)getAudioDeviceWithUID:(id)a3;
-- (void)addAudioDevices:(id)a3;
+- (id)getAudioDeviceWithUID:(id)d;
+- (void)addAudioDevices:(id)devices;
 - (void)init;
-- (void)removeAudioDevice:(id)a3;
-- (void)removeAudioDeviceWithUID:(id)a3;
-- (void)removeAudioDevices:(id)a3;
+- (void)removeAudioDevice:(id)device;
+- (void)removeAudioDeviceWithUID:(id)d;
+- (void)removeAudioDevices:(id)devices;
 @end
 
 @implementation ASDTDeviceList
 
 - (NSArray)audioDevices
 {
-  v3 = [(ASDTDeviceList *)self lock];
-  [v3 lock];
+  lock = [(ASDTDeviceList *)self lock];
+  [lock lock];
 
-  v4 = [(ASDTDeviceList *)self audioDeviceDict];
-  v5 = [v4 allValues];
+  audioDeviceDict = [(ASDTDeviceList *)self audioDeviceDict];
+  allValues = [audioDeviceDict allValues];
 
-  v6 = [(ASDTDeviceList *)self lock];
-  [v6 unlock];
+  lock2 = [(ASDTDeviceList *)self lock];
+  [lock2 unlock];
 
-  return v5;
+  return allValues;
 }
 
 - (ASDTDeviceList)init
@@ -36,29 +36,29 @@
     goto LABEL_5;
   }
 
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [(ASDTDeviceList *)v2 setAudioDeviceDict:v3];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(ASDTDeviceList *)v2 setAudioDeviceDict:dictionary];
 
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  [(ASDTDeviceList *)v2 setInterestsDict:v4];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  [(ASDTDeviceList *)v2 setInterestsDict:dictionary2];
 
   v5 = objc_alloc_init(MEMORY[0x277CCAAF8]);
   [(ASDTDeviceList *)v2 setLock:v5];
 
-  v6 = [(ASDTDeviceList *)v2 lock];
-  [v6 setName:@"com.apple.AudioServerDriverTransports.ASDTDeviceList"];
+  lock = [(ASDTDeviceList *)v2 lock];
+  [lock setName:@"com.apple.AudioServerDriverTransports.ASDTDeviceList"];
 
-  v7 = [(ASDTDeviceList *)v2 lock];
-  if (v7)
+  lock2 = [(ASDTDeviceList *)v2 lock];
+  if (lock2)
   {
-    v8 = v7;
-    v9 = [(ASDTDeviceList *)v2 audioDeviceDict];
-    if (v9)
+    v8 = lock2;
+    audioDeviceDict = [(ASDTDeviceList *)v2 audioDeviceDict];
+    if (audioDeviceDict)
     {
-      v10 = v9;
-      v11 = [(ASDTDeviceList *)v2 interestsDict];
+      v10 = audioDeviceDict;
+      interestsDict = [(ASDTDeviceList *)v2 interestsDict];
 
-      if (v11)
+      if (interestsDict)
       {
 LABEL_5:
         v12 = v2;
@@ -83,19 +83,19 @@ LABEL_10:
   return v12;
 }
 
-- (id)getAudioDeviceWithUID:(id)a3
+- (id)getAudioDeviceWithUID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v4 = a3;
-    v5 = [(ASDTDeviceList *)self lock];
-    [v5 lock];
+    dCopy = d;
+    lock = [(ASDTDeviceList *)self lock];
+    [lock lock];
 
-    v6 = [(ASDTDeviceList *)self audioDeviceDict];
-    v7 = [v6 objectForKey:v4];
+    audioDeviceDict = [(ASDTDeviceList *)self audioDeviceDict];
+    v7 = [audioDeviceDict objectForKey:dCopy];
 
-    v8 = [(ASDTDeviceList *)self lock];
-    [v8 unlock];
+    lock2 = [(ASDTDeviceList *)self lock];
+    [lock2 unlock];
   }
 
   else
@@ -106,24 +106,24 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)addAudioDeviceWithCheck:(id)a3
+- (BOOL)addAudioDeviceWithCheck:(id)check
 {
-  v4 = a3;
-  v5 = [v4 deviceUID];
+  checkCopy = check;
+  deviceUID = [checkCopy deviceUID];
 
-  if (v5)
+  if (deviceUID)
   {
-    v6 = [(ASDTDeviceList *)self lock];
-    [v6 lock];
+    lock = [(ASDTDeviceList *)self lock];
+    [lock lock];
 
-    v7 = [(ASDTDeviceList *)self audioDeviceDict];
-    v8 = [v4 deviceUID];
-    [v7 setObject:v4 forKey:v8];
+    audioDeviceDict = [(ASDTDeviceList *)self audioDeviceDict];
+    deviceUID2 = [checkCopy deviceUID];
+    [audioDeviceDict setObject:checkCopy forKey:deviceUID2];
 
-    v9 = [(ASDTDeviceList *)self lock];
-    [v9 unlock];
+    lock2 = [(ASDTDeviceList *)self lock];
+    [lock2 unlock];
 
-    [(ASDTDeviceList *)self notifyOfInterest:1 forDevice:v4];
+    [(ASDTDeviceList *)self notifyOfInterest:1 forDevice:checkCopy];
   }
 
   else
@@ -131,22 +131,22 @@ LABEL_10:
     v10 = ASDTBaseLogType();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(ASDTDeviceList *)v4 addAudioDeviceWithCheck:v10];
+      [(ASDTDeviceList *)checkCopy addAudioDeviceWithCheck:v10];
     }
   }
 
-  return v5 != 0;
+  return deviceUID != 0;
 }
 
-- (void)addAudioDevices:(id)a3
+- (void)addAudioDevices:(id)devices
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  devicesCopy = devices;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [devicesCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -158,14 +158,14 @@ LABEL_10:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(devicesCopy);
         }
 
         [(ASDTDeviceList *)self addAudioDevice:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [devicesCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -174,39 +174,39 @@ LABEL_10:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeAudioDeviceWithUID:(id)a3
+- (void)removeAudioDeviceWithUID:(id)d
 {
-  v8 = a3;
+  dCopy = d;
   v4 = [(ASDTDeviceList *)self getAudioDeviceWithUID:?];
   if (v4)
   {
     [(ASDTDeviceList *)self notifyOfInterest:4 forDevice:v4];
-    v5 = [(ASDTDeviceList *)self lock];
-    [v5 lock];
+    lock = [(ASDTDeviceList *)self lock];
+    [lock lock];
 
-    v6 = [(ASDTDeviceList *)self audioDeviceDict];
-    [v6 removeObjectForKey:v8];
+    audioDeviceDict = [(ASDTDeviceList *)self audioDeviceDict];
+    [audioDeviceDict removeObjectForKey:dCopy];
 
-    v7 = [(ASDTDeviceList *)self lock];
-    [v7 unlock];
+    lock2 = [(ASDTDeviceList *)self lock];
+    [lock2 unlock];
   }
 }
 
-- (void)removeAudioDevice:(id)a3
+- (void)removeAudioDevice:(id)device
 {
-  v4 = [a3 deviceUID];
-  [(ASDTDeviceList *)self removeAudioDeviceWithUID:v4];
+  deviceUID = [device deviceUID];
+  [(ASDTDeviceList *)self removeAudioDeviceWithUID:deviceUID];
 }
 
-- (void)removeAudioDevices:(id)a3
+- (void)removeAudioDevices:(id)devices
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  devicesCopy = devices;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [devicesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -218,17 +218,17 @@ LABEL_10:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(devicesCopy);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * v8) deviceUID];
-        [(ASDTDeviceList *)self removeAudioDeviceWithUID:v9];
+        deviceUID = [*(*(&v11 + 1) + 8 * v8) deviceUID];
+        [(ASDTDeviceList *)self removeAudioDeviceWithUID:deviceUID];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [devicesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);

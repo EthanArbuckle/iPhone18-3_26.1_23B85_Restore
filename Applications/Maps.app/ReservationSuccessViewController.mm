@@ -3,8 +3,8 @@
 - (NSString)subText;
 - (UILabel)mainLabel;
 - (UILabel)subLabel;
-- (void)setMainText:(id)a3;
-- (void)setSubText:(id)a3;
+- (void)setMainText:(id)text;
+- (void)setSubText:(id)text;
 - (void)viewDidLoad;
 @end
 
@@ -50,32 +50,32 @@
 
 - (NSString)subText
 {
-  v2 = [(ReservationSuccessViewController *)self subLabel];
-  v3 = [v2 text];
+  subLabel = [(ReservationSuccessViewController *)self subLabel];
+  text = [subLabel text];
 
-  return v3;
+  return text;
 }
 
 - (NSString)mainText
 {
-  v2 = [(ReservationSuccessViewController *)self mainLabel];
-  v3 = [v2 text];
+  mainLabel = [(ReservationSuccessViewController *)self mainLabel];
+  text = [mainLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setSubText:(id)a3
+- (void)setSubText:(id)text
 {
-  v4 = a3;
-  v5 = [(ReservationSuccessViewController *)self subLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  subLabel = [(ReservationSuccessViewController *)self subLabel];
+  [subLabel setText:textCopy];
 }
 
-- (void)setMainText:(id)a3
+- (void)setMainText:(id)text
 {
-  v4 = a3;
-  v5 = [(ReservationSuccessViewController *)self mainLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  mainLabel = [(ReservationSuccessViewController *)self mainLabel];
+  [mainLabel setText:textCopy];
 }
 
 - (void)viewDidLoad
@@ -88,75 +88,75 @@
   self->_editButton = v3;
 
   [(UIButton *)self->_editButton setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(ReservationSuccessViewController *)self view];
-  v6 = [(ReservationSuccessViewController *)self mainLabel];
-  [v5 addSubview:v6];
+  view = [(ReservationSuccessViewController *)self view];
+  mainLabel = [(ReservationSuccessViewController *)self mainLabel];
+  [view addSubview:mainLabel];
 
-  v7 = [(ReservationSuccessViewController *)self view];
-  v8 = [(ReservationSuccessViewController *)self subLabel];
-  [v7 addSubview:v8];
+  view2 = [(ReservationSuccessViewController *)self view];
+  subLabel = [(ReservationSuccessViewController *)self subLabel];
+  [view2 addSubview:subLabel];
 
-  v9 = [(ReservationSuccessViewController *)self view];
-  v10 = [(ReservationSuccessViewController *)self editButton];
-  [v9 addSubview:v10];
+  view3 = [(ReservationSuccessViewController *)self view];
+  editButton = [(ReservationSuccessViewController *)self editButton];
+  [view3 addSubview:editButton];
 
-  v11 = [(ReservationSuccessViewController *)self mainLabel];
-  v12 = [v11 leadingAnchor];
-  v13 = [(ReservationSuccessViewController *)self view];
-  v14 = [v13 layoutMarginsGuide];
-  v15 = [v14 leadingAnchor];
-  v60 = [v12 constraintEqualToAnchor:v15];
+  mainLabel2 = [(ReservationSuccessViewController *)self mainLabel];
+  leadingAnchor = [mainLabel2 leadingAnchor];
+  view4 = [(ReservationSuccessViewController *)self view];
+  layoutMarginsGuide = [view4 layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v60 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-  v16 = [(ReservationSuccessViewController *)self mainLabel];
-  v17 = [v16 trailingAnchor];
-  v18 = [(ReservationSuccessViewController *)self view];
-  v19 = [v18 layoutMarginsGuide];
-  v20 = [v19 trailingAnchor];
-  v59 = [v17 constraintEqualToAnchor:v20];
+  mainLabel3 = [(ReservationSuccessViewController *)self mainLabel];
+  trailingAnchor = [mainLabel3 trailingAnchor];
+  view5 = [(ReservationSuccessViewController *)self view];
+  layoutMarginsGuide2 = [view5 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v59 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
-  v21 = [(ReservationSuccessViewController *)self mainLabel];
-  v22 = [v21 firstBaselineAnchor];
-  v23 = [(ReservationSuccessViewController *)self view];
-  v24 = [v23 layoutMarginsGuide];
-  v25 = [v24 topAnchor];
-  v58 = [v22 constraintEqualToAnchor:v25 constant:42.5];
+  mainLabel4 = [(ReservationSuccessViewController *)self mainLabel];
+  firstBaselineAnchor = [mainLabel4 firstBaselineAnchor];
+  view6 = [(ReservationSuccessViewController *)self view];
+  layoutMarginsGuide3 = [view6 layoutMarginsGuide];
+  topAnchor = [layoutMarginsGuide3 topAnchor];
+  v58 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:42.5];
 
-  v26 = [(ReservationSuccessViewController *)self mainLabel];
-  v27 = [v26 leadingAnchor];
-  v28 = [(ReservationSuccessViewController *)self subLabel];
-  v29 = [v28 leadingAnchor];
-  v57 = [v27 constraintEqualToAnchor:v29];
+  mainLabel5 = [(ReservationSuccessViewController *)self mainLabel];
+  leadingAnchor3 = [mainLabel5 leadingAnchor];
+  subLabel2 = [(ReservationSuccessViewController *)self subLabel];
+  leadingAnchor4 = [subLabel2 leadingAnchor];
+  v57 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
 
-  v30 = [(ReservationSuccessViewController *)self subLabel];
-  v31 = [v30 trailingAnchor];
-  v32 = [(ReservationSuccessViewController *)self view];
-  v33 = [v32 layoutMarginsGuide];
-  v34 = [v33 trailingAnchor];
-  v56 = [v31 constraintEqualToAnchor:v34];
+  subLabel3 = [(ReservationSuccessViewController *)self subLabel];
+  trailingAnchor3 = [subLabel3 trailingAnchor];
+  view7 = [(ReservationSuccessViewController *)self view];
+  layoutMarginsGuide4 = [view7 layoutMarginsGuide];
+  trailingAnchor4 = [layoutMarginsGuide4 trailingAnchor];
+  v56 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
 
-  v35 = [(ReservationSuccessViewController *)self subLabel];
-  v36 = [v35 firstBaselineAnchor];
-  v37 = [(ReservationSuccessViewController *)self mainLabel];
-  v38 = [v37 firstBaselineAnchor];
-  v55 = [v36 constraintEqualToAnchor:v38 constant:25.0];
+  subLabel4 = [(ReservationSuccessViewController *)self subLabel];
+  firstBaselineAnchor2 = [subLabel4 firstBaselineAnchor];
+  mainLabel6 = [(ReservationSuccessViewController *)self mainLabel];
+  firstBaselineAnchor3 = [mainLabel6 firstBaselineAnchor];
+  v55 = [firstBaselineAnchor2 constraintEqualToAnchor:firstBaselineAnchor3 constant:25.0];
 
-  v39 = [(ReservationSuccessViewController *)self editButton];
-  v40 = [v39 leadingAnchor];
-  v41 = [(ReservationSuccessViewController *)self mainLabel];
-  v42 = [v41 leadingAnchor];
-  v54 = [v40 constraintEqualToAnchor:v42];
+  editButton2 = [(ReservationSuccessViewController *)self editButton];
+  leadingAnchor5 = [editButton2 leadingAnchor];
+  mainLabel7 = [(ReservationSuccessViewController *)self mainLabel];
+  leadingAnchor6 = [mainLabel7 leadingAnchor];
+  v54 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
 
-  v43 = [(ReservationSuccessViewController *)self editButton];
-  v44 = [v43 trailingAnchor];
-  v45 = [(ReservationSuccessViewController *)self view];
-  v46 = [v45 trailingAnchor];
-  v53 = [v44 constraintEqualToAnchor:v46];
+  editButton3 = [(ReservationSuccessViewController *)self editButton];
+  trailingAnchor5 = [editButton3 trailingAnchor];
+  view8 = [(ReservationSuccessViewController *)self view];
+  trailingAnchor6 = [view8 trailingAnchor];
+  v53 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
 
-  v47 = [(ReservationSuccessViewController *)self editButton];
-  v48 = [v47 lastBaselineAnchor];
-  v49 = [(ReservationSuccessViewController *)self view];
-  v50 = [v49 bottomAnchor];
-  v51 = [v48 constraintEqualToAnchor:v50 constant:16.5];
+  editButton4 = [(ReservationSuccessViewController *)self editButton];
+  lastBaselineAnchor = [editButton4 lastBaselineAnchor];
+  view9 = [(ReservationSuccessViewController *)self view];
+  bottomAnchor = [view9 bottomAnchor];
+  v51 = [lastBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:16.5];
 
   v62[0] = v60;
   v62[1] = v59;

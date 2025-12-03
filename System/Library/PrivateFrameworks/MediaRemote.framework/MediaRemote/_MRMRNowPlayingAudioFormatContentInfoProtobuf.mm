@@ -1,27 +1,27 @@
 @interface _MRMRNowPlayingAudioFormatContentInfoProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAudioSessionID:(BOOL)a3;
-- (void)setHasChannelCount:(BOOL)a3;
-- (void)setHasEligibleForSpatialization:(BOOL)a3;
-- (void)setHasIntendedSpatialExperience:(BOOL)a3;
-- (void)setHasPid:(BOOL)a3;
-- (void)setHasRenderingMode:(BOOL)a3;
-- (void)setHasResolvedSpatialExperience:(BOOL)a3;
-- (void)setHasSpatialized:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAudioSessionID:(BOOL)d;
+- (void)setHasChannelCount:(BOOL)count;
+- (void)setHasEligibleForSpatialization:(BOOL)spatialization;
+- (void)setHasIntendedSpatialExperience:(BOOL)experience;
+- (void)setHasPid:(BOOL)pid;
+- (void)setHasRenderingMode:(BOOL)mode;
+- (void)setHasResolvedSpatialExperience:(BOOL)experience;
+- (void)setHasSpatialized:(BOOL)spatialized;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRMRNowPlayingAudioFormatContentInfoProtobuf
 
-- (void)setHasAudioSessionID:(BOOL)a3
+- (void)setHasAudioSessionID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 2;
   }
@@ -34,9 +34,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasChannelCount:(BOOL)a3
+- (void)setHasChannelCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -49,9 +49,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasEligibleForSpatialization:(BOOL)a3
+- (void)setHasEligibleForSpatialization:(BOOL)spatialization
 {
-  if (a3)
+  if (spatialization)
   {
     v3 = 128;
   }
@@ -64,9 +64,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasSpatialized:(BOOL)a3
+- (void)setHasSpatialized:(BOOL)spatialized
 {
-  if (a3)
+  if (spatialized)
   {
     v3 = 256;
   }
@@ -79,9 +79,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasIntendedSpatialExperience:(BOOL)a3
+- (void)setHasIntendedSpatialExperience:(BOOL)experience
 {
-  if (a3)
+  if (experience)
   {
     v3 = 8;
   }
@@ -94,9 +94,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasResolvedSpatialExperience:(BOOL)a3
+- (void)setHasResolvedSpatialExperience:(BOOL)experience
 {
-  if (a3)
+  if (experience)
   {
     v3 = 64;
   }
@@ -109,9 +109,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasPid:(BOOL)a3
+- (void)setHasPid:(BOOL)pid
 {
-  if (a3)
+  if (pid)
   {
     v3 = 16;
   }
@@ -124,9 +124,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasRenderingMode:(BOOL)a3
+- (void)setHasRenderingMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 32;
   }
@@ -145,20 +145,20 @@
   v8.receiver = self;
   v8.super_class = _MRMRNowPlayingAudioFormatContentInfoProtobuf;
   v4 = [(_MRMRNowPlayingAudioFormatContentInfoProtobuf *)&v8 description];
-  v5 = [(_MRMRNowPlayingAudioFormatContentInfoProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRMRNowPlayingAudioFormatContentInfoProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   bundleID = self->_bundleID;
   if (bundleID)
   {
-    [v3 setObject:bundleID forKey:@"bundleID"];
+    [dictionary setObject:bundleID forKey:@"bundleID"];
   }
 
   has = self->_has;
@@ -289,14 +289,14 @@ LABEL_16:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v16 = v4;
+  toCopy = to;
+  v16 = toCopy;
   if (self->_bundleID)
   {
     PBDataWriterWriteStringField();
-    v4 = v16;
+    toCopy = v16;
   }
 
   has = self->_has;
@@ -304,7 +304,7 @@ LABEL_16:
   {
     audioSessionID = self->_audioSessionID;
     PBDataWriterWriteUint64Field();
-    v4 = v16;
+    toCopy = v16;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -325,20 +325,20 @@ LABEL_5:
 
   audioFormat = self->_audioFormat;
   PBDataWriterWriteUint64Field();
-  v4 = v16;
+  toCopy = v16;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_6:
     channelCount = self->_channelCount;
     PBDataWriterWriteUint64Field();
-    v4 = v16;
+    toCopy = v16;
   }
 
 LABEL_7:
   if (self->_bestAvailableContent)
   {
     PBDataWriterWriteStringField();
-    v4 = v16;
+    toCopy = v16;
   }
 
   v7 = self->_has;
@@ -346,7 +346,7 @@ LABEL_7:
   {
     eligibleForSpatialization = self->_eligibleForSpatialization;
     PBDataWriterWriteBOOLField();
-    v4 = v16;
+    toCopy = v16;
     v7 = self->_has;
     if ((v7 & 0x100) == 0)
     {
@@ -367,7 +367,7 @@ LABEL_11:
 
   spatialized = self->_spatialized;
   PBDataWriterWriteBOOLField();
-  v4 = v16;
+  toCopy = v16;
   v7 = self->_has;
   if ((v7 & 8) == 0)
   {
@@ -383,7 +383,7 @@ LABEL_12:
 LABEL_24:
   intendedSpatialExperience = self->_intendedSpatialExperience;
   PBDataWriterWriteInt64Field();
-  v4 = v16;
+  toCopy = v16;
   v7 = self->_has;
   if ((v7 & 0x40) == 0)
   {
@@ -399,7 +399,7 @@ LABEL_13:
 LABEL_25:
   resolvedSpatialExperience = self->_resolvedSpatialExperience;
   PBDataWriterWriteInt64Field();
-  v4 = v16;
+  toCopy = v16;
   v7 = self->_has;
   if ((v7 & 0x10) == 0)
   {
@@ -415,33 +415,33 @@ LABEL_14:
 LABEL_26:
   pid = self->_pid;
   PBDataWriterWriteUint64Field();
-  v4 = v16;
+  toCopy = v16;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_15:
     renderingMode = self->_renderingMode;
     PBDataWriterWriteInt64Field();
-    v4 = v16;
+    toCopy = v16;
   }
 
 LABEL_16:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_bundleID)
   {
-    [v4 setBundleID:?];
-    v4 = v7;
+    [toCopy setBundleID:?];
+    toCopy = v7;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = self->_audioSessionID;
-    *(v4 + 42) |= 2u;
+    *(toCopy + 2) = self->_audioSessionID;
+    *(toCopy + 42) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -460,27 +460,27 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 1) = self->_audioFormat;
-  *(v4 + 42) |= 1u;
+  *(toCopy + 1) = self->_audioFormat;
+  *(toCopy + 42) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_6:
-    *(v4 + 3) = self->_channelCount;
-    *(v4 + 42) |= 4u;
+    *(toCopy + 3) = self->_channelCount;
+    *(toCopy + 42) |= 4u;
   }
 
 LABEL_7:
   if (self->_bestAvailableContent)
   {
     [v7 setBestAvailableContent:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 0x80) != 0)
   {
-    *(v4 + 80) = self->_eligibleForSpatialization;
-    *(v4 + 42) |= 0x80u;
+    *(toCopy + 80) = self->_eligibleForSpatialization;
+    *(toCopy + 42) |= 0x80u;
     v6 = self->_has;
     if ((v6 & 0x100) == 0)
     {
@@ -499,8 +499,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  *(v4 + 81) = self->_spatialized;
-  *(v4 + 42) |= 0x100u;
+  *(toCopy + 81) = self->_spatialized;
+  *(toCopy + 42) |= 0x100u;
   v6 = self->_has;
   if ((v6 & 8) == 0)
   {
@@ -514,8 +514,8 @@ LABEL_12:
   }
 
 LABEL_24:
-  *(v4 + 4) = self->_intendedSpatialExperience;
-  *(v4 + 42) |= 8u;
+  *(toCopy + 4) = self->_intendedSpatialExperience;
+  *(toCopy + 42) |= 8u;
   v6 = self->_has;
   if ((v6 & 0x40) == 0)
   {
@@ -529,8 +529,8 @@ LABEL_13:
   }
 
 LABEL_25:
-  *(v4 + 7) = self->_resolvedSpatialExperience;
-  *(v4 + 42) |= 0x40u;
+  *(toCopy + 7) = self->_resolvedSpatialExperience;
+  *(toCopy + 42) |= 0x40u;
   v6 = self->_has;
   if ((v6 & 0x10) == 0)
   {
@@ -544,22 +544,22 @@ LABEL_14:
   }
 
 LABEL_26:
-  *(v4 + 5) = self->_pid;
-  *(v4 + 42) |= 0x10u;
+  *(toCopy + 5) = self->_pid;
+  *(toCopy + 42) |= 0x10u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_15:
-    *(v4 + 6) = self->_renderingMode;
-    *(v4 + 42) |= 0x20u;
+    *(toCopy + 6) = self->_renderingMode;
+    *(toCopy + 42) |= 0x20u;
   }
 
 LABEL_16:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_bundleID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_bundleID copyWithZone:zone];
   v7 = *(v5 + 72);
   *(v5 + 72) = v6;
 
@@ -596,7 +596,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v9 = [(NSString *)self->_bestAvailableContent copyWithZone:a3];
+  v9 = [(NSString *)self->_bestAvailableContent copyWithZone:zone];
   v10 = *(v5 + 64);
   *(v5 + 64) = v9;
 
@@ -680,16 +680,16 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_58;
   }
 
   bundleID = self->_bundleID;
-  if (bundleID | *(v4 + 9))
+  if (bundleID | *(equalCopy + 9))
   {
     if (![(NSString *)bundleID isEqual:?])
     {
@@ -698,10 +698,10 @@ LABEL_11:
   }
 
   has = self->_has;
-  v7 = *(v4 + 42);
+  v7 = *(equalCopy + 42);
   if ((has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_audioSessionID != *(v4 + 2))
+    if ((v7 & 2) == 0 || self->_audioSessionID != *(equalCopy + 2))
     {
       goto LABEL_58;
     }
@@ -714,7 +714,7 @@ LABEL_11:
 
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_audioFormat != *(v4 + 1))
+    if ((v7 & 1) == 0 || self->_audioFormat != *(equalCopy + 1))
     {
       goto LABEL_58;
     }
@@ -727,7 +727,7 @@ LABEL_11:
 
   if ((has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_channelCount != *(v4 + 3))
+    if ((v7 & 4) == 0 || self->_channelCount != *(equalCopy + 3))
     {
       goto LABEL_58;
     }
@@ -739,7 +739,7 @@ LABEL_11:
   }
 
   bestAvailableContent = self->_bestAvailableContent;
-  if (bestAvailableContent | *(v4 + 8))
+  if (bestAvailableContent | *(equalCopy + 8))
   {
     if (![(NSString *)bestAvailableContent isEqual:?])
     {
@@ -749,7 +749,7 @@ LABEL_11:
     has = self->_has;
   }
 
-  v9 = *(v4 + 42);
+  v9 = *(equalCopy + 42);
   if ((has & 0x80) != 0)
   {
     if ((v9 & 0x80) == 0)
@@ -757,16 +757,16 @@ LABEL_11:
       goto LABEL_58;
     }
 
-    v10 = *(v4 + 80);
+    v10 = *(equalCopy + 80);
     if (self->_eligibleForSpatialization)
     {
-      if ((*(v4 + 80) & 1) == 0)
+      if ((*(equalCopy + 80) & 1) == 0)
       {
         goto LABEL_58;
       }
     }
 
-    else if (*(v4 + 80))
+    else if (*(equalCopy + 80))
     {
       goto LABEL_58;
     }
@@ -779,7 +779,7 @@ LABEL_11:
 
   if ((has & 0x100) == 0)
   {
-    if ((*(v4 + 42) & 0x100) == 0)
+    if ((*(equalCopy + 42) & 0x100) == 0)
     {
       goto LABEL_26;
     }
@@ -789,21 +789,21 @@ LABEL_58:
     goto LABEL_59;
   }
 
-  if ((*(v4 + 42) & 0x100) == 0)
+  if ((*(equalCopy + 42) & 0x100) == 0)
   {
     goto LABEL_58;
   }
 
-  v11 = *(v4 + 81);
+  v11 = *(equalCopy + 81);
   if (self->_spatialized)
   {
-    if ((*(v4 + 81) & 1) == 0)
+    if ((*(equalCopy + 81) & 1) == 0)
     {
       goto LABEL_58;
     }
   }
 
-  else if (*(v4 + 81))
+  else if (*(equalCopy + 81))
   {
     goto LABEL_58;
   }
@@ -811,7 +811,7 @@ LABEL_58:
 LABEL_26:
   if ((has & 8) != 0)
   {
-    if ((v9 & 8) == 0 || self->_intendedSpatialExperience != *(v4 + 4))
+    if ((v9 & 8) == 0 || self->_intendedSpatialExperience != *(equalCopy + 4))
     {
       goto LABEL_58;
     }
@@ -824,7 +824,7 @@ LABEL_26:
 
   if ((has & 0x40) != 0)
   {
-    if ((v9 & 0x40) == 0 || self->_resolvedSpatialExperience != *(v4 + 7))
+    if ((v9 & 0x40) == 0 || self->_resolvedSpatialExperience != *(equalCopy + 7))
     {
       goto LABEL_58;
     }
@@ -837,7 +837,7 @@ LABEL_26:
 
   if ((has & 0x10) != 0)
   {
-    if ((v9 & 0x10) == 0 || self->_pid != *(v4 + 5))
+    if ((v9 & 0x10) == 0 || self->_pid != *(equalCopy + 5))
     {
       goto LABEL_58;
     }
@@ -850,7 +850,7 @@ LABEL_26:
 
   if ((has & 0x20) != 0)
   {
-    if ((v9 & 0x20) == 0 || self->_renderingMode != *(v4 + 6))
+    if ((v9 & 0x20) == 0 || self->_renderingMode != *(equalCopy + 6))
     {
       goto LABEL_58;
     }
@@ -990,22 +990,22 @@ LABEL_14:
   return v5 ^ v3 ^ v6 ^ v7 ^ v8 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (*(v4 + 9))
+  fromCopy = from;
+  v7 = fromCopy;
+  if (*(fromCopy + 9))
   {
     [(_MRMRNowPlayingAudioFormatContentInfoProtobuf *)self setBundleID:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v5 = *(v4 + 42);
+  v5 = *(fromCopy + 42);
   if ((v5 & 2) != 0)
   {
-    self->_audioSessionID = *(v4 + 2);
+    self->_audioSessionID = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 42);
+    v5 = *(fromCopy + 42);
     if ((v5 & 1) == 0)
     {
 LABEL_5:
@@ -1023,28 +1023,28 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  self->_audioFormat = *(v4 + 1);
+  self->_audioFormat = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 42) & 4) != 0)
+  if ((*(fromCopy + 42) & 4) != 0)
   {
 LABEL_6:
-    self->_channelCount = *(v4 + 3);
+    self->_channelCount = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 
 LABEL_7:
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(_MRMRNowPlayingAudioFormatContentInfoProtobuf *)self setBestAvailableContent:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 42);
+  v6 = *(fromCopy + 42);
   if ((v6 & 0x80) != 0)
   {
-    self->_eligibleForSpatialization = *(v4 + 80);
+    self->_eligibleForSpatialization = *(fromCopy + 80);
     *&self->_has |= 0x80u;
-    v6 = *(v4 + 42);
+    v6 = *(fromCopy + 42);
     if ((v6 & 0x100) == 0)
     {
 LABEL_11:
@@ -1057,14 +1057,14 @@ LABEL_11:
     }
   }
 
-  else if ((*(v4 + 42) & 0x100) == 0)
+  else if ((*(fromCopy + 42) & 0x100) == 0)
   {
     goto LABEL_11;
   }
 
-  self->_spatialized = *(v4 + 81);
+  self->_spatialized = *(fromCopy + 81);
   *&self->_has |= 0x100u;
-  v6 = *(v4 + 42);
+  v6 = *(fromCopy + 42);
   if ((v6 & 8) == 0)
   {
 LABEL_12:
@@ -1077,9 +1077,9 @@ LABEL_12:
   }
 
 LABEL_24:
-  self->_intendedSpatialExperience = *(v4 + 4);
+  self->_intendedSpatialExperience = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v6 = *(v4 + 42);
+  v6 = *(fromCopy + 42);
   if ((v6 & 0x40) == 0)
   {
 LABEL_13:
@@ -1092,9 +1092,9 @@ LABEL_13:
   }
 
 LABEL_25:
-  self->_resolvedSpatialExperience = *(v4 + 7);
+  self->_resolvedSpatialExperience = *(fromCopy + 7);
   *&self->_has |= 0x40u;
-  v6 = *(v4 + 42);
+  v6 = *(fromCopy + 42);
   if ((v6 & 0x10) == 0)
   {
 LABEL_14:
@@ -1107,12 +1107,12 @@ LABEL_14:
   }
 
 LABEL_26:
-  self->_pid = *(v4 + 5);
+  self->_pid = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 42) & 0x20) != 0)
+  if ((*(fromCopy + 42) & 0x20) != 0)
   {
 LABEL_15:
-    self->_renderingMode = *(v4 + 6);
+    self->_renderingMode = *(fromCopy + 6);
     *&self->_has |= 0x20u;
   }
 

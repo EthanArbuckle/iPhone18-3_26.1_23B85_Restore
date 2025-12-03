@@ -1,18 +1,18 @@
 @interface SKUIGridViewGradientDecorationView
-- (SKUIGridViewGradientDecorationView)initWithFrame:(CGRect)a3;
-- (void)_createGradient:(id)a3 withGradientType:(int64_t)a4;
-- (void)applyLayoutAttributes:(id)a3;
+- (SKUIGridViewGradientDecorationView)initWithFrame:(CGRect)frame;
+- (void)_createGradient:(id)gradient withGradientType:(int64_t)type;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
 @end
 
 @implementation SKUIGridViewGradientDecorationView
 
-- (SKUIGridViewGradientDecorationView)initWithFrame:(CGRect)a3
+- (SKUIGridViewGradientDecorationView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIGridViewGradientDecorationView initWithFrame:];
@@ -34,26 +34,26 @@
   if ([(IKColor *)self->_kolor colorType]== 3)
   {
     v4 = MEMORY[0x277CBEB18];
-    v5 = [(IKColor *)self->_kolor gradientColors];
-    v6 = [v4 arrayWithArray:v5];
+    gradientColors = [(IKColor *)self->_kolor gradientColors];
+    v6 = [v4 arrayWithArray:gradientColors];
 
     if ([v6 count])
     {
-      v7 = [(IKColor *)self->_kolor gradientColors];
-      v8 = [v7 firstObject];
+      gradientColors2 = [(IKColor *)self->_kolor gradientColors];
+      firstObject = [gradientColors2 firstObject];
 
       [v6 removeObjectAtIndex:0];
-      [(SKUIGridViewGradientDecorationBackgroundView *)self->_backgroundView setBackgroundColor:v8];
+      [(SKUIGridViewGradientDecorationBackgroundView *)self->_backgroundView setBackgroundColor:firstObject];
       [(SKUIGridViewGradientDecorationView *)self _createGradient:v6 withGradientType:[(IKColor *)self->_kolor gradientDirectionType]];
     }
   }
 }
 
-- (void)_createGradient:(id)a3 withGradientType:(int64_t)a4
+- (void)_createGradient:(id)gradient withGradientType:(int64_t)type
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(SKUIGridViewGradientDecorationBackgroundView *)self->_backgroundView layer];
+  gradientCopy = gradient;
+  layer = [(SKUIGridViewGradientDecorationBackgroundView *)self->_backgroundView layer];
   if ([(IKColor *)self->_kolor gradientType]== 1)
   {
     v7 = 1.0;
@@ -75,15 +75,15 @@
     v7 = 0.5;
   }
 
-  [v6 setStartPoint:{v8, v9}];
-  [v6 setEndPoint:{v10, v7}];
+  [layer setStartPoint:{v8, v9}];
+  [layer setEndPoint:{v10, v7}];
 LABEL_6:
-  v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(gradientCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v12 = v5;
+  v12 = gradientCopy;
   v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v13)
   {
@@ -111,15 +111,15 @@ LABEL_6:
     while (v14);
   }
 
-  [v6 setColors:v11];
+  [layer setColors:v11];
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v15.receiver = self;
   v15.super_class = SKUIGridViewGradientDecorationView;
-  [(SKUIGridViewGradientDecorationView *)&v15 applyLayoutAttributes:v4];
+  [(SKUIGridViewGradientDecorationView *)&v15 applyLayoutAttributes:attributesCopy];
   backgroundView = self->_backgroundView;
   if (backgroundView)
   {
@@ -135,16 +135,16 @@ LABEL_6:
 
   [(SKUIGridViewGradientDecorationBackgroundView *)self->_backgroundView setUserInteractionEnabled:0];
   [(SKUIGridViewGradientDecorationView *)self addSubview:self->_backgroundView];
-  v10 = [v4 gradientColor];
+  gradientColor = [attributesCopy gradientColor];
   kolor = self->_kolor;
-  self->_kolor = v10;
+  self->_kolor = gradientColor;
 
   if ([(IKColor *)self->_kolor colorType]!= 3)
   {
     v12 = self->_backgroundView;
-    v13 = [v4 gradientColor];
-    v14 = [v13 color];
-    [(SKUIGridViewGradientDecorationBackgroundView *)v12 setBackgroundColor:v14];
+    gradientColor2 = [attributesCopy gradientColor];
+    color = [gradientColor2 color];
+    [(SKUIGridViewGradientDecorationBackgroundView *)v12 setBackgroundColor:color];
   }
 }
 

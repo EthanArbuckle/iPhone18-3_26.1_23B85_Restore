@@ -1,32 +1,32 @@
 @interface _OSBatteryLowSOCPredictorOutput
-- (_OSBatteryLowSOCPredictorOutput)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_OSBatteryLowSOCPredictorOutput)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _OSBatteryLowSOCPredictorOutput
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   confidence = self->_confidence;
-  v5 = a3;
-  [v5 encodeDouble:@"confidence" forKey:confidence];
-  [v5 encodeDouble:@"confidenceThreshold" forKey:self->_confidenceThreshold];
-  [v5 encodeBool:self->_lowSOCPredicted forKey:@"lowSOCPredicted"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"confidence" forKey:confidence];
+  [coderCopy encodeDouble:@"confidenceThreshold" forKey:self->_confidenceThreshold];
+  [coderCopy encodeBool:self->_lowSOCPredicted forKey:@"lowSOCPredicted"];
 }
 
-- (_OSBatteryLowSOCPredictorOutput)initWithCoder:(id)a3
+- (_OSBatteryLowSOCPredictorOutput)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = _OSBatteryLowSOCPredictorOutput;
   v5 = [(_OSBatteryLowSOCPredictorOutput *)&v10 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"confidence"];
+    [coderCopy decodeDoubleForKey:@"confidence"];
     v5->_confidence = v6;
-    [v4 decodeDoubleForKey:@"confidenceThreshold"];
+    [coderCopy decodeDoubleForKey:@"confidenceThreshold"];
     v5->_confidenceThreshold = v7;
-    v5->_lowSOCPredicted = [v4 decodeBoolForKey:@"lowSOCPredicted"];
+    v5->_lowSOCPredicted = [coderCopy decodeBoolForKey:@"lowSOCPredicted"];
     v8 = v5;
   }
 

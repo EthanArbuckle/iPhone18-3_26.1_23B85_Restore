@@ -1,6 +1,6 @@
 @interface DoorUIAccessibilityElement
 - (_TtC16MagnifierSupport26DoorUIAccessibilityElement)init;
-- (_TtC16MagnifierSupport26DoorUIAccessibilityElement)initWithAccessibilityContainer:(id)a3;
+- (_TtC16MagnifierSupport26DoorUIAccessibilityElement)initWithAccessibilityContainer:(id)container;
 - (id)accessibilityExpandedTextValue;
 @end
 
@@ -14,7 +14,7 @@
   return v2;
 }
 
-- (_TtC16MagnifierSupport26DoorUIAccessibilityElement)initWithAccessibilityContainer:(id)a3
+- (_TtC16MagnifierSupport26DoorUIAccessibilityElement)initWithAccessibilityContainer:(id)container
 {
   swift_unknownObjectRetain();
   sub_257ED0160();

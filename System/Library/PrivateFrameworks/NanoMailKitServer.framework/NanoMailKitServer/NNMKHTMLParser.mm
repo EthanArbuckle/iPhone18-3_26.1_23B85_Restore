@@ -1,27 +1,27 @@
 @interface NNMKHTMLParser
-- (BOOL)_isElementBlocked:(id)a3 attributes:(const char *)a4;
-- (BOOL)_isElementDisplayedInBlock:(id)a3;
-- (BOOL)_isElementLineBreak:(id)a3;
-- (BOOL)_isElementList:(id)a3 ordered:(BOOL *)a4;
-- (BOOL)_isElementQuoteElement:(id)a3 attributes:(const char *)a4;
+- (BOOL)_isElementBlocked:(id)blocked attributes:(const char *)attributes;
+- (BOOL)_isElementDisplayedInBlock:(id)block;
+- (BOOL)_isElementLineBreak:(id)break;
+- (BOOL)_isElementList:(id)list ordered:(BOOL *)ordered;
+- (BOOL)_isElementQuoteElement:(id)element attributes:(const char *)attributes;
 - (NNMKHTMLParser)init;
 - (_xmlSAXHandler)parsingSAXHandler;
-- (id)_stringAttributeValueForCSSStyleName:(id)a3 inStyleAttribute:(id)a4;
-- (id)_stringAttributesForStyleAttribute:(id)a3;
+- (id)_stringAttributeValueForCSSStyleName:(id)name inStyleAttribute:(id)attribute;
+- (id)_stringAttributesForStyleAttribute:(id)attribute;
 - (id)_topStringAttributes;
-- (id)_valueForAttributeNamed:(id)a3 inAttributes:(const char *)a4;
-- (unint64_t)_textAlignmentFromString:(id)a3;
-- (unint64_t)_writingDirectionFromString:(id)a3;
-- (void)_appendImageFromAttributes:(const char *)a3;
-- (void)_appendString:(id)a3;
-- (void)_enumerateAttributes:(const char *)a3 withBlock:(id)a4;
+- (id)_valueForAttributeNamed:(id)named inAttributes:(const char *)attributes;
+- (unint64_t)_textAlignmentFromString:(id)string;
+- (unint64_t)_writingDirectionFromString:(id)string;
+- (void)_appendImageFromAttributes:(const char *)attributes;
+- (void)_appendString:(id)string;
+- (void)_enumerateAttributes:(const char *)attributes withBlock:(id)block;
 - (void)_flushCharactersIfNeeded;
-- (void)_pushStringAttributes:(id)a3;
+- (void)_pushStringAttributes:(id)attributes;
 - (void)_requireNewLine;
-- (void)_stringAttributeForElement:(id)a3 attributes:(const char *)a4 stringAttributeKey:(id *)a5 stringAttributeValue:(id *)a6;
-- (void)_stringAttributeForHyperlink:(id)a3 attributes:(const char *)a4 stringAttributeKey:(id *)a5 stringAttributeValue:(id *)a6;
-- (void)parseHTMLBody:(id)a3 encoding:(unint64_t)a4;
-- (void)setParsingSAXHandler:(_xmlSAXHandler *)a3;
+- (void)_stringAttributeForElement:(id)element attributes:(const char *)attributes stringAttributeKey:(id *)key stringAttributeValue:(id *)value;
+- (void)_stringAttributeForHyperlink:(id)hyperlink attributes:(const char *)attributes stringAttributeKey:(id *)key stringAttributeValue:(id *)value;
+- (void)parseHTMLBody:(id)body encoding:(unint64_t)encoding;
+- (void)setParsingSAXHandler:(_xmlSAXHandler *)handler;
 @end
 
 @implementation NNMKHTMLParser
@@ -53,9 +53,9 @@
   return v3;
 }
 
-- (void)parseHTMLBody:(id)a3 encoding:(unint64_t)a4
+- (void)parseHTMLBody:(id)body encoding:(unint64_t)encoding
 {
-  v5 = a3;
+  bodyCopy = body;
   v6 = objc_alloc_init(MEMORY[0x277CBEB28]);
   charactersBuffer = self->_charactersBuffer;
   self->_charactersBuffer = v6;
@@ -84,8 +84,8 @@
   *&self->_parsingHead = 0;
   self->_cancelled = 0;
   htmlBodyToParse = self->_htmlBodyToParse;
-  self->_htmlBodyToParse = v5;
-  v16 = v5;
+  self->_htmlBodyToParse = bodyCopy;
+  v16 = bodyCopy;
 
   v20 = [(NSString *)v16 dataUsingEncoding:4];
   v17 = v20;
@@ -98,45 +98,45 @@
   self->_htmlBodyToParse = 0;
 }
 
-- (BOOL)_isElementBlocked:(id)a3 attributes:(const char *)a4
+- (BOOL)_isElementBlocked:(id)blocked attributes:(const char *)attributes
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __47__NNMKHTMLParser__isElementBlocked_attributes___block_invoke;
   v5[3] = &unk_279935E68;
   v5[4] = self;
-  v5[5] = a4;
-  return [(NNMKHTMLParser *)self isElementBlocked:a3 attributeQueryBlock:v5];
+  v5[5] = attributes;
+  return [(NNMKHTMLParser *)self isElementBlocked:blocked attributeQueryBlock:v5];
 }
 
-- (BOOL)_isElementDisplayedInBlock:(id)a3
+- (BOOL)_isElementDisplayedInBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = 1;
-  if ([v3 compare:@"div" options:1])
+  if ([blockCopy compare:@"div" options:1])
   {
     v4 = 1;
-    if ([v3 compare:@"blockquote" options:1])
+    if ([blockCopy compare:@"blockquote" options:1])
     {
       v4 = 1;
-      if ([v3 compare:@"table" options:1])
+      if ([blockCopy compare:@"table" options:1])
       {
         v4 = 1;
-        if ([v3 compare:@"tr" options:1])
+        if ([blockCopy compare:@"tr" options:1])
         {
           v4 = 1;
-          if ([v3 compare:@"td" options:1])
+          if ([blockCopy compare:@"td" options:1])
           {
             v4 = 1;
-            if ([v3 compare:@"p" options:1])
+            if ([blockCopy compare:@"p" options:1])
             {
               v4 = 1;
-              if ([v3 compare:@"li" options:1])
+              if ([blockCopy compare:@"li" options:1])
               {
                 v4 = 1;
-                if ([v3 compare:@"ul" options:1])
+                if ([blockCopy compare:@"ul" options:1])
                 {
-                  v4 = [v3 compare:@"ol" options:1] == 0;
+                  v4 = [blockCopy compare:@"ol" options:1] == 0;
                 }
               }
             }
@@ -149,10 +149,10 @@
   return v4;
 }
 
-- (BOOL)_isElementQuoteElement:(id)a3 attributes:(const char *)a4
+- (BOOL)_isElementQuoteElement:(id)element attributes:(const char *)attributes
 {
-  v6 = a3;
-  if (![v6 compare:@"blockquote" options:1])
+  elementCopy = element;
+  if (![elementCopy compare:@"blockquote" options:1])
   {
     v18 = 0;
     v19 = &v18;
@@ -172,7 +172,7 @@
     v11[3] = &unk_279935E90;
     v11[4] = &v18;
     v11[5] = &v12;
-    [(NNMKHTMLParser *)self _enumerateAttributes:a4 withBlock:v11];
+    [(NNMKHTMLParser *)self _enumerateAttributes:attributes withBlock:v11];
     v7 = v19[5];
     if (v7 && ![v7 compare:v19[5] options:1] || (v8 = v13[5]) != 0 && !objc_msgSend(v8, "compare:options:", @"gmail_quote", 1))
     {
@@ -217,24 +217,24 @@ LABEL_5:
   }
 }
 
-- (BOOL)_isElementLineBreak:(id)a3
+- (BOOL)_isElementLineBreak:(id)break
 {
-  v3 = a3;
+  breakCopy = break;
   v4 = 1;
-  if ([v3 compare:@"br" options:1])
+  if ([breakCopy compare:@"br" options:1])
   {
-    v4 = [v3 compare:@"hr" options:1] == 0;
+    v4 = [breakCopy compare:@"hr" options:1] == 0;
   }
 
   return v4;
 }
 
-- (BOOL)_isElementList:(id)a3 ordered:(BOOL *)a4
+- (BOOL)_isElementList:(id)list ordered:(BOOL *)ordered
 {
-  v5 = a3;
-  if (![v5 compare:@"ul" options:1])
+  listCopy = list;
+  if (![listCopy compare:@"ul" options:1])
   {
-    if (!a4)
+    if (!ordered)
     {
 LABEL_8:
       v6 = 1;
@@ -243,14 +243,14 @@ LABEL_8:
 
     v6 = 0;
 LABEL_7:
-    *a4 = v6;
+    *ordered = v6;
     goto LABEL_8;
   }
 
-  if (![v5 compare:@"ol" options:1])
+  if (![listCopy compare:@"ol" options:1])
   {
     v6 = 1;
-    if (!a4)
+    if (!ordered)
     {
       goto LABEL_9;
     }
@@ -264,18 +264,18 @@ LABEL_9:
   return v6;
 }
 
-- (void)_stringAttributeForElement:(id)a3 attributes:(const char *)a4 stringAttributeKey:(id *)a5 stringAttributeValue:(id *)a6
+- (void)_stringAttributeForElement:(id)element attributes:(const char *)attributes stringAttributeKey:(id *)key stringAttributeValue:(id *)value
 {
-  v10 = a3;
-  *a5 = 0;
-  *a6 = 0;
-  v15 = v10;
-  if (![v10 compare:@"b" options:1])
+  elementCopy = element;
+  *key = 0;
+  *value = 0;
+  v15 = elementCopy;
+  if (![elementCopy compare:@"b" options:1])
   {
     v13 = kBoldMessageBodyCustomAttribute;
 LABEL_11:
-    *a5 = *v13;
-    *a6 = [MEMORY[0x277CBEB68] null];
+    *key = *v13;
+    *value = [MEMORY[0x277CBEB68] null];
     goto LABEL_19;
   }
 
@@ -289,8 +289,8 @@ LABEL_11:
   {
     v14 = MEMORY[0x277D741F0];
 LABEL_14:
-    *a5 = *v14;
-    *a6 = &unk_286C7BD78;
+    *key = *v14;
+    *value = &unk_286C7BD78;
     goto LABEL_19;
   }
 
@@ -307,7 +307,7 @@ LABEL_14:
       goto LABEL_19;
     }
 
-    v11 = [(NNMKHTMLParser *)self _valueForAttributeNamed:@"bgColor" inAttributes:a4];
+    v11 = [(NNMKHTMLParser *)self _valueForAttributeNamed:@"bgColor" inAttributes:attributes];
     if (!v11)
     {
       goto LABEL_18;
@@ -317,13 +317,13 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  v11 = [(NNMKHTMLParser *)self _valueForAttributeNamed:@"color" inAttributes:a4];
+  v11 = [(NNMKHTMLParser *)self _valueForAttributeNamed:@"color" inAttributes:attributes];
   if (v11)
   {
     v12 = kFontColorMessageBodyCustomAttribute;
 LABEL_17:
-    *a5 = *v12;
-    *a6 = [MEMORY[0x277D75348] colorWithWebColor:v11];
+    *key = *v12;
+    *value = [MEMORY[0x277D75348] colorWithWebColor:v11];
   }
 
 LABEL_18:
@@ -331,14 +331,14 @@ LABEL_18:
 LABEL_19:
 }
 
-- (id)_stringAttributesForStyleAttribute:(id)a3
+- (id)_stringAttributesForStyleAttribute:(id)attribute
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
+  attributeCopy = attribute;
   v6 = objc_alloc_init(v4);
-  v7 = [(NNMKHTMLParser *)self _stringAttributeValueForCSSStyleName:@"color" inStyleAttribute:v5];
-  v8 = [(NNMKHTMLParser *)self _stringAttributeValueForCSSStyleName:@"text-align" inStyleAttribute:v5];
-  v9 = [(NNMKHTMLParser *)self _stringAttributeValueForCSSStyleName:@"direction" inStyleAttribute:v5];
+  v7 = [(NNMKHTMLParser *)self _stringAttributeValueForCSSStyleName:@"color" inStyleAttribute:attributeCopy];
+  v8 = [(NNMKHTMLParser *)self _stringAttributeValueForCSSStyleName:@"text-align" inStyleAttribute:attributeCopy];
+  v9 = [(NNMKHTMLParser *)self _stringAttributeValueForCSSStyleName:@"direction" inStyleAttribute:attributeCopy];
 
   if (v7)
   {
@@ -372,19 +372,19 @@ LABEL_19:
   return v6;
 }
 
-- (id)_stringAttributeValueForCSSStyleName:(id)a3 inStyleAttribute:(id)a4
+- (id)_stringAttributeValueForCSSStyleName:(id)name inStyleAttribute:(id)attribute
 {
-  v5 = a4;
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"(^|)\\s*(%@\\s*:\\s*)(.+?)(;|$)", a3];;
-  v7 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:v6 options:1 error:0];
-  v8 = [v5 lowercaseString];
-  v9 = [v7 matchesInString:v8 options:0 range:{0, objc_msgSend(v5, "length")}];
+  attributeCopy = attribute;
+  name = [MEMORY[0x277CCACA8] stringWithFormat:@"(^|)\\s*(%@\\s*:\\s*)(.+?)(;|$)", name];;
+  v7 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:name options:1 error:0];
+  lowercaseString = [attributeCopy lowercaseString];
+  v9 = [v7 matchesInString:lowercaseString options:0 range:{0, objc_msgSend(attributeCopy, "length")}];
 
   if ([v9 count])
   {
     v10 = [v9 objectAtIndexedSubscript:0];
     v11 = [v10 rangeAtIndex:3];
-    v13 = [v5 substringWithRange:{v11, v12}];
+    v13 = [attributeCopy substringWithRange:{v11, v12}];
   }
 
   else
@@ -395,17 +395,17 @@ LABEL_19:
   return v13;
 }
 
-- (unint64_t)_textAlignmentFromString:(id)a3
+- (unint64_t)_textAlignmentFromString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = 1;
-  if ([v3 compare:@"left" options:1])
+  if ([stringCopy compare:@"left" options:1])
   {
-    if ([v3 compare:@"center" options:1])
+    if ([stringCopy compare:@"center" options:1])
     {
-      if ([v3 compare:@"right" options:1])
+      if ([stringCopy compare:@"right" options:1])
       {
-        v4 = 4 * ([v3 compare:@"justify" options:1] == 0);
+        v4 = 4 * ([stringCopy compare:@"justify" options:1] == 0);
       }
 
       else
@@ -423,15 +423,15 @@ LABEL_19:
   return v4;
 }
 
-- (unint64_t)_writingDirectionFromString:(id)a3
+- (unint64_t)_writingDirectionFromString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = 1;
-  if ([v3 compare:@"ltr" options:1])
+  if ([stringCopy compare:@"ltr" options:1])
   {
-    if ([v3 compare:@"rtl" options:1])
+    if ([stringCopy compare:@"rtl" options:1])
     {
-      v4 = [v3 compare:@"initial" options:1] == 0;
+      v4 = [stringCopy compare:@"initial" options:1] == 0;
     }
 
     else
@@ -443,73 +443,73 @@ LABEL_19:
   return v4;
 }
 
-- (void)_stringAttributeForHyperlink:(id)a3 attributes:(const char *)a4 stringAttributeKey:(id *)a5 stringAttributeValue:(id *)a6
+- (void)_stringAttributeForHyperlink:(id)hyperlink attributes:(const char *)attributes stringAttributeKey:(id *)key stringAttributeValue:(id *)value
 {
-  *a5 = 0;
-  *a6 = 0;
+  *key = 0;
+  *value = 0;
   v21 = [(NNMKHTMLParser *)self _valueForAttributeNamed:@"href" inAttributes:?];
-  v10 = [v21 lowercaseString];
-  if ([v10 hasPrefix:@"http:"])
+  lowercaseString = [v21 lowercaseString];
+  if ([lowercaseString hasPrefix:@"http:"])
   {
     goto LABEL_14;
   }
 
-  v11 = [v21 lowercaseString];
-  if ([v11 hasPrefix:@"https:"])
+  lowercaseString2 = [v21 lowercaseString];
+  if ([lowercaseString2 hasPrefix:@"https:"])
   {
 LABEL_13:
 
 LABEL_14:
 LABEL_15:
-    *a5 = @"NNMKHyperlink";
+    *key = @"NNMKHyperlink";
     v16 = MEMORY[0x277CBEBC0];
-    v17 = [(NNMKHTMLParser *)self _valueForAttributeNamed:@"href" inAttributes:a4];
-    *a6 = [v16 URLWithString:v17];
+    v17 = [(NNMKHTMLParser *)self _valueForAttributeNamed:@"href" inAttributes:attributes];
+    *value = [v16 URLWithString:v17];
 
     goto LABEL_16;
   }
 
-  v12 = [v21 lowercaseString];
-  if ([v12 hasPrefix:@"mailto:"])
+  lowercaseString3 = [v21 lowercaseString];
+  if ([lowercaseString3 hasPrefix:@"mailto:"])
   {
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v13 = [v21 lowercaseString];
-  if ([v13 hasPrefix:@"map:"])
+  lowercaseString4 = [v21 lowercaseString];
+  if ([lowercaseString4 hasPrefix:@"map:"])
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v14 = [v21 lowercaseString];
-  if ([v14 hasPrefix:@"maps:"])
+  lowercaseString5 = [v21 lowercaseString];
+  if ([lowercaseString5 hasPrefix:@"maps:"])
   {
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  v15 = [v21 lowercaseString];
-  if ([v15 hasPrefix:@"sms:"])
+  lowercaseString6 = [v21 lowercaseString];
+  if ([lowercaseString6 hasPrefix:@"sms:"])
   {
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v20 = [v21 lowercaseString];
-  if ([v20 hasPrefix:@"tel:"])
+  lowercaseString7 = [v21 lowercaseString];
+  if ([lowercaseString7 hasPrefix:@"tel:"])
   {
 
     goto LABEL_9;
   }
 
-  v18 = [v21 lowercaseString];
-  v19 = [v18 hasPrefix:@"itms-services:"];
+  lowercaseString8 = [v21 lowercaseString];
+  v19 = [lowercaseString8 hasPrefix:@"itms-services:"];
 
   if (v19)
   {
@@ -519,9 +519,9 @@ LABEL_9:
 LABEL_16:
 }
 
-- (id)_valueForAttributeNamed:(id)a3 inAttributes:(const char *)a4
+- (id)_valueForAttributeNamed:(id)named inAttributes:(const char *)attributes
 {
-  v6 = a3;
+  namedCopy = named;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -532,10 +532,10 @@ LABEL_16:
   v10[1] = 3221225472;
   v10[2] = __55__NNMKHTMLParser__valueForAttributeNamed_inAttributes___block_invoke;
   v10[3] = &unk_279935EB8;
-  v7 = v6;
+  v7 = namedCopy;
   v11 = v7;
   v12 = &v13;
-  [(NNMKHTMLParser *)self _enumerateAttributes:a4 withBlock:v10];
+  [(NNMKHTMLParser *)self _enumerateAttributes:attributes withBlock:v10];
   v8 = v14[5];
 
   _Block_object_dispose(&v13, 8);
@@ -553,10 +553,10 @@ void __55__NNMKHTMLParser__valueForAttributeNamed_inAttributes___block_invoke(ui
   }
 }
 
-- (void)_enumerateAttributes:(const char *)a3 withBlock:(id)a4
+- (void)_enumerateAttributes:(const char *)attributes withBlock:(id)block
 {
-  v5 = a4;
-  if (!a3)
+  blockCopy = block;
+  if (!attributes)
   {
     goto LABEL_14;
   }
@@ -564,7 +564,7 @@ void __55__NNMKHTMLParser__valueForAttributeNamed_inAttributes___block_invoke(ui
   v6 = 0;
   for (i = 1; ; ++i)
   {
-    v8 = *a3;
+    v8 = *attributes;
     if (v6)
     {
       break;
@@ -577,7 +577,7 @@ void __55__NNMKHTMLParser__valueForAttributeNamed_inAttributes___block_invoke(ui
 
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:?];
 LABEL_11:
-    ++a3;
+    ++attributes;
   }
 
   if (v8)
@@ -591,7 +591,7 @@ LABEL_11:
   }
 
   v10 = 0;
-  v5[2](v5, i, v6, v9, &v10);
+  blockCopy[2](blockCopy, i, v6, v9, &v10);
   if (v10 != 1)
   {
 
@@ -605,11 +605,11 @@ LABEL_14:
 
 - (id)_topStringAttributes
 {
-  v2 = [(NSMutableArray *)self->_stringAttributesStack lastObject];
-  v3 = v2;
-  if (v2)
+  lastObject = [(NSMutableArray *)self->_stringAttributesStack lastObject];
+  v3 = lastObject;
+  if (lastObject)
   {
-    v4 = v2;
+    v4 = lastObject;
   }
 
   else
@@ -622,13 +622,13 @@ LABEL_14:
   return v4;
 }
 
-- (void)_pushStringAttributes:(id)a3
+- (void)_pushStringAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(NNMKHTMLParser *)self _topStringAttributes];
-  v6 = [v5 mutableCopy];
+  attributesCopy = attributes;
+  _topStringAttributes = [(NNMKHTMLParser *)self _topStringAttributes];
+  v6 = [_topStringAttributes mutableCopy];
 
-  [v6 addEntriesFromDictionary:v4];
+  [v6 addEntriesFromDictionary:attributesCopy];
   [(NSMutableArray *)self->_stringAttributesStack addObject:v6];
 }
 
@@ -658,29 +658,29 @@ LABEL_14:
   }
 }
 
-- (void)_appendString:(id)a3
+- (void)_appendString:(id)string
 {
-  v4 = a3;
-  v5 = [(NNMKHTMLParser *)self _topStringAttributes];
-  [(NNMKHTMLParser *)self appendString:v4 stringAttributes:v5];
+  stringCopy = string;
+  _topStringAttributes = [(NNMKHTMLParser *)self _topStringAttributes];
+  [(NNMKHTMLParser *)self appendString:stringCopy stringAttributes:_topStringAttributes];
 
-  LOBYTE(v5) = [v4 hasSuffix:@"\n"];
-  self->_isLastCharAddedLineBreak = v5;
+  LOBYTE(_topStringAttributes) = [stringCopy hasSuffix:@"\n"];
+  self->_isLastCharAddedLineBreak = _topStringAttributes;
 }
 
-- (void)_appendImageFromAttributes:(const char *)a3
+- (void)_appendImageFromAttributes:(const char *)attributes
 {
-  v12 = [(NNMKHTMLParser *)self _valueForAttributeNamed:@"src" inAttributes:a3];
-  v5 = [(NNMKHTMLParser *)self _valueForAttributeNamed:@"width" inAttributes:a3];
+  v12 = [(NNMKHTMLParser *)self _valueForAttributeNamed:@"src" inAttributes:attributes];
+  v5 = [(NNMKHTMLParser *)self _valueForAttributeNamed:@"width" inAttributes:attributes];
   [v5 floatValue];
   v7 = v6;
 
-  v8 = [(NNMKHTMLParser *)self _valueForAttributeNamed:@"height" inAttributes:a3];
+  v8 = [(NNMKHTMLParser *)self _valueForAttributeNamed:@"height" inAttributes:attributes];
   [v8 floatValue];
   v10 = v9;
 
-  v11 = [(NNMKHTMLParser *)self _topStringAttributes];
-  [(NNMKHTMLParser *)self appendImageWithSource:v12 width:v11 height:v7 stringAttributes:v10];
+  _topStringAttributes = [(NNMKHTMLParser *)self _topStringAttributes];
+  [(NNMKHTMLParser *)self appendImageWithSource:v12 width:_topStringAttributes height:v7 stringAttributes:v10];
 
   self->_isLastCharAddedLineBreak = 0;
 }
@@ -714,33 +714,33 @@ LABEL_14:
   return self;
 }
 
-- (void)setParsingSAXHandler:(_xmlSAXHandler *)a3
+- (void)setParsingSAXHandler:(_xmlSAXHandler *)handler
 {
-  v3 = *&a3->internalSubset;
-  v4 = *&a3->hasInternalSubset;
-  v5 = *&a3->resolveEntity;
-  *&self->_parsingSAXHandler.entityDecl = *&a3->entityDecl;
+  v3 = *&handler->internalSubset;
+  v4 = *&handler->hasInternalSubset;
+  v5 = *&handler->resolveEntity;
+  *&self->_parsingSAXHandler.entityDecl = *&handler->entityDecl;
   *&self->_parsingSAXHandler.resolveEntity = v5;
   *&self->_parsingSAXHandler.hasInternalSubset = v4;
   *&self->_parsingSAXHandler.internalSubset = v3;
-  v6 = *&a3->attributeDecl;
-  v7 = *&a3->unparsedEntityDecl;
-  v8 = *&a3->startDocument;
-  *&self->_parsingSAXHandler.startElement = *&a3->startElement;
+  v6 = *&handler->attributeDecl;
+  v7 = *&handler->unparsedEntityDecl;
+  v8 = *&handler->startDocument;
+  *&self->_parsingSAXHandler.startElement = *&handler->startElement;
   *&self->_parsingSAXHandler.startDocument = v8;
   *&self->_parsingSAXHandler.unparsedEntityDecl = v7;
   *&self->_parsingSAXHandler.attributeDecl = v6;
-  v9 = *&a3->reference;
-  v10 = *&a3->ignorableWhitespace;
-  v11 = *&a3->error;
-  *&self->_parsingSAXHandler.comment = *&a3->comment;
+  v9 = *&handler->reference;
+  v10 = *&handler->ignorableWhitespace;
+  v11 = *&handler->error;
+  *&self->_parsingSAXHandler.comment = *&handler->comment;
   *&self->_parsingSAXHandler.error = v11;
   *&self->_parsingSAXHandler.reference = v9;
   *&self->_parsingSAXHandler.ignorableWhitespace = v10;
-  v12 = *&a3->getParameterEntity;
-  v13 = *&a3->externalSubset;
-  v14 = *&a3->endElementNs;
-  *&self->_parsingSAXHandler._private = *&a3->_private;
+  v12 = *&handler->getParameterEntity;
+  v13 = *&handler->externalSubset;
+  v14 = *&handler->endElementNs;
+  *&self->_parsingSAXHandler._private = *&handler->_private;
   *&self->_parsingSAXHandler.endElementNs = v14;
   *&self->_parsingSAXHandler.getParameterEntity = v12;
   *&self->_parsingSAXHandler.externalSubset = v13;

@@ -1,23 +1,23 @@
 @interface CNiOSABAccountForExternalIdentifierPredicate
-- (CNiOSABAccountForExternalIdentifierPredicate)initWithAccountExternalIdentifier:(id)a3;
-- (CNiOSABAccountForExternalIdentifierPredicate)initWithCoder:(id)a3;
-- (__CFArray)cn_copyAccountsInAddressBook:(void *)a3 error:(__CFError *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (CNiOSABAccountForExternalIdentifierPredicate)initWithAccountExternalIdentifier:(id)identifier;
+- (CNiOSABAccountForExternalIdentifierPredicate)initWithCoder:(id)coder;
+- (__CFArray)cn_copyAccountsInAddressBook:(void *)book error:(__CFError *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNiOSABAccountForExternalIdentifierPredicate
 
-- (CNiOSABAccountForExternalIdentifierPredicate)initWithAccountExternalIdentifier:(id)a3
+- (CNiOSABAccountForExternalIdentifierPredicate)initWithAccountExternalIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"externalIdentifier == %@", v4];
+  identifierCopy = identifier;
+  identifierCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"externalIdentifier == %@", identifierCopy];
   v10.receiver = self;
   v10.super_class = CNiOSABAccountForExternalIdentifierPredicate;
-  v6 = [(CNPredicate *)&v10 initWithPredicate:v5];
+  v6 = [(CNPredicate *)&v10 initWithPredicate:identifierCopy];
 
   if (v6)
   {
-    v7 = [v4 copy];
+    v7 = [identifierCopy copy];
     externalIdentifier = v6->_externalIdentifier;
     v6->_externalIdentifier = v7;
   }
@@ -25,15 +25,15 @@
   return v6;
 }
 
-- (CNiOSABAccountForExternalIdentifierPredicate)initWithCoder:(id)a3
+- (CNiOSABAccountForExternalIdentifierPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CNiOSABAccountForExternalIdentifierPredicate;
-  v5 = [(CNPredicate *)&v11 initWithCoder:v4];
+  v5 = [(CNPredicate *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_externalIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_externalIdentifier"];
     v7 = [v6 copy];
     externalIdentifier = v5->_externalIdentifier;
     v5->_externalIdentifier = v7;
@@ -44,16 +44,16 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNiOSABAccountForExternalIdentifierPredicate;
-  v4 = a3;
-  [(CNPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_externalIdentifier forKey:{@"_externalIdentifier", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CNPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_externalIdentifier forKey:{@"_externalIdentifier", v5.receiver, v5.super_class}];
 }
 
-- (__CFArray)cn_copyAccountsInAddressBook:(void *)a3 error:(__CFError *)a4
+- (__CFArray)cn_copyAccountsInAddressBook:(void *)book error:(__CFError *)error
 {
   [(CNiOSABAccountForExternalIdentifierPredicate *)self externalIdentifier];
 

@@ -1,11 +1,11 @@
 @interface WANWActivityTransform
 - (_TtC13WiFiAnalytics21WANWActivityTransform)init;
-- (_TtC13WiFiAnalytics21WANWActivityTransform)initWithLater:(id)a3 early:(id)a4;
+- (_TtC13WiFiAnalytics21WANWActivityTransform)initWithLater:(id)later early:(id)early;
 @end
 
 @implementation WANWActivityTransform
 
-- (_TtC13WiFiAnalytics21WANWActivityTransform)initWithLater:(id)a3 early:(id)a4
+- (_TtC13WiFiAnalytics21WANWActivityTransform)initWithLater:(id)later early:(id)early
 {
   v4 = sub_1C8590CC4();
   v5 = sub_1C8590CC4();

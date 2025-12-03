@@ -1,11 +1,11 @@
 @interface StreamingKeyProvisioner
-- (BOOL)contentKeySession:(id)a3 shouldRetryContentKeyRequest:(id)a4 reason:(id)a5;
+- (BOOL)contentKeySession:(id)session shouldRetryContentKeyRequest:(id)request reason:(id)reason;
 - (_TtC12SeymourMedia23StreamingKeyProvisioner)init;
-- (void)contentKeySession:(id)a3 contentKeyRequest:(id)a4 didFailWithError:(id)a5;
-- (void)contentKeySession:(id)a3 contentKeyRequestDidSucceed:(id)a4;
-- (void)contentKeySession:(id)a3 didProvideContentKeyRequest:(id)a4;
-- (void)contentKeySession:(id)a3 didProvidePersistableContentKeyRequest:(id)a4;
-- (void)contentKeySession:(id)a3 didProvideRenewingContentKeyRequest:(id)a4;
+- (void)contentKeySession:(id)session contentKeyRequest:(id)request didFailWithError:(id)error;
+- (void)contentKeySession:(id)session contentKeyRequestDidSucceed:(id)succeed;
+- (void)contentKeySession:(id)session didProvideContentKeyRequest:(id)request;
+- (void)contentKeySession:(id)session didProvidePersistableContentKeyRequest:(id)request;
+- (void)contentKeySession:(id)session didProvideRenewingContentKeyRequest:(id)request;
 @end
 
 @implementation StreamingKeyProvisioner
@@ -17,54 +17,54 @@
   return result;
 }
 
-- (void)contentKeySession:(id)a3 didProvidePersistableContentKeyRequest:(id)a4
+- (void)contentKeySession:(id)session didProvidePersistableContentKeyRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_20C53C270(v7);
+  sessionCopy = session;
+  requestCopy = request;
+  selfCopy = self;
+  sub_20C53C270(requestCopy);
 }
 
-- (void)contentKeySession:(id)a3 didProvideContentKeyRequest:(id)a4
+- (void)contentKeySession:(id)session didProvideContentKeyRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_20C53CE44(v7);
+  sessionCopy = session;
+  requestCopy = request;
+  selfCopy = self;
+  sub_20C53CE44(requestCopy);
 }
 
-- (void)contentKeySession:(id)a3 didProvideRenewingContentKeyRequest:(id)a4
+- (void)contentKeySession:(id)session didProvideRenewingContentKeyRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_20C53DA94(v7);
+  sessionCopy = session;
+  requestCopy = request;
+  selfCopy = self;
+  sub_20C53DA94(requestCopy);
 }
 
-- (void)contentKeySession:(id)a3 contentKeyRequest:(id)a4 didFailWithError:(id)a5
+- (void)contentKeySession:(id)session contentKeyRequest:(id)request didFailWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = a5;
-  v10 = self;
-  sub_20C53DF28(v9, v11);
+  sessionCopy = session;
+  requestCopy = request;
+  errorCopy = error;
+  selfCopy = self;
+  sub_20C53DF28(requestCopy, errorCopy);
 }
 
-- (void)contentKeySession:(id)a3 contentKeyRequestDidSucceed:(id)a4
+- (void)contentKeySession:(id)session contentKeyRequestDidSucceed:(id)succeed
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_20C53E47C(v7);
+  sessionCopy = session;
+  succeedCopy = succeed;
+  selfCopy = self;
+  sub_20C53E47C(succeedCopy);
 }
 
-- (BOOL)contentKeySession:(id)a3 shouldRetryContentKeyRequest:(id)a4 reason:(id)a5
+- (BOOL)contentKeySession:(id)session shouldRetryContentKeyRequest:(id)request reason:(id)reason
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  LOBYTE(self) = sub_20C53E648(v9, v10);
+  sessionCopy = session;
+  requestCopy = request;
+  reasonCopy = reason;
+  selfCopy = self;
+  LOBYTE(self) = sub_20C53E648(requestCopy, reasonCopy);
 
   return self & 1;
 }

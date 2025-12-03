@@ -2,25 +2,25 @@
 + (id)Event;
 + (id)configurationForEvent;
 + (id)storeConfigurationForEvent;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMMessagesSearchLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"Event"])
+  if ([name isEqualToString:@"Event"])
   {
-    v4 = [a1 Event];
+    event = [self Event];
   }
 
   else
   {
-    v4 = 0;
+    event = 0;
   }
 
-  return v4;
+  return event;
 }
 
 + (id)validKeyPaths
@@ -36,13 +36,13 @@
 
 + (id)configurationForEvent
 {
-  v3 = [a1 storeConfigurationForEvent];
-  v4 = [a1 syncPolicyForEvent];
+  storeConfigurationForEvent = [self storeConfigurationForEvent];
+  syncPolicyForEvent = [self syncPolicyForEvent];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"E1134E73-674F-4CC4-BBB1-32D44F1BF6E9"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Messages.Search.Event" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Messages.Search.Event" eventClass:objc_opt_class() storeConfig:storeConfigurationForEvent syncPolicy:syncPolicyForEvent legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -59,7 +59,7 @@
 + (id)Event
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForEvent];
+  configurationForEvent = [self configurationForEvent];
   v3 = +[BMMessagesSearchEvent columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -71,7 +71,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Messages.Search.Event" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Messages.Search.Event" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Messages.Search.Event" schema:v9 configuration:configurationForEvent];
 
   v11 = *MEMORY[0x1E69E9840];
 

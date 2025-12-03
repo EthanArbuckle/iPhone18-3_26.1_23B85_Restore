@@ -1,14 +1,14 @@
 @interface VCUIPhoneticVocabularyNavigationViewWrapper
-+ (id)createRecordOnlyViewWithVoiceControlLocaleIdentifier:(id)a3 text:(id)a4 completionHandler:(id)a5;
-+ (id)createTypeAndRecordViewWithVoiceControlLocaleIdentifier:(id)a3 completionHandler:(id)a4;
++ (id)createRecordOnlyViewWithVoiceControlLocaleIdentifier:(id)identifier text:(id)text completionHandler:(id)handler;
++ (id)createTypeAndRecordViewWithVoiceControlLocaleIdentifier:(id)identifier completionHandler:(id)handler;
 - (VCUIPhoneticVocabularyNavigationViewWrapper)init;
 @end
 
 @implementation VCUIPhoneticVocabularyNavigationViewWrapper
 
-+ (id)createTypeAndRecordViewWithVoiceControlLocaleIdentifier:(id)a3 completionHandler:(id)a4
++ (id)createTypeAndRecordViewWithVoiceControlLocaleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(handler);
   v5 = sub_272434930();
   v7 = v6;
   v8 = swift_allocObject();
@@ -18,9 +18,9 @@
   return v9;
 }
 
-+ (id)createRecordOnlyViewWithVoiceControlLocaleIdentifier:(id)a3 text:(id)a4 completionHandler:(id)a5
++ (id)createRecordOnlyViewWithVoiceControlLocaleIdentifier:(id)identifier text:(id)text completionHandler:(id)handler
 {
-  v5 = _Block_copy(a5);
+  v5 = _Block_copy(handler);
   v6 = sub_272434930();
   v8 = v7;
   v9 = sub_272434930();

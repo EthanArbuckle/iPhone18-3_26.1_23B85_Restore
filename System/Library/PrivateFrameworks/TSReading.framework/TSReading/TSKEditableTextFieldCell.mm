@@ -1,5 +1,5 @@
 @interface TSKEditableTextFieldCell
-- (TSKEditableTextFieldCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (TSKEditableTextFieldCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)beginEditing;
 - (void)dealloc;
 - (void)layoutSubviews;
@@ -7,11 +7,11 @@
 
 @implementation TSKEditableTextFieldCell
 
-- (TSKEditableTextFieldCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (TSKEditableTextFieldCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = TSKEditableTextFieldCell;
-  v4 = [(TSKEditableTextFieldCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(TSKEditableTextFieldCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x277D75BB8]);
@@ -22,8 +22,8 @@
     -[UITextField setFont:](v4->mTextField, "setFont:", [MEMORY[0x277D74300] systemFontOfSize:17.0]);
     [(UITextField *)v4->mTextField setReturnKeyType:9];
     [(UITextField *)v4->mTextField setUserInteractionEnabled:0];
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v4 selector:sel_textFieldDidEndEditing_ name:*MEMORY[0x277D770B8] object:v4->mTextField];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_textFieldDidEndEditing_ name:*MEMORY[0x277D770B8] object:v4->mTextField];
   }
 
   return v4;
@@ -50,23 +50,23 @@
   y = v18.origin.y;
   width = v18.size.width;
   height = v18.size.height;
-  v7 = [(UITextField *)self->mTextField contentVerticalAlignment];
+  contentVerticalAlignment = [(UITextField *)self->mTextField contentVerticalAlignment];
   v8 = height + 1.0;
   if (height)
   {
     v8 = height;
   }
 
-  if (!v7)
+  if (!contentVerticalAlignment)
   {
     height = v8;
   }
 
-  v9 = [(TSKEditableTextFieldCell *)self textLabel];
-  v10 = [v9 text];
-  if (v10 && [v10 length])
+  textLabel = [(TSKEditableTextFieldCell *)self textLabel];
+  text = [textLabel text];
+  if (text && [text length])
   {
-    [v9 textRectForBounds:1 limitedToNumberOfLines:{x, y, width, height}];
+    [textLabel textRectForBounds:1 limitedToNumberOfLines:{x, y, width, height}];
     *&v11 = v11 + v12;
     v13 = *&v11;
     x = x + v13;

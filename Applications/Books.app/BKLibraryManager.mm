@@ -1,25 +1,25 @@
 @interface BKLibraryManager
-- (void)fetchCoverForAssetID:(id)a3 size:(CGSize)a4 completion:(id)a5;
+- (void)fetchCoverForAssetID:(id)d size:(CGSize)size completion:(id)completion;
 @end
 
 @implementation BKLibraryManager
 
-- (void)fetchCoverForAssetID:(id)a3 size:(CGSize)a4 completion:(id)a5
+- (void)fetchCoverForAssetID:(id)d size:(CGSize)size completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  dCopy = d;
+  completionCopy = completion;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10011B860;
   v16[3] = &unk_100A07DC8;
   v16[4] = self;
-  v11 = v9;
+  v11 = dCopy;
   v17 = v11;
   v19 = width;
   v20 = height;
-  v12 = v10;
+  v12 = completionCopy;
   v18 = v12;
   v13 = objc_retainBlock(v16);
   if (v13)

@@ -1,14 +1,14 @@
 @interface BKEventDeferringNode
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)succinctDescription;
 - (uint64_t)_disconnectSubnode:(uint64_t)result;
 - (uint64_t)connectSubnode:(uint64_t)result;
-- (uint64_t)hasAncestorNode:(uint64_t)a1;
+- (uint64_t)hasAncestorNode:(uint64_t)node;
 - (uint64_t)pid;
 - (uint64_t)rule;
 - (uint64_t)subnodes;
 - (unint64_t)hash;
-- (void)appendDescriptionToStream:(id)a3;
+- (void)appendDescriptionToStream:(id)stream;
 - (void)disconnectFromGraph;
 @end
 
@@ -17,9 +17,9 @@
 - (void)disconnectFromGraph
 {
   v39 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    if (!*(a1 + 16))
+    if (!*(self + 16))
     {
       v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"can't disconnect the root"];
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -32,7 +32,7 @@
         v29 = 2114;
         v30 = v16;
         v31 = 2048;
-        v32 = a1;
+        selfCopy = self;
         v33 = 2114;
         v34 = @"BKEventDeferringNode.m";
         v35 = 1024;
@@ -52,7 +52,7 @@
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v2 = [*(a1 + 24) copy];
+    v2 = [*(self + 24) copy];
     v3 = [v2 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v3)
     {
@@ -68,7 +68,7 @@
             objc_enumerationMutation(v2);
           }
 
-          [(BKEventDeferringNode *)*(*(&v21 + 1) + 8 * v6++) _disconnectSubnode:a1];
+          [(BKEventDeferringNode *)*(*(&v21 + 1) + 8 * v6++) _disconnectSubnode:self];
         }
 
         while (v4 != v6);
@@ -82,7 +82,7 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = [*(a1 + 32) copy];
+    v7 = [*(self + 32) copy];
     v8 = [v7 countByEnumeratingWithState:&v17 objects:v25 count:16];
     if (v8)
     {
@@ -98,7 +98,7 @@
             objc_enumerationMutation(v7);
           }
 
-          [(BKEventDeferringNode *)a1 _disconnectSubnode:?];
+          [(BKEventDeferringNode *)self _disconnectSubnode:?];
         }
 
         while (v9 != v11);
@@ -121,16 +121,16 @@
   return v5 ^ v3;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__BKEventDeferringNode_appendDescriptionToStream___block_invoke;
   v6[3] = &unk_2784F7270;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = streamCopy;
+  v5 = streamCopy;
   [v5 appendProem:0 block:v6];
 }
 
@@ -167,10 +167,10 @@ void __50__BKEventDeferringNode_appendDescriptionToStream___block_invoke(uint64_
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -178,7 +178,7 @@ void __50__BKEventDeferringNode_appendDescriptionToStream___block_invoke(uint64_
   else
   {
     v5 = objc_opt_class();
-    v6 = v4;
+    v6 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -216,8 +216,8 @@ void __50__BKEventDeferringNode_appendDescriptionToStream___block_invoke(uint64_
 - (id)succinctDescription
 {
   v2 = MEMORY[0x277CF0C08];
-  v3 = [MEMORY[0x277CF0C10] succinctStyle];
-  v4 = [v2 descriptionForRootObject:a1 withStyle:v3];
+  succinctStyle = [MEMORY[0x277CF0C10] succinctStyle];
+  v4 = [v2 descriptionForRootObject:self withStyle:succinctStyle];
 
   return v4;
 }
@@ -296,13 +296,13 @@ LABEL_4:
   return result;
 }
 
-- (uint64_t)hasAncestorNode:(uint64_t)a1
+- (uint64_t)hasAncestorNode:(uint64_t)node
 {
   v15 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (node)
   {
-    if ([*(a1 + 24) containsObject:v3])
+    if ([*(node + 24) containsObject:v3])
     {
       v4 = 1;
     }
@@ -313,7 +313,7 @@ LABEL_4:
       v13 = 0u;
       v10 = 0u;
       v11 = 0u;
-      v5 = *(a1 + 24);
+      v5 = *(node + 24);
       v4 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {

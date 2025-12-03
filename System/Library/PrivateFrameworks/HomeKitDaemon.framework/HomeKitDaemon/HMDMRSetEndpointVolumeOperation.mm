@@ -1,15 +1,15 @@
 @interface HMDMRSetEndpointVolumeOperation
 + (id)logCategory;
 - (BOOL)cancelOnSetup;
-- (HMDMRSetEndpointVolumeOperation)initWithRouteIDs:(id)a3 volume:(id)a4;
-- (HMDMRSetEndpointVolumeOperation)initWithRouteIDs:(id)a3 volume:(id)a4 externalObjectInterface:(id)a5;
+- (HMDMRSetEndpointVolumeOperation)initWithRouteIDs:(id)ds volume:(id)volume;
+- (HMDMRSetEndpointVolumeOperation)initWithRouteIDs:(id)ds volume:(id)volume externalObjectInterface:(id)interface;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
-- (id)connectToEndpoint:(id)a3 connection:(id)a4;
-- (id)discoverRemoteControlEndpointsForUIDs:(id)a3;
-- (id)getVolumeCapabilitiesForEndpoint:(id)a3 outputDeviceUID:(id)a4;
-- (id)setVolumeOnEndpoint:(id)a3 outputDeviceUID:(id)a4;
-- (void)generateOverallResultAndFinishWithDeviceStatuses:(id)a3 overallError:(id)a4;
+- (id)connectToEndpoint:(id)endpoint connection:(id)connection;
+- (id)discoverRemoteControlEndpointsForUIDs:(id)ds;
+- (id)getVolumeCapabilitiesForEndpoint:(id)endpoint outputDeviceUID:(id)d;
+- (id)setVolumeOnEndpoint:(id)endpoint outputDeviceUID:(id)d;
+- (void)generateOverallResultAndFinishWithDeviceStatuses:(id)statuses overallError:(id)error;
 - (void)main;
 @end
 
@@ -19,12 +19,12 @@
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDMRSetEndpointVolumeOperation *)self volume];
-  v5 = [v3 initWithName:@"Volume" value:v4];
+  volume = [(HMDMRSetEndpointVolumeOperation *)self volume];
+  v5 = [v3 initWithName:@"Volume" value:volume];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDMRSetEndpointVolumeOperation *)self routeIDs];
-  v8 = [v6 initWithName:@"Route IDs" value:v7];
+  routeIDs = [(HMDMRSetEndpointVolumeOperation *)self routeIDs];
+  v8 = [v6 initWithName:@"Route IDs" value:routeIDs];
   v12[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
 
@@ -36,21 +36,21 @@
 - (NSString)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMDMRSetEndpointVolumeOperation *)self volume];
-  v6 = [(HMDMRSetEndpointVolumeOperation *)self routeIDs];
-  v7 = [v3 stringWithFormat:@"%@ volume: %@ route IDs: %@", v4, v5, v6];
+  shortDescription = [objc_opt_class() shortDescription];
+  volume = [(HMDMRSetEndpointVolumeOperation *)self volume];
+  routeIDs = [(HMDMRSetEndpointVolumeOperation *)self routeIDs];
+  v7 = [v3 stringWithFormat:@"%@ volume: %@ route IDs: %@", shortDescription, volume, routeIDs];
 
   return v7;
 }
 
-- (id)setVolumeOnEndpoint:(id)a3 outputDeviceUID:(id)a4
+- (id)setVolumeOnEndpoint:(id)endpoint outputDeviceUID:(id)d
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  endpointCopy = endpoint;
+  dCopy = d;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -58,27 +58,27 @@
     *buf = 138543618;
     v38 = v11;
     v39 = 2112;
-    v40 = v7;
+    v40 = dCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Begin setMRAVOutputDeviceVolume on outputDeviceUID %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HMFOperation *)v9 activity];
-  [v12 markWithFormat:@"Begin setMRAVOutputDeviceVolume on outputDeviceUID %@", v7];
+  activity = [(HMFOperation *)selfCopy activity];
+  [activity markWithFormat:@"Begin setMRAVOutputDeviceVolume on outputDeviceUID %@", dCopy];
 
-  objc_initWeak(buf, v9);
-  v13 = [(HMDMRSetEndpointVolumeOperation *)v9 externalObjectInterface];
-  v14 = [(HMDMRSetEndpointVolumeOperation *)v9 volume];
-  [v14 floatValue];
+  objc_initWeak(buf, selfCopy);
+  externalObjectInterface = [(HMDMRSetEndpointVolumeOperation *)selfCopy externalObjectInterface];
+  volume = [(HMDMRSetEndpointVolumeOperation *)selfCopy volume];
+  [volume floatValue];
   v16 = v15;
-  v17 = [(HMFOperation *)v9 underlyingQueue];
+  underlyingQueue = [(HMFOperation *)selfCopy underlyingQueue];
   LODWORD(v18) = v16;
-  v19 = [v13 setMRAVOutputDeviceVolume:v6 endpoint:v7 outputDeviceUID:v17 queue:v18];
+  v19 = [externalObjectInterface setMRAVOutputDeviceVolume:endpointCopy endpoint:dCopy outputDeviceUID:underlyingQueue queue:v18];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __71__HMDMRSetEndpointVolumeOperation_setVolumeOnEndpoint_outputDeviceUID___block_invoke;
   v35[3] = &unk_2786837F8;
-  v20 = v7;
+  v20 = dCopy;
   v36 = v20;
   v21 = [v19 flatMap:v35];
   v33[0] = MEMORY[0x277D85DD0];
@@ -95,7 +95,7 @@
   objc_copyWeak(&v32, buf);
   v24 = v22;
   v30 = v24;
-  v25 = v6;
+  v25 = endpointCopy;
   v31 = v25;
   v26 = [v23 addCompletionBlock:v29];
 
@@ -200,13 +200,13 @@ LABEL_8:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getVolumeCapabilitiesForEndpoint:(id)a3 outputDeviceUID:(id)a4
+- (id)getVolumeCapabilitiesForEndpoint:(id)endpoint outputDeviceUID:(id)d
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  endpointCopy = endpoint;
+  dCopy = d;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -214,26 +214,26 @@ LABEL_8:
     *buf = 138543618;
     v27 = v11;
     v28 = 2112;
-    v29 = v7;
+    v29 = dCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Begin getMRAVEndpointOutputDeviceUIDVolumeControlCapabilitiesForEndpoint on outputDeviceUID %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HMFOperation *)v9 activity];
-  [v12 markWithFormat:@"Begin getMRAVEndpointOutputDeviceUIDVolumeControlCapabilitiesForEndpoint on outputDeviceUID %@", v7];
+  activity = [(HMFOperation *)selfCopy activity];
+  [activity markWithFormat:@"Begin getMRAVEndpointOutputDeviceUIDVolumeControlCapabilitiesForEndpoint on outputDeviceUID %@", dCopy];
 
-  objc_initWeak(buf, v9);
-  v13 = [(HMDMRSetEndpointVolumeOperation *)v9 externalObjectInterface];
-  v14 = [(HMFOperation *)v9 underlyingQueue];
-  v15 = [v13 getMRAVEndpointOutputDeviceUIDVolumeControlCapabilitiesForEndpoint:v6 outputDeviceUID:v7 queue:v14];
+  objc_initWeak(buf, selfCopy);
+  externalObjectInterface = [(HMDMRSetEndpointVolumeOperation *)selfCopy externalObjectInterface];
+  underlyingQueue = [(HMFOperation *)selfCopy underlyingQueue];
+  v15 = [externalObjectInterface getMRAVEndpointOutputDeviceUIDVolumeControlCapabilitiesForEndpoint:endpointCopy outputDeviceUID:dCopy queue:underlyingQueue];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __84__HMDMRSetEndpointVolumeOperation_getVolumeCapabilitiesForEndpoint_outputDeviceUID___block_invoke;
   v22[3] = &unk_278672638;
   objc_copyWeak(&v25, buf);
-  v16 = v6;
+  v16 = endpointCopy;
   v23 = v16;
-  v17 = v7;
+  v17 = dCopy;
   v24 = v17;
   v18 = [v15 addCompletionBlock:v22];
   v19 = [v18 recover:&__block_literal_global_171_33830];
@@ -302,13 +302,13 @@ id __84__HMDMRSetEndpointVolumeOperation_getVolumeCapabilitiesForEndpoint_output
   return v3;
 }
 
-- (id)connectToEndpoint:(id)a3 connection:(id)a4
+- (id)connectToEndpoint:(id)endpoint connection:(id)connection
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  endpointCopy = endpoint;
+  connectionCopy = connection;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -316,23 +316,23 @@ id __84__HMDMRSetEndpointVolumeOperation_getVolumeCapabilitiesForEndpoint_output
     *buf = 138543618;
     v29 = v11;
     v30 = 2112;
-    v31 = v6;
+    v31 = endpointCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Begin connect to endpoint %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HMFOperation *)v9 activity];
-  [v12 markWithFormat:@"Begin connect to endpoint %@", v6];
+  activity = [(HMFOperation *)selfCopy activity];
+  [activity markWithFormat:@"Begin connect to endpoint %@", endpointCopy];
 
-  objc_initWeak(buf, v9);
+  objc_initWeak(buf, selfCopy);
   v13 = MEMORY[0x277D2C900];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __64__HMDMRSetEndpointVolumeOperation_connectToEndpoint_connection___block_invoke;
   v25[3] = &unk_2786725F0;
-  v14 = v7;
+  v14 = connectionCopy;
   v26 = v14;
-  v15 = v6;
+  v15 = endpointCopy;
   v27 = v15;
   v16 = [v13 futureWithErrorOnlyHandlerAdapterBlock:v25];
   v22[0] = MEMORY[0x277D85DD0];
@@ -423,12 +423,12 @@ id __64__HMDMRSetEndpointVolumeOperation_connectToEndpoint_connection___block_in
   return v3;
 }
 
-- (id)discoverRemoteControlEndpointsForUIDs:(id)a3
+- (id)discoverRemoteControlEndpointsForUIDs:(id)ds
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -439,17 +439,17 @@ id __64__HMDMRSetEndpointVolumeOperation_connectToEndpoint_connection___block_in
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMFOperation *)v6 activity];
-  [v9 markWithReason:@"Begin discoverRemoteControlEndpointsMatchingUIDs"];
+  activity = [(HMFOperation *)selfCopy activity];
+  [activity markWithReason:@"Begin discoverRemoteControlEndpointsMatchingUIDs"];
 
-  objc_initWeak(buf, v6);
+  objc_initWeak(buf, selfCopy);
   v10 = MEMORY[0x277D2C900];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __73__HMDMRSetEndpointVolumeOperation_discoverRemoteControlEndpointsForUIDs___block_invoke;
   v15[3] = &unk_2786725A0;
   objc_copyWeak(&v17, buf);
-  v11 = v4;
+  v11 = dsCopy;
   v16 = v11;
   v12 = [v10 futureWithCompletionHandlerAdapterBlock:v15];
 
@@ -556,14 +556,14 @@ HMDMRAVEndpoint *__73__HMDMRSetEndpointVolumeOperation_discoverRemoteControlEndp
 
 - (BOOL)cancelOnSetup
 {
-  v2 = self;
+  selfCopy = self;
   v45 = *MEMORY[0x277D85DE8];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v3 = [(HMDMRSetEndpointVolumeOperation *)self dependencies];
-  v4 = [v3 countByEnumeratingWithState:&v36 objects:v44 count:16];
+  dependencies = [(HMDMRSetEndpointVolumeOperation *)self dependencies];
+  v4 = [dependencies countByEnumeratingWithState:&v36 objects:v44 count:16];
   if (v4)
   {
     v5 = v4;
@@ -574,17 +574,17 @@ HMDMRAVEndpoint *__73__HMDMRSetEndpointVolumeOperation_discoverRemoteControlEndp
       {
         if (*v37 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dependencies);
         }
 
         v8 = *(*(&v36 + 1) + 8 * i);
-        v9 = [v8 error];
+        error = [v8 error];
 
-        if (v9)
+        if (error)
         {
           v10 = objc_autoreleasePoolPush();
-          v11 = v2;
-          v12 = v2;
+          v11 = selfCopy;
+          v12 = selfCopy;
           v13 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
           {
@@ -595,31 +595,31 @@ HMDMRAVEndpoint *__73__HMDMRSetEndpointVolumeOperation_discoverRemoteControlEndp
           }
 
           objc_autoreleasePoolPop(v10);
-          v15 = [(HMFOperation *)v12 activity];
-          [v15 markWithReason:@"Volume Operation canceled by dependency failure"];
+          activity = [(HMFOperation *)v12 activity];
+          [activity markWithReason:@"Volume Operation canceled by dependency failure"];
 
-          v16 = [v8 error];
-          [(HMFOperation *)v12 cancelWithError:v16];
+          error2 = [v8 error];
+          [(HMFOperation *)v12 cancelWithError:error2];
 
-          v2 = v11;
+          selfCopy = v11;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v36 objects:v44 count:16];
+      v5 = [dependencies countByEnumeratingWithState:&v36 objects:v44 count:16];
     }
 
     while (v5);
   }
 
-  v17 = [(HMDMRSetEndpointVolumeOperation *)v2 routeIDs];
-  v18 = [v17 count];
+  routeIDs = [(HMDMRSetEndpointVolumeOperation *)selfCopy routeIDs];
+  v18 = [routeIDs count];
 
-  v19 = [(HMDMRSetEndpointVolumeOperation *)v2 volume];
-  [v19 floatValue];
+  volume = [(HMDMRSetEndpointVolumeOperation *)selfCopy volume];
+  [volume floatValue];
   if (v20 >= 0.0)
   {
-    v22 = [(HMDMRSetEndpointVolumeOperation *)v2 volume];
-    [v22 floatValue];
+    volume2 = [(HMDMRSetEndpointVolumeOperation *)selfCopy volume];
+    [volume2 floatValue];
     v21 = v23 <= 1.0;
   }
 
@@ -628,40 +628,40 @@ HMDMRAVEndpoint *__73__HMDMRSetEndpointVolumeOperation_discoverRemoteControlEndp
     v21 = 0;
   }
 
-  if (![(HMDMRSetEndpointVolumeOperation *)v2 isCancelled]&& (v18 == 0 || !v21))
+  if (![(HMDMRSetEndpointVolumeOperation *)selfCopy isCancelled]&& (v18 == 0 || !v21))
   {
     v24 = MEMORY[0x277CCACA8];
     if (v18 != 0 || v21)
     {
       if (v18)
       {
-        v25 = [(HMDMRSetEndpointVolumeOperation *)v2 volume];
-        v26 = [v24 stringWithFormat:@"SetVolumeOperation: volume: (%@) is invalid", v25];
+        volume3 = [(HMDMRSetEndpointVolumeOperation *)selfCopy volume];
+        v26 = [v24 stringWithFormat:@"SetVolumeOperation: volume: (%@) is invalid", volume3];
         v27 = 2967;
       }
 
       else
       {
-        v25 = [(HMDMRSetEndpointVolumeOperation *)v2 routeIDs];
-        v26 = [v24 stringWithFormat:@"SetVolumeOperation: route ID: (%@) is invalid", v25];
+        volume3 = [(HMDMRSetEndpointVolumeOperation *)selfCopy routeIDs];
+        v26 = [v24 stringWithFormat:@"SetVolumeOperation: route ID: (%@) is invalid", volume3];
         v27 = 2968;
       }
     }
 
     else
     {
-      v25 = [(HMDMRSetEndpointVolumeOperation *)v2 volume];
-      v28 = [(HMDMRSetEndpointVolumeOperation *)v2 routeIDs];
-      v26 = [v24 stringWithFormat:@"SetVolumeOperation volume: (%@) and route ID: (%@) are invalid", v25, v28];
+      volume3 = [(HMDMRSetEndpointVolumeOperation *)selfCopy volume];
+      routeIDs2 = [(HMDMRSetEndpointVolumeOperation *)selfCopy routeIDs];
+      v26 = [v24 stringWithFormat:@"SetVolumeOperation volume: (%@) and route ID: (%@) are invalid", volume3, routeIDs2];
 
       v27 = 2969;
     }
 
     v29 = [MEMORY[0x277CCA9B8] hmPrivateErrorWithCode:v27 description:v26 underlyingError:0];
-    [(HMFOperation *)v2 cancelWithError:v29];
+    [(HMFOperation *)selfCopy cancelWithError:v29];
 
     v30 = objc_autoreleasePoolPush();
-    v31 = v2;
+    v31 = selfCopy;
     v32 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
@@ -676,59 +676,59 @@ HMDMRAVEndpoint *__73__HMDMRSetEndpointVolumeOperation_discoverRemoteControlEndp
     objc_autoreleasePoolPop(v30);
   }
 
-  result = [(HMDMRSetEndpointVolumeOperation *)v2 isCancelled];
+  result = [(HMDMRSetEndpointVolumeOperation *)selfCopy isCancelled];
   v35 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (void)generateOverallResultAndFinishWithDeviceStatuses:(id)a3 overallError:(id)a4
+- (void)generateOverallResultAndFinishWithDeviceStatuses:(id)statuses overallError:(id)error
 {
   v105 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMFOperation *)self activity];
-  [v8 markWithReason:@"Volume futures completed"];
+  statusesCopy = statuses;
+  errorCopy = error;
+  activity = [(HMFOperation *)self activity];
+  [activity markWithReason:@"Volume futures completed"];
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     HMFGetLogIdentifier();
-    v13 = v12 = v6;
+    v13 = v12 = statusesCopy;
     *buf = 138543362;
     v102 = v13;
     _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@Volume futures completed", buf, 0xCu);
 
-    v6 = v12;
+    statusesCopy = v12;
   }
 
   objc_autoreleasePoolPop(v9);
-  v14 = [v6 mutableCopy];
+  v14 = [statusesCopy mutableCopy];
   v15 = v14;
   if (v14)
   {
-    v16 = v14;
+    array = v14;
   }
 
   else
   {
-    v16 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
-  v17 = v16;
+  v17 = array;
 
   v18 = MEMORY[0x277CBEB98];
-  v19 = [(HMDMRSetEndpointVolumeOperation *)v10 routeIDs];
-  v20 = [v18 setWithArray:v19];
+  routeIDs = [(HMDMRSetEndpointVolumeOperation *)selfCopy routeIDs];
+  v20 = [v18 setWithArray:routeIDs];
 
   v21 = MEMORY[0x277CBEB98];
   v22 = [v17 na_map:&__block_literal_global_102_33885];
   v23 = [v21 setWithArray:v22];
 
   v87 = v17;
-  v83 = v7;
-  v84 = v10;
+  v83 = errorCopy;
+  v84 = selfCopy;
   v81 = v23;
   v82 = v20;
   if (([v20 isEqualToSet:v23] & 1) == 0)
@@ -736,7 +736,7 @@ HMDMRAVEndpoint *__73__HMDMRSetEndpointVolumeOperation_discoverRemoteControlEndp
     v24 = [v20 mutableCopy];
     [v24 minusSet:v23];
     v25 = objc_autoreleasePoolPush();
-    v26 = v10;
+    v26 = selfCopy;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
@@ -794,7 +794,7 @@ HMDMRAVEndpoint *__73__HMDMRSetEndpointVolumeOperation_discoverRemoteControlEndp
     }
 
     v23 = v81;
-    v10 = v84;
+    selfCopy = v84;
     v20 = v82;
   }
 
@@ -804,7 +804,7 @@ HMDMRAVEndpoint *__73__HMDMRSetEndpointVolumeOperation_discoverRemoteControlEndp
   }
 
   obja = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v37 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v38 = [MEMORY[0x277CBEB58] set];
   v90 = 0u;
   v91 = 0u;
@@ -826,23 +826,23 @@ HMDMRAVEndpoint *__73__HMDMRSetEndpointVolumeOperation_discoverRemoteControlEndp
         }
 
         v44 = *(*(&v90 + 1) + 8 * j);
-        v45 = [v44 outputUID];
+        outputUID = [v44 outputUID];
 
-        if (v45)
+        if (outputUID)
         {
-          v46 = [v44 error];
+          error = [v44 error];
 
-          if (v46)
+          if (error)
           {
-            v47 = [v44 error];
-            v48 = [v44 outputUID];
-            [v37 setObject:v47 forKeyedSubscript:v48];
+            error2 = [v44 error];
+            outputUID2 = [v44 outputUID];
+            [dictionary setObject:error2 forKeyedSubscript:outputUID2];
           }
 
           else
           {
-            v47 = [v44 outputUID];
-            [v38 addObject:v47];
+            error2 = [v44 outputUID];
+            [v38 addObject:error2];
           }
         }
       }
@@ -853,26 +853,26 @@ HMDMRAVEndpoint *__73__HMDMRSetEndpointVolumeOperation_discoverRemoteControlEndp
     while (v41);
   }
 
-  v49 = [v37 copy];
+  v49 = [dictionary copy];
   [obja setObject:v49 forKeyedSubscript:@"HMD.MRSetEndpointVolumeOperation.FailedEndpoints"];
 
-  v50 = [v38 allObjects];
-  [obja setObject:v50 forKeyedSubscript:@"HMD.MRSetEndpointVolumeOperation.SucceededEndpoints"];
+  allObjects = [v38 allObjects];
+  [obja setObject:allObjects forKeyedSubscript:@"HMD.MRSetEndpointVolumeOperation.SucceededEndpoints"];
 
   v51 = [v39 na_map:&__block_literal_global_112_33889];
   v52 = v51;
-  if (v7)
+  if (errorCopy)
   {
-    v53 = v7;
+    firstObject = errorCopy;
   }
 
   else
   {
-    v53 = [v51 firstObject];
+    firstObject = [v51 firstObject];
   }
 
-  v54 = v53;
-  [obja setObject:v53 forKeyedSubscript:*MEMORY[0x277CCA7E8]];
+  v54 = firstObject;
+  [obja setObject:firstObject forKeyedSubscript:*MEMORY[0x277CCA7E8]];
   v88[0] = MEMORY[0x277D85DD0];
   v88[1] = 3221225472;
   v88[2] = __97__HMDMRSetEndpointVolumeOperation_generateOverallResultAndFinishWithDeviceStatuses_overallError___block_invoke_4;
@@ -883,27 +883,27 @@ HMDMRAVEndpoint *__73__HMDMRSetEndpointVolumeOperation_discoverRemoteControlEndp
   v56 = [v52 na_all:v88];
   v57 = v55 ? v56 : 0;
   v58 = MEMORY[0x277CCA9B8];
-  if (v7 || v57)
+  if (errorCopy || v57)
   {
-    v59 = [v55 domain];
-    v61 = [v55 code];
+    domain = [v55 domain];
+    code = [v55 code];
     v62 = [obja copy];
-    v60 = [v58 errorWithDomain:v59 code:v61 userInfo:v62];
+    v60 = [v58 errorWithDomain:domain code:code userInfo:v62];
   }
 
   else
   {
-    v59 = [obja copy];
-    v60 = [v58 hmPrivateErrorWithCode:2965 userInfo:v59];
+    domain = [obja copy];
+    v60 = [v58 hmPrivateErrorWithCode:2965 userInfo:domain];
   }
 
   v63 = [v38 count];
-  v64 = [(HMFOperation *)v84 activity];
-  v65 = v64;
+  activity2 = [(HMFOperation *)v84 activity];
+  v65 = activity2;
   v66 = v63;
   if (v63)
   {
-    [v64 markWithReason:@"finished with partial success"];
+    [activity2 markWithReason:@"finished with partial success"];
 
     v67 = objc_autoreleasePoolPush();
     v68 = v84;
@@ -924,10 +924,10 @@ HMDMRAVEndpoint *__73__HMDMRSetEndpointVolumeOperation_discoverRemoteControlEndp
 
   else
   {
-    [v64 markWithReason:@"Canceled with error"];
+    [activity2 markWithReason:@"Canceled with error"];
 
-    v71 = [(HMFOperation *)v84 activity];
-    [v71 invalidate];
+    activity3 = [(HMFOperation *)v84 activity];
+    [activity3 invalidate];
 
     v72 = objc_autoreleasePoolPush();
     v73 = v84;
@@ -949,21 +949,21 @@ HMDMRAVEndpoint *__73__HMDMRSetEndpointVolumeOperation_discoverRemoteControlEndp
     [(HMFOperation *)v73 cancelWithError:v60];
   }
 
-  v7 = v83;
-  v10 = v84;
+  errorCopy = v83;
+  selfCopy = v84;
   v17 = v87;
   v23 = v81;
   v20 = v82;
   if (v66)
   {
 LABEL_50:
-    v77 = [(HMFOperation *)v10 activity];
-    [v77 markWithReason:@"Finished with success"];
+    activity4 = [(HMFOperation *)selfCopy activity];
+    [activity4 markWithReason:@"Finished with success"];
 
-    v78 = [(HMFOperation *)v10 activity];
-    [v78 invalidate];
+    activity5 = [(HMFOperation *)selfCopy activity];
+    [activity5 invalidate];
 
-    [(HMFOperation *)v10 finish];
+    [(HMFOperation *)selfCopy finish];
   }
 
   v79 = *MEMORY[0x277D85DE8];
@@ -1006,26 +1006,26 @@ BOOL __97__HMDMRSetEndpointVolumeOperation_generateOverallResultAndFinishWithDev
 
 - (void)main
 {
-  v3 = [(HMFOperation *)self activity];
-  [v3 markWithReason:@"Volume Operation Started"];
+  activity = [(HMFOperation *)self activity];
+  [activity markWithReason:@"Volume Operation Started"];
 
   if ([(HMDMRSetEndpointVolumeOperation *)self cancelOnSetup])
   {
-    v4 = [(HMFOperation *)self activity];
-    [v4 markWithReason:@"Canceled with error before starting"];
+    activity2 = [(HMFOperation *)self activity];
+    [activity2 markWithReason:@"Canceled with error before starting"];
 
-    v11 = [(HMFOperation *)self activity];
-    [v11 invalidate];
+    activity3 = [(HMFOperation *)self activity];
+    [activity3 invalidate];
   }
 
   else
   {
-    v5 = [(HMDMRSetEndpointVolumeOperation *)self externalObjectInterface];
-    v6 = [v5 createAssistantDiscovery];
-    [(HMDMRSetEndpointVolumeOperation *)self setDiscovery:v6];
+    externalObjectInterface = [(HMDMRSetEndpointVolumeOperation *)self externalObjectInterface];
+    createAssistantDiscovery = [externalObjectInterface createAssistantDiscovery];
+    [(HMDMRSetEndpointVolumeOperation *)self setDiscovery:createAssistantDiscovery];
 
-    v7 = [(HMDMRSetEndpointVolumeOperation *)self routeIDs];
-    v8 = [(HMDMRSetEndpointVolumeOperation *)self discoverRemoteControlEndpointsForUIDs:v7];
+    routeIDs = [(HMDMRSetEndpointVolumeOperation *)self routeIDs];
+    v8 = [(HMDMRSetEndpointVolumeOperation *)self discoverRemoteControlEndpointsForUIDs:routeIDs];
 
     objc_initWeak(&location, self);
     v14[0] = MEMORY[0x277D85DD0];
@@ -1380,38 +1380,38 @@ HMDMROutputDeviceStatus *__39__HMDMRSetEndpointVolumeOperation_main__block_invok
   return v6;
 }
 
-- (HMDMRSetEndpointVolumeOperation)initWithRouteIDs:(id)a3 volume:(id)a4
+- (HMDMRSetEndpointVolumeOperation)initWithRouteIDs:(id)ds volume:(id)volume
 {
-  v6 = a4;
-  v7 = a3;
+  volumeCopy = volume;
+  dsCopy = ds;
   v8 = objc_alloc_init(HMDMRSetEndpointVolumeOperationDefaultExternalObjectInterface);
-  v9 = [(HMDMRSetEndpointVolumeOperation *)self initWithRouteIDs:v7 volume:v6 externalObjectInterface:v8];
+  v9 = [(HMDMRSetEndpointVolumeOperation *)self initWithRouteIDs:dsCopy volume:volumeCopy externalObjectInterface:v8];
 
   return v9;
 }
 
-- (HMDMRSetEndpointVolumeOperation)initWithRouteIDs:(id)a3 volume:(id)a4 externalObjectInterface:(id)a5
+- (HMDMRSetEndpointVolumeOperation)initWithRouteIDs:(id)ds volume:(id)volume externalObjectInterface:(id)interface
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  volumeCopy = volume;
+  interfaceCopy = interface;
   v21.receiver = self;
   v21.super_class = HMDMRSetEndpointVolumeOperation;
   v11 = [(HMFOperation *)&v21 initWithTimeout:0.0];
   if (v11)
   {
     v12 = MEMORY[0x277CCABB0];
-    [v9 floatValue];
+    [volumeCopy floatValue];
     *&v14 = v13 / 100.0;
     v15 = [v12 numberWithFloat:v14];
     volume = v11->_volume;
     v11->_volume = v15;
 
-    v17 = [v8 copy];
+    v17 = [dsCopy copy];
     routeIDs = v11->_routeIDs;
     v11->_routeIDs = v17;
 
-    objc_storeStrong(&v11->_externalObjectInterface, a5);
+    objc_storeStrong(&v11->_externalObjectInterface, interface);
     v19 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:@"HMDMRSetEndpointVolumeOperation"];
     [(HMFOperation *)v11 setActivity:v19];
   }

@@ -1,17 +1,17 @@
 @interface AWDIDSLocalDeliverySocketOpened
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasOpenError:(BOOL)a3;
-- (void)setHasPriority:(BOOL)a3;
-- (void)setHasSocketError:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasOpenError:(BOOL)error;
+- (void)setHasPriority:(BOOL)priority;
+- (void)setHasSocketError:(BOOL)error;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDIDSLocalDeliverySocketOpened
@@ -26,9 +26,9 @@
   [(AWDIDSLocalDeliverySocketOpened *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 16;
   }
@@ -41,9 +41,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasOpenError:(BOOL)a3
+- (void)setHasOpenError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 2;
   }
@@ -56,9 +56,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSocketError:(BOOL)a3
+- (void)setHasSocketError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 8;
   }
@@ -71,9 +71,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasPriority:(BOOL)a3
+- (void)setHasPriority:(BOOL)priority
 {
-  if (a3)
+  if (priority)
   {
     v3 = 4;
   }
@@ -95,22 +95,22 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if ((*&self->_has & 0x10) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   service = self->_service;
   if (service)
   {
-    [v3 setObject:service forKey:@"service"];
+    [dictionary setObject:service forKey:@"service"];
   }
 
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_isToDefaultPairedDevice), @"isToDefaultPairedDevice"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_isToDefaultPairedDevice), @"isToDefaultPairedDevice"}];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -129,7 +129,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_openError), @"openError"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_openError), @"openError"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -143,30 +143,30 @@ LABEL_8:
   }
 
 LABEL_17:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_socketError), @"socketError"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_socketError), @"socketError"}];
   if ((*&self->_has & 4) != 0)
   {
 LABEL_9:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_priority), @"priority"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_priority), @"priority"}];
   }
 
 LABEL_10:
   streamName = self->_streamName;
   if (streamName)
   {
-    [v3 setObject:streamName forKey:@"streamName"];
+    [dictionary setObject:streamName forKey:@"streamName"];
   }
 
   guid = self->_guid;
   if (guid)
   {
-    [v3 setObject:guid forKey:@"guid"];
+    [dictionary setObject:guid forKey:@"guid"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if ((*&self->_has & 0x10) != 0)
   {
@@ -239,24 +239,24 @@ LABEL_10:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ((*&self->_has & 0x10) != 0)
   {
-    *(a3 + 5) = self->_timestamp;
-    *(a3 + 72) |= 0x10u;
+    *(to + 5) = self->_timestamp;
+    *(to + 72) |= 0x10u;
   }
 
   if (self->_service)
   {
-    [a3 setService:?];
+    [to setService:?];
   }
 
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_isToDefaultPairedDevice;
-    *(a3 + 72) |= 1u;
+    *(to + 1) = self->_isToDefaultPairedDevice;
+    *(to + 72) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -275,8 +275,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(a3 + 2) = self->_openError;
-  *(a3 + 72) |= 2u;
+  *(to + 2) = self->_openError;
+  *(to + 72) |= 2u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -290,31 +290,31 @@ LABEL_8:
   }
 
 LABEL_18:
-  *(a3 + 4) = self->_socketError;
-  *(a3 + 72) |= 8u;
+  *(to + 4) = self->_socketError;
+  *(to + 72) |= 8u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_9:
-    *(a3 + 3) = self->_priority;
-    *(a3 + 72) |= 4u;
+    *(to + 3) = self->_priority;
+    *(to + 72) |= 4u;
   }
 
 LABEL_10:
   if (self->_streamName)
   {
-    [a3 setStreamName:?];
+    [to setStreamName:?];
   }
 
   if (self->_guid)
   {
 
-    [a3 setGuid:?];
+    [to setGuid:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 0x10) != 0)
   {
@@ -322,7 +322,7 @@ LABEL_10:
     *(v5 + 72) |= 0x10u;
   }
 
-  *(v6 + 56) = [(NSString *)self->_service copyWithZone:a3];
+  *(v6 + 56) = [(NSString *)self->_service copyWithZone:zone];
   has = self->_has;
   if (has)
   {
@@ -372,27 +372,27 @@ LABEL_7:
 
 LABEL_8:
 
-  *(v6 + 64) = [(NSString *)self->_streamName copyWithZone:a3];
-  *(v6 + 48) = [(NSString *)self->_guid copyWithZone:a3];
+  *(v6 + 64) = [(NSString *)self->_streamName copyWithZone:zone];
+  *(v6 + 48) = [(NSString *)self->_guid copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 72);
+    v7 = *(equal + 72);
     if ((has & 0x10) != 0)
     {
-      if ((*(a3 + 72) & 0x10) == 0 || self->_timestamp != *(a3 + 5))
+      if ((*(equal + 72) & 0x10) == 0 || self->_timestamp != *(equal + 5))
       {
         goto LABEL_34;
       }
     }
 
-    else if ((*(a3 + 72) & 0x10) != 0)
+    else if ((*(equal + 72) & 0x10) != 0)
     {
 LABEL_34:
       LOBYTE(v5) = 0;
@@ -400,7 +400,7 @@ LABEL_34:
     }
 
     service = self->_service;
-    if (service | *(a3 + 7))
+    if (service | *(equal + 7))
     {
       v5 = [(NSString *)service isEqual:?];
       if (!v5)
@@ -411,64 +411,64 @@ LABEL_34:
       has = self->_has;
     }
 
-    v9 = *(a3 + 72);
+    v9 = *(equal + 72);
     if (has)
     {
-      if ((*(a3 + 72) & 1) == 0 || self->_isToDefaultPairedDevice != *(a3 + 1))
+      if ((*(equal + 72) & 1) == 0 || self->_isToDefaultPairedDevice != *(equal + 1))
       {
         goto LABEL_34;
       }
     }
 
-    else if (*(a3 + 72))
+    else if (*(equal + 72))
     {
       goto LABEL_34;
     }
 
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 72) & 2) == 0 || self->_openError != *(a3 + 2))
+      if ((*(equal + 72) & 2) == 0 || self->_openError != *(equal + 2))
       {
         goto LABEL_34;
       }
     }
 
-    else if ((*(a3 + 72) & 2) != 0)
+    else if ((*(equal + 72) & 2) != 0)
     {
       goto LABEL_34;
     }
 
     if ((has & 8) != 0)
     {
-      if ((*(a3 + 72) & 8) == 0 || self->_socketError != *(a3 + 4))
+      if ((*(equal + 72) & 8) == 0 || self->_socketError != *(equal + 4))
       {
         goto LABEL_34;
       }
     }
 
-    else if ((*(a3 + 72) & 8) != 0)
+    else if ((*(equal + 72) & 8) != 0)
     {
       goto LABEL_34;
     }
 
     if ((has & 4) != 0)
     {
-      if ((*(a3 + 72) & 4) == 0 || self->_priority != *(a3 + 3))
+      if ((*(equal + 72) & 4) == 0 || self->_priority != *(equal + 3))
       {
         goto LABEL_34;
       }
     }
 
-    else if ((*(a3 + 72) & 4) != 0)
+    else if ((*(equal + 72) & 4) != 0)
     {
       goto LABEL_34;
     }
 
     streamName = self->_streamName;
-    if (!(streamName | *(a3 + 8)) || (v5 = [(NSString *)streamName isEqual:?]) != 0)
+    if (!(streamName | *(equal + 8)) || (v5 = [(NSString *)streamName isEqual:?]) != 0)
     {
       guid = self->_guid;
-      if (guid | *(a3 + 6))
+      if (guid | *(equal + 6))
       {
 
         LOBYTE(v5) = [(NSString *)guid isEqual:?];
@@ -551,25 +551,25 @@ LABEL_13:
   return v9 ^ [(NSString *)self->_guid hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if ((*(a3 + 72) & 0x10) != 0)
+  if ((*(from + 72) & 0x10) != 0)
   {
-    self->_timestamp = *(a3 + 5);
+    self->_timestamp = *(from + 5);
     *&self->_has |= 0x10u;
   }
 
-  if (*(a3 + 7))
+  if (*(from + 7))
   {
     [(AWDIDSLocalDeliverySocketOpened *)self setService:?];
   }
 
-  v5 = *(a3 + 72);
+  v5 = *(from + 72);
   if (v5)
   {
-    self->_isToDefaultPairedDevice = *(a3 + 1);
+    self->_isToDefaultPairedDevice = *(from + 1);
     *&self->_has |= 1u;
-    v5 = *(a3 + 72);
+    v5 = *(from + 72);
     if ((v5 & 2) == 0)
     {
 LABEL_7:
@@ -582,14 +582,14 @@ LABEL_7:
     }
   }
 
-  else if ((*(a3 + 72) & 2) == 0)
+  else if ((*(from + 72) & 2) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_openError = *(a3 + 2);
+  self->_openError = *(from + 2);
   *&self->_has |= 2u;
-  v5 = *(a3 + 72);
+  v5 = *(from + 72);
   if ((v5 & 8) == 0)
   {
 LABEL_8:
@@ -602,22 +602,22 @@ LABEL_8:
   }
 
 LABEL_18:
-  self->_socketError = *(a3 + 4);
+  self->_socketError = *(from + 4);
   *&self->_has |= 8u;
-  if ((*(a3 + 72) & 4) != 0)
+  if ((*(from + 72) & 4) != 0)
   {
 LABEL_9:
-    self->_priority = *(a3 + 3);
+    self->_priority = *(from + 3);
     *&self->_has |= 4u;
   }
 
 LABEL_10:
-  if (*(a3 + 8))
+  if (*(from + 8))
   {
     [(AWDIDSLocalDeliverySocketOpened *)self setStreamName:?];
   }
 
-  if (*(a3 + 6))
+  if (*(from + 6))
   {
 
     [(AWDIDSLocalDeliverySocketOpened *)self setGuid:?];

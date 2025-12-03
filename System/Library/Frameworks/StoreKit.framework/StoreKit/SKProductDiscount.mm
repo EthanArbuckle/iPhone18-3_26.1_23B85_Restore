@@ -1,9 +1,9 @@
 @interface SKProductDiscount
 - (SKProductDiscount)init;
-- (void)_setIdentifier:(id)a3;
-- (void)_setPrice:(id)a3;
-- (void)_setPriceLocale:(id)a3;
-- (void)_setSubscriptionPeriod:(id)a3;
+- (void)_setIdentifier:(id)identifier;
+- (void)_setPrice:(id)price;
+- (void)_setPriceLocale:(id)locale;
+- (void)_setSubscriptionPeriod:(id)period;
 @end
 
 @implementation SKProductDiscount
@@ -23,27 +23,27 @@
   return v2;
 }
 
-- (void)_setPrice:(id)a3
+- (void)_setPrice:(id)price
 {
-  objc_storeStrong(self->_internal + 1, a3);
-  v4 = a3;
+  objc_storeStrong(self->_internal + 1, price);
+  priceCopy = price;
 }
 
-- (void)_setPriceLocale:(id)a3
+- (void)_setPriceLocale:(id)locale
 {
-  objc_storeStrong(self->_internal + 2, a3);
-  v4 = a3;
+  objc_storeStrong(self->_internal + 2, locale);
+  localeCopy = locale;
 }
 
-- (void)_setSubscriptionPeriod:(id)a3
+- (void)_setSubscriptionPeriod:(id)period
 {
-  objc_storeStrong(self->_internal + 4, a3);
-  v4 = a3;
+  objc_storeStrong(self->_internal + 4, period);
+  periodCopy = period;
 }
 
-- (void)_setIdentifier:(id)a3
+- (void)_setIdentifier:(id)identifier
 {
-  *(self->_internal + 7) = [a3 copy];
+  *(self->_internal + 7) = [identifier copy];
 
   MEMORY[0x1EEE66BB8]();
 }

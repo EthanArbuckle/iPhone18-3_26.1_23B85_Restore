@@ -1,67 +1,67 @@
 @interface MFMessageInfoItem
-- (MFMessageInfoItem)initWithAttachment:(id)a3;
-- (MFMessageInfoItem)initWithEmail:(id)a3;
-- (MFMessageInfoItem)initWithRichLink:(id)a3;
-- (MFMessageInfoItem)initWithSubject:(id)a3;
+- (MFMessageInfoItem)initWithAttachment:(id)attachment;
+- (MFMessageInfoItem)initWithEmail:(id)email;
+- (MFMessageInfoItem)initWithRichLink:(id)link;
+- (MFMessageInfoItem)initWithSubject:(id)subject;
 @end
 
 @implementation MFMessageInfoItem
 
-- (MFMessageInfoItem)initWithEmail:(id)a3
+- (MFMessageInfoItem)initWithEmail:(id)email
 {
-  v5 = a3;
+  emailCopy = email;
   v9.receiver = self;
   v9.super_class = MFMessageInfoItem;
   v6 = [(MFMessageInfoItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_emailAddress, a3);
+    objc_storeStrong(&v6->_emailAddress, email);
   }
 
   return v7;
 }
 
-- (MFMessageInfoItem)initWithSubject:(id)a3
+- (MFMessageInfoItem)initWithSubject:(id)subject
 {
-  v5 = a3;
+  subjectCopy = subject;
   v9.receiver = self;
   v9.super_class = MFMessageInfoItem;
   v6 = [(MFMessageInfoItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_subject, a3);
+    objc_storeStrong(&v6->_subject, subject);
   }
 
   return v7;
 }
 
-- (MFMessageInfoItem)initWithAttachment:(id)a3
+- (MFMessageInfoItem)initWithAttachment:(id)attachment
 {
-  v5 = a3;
+  attachmentCopy = attachment;
   v9.receiver = self;
   v9.super_class = MFMessageInfoItem;
   v6 = [(MFMessageInfoItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_attachment, a3);
+    objc_storeStrong(&v6->_attachment, attachment);
   }
 
   return v7;
 }
 
-- (MFMessageInfoItem)initWithRichLink:(id)a3
+- (MFMessageInfoItem)initWithRichLink:(id)link
 {
-  v5 = a3;
+  linkCopy = link;
   v9.receiver = self;
   v9.super_class = MFMessageInfoItem;
   v6 = [(MFMessageInfoItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_richLink, a3);
+    objc_storeStrong(&v6->_richLink, link);
   }
 
   return v7;

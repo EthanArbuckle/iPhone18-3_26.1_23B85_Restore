@@ -1,12 +1,12 @@
 @interface NPKProtoPassAssociatedDataRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoPassAssociatedDataRequest
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoPassAssociatedDataRequest;
   v4 = [(NPKProtoPassAssociatedDataRequest *)&v8 description];
-  v5 = [(NPKProtoPassAssociatedDataRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoPassAssociatedDataRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   passUniqueID = self->_passUniqueID;
   if (passUniqueID)
   {
-    [v3 setObject:passUniqueID forKey:@"passUniqueID"];
+    [dictionary setObject:passUniqueID forKey:@"passUniqueID"];
   }
 
   if (*&self->_has)
@@ -42,15 +42,15 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_passUniqueID)
   {
     [NPKProtoPassAssociatedDataRequest writeTo:];
   }
 
-  v6 = v4;
+  v6 = toCopy;
   PBDataWriterWriteStringField();
   if (*&self->_has)
   {
@@ -59,21 +59,21 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  [v4 setPassUniqueID:self->_passUniqueID];
+  toCopy = to;
+  [toCopy setPassUniqueID:self->_passUniqueID];
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_passRequestedData;
-    *(v4 + 24) |= 1u;
+    *(toCopy + 1) = self->_passRequestedData;
+    *(toCopy + 24) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_passUniqueID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_passUniqueID copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -86,16 +86,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   passUniqueID = self->_passUniqueID;
-  if (passUniqueID | *(v4 + 2))
+  if (passUniqueID | *(equalCopy + 2))
   {
     if (![(NSString *)passUniqueID isEqual:?])
     {
@@ -103,10 +103,10 @@
     }
   }
 
-  v6 = (*(v4 + 24) & 1) == 0;
+  v6 = (*(equalCopy + 24) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) != 0 && self->_passRequestedData == *(v4 + 1))
+    if ((*(equalCopy + 24) & 1) != 0 && self->_passRequestedData == *(equalCopy + 1))
     {
       v6 = 1;
       goto LABEL_9;
@@ -137,19 +137,19 @@ LABEL_9:
   return v4 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[2])
+  fromCopy = from;
+  if (fromCopy[2])
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(NPKProtoPassAssociatedDataRequest *)self setPassUniqueID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
-    self->_passRequestedData = v4[1];
+    self->_passRequestedData = fromCopy[1];
     *&self->_has |= 1u;
   }
 }

@@ -1,13 +1,13 @@
 @interface AWDWiFiMetricWiFiStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiMetricWiFiStats
@@ -29,22 +29,22 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   wifiStats = self->_wifiStats;
   if (wifiStats)
   {
-    [v3 setObject:-[AWDWifiStats dictionaryRepresentation](wifiStats forKey:{"dictionaryRepresentation"), @"wifiStats"}];
+    [dictionary setObject:-[AWDWifiStats dictionaryRepresentation](wifiStats forKey:{"dictionaryRepresentation"), @"wifiStats"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -59,24 +59,24 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 24) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 24) |= 1u;
   }
 
   wifiStats = self->_wifiStats;
   if (wifiStats)
   {
-    [a3 setWifiStats:wifiStats];
+    [to setWifiStats:wifiStats];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -84,25 +84,25 @@
     *(v5 + 24) |= 1u;
   }
 
-  v6[2] = [(AWDWifiStats *)self->_wifiStats copyWithZone:a3];
+  v6[2] = [(AWDWifiStats *)self->_wifiStats copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 24);
+    v6 = *(equal + 24);
     if (*&self->_has)
     {
-      if ((*(a3 + 24) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 24) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_9;
       }
     }
 
-    else if (*(a3 + 24))
+    else if (*(equal + 24))
     {
 LABEL_9:
       LOBYTE(v5) = 0;
@@ -110,7 +110,7 @@ LABEL_9:
     }
 
     wifiStats = self->_wifiStats;
-    if (wifiStats | *(a3 + 2))
+    if (wifiStats | *(equal + 2))
     {
 
       LOBYTE(v5) = [(AWDWifiStats *)wifiStats isEqual:?];
@@ -140,15 +140,15 @@ LABEL_9:
   return [(AWDWifiStats *)self->_wifiStats hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 24))
+  if (*(from + 24))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  v3 = *(a3 + 2);
+  v3 = *(from + 2);
   if (self->_wifiStats)
   {
     if (v3)

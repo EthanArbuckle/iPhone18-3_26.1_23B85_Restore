@@ -1,39 +1,39 @@
 @interface CPLPrequelitePreventWipeNotification
-+ (void)resetNotificationForLibraryIdentifier:(id)a3;
-- (BOOL)_warnUserAndReturnIfShouldPreventWipeOnUpgradeCreateRadar:(BOOL)a3;
-- (CPLPrequelitePreventWipeNotification)initWithLibraryIdentifier:(id)a3 reason:(id)a4;
++ (void)resetNotificationForLibraryIdentifier:(id)identifier;
+- (BOOL)_warnUserAndReturnIfShouldPreventWipeOnUpgradeCreateRadar:(BOOL)radar;
+- (CPLPrequelitePreventWipeNotification)initWithLibraryIdentifier:(id)identifier reason:(id)reason;
 - (id)createRadarURL;
 - (void)_save;
 @end
 
 @implementation CPLPrequelitePreventWipeNotification
 
-+ (void)resetNotificationForLibraryIdentifier:(id)a3
++ (void)resetNotificationForLibraryIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v3 = a3;
+    identifierCopy = identifier;
     v5 = +[NSUserDefaults standardUserDefaults];
-    v4 = sub_100169A30(v3);
+    v4 = sub_100169A30(identifierCopy);
 
     [v5 removeObjectForKey:v4];
   }
 }
 
-- (CPLPrequelitePreventWipeNotification)initWithLibraryIdentifier:(id)a3 reason:(id)a4
+- (CPLPrequelitePreventWipeNotification)initWithLibraryIdentifier:(id)identifier reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  reasonCopy = reason;
   v22.receiver = self;
   v22.super_class = CPLPrequelitePreventWipeNotification;
   v8 = [(CPLPrequelitePreventWipeNotification *)&v22 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     libraryIdentifier = v8->_libraryIdentifier;
     v8->_libraryIdentifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [reasonCopy copy];
     reason = v8->_reason;
     v8->_reason = v11;
 
@@ -82,15 +82,15 @@
   }
 }
 
-- (BOOL)_warnUserAndReturnIfShouldPreventWipeOnUpgradeCreateRadar:(BOOL)a3
+- (BOOL)_warnUserAndReturnIfShouldPreventWipeOnUpgradeCreateRadar:(BOOL)radar
 {
-  v3 = a3;
+  radarCopy = radar;
   if (self->_reason)
   {
     v5 = [NSString alloc];
     reason = self->_reason;
     v6 = [v5 initWithFormat:@"%@."];
-    if (v3)
+    if (radarCopy)
     {
       goto LABEL_4;
     }
@@ -99,7 +99,7 @@
   }
 
   v6 = @"iCloud Photo Library is about to wipe its whole sync state.";
-  if (!a3)
+  if (!radar)
   {
 LABEL_3:
     v7 = [(__CFString *)v6 stringByAppendingString:@"\nThis will trigger a potential lengthy reset sync but should not lose any data."];
@@ -117,7 +117,7 @@ LABEL_4:
   v8 = [NSDictionary dictionaryWithObjects:v51 forKeys:v50 count:3];
   v9 = [v8 mutableCopy];
 
-  if (v3)
+  if (radarCopy)
   {
     v48[0] = kCFUserNotificationDefaultButtonTitleKey;
     v48[1] = kCFUserNotificationAlternateButtonTitleKey;
@@ -177,15 +177,15 @@ LABEL_4:
     ignoreBeforeDate = self->_ignoreBeforeDate;
     self->_ignoreBeforeDate = 0;
 
-    if (v3)
+    if (radarCopy)
     {
       if (v22 != 2)
       {
         if (v22 != 1)
         {
-          v32 = [(CPLPrequelitePreventWipeNotification *)self createRadarURL];
+          createRadarURL = [(CPLPrequelitePreventWipeNotification *)self createRadarURL];
           v33 = +[LSApplicationWorkspace defaultWorkspace];
-          [v33 openURL:v32 configuration:0 completionHandler:0];
+          [v33 openURL:createRadarURL configuration:0 completionHandler:0];
         }
 
         goto LABEL_29;

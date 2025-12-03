@@ -1,28 +1,28 @@
 @interface SBSAElementIdentification
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SBSAElementIdentification)initWithClientIdentifier:(id)a3 elementIdentifier:(id)a4;
-- (SBSAElementIdentification)initWithElementIdentification:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SBSAElementIdentification)initWithClientIdentifier:(id)identifier elementIdentifier:(id)elementIdentifier;
+- (SBSAElementIdentification)initWithElementIdentification:(id)identification;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation SBSAElementIdentification
 
-- (SBSAElementIdentification)initWithClientIdentifier:(id)a3 elementIdentifier:(id)a4
+- (SBSAElementIdentification)initWithClientIdentifier:(id)identifier elementIdentifier:(id)elementIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  elementIdentifierCopy = elementIdentifier;
   v14.receiver = self;
   v14.super_class = SBSAElementIdentification;
   v8 = [(SBSAElementIdentification *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     clientIdentifier = v8->_clientIdentifier;
     v8->_clientIdentifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [elementIdentifierCopy copy];
     elementIdentifier = v8->_elementIdentifier;
     v8->_elementIdentifier = v11;
   }
@@ -30,26 +30,26 @@
   return v8;
 }
 
-- (SBSAElementIdentification)initWithElementIdentification:(id)a3
+- (SBSAElementIdentification)initWithElementIdentification:(id)identification
 {
-  v4 = a3;
-  v5 = [v4 clientIdentifier];
-  v6 = [v4 elementIdentifier];
+  identificationCopy = identification;
+  clientIdentifier = [identificationCopy clientIdentifier];
+  elementIdentifier = [identificationCopy elementIdentifier];
 
-  v7 = [(SBSAElementIdentification *)self initWithClientIdentifier:v5 elementIdentifier:v6];
+  v7 = [(SBSAElementIdentification *)self initWithClientIdentifier:clientIdentifier elementIdentifier:elementIdentifier];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   clientIdentifier = self->_clientIdentifier;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __37__SBSAElementIdentification_isEqual___block_invoke;
   v19[3] = &unk_2783B1D60;
-  v7 = v4;
+  v7 = equalCopy;
   v20 = v7;
   v8 = [v5 appendString:clientIdentifier counterpart:v19];
   elementIdentifier = self->_elementIdentifier;
@@ -67,8 +67,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendString:self->_clientIdentifier];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendString:self->_clientIdentifier];
   v5 = [v4 appendString:self->_elementIdentifier];
   v6 = [v5 hash];
 
@@ -82,7 +82,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   clientIdentifier = self->_clientIdentifier;

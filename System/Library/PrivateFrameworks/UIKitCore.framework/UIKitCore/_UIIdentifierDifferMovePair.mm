@@ -1,14 +1,14 @@
 @interface _UIIdentifierDifferMovePair
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (int64_t)compare:(id)a3;
-- (void)initWithFromIndex:(uint64_t)a3 toIndex:;
+- (int64_t)compare:(id)compare;
+- (void)initWithFromIndex:(uint64_t)index toIndex:;
 @end
 
 @implementation _UIIdentifierDifferMovePair
 
-- (void)initWithFromIndex:(uint64_t)a3 toIndex:
+- (void)initWithFromIndex:(uint64_t)index toIndex:
 {
   if (result)
   {
@@ -18,23 +18,23 @@
     if (result)
     {
       result[1] = a2;
-      result[2] = a3;
+      result[2] = index;
     }
   }
 
   return result;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   if (self)
   {
     fromIndex = self->_fromIndex;
-    if (v4)
+    if (compareCopy)
     {
 LABEL_3:
-      v6 = v4[1];
+      v6 = compareCopy[1];
       goto LABEL_4;
     }
   }
@@ -42,7 +42,7 @@ LABEL_3:
   else
   {
     fromIndex = 0;
-    if (v4)
+    if (compareCopy)
     {
       goto LABEL_3;
     }
@@ -71,10 +71,10 @@ LABEL_4:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -82,15 +82,15 @@ LABEL_4:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && v4->_fromIndex == self->_fromIndex && v4->_toIndex == self->_toIndex;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && equalCopy->_fromIndex == self->_fromIndex && equalCopy->_toIndex == self->_toIndex;
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [_UIIdentifierDifferMovePair allocWithZone:a3];
+  result = [_UIIdentifierDifferMovePair allocWithZone:zone];
   if (self)
   {
     v5 = *&self->_fromIndex;

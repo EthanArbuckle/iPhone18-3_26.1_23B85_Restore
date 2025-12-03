@@ -1,25 +1,25 @@
 @interface _HKFactorization
-+ (_HKFactorization)factorizationWithFactorsAndExponents:(id)a3;
++ (_HKFactorization)factorizationWithFactorsAndExponents:(id)exponents;
 + (id)factorization;
-+ (id)factorizationFromString:(id)a3 factorGrammar:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)factorizationFromString:(id)string factorGrammar:(id)grammar;
+- (BOOL)isEqual:(id)equal;
 - (_HKFactorization)init;
-- (_HKFactorization)initWithCoder:(id)a3;
+- (_HKFactorization)initWithCoder:(id)coder;
 - (id)anyFactor;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)factorizationByDividing:(id)a3;
-- (id)factorizationByMultiplying:(id)a3;
-- (id)factorizationByRaisingToExponent:(int64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)factorizationByDividing:(id)dividing;
+- (id)factorizationByMultiplying:(id)multiplying;
+- (id)factorizationByRaisingToExponent:(int64_t)exponent;
 - (id)unitString;
-- (int64_t)_exponentForFactor:(id)a3;
-- (int64_t)exponentForFactor:(id)a3;
+- (int64_t)_exponentForFactor:(id)factor;
+- (int64_t)exponentForFactor:(id)factor;
 - (unint64_t)hash;
-- (void)_enumerateFactorsWithHandler:(id)a3;
-- (void)_multiplyByFactor:(id)a3 exponent:(int64_t)a4;
-- (void)_multiplyByFactorization:(id)a3;
-- (void)_raiseToExponent:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateFactorsWithHandler:(id)a3;
+- (void)_enumerateFactorsWithHandler:(id)handler;
+- (void)_multiplyByFactor:(id)factor exponent:(int64_t)exponent;
+- (void)_multiplyByFactorization:(id)factorization;
+- (void)_raiseToExponent:(int64_t)exponent;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateFactorsWithHandler:(id)handler;
 @end
 
 @implementation _HKFactorization
@@ -34,17 +34,17 @@
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
+  string2 = [MEMORY[0x1E696AD60] string];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __30___HKFactorization_unitString__block_invoke;
   v14 = &unk_1E737FC28;
   v17 = &v23;
-  v5 = v3;
+  v5 = string;
   v15 = v5;
   v18 = &v19;
-  v6 = v4;
+  v6 = string2;
   v16 = v6;
   [(_HKFactorization *)self enumerateFactorsWithHandler:&v11];
   v7 = v20[3];
@@ -82,7 +82,7 @@ LABEL_8:
 
 + (id)factorization
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -94,9 +94,9 @@ LABEL_8:
   v2 = [(_HKFactorization *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     factors = v2->_factors;
-    v2->_factors = v3;
+    v2->_factors = strongToStrongObjectsMapTable;
   }
 
   return v2;
@@ -104,25 +104,25 @@ LABEL_8:
 
 - (id)anyFactor
 {
-  v2 = [(NSMapTable *)self->_factors keyEnumerator];
-  v3 = [v2 nextObject];
+  keyEnumerator = [(NSMapTable *)self->_factors keyEnumerator];
+  nextObject = [keyEnumerator nextObject];
 
-  return v3;
+  return nextObject;
 }
 
-+ (_HKFactorization)factorizationWithFactorsAndExponents:(id)a3
++ (_HKFactorization)factorizationWithFactorsAndExponents:(id)exponents
 {
-  v4 = a3;
-  v5 = [a1 factorization];
+  exponentsCopy = exponents;
+  factorization = [self factorization];
   v12 = &v14;
-  v6 = v4;
+  v6 = exponentsCopy;
   v7 = v6;
   if (v6)
   {
     v8 = v6;
     do
     {
-      [v5 _multiplyByFactor:v8 exponent:*v12];
+      [factorization _multiplyByFactor:v8 exponent:*v12];
       v9 = (v12 + 1);
       v12 += 2;
       v10 = *v9;
@@ -133,32 +133,32 @@ LABEL_8:
     while (v10);
   }
 
-  return v5;
+  return factorization;
 }
 
-+ (id)factorizationFromString:(id)a3 factorGrammar:(id)a4
++ (id)factorizationFromString:(id)string factorGrammar:(id)grammar
 {
   v36[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  stringCopy = string;
+  grammarCopy = grammar;
   os_unfair_lock_lock(&_FactorizationGrammarWithFactorGrammar_lock);
   v7 = _FactorizationGrammarWithFactorGrammar_cache;
   if (!_FactorizationGrammarWithFactorGrammar_cache)
   {
-    v8 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     v9 = _FactorizationGrammarWithFactorGrammar_cache;
-    _FactorizationGrammarWithFactorGrammar_cache = v8;
+    _FactorizationGrammarWithFactorGrammar_cache = strongToStrongObjectsMapTable;
 
     v7 = _FactorizationGrammarWithFactorGrammar_cache;
   }
 
-  v10 = [v7 objectForKey:v6];
+  v10 = [v7 objectForKey:grammarCopy];
   if (!v10)
   {
-    v28 = v6;
+    v28 = grammarCopy;
     v11 = [_HKCFGNonTerminal nonTerminalWithLabel:@"Q"];
     v12 = [_HKCFGNonTerminal nonTerminalWithLabel:@"P"];
-    v13 = [v28 rootNonTerminal];
+    rootNonTerminal = [v28 rootNonTerminal];
 
     v27 = [_HKCFGTerminal terminalMatchingCharacterInString:@"*.·"];
     v14 = +[_HKCFGTerminal terminalMatchingAnyInteger];
@@ -180,11 +180,11 @@ LABEL_8:
     [v11 addReplacementRuleWithExpressions:v17 nodeEvaluator:&__block_literal_global_129_0];
 
     [v12 addReplacementRuleWithExpressions:&unk_1F0686A90 nodeEvaluator:&__block_literal_global_137];
-    v33 = v13;
+    v33 = rootNonTerminal;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v33 count:1];
     [v12 addReplacementRuleWithExpressions:v18 nodeEvaluator:&__block_literal_global_139];
 
-    v32[0] = v13;
+    v32[0] = rootNonTerminal;
     v32[1] = @"^";
     v32[2] = v14;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:3];
@@ -217,22 +217,22 @@ LABEL_8:
 
   os_unfair_lock_unlock(&_FactorizationGrammarWithFactorGrammar_lock);
 
-  v23 = [v10 parseTreeForString:v5];
+  v23 = [v10 parseTreeForString:stringCopy];
   if (!v23)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Unable to parse factorization string %@", v5}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Unable to parse factorization string %@", stringCopy}];
   }
 
-  v24 = [v23 evaluate];
+  evaluate = [v23 evaluate];
 
   v25 = *MEMORY[0x1E69E9840];
 
-  return v24;
+  return evaluate;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33___HKFactorization_copyWithZone___block_invoke;
@@ -244,10 +244,10 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -257,7 +257,7 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(NSMapTable *)self->_factors isEqual:v4->_factors];
+      v5 = [(NSMapTable *)self->_factors isEqual:equalCopy->_factors];
     }
 
     else
@@ -286,42 +286,42 @@ LABEL_8:
   return v2;
 }
 
-- (id)factorizationByMultiplying:(id)a3
+- (id)factorizationByMultiplying:(id)multiplying
 {
-  v4 = a3;
+  multiplyingCopy = multiplying;
   v5 = [(_HKFactorization *)self copy];
-  [v5 _multiplyByFactorization:v4];
+  [v5 _multiplyByFactorization:multiplyingCopy];
 
   return v5;
 }
 
-- (id)factorizationByDividing:(id)a3
+- (id)factorizationByDividing:(id)dividing
 {
-  v4 = [a3 reciprocal];
-  v5 = [(_HKFactorization *)self factorizationByMultiplying:v4];
+  reciprocal = [dividing reciprocal];
+  v5 = [(_HKFactorization *)self factorizationByMultiplying:reciprocal];
 
   return v5;
 }
 
-- (id)factorizationByRaisingToExponent:(int64_t)a3
+- (id)factorizationByRaisingToExponent:(int64_t)exponent
 {
   v4 = [(_HKFactorization *)self copy];
-  [v4 _raiseToExponent:a3];
+  [v4 _raiseToExponent:exponent];
 
   return v4;
 }
 
-- (void)enumerateFactorsWithHandler:(id)a3
+- (void)enumerateFactorsWithHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v17 = 0;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NSMapTable *)self->_factors keyEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  keyEnumerator = [(NSMapTable *)self->_factors keyEnumerator];
+  v6 = [keyEnumerator countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -332,12 +332,12 @@ LABEL_3:
     {
       if (*v14 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(keyEnumerator);
       }
 
       v10 = *(*(&v13 + 1) + 8 * v9);
       v11 = [(NSMapTable *)self->_factors objectForKey:v10];
-      v4[2](v4, v10, [v11 integerValue], &v17);
+      handlerCopy[2](handlerCopy, v10, [v11 integerValue], &v17);
 
       if (v17)
       {
@@ -346,7 +346,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v18 count:16];
+        v7 = [keyEnumerator countByEnumeratingWithState:&v13 objects:v18 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -360,17 +360,17 @@ LABEL_3:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_enumerateFactorsWithHandler:(id)a3
+- (void)_enumerateFactorsWithHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v17 = 0;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NSMapTable *)self->_factors keyEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  keyEnumerator = [(NSMapTable *)self->_factors keyEnumerator];
+  v6 = [keyEnumerator countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -381,12 +381,12 @@ LABEL_3:
     {
       if (*v14 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(keyEnumerator);
       }
 
       v10 = *(*(&v13 + 1) + 8 * v9);
       v11 = [(NSMapTable *)self->_factors objectForKey:v10];
-      v4[2](v4, v10, v11, &v17);
+      handlerCopy[2](handlerCopy, v10, v11, &v17);
 
       if (v17)
       {
@@ -395,7 +395,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v18 count:16];
+        v7 = [keyEnumerator countByEnumeratingWithState:&v13 objects:v18 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -409,44 +409,44 @@ LABEL_3:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)exponentForFactor:(id)a3
+- (int64_t)exponentForFactor:(id)factor
 {
-  v3 = [(NSMapTable *)self->_factors objectForKey:a3];
-  v4 = [v3 integerValue];
+  v3 = [(NSMapTable *)self->_factors objectForKey:factor];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
-  v6 = [v4 array];
-  v7 = [MEMORY[0x1E695DF70] array];
+  coderCopy = coder;
+  array = [v4 array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __36___HKFactorization_encodeWithCoder___block_invoke;
   v13 = &unk_1E737FC50;
-  v14 = v6;
-  v15 = v7;
-  v8 = v7;
-  v9 = v6;
+  v14 = array;
+  v15 = array2;
+  v8 = array2;
+  v9 = array;
   [(_HKFactorization *)self _enumerateFactorsWithHandler:&v10];
-  [v5 encodeObject:v9 forKey:{@"HKFactorizationFactorsKey", v10, v11, v12, v13}];
-  [v5 encodeObject:v8 forKey:@"HKFactorizationExponentsKey"];
+  [coderCopy encodeObject:v9 forKey:{@"HKFactorizationFactorsKey", v10, v11, v12, v13}];
+  [coderCopy encodeObject:v8 forKey:@"HKFactorizationExponentsKey"];
 }
 
-- (_HKFactorization)initWithCoder:(id)a3
+- (_HKFactorization)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 allowedClasses];
-  v6 = [v5 setByAddingObject:objc_opt_class()];
+  coderCopy = coder;
+  allowedClasses = [coderCopy allowedClasses];
+  v6 = [allowedClasses setByAddingObject:objc_opt_class()];
 
-  v7 = [v4 decodeObjectOfClasses:v6 forKey:@"HKFactorizationFactorsKey"];
+  v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"HKFactorizationFactorsKey"];
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
   v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"HKFactorizationExponentsKey"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"HKFactorizationExponentsKey"];
   v12 = [v7 count];
   if (v12 != [v11 count])
   {
@@ -457,22 +457,22 @@ LABEL_3:
   if (v13)
   {
     v25 = v7;
-    v14 = [v7 objectEnumerator];
-    v15 = [v11 objectEnumerator];
-    v16 = [v14 nextObject];
-    if (v16)
+    objectEnumerator = [v7 objectEnumerator];
+    objectEnumerator2 = [v11 objectEnumerator];
+    nextObject = [objectEnumerator nextObject];
+    if (nextObject)
     {
-      v17 = v16;
+      v17 = nextObject;
       v23 = v6;
-      v24 = v4;
-      v18 = 0;
+      v24 = coderCopy;
+      nextObject2 = 0;
       v19 = *MEMORY[0x1E696A4B8];
       do
       {
-        v20 = v18;
-        v18 = [v15 nextObject];
+        v20 = nextObject2;
+        nextObject2 = [objectEnumerator2 nextObject];
 
-        if (!v18)
+        if (!nextObject2)
         {
           break;
         }
@@ -480,19 +480,19 @@ LABEL_3:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          [MEMORY[0x1E695DF30] raise:v19 format:{@"_HKFactorization exponent is not of class NSNumber: %@", v18}];
+          [MEMORY[0x1E695DF30] raise:v19 format:{@"_HKFactorization exponent is not of class NSNumber: %@", nextObject2}];
         }
 
-        -[_HKFactorization _multiplyByFactor:exponent:](v13, "_multiplyByFactor:exponent:", v17, [v18 integerValue]);
-        v21 = [v14 nextObject];
+        -[_HKFactorization _multiplyByFactor:exponent:](v13, "_multiplyByFactor:exponent:", v17, [nextObject2 integerValue]);
+        nextObject3 = [objectEnumerator nextObject];
 
-        v17 = v21;
+        v17 = nextObject3;
       }
 
-      while (v21);
+      while (nextObject3);
 
       v6 = v23;
-      v4 = v24;
+      coderCopy = v24;
     }
 
     v7 = v25;
@@ -501,45 +501,45 @@ LABEL_3:
   return v13;
 }
 
-- (int64_t)_exponentForFactor:(id)a3
+- (int64_t)_exponentForFactor:(id)factor
 {
-  v3 = [(NSMapTable *)self->_factors objectForKey:a3];
-  v4 = [v3 integerValue];
+  v3 = [(NSMapTable *)self->_factors objectForKey:factor];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (void)_multiplyByFactor:(id)a3 exponent:(int64_t)a4
+- (void)_multiplyByFactor:(id)factor exponent:(int64_t)exponent
 {
-  v9 = a3;
+  factorCopy = factor;
   v6 = [(_HKFactorization *)self _exponentForFactor:?];
   factors = self->_factors;
-  if (v6 + a4)
+  if (v6 + exponent)
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:v6 + a4];
-    [(NSMapTable *)factors setObject:v8 forKey:v9];
+    exponent = [MEMORY[0x1E696AD98] numberWithInteger:v6 + exponent];
+    [(NSMapTable *)factors setObject:exponent forKey:factorCopy];
   }
 
   else
   {
-    [(NSMapTable *)factors removeObjectForKey:v9];
+    [(NSMapTable *)factors removeObjectForKey:factorCopy];
   }
 }
 
-- (void)_multiplyByFactorization:(id)a3
+- (void)_multiplyByFactorization:(id)factorization
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __45___HKFactorization__multiplyByFactorization___block_invoke;
   v3[3] = &unk_1E737FBD8;
   v3[4] = self;
-  [a3 enumerateFactorsWithHandler:v3];
+  [factorization enumerateFactorsWithHandler:v3];
 }
 
-- (void)_raiseToExponent:(int64_t)a3
+- (void)_raiseToExponent:(int64_t)exponent
 {
   factors = self->_factors;
-  if (a3)
+  if (exponent)
   {
     v6 = [(NSMapTable *)factors copy];
     v10[0] = MEMORY[0x1E69E9820];
@@ -548,7 +548,7 @@ LABEL_3:
     v10[3] = &unk_1E737FC78;
     v7 = v6;
     v11 = v7;
-    v12 = a3;
+    exponentCopy = exponent;
     [(_HKFactorization *)self enumerateFactorsWithHandler:v10];
     v8 = self->_factors;
     self->_factors = v7;

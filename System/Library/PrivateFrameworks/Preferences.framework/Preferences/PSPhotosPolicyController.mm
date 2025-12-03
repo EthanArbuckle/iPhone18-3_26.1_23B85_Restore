@@ -1,18 +1,18 @@
 @interface PSPhotosPolicyController
-- (id)_photosStatus:(id)a3;
-- (id)appSpecifierWithName:(id)a3 bundleID:(id)a4;
-- (id)appSpecifierWithName:(id)a3 bundleID:(id)a4 showPhotosAccess:(BOOL)a5 showPhotosAddAccess:(BOOL)a6 showPickerUsage:(BOOL)a7;
-- (void)_setPhotosStatus:(id)a3 specifier:(id)a4;
-- (void)getAuthorizationStatesForService:(__CFString *)a3 allowedArray:(id *)a4 limitedArray:(id *)a5 deniedArray:(id *)a6;
-- (void)setTCCForService:(__CFString *)a3 appIdentifier:(id)a4 value:(int)a5 completion:(id)a6;
+- (id)_photosStatus:(id)status;
+- (id)appSpecifierWithName:(id)name bundleID:(id)d;
+- (id)appSpecifierWithName:(id)name bundleID:(id)d showPhotosAccess:(BOOL)access showPhotosAddAccess:(BOOL)addAccess showPickerUsage:(BOOL)usage;
+- (void)_setPhotosStatus:(id)status specifier:(id)specifier;
+- (void)getAuthorizationStatesForService:(__CFString *)service allowedArray:(id *)array limitedArray:(id *)limitedArray deniedArray:(id *)deniedArray;
+- (void)setTCCForService:(__CFString *)service appIdentifier:(id)identifier value:(int)value completion:(id)completion;
 @end
 
 @implementation PSPhotosPolicyController
 
-- (id)appSpecifierWithName:(id)a3 bundleID:(id)a4
+- (id)appSpecifierWithName:(id)name bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  dCopy = d;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -25,17 +25,17 @@
   v9 = tcc_message_options_create();
   tcc_message_options_set_request_prompt_policy();
   tcc_message_options_set_reply_handler_policy();
-  [v7 UTF8String];
+  [dCopy UTF8String];
   v10 = tcc_identity_create();
   v16 = MEMORY[0x1E69E9820];
   tcc_server_message_get_authorization_records_by_identity();
   v11 = PSPhotosPolicyBundleIdentifiersWithRecentPickerUsage();
-  v12 = [v11 containsObject:{v7, v16, 3221225472, __58__PSPhotosPolicyController_appSpecifierWithName_bundleID___block_invoke, &unk_1E71DC0B0, &v17, &v21}];
+  v12 = [v11 containsObject:{dCopy, v16, 3221225472, __58__PSPhotosPolicyController_appSpecifierWithName_bundleID___block_invoke, &unk_1E71DC0B0, &v17, &v21}];
 
   v13 = *(v18 + 24);
   if ((*(v22 + 24) | v13 | v12))
   {
-    v14 = [PSPhotosPolicyController appSpecifierWithName:"appSpecifierWithName:bundleID:showPhotosAccess:showPhotosAddAccess:showPickerUsage:" bundleID:v6 showPhotosAccess:v7 showPhotosAddAccess:v13 & 1 showPickerUsage:?];
+    v14 = [PSPhotosPolicyController appSpecifierWithName:"appSpecifierWithName:bundleID:showPhotosAccess:showPhotosAddAccess:showPickerUsage:" bundleID:nameCopy showPhotosAccess:dCopy showPhotosAddAccess:v13 & 1 showPickerUsage:?];
   }
 
   else
@@ -86,26 +86,26 @@ LABEL_7:
 LABEL_8:
 }
 
-- (id)appSpecifierWithName:(id)a3 bundleID:(id)a4 showPhotosAccess:(BOOL)a5 showPhotosAddAccess:(BOOL)a6 showPickerUsage:(BOOL)a7
+- (id)appSpecifierWithName:(id)name bundleID:(id)d showPhotosAccess:(BOOL)access showPhotosAddAccess:(BOOL)addAccess showPickerUsage:(BOOL)usage
 {
-  v23 = a7;
-  v7 = a6;
-  v8 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [PSSpecifier preferenceSpecifierNamed:v12 target:self set:sel__setPhotosStatus_specifier_ get:sel__photosStatus_ detail:objc_opt_class() cell:2 edit:0];
+  usageCopy = usage;
+  addAccessCopy = addAccess;
+  accessCopy = access;
+  dCopy = d;
+  nameCopy = name;
+  v13 = [PSSpecifier preferenceSpecifierNamed:nameCopy target:self set:sel__setPhotosStatus_specifier_ get:sel__photosStatus_ detail:objc_opt_class() cell:2 edit:0];
 
-  [v13 setIdentifier:v11];
-  [v13 setProperty:v11 forKey:@"appBundleID"];
+  [v13 setIdentifier:dCopy];
+  [v13 setProperty:dCopy forKey:@"appBundleID"];
 
   v14 = PS_LocalizedStringForSystemPolicy(@"PHOTOS_AUTH_ONGOING_HEADER");
   [v13 setProperty:v14 forKey:@"staticHeaderText"];
 
-  v15 = [MEMORY[0x1E695DF70] array];
-  v16 = [MEMORY[0x1E695DF70] array];
-  if (!v8 && !v7 || (PS_LocalizedStringForSystemPolicy(@"PHOTOS_NO_ACCESS_AUTHORIZATION"), v21 = objc_claimAutoreleasedReturnValue(), [v15 addObject:v21], v21, objc_msgSend(v16, "addObject:", &unk_1EFE65AA8), objc_msgSend(v13, "setProperty:forKey:", MEMORY[0x1E695E118], @"hasTCCOptions"), !v7))
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  if (!accessCopy && !addAccessCopy || (PS_LocalizedStringForSystemPolicy(@"PHOTOS_NO_ACCESS_AUTHORIZATION"), v21 = objc_claimAutoreleasedReturnValue(), [array addObject:v21], v21, objc_msgSend(array2, "addObject:", &unk_1EFE65AA8), objc_msgSend(v13, "setProperty:forKey:", MEMORY[0x1E695E118], @"hasTCCOptions"), !addAccessCopy))
   {
-    if (!v8)
+    if (!accessCopy)
     {
       goto LABEL_5;
     }
@@ -114,41 +114,41 @@ LABEL_8:
   }
 
   v22 = PS_LocalizedStringForSystemPolicy(@"PHOTOS_ADD_ONLY_AUTHORIZATION");
-  [v15 addObject:v22];
+  [array addObject:v22];
 
-  [v16 addObject:&unk_1EFE65AC0];
-  if (v8)
+  [array2 addObject:&unk_1EFE65AC0];
+  if (accessCopy)
   {
 LABEL_4:
     v17 = PS_LocalizedStringForSystemPolicy(@"PHOTOS_LIMITED_AUTHORIZATION");
-    [v15 addObject:v17];
+    [array addObject:v17];
 
-    [v16 addObject:&unk_1EFE65AD8];
+    [array2 addObject:&unk_1EFE65AD8];
     v18 = PS_LocalizedStringForSystemPolicy(@"PHOTOS_FULL_AUTHORIZATION");
-    [v15 addObject:v18];
+    [array addObject:v18];
 
-    [v16 addObject:&unk_1EFE65AF0];
+    [array2 addObject:&unk_1EFE65AF0];
   }
 
 LABEL_5:
-  if (v23)
+  if (usageCopy)
   {
     v19 = PS_LocalizedStringForSystemPolicy(@"PHOTOS_PICKER_ONLY_AUTHORIZATION");
-    [v15 addObject:v19];
+    [array addObject:v19];
 
-    [v16 addObject:&unk_1EFE65B08];
+    [array2 addObject:&unk_1EFE65B08];
     [v13 setProperty:MEMORY[0x1E695E118] forKey:@"hasPickerInfo"];
   }
 
-  [v13 setValues:v16 titles:v15];
+  [v13 setValues:array2 titles:array];
 
   return v13;
 }
 
-- (void)_setPhotosStatus:(id)a3 specifier:(id)a4
+- (void)_setPhotosStatus:(id)status specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = [a4 propertyForKey:@"appBundleID"];
+  statusCopy = status;
+  v7 = [specifier propertyForKey:@"appBundleID"];
   v8 = MEMORY[0x1E69D55D0];
   v9 = *MEMORY[0x1E69D55D0];
   v23 = 0;
@@ -162,18 +162,18 @@ LABEL_5:
   v13 = v22;
   v14 = v21;
   v15 = [v13 arrayByAddingObjectsFromArray:v14];
-  if ([v6 intValue] == 2)
+  if ([statusCopy intValue] == 2)
   {
     v16 = *v11;
-    v17 = self;
+    selfCopy4 = self;
     v18 = v7;
     v19 = 2;
 LABEL_15:
-    [(PSPhotosPolicyController *)v17 setTCCForService:v16 appIdentifier:v18 value:v19];
+    [(PSPhotosPolicyController *)selfCopy4 setTCCForService:v16 appIdentifier:v18 value:v19];
     goto LABEL_16;
   }
 
-  if ([v6 intValue] == 1)
+  if ([statusCopy intValue] == 1)
   {
     if ([v15 containsObject:v7])
     {
@@ -181,27 +181,27 @@ LABEL_15:
     }
 
     v16 = *v8;
-    v17 = self;
+    selfCopy4 = self;
     v18 = v7;
     v19 = 1;
     goto LABEL_15;
   }
 
-  if ([v6 intValue] == 3)
+  if ([statusCopy intValue] == 3)
   {
     v16 = *v11;
-    v17 = self;
+    selfCopy4 = self;
     v18 = v7;
     v19 = 3;
     goto LABEL_15;
   }
 
-  if ([v6 intValue] && objc_msgSend(v6, "intValue") != 4)
+  if ([statusCopy intValue] && objc_msgSend(statusCopy, "intValue") != 4)
   {
     v20 = _PSLoggingFacility();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      [PSPhotosPolicyController _setPhotosStatus:v6 specifier:v20];
+      [PSPhotosPolicyController _setPhotosStatus:statusCopy specifier:v20];
     }
   }
 
@@ -215,7 +215,7 @@ LABEL_15:
     if ([v10 containsObject:v7])
     {
       v16 = *v8;
-      v17 = self;
+      selfCopy4 = self;
       v18 = v7;
       v19 = 0;
       goto LABEL_15;
@@ -225,9 +225,9 @@ LABEL_15:
 LABEL_16:
 }
 
-- (id)_photosStatus:(id)a3
+- (id)_photosStatus:(id)status
 {
-  v4 = [a3 propertyForKey:@"appBundleID"];
+  v4 = [status propertyForKey:@"appBundleID"];
   v5 = *MEMORY[0x1E69D55D0];
   v16 = 0;
   [(PSPhotosPolicyController *)self getAuthorizationStatesForService:v5 allowedArray:&v16 limitedArray:0 deniedArray:0];
@@ -272,11 +272,11 @@ LABEL_16:
   return v10;
 }
 
-- (void)setTCCForService:(__CFString *)a3 appIdentifier:(id)a4 value:(int)a5 completion:(id)a6
+- (void)setTCCForService:(__CFString *)service appIdentifier:(id)identifier value:(int)value completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a6;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if (setTCCForService_appIdentifier_value_completion__onceToken != -1)
   {
     [PSPhotosPolicyController setTCCForService:appIdentifier:value:completion:];
@@ -286,33 +286,33 @@ LABEL_16:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v27 = a3;
+    serviceCopy = service;
     v28 = 2112;
-    v29 = v10;
+    v29 = identifierCopy;
     v30 = 1024;
-    v31 = a5;
+    valueCopy = value;
     _os_log_impl(&dword_18B008000, v12, OS_LOG_TYPE_DEFAULT, "Setting TCC auth for service: %@ appIdentifier:%@, accessLevel:%d", buf, 0x1Cu);
   }
 
-  [v10 cStringUsingEncoding:4];
+  [identifierCopy cStringUsingEncoding:4];
   v13 = tcc_identity_create();
   v14 = tcc_service_singleton_for_CF_name();
   v15 = 0;
-  if ((a5 - 1) <= 2)
+  if ((value - 1) <= 2)
   {
-    v15 = qword_18B103BC0[a5 - 1];
+    v15 = qword_18B103BC0[value - 1];
   }
 
-  v16 = CFEqual(a3, *MEMORY[0x1E69D55C8]);
-  if (a5 == 2 && v16 && TCCLibraryCore() && gettcc_server_message_prompt_authorization_valueSymbolLoc())
+  v16 = CFEqual(service, *MEMORY[0x1E69D55C8]);
+  if (value == 2 && v16 && TCCLibraryCore() && gettcc_server_message_prompt_authorization_valueSymbolLoc())
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __76__PSPhotosPolicyController_setTCCForService_appIdentifier_value_completion___block_invoke_163;
     aBlock[3] = &unk_1E71DC100;
     aBlock[4] = self;
-    v24 = v10;
-    v25 = v11;
+    v24 = identifierCopy;
+    v25 = completionCopy;
     v17 = _Block_copy(aBlock);
     v18 = setTCCForService_appIdentifier_value_completion__tccServer;
     v19 = v13;
@@ -330,9 +330,9 @@ LABEL_16:
   else
   {
     tcc_server_message_set_authorization_value();
-    if (v11)
+    if (completionCopy)
     {
-      v11[2](v11);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -366,42 +366,42 @@ void __76__PSPhotosPolicyController_setTCCForService_appIdentifier_value_complet
   }
 }
 
-- (void)getAuthorizationStatesForService:(__CFString *)a3 allowedArray:(id *)a4 limitedArray:(id *)a5 deniedArray:(id *)a6
+- (void)getAuthorizationStatesForService:(__CFString *)service allowedArray:(id *)array limitedArray:(id *)limitedArray deniedArray:(id *)deniedArray
 {
   v24 = *MEMORY[0x1E69E9840];
   v10 = tcc_server_create();
   v11 = tcc_service_singleton_for_CF_name();
-  v12 = [MEMORY[0x1E695DF70] array];
-  v13 = [MEMORY[0x1E695DF70] array];
-  v14 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   v15 = _PSLoggingFacility();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v23 = a3;
+    serviceCopy = service;
     _os_log_impl(&dword_18B008000, v15, OS_LOG_TYPE_DEFAULT, "Requesting TCC auth records for service: %@", buf, 0xCu);
   }
 
-  v16 = v12;
-  v17 = v13;
-  v18 = v14;
+  v16 = array;
+  v17 = array2;
+  v18 = array3;
   tcc_server_message_get_authorization_records_by_service();
-  if (a4)
+  if (array)
   {
     v19 = v16;
-    *a4 = v16;
+    *array = v16;
   }
 
-  if (a5)
+  if (limitedArray)
   {
     v20 = v17;
-    *a5 = v17;
+    *limitedArray = v17;
   }
 
-  if (a6)
+  if (deniedArray)
   {
     v21 = v18;
-    *a6 = v18;
+    *deniedArray = v18;
   }
 }
 

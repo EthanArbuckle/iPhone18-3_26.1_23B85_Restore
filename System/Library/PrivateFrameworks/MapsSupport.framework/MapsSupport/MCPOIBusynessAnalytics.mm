@@ -1,7 +1,7 @@
 @interface MCPOIBusynessAnalytics
 + (id)shared;
-+ (void)report:(unint64_t)a3;
-+ (void)reportCompleteWithRTEnabled:(BOOL)a3 rtCollected:(BOOL)a4 rtError:(id)a5 dpEnabled:(BOOL)a6 dpCollected:(BOOL)a7 dpError:(id)a8 bpEnabled:(BOOL)a9 bpCollected:(BOOL)a10 bpError:(id)a11;
++ (void)report:(unint64_t)report;
++ (void)reportCompleteWithRTEnabled:(BOOL)enabled rtCollected:(BOOL)collected rtError:(id)error dpEnabled:(BOOL)dpEnabled dpCollected:(BOOL)dpCollected dpError:(id)dpError bpEnabled:(BOOL)bpEnabled bpCollected:(BOOL)self0 bpError:(id)self1;
 - (MCPOIBusynessAnalytics)init;
 @end
 
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_100007EE0;
   block[3] = &unk_10001D688;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100023300 != -1)
   {
     dispatch_once(&qword_100023300, block);
@@ -39,25 +39,25 @@
   return v2;
 }
 
-+ (void)report:(unint64_t)a3
++ (void)report:(unint64_t)report
 {
   AnalyticsSendEventLazy();
   if (PLShouldLogRegisteredEvent())
   {
-    v5 = [a1 shared];
-    v6 = [v5 counters];
-    [v6 incrementCounterForAnalytic:a3];
+    shared = [self shared];
+    counters = [shared counters];
+    [counters incrementCounterForAnalytic:report];
   }
 }
 
-+ (void)reportCompleteWithRTEnabled:(BOOL)a3 rtCollected:(BOOL)a4 rtError:(id)a5 dpEnabled:(BOOL)a6 dpCollected:(BOOL)a7 dpError:(id)a8 bpEnabled:(BOOL)a9 bpCollected:(BOOL)a10 bpError:(id)a11
++ (void)reportCompleteWithRTEnabled:(BOOL)enabled rtCollected:(BOOL)collected rtError:(id)error dpEnabled:(BOOL)dpEnabled dpCollected:(BOOL)dpCollected dpError:(id)dpError bpEnabled:(BOOL)bpEnabled bpCollected:(BOOL)self0 bpError:(id)self1
 {
-  v12 = a5;
-  v16 = a8;
-  v17 = a11;
-  v13 = v17;
-  v14 = v16;
-  v15 = v12;
+  errorCopy = error;
+  dpErrorCopy = dpError;
+  bpErrorCopy = bpError;
+  v13 = bpErrorCopy;
+  v14 = dpErrorCopy;
+  v15 = errorCopy;
   AnalyticsSendEventLazy();
 }
 

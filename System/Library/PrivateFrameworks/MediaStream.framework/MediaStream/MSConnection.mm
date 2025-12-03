@@ -1,31 +1,31 @@
 @interface MSConnection
 + (id)sharedConnection;
-- (BOOL)dequeueAssetCollectionWithGUIDs:(id)a3 personID:(id)a4 outError:(id *)a5;
-- (BOOL)enqueueAssetCollections:(id)a3 personID:(id)a4 outError:(id *)a5;
+- (BOOL)dequeueAssetCollectionWithGUIDs:(id)ds personID:(id)d outError:(id *)error;
+- (BOOL)enqueueAssetCollections:(id)collections personID:(id)d outError:(id *)error;
 - (MSConnection)init;
-- (id)_machErrorWithUnderlyingError:(id)a3;
+- (id)_machErrorWithUnderlyingError:(id)error;
 - (id)pause;
-- (id)serverSideConfigurationForPersonID:(id)a3;
+- (id)serverSideConfigurationForPersonID:(id)d;
 - (void)_waitForMessageToBeSent;
-- (void)abortActivitiesForPersonID:(id)a3;
+- (void)abortActivitiesForPersonID:(id)d;
 - (void)checkForOutstandingActivities;
 - (void)dealloc;
-- (void)deleteAssetCollections:(id)a3 personID:(id)a4;
-- (void)forgetPersonID:(id)a3;
-- (void)handleSubscriptionPushForPersonID:(id)a3;
-- (void)pollForSubscriptionUpdatesForPersonID:(id)a3;
-- (void)refreshServerSideConfigurationForPersonID:(id)a3;
-- (void)resetServerStateForPersonID:(id)a3;
+- (void)deleteAssetCollections:(id)collections personID:(id)d;
+- (void)forgetPersonID:(id)d;
+- (void)handleSubscriptionPushForPersonID:(id)d;
+- (void)pollForSubscriptionUpdatesForPersonID:(id)d;
+- (void)refreshServerSideConfigurationForPersonID:(id)d;
+- (void)resetServerStateForPersonID:(id)d;
 @end
 
 @implementation MSConnection
 
-- (id)_machErrorWithUnderlyingError:(id)a3
+- (id)_machErrorWithUnderlyingError:(id)error
 {
   v3 = MEMORY[0x277CCA9B8];
-  v4 = a3;
+  errorCopy = error;
   v5 = MSMSLocalizedString(@"ERROR_MACH_FAILURE");
-  v6 = [v3 MSErrorWithDomain:@"mstreamdErrorDomain" code:1000 description:v5 underlyingError:v4];
+  v6 = [v3 MSErrorWithDomain:@"mstreamdErrorDomain" code:1000 description:v5 underlyingError:errorCopy];
 
   return v6;
 }
@@ -37,17 +37,17 @@
   return v2;
 }
 
-- (void)abortActivitiesForPersonID:(id)a3
+- (void)abortActivitiesForPersonID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   center = self->_center;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __43__MSConnection_abortActivitiesForPersonID___block_invoke;
   v11 = &unk_2798A4C78;
-  v12 = v4;
-  v13 = self;
-  v6 = v4;
+  v12 = dCopy;
+  selfCopy = self;
+  v6 = dCopy;
   v7 = [(NSXPCConnection *)center remoteObjectProxyWithErrorHandler:&v8];
   [v7 abortAllActivityForPersonID:{v6, v8, v9, v10, v11}];
   [(MSConnection *)self _waitForMessageToBeSent];
@@ -71,16 +71,16 @@ void __43__MSConnection_abortActivitiesForPersonID___block_invoke(uint64_t a1, u
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetServerStateForPersonID:(id)a3
+- (void)resetServerStateForPersonID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   center = self->_center;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __44__MSConnection_resetServerStateForPersonID___block_invoke;
   v8[3] = &unk_2798A4CA0;
-  v9 = v4;
-  v6 = v4;
+  v9 = dCopy;
+  v6 = dCopy;
   v7 = [(NSXPCConnection *)center remoteObjectProxyWithErrorHandler:v8];
   [v7 resetServerStateForPersonID:v6];
   [(MSConnection *)self _waitForMessageToBeSent];
@@ -102,16 +102,16 @@ void __44__MSConnection_resetServerStateForPersonID___block_invoke(uint64_t a1, 
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)refreshServerSideConfigurationForPersonID:(id)a3
+- (void)refreshServerSideConfigurationForPersonID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   center = self->_center;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__MSConnection_refreshServerSideConfigurationForPersonID___block_invoke;
   v8[3] = &unk_2798A4CA0;
-  v9 = v4;
-  v6 = v4;
+  v9 = dCopy;
+  v6 = dCopy;
   v7 = [(NSXPCConnection *)center remoteObjectProxyWithErrorHandler:v8];
   [v7 refreshServerSideConfigurationForPersonID:v6];
   [(MSConnection *)self _waitForMessageToBeSent];
@@ -133,15 +133,15 @@ void __58__MSConnection_refreshServerSideConfigurationForPersonID___block_invoke
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)serverSideConfigurationForPersonID:(id)a3
+- (id)serverSideConfigurationForPersonID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy_;
   v26 = __Block_byref_object_dispose_;
-  v27 = [(NSMutableDictionary *)self->_serverSideConfig objectForKey:v4];
+  v27 = [(NSMutableDictionary *)self->_serverSideConfig objectForKey:dCopy];
   v5 = v23[5];
   if (!v5)
   {
@@ -151,9 +151,9 @@ void __58__MSConnection_refreshServerSideConfigurationForPersonID___block_invoke
     v18[1] = 3221225472;
     v18[2] = __51__MSConnection_serverSideConfigurationForPersonID___block_invoke;
     v18[3] = &unk_2798A4CE8;
-    v8 = v4;
+    v8 = dCopy;
     v19 = v8;
-    v20 = self;
+    selfCopy = self;
     v9 = v6;
     v21 = v9;
     v10 = [(NSXPCConnection *)center remoteObjectProxyWithErrorHandler:v18];
@@ -211,16 +211,16 @@ intptr_t __51__MSConnection_serverSideConfigurationForPersonID___block_invoke_78
   return dispatch_semaphore_signal(v6);
 }
 
-- (void)forgetPersonID:(id)a3
+- (void)forgetPersonID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   center = self->_center;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __31__MSConnection_forgetPersonID___block_invoke;
   v8[3] = &unk_2798A4CA0;
-  v9 = v4;
-  v6 = v4;
+  v9 = dCopy;
+  v6 = dCopy;
   v7 = [(NSXPCConnection *)center remoteObjectProxyWithErrorHandler:v8];
   [v7 forgetEverythingForPersonID:v6];
   [(MSConnection *)self _waitForMessageToBeSent];
@@ -242,16 +242,16 @@ void __31__MSConnection_forgetPersonID___block_invoke(uint64_t a1, uint64_t a2)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSubscriptionPushForPersonID:(id)a3
+- (void)handleSubscriptionPushForPersonID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   center = self->_center;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __50__MSConnection_handleSubscriptionPushForPersonID___block_invoke;
   v8[3] = &unk_2798A4CA0;
-  v9 = v4;
-  v6 = v4;
+  v9 = dCopy;
+  v6 = dCopy;
   v7 = [(NSXPCConnection *)center remoteObjectProxyWithErrorHandler:v8];
   [v7 pollForSubscriptionUpdatesTriggeredByPushNotificationForPersonID:v6];
   [(MSConnection *)self _waitForMessageToBeSent];
@@ -293,16 +293,16 @@ void __45__MSConnection_checkForOutstandingActivities__block_invoke(uint64_t a1,
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pollForSubscriptionUpdatesForPersonID:(id)a3
+- (void)pollForSubscriptionUpdatesForPersonID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   center = self->_center;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__MSConnection_pollForSubscriptionUpdatesForPersonID___block_invoke;
   v8[3] = &unk_2798A4CA0;
-  v9 = v4;
-  v6 = v4;
+  v9 = dCopy;
+  v6 = dCopy;
   v7 = [(NSXPCConnection *)center remoteObjectProxyWithErrorHandler:v8];
   [v7 pollForSubscriptionUpdatesForPersonID:v6];
   [(MSConnection *)self _waitForMessageToBeSent];
@@ -324,19 +324,19 @@ void __54__MSConnection_pollForSubscriptionUpdatesForPersonID___block_invoke(uin
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteAssetCollections:(id)a3 personID:(id)a4
+- (void)deleteAssetCollections:(id)collections personID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  collectionsCopy = collections;
+  dCopy = d;
   center = self->_center;
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __48__MSConnection_deleteAssetCollections_personID___block_invoke;
   v15 = &unk_2798A4C78;
-  v16 = v6;
-  v17 = v7;
-  v9 = v7;
-  v10 = v6;
+  v16 = collectionsCopy;
+  v17 = dCopy;
+  v9 = dCopy;
+  v10 = collectionsCopy;
   v11 = [(NSXPCConnection *)center remoteObjectProxyWithErrorHandler:&v12];
   [v11 deleteAssetCollections:v10 personID:{v9, v12, v13, v14, v15}];
   [(MSConnection *)self _waitForMessageToBeSent];
@@ -361,10 +361,10 @@ void __48__MSConnection_deleteAssetCollections_personID___block_invoke(uint64_t 
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)dequeueAssetCollectionWithGUIDs:(id)a3 personID:(id)a4 outError:(id *)a5
+- (BOOL)dequeueAssetCollectionWithGUIDs:(id)ds personID:(id)d outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dsCopy = ds;
+  dCopy = d;
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
@@ -383,9 +383,9 @@ void __48__MSConnection_deleteAssetCollections_personID___block_invoke(uint64_t 
   v26[3] = &unk_2798A4C28;
   v30 = &v31;
   v26[4] = self;
-  v12 = v8;
+  v12 = dsCopy;
   v27 = v12;
-  v13 = v9;
+  v13 = dCopy;
   v28 = v13;
   v14 = v10;
   v29 = v14;
@@ -400,9 +400,9 @@ void __48__MSConnection_deleteAssetCollections_personID___block_invoke(uint64_t 
   v23 = v16;
   [v15 dequeueAssetCollectionWithGUIDs:v12 personID:v13 reply:&v19];
   dispatch_semaphore_wait(v16, 0xFFFFFFFFFFFFFFFFLL);
-  if (a5 && v32[5])
+  if (error && v32[5])
   {
-    *a5 = [(MSConnection *)self _machErrorWithUnderlyingError:v19, v20, v21, v22];
+    *error = [(MSConnection *)self _machErrorWithUnderlyingError:v19, v20, v21, v22];
   }
 
   v17 = *(v38 + 24);
@@ -459,10 +459,10 @@ intptr_t __66__MSConnection_dequeueAssetCollectionWithGUIDs_personID_outError___
   return dispatch_semaphore_signal(v8);
 }
 
-- (BOOL)enqueueAssetCollections:(id)a3 personID:(id)a4 outError:(id *)a5
+- (BOOL)enqueueAssetCollections:(id)collections personID:(id)d outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  collectionsCopy = collections;
+  dCopy = d;
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
@@ -481,9 +481,9 @@ intptr_t __66__MSConnection_dequeueAssetCollectionWithGUIDs_personID_outError___
   v26[3] = &unk_2798A4C28;
   v30 = &v31;
   v26[4] = self;
-  v12 = v8;
+  v12 = collectionsCopy;
   v27 = v12;
-  v13 = v9;
+  v13 = dCopy;
   v28 = v13;
   v14 = v10;
   v29 = v14;
@@ -498,9 +498,9 @@ intptr_t __66__MSConnection_dequeueAssetCollectionWithGUIDs_personID_outError___
   v23 = v16;
   [v15 enqueueAssetCollections:v12 personID:v13 reply:&v19];
   dispatch_semaphore_wait(v16, 0xFFFFFFFFFFFFFFFFLL);
-  if (a5 && v32[5])
+  if (error && v32[5])
   {
-    *a5 = [(MSConnection *)self _machErrorWithUnderlyingError:v19, v20, v21, v22];
+    *error = [(MSConnection *)self _machErrorWithUnderlyingError:v19, v20, v21, v22];
   }
 
   v17 = *(v38 + 24);
@@ -632,7 +632,7 @@ void __20__MSConnection_init__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __32__MSConnection_sharedConnection__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedConnection_once != -1)
   {
     dispatch_once(&sharedConnection_once, block);

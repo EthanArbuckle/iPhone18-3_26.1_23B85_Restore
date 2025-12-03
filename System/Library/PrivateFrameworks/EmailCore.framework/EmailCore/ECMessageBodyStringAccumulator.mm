@@ -1,42 +1,42 @@
 @interface ECMessageBodyStringAccumulator
-- (ECMessageBodyStringAccumulator)initWithOptions:(unint64_t)a3 lengthLimit:(unint64_t)a4 currencyFormatter:(id)a5;
+- (ECMessageBodyStringAccumulator)initWithOptions:(unint64_t)options lengthLimit:(unint64_t)limit currencyFormatter:(id)formatter;
 - (NSString)debugDescription;
-- (void)appendCharacters:(const unsigned __int16 *)a3 length:(unint64_t)a4;
+- (void)appendCharacters:(const unsigned __int16 *)characters length:(unint64_t)length;
 - (void)appendCurrencyDecimalSeparator;
-- (void)appendCustomEntityWithTag:(unint64_t)a3 stringRepresentation:(id)a4;
-- (void)appendInnerTextWithConsumableNode:(id)a3;
+- (void)appendCustomEntityWithTag:(unint64_t)tag stringRepresentation:(id)representation;
+- (void)appendInnerTextWithConsumableNode:(id)node;
 - (void)appendNewline;
-- (void)appendRange:(_NSRange)a3 ofString:(id)a4;
-- (void)appendString:(id)a3;
+- (void)appendRange:(_NSRange)range ofString:(id)string;
+- (void)appendString:(id)string;
 @end
 
 @implementation ECMessageBodyStringAccumulator
 
-- (ECMessageBodyStringAccumulator)initWithOptions:(unint64_t)a3 lengthLimit:(unint64_t)a4 currencyFormatter:(id)a5
+- (ECMessageBodyStringAccumulator)initWithOptions:(unint64_t)options lengthLimit:(unint64_t)limit currencyFormatter:(id)formatter
 {
-  v9 = a5;
+  formatterCopy = formatter;
   v18.receiver = self;
   v18.super_class = ECMessageBodyStringAccumulator;
   v10 = [(ECMessageBodyStringAccumulator *)&v18 init];
   v11 = v10;
   if (v10)
   {
-    v10->_options = a3;
-    objc_storeStrong(&v10->_currencyFormatter, a5);
-    v11->_remainingLength = a4;
+    v10->_options = options;
+    objc_storeStrong(&v10->_currencyFormatter, formatter);
+    v11->_remainingLength = limit;
     options = v11->_options;
     v13 = objc_alloc(MEMORY[0x277CCAB68]);
     if ((options & 8) != 0)
     {
-      v14 = 2;
+      limitCopy = 2;
     }
 
     else
     {
-      v14 = a4;
+      limitCopy = limit;
     }
 
-    v15 = [v13 initWithCapacity:v14];
+    v15 = [v13 initWithCapacity:limitCopy];
     accumulatedString = v11->_accumulatedString;
     v11->_accumulatedString = v15;
 
@@ -49,8 +49,8 @@
 
 - (NSString)debugDescription
 {
-  v3 = [(ECMessageBodyStringAccumulator *)self accumulatedString];
-  v4 = [v3 mutableCopy];
+  accumulatedString = [(ECMessageBodyStringAccumulator *)self accumulatedString];
+  v4 = [accumulatedString mutableCopy];
 
   [v4 replaceOccurrencesOfString:@"\n" withString:@"␊" options:0 range:{0, objc_msgSend(v4, "length")}];
   [v4 replaceOccurrencesOfString:@"\r" withString:@"␍" options:0 range:{0, objc_msgSend(v4, "length")}];
@@ -70,7 +70,7 @@
   v12 = 3221225472;
   v13 = __50__ECMessageBodyStringAccumulator_debugDescription__block_invoke;
   v14 = &unk_27874BCE0;
-  v15 = self;
+  selfCopy = self;
   v17 = v18;
   v6 = v5;
   v16 = v6;
@@ -101,11 +101,11 @@
     v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"remaining=%llu", self->_remainingLength];
   }
 
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@: %p> %@ %@\n\t%@", objc_opt_class(), self, v6, v8, v4, v11, v12, v13, v14, v15];
+  selfCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@: %p> %@ %@\n\t%@", objc_opt_class(), self, v6, v8, v4, v11, v12, v13, v14, selfCopy];
 
   _Block_object_dispose(v18, 8);
 
-  return v9;
+  return selfCopy;
 }
 
 BOOL __50__ECMessageBodyStringAccumulator_debugDescription__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -144,27 +144,27 @@ BOOL __50__ECMessageBodyStringAccumulator_debugDescription__block_invoke(uint64_
 
 - (void)appendCurrencyDecimalSeparator
 {
-  v3 = [(NSNumberFormatter *)self->_currencyFormatter currencyDecimalSeparator];
+  currencyDecimalSeparator = [(NSNumberFormatter *)self->_currencyFormatter currencyDecimalSeparator];
   [(ECMessageBodyStringAccumulator *)self appendString:?];
 }
 
-- (void)appendString:(id)a3
+- (void)appendString:(id)string
 {
-  v4 = a3;
-  -[ECMessageBodyStringAccumulator appendRange:ofString:](self, "appendRange:ofString:", 0, [v4 length], v4);
+  stringCopy = string;
+  -[ECMessageBodyStringAccumulator appendRange:ofString:](self, "appendRange:ofString:", 0, [stringCopy length], stringCopy);
 }
 
-- (void)appendRange:(_NSRange)a3 ofString:(id)a4
+- (void)appendRange:(_NSRange)range ofString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v16[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  stringCopy = string;
   if (length >= 0x3200001)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[ECMessageBodyStringAccumulator appendRange:ofString:]"];
-    [v14 handleFailureInFunction:v15 file:@"ECMessageBodyStringAccumulator.m" lineNumber:133 description:{@"Temporary buffer too large or with a negative count (%zu).", length}];
+    [currentHandler handleFailureInFunction:v15 file:@"ECMessageBodyStringAccumulator.m" lineNumber:133 description:{@"Temporary buffer too large or with a negative count (%zu).", length}];
   }
 
   if (length <= 1)
@@ -196,16 +196,16 @@ BOOL __50__ECMessageBodyStringAccumulator_debugDescription__block_invoke(uint64_
     v10 = v12;
   }
 
-  [v7 getCharacters:v10 range:{location, length}];
+  [stringCopy getCharacters:v10 range:{location, length}];
   [(ECMessageBodyStringAccumulator *)self appendCharacters:v10 length:length];
   free(v12);
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appendCharacters:(const unsigned __int16 *)a3 length:(unint64_t)a4
+- (void)appendCharacters:(const unsigned __int16 *)characters length:(unint64_t)length
 {
-  if (a4)
+  if (length)
   {
     v6 = 0;
     v7 = 0;
@@ -236,7 +236,7 @@ LABEL_137:
         return;
       }
 
-      v11 = a3[v6];
+      v11 = characters[v6];
       v12 = v6 + 1;
       if (!self->_options)
       {
@@ -256,20 +256,20 @@ LABEL_137:
           v7 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:20];
         }
 
-        if (v6 + 21 >= a4)
+        if (v6 + 21 >= length)
         {
-          v17 = a4;
+          lengthCopy = length;
         }
 
         else
         {
-          v17 = v6 + 21;
+          lengthCopy = v6 + 21;
         }
 
         v18 = v7;
-        if (v12 >= v17)
+        if (v12 >= lengthCopy)
         {
-          v17 = v12;
+          lengthCopy = v12;
         }
 
         else
@@ -277,7 +277,7 @@ LABEL_137:
           v19 = v12;
           while (1)
           {
-            chars = a3[v19];
+            chars = characters[v19];
             v20 = chars;
             v21 = v19 + 1;
             if (chars <= 0x3Bu && ((1 << chars) & 0x800004100002600) != 0)
@@ -288,7 +288,7 @@ LABEL_137:
             v7 = v18;
             CFStringAppendCharacters(v18, &chars, 1);
             ++v19;
-            if (v17 == v21)
+            if (lengthCopy == v21)
             {
               goto LABEL_42;
             }
@@ -298,22 +298,22 @@ LABEL_137:
           CFStringAppendCharacters(v18, &v57, 1);
           if (v20 == 59)
           {
-            v17 = v19 + 1;
+            lengthCopy = v19 + 1;
           }
 
           else
           {
-            v17 = v19;
+            lengthCopy = v19;
           }
 
           v7 = v18;
         }
 
 LABEL_42:
-        v23 = [(__CFString *)v7 ec_parseHTMLEntityCharacter];
-        if (v23)
+        ec_parseHTMLEntityCharacter = [(__CFString *)v7 ec_parseHTMLEntityCharacter];
+        if (ec_parseHTMLEntityCharacter)
         {
-          v11 = v23;
+          v11 = ec_parseHTMLEntityCharacter;
         }
 
         else
@@ -321,22 +321,22 @@ LABEL_42:
           v11 = 38;
         }
 
-        if (v23)
+        if (ec_parseHTMLEntityCharacter)
         {
-          v12 = v17;
+          v12 = lengthCopy;
         }
       }
 
-      v24 = [MEMORY[0x277CCA900] ec_whitespaceNewlineAndTagCharacterSet];
-      v25 = [v24 longCharacterIsMember:v11];
+      ec_whitespaceNewlineAndTagCharacterSet = [MEMORY[0x277CCA900] ec_whitespaceNewlineAndTagCharacterSet];
+      v25 = [ec_whitespaceNewlineAndTagCharacterSet longCharacterIsMember:v11];
 
       if (!v25)
       {
         break;
       }
 
-      v26 = [MEMORY[0x277CCA900] newlineCharacterSet];
-      v27 = [v26 longCharacterIsMember:v11];
+      newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+      v27 = [newlineCharacterSet longCharacterIsMember:v11];
 
       if (v27)
       {
@@ -552,14 +552,14 @@ LABEL_125:
 
 LABEL_136:
       v6 = v12;
-      if (v12 >= a4)
+      if (v12 >= length)
       {
         goto LABEL_137;
       }
     }
 
-    v31 = [MEMORY[0x277CCA900] ec_ignorableCharacterSet];
-    v32 = [v31 longCharacterIsMember:v11];
+    ec_ignorableCharacterSet = [MEMORY[0x277CCA900] ec_ignorableCharacterSet];
+    v32 = [ec_ignorableCharacterSet longCharacterIsMember:v11];
 
     if (v32)
     {
@@ -573,9 +573,9 @@ LABEL_136:
       goto LABEL_136;
     }
 
-    v35 = [MEMORY[0x277CCA900] ec_zeroWidthCharacterSet];
+    ec_zeroWidthCharacterSet = [MEMORY[0x277CCA900] ec_zeroWidthCharacterSet];
     v30 = v7;
-    v36 = [v35 longCharacterIsMember:v11];
+    v36 = [ec_zeroWidthCharacterSet longCharacterIsMember:v11];
 
     v28 = self->_lastEntity;
     v34 = 1;
@@ -592,12 +592,12 @@ LABEL_136:
   }
 }
 
-- (void)appendCustomEntityWithTag:(unint64_t)a3 stringRepresentation:(id)a4
+- (void)appendCustomEntityWithTag:(unint64_t)tag stringRepresentation:(id)representation
 {
-  v6 = a4;
-  if (self->_lastCustomEntityTag != a3)
+  representationCopy = representation;
+  if (self->_lastCustomEntityTag != tag)
   {
-    v7 = v6;
+    v7 = representationCopy;
     if (self->_lastEntity == 3)
     {
       [(ECMessageBodyStringAccumulator *)self appendString:@" "];
@@ -605,28 +605,28 @@ LABEL_136:
 
     [(ECMessageBodyStringAccumulator *)self appendString:v7];
     [(ECMessageBodyStringAccumulator *)self appendString:@" "];
-    self->_lastCustomEntityTag = a3;
-    v6 = v7;
+    self->_lastCustomEntityTag = tag;
+    representationCopy = v7;
   }
 }
 
-- (void)appendInnerTextWithConsumableNode:(id)a3
+- (void)appendInnerTextWithConsumableNode:(id)node
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v4, 0}];
+  nodeCopy = node;
+  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{nodeCopy, 0}];
   while ([v5 count] && !-[ECMessageBodyStringAccumulator isFull](self, "isFull"))
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = [v5 lastObject];
-    v8 = [v7 copyConsumableNodesAndAppendInnerTextToStringAccumulator:self];
+    lastObject = [v5 lastObject];
+    v8 = [lastObject copyConsumableNodesAndAppendInnerTextToStringAccumulator:self];
     [v5 removeLastObject];
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v9 = [v8 reverseObjectEnumerator];
-    v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    reverseObjectEnumerator = [v8 reverseObjectEnumerator];
+    v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v10)
     {
       v11 = *v15;
@@ -637,14 +637,14 @@ LABEL_136:
         {
           if (*v15 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           [v5 addObject:*(*(&v14 + 1) + 8 * v12++)];
         }
 
         while (v10 != v12);
-        v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v10);

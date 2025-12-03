@@ -1,36 +1,36 @@
 @interface _SFPBRFMapCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFMapCardSection)initWithDictionary:(id)a3;
-- (_SFPBRFMapCardSection)initWithFacade:(id)a3;
-- (_SFPBRFMapCardSection)initWithJSON:(id)a3;
+- (_SFPBRFMapCardSection)initWithDictionary:(id)dictionary;
+- (_SFPBRFMapCardSection)initWithFacade:(id)facade;
+- (_SFPBRFMapCardSection)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAnnotations:(id)a3;
-- (void)addMarkers:(id)a3;
-- (void)addPolyline:(id)a3;
-- (void)setAnnotations:(id)a3;
-- (void)setMarkers:(id)a3;
-- (void)setPolyline:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAnnotations:(id)annotations;
+- (void)addMarkers:(id)markers;
+- (void)addPolyline:(id)polyline;
+- (void)setAnnotations:(id)annotations;
+- (void)setMarkers:(id)markers;
+- (void)setPolyline:(id)polyline;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFMapCardSection
 
-- (_SFPBRFMapCardSection)initWithFacade:(id)a3
+- (_SFPBRFMapCardSection)initWithFacade:(id)facade
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFMapCardSection *)self init];
   if (v5)
   {
-    if ([v4 hasSizeFormat])
+    if ([facadeCopy hasSizeFormat])
     {
-      -[_SFPBRFMapCardSection setSizeFormat:](v5, "setSizeFormat:", [v4 sizeFormat]);
+      -[_SFPBRFMapCardSection setSizeFormat:](v5, "setSizeFormat:", [facadeCopy sizeFormat]);
     }
 
-    v6 = [v4 markers];
-    if (v6)
+    markers = [facadeCopy markers];
+    if (markers)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -44,8 +44,8 @@
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v8 = [v4 markers];
-    v9 = [v8 countByEnumeratingWithState:&v42 objects:v48 count:16];
+    markers2 = [facadeCopy markers];
+    v9 = [markers2 countByEnumeratingWithState:&v42 objects:v48 count:16];
     if (v9)
     {
       v10 = v9;
@@ -56,7 +56,7 @@
         {
           if (*v43 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(markers2);
           }
 
           v13 = [[_SFPBRFMapMarker alloc] initWithFacade:*(*(&v42 + 1) + 8 * i)];
@@ -66,15 +66,15 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v42 objects:v48 count:16];
+        v10 = [markers2 countByEnumeratingWithState:&v42 objects:v48 count:16];
       }
 
       while (v10);
     }
 
     [(_SFPBRFMapCardSection *)v5 setMarkers:v7];
-    v14 = [v4 annotations];
-    if (v14)
+    annotations = [facadeCopy annotations];
+    if (annotations)
     {
       v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -88,8 +88,8 @@
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v16 = [v4 annotations];
-    v17 = [v16 countByEnumeratingWithState:&v38 objects:v47 count:16];
+    annotations2 = [facadeCopy annotations];
+    v17 = [annotations2 countByEnumeratingWithState:&v38 objects:v47 count:16];
     if (v17)
     {
       v18 = v17;
@@ -100,7 +100,7 @@
         {
           if (*v39 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(annotations2);
           }
 
           v21 = [[_SFPBRFMapAnnotation alloc] initWithFacade:*(*(&v38 + 1) + 8 * j)];
@@ -110,16 +110,16 @@
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v38 objects:v47 count:16];
+        v18 = [annotations2 countByEnumeratingWithState:&v38 objects:v47 count:16];
       }
 
       while (v18);
     }
 
     [(_SFPBRFMapCardSection *)v5 setAnnotations:v15];
-    v22 = [v4 polyline];
+    polyline = [facadeCopy polyline];
     v33 = v5;
-    if (v22)
+    if (polyline)
     {
       v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -133,8 +133,8 @@
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v24 = [v4 polyline];
-    v25 = [v24 countByEnumeratingWithState:&v34 objects:v46 count:16];
+    polyline2 = [facadeCopy polyline];
+    v25 = [polyline2 countByEnumeratingWithState:&v34 objects:v46 count:16];
     if (v25)
     {
       v26 = v25;
@@ -145,7 +145,7 @@
         {
           if (*v35 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(polyline2);
           }
 
           v29 = [[_SFPBLatLng alloc] initWithFacade:*(*(&v34 + 1) + 8 * k)];
@@ -155,7 +155,7 @@
           }
         }
 
-        v26 = [v24 countByEnumeratingWithState:&v34 objects:v46 count:16];
+        v26 = [polyline2 countByEnumeratingWithState:&v34 objects:v46 count:16];
       }
 
       while (v26);
@@ -163,15 +163,15 @@
 
     v5 = v33;
     [(_SFPBRFMapCardSection *)v33 setPolylines:v23];
-    if ([v4 hasCameraDistance])
+    if ([facadeCopy hasCameraDistance])
     {
-      [v4 cameraDistance];
+      [facadeCopy cameraDistance];
       [(_SFPBRFMapCardSection *)v33 setCameraDistance:?];
     }
 
-    if ([v4 hasShowsUserLocation])
+    if ([facadeCopy hasShowsUserLocation])
     {
-      -[_SFPBRFMapCardSection setShowsUserLocation:](v33, "setShowsUserLocation:", [v4 showsUserLocation]);
+      -[_SFPBRFMapCardSection setShowsUserLocation:](v33, "setShowsUserLocation:", [facadeCopy showsUserLocation]);
     }
 
     v30 = v33;
@@ -181,23 +181,23 @@
   return v5;
 }
 
-- (_SFPBRFMapCardSection)initWithDictionary:(id)a3
+- (_SFPBRFMapCardSection)initWithDictionary:(id)dictionary
 {
   v55 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v51.receiver = self;
   v51.super_class = _SFPBRFMapCardSection;
   v5 = [(_SFPBRFMapCardSection *)&v51 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"sizeFormat"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"sizeFormat"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBRFMapCardSection setSizeFormat:](v5, "setSizeFormat:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"markers"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"markers"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -239,7 +239,7 @@
       v6 = v8;
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"annotations"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"annotations"];
     objc_opt_class();
     v38 = v16;
     if (objc_opt_isKindOfClass())
@@ -281,7 +281,7 @@
       v16 = v38;
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"polyline"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"polyline"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -324,7 +324,7 @@
       v16 = v38;
     }
 
-    v32 = [v4 objectForKeyedSubscript:@"cameraDistance"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"cameraDistance"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -332,7 +332,7 @@
       [(_SFPBRFMapCardSection *)v5 setCameraDistance:?];
     }
 
-    v33 = [v4 objectForKeyedSubscript:@"showsUserLocation"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"showsUserLocation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -346,30 +346,30 @@
   return v5;
 }
 
-- (_SFPBRFMapCardSection)initWithJSON:(id)a3
+- (_SFPBRFMapCardSection)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFMapCardSection *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFMapCardSection *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFMapCardSection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -383,10 +383,10 @@
 - (id)dictionaryRepresentation
 {
   v50 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_annotations count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
@@ -406,16 +406,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v43 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v43 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -425,7 +425,7 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"annotations"];
+    [dictionary setObject:array forKeyedSubscript:@"annotations"];
   }
 
   if (self->_cameraDistance != 0.0)
@@ -433,12 +433,12 @@
     v12 = MEMORY[0x1E696AD98];
     [(_SFPBRFMapCardSection *)self cameraDistance];
     v13 = [v12 numberWithDouble:?];
-    [v3 setObject:v13 forKeyedSubscript:@"cameraDistance"];
+    [dictionary setObject:v13 forKeyedSubscript:@"cameraDistance"];
   }
 
   if ([(NSArray *)self->_markers count])
   {
-    v14 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
@@ -458,16 +458,16 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v39 + 1) + 8 * j) dictionaryRepresentation];
-          if (v20)
+          dictionaryRepresentation2 = [*(*(&v39 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v14 addObject:v20];
+            [array2 addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v21 = [MEMORY[0x1E695DFB0] null];
-            [v14 addObject:v21];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null2];
           }
         }
 
@@ -477,12 +477,12 @@
       while (v17);
     }
 
-    [v3 setObject:v14 forKeyedSubscript:@"markers"];
+    [dictionary setObject:array2 forKeyedSubscript:@"markers"];
   }
 
   if ([(NSArray *)self->_polylines count])
   {
-    v22 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
@@ -502,16 +502,16 @@
             objc_enumerationMutation(v23);
           }
 
-          v28 = [*(*(&v35 + 1) + 8 * k) dictionaryRepresentation];
-          if (v28)
+          dictionaryRepresentation3 = [*(*(&v35 + 1) + 8 * k) dictionaryRepresentation];
+          if (dictionaryRepresentation3)
           {
-            [v22 addObject:v28];
+            [array3 addObject:dictionaryRepresentation3];
           }
 
           else
           {
-            v29 = [MEMORY[0x1E695DFB0] null];
-            [v22 addObject:v29];
+            null3 = [MEMORY[0x1E695DFB0] null];
+            [array3 addObject:null3];
           }
         }
 
@@ -521,28 +521,28 @@
       while (v25);
     }
 
-    [v3 setObject:v22 forKeyedSubscript:@"polyline"];
+    [dictionary setObject:array3 forKeyedSubscript:@"polyline"];
   }
 
   if (self->_showsUserLocation)
   {
     v30 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBRFMapCardSection showsUserLocation](self, "showsUserLocation")}];
-    [v3 setObject:v30 forKeyedSubscript:@"showsUserLocation"];
+    [dictionary setObject:v30 forKeyedSubscript:@"showsUserLocation"];
   }
 
   if (self->_sizeFormat)
   {
-    v31 = [(_SFPBRFMapCardSection *)self sizeFormat];
-    if (v31)
+    sizeFormat = [(_SFPBRFMapCardSection *)self sizeFormat];
+    if (sizeFormat)
     {
-      if (v31 == 1)
+      if (sizeFormat == 1)
       {
         v32 = @"1";
       }
 
       else
       {
-        v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v31];
+        v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", sizeFormat];
       }
     }
 
@@ -551,12 +551,12 @@
       v32 = @"0";
     }
 
-    [v3 setObject:v32 forKeyedSubscript:@"sizeFormat"];
+    [dictionary setObject:v32 forKeyedSubscript:@"sizeFormat"];
   }
 
   v33 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -611,34 +611,34 @@
   return v4 ^ v5 ^ v6 ^ v12 ^ v13 ^ (2654435761 * sizeFormat);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   sizeFormat = self->_sizeFormat;
-  if (sizeFormat != [v4 sizeFormat])
+  if (sizeFormat != [equalCopy sizeFormat])
   {
     goto LABEL_18;
   }
 
-  v6 = [(_SFPBRFMapCardSection *)self markers];
-  v7 = [v4 markers];
-  if ((v6 != 0) == (v7 == 0))
+  markers = [(_SFPBRFMapCardSection *)self markers];
+  markers2 = [equalCopy markers];
+  if ((markers != 0) == (markers2 == 0))
   {
     goto LABEL_17;
   }
 
-  v8 = [(_SFPBRFMapCardSection *)self markers];
-  if (v8)
+  markers3 = [(_SFPBRFMapCardSection *)self markers];
+  if (markers3)
   {
-    v9 = v8;
-    v10 = [(_SFPBRFMapCardSection *)self markers];
-    v11 = [v4 markers];
-    v12 = [v10 isEqual:v11];
+    v9 = markers3;
+    markers4 = [(_SFPBRFMapCardSection *)self markers];
+    markers5 = [equalCopy markers];
+    v12 = [markers4 isEqual:markers5];
 
     if (!v12)
     {
@@ -650,20 +650,20 @@
   {
   }
 
-  v6 = [(_SFPBRFMapCardSection *)self annotations];
-  v7 = [v4 annotations];
-  if ((v6 != 0) == (v7 == 0))
+  markers = [(_SFPBRFMapCardSection *)self annotations];
+  markers2 = [equalCopy annotations];
+  if ((markers != 0) == (markers2 == 0))
   {
     goto LABEL_17;
   }
 
-  v13 = [(_SFPBRFMapCardSection *)self annotations];
-  if (v13)
+  annotations = [(_SFPBRFMapCardSection *)self annotations];
+  if (annotations)
   {
-    v14 = v13;
-    v15 = [(_SFPBRFMapCardSection *)self annotations];
-    v16 = [v4 annotations];
-    v17 = [v15 isEqual:v16];
+    v14 = annotations;
+    annotations2 = [(_SFPBRFMapCardSection *)self annotations];
+    annotations3 = [equalCopy annotations];
+    v17 = [annotations2 isEqual:annotations3];
 
     if (!v17)
     {
@@ -675,22 +675,22 @@
   {
   }
 
-  v6 = [(_SFPBRFMapCardSection *)self polylines];
-  v7 = [v4 polylines];
-  if ((v6 != 0) == (v7 == 0))
+  markers = [(_SFPBRFMapCardSection *)self polylines];
+  markers2 = [equalCopy polylines];
+  if ((markers != 0) == (markers2 == 0))
   {
 LABEL_17:
 
     goto LABEL_18;
   }
 
-  v18 = [(_SFPBRFMapCardSection *)self polylines];
-  if (v18)
+  polylines = [(_SFPBRFMapCardSection *)self polylines];
+  if (polylines)
   {
-    v19 = v18;
-    v20 = [(_SFPBRFMapCardSection *)self polylines];
-    v21 = [v4 polylines];
-    v22 = [v20 isEqual:v21];
+    v19 = polylines;
+    polylines2 = [(_SFPBRFMapCardSection *)self polylines];
+    polylines3 = [equalCopy polylines];
+    v22 = [polylines2 isEqual:polylines3];
 
     if (!v22)
     {
@@ -703,11 +703,11 @@ LABEL_17:
   }
 
   cameraDistance = self->_cameraDistance;
-  [v4 cameraDistance];
+  [equalCopy cameraDistance];
   if (cameraDistance == v26)
   {
     showsUserLocation = self->_showsUserLocation;
-    v23 = showsUserLocation == [v4 showsUserLocation];
+    v23 = showsUserLocation == [equalCopy showsUserLocation];
     goto LABEL_19;
   }
 
@@ -718,21 +718,21 @@ LABEL_19:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ([(_SFPBRFMapCardSection *)self sizeFormat])
   {
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(_SFPBRFMapCardSection *)self markers];
+  markers = [(_SFPBRFMapCardSection *)self markers];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v33 objects:v39 count:16];
+  v6 = [markers countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v6)
   {
     v7 = v6;
@@ -744,7 +744,7 @@ LABEL_19:
       {
         if (*v34 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(markers);
         }
 
         v10 = *(*(&v33 + 1) + 8 * v9);
@@ -753,18 +753,18 @@ LABEL_19:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v33 objects:v39 count:16];
+      v7 = [markers countByEnumeratingWithState:&v33 objects:v39 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [(_SFPBRFMapCardSection *)self annotations];
+  annotations = [(_SFPBRFMapCardSection *)self annotations];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v12 = [v11 countByEnumeratingWithState:&v29 objects:v38 count:16];
+  v12 = [annotations countByEnumeratingWithState:&v29 objects:v38 count:16];
   if (v12)
   {
     v13 = v12;
@@ -776,7 +776,7 @@ LABEL_19:
       {
         if (*v30 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(annotations);
         }
 
         v16 = *(*(&v29 + 1) + 8 * v15);
@@ -785,18 +785,18 @@ LABEL_19:
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v29 objects:v38 count:16];
+      v13 = [annotations countByEnumeratingWithState:&v29 objects:v38 count:16];
     }
 
     while (v13);
   }
 
-  v17 = [(_SFPBRFMapCardSection *)self polylines];
+  polylines = [(_SFPBRFMapCardSection *)self polylines];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v18 = [v17 countByEnumeratingWithState:&v25 objects:v37 count:16];
+  v18 = [polylines countByEnumeratingWithState:&v25 objects:v37 count:16];
   if (v18)
   {
     v19 = v18;
@@ -808,7 +808,7 @@ LABEL_19:
       {
         if (*v26 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(polylines);
         }
 
         v22 = *(*(&v25 + 1) + 8 * v21);
@@ -817,7 +817,7 @@ LABEL_19:
       }
 
       while (v19 != v21);
-      v19 = [v17 countByEnumeratingWithState:&v25 objects:v37 count:16];
+      v19 = [polylines countByEnumeratingWithState:&v25 objects:v37 count:16];
     }
 
     while (v19);
@@ -837,81 +837,81 @@ LABEL_19:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addPolyline:(id)a3
+- (void)addPolyline:(id)polyline
 {
-  v4 = a3;
+  polylineCopy = polyline;
   polylines = self->_polylines;
-  v8 = v4;
+  v8 = polylineCopy;
   if (!polylines)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_polylines;
-    self->_polylines = v6;
+    self->_polylines = array;
 
-    v4 = v8;
+    polylineCopy = v8;
     polylines = self->_polylines;
   }
 
-  [(NSArray *)polylines addObject:v4];
+  [(NSArray *)polylines addObject:polylineCopy];
 }
 
-- (void)setPolyline:(id)a3
+- (void)setPolyline:(id)polyline
 {
-  v4 = [a3 copy];
+  v4 = [polyline copy];
   polylines = self->_polylines;
   self->_polylines = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addAnnotations:(id)a3
+- (void)addAnnotations:(id)annotations
 {
-  v4 = a3;
+  annotationsCopy = annotations;
   annotations = self->_annotations;
-  v8 = v4;
+  v8 = annotationsCopy;
   if (!annotations)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_annotations;
-    self->_annotations = v6;
+    self->_annotations = array;
 
-    v4 = v8;
+    annotationsCopy = v8;
     annotations = self->_annotations;
   }
 
-  [(NSArray *)annotations addObject:v4];
+  [(NSArray *)annotations addObject:annotationsCopy];
 }
 
-- (void)setAnnotations:(id)a3
+- (void)setAnnotations:(id)annotations
 {
-  v4 = [a3 copy];
+  v4 = [annotations copy];
   annotations = self->_annotations;
   self->_annotations = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addMarkers:(id)a3
+- (void)addMarkers:(id)markers
 {
-  v4 = a3;
+  markersCopy = markers;
   markers = self->_markers;
-  v8 = v4;
+  v8 = markersCopy;
   if (!markers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_markers;
-    self->_markers = v6;
+    self->_markers = array;
 
-    v4 = v8;
+    markersCopy = v8;
     markers = self->_markers;
   }
 
-  [(NSArray *)markers addObject:v4];
+  [(NSArray *)markers addObject:markersCopy];
 }
 
-- (void)setMarkers:(id)a3
+- (void)setMarkers:(id)markers
 {
-  v4 = [a3 copy];
+  v4 = [markers copy];
   markers = self->_markers;
   self->_markers = v4;
 

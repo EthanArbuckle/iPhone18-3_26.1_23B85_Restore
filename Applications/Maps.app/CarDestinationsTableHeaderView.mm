@@ -1,14 +1,14 @@
 @interface CarDestinationsTableHeaderView
-- (CarDestinationsTableHeaderView)initWithReuseIdentifier:(id)a3;
+- (CarDestinationsTableHeaderView)initWithReuseIdentifier:(id)identifier;
 @end
 
 @implementation CarDestinationsTableHeaderView
 
-- (CarDestinationsTableHeaderView)initWithReuseIdentifier:(id)a3
+- (CarDestinationsTableHeaderView)initWithReuseIdentifier:(id)identifier
 {
   v26.receiver = self;
   v26.super_class = CarDestinationsTableHeaderView;
-  v3 = [(CarDestinationsTableHeaderView *)&v26 initWithReuseIdentifier:a3];
+  v3 = [(CarDestinationsTableHeaderView *)&v26 initWithReuseIdentifier:identifier];
   if (v3)
   {
     v4 = [[MKVibrantLabel alloc] initWithStyle:1];
@@ -35,21 +35,21 @@
 
     [(MKVibrantLabel *)v3->_titleLabel setNumberOfLines:1];
     [(CarDestinationsTableHeaderView *)v3 addSubview:v3->_titleLabel];
-    v24 = [(MKVibrantLabel *)v3->_titleLabel firstBaselineAnchor];
-    v23 = [(CarDestinationsTableHeaderView *)v3 topAnchor];
-    v22 = [v24 constraintEqualToAnchor:v23 constant:10.0];
+    firstBaselineAnchor = [(MKVibrantLabel *)v3->_titleLabel firstBaselineAnchor];
+    topAnchor = [(CarDestinationsTableHeaderView *)v3 topAnchor];
+    v22 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:10.0];
     v27[0] = v22;
-    v21 = [(MKVibrantLabel *)v3->_titleLabel leadingAnchor];
-    v10 = [(CarDestinationsTableHeaderView *)v3 leadingAnchor];
-    v11 = [v21 constraintEqualToAnchor:v10 constant:-2.0];
+    leadingAnchor = [(MKVibrantLabel *)v3->_titleLabel leadingAnchor];
+    leadingAnchor2 = [(CarDestinationsTableHeaderView *)v3 leadingAnchor];
+    v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:-2.0];
     v27[1] = v11;
-    v12 = [(CarDestinationsTableHeaderView *)v3 trailingAnchor];
-    v13 = [(MKVibrantLabel *)v3->_titleLabel trailingAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    trailingAnchor = [(CarDestinationsTableHeaderView *)v3 trailingAnchor];
+    trailingAnchor2 = [(MKVibrantLabel *)v3->_titleLabel trailingAnchor];
+    v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v27[2] = v14;
-    v15 = [(CarDestinationsTableHeaderView *)v3 bottomAnchor];
-    v16 = [(MKVibrantLabel *)v3->_titleLabel lastBaselineAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16 constant:7.0];
+    bottomAnchor = [(CarDestinationsTableHeaderView *)v3 bottomAnchor];
+    lastBaselineAnchor = [(MKVibrantLabel *)v3->_titleLabel lastBaselineAnchor];
+    v17 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor constant:7.0];
     v27[3] = v17;
     v18 = [NSArray arrayWithObjects:v27 count:4];
     [(CarDestinationsTableHeaderView *)v3 addConstraints:v18];

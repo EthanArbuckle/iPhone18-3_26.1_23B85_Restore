@@ -1,14 +1,14 @@
 @interface ConversationControlsTrailingActionsView
-- (void)tappedStopScreenShareWithSender:(id)a3;
+- (void)tappedStopScreenShareWithSender:(id)sender;
 @end
 
 @implementation ConversationControlsTrailingActionsView
 
-- (void)tappedStopScreenShareWithSender:(id)a3
+- (void)tappedStopScreenShareWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  ConversationControlsTrailingActionsView.tappedStopScreenShare(sender:)(v5);
+  senderCopy = sender;
+  selfCopy = self;
+  ConversationControlsTrailingActionsView.tappedStopScreenShare(sender:)(selfCopy);
 }
 
 @end

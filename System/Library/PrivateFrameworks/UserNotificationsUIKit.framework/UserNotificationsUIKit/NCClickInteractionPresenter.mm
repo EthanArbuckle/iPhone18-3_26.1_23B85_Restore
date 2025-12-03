@@ -1,23 +1,23 @@
 @interface NCClickInteractionPresenter
-- (BOOL)clickInteractionShouldBegin:(id)a3;
+- (BOOL)clickInteractionShouldBegin:(id)begin;
 - (BOOL)dismissModalFullScreenIfNeeded;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (CGRect)_finalPresentedViewFrame;
 - (CGRect)_initialPresentedViewFrame;
 - (CGRect)sourceViewVisibleRect;
-- (NCClickInteractionPresenter)initWithTitle:(id)a3 sourceView:(id)a4 materialRecipe:(int64_t)a5;
+- (NCClickInteractionPresenter)initWithTitle:(id)title sourceView:(id)view materialRecipe:(int64_t)recipe;
 - (NCClickInteractionPresenterDelegate)delegate;
 - (NCTouchEaterGestureRecognizer)_touchEater;
 - (UIView)sourceView;
-- (double)_frictionForTransitionPresentation:(BOOL)a3 cancelled:(BOOL)a4;
-- (double)_tensionForTransitionPresentation:(BOOL)a3 cancelled:(BOOL)a4;
-- (id)highlightEffectForClickInteraction:(id)a3;
-- (void)_animatePresentation:(BOOL)a3 cancelled:(BOOL)a4 completion:(id)a5;
+- (double)_frictionForTransitionPresentation:(BOOL)presentation cancelled:(BOOL)cancelled;
+- (double)_tensionForTransitionPresentation:(BOOL)presentation cancelled:(BOOL)cancelled;
+- (id)highlightEffectForClickInteraction:(id)interaction;
+- (void)_animatePresentation:(BOOL)presentation cancelled:(BOOL)cancelled completion:(id)completion;
 - (void)_configureBackgroundMaterialViewIfNecessary;
 - (void)_configureContainerViewIfNecessary;
 - (void)_configurePortalViewIfNecessary;
-- (void)_configurePresentedControlIfNecessaryWithTitle:(id)a3;
-- (void)_handleEatenTouch:(id)a3;
+- (void)_configurePresentedControlIfNecessaryWithTitle:(id)title;
+- (void)_handleEatenTouch:(id)touch;
 - (void)_performCancel;
 - (void)_performPresentation;
 - (void)_setUpBackgroundMaterialView;
@@ -27,26 +27,26 @@
 - (void)_setUpPresentedControl;
 - (void)_setUpSubviews;
 - (void)_tearDown;
-- (void)clickInteractionDidEnd:(id)a3;
+- (void)clickInteractionDidEnd:(id)end;
 - (void)dealloc;
 - (void)presentModalFullScreen;
-- (void)setOverrideUserInterfaceStyle:(int64_t)a3;
+- (void)setOverrideUserInterfaceStyle:(int64_t)style;
 @end
 
 @implementation NCClickInteractionPresenter
 
-- (NCClickInteractionPresenter)initWithTitle:(id)a3 sourceView:(id)a4 materialRecipe:(int64_t)a5
+- (NCClickInteractionPresenter)initWithTitle:(id)title sourceView:(id)view materialRecipe:(int64_t)recipe
 {
-  v8 = a3;
-  v9 = a4;
+  titleCopy = title;
+  viewCopy = view;
   v19.receiver = self;
   v19.super_class = NCClickInteractionPresenter;
   v10 = [(NCClickInteractionPresenter *)&v19 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_sourceView, v9);
-    [v9 bounds];
+    objc_storeWeak(&v10->_sourceView, viewCopy);
+    [viewCopy bounds];
     v11->_sourceViewVisibleRect.origin.x = v12;
     v11->_sourceViewVisibleRect.origin.y = v13;
     v11->_sourceViewVisibleRect.size.width = v14;
@@ -56,9 +56,9 @@
     v11->_clickInteraction = v16;
 
     [(_UIClickInteraction *)v11->_clickInteraction setDelegate:v11];
-    [v9 addInteraction:v11->_clickInteraction];
-    v11->_materialRecipe = a5;
-    [(NCClickInteractionPresenter *)v11 _configurePresentedControlIfNecessaryWithTitle:v8];
+    [viewCopy addInteraction:v11->_clickInteraction];
+    v11->_materialRecipe = recipe;
+    [(NCClickInteractionPresenter *)v11 _configurePresentedControlIfNecessaryWithTitle:titleCopy];
   }
 
   return v11;
@@ -72,11 +72,11 @@
   [(NCClickInteractionPresenter *)&v3 dealloc];
 }
 
-- (void)setOverrideUserInterfaceStyle:(int64_t)a3
+- (void)setOverrideUserInterfaceStyle:(int64_t)style
 {
-  if (self->_overrideUserInterfaceStyle != a3)
+  if (self->_overrideUserInterfaceStyle != style)
   {
-    self->_overrideUserInterfaceStyle = a3;
+    self->_overrideUserInterfaceStyle = style;
     [(NCClickInteractionPresentedControl *)self->_presentedControl _setOverrideUserInterfaceStyle:?];
   }
 }
@@ -105,19 +105,19 @@
   [(NCClickInteractionPresenter *)self _performPresentation];
 }
 
-- (BOOL)clickInteractionShouldBegin:(id)a3
+- (BOOL)clickInteractionShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   WeakRetained = objc_loadWeakRetained(&self->_sourceView);
-  [v4 locationInCoordinateSpace:WeakRetained];
+  [beginCopy locationInCoordinateSpace:WeakRetained];
   v7 = v6;
   v9 = v8;
 
   v11.x = v7;
   v11.y = v9;
-  LODWORD(v4) = CGRectContainsPoint(self->_sourceViewVisibleRect, v11);
+  LODWORD(beginCopy) = CGRectContainsPoint(self->_sourceViewVisibleRect, v11);
 
-  if (v4)
+  if (beginCopy)
   {
     [(NCClickInteractionPresenter *)self _setUpPresentationIfNecessary];
   }
@@ -125,9 +125,9 @@
   return self->_hinting;
 }
 
-- (id)highlightEffectForClickInteraction:(id)a3
+- (id)highlightEffectForClickInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   objc_initWeak(&location, self);
   v5 = objc_alloc(MEMORY[0x277D76150]);
   v8[0] = MEMORY[0x277D85DD0];
@@ -192,7 +192,7 @@ void __66__NCClickInteractionPresenter_highlightEffectForClickInteraction___bloc
   [v7 setTransform:&t1];
 }
 
-- (void)clickInteractionDidEnd:(id)a3
+- (void)clickInteractionDidEnd:(id)end
 {
   [(UIView *)self->_portalView removeFromSuperview];
   portalView = self->_portalView;
@@ -205,16 +205,16 @@ void __66__NCClickInteractionPresenter_highlightEffectForClickInteraction___bloc
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a4;
-  v7 = a3;
+  touchCopy = touch;
+  recognizerCopy = recognizer;
   WeakRetained = objc_loadWeakRetained(&self->_touchEater);
 
-  if (WeakRetained == v7)
+  if (WeakRetained == recognizerCopy)
   {
     presentedControl = self->_presentedControl;
-    [v6 locationInView:presentedControl];
+    [touchCopy locationInView:presentedControl];
     v9 = [(NCClickInteractionPresentedControl *)presentedControl pointInside:0 withEvent:?]^ 1;
   }
 
@@ -251,8 +251,8 @@ void __66__NCClickInteractionPresenter_highlightEffectForClickInteraction___bloc
 
     [(UIView *)self->_containerView setAutoresizesSubviews:1];
     [(UIView *)self->_containerView setAutoresizingMask:18];
-    v6 = [(UIView *)self->_containerView layer];
-    [v6 setHitTestsAsOpaque:1];
+    layer = [(UIView *)self->_containerView layer];
+    [layer setHitTestsAsOpaque:1];
 
     obj = [[NCTouchEaterGestureRecognizer alloc] initWithTarget:self action:sel__handleEatenTouch_];
     [(UIView *)self->_containerView addGestureRecognizer:obj];
@@ -264,23 +264,23 @@ void __66__NCClickInteractionPresenter_highlightEffectForClickInteraction___bloc
 - (void)_setUpContainerView
 {
   [(NCClickInteractionPresenter *)self _configureContainerViewIfNecessary];
-  v3 = [(UIView *)self->_containerView superview];
+  superview = [(UIView *)self->_containerView superview];
 
-  if (!v3)
+  if (!superview)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    if ((objc_opt_respondsToSelector() & 1) == 0 || ([WeakRetained containerViewForClickInteractionPresenter:self], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+    if ((objc_opt_respondsToSelector() & 1) == 0 || ([WeakRetained containerViewForClickInteractionPresenter:self], (window = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v6 = objc_loadWeakRetained(&self->_sourceView);
-      v5 = [v6 window];
+      window = [v6 window];
     }
 
-    [v5 addSubview:self->_containerView];
+    [window addSubview:self->_containerView];
   }
 
   containerView = self->_containerView;
-  v8 = [(UIView *)containerView superview];
-  [v8 bounds];
+  superview2 = [(UIView *)containerView superview];
+  [superview2 bounds];
   [(UIView *)containerView setFrame:?];
 
   v9 = objc_loadWeakRetained(&self->_touchEater);
@@ -342,8 +342,8 @@ void __66__NCClickInteractionPresenter_highlightEffectForClickInteraction___bloc
   v8 = v7;
   v10 = v9;
   containerView = self->_containerView;
-  v12 = [WeakRetained superview];
-  [v12 convertRect:0 toView:{v4, v6, v8, v10}];
+  superview = [WeakRetained superview];
+  [superview convertRect:0 toView:{v4, v6, v8, v10}];
   [(UIView *)containerView convertRect:0 fromView:?];
   v14 = v13;
   v16 = v15;
@@ -353,12 +353,12 @@ void __66__NCClickInteractionPresenter_highlightEffectForClickInteraction___bloc
   [(UIView *)self->_portalView setFrame:v14, v16, v18, v20];
 }
 
-- (void)_configurePresentedControlIfNecessaryWithTitle:(id)a3
+- (void)_configurePresentedControlIfNecessaryWithTitle:(id)title
 {
   if (!self->_presentedControl)
   {
-    v5 = a3;
-    v6 = [[NCClickInteractionPresentedControl alloc] initWithTitle:v5 materialRecipe:self->_materialRecipe];
+    titleCopy = title;
+    v6 = [[NCClickInteractionPresentedControl alloc] initWithTitle:titleCopy materialRecipe:self->_materialRecipe];
 
     presentedControl = self->_presentedControl;
     self->_presentedControl = v6;
@@ -367,15 +367,15 @@ void __66__NCClickInteractionPresenter_highlightEffectForClickInteraction___bloc
     WeakRetained = objc_loadWeakRetained(&self->_sourceView);
     if (objc_opt_respondsToSelector())
     {
-      v8 = [WeakRetained adjustsFontForContentSizeCategory];
+      adjustsFontForContentSizeCategory = [WeakRetained adjustsFontForContentSizeCategory];
     }
 
     else
     {
-      v8 = 0;
+      adjustsFontForContentSizeCategory = 0;
     }
 
-    [(NCClickInteractionPresentedControl *)self->_presentedControl setAdjustsFontForContentSizeCategory:v8];
+    [(NCClickInteractionPresentedControl *)self->_presentedControl setAdjustsFontForContentSizeCategory:adjustsFontForContentSizeCategory];
   }
 }
 
@@ -390,11 +390,11 @@ void __66__NCClickInteractionPresenter_highlightEffectForClickInteraction___bloc
     v8 = 3221225472;
     v9 = __53__NCClickInteractionPresenter__setUpPresentedControl__block_invoke;
     v10 = &unk_27836F560;
-    v11 = self;
+    selfCopy = self;
     v12 = v4;
     v6 = v4;
     [v5 performWithoutAnimation:&v7];
-    [(UIView *)self->_containerView addSubview:self->_presentedControl, v7, v8, v9, v10, v11];
+    [(UIView *)self->_containerView addSubview:self->_presentedControl, v7, v8, v9, v10, selfCopy];
   }
 }
 
@@ -430,15 +430,15 @@ uint64_t __53__NCClickInteractionPresenter__setUpPresentedControl__block_invoke(
 {
   [(NCClickInteractionPresenter *)self _setUpContainerView];
   WeakRetained = objc_loadWeakRetained(&self->_sourceView);
-  v4 = [WeakRetained superview];
-  [WeakRetained convertRect:v4 toView:{self->_sourceViewVisibleRect.origin.x, self->_sourceViewVisibleRect.origin.y, self->_sourceViewVisibleRect.size.width, self->_sourceViewVisibleRect.size.height}];
+  superview = [WeakRetained superview];
+  [WeakRetained convertRect:superview toView:{self->_sourceViewVisibleRect.origin.x, self->_sourceViewVisibleRect.origin.y, self->_sourceViewVisibleRect.size.width, self->_sourceViewVisibleRect.size.height}];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [WeakRetained superview];
-  [v13 convertRect:self->_containerView toView:{v6, v8, v10, v12}];
+  superview2 = [WeakRetained superview];
+  [superview2 convertRect:self->_containerView toView:{v6, v8, v10, v12}];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -504,10 +504,10 @@ uint64_t __53__NCClickInteractionPresenter__setUpPresentedControl__block_invoke(
   return result;
 }
 
-- (double)_tensionForTransitionPresentation:(BOOL)a3 cancelled:(BOOL)a4
+- (double)_tensionForTransitionPresentation:(BOOL)presentation cancelled:(BOOL)cancelled
 {
   result = 500.0;
-  if (a4)
+  if (cancelled)
   {
     return 2000.0;
   }
@@ -515,11 +515,11 @@ uint64_t __53__NCClickInteractionPresenter__setUpPresentedControl__block_invoke(
   return result;
 }
 
-- (double)_frictionForTransitionPresentation:(BOOL)a3 cancelled:(BOOL)a4
+- (double)_frictionForTransitionPresentation:(BOOL)presentation cancelled:(BOOL)cancelled
 {
-  if (a4)
+  if (cancelled)
   {
-    [(NCClickInteractionPresenter *)self _tensionForTransitionPresentation:a3 cancelled:1];
+    [(NCClickInteractionPresenter *)self _tensionForTransitionPresentation:presentation cancelled:1];
 
     return NCFrictionForCriticallyDampedSpringWithTension(v4);
   }
@@ -527,7 +527,7 @@ uint64_t __53__NCClickInteractionPresenter__setUpPresentedControl__block_invoke(
   else
   {
     result = 18.0;
-    if (a3)
+    if (presentation)
     {
       return 26.0;
     }
@@ -536,12 +536,12 @@ uint64_t __53__NCClickInteractionPresenter__setUpPresentedControl__block_invoke(
   return result;
 }
 
-- (void)_animatePresentation:(BOOL)a3 cancelled:(BOOL)a4 completion:(id)a5
+- (void)_animatePresentation:(BOOL)presentation cancelled:(BOOL)cancelled completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  if (v6)
+  cancelledCopy = cancelled;
+  presentationCopy = presentation;
+  completionCopy = completion;
+  if (presentationCopy)
   {
     [(NCClickInteractionPresenter *)self _finalPresentedViewFrame];
   }
@@ -557,16 +557,16 @@ uint64_t __53__NCClickInteractionPresenter__setUpPresentedControl__block_invoke(
   v16 = v12;
   objc_initWeak(&location, self);
   v17 = MEMORY[0x277D75D18];
-  [(NCClickInteractionPresenter *)self _tensionForTransitionPresentation:v6 cancelled:v5];
+  [(NCClickInteractionPresenter *)self _tensionForTransitionPresentation:presentationCopy cancelled:cancelledCopy];
   v19 = v18;
-  [(NCClickInteractionPresenter *)self _frictionForTransitionPresentation:v6 cancelled:v5];
+  [(NCClickInteractionPresenter *)self _frictionForTransitionPresentation:presentationCopy cancelled:cancelledCopy];
   v21 = v20;
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __73__NCClickInteractionPresenter__animatePresentation_cancelled_completion___block_invoke;
   v27[3] = &unk_2783729A8;
   objc_copyWeak(v28, &location);
-  v29 = v6;
+  v29 = presentationCopy;
   v28[1] = v13;
   v28[2] = v14;
   v28[3] = v15;
@@ -575,11 +575,11 @@ uint64_t __53__NCClickInteractionPresenter__setUpPresentedControl__block_invoke(
   v23[1] = 3221225472;
   v23[2] = __73__NCClickInteractionPresenter__animatePresentation_cancelled_completion___block_invoke_2;
   v23[3] = &unk_2783729D0;
-  v26 = v6;
+  v26 = presentationCopy;
   objc_copyWeak(&v25, &location);
-  v22 = v8;
+  v22 = completionCopy;
   v24 = v22;
-  [v17 _animateUsingSpringWithTension:v5 ^ 1 friction:v27 interactive:v23 animations:v19 completion:v21];
+  [v17 _animateUsingSpringWithTension:cancelledCopy ^ 1 friction:v27 interactive:v23 animations:v19 completion:v21];
 
   objc_destroyWeak(&v25);
   objc_destroyWeak(v28);
@@ -737,9 +737,9 @@ void __45__NCClickInteractionPresenter__performCancel__block_invoke(uint64_t a1)
   self->_portalView = 0;
 }
 
-- (void)_handleEatenTouch:(id)a3
+- (void)_handleEatenTouch:(id)touch
 {
-  if ([a3 state] == 3)
+  if ([touch state] == 3)
   {
 
     [(NCClickInteractionPresenter *)self dismissModalFullScreenIfNeeded];

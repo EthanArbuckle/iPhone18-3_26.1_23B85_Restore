@@ -1,18 +1,18 @@
 @interface ACAccountStore
-- (id)mb_accountForPersonaIdentifier:(id)a3;
+- (id)mb_accountForPersonaIdentifier:(id)identifier;
 @end
 
 @implementation ACAccountStore
 
-- (id)mb_accountForPersonaIdentifier:(id)a3
+- (id)mb_accountForPersonaIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     __assert_rtn("[ACAccountStore(MBPersonaHelpers) mb_accountForPersonaIdentifier:]", "ACAccountStore+MBPersonaHelpers.m", 14, "personaIdentifier");
   }
 
-  v5 = v4;
+  v5 = identifierCopy;
   v6 = [(ACAccountStore *)self accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierAppleAccount];
   [(ACAccountStore *)self accountsWithAccountType:v6];
   v15 = 0u;
@@ -33,8 +33,8 @@
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 personaIdentifier];
-        v13 = [v12 isEqualToString:v5];
+        personaIdentifier = [v11 personaIdentifier];
+        v13 = [personaIdentifier isEqualToString:v5];
 
         if (v13)
         {

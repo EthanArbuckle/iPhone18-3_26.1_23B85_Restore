@@ -1,13 +1,13 @@
 @interface PLBasebandExtraCode
-- (void)logWithLogger:(id)a3;
+- (void)logWithLogger:(id)logger;
 @end
 
 @implementation PLBasebandExtraCode
 
-- (void)logWithLogger:(id)a3
+- (void)logWithLogger:(id)logger
 {
-  v3 = [(PLBasebandMessage *)self agent];
-  [v3 logEventNoneBBReportBy:7 withAction:6];
+  agent = [(PLBasebandMessage *)self agent];
+  [agent logEventNoneBBReportBy:7 withAction:6];
 }
 
 @end

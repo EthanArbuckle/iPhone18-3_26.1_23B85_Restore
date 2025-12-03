@@ -1,25 +1,25 @@
 @interface HUAccessorySettingsDetailsViewControllerFactory
-+ (id)_viewControllerForIdentifier:(id)a3 groupItem:(id)a4;
-+ (id)_viewControllerForIdentifier:(id)a3 settingItem:(id)a4;
-+ (id)viewControllerForGroup:(id)a3;
-+ (id)viewControllerForSettingItem:(id)a3;
++ (id)_viewControllerForIdentifier:(id)identifier groupItem:(id)item;
++ (id)_viewControllerForIdentifier:(id)identifier settingItem:(id)item;
++ (id)viewControllerForGroup:(id)group;
++ (id)viewControllerForSettingItem:(id)item;
 @end
 
 @implementation HUAccessorySettingsDetailsViewControllerFactory
 
-+ (id)_viewControllerForIdentifier:(id)a3 groupItem:(id)a4
++ (id)_viewControllerForIdentifier:(id)identifier groupItem:(id)item
 {
-  v5 = a4;
-  v6 = a3;
+  itemCopy = item;
+  identifierCopy = identifier;
   if (_MergedGlobals_639 != -1)
   {
     dispatch_once(&_MergedGlobals_639, &__block_literal_global_261_0);
   }
 
   v7 = qword_2811221F8;
-  v8 = [v7 objectForKeyedSubscript:v6];
+  v8 = [v7 objectForKeyedSubscript:identifierCopy];
 
-  v9 = [[v8 alloc] initWithAccessoryGroupItem:v5];
+  v9 = [[v8 alloc] initWithAccessoryGroupItem:itemCopy];
 
   return v9;
 }
@@ -54,19 +54,19 @@ void __90__HUAccessorySettingsDetailsViewControllerFactory__viewControllerForIde
   qword_2811221F8 = v0;
 }
 
-+ (id)_viewControllerForIdentifier:(id)a3 settingItem:(id)a4
++ (id)_viewControllerForIdentifier:(id)identifier settingItem:(id)item
 {
-  v5 = a4;
-  v6 = a3;
+  itemCopy = item;
+  identifierCopy = identifier;
   if (qword_281122200 != -1)
   {
     dispatch_once(&qword_281122200, &__block_literal_global_311_0);
   }
 
   v7 = qword_281122208;
-  v8 = [v7 objectForKeyedSubscript:v6];
+  v8 = [v7 objectForKeyedSubscript:identifierCopy];
 
-  v9 = [[v8 alloc] initWithAccessorySettingItem:v5];
+  v9 = [[v8 alloc] initWithAccessorySettingItem:itemCopy];
 
   return v9;
 }
@@ -87,17 +87,17 @@ void __92__HUAccessorySettingsDetailsViewControllerFactory__viewControllerForIde
   qword_281122208 = v0;
 }
 
-+ (id)viewControllerForSettingItem:(id)a3
++ (id)viewControllerForSettingItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 entity];
-  v6 = [v5 userInfo];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13390]];
+  itemCopy = item;
+  entity = [itemCopy entity];
+  userInfo = [entity userInfo];
+  v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D13390]];
 
-  v8 = [v4 settingKeyPath];
-  LODWORD(v6) = [v8 isEqualToString:*MEMORY[0x277D139E0]];
+  settingKeyPath = [itemCopy settingKeyPath];
+  LODWORD(userInfo) = [settingKeyPath isEqualToString:*MEMORY[0x277D139E0]];
 
-  if (v6)
+  if (userInfo)
   {
 
     v7 = @"SiriTriggerPhraseSettingDetailsViewController";
@@ -107,12 +107,12 @@ void __92__HUAccessorySettingsDetailsViewControllerFactory__viewControllerForIde
   {
     v10 = 0;
 LABEL_8:
-    v11 = [[HUAccessorySettingsDetailsViewController alloc] initWithAccessorySettingItem:v4];
+    v11 = [[HUAccessorySettingsDetailsViewController alloc] initWithAccessorySettingItem:itemCopy];
 
     goto LABEL_9;
   }
 
-  v9 = [a1 _viewControllerForIdentifier:v7 settingItem:v4];
+  v9 = [self _viewControllerForIdentifier:v7 settingItem:itemCopy];
   v10 = v9;
   if (!v9)
   {
@@ -130,23 +130,23 @@ LABEL_9:
   return v11;
 }
 
-+ (id)viewControllerForGroup:(id)a3
++ (id)viewControllerForGroup:(id)group
 {
-  v4 = a3;
-  v5 = [v4 entity];
-  v6 = [v5 userInfo];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13390]];
+  groupCopy = group;
+  entity = [groupCopy entity];
+  userInfo = [entity userInfo];
+  v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D13390]];
 
   if (!v7)
   {
     v9 = 0;
 LABEL_6:
-    v10 = [[HUAccessorySettingsDetailsViewController alloc] initWithAccessoryGroupItem:v4];
+    v10 = [[HUAccessorySettingsDetailsViewController alloc] initWithAccessoryGroupItem:groupCopy];
 
     goto LABEL_7;
   }
 
-  v8 = [a1 _viewControllerForIdentifier:v7 groupItem:v4];
+  v8 = [self _viewControllerForIdentifier:v7 groupItem:groupCopy];
   v9 = v8;
   if (!v8)
   {

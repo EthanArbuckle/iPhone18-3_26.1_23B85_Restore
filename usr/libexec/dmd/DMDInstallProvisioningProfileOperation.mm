@@ -1,7 +1,7 @@
 @interface DMDInstallProvisioningProfileOperation
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4;
++ (BOOL)validateRequest:(id)request error:(id *)error;
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -21,21 +21,21 @@
   return [NSSet setWithObject:v2];
 }
 
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4
++ (BOOL)validateRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v10.receiver = a1;
+  requestCopy = request;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___DMDInstallProvisioningProfileOperation;
-  if (!objc_msgSendSuper2(&v10, "validateRequest:error:", v6, a4))
+  if (!objc_msgSendSuper2(&v10, "validateRequest:error:", requestCopy, error))
   {
     goto LABEL_6;
   }
 
-  v7 = [v6 profileData];
+  profileData = [requestCopy profileData];
 
-  if (!v7)
+  if (!profileData)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -43,31 +43,31 @@
     v11 = DMFInvalidParameterErrorKey;
     v12 = @"request.profileData";
     v8 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-    *a4 = DMFErrorWithCodeAndUserInfo();
+    *error = DMFErrorWithCodeAndUserInfo();
 
 LABEL_6:
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_7;
   }
 
-  LOBYTE(a4) = 1;
+  LOBYTE(error) = 1;
 LABEL_7:
 
-  return a4;
+  return error;
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = +[MCProfileConnection sharedConnection];
-  v6 = [v4 profileData];
-  v7 = [v4 managingProfileIdentifier];
+  profileData = [requestCopy profileData];
+  managingProfileIdentifier = [requestCopy managingProfileIdentifier];
 
   v11 = 0;
-  LODWORD(v4) = [v5 installProvisioningProfileData:v6 managingProfileIdentifier:v7 outError:&v11];
+  LODWORD(requestCopy) = [v5 installProvisioningProfileData:profileData managingProfileIdentifier:managingProfileIdentifier outError:&v11];
   v8 = v11;
 
-  if (v4)
+  if (requestCopy)
   {
     [(DMDInstallProvisioningProfileOperation *)self endOperationWithResultObject:0];
   }

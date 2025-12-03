@@ -1,26 +1,26 @@
 @interface CAFMeasurementRange
-- (BOOL)valueIsInRange:(id)a3;
-- (CAFMeasurementRange)initWithMetaData:(id)a3 unit:(id)a4;
+- (BOOL)valueIsInRange:(id)range;
+- (CAFMeasurementRange)initWithMetaData:(id)data unit:(id)unit;
 - (NSMeasurement)maximumValue;
 - (NSMeasurement)minimumValue;
 - (NSMeasurement)stepValue;
-- (id)limitedValueForValue:(id)a3;
+- (id)limitedValueForValue:(id)value;
 - (id)rangeDescription;
-- (id)valueRoundedToNearestStepValue:(id)a3;
+- (id)valueRoundedToNearestStepValue:(id)value;
 @end
 
 @implementation CAFMeasurementRange
 
-- (CAFMeasurementRange)initWithMetaData:(id)a3 unit:(id)a4
+- (CAFMeasurementRange)initWithMetaData:(id)data unit:(id)unit
 {
-  v7 = a4;
+  unitCopy = unit;
   v11.receiver = self;
   v11.super_class = CAFMeasurementRange;
-  v8 = [(CAFRange *)&v11 initWithMetaData:a3];
+  v8 = [(CAFRange *)&v11 initWithMetaData:data];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_unit, a4);
+    objc_storeStrong(&v8->_unit, unit);
   }
 
   return v9;
@@ -29,11 +29,11 @@
 - (NSMeasurement)minimumValue
 {
   v3 = objc_alloc(MEMORY[0x277CCAB10]);
-  v4 = [(CAFRange *)self minimum];
-  [v4 doubleValue];
+  minimum = [(CAFRange *)self minimum];
+  [minimum doubleValue];
   v6 = v5;
-  v7 = [(CAFMeasurementRange *)self unit];
-  v8 = [v3 initWithDoubleValue:v7 unit:v6];
+  unit = [(CAFMeasurementRange *)self unit];
+  v8 = [v3 initWithDoubleValue:unit unit:v6];
 
   return v8;
 }
@@ -41,11 +41,11 @@
 - (NSMeasurement)maximumValue
 {
   v3 = objc_alloc(MEMORY[0x277CCAB10]);
-  v4 = [(CAFRange *)self maximum];
-  [v4 doubleValue];
+  maximum = [(CAFRange *)self maximum];
+  [maximum doubleValue];
   v6 = v5;
-  v7 = [(CAFMeasurementRange *)self unit];
-  v8 = [v3 initWithDoubleValue:v7 unit:v6];
+  unit = [(CAFMeasurementRange *)self unit];
+  v8 = [v3 initWithDoubleValue:unit unit:v6];
 
   return v8;
 }
@@ -53,37 +53,37 @@
 - (NSMeasurement)stepValue
 {
   v3 = objc_alloc(MEMORY[0x277CCAB10]);
-  v4 = [(CAFRange *)self step];
-  [v4 doubleValue];
+  step = [(CAFRange *)self step];
+  [step doubleValue];
   v6 = v5;
-  v7 = [(CAFMeasurementRange *)self unit];
-  v8 = [v3 initWithDoubleValue:v7 unit:v6];
+  unit = [(CAFMeasurementRange *)self unit];
+  v8 = [v3 initWithDoubleValue:unit unit:v6];
 
   return v8;
 }
 
 - (id)rangeDescription
 {
-  v3 = [(CAFMeasurementRange *)self minimumValue];
-  v4 = [CAFMeasurementCharacteristic _sharedStringFromMeasurement:v3];
+  minimumValue = [(CAFMeasurementRange *)self minimumValue];
+  v4 = [CAFMeasurementCharacteristic _sharedStringFromMeasurement:minimumValue];
 
-  v5 = [(CAFMeasurementRange *)self maximumValue];
-  v6 = [CAFMeasurementCharacteristic _sharedStringFromMeasurement:v5];
+  maximumValue = [(CAFMeasurementRange *)self maximumValue];
+  v6 = [CAFMeasurementCharacteristic _sharedStringFromMeasurement:maximumValue];
 
-  v7 = [(CAFMeasurementRange *)self stepValue];
-  v8 = [CAFMeasurementCharacteristic _sharedStringFromMeasurement:v7];
+  stepValue = [(CAFMeasurementRange *)self stepValue];
+  v8 = [CAFMeasurementCharacteristic _sharedStringFromMeasurement:stepValue];
 
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@..%@]x%@", v4, v6, v8];
 
   return v9;
 }
 
-- (BOOL)valueIsInRange:(id)a3
+- (BOOL)valueIsInRange:(id)range
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
-  v6 = [(CAFMeasurementRange *)self unit];
-  v7 = [v5 measurementByConvertingToUnit:v6];
+  rangeCopy = range;
+  unit = [(CAFMeasurementRange *)self unit];
+  v7 = [rangeCopy measurementByConvertingToUnit:unit];
 
   [v7 doubleValue];
   v8 = [v4 numberWithDouble:?];
@@ -92,36 +92,36 @@
   return self;
 }
 
-- (id)valueRoundedToNearestStepValue:(id)a3
+- (id)valueRoundedToNearestStepValue:(id)value
 {
-  v4 = a3;
-  v5 = [(CAFRange *)self floatRange];
-  v6 = [(CAFMeasurementRange *)self unit];
-  v7 = [v4 measurementByConvertingToUnit:v6];
+  valueCopy = value;
+  floatRange = [(CAFRange *)self floatRange];
+  unit = [(CAFMeasurementRange *)self unit];
+  v7 = [valueCopy measurementByConvertingToUnit:unit];
 
   [v7 doubleValue];
   *&v8 = v8;
-  [v5 valueRoundedToNearestStepValue:v8];
+  [floatRange valueRoundedToNearestStepValue:v8];
   v10 = v9;
   v11 = objc_alloc(MEMORY[0x277CCAB10]);
-  v12 = [(CAFMeasurementRange *)self unit];
-  v13 = [v11 initWithDoubleValue:v12 unit:v10];
+  unit2 = [(CAFMeasurementRange *)self unit];
+  v13 = [v11 initWithDoubleValue:unit2 unit:v10];
 
   return v13;
 }
 
-- (id)limitedValueForValue:(id)a3
+- (id)limitedValueForValue:(id)value
 {
-  v4 = a3;
-  v5 = [(CAFMeasurementRange *)self unit];
-  v6 = [v4 measurementByConvertingToUnit:v5];
+  valueCopy = value;
+  unit = [(CAFMeasurementRange *)self unit];
+  v6 = [valueCopy measurementByConvertingToUnit:unit];
 
-  v7 = [v6 numberValue];
-  v8 = [(CAFRange *)self limitedToRange:v7];
+  numberValue = [v6 numberValue];
+  v8 = [(CAFRange *)self limitedToRange:numberValue];
 
   v9 = objc_alloc(MEMORY[0x277CCAB10]);
-  v10 = [(CAFMeasurementRange *)self unit];
-  v11 = [v9 initWithNumberValue:v8 unit:v10];
+  unit2 = [(CAFMeasurementRange *)self unit];
+  v11 = [v9 initWithNumberValue:v8 unit:unit2];
 
   return v11;
 }

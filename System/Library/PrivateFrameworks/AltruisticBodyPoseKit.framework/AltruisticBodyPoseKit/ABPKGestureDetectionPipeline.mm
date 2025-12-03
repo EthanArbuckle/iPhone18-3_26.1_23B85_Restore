@@ -1,36 +1,36 @@
 @interface ABPKGestureDetectionPipeline
-- (ABPKGestureDetectionPipeline)initWithFrequency:(unsigned int)a3;
-- (BOOL)overlayResult:(id)a3 OnImage:(__CVBuffer *)a4 andGenerateOverlayImage:(__CVBuffer *)a5;
-- (int)runPoseEstimationWithInput:(__CVBuffer *)a3 abpkDeviceOrientation:(int64_t)a4 atTimeStamp:(double)a5 andOutput:(id)a6;
-- (int)runWithInput:(__CVBuffer *)a3 abpkDeviceOrientation:(int64_t)a4 atTimeStamp:(double)a5 andOutput:(id)a6;
-- (void)extractDataForJointIdx:(void *)a3@<X3> fromPoseTimeArray:(void *)a4@<X8>;
+- (ABPKGestureDetectionPipeline)initWithFrequency:(unsigned int)frequency;
+- (BOOL)overlayResult:(id)result OnImage:(__CVBuffer *)image andGenerateOverlayImage:(__CVBuffer *)overlayImage;
+- (int)runPoseEstimationWithInput:(__CVBuffer *)input abpkDeviceOrientation:(int64_t)orientation atTimeStamp:(double)stamp andOutput:(id)output;
+- (int)runWithInput:(__CVBuffer *)input abpkDeviceOrientation:(int64_t)orientation atTimeStamp:(double)stamp andOutput:(id)output;
+- (void)extractDataForJointIdx:(void *)idx@<X3> fromPoseTimeArray:(void *)array@<X8>;
 @end
 
 @implementation ABPKGestureDetectionPipeline
 
-- (ABPKGestureDetectionPipeline)initWithFrequency:(unsigned int)a3
+- (ABPKGestureDetectionPipeline)initWithFrequency:(unsigned int)frequency
 {
-  v4 = self;
+  selfCopy = self;
   v32 = *MEMORY[0x277D85DE8];
   [(ABPKGestureDetectionPipeline *)self _startInitABPKSignpost];
-  if (a3 > 0x1E || ((1 << a3) & 0x40000420) == 0)
+  if (frequency > 0x1E || ((1 << frequency) & 0x40000420) == 0)
   {
     v25 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      v31 = a3;
+      frequencyCopy = frequency;
       _os_log_impl(&dword_23EDDC000, v25, OS_LOG_TYPE_ERROR, " Failed to initialize Gesture Detection Pipeline. Unsupported Frequency: %d ", buf, 8u);
     }
 
     goto LABEL_29;
   }
 
-  v4->_fps = a3;
-  v4->_maxPreviousPoses = 2 * a3;
-  v4->_raisingMaxPreviousPoses = a3 / 3u + 1;
-  v4->_wavingMinPeriodicFrames = a3 / 3u + 1;
-  v4->_wavingAngleChangeLastFrames = ((139812 * ((5 * a3) & 0x3FFFu)) >> 20) + 1;
+  selfCopy->_fps = frequency;
+  selfCopy->_maxPreviousPoses = 2 * frequency;
+  selfCopy->_raisingMaxPreviousPoses = frequency / 3u + 1;
+  selfCopy->_wavingMinPeriodicFrames = frequency / 3u + 1;
+  selfCopy->_wavingAngleChangeLastFrames = ((139812 * ((5 * frequency) & 0x3FFFu)) >> 20) + 1;
   v5 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -41,61 +41,61 @@
   v6 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    fps = v4->_fps;
+    fps = selfCopy->_fps;
     *buf = 67109120;
-    v31 = fps;
+    frequencyCopy = fps;
     _os_log_impl(&dword_23EDDC000, v6, OS_LOG_TYPE_DEBUG, " \t _fps: %d ", buf, 8u);
   }
 
   v8 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    maxPreviousPoses = v4->_maxPreviousPoses;
+    maxPreviousPoses = selfCopy->_maxPreviousPoses;
     *buf = 67109120;
-    v31 = maxPreviousPoses;
+    frequencyCopy = maxPreviousPoses;
     _os_log_impl(&dword_23EDDC000, v8, OS_LOG_TYPE_DEBUG, " \t maxPreviousPoses: %d ", buf, 8u);
   }
 
   v10 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    raisingMaxPreviousPoses = v4->_raisingMaxPreviousPoses;
+    raisingMaxPreviousPoses = selfCopy->_raisingMaxPreviousPoses;
     *buf = 67109120;
-    v31 = raisingMaxPreviousPoses;
+    frequencyCopy = raisingMaxPreviousPoses;
     _os_log_impl(&dword_23EDDC000, v10, OS_LOG_TYPE_DEBUG, " \t raisingMaxPreviousPoses: %d, ", buf, 8u);
   }
 
   v12 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    wavingMinPeriodicFrames = v4->_wavingMinPeriodicFrames;
+    wavingMinPeriodicFrames = selfCopy->_wavingMinPeriodicFrames;
     *buf = 67109120;
-    v31 = wavingMinPeriodicFrames;
+    frequencyCopy = wavingMinPeriodicFrames;
     _os_log_impl(&dword_23EDDC000, v12, OS_LOG_TYPE_DEBUG, " \t wavingMinPeriodicFrames: %d ", buf, 8u);
   }
 
   v14 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    wavingAngleChangeLastFrames = v4->_wavingAngleChangeLastFrames;
+    wavingAngleChangeLastFrames = selfCopy->_wavingAngleChangeLastFrames;
     *buf = 67109120;
-    v31 = wavingAngleChangeLastFrames;
+    frequencyCopy = wavingAngleChangeLastFrames;
     _os_log_impl(&dword_23EDDC000, v14, OS_LOG_TYPE_DEBUG, " \t wavingAngleChangeLastFrames: %d ", buf, 8u);
   }
 
-  v29.receiver = v4;
+  v29.receiver = selfCopy;
   v29.super_class = ABPKGestureDetectionPipeline;
-  v4 = [(ABPKGestureDetectionPipeline *)&v29 init];
-  if (!v4)
+  selfCopy = [(ABPKGestureDetectionPipeline *)&v29 init];
+  if (!selfCopy)
   {
     goto LABEL_19;
   }
 
   v16 = [[ABPK2DDetectionConfiguration alloc] initWithAlgorithmMode:0];
-  config2D = v4->_config2D;
-  v4->_config2D = v16;
+  config2D = selfCopy->_config2D;
+  selfCopy->_config2D = v16;
 
-  if (!v4->_config2D)
+  if (!selfCopy->_config2D)
   {
     v26 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -107,11 +107,11 @@
     goto LABEL_28;
   }
 
-  v18 = [[ABPK2DPoseEstimation alloc] initWith2DDetectionConfig:v4->_config2D use3DSkeletonForExtrapolation:0 shouldPush3DSupportSkeleton:0];
-  poseEstimation2D = v4->_poseEstimation2D;
-  v4->_poseEstimation2D = v18;
+  v18 = [[ABPK2DPoseEstimation alloc] initWith2DDetectionConfig:selfCopy->_config2D use3DSkeletonForExtrapolation:0 shouldPush3DSupportSkeleton:0];
+  poseEstimation2D = selfCopy->_poseEstimation2D;
+  selfCopy->_poseEstimation2D = v18;
 
-  if (!v4->_poseEstimation2D)
+  if (!selfCopy->_poseEstimation2D)
   {
     v26 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -128,31 +128,31 @@ LABEL_29:
   }
 
   v20 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  joints2DBufferDict = v4->_joints2DBufferDict;
-  v4->_joints2DBufferDict = v20;
+  joints2DBufferDict = selfCopy->_joints2DBufferDict;
+  selfCopy->_joints2DBufferDict = v20;
 
   v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  previousGestureDetectionResult = v4->_previousGestureDetectionResult;
-  v4->_previousGestureDetectionResult = v22;
+  previousGestureDetectionResult = selfCopy->_previousGestureDetectionResult;
+  selfCopy->_previousGestureDetectionResult = v22;
 
-  v4->_lastTrackingId = -1;
+  selfCopy->_lastTrackingId = -1;
 LABEL_19:
-  [(ABPKGestureDetectionPipeline *)v4 _endInitABPKSignpost];
-  v4 = v4;
-  v24 = v4;
+  [(ABPKGestureDetectionPipeline *)selfCopy _endInitABPKSignpost];
+  selfCopy = selfCopy;
+  v24 = selfCopy;
 LABEL_30:
 
   v27 = *MEMORY[0x277D85DE8];
   return v24;
 }
 
-- (int)runWithInput:(__CVBuffer *)a3 abpkDeviceOrientation:(int64_t)a4 atTimeStamp:(double)a5 andOutput:(id)a6
+- (int)runWithInput:(__CVBuffer *)input abpkDeviceOrientation:(int64_t)orientation atTimeStamp:(double)stamp andOutput:(id)output
 {
   v126 = *MEMORY[0x277D85DE8];
-  v108 = a6;
-  [(ABPKGestureDetectionPipeline *)self _startGestureDetectionRunWithInputSignpostWithTimestamp:a5];
+  outputCopy = output;
+  [(ABPKGestureDetectionPipeline *)self _startGestureDetectionRunWithInputSignpostWithTimestamp:stamp];
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v107 = [(ABPKGestureDetectionPipeline *)self runPoseEstimationWithInput:a3 abpkDeviceOrientation:a4 atTimeStamp:v10 andOutput:a5];
+  v107 = [(ABPKGestureDetectionPipeline *)self runPoseEstimationWithInput:input abpkDeviceOrientation:orientation atTimeStamp:v10 andOutput:stamp];
   v11 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -163,7 +163,7 @@ LABEL_30:
 
   v113 = v10;
 
-  [(ABPKGestureDetectionPipeline *)self _startGestureDetectionPersonTrackingSignpostWithTimestamp:a5];
+  [(ABPKGestureDetectionPipeline *)self _startGestureDetectionPersonTrackingSignpostWithTimestamp:stamp];
   v12 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -194,7 +194,7 @@ LABEL_30:
       }
 
       *&v15 = 0.0;
-      v109 = -1000;
+      trackingId3 = -1000;
       v16 = 10000.0;
       while (v15 < [(NSMutableArray *)self->_previousGestureDetectionResult count])
       {
@@ -202,11 +202,11 @@ LABEL_30:
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
           v18 = [(NSMutableArray *)self->_previousGestureDetectionResult objectAtIndexedSubscript:v15];
-          v19 = [v18 trackingId];
+          trackingId = [v18 trackingId];
           *v121 = 134218240;
           v122 = *&v15;
           v123 = 1024;
-          v124 = v19;
+          v124 = trackingId;
           _os_log_impl(&dword_23EDDC000, v17, OS_LOG_TYPE_DEBUG, " \t Comparing with previous skeleton %lu with tracking_id: %u ", v121, 0x12u);
         }
 
@@ -215,7 +215,7 @@ LABEL_30:
         v116 = 0;
         std::vector<unsigned long>::__init_with_size[abi:ne200100]<unsigned long *,unsigned long *>(&__p, __src, v118, (v118 - __src) >> 3);
         v20 = [(NSMutableArray *)self->_previousGestureDetectionResult objectAtIndexedSubscript:v15];
-        v21 = [v20 trackingId];
+        trackingId2 = [v20 trackingId];
         if (v115 == __p)
         {
           v24 = 0;
@@ -234,7 +234,7 @@ LABEL_30:
             v23 = (v115 - __p) >> 3;
           }
 
-          if (*__p == v21)
+          if (*__p == trackingId2)
           {
             v24 = 1;
           }
@@ -253,7 +253,7 @@ LABEL_30:
               v27 = *(__p + v25++);
             }
 
-            while (v27 != v21);
+            while (v27 != trackingId2);
             v24 = v26 < v22;
           }
         }
@@ -277,25 +277,25 @@ LABEL_30:
         }
 
         v29 = [v113 objectAtIndexedSubscript:v13];
-        v30 = [v29 keypoints2d];
+        keypoints2d = [v29 keypoints2d];
         v31 = [(NSMutableArray *)self->_previousGestureDetectionResult objectAtIndexedSubscript:v15];
-        v32 = [v31 skeleton2D];
-        v33 = [v32 keypoints2d];
+        skeleton2D = [v31 skeleton2D];
+        keypoints2d2 = [skeleton2D keypoints2d];
         v34 = [v113 objectAtIndexedSubscript:v13];
-        v35 = [v34 skeletonDefinition];
-        v36 = [v35 jointCount];
-        for (i = 0.0; v36; --v36)
+        skeletonDefinition = [v34 skeletonDefinition];
+        jointCount = [skeletonDefinition jointCount];
+        for (i = 0.0; jointCount; --jointCount)
         {
-          *v38.f32 = *v30;
-          *&v38.u32[2] = *v33;
+          *v38.f32 = *keypoints2d;
+          *&v38.u32[2] = *keypoints2d2;
           if ((vmaxv_u16(vmovn_s32(vcltzq_f32(v38))) & 1) == 0)
           {
-            v39 = vsub_f32(*v30, *v33);
+            v39 = vsub_f32(*keypoints2d, *keypoints2d2);
             i = i + sqrtf(vaddv_f32(vmul_f32(v39, v39)));
           }
 
-          ++v33;
-          ++v30;
+          ++keypoints2d2;
+          ++keypoints2d;
         }
 
         v40 = __ABPKLogSharedInstance();
@@ -309,7 +309,7 @@ LABEL_30:
         if (i < v16)
         {
           v28 = [(NSMutableArray *)self->_previousGestureDetectionResult objectAtIndexedSubscript:v15];
-          v109 = [v28 trackingId];
+          trackingId3 = [v28 trackingId];
           v16 = i;
 LABEL_38:
         }
@@ -327,8 +327,8 @@ LABEL_38:
 
       if (v16 <= 1500.0)
       {
-        v43 = v109;
-        if (v109 == -1000)
+        v43 = trackingId3;
+        if (trackingId3 == -1000)
         {
           goto LABEL_47;
         }
@@ -409,15 +409,15 @@ LABEL_47:
 
       v118 = v46;
       v55 = [v113 objectAtIndexedSubscript:v13];
-      v56 = [v55 skeletonDefinition];
-      v57 = [v56 jointCount];
+      skeletonDefinition2 = [v55 skeletonDefinition];
+      jointCount2 = [skeletonDefinition2 jointCount];
 
       v111 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v58 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v59 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      if (v57)
+      if (jointCount2)
       {
-        for (j = 0; j != v57; ++j)
+        for (j = 0; j != jointCount2; ++j)
         {
           v61 = [v113 objectAtIndexedSubscript:v13];
           v112 = *([v61 keypoints2d] + 8 * j);
@@ -478,8 +478,8 @@ LABEL_47:
 
   self->_lastTrackingId += [v10 count];
 LABEL_71:
-  [(ABPKGestureDetectionPipeline *)self _endGestureDetectionPersonTrackingSignpostWithTimestamp:a5];
-  [(ABPKGestureDetectionPipeline *)self _startGestureDetectionAlgorithmSignpostWithTimestamp:a5];
+  [(ABPKGestureDetectionPipeline *)self _endGestureDetectionPersonTrackingSignpostWithTimestamp:stamp];
+  [(ABPKGestureDetectionPipeline *)self _startGestureDetectionAlgorithmSignpostWithTimestamp:stamp];
   if (v107)
   {
     v83 = __ABPKLogSharedInstance();
@@ -501,11 +501,11 @@ LABEL_71:
       _os_log_impl(&dword_23EDDC000, v85, OS_LOG_TYPE_DEBUG, " _previousGestureDetectionResult count: %lu ", v121, 0xCu);
     }
 
-    v87 = [(NSMutableDictionary *)self->_joints2DBufferDict allKeys];
-    for (m = 0; [v87 count] > m; ++m)
+    allKeys = [(NSMutableDictionary *)self->_joints2DBufferDict allKeys];
+    for (m = 0; [allKeys count] > m; ++m)
     {
       v89 = self->_joints2DBufferDict;
-      v90 = [v87 objectAtIndexedSubscript:m];
+      v90 = [allKeys objectAtIndexedSubscript:m];
       [(NSMutableDictionary *)v89 removeObjectForKey:v90];
     }
 
@@ -530,10 +530,10 @@ LABEL_71:
       v98 = [v113 objectAtIndexedSubscript:n];
       [(ABPKGestureDetectionPipeline *)self runGestureDetection:v98 withTrackingId:v97 andResult:v96];
 
-      [v108 addObject:v96];
+      [outputCopy addObject:v96];
     }
 
-    v99 = [v108 mutableCopy];
+    v99 = [outputCopy mutableCopy];
     v100 = self->_previousGestureDetectionResult;
     self->_previousGestureDetectionResult = v99;
 
@@ -556,8 +556,8 @@ LABEL_71:
     }
 
     v92 = v113;
-    [(ABPKGestureDetectionPipeline *)self _endGestureDetectionAlgorithmSignpostWithTimestamp:a5];
-    [(ABPKGestureDetectionPipeline *)self _endGestureDetectionRunWithInputSignpostWithTimestamp:a5];
+    [(ABPKGestureDetectionPipeline *)self _endGestureDetectionAlgorithmSignpostWithTimestamp:stamp];
+    [(ABPKGestureDetectionPipeline *)self _endGestureDetectionRunWithInputSignpostWithTimestamp:stamp];
     v91 = 0;
   }
 
@@ -577,13 +577,13 @@ LABEL_71:
   return v91;
 }
 
-- (int)runPoseEstimationWithInput:(__CVBuffer *)a3 abpkDeviceOrientation:(int64_t)a4 atTimeStamp:(double)a5 andOutput:(id)a6
+- (int)runPoseEstimationWithInput:(__CVBuffer *)input abpkDeviceOrientation:(int64_t)orientation atTimeStamp:(double)stamp andOutput:(id)output
 {
   v45 = *MEMORY[0x277D85DE8];
-  v10 = a6;
-  [(ABPKGestureDetectionPipeline *)self _startGestureDetectionImagePreProcessingSignpostWithTimestamp:a5];
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  outputCopy = output;
+  [(ABPKGestureDetectionPipeline *)self _startGestureDetectionImagePreProcessingSignpostWithTimestamp:stamp];
+  Width = CVPixelBufferGetWidth(input);
+  Height = CVPixelBufferGetHeight(input);
   v13 = __ABPKLogSharedInstance();
   v14 = Width;
   v15 = Height;
@@ -596,13 +596,13 @@ LABEL_71:
     _os_log_impl(&dword_23EDDC000, v13, OS_LOG_TYPE_DEBUG, " Sensor image resolution: (height,width):(%f,%f) ", buf, 0x16u);
   }
 
-  if ([(ABPK2DDetectionConfiguration *)self->_config2D abpkDeviceOrientation]!= a4)
+  if ([(ABPK2DDetectionConfiguration *)self->_config2D abpkDeviceOrientation]!= orientation)
   {
     v16 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       v17 = convertABPKDeviceOrientationEnumToString([(ABPK2DDetectionConfiguration *)self->_config2D abpkDeviceOrientation]);
-      convertABPKDeviceOrientationEnumToString(a4);
+      convertABPKDeviceOrientationEnumToString(orientation);
       v18 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
       *buf = 138412546;
       *&buf[4] = v17;
@@ -611,7 +611,7 @@ LABEL_71:
       _os_log_impl(&dword_23EDDC000, v16, OS_LOG_TYPE_DEBUG, " Device orientation changed from %@ to %@ ", buf, 0x16u);
     }
 
-    [(ABPK2DDetectionConfiguration *)self->_config2D setAbpkDeviceOrientation:a4];
+    [(ABPK2DDetectionConfiguration *)self->_config2D setAbpkDeviceOrientation:orientation];
   }
 
   [ABPK2DMLModelConfigSelector inputDimensionsForModelWithABPKNetworkConfig:self->_config2D];
@@ -656,12 +656,12 @@ LABEL_21:
 
     else
     {
-      v32 = [(ABPKImagePreProcessing *)v25 preprocessData:a3 outputBuffer:*buf];
+      v32 = [(ABPKImagePreProcessing *)v25 preprocessData:input outputBuffer:*buf];
       [(ABPKImagePreProcessing *)v25 logProfilingDetails];
       if (!v32)
       {
-        [(ABPKGestureDetectionPipeline *)self _endGestureDetectionImagePreProcessingSignpostWithTimestamp:a5];
-        [(ABPKGestureDetectionPipeline *)self _startGestureDetection2DDetectionMLSignpostWithTimestamp:a5];
+        [(ABPKGestureDetectionPipeline *)self _endGestureDetectionImagePreProcessingSignpostWithTimestamp:stamp];
+        [(ABPKGestureDetectionPipeline *)self _startGestureDetection2DDetectionMLSignpostWithTimestamp:stamp];
         v35 = __ABPKLogSharedInstance();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
         {
@@ -677,7 +677,7 @@ LABEL_21:
         }
 
         v37 = [ABPKMLImageData alloc];
-        v28 = [(ABPKMLImageData *)v37 initWithPixelBuffer:*buf timestamp:a4 abpkDeviceOrientation:v24 preprocessingParameters:a5];
+        v28 = [(ABPKMLImageData *)v37 initWithPixelBuffer:*buf timestamp:orientation abpkDeviceOrientation:v24 preprocessingParameters:stamp];
         if ([(ABPK2DPoseEstimation *)self->_poseEstimation2D runWithMLImageData:v28 rotationOfResultTensor:0]== -6661)
         {
           v38 = __ABPKLogSharedInstance();
@@ -692,9 +692,9 @@ LABEL_21:
 
         else
         {
-          [(ABPK2DPoseEstimation *)self->_poseEstimation2D getRawTrackedHumanSkeletonVector:v10];
+          [(ABPK2DPoseEstimation *)self->_poseEstimation2D getRawTrackedHumanSkeletonVector:outputCopy];
           CVPixelBufferRelease(*buf);
-          [(ABPKGestureDetectionPipeline *)self _endGestureDetection2DDetectionPostProcessingSignpostWithTimestamp:a5];
+          [(ABPKGestureDetectionPipeline *)self _endGestureDetection2DDetectionPostProcessingSignpostWithTimestamp:stamp];
           v31 = 0;
         }
 
@@ -730,37 +730,37 @@ LABEL_24:
   return v31;
 }
 
-- (void)extractDataForJointIdx:(void *)a3@<X3> fromPoseTimeArray:(void *)a4@<X8>
+- (void)extractDataForJointIdx:(void *)idx@<X3> fromPoseTimeArray:(void *)array@<X8>
 {
-  v16 = a3;
-  _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEEC2B8ne200100Em(a4, *(a1 + 56));
-  if (*(a1 + 56))
+  idxCopy = idx;
+  _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEEC2B8ne200100Em(array, *(self + 56));
+  if (*(self + 56))
   {
     v7 = 0;
     do
     {
-      v8 = [v16 objectAtIndexedSubscript:v7];
+      v8 = [idxCopy objectAtIndexedSubscript:v7];
       v9 = [v8 objectAtIndexedSubscript:a2];
       v10 = [v9 objectAtIndexedSubscript:0];
       [v10 floatValue];
       v17 = v11;
-      v12 = [v16 objectAtIndexedSubscript:v7];
+      v12 = [idxCopy objectAtIndexedSubscript:v7];
       v13 = [v12 objectAtIndexedSubscript:a2];
       v14 = [v13 objectAtIndexedSubscript:1];
       [v14 floatValue];
       v18 = __PAIR64__(v15, v17);
 
-      *(*a4 + 8 * v7++) = v18;
+      *(*array + 8 * v7++) = v18;
     }
 
-    while (v7 < *(a1 + 56));
+    while (v7 < *(self + 56));
   }
 }
 
-- (BOOL)overlayResult:(id)a3 OnImage:(__CVBuffer *)a4 andGenerateOverlayImage:(__CVBuffer *)a5
+- (BOOL)overlayResult:(id)result OnImage:(__CVBuffer *)image andGenerateOverlayImage:(__CVBuffer *)overlayImage
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  resultCopy = result;
   *buf = xmmword_23EE281B0;
   v27 = xmmword_23EE281C0;
   *&v8 = 255;
@@ -784,7 +784,7 @@ LABEL_24:
   v10 = 0;
   *&v11 = 134217984;
   v22 = v11;
-  while (v10 < [v7 count])
+  while (v10 < [resultCopy count])
   {
     v12 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -794,11 +794,11 @@ LABEL_24:
       _os_log_impl(&dword_23EDDC000, v12, OS_LOG_TYPE_DEBUG, " \x10Overlaying result for Person: %lu ", buf, 0xCu);
     }
 
-    v13 = [v7 objectAtIndexedSubscript:v10];
-    v14 = [v13 gestureTypes];
-    v15 = [v14 count];
+    v13 = [resultCopy objectAtIndexedSubscript:v10];
+    gestureTypes = [v13 gestureTypes];
+    v15 = [gestureTypes count];
 
-    v16 = [v13 trackingId];
+    trackingId = [v13 trackingId];
     if (v15)
     {
       v17 = __ABPKLogSharedInstance();
@@ -813,20 +813,20 @@ LABEL_24:
 
     else
     {
-      v18 = *(__p + v16 % ((v24 - __p) >> 4));
+      v18 = *(__p + trackingId % ((v24 - __p) >> 4));
     }
 
     if (v10)
     {
-      v19 = a5;
+      imageCopy = overlayImage;
     }
 
     else
     {
-      v19 = a4;
+      imageCopy = image;
     }
 
-    [v13 overlayResultOnImage:v19 withResult:a5 withColor:*&v18];
+    [v13 overlayResultOnImage:imageCopy withResult:overlayImage withColor:*&v18];
 
     ++v10;
   }

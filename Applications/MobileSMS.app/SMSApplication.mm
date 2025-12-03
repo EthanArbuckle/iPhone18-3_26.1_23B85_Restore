@@ -2,27 +2,27 @@
 - (BOOL)canRunTests;
 - (BOOL)isNewConversationList;
 - (BOOL)isRunningTest;
-- (BOOL)runTest:(id)a3 options:(id)a4;
-- (BOOL)runTestNameOrFallback:(id)a3;
-- (BOOL)validateActionMenuWindowOrientationExpectedOrientation:(int64_t)a3 withResultsDictionary:(id)a4;
-- (BOOL)validateAtConversationListInConversationListController:(id)a3 previousSearchText:(id)a4 withResultsDictionary:(id)a5;
-- (BOOL)validateBottomInsetGreaterThanIAVHeight:(id)a3 expected:(BOOL)a4 withResultsDictionary:(id)a5;
-- (BOOL)validateEntryViewIsFirstResponder:(id)a3 expected:(BOOL)a4 withResultsDictionary:(id)a5;
-- (BOOL)validateIAVisExpanded:(id)a3 expected:(BOOL)a4 withResultsDictionary:(id)a5;
-- (BOOL)validateNonzeroTranscriptInsets:(id)a3 expected:(BOOL)a4 withResultsDictionary:(id)a5;
-- (BOOL)validateNumberOfSearchResultsInConversationListController:(id)a3 searchText:(id)a4 expectedNumber:(int64_t)a5 withResultsDictionary:(id)a6;
-- (BOOL)validateRecipientSelectionControllerIsFirstResponder:(id)a3 expected:(BOOL)a4 withResultsDictionary:(id)a5;
-- (BOOL)validateTranscriptControllerIsFirstResponder:(id)a3 expected:(BOOL)a4 withResultsDictionary:(id)a5;
-- (BOOL)validateTranscriptIsScrolledToBottom:(id)a3 expected:(BOOL)a4 withResultsDictionary:(id)a5;
-- (BOOL)validateTranscriptPreviewCacheHasResumed:(id)a3 expected:(BOOL)a4 withResultsDictionary:(id)a5;
-- (BOOL)validateTranscriptShouldAutorotate:(id)a3 expected:(BOOL)a4 withResultsDictionary:(id)a5;
-- (BOOL)validateTranscriptVendingIAV:(id)a3 expected:(BOOL)a4 withResultsDictionary:(id)a5;
+- (BOOL)runTest:(id)test options:(id)options;
+- (BOOL)runTestNameOrFallback:(id)fallback;
+- (BOOL)validateActionMenuWindowOrientationExpectedOrientation:(int64_t)orientation withResultsDictionary:(id)dictionary;
+- (BOOL)validateAtConversationListInConversationListController:(id)controller previousSearchText:(id)text withResultsDictionary:(id)dictionary;
+- (BOOL)validateBottomInsetGreaterThanIAVHeight:(id)height expected:(BOOL)expected withResultsDictionary:(id)dictionary;
+- (BOOL)validateEntryViewIsFirstResponder:(id)responder expected:(BOOL)expected withResultsDictionary:(id)dictionary;
+- (BOOL)validateIAVisExpanded:(id)expanded expected:(BOOL)expected withResultsDictionary:(id)dictionary;
+- (BOOL)validateNonzeroTranscriptInsets:(id)insets expected:(BOOL)expected withResultsDictionary:(id)dictionary;
+- (BOOL)validateNumberOfSearchResultsInConversationListController:(id)controller searchText:(id)text expectedNumber:(int64_t)number withResultsDictionary:(id)dictionary;
+- (BOOL)validateRecipientSelectionControllerIsFirstResponder:(id)responder expected:(BOOL)expected withResultsDictionary:(id)dictionary;
+- (BOOL)validateTranscriptControllerIsFirstResponder:(id)responder expected:(BOOL)expected withResultsDictionary:(id)dictionary;
+- (BOOL)validateTranscriptIsScrolledToBottom:(id)bottom expected:(BOOL)expected withResultsDictionary:(id)dictionary;
+- (BOOL)validateTranscriptPreviewCacheHasResumed:(id)resumed expected:(BOOL)expected withResultsDictionary:(id)dictionary;
+- (BOOL)validateTranscriptShouldAutorotate:(id)autorotate expected:(BOOL)expected withResultsDictionary:(id)dictionary;
+- (BOOL)validateTranscriptVendingIAV:(id)v expected:(BOOL)expected withResultsDictionary:(id)dictionary;
 - (SMSApplication)init;
 - (SMSApplicationPerformSearchProtocol)testPerformSearchDelegate;
-- (id)_fsmIdentifierForTestName:(id)a3;
+- (id)_fsmIdentifierForTestName:(id)name;
 - (id)messagesController;
 - (id)sceneController;
-- (unint64_t)mapSectionIdentifierForCurrentConversationListClass:(unint64_t)a3;
+- (unint64_t)mapSectionIdentifierForCurrentConversationListClass:(unint64_t)class;
 - (void)IMCoreDeleteTopChat;
 - (void)IMCoreSendNewCompose;
 - (void)IMCoreToggleDisturb;
@@ -52,112 +52,112 @@
 - (void)UITestShowConversationWithAlertPresented;
 - (void)UITestTapIntoAndOutOfConversations;
 - (void)_cancelPeoplePicker;
-- (void)_chatControllerDidRotate:(id)a3;
-- (void)_chatControllerWillRotate:(id)a3;
+- (void)_chatControllerDidRotate:(id)rotate;
+- (void)_chatControllerWillRotate:(id)rotate;
 - (void)_clearFailureBadge;
-- (void)_clearSearchStringWithPreviousSearchText:(id)a3 resultsDictionary:(id)a4 completion:(id)a5;
+- (void)_clearSearchStringWithPreviousSearchText:(id)text resultsDictionary:(id)dictionary completion:(id)completion;
 - (void)_connectToDaemon;
-- (void)_detailsViewScrollingPerfTest:(id)a3;
-- (void)_dismissPeoplePickerWithCompletion:(id)a3 completion:(id)a4;
-- (void)_handleUnitTestInvocation:(id)a3;
-- (void)_keyboardDidShow:(id)a3;
-- (void)_keyboardWillShow:(id)a3;
-- (void)_resolveContactTest:(id)a3;
-- (void)_scrollPseudoContactTest:(id)a3 withOptions:(id)a4;
-- (void)_searchForString:(id)a3 validateExpectedSearchResults:(id)a4 resultsDictionary:(id)a5 completion:(id)a6;
-- (void)_searchForString:(id)a3 withCompletion:(id)a4;
-- (void)_selectContact:(id)a3;
-- (void)_showPeoplePickerTest:(id)a3;
+- (void)_detailsViewScrollingPerfTest:(id)test;
+- (void)_dismissPeoplePickerWithCompletion:(id)completion completion:(id)a4;
+- (void)_handleUnitTestInvocation:(id)invocation;
+- (void)_keyboardDidShow:(id)show;
+- (void)_keyboardWillShow:(id)show;
+- (void)_resolveContactTest:(id)test;
+- (void)_scrollPseudoContactTest:(id)test withOptions:(id)options;
+- (void)_searchForString:(id)string validateExpectedSearchResults:(id)results resultsDictionary:(id)dictionary completion:(id)completion;
+- (void)_searchForString:(id)string withCompletion:(id)completion;
+- (void)_selectContact:(id)contact;
+- (void)_showPeoplePickerTest:(id)test;
 - (void)_startCancelPeoplePickerTest;
 - (void)_startPeoplePickerTest;
-- (void)_startResolveContactTest:(id)a3;
+- (void)_startResolveContactTest:(id)test;
 - (void)_startSelectContactPeoplePickerTest;
-- (void)_startcomposePseudoContactTest:(id)a3 withOptions:(id)a4;
-- (void)_stickerDragFired:(id)a3;
-- (void)_willConfigureCellWithTranscriptPluginChatItem:(id)a3;
-- (void)buildMenuWithBuilder:(id)a3;
-- (void)chatRegistryDidLoad:(id)a3;
+- (void)_startcomposePseudoContactTest:(id)test withOptions:(id)options;
+- (void)_stickerDragFired:(id)fired;
+- (void)_willConfigureCellWithTranscriptPluginChatItem:(id)item;
+- (void)buildMenuWithBuilder:(id)builder;
+- (void)chatRegistryDidLoad:(id)load;
 - (void)cleanupCurrentTest;
 - (void)clearEntryView;
 - (void)contactPickerDidHide;
 - (void)dealloc;
-- (void)deleteChat:(id)a3;
+- (void)deleteChat:(id)chat;
 - (void)deleteTopChat;
-- (void)didChangeOrientation:(id)a3;
+- (void)didChangeOrientation:(id)orientation;
 - (void)didDeleteChat;
-- (void)didShowAMessage:(id)a3;
-- (void)didShowAMessageExtended:(id)a3;
+- (void)didShowAMessage:(id)message;
+- (void)didShowAMessageExtended:(id)extended;
 - (void)didShowNewCompose;
 - (void)didShowTranscriptList;
 - (void)dissmissComposeSheet;
-- (void)doPushToTranscriptTestForChatIdentifierPerformanceTest:(id)a3 testBlock:(id)a4;
-- (void)failedTest:(id)a3;
-- (void)failedTest:(id)a3 withFailure:(id)a4;
-- (void)failedTest:(id)a3 withFailure:(id)a4 withResults:(id)a5;
-- (void)finishedTest:(id)a3 extraResults:(id)a4;
-- (void)installNotificationObserverForNotificationName:(id)a3 notificationName:(id)a4 forOneNotification:(BOOL)a5 usingBlock:(id)a6;
-- (void)keyCommandCompose:(id)a3;
-- (void)newComposeDismissContactPicker:(id)a3;
+- (void)doPushToTranscriptTestForChatIdentifierPerformanceTest:(id)test testBlock:(id)block;
+- (void)failedTest:(id)test;
+- (void)failedTest:(id)test withFailure:(id)failure;
+- (void)failedTest:(id)test withFailure:(id)failure withResults:(id)results;
+- (void)finishedTest:(id)test extraResults:(id)results;
+- (void)installNotificationObserverForNotificationName:(id)name notificationName:(id)notificationName forOneNotification:(BOOL)notification usingBlock:(id)block;
+- (void)keyCommandCompose:(id)compose;
+- (void)newComposeDismissContactPicker:(id)picker;
 - (void)perfTestPushToTranscript;
 - (void)playAudioMessage;
-- (void)scrollPhotoPickerTestWithOptions:(id)a3;
+- (void)scrollPhotoPickerTestWithOptions:(id)options;
 - (void)scrollPseudoContacts;
 - (void)scrollTranscript;
 - (void)sendAudioMessage;
-- (void)sendMultipleMessagesEntryView:(id)a3 composition:(id)a4 handler:(id)a5;
-- (void)showConversationForChatIdentifier:(id)a3 forceReload:(BOOL)a4 options:(id)a5 completion:(id)a6;
-- (void)showConversationForChatIdentifier:(id)a3 willShowConversation:(id)a4 didShowConversation:(id)a5;
+- (void)sendMultipleMessagesEntryView:(id)view composition:(id)composition handler:(id)handler;
+- (void)showConversationForChatIdentifier:(id)identifier forceReload:(BOOL)reload options:(id)options completion:(id)completion;
+- (void)showConversationForChatIdentifier:(id)identifier willShowConversation:(id)conversation didShowConversation:(id)showConversation;
 - (void)showKeyboard;
-- (void)showMessagesApplicationAndStartTestForIdentifier:(id)a3 supportsLaunchSubtest:(BOOL)a4;
+- (void)showMessagesApplicationAndStartTestForIdentifier:(id)identifier supportsLaunchSubtest:(BOOL)subtest;
 - (void)showNextMessage;
-- (void)showTransscriptAnimated:(BOOL)a3;
-- (void)startAndFailTestNamed:(id)a3 withFailure:(id)a4;
-- (void)startAudioBalloonPlaybackTest:(id)a3;
+- (void)showTransscriptAnimated:(BOOL)animated;
+- (void)startAndFailTestNamed:(id)named withFailure:(id)failure;
+- (void)startAudioBalloonPlaybackTest:(id)test;
 - (void)startAudioWaveformFPSTest;
-- (void)startCancelPeoplePickerTest:(id)a3;
-- (void)startComposeMessageToPseudoContactTest:(id)a3;
-- (void)startDetailsTest:(id)a3;
-- (void)startExtensionTest:(id)a3 launch:(BOOL)a4;
+- (void)startCancelPeoplePickerTest:(id)test;
+- (void)startComposeMessageToPseudoContactTest:(id)test;
+- (void)startDetailsTest:(id)test;
+- (void)startExtensionTest:(id)test launch:(BOOL)launch;
 - (void)startFSMTest;
-- (void)startGeneralStaticFPSTestWithDelay:(id)a3;
+- (void)startGeneralStaticFPSTestWithDelay:(id)delay;
 - (void)startGifPlaybackStaticFPSTest;
-- (void)startInteractiveStickerDragTest:(id)a3;
+- (void)startInteractiveStickerDragTest:(id)test;
 - (void)startInvisibleInkStaticFPSTest;
-- (void)startKeyboardPresentationTest:(id)a3;
-- (void)startKeyboardResponsivenessTest:(id)a3;
-- (void)startLiveBubbleLoadingTest:(id)a3;
-- (void)startMarkAsReadLocallyTestWithOptions:(id)a3;
-- (void)startMarkAsReadReceivedTestWithOptions:(id)a3;
-- (void)startPPTSubtestForCurrentTest:(id)a3;
-- (void)startPriorityBoostingTestWithOptions:(id)a3;
-- (void)startQuicklookPresentationTest:(id)a3;
-- (void)startResizeTestWithOptions:(id)a3;
-- (void)startResolveContactTest:(id)a3;
-- (void)startRotationTest:(id)a3;
-- (void)startRotationTestWithTranscript:(id)a3;
-- (void)startScreenshotTestWithOptions:(id)a3;
-- (void)startScrollConversationsTest:(id)a3;
-- (void)startScrollForCollectionView:(id)a3;
-- (void)startScrollPseudoContactNamesTest:(id)a3;
-- (void)startScrollTranscriptTest:(id)a3;
-- (void)startSelectContactPeoplePickerTest:(id)a3;
+- (void)startKeyboardPresentationTest:(id)test;
+- (void)startKeyboardResponsivenessTest:(id)test;
+- (void)startLiveBubbleLoadingTest:(id)test;
+- (void)startMarkAsReadLocallyTestWithOptions:(id)options;
+- (void)startMarkAsReadReceivedTestWithOptions:(id)options;
+- (void)startPPTSubtestForCurrentTest:(id)test;
+- (void)startPriorityBoostingTestWithOptions:(id)options;
+- (void)startQuicklookPresentationTest:(id)test;
+- (void)startResizeTestWithOptions:(id)options;
+- (void)startResolveContactTest:(id)test;
+- (void)startRotationTest:(id)test;
+- (void)startRotationTestWithTranscript:(id)transcript;
+- (void)startScreenshotTestWithOptions:(id)options;
+- (void)startScrollConversationsTest:(id)test;
+- (void)startScrollForCollectionView:(id)view;
+- (void)startScrollPseudoContactNamesTest:(id)test;
+- (void)startScrollTranscriptTest:(id)test;
+- (void)startSelectContactPeoplePickerTest:(id)test;
 - (void)startSendAnimationExistingTest;
-- (void)startSendAnimationNewComposeTest:(id)a3;
-- (void)startShowMessagesTest:(id)a3;
-- (void)startShowNewComposeTest:(id)a3;
-- (void)startShowPeoplePickerTest:(id)a3;
-- (void)startStaticFSMFPSTest:(id)a3;
-- (void)startStaticTranscriptFPSTest:(id)a3;
-- (void)startStuckAudioPillTest:(id)a3;
-- (void)startTranscriptOnlyScreenshotTestwithOptions:(id)a3;
-- (void)stopPPTSubtestForCurrentTest:(id)a3;
+- (void)startSendAnimationNewComposeTest:(id)test;
+- (void)startShowMessagesTest:(id)test;
+- (void)startShowNewComposeTest:(id)test;
+- (void)startShowPeoplePickerTest:(id)test;
+- (void)startStaticFSMFPSTest:(id)test;
+- (void)startStaticTranscriptFPSTest:(id)test;
+- (void)startStuckAudioPillTest:(id)test;
+- (void)startTranscriptOnlyScreenshotTestwithOptions:(id)options;
+- (void)stopPPTSubtestForCurrentTest:(id)test;
 - (void)tapFSMIfNecessary;
 - (void)tearDownCancelPeoplePickerTest;
-- (void)tearDownResolveContactTest:(id)a3;
+- (void)tearDownResolveContactTest:(id)test;
 - (void)tearDownSelectContactPeoplePickerTest;
 - (void)tearDownShowPeoplePickerTest;
-- (void)tearDownShowPeoplePickerTest:(id)a3;
-- (void)typeInContactName:(id)a3;
+- (void)tearDownShowPeoplePickerTest:(id)test;
+- (void)typeInContactName:(id)name;
 @end
 
 @implementation SMSApplication
@@ -217,9 +217,9 @@
       if (CKIsRunningForDevelopmentOnSimulator())
       {
         v6 = +[IMLockdownManager sharedInstance];
-        v7 = [v6 isInternalInstall];
+        isInternalInstall = [v6 isInternalInstall];
 
-        if (v7)
+        if (isInternalInstall)
         {
           v8 = +[CKIMSimulatedChat prepopulatedChat];
           v27[0] = qword_10003A1E0;
@@ -251,14 +251,14 @@ LABEL_16:
 LABEL_17:
   [IMChat setChatItemRulesClass:objc_opt_class()];
   v12 = +[IMFeatureFlags sharedFeatureFlags];
-  v13 = [v12 isUnreadCountRefactorEnabled];
+  isUnreadCountRefactorEnabled = [v12 isUnreadCountRefactorEnabled];
 
-  if (v13)
+  if (isUnreadCountRefactorEnabled)
   {
     v14 = +[IMChatRegistry sharedRegistry];
-    v15 = [v14 unreadCountController];
+    unreadCountController = [v14 unreadCountController];
     v16 = objc_alloc_init(CKUnreadCountFilterController);
-    [v15 replaceFilteringController:v16];
+    [unreadCountController replaceFilteringController:v16];
   }
 
   v17 = +[CKConversationList sharedConversationList];
@@ -275,8 +275,8 @@ LABEL_17:
   v4 = CKListenerCapabilities() | 0x60400000;
   v10 = objc_alloc_init(NSMutableDictionary);
   v5 = +[IMPinnedConversationsController sharedInstance];
-  v6 = [v5 pinnedConversationIdentifiers];
-  [v10 setObject:v6 forKeyedSubscript:IMClientSetupContextPinnedChatIdentifiers];
+  pinnedConversationIdentifiers = [v5 pinnedConversationIdentifiers];
+  [v10 setObject:pinnedConversationIdentifiers forKeyedSubscript:IMClientSetupContextPinnedChatIdentifiers];
 
   v7 = +[IMDaemonController sharedController];
   v8 = [v7 multiplexedConnectionWithLabel:@"MobileSMS" capabilities:v4 context:v10];
@@ -314,10 +314,10 @@ LABEL_17:
   byte_10003A141 = 0;
 }
 
-- (void)startScreenshotTestWithOptions:(id)a3
+- (void)startScreenshotTestWithOptions:(id)options
 {
-  v5 = a3;
-  v4 = [v5 valueForKey:@"testName"];
+  optionsCopy = options;
+  v4 = [optionsCopy valueForKey:@"testName"];
   if (!IMIsRunningInScreenshotTesting())
   {
     exit(-1);
@@ -325,14 +325,14 @@ LABEL_17:
 
   if (![SMSScreenshotTestInfo screenshotTestNameEnumValue:v4])
   {
-    [(SMSApplication *)self startTranscriptOnlyScreenshotTestwithOptions:v5];
+    [(SMSApplication *)self startTranscriptOnlyScreenshotTestwithOptions:optionsCopy];
   }
 }
 
-- (void)startTranscriptOnlyScreenshotTestwithOptions:(id)a3
+- (void)startTranscriptOnlyScreenshotTestwithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 valueForKey:@"chatIdentifier"];
+  optionsCopy = options;
+  v5 = [optionsCopy valueForKey:@"chatIdentifier"];
   v6 = +[CKConversationList sharedConversationList];
   v7 = [v6 conversationForExistingChatWithChatIdentifier:v5];
 
@@ -344,8 +344,8 @@ LABEL_17:
     v9 = +[CKDraftManager sharedInstance];
     [v9 saveCompositionAndFlushCache:1];
 
-    v10 = [(SMSApplication *)self messagesController];
-    [v10 showConversationListWithAnimation:0];
+    messagesController = [(SMSApplication *)self messagesController];
+    [messagesController showConversationListWithAnimation:0];
 
     v11 = dispatch_time(0, 1000000000);
     block[0] = _NSConcreteStackBlock;
@@ -354,44 +354,44 @@ LABEL_17:
     block[3] = &unk_1000309E8;
     block[4] = self;
     v13 = v7;
-    v14 = v4;
+    v14 = optionsCopy;
     dispatch_after(v11, &_dispatch_main_q, block);
   }
 }
 
 - (id)sceneController
 {
-  v2 = [(SMSApplication *)self delegate];
+  delegate = [(SMSApplication *)self delegate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 sceneController];
+    sceneController = [delegate sceneController];
   }
 
   else
   {
-    v3 = 0;
+    sceneController = 0;
   }
 
-  return v3;
+  return sceneController;
 }
 
 - (id)messagesController
 {
-  v2 = [(SMSApplication *)self sceneController];
-  v3 = [v2 messagesSceneDelegate];
-  v4 = [v3 messagesController];
+  sceneController = [(SMSApplication *)self sceneController];
+  messagesSceneDelegate = [sceneController messagesSceneDelegate];
+  messagesController = [messagesSceneDelegate messagesController];
 
-  return v4;
+  return messagesController;
 }
 
-- (BOOL)runTestNameOrFallback:(id)a3
+- (BOOL)runTestNameOrFallback:(id)fallback
 {
-  v4 = a3;
-  v5 = NSSelectorFromString(v4);
+  fallbackCopy = fallback;
+  v5 = NSSelectorFromString(fallbackCopy);
   if (v5 && (v6 = v5, (objc_opt_respondsToSelector() & 1) != 0) || ([qword_10003A120 objectForKey:@"implementationMethodName"], (v7 = objc_claimAutoreleasedReturnValue()) != 0) && (v8 = v7, v6 = NSSelectorFromString(v7), v8, v6))
   {
-    if ([(NSString *)v4 rangeOfString:@"Landscape"]== 0x7FFFFFFFFFFFFFFFLL)
+    if ([(NSString *)fallbackCopy rangeOfString:@"Landscape"]== 0x7FFFFFFFFFFFFFFFLL)
     {
       v9 = 1;
     }
@@ -417,10 +417,10 @@ LABEL_17:
   return v10;
 }
 
-- (BOOL)runTest:(id)a3 options:(id)a4
+- (BOOL)runTest:(id)test options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  testCopy = test;
+  optionsCopy = options;
   [IMBalloonPluginManager setIsRunningPPT:1];
   v9 = IMGetDomainValueForKey();
   v10 = v9;
@@ -443,8 +443,8 @@ LABEL_17:
   v13 = +[NSNotificationCenter defaultCenter];
   [v13 addObserver:self selector:"chatRegistryDidLoad:" name:IMChatRegistryDidLoadNotification object:0];
 
-  objc_storeStrong(&__CurrentTestName, a3);
-  objc_storeStrong(&qword_10003A120, a4);
+  objc_storeStrong(&__CurrentTestName, test);
+  objc_storeStrong(&qword_10003A120, options);
   v14 = [qword_10003A120 objectForKey:@"iterations"];
   dword_10003A130 = [v14 intValue] + 1;
 
@@ -453,9 +453,9 @@ LABEL_17:
   v22[2] = sub_100002724;
   v22[3] = &unk_100030A10;
   v22[4] = self;
-  v15 = v7;
+  v15 = testCopy;
   v23 = v15;
-  v16 = v8;
+  v16 = optionsCopy;
   v24 = v16;
   v17 = objc_retainBlock(v22);
   if ([(SMSApplication *)self canRunTests])
@@ -476,14 +476,14 @@ LABEL_17:
   return v18;
 }
 
-- (void)finishedTest:(id)a3 extraResults:(id)a4
+- (void)finishedTest:(id)test extraResults:(id)results
 {
-  v6 = a4;
-  v7 = a3;
-  sub_100001E2C(v7);
+  resultsCopy = results;
+  testCopy = test;
+  sub_100001E2C(testCopy);
   v10.receiver = self;
   v10.super_class = SMSApplication;
-  [(SMSApplication *)&v10 finishedTest:v7 extraResults:v6];
+  [(SMSApplication *)&v10 finishedTest:testCopy extraResults:resultsCopy];
 
   if (__CurrentTestName)
   {
@@ -498,45 +498,45 @@ LABEL_17:
   [(SMSApplication *)self cleanupCurrentTest];
 }
 
-- (void)failedTest:(id)a3 withFailure:(id)a4 withResults:(id)a5
+- (void)failedTest:(id)test withFailure:(id)failure withResults:(id)results
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  resultsCopy = results;
+  failureCopy = failure;
+  testCopy = test;
   [(SMSApplication *)self cleanupCurrentTest];
   v11.receiver = self;
   v11.super_class = SMSApplication;
-  [(SMSApplication *)&v11 failedTest:v10 withFailure:v9 withResults:v8];
+  [(SMSApplication *)&v11 failedTest:testCopy withFailure:failureCopy withResults:resultsCopy];
 }
 
-- (void)failedTest:(id)a3 withFailure:(id)a4
+- (void)failedTest:(id)test withFailure:(id)failure
 {
-  v6 = a4;
-  v7 = a3;
+  failureCopy = failure;
+  testCopy = test;
   [(SMSApplication *)self cleanupCurrentTest];
   v8.receiver = self;
   v8.super_class = SMSApplication;
-  [(SMSApplication *)&v8 failedTest:v7 withFailure:v6];
+  [(SMSApplication *)&v8 failedTest:testCopy withFailure:failureCopy];
 }
 
-- (void)failedTest:(id)a3
+- (void)failedTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   [(SMSApplication *)self cleanupCurrentTest];
   v5.receiver = self;
   v5.super_class = SMSApplication;
-  [(SMSApplication *)&v5 failedTest:v4];
+  [(SMSApplication *)&v5 failedTest:testCopy];
 }
 
-- (void)showConversationForChatIdentifier:(id)a3 willShowConversation:(id)a4 didShowConversation:(id)a5
+- (void)showConversationForChatIdentifier:(id)identifier willShowConversation:(id)conversation didShowConversation:(id)showConversation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  conversationCopy = conversation;
+  showConversationCopy = showConversation;
   v11 = +[CKConversationList sharedConversationList];
-  v12 = [v11 conversations];
+  conversations = [v11 conversations];
 
-  if ([v12 count])
+  if ([conversations count])
   {
     [(SMSApplication *)self showTranscriptListNotAnimated];
     v13 = dispatch_time(0, 500000000);
@@ -544,10 +544,10 @@ LABEL_17:
     v14[1] = 3221225472;
     v14[2] = sub_100003574;
     v14[3] = &unk_100030A60;
-    v15 = v8;
-    v16 = self;
-    v17 = v10;
-    v18 = v9;
+    v15 = identifierCopy;
+    selfCopy = self;
+    v17 = showConversationCopy;
+    v18 = conversationCopy;
     dispatch_after(v13, &_dispatch_main_q, v14);
   }
 
@@ -558,10 +558,10 @@ LABEL_17:
   }
 }
 
-- (void)doPushToTranscriptTestForChatIdentifierPerformanceTest:(id)a3 testBlock:(id)a4
+- (void)doPushToTranscriptTestForChatIdentifierPerformanceTest:(id)test testBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  testCopy = test;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100003830;
@@ -572,13 +572,13 @@ LABEL_17:
   v10[2] = sub_100003844;
   v10[3] = &unk_100030A88;
   v11 = objc_alloc_init(NSMutableDictionary);
-  v12 = v6;
+  v12 = blockCopy;
   v8 = v11;
-  v9 = v6;
-  [(SMSApplication *)self showConversationForChatIdentifier:v7 willShowConversation:v13 didShowConversation:v10];
+  v9 = blockCopy;
+  [(SMSApplication *)self showConversationForChatIdentifier:testCopy willShowConversation:v13 didShowConversation:v10];
 }
 
-- (void)showTransscriptAnimated:(BOOL)a3
+- (void)showTransscriptAnimated:(BOOL)animated
 {
   v5 = dispatch_time(0, 1000000000);
   v6[0] = _NSConcreteStackBlock;
@@ -586,51 +586,51 @@ LABEL_17:
   v6[2] = sub_1000038FC;
   v6[3] = &unk_100030AB0;
   v6[4] = self;
-  v7 = a3;
+  animatedCopy = animated;
   dispatch_after(v5, &_dispatch_main_q, v6);
 }
 
 - (void)showKeyboard
 {
-  v3 = [(SMSApplication *)self messagesController];
-  v2 = [v3 chatController];
-  [v2 showKeyboardForReply];
+  messagesController = [(SMSApplication *)self messagesController];
+  chatController = [messagesController chatController];
+  [chatController showKeyboardForReply];
 }
 
 - (void)scrollPseudoContacts
 {
-  v2 = [(SMSApplication *)self messagesController];
-  v10 = [v2 ppt_chatController];
+  messagesController = [(SMSApplication *)self messagesController];
+  ppt_chatController = [messagesController ppt_chatController];
 
-  v3 = [v10 composeRecipientSelectionController];
-  v4 = [v3 searchListController];
-  v5 = [v4 tableView];
+  composeRecipientSelectionController = [ppt_chatController composeRecipientSelectionController];
+  searchListController = [composeRecipientSelectionController searchListController];
+  tableView = [searchListController tableView];
 
   v6 = [qword_10003A120 objectForKey:@"offset"];
-  v7 = [v6 intValue];
+  intValue = [v6 intValue];
 
   v8 = [qword_10003A120 objectForKey:@"iterations"];
-  v9 = [v8 intValue];
+  intValue2 = [v8 intValue];
 
-  [v5 _performScrollTest:__CurrentTestName iterations:v9 delta:v7];
+  [tableView _performScrollTest:__CurrentTestName iterations:intValue2 delta:intValue];
 }
 
 - (void)tapFSMIfNecessary
 {
   if ([__CurrentTestName rangeOfString:@"FSM"] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = [(SMSApplication *)self messagesController];
-    v4 = [v3 chatController];
+    messagesController = [(SMSApplication *)self messagesController];
+    chatController = [messagesController chatController];
 
-    v5 = [v4 collectionViewController];
-    v18 = v4;
-    [v4 collectionView];
+    collectionViewController = [chatController collectionViewController];
+    v18 = chatController;
+    [chatController collectionView];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v17 = v22 = 0u;
-    v6 = [v17 visibleCells];
-    v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    visibleCells = [v17 visibleCells];
+    v7 = [visibleCells countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v7)
     {
       v8 = v7;
@@ -641,7 +641,7 @@ LABEL_17:
         {
           if (*v20 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(visibleCells);
           }
 
           v11 = *(*(&v19 + 1) + 8 * i);
@@ -649,16 +649,16 @@ LABEL_17:
           if (objc_opt_isKindOfClass())
           {
             v12 = v11;
-            v13 = [v12 statusButton];
-            if (v13)
+            statusButton = [v12 statusButton];
+            if (statusButton)
             {
-              v14 = v13;
+              v14 = statusButton;
               v15 = objc_opt_respondsToSelector();
 
               if (v15)
               {
-                v16 = [v12 statusButton];
-                [v5 touchUpInsideCellStatusButton:v16];
+                statusButton2 = [v12 statusButton];
+                [collectionViewController touchUpInsideCellStatusButton:statusButton2];
 
                 goto LABEL_15;
               }
@@ -666,7 +666,7 @@ LABEL_17:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v8 = [visibleCells countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v8)
         {
           continue;
@@ -682,17 +682,17 @@ LABEL_15:
 
 - (void)scrollTranscript
 {
-  v2 = [(SMSApplication *)self messagesController];
-  v3 = [v2 chatController];
-  v4 = [v3 collectionViewController];
-  v13 = [v4 collectionView];
+  messagesController = [(SMSApplication *)self messagesController];
+  chatController = [messagesController chatController];
+  collectionViewController = [chatController collectionViewController];
+  collectionView = [collectionViewController collectionView];
 
   v5 = [qword_10003A120 objectForKey:@"recapBased"];
-  LODWORD(v3) = [v5 BOOLValue];
+  LODWORD(chatController) = [v5 BOOLValue];
 
-  if (v3 && [sub_100003E78() isRecapAvailable])
+  if (chatController && [sub_100003E78() isRecapAvailable])
   {
-    v6 = [objc_alloc(sub_100003F58()) initWithTestName:__CurrentTestName scrollView:v13 completionHandler:0];
+    v6 = [objc_alloc(sub_100003F58()) initWithTestName:__CurrentTestName scrollView:collectionView completionHandler:0];
     [sub_100003E78() runTestWithParameters:v6];
   }
 
@@ -708,21 +708,21 @@ LABEL_15:
 
     else
     {
-      [v13 frame];
+      [collectionView frame];
       v8 = v9;
       dword_10003A144 = v9;
     }
 
     v10 = __CurrentTestName;
     v11 = dword_10003A130;
-    [v13 contentSize];
-    [v13 _performScrollTest:v10 iterations:v11 delta:v8 length:v12];
+    [collectionView contentSize];
+    [collectionView _performScrollTest:v10 iterations:v11 delta:v8 length:v12];
   }
 }
 
-- (void)didShowAMessage:(id)a3
+- (void)didShowAMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   if (__CurrentTestName)
   {
     if ([__CurrentTestName rangeOfString:kShowMessagesTest] != 0x7FFFFFFFFFFFFFFFLL)
@@ -781,9 +781,9 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)didShowAMessageExtended:(id)a3
+- (void)didShowAMessageExtended:(id)extended
 {
-  v4 = a3;
+  extendedCopy = extended;
   if (__CurrentTestName && [__CurrentTestName rangeOfString:kShowMessagesExtendedTest] != 0x7FFFFFFFFFFFFFFFLL)
   {
     if ((+[UIDevice __ck_currentDeviceIsPadOrMac]& 1) == 0)
@@ -844,17 +844,17 @@ LABEL_15:
 {
   [(SMSApplication *)self showTranscriptListNotAnimated];
   v3 = +[CKConversationList sharedConversationList];
-  v4 = [v3 conversations];
+  conversations = [v3 conversations];
 
-  if ([v4 count])
+  if ([conversations count])
   {
     v5 = +[CKConversationList sharedConversationList];
     v6 = [v5 conversationForExistingChatWithChatIdentifier:@"chat339741476857344860"];
 
-    v7 = [(SMSApplication *)self messagesController];
+    messagesController = [(SMSApplication *)self messagesController];
     v10 = v6;
     v8 = [NSArray arrayWithObjects:&v10 count:1];
-    [v7 conversationListIsDeletingConversations:v8];
+    [messagesController conversationListIsDeletingConversations:v8];
 
     v9 = +[CKConversationList sharedConversationList];
     [v9 deleteConversation:v6];
@@ -868,50 +868,50 @@ LABEL_15:
 
 - (void)playAudioMessage
 {
-  v2 = [(SMSApplication *)self messagesController];
-  v3 = [v2 chatController];
+  messagesController = [(SMSApplication *)self messagesController];
+  chatController = [messagesController chatController];
 
-  v4 = [v3 collectionViewController];
-  v5 = [v4 collectionView];
+  collectionViewController = [chatController collectionViewController];
+  collectionView = [collectionViewController collectionView];
 
-  v6 = [v5 visibleCells];
-  v7 = [v6 reverseObjectEnumerator];
-  v8 = [v7 allObjects];
+  visibleCells = [collectionView visibleCells];
+  reverseObjectEnumerator = [visibleCells reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100004880;
   v11[3] = &unk_100030AD8;
-  v12 = v5;
-  v13 = v3;
-  v9 = v3;
-  v10 = v5;
-  [v8 enumerateObjectsUsingBlock:v11];
+  v12 = collectionView;
+  v13 = chatController;
+  v9 = chatController;
+  v10 = collectionView;
+  [allObjects enumerateObjectsUsingBlock:v11];
 }
 
 - (void)sendAudioMessage
 {
   v3 = +[CKConversationList sharedConversationList];
-  v4 = [v3 conversations];
+  conversations = [v3 conversations];
 
-  v5 = [(SMSApplication *)self messagesController];
-  v6 = [v5 chatController];
+  messagesController = [(SMSApplication *)self messagesController];
+  chatController = [messagesController chatController];
 
-  if ([v4 count])
+  if ([conversations count])
   {
     v7 = +[CKConversationList sharedConversationList];
     v8 = [v7 conversationForExistingChatWithChatIdentifier:@"chat339741476857344860"];
 
-    v9 = [(SMSApplication *)self messagesController];
-    [v9 showConversation:v8 animate:1];
+    messagesController2 = [(SMSApplication *)self messagesController];
+    [messagesController2 showConversation:v8 animate:1];
 
     v10 = dispatch_time(0, 1000000000);
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100004AB4;
     v11[3] = &unk_100030B00;
-    v12 = v6;
-    v13 = self;
+    v12 = chatController;
+    selfCopy = self;
     dispatch_after(v10, &_dispatch_main_q, v11);
   }
 }
@@ -952,9 +952,9 @@ LABEL_15:
 - (void)UITestShowConversationWithAlertPresented
 {
   v3 = +[CKConversationList sharedConversationList];
-  v4 = [v3 conversations];
+  conversations = [v3 conversations];
 
-  v5 = [v4 count];
+  v5 = [conversations count];
   [(SMSApplication *)self startedTest:__CurrentTestName];
   if (v5)
   {
@@ -981,9 +981,9 @@ LABEL_15:
 - (void)UITestActionMenuAfterRotationInVideoTaker
 {
   v3 = +[CKConversationList sharedConversationList];
-  v4 = [v3 conversations];
+  conversations = [v3 conversations];
 
-  v5 = [v4 count];
+  v5 = [conversations count];
   [(SMSApplication *)self startedTest:__CurrentTestName];
   if (v5)
   {
@@ -1018,38 +1018,38 @@ LABEL_15:
   dispatch_after(v3, &_dispatch_main_q, block);
 }
 
-- (void)deleteChat:(id)a3
+- (void)deleteChat:(id)chat
 {
-  v4 = a3;
+  chatCopy = chat;
   if (![(SMSApplication *)self isOldConversationList])
   {
     if ([(SMSApplication *)self isNewConversationList])
     {
-      v18 = [(SMSApplication *)self messagesController];
-      v19 = [v18 conversationListController];
+      messagesController = [(SMSApplication *)self messagesController];
+      conversationListController = [messagesController conversationListController];
 
-      v20 = [v4 item];
-      v21 = [v19 conversationList];
-      v22 = [v21 conversations];
-      v23 = [v22 count];
+      item = [chatCopy item];
+      conversationList = [conversationListController conversationList];
+      conversations = [conversationList conversations];
+      v23 = [conversations count];
 
-      if (v20 < v23)
+      if (item < v23)
       {
-        [v19 setEditingMode:1 animated:0];
-        v24 = [v19 collectionView];
-        [v24 selectItemAtIndexPath:v4 animated:1 scrollPosition:0];
+        [conversationListController setEditingMode:1 animated:0];
+        collectionView = [conversationListController collectionView];
+        [collectionView selectItemAtIndexPath:chatCopy animated:1 scrollPosition:0];
 
-        v25 = [v19 collectionView];
-        v26 = [v25 delegate];
-        v27 = [v19 collectionView];
-        [v26 collectionView:v27 didSelectItemAtIndexPath:v4];
+        collectionView2 = [conversationListController collectionView];
+        delegate = [collectionView2 delegate];
+        collectionView3 = [conversationListController collectionView];
+        [delegate collectionView:collectionView3 didSelectItemAtIndexPath:chatCopy];
 
         v28 = dispatch_time(0, 1000000000);
         v30[0] = _NSConcreteStackBlock;
         v30[1] = 3221225472;
         v30[2] = sub_100006340;
         v30[3] = &unk_1000309C0;
-        v31 = v19;
+        v31 = conversationListController;
         dispatch_after(v28, &_dispatch_main_q, v30);
       }
     }
@@ -1061,37 +1061,37 @@ LABEL_15:
         goto LABEL_12;
       }
 
-      v19 = OSLogHandleForIMFoundationCategory();
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+      conversationListController = OSLogHandleForIMFoundationCategory();
+      if (os_log_type_enabled(conversationListController, OS_LOG_TYPE_INFO))
       {
         *v29 = 0;
-        _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "The conversation list was not of type CKConversationListController or CKConversationListCollectionViewController.", v29, 2u);
+        _os_log_impl(&_mh_execute_header, conversationListController, OS_LOG_TYPE_INFO, "The conversation list was not of type CKConversationListController or CKConversationListCollectionViewController.", v29, 2u);
       }
     }
 
     goto LABEL_12;
   }
 
-  v5 = [(SMSApplication *)self messagesController];
-  v6 = [v5 conversationListController];
-  v7 = [v6 view];
+  messagesController2 = [(SMSApplication *)self messagesController];
+  conversationListController2 = [messagesController2 conversationListController];
+  view = [conversationListController2 view];
 
-  v8 = [v4 row];
-  v9 = [(SMSApplication *)self messagesController];
-  v10 = [v9 conversationListController];
-  v11 = [v10 conversationList];
-  v12 = [v11 conversations];
-  v13 = [v12 count];
+  v8 = [chatCopy row];
+  messagesController3 = [(SMSApplication *)self messagesController];
+  conversationListController3 = [messagesController3 conversationListController];
+  conversationList2 = [conversationListController3 conversationList];
+  conversations2 = [conversationList2 conversations];
+  v13 = [conversations2 count];
 
   if (v8 < v13)
   {
-    v14 = [(SMSApplication *)self messagesController];
-    v15 = [v14 conversationListController];
-    [v15 setEditing:1 animated:0];
+    messagesController4 = [(SMSApplication *)self messagesController];
+    conversationListController4 = [messagesController4 conversationListController];
+    [conversationListController4 setEditing:1 animated:0];
 
-    [v7 selectRowAtIndexPath:v4 animated:1 scrollPosition:0];
-    v16 = [v7 delegate];
-    [v16 tableView:v7 didSelectRowAtIndexPath:v4];
+    [view selectRowAtIndexPath:chatCopy animated:1 scrollPosition:0];
+    delegate2 = [view delegate];
+    [delegate2 tableView:view didSelectRowAtIndexPath:chatCopy];
 
     v17 = dispatch_time(0, 1000000000);
     block[0] = _NSConcreteStackBlock;
@@ -1108,12 +1108,12 @@ LABEL_12:
 - (BOOL)isNewConversationList
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 conversationListControllerClass];
+  conversationListControllerClass = [v2 conversationListControllerClass];
 
-  return v3 == objc_opt_class();
+  return conversationListControllerClass == objc_opt_class();
 }
 
-- (unint64_t)mapSectionIdentifierForCurrentConversationListClass:(unint64_t)a3
+- (unint64_t)mapSectionIdentifierForCurrentConversationListClass:(unint64_t)class
 {
   if (![(SMSApplication *)self isOldConversationList])
   {
@@ -1122,16 +1122,16 @@ LABEL_12:
       goto LABEL_42;
     }
 
-    if (a3 <= 2)
+    if (class <= 2)
     {
-      if (!a3)
+      if (!class)
       {
-        return a3;
+        return class;
       }
 
-      if (a3 != 1)
+      if (class != 1)
       {
-        if (a3 == 2)
+        if (class == 2)
         {
           return 1;
         }
@@ -1142,14 +1142,14 @@ LABEL_12:
       return 3;
     }
 
-    if (a3 > 4)
+    if (class > 4)
     {
-      if (a3 == 5)
+      if (class == 5)
       {
         return 4;
       }
 
-      if (a3 == 6)
+      if (class == 6)
       {
         return 5;
       }
@@ -1157,7 +1157,7 @@ LABEL_12:
       goto LABEL_42;
     }
 
-    if (a3 == 3)
+    if (class == 3)
     {
       return 2;
     }
@@ -1181,11 +1181,11 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  if (a3 > 2)
+  if (class > 2)
   {
-    if (a3 <= 4)
+    if (class <= 4)
     {
-      if (a3 != 3)
+      if (class != 3)
       {
         return 1;
       }
@@ -1207,9 +1207,9 @@ LABEL_40:
       goto LABEL_40;
     }
 
-    if (a3 != 5)
+    if (class != 5)
     {
-      if (a3 != 6)
+      if (class != 6)
       {
         goto LABEL_42;
       }
@@ -1220,7 +1220,7 @@ LABEL_40:
     return 2;
   }
 
-  if (!a3)
+  if (!class)
   {
     if (!IMOSLoggingEnabled())
     {
@@ -1239,9 +1239,9 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  if (a3 != 1)
+  if (class != 1)
   {
-    if (a3 != 2 || !IMOSLoggingEnabled())
+    if (class != 2 || !IMOSLoggingEnabled())
     {
       goto LABEL_42;
     }
@@ -1290,11 +1290,11 @@ LABEL_42:
 {
   [(SMSApplication *)self showTranscriptListNotAnimated];
   v3 = +[CKConversationList sharedConversationList];
-  v4 = [v3 conversations];
+  conversations = [v3 conversations];
 
-  if (v4)
+  if (conversations)
   {
-    qword_10003A158 = [v4 count];
+    qword_10003A158 = [conversations count];
     v5 = dispatch_time(0, 500000000);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -1354,9 +1354,9 @@ LABEL_42:
   v6 = [NSURL URLWithString:v5];
 
   [(SMSApplication *)self startedTest:__CurrentTestName];
-  v7 = [(SMSApplication *)self sceneController];
-  v8 = [v7 messagesSceneDelegate];
-  [v8 openURL:v6 sourceApplication:0];
+  sceneController = [(SMSApplication *)self sceneController];
+  messagesSceneDelegate = [sceneController messagesSceneDelegate];
+  [messagesSceneDelegate openURL:v6 sourceApplication:0];
 
   v9 = dispatch_time(0, 2000000000);
   block[0] = _NSConcreteStackBlock;
@@ -1427,9 +1427,9 @@ LABEL_42:
 
   else
   {
-    v4 = [(SMSApplication *)self sceneController];
-    v5 = [v4 messagesSceneDelegate];
-    [v5 setShouldShowRegistrationOverride:1];
+    sceneController = [(SMSApplication *)self sceneController];
+    messagesSceneDelegate = [sceneController messagesSceneDelegate];
+    [messagesSceneDelegate setShouldShowRegistrationOverride:1];
 
     v6 = +[NSNotificationCenter defaultCenter];
     [v6 postNotificationName:IMAccountControllerOperationalAccountsChangedNotification object:0];
@@ -1572,17 +1572,17 @@ LABEL_42:
   dispatch_after(v3, &_dispatch_main_q, block);
 }
 
-- (void)newComposeDismissContactPicker:(id)a3
+- (void)newComposeDismissContactPicker:(id)picker
 {
-  v4 = a3;
+  pickerCopy = picker;
   v5 = dispatch_time(0, 2000000000);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000B0B8;
   v7[3] = &unk_100030B00;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = pickerCopy;
+  v6 = pickerCopy;
   dispatch_after(v5, &_dispatch_main_q, v7);
 }
 
@@ -1689,185 +1689,185 @@ LABEL_42:
   [(SMSApplication *)self _searchForString:@"#4813" withCompletion:v3];
 }
 
-- (void)_searchForString:(id)a3 validateExpectedSearchResults:(id)a4 resultsDictionary:(id)a5 completion:(id)a6
+- (void)_searchForString:(id)string validateExpectedSearchResults:(id)results resultsDictionary:(id)dictionary completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(SMSApplication *)self messagesController];
-  v15 = [v14 conversationListController];
+  stringCopy = string;
+  resultsCopy = results;
+  dictionaryCopy = dictionary;
+  completionCopy = completion;
+  messagesController = [(SMSApplication *)self messagesController];
+  conversationListController = [messagesController conversationListController];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10000D57C;
   v20[3] = &unk_100030D80;
-  v21 = v11;
-  v22 = self;
-  v23 = v10;
-  v24 = v12;
-  v25 = v13;
-  v16 = v13;
-  v17 = v12;
-  v18 = v10;
-  v19 = v11;
-  [v15 performSearch:v18 completion:v20];
+  v21 = resultsCopy;
+  selfCopy = self;
+  v23 = stringCopy;
+  v24 = dictionaryCopy;
+  v25 = completionCopy;
+  v16 = completionCopy;
+  v17 = dictionaryCopy;
+  v18 = stringCopy;
+  v19 = resultsCopy;
+  [conversationListController performSearch:v18 completion:v20];
 }
 
-- (void)_searchForString:(id)a3 withCompletion:(id)a4
+- (void)_searchForString:(id)string withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(SMSApplication *)self messagesController];
-  v8 = [v9 conversationListController];
-  [v8 performSearch:v7 completion:v6];
+  completionCopy = completion;
+  stringCopy = string;
+  messagesController = [(SMSApplication *)self messagesController];
+  conversationListController = [messagesController conversationListController];
+  [conversationListController performSearch:stringCopy completion:completionCopy];
 }
 
-- (void)_clearSearchStringWithPreviousSearchText:(id)a3 resultsDictionary:(id)a4 completion:(id)a5
+- (void)_clearSearchStringWithPreviousSearchText:(id)text resultsDictionary:(id)dictionary completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SMSApplication *)self messagesController];
-  v12 = [v11 conversationListController];
+  textCopy = text;
+  dictionaryCopy = dictionary;
+  completionCopy = completion;
+  messagesController = [(SMSApplication *)self messagesController];
+  conversationListController = [messagesController conversationListController];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10000D8BC;
   v16[3] = &unk_100030DA8;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
-  [v12 performSearch:0 completion:v16];
+  v17 = textCopy;
+  v18 = dictionaryCopy;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  v14 = dictionaryCopy;
+  v15 = textCopy;
+  [conversationListController performSearch:0 completion:v16];
 }
 
-- (BOOL)validateNumberOfSearchResultsInConversationListController:(id)a3 searchText:(id)a4 expectedNumber:(int64_t)a5 withResultsDictionary:(id)a6
+- (BOOL)validateNumberOfSearchResultsInConversationListController:(id)controller searchText:(id)text expectedNumber:(int64_t)number withResultsDictionary:(id)dictionary
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [a3 searchResultsController];
-  v13 = [v12 collectionView];
-  v14 = [v13 numberOfItemsInSection:0];
-  v15 = v14 == a5;
-  v16 = [NSString stringWithFormat:@"Search %@ number of results", v11];
+  dictionaryCopy = dictionary;
+  textCopy = text;
+  searchResultsController = [controller searchResultsController];
+  collectionView = [searchResultsController collectionView];
+  v14 = [collectionView numberOfItemsInSection:0];
+  v15 = v14 == number;
+  textCopy = [NSString stringWithFormat:@"Search %@ number of results", textCopy];
 
-  v17 = [NSString stringWithFormat:@"expected=%lld, actual=%lld", a5, v14];
-  [(SMSApplication *)self _recordResult:v15 forKey:v16 comment:v17 resultsDictionary:v10];
+  v17 = [NSString stringWithFormat:@"expected=%lld, actual=%lld", number, v14];
+  [(SMSApplication *)self _recordResult:v15 forKey:textCopy comment:v17 resultsDictionary:dictionaryCopy];
 
   return v15;
 }
 
-- (BOOL)validateAtConversationListInConversationListController:(id)a3 previousSearchText:(id)a4 withResultsDictionary:(id)a5
+- (BOOL)validateAtConversationListInConversationListController:(id)controller previousSearchText:(id)text withResultsDictionary:(id)dictionary
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 searchResultsController];
-  v11 = [v10 collectionView];
-  v12 = [v11 numberOfItemsInSection:0];
-  v13 = [NSString stringWithFormat:@"After clearing %@ should have no results", v9];
+  dictionaryCopy = dictionary;
+  textCopy = text;
+  searchResultsController = [controller searchResultsController];
+  collectionView = [searchResultsController collectionView];
+  v12 = [collectionView numberOfItemsInSection:0];
+  textCopy = [NSString stringWithFormat:@"After clearing %@ should have no results", textCopy];
 
   v14 = [NSString stringWithFormat:@"actual=%lld", v12];
-  [(SMSApplication *)self _recordResult:v12 == 0 forKey:v13 comment:v14 resultsDictionary:v8];
+  [(SMSApplication *)self _recordResult:v12 == 0 forKey:textCopy comment:v14 resultsDictionary:dictionaryCopy];
 
   return v12 == 0;
 }
 
-- (BOOL)validateTranscriptShouldAutorotate:(id)a3 expected:(BOOL)a4 withResultsDictionary:(id)a5
+- (BOOL)validateTranscriptShouldAutorotate:(id)autorotate expected:(BOOL)expected withResultsDictionary:(id)dictionary
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [a3 shouldAutorotate] ^ v5;
-  [(SMSApplication *)self _recordResult:v9 ^ 1 forKey:@"Transcript should autorotate" comment:0 resultsDictionary:v8];
+  expectedCopy = expected;
+  dictionaryCopy = dictionary;
+  v9 = [autorotate shouldAutorotate] ^ expectedCopy;
+  [(SMSApplication *)self _recordResult:v9 ^ 1 forKey:@"Transcript should autorotate" comment:0 resultsDictionary:dictionaryCopy];
 
   return v9 ^ 1;
 }
 
-- (BOOL)validateTranscriptVendingIAV:(id)a3 expected:(BOOL)a4 withResultsDictionary:(id)a5
+- (BOOL)validateTranscriptVendingIAV:(id)v expected:(BOOL)expected withResultsDictionary:(id)dictionary
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [a3 inputAccessoryView];
-  LODWORD(a3) = v9 == 0;
+  expectedCopy = expected;
+  dictionaryCopy = dictionary;
+  inputAccessoryView = [v inputAccessoryView];
+  LODWORD(v) = inputAccessoryView == 0;
 
-  [(SMSApplication *)self _recordResult:a3 ^ v5 forKey:@"Transcript vending IAV" comment:0 resultsDictionary:v8];
-  return a3 ^ v5;
+  [(SMSApplication *)self _recordResult:v ^ expectedCopy forKey:@"Transcript vending IAV" comment:0 resultsDictionary:dictionaryCopy];
+  return v ^ expectedCopy;
 }
 
-- (BOOL)validateNonzeroTranscriptInsets:(id)a3 expected:(BOOL)a4 withResultsDictionary:(id)a5
+- (BOOL)validateNonzeroTranscriptInsets:(id)insets expected:(BOOL)expected withResultsDictionary:(id)dictionary
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [a3 collectionViewController];
-  v10 = [v9 collectionView];
-  [v10 contentInset];
+  expectedCopy = expected;
+  dictionaryCopy = dictionary;
+  collectionViewController = [insets collectionViewController];
+  collectionView = [collectionViewController collectionView];
+  [collectionView contentInset];
   v12 = v11;
   v14 = v13;
 
-  v15 = (v12 <= 0.0) ^ v5;
+  v15 = (v12 <= 0.0) ^ expectedCopy;
   v16 = [NSString stringWithFormat:@"%.2f", *&v12];
-  [(SMSApplication *)self _recordResult:v15 forKey:@"Transcript top inset is nonzero" comment:v16 resultsDictionary:v8];
-  v17 = (v14 <= 0.0) ^ v5;
+  [(SMSApplication *)self _recordResult:v15 forKey:@"Transcript top inset is nonzero" comment:v16 resultsDictionary:dictionaryCopy];
+  v17 = (v14 <= 0.0) ^ expectedCopy;
   v18 = [NSString stringWithFormat:@"%.2f", *&v14];
 
-  [(SMSApplication *)self _recordResult:v17 forKey:@"Transcript bottom inset is nonzero" comment:v18 resultsDictionary:v8];
+  [(SMSApplication *)self _recordResult:v17 forKey:@"Transcript bottom inset is nonzero" comment:v18 resultsDictionary:dictionaryCopy];
   return v15 & v17;
 }
 
-- (BOOL)validateBottomInsetGreaterThanIAVHeight:(id)a3 expected:(BOOL)a4 withResultsDictionary:(id)a5
+- (BOOL)validateBottomInsetGreaterThanIAVHeight:(id)height expected:(BOOL)expected withResultsDictionary:(id)dictionary
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 collectionViewController];
-  v11 = [v10 collectionView];
-  [v11 contentInset];
+  expectedCopy = expected;
+  dictionaryCopy = dictionary;
+  heightCopy = height;
+  collectionViewController = [heightCopy collectionViewController];
+  collectionView = [collectionViewController collectionView];
+  [collectionView contentInset];
   v13 = v12;
 
-  v14 = [v9 inputAccessoryView];
+  inputAccessoryView = [heightCopy inputAccessoryView];
 
-  if (!v14)
+  if (!inputAccessoryView)
   {
-    [(SMSApplication *)self _recordResult:0 forKey:@"Bottom inset > IAV height (KB up)" comment:@"Transcript controller returned nil IAV resultsDictionary:FAIL", v8];
+    [(SMSApplication *)self _recordResult:0 forKey:@"Bottom inset > IAV height (KB up)" comment:@"Transcript controller returned nil IAV resultsDictionary:FAIL", dictionaryCopy];
   }
 
-  [v14 frame];
+  [inputAccessoryView frame];
   v16 = v13 <= v15;
   v17 = [NSString stringWithFormat:@"bottom inset %.2f. IAV %.2f", *&v13, *&v15];
-  [(SMSApplication *)self _recordResult:v16 ^ v5 forKey:@"Bottom inset > IAV height (KB up)" comment:v17 resultsDictionary:v8];
+  [(SMSApplication *)self _recordResult:v16 ^ expectedCopy forKey:@"Bottom inset > IAV height (KB up)" comment:v17 resultsDictionary:dictionaryCopy];
 
-  return v16 ^ v5;
+  return v16 ^ expectedCopy;
 }
 
-- (BOOL)validateIAVisExpanded:(id)a3 expected:(BOOL)a4 withResultsDictionary:(id)a5
+- (BOOL)validateIAVisExpanded:(id)expanded expected:(BOOL)expected withResultsDictionary:(id)dictionary
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [a3 inputAccessoryView];
-  if (!v9)
+  expectedCopy = expected;
+  dictionaryCopy = dictionary;
+  inputAccessoryView = [expanded inputAccessoryView];
+  if (!inputAccessoryView)
   {
-    [(SMSApplication *)self _recordResult:0 forKey:@"IAV height > 44.0 (IAV is expanded)" comment:@"Transcript controller returned nil IAV resultsDictionary:FAIL", v8];
+    [(SMSApplication *)self _recordResult:0 forKey:@"IAV height > 44.0 (IAV is expanded)" comment:@"Transcript controller returned nil IAV resultsDictionary:FAIL", dictionaryCopy];
   }
 
-  [v9 frame];
+  [inputAccessoryView frame];
   v11 = v10 <= 44.0;
   v12 = [NSString stringWithFormat:@"IAV height %.2f", *&v10];
-  [(SMSApplication *)self _recordResult:v11 ^ v5 forKey:@"IAV height > 44.0 (IAV is expanded)" comment:v12 resultsDictionary:v8];
+  [(SMSApplication *)self _recordResult:v11 ^ expectedCopy forKey:@"IAV height > 44.0 (IAV is expanded)" comment:v12 resultsDictionary:dictionaryCopy];
 
-  return v11 ^ v5;
+  return v11 ^ expectedCopy;
 }
 
-- (BOOL)validateTranscriptControllerIsFirstResponder:(id)a3 expected:(BOOL)a4 withResultsDictionary:(id)a5
+- (BOOL)validateTranscriptControllerIsFirstResponder:(id)responder expected:(BOOL)expected withResultsDictionary:(id)dictionary
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 view];
-  v11 = [v10 window];
-  v12 = [v11 firstResponder];
+  expectedCopy = expected;
+  dictionaryCopy = dictionary;
+  responderCopy = responder;
+  view = [responderCopy view];
+  window = [view window];
+  firstResponder = [window firstResponder];
 
-  v13 = (v12 != v9) ^ v5;
+  v13 = (firstResponder != responderCopy) ^ expectedCopy;
   if (v13)
   {
     v14 = 0;
@@ -1876,7 +1876,7 @@ LABEL_42:
   else
   {
     v15 = @"Transcript is FR when it should not be";
-    if (v5)
+    if (expectedCopy)
     {
       v15 = @"Expected TranscriptController to be FR";
     }
@@ -1884,23 +1884,23 @@ LABEL_42:
     v14 = v15;
   }
 
-  [(SMSApplication *)self _recordResult:v13 forKey:@"TranscriptController is First Responder" comment:v14 resultsDictionary:v8];
+  [(SMSApplication *)self _recordResult:v13 forKey:@"TranscriptController is First Responder" comment:v14 resultsDictionary:dictionaryCopy];
 
   return v13;
 }
 
-- (BOOL)validateEntryViewIsFirstResponder:(id)a3 expected:(BOOL)a4 withResultsDictionary:(id)a5
+- (BOOL)validateEntryViewIsFirstResponder:(id)responder expected:(BOOL)expected withResultsDictionary:(id)dictionary
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [a3 entryView];
-  v10 = [v9 contentView];
-  v11 = [v10 isActive] ^ v5;
+  expectedCopy = expected;
+  dictionaryCopy = dictionary;
+  entryView = [responder entryView];
+  contentView = [entryView contentView];
+  v11 = [contentView isActive] ^ expectedCopy;
 
   if (v11 == 1)
   {
     v12 = @"IAV is FR when it should not be, keyboard should be dismissed";
-    if (v5)
+    if (expectedCopy)
     {
       v12 = @"Expected IAV to be FR, keyboard presented";
     }
@@ -1913,25 +1913,25 @@ LABEL_42:
     v13 = 0;
   }
 
-  [(SMSApplication *)self _recordResult:v11 ^ 1 forKey:@"Entry View is First Responder" comment:v13 resultsDictionary:v8];
+  [(SMSApplication *)self _recordResult:v11 ^ 1 forKey:@"Entry View is First Responder" comment:v13 resultsDictionary:dictionaryCopy];
 
   return v11 ^ 1;
 }
 
-- (BOOL)validateTranscriptIsScrolledToBottom:(id)a3 expected:(BOOL)a4 withResultsDictionary:(id)a5
+- (BOOL)validateTranscriptIsScrolledToBottom:(id)bottom expected:(BOOL)expected withResultsDictionary:(id)dictionary
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [a3 collectionViewController];
-  v10 = [v9 collectionView];
+  expectedCopy = expected;
+  dictionaryCopy = dictionary;
+  collectionViewController = [bottom collectionViewController];
+  collectionView = [collectionViewController collectionView];
 
-  v11 = [v10 __ck_isScrolledToBottom] ^ v5;
+  v11 = [collectionView __ck_isScrolledToBottom] ^ expectedCopy;
   if (v11 == 1)
   {
-    [v10 contentOffset];
+    [collectionView contentOffset];
     v13 = v12;
-    [v10 __ck_bottomOffset];
-    if (v5)
+    [collectionView __ck_bottomOffset];
+    if (expectedCopy)
     {
       [NSString stringWithFormat:@"Not scrolled to bottom. Current %.2f expected %.2f", v13, v14];
     }
@@ -1948,7 +1948,7 @@ LABEL_42:
     v15 = 0;
   }
 
-  if (v5)
+  if (expectedCopy)
   {
     v16 = @"Transcript scrolled to bottom";
   }
@@ -1958,20 +1958,20 @@ LABEL_42:
     v16 = @"Transcript not scrolled to bottom";
   }
 
-  [(SMSApplication *)self _recordResult:v11 ^ 1 forKey:v16 comment:v15 resultsDictionary:v8];
+  [(SMSApplication *)self _recordResult:v11 ^ 1 forKey:v16 comment:v15 resultsDictionary:dictionaryCopy];
 
   return v11 ^ 1;
 }
 
-- (BOOL)validateTranscriptPreviewCacheHasResumed:(id)a3 expected:(BOOL)a4 withResultsDictionary:(id)a5
+- (BOOL)validateTranscriptPreviewCacheHasResumed:(id)resumed expected:(BOOL)expected withResultsDictionary:(id)dictionary
 {
-  v5 = a4;
-  v7 = a5;
+  expectedCopy = expected;
+  dictionaryCopy = dictionary;
   v8 = +[CKPreviewDispatchCache transcriptPreviewCache];
   v9 = [v8 valueForKey:@"dispatchCache"];
   v10 = [v9 valueForKey:@"dispatchQueue"];
-  v11 = [v10 isSuspended] ^ v5;
-  if (v5)
+  v11 = [v10 isSuspended] ^ expectedCopy;
+  if (expectedCopy)
   {
     v12 = @"Transcript preview cache resumed";
   }
@@ -1991,21 +1991,21 @@ LABEL_42:
     v13 = @"Transcript preview cache suspend state incorrect";
   }
 
-  [(SMSApplication *)self _recordResult:v11 forKey:v12 comment:v13 resultsDictionary:v7];
+  [(SMSApplication *)self _recordResult:v11 forKey:v12 comment:v13 resultsDictionary:dictionaryCopy];
 
   return v11;
 }
 
-- (BOOL)validateRecipientSelectionControllerIsFirstResponder:(id)a3 expected:(BOOL)a4 withResultsDictionary:(id)a5
+- (BOOL)validateRecipientSelectionControllerIsFirstResponder:(id)responder expected:(BOOL)expected withResultsDictionary:(id)dictionary
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [a3 composeRecipientSelectionController];
-  v10 = [v9 toFieldIsFirstResponder] ^ v5;
+  expectedCopy = expected;
+  dictionaryCopy = dictionary;
+  composeRecipientSelectionController = [responder composeRecipientSelectionController];
+  v10 = [composeRecipientSelectionController toFieldIsFirstResponder] ^ expectedCopy;
   if (v10 == 1)
   {
     v11 = @"To: field is FR when it should not be";
-    if (v5)
+    if (expectedCopy)
     {
       v11 = @"Expected To: field to be FR, keyboard presented";
     }
@@ -2018,20 +2018,20 @@ LABEL_42:
     v12 = 0;
   }
 
-  [(SMSApplication *)self _recordResult:v10 ^ 1 forKey:@"To: field is first responder" comment:v12 resultsDictionary:v8];
+  [(SMSApplication *)self _recordResult:v10 ^ 1 forKey:@"To: field is first responder" comment:v12 resultsDictionary:dictionaryCopy];
 
   return v10 ^ 1;
 }
 
-- (BOOL)validateActionMenuWindowOrientationExpectedOrientation:(int64_t)a3 withResultsDictionary:(id)a4
+- (BOOL)validateActionMenuWindowOrientationExpectedOrientation:(int64_t)orientation withResultsDictionary:(id)dictionary
 {
-  v6 = a4;
+  dictionaryCopy = dictionary;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [UIApp windows];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  windows = [UIApp windows];
+  v8 = [windows countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2042,15 +2042,15 @@ LABEL_42:
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(windows);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
         NSClassFromString(@"CKActionMenuWindow");
         if ((objc_opt_isKindOfClass() & 1) != 0 && [v12 _orientationForViewTransform])
         {
-          v14 = [v12 _orientationForViewTransform];
-          if (v14 == a3)
+          _orientationForViewTransform = [v12 _orientationForViewTransform];
+          if (_orientationForViewTransform == orientation)
           {
             v15 = @"Orientation is correct";
           }
@@ -2060,14 +2060,14 @@ LABEL_42:
             v15 = @"Orientation is incorrect";
           }
 
-          [(SMSApplication *)self _recordResult:v14 == a3 forKey:@"CKActionMenuWindow orientation" comment:v15 resultsDictionary:v6];
+          [(SMSApplication *)self _recordResult:_orientationForViewTransform == orientation forKey:@"CKActionMenuWindow orientation" comment:v15 resultsDictionary:dictionaryCopy];
 
           v13 = 1;
           goto LABEL_15;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [windows countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v9)
       {
         continue;
@@ -2077,7 +2077,7 @@ LABEL_42:
     }
   }
 
-  [(SMSApplication *)self _recordResult:0 forKey:@"CKActionMenuWindow orientation" comment:@"No window found" resultsDictionary:v6];
+  [(SMSApplication *)self _recordResult:0 forKey:@"CKActionMenuWindow orientation" comment:@"No window found" resultsDictionary:dictionaryCopy];
   v13 = 0;
 LABEL_15:
 
@@ -2113,9 +2113,9 @@ LABEL_15:
   [(SMSApplication *)self showTranscriptListNotAnimated];
   [(SMSApplication *)self startedTest:__CurrentTestName];
   v3 = +[CKConversationList sharedConversationList];
-  v4 = [v3 conversations];
+  conversations = [v3 conversations];
 
-  if ([v4 count])
+  if ([conversations count])
   {
     v5 = +[CKConversationList sharedConversationList];
     v6 = [v5 conversationForExistingChatWithChatIdentifier:@"chat339741476857344860"];
@@ -2126,7 +2126,7 @@ LABEL_15:
     v9[2] = sub_10000EC44;
     v9[3] = &unk_100030B00;
     v10 = v6;
-    v11 = self;
+    selfCopy = self;
     v8 = v6;
     dispatch_after(v7, &_dispatch_main_q, v9);
   }
@@ -2142,17 +2142,17 @@ LABEL_15:
   [(SMSApplication *)self showTranscriptListNotAnimated];
   [(SMSApplication *)self startedTest:__CurrentTestName];
   v3 = +[CKConversationList sharedConversationList];
-  v4 = [v3 conversations];
+  conversations = [v3 conversations];
 
-  if ([v4 count])
+  if ([conversations count])
   {
     v5 = +[CKConversationList sharedConversationList];
     v6 = [v5 conversationForExistingChatWithChatIdentifier:@"chat339741476857344860"];
 
-    v7 = [(SMSApplication *)self messagesController];
+    messagesController = [(SMSApplication *)self messagesController];
     v12 = v6;
     v8 = [NSArray arrayWithObjects:&v12 count:1];
-    [v7 conversationListIsDeletingConversations:v8];
+    [messagesController conversationListIsDeletingConversations:v8];
 
     v9 = +[CKConversationList sharedConversationList];
     [v9 deleteConversation:v6];
@@ -2178,8 +2178,8 @@ LABEL_15:
   v4 = v3;
   if (!v3 || ![v3 length])
   {
-    v5 = [NSString stringWithFormat:@"chatIdentifier%ld", qword_10003A148];
-    v6 = [qword_10003A120 objectForKey:v5];
+    qword_10003A148 = [NSString stringWithFormat:@"chatIdentifier%ld", qword_10003A148];
+    v6 = [qword_10003A120 objectForKey:qword_10003A148];
     v7 = v6;
     if (v6)
     {
@@ -2199,10 +2199,10 @@ LABEL_15:
   v10 = +[CKConversationList sharedConversationList];
   v11 = [v10 conversationForExistingChatWithChatIdentifier:v4];
 
-  v12 = [(SMSApplication *)self messagesController];
-  v13 = [v12 currentConversation];
+  messagesController = [(SMSApplication *)self messagesController];
+  currentConversation = [messagesController currentConversation];
 
-  if (v11 == v13)
+  if (v11 == currentConversation)
   {
     ++qword_10003A148;
     [(SMSApplication *)self performSelector:"showNextMessage" withObject:0 afterDelay:1.0];
@@ -2222,12 +2222,12 @@ LABEL_15:
     v21[4] = self;
     [(SMSApplication *)self installNotificationObserverForNotificationName:v16 notificationName:@"PPTDidLayoutConversationEvent" forOneNotification:1 usingBlock:v21];
 
-    v17 = [(SMSApplication *)self messagesController];
-    v18 = [v17 conversationListController];
-    [v18 beginHoldingConversationListUpdatesForPPTTests];
+    messagesController2 = [(SMSApplication *)self messagesController];
+    conversationListController = [messagesController2 conversationListController];
+    [conversationListController beginHoldingConversationListUpdatesForPPTTests];
 
-    v19 = [(SMSApplication *)self messagesController];
-    [v19 showConversation:v11 animate:1];
+    messagesController3 = [(SMSApplication *)self messagesController];
+    [messagesController3 showConversation:v11 animate:1];
 
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -2238,14 +2238,14 @@ LABEL_15:
   }
 }
 
-- (void)startShowMessagesTest:(id)a3
+- (void)startShowMessagesTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v5 = +[CKConversationList sharedConversationList];
-  v9 = [v5 conversations];
+  conversations = [v5 conversations];
 
-  v6 = [v9 count];
-  v7 = [v4 objectForKey:@"numMessages"];
+  v6 = [conversations count];
+  v7 = [testCopy objectForKey:@"numMessages"];
 
   qword_10003A150 = [v7 integerValue];
   v8 = qword_10003A150;
@@ -2270,20 +2270,20 @@ LABEL_15:
 
 - (void)dissmissComposeSheet
 {
-  v3 = [(SMSApplication *)self messagesController];
-  v4 = [v3 presentedViewController];
+  messagesController = [(SMSApplication *)self messagesController];
+  presentedViewController = [messagesController presentedViewController];
 
-  if (v4)
+  if (presentedViewController)
   {
-    v5 = [(SMSApplication *)self messagesController];
-    [v5 dismissViewControllerAnimated:0 completion:0];
+    messagesController2 = [(SMSApplication *)self messagesController];
+    [messagesController2 dismissViewControllerAnimated:0 completion:0];
   }
 }
 
-- (void)_dismissPeoplePickerWithCompletion:(id)a3 completion:(id)a4
+- (void)_dismissPeoplePickerWithCompletion:(id)completion completion:(id)a4
 {
   v6 = a4;
-  [a3 _dismissPeoplePicker];
+  [completion _dismissPeoplePicker];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000F4D4;
@@ -2293,16 +2293,16 @@ LABEL_15:
   [(SMSApplication *)self installCACommitCompletionBlock:v8];
 }
 
-- (void)tearDownShowPeoplePickerTest:(id)a3
+- (void)tearDownShowPeoplePickerTest:(id)test
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10000F580;
   v4[3] = &unk_100030B00;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(SMSApplication *)v5 installCACommitCompletionBlock:v4];
+  selfCopy = self;
+  testCopy = test;
+  v3 = testCopy;
+  [(SMSApplication *)selfCopy installCACommitCompletionBlock:v4];
 }
 
 - (void)tearDownShowPeoplePickerTest
@@ -2315,36 +2315,36 @@ LABEL_15:
   [(SMSApplication *)self installCACommitCompletionBlock:v2];
 }
 
-- (void)_showPeoplePickerTest:(id)a3
+- (void)_showPeoplePickerTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v5 = +[NSDistributedNotificationCenter defaultCenter];
   v6 = CNContactPickerViewControllerPickerDidShowNotification;
   v9 = _NSConcreteStackBlock;
   v10 = 3221225472;
   v11 = sub_10000FB98;
   v12 = &unk_100030C18;
-  v13 = self;
-  v14 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v14 = testCopy;
+  v7 = testCopy;
   [(SMSApplication *)self installNotificationObserverForNotificationName:v5 notificationName:v6 forOneNotification:1 usingBlock:&v9];
 
-  [(SMSApplication *)self startedSubTest:@"ShowPeoplePicker" forTest:__CurrentTestName, v9, v10, v11, v12, v13];
-  v8 = [v7 toField];
-  [v7 composeRecipientViewRequestAddRecipient:v8];
+  [(SMSApplication *)self startedSubTest:@"ShowPeoplePicker" forTest:__CurrentTestName, v9, v10, v11, v12, selfCopy];
+  toField = [v7 toField];
+  [v7 composeRecipientViewRequestAddRecipient:toField];
 }
 
 - (void)_startPeoplePickerTest
 {
-  v3 = [(SMSApplication *)self messagesController];
-  v5 = [v3 ppt_chatController];
+  messagesController = [(SMSApplication *)self messagesController];
+  ppt_chatController = [messagesController ppt_chatController];
 
-  v4 = [v5 composeRecipientSelectionController];
+  composeRecipientSelectionController = [ppt_chatController composeRecipientSelectionController];
   [(SMSApplication *)self startedTest:__CurrentTestName];
-  [(SMSApplication *)self _showPeoplePickerTest:v4];
+  [(SMSApplication *)self _showPeoplePickerTest:composeRecipientSelectionController];
 }
 
-- (void)startShowPeoplePickerTest:(id)a3
+- (void)startShowPeoplePickerTest:(id)test
 {
   [(SMSApplication *)self dissmissComposeSheet];
   v4 = +[NSNotificationCenter defaultCenter];
@@ -2355,8 +2355,8 @@ LABEL_15:
   v6[4] = self;
   [(SMSApplication *)self installNotificationObserverForNotificationName:v4 notificationName:@"PPTDidShowConversationEvent" forOneNotification:1 usingBlock:v6];
 
-  v5 = [(SMSApplication *)self messagesController];
-  [v5 showNewMessageCompositionPanelWithRecipients:0 composition:0 animated:1];
+  messagesController = [(SMSApplication *)self messagesController];
+  [messagesController showNewMessageCompositionPanelWithRecipients:0 composition:0 animated:1];
 }
 
 - (void)tearDownSelectContactPeoplePickerTest
@@ -2369,14 +2369,14 @@ LABEL_15:
   [(SMSApplication *)self installCACommitCompletionBlock:v2];
 }
 
-- (void)_selectContact:(id)a3
+- (void)_selectContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v5 = [qword_10003A120 objectForKey:@"contactNumber"];
   if (v5)
   {
     v6 = +[IMContactStore sharedInstance];
-    v7 = [v6 getContactStore];
+    getContactStore = [v6 getContactStore];
 
     v8 = [CNPhoneNumber phoneNumberWithStringValue:v5];
     v9 = [CNContact predicateForContactsMatchingPhoneNumber:v8];
@@ -2384,7 +2384,7 @@ LABEL_15:
     v38 = v10;
     v11 = [NSArray arrayWithObjects:&v38 count:1];
     v37 = 0;
-    v12 = [v7 unifiedContactsMatchingPredicate:v9 keysToFetch:v11 error:&v37];
+    v12 = [getContactStore unifiedContactsMatchingPredicate:v9 keysToFetch:v11 error:&v37];
     v20 = v37;
 
     v31 = 0;
@@ -2409,15 +2409,15 @@ LABEL_15:
     v24 = &v25;
     [v12 enumerateObjectsUsingBlock:v21];
     v14 = v32[5];
-    v15 = [v26[5] identifier];
-    v16 = [CNContactProperty contactPropertyWithContact:v14 propertyKey:CNContactPhoneNumbersKey identifier:v15];
+    identifier = [v26[5] identifier];
+    v16 = [CNContactProperty contactPropertyWithContact:v14 propertyKey:CNContactPhoneNumbersKey identifier:identifier];
 
     v17 = __CurrentTestName;
     v18 = [NSArray arrayWithObject:@"time"];
     [(SMSApplication *)self startedSubTest:@"SelectContact" forTest:v17 withMetrics:v18];
 
-    v19 = [v4 contactPickerViewController];
-    [v4 contactPicker:v19 didSelectContactProperty:v16];
+    contactPickerViewController = [contactCopy contactPickerViewController];
+    [contactCopy contactPicker:contactPickerViewController didSelectContactProperty:v16];
 
     _Block_object_dispose(&v25, 8);
     _Block_object_dispose(&v31, 8);
@@ -2431,10 +2431,10 @@ LABEL_15:
 
 - (void)_startSelectContactPeoplePickerTest
 {
-  v3 = [(SMSApplication *)self messagesController];
-  v4 = [v3 ppt_chatController];
+  messagesController = [(SMSApplication *)self messagesController];
+  ppt_chatController = [messagesController ppt_chatController];
 
-  v5 = [v4 composeRecipientSelectionController];
+  composeRecipientSelectionController = [ppt_chatController composeRecipientSelectionController];
   v6 = +[NSDistributedNotificationCenter defaultCenter];
   v7 = CNContactPickerViewControllerPickerDidShowNotification;
   v12[0] = _NSConcreteStackBlock;
@@ -2442,8 +2442,8 @@ LABEL_15:
   v12[2] = sub_1000105A4;
   v12[3] = &unk_100030C18;
   v12[4] = self;
-  v13 = v5;
-  v8 = v5;
+  v13 = composeRecipientSelectionController;
+  v8 = composeRecipientSelectionController;
   [(SMSApplication *)self installNotificationObserverForNotificationName:v6 notificationName:v7 forOneNotification:1 usingBlock:v12];
 
   v9 = +[NSDistributedNotificationCenter defaultCenter];
@@ -2454,11 +2454,11 @@ LABEL_15:
   v11[4] = self;
   [(SMSApplication *)self installNotificationObserverForNotificationName:v9 notificationName:CNContactPickerViewControllerPickerDidHideNotification forOneNotification:1 usingBlock:v11];
 
-  v10 = [v8 toField];
-  [v8 composeRecipientViewRequestAddRecipient:v10];
+  toField = [v8 toField];
+  [v8 composeRecipientViewRequestAddRecipient:toField];
 }
 
-- (void)startSelectContactPeoplePickerTest:(id)a3
+- (void)startSelectContactPeoplePickerTest:(id)test
 {
   [(SMSApplication *)self dissmissComposeSheet];
   v4 = +[NSNotificationCenter defaultCenter];
@@ -2470,8 +2470,8 @@ LABEL_15:
   [(SMSApplication *)self installNotificationObserverForNotificationName:v4 notificationName:@"PPTDidShowConversationEvent" forOneNotification:1 usingBlock:v6];
 
   [(SMSApplication *)self startedTest:__CurrentTestName];
-  v5 = [(SMSApplication *)self messagesController];
-  [v5 showNewMessageCompositionPanelWithRecipients:0 composition:0 animated:1];
+  messagesController = [(SMSApplication *)self messagesController];
+  [messagesController showNewMessageCompositionPanelWithRecipients:0 composition:0 animated:1];
 }
 
 - (void)tearDownCancelPeoplePickerTest
@@ -2486,26 +2486,26 @@ LABEL_15:
 
 - (void)_cancelPeoplePicker
 {
-  v3 = [(SMSApplication *)self messagesController];
-  v7 = [v3 ppt_chatController];
+  messagesController = [(SMSApplication *)self messagesController];
+  ppt_chatController = [messagesController ppt_chatController];
 
-  v4 = [v7 composeRecipientSelectionController];
-  if (v4)
+  composeRecipientSelectionController = [ppt_chatController composeRecipientSelectionController];
+  if (composeRecipientSelectionController)
   {
     v5 = __CurrentTestName;
     v6 = [NSArray arrayWithObject:@"time"];
     [(SMSApplication *)self startedSubTest:@"CancelPeoplePicker" forTest:v5 withMetrics:v6];
 
-    [v4 contactPickerDidCancel:0];
+    [composeRecipientSelectionController contactPickerDidCancel:0];
   }
 }
 
 - (void)_startCancelPeoplePickerTest
 {
-  v3 = [(SMSApplication *)self messagesController];
-  v4 = [v3 ppt_chatController];
+  messagesController = [(SMSApplication *)self messagesController];
+  ppt_chatController = [messagesController ppt_chatController];
 
-  v5 = [v4 composeRecipientSelectionController];
+  composeRecipientSelectionController = [ppt_chatController composeRecipientSelectionController];
   v6 = +[NSDistributedNotificationCenter defaultCenter];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -2522,11 +2522,11 @@ LABEL_15:
   v9[4] = self;
   [(SMSApplication *)self installNotificationObserverForNotificationName:v7 notificationName:CNContactPickerViewControllerPickerDidHideNotification forOneNotification:1 usingBlock:v9];
 
-  v8 = [v5 toField];
-  [v5 composeRecipientViewRequestAddRecipient:v8];
+  toField = [composeRecipientSelectionController toField];
+  [composeRecipientSelectionController composeRecipientViewRequestAddRecipient:toField];
 }
 
-- (void)startCancelPeoplePickerTest:(id)a3
+- (void)startCancelPeoplePickerTest:(id)test
 {
   [(SMSApplication *)self dissmissComposeSheet];
   v4 = +[NSNotificationCenter defaultCenter];
@@ -2538,19 +2538,19 @@ LABEL_15:
   [(SMSApplication *)self installNotificationObserverForNotificationName:v4 notificationName:@"PPTDidShowConversationEvent" forOneNotification:1 usingBlock:v6];
 
   [(SMSApplication *)self startedTest:__CurrentTestName];
-  v5 = [(SMSApplication *)self messagesController];
-  [v5 showNewMessageCompositionPanelWithRecipients:0 composition:0 animated:1];
+  messagesController = [(SMSApplication *)self messagesController];
+  [messagesController showNewMessageCompositionPanelWithRecipients:0 composition:0 animated:1];
 }
 
-- (void)tearDownResolveContactTest:(id)a3
+- (void)tearDownResolveContactTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   [(SMSApplication *)self finishedSubTest:@"ResolveContact" forTest:__CurrentTestName];
   if (+[UIDevice __ck_currentDeviceIsPadOrMac])
   {
-    v5 = [(SMSApplication *)self messagesController];
-    v6 = [v5 ppt_chatController];
-    [v6 performSelector:"cancelButtonTapped:" withObject:0];
+    messagesController = [(SMSApplication *)self messagesController];
+    ppt_chatController = [messagesController ppt_chatController];
+    [ppt_chatController performSelector:"cancelButtonTapped:" withObject:0];
   }
 
   else
@@ -2562,44 +2562,44 @@ LABEL_15:
   v8[1] = 3221225472;
   v8[2] = sub_100010D94;
   v8[3] = &unk_100030DD0;
-  v9 = v4;
-  v7 = v4;
+  v9 = testCopy;
+  v7 = testCopy;
   [(SMSApplication *)self installCACommitCompletionBlock:v8];
 }
 
-- (void)_resolveContactTest:(id)a3
+- (void)_resolveContactTest:(id)test
 {
-  v4 = a3;
-  v5 = [(SMSApplication *)self messagesController];
-  v9 = [v5 ppt_chatController];
+  testCopy = test;
+  messagesController = [(SMSApplication *)self messagesController];
+  ppt_chatController = [messagesController ppt_chatController];
 
-  v6 = [v9 composeRecipientSelectionController];
-  v7 = [v6 toField];
-  v8 = [v7 textView];
-  [v8 setText:v4];
+  composeRecipientSelectionController = [ppt_chatController composeRecipientSelectionController];
+  toField = [composeRecipientSelectionController toField];
+  textView = [toField textView];
+  [textView setText:testCopy];
 
-  [v6 composeRecipientView:v7 textDidChange:v4];
+  [composeRecipientSelectionController composeRecipientView:toField textDidChange:testCopy];
 }
 
-- (void)typeInContactName:(id)a3
+- (void)typeInContactName:(id)name
 {
-  v4 = a3;
-  v5 = [(SMSApplication *)self messagesController];
-  v9 = [v5 ppt_chatController];
+  nameCopy = name;
+  messagesController = [(SMSApplication *)self messagesController];
+  ppt_chatController = [messagesController ppt_chatController];
 
-  v6 = [v9 composeRecipientSelectionController];
-  v7 = [v6 toField];
-  v8 = [v7 textView];
-  [v8 setText:v4];
+  composeRecipientSelectionController = [ppt_chatController composeRecipientSelectionController];
+  toField = [composeRecipientSelectionController toField];
+  textView = [toField textView];
+  [textView setText:nameCopy];
 
-  [v6 composeRecipientView:v7 textDidChange:v4];
+  [composeRecipientSelectionController composeRecipientView:toField textDidChange:nameCopy];
 }
 
-- (void)startComposeMessageToPseudoContactTest:(id)a3
+- (void)startComposeMessageToPseudoContactTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   [(SMSApplication *)self dissmissComposeSheet];
-  v5 = [v4 objectForKey:@"contactName"];
+  v5 = [testCopy objectForKey:@"contactName"];
 
   if (v5)
   {
@@ -2612,10 +2612,10 @@ LABEL_15:
   }
 }
 
-- (void)_startcomposePseudoContactTest:(id)a3 withOptions:(id)a4
+- (void)_startcomposePseudoContactTest:(id)test withOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  testCopy = test;
+  optionsCopy = options;
   [(SMSApplication *)self dissmissComposeSheet];
   v8 = +[NSNotificationCenter defaultCenter];
   v16[0] = _NSConcreteStackBlock;
@@ -2623,10 +2623,10 @@ LABEL_15:
   v16[2] = sub_100011168;
   v16[3] = &unk_100030E48;
   v16[4] = self;
-  v9 = v6;
+  v9 = testCopy;
   v17 = v9;
-  v18 = v7;
-  v10 = v7;
+  v18 = optionsCopy;
+  v10 = optionsCopy;
   [(SMSApplication *)self installNotificationObserverForNotificationName:v8 notificationName:@"PPTDidShowConversationEvent" forOneNotification:1 usingBlock:v16];
 
   v11 = +[NSNotificationCenter defaultCenter];
@@ -2639,15 +2639,15 @@ LABEL_15:
   v12 = v9;
   [(SMSApplication *)self installNotificationObserverForNotificationName:v11 notificationName:@"PPTSearchListDidShowOrHideNotification" forOneNotification:1 usingBlock:v14];
 
-  v13 = [(SMSApplication *)self messagesController];
-  [v13 showNewMessageCompositionPanelWithRecipients:0 composition:0 animated:1];
+  messagesController = [(SMSApplication *)self messagesController];
+  [messagesController showNewMessageCompositionPanelWithRecipients:0 composition:0 animated:1];
 }
 
-- (void)startScrollPseudoContactNamesTest:(id)a3
+- (void)startScrollPseudoContactNamesTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   [(SMSApplication *)self dissmissComposeSheet];
-  v5 = [v4 objectForKey:@"contactName"];
+  v5 = [testCopy objectForKey:@"contactName"];
 
   if (v5)
   {
@@ -2660,23 +2660,23 @@ LABEL_15:
   }
 }
 
-- (void)_scrollPseudoContactTest:(id)a3 withOptions:(id)a4
+- (void)_scrollPseudoContactTest:(id)test withOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  testCopy = test;
+  optionsCopy = options;
   [(SMSApplication *)self dissmissComposeSheet];
-  v8 = [(SMSApplication *)self messagesController];
-  v9 = [v8 ppt_chatController];
+  messagesController = [(SMSApplication *)self messagesController];
+  ppt_chatController = [messagesController ppt_chatController];
 
-  v10 = [v9 composeRecipientSelectionController];
+  composeRecipientSelectionController = [ppt_chatController composeRecipientSelectionController];
   v11 = +[NSNotificationCenter defaultCenter];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_1000114FC;
   v21[3] = &unk_100030C18;
   v21[4] = self;
-  v22 = v7;
-  v12 = v7;
+  v22 = optionsCopy;
+  v12 = optionsCopy;
   [(SMSApplication *)self installNotificationObserverForNotificationName:v11 notificationName:@"PPTDidShowConversationEvent" forOneNotification:1 usingBlock:v21];
 
   v13 = +[NSNotificationCenter defaultCenter];
@@ -2684,20 +2684,20 @@ LABEL_15:
   v17[1] = 3221225472;
   v17[2] = sub_1000115B4;
   v17[3] = &unk_100030E48;
-  v18 = v10;
-  v19 = self;
-  v20 = v6;
-  v14 = v6;
-  v15 = v10;
+  v18 = composeRecipientSelectionController;
+  selfCopy = self;
+  v20 = testCopy;
+  v14 = testCopy;
+  v15 = composeRecipientSelectionController;
   [(SMSApplication *)self installNotificationObserverForNotificationName:v13 notificationName:@"PPTSearchListDidShowOrHideNotification" forOneNotification:1 usingBlock:v17];
 
-  v16 = [(SMSApplication *)self messagesController];
-  [v16 showNewMessageCompositionPanelWithRecipients:0 composition:0 animated:1];
+  messagesController2 = [(SMSApplication *)self messagesController];
+  [messagesController2 showNewMessageCompositionPanelWithRecipients:0 composition:0 animated:1];
 }
 
-- (void)_startResolveContactTest:(id)a3
+- (void)_startResolveContactTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   [(SMSApplication *)self dissmissComposeSheet];
   v5 = +[NSNotificationCenter defaultCenter];
   v10[0] = _NSConcreteStackBlock;
@@ -2705,8 +2705,8 @@ LABEL_15:
   v10[2] = sub_100011768;
   v10[3] = &unk_100030C18;
   v10[4] = self;
-  v11 = v4;
-  v6 = v4;
+  v11 = testCopy;
+  v6 = testCopy;
   [(SMSApplication *)self installNotificationObserverForNotificationName:v5 notificationName:@"PPTDidShowConversationEvent" forOneNotification:1 usingBlock:v10];
 
   v7 = +[NSNotificationCenter defaultCenter];
@@ -2717,13 +2717,13 @@ LABEL_15:
   v9[4] = self;
   [(SMSApplication *)self installNotificationObserverForNotificationName:v7 notificationName:@"PPTSearchListDidShowOrHideNotification" forOneNotification:1 usingBlock:v9];
 
-  v8 = [(SMSApplication *)self messagesController];
-  [v8 showNewMessageCompositionPanelWithRecipients:0 composition:0 animated:1];
+  messagesController = [(SMSApplication *)self messagesController];
+  [messagesController showNewMessageCompositionPanelWithRecipients:0 composition:0 animated:1];
 }
 
-- (void)startResolveContactTest:(id)a3
+- (void)startResolveContactTest:(id)test
 {
-  v4 = [a3 objectForKey:@"contactNumber"];
+  v4 = [test objectForKey:@"contactNumber"];
   if (v4)
   {
     [(SMSApplication *)self startedTest:__CurrentTestName];
@@ -2736,7 +2736,7 @@ LABEL_15:
   }
 }
 
-- (void)startShowNewComposeTest:(id)a3
+- (void)startShowNewComposeTest:(id)test
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -2744,13 +2744,13 @@ LABEL_15:
   v8[3] = &unk_1000309C0;
   v8[4] = self;
   v4 = objc_retainBlock(v8);
-  v5 = [(SMSApplication *)self messagesController];
-  v6 = [v5 presentedViewController];
+  messagesController = [(SMSApplication *)self messagesController];
+  presentedViewController = [messagesController presentedViewController];
 
-  if (v6)
+  if (presentedViewController)
   {
-    v7 = [(SMSApplication *)self messagesController];
-    [v7 dismissViewControllerAnimated:0 completion:v4];
+    messagesController2 = [(SMSApplication *)self messagesController];
+    [messagesController2 dismissViewControllerAnimated:0 completion:v4];
   }
 
   else
@@ -2759,15 +2759,15 @@ LABEL_15:
   }
 }
 
-- (void)startStuckAudioPillTest:(id)a3
+- (void)startStuckAudioPillTest:(id)test
 {
   v7[0] = 0;
   v7[1] = v7;
   v7[2] = 0x3032000000;
   v7[3] = sub_100004F08;
   v7[4] = sub_100004F18;
-  v4 = [(SMSApplication *)self messagesController];
-  v8 = [v4 chatController];
+  messagesController = [(SMSApplication *)self messagesController];
+  chatController = [messagesController chatController];
 
   v5 = dispatch_time(0, 1000000000);
   v6[0] = _NSConcreteStackBlock;
@@ -2780,33 +2780,33 @@ LABEL_15:
   _Block_object_dispose(v7, 8);
 }
 
-- (void)sendMultipleMessagesEntryView:(id)a3 composition:(id)a4 handler:(id)a5
+- (void)sendMultipleMessagesEntryView:(id)view composition:(id)composition handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  [v8 setComposition:a4];
+  viewCopy = view;
+  handlerCopy = handler;
+  [viewCopy setComposition:composition];
   v10 = dispatch_time(0, 2000000000);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001203C;
   block[3] = &unk_100030EC0;
   block[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = viewCopy;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = viewCopy;
   dispatch_after(v10, &_dispatch_main_q, block);
 }
 
-- (void)startDetailsTest:(id)a3
+- (void)startDetailsTest:(id)test
 {
   v7[0] = 0;
   v7[1] = v7;
   v7[2] = 0x3032000000;
   v7[3] = sub_100004F08;
   v7[4] = sub_100004F18;
-  v4 = [(SMSApplication *)self messagesController];
-  v8 = [v4 chatController];
+  messagesController = [(SMSApplication *)self messagesController];
+  chatController = [messagesController chatController];
 
   v5 = dispatch_time(0, 1000000000);
   v6[0] = _NSConcreteStackBlock;
@@ -2819,10 +2819,10 @@ LABEL_15:
   _Block_object_dispose(v7, 8);
 }
 
-- (void)_detailsViewScrollingPerfTest:(id)a3
+- (void)_detailsViewScrollingPerfTest:(id)test
 {
-  v11 = a3;
-  v4 = [v11 view];
+  testCopy = test;
+  view = [testCopy view];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2831,16 +2831,16 @@ LABEL_15:
     [(SMSApplication *)self failedTest:__CurrentTestName];
   }
 
-  v6 = [v11 view];
+  view2 = [testCopy view];
   v7 = [qword_10003A120 objectForKey:@"iterations"];
-  v8 = [v7 intValue];
+  intValue = [v7 intValue];
 
   v9 = __CurrentTestName;
-  [v6 frame];
-  [v6 _performScrollTest:v9 iterations:v8 delta:(v10 + v10)];
+  [view2 frame];
+  [view2 _performScrollTest:v9 iterations:intValue delta:(v10 + v10)];
 }
 
-- (void)startSendAnimationNewComposeTest:(id)a3
+- (void)startSendAnimationNewComposeTest:(id)test
 {
   v4 = [NSAttributedString alloc];
   v5 = +[NSBundle mainBundle];
@@ -2869,46 +2869,46 @@ LABEL_15:
   v4 = +[CKConversationList sharedConversationList];
   v5 = [v4 conversationForExistingChatWithChatIdentifier:@"jake.chase.dev1@icloud.com"];
 
-  v6 = [(SMSApplication *)self messagesController];
-  [v6 showConversation:v5 animate:0];
+  messagesController = [(SMSApplication *)self messagesController];
+  [messagesController showConversation:v5 animate:0];
 
   CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.5, 0);
-  v7 = [(SMSApplication *)self messagesController];
-  v8 = [v7 presentedViewController];
+  messagesController2 = [(SMSApplication *)self messagesController];
+  presentedViewController = [messagesController2 presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [(SMSApplication *)self messagesController];
-    [v10 dismissViewControllerAnimated:0 completion:0];
+    messagesController3 = [(SMSApplication *)self messagesController];
+    [messagesController3 dismissViewControllerAnimated:0 completion:0];
 
     CFRunLoopRunInMode(kCFRunLoopDefaultMode, 1.0, 0);
   }
 
-  v11 = [(SMSApplication *)self messagesController];
-  v12 = [v11 chatController];
+  messagesController4 = [(SMSApplication *)self messagesController];
+  chatController = [messagesController4 chatController];
 
-  v13 = [v12 entryView];
+  entryView = [chatController entryView];
   [(SMSApplication *)self startedTest:__CurrentTestName];
-  [v13 setComposition:v3];
+  [entryView setComposition:v3];
   CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.5, 0);
-  [v13 touchUpInsideSendButton:0];
+  [entryView touchUpInsideSendButton:0];
   CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.5, 0);
   v14 = objc_alloc_init(NSMutableDictionary);
   [(SMSApplication *)self finishedTest:__CurrentTestName extraResults:v14];
 }
 
-- (void)startScrollTranscriptTest:(id)a3
+- (void)startScrollTranscriptTest:(id)test
 {
-  v4 = [a3 objectForKey:@"chatIdentifier"];
+  v4 = [test objectForKey:@"chatIdentifier"];
   v5 = +[CKConversationList sharedConversationList];
-  v6 = [v5 conversations];
+  conversations = [v5 conversations];
 
   v7 = +[CKConversationList sharedConversationList];
   v8 = [v7 conversationForExistingChatWithChatIdentifier:v4];
 
-  if ([v6 count])
+  if ([conversations count])
   {
     v9 = v8 == 0;
   }
@@ -2926,10 +2926,10 @@ LABEL_15:
 
   else
   {
-    v10 = [(SMSApplication *)self messagesController];
-    v11 = [v10 currentConversation];
+    messagesController = [(SMSApplication *)self messagesController];
+    currentConversation = [messagesController currentConversation];
 
-    if (v8 == v11)
+    if (v8 == currentConversation)
     {
       if ([__CurrentTestName rangeOfString:@"WithKeyboard"] != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -2955,30 +2955,30 @@ LABEL_15:
   }
 }
 
-- (void)chatRegistryDidLoad:(id)a3
+- (void)chatRegistryDidLoad:(id)load
 {
-  v4 = a3;
-  v5 = v4;
+  loadCopy = load;
+  v5 = loadCopy;
   if (qword_10003A138)
   {
-    v6 = v4;
-    v4 = [(SMSApplication *)self canRunTests];
+    v6 = loadCopy;
+    loadCopy = [(SMSApplication *)self canRunTests];
     v5 = v6;
-    if (v4)
+    if (loadCopy)
     {
       dispatch_async(&_dispatch_main_q, &stru_100030F28);
       v5 = v6;
     }
   }
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(loadCopy, v5);
 }
 
 - (BOOL)canRunTests
 {
   v2 = +[IMChatRegistry sharedRegistry];
-  v3 = [v2 cachedChats];
-  v4 = [v3 count];
+  cachedChats = [v2 cachedChats];
+  v4 = [cachedChats count];
 
   v5 = [__CurrentTestName rangeOfString:@"MessageSendLatency"];
   v6 = +[IMChatRegistry sharedRegistry];
@@ -2995,20 +2995,20 @@ LABEL_15:
   }
 }
 
-- (void)startStaticTranscriptFPSTest:(id)a3
+- (void)startStaticTranscriptFPSTest:(id)test
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"chatIdentifier"];
+  testCopy = test;
+  v5 = [testCopy objectForKey:@"chatIdentifier"];
   v6 = +[CKConversationList sharedConversationList];
-  v7 = [v6 conversations];
+  conversations = [v6 conversations];
 
   v8 = +[CKConversationList sharedConversationList];
   v9 = [v8 conversationForExistingChatWithChatIdentifier:v5];
 
-  v10 = [v4 objectForKey:@"runtime"];
+  v10 = [testCopy objectForKey:@"runtime"];
 
-  v11 = [v10 intValue];
-  if ([v7 count])
+  intValue = [v10 intValue];
+  if ([conversations count])
   {
     v12 = v9 == 0;
   }
@@ -3026,12 +3026,12 @@ LABEL_15:
 
   else
   {
-    v13 = [(SMSApplication *)self messagesController];
-    v14 = [v13 currentConversation];
+    messagesController = [(SMSApplication *)self messagesController];
+    currentConversation = [messagesController currentConversation];
 
-    if (v9 == v14)
+    if (v9 == currentConversation)
     {
-      v16 = [NSNumber numberWithInteger:v11];
+      v16 = [NSNumber numberWithInteger:intValue];
       [(SMSApplication *)self performSelector:"startGeneralStaticFPSTestWithDelay:" withObject:v16 afterDelay:1.0];
     }
 
@@ -3050,12 +3050,12 @@ LABEL_15:
   }
 }
 
-- (void)startGeneralStaticFPSTestWithDelay:(id)a3
+- (void)startGeneralStaticFPSTestWithDelay:(id)delay
 {
   v4 = __CurrentTestName;
-  v5 = a3;
+  delayCopy = delay;
   [(SMSApplication *)self startedTest:v4];
-  LODWORD(v4) = [v5 intValue];
+  LODWORD(v4) = [delayCopy intValue];
 
   v6 = dispatch_time(0, 1000000000 * v4);
   block[0] = _NSConcreteStackBlock;
@@ -3066,16 +3066,16 @@ LABEL_15:
   dispatch_after(v6, &_dispatch_main_q, block);
 }
 
-- (void)startStaticFSMFPSTest:(id)a3
+- (void)startStaticFSMFPSTest:(id)test
 {
-  v4 = [a3 objectForKey:@"chatIdentifier"];
+  v4 = [test objectForKey:@"chatIdentifier"];
   v5 = +[CKConversationList sharedConversationList];
-  v6 = [v5 conversations];
+  conversations = [v5 conversations];
 
   v7 = +[CKConversationList sharedConversationList];
   v8 = [v7 conversationForExistingChatWithChatIdentifier:v4];
 
-  if ([v6 count])
+  if ([conversations count])
   {
     v9 = v8 == 0;
   }
@@ -3093,10 +3093,10 @@ LABEL_15:
 
   else
   {
-    v10 = [(SMSApplication *)self messagesController];
-    v11 = [v10 currentConversation];
+    messagesController = [(SMSApplication *)self messagesController];
+    currentConversation = [messagesController currentConversation];
 
-    if (v8 == v11)
+    if (v8 == currentConversation)
     {
       [(SMSApplication *)self performSelector:"startFSMTest" withObject:0 afterDelay:1.0];
     }
@@ -3133,10 +3133,10 @@ LABEL_15:
   dispatch_after(v6, &_dispatch_main_q, block);
 }
 
-- (id)_fsmIdentifierForTestName:(id)a3
+- (id)_fsmIdentifierForTestName:(id)name
 {
-  v3 = a3;
-  if ([v3 containsString:@"Confetti"])
+  nameCopy = name;
+  if ([nameCopy containsString:@"Confetti"])
   {
     v4 = &CKFullScreenEffectConfettiIdentifier;
 LABEL_19:
@@ -3144,49 +3144,49 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if ([v3 containsString:@"Heart"])
+  if ([nameCopy containsString:@"Heart"])
   {
     v4 = &CKFullScreenEffectLoveIdentifier;
     goto LABEL_19;
   }
 
-  if ([v3 containsString:@"Balloon"])
+  if ([nameCopy containsString:@"Balloon"])
   {
     v4 = &CKFullScreenEffectHappyBirthdayIdentifier;
     goto LABEL_19;
   }
 
-  if ([v3 containsString:@"Laser"])
+  if ([nameCopy containsString:@"Laser"])
   {
     v4 = &CKFullScreenEffectLasersIdentifier;
     goto LABEL_19;
   }
 
-  if ([v3 containsString:@"Fireworks"])
+  if ([nameCopy containsString:@"Fireworks"])
   {
     v4 = &CKFullScreenEffectFireworksIdentifier;
     goto LABEL_19;
   }
 
-  if ([v3 containsString:@"ShootingStar"])
+  if ([nameCopy containsString:@"ShootingStar"])
   {
     v4 = &CKFullScreenEffectShootingStarIdentifier;
     goto LABEL_19;
   }
 
-  if ([v3 containsString:@"Sparkles"])
+  if ([nameCopy containsString:@"Sparkles"])
   {
     v4 = &CKFullScreenEffectCelebrationIdentifier;
     goto LABEL_19;
   }
 
-  if ([v3 containsString:@"Echo"])
+  if ([nameCopy containsString:@"Echo"])
   {
     v4 = &CKFullScreenEffectEchoIdentifier;
     goto LABEL_19;
   }
 
-  if ([v3 containsString:@"Spotlight"])
+  if ([nameCopy containsString:@"Spotlight"])
   {
     v4 = &CKFullScreenEffectSpotlightIdentifier;
     goto LABEL_19;
@@ -3198,10 +3198,10 @@ LABEL_20:
   return v5;
 }
 
-- (void)startInteractiveStickerDragTest:(id)a3
+- (void)startInteractiveStickerDragTest:(id)test
 {
-  v4 = [a3 objectForKey:@"runtime"];
-  v5 = [v4 intValue];
+  v4 = [test objectForKey:@"runtime"];
+  intValue = [v4 intValue];
 
   v6 = [CKBrowserDragWindow alloc];
   v7 = +[UIScreen mainScreen];
@@ -3243,8 +3243,8 @@ LABEL_20:
   MidY = CGRectGetMidY(v38);
   v20 = [[CKBrowserDragViewController alloc] initWithDragImage:v17 inSourceRect:0 withSourcePoint:0.0 keyboardSourceRect:0.0 keyboardSourcePoint:100.0 withGestureRecognizer:{100.0, MidX, MidY, 0, 0, 0x4059000000000000, 0x4059000000000000, *&MidX, *&MidY}];
   [v8 setHidden:0];
-  v21 = [v8 rootViewController];
-  [v21 presentViewController:v20 animated:0 completion:0];
+  rootViewController = [v8 rootViewController];
+  [rootViewController presentViewController:v20 animated:0 completion:0];
   v22 = qword_10003A160;
   qword_10003A160 = v20;
   v23 = v20;
@@ -3259,28 +3259,28 @@ LABEL_20:
 
   [v23 manuallyInitializeDragAtPoint:{MidX, MidY}];
   [(SMSApplication *)self startedTest:__CurrentTestName];
-  v27 = dispatch_time(0, 1000000000 * v5);
+  v27 = dispatch_time(0, 1000000000 * intValue);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100014118;
   block[3] = &unk_1000309E8;
   v31 = v25;
   v32 = v8;
-  v33 = self;
+  selfCopy = self;
   v28 = v8;
   v29 = v25;
   dispatch_after(v27, &_dispatch_main_q, block);
 }
 
-- (void)_stickerDragFired:(id)a3
+- (void)_stickerDragFired:(id)fired
 {
-  [qword_10003A160 manuallyUpdateDragPositionToPoint:{a3, xmmword_10003A170}];
+  [qword_10003A160 manuallyUpdateDragPositionToPoint:{fired, xmmword_10003A170}];
   __asm { FMOV            V1.2D, #2.0 }
 
   xmmword_10003A170 = vaddq_f64(xmmword_10003A170, _Q1);
 }
 
-- (void)startRotationTest:(id)a3
+- (void)startRotationTest:(id)test
 {
   [(SMSApplication *)self startedTest:__CurrentTestName];
   --dword_10003A130;
@@ -3289,15 +3289,15 @@ LABEL_20:
   [v3 rotateIfNeeded:3];
 }
 
-- (void)startRotationTestWithTranscript:(id)a3
+- (void)startRotationTestWithTranscript:(id)transcript
 {
   v4 = +[CKConversationList sharedConversationList];
-  v5 = [v4 conversations];
+  conversations = [v4 conversations];
 
   v6 = +[CKConversationList sharedConversationList];
   v7 = [v6 conversationForExistingChatWithChatIdentifier:@"madrid64@apple.com"];
 
-  if ([v5 count])
+  if ([conversations count])
   {
     v8 = v7 == 0;
   }
@@ -3315,8 +3315,8 @@ LABEL_20:
 
   else
   {
-    v9 = [(SMSApplication *)self messagesController];
-    v10 = [v9 currentConversation];
+    messagesController = [(SMSApplication *)self messagesController];
+    currentConversation = [messagesController currentConversation];
 
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
@@ -3325,7 +3325,7 @@ LABEL_20:
     v17[4] = self;
     v11 = objc_retainBlock(v17);
     v12 = v11;
-    if (v7 == v10)
+    if (v7 == currentConversation)
     {
       (v11[2])(v11);
     }
@@ -3346,7 +3346,7 @@ LABEL_20:
   }
 }
 
-- (void)_chatControllerWillRotate:(id)a3
+- (void)_chatControllerWillRotate:(id)rotate
 {
   v4 = dispatch_time(0, 10000000);
   block[0] = _NSConcreteStackBlock;
@@ -3357,7 +3357,7 @@ LABEL_20:
   dispatch_after(v4, &_dispatch_main_q, block);
 }
 
-- (void)_chatControllerDidRotate:(id)a3
+- (void)_chatControllerDidRotate:(id)rotate
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:kPPTChatControllerWillRotateNotification object:0];
@@ -3368,12 +3368,12 @@ LABEL_20:
 - (void)startAudioWaveformFPSTest
 {
   v3 = +[CKConversationList sharedConversationList];
-  v4 = [v3 conversations];
+  conversations = [v3 conversations];
 
   v5 = +[CKConversationList sharedConversationList];
   v6 = [v5 conversationForExistingChatWithChatIdentifier:@"madrid64@apple.com"];
 
-  if ([v4 count])
+  if ([conversations count])
   {
     v7 = v6 == 0;
   }
@@ -3391,8 +3391,8 @@ LABEL_20:
 
   else
   {
-    v8 = [(SMSApplication *)self messagesController];
-    v9 = [v8 currentConversation];
+    messagesController = [(SMSApplication *)self messagesController];
+    currentConversation = [messagesController currentConversation];
 
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
@@ -3401,7 +3401,7 @@ LABEL_20:
     v16[4] = self;
     v10 = objc_retainBlock(v16);
     v11 = v10;
-    if (v6 == v9)
+    if (v6 == currentConversation)
     {
       (v10[2])(v10);
     }
@@ -3425,12 +3425,12 @@ LABEL_20:
 - (void)startInvisibleInkStaticFPSTest
 {
   v3 = +[CKConversationList sharedConversationList];
-  v4 = [v3 conversations];
+  conversations = [v3 conversations];
 
   v5 = +[CKConversationList sharedConversationList];
   v6 = [v5 conversationForExistingChatWithChatIdentifier:@"chatF4855F71-ABE9-45C6-93CF-647E4D741734"];
 
-  if ([v4 count])
+  if ([conversations count])
   {
     v7 = v6 == 0;
   }
@@ -3448,8 +3448,8 @@ LABEL_20:
 
   else
   {
-    v8 = [(SMSApplication *)self messagesController];
-    v9 = [v8 currentConversation];
+    messagesController = [(SMSApplication *)self messagesController];
+    currentConversation = [messagesController currentConversation];
 
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
@@ -3458,7 +3458,7 @@ LABEL_20:
     v16[4] = self;
     v10 = objc_retainBlock(v16);
     v11 = v10;
-    if (v6 == v9)
+    if (v6 == currentConversation)
     {
       (v10[2])(v10);
     }
@@ -3482,12 +3482,12 @@ LABEL_20:
 - (void)startGifPlaybackStaticFPSTest
 {
   v3 = +[CKConversationList sharedConversationList];
-  v4 = [v3 conversations];
+  conversations = [v3 conversations];
 
   v5 = +[CKConversationList sharedConversationList];
   v6 = [v5 conversationForExistingChatWithChatIdentifier:@"eugene@bistolas.info"];
 
-  if ([v4 count])
+  if ([conversations count])
   {
     v7 = v6 == 0;
   }
@@ -3505,8 +3505,8 @@ LABEL_20:
 
   else
   {
-    v8 = [(SMSApplication *)self messagesController];
-    v9 = [v8 currentConversation];
+    messagesController = [(SMSApplication *)self messagesController];
+    currentConversation = [messagesController currentConversation];
 
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
@@ -3515,7 +3515,7 @@ LABEL_20:
     v16[4] = self;
     v10 = objc_retainBlock(v16);
     v11 = v10;
-    if (v6 == v9)
+    if (v6 == currentConversation)
     {
       (v10[2])(v10);
     }
@@ -3536,15 +3536,15 @@ LABEL_20:
   }
 }
 
-- (void)startKeyboardPresentationTest:(id)a3
+- (void)startKeyboardPresentationTest:(id)test
 {
   v4 = +[CKConversationList sharedConversationList];
-  v5 = [v4 conversations];
+  conversations = [v4 conversations];
 
   v6 = +[CKConversationList sharedConversationList];
   v7 = [v6 conversationForExistingChatWithChatIdentifier:@"+14088969566"];
 
-  if ([v5 count])
+  if ([conversations count])
   {
     v8 = v7 == 0;
   }
@@ -3562,8 +3562,8 @@ LABEL_20:
 
   else
   {
-    v9 = [(SMSApplication *)self messagesController];
-    v10 = [v9 currentConversation];
+    messagesController = [(SMSApplication *)self messagesController];
+    currentConversation = [messagesController currentConversation];
 
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
@@ -3572,10 +3572,10 @@ LABEL_20:
     v18[4] = self;
     v11 = objc_retainBlock(v18);
     v12 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v13 = [v12 preferencesActions];
-    [v13 setPredictionEnabled:0];
+    preferencesActions = [v12 preferencesActions];
+    [preferencesActions setPredictionEnabled:0];
 
-    if (v7 == v10)
+    if (v7 == currentConversation)
     {
       (v11[2])(v11);
     }
@@ -3596,15 +3596,15 @@ LABEL_20:
   }
 }
 
-- (void)startKeyboardResponsivenessTest:(id)a3
+- (void)startKeyboardResponsivenessTest:(id)test
 {
   v4 = +[CKConversationList sharedConversationList];
-  v5 = [v4 conversations];
+  conversations = [v4 conversations];
 
   v6 = +[CKConversationList sharedConversationList];
   v7 = [v6 conversationForExistingChatWithChatIdentifier:@"+14088969566"];
 
-  if ([v5 count])
+  if ([conversations count])
   {
     v8 = v7 == 0;
   }
@@ -3622,8 +3622,8 @@ LABEL_20:
 
   else
   {
-    v9 = [(SMSApplication *)self messagesController];
-    v10 = [v9 currentConversation];
+    messagesController = [(SMSApplication *)self messagesController];
+    currentConversation = [messagesController currentConversation];
 
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
@@ -3632,10 +3632,10 @@ LABEL_20:
     v18[4] = self;
     v11 = objc_retainBlock(v18);
     v12 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v13 = [v12 preferencesActions];
-    [v13 setPredictionEnabled:0];
+    preferencesActions = [v12 preferencesActions];
+    [preferencesActions setPredictionEnabled:0];
 
-    if (v7 == v10)
+    if (v7 == currentConversation)
     {
       (v11[2])(v11);
     }
@@ -3656,7 +3656,7 @@ LABEL_20:
   }
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
   if ([__CurrentTestName isEqualToString:@"PresentKeyboardTest"])
   {
@@ -3666,7 +3666,7 @@ LABEL_20:
   }
 }
 
-- (void)_keyboardDidShow:(id)a3
+- (void)_keyboardDidShow:(id)show
 {
   byte_10003A140 = 1;
   if (([__CurrentTestName isEqualToString:@"PresentKeyboardTest"] & 1) != 0 || (objc_msgSend(__CurrentTestName, "isEqualToString:", @"PresentKeyboardResponsivenessTest") & 1) != 0 || byte_10003A141 == 1 && objc_msgSend(__CurrentTestName, "rangeOfString:", kShowNewComposeTest) != 0x7FFFFFFFFFFFFFFFLL)
@@ -3677,15 +3677,15 @@ LABEL_20:
   }
 }
 
-- (void)startQuicklookPresentationTest:(id)a3
+- (void)startQuicklookPresentationTest:(id)test
 {
   v4 = +[CKConversationList sharedConversationList];
-  v5 = [v4 conversations];
+  conversations = [v4 conversations];
 
   v6 = +[CKConversationList sharedConversationList];
   v7 = [v6 conversationForExistingChatWithChatIdentifier:@"+14088383543"];
 
-  if ([v5 count])
+  if ([conversations count])
   {
     v8 = v7 == 0;
   }
@@ -3703,8 +3703,8 @@ LABEL_20:
 
   else
   {
-    v9 = [(SMSApplication *)self messagesController];
-    v10 = [v9 currentConversation];
+    messagesController = [(SMSApplication *)self messagesController];
+    currentConversation = [messagesController currentConversation];
 
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
@@ -3713,7 +3713,7 @@ LABEL_20:
     v17[4] = self;
     v11 = objc_retainBlock(v17);
     v12 = v11;
-    if (v7 == v10)
+    if (v7 == currentConversation)
     {
       (v11[2])(v11);
     }
@@ -3734,7 +3734,7 @@ LABEL_20:
   }
 }
 
-- (void)startAudioBalloonPlaybackTest:(id)a3
+- (void)startAudioBalloonPlaybackTest:(id)test
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"_audioBalloonPlaybackWillStart:" name:kAudioBalloonViewPlaybackWillStartNotification object:0];
@@ -3747,33 +3747,33 @@ LABEL_20:
 
   if (v7)
   {
-    v8 = [(SMSApplication *)self messagesController];
-    [v8 showConversation:v7 animate:0];
+    messagesController = [(SMSApplication *)self messagesController];
+    [messagesController showConversation:v7 animate:0];
 
     CFRunLoopRunInMode(kCFRunLoopDefaultMode, 1.0, 0);
-    v9 = [(SMSApplication *)self messagesController];
-    v10 = [v9 chatController];
+    messagesController2 = [(SMSApplication *)self messagesController];
+    chatController = [messagesController2 chatController];
 
-    v11 = [v10 collectionViewController];
-    [v11 __setCurrentTestName:__CurrentTestName];
-    v12 = [v10 collectionView];
+    collectionViewController = [chatController collectionViewController];
+    [collectionViewController __setCurrentTestName:__CurrentTestName];
+    collectionView = [chatController collectionView];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v13 = [v12 visibleCells];
-    v14 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
-    if (v14)
+    visibleCells = [collectionView visibleCells];
+    balloonView2 = [visibleCells countByEnumeratingWithState:&v22 objects:v26 count:16];
+    if (balloonView2)
     {
-      v21 = v11;
+      v21 = collectionViewController;
       v15 = *v23;
       while (2)
       {
-        for (i = 0; i != v14; i = i + 1)
+        for (i = 0; i != balloonView2; i = i + 1)
         {
           if (*v23 != v15)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(visibleCells);
           }
 
           v17 = *(*(&v22 + 1) + 8 * i);
@@ -3781,21 +3781,21 @@ LABEL_20:
           if (objc_opt_isKindOfClass())
           {
             v18 = v17;
-            v19 = [v18 balloonView];
+            balloonView = [v18 balloonView];
             objc_opt_class();
             isKindOfClass = objc_opt_isKindOfClass();
 
             if (isKindOfClass)
             {
-              v14 = [v18 balloonView];
+              balloonView2 = [v18 balloonView];
 
               goto LABEL_15;
             }
           }
         }
 
-        v14 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
-        if (v14)
+        balloonView2 = [visibleCells countByEnumeratingWithState:&v22 objects:v26 count:16];
+        if (balloonView2)
         {
           continue;
         }
@@ -3804,10 +3804,10 @@ LABEL_20:
       }
 
 LABEL_15:
-      v11 = v21;
+      collectionViewController = v21;
     }
 
-    [v11 balloonViewTapped:v14 withModifierFlags:0 selectedText:0];
+    [collectionViewController balloonViewTapped:balloonView2 withModifierFlags:0 selectedText:0];
   }
 
   else
@@ -3817,45 +3817,45 @@ LABEL_15:
   }
 }
 
-- (void)startScrollConversationsTest:(id)a3
+- (void)startScrollConversationsTest:(id)test
 {
-  v4 = a3;
-  v5 = [(SMSApplication *)self messagesController];
-  v6 = [v5 chatController];
+  testCopy = test;
+  messagesController = [(SMSApplication *)self messagesController];
+  chatController = [messagesController chatController];
 
-  [v6 _backbuttonPressed];
+  [chatController _backbuttonPressed];
   v7 = dispatch_time(0, 6000000000);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100016408;
   v9[3] = &unk_100030B00;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = testCopy;
+  v8 = testCopy;
   dispatch_after(v7, &_dispatch_main_q, v9);
 }
 
 - (void)clearEntryView
 {
-  v3 = [(SMSApplication *)self messagesController];
-  v5 = [v3 chatController];
+  messagesController = [(SMSApplication *)self messagesController];
+  chatController = [messagesController chatController];
 
-  v4 = [v5 entryView];
-  [v4 setComposition:0];
+  entryView = [chatController entryView];
+  [entryView setComposition:0];
 
   [(SMSApplication *)self showTranscriptListNotAnimated];
 }
 
-- (void)startScrollForCollectionView:(id)a3
+- (void)startScrollForCollectionView:(id)view
 {
   v3 = qword_10003A120;
-  v7 = a3;
+  viewCopy = view;
   v4 = [v3 objectForKey:@"offset"];
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
 
-  if (v5)
+  if (intValue)
   {
-    v6 = v5;
+    v6 = intValue;
   }
 
   else
@@ -3863,12 +3863,12 @@ LABEL_15:
     v6 = 18;
   }
 
-  [v7 _performScrollTest:__CurrentTestName iterations:dword_10003A130 delta:v6 scrollAxis:1];
+  [viewCopy _performScrollTest:__CurrentTestName iterations:dword_10003A130 delta:v6 scrollAxis:1];
 }
 
-- (void)scrollPhotoPickerTestWithOptions:(id)a3
+- (void)scrollPhotoPickerTestWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10001692C;
@@ -3876,15 +3876,15 @@ LABEL_15:
   v21[4] = self;
   v5 = objc_retainBlock(v21);
   v6 = +[CKConversationList sharedConversationList];
-  v7 = [v6 conversations];
+  conversations = [v6 conversations];
 
-  if ([v7 count])
+  if ([conversations count])
   {
     v8 = +[CKConversationList sharedConversationList];
     v9 = [v8 conversationForExistingChatWithChatIdentifier:@"madrid64@apple.com"];
 
-    v10 = [(SMSApplication *)self messagesController];
-    v11 = [v10 currentConversation];
+    messagesController = [(SMSApplication *)self messagesController];
+    currentConversation = [messagesController currentConversation];
 
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
@@ -3892,10 +3892,10 @@ LABEL_15:
     v18[3] = &unk_100030F78;
     v18[4] = self;
     v20 = v5;
-    v19 = v4;
+    v19 = optionsCopy;
     v12 = objc_retainBlock(v18);
     v13 = v12;
-    if (v9 == v11)
+    if (v9 == currentConversation)
     {
       (v12[2])(v12);
     }
@@ -3921,23 +3921,23 @@ LABEL_15:
   }
 }
 
-- (void)startExtensionTest:(id)a3 launch:(BOOL)a4
+- (void)startExtensionTest:(id)test launch:(BOOL)launch
 {
-  v6 = a3;
-  [v6 objectForKey:@"chatIdentifier"];
+  testCopy = test;
+  [testCopy objectForKey:@"chatIdentifier"];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100016E04;
   v9[3] = &unk_100030FC8;
-  v13 = a4;
-  v10 = v6;
+  launchCopy = launch;
+  v10 = testCopy;
   v12 = v11 = self;
   v7 = v12;
-  v8 = v6;
+  v8 = testCopy;
   [(SMSApplication *)self showConversationForChatIdentifier:v7 forceReload:1 options:v8 completion:v9];
 }
 
-- (void)startPriorityBoostingTestWithOptions:(id)a3
+- (void)startPriorityBoostingTestWithOptions:(id)options
 {
   [(SMSApplication *)self startedTest:__CurrentTestName];
   v5 = __CurrentTestName;
@@ -3947,9 +3947,9 @@ LABEL_15:
   [(SMSApplication *)self finishedTest:v5];
 }
 
-- (void)startMarkAsReadLocallyTestWithOptions:(id)a3
+- (void)startMarkAsReadLocallyTestWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = [qword_10003A120 objectForKey:@"chatIdentifier"];
   v6 = IMCopyGUIDForChat();
   if (IMOSLoggingEnabled())
@@ -4010,9 +4010,9 @@ LABEL_15:
   }
 }
 
-- (void)startMarkAsReadReceivedTestWithOptions:(id)a3
+- (void)startMarkAsReadReceivedTestWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = [qword_10003A120 objectForKey:@"chatIdentifier"];
   v6 = IMCopyGUIDForChat();
   v7 = [qword_10003A120 objectForKey:@"sentGUID"];
@@ -4084,53 +4084,53 @@ LABEL_15:
   }
 }
 
-- (void)showMessagesApplicationAndStartTestForIdentifier:(id)a3 supportsLaunchSubtest:(BOOL)a4
+- (void)showMessagesApplicationAndStartTestForIdentifier:(id)identifier supportsLaunchSubtest:(BOOL)subtest
 {
-  v4 = a4;
-  v21 = a3;
-  v6 = [(SMSApplication *)self messagesController];
-  v7 = [v6 chatController];
-  v8 = [v7 inputController];
+  subtestCopy = subtest;
+  identifierCopy = identifier;
+  messagesController = [(SMSApplication *)self messagesController];
+  chatController = [messagesController chatController];
+  inputController = [chatController inputController];
 
   v9 = +[IMBalloonPluginManager sharedInstance];
-  v10 = [v9 balloonPluginForBundleID:v21];
+  v10 = [v9 balloonPluginForBundleID:identifierCopy];
 
   if (v10)
   {
     if ([__CurrentTestName rangeOfString:@"ExtensionLaunch"] != 0x7FFFFFFFFFFFFFFFLL)
     {
       [(SMSApplication *)self startedTest:__CurrentTestName];
-      if (v4)
+      if (subtestCopy)
       {
         [(SMSApplication *)self startedSubTest:@"PluginLaunchSubtest" forTest:__CurrentTestName];
       }
     }
 
 LABEL_13:
-    if ([v21 isEqualToString:IMBalloonPluginIdentifierDT])
+    if ([identifierCopy isEqualToString:IMBalloonPluginIdentifierDT])
     {
-      [v8 showDTCompose];
+      [inputController showDTCompose];
     }
 
-    else if ([v21 isEqualToString:IMBalloonPluginIdentifierPhotos])
+    else if ([identifierCopy isEqualToString:IMBalloonPluginIdentifierPhotos])
     {
-      [v8 showPhotosBrowser];
+      [inputController showPhotosBrowser];
     }
 
-    else if ([v21 isEqualToString:IMBalloonPluginIdentifierHandwriting])
+    else if ([identifierCopy isEqualToString:IMBalloonPluginIdentifierHandwriting])
     {
-      [v8 showHandwritingBrowser];
+      [inputController showHandwritingBrowser];
     }
 
     else
     {
-      [v8 showBrowserForPlugin:v10 dataSource:0 style:1];
+      [inputController showBrowserForPlugin:v10 dataSource:0 style:1];
     }
 
     goto LABEL_22;
   }
 
-  v11 = [v21 substringFromIndex:{objc_msgSend(v21, "rangeOfString:options:", @".", 4) + 1}];
+  v11 = [identifierCopy substringFromIndex:{objc_msgSend(identifierCopy, "rangeOfString:options:", @".", 4) + 1}];
   v12 = [NSString stringWithFormat:@"%@-%@", v11, @"ExtensionLaunch"];
   if ([__CurrentTestName isEqualToString:v12])
   {
@@ -4139,22 +4139,22 @@ LABEL_13:
       sub_10001D348();
     }
 
-    v13 = [qword_10003A198 pluginKitProxyForIdentifier:v21];
-    v14 = [v13 containingBundle];
-    v15 = [v14 teamID];
-    v16 = v15;
+    v13 = [qword_10003A198 pluginKitProxyForIdentifier:identifierCopy];
+    containingBundle = [v13 containingBundle];
+    teamID = [containingBundle teamID];
+    v16 = teamID;
     v17 = @"0000000000";
-    if (v15)
+    if (teamID)
     {
-      v17 = v15;
+      v17 = teamID;
     }
 
     v18 = v17;
 
-    v19 = [NSString stringWithFormat:@"%@:%@:%@", IMBalloonPluginIdentifierMessageExtension, v18, v21];
+    identifierCopy = [NSString stringWithFormat:@"%@:%@:%@", IMBalloonPluginIdentifierMessageExtension, v18, identifierCopy];
 
     v20 = +[IMBalloonPluginManager sharedInstance];
-    v10 = [v20 balloonPluginForBundleID:v19];
+    v10 = [v20 balloonPluginForBundleID:identifierCopy];
 
     if (v10)
     {
@@ -4166,7 +4166,7 @@ LABEL_13:
       goto LABEL_13;
     }
 
-    [(SMSApplication *)self startAndFailTestNamed:__CurrentTestName withFailure:@"Plugin not found for identifier %@", v21];
+    [(SMSApplication *)self startAndFailTestNamed:__CurrentTestName withFailure:@"Plugin not found for identifier %@", identifierCopy];
   }
 
   else
@@ -4177,7 +4177,7 @@ LABEL_13:
 LABEL_22:
 }
 
-- (void)didChangeOrientation:(id)a3
+- (void)didChangeOrientation:(id)orientation
 {
   if ([__CurrentTestName rangeOfString:kShowMessagesTest] == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -4257,7 +4257,7 @@ LABEL_22:
   }
 }
 
-- (void)startLiveBubbleLoadingTest:(id)a3
+- (void)startLiveBubbleLoadingTest:(id)test
 {
   v4 = [qword_10003A120 objectForKey:@"chatIdentifier"];
   v5 = +[CKConversationList sharedConversationList];
@@ -4283,19 +4283,19 @@ LABEL_22:
   }
 }
 
-- (void)startResizeTestWithOptions:(id)a3
+- (void)startResizeTestWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = [qword_10003A120 objectForKey:@"recapBased"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
-    v7 = [(SMSApplication *)self sceneController];
-    v8 = [v7 messagesSceneDelegate];
-    v9 = [v8 window];
+    sceneController = [(SMSApplication *)self sceneController];
+    messagesSceneDelegate = [sceneController messagesSceneDelegate];
+    window = [messagesSceneDelegate window];
 
-    if (([v9 isKeyWindow] & 1) == 0)
+    if (([window isKeyWindow] & 1) == 0)
     {
       [(SMSApplication *)self startAndFailTestNamed:__CurrentTestName withFailure:@"The MessagesSceneDelegate's window isn't key for some reason"];
     }
@@ -4319,14 +4319,14 @@ LABEL_22:
     v11 = v10;
     _Block_object_dispose(&v15, 8);
     v12 = [v10 alloc];
-    v13 = [v12 initWithTestName:__CurrentTestName window:v9 completionHandler:0];
+    v13 = [v12 initWithTestName:__CurrentTestName window:window completionHandler:0];
     [v13 setMinimumWindowSize:{300.0, 300.0}];
     [v13 setMaximumWindowSize:{600.0, 600.0}];
     [sub_100003E78() runTestWithParameters:v13];
   }
 }
 
-- (void)_willConfigureCellWithTranscriptPluginChatItem:(id)a3
+- (void)_willConfigureCellWithTranscriptPluginChatItem:(id)item
 {
   v3 = CKPluginChatItemPPTName;
   if ([__CurrentTestName isEqualToString:CKPluginChatItemPPTName])
@@ -4336,23 +4336,23 @@ LABEL_22:
   }
 }
 
-- (void)startPPTSubtestForCurrentTest:(id)a3
+- (void)startPPTSubtestForCurrentTest:(id)test
 {
-  if (a3)
+  if (test)
   {
     v3 = __CurrentTestName;
     if (__CurrentTestName)
     {
-      v5 = a3;
+      testCopy = test;
       v6 = [NSArray arrayWithObject:@"time"];
-      [(SMSApplication *)self startedSubTest:v5 forTest:v3 withMetrics:v6];
+      [(SMSApplication *)self startedSubTest:testCopy forTest:v3 withMetrics:v6];
     }
   }
 }
 
-- (void)stopPPTSubtestForCurrentTest:(id)a3
+- (void)stopPPTSubtestForCurrentTest:(id)test
 {
-  if (a3)
+  if (test)
   {
     if (__CurrentTestName)
     {
@@ -4361,11 +4361,11 @@ LABEL_22:
   }
 }
 
-- (void)installNotificationObserverForNotificationName:(id)a3 notificationName:(id)a4 forOneNotification:(BOOL)a5 usingBlock:(id)a6
+- (void)installNotificationObserverForNotificationName:(id)name notificationName:(id)notificationName forOneNotification:(BOOL)notification usingBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  nameCopy = name;
+  notificationNameCopy = notificationName;
+  blockCopy = block;
   v12 = +[NSOperationQueue mainQueue];
   v22 = 0;
   v23 = &v22;
@@ -4373,17 +4373,17 @@ LABEL_22:
   v25 = sub_100004F08;
   v26 = sub_100004F18;
   v27 = 0;
-  objc_initWeak(&location, v9);
+  objc_initWeak(&location, nameCopy);
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000183F4;
   v16[3] = &unk_100030FF0;
   v18 = &v22;
-  v20 = a5;
+  notificationCopy = notification;
   objc_copyWeak(&v19, &location);
-  v13 = v11;
+  v13 = blockCopy;
   v17 = v13;
-  v14 = [v9 addObserverForName:v10 object:0 queue:v12 usingBlock:v16];
+  v14 = [nameCopy addObserverForName:notificationNameCopy object:0 queue:v12 usingBlock:v16];
   v15 = v23[5];
   v23[5] = v14;
 
@@ -4392,17 +4392,17 @@ LABEL_22:
   _Block_object_dispose(&v22, 8);
 }
 
-- (void)showConversationForChatIdentifier:(id)a3 forceReload:(BOOL)a4 options:(id)a5 completion:(id)a6
+- (void)showConversationForChatIdentifier:(id)identifier forceReload:(BOOL)reload options:(id)options completion:(id)completion
 {
-  v9 = a6;
-  v10 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v11 = +[CKConversationList sharedConversationList];
-  v12 = [v11 conversations];
+  conversations = [v11 conversations];
 
   v13 = +[CKConversationList sharedConversationList];
-  v14 = [v13 conversationForExistingChatWithChatIdentifier:v10];
+  v14 = [v13 conversationForExistingChatWithChatIdentifier:identifierCopy];
 
-  if ([v12 count])
+  if ([conversations count])
   {
     v15 = v14 == 0;
   }
@@ -4414,15 +4414,15 @@ LABEL_22:
 
   if (v15)
   {
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
-    v16 = [(SMSApplication *)self messagesController];
-    v17 = [v16 currentConversation];
+    messagesController = [(SMSApplication *)self messagesController];
+    currentConversation = [messagesController currentConversation];
 
-    if (a4 || v14 != v17)
+    if (reload || v14 != currentConversation)
     {
       [(SMSApplication *)self showTranscriptListNotAnimated];
       v18 = dispatch_time(0, 1000000000);
@@ -4432,24 +4432,24 @@ LABEL_22:
       block[3] = &unk_100030EC0;
       block[4] = self;
       v20 = v14;
-      v21 = v9;
+      v21 = completionCopy;
       dispatch_after(v18, &_dispatch_main_q, block);
     }
 
     else
     {
-      v9[2](v9, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 }
 
-- (void)startAndFailTestNamed:(id)a3 withFailure:(id)a4
+- (void)startAndFailTestNamed:(id)named withFailure:(id)failure
 {
   v5 = __CurrentTestName;
-  v6 = a4;
+  failureCopy = failure;
   [(SMSApplication *)self startedTest:v5];
   v7 = __CurrentTestName;
-  v8 = [[NSString alloc] initWithFormat:v6 arguments:&v9];
+  v8 = [[NSString alloc] initWithFormat:failureCopy arguments:&v9];
 
   [(SMSApplication *)self failedTest:v7 withFailure:v8];
 }
@@ -4461,17 +4461,17 @@ LABEL_22:
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"__kMessagesBadgeControllerClearFailureBadgeNotification", 0, 0, 1u);
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   if (CKIsRunningInMacCatalyst() || _CKUIEnhancedMainMenuEnabled())
   {
     v3 = +[CKMenuBarManager sharedInstance];
-    [v3 buildMenuWithBuilder:v4];
+    [v3 buildMenuWithBuilder:builderCopy];
   }
 }
 
-- (void)keyCommandCompose:(id)a3
+- (void)keyCommandCompose:(id)compose
 {
   v3 = +[CKDraftManager sharedInstance];
   [v3 setDraftForPendingConversation:0 withRecipients:0];
@@ -4496,18 +4496,18 @@ LABEL_22:
   [(SMSApplication *)&v4 dealloc];
 }
 
-- (void)_handleUnitTestInvocation:(id)a3
+- (void)_handleUnitTestInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   [(SMSApplication *)self setRunningViaTestRunner:1];
   v5 = dispatch_time(0, 5000000000);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001CF9C;
   v7[3] = &unk_100030B00;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = invocationCopy;
+  selfCopy = self;
+  v6 = invocationCopy;
   dispatch_after(v5, &_dispatch_main_q, v7);
 }
 

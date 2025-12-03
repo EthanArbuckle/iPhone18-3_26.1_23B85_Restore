@@ -10,8 +10,8 @@
 {
   if (([UIApp _isSpringBoard] & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"UIPointerInteraction.m" lineNumber:741 description:@"This may only be used in Springboard!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPointerInteraction.m" lineNumber:741 description:@"This may only be used in Springboard!"];
   }
 
   return [(UIPointerRegionRequest *)self _pointerType]== 1;

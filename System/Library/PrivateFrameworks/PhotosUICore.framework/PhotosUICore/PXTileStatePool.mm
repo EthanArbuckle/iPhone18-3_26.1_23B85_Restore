@@ -2,18 +2,18 @@
 - (PXTileStatePool)init;
 - (id).cxx_construct;
 - (id)description;
-- (id)indexesOfStatesPassingTest:(id)a3;
-- (unint64_t)checkOutIndexWithInitialConfiguration:(id)a3;
-- (unint64_t)indexOfFirstStatePassingTest:(id)a3;
-- (unint64_t)indexOfStateWithTargetIdentifier:(PXTileIdentifier *)a3;
-- (void)_cleanupStateAtIndex:(unint64_t)a3;
-- (void)_storeTargetIdentifierLookupForTileState:(PXTileState *)a3 withIndex:(unint64_t)a4;
-- (void)checkInIndex:(unint64_t)a3;
-- (void)checkInIndexes:(id)a3;
+- (id)indexesOfStatesPassingTest:(id)test;
+- (unint64_t)checkOutIndexWithInitialConfiguration:(id)configuration;
+- (unint64_t)indexOfFirstStatePassingTest:(id)test;
+- (unint64_t)indexOfStateWithTargetIdentifier:(PXTileIdentifier *)identifier;
+- (void)_cleanupStateAtIndex:(unint64_t)index;
+- (void)_storeTargetIdentifierLookupForTileState:(PXTileState *)state withIndex:(unint64_t)index;
+- (void)checkInIndex:(unint64_t)index;
+- (void)checkInIndexes:(id)indexes;
 - (void)dealloc;
-- (void)enumerateStatesAtIndexes:(id)a3 usingBlock:(id)a4;
-- (void)enumerateStatesInRect:(CGRect)a3 usingBlock:(id)a4;
-- (void)setTargetIdentifier:(PXTileIdentifier *)a3 forTileStateAtIndex:(unint64_t)a4;
+- (void)enumerateStatesAtIndexes:(id)indexes usingBlock:(id)block;
+- (void)enumerateStatesInRect:(CGRect)rect usingBlock:(id)block;
+- (void)setTargetIdentifier:(PXTileIdentifier *)identifier forTileStateAtIndex:(unint64_t)index;
 @end
 
 @implementation PXTileStatePool
@@ -68,14 +68,14 @@ void __66__PXTileStatePool__storeCurrentFrameLookupForTileState_withIndex___bloc
   [v3 addIndex:*(a1 + 40)];
 }
 
-- (void)_storeTargetIdentifierLookupForTileState:(PXTileState *)a3 withIndex:(unint64_t)a4
+- (void)_storeTargetIdentifierLookupForTileState:(PXTileState *)state withIndex:(unint64_t)index
 {
-  length = a3->var2.length;
+  length = state->var2.length;
   if (length)
   {
     v5 = 0;
-    index = a3->var2.index;
-    v7 = a3->var2.length;
+    index = state->var2.index;
+    v7 = state->var2.length;
     do
     {
       v7 ^= index[v5] << v5;
@@ -129,7 +129,7 @@ LABEL_25:
           while (v14 < length && v15 == v16);
           if (v15 == v16)
           {
-            v12[13] = a4;
+            v12[13] = index;
             return;
           }
         }
@@ -171,13 +171,13 @@ void __58__PXTileStatePool_setCurrentGeometry_forTileStateAtIndex___block_invoke
   [v3 removeIndex:*(a1 + 40)];
 }
 
-- (void)setTargetIdentifier:(PXTileIdentifier *)a3 forTileStateAtIndex:(unint64_t)a4
+- (void)setTargetIdentifier:(PXTileIdentifier *)identifier forTileStateAtIndex:(unint64_t)index
 {
-  v7 = &self->_states[a4];
+  v7 = &self->_states[index];
   p_length = &v7->var2.length;
   length = v7->var2.length;
-  v10 = a3->length;
-  v11 = length == a3->length;
+  v10 = identifier->length;
+  v11 = length == identifier->length;
   if (length)
   {
     v12 = length == v10;
@@ -196,7 +196,7 @@ void __58__PXTileStatePool_setCurrentGeometry_forTileStateAtIndex___block_invoke
     {
       v16 = *index++;
       v15 = v16;
-      v17 = *(&a3->length + v14);
+      v17 = *(&identifier->length + v14);
       v11 = v16 == v17;
       if (v14 >= length)
       {
@@ -211,28 +211,28 @@ void __58__PXTileStatePool_setCurrentGeometry_forTileStateAtIndex___block_invoke
 
   if (!v11)
   {
-    if (v10 || (v22 = *&v7->var2.index[1], v27[0] = *p_length, v27[1] = v22, v23 = *&v7->var2.index[3], v24 = *&v7->var2.index[5], v25 = *&v7->var2.index[7], v28 = v7->var2.index[9], v27[3] = v24, v27[4] = v25, v27[2] = v23, v26 = [(PXTileStatePool *)self indexOfStateWithTargetIdentifier:v27], v26 == 0x7FFFFFFFFFFFFFFFLL) || v26 == a4)
+    if (v10 || (v22 = *&v7->var2.index[1], v27[0] = *p_length, v27[1] = v22, v23 = *&v7->var2.index[3], v24 = *&v7->var2.index[5], v25 = *&v7->var2.index[7], v28 = v7->var2.index[9], v27[3] = v24, v27[4] = v25, v27[2] = v23, v26 = [(PXTileStatePool *)self indexOfStateWithTargetIdentifier:v27], v26 == 0x7FFFFFFFFFFFFFFFLL) || v26 == index)
     {
       std::__hash_table<std::__hash_value_type<PXTileIdentifier,unsigned long>,std::__unordered_map_hasher<PXTileIdentifier,std::__hash_value_type<PXTileIdentifier,unsigned long>,std::hash<PXTileIdentifier>,std::equal_to<PXTileIdentifier>,true>,std::__unordered_map_equal<PXTileIdentifier,std::__hash_value_type<PXTileIdentifier,unsigned long>,std::equal_to<PXTileIdentifier>,std::hash<PXTileIdentifier>,true>,std::allocator<std::__hash_value_type<PXTileIdentifier,unsigned long>>>::__erase_unique<PXTileIdentifier>(&self->_indexByTargetIdentifier.__table_.__bucket_list_.__ptr_, p_length);
     }
 
-    v18 = *&a3->index[1];
-    *p_length = *&a3->length;
+    v18 = *&identifier->index[1];
+    *p_length = *&identifier->length;
     *&v7->var2.index[1] = v18;
-    v19 = *&a3->index[3];
-    v20 = *&a3->index[5];
-    v21 = *&a3->index[7];
-    v7->var2.index[9] = a3->index[9];
+    v19 = *&identifier->index[3];
+    v20 = *&identifier->index[5];
+    v21 = *&identifier->index[7];
+    v7->var2.index[9] = identifier->index[9];
     *&v7->var2.index[5] = v20;
     *&v7->var2.index[7] = v21;
     *&v7->var2.index[3] = v19;
-    [(PXTileStatePool *)self _storeTargetIdentifierLookupForTileState:v7 withIndex:a4];
+    [(PXTileStatePool *)self _storeTargetIdentifierLookupForTileState:v7 withIndex:index];
   }
 }
 
-- (unint64_t)indexOfStateWithTargetIdentifier:(PXTileIdentifier *)a3
+- (unint64_t)indexOfStateWithTargetIdentifier:(PXTileIdentifier *)identifier
 {
-  v4 = std::__hash_table<std::__hash_value_type<PXTileIdentifier,unsigned long>,std::__unordered_map_hasher<PXTileIdentifier,std::__hash_value_type<PXTileIdentifier,unsigned long>,std::hash<PXTileIdentifier>,std::equal_to<PXTileIdentifier>,true>,std::__unordered_map_equal<PXTileIdentifier,std::__hash_value_type<PXTileIdentifier,unsigned long>,std::equal_to<PXTileIdentifier>,std::hash<PXTileIdentifier>,true>,std::allocator<std::__hash_value_type<PXTileIdentifier,unsigned long>>>::find<PXTileIdentifier>(&self->_indexByTargetIdentifier.__table_.__bucket_list_.__ptr_, &a3->length);
+  v4 = std::__hash_table<std::__hash_value_type<PXTileIdentifier,unsigned long>,std::__unordered_map_hasher<PXTileIdentifier,std::__hash_value_type<PXTileIdentifier,unsigned long>,std::hash<PXTileIdentifier>,std::equal_to<PXTileIdentifier>,true>,std::__unordered_map_equal<PXTileIdentifier,std::__hash_value_type<PXTileIdentifier,unsigned long>,std::equal_to<PXTileIdentifier>,std::hash<PXTileIdentifier>,true>,std::allocator<std::__hash_value_type<PXTileIdentifier,unsigned long>>>::find<PXTileIdentifier>(&self->_indexByTargetIdentifier.__table_.__bucket_list_.__ptr_, &identifier->length);
   v5 = 0x7FFFFFFFFFFFFFFFLL;
   if (v4)
   {
@@ -246,19 +246,19 @@ void __58__PXTileStatePool_setCurrentGeometry_forTileStateAtIndex___block_invoke
   return v5;
 }
 
-- (id)indexesOfStatesPassingTest:(id)a3
+- (id)indexesOfStatesPassingTest:(id)test
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD50] indexSet];
+  testCopy = test;
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   usedIndexes = self->_usedIndexes;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __46__PXTileStatePool_indexesOfStatesPassingTest___block_invoke;
   v12[3] = &unk_1E7731CE8;
   v12[4] = self;
-  v7 = v4;
+  v7 = testCopy;
   v14 = v7;
-  v8 = v5;
+  v8 = indexSet;
   v13 = v8;
   [(NSMutableIndexSet *)usedIndexes enumerateIndexesUsingBlock:v12];
   v9 = v13;
@@ -280,9 +280,9 @@ uint64_t __46__PXTileStatePool_indexesOfStatesPassingTest___block_invoke(uint64_
   return result;
 }
 
-- (unint64_t)indexOfFirstStatePassingTest:(id)a3
+- (unint64_t)indexOfFirstStatePassingTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -293,9 +293,9 @@ uint64_t __46__PXTileStatePool_indexesOfStatesPassingTest___block_invoke(uint64_
   v9[2] = __48__PXTileStatePool_indexOfFirstStatePassingTest___block_invoke;
   v9[3] = &unk_1E7739B38;
   v9[4] = self;
-  v10 = v4;
+  v10 = testCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = testCopy;
   [(NSMutableIndexSet *)usedIndexes enumerateIndexesUsingBlock:v9];
   v7 = v13[3];
 
@@ -315,13 +315,13 @@ uint64_t __48__PXTileStatePool_indexOfFirstStatePassingTest___block_invoke(uint6
   return result;
 }
 
-- (void)enumerateStatesInRect:(CGRect)a3 usingBlock:(id)a4
+- (void)enumerateStatesInRect:(CGRect)rect usingBlock:(id)block
 {
   v5[0] = 0;
   v5[1] = v5;
   v5[2] = 0x2020000000;
   v6 = 0;
-  v4 = a4;
+  blockCopy = block;
   PXEnumeratePageKeysForRect();
 }
 
@@ -363,16 +363,16 @@ uint64_t __52__PXTileStatePool_enumerateStatesInRect_usingBlock___block_invoke_2
   return result;
 }
 
-- (void)enumerateStatesAtIndexes:(id)a3 usingBlock:(id)a4
+- (void)enumerateStatesAtIndexes:(id)indexes usingBlock:(id)block
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__PXTileStatePool_enumerateStatesAtIndexes_usingBlock___block_invoke;
   v6[3] = &unk_1E7731C98;
   v6[4] = self;
-  v6[5] = a4;
-  v5 = a4;
-  [a3 enumerateRangesUsingBlock:v6];
+  v6[5] = block;
+  blockCopy = block;
+  [indexes enumerateRangesUsingBlock:v6];
 }
 
 uint64_t __55__PXTileStatePool_enumerateStatesAtIndexes_usingBlock___block_invoke(uint64_t result, unint64_t a2, uint64_t a3)
@@ -397,9 +397,9 @@ uint64_t __55__PXTileStatePool_enumerateStatesAtIndexes_usingBlock___block_invok
   return result;
 }
 
-- (void)_cleanupStateAtIndex:(unint64_t)a3
+- (void)_cleanupStateAtIndex:(unint64_t)index
 {
-  v5 = &self->_states[a3];
+  v5 = &self->_states[index];
   var10 = v5->var10;
   if (var10)
   {
@@ -425,7 +425,7 @@ uint64_t __55__PXTileStatePool_enumerateStatesAtIndexes_usingBlock___block_invok
   v13[4] = v11;
   v13[2] = v9;
   v12 = [(PXTileStatePool *)self indexOfStateWithTargetIdentifier:v13];
-  if (v12 == a3 && v12 != 0x7FFFFFFFFFFFFFFFLL)
+  if (v12 == index && v12 != 0x7FFFFFFFFFFFFFFFLL)
   {
     std::__hash_table<std::__hash_value_type<PXTileIdentifier,unsigned long>,std::__unordered_map_hasher<PXTileIdentifier,std::__hash_value_type<PXTileIdentifier,unsigned long>,std::hash<PXTileIdentifier>,std::equal_to<PXTileIdentifier>,true>,std::__unordered_map_equal<PXTileIdentifier,std::__hash_value_type<PXTileIdentifier,unsigned long>,std::equal_to<PXTileIdentifier>,std::hash<PXTileIdentifier>,true>,std::allocator<std::__hash_value_type<PXTileIdentifier,unsigned long>>>::__erase_unique<PXTileIdentifier>(&self->_indexByTargetIdentifier.__table_.__bucket_list_.__ptr_, &v5->var2.length);
   }
@@ -439,31 +439,31 @@ void __40__PXTileStatePool__cleanupStateAtIndex___block_invoke(uint64_t a1, uint
   [v3 removeIndex:*(a1 + 40)];
 }
 
-- (void)checkInIndexes:(id)a3
+- (void)checkInIndexes:(id)indexes
 {
-  v4 = a3;
+  indexesCopy = indexes;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __34__PXTileStatePool_checkInIndexes___block_invoke;
   v5[3] = &unk_1E774C138;
   v5[4] = self;
-  [v4 enumerateIndexesUsingBlock:v5];
-  [(NSMutableIndexSet *)self->_usedIndexes removeIndexes:v4];
-  [(NSMutableIndexSet *)self->_unusedIndexes addIndexes:v4];
+  [indexesCopy enumerateIndexesUsingBlock:v5];
+  [(NSMutableIndexSet *)self->_usedIndexes removeIndexes:indexesCopy];
+  [(NSMutableIndexSet *)self->_unusedIndexes addIndexes:indexesCopy];
 }
 
-- (void)checkInIndex:(unint64_t)a3
+- (void)checkInIndex:(unint64_t)index
 {
   [(PXTileStatePool *)self _cleanupStateAtIndex:?];
-  [(NSMutableIndexSet *)self->_usedIndexes removeIndex:a3];
+  [(NSMutableIndexSet *)self->_usedIndexes removeIndex:index];
   unusedIndexes = self->_unusedIndexes;
 
-  [(NSMutableIndexSet *)unusedIndexes addIndex:a3];
+  [(NSMutableIndexSet *)unusedIndexes addIndex:index];
 }
 
-- (unint64_t)checkOutIndexWithInitialConfiguration:(id)a3
+- (unint64_t)checkOutIndexWithInitialConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   if (![(NSMutableIndexSet *)self->_unusedIndexes count])
   {
     statesMaxCount = self->_statesMaxCount;
@@ -478,16 +478,16 @@ void __40__PXTileStatePool__cleanupStateAtIndex___block_invoke(uint64_t a1, uint
     [(NSMutableIndexSet *)self->_unusedIndexes addIndexesInRange:statesMaxCount, self->_statesMaxCount - statesMaxCount];
   }
 
-  v7 = [(NSMutableIndexSet *)self->_unusedIndexes firstIndex];
-  [(NSMutableIndexSet *)self->_unusedIndexes removeIndex:v7];
-  [(NSMutableIndexSet *)self->_usedIndexes addIndex:v7];
-  bzero(&self->_states[v7], 0x2C8uLL);
+  firstIndex = [(NSMutableIndexSet *)self->_unusedIndexes firstIndex];
+  [(NSMutableIndexSet *)self->_unusedIndexes removeIndex:firstIndex];
+  [(NSMutableIndexSet *)self->_usedIndexes addIndex:firstIndex];
+  bzero(&self->_states[firstIndex], 0x2C8uLL);
   states = self->_states;
-  v4[2](v4, &states[v7]);
-  [(PXTileStatePool *)self _storeCurrentFrameLookupForTileState:&states[v7] withIndex:v7];
-  [(PXTileStatePool *)self _storeTargetIdentifierLookupForTileState:&states[v7] withIndex:v7];
+  configurationCopy[2](configurationCopy, &states[firstIndex]);
+  [(PXTileStatePool *)self _storeCurrentFrameLookupForTileState:&states[firstIndex] withIndex:firstIndex];
+  [(PXTileStatePool *)self _storeTargetIdentifierLookupForTileState:&states[firstIndex] withIndex:firstIndex];
 
-  return v7;
+  return firstIndex;
 }
 
 - (void)dealloc
@@ -536,13 +536,13 @@ void __26__PXTileStatePool_dealloc__block_invoke(uint64_t a1, uint64_t a2)
   v2 = [(PXTileStatePool *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD50] indexSet];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
     usedIndexes = v2->_usedIndexes;
-    v2->_usedIndexes = v3;
+    v2->_usedIndexes = indexSet;
 
-    v5 = [MEMORY[0x1E696AD50] indexSet];
+    indexSet2 = [MEMORY[0x1E696AD50] indexSet];
     unusedIndexes = v2->_unusedIndexes;
-    v2->_unusedIndexes = v5;
+    v2->_unusedIndexes = indexSet2;
 
     v7 = [MEMORY[0x1E696AE10] pointerFunctionsWithOptions:1282];
     v8 = [MEMORY[0x1E696AE10] pointerFunctionsWithOptions:0];

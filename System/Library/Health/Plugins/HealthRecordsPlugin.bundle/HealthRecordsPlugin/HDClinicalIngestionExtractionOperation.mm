@@ -1,24 +1,24 @@
 @interface HDClinicalIngestionExtractionOperation
-- (BOOL)_processClinicalRecordsInExtractionResult:(id)a3 error:(id *)a4;
-- (BOOL)_processMedicalDownloadableAttachmentsInExtractionResult:(id)a3 error:(id *)a4;
-- (BOOL)_processMedicalRecordsInExtractionResult:(id)a3 error:(id *)a4;
-- (BOOL)_updateAccountLastExtractedRowID:(id)a3 extractionRulesVersion:(id)a4 profile:(id)a5 error:(id *)a6;
-- (HDClinicalIngestionExtractionOperation)initWithTask:(id)a3 account:(id)a4 nextOperation:(id)a5;
-- (id)_extractionBatchWithRulesVersion:(id)a3 error:(id *)a4;
-- (id)_lookupDisplayNameForExtractedItemUnit:(id)a3;
-- (id)_processFHIRResourcesInExtractionResult:(id)a3 error:(id *)a4;
-- (void)_cancelWithError:(id)a3;
-- (void)_didCompleteExtractionWithRequest:(id)a3 result:(id)a4 highestRowID:(id)a5 extractionRulesVersion:(id)a6 profile:(id)a7 error:(id)a8;
+- (BOOL)_processClinicalRecordsInExtractionResult:(id)result error:(id *)error;
+- (BOOL)_processMedicalDownloadableAttachmentsInExtractionResult:(id)result error:(id *)error;
+- (BOOL)_processMedicalRecordsInExtractionResult:(id)result error:(id *)error;
+- (BOOL)_updateAccountLastExtractedRowID:(id)d extractionRulesVersion:(id)version profile:(id)profile error:(id *)error;
+- (HDClinicalIngestionExtractionOperation)initWithTask:(id)task account:(id)account nextOperation:(id)operation;
+- (id)_extractionBatchWithRulesVersion:(id)version error:(id *)error;
+- (id)_lookupDisplayNameForExtractedItemUnit:(id)unit;
+- (id)_processFHIRResourcesInExtractionResult:(id)result error:(id *)error;
+- (void)_cancelWithError:(id)error;
+- (void)_didCompleteExtractionWithRequest:(id)request result:(id)result highestRowID:(id)d extractionRulesVersion:(id)version profile:(id)profile error:(id)error;
 - (void)main;
 @end
 
 @implementation HDClinicalIngestionExtractionOperation
 
-- (HDClinicalIngestionExtractionOperation)initWithTask:(id)a3 account:(id)a4 nextOperation:(id)a5
+- (HDClinicalIngestionExtractionOperation)initWithTask:(id)task account:(id)account nextOperation:(id)operation
 {
   v8.receiver = self;
   v8.super_class = HDClinicalIngestionExtractionOperation;
-  v5 = [(HDClinicalIngestionPerAccountOperation *)&v8 initWithTask:a3 account:a4 nextOperation:a5];
+  v5 = [(HDClinicalIngestionPerAccountOperation *)&v8 initWithTask:task account:account nextOperation:operation];
   v6 = v5;
   if (v5)
   {
@@ -37,17 +37,17 @@
     sub_9D0E4(v3, self);
   }
 
-  v4 = [(HDClinicalIngestionOperation *)self profile];
-  v5 = [v4 database];
-  v6 = [v5 isProtectedDataAvailable];
+  profile = [(HDClinicalIngestionOperation *)self profile];
+  database = [profile database];
+  isProtectedDataAvailable = [database isProtectedDataAvailable];
 
-  if (v6)
+  if (isProtectedDataAvailable)
   {
-    v7 = [(HDClinicalIngestionOperation *)self task];
-    v8 = [v7 healthRecordsServiceClient];
+    task = [(HDClinicalIngestionOperation *)self task];
+    healthRecordsServiceClient = [task healthRecordsServiceClient];
 
     v44 = 0;
-    v9 = [v8 rulesVersionForFHIRDocumentExtractionWithError:&v44];
+    v9 = [healthRecordsServiceClient rulesVersionForFHIRDocumentExtractionWithError:&v44];
     v10 = v44;
     v11 = v10;
     if (v9)
@@ -55,25 +55,25 @@
       v43 = 0;
       v12 = [(HDClinicalIngestionExtractionOperation *)self _extractionBatchWithRulesVersion:v9 error:&v43];
       v13 = v43;
-      v14 = [v12 document];
+      document = [v12 document];
 
-      if (v14)
+      if (document)
       {
-        v15 = [v12 highestRowID];
+        highestRowID = [v12 highestRowID];
 
-        if (v15)
+        if (highestRowID)
         {
           v35 = v11;
-          v16 = [v12 document];
-          v17 = [v16 resourceObjects];
-          v18 = [v17 count];
+          document2 = [v12 document];
+          resourceObjects = [document2 resourceObjects];
+          v18 = [resourceObjects count];
 
           if (v18)
           {
             v19 = [HDExtractionRequest alloc];
-            v20 = [v12 document];
-            v21 = [v20 resourceObjects];
-            v22 = [v19 initWithResources:v21];
+            document3 = [v12 document];
+            resourceObjects2 = [document3 resourceObjects];
+            v22 = [v19 initWithResources:resourceObjects2];
 
             v23 = HDCreateSerialUtilityDispatchQueue();
             extractionResponseQueue = self->_extractionResponseQueue;
@@ -90,11 +90,11 @@
             v36[4] = self;
             v37 = v22;
             v38 = v12;
-            v39 = v4;
+            v39 = profile;
             v40 = v27;
             v28 = v27;
             v29 = v22;
-            [v8 executeFHIRExtractionRequest:v29 completion:v36];
+            [healthRecordsServiceClient executeFHIRExtractionRequest:v29 completion:v36];
             dispatch_semaphore_wait(v28, 0xFFFFFFFFFFFFFFFFLL);
           }
 
@@ -107,9 +107,9 @@
               sub_9D17C(v32, self);
             }
 
-            v33 = [v12 highestRowID];
+            highestRowID2 = [v12 highestRowID];
             v42 = 0;
-            v34 = [(HDClinicalIngestionExtractionOperation *)self _updateAccountLastExtractedRowID:v33 extractionRulesVersion:v9 profile:v4 error:&v42];
+            v34 = [(HDClinicalIngestionExtractionOperation *)self _updateAccountLastExtractedRowID:highestRowID2 extractionRulesVersion:v9 profile:profile error:&v42];
             v29 = v42;
 
             if ((v34 & 1) == 0)
@@ -153,56 +153,56 @@
 
   else
   {
-    v8 = +[NSError hk_protectedDataInaccessibilityError];
-    [(HDClinicalIngestionExtractionOperation *)self _cancelWithError:v8];
+    healthRecordsServiceClient = +[NSError hk_protectedDataInaccessibilityError];
+    [(HDClinicalIngestionExtractionOperation *)self _cancelWithError:healthRecordsServiceClient];
   }
 }
 
-- (id)_extractionBatchWithRulesVersion:(id)a3 error:(id *)a4
+- (id)_extractionBatchWithRulesVersion:(id)version error:(id *)error
 {
   if (self->_document)
   {
-    v5 = a3;
-    v6 = [[HDFHIRResourceExtractionBatch alloc] initWithDocument:self->_document rulesVersion:v5];
+    versionCopy = version;
+    v6 = [[HDFHIRResourceExtractionBatch alloc] initWithDocument:self->_document rulesVersion:versionCopy];
   }
 
   else
   {
-    v8 = a3;
-    v9 = [(HDClinicalIngestionExtractionOperation *)self batchSize];
-    if (v9)
+    versionCopy2 = version;
+    batchSize = [(HDClinicalIngestionExtractionOperation *)self batchSize];
+    if (batchSize)
     {
-      v10 = [(HDClinicalIngestionExtractionOperation *)self batchSize];
-      v11 = [v10 integerValue];
+      batchSize2 = [(HDClinicalIngestionExtractionOperation *)self batchSize];
+      integerValue = [batchSize2 integerValue];
     }
 
     else
     {
-      v11 = kHDSQLiteQueryNoLimit;
+      integerValue = kHDSQLiteQueryNoLimit;
     }
 
-    v5 = [(HDClinicalIngestionPerAccountOperation *)self account];
-    v12 = [v5 identifier];
-    v13 = [(HDClinicalIngestionOperation *)self profile];
-    v6 = [HDOriginalFHIRResourceEntity resourceExtractionBatchForAccountIdentifier:v12 extractionRulesVersion:v8 batchSize:v11 profile:v13 error:a4];
+    versionCopy = [(HDClinicalIngestionPerAccountOperation *)self account];
+    identifier = [versionCopy identifier];
+    profile = [(HDClinicalIngestionOperation *)self profile];
+    v6 = [HDOriginalFHIRResourceEntity resourceExtractionBatchForAccountIdentifier:identifier extractionRulesVersion:versionCopy2 batchSize:integerValue profile:profile error:error];
   }
 
   return v6;
 }
 
-- (void)_didCompleteExtractionWithRequest:(id)a3 result:(id)a4 highestRowID:(id)a5 extractionRulesVersion:(id)a6 profile:(id)a7 error:(id)a8
+- (void)_didCompleteExtractionWithRequest:(id)request result:(id)result highestRowID:(id)d extractionRulesVersion:(id)version profile:(id)profile error:(id)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  requestCopy = request;
+  resultCopy = result;
+  dCopy = d;
+  versionCopy = version;
+  profileCopy = profile;
+  errorCopy = error;
   _HKInitializeLogging();
   v20 = HKLogHealthRecords;
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEBUG))
   {
-    sub_9D2D8(v20, self, v14);
+    sub_9D2D8(v20, self, requestCopy);
   }
 
   v21 = objc_retainBlock(self->_unitTest_didCompleteExtractionFromResource);
@@ -212,21 +212,21 @@
     (*(v21 + 2))(v21);
   }
 
-  if (v15)
+  if (resultCopy)
   {
-    v54 = v19;
+    v54 = errorCopy;
     v55 = v22;
-    v56 = v18;
-    v57 = v17;
-    v58 = v16;
-    v59 = v14;
+    v56 = profileCopy;
+    v57 = versionCopy;
+    v58 = dCopy;
+    v59 = requestCopy;
     v68 = 0u;
     v69 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v60 = v15;
-    v23 = [v15 allUnits];
-    v24 = [v23 countByEnumeratingWithState:&v66 objects:v76 count:16];
+    v60 = resultCopy;
+    allUnits = [resultCopy allUnits];
+    v24 = [allUnits countByEnumeratingWithState:&v66 objects:v76 count:16];
     if (v24)
     {
       v25 = v24;
@@ -237,17 +237,17 @@
         {
           if (*v67 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(allUnits);
           }
 
           v28 = *(*(&v66 + 1) + 8 * i);
-          v29 = [(__CFString *)v28 clinicalRecord];
-          if (v29)
+          clinicalRecord = [(__CFString *)v28 clinicalRecord];
+          if (clinicalRecord)
           {
             v30 = [(HDClinicalIngestionExtractionOperation *)self _lookupDisplayNameForExtractedItemUnit:v28];
             if (v30)
             {
-              [v29 _setDisplayName:v30];
+              [clinicalRecord _setDisplayName:v30];
             }
 
             else
@@ -259,7 +259,7 @@
                 v32 = v31;
                 v33 = [(HDClinicalIngestionPerAccountOperation *)self debugDescription];
                 *buf = 138543618;
-                v71 = v33;
+                selfCopy2 = v33;
                 v72 = 2114;
                 v73 = v28;
                 _os_log_error_impl(&dword_0, v32, OS_LOG_TYPE_ERROR, "%{public}@ did not receive a display name for item %{public}@", buf, 0x16u);
@@ -268,7 +268,7 @@
           }
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v66 objects:v76 count:16];
+        v25 = [allUnits countByEnumeratingWithState:&v66 objects:v76 count:16];
       }
 
       while (v25);
@@ -277,9 +277,9 @@
     v34 = objc_alloc_init(NSMutableArray);
     v35 = [(HDClinicalPostExtractionOperation *)[HDClinicalPostExtractionReferenceRangeStatusOperation alloc] initWithExtractionResult:v60];
     [v34 addObject:v35];
-    v14 = v59;
-    v18 = v56;
-    v17 = v57;
+    requestCopy = v59;
+    profileCopy = v56;
+    versionCopy = v57;
     if ([v34 count])
     {
       _HKInitializeLogging();
@@ -300,7 +300,7 @@
           v40 = @"s";
         }
 
-        v71 = self;
+        selfCopy2 = self;
         v72 = 2048;
         v73 = v38;
         v74 = 2114;
@@ -326,19 +326,19 @@
         }
 
         *buf = 138543618;
-        v71 = self;
+        selfCopy2 = self;
         v72 = 2114;
         v73 = v44;
         _os_log_impl(&dword_0, v43, OS_LOG_TYPE_DEFAULT, "%{public}@ finished running post extraction operation%{public}@", buf, 0x16u);
       }
     }
 
-    v45 = [v59 resources];
-    -[HDClinicalIngestionExtractionOperation setCountOfExtractedResources:](self, "setCountOfExtractedResources:", [v45 count]);
+    resources = [v59 resources];
+    -[HDClinicalIngestionExtractionOperation setCountOfExtractedResources:](self, "setCountOfExtractedResources:", [resources count]);
 
     v65 = v54;
     v46 = [(HDClinicalIngestionExtractionOperation *)self _processFHIRResourcesInExtractionResult:v60 error:&v65];
-    v19 = v65;
+    errorCopy = v65;
 
     if (v46)
     {
@@ -346,28 +346,28 @@
       v64 = 0;
       v47 = [(HDClinicalIngestionExtractionOperation *)self _processMedicalRecordsInExtractionResult:v46 error:&v64];
       v48 = v64;
-      v19 = v48;
-      v16 = v58;
+      errorCopy = v48;
+      dCopy = v58;
       if (v47)
       {
 
         v63 = 0;
         v49 = [(HDClinicalIngestionExtractionOperation *)self _processClinicalRecordsInExtractionResult:v46 error:&v63];
         v50 = v63;
-        v19 = v50;
+        errorCopy = v50;
         if (v49)
         {
 
           v62 = 0;
           v51 = [(HDClinicalIngestionExtractionOperation *)self _processMedicalDownloadableAttachmentsInExtractionResult:v46 error:&v62];
           v52 = v62;
-          v19 = v52;
+          errorCopy = v52;
           if (v51)
           {
 
             v61 = 0;
             v53 = [(HDClinicalIngestionExtractionOperation *)self _updateAccountLastExtractedRowID:v58 extractionRulesVersion:v57 profile:v56 error:&v61];
-            v19 = v61;
+            errorCopy = v61;
             if (v53)
             {
               goto LABEL_40;
@@ -379,43 +379,43 @@
 
     else
     {
-      v16 = v58;
+      dCopy = v58;
     }
 
-    [(HDClinicalIngestionExtractionOperation *)self _cancelWithError:v19];
+    [(HDClinicalIngestionExtractionOperation *)self _cancelWithError:errorCopy];
 LABEL_40:
 
     v22 = v55;
     goto LABEL_41;
   }
 
-  [(HDClinicalIngestionExtractionOperation *)self _cancelWithError:v19];
+  [(HDClinicalIngestionExtractionOperation *)self _cancelWithError:errorCopy];
 LABEL_41:
 }
 
-- (id)_lookupDisplayNameForExtractedItemUnit:(id)a3
+- (id)_lookupDisplayNameForExtractedItemUnit:(id)unit
 {
-  v4 = a3;
-  v5 = [v4 medicalRecord];
-  v6 = v5;
-  if (v5)
+  unitCopy = unit;
+  medicalRecord = [unitCopy medicalRecord];
+  v6 = medicalRecord;
+  if (medicalRecord)
   {
-    v7 = [v5 medicalRecordCodings];
-    v8 = [HKMedicalCodingCollection collectionWithCodings:v7];
+    medicalRecordCodings = [medicalRecord medicalRecordCodings];
+    v8 = [HKMedicalCodingCollection collectionWithCodings:medicalRecordCodings];
 
     v9 = [HKConceptSynthesizer bestDisplayNameForCodingCollection:v8];
     v10 = v9;
     if (v9)
     {
-      v11 = v9;
+      fallbackDisplayString = v9;
     }
 
     else
     {
-      v11 = [v6 fallbackDisplayString];
+      fallbackDisplayString = [v6 fallbackDisplayString];
     }
 
-    v16 = v11;
+    v16 = fallbackDisplayString;
   }
 
   else
@@ -440,19 +440,19 @@ LABEL_41:
   return v16;
 }
 
-- (id)_processFHIRResourcesInExtractionResult:(id)a3 error:(id *)a4
+- (id)_processFHIRResourcesInExtractionResult:(id)result error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 items];
-  v7 = [v6 hk_map:&stru_106200];
+  resultCopy = result;
+  items = [resultCopy items];
+  v7 = [items hk_map:&stru_106200];
 
   v42 = 0;
-  v8 = [(HDClinicalIngestionPerAccountOperation *)self account];
-  v9 = [(HDClinicalIngestionOperation *)self profile];
-  v10 = [v9 currentSyncIdentityPersistentID];
-  v11 = [(HDClinicalIngestionOperation *)self profile];
+  account = [(HDClinicalIngestionPerAccountOperation *)self account];
+  profile = [(HDClinicalIngestionOperation *)self profile];
+  currentSyncIdentityPersistentID = [profile currentSyncIdentityPersistentID];
+  profile2 = [(HDClinicalIngestionOperation *)self profile];
   v41 = 0;
-  v12 = [HDOriginalFHIRResourceEntity insertOrUpdateResourceObjects:v7 upsertedResourceObjectPairs:&v42 account:v8 syncProvenance:0 syncIdentity:v10 profile:v11 error:&v41 inaccessibilityHandler:0];
+  v12 = [HDOriginalFHIRResourceEntity insertOrUpdateResourceObjects:v7 upsertedResourceObjectPairs:&v42 account:account syncProvenance:0 syncIdentity:currentSyncIdentityPersistentID profile:profile2 error:&v41 inaccessibilityHandler:0];
   v35 = v42;
   v13 = v41;
 
@@ -464,8 +464,8 @@ LABEL_41:
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v33 = v5;
-    obj = [v5 items];
+    v33 = resultCopy;
+    obj = [resultCopy items];
     v15 = [obj countByEnumeratingWithState:&v37 objects:v43 count:16];
     if (v15)
     {
@@ -502,9 +502,9 @@ LABEL_41:
 
           v21 = v20;
           v22 = [HDExtractionResultItem alloc];
-          v23 = [v21 databaseResource];
-          v24 = [v19 units];
-          v25 = [v22 initWithOriginalFHIRResource:v23 units:v24 flags:{objc_msgSend(v19, "flags")}];
+          databaseResource = [v21 databaseResource];
+          units = [v19 units];
+          v25 = [v22 initWithOriginalFHIRResource:databaseResource units:units flags:{objc_msgSend(v19, "flags")}];
 
           [v14 addObject:v25];
         }
@@ -522,7 +522,7 @@ LABEL_41:
     v26 = [[HDExtractionResult alloc] initWithItems:v14];
 LABEL_17:
     v7 = v32;
-    v5 = v33;
+    resultCopy = v33;
   }
 
   else
@@ -536,7 +536,7 @@ LABEL_17:
       *buf = 138543874;
       v45 = v31;
       v46 = 2114;
-      v47 = v5;
+      v47 = resultCopy;
       v48 = 2114;
       v49 = v13;
       _os_log_error_impl(&dword_0, v30, OS_LOG_TYPE_ERROR, "%{public}@ failed to insert or update result %{public}@: %{public}@", buf, 0x20u);
@@ -548,14 +548,14 @@ LABEL_17:
   return v26;
 }
 
-- (BOOL)_processClinicalRecordsInExtractionResult:(id)a3 error:(id *)a4
+- (BOOL)_processClinicalRecordsInExtractionResult:(id)result error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDClinicalIngestionPerAccountOperation *)self account];
-  v8 = [v7 gateway];
-  v9 = [v8 externalID];
-  v10 = [(HDClinicalIngestionOperation *)self profile];
-  v11 = [HDClinicalRecordEntity processClinicalRecordsInExtractionResult:v6 clinicalExternalID:v9 profile:v10 error:a4];
+  resultCopy = result;
+  account = [(HDClinicalIngestionPerAccountOperation *)self account];
+  gateway = [account gateway];
+  externalID = [gateway externalID];
+  profile = [(HDClinicalIngestionOperation *)self profile];
+  v11 = [HDClinicalRecordEntity processClinicalRecordsInExtractionResult:resultCopy clinicalExternalID:externalID profile:profile error:error];
 
   if (v11)
   {
@@ -578,13 +578,13 @@ LABEL_17:
   return v11 != 0;
 }
 
-- (BOOL)_processMedicalRecordsInExtractionResult:(id)a3 error:(id *)a4
+- (BOOL)_processMedicalRecordsInExtractionResult:(id)result error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDClinicalIngestionPerAccountOperation *)self account];
-  v8 = [v7 identifier];
-  v9 = [(HDClinicalIngestionOperation *)self profile];
-  v10 = [HDMedicalRecordEntity processMedicalRecordsInExtractionResult:v6 accountIdentifier:v8 profile:v9 error:a4];
+  resultCopy = result;
+  account = [(HDClinicalIngestionPerAccountOperation *)self account];
+  identifier = [account identifier];
+  profile = [(HDClinicalIngestionOperation *)self profile];
+  v10 = [HDMedicalRecordEntity processMedicalRecordsInExtractionResult:resultCopy accountIdentifier:identifier profile:profile error:error];
 
   if (v10)
   {
@@ -607,28 +607,28 @@ LABEL_17:
   return v10 != 0;
 }
 
-- (BOOL)_updateAccountLastExtractedRowID:(id)a3 extractionRulesVersion:(id)a4 profile:(id)a5 error:(id *)a6
+- (BOOL)_updateAccountLastExtractedRowID:(id)d extractionRulesVersion:(id)version profile:(id)profile error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(HDClinicalIngestionOperation *)self profile];
-  v14 = [v13 database];
+  profileCopy = profile;
+  versionCopy = version;
+  dCopy = d;
+  profile = [(HDClinicalIngestionOperation *)self profile];
+  database = [profile database];
 
-  v15 = [(HDClinicalIngestionPerAccountOperation *)self account];
-  v16 = [v15 identifier];
+  account = [(HDClinicalIngestionPerAccountOperation *)self account];
+  identifier = [account identifier];
 
-  LOBYTE(a6) = [HDClinicalAccountEntity updateAccountLastExtractedRowID:v12 rulesVersion:v11 identifier:v16 profile:v10 healthDatabase:v14 error:a6];
-  return a6;
+  LOBYTE(error) = [HDClinicalAccountEntity updateAccountLastExtractedRowID:dCopy rulesVersion:versionCopy identifier:identifier profile:profileCopy healthDatabase:database error:error];
+  return error;
 }
 
-- (BOOL)_processMedicalDownloadableAttachmentsInExtractionResult:(id)a3 error:(id *)a4
+- (BOOL)_processMedicalDownloadableAttachmentsInExtractionResult:(id)result error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDClinicalIngestionPerAccountOperation *)self account];
-  v8 = [v7 identifier];
-  v9 = [(HDClinicalIngestionOperation *)self profile];
-  v10 = [HDMedicalDownloadableAttachmentEntity processMedicalDownloadableAttachmentsInExtractionResult:v6 accountIdentifier:v8 profile:v9 error:a4];
+  resultCopy = result;
+  account = [(HDClinicalIngestionPerAccountOperation *)self account];
+  identifier = [account identifier];
+  profile = [(HDClinicalIngestionOperation *)self profile];
+  v10 = [HDMedicalDownloadableAttachmentEntity processMedicalDownloadableAttachmentsInExtractionResult:resultCopy accountIdentifier:identifier profile:profile error:error];
 
   if (v10)
   {
@@ -643,9 +643,9 @@ LABEL_17:
   return 1;
 }
 
-- (void)_cancelWithError:(id)a3
+- (void)_cancelWithError:(id)error
 {
-  [(HDClinicalIngestionExtractionOperation *)self setExtractionError:a3];
+  [(HDClinicalIngestionExtractionOperation *)self setExtractionError:error];
 
   [(HDClinicalIngestionExtractionOperation *)self cancel];
 }

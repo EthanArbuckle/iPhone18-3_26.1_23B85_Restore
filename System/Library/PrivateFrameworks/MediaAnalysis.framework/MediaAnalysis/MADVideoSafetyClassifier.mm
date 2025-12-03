@@ -1,32 +1,32 @@
 @interface MADVideoSafetyClassifier
-+ (id)analyzeVideoAssetOnDemandWithURL:(id)a3 localIdentifier:(id)a4 timeRange:(id *)a5 cancelBlock:(id)a6 andProgressHandler:(id)a7;
-+ (id)mergeScoresForLabelsA:(id)a3 scoresForLabelsB:(id)a4;
-+ (id)safetyScoresForLabels:(id)a3;
++ (id)analyzeVideoAssetOnDemandWithURL:(id)l localIdentifier:(id)identifier timeRange:(id *)range cancelBlock:(id)block andProgressHandler:(id)handler;
++ (id)mergeScoresForLabelsA:(id)a scoresForLabelsB:(id)b;
++ (id)safetyScoresForLabels:(id)labels;
 - (MADVideoSafetyClassifier)init;
 - (id)results;
-- (int)analyzeFrame:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 flags:(unint64_t *)a6;
-- (int)analyzeFrameWithSampleBuffer:(opaqueCMSampleBuffer *)a3 timestamp:(id *)a4 duration:(id *)a5 andFlags:(unint64_t *)a6;
+- (int)analyzeFrame:(__CVBuffer *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration flags:(unint64_t *)flags;
+- (int)analyzeFrameWithSampleBuffer:(opaqueCMSampleBuffer *)buffer timestamp:(id *)timestamp duration:(id *)duration andFlags:(unint64_t *)flags;
 - (int)configureAndStartVideoAnalyzer;
-- (int)finishAnalysisPass:(id *)a3;
+- (int)finishAnalysisPass:(id *)pass;
 - (void)addAnalysisResults;
-- (void)configureProcessTimeIntervalFrom:(id *)a3;
+- (void)configureProcessTimeIntervalFrom:(id *)from;
 @end
 
 @implementation MADVideoSafetyClassifier
 
-+ (id)safetyScoresForLabels:(id)a3
++ (id)safetyScoresForLabels:(id)labels
 {
-  v3 = a3;
-  if (v3)
+  labelsCopy = labels;
+  if (labelsCopy)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __50__MADVideoSafetyClassifier_safetyScoresForLabels___block_invoke;
     v7[3] = &unk_1E834DF68;
-    v5 = v4;
+    v5 = dictionary;
     v8 = v5;
-    [v3 enumerateKeysAndObjectsUsingBlock:v7];
+    [labelsCopy enumerateKeysAndObjectsUsingBlock:v7];
   }
 
   else
@@ -59,16 +59,16 @@ void __50__MADVideoSafetyClassifier_safetyScoresForLabels___block_invoke(uint64_
   }
 }
 
-+ (id)mergeScoresForLabelsA:(id)a3 scoresForLabelsB:(id)a4
++ (id)mergeScoresForLabelsA:(id)a scoresForLabelsB:(id)b
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  aCopy = a;
+  bCopy = b;
+  v7 = bCopy;
+  if (aCopy)
   {
-    if (v6)
+    if (bCopy)
     {
-      v8 = [v5 mutableCopy];
+      v8 = [aCopy mutableCopy];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __67__MADVideoSafetyClassifier_mergeScoresForLabelsA_scoresForLabelsB___block_invoke;
@@ -80,12 +80,12 @@ void __50__MADVideoSafetyClassifier_safetyScoresForLabels___block_invoke(uint64_
       goto LABEL_7;
     }
 
-    v10 = v5;
+    v10 = aCopy;
   }
 
   else
   {
-    v10 = v6;
+    v10 = bCopy;
   }
 
   v9 = v10;
@@ -125,23 +125,23 @@ void __67__MADVideoSafetyClassifier_mergeScoresForLabelsA_scoresForLabelsB___blo
   }
 }
 
-+ (id)analyzeVideoAssetOnDemandWithURL:(id)a3 localIdentifier:(id)a4 timeRange:(id *)a5 cancelBlock:(id)a6 andProgressHandler:(id)a7
++ (id)analyzeVideoAssetOnDemandWithURL:(id)l localIdentifier:(id)identifier timeRange:(id *)range cancelBlock:(id)block andProgressHandler:(id)handler
 {
   v61 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  v15 = [MEMORY[0x1E695DF70] array];
-  if ((a5->var0.var2 & 1) != 0 && (a5->var1.var2 & 1) != 0 && !a5->var1.var3 && (a5->var1.var0 & 0x8000000000000000) == 0)
+  lCopy = l;
+  identifierCopy = identifier;
+  blockCopy = block;
+  handlerCopy = handler;
+  array = [MEMORY[0x1E695DF70] array];
+  if ((range->var0.var2 & 1) != 0 && (range->var1.var2 & 1) != 0 && !range->var1.var3 && (range->var1.var0 & 0x8000000000000000) == 0)
   {
     context = objc_autoreleasePoolPush();
     v43 = objc_alloc_init(MEMORY[0x1E69AE4F0]);
     [v43 setRequiresScoresAndLabels:1];
     [v43 setEnableGoreViolenceDetection:_os_feature_enabled_impl()];
-    v18 = [MEMORY[0x1E696AAE8] mainBundle];
-    v19 = [v18 bundleIdentifier];
-    v20 = [MADServiceVideoAsset assetWithURL:v11 identifier:v12 clientBundleID:v19 clientTeamID:0];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v20 = [MADServiceVideoAsset assetWithURL:lCopy identifier:identifierCopy clientBundleID:bundleIdentifier clientTeamID:0];
 
     v42 = v20;
     if (!v20)
@@ -150,7 +150,7 @@ void __67__MADVideoSafetyClassifier_mergeScoresForLabelsA_scoresForLabelsB___blo
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v12;
+        *(&buf + 4) = identifierCopy;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to create MADServiceVideoAsset with %@", &buf, 0xCu);
       }
 
@@ -175,7 +175,7 @@ void __67__MADVideoSafetyClassifier_mergeScoresForLabelsA_scoresForLabelsB___blo
     aBlock[4] = &v46;
     aBlock[5] = &buf;
     v40 = _Block_copy(aBlock);
-    v21 = [(MADServiceVideoProcessingSubtask *)MADServiceVideoSafetyProcessingTask taskWithRequest:v43 forAsset:v20 cancelBlock:v13 progressHandler:v14 andCompletionHandler:v40];
+    v21 = [(MADServiceVideoProcessingSubtask *)MADServiceVideoSafetyProcessingTask taskWithRequest:v43 forAsset:v20 cancelBlock:blockCopy progressHandler:handlerCopy andCompletionHandler:v40];
     v22 = v21;
     if (!v21)
     {
@@ -258,17 +258,17 @@ LABEL_38:
       v38 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v55 forKeys:v54 count:2];
 
       v52[0] = @"start";
-      var0 = a5->var0;
+      var0 = range->var0;
       v35 = CMTimeToNSDictionary(&var0);
       v53[0] = v35;
       v52[1] = @"duration";
-      var0 = a5->var1;
+      var0 = range->var1;
       v36 = CMTimeToNSDictionary(&var0);
       v52[2] = @"attributes";
       v53[1] = v36;
       v53[2] = v38;
       v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:v52 count:3];
-      [v15 addObject:v37];
+      [array addObject:v37];
     }
 
     v22 = v39;
@@ -283,7 +283,7 @@ LABEL_38:
 
 LABEL_7:
   v50 = @"SafetyResults";
-  v51 = v15;
+  v51 = array;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v51 forKeys:&v50 count:{1, v38}];
 
   return v16;
@@ -411,9 +411,9 @@ LABEL_26:
   *(v2 + 9) = v7;
   *(v2 + 20) = 1065353216;
   *(v2 + 52) = -1;
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v9 = v3[15];
-  v3[15] = v8;
+  v3[15] = array;
 
   if (!v3[15])
   {
@@ -497,11 +497,11 @@ LABEL_21:
   return v24;
 }
 
-- (void)configureProcessTimeIntervalFrom:(id *)a3
+- (void)configureProcessTimeIntervalFrom:(id *)from
 {
-  if (a3->var2)
+  if (from->var2)
   {
-    v5 = *a3;
+    v5 = *from;
     processTimeInterval = CMTimeGetSeconds(&v5) / 30.0;
     if (self->_processTimeInterval >= processTimeInterval)
     {
@@ -594,13 +594,13 @@ LABEL_21:
   }
 }
 
-- (int)analyzeFrameWithSampleBuffer:(opaqueCMSampleBuffer *)a3 timestamp:(id *)a4 duration:(id *)a5 andFlags:(unint64_t *)a6
+- (int)analyzeFrameWithSampleBuffer:(opaqueCMSampleBuffer *)buffer timestamp:(id *)timestamp duration:(id *)duration andFlags:(unint64_t *)flags
 {
   v42 = *MEMORY[0x1E69E9840];
-  if (a4->var2)
+  if (timestamp->var2)
   {
     p_timeLastProcess = &self->_timeLastProcess;
-    buf = *a4;
+    buf = *timestamp;
     rhs = self->_timeLastProcess;
     CMTimeSubtract(&time, &buf, &rhs);
     if (CMTimeGetSeconds(&time) < self->_processTimeInterval)
@@ -608,8 +608,8 @@ LABEL_21:
       return 0;
     }
 
-    v11 = *&a4->var0;
-    p_timeLastProcess->epoch = a4->var3;
+    v11 = *&timestamp->var0;
+    p_timeLastProcess->epoch = timestamp->var3;
     *&p_timeLastProcess->value = v11;
     if ((self->_start.flags & 1) == 0)
     {
@@ -619,13 +619,13 @@ LABEL_21:
         return result;
       }
 
-      v12 = *&a4->var0;
-      self->_start.epoch = a4->var3;
+      v12 = *&timestamp->var0;
+      self->_start.epoch = timestamp->var3;
       *&self->_start.value = v12;
     }
 
-    var3 = a4->var3;
-    *&self->_end.value = *&a4->var0;
+    var3 = timestamp->var3;
+    *&self->_end.value = *&timestamp->var0;
     self->_end.epoch = var3;
     if (!self->_remainingDetections)
     {
@@ -635,7 +635,7 @@ LABEL_21:
     v14 = objc_autoreleasePoolPush();
     videoAnalyzer = self->_videoAnalyzer;
     v38 = 0;
-    v16 = [(SCMLVideoAnalyzer *)videoAnalyzer addFrameBuffer:a3 error:&v38];
+    v16 = [(SCMLVideoAnalyzer *)videoAnalyzer addFrameBuffer:buffer error:&v38];
     v17 = v38;
     if (v17)
     {
@@ -693,8 +693,8 @@ LABEL_21:
         v30 = objc_opt_class();
         scoresForLabels = self->_scoresForLabels;
         v32 = objc_opt_class();
-        v33 = [v20 scoresForLabels];
-        v34 = [v32 safetyScoresForLabels:v33];
+        scoresForLabels = [v20 scoresForLabels];
+        v34 = [v32 safetyScoresForLabels:scoresForLabels];
         v35 = [v30 mergeScoresForLabelsA:scoresForLabels scoresForLabelsB:v34];
         v36 = self->_scoresForLabels;
         self->_scoresForLabels = v35;
@@ -747,12 +747,12 @@ LABEL_38:
   return -50;
 }
 
-- (int)analyzeFrame:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 flags:(unint64_t *)a6
+- (int)analyzeFrame:(__CVBuffer *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration flags:(unint64_t *)flags
 {
-  v16 = *a4;
+  v16 = *timestamp;
   sampleBufferOut = 0;
   formatDescriptionOut = 0;
-  v11 = CMVideoFormatDescriptionCreateForImageBuffer(0, a3, &formatDescriptionOut);
+  v11 = CMVideoFormatDescriptionCreateForImageBuffer(0, frame, &formatDescriptionOut);
   if (v11)
   {
     if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -771,14 +771,14 @@ LABEL_38:
   sampleTiming.duration.epoch = *(MEMORY[0x1E6960C70] + 16);
   sampleTiming.presentationTimeStamp = v16;
   sampleTiming.decodeTimeStamp = sampleTiming.duration;
-  v11 = CMSampleBufferCreateReadyWithImageBuffer(*MEMORY[0x1E695E480], a3, formatDescriptionOut, &sampleTiming, &sampleBufferOut);
+  v11 = CMSampleBufferCreateReadyWithImageBuffer(*MEMORY[0x1E695E480], frame, formatDescriptionOut, &sampleTiming, &sampleBufferOut);
   if (!v11)
   {
     CF<__CVBuffer *>::~CF(&formatDescriptionOut);
-    *&sampleTiming.duration.value = *&a4->var0;
-    sampleTiming.duration.epoch = a4->var3;
-    v16 = *a5;
-    v11 = [(MADVideoSafetyClassifier *)self analyzeFrameWithSampleBuffer:sampleBufferOut timestamp:&sampleTiming duration:&v16 andFlags:a6];
+    *&sampleTiming.duration.value = *&timestamp->var0;
+    sampleTiming.duration.epoch = timestamp->var3;
+    v16 = *duration;
+    v11 = [(MADVideoSafetyClassifier *)self analyzeFrameWithSampleBuffer:sampleBufferOut timestamp:&sampleTiming duration:&v16 andFlags:flags];
     goto LABEL_11;
   }
 
@@ -799,10 +799,10 @@ LABEL_11:
   return v11;
 }
 
-- (int)finishAnalysisPass:(id *)a3
+- (int)finishAnalysisPass:(id *)pass
 {
   v25 = *MEMORY[0x1E69E9840];
-  if ((a3->var0.var2 & 1) == 0 || (a3->var1.var2 & 1) == 0 || a3->var1.var3 || a3->var1.var0 < 0)
+  if ((pass->var0.var2 & 1) == 0 || (pass->var1.var2 & 1) == 0 || pass->var1.var3 || pass->var1.var0 < 0)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -815,10 +815,10 @@ LABEL_11:
 
   else
   {
-    v5 = *&a3->var0.var3;
-    *&buf.start.value = *&a3->var0.var0;
+    v5 = *&pass->var0.var3;
+    *&buf.start.value = *&pass->var0.var0;
     *&buf.start.epoch = v5;
-    *&buf.duration.timescale = *&a3->var1.var1;
+    *&buf.duration.timescale = *&pass->var1.var1;
     CMTimeRangeGetEnd(&v23, &buf);
     self->_end = v23;
     if (!self->_remainingDetections || (self->_start.flags & 1) == 0)
@@ -872,8 +872,8 @@ LABEL_11:
       v11 = objc_opt_class();
       scoresForLabels = self->_scoresForLabels;
       v13 = objc_opt_class();
-      v14 = [v7 scoresForLabels];
-      v15 = [v13 safetyScoresForLabels:v14];
+      scoresForLabels = [v7 scoresForLabels];
+      v15 = [v13 safetyScoresForLabels:scoresForLabels];
       v16 = [v11 mergeScoresForLabelsA:scoresForLabels scoresForLabelsB:v15];
       v17 = self->_scoresForLabels;
       self->_scoresForLabels = v16;

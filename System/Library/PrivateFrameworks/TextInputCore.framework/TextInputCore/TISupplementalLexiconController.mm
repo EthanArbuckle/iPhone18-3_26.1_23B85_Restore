@@ -1,16 +1,16 @@
 @interface TISupplementalLexiconController
 - (TISupplementalLexicon)activeLexicon;
-- (TISupplementalLexiconController)initWithConnection:(id)a3;
+- (TISupplementalLexiconController)initWithConnection:(id)connection;
 - (TISupplementalLexiconControllerDelegate)delegate;
 - (_LXLexicon)activePhraseLexicon;
 - (_LXLexicon)activeWordLexicon;
-- (id)identifiersOfItemsEqualToMecrabraCandidate:(id)a3;
-- (id)lexiconWithIdentifier:(unint64_t)a3;
+- (id)identifiersOfItemsEqualToMecrabraCandidate:(id)candidate;
+- (id)lexiconWithIdentifier:(unint64_t)identifier;
 - (void)_sendActiveLexiconDidChangeNotification;
-- (void)addLexicon:(id)a3;
+- (void)addLexicon:(id)lexicon;
 - (void)clearActiveLexicon;
-- (void)removeLexiconWithIdentifier:(unint64_t)a3;
-- (void)setActiveLexiconWithIdentifier:(unint64_t)a3;
+- (void)removeLexiconWithIdentifier:(unint64_t)identifier;
+- (void)setActiveLexiconWithIdentifier:(unint64_t)identifier;
 @end
 
 @implementation TISupplementalLexiconController
@@ -22,10 +22,10 @@
   return WeakRetained;
 }
 
-- (id)identifiersOfItemsEqualToMecrabraCandidate:(id)a3
+- (id)identifiersOfItemsEqualToMecrabraCandidate:(id)candidate
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  candidateCopy = candidate;
   if (self->_activeLexiconIdentifier)
   {
     v5 = objc_opt_new();
@@ -36,9 +36,9 @@
     lexicons = self->_lexicons;
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{self->_activeLexiconIdentifier, 0}];
     v8 = [(NSMutableDictionary *)lexicons objectForKeyedSubscript:v7];
-    v9 = [v8 items];
+    items = [v8 items];
 
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v10 = [items countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
       v11 = v10;
@@ -49,40 +49,40 @@
         {
           if (*v20 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(items);
           }
 
           v14 = *(*(&v19 + 1) + 8 * i);
-          if ([v14 core_isEqualToMecabraCandidate:v4])
+          if ([v14 core_isEqualToMecabraCandidate:candidateCopy])
           {
             v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v14, "identifier")}];
             [v5 addObject:v15];
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v11 = [items countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v11);
     }
 
-    v16 = [v5 allObjects];
+    allObjects = [v5 allObjects];
   }
 
   else
   {
-    v16 = MEMORY[0x277CBEBF8];
+    allObjects = MEMORY[0x277CBEBF8];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return allObjects;
 }
 
-- (id)lexiconWithIdentifier:(unint64_t)a3
+- (id)lexiconWithIdentifier:(unint64_t)identifier
 {
   lexicons = self->_lexicons;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:identifier];
   v5 = [(NSMutableDictionary *)lexicons objectForKeyedSubscript:v4];
 
   return v5;
@@ -98,10 +98,10 @@
   entityStores = self->_entityStores;
   v3 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:?];
   v4 = [(NSMutableDictionary *)entityStores objectForKeyedSubscript:v3];
-  v5 = [v4 phraseLexicon];
-  v6 = [v5 getLexiconImplementation];
+  phraseLexicon = [v4 phraseLexicon];
+  getLexiconImplementation = [phraseLexicon getLexiconImplementation];
 
-  return v6;
+  return getLexiconImplementation;
 }
 
 - (_LXLexicon)activeWordLexicon
@@ -114,10 +114,10 @@
   entityStores = self->_entityStores;
   v3 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:?];
   v4 = [(NSMutableDictionary *)entityStores objectForKeyedSubscript:v3];
-  v5 = [v4 wordLexicon];
-  v6 = [v5 getLexiconImplementation];
+  wordLexicon = [v4 wordLexicon];
+  getLexiconImplementation = [wordLexicon getLexiconImplementation];
 
-  return v6;
+  return getLexiconImplementation;
 }
 
 - (void)clearActiveLexicon
@@ -129,11 +129,11 @@
     _os_log_impl(&dword_22CA55000, v3, OS_LOG_TYPE_INFO, "Clear active lexicon", v6, 2u);
   }
 
-  v4 = [(TISupplementalLexiconController *)self activeLexicon];
+  activeLexicon = [(TISupplementalLexiconController *)self activeLexicon];
   self->_activeLexiconIdentifier = 0;
-  v5 = [(TISupplementalLexiconController *)self activeLexicon];
+  activeLexicon2 = [(TISupplementalLexiconController *)self activeLexicon];
 
-  if (v4 != v5)
+  if (activeLexicon != activeLexicon2)
   {
     [(TISupplementalLexiconController *)self _sendActiveLexiconDidChangeNotification];
   }
@@ -142,43 +142,43 @@
 - (void)_sendActiveLexiconDidChangeNotification
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v2 = TISupplementalLexiconOSLogFacility();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
     {
-      v3 = [a1 activeLexicon];
+      activeLexicon = [self activeLexicon];
       *buf = 134217984;
-      v12 = [v3 identifier];
+      identifier = [activeLexicon identifier];
       _os_log_impl(&dword_22CA55000, v2, OS_LOG_TYPE_INFO, "Active supplemental lexicon did change (active identifier=%llu)", buf, 0xCu);
     }
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    v5 = [a1 activeLexicon];
-    if (v5)
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    activeLexicon2 = [self activeLexicon];
+    if (activeLexicon2)
     {
-      v6 = [a1 activeLexicon];
-      v10 = v6;
+      activeLexicon3 = [self activeLexicon];
+      v10 = activeLexicon3;
       v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-      [v4 postNotificationName:@"TIActiveLexiconDidChangeNotification" object:a1 userInfo:v7];
+      [defaultCenter postNotificationName:@"TIActiveLexiconDidChangeNotification" object:self userInfo:v7];
     }
 
     else
     {
-      [v4 postNotificationName:@"TIActiveLexiconDidChangeNotification" object:a1 userInfo:MEMORY[0x277CBEC10]];
+      [defaultCenter postNotificationName:@"TIActiveLexiconDidChangeNotification" object:self userInfo:MEMORY[0x277CBEC10]];
     }
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setActiveLexiconWithIdentifier:(unint64_t)a3
+- (void)setActiveLexiconWithIdentifier:(unint64_t)identifier
 {
-  v6 = [(TISupplementalLexiconController *)self activeLexicon];
-  self->_activeLexiconIdentifier = a3;
-  v5 = [(TISupplementalLexiconController *)self activeLexicon];
+  activeLexicon = [(TISupplementalLexiconController *)self activeLexicon];
+  self->_activeLexiconIdentifier = identifier;
+  activeLexicon2 = [(TISupplementalLexiconController *)self activeLexicon];
 
-  if (v6 != v5)
+  if (activeLexicon != activeLexicon2)
   {
     [(TISupplementalLexiconController *)self _sendActiveLexiconDidChangeNotification];
   }
@@ -201,34 +201,34 @@
   return v4;
 }
 
-- (void)removeLexiconWithIdentifier:(unint64_t)a3
+- (void)removeLexiconWithIdentifier:(unint64_t)identifier
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = TISupplementalLexiconOSLogFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v13 = 134217984;
-    v14 = a3;
+    identifierCopy = identifier;
     _os_log_impl(&dword_22CA55000, v5, OS_LOG_TYPE_INFO, "Remove supplemental lexicon with identifier=%llu", &v13, 0xCu);
   }
 
-  v6 = [(TISupplementalLexiconController *)self activeLexicon];
-  if (self->_activeLexiconIdentifier == a3)
+  activeLexicon = [(TISupplementalLexiconController *)self activeLexicon];
+  if (self->_activeLexiconIdentifier == identifier)
   {
     self->_activeLexiconIdentifier = 0;
   }
 
   entityStores = self->_entityStores;
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:identifier];
   [(NSMutableDictionary *)entityStores removeObjectForKey:v8];
 
   lexicons = self->_lexicons;
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:identifier];
   [(NSMutableDictionary *)lexicons removeObjectForKey:v10];
 
-  v11 = [(TISupplementalLexiconController *)self activeLexicon];
+  activeLexicon2 = [(TISupplementalLexiconController *)self activeLexicon];
 
-  if (v6 != v11)
+  if (activeLexicon != activeLexicon2)
   {
     [(TISupplementalLexiconController *)self _sendActiveLexiconDidChangeNotification];
   }
@@ -236,36 +236,36 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addLexicon:(id)a3
+- (void)addLexicon:(id)lexicon
 {
   v61 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lexiconCopy = lexicon;
   v5 = TISupplementalLexiconOSLogFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 identifier];
-    v7 = [v4 items];
+    identifier = [lexiconCopy identifier];
+    items = [lexiconCopy items];
     *buf = 134218240;
-    v58 = v6;
+    v58 = identifier;
     v59 = 2048;
-    v60 = [v7 count];
+    v60 = [items count];
     _os_log_impl(&dword_22CA55000, v5, OS_LOG_TYPE_INFO, "Add supplemental lexicon with identifier=%llu (#items=%lu)", buf, 0x16u);
   }
 
-  v38 = [(TISupplementalLexiconController *)self activeLexicon];
-  if (self->_needsAtSignSearchPrefixQuirk && ![v4 searchPrefixes])
+  activeLexicon = [(TISupplementalLexiconController *)self activeLexicon];
+  if (self->_needsAtSignSearchPrefixQuirk && ![lexiconCopy searchPrefixes])
   {
-    [v4 setSearchPrefixes:1];
+    [lexiconCopy setSearchPrefixes:1];
   }
 
-  v39 = [MEMORY[0x277CCACA8] stringWithFormat:@"Supplemental-%d-%llu", self->_connectionIdentifier, objc_msgSend(v4, "identifier")];
-  v8 = [v4 items];
-  v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v8, "count")}];
+  v39 = [MEMORY[0x277CCACA8] stringWithFormat:@"Supplemental-%d-%llu", self->_connectionIdentifier, objc_msgSend(lexiconCopy, "identifier")];
+  items2 = [lexiconCopy items];
+  v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(items2, "count")}];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v10 = v8;
+  v10 = items2;
   v11 = [v10 countByEnumeratingWithState:&v48 objects:buf count:16];
   if (v11)
   {
@@ -289,15 +289,15 @@
     while (v12);
   }
 
-  v15 = [MEMORY[0x277D6F380] sharedInputModeController];
-  v16 = [v15 enabledInputModeIdentifiers];
+  mEMORY[0x277D6F380] = [MEMORY[0x277D6F380] sharedInputModeController];
+  enabledInputModeIdentifiers = [mEMORY[0x277D6F380] enabledInputModeIdentifiers];
 
   v17 = [MEMORY[0x277CBEB58] set];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v18 = v16;
+  v18 = enabledInputModeIdentifiers;
   v19 = [v18 countByEnumeratingWithState:&v44 objects:v56 count:16];
   if (v19)
   {
@@ -374,16 +374,16 @@
   }
 
   entityStores = self->_entityStores;
-  v33 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "identifier")}];
+  v33 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(lexiconCopy, "identifier")}];
   [(NSMutableDictionary *)entityStores setObject:v25 forKeyedSubscript:v33];
 
   lexicons = self->_lexicons;
-  v35 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "identifier")}];
-  [(NSMutableDictionary *)lexicons setObject:v4 forKeyedSubscript:v35];
+  v35 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(lexiconCopy, "identifier")}];
+  [(NSMutableDictionary *)lexicons setObject:lexiconCopy forKeyedSubscript:v35];
 
-  v36 = [(TISupplementalLexiconController *)self activeLexicon];
+  activeLexicon2 = [(TISupplementalLexiconController *)self activeLexicon];
 
-  if (v38 != v36)
+  if (activeLexicon != activeLexicon2)
   {
     [(TISupplementalLexiconController *)self _sendActiveLexiconDidChangeNotification];
   }
@@ -391,9 +391,9 @@
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (TISupplementalLexiconController)initWithConnection:(id)a3
+- (TISupplementalLexiconController)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v23.receiver = self;
   v23.super_class = TISupplementalLexiconController;
   v5 = [(TISupplementalLexiconController *)&v23 init];
@@ -404,9 +404,9 @@
     *(v5 + 1) = v6;
 
     v8 = *MEMORY[0x277CBECE8];
-    if (v4)
+    if (connectionCopy)
     {
-      [v4 auditToken];
+      [connectionCopy auditToken];
     }
 
     else
@@ -419,9 +419,9 @@
     CFRelease(v9);
     *(v5 + 40) = [(__CFString *)v10 isEqualToString:@"com.apple.MobileSMS"];
 
-    if (v4)
+    if (connectionCopy)
     {
-      [v4 auditToken];
+      [connectionCopy auditToken];
     }
 
     else
@@ -434,9 +434,9 @@
     v12 = *(v5 + 2);
     *(v5 + 2) = v11;
 
-    if (v4)
+    if (connectionCopy)
     {
-      [v4 auditToken];
+      [connectionCopy auditToken];
     }
 
     else

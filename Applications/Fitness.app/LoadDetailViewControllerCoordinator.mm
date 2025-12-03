@@ -1,12 +1,12 @@
 @interface LoadDetailViewControllerCoordinator
-- (void)didTapOnInfoButton:(id)a3;
+- (void)didTapOnInfoButton:(id)button;
 @end
 
 @implementation LoadDetailViewControllerCoordinator
 
-- (void)didTapOnInfoButton:(id)a3
+- (void)didTapOnInfoButton:(id)button
 {
-  v3 = a3;
+  buttonCopy = button;
 
   sub_10043DA6C();
 }

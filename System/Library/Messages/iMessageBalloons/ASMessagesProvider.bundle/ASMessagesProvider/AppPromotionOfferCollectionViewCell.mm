@@ -1,12 +1,12 @@
 @interface AppPromotionOfferCollectionViewCell
-- (_TtC18ASMessagesProvider35AppPromotionOfferCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC18ASMessagesProvider35AppPromotionOfferCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation AppPromotionOfferCollectionViewCell
 
-- (_TtC18ASMessagesProvider35AppPromotionOfferCollectionViewCell)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider35AppPromotionOfferCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC18ASMessagesProvider35AppPromotionOfferCollectionViewCell_itemLayoutContext;
   v5 = sub_75C840();
@@ -42,7 +42,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_278224();
 }
 

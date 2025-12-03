@@ -7,51 +7,51 @@
 - (NSArray)currentVendorNameList;
 - (UGCPhotoAlbumCategory)currentAlbumCategory;
 - (UGCPhotoViewerDataProvider)currentDataProvider;
-- (UGCPhotoViewerDataSource)initWithMapItem:(id)a3 delegate:(id)a4;
-- (id)_dataProviderForAlbumIndex:(unint64_t)a3;
+- (UGCPhotoViewerDataSource)initWithMapItem:(id)item delegate:(id)delegate;
+- (id)_dataProviderForAlbumIndex:(unint64_t)index;
 - (unint64_t)totalNumberOfPhotosForCurrentDataProvider;
 - (void)_createDataSourceIfNeeded;
 - (void)_initComingledVendorPhotos;
 - (void)_initSingleVendorPhotos;
 - (void)fetchNextBatchRequestIfNeeded;
-- (void)photoViewerDataProvider:(id)a3 didUpdateWithPhotos:(id)a4;
-- (void)photoViewerDataProvider:(id)a3 failedBatchRequestWithError:(id)a4 range:(_NSRange)a5;
-- (void)setActive:(BOOL)a3;
-- (void)setIndexOfTappedPhoto:(unint64_t)a3;
+- (void)photoViewerDataProvider:(id)provider didUpdateWithPhotos:(id)photos;
+- (void)photoViewerDataProvider:(id)provider failedBatchRequestWithError:(id)error range:(_NSRange)range;
+- (void)setActive:(BOOL)active;
+- (void)setIndexOfTappedPhoto:(unint64_t)photo;
 @end
 
 @implementation UGCPhotoViewerDataSource
 
 - (unint64_t)totalNumberOfPhotosForCurrentDataProvider
 {
-  v2 = [(UGCPhotoViewerDataSource *)self currentDataProvider];
-  v3 = [v2 totalNumberOfPhotos];
+  currentDataProvider = [(UGCPhotoViewerDataSource *)self currentDataProvider];
+  totalNumberOfPhotos = [currentDataProvider totalNumberOfPhotos];
 
-  return v3;
+  return totalNumberOfPhotos;
 }
 
 - (BOOL)isSingleVendorThatHasPhotosNeedingObfuscation
 {
-  v3 = [(UGCPhotoViewerDataSource *)self currentDataProvider];
-  v4 = [v3 hasPhotosThatShouldBeObfuscatedWhenInFullScreen];
+  currentDataProvider = [(UGCPhotoViewerDataSource *)self currentDataProvider];
+  hasPhotosThatShouldBeObfuscatedWhenInFullScreen = [currentDataProvider hasPhotosThatShouldBeObfuscatedWhenInFullScreen];
 
-  if (!v4)
+  if (!hasPhotosThatShouldBeObfuscatedWhenInFullScreen)
   {
     return 0;
   }
 
-  v5 = [(MKMapItem *)self->_mapItem _allPhotoAttributions];
-  v6 = [v5 count] == 1;
+  _allPhotoAttributions = [(MKMapItem *)self->_mapItem _allPhotoAttributions];
+  v6 = [_allPhotoAttributions count] == 1;
 
   return v6;
 }
 
 - (BOOL)isAllowedToShowAddPhotosCallToAction
 {
-  v3 = [(UGCPhotoViewerDataSource *)self currentDataProvider];
-  v4 = [v3 isAllowedToShowAddPhotoCallToAction];
+  currentDataProvider = [(UGCPhotoViewerDataSource *)self currentDataProvider];
+  isAllowedToShowAddPhotoCallToAction = [currentDataProvider isAllowedToShowAddPhotoCallToAction];
 
-  if (!v4)
+  if (!isAllowedToShowAddPhotoCallToAction)
   {
     return 0;
   }
@@ -63,31 +63,31 @@
 
 - (BOOL)hasDataToShow
 {
-  v2 = [(UGCPhotoViewerDataSource *)self currentDataProvider];
-  v3 = [v2 hasDataToShow];
+  currentDataProvider = [(UGCPhotoViewerDataSource *)self currentDataProvider];
+  hasDataToShow = [currentDataProvider hasDataToShow];
 
-  return v3;
+  return hasDataToShow;
 }
 
-- (void)photoViewerDataProvider:(id)a3 failedBatchRequestWithError:(id)a4 range:(_NSRange)a5
+- (void)photoViewerDataProvider:(id)provider failedBatchRequestWithError:(id)error range:(_NSRange)range
 {
-  v10 = a4;
-  v7 = a3;
-  v8 = [(UGCPhotoViewerDataSource *)self currentDataProvider];
+  errorCopy = error;
+  providerCopy = provider;
+  currentDataProvider = [(UGCPhotoViewerDataSource *)self currentDataProvider];
 
-  if (v8 == v7)
+  if (currentDataProvider == providerCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained photoViewerDataSourceDidUpdate:self withError:v10];
+    [WeakRetained photoViewerDataSourceDidUpdate:self withError:errorCopy];
   }
 }
 
-- (void)photoViewerDataProvider:(id)a3 didUpdateWithPhotos:(id)a4
+- (void)photoViewerDataProvider:(id)provider didUpdateWithPhotos:(id)photos
 {
-  v5 = a3;
-  v6 = [(UGCPhotoViewerDataSource *)self currentDataProvider];
+  providerCopy = provider;
+  currentDataProvider = [(UGCPhotoViewerDataSource *)self currentDataProvider];
 
-  if (v6 == v5)
+  if (currentDataProvider == providerCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained photoViewerDataSourceDidUpdate:self];
@@ -112,26 +112,26 @@
 
 - (NSArray)currentVendorNameList
 {
-  v2 = [(UGCPhotoViewerDataSource *)self currentDataProvider];
-  v3 = [v2 attributionNames];
+  currentDataProvider = [(UGCPhotoViewerDataSource *)self currentDataProvider];
+  attributionNames = [currentDataProvider attributionNames];
 
-  return v3;
+  return attributionNames;
 }
 
 - (NSArray)currentPhotoList
 {
-  v2 = [(UGCPhotoViewerDataSource *)self currentDataProvider];
-  v3 = [v2 photoList];
+  currentDataProvider = [(UGCPhotoViewerDataSource *)self currentDataProvider];
+  photoList = [currentDataProvider photoList];
 
-  return v3;
+  return photoList;
 }
 
 - (void)fetchNextBatchRequestIfNeeded
 {
   if ([(UGCPhotoViewerDataSource *)self isActive])
   {
-    v4 = [(UGCPhotoViewerDataSource *)self currentDataProvider];
-    [v4 fetchNextBatchRequestIfNeeded];
+    currentDataProvider = [(UGCPhotoViewerDataSource *)self currentDataProvider];
+    [currentDataProvider fetchNextBatchRequestIfNeeded];
   }
 
   else
@@ -147,26 +147,26 @@
 
 - (BOOL)hasReachedTotalCount
 {
-  v2 = [(UGCPhotoViewerDataSource *)self currentDataProvider];
-  v3 = [v2 hasReachedTotalCount];
+  currentDataProvider = [(UGCPhotoViewerDataSource *)self currentDataProvider];
+  hasReachedTotalCount = [currentDataProvider hasReachedTotalCount];
 
-  return v3;
+  return hasReachedTotalCount;
 }
 
-- (void)setIndexOfTappedPhoto:(unint64_t)a3
+- (void)setIndexOfTappedPhoto:(unint64_t)photo
 {
-  if (self->_indexOfTappedPhoto != a3)
+  if (self->_indexOfTappedPhoto != photo)
   {
-    self->_indexOfTappedPhoto = a3;
-    v5 = [(NSMutableArray *)self->_dataProviders firstObject];
-    [v5 setIndexOfTappedPhoto:a3];
+    self->_indexOfTappedPhoto = photo;
+    firstObject = [(NSMutableArray *)self->_dataProviders firstObject];
+    [firstObject setIndexOfTappedPhoto:photo];
   }
 }
 
 - (void)_initSingleVendorPhotos
 {
-  v3 = [(MKMapItem *)self->_mapItem _mapkit_resolvedFlatPhotoList];
-  v4 = [v3 count];
+  _mapkit_resolvedFlatPhotoList = [(MKMapItem *)self->_mapItem _mapkit_resolvedFlatPhotoList];
+  v4 = [_mapkit_resolvedFlatPhotoList count];
 
   if (v4)
   {
@@ -179,8 +179,8 @@
     v9 = [UGCPlaceDataPhotoListDataProvider alloc];
     UInteger = GEOConfigGetUInteger();
     v11 = GEOConfigGetUInteger();
-    v12 = [(MKMapItem *)self->_mapItem _geoMapItem];
-    v13 = -[UGCPlaceDataPhotoListDataProvider initWitBatchRequester:initialCount:batchCount:totalCount:albumCategory:delegate:](v9, "initWitBatchRequester:initialCount:batchCount:totalCount:albumCategory:delegate:", v8, UInteger, v11, [v12 _totalPhotoCount], v14, self);
+    _geoMapItem = [(MKMapItem *)self->_mapItem _geoMapItem];
+    v13 = -[UGCPlaceDataPhotoListDataProvider initWitBatchRequester:initialCount:batchCount:totalCount:albumCategory:delegate:](v9, "initWitBatchRequester:initialCount:batchCount:totalCount:albumCategory:delegate:", v8, UInteger, v11, [_geoMapItem _totalPhotoCount], v14, self);
 
     [(NSMutableArray *)self->_dataProviders addObject:v13];
   }
@@ -192,11 +192,11 @@
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v3 = [(MKMapItem *)self->_mapItem _geoMapItem];
-  v4 = [v3 _captionedPhotoAlbums];
+  _geoMapItem = [(MKMapItem *)self->_mapItem _geoMapItem];
+  _captionedPhotoAlbums = [_geoMapItem _captionedPhotoAlbums];
 
-  obj = v4;
-  v5 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  obj = _captionedPhotoAlbums;
+  v5 = [_captionedPhotoAlbums countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v5)
   {
     v6 = v5;
@@ -214,23 +214,23 @@
         v9 = *(*(&v24 + 1) + 8 * v8);
         v10 = [UGCPhotoViewerComingledBatchRequester alloc];
         mapItem = self->_mapItem;
-        v12 = [v9 categoryId];
-        v13 = [(UGCPhotoViewerComingledBatchRequester *)v10 initWithMapItem:mapItem categoryId:v12];
+        categoryId = [v9 categoryId];
+        v13 = [(UGCPhotoViewerComingledBatchRequester *)v10 initWithMapItem:mapItem categoryId:categoryId];
 
-        v14 = [v9 categoryName];
-        v15 = [v14 length];
+        categoryName = [v9 categoryName];
+        v15 = [categoryName length];
 
         v16 = [UGCPhotoAlbumCategory alloc];
         if (v15)
         {
-          v17 = [v9 categoryName];
-          v18 = [(UGCPhotoAlbumCategory *)v16 initWithTitle:v17 categoryType:1];
+          categoryName2 = [v9 categoryName];
+          v18 = [(UGCPhotoAlbumCategory *)v16 initWithTitle:categoryName2 categoryType:1];
         }
 
         else
         {
-          v17 = +[NSBundle mainBundle];
-          v19 = [v17 localizedStringForKey:@"Other [More Photos]" value:@"localized string not found" table:0];
+          categoryName2 = +[NSBundle mainBundle];
+          v19 = [categoryName2 localizedStringForKey:@"Other [More Photos]" value:@"localized string not found" table:0];
           v18 = [(UGCPhotoAlbumCategory *)v16 initWithTitle:v19 categoryType:0];
         }
 
@@ -253,16 +253,16 @@
   }
 }
 
-- (id)_dataProviderForAlbumIndex:(unint64_t)a3
+- (id)_dataProviderForAlbumIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_dataProviders count]<= a3)
+  if ([(NSMutableArray *)self->_dataProviders count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_dataProviders objectAtIndexedSubscript:a3];
+    v5 = [(NSMutableArray *)self->_dataProviders objectAtIndexedSubscript:index];
   }
 
   return v5;
@@ -271,9 +271,9 @@
 - (UGCPhotoAlbumCategory)currentAlbumCategory
 {
   v2 = [(UGCPhotoViewerDataSource *)self _dataProviderForAlbumIndex:[(UGCPhotoViewerDataSource *)self albumIndex]];
-  v3 = [v2 albumCategory];
+  albumCategory = [v2 albumCategory];
 
-  return v3;
+  return albumCategory;
 }
 
 - (void)_createDataSourceIfNeeded
@@ -304,10 +304,10 @@
 
     if ([(MKMapItem *)self->_mapItem _mapkit_supportsFullScreenExperience])
     {
-      v9 = [(MKMapItem *)self->_mapItem _geoMapItem];
-      v10 = [v9 _hasCaptionedPhotoAlbum];
+      _geoMapItem = [(MKMapItem *)self->_mapItem _geoMapItem];
+      _hasCaptionedPhotoAlbum = [_geoMapItem _hasCaptionedPhotoAlbum];
 
-      if (v10)
+      if (_hasCaptionedPhotoAlbum)
       {
         [(UGCPhotoViewerDataSource *)self _initComingledVendorPhotos];
       }
@@ -319,36 +319,36 @@
     }
 
     indexOfTappedPhoto = self->_indexOfTappedPhoto;
-    v12 = [(NSMutableArray *)self->_dataProviders firstObject];
-    [v12 setIndexOfTappedPhoto:indexOfTappedPhoto];
+    firstObject = [(NSMutableArray *)self->_dataProviders firstObject];
+    [firstObject setIndexOfTappedPhoto:indexOfTappedPhoto];
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
-    if (a3)
+    self->_active = active;
+    if (active)
     {
       [(UGCPhotoViewerDataSource *)self _createDataSourceIfNeeded];
     }
   }
 }
 
-- (UGCPhotoViewerDataSource)initWithMapItem:(id)a3 delegate:(id)a4
+- (UGCPhotoViewerDataSource)initWithMapItem:(id)item delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = UGCPhotoViewerDataSource;
   v9 = [(UGCPhotoViewerDataSource *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mapItem, a3);
+    objc_storeStrong(&v9->_mapItem, item);
     v10->_albumIndex = 0;
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
   }
 
   return v10;

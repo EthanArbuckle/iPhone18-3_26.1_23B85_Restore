@@ -1,6 +1,6 @@
 @interface WBSCalculationResultProvider
 - (WBSCalculationResultProvider)init;
-- (void)evaluateQuery:(id)a3 resultHandler:(id)a4;
+- (void)evaluateQuery:(id)query resultHandler:(id)handler;
 @end
 
 @implementation WBSCalculationResultProvider
@@ -13,9 +13,9 @@
   if (v2)
   {
     v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.safarishared.%p", v2];
-    v4 = [v3 UTF8String];
+    uTF8String = [v3 UTF8String];
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v6 = dispatch_queue_create(v4, v5);
+    v6 = dispatch_queue_create(uTF8String, v5);
     calculationQueue = v2->_calculationQueue;
     v2->_calculationQueue = v6;
 
@@ -37,11 +37,11 @@
   return v2;
 }
 
-- (void)evaluateQuery:(id)a3 resultHandler:(id)a4
+- (void)evaluateQuery:(id)query resultHandler:(id)handler
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_queryLock);
   os_unfair_lock_lock(&self->_calculateRequestLock);
   currentCalculateRequest = self->_currentCalculateRequest;
@@ -51,29 +51,29 @@
   }
 
   os_unfair_lock_unlock(&self->_calculateRequestLock);
-  v9 = [v6 queryString];
-  v10 = [v9 safari_stringByTrimmingWhitespace];
+  queryString = [queryCopy queryString];
+  safari_stringByTrimmingWhitespace = [queryString safari_stringByTrimmingWhitespace];
 
-  v11 = [(NSString *)self->_currentQueryString isEqualToString:v10];
+  v11 = [(NSString *)self->_currentQueryString isEqualToString:safari_stringByTrimmingWhitespace];
   currentCalculateResult = self->_currentCalculateResult;
   if (v11)
   {
     if (currentCalculateResult)
     {
       v13 = [[WBSCalculationResult alloc] initWithCalculateResult:self->_currentCalculateResult];
-      v7[2](v7, v13);
+      handlerCopy[2](handlerCopy, v13);
 
       goto LABEL_9;
     }
 
 LABEL_8:
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_9;
   }
 
   self->_currentCalculateResult = 0;
 
-  if ([v10 length] <= 1 || -[NSSet containsObject:](self->_queryStringsToIgnore, "containsObject:", v10))
+  if ([safari_stringByTrimmingWhitespace length] <= 1 || -[NSSet containsObject:](self->_queryStringsToIgnore, "containsObject:", safari_stringByTrimmingWhitespace))
   {
     goto LABEL_8;
   }
@@ -96,9 +96,9 @@ LABEL_8:
           objc_enumerationMutation(v14);
         }
 
-        if ([v10 hasPrefix:*(*(&v26 + 1) + 8 * i)])
+        if ([safari_stringByTrimmingWhitespace hasPrefix:*(*(&v26 + 1) + 8 * i)])
         {
-          v7[2](v7, 0);
+          handlerCopy[2](handlerCopy, 0);
 
           goto LABEL_9;
         }
@@ -115,26 +115,26 @@ LABEL_8:
   }
 
   phoneNumberDetector = self->_phoneNumberDetector;
-  v19 = [v6 queryString];
-  v20 = [v6 queryString];
-  v21 = -[NSDataDetector numberOfMatchesInString:options:range:](phoneNumberDetector, "numberOfMatchesInString:options:range:", v19, 0, 0, [v20 length]);
+  queryString2 = [queryCopy queryString];
+  queryString3 = [queryCopy queryString];
+  v21 = -[NSDataDetector numberOfMatchesInString:options:range:](phoneNumberDetector, "numberOfMatchesInString:options:range:", queryString2, 0, 0, [queryString3 length]);
 
-  if (v21 || (WBSUnifiedFieldInputTypeForString(v10) - 1) <= 1)
+  if (v21 || (WBSUnifiedFieldInputTypeForString(safari_stringByTrimmingWhitespace) - 1) <= 1)
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
-    objc_storeStrong(&self->_currentQueryString, v10);
+    objc_storeStrong(&self->_currentQueryString, safari_stringByTrimmingWhitespace);
     calculationQueue = self->_calculationQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __60__WBSCalculationResultProvider_evaluateQuery_resultHandler___block_invoke;
     block[3] = &unk_1E7FB6E08;
     block[4] = self;
-    v24 = v10;
-    v25 = v7;
+    v24 = safari_stringByTrimmingWhitespace;
+    v25 = handlerCopy;
     dispatch_async(calculationQueue, block);
   }
 

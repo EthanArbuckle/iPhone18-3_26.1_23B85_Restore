@@ -1,6 +1,6 @@
 @interface HearingProtectionAboutViewController
-- (_TtC21HearingModeSettingsUI36HearingProtectionAboutViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (_TtC21HearingModeSettingsUI36HearingProtectionAboutViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)getFeatureVersion;
 - (id)getUpdateVersion;
 - (id)getYearOfRelease;
@@ -11,9 +11,9 @@
 
 @implementation HearingProtectionAboutViewController
 
-- (_TtC21HearingModeSettingsUI36HearingProtectionAboutViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC21HearingModeSettingsUI36HearingProtectionAboutViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_2520046E0();
     v7 = v6;
@@ -25,13 +25,13 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_251FCB39C(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_251FCB39C(v5, v7, bundle);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_251FCB514();
 }
 
@@ -44,7 +44,7 @@
 
 - (id)getUpdateVersion
 {
-  v2 = self;
+  selfCopy = self;
   sub_251FD10F4();
 
   v3 = sub_2520046B0();
@@ -61,7 +61,7 @@
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_251FD12FC();
 
   if (v3)
@@ -77,7 +77,7 @@
   return v4;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   v4 = sub_252003BA0();
   v5 = *(v4 - 8);
@@ -108,14 +108,14 @@
   }
 
   (*(v6 + 32))(v10, v4, v5);
-  v12 = [objc_opt_self() sharedApplication];
+  sharedApplication = [objc_opt_self() sharedApplication];
   v13 = sub_252003AF0();
   sub_251FD4C8C(MEMORY[0x277D84F90]);
   type metadata accessor for OpenExternalURLOptionsKey(0);
   sub_251FD6138(&qword_27F4C6A60);
   v14 = sub_252004600();
 
-  [v12 openURL:v13 options:v14 completionHandler:0];
+  [sharedApplication openURL:v13 options:v14 completionHandler:0];
 
   return (*(v6 + 8))(v10, v5);
 }

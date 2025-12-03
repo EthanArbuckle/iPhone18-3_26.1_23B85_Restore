@@ -1,87 +1,87 @@
 @interface NMSMutableMediaSyncInfo
-+ (id)requiredUserInfoPropertiesForModelKind:(id)a3;
++ (id)requiredUserInfoPropertiesForModelKind:(id)kind;
 - (BOOL)hasItemsOverStorageLimit;
-- (BOOL)hasItemsOverStorageLimitForContainer:(id)a3;
+- (BOOL)hasItemsOverStorageLimitForContainer:(id)container;
 - (BOOL)hasItemsWaitingWithoutPauseReason;
 - (float)progress;
-- (float)progressForContainer:(id)a3;
+- (float)progressForContainer:(id)container;
 - (id)_info;
-- (id)_infoForContainer:(id)a3;
-- (id)_infoForItem:(id)a3;
+- (id)_infoForContainer:(id)container;
+- (id)_infoForItem:(id)item;
 - (unint64_t)_persistingOptions;
 - (unint64_t)downloadPauseReason;
-- (unint64_t)downloadPauseReasonForContainer:(id)a3;
-- (unint64_t)playabilityForContainer:(id)a3;
+- (unint64_t)downloadPauseReasonForContainer:(id)container;
+- (unint64_t)playabilityForContainer:(id)container;
 - (unint64_t)status;
-- (unint64_t)statusForContainer:(id)a3;
+- (unint64_t)statusForContainer:(id)container;
 - (void)_notifyInfoChanged;
 - (void)_updateAggregateInfoIfNeeded;
 - (void)_writeInfo;
-- (void)setDownloadPauseReason:(unint64_t)a3 forItem:(id)a4;
-- (void)setItems:(id)a3 forContainer:(id)a4;
-- (void)setOverStorageLimitBehavior:(unint64_t)a3 forContainer:(id)a4;
-- (void)setProgressBytes:(unint64_t)a3 totalBytes:(unint64_t)a4 forItem:(id)a5;
-- (void)setStatus:(unint64_t)a3 forItem:(id)a4;
-- (void)setUserInfo:(id)a3 forContainer:(id)a4;
-- (void)setUserInfo:(id)a3 forItem:(id)a4;
-- (void)setUserInfoForModelObject:(id)a3 manuallyPinned:(BOOL)a4;
+- (void)setDownloadPauseReason:(unint64_t)reason forItem:(id)item;
+- (void)setItems:(id)items forContainer:(id)container;
+- (void)setOverStorageLimitBehavior:(unint64_t)behavior forContainer:(id)container;
+- (void)setProgressBytes:(unint64_t)bytes totalBytes:(unint64_t)totalBytes forItem:(id)item;
+- (void)setStatus:(unint64_t)status forItem:(id)item;
+- (void)setUserInfo:(id)info forContainer:(id)container;
+- (void)setUserInfo:(id)info forItem:(id)item;
+- (void)setUserInfoForModelObject:(id)object manuallyPinned:(BOOL)pinned;
 - (void)synchronize;
 @end
 
 @implementation NMSMutableMediaSyncInfo
 
-- (unint64_t)statusForContainer:(id)a3
+- (unint64_t)statusForContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   [(NMSMutableMediaSyncInfo *)self _updateAggregateInfoIfNeeded];
   v7.receiver = self;
   v7.super_class = NMSMutableMediaSyncInfo;
-  v5 = [(NMSMediaSyncInfo *)&v7 statusForContainer:v4];
+  v5 = [(NMSMediaSyncInfo *)&v7 statusForContainer:containerCopy];
 
   return v5;
 }
 
-- (unint64_t)playabilityForContainer:(id)a3
+- (unint64_t)playabilityForContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   [(NMSMutableMediaSyncInfo *)self _updateAggregateInfoIfNeeded];
   v7.receiver = self;
   v7.super_class = NMSMutableMediaSyncInfo;
-  v5 = [(NMSMediaSyncInfo *)&v7 playabilityForContainer:v4];
+  v5 = [(NMSMediaSyncInfo *)&v7 playabilityForContainer:containerCopy];
 
   return v5;
 }
 
-- (float)progressForContainer:(id)a3
+- (float)progressForContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   [(NMSMutableMediaSyncInfo *)self _updateAggregateInfoIfNeeded];
   v8.receiver = self;
   v8.super_class = NMSMutableMediaSyncInfo;
-  [(NMSMediaSyncInfo *)&v8 progressForContainer:v4];
+  [(NMSMediaSyncInfo *)&v8 progressForContainer:containerCopy];
   v6 = v5;
 
   return v6;
 }
 
-- (unint64_t)downloadPauseReasonForContainer:(id)a3
+- (unint64_t)downloadPauseReasonForContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   [(NMSMutableMediaSyncInfo *)self _updateAggregateInfoIfNeeded];
   v7.receiver = self;
   v7.super_class = NMSMutableMediaSyncInfo;
-  v5 = [(NMSMediaSyncInfo *)&v7 downloadPauseReasonForContainer:v4];
+  v5 = [(NMSMediaSyncInfo *)&v7 downloadPauseReasonForContainer:containerCopy];
 
   return v5;
 }
 
-- (BOOL)hasItemsOverStorageLimitForContainer:(id)a3
+- (BOOL)hasItemsOverStorageLimitForContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   [(NMSMutableMediaSyncInfo *)self _updateAggregateInfoIfNeeded];
   v6.receiver = self;
   v6.super_class = NMSMutableMediaSyncInfo;
-  LOBYTE(self) = [(NMSMediaSyncInfo *)&v6 hasItemsOverStorageLimitForContainer:v4];
+  LOBYTE(self) = [(NMSMediaSyncInfo *)&v6 hasItemsOverStorageLimitForContainer:containerCopy];
 
   return self;
 }
@@ -127,13 +127,13 @@
   return [(NMSMediaSyncInfo *)&v4 hasItemsOverStorageLimit];
 }
 
-- (void)setItems:(id)a3 forContainer:(id)a4
+- (void)setItems:(id)items forContainer:(id)container
 {
-  v6 = a3;
-  v10 = [(NMSMutableMediaSyncInfo *)self _infoForContainer:a4];
-  [v10 setObject:v6 forKeyedSubscript:@"itemsIdentifiers"];
+  itemsCopy = items;
+  v10 = [(NMSMutableMediaSyncInfo *)self _infoForContainer:container];
+  [v10 setObject:itemsCopy forKeyedSubscript:@"itemsIdentifiers"];
   v7 = MEMORY[0x277CCABB0];
-  v8 = [v6 count];
+  v8 = [itemsCopy count];
 
   v9 = [v7 numberWithUnsignedInteger:v8];
   [v10 setObject:v9 forKeyedSubscript:@"itemCount"];
@@ -141,57 +141,57 @@
   self->_needsUpdateAggregateInfo = 1;
 }
 
-- (void)setOverStorageLimitBehavior:(unint64_t)a3 forContainer:(id)a4
+- (void)setOverStorageLimitBehavior:(unint64_t)behavior forContainer:(id)container
 {
-  v7 = [(NMSMutableMediaSyncInfo *)self _infoForContainer:a4];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v7 = [(NMSMutableMediaSyncInfo *)self _infoForContainer:container];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:behavior];
   [v7 setObject:v6 forKeyedSubscript:@"overStorageLimitBehavior"];
 
   self->_needsUpdateAggregateInfo = 1;
 }
 
-- (void)setStatus:(unint64_t)a3 forItem:(id)a4
+- (void)setStatus:(unint64_t)status forItem:(id)item
 {
-  v7 = [(NMSMutableMediaSyncInfo *)self _infoForItem:a4];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v7 = [(NMSMutableMediaSyncInfo *)self _infoForItem:item];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:status];
   [v7 setObject:v6 forKeyedSubscript:@"status"];
 
   self->_needsUpdateAggregateInfo = 1;
 }
 
-- (void)setProgressBytes:(unint64_t)a3 totalBytes:(unint64_t)a4 forItem:(id)a5
+- (void)setProgressBytes:(unint64_t)bytes totalBytes:(unint64_t)totalBytes forItem:(id)item
 {
-  v10 = [(NMSMutableMediaSyncInfo *)self _infoForItem:a5];
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
+  v10 = [(NMSMutableMediaSyncInfo *)self _infoForItem:item];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:totalBytes];
   [v10 setObject:v8 forKeyedSubscript:@"totalBytes"];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:bytes];
   [v10 setObject:v9 forKeyedSubscript:@"progressBytes"];
 
   self->_needsUpdateAggregateInfo = 1;
 }
 
-- (void)setDownloadPauseReason:(unint64_t)a3 forItem:(id)a4
+- (void)setDownloadPauseReason:(unint64_t)reason forItem:(id)item
 {
-  v7 = [(NMSMutableMediaSyncInfo *)self _infoForItem:a4];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v7 = [(NMSMutableMediaSyncInfo *)self _infoForItem:item];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:reason];
   [v7 setObject:v6 forKeyedSubscript:@"downloadPauseReason"];
 
   self->_needsUpdateAggregateInfo = 1;
 }
 
-- (void)setUserInfo:(id)a3 forContainer:(id)a4
+- (void)setUserInfo:(id)info forContainer:(id)container
 {
-  v6 = a3;
-  v7 = [(NMSMutableMediaSyncInfo *)self _infoForContainer:a4];
-  [v7 setObject:v6 forKeyedSubscript:@"userInfo"];
+  infoCopy = info;
+  v7 = [(NMSMutableMediaSyncInfo *)self _infoForContainer:container];
+  [v7 setObject:infoCopy forKeyedSubscript:@"userInfo"];
 }
 
-- (void)setUserInfo:(id)a3 forItem:(id)a4
+- (void)setUserInfo:(id)info forItem:(id)item
 {
-  v6 = a3;
-  v7 = [(NMSMutableMediaSyncInfo *)self _infoForItem:a4];
-  [v7 setObject:v6 forKeyedSubscript:@"userInfo"];
+  infoCopy = info;
+  v7 = [(NMSMutableMediaSyncInfo *)self _infoForItem:item];
+  [v7 setObject:infoCopy forKeyedSubscript:@"userInfo"];
 }
 
 - (void)synchronize
@@ -204,67 +204,67 @@
 
 - (id)_info
 {
-  v3 = [(NMSMediaSyncInfo *)self info];
+  info = [(NMSMediaSyncInfo *)self info];
 
-  if (!v3)
+  if (!info)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
-    [(NMSMediaSyncInfo *)self setInfo:v4];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(NMSMediaSyncInfo *)self setInfo:dictionary];
   }
 
   return [(NMSMediaSyncInfo *)self info];
 }
 
-- (id)_infoForContainer:(id)a3
+- (id)_infoForContainer:(id)container
 {
-  v4 = a3;
-  v5 = [(NMSMediaSyncInfo *)self info];
-  v6 = [v5 objectForKeyedSubscript:@"containers"];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  containerCopy = container;
+  info = [(NMSMediaSyncInfo *)self info];
+  v6 = [info objectForKeyedSubscript:@"containers"];
+  dictionary = [v6 objectForKeyedSubscript:containerCopy];
 
-  if (!v7)
+  if (!dictionary)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
-    v8 = [(NMSMutableMediaSyncInfo *)self _info];
-    v9 = [v8 objectForKeyedSubscript:@"containers"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    _info = [(NMSMutableMediaSyncInfo *)self _info];
+    v9 = [_info objectForKeyedSubscript:@"containers"];
 
     if (!v9)
     {
-      v10 = [MEMORY[0x277CBEB38] dictionary];
-      [v8 setObject:v10 forKeyedSubscript:@"containers"];
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+      [_info setObject:dictionary2 forKeyedSubscript:@"containers"];
     }
 
-    v11 = [v8 objectForKeyedSubscript:@"containers"];
-    [v11 setObject:v7 forKeyedSubscript:v4];
+    v11 = [_info objectForKeyedSubscript:@"containers"];
+    [v11 setObject:dictionary forKeyedSubscript:containerCopy];
   }
 
-  return v7;
+  return dictionary;
 }
 
-- (id)_infoForItem:(id)a3
+- (id)_infoForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(NMSMediaSyncInfo *)self info];
-  v6 = [v5 objectForKeyedSubscript:@"items"];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  itemCopy = item;
+  info = [(NMSMediaSyncInfo *)self info];
+  v6 = [info objectForKeyedSubscript:@"items"];
+  dictionary = [v6 objectForKeyedSubscript:itemCopy];
 
-  if (!v7)
+  if (!dictionary)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
-    v8 = [(NMSMutableMediaSyncInfo *)self _info];
-    v9 = [v8 objectForKeyedSubscript:@"items"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    _info = [(NMSMutableMediaSyncInfo *)self _info];
+    v9 = [_info objectForKeyedSubscript:@"items"];
 
     if (!v9)
     {
-      v10 = [MEMORY[0x277CBEB38] dictionary];
-      [v8 setObject:v10 forKeyedSubscript:@"items"];
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+      [_info setObject:dictionary2 forKeyedSubscript:@"items"];
     }
 
-    v11 = [v8 objectForKeyedSubscript:@"items"];
-    [v11 setObject:v7 forKeyedSubscript:v4];
+    v11 = [_info objectForKeyedSubscript:@"items"];
+    [v11 setObject:dictionary forKeyedSubscript:itemCopy];
   }
 
-  return v7;
+  return dictionary;
 }
 
 - (void)_updateAggregateInfoIfNeeded
@@ -275,8 +275,8 @@
     v48 = &v47;
     v49 = 0x2020000000;
     v50 = 0;
-    v3 = [(NMSMediaSyncInfo *)self info];
-    v4 = [v3 objectForKeyedSubscript:@"containers"];
+    info = [(NMSMediaSyncInfo *)self info];
+    v4 = [info objectForKeyedSubscript:@"containers"];
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
     v46[2] = __55__NMSMutableMediaSyncInfo__updateAggregateInfoIfNeeded__block_invoke;
@@ -309,8 +309,8 @@
     v23 = &v22;
     v24 = 0x2020000000;
     v25 = 0;
-    v5 = [(NMSMediaSyncInfo *)self info];
-    v6 = [v5 objectForKeyedSubscript:@"items"];
+    info2 = [(NMSMediaSyncInfo *)self info];
+    v6 = [info2 objectForKeyedSubscript:@"items"];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __55__NMSMutableMediaSyncInfo__updateAggregateInfoIfNeeded__block_invoke_3;
@@ -334,8 +334,8 @@
     }
 
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7];
-    v9 = [(NMSMediaSyncInfo *)self info];
-    [v9 setObject:v8 forKeyedSubscript:@"status"];
+    info3 = [(NMSMediaSyncInfo *)self info];
+    [info3 setObject:v8 forKeyedSubscript:@"status"];
 
     v11 = v35[3];
     if (v11)
@@ -350,20 +350,20 @@
     }
 
     v13 = [MEMORY[0x277CCABB0] numberWithDouble:v12];
-    v14 = [(NMSMediaSyncInfo *)self info];
-    [v14 setObject:v13 forKeyedSubscript:@"cachedProgress"];
+    info4 = [(NMSMediaSyncInfo *)self info];
+    [info4 setObject:v13 forKeyedSubscript:@"cachedProgress"];
 
     v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v27[3]];
-    v16 = [(NMSMediaSyncInfo *)self info];
-    [v16 setObject:v15 forKeyedSubscript:@"downloadPauseReason"];
+    info5 = [(NMSMediaSyncInfo *)self info];
+    [info5 setObject:v15 forKeyedSubscript:@"downloadPauseReason"];
 
     v17 = [MEMORY[0x277CCABB0] numberWithBool:*(v23 + 24)];
-    v18 = [(NMSMediaSyncInfo *)self info];
-    [v18 setObject:v17 forKeyedSubscript:@"hasItemsWaitingWithoutPauseReason"];
+    info6 = [(NMSMediaSyncInfo *)self info];
+    [info6 setObject:v17 forKeyedSubscript:@"hasItemsWaitingWithoutPauseReason"];
 
     v19 = [MEMORY[0x277CCABB0] numberWithBool:*(v48 + 24)];
-    v20 = [(NMSMediaSyncInfo *)self info];
-    [v20 setObject:v19 forKeyedSubscript:@"hasItemsOverStorageLimit"];
+    info7 = [(NMSMediaSyncInfo *)self info];
+    [info7 setObject:v19 forKeyedSubscript:@"hasItemsOverStorageLimit"];
 
     self->_needsUpdateAggregateInfo = 0;
     _Block_object_dispose(&v22, 8);
@@ -663,86 +663,86 @@ void __55__NMSMutableMediaSyncInfo__updateAggregateInfoIfNeeded__block_invoke_3(
 - (void)_writeInfo
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [(NMSMutableMediaSyncInfo *)self _persistingOptions];
-  v6 = [(NMSMediaSyncInfo *)self info];
-  v7 = [v6 objectForKeyedSubscript:@"containers"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  _persistingOptions = [(NMSMutableMediaSyncInfo *)self _persistingOptions];
+  info = [(NMSMediaSyncInfo *)self info];
+  v7 = [info objectForKeyedSubscript:@"containers"];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __37__NMSMutableMediaSyncInfo__writeInfo__block_invoke;
   v36[3] = &unk_27993E3A0;
-  v38 = v5;
-  v8 = v4;
+  v38 = _persistingOptions;
+  v8 = dictionary2;
   v37 = v8;
   [v7 enumerateKeysAndObjectsUsingBlock:v36];
 
   if ([v8 count])
   {
-    [v3 setObject:v8 forKeyedSubscript:@"containers"];
+    [dictionary setObject:v8 forKeyedSubscript:@"containers"];
   }
 
-  if ((v5 & 4) != 0)
+  if ((_persistingOptions & 4) != 0)
   {
-    v9 = [(NMSMediaSyncInfo *)self info];
-    v10 = [v9 objectForKeyedSubscript:@"status"];
-    [v3 setObject:v10 forKeyedSubscript:@"status"];
+    info2 = [(NMSMediaSyncInfo *)self info];
+    v10 = [info2 objectForKeyedSubscript:@"status"];
+    [dictionary setObject:v10 forKeyedSubscript:@"status"];
 
-    v11 = [(NMSMediaSyncInfo *)self info];
-    v12 = [v11 objectForKeyedSubscript:@"cachedProgress"];
-    [v3 setObject:v12 forKeyedSubscript:@"cachedProgress"];
+    info3 = [(NMSMediaSyncInfo *)self info];
+    v12 = [info3 objectForKeyedSubscript:@"cachedProgress"];
+    [dictionary setObject:v12 forKeyedSubscript:@"cachedProgress"];
 
-    v13 = [(NMSMediaSyncInfo *)self info];
-    v14 = [v13 objectForKeyedSubscript:@"downloadPauseReason"];
-    [v3 setObject:v14 forKeyedSubscript:@"downloadPauseReason"];
+    info4 = [(NMSMediaSyncInfo *)self info];
+    v14 = [info4 objectForKeyedSubscript:@"downloadPauseReason"];
+    [dictionary setObject:v14 forKeyedSubscript:@"downloadPauseReason"];
 
-    v15 = [(NMSMediaSyncInfo *)self info];
-    v16 = [v15 objectForKeyedSubscript:@"hasItemsWaitingWithoutPauseReason"];
-    [v3 setObject:v16 forKeyedSubscript:@"hasItemsWaitingWithoutPauseReason"];
+    info5 = [(NMSMediaSyncInfo *)self info];
+    v16 = [info5 objectForKeyedSubscript:@"hasItemsWaitingWithoutPauseReason"];
+    [dictionary setObject:v16 forKeyedSubscript:@"hasItemsWaitingWithoutPauseReason"];
 
     v17 = MEMORY[0x277CCABB0];
-    v18 = [(NMSMediaSyncInfo *)self info];
-    v19 = [v18 objectForKeyedSubscript:@"items"];
+    info6 = [(NMSMediaSyncInfo *)self info];
+    v19 = [info6 objectForKeyedSubscript:@"items"];
     v20 = [v17 numberWithUnsignedInteger:{objc_msgSend(v19, "count")}];
-    [v3 setObject:v20 forKeyedSubscript:@"itemCount"];
+    [dictionary setObject:v20 forKeyedSubscript:@"itemCount"];
 
-    v21 = [(NMSMediaSyncInfo *)self info];
-    v22 = [v21 objectForKeyedSubscript:@"hasItemsOverStorageLimit"];
-    [v3 setObject:v22 forKeyedSubscript:@"hasItemsOverStorageLimit"];
+    info7 = [(NMSMediaSyncInfo *)self info];
+    v22 = [info7 objectForKeyedSubscript:@"hasItemsOverStorageLimit"];
+    [dictionary setObject:v22 forKeyedSubscript:@"hasItemsOverStorageLimit"];
   }
 
   v23 = +[NMSyncDefaults sharedDefaults];
-  v24 = [v23 debugSyncInfoEnabled];
+  debugSyncInfoEnabled = [v23 debugSyncInfoEnabled];
 
-  if (v24)
+  if (debugSyncInfoEnabled)
   {
-    v25 = [(NMSMediaSyncInfo *)self info];
-    [v3 setObject:v25 forKeyedSubscript:@"debug-info"];
+    info8 = [(NMSMediaSyncInfo *)self info];
+    [dictionary setObject:info8 forKeyedSubscript:@"debug-info"];
   }
 
   v26 = +[NMSyncDefaults sharedDefaults];
-  v27 = [(NMSMediaSyncInfo *)self target];
-  if (v27 > 2)
+  target = [(NMSMediaSyncInfo *)self target];
+  if (target > 2)
   {
-    if ((v27 - 3) < 2)
+    if ((target - 3) < 2)
     {
-      v28 = [(NMSMediaSyncInfo *)self _syncInfoFilePath];
-      [v3 writeToFile:v28 atomically:1];
+      _syncInfoFilePath = [(NMSMediaSyncInfo *)self _syncInfoFilePath];
+      [dictionary writeToFile:_syncInfoFilePath atomically:1];
     }
   }
 
-  else if (v27)
+  else if (target)
   {
-    if (v27 == 1)
+    if (target == 1)
     {
-      [v26 setPodcastsSyncInfo:v3];
-      v29 = [(NMSMediaSyncInfo *)self info];
-      v30 = [v29 objectForKeyedSubscript:@"items"];
+      [v26 setPodcastsSyncInfo:dictionary];
+      info9 = [(NMSMediaSyncInfo *)self info];
+      v30 = [info9 objectForKeyedSubscript:@"items"];
       if (v30)
       {
         v39 = @"items";
-        v31 = [(NMSMediaSyncInfo *)self info];
-        v32 = [v31 objectForKeyedSubscript:@"items"];
+        info10 = [(NMSMediaSyncInfo *)self info];
+        v32 = [info10 objectForKeyedSubscript:@"items"];
         v40[0] = v32;
         v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:&v39 count:1];
       }
@@ -752,19 +752,19 @@ void __55__NMSMutableMediaSyncInfo__updateAggregateInfoIfNeeded__block_invoke_3(
         v33 = MEMORY[0x277CBEC10];
       }
 
-      v34 = [(NMSMediaSyncInfo *)self _syncInfoFilePath];
-      [v33 writeToFile:v34 atomically:1];
+      _syncInfoFilePath2 = [(NMSMediaSyncInfo *)self _syncInfoFilePath];
+      [v33 writeToFile:_syncInfoFilePath2 atomically:1];
     }
 
-    else if (v27 == 2)
+    else if (target == 2)
     {
-      [v26 setAudiobooksSyncInfo:v3];
+      [v26 setAudiobooksSyncInfo:dictionary];
     }
   }
 
   else
   {
-    [v26 setMusicSyncInfo:v3];
+    [v26 setMusicSyncInfo:dictionary];
   }
 
   v35 = *MEMORY[0x277D85DE8];
@@ -819,32 +819,32 @@ void __37__NMSMutableMediaSyncInfo__writeInfo__block_invoke(uint64_t a1, void *a
 
 - (unint64_t)_persistingOptions
 {
-  v2 = [(NMSMediaSyncInfo *)self target];
-  if (v2 > 4)
+  target = [(NMSMediaSyncInfo *)self target];
+  if (target > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_25B2CEC10[v2];
+    return qword_25B2CEC10[target];
   }
 }
 
 - (void)_notifyInfoChanged
 {
-  v3 = [(NMSMediaSyncInfo *)self _notificationName];
-  v2 = v3;
-  notify_post([v3 UTF8String]);
+  _notificationName = [(NMSMediaSyncInfo *)self _notificationName];
+  v2 = _notificationName;
+  notify_post([_notificationName UTF8String]);
 }
 
-+ (id)requiredUserInfoPropertiesForModelKind:(id)a3
++ (id)requiredUserInfoPropertiesForModelKind:(id)kind
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 identityKind];
-  v5 = [MEMORY[0x277CD5E48] identityKind];
-  v6 = [v4 isEqual:v5];
+  kindCopy = kind;
+  identityKind = [kindCopy identityKind];
+  identityKind2 = [MEMORY[0x277CD5E48] identityKind];
+  v6 = [identityKind isEqual:identityKind2];
 
   if (v6)
   {
@@ -856,14 +856,14 @@ void __37__NMSMutableMediaSyncInfo__writeInfo__block_invoke(uint64_t a1, void *a
     v10 = v20;
 LABEL_5:
     v15 = [v9 arrayWithObjects:v10 count:2];
-    v16 = [v7 propertySetWithProperties:v15];
+    emptyPropertySet = [v7 propertySetWithProperties:v15];
 
     goto LABEL_7;
   }
 
-  v11 = [v3 identityKind];
-  v12 = [MEMORY[0x277CD5F08] identityKind];
-  v13 = [v11 isEqual:v12];
+  identityKind3 = [kindCopy identityKind];
+  identityKind4 = [MEMORY[0x277CD5F08] identityKind];
+  v13 = [identityKind3 isEqual:identityKind4];
 
   v7 = MEMORY[0x277CD6018];
   if (v13)
@@ -876,31 +876,31 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v16 = [MEMORY[0x277CD6018] emptyPropertySet];
+  emptyPropertySet = [MEMORY[0x277CD6018] emptyPropertySet];
 LABEL_7:
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return emptyPropertySet;
 }
 
-- (void)setUserInfoForModelObject:(id)a3 manuallyPinned:(BOOL)a4
+- (void)setUserInfoForModelObject:(id)object manuallyPinned:(BOOL)pinned
 {
-  v33 = a3;
+  objectCopy = object;
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v33;
+    v7 = objectCopy;
     v8 = MEMORY[0x277D2B598];
     v9 = MEMORY[0x277CCABB0];
-    v10 = [v7 identifiers];
-    v11 = [v10 library];
-    v12 = [v9 numberWithLongLong:{objc_msgSend(v11, "persistentID")}];
+    identifiers = [v7 identifiers];
+    library = [identifiers library];
+    v12 = [v9 numberWithLongLong:{objc_msgSend(library, "persistentID")}];
     v13 = [v8 midDataFromAlbumPID:v12];
     [v6 setObject:v13 forKey:@"midData"];
 
-    if (a4)
+    if (pinned)
     {
       v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v7, "keepLocalEnableState")}];
       [v6 setObject:v14 forKey:@"keepLocal"];
@@ -911,18 +911,18 @@ LABEL_7:
       [v6 setObject:&unk_286C8D6D0 forKey:@"keepLocal"];
     }
 
-    v23 = [MEMORY[0x277CD5E48] identityKind];
-    v24 = [(NMSMediaSyncInfo *)self _syncInfoModelKindForMPModelKind:v23];
+    identityKind = [MEMORY[0x277CD5E48] identityKind];
+    v24 = [(NMSMediaSyncInfo *)self _syncInfoModelKindForMPModelKind:identityKind];
     [v6 setObject:v24 forKey:@"modelKind"];
 
-    v25 = [v7 title];
+    title = [v7 title];
 
-    if (!v25)
+    if (!title)
     {
       goto LABEL_14;
     }
 
-    v26 = [v7 title];
+    title2 = [v7 title];
     v27 = @"title";
     goto LABEL_13;
   }
@@ -933,16 +933,16 @@ LABEL_7:
     goto LABEL_15;
   }
 
-  v15 = v33;
+  v15 = objectCopy;
   v16 = MEMORY[0x277D2B598];
   v17 = MEMORY[0x277CCABB0];
-  v18 = [v15 identifiers];
-  v19 = [v18 library];
-  v20 = [v17 numberWithLongLong:{objc_msgSend(v19, "persistentID")}];
+  identifiers2 = [v15 identifiers];
+  library2 = [identifiers2 library];
+  v20 = [v17 numberWithLongLong:{objc_msgSend(library2, "persistentID")}];
   v21 = [v16 midDataFromPlaylistPID:v20];
   [v6 setObject:v21 forKey:@"midData"];
 
-  if (a4)
+  if (pinned)
   {
     v22 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v15, "keepLocalEnableState")}];
     [v6 setObject:v22 forKey:@"keepLocal"];
@@ -953,26 +953,26 @@ LABEL_7:
     [v6 setObject:&unk_286C8D6D0 forKey:@"keepLocal"];
   }
 
-  v28 = [MEMORY[0x277CD5F08] identityKind];
-  v29 = [(NMSMediaSyncInfo *)self _syncInfoModelKindForMPModelKind:v28];
+  identityKind2 = [MEMORY[0x277CD5F08] identityKind];
+  v29 = [(NMSMediaSyncInfo *)self _syncInfoModelKindForMPModelKind:identityKind2];
   [v6 setObject:v29 forKey:@"modelKind"];
 
-  v30 = [v15 name];
+  name = [v15 name];
 
-  if (v30)
+  if (name)
   {
-    v26 = [v15 name];
+    title2 = [v15 name];
     v27 = @"name";
 LABEL_13:
-    [v6 setObject:v26 forKey:v27];
+    [v6 setObject:title2 forKey:v27];
   }
 
 LABEL_14:
 
 LABEL_15:
   v31 = [v6 copy];
-  v32 = [v33 nms_syncInfoContainerIdentifier];
-  [(NMSMutableMediaSyncInfo *)self setUserInfo:v31 forContainer:v32];
+  nms_syncInfoContainerIdentifier = [objectCopy nms_syncInfoContainerIdentifier];
+  [(NMSMutableMediaSyncInfo *)self setUserInfo:v31 forContainer:nms_syncInfoContainerIdentifier];
 }
 
 @end

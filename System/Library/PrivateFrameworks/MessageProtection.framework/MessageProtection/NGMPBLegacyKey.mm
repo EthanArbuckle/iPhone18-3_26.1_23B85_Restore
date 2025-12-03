@@ -1,11 +1,11 @@
 @interface NGMPBLegacyKey
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NGMPBLegacyKey
@@ -16,20 +16,20 @@
   v8.receiver = self;
   v8.super_class = NGMPBLegacyKey;
   v4 = [(NGMPBLegacyKey *)&v8 description];
-  v5 = [(NGMPBLegacyKey *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NGMPBLegacyKey *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   encryptionKey = self->_encryptionKey;
   if (encryptionKey)
   {
-    [v3 setObject:encryptionKey forKey:@"encryptionKey"];
+    [dictionary setObject:encryptionKey forKey:@"encryptionKey"];
   }
 
   signingKey = self->_signingKey;
@@ -41,15 +41,15 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_encryptionKey)
   {
     [NGMPBLegacyKey writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteDataField();
   if (!self->_signingKey)
   {
@@ -59,35 +59,35 @@
   PBDataWriterWriteDataField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   encryptionKey = self->_encryptionKey;
-  v5 = a3;
-  [v5 setEncryptionKey:encryptionKey];
-  [v5 setSigningKey:self->_signingKey];
+  toCopy = to;
+  [toCopy setEncryptionKey:encryptionKey];
+  [toCopy setSigningKey:self->_signingKey];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_encryptionKey copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_encryptionKey copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSData *)self->_signingKey copyWithZone:a3];
+  v8 = [(NSData *)self->_signingKey copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((encryptionKey = self->_encryptionKey, !(encryptionKey | v4[1])) || -[NSData isEqual:](encryptionKey, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((encryptionKey = self->_encryptionKey, !(encryptionKey | equalCopy[1])) || -[NSData isEqual:](encryptionKey, "isEqual:")))
   {
     signingKey = self->_signingKey;
-    if (signingKey | v4[2])
+    if (signingKey | equalCopy[2])
     {
       v7 = [(NSData *)signingKey isEqual:?];
     }
@@ -106,20 +106,20 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[1])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[1])
   {
     [(NGMPBLegacyKey *)self setEncryptionKey:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(NGMPBLegacyKey *)self setSigningKey:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

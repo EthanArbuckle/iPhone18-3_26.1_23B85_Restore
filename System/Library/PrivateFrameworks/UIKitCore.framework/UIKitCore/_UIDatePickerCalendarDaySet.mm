@@ -1,24 +1,24 @@
 @interface _UIDatePickerCalendarDaySet
-- (_UIDatePickerCalendarDaySet)initWithCalendar:(id)a3;
-- (id)_createDaysForMonth:(id)a3;
-- (id)_partialDaysForMonth:(id)a3 atBeginningOfMonth:(BOOL)a4 count:(unint64_t)a5;
-- (id)daysForMonth:(id)a3 includingOverlapDays:(BOOL)a4;
+- (_UIDatePickerCalendarDaySet)initWithCalendar:(id)calendar;
+- (id)_createDaysForMonth:(id)month;
+- (id)_partialDaysForMonth:(id)month atBeginningOfMonth:(BOOL)ofMonth count:(unint64_t)count;
+- (id)daysForMonth:(id)month includingOverlapDays:(BOOL)days;
 - (id)loadedDays;
-- (void)cleanupDaysKeepingDaysForMonths:(id)a3;
+- (void)cleanupDaysKeepingDaysForMonths:(id)months;
 @end
 
 @implementation _UIDatePickerCalendarDaySet
 
-- (_UIDatePickerCalendarDaySet)initWithCalendar:(id)a3
+- (_UIDatePickerCalendarDaySet)initWithCalendar:(id)calendar
 {
-  v5 = a3;
+  calendarCopy = calendar;
   v11.receiver = self;
   v11.super_class = _UIDatePickerCalendarDaySet;
   v6 = [(_UIDatePickerCalendarDaySet *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_calendar, a3);
+    objc_storeStrong(&v6->_calendar, calendar);
     v8 = objc_opt_new();
     loadedDays = v7->_loadedDays;
     v7->_loadedDays = v8;
@@ -27,23 +27,23 @@
   return v7;
 }
 
-- (id)_createDaysForMonth:(id)a3
+- (id)_createDaysForMonth:(id)month
 {
-  v5 = a3;
+  monthCopy = month;
   v6 = self->_calendar;
-  v7 = [v5 date];
+  date = [monthCopy date];
   v27 = 0;
   v28 = 0.0;
-  v8 = [(NSCalendar *)v6 rangeOfUnit:8 startDate:&v27 interval:&v28 forDate:v7];
+  v8 = [(NSCalendar *)v6 rangeOfUnit:8 startDate:&v27 interval:&v28 forDate:date];
   v9 = v27;
   if (!v8)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"_UIDatePickerCalendarDaySet.m" lineNumber:54 description:{@"Unable to find calendar range for date %@", v7}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDatePickerCalendarDaySet.m" lineNumber:54 description:{@"Unable to find calendar range for date %@", date}];
   }
 
   v25 = a2;
-  v26 = self;
+  selfCopy = self;
   v10 = [v9 dateByAddingTimeInterval:v28];
   v11 = objc_opt_new();
   v12 = objc_opt_new();
@@ -60,7 +60,7 @@
         break;
       }
 
-      v16 = [v5 dayWithDate:v15 assignedMonth:0];
+      v16 = [monthCopy dayWithDate:v15 assignedMonth:0];
       [v11 addObject:v16];
       [v12 setDay:{objc_msgSend(v12, "day") + 1}];
       v17 = [(NSCalendar *)v6 dateByAddingComponents:v12 toDate:v14 options:0];
@@ -77,8 +77,8 @@
 
   if (v18 != v20)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:v25 object:v26 file:@"_UIDatePickerCalendarDaySet.m" lineNumber:71 description:{@"Invalid date calculation. Duplicate days found in days for month %@.", v5}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:v25 object:selfCopy file:@"_UIDatePickerCalendarDaySet.m" lineNumber:71 description:{@"Invalid date calculation. Duplicate days found in days for month %@.", monthCopy}];
   }
 
   v21 = [v11 copy];
@@ -86,26 +86,26 @@
   return v21;
 }
 
-- (id)_partialDaysForMonth:(id)a3 atBeginningOfMonth:(BOOL)a4 count:(unint64_t)a5
+- (id)_partialDaysForMonth:(id)month atBeginningOfMonth:(BOOL)ofMonth count:(unint64_t)count
 {
-  v8 = a3;
-  v9 = [(_UIDatePickerCalendarDaySet *)self daysForMonth:v8 includingOverlapDays:0];
+  monthCopy = month;
+  v9 = [(_UIDatePickerCalendarDaySet *)self daysForMonth:monthCopy includingOverlapDays:0];
   v10 = [v9 count];
-  if (a4)
+  if (ofMonth)
   {
-    if (v10 < a5)
+    if (v10 < count)
     {
       do
       {
         v11 = v9;
-        v12 = v8;
-        v8 = [v8 nextMonth];
+        v12 = monthCopy;
+        monthCopy = [monthCopy nextMonth];
 
-        v13 = [(_UIDatePickerCalendarDaySet *)self daysForMonth:v8 includingOverlapDays:0];
+        v13 = [(_UIDatePickerCalendarDaySet *)self daysForMonth:monthCopy includingOverlapDays:0];
         v9 = [v11 arrayByAddingObjectsFromArray:v13];
       }
 
-      while ([v9 count] < a5);
+      while ([v9 count] < count);
     }
 
     v14 = 0;
@@ -113,46 +113,46 @@
 
   else
   {
-    if (v10 >= a5)
+    if (v10 >= count)
     {
       v17 = v9;
-      v15 = v8;
+      previousMonth = monthCopy;
     }
 
     else
     {
       do
       {
-        v15 = [v8 previousMonth];
+        previousMonth = [monthCopy previousMonth];
 
-        v16 = [(_UIDatePickerCalendarDaySet *)self daysForMonth:v15 includingOverlapDays:0];
+        v16 = [(_UIDatePickerCalendarDaySet *)self daysForMonth:previousMonth includingOverlapDays:0];
         v17 = [v16 arrayByAddingObjectsFromArray:v9];
 
-        v8 = v15;
+        monthCopy = previousMonth;
         v9 = v17;
       }
 
-      while ([v17 count] < a5);
+      while ([v17 count] < count);
     }
 
-    v14 = [v17 count] - a5;
+    v14 = [v17 count] - count;
     v9 = v17;
-    v8 = v15;
+    monthCopy = previousMonth;
   }
 
-  v18 = [v9 subarrayWithRange:{v14, a5}];
+  v18 = [v9 subarrayWithRange:{v14, count}];
 
   return v18;
 }
 
-- (id)daysForMonth:(id)a3 includingOverlapDays:(BOOL)a4
+- (id)daysForMonth:(id)month includingOverlapDays:(BOOL)days
 {
-  v4 = a4;
-  v7 = a3;
-  v8 = [(NSMutableDictionary *)self->_loadedDays objectForKeyedSubscript:v7];
+  daysCopy = days;
+  monthCopy = month;
+  v8 = [(NSMutableDictionary *)self->_loadedDays objectForKeyedSubscript:monthCopy];
   if (v8)
   {
-    if (!v4)
+    if (!daysCopy)
     {
       goto LABEL_18;
     }
@@ -160,29 +160,29 @@
 
   else
   {
-    v8 = [(_UIDatePickerCalendarDaySet *)self _createDaysForMonth:v7];
-    [(NSMutableDictionary *)self->_loadedDays setObject:v8 forKeyedSubscript:v7];
-    if (!v4)
+    v8 = [(_UIDatePickerCalendarDaySet *)self _createDaysForMonth:monthCopy];
+    [(NSMutableDictionary *)self->_loadedDays setObject:v8 forKeyedSubscript:monthCopy];
+    if (!daysCopy)
     {
       goto LABEL_18;
     }
   }
 
-  v9 = [v8 firstObject];
-  v10 = [v9 date];
+  firstObject = [v8 firstObject];
+  date = [firstObject date];
 
   calendar = self->_calendar;
   v50 = 0;
-  LOBYTE(v9) = [(NSCalendar *)calendar rangeOfUnit:4096 startDate:&v50 interval:0 forDate:v10];
+  LOBYTE(firstObject) = [(NSCalendar *)calendar rangeOfUnit:4096 startDate:&v50 interval:0 forDate:date];
   v12 = v50;
-  if ((v9 & 1) == 0)
+  if ((firstObject & 1) == 0)
   {
-    v40 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v40 handleFailureInMethod:a2 object:self file:@"_UIDatePickerCalendarDaySet.m" lineNumber:139 description:{@"Unable to find the beginning of the week for date %@.", v10}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDatePickerCalendarDaySet.m" lineNumber:139 description:{@"Unable to find the beginning of the week for date %@.", date}];
   }
 
-  v47 = v10;
-  v13 = _UIDatePickerNumberOfDaysBetweenDates(self->_calendar, v12, v10);
+  v47 = date;
+  v13 = _UIDatePickerNumberOfDaysBetweenDates(self->_calendar, v12, date);
   if (v13 < 1)
   {
     v16 = MEMORY[0x1E695E0F0];
@@ -191,26 +191,26 @@
   else
   {
     v14 = v13;
-    v15 = [v7 previousMonth];
-    v16 = [(_UIDatePickerCalendarDaySet *)self _partialDaysForMonth:v15 atBeginningOfMonth:0 count:v14];
+    previousMonth = [monthCopy previousMonth];
+    v16 = [(_UIDatePickerCalendarDaySet *)self _partialDaysForMonth:previousMonth atBeginningOfMonth:0 count:v14];
   }
 
-  v17 = [v8 lastObject];
-  v18 = [v17 date];
+  lastObject = [v8 lastObject];
+  date2 = [lastObject date];
 
   v48 = 0;
   v49 = 0.0;
-  LOBYTE(v17) = [(NSCalendar *)self->_calendar rangeOfUnit:4096 startDate:&v48 interval:&v49 forDate:v18];
+  LOBYTE(lastObject) = [(NSCalendar *)self->_calendar rangeOfUnit:4096 startDate:&v48 interval:&v49 forDate:date2];
   v19 = v48;
-  if ((v17 & 1) == 0)
+  if ((lastObject & 1) == 0)
   {
-    v41 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v41 handleFailureInMethod:a2 object:self file:@"_UIDatePickerCalendarDaySet.m" lineNumber:147 description:{@"Unable to find the beginning of the week for date %@.", v18}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIDatePickerCalendarDaySet.m" lineNumber:147 description:{@"Unable to find the beginning of the week for date %@.", date2}];
   }
 
   v20 = [v19 dateByAddingTimeInterval:v49 + -1.0];
-  v45 = v18;
-  v21 = _UIDatePickerNumberOfDaysBetweenDates(self->_calendar, v18, v20);
+  v45 = date2;
+  v21 = _UIDatePickerNumberOfDaysBetweenDates(self->_calendar, date2, v20);
   v43 = a2;
   v44 = v19;
   v46 = v12;
@@ -222,12 +222,12 @@
   else
   {
     v22 = v21;
-    v23 = [v7 nextMonth];
-    v24 = [(_UIDatePickerCalendarDaySet *)self _partialDaysForMonth:v23 atBeginningOfMonth:1 count:v22];
+    nextMonth = [monthCopy nextMonth];
+    v24 = [(_UIDatePickerCalendarDaySet *)self _partialDaysForMonth:nextMonth atBeginningOfMonth:1 count:v22];
   }
 
-  v25 = _daysAssignedToMonth(v16, v7);
-  v26 = _daysAssignedToMonth(v24, v7);
+  v25 = _daysAssignedToMonth(v16, monthCopy);
+  v26 = _daysAssignedToMonth(v24, monthCopy);
   v34 = _joinedArrayFromArrays(v26, v27, v28, v29, v30, v31, v32, v33, v25);
 
   v35 = [v34 count];
@@ -237,8 +237,8 @@
 
   if (v38)
   {
-    v42 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v42 handleFailureInMethod:v43 object:self file:@"_UIDatePickerCalendarDaySet.m" lineNumber:156 description:@"Invalid calculation: number of calculated days is not dividable by the number of days in a week."];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:v43 object:self file:@"_UIDatePickerCalendarDaySet.m" lineNumber:156 description:@"Invalid calculation: number of calculated days is not dividable by the number of days in a week."];
   }
 
   v8 = v34;
@@ -247,12 +247,12 @@ LABEL_18:
   return v8;
 }
 
-- (void)cleanupDaysKeepingDaysForMonths:(id)a3
+- (void)cleanupDaysKeepingDaysForMonths:(id)months
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  monthsCopy = months;
   loadedDays = self->_loadedDays;
-  v6 = v4;
+  v6 = monthsCopy;
   v7 = loadedDays;
   v8 = objc_opt_new();
   v17 = 0u;

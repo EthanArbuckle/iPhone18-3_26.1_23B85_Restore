@@ -1,32 +1,32 @@
 @interface PBUIImageSlotView
 - (CGSize)_pointSize;
-- (void)_updateWithImage:(id)a3;
-- (void)deferredImageSlot:(id)a3 didUpdateImage:(id)a4;
+- (void)_updateWithImage:(id)image;
+- (void)deferredImageSlot:(id)slot didUpdateImage:(id)image;
 - (void)layoutSubviews;
-- (void)setImageSlot:(id)a3;
+- (void)setImageSlot:(id)slot;
 @end
 
 @implementation PBUIImageSlotView
 
-- (void)setImageSlot:(id)a3
+- (void)setImageSlot:(id)slot
 {
-  v5 = a3;
+  slotCopy = slot;
   imageSlot = self->_imageSlot;
-  if (imageSlot != v5)
+  if (imageSlot != slotCopy)
   {
-    v12 = v5;
-    v7 = [(PBUIImageSlot *)imageSlot _deferredImageSlot];
-    [v7 removeImageSlotObserver:self];
+    v12 = slotCopy;
+    _deferredImageSlot = [(PBUIImageSlot *)imageSlot _deferredImageSlot];
+    [_deferredImageSlot removeImageSlotObserver:self];
 
-    objc_storeStrong(&self->_imageSlot, a3);
-    v8 = [(PBUIImageSlot *)self->_imageSlot _deferredImageSlot];
-    [v8 addImageSlotObserver:self];
-    v9 = [v8 fallbackColor];
-    [(PBUIImageSlotView *)self setBackgroundColor:v9];
+    objc_storeStrong(&self->_imageSlot, slot);
+    _deferredImageSlot2 = [(PBUIImageSlot *)self->_imageSlot _deferredImageSlot];
+    [_deferredImageSlot2 addImageSlotObserver:self];
+    fallbackColor = [_deferredImageSlot2 fallbackColor];
+    [(PBUIImageSlotView *)self setBackgroundColor:fallbackColor];
 
-    v10 = [(PBUIImageSlot *)self->_imageSlot image];
+    image = [(PBUIImageSlot *)self->_imageSlot image];
 
-    if (v10)
+    if (image)
     {
       imageView = [(PBUIImageSlot *)self->_imageSlot image];
       [(PBUIImageSlotView *)self _updateWithImage:imageView];
@@ -42,10 +42,10 @@
     [(PBUIImageSlotView *)self invalidateIntrinsicContentSize];
     [(PBUIImageSlotView *)self setNeedsLayout];
 
-    v5 = v12;
+    slotCopy = v12;
   }
 
-  MEMORY[0x2821F96F8](imageSlot, v5);
+  MEMORY[0x2821F96F8](imageSlot, slotCopy);
 }
 
 - (void)layoutSubviews
@@ -53,24 +53,24 @@
   v5.receiver = self;
   v5.super_class = PBUIImageSlotView;
   [(PBUIImageSlotView *)&v5 layoutSubviews];
-  v3 = [(PBUIImageSlot *)self->_imageSlot image];
-  v4 = [(UIImageView *)self->_imageView image];
+  image = [(PBUIImageSlot *)self->_imageSlot image];
+  image2 = [(UIImageView *)self->_imageView image];
 
-  if (v4 != v3)
+  if (image2 != image)
   {
-    [(PBUIImageSlotView *)self _updateWithImage:v3];
+    [(PBUIImageSlotView *)self _updateWithImage:image];
   }
 }
 
-- (void)deferredImageSlot:(id)a3 didUpdateImage:(id)a4
+- (void)deferredImageSlot:(id)slot didUpdateImage:(id)image
 {
-  if (self->_imageSlot == a3)
+  if (self->_imageSlot == slot)
   {
-    [(PBUIImageSlotView *)self _updateWithImage:a4];
+    [(PBUIImageSlotView *)self _updateWithImage:image];
   }
 }
 
-- (void)_updateWithImage:(id)a3
+- (void)_updateWithImage:(id)image
 {
   imageView = self->_imageView;
   if (!imageView)
@@ -86,8 +86,8 @@
     imageView = self->_imageView;
   }
 
-  v8 = [(PBUIImageSlot *)self->_imageSlot image];
-  [(UIImageView *)imageView setImage:v8];
+  image = [(PBUIImageSlot *)self->_imageSlot image];
+  [(UIImageView *)imageView setImage:image];
 
   [(PBUIImageSlotView *)self invalidateIntrinsicContentSize];
 
@@ -96,8 +96,8 @@
 
 - (CGSize)_pointSize
 {
-  v2 = [(PBUIImageSlot *)self->_imageSlot image];
-  [v2 size];
+  image = [(PBUIImageSlot *)self->_imageSlot image];
+  [image size];
   v4 = v3;
   v6 = v5;
 

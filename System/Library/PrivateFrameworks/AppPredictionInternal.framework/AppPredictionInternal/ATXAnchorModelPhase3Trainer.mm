@@ -1,36 +1,36 @@
 @interface ATXAnchorModelPhase3Trainer
-- (double)endSecondsAfterAnchorGivenHistoricalOffsets:(id)a3;
-- (double)endSecondsAfterAnchorGivenHistoricalOffsets:(id)a3 startSecondsAfterAnchor:(double)a4;
-- (double)startSecondsAfterAnchorGivenHistoricalOffsets:(id)a3;
-- (id)initForAnchor:(id)a3;
-- (id)initForAnchor:(id)a3 anchorModelDataStoreWrapper:(id)a4;
-- (id)trainPhase3ForCandidate:(id)a3;
-- (unint64_t)indexOfPercentile:(double)a3 array:(id)a4;
+- (double)endSecondsAfterAnchorGivenHistoricalOffsets:(id)offsets;
+- (double)endSecondsAfterAnchorGivenHistoricalOffsets:(id)offsets startSecondsAfterAnchor:(double)anchor;
+- (double)startSecondsAfterAnchorGivenHistoricalOffsets:(id)offsets;
+- (id)initForAnchor:(id)anchor;
+- (id)initForAnchor:(id)anchor anchorModelDataStoreWrapper:(id)wrapper;
+- (id)trainPhase3ForCandidate:(id)candidate;
+- (unint64_t)indexOfPercentile:(double)percentile array:(id)array;
 @end
 
 @implementation ATXAnchorModelPhase3Trainer
 
-- (id)initForAnchor:(id)a3
+- (id)initForAnchor:(id)anchor
 {
-  v4 = a3;
+  anchorCopy = anchor;
   v5 = objc_opt_new();
-  v6 = [(ATXAnchorModelPhase3Trainer *)self initForAnchor:v4 anchorModelDataStoreWrapper:v5];
+  v6 = [(ATXAnchorModelPhase3Trainer *)self initForAnchor:anchorCopy anchorModelDataStoreWrapper:v5];
 
   return v6;
 }
 
-- (id)initForAnchor:(id)a3 anchorModelDataStoreWrapper:(id)a4
+- (id)initForAnchor:(id)anchor anchorModelDataStoreWrapper:(id)wrapper
 {
-  v7 = a3;
-  v8 = a4;
+  anchorCopy = anchor;
+  wrapperCopy = wrapper;
   v14.receiver = self;
   v14.super_class = ATXAnchorModelPhase3Trainer;
   v9 = [(ATXAnchorModelPhase3Trainer *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_anchor, a3);
-    objc_storeStrong(&v10->_storeWrapper, a4);
+    objc_storeStrong(&v9->_anchor, anchor);
+    objc_storeStrong(&v10->_storeWrapper, wrapper);
     v11 = +[ATXAnchorModelHyperParameters sharedInstance];
     hyperParameters = v10->_hyperParameters;
     v10->_hyperParameters = v11;
@@ -39,18 +39,18 @@
   return v10;
 }
 
-- (id)trainPhase3ForCandidate:(id)a3
+- (id)trainPhase3ForCandidate:(id)candidate
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  candidateCopy = candidate;
   v5 = objc_autoreleasePoolPush();
   v6 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(ATXAnchorModelPhase3Trainer *)v4 trainPhase3ForCandidate:v6, v7, v8, v9, v10, v11, v12];
+    [(ATXAnchorModelPhase3Trainer *)candidateCopy trainPhase3ForCandidate:v6, v7, v8, v9, v10, v11, v12];
   }
 
-  v13 = [(ATXAnchorModelDataStoreWrapperProtocol *)self->_storeWrapper secondsAfterAnchorWhenCandidateOccurredForAnchor:self->_anchor candidateId:v4 onlyConsiderFirstOccurrencePerAnchor:1];
+  v13 = [(ATXAnchorModelDataStoreWrapperProtocol *)self->_storeWrapper secondsAfterAnchorWhenCandidateOccurredForAnchor:self->_anchor candidateId:candidateCopy onlyConsiderFirstOccurrencePerAnchor:1];
   if ([(ATXBackgroundActivityProtocol *)self->_runningTask didDefer])
   {
     v14 = __atxlog_handle_anchor();
@@ -65,7 +65,7 @@
     goto LABEL_15;
   }
 
-  v14 = [(ATXAnchorModelDataStoreWrapperProtocol *)self->_storeWrapper secondsAfterAnchorWhenCandidateOccurredForAnchor:self->_anchor candidateId:v4 onlyConsiderFirstOccurrencePerAnchor:0];
+  v14 = [(ATXAnchorModelDataStoreWrapperProtocol *)self->_storeWrapper secondsAfterAnchorWhenCandidateOccurredForAnchor:self->_anchor candidateId:candidateCopy onlyConsiderFirstOccurrencePerAnchor:0];
   if ([(ATXBackgroundActivityProtocol *)self->_runningTask didDefer])
   {
     v16 = __atxlog_handle_anchor();
@@ -94,7 +94,7 @@ LABEL_15:
   v22 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
   {
-    [(ATXAnchorModelPhase3Trainer *)v4 trainPhase3ForCandidate:v22, v23, v24, v25, v26, v27, v28];
+    [(ATXAnchorModelPhase3Trainer *)candidateCopy trainPhase3ForCandidate:v22, v23, v24, v25, v26, v27, v28];
   }
 
   v29 = [[ATXAnchorModelPredictionOffsetFromAnchorOccurrence alloc] initWithStartSecondsAfterAnchor:v19 endSecondsAfterAnchor:v21];
@@ -106,12 +106,12 @@ LABEL_16:
   return v29;
 }
 
-- (double)startSecondsAfterAnchorGivenHistoricalOffsets:(id)a3
+- (double)startSecondsAfterAnchorGivenHistoricalOffsets:(id)offsets
 {
   hyperParameters = self->_hyperParameters;
-  v5 = a3;
+  offsetsCopy = offsets;
   [(ATXAnchorModelHyperParameters *)hyperParameters percentileForStartOffsetFromAnchorForPhase3];
-  v6 = [v5 objectAtIndexedSubscript:{-[ATXAnchorModelPhase3Trainer indexOfPercentile:array:](self, "indexOfPercentile:array:", v5)}];
+  v6 = [offsetsCopy objectAtIndexedSubscript:{-[ATXAnchorModelPhase3Trainer indexOfPercentile:array:](self, "indexOfPercentile:array:", offsetsCopy)}];
 
   [v6 doubleValue];
   v8 = v7;
@@ -119,11 +119,11 @@ LABEL_16:
   return v8;
 }
 
-- (double)endSecondsAfterAnchorGivenHistoricalOffsets:(id)a3 startSecondsAfterAnchor:(double)a4
+- (double)endSecondsAfterAnchorGivenHistoricalOffsets:(id)offsets startSecondsAfterAnchor:(double)anchor
 {
-  [(ATXAnchorModelPhase3Trainer *)self endSecondsAfterAnchorGivenHistoricalOffsets:a3];
+  [(ATXAnchorModelPhase3Trainer *)self endSecondsAfterAnchorGivenHistoricalOffsets:offsets];
   v7 = v6;
-  v8 = v6 - a4;
+  v8 = v6 - anchor;
   [(ATXAnchorModelHyperParameters *)self->_hyperParameters maxDurationForAnchorModelPredictionInSecondsForPhase3];
   if (v8 > v9)
   {
@@ -134,7 +134,7 @@ LABEL_16:
     }
 
     [(ATXAnchorModelHyperParameters *)self->_hyperParameters maxDurationForAnchorModelPredictionInSecondsForPhase3];
-    return v18 + a4;
+    return v18 + anchor;
   }
 
   [(ATXAnchorModelHyperParameters *)self->_hyperParameters minDurationForAnchorModelPredictionInSecondsForPhase3];
@@ -147,18 +147,18 @@ LABEL_16:
     }
 
     [(ATXAnchorModelHyperParameters *)self->_hyperParameters minDurationForAnchorModelPredictionInSecondsForPhase3];
-    return v18 + a4;
+    return v18 + anchor;
   }
 
   return v7;
 }
 
-- (double)endSecondsAfterAnchorGivenHistoricalOffsets:(id)a3
+- (double)endSecondsAfterAnchorGivenHistoricalOffsets:(id)offsets
 {
   hyperParameters = self->_hyperParameters;
-  v5 = a3;
+  offsetsCopy = offsets;
   [(ATXAnchorModelHyperParameters *)hyperParameters percentileForEndOffsetFromAnchorForPhase3];
-  v6 = [v5 objectAtIndexedSubscript:{-[ATXAnchorModelPhase3Trainer indexOfPercentile:array:](self, "indexOfPercentile:array:", v5)}];
+  v6 = [offsetsCopy objectAtIndexedSubscript:{-[ATXAnchorModelPhase3Trainer indexOfPercentile:array:](self, "indexOfPercentile:array:", offsetsCopy)}];
 
   [v6 doubleValue];
   v8 = v7;
@@ -166,13 +166,13 @@ LABEL_16:
   return v8;
 }
 
-- (unint64_t)indexOfPercentile:(double)a3 array:(id)a4
+- (unint64_t)indexOfPercentile:(double)percentile array:(id)array
 {
-  v5 = a4;
-  v6 = v5;
-  if (v5 && [v5 count])
+  arrayCopy = array;
+  v6 = arrayCopy;
+  if (arrayCopy && [arrayCopy count])
   {
-    v7 = (ceil([v6 count] * a3) + -1.0);
+    v7 = (ceil([v6 count] * percentile) + -1.0);
   }
 
   else
@@ -180,7 +180,7 @@ LABEL_16:
     v8 = __atxlog_handle_anchor();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
     {
-      [ATXAnchorModelPhase3Trainer indexOfPercentile:v8 array:a3];
+      [ATXAnchorModelPhase3Trainer indexOfPercentile:v8 array:percentile];
     }
 
     v7 = 0;

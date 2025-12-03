@@ -1,25 +1,25 @@
 @interface _UITextLightLoupeView
-- (CGPoint)constrainedModelPositionForPosition:(CGPoint)a3;
+- (CGPoint)constrainedModelPositionForPosition:(CGPoint)position;
 - (CGPoint)modelPosition;
 - (CGSize)preferredSize;
 - (UICoordinateSpace)containerCoordinateSpace;
-- (_UITextLightLoupeView)initWithSourceView:(id)a3;
+- (_UITextLightLoupeView)initWithSourceView:(id)view;
 - (id)_backgroundColorIfNecessary;
-- (void)_displayLinkFired:(id)a3;
+- (void)_displayLinkFired:(id)fired;
 - (void)_stopDisplayLink;
 - (void)_updateColorsForCurrentTraitCollection;
 - (void)layoutSubviews;
 - (void)removeFromSuperview;
-- (void)setModelPosition:(CGPoint)a3;
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)setModelPosition:(CGPoint)position;
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation _UITextLightLoupeView
 
-- (_UITextLightLoupeView)initWithSourceView:(id)a3
+- (_UITextLightLoupeView)initWithSourceView:(id)view
 {
   v78[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v77.receiver = self;
   v77.super_class = _UITextLightLoupeView;
   v5 = *MEMORY[0x1E695F058];
@@ -30,22 +30,22 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_sourceView, v4);
+    objc_storeWeak(&v9->_sourceView, viewCopy);
     +[UIColor blackColor];
-    v11 = v65 = v4;
-    v12 = [v11 CGColor];
-    v13 = [(UIView *)v10 layer];
-    [v13 setShadowColor:v12];
+    v11 = v65 = viewCopy;
+    cGColor = [v11 CGColor];
+    layer = [(UIView *)v10 layer];
+    [layer setShadowColor:cGColor];
 
-    v14 = [(UIView *)v10 layer];
-    [v14 setShadowOffset:{0.0, 2.0}];
+    layer2 = [(UIView *)v10 layer];
+    [layer2 setShadowOffset:{0.0, 2.0}];
 
-    v15 = [(UIView *)v10 layer];
-    [v15 setShadowRadius:22.0];
+    layer3 = [(UIView *)v10 layer];
+    [layer3 setShadowRadius:22.0];
 
-    v16 = [(UIView *)v10 layer];
+    layer4 = [(UIView *)v10 layer];
     LODWORD(v17) = 1036831949;
-    [v16 setShadowOpacity:v17];
+    [layer4 setShadowOpacity:v17];
 
     v18 = [UIView alloc];
     [(UIView *)v10 bounds];
@@ -54,17 +54,17 @@
     v10->_maskView = v19;
 
     v21 = *MEMORY[0x1E69796E8];
-    v22 = [(UIView *)v10->_maskView layer];
-    [v22 setCornerCurve:v21];
+    layer5 = [(UIView *)v10->_maskView layer];
+    [layer5 setCornerCurve:v21];
 
-    v23 = [(UIView *)v10->_maskView layer];
-    [v23 setMasksToBounds:1];
+    layer6 = [(UIView *)v10->_maskView layer];
+    [layer6 setMasksToBounds:1];
 
-    v24 = [(UIView *)v10->_maskView layer];
-    [v24 setCornerRadius:22.0];
+    layer7 = [(UIView *)v10->_maskView layer];
+    [layer7 setCornerRadius:22.0];
 
-    v25 = [(UIView *)v10->_maskView layer];
-    [v25 setBorderWidth:0.66];
+    layer8 = [(UIView *)v10->_maskView layer];
+    [layer8 setBorderWidth:0.66];
 
     [(UIView *)v10 addSubview:v10->_maskView];
     v26 = [[UIView alloc] initWithFrame:v5, v6, v7, v8];
@@ -73,15 +73,15 @@
 
     [(UIView *)v10->_portalContainerView setAnchorPoint:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
     [(UIView *)v10->_maskView addSubview:v10->_portalContainerView];
-    v28 = [v4 window];
+    window = [viewCopy window];
     v29 = [UIView alloc];
-    [v28 frame];
+    [window frame];
     v30 = [(UIView *)v29 initWithFrame:?];
     backgroundView = v10->_backgroundView;
     v10->_backgroundView = v30;
 
-    v32 = [(_UITextLightLoupeView *)v10 _backgroundColorIfNecessary];
-    [(UIView *)v10->_backgroundView setBackgroundColor:v32];
+    _backgroundColorIfNecessary = [(_UITextLightLoupeView *)v10 _backgroundColorIfNecessary];
+    [(UIView *)v10->_backgroundView setBackgroundColor:_backgroundColorIfNecessary];
 
     [(UIView *)v10->_portalContainerView addSubview:v10->_backgroundView];
     v66[0] = 0;
@@ -110,40 +110,40 @@
     [(UIView *)v10->_glowView setBackgroundColor:v38];
 
     v39 = *MEMORY[0x1E6979C38];
-    v40 = [(UIView *)v10->_glowView layer];
-    [v40 setCompositingFilter:v39];
+    layer9 = [(UIView *)v10->_glowView layer];
+    [layer9 setCompositingFilter:v39];
 
     v78[0] = v35;
     v78[1] = v34;
     v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:v78 count:2];
-    v42 = [(UIView *)v10->_glowView layer];
-    [v42 setFilters:v41];
+    layer10 = [(UIView *)v10->_glowView layer];
+    [layer10 setFilters:v41];
 
-    v43 = [(UIView *)v10->_glowView layer];
-    [v43 setMasksToBounds:1];
+    layer11 = [(UIView *)v10->_glowView layer];
+    [layer11 setMasksToBounds:1];
 
-    v44 = [(UIView *)v10->_glowView layer];
-    [v44 setCornerCurve:v21];
+    layer12 = [(UIView *)v10->_glowView layer];
+    [layer12 setCornerCurve:v21];
 
-    v45 = [(UIView *)v10->_glowView layer];
-    [v45 setCornerRadius:22.0];
+    layer13 = [(UIView *)v10->_glowView layer];
+    [layer13 setCornerRadius:22.0];
 
-    v46 = [objc_opt_self() mainScreen];
-    [v46 scale];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen scale];
     v48 = v47;
-    v49 = [(UIView *)v10->_glowView layer];
-    [v49 setRasterizationScale:v48];
+    layer14 = [(UIView *)v10->_glowView layer];
+    [layer14 setRasterizationScale:v48];
 
-    v50 = [(UIView *)v10->_glowView layer];
-    [v50 setShouldRasterize:1];
+    layer15 = [(UIView *)v10->_glowView layer];
+    [layer15 setShouldRasterize:1];
 
     [(UIView *)v10->_maskView addSubview:v10->_glowView];
-    v51 = [v65 window];
-    v52 = [v51 screen];
+    window2 = [v65 window];
+    screen = [window2 screen];
 
-    if (v52)
+    if (screen)
     {
-      v53 = v52;
+      v53 = screen;
     }
 
     else
@@ -157,19 +157,19 @@
 
     [(CADisplayLink *)v10->_displayLink setPreferredFramesPerSecond:60];
     v56 = v10->_displayLink;
-    v57 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [(CADisplayLink *)v56 addToRunLoop:v57 forMode:*MEMORY[0x1E695D918]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [(CADisplayLink *)v56 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695D918]];
 
-    v58 = [[_UIPortalView alloc] initWithSourceView:v28];
+    v58 = [[_UIPortalView alloc] initWithSourceView:window];
     portalView = v10->_portalView;
     v10->_portalView = v58;
 
     [(_UIPortalView *)v10->_portalView setMatchesAlpha:1];
     [(_UIPortalView *)v10->_portalView setMatchesTransform:1];
-    [v28 anchorPoint];
+    [window anchorPoint];
     [(UIView *)v10->_portalView setAnchorPoint:?];
-    v60 = [v28 layer];
-    [v60 frame];
+    layer16 = [window layer];
+    [layer16 frame];
     [(_UIPortalView *)v10->_portalView setFrame:?];
 
     [(UIView *)v10->_portalContainerView addSubview:v10->_portalView];
@@ -177,7 +177,7 @@
     v61 = +[UITraitCollection systemTraitsAffectingColorAppearance];
     v62 = [(UIView *)v10 registerForTraitChanges:v61 withAction:sel__updateColorsForCurrentTraitCollection];
 
-    v4 = v65;
+    viewCopy = v65;
   }
 
   return v10;
@@ -185,10 +185,10 @@
 
 - (void)_updateColorsForCurrentTraitCollection
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v4 == 2)
+  if (userInterfaceStyle == 2)
   {
     v5 = 0.2;
     v6 = 1.0;
@@ -202,9 +202,9 @@
 
   v10 = [UIColor colorWithWhite:v6 alpha:v5];
   v7 = v10;
-  v8 = [v10 CGColor];
-  v9 = [(UIView *)self->_maskView layer];
-  [v9 setBorderColor:v8];
+  cGColor = [v10 CGColor];
+  layer = [(UIView *)self->_maskView layer];
+  [layer setBorderColor:cGColor];
 }
 
 - (void)_stopDisplayLink
@@ -233,10 +233,10 @@
 
 - (UICoordinateSpace)containerCoordinateSpace
 {
-  v2 = [(UIView *)self window];
-  v3 = [v2 coordinateSpace];
+  window = [(UIView *)self window];
+  coordinateSpace = [window coordinateSpace];
 
-  return v3;
+  return coordinateSpace;
 }
 
 - (id)_backgroundColorIfNecessary
@@ -244,8 +244,8 @@
   v42 = *MEMORY[0x1E69E9840];
   if (![UIApp _isSpringBoard] || ((v3 = objc_loadWeakRetained(&self->_sourceView), objc_msgSend(v3, "window"), v4 = objc_claimAutoreleasedReturnValue(), v3, objc_msgSend(v4, "screen"), v5 = objc_claimAutoreleasedReturnValue(), +[UIWindow allWindowsIncludingInternalWindows:onlyVisibleWindows:forScreen:](UIWindow, "allWindowsIncludingInternalWindows:onlyVisibleWindows:forScreen:", 1, 1, v5), v6 = objc_claimAutoreleasedReturnValue(), v5, v7 = NSClassFromString(&cfstr_Sbhomescreenwi.isa), v8 = NSClassFromString(&cfstr_Sbisolationtan.isa), *&buf = 0, *(&buf + 1) = &buf, v40 = 0x2020000000, v41 = 0x7FFFFFFFFFFFFFFFLL, v35 = 0, v36 = &v35, v37 = 0x2020000000, v38 = 0x7FFFFFFFFFFFFFFFLL, v29[0] = MEMORY[0x1E69E9820], v29[1] = 3221225472, v29[2] = __52___UITextLightLoupeView__backgroundColorIfNecessary__block_invoke, v29[3] = &unk_1E711FC20, p_buf = &buf, v9 = v4, v30 = v9, v32 = &v35, v33 = v8, v34 = v7, objc_msgSend(v6, "enumerateObjectsUsingBlock:", v29), *(*(&buf + 1) + 24) != 0x7FFFFFFFFFFFFFFFLL) && v36[3] != 0x7FFFFFFFFFFFFFFFLL ? (+[UIColor blackColor](UIColor, "blackColor"), v4 = objc_claimAutoreleasedReturnValue(), v10 = 0) : (v10 = 1), v30, _Block_object_dispose(&v35, 8), _Block_object_dispose(&buf, 8), v6, v9, v10))
   {
-    v11 = [(UIView *)self _window];
-    if ([v11 _isHostedInAnotherProcess])
+    _window = [(UIView *)self _window];
+    if ([_window _isHostedInAnotherProcess])
     {
 LABEL_8:
       v12 = +[UIColor darkGrayColor];
@@ -253,31 +253,31 @@ LABEL_8:
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_sourceView);
-    v15 = [WeakRetained window];
-    v16 = [v15 windowScene];
-    v17 = [v16 _backgroundStyle];
+    window = [WeakRetained window];
+    windowScene = [window windowScene];
+    _backgroundStyle = [windowScene _backgroundStyle];
 
-    if (v17 <= 6)
+    if (_backgroundStyle <= 6)
     {
-      if (((1 << v17) & 0xC) != 0)
+      if (((1 << _backgroundStyle) & 0xC) != 0)
       {
         v12 = +[UIColor lightGrayColor];
         goto LABEL_9;
       }
 
-      if (((1 << v17) & 0x30) != 0)
+      if (((1 << _backgroundStyle) & 0x30) != 0)
       {
         goto LABEL_8;
       }
 
-      if (((1 << v17) & 0x42) != 0)
+      if (((1 << _backgroundStyle) & 0x42) != 0)
       {
         v12 = +[UIColor grayColor];
         goto LABEL_9;
       }
     }
 
-    if (v17)
+    if (_backgroundStyle)
     {
       if (os_variant_has_internal_diagnostics())
       {
@@ -285,11 +285,11 @@ LABEL_8:
         if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
         {
           v25 = objc_loadWeakRetained(&self->_sourceView);
-          v26 = [v25 window];
-          v27 = [v26 windowScene];
-          v28 = [v27 _backgroundStyle];
+          window2 = [v25 window];
+          windowScene2 = [window2 windowScene];
+          _backgroundStyle2 = [windowScene2 _backgroundStyle];
           LODWORD(buf) = 134217984;
-          *(&buf + 4) = v28;
+          *(&buf + 4) = _backgroundStyle2;
           _os_log_fault_impl(&dword_188A29000, v24, OS_LOG_TYPE_FAULT, "Modern Loupe: Unexpected background style: %ld", &buf, 0xCu);
         }
       }
@@ -301,11 +301,11 @@ LABEL_8:
         {
           v19 = v18;
           v20 = objc_loadWeakRetained(&self->_sourceView);
-          v21 = [v20 window];
-          v22 = [v21 windowScene];
-          v23 = [v22 _backgroundStyle];
+          window3 = [v20 window];
+          windowScene3 = [window3 windowScene];
+          _backgroundStyle3 = [windowScene3 _backgroundStyle];
           LODWORD(buf) = 134217984;
-          *(&buf + 4) = v23;
+          *(&buf + 4) = _backgroundStyle3;
           _os_log_impl(&dword_188A29000, v19, OS_LOG_TYPE_ERROR, "Modern Loupe: Unexpected background style: %ld", &buf, 0xCu);
         }
       }
@@ -323,11 +323,11 @@ LABEL_10:
   return v4;
 }
 
-- (void)setModelPosition:(CGPoint)a3
+- (void)setModelPosition:(CGPoint)position
 {
-  if (self->_modelPosition.x != a3.x || self->_modelPosition.y != a3.y)
+  if (self->_modelPosition.x != position.x || self->_modelPosition.y != position.y)
   {
-    self->_modelPosition = a3;
+    self->_modelPosition = position;
     if (self->_visible)
     {
       [(CADisplayLink *)self->_displayLink setPaused:0];
@@ -335,31 +335,31 @@ LABEL_10:
   }
 }
 
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
+  animatedCopy = animated;
+  visibleCopy = visible;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __56___UITextLightLoupeView_setVisible_animated_completion___block_invoke;
   aBlock[3] = &unk_1E711FC48;
   aBlock[4] = self;
-  v20 = v5;
-  v9 = v8;
+  v20 = animatedCopy;
+  v9 = completionCopy;
   v19 = v9;
   v10 = _Block_copy(aBlock);
   v11 = v10;
-  if (self->_visible == v6)
+  if (self->_visible == visibleCopy)
   {
     (*(v10 + 2))(v10, 1, 0);
   }
 
   else
   {
-    self->_visible = v6;
+    self->_visible = visibleCopy;
     v12 = *MEMORY[0x1E695EFF8];
-    if (v6)
+    if (visibleCopy)
     {
       [(CADisplayLink *)self->_displayLink setPaused:0];
       v13 = 1.0;
@@ -382,7 +382,7 @@ LABEL_10:
     v17[7] = v14;
     v15 = _Block_copy(v17);
     v16 = v15;
-    if (v5)
+    if (animatedCopy)
     {
       [UIView _animateUsingSpringWithTension:0 friction:v15 interactive:v11 animations:400.0 completion:35.0];
     }
@@ -408,14 +408,14 @@ LABEL_10:
   [(UIView *)self->_portalContainerView setFrame:?];
 }
 
-- (CGPoint)constrainedModelPositionForPosition:(CGPoint)a3
+- (CGPoint)constrainedModelPositionForPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   [(_UITextLightLoupeView *)self _visualOffset];
   v7 = y + v6;
-  v8 = [(_UITextLightLoupeView *)self containerCoordinateSpace];
-  [v8 bounds];
+  containerCoordinateSpace = [(_UITextLightLoupeView *)self containerCoordinateSpace];
+  [containerCoordinateSpace bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -431,10 +431,10 @@ LABEL_10:
   return result;
 }
 
-- (void)_displayLinkFired:(id)a3
+- (void)_displayLinkFired:(id)fired
 {
   p_modelPosition = &self->_modelPosition;
-  [(_UITextLightLoupeView *)self constrainedModelPositionForPosition:a3, self->_modelPosition.x, self->_modelPosition.y];
+  [(_UITextLightLoupeView *)self constrainedModelPositionForPosition:fired, self->_modelPosition.x, self->_modelPosition.y];
   v6 = v5;
   v8 = v7;
   [(UIView *)self center];
@@ -453,9 +453,9 @@ LABEL_10:
     v20 = -(v12 - (v16 + v15 * 0.5));
     [(_UITextLightLoupeView *)self _visualOffset];
     CATransform3DMakeTranslation(&v24, v20, v21 - v19, 0.0);
-    v22 = [(UIView *)self->_portalContainerView layer];
+    layer = [(UIView *)self->_portalContainerView layer];
     v23 = v24;
-    [v22 setSublayerTransform:&v23];
+    [layer setSublayerTransform:&v23];
   }
 
   [(UIView *)self setCenter:v12, v14];

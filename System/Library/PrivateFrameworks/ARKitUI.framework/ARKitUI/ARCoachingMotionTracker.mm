@@ -2,7 +2,7 @@
 - (ARCoachingMotionTracker)init;
 - (double)calcAverageVelocity;
 - (void)clear;
-- (void)updateWithFrame:(id)a3;
+- (void)updateWithFrame:(id)frame;
 @end
 
 @implementation ARCoachingMotionTracker
@@ -26,7 +26,7 @@
   v1 = 0uLL;
   for (i = 16; i != 96; i += 16)
   {
-    v1 = vaddq_f32(v1, *(a1 + i));
+    v1 = vaddq_f32(v1, *(self + i));
   }
 
   __asm { FMOV            V1.4S, #5.0 }
@@ -35,15 +35,15 @@
   return result;
 }
 
-- (void)updateWithFrame:(id)a3
+- (void)updateWithFrame:(id)frame
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  frameCopy = frame;
+  v5 = frameCopy;
+  if (frameCopy)
   {
-    v6 = [v4 camera];
-    [v6 transform];
+    camera = [frameCopy camera];
+    [camera transform];
     v25 = v7;
 
     [v5 timestamp];
@@ -106,7 +106,7 @@
           *buf = 138543618;
           v27 = v21;
           v28 = 2048;
-          v29 = self;
+          selfCopy2 = self;
           v22 = "%{public}@ <%p>: Coaching view stopped moving";
 LABEL_17:
           _os_log_impl(&dword_23D3AE000, v19, OS_LOG_TYPE_INFO, v22, buf, 0x16u);
@@ -134,7 +134,7 @@ LABEL_17:
         *buf = 138543618;
         v27 = v21;
         v28 = 2048;
-        v29 = self;
+        selfCopy2 = self;
         v22 = "%{public}@ <%p>: Coaching view started moving";
         goto LABEL_17;
       }

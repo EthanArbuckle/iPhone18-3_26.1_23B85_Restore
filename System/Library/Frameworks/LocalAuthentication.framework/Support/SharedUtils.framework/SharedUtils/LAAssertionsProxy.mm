@@ -1,9 +1,9 @@
 @interface LAAssertionsProxy
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3;
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler;
 - (void)dealloc;
-- (void)dropTouchIdAssertionWithReason:(id)a3 reply:(id)a4;
-- (void)setConnection:(id)a3;
-- (void)takeTouchIdAssertionWithReason:(id)a3 reply:(id)a4;
+- (void)dropTouchIdAssertionWithReason:(id)reason reply:(id)reply;
+- (void)setConnection:(id)connection;
+- (void)takeTouchIdAssertionWithReason:(id)reason reply:(id)reply;
 @end
 
 @implementation LAAssertionsProxy
@@ -19,10 +19,10 @@
   [(LAAssertionsProxy *)&v4 dealloc];
 }
 
-- (void)takeTouchIdAssertionWithReason:(id)a3 reply:(id)a4
+- (void)takeTouchIdAssertionWithReason:(id)reason reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  reasonCopy = reason;
   v8 = LA_LOG_0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -30,9 +30,9 @@
     _os_log_impl(&dword_1DF403000, v8, OS_LOG_TYPE_INFO, "Will acquire TouchID assertion", buf, 2u);
   }
 
-  if (v6)
+  if (replyCopy)
   {
-    v9 = v6;
+    v9 = replyCopy;
   }
 
   else
@@ -49,7 +49,7 @@
   v13[3] = &unk_1E86B5D08;
   v14 = v10;
   v12 = v10;
-  [v11 takeTouchIdAssertionWithReason:v7 reply:v13];
+  [v11 takeTouchIdAssertionWithReason:reasonCopy reply:v13];
 }
 
 void __58__LAAssertionsProxy_takeTouchIdAssertionWithReason_reply___block_invoke_2(uint64_t a1, void *a2)
@@ -74,10 +74,10 @@ void __58__LAAssertionsProxy_takeTouchIdAssertionWithReason_reply___block_invoke
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)dropTouchIdAssertionWithReason:(id)a3 reply:(id)a4
+- (void)dropTouchIdAssertionWithReason:(id)reason reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  reasonCopy = reason;
   v8 = LA_LOG_0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -85,9 +85,9 @@ void __58__LAAssertionsProxy_takeTouchIdAssertionWithReason_reply___block_invoke
     _os_log_impl(&dword_1DF403000, v8, OS_LOG_TYPE_INFO, "Will remove TouchID assertion", buf, 2u);
   }
 
-  if (v6)
+  if (replyCopy)
   {
-    v9 = v6;
+    v9 = replyCopy;
   }
 
   else
@@ -104,7 +104,7 @@ void __58__LAAssertionsProxy_takeTouchIdAssertionWithReason_reply___block_invoke
   v13[3] = &unk_1E86B5D08;
   v14 = v10;
   v12 = v10;
-  [v11 dropTouchIdAssertionWithReason:v7 reply:v13];
+  [v11 dropTouchIdAssertionWithReason:reasonCopy reply:v13];
 }
 
 void __58__LAAssertionsProxy_dropTouchIdAssertionWithReason_reply___block_invoke_2(uint64_t a1, void *a2)
@@ -129,16 +129,16 @@ void __58__LAAssertionsProxy_dropTouchIdAssertionWithReason_reply___block_invoke
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [LAAssertionsProxy _remoteObjectProxyWithErrorHandler:];
   }
 
-  v5 = v4;
+  v5 = handlerCopy;
   if ([(LAAssertionsProxy *)self isConnected])
   {
     connection = self->_connection;
@@ -196,20 +196,20 @@ void __56__LAAssertionsProxy__remoteObjectProxyWithErrorHandler___block_invoke(u
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setConnection:(id)a3
+- (void)setConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F5A7AB58];
-  [(NSXPCConnection *)v4 setRemoteObjectInterface:v5];
+  [(NSXPCConnection *)connectionCopy setRemoteObjectInterface:v5];
 
   if (self->_queue)
   {
-    [(NSXPCConnection *)v4 _setQueue:?];
+    [(NSXPCConnection *)connectionCopy _setQueue:?];
   }
 
-  [(NSXPCConnection *)v4 setInterruptionHandler:&__block_literal_global_58];
-  [(NSXPCConnection *)v4 setInvalidationHandler:&__block_literal_global_61];
-  [(NSXPCConnection *)v4 resume];
+  [(NSXPCConnection *)connectionCopy setInterruptionHandler:&__block_literal_global_58];
+  [(NSXPCConnection *)connectionCopy setInvalidationHandler:&__block_literal_global_61];
+  [(NSXPCConnection *)connectionCopy resume];
   connection = self->_connection;
   if (connection)
   {
@@ -219,7 +219,7 @@ void __56__LAAssertionsProxy__remoteObjectProxyWithErrorHandler___block_invoke(u
   }
 
   v8 = self->_connection;
-  self->_connection = v4;
+  self->_connection = connectionCopy;
 }
 
 void __35__LAAssertionsProxy_setConnection___block_invoke()

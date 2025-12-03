@@ -5,20 +5,20 @@
 - (PDFView)be_pdfView;
 - (double)be_autoScaleFactor;
 - (double)be_overrideAutoScale;
-- (void)setBe_overrideAutoScale:(double)a3;
-- (void)setBe_useOverrideAutoScale:(BOOL)a3;
+- (void)setBe_overrideAutoScale:(double)scale;
+- (void)setBe_useOverrideAutoScale:(BOOL)scale;
 @end
 
 @implementation UIViewController
 
 - (double)be_autoScaleFactor
 {
-  v3 = [(UIViewController *)self be_pdfView];
-  if (-[UIViewController be_useOverrideAutoScale](self, "be_useOverrideAutoScale") || [v3 be_useOverrideAutoScale])
+  be_pdfView = [(UIViewController *)self be_pdfView];
+  if (-[UIViewController be_useOverrideAutoScale](self, "be_useOverrideAutoScale") || [be_pdfView be_useOverrideAutoScale])
   {
     [(UIViewController *)self be_overrideAutoScale];
     v5 = v4;
-    [v3 be_overrideAutoScale];
+    [be_pdfView be_overrideAutoScale];
     if (v5 < v6)
     {
       v5 = v6;
@@ -34,9 +34,9 @@
   return v5;
 }
 
-- (void)setBe_overrideAutoScale:(double)a3
+- (void)setBe_overrideAutoScale:(double)scale
 {
-  v4 = [NSNumber numberWithDouble:a3];
+  v4 = [NSNumber numberWithDouble:scale];
   objc_setAssociatedObject(self, "be_overrideAutoScale", v4, &dword_0 + 1);
 }
 
@@ -49,18 +49,18 @@
   return v4;
 }
 
-- (void)setBe_useOverrideAutoScale:(BOOL)a3
+- (void)setBe_useOverrideAutoScale:(BOOL)scale
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:scale];
   objc_setAssociatedObject(self, "be_useOverrideAutoScale", v4, &dword_0 + 1);
 }
 
 - (BOOL)be_useOverrideAutoScale
 {
   v2 = objc_getAssociatedObject(self, "be_useOverrideAutoScale");
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (PDFView)be_pdfView

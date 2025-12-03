@@ -1,19 +1,19 @@
 @interface PLPhotoBakedThumbnails
-+ (BOOL)_transformForImage:(CGImage *)a3 isCropped:(BOOL)a4 captureOrientation:(int)a5 sizeInOut:(CGSize *)a6 contextSizeOut:(CGSize *)a7 transformOut:(CGAffineTransform *)a8;
-+ (id)thumbnailsWithContentsOfFile:(id)a3 format:(unsigned __int16)a4;
-- (BOOL)saveToFile:(id)a3;
-- (BOOL)writeBorderedThumbnailOfImage:(CGImage *)a3 toBuffer:(void *)a4 orientation:(int *)a5 format:(unsigned __int16)a6 formatInfo:(id *)a7 delegate:(id)a8;
-- (CGImage)thumbnailImageAtIndex:(int64_t)a3;
++ (BOOL)_transformForImage:(CGImage *)image isCropped:(BOOL)cropped captureOrientation:(int)orientation sizeInOut:(CGSize *)out contextSizeOut:(CGSize *)sizeOut transformOut:(CGAffineTransform *)transformOut;
++ (id)thumbnailsWithContentsOfFile:(id)file format:(unsigned __int16)format;
+- (BOOL)saveToFile:(id)file;
+- (BOOL)writeBorderedThumbnailOfImage:(CGImage *)image toBuffer:(void *)buffer orientation:(int *)orientation format:(unsigned __int16)format formatInfo:(id *)info delegate:(id)delegate;
+- (CGImage)thumbnailImageAtIndex:(int64_t)index;
 - (CGRect)imageRect;
 - (CGSize)size;
 - (NSMutableDictionary)options;
-- (PLPhotoBakedThumbnails)initWithContentsOfFile:(id)a3 format:(unsigned __int16)a4 readOnly:(BOOL)a5;
-- (PLPhotoBakedThumbnails)initWithData:(id)a3 format:(unsigned __int16)a4 readOnly:(BOOL)a5;
-- (PLPhotoBakedThumbnails)initWithImages:(id)a3 format:(unsigned __int16)a4 options:(id)a5 delegate:(id)a6;
-- (char)thumbnailBytesAtIndex:(int64_t)a3;
+- (PLPhotoBakedThumbnails)initWithContentsOfFile:(id)file format:(unsigned __int16)format readOnly:(BOOL)only;
+- (PLPhotoBakedThumbnails)initWithData:(id)data format:(unsigned __int16)format readOnly:(BOOL)only;
+- (PLPhotoBakedThumbnails)initWithImages:(id)images format:(unsigned __int16)format options:(id)options delegate:(id)delegate;
+- (char)thumbnailBytesAtIndex:(int64_t)index;
 - (id)_thumbnailData;
 - (id)serializedData;
-- (id)thumbnailDataAtIndex:(int64_t)a3;
+- (id)thumbnailDataAtIndex:(int64_t)index;
 @end
 
 @implementation PLPhotoBakedThumbnails
@@ -34,13 +34,13 @@
   return v5;
 }
 
-- (BOOL)writeBorderedThumbnailOfImage:(CGImage *)a3 toBuffer:(void *)a4 orientation:(int *)a5 format:(unsigned __int16)a6 formatInfo:(id *)a7 delegate:(id)a8
+- (BOOL)writeBorderedThumbnailOfImage:(CGImage *)image toBuffer:(void *)buffer orientation:(int *)orientation format:(unsigned __int16)format formatInfo:(id *)info delegate:(id)delegate
 {
-  v9 = a6;
-  v14 = a8;
-  if (a3)
+  formatCopy = format;
+  delegateCopy = delegate;
+  if (image)
   {
-    v15 = a4 == 0;
+    v15 = buffer == 0;
   }
 
   else
@@ -48,7 +48,7 @@
     v15 = 1;
   }
 
-  v16 = v15 || a7 == 0;
+  v16 = v15 || info == 0;
   v17 = !v16;
   if (!v16)
   {
@@ -68,16 +68,16 @@
 
     else
     {
-      size = a7->var1;
+      size = info->var1;
       v39 = size;
-      x = a7->var2.origin.x;
-      y = a7->var2.origin.y;
-      v23 = a7->var2.size.width;
-      v22 = a7->var2.size.height;
-      v21 = a7->var3.origin.x;
-      v18 = a7->var3.origin.y;
-      width = a7->var3.size.width;
-      height = a7->var3.size.height;
+      x = info->var2.origin.x;
+      y = info->var2.origin.y;
+      v23 = info->var2.size.width;
+      v22 = info->var2.size.height;
+      v21 = info->var3.origin.x;
+      v18 = info->var3.origin.y;
+      width = info->var3.size.width;
+      height = info->var3.size.height;
     }
 
     v40.origin.x = x;
@@ -93,8 +93,8 @@
     *&v37.a = *MEMORY[0x1E695EFD0];
     *&v37.c = v27;
     *&v37.tx = *(MEMORY[0x1E695EFD0] + 32);
-    v28 = [MEMORY[0x1E69BF260] formatWithID:v9];
-    if (a5 && [objc_opt_class() _transformForImage:a3 isCropped:objc_msgSend(v28 captureOrientation:"isCropped") sizeInOut:*a5 contextSizeOut:&v39 transformOut:{&size, &v37}])
+    v28 = [MEMORY[0x1E69BF260] formatWithID:formatCopy];
+    if (orientation && [objc_opt_class() _transformForImage:image isCropped:objc_msgSend(v28 captureOrientation:"isCropped") sizeInOut:*orientation contextSizeOut:&v39 transformOut:{&size, &v37}])
     {
       v35 = v37;
       memset(&transform, 0, sizeof(transform));
@@ -122,16 +122,16 @@
     }
 
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
-    v30 = CGBitmapContextCreate(a4, size.width, size.height, a7->var5, (size.width * a7->var6), DeviceRGB, a7->var4);
+    v30 = CGBitmapContextCreate(buffer, size.width, size.height, info->var5, (size.width * info->var6), DeviceRGB, info->var4);
     v31 = v30;
-    if (a5)
+    if (orientation)
     {
       transform = v37;
       CGContextConcatCTM(v30, &transform);
     }
 
-    v32 = CGColorCreate(DeviceRGB, a7->var7);
-    v33 = CGColorCreate(DeviceRGB, a7->var8);
+    v32 = CGColorCreate(DeviceRGB, info->var7);
+    v33 = CGColorCreate(DeviceRGB, info->var8);
     CGContextSetFillColorWithColor(v31, v32);
     if (!v26)
     {
@@ -146,7 +146,7 @@
     v45.origin.y = y;
     v45.size.width = v23;
     v45.size.height = v22;
-    CGContextDrawImage(v31, v45, a3);
+    CGContextDrawImage(v31, v45, image);
     if (!v26)
     {
       v46.origin.x = v21;
@@ -158,9 +158,9 @@
 
     CGColorRelease(v33);
     CGColorRelease(v32);
-    if (v14)
+    if (delegateCopy)
     {
-      [v14 decorateThumbnail:self inContext:v31];
+      [delegateCopy decorateThumbnail:self inContext:v31];
     }
 
     CGContextRelease(v31);
@@ -230,7 +230,7 @@
   return options;
 }
 
-- (CGImage)thumbnailImageAtIndex:(int64_t)a3
+- (CGImage)thumbnailImageAtIndex:(int64_t)index
 {
   if (self->_thumbnailImages)
   {
@@ -252,8 +252,8 @@
     do
     {
       v9 = self->_thumbnailImages;
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [(NSMutableArray *)v9 addObject:v10];
+      null = [MEMORY[0x1E695DFB0] null];
+      [(NSMutableArray *)v9 addObject:null];
 
       ++v8;
       count = self->_count;
@@ -262,18 +262,18 @@
     while (count > v8);
   }
 
-  if (count <= a3)
+  if (count <= index)
   {
     return 0;
   }
 
-  v11 = [(NSMutableArray *)self->_thumbnailImages objectAtIndex:a3];
-  v12 = [MEMORY[0x1E695DFB0] null];
+  v11 = [(NSMutableArray *)self->_thumbnailImages objectAtIndex:index];
+  null2 = [MEMORY[0x1E695DFB0] null];
 
-  if (v11 == v12)
+  if (v11 == null2)
   {
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
-    v14 = [(PLPhotoBakedThumbnails *)self thumbnailDataAtIndex:a3];
+    v14 = [(PLPhotoBakedThumbnails *)self thumbnailDataAtIndex:index];
     v15 = v14;
     if (v14)
     {
@@ -282,16 +282,16 @@
       width = v17;
       [(PLPhotoBakedThumbnails *)self size];
       v19 = v18;
-      v20 = [(PLPhotoBakedThumbnails *)self bitsPerComponent];
+      bitsPerComponent = [(PLPhotoBakedThumbnails *)self bitsPerComponent];
       v21 = 8 * [(PLPhotoBakedThumbnails *)self bytesPerPixel];
-      v22 = [(PLPhotoBakedThumbnails *)self bytesPerPixel];
+      bytesPerPixel = [(PLPhotoBakedThumbnails *)self bytesPerPixel];
       [(PLPhotoBakedThumbnails *)self size];
-      v24 = CGImageCreate(width, v19, v20, v21, (v23 * v22), DeviceRGB, [(PLPhotoBakedThumbnails *)self bitmapInfo], v16, 0, 0, kCGRenderingIntentDefault);
+      v24 = CGImageCreate(width, v19, bitsPerComponent, v21, (v23 * bytesPerPixel), DeviceRGB, [(PLPhotoBakedThumbnails *)self bitmapInfo], v16, 0, 0, kCGRenderingIntentDefault);
 
       CGDataProviderRelease(v16);
       if (v24)
       {
-        [(NSMutableArray *)self->_thumbnailImages replaceObjectAtIndex:a3 withObject:v24];
+        [(NSMutableArray *)self->_thumbnailImages replaceObjectAtIndex:index withObject:v24];
         v11 = v24;
       }
 
@@ -307,7 +307,7 @@
   return v11;
 }
 
-- (char)thumbnailBytesAtIndex:(int64_t)a3
+- (char)thumbnailBytesAtIndex:(int64_t)index
 {
   if (self->_singleThumbnailImageLength < 1)
   {
@@ -317,7 +317,7 @@
   v13 = v5;
   v14 = v4;
   v15 = v3;
-  if (self->_count <= a3)
+  if (self->_count <= index)
   {
     return 0;
   }
@@ -342,12 +342,12 @@
     v11 = v11;
   }
 
-  return ([(NSData *)self->_thumbnailData bytes:v6]+ v11 + self->_singleThumbnailImageLength * a3);
+  return ([(NSData *)self->_thumbnailData bytes:v6]+ v11 + self->_singleThumbnailImageLength * index);
 }
 
-- (id)thumbnailDataAtIndex:(int64_t)a3
+- (id)thumbnailDataAtIndex:(int64_t)index
 {
-  v4 = [(PLPhotoBakedThumbnails *)self thumbnailBytesAtIndex:a3];
+  v4 = [(PLPhotoBakedThumbnails *)self thumbnailBytesAtIndex:index];
   if (v4)
   {
     v5 = v4;
@@ -370,14 +370,14 @@
   return v8;
 }
 
-- (BOOL)saveToFile:(id)a3
+- (BOOL)saveToFile:(id)file
 {
-  v4 = a3;
-  v5 = [(PLPhotoBakedThumbnails *)self serializedData];
-  v6 = v5;
-  if (v5)
+  fileCopy = file;
+  serializedData = [(PLPhotoBakedThumbnails *)self serializedData];
+  v6 = serializedData;
+  if (serializedData)
   {
-    v7 = [v5 writeToFile:v4 options:1073741825 error:0];
+    v7 = [serializedData writeToFile:fileCopy options:1073741825 error:0];
   }
 
   else
@@ -420,8 +420,8 @@
       }
 
       v11 = v10 + count * singleThumbnailImageLength;
-      v12 = [(PLPhotoBakedThumbnails *)self _thumbnailData];
-      [v12 replaceBytesInRange:v11 withBytes:objc_msgSend(v12 length:{"length") - v11, objc_msgSend(v4, "bytes"), objc_msgSend(v4, "length")}];
+      _thumbnailData = [(PLPhotoBakedThumbnails *)self _thumbnailData];
+      [_thumbnailData replaceBytesInRange:v11 withBytes:objc_msgSend(_thumbnailData length:{"length") - v11, objc_msgSend(v4, "bytes"), objc_msgSend(v4, "length")}];
       self->_optionsAccessed = 0;
     }
 
@@ -436,13 +436,13 @@
   return v13;
 }
 
-- (PLPhotoBakedThumbnails)initWithImages:(id)a3 format:(unsigned __int16)a4 options:(id)a5 delegate:(id)a6
+- (PLPhotoBakedThumbnails)initWithImages:(id)images format:(unsigned __int16)format options:(id)options delegate:(id)delegate
 {
-  v8 = a4;
+  formatCopy = format;
   v69 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  imagesCopy = images;
+  optionsCopy = options;
+  delegateCopy = delegate;
   v65.receiver = self;
   v65.super_class = PLPhotoBakedThumbnails;
   v14 = [(PLPhotoBakedThumbnails *)&v65 init];
@@ -454,8 +454,8 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  v14->_format = v8;
-  v14->_count = [v11 count];
+  v14->_format = formatCopy;
+  v14->_count = [imagesCopy count];
   v16 = PLPhotoBakedFormatInfoForFormat();
   count = v15->_count;
   if (count)
@@ -482,11 +482,11 @@ LABEL_38:
     {
       if (count != 1)
       {
-        v54 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v54 handleFailureInMethod:a2 object:v15 file:@"PLPhotoBakedThumbnails.m" lineNumber:196 description:@"Tried to serialize multiple images into baked thumbnail with dynamic size"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:v15 file:@"PLPhotoBakedThumbnails.m" lineNumber:196 description:@"Tried to serialize multiple images into baked thumbnail with dynamic size"];
       }
 
-      v23 = [v11 objectAtIndex:0];
+      v23 = [imagesCopy objectAtIndex:0];
       Width = CGImageGetWidth(v23);
       Height = CGImageGetHeight(v23);
       v26 = Width / Height;
@@ -512,9 +512,9 @@ LABEL_38:
     }
 
     v15->_singleThumbnailImageLength = singleThumbnailImageLength;
-    if (v12)
+    if (optionsCopy)
     {
-      v32 = [v12 mutableCopy];
+      v32 = [optionsCopy mutableCopy];
       options = v15->_options;
       v15->_options = v32;
 
@@ -545,7 +545,7 @@ LABEL_38:
     }
 
     v58 = v35;
-    v59 = v12;
+    v59 = optionsCopy;
     v39 = v57 + v15->_count * singleThumbnailImageLength;
     v15->_dataIsMutable = 1;
     v56 = v38;
@@ -553,13 +553,13 @@ LABEL_38:
     thumbnailData = v15->_thumbnailData;
     v15->_thumbnailData = v40;
 
-    v42 = [(NSData *)v15->_thumbnailData bytes];
-    v43 = v42;
-    *v42 = -1160913749;
-    *(v42 + 4) = bswap32(v8);
-    *(v42 + 10) = 0;
-    *(v42 + 11) = v21 == 0;
-    *(v42 + 8) = bswap32(LOWORD(v15->_count)) >> 16;
+    bytes = [(NSData *)v15->_thumbnailData bytes];
+    v43 = bytes;
+    *bytes = -1160913749;
+    *(bytes + 4) = bswap32(formatCopy);
+    *(bytes + 10) = 0;
+    *(bytes + 11) = v21 == 0;
+    *(bytes + 8) = bswap32(LOWORD(v15->_count)) >> 16;
     v55 = v39;
     v44 = bswap32(v39);
     if (v15->_options)
@@ -572,7 +572,7 @@ LABEL_38:
       v45 = 0;
     }
 
-    *(v42 + 12) = v45;
+    *(bytes + 12) = v45;
     if (!v21)
     {
       *([(NSData *)v15->_thumbnailData bytes]+ 16) = vrev32_s8(vmovn_s64(vcvtq_u64_f64(v15->_size)));
@@ -582,7 +582,7 @@ LABEL_38:
     v63 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v46 = v11;
+    v46 = imagesCopy;
     v47 = [v46 countByEnumeratingWithState:&v60 objects:v66 count:16];
     if (v47)
     {
@@ -598,7 +598,7 @@ LABEL_38:
             objc_enumerationMutation(v46);
           }
 
-          [(PLPhotoBakedThumbnails *)v15 writeBorderedThumbnailOfImage:*(*(&v60 + 1) + 8 * i) toBuffer:v49 orientation:0 format:v8 formatInfo:v20 delegate:v13];
+          [(PLPhotoBakedThumbnails *)v15 writeBorderedThumbnailOfImage:*(*(&v60 + 1) + 8 * i) toBuffer:v49 orientation:0 format:formatCopy formatInfo:v20 delegate:delegateCopy];
           v49 += v15->_singleThumbnailImageLength;
         }
 
@@ -610,11 +610,11 @@ LABEL_38:
 
     if (v56)
     {
-      v52 = [(PLPhotoBakedThumbnails *)v15 _thumbnailData];
-      [v52 replaceBytesInRange:v55 withBytes:v56 length:{objc_msgSend(v58, "bytes"), v56}];
+      _thumbnailData = [(PLPhotoBakedThumbnails *)v15 _thumbnailData];
+      [_thumbnailData replaceBytesInRange:v55 withBytes:v56 length:{objc_msgSend(v58, "bytes"), v56}];
     }
 
-    v12 = v59;
+    optionsCopy = v59;
     goto LABEL_38;
   }
 
@@ -624,21 +624,21 @@ LABEL_39:
   return v19;
 }
 
-- (PLPhotoBakedThumbnails)initWithContentsOfFile:(id)a3 format:(unsigned __int16)a4 readOnly:(BOOL)a5
+- (PLPhotoBakedThumbnails)initWithContentsOfFile:(id)file format:(unsigned __int16)format readOnly:(BOOL)only
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  if (v8)
+  onlyCopy = only;
+  formatCopy = format;
+  fileCopy = file;
+  if (fileCopy)
   {
-    if (v5)
+    if (onlyCopy)
     {
-      v9 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:v8 options:8 error:0];
+      v9 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:fileCopy options:8 error:0];
     }
 
     else
     {
-      v9 = [objc_alloc(MEMORY[0x1E695DF88]) initWithContentsOfFile:v8];
+      v9 = [objc_alloc(MEMORY[0x1E695DF88]) initWithContentsOfFile:fileCopy];
     }
 
     v10 = v9;
@@ -649,15 +649,15 @@ LABEL_39:
     v10 = 0;
   }
 
-  v11 = [(PLPhotoBakedThumbnails *)self initWithData:v10 format:v6 readOnly:v5];
+  v11 = [(PLPhotoBakedThumbnails *)self initWithData:v10 format:formatCopy readOnly:onlyCopy];
 
   return v11;
 }
 
-- (PLPhotoBakedThumbnails)initWithData:(id)a3 format:(unsigned __int16)a4 readOnly:(BOOL)a5
+- (PLPhotoBakedThumbnails)initWithData:(id)data format:(unsigned __int16)format readOnly:(BOOL)only
 {
-  v6 = a4;
-  v9 = a3;
+  formatCopy = format;
+  dataCopy = data;
   v31.receiver = self;
   v31.super_class = PLPhotoBakedThumbnails;
   v10 = [(PLPhotoBakedThumbnails *)&v31 init];
@@ -673,9 +673,9 @@ LABEL_39:
   }
 
   v12 = v11;
-  *(v10 + 4) = v6;
-  v10[24] = !a5;
-  objc_storeStrong(v10 + 4, a3);
+  *(v10 + 4) = formatCopy;
+  v10[24] = !only;
+  objc_storeStrong(v10 + 4, data);
   v13 = [*(v10 + 4) length];
   v14 = *(v10 + 4);
   if (!v14 || v13 < 0x10)
@@ -683,18 +683,18 @@ LABEL_39:
     goto LABEL_17;
   }
 
-  v16 = [v14 bytes];
-  if (!v16)
+  bytes = [v14 bytes];
+  if (!bytes)
   {
     goto LABEL_17;
   }
 
-  v17 = v16->u32[1];
-  v18 = v16[1].u16[0];
-  v19 = v16[1].u32[1];
-  if (v16->i32[0] != -1160913749)
+  v17 = bytes->u32[1];
+  v18 = bytes[1].u16[0];
+  v19 = bytes[1].u32[1];
+  if (bytes->i32[0] != -1160913749)
   {
-    if (v16->i32[0] != -1411592774)
+    if (bytes->i32[0] != -1411592774)
     {
 LABEL_17:
       v25 = 0;
@@ -706,14 +706,14 @@ LABEL_17:
     v19 = bswap32(v19);
   }
 
-  if (bswap32(v17) != v6)
+  if (bswap32(v17) != formatCopy)
   {
     goto LABEL_17;
   }
 
-  if (v16[1].i8[3])
+  if (bytes[1].i8[3])
   {
-    v23 = vrev32_s8(v16[2]);
+    v23 = vrev32_s8(bytes[2]);
     v24.i64[0] = v23.i32[0];
     v24.i64[1] = v23.i32[1];
     *(v10 + 72) = vcvtq_f64_s64(v24);
@@ -749,7 +749,7 @@ LABEL_17:
 
   if (!v28)
   {
-    v29 = [MEMORY[0x1E695DEF0] dataWithBytes:&v16->i8[v27] length:v13 - v27];
+    v29 = [MEMORY[0x1E695DEF0] dataWithBytes:&bytes->i8[v27] length:v13 - v27];
     v30 = *(v10 + 7);
     *(v10 + 7) = v29;
   }
@@ -760,44 +760,44 @@ LABEL_18:
   return v25;
 }
 
-+ (BOOL)_transformForImage:(CGImage *)a3 isCropped:(BOOL)a4 captureOrientation:(int)a5 sizeInOut:(CGSize *)a6 contextSizeOut:(CGSize *)a7 transformOut:(CGAffineTransform *)a8
++ (BOOL)_transformForImage:(CGImage *)image isCropped:(BOOL)cropped captureOrientation:(int)orientation sizeInOut:(CGSize *)out contextSizeOut:(CGSize *)sizeOut transformOut:(CGAffineTransform *)transformOut
 {
-  if (!a8)
+  if (!transformOut)
   {
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v34 handleFailureInMethod:a2 object:a1 file:@"PLPhotoBakedThumbnails.m" lineNumber:481 description:{@"Invalid parameter not satisfying: %@", @"transform"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoBakedThumbnails.m" lineNumber:481 description:{@"Invalid parameter not satisfying: %@", @"transform"}];
 
     return 0;
   }
 
   result = 0;
-  if (a6 && a7)
+  if (out && sizeOut)
   {
-    Width = CGImageGetWidth(a3);
-    Height = CGImageGetHeight(a3);
-    if (!a4)
+    Width = CGImageGetWidth(image);
+    Height = CGImageGetHeight(image);
+    if (!cropped)
     {
       if (Width <= Height)
       {
-        a6->width = floor(a6->height * (Width / Height));
+        out->width = floor(out->height * (Width / Height));
       }
 
       else
       {
-        a6->height = floor(a6->width * (Height / Width));
+        out->height = floor(out->width * (Height / Width));
       }
 
-      *a7 = *a6;
+      *sizeOut = *out;
     }
 
     v17 = MEMORY[0x1E695EFD0];
     v19 = *MEMORY[0x1E695EFD0];
     v18 = *(MEMORY[0x1E695EFD0] + 16);
-    *&a8->a = *MEMORY[0x1E695EFD0];
-    *&a8->c = v18;
+    *&transformOut->a = *MEMORY[0x1E695EFD0];
+    *&transformOut->c = v18;
     v20 = *(v17 + 32);
-    *&a8->tx = v20;
-    switch(a5)
+    *&transformOut->tx = v20;
+    switch(orientation)
     {
       case 2:
         *&v35.a = v19;
@@ -805,14 +805,14 @@ LABEL_18:
         *&v35.tx = v20;
         CGAffineTransformRotate(&v36, &v35, 1.57079633);
         v25 = *&v36.c;
-        *&a8->a = *&v36.a;
-        *&a8->c = v25;
-        *&a8->tx = *&v36.tx;
-        v26 = -a6->height;
-        v27 = *&a8->c;
-        *&v35.a = *&a8->a;
+        *&transformOut->a = *&v36.a;
+        *&transformOut->c = v25;
+        *&transformOut->tx = *&v36.tx;
+        v26 = -out->height;
+        v27 = *&transformOut->c;
+        *&v35.a = *&transformOut->a;
         *&v35.c = v27;
-        *&v35.tx = *&a8->tx;
+        *&v35.tx = *&transformOut->tx;
         v28 = 0.0;
         break;
       case 3:
@@ -823,20 +823,20 @@ LABEL_18:
         *&v35.tx = v20;
         CGAffineTransformRotate(&v36, &v35, 3.14159265);
         v21 = *&v36.c;
-        *&a8->a = *&v36.a;
-        *&a8->c = v21;
-        *&a8->tx = *&v36.tx;
-        v22 = -a6->width;
-        *&v21 = -a6->height;
-        v23 = *&a8->c;
-        *&v35.a = *&a8->a;
+        *&transformOut->a = *&v36.a;
+        *&transformOut->c = v21;
+        *&transformOut->tx = *&v36.tx;
+        v22 = -out->width;
+        *&v21 = -out->height;
+        v23 = *&transformOut->c;
+        *&v35.a = *&transformOut->a;
         *&v35.c = v23;
-        *&v35.tx = *&a8->tx;
+        *&v35.tx = *&transformOut->tx;
         CGAffineTransformTranslate(&v36, &v35, v22, *&v21);
         v24 = *&v36.c;
-        *&a8->a = *&v36.a;
-        *&a8->c = v24;
-        *&a8->tx = *&v36.tx;
+        *&transformOut->a = *&v36.a;
+        *&transformOut->c = v24;
+        *&transformOut->tx = *&v36.tx;
         return 1;
       default:
         *&v35.a = v19;
@@ -844,35 +844,35 @@ LABEL_18:
         *&v35.tx = v20;
         CGAffineTransformRotate(&v36, &v35, -1.57079633);
         v29 = *&v36.c;
-        *&a8->a = *&v36.a;
-        *&a8->c = v29;
-        *&a8->tx = *&v36.tx;
-        v28 = -a6->width;
-        v30 = *&a8->c;
-        *&v35.a = *&a8->a;
+        *&transformOut->a = *&v36.a;
+        *&transformOut->c = v29;
+        *&transformOut->tx = *&v36.tx;
+        v28 = -out->width;
+        v30 = *&transformOut->c;
+        *&v35.a = *&transformOut->a;
         *&v35.c = v30;
-        *&v35.tx = *&a8->tx;
+        *&v35.tx = *&transformOut->tx;
         v26 = 0.0;
         break;
     }
 
     CGAffineTransformTranslate(&v36, &v35, v28, v26);
     v31 = *&v36.c;
-    *&a8->a = *&v36.a;
-    *&a8->c = v31;
-    *&a8->tx = *&v36.tx;
-    *a7 = vextq_s8(*a6, *a6, 8uLL);
+    *&transformOut->a = *&v36.a;
+    *&transformOut->c = v31;
+    *&transformOut->tx = *&v36.tx;
+    *sizeOut = vextq_s8(*out, *out, 8uLL);
     return 1;
   }
 
   return result;
 }
 
-+ (id)thumbnailsWithContentsOfFile:(id)a3 format:(unsigned __int16)a4
++ (id)thumbnailsWithContentsOfFile:(id)file format:(unsigned __int16)format
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [[PLPhotoBakedThumbnails alloc] initWithContentsOfFile:v5 format:v4 readOnly:0];
+  formatCopy = format;
+  fileCopy = file;
+  v6 = [[PLPhotoBakedThumbnails alloc] initWithContentsOfFile:fileCopy format:formatCopy readOnly:0];
 
   return v6;
 }

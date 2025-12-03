@@ -1,68 +1,68 @@
 @interface IMDScheduledMessageCoordinator
-+ (void)notifyPeersWithScheduledMessageUpdate:(id)a3 scheduleState:(unint64_t)a4;
++ (void)notifyPeersWithScheduledMessageUpdate:(id)update scheduleState:(unint64_t)state;
 - (IMDScheduledMessageCoordinator)init;
-- (IMDScheduledMessageCoordinator)initWithServiceSession:(id)a3;
+- (IMDScheduledMessageCoordinator)initWithServiceSession:(id)session;
 - (id)description;
-- (id)processMessageForSending:(id)a3 toChat:(id)a4 style:(unsigned __int8)a5 allowWatchdog:(BOOL)a6 account:(id)a7;
-- (void)didSendMessage:(id)a3 forChat:(id)a4 style:(unsigned __int8)a5 account:(id)a6 forceDate:(id)a7 itemIsComingFromStorage:(BOOL)a8;
-- (void)didUpdateChatStatus:(int)a3 chat:(id)a4 style:(unsigned __int8)a5 displayName:(id)a6 groupID:(id)a7 lastAddressedHandle:(id)a8 lastAddressedSIMID:(id)a9 handleInfo:(id)a10 account:(id)a11 category:(int64_t)a12 spamExtensionName:(id)a13 isBlackholed:(BOOL)a14;
-- (void)handleMessageDidReplace:(id)a3 newMessage:(id)a4;
-- (void)informOfCancelledMessageWithMessageGUID:(id)a3 success:(BOOL)a4 cancelType:(unint64_t)a5 error:(id)a6;
-- (void)removeFailedEditsFrom:(id)a3;
-- (void)serviceSession:(id)a3 willMoveChatToRecentlyDeleted:(id)a4;
-- (void)serviceSession:(id)a3 willRemoveChat:(id)a4;
+- (id)processMessageForSending:(id)sending toChat:(id)chat style:(unsigned __int8)style allowWatchdog:(BOOL)watchdog account:(id)account;
+- (void)didSendMessage:(id)message forChat:(id)chat style:(unsigned __int8)style account:(id)account forceDate:(id)date itemIsComingFromStorage:(BOOL)storage;
+- (void)didUpdateChatStatus:(int)status chat:(id)chat style:(unsigned __int8)style displayName:(id)name groupID:(id)d lastAddressedHandle:(id)handle lastAddressedSIMID:(id)iD handleInfo:(id)self0 account:(id)self1 category:(int64_t)self2 spamExtensionName:(id)self3 isBlackholed:(BOOL)self4;
+- (void)handleMessageDidReplace:(id)replace newMessage:(id)message;
+- (void)informOfCancelledMessageWithMessageGUID:(id)d success:(BOOL)success cancelType:(unint64_t)type error:(id)error;
+- (void)removeFailedEditsFrom:(id)from;
+- (void)serviceSession:(id)session willMoveChatToRecentlyDeleted:(id)deleted;
+- (void)serviceSession:(id)session willRemoveChat:(id)chat;
 - (void)systemDidLeaveFirstDataProtectionLock;
 - (void)timerDidFire;
-- (void)updateTimerForTimeInterval:(double)a3;
+- (void)updateTimerForTimeInterval:(double)interval;
 @end
 
 @implementation IMDScheduledMessageCoordinator
 
-- (IMDScheduledMessageCoordinator)initWithServiceSession:(id)a3
+- (IMDScheduledMessageCoordinator)initWithServiceSession:(id)session
 {
   v4 = objc_opt_self();
-  v5 = a3;
-  v6 = [v4 sharedInstance];
-  v7 = [objc_opt_self() sharedInstance];
-  v8 = [objc_opt_self() sharedInstance];
+  sessionCopy = session;
+  sharedInstance = [v4 sharedInstance];
+  sharedInstance2 = [objc_opt_self() sharedInstance];
+  sharedInstance3 = [objc_opt_self() sharedInstance];
   v9 = objc_allocWithZone(IMDScheduledMessageCoordinator);
-  v10 = sub_22B773558(v5, v6, v7, v8);
+  v10 = sub_22B773558(sessionCopy, sharedInstance, sharedInstance2, sharedInstance3);
   swift_getObjectType();
   swift_deallocPartialClassInstance();
   return v10;
 }
 
-- (void)updateTimerForTimeInterval:(double)a3
+- (void)updateTimerForTimeInterval:(double)interval
 {
-  v4 = self;
-  sub_22B773CF8(a3);
+  selfCopy = self;
+  sub_22B773CF8(interval);
 }
 
-- (void)informOfCancelledMessageWithMessageGUID:(id)a3 success:(BOOL)a4 cancelType:(unint64_t)a5 error:(id)a6
+- (void)informOfCancelledMessageWithMessageGUID:(id)d success:(BOOL)success cancelType:(unint64_t)type error:(id)error
 {
   v10 = sub_22B7DB6A8();
   v12 = v11;
-  v14 = a6;
-  v13 = self;
-  sub_22B77A808(v10, v12, a4, a5);
+  errorCopy = error;
+  selfCopy = self;
+  sub_22B77A808(v10, v12, success, type);
 }
 
-- (void)removeFailedEditsFrom:(id)a3
+- (void)removeFailedEditsFrom:(id)from
 {
-  v4 = a3;
-  v5 = self;
-  sub_22B77B67C(v4);
+  fromCopy = from;
+  selfCopy = self;
+  sub_22B77B67C(fromCopy);
 }
 
 - (void)timerDidFire
 {
-  v2 = self;
+  selfCopy = self;
   sub_22B775D70();
 }
 
 - (id)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_22B777350();
 
   v3 = sub_22B7DB678();
@@ -77,30 +77,30 @@
   return result;
 }
 
-- (void)handleMessageDidReplace:(id)a3 newMessage:(id)a4
+- (void)handleMessageDidReplace:(id)replace newMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_22B778F38(v6, v7);
+  replaceCopy = replace;
+  messageCopy = message;
+  selfCopy = self;
+  sub_22B778F38(replaceCopy, messageCopy);
 }
 
-+ (void)notifyPeersWithScheduledMessageUpdate:(id)a3 scheduleState:(unint64_t)a4
++ (void)notifyPeersWithScheduledMessageUpdate:(id)update scheduleState:(unint64_t)state
 {
   v5 = sub_22B7DB6A8();
-  sub_22B77BDB8(v5, v6, a4);
+  sub_22B77BDB8(v5, v6, state);
 }
 
-- (void)didSendMessage:(id)a3 forChat:(id)a4 style:(unsigned __int8)a5 account:(id)a6 forceDate:(id)a7 itemIsComingFromStorage:(BOOL)a8
+- (void)didSendMessage:(id)message forChat:(id)chat style:(unsigned __int8)style account:(id)account forceDate:(id)date itemIsComingFromStorage:(BOOL)storage
 {
-  v10 = a5;
+  styleCopy = style;
   v13 = sub_22B6F0AD4(&unk_27D8CF790, &qword_22B7F9578);
   v14 = *(*(v13 - 8) + 64);
   MEMORY[0x28223BE20](v13 - 8);
   v16 = &v25 - v15;
   v17 = sub_22B7DB6A8();
   v19 = v18;
-  if (a7)
+  if (date)
   {
     sub_22B7DA928();
     v20 = sub_22B7DA968();
@@ -113,56 +113,56 @@
     (*(*(v21 - 8) + 56))(v16, 1, 1, v21);
   }
 
-  v22 = a3;
-  v23 = a6;
-  v24 = self;
-  sub_22B77C7AC(v22, v17, v19, v10);
+  messageCopy = message;
+  accountCopy = account;
+  selfCopy = self;
+  sub_22B77C7AC(messageCopy, v17, v19, styleCopy);
 
   sub_22B4D0D64(v16, &unk_27D8CF790, &qword_22B7F9578);
 }
 
-- (void)didUpdateChatStatus:(int)a3 chat:(id)a4 style:(unsigned __int8)a5 displayName:(id)a6 groupID:(id)a7 lastAddressedHandle:(id)a8 lastAddressedSIMID:(id)a9 handleInfo:(id)a10 account:(id)a11 category:(int64_t)a12 spamExtensionName:(id)a13 isBlackholed:(BOOL)a14
+- (void)didUpdateChatStatus:(int)status chat:(id)chat style:(unsigned __int8)style displayName:(id)name groupID:(id)d lastAddressedHandle:(id)handle lastAddressedSIMID:(id)iD handleInfo:(id)self0 account:(id)self1 category:(int64_t)self2 spamExtensionName:(id)self3 isBlackholed:(BOOL)self4
 {
   v17 = sub_22B7DB6A8();
   v19 = v18;
-  v20 = a11;
-  v21 = self;
-  sub_22B77CCA4(a3, v17, v19, a5);
+  accountCopy = account;
+  selfCopy = self;
+  sub_22B77CCA4(status, v17, v19, style);
 }
 
-- (id)processMessageForSending:(id)a3 toChat:(id)a4 style:(unsigned __int8)a5 allowWatchdog:(BOOL)a6 account:(id)a7
+- (id)processMessageForSending:(id)sending toChat:(id)chat style:(unsigned __int8)style allowWatchdog:(BOOL)watchdog account:(id)account
 {
-  v8 = a5;
+  styleCopy = style;
   v11 = sub_22B7DB6A8();
   v13 = v12;
-  v14 = a3;
-  v15 = a7;
-  v16 = self;
-  sub_22B77CF84(v14, v11, v13, v8);
+  sendingCopy = sending;
+  accountCopy = account;
+  selfCopy = self;
+  sub_22B77CF84(sendingCopy, v11, v13, styleCopy);
   v18 = v17;
 
   return v18;
 }
 
-- (void)serviceSession:(id)a3 willRemoveChat:(id)a4
+- (void)serviceSession:(id)session willRemoveChat:(id)chat
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_22B77E01C(v7, "%@ Handling chat %@ being removed.");
+  sessionCopy = session;
+  chatCopy = chat;
+  selfCopy = self;
+  sub_22B77E01C(chatCopy, "%@ Handling chat %@ being removed.");
 }
 
-- (void)serviceSession:(id)a3 willMoveChatToRecentlyDeleted:(id)a4
+- (void)serviceSession:(id)session willMoveChatToRecentlyDeleted:(id)deleted
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_22B77E01C(v7, "%@ Handling chat %@ being moved to recently deleted.");
+  sessionCopy = session;
+  deletedCopy = deleted;
+  selfCopy = self;
+  sub_22B77E01C(deletedCopy, "%@ Handling chat %@ being moved to recently deleted.");
 }
 
 - (void)systemDidLeaveFirstDataProtectionLock
 {
-  v2 = self;
+  selfCopy = self;
   sub_22B779CC0();
 }
 

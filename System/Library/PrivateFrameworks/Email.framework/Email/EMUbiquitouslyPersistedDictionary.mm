@@ -1,24 +1,24 @@
 @interface EMUbiquitouslyPersistedDictionary
 + (OS_os_log)log;
-+ (id)sharedDictionaryWithIdentifier:(id)a3;
-- (EMUbiquitouslyPersistedDictionary)initWithPlistPath:(id)a3 identifier:(id)a4 encrypted:(BOOL)a5 delegate:(id)a6;
++ (id)sharedDictionaryWithIdentifier:(id)identifier;
+- (EMUbiquitouslyPersistedDictionary)initWithPlistPath:(id)path identifier:(id)identifier encrypted:(BOOL)encrypted delegate:(id)delegate;
 - (EMUbiquitouslyPersistedDictionaryDelegate)delegate;
-- (id)_mergeChangesForRemotelyChangedKeys:(id)a3;
-- (id)objectForKey:(id)a3;
-- (id)objectForKeyedSubscript:(id)a3;
+- (id)_mergeChangesForRemotelyChangedKeys:(id)keys;
+- (id)objectForKey:(id)key;
+- (id)objectForKeyedSubscript:(id)subscript;
 - (unint64_t)count;
 - (void)_ensureStoredObjectsAreInKVStore;
-- (void)_mergeKVStoreChangedKeys:(id)a3;
+- (void)_mergeKVStoreChangedKeys:(id)keys;
 - (void)_purgeOldestEntries;
 - (void)_resetKVStore;
-- (void)_storeChangedExternally:(id)a3;
+- (void)_storeChangedExternally:(id)externally;
 - (void)_synchronize;
 - (void)_writeToPlist;
-- (void)notifyDelegateOfChangedItems:(id)a3 deletedItems:(id)a4;
+- (void)notifyDelegateOfChangedItems:(id)items deletedItems:(id)deletedItems;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
 @end
 
 @implementation EMUbiquitouslyPersistedDictionary
@@ -37,7 +37,7 @@ void __40__EMUbiquitouslyPersistedDictionary_log__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __40__EMUbiquitouslyPersistedDictionary_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_40 != -1)
   {
     dispatch_once(&log_onceToken_40, block);
@@ -48,9 +48,9 @@ void __40__EMUbiquitouslyPersistedDictionary_log__block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (id)sharedDictionaryWithIdentifier:(id)a3
++ (id)sharedDictionaryWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (sharedDictionaryWithIdentifier__onceToken != -1)
   {
     +[EMUbiquitouslyPersistedDictionary sharedDictionaryWithIdentifier:];
@@ -67,9 +67,9 @@ void __40__EMUbiquitouslyPersistedDictionary_log__block_invoke(uint64_t a1)
   v8[1] = 3221225472;
   v8[2] = __68__EMUbiquitouslyPersistedDictionary_sharedDictionaryWithIdentifier___block_invoke_35;
   v8[3] = &unk_1E826F128;
-  v9 = v3;
+  v9 = identifierCopy;
   v10 = &v11;
-  v5 = v3;
+  v5 = identifierCopy;
   dispatch_sync(v4, v8);
   v6 = v12[5];
 
@@ -111,27 +111,27 @@ void __68__EMUbiquitouslyPersistedDictionary_sharedDictionaryWithIdentifier___bl
   }
 }
 
-- (EMUbiquitouslyPersistedDictionary)initWithPlistPath:(id)a3 identifier:(id)a4 encrypted:(BOOL)a5 delegate:(id)a6
+- (EMUbiquitouslyPersistedDictionary)initWithPlistPath:(id)path identifier:(id)identifier encrypted:(BOOL)encrypted delegate:(id)delegate
 {
-  v7 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  encryptedCopy = encrypted;
+  pathCopy = path;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
   v36.receiver = self;
   v36.super_class = EMUbiquitouslyPersistedDictionary;
   v15 = [(EMUbiquitouslyPersistedDictionary *)&v36 init];
   if (v15)
   {
-    v16 = [v13 copy];
+    v16 = [identifierCopy copy];
     identifier = v15->_identifier;
     v15->_identifier = v16;
 
-    v18 = [objc_alloc(MEMORY[0x1E696AFB8]) initWithStoreIdentifier:v15->_identifier type:v7];
+    v18 = [objc_alloc(MEMORY[0x1E696AFB8]) initWithStoreIdentifier:v15->_identifier type:encryptedCopy];
     kvStore = v15->_kvStore;
     v15->_kvStore = v18;
 
-    objc_storeStrong(&v15->_plistPath, a3);
-    objc_storeWeak(&v15->_delegate, v14);
+    objc_storeStrong(&v15->_plistPath, path);
+    objc_storeWeak(&v15->_delegate, delegateCopy);
     v20 = dispatch_queue_create([(NSString *)v15->_identifier UTF8String], 0);
     mutationQueue = v15->_mutationQueue;
     v15->_mutationQueue = v20;
@@ -145,8 +145,8 @@ void __68__EMUbiquitouslyPersistedDictionary_sharedDictionaryWithIdentifier___bl
 
       if ((v25 & 1) == 0)
       {
-        v26 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v26 handleFailureInMethod:a2 object:v15 file:@"EMUbiquitouslyPersistedDictionary.m" lineNumber:104 description:@"Unsupported version"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:v15 file:@"EMUbiquitouslyPersistedDictionary.m" lineNumber:104 description:@"Unsupported version"];
       }
     }
 
@@ -172,8 +172,8 @@ void __68__EMUbiquitouslyPersistedDictionary_sharedDictionaryWithIdentifier___bl
     }
 
     [(EMUbiquitouslyPersistedDictionary *)v15 _mergeKVStoreChangedKeys:0];
-    v34 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v34 addObserver:v15 selector:sel__storeChangedExternally_ name:*MEMORY[0x1E696A9E8] object:v15->_kvStore];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v15 selector:sel__storeChangedExternally_ name:*MEMORY[0x1E696A9E8] object:v15->_kvStore];
   }
 
   return v15;
@@ -185,14 +185,14 @@ void __68__EMUbiquitouslyPersistedDictionary_sharedDictionaryWithIdentifier___bl
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0xAAAAAAAAAAAAAAAALL;
-  v3 = [(EMUbiquitouslyPersistedDictionary *)self mutationQueue];
+  mutationQueue = [(EMUbiquitouslyPersistedDictionary *)self mutationQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__EMUbiquitouslyPersistedDictionary_count__block_invoke;
   v6[3] = &unk_1E826F128;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(mutationQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -205,14 +205,14 @@ void __42__EMUbiquitouslyPersistedDictionary_count__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 count];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"EMUbiquitouslyPersistedDictionary.m" lineNumber:134 description:{@"Invalid parameter not satisfying: %@", @"[key isKindOfClass:[NSString class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMUbiquitouslyPersistedDictionary.m" lineNumber:134 description:{@"Invalid parameter not satisfying: %@", @"[key isKindOfClass:[NSString class]]"}];
   }
 
   v14 = 0;
@@ -221,16 +221,16 @@ void __42__EMUbiquitouslyPersistedDictionary_count__block_invoke(uint64_t a1)
   v17 = __Block_byref_object_copy__13;
   v18 = __Block_byref_object_dispose__13;
   v19 = 0;
-  v6 = [(EMUbiquitouslyPersistedDictionary *)self mutationQueue];
+  mutationQueue = [(EMUbiquitouslyPersistedDictionary *)self mutationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__EMUbiquitouslyPersistedDictionary_objectForKey___block_invoke;
   block[3] = &unk_1E826FBE8;
-  v12 = v5;
+  v12 = keyCopy;
   v13 = &v14;
   block[4] = self;
-  v7 = v5;
-  dispatch_sync(v6, block);
+  v7 = keyCopy;
+  dispatch_sync(mutationQueue, block);
 
   v8 = v15[5];
   _Block_object_dispose(&v14, 8);
@@ -248,43 +248,43 @@ void __50__EMUbiquitouslyPersistedDictionary_objectForKey___block_invoke(uint64_
   *(v4 + 40) = v3;
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v3 = [(EMUbiquitouslyPersistedDictionary *)self objectForKey:a3];
+  v3 = [(EMUbiquitouslyPersistedDictionary *)self objectForKey:subscript];
 
   return v3;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  keyCopy = key;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"EMUbiquitouslyPersistedDictionary.m" lineNumber:148 description:{@"Invalid parameter not satisfying: %@", @"[(id)key isKindOfClass:[NSString class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMUbiquitouslyPersistedDictionary.m" lineNumber:148 description:{@"Invalid parameter not satisfying: %@", @"[(id)key isKindOfClass:[NSString class]]"}];
   }
 
-  v9 = v8;
+  v9 = keyCopy;
   if (![v9 length] || (v10 = objc_msgSend(v9, "length"), -[EMUbiquitouslyPersistedDictionary kvStore](self, "kvStore"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "maximumKeyLength"), v11, v10 > v12))
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"EMUbiquitouslyPersistedDictionary.m" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"keyString.length > 0 && keyString.length <= self.kvStore.maximumKeyLength"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"EMUbiquitouslyPersistedDictionary.m" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"keyString.length > 0 && keyString.length <= self.kvStore.maximumKeyLength"}];
   }
 
-  v14 = [(EMUbiquitouslyPersistedDictionary *)self mutationQueue];
+  mutationQueue = [(EMUbiquitouslyPersistedDictionary *)self mutationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__EMUbiquitouslyPersistedDictionary_setObject_forKey___block_invoke;
   block[3] = &unk_1E826D498;
-  v19 = v7;
-  v20 = self;
+  v19 = objectCopy;
+  selfCopy = self;
   v15 = v9;
   v21 = v15;
   v22 = v15;
-  v16 = v7;
-  dispatch_async(v14, block);
+  v16 = objectCopy;
+  dispatch_async(mutationQueue, block);
 }
 
 void __54__EMUbiquitouslyPersistedDictionary_setObject_forKey___block_invoke(uint64_t a1)
@@ -313,39 +313,39 @@ void __54__EMUbiquitouslyPersistedDictionary_setObject_forKey___block_invoke(uin
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  v7 = a3;
-  v6 = a4;
-  if (v7)
+  objectCopy = object;
+  subscriptCopy = subscript;
+  if (objectCopy)
   {
-    [(EMUbiquitouslyPersistedDictionary *)self setObject:v7 forKey:v6];
+    [(EMUbiquitouslyPersistedDictionary *)self setObject:objectCopy forKey:subscriptCopy];
   }
 
   else
   {
-    [(EMUbiquitouslyPersistedDictionary *)self removeObjectForKey:v6];
+    [(EMUbiquitouslyPersistedDictionary *)self removeObjectForKey:subscriptCopy];
   }
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"EMUbiquitouslyPersistedDictionary.m" lineNumber:173 description:{@"Invalid parameter not satisfying: %@", @"[(id)key isKindOfClass:[NSString class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMUbiquitouslyPersistedDictionary.m" lineNumber:173 description:{@"Invalid parameter not satisfying: %@", @"[(id)key isKindOfClass:[NSString class]]"}];
   }
 
-  v6 = v5;
+  v6 = keyCopy;
   if (![v6 length] || (v7 = objc_msgSend(v6, "length"), -[EMUbiquitouslyPersistedDictionary kvStore](self, "kvStore"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "maximumKeyLength"), v8, v7 > v9))
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"EMUbiquitouslyPersistedDictionary.m" lineNumber:175 description:{@"Invalid parameter not satisfying: %@", @"keyString.length > 0 && keyString.length <= self.kvStore.maximumKeyLength"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"EMUbiquitouslyPersistedDictionary.m" lineNumber:175 description:{@"Invalid parameter not satisfying: %@", @"keyString.length > 0 && keyString.length <= self.kvStore.maximumKeyLength"}];
   }
 
-  v11 = [(EMUbiquitouslyPersistedDictionary *)self mutationQueue];
+  mutationQueue = [(EMUbiquitouslyPersistedDictionary *)self mutationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__EMUbiquitouslyPersistedDictionary_removeObjectForKey___block_invoke;
@@ -354,7 +354,7 @@ void __54__EMUbiquitouslyPersistedDictionary_setObject_forKey___block_invoke(uin
   v15 = v6;
   v16 = v6;
   v12 = v6;
-  dispatch_async(v11, block);
+  dispatch_async(mutationQueue, block);
 }
 
 uint64_t __56__EMUbiquitouslyPersistedDictionary_removeObjectForKey___block_invoke(uint64_t a1)
@@ -372,13 +372,13 @@ uint64_t __56__EMUbiquitouslyPersistedDictionary_removeObjectForKey___block_invo
 
 - (void)removeAllObjects
 {
-  v3 = [(EMUbiquitouslyPersistedDictionary *)self mutationQueue];
+  mutationQueue = [(EMUbiquitouslyPersistedDictionary *)self mutationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__EMUbiquitouslyPersistedDictionary_removeAllObjects__block_invoke;
   block[3] = &unk_1E826C098;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(mutationQueue, block);
 }
 
 uint64_t __53__EMUbiquitouslyPersistedDictionary_removeAllObjects__block_invoke(uint64_t a1)
@@ -398,19 +398,19 @@ uint64_t __53__EMUbiquitouslyPersistedDictionary_removeAllObjects__block_invoke(
 - (void)_writeToPlist
 {
   *buf = 138543362;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_1C6655000, log, OS_LOG_TYPE_ERROR, "_writeToPlist failed with error %{public}@", buf, 0xCu);
 }
 
 - (void)_ensureStoredObjectsAreInKVStore
 {
-  v3 = [(EMUbiquitouslyPersistedDictionary *)self storedObjects];
+  storedObjects = [(EMUbiquitouslyPersistedDictionary *)self storedObjects];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __69__EMUbiquitouslyPersistedDictionary__ensureStoredObjectsAreInKVStore__block_invoke;
   v4[3] = &unk_1E826FC10;
   v4[4] = self;
-  [v3 enumerateKeysAndObjectsUsingBlock:v4];
+  [storedObjects enumerateKeysAndObjectsUsingBlock:v4];
 }
 
 void __69__EMUbiquitouslyPersistedDictionary__ensureStoredObjectsAreInKVStore__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -431,10 +431,10 @@ void __69__EMUbiquitouslyPersistedDictionary__ensureStoredObjectsAreInKVStore__b
 {
   [(EMUbiquitouslyPersistedDictionary *)self _writeToPlist];
   [(EMUbiquitouslyPersistedDictionary *)self _ensureStoredObjectsAreInKVStore];
-  v3 = [(EMUbiquitouslyPersistedDictionary *)self kvStore];
-  v4 = [v3 synchronize];
+  kvStore = [(EMUbiquitouslyPersistedDictionary *)self kvStore];
+  synchronize = [kvStore synchronize];
 
-  if ((v4 & 1) == 0)
+  if ((synchronize & 1) == 0)
   {
     v5 = +[EMUbiquitouslyPersistedDictionary log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -446,9 +446,9 @@ void __69__EMUbiquitouslyPersistedDictionary__ensureStoredObjectsAreInKVStore__b
 
 - (void)_purgeOldestEntries
 {
-  v3 = [(EMUbiquitouslyPersistedDictionary *)self storedObjects];
-  v4 = [v3 allKeys];
-  v5 = [v4 mutableCopy];
+  storedObjects = [(EMUbiquitouslyPersistedDictionary *)self storedObjects];
+  allKeys = [storedObjects allKeys];
+  v5 = [allKeys mutableCopy];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -465,13 +465,13 @@ void __69__EMUbiquitouslyPersistedDictionary__ensureStoredObjectsAreInKVStore__b
       break;
     }
 
-    v9 = [(EMUbiquitouslyPersistedDictionary *)self storedObjects];
+    storedObjects2 = [(EMUbiquitouslyPersistedDictionary *)self storedObjects];
     v10 = [v5 objectAtIndexedSubscript:i];
-    [v9 removeObjectForKey:v10];
+    [storedObjects2 removeObjectForKey:v10];
 
-    v11 = [(EMUbiquitouslyPersistedDictionary *)self kvStore];
+    kvStore = [(EMUbiquitouslyPersistedDictionary *)self kvStore];
     v12 = [v5 objectAtIndexedSubscript:i];
-    [v11 removeObjectForKey:v12];
+    [kvStore removeObjectForKey:v12];
   }
 
   [(EMUbiquitouslyPersistedDictionary *)self _synchronize];
@@ -505,15 +505,15 @@ uint64_t __56__EMUbiquitouslyPersistedDictionary__purgeOldestEntries__block_invo
     _os_log_impl(&dword_1C6655000, v3, OS_LOG_TYPE_DEFAULT, "resetting kv store for %@", buf, 0xCu);
   }
 
-  v5 = [(EMUbiquitouslyPersistedDictionary *)self kvStore];
-  v6 = [v5 dictionaryRepresentation];
+  kvStore = [(EMUbiquitouslyPersistedDictionary *)self kvStore];
+  dictionaryRepresentation = [kvStore dictionaryRepresentation];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v6 allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allKeys = [dictionaryRepresentation allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = *v16;
@@ -524,64 +524,64 @@ uint64_t __56__EMUbiquitouslyPersistedDictionary__purgeOldestEntries__block_invo
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v15 + 1) + 8 * v10);
-        v12 = [(EMUbiquitouslyPersistedDictionary *)self kvStore];
-        [v12 removeObjectForKey:v11];
+        kvStore2 = [(EMUbiquitouslyPersistedDictionary *)self kvStore];
+        [kvStore2 removeObjectForKey:v11];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  v13 = [(EMUbiquitouslyPersistedDictionary *)self kvStore];
-  [v13 synchronize];
+  kvStore3 = [(EMUbiquitouslyPersistedDictionary *)self kvStore];
+  [kvStore3 synchronize];
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_mergeKVStoreChangedKeys:(id)a3
+- (void)_mergeKVStoreChangedKeys:(id)keys
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keysCopy = keys;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  if ([v4 count])
+  if ([keysCopy count])
   {
-    v5 = [(EMUbiquitouslyPersistedDictionary *)self delegate];
-    v6 = [v5 conformsToProtocol:&unk_1F4642808];
+    delegate = [(EMUbiquitouslyPersistedDictionary *)self delegate];
+    v6 = [delegate conformsToProtocol:&unk_1F4642808];
 
     if (!v6)
     {
       goto LABEL_4;
     }
 
-    v7 = [(EMUbiquitouslyPersistedDictionary *)self delegate];
-    v8 = [(EMUbiquitouslyPersistedDictionary *)self storedObjects];
-    v9 = [(EMUbiquitouslyPersistedDictionary *)self kvStore];
-    v10 = [v7 mergeChangesForRemotelyChangedKeys:v4 localStore:v8 cloudStore:v9];
+    delegate2 = [(EMUbiquitouslyPersistedDictionary *)self delegate];
+    storedObjects = [(EMUbiquitouslyPersistedDictionary *)self storedObjects];
+    kvStore = [(EMUbiquitouslyPersistedDictionary *)self kvStore];
+    v10 = [delegate2 mergeChangesForRemotelyChangedKeys:keysCopy localStore:storedObjects cloudStore:kvStore];
 
     if (!v10)
     {
 LABEL_4:
-      v10 = [(EMUbiquitouslyPersistedDictionary *)self _mergeChangesForRemotelyChangedKeys:v4];
+      v10 = [(EMUbiquitouslyPersistedDictionary *)self _mergeChangesForRemotelyChangedKeys:keysCopy];
     }
 
-    v11 = [v10 changedItems];
-    v12 = [v10 deletedItems];
-    if ([v11 count] || objc_msgSend(v12, "count"))
+    changedItems = [v10 changedItems];
+    deletedItems = [v10 deletedItems];
+    if ([changedItems count] || objc_msgSend(deletedItems, "count"))
     {
       *(v21 + 24) = 1;
-      [(EMUbiquitouslyPersistedDictionary *)self notifyDelegateOfChangedItems:v11 deletedItems:v12];
+      [(EMUbiquitouslyPersistedDictionary *)self notifyDelegateOfChangedItems:changedItems deletedItems:deletedItems];
     }
 
     if ([v10 requiresSynchronizing])
@@ -592,15 +592,15 @@ LABEL_4:
 
   else
   {
-    v13 = [(EMUbiquitouslyPersistedDictionary *)self kvStore];
-    v14 = [v13 dictionaryRepresentation];
+    kvStore2 = [(EMUbiquitouslyPersistedDictionary *)self kvStore];
+    dictionaryRepresentation = [kvStore2 dictionaryRepresentation];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __62__EMUbiquitouslyPersistedDictionary__mergeKVStoreChangedKeys___block_invoke;
     v19[3] = &unk_1E826FC60;
     v19[4] = self;
     v19[5] = &v20;
-    [v14 enumerateKeysAndObjectsUsingBlock:v19];
+    [dictionaryRepresentation enumerateKeysAndObjectsUsingBlock:v19];
   }
 
   if (*(v21 + 24) == 1)
@@ -608,9 +608,9 @@ LABEL_4:
     v15 = +[EMUbiquitouslyPersistedDictionary log];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(EMUbiquitouslyPersistedDictionary *)self storedObjects];
+      storedObjects2 = [(EMUbiquitouslyPersistedDictionary *)self storedObjects];
       *buf = 138412290;
-      v25 = v16;
+      v25 = storedObjects2;
       _os_log_impl(&dword_1C6655000, v15, OS_LOG_TYPE_DEFAULT, "after merging changes: %@", buf, 0xCu);
     }
 
@@ -648,17 +648,17 @@ void __62__EMUbiquitouslyPersistedDictionary__mergeKVStoreChangedKeys___block_in
   }
 }
 
-- (id)_mergeChangesForRemotelyChangedKeys:(id)a3
+- (id)_mergeChangesForRemotelyChangedKeys:(id)keys
 {
   v30 = *MEMORY[0x1E69E9840];
-  v19 = a3;
+  keysCopy = keys;
   v21 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v19;
+  obj = keysCopy;
   v4 = [obj countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v4)
   {
@@ -673,29 +673,29 @@ void __62__EMUbiquitouslyPersistedDictionary__mergeKVStoreChangedKeys___block_in
         }
 
         v7 = *(*(&v23 + 1) + 8 * i);
-        v8 = [(EMUbiquitouslyPersistedDictionary *)self kvStore];
-        v9 = [v8 objectForKey:v7];
+        kvStore = [(EMUbiquitouslyPersistedDictionary *)self kvStore];
+        v9 = [kvStore objectForKey:v7];
 
-        v10 = [(EMUbiquitouslyPersistedDictionary *)self storedObjects];
-        v11 = [v10 objectForKeyedSubscript:v7];
+        storedObjects = [(EMUbiquitouslyPersistedDictionary *)self storedObjects];
+        v11 = [storedObjects objectForKeyedSubscript:v7];
 
         if (!v9)
         {
           if (v11)
           {
             [v20 addObject:v7];
-            v15 = [(EMUbiquitouslyPersistedDictionary *)self storedObjects];
-            [v15 removeObjectForKey:v7];
+            storedObjects2 = [(EMUbiquitouslyPersistedDictionary *)self storedObjects];
+            [storedObjects2 removeObjectForKey:v7];
           }
 
           else
           {
-            v15 = +[EMUbiquitouslyPersistedDictionary log];
-            if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+            storedObjects2 = +[EMUbiquitouslyPersistedDictionary log];
+            if (os_log_type_enabled(storedObjects2, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
               v28 = obj;
-              _os_log_impl(&dword_1C6655000, v15, OS_LOG_TYPE_DEFAULT, "no changes detected, changed keys=%@", buf, 0xCu);
+              _os_log_impl(&dword_1C6655000, storedObjects2, OS_LOG_TYPE_DEFAULT, "no changes detected, changed keys=%@", buf, 0xCu);
             }
           }
 
@@ -705,8 +705,8 @@ void __62__EMUbiquitouslyPersistedDictionary__mergeKVStoreChangedKeys___block_in
         if (!v11 || ([v11 objectForKeyedSubscript:@"value"], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "objectForKeyedSubscript:", @"value"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v12, "isEqual:", v13), v13, v12, (v14 & 1) == 0))
         {
           [v21 setObject:v9 forKeyedSubscript:v7];
-          v15 = [(EMUbiquitouslyPersistedDictionary *)self storedObjects];
-          [v15 setObject:v9 forKeyedSubscript:v7];
+          storedObjects2 = [(EMUbiquitouslyPersistedDictionary *)self storedObjects];
+          [storedObjects2 setObject:v9 forKeyedSubscript:v7];
 LABEL_14:
         }
       }
@@ -732,19 +732,19 @@ LABEL_14:
   return v16;
 }
 
-- (void)_storeChangedExternally:(id)a3
+- (void)_storeChangedExternally:(id)externally
 {
-  v5 = a3;
-  v6 = [(EMUbiquitouslyPersistedDictionary *)self mutationQueue];
+  externallyCopy = externally;
+  mutationQueue = [(EMUbiquitouslyPersistedDictionary *)self mutationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__EMUbiquitouslyPersistedDictionary__storeChangedExternally___block_invoke;
   block[3] = &unk_1E826CB80;
-  v9 = v5;
-  v10 = self;
+  v9 = externallyCopy;
+  selfCopy = self;
   v11 = a2;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = externallyCopy;
+  dispatch_async(mutationQueue, block);
 }
 
 void __61__EMUbiquitouslyPersistedDictionary__storeChangedExternally___block_invoke(uint64_t a1)
@@ -816,23 +816,23 @@ LABEL_16:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyDelegateOfChangedItems:(id)a3 deletedItems:(id)a4
+- (void)notifyDelegateOfChangedItems:(id)items deletedItems:(id)deletedItems
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 ef_mapValues:&__block_literal_global_134];
-  v9 = [(EMUbiquitouslyPersistedDictionary *)self delegate];
-  if (v9)
+  itemsCopy = items;
+  deletedItemsCopy = deletedItems;
+  v8 = [itemsCopy ef_mapValues:&__block_literal_global_134];
+  delegate = [(EMUbiquitouslyPersistedDictionary *)self delegate];
+  if (delegate)
   {
-    v10 = [(EMUbiquitouslyPersistedDictionary *)self delegateScheduler];
+    delegateScheduler = [(EMUbiquitouslyPersistedDictionary *)self delegateScheduler];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __79__EMUbiquitouslyPersistedDictionary_notifyDelegateOfChangedItems_deletedItems___block_invoke_2;
     v11[3] = &unk_1E826C230;
-    v12 = v9;
+    v12 = delegate;
     v13 = v8;
-    v14 = v7;
-    [v10 performBlock:v11];
+    v14 = deletedItemsCopy;
+    [delegateScheduler performBlock:v11];
   }
 }
 

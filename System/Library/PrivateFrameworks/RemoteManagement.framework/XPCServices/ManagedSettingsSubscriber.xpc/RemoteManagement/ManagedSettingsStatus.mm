@@ -2,14 +2,14 @@
 + (id)supportedStatusClasses;
 + (id)supportedStatusKeys;
 - (_TtC25ManagedSettingsSubscriber21ManagedSettingsStatus)init;
-- (void)queryForStatusWithKeyPaths:(id)a3 store:(id)a4 completionHandler:(id)a5;
+- (void)queryForStatusWithKeyPaths:(id)paths store:(id)store completionHandler:(id)handler;
 @end
 
 @implementation ManagedSettingsStatus
 
 + (id)supportedStatusKeys
 {
-  v2 = [objc_opt_self() managedSettingsSchemas];
+  managedSettingsSchemas = [objc_opt_self() managedSettingsSchemas];
   sub_10000B858(0, &qword_10001CD48, RMModelStatusSchema_ptr);
   v3 = sub_1000113EC();
 
@@ -27,13 +27,13 @@
   return v2.super.isa;
 }
 
-- (void)queryForStatusWithKeyPaths:(id)a3 store:(id)a4 completionHandler:(id)a5
+- (void)queryForStatusWithKeyPaths:(id)paths store:(id)store completionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   v8 = sub_10001159C();
   _Block_copy(v7);
-  v9 = a4;
-  v10 = self;
+  storeCopy = store;
+  selfCopy = self;
   sub_10000E5A0(v8, v7);
   _Block_release(v7);
   _Block_release(v7);

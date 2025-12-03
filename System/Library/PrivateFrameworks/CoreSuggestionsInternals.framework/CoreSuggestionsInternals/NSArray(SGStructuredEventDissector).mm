@@ -6,8 +6,8 @@
 
 - (BOOL)sg_isEmptySchemaObject
 {
-  v1 = [a1 sg_deepCopyWithoutEmptySchemaObjects];
-  v2 = [v1 count] == 0;
+  sg_deepCopyWithoutEmptySchemaObjects = [self sg_deepCopyWithoutEmptySchemaObjects];
+  v2 = [sg_deepCopyWithoutEmptySchemaObjects count] == 0;
 
   return v2;
 }

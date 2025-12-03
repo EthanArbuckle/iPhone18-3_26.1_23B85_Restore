@@ -1,30 +1,30 @@
 @interface CNPhotoPickerProviderItem
-+ (id)generateImageDataWithData:(id)a3 filterName:(id)a4;
-+ (id)generateThumbnailImageDataWithData:(id)a3 cropRect:(CGRect)a4;
-+ (id)thumbnailViewForImage:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)generateImageDataWithData:(id)data filterName:(id)name;
++ (id)generateThumbnailImageDataWithData:(id)data cropRect:(CGRect)rect;
++ (id)thumbnailViewForImage:(id)image;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)cropRect;
-- (CNPhotoPickerProviderItem)initWithImageData:(id)a3 thumbnailImageData:(id)a4 fullscreenImageData:(id)a5 cropRect:(CGRect)a6;
-- (CNPhotoPickerProviderItem)initWithImageData:(id)a3 thumbnailImageData:(id)a4 fullscreenImageData:(id)a5 imageFilterName:(id)a6 cropRect:(CGRect)a7 renderingQueue:(id)a8 callbackQueue:(id)a9;
+- (CNPhotoPickerProviderItem)initWithImageData:(id)data thumbnailImageData:(id)imageData fullscreenImageData:(id)fullscreenImageData cropRect:(CGRect)rect;
+- (CNPhotoPickerProviderItem)initWithImageData:(id)data thumbnailImageData:(id)imageData fullscreenImageData:(id)fullscreenImageData imageFilterName:(id)name cropRect:(CGRect)rect renderingQueue:(id)queue callbackQueue:(id)callbackQueue;
 - (CNPhotoPickerProviderItemDelegate)delegate;
 - (NSData)imageData;
 - (NSString)localizedVariantsTitle;
 - (UIImage)croppedFullSizeImage;
 - (UIImage)fullSizeImage;
 - (id)contactImageForMetadataStore;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)generatePhotoFilterVariants;
 - (id)generateThumbnailImageDataIfNeeded;
-- (id)generateThumbnailImageDataWithData:(id)a3;
-- (id)rotateImageDataIfNeeded:(id)a3;
+- (id)generateThumbnailImageDataWithData:(id)data;
+- (id)rotateImageDataIfNeeded:(id)needed;
 - (unint64_t)hash;
-- (void)applyVariantEffectToFullsizeImageWithCompletion:(id)a3;
-- (void)fullSizeViewWithCompletion:(id)a3;
+- (void)applyVariantEffectToFullsizeImageWithCompletion:(id)completion;
+- (void)fullSizeViewWithCompletion:(id)completion;
 - (void)generateAllImageDatasIfNeeded;
-- (void)thumbnailViewWithCompletion:(id)a3;
-- (void)thumbnailViewWithPlaceholderProvider:(id)a3 completion:(id)a4;
-- (void)updateContact:(id)a3;
-- (void)updateVisualIdentity:(id)a3;
+- (void)thumbnailViewWithCompletion:(id)completion;
+- (void)thumbnailViewWithPlaceholderProvider:(id)provider completion:(id)completion;
+- (void)updateContact:(id)contact;
+- (void)updateVisualIdentity:(id)identity;
 @end
 
 @implementation CNPhotoPickerProviderItem
@@ -67,25 +67,25 @@ uint64_t __33__CNPhotoPickerProviderItem_hash__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __37__CNPhotoPickerProviderItem_isEqual___block_invoke;
   v15[3] = &unk_1E74E7460;
   v15[4] = self;
-  v16 = v4;
+  v16 = equalCopy;
   aBlock = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __37__CNPhotoPickerProviderItem_isEqual___block_invoke_2;
   v12 = &unk_1E74E7460;
-  v13 = self;
+  selfCopy = self;
   v14 = v16;
   v6 = v16;
   v7 = _Block_copy(&aBlock);
-  LOBYTE(self) = [v5 isObject:self equalToOther:v6 withBlocks:{v15, v7, 0, aBlock, v10, v11, v12, v13}];
+  LOBYTE(self) = [v5 isObject:self equalToOther:v6 withBlocks:{v15, v7, 0, aBlock, v10, v11, v12, selfCopy}];
 
   return self;
 }
@@ -122,27 +122,27 @@ BOOL __37__CNPhotoPickerProviderItem_isEqual___block_invoke_2(uint64_t a1)
 - (id)contactImageForMetadataStore
 {
   v3 = objc_alloc(MEMORY[0x1E695CD88]);
-  v4 = [(CNPhotoPickerProviderItem *)self originalImageData];
+  originalImageData = [(CNPhotoPickerProviderItem *)self originalImageData];
   [(CNPhotoPickerProviderItem *)self cropRect];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [MEMORY[0x1E695DF00] date];
-  v14 = [v3 initWithImageData:v4 cropRect:v13 lastUsedDate:{v6, v8, v10, v12}];
+  date = [MEMORY[0x1E695DF00] date];
+  v14 = [v3 initWithImageData:originalImageData cropRect:date lastUsedDate:{v6, v8, v10, v12}];
 
-  v15 = [(CNPhotoPickerProviderItem *)self imageFilterName];
-  [v14 setVariant:v15];
+  imageFilterName = [(CNPhotoPickerProviderItem *)self imageFilterName];
+  [v14 setVariant:imageFilterName];
 
   [v14 setSource:2];
 
   return v14;
 }
 
-- (id)rotateImageDataIfNeeded:(id)a3
+- (id)rotateImageDataIfNeeded:(id)needed
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69DCAB8] cnui_imageWithDataPreservingScale:v3];
+  neededCopy = needed;
+  v4 = [MEMORY[0x1E69DCAB8] cnui_imageWithDataPreservingScale:neededCopy];
   if ([v4 imageOrientation])
   {
     [v4 size];
@@ -164,7 +164,7 @@ BOOL __37__CNPhotoPickerProviderItem_isEqual___block_invoke_2(uint64_t a1)
 
   else
   {
-    v15 = v3;
+    v15 = neededCopy;
   }
 
   return v15;
@@ -172,21 +172,21 @@ BOOL __37__CNPhotoPickerProviderItem_isEqual___block_invoke_2(uint64_t a1)
 
 - (id)generatePhotoFilterVariants
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(CNPhotoPickerProviderItem *)self thumbnailImageData];
+  array = [MEMORY[0x1E695DF70] array];
+  thumbnailImageData = [(CNPhotoPickerProviderItem *)self thumbnailImageData];
 
-  if (v4)
+  if (thumbnailImageData)
   {
-    v5 = [(CNPhotoPickerProviderItem *)self thumbnailImageData];
+    thumbnailImageData2 = [(CNPhotoPickerProviderItem *)self thumbnailImageData];
   }
 
   else
   {
-    v6 = [(CNPhotoPickerProviderItem *)self originalImageData];
-    v5 = [(CNPhotoPickerProviderItem *)self generateThumbnailImageDataWithData:v6];
+    originalImageData = [(CNPhotoPickerProviderItem *)self originalImageData];
+    thumbnailImageData2 = [(CNPhotoPickerProviderItem *)self generateThumbnailImageDataWithData:originalImageData];
   }
 
-  v7 = [MEMORY[0x1E69DCAB8] cnui_imageWithDataPreservingScale:v5];
+  v7 = [MEMORY[0x1E69DCAB8] cnui_imageWithDataPreservingScale:thumbnailImageData2];
   [v7 size];
   if (v8 > 256.0 || ([v7 size], v9 = 1.0, v10 > 256.0))
   {
@@ -207,17 +207,17 @@ BOOL __37__CNPhotoPickerProviderItem_isEqual___block_invoke_2(uint64_t a1)
   }
 
   v15 = objc_alloc(objc_opt_class());
-  v16 = [(CNPhotoPickerProviderItem *)self originalImageData];
-  v17 = [(CNPhotoPickerProviderItem *)self originalImageData];
+  originalImageData2 = [(CNPhotoPickerProviderItem *)self originalImageData];
+  originalImageData3 = [(CNPhotoPickerProviderItem *)self originalImageData];
   [(CNPhotoPickerProviderItem *)self cropRect];
-  v18 = [v15 initWithImageData:v16 thumbnailImageData:v5 fullscreenImageData:v17 cropRect:?];
+  v18 = [v15 initWithImageData:originalImageData2 thumbnailImageData:thumbnailImageData2 fullscreenImageData:originalImageData3 cropRect:?];
 
   [v18 setImageFilterName:0];
   v19 = CNContactsUIBundle();
   v20 = [v19 localizedStringForKey:@"PHOTO_FILTER_ORIGINAL_LABEL" value:&stru_1F0CE7398 table:@"Localized"];
   [v18 setLocalizedVariantDisplayName:v20];
 
-  [v3 _cn_addNonNilObject:v18];
+  [array _cn_addNonNilObject:v18];
   [v7 scale];
   v22 = v21;
   [v7 size];
@@ -229,9 +229,9 @@ BOOL __37__CNPhotoPickerProviderItem_isEqual___block_invoke_2(uint64_t a1)
   v31[2] = __56__CNPhotoPickerProviderItem_generatePhotoFilterVariants__block_invoke;
   v31[3] = &unk_1E74E3B28;
   v31[4] = self;
-  v27 = v3;
+  v27 = array;
   v32 = v27;
-  [CNPhotoPickerImageWithEffectGenerator imagesByApplyingEffectsToImageData:v5 withScaleFactor:v31 originalImageScale:v9 cropRect:v22 completion:0.0, 0.0, v24, v26];
+  [CNPhotoPickerImageWithEffectGenerator imagesByApplyingEffectsToImageData:thumbnailImageData2 withScaleFactor:v31 originalImageScale:v9 cropRect:v22 completion:0.0, 0.0, v24, v26];
   v28 = v32;
   v29 = v27;
 
@@ -258,58 +258,58 @@ void __56__CNPhotoPickerProviderItem_generatePhotoFilterVariants__block_invoke(u
   [*(a1 + 40) _cn_addNonNilObject:v9];
 }
 
-- (void)updateVisualIdentity:(id)a3
+- (void)updateVisualIdentity:(id)identity
 {
-  v9 = a3;
-  [v9 setMemojiMetadata:0];
+  identityCopy = identity;
+  [identityCopy setMemojiMetadata:0];
   [(CNPhotoPickerProviderItem *)self generateAllImageDatasIfNeeded];
-  v4 = [(CNPhotoPickerProviderItem *)self imageData];
-  [v9 setImageData:v4];
+  imageData = [(CNPhotoPickerProviderItem *)self imageData];
+  [identityCopy setImageData:imageData];
 
-  v5 = [(CNPhotoPickerProviderItem *)self imageData];
-  v6 = [v5 _cn_md5Hash];
-  [v9 setImageHash:v6];
+  imageData2 = [(CNPhotoPickerProviderItem *)self imageData];
+  _cn_md5Hash = [imageData2 _cn_md5Hash];
+  [identityCopy setImageHash:_cn_md5Hash];
 
   [(CNPhotoPickerProviderItem *)self cropRect];
-  [v9 setCropRect:?];
-  v7 = [(CNPhotoPickerProviderItem *)self thumbnailImageData];
-  [v9 setThumbnailImageData:v7];
+  [identityCopy setCropRect:?];
+  thumbnailImageData = [(CNPhotoPickerProviderItem *)self thumbnailImageData];
+  [identityCopy setThumbnailImageData:thumbnailImageData];
 
-  v8 = [(CNPhotoPickerProviderItem *)self fullscreenImageData];
-  [v9 setFullscreenImageData:v8];
+  fullscreenImageData = [(CNPhotoPickerProviderItem *)self fullscreenImageData];
+  [identityCopy setFullscreenImageData:fullscreenImageData];
 
-  [v9 updateImageType:1];
+  [identityCopy updateImageType:1];
 }
 
-- (void)updateContact:(id)a3
+- (void)updateContact:(id)contact
 {
-  v4 = a3;
-  v5 = [[CNVisualIdentity alloc] initWithContact:v4];
+  contactCopy = contact;
+  v5 = [[CNVisualIdentity alloc] initWithContact:contactCopy];
   [(CNPhotoPickerProviderItem *)self updateVisualIdentity:v5];
-  [(CNVisualIdentity *)v5 updateImageForContact:v4];
+  [(CNVisualIdentity *)v5 updateImageForContact:contactCopy];
 }
 
-- (void)applyVariantEffectToFullsizeImageWithCompletion:(id)a3
+- (void)applyVariantEffectToFullsizeImageWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CNPhotoPickerProviderItem *)self imageFilterName];
+  completionCopy = completion;
+  imageFilterName = [(CNPhotoPickerProviderItem *)self imageFilterName];
 
-  if (v5)
+  if (imageFilterName)
   {
     [(CNPhotoPickerProviderItem *)self setThumbnailImageData:0];
-    v6 = [(CNPhotoPickerProviderItem *)self renderingQueue];
+    renderingQueue = [(CNPhotoPickerProviderItem *)self renderingQueue];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __77__CNPhotoPickerProviderItem_applyVariantEffectToFullsizeImageWithCompletion___block_invoke;
     v7[3] = &unk_1E74E6DD0;
     v7[4] = self;
-    v8 = v4;
-    [v6 performBlock:v7];
+    v8 = completionCopy;
+    [renderingQueue performBlock:v7];
   }
 
   else
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -330,9 +330,9 @@ void __77__CNPhotoPickerProviderItem_applyVariantEffectToFullsizeImageWithComple
   croppedFullSizeImage = self->_croppedFullSizeImage;
   if (!croppedFullSizeImage)
   {
-    v4 = [(CNPhotoPickerProviderItem *)self fullSizeImage];
+    fullSizeImage = [(CNPhotoPickerProviderItem *)self fullSizeImage];
 
-    if (!v4)
+    if (!fullSizeImage)
     {
       v9 = 0;
       goto LABEL_9;
@@ -340,19 +340,19 @@ void __77__CNPhotoPickerProviderItem_applyVariantEffectToFullsizeImageWithComple
 
     [(CNPhotoPickerProviderItem *)self cropRect];
     v5 = CGRectEqualToRect(v16, *MEMORY[0x1E695F058]);
-    v6 = [(CNPhotoPickerProviderItem *)self fullSizeImage];
-    v7 = v6;
+    fullSizeImage2 = [(CNPhotoPickerProviderItem *)self fullSizeImage];
+    v7 = fullSizeImage2;
     if (v5)
     {
       v8 = self->_croppedFullSizeImage;
-      self->_croppedFullSizeImage = v6;
+      self->_croppedFullSizeImage = fullSizeImage2;
     }
 
     else
     {
-      v10 = [(UIImage *)v6 CGImage];
+      cGImage = [(UIImage *)fullSizeImage2 CGImage];
       [(CNPhotoPickerProviderItem *)self cropRect];
-      v11 = CGImageCreateWithImageInRect(v10, v17);
+      v11 = CGImageCreateWithImageInRect(cGImage, v17);
 
       v12 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v11];
       v13 = self->_croppedFullSizeImage;
@@ -375,11 +375,11 @@ LABEL_9:
   fullSizeImage = self->_fullSizeImage;
   if (!fullSizeImage)
   {
-    v4 = [(CNPhotoPickerProviderItem *)self imageData];
-    if (![v4 length])
+    imageData = [(CNPhotoPickerProviderItem *)self imageData];
+    if (![imageData length])
     {
-      v5 = [(CNPhotoPickerProviderItem *)self fullscreenImageData];
-      v6 = [v5 length];
+      fullscreenImageData = [(CNPhotoPickerProviderItem *)self fullscreenImageData];
+      v6 = [fullscreenImageData length];
 
       if (v6)
       {
@@ -392,10 +392,10 @@ LABEL_9:
       }
       v7 = ;
 
-      v4 = v7;
+      imageData = v7;
     }
 
-    v8 = [MEMORY[0x1E69DCAB8] imageWithData:v4];
+    v8 = [MEMORY[0x1E69DCAB8] imageWithData:imageData];
     v9 = self->_fullSizeImage;
     self->_fullSizeImage = v8;
 
@@ -405,56 +405,56 @@ LABEL_9:
   return fullSizeImage;
 }
 
-- (void)fullSizeViewWithCompletion:(id)a3
+- (void)fullSizeViewWithCompletion:(id)completion
 {
-  v9 = a3;
-  v4 = [(CNPhotoPickerProviderItem *)self imageData];
-  if (v4)
+  completionCopy = completion;
+  imageData = [(CNPhotoPickerProviderItem *)self imageData];
+  if (imageData)
   {
 
 LABEL_4:
     v6 = objc_opt_class();
-    v7 = [(CNPhotoPickerProviderItem *)self croppedFullSizeImage];
-    v8 = [v6 thumbnailViewForImage:v7];
-    v9[2](v9, v8);
+    croppedFullSizeImage = [(CNPhotoPickerProviderItem *)self croppedFullSizeImage];
+    v8 = [v6 thumbnailViewForImage:croppedFullSizeImage];
+    completionCopy[2](completionCopy, v8);
 
     goto LABEL_5;
   }
 
-  v5 = [(CNPhotoPickerProviderItem *)self fullscreenImageData];
+  fullscreenImageData = [(CNPhotoPickerProviderItem *)self fullscreenImageData];
 
-  if (v5)
+  if (fullscreenImageData)
   {
     goto LABEL_4;
   }
 
-  [(CNPhotoPickerProviderItem *)self thumbnailViewWithCompletion:v9];
+  [(CNPhotoPickerProviderItem *)self thumbnailViewWithCompletion:completionCopy];
 LABEL_5:
 }
 
-- (void)thumbnailViewWithCompletion:(id)a3
+- (void)thumbnailViewWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CNPhotoPickerProviderItem *)self thumbnailImage];
+  completionCopy = completion;
+  thumbnailImage = [(CNPhotoPickerProviderItem *)self thumbnailImage];
 
-  if (v5)
+  if (thumbnailImage)
   {
     v6 = objc_opt_class();
-    v7 = [(CNPhotoPickerProviderItem *)self thumbnailImage];
-    v8 = [v6 thumbnailViewForImage:v7];
-    v4[2](v4, v8);
+    thumbnailImage2 = [(CNPhotoPickerProviderItem *)self thumbnailImage];
+    v8 = [v6 thumbnailViewForImage:thumbnailImage2];
+    completionCopy[2](completionCopy, v8);
   }
 
   else
   {
-    v9 = [(CNPhotoPickerProviderItem *)self renderingQueue];
+    renderingQueue = [(CNPhotoPickerProviderItem *)self renderingQueue];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __57__CNPhotoPickerProviderItem_thumbnailViewWithCompletion___block_invoke;
     v10[3] = &unk_1E74E6DD0;
     v10[4] = self;
-    v11 = v4;
-    [v9 performBlock:v10];
+    v11 = completionCopy;
+    [renderingQueue performBlock:v10];
   }
 }
 
@@ -483,23 +483,23 @@ void __57__CNPhotoPickerProviderItem_thumbnailViewWithCompletion___block_invoke_
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)thumbnailViewWithPlaceholderProvider:(id)a3 completion:(id)a4
+- (void)thumbnailViewWithPlaceholderProvider:(id)provider completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CNPhotoPickerProviderItem *)self loadingPlaceholderImage];
+  providerCopy = provider;
+  completionCopy = completion;
+  loadingPlaceholderImage = [(CNPhotoPickerProviderItem *)self loadingPlaceholderImage];
 
-  if (v8)
+  if (loadingPlaceholderImage)
   {
     v9 = objc_opt_class();
-    v10 = [(CNPhotoPickerProviderItem *)self loadingPlaceholderImage];
-    v11 = [v9 thumbnailViewForImage:v10];
-    v6[2](v6, v11);
+    loadingPlaceholderImage2 = [(CNPhotoPickerProviderItem *)self loadingPlaceholderImage];
+    v11 = [v9 thumbnailViewForImage:loadingPlaceholderImage2];
+    providerCopy[2](providerCopy, v11);
   }
 
   else
   {
-    v6[2](v6, 0);
+    providerCopy[2](providerCopy, 0);
   }
 
   v13[0] = MEMORY[0x1E69E9820];
@@ -507,8 +507,8 @@ void __57__CNPhotoPickerProviderItem_thumbnailViewWithCompletion___block_invoke_
   v13[2] = __77__CNPhotoPickerProviderItem_thumbnailViewWithPlaceholderProvider_completion___block_invoke;
   v13[3] = &unk_1E74E3B00;
   v13[4] = self;
-  v14 = v7;
-  v12 = v7;
+  v14 = completionCopy;
+  v12 = completionCopy;
   [(CNPhotoPickerProviderItem *)self thumbnailViewWithCompletion:v13];
 }
 
@@ -524,33 +524,33 @@ void __77__CNPhotoPickerProviderItem_thumbnailViewWithPlaceholderProvider_comple
   }
 }
 
-- (id)generateThumbnailImageDataWithData:(id)a3
+- (id)generateThumbnailImageDataWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_opt_class();
   [(CNPhotoPickerProviderItem *)self cropRect];
-  v6 = [v5 generateThumbnailImageDataWithData:v4 cropRect:?];
+  v6 = [v5 generateThumbnailImageDataWithData:dataCopy cropRect:?];
 
   return v6;
 }
 
 - (id)generateThumbnailImageDataIfNeeded
 {
-  v3 = [(CNPhotoPickerProviderItem *)self thumbnailImageData];
+  thumbnailImageData = [(CNPhotoPickerProviderItem *)self thumbnailImageData];
 
-  if (!v3)
+  if (!thumbnailImageData)
   {
     [(CNPhotoPickerProviderItem *)self cropRect];
     v4 = CGRectEqualToRect(v9, *MEMORY[0x1E695F058]);
-    v5 = [(CNPhotoPickerProviderItem *)self imageData];
+    imageData = [(CNPhotoPickerProviderItem *)self imageData];
     if (v4)
     {
-      [(CNPhotoPickerProviderItem *)self setThumbnailImageData:v5];
+      [(CNPhotoPickerProviderItem *)self setThumbnailImageData:imageData];
     }
 
     else
     {
-      v6 = [(CNPhotoPickerProviderItem *)self generateThumbnailImageDataWithData:v5];
+      v6 = [(CNPhotoPickerProviderItem *)self generateThumbnailImageDataWithData:imageData];
       [(CNPhotoPickerProviderItem *)self setThumbnailImageData:v6];
     }
   }
@@ -560,17 +560,17 @@ void __77__CNPhotoPickerProviderItem_thumbnailViewWithPlaceholderProvider_comple
 
 - (void)generateAllImageDatasIfNeeded
 {
-  v3 = [(CNPhotoPickerProviderItem *)self imageData];
-  if (v3)
+  imageData = [(CNPhotoPickerProviderItem *)self imageData];
+  if (imageData)
   {
-    v4 = v3;
-    v5 = [(CNPhotoPickerProviderItem *)self thumbnailImageData];
-    if (v5)
+    v4 = imageData;
+    thumbnailImageData = [(CNPhotoPickerProviderItem *)self thumbnailImageData];
+    if (thumbnailImageData)
     {
-      v6 = v5;
-      v7 = [(CNPhotoPickerProviderItem *)self fullscreenImageData];
+      v6 = thumbnailImageData;
+      fullscreenImageData = [(CNPhotoPickerProviderItem *)self fullscreenImageData];
 
-      if (v7)
+      if (fullscreenImageData)
       {
         return;
       }
@@ -581,13 +581,13 @@ void __77__CNPhotoPickerProviderItem_thumbnailViewWithPlaceholderProvider_comple
     }
   }
 
-  v8 = [(CNPhotoPickerProviderItem *)self generateThumbnailImageDataIfNeeded];
-  v9 = [(CNPhotoPickerProviderItem *)self fullscreenImageData];
+  generateThumbnailImageDataIfNeeded = [(CNPhotoPickerProviderItem *)self generateThumbnailImageDataIfNeeded];
+  fullscreenImageData2 = [(CNPhotoPickerProviderItem *)self fullscreenImageData];
 
-  if (!v9)
+  if (!fullscreenImageData2)
   {
-    v10 = [(CNPhotoPickerProviderItem *)self imageData];
-    [(CNPhotoPickerProviderItem *)self setFullscreenImageData:v10];
+    imageData2 = [(CNPhotoPickerProviderItem *)self imageData];
+    [(CNPhotoPickerProviderItem *)self setFullscreenImageData:imageData2];
   }
 }
 
@@ -625,51 +625,51 @@ void __77__CNPhotoPickerProviderItem_thumbnailViewWithPlaceholderProvider_comple
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   imageData = self->_imageData;
-  v6 = [(CNPhotoPickerProviderItem *)self thumbnailImageData];
-  v7 = [(CNPhotoPickerProviderItem *)self fullscreenImageData];
+  thumbnailImageData = [(CNPhotoPickerProviderItem *)self thumbnailImageData];
+  fullscreenImageData = [(CNPhotoPickerProviderItem *)self fullscreenImageData];
   [(CNPhotoPickerProviderItem *)self cropRect];
-  v8 = [v4 initWithImageData:imageData thumbnailImageData:v6 fullscreenImageData:v7 cropRect:?];
+  v8 = [v4 initWithImageData:imageData thumbnailImageData:thumbnailImageData fullscreenImageData:fullscreenImageData cropRect:?];
 
   [v8 setImageFilterName:self->_imageFilterName];
   [v8 setAssetIdentifier:self->_assetIdentifier];
   return v8;
 }
 
-- (CNPhotoPickerProviderItem)initWithImageData:(id)a3 thumbnailImageData:(id)a4 fullscreenImageData:(id)a5 imageFilterName:(id)a6 cropRect:(CGRect)a7 renderingQueue:(id)a8 callbackQueue:(id)a9
+- (CNPhotoPickerProviderItem)initWithImageData:(id)data thumbnailImageData:(id)imageData fullscreenImageData:(id)fullscreenImageData imageFilterName:(id)name cropRect:(CGRect)rect renderingQueue:(id)queue callbackQueue:(id)callbackQueue
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v19 = a3;
-  v30 = a4;
-  v29 = a5;
-  v20 = a6;
-  v21 = a8;
-  v22 = a9;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  dataCopy = data;
+  imageDataCopy = imageData;
+  fullscreenImageDataCopy = fullscreenImageData;
+  nameCopy = name;
+  queueCopy = queue;
+  callbackQueueCopy = callbackQueue;
   v31.receiver = self;
   v31.super_class = CNPhotoPickerProviderItem;
   v23 = [(CNPhotoPickerProviderItem *)&v31 init];
   v24 = v23;
   if (v23)
   {
-    v25 = [(CNPhotoPickerProviderItem *)v23 rotateImageDataIfNeeded:v19, v29, v30];
+    imageDataCopy = [(CNPhotoPickerProviderItem *)v23 rotateImageDataIfNeeded:dataCopy, fullscreenImageDataCopy, imageDataCopy];
     imageData = v24->_imageData;
-    v24->_imageData = v25;
+    v24->_imageData = imageDataCopy;
 
-    objc_storeStrong(&v24->_thumbnailImageData, a4);
-    objc_storeStrong(&v24->_fullscreenImageData, a5);
-    objc_storeStrong(&v24->_imageFilterName, a6);
+    objc_storeStrong(&v24->_thumbnailImageData, imageData);
+    objc_storeStrong(&v24->_fullscreenImageData, fullscreenImageData);
+    objc_storeStrong(&v24->_imageFilterName, name);
     v24->_cropRect.origin.x = x;
     v24->_cropRect.origin.y = y;
     v24->_cropRect.size.width = width;
     v24->_cropRect.size.height = height;
-    objc_storeStrong(&v24->_renderingQueue, a8);
-    objc_storeStrong(&v24->_callbackQueue, a9);
+    objc_storeStrong(&v24->_renderingQueue, queue);
+    objc_storeStrong(&v24->_callbackQueue, callbackQueue);
     v24->_allowsEditing = 1;
     v27 = v24;
   }
@@ -677,28 +677,28 @@ void __77__CNPhotoPickerProviderItem_thumbnailViewWithPlaceholderProvider_comple
   return v24;
 }
 
-- (CNPhotoPickerProviderItem)initWithImageData:(id)a3 thumbnailImageData:(id)a4 fullscreenImageData:(id)a5 cropRect:(CGRect)a6
+- (CNPhotoPickerProviderItem)initWithImageData:(id)data thumbnailImageData:(id)imageData fullscreenImageData:(id)fullscreenImageData cropRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  fullscreenImageDataCopy = fullscreenImageData;
+  imageDataCopy = imageData;
+  dataCopy = data;
   v16 = +[CNUIContactsEnvironment currentEnvironment];
-  v17 = [v16 defaultSchedulerProvider];
-  v18 = [v17 newSerialSchedulerWithName:@"com.apple.ContactsUI.PhotoPickerProviderItem.renderingQueue"];
-  v19 = [v17 mainThreadScheduler];
-  v20 = [(CNPhotoPickerProviderItem *)self initWithImageData:v15 thumbnailImageData:v14 fullscreenImageData:v13 imageFilterName:0 cropRect:v18 renderingQueue:v19 callbackQueue:x, y, width, height];
+  defaultSchedulerProvider = [v16 defaultSchedulerProvider];
+  v18 = [defaultSchedulerProvider newSerialSchedulerWithName:@"com.apple.ContactsUI.PhotoPickerProviderItem.renderingQueue"];
+  mainThreadScheduler = [defaultSchedulerProvider mainThreadScheduler];
+  height = [(CNPhotoPickerProviderItem *)self initWithImageData:dataCopy thumbnailImageData:imageDataCopy fullscreenImageData:fullscreenImageDataCopy imageFilterName:0 cropRect:v18 renderingQueue:mainThreadScheduler callbackQueue:x, y, width, height];
 
-  return v20;
+  return height;
 }
 
-+ (id)thumbnailViewForImage:(id)a3
++ (id)thumbnailViewForImage:(id)image
 {
-  v3 = a3;
-  [v3 size];
+  imageCopy = image;
+  [imageCopy size];
   v5 = fmax(v4, 90.0);
   v6 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 0.0, v5, v5}];
   [v6 setAutoresizingMask:18];
@@ -707,21 +707,21 @@ void __77__CNPhotoPickerProviderItem_thumbnailViewWithPlaceholderProvider_comple
   [v7 setCenter:?];
   [v7 setAutoresizingMask:18];
   [v7 setContentMode:2];
-  [v7 setImage:v3];
+  [v7 setImage:imageCopy];
 
   [v6 addSubview:v7];
 
   return v6;
 }
 
-+ (id)generateThumbnailImageDataWithData:(id)a3 cropRect:(CGRect)a4
++ (id)generateThumbnailImageDataWithData:(id)data cropRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3;
-  if (v8)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  dataCopy = data;
+  if (dataCopy)
   {
     v16.origin.x = x;
     v16.origin.y = y;
@@ -729,18 +729,18 @@ void __77__CNPhotoPickerProviderItem_thumbnailViewWithPlaceholderProvider_comple
     v16.size.height = height;
     if (CGRectEqualToRect(v16, *MEMORY[0x1E695F058]))
     {
-      v9 = v8;
+      v9 = dataCopy;
     }
 
     else
     {
-      v10 = [MEMORY[0x1E69DCAB8] imageWithData:v8];
-      v11 = [v10 CGImage];
+      v10 = [MEMORY[0x1E69DCAB8] imageWithData:dataCopy];
+      cGImage = [v10 CGImage];
       v17.origin.x = x;
       v17.origin.y = y;
       v17.size.width = width;
       v17.size.height = height;
-      v12 = CGImageCreateWithImageInRect(v11, v17);
+      v12 = CGImageCreateWithImageInRect(cGImage, v17);
       v13 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v12];
 
       CGImageRelease(v12);
@@ -756,13 +756,13 @@ void __77__CNPhotoPickerProviderItem_thumbnailViewWithPlaceholderProvider_comple
   return v9;
 }
 
-+ (id)generateImageDataWithData:(id)a3 filterName:(id)a4
++ (id)generateImageDataWithData:(id)data filterName:(id)name
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = MEMORY[0x1E695F620];
-  v7 = a4;
+  nameCopy = name;
   v8 = [v6 contextWithOptions:0];
-  v9 = [CNPhotoPickerImageWithEffectGenerator imageByApplyingEffect:v7 withContext:v8 toImageData:v5];
+  v9 = [CNPhotoPickerImageWithEffectGenerator imageByApplyingEffect:nameCopy withContext:v8 toImageData:dataCopy];
 
   if (v9)
   {
@@ -771,7 +771,7 @@ void __77__CNPhotoPickerProviderItem_thumbnailViewWithPlaceholderProvider_comple
 
   else
   {
-    v10 = v5;
+    v10 = dataCopy;
   }
 
   v11 = v10;

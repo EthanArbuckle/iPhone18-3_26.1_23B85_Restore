@@ -1,8 +1,8 @@
 @interface AVSystemRemotePoolOutputDeviceCommunicationChannelImpl
-- (AVSystemRemotePoolOutputDeviceCommunicationChannelImpl)initWithDeviceID:(id)a3 channelUUID:(__CFString *)a4 outputContext:(id)a5;
+- (AVSystemRemotePoolOutputDeviceCommunicationChannelImpl)initWithDeviceID:(id)d channelUUID:(__CFString *)iD outputContext:(id)context;
 - (void)close;
 - (void)dealloc;
-- (void)sendData:(id)a3 completionHandler:(id)a4;
+- (void)sendData:(id)data completionHandler:(id)handler;
 @end
 
 @implementation AVSystemRemotePoolOutputDeviceCommunicationChannelImpl
@@ -20,10 +20,10 @@
   [(AVSystemRemotePoolOutputDeviceCommunicationChannelImpl *)&v4 dealloc];
 }
 
-- (void)sendData:(id)a3 completionHandler:(id)a4
+- (void)sendData:(id)data completionHandler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = [a4 copy];
+  v6 = [handler copy];
   if (dword_1ED6F6B68)
   {
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -37,7 +37,7 @@
   v11 = *(*(CMBaseObjectGetVTable() + 16) + 160);
   if (v11)
   {
-    v11(v8, deviceID, commChannelUUID, a3, AVSystemRemotePoolOutputDeviceCommunicationChannelSendDataCompletion, v6);
+    v11(v8, deviceID, commChannelUUID, data, AVSystemRemotePoolOutputDeviceCommunicationChannelSendDataCompletion, v6);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -45,7 +45,7 @@
 
 - (void)close
 {
-  v3 = [(AVOutputContext *)self->_outputContext figRoutingContext];
+  figRoutingContext = [(AVOutputContext *)self->_outputContext figRoutingContext];
   deviceID = self->_deviceID;
   commChannelUUID = self->_commChannelUUID;
   VTable = CMBaseObjectGetVTable();
@@ -54,11 +54,11 @@
   {
     v8 = *(VTable + 16) + 168;
 
-    v7(v3, deviceID, commChannelUUID);
+    v7(figRoutingContext, deviceID, commChannelUUID);
   }
 }
 
-- (AVSystemRemotePoolOutputDeviceCommunicationChannelImpl)initWithDeviceID:(id)a3 channelUUID:(__CFString *)a4 outputContext:(id)a5
+- (AVSystemRemotePoolOutputDeviceCommunicationChannelImpl)initWithDeviceID:(id)d channelUUID:(__CFString *)iD outputContext:(id)context
 {
   v13.receiver = self;
   v13.super_class = AVSystemRemotePoolOutputDeviceCommunicationChannelImpl;
@@ -68,44 +68,44 @@
     goto LABEL_10;
   }
 
-  v9 = a5;
-  v8->_outputContext = v9;
-  if (!v9)
+  contextCopy = context;
+  v8->_outputContext = contextCopy;
+  if (!contextCopy)
   {
     goto LABEL_10;
   }
 
-  if (![(AVOutputContext *)v9 figRoutingContext])
+  if (![(AVOutputContext *)contextCopy figRoutingContext])
   {
     goto LABEL_10;
   }
 
-  v10 = [a3 copy];
+  v10 = [d copy];
   v8->_deviceID = v10;
   if (!v10)
   {
     goto LABEL_10;
   }
 
-  if (!a4)
+  if (!iD)
   {
     v8->_commChannelUUID = 0;
     goto LABEL_9;
   }
 
-  v11 = CFRetain(a4);
+  v11 = CFRetain(iD);
   v8->_commChannelUUID = v11;
   if (!v11)
   {
 LABEL_10:
-    a4 = 0;
+    iD = 0;
     goto LABEL_9;
   }
 
-  a4 = v8;
+  iD = v8;
 LABEL_9:
 
-  return a4;
+  return iD;
 }
 
 @end

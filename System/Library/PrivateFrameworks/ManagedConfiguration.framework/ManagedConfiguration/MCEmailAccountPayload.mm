@@ -1,8 +1,8 @@
 @interface MCEmailAccountPayload
-+ (id)profileNameFromAccountTag:(id)a3;
++ (id)profileNameFromAccountTag:(id)tag;
 - (BOOL)containsSensitiveUserInformation;
-- (MCEmailAccountPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
-- (id)_authenticationTypeLocalizedString:(id)a3;
+- (MCEmailAccountPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
+- (id)_authenticationTypeLocalizedString:(id)string;
 - (id)_emailAccountTypeLocalizedString;
 - (id)mailAccountIdentifiers;
 - (id)payloadDescriptionKeyValueSections;
@@ -15,23 +15,23 @@
 
 @implementation MCEmailAccountPayload
 
-- (MCEmailAccountPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCEmailAccountPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v118[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
   v111.receiver = self;
   v111.super_class = MCEmailAccountPayload;
-  v10 = [(MCEmailAccountPayloadBase *)&v111 initWithDictionary:v8 profile:v9 outError:a5];
+  v10 = [(MCEmailAccountPayloadBase *)&v111 initWithDictionary:dictionaryCopy profile:profileCopy outError:error];
   if (!v10)
   {
     goto LABEL_24;
   }
 
-  if ([v9 isStub])
+  if ([profileCopy isStub])
   {
     v100 = 0;
-    v11 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"EmailAccountType" isRequired:0 outError:&v100];
+    v11 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"EmailAccountType" isRequired:0 outError:&v100];
     v12 = v100;
     emailAccountType = v10->_emailAccountType;
     v10->_emailAccountType = v11;
@@ -42,7 +42,7 @@
     }
 
     v99 = 0;
-    v14 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"IncomingMailServerAuthentication" isRequired:0 outError:&v99];
+    v14 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"IncomingMailServerAuthentication" isRequired:0 outError:&v99];
     v12 = v99;
     incomingMailServerAuthentication = v10->_incomingMailServerAuthentication;
     v10->_incomingMailServerAuthentication = v14;
@@ -53,7 +53,7 @@
     }
 
     v98 = 0;
-    v16 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"IncomingMailServerHostName" isRequired:0 outError:&v98];
+    v16 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"IncomingMailServerHostName" isRequired:0 outError:&v98];
     v12 = v98;
     incomingMailServerHostname = v10->_incomingMailServerHostname;
     v10->_incomingMailServerHostname = v16;
@@ -64,7 +64,7 @@
     }
 
     v97 = 0;
-    v18 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"OutgoingMailServerAuthentication" isRequired:0 outError:&v97];
+    v18 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"OutgoingMailServerAuthentication" isRequired:0 outError:&v97];
     v12 = v97;
     outgoingMailServerAuthentication = v10->_outgoingMailServerAuthentication;
     v10->_outgoingMailServerAuthentication = v18;
@@ -75,7 +75,7 @@
     }
 
     v96 = 0;
-    v20 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"OutgoingMailServerHostName" isRequired:0 outError:&v96];
+    v20 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"OutgoingMailServerHostName" isRequired:0 outError:&v96];
     v12 = v96;
     outgoingMailServerHostname = v10->_outgoingMailServerHostname;
     v10->_outgoingMailServerHostname = v20;
@@ -86,7 +86,7 @@
     }
 
     v95 = 0;
-    v22 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"IncomingACAccountIdentifier" isRequired:0 outError:&v95];
+    v22 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"IncomingACAccountIdentifier" isRequired:0 outError:&v95];
     v12 = v95;
     incomingACAccountIdentifier = v10->_incomingACAccountIdentifier;
     v10->_incomingACAccountIdentifier = v22;
@@ -97,7 +97,7 @@
     }
 
     v94 = 0;
-    v24 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"OutgoingACAccountIdentifier" isRequired:0 outError:&v94];
+    v24 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"OutgoingACAccountIdentifier" isRequired:0 outError:&v94];
     v12 = v94;
     v25 = 360;
   }
@@ -105,7 +105,7 @@
   else
   {
     v110 = 0;
-    v26 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"EmailAccountType" isRequired:1 outError:&v110];
+    v26 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"EmailAccountType" isRequired:1 outError:&v110];
     v12 = v110;
     v27 = v10->_emailAccountType;
     v10->_emailAccountType = v26;
@@ -124,7 +124,7 @@
     v30 = v109;
 
     v108 = v30;
-    v31 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"IncomingMailServerAuthentication" isRequired:1 outError:&v108];
+    v31 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"IncomingMailServerAuthentication" isRequired:1 outError:&v108];
     v12 = v108;
 
     v32 = v10->_incomingMailServerAuthentication;
@@ -147,7 +147,7 @@
     v35 = v107;
 
     v106 = v35;
-    v36 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"IncomingMailServerHostName" isRequired:1 outError:&v106];
+    v36 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"IncomingMailServerHostName" isRequired:1 outError:&v106];
     v12 = v106;
 
     v37 = v10->_incomingMailServerHostname;
@@ -159,7 +159,7 @@
     }
 
     v105 = 0;
-    v38 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"OutgoingMailServerAuthentication" isRequired:1 outError:&v105];
+    v38 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"OutgoingMailServerAuthentication" isRequired:1 outError:&v105];
     v12 = v105;
     v39 = v10->_outgoingMailServerAuthentication;
     v10->_outgoingMailServerAuthentication = v38;
@@ -181,7 +181,7 @@
     v42 = v104;
 
     v103 = v42;
-    v43 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"OutgoingMailServerHostName" isRequired:1 outError:&v103];
+    v43 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"OutgoingMailServerHostName" isRequired:1 outError:&v103];
     v12 = v103;
 
     v44 = v10->_outgoingMailServerHostname;
@@ -193,7 +193,7 @@
     }
 
     v102 = 0;
-    v58 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"IncomingPassword" isRequired:0 outError:&v102];
+    v58 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"IncomingPassword" isRequired:0 outError:&v102];
     v12 = v102;
     incomingPassword = v10->_incomingPassword;
     v10->_incomingPassword = v58;
@@ -204,7 +204,7 @@
     }
 
     v101 = 0;
-    v24 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"OutgoingPassword" isRequired:0 outError:&v101];
+    v24 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"OutgoingPassword" isRequired:0 outError:&v101];
     v12 = v101;
     v25 = 296;
   }
@@ -218,7 +218,7 @@
   }
 
   v93 = 0;
-  v61 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"EmailAccountDescription" isRequired:0 outError:&v93];
+  v61 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"EmailAccountDescription" isRequired:0 outError:&v93];
   v12 = v93;
   emailAccountDescription = v10->_emailAccountDescription;
   v10->_emailAccountDescription = v61;
@@ -229,7 +229,7 @@
   }
 
   v92 = 0;
-  v63 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"EmailAddress" isRequired:0 outError:&v92];
+  v63 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"EmailAddress" isRequired:0 outError:&v92];
   v12 = v92;
   emailAddress = v10->_emailAddress;
   v10->_emailAddress = v63;
@@ -240,7 +240,7 @@
   }
 
   v91 = 0;
-  v65 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"EmailAccountName" isRequired:0 outError:&v91];
+  v65 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"EmailAccountName" isRequired:0 outError:&v91];
   v12 = v91;
   emailAccountName = v10->_emailAccountName;
   v10->_emailAccountName = v65;
@@ -251,7 +251,7 @@
   }
 
   v90 = 0;
-  v67 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"IncomingMailServerUsername" isRequired:0 outError:&v90];
+  v67 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"IncomingMailServerUsername" isRequired:0 outError:&v90];
   v12 = v90;
   incomingMailServerUsername = v10->_incomingMailServerUsername;
   v10->_incomingMailServerUsername = v67;
@@ -262,7 +262,7 @@
   }
 
   v89 = 0;
-  v69 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"IncomingMailServerPortNumber" isRequired:0 outError:&v89];
+  v69 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"IncomingMailServerPortNumber" isRequired:0 outError:&v89];
   v12 = v89;
   incomingMailServerPortNumber = v10->_incomingMailServerPortNumber;
   v10->_incomingMailServerPortNumber = v69;
@@ -273,7 +273,7 @@
   }
 
   v88 = 0;
-  v71 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"IncomingMailServerUseSSL" isRequired:0 outError:&v88];
+  v71 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"IncomingMailServerUseSSL" isRequired:0 outError:&v88];
   v12 = v88;
   incomingMailServerUseSSLNum = v10->_incomingMailServerUseSSLNum;
   v10->_incomingMailServerUseSSLNum = v71;
@@ -285,7 +285,7 @@
 
   v10->_incomingMailServerUseSSL = [(NSNumber *)v10->_incomingMailServerUseSSLNum BOOLValue];
   v87 = 0;
-  v73 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"IncomingMailServerIMAPPathPrefix" isRequired:0 outError:&v87];
+  v73 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"IncomingMailServerIMAPPathPrefix" isRequired:0 outError:&v87];
   v12 = v87;
   incomingMailServerIMAPPathPrefix = v10->_incomingMailServerIMAPPathPrefix;
   v10->_incomingMailServerIMAPPathPrefix = v73;
@@ -296,7 +296,7 @@
   }
 
   v86 = 0;
-  v75 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"OutgoingPasswordSameAsIncomingPassword" isRequired:0 outError:&v86];
+  v75 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"OutgoingPasswordSameAsIncomingPassword" isRequired:0 outError:&v86];
   v12 = v86;
   outgoingPasswordSameAsIncomingPasswordNum = v10->_outgoingPasswordSameAsIncomingPasswordNum;
   v10->_outgoingPasswordSameAsIncomingPasswordNum = v75;
@@ -308,7 +308,7 @@
 
   v10->_outgoingPasswordSameAsIncomingPassword = [(NSNumber *)v10->_outgoingPasswordSameAsIncomingPasswordNum BOOLValue];
   v85 = 0;
-  v77 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"OutgoingMailServerUsername" isRequired:0 outError:&v85];
+  v77 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"OutgoingMailServerUsername" isRequired:0 outError:&v85];
   v12 = v85;
   outgoingMailServerUsername = v10->_outgoingMailServerUsername;
   v10->_outgoingMailServerUsername = v77;
@@ -319,20 +319,20 @@
   }
 
   v84 = 0;
-  v79 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"OutgoingMailServerPortNumber" isRequired:0 outError:&v84];
+  v79 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"OutgoingMailServerPortNumber" isRequired:0 outError:&v84];
   v12 = v84;
   outgoingMailServerPortNumber = v10->_outgoingMailServerPortNumber;
   v10->_outgoingMailServerPortNumber = v79;
 
-  if (v12 || (v83 = 0, [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"OutgoingMailServerUseSSL" isRequired:0 outError:&v83], v81 = objc_claimAutoreleasedReturnValue(), v12 = v83, outgoingMailServerUseSSLNum = v10->_outgoingMailServerUseSSLNum, v10->_outgoingMailServerUseSSLNum = v81, outgoingMailServerUseSSLNum, v12))
+  if (v12 || (v83 = 0, [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"OutgoingMailServerUseSSL" isRequired:0 outError:&v83], v81 = objc_claimAutoreleasedReturnValue(), v12 = v83, outgoingMailServerUseSSLNum = v10->_outgoingMailServerUseSSLNum, v10->_outgoingMailServerUseSSLNum = v81, outgoingMailServerUseSSLNum, v12))
   {
 LABEL_15:
     v45 = [(MCPayload *)v10 malformedPayloadErrorWithError:v12];
     v46 = v45;
-    if (a5)
+    if (error)
     {
       v47 = v45;
-      *a5 = v46;
+      *error = v46;
     }
 
     v48 = _MCLogObjects;
@@ -341,11 +341,11 @@ LABEL_15:
       v49 = v48;
       v50 = objc_opt_class();
       v51 = v50;
-      v52 = [v46 MCVerboseDescription];
+      mCVerboseDescription = [v46 MCVerboseDescription];
       *buf = 138543618;
       v113 = v50;
       v114 = 2114;
-      v115 = v52;
+      v115 = mCVerboseDescription;
       _os_log_impl(&dword_1A795B000, v49, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
     }
 
@@ -355,17 +355,17 @@ LABEL_15:
 
   v10->_outgoingMailServerUseSSL = [(NSNumber *)v10->_outgoingMailServerUseSSLNum BOOLValue];
 LABEL_20:
-  if ([v8 count])
+  if ([dictionaryCopy count])
   {
     v53 = _MCLogObjects;
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
     {
       v54 = v53;
-      v55 = [(MCPayload *)v10 friendlyName];
+      friendlyName = [(MCPayload *)v10 friendlyName];
       *buf = 138543618;
-      v113 = v55;
+      v113 = friendlyName;
       v114 = 2114;
-      v115 = v8;
+      v115 = dictionaryCopy;
       _os_log_impl(&dword_1A795B000, v54, OS_LOG_TYPE_INFO, "Payload “%{public}@” contains ignored fields. They are: %{public}@", buf, 0x16u);
     }
   }
@@ -379,12 +379,12 @@ LABEL_24:
 {
   v25.receiver = self;
   v25.super_class = MCEmailAccountPayload;
-  v3 = [(MCEmailAccountPayloadBase *)&v25 stubDictionary];
-  v4 = v3;
+  stubDictionary = [(MCEmailAccountPayloadBase *)&v25 stubDictionary];
+  v4 = stubDictionary;
   emailAccountDescription = self->_emailAccountDescription;
   if (emailAccountDescription)
   {
-    [v3 setObject:emailAccountDescription forKey:@"EmailAccountDescription"];
+    [stubDictionary setObject:emailAccountDescription forKey:@"EmailAccountDescription"];
   }
 
   emailAccountType = self->_emailAccountType;
@@ -503,13 +503,13 @@ LABEL_24:
   v3 = objc_alloc(MEMORY[0x1E696AD60]);
   v14.receiver = self;
   v14.super_class = MCEmailAccountPayload;
-  v4 = [(MCEmailAccountPayloadBase *)&v14 verboseDescription];
-  v5 = [v3 initWithFormat:@"%@\n", v4];
+  verboseDescription = [(MCEmailAccountPayloadBase *)&v14 verboseDescription];
+  v5 = [v3 initWithFormat:@"%@\n", verboseDescription];
 
-  v6 = [(MCPayload *)self profile];
-  v7 = [v6 isStub];
+  profile = [(MCPayload *)self profile];
+  isStub = [profile isStub];
 
-  if ((v7 & 1) == 0)
+  if ((isStub & 1) == 0)
   {
     if (self->_emailAccountDescription)
     {
@@ -613,8 +613,8 @@ LABEL_24:
 
 - (id)subtitle1Label
 {
-  v2 = [(MCEmailAccountPayload *)self _emailAccountTypeLocalizedString];
-  if (v2)
+  _emailAccountTypeLocalizedString = [(MCEmailAccountPayload *)self _emailAccountTypeLocalizedString];
+  if (_emailAccountTypeLocalizedString)
   {
     v3 = @"EMAIL_ACCOUNT_TYPE_COLON";
   }
@@ -631,52 +631,52 @@ LABEL_24:
 
 - (id)subtitle2Label
 {
-  v3 = [(MCEmailAccountPayload *)self incomingMailServerHostname];
-  if (v3)
+  incomingMailServerHostname = [(MCEmailAccountPayload *)self incomingMailServerHostname];
+  if (incomingMailServerHostname)
   {
-    v4 = v3;
-    v5 = [(MCEmailAccountPayload *)self _emailAccountTypeLocalizedString];
+    v4 = incomingMailServerHostname;
+    _emailAccountTypeLocalizedString = [(MCEmailAccountPayload *)self _emailAccountTypeLocalizedString];
 
-    if (v5)
+    if (_emailAccountTypeLocalizedString)
     {
-      v3 = MCLocalizedString(@"EMAIL_ACCOUNT_SERVER_COLON");
+      incomingMailServerHostname = MCLocalizedString(@"EMAIL_ACCOUNT_SERVER_COLON");
     }
 
     else
     {
-      v3 = 0;
+      incomingMailServerHostname = 0;
     }
   }
 
-  return v3;
+  return incomingMailServerHostname;
 }
 
 - (id)subtitle2Description
 {
-  v3 = [(MCEmailAccountPayload *)self incomingMailServerHostname];
-  if (v3)
+  incomingMailServerHostname = [(MCEmailAccountPayload *)self incomingMailServerHostname];
+  if (incomingMailServerHostname)
   {
-    v4 = v3;
-    v5 = [(MCEmailAccountPayload *)self _emailAccountTypeLocalizedString];
+    v4 = incomingMailServerHostname;
+    _emailAccountTypeLocalizedString = [(MCEmailAccountPayload *)self _emailAccountTypeLocalizedString];
 
-    if (v5)
+    if (_emailAccountTypeLocalizedString)
     {
-      v3 = [(MCEmailAccountPayload *)self incomingMailServerHostname];
+      incomingMailServerHostname = [(MCEmailAccountPayload *)self incomingMailServerHostname];
     }
 
     else
     {
-      v3 = 0;
+      incomingMailServerHostname = 0;
     }
   }
 
-  return v3;
+  return incomingMailServerHostname;
 }
 
 - (id)_emailAccountTypeLocalizedString
 {
-  v2 = [(MCEmailAccountPayload *)self emailAccountType];
-  v3 = [v2 isEqualToString:@"EmailTypeIMAP"];
+  emailAccountType = [(MCEmailAccountPayload *)self emailAccountType];
+  v3 = [emailAccountType isEqualToString:@"EmailTypeIMAP"];
 
   if (v3)
   {
@@ -693,28 +693,28 @@ LABEL_24:
   return v5;
 }
 
-- (id)_authenticationTypeLocalizedString:(id)a3
+- (id)_authenticationTypeLocalizedString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = MCLocalizedString(@"AUTHENTICATION_TYPE_NONE");
-  if ([v3 isEqualToString:@"EmailAuthPassword"])
+  if ([stringCopy isEqualToString:@"EmailAuthPassword"])
   {
     v5 = @"AUTHENTICATION_TYPE_PASSWORD";
   }
 
-  else if ([v3 isEqualToString:@"EmailAuthCRAMMD5"])
+  else if ([stringCopy isEqualToString:@"EmailAuthCRAMMD5"])
   {
     v5 = @"AUTHENTICATION_TYPE_CRAMMD5";
   }
 
-  else if ([v3 isEqualToString:@"EmailAuthNTLM"])
+  else if ([stringCopy isEqualToString:@"EmailAuthNTLM"])
   {
     v5 = @"AUTHENTICATION_TYPE_NTLM";
   }
 
   else
   {
-    if (![v3 isEqualToString:@"EmailAuthHTTPMD5"])
+    if (![stringCopy isEqualToString:@"EmailAuthHTTPMD5"])
     {
       goto LABEL_10;
     }
@@ -757,9 +757,9 @@ LABEL_10:
   if (self->_emailAccountType)
   {
     v13 = [MCKeyValue alloc];
-    v14 = [(MCEmailAccountPayload *)self _emailAccountTypeLocalizedString];
+    _emailAccountTypeLocalizedString = [(MCEmailAccountPayload *)self _emailAccountTypeLocalizedString];
     v15 = MCLocalizedString(@"TYPE");
-    v16 = [(MCKeyValue *)v13 initWithLocalizedString:v14 localizedKey:v15];
+    v16 = [(MCKeyValue *)v13 initWithLocalizedString:_emailAccountTypeLocalizedString localizedKey:v15];
 
     [v4 addObject:v16];
   }
@@ -946,10 +946,10 @@ LABEL_10:
 
   v88.receiver = self;
   v88.super_class = MCEmailAccountPayload;
-  v86 = [(MCEmailAccountPayloadBase *)&v88 payloadDescriptionKeyValueSections];
-  if ([v86 count])
+  payloadDescriptionKeyValueSections = [(MCEmailAccountPayloadBase *)&v88 payloadDescriptionKeyValueSections];
+  if ([payloadDescriptionKeyValueSections count])
   {
-    [v3 addObjectsFromArray:v86];
+    [v3 addObjectsFromArray:payloadDescriptionKeyValueSections];
   }
 
   if (![v3 count])
@@ -961,10 +961,10 @@ LABEL_10:
   return v3;
 }
 
-+ (id)profileNameFromAccountTag:(id)a3
++ (id)profileNameFromAccountTag:(id)tag
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"|" options:4];
+  tagCopy = tag;
+  v4 = [tagCopy rangeOfString:@"|" options:4];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = &stru_1F1A7FAB0;
@@ -972,7 +972,7 @@ LABEL_10:
 
   else
   {
-    v5 = [v3 substringWithRange:{v4 + 1, objc_msgSend(v3, "length") + ~v4}];
+    v5 = [tagCopy substringWithRange:{v4 + 1, objc_msgSend(tagCopy, "length") + ~v4}];
   }
 
   return v5;
@@ -987,16 +987,16 @@ LABEL_10:
     return 1;
   }
 
-  v4 = [(MCEmailAccountPayload *)self incomingPassword];
-  if (v4)
+  incomingPassword = [(MCEmailAccountPayload *)self incomingPassword];
+  if (incomingPassword)
   {
     v3 = 1;
   }
 
   else
   {
-    v5 = [(MCEmailAccountPayload *)self outgoingPassword];
-    v3 = v5 != 0;
+    outgoingPassword = [(MCEmailAccountPayload *)self outgoingPassword];
+    v3 = outgoingPassword != 0;
   }
 
   return v3;

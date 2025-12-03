@@ -195,10 +195,10 @@ void __23__ISDefaults_tintColor__block_invoke()
 
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s%@%@", "20:59:51", v8, v7];
     v10 = [MEMORY[0x1E696AFB0] _IF_UUIDWithString:v9];
-    v11 = [v10 UUIDString];
+    uUIDString = [v10 UUIDString];
 
     cacheSaltString = v2->_cacheSaltString;
-    v2->_cacheSaltString = v11;
+    v2->_cacheSaltString = uUIDString;
   }
 
   return v2;
@@ -256,8 +256,8 @@ uint64_t __28__ISDefaults_sharedInstance__block_invoke()
     }
 
     v9 = [v7 URLByAppendingPathComponent:@"com.apple.IconsCache" isDirectory:1];
-    v10 = [(ISDefaults *)self cacheSaltString];
-    v11 = [v9 URLByAppendingPathComponent:v10 isDirectory:1];
+    cacheSaltString = [(ISDefaults *)self cacheSaltString];
+    v11 = [v9 URLByAppendingPathComponent:cacheSaltString isDirectory:1];
     v12 = self->__cacheURL;
     self->__cacheURL = v11;
 
@@ -272,8 +272,8 @@ uint64_t __28__ISDefaults_sharedInstance__block_invoke()
   metalCacheURL = self->_metalCacheURL;
   if (!metalCacheURL)
   {
-    v4 = [(ISDefaults *)self cacheURL];
-    v5 = [v4 URLByAppendingPathComponent:@"__METAL_CACHE__"];
+    cacheURL = [(ISDefaults *)self cacheURL];
+    v5 = [cacheURL URLByAppendingPathComponent:@"__METAL_CACHE__"];
     v6 = self->_metalCacheURL;
     self->_metalCacheURL = v5;
 
@@ -375,42 +375,42 @@ void __45__ISDefaults_isUnsupportedDecorationDisabled__block_invoke()
 
 - (BOOL)isEnhancedGlassEnabled
 {
-  v3 = [(ISDefaults *)self isSolariumEnabled];
-  if (v3)
+  isSolariumEnabled = [(ISDefaults *)self isSolariumEnabled];
+  if (isSolariumEnabled)
   {
     if ([(ISDefaults *)self featureOverride])
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(isSolariumEnabled) = 1;
     }
 
     else
     {
 
-      LOBYTE(v3) = _os_feature_enabled_impl();
+      LOBYTE(isSolariumEnabled) = _os_feature_enabled_impl();
     }
   }
 
-  return v3;
+  return isSolariumEnabled;
 }
 
 - (BOOL)isSolariumCornerRadiusEnabled
 {
-  v3 = [(ISDefaults *)self isSolariumEnabled];
-  if (v3)
+  isSolariumEnabled = [(ISDefaults *)self isSolariumEnabled];
+  if (isSolariumEnabled)
   {
     if ([(ISDefaults *)self featureOverride])
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(isSolariumEnabled) = 1;
     }
 
     else
     {
 
-      LOBYTE(v3) = _os_feature_enabled_impl();
+      LOBYTE(isSolariumEnabled) = _os_feature_enabled_impl();
     }
   }
 
-  return v3;
+  return isSolariumEnabled;
 }
 
 - (BOOL)safeBoot
@@ -436,7 +436,7 @@ uint64_t __22__ISDefaults_safeBoot__block_invoke()
 - (void)cacheURL
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = *a1;
+  v2 = *self;
   v4 = 134217984;
   v5 = v2;
   _os_log_fault_impl(&dword_1A77B8000, a2, OS_LOG_TYPE_FAULT, "Failed to get cache path with error: %llu.", &v4, 0xCu);

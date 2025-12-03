@@ -1,56 +1,56 @@
 @interface SFMagicHeadWheelView
-+ (double)clampedRotationDegrees:(double)a3;
-- (BOOL)canChangeSelectionWhenInRotationState:(int64_t)a3 guidanceState:(int64_t)a4 description:(id *)a5 ignoreDisabling:(BOOL)a6;
-- (BOOL)canChangeSelectionWithDescription:(id *)a3 ignoreDisabling:(BOOL)a4;
-- (BOOL)configureSelectedHeadWithNode:(id)a3 slotNode:(id)a4 isSameAsSelected:(BOOL)a5;
++ (double)clampedRotationDegrees:(double)degrees;
+- (BOOL)canChangeSelectionWhenInRotationState:(int64_t)state guidanceState:(int64_t)guidanceState description:(id *)description ignoreDisabling:(BOOL)disabling;
+- (BOOL)canChangeSelectionWithDescription:(id *)description ignoreDisabling:(BOOL)disabling;
+- (BOOL)configureSelectedHeadWithNode:(id)node slotNode:(id)slotNode isSameAsSelected:(BOOL)selected;
 - (BOOL)guidanceStatesEnabled;
 - (BOOL)inGuidanceStates;
-- (BOOL)transitionToGuidanceState:(int64_t)a3;
-- (BOOL)updateSelectedHead:(id)a3;
-- (BOOL)updateSelectedNode:(id)a3;
-- (BOOL)updateSelectedSlotNode:(id)a3;
+- (BOOL)transitionToGuidanceState:(int64_t)state;
+- (BOOL)updateSelectedHead:(id)head;
+- (BOOL)updateSelectedNode:(id)node;
+- (BOOL)updateSelectedSlotNode:(id)node;
 - (CGPoint)centerOfContentBounds;
 - (CGRect)squareBounds;
-- (SFMagicHeadWheelView)initWithNumberOfDots:(unint64_t)a3 dotsRadius:(double)a4 isMagicHead:(BOOL)a5;
+- (SFMagicHeadWheelView)initWithNumberOfDots:(unint64_t)dots dotsRadius:(double)radius isMagicHead:(BOOL)head;
 - (SFMagicHeadWheelViewDelegate)delegate;
-- (int64_t)triggerCountForCandidateRotationState:(int64_t)a3;
-- (void)cozyUpAnimationForHead:(id)a3;
+- (int64_t)triggerCountForCandidateRotationState:(int64_t)state;
+- (void)cozyUpAnimationForHead:(id)head;
 - (void)createSprings;
 - (void)dealloc;
-- (void)deviceRotatedToDegrees:(double)a3 withPitch:(double)a4 andRoll:(double)a5;
-- (void)hapticsForHideDots:(BOOL)a3;
-- (void)hideDots:(BOOL)a3 withAnimationDuration:(double)a4;
-- (void)hideSelection:(BOOL)a3;
+- (void)deviceRotatedToDegrees:(double)degrees withPitch:(double)pitch andRoll:(double)roll;
+- (void)hapticsForHideDots:(BOOL)dots;
+- (void)hideDots:(BOOL)dots withAnimationDuration:(double)duration;
+- (void)hideSelection:(BOOL)selection;
 - (void)invalidate;
 - (void)layoutSubviews;
 - (void)loadSettings;
-- (void)magicHead:(id)a3 requestingSubtitleTextChangeForState:(int64_t)a4;
-- (void)magicHeadDidFinishTransferForHead:(id)a3;
-- (void)magicHeadDidStartTransferForHead:(id)a3;
-- (void)magicHeadDidTerminateTransferForHead:(id)a3;
+- (void)magicHead:(id)head requestingSubtitleTextChangeForState:(int64_t)state;
+- (void)magicHeadDidFinishTransferForHead:(id)head;
+- (void)magicHeadDidStartTransferForHead:(id)head;
+- (void)magicHeadDidTerminateTransferForHead:(id)head;
 - (void)pulseSelectedHead;
-- (void)scaleDots:(BOOL)a3;
-- (void)selectAnimationForHead:(id)a3 withDismissHead:(id)a4;
+- (void)scaleDots:(BOOL)dots;
+- (void)selectAnimationForHead:(id)head withDismissHead:(id)dismissHead;
 - (void)selectedHeadHighlighted;
 - (void)selectedHeadHightlightCancel;
 - (void)selectedHeadTapped;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setMarkerViewForIdentifier:(id)a3 atPositionDegree:(double)a4;
-- (void)setNoUWBCapableDevices:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFrame:(CGRect)frame;
+- (void)setMarkerViewForIdentifier:(id)identifier atPositionDegree:(double)degree;
+- (void)setNoUWBCapableDevices:(BOOL)devices;
 - (void)startSuppressGuidanceHapticsTimer;
 - (void)stopSuppressGuidanceHapticsTimer;
-- (void)transitionToRotationState:(int64_t)a3 bypassSampling:(BOOL)a4;
+- (void)transitionToRotationState:(int64_t)state bypassSampling:(BOOL)sampling;
 - (void)updateCanChangeSelectionUI;
 - (void)updatePlaceHolderView;
 - (void)updateSelectionControlState;
-- (void)updateVelocityWithCurrentAngle:(double)a3;
+- (void)updateVelocityWithCurrentAngle:(double)angle;
 - (void)updateVisibilityOfComponents;
 @end
 
 @implementation SFMagicHeadWheelView
 
-- (SFMagicHeadWheelView)initWithNumberOfDots:(unint64_t)a3 dotsRadius:(double)a4 isMagicHead:(BOOL)a5
+- (SFMagicHeadWheelView)initWithNumberOfDots:(unint64_t)dots dotsRadius:(double)radius isMagicHead:(BOOL)head
 {
   v53.receiver = self;
   v53.super_class = SFMagicHeadWheelView;
@@ -63,16 +63,16 @@
   if (v12)
   {
     [(SFMagicHeadWheelView *)v12 loadSettings];
-    v13->_magicHead = a5;
+    v13->_magicHead = head;
     v14 = objc_opt_new();
     [(SFMagicHeadWheelView *)v13 setIdentifierToSelectionMarkerView:v14];
 
-    v15 = [MEMORY[0x1E69DC888] clearColor];
-    [(SFMagicHeadWheelView *)v13 setBackgroundColor:v15];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(SFMagicHeadWheelView *)v13 setBackgroundColor:clearColor];
 
     if ([(SFMagicHeadWheelView *)v13 guidanceStatesEnabled])
     {
-      v16 = [(SFMagicHeadWheelView *)v13 layer];
+      layer = [(SFMagicHeadWheelView *)v13 layer];
       v17 = *(MEMORY[0x1E69792E8] + 48);
       v48[2] = *(MEMORY[0x1E69792E8] + 32);
       v48[3] = v17;
@@ -86,27 +86,27 @@
       v20 = *(MEMORY[0x1E69792E8] + 112);
       v51 = *(MEMORY[0x1E69792E8] + 96);
       v52 = v20;
-      [v16 setSublayerTransform:v48];
+      [layer setSublayerTransform:v48];
     }
 
     v21 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v8, v9, v10, v11}];
     [(SFMagicHeadWheelView *)v13 setContentView:v21];
 
-    v22 = [MEMORY[0x1E69DC888] clearColor];
-    v23 = [(SFMagicHeadWheelView *)v13 contentView];
-    [v23 setBackgroundColor:v22];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    contentView = [(SFMagicHeadWheelView *)v13 contentView];
+    [contentView setBackgroundColor:clearColor2];
 
-    v24 = [(SFMagicHeadWheelView *)v13 contentView];
-    [(SFMagicHeadWheelView *)v13 addSubview:v24];
+    contentView2 = [(SFMagicHeadWheelView *)v13 contentView];
+    [(SFMagicHeadWheelView *)v13 addSubview:contentView2];
 
     if (![(SFMagicHeadWheelView *)v13 isMagicHead])
     {
       v25 = [[SFMagicHeadPlaceholderView alloc] initWithFrame:v8, v9, v10, v11];
       [(SFMagicHeadWheelView *)v13 setPlaceHolderView:v25];
 
-      v26 = [(SFMagicHeadWheelView *)v13 contentView];
-      v27 = [(SFMagicHeadWheelView *)v13 placeHolderView];
-      [v26 addSubview:v27];
+      contentView3 = [(SFMagicHeadWheelView *)v13 contentView];
+      placeHolderView = [(SFMagicHeadWheelView *)v13 placeHolderView];
+      [contentView3 addSubview:placeHolderView];
     }
 
     v28 = [MEMORY[0x1E69DC730] effectWithStyle:9];
@@ -114,33 +114,33 @@
     v30 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v29];
     [(SFMagicHeadWheelView *)v13 setDotsContainer:v30];
 
-    v31 = [(SFMagicHeadWheelView *)v13 contentView];
-    v32 = [(SFMagicHeadWheelView *)v13 dotsContainer];
-    [v31 addSubview:v32];
+    contentView4 = [(SFMagicHeadWheelView *)v13 contentView];
+    dotsContainer = [(SFMagicHeadWheelView *)v13 dotsContainer];
+    [contentView4 addSubview:dotsContainer];
 
     v33 = objc_opt_new();
     [(SFMagicHeadWheelView *)v13 setDots:v33];
 
-    [(SFMagicHeadWheelView *)v13 setNumberOfDots:a3];
-    [(SFMagicHeadWheelView *)v13 setDotsRadius:a4];
-    for (; a3; --a3)
+    [(SFMagicHeadWheelView *)v13 setNumberOfDots:dots];
+    [(SFMagicHeadWheelView *)v13 setDotsRadius:radius];
+    for (; dots; --dots)
     {
       v34 = objc_opt_new();
-      [v34 setBounds:{0.0, 0.0, a4 + a4, a4 + a4}];
-      v35 = [v34 layer];
-      [v35 setCornerRadius:a4];
+      [v34 setBounds:{0.0, 0.0, radius + radius, radius + radius}];
+      layer2 = [v34 layer];
+      [layer2 setCornerRadius:radius];
 
-      v36 = [MEMORY[0x1E69DC888] whiteColor];
-      [v34 setBackgroundColor:v36];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [v34 setBackgroundColor:whiteColor];
 
       [v34 setUserInteractionEnabled:0];
       [v34 setAlpha:0.0];
-      v37 = [(SFMagicHeadWheelView *)v13 dots];
-      [v37 addObject:v34];
+      dots = [(SFMagicHeadWheelView *)v13 dots];
+      [dots addObject:v34];
 
-      v38 = [(SFMagicHeadWheelView *)v13 dotsContainer];
-      v39 = [v38 contentView];
-      [v39 addSubview:v34];
+      dotsContainer2 = [(SFMagicHeadWheelView *)v13 dotsContainer];
+      contentView5 = [dotsContainer2 contentView];
+      [contentView5 addSubview:v34];
     }
 
     if (![(SFMagicHeadWheelView *)v13 isMagicHead])
@@ -148,21 +148,21 @@
       v40 = [objc_alloc(MEMORY[0x1E69DC8F0]) initWithFrame:{v8, v9, v10, v11}];
       [(SFMagicHeadWheelView *)v13 setSelectedHeadControl:v40];
 
-      v41 = [(SFMagicHeadWheelView *)v13 selectedHeadControl];
-      [v41 addTarget:v13 action:sel_selectedHeadTapped forControlEvents:64];
+      selectedHeadControl = [(SFMagicHeadWheelView *)v13 selectedHeadControl];
+      [selectedHeadControl addTarget:v13 action:sel_selectedHeadTapped forControlEvents:64];
 
-      v42 = [(SFMagicHeadWheelView *)v13 selectedHeadControl];
-      [v42 addTarget:v13 action:sel_selectedHeadHighlighted forControlEvents:1];
+      selectedHeadControl2 = [(SFMagicHeadWheelView *)v13 selectedHeadControl];
+      [selectedHeadControl2 addTarget:v13 action:sel_selectedHeadHighlighted forControlEvents:1];
 
-      v43 = [(SFMagicHeadWheelView *)v13 selectedHeadControl];
-      [v43 addTarget:v13 action:sel_selectedHeadHightlightCancel forControlEvents:256];
+      selectedHeadControl3 = [(SFMagicHeadWheelView *)v13 selectedHeadControl];
+      [selectedHeadControl3 addTarget:v13 action:sel_selectedHeadHightlightCancel forControlEvents:256];
 
-      v44 = [(SFMagicHeadWheelView *)v13 selectedHeadControl];
-      [v44 addTarget:v13 action:sel_selectedHeadHightlightCancel forControlEvents:128];
+      selectedHeadControl4 = [(SFMagicHeadWheelView *)v13 selectedHeadControl];
+      [selectedHeadControl4 addTarget:v13 action:sel_selectedHeadHightlightCancel forControlEvents:128];
 
-      v45 = [(SFMagicHeadWheelView *)v13 contentView];
-      v46 = [(SFMagicHeadWheelView *)v13 selectedHeadControl];
-      [v45 addSubview:v46];
+      contentView6 = [(SFMagicHeadWheelView *)v13 contentView];
+      selectedHeadControl5 = [(SFMagicHeadWheelView *)v13 selectedHeadControl];
+      [contentView6 addSubview:selectedHeadControl5];
     }
 
     [(SFMagicHeadWheelView *)v13 setRotatedAfterSelectionWasMade:1];
@@ -178,9 +178,9 @@
 
 - (void)loadSettings
 {
-  v4 = [MEMORY[0x1E69CDEB8] rootSettings];
-  v3 = [v4 magicHeadSettings];
-  [(SFMagicHeadWheelView *)self setSettings:v3];
+  rootSettings = [MEMORY[0x1E69CDEB8] rootSettings];
+  magicHeadSettings = [rootSettings magicHeadSettings];
+  [(SFMagicHeadWheelView *)self setSettings:magicHeadSettings];
 }
 
 - (void)invalidate
@@ -189,25 +189,25 @@
   {
     [(SFMagicHeadWheelView *)self setInvalidated:1];
     [(SFMagicHeadWheelView *)self stopSuppressGuidanceHapticsTimer];
-    v3 = [(SFMagicHeadWheelView *)self rotationSpringProperty];
-    [v3 invalidate];
+    rotationSpringProperty = [(SFMagicHeadWheelView *)self rotationSpringProperty];
+    [rotationSpringProperty invalidate];
 
-    v4 = [(SFMagicHeadWheelView *)self pitchSpringProperty];
-    [v4 invalidate];
+    pitchSpringProperty = [(SFMagicHeadWheelView *)self pitchSpringProperty];
+    [pitchSpringProperty invalidate];
 
-    v5 = [(SFMagicHeadWheelView *)self rollSpringProperty];
-    [v5 invalidate];
+    rollSpringProperty = [(SFMagicHeadWheelView *)self rollSpringProperty];
+    [rollSpringProperty invalidate];
 
     [(SFMagicHeadWheelView *)self setSelectionAnimator:0];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
-    if (a3)
+    self->_enabled = enabled;
+    if (enabled)
     {
       [(SFMagicHeadWheelView *)self setNeedsLayout];
     }
@@ -220,11 +220,11 @@
   }
 }
 
-- (void)setNoUWBCapableDevices:(BOOL)a3
+- (void)setNoUWBCapableDevices:(BOOL)devices
 {
-  if (self->_noUWBCapableDevices != a3)
+  if (self->_noUWBCapableDevices != devices)
   {
-    self->_noUWBCapableDevices = a3;
+    self->_noUWBCapableDevices = devices;
     [(SFMagicHeadWheelView *)self updatePlaceHolderView];
   }
 }
@@ -251,12 +251,12 @@
 
   objc_initWeak(&location, self);
   v6 = MEMORY[0x1E69DD250];
-  v7 = [(SFMagicHeadWheelView *)self rotationSpringProperty];
-  v14[0] = v7;
-  v8 = [(SFMagicHeadWheelView *)self pitchSpringProperty];
-  v14[1] = v8;
-  v9 = [(SFMagicHeadWheelView *)self rollSpringProperty];
-  v14[2] = v9;
+  rotationSpringProperty = [(SFMagicHeadWheelView *)self rotationSpringProperty];
+  v14[0] = rotationSpringProperty;
+  pitchSpringProperty = [(SFMagicHeadWheelView *)self pitchSpringProperty];
+  v14[1] = pitchSpringProperty;
+  rollSpringProperty = [(SFMagicHeadWheelView *)self rollSpringProperty];
+  v14[2] = rollSpringProperty;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:3];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -285,102 +285,102 @@ void __37__SFMagicHeadWheelView_createSprings__block_invoke_2(uint64_t a1)
   [WeakRetained setNeedsLayout];
 }
 
-- (void)deviceRotatedToDegrees:(double)a3 withPitch:(double)a4 andRoll:(double)a5
+- (void)deviceRotatedToDegrees:(double)degrees withPitch:(double)pitch andRoll:(double)roll
 {
-  v8 = [(SFMagicHeadWheelView *)self pitchSpringProperty];
+  pitchSpringProperty = [(SFMagicHeadWheelView *)self pitchSpringProperty];
 
-  if (!v8)
+  if (!pitchSpringProperty)
   {
     [(SFMagicHeadWheelView *)self createSprings];
   }
 
-  v9 = a4;
-  v10 = v9 * 57.2957795;
+  pitchCopy = pitch;
+  v10 = pitchCopy * 57.2957795;
   v11 = v10;
-  v12 = [(SFMagicHeadWheelView *)self pitchSpringProperty];
-  [v12 setInput:v11];
+  pitchSpringProperty2 = [(SFMagicHeadWheelView *)self pitchSpringProperty];
+  [pitchSpringProperty2 setInput:v11];
 
-  v13 = a5;
-  v14 = v13 * 57.2957795;
+  rollCopy = roll;
+  v14 = rollCopy * 57.2957795;
   v15 = v14;
-  v16 = [(SFMagicHeadWheelView *)self rollSpringProperty];
-  [v16 setInput:v15];
+  rollSpringProperty = [(SFMagicHeadWheelView *)self rollSpringProperty];
+  [rollSpringProperty setInput:v15];
 
   v17 = objc_opt_class();
-  v21 = [(SFMagicHeadWheelView *)self rotationSpringProperty];
-  [v21 input];
+  rotationSpringProperty = [(SFMagicHeadWheelView *)self rotationSpringProperty];
+  [rotationSpringProperty input];
   [v17 rotationWithShortestDistanceFromDegrees:? toDegrees:?];
   v19 = v18;
-  v20 = [(SFMagicHeadWheelView *)self rotationSpringProperty];
-  [v20 setInput:v19];
+  rotationSpringProperty2 = [(SFMagicHeadWheelView *)self rotationSpringProperty];
+  [rotationSpringProperty2 setInput:v19];
 }
 
-- (int64_t)triggerCountForCandidateRotationState:(int64_t)a3
+- (int64_t)triggerCountForCandidateRotationState:(int64_t)state
 {
-  v5 = [(SFMagicHeadWheelView *)self isMagicHead];
-  v6 = [(SFMagicHeadWheelView *)self settings];
-  v7 = v6;
-  if (a3 == 1)
+  isMagicHead = [(SFMagicHeadWheelView *)self isMagicHead];
+  settings = [(SFMagicHeadWheelView *)self settings];
+  v7 = settings;
+  if (state == 1)
   {
-    if (v5)
+    if (isMagicHead)
     {
-      v8 = [v6 rotationStartGatingResponsiveness];
+      rotationStartGatingResponsiveness = [settings rotationStartGatingResponsiveness];
     }
 
     else
     {
-      v8 = [v6 rotationStartBigHeadGatingResponsiveness];
+      rotationStartGatingResponsiveness = [settings rotationStartBigHeadGatingResponsiveness];
     }
   }
 
-  else if (v5)
+  else if (isMagicHead)
   {
-    v8 = [v6 rotationStopGatingResponsiveness];
+    rotationStartGatingResponsiveness = [settings rotationStopGatingResponsiveness];
   }
 
   else
   {
-    v8 = [v6 rotationStopBigHeadGatingResponsiveness];
+    rotationStartGatingResponsiveness = [settings rotationStopBigHeadGatingResponsiveness];
   }
 
-  v9 = v8;
+  v9 = rotationStartGatingResponsiveness;
 
   return v9;
 }
 
-- (void)transitionToRotationState:(int64_t)a3 bypassSampling:(BOOL)a4
+- (void)transitionToRotationState:(int64_t)state bypassSampling:(BOOL)sampling
 {
-  v5 = a3;
+  stateCopy = state;
   v25 = *MEMORY[0x1E69E9840];
-  if ([(SFMagicHeadWheelView *)self proposedRotationState]!= a3)
+  if ([(SFMagicHeadWheelView *)self proposedRotationState]!= state)
   {
-    [(SFMagicHeadWheelView *)self setProposedRotationState:v5];
+    [(SFMagicHeadWheelView *)self setProposedRotationState:stateCopy];
     [(SFMagicHeadWheelView *)self setConsecutiveRotationChangeRequests:0];
   }
 
   v7 = [(SFMagicHeadWheelView *)self triggerCountForCandidateRotationState:[(SFMagicHeadWheelView *)self proposedRotationState]];
-  if (v5 <= 1)
+  if (stateCopy <= 1)
   {
     v8 = v7;
-    v9 = [(SFMagicHeadWheelView *)self proposedRotationState];
-    if (v9 != [(SFMagicHeadWheelView *)self rotationState]&& [(SFMagicHeadWheelView *)self consecutiveRotationChangeRequests]< v8 && !a4)
+    proposedRotationState = [(SFMagicHeadWheelView *)self proposedRotationState];
+    if (proposedRotationState != [(SFMagicHeadWheelView *)self rotationState]&& [(SFMagicHeadWheelView *)self consecutiveRotationChangeRequests]< v8 && !sampling)
     {
       [(SFMagicHeadWheelView *)self setConsecutiveRotationChangeRequests:[(SFMagicHeadWheelView *)self consecutiveRotationChangeRequests]+ 1];
-      v5 = [(SFMagicHeadWheelView *)self rotationState];
+      stateCopy = [(SFMagicHeadWheelView *)self rotationState];
     }
   }
 
-  if ([(SFMagicHeadWheelView *)self rotationState]!= v5)
+  if ([(SFMagicHeadWheelView *)self rotationState]!= stateCopy)
   {
-    v10 = [(SFMagicHeadWheelView *)self rotationState];
-    [(SFMagicHeadWheelView *)self setRotationState:v5];
+    rotationState = [(SFMagicHeadWheelView *)self rotationState];
+    [(SFMagicHeadWheelView *)self setRotationState:stateCopy];
     v18 = 0;
     [(SFMagicHeadWheelView *)self canChangeSelectionWithDescription:&v18];
     v11 = v18;
     v12 = magic_head_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      if (v10 == 1)
+      if (rotationState == 1)
       {
         v13 = "Rotating";
       }
@@ -390,7 +390,7 @@ void __37__SFMagicHeadWheelView_createSprings__block_invoke_2(uint64_t a1)
         v13 = "?";
       }
 
-      if (v10)
+      if (rotationState)
       {
         v14 = v13;
       }
@@ -400,8 +400,8 @@ void __37__SFMagicHeadWheelView_createSprings__block_invoke_2(uint64_t a1)
         v14 = "Resting";
       }
 
-      v15 = [(SFMagicHeadWheelView *)self rotationState];
-      if (v15 == 1)
+      rotationState2 = [(SFMagicHeadWheelView *)self rotationState];
+      if (rotationState2 == 1)
       {
         v16 = "Rotating";
       }
@@ -413,7 +413,7 @@ void __37__SFMagicHeadWheelView_createSprings__block_invoke_2(uint64_t a1)
 
       *buf = 136315650;
       v20 = v14;
-      if (!v15)
+      if (!rotationState2)
       {
         v16 = "Resting";
       }
@@ -440,14 +440,14 @@ void __37__SFMagicHeadWheelView_createSprings__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)updateVelocityWithCurrentAngle:(double)a3
+- (void)updateVelocityWithCurrentAngle:(double)angle
 {
-  v5 = [(SFMagicHeadWheelView *)self settings];
-  [v5 rotationGateThresholdDegrees];
+  settings = [(SFMagicHeadWheelView *)self settings];
+  [settings rotationGateThresholdDegrees];
   v7 = v6;
 
   [(SFMagicHeadWheelView *)self previousAngle];
-  v9 = a3 - v8;
+  v9 = angle - v8;
   if (v9 < 0.0)
   {
     v9 = -v9;
@@ -455,18 +455,18 @@ void __37__SFMagicHeadWheelView_createSprings__block_invoke_2(uint64_t a1)
 
   [(SFMagicHeadWheelView *)self transitionToRotationState:v9 >= v7 bypassSampling:0];
 
-  [(SFMagicHeadWheelView *)self setPreviousAngle:a3];
+  [(SFMagicHeadWheelView *)self setPreviousAngle:angle];
 }
 
-+ (double)clampedRotationDegrees:(double)a3
++ (double)clampedRotationDegrees:(double)degrees
 {
   v3 = 0.0;
-  if (a3 < 0.0)
+  if (degrees < 0.0)
   {
     v3 = -1.0;
   }
 
-  if (a3 <= 0.0)
+  if (degrees <= 0.0)
   {
     v4 = v3;
   }
@@ -476,13 +476,13 @@ void __37__SFMagicHeadWheelView_createSprings__block_invoke_2(uint64_t a1)
     v4 = 1.0;
   }
 
-  if (a3 < 0.0)
+  if (degrees < 0.0)
   {
-    a3 = -a3;
+    degrees = -degrees;
   }
 
-  v5 = a3;
-  v6 = v4 * fmodf(v5, 360.0);
+  degreesCopy = degrees;
+  v6 = v4 * fmodf(degreesCopy, 360.0);
   if (v6 >= 0.0)
   {
     return v6;
@@ -494,24 +494,24 @@ void __37__SFMagicHeadWheelView_createSprings__block_invoke_2(uint64_t a1)
   }
 }
 
-- (BOOL)canChangeSelectionWhenInRotationState:(int64_t)a3 guidanceState:(int64_t)a4 description:(id *)a5 ignoreDisabling:(BOOL)a6
+- (BOOL)canChangeSelectionWhenInRotationState:(int64_t)state guidanceState:(int64_t)guidanceState description:(id *)description ignoreDisabling:(BOOL)disabling
 {
-  if (a6 || -[SFMagicHeadWheelView isMagicHead](self, "isMagicHead") || (-[SFMagicHeadWheelView settings](self, "settings"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 selectionDisabled], v10, !v11))
+  if (disabling || -[SFMagicHeadWheelView isMagicHead](self, "isMagicHead") || (-[SFMagicHeadWheelView settings](self, "settings"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 selectionDisabled], v10, !v11))
   {
-    if ((a4 - 3) > 1)
+    if ((guidanceState - 3) > 1)
     {
-      v14 = [(SFMagicHeadWheelView *)self settings];
-      v15 = [v14 rotationGatedSelectionEnabled];
-      v16 = a3 != 1;
+      settings = [(SFMagicHeadWheelView *)self settings];
+      rotationGatedSelectionEnabled = [settings rotationGatedSelectionEnabled];
+      v16 = state != 1;
 
-      v12 = v16 & v15 ^ 1;
+      v12 = v16 & rotationGatedSelectionEnabled ^ 1;
       v13 = @"Selection can change";
-      if ((v16 & v15) != 0)
+      if ((v16 & rotationGatedSelectionEnabled) != 0)
       {
         v13 = @"Selection cannot change due to Not Rotating";
       }
 
-      if (a5)
+      if (description)
       {
         goto LABEL_12;
       }
@@ -520,7 +520,7 @@ void __37__SFMagicHeadWheelView_createSprings__block_invoke_2(uint64_t a1)
     else
     {
       v12 = 0;
-      if (a5)
+      if (description)
       {
         v13 = @"Selection cannot change due to Tilted";
         goto LABEL_12;
@@ -531,31 +531,31 @@ void __37__SFMagicHeadWheelView_createSprings__block_invoke_2(uint64_t a1)
   else
   {
     v12 = 0;
-    if (a5)
+    if (description)
     {
       v13 = @"Selection cannot change due to being Disabled";
 LABEL_12:
-      *a5 = v13;
+      *description = v13;
     }
   }
 
   return v12 & 1;
 }
 
-- (BOOL)canChangeSelectionWithDescription:(id *)a3 ignoreDisabling:(BOOL)a4
+- (BOOL)canChangeSelectionWithDescription:(id *)description ignoreDisabling:(BOOL)disabling
 {
-  v4 = a4;
-  v7 = [(SFMagicHeadWheelView *)self rotationState];
-  v8 = [(SFMagicHeadWheelView *)self guidanceState];
+  disablingCopy = disabling;
+  rotationState = [(SFMagicHeadWheelView *)self rotationState];
+  guidanceState = [(SFMagicHeadWheelView *)self guidanceState];
 
-  return [(SFMagicHeadWheelView *)self canChangeSelectionWhenInRotationState:v7 guidanceState:v8 description:a3 ignoreDisabling:v4];
+  return [(SFMagicHeadWheelView *)self canChangeSelectionWhenInRotationState:rotationState guidanceState:guidanceState description:description ignoreDisabling:disablingCopy];
 }
 
 - (BOOL)inGuidanceStates
 {
-  v3 = [(SFMagicHeadWheelView *)self guidanceState];
+  guidanceState = [(SFMagicHeadWheelView *)self guidanceState];
 
-  return [(SFMagicHeadWheelView *)self inGuidanceStatesWhenInState:v3];
+  return [(SFMagicHeadWheelView *)self inGuidanceStatesWhenInState:guidanceState];
 }
 
 - (BOOL)guidanceStatesEnabled
@@ -567,8 +567,8 @@ LABEL_12:
 
   else
   {
-    v4 = [(SFMagicHeadWheelView *)self settings];
-    if ([v4 guidanceEnabled] && -[SFMagicHeadWheelView rotatedAfterSelectionWasMade](self, "rotatedAfterSelectionWasMade"))
+    settings = [(SFMagicHeadWheelView *)self settings];
+    if ([settings guidanceEnabled] && -[SFMagicHeadWheelView rotatedAfterSelectionWasMade](self, "rotatedAfterSelectionWasMade"))
     {
       v3 = ![(SFMagicHeadWheelView *)self noUWBCapableDevices];
     }
@@ -582,41 +582,41 @@ LABEL_12:
   return v3;
 }
 
-- (BOOL)transitionToGuidanceState:(int64_t)a3
+- (BOOL)transitionToGuidanceState:(int64_t)state
 {
   v27 = *MEMORY[0x1E69E9840];
-  if ([(SFMagicHeadWheelView *)self guidanceState]== a3)
+  if ([(SFMagicHeadWheelView *)self guidanceState]== state)
   {
     return 1;
   }
 
-  v6 = [(SFMagicHeadWheelView *)self guidanceState];
-  v7 = a3 != 2 && v6 == 1;
+  guidanceState = [(SFMagicHeadWheelView *)self guidanceState];
+  v7 = state != 2 && guidanceState == 1;
   v5 = !v7;
   if (v7)
   {
     v10 = magic_head_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(SFMagicHeadWheelView *)self guidanceState];
-      if (v13 > 4)
+      guidanceState2 = [(SFMagicHeadWheelView *)self guidanceState];
+      if (guidanceState2 > 4)
       {
         v14 = "?";
       }
 
       else
       {
-        v14 = off_1E7EE3858[v13];
+        v14 = off_1E7EE3858[guidanceState2];
       }
 
-      if (a3 > 4)
+      if (state > 4)
       {
         v16 = "?";
       }
 
       else
       {
-        v16 = off_1E7EE3830[a3];
+        v16 = off_1E7EE3830[state];
       }
 
       *buf = 136315394;
@@ -629,8 +629,8 @@ LABEL_12:
 
   else
   {
-    v8 = [(SFMagicHeadWheelView *)self guidanceState];
-    [(SFMagicHeadWheelView *)self setGuidanceState:a3];
+    guidanceState3 = [(SFMagicHeadWheelView *)self guidanceState];
+    [(SFMagicHeadWheelView *)self setGuidanceState:state];
     if ([(SFMagicHeadWheelView *)self rotatedAfterSelectionWasMade]&& [(SFMagicHeadWheelView *)self guidanceState]== 2)
     {
       [(SFMagicHeadWheelView *)self transitionToRotationState:0 bypassSampling:1];
@@ -650,24 +650,24 @@ LABEL_12:
     v11 = magic_head_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      if (v8 > 4)
+      if (guidanceState3 > 4)
       {
         v12 = "?";
       }
 
       else
       {
-        v12 = off_1E7EE3858[v8];
+        v12 = off_1E7EE3858[guidanceState3];
       }
 
-      if (a3 > 4)
+      if (state > 4)
       {
         v15 = "?";
       }
 
       else
       {
-        v15 = off_1E7EE3858[a3];
+        v15 = off_1E7EE3858[state];
       }
 
       *buf = 136315650;
@@ -681,11 +681,11 @@ LABEL_12:
 
     [(SFMagicHeadWheelView *)self updateSelectionControlState];
     [(SFMagicHeadWheelView *)self updateVisibilityOfComponents];
-    v17 = [(SFMagicHeadWheelView *)self inGuidanceStatesWhenInState:v8];
-    if (v17 != [(SFMagicHeadWheelView *)self inGuidanceStatesWhenInState:a3])
+    v17 = [(SFMagicHeadWheelView *)self inGuidanceStatesWhenInState:guidanceState3];
+    if (v17 != [(SFMagicHeadWheelView *)self inGuidanceStatesWhenInState:state])
     {
-      v18 = [(SFMagicHeadWheelView *)self delegate];
-      [v18 magicHeadSelectedHeadRequestingDisabledState:{-[SFMagicHeadWheelView inGuidanceStatesWhenInState:](self, "inGuidanceStatesWhenInState:", a3)}];
+      delegate = [(SFMagicHeadWheelView *)self delegate];
+      [delegate magicHeadSelectedHeadRequestingDisabledState:{-[SFMagicHeadWheelView inGuidanceStatesWhenInState:](self, "inGuidanceStatesWhenInState:", state)}];
     }
   }
 
@@ -694,23 +694,23 @@ LABEL_12:
 
 - (void)updateVisibilityOfComponents
 {
-  v3 = [(SFMagicHeadWheelView *)self dots];
-  v4 = [v3 firstObject];
-  [v4 alpha];
+  dots = [(SFMagicHeadWheelView *)self dots];
+  firstObject = [dots firstObject];
+  [firstObject alpha];
   v6 = v5;
 
   if (![(SFMagicHeadWheelView *)self isMagicHead])
   {
-    v7 = [(SFMagicHeadWheelView *)self guidanceState];
-    if (fabs(v6) >= 0.00000011920929 == v7 > 2)
+    guidanceState = [(SFMagicHeadWheelView *)self guidanceState];
+    if (fabs(v6) >= 0.00000011920929 == guidanceState > 2)
     {
-      v8 = v7;
-      v9 = v7 > 2;
+      v8 = guidanceState;
+      v9 = guidanceState > 2;
       [(SFMagicHeadWheelView *)self hideDots:v9 withAnimationDuration:0.2];
       [(SFMagicHeadWheelView *)self scaleDots:v9];
-      v10 = [(SFMagicHeadWheelView *)self window];
+      window = [(SFMagicHeadWheelView *)self window];
 
-      if (v10)
+      if (window)
       {
         [(SFMagicHeadWheelView *)self hapticsForHideDots:v8 > 2];
       }
@@ -724,11 +724,11 @@ LABEL_12:
   [(SFMagicHeadWheelView *)self updateCanChangeSelectionUI];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = SFMagicHeadWheelView;
-  [(SFMagicHeadWheelView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SFMagicHeadWheelView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(SFMagicHeadWheelView *)self setNeedsLayout];
 }
 
@@ -748,11 +748,11 @@ LABEL_12:
 
 - (CGPoint)centerOfContentBounds
 {
-  v3 = [(SFMagicHeadWheelView *)self contentView];
-  [v3 bounds];
+  contentView = [(SFMagicHeadWheelView *)self contentView];
+  [contentView bounds];
   MidX = CGRectGetMidX(v10);
-  v5 = [(SFMagicHeadWheelView *)self contentView];
-  [v5 bounds];
+  contentView2 = [(SFMagicHeadWheelView *)self contentView];
+  [contentView2 bounds];
   MidY = CGRectGetMidY(v11);
 
   v7 = MidX;
@@ -768,7 +768,7 @@ LABEL_12:
   v97.receiver = self;
   v97.super_class = SFMagicHeadWheelView;
   [(SFMagicHeadWheelView *)&v97 layoutSubviews];
-  v3 = [(SFMagicHeadWheelView *)self settings];
+  settings = [(SFMagicHeadWheelView *)self settings];
   [(SFMagicHeadWheelView *)self bounds];
   Width = CGRectGetWidth(v111);
   [(SFMagicHeadWheelView *)self bounds];
@@ -784,15 +784,15 @@ LABEL_12:
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(SFMagicHeadWheelView *)self contentView];
-  [v14 setBounds:{v7, v9, v11, v13}];
+  contentView = [(SFMagicHeadWheelView *)self contentView];
+  [contentView setBounds:{v7, v9, v11, v13}];
 
   [(SFMagicHeadWheelView *)self bounds];
   MidX = CGRectGetMidX(v113);
   [(SFMagicHeadWheelView *)self bounds];
   MidY = CGRectGetMidY(v114);
-  v17 = [(SFMagicHeadWheelView *)self contentView];
-  [v17 setCenter:{MidX, MidY}];
+  contentView2 = [(SFMagicHeadWheelView *)self contentView];
+  [contentView2 setCenter:{MidX, MidY}];
 
   [(SFMagicHeadWheelView *)self centerOfContentBounds];
   v19 = v18;
@@ -800,37 +800,37 @@ LABEL_12:
   [(SFMagicHeadWheelView *)self centerOfContentBounds];
   v23 = v22;
   v25 = v24;
-  v26 = [(SFMagicHeadWheelView *)self canChangeSelectionView];
-  [v26 setCenter:{v23, v25}];
+  canChangeSelectionView = [(SFMagicHeadWheelView *)self canChangeSelectionView];
+  [canChangeSelectionView setCenter:{v23, v25}];
 
-  v27 = [(SFMagicHeadWheelView *)self placeHolderView];
-  [v27 setBounds:{v7, v9, v11, v13}];
+  placeHolderView = [(SFMagicHeadWheelView *)self placeHolderView];
+  [placeHolderView setBounds:{v7, v9, v11, v13}];
 
-  v28 = [(SFMagicHeadWheelView *)self placeHolderView];
-  [v28 setCenter:{v19, v21}];
+  placeHolderView2 = [(SFMagicHeadWheelView *)self placeHolderView];
+  [placeHolderView2 setCenter:{v19, v21}];
 
-  v29 = [(SFMagicHeadWheelView *)self selectedHeadControl];
-  [v29 setBounds:{v7, v9, v11, v13}];
+  selectedHeadControl = [(SFMagicHeadWheelView *)self selectedHeadControl];
+  [selectedHeadControl setBounds:{v7, v9, v11, v13}];
 
-  v30 = [(SFMagicHeadWheelView *)self selectedHeadControl];
-  [v30 setCenter:{v19, v21}];
+  selectedHeadControl2 = [(SFMagicHeadWheelView *)self selectedHeadControl];
+  [selectedHeadControl2 setCenter:{v19, v21}];
 
-  v31 = [(SFMagicHeadWheelView *)self dotsContainer];
-  [v31 setBounds:{v7, v9, v11, v13}];
+  dotsContainer = [(SFMagicHeadWheelView *)self dotsContainer];
+  [dotsContainer setBounds:{v7, v9, v11, v13}];
 
-  v32 = [(SFMagicHeadWheelView *)self dotsContainer];
-  [v32 setCenter:{v19, v21}];
+  dotsContainer2 = [(SFMagicHeadWheelView *)self dotsContainer];
+  [dotsContainer2 setCenter:{v19, v21}];
 
   if ([(SFMagicHeadWheelView *)self isEnabled])
   {
-    v33 = [(SFMagicHeadWheelView *)self guidanceStatesEnabled];
-    if (v33)
+    guidanceStatesEnabled = [(SFMagicHeadWheelView *)self guidanceStatesEnabled];
+    if (guidanceStatesEnabled)
     {
-      v34 = [(SFMagicHeadWheelView *)self pitchSpringProperty];
-      if ([v34 primed])
+      pitchSpringProperty = [(SFMagicHeadWheelView *)self pitchSpringProperty];
+      if ([pitchSpringProperty primed])
       {
-        v35 = [(SFMagicHeadWheelView *)self pitchSpringProperty];
-        [v35 output];
+        pitchSpringProperty2 = [(SFMagicHeadWheelView *)self pitchSpringProperty];
+        [pitchSpringProperty2 output];
         v37 = v36;
       }
 
@@ -847,9 +847,9 @@ LABEL_12:
 
     if ([(SFMagicHeadWheelView *)self guidanceState]== 4)
     {
-      [v3 guidanceTooFarDegrees];
+      [settings guidanceTooFarDegrees];
       v39 = v38;
-      [v3 guidanceRecoveredDegreesDelta];
+      [settings guidanceRecoveredDegreesDelta];
       if (v37 > v39 + v40)
       {
         v41 = 3;
@@ -857,19 +857,19 @@ LABEL_12:
       }
 
 LABEL_15:
-      [v3 guidanceFadeHeadDegrees];
+      [settings guidanceFadeHeadDegrees];
       v45 = v44;
-      [v3 guidanceRestoreHeadDegreesDelta];
+      [settings guidanceRestoreHeadDegreesDelta];
       if (v37 <= v45 + v46)
       {
 LABEL_23:
-        [v3 guidanceGoodAngleThreshold];
+        [settings guidanceGoodAngleThreshold];
         v49 = v48;
-        [v3 guidanceGoodAngleThreshold];
+        [settings guidanceGoodAngleThreshold];
         v51 = v50;
-        [v3 guidanceWorstAngleDegreesDelta];
+        [settings guidanceWorstAngleDegreesDelta];
         v53 = v51 - v52;
-        [v3 guidanceDipSpeed];
+        [settings guidanceDipSpeed];
         v55 = 0.0;
         v56 = SFMathMap(v37, v53, v49, -(v49 * v54), 0.0);
         if (v56 < v53)
@@ -877,55 +877,55 @@ LABEL_23:
           v53 = v56;
         }
 
-        [v3 guidanceRubberbandingStretchiness];
+        [settings guidanceRubberbandingStretchiness];
         v58 = fmin(SFMathRubberband(v53, v49, v49, v57, 0.0), 0.0);
         if ([(SFMagicHeadWheelView *)self inGuidanceStates])
         {
-          v59 = [(SFMagicHeadWheelView *)self contentView];
-          v60 = [v59 layer];
+          contentView3 = [(SFMagicHeadWheelView *)self contentView];
+          layer = [contentView3 layer];
           v61 = v58;
           v62 = v61 * 0.0174532925;
           *&v62 = v62;
           v63 = [MEMORY[0x1E696AD98] numberWithFloat:v62];
-          [v60 setValue:v63 forKeyPath:@"transform.rotation.x"];
+          [layer setValue:v63 forKeyPath:@"transform.rotation.x"];
         }
 
-        if ([v3 rollEnabled])
+        if ([settings rollEnabled])
         {
-          v64 = [(SFMagicHeadWheelView *)self rollSpringProperty];
-          if ([v64 primed])
+          rollSpringProperty = [(SFMagicHeadWheelView *)self rollSpringProperty];
+          if ([rollSpringProperty primed])
           {
-            v65 = [(SFMagicHeadWheelView *)self rollSpringProperty];
-            [v65 output];
+            rollSpringProperty2 = [(SFMagicHeadWheelView *)self rollSpringProperty];
+            [rollSpringProperty2 output];
             v55 = v66;
           }
         }
 
-        [v3 rollMaxDegrees];
+        [settings rollMaxDegrees];
         v68 = -v67;
-        [v3 rollMaxDegrees];
+        [settings rollMaxDegrees];
         v70 = v69;
-        [v3 rollRubberbandingStretchiness];
+        [settings rollRubberbandingStretchiness];
         v72 = v71;
-        [v3 rollRubberbandingStretchiness];
+        [settings rollRubberbandingStretchiness];
         v74 = SFMathRubberband(v55, v68, v70, v72, v73);
-        if (v33)
+        if (guidanceStatesEnabled)
         {
-          v75 = [(SFMagicHeadWheelView *)self contentView];
-          v76 = [v75 layer];
+          contentView4 = [(SFMagicHeadWheelView *)self contentView];
+          layer2 = [contentView4 layer];
           v77 = v74;
           v78 = v77 * 0.0174532925;
           *&v78 = v78;
           v79 = [MEMORY[0x1E696AD98] numberWithFloat:v78];
-          [v76 setValue:v79 forKeyPath:@"transform.rotation.y"];
+          [layer2 setValue:v79 forKeyPath:@"transform.rotation.y"];
         }
 
-        v80 = [(SFMagicHeadWheelView *)self rotationSpringProperty];
+        rotationSpringProperty = [(SFMagicHeadWheelView *)self rotationSpringProperty];
         v81 = 0.0;
-        if ([v80 primed])
+        if ([rotationSpringProperty primed])
         {
-          v82 = [(SFMagicHeadWheelView *)self rotationSpringProperty];
-          [v82 output];
+          rotationSpringProperty2 = [(SFMagicHeadWheelView *)self rotationSpringProperty];
+          [rotationSpringProperty2 output];
           v81 = v83;
         }
 
@@ -937,14 +937,14 @@ LABEL_23:
         *&block[5] = v81;
         dispatch_async(MEMORY[0x1E69E96A0], block);
         [(SFMagicHeadWheelView *)self updateVelocityWithCurrentAngle:v81];
-        v84 = [(SFMagicHeadWheelView *)self dotsContainer];
-        [v84 bounds];
+        dotsContainer3 = [(SFMagicHeadWheelView *)self dotsContainer];
+        [dotsContainer3 bounds];
         v85 = CGRectGetMidX(v115);
-        v86 = [(SFMagicHeadWheelView *)self dotsContainer];
-        [v86 bounds];
+        dotsContainer4 = [(SFMagicHeadWheelView *)self dotsContainer];
+        [dotsContainer4 bounds];
         v87 = CGRectGetMidY(v116);
 
-        v88 = [(SFMagicHeadWheelView *)self dots];
+        dots = [(SFMagicHeadWheelView *)self dots];
         v95[0] = MEMORY[0x1E69E9820];
         v95[1] = 3221225472;
         v95[2] = __38__SFMagicHeadWheelView_layoutSubviews__block_invoke_2;
@@ -953,10 +953,10 @@ LABEL_23:
         *&v95[6] = v87;
         v95[4] = self;
         *&v95[7] = v81;
-        [v88 enumerateObjectsUsingBlock:v95];
+        [dots enumerateObjectsUsingBlock:v95];
 
-        v89 = [(SFMagicHeadWheelView *)self identifierToSelectionMarkerView];
-        v90 = [v89 allValues];
+        identifierToSelectionMarkerView = [(SFMagicHeadWheelView *)self identifierToSelectionMarkerView];
+        allValues = [identifierToSelectionMarkerView allValues];
         v94[0] = MEMORY[0x1E69E9820];
         v94[1] = 3221225472;
         v94[2] = __38__SFMagicHeadWheelView_layoutSubviews__block_invoke_4;
@@ -964,13 +964,13 @@ LABEL_23:
         *&v94[4] = v85;
         *&v94[5] = v87;
         *&v94[6] = v81;
-        [v90 enumerateObjectsUsingBlock:v94];
+        [allValues enumerateObjectsUsingBlock:v94];
 
         v91 = magic_head_log();
         if (os_log_type_enabled(v91, OS_LOG_TYPE_DEBUG))
         {
-          v92 = [(SFMagicHeadWheelView *)self rotationSpringProperty];
-          [v92 input];
+          rotationSpringProperty3 = [(SFMagicHeadWheelView *)self rotationSpringProperty];
+          [rotationSpringProperty3 input];
           *buf = 134219264;
           v99 = v81;
           v100 = 2048;
@@ -995,9 +995,9 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v42 = [(SFMagicHeadWheelView *)self guidanceState];
-    [v3 guidanceTooFarDegrees];
-    if (v42 == 3)
+    guidanceState = [(SFMagicHeadWheelView *)self guidanceState];
+    [settings guidanceTooFarDegrees];
+    if (guidanceState == 3)
     {
       if (v37 >= v43)
       {
@@ -1007,7 +1007,7 @@ LABEL_22:
 
     else if (v37 >= v43)
     {
-      [v3 guidanceFadeHeadDegrees];
+      [settings guidanceFadeHeadDegrees];
       if (v37 >= v47)
       {
         v41 = 0;
@@ -1155,80 +1155,80 @@ void __38__SFMagicHeadWheelView_layoutSubviews__block_invoke_4(double *a1, void 
 {
   if (IsAppleInternalBuild() && (-[SFMagicHeadWheelView settings](self, "settings"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 showSelectionGateLock], v3, v4))
   {
-    v5 = [(SFMagicHeadWheelView *)self canChangeSelectionView];
+    canChangeSelectionView = [(SFMagicHeadWheelView *)self canChangeSelectionView];
 
-    if (!v5)
+    if (!canChangeSelectionView)
     {
       v6 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithSize:{40.0, 40.0}];
       [(SFMagicHeadWheelView *)self setCanChangeSelectionView:v6];
 
-      v7 = [(SFMagicHeadWheelView *)self canChangeSelectionView];
-      v8 = [v7 layer];
-      [v8 setZPosition:9999.0];
+      canChangeSelectionView2 = [(SFMagicHeadWheelView *)self canChangeSelectionView];
+      layer = [canChangeSelectionView2 layer];
+      [layer setZPosition:9999.0];
 
-      v9 = [MEMORY[0x1E69DC888] systemRedColor];
-      v10 = [(SFMagicHeadWheelView *)self canChangeSelectionView];
-      [v10 setTintColor:v9];
+      systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+      canChangeSelectionView3 = [(SFMagicHeadWheelView *)self canChangeSelectionView];
+      [canChangeSelectionView3 setTintColor:systemRedColor];
 
-      v11 = [(SFMagicHeadWheelView *)self contentView];
-      v12 = [(SFMagicHeadWheelView *)self canChangeSelectionView];
-      [v11 addSubview:v12];
+      contentView = [(SFMagicHeadWheelView *)self contentView];
+      canChangeSelectionView4 = [(SFMagicHeadWheelView *)self canChangeSelectionView];
+      [contentView addSubview:canChangeSelectionView4];
 
       v13 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"lock.fill"];
-      v14 = [(SFMagicHeadWheelView *)self canChangeSelectionView];
-      [v14 setImage:v13];
+      canChangeSelectionView5 = [(SFMagicHeadWheelView *)self canChangeSelectionView];
+      [canChangeSelectionView5 setImage:v13];
 
       v15 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"lock.open.fill"];
-      v16 = [(SFMagicHeadWheelView *)self canChangeSelectionView];
-      [v16 setHighlightedImage:v15];
+      canChangeSelectionView6 = [(SFMagicHeadWheelView *)self canChangeSelectionView];
+      [canChangeSelectionView6 setHighlightedImage:v15];
     }
 
     v17 = [(SFMagicHeadWheelView *)self canChangeSelectionWithDescription:0 ignoreDisabling:1];
-    v19 = [(SFMagicHeadWheelView *)self canChangeSelectionView];
-    [v19 setHighlighted:v17];
+    canChangeSelectionView7 = [(SFMagicHeadWheelView *)self canChangeSelectionView];
+    [canChangeSelectionView7 setHighlighted:v17];
   }
 
   else
   {
-    v18 = [(SFMagicHeadWheelView *)self canChangeSelectionView];
-    [v18 removeFromSuperview];
+    canChangeSelectionView8 = [(SFMagicHeadWheelView *)self canChangeSelectionView];
+    [canChangeSelectionView8 removeFromSuperview];
 
     [(SFMagicHeadWheelView *)self setCanChangeSelectionView:0];
   }
 }
 
-- (void)setMarkerViewForIdentifier:(id)a3 atPositionDegree:(double)a4
+- (void)setMarkerViewForIdentifier:(id)identifier atPositionDegree:(double)degree
 {
-  v6 = a3;
-  v7 = [(SFMagicHeadWheelView *)self identifierToSelectionMarkerView];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  identifierCopy = identifier;
+  identifierToSelectionMarkerView = [(SFMagicHeadWheelView *)self identifierToSelectionMarkerView];
+  v8 = [identifierToSelectionMarkerView objectForKeyedSubscript:identifierCopy];
   [v8 removeFromSuperview];
 
   v9 = [SFMagicHeadMarkerView alloc];
   [(SFMagicHeadWheelView *)self radius];
-  v15 = [(SFMagicHeadMarkerView *)v9 initWithPositionDegree:a4 containerRadius:v10];
-  v11 = [(SFMagicHeadWheelView *)self settings];
-  -[SFMagicHeadMarkerView setHidden:](v15, "setHidden:", [v11 showSelectionMarkers] ^ 1);
+  v15 = [(SFMagicHeadMarkerView *)v9 initWithPositionDegree:degree containerRadius:v10];
+  settings = [(SFMagicHeadWheelView *)self settings];
+  -[SFMagicHeadMarkerView setHidden:](v15, "setHidden:", [settings showSelectionMarkers] ^ 1);
 
-  v12 = [(SFMagicHeadWheelView *)self dotsContainer];
-  v13 = [v12 contentView];
-  [v13 addSubview:v15];
+  dotsContainer = [(SFMagicHeadWheelView *)self dotsContainer];
+  contentView = [dotsContainer contentView];
+  [contentView addSubview:v15];
 
-  v14 = [(SFMagicHeadWheelView *)self identifierToSelectionMarkerView];
-  [v14 setObject:v15 forKeyedSubscript:v6];
+  identifierToSelectionMarkerView2 = [(SFMagicHeadWheelView *)self identifierToSelectionMarkerView];
+  [identifierToSelectionMarkerView2 setObject:v15 forKeyedSubscript:identifierCopy];
 
   [(SFMagicHeadWheelView *)self setNeedsLayout];
 }
 
-- (BOOL)updateSelectedNode:(id)a3
+- (BOOL)updateSelectedNode:(id)node
 {
-  v4 = a3;
-  v5 = [(SFMagicHeadWheelView *)self selectedHead];
-  v6 = [v5 node];
-  v7 = [v6 realName];
-  v8 = [v4 realName];
-  v9 = v7;
-  v10 = v8;
+  nodeCopy = node;
+  selectedHead = [(SFMagicHeadWheelView *)self selectedHead];
+  node = [selectedHead node];
+  realName = [node realName];
+  realName2 = [nodeCopy realName];
+  v9 = realName;
+  v10 = realName2;
   v11 = v10;
   if (v9 == v10)
   {
@@ -1245,19 +1245,19 @@ void __38__SFMagicHeadWheelView_layoutSubviews__block_invoke_4(double *a1, void 
     v12 = [v9 isEqual:v10];
   }
 
-  v13 = [(SFMagicHeadWheelView *)self configureSelectedHeadWithNode:v4 slotNode:0 isSameAsSelected:v12];
+  v13 = [(SFMagicHeadWheelView *)self configureSelectedHeadWithNode:nodeCopy slotNode:0 isSameAsSelected:v12];
   return v13;
 }
 
-- (BOOL)updateSelectedSlotNode:(id)a3
+- (BOOL)updateSelectedSlotNode:(id)node
 {
-  v4 = a3;
-  v5 = [(SFMagicHeadWheelView *)self selectedHead];
-  v6 = [v5 slotNode];
-  v7 = [v6 identifier];
-  v8 = [v4 identifier];
-  v9 = v7;
-  v10 = v8;
+  nodeCopy = node;
+  selectedHead = [(SFMagicHeadWheelView *)self selectedHead];
+  slotNode = [selectedHead slotNode];
+  identifier = [slotNode identifier];
+  identifier2 = [nodeCopy identifier];
+  v9 = identifier;
+  v10 = identifier2;
   v11 = v10;
   if (v9 == v10)
   {
@@ -1274,25 +1274,25 @@ void __38__SFMagicHeadWheelView_layoutSubviews__block_invoke_4(double *a1, void 
     v12 = [v9 isEqual:v10];
   }
 
-  v13 = [(SFMagicHeadWheelView *)self configureSelectedHeadWithNode:0 slotNode:v4 isSameAsSelected:v12];
+  v13 = [(SFMagicHeadWheelView *)self configureSelectedHeadWithNode:0 slotNode:nodeCopy isSameAsSelected:v12];
   return v13;
 }
 
-- (BOOL)configureSelectedHeadWithNode:(id)a3 slotNode:(id)a4 isSameAsSelected:(BOOL)a5
+- (BOOL)configureSelectedHeadWithNode:(id)node slotNode:(id)slotNode isSameAsSelected:(BOOL)selected
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v9)
+  selectedCopy = selected;
+  nodeCopy = node;
+  slotNodeCopy = slotNode;
+  v10 = slotNodeCopy;
+  if (!slotNodeCopy)
   {
-    v9 = v8;
+    slotNodeCopy = nodeCopy;
   }
 
-  v11 = [v9 selectionReason];
-  if (v11 == 2)
+  selectionReason = [slotNodeCopy selectionReason];
+  if (selectionReason == 2)
   {
-    if (!v5)
+    if (!selectedCopy)
     {
       v12 = magic_head_log();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1311,31 +1311,31 @@ void __38__SFMagicHeadWheelView_layoutSubviews__block_invoke_4(double *a1, void 
   v13 = v35;
   if (v24)
   {
-    if (v11 == 1)
+    if (selectionReason == 1)
     {
-      if (v5)
+      if (selectedCopy)
       {
-        v25 = [(SFMagicHeadWheelView *)self selectedHead];
-        v26 = [v25 pointedAt];
+        selectedHead = [(SFMagicHeadWheelView *)self selectedHead];
+        pointedAt = [selectedHead pointedAt];
 
-        if ((v26 & 1) == 0)
+        if ((pointedAt & 1) == 0)
         {
           v27 = magic_head_log();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
           {
-            [SFMagicHeadWheelView configureSelectedHeadWithNode:v8 slotNode:v27 isSameAsSelected:?];
+            [SFMagicHeadWheelView configureSelectedHeadWithNode:nodeCopy slotNode:v27 isSameAsSelected:?];
           }
 
-          v28 = [(SFMagicHeadWheelView *)self selectedHead];
-          [v28 setPointedAt:1];
+          selectedHead2 = [(SFMagicHeadWheelView *)self selectedHead];
+          [selectedHead2 setPointedAt:1];
 
           [(SFMagicHeadWheelView *)self pulseSelectedHead];
           [(SFMagicHeadWheelView *)self triggerReSelectedHaptic];
-          v29 = [(SFMagicHeadWheelView *)self selectedHead];
-          v30 = [v29 nodeIdentifier];
-          v31 = [(SFMagicHeadWheelView *)self rotationSpringProperty];
-          [v31 input];
-          [(SFMagicHeadWheelView *)self setMarkerViewForIdentifier:v30 atPositionDegree:-v32];
+          selectedHead3 = [(SFMagicHeadWheelView *)self selectedHead];
+          nodeIdentifier = [selectedHead3 nodeIdentifier];
+          rotationSpringProperty = [(SFMagicHeadWheelView *)self rotationSpringProperty];
+          [rotationSpringProperty input];
+          [(SFMagicHeadWheelView *)self setMarkerViewForIdentifier:nodeIdentifier atPositionDegree:-v32];
 
           [(SFMagicHeadWheelView *)self transitionToGuidanceState:2];
         }
@@ -1345,10 +1345,10 @@ void __38__SFMagicHeadWheelView_layoutSubviews__block_invoke_4(double *a1, void 
     }
 
 LABEL_9:
-    v14 = [(SFMagicHeadWheelView *)self selectedHead];
-    v15 = [v14 pointedAt];
+    selectedHead4 = [(SFMagicHeadWheelView *)self selectedHead];
+    pointedAt2 = [selectedHead4 pointedAt];
 
-    if (v15)
+    if (pointedAt2)
     {
       v16 = magic_head_log();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -1356,24 +1356,24 @@ LABEL_9:
         [SFMagicHeadWheelView configureSelectedHeadWithNode:v16 slotNode:? isSameAsSelected:?];
       }
 
-      v17 = [(SFMagicHeadWheelView *)self selectedHead];
-      [v17 setPointedAt:0];
+      selectedHead5 = [(SFMagicHeadWheelView *)self selectedHead];
+      [selectedHead5 setPointedAt:0];
     }
 
 LABEL_13:
-    if (v8 | v10)
+    if (nodeCopy | v10)
     {
       v18 = [SFMagicHead alloc];
       [(SFMagicHeadWheelView *)self radius];
       v20 = v19;
-      v21 = [(SFMagicHeadWheelView *)self settings];
-      v22 = [(SFMagicHead *)v18 initWithNode:v8 slotNode:v10 containerRadius:self delegate:v21 settings:v20];
+      settings = [(SFMagicHeadWheelView *)self settings];
+      v22 = [(SFMagicHead *)v18 initWithNode:nodeCopy slotNode:v10 containerRadius:self delegate:settings settings:v20];
       v23 = [(SFMagicHeadWheelView *)self updateSelectedHead:v22];
     }
 
     else
     {
-      v23 = !v5;
+      v23 = !selectedCopy;
     }
 
     goto LABEL_26;
@@ -1393,23 +1393,23 @@ LABEL_26:
 
 - (void)pulseSelectedHead
 {
-  v3 = [(SFMagicHeadWheelView *)self settings];
-  v4 = [v3 selectedPulseEnabled];
+  settings = [(SFMagicHeadWheelView *)self settings];
+  selectedPulseEnabled = [settings selectedPulseEnabled];
 
-  if (v4)
+  if (selectedPulseEnabled)
   {
-    v5 = [(SFMagicHeadWheelView *)self selectionAnimator];
-    v6 = [v5 isRunning];
+    selectionAnimator = [(SFMagicHeadWheelView *)self selectionAnimator];
+    isRunning = [selectionAnimator isRunning];
 
-    if ((v6 & 1) == 0)
+    if ((isRunning & 1) == 0)
     {
-      v7 = [(SFMagicHeadWheelView *)self settings];
-      [v7 selectedPulseScaleAmount];
+      settings2 = [(SFMagicHeadWheelView *)self settings];
+      [settings2 selectedPulseScaleAmount];
       v9 = v8;
 
       v10 = MEMORY[0x1E69DD250];
-      v11 = [(SFMagicHeadWheelView *)self settings];
-      [v11 selectedPulseDurationS];
+      settings3 = [(SFMagicHeadWheelView *)self settings];
+      [settings3 selectedPulseDurationS];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __41__SFMagicHeadWheelView_pulseSelectedHead__block_invoke;
@@ -1419,11 +1419,11 @@ LABEL_26:
       [v10 animateWithDuration:0 delay:v19 usingSpringWithDamping:0 initialSpringVelocity:? options:? animations:? completion:?];
 
       v12 = MEMORY[0x1E69DD250];
-      v13 = [(SFMagicHeadWheelView *)self settings];
-      [v13 selectedPulseDurationS];
+      settings4 = [(SFMagicHeadWheelView *)self settings];
+      [settings4 selectedPulseDurationS];
       v15 = v14;
-      v16 = [(SFMagicHeadWheelView *)self settings];
-      [v16 selectedPulseDurationS];
+      settings5 = [(SFMagicHeadWheelView *)self settings];
+      [settings5 selectedPulseDurationS];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __41__SFMagicHeadWheelView_pulseSelectedHead__block_invoke_2;
@@ -1452,14 +1452,14 @@ void __41__SFMagicHeadWheelView_pulseSelectedHead__block_invoke_2(uint64_t a1)
   [v1 setTransform:v3];
 }
 
-- (BOOL)updateSelectedHead:(id)a3
+- (BOOL)updateSelectedHead:(id)head
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(SFMagicHead *)self->_selectedHead nodeIdentifier];
-  v7 = [v5 nodeIdentifier];
-  v8 = v6;
-  v9 = v7;
+  headCopy = head;
+  nodeIdentifier = [(SFMagicHead *)self->_selectedHead nodeIdentifier];
+  nodeIdentifier2 = [headCopy nodeIdentifier];
+  v8 = nodeIdentifier;
+  v9 = nodeIdentifier2;
   v10 = v9;
   if (v8 == v9)
   {
@@ -1476,40 +1476,40 @@ void __41__SFMagicHeadWheelView_pulseSelectedHead__block_invoke_2(uint64_t a1)
     v11 = [v8 isEqual:v9];
   }
 
-  v12 = [(SFMagicHead *)self->_selectedHead slotNode];
-  v13 = [v12 avatarImageSlotID];
-  v14 = [v5 slotNode];
-  v15 = [v14 avatarImageSlotID];
+  slotNode = [(SFMagicHead *)self->_selectedHead slotNode];
+  avatarImageSlotID = [slotNode avatarImageSlotID];
+  slotNode2 = [headCopy slotNode];
+  avatarImageSlotID2 = [slotNode2 avatarImageSlotID];
 
-  if ((!v11 || v13 != v15) && [(SFMagicHeadWheelView *)self transitionToGuidanceState:1])
+  if ((!v11 || avatarImageSlotID != avatarImageSlotID2) && [(SFMagicHeadWheelView *)self transitionToGuidanceState:1])
   {
     v16 = self->_selectedHead;
-    objc_storeStrong(&self->_selectedHead, a3);
+    objc_storeStrong(&self->_selectedHead, head);
     v17 = magic_head_log();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(SFMagicHead *)self->_selectedHead node];
+      node = [(SFMagicHead *)self->_selectedHead node];
       v33 = 138412290;
-      v34 = v18;
+      v34 = node;
       _os_log_impl(&dword_1B9E4B000, v17, OS_LOG_TYPE_DEFAULT, "Selecting %@", &v33, 0xCu);
     }
 
     if (self->_selectedHead)
     {
-      v19 = [v5 nodeIdentifier];
-      v20 = [(SFMagicHeadWheelView *)self rotationSpringProperty];
-      [v20 input];
-      [(SFMagicHeadWheelView *)self setMarkerViewForIdentifier:v19 atPositionDegree:-v21];
+      nodeIdentifier3 = [headCopy nodeIdentifier];
+      rotationSpringProperty = [(SFMagicHeadWheelView *)self rotationSpringProperty];
+      [rotationSpringProperty input];
+      [(SFMagicHeadWheelView *)self setMarkerViewForIdentifier:nodeIdentifier3 atPositionDegree:-v21];
 
       [(SFMagicHead *)self->_selectedHead setUserInteractionEnabled:0];
-      v22 = [(SFMagicHeadWheelView *)self contentView];
-      [v22 addSubview:self->_selectedHead];
+      contentView = [(SFMagicHeadWheelView *)self contentView];
+      [contentView addSubview:self->_selectedHead];
 
       [(SFMagicHeadWheelView *)self centerOfContentBounds];
       [(SFMagicHead *)self->_selectedHead setCenter:?];
-      v23 = [(SFMagicHead *)self->_selectedHead slotNode];
+      slotNode3 = [(SFMagicHead *)self->_selectedHead slotNode];
       selectedHead = self->_selectedHead;
-      if (v23)
+      if (slotNode3)
       {
         [(SFMagicHead *)selectedHead slotNode];
       }
@@ -1519,34 +1519,34 @@ void __41__SFMagicHeadWheelView_pulseSelectedHead__block_invoke_2(uint64_t a1)
         [(SFMagicHead *)selectedHead node];
       }
       v28 = ;
-      v29 = [v28 selectionReason];
+      selectionReason = [v28 selectionReason];
 
-      if (v29 != 1)
+      if (selectionReason != 1)
       {
-        v30 = [(SFMagicHeadWheelView *)self settings];
-        v31 = [v30 hapticForCozyUpSelectionEnabled];
+        settings = [(SFMagicHeadWheelView *)self settings];
+        hapticForCozyUpSelectionEnabled = [settings hapticForCozyUpSelectionEnabled];
 
-        if (v31)
+        if (hapticForCozyUpSelectionEnabled)
         {
           [(SFMagicHeadWheelView *)self triggerSelectedHaptic];
         }
 
-        [(SFMagicHeadWheelView *)self cozyUpAnimationForHead:v5];
+        [(SFMagicHeadWheelView *)self cozyUpAnimationForHead:headCopy];
         goto LABEL_23;
       }
 
       [(SFMagicHeadWheelView *)self triggerSelectedHaptic];
-      v26 = self;
-      v27 = v5;
+      selfCopy2 = self;
+      v27 = headCopy;
     }
 
     else
     {
-      v26 = self;
+      selfCopy2 = self;
       v27 = 0;
     }
 
-    [(SFMagicHeadWheelView *)v26 selectAnimationForHead:v27 withDismissHead:v16];
+    [(SFMagicHeadWheelView *)selfCopy2 selectAnimationForHead:v27 withDismissHead:v16];
 LABEL_23:
 
     v25 = 1;
@@ -1561,70 +1561,70 @@ LABEL_24:
 
 - (void)updateSelectionControlState
 {
-  v3 = [(SFMagicHeadWheelView *)self inGuidanceStates];
-  v4 = [(SFMagicHeadWheelView *)self selectedHeadControl];
-  v5 = v4;
-  if (v3)
+  inGuidanceStates = [(SFMagicHeadWheelView *)self inGuidanceStates];
+  selectedHeadControl = [(SFMagicHeadWheelView *)self selectedHeadControl];
+  v5 = selectedHeadControl;
+  if (inGuidanceStates)
   {
-    [v4 setEnabled:0];
+    [selectedHeadControl setEnabled:0];
 
     [(SFMagicHeadWheelView *)self selectedHeadHightlightCancel];
   }
 
   else
   {
-    [v4 setEnabled:1];
+    [selectedHeadControl setEnabled:1];
   }
 }
 
 - (void)selectedHeadHighlighted
 {
-  v2 = [(SFMagicHeadWheelView *)self selectedHead];
-  [v2 setHighlighted:1];
+  selectedHead = [(SFMagicHeadWheelView *)self selectedHead];
+  [selectedHead setHighlighted:1];
 }
 
 - (void)selectedHeadHightlightCancel
 {
-  v2 = [(SFMagicHeadWheelView *)self selectedHead];
-  [v2 setHighlighted:0];
+  selectedHead = [(SFMagicHeadWheelView *)self selectedHead];
+  [selectedHead setHighlighted:0];
 }
 
 - (void)selectedHeadTapped
 {
-  v3 = [(SFMagicHeadWheelView *)self selectedHead];
-  v5 = [v3 node];
+  selectedHead = [(SFMagicHeadWheelView *)self selectedHead];
+  node = [selectedHead node];
 
-  if (v5)
+  if (node)
   {
-    v4 = [(SFMagicHeadWheelView *)self delegate];
-    [v4 magicHeadSelectedNodeTapped:v5];
+    delegate = [(SFMagicHeadWheelView *)self delegate];
+    [delegate magicHeadSelectedNodeTapped:node];
 
     [(SFMagicHeadWheelView *)self selectedHeadHightlightCancel];
   }
 }
 
-- (void)cozyUpAnimationForHead:(id)a3
+- (void)cozyUpAnimationForHead:(id)head
 {
-  v4 = a3;
-  v5 = [(SFMagicHeadWheelView *)self settings];
-  [v4 setPosition:1];
-  if ([v5 cozyUpAnimationEnabled])
+  headCopy = head;
+  settings = [(SFMagicHeadWheelView *)self settings];
+  [headCopy setPosition:1];
+  if ([settings cozyUpAnimationEnabled])
   {
-    [v4 setSize:0];
+    [headCopy setSize:0];
     v6 = objc_opt_new();
     [(SFMagicHeadWheelView *)self setSelectionAnimator:v6];
 
-    v7 = [(SFMagicHeadWheelView *)self placeHolderView];
-    v8 = [(SFMagicHeadWheelView *)self selectionAnimator];
+    placeHolderView = [(SFMagicHeadWheelView *)self placeHolderView];
+    selectionAnimator = [(SFMagicHeadWheelView *)self selectionAnimator];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __47__SFMagicHeadWheelView_cozyUpAnimationForHead___block_invoke;
     v18[3] = &unk_1E7EE3770;
-    v19 = v5;
-    v20 = v4;
-    v9 = v7;
+    v19 = settings;
+    v20 = headCopy;
+    v9 = placeHolderView;
     v21 = v9;
-    [v8 addAnimations:v18];
+    [selectionAnimator addAnimations:v18];
 
     objc_initWeak(&location, self);
     selectionAnimator = self->_selectionAnimator;
@@ -1634,13 +1634,13 @@ LABEL_24:
     v15[3] = &unk_1E7EE3798;
     objc_copyWeak(&v16, &location);
     [(UIViewPropertyAnimator *)selectionAnimator addCompletion:v15];
-    v11 = [(SFMagicHeadWheelView *)self delegate];
-    v12 = [(SFMagicHeadWheelView *)self selectedHead];
-    v13 = [v12 node];
-    [v11 magicHeadChangedSelectionToNode:v13];
+    delegate = [(SFMagicHeadWheelView *)self delegate];
+    selectedHead = [(SFMagicHeadWheelView *)self selectedHead];
+    node = [selectedHead node];
+    [delegate magicHeadChangedSelectionToNode:node];
 
-    v14 = [(SFMagicHeadWheelView *)self selectionAnimator];
-    [v14 startAnimation];
+    selectionAnimator2 = [(SFMagicHeadWheelView *)self selectionAnimator];
+    [selectionAnimator2 startAnimation];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
@@ -1648,7 +1648,7 @@ LABEL_24:
 
   else
   {
-    [v4 setSize:2];
+    [headCopy setSize:2];
   }
 }
 
@@ -1683,16 +1683,16 @@ void __47__SFMagicHeadWheelView_cozyUpAnimationForHead___block_invoke_3(uint64_t
   }
 }
 
-- (void)selectAnimationForHead:(id)a3 withDismissHead:(id)a4
+- (void)selectAnimationForHead:(id)head withDismissHead:(id)dismissHead
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SFMagicHeadWheelView *)self settings];
-  if (v7)
+  headCopy = head;
+  dismissHeadCopy = dismissHead;
+  settings = [(SFMagicHeadWheelView *)self settings];
+  if (dismissHeadCopy)
   {
-    v9 = [(SFMagicHeadWheelView *)self identifierToSelectionMarkerView];
-    v10 = [v7 nodeIdentifier];
-    v11 = [v9 objectForKeyedSubscript:v10];
+    identifierToSelectionMarkerView = [(SFMagicHeadWheelView *)self identifierToSelectionMarkerView];
+    nodeIdentifier = [dismissHeadCopy nodeIdentifier];
+    v11 = [identifierToSelectionMarkerView objectForKeyedSubscript:nodeIdentifier];
     [v11 currentOffset];
     v13 = v12;
   }
@@ -1702,29 +1702,29 @@ void __47__SFMagicHeadWheelView_cozyUpAnimationForHead___block_invoke_3(uint64_t
     v13 = 0;
   }
 
-  [v6 setSize:1];
-  [v6 setPosition:0];
-  [v6 setAlpha:0.0];
+  [headCopy setSize:1];
+  [headCopy setPosition:0];
+  [headCopy setAlpha:0.0];
   v14 = objc_opt_new();
   [(SFMagicHeadWheelView *)self setSelectionAnimator:v14];
 
-  v15 = [(SFMagicHeadWheelView *)self placeHolderView];
-  v16 = [(SFMagicHeadWheelView *)self selectionAnimator];
+  placeHolderView = [(SFMagicHeadWheelView *)self placeHolderView];
+  selectionAnimator = [(SFMagicHeadWheelView *)self selectionAnimator];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __63__SFMagicHeadWheelView_selectAnimationForHead_withDismissHead___block_invoke;
   v32[3] = &unk_1E7EE37C0;
-  v17 = v6;
+  v17 = headCopy;
   v33 = v17;
   v37 = 0x4077D00000000000;
-  v18 = v8;
+  v18 = settings;
   v34 = v18;
-  v19 = v15;
+  v19 = placeHolderView;
   v35 = v19;
-  v20 = v7;
+  v20 = dismissHeadCopy;
   v36 = v20;
   v38 = v13;
-  [v16 addAnimations:v32];
+  [selectionAnimator addAnimations:v32];
 
   objc_initWeak(&location, self);
   selectionAnimator = self->_selectionAnimator;
@@ -1735,12 +1735,12 @@ void __47__SFMagicHeadWheelView_cozyUpAnimationForHead___block_invoke_3(uint64_t
   objc_copyWeak(&v30, &location);
   [(UIViewPropertyAnimator *)selectionAnimator addCompletion:&v26];
   v22 = [(SFMagicHeadWheelView *)self delegate:v26];
-  v23 = [(SFMagicHeadWheelView *)self selectedHead];
-  v24 = [v23 node];
-  [v22 magicHeadChangedSelectionToNode:v24];
+  selectedHead = [(SFMagicHeadWheelView *)self selectedHead];
+  node = [selectedHead node];
+  [v22 magicHeadChangedSelectionToNode:node];
 
-  v25 = [(SFMagicHeadWheelView *)self selectionAnimator];
-  [v25 startAnimation];
+  selectionAnimator2 = [(SFMagicHeadWheelView *)self selectionAnimator];
+  [selectionAnimator2 startAnimation];
 
   objc_destroyWeak(&v30);
   objc_destroyWeak(&location);
@@ -1857,25 +1857,25 @@ void __63__SFMagicHeadWheelView_selectAnimationForHead_withDismissHead___block_i
   }
 }
 
-- (void)hideSelection:(BOOL)a3
+- (void)hideSelection:(BOOL)selection
 {
-  v5 = [(SFMagicHeadWheelView *)self selectedHead];
+  selectedHead = [(SFMagicHeadWheelView *)self selectedHead];
 
-  if (v5)
+  if (selectedHead)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __38__SFMagicHeadWheelView_hideSelection___block_invoke;
     v8[3] = &unk_1E7EE37E8;
     v8[4] = self;
-    v9 = a3;
+    selectionCopy = selection;
     [MEMORY[0x1E69DD250] performWithoutAnimation:v8];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __38__SFMagicHeadWheelView_hideSelection___block_invoke_2;
     v6[3] = &unk_1E7EE37E8;
     v6[4] = self;
-    v7 = a3;
+    selectionCopy2 = selection;
     [MEMORY[0x1E69DD250] animateWithDuration:v6 animations:0.2];
   }
 }
@@ -1912,15 +1912,15 @@ void __38__SFMagicHeadWheelView_hideSelection___block_invoke_2(uint64_t a1)
   [v2 setAlpha:v1];
 }
 
-- (void)hideDots:(BOOL)a3 withAnimationDuration:(double)a4
+- (void)hideDots:(BOOL)dots withAnimationDuration:(double)duration
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __55__SFMagicHeadWheelView_hideDots_withAnimationDuration___block_invoke;
   v4[3] = &unk_1E7EE37E8;
   v4[4] = self;
-  v5 = a3;
-  [MEMORY[0x1E69DD250] animateWithDuration:v4 animations:a4];
+  dotsCopy = dots;
+  [MEMORY[0x1E69DD250] animateWithDuration:v4 animations:duration];
 }
 
 void __55__SFMagicHeadWheelView_hideDots_withAnimationDuration___block_invoke(uint64_t a1)
@@ -1936,13 +1936,13 @@ void __55__SFMagicHeadWheelView_hideDots_withAnimationDuration___block_invoke(ui
   [v4 setValue:v3 forKey:@"alpha"];
 }
 
-- (void)scaleDots:(BOOL)a3
+- (void)scaleDots:(BOOL)dots
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __34__SFMagicHeadWheelView_scaleDots___block_invoke;
   v3[3] = &unk_1E7EE37E8;
-  v4 = a3;
+  dotsCopy = dots;
   v3[4] = self;
   [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v3 usingSpringWithDamping:0 initialSpringVelocity:0.7 options:0.0 animations:0.6 completion:0.0];
 }
@@ -1963,7 +1963,7 @@ void __34__SFMagicHeadWheelView_scaleDots___block_invoke(uint64_t a1)
 
 - (void)updatePlaceHolderView
 {
-  v3 = [(SFMagicHeadWheelView *)self guidanceState];
+  guidanceState = [(SFMagicHeadWheelView *)self guidanceState];
   if ([(SFMagicHeadWheelView *)self inGuidanceStates])
   {
     v4 = 1;
@@ -1971,8 +1971,8 @@ void __34__SFMagicHeadWheelView_scaleDots___block_invoke(uint64_t a1)
 
   else
   {
-    v5 = [(SFMagicHeadWheelView *)self selectedHead];
-    v4 = v5 != 0;
+    selectedHead = [(SFMagicHeadWheelView *)self selectedHead];
+    v4 = selectedHead != 0;
   }
 
   v6[0] = MEMORY[0x1E69E9820];
@@ -1980,7 +1980,7 @@ void __34__SFMagicHeadWheelView_scaleDots___block_invoke(uint64_t a1)
   v6[2] = __45__SFMagicHeadWheelView_updatePlaceHolderView__block_invoke;
   v6[3] = &unk_1E7EE3810;
   v6[4] = self;
-  v7 = v3 == 4;
+  v7 = guidanceState == 4;
   v8 = v4;
   [MEMORY[0x1E69DD250] animateWithDuration:v6 animations:0.4];
 }
@@ -1991,60 +1991,60 @@ void __45__SFMagicHeadWheelView_updatePlaceHolderView__block_invoke(uint64_t a1)
   [v2 setTiltedTooFarColor:*(a1 + 40) useRaiseLabel:*(a1 + 41) useNoUWBCapableLabel:{objc_msgSend(*(a1 + 32), "noUWBCapableDevices")}];
 }
 
-- (void)magicHead:(id)a3 requestingSubtitleTextChangeForState:(int64_t)a4
+- (void)magicHead:(id)head requestingSubtitleTextChangeForState:(int64_t)state
 {
-  v6 = a3;
-  v7 = [(SFMagicHeadWheelView *)self selectedHead];
-  v10 = v6;
-  v8 = v7;
-  if (v8 == v10)
+  headCopy = head;
+  selectedHead = [(SFMagicHeadWheelView *)self selectedHead];
+  v10 = headCopy;
+  delegate = selectedHead;
+  if (delegate == v10)
   {
 
     goto LABEL_6;
   }
 
-  if ((v10 != 0) == (v8 == 0))
+  if ((v10 != 0) == (delegate == 0))
   {
 
     goto LABEL_8;
   }
 
-  v9 = [v10 isEqual:v8];
+  v9 = [v10 isEqual:delegate];
 
   if (v9)
   {
 LABEL_6:
-    v8 = [(SFMagicHeadWheelView *)self delegate];
-    [v8 magicHeadSelectedHeadRequestingSubtitleTextChangeForState:a4];
+    delegate = [(SFMagicHeadWheelView *)self delegate];
+    [delegate magicHeadSelectedHeadRequestingSubtitleTextChangeForState:state];
 LABEL_8:
   }
 }
 
-- (void)magicHeadDidStartTransferForHead:(id)a3
+- (void)magicHeadDidStartTransferForHead:(id)head
 {
-  v4 = a3;
-  v6 = [(SFMagicHeadWheelView *)self delegate];
-  v5 = [v4 node];
+  headCopy = head;
+  delegate = [(SFMagicHeadWheelView *)self delegate];
+  node = [headCopy node];
 
-  [v6 magicHeadDidStartTransferForNode:v5];
+  [delegate magicHeadDidStartTransferForNode:node];
 }
 
-- (void)magicHeadDidTerminateTransferForHead:(id)a3
+- (void)magicHeadDidTerminateTransferForHead:(id)head
 {
-  v4 = a3;
-  v6 = [(SFMagicHeadWheelView *)self delegate];
-  v5 = [v4 node];
+  headCopy = head;
+  delegate = [(SFMagicHeadWheelView *)self delegate];
+  node = [headCopy node];
 
-  [v6 magicHeadDidTerminateTransferForNode:v5];
+  [delegate magicHeadDidTerminateTransferForNode:node];
 }
 
-- (void)magicHeadDidFinishTransferForHead:(id)a3
+- (void)magicHeadDidFinishTransferForHead:(id)head
 {
-  v4 = a3;
-  v6 = [(SFMagicHeadWheelView *)self delegate];
-  v5 = [v4 node];
+  headCopy = head;
+  delegate = [(SFMagicHeadWheelView *)self delegate];
+  node = [headCopy node];
 
-  [v6 magicHeadDidFinishTransferForNode:v5];
+  [delegate magicHeadDidFinishTransferForNode:node];
 }
 
 - (void)stopSuppressGuidanceHapticsTimer
@@ -2065,37 +2065,37 @@ LABEL_8:
   v3 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, MEMORY[0x1E69E96A0]);
   [(SFMagicHeadWheelView *)self setSuppressGuidanceHapticsTimer:v3];
 
-  v4 = [(SFMagicHeadWheelView *)self settings];
-  [v4 guidanceSuppressHapticsDurationS];
+  settings = [(SFMagicHeadWheelView *)self settings];
+  [settings guidanceSuppressHapticsDurationS];
   v6 = v5;
 
   v7 = 1000000000 * v6;
-  v8 = [(SFMagicHeadWheelView *)self suppressGuidanceHapticsTimer];
+  suppressGuidanceHapticsTimer = [(SFMagicHeadWheelView *)self suppressGuidanceHapticsTimer];
   v9 = dispatch_time(0, v7);
-  dispatch_source_set_timer(v8, v9, v7, v7 >> 2);
+  dispatch_source_set_timer(suppressGuidanceHapticsTimer, v9, v7, v7 >> 2);
 
-  v10 = [(SFMagicHeadWheelView *)self suppressGuidanceHapticsTimer];
+  suppressGuidanceHapticsTimer2 = [(SFMagicHeadWheelView *)self suppressGuidanceHapticsTimer];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __57__SFMagicHeadWheelView_startSuppressGuidanceHapticsTimer__block_invoke;
   handler[3] = &unk_1E7EE3720;
   handler[4] = self;
-  dispatch_source_set_event_handler(v10, handler);
+  dispatch_source_set_event_handler(suppressGuidanceHapticsTimer2, handler);
 
-  v11 = [(SFMagicHeadWheelView *)self suppressGuidanceHapticsTimer];
-  dispatch_resume(v11);
+  suppressGuidanceHapticsTimer3 = [(SFMagicHeadWheelView *)self suppressGuidanceHapticsTimer];
+  dispatch_resume(suppressGuidanceHapticsTimer3);
 }
 
-- (void)hapticsForHideDots:(BOOL)a3
+- (void)hapticsForHideDots:(BOOL)dots
 {
-  v3 = a3;
-  v5 = [(SFMagicHeadWheelView *)self settings];
-  [v5 guidanceSuppressHapticsEnabled];
+  dotsCopy = dots;
+  settings = [(SFMagicHeadWheelView *)self settings];
+  [settings guidanceSuppressHapticsEnabled];
   v7 = v6;
 
   if (v7 == 0.0)
   {
-    if (v3)
+    if (dotsCopy)
     {
 LABEL_7:
 
@@ -2106,14 +2106,14 @@ LABEL_7:
 
   else
   {
-    v8 = [(SFMagicHeadWheelView *)self suppressGuidanceHapticsTimer];
+    suppressGuidanceHapticsTimer = [(SFMagicHeadWheelView *)self suppressGuidanceHapticsTimer];
 
-    if (v8)
+    if (suppressGuidanceHapticsTimer)
     {
       return;
     }
 
-    if (v3)
+    if (dotsCopy)
     {
       goto LABEL_7;
     }

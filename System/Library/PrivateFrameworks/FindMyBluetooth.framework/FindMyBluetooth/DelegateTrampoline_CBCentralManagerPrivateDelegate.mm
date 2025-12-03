@@ -1,44 +1,44 @@
 @interface DelegateTrampoline_CBCentralManagerPrivateDelegate
 - (_TtC15FindMyBluetoothP33_70F3B43C606FCD1D14F1E1CF221D31A750DelegateTrampoline_CBCentralManagerPrivateDelegate)init;
-- (void)centralManager:(id)a3 connectionEventDidOccur:(int64_t)a4 forPeripheral:(id)a5;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)centralManager:(id)manager connectionEventDidOccur:(int64_t)occur forPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i;
+- (void)centralManagerDidUpdateState:(id)state;
 @end
 
 @implementation DelegateTrampoline_CBCentralManagerPrivateDelegate
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_24AC9C318(v4);
+  stateCopy = state;
+  selfCopy = self;
+  sub_24AC9C318(stateCopy);
 }
 
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i
 {
   v10 = sub_24ACD0500();
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = self;
-  sub_24ACA0DD8(v12, v10, v13);
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  iCopy = i;
+  selfCopy = self;
+  sub_24ACA0DD8(peripheralCopy, v10, iCopy);
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_24ACA0FF4(v7, &unk_285E26BA0, &unk_24ACD5D48);
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  selfCopy = self;
+  sub_24ACA0FF4(peripheralCopy, &unk_285E26BA0, &unk_24ACD5D48);
 }
 
-- (void)centralManager:(id)a3 connectionEventDidOccur:(int64_t)a4 forPeripheral:(id)a5
+- (void)centralManager:(id)manager connectionEventDidOccur:(int64_t)occur forPeripheral:(id)peripheral
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = self;
-  sub_24ACA13F4(a4, v9);
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  selfCopy = self;
+  sub_24ACA13F4(occur, peripheralCopy);
 }
 
 - (_TtC15FindMyBluetoothP33_70F3B43C606FCD1D14F1E1CF221D31A750DelegateTrampoline_CBCentralManagerPrivateDelegate)init

@@ -1,21 +1,21 @@
 @interface STiCloudOrganization
-+ (id)fetchOrCreateiCloudOrganizationWithContext:(id)a3 error:(id *)a4;
++ (id)fetchOrCreateiCloudOrganizationWithContext:(id)context error:(id *)error;
 + (id)fetchRequest;
-+ (id)fetchWithContext:(id)a3 error:(id *)a4;
-- (BOOL)_validateNumberOfObjects:(id)a3;
-- (BOOL)validateForDelete:(id *)a3;
-- (BOOL)validateForInsert:(id *)a3;
-- (BOOL)validateForUpdate:(id *)a3;
++ (id)fetchWithContext:(id)context error:(id *)error;
+- (BOOL)_validateNumberOfObjects:(id)objects;
+- (BOOL)validateForDelete:(id *)delete;
+- (BOOL)validateForInsert:(id *)insert;
+- (BOOL)validateForUpdate:(id *)update;
 @end
 
 @implementation STiCloudOrganization
 
-+ (id)fetchWithContext:(id)a3 error:(id *)a4
++ (id)fetchWithContext:(id)context error:(id *)error
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a1 fetchRequest];
-  v8 = [v6 executeFetchRequest:v7 error:a4];
+  contextCopy = context;
+  fetchRequest = [self fetchRequest];
+  v8 = [contextCopy executeFetchRequest:fetchRequest error:error];
 
   if (!v8)
   {
@@ -24,17 +24,17 @@
 
   if ([v8 count] < 2)
   {
-    v16 = [v8 firstObject];
-    v14 = v16;
-    if (v16)
+    firstObject = [v8 firstObject];
+    v14 = firstObject;
+    if (firstObject)
     {
-      v14 = v16;
+      v14 = firstObject;
       v15 = v14;
     }
 
     else
     {
-      if (a4)
+      if (error)
       {
         v17 = MEMORY[0x1E696ABC0];
         v18 = *MEMORY[0x1E696A578];
@@ -49,7 +49,7 @@
           v25 = v18;
           v26 = @"There must be one Cloud Organization.";
           v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-          *a4 = [v21 errorWithDomain:@"STErrorDomain" code:505 userInfo:v22];
+          *error = [v21 errorWithDomain:@"STErrorDomain" code:505 userInfo:v22];
         }
       }
 
@@ -59,7 +59,7 @@
     goto LABEL_13;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_6;
   }
@@ -83,7 +83,7 @@ LABEL_6:
   v30 = @"There must be one and only one Cloud Organization object.";
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
   [v13 errorWithDomain:@"STErrorDomain" code:504 userInfo:v14];
-  *a4 = v15 = 0;
+  *error = v15 = 0;
 LABEL_13:
 
 LABEL_14:
@@ -92,11 +92,11 @@ LABEL_14:
   return v15;
 }
 
-+ (id)fetchOrCreateiCloudOrganizationWithContext:(id)a3 error:(id *)a4
++ (id)fetchOrCreateiCloudOrganizationWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 fetchRequest];
-  v8 = [v6 executeFetchRequest:v7 error:a4];
+  contextCopy = context;
+  fetchRequest = [self fetchRequest];
+  v8 = [contextCopy executeFetchRequest:fetchRequest error:error];
   v9 = v8;
   if (v8)
   {
@@ -109,38 +109,38 @@ LABEL_14:
       }
     }
 
-    v11 = [v9 firstObject];
-    if (!v11)
+    firstObject = [v9 firstObject];
+    if (!firstObject)
     {
-      v11 = [[STiCloudOrganization alloc] initWithContext:v6];
+      firstObject = [[STiCloudOrganization alloc] initWithContext:contextCopy];
     }
 
-    v12 = [(STiCloudOrganization *)v11 settings];
-    if (!v12)
+    settings = [(STiCloudOrganization *)firstObject settings];
+    if (!settings)
     {
-      v12 = [[STiCloudOrganizationSettings alloc] initWithContext:v6];
-      [(STiCloudOrganizationSettings *)v12 setOrganization:v11];
+      settings = [[STiCloudOrganizationSettings alloc] initWithContext:contextCopy];
+      [(STiCloudOrganizationSettings *)settings setOrganization:firstObject];
     }
   }
 
   else
   {
-    v11 = 0;
+    firstObject = 0;
   }
 
-  return v11;
+  return firstObject;
 }
 
 + (id)fetchRequest
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___STiCloudOrganization;
   v2 = objc_msgSendSuper2(&v4, sel_fetchRequest);
 
   return v2;
 }
 
-- (BOOL)validateForUpdate:(id *)a3
+- (BOOL)validateForUpdate:(id *)update
 {
   v7.receiver = self;
   v7.super_class = STiCloudOrganization;
@@ -155,14 +155,14 @@ LABEL_14:
     v5 = +[STLog coreDataValidation];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
-      [STiCloudOrganization validateForUpdate:a3];
+      [STiCloudOrganization validateForUpdate:update];
     }
   }
 
   return v4;
 }
 
-- (BOOL)validateForInsert:(id *)a3
+- (BOOL)validateForInsert:(id *)insert
 {
   v10.receiver = self;
   v10.super_class = STiCloudOrganization;
@@ -186,7 +186,7 @@ LABEL_14:
 
     v9.receiver = self;
     v9.super_class = STiCloudOrganization;
-    v7 = [(NSManagedObject *)&v9 parseValidationErrors:a3 otherErrors:v5];
+    v7 = [(NSManagedObject *)&v9 parseValidationErrors:insert otherErrors:v5];
   }
 
   else
@@ -194,7 +194,7 @@ LABEL_14:
     v5 = +[STLog coreDataValidation];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
-      [STiCloudOrganization validateForInsert:a3];
+      [STiCloudOrganization validateForInsert:insert];
     }
 
     v7 = 0;
@@ -203,7 +203,7 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)validateForDelete:(id *)a3
+- (BOOL)validateForDelete:(id *)delete
 {
   v10.receiver = self;
   v10.super_class = STiCloudOrganization;
@@ -227,7 +227,7 @@ LABEL_14:
 
     v9.receiver = self;
     v9.super_class = STiCloudOrganization;
-    v7 = [(NSManagedObject *)&v9 parseValidationErrors:a3 otherErrors:v5];
+    v7 = [(NSManagedObject *)&v9 parseValidationErrors:delete otherErrors:v5];
   }
 
   else
@@ -235,7 +235,7 @@ LABEL_14:
     v5 = +[STLog coreDataValidation];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
-      [STiCloudOrganization validateForDelete:a3];
+      [STiCloudOrganization validateForDelete:delete];
     }
 
     v7 = 0;
@@ -244,10 +244,10 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)_validateNumberOfObjects:(id)a3
+- (BOOL)_validateNumberOfObjects:(id)objects
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  objectsCopy = objects;
   v4 = +[STiCloudOrganization fetchRequest];
   v13 = 0;
   v5 = [v4 execute:&v13];
@@ -265,12 +265,12 @@ LABEL_14:
     v15[0] = @"There must be one and only one Cloud Organization object.";
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
     v9 = [v7 errorWithDomain:@"STErrorDomain" code:504 userInfo:v8];
-    [v3 addObject:v9];
+    [objectsCopy addObject:v9];
   }
 
   else
   {
-    [v3 addObject:v6];
+    [objectsCopy addObject:v6];
   }
 
   v10 = 0;

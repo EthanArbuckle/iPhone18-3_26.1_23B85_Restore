@@ -1,49 +1,49 @@
 @interface _INPBAnswerCallIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBAnswerCallIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBAnswerCallIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsAudioRoute:(id)a3;
+- (int)StringAsAudioRoute:(id)route;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAudioRoute:(int)a3;
-- (void)setCallIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAudioRoute:(int)route;
+- (void)setCallIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBAnswerCallIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBAnswerCallIntent *)self hasAudioRoute])
   {
-    v4 = [(_INPBAnswerCallIntent *)self audioRoute];
-    if ((v4 - 2) >= 3)
+    audioRoute = [(_INPBAnswerCallIntent *)self audioRoute];
+    if ((audioRoute - 2) >= 3)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", audioRoute];
     }
 
     else
     {
-      v5 = off_1E7286DF8[(v4 - 2)];
+      v5 = off_1E7286DF8[(audioRoute - 2)];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"audioRoute"];
+    [dictionary setObject:v5 forKeyedSubscript:@"audioRoute"];
   }
 
   if (self->_callIdentifier)
   {
-    v6 = [(_INPBAnswerCallIntent *)self callIdentifier];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"callIdentifier"];
+    callIdentifier = [(_INPBAnswerCallIntent *)self callIdentifier];
+    v7 = [callIdentifier copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"callIdentifier"];
   }
 
-  v8 = [(_INPBAnswerCallIntent *)self intentMetadata];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBAnswerCallIntent *)self intentMetadata];
+  dictionaryRepresentation = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"intentMetadata"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -62,46 +62,46 @@
   return v4 ^ [(_INPBIntentMetadata *)self->_intentMetadata hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = [(_INPBAnswerCallIntent *)self hasAudioRoute];
-  if (v5 != [v4 hasAudioRoute])
+  hasAudioRoute = [(_INPBAnswerCallIntent *)self hasAudioRoute];
+  if (hasAudioRoute != [equalCopy hasAudioRoute])
   {
     goto LABEL_16;
   }
 
   if ([(_INPBAnswerCallIntent *)self hasAudioRoute])
   {
-    if ([v4 hasAudioRoute])
+    if ([equalCopy hasAudioRoute])
     {
       audioRoute = self->_audioRoute;
-      if (audioRoute != [v4 audioRoute])
+      if (audioRoute != [equalCopy audioRoute])
       {
         goto LABEL_16;
       }
     }
   }
 
-  v7 = [(_INPBAnswerCallIntent *)self callIdentifier];
-  v8 = [v4 callIdentifier];
-  if ((v7 != 0) == (v8 == 0))
+  callIdentifier = [(_INPBAnswerCallIntent *)self callIdentifier];
+  callIdentifier2 = [equalCopy callIdentifier];
+  if ((callIdentifier != 0) == (callIdentifier2 == 0))
   {
     goto LABEL_15;
   }
 
-  v9 = [(_INPBAnswerCallIntent *)self callIdentifier];
-  if (v9)
+  callIdentifier3 = [(_INPBAnswerCallIntent *)self callIdentifier];
+  if (callIdentifier3)
   {
-    v10 = v9;
-    v11 = [(_INPBAnswerCallIntent *)self callIdentifier];
-    v12 = [v4 callIdentifier];
-    v13 = [v11 isEqual:v12];
+    v10 = callIdentifier3;
+    callIdentifier4 = [(_INPBAnswerCallIntent *)self callIdentifier];
+    callIdentifier5 = [equalCopy callIdentifier];
+    v13 = [callIdentifier4 isEqual:callIdentifier5];
 
     if (!v13)
     {
@@ -113,12 +113,12 @@
   {
   }
 
-  v7 = [(_INPBAnswerCallIntent *)self intentMetadata];
-  v8 = [v4 intentMetadata];
-  if ((v7 != 0) != (v8 == 0))
+  callIdentifier = [(_INPBAnswerCallIntent *)self intentMetadata];
+  callIdentifier2 = [equalCopy intentMetadata];
+  if ((callIdentifier != 0) != (callIdentifier2 == 0))
   {
-    v14 = [(_INPBAnswerCallIntent *)self intentMetadata];
-    if (!v14)
+    intentMetadata = [(_INPBAnswerCallIntent *)self intentMetadata];
+    if (!intentMetadata)
     {
 
 LABEL_19:
@@ -126,10 +126,10 @@ LABEL_19:
       goto LABEL_17;
     }
 
-    v15 = v14;
-    v16 = [(_INPBAnswerCallIntent *)self intentMetadata];
-    v17 = [v4 intentMetadata];
-    v18 = [v16 isEqual:v17];
+    v15 = intentMetadata;
+    intentMetadata2 = [(_INPBAnswerCallIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v18 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (v18)
     {
@@ -149,7 +149,7 @@ LABEL_17:
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBAnswerCallIntent allocWithZone:](_INPBAnswerCallIntent init];
   if ([(_INPBAnswerCallIntent *)self hasAudioRoute])
@@ -157,91 +157,91 @@ LABEL_17:
     [(_INPBAnswerCallIntent *)v5 setAudioRoute:[(_INPBAnswerCallIntent *)self audioRoute]];
   }
 
-  v6 = [(NSString *)self->_callIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_callIdentifier copyWithZone:zone];
   [(_INPBAnswerCallIntent *)v5 setCallIdentifier:v6];
 
-  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBAnswerCallIntent *)v5 setIntentMetadata:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBAnswerCallIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBAnswerCallIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBAnswerCallIntent)initWithCoder:(id)a3
+- (_INPBAnswerCallIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBAnswerCallIntent *)self initWithData:v6];
+    self = [(_INPBAnswerCallIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   if ([(_INPBAnswerCallIntent *)self hasAudioRoute])
   {
     audioRoute = self->_audioRoute;
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(_INPBAnswerCallIntent *)self callIdentifier];
+  callIdentifier = [(_INPBAnswerCallIntent *)self callIdentifier];
 
-  if (v5)
+  if (callIdentifier)
   {
     callIdentifier = self->_callIdentifier;
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_INPBAnswerCallIntent *)self intentMetadata];
+  intentMetadata = [(_INPBAnswerCallIntent *)self intentMetadata];
 
-  v8 = v10;
-  if (v7)
+  v8 = toCopy;
+  if (intentMetadata)
   {
-    v9 = [(_INPBAnswerCallIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBAnswerCallIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
 
-    v8 = v10;
+    v8 = toCopy;
   }
 }
 
-- (void)setCallIdentifier:(id)a3
+- (void)setCallIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   callIdentifier = self->_callIdentifier;
   self->_callIdentifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, callIdentifier);
 }
 
-- (int)StringAsAudioRoute:(id)a3
+- (int)StringAsAudioRoute:(id)route
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SPEAKERPHONE_AUDIO_ROUTE"])
+  routeCopy = route;
+  if ([routeCopy isEqualToString:@"SPEAKERPHONE_AUDIO_ROUTE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"BLUETOOTH_AUDIO_ROUTE"])
+  else if ([routeCopy isEqualToString:@"BLUETOOTH_AUDIO_ROUTE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"HEY_SIRI_AUDIO_ROUTE"])
+  else if ([routeCopy isEqualToString:@"HEY_SIRI_AUDIO_ROUTE"])
   {
     v4 = 4;
   }
@@ -254,10 +254,10 @@ LABEL_17:
   return v4;
 }
 
-- (void)setAudioRoute:(int)a3
+- (void)setAudioRoute:(int)route
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (route == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -265,7 +265,7 @@ LABEL_17:
   else
   {
     *&self->_has = has | 1;
-    self->_audioRoute = a3;
+    self->_audioRoute = route;
   }
 }
 

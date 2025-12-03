@@ -1,37 +1,37 @@
 @interface ATXContext
-+ (id)defaultTimeWindowForContextType:(unint64_t)a3;
-- (ATXContext)initWithCoder:(id)a3;
-- (ATXContext)initWithContextType:(unint64_t)a3 location:(id)a4 timeWindow:(id)a5;
-- (void)encodeWithCoder:(id)a3;
++ (id)defaultTimeWindowForContextType:(unint64_t)type;
+- (ATXContext)initWithCoder:(id)coder;
+- (ATXContext)initWithContextType:(unint64_t)type location:(id)location timeWindow:(id)window;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXContext
 
-- (ATXContext)initWithContextType:(unint64_t)a3 location:(id)a4 timeWindow:(id)a5
+- (ATXContext)initWithContextType:(unint64_t)type location:(id)location timeWindow:(id)window
 {
-  v9 = a4;
-  v10 = a5;
+  locationCopy = location;
+  windowCopy = window;
   v14.receiver = self;
   v14.super_class = ATXContext;
   v11 = [(ATXContext *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_contextType = a3;
-    objc_storeStrong(&v11->_location, a4);
-    objc_storeStrong(&v12->_timeWindow, a5);
+    v11->_contextType = type;
+    objc_storeStrong(&v11->_location, location);
+    objc_storeStrong(&v12->_timeWindow, window);
   }
 
   return v12;
 }
 
-+ (id)defaultTimeWindowForContextType:(unint64_t)a3
++ (id)defaultTimeWindowForContextType:(unint64_t)type
 {
   v4 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:1234.0];
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   v6 = objc_opt_new();
   [v6 setDay:0];
-  if (a3 == 2)
+  if (type == 2)
   {
     v9 = 3;
   }
@@ -40,7 +40,7 @@
   {
     v7 = 0;
     v8 = 0;
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_6;
     }
@@ -49,8 +49,8 @@
   }
 
   [v6 setHour:v9];
-  v10 = [v5 startOfDayForDate:v4];
-  v7 = [v5 dateByAddingComponents:v6 toDate:v10 options:0];
+  v10 = [currentCalendar startOfDayForDate:v4];
+  v7 = [currentCalendar dateByAddingComponents:v6 toDate:v10 options:0];
 
   v8 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v7 duration:28800.0];
 LABEL_6:
@@ -58,23 +58,23 @@ LABEL_6:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[ATXContext contextType](self forKey:{"contextType"), @"contextTypeKey"}];
-  v5 = [(ATXContext *)self location];
-  [v4 encodeObject:v5 forKey:@"contextLocationKey"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[ATXContext contextType](self forKey:{"contextType"), @"contextTypeKey"}];
+  location = [(ATXContext *)self location];
+  [coderCopy encodeObject:location forKey:@"contextLocationKey"];
 
-  v6 = [(ATXContext *)self timeWindow];
-  [v4 encodeObject:v6 forKey:@"contextTimeWindowKey"];
+  timeWindow = [(ATXContext *)self timeWindow];
+  [coderCopy encodeObject:timeWindow forKey:@"contextTimeWindowKey"];
 }
 
-- (ATXContext)initWithCoder:(id)a3
+- (ATXContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"contextTypeKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contextLocationKey"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contextTimeWindowKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"contextTypeKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contextLocationKey"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contextTimeWindowKey"];
 
   v8 = [(ATXContext *)self initWithContextType:v5 location:v6 timeWindow:v7];
   return v8;

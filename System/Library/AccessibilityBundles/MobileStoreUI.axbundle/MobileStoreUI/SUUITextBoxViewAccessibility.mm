@@ -1,77 +1,77 @@
 @interface SUUITextBoxViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)isAccessibilityElement:(id)a3;
-- (CGRect)accessibilityFrame:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)isAccessibilityElement:(id)element;
+- (CGRect)accessibilityFrame:(id)frame;
 - (id)accessibilityElements;
-- (id)accessibilityLabel:(id)a3;
-- (unint64_t)accessibilityTraits:(id)a3;
-- (void)_accessibilitySwitchOrderedChildrenFrom:(id)a3;
+- (id)accessibilityLabel:(id)label;
+- (unint64_t)accessibilityTraits:(id)traits;
+- (void)_accessibilitySwitchOrderedChildrenFrom:(id)from;
 @end
 
 @implementation SUUITextBoxViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUITextBoxView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"SUUITextBoxView" hasInstanceVariable:@"_subtitleLabel" withType:"UILabel"];
-  [v3 validateClass:@"SUUITextBoxView" hasInstanceVariable:@"_ratingLabel" withType:"UILabel"];
-  [v3 validateClass:@"SUUITextBoxView" hasInstanceVariable:@"_ratingImageView" withType:"UIImageView"];
-  [v3 validateClass:@"SUUITextBoxView" hasInstanceVariable:@"_underlyingText" withType:"NSString"];
-  [v3 validateClass:@"SUUITextBoxView" hasInstanceVariable:@"_textFrame" withType:"^{__CTFrame=}"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUITextBoxView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"SUUITextBoxView" hasInstanceVariable:@"_subtitleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"SUUITextBoxView" hasInstanceVariable:@"_ratingLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"SUUITextBoxView" hasInstanceVariable:@"_ratingImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"SUUITextBoxView" hasInstanceVariable:@"_underlyingText" withType:"NSString"];
+  [validationsCopy validateClass:@"SUUITextBoxView" hasInstanceVariable:@"_textFrame" withType:"^{__CTFrame=}"];
 }
 
 - (id)accessibilityElements
 {
   v3 = MEMORY[0x29EDC7620];
-  v4 = [(SUUITextBoxViewAccessibility *)self _accessibilityValueForKey:*MEMORY[0x29EDC7620]];
-  if (!v4)
+  array = [(SUUITextBoxViewAccessibility *)self _accessibilityValueForKey:*MEMORY[0x29EDC7620]];
+  if (!array)
   {
-    v4 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v5 = [objc_alloc(MEMORY[0x29EDC78F8]) initWithAccessibilityContainer:self];
     [v5 setAccessibilityDelegate:self];
     [v5 setAccessibilityIdentifier:@"ElementIDHeader"];
-    [v4 addObject:v5];
+    [array addObject:v5];
     v6 = [objc_alloc(MEMORY[0x29EDC78F8]) initWithAccessibilityContainer:self];
     [v6 setAccessibilityDelegate:self];
     [v6 setAccessibilityIdentifier:@"ElementIDContent"];
-    [v4 addObject:v6];
-    [(SUUITextBoxViewAccessibility *)self _accessibilitySetRetainedValue:v4 forKey:*v3];
+    [array addObject:v6];
+    [(SUUITextBoxViewAccessibility *)self _accessibilitySetRetainedValue:array forKey:*v3];
   }
 
+  return array;
+}
+
+- (BOOL)isAccessibilityElement:(id)element
+{
+  accessibilityLabel = [element accessibilityLabel];
+  v4 = [accessibilityLabel length] != 0;
+
   return v4;
 }
 
-- (BOOL)isAccessibilityElement:(id)a3
+- (id)accessibilityLabel:(id)label
 {
-  v3 = [a3 accessibilityLabel];
-  v4 = [v3 length] != 0;
-
-  return v4;
-}
-
-- (id)accessibilityLabel:(id)a3
-{
-  v4 = a3;
-  v5 = [v4 accessibilityIdentifier];
-  v6 = [v5 isEqualToString:@"ElementIDHeader"];
+  labelCopy = label;
+  accessibilityIdentifier = [labelCopy accessibilityIdentifier];
+  v6 = [accessibilityIdentifier isEqualToString:@"ElementIDHeader"];
 
   if (v6)
   {
     v7 = [(SUUITextBoxViewAccessibility *)self safeValueForKey:@"_titleLabel"];
-    v8 = [v7 accessibilityLabel];
+    accessibilityLabel = [v7 accessibilityLabel];
   }
 
   else
   {
-    v9 = [v4 accessibilityIdentifier];
-    v10 = [v9 isEqualToString:@"ElementIDContent"];
+    accessibilityIdentifier2 = [labelCopy accessibilityIdentifier];
+    v10 = [accessibilityIdentifier2 isEqualToString:@"ElementIDContent"];
 
     if (!v10)
     {
       v21.receiver = self;
       v21.super_class = SUUITextBoxViewAccessibility;
-      v8 = [(SUUITextBoxViewAccessibility *)&v21 accessibilityLabel];
+      accessibilityLabel = [(SUUITextBoxViewAccessibility *)&v21 accessibilityLabel];
       goto LABEL_12;
     }
 
@@ -85,8 +85,8 @@
     }
 
     v15 = UIAccessibilitySafeTextForCoreTextObject();
-    v16 = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
-    v17 = [v15 stringByTrimmingCharactersInSet:v16];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
+    v17 = [v15 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
     if ([v17 length])
     {
@@ -98,19 +98,19 @@
       [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{3, v7, v11, v12, v20}];
     }
     v18 = ;
-    v8 = MEMORY[0x29C2E1480]();
+    accessibilityLabel = MEMORY[0x29C2E1480]();
   }
 
 LABEL_12:
 
-  return v8;
+  return accessibilityLabel;
 }
 
-- (CGRect)accessibilityFrame:(id)a3
+- (CGRect)accessibilityFrame:(id)frame
 {
-  v4 = a3;
-  v5 = [v4 accessibilityIdentifier];
-  v6 = [v5 isEqualToString:@"ElementIDHeader"];
+  frameCopy = frame;
+  accessibilityIdentifier = [frameCopy accessibilityIdentifier];
+  v6 = [accessibilityIdentifier isEqualToString:@"ElementIDHeader"];
 
   if (v6)
   {
@@ -124,8 +124,8 @@ LABEL_12:
 
   else
   {
-    v16 = [v4 accessibilityIdentifier];
-    v17 = [v16 isEqualToString:@"ElementIDContent"];
+    accessibilityIdentifier2 = [frameCopy accessibilityIdentifier];
+    v17 = [accessibilityIdentifier2 isEqualToString:@"ElementIDContent"];
 
     if (v17)
     {
@@ -156,17 +156,17 @@ LABEL_12:
   return result;
 }
 
-- (unint64_t)accessibilityTraits:(id)a3
+- (unint64_t)accessibilityTraits:(id)traits
 {
-  v4 = a3;
-  v5 = [v4 accessibilityIdentifier];
-  v6 = [v5 isEqualToString:@"ElementIDHeader"];
+  traitsCopy = traits;
+  accessibilityIdentifier = [traitsCopy accessibilityIdentifier];
+  v6 = [accessibilityIdentifier isEqualToString:@"ElementIDHeader"];
 
   if (v6)
   {
-    v7 = [v4 accessibilityLabel];
+    accessibilityLabel = [traitsCopy accessibilityLabel];
 
-    v8 = [v7 length];
+    v8 = [accessibilityLabel length];
     if (v8)
     {
       v9 = MEMORY[0x29EDC7F80];
@@ -180,9 +180,9 @@ LABEL_12:
 
   else
   {
-    v10 = [v4 accessibilityIdentifier];
+    accessibilityIdentifier2 = [traitsCopy accessibilityIdentifier];
 
-    v11 = [v10 isEqualToString:@"ElementIDContent"];
+    v11 = [accessibilityIdentifier2 isEqualToString:@"ElementIDContent"];
     if (!v11)
     {
       v13.receiver = self;
@@ -196,12 +196,12 @@ LABEL_12:
   return *v9;
 }
 
-- (void)_accessibilitySwitchOrderedChildrenFrom:(id)a3
+- (void)_accessibilitySwitchOrderedChildrenFrom:(id)from
 {
   v18 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  fromCopy = from;
   v5 = MEMORY[0x29EDC7620];
-  v6 = [v4 _accessibilityValueForKey:*MEMORY[0x29EDC7620]];
+  v6 = [fromCopy _accessibilityValueForKey:*MEMORY[0x29EDC7620]];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -232,7 +232,7 @@ LABEL_12:
   }
 
   [(SUUITextBoxViewAccessibility *)self _accessibilitySetRetainedValue:v6 forKey:*v5];
-  [v4 _accessibilityRemoveValueForKey:*v5];
+  [fromCopy _accessibilityRemoveValueForKey:*v5];
 
   v12 = *MEMORY[0x29EDCA608];
 }

@@ -1,19 +1,19 @@
 @interface TSPLazyReferenceArray
 - (TSPLazyReferenceArray)init;
-- (TSPLazyReferenceArray)initWithArray:(id)a3;
-- (TSPLazyReferenceArray)initWithCapacity:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)objectAtIndex:(unint64_t)a3;
-- (id)objectsAtIndexes:(id)a3;
-- (id)subarrayWithRange:(_NSRange)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (void)addObject:(id)a3;
-- (void)addObjectsFromArray:(id)a3;
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4;
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4;
-- (void)replaceObjectsInRange:(_NSRange)a3 withObjectsFromArray:(id)a4;
-- (void)replaceObjectsInRange:(_NSRange)a3 withObjectsFromArray:(id)a4 range:(_NSRange)a5;
+- (TSPLazyReferenceArray)initWithArray:(id)array;
+- (TSPLazyReferenceArray)initWithCapacity:(unint64_t)capacity;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)objectAtIndex:(unint64_t)index;
+- (id)objectsAtIndexes:(id)indexes;
+- (id)subarrayWithRange:(_NSRange)range;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (void)addObject:(id)object;
+- (void)addObjectsFromArray:(id)array;
+- (void)insertObject:(id)object atIndex:(unint64_t)index;
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object;
+- (void)replaceObjectsInRange:(_NSRange)range withObjectsFromArray:(id)array;
+- (void)replaceObjectsInRange:(_NSRange)range withObjectsFromArray:(id)array range:(_NSRange)a5;
 @end
 
 @implementation TSPLazyReferenceArray
@@ -33,7 +33,7 @@
   return v2;
 }
 
-- (TSPLazyReferenceArray)initWithCapacity:(unint64_t)a3
+- (TSPLazyReferenceArray)initWithCapacity:(unint64_t)capacity
 {
   v10.receiver = self;
   v10.super_class = TSPLazyReferenceArray;
@@ -41,7 +41,7 @@
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x277CBEB18]);
-    v7 = objc_msgSend_initWithCapacity_(v5, v6, a3);
+    v7 = objc_msgSend_initWithCapacity_(v5, v6, capacity);
     references = v4->_references;
     v4->_references = v7;
   }
@@ -49,9 +49,9 @@
   return v4;
 }
 
-- (TSPLazyReferenceArray)initWithArray:(id)a3
+- (TSPLazyReferenceArray)initWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -61,7 +61,7 @@
     if (v5)
     {
       v6 = objc_alloc(MEMORY[0x277CBEB18]);
-      v8 = objc_msgSend_initWithArray_(v6, v7, v4[1]);
+      v8 = objc_msgSend_initWithArray_(v6, v7, arrayCopy[1]);
       references = v5->_references;
       v5->_references = v8;
     }
@@ -71,13 +71,13 @@
   {
     v11.receiver = self;
     v11.super_class = TSPLazyReferenceArray;
-    v5 = [(TSPLazyReferenceArray *)&v11 initWithArray:v4];
+    v5 = [(TSPLazyReferenceArray *)&v11 initWithArray:arrayCopy];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSPLazyReferenceArray copyWithZone:]");
@@ -88,7 +88,7 @@
   return 0;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSPLazyReferenceArray mutableCopyWithZone:]");
@@ -99,9 +99,9 @@
   return 0;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  v3 = objc_msgSend_objectAtIndexedSubscript_(self->_references, a2, a3);
+  v3 = objc_msgSend_objectAtIndexedSubscript_(self->_references, a2, index);
   v49 = 0;
   v5 = objc_msgSend_objectAndReturnError_(v3, v4, &v49);
   v6 = v49;
@@ -168,20 +168,20 @@
   return v5;
 }
 
-- (id)objectsAtIndexes:(id)a3
+- (id)objectsAtIndexes:(id)indexes
 {
-  v4 = a3;
+  indexesCopy = indexes;
   v5 = [TSPLazyReferenceArray alloc];
-  v7 = objc_msgSend_objectsAtIndexes_(self->_references, v6, v4);
+  v7 = objc_msgSend_objectsAtIndexes_(self->_references, v6, indexesCopy);
   v9 = objc_msgSend_initWithArray_(v5, v8, v7);
 
   return v9;
 }
 
-- (id)subarrayWithRange:(_NSRange)a3
+- (id)subarrayWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = [TSPLazyReferenceArray alloc];
   v8 = objc_msgSend_subarrayWithRange_(self->_references, v7, location, length);
   v10 = objc_msgSend_initWithArray_(v6, v9, v8);
@@ -189,36 +189,36 @@
   return v10;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  var0 = a3->var0;
-  if (!a3->var0)
+  var0 = state->var0;
+  if (!state->var0)
   {
-    a3->var2 = &self->_mutations;
+    state->var2 = &self->_mutations;
   }
 
-  v10 = objc_msgSend_count(self->_references, a2, a3);
+  v10 = objc_msgSend_count(self->_references, a2, state);
   if (v10 <= var0)
   {
     return 0;
   }
 
-  v60 = a3;
-  v61 = a4;
-  if (v10 - var0 >= a5)
+  stateCopy = state;
+  objectsCopy = objects;
+  if (v10 - var0 >= count)
   {
-    v12 = a5;
+    countCopy = count;
   }
 
   else
   {
-    v12 = v10 - var0;
+    countCopy = v10 - var0;
   }
 
-  if (v12)
+  if (countCopy)
   {
     v13 = var0;
-    v14 = v12;
+    v14 = countCopy;
     do
     {
       v15 = objc_msgSend_objectAtIndexedSubscript_(self->_references, v11, v13);
@@ -285,7 +285,7 @@
         abort();
       }
 
-      *a4++ = v17;
+      *objects++ = v17;
 
       ++v13;
       --v14;
@@ -294,18 +294,18 @@
     while (v14);
   }
 
-  v60->var0 = v12 + var0;
-  v60->var1 = v61;
-  return v12;
+  stateCopy->var0 = countCopy + var0;
+  stateCopy->var1 = objectsCopy;
+  return countCopy;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v16 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_msgSend_addObject_(self->_references, v4, v16);
+    objc_msgSend_addObject_(self->_references, v4, objectCopy);
   }
 
   else
@@ -322,39 +322,39 @@
     }
 
     references = self->_references;
-    v14 = objc_msgSend_referenceForObject_(TSPLazyReference, v5, v16);
+    v14 = objc_msgSend_referenceForObject_(TSPLazyReference, v5, objectCopy);
     objc_msgSend_addObject_(references, v15, v14);
   }
 
   ++self->_mutations;
 }
 
-- (void)addObjectsFromArray:(id)a3
+- (void)addObjectsFromArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_msgSend_addObjectsFromArray_(self->_references, v5, v4[1]);
+    objc_msgSend_addObjectsFromArray_(self->_references, v5, arrayCopy[1]);
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = TSPLazyReferenceArray;
-    [(TSPLazyReferenceArray *)&v6 addObjectsFromArray:v4];
+    [(TSPLazyReferenceArray *)&v6 addObjectsFromArray:arrayCopy];
   }
 
   ++self->_mutations;
 }
 
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4
+- (void)insertObject:(id)object atIndex:(unint64_t)index
 {
-  v18 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_msgSend_insertObject_atIndex_(self->_references, v6, v18, a4);
+    objc_msgSend_insertObject_atIndex_(self->_references, v6, objectCopy, index);
   }
 
   else
@@ -371,20 +371,20 @@
     }
 
     references = self->_references;
-    v16 = objc_msgSend_referenceForObject_(TSPLazyReference, v7, v18);
-    objc_msgSend_insertObject_atIndex_(references, v17, v16, a4);
+    v16 = objc_msgSend_referenceForObject_(TSPLazyReference, v7, objectCopy);
+    objc_msgSend_insertObject_atIndex_(references, v17, v16, index);
   }
 
   ++self->_mutations;
 }
 
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object
 {
-  v18 = a4;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_msgSend_replaceObjectAtIndex_withObject_(self->_references, v6, a3, v18);
+    objc_msgSend_replaceObjectAtIndex_withObject_(self->_references, v6, index, objectCopy);
   }
 
   else
@@ -401,52 +401,52 @@
     }
 
     references = self->_references;
-    v16 = objc_msgSend_referenceForObject_(TSPLazyReference, v7, v18);
-    objc_msgSend_replaceObjectAtIndex_withObject_(references, v17, a3, v16);
+    v16 = objc_msgSend_referenceForObject_(TSPLazyReference, v7, objectCopy);
+    objc_msgSend_replaceObjectAtIndex_withObject_(references, v17, index, v16);
   }
 
   ++self->_mutations;
 }
 
-- (void)replaceObjectsInRange:(_NSRange)a3 withObjectsFromArray:(id)a4
+- (void)replaceObjectsInRange:(_NSRange)range withObjectsFromArray:(id)array
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  arrayCopy = array;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_msgSend_replaceObjectsInRange_withObjectsFromArray_(self->_references, v8, location, length, v7[1]);
+    objc_msgSend_replaceObjectsInRange_withObjectsFromArray_(self->_references, v8, location, length, arrayCopy[1]);
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = TSPLazyReferenceArray;
-    [(TSPLazyReferenceArray *)&v9 replaceObjectsInRange:location withObjectsFromArray:length, v7];
+    [(TSPLazyReferenceArray *)&v9 replaceObjectsInRange:location withObjectsFromArray:length, arrayCopy];
   }
 
   ++self->_mutations;
 }
 
-- (void)replaceObjectsInRange:(_NSRange)a3 withObjectsFromArray:(id)a4 range:(_NSRange)a5
+- (void)replaceObjectsInRange:(_NSRange)range withObjectsFromArray:(id)array range:(_NSRange)a5
 {
   length = a5.length;
   location = a5.location;
-  v7 = a3.length;
-  v8 = a3.location;
-  v10 = a4;
+  v7 = range.length;
+  v8 = range.location;
+  arrayCopy = array;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_msgSend_replaceObjectsInRange_withObjectsFromArray_range_(self->_references, v11, v8, v7, v10[1], location, length);
+    objc_msgSend_replaceObjectsInRange_withObjectsFromArray_range_(self->_references, v11, v8, v7, arrayCopy[1], location, length);
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = TSPLazyReferenceArray;
-    [(TSPLazyReferenceArray *)&v12 replaceObjectsInRange:v8 withObjectsFromArray:v7 range:v10, location, length];
+    [(TSPLazyReferenceArray *)&v12 replaceObjectsInRange:v8 withObjectsFromArray:v7 range:arrayCopy, location, length];
   }
 
   ++self->_mutations;

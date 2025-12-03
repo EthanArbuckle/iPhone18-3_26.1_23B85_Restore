@@ -1,6 +1,6 @@
 @interface AyHWzHEhbORltioL
 + (id)sharedInstance;
-- (unint64_t)XIxEGt72u9dQYi43:(int)a3 S6srINK5PmHWLUdD:(unint64_t)a4;
+- (unint64_t)XIxEGt72u9dQYi43:(int)yi43 S6srINK5PmHWLUdD:(unint64_t)d;
 @end
 
 @implementation AyHWzHEhbORltioL
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = sub_100009498;
   block[3] = &unk_10068EEE8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006D7C60 != -1)
   {
     dispatch_once(&qword_1006D7C60, block);
@@ -22,15 +22,15 @@
   return v2;
 }
 
-- (unint64_t)XIxEGt72u9dQYi43:(int)a3 S6srINK5PmHWLUdD:(unint64_t)a4
+- (unint64_t)XIxEGt72u9dQYi43:(int)yi43 S6srINK5PmHWLUdD:(unint64_t)d
 {
-  if (a3 > 0xA)
+  if (yi43 > 0xA)
   {
     return 0;
   }
 
   result = 1;
-  if (((1 << a3) & 0x40C) == 0)
+  if (((1 << yi43) & 0x40C) == 0)
   {
     return 0;
   }

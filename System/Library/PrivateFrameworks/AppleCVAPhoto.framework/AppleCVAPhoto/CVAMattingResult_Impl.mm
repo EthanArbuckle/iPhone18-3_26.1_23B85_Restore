@@ -1,5 +1,5 @@
 @interface CVAMattingResult_Impl
-- (CVAMattingResult_Impl)initWithDisparityPostprocessingResult:(id)a3 alphaMattePixelBuffer:(__CVBuffer *)a4;
+- (CVAMattingResult_Impl)initWithDisparityPostprocessingResult:(id)result alphaMattePixelBuffer:(__CVBuffer *)buffer;
 - (void)dealloc;
 @end
 
@@ -13,15 +13,15 @@
   [(CVAMattingResult_Impl *)&v3 dealloc];
 }
 
-- (CVAMattingResult_Impl)initWithDisparityPostprocessingResult:(id)a3 alphaMattePixelBuffer:(__CVBuffer *)a4
+- (CVAMattingResult_Impl)initWithDisparityPostprocessingResult:(id)result alphaMattePixelBuffer:(__CVBuffer *)buffer
 {
-  v7 = a3;
+  resultCopy = result;
   v10.receiver = self;
   v10.super_class = CVAMattingResult_Impl;
   v8 = [(CVAMattingResult_Impl *)&v10 init];
-  objc_storeStrong(&v8->_disparityPostprocessingResult, a3);
-  v8->_alphaMattePixelBuffer = a4;
-  CVPixelBufferRetain(a4);
+  objc_storeStrong(&v8->_disparityPostprocessingResult, result);
+  v8->_alphaMattePixelBuffer = buffer;
+  CVPixelBufferRetain(buffer);
 
   return v8;
 }

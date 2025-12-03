@@ -1,10 +1,10 @@
 @interface SmartWaypointComplicationDataSource
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4;
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device;
 - (BOOL)_complicationTargetingIsActive;
 - (BOOL)_needsInvalidation;
-- (SmartWaypointComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
-- (id)_templateWithSampleWaypointLabel:(id)a3 symbol:(id)a4 color:(id)a5;
-- (id)_templateWithWaypoint:(id)a3 location:(id)a4 heading:(id)a5 altitude:(id)a6 deviceCalibrated:(BOOL)a7 showNoData:(BOOL)a8 showInactiveState:(BOOL)a9 showAlwaysOnState:(BOOL)a10 showPrivacyOnState:(BOOL)a11;
+- (SmartWaypointComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
+- (id)_templateWithSampleWaypointLabel:(id)label symbol:(id)symbol color:(id)color;
+- (id)_templateWithWaypoint:(id)waypoint location:(id)location heading:(id)heading altitude:(id)altitude deviceCalibrated:(BOOL)calibrated showNoData:(BOOL)data showInactiveState:(BOOL)state showAlwaysOnState:(BOOL)self0 showPrivacyOnState:(BOOL)self1;
 - (id)alwaysOnTemplate;
 - (id)noDataTemplate;
 - (id)privacyTemplate;
@@ -16,28 +16,28 @@
 - (void)becomeActive;
 - (void)becomeInactive;
 - (void)dealloc;
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5;
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler;
 - (void)resume;
 @end
 
 @implementation SmartWaypointComplicationDataSource
 
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device
 {
-  v5 = a4;
-  if (objc_msgSend_supportsUrsa(v5, v6, v7, v8))
+  deviceCopy = device;
+  if (objc_msgSend_supportsUrsa(deviceCopy, v6, v7, v8))
   {
     v9 = objc_alloc(MEMORY[0x277CCAD78]);
     v12 = objc_msgSend_initWithUUIDString_(v9, v10, @"4AF61239-2126-4FD6-8E7A-CDA2D7A0BFE9", v11);
-    v15 = objc_msgSend_supportsCapability_(v5, v13, v12, v14);
+    v15 = objc_msgSend_supportsCapability_(deviceCopy, v13, v12, v14);
 
     if (v15)
     {
-      if ((objc_msgSend_isTinker(v5, v16, v17, v18) & 1) == 0)
+      if ((objc_msgSend_isTinker(deviceCopy, v16, v17, v18) & 1) == 0)
       {
         if (!objc_msgSend_showingIdealizedData(NCManager, v19, v20, v21))
         {
-          v23 = (a3 - 8) < 5;
+          v23 = (family - 8) < 5;
           goto LABEL_9;
         }
 
@@ -57,11 +57,11 @@ LABEL_9:
   return v23;
 }
 
-- (SmartWaypointComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (SmartWaypointComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
   v20.receiver = self;
   v20.super_class = SmartWaypointComplicationDataSource;
-  v5 = [NanoCompassBaseComplicationDataSource initWithComplication:sel_initWithComplication_family_forDevice_mode_ family:a3 forDevice:? mode:?];
+  v5 = [NanoCompassBaseComplicationDataSource initWithComplication:sel_initWithComplication_family_forDevice_mode_ family:complication forDevice:? mode:?];
   v9 = objc_msgSend_idealizedWaypoint(NCWaypoint, v6, v7, v8);
   objc_msgSend_setWaypoint_(v5, v10, v9, v11);
 
@@ -108,10 +108,10 @@ LABEL_9:
   return objc_msgSend__complicationTargetingIsActive(self, v5, v6, v7);
 }
 
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a5;
+  handlerCopy = handler;
   v10 = objc_msgSend_targetedWaypoint(self, v7, v8, v9);
   if (v10 && (v14 = v10, IsActive = objc_msgSend__complicationTargetingIsActive(self, v11, v12, v13), v14, IsActive))
   {
@@ -139,7 +139,7 @@ LABEL_9:
     _os_log_impl(&dword_23BD26000, v33, OS_LOG_TYPE_DEFAULT, "%s: launch url is %@", buf, 0x16u);
   }
 
-  v6[2](v6, v32);
+  handlerCopy[2](handlerCopy, v32);
 }
 
 - (void)becomeActive
@@ -402,20 +402,20 @@ LABEL_6:
   return objc_msgSend__templateWithWaypoint_location_heading_altitude_deviceCalibrated_showNoData_showInactiveState_showAlwaysOnState_showPrivacyOnState_(self, a2, 0, 0, 0, 0, 0, 1, v3);
 }
 
-- (id)_templateWithSampleWaypointLabel:(id)a3 symbol:(id)a4 color:(id)a5
+- (id)_templateWithSampleWaypointLabel:(id)label symbol:(id)symbol color:(id)color
 {
   v71[4] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  labelCopy = label;
+  symbolCopy = symbol;
+  colorCopy = color;
   v70[0] = @"showSampleData";
   v70[1] = @"label";
   v71[0] = &unk_284E8AF98;
-  v71[1] = v8;
+  v71[1] = labelCopy;
   v70[2] = @"symbol";
   v70[3] = @"color";
-  v71[2] = v9;
-  v71[3] = v10;
+  v71[2] = symbolCopy;
+  v71[3] = colorCopy;
   v12 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v11, v71, v70, 4);
   v16 = objc_msgSend_family(self, v13, v14, v15);
   if (v16 > 9)
@@ -454,7 +454,7 @@ LABEL_12:
 
   if (v16 == 8)
   {
-    v21 = NanoCompassSampleWaypointCornerComplicationTextProvider(v8, v10);
+    v21 = NanoCompassSampleWaypointCornerComplicationTextProvider(labelCopy, colorCopy);
     v57 = MEMORY[0x277CBBB10];
     v58 = objc_opt_class();
     v30 = objc_msgSend_fullColorImageProviderWithImageViewClass_(v57, v59, v58, v60);
@@ -465,7 +465,7 @@ LABEL_12:
 
   if (v16 == 9)
   {
-    v21 = NanoCompassSampleWaypointCornerComplicationTextProvider(v8, v10);
+    v21 = NanoCompassSampleWaypointCornerComplicationTextProvider(labelCopy, colorCopy);
     v26 = MEMORY[0x277CBBB10];
     v27 = objc_opt_class();
     v30 = objc_msgSend_fullColorImageProviderWithImageViewClass_(v26, v28, v27, v29);
@@ -494,23 +494,23 @@ LABEL_18:
   return v38;
 }
 
-- (id)_templateWithWaypoint:(id)a3 location:(id)a4 heading:(id)a5 altitude:(id)a6 deviceCalibrated:(BOOL)a7 showNoData:(BOOL)a8 showInactiveState:(BOOL)a9 showAlwaysOnState:(BOOL)a10 showPrivacyOnState:(BOOL)a11
+- (id)_templateWithWaypoint:(id)waypoint location:(id)location heading:(id)heading altitude:(id)altitude deviceCalibrated:(BOOL)calibrated showNoData:(BOOL)data showInactiveState:(BOOL)state showAlwaysOnState:(BOOL)self0 showPrivacyOnState:(BOOL)self1
 {
-  v11 = a8;
-  v12 = a7;
+  dataCopy = data;
+  calibratedCopy = calibrated;
   v123[9] = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v22 = a6;
-  v23 = !v12 | v11;
-  if (v23 != 1 || a10)
+  waypointCopy = waypoint;
+  locationCopy = location;
+  headingCopy = heading;
+  altitudeCopy = altitude;
+  v23 = !calibratedCopy | dataCopy;
+  if (v23 != 1 || onState)
   {
     v122[0] = @"heading";
-    if (v18)
+    if (headingCopy)
     {
       v117 = 0;
-      v24 = v18;
+      v24 = headingCopy;
       goto LABEL_7;
     }
   }
@@ -518,19 +518,19 @@ LABEL_18:
   else
   {
 
-    v17 = 0;
+    locationCopy = 0;
     v122[0] = @"heading";
   }
 
   v24 = objc_msgSend_null(MEMORY[0x277CBEB68], v19, v20, v21);
-  v18 = 0;
+  headingCopy = 0;
   v117 = 1;
 LABEL_7:
   v116 = v24;
   v123[0] = v24;
   v122[1] = @"location";
-  v25 = v17;
-  if (!v17)
+  v25 = locationCopy;
+  if (!locationCopy)
   {
     v25 = objc_msgSend_null(MEMORY[0x277CBEB68], v19, v20, v21);
   }
@@ -538,20 +538,20 @@ LABEL_7:
   v115 = v25;
   v123[1] = v25;
   v122[2] = @"waypoint";
-  v26 = v16;
-  if (!v16)
+  v26 = waypointCopy;
+  if (!waypointCopy)
   {
     v26 = objc_msgSend_null(MEMORY[0x277CBEB68], v19, v20, v21);
   }
 
-  v119 = v18;
-  v120 = v17;
-  v118 = v16;
+  v119 = headingCopy;
+  v120 = locationCopy;
+  v118 = waypointCopy;
   v123[2] = v26;
   v122[3] = @"altitude";
-  v27 = v22;
-  v28 = v22;
-  if (!v22)
+  v27 = altitudeCopy;
+  v28 = altitudeCopy;
+  if (!altitudeCopy)
   {
     v27 = objc_msgSend_null(MEMORY[0x277CBEB68], v19, v20, v21);
   }
@@ -561,10 +561,10 @@ LABEL_7:
   v29 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v19, v23, v21);
   v123[4] = v29;
   v122[5] = @"inactive";
-  v32 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v30, a9, v31);
+  v32 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v30, state, v31);
   v123[5] = v32;
   v122[6] = @"alwayson";
-  v35 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v33, a10, v34);
+  v35 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v33, onState, v34);
   v123[6] = v35;
   v122[7] = @"smart";
   v36 = MEMORY[0x277CCABB0];
@@ -572,7 +572,7 @@ LABEL_7:
   v43 = objc_msgSend_numberWithBool_(v36, v41, isSmartComplication, v42);
   v123[7] = v43;
   v122[8] = @"showPrivacyRedaction";
-  v46 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v44, a11, v45);
+  v46 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v44, privacyOnState, v45);
   v123[8] = v46;
   v48 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v47, v123, v122, 9);
 
@@ -630,7 +630,7 @@ LABEL_33:
 
   if (v53 == 8)
   {
-    if (a11)
+    if (privacyOnState)
     {
       objc_msgSend_redactionTextProvider(self, v54, v55, v56);
     }
@@ -639,7 +639,7 @@ LABEL_33:
     {
       v87 = objc_msgSend_isSmartComplication(self, v54, v55, v56);
       v91 = objc_msgSend_isSmartComplication(self, v88, v89, v90);
-      NanoCompassWaypointCornerAndBezelComplicationTextProvider(v120, v119, v118, a9, a10, v87 ^ 1, v91);
+      NanoCompassWaypointCornerAndBezelComplicationTextProvider(v120, v119, v118, state, onState, v87 ^ 1, v91);
     }
     v61 = ;
     v92 = MEMORY[0x277CBBB10];
@@ -652,14 +652,14 @@ LABEL_33:
 
   if (v53 == 9)
   {
-    if ((v23 | a11) == 1)
+    if ((v23 | privacyOnState) == 1)
     {
       objc_msgSend_redactionTextProvider(self, v54, v55, v56);
     }
 
     else
     {
-      NanoCompassWaypointCornerAndBezelComplicationTextProvider(v120, v119, v118, a9, a10, 0, 0);
+      NanoCompassWaypointCornerAndBezelComplicationTextProvider(v120, v119, v118, state, onState, 0, 0);
     }
     v61 = ;
     v100 = MEMORY[0x277CBBB10];

@@ -16,11 +16,11 @@
 - (id)requestPayload
 {
   v3 = objc_opt_new();
-  v4 = [(CCDEnrollmentEndMDMMigrationRequest *)self status];
-  [v3 setStatus:v4];
+  status = [(CCDEnrollmentEndMDMMigrationRequest *)self status];
+  [v3 setStatus:status];
 
-  v5 = [(CCDEnrollmentEndMDMMigrationRequest *)self serverUID];
-  [v3 setServerUID:v5];
+  serverUID = [(CCDEnrollmentEndMDMMigrationRequest *)self serverUID];
+  [v3 setServerUID:serverUID];
 
   return v3;
 }

@@ -1,16 +1,16 @@
 @interface HKHeartbeatSeriesSample
-+ (id)_heartbeatSeriesSampleFromCSV:(id)a3 startDate:(id)a4 metadata:(id)a5 error:(id *)a6;
-+ (id)_heartbeatSeriesSampleWithData:(id)a3 startDate:(id)a4 endDate:(id)a5 device:(id)a6 metadata:(id)a7;
++ (id)_heartbeatSeriesSampleFromCSV:(id)v startDate:(id)date metadata:(id)metadata error:(id *)error;
++ (id)_heartbeatSeriesSampleWithData:(id)data startDate:(id)date endDate:(id)endDate device:(id)device metadata:(id)metadata;
 - (HKHeartbeatSeriesSample)init;
-- (HKHeartbeatSeriesSample)initWithCoder:(id)a3;
+- (HKHeartbeatSeriesSample)initWithCoder:(id)coder;
 - (NSNumber)_maximumBeatsPerMinute;
 - (NSNumber)_minimumBeatsPerMinute;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
 - (void)_computeMinimumAndMaximumBeatsPerMinute;
-- (void)_enumerateHeartbeatDataWithBlock:(id)a3;
-- (void)_setPayload:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateHeartbeatDataWithBlock:(id)a3;
+- (void)_enumerateHeartbeatDataWithBlock:(id)block;
+- (void)_setPayload:(id)payload;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateHeartbeatDataWithBlock:(id)block;
 @end
 
 @implementation HKHeartbeatSeriesSample
@@ -25,48 +25,48 @@
   return 0;
 }
 
-+ (id)_heartbeatSeriesSampleWithData:(id)a3 startDate:(id)a4 endDate:(id)a5 device:(id)a6 metadata:(id)a7
++ (id)_heartbeatSeriesSampleWithData:(id)data startDate:(id)date endDate:(id)endDate device:(id)device metadata:(id)metadata
 {
-  v12 = a3;
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
+  dataCopy = data;
+  metadataCopy = metadata;
+  deviceCopy = device;
+  endDateCopy = endDate;
+  dateCopy = date;
   v17 = +[HKSeriesType heartbeatSeriesType];
-  [v16 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v19 = v18;
 
-  [v15 timeIntervalSinceReferenceDate];
+  [endDateCopy timeIntervalSinceReferenceDate];
   v21 = v20;
 
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __92__HKHeartbeatSeriesSample__heartbeatSeriesSampleWithData_startDate_endDate_device_metadata___block_invoke;
   v25[3] = &unk_1E7383830;
-  v26 = v12;
-  v22 = v12;
-  v23 = [a1 _newSampleWithType:v17 startDate:v14 endDate:v13 device:v25 metadata:v19 config:v21];
+  v26 = dataCopy;
+  v22 = dataCopy;
+  v23 = [self _newSampleWithType:v17 startDate:deviceCopy endDate:metadataCopy device:v25 metadata:v19 config:v21];
 
   return v23;
 }
 
-- (void)enumerateHeartbeatDataWithBlock:(id)a3
+- (void)enumerateHeartbeatDataWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__HKHeartbeatSeriesSample_enumerateHeartbeatDataWithBlock___block_invoke;
   v6[3] = &unk_1E7383858;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(HKHeartbeatSeriesSample *)self _enumerateHeartbeatDataWithBlock:v6];
 }
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
   v37.receiver = self;
   v37.super_class = HKHeartbeatSeriesSample;
-  v5 = [(HKSeriesSample *)&v37 _validateWithConfiguration:a3.var0, a3.var1];
+  v5 = [(HKSeriesSample *)&v37 _validateWithConfiguration:configuration.var0, configuration.var1];
   v6 = v5;
   if (v5)
   {
@@ -75,9 +75,9 @@
 
   else
   {
-    v8 = [(HKSample *)self sampleType];
+    sampleType = [(HKSample *)self sampleType];
     v9 = +[HKSeriesType heartbeatSeriesType];
-    v10 = [v8 isEqual:v9];
+    v10 = [sampleType isEqual:v9];
 
     if (v10)
     {
@@ -102,11 +102,11 @@
         v26[6] = &v27;
         v26[7] = a2;
         [(HKHeartbeatSeriesSample *)self _enumerateHeartbeatDataWithBlock:v26];
-        v20 = [(HKSample *)self startDate];
-        v21 = [v20 dateByAddingTimeInterval:v28[3]];
+        startDate = [(HKSample *)self startDate];
+        v21 = [startDate dateByAddingTimeInterval:v28[3]];
 
-        v22 = [(HKSample *)self endDate];
-        v23 = [v21 hk_isBeforeOrEqualToDate:v22];
+        endDate = [(HKSample *)self endDate];
+        v23 = [v21 hk_isBeforeOrEqualToDate:endDate];
 
         if (v23)
         {
@@ -308,10 +308,10 @@ uint64_t __66__HKHeartbeatSeriesSample__computeMinimumAndMaximumBeatsPerMinute__
   return 1;
 }
 
-- (void)_enumerateHeartbeatDataWithBlock:(id)a3
+- (void)_enumerateHeartbeatDataWithBlock:(id)block
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   if (self->_numberOfDataPoints >= 1)
   {
     v5 = 0;
@@ -319,7 +319,7 @@ uint64_t __66__HKHeartbeatSeriesSample__computeMinimumAndMaximumBeatsPerMinute__
     do
     {
       [(NSData *)self->_heartbeatData getBytes:&v8 range:v5, 16];
-      if ((v4[2](v4, v9 != 0, v8) & 1) == 0)
+      if ((blockCopy[2](blockCopy, v9 != 0, v8) & 1) == 0)
       {
         break;
       }
@@ -334,49 +334,49 @@ uint64_t __66__HKHeartbeatSeriesSample__computeMinimumAndMaximumBeatsPerMinute__
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setPayload:(id)a3
+- (void)_setPayload:(id)payload
 {
-  v6 = a3;
-  v4 = [MEMORY[0x1E695DEF0] dataWithData:v6];
+  payloadCopy = payload;
+  v4 = [MEMORY[0x1E695DEF0] dataWithData:payloadCopy];
   heartbeatData = self->_heartbeatData;
   self->_heartbeatData = v4;
 
-  self->_numberOfDataPoints = [v6 length] >> 4;
+  self->_numberOfDataPoints = [payloadCopy length] >> 4;
 }
 
-- (HKHeartbeatSeriesSample)initWithCoder:(id)a3
+- (HKHeartbeatSeriesSample)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = HKHeartbeatSeriesSample;
-  v5 = [(HKSeriesSample *)&v8 initWithCoder:v4];
+  v5 = [(HKSeriesSample *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"heartbeatData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"heartbeatData"];
     [(HKHeartbeatSeriesSample *)v5 _setPayload:v6];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKHeartbeatSeriesSample;
-  v4 = a3;
-  [(HKSeriesSample *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_heartbeatData forKey:{@"heartbeatData", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(HKSeriesSample *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_heartbeatData forKey:{@"heartbeatData", v5.receiver, v5.super_class}];
 }
 
-+ (id)_heartbeatSeriesSampleFromCSV:(id)a3 startDate:(id)a4 metadata:(id)a5 error:(id *)a6
++ (id)_heartbeatSeriesSampleFromCSV:(id)v startDate:(id)date metadata:(id)metadata error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E696AEC0] stringWithContentsOfFile:a3 encoding:4 error:a6];
+  dateCopy = date;
+  metadataCopy = metadata;
+  v11 = [MEMORY[0x1E696AEC0] stringWithContentsOfFile:v encoding:4 error:error];
   if ([v11 length])
   {
-    v32 = v10;
+    v32 = metadataCopy;
     v31 = v11;
     v12 = [v11 componentsSeparatedByString:@"\n"];
     v13 = [MEMORY[0x1E695DF88] dataWithCapacity:{16 * objc_msgSend(v12, "count")}];
@@ -409,10 +409,10 @@ uint64_t __66__HKHeartbeatSeriesSample__computeMinimumAndMaximumBeatsPerMinute__
             v24 = [v20 substringFromIndex:v22 + 1];
             [v23 doubleValue];
             v18 = v25;
-            v26 = [v24 BOOLValue];
+            bOOLValue = [v24 BOOLValue];
             v39 = 0;
             v38 = v18;
-            if ((v26 & 1) == 0)
+            if ((bOOLValue & 1) == 0)
             {
               LOBYTE(v39) = 1;
             }
@@ -432,9 +432,9 @@ uint64_t __66__HKHeartbeatSeriesSample__computeMinimumAndMaximumBeatsPerMinute__
       v18 = 0.0;
     }
 
-    v28 = [v9 dateByAddingTimeInterval:v18];
-    v10 = v32;
-    v27 = [HKHeartbeatSeriesSample _heartbeatSeriesSampleWithData:v13 startDate:v9 endDate:v28 device:0 metadata:v32];
+    v28 = [dateCopy dateByAddingTimeInterval:v18];
+    metadataCopy = v32;
+    v27 = [HKHeartbeatSeriesSample _heartbeatSeriesSampleWithData:v13 startDate:dateCopy endDate:v28 device:0 metadata:v32];
 
     v11 = v31;
   }

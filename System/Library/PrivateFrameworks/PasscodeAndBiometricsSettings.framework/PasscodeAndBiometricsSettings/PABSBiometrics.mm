@@ -6,19 +6,19 @@
 - (BOOL)isFingerprintUnlockAllowed;
 - (BOOL)isPeriocularEnrollmentSupported;
 - (BOOL)isTouchIDUnlockRestricted;
-- (BOOL)removeIdentity:(id)a3;
-- (BOOL)setName:(id)a3 forIdentity:(id)a4;
+- (BOOL)removeIdentity:(id)identity;
+- (BOOL)setName:(id)name forIdentity:(id)identity;
 - (BOOL)shouldRestrictFeaturesRequiringEnrollment;
 - (PABSBiometrics)init;
-- (id)deviceForType:(int64_t)a3;
-- (id)identitiesForIdentityType:(int64_t)a3;
-- (id)nextIdentityNameForIdentityType:(int64_t)a3;
-- (int64_t)deviceTypeForIdentityType:(int64_t)a3;
-- (int64_t)maximumIdentityCountForIdentityType:(int64_t)a3;
+- (id)deviceForType:(int64_t)type;
+- (id)identitiesForIdentityType:(int64_t)type;
+- (id)nextIdentityNameForIdentityType:(int64_t)type;
+- (int64_t)deviceTypeForIdentityType:(int64_t)type;
+- (int64_t)maximumIdentityCountForIdentityType:(int64_t)type;
 - (void)init;
 - (void)isPeriocularEnrollmentSupported;
-- (void)removeIdentity:(id)a3 completion:(id)a4;
-- (void)setName:(id)a3 forIdentity:(id)a4 completion:(id)a5;
+- (void)removeIdentity:(id)identity completion:(id)completion;
+- (void)setName:(id)name forIdentity:(id)identity completion:(id)completion;
 @end
 
 @implementation PABSBiometrics
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = __32__PABSBiometrics_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -60,8 +60,8 @@ uint64_t __32__PABSBiometrics_sharedInstance__block_invoke(uint64_t a1)
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v3 = [MEMORY[0x277CF1BC0] availableDevices];
-    v4 = [v3 countByEnumeratingWithState:&v20 objects:v31 count:16];
+    availableDevices = [MEMORY[0x277CF1BC0] availableDevices];
+    v4 = [availableDevices countByEnumeratingWithState:&v20 objects:v31 count:16];
     if (!v4)
     {
       goto LABEL_20;
@@ -75,12 +75,12 @@ uint64_t __32__PABSBiometrics_sharedInstance__block_invoke(uint64_t a1)
       {
         if (*v21 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(availableDevices);
         }
 
         v8 = *(*(&v20 + 1) + 8 * i);
-        v9 = [v8 type];
-        if (v9 == 1)
+        type = [v8 type];
+        if (type == 1)
         {
           v18 = 0;
           v14 = [MEMORY[0x277CF1BD8] deviceWithDescriptor:v8 error:&v18];
@@ -102,7 +102,7 @@ uint64_t __32__PABSBiometrics_sharedInstance__block_invoke(uint64_t a1)
           goto LABEL_15;
         }
 
-        if (v9 == 2)
+        if (type == 2)
         {
           v19 = 0;
           v10 = [MEMORY[0x277CF1BD0] deviceWithDescriptor:v8 error:&v19];
@@ -135,7 +135,7 @@ LABEL_15:
 LABEL_18:
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v20 objects:v31 count:16];
+      v5 = [availableDevices countByEnumeratingWithState:&v20 objects:v31 count:16];
       if (!v5)
       {
 LABEL_20:
@@ -151,15 +151,15 @@ LABEL_20:
 
 + (id)identities
 {
-  v2 = [MEMORY[0x277CF1BF8] manager];
-  v3 = [v2 identities:0];
+  manager = [MEMORY[0x277CF1BF8] manager];
+  v3 = [manager identities:0];
 
   return v3;
 }
 
-- (id)identitiesForIdentityType:(int64_t)a3
+- (id)identitiesForIdentityType:(int64_t)type
 {
-  v3 = [(PABSBiometrics *)self deviceForType:[(PABSBiometrics *)self deviceTypeForIdentityType:a3]];
+  v3 = [(PABSBiometrics *)self deviceForType:[(PABSBiometrics *)self deviceTypeForIdentityType:type]];
   v9 = 0;
   v4 = [v3 identitiesWithError:&v9];
   v5 = v9;
@@ -182,13 +182,13 @@ LABEL_20:
   return v7;
 }
 
-- (int64_t)maximumIdentityCountForIdentityType:(int64_t)a3
+- (int64_t)maximumIdentityCountForIdentityType:(int64_t)type
 {
-  v3 = [(PABSBiometrics *)self deviceForType:[(PABSBiometrics *)self deviceTypeForIdentityType:a3]];
+  v3 = [(PABSBiometrics *)self deviceForType:[(PABSBiometrics *)self deviceTypeForIdentityType:type]];
   v9 = 0;
   v4 = [v3 maxIdentityCountWithError:&v9];
   v5 = v9;
-  v6 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
   if (v5)
   {
@@ -198,31 +198,31 @@ LABEL_20:
       [PABSBiometrics maximumIdentityCountForIdentityType:];
     }
 
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
-- (BOOL)setName:(id)a3 forIdentity:(id)a4
+- (BOOL)setName:(id)name forIdentity:(id)identity
 {
-  v6 = a4;
-  [v6 setName:a3];
-  v7 = -[PABSBiometrics deviceForType:](self, "deviceForType:", -[PABSBiometrics deviceTypeForIdentityType:](self, "deviceTypeForIdentityType:", [v6 type]));
+  identityCopy = identity;
+  [identityCopy setName:name];
+  v7 = -[PABSBiometrics deviceForType:](self, "deviceForType:", -[PABSBiometrics deviceTypeForIdentityType:](self, "deviceTypeForIdentityType:", [identityCopy type]));
   v12 = 0;
-  v8 = [v7 updateIdentity:v6 error:&v12];
+  v8 = [v7 updateIdentity:identityCopy error:&v12];
 
   v9 = v12;
   if (v8)
   {
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 postNotificationName:@"PABSBiometricsDidUpdate" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"PABSBiometricsDidUpdate" object:0];
   }
 
   else
   {
-    v10 = PABSLogForCategory(0);
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    defaultCenter = PABSLogForCategory(0);
+    if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_ERROR))
     {
       [PABSBiometrics setName:forIdentity:];
     }
@@ -231,19 +231,19 @@ LABEL_20:
   return v8;
 }
 
-- (void)setName:(id)a3 forIdentity:(id)a4 completion:(id)a5
+- (void)setName:(id)name forIdentity:(id)identity completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  [v9 setName:a3];
-  v10 = -[PABSBiometrics deviceForType:](self, "deviceForType:", -[PABSBiometrics deviceTypeForIdentityType:](self, "deviceTypeForIdentityType:", [v9 type]));
+  completionCopy = completion;
+  identityCopy = identity;
+  [identityCopy setName:name];
+  v10 = -[PABSBiometrics deviceForType:](self, "deviceForType:", -[PABSBiometrics deviceTypeForIdentityType:](self, "deviceTypeForIdentityType:", [identityCopy type]));
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __49__PABSBiometrics_setName_forIdentity_completion___block_invoke;
   v12[3] = &unk_279A03300;
-  v13 = v8;
-  v11 = v8;
-  [v10 updateIdentity:v9 reply:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [v10 updateIdentity:identityCopy reply:v12];
 }
 
 void __49__PABSBiometrics_setName_forIdentity_completion___block_invoke(uint64_t a1, char a2, void *a3)
@@ -292,24 +292,24 @@ uint64_t __49__PABSBiometrics_setName_forIdentity_completion___block_invoke_2(ui
   return result;
 }
 
-- (BOOL)removeIdentity:(id)a3
+- (BOOL)removeIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = -[PABSBiometrics deviceForType:](self, "deviceForType:", -[PABSBiometrics deviceTypeForIdentityType:](self, "deviceTypeForIdentityType:", [v4 type]));
+  identityCopy = identity;
+  v5 = -[PABSBiometrics deviceForType:](self, "deviceForType:", -[PABSBiometrics deviceTypeForIdentityType:](self, "deviceTypeForIdentityType:", [identityCopy type]));
   v10 = 0;
-  v6 = [v5 removeIdentity:v4 error:&v10];
+  v6 = [v5 removeIdentity:identityCopy error:&v10];
 
   v7 = v10;
   if (v6)
   {
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 postNotificationName:@"PABSBiometricsDidUpdate" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"PABSBiometricsDidUpdate" object:0];
   }
 
   else
   {
-    v8 = PABSLogForCategory(0);
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    defaultCenter = PABSLogForCategory(0);
+    if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_ERROR))
     {
       [PABSBiometrics removeIdentity:];
     }
@@ -318,18 +318,18 @@ uint64_t __49__PABSBiometrics_setName_forIdentity_completion___block_invoke_2(ui
   return v6;
 }
 
-- (void)removeIdentity:(id)a3 completion:(id)a4
+- (void)removeIdentity:(id)identity completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = -[PABSBiometrics deviceForType:](self, "deviceForType:", -[PABSBiometrics deviceTypeForIdentityType:](self, "deviceTypeForIdentityType:", [v7 type]));
+  completionCopy = completion;
+  identityCopy = identity;
+  v8 = -[PABSBiometrics deviceForType:](self, "deviceForType:", -[PABSBiometrics deviceTypeForIdentityType:](self, "deviceTypeForIdentityType:", [identityCopy type]));
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __44__PABSBiometrics_removeIdentity_completion___block_invoke;
   v10[3] = &unk_279A03300;
-  v11 = v6;
-  v9 = v6;
-  [v8 removeIdentity:v7 reply:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [v8 removeIdentity:identityCopy reply:v10];
 }
 
 void __44__PABSBiometrics_removeIdentity_completion___block_invoke(uint64_t a1, char a2, void *a3)
@@ -380,21 +380,21 @@ uint64_t __44__PABSBiometrics_removeIdentity_completion___block_invoke_2(uint64_
 
 - (BOOL)isPeriocularEnrollmentSupported
 {
-  v3 = [(PABSBiometrics *)self pearlDevice];
+  pearlDevice = [(PABSBiometrics *)self pearlDevice];
 
-  if (!v3)
+  if (!pearlDevice)
   {
     return 0;
   }
 
-  v4 = [(PABSBiometrics *)self pearlDevice];
+  pearlDevice2 = [(PABSBiometrics *)self pearlDevice];
   v10 = 0;
-  v5 = [v4 supportsPeriocularEnrollmentWithError:&v10];
+  v5 = [pearlDevice2 supportsPeriocularEnrollmentWithError:&v10];
   v6 = v10;
 
   if (v5)
   {
-    v7 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
@@ -405,22 +405,22 @@ uint64_t __44__PABSBiometrics_removeIdentity_completion___block_invoke_2(uint64_
       [PABSBiometrics isPeriocularEnrollmentSupported];
     }
 
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (id)deviceForType:(int64_t)a3
+- (id)deviceForType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
-    v3 = [(PABSBiometrics *)self touchIDDevice];
+    touchIDDevice = [(PABSBiometrics *)self touchIDDevice];
   }
 
-  else if (a3 == 2)
+  else if (type == 2)
   {
-    v3 = [(PABSBiometrics *)self pearlDevice];
+    touchIDDevice = [(PABSBiometrics *)self pearlDevice];
   }
 
   else
@@ -431,16 +431,16 @@ uint64_t __44__PABSBiometrics_removeIdentity_completion___block_invoke_2(uint64_
       [PABSBiometrics deviceForType:];
     }
 
-    v3 = 0;
+    touchIDDevice = 0;
   }
 
-  return v3;
+  return touchIDDevice;
 }
 
-- (int64_t)deviceTypeForIdentityType:(int64_t)a3
+- (int64_t)deviceTypeForIdentityType:(int64_t)type
 {
-  v3 = a3;
-  if ((a3 - 1) >= 2)
+  typeCopy = type;
+  if ((type - 1) >= 2)
   {
     v4 = PABSLogForCategory(0);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -451,10 +451,10 @@ uint64_t __44__PABSBiometrics_removeIdentity_completion___block_invoke_2(uint64_
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v3;
+  return typeCopy;
 }
 
-- (id)nextIdentityNameForIdentityType:(int64_t)a3
+- (id)nextIdentityNameForIdentityType:(int64_t)type
 {
   v42 = *MEMORY[0x277D85DE8];
   v4 = [MEMORY[0x277CBEB58] set];
@@ -463,7 +463,7 @@ uint64_t __44__PABSBiometrics_removeIdentity_completion___block_invoke_2(uint64_
   v38 = 0u;
   v37 = 0u;
   v5 = +[PABSBiometrics sharedInstance];
-  v6 = [v5 identitiesForIdentityType:a3];
+  v6 = [v5 identitiesForIdentityType:type];
 
   v7 = [v6 countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v7)
@@ -478,10 +478,10 @@ uint64_t __44__PABSBiometrics_removeIdentity_completion___block_invoke_2(uint64_
           objc_enumerationMutation(v6);
         }
 
-        v10 = [*(*(&v37 + 1) + 8 * i) name];
-        if (v10)
+        name = [*(*(&v37 + 1) + 8 * i) name];
+        if (name)
         {
-          [v4 addObject:v10];
+          [v4 addObject:name];
         }
       }
 
@@ -492,7 +492,7 @@ uint64_t __44__PABSBiometrics_removeIdentity_completion___block_invoke_2(uint64_
   }
 
   v11 = +[PABSBiometrics sharedInstance];
-  v12 = [v11 maximumIdentityCountForIdentityType:a3];
+  v12 = [v11 maximumIdentityCountForIdentityType:type];
 
   v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:v12];
   v14 = objc_alloc_init(MEMORY[0x277CCABB8]);
@@ -505,13 +505,13 @@ uint64_t __44__PABSBiometrics_removeIdentity_completion___block_invoke_2(uint64_
       v17 = [v14 stringFromNumber:v16];
 
       v18 = MEMORY[0x277CCACA8];
-      if (a3 == 1)
+      if (type == 1)
       {
         v21 = PABS_LocalizedStringForPasscodeLock(@"IDENTITY_NAME_FORMAT_TOUCH_ID");
         v20 = [v18 stringWithFormat:v21, v17];
       }
 
-      else if (a3 == 2)
+      else if (type == 2)
       {
         v19 = PABS_LocalizedStringForPasscodeLock(@"IDENTITY_NAME_FORMAT_FACE_ID");
         v20 = [v18 stringWithFormat:v19, v17];
@@ -577,16 +577,16 @@ unint64_t __50__PABSBiometrics_nextIdentityNameForIdentityType___block_invoke_2(
 
 - (BOOL)isBiometricEditingAllowed
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isFingerprintModificationAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isFingerprintModificationAllowed = [mEMORY[0x277D262A0] isFingerprintModificationAllowed];
 
-  return v3;
+  return isFingerprintModificationAllowed;
 }
 
 - (BOOL)shouldRestrictFeaturesRequiringEnrollment
 {
-  v3 = [objc_opt_class() identities];
-  if ([v3 count])
+  identities = [objc_opt_class() identities];
+  if ([identities count])
   {
     LOBYTE(v4) = 0;
   }
@@ -601,16 +601,16 @@ unint64_t __50__PABSBiometrics_nextIdentityNameForIdentityType___block_invoke_2(
 
 - (BOOL)isFingerprintUnlockAllowed
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x277D25EC0]] == 1;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25EC0]] == 1;
 
   return v3;
 }
 
 - (BOOL)isTouchIDUnlockRestricted
 {
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  v4 = ([v3 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25EC0]] & 1) != 0 || -[PABSBiometrics shouldRestrictFeaturesRequiringEnrollment](self, "shouldRestrictFeaturesRequiringEnrollment");
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v4 = ([mEMORY[0x277D262A0] isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25EC0]] & 1) != 0 || -[PABSBiometrics shouldRestrictFeaturesRequiringEnrollment](self, "shouldRestrictFeaturesRequiringEnrollment");
 
   return v4;
 }
@@ -625,9 +625,9 @@ unint64_t __50__PABSBiometrics_nextIdentityNameForIdentityType___block_invoke_2(
 
 - (void)init
 {
-  v7 = [a2 type];
-  *a1 = 134217984;
-  *a3 = v7;
+  type = [a2 type];
+  *self = 134217984;
+  *a3 = type;
 }
 
 - (void)identitiesForIdentityType:.cold.1()

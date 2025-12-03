@@ -1,21 +1,21 @@
 @interface MesaPairerInputs
-- (BOOL)validateAndInitializeParameters:(id)a3;
-- (id)_filterSeaCookieServerUrl:(id)a3;
-- (void)_validateURL:(id)a3 failed:(BOOL *)a4;
+- (BOOL)validateAndInitializeParameters:(id)parameters;
+- (id)_filterSeaCookieServerUrl:(id)url;
+- (void)_validateURL:(id)l failed:(BOOL *)failed;
 @end
 
 @implementation MesaPairerInputs
 
-- (id)_filterSeaCookieServerUrl:(id)a3
+- (id)_filterSeaCookieServerUrl:(id)url
 {
-  v3 = a3;
-  v4 = v3;
+  urlCopy = url;
+  v4 = urlCopy;
   if (MGGetBoolAnswer())
   {
     v5 = objc_opt_new();
     v6 = [v5 hasEntitlementBoolForTag:1633776739 inAPTicket:0];
 
-    v4 = v3;
+    v4 = urlCopy;
     if ((v6 & 1) == 0)
     {
 
@@ -34,24 +34,24 @@
   return v4;
 }
 
-- (void)_validateURL:(id)a3 failed:(BOOL *)a4
+- (void)_validateURL:(id)l failed:(BOOL *)failed
 {
-  v5 = a3;
-  if (v5)
+  lCopy = l;
+  if (lCopy)
   {
-    v6 = [NSURL URLWithString:v5];
+    v6 = [NSURL URLWithString:lCopy];
     v7 = v6;
     if (v6 && ([v6 host], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
     {
-      v9 = [v7 scheme];
-      if (![v9 caseInsensitiveCompare:@"http"])
+      scheme = [v7 scheme];
+      if (![scheme caseInsensitiveCompare:@"http"])
       {
 
         goto LABEL_11;
       }
 
-      v10 = [v7 scheme];
-      v11 = [v10 caseInsensitiveCompare:@"https"];
+      scheme2 = [v7 scheme];
+      v11 = [scheme2 caseInsensitiveCompare:@"https"];
 
       if (!v11)
       {
@@ -76,16 +76,16 @@ LABEL_11:
       }
     }
 
-    *a4 = 1;
+    *failed = 1;
     goto LABEL_11;
   }
 
 LABEL_12:
 }
 
-- (BOOL)validateAndInitializeParameters:(id)a3
+- (BOOL)validateAndInitializeParameters:(id)parameters
 {
-  v6 = a3;
+  parametersCopy = parameters;
   v53 = 0;
   v7 = handleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -95,7 +95,7 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v8 = [v6 dk_stringFromKey:@"SCPairURL" maxLength:256 defaultValue:@"https://shps.apple.com/hps/processor" failed:&v53];
+  v8 = [parametersCopy dk_stringFromKey:@"SCPairURL" maxLength:256 defaultValue:@"https://shps.apple.com/hps/processor" failed:&v53];
   v9 = [(MesaPairerInputs *)self _filterSeaCookieServerUrl:v8];
 
   v10 = handleForCategory();
@@ -118,12 +118,12 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v16 = [(NSURL *)v14 scheme];
-  v4 = [v16 caseInsensitiveCompare:@"http"];
-  if (!v4)
+  scheme = [(NSURL *)v14 scheme];
+  scheme4 = [scheme caseInsensitiveCompare:@"http"];
+  if (!scheme4)
   {
-    v3 = [(NSURL *)v15 scheme];
-    if (![v3 caseInsensitiveCompare:@"https"])
+    scheme2 = [(NSURL *)v15 scheme];
+    if (![scheme2 caseInsensitiveCompare:@"https"])
     {
 
 LABEL_13:
@@ -138,19 +138,19 @@ LABEL_13:
     }
   }
 
-  v17 = [(NSURL *)v15 host];
+  host = [(NSURL *)v15 host];
 
-  if (!v4)
+  if (!scheme4)
   {
   }
 
-  if (!v17)
+  if (!host)
   {
     goto LABEL_13;
   }
 
 LABEL_16:
-  v19 = [v6 NSStringFromKey:@"CAURL" defaultValue:0 failed:&v53];
+  v19 = [parametersCopy NSStringFromKey:@"CAURL" defaultValue:0 failed:&v53];
   FDRCAURL = self->_FDRCAURL;
   self->_FDRCAURL = v19;
 
@@ -164,7 +164,7 @@ LABEL_16:
   }
 
   [(MesaPairerInputs *)self _validateURL:self->_FDRCAURL failed:&v53];
-  v23 = [v6 NSStringFromKey:@"DSURL" defaultValue:0 failed:&v53];
+  v23 = [parametersCopy NSStringFromKey:@"DSURL" defaultValue:0 failed:&v53];
   FDRDSURL = self->_FDRDSURL;
   self->_FDRDSURL = v23;
 
@@ -178,7 +178,7 @@ LABEL_16:
   }
 
   [(MesaPairerInputs *)self _validateURL:self->_FDRDSURL failed:&v53];
-  v27 = [v6 NSStringFromKey:@"TrustObjectURL" defaultValue:0 failed:&v53];
+  v27 = [parametersCopy NSStringFromKey:@"TrustObjectURL" defaultValue:0 failed:&v53];
   trustObjectURL = self->_trustObjectURL;
   self->_trustObjectURL = v27;
 
@@ -192,7 +192,7 @@ LABEL_16:
   }
 
   [(MesaPairerInputs *)self _validateURL:self->_trustObjectURL failed:&v53];
-  self->_useAppleConnect = [v6 dk_BOOLFromKey:@"UseAppleConnect" defaultValue:0 failed:&v53];
+  self->_useAppleConnect = [parametersCopy dk_BOOLFromKey:@"UseAppleConnect" defaultValue:0 failed:&v53];
   v31 = handleForCategory();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
   {
@@ -211,7 +211,7 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Use AppleConnect: %@", buf, 0xCu);
   }
 
-  v33 = [v6 dk_stringFromKey:@"TatsuURL" maxLength:256 defaultValue:0 failed:&v53];
+  v33 = [parametersCopy dk_stringFromKey:@"TatsuURL" maxLength:256 defaultValue:0 failed:&v53];
   if (!v33)
   {
     if (self->_useAppleConnect)
@@ -245,12 +245,12 @@ LABEL_16:
     goto LABEL_42;
   }
 
-  v39 = [(NSURL *)v38 scheme];
-  v40 = [v39 caseInsensitiveCompare:@"http"];
+  scheme3 = [(NSURL *)v38 scheme];
+  v40 = [scheme3 caseInsensitiveCompare:@"http"];
   if (!v40)
   {
-    v4 = [(NSURL *)v38 scheme];
-    if (![v4 caseInsensitiveCompare:@"https"])
+    scheme4 = [(NSURL *)v38 scheme];
+    if (![scheme4 caseInsensitiveCompare:@"https"])
     {
 
       v11 = &off_10000E000;
@@ -266,20 +266,20 @@ LABEL_42:
     }
   }
 
-  v41 = [(NSURL *)v38 host];
+  host2 = [(NSURL *)v38 host];
 
   if (!v40)
   {
   }
 
   v11 = &off_10000E000;
-  if (!v41)
+  if (!host2)
   {
     goto LABEL_42;
   }
 
 LABEL_45:
-  v43 = [v6 dk_stringFromKey:@"keyBlob" maxLength:1024 defaultValue:0 failed:&v53];
+  v43 = [parametersCopy dk_stringFromKey:@"keyBlob" maxLength:1024 defaultValue:0 failed:&v53];
   if (v43)
   {
     v44 = handleForCategory();
@@ -304,7 +304,7 @@ LABEL_45:
     }
   }
 
-  self->_skipPairingPreCheck = [v6 dk_BOOLFromKey:@"SkipPairingPreCheck" defaultValue:0 failed:&v53];
+  self->_skipPairingPreCheck = [parametersCopy dk_BOOLFromKey:@"SkipPairingPreCheck" defaultValue:0 failed:&v53];
   v48 = handleForCategory();
   if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
   {

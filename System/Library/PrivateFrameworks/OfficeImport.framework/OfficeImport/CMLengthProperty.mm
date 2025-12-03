@@ -1,12 +1,12 @@
 @interface CMLengthProperty
-+ (double)convertToPoints:(double)result unit:(int)a4;
-+ (id)cssStringValue:(double)a3 unit:(int)a4;
-- (CMLengthProperty)initWithNumber:(double)a3 unit:(int)a4;
++ (double)convertToPoints:(double)result unit:(int)unit;
++ (id)cssStringValue:(double)value unit:(int)unit;
+- (CMLengthProperty)initWithNumber:(double)number unit:(int)unit;
 - (id)cssString;
-- (id)cssStringForName:(id)a3;
+- (id)cssStringForName:(id)name;
 - (id)description;
-- (int)compareValue:(id)a3;
-- (void)addNumber:(double)a3 unit:(int)a4;
+- (int)compareValue:(id)value;
+- (void)addNumber:(double)number unit:(int)unit;
 @end
 
 @implementation CMLengthProperty
@@ -64,90 +64,90 @@ LABEL_16:
   return v6;
 }
 
-+ (id)cssStringValue:(double)a3 unit:(int)a4
++ (id)cssStringValue:(double)value unit:(int)unit
 {
-  if (a4 <= 7)
+  if (unit <= 7)
   {
-    if (a4 == 2)
+    if (unit == 2)
     {
-      v5 = (a3 / 20.0);
+      valueCopy = (value / 20.0);
       goto LABEL_16;
     }
 
-    if (a4 == 6)
+    if (unit == 6)
     {
-      v5 = (a3 / 2);
+      valueCopy = (value / 2);
 LABEL_16:
-      v7 = [MEMORY[0x277CCABB0] numberWithInt:v5];
+      v7 = [MEMORY[0x277CCABB0] numberWithInt:valueCopy];
       v8 = +[CMGlobalCache lengthPropertyCache];
       v9 = [v8 objectForKey:v7];
       v10 = v9;
       if (v9)
       {
-        v4 = v9;
+        valueCopy = v9;
       }
 
       else
       {
-        v4 = [MEMORY[0x277CCACA8] stringWithFormat:@":%dpx", v5];;
-        [v8 setObject:v4 forKey:v7];
+        valueCopy = [MEMORY[0x277CCACA8] stringWithFormat:@":%dpx", valueCopy];;
+        [v8 setObject:valueCopy forKey:v7];
       }
 
       goto LABEL_20;
     }
 
 LABEL_10:
-    if (a3 > 1.0 || a3 <= 0.5)
+    if (value > 1.0 || value <= 0.5)
     {
-      v5 = a3;
+      valueCopy = value;
     }
 
     else
     {
-      v5 = 1;
+      valueCopy = 1;
     }
 
     goto LABEL_16;
   }
 
-  if ((a4 - 8) >= 2)
+  if ((unit - 8) >= 2)
   {
-    if (a4 == 10)
+    if (unit == 10)
     {
-      v5 = (a3 / 8);
+      valueCopy = (value / 8);
       goto LABEL_16;
     }
 
     goto LABEL_10;
   }
 
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@":%f", *&a3];;
+  valueCopy = [MEMORY[0x277CCACA8] stringWithFormat:@":%f", *&value];;
 LABEL_20:
 
-  return v4;
+  return valueCopy;
 }
 
-- (CMLengthProperty)initWithNumber:(double)a3 unit:(int)a4
+- (CMLengthProperty)initWithNumber:(double)number unit:(int)unit
 {
   v7.receiver = self;
   v7.super_class = CMLengthProperty;
   result = [(CMLengthProperty *)&v7 init];
   if (result)
   {
-    result->value = a3;
-    result->unitType = a4;
+    result->value = number;
+    result->unitType = unit;
   }
 
   return result;
 }
 
-- (int)compareValue:(id)a3
+- (int)compareValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = valueCopy;
     value = self->value;
     [v5 value];
     if (value == v7)
@@ -178,15 +178,15 @@ LABEL_20:
   return v8;
 }
 
-- (id)cssStringForName:(id)a3
+- (id)cssStringForName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   unitType = self->unitType;
   if (unitType > 7)
   {
     if ((unitType - 8) < 2)
     {
-      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%f", v4, *&self->value];;
+      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%f", nameCopy, *&self->value];;
       goto LABEL_18;
     }
 
@@ -229,21 +229,21 @@ LABEL_10:
   v6 = (self->value / 20.0);
   v8 = @"%@:%dpt;";
 LABEL_17:
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:v8, v4, v6];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:v8, nameCopy, v6];
 LABEL_18:
   v11 = v7;
 
   return v11;
 }
 
-+ (double)convertToPoints:(double)result unit:(int)a4
++ (double)convertToPoints:(double)result unit:(int)unit
 {
-  if ((a4 - 2) < 2)
+  if ((unit - 2) < 2)
   {
     return result / 20.0;
   }
 
-  if (a4 == 6)
+  if (unit == 6)
   {
     return result * 0.5;
   }
@@ -255,25 +255,25 @@ LABEL_18:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CMLengthProperty *)self cssString];
-  v6 = [v3 stringWithFormat:@"<%@: %p %@>", v4, self, v5];
+  cssString = [(CMLengthProperty *)self cssString];
+  v6 = [v3 stringWithFormat:@"<%@: %p %@>", v4, self, cssString];
 
   return v6;
 }
 
-- (void)addNumber:(double)a3 unit:(int)a4
+- (void)addNumber:(double)number unit:(int)unit
 {
-  if (self->unitType == a4)
+  if (self->unitType == unit)
   {
-    self->value = self->value + a3;
+    self->value = self->value + number;
   }
 
   else
   {
-    v6 = *&a4;
+    v6 = *&unit;
     [objc_opt_class() convertToPoints:self->unitType unit:self->value];
     v8 = v7;
-    [objc_opt_class() convertToPoints:v6 unit:a3];
+    [objc_opt_class() convertToPoints:v6 unit:number];
     self->value = v8 + v9;
     self->unitType = 1;
   }

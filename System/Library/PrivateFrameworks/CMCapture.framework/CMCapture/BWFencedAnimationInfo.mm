@@ -1,5 +1,5 @@
 @interface BWFencedAnimationInfo
-- (BWFencedAnimationInfo)initWithFencePortSendRight:(id)a3;
+- (BWFencedAnimationInfo)initWithFencePortSendRight:(id)right;
 - (void)dealloc;
 @end
 
@@ -12,16 +12,16 @@
   [(BWFencedAnimationInfo *)&v3 dealloc];
 }
 
-- (BWFencedAnimationInfo)initWithFencePortSendRight:(id)a3
+- (BWFencedAnimationInfo)initWithFencePortSendRight:(id)right
 {
   v7.receiver = self;
   v7.super_class = BWFencedAnimationInfo;
   v4 = [(BWFencedAnimationInfo *)&v7 init];
   if (v4)
   {
-    v5 = a3;
-    v4->_fencePortSendRight = v5;
-    if (v5)
+    rightCopy = right;
+    v4->_fencePortSendRight = rightCopy;
+    if (rightCopy)
     {
       v4->_fencePortGenerationCount = atomic_fetch_add_explicit(&sFencedAnimationFencePortGenerationCount, 1uLL, memory_order_relaxed) + 1;
     }

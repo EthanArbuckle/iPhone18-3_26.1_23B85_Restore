@@ -20,7 +20,7 @@
 - (id)CNLabeledValueFromABSMultiValueTranform
 {
   v2 = +[ABSConstantsMapping ABToCNLabelConstantsMapping];
-  v3 = [a1 multiValueTransformWithLabelMapping:v2 valueTransform:&__block_literal_global_7];
+  v3 = [self multiValueTransformWithLabelMapping:v2 valueTransform:&__block_literal_global_7];
 
   return v3;
 }
@@ -28,7 +28,7 @@
 - (id)ABSMultiValueLabeledValueFromCNLabeledValueTransform
 {
   v2 = +[ABSConstantsMapping CNToABLabelConstantsMapping];
-  v3 = [a1 multiValueTransformWithLabelMapping:v2 valueTransform:&__block_literal_global_44];
+  v3 = [self multiValueTransformWithLabelMapping:v2 valueTransform:&__block_literal_global_44];
 
   return v3;
 }

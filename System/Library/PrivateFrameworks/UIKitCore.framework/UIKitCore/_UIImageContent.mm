@@ -1,21 +1,21 @@
 @interface _UIImageContent
-+ (BOOL)content:(void *)a3 isEqualToContent:;
++ (BOOL)content:(void *)content isEqualToContent:;
 + (_UIImageContent)empty;
-+ (void)_cachePreparedContent:(void *)a3 forDisplayOfContent:;
-- (BOOL)_isSameSymbolImageContentExceptVariableValue:(id)a3;
-- (BOOL)addContentToDestination:(CGImageDestination *)a3 properties:(id)a4;
++ (void)_cachePreparedContent:(void *)content forDisplayOfContent:;
+- (BOOL)_isSameSymbolImageContentExceptVariableValue:(id)value;
+- (BOOL)addContentToDestination:(CGImageDestination *)destination properties:(id)properties;
 - (CGSize)CGPDFPageSize;
 - (CGSize)CGSVGDocumentSize;
 - (CGSize)size;
 - (CGSize)sizeInPixels;
 - (_UIImageContent)init;
-- (_UIImageContent)initWithScale:(double)a3;
+- (_UIImageContent)initWithScale:(double)scale;
 - (double)imageMaximumHeadroom;
 - (id)_existingPreparedContentForDisplay;
 - (id)debugDescription;
 - (id)debugQuickLookObject;
-- (id)renditionWithSize:(CGSize)a3 scale:(double)a4 renditionContext:(id)a5;
-- (void)_prepareForDrawingWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5;
+- (id)renditionWithSize:(CGSize)size scale:(double)scale renditionContext:(id)context;
+- (void)_prepareForDrawingWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context;
 @end
 
 @implementation _UIImageContent
@@ -45,39 +45,39 @@
 
 - (id)_existingPreparedContentForDisplay
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     os_unfair_lock_lock(&_MergedGlobals_51);
-    v1 = [qword_1ED4996C8 objectForKey:v1];
+    selfCopy = [qword_1ED4996C8 objectForKey:selfCopy];
     os_unfair_lock_unlock(&_MergedGlobals_51);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (_UIImageContent)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:87 description:@"You can't just init an _UIImageContent!"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:87 description:@"You can't just init an _UIImageContent!"];
 
   return 0;
 }
 
-- (_UIImageContent)initWithScale:(double)a3
+- (_UIImageContent)initWithScale:(double)scale
 {
   v6.receiver = self;
   v6.super_class = _UIImageContent;
   result = [(_UIImageContent *)&v6 init];
   if (result)
   {
-    v5 = 1.0;
-    if (a3 > 0.0)
+    scaleCopy = 1.0;
+    if (scale > 0.0)
     {
-      v5 = a3;
+      scaleCopy = scale;
     }
 
-    result->_scale = v5;
+    result->_scale = scaleCopy;
   }
 
   return result;
@@ -85,9 +85,9 @@
 
 - (double)imageMaximumHeadroom
 {
-  v2 = [(_UIImageContent *)self isHDR];
+  isHDR = [(_UIImageContent *)self isHDR];
   result = 1.0;
-  if (v2)
+  if (isHDR)
   {
     return 8.0;
   }
@@ -95,12 +95,12 @@
   return result;
 }
 
-- (BOOL)addContentToDestination:(CGImageDestination *)a3 properties:(id)a4
+- (BOOL)addContentToDestination:(CGImageDestination *)destination properties:(id)properties
 {
-  v6 = a4;
+  propertiesCopy = properties;
   if ([(_UIImageContent *)self canWriteToImageIO]&& (v7 = [(_UIImageContent *)self CGImage]) != 0)
   {
-    CGImageDestinationAddImage(a3, v7, v6);
+    CGImageDestinationAddImage(destination, v7, propertiesCopy);
     v8 = 1;
   }
 
@@ -112,23 +112,23 @@
   return v8;
 }
 
-+ (void)_cachePreparedContent:(void *)a3 forDisplayOfContent:
++ (void)_cachePreparedContent:(void *)content forDisplayOfContent:
 {
-  v8 = a3;
+  contentCopy = content;
   v4 = a2;
   objc_opt_self();
   os_unfair_lock_lock(&_MergedGlobals_51);
   v5 = qword_1ED4996C8;
   if (!qword_1ED4996C8)
   {
-    v6 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
     v7 = qword_1ED4996C8;
-    qword_1ED4996C8 = v6;
+    qword_1ED4996C8 = weakToWeakObjectsMapTable;
 
     v5 = qword_1ED4996C8;
   }
 
-  [v5 setObject:v4 forKey:v8];
+  [v5 setObject:v4 forKey:contentCopy];
   [qword_1ED4996C8 setObject:v4 forKey:v4];
 
   os_unfair_lock_unlock(&_MergedGlobals_51);
@@ -185,12 +185,12 @@
   return result;
 }
 
-+ (BOOL)content:(void *)a3 isEqualToContent:
++ (BOOL)content:(void *)content isEqualToContent:
 {
   v4 = a2;
-  v5 = a3;
+  contentCopy = content;
   objc_opt_self();
-  if (v4 == v5)
+  if (v4 == contentCopy)
   {
     v6 = 1;
   }
@@ -198,14 +198,14 @@
   else
   {
     v6 = 0;
-    if (v4 && v5)
+    if (v4 && contentCopy)
     {
       v7 = objc_opt_class();
       if (v7 == objc_opt_class())
       {
         [v4 scale];
         v9 = v8;
-        [v5 scale];
+        [contentCopy scale];
         v6 = v9 == v10;
       }
 
@@ -219,49 +219,49 @@
   return v6;
 }
 
-- (BOOL)_isSameSymbolImageContentExceptVariableValue:(id)a3
+- (BOOL)_isSameSymbolImageContentExceptVariableValue:(id)value
 {
-  v4 = a3;
-  v5 = [(_UIImageContent *)self vectorGlyph];
-  [v5 variableMinValue];
-  if (v6 != INFINITY || ([v5 variableMaxValue], v7 != INFINITY))
+  valueCopy = value;
+  vectorGlyph = [(_UIImageContent *)self vectorGlyph];
+  [vectorGlyph variableMinValue];
+  if (v6 != INFINITY || ([vectorGlyph variableMaxValue], v7 != INFINITY))
   {
-    v8 = [v5 copy];
+    v8 = [vectorGlyph copy];
 
     [v8 setVariableMinValue:INFINITY];
     [v8 setVariableMaxValue:INFINITY];
-    v5 = v8;
+    vectorGlyph = v8;
   }
 
-  v9 = [v4 vectorGlyph];
-  [v9 variableMinValue];
-  if (v10 != INFINITY || ([v9 variableMaxValue], v11 != INFINITY))
+  vectorGlyph2 = [valueCopy vectorGlyph];
+  [vectorGlyph2 variableMinValue];
+  if (v10 != INFINITY || ([vectorGlyph2 variableMaxValue], v11 != INFINITY))
   {
-    v12 = [v9 copy];
+    v12 = [vectorGlyph2 copy];
 
     [v12 setVariableMinValue:INFINITY];
     [v12 setVariableMaxValue:INFINITY];
-    v9 = v12;
+    vectorGlyph2 = v12;
   }
 
   v13 = 0;
-  if (v5 && v9)
+  if (vectorGlyph && vectorGlyph2)
   {
-    v13 = [v5 isEqual:v9];
+    v13 = [vectorGlyph isEqual:vectorGlyph2];
   }
 
   return v13;
 }
 
-- (id)renditionWithSize:(CGSize)a3 scale:(double)a4 renditionContext:(id)a5
+- (id)renditionWithSize:(CGSize)size scale:(double)scale renditionContext:(id)context
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a5;
-  if (a4 <= 0.0)
+  height = size.height;
+  width = size.width;
+  contextCopy = context;
+  if (scale <= 0.0)
   {
     [(_UIImageContent *)self scale];
-    a4 = v10;
+    scale = v10;
   }
 
   if (_UIImageDummyImageContentRendering())
@@ -271,11 +271,11 @@
     aBlock[2] = __60___UIImageContent_renditionWithSize_scale_renditionContext___block_invoke;
     aBlock[3] = &unk_1E7106CF0;
     aBlock[4] = self;
-    *&aBlock[5] = a4;
+    *&aBlock[5] = scale;
     *&aBlock[6] = width;
     *&aBlock[7] = height;
     v11 = _Block_copy(aBlock);
-    v12 = [(_UIImageContentRenditionContext *)v9 _renderingEffectsWithSize:height];
+    v12 = [(_UIImageContentRenditionContext *)contextCopy _renderingEffectsWithSize:height];
     v13 = 0;
     v14 = 0;
 LABEL_19:
@@ -290,7 +290,7 @@ LABEL_19:
     v32[2] = __60___UIImageContent_renditionWithSize_scale_renditionContext___block_invoke_38;
     v32[3] = &unk_1E7106E98;
     v34 = v38;
-    v35 = a4;
+    scaleCopy = scale;
     v36 = width;
     v37 = height;
     v11 = v11;
@@ -302,16 +302,16 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v12 = [(_UIImageContentRenditionContext *)v9 _renderingEffectsWithSize:height];
+  v12 = [(_UIImageContentRenditionContext *)contextCopy _renderingEffectsWithSize:height];
   [(_UIImageContent *)self size];
-  if (v16 == width && v15 == height && ([(_UIImageContent *)self scale], a4 == v17) && [(_UIImageContent *)self hasCGImage])
+  if (v16 == width && v15 == height && ([(_UIImageContent *)self scale], scale == v17) && [(_UIImageContent *)self hasCGImage])
   {
-    v18 = [(_UIImageContent *)self CGImage];
+    cGImage = [(_UIImageContent *)self CGImage];
     v62[0] = MEMORY[0x1E69E9820];
     v62[1] = 3221225472;
     v62[2] = __60___UIImageContent_renditionWithSize_scale_renditionContext___block_invoke_2;
     v62[3] = &__block_descriptor_40_e15___CGImage__8__0l;
-    v62[4] = v18;
+    v62[4] = cGImage;
     v19 = _Block_copy(v62);
     v61[0] = MEMORY[0x1E69E9820];
     v61[1] = 3221225472;
@@ -320,7 +320,7 @@ LABEL_19:
     v61[4] = self;
     *&v61[5] = width;
     *&v61[6] = height;
-    *&v61[7] = a4;
+    *&v61[7] = scale;
     v11 = _Block_copy(v61);
     v14 = 0;
   }
@@ -336,8 +336,8 @@ LABEL_19:
       v40[4] = self;
       v42 = width;
       v43 = height;
-      v44 = a4;
-      v41 = v9;
+      scaleCopy2 = scale;
+      v41 = contextCopy;
       v11 = _Block_copy(v40);
 
       v14 = 0;
@@ -356,7 +356,7 @@ LABEL_19:
     }
 
     v21 = v20;
-    if ([(_UIImageContentRenditionContext *)v9 _shouldResolveTemplateColor:v21])
+    if ([(_UIImageContentRenditionContext *)contextCopy _shouldResolveTemplateColor:v21])
     {
       [(UIBackgroundConfiguration *)v12 _setCustomView:?];
     }
@@ -365,12 +365,12 @@ LABEL_19:
     v54[1] = 3221225472;
     v54[2] = __60___UIImageContent_renditionWithSize_scale_renditionContext___block_invoke_4;
     v54[3] = &unk_1E7106D88;
-    v22 = v9;
+    v22 = contextCopy;
     v55 = v22;
-    v56 = self;
+    selfCopy = self;
     v58 = width;
     v59 = height;
-    v60 = a4;
+    scaleCopy3 = scale;
     v23 = v21;
     v57 = v23;
     v19 = _Block_copy(v54);
@@ -381,7 +381,7 @@ LABEL_19:
     v48[4] = self;
     v51 = width;
     v52 = height;
-    v53 = a4;
+    scaleCopy4 = scale;
     v24 = v22;
     v49 = v24;
     v25 = v23;
@@ -406,27 +406,27 @@ LABEL_19:
 
 LABEL_20:
   v28 = [_UIImageContentProvider providerWithDrawingProvider:v11 CGImageProvider:v19 rbSymbolConfigurationProvider:v14];
-  if (!v9 || (v27 & 1) != 0)
+  if (!contextCopy || (v27 & 1) != 0)
   {
-    v29 = [_UIImageContentRendition renditionWithContentProvider:v28];
+    height = [_UIImageContentRendition renditionWithContentProvider:v28];
   }
 
   else
   {
-    v29 = [(_UIImageContentRenditionContext *)v9 _renditionWithContentProvider:v28 effects:v12 size:width, height];
+    height = [(_UIImageContentRenditionContext *)contextCopy _renditionWithContentProvider:v28 effects:v12 size:width, height];
   }
 
-  v30 = v29;
+  v30 = height;
 
   return v30;
 }
 
-- (void)_prepareForDrawingWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5
+- (void)_prepareForDrawingWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context
 {
-  [(_UIImageContent *)self scale:a3.width];
-  v8 = a4 / v7;
+  [(_UIImageContent *)self scale:size.width];
+  v8 = scale / v7;
 
-  CGContextScaleCTM(a5, v8, v8);
+  CGContextScaleCTM(context, v8, v8);
 }
 
 - (id)debugDescription

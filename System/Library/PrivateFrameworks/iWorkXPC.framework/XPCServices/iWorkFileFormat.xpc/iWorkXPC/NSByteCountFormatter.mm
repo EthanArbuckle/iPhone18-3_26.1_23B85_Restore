@@ -1,12 +1,12 @@
 @interface NSByteCountFormatter
-+ (id)tsu_stringWithNonBreakingSpacesFromByteCount:(int64_t)a3 countStyle:(int64_t)a4;
++ (id)tsu_stringWithNonBreakingSpacesFromByteCount:(int64_t)count countStyle:(int64_t)style;
 @end
 
 @implementation NSByteCountFormatter
 
-+ (id)tsu_stringWithNonBreakingSpacesFromByteCount:(int64_t)a3 countStyle:(int64_t)a4
++ (id)tsu_stringWithNonBreakingSpacesFromByteCount:(int64_t)count countStyle:(int64_t)style
 {
-  v4 = [NSByteCountFormatter stringFromByteCount:a3 countStyle:a4];
+  v4 = [NSByteCountFormatter stringFromByteCount:count countStyle:style];
   v5 = [v4 stringByReplacingOccurrencesOfString:@" " withString:@" "];
 
   return v5;

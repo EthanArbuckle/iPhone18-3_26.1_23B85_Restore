@@ -1,13 +1,13 @@
 @interface AVSecondScreen
-- (AVSecondScreen)initWithScene:(id)a3;
+- (AVSecondScreen)initWithScene:(id)scene;
 - (BOOL)_isWindowSceneAvailable;
 - (CGRect)sceneBounds;
 - (UIScreen)screen;
 - (UIWindowScene)windowScene;
 - (void)_updatePreferredDisplayCriteria;
-- (void)connectWithSecondScreenConnection:(id)a3;
+- (void)connectWithSecondScreenConnection:(id)connection;
 - (void)dealloc;
-- (void)setState:(int64_t)a3;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation AVSecondScreen
@@ -28,19 +28,19 @@
 
 - (BOOL)_isWindowSceneAvailable
 {
-  v3 = [(AVSecondScreen *)self windowScene];
-  v4 = [(AVSecondScreen *)self window];
-  v5 = [v3 avkit_screenHasWindowsExcludingWindow:v4];
+  windowScene = [(AVSecondScreen *)self windowScene];
+  window = [(AVSecondScreen *)self window];
+  v5 = [windowScene avkit_screenHasWindowsExcludingWindow:window];
 
   return v5 ^ 1;
 }
 
 - (void)_updatePreferredDisplayCriteria
 {
-  v3 = [(AVSecondScreen *)self secondScreenConnection];
-  v8 = [v3 preferredDisplayCriteria];
+  secondScreenConnection = [(AVSecondScreen *)self secondScreenConnection];
+  preferredDisplayCriteria = [secondScreenConnection preferredDisplayCriteria];
 
-  v4 = [v8 videoDynamicRange] - 1;
+  v4 = [preferredDisplayCriteria videoDynamicRange] - 1;
   if (v4 > 4)
   {
     v5 = -1;
@@ -51,16 +51,16 @@
     v5 = qword_18B6EC5D8[v4];
   }
 
-  v6 = [(AVSecondScreen *)self windowScene];
-  [v8 refreshRate];
-  [v6 avkit_setPreferredRefreshRate:v5 HDRMode:v7];
+  windowScene = [(AVSecondScreen *)self windowScene];
+  [preferredDisplayCriteria refreshRate];
+  [windowScene avkit_setPreferredRefreshRate:v5 HDRMode:v7];
 }
 
 - (CGRect)sceneBounds
 {
-  v2 = [(AVSecondScreen *)self windowScene];
-  v3 = [v2 coordinateSpace];
-  [v3 bounds];
+  windowScene = [(AVSecondScreen *)self windowScene];
+  coordinateSpace = [windowScene coordinateSpace];
+  [coordinateSpace bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -77,17 +77,17 @@
   return result;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    v5 = [(AVSecondScreen *)self isAvailable];
-    v6 = [(AVSecondScreen *)self window];
-    if (v6)
+    isAvailable = [(AVSecondScreen *)self isAvailable];
+    window = [(AVSecondScreen *)self window];
+    if (window)
     {
-      v7 = [(AVSecondScreen *)self window];
-      v8 = [v7 isHidden] ^ 1;
+      window2 = [(AVSecondScreen *)self window];
+      v8 = [window2 isHidden] ^ 1;
     }
 
     else
@@ -109,14 +109,14 @@
         v11 = off_1E7207B20[state];
       }
 
-      if (a3 > 2)
+      if (state > 2)
       {
         v12 = @"Invalid";
       }
 
       else
       {
-        v12 = off_1E7207B20[a3];
+        v12 = off_1E7207B20[state];
       }
 
       v14 = 136315650;
@@ -128,28 +128,28 @@
       _os_log_impl(&dword_18B49C000, v10, OS_LOG_TYPE_DEFAULT, "%s %@ -> %@", &v14, 0x20u);
     }
 
-    self->_state = a3;
-    switch(a3)
+    self->_state = state;
+    switch(state)
     {
       case 2:
-        v13 = [(AVSecondScreen *)self secondScreenConnection];
-        [v13 connectWithScreen:self active:1];
+        secondScreenConnection = [(AVSecondScreen *)self secondScreenConnection];
+        [secondScreenConnection connectWithScreen:self active:1];
         goto LABEL_21;
       case 1:
-        if (v5)
+        if (isAvailable)
         {
           return;
         }
 
-        v13 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v13 postNotificationName:@"AVSecondScreenConnectionDidBecomePossibleNotification" object:self];
+        secondScreenConnection = [MEMORY[0x1E696AD88] defaultCenter];
+        [secondScreenConnection postNotificationName:@"AVSecondScreenConnectionDidBecomePossibleNotification" object:self];
         goto LABEL_21;
       case 0:
         [(AVSecondScreen *)self connectWithSecondScreenConnection:0];
         if (v8)
         {
-          v13 = [(AVSecondScreen *)self windowScene];
-          [v13 avkit_resetPreferredModeSwitchRequest];
+          secondScreenConnection = [(AVSecondScreen *)self windowScene];
+          [secondScreenConnection avkit_resetPreferredModeSwitchRequest];
 LABEL_21:
         }
 
@@ -158,13 +158,13 @@ LABEL_21:
   }
 }
 
-- (void)connectWithSecondScreenConnection:(id)a3
+- (void)connectWithSecondScreenConnection:(id)connection
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AVSecondScreen *)self secondScreenConnection];
+  connectionCopy = connection;
+  secondScreenConnection = [(AVSecondScreen *)self secondScreenConnection];
 
-  if (v5 != v4)
+  if (secondScreenConnection != connectionCopy)
   {
     v6 = _AVLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -172,17 +172,17 @@ LABEL_21:
       v26 = 136315394;
       v27 = "[AVSecondScreen connectWithSecondScreenConnection:]";
       v28 = 2112;
-      v29 = v4;
+      v29 = connectionCopy;
       _os_log_impl(&dword_18B49C000, v6, OS_LOG_TYPE_DEFAULT, "%s %@", &v26, 0x16u);
     }
 
-    v7 = [(AVSecondScreen *)self secondScreenConnection];
-    [v7 connectWithScreen:0 active:0];
-    v8 = [v7 debugAssistant];
-    [v8 setScene:0];
+    secondScreenConnection2 = [(AVSecondScreen *)self secondScreenConnection];
+    [secondScreenConnection2 connectWithScreen:0 active:0];
+    debugAssistant = [secondScreenConnection2 debugAssistant];
+    [debugAssistant setScene:0];
 
-    [(AVSecondScreen *)self setSecondScreenConnection:v4];
-    if (v4)
+    [(AVSecondScreen *)self setSecondScreenConnection:connectionCopy];
+    if (connectionCopy)
     {
       if (![(AVSecondScreen *)self isAvailable])
       {
@@ -194,55 +194,55 @@ LABEL_21:
         }
       }
 
-      v10 = [v4 debugAssistant];
-      v11 = [(AVSecondScreen *)self windowScene];
-      [v10 setScene:v11];
+      debugAssistant2 = [connectionCopy debugAssistant];
+      windowScene = [(AVSecondScreen *)self windowScene];
+      [debugAssistant2 setScene:windowScene];
 
       [(AVSecondScreen *)self _updatePreferredDisplayCriteria];
-      v12 = [(AVSecondScreen *)self window];
+      window = [(AVSecondScreen *)self window];
 
-      if (!v12)
+      if (!window)
       {
         v13 = objc_alloc(MEMORY[0x1E69DD2E8]);
-        v14 = [(AVSecondScreen *)self windowScene];
-        v15 = [v13 initWithWindowScene:v14];
+        windowScene2 = [(AVSecondScreen *)self windowScene];
+        v15 = [v13 initWithWindowScene:windowScene2];
         [(AVSecondScreen *)self setWindow:v15];
 
         v16 = _AVLog();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
-          v17 = [(AVSecondScreen *)self window];
-          v18 = [(AVSecondScreen *)self window];
-          v19 = [v18 screen];
+          window2 = [(AVSecondScreen *)self window];
+          window3 = [(AVSecondScreen *)self window];
+          screen = [window3 screen];
           v26 = 136315650;
           v27 = "[AVSecondScreen connectWithSecondScreenConnection:]";
           v28 = 2048;
-          v29 = v17;
+          v29 = window2;
           v30 = 2112;
-          v31 = v19;
+          v31 = screen;
           _os_log_impl(&dword_18B49C000, v16, OS_LOG_TYPE_DEFAULT, "%s Created second window %p on %@", &v26, 0x20u);
         }
       }
 
-      v20 = [(AVSecondScreen *)self window];
-      v21 = [v4 contentViewController];
-      [v20 setRootViewController:v21];
+      window4 = [(AVSecondScreen *)self window];
+      contentViewController = [connectionCopy contentViewController];
+      [window4 setRootViewController:contentViewController];
 
-      [v4 connectWithScreen:self active:1];
-      v22 = [(AVSecondScreen *)self window];
-      [v22 setHidden:0];
+      [connectionCopy connectWithScreen:self active:1];
+      window5 = [(AVSecondScreen *)self window];
+      [window5 setHidden:0];
     }
 
     else
     {
-      v23 = [(AVSecondScreen *)self window];
-      [v23 setHidden:1];
+      window6 = [(AVSecondScreen *)self window];
+      [window6 setHidden:1];
 
-      v24 = [(AVSecondScreen *)self window];
-      [v24 setRootViewController:0];
+      window7 = [(AVSecondScreen *)self window];
+      [window7 setRootViewController:0];
 
-      v25 = [(AVSecondScreen *)self window];
-      [v25 setWindowScene:0];
+      window8 = [(AVSecondScreen *)self window];
+      [window8 setWindowScene:0];
 
       [(AVSecondScreen *)self setWindow:0];
     }
@@ -252,8 +252,8 @@ LABEL_21:
 - (void)dealloc
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(AVSecondScreen *)self observationController];
-  [v3 stopAllObservation];
+  observationController = [(AVSecondScreen *)self observationController];
+  [observationController stopAllObservation];
 
   [(AVSecondScreen *)self setState:0];
   v4 = _AVLog();
@@ -271,24 +271,24 @@ LABEL_21:
   [(AVSecondScreen *)&v5 dealloc];
 }
 
-- (AVSecondScreen)initWithScene:(id)a3
+- (AVSecondScreen)initWithScene:(id)scene
 {
-  v4 = a3;
-  v5 = [v4 avkit_asWindowScene];
-  v6 = [v4 avkit_screenType];
+  sceneCopy = scene;
+  avkit_asWindowScene = [sceneCopy avkit_asWindowScene];
+  avkit_screenType = [sceneCopy avkit_screenType];
 
-  if ((v6 - 5) >= 0xFFFFFFFFFFFFFFFELL)
+  if ((avkit_screenType - 5) >= 0xFFFFFFFFFFFFFFFELL)
   {
     v20.receiver = self;
     v20.super_class = AVSecondScreen;
     v8 = [(AVSecondScreen *)&v20 init];
     if (v8)
     {
-      v9 = [v5 screen];
-      objc_storeWeak(&v8->_windowScene, v5);
-      objc_storeWeak(&v8->_screen, v9);
-      v8->_TVOutScreen = v6 == 3;
-      if ([v5 activationState] <= 1 && (objc_msgSend(v5, "avkit_screenHasWindowsExcludingWindow:", 0) & 1) == 0)
+      screen = [avkit_asWindowScene screen];
+      objc_storeWeak(&v8->_windowScene, avkit_asWindowScene);
+      objc_storeWeak(&v8->_screen, screen);
+      v8->_TVOutScreen = avkit_screenType == 3;
+      if ([avkit_asWindowScene activationState] <= 1 && (objc_msgSend(avkit_asWindowScene, "avkit_screenHasWindowsExcludingWindow:", 0) & 1) == 0)
       {
         v8->_state = 1;
       }
@@ -297,38 +297,38 @@ LABEL_21:
       observationController = v8->_observationController;
       v8->_observationController = v10;
 
-      v12 = [(AVSecondScreen *)v8 observationController];
-      [v12 startObservingNotificationForName:*MEMORY[0x1E69DE338] object:v5 notificationCenter:0 observationHandler:&__block_literal_global_6825];
+      observationController = [(AVSecondScreen *)v8 observationController];
+      [observationController startObservingNotificationForName:*MEMORY[0x1E69DE338] object:avkit_asWindowScene notificationCenter:0 observationHandler:&__block_literal_global_6825];
 
-      v13 = [(AVSecondScreen *)v8 observationController];
-      [v13 startObservingNotificationForName:*MEMORY[0x1E69DE358] object:v5 notificationCenter:0 observationHandler:&__block_literal_global_10_6826];
+      observationController2 = [(AVSecondScreen *)v8 observationController];
+      [observationController2 startObservingNotificationForName:*MEMORY[0x1E69DE358] object:avkit_asWindowScene notificationCenter:0 observationHandler:&__block_literal_global_10_6826];
 
-      v14 = [(AVSecondScreen *)v8 observationController];
-      [v14 startObservingNotificationForName:*MEMORY[0x1E69DE360] object:v5 notificationCenter:0 observationHandler:&__block_literal_global_13_6827];
+      observationController3 = [(AVSecondScreen *)v8 observationController];
+      [observationController3 startObservingNotificationForName:*MEMORY[0x1E69DE360] object:avkit_asWindowScene notificationCenter:0 observationHandler:&__block_literal_global_13_6827];
 
-      v15 = [(AVSecondScreen *)v8 observationController];
-      [v15 startObservingNotificationForName:*MEMORY[0x1E69DE348] object:v5 notificationCenter:0 observationHandler:&__block_literal_global_16_6828];
+      observationController4 = [(AVSecondScreen *)v8 observationController];
+      [observationController4 startObservingNotificationForName:*MEMORY[0x1E69DE348] object:avkit_asWindowScene notificationCenter:0 observationHandler:&__block_literal_global_16_6828];
 
-      v16 = [(AVSecondScreen *)v8 observationController];
-      [v16 startObservingNotificationForName:*MEMORY[0x1E69DE340] object:v5 notificationCenter:0 observationHandler:&__block_literal_global_19_6829];
+      observationController5 = [(AVSecondScreen *)v8 observationController];
+      [observationController5 startObservingNotificationForName:*MEMORY[0x1E69DE340] object:avkit_asWindowScene notificationCenter:0 observationHandler:&__block_literal_global_19_6829];
 
-      v17 = [(AVSecondScreen *)v8 observationController];
-      [v17 startObservingNotificationForName:*MEMORY[0x1E69DE7C0] object:0 notificationCenter:0 observationHandler:&__block_literal_global_24_6830];
+      observationController6 = [(AVSecondScreen *)v8 observationController];
+      [observationController6 startObservingNotificationForName:*MEMORY[0x1E69DE7C0] object:0 notificationCenter:0 observationHandler:&__block_literal_global_24_6830];
 
-      v18 = [(AVSecondScreen *)v8 observationController];
-      [v18 startObservingNotificationForName:@"AVSecondScreenConnectionPreferredDisplayCriteriaDidChangeNotification" object:0 notificationCenter:0 observationHandler:&__block_literal_global_27_6831];
+      observationController7 = [(AVSecondScreen *)v8 observationController];
+      [observationController7 startObservingNotificationForName:@"AVSecondScreenConnectionPreferredDisplayCriteriaDidChangeNotification" object:0 notificationCenter:0 observationHandler:&__block_literal_global_27_6831];
     }
 
     self = v8;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 void __32__AVSecondScreen_initWithScene___block_invoke_25(uint64_t a1, void *a2, uint64_t a3, void *a4)

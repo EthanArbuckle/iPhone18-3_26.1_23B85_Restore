@@ -1,27 +1,27 @@
 @interface IFTSchemaIFTRequestContentSpeechContent
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTRequestContentSpeechContent)initWithDictionary:(id)a3;
-- (IFTSchemaIFTRequestContentSpeechContent)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTRequestContentSpeechContent)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTRequestContentSpeechContent)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addCandidates:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCandidates:(id)candidates;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTRequestContentSpeechContent
 
-- (IFTSchemaIFTRequestContentSpeechContent)initWithDictionary:(id)a3
+- (IFTSchemaIFTRequestContentSpeechContent)initWithDictionary:(id)dictionary
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = IFTSchemaIFTRequestContentSpeechContent;
   v5 = [(IFTSchemaIFTRequestContentSpeechContent *)&v21 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"candidates"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"candidates"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,30 +71,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTRequestContentSpeechContent)initWithJSON:(id)a3
+- (IFTSchemaIFTRequestContentSpeechContent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTRequestContentSpeechContent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTRequestContentSpeechContent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTRequestContentSpeechContent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -108,10 +108,10 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_candidates count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
@@ -131,16 +131,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -150,26 +150,26 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"candidates"];
+    [dictionary setObject:array forKeyedSubscript:@"candidates"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v13];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v13];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(IFTSchemaIFTRequestContentSpeechContent *)self candidates];
-    v6 = [v4 candidates];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    candidates = [(IFTSchemaIFTRequestContentSpeechContent *)self candidates];
+    candidates2 = [equalCopy candidates];
+    v7 = candidates2;
+    if ((candidates != 0) != (candidates2 == 0))
     {
-      v8 = [(IFTSchemaIFTRequestContentSpeechContent *)self candidates];
-      if (!v8)
+      candidates3 = [(IFTSchemaIFTRequestContentSpeechContent *)self candidates];
+      if (!candidates3)
       {
 
 LABEL_10:
@@ -177,10 +177,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(IFTSchemaIFTRequestContentSpeechContent *)self candidates];
-      v11 = [v4 candidates];
-      v12 = [v10 isEqual:v11];
+      v9 = candidates3;
+      candidates4 = [(IFTSchemaIFTRequestContentSpeechContent *)self candidates];
+      candidates5 = [equalCopy candidates];
+      v12 = [candidates4 isEqual:candidates5];
 
       if (v12)
       {
@@ -199,10 +199,10 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -235,32 +235,32 @@ LABEL_8:
   }
 }
 
-- (void)addCandidates:(id)a3
+- (void)addCandidates:(id)candidates
 {
-  v4 = a3;
+  candidatesCopy = candidates;
   candidates = self->_candidates;
-  v8 = v4;
+  v8 = candidatesCopy;
   if (!candidates)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_candidates;
-    self->_candidates = v6;
+    self->_candidates = array;
 
-    v4 = v8;
+    candidatesCopy = v8;
     candidates = self->_candidates;
   }
 
-  [(NSArray *)candidates addObject:v4];
+  [(NSArray *)candidates addObject:candidatesCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = IFTSchemaIFTRequestContentSpeechContent;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(IFTSchemaIFTRequestContentSpeechContent *)self candidates:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(IFTSchemaIFTRequestContentSpeechContent *)self setCandidates:v7];
 

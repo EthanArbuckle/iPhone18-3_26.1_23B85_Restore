@@ -1,30 +1,30 @@
 @interface PSContactsPolicyController
-- (id)appSpecifierWithName:(id)a3 bundleID:(id)a4;
-- (id)appSpecifierWithName:(id)a3 bundleID:(id)a4 showContactsAccess:(BOOL)a5 showPickerUsage:(BOOL)a6;
-- (id)contactsStatus:(id)a3;
-- (void)_setContactsTCCStatus:(id)a3 specifier:(id)a4;
-- (void)setTCCForService:(__CFString *)a3 appIdentifier:(id)a4 value:(int)a5;
+- (id)appSpecifierWithName:(id)name bundleID:(id)d;
+- (id)appSpecifierWithName:(id)name bundleID:(id)d showContactsAccess:(BOOL)access showPickerUsage:(BOOL)usage;
+- (id)contactsStatus:(id)status;
+- (void)_setContactsTCCStatus:(id)status specifier:(id)specifier;
+- (void)setTCCForService:(__CFString *)service appIdentifier:(id)identifier value:(int)value;
 - (void)updateContactsAuthorizationStatus;
 @end
 
 @implementation PSContactsPolicyController
 
-- (void)setTCCForService:(__CFString *)a3 appIdentifier:(id)a4 value:(int)a5
+- (void)setTCCForService:(__CFString *)service appIdentifier:(id)identifier value:(int)value
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  identifierCopy = identifier;
   v9 = _PSLoggingFacility();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (a5 != 4)
+  if (value != 4)
   {
     if (v10)
     {
       *buf = 138412802;
-      v28 = a3;
+      serviceCopy2 = service;
       v29 = 2112;
-      v30 = v8;
+      v30 = identifierCopy;
       v31 = 1024;
-      v32 = a5;
+      valueCopy = value;
       _os_log_impl(&dword_18B008000, v9, OS_LOG_TYPE_DEFAULT, "Setting TCC auth for service: %@ appIdentifier:%@, accessLevel:%d", buf, 0x1Cu);
     }
 
@@ -33,14 +33,14 @@
       [PSContactsPolicyController setTCCForService:appIdentifier:value:];
     }
 
-    [(__CFString *)v8 cStringUsingEncoding:4];
+    [(__CFString *)identifierCopy cStringUsingEncoding:4];
     v9 = tcc_identity_create();
     v11 = tcc_service_singleton_for_CF_name();
-    switch(a5)
+    switch(value)
     {
       case 1:
-        v17 = [(PSContactsPolicyController *)self contactsLimitedAccessAppIDs];
-        v18 = [v17 containsObject:v8];
+        contactsLimitedAccessAppIDs = [(PSContactsPolicyController *)self contactsLimitedAccessAppIDs];
+        v18 = [contactsLimitedAccessAppIDs containsObject:identifierCopy];
 
         if ((v18 & 1) == 0)
         {
@@ -51,8 +51,8 @@
       case 3:
         goto LABEL_20;
       case 2:
-        v12 = [(PSContactsPolicyController *)self contactsFullAccessAllowedAppIDs];
-        v13 = [v12 containsObject:v8];
+        contactsFullAccessAllowedAppIDs = [(PSContactsPolicyController *)self contactsFullAccessAllowedAppIDs];
+        v13 = [contactsFullAccessAllowedAppIDs containsObject:identifierCopy];
 
         if ((v13 & 1) == 0)
         {
@@ -62,15 +62,15 @@
             v22 = 3221225472;
             v23 = __67__PSContactsPolicyController_setTCCForService_appIdentifier_value___block_invoke_2;
             v24 = &unk_1E71DBEC0;
-            v25 = self;
-            v14 = v8;
+            selfCopy = self;
+            v14 = identifierCopy;
             v26 = v14;
             v15 = _Block_copy(&v21);
             v16 = _PSLoggingFacility();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              v28 = a3;
+              serviceCopy2 = service;
               v29 = 2112;
               v30 = v14;
               _os_log_impl(&dword_18B008000, v16, OS_LOG_TYPE_DEFAULT, "Setting %@ auth for app %@ to full, after prompt", buf, 0x16u);
@@ -88,8 +88,8 @@ LABEL_21:
 
         break;
       default:
-        v19 = [(PSContactsPolicyController *)self contactsDeniedAppIDs];
-        v20 = [v19 containsObject:v8];
+        contactsDeniedAppIDs = [(PSContactsPolicyController *)self contactsDeniedAppIDs];
+        v20 = [contactsDeniedAppIDs containsObject:identifierCopy];
 
         if ((v20 & 1) == 0)
         {
@@ -105,7 +105,7 @@ LABEL_21:
   if (v10)
   {
     *buf = 138412290;
-    v28 = v8;
+    serviceCopy2 = identifierCopy;
     _os_log_impl(&dword_18B008000, v9, OS_LOG_TYPE_DEFAULT, "Access level is picker only; Skipping for app: %@", buf, 0xCu);
   }
 
@@ -152,13 +152,13 @@ void __67__PSContactsPolicyController_setTCCForService_appIdentifier_value___blo
   [(PSContactsPolicyController *)self setPickerUsageAppIDs:v7];
 }
 
-- (id)contactsStatus:(id)a3
+- (id)contactsStatus:(id)status
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [a3 propertyForKey:@"appBundleID"];
+  v4 = [status propertyForKey:@"appBundleID"];
   [(PSContactsPolicyController *)self updateContactsAuthorizationStatus];
-  v5 = [(PSContactsPolicyController *)self contactsFullAccessAllowedAppIDs];
-  v6 = [v5 containsObject:v4];
+  contactsFullAccessAllowedAppIDs = [(PSContactsPolicyController *)self contactsFullAccessAllowedAppIDs];
+  v6 = [contactsFullAccessAllowedAppIDs containsObject:v4];
 
   if (v6)
   {
@@ -174,8 +174,8 @@ void __67__PSContactsPolicyController_setTCCForService_appIdentifier_value___blo
     goto LABEL_19;
   }
 
-  v9 = [(PSContactsPolicyController *)self contactsLimitedAccessAppIDs];
-  v10 = [v9 containsObject:v4];
+  contactsLimitedAccessAppIDs = [(PSContactsPolicyController *)self contactsLimitedAccessAppIDs];
+  v10 = [contactsLimitedAccessAppIDs containsObject:v4];
 
   if (v10)
   {
@@ -191,8 +191,8 @@ void __67__PSContactsPolicyController_setTCCForService_appIdentifier_value___blo
     goto LABEL_19;
   }
 
-  v11 = [(PSContactsPolicyController *)self contactsDeniedAppIDs];
-  v12 = [v11 containsObject:v4];
+  contactsDeniedAppIDs = [(PSContactsPolicyController *)self contactsDeniedAppIDs];
+  v12 = [contactsDeniedAppIDs containsObject:v4];
 
   if (v12)
   {
@@ -209,8 +209,8 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v13 = [(PSContactsPolicyController *)self pickerUsageAppIDs];
-  v14 = [v13 containsObject:v4];
+  pickerUsageAppIDs = [(PSContactsPolicyController *)self pickerUsageAppIDs];
+  v14 = [pickerUsageAppIDs containsObject:v4];
 
   v15 = _PSLoggingFacility();
   v7 = v15;
@@ -237,21 +237,21 @@ LABEL_19:
   return v8;
 }
 
-- (void)_setContactsTCCStatus:(id)a3 specifier:(id)a4
+- (void)_setContactsTCCStatus:(id)status specifier:(id)specifier
 {
   *&v16[13] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a4 propertyForKey:@"appBundleID"];
-  v8 = [v6 intValue];
+  statusCopy = status;
+  v7 = [specifier propertyForKey:@"appBundleID"];
+  intValue = [statusCopy intValue];
 
-  if (v8 > 4)
+  if (intValue > 4)
   {
     v9 = @"unsupported";
   }
 
   else
   {
-    v9 = off_1E71DBF38[v8];
+    v9 = off_1E71DBF38[intValue];
   }
 
   v10 = _PSLoggingFacility();
@@ -260,7 +260,7 @@ LABEL_19:
     v13 = 138412802;
     v14 = v7;
     v15 = 1024;
-    *v16 = v8;
+    *v16 = intValue;
     v16[2] = 2112;
     *&v16[3] = v9;
     _os_log_impl(&dword_18B008000, v10, OS_LOG_TYPE_DEFAULT, "Selected contacts auth for app %@: %d(%@)", &v13, 0x1Cu);
@@ -268,14 +268,14 @@ LABEL_19:
 
   v11 = _PSLoggingFacility();
   v12 = v11;
-  if (v8 > 2)
+  if (intValue > 2)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
     {
       v13 = 138412802;
       v14 = v7;
       v15 = 1024;
-      *v16 = v8;
+      *v16 = intValue;
       v16[2] = 2112;
       *&v16[3] = v9;
       _os_log_fault_impl(&dword_18B008000, v12, OS_LOG_TYPE_FAULT, "Unexpected value set for contacts tcc access for app %@: %d(%@)", &v13, 0x1Cu);
@@ -293,14 +293,14 @@ LABEL_19:
       _os_log_impl(&dword_18B008000, v12, OS_LOG_TYPE_DEFAULT, "Setting contacts auth for app %@ to %@", &v13, 0x16u);
     }
 
-    [(PSContactsPolicyController *)self setTCCForService:*MEMORY[0x1E69D5500] appIdentifier:v7 value:v8];
+    [(PSContactsPolicyController *)self setTCCForService:*MEMORY[0x1E69D5500] appIdentifier:v7 value:intValue];
   }
 }
 
-- (id)appSpecifierWithName:(id)a3 bundleID:(id)a4
+- (id)appSpecifierWithName:(id)name bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  dCopy = d;
   v8 = *MEMORY[0x1E69D5500];
   v20 = 0;
   v21 = 0;
@@ -313,63 +313,63 @@ LABEL_19:
   v13 = [v12 setByAddingObjectsFromSet:v11];
 
   v14 = bundleIdentifiersWithPickerAccess();
-  v15 = [v13 containsObject:v7];
-  v16 = [v14 containsObject:v7];
+  v15 = [v13 containsObject:dCopy];
+  v16 = [v14 containsObject:dCopy];
   if ((v15 & 1) != 0 || (v17 = 0, v16))
   {
-    v17 = [(PSContactsPolicyController *)self appSpecifierWithName:v6 bundleID:v7 showContactsAccess:v15 showPickerUsage:v16];
+    v17 = [(PSContactsPolicyController *)self appSpecifierWithName:nameCopy bundleID:dCopy showContactsAccess:v15 showPickerUsage:v16];
   }
 
   return v17;
 }
 
-- (id)appSpecifierWithName:(id)a3 bundleID:(id)a4 showContactsAccess:(BOOL)a5 showPickerUsage:(BOOL)a6
+- (id)appSpecifierWithName:(id)name bundleID:(id)d showContactsAccess:(BOOL)access showPickerUsage:(BOOL)usage
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [PSSpecifier preferenceSpecifierNamed:v11 target:self set:sel__setContactsTCCStatus_specifier_ get:sel_contactsStatus_ detail:objc_opt_class() cell:2 edit:0];
+  usageCopy = usage;
+  accessCopy = access;
+  dCopy = d;
+  nameCopy = name;
+  v12 = [PSSpecifier preferenceSpecifierNamed:nameCopy target:self set:sel__setContactsTCCStatus_specifier_ get:sel_contactsStatus_ detail:objc_opt_class() cell:2 edit:0];
 
-  v13 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v10 allowPlaceholder:1 error:0];
-  [v12 setIdentifier:v10];
-  [v12 setProperty:v10 forKey:@"appBundleID"];
+  v13 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:dCopy allowPlaceholder:1 error:0];
+  [v12 setIdentifier:dCopy];
+  [v12 setProperty:dCopy forKey:@"appBundleID"];
 
-  v14 = [v13 localizedName];
-  [v12 setProperty:v14 forKey:@"appLocalizedDisplayName"];
+  localizedName = [v13 localizedName];
+  [v12 setProperty:localizedName forKey:@"appLocalizedDisplayName"];
 
   v15 = PS_LocalizedStringForSystemPolicy(@"CONTACTS_AUTH_HEADER");
   [v12 setProperty:v15 forKey:@"staticHeaderText"];
 
-  v16 = [MEMORY[0x1E695DF70] array];
-  v17 = [MEMORY[0x1E695DF70] array];
-  if (v7)
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  if (accessCopy)
   {
     v18 = PS_LocalizedStringForSystemPolicy(@"CONTACTS_NO_ACCESS_AUTHORIZATION");
-    [v16 addObject:v18];
+    [array addObject:v18];
 
-    [v17 addObject:&unk_1EFE65A30];
+    [array2 addObject:&unk_1EFE65A30];
     [v12 setProperty:MEMORY[0x1E695E118] forKey:@"hasTCCOptions"];
     v19 = PS_LocalizedStringForSystemPolicy(@"CONTACTS_LIMITED_ACCESS_AUTHORIZATION");
-    [v16 addObject:v19];
+    [array addObject:v19];
 
-    [v17 addObject:&unk_1EFE65A00];
+    [array2 addObject:&unk_1EFE65A00];
     v20 = PS_LocalizedStringForSystemPolicy(@"CONTACTS_FULL_ACCESS_AUTHORIZATION");
-    [v16 addObject:v20];
+    [array addObject:v20];
 
-    [v17 addObject:&unk_1EFE65A18];
+    [array2 addObject:&unk_1EFE65A18];
   }
 
-  if (v6)
+  if (usageCopy)
   {
     v21 = PS_LocalizedStringForSystemPolicy(@"CONTACTS_PICKER_ONLY_AUTHORIZATION");
-    [v16 addObject:v21];
+    [array addObject:v21];
 
-    [v17 addObject:&unk_1EFE65A48];
+    [array2 addObject:&unk_1EFE65A48];
     [v12 setProperty:MEMORY[0x1E695E118] forKey:@"hasPickerInfo"];
   }
 
-  [v12 setValues:v17 titles:v16];
+  [v12 setValues:array2 titles:array];
 
   return v12;
 }

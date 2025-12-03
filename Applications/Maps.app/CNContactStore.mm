@@ -1,6 +1,6 @@
 @interface CNContactStore
 + (BOOL)_maps_isAuthorized;
-+ (void)promptForContactsAccessIfNeededBeforePerforming:(id)a3;
++ (void)promptForContactsAccessIfNeededBeforePerforming:(id)performing;
 @end
 
 @implementation CNContactStore
@@ -21,15 +21,15 @@
   return v3;
 }
 
-+ (void)promptForContactsAccessIfNeededBeforePerforming:(id)a3
++ (void)promptForContactsAccessIfNeededBeforePerforming:(id)performing
 {
-  v4 = a3;
+  performingCopy = performing;
   v5 = [CNContactStore authorizationStatusForEntityType:0];
   if (v5 > CNAuthorizationStatusDenied)
   {
     if ((v5 - 3) < 2)
     {
-      v4[2](v4, 1);
+      performingCopy[2](performingCopy, 1);
     }
   }
 
@@ -37,22 +37,22 @@
   {
     if (v5 == CNAuthorizationStatusRestricted)
     {
-      v4[2](v4, 0);
+      performingCopy[2](performingCopy, 0);
     }
 
     else if (v5 == CNAuthorizationStatusDenied)
     {
       v6 = +[UIApplication _maps_keyMapsWindow];
-      v7 = [v6 windowScene];
+      windowScene = [v6 windowScene];
 
-      if (v7)
+      if (windowScene)
       {
         v27 = 0;
         v28 = &v27;
         v29 = 0x3032000000;
         v30 = sub_100B0A0EC;
         v31 = sub_100B0A0FC;
-        v32 = [[UIWindow alloc] initWithWindowScene:v7];
+        v32 = [[UIWindow alloc] initWithWindowScene:windowScene];
         v8 = objc_alloc_init(UIViewController);
         [v28[5] setRootViewController:v8];
 
@@ -89,13 +89,13 @@
         [v16 addAction:v22];
         [v16 setPreferredAction:v22];
         [v28[5] makeKeyAndVisible];
-        v23 = [v28[5] rootViewController];
-        [v23 presentViewController:v16 animated:1 completion:0];
+        rootViewController = [v28[5] rootViewController];
+        [rootViewController presentViewController:v16 animated:1 completion:0];
 
         _Block_object_dispose(&v27, 8);
       }
 
-      v4[2](v4, 0);
+      performingCopy[2](performingCopy, 0);
     }
   }
 
@@ -106,8 +106,8 @@
     v33[1] = 3221225472;
     v33[2] = sub_100B0A04C;
     v33[3] = &unk_101638120;
-    v35 = a1;
-    v34 = v4;
+    selfCopy = self;
+    v34 = performingCopy;
     [v24 requestAccessForEntityType:0 completionHandler:v33];
   }
 }

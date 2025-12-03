@@ -19,8 +19,8 @@
 + (uint64_t)nilBoostUUID
 {
   v5 = *MEMORY[0x277D85DE8];
-  v0 = [MEMORY[0x277CCAD78] nilUUID];
-  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(v0, &v3);
+  nilUUID = [MEMORY[0x277CCAD78] nilUUID];
+  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(nilUUID, &v3);
 
   if ((v4 & 1) == 0)
   {
@@ -42,8 +42,8 @@
 
 - (uint64_t)isNilUUID
 {
-  v2 = [MEMORY[0x277CCAD78] nilUUID];
-  v3 = [a1 isEqual:v2];
+  nilUUID = [MEMORY[0x277CCAD78] nilUUID];
+  v3 = [self isEqual:nilUUID];
 
   return v3;
 }
@@ -58,7 +58,7 @@
 - (uint64_t)toBoostUUID
 {
   v5 = *MEMORY[0x277D85DE8];
-  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(a1, &v3);
+  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(self, &v3);
   if (v4 == 1)
   {
     result = v3;

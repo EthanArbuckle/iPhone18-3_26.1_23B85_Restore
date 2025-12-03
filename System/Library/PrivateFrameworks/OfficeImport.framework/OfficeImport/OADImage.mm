@@ -1,6 +1,6 @@
 @interface OADImage
 - (OADImage)init;
-- (OADImage)initWithBlipRef:(id)a3;
+- (OADImage)initWithBlipRef:(id)ref;
 - (id)createImageFill;
 - (id)description;
 - (void)createPictureFramePresetGeometry;
@@ -16,18 +16,18 @@
   return [(OADDrawable *)&v5 initWithPropertiesClass:v3];
 }
 
-- (OADImage)initWithBlipRef:(id)a3
+- (OADImage)initWithBlipRef:(id)ref
 {
-  v4 = a3;
+  refCopy = ref;
   v5 = [(OADImage *)self init];
   if (v5)
   {
     v6 = objc_alloc_init(OADImageFill);
-    [(OADImageFill *)v6 setBlipRef:v4];
+    [(OADImageFill *)v6 setBlipRef:refCopy];
     v7 = objc_alloc_init(OADStretchTechnique);
     [(OADImageFill *)v6 setTechnique:v7];
-    v8 = [(OADImage *)v5 imageProperties];
-    [v8 setImageFill:v6];
+    imageProperties = [(OADImage *)v5 imageProperties];
+    [imageProperties setImageFill:v6];
   }
 
   return v5;
@@ -35,10 +35,10 @@
 
 - (id)createImageFill
 {
-  v3 = [(OADImage *)self imageProperties];
-  v4 = [v3 isMergedWithParent];
-  [v3 setMergedWithParent:0];
-  if ([v3 hasImageFill])
+  imageProperties = [(OADImage *)self imageProperties];
+  isMergedWithParent = [imageProperties isMergedWithParent];
+  [imageProperties setMergedWithParent:0];
+  if ([imageProperties hasImageFill])
   {
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OADImage createImageFill]"];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/compatibility/OfficeArt/Dom/OADImage.mm"];
@@ -47,10 +47,10 @@
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  [v3 setMergedWithParent:v4];
+  [imageProperties setMergedWithParent:isMergedWithParent];
   v7 = objc_alloc_init(OADImageFill);
-  v8 = [(OADImage *)self imageProperties];
-  [v8 setImageFill:v7];
+  imageProperties2 = [(OADImage *)self imageProperties];
+  [imageProperties2 setImageFill:v7];
 
   v9 = +[OADStretchTechnique defaultProperties];
   v10 = [v9 copy];

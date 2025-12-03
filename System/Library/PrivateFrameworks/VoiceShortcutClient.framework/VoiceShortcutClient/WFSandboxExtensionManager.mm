@@ -1,9 +1,9 @@
 @interface WFSandboxExtensionManager
-+ (BOOL)hasExtensionForResourceClassName:(id)a3;
++ (BOOL)hasExtensionForResourceClassName:(id)name;
 + (NSSet)allAvailableExtensionResourceClassNames;
 - (WFSandboxExtensionManager)init;
-- (WFSandboxExtensionManager)initWithExtensionClassesPerResource:(id)a3;
-- (id)requestSandboxExtensionForResources:(id)a3 destinationProcessAuditToken:(id *)a4 unauthorizedResources:(id *)a5;
+- (WFSandboxExtensionManager)initWithExtensionClassesPerResource:(id)resource;
+- (id)requestSandboxExtensionForResources:(id)resources destinationProcessAuditToken:(id *)token unauthorizedResources:(id *)unauthorizedResources;
 @end
 
 @implementation WFSandboxExtensionManager
@@ -16,26 +16,26 @@
   return v4;
 }
 
-- (id)requestSandboxExtensionForResources:(id)a3 destinationProcessAuditToken:(id *)a4 unauthorizedResources:(id *)a5
+- (id)requestSandboxExtensionForResources:(id)resources destinationProcessAuditToken:(id *)token unauthorizedResources:(id *)unauthorizedResources
 {
   v8 = MEMORY[0x1E695DFA8];
-  v9 = a3;
+  resourcesCopy = resources;
   v10 = [v8 set];
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __116__WFSandboxExtensionManager_requestSandboxExtensionForResources_destinationProcessAuditToken_unauthorizedResources___block_invoke;
   v18 = &unk_1E7B019D8;
-  v19 = self;
+  selfCopy = self;
   v11 = v10;
   v20 = v11;
-  v12 = *&a4->var0[4];
-  v21 = *a4->var0;
+  v12 = *&token->var0[4];
+  v21 = *token->var0;
   v22 = v12;
-  v13 = [v9 if_compactMap:&v15];
+  v13 = [resourcesCopy if_compactMap:&v15];
 
-  if (a5)
+  if (unauthorizedResources)
   {
-    *a5 = [v11 copy];
+    *unauthorizedResources = [v11 copy];
   }
 
   return v13;
@@ -103,22 +103,22 @@ LABEL_11:
   return v11;
 }
 
-- (WFSandboxExtensionManager)initWithExtensionClassesPerResource:(id)a3
+- (WFSandboxExtensionManager)initWithExtensionClassesPerResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   v15.receiver = self;
   v15.super_class = WFSandboxExtensionManager;
   v5 = [(WFSandboxExtensionManager *)&v15 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [resourceCopy copy];
     extensionClassesPerResource = v5->_extensionClassesPerResource;
     v5->_extensionClassesPerResource = v6;
 
     v8 = MEMORY[0x1E695DFD8];
-    v9 = [(WFSandboxExtensionManager *)v5 extensionClassesPerResource];
-    v10 = [v9 allKeys];
-    v11 = [v8 setWithArray:v10];
+    extensionClassesPerResource = [(WFSandboxExtensionManager *)v5 extensionClassesPerResource];
+    allKeys = [extensionClassesPerResource allKeys];
+    v11 = [v8 setWithArray:allKeys];
     extensionResourcesClassNames = v5->_extensionResourcesClassNames;
     v5->_extensionResourcesClassNames = v11;
 
@@ -128,11 +128,11 @@ LABEL_11:
   return v5;
 }
 
-+ (BOOL)hasExtensionForResourceClassName:(id)a3
++ (BOOL)hasExtensionForResourceClassName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = &unk_1F2931600;
-  v5 = [&unk_1F2931600 objectForKey:v3];
+  v5 = [&unk_1F2931600 objectForKey:nameCopy];
 
   return v5 != 0;
 }
@@ -141,8 +141,8 @@ LABEL_11:
 {
   v2 = MEMORY[0x1E695DFD8];
   v3 = &unk_1F2931600;
-  v4 = [&unk_1F2931600 allKeys];
-  v5 = [v2 setWithArray:v4];
+  allKeys = [&unk_1F2931600 allKeys];
+  v5 = [v2 setWithArray:allKeys];
 
   return v5;
 }

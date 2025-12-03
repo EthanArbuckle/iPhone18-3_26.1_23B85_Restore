@@ -1,6 +1,6 @@
 @interface MapsSuggestionsBlockCondition
 - (BOOL)isTrue;
-- (MapsSuggestionsBlockCondition)initWithName:(id)a3 queue:(id)a4 block:(id)a5;
+- (MapsSuggestionsBlockCondition)initWithName:(id)name queue:(id)queue block:(id)block;
 @end
 
 @implementation MapsSuggestionsBlockCondition
@@ -34,27 +34,27 @@
   }
 }
 
-- (MapsSuggestionsBlockCondition)initWithName:(id)a3 queue:(id)a4 block:(id)a5
+- (MapsSuggestionsBlockCondition)initWithName:(id)name queue:(id)queue block:(id)block
 {
   v27 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  queueCopy = queue;
+  blockCopy = block;
+  if (blockCopy)
   {
     v18.receiver = self;
     v18.super_class = MapsSuggestionsBlockCondition;
-    v11 = [(MapsSuggestionsBaseCondition *)&v18 initWithName:a3];
+    v11 = [(MapsSuggestionsBaseCondition *)&v18 initWithName:name];
     v12 = v11;
     if (v11)
     {
-      objc_storeStrong(&v11->_queue, a4);
-      v13 = [v10 copy];
+      objc_storeStrong(&v11->_queue, queue);
+      v13 = [blockCopy copy];
       block = v12->_block;
       v12->_block = v13;
     }
 
     self = v12;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
@@ -73,10 +73,10 @@
       _os_log_impl(&dword_1C5126000, v16, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a BOOLean block to evaluate", buf, 0x26u);
     }
 
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 uint64_t __39__MapsSuggestionsBlockCondition_isTrue__block_invoke(uint64_t a1)

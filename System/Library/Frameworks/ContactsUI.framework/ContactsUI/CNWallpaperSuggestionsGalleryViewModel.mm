@@ -1,25 +1,25 @@
 @interface CNWallpaperSuggestionsGalleryViewModel
 - (_TtC10ContactsUI38CNWallpaperSuggestionsGalleryViewModel)init;
-- (void)editingViewController:(id)a3 didFinishWithConfiguration:(id)a4;
-- (void)editingViewControllerDidFinishShowingContent:(id)a3;
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4;
+- (void)editingViewController:(id)controller didFinishWithConfiguration:(id)configuration;
+- (void)editingViewControllerDidFinishShowingContent:(id)content;
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info;
 @end
 
 @implementation CNWallpaperSuggestionsGalleryViewModel
 
-- (void)editingViewController:(id)a3 didFinishWithConfiguration:(id)a4
+- (void)editingViewController:(id)controller didFinishWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_199B2F84C(a4);
+  controllerCopy = controller;
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_199B2F84C(configuration);
 }
 
-- (void)editingViewControllerDidFinishShowingContent:(id)a3
+- (void)editingViewControllerDidFinishShowingContent:(id)content
 {
-  v4 = a3;
-  v5 = self;
-  sub_199B2C42C(v4);
+  contentCopy = content;
+  selfCopy = self;
+  sub_199B2C42C(contentCopy);
 }
 
 - (_TtC10ContactsUI38CNWallpaperSuggestionsGalleryViewModel)init
@@ -29,14 +29,14 @@
   return result;
 }
 
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info
 {
   type metadata accessor for InfoKey(0);
   sub_199B2F57C(&unk_1EAF74FF0, type metadata accessor for InfoKey);
   v6 = sub_199DF9E9C();
-  v7 = a3;
-  v8 = self;
-  sub_199B2E6C0(v7, v6);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_199B2E6C0(controllerCopy, v6);
 }
 
 @end

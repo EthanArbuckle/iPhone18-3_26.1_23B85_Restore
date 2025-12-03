@@ -1,19 +1,19 @@
 @interface PadRotateYearViewFromPortraitTest
-- (void)_setupViewToDate:(id)a3;
+- (void)_setupViewToDate:(id)date;
 @end
 
 @implementation PadRotateYearViewFromPortraitTest
 
-- (void)_setupViewToDate:(id)a3
+- (void)_setupViewToDate:(id)date
 {
-  v4 = a3;
-  v5 = [(ApplicationTest *)self application];
-  v6 = [v5 rootNavigationController];
-  v8 = [v6 resetToYearView];
+  dateCopy = date;
+  application = [(ApplicationTest *)self application];
+  rootNavigationController = [application rootNavigationController];
+  resetToYearView = [rootNavigationController resetToYearView];
 
-  v7 = [v4 date];
+  date = [dateCopy date];
 
-  [v8 showDate:v7 animated:0];
+  [resetToYearView showDate:date animated:0];
 }
 
 @end

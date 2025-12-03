@@ -6,8 +6,8 @@
 
 - (NSDictionary)countrySMSCodes
 {
-  v2 = [(LakituResponse *)self responseDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"map"];
+  responseDictionary = [(LakituResponse *)self responseDictionary];
+  v3 = [responseDictionary objectForKeyedSubscript:@"map"];
 
   return v3;
 }

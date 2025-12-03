@@ -1,27 +1,27 @@
 @interface CABatchHandle
-+ (id)createFromXPCRepresentation:(id)a3;
-- (CABatchHandle)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)createFromXPCRepresentation:(id)representation;
+- (CABatchHandle)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)createXPCRepresentation;
 - (id)description;
-- (void)_initWithPort:(uint64_t)a3 name:;
-- (void)_initWithXPCRepresentation:(void *)a1;
+- (void)_initWithPort:(uint64_t)port name:;
+- (void)_initWithXPCRepresentation:(void *)representation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
 @end
 
 @implementation CABatchHandle
 
-- (void)_initWithPort:(uint64_t)a3 name:
+- (void)_initWithPort:(uint64_t)port name:
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = CABatchHandle;
   v5 = objc_msgSendSuper2(&v9, sel_init);
   if (!v5)
@@ -37,7 +37,7 @@
 
   while (add == -1);
   v5[1] = add + 1;
-  v5[2] = a3;
+  v5[2] = port;
   *(v5 + 6) = a2;
   kdebug_trace();
   return v6;
@@ -73,13 +73,13 @@
   return [v3 stringWithFormat:@"<CABatchHandle:%p name=%llx usable=%@>", self, handle_name, v6, v9];
 }
 
-- (CABatchHandle)initWithCoder:(id)a3
+- (CABatchHandle)initWithCoder:(id)coder
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = [a3 decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"x"];
+    v6 = [coder decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"x"];
     v7 = v6;
     objc_autoreleasePoolPop(v5);
   }
@@ -94,10 +94,10 @@
   return v8;
 }
 
-- (void)_initWithXPCRepresentation:(void *)a1
+- (void)_initWithXPCRepresentation:(void *)representation
 {
-  v2 = a1;
-  if (a1)
+  representationCopy = representation;
+  if (representation)
   {
     if (a2 && object_getClass(a2) == MEMORY[0x1E69E9E80])
     {
@@ -112,14 +112,14 @@
       v5 = 0;
     }
 
-    v2 = [(CABatchHandle *)v2 _initWithPort:v5 name:uint64];
+    representationCopy = [(CABatchHandle *)representationCopy _initWithPort:v5 name:uint64];
     kdebug_trace();
   }
 
-  return v2;
+  return representationCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -127,17 +127,17 @@
     __assert_rtn("[CABatchHandle encodeWithCoder:]", "CABatchHandle.mm", 318, "[coder isKindOfClass:[NSXPCCoder class]]");
   }
 
-  v5 = [(CABatchHandle *)self createXPCRepresentation];
-  if (v5)
+  createXPCRepresentation = [(CABatchHandle *)self createXPCRepresentation];
+  if (createXPCRepresentation)
   {
-    v6 = v5;
-    [a3 encodeXPCObject:v5 forKey:@"x"];
+    v6 = createXPCRepresentation;
+    [coder encodeXPCObject:createXPCRepresentation forKey:@"x"];
 
     xpc_release(v6);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (self && self->_port + 1 >= 2)
   {
@@ -228,11 +228,11 @@
   [(CABatchHandle *)&v4 dealloc];
 }
 
-+ (id)createFromXPCRepresentation:(id)a3
++ (id)createFromXPCRepresentation:(id)representation
 {
   v4 = [CABatchHandle alloc];
 
-  return [(CABatchHandle *)v4 _initWithXPCRepresentation:a3];
+  return [(CABatchHandle *)v4 _initWithXPCRepresentation:representation];
 }
 
 @end

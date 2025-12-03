@@ -1,23 +1,23 @@
 @interface PKHandwritingDataCollectionViewController
-- (void)initWithDrawings:(void *)a3 metadata:;
-- (void)segmentChanged:(id)a3;
-- (void)sendRadarButtonTapped:(id)a3;
-- (void)setSegmentControl:(uint64_t)a1;
+- (void)initWithDrawings:(void *)drawings metadata:;
+- (void)segmentChanged:(id)changed;
+- (void)sendRadarButtonTapped:(id)tapped;
+- (void)setSegmentControl:(uint64_t)control;
 - (void)viewDidLoad;
 @end
 
 @implementation PKHandwritingDataCollectionViewController
 
-- (void)initWithDrawings:(void *)a3 metadata:
+- (void)initWithDrawings:(void *)drawings metadata:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = PKHandwritingDataCollectionViewController;
-  v4 = a3;
+  drawingsCopy = drawings;
   v5 = a2;
   v6 = objc_msgSendSuper2(&v12, sel_init);
   v7 = [v5 copy];
@@ -25,35 +25,35 @@
   v8 = v6[128];
   v6[128] = v7;
 
-  v9 = [v4 copy];
+  v9 = [drawingsCopy copy];
   v10 = v6[129];
   v6[129] = v9;
 
   return v6;
 }
 
-- (void)segmentChanged:(id)a3
+- (void)segmentChanged:(id)changed
 {
-  v34 = a3;
+  changedCopy = changed;
   if (self)
   {
-    v4 = [(PKHandwritingDataCollecting *)self->_currentDataCollector viewController];
-    [v4 willMoveToParentViewController:0];
+    viewController = [(PKHandwritingDataCollecting *)self->_currentDataCollector viewController];
+    [viewController willMoveToParentViewController:0];
 
     currentDataCollector = self->_currentDataCollector;
   }
 
   else
   {
-    v31 = [0 viewController];
-    [v31 willMoveToParentViewController:0];
+    viewController2 = [0 viewController];
+    [viewController2 willMoveToParentViewController:0];
 
     currentDataCollector = 0;
   }
 
-  v6 = [(PKHandwritingDataCollecting *)currentDataCollector viewController];
-  v7 = [v6 view];
-  [v7 removeFromSuperview];
+  viewController3 = [(PKHandwritingDataCollecting *)currentDataCollector viewController];
+  view = [viewController3 view];
+  [view removeFromSuperview];
 
   if (self)
   {
@@ -65,14 +65,14 @@
     v8 = 0;
   }
 
-  v9 = [(PKHandwritingDataCollecting *)v8 viewController];
-  [v9 removeFromParentViewController];
+  viewController4 = [(PKHandwritingDataCollecting *)v8 viewController];
+  [viewController4 removeFromParentViewController];
 
-  v10 = [v34 selectedSegmentIndex];
+  selectedSegmentIndex = [changedCopy selectedSegmentIndex];
   if (self)
   {
     v11 = 5;
-    if (!v10)
+    if (!selectedSegmentIndex)
     {
       v11 = 4;
     }
@@ -86,11 +86,11 @@
     v12 = 0;
   }
 
-  v13 = [(PKHandwritingDataCollecting *)v12 viewController];
-  [(PKHandwritingDataCollectionViewController *)self addChildViewController:v13];
+  viewController5 = [(PKHandwritingDataCollecting *)v12 viewController];
+  [(PKHandwritingDataCollectionViewController *)self addChildViewController:viewController5];
 
-  v14 = [(PKHandwritingDataCollectionViewController *)self view];
-  [v14 bounds];
+  view2 = [(PKHandwritingDataCollectionViewController *)self view];
+  [view2 bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -105,31 +105,31 @@
     v23 = 0;
   }
 
-  v24 = [(PKHandwritingDataCollecting *)v23 viewController];
-  v25 = [v24 view];
-  [v25 setFrame:{v16, v18, v20, v22}];
+  viewController6 = [(PKHandwritingDataCollecting *)v23 viewController];
+  view3 = [viewController6 view];
+  [view3 setFrame:{v16, v18, v20, v22}];
 
-  v26 = [(PKHandwritingDataCollectionViewController *)self view];
+  view4 = [(PKHandwritingDataCollectionViewController *)self view];
   if (self)
   {
-    v27 = [(PKHandwritingDataCollecting *)self->_currentDataCollector viewController];
-    v28 = [v27 view];
-    [v26 addSubview:v28];
+    viewController7 = [(PKHandwritingDataCollecting *)self->_currentDataCollector viewController];
+    view5 = [viewController7 view];
+    [view4 addSubview:view5];
 
     v29 = self->_currentDataCollector;
   }
 
   else
   {
-    v32 = [0 viewController];
-    v33 = [v32 view];
-    [v26 addSubview:v33];
+    viewController8 = [0 viewController];
+    view6 = [viewController8 view];
+    [view4 addSubview:view6];
 
     v29 = 0;
   }
 
-  v30 = [(PKHandwritingDataCollecting *)v29 viewController];
-  [v30 didMoveToParentViewController:self];
+  viewController9 = [(PKHandwritingDataCollecting *)v29 viewController];
+  [viewController9 didMoveToParentViewController:self];
 }
 
 - (void)viewDidLoad
@@ -142,20 +142,20 @@
   v4 = [v3 localizedStringForKey:@"Handwriting Feedback" value:@"Handwriting Feedback" table:@"Localizable"];
   [(PKHandwritingDataCollectionViewController *)self setTitle:v4];
 
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  v6 = [(PKHandwritingDataCollectionViewController *)self view];
-  [v6 setBackgroundColor:v5];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  view = [(PKHandwritingDataCollectionViewController *)self view];
+  [view setBackgroundColor:whiteColor];
 
   v7 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_cancelButtonTapped_];
-  v8 = [(PKHandwritingDataCollectionViewController *)self navigationItem];
-  [v8 setLeftBarButtonItem:v7];
+  navigationItem = [(PKHandwritingDataCollectionViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v7];
 
   v9 = objc_alloc(MEMORY[0x1E69DC708]);
   v10 = _PencilKitBundle();
   v11 = [v10 localizedStringForKey:@"Submit" value:@"Submit" table:@"Localizable"];
   v12 = [v9 initWithTitle:v11 style:2 target:self action:sel_sendRadarButtonTapped_];
-  v13 = [(PKHandwritingDataCollectionViewController *)self navigationItem];
-  [v13 setRightBarButtonItem:v12];
+  navigationItem2 = [(PKHandwritingDataCollectionViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v12];
 
   if (os_variant_has_internal_diagnostics())
   {
@@ -178,23 +178,23 @@
     if (self)
     {
       v46 = self->_segmentControl;
-      v47 = [(PKHandwritingDataCollectionViewController *)self navigationItem];
-      [v47 setTitleView:v46];
+      navigationItem3 = [(PKHandwritingDataCollectionViewController *)self navigationItem];
+      [navigationItem3 setTitleView:v46];
 
       v48 = self->_segmentControl;
     }
 
     else
     {
-      v68 = [0 navigationItem];
-      [v68 setTitleView:0];
+      navigationItem4 = [0 navigationItem];
+      [navigationItem4 setTitleView:0];
 
       v48 = 0;
     }
 
     [(UISegmentedControl *)v48 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v49 = [(PKHandwritingDataCollectionViewController *)self view];
-    v50 = v49;
+    view2 = [(PKHandwritingDataCollectionViewController *)self view];
+    v50 = view2;
     if (self)
     {
       v51 = self->_segmentControl;
@@ -205,7 +205,7 @@
       v51 = 0;
     }
 
-    [v49 addSubview:v51];
+    [view2 addSubview:v51];
 
     if (self)
     {
@@ -219,12 +219,12 @@
 
     v71 = MEMORY[0x1E696ACD8];
     v77 = v52;
-    v53 = [(UISegmentedControl *)v77 topAnchor];
-    v75 = [(PKHandwritingDataCollectionViewController *)self view];
-    v74 = [v75 safeAreaLayoutGuide];
-    [v74 topAnchor];
-    v73 = v76 = v53;
-    v72 = [v53 constraintEqualToAnchor:8.0 constant:?];
+    topAnchor = [(UISegmentedControl *)v77 topAnchor];
+    view3 = [(PKHandwritingDataCollectionViewController *)self view];
+    safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+    [safeAreaLayoutGuide topAnchor];
+    v73 = v76 = topAnchor;
+    v72 = [topAnchor constraintEqualToAnchor:8.0 constant:?];
     v79[0] = v72;
     if (self)
     {
@@ -237,11 +237,11 @@
     }
 
     v70 = v54;
-    v55 = [(UISegmentedControl *)v70 leadingAnchor];
-    v56 = [(PKHandwritingDataCollectionViewController *)self view];
-    v57 = [v56 leadingAnchor];
-    v69 = v55;
-    v58 = [v55 constraintEqualToAnchor:v57 constant:16.0];
+    leadingAnchor = [(UISegmentedControl *)v70 leadingAnchor];
+    view4 = [(PKHandwritingDataCollectionViewController *)self view];
+    leadingAnchor2 = [view4 leadingAnchor];
+    v69 = leadingAnchor;
+    v58 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     v79[1] = v58;
     if (self)
     {
@@ -254,10 +254,10 @@
     }
 
     v60 = v59;
-    v61 = [(UISegmentedControl *)v60 trailingAnchor];
-    v62 = [(PKHandwritingDataCollectionViewController *)self view];
-    v63 = [v62 trailingAnchor];
-    v64 = [v61 constraintEqualToAnchor:v63 constant:-16.0];
+    trailingAnchor = [(UISegmentedControl *)v60 trailingAnchor];
+    view5 = [(PKHandwritingDataCollectionViewController *)self view];
+    trailingAnchor2 = [view5 trailingAnchor];
+    v64 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
     v79[2] = v64;
     v65 = [MEMORY[0x1E695DEC8] arrayWithObjects:v79 count:3];
     [v71 activateConstraints:v65];
@@ -302,11 +302,11 @@
   }
 
   v24 = currentDataCollector;
-  v25 = [(PKHandwritingDataCollecting *)v24 viewController];
-  [(PKHandwritingDataCollectionViewController *)self addChildViewController:v25];
+  viewController = [(PKHandwritingDataCollecting *)v24 viewController];
+  [(PKHandwritingDataCollectionViewController *)self addChildViewController:viewController];
 
-  v26 = [(PKHandwritingDataCollectionViewController *)self view];
-  [v26 bounds];
+  view6 = [(PKHandwritingDataCollectionViewController *)self view];
+  [view6 bounds];
   v28 = v27;
   v30 = v29;
   v32 = v31;
@@ -321,45 +321,45 @@
     v35 = 0;
   }
 
-  v36 = [(PKHandwritingDataCollecting *)v35 viewController];
-  v37 = [v36 view];
-  [v37 setFrame:{v28, v30, v32, v34}];
+  viewController2 = [(PKHandwritingDataCollecting *)v35 viewController];
+  view7 = [viewController2 view];
+  [view7 setFrame:{v28, v30, v32, v34}];
 
-  v38 = [(PKHandwritingDataCollectionViewController *)self view];
+  view8 = [(PKHandwritingDataCollectionViewController *)self view];
   if (self)
   {
-    v39 = [(PKHandwritingDataCollecting *)self->_currentDataCollector viewController];
-    v40 = [v39 view];
-    [v38 addSubview:v40];
+    viewController3 = [(PKHandwritingDataCollecting *)self->_currentDataCollector viewController];
+    view9 = [viewController3 view];
+    [view8 addSubview:view9];
 
     v41 = self->_currentDataCollector;
   }
 
   else
   {
-    v66 = [0 viewController];
-    v67 = [v66 view];
-    [v38 addSubview:v67];
+    viewController4 = [0 viewController];
+    view10 = [viewController4 view];
+    [view8 addSubview:view10];
 
     v41 = 0;
   }
 
   v42 = v41;
-  v43 = [(PKHandwritingDataCollecting *)v42 viewController];
-  [v43 didMoveToParentViewController:self];
+  viewController5 = [(PKHandwritingDataCollecting *)v42 viewController];
+  [viewController5 didMoveToParentViewController:self];
 }
 
-- (void)setSegmentControl:(uint64_t)a1
+- (void)setSegmentControl:(uint64_t)control
 {
-  if (a1)
+  if (control)
   {
-    objc_storeStrong((a1 + 992), a2);
+    objc_storeStrong((control + 992), a2);
   }
 }
 
-- (void)sendRadarButtonTapped:(id)a3
+- (void)sendRadarButtonTapped:(id)tapped
 {
-  v3 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_currentDataCollector;
@@ -367,7 +367,7 @@
 
   [(PKHandwritingDataCollectionViewController *)self submitFeedback];
 
-  [(PKHandwritingDataCollectionViewController *)v3 dismissViewControllerAnimated:1 completion:0];
+  [(PKHandwritingDataCollectionViewController *)selfCopy dismissViewControllerAnimated:1 completion:0];
 }
 
 @end

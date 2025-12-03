@@ -1,16 +1,16 @@
 @interface AudioComponentPrefRegConnection
-- (AudioComponentPrefRegConnection)initWithRegistrar:(void *)a3 connection:(id)a4;
-- (BOOL)isGenericAppIcon:(id)a3 size:(CGSize)a4 scale:(double)a5;
+- (AudioComponentPrefRegConnection)initWithRegistrar:(void *)registrar connection:(id)connection;
+- (BOOL)isGenericAppIcon:(id)icon size:(CGSize)size scale:(double)scale;
 - (id).cxx_construct;
-- (void)clearConfigurationInfoCache:(id)a3;
-- (void)copyConfigurationInfoFromCache:(id)a3 reply:(id)a4;
-- (void)getComponentUserTags:(id)a3 reply:(id)a4;
-- (void)getExtensionComponentList:(id)a3 linkedSDKRequiresEntitlement:(BOOL)a4 reply:(id)a5;
-- (void)getExtensionIcon:(id)a3 reply:(id)a4;
-- (void)getInterAppIcon:(id)a3 reply:(id)a4;
-- (void)setComponentUserTags:(id)a3 tags:(id)a4;
-- (void)setExtensionComponentList:(id)a3 linkedSDKRequiresEntitlement:(BOOL)a4 components:(id)a5 reply:(id)a6;
-- (void)writeConfigurationInfoToCache:(id)a3 configurationInfo:(id)a4;
+- (void)clearConfigurationInfoCache:(id)cache;
+- (void)copyConfigurationInfoFromCache:(id)cache reply:(id)reply;
+- (void)getComponentUserTags:(id)tags reply:(id)reply;
+- (void)getExtensionComponentList:(id)list linkedSDKRequiresEntitlement:(BOOL)entitlement reply:(id)reply;
+- (void)getExtensionIcon:(id)icon reply:(id)reply;
+- (void)getInterAppIcon:(id)icon reply:(id)reply;
+- (void)setComponentUserTags:(id)tags tags:(id)a4;
+- (void)setExtensionComponentList:(id)list linkedSDKRequiresEntitlement:(BOOL)entitlement components:(id)components reply:(id)reply;
+- (void)writeConfigurationInfoToCache:(id)cache configurationInfo:(id)info;
 @end
 
 @implementation AudioComponentPrefRegConnection
@@ -23,14 +23,14 @@
   return self;
 }
 
-- (void)clearConfigurationInfoCache:(id)a3
+- (void)clearConfigurationInfoCache:(id)cache
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  cacheCopy = cache;
   v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.audio.AudioComponentCache"];
-  if (v3 && [(__CFString *)v3 length])
+  if (cacheCopy && [(__CFString *)cacheCopy length])
   {
-    CFPreferencesSetAppValue(v3, 0, v4);
+    CFPreferencesSetAppValue(cacheCopy, 0, v4);
   }
 
   else
@@ -71,43 +71,43 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)writeConfigurationInfoToCache:(id)a3 configurationInfo:(id)a4
+- (void)writeConfigurationInfoToCache:(id)cache configurationInfo:(id)info
 {
-  v7 = a3;
-  v5 = a4;
+  cacheCopy = cache;
+  infoCopy = info;
   v6 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.audio.AudioComponentCache"];
-  [v6 setValue:v5 forKey:v7];
+  [v6 setValue:infoCopy forKey:cacheCopy];
 }
 
-- (void)copyConfigurationInfoFromCache:(id)a3 reply:(id)a4
+- (void)copyConfigurationInfoFromCache:(id)cache reply:(id)reply
 {
-  v8 = a3;
-  v5 = a4;
+  cacheCopy = cache;
+  replyCopy = reply;
   v6 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.audio.AudioComponentCache"];
-  v7 = [v6 dictionaryForKey:v8];
-  v5[2](v5, v7);
+  v7 = [v6 dictionaryForKey:cacheCopy];
+  replyCopy[2](replyCopy, v7);
 }
 
-- (void)getInterAppIcon:(id)a3 reply:(id)a4
+- (void)getInterAppIcon:(id)icon reply:(id)reply
 {
-  v9 = a3;
-  v5 = a4;
-  if (v9)
+  iconCopy = icon;
+  replyCopy = reply;
+  if (iconCopy)
   {
     [-[objc_class mainScreen](NSClassFromString(&cfstr_Uiscreen.isa) "mainScreen")];
-    v7 = [NSClassFromString(&cfstr_Uiimage.isa) _applicationIconImageForBundleIdentifier:v9 format:2 scale:v6];
+    v7 = [NSClassFromString(&cfstr_Uiimage.isa) _applicationIconImageForBundleIdentifier:iconCopy format:2 scale:v6];
     v8 = localUIImagePNGRepresentation(v7);
-    v5[2](v5, v8);
+    replyCopy[2](replyCopy, v8);
   }
 
-  v5[2](v5, 0);
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)getExtensionIcon:(id)a3 reply:(id)a4
+- (void)getExtensionIcon:(id)icon reply:(id)reply
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  iconCopy = icon;
+  replyCopy = reply;
   ISImageDescriptorClass = getISImageDescriptorClass();
   v36 = 0;
   v37 = &v36;
@@ -130,9 +130,9 @@
   _Block_object_dispose(&v36, 8);
   if (!v9)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v30 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkISImageDescriptorHomeScreen()"];
-    [v29 handleFailureInFunction:v30 file:@"AudioComponentRegistrar.mm" lineNumber:633 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v30 file:@"AudioComponentRegistrar.mm" lineNumber:633 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -161,11 +161,11 @@
 
   v18 = v17;
   _Block_object_dispose(&v36, 8);
-  v19 = [v17 mainScreen];
-  [v19 scale];
+  mainScreen = [v17 mainScreen];
+  [mainScreen scale];
   v21 = v20;
 
-  v22 = [objc_alloc(getISIconClass()) initWithBundleIdentifier:v6];
+  v22 = [objc_alloc(getISIconClass()) initWithBundleIdentifier:iconCopy];
   v23 = [objc_alloc(getISImageDescriptorClass()) initWithSize:v14 scale:{v16, v21}];
   v40[0] = v23;
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:1];
@@ -183,41 +183,41 @@
     v27 = v26;
   }
 
-  (v7)[2](v7, v27);
+  (replyCopy)[2](replyCopy, v27);
 
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isGenericAppIcon:(id)a3 size:(CGSize)a4 scale:(double)a5
+- (BOOL)isGenericAppIcon:(id)icon size:(CGSize)size scale:(double)scale
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v17[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [getISIconClass() genericApplicationIcon];
-  v10 = [objc_alloc(getISImageDescriptorClass()) initWithSize:width scale:{height, a5}];
+  iconCopy = icon;
+  genericApplicationIcon = [getISIconClass() genericApplicationIcon];
+  v10 = [objc_alloc(getISImageDescriptorClass()) initWithSize:width scale:{height, scale}];
   v17[0] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
-  [v9 prepareImagesForImageDescriptors:v11];
+  [genericApplicationIcon prepareImagesForImageDescriptors:v11];
 
-  v12 = [getUIImageClass() imageWithCGImage:objc_msgSend(v9 scale:"CGImageForDescriptor:" orientation:{v10), 0, a5}];
+  v12 = [getUIImageClass() imageWithCGImage:objc_msgSend(genericApplicationIcon scale:"CGImageForDescriptor:" orientation:{v10), 0, scale}];
   v13 = localUIImagePNGRepresentation(v12);
-  v14 = [v8 isEqualToData:v13];
+  v14 = [iconCopy isEqualToData:v13];
 
   v15 = *MEMORY[0x1E69E9840];
   return v14;
 }
 
-- (void)setComponentUserTags:(id)a3 tags:(id)a4
+- (void)setComponentUserTags:(id)tags tags:(id)a4
 {
   v17 = *MEMORY[0x1E69E9840];
   mImpl = self->mImpl;
-  v6 = a3;
+  tagsCopy = tags;
   v7 = a4;
   if ((*mImpl & 1) == 0)
   {
     memset(&v13, 0, sizeof(v13));
-    dictionaryToComponentDescription(v6, &v13, &v12);
+    dictionaryToComponentDescription(tagsCopy, &v13, &v12);
     v8 = MEMORY[0x1E696AEC0];
     CAX4CCString::CAX4CCString(v16, v13.componentType);
     CAX4CCString::CAX4CCString(v15, v13.componentSubType);
@@ -231,13 +231,13 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getComponentUserTags:(id)a3 reply:(id)a4
+- (void)getComponentUserTags:(id)tags reply:(id)reply
 {
   v37 = *MEMORY[0x1E69E9840];
-  v28 = a4;
+  replyCopy = reply;
   mImpl = self->mImpl;
-  v7 = a3;
-  v8 = v7;
+  tagsCopy = tags;
+  v8 = tagsCopy;
   if (*mImpl)
   {
     v9 = 0;
@@ -247,7 +247,7 @@
   {
     memset(&v30, 0, sizeof(v30));
     v29 = 0;
-    dictionaryToComponentDescription(v7, &v30, &v29);
+    dictionaryToComponentDescription(tagsCopy, &v30, &v29);
     v10 = MEMORY[0x1E696AEC0];
     componentType = v30.componentType;
     CAX4CCString::CAX4CCString(&v35, v30.componentType);
@@ -288,16 +288,16 @@
     }
   }
 
-  v28[2](v28, v9);
+  replyCopy[2](replyCopy, v9);
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getExtensionComponentList:(id)a3 linkedSDKRequiresEntitlement:(BOOL)a4 reply:(id)a5
+- (void)getExtensionComponentList:(id)list linkedSDKRequiresEntitlement:(BOOL)entitlement reply:(id)reply
 {
-  self->mConnInfo.mLinkedSDKRequiresEntitlement = a4;
+  self->mConnInfo.mLinkedSDKRequiresEntitlement = entitlement;
   mImpl = self->mImpl;
-  v12 = a3;
-  v8 = a5;
+  listCopy = list;
+  replyCopy = reply;
   mExtUsePermission = self->mConnInfo.mExtUsePermission;
   if (mExtUsePermission == -1)
   {
@@ -308,7 +308,7 @@
   if (mExtUsePermission == 1 && (v10 = mImpl[32]) != 0)
   {
     os_unfair_lock_lock(mImpl[32]);
-    v11 = AUExtensionScanner::getExtensionComponentList(&v10[2], v12);
+    v11 = AUExtensionScanner::getExtensionComponentList(&v10[2], listCopy);
     os_unfair_lock_unlock(v10);
   }
 
@@ -317,16 +317,16 @@
     v11 = 0;
   }
 
-  v8[2](v8, v11);
+  replyCopy[2](replyCopy, v11);
 }
 
-- (void)setExtensionComponentList:(id)a3 linkedSDKRequiresEntitlement:(BOOL)a4 components:(id)a5 reply:(id)a6
+- (void)setExtensionComponentList:(id)list linkedSDKRequiresEntitlement:(BOOL)entitlement components:(id)components reply:(id)reply
 {
-  self->mConnInfo.mLinkedSDKRequiresEntitlement = a4;
+  self->mConnInfo.mLinkedSDKRequiresEntitlement = entitlement;
   mImpl = self->mImpl;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  listCopy = list;
+  componentsCopy = components;
+  replyCopy = reply;
   mExtUsePermission = self->mConnInfo.mExtUsePermission;
   if (mExtUsePermission == -1)
   {
@@ -345,8 +345,8 @@
       memset(&v22, 0, 24);
       v22.mSorted = 1;
       os_unfair_lock_lock(v15);
-      v16 = v10;
-      v17 = v11;
+      v16 = listCopy;
+      v17 = componentsCopy;
       Extension = AUExtensionScanner::findExtension((v15 + 8), v16);
       if (*(v15 + 144) != Extension)
       {
@@ -379,20 +379,20 @@
     }
   }
 
-  v12[2](v12, v14);
+  replyCopy[2](replyCopy, v14);
 }
 
-- (AudioComponentPrefRegConnection)initWithRegistrar:(void *)a3 connection:(id)a4
+- (AudioComponentPrefRegConnection)initWithRegistrar:(void *)registrar connection:(id)connection
 {
-  v6 = a4;
+  connectionCopy = connection;
   v10.receiver = self;
   v10.super_class = AudioComponentPrefRegConnection;
   v7 = [(AudioComponentPrefRegConnection *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    v7->mImpl = a3;
-    objc_storeWeak(&v7->mConnInfo.mConnection, v6);
+    v7->mImpl = registrar;
+    objc_storeWeak(&v7->mConnInfo.mConnection, connectionCopy);
   }
 
   return v8;

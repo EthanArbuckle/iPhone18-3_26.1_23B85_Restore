@@ -1,12 +1,12 @@
 @interface FedStatsBooleanType
-+ (id)createFromDict:(id)a3 possibleError:(id *)a4;
++ (id)createFromDict:(id)dict possibleError:(id *)error;
 - (FedStatsBooleanType)init;
-- (id)decodeFromHistogramVector:(id)a3 possibleError:(id *)a4;
-- (id)decodeFromIndex:(id)a3 possibleError:(id *)a4;
-- (id)decodeFromOneHotVector:(id)a3 possibleError:(id *)a4;
-- (id)encodeToHistogramVector:(id)a3 possibleError:(id *)a4;
-- (id)encodeToIndex:(id)a3 possibleError:(id *)a4;
-- (id)encodeToOneHotVector:(id)a3 possibleError:(id *)a4;
+- (id)decodeFromHistogramVector:(id)vector possibleError:(id *)error;
+- (id)decodeFromIndex:(id)index possibleError:(id *)error;
+- (id)decodeFromOneHotVector:(id)vector possibleError:(id *)error;
+- (id)encodeToHistogramVector:(id)vector possibleError:(id *)error;
+- (id)encodeToIndex:(id)index possibleError:(id *)error;
+- (id)encodeToOneHotVector:(id)vector possibleError:(id *)error;
 @end
 
 @implementation FedStatsBooleanType
@@ -18,18 +18,18 @@
   return [(FedStatsBooleanType *)&v3 init];
 }
 
-+ (id)createFromDict:(id)a3 possibleError:(id *)a4
++ (id)createFromDict:(id)dict possibleError:(id *)error
 {
-  v4 = objc_alloc_init(a1);
+  v4 = objc_alloc_init(self);
 
   return v4;
 }
 
-- (id)encodeToIndex:(id)a3 possibleError:(id *)a4
+- (id)encodeToIndex:(id)index possibleError:(id *)error
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB68] null];
-  v7 = [v5 isEqual:v6];
+  indexCopy = index;
+  null = [MEMORY[0x277CBEB68] null];
+  v7 = [indexCopy isEqual:null];
 
   if (v7)
   {
@@ -41,13 +41,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v5, "BOOLValue")}];
+      v8 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(indexCopy, "BOOLValue")}];
     }
 
-    else if (a4)
+    else if (error)
     {
       [FedStatsError errorWithCode:401 description:@"The encoder can only work with a number type"];
-      *a4 = v8 = 0;
+      *error = v8 = 0;
     }
 
     else
@@ -59,19 +59,19 @@
   return v8;
 }
 
-- (id)decodeFromIndex:(id)a3 possibleError:(id *)a4
+- (id)decodeFromIndex:(id)index possibleError:(id *)error
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  indexCopy = index;
+  v6 = indexCopy;
+  if (indexCopy)
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v5, "BOOLValue")}];
+    v7 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(indexCopy, "BOOLValue")}];
   }
 
-  else if (a4)
+  else if (error)
   {
     [FedStatsError errorWithCode:500 description:@"The encoder can only work with a number type"];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
   else
@@ -82,9 +82,9 @@
   return v7;
 }
 
-- (id)encodeToOneHotVector:(id)a3 possibleError:(id *)a4
+- (id)encodeToOneHotVector:(id)vector possibleError:(id *)error
 {
-  v4 = [(FedStatsBooleanType *)self encodeToIndex:a3 possibleError:a4];
+  v4 = [(FedStatsBooleanType *)self encodeToIndex:vector possibleError:error];
   v5 = v4;
   if (v4)
   {
@@ -101,22 +101,22 @@
   return v6;
 }
 
-- (id)decodeFromOneHotVector:(id)a3 possibleError:(id *)a4
+- (id)decodeFromOneHotVector:(id)vector possibleError:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  vectorCopy = vector;
+  v7 = vectorCopy;
+  if (vectorCopy)
   {
     v11 = 0;
-    [v6 getBytes:&v11 range:{0, 2}];
+    [vectorCopy getBytes:&v11 range:{0, 2}];
     v8 = [MEMORY[0x277CCABB0] numberWithBool:HIBYTE(v11) == 1];
-    v9 = [(FedStatsBooleanType *)self decodeFromIndex:v8 possibleError:a4];
+    v9 = [(FedStatsBooleanType *)self decodeFromIndex:v8 possibleError:error];
   }
 
-  else if (a4)
+  else if (error)
   {
     [FedStatsError errorWithCode:500 description:@"The decoder can only work with a valid one-hot vector"];
-    *a4 = v9 = 0;
+    *error = v9 = 0;
   }
 
   else
@@ -127,21 +127,21 @@
   return v9;
 }
 
-- (id)encodeToHistogramVector:(id)a3 possibleError:(id *)a4
+- (id)encodeToHistogramVector:(id)vector possibleError:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [FedStatsError errorWithCode:900 description:@"Histogram vector is not implemented for this type."];
+    *error = [FedStatsError errorWithCode:900 description:@"Histogram vector is not implemented for this type."];
   }
 
   return 0;
 }
 
-- (id)decodeFromHistogramVector:(id)a3 possibleError:(id *)a4
+- (id)decodeFromHistogramVector:(id)vector possibleError:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [FedStatsError errorWithCode:900 description:@"Histogram vector is not implemented for this type."];
+    *error = [FedStatsError errorWithCode:900 description:@"Histogram vector is not implemented for this type."];
   }
 
   return 0;

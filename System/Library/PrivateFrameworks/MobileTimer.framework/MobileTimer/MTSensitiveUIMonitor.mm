@@ -4,7 +4,7 @@
 - (BOOL)_isVendorRelease;
 - (MTSensitiveUIMonitor)init;
 - (void)_handleNotification;
-- (void)_withLock:(id)a3;
+- (void)_withLock:(id)lock;
 - (void)dealloc;
 @end
 
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __37__MTSensitiveUIMonitor_sharedMonitor__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedMonitor_onceToken != -1)
   {
     dispatch_once(&sharedMonitor_onceToken, block);
@@ -88,11 +88,11 @@ void __40__MTSensitiveUIMonitor__isVendorRelease__block_invoke()
   [(MTSensitiveUIMonitor *)&v3 dealloc];
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -104,7 +104,7 @@ void __40__MTSensitiveUIMonitor__isVendorRelease__block_invoke()
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ sensitiveUIStateChanged", buf, 0xCu);
   }
 

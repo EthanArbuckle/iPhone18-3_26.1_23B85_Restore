@@ -1,23 +1,23 @@
 @interface MRDProcessHIDEventManager
-- (MRDProcessHIDEventManager)initWithBundleID:(id)a3 processID:(int)a4;
-- (void)dispatchHIDEvent:(__IOHIDEvent *)a3;
+- (MRDProcessHIDEventManager)initWithBundleID:(id)d processID:(int)iD;
+- (void)dispatchHIDEvent:(__IOHIDEvent *)event;
 @end
 
 @implementation MRDProcessHIDEventManager
 
-- (MRDProcessHIDEventManager)initWithBundleID:(id)a3 processID:(int)a4
+- (MRDProcessHIDEventManager)initWithBundleID:(id)d processID:(int)iD
 {
-  v6 = a3;
+  dCopy = d;
   v16.receiver = self;
   v16.super_class = MRDProcessHIDEventManager;
   v7 = [(MRDProcessHIDEventManager *)&v16 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [dCopy copy];
     bundleID = v7->_bundleID;
     v7->_bundleID = v8;
 
-    v7->_processID = a4;
+    v7->_processID = iD;
     v10 = objc_opt_class();
     Name = class_getName(v10);
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -29,15 +29,15 @@
   return v7;
 }
 
-- (void)dispatchHIDEvent:(__IOHIDEvent *)a3
+- (void)dispatchHIDEvent:(__IOHIDEvent *)event
 {
-  CFRetain(a3);
+  CFRetain(event);
   serialQueue = self->_serialQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10006B968;
   block[3] = &unk_1004B82A0;
-  block[4] = a3;
+  block[4] = event;
   dispatch_async(serialQueue, block);
 }
 

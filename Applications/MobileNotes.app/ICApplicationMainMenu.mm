@@ -1,14 +1,14 @@
 @interface ICApplicationMainMenu
-+ (void)buildMenuWithBuilder:(id)a3;
++ (void)buildMenuWithBuilder:(id)builder;
 - (ICApplicationMainMenu)init;
 @end
 
 @implementation ICApplicationMainMenu
 
-+ (void)buildMenuWithBuilder:(id)a3
++ (void)buildMenuWithBuilder:(id)builder
 {
   swift_unknownObjectRetain();
-  sub_100377420(a3);
+  sub_100377420(builder);
 
   swift_unknownObjectRelease();
 }

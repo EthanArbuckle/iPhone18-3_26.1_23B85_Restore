@@ -1,44 +1,44 @@
 @interface HMDNotificationRegistry
 + (id)logCategory;
-- (BOOL)hasRegistrationsForActionSetUUID:(id)a3;
-- (BOOL)removeRegistrationsForActionSetUUID:(id)a3;
-- (BOOL)removeRegistrationsForMediaProfile:(id)a3;
-- (BOOL)setNotificationsEnabled:(BOOL)a3 user:(id)a4 deviceIdsDestination:(id)a5 characteristicsPayload:(id)a6 characteristicChangeThresholdsPayload:(id)a7 mediaPropertiesPayload:(id)a8 actionSetsPayload:(id)a9 matterNotificationPayload:(id)a10;
+- (BOOL)hasRegistrationsForActionSetUUID:(id)d;
+- (BOOL)removeRegistrationsForActionSetUUID:(id)d;
+- (BOOL)removeRegistrationsForMediaProfile:(id)profile;
+- (BOOL)setNotificationsEnabled:(BOOL)enabled user:(id)user deviceIdsDestination:(id)destination characteristicsPayload:(id)payload characteristicChangeThresholdsPayload:(id)thresholdsPayload mediaPropertiesPayload:(id)propertiesPayload actionSetsPayload:(id)setsPayload matterNotificationPayload:(id)self0;
 - (HMDNotificationRegistry)init;
-- (HMDNotificationRegistry)initWithPendingRequestsRetryTimer:(id)a3;
-- (id)characteristicsByDestinationForCharacteristics:(id)a3 applyChangeThresholding:(BOOL)a4;
+- (HMDNotificationRegistry)initWithPendingRequestsRetryTimer:(id)timer;
+- (id)characteristicsByDestinationForCharacteristics:(id)characteristics applyChangeThresholding:(BOOL)thresholding;
 - (id)delegates;
-- (id)destinationsRegisteredForNotificationsForActionSetResponses:(id)a3;
-- (id)destinationsRegisteredForNotificationsForProperties:(id)a3;
-- (id)filterActionSetResponses:(id)a3 deviceIdsDestination:(id)a4;
-- (id)filterProperties:(id)a3 deviceIdsDestination:(id)a4;
+- (id)destinationsRegisteredForNotificationsForActionSetResponses:(id)responses;
+- (id)destinationsRegisteredForNotificationsForProperties:(id)properties;
+- (id)filterActionSetResponses:(id)responses deviceIdsDestination:(id)destination;
+- (id)filterProperties:(id)properties deviceIdsDestination:(id)destination;
 - (id)home;
 - (id)logIdentifier;
-- (id)propertiesRegisteredForMediaProfileUniqueIdentifier:(id)a3;
+- (id)propertiesRegisteredForMediaProfileUniqueIdentifier:(id)identifier;
 - (id)shortDescription;
-- (uint64_t)_processMediaPropertiesRequests:(void *)a1;
-- (void)_addPendingRequests:(void *)a1;
-- (void)_processCharacteristicsRequests:(void *)a1;
-- (void)addDelegate:(id)a3;
-- (void)auditNotificationDestinations:(id)a3 home:(id)a4;
+- (uint64_t)_processMediaPropertiesRequests:(void *)requests;
+- (void)_addPendingRequests:(void *)requests;
+- (void)_processCharacteristicsRequests:(void *)requests;
+- (void)addDelegate:(id)delegate;
+- (void)auditNotificationDestinations:(id)destinations home:(id)home;
 - (void)clearAllRegistrations;
-- (void)configureWithHome:(id)a3;
-- (void)configureWithHome:(id)a3 coreDataAdapter:(id)a4;
+- (void)configureWithHome:(id)home;
+- (void)configureWithHome:(id)home coreDataAdapter:(id)adapter;
 - (void)disableAllRegistrations;
-- (void)notifyDelegatesOfMediaRegistryUpdatesForMediaProfiles:(void *)a1;
-- (void)notifyDelegatesOfRegistryUpdatesForActionSets:(void *)a1;
-- (void)removeRegistrationsForCharacteristics:(id)a3;
+- (void)notifyDelegatesOfMediaRegistryUpdatesForMediaProfiles:(void *)profiles;
+- (void)notifyDelegatesOfRegistryUpdatesForActionSets:(void *)sets;
+- (void)removeRegistrationsForCharacteristics:(id)characteristics;
 - (void)reprocessEnabledCharacteristicRegistrations;
-- (void)storeCHIPRemoteSubscriberWithRemoteSourceID:(id)a3;
-- (void)timerDidFire:(id)a3;
+- (void)storeCHIPRemoteSubscriberWithRemoteSourceID:(id)d;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDNotificationRegistry
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v62 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  fireCopy = fire;
   if (self)
   {
     Property = objc_getProperty(self, v4, 64, 1);
@@ -52,10 +52,10 @@
     v8 = 0;
   }
 
-  if (v8 == v5)
+  if (v8 == fireCopy)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -68,18 +68,18 @@
     objc_autoreleasePoolPop(v9);
     if (self)
     {
-      v14 = objc_getProperty(v10, v13, 64, 1);
+      v14 = objc_getProperty(selfCopy, v13, 64, 1);
       dispatch_assert_queue_V2(v14);
-      v16 = [objc_getProperty(v10 v15];
-      [objc_getProperty(v10 v17];
+      v16 = [objc_getProperty(selfCopy v15];
+      [objc_getProperty(selfCopy v17];
       v18 = [v16 count];
       v19 = objc_autoreleasePoolPush();
-      v20 = v10;
+      v20 = selfCopy;
       v21 = HMFGetOSLogHandle();
       v22 = os_log_type_enabled(v21, OS_LOG_TYPE_INFO);
       if (v18)
       {
-        v45 = v5;
+        v45 = fireCopy;
         if (v22)
         {
           v23 = HMFGetLogIdentifier();
@@ -168,11 +168,11 @@
                 if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
                 {
                   v34 = HMFGetLogIdentifier();
-                  v35 = [v30 retryCount];
+                  retryCount = [v30 retryCount];
                   *v52 = 138543874;
                   v53 = v34;
                   v54 = 2048;
-                  v55 = v35;
+                  v55 = retryCount;
                   v56 = 2112;
                   v57 = v30;
                   _os_log_impl(&dword_229538000, v33, OS_LOG_TYPE_ERROR, "%{public}@Dropping pending request that is still around after %ld retries: %@", v52, 0x20u);
@@ -192,7 +192,7 @@
         [(HMDNotificationRegistry *)v20 _processMediaPropertiesRequests:v46];
 
         v16 = v44;
-        v5 = v45;
+        fireCopy = v45;
       }
 
       else
@@ -213,19 +213,19 @@
   v43 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processCharacteristicsRequests:(void *)a1
+- (void)_processCharacteristicsRequests:(void *)requests
 {
   v97 = *MEMORY[0x277D85DE8];
   v3 = a2;
   v65 = v3;
-  if (a1)
+  if (requests)
   {
     v5 = v3;
-    Property = objc_getProperty(a1, v4, 64, 1);
+    Property = objc_getProperty(requests, v4, 64, 1);
     dispatch_assert_queue_V2(Property);
     if ([v5 count])
     {
-      v71 = a1;
+      requestsCopy = requests;
       v69 = [MEMORY[0x277CBEB58] set];
       v66 = [MEMORY[0x277CBEB58] set];
       v68 = +[HMDHAPMetadata getSharedInstance];
@@ -253,7 +253,7 @@
             v73 = v7;
             v9 = *(*(&v79 + 1) + 8 * v7);
             v10 = objc_autoreleasePoolPush();
-            self = v71;
+            self = requestsCopy;
             v11 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
             {
@@ -304,22 +304,22 @@
 
                   if (v22)
                   {
-                    v23 = [v22 deviceIdsDestination];
-                    v24 = [v13 deviceIdsDestination];
-                    if ([v23 isEqualToString:v24])
+                    deviceIdsDestination = [v22 deviceIdsDestination];
+                    deviceIdsDestination2 = [v13 deviceIdsDestination];
+                    if ([deviceIdsDestination isEqualToString:deviceIdsDestination2])
                     {
-                      v25 = [v22 accessoryUUID];
-                      v26 = [v13 accessoryUUID];
-                      v27 = [v25 isEqual:v26];
+                      accessoryUUID = [v22 accessoryUUID];
+                      accessoryUUID2 = [v13 accessoryUUID];
+                      v27 = [accessoryUUID isEqual:accessoryUUID2];
 
                       if (v27)
                       {
-                        v28 = [v22 characteristicInstanceIDs];
-                        v29 = [v13 characteristicInstanceIDs];
-                        [v28 minusSet:v29];
+                        characteristicInstanceIDs = [v22 characteristicInstanceIDs];
+                        characteristicInstanceIDs2 = [v13 characteristicInstanceIDs];
+                        [characteristicInstanceIDs minusSet:characteristicInstanceIDs2];
 
-                        v30 = [v22 characteristicInstanceIDs];
-                        v31 = [v30 count] == 0;
+                        characteristicInstanceIDs3 = [v22 characteristicInstanceIDs];
+                        v31 = [characteristicInstanceIDs3 count] == 0;
 
                         v32 = objc_autoreleasePoolPush();
                         v33 = self;
@@ -375,8 +375,8 @@
             }
 
             WeakRetained = objc_loadWeakRetained(self + 7);
-            v41 = [v13 accessoryUUID];
-            v42 = [WeakRetained accessoryWithUUID:v41];
+            accessoryUUID3 = [v13 accessoryUUID];
+            v42 = [WeakRetained accessoryWithUUID:accessoryUUID3];
 
             objc_opt_class();
             if (objc_opt_isKindOfClass())
@@ -401,8 +401,8 @@
               v78 = v68;
               v45 = [v44 characteristicsPassingTest:v77];
               v46 = [v45 count];
-              v47 = [v13 characteristicInstanceIDs];
-              LOBYTE(v46) = v46 == [v47 count];
+              characteristicInstanceIDs4 = [v13 characteristicInstanceIDs];
+              LOBYTE(v46) = v46 == [characteristicInstanceIDs4 count];
 
               if (v46)
               {
@@ -465,7 +465,7 @@
         while (v72);
       }
 
-      v59 = [objc_getProperty(v71 v58];
+      v59 = [objc_getProperty(requestsCopy v58];
       v60 = v69;
       v61 = objc_autoreleasePoolPush();
       *&v83 = 0;
@@ -476,41 +476,41 @@
       *&buf[8] = 3221225472;
       *&buf[16] = __79__HMDNotificationRegistry__processCoreDataRequestResults_pendingRequestsToAdd___block_invoke;
       v93 = &unk_278671C68;
-      v94 = v71;
+      v94 = requestsCopy;
       v62 = v60;
       v95 = v62;
       v96 = &v83;
       [v59 hmf_enumerateWithAutoreleasePoolUsingBlock:buf];
-      a1 = *(*(&v83 + 1) + 24);
+      requests = *(*(&v83 + 1) + 24);
 
       _Block_object_dispose(&v83, 8);
       objc_autoreleasePoolPop(v61);
 
-      [(HMDNotificationRegistry *)v71 _addPendingRequests:v62];
+      [(HMDNotificationRegistry *)requestsCopy _addPendingRequests:v62];
     }
 
     else
     {
-      a1 = 0;
+      requests = 0;
     }
   }
 
   v63 = *MEMORY[0x277D85DE8];
-  return a1;
+  return requests;
 }
 
-- (uint64_t)_processMediaPropertiesRequests:(void *)a1
+- (uint64_t)_processMediaPropertiesRequests:(void *)requests
 {
   v114 = *MEMORY[0x277D85DE8];
   v3 = a2;
   v84 = v3;
-  if (!a1 || (v5 = v3, Property = objc_getProperty(a1, v4, 64, 1), dispatch_assert_queue_V2(Property), ![v5 count]))
+  if (!requests || (v5 = v3, Property = objc_getProperty(requests, v4, 64, 1), dispatch_assert_queue_V2(Property), ![v5 count]))
   {
     v88 = 0;
     goto LABEL_62;
   }
 
-  v90 = a1;
+  requestsCopy = requests;
   v86 = [MEMORY[0x277CBEB58] set];
   v85 = [MEMORY[0x277CBEB58] set];
   v97 = 0u;
@@ -542,7 +542,7 @@
       v92 = v7;
       v9 = *(*(&v95 + 1) + 8 * v7);
       v10 = objc_autoreleasePoolPush();
-      self = v90;
+      self = requestsCopy;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
@@ -593,22 +593,22 @@
 
             if (v22)
             {
-              v23 = [v22 deviceIdsDestination];
-              v24 = [v13 deviceIdsDestination];
-              if ([v23 isEqualToString:v24])
+              deviceIdsDestination = [v22 deviceIdsDestination];
+              deviceIdsDestination2 = [v13 deviceIdsDestination];
+              if ([deviceIdsDestination isEqualToString:deviceIdsDestination2])
               {
-                v25 = [v22 mediaProfileUUID];
-                v26 = [v13 mediaProfileUUID];
-                v27 = [v25 isEqual:v26];
+                mediaProfileUUID = [v22 mediaProfileUUID];
+                mediaProfileUUID2 = [v13 mediaProfileUUID];
+                v27 = [mediaProfileUUID isEqual:mediaProfileUUID2];
 
                 if (v27)
                 {
-                  v28 = [v22 mediaProperties];
-                  v29 = [v13 mediaProperties];
-                  [v28 minusSet:v29];
+                  mediaProperties = [v22 mediaProperties];
+                  mediaProperties2 = [v13 mediaProperties];
+                  [mediaProperties minusSet:mediaProperties2];
 
-                  v30 = [v22 mediaProperties];
-                  v31 = [v30 count] == 0;
+                  mediaProperties3 = [v22 mediaProperties];
+                  v31 = [mediaProperties3 count] == 0;
 
                   v32 = objc_autoreleasePoolPush();
                   v33 = self;
@@ -663,51 +663,51 @@
         while (v39);
       }
 
-      v40 = [(HMDNotificationRegistry *)self home];
-      v41 = [v13 mediaProfileUUID];
-      v42 = [v40 mediaProfileWithUUID:v41];
+      home = [(HMDNotificationRegistry *)self home];
+      mediaProfileUUID3 = [v13 mediaProfileUUID];
+      v42 = [home mediaProfileWithUUID:mediaProfileUUID3];
 
       if (v42)
       {
-        v43 = [v13 mediaProperties];
-        v44 = [v43 count] == 0;
+        mediaProperties4 = [v13 mediaProperties];
+        v44 = [mediaProperties4 count] == 0;
 
         if (!v44)
         {
-          v45 = [v13 enable];
+          enable = [v13 enable];
           v46 = objc_autoreleasePoolPush();
           v47 = self;
           v48 = HMFGetOSLogHandle();
           v49 = os_log_type_enabled(v48, OS_LOG_TYPE_INFO);
-          if (v45)
+          if (enable)
           {
             if (v49)
             {
               v50 = HMFGetLogIdentifier();
-              v51 = [v13 mediaProperties];
+              mediaProperties5 = [v13 mediaProperties];
               *buf = 138543874;
               v109 = v50;
               v110 = 2112;
               v111 = v42;
               v112 = 2112;
-              v113 = v51;
+              v113 = mediaProperties5;
               _os_log_impl(&dword_229538000, v48, OS_LOG_TYPE_INFO, "%{public}@Enabling notification for media profile: %@ media properties: %@", buf, 0x20u);
             }
 
             objc_autoreleasePoolPop(v46);
-            v52 = [v13 mediaProperties];
-            v53 = [v13 user];
-            v54 = [v13 deviceIdsDestination];
+            mediaProperties6 = [v13 mediaProperties];
+            user = [v13 user];
+            deviceIdsDestination3 = [v13 deviceIdsDestination];
             v55 = v42;
-            v56 = v52;
-            v57 = v53;
-            v58 = v54;
-            if ([v56 count])
+            uniqueIdentifier = mediaProperties6;
+            v57 = user;
+            v58 = deviceIdsDestination3;
+            if ([uniqueIdentifier count])
             {
               v59 = v47 + 2;
               os_unfair_lock_lock_with_options();
               v61 = objc_getProperty(v47, v60, 32, 1);
-              v62 = [v61 enableNotificationForMediaProfile:v55 mediaProperties:v56 user:v57 deviceIdsDestination:v58];
+              v62 = [v61 enableNotificationForMediaProfile:v55 mediaProperties:uniqueIdentifier user:v57 deviceIdsDestination:v58];
 
               os_unfair_lock_unlock(v59);
               if ((v62 & 1) == 0)
@@ -728,30 +728,30 @@ LABEL_53:
             if (v49)
             {
               v72 = HMFGetLogIdentifier();
-              v73 = [v13 mediaProperties];
+              mediaProperties7 = [v13 mediaProperties];
               *buf = 138543874;
               v109 = v72;
               v110 = 2112;
               v111 = v42;
               v112 = 2112;
-              v113 = v73;
+              v113 = mediaProperties7;
               _os_log_impl(&dword_229538000, v48, OS_LOG_TYPE_INFO, "%{public}@Disabling notification for media profile: %@ media properties: %@", buf, 0x20u);
             }
 
             objc_autoreleasePoolPop(v46);
-            v74 = [v13 mediaProperties];
-            v75 = [v13 user];
-            v76 = [v13 deviceIdsDestination];
+            mediaProperties8 = [v13 mediaProperties];
+            user2 = [v13 user];
+            deviceIdsDestination4 = [v13 deviceIdsDestination];
             v55 = v42;
-            v56 = v74;
-            v57 = v75;
-            v58 = v76;
-            if ([v56 count])
+            uniqueIdentifier = mediaProperties8;
+            v57 = user2;
+            v58 = deviceIdsDestination4;
+            if ([uniqueIdentifier count])
             {
               v77 = v47 + 2;
               os_unfair_lock_lock_with_options();
               v79 = objc_getProperty(v47, v78, 32, 1);
-              v80 = [v79 disableNotificationForMediaProfile:v55 mediaProperties:v56 user:v57 deviceIdsDestination:v58];
+              v80 = [v79 disableNotificationForMediaProfile:v55 mediaProperties:uniqueIdentifier user:v57 deviceIdsDestination:v58];
 
               os_unfair_lock_unlock(v77);
               if ((v80 & 1) == 0)
@@ -760,8 +760,8 @@ LABEL_53:
               }
 
 LABEL_50:
-              v56 = [v42 uniqueIdentifier];
-              [v85 addObject:v56];
+              uniqueIdentifier = [v42 uniqueIdentifier];
+              [v85 addObject:uniqueIdentifier];
               v63 = 1;
 LABEL_52:
 
@@ -820,11 +820,11 @@ LABEL_54:
   while (v91);
 LABEL_59:
 
-  [(HMDNotificationRegistry *)v90 _addPendingRequests:v86];
+  [(HMDNotificationRegistry *)requestsCopy _addPendingRequests:v86];
   if ([v85 count])
   {
-    v81 = [v85 allObjects];
-    [(HMDNotificationRegistry *)v90 notifyDelegatesOfMediaRegistryUpdatesForMediaProfiles:v81];
+    allObjects = [v85 allObjects];
+    [(HMDNotificationRegistry *)requestsCopy notifyDelegatesOfMediaRegistryUpdatesForMediaProfiles:allObjects];
   }
 
 LABEL_62:
@@ -843,17 +843,17 @@ LABEL_62:
   return WeakRetained;
 }
 
-- (void)_addPendingRequests:(void *)a1
+- (void)_addPendingRequests:(void *)requests
 {
   v15 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  Property = objc_getProperty(a1, v4, 64, 1);
+  Property = objc_getProperty(requests, v4, 64, 1);
   dispatch_assert_queue_V2(Property);
   if ([v3 count])
   {
-    [objc_getProperty(a1 v6];
+    [objc_getProperty(requests v6];
     v7 = objc_autoreleasePoolPush();
-    v8 = a1;
+    requestsCopy = requests;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -864,28 +864,28 @@ LABEL_62:
     }
 
     objc_autoreleasePoolPop(v7);
-    [objc_getProperty(v8 v11];
+    [objc_getProperty(requestsCopy v11];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyDelegatesOfMediaRegistryUpdatesForMediaProfiles:(void *)a1
+- (void)notifyDelegatesOfMediaRegistryUpdatesForMediaProfiles:(void *)profiles
 {
   v3 = a2;
-  if (a1)
+  if (profiles)
   {
-    v4 = [(HMDNotificationRegistry *)a1 delegates];
-    v5 = [v4 allObjects];
+    delegates = [(HMDNotificationRegistry *)profiles delegates];
+    allObjects = [delegates allObjects];
 
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, profiles);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __81__HMDNotificationRegistry_notifyDelegatesOfMediaRegistryUpdatesForMediaProfiles___block_invoke;
     v6[3] = &unk_278671C90;
     objc_copyWeak(&v8, &location);
     v7 = v3;
-    [v5 na_each:v6];
+    [allObjects na_each:v6];
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
@@ -895,8 +895,8 @@ LABEL_62:
 - (id)delegates
 {
   os_unfair_lock_lock_with_options();
-  v2 = [*(a1 + 16) copy];
-  os_unfair_lock_unlock((a1 + 8));
+  v2 = [*(self + 16) copy];
+  os_unfair_lock_unlock((self + 8));
 
   return v2;
 }
@@ -1094,19 +1094,19 @@ LABEL_15:
 
 - (id)logIdentifier
 {
-  v2 = [(HMDNotificationRegistry *)&self->super.super.isa home];
-  v3 = [v2 uuid];
-  v4 = [v3 UUIDString];
+  home = [(HMDNotificationRegistry *)&self->super.super.isa home];
+  uuid = [home uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1114,29 +1114,29 @@ LABEL_15:
     v10 = 138543618;
     v11 = v8;
     v12 = 2112;
-    v13 = v4;
+    v13 = delegateCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@adding delegate %@", &v10, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   os_unfair_lock_lock_with_options();
-  [(NSHashTable *)v6->_delegates addObject:v4];
-  os_unfair_lock_unlock(&v6->_lock);
+  [(NSHashTable *)selfCopy->_delegates addObject:delegateCopy];
+  os_unfair_lock_unlock(&selfCopy->_lock);
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setNotificationsEnabled:(BOOL)a3 user:(id)a4 deviceIdsDestination:(id)a5 characteristicsPayload:(id)a6 characteristicChangeThresholdsPayload:(id)a7 mediaPropertiesPayload:(id)a8 actionSetsPayload:(id)a9 matterNotificationPayload:(id)a10
+- (BOOL)setNotificationsEnabled:(BOOL)enabled user:(id)user deviceIdsDestination:(id)destination characteristicsPayload:(id)payload characteristicChangeThresholdsPayload:(id)thresholdsPayload mediaPropertiesPayload:(id)propertiesPayload actionSetsPayload:(id)setsPayload matterNotificationPayload:(id)self0
 {
-  v217 = a3;
+  enabledCopy = enabled;
   v271 = *MEMORY[0x277D85DE8];
-  v219 = a4;
-  v220 = a5;
-  v15 = a6;
-  v204 = a7;
-  v199 = a8;
-  v201 = a9;
-  v212 = a10;
+  userCopy = user;
+  destinationCopy = destination;
+  payloadCopy = payload;
+  thresholdsPayloadCopy = thresholdsPayload;
+  propertiesPayloadCopy = propertiesPayload;
+  setsPayloadCopy = setsPayload;
+  notificationPayloadCopy = notificationPayload;
   if (self)
   {
     Property = objc_getProperty(self, v16, 64, 1);
@@ -1149,33 +1149,33 @@ LABEL_15:
 
   dispatch_assert_queue_V2(Property);
   v18 = objc_autoreleasePoolPush();
-  v205 = self;
+  selfCopy = self;
   selfa = self;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
     v20 = HMFGetLogIdentifier();
     v21 = HMFBooleanToString();
-    v22 = [v219 shortDescription];
+    shortDescription = [userCopy shortDescription];
     *buf = 138544130;
     *&buf[4] = v20;
     *&buf[12] = 2112;
     *&buf[14] = v21;
     *&buf[22] = 2112;
-    v269 = v22;
+    v269 = shortDescription;
     LOWORD(v270) = 2112;
-    *(&v270 + 2) = v220;
+    *(&v270 + 2) = destinationCopy;
     _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_INFO, "%{public}@Setting notifications enabled to %@ for user: %@ deviceIdsDestination: %@", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v18);
-  v213 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v201, "count")}];
-  v207 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v15, "count")}];
+  v213 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(setsPayloadCopy, "count")}];
+  v207 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(payloadCopy, "count")}];
   v249 = 0u;
   v250 = 0u;
   v247 = 0u;
   v248 = 0u;
-  obj = v15;
+  obj = payloadCopy;
   v225 = [obj countByEnumeratingWithState:&v247 objects:v262 count:16];
   if (v225)
   {
@@ -1210,8 +1210,8 @@ LABEL_15:
           v227 = v27;
           if (v27)
           {
-            v28 = [v27 UUIDString];
-            v29 = [obj objectForKeyedSubscript:v28];
+            uUIDString = [v27 UUIDString];
+            v29 = [obj objectForKeyedSubscript:uUIDString];
 
             v30 = v29;
             objc_opt_class();
@@ -1229,14 +1229,14 @@ LABEL_15:
 
             if (v32)
             {
-              v33 = [[HMDNotificationRegistryCharacteristicsRequest alloc] initWithEnable:v217 user:v219 deviceIdsDestination:v220 accessoryUUID:v227];
-              v34 = v204;
+              v33 = [[HMDNotificationRegistryCharacteristicsRequest alloc] initWithEnable:enabledCopy user:userCopy deviceIdsDestination:destinationCopy accessoryUUID:v227];
+              v34 = thresholdsPayloadCopy;
               v215 = v227;
-              if (v205)
+              if (selfCopy)
               {
                 v35 = objc_autoreleasePoolPush();
-                v36 = [v215 UUIDString];
-                v37 = [v34 objectForKeyedSubscript:v36];
+                uUIDString2 = [v215 UUIDString];
+                v37 = [v34 objectForKeyedSubscript:uUIDString2];
 
                 v38 = v37;
                 objc_opt_class();
@@ -1254,13 +1254,13 @@ LABEL_15:
 
                 if (v40)
                 {
-                  v41 = [MEMORY[0x277CBEB38] dictionary];
+                  dictionary = [MEMORY[0x277CBEB38] dictionary];
                   *buf = MEMORY[0x277D85DD0];
                   *&buf[8] = 3221225472;
                   *&buf[16] = __74__HMDNotificationRegistry_parseChangeThresholdsFromPayload_accessoryUUID___block_invoke;
                   v269 = &unk_278671C40;
                   *&v270 = selfa;
-                  v42 = v41;
+                  v42 = dictionary;
                   *(&v270 + 1) = v42;
                   [v40 na_each:buf];
                   v210 = v26;
@@ -1295,12 +1295,12 @@ LABEL_15:
 
               if ([v49 count])
               {
-                v66 = [(HMDNotificationRegistryCharacteristicsRequest *)v33 characteristicChangeThresholds];
-                [v66 addEntriesFromDictionary:v49];
+                characteristicChangeThresholds = [(HMDNotificationRegistryCharacteristicsRequest *)v33 characteristicChangeThresholds];
+                [characteristicChangeThresholds addEntriesFromDictionary:v49];
               }
 
-              v67 = [(HMDNotificationRegistryCharacteristicsRequest *)v33 characteristicInstanceIDs];
-              [v67 addObjectsFromArray:v32];
+              characteristicInstanceIDs = [(HMDNotificationRegistryCharacteristicsRequest *)v33 characteristicInstanceIDs];
+              [characteristicInstanceIDs addObjectsFromArray:v32];
 
               [v207 addObject:v33];
             }
@@ -1380,12 +1380,12 @@ LABEL_15:
     while (v68);
   }
 
-  v211 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v199, "count")}];
+  v211 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(propertiesPayloadCopy, "count")}];
   v245 = 0u;
   v246 = 0u;
   v243 = 0u;
   v244 = 0u;
-  v223 = v199;
+  v223 = propertiesPayloadCopy;
   v69 = [v223 countByEnumeratingWithState:&v243 objects:v261 count:16];
   if (v69)
   {
@@ -1421,8 +1421,8 @@ LABEL_15:
           v75 = v74;
           if (v74)
           {
-            v76 = [v74 UUIDString];
-            v77 = [v223 objectForKeyedSubscript:v76];
+            uUIDString3 = [v74 UUIDString];
+            v77 = [v223 objectForKeyedSubscript:uUIDString3];
 
             v78 = v77;
             objc_opt_class();
@@ -1440,9 +1440,9 @@ LABEL_15:
 
             if (v80)
             {
-              v81 = [[HMDNotificationRegistryMediaPropertiesRequest alloc] initWithEnable:v217 user:v219 deviceIdsDestination:v220 mediaProfileUUID:v75];
-              v82 = [(HMDNotificationRegistryMediaPropertiesRequest *)v81 mediaProperties];
-              [v82 addObjectsFromArray:v80];
+              v81 = [[HMDNotificationRegistryMediaPropertiesRequest alloc] initWithEnable:enabledCopy user:userCopy deviceIdsDestination:destinationCopy mediaProfileUUID:v75];
+              mediaProperties = [(HMDNotificationRegistryMediaPropertiesRequest *)v81 mediaProperties];
+              [mediaProperties addObjectsFromArray:v80];
 
               [v211 addObject:v81];
             }
@@ -1527,7 +1527,7 @@ LABEL_15:
   v242 = 0u;
   v240 = 0u;
   v239 = 0u;
-  v216 = v201;
+  v216 = setsPayloadCopy;
   v99 = [v216 countByEnumeratingWithState:&v239 objects:v260 count:16];
   if (v99)
   {
@@ -1560,7 +1560,7 @@ LABEL_15:
           v105 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v104];
           if (v105)
           {
-            v106 = [[HMDNotificationRegistryActionSetRequest alloc] initWithEnable:v217 user:v219 deviceIdsDestination:v220 actionSetUUID:v105];
+            v106 = [[HMDNotificationRegistryActionSetRequest alloc] initWithEnable:enabledCopy user:userCopy deviceIdsDestination:destinationCopy actionSetUUID:v105];
             [v213 addObject:v106];
           }
 
@@ -1607,7 +1607,7 @@ LABEL_15:
   }
 
   v197 = v213;
-  if (!v205 || (v116 = objc_getProperty(selfa, v115, 64, 1), dispatch_assert_queue_V2(v116), ![v197 count]))
+  if (!selfCopy || (v116 = objc_getProperty(selfa, v115, 64, 1), dispatch_assert_queue_V2(v116), ![v197 count]))
   {
     v209 = 0;
     goto LABEL_141;
@@ -1664,8 +1664,8 @@ LABEL_15:
       v258 = 0u;
       v255 = 0u;
       v256 = 0u;
-      v126 = [objc_getProperty(v229 v125];
-      v127 = [v126 countByEnumeratingWithState:&v255 objects:buf count:16];
+      v125 = [objc_getProperty(v229 v125];
+      v127 = [v125 countByEnumeratingWithState:&v255 objects:buf count:16];
       if (v127)
       {
         v128 = *v256;
@@ -1675,7 +1675,7 @@ LABEL_15:
           {
             if (*v256 != v128)
             {
-              objc_enumerationMutation(v126);
+              objc_enumerationMutation(v125);
             }
 
             v130 = *(*(&v255 + 1) + 8 * j);
@@ -1694,13 +1694,13 @@ LABEL_15:
 
             if (v132)
             {
-              v133 = [v132 deviceIdsDestination];
-              v134 = [v132 deviceIdsDestination];
-              if ([v133 isEqualToString:v134])
+              deviceIdsDestination = [v132 deviceIdsDestination];
+              deviceIdsDestination2 = [v132 deviceIdsDestination];
+              if ([deviceIdsDestination isEqualToString:deviceIdsDestination2])
               {
-                v135 = [v132 actionSetUUID];
-                v136 = [v132 actionSetUUID];
-                v137 = [v135 isEqual:v136];
+                actionSetUUID = [v132 actionSetUUID];
+                actionSetUUID2 = [v132 actionSetUUID];
+                v137 = [actionSetUUID isEqual:actionSetUUID2];
 
                 if (v137)
                 {
@@ -1728,24 +1728,24 @@ LABEL_15:
             }
           }
 
-          v127 = [v126 countByEnumeratingWithState:&v255 objects:buf count:16];
+          v127 = [v125 countByEnumeratingWithState:&v255 objects:buf count:16];
         }
 
         while (v127);
       }
 
-      v143 = [(HMDNotificationRegistry *)&v229->super.super.isa home];
-      v144 = [v218 actionSetUUID];
-      v145 = [v143 actionSetWithUUID:v144];
+      home = [(HMDNotificationRegistry *)&v229->super.super.isa home];
+      actionSetUUID3 = [v218 actionSetUUID];
+      v145 = [home actionSetWithUUID:actionSetUUID3];
 
       if (v145)
       {
-        v146 = [v218 enable];
+        enable = [v218 enable];
         v147 = objc_autoreleasePoolPush();
         v148 = v229;
         v149 = HMFGetOSLogHandle();
         v150 = os_log_type_enabled(v149, OS_LOG_TYPE_INFO);
-        if (v146)
+        if (enable)
         {
           if (v150)
           {
@@ -1758,12 +1758,12 @@ LABEL_15:
           }
 
           objc_autoreleasePoolPop(v147);
-          v152 = [v145 uuid];
-          v153 = [v218 user];
-          v154 = [v218 deviceIdsDestination];
-          v155 = v152;
-          v156 = v153;
-          v157 = v154;
+          uuid = [v145 uuid];
+          user = [v218 user];
+          deviceIdsDestination3 = [v218 deviceIdsDestination];
+          v155 = uuid;
+          v156 = user;
+          v157 = deviceIdsDestination3;
           v158 = v148 + 2;
           os_unfair_lock_lock_with_options();
           v160 = objc_getProperty(v148, v159, 32, 1);
@@ -1776,8 +1776,8 @@ LABEL_15:
           }
 
 LABEL_131:
-          v178 = [v145 uuid];
-          [v198 addObject:v178];
+          uuid2 = [v145 uuid];
+          [v198 addObject:uuid2];
 
           v162 = 1;
         }
@@ -1795,12 +1795,12 @@ LABEL_131:
           }
 
           objc_autoreleasePoolPop(v147);
-          v168 = [v145 uuid];
-          v169 = [v218 user];
-          v170 = [v218 deviceIdsDestination];
-          v171 = v168;
-          v172 = v169;
-          v173 = v170;
+          uuid3 = [v145 uuid];
+          user2 = [v218 user];
+          deviceIdsDestination4 = [v218 deviceIdsDestination];
+          v171 = uuid3;
+          v172 = user2;
+          v173 = deviceIdsDestination4;
           v174 = v148 + 2;
           os_unfair_lock_lock_with_options();
           v176 = objc_getProperty(v148, v175, 32, 1);
@@ -1850,12 +1850,12 @@ LABEL_138:
   [(HMDNotificationRegistry *)selfa _addPendingRequests:v200];
   if ([v198 count])
   {
-    v179 = [v198 allObjects];
-    [(HMDNotificationRegistry *)selfa notifyDelegatesOfRegistryUpdatesForActionSets:v179];
+    allObjects = [v198 allObjects];
+    [(HMDNotificationRegistry *)selfa notifyDelegatesOfRegistryUpdatesForActionSets:allObjects];
   }
 
 LABEL_141:
-  v226 = [(HMDNotificationRegistry *)&selfa->super.super.isa home];
+  home2 = [(HMDNotificationRegistry *)&selfa->super.super.isa home];
   v180 = objc_autoreleasePoolPush();
   v230 = selfa;
   v181 = HMFGetOSLogHandle();
@@ -1865,7 +1865,7 @@ LABEL_141:
     *buf = 138543618;
     *&buf[4] = v182;
     *&buf[12] = 2112;
-    *&buf[14] = v212;
+    *&buf[14] = notificationPayloadCopy;
     _os_log_impl(&dword_229538000, v181, OS_LOG_TYPE_INFO, "%{public}@Handling notification registration for matter attributes. payload=%@", buf, 0x16u);
   }
 
@@ -1874,8 +1874,8 @@ LABEL_141:
   v238 = 0u;
   v235 = 0u;
   v236 = 0u;
-  v183 = [v226 hapAccessories];
-  v184 = [v183 countByEnumeratingWithState:&v235 objects:v259 count:16];
+  hapAccessories = [home2 hapAccessories];
+  v184 = [hapAccessories countByEnumeratingWithState:&v235 objects:v259 count:16];
   if (v184)
   {
     v185 = 0;
@@ -1886,14 +1886,14 @@ LABEL_141:
       {
         if (*v236 != v186)
         {
-          objc_enumerationMutation(v183);
+          objc_enumerationMutation(hapAccessories);
         }
 
         v188 = *(*(&v235 + 1) + 8 * k);
-        v189 = [v188 matterNodeID];
-        if (([v189 isEqual:&unk_283E71D08] & 1) == 0)
+        matterNodeID = [v188 matterNodeID];
+        if (([matterNodeID isEqual:&unk_283E71D08] & 1) == 0)
         {
-          v190 = [v212 hmf_dictionaryForKey:v189];
+          v190 = [notificationPayloadCopy hmf_dictionaryForKey:matterNodeID];
           v191 = v190 == 0;
 
           if (!v191)
@@ -1902,9 +1902,9 @@ LABEL_141:
             v231[1] = 3221225472;
             v231[2] = __205__HMDNotificationRegistry_setNotificationsEnabled_user_deviceIdsDestination_characteristicsPayload_characteristicChangeThresholdsPayload_mediaPropertiesPayload_actionSetsPayload_matterNotificationPayload___block_invoke;
             v231[3] = &unk_278689668;
-            v232 = v189;
+            v232 = matterNodeID;
             v233 = v230;
-            v234 = v226;
+            v234 = home2;
             [v188 setCHIPReportHandler:v231];
 
             v185 = 1;
@@ -1912,14 +1912,14 @@ LABEL_141:
         }
       }
 
-      v184 = [v183 countByEnumeratingWithState:&v235 objects:v259 count:16];
+      v184 = [hapAccessories countByEnumeratingWithState:&v235 objects:v259 count:16];
     }
 
     while (v184);
 
     if (v185)
     {
-      [(HMDNotificationRegistry *)v230 storeCHIPRemoteSubscriberWithRemoteSourceID:v220];
+      [(HMDNotificationRegistry *)v230 storeCHIPRemoteSubscriberWithRemoteSourceID:destinationCopy];
       v192 = 1;
       goto LABEL_157;
     }
@@ -1935,7 +1935,7 @@ LABEL_157:
   v194 = v193 | [(HMDNotificationRegistry *)v230 _processMediaPropertiesRequests:v211];
   if ((v192 | v209 | v194))
   {
-    [v226 saveToCurrentAccountWithReason:@"kModifyCharacterisiticNotificationsRequestKey"];
+    [home2 saveToCurrentAccountWithReason:@"kModifyCharacterisiticNotificationsRequestKey"];
   }
 
   v195 = *MEMORY[0x277D85DE8];
@@ -1987,22 +1987,22 @@ void __205__HMDNotificationRegistry_setNotificationsEnabled_user_deviceIdsDestin
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyDelegatesOfRegistryUpdatesForActionSets:(void *)a1
+- (void)notifyDelegatesOfRegistryUpdatesForActionSets:(void *)sets
 {
   v3 = a2;
-  if (a1)
+  if (sets)
   {
-    v4 = [(HMDNotificationRegistry *)a1 delegates];
-    v5 = [v4 allObjects];
+    delegates = [(HMDNotificationRegistry *)sets delegates];
+    allObjects = [delegates allObjects];
 
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, sets);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __73__HMDNotificationRegistry_notifyDelegatesOfRegistryUpdatesForActionSets___block_invoke;
     v6[3] = &unk_278671C90;
     objc_copyWeak(&v8, &location);
     v7 = v3;
-    [v5 na_each:v6];
+    [allObjects na_each:v6];
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
@@ -2157,29 +2157,29 @@ LABEL_20:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)storeCHIPRemoteSubscriberWithRemoteSourceID:(id)a3
+- (void)storeCHIPRemoteSubscriberWithRemoteSourceID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v4 = a3;
-    v5 = [(HMDNotificationRegistry *)self chipRemoteSubscribers];
+    dCopy = d;
+    chipRemoteSubscribers = [(HMDNotificationRegistry *)self chipRemoteSubscribers];
 
-    if (!v5)
+    if (!chipRemoteSubscribers)
     {
       v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
       [(HMDNotificationRegistry *)self setChipRemoteSubscribers:v6];
     }
 
-    v7 = [(HMDNotificationRegistry *)self chipRemoteSubscribers];
-    [v7 addObject:v4];
+    chipRemoteSubscribers2 = [(HMDNotificationRegistry *)self chipRemoteSubscribers];
+    [chipRemoteSubscribers2 addObject:dCopy];
   }
 }
 
-- (void)auditNotificationDestinations:(id)a3 home:(id)a4
+- (void)auditNotificationDestinations:(id)destinations home:(id)home
 {
-  v6 = a3;
-  v30 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
+  destinationsCopy = destinations;
+  homeCopy = home;
+  array = [MEMORY[0x277CBEB18] array];
   os_unfair_lock_lock_with_options();
   if (self)
   {
@@ -2192,7 +2192,7 @@ LABEL_20:
   }
 
   v10 = Property;
-  v11 = [v10 removeCharacteristicRegistrationsWithoutAllowedDestinations:v6];
+  v11 = [v10 removeCharacteristicRegistrationsWithoutAllowedDestinations:destinationsCopy];
 
   if (isiOSDevice())
   {
@@ -2200,28 +2200,28 @@ LABEL_20:
     v39[1] = 3221225472;
     v39[2] = __62__HMDNotificationRegistry_auditNotificationDestinations_home___block_invoke;
     v39[3] = &unk_278671B90;
-    v40 = v30;
-    v41 = v7;
+    v40 = homeCopy;
+    v41 = array;
     [v11 na_each:v39];
   }
 
   v12 = +[HMDDeviceCapabilities deviceCapabilities];
-  v13 = [v12 isResidentCapable];
+  isResidentCapable = [v12 isResidentCapable];
 
-  if (v13)
+  if (isResidentCapable)
   {
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
     v37[2] = __62__HMDNotificationRegistry_auditNotificationDestinations_home___block_invoke_188;
     v37[3] = &unk_278671BB8;
-    v38 = v30;
+    v38 = homeCopy;
     v15 = [v11 na_map:v37];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __62__HMDNotificationRegistry_auditNotificationDestinations_home___block_invoke_2_190;
     v35[3] = &unk_278682908;
     v35[4] = self;
-    v36 = v7;
+    v36 = array;
     [v15 na_each:v35];
   }
 
@@ -2236,7 +2236,7 @@ LABEL_20:
   }
 
   v17 = v16;
-  v18 = [v17 removeMediaRegistrationsWithoutAllowedDestinations:v6];
+  v18 = [v17 removeMediaRegistrationsWithoutAllowedDestinations:destinationsCopy];
 
   if ([v18 count])
   {
@@ -2249,7 +2249,7 @@ LABEL_20:
     v21 = v20;
     v34 = v21;
     v22 = _Block_copy(aBlock);
-    [v7 addObject:v22];
+    [array addObject:v22];
   }
 
   if (self)
@@ -2263,7 +2263,7 @@ LABEL_20:
   }
 
   v24 = v23;
-  v25 = [v24 removeActionSetRegistrationsWithoutAllowedDestinations:v6];
+  v25 = [v24 removeActionSetRegistrationsWithoutAllowedDestinations:destinationsCopy];
 
   if ([v25 count])
   {
@@ -2276,11 +2276,11 @@ LABEL_20:
     v27 = v26;
     v32 = v27;
     v28 = _Block_copy(v31);
-    [v7 addObject:v28];
+    [array addObject:v28];
   }
 
   os_unfair_lock_unlock((self + v29));
-  [v7 na_each:&__block_literal_global_200_28744];
+  [array na_each:&__block_literal_global_200_28744];
 }
 
 void __62__HMDNotificationRegistry_auditNotificationDestinations_home___block_invoke(uint64_t a1, void *a2)
@@ -2453,11 +2453,11 @@ void __62__HMDNotificationRegistry_auditNotificationDestinations_home___block_in
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)destinationsRegisteredForNotificationsForActionSetResponses:(id)a3
+- (id)destinationsRegisteredForNotificationsForActionSetResponses:(id)responses
 {
   v25 = *MEMORY[0x277D85DE8];
-  v19 = a3;
-  if ([v19 count])
+  responsesCopy = responses;
+  if ([responsesCopy count])
   {
     v4 = [MEMORY[0x277CBEB58] set];
     os_unfair_lock_lock_with_options();
@@ -2465,7 +2465,7 @@ void __62__HMDNotificationRegistry_auditNotificationDestinations_home___block_in
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v5 = v19;
+    v5 = responsesCopy;
     v7 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v7)
     {
@@ -2492,8 +2492,8 @@ void __62__HMDNotificationRegistry_auditNotificationDestinations_home___block_in
           }
 
           v12 = Property;
-          v13 = [v10 actionSetUUID];
-          v14 = [v12 destinationsToNotifyForActionSetUUID:v13];
+          actionSetUUID = [v10 actionSetUUID];
+          v14 = [v12 destinationsToNotifyForActionSetUUID:actionSetUUID];
 
           [v4 addObjectsFromArray:v14];
           ++v9;
@@ -2521,11 +2521,11 @@ void __62__HMDNotificationRegistry_auditNotificationDestinations_home___block_in
   return v16;
 }
 
-- (id)destinationsRegisteredForNotificationsForProperties:(id)a3
+- (id)destinationsRegisteredForNotificationsForProperties:(id)properties
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  propertiesCopy = properties;
+  if ([propertiesCopy count])
   {
     v5 = [MEMORY[0x277CBEB58] set];
     os_unfair_lock_lock_with_options();
@@ -2533,7 +2533,7 @@ void __62__HMDNotificationRegistry_auditNotificationDestinations_home___block_in
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = v4;
+    v6 = propertiesCopy;
     v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
@@ -2588,18 +2588,18 @@ void __62__HMDNotificationRegistry_auditNotificationDestinations_home___block_in
   return v16;
 }
 
-- (id)characteristicsByDestinationForCharacteristics:(id)a3 applyChangeThresholding:(BOOL)a4
+- (id)characteristicsByDestinationForCharacteristics:(id)characteristics applyChangeThresholding:(BOOL)thresholding
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a3;
-  v8 = [v6 dictionary];
+  characteristicsCopy = characteristics;
+  dictionary = [v6 dictionary];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __98__HMDNotificationRegistry_characteristicsByDestinationForCharacteristics_applyChangeThresholding___block_invoke;
   v12[3] = &unk_278671B68;
   v12[4] = self;
-  v13 = a4;
-  v9 = [v7 na_reduceWithInitialValue:v8 reducer:v12];
+  thresholdingCopy = thresholding;
+  v9 = [characteristicsCopy na_reduceWithInitialValue:dictionary reducer:v12];
 
   v10 = [v9 copy];
 
@@ -2645,21 +2645,21 @@ void __98__HMDNotificationRegistry_characteristicsByDestinationForCharacteristic
   [v3 addObject:*(a1 + 40)];
 }
 
-- (id)filterActionSetResponses:(id)a3 deviceIdsDestination:(id)a4
+- (id)filterActionSetResponses:(id)responses deviceIdsDestination:(id)destination
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v21 = v6;
-  if ([v6 count])
+  responsesCopy = responses;
+  destinationCopy = destination;
+  v21 = responsesCopy;
+  if ([responsesCopy count])
   {
-    v22 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    v22 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(responsesCopy, "count")}];
     os_unfair_lock_lock_with_options();
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    obj = v6;
+    obj = responsesCopy;
     v9 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v9)
     {
@@ -2686,10 +2686,10 @@ void __98__HMDNotificationRegistry_characteristicsByDestinationForCharacteristic
           }
 
           v14 = Property;
-          v15 = [v12 actionSetUUID];
-          v16 = [v14 destinationsToNotifyForActionSetUUID:v15];
+          actionSetUUID = [v12 actionSetUUID];
+          v16 = [v14 destinationsToNotifyForActionSetUUID:actionSetUUID];
 
-          if ([v16 containsObject:v7])
+          if ([v16 containsObject:destinationCopy])
           {
             [v22 addObject:v12];
           }
@@ -2719,9 +2719,9 @@ void __98__HMDNotificationRegistry_characteristicsByDestinationForCharacteristic
   return v18;
 }
 
-- (BOOL)hasRegistrationsForActionSetUUID:(id)a3
+- (BOOL)hasRegistrationsForActionSetUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock_with_options();
   if (self)
   {
@@ -2734,15 +2734,15 @@ void __98__HMDNotificationRegistry_characteristicsByDestinationForCharacteristic
   }
 
   v7 = Property;
-  v8 = [v7 hasEnabledRegistrationForActionSetUUID:v4];
+  v8 = [v7 hasEnabledRegistrationForActionSetUUID:dCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   return v8;
 }
 
-- (id)propertiesRegisteredForMediaProfileUniqueIdentifier:(id)a3
+- (id)propertiesRegisteredForMediaProfileUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
   if (self)
   {
@@ -2755,27 +2755,27 @@ void __98__HMDNotificationRegistry_characteristicsByDestinationForCharacteristic
   }
 
   v7 = Property;
-  v8 = [v7 mediaPropertiesRegisteredForMediaProfileUniqueIdentifier:v4];
+  v8 = [v7 mediaPropertiesRegisteredForMediaProfileUniqueIdentifier:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v8;
 }
 
-- (id)filterProperties:(id)a3 deviceIdsDestination:(id)a4
+- (id)filterProperties:(id)properties deviceIdsDestination:(id)destination
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  propertiesCopy = properties;
+  destinationCopy = destination;
+  if ([propertiesCopy count])
   {
-    v21 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    v21 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(propertiesCopy, "count")}];
     os_unfair_lock_lock_with_options();
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v8 = v6;
+    v8 = propertiesCopy;
     v10 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v10)
     {
@@ -2804,7 +2804,7 @@ void __98__HMDNotificationRegistry_characteristicsByDestinationForCharacteristic
           v15 = Property;
           v16 = [v15 destinationsToNotifyForMediaPropertyResponse:v13];
 
-          if ([v16 containsObject:v7])
+          if ([v16 containsObject:destinationCopy])
           {
             [v21 addObject:v13];
           }
@@ -2834,12 +2834,12 @@ void __98__HMDNotificationRegistry_characteristicsByDestinationForCharacteristic
   return v18;
 }
 
-- (BOOL)removeRegistrationsForActionSetUUID:(id)a3
+- (BOOL)removeRegistrationsForActionSetUUID:(id)d
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -2847,15 +2847,15 @@ void __98__HMDNotificationRegistry_characteristicsByDestinationForCharacteristic
     *buf = 138543618;
     v18 = v8;
     v19 = 2112;
-    v20 = v4;
+    v20 = dCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Removing registrations for action set: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   os_unfair_lock_lock_with_options();
-  if (v6)
+  if (selfCopy)
   {
-    Property = objc_getProperty(v6, v9, 32, 1);
+    Property = objc_getProperty(selfCopy, v9, 32, 1);
   }
 
   else
@@ -2864,26 +2864,26 @@ void __98__HMDNotificationRegistry_characteristicsByDestinationForCharacteristic
   }
 
   v11 = Property;
-  v12 = [v11 removeRegistrationsForActionSetUUID:v4];
+  v12 = [v11 removeRegistrationsForActionSetUUID:dCopy];
 
-  os_unfair_lock_unlock(&v6->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   if (v12)
   {
-    v16 = v4;
+    v16 = dCopy;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v16 count:1];
-    [(HMDNotificationRegistry *)v6 notifyDelegatesOfMediaRegistryUpdatesForMediaProfiles:v13];
+    [(HMDNotificationRegistry *)selfCopy notifyDelegatesOfMediaRegistryUpdatesForMediaProfiles:v13];
   }
 
   v14 = *MEMORY[0x277D85DE8];
   return v12;
 }
 
-- (BOOL)removeRegistrationsForMediaProfile:(id)a3
+- (BOOL)removeRegistrationsForMediaProfile:(id)profile
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  profileCopy = profile;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -2891,15 +2891,15 @@ void __98__HMDNotificationRegistry_characteristicsByDestinationForCharacteristic
     *buf = 138543618;
     v19 = v8;
     v20 = 2112;
-    v21 = v4;
+    v21 = profileCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Removing registrations for media profile: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   os_unfair_lock_lock_with_options();
-  if (v6)
+  if (selfCopy)
   {
-    Property = objc_getProperty(v6, v9, 32, 1);
+    Property = objc_getProperty(selfCopy, v9, 32, 1);
   }
 
   else
@@ -2908,27 +2908,27 @@ void __98__HMDNotificationRegistry_characteristicsByDestinationForCharacteristic
   }
 
   v11 = Property;
-  v12 = [v11 removeRegistrationsForMediaProfile:v4];
+  v12 = [v11 removeRegistrationsForMediaProfile:profileCopy];
 
-  os_unfair_lock_unlock(&v6->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   if (v12)
   {
-    v13 = [v4 uniqueIdentifier];
-    v17 = v13;
+    uniqueIdentifier = [profileCopy uniqueIdentifier];
+    v17 = uniqueIdentifier;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v17 count:1];
-    [(HMDNotificationRegistry *)v6 notifyDelegatesOfMediaRegistryUpdatesForMediaProfiles:v14];
+    [(HMDNotificationRegistry *)selfCopy notifyDelegatesOfMediaRegistryUpdatesForMediaProfiles:v14];
   }
 
   v15 = *MEMORY[0x277D85DE8];
   return v12;
 }
 
-- (void)removeRegistrationsForCharacteristics:(id)a3
+- (void)removeRegistrationsForCharacteristics:(id)characteristics
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  characteristicsCopy = characteristics;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -2936,15 +2936,15 @@ void __98__HMDNotificationRegistry_characteristicsByDestinationForCharacteristic
     v13 = 138543618;
     v14 = v8;
     v15 = 2112;
-    v16 = v4;
+    v16 = characteristicsCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Removing registrations for characteristics: %@", &v13, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   os_unfair_lock_lock_with_options();
-  if (v6)
+  if (selfCopy)
   {
-    Property = objc_getProperty(v6, v9, 32, 1);
+    Property = objc_getProperty(selfCopy, v9, 32, 1);
   }
 
   else
@@ -2953,9 +2953,9 @@ void __98__HMDNotificationRegistry_characteristicsByDestinationForCharacteristic
   }
 
   v11 = Property;
-  [v11 removeRegistrationsForCharacteristics:v4];
+  [v11 removeRegistrationsForCharacteristics:characteristicsCopy];
 
-  os_unfair_lock_unlock(&v6->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v12 = *MEMORY[0x277D85DE8];
 }
 
@@ -2973,11 +2973,11 @@ void __98__HMDNotificationRegistry_characteristicsByDestinationForCharacteristic
   }
 
   v5 = Property;
-  v6 = [v5 shortDescription];
+  shortDescription = [v5 shortDescription];
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v6;
+  return shortDescription;
 }
 
 - (void)clearAllRegistrations
@@ -2991,22 +2991,22 @@ void __98__HMDNotificationRegistry_characteristicsByDestinationForCharacteristic
     [v6 removeAllCharacteristicRegistrations];
 
     v8 = objc_getProperty(self, v7, 32, 1);
-    v9 = [v8 removeAllActionSetRegistrations];
+    removeAllActionSetRegistrations = [v8 removeAllActionSetRegistrations];
 
     v11 = objc_getProperty(self, v10, 32, 1);
-    v14 = [v11 removeAllMediaProfileRegistrations];
+    removeAllMediaProfileRegistrations = [v11 removeAllMediaProfileRegistrations];
 
     os_unfair_lock_unlock(&self->_lock);
-    if ([v14 count])
+    if ([removeAllMediaProfileRegistrations count])
     {
-      v12 = [v14 allObjects];
-      [(HMDNotificationRegistry *)self notifyDelegatesOfMediaRegistryUpdatesForMediaProfiles:v12];
+      allObjects = [removeAllMediaProfileRegistrations allObjects];
+      [(HMDNotificationRegistry *)self notifyDelegatesOfMediaRegistryUpdatesForMediaProfiles:allObjects];
     }
 
-    if ([v9 count])
+    if ([removeAllActionSetRegistrations count])
     {
-      v13 = [v9 allObjects];
-      [(HMDNotificationRegistry *)self notifyDelegatesOfRegistryUpdatesForActionSets:v13];
+      allObjects2 = [removeAllActionSetRegistrations allObjects];
+      [(HMDNotificationRegistry *)self notifyDelegatesOfRegistryUpdatesForActionSets:allObjects2];
     }
   }
 }
@@ -3019,25 +3019,25 @@ void __98__HMDNotificationRegistry_characteristicsByDestinationForCharacteristic
   v35 = 0x3032000000;
   v36 = __Block_byref_object_copy__28761;
   v37 = __Block_byref_object_dispose__28762;
-  v38 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
   v30 = __Block_byref_object_copy__28761;
   v31 = __Block_byref_object_dispose__28762;
   v32 = 0;
-  v3 = [(HMDNotificationRegistry *)&self->super.super.isa home];
-  v4 = [v3 hapAccessories];
+  home = [(HMDNotificationRegistry *)&self->super.super.isa home];
+  hapAccessories = [home hapAccessories];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __50__HMDNotificationRegistry_disableAllRegistrations__block_invoke;
   v26[3] = &unk_278671B18;
   v26[4] = &v27;
   v26[5] = &v33;
-  [v4 hmf_enumerateWithAutoreleasePoolUsingBlock:v26];
+  [hapAccessories hmf_enumerateWithAutoreleasePoolUsingBlock:v26];
 
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -3051,9 +3051,9 @@ void __98__HMDNotificationRegistry_characteristicsByDestinationForCharacteristic
   }
 
   objc_autoreleasePoolPop(v5);
-  if (v6)
+  if (selfCopy)
   {
-    Property = objc_getProperty(v6, v10, 32, 1);
+    Property = objc_getProperty(selfCopy, v10, 32, 1);
   }
 
   else
@@ -3064,9 +3064,9 @@ void __98__HMDNotificationRegistry_characteristicsByDestinationForCharacteristic
   v12 = Property;
   [v12 disableAllCharacteristicRegistrations];
 
-  if (v6)
+  if (selfCopy)
   {
-    v14 = objc_getProperty(v6, v13, 32, 1);
+    v14 = objc_getProperty(selfCopy, v13, 32, 1);
   }
 
   else
@@ -3075,11 +3075,11 @@ void __98__HMDNotificationRegistry_characteristicsByDestinationForCharacteristic
   }
 
   v15 = v14;
-  v16 = [v15 disableAllActionSetRegistrations];
+  disableAllActionSetRegistrations = [v15 disableAllActionSetRegistrations];
 
-  if (v6)
+  if (selfCopy)
   {
-    v18 = objc_getProperty(v6, v17, 32, 1);
+    v18 = objc_getProperty(selfCopy, v17, 32, 1);
   }
 
   else
@@ -3088,7 +3088,7 @@ void __98__HMDNotificationRegistry_characteristicsByDestinationForCharacteristic
   }
 
   v19 = v18;
-  v20 = [v19 disableAllMediaProfileRegistrations];
+  disableAllMediaProfileRegistrations = [v19 disableAllMediaProfileRegistrations];
 
   if (v28[5] && [v34[5] count])
   {
@@ -3097,21 +3097,21 @@ void __98__HMDNotificationRegistry_characteristicsByDestinationForCharacteristic
     v25[1] = 3221225472;
     v25[2] = __50__HMDNotificationRegistry_disableAllRegistrations__block_invoke_180;
     v25[3] = &unk_278671B40;
-    v25[4] = v6;
+    v25[4] = selfCopy;
     v25[5] = &v27;
     [v21 na_each:v25];
   }
 
-  if ([v20 count])
+  if ([disableAllMediaProfileRegistrations count])
   {
-    v22 = [v20 allObjects];
-    [(HMDNotificationRegistry *)v6 notifyDelegatesOfMediaRegistryUpdatesForMediaProfiles:v22];
+    allObjects = [disableAllMediaProfileRegistrations allObjects];
+    [(HMDNotificationRegistry *)selfCopy notifyDelegatesOfMediaRegistryUpdatesForMediaProfiles:allObjects];
   }
 
-  if ([v16 count])
+  if ([disableAllActionSetRegistrations count])
   {
-    v23 = [v16 allObjects];
-    [(HMDNotificationRegistry *)v6 notifyDelegatesOfRegistryUpdatesForActionSets:v23];
+    allObjects2 = [disableAllActionSetRegistrations allObjects];
+    [(HMDNotificationRegistry *)selfCopy notifyDelegatesOfRegistryUpdatesForActionSets:allObjects2];
   }
 
   _Block_object_dispose(&v27, 8);
@@ -3202,7 +3202,7 @@ void __50__HMDNotificationRegistry_disableAllRegistrations__block_invoke_4(uint6
 
 - (void)reprocessEnabledCharacteristicRegistrations
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 64, 1);
@@ -3212,7 +3212,7 @@ void __50__HMDNotificationRegistry_disableAllRegistrations__block_invoke_4(uint6
   block[1] = 3221225472;
   block[2] = __70__HMDNotificationRegistry_reprocessEnabledCharacteristicRegistrations__block_invoke;
   block[3] = &unk_27868A728;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(&self->super.super, block);
 }
 
@@ -3349,21 +3349,21 @@ void __71__HMDNotificationRegistry__reprocessEnabledCharacteristicRegistrations_
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureWithHome:(id)a3 coreDataAdapter:(id)a4
+- (void)configureWithHome:(id)home coreDataAdapter:(id)adapter
 {
-  obj = a3;
-  v6 = a4;
+  obj = home;
+  adapterCopy = adapter;
   os_unfair_lock_lock_with_options();
   if (self)
   {
     objc_storeWeak(&self->_home, obj);
   }
 
-  v7 = [obj workQueue];
-  v9 = v7;
+  workQueue = [obj workQueue];
+  v9 = workQueue;
   if (self)
   {
-    objc_setProperty_atomic(self, v8, v7, 64);
+    objc_setProperty_atomic(self, v8, workQueue, 64);
 
     Property = objc_getProperty(self, v10, 40, 1);
   }
@@ -3393,21 +3393,21 @@ void __71__HMDNotificationRegistry__reprocessEnabledCharacteristicRegistrations_
   [v17 setDelegateQueue:v14];
 
   coreDataAdapter = self->_coreDataAdapter;
-  self->_coreDataAdapter = v6;
+  self->_coreDataAdapter = adapterCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)configureWithHome:(id)a3
+- (void)configureWithHome:(id)home
 {
-  v4 = a3;
-  v5 = [[HMDNotificationRegistryCoreDataAdapter alloc] initWithHome:v4];
-  [(HMDNotificationRegistry *)self configureWithHome:v4 coreDataAdapter:v5];
+  homeCopy = home;
+  v5 = [[HMDNotificationRegistryCoreDataAdapter alloc] initWithHome:homeCopy];
+  [(HMDNotificationRegistry *)self configureWithHome:homeCopy coreDataAdapter:v5];
 }
 
-- (HMDNotificationRegistry)initWithPendingRequestsRetryTimer:(id)a3
+- (HMDNotificationRegistry)initWithPendingRequestsRetryTimer:(id)timer
 {
-  v5 = a3;
+  timerCopy = timer;
   v13.receiver = self;
   v13.super_class = HMDNotificationRegistry;
   v6 = [(HMDNotificationRegistry *)&v13 init];
@@ -3415,10 +3415,10 @@ void __71__HMDNotificationRegistry__reprocessEnabledCharacteristicRegistrations_
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_pendingRequestsRetryTimer, a3);
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeStrong(&v6->_pendingRequestsRetryTimer, timer);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     delegates = v7->_delegates;
-    v7->_delegates = v8;
+    v7->_delegates = weakObjectsHashTable;
 
     v10 = [MEMORY[0x277CBEB58] set];
     pendingRequests = v7->_pendingRequests;

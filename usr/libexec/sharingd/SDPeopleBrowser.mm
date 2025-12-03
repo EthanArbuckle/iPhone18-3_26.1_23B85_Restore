@@ -2,7 +2,7 @@
 - (SDPeopleBrowser)init;
 - (SDPeopleBrowserDiffableDelegate)diffableDelegate;
 - (void)dealloc;
-- (void)networkBrowser:(id)a3 nodesChangedForParent:(__SFNode *)a4 protocol:(id)a5 error:(int)a6;
+- (void)networkBrowser:(id)browser nodesChangedForParent:(__SFNode *)parent protocol:(id)protocol error:(int)error;
 - (void)start;
 - (void)stop;
 @end
@@ -71,26 +71,26 @@
     networkBrowser = self->_networkBrowser;
     self->_networkBrowser = v7;
 
-    v9 = [(SDPeopleBrowser *)self helperConnection];
-    [(SDNetworkBrowser *)self->_networkBrowser setHelperConnection:v9];
+    helperConnection = [(SDPeopleBrowser *)self helperConnection];
+    [(SDNetworkBrowser *)self->_networkBrowser setHelperConnection:helperConnection];
 
-    v10 = [(SDPeopleBrowser *)self bundleID];
-    [(SDNetworkBrowser *)self->_networkBrowser setBundleID:v10];
+    bundleID = [(SDPeopleBrowser *)self bundleID];
+    [(SDNetworkBrowser *)self->_networkBrowser setBundleID:bundleID];
 
     [(SDNetworkBrowser *)self->_networkBrowser setDelegate:self];
-    v11 = [(SDPeopleBrowser *)self options];
-    [(SDNetworkBrowser *)self->_networkBrowser setOptions:v11];
+    options = [(SDPeopleBrowser *)self options];
+    [(SDNetworkBrowser *)self->_networkBrowser setOptions:options];
 
     v12 = self->_networkBrowser;
-    v13 = [(SDPeopleBrowser *)self sessionID];
-    [(SDNetworkBrowser *)v12 openNode:v5 forProtocol:v13 flags:0];
+    sessionID = [(SDPeopleBrowser *)self sessionID];
+    [(SDNetworkBrowser *)v12 openNode:v5 forProtocol:sessionID flags:0];
 
-    v14 = [(SDPeopleBrowser *)self sessionID];
-    v15 = [NSString stringWithFormat:@"SDPeopleBrowser for session %@", v14];
+    sessionID2 = [(SDPeopleBrowser *)self sessionID];
+    v15 = [NSString stringWithFormat:@"SDPeopleBrowser for session %@", sessionID2];
 
-    v16 = [(SDPeopleBrowser *)self helperConnection];
+    helperConnection2 = [(SDPeopleBrowser *)self helperConnection];
 
-    if (v16)
+    if (helperConnection2)
     {
       v17 = daemon_log();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
@@ -98,8 +98,8 @@
         sub_1000AA778(v17);
       }
 
-      v18 = [(SDPeopleBrowser *)self helperConnection];
-      [v18 invalidate];
+      helperConnection3 = [(SDPeopleBrowser *)self helperConnection];
+      [helperConnection3 invalidate];
     }
 
     v19 = [[SDXPCHelperConnection alloc] initWithQueue:0];
@@ -110,11 +110,11 @@
     v22[2] = sub_1000A9D7C;
     v22[3] = &unk_1008CDEA0;
     v22[4] = v15;
-    v20 = [(SDPeopleBrowser *)self helperConnection];
-    [v20 setInvalidationHandler:v22];
+    helperConnection4 = [(SDPeopleBrowser *)self helperConnection];
+    [helperConnection4 setInvalidationHandler:v22];
 
-    v21 = [(SDPeopleBrowser *)self helperConnection];
-    [v21 activate];
+    helperConnection5 = [(SDPeopleBrowser *)self helperConnection];
+    [helperConnection5 activate];
 
     (v6[2])(v6);
     (*(v2 + 16))(v2);
@@ -127,15 +127,15 @@
   networkBrowser = self->_networkBrowser;
   self->_networkBrowser = 0;
 
-  v4 = [(SDPeopleBrowser *)self helperConnection];
-  [v4 invalidate];
+  helperConnection = [(SDPeopleBrowser *)self helperConnection];
+  [helperConnection invalidate];
 
   [(SDPeopleBrowser *)self setHelperConnection:0];
 }
 
-- (void)networkBrowser:(id)a3 nodesChangedForParent:(__SFNode *)a4 protocol:(id)a5 error:(int)a6
+- (void)networkBrowser:(id)browser nodesChangedForParent:(__SFNode *)parent protocol:(id)protocol error:(int)error
 {
-  v8 = a3;
+  browserCopy = browser;
   v9 = magic_head_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -143,9 +143,9 @@
   }
 
   v10 = objc_opt_new();
-  v11 = [v8 childrenForNode:a4];
+  v11 = [browserCopy childrenForNode:parent];
   people = self->_people;
-  v48 = v8;
+  v48 = browserCopy;
   if (people)
   {
     v13 = people;
@@ -178,9 +178,9 @@
 
         v18 = *(*(&v62 + 1) + 8 * i);
         v19 = SFNodeCopyRealName();
-        v20 = [v19 lowercaseString];
+        lowercaseString = [v19 lowercaseString];
 
-        v21 = [(NSMutableDictionary *)self->_nodes objectForKeyedSubscript:v20];
+        v21 = [(NSMutableDictionary *)self->_nodes objectForKeyedSubscript:lowercaseString];
         if (v21)
         {
           v22 = v21;
@@ -190,14 +190,14 @@
         else
         {
           v22 = [SFAirDropNode nodeWithSFNode:v18];
-          v23 = [v22 transportBundleID];
+          transportBundleID = [v22 transportBundleID];
 
-          if (!v23)
+          if (!transportBundleID)
           {
             [v22 setTransportBundleID:UIActivityTypeAirDrop];
           }
 
-          [(NSMutableDictionary *)self->_nodes setObject:v22 forKeyedSubscript:v20];
+          [(NSMutableDictionary *)self->_nodes setObject:v22 forKeyedSubscript:lowercaseString];
         }
 
         [v10 addObject:v22];
@@ -241,21 +241,21 @@
         else
         {
           [v51 addObject:v29];
-          v30 = [v29 contactIdentifier];
-          if (v30)
+          contactIdentifier = [v29 contactIdentifier];
+          if (contactIdentifier)
           {
-            [v50 addObject:v30];
+            [v50 addObject:contactIdentifier];
           }
 
           v31 = magic_head_log();
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
           {
-            v32 = [v29 displayName];
-            v33 = [v29 nodeIdentifier];
+            displayName = [v29 displayName];
+            nodeIdentifier = [v29 nodeIdentifier];
             *buf = 138412546;
-            v68 = v32;
+            v68 = displayName;
             v69 = 2112;
-            v70 = v33;
+            v70 = nodeIdentifier;
             _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Removing person %@ (%@)", buf, 0x16u);
           }
         }

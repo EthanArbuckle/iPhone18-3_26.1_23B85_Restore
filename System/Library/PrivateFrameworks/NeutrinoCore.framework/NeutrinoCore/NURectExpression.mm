@@ -3,20 +3,20 @@
 - (NUChannelExpression)widthExpression;
 - (NUChannelExpression)xExpression;
 - (NUChannelExpression)yExpression;
-- (NURectExpression)initWithExpressionType:(int64_t)a3 arguments:(id)a4;
-- (NURectExpression)initWithXExpression:(id)a3 yExpression:(id)a4 widthExpression:(id)a5 heightExpression:(id)a6;
+- (NURectExpression)initWithExpressionType:(int64_t)type arguments:(id)arguments;
+- (NURectExpression)initWithXExpression:(id)expression yExpression:(id)yExpression widthExpression:(id)widthExpression heightExpression:(id)heightExpression;
 - (id)compactDescription;
 - (id)description;
-- (id)evaluateWithArgumentData:(id)a3 error:(id *)a4;
+- (id)evaluateWithArgumentData:(id)data error:(id *)error;
 @end
 
 @implementation NURectExpression
 
-- (id)evaluateWithArgumentData:(id)a3 error:(id *)a4
+- (id)evaluateWithArgumentData:(id)data error:(id *)error
 {
   v57 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 count] != 4)
+  dataCopy = data;
+  if ([dataCopy count] != 4)
   {
     v23 = NUAssertLogger_4187();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -37,8 +37,8 @@
         v37 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v38 = MEMORY[0x1E696AF00];
         v39 = v37;
-        v40 = [v38 callStackSymbols];
-        v41 = [v40 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v38 callStackSymbols];
+        v41 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v37;
         *&buf[12] = 2114;
@@ -49,8 +49,8 @@
 
     else if (v27)
     {
-      v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v29 = [v28 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v29 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v29;
       _os_log_error_impl(&dword_1C0184000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -59,7 +59,7 @@
     _NUAssertFailHandler("[NURectExpression evaluateWithArgumentData:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 3231, @"Invalid parameter not satisfying: %s", v42, v43, v44, v45, "args.count == 4");
   }
 
-  if (!a4)
+  if (!error)
   {
     v30 = NUAssertLogger_4187();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -80,8 +80,8 @@
         v46 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v47 = MEMORY[0x1E696AF00];
         v48 = v46;
-        v49 = [v47 callStackSymbols];
-        v50 = [v49 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v47 callStackSymbols];
+        v50 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v46;
         *&buf[12] = 2114;
@@ -92,8 +92,8 @@
 
     else if (v34)
     {
-      v35 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v36 = [v35 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v36 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v36;
       _os_log_error_impl(&dword_1C0184000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -105,33 +105,33 @@
   v6 = 0;
   while (1)
   {
-    v7 = [v5 objectAtIndexedSubscript:v6];
-    v8 = [v7 format];
-    v9 = [v8 expressionType];
+    v7 = [dataCopy objectAtIndexedSubscript:v6];
+    format = [v7 format];
+    expressionType = [format expressionType];
 
-    if ((v9 & 0xFFFFFFFFFFFFFFFELL) != 2)
+    if ((expressionType & 0xFFFFFFFFFFFFFFFELL) != 2)
     {
       break;
     }
 
     if (++v6 == 4)
     {
-      v10 = [v5 objectAtIndexedSubscript:0];
-      v11 = [v10 value];
+      v10 = [dataCopy objectAtIndexedSubscript:0];
+      value = [v10 value];
 
-      v12 = [v5 objectAtIndexedSubscript:1];
-      v13 = [v12 value];
+      v12 = [dataCopy objectAtIndexedSubscript:1];
+      value2 = [v12 value];
 
-      v14 = [v5 objectAtIndexedSubscript:2];
-      v15 = [v14 value];
+      v14 = [dataCopy objectAtIndexedSubscript:2];
+      value3 = [v14 value];
 
-      v16 = [v5 objectAtIndexedSubscript:3];
-      v17 = [v16 value];
+      v16 = [dataCopy objectAtIndexedSubscript:3];
+      value4 = [v16 value];
 
-      *buf = [v11 integerValue];
-      *&buf[8] = [v13 integerValue];
-      *&buf[16] = [v15 integerValue];
-      v56 = [v17 integerValue];
+      *buf = [value integerValue];
+      *&buf[8] = [value2 integerValue];
+      *&buf[16] = [value3 integerValue];
+      integerValue = [value4 integerValue];
       v18 = [MEMORY[0x1E696B098] nu_valueWithPixelRect:buf];
       v19 = [NUChannelControlData alloc];
       v20 = objc_alloc_init(NURectSetting);
@@ -141,7 +141,7 @@
     }
   }
 
-  *a4 = [NUError invalidError:@"Expected numeric expression" object:v7];
+  *error = [NUError invalidError:@"Expected numeric expression" object:v7];
 
   v21 = 0;
 LABEL_8:
@@ -152,14 +152,14 @@ LABEL_8:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(NURectExpression *)self xExpression];
-  v5 = [v4 description];
-  v6 = [(NURectExpression *)self yExpression];
-  v7 = [v6 description];
-  v8 = [(NURectExpression *)self widthExpression];
-  v9 = [v8 description];
-  v10 = [(NURectExpression *)self heightExpression];
-  v11 = [v10 description];
+  xExpression = [(NURectExpression *)self xExpression];
+  v5 = [xExpression description];
+  yExpression = [(NURectExpression *)self yExpression];
+  v7 = [yExpression description];
+  widthExpression = [(NURectExpression *)self widthExpression];
+  v9 = [widthExpression description];
+  heightExpression = [(NURectExpression *)self heightExpression];
+  v11 = [heightExpression description];
   v12 = [v3 stringWithFormat:@"rect[origin:%@, %@ size:%@, %@]", v5, v7, v9, v11];
 
   return v12;
@@ -168,59 +168,59 @@ LABEL_8:
 - (id)compactDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(NURectExpression *)self xExpression];
-  v5 = [v4 compactDescription];
-  v6 = [(NURectExpression *)self yExpression];
-  v7 = [v6 compactDescription];
-  v8 = [(NURectExpression *)self widthExpression];
-  v9 = [v8 compactDescription];
-  v10 = [(NURectExpression *)self heightExpression];
-  v11 = [v10 compactDescription];
-  v12 = [v3 stringWithFormat:@"□[o:%@, %@|s:%@, %@]", v5, v7, v9, v11];
+  xExpression = [(NURectExpression *)self xExpression];
+  compactDescription = [xExpression compactDescription];
+  yExpression = [(NURectExpression *)self yExpression];
+  compactDescription2 = [yExpression compactDescription];
+  widthExpression = [(NURectExpression *)self widthExpression];
+  compactDescription3 = [widthExpression compactDescription];
+  heightExpression = [(NURectExpression *)self heightExpression];
+  compactDescription4 = [heightExpression compactDescription];
+  v12 = [v3 stringWithFormat:@"□[o:%@, %@|s:%@, %@]", compactDescription, compactDescription2, compactDescription3, compactDescription4];
 
   return v12;
 }
 
 - (NUChannelExpression)heightExpression
 {
-  v2 = [(NUChannelExpression *)self arguments];
-  v3 = [v2 objectAtIndexedSubscript:3];
+  arguments = [(NUChannelExpression *)self arguments];
+  v3 = [arguments objectAtIndexedSubscript:3];
 
   return v3;
 }
 
 - (NUChannelExpression)widthExpression
 {
-  v2 = [(NUChannelExpression *)self arguments];
-  v3 = [v2 objectAtIndexedSubscript:2];
+  arguments = [(NUChannelExpression *)self arguments];
+  v3 = [arguments objectAtIndexedSubscript:2];
 
   return v3;
 }
 
 - (NUChannelExpression)yExpression
 {
-  v2 = [(NUChannelExpression *)self arguments];
-  v3 = [v2 objectAtIndexedSubscript:1];
+  arguments = [(NUChannelExpression *)self arguments];
+  v3 = [arguments objectAtIndexedSubscript:1];
 
   return v3;
 }
 
 - (NUChannelExpression)xExpression
 {
-  v2 = [(NUChannelExpression *)self arguments];
-  v3 = [v2 objectAtIndexedSubscript:0];
+  arguments = [(NUChannelExpression *)self arguments];
+  v3 = [arguments objectAtIndexedSubscript:0];
 
   return v3;
 }
 
-- (NURectExpression)initWithXExpression:(id)a3 yExpression:(id)a4 widthExpression:(id)a5 heightExpression:(id)a6
+- (NURectExpression)initWithXExpression:(id)expression yExpression:(id)yExpression widthExpression:(id)widthExpression heightExpression:(id)heightExpression
 {
   v88 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  expressionCopy = expression;
+  yExpressionCopy = yExpression;
+  widthExpressionCopy = widthExpression;
+  heightExpressionCopy = heightExpression;
+  if (!expressionCopy)
   {
     v18 = NUAssertLogger_4187();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -241,8 +241,8 @@ LABEL_8:
         v46 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v47 = MEMORY[0x1E696AF00];
         v48 = v46;
-        v49 = [v47 callStackSymbols];
-        v50 = [v49 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v47 callStackSymbols];
+        v50 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v85 = v46;
         v86 = 2114;
@@ -253,8 +253,8 @@ LABEL_8:
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v85 = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -263,7 +263,7 @@ LABEL_8:
     _NUAssertFailHandler("[NURectExpression initWithXExpression:yExpression:widthExpression:heightExpression:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 3197, @"Invalid parameter not satisfying: %s", v51, v52, v53, v54, "x != nil");
   }
 
-  if (!v11)
+  if (!yExpressionCopy)
   {
     v25 = NUAssertLogger_4187();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -284,8 +284,8 @@ LABEL_8:
         v55 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v56 = MEMORY[0x1E696AF00];
         v57 = v55;
-        v58 = [v56 callStackSymbols];
-        v59 = [v58 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v56 callStackSymbols];
+        v59 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v85 = v55;
         v86 = 2114;
@@ -296,8 +296,8 @@ LABEL_8:
 
     else if (v29)
     {
-      v30 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v31 = [v30 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v31 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v85 = v31;
       _os_log_error_impl(&dword_1C0184000, v28, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -306,7 +306,7 @@ LABEL_8:
     _NUAssertFailHandler("[NURectExpression initWithXExpression:yExpression:widthExpression:heightExpression:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 3198, @"Invalid parameter not satisfying: %s", v60, v61, v62, v63, "y != nil");
   }
 
-  if (!v12)
+  if (!widthExpressionCopy)
   {
     v32 = NUAssertLogger_4187();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -327,8 +327,8 @@ LABEL_8:
         v64 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v65 = MEMORY[0x1E696AF00];
         v66 = v64;
-        v67 = [v65 callStackSymbols];
-        v68 = [v67 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v65 callStackSymbols];
+        v68 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v85 = v64;
         v86 = 2114;
@@ -339,8 +339,8 @@ LABEL_8:
 
     else if (v36)
     {
-      v37 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v38 = [v37 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v38 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v85 = v38;
       _os_log_error_impl(&dword_1C0184000, v35, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -349,8 +349,8 @@ LABEL_8:
     _NUAssertFailHandler("[NURectExpression initWithXExpression:yExpression:widthExpression:heightExpression:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 3199, @"Invalid parameter not satisfying: %s", v69, v70, v71, v72, "width != nil");
   }
 
-  v14 = v13;
-  if (!v13)
+  v14 = heightExpressionCopy;
+  if (!heightExpressionCopy)
   {
     v39 = NUAssertLogger_4187();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -371,8 +371,8 @@ LABEL_8:
         v73 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v74 = MEMORY[0x1E696AF00];
         v75 = v73;
-        v76 = [v74 callStackSymbols];
-        v77 = [v76 componentsJoinedByString:@"\n"];
+        callStackSymbols7 = [v74 callStackSymbols];
+        v77 = [callStackSymbols7 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v85 = v73;
         v86 = 2114;
@@ -383,8 +383,8 @@ LABEL_8:
 
     else if (v43)
     {
-      v44 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v45 = [v44 componentsJoinedByString:@"\n"];
+      callStackSymbols8 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v45 = [callStackSymbols8 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v85 = v45;
       _os_log_error_impl(&dword_1C0184000, v42, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -393,10 +393,10 @@ LABEL_8:
     _NUAssertFailHandler("[NURectExpression initWithXExpression:yExpression:widthExpression:heightExpression:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 3200, @"Invalid parameter not satisfying: %s", v78, v79, v80, v81, "height != nil");
   }
 
-  v83[0] = v10;
-  v83[1] = v11;
-  v83[2] = v12;
-  v83[3] = v13;
+  v83[0] = expressionCopy;
+  v83[1] = yExpressionCopy;
+  v83[2] = widthExpressionCopy;
+  v83[3] = heightExpressionCopy;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v83 count:4];
   v82.receiver = self;
   v82.super_class = NURectExpression;
@@ -405,10 +405,10 @@ LABEL_8:
   return v16;
 }
 
-- (NURectExpression)initWithExpressionType:(int64_t)a3 arguments:(id)a4
+- (NURectExpression)initWithExpressionType:(int64_t)type arguments:(id)arguments
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  argumentsCopy = arguments;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_1367);
@@ -452,8 +452,8 @@ LABEL_8:
     {
       v15 = MEMORY[0x1E696AF00];
       v16 = v14;
-      v17 = [v15 callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v15 callStackSymbols];
+      v18 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v18;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -469,8 +469,8 @@ LABEL_8:
     v21 = MEMORY[0x1E696AF00];
     v22 = specific;
     v23 = v19;
-    v24 = [v21 callStackSymbols];
-    v25 = [v24 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v21 callStackSymbols];
+    v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v33 = specific;
     v34 = 2114;

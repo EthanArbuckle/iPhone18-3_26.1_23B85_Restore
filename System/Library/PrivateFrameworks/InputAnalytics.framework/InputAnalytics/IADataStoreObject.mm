@@ -2,18 +2,18 @@
 + (id)type;
 - (BOOL)destroy;
 - (BOOL)persist;
-- (IADataStoreObject)initWithDatastoreHandle:(id)a3 andName:(id)a4 shouldBeCreated:(BOOL)a5;
+- (IADataStoreObject)initWithDatastoreHandle:(id)handle andName:(id)name shouldBeCreated:(BOOL)created;
 - (IADefaultsDataStore)datastoreHandle;
 @end
 
 @implementation IADataStoreObject
 
-- (IADataStoreObject)initWithDatastoreHandle:(id)a3 andName:(id)a4 shouldBeCreated:(BOOL)a5
+- (IADataStoreObject)initWithDatastoreHandle:(id)handle andName:(id)name shouldBeCreated:(BOOL)created
 {
-  v5 = a5;
+  createdCopy = created;
   v62 = *MEMORY[0x1E69E9840];
-  objc_initWeak(&location, a3);
-  v8 = a4;
+  objc_initWeak(&location, handle);
+  nameCopy = name;
   v54.receiver = self;
   v54.super_class = IADataStoreObject;
   v9 = [(IADataStoreObject *)&v54 init];
@@ -25,9 +25,9 @@
   v10 = objc_loadWeakRetained(&location);
   objc_storeWeak(&v9->_datastoreHandle, v10);
 
-  objc_storeStrong(&v9->_name, a4);
+  objc_storeStrong(&v9->_name, name);
   v9->_destroyed = 0;
-  if (!v5)
+  if (!createdCopy)
   {
     v13 = objc_msgSend_datastoreHandle(v9, v11, v12);
     v16 = v13;
@@ -208,7 +208,7 @@ LABEL_10:
   }
 
   v7 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v5, v6);
-  objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v7, v8, a2, a1, @"IADataStoreObject.m", 118, @"type not implemented");
+  objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v7, v8, a2, self, @"IADataStoreObject.m", 118, @"type not implemented");
 
   return 0;
 }

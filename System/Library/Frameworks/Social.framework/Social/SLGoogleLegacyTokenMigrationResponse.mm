@@ -1,15 +1,15 @@
 @interface SLGoogleLegacyTokenMigrationResponse
-- (SLGoogleLegacyTokenMigrationResponse)initWithData:(id)a3 urlResponse:(id)a4 error:(id)a5;
+- (SLGoogleLegacyTokenMigrationResponse)initWithData:(id)data urlResponse:(id)response error:(id)error;
 @end
 
 @implementation SLGoogleLegacyTokenMigrationResponse
 
-- (SLGoogleLegacyTokenMigrationResponse)initWithData:(id)a3 urlResponse:(id)a4 error:(id)a5
+- (SLGoogleLegacyTokenMigrationResponse)initWithData:(id)data urlResponse:(id)response error:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v9, "length")}];
+  dataCopy = data;
+  responseCopy = response;
+  errorCopy = error;
+  v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(dataCopy, "length")}];
   _SLLog(v5, 7, @"SLGoogleLegacyTokenMigrationResponse initWithData: %@ length urlResponse: %@ error: %@");
 
   v19.receiver = self;
@@ -18,12 +18,12 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_error, a5);
+    objc_storeStrong(&v12->_error, error);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13->_statusCode = [v10 statusCode];
-      v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v9 encoding:4];
+      v13->_statusCode = [responseCopy statusCode];
+      v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:dataCopy encoding:4];
       responseBody = v13->_responseBody;
       v13->_responseBody = v14;
 

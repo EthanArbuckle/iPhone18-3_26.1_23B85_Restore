@@ -2,10 +2,10 @@
 - (NSArray)supplementaryIdentifiers;
 - (SFCapsulePageContainer)container;
 - (_TtC12MobileSafari26SFCapsulePageLayoutMinibar)init;
-- (_TtC12MobileSafari26SFCapsulePageLayoutMinibar)initWithContainer:(id)a3;
+- (_TtC12MobileSafari26SFCapsulePageLayoutMinibar)initWithContainer:(id)container;
 - (double)pageWidth;
-- (id)infoForSupplementaryIdentifier:(id)a3 page:(id)a4;
-- (id)topBackdropInfoForPage:(id)a3;
+- (id)infoForSupplementaryIdentifier:(id)identifier page:(id)page;
+- (id)topBackdropInfoForPage:(id)page;
 @end
 
 @implementation SFCapsulePageLayoutMinibar
@@ -17,13 +17,13 @@
   return result;
 }
 
-- (id)infoForSupplementaryIdentifier:(id)a3 page:(id)a4
+- (id)infoForSupplementaryIdentifier:(id)identifier page:(id)page
 {
   v6 = sub_18BC20BD8();
   v8 = v7;
   swift_unknownObjectRetain();
-  v9 = self;
-  v10 = sub_18B7B9860(v6, v8, a4);
+  selfCopy = self;
+  v10 = sub_18B7B9860(v6, v8, page);
   swift_unknownObjectRelease();
 
   return v10;
@@ -45,17 +45,17 @@
   return v6;
 }
 
-- (id)topBackdropInfoForPage:(id)a3
+- (id)topBackdropInfoForPage:(id)page
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_18B7F8970();
   swift_unknownObjectRelease();
 
   return v5;
 }
 
-- (_TtC12MobileSafari26SFCapsulePageLayoutMinibar)initWithContainer:(id)a3
+- (_TtC12MobileSafari26SFCapsulePageLayoutMinibar)initWithContainer:(id)container
 {
   *(self + OBJC_IVAR____TtC12MobileSafari26SFCapsulePageLayoutMinibar_buttonPadding) = 0x4020000000000000;
   *(self + OBJC_IVAR____TtC12MobileSafari26SFCapsulePageLayoutMinibar_minimumCapsuleHeight) = 0x4048000000000000;
@@ -85,7 +85,7 @@
   }
 
   v4 = Strong;
-  v5 = self;
+  selfCopy = self;
   [v4 bounds];
   v7 = v6;
   v9 = v8;

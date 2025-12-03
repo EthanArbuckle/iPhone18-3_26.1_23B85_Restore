@@ -1,24 +1,24 @@
 @interface _HDSQLiteComparisonPredicateCoalesce
-- (BOOL)isCompatibleWithPredicate:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (_HDSQLiteComparisonPredicateCoalesce)initWithProperties:(id)a3 value:(id)a4 comparisonType:(int64_t)a5;
-- (id)SQLForEntityClass:(Class)a3;
-- (id)SQLJoinClausesForEntityClass:(Class)a3;
+- (BOOL)isCompatibleWithPredicate:(id)predicate;
+- (BOOL)isEqual:(id)equal;
+- (_HDSQLiteComparisonPredicateCoalesce)initWithProperties:(id)properties value:(id)value comparisonType:(int64_t)type;
+- (id)SQLForEntityClass:(Class)class;
+- (id)SQLJoinClausesForEntityClass:(Class)class;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation _HDSQLiteComparisonPredicateCoalesce
 
-- (_HDSQLiteComparisonPredicateCoalesce)initWithProperties:(id)a3 value:(id)a4 comparisonType:(int64_t)a5
+- (_HDSQLiteComparisonPredicateCoalesce)initWithProperties:(id)properties value:(id)value comparisonType:(int64_t)type
 {
-  v8 = a3;
+  propertiesCopy = properties;
   v13.receiver = self;
   v13.super_class = _HDSQLiteComparisonPredicateCoalesce;
-  v9 = [(HDSQLiteComparisonPredicate *)&v13 initWithProperty:0 value:a4 comparisonType:a5];
+  v9 = [(HDSQLiteComparisonPredicate *)&v13 initWithProperty:0 value:value comparisonType:type];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [propertiesCopy copy];
     properties = v9->_properties;
     v9->_properties = v10;
   }
@@ -31,24 +31,24 @@
   v7.receiver = self;
   v7.super_class = _HDSQLiteComparisonPredicateCoalesce;
   v3 = [(HDSQLiteComparisonPredicate *)&v7 hash];
-  v4 = [(_HDSQLiteComparisonPredicateCoalesce *)self properties];
-  v5 = [v4 hash];
+  properties = [(_HDSQLiteComparisonPredicateCoalesce *)self properties];
+  v5 = [properties hash];
 
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = _HDSQLiteComparisonPredicateCoalesce;
-  if (![(HDSQLiteComparisonPredicate *)&v9 isEqual:v4])
+  if (![(HDSQLiteComparisonPredicate *)&v9 isEqual:equalCopy])
   {
     goto LABEL_5;
   }
 
   properties = self->_properties;
-  v6 = v4[5];
+  v6 = equalCopy[5];
   if (properties == v6)
   {
     v7 = 1;
@@ -71,7 +71,7 @@ LABEL_7:
   return v7;
 }
 
-- (id)SQLJoinClausesForEntityClass:(Class)a3
+- (id)SQLJoinClausesForEntityClass:(Class)class
 {
   v19 = *MEMORY[0x277D85DE8];
   if ([(NSArray *)self->_properties count])
@@ -96,7 +96,7 @@ LABEL_7:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [(objc_class *)a3 joinClausesForProperty:*(*(&v14 + 1) + 8 * i), v14];
+          v11 = [(objc_class *)class joinClausesForProperty:*(*(&v14 + 1) + 8 * i), v14];
           [v5 unionSet:v11];
         }
 
@@ -117,18 +117,18 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)isCompatibleWithPredicate:(id)a3
+- (BOOL)isCompatibleWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v9.receiver = self;
   v9.super_class = _HDSQLiteComparisonPredicateCoalesce;
-  if (![(HDSQLiteComparisonPredicate *)&v9 isCompatibleWithPredicate:v4])
+  if (![(HDSQLiteComparisonPredicate *)&v9 isCompatibleWithPredicate:predicateCopy])
   {
     goto LABEL_5;
   }
 
   properties = self->_properties;
-  v6 = v4[5];
+  v6 = predicateCopy[5];
   if (properties == v6)
   {
     v7 = 1;
@@ -151,19 +151,19 @@ LABEL_7:
   return v7;
 }
 
-- (id)SQLForEntityClass:(Class)a3
+- (id)SQLForEntityClass:(Class)class
 {
   properties = self->_properties;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __58___HDSQLiteComparisonPredicateCoalesce_SQLForEntityClass___block_invoke;
   v11[3] = &__block_descriptor_40_e28___NSString_16__0__NSString_8lu32l8;
-  v11[4] = a3;
+  v11[4] = class;
   v5 = [(NSArray *)properties hk_map:v11];
   v6 = [v5 componentsJoinedByString:{@", "}];
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(HDSQLiteComparisonPredicate *)self _comparisonTypeString];
-  v9 = [v7 stringWithFormat:@"(COALESCE(%@) %@ ?)", v6, v8];
+  _comparisonTypeString = [(HDSQLiteComparisonPredicate *)self _comparisonTypeString];
+  v9 = [v7 stringWithFormat:@"(COALESCE(%@) %@ ?)", v6, _comparisonTypeString];
 
   return v9;
 }
@@ -174,7 +174,7 @@ LABEL_7:
   [(NSArray *)self->_properties componentsJoinedByString:@", "];
   objc_claimAutoreleasedReturnValue();
   v5 = OUTLINED_FUNCTION_1_6();
-  v6 = [(HDSQLiteComparisonPredicate *)v5 _comparisonTypeString];
+  _comparisonTypeString = [(HDSQLiteComparisonPredicate *)v5 _comparisonTypeString];
   [(HDSQLiteComparisonPredicate *)self value];
   objc_claimAutoreleasedReturnValue();
   OUTLINED_FUNCTION_0_9();

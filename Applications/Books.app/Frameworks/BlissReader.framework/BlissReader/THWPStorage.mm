@@ -1,29 +1,29 @@
 @interface THWPStorage
-- (THWPStorage)initWithContext:(id)a3;
-- (_NSRange)closestMatchForString:(id)a3 leftContext:(id)a4 rightContext:(id)a5 startCharIndex:(unint64_t)a6;
-- (_NSRange)p_closestMatchForString:(id)a3 startCharIndex:(unint64_t)a4;
+- (THWPStorage)initWithContext:(id)context;
+- (_NSRange)closestMatchForString:(id)string leftContext:(id)context rightContext:(id)rightContext startCharIndex:(unint64_t)index;
+- (_NSRange)p_closestMatchForString:(id)string startCharIndex:(unint64_t)index;
 - (_NSRange)rangeOfInterest;
-- (__CFDictionary)createFilteredCoreTextAttributes:(__CFDictionary *)a3 effectiveRange:(_NSRange *)a4 filterDelegate:(id)a5;
-- (double)filteredCoreTextAttributesFontScaleEffectiveRange:(_NSRange *)a3 filterDelegate:(id)a4;
-- (double)p_applicationFontScaleWithFilterDelegate:(id)a3;
+- (__CFDictionary)createFilteredCoreTextAttributes:(__CFDictionary *)attributes effectiveRange:(_NSRange *)range filterDelegate:(id)delegate;
+- (double)filteredCoreTextAttributesFontScaleEffectiveRange:(_NSRange *)range filterDelegate:(id)delegate;
+- (double)p_applicationFontScaleWithFilterDelegate:(id)delegate;
 - (id)documentRoot;
-- (unint64_t)wordCountInRange:(_NSRange)a3;
-- (void)annotationsChangedInRange:(_NSRange)a3;
-- (void)contextualStringsForSelection:(_NSRange)a3 prefix:(id *)a4 suffix:(id *)a5;
+- (unint64_t)wordCountInRange:(_NSRange)range;
+- (void)annotationsChangedInRange:(_NSRange)range;
+- (void)contextualStringsForSelection:(_NSRange)selection prefix:(id *)prefix suffix:(id *)suffix;
 - (void)dealloc;
 - (void)p_freeAnnotationRanges;
 - (void)p_reloadAnnotations;
-- (void)setAnnotationSource:(id)a3;
-- (void)updateAnnotationSourceWithContentNode:(id)a3;
+- (void)setAnnotationSource:(id)source;
+- (void)updateAnnotationSourceWithContentNode:(id)node;
 @end
 
 @implementation THWPStorage
 
-- (THWPStorage)initWithContext:(id)a3
+- (THWPStorage)initWithContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = THWPStorage;
-  result = [(THWPStorage *)&v4 initWithContext:a3];
+  result = [(THWPStorage *)&v4 initWithContext:context];
   if (result)
   {
     result->_fontSize = 0x7FFFFFFFFFFFFFFFLL;
@@ -33,19 +33,19 @@
   return result;
 }
 
-- (unint64_t)wordCountInRange:(_NSRange)a3
+- (unint64_t)wordCountInRange:(_NSRange)range
 {
-  if (a3.location == 0x7FFFFFFFFFFFFFFFLL || a3.length == 0)
+  if (range.location == 0x7FFFFFFFFFFFFFFFLL || range.length == 0)
   {
     return 0;
   }
 
-  length = a3.length;
-  location = a3.location;
-  v6 = [(THWPStorage *)self string];
+  length = range.length;
+  location = range.location;
+  string = [(THWPStorage *)self string];
   v11.location = location;
   v11.length = length;
-  v7 = CFStringTokenizerCreate(0, v6, v11, 0, 0);
+  v7 = CFStringTokenizerCreate(0, string, v11, 0, 0);
   if (!v7)
   {
     return 0;
@@ -63,16 +63,16 @@
   return v9;
 }
 
-- (void)contextualStringsForSelection:(_NSRange)a3 prefix:(id *)a4 suffix:(id *)a5
+- (void)contextualStringsForSelection:(_NSRange)selection prefix:(id *)prefix suffix:(id *)suffix
 {
-  if (a3.location != 0x7FFFFFFFFFFFFFFFLL)
+  if (selection.location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    length = a3.length;
-    if (a3.length <= 0x100)
+    length = selection.length;
+    if (selection.length <= 0x100)
     {
-      if (a4 | a5)
+      if (prefix | suffix)
       {
-        location = a3.location;
+        location = selection.location;
         v10 = [(THWPStorage *)self selectionRangeForCharIndex:?];
         if (v10 != 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -102,7 +102,7 @@
 
             if (v15 != 0x7FFFFFFFFFFFFFFFLL && v14)
             {
-              if (a4)
+              if (prefix)
               {
                 v20 = location <= (v15 + 64) ? v15 : (location - 64);
                 if (v20 < location)
@@ -118,13 +118,13 @@
 
                     if (v23 != 0x7FFFFFFFFFFFFFFFLL && v23 >= v15 && &v23[v22] <= location)
                     {
-                      *a4 = [(THWPStorage *)self substringWithRange:v23, location - v23];
+                      *prefix = [(THWPStorage *)self substringWithRange:v23, location - v23];
                     }
                   }
                 }
               }
 
-              if (a5)
+              if (suffix)
               {
                 v24 = location + length;
                 v25 = v24 + 64 >= &v15[v16] ? &v15[v16] : (v24 + 64);
@@ -147,7 +147,7 @@
 
                     if (v26 >= v24 && v28 <= &v15[v16])
                     {
-                      *a5 = [(THWPStorage *)self substringWithRange:v24, &v28[-v24]];
+                      *suffix = [(THWPStorage *)self substringWithRange:v24, &v28[-v24]];
                     }
                   }
                 }
@@ -182,7 +182,7 @@
   [(THWPStorage *)&v3 dealloc];
 }
 
-- (void)updateAnnotationSourceWithContentNode:(id)a3
+- (void)updateAnnotationSourceWithContentNode:(id)node
 {
   if (!self->_annotationSourceOnceToken)
   {
@@ -192,10 +192,10 @@
       objc_opt_class();
       [-[THWPStorage context](self "context")];
       v5 = TSUDynamicCast();
-      v6 = [a3 annotationIDForInfo:self];
+      v6 = [node annotationIDForInfo:self];
       if (v6)
       {
-        v7 = -[THCoreDataAnnotationSource initWithAnnotationController:contentNode:storageId:storageLength:]([THCoreDataAnnotationSource alloc], "initWithAnnotationController:contentNode:storageId:storageLength:", [v5 annotationController], a3, v6, -[THWPStorage length](self, "length"));
+        v7 = -[THCoreDataAnnotationSource initWithAnnotationController:contentNode:storageId:storageLength:]([THCoreDataAnnotationSource alloc], "initWithAnnotationController:contentNode:storageId:storageLength:", [v5 annotationController], node, v6, -[THWPStorage length](self, "length"));
         [(THWPStorage *)self setAnnotationSource:v7];
 
         self->_annotationSourceOnceToken = 1;
@@ -206,14 +206,14 @@
   }
 }
 
-- (void)setAnnotationSource:(id)a3
+- (void)setAnnotationSource:(id)source
 {
   mAnnotationSource = self->mAnnotationSource;
-  if (mAnnotationSource != a3)
+  if (mAnnotationSource != source)
   {
-    v5 = a3;
-    self->mAnnotationSource = v5;
-    [(THWPAnnotationSource *)v5 addInterest:self];
+    sourceCopy = source;
+    self->mAnnotationSource = sourceCopy;
+    [(THWPAnnotationSource *)sourceCopy addInterest:self];
     if (mAnnotationSource)
     {
       [(THWPAnnotationSource *)mAnnotationSource removeInterest:self];
@@ -223,10 +223,10 @@
   }
 }
 
-- (void)annotationsChangedInRange:(_NSRange)a3
+- (void)annotationsChangedInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   if (!+[NSThread isMainThread])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
@@ -244,9 +244,9 @@
 {
   objc_sync_enter(self);
   [(THWPStorage *)self p_freeAnnotationRanges];
-  v3 = [(THWPStorage *)self annotationSource];
-  v4 = [(THWPStorage *)self rangeOfInterest];
-  v6 = [(THWPAnnotationSource *)v3 annotationsForRange:v4, v5];
+  annotationSource = [(THWPStorage *)self annotationSource];
+  rangeOfInterest = [(THWPStorage *)self rangeOfInterest];
+  v6 = [(THWPAnnotationSource *)annotationSource annotationsForRange:rangeOfInterest, v5];
   v7 = v6;
   if (v6)
   {
@@ -260,15 +260,15 @@
       do
       {
         v13 = [v7 objectAtIndex:v11];
-        v14 = [v13 annotationStyle];
+        annotationStyle = [v13 annotationStyle];
         v15 = 0;
-        v16 = 0x7FFFFFFFFFFFFFFFLL;
-        if (v14 && v14 != 6)
+        annotationStorageRange = 0x7FFFFFFFFFFFFFFFLL;
+        if (annotationStyle && annotationStyle != 6)
         {
-          v16 = [v13 annotationStorageRange];
+          annotationStorageRange = [v13 annotationStorageRange];
         }
 
-        *(p_length - 1) = v16;
+        *(p_length - 1) = annotationStorageRange;
         *p_length = v15;
         ++v11;
         p_length += 2;
@@ -292,25 +292,25 @@
   return result;
 }
 
-- (double)p_applicationFontScaleWithFilterDelegate:(id)a3
+- (double)p_applicationFontScaleWithFilterDelegate:(id)delegate
 {
-  if (a3 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v5 = [a3 fontSizeForTextSource:self];
+    v5 = [delegate fontSizeForTextSource:self];
     v6 = +[THApplicationSettings sharedSettings];
-    v7 = v5;
+    fontSize2 = v5;
 LABEL_9:
 
-    [v6 flowFontScaleForFontSize:v7];
+    [v6 flowFontScaleForFontSize:fontSize2];
     return result;
   }
 
-  v8 = [(THWPStorage *)self fontSize];
+  fontSize = [(THWPStorage *)self fontSize];
   v9 = +[THApplicationSettings sharedSettings];
   v10 = v9;
-  if (v8 != 0x7FFFFFFFFFFFFFFFLL)
+  if (fontSize != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(THWPStorage *)self fontSize];
+    fontSize2 = [(THWPStorage *)self fontSize];
     v6 = v10;
     goto LABEL_9;
   }
@@ -319,12 +319,12 @@ LABEL_9:
   return result;
 }
 
-- (double)filteredCoreTextAttributesFontScaleEffectiveRange:(_NSRange *)a3 filterDelegate:(id)a4
+- (double)filteredCoreTextAttributesFontScaleEffectiveRange:(_NSRange *)range filterDelegate:(id)delegate
 {
-  if (a4)
+  if (delegate)
   {
-    v7 = [a4 shouldFilterTextSource:self];
-    if (!a3)
+    v7 = [delegate shouldFilterTextSource:self];
+    if (!range)
     {
       return 1.0;
     }
@@ -333,27 +333,27 @@ LABEL_9:
   else
   {
     v7 = 1;
-    if (!a3)
+    if (!range)
     {
       return 1.0;
     }
   }
 
-  if (!v7 || !a3->length || !-[THWPStorage usesApplicationFontScaling](self, "usesApplicationFontScaling") && (!a4 || (objc_opt_respondsToSelector() & 1) == 0 || ![a4 useApplicationFontScaleForTextSource:self]))
+  if (!v7 || !range->length || !-[THWPStorage usesApplicationFontScaling](self, "usesApplicationFontScaling") && (!delegate || (objc_opt_respondsToSelector() & 1) == 0 || ![delegate useApplicationFontScaleForTextSource:self]))
   {
     return 1.0;
   }
 
-  [(THWPStorage *)self p_applicationFontScaleWithFilterDelegate:a4];
+  [(THWPStorage *)self p_applicationFontScaleWithFilterDelegate:delegate];
   return result;
 }
 
-- (__CFDictionary)createFilteredCoreTextAttributes:(__CFDictionary *)a3 effectiveRange:(_NSRange *)a4 filterDelegate:(id)a5
+- (__CFDictionary)createFilteredCoreTextAttributes:(__CFDictionary *)attributes effectiveRange:(_NSRange *)range filterDelegate:(id)delegate
 {
-  if (a5)
+  if (delegate)
   {
-    v9 = [a5 shouldFilterTextSource:self];
-    if (!a4)
+    v9 = [delegate shouldFilterTextSource:self];
+    if (!range)
     {
       goto LABEL_40;
     }
@@ -362,20 +362,20 @@ LABEL_9:
   else
   {
     v9 = 1;
-    if (!a4)
+    if (!range)
     {
 LABEL_40:
-      CFRetain(a3);
-      return a3;
+      CFRetain(attributes);
+      return attributes;
     }
   }
 
-  if (!v9 || !a4->length)
+  if (!v9 || !range->length)
   {
     goto LABEL_40;
   }
 
-  if ((-[THWPStorage usesApplicationFontScaling](self, "usesApplicationFontScaling") || a5 && (objc_opt_respondsToSelector() & 1) != 0 && [a5 useApplicationFontScaleForTextSource:self]) && (-[THWPStorage p_applicationFontScaleWithFilterDelegate:](self, "p_applicationFontScaleWithFilterDelegate:", a5), v10 != 1.0) && (v11 = CFDictionaryGetValue(a3, kCTFontAttributeName)) != 0)
+  if ((-[THWPStorage usesApplicationFontScaling](self, "usesApplicationFontScaling") || delegate && (objc_opt_respondsToSelector() & 1) != 0 && [delegate useApplicationFontScaleForTextSource:self]) && (-[THWPStorage p_applicationFontScaleWithFilterDelegate:](self, "p_applicationFontScaleWithFilterDelegate:", delegate), v10 != 1.0) && (v11 = CFDictionaryGetValue(attributes, kCTFontAttributeName)) != 0)
   {
     v12 = v11;
     CTFontGetSize(v11);
@@ -401,10 +401,10 @@ LABEL_40:
       {
         location = mAnnotationRanges[v14].location;
         v17.location = location;
-        v19 = NSIntersectionRange(*a4, v17);
+        v19 = NSIntersectionRange(*range, v17);
         if (v19.length)
         {
-          if (a4->location >= location)
+          if (range->location >= location)
           {
             length = v19.length;
           }
@@ -414,10 +414,10 @@ LABEL_40:
             length = 0;
           }
 
-          v21 = v19.location + length - a4->location;
+          v21 = v19.location + length - range->location;
           if (v21)
           {
-            a4->length = v21;
+            range->length = v21;
           }
 
           else
@@ -435,8 +435,8 @@ LABEL_40:
   }
 
   objc_sync_exit(self);
-  v22 = CFDictionaryGetValue(a3, kCTForegroundColorAttributeName);
-  MutableCopy = CFDictionaryCreateMutableCopy(0, 0, a3);
+  v22 = CFDictionaryGetValue(attributes, kCTForegroundColorAttributeName);
+  MutableCopy = CFDictionaryCreateMutableCopy(0, 0, attributes);
   objc_opt_class();
   [-[THWPStorage context](self "context")];
   v24 = TSUDynamicCast();
@@ -491,68 +491,68 @@ LABEL_36:
 
 - (id)documentRoot
 {
-  v2 = [(THWPStorage *)self context];
+  context = [(THWPStorage *)self context];
 
-  return [v2 documentRoot];
+  return [context documentRoot];
 }
 
-- (_NSRange)p_closestMatchForString:(id)a3 startCharIndex:(unint64_t)a4
+- (_NSRange)p_closestMatchForString:(id)string startCharIndex:(unint64_t)index
 {
-  v4 = a4;
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+  indexCopy = index;
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v7 = [(THWPStorage *)self string];
-  v8 = [a3 length];
-  if (v8 <= [v7 length] && objc_msgSend(a3, "length") && objc_msgSend(v7, "length"))
+  string = [(THWPStorage *)self string];
+  v8 = [string length];
+  if (v8 <= [string length] && objc_msgSend(string, "length") && objc_msgSend(string, "length"))
   {
-    v9 = [a3 length];
-    if (&v9[v4] > [v7 length])
+    v9 = [string length];
+    if (&v9[indexCopy] > [string length])
     {
-      v10 = [v7 length];
-      v4 = v10 - [a3 length];
+      v10 = [string length];
+      indexCopy = v10 - [string length];
     }
 
-    if (([objc_msgSend(v7 substringWithRange:{v4, v9), "isEqualToString:", a3}] & 1) == 0)
+    if (([objc_msgSend(string substringWithRange:{indexCopy, v9), "isEqualToString:", string}] & 1) == 0)
     {
-      v11 = [v7 rangeOfString:a3 options:1 range:{v4, objc_msgSend(v7, "length") - v4}];
+      v11 = [string rangeOfString:string options:1 range:{indexCopy, objc_msgSend(string, "length") - indexCopy}];
       v13 = v12;
-      v14 = [v7 rangeOfString:a3 options:5 range:{0, &v9[v4]}];
+      v14 = [string rangeOfString:string options:5 range:{0, &v9[indexCopy]}];
       v15 = v14;
       v9 = v16;
       if (v11 == 0x7FFFFFFFFFFFFFFFLL || v14 == 0x7FFFFFFFFFFFFFFFLL)
       {
         if (v11 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v4 = v14;
+          indexCopy = v14;
         }
 
         else
         {
           v9 = v13;
-          v4 = v11;
+          indexCopy = v11;
         }
       }
 
       else
       {
-        v17 = (v4 - v14);
-        if (v4 < v14 || v11 < v4)
+        v17 = (indexCopy - v14);
+        if (indexCopy < v14 || v11 < indexCopy)
         {
           [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
         }
 
-        if (&v11[-v4] > v17)
+        if (&v11[-indexCopy] > v17)
         {
-          v4 = v15;
+          indexCopy = v15;
         }
 
         else
         {
           v9 = v13;
-          v4 = v11;
+          indexCopy = v11;
         }
       }
     }
@@ -561,55 +561,55 @@ LABEL_36:
   else
   {
     v9 = 0;
-    v4 = 0x7FFFFFFFFFFFFFFFLL;
+    indexCopy = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v18 = v4;
+  v18 = indexCopy;
   v19 = v9;
   result.length = v19;
   result.location = v18;
   return result;
 }
 
-- (_NSRange)closestMatchForString:(id)a3 leftContext:(id)a4 rightContext:(id)a5 startCharIndex:(unint64_t)a6
+- (_NSRange)closestMatchForString:(id)string leftContext:(id)context rightContext:(id)rightContext startCharIndex:(unint64_t)index
 {
-  if (a6 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if (!a3)
+  if (!string)
   {
-    a3 = &stru_471858;
+    string = &stru_471858;
   }
 
-  if (!a4)
+  if (!context)
   {
-    a4 = &stru_471858;
+    context = &stru_471858;
   }
 
-  if (!a5)
+  if (!rightContext)
   {
-    a5 = &stru_471858;
+    rightContext = &stru_471858;
   }
 
-  if (![a4 length] && !objc_msgSend(a5, "length"))
+  if (![context length] && !objc_msgSend(rightContext, "length"))
   {
     goto LABEL_21;
   }
 
-  v11 = [[NSString alloc] initWithFormat:@"%@%@%@", a4, a3, a5];
-  if ([a4 length] >= a6)
+  rightContext = [[NSString alloc] initWithFormat:@"%@%@%@", context, string, rightContext];
+  if ([context length] >= index)
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = a6 - [a4 length];
+    v12 = index - [context length];
   }
 
-  v13 = [(THWPStorage *)self p_closestMatchForString:v11 startCharIndex:v12];
+  v13 = [(THWPStorage *)self p_closestMatchForString:rightContext startCharIndex:v12];
   if (v13 == 0x7FFFFFFFFFFFFFFFLL)
   {
 
@@ -618,25 +618,25 @@ LABEL_36:
 
   v15 = v13;
   v16 = v14;
-  if (v14 != [v11 length])
+  if (v14 != [rightContext length])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v17 = [a4 length];
-  if (v16 < &v17[[a5 length]])
+  v17 = [context length];
+  if (v16 < &v17[[rightContext length]])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v18 = &v15[[a4 length]];
-  v19 = [a4 length];
-  v20 = [a5 length];
+  v18 = &v15[[context length]];
+  v19 = [context length];
+  v20 = [rightContext length];
 
   if (v18 == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_21:
-    v18 = [(THWPStorage *)self p_closestMatchForString:a3 startCharIndex:a6];
+    v18 = [(THWPStorage *)self p_closestMatchForString:string startCharIndex:index];
     v22 = v21;
     v23 = 0x7FFFFFFFFFFFFFFFLL;
     if (v18 == 0x7FFFFFFFFFFFFFFFLL)

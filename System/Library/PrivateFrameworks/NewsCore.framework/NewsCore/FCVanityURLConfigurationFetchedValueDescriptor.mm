@@ -1,24 +1,24 @@
 @interface FCVanityURLConfigurationFetchedValueDescriptor
-- (BOOL)isValue:(id)a3 equalToValue:(id)a4;
+- (BOOL)isValue:(id)value equalToValue:(id)toValue;
 - (FCVanityURLConfigurationFetchedValueDescriptor)init;
-- (FCVanityURLConfigurationFetchedValueDescriptor)initWithConfigurationManager:(id)a3;
+- (FCVanityURLConfigurationFetchedValueDescriptor)initWithConfigurationManager:(id)manager;
 - (id)_vanityURLConfiguration;
 - (id)inputManagers;
-- (void)fetchValueWithCachePolicy:(unint64_t)a3 qualityOfService:(int64_t)a4 completion:(id)a5;
+- (void)fetchValueWithCachePolicy:(unint64_t)policy qualityOfService:(int64_t)service completion:(id)completion;
 @end
 
 @implementation FCVanityURLConfigurationFetchedValueDescriptor
 
 - (id)_vanityURLConfiguration
 {
-  v2 = [(FCVanityURLConfigurationFetchedValueDescriptor *)self configurationManager];
-  v3 = [v2 value];
+  configurationManager = [(FCVanityURLConfigurationFetchedValueDescriptor *)self configurationManager];
+  value = [configurationManager value];
 
-  v4 = [v3 paidBundleConfig];
-  v5 = [v4 vanityURLMappingResourceID];
-  if (v5)
+  paidBundleConfig = [value paidBundleConfig];
+  vanityURLMappingResourceID = [paidBundleConfig vanityURLMappingResourceID];
+  if (vanityURLMappingResourceID)
   {
-    v6 = -[FCManagedResourceConfiguration initWithResourceID:refreshRate:]([FCManagedResourceConfiguration alloc], "initWithResourceID:refreshRate:", v5, [v4 vanityURLMappingRefreshRate]);
+    v6 = -[FCManagedResourceConfiguration initWithResourceID:refreshRate:]([FCManagedResourceConfiguration alloc], "initWithResourceID:refreshRate:", vanityURLMappingResourceID, [paidBundleConfig vanityURLMappingRefreshRate]);
   }
 
   else
@@ -32,8 +32,8 @@
 - (id)inputManagers
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(FCVanityURLConfigurationFetchedValueDescriptor *)self configurationManager];
-  v6[0] = v2;
+  configurationManager = [(FCVanityURLConfigurationFetchedValueDescriptor *)self configurationManager];
+  v6[0] = configurationManager;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -67,11 +67,11 @@
   objc_exception_throw(v6);
 }
 
-- (FCVanityURLConfigurationFetchedValueDescriptor)initWithConfigurationManager:(id)a3
+- (FCVanityURLConfigurationFetchedValueDescriptor)initWithConfigurationManager:(id)manager
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  managerCopy = manager;
+  if (!managerCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "configurationManager"];
     *buf = 136315906;
@@ -91,18 +91,18 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configurationManager, a3);
+    objc_storeStrong(&v6->_configurationManager, manager);
   }
 
   v8 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (void)fetchValueWithCachePolicy:(unint64_t)a3 qualityOfService:(int64_t)a4 completion:(id)a5
+- (void)fetchValueWithCachePolicy:(unint64_t)policy qualityOfService:(int64_t)service completion:(id)completion
 {
-  v6 = a5;
-  v9 = [(FCVanityURLConfigurationFetchedValueDescriptor *)self _vanityURLConfiguration];
-  if (v9)
+  completionCopy = completion;
+  _vanityURLConfiguration = [(FCVanityURLConfigurationFetchedValueDescriptor *)self _vanityURLConfiguration];
+  if (_vanityURLConfiguration)
   {
     v7 = 0;
   }
@@ -112,16 +112,16 @@
     v7 = [MEMORY[0x1E696ABC0] errorWithDomain:@"FCErrorDomain" code:8 userInfo:0];
   }
 
-  v8 = [(FCVanityURLConfigurationFetchedValueDescriptor *)self _vanityURLConfiguration];
-  v6[2](v6, v8, v7);
+  _vanityURLConfiguration2 = [(FCVanityURLConfigurationFetchedValueDescriptor *)self _vanityURLConfiguration];
+  completionCopy[2](completionCopy, _vanityURLConfiguration2, v7);
 }
 
-- (BOOL)isValue:(id)a3 equalToValue:(id)a4
+- (BOOL)isValue:(id)value equalToValue:(id)toValue
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  valueCopy = value;
+  toValueCopy = toValue;
+  if (!valueCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "left"];
     *buf = 136315906;
@@ -134,13 +134,13 @@
     v23 = v14;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v6)
+    if (toValueCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v6)
+  else if (toValueCopy)
   {
     goto LABEL_6;
   }
@@ -161,12 +161,12 @@
 
 LABEL_6:
   v7 = MEMORY[0x1E69E58C0];
-  v8 = [v5 resourceID];
-  v9 = [v6 resourceID];
-  if ([v7 nf_object:v8 isEqualToObject:v9])
+  resourceID = [valueCopy resourceID];
+  resourceID2 = [toValueCopy resourceID];
+  if ([v7 nf_object:resourceID isEqualToObject:resourceID2])
   {
-    v10 = [v5 refreshRate];
-    v11 = v10 == [v6 refreshRate];
+    refreshRate = [valueCopy refreshRate];
+    v11 = refreshRate == [toValueCopy refreshRate];
   }
 
   else

@@ -1,73 +1,73 @@
 @interface IDSMPFullDeviceIdentityContainerEncrypter
-- (BOOL)verifySignedData:(id)a3 matchesData:(id)a4 forType:(int64_t)a5 withPublicDeviceIdentity:(id)a6 error:(id *)a7;
-- (BOOL)verifySignedData:(id)a3 matchesData:(id)a4 withSecPublicDeviceIdentity:(__SecKey *)a5 diversifier:(id)a6 error:(id *)a7;
-- (IDSMPFullDeviceIdentityContainerEncrypter)initWithRegistrationKeyManager:(id)a3;
-- (id)_validateParametersWithFullIdentityToUse:(id)a3 fullIdentity:(id)a4 publicIdentity:(id)a5 inputData:(id)a6 identifier:(id)a7 forDecryption:(BOOL)a8;
-- (id)batchSignDatas:(id)a3 withType:(int64_t)a4 error:(id *)a5;
-- (id)decryptData:(id)a3 decryptionContext:(id)a4 withPublicDeviceIdentityContainer:(id)a5 usingIdentifier:(id)a6 isRetry:(BOOL)a7;
-- (id)decryptData:(id)a3 withPublicDeviceIdentityContainer:(id)a4 error:(id *)a5 usingIdentifier:(id)a6 isRetry:(BOOL)a7;
-- (id)encryptData:(id)a3 encryptionContext:(id)a4 forceSizeOptimizations:(BOOL)a5 resetState:(BOOL)a6 withEncryptedAttributes:(id)a7 withPublicDeviceIdentityContainer:(id)a8 usedIdentifier:(id *)a9 metadata:(id *)a10 error:(id *)a11;
-- (id)legacyEncryptData:(id)a3 withEncryptedAttributes:(id)a4 withPublicDeviceIdentityContainer:(id)a5 error:(id *)a6;
-- (id)offGridKeyDistributionEncryptData:(id)a3 encryptionContext:(id)a4 withPublicDeviceIdentityContainer:(id)a5 error:(id *)a6;
-- (id)signData:(id)a3 usingApplicationKeyIndex:(unsigned __int16)a4 diversifier:(id)a5 error:(id *)a6;
-- (id)signData:(id)a3 withSignatureType:(int64_t)a4 error:(id *)a5;
+- (BOOL)verifySignedData:(id)data matchesData:(id)matchesData forType:(int64_t)type withPublicDeviceIdentity:(id)identity error:(id *)error;
+- (BOOL)verifySignedData:(id)data matchesData:(id)matchesData withSecPublicDeviceIdentity:(__SecKey *)identity diversifier:(id)diversifier error:(id *)error;
+- (IDSMPFullDeviceIdentityContainerEncrypter)initWithRegistrationKeyManager:(id)manager;
+- (id)_validateParametersWithFullIdentityToUse:(id)use fullIdentity:(id)identity publicIdentity:(id)publicIdentity inputData:(id)data identifier:(id)identifier forDecryption:(BOOL)decryption;
+- (id)batchSignDatas:(id)datas withType:(int64_t)type error:(id *)error;
+- (id)decryptData:(id)data decryptionContext:(id)context withPublicDeviceIdentityContainer:(id)container usingIdentifier:(id)identifier isRetry:(BOOL)retry;
+- (id)decryptData:(id)data withPublicDeviceIdentityContainer:(id)container error:(id *)error usingIdentifier:(id)identifier isRetry:(BOOL)retry;
+- (id)encryptData:(id)data encryptionContext:(id)context forceSizeOptimizations:(BOOL)optimizations resetState:(BOOL)state withEncryptedAttributes:(id)attributes withPublicDeviceIdentityContainer:(id)container usedIdentifier:(id *)identifier metadata:(id *)self0 error:(id *)self1;
+- (id)legacyEncryptData:(id)data withEncryptedAttributes:(id)attributes withPublicDeviceIdentityContainer:(id)container error:(id *)error;
+- (id)offGridKeyDistributionEncryptData:(id)data encryptionContext:(id)context withPublicDeviceIdentityContainer:(id)container error:(id *)error;
+- (id)signData:(id)data usingApplicationKeyIndex:(unsigned __int16)index diversifier:(id)diversifier error:(id *)error;
+- (id)signData:(id)data withSignatureType:(int64_t)type error:(id *)error;
 @end
 
 @implementation IDSMPFullDeviceIdentityContainerEncrypter
 
-- (IDSMPFullDeviceIdentityContainerEncrypter)initWithRegistrationKeyManager:(id)a3
+- (IDSMPFullDeviceIdentityContainerEncrypter)initWithRegistrationKeyManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = IDSMPFullDeviceIdentityContainerEncrypter;
   v6 = [(IDSMPFullDeviceIdentityContainerEncrypter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_registrationKeyManager, a3);
+    objc_storeStrong(&v6->_registrationKeyManager, manager);
   }
 
   return v7;
 }
 
-- (id)legacyEncryptData:(id)a3 withEncryptedAttributes:(id)a4 withPublicDeviceIdentityContainer:(id)a5 error:(id *)a6
+- (id)legacyEncryptData:(id)data withEncryptedAttributes:(id)attributes withPublicDeviceIdentityContainer:(id)container error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dataCopy = data;
+  attributesCopy = attributes;
+  containerCopy = container;
   v13 = [(IDSRegistrationKeyManager *)self->_registrationKeyManager fullDeviceIdentityContainerUsableForKeyType:1];
-  v14 = [(IDSRegistrationKeyManager *)self->_registrationKeyManager fullDeviceIdentityContainer];
+  fullDeviceIdentityContainer = [(IDSRegistrationKeyManager *)self->_registrationKeyManager fullDeviceIdentityContainer];
   v15 = IDSMPLegacyIdentityIdentifier;
-  v16 = [(IDSMPFullDeviceIdentityContainerEncrypter *)self _validateParametersWithFullIdentityToUse:v13 fullIdentity:v14 publicIdentity:v12 inputData:v10 identifier:IDSMPLegacyIdentityIdentifier forDecryption:0];
+  v16 = [(IDSMPFullDeviceIdentityContainerEncrypter *)self _validateParametersWithFullIdentityToUse:v13 fullIdentity:fullDeviceIdentityContainer publicIdentity:containerCopy inputData:dataCopy identifier:IDSMPLegacyIdentityIdentifier forDecryption:0];
   if (v16)
   {
     v17 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v30 = v12;
+      v30 = containerCopy;
       v31 = 2112;
       v32 = v13;
       v33 = 2048;
-      v34 = [v10 length];
+      v34 = [dataCopy length];
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Invalid encryption parameters (using) -- failing {publicDeviceIdentityContainer: %@, fullIdentity: %@, inputDataLength: %llu", buf, 0x20u);
     }
 
     if (os_log_shim_legacy_logging_enabled())
     {
-      v26 = [v10 length];
+      v26 = [dataCopy length];
       _IDSWarnV();
-      v27 = [v10 length];
+      v27 = [dataCopy length];
       _IDSLogV();
-      [v10 length];
+      [dataCopy length];
       _IDSLogTransport();
     }
 
-    if (a6)
+    if (error)
     {
       v18 = v16;
       v19 = 0;
-      *a6 = v16;
+      *error = v16;
     }
 
     else
@@ -93,7 +93,7 @@
     }
 
     v28 = 0;
-    v19 = [v12 legacySealMessage:v10 withEncryptedAttributes:v11 signedByFullIdentity:v13 usingIdentitiesWithIdentifier:v15 error:{&v28, v25}];
+    v19 = [containerCopy legacySealMessage:dataCopy withEncryptedAttributes:attributesCopy signedByFullIdentity:v13 usingIdentitiesWithIdentifier:v15 error:{&v28, v25}];
     v21 = v28;
     if (!v19)
     {
@@ -110,10 +110,10 @@
         _IDSLogV();
       }
 
-      if (a6)
+      if (error)
       {
         v23 = v21;
-        *a6 = v21;
+        *error = v21;
       }
     }
   }
@@ -121,44 +121,44 @@
   return v19;
 }
 
-- (id)offGridKeyDistributionEncryptData:(id)a3 encryptionContext:(id)a4 withPublicDeviceIdentityContainer:(id)a5 error:(id *)a6
+- (id)offGridKeyDistributionEncryptData:(id)data encryptionContext:(id)context withPublicDeviceIdentityContainer:(id)container error:(id *)error
 {
-  v34 = a3;
-  v33 = a4;
-  v35 = a5;
+  dataCopy = data;
+  contextCopy = context;
+  containerCopy = container;
   v9 = [(IDSRegistrationKeyManager *)self->_registrationKeyManager fullDeviceIdentityContainerUsableForKeyType:2];
-  v31 = [(IDSRegistrationKeyManager *)self->_registrationKeyManager fullDeviceIdentityContainer];
-  v32 = [(IDSMPFullDeviceIdentityContainerEncrypter *)self _validateParametersWithFullIdentityToUse:v9 fullIdentity:v31 publicIdentity:v35 inputData:v34 identifier:IDSPaddyIdentityIdentifier forDecryption:0];
+  fullDeviceIdentityContainer = [(IDSRegistrationKeyManager *)self->_registrationKeyManager fullDeviceIdentityContainer];
+  v32 = [(IDSMPFullDeviceIdentityContainerEncrypter *)self _validateParametersWithFullIdentityToUse:v9 fullIdentity:fullDeviceIdentityContainer publicIdentity:containerCopy inputData:dataCopy identifier:IDSPaddyIdentityIdentifier forDecryption:0];
   if (v32)
   {
     v10 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v38 = v35;
+      v38 = containerCopy;
       v39 = 2112;
       v40 = v9;
       v41 = 2048;
-      v42 = [v34 length];
+      v42 = [dataCopy length];
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Invalid encryption parameters -- failing {publicDeviceIdentityContainer: %@, fullIdentity: %@, inputDataLength: %llu}", buf, 0x20u);
     }
 
     if (os_log_shim_legacy_logging_enabled())
     {
-      v27 = [v34 length];
+      v27 = [dataCopy length];
       _IDSWarnV();
-      v28 = [v34 length];
+      v28 = [dataCopy length];
       _IDSLogV();
-      [v34 length];
+      [dataCopy length];
       _IDSLogTransport();
     }
 
-    if (a6)
+    if (error)
     {
       v11 = v32;
       v12 = 0;
       v13 = v32;
-      *a6 = v32;
+      *error = v32;
       goto LABEL_24;
     }
 
@@ -181,16 +181,16 @@
       _IDSLogV();
     }
 
-    v29 = [v33 sendingURI];
-    v15 = [v29 prefixedURI];
-    v16 = [v33 sendingPushToken];
-    v17 = [v16 rawToken];
-    v18 = [v33 receivingURI];
-    v19 = [v18 prefixedURI];
-    v20 = [v33 receivingPushToken];
-    v21 = [v20 rawToken];
+    sendingURI = [contextCopy sendingURI];
+    prefixedURI = [sendingURI prefixedURI];
+    sendingPushToken = [contextCopy sendingPushToken];
+    rawToken = [sendingPushToken rawToken];
+    receivingURI = [contextCopy receivingURI];
+    prefixedURI2 = [receivingURI prefixedURI];
+    receivingPushToken = [contextCopy receivingPushToken];
+    rawToken2 = [receivingPushToken rawToken];
     v36 = 0;
-    v12 = [v35 sealPaddyMessage:v34 sendingURI:v15 sendingPushToken:v17 receivingURI:v19 receivingPushToken:v21 signedByFullIdentity:v9 error:&v36];
+    v12 = [containerCopy sealPaddyMessage:dataCopy sendingURI:prefixedURI sendingPushToken:rawToken receivingURI:prefixedURI2 receivingPushToken:rawToken2 signedByFullIdentity:v9 error:&v36];
     v22 = v36;
 
     if (!v12)
@@ -208,10 +208,10 @@
         _IDSLogV();
       }
 
-      if (a6)
+      if (error)
       {
         v24 = v22;
-        *a6 = v22;
+        *error = v22;
       }
     }
   }
@@ -222,15 +222,15 @@ LABEL_24:
   return v12;
 }
 
-- (id)encryptData:(id)a3 encryptionContext:(id)a4 forceSizeOptimizations:(BOOL)a5 resetState:(BOOL)a6 withEncryptedAttributes:(id)a7 withPublicDeviceIdentityContainer:(id)a8 usedIdentifier:(id *)a9 metadata:(id *)a10 error:(id *)a11
+- (id)encryptData:(id)data encryptionContext:(id)context forceSizeOptimizations:(BOOL)optimizations resetState:(BOOL)state withEncryptedAttributes:(id)attributes withPublicDeviceIdentityContainer:(id)container usedIdentifier:(id *)identifier metadata:(id *)self0 error:(id *)self1
 {
-  v66 = a3;
-  v65 = a4;
-  v62 = a7;
-  v16 = a8;
-  v17 = [v16 ngmPublicDeviceIdentity];
-  v18 = v17;
-  if (v17)
+  dataCopy = data;
+  contextCopy = context;
+  attributesCopy = attributes;
+  containerCopy = container;
+  ngmPublicDeviceIdentity = [containerCopy ngmPublicDeviceIdentity];
+  v18 = ngmPublicDeviceIdentity;
+  if (ngmPublicDeviceIdentity)
   {
     v19 = 2;
   }
@@ -241,9 +241,9 @@ LABEL_24:
   }
 
   v20 = [(IDSRegistrationKeyManager *)self->_registrationKeyManager fullDeviceIdentityContainerUsableForKeyType:v19];
-  v63 = [(IDSRegistrationKeyManager *)self->_registrationKeyManager fullDeviceIdentityContainer];
+  fullDeviceIdentityContainer = [(IDSRegistrationKeyManager *)self->_registrationKeyManager fullDeviceIdentityContainer];
   v21 = IDSMPLegacyIdentityIdentifier;
-  if (a9)
+  if (identifier)
   {
     v22 = IDSMPLegacyIdentityIdentifier;
   }
@@ -253,41 +253,41 @@ LABEL_24:
     v22 = 0;
   }
 
-  v64 = [(IDSMPFullDeviceIdentityContainerEncrypter *)self _validateParametersWithFullIdentityToUse:v20 fullIdentity:v63 publicIdentity:v16 inputData:v66 identifier:v22 forDecryption:0];
+  v64 = [(IDSMPFullDeviceIdentityContainerEncrypter *)self _validateParametersWithFullIdentityToUse:v20 fullIdentity:fullDeviceIdentityContainer publicIdentity:containerCopy inputData:dataCopy identifier:v22 forDecryption:0];
   if (v64)
   {
     v23 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       *buf = 138413058;
-      v70 = v16;
+      v70 = containerCopy;
       v71 = 2112;
       v72 = v20;
       v73 = 2048;
-      v74 = [v66 length];
+      v74 = [dataCopy length];
       v75 = 2048;
-      v76 = a9;
+      identifierCopy = identifier;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "Invalid encryption parameters (used) -- failing {publicDeviceIdentityContainer: %@, fullIdentity: %@, inputDataLength: %llu, identifier: %p}", buf, 0x2Au);
     }
 
     if (os_log_shim_legacy_logging_enabled())
     {
-      v48 = [v66 length];
+      v48 = [dataCopy length];
       _IDSWarnV();
-      v49 = [v66 length];
+      v49 = [dataCopy length];
       _IDSLogV();
-      [v66 length];
+      [dataCopy length];
       _IDSLogTransport();
     }
 
-    if (a11)
+    if (error)
     {
       v24 = v64;
-      *a11 = v64;
+      *error = v64;
     }
 
     v25 = 0;
-    if (a9 && !v20)
+    if (identifier && !v20)
     {
       if (v18)
       {
@@ -300,7 +300,7 @@ LABEL_24:
       }
 
       v25 = 0;
-      *a9 = v26;
+      *identifier = v26;
     }
   }
 
@@ -320,63 +320,63 @@ LABEL_24:
       _IDSLogV();
     }
 
-    v57 = [v65 guid];
-    v61 = [v65 sendingURI];
-    v60 = [v65 sendingPushToken];
-    v59 = [v65 receivingURI];
-    v58 = [v65 receivingPushToken];
-    v56 = [v65 authenticatedData];
-    v28 = [v65 messageType];
+    guid = [contextCopy guid];
+    sendingURI = [contextCopy sendingURI];
+    sendingPushToken = [contextCopy sendingPushToken];
+    receivingURI = [contextCopy receivingURI];
+    receivingPushToken = [contextCopy receivingPushToken];
+    authenticatedData = [contextCopy authenticatedData];
+    messageType = [contextCopy messageType];
     v29 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413826;
-      v70 = v57;
+      v70 = guid;
       v71 = 2112;
-      v72 = v61;
+      v72 = sendingURI;
       v73 = 2112;
-      v74 = v60;
+      v74 = sendingPushToken;
       v75 = 2112;
-      v76 = v59;
+      identifierCopy = receivingURI;
       v77 = 2112;
-      v78 = v58;
+      v78 = receivingPushToken;
       v79 = 2112;
-      v80 = v56;
+      v80 = authenticatedData;
       v81 = 2048;
-      v82 = v28;
+      v82 = messageType;
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Calling into sealMessage with {guid:%@, sendingURI:%@, sendingPushToken:%@, receivingURI:%@, receivingPushToken:%@, authenticatedData:%@, messageType:%ld}", buf, 0x48u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v53 = v56;
-      v54 = v28;
-      v51 = v59;
-      v52 = v58;
-      v46 = v61;
-      v47 = v60;
-      v44 = v57;
+      v53 = authenticatedData;
+      v54 = messageType;
+      v51 = receivingURI;
+      v52 = receivingPushToken;
+      v46 = sendingURI;
+      v47 = sendingPushToken;
+      v44 = guid;
       _IDSLogV();
     }
 
-    v30 = [v61 prefixedURI];
-    v31 = [v60 rawToken];
-    v32 = [v59 prefixedURI];
-    v33 = [v58 rawToken];
+    prefixedURI = [sendingURI prefixedURI];
+    rawToken = [sendingPushToken rawToken];
+    prefixedURI2 = [receivingURI prefixedURI];
+    rawToken2 = [receivingPushToken rawToken];
     v67 = 0;
     v68 = 0;
-    BYTE1(v50) = a6;
-    LOBYTE(v50) = a5;
-    v25 = [v16 sealMessage:v66 authenticatedData:v56 messageType:v28 guid:v57 sendingURI:v30 sendingPushToken:v31 receivingURI:v32 receivingPushToken:v33 forceSizeOptimizations:v50 resetState:v62 withEncryptedAttributes:v20 signedByFullIdentity:a9 usedIdentityWithIdentifier:&v68 error:&v67 additionalResult:?];
+    BYTE1(v50) = state;
+    LOBYTE(v50) = optimizations;
+    v25 = [containerCopy sealMessage:dataCopy authenticatedData:authenticatedData messageType:messageType guid:guid sendingURI:prefixedURI sendingPushToken:rawToken receivingURI:prefixedURI2 receivingPushToken:rawToken2 forceSizeOptimizations:v50 resetState:attributesCopy withEncryptedAttributes:v20 signedByFullIdentity:identifier usedIdentityWithIdentifier:&v68 error:&v67 additionalResult:?];
     v34 = v68;
     v35 = v67;
 
     v36 = [[IDSEncryptionMetadata alloc] initWithAdditionalEncryptionResult:v35];
     v37 = v36;
-    if (a10)
+    if (metadata)
     {
       v38 = v36;
-      *a10 = v37;
+      *metadata = v37;
     }
 
     if (!v25)
@@ -395,13 +395,13 @@ LABEL_24:
         _IDSLogV();
       }
 
-      if (a11)
+      if (error)
       {
         v40 = v34;
-        *a11 = v34;
+        *error = v34;
       }
 
-      if ([*a9 isEqualToString:{IDSNGMDeviceIdentityIdentifier, v45}])
+      if ([*identifier isEqualToString:{IDSNGMDeviceIdentityIdentifier, v45}])
       {
         v41 = +[IMIDSLog encryption];
         if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -415,44 +415,44 @@ LABEL_24:
   return v25;
 }
 
-- (id)decryptData:(id)a3 withPublicDeviceIdentityContainer:(id)a4 error:(id *)a5 usingIdentifier:(id)a6 isRetry:(BOOL)a7
+- (id)decryptData:(id)data withPublicDeviceIdentityContainer:(id)container error:(id *)error usingIdentifier:(id)identifier isRetry:(BOOL)retry
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = [(IDSRegistrationKeyManager *)self->_registrationKeyManager fullDeviceIdentityContainer];
-  v15 = [(IDSMPFullDeviceIdentityContainerEncrypter *)self _validateParametersWithFullIdentityToUse:v14 fullIdentity:0 publicIdentity:v12 inputData:v11 identifier:v13 forDecryption:1];
+  dataCopy = data;
+  containerCopy = container;
+  identifierCopy = identifier;
+  fullDeviceIdentityContainer = [(IDSRegistrationKeyManager *)self->_registrationKeyManager fullDeviceIdentityContainer];
+  v15 = [(IDSMPFullDeviceIdentityContainerEncrypter *)self _validateParametersWithFullIdentityToUse:fullDeviceIdentityContainer fullIdentity:0 publicIdentity:containerCopy inputData:dataCopy identifier:identifierCopy forDecryption:1];
   if (v15)
   {
     v16 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138413058;
-      v36 = v12;
+      v36 = containerCopy;
       v37 = 2112;
-      v38 = v14;
+      v38 = fullDeviceIdentityContainer;
       v39 = 2048;
-      v40 = [v11 length];
+      v40 = [dataCopy length];
       v41 = 2048;
-      v42 = v13;
+      v42 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Invalid decryption parameters -- failing {publicDeviceIdentityContainer: %@, fullIdentity: %@, inputDataLength: %llu, identifier: %p}", buf, 0x2Au);
     }
 
     if (os_log_shim_legacy_logging_enabled())
     {
-      v31 = [v11 length];
+      v31 = [dataCopy length];
       _IDSWarnV();
-      v32 = [v11 length];
+      v32 = [dataCopy length];
       _IDSLogV();
-      [v11 length];
+      [dataCopy length];
       _IDSLogTransport();
     }
 
-    if (a5)
+    if (error)
     {
       v17 = v15;
       v18 = 0;
-      *a5 = v15;
+      *error = v15;
     }
 
     else
@@ -467,22 +467,22 @@ LABEL_24:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v36 = v14;
+      v36 = fullDeviceIdentityContainer;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Using full identity: %@", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v28 = v14;
+      v28 = fullDeviceIdentityContainer;
       _IDSLogV();
     }
 
     v34 = 0;
-    v18 = [v14 unsealMessage:v11 signedByPublicIdentity:v12 usingIdentityWithIdentifier:v13 error:{&v34, v28}];
+    v18 = [fullDeviceIdentityContainer unsealMessage:dataCopy signedByPublicIdentity:containerCopy usingIdentityWithIdentifier:identifierCopy error:{&v34, v28}];
     v20 = v34;
     if (v18)
     {
-      v21 = v14;
+      previousFullDeviceIdentityContainer = fullDeviceIdentityContainer;
     }
 
     else
@@ -501,93 +501,93 @@ LABEL_24:
         _IDSLogV();
       }
 
-      v21 = [(IDSRegistrationKeyManager *)self->_registrationKeyManager previousFullDeviceIdentityContainer];
+      previousFullDeviceIdentityContainer = [(IDSRegistrationKeyManager *)self->_registrationKeyManager previousFullDeviceIdentityContainer];
 
-      if (v21)
+      if (previousFullDeviceIdentityContainer)
       {
         v23 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v36 = v21;
+          v36 = previousFullDeviceIdentityContainer;
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Using previous full identity: %@", buf, 0xCu);
         }
 
         if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
         {
-          v30 = v21;
+          v30 = previousFullDeviceIdentityContainer;
           _IDSLogV();
         }
 
         v33 = 0;
-        v18 = [v21 unsealMessage:v11 signedByPublicIdentity:v12 usingIdentityWithIdentifier:v13 error:{&v33, v30}];
+        v18 = [previousFullDeviceIdentityContainer unsealMessage:dataCopy signedByPublicIdentity:containerCopy usingIdentityWithIdentifier:identifierCopy error:{&v33, v30}];
         v24 = v33;
-        if (a5 && !v18)
+        if (error && !v18)
         {
           v25 = v20;
-          *a5 = v20;
+          *error = v20;
         }
       }
 
-      else if (a5)
+      else if (error)
       {
         v26 = v20;
-        v21 = 0;
+        previousFullDeviceIdentityContainer = 0;
         v18 = 0;
-        *a5 = v20;
+        *error = v20;
       }
 
       else
       {
-        v21 = 0;
+        previousFullDeviceIdentityContainer = 0;
         v18 = 0;
       }
     }
 
-    v14 = v21;
+    fullDeviceIdentityContainer = previousFullDeviceIdentityContainer;
   }
 
   return v18;
 }
 
-- (id)decryptData:(id)a3 decryptionContext:(id)a4 withPublicDeviceIdentityContainer:(id)a5 usingIdentifier:(id)a6 isRetry:(BOOL)a7
+- (id)decryptData:(id)data decryptionContext:(id)context withPublicDeviceIdentityContainer:(id)container usingIdentifier:(id)identifier isRetry:(BOOL)retry
 {
-  v38 = a3;
-  v37 = a4;
-  v39 = a5;
-  v11 = a6;
+  dataCopy = data;
+  contextCopy = context;
+  containerCopy = container;
+  identifierCopy = identifier;
   v35 = self->_registrationKeyManager;
-  v12 = [(IDSRegistrationKeyManager *)v35 fullDeviceIdentityContainer];
-  v36 = [(IDSMPFullDeviceIdentityContainerEncrypter *)self _validateParametersWithFullIdentityToUse:v12 fullIdentity:0 publicIdentity:v39 inputData:v38 identifier:v11 forDecryption:1];
+  fullDeviceIdentityContainer = [(IDSRegistrationKeyManager *)v35 fullDeviceIdentityContainer];
+  v36 = [(IDSMPFullDeviceIdentityContainerEncrypter *)self _validateParametersWithFullIdentityToUse:fullDeviceIdentityContainer fullIdentity:0 publicIdentity:containerCopy inputData:dataCopy identifier:identifierCopy forDecryption:1];
   if (v36)
   {
     v13 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138413058;
-      v48 = v39;
+      v48 = containerCopy;
       v49 = 2112;
-      v50 = v12;
+      v50 = fullDeviceIdentityContainer;
       v51 = 2048;
-      v52 = [v38 length];
+      v52 = [dataCopy length];
       v53 = 2048;
-      v54 = v11;
+      v54 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Invalid decryption parameters -- failing {publicDeviceIdentityContainer: %@, fullIdentity: %@, inputDataLength: %llu, identifier: %p}", buf, 0x2Au);
     }
 
     if (os_log_shim_legacy_logging_enabled())
     {
-      v28 = [v38 length];
+      v28 = [dataCopy length];
       _IDSWarnV();
-      v29 = [v38 length];
+      v29 = [dataCopy length];
       _IDSLogV();
-      [v38 length];
+      [dataCopy length];
       _IDSLogTransport();
     }
 
-    v14 = objc_alloc_init(CUTUnsafePromiseSeal);
-    [v14 failWithError:v36];
-    v15 = [v14 promise];
+    guid = objc_alloc_init(CUTUnsafePromiseSeal);
+    [guid failWithError:v36];
+    promise = [guid promise];
   }
 
   else
@@ -596,40 +596,40 @@ LABEL_24:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v48 = v12;
+      v48 = fullDeviceIdentityContainer;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Using full identity: %@", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v27 = v12;
+      v27 = fullDeviceIdentityContainer;
       _IDSLogV();
     }
 
-    v14 = [v37 guid];
-    v34 = [v37 sendingURI];
-    v33 = [v37 sendingPushToken];
-    v32 = [v37 receivingURI];
-    v31 = [v37 receivingPushToken];
-    v30 = [v37 authenticatedData];
-    v17 = [v37 messageType];
+    guid = [contextCopy guid];
+    sendingURI = [contextCopy sendingURI];
+    sendingPushToken = [contextCopy sendingPushToken];
+    receivingURI = [contextCopy receivingURI];
+    receivingPushToken = [contextCopy receivingPushToken];
+    authenticatedData = [contextCopy authenticatedData];
+    messageType = [contextCopy messageType];
     v18 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413826;
-      v48 = v14;
+      v48 = guid;
       v49 = 2112;
-      v50 = v34;
+      v50 = sendingURI;
       v51 = 2112;
-      v52 = v33;
+      v52 = sendingPushToken;
       v53 = 2112;
-      v54 = v32;
+      v54 = receivingURI;
       v55 = 2112;
-      v56 = v31;
+      v56 = receivingPushToken;
       v57 = 2112;
-      v58 = v30;
+      v58 = authenticatedData;
       v59 = 2048;
-      v60 = v17;
+      v60 = messageType;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Calling into unsealMessage with {guid:%@, sendingURI:%@, sendingPushToken:%@, receivingURI:%@, receivingPushToken:%@, authenticatedData:%@, messageType:%ld}", buf, 0x48u);
     }
 
@@ -639,49 +639,49 @@ LABEL_24:
     }
 
     v19 = objc_alloc_init(CUTUnsafePromiseSeal);
-    v20 = [v34 prefixedURI];
-    v21 = [v33 rawToken];
-    v22 = [v32 prefixedURI];
-    v23 = [v31 rawToken];
-    v24 = [v12 unsealMessage:v38 authenticatedData:v30 messageType:v17 guid:v14 sendingURI:v20 sendingPushToken:v21 receivingURI:v22 receivingPushToken:v23 signedByPublicIdentity:v39 usingIdentityWithIdentifier:v11];
+    prefixedURI = [sendingURI prefixedURI];
+    rawToken = [sendingPushToken rawToken];
+    prefixedURI2 = [receivingURI prefixedURI];
+    rawToken2 = [receivingPushToken rawToken];
+    v24 = [fullDeviceIdentityContainer unsealMessage:dataCopy authenticatedData:authenticatedData messageType:messageType guid:guid sendingURI:prefixedURI sendingPushToken:rawToken receivingURI:prefixedURI2 receivingPushToken:rawToken2 signedByPublicIdentity:containerCopy usingIdentityWithIdentifier:identifierCopy];
     v40[0] = _NSConcreteStackBlock;
     v40[1] = 3221225472;
     v40[2] = sub_1003439A4;
     v40[3] = &unk_100BD8800;
     v41 = v35;
     v42 = v19;
-    v43 = v38;
-    v44 = v37;
-    v45 = v39;
-    v46 = v11;
+    v43 = dataCopy;
+    v44 = contextCopy;
+    v45 = containerCopy;
+    v46 = identifierCopy;
     v25 = v19;
     [v24 registerResultBlock:v40];
 
-    v15 = [v25 promise];
+    promise = [v25 promise];
   }
 
-  return v15;
+  return promise;
 }
 
-- (id)_validateParametersWithFullIdentityToUse:(id)a3 fullIdentity:(id)a4 publicIdentity:(id)a5 inputData:(id)a6 identifier:(id)a7 forDecryption:(BOOL)a8
+- (id)_validateParametersWithFullIdentityToUse:(id)use fullIdentity:(id)identity publicIdentity:(id)publicIdentity inputData:(id)data identifier:(id)identifier forDecryption:(BOOL)decryption
 {
-  v8 = a8;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  decryptionCopy = decryption;
+  useCopy = use;
+  identityCopy = identity;
+  publicIdentityCopy = publicIdentity;
+  dataCopy = data;
+  identifierCopy = identifier;
   v18 = &IDSDecryptionErrorDomain;
-  if (!v8)
+  if (!decryptionCopy)
   {
     v18 = &IDSEncryptionErrorDomain;
   }
 
   v19 = *v18;
-  if (!v13)
+  if (!useCopy)
   {
-    v21 = !v8;
-    if (v14)
+    v21 = !decryptionCopy;
+    if (identityCopy)
     {
       v22 = 20;
     }
@@ -695,9 +695,9 @@ LABEL_24:
     goto LABEL_14;
   }
 
-  if (!v15)
+  if (!publicIdentityCopy)
   {
-    v21 = !v8;
+    v21 = !decryptionCopy;
     v22 = 17;
     v23 = 4;
 LABEL_14:
@@ -715,17 +715,17 @@ LABEL_14:
     goto LABEL_18;
   }
 
-  if (![v16 length])
+  if (![dataCopy length])
   {
-    v21 = !v8;
+    v21 = !decryptionCopy;
     v22 = 18;
     v23 = 7;
     goto LABEL_14;
   }
 
-  if (!v17)
+  if (!identifierCopy)
   {
-    v21 = !v8;
+    v21 = !decryptionCopy;
     v22 = 19;
     v23 = 8;
     goto LABEL_14;
@@ -737,18 +737,18 @@ LABEL_18:
   return v20;
 }
 
-- (id)signData:(id)a3 withSignatureType:(int64_t)a4 error:(id *)a5
+- (id)signData:(id)data withSignatureType:(int64_t)type error:(id *)error
 {
-  v8 = a3;
-  v9 = [(IDSRegistrationKeyManager *)self->_registrationKeyManager fullDeviceIdentityContainer];
-  v10 = v9;
-  if (v9)
+  dataCopy = data;
+  fullDeviceIdentityContainer = [(IDSRegistrationKeyManager *)self->_registrationKeyManager fullDeviceIdentityContainer];
+  v10 = fullDeviceIdentityContainer;
+  if (fullDeviceIdentityContainer)
   {
     v18 = 0;
-    v11 = [v9 signDataWithNGMIdentity:v8 forType:a4 error:&v18];
+    v11 = [fullDeviceIdentityContainer signDataWithNGMIdentity:dataCopy forType:type error:&v18];
     v12 = v18;
     v13 = v12;
-    if (a5 && !v11)
+    if (error && !v11)
     {
       if (v12)
       {
@@ -775,14 +775,14 @@ LABEL_18:
         v14 = 0;
       }
 
-      *a5 = [NSError errorWithDomain:IDSSigningErrorDomain code:12 userInfo:v14, v17];
+      *error = [NSError errorWithDomain:IDSSigningErrorDomain code:12 userInfo:v14, v17];
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     [NSError errorWithDomain:IDSSigningErrorDomain code:11 userInfo:0];
-    *a5 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -793,17 +793,17 @@ LABEL_18:
   return v11;
 }
 
-- (id)signData:(id)a3 usingApplicationKeyIndex:(unsigned __int16)a4 diversifier:(id)a5 error:(id *)a6
+- (id)signData:(id)data usingApplicationKeyIndex:(unsigned __int16)index diversifier:(id)diversifier error:(id *)error
 {
-  v8 = a4;
-  dataToSign = a3;
-  v10 = a5;
-  if (![(IDSRegistrationKeyManager *)self->_registrationKeyManager fullIdentityForKeyIndex:v8]|| (v11 = CFRetain([(IDSRegistrationKeyManager *)self->_registrationKeyManager fullIdentityForKeyIndex:v8])) == 0)
+  indexCopy = index;
+  dataToSign = data;
+  diversifierCopy = diversifier;
+  if (![(IDSRegistrationKeyManager *)self->_registrationKeyManager fullIdentityForKeyIndex:indexCopy]|| (v11 = CFRetain([(IDSRegistrationKeyManager *)self->_registrationKeyManager fullIdentityForKeyIndex:indexCopy])) == 0)
   {
-    if (a6)
+    if (error)
     {
       [NSError errorWithDomain:IDSSigningErrorDomain code:11 userInfo:0];
-      *a6 = v25 = 0;
+      *error = v25 = 0;
       goto LABEL_40;
     }
 
@@ -811,11 +811,11 @@ LABEL_18:
   }
 
   v12 = v11;
-  if (!v10)
+  if (!diversifierCopy)
   {
-    if (a6)
+    if (error)
     {
-      *a6 = [NSError errorWithDomain:IDSSigningErrorDomain code:15 userInfo:0];
+      *error = [NSError errorWithDomain:IDSSigningErrorDomain code:15 userInfo:0];
     }
 
     v29 = OSLogHandleForIDSCategory();
@@ -840,10 +840,10 @@ LABEL_18:
   }
 
   v13 = qword_100CBCF28;
-  v14 = [v10 diversifier];
-  v15 = [v10 trackingPreventionSecret];
+  diversifier = [diversifierCopy diversifier];
+  trackingPreventionSecret = [diversifierCopy trackingPreventionSecret];
   v37 = 0;
-  v16 = [v13 diversifyPrivateKey:v12 withDocumentIdentifier:v14 trackingPreventionSalt:v15 error:&v37];
+  v16 = [v13 diversifyPrivateKey:v12 withDocumentIdentifier:diversifier trackingPreventionSalt:trackingPreventionSecret error:&v37];
   v17 = v37;
   if (!v16)
   {
@@ -857,10 +857,10 @@ LABEL_18:
   }
 
   v18 = qword_100CBCF28;
-  v19 = [v10 diversifier];
-  v20 = [v10 trackingPreventionSecret];
+  diversifier2 = [diversifierCopy diversifier];
+  trackingPreventionSecret2 = [diversifierCopy trackingPreventionSecret];
   v36 = v17;
-  v21 = [v18 diversifyPrivateKey:v12 withDocumentIdentifier:v19 trackingPreventionSalt:v20 error:&v36];
+  v21 = [v18 diversifyPrivateKey:v12 withDocumentIdentifier:diversifier2 trackingPreventionSalt:trackingPreventionSecret2 error:&v36];
   v22 = v36;
 
   v23 = CFRetain(v21);
@@ -871,7 +871,7 @@ LABEL_18:
     {
 LABEL_31:
       v30 = 0;
-      if (!a6)
+      if (!error)
       {
 LABEL_33:
         v31 = OSLogHandleForIDSCategory();
@@ -880,7 +880,7 @@ LABEL_33:
           *buf = 138412802;
           v41 = v12;
           v42 = 2112;
-          v43 = v10;
+          v43 = diversifierCopy;
           v44 = 2112;
           v45 = v17;
           _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Failed to diversify key for signing { tempIdentity: %@, diversifier: %@, mpError: %@ }", buf, 0x20u);
@@ -899,7 +899,7 @@ LABEL_39:
       }
 
 LABEL_32:
-      *a6 = [NSError errorWithDomain:IDSSigningErrorDomain code:15 userInfo:v30];
+      *error = [NSError errorWithDomain:IDSSigningErrorDomain code:15 userInfo:v30];
       goto LABEL_33;
     }
 
@@ -907,7 +907,7 @@ LABEL_28:
     v46 = NSUnderlyingErrorKey;
     v47 = v17;
     v30 = [NSDictionary dictionaryWithObjects:&v47 forKeys:&v46 count:1];
-    if (!a6)
+    if (!error)
     {
       goto LABEL_33;
     }
@@ -920,8 +920,8 @@ LABEL_28:
   error = 0;
   v24 = SecKeyCreateSignature(v23, kSecKeyAlgorithmECDSASignatureMessageX962SHA256, dataToSign, &error);
   v25 = v24;
-  v26 = error;
-  if (!a6 || v24)
+  errorCopy = error;
+  if (!error || v24)
   {
     if (error)
     {
@@ -935,19 +935,19 @@ LABEL_28:
     if (error)
     {
       v38 = NSUnderlyingErrorKey;
-      v39 = error;
-      v27 = [NSDictionary dictionaryWithObjects:&v39 forKeys:&v38 count:1];
+      errorCopy2 = error;
+      v27 = [NSDictionary dictionaryWithObjects:&errorCopy2 forKeys:&v38 count:1];
       v28 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v41 = v26;
+        v41 = errorCopy;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Security Error signing data: %@", buf, 0xCu);
       }
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v33 = v26;
+        v33 = errorCopy;
         _IDSLogV();
       }
     }
@@ -957,7 +957,7 @@ LABEL_28:
       v27 = 0;
     }
 
-    *a6 = [NSError errorWithDomain:IDSSigningErrorDomain code:13 userInfo:v27, v33];
+    *error = [NSError errorWithDomain:IDSSigningErrorDomain code:13 userInfo:v27, v33];
   }
 
   CFRelease(v23);
@@ -966,18 +966,18 @@ LABEL_40:
   return v25;
 }
 
-- (id)batchSignDatas:(id)a3 withType:(int64_t)a4 error:(id *)a5
+- (id)batchSignDatas:(id)datas withType:(int64_t)type error:(id *)error
 {
-  v8 = a3;
-  v9 = [(IDSRegistrationKeyManager *)self->_registrationKeyManager fullDeviceIdentityContainer];
-  v10 = v9;
-  if (v9)
+  datasCopy = datas;
+  fullDeviceIdentityContainer = [(IDSRegistrationKeyManager *)self->_registrationKeyManager fullDeviceIdentityContainer];
+  v10 = fullDeviceIdentityContainer;
+  if (fullDeviceIdentityContainer)
   {
     v18 = 0;
-    v11 = [v9 batchSignWithNGMIdentity:v8 forType:a4 error:&v18];
+    v11 = [fullDeviceIdentityContainer batchSignWithNGMIdentity:datasCopy forType:type error:&v18];
     v12 = v18;
     v13 = [v11 count];
-    if (a5 && !v13)
+    if (error && !v13)
     {
       if (v12)
       {
@@ -1004,14 +1004,14 @@ LABEL_40:
         v14 = 0;
       }
 
-      *a5 = [NSError errorWithDomain:IDSSigningErrorDomain code:12 userInfo:v14, v17];
+      *error = [NSError errorWithDomain:IDSSigningErrorDomain code:12 userInfo:v14, v17];
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     [NSError errorWithDomain:IDSSigningErrorDomain code:11 userInfo:0];
-    *a5 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -1022,19 +1022,19 @@ LABEL_40:
   return v11;
 }
 
-- (BOOL)verifySignedData:(id)a3 matchesData:(id)a4 forType:(int64_t)a5 withPublicDeviceIdentity:(id)a6 error:(id *)a7
+- (BOOL)verifySignedData:(id)data matchesData:(id)matchesData forType:(int64_t)type withPublicDeviceIdentity:(id)identity error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = v13;
-  if (v13)
+  dataCopy = data;
+  matchesDataCopy = matchesData;
+  identityCopy = identity;
+  v14 = identityCopy;
+  if (identityCopy)
   {
     v23 = 0;
-    v15 = [v13 isValidSignature:v11 forMessage:v12 forType:a5 error:&v23];
+    v15 = [identityCopy isValidSignature:dataCopy forMessage:matchesDataCopy forType:type error:&v23];
     v16 = v23;
     v17 = v16;
-    if (a7)
+    if (error)
     {
       v18 = v15;
     }
@@ -1071,14 +1071,14 @@ LABEL_40:
         v19 = 0;
       }
 
-      *a7 = [NSError errorWithDomain:IDSSigningErrorDomain code:12 userInfo:v19, v22];
+      *error = [NSError errorWithDomain:IDSSigningErrorDomain code:12 userInfo:v19, v22];
     }
   }
 
-  else if (a7)
+  else if (error)
   {
     [NSError errorWithDomain:IDSSigningErrorDomain code:10 userInfo:0];
-    *a7 = v15 = 0;
+    *error = v15 = 0;
   }
 
   else
@@ -1089,15 +1089,15 @@ LABEL_40:
   return v15;
 }
 
-- (BOOL)verifySignedData:(id)a3 matchesData:(id)a4 withSecPublicDeviceIdentity:(__SecKey *)a5 diversifier:(id)a6 error:(id *)a7
+- (BOOL)verifySignedData:(id)data matchesData:(id)matchesData withSecPublicDeviceIdentity:(__SecKey *)identity diversifier:(id)diversifier error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = v13;
-  if (!a5)
+  dataCopy = data;
+  matchesDataCopy = matchesData;
+  diversifierCopy = diversifier;
+  v14 = diversifierCopy;
+  if (!identity)
   {
-    if (a7)
+    if (error)
     {
       v15 = [NSError errorWithDomain:IDSSigningErrorDomain code:10 userInfo:0];
       goto LABEL_7;
@@ -1108,14 +1108,14 @@ LABEL_8:
     goto LABEL_23;
   }
 
-  if (v13)
+  if (diversifierCopy)
   {
-    if (a7)
+    if (error)
     {
       v15 = [NSError errorWithDomain:IDSSigningErrorDomain code:15 userInfo:0];
 LABEL_7:
       v16 = 0;
-      *a7 = v15;
+      *error = v15;
       goto LABEL_23;
     }
 
@@ -1123,9 +1123,9 @@ LABEL_7:
   }
 
   error = 0;
-  v17 = SecKeyVerifySignature(a5, kSecKeyAlgorithmECDSASignatureMessageX962SHA256, v11, v12, &error);
-  v18 = error;
-  if (!a7 || v17)
+  v17 = SecKeyVerifySignature(identity, kSecKeyAlgorithmECDSASignatureMessageX962SHA256, dataCopy, matchesDataCopy, &error);
+  errorCopy = error;
+  if (!error || v17)
   {
     if (error)
     {
@@ -1138,19 +1138,19 @@ LABEL_7:
     if (error)
     {
       v26 = NSUnderlyingErrorKey;
-      v27 = error;
-      v19 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
+      errorCopy2 = error;
+      v19 = [NSDictionary dictionaryWithObjects:&errorCopy2 forKeys:&v26 count:1];
       v20 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v25 = v18;
+        v25 = errorCopy;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Security Error verifying signing data: %@", buf, 0xCu);
       }
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v22 = v18;
+        v22 = errorCopy;
         _IDSLogV();
       }
     }
@@ -1160,7 +1160,7 @@ LABEL_7:
       v19 = 0;
     }
 
-    *a7 = [NSError errorWithDomain:IDSSigningErrorDomain code:13 userInfo:v19, v22];
+    *error = [NSError errorWithDomain:IDSSigningErrorDomain code:13 userInfo:v19, v22];
   }
 
   v16 = 1;

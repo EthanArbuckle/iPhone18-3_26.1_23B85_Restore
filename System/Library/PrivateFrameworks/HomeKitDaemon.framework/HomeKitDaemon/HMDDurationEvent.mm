@@ -1,19 +1,19 @@
 @interface HMDDurationEvent
 + (id)logCategory;
-- (BOOL)isCompatbileWithEvent:(id)a3;
-- (HMDDurationEvent)initWithCoder:(id)a3;
-- (HMDDurationEvent)initWithModel:(id)a3 home:(id)a4;
+- (BOOL)isCompatbileWithEvent:(id)event;
+- (HMDDurationEvent)initWithCoder:(id)coder;
+- (HMDDurationEvent)initWithModel:(id)model home:(id)home;
 - (NSNumber)duration;
 - (NSString)description;
 - (id)_nextTimerDate;
 - (id)analyticsTriggerEventData;
 - (id)createPayload;
 - (id)emptyModelObject;
-- (id)modelObjectWithChangeType:(unint64_t)a3;
-- (void)_handleUpdateRequest:(id)a3;
-- (void)_transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDuration:(id)a3;
+- (id)modelObjectWithChangeType:(unint64_t)type;
+- (void)_handleUpdateRequest:(id)request;
+- (void)_transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDuration:(id)duration;
 @end
 
 @implementation HMDDurationEvent
@@ -31,19 +31,19 @@
 - (id)_nextTimerDate
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [MEMORY[0x277CBEA80] currentCalendar];
-  v5 = [v4 components:252 fromDate:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v5 = [currentCalendar components:252 fromDate:date];
 
-  v6 = [v5 second];
-  v7 = [(HMDDurationEvent *)self duration];
-  [v5 setSecond:{objc_msgSend(v7, "unsignedIntegerValue") + v6}];
+  second = [v5 second];
+  duration = [(HMDDurationEvent *)self duration];
+  [v5 setSecond:{objc_msgSend(duration, "unsignedIntegerValue") + second}];
 
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
-  v9 = [v8 dateFromComponents:v5];
+  currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+  v9 = [currentCalendar2 dateFromComponents:v5];
 
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -61,14 +61,14 @@
   return v9;
 }
 
-- (void)_transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5
+- (void)_transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  updatedCopy = updated;
+  valuesCopy = values;
+  messageCopy = message;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -79,7 +79,7 @@
   }
 
   objc_autoreleasePoolPop(v11);
-  v15 = v9;
+  v15 = valuesCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -95,18 +95,18 @@
 
   if (v17)
   {
-    v18 = [v17 duration];
-    if (v18)
+    duration = [v17 duration];
+    if (duration)
     {
-      v19 = v18;
-      v20 = [(HMDDurationEvent *)v12 duration];
-      if (v20)
+      v19 = duration;
+      duration2 = [(HMDDurationEvent *)selfCopy duration];
+      if (duration2)
       {
-        v21 = v20;
-        v22 = [(HMDDurationEvent *)v12 duration];
-        [v22 doubleValue];
-        v23 = [v17 duration];
-        [v23 doubleValue];
+        v21 = duration2;
+        duration3 = [(HMDDurationEvent *)selfCopy duration];
+        [duration3 doubleValue];
+        duration4 = [v17 duration];
+        [duration4 doubleValue];
         v24 = HMDurationsApproximatelyEqual();
 
         if (v24)
@@ -119,56 +119,56 @@
       {
       }
 
-      v25 = [v17 duration];
-      [(HMDDurationEvent *)v12 setDuration:v25];
+      duration5 = [v17 duration];
+      [(HMDDurationEvent *)selfCopy setDuration:duration5];
 
-      v26 = [(HMDEvent *)v12 eventTrigger];
-      [v26 markChangedForMessage:v10];
+      eventTrigger = [(HMDEvent *)selfCopy eventTrigger];
+      [eventTrigger markChangedForMessage:messageCopy];
     }
 
 LABEL_13:
-    [v10 respondWithSuccess];
+    [messageCopy respondWithSuccess];
   }
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (id)modelObjectWithChangeType:(unint64_t)a3
+- (id)modelObjectWithChangeType:(unint64_t)type
 {
   v5 = [HMDDurationEventModel alloc];
-  v6 = [(HMDEvent *)self uuid];
-  v7 = [(HMDEvent *)self eventTrigger];
-  v8 = [v7 uuid];
-  v9 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:a3 uuid:v6 parentUUID:v8];
+  uuid = [(HMDEvent *)self uuid];
+  eventTrigger = [(HMDEvent *)self eventTrigger];
+  uuid2 = [eventTrigger uuid];
+  v9 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:type uuid:uuid parentUUID:uuid2];
 
   v10 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDEvent isEndEvent](self, "isEndEvent")}];
   [(HMDDurationEventModel *)v9 setEndEvent:v10];
 
-  v11 = [(HMDDurationEvent *)self duration];
-  [(HMDDurationEventModel *)v9 setDuration:v11];
+  duration = [(HMDDurationEvent *)self duration];
+  [(HMDDurationEventModel *)v9 setDuration:duration];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = HMDDurationEvent;
-  v4 = a3;
-  [(HMDTimeEvent *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(HMDTimeEvent *)&v6 encodeWithCoder:coderCopy];
   v5 = [(HMDDurationEvent *)self duration:v6.receiver];
-  [v4 encodeObject:v5 forKey:*MEMORY[0x277CD2280]];
+  [coderCopy encodeObject:v5 forKey:*MEMORY[0x277CD2280]];
 }
 
-- (HMDDurationEvent)initWithCoder:(id)a3
+- (HMDDurationEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HMDDurationEvent;
-  v5 = [(HMDTimeEvent *)&v9 initWithCoder:v4];
+  v5 = [(HMDTimeEvent *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD2280]];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD2280]];
     duration = v5->_duration;
     v5->_duration = v6;
   }
@@ -176,19 +176,19 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)isCompatbileWithEvent:(id)a3
+- (BOOL)isCompatbileWithEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = HMDDurationEvent;
-  return [(HMDTimeEvent *)&v4 isCompatibleWithEvent:a3];
+  return [(HMDTimeEvent *)&v4 isCompatibleWithEvent:event];
 }
 
-- (void)setDuration:(id)a3
+- (void)setDuration:(id)duration
 {
-  v4 = a3;
+  durationCopy = duration;
   os_unfair_lock_lock_with_options();
   duration = self->_duration;
-  self->_duration = v4;
+  self->_duration = durationCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -202,36 +202,36 @@ LABEL_13:
   return v3;
 }
 
-- (void)_handleUpdateRequest:(id)a3
+- (void)_handleUpdateRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 numberForKey:*MEMORY[0x277CD2280]];
+  requestCopy = request;
+  v5 = [requestCopy numberForKey:*MEMORY[0x277CD2280]];
   if (v5)
   {
-    v6 = [(HMDDurationEvent *)self emptyModelObject];
-    [v6 setDuration:v5];
-    v7 = [(HMDEvent *)self eventTrigger];
-    v8 = [v7 home];
-    v9 = [v8 backingStore];
-    v10 = [v4 name];
+    emptyModelObject = [(HMDDurationEvent *)self emptyModelObject];
+    [emptyModelObject setDuration:v5];
+    eventTrigger = [(HMDEvent *)self eventTrigger];
+    home = [eventTrigger home];
+    backingStore = [home backingStore];
+    name = [requestCopy name];
     v11 = +[HMDBackingStoreTransactionOptions defaultXPCOptions];
-    v12 = [v9 transaction:v10 options:v11];
+    v12 = [backingStore transaction:name options:v11];
 
-    [v12 add:v6];
+    [v12 add:emptyModelObject];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __41__HMDDurationEvent__handleUpdateRequest___block_invoke;
     v15[3] = &unk_27868A1D8;
-    v16 = v4;
-    v17 = v6;
-    v13 = v6;
+    v16 = requestCopy;
+    v17 = emptyModelObject;
+    v13 = emptyModelObject;
     [v12 run:v15];
   }
 
   else
   {
     v14 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-    [v4 respondWithError:v14];
+    [requestCopy respondWithError:v14];
   }
 }
 
@@ -262,10 +262,10 @@ void __41__HMDDurationEvent__handleUpdateRequest___block_invoke(uint64_t a1, uin
 - (id)emptyModelObject
 {
   v3 = [HMDDurationEventModel alloc];
-  v4 = [(HMDEvent *)self uuid];
-  v5 = [(HMDEvent *)self eventTrigger];
-  v6 = [v5 uuid];
-  v7 = [(HMDBackingStoreModelObject *)v3 initWithObjectChangeType:2 uuid:v4 parentUUID:v6];
+  uuid = [(HMDEvent *)self uuid];
+  eventTrigger = [(HMDEvent *)self eventTrigger];
+  uuid2 = [eventTrigger uuid];
+  v7 = [(HMDBackingStoreModelObject *)v3 initWithObjectChangeType:2 uuid:uuid parentUUID:uuid2];
 
   return v7;
 }
@@ -275,11 +275,11 @@ void __41__HMDDurationEvent__handleUpdateRequest___block_invoke(uint64_t a1, uin
   v3 = MEMORY[0x277CBEB38];
   v9.receiver = self;
   v9.super_class = HMDDurationEvent;
-  v4 = [(HMDEvent *)&v9 createPayload];
-  v5 = [v3 dictionaryWithDictionary:v4];
+  createPayload = [(HMDEvent *)&v9 createPayload];
+  v5 = [v3 dictionaryWithDictionary:createPayload];
 
-  v6 = [(HMDDurationEvent *)self duration];
-  [v5 setObject:v6 forKeyedSubscript:*MEMORY[0x277CD2280]];
+  duration = [(HMDDurationEvent *)self duration];
+  [v5 setObject:duration forKeyedSubscript:*MEMORY[0x277CD2280]];
 
   v7 = [v5 copy];
 
@@ -292,23 +292,23 @@ void __41__HMDDurationEvent__handleUpdateRequest___block_invoke(uint64_t a1, uin
   v8.receiver = self;
   v8.super_class = HMDDurationEvent;
   v4 = [(HMDEvent *)&v8 description];
-  v5 = [(HMDDurationEvent *)self duration];
-  v6 = [v3 stringWithFormat:@"[Duration-Event: %@, %@s]", v4, v5];
+  duration = [(HMDDurationEvent *)self duration];
+  v6 = [v3 stringWithFormat:@"[Duration-Event: %@, %@s]", v4, duration];
 
   return v6;
 }
 
-- (HMDDurationEvent)initWithModel:(id)a3 home:(id)a4
+- (HMDDurationEvent)initWithModel:(id)model home:(id)home
 {
-  v6 = a3;
+  modelCopy = model;
   v11.receiver = self;
   v11.super_class = HMDDurationEvent;
-  v7 = [(HMDTimeEvent *)&v11 initWithModel:v6 home:a4];
+  v7 = [(HMDTimeEvent *)&v11 initWithModel:modelCopy home:home];
   if (v7)
   {
-    v8 = [v6 duration];
+    duration = [modelCopy duration];
     duration = v7->_duration;
-    v7->_duration = v8;
+    v7->_duration = duration;
 
     v7->_lock._os_unfair_lock_opaque = 0;
   }

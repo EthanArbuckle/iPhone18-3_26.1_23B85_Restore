@@ -5,11 +5,11 @@
 - (AVPlayerInterstitialEventMonitor)initWithPrimaryPlayer:(AVPlayer *)primaryPlayer;
 - (NSArray)events;
 - (NSString)currentEventSkipControlLabel;
-- (id)makeCopyOf:(id)a3 immutable:(BOOL)a4;
+- (id)makeCopyOf:(id)of immutable:(BOOL)immutable;
 - (int64_t)currentEventSkippableState;
-- (void)_addMonitorListeners:(OpaqueFigPlayerInterstitialCoordinator *)a3;
+- (void)_addMonitorListeners:(OpaqueFigPlayerInterstitialCoordinator *)listeners;
 - (void)_removeMonitorListeners;
-- (void)_setCachedCurrentEvent:(id)a3;
+- (void)_setCachedCurrentEvent:(id)event;
 - (void)_updateCachedCurrentEvent;
 - (void)dealloc;
 @end
@@ -18,7 +18,7 @@
 
 + (AVPlayerInterstitialEventMonitor)interstitialEventMonitorWithPrimaryPlayer:(AVPlayer *)primaryPlayer
 {
-  v3 = [[a1 alloc] initWithPrimaryPlayer:primaryPlayer];
+  v3 = [[self alloc] initWithPrimaryPlayer:primaryPlayer];
 
   return v3;
 }
@@ -43,9 +43,9 @@
   }
 
   objc_storeWeak(&v11->_primaryPlayer, primaryPlayer);
-  v12 = [(AVPlayer *)primaryPlayer interstitialPlayer];
-  self->_interstitialPlayer = v12;
-  if (!v12)
+  interstitialPlayer = [(AVPlayer *)primaryPlayer interstitialPlayer];
+  self->_interstitialPlayer = interstitialPlayer;
+  if (!interstitialPlayer)
   {
     v16 = MEMORY[0x1E695DF30];
     v17 = *MEMORY[0x1E696A790];
@@ -58,12 +58,12 @@ LABEL_9:
   v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   self->_ivarQueue = dispatch_queue_create("com.apple.avplayerinterstitialeventmonitor.ivars", v13);
   self->_weakReference = [[AVWeakReference alloc] initWithReferencedObject:self];
-  v14 = [(AVPlayer *)primaryPlayer _copyInterstitialCoordinator];
-  [(AVPlayerInterstitialEventMonitor *)self _addMonitorListeners:v14];
+  _copyInterstitialCoordinator = [(AVPlayer *)primaryPlayer _copyInterstitialCoordinator];
+  [(AVPlayerInterstitialEventMonitor *)self _addMonitorListeners:_copyInterstitialCoordinator];
   [(AVPlayerInterstitialEventMonitor *)self _updateCachedCurrentEvent];
-  if (v14)
+  if (_copyInterstitialCoordinator)
   {
-    CFRelease(v14);
+    CFRelease(_copyInterstitialCoordinator);
   }
 
 LABEL_6:
@@ -108,16 +108,16 @@ LABEL_6:
   [(AVPlayerInterstitialEventMonitor *)&v7 dealloc];
 }
 
-- (id)makeCopyOf:(id)a3 immutable:(BOOL)a4
+- (id)makeCopyOf:(id)of immutable:(BOOL)immutable
 {
-  v4 = a4;
+  immutableCopy = immutable;
   v19 = *MEMORY[0x1E69E9840];
-  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a3, "count")}];
+  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(of, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [of countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -129,12 +129,12 @@ LABEL_6:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(of);
         }
 
         v11 = [*(*(&v14 + 1) + 8 * v10) copy];
         v12 = v11;
-        if (v4)
+        if (immutableCopy)
         {
           [v11 setImmutable];
         }
@@ -145,7 +145,7 @@ LABEL_6:
       }
 
       while (v8 != v10);
-      v8 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [of countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -164,11 +164,11 @@ LABEL_6:
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  v4 = [objc_loadWeak(&self->_primaryPlayer) _copyInterstitialCoordinator];
+  _copyInterstitialCoordinator = [objc_loadWeak(&self->_primaryPlayer) _copyInterstitialCoordinator];
   v12[0] = 0;
-  if (v4)
+  if (_copyInterstitialCoordinator)
   {
-    v5 = v4;
+    v5 = _copyInterstitialCoordinator;
     v6 = *(*(CMBaseObjectGetVTable() + 16) + 8);
     if (v6)
     {
@@ -219,13 +219,13 @@ uint64_t __48__AVPlayerInterstitialEventMonitor_currentEvent__block_invoke(uint6
 
 - (int64_t)currentEventSkippableState
 {
-  v2 = [objc_loadWeak(&self->_primaryPlayer) _copyInterstitialCoordinator];
-  if (!v2)
+  _copyInterstitialCoordinator = [objc_loadWeak(&self->_primaryPlayer) _copyInterstitialCoordinator];
+  if (!_copyInterstitialCoordinator)
   {
     return 0;
   }
 
-  v3 = v2;
+  v3 = _copyInterstitialCoordinator;
   v4 = *(*(CMBaseObjectGetVTable() + 16) + 128);
   if (v4)
   {
@@ -241,26 +241,26 @@ uint64_t __48__AVPlayerInterstitialEventMonitor_currentEvent__block_invoke(uint6
   return v5;
 }
 
-- (void)_addMonitorListeners:(OpaqueFigPlayerInterstitialCoordinator *)a3
+- (void)_addMonitorListeners:(OpaqueFigPlayerInterstitialCoordinator *)listeners
 {
   v5 = [AVCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-  [v5 addListenerWithWeakReference:self->_weakReference callback:avplayerinterstitialeventmonitor_fpNotificationCallback name:*MEMORY[0x1E6972F10] object:a3 flags:0];
-  [v5 addListenerWithWeakReference:self->_weakReference callback:avplayerinterstitialeventmonitor_fpNotificationCallback name:*MEMORY[0x1E6972ED8] object:a3 flags:0];
-  [v5 addListenerWithWeakReference:self->_weakReference callback:avplayerinterstitialeventmonitor_fpNotificationCallback name:*MEMORY[0x1E6972EE0] object:a3 flags:0];
-  [v5 addListenerWithWeakReference:self->_weakReference callback:avplayerinterstitialeventmonitor_fpNotificationCallback name:*MEMORY[0x1E6972F00] object:a3 flags:0];
-  [v5 addListenerWithWeakReference:self->_weakReference callback:avplayerinterstitialeventmonitor_fpNotificationCallback name:*MEMORY[0x1E6972F48] object:a3 flags:0];
-  [v5 addListenerWithWeakReference:self->_weakReference callback:avplayerinterstitialeventmonitor_fpNotificationCallback name:*MEMORY[0x1E6972F28] object:a3 flags:0];
-  [v5 addListenerWithWeakReference:self->_weakReference callback:avplayerinterstitialeventmonitor_fpNotificationCallback name:*MEMORY[0x1E6972F50] object:a3 flags:0];
-  [v5 addListenerWithWeakReference:self->_weakReference callback:avplayerinterstitialeventmonitor_fpNotificationCallback name:*MEMORY[0x1E6972EB8] object:a3 flags:0];
-  self->_observedCoord = a3;
+  [v5 addListenerWithWeakReference:self->_weakReference callback:avplayerinterstitialeventmonitor_fpNotificationCallback name:*MEMORY[0x1E6972F10] object:listeners flags:0];
+  [v5 addListenerWithWeakReference:self->_weakReference callback:avplayerinterstitialeventmonitor_fpNotificationCallback name:*MEMORY[0x1E6972ED8] object:listeners flags:0];
+  [v5 addListenerWithWeakReference:self->_weakReference callback:avplayerinterstitialeventmonitor_fpNotificationCallback name:*MEMORY[0x1E6972EE0] object:listeners flags:0];
+  [v5 addListenerWithWeakReference:self->_weakReference callback:avplayerinterstitialeventmonitor_fpNotificationCallback name:*MEMORY[0x1E6972F00] object:listeners flags:0];
+  [v5 addListenerWithWeakReference:self->_weakReference callback:avplayerinterstitialeventmonitor_fpNotificationCallback name:*MEMORY[0x1E6972F48] object:listeners flags:0];
+  [v5 addListenerWithWeakReference:self->_weakReference callback:avplayerinterstitialeventmonitor_fpNotificationCallback name:*MEMORY[0x1E6972F28] object:listeners flags:0];
+  [v5 addListenerWithWeakReference:self->_weakReference callback:avplayerinterstitialeventmonitor_fpNotificationCallback name:*MEMORY[0x1E6972F50] object:listeners flags:0];
+  [v5 addListenerWithWeakReference:self->_weakReference callback:avplayerinterstitialeventmonitor_fpNotificationCallback name:*MEMORY[0x1E6972EB8] object:listeners flags:0];
+  self->_observedCoord = listeners;
 }
 
 - (void)_updateCachedCurrentEvent
 {
-  v3 = [objc_loadWeak(&self->_primaryPlayer) _copyInterstitialCoordinator];
-  if (v3)
+  _copyInterstitialCoordinator = [objc_loadWeak(&self->_primaryPlayer) _copyInterstitialCoordinator];
+  if (_copyInterstitialCoordinator)
   {
-    v4 = v3;
+    v4 = _copyInterstitialCoordinator;
     v5 = *(*(CMBaseObjectGetVTable() + 16) + 16);
     if (v5)
     {
@@ -282,7 +282,7 @@ uint64_t __48__AVPlayerInterstitialEventMonitor_currentEvent__block_invoke(uint6
   }
 }
 
-- (void)_setCachedCurrentEvent:(id)a3
+- (void)_setCachedCurrentEvent:(id)event
 {
   ivarQueue = self->_ivarQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -290,7 +290,7 @@ uint64_t __48__AVPlayerInterstitialEventMonitor_currentEvent__block_invoke(uint6
   v4[2] = __59__AVPlayerInterstitialEventMonitor__setCachedCurrentEvent___block_invoke;
   v4[3] = &unk_1E7460DF0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = event;
   dispatch_sync(ivarQueue, v4);
 }
 
@@ -320,13 +320,13 @@ uint64_t __59__AVPlayerInterstitialEventMonitor__setCachedCurrentEvent___block_i
 
 - (NSString)currentEventSkipControlLabel
 {
-  v2 = [objc_loadWeak(&self->_primaryPlayer) _copyInterstitialCoordinator];
-  if (!v2)
+  _copyInterstitialCoordinator = [objc_loadWeak(&self->_primaryPlayer) _copyInterstitialCoordinator];
+  if (!_copyInterstitialCoordinator)
   {
     return 0;
   }
 
-  v3 = v2;
+  v3 = _copyInterstitialCoordinator;
   v4 = *(*(CMBaseObjectGetVTable() + 16) + 152);
   if (v4)
   {

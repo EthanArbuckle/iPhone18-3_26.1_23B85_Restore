@@ -1,11 +1,11 @@
 @interface SUUIQuicklinkCollectionViewCell
 - (id)_linkButton;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_linkButtonAction:(id)a3;
-- (void)configureForLink:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_linkButtonAction:(id)action;
+- (void)configureForLink:(id)link;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setColoringWithColorScheme:(id)a3;
+- (void)setColoringWithColorScheme:(id)scheme;
 @end
 
 @implementation SUUIQuicklinkCollectionViewCell
@@ -18,16 +18,16 @@
   [(SUUIQuicklinkCollectionViewCell *)&v3 dealloc];
 }
 
-- (void)configureForLink:(id)a3
+- (void)configureForLink:(id)link
 {
-  v7 = a3;
-  v4 = [v7 title];
-  if ([v4 length])
+  linkCopy = link;
+  title = [linkCopy title];
+  if ([title length])
   {
-    v5 = [(SUUIQuicklinkCollectionViewCell *)self _linkButton];
-    [v5 setHidden:0];
-    v6 = [v7 title];
-    [v5 setTitle:v6 forState:0];
+    _linkButton = [(SUUIQuicklinkCollectionViewCell *)self _linkButton];
+    [_linkButton setHidden:0];
+    title2 = [linkCopy title];
+    [_linkButton setTitle:title2 forState:0];
 
     [(SUUIQuicklinkCollectionViewCell *)self setNeedsLayout];
   }
@@ -38,24 +38,24 @@
   }
 }
 
-- (void)setColoringWithColorScheme:(id)a3
+- (void)setColoringWithColorScheme:(id)scheme
 {
-  v6 = a3;
-  v4 = [v6 secondaryTextColor];
-  if (!v4)
+  schemeCopy = scheme;
+  secondaryTextColor = [schemeCopy secondaryTextColor];
+  if (!secondaryTextColor)
   {
-    v4 = [v6 primaryTextColor];
+    secondaryTextColor = [schemeCopy primaryTextColor];
   }
 
-  v5 = [(SUUIQuicklinkCollectionViewCell *)self _linkButton];
-  [v5 setTintColor:v4];
+  _linkButton = [(SUUIQuicklinkCollectionViewCell *)self _linkButton];
+  [_linkButton setTintColor:secondaryTextColor];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = SUUIQuicklinkCollectionViewCell;
-  v5 = [(SUUIQuicklinkCollectionViewCell *)&v8 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(SUUIQuicklinkCollectionViewCell *)&v8 hitTest:event withEvent:test.x, test.y];
   if ([v5 isDescendantOfView:self])
   {
     v6 = self->_linkButton;
@@ -73,8 +73,8 @@
   [(SUUICollectionViewCell *)&v13 layoutSubviews];
   if (self->_linkButton)
   {
-    v3 = [(SUUIQuicklinkCollectionViewCell *)self contentView];
-    [v3 bounds];
+    contentView = [(SUUIQuicklinkCollectionViewCell *)self contentView];
+    [contentView bounds];
     v5 = v4;
     v7 = v6;
 
@@ -95,14 +95,14 @@
   }
 }
 
-- (void)_linkButtonAction:(id)a3
+- (void)_linkButtonAction:(id)action
 {
   v6 = SUUICollectionViewForView(self);
-  v4 = [v6 delegate];
+  delegate = [v6 delegate];
   if (objc_opt_respondsToSelector())
   {
     v5 = [v6 indexPathForCell:self];
-    [v4 collectionView:v6 didSelectItemAtIndexPath:v5];
+    [delegate collectionView:v6 didSelectItemAtIndexPath:v5];
   }
 }
 
@@ -116,12 +116,12 @@
     self->_linkButton = v4;
 
     [(UIButton *)self->_linkButton addTarget:self action:sel__linkButtonAction_ forControlEvents:64];
-    v6 = [(UIButton *)self->_linkButton titleLabel];
+    titleLabel = [(UIButton *)self->_linkButton titleLabel];
     v7 = [MEMORY[0x277D74300] systemFontOfSize:17.0];
-    [v6 setFont:v7];
+    [titleLabel setFont:v7];
 
-    v8 = [(SUUIQuicklinkCollectionViewCell *)self contentView];
-    [v8 addSubview:self->_linkButton];
+    contentView = [(SUUIQuicklinkCollectionViewCell *)self contentView];
+    [contentView addSubview:self->_linkButton];
 
     linkButton = self->_linkButton;
   }

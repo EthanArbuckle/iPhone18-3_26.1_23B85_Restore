@@ -2,32 +2,32 @@
 + (UIColor)defaultProgressColor;
 + (UIColor)defaultTrackColorOnSelectedBackground;
 - (CGSize)intrinsicContentSize;
-- (DOCDownloadProgressView)initWithCoder:(id)a3;
-- (DOCDownloadProgressView)initWithFrame:(CGRect)a3;
-- (void)_addToPendingAnimationQueue:(id)a3;
-- (void)_setProgress:(double)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_updateStatusPropertiesAnimated:(BOOL)a3 completion:(id)a4;
-- (void)animateToFullRingAndHideWithCompletion:(id)a3;
+- (DOCDownloadProgressView)initWithCoder:(id)coder;
+- (DOCDownloadProgressView)initWithFrame:(CGRect)frame;
+- (void)_addToPendingAnimationQueue:(id)queue;
+- (void)_setProgress:(double)progress animated:(BOOL)animated completion:(id)completion;
+- (void)_updateStatusPropertiesAnimated:(BOOL)animated completion:(id)completion;
+- (void)animateToFullRingAndHideWithCompletion:(id)completion;
 - (void)beginGraduallyIncreasingProgress;
 - (void)dealloc;
 - (void)doc_commonInit;
-- (void)fadeoutWithCompletion:(id)a3;
-- (void)handleTap:(id)a3;
+- (void)fadeoutWithCompletion:(id)completion;
+- (void)handleTap:(id)tap;
 - (void)installSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setActiveStrokeColor:(id)a3;
-- (void)setInactiveStrokeColor:(id)a3;
-- (void)setObservedProgress:(id)a3;
-- (void)setProgress:(double)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setActiveStrokeColor:(id)color;
+- (void)setInactiveStrokeColor:(id)color;
+- (void)setObservedProgress:(id)progress;
+- (void)setProgress:(double)progress animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation DOCDownloadProgressView
 
-- (DOCDownloadProgressView)initWithCoder:(id)a3
+- (DOCDownloadProgressView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = DOCDownloadProgressView;
-  v3 = [(DOCDownloadProgressView *)&v7 initWithCoder:a3];
+  v3 = [(DOCDownloadProgressView *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -38,11 +38,11 @@
   return v4;
 }
 
-- (DOCDownloadProgressView)initWithFrame:(CGRect)a3
+- (DOCDownloadProgressView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = DOCDownloadProgressView;
-  v3 = [(DOCDownloadProgressView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DOCDownloadProgressView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -56,8 +56,8 @@
 + (UIColor)defaultTrackColorOnSelectedBackground
 {
   v2 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:2];
-  v3 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v4 = [v3 resolvedColorWithTraitCollection:v2];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  v4 = [secondaryLabelColor resolvedColorWithTraitCollection:v2];
 
   return v4;
 }
@@ -65,8 +65,8 @@
 + (UIColor)defaultProgressColor
 {
   v2 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:2];
-  v3 = [MEMORY[0x277D75348] labelColor];
-  v4 = [v3 resolvedColorWithTraitCollection:v2];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v4 = [labelColor resolvedColorWithTraitCollection:v2];
 
   return v4;
 }
@@ -94,12 +94,12 @@
   [(DOCGhostRingView *)self->_ghostRingView setAlpha:0.0];
   [(DOCIndeterminateProgressRingView *)self->_indeterminateProgressRingView setAlpha:0.0];
   [(DOCDeterminateProgressRingView *)self->_determinateProgressRingView setAlpha:0.0];
-  v17 = [objc_opt_class() defaultProgressColor];
-  v12 = [objc_opt_class() defaultTrackColor];
-  [(DOCGhostRingView *)self->_ghostRingView setTintColor:v12];
+  defaultProgressColor = [objc_opt_class() defaultProgressColor];
+  defaultTrackColor = [objc_opt_class() defaultTrackColor];
+  [(DOCGhostRingView *)self->_ghostRingView setTintColor:defaultTrackColor];
 
-  [(DOCIndeterminateProgressRingView *)self->_indeterminateProgressRingView setTintColor:v17];
-  [(DOCDeterminateProgressRingView *)self->_determinateProgressRingView setTintColor:v17];
+  [(DOCIndeterminateProgressRingView *)self->_indeterminateProgressRingView setTintColor:defaultProgressColor];
+  [(DOCDeterminateProgressRingView *)self->_determinateProgressRingView setTintColor:defaultProgressColor];
   [(DOCDownloadProgressView *)self installSubviews];
   v13 = objc_opt_new();
   pendingAnimationQueue = self->_pendingAnimationQueue;
@@ -117,30 +117,30 @@
 - (void)installSubviews
 {
   v12[3] = *MEMORY[0x277D85DE8];
-  v2 = self;
-  [(DOCDownloadProgressView *)v2 setAutoresizesSubviews:1];
-  v3 = v2;
+  selfCopy = self;
+  [(DOCDownloadProgressView *)selfCopy setAutoresizesSubviews:1];
+  v3 = selfCopy;
   if (DOCVibrancyFeatureEnabled())
   {
     v4 = objc_alloc(MEMORY[0x277D75D18]);
-    [(DOCDownloadProgressView *)v2 bounds];
+    [(DOCDownloadProgressView *)selfCopy bounds];
     v5 = [v4 initWithFrame:?];
-    v6 = [v5 asPrimaryStrokeViewDecoratorEmbeddable];
-    v3 = v2;
-    if (v6)
+    asPrimaryStrokeViewDecoratorEmbeddable = [v5 asPrimaryStrokeViewDecoratorEmbeddable];
+    v3 = selfCopy;
+    if (asPrimaryStrokeViewDecoratorEmbeddable)
     {
       v3 = v5;
 
-      [v6 setAutoresizingMask:18];
-      [(DOCDownloadProgressView *)v2 bounds];
-      [v6 setFrame:?];
-      [(DOCDownloadProgressView *)v2 addSubview:v6];
+      [asPrimaryStrokeViewDecoratorEmbeddable setAutoresizingMask:18];
+      [(DOCDownloadProgressView *)selfCopy bounds];
+      [asPrimaryStrokeViewDecoratorEmbeddable setFrame:?];
+      [(DOCDownloadProgressView *)selfCopy addSubview:asPrimaryStrokeViewDecoratorEmbeddable];
     }
   }
 
-  v12[0] = v2->_indeterminateProgressRingView;
-  v12[1] = v2->_ghostRingView;
-  v12[2] = v2->_determinateProgressRingView;
+  v12[0] = selfCopy->_indeterminateProgressRingView;
+  v12[1] = selfCopy->_ghostRingView;
+  v12[2] = selfCopy->_determinateProgressRingView;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:3];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -150,7 +150,7 @@
   v8 = v3;
   [v7 enumerateObjectsUsingBlock:v10];
   v9 = [MEMORY[0x277D755A8] doc_circleWithInset:-8.0];
-  [(DOCDownloadProgressView *)v2 setHoverStyle:v9];
+  [(DOCDownloadProgressView *)selfCopy setHoverStyle:v9];
 }
 
 void __42__DOCDownloadProgressView_installSubviews__block_invoke(uint64_t a1, void *a2)
@@ -195,24 +195,24 @@ void __42__DOCDownloadProgressView_installSubviews__block_invoke(uint64_t a1, vo
   [(DOCDownloadProgressView *)&v7 dealloc];
 }
 
-- (void)setActiveStrokeColor:(id)a3
+- (void)setActiveStrokeColor:(id)color
 {
-  objc_storeStrong(&self->_activeStrokeColor, a3);
-  v5 = a3;
-  [(DOCIndeterminateProgressRingView *)self->_indeterminateProgressRingView setTintColor:v5];
-  [(DOCDeterminateProgressRingView *)self->_determinateProgressRingView setTintColor:v5];
+  objc_storeStrong(&self->_activeStrokeColor, color);
+  colorCopy = color;
+  [(DOCIndeterminateProgressRingView *)self->_indeterminateProgressRingView setTintColor:colorCopy];
+  [(DOCDeterminateProgressRingView *)self->_determinateProgressRingView setTintColor:colorCopy];
 }
 
-- (void)setInactiveStrokeColor:(id)a3
+- (void)setInactiveStrokeColor:(id)color
 {
-  objc_storeStrong(&self->_inactiveStrokeColor, a3);
-  v5 = a3;
-  [(DOCGhostRingView *)self->_ghostRingView setTintColor:v5];
+  objc_storeStrong(&self->_inactiveStrokeColor, color);
+  colorCopy = color;
+  [(DOCGhostRingView *)self->_ghostRingView setTintColor:colorCopy];
 }
 
-- (void)_addToPendingAnimationQueue:(id)a3
+- (void)_addToPendingAnimationQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = self->_pendingAnimationQueue;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -242,10 +242,10 @@ void __42__DOCDownloadProgressView_installSubviews__block_invoke(uint64_t a1, vo
   v20[3] = &unk_278FA2588;
   v20[4] = self;
   v21 = v6;
-  v22 = v4;
+  v22 = queueCopy;
   v23 = v7;
   v17 = v7;
-  v18 = v4;
+  v18 = queueCopy;
   v19 = v6;
   [(NSOperationQueue *)pendingAnimationQueue addOperationWithBlock:v20];
 }
@@ -317,10 +317,10 @@ uint64_t __55__DOCDownloadProgressView__addToPendingAnimationQueue___block_invok
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)_updateStatusPropertiesAnimated:(BOOL)a3 completion:(id)a4
+- (void)_updateStatusPropertiesAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   if (self->_progress == 0.0)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -330,23 +330,23 @@ uint64_t __55__DOCDownloadProgressView__addToPendingAnimationQueue___block_invok
     aBlock[4] = self;
     v7 = _Block_copy(aBlock);
     v8 = v7;
-    if (v4)
+    if (animatedCopy)
     {
       v9 = MEMORY[0x277D75D18];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __70__DOCDownloadProgressView__updateStatusPropertiesAnimated_completion___block_invoke_2;
       v18[3] = &unk_278FA25B0;
-      v19 = v6;
+      v19 = completionCopy;
       [v9 animateWithDuration:v8 animations:v18 completion:0.35];
     }
 
     else
     {
       v7[2](v7);
-      if (v6)
+      if (completionCopy)
       {
-        (*(v6 + 2))(v6, 1);
+        (*(completionCopy + 2))(completionCopy, 1);
       }
     }
   }
@@ -366,7 +366,7 @@ uint64_t __55__DOCDownloadProgressView__addToPendingAnimationQueue___block_invok
     v16[4] = self;
     v10 = _Block_copy(v16);
     v11 = v10;
-    if (v4)
+    if (animatedCopy)
     {
       v12 = MEMORY[0x277D75D18];
       v13[0] = MEMORY[0x277D85DD0];
@@ -374,7 +374,7 @@ uint64_t __55__DOCDownloadProgressView__addToPendingAnimationQueue___block_invok
       v13[2] = __70__DOCDownloadProgressView__updateStatusPropertiesAnimated_completion___block_invoke_5;
       v13[3] = &unk_278FA25D8;
       v14 = v8;
-      v15 = v6;
+      v15 = completionCopy;
       [v12 animateWithDuration:v11 animations:v13 completion:0.35];
     }
 
@@ -382,9 +382,9 @@ uint64_t __55__DOCDownloadProgressView__addToPendingAnimationQueue___block_invok
     {
       (*(v10 + 2))(v10);
       v8[2](v8);
-      if (v6)
+      if (completionCopy)
       {
-        (*(v6 + 2))(v6, 1);
+        (*(completionCopy + 2))(completionCopy, 1);
       }
     }
   }
@@ -456,31 +456,31 @@ uint64_t __70__DOCDownloadProgressView__updateStatusPropertiesAnimated_completio
   return result;
 }
 
-- (void)_setProgress:(double)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_setProgress:(double)progress animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = v8;
+  animatedCopy = animated;
+  completionCopy = completion;
+  v9 = completionCopy;
   progress = self->_progress;
-  if (progress == a3)
+  if (progress == progress)
   {
-    if (v8)
+    if (completionCopy)
     {
-      (*(v8 + 2))(v8, 1);
+      (*(completionCopy + 2))(completionCopy, 1);
     }
   }
 
   else
   {
-    self->_progress = a3;
-    if (a3 == 0.0 || progress == 0.0)
+    self->_progress = progress;
+    if (progress == 0.0 || progress == 0.0)
     {
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __60__DOCDownloadProgressView__setProgress_animated_completion___block_invoke;
       v17[3] = &unk_278FA25B0;
-      v18 = v8;
-      [(DOCDownloadProgressView *)self _updateStatusPropertiesAnimated:v5 completion:v17];
+      v18 = completionCopy;
+      [(DOCDownloadProgressView *)self _updateStatusPropertiesAnimated:animatedCopy completion:v17];
     }
 
     else
@@ -490,10 +490,10 @@ uint64_t __70__DOCDownloadProgressView__updateStatusPropertiesAnimated_completio
       aBlock[2] = __60__DOCDownloadProgressView__setProgress_animated_completion___block_invoke_2;
       aBlock[3] = &unk_278FA2128;
       aBlock[4] = self;
-      *&aBlock[5] = a3;
+      *&aBlock[5] = progress;
       v11 = _Block_copy(aBlock);
       v12 = v11;
-      if (v5)
+      if (animatedCopy)
       {
         v13 = MEMORY[0x277D75D18];
         v14[0] = MEMORY[0x277D85DD0];
@@ -545,11 +545,11 @@ uint64_t __60__DOCDownloadProgressView__setProgress_animated_completion___block_
   return result;
 }
 
-- (void)setProgress:(double)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setProgress:(double)progress animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
+  animatedCopy = animated;
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  completionCopy = completion;
   v9 = MEMORY[0x277D06310];
   v10 = *MEMORY[0x277D06310];
   if (!*MEMORY[0x277D06310])
@@ -563,17 +563,17 @@ uint64_t __60__DOCDownloadProgressView__setProgress_animated_completion___block_
     *location = 138412802;
     *&location[4] = self;
     v16 = 2048;
-    v17 = a3;
+    progressCopy = progress;
     v18 = 1024;
-    v19 = v5;
+    v19 = animatedCopy;
     _os_log_debug_impl(&dword_2493AC000, v10, OS_LOG_TYPE_DEBUG, "%@ | --setStatus--\tcalled with status: %f animated: %d", location, 0x1Cu);
   }
 
   if (self->_graduallyIncreasingProgress)
   {
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -585,9 +585,9 @@ uint64_t __60__DOCDownloadProgressView__setProgress_animated_completion___block_
     v11[2] = __59__DOCDownloadProgressView_setProgress_animated_completion___block_invoke;
     v11[3] = &unk_278FA2600;
     objc_copyWeak(v13, location);
-    v13[1] = *&a3;
-    v14 = v5;
-    v12 = v8;
+    v13[1] = *&progress;
+    v14 = animatedCopy;
+    v12 = completionCopy;
     [(DOCDownloadProgressView *)self _addToPendingAnimationQueue:v11];
 
     objc_destroyWeak(v13);
@@ -624,14 +624,14 @@ uint64_t __59__DOCDownloadProgressView_setProgress_animated_completion___block_i
   return v4();
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == &DOCDownloadProgressViewKVOContext)
+  if (context == &DOCDownloadProgressViewKVOContext)
   {
-    v7 = [(DOCDownloadProgressView *)self observedProgress:a3];
-    v8 = [v7 isIndeterminate];
+    v7 = [(DOCDownloadProgressView *)self observedProgress:path];
+    isIndeterminate = [v7 isIndeterminate];
 
-    if (v8)
+    if (isIndeterminate)
     {
 
       [(DOCDownloadProgressView *)self setProgress:1 animated:0.0];
@@ -639,8 +639,8 @@ uint64_t __59__DOCDownloadProgressView_setProgress_animated_completion___block_i
 
     else
     {
-      v9 = [(DOCDownloadProgressView *)self observedProgress];
-      [v9 fractionCompleted];
+      observedProgress = [(DOCDownloadProgressView *)self observedProgress];
+      [observedProgress fractionCompleted];
       [(DOCDownloadProgressView *)self setProgress:1 animated:?];
     }
   }
@@ -649,16 +649,16 @@ uint64_t __59__DOCDownloadProgressView_setProgress_animated_completion___block_i
   {
     v10.receiver = self;
     v10.super_class = DOCDownloadProgressView;
-    [(DOCDownloadProgressView *)&v10 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(DOCDownloadProgressView *)&v10 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (void)setObservedProgress:(id)a3
+- (void)setObservedProgress:(id)progress
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  progressCopy = progress;
   observedProgress = self->_observedProgress;
-  if (observedProgress != v5)
+  if (observedProgress != progressCopy)
   {
     if (observedProgress && self->_shouldStopObservingProgress)
     {
@@ -683,22 +683,22 @@ uint64_t __59__DOCDownloadProgressView_setProgress_animated_completion___block_i
       [(DOCDownloadProgressView *)self setShouldStopObservingProgress:0];
     }
 
-    objc_storeStrong(&self->_observedProgress, a3);
+    objc_storeStrong(&self->_observedProgress, progress);
     v10 = self->_observedProgress;
     if (v10 && ![(NSProgress *)v10 isFinished])
     {
-      v11 = [(DOCDownloadProgressView *)self observedProgress];
-      v12 = [v11 isIndeterminate];
+      observedProgress = [(DOCDownloadProgressView *)self observedProgress];
+      isIndeterminate = [observedProgress isIndeterminate];
 
-      if (v12)
+      if (isIndeterminate)
       {
         [(DOCDownloadProgressView *)self setProgress:1 animated:0.0];
       }
 
       else
       {
-        v13 = [(DOCDownloadProgressView *)self observedProgress];
-        [v13 fractionCompleted];
+        observedProgress2 = [(DOCDownloadProgressView *)self observedProgress];
+        [observedProgress2 fractionCompleted];
         [(DOCDownloadProgressView *)self setProgress:1 animated:?];
       }
 
@@ -810,16 +810,16 @@ uint64_t __59__DOCDownloadProgressView_beginGraduallyIncreasingProgress__block_i
   return v2();
 }
 
-- (void)fadeoutWithCompletion:(id)a3
+- (void)fadeoutWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__DOCDownloadProgressView_fadeoutWithCompletion___block_invoke;
   v6[3] = &unk_278FA2650;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v7 = v5;
   [(DOCDownloadProgressView *)self _addToPendingAnimationQueue:v6];
 
@@ -876,16 +876,16 @@ uint64_t __49__DOCDownloadProgressView_fadeoutWithCompletion___block_invoke_3(ui
   return v4();
 }
 
-- (void)animateToFullRingAndHideWithCompletion:(id)a3
+- (void)animateToFullRingAndHideWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __66__DOCDownloadProgressView_animateToFullRingAndHideWithCompletion___block_invoke;
   v6[3] = &unk_278FA2650;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v7 = v5;
   [(DOCDownloadProgressView *)self _addToPendingAnimationQueue:v6];
 
@@ -986,9 +986,9 @@ uint64_t __66__DOCDownloadProgressView_animateToFullRingAndHideWithCompletion___
   return result;
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  if ([a3 state] == 3)
+  if ([tap state] == 3)
   {
     observedProgress = self->_observedProgress;
     if (observedProgress)

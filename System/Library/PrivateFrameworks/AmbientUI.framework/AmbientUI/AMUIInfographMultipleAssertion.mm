@@ -1,19 +1,19 @@
 @interface AMUIInfographMultipleAssertion
-- (AMUIInfographMultipleAssertion)initWithAssertions:(id)a3;
+- (AMUIInfographMultipleAssertion)initWithAssertions:(id)assertions;
 - (void)invalidate;
 @end
 
 @implementation AMUIInfographMultipleAssertion
 
-- (AMUIInfographMultipleAssertion)initWithAssertions:(id)a3
+- (AMUIInfographMultipleAssertion)initWithAssertions:(id)assertions
 {
-  v4 = a3;
+  assertionsCopy = assertions;
   v9.receiver = self;
   v9.super_class = AMUIInfographMultipleAssertion;
   v5 = [(AMUIInfographMultipleAssertion *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [assertionsCopy copy];
     assertions = v5->_assertions;
     v5->_assertions = v6;
   }
@@ -28,8 +28,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(AMUIInfographMultipleAssertion *)self assertions];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  assertions = [(AMUIInfographMultipleAssertion *)self assertions];
+  v3 = [assertions countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -41,14 +41,14 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(assertions);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) invalidate];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [assertions countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);

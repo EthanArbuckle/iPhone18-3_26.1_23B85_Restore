@@ -1,7 +1,7 @@
 @interface HUComfortSoundsFilterPoint
-- (BOOL)isEqual:(id)a3;
-- (HUComfortSoundsFilterPoint)initWithCoder:(id)a3;
-- (HUComfortSoundsFilterPoint)initWithPoint:(CGPoint)a3;
+- (BOOL)isEqual:(id)equal;
+- (HUComfortSoundsFilterPoint)initWithCoder:(id)coder;
+- (HUComfortSoundsFilterPoint)initWithPoint:(CGPoint)point;
 - (double)frequencyForBandPass;
 - (double)gainForHighResonance;
 - (double)gainForLeftBellFilters;
@@ -9,15 +9,15 @@
 - (double)gainForRightBellFilters;
 - (double)widthForBandPass;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HUComfortSoundsFilterPoint
 
-- (HUComfortSoundsFilterPoint)initWithPoint:(CGPoint)a3
+- (HUComfortSoundsFilterPoint)initWithPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v8.receiver = self;
   v8.super_class = HUComfortSoundsFilterPoint;
   v5 = [(HUComfortSoundsFilterPoint *)&v8 init];
@@ -31,35 +31,35 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   [(HUComfortSoundsFilterPoint *)self xValue];
   *&v4 = v4;
-  [v6 encodeFloat:@"y" forKey:v4];
+  [coderCopy encodeFloat:@"y" forKey:v4];
   [(HUComfortSoundsFilterPoint *)self yValue];
   *&v5 = v5;
-  [v6 encodeFloat:@"x" forKey:v5];
+  [coderCopy encodeFloat:@"x" forKey:v5];
 }
 
-- (HUComfortSoundsFilterPoint)initWithCoder:(id)a3
+- (HUComfortSoundsFilterPoint)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeFloatForKey:@"y"];
+  coderCopy = coder;
+  [coderCopy decodeFloatForKey:@"y"];
   v6 = v5;
-  [v4 decodeFloatForKey:@"x"];
+  [coderCopy decodeFloatForKey:@"x"];
   v8 = v7;
 
   return [(HUComfortSoundsFilterPoint *)self initWithPoint:v6, v8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(HUComfortSoundsFilterPoint *)self xValue];
     v7 = v6;
     [v5 xValue];

@@ -1,42 +1,42 @@
 @interface PXStoryMutableDummyTimeline
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)addClipWithTimeRange:(id *)a3 frame:(CGRect)a4 resource:(id)a5 playbackStyle:(int64_t)a6 transitionInfo:(id *)a7;
-- (int64_t)addSegmentWithResources:(id)a3 preferredDuration:(id *)a4 compositionInfo:(id *)a5 transitionInfo:(id *)a6;
-- (int64_t)addSegmentWithTimeRange:(id *)a3 compositionInfo:(id *)a4 transitionInfo:(id *)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)addClipWithTimeRange:(id *)range frame:(CGRect)frame resource:(id)resource playbackStyle:(int64_t)style transitionInfo:(id *)info;
+- (int64_t)addSegmentWithResources:(id)resources preferredDuration:(id *)duration compositionInfo:(id *)info transitionInfo:(id *)transitionInfo;
+- (int64_t)addSegmentWithTimeRange:(id *)range compositionInfo:(id *)info transitionInfo:(id *)transitionInfo;
 @end
 
 @implementation PXStoryMutableDummyTimeline
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PXStoryDummyTimeline alloc];
 
   return [(PXStoryDummyTimeline *)v4 initWithTimeline:self];
 }
 
-- (int64_t)addSegmentWithResources:(id)a3 preferredDuration:(id *)a4 compositionInfo:(id *)a5 transitionInfo:(id *)a6
+- (int64_t)addSegmentWithResources:(id)resources preferredDuration:(id *)duration compositionInfo:(id *)info transitionInfo:(id *)transitionInfo
 {
   v20 = 0u;
   v21 = 0u;
   v19 = 0u;
-  v10 = a3;
+  resourcesCopy = resources;
   [(PXStoryDummyTimeline *)self timeRange];
   memset(&v18, 0, sizeof(v18));
   *&v14[1] = 0;
   v14[0] = PXStoryTimeZero;
-  *duration = *a4;
+  *duration = *duration;
   *&range.start.value = PXStoryTimeZero;
   range.start.epoch = 0;
   CMTimeRangeMake(&v18, &range.start, duration);
   range = v18;
-  v11 = *&a5->var2;
-  *duration = *&a5->var0;
+  v11 = *&info->var2;
+  *duration = *&info->var0;
   *&duration[16] = v11;
-  var4 = a5->var4;
-  v12 = *&a6->var2.var1;
-  v14[0] = *&a6->var0;
+  var4 = info->var4;
+  v12 = *&transitionInfo->var2.var1;
+  v14[0] = *&transitionInfo->var0;
   v14[1] = v12;
-  v15 = *&a6->var3;
+  v15 = *&transitionInfo->var3;
   [(PXStoryMutableDummyTimeline *)self addSegmentWithTimeRange:&range compositionInfo:duration transitionInfo:v14];
   [(PXStoryDummyTimeline *)self size];
   PXRectWithOriginAndSize();
@@ -74,14 +74,14 @@ void __104__PXStoryMutableDummyTimeline_addSegmentWithResources_preferredDuratio
   [v14 addClipWithTimeRange:v19 frame:v5 resource:v13 playbackStyle:v17 transitionInfo:{v6, v7 + a3 * (v10 + (v9 + v10) / v11 - v10), v8}];
 }
 
-- (int64_t)addSegmentWithTimeRange:(id *)a3 compositionInfo:(id *)a4 transitionInfo:(id *)a5
+- (int64_t)addSegmentWithTimeRange:(id *)range compositionInfo:(id *)info transitionInfo:(id *)transitionInfo
 {
-  v8 = self;
-  v9 = [(PXStoryDummyTimeline *)self numberOfSegments];
-  [(PXStoryDummyTimeline *)v8 setNumberOfSegments:v9 + 1];
+  selfCopy = self;
+  numberOfSegments = [(PXStoryDummyTimeline *)self numberOfSegments];
+  [(PXStoryDummyTimeline *)selfCopy setNumberOfSegments:numberOfSegments + 1];
   *(v28 + 3) = 0;
   LODWORD(v28[0]) = 0;
-  *&v41[8] = a3->var1;
+  *&v41[8] = range->var1;
   *v41 = 0;
   v40 = PXStoryTimeZero;
   memset(v43, 0, 40);
@@ -94,14 +94,14 @@ void __104__PXStoryMutableDummyTimeline_addSegmentWithResources_preferredDuratio
   v36 = 0;
   v33[0] = 0;
   *(v33 + 3) = 0;
-  v10 = *&a5->var2.var1;
-  v30 = *&a5->var0;
+  v10 = *&transitionInfo->var2.var1;
+  v30 = *&transitionInfo->var0;
   v31 = v10;
-  *&v32 = *&a5->var3;
-  v11 = *&a4->var2;
-  *&v29.start.value = *&a4->var0;
+  *&v32 = *&transitionInfo->var3;
+  v11 = *&info->var2;
+  *&v29.start.value = *&info->var0;
   *&v29.start.epoch = v11;
-  *&v29.duration.timescale = a4->var4;
+  *&v29.duration.timescale = info->var4;
   add = atomic_fetch_add(PXStorySegmentIdentifierMakeUnique_uniqueIdentifier, 1u);
   v37 = *&v29.start.value;
   v38 = *&v29.start.epoch;
@@ -111,13 +111,13 @@ void __104__PXStoryMutableDummyTimeline_addSegmentWithResources_preferredDuratio
   v36 = v32;
   v33[0] = v28[0];
   *(v33 + 3) = *(v28 + 3);
-  v13 = &v8->super._segmentTimeRanges[v9];
-  v15 = *&a3->var0.var3;
-  v14 = *&a3->var1.var1;
-  *&v13->var0.var0 = *&a3->var0.var0;
+  v13 = &selfCopy->super._segmentTimeRanges[numberOfSegments];
+  v15 = *&range->var0.var3;
+  v14 = *&range->var1.var1;
+  *&v13->var0.var0 = *&range->var0.var0;
   *&v13->var0.var3 = v15;
   *&v13->var1.var1 = v14;
-  v16 = v8->super._segmentInfos + 200 * v9;
+  v16 = selfCopy->super._segmentInfos + 200 * numberOfSegments;
   *v16 = add;
   v17 = v38;
   *(v16 + 8) = v37;
@@ -142,61 +142,61 @@ void __104__PXStoryMutableDummyTimeline_addSegmentWithResources_preferredDuratio
   v23 = v33[0];
   *(v16 + 196) = *(v33 + 3);
   *(v16 + 193) = v23;
-  v8 = (v8 + 8);
-  v24 = *&v8->super._timeRange.start.timescale;
-  *&v29.start.value = *&v8->super.super.super.isa;
+  selfCopy = (selfCopy + 8);
+  v24 = *&selfCopy->super._timeRange.start.timescale;
+  *&v29.start.value = *&selfCopy->super.super.super.isa;
   *&v29.start.epoch = v24;
-  *&v29.duration.timescale = *&v8->super._timeRange.duration.value;
-  v25 = *&a3->var0.var3;
-  v28[0] = *&a3->var0.var0;
+  *&v29.duration.timescale = *&selfCopy->super._timeRange.duration.value;
+  v25 = *&range->var0.var3;
+  v28[0] = *&range->var0.var0;
   v28[1] = v25;
-  v28[2] = *&a3->var1.var1;
+  v28[2] = *&range->var1.var1;
   PXStoryTimeRangeUnion(&v29, v28, &v30);
   v26 = v31;
-  *&v8->super.super.super.isa = v30;
-  *&v8->super._timeRange.start.timescale = v26;
-  *&v8->super._timeRange.duration.value = v32;
+  *&selfCopy->super.super.super.isa = v30;
+  *&selfCopy->super._timeRange.start.timescale = v26;
+  *&selfCopy->super._timeRange.duration.value = v32;
   return add;
 }
 
-- (int64_t)addClipWithTimeRange:(id *)a3 frame:(CGRect)a4 resource:(id)a5 playbackStyle:(int64_t)a6 transitionInfo:(id *)a7
+- (int64_t)addClipWithTimeRange:(id *)range frame:(CGRect)frame resource:(id)resource playbackStyle:(int64_t)style transitionInfo:(id *)info
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  *&v97[8] = a3->var1;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  *&v97[8] = range->var1;
   *v97 = 0;
   v96 = PXStoryTimeZero;
   memset(v99, 0, 40);
   v98 = PXStoryTimeMaximum;
-  v15 = a5;
+  resourceCopy = resource;
   add = atomic_fetch_add(PXStoryClipIdentifierMakeUnique_uniqueIdentifier, 1u);
-  v17 = [v15 px_storyResourceKind];
+  px_storyResourceKind = [resourceCopy px_storyResourceKind];
   v18 = *off_1E7721FA8;
   v19 = *(off_1E7721FA8 + 1);
   v20 = *(off_1E7721FA8 + 2);
   v21 = *(off_1E7721FA8 + 3);
-  v22 = *&a7->var2.var1;
-  v93 = *&a7->var0;
+  v22 = *&info->var2.var1;
+  v93 = *&info->var0;
   v94 = v22;
-  v95 = *&a7->var3;
-  v23 = [(PXStoryDummyTimeline *)self numberOfClips];
-  [(PXStoryDummyTimeline *)self setNumberOfClips:v23 + 1];
-  v24 = &self->super._clipTimeRanges[v23];
-  v25 = *&a3->var0.var0;
-  v26 = *&a3->var1.var1;
-  *&v24->var0.var3 = *&a3->var0.var3;
+  v95 = *&info->var3;
+  numberOfClips = [(PXStoryDummyTimeline *)self numberOfClips];
+  [(PXStoryDummyTimeline *)self setNumberOfClips:numberOfClips + 1];
+  v24 = &self->super._clipTimeRanges[numberOfClips];
+  v25 = *&range->var0.var0;
+  v26 = *&range->var1.var1;
+  *&v24->var0.var3 = *&range->var0.var3;
   *&v24->var1.var1 = v26;
   *&v24->var0.var0 = v25;
-  v27 = &self->super._clipFrames[v23];
+  v27 = &self->super._clipFrames[numberOfClips];
   v27->origin.x = x;
   v27->origin.y = y;
   v27->size.width = width;
   v27->size.height = height;
-  v28 = self->super._clipInfos + 768 * v23;
+  v28 = self->super._clipInfos + 768 * numberOfClips;
   *v28 = add;
-  *(v28 + 1) = v17;
+  *(v28 + 1) = px_storyResourceKind;
   *(v28 + 2) = width;
   *(v28 + 3) = height;
   *(v28 + 4) = 0;
@@ -212,7 +212,7 @@ void __104__PXStoryMutableDummyTimeline_addSegmentWithResources_preferredDuratio
   *(v28 + 40) = v32;
   *(v28 + 17) = v29;
   *(v28 + 18) = 0;
-  *(v28 + 19) = a6;
+  *(v28 + 19) = style;
   *(v28 + 12) = xmmword_1A53838D0;
   *(v28 + 13) = unk_1A53838E0;
   *(v28 + 10) = PXStoryAssetContentInfoNull;
@@ -261,17 +261,17 @@ void __104__PXStoryMutableDummyTimeline_addSegmentWithResources_preferredDuratio
   *&v92.start.value = *&self->super._timeRange.start.value;
   *&v92.start.epoch = v35;
   *&v92.duration.timescale = *&self->super._timeRange.duration.timescale;
-  v36 = *&a3->var0.var3;
-  v91[0] = *&a3->var0.var0;
+  v36 = *&range->var0.var3;
+  v91[0] = *&range->var0.var0;
   v91[1] = v36;
-  v91[2] = *&a3->var1.var1;
+  v91[2] = *&range->var1.var1;
   PXStoryTimeRangeUnion(&v92, v91, &v46);
   v37 = v47;
   *&self->super._timeRange.start.value = v46;
   *&self->super._timeRange.start.epoch = v37;
   *&self->super._timeRange.duration.timescale = *v48;
-  v38 = [v15 px_storyResourceIdentifier];
-  v39 = [(NSCountedSet *)self->super._resourceOccurrenceCounts countForObject:v38];
+  px_storyResourceIdentifier = [resourceCopy px_storyResourceIdentifier];
+  v39 = [(NSCountedSet *)self->super._resourceOccurrenceCounts countForObject:px_storyResourceIdentifier];
   v40 = [PXStoryDummyClip alloc];
   *&v47 = width;
   *(&v47 + 1) = height;
@@ -284,11 +284,11 @@ void __104__PXStoryMutableDummyTimeline_addSegmentWithResources_preferredDuratio
   *&v48[3] = *v97;
   *&v48[5] = *&v97[16];
   *&v46 = add;
-  *(&v46 + 1) = v17;
+  *(&v46 + 1) = px_storyResourceKind;
   v48[0] = 0;
   v48[13] = *&v99[2];
   v48[14] = 0;
-  v48[15] = a6;
+  v48[15] = style;
   v51 = xmmword_1A53838D0;
   v52 = unk_1A53838E0;
   v56 = xmmword_1A5383920;
@@ -329,16 +329,16 @@ void __104__PXStoryMutableDummyTimeline_addSegmentWithResources_preferredDuratio
   v88 = 0u;
   v89 = 0u;
   v90 = 0;
-  v41 = [(PXStoryDummyClip *)v40 initWithInfo:&v46 resource:v15 resourceOccurrenceIndex:v39];
+  v41 = [(PXStoryDummyClip *)v40 initWithInfo:&v46 resource:resourceCopy resourceOccurrenceIndex:v39];
 
   clipsByIdentifier = self->super._clipsByIdentifier;
   v43 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PXStoryDummyClip identifier](v41, "identifier")}];
   [(NSMutableDictionary *)clipsByIdentifier setObject:v41 forKeyedSubscript:v43];
 
-  [(NSCountedSet *)self->super._resourceOccurrenceCounts addObject:v38];
-  v44 = [(PXStoryDummyClip *)v41 identifier];
+  [(NSCountedSet *)self->super._resourceOccurrenceCounts addObject:px_storyResourceIdentifier];
+  identifier = [(PXStoryDummyClip *)v41 identifier];
 
-  return v44;
+  return identifier;
 }
 
 @end

@@ -9,7 +9,7 @@
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 hmf_dataForKey:v4];
+  v5 = [self hmf_dataForKey:v4];
   if (v5)
   {
     v15 = 0;
@@ -23,7 +23,7 @@
     else
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = a1;
+      selfCopy = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
@@ -53,7 +53,7 @@
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 hmf_dataForKey:v4];
+  v5 = [self hmf_dataForKey:v4];
   if (v5)
   {
     v15 = 0;
@@ -67,7 +67,7 @@
     else
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = a1;
+      selfCopy = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {

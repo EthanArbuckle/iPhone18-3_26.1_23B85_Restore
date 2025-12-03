@@ -1,17 +1,17 @@
 @interface SBDisplayItemLayoutAttributesDebugView
 - (SBDisplayItemLayoutAttributes)layoutAttributes;
-- (SBDisplayItemLayoutAttributesDebugView)initWithFrame:(CGRect)a3;
-- (void)setLayoutAttributes:(id)a3;
+- (SBDisplayItemLayoutAttributesDebugView)initWithFrame:(CGRect)frame;
+- (void)setLayoutAttributes:(id)attributes;
 @end
 
 @implementation SBDisplayItemLayoutAttributesDebugView
 
-- (SBDisplayItemLayoutAttributesDebugView)initWithFrame:(CGRect)a3
+- (SBDisplayItemLayoutAttributesDebugView)initWithFrame:(CGRect)frame
 {
   v37[6] = *MEMORY[0x277D85DE8];
   v36.receiver = self;
   v36.super_class = SBDisplayItemLayoutAttributesDebugView;
-  v3 = [(SBDisplayItemLayoutAttributesDebugView *)&v36 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBDisplayItemLayoutAttributesDebugView *)&v36 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -19,12 +19,12 @@
     v5 = MEMORY[0x277D75348];
     v35 = v4;
     v6 = v4;
-    v7 = [v5 darkTextColor];
-    v8 = [v7 colorWithAlphaComponent:0.6];
+    darkTextColor = [v5 darkTextColor];
+    v8 = [darkTextColor colorWithAlphaComponent:0.6];
     [(SBDisplayItemLayoutAttributesDebugView *)v6 setBackgroundColor:v8];
 
-    v9 = [(SBDisplayItemLayoutAttributesDebugView *)v6 layer];
-    [v9 setCornerRadius:12.0];
+    layer = [(SBDisplayItemLayoutAttributesDebugView *)v6 layer];
+    [layer setCornerRadius:12.0];
 
     [(SBDisplayItemLayoutAttributesDebugView *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
     v10 = objc_alloc(MEMORY[0x277D756B8]);
@@ -33,8 +33,8 @@
     v6->_label = v11;
     v13 = v11;
 
-    v14 = [MEMORY[0x277D75348] systemWhiteColor];
-    [(UILabel *)v13 setTextColor:v14];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    [(UILabel *)v13 setTextColor:systemWhiteColor];
 
     [(UILabel *)v13 setNumberOfLines:0];
     [(UILabel *)v13 setLineBreakMode:0];
@@ -45,28 +45,28 @@
     [(UILabel *)v13 setAdjustsFontSizeToFitWidth:1];
     [(SBDisplayItemLayoutAttributesDebugView *)v6 addSubview:v13];
     v27 = MEMORY[0x277CCAAD0];
-    v34 = [(SBDisplayItemLayoutAttributesDebugView *)v6 heightAnchor];
-    v33 = [v34 constraintEqualToConstant:200.0];
+    heightAnchor = [(SBDisplayItemLayoutAttributesDebugView *)v6 heightAnchor];
+    v33 = [heightAnchor constraintEqualToConstant:200.0];
     v37[0] = v33;
-    v32 = [(SBDisplayItemLayoutAttributesDebugView *)v6 widthAnchor];
-    v31 = [v32 constraintEqualToConstant:340.0];
+    widthAnchor = [(SBDisplayItemLayoutAttributesDebugView *)v6 widthAnchor];
+    v31 = [widthAnchor constraintEqualToConstant:340.0];
     v37[1] = v31;
-    v30 = [(UILabel *)v13 leadingAnchor];
-    v29 = [(SBDisplayItemLayoutAttributesDebugView *)v6 leadingAnchor];
-    v28 = [v30 constraintEqualToAnchor:v29 constant:10.0];
+    leadingAnchor = [(UILabel *)v13 leadingAnchor];
+    leadingAnchor2 = [(SBDisplayItemLayoutAttributesDebugView *)v6 leadingAnchor];
+    v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
     v37[2] = v28;
-    v26 = [(UILabel *)v13 trailingAnchor];
-    v16 = [(SBDisplayItemLayoutAttributesDebugView *)v6 trailingAnchor];
-    v17 = [v26 constraintEqualToAnchor:v16 constant:-10.0];
+    trailingAnchor = [(UILabel *)v13 trailingAnchor];
+    trailingAnchor2 = [(SBDisplayItemLayoutAttributesDebugView *)v6 trailingAnchor];
+    v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-10.0];
     v37[3] = v17;
-    v18 = [(UILabel *)v13 topAnchor];
-    v19 = [(SBDisplayItemLayoutAttributesDebugView *)v6 topAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19 constant:5.0];
+    topAnchor = [(UILabel *)v13 topAnchor];
+    topAnchor2 = [(SBDisplayItemLayoutAttributesDebugView *)v6 topAnchor];
+    v20 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:5.0];
     v37[4] = v20;
-    v21 = [(UILabel *)v13 bottomAnchor];
-    v22 = [(SBDisplayItemLayoutAttributesDebugView *)v6 bottomAnchor];
+    bottomAnchor = [(UILabel *)v13 bottomAnchor];
+    bottomAnchor2 = [(SBDisplayItemLayoutAttributesDebugView *)v6 bottomAnchor];
 
-    v23 = [v21 constraintEqualToAnchor:v22 constant:-5.0];
+    v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-5.0];
     v37[5] = v23;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:6];
     [v27 activateConstraints:v24];
@@ -77,12 +77,12 @@
   return v4;
 }
 
-- (void)setLayoutAttributes:(id)a3
+- (void)setLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  objc_storeWeak(&self->_layoutAttributes, v4);
+  attributesCopy = attributes;
+  objc_storeWeak(&self->_layoutAttributes, attributesCopy);
   label = self->_label;
-  v6 = [v4 debugDescription];
+  v6 = [attributesCopy debugDescription];
 
   [(UILabel *)label setText:v6];
 }

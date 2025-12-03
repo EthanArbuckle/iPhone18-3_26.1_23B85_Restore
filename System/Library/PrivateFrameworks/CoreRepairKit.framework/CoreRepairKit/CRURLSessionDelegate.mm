@@ -1,15 +1,15 @@
 @interface CRURLSessionDelegate
-+ (BOOL)trustIsValidWithProtectionSpace:(id)a3;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
++ (BOOL)trustIsValidWithProtectionSpace:(id)space;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
 @end
 
 @implementation CRURLSessionDelegate
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a5;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   v8 = handleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -17,10 +17,10 @@
     _os_log_impl(&dword_24785F000, v8, OS_LOG_TYPE_DEFAULT, "didReceiveChallenge", &v23, 2u);
   }
 
-  v9 = [v6 protectionSpace];
-  v10 = [v9 serverTrust];
+  protectionSpace = [challengeCopy protectionSpace];
+  serverTrust = [protectionSpace serverTrust];
 
-  v11 = SecTrustCopyCertificateChain(v10);
+  v11 = SecTrustCopyCertificateChain(serverTrust);
   if (v11)
   {
     v12 = v11;
@@ -43,8 +43,8 @@
     v14 = 0;
   }
 
-  v15 = [v6 protectionSpace];
-  v16 = [CRURLSessionDelegate trustIsValidWithProtectionSpace:v15];
+  protectionSpace2 = [challengeCopy protectionSpace];
+  v16 = [CRURLSessionDelegate trustIsValidWithProtectionSpace:protectionSpace2];
 
   v17 = handleForCategory();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -52,17 +52,17 @@
     v23 = 138412546;
     v24 = v14;
     v25 = 2112;
-    v26 = v6;
+    v26 = challengeCopy;
     _os_log_impl(&dword_24785F000, v17, OS_LOG_TYPE_DEFAULT, "Certificate:%@:%@", &v23, 0x16u);
   }
 
   if (v16)
   {
     v18 = MEMORY[0x277CCACF0];
-    v19 = [v6 protectionSpace];
-    v20 = [v18 credentialForTrust:{objc_msgSend(v19, "serverTrust")}];
+    protectionSpace3 = [challengeCopy protectionSpace];
+    v20 = [v18 credentialForTrust:{objc_msgSend(protectionSpace3, "serverTrust")}];
 
-    v7[2](v7, 0, v20);
+    handlerCopy[2](handlerCopy, 0, v20);
   }
 
   else
@@ -73,19 +73,19 @@
       [CRURLSessionDelegate URLSession:didReceiveChallenge:completionHandler:];
     }
 
-    v7[2](v7, 2, 0);
+    handlerCopy[2](handlerCopy, 2, 0);
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)trustIsValidWithProtectionSpace:(id)a3
++ (BOOL)trustIsValidWithProtectionSpace:(id)space
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
+  spaceCopy = space;
+  v4 = spaceCopy;
   error = 0;
-  if (!v3)
+  if (!spaceCopy)
   {
     v11 = handleForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -96,8 +96,8 @@
     goto LABEL_10;
   }
 
-  v5 = [v3 serverTrust];
-  if (!v5)
+  serverTrust = [spaceCopy serverTrust];
+  if (!serverTrust)
   {
 LABEL_10:
     v12 = handleForCategory();
@@ -111,8 +111,8 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  v6 = v5;
-  v7 = [v4 host];
+  v6 = serverTrust;
+  host = [v4 host];
   AppleAST2Service = SecPolicyCreateAppleAST2Service();
 
   v9 = handleForCategory();

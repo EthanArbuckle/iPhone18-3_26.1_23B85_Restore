@@ -1,13 +1,13 @@
 @interface HTTailspin
-+ (BOOL)hasAppExceededGeneratedLogsCountForDuration:(double)a3 procName:(id)a4 isFirstPartyApp:(BOOL)a5;
++ (BOOL)hasAppExceededGeneratedLogsCountForDuration:(double)duration procName:(id)name isFirstPartyApp:(BOOL)app;
 + (BOOL)hasExceededDailyFenceLogLimit;
-+ (BOOL)hasExceededDailyLimit:(double)a3 isFirstPartyApp:(BOOL)a4;
-+ (BOOL)moveAndTrackTailspinToSpoolDirectory:(id)a3 error:(id *)a4;
-+ (BOOL)saveSentryTailspin:(id)a3 infoDict:(id)a4 startTime:(unint64_t)a5 endTime:(unint64_t)a6 error:(id *)a7;
++ (BOOL)hasExceededDailyLimit:(double)limit isFirstPartyApp:(BOOL)app;
++ (BOOL)moveAndTrackTailspinToSpoolDirectory:(id)directory error:(id *)error;
++ (BOOL)saveSentryTailspin:(id)tailspin infoDict:(id)dict startTime:(unint64_t)time endTime:(unint64_t)endTime error:(id *)error;
 + (void)decrementPendingTailspinBlocks;
-+ (void)incrementAppGeneratedLogsCountForDuration:(double)a3 procName:(id)a4 isFirstPartyApp:(BOOL)a5;
++ (void)incrementAppGeneratedLogsCountForDuration:(double)duration procName:(id)name isFirstPartyApp:(BOOL)app;
 + (void)incrementDailyFenceLogGenerationCount;
-+ (void)incrementDailyLogGenerationCountForDuration:(double)a3 isFirstPartyApp:(BOOL)a4;
++ (void)incrementDailyLogGenerationCountForDuration:(double)duration isFirstPartyApp:(BOOL)app;
 + (void)incrementPendingTailspinBlocks;
 + (void)initialize;
 + (void)refreshAppGeneratedLogsCount;
@@ -21,8 +21,8 @@
 + (void)resetPerAppCounts;
 + (void)resetPerPeriodSentryTailspinCounts;
 + (void)saveTailspinForAllPendingHangs;
-+ (void)saveTailspinForForceQuit:(id)a3 completionBlock:(id)a4;
-+ (void)saveTailspinWithFileName:(id)a3 directoryPath:(id)a4 infoDictArray:(id)a5 startTime:(unint64_t)a6 endTime:(unint64_t)a7 processName:(id)a8 pid:(int)a9 requestType:(int64_t)a10 includeOSSignposts:(BOOL)a11 completionQueue:(id)a12 completionHandler:(id)a13;
++ (void)saveTailspinForForceQuit:(id)quit completionBlock:(id)block;
++ (void)saveTailspinWithFileName:(id)name directoryPath:(id)path infoDictArray:(id)array startTime:(unint64_t)time endTime:(unint64_t)endTime processName:(id)processName pid:(int)pid requestType:(int64_t)self0 includeOSSignposts:(BOOL)self1 completionQueue:(id)self2 completionHandler:(id)self3;
 @end
 
 @implementation HTTailspin
@@ -237,26 +237,26 @@
   [qword_100067DB0 removeAllObjects];
 }
 
-+ (BOOL)hasAppExceededGeneratedLogsCountForDuration:(double)a3 procName:(id)a4 isFirstPartyApp:(BOOL)a5
++ (BOOL)hasAppExceededGeneratedLogsCountForDuration:(double)duration procName:(id)name isFirstPartyApp:(BOOL)app
 {
-  v7 = a4;
+  nameCopy = name;
   v8 = +[HTPrefs sharedPrefs];
-  v9 = [v8 runloopLongHangDurationThresholdMSec];
+  runloopLongHangDurationThresholdMSec = [v8 runloopLongHangDurationThresholdMSec];
 
-  if (v9 <= a3 && a5)
+  if (runloopLongHangDurationThresholdMSec <= duration && app)
   {
     v10 = 0;
   }
 
   else
   {
-    v11 = [qword_100067DA8 objectForKeyedSubscript:v7];
+    v11 = [qword_100067DA8 objectForKeyedSubscript:nameCopy];
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 unsignedIntValue];
+      unsignedIntValue = [v11 unsignedIntValue];
       v14 = +[HTPrefs sharedPrefs];
-      v10 = v13 >= [v14 runLoopHangPerPeriodLogLimit];
+      v10 = unsignedIntValue >= [v14 runLoopHangPerPeriodLogLimit];
     }
 
     else
@@ -268,27 +268,27 @@
   return v10;
 }
 
-+ (BOOL)hasExceededDailyLimit:(double)a3 isFirstPartyApp:(BOOL)a4
++ (BOOL)hasExceededDailyLimit:(double)limit isFirstPartyApp:(BOOL)app
 {
-  if (a4)
+  if (app)
   {
     v5 = +[HTPrefs sharedPrefs];
-    v6 = [v5 runloopLongHangDurationThresholdMSec];
+    runloopLongHangDurationThresholdMSec = [v5 runloopLongHangDurationThresholdMSec];
 
-    if (v6 <= a3)
+    if (runloopLongHangDurationThresholdMSec <= limit)
     {
       v18 = dword_100067D88;
       v19 = +[HTPrefs sharedPrefs];
-      v20 = [v19 runLoopLongHangDailyLogLimit];
+      runLoopLongHangDailyLogLimit = [v19 runLoopLongHangDailyLogLimit];
 
-      if (v18 >= v20)
+      if (v18 >= runLoopLongHangDailyLogLimit)
       {
         v12 = sub_100003824();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           v13 = +[HTPrefs sharedPrefs];
           v25 = 67109120;
-          v26 = [v13 runLoopLongHangDailyLogLimit];
+          runLoopLongHangDailyLogLimit2 = [v13 runLoopLongHangDailyLogLimit];
           v14 = "Device has hit the Daily Generated Long Log limit of %u. Not saving a report!";
           goto LABEL_17;
         }
@@ -300,22 +300,22 @@
     else
     {
       v7 = +[HTPrefs sharedPrefs];
-      v8 = [v7 runloopHangDurationThresholdMSec];
+      runloopHangDurationThresholdMSec = [v7 runloopHangDurationThresholdMSec];
 
-      if (v8 <= a3)
+      if (runloopHangDurationThresholdMSec <= limit)
       {
         v21 = dword_100067D84;
         v22 = +[HTPrefs sharedPrefs];
-        v23 = [v22 runLoopHangDailyLogLimit];
+        runLoopHangDailyLogLimit = [v22 runLoopHangDailyLogLimit];
 
-        if (v21 >= v23)
+        if (v21 >= runLoopHangDailyLogLimit)
         {
           v12 = sub_100003824();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
             v13 = +[HTPrefs sharedPrefs];
             v25 = 67109120;
-            v26 = [v13 runLoopHangDailyLogLimit];
+            runLoopLongHangDailyLogLimit2 = [v13 runLoopHangDailyLogLimit];
             v14 = "Device has hit the Daily Generated Short Log limit of %u. Not saving a report!";
             goto LABEL_17;
           }
@@ -328,16 +328,16 @@
       {
         v9 = dword_100067D80;
         v10 = +[HTPrefs sharedPrefs];
-        v11 = [v10 runLoopMicroHangDailyLogLimit];
+        runLoopMicroHangDailyLogLimit = [v10 runLoopMicroHangDailyLogLimit];
 
-        if (v9 >= v11)
+        if (v9 >= runLoopMicroHangDailyLogLimit)
         {
           v12 = sub_100003824();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
             v13 = +[HTPrefs sharedPrefs];
             v25 = 67109120;
-            v26 = [v13 runLoopMicroHangDailyLogLimit];
+            runLoopLongHangDailyLogLimit2 = [v13 runLoopMicroHangDailyLogLimit];
             v14 = "Device has hit the Daily Generated Micro Log limit of %u. Not saving a report!";
 LABEL_17:
             _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, v14, &v25, 8u);
@@ -355,9 +355,9 @@ LABEL_17:
 
   v15 = dword_100067D8C;
   v16 = +[HTPrefs sharedPrefs];
-  v17 = [v16 runloopHangThirdPartyDailyLogLimit];
+  runloopHangThirdPartyDailyLogLimit = [v16 runloopHangThirdPartyDailyLogLimit];
 
-  if (v15 < v17)
+  if (v15 < runloopHangThirdPartyDailyLogLimit)
   {
     return 0;
   }
@@ -367,7 +367,7 @@ LABEL_17:
   {
     v13 = +[HTPrefs sharedPrefs];
     v25 = 67109120;
-    v26 = [v13 runloopHangThirdPartyDailyLogLimit];
+    runLoopLongHangDailyLogLimit2 = [v13 runloopHangThirdPartyDailyLogLimit];
     v14 = "Device has hit the Daily Generated Third Party Log limit of %u. Not saving a report!";
     goto LABEL_17;
   }
@@ -381,9 +381,9 @@ LABEL_18:
 {
   v2 = dword_100067D90;
   v3 = +[HTPrefs sharedPrefs];
-  v4 = [v3 fenceHangDailyLogLimit];
+  fenceHangDailyLogLimit = [v3 fenceHangDailyLogLimit];
 
-  if (v2 >= v4)
+  if (v2 >= fenceHangDailyLogLimit)
   {
     v5 = sub_100003824();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -395,44 +395,44 @@ LABEL_18:
     }
   }
 
-  return v2 >= v4;
+  return v2 >= fenceHangDailyLogLimit;
 }
 
-+ (void)incrementAppGeneratedLogsCountForDuration:(double)a3 procName:(id)a4 isFirstPartyApp:(BOOL)a5
++ (void)incrementAppGeneratedLogsCountForDuration:(double)duration procName:(id)name isFirstPartyApp:(BOOL)app
 {
-  v5 = a5;
-  v7 = a4;
+  appCopy = app;
+  nameCopy = name;
   v8 = +[HTPrefs sharedPrefs];
-  v9 = [v8 runloopLongHangDurationThresholdMSec];
+  runloopLongHangDurationThresholdMSec = [v8 runloopLongHangDurationThresholdMSec];
 
-  if (v9 > a3 || !v5)
+  if (runloopLongHangDurationThresholdMSec > duration || !appCopy)
   {
-    v11 = [qword_100067DA8 objectForKeyedSubscript:v7];
+    v11 = [qword_100067DA8 objectForKeyedSubscript:nameCopy];
     v13 = v11;
     if (v11)
     {
-      v12 = [v11 unsignedIntValue];
+      unsignedIntValue = [v11 unsignedIntValue];
     }
 
     else
     {
-      v12 = 0;
+      unsignedIntValue = 0;
     }
 
     v15 = +[HTPrefs sharedPrefs];
-    v16 = [v15 runLoopHangPerPeriodLogLimit];
+    runLoopHangPerPeriodLogLimit = [v15 runLoopHangPerPeriodLogLimit];
 
-    if (v12 >= v16)
+    if (unsignedIntValue >= runLoopHangPerPeriodLogLimit)
     {
       v18 = sub_100003824();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
         v19 = 138412802;
-        v20 = v7;
+        v20 = nameCopy;
         v21 = 1024;
-        v22 = v12;
+        v22 = unsignedIntValue;
         v23 = 1024;
-        v24 = v12;
+        v24 = unsignedIntValue;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "%@ Generated Log count: %u -> %u", &v19, 0x18u);
       }
     }
@@ -443,16 +443,16 @@ LABEL_18:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         v19 = 138412802;
-        v20 = v7;
+        v20 = nameCopy;
         v21 = 1024;
-        v22 = v12;
+        v22 = unsignedIntValue;
         v23 = 1024;
-        v24 = v12 + 1;
+        v24 = unsignedIntValue + 1;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "%@ Generated Log count: %u -> %u", &v19, 0x18u);
       }
 
-      v18 = [NSNumber numberWithUnsignedInt:v12 + 1];
-      [qword_100067DA8 setObject:v18 forKeyedSubscript:v7];
+      v18 = [NSNumber numberWithUnsignedInt:unsignedIntValue + 1];
+      [qword_100067DA8 setObject:v18 forKeyedSubscript:nameCopy];
     }
   }
 
@@ -462,20 +462,20 @@ LABEL_18:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v19 = 138412290;
-      v20 = v7;
+      v20 = nameCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%@ Generated Log count: Long Hang does not count towards per-app generated log count", &v19, 0xCu);
     }
   }
 }
 
-+ (void)incrementDailyLogGenerationCountForDuration:(double)a3 isFirstPartyApp:(BOOL)a4
++ (void)incrementDailyLogGenerationCountForDuration:(double)duration isFirstPartyApp:(BOOL)app
 {
-  if (a4)
+  if (app)
   {
     v5 = +[HTPrefs sharedPrefs];
-    v6 = [v5 runloopLongHangDurationThresholdMSec];
+    runloopLongHangDurationThresholdMSec = [v5 runloopLongHangDurationThresholdMSec];
 
-    if (v6 <= a3)
+    if (runloopLongHangDurationThresholdMSec <= duration)
     {
       ++dword_100067D88;
       v9 = sub_100003824();
@@ -493,9 +493,9 @@ LABEL_18:
     else
     {
       v7 = +[HTPrefs sharedPrefs];
-      v8 = [v7 runloopHangDurationThresholdMSec];
+      runloopHangDurationThresholdMSec = [v7 runloopHangDurationThresholdMSec];
 
-      if (v8 <= a3)
+      if (runloopHangDurationThresholdMSec <= duration)
       {
         ++dword_100067D84;
         v9 = sub_100003824();
@@ -590,13 +590,13 @@ LABEL_12:
   }
 }
 
-+ (BOOL)moveAndTrackTailspinToSpoolDirectory:(id)a3 error:(id *)a4
++ (BOOL)moveAndTrackTailspinToSpoolDirectory:(id)directory error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 lastPathComponent];
-  v7 = [NSString stringWithFormat:@"%s/%@", "/var/root/Library/Caches/hangtracerd/spool", v6];
+  directoryCopy = directory;
+  lastPathComponent = [directoryCopy lastPathComponent];
+  v7 = [NSString stringWithFormat:@"%s/%@", "/var/root/Library/Caches/hangtracerd/spool", lastPathComponent];
   v8 = +[NSFileManager defaultManager];
-  v9 = [v8 moveItemAtPath:v5 toPath:v7 error:a4];
+  v9 = [v8 moveItemAtPath:directoryCopy toPath:v7 error:error];
 
   v10 = sub_100003824();
   v11 = v10;
@@ -605,7 +605,7 @@ LABEL_12:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v14 = v5;
+      v14 = directoryCopy;
       v15 = 2112;
       v16 = v7;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Successfully moved tailspin from %@ to spool directory path: %@", buf, 0x16u);
@@ -625,27 +625,27 @@ LABEL_12:
   return v9;
 }
 
-+ (BOOL)saveSentryTailspin:(id)a3 infoDict:(id)a4 startTime:(unint64_t)a5 endTime:(unint64_t)a6 error:(id *)a7
++ (BOOL)saveSentryTailspin:(id)tailspin infoDict:(id)dict startTime:(unint64_t)time endTime:(unint64_t)endTime error:(id *)error
 {
-  v10 = a4;
+  dictCopy = dict;
   v11 = off_1000676F0;
-  v12 = a3;
-  v13 = [v10 objectForKeyedSubscript:v11];
+  tailspinCopy = tailspin;
+  v13 = [dictCopy objectForKeyedSubscript:v11];
   v44 = [v13 isEqualToString:off_1000676F8];
   v14 = qword_100067D58;
   v15 = +[NSDate date];
   v16 = [v14 stringFromDate:v15];
-  v17 = [NSString stringWithFormat:@"%@-%@.%@", v12, v16, @"tailspin"];
+  v17 = [NSString stringWithFormat:@"%@-%@.%@", tailspinCopy, v16, @"tailspin"];
 
   v18 = [NSString stringWithFormat:@"%s", "/var/root/Library/Caches/hangtracerd/tmp"];
   v19 = [NSString stringWithFormat:@"%s/%@", "/var/root/Library/Caches/hangtracerd/tmp", v17];
-  v46 = [v19 UTF8String];
+  uTF8String = [v19 UTF8String];
   v20 = +[HTPrefs sharedPrefs];
-  v21 = [v20 htTailspinEnabled];
+  htTailspinEnabled = [v20 htTailspinEnabled];
 
-  if ((v21 & 1) == 0)
+  if ((htTailspinEnabled & 1) == 0)
   {
-    if (!a7)
+    if (!error)
     {
       goto LABEL_21;
     }
@@ -654,13 +654,13 @@ LABEL_12:
     v34 = 1;
 LABEL_20:
     sub_10001990C(v34, v33);
-    *a7 = v35 = 0;
+    *error = v35 = 0;
     goto LABEL_22;
   }
 
   if (!sub_10002A60C())
   {
-    if (!a7)
+    if (!error)
     {
       goto LABEL_21;
     }
@@ -670,14 +670,14 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v43 = a6;
+  endTimeCopy = endTime;
   v22 = dword_100067D98;
   v23 = +[HTPrefs sharedPrefs];
-  v24 = [v23 signpostMonitoringDailyLogLimit];
+  signpostMonitoringDailyLogLimit = [v23 signpostMonitoringDailyLogLimit];
 
-  if (v22 >= v24)
+  if (v22 >= signpostMonitoringDailyLogLimit)
   {
-    if (a7)
+    if (error)
     {
       v33 = @"Sentry has hit its daily tailspin limit";
 LABEL_19:
@@ -692,11 +692,11 @@ LABEL_21:
 
   v25 = dword_100067D9C;
   v26 = +[HTPrefs sharedPrefs];
-  v27 = [v26 signpostMonitoringPerPeriodLogLimit];
+  signpostMonitoringPerPeriodLogLimit = [v26 signpostMonitoringPerPeriodLogLimit];
 
-  if (v25 >= v27)
+  if (v25 >= signpostMonitoringPerPeriodLogLimit)
   {
-    if (a7)
+    if (error)
     {
       v33 = @"Sentry has hit its per-period tailspin limit";
       goto LABEL_19;
@@ -709,9 +709,9 @@ LABEL_21:
   if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
   {
     v29 = +[HTPrefs sharedPrefs];
-    v30 = [v29 shouldCollectOSSignposts];
+    shouldCollectOSSignposts = [v29 shouldCollectOSSignposts];
     v31 = @"NO";
-    if (v30)
+    if (shouldCollectOSSignposts)
     {
       v31 = @"YES";
     }
@@ -723,37 +723,37 @@ LABEL_21:
 
   if (v44)
   {
-    v32 = [v10 objectForKeyedSubscript:off_1000676D0];
-    v45 = [v32 intValue];
+    v32 = [dictCopy objectForKeyedSubscript:off_1000676D0];
+    intValue = [v32 intValue];
   }
 
   else
   {
-    v45 = 0;
+    intValue = 0;
   }
 
   v37 = objc_alloc_init(NSMutableArray);
-  [v37 addObject:v10];
+  [v37 addObject:dictCopy];
   v38 = sub_100029534(0x7D0uLL);
-  if (v38 >= a5)
+  if (v38 >= time)
   {
     v38 = 0;
   }
 
-  v48 = a5 - v38;
+  v48 = time - v38;
   v49[0] = _NSConcreteStackBlock;
   v49[1] = 3221225472;
   v49[2] = sub_10002D784;
   v49[3] = &unk_100056A00;
   v50 = @"Sentry";
   v51 = v19;
-  v53 = v46;
-  v52 = v10;
+  v53 = uTF8String;
+  v52 = dictCopy;
   v39 = objc_retainBlock(v49);
   v40 = +[HTPrefs sharedPrefs];
   LOBYTE(v42) = [v40 shouldCollectOSSignposts];
-  LODWORD(v41) = v45;
-  [HTTailspin saveTailspinWithFileName:v17 directoryPath:v18 infoDictArray:v37 startTime:v48 endTime:v43 processName:@"Sentry" pid:v41 requestType:3 includeOSSignposts:v42 completionQueue:qword_100067D60 completionHandler:v39];
+  LODWORD(v41) = intValue;
+  [HTTailspin saveTailspinWithFileName:v17 directoryPath:v18 infoDictArray:v37 startTime:v48 endTime:endTimeCopy processName:@"Sentry" pid:v41 requestType:3 includeOSSignposts:v42 completionQueue:qword_100067D60 completionHandler:v39];
 
   v35 = 1;
 LABEL_22:
@@ -761,26 +761,26 @@ LABEL_22:
   return v35;
 }
 
-+ (void)saveTailspinForForceQuit:(id)a3 completionBlock:(id)a4
++ (void)saveTailspinForForceQuit:(id)quit completionBlock:(id)block
 {
-  v5 = a3;
-  v25 = a4;
-  v24 = [v5 absoluteTime];
-  v6 = [v5 processName];
+  quitCopy = quit;
+  blockCopy = block;
+  absoluteTime = [quitCopy absoluteTime];
+  processName = [quitCopy processName];
   v7 = qword_100067D58;
-  v8 = [v5 calendarTime];
-  v9 = [v7 stringFromDate:v8];
-  v10 = [NSString stringWithFormat:@"ForceQuit-%@-%@.%@", v6, v9, @"tailspin"];
+  calendarTime = [quitCopy calendarTime];
+  v9 = [v7 stringFromDate:calendarTime];
+  v10 = [NSString stringWithFormat:@"ForceQuit-%@-%@.%@", processName, v9, @"tailspin"];
 
   v26[0] = @"Reason";
-  v11 = [v5 processName];
-  v12 = [NSString stringWithFormat:@"ForceQuit-%@", v11];
+  processName2 = [quitCopy processName];
+  v12 = [NSString stringWithFormat:@"ForceQuit-%@", processName2];
   v27[0] = v12;
   v26[1] = @"ProcessPath";
-  v13 = [v5 executablePath];
-  v27[1] = v13;
+  executablePath = [quitCopy executablePath];
+  v27[1] = executablePath;
   v26[2] = @"PID";
-  v14 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v5 pid]);
+  v14 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [quitCopy pid]);
   v27[2] = v14;
   v26[3] = @"NetworkState";
   v15 = +[HTNetworkInfo networkStateForTailSpin];
@@ -800,20 +800,20 @@ LABEL_22:
 
   v19 = objc_alloc_init(NSMutableArray);
   [v19 addObject:v18];
-  if (sub_10002957C(60.0) >= v24)
+  if (sub_10002957C(60.0) >= absoluteTime)
   {
     v20 = 0;
   }
 
   else
   {
-    v20 = (v24 - sub_10002957C(60.0));
+    v20 = (absoluteTime - sub_10002957C(60.0));
   }
 
-  v21 = [v5 processName];
+  processName3 = [quitCopy processName];
   LOBYTE(v23) = 1;
-  LODWORD(v22) = [v5 pid];
-  [HTTailspin saveTailspinWithFileName:v10 directoryPath:@"/var/root/Library/Caches/hangtracerd/tmp" infoDictArray:v19 startTime:v20 endTime:v24 processName:v21 pid:v22 requestType:4 includeOSSignposts:v23 completionQueue:qword_100067D60 completionHandler:v25];
+  LODWORD(v22) = [quitCopy pid];
+  [HTTailspin saveTailspinWithFileName:v10 directoryPath:@"/var/root/Library/Caches/hangtracerd/tmp" infoDictArray:v19 startTime:v20 endTime:absoluteTime processName:processName3 pid:v22 requestType:4 includeOSSignposts:v23 completionQueue:qword_100067D60 completionHandler:blockCopy];
 }
 
 + (void)saveTailspinForAllPendingHangs
@@ -835,17 +835,17 @@ LABEL_22:
     }
 
     v7 = +[HTHangInfo firstHang];
-    v8 = [v7 serviceName];
-    v9 = [v7 processName];
+    serviceName = [v7 serviceName];
+    processName = [v7 processName];
     v10 = qword_100067D58;
     v11 = +[NSDate date];
     v12 = [v10 stringFromDate:v11];
-    v3 = [NSString stringWithFormat:@"%@-%@-%@.%@", v8, v9, v12, @"tailspin"];
+    v3 = [NSString stringWithFormat:@"%@-%@-%@.%@", serviceName, processName, v12, @"tailspin"];
 
-    v13 = [v7 processName];
+    processName2 = [v7 processName];
     v34 = [v7 pid];
-    v14 = [v7 serviceName];
-    v33 = sub_10001AEA0(v14);
+    serviceName2 = [v7 serviceName];
+    v33 = sub_10001AEA0(serviceName2);
 
     v15 = objc_alloc_init(NSMutableArray);
     v40 = 0u;
@@ -867,8 +867,8 @@ LABEL_22:
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v40 + 1) + 8 * i) infoDict];
-          [v15 addObject:v21];
+          infoDict = [*(*(&v40 + 1) + 8 * i) infoDict];
+          [v15 addObject:infoDict];
         }
 
         v18 = [v16 countByEnumeratingWithState:&v40 objects:v44 count:16];
@@ -892,12 +892,12 @@ LABEL_22:
     v35[1] = 3221225472;
     v35[2] = sub_10002E1DC;
     v35[3] = &unk_100056A00;
-    v37 = v36 = v13;
+    v37 = v36 = processName2;
     v38 = v7;
-    v39 = [v37 UTF8String];
+    uTF8String = [v37 UTF8String];
     v27 = v7;
     v28 = v37;
-    v29 = v13;
+    v29 = processName2;
     v30 = objc_retainBlock(v35);
     LOBYTE(v32) = 1;
     LODWORD(v31) = v34;
@@ -913,19 +913,19 @@ LABEL_22:
   }
 }
 
-+ (void)saveTailspinWithFileName:(id)a3 directoryPath:(id)a4 infoDictArray:(id)a5 startTime:(unint64_t)a6 endTime:(unint64_t)a7 processName:(id)a8 pid:(int)a9 requestType:(int64_t)a10 includeOSSignposts:(BOOL)a11 completionQueue:(id)a12 completionHandler:(id)a13
++ (void)saveTailspinWithFileName:(id)name directoryPath:(id)path infoDictArray:(id)array startTime:(unint64_t)time endTime:(unint64_t)endTime processName:(id)processName pid:(int)pid requestType:(int64_t)self0 includeOSSignposts:(BOOL)self1 completionQueue:(id)self2 completionHandler:(id)self3
 {
-  v16 = a3;
-  v17 = a4;
-  v72 = a5;
-  v18 = a8;
-  v71 = a12;
-  v19 = a13;
+  nameCopy = name;
+  pathCopy = path;
+  arrayCopy = array;
+  processNameCopy = processName;
+  queueCopy = queue;
+  handlerCopy = handler;
   sub_100003738(@"Tailspin Request");
-  v73 = v16;
-  v59 = v16;
-  v20 = v17;
-  v21 = [NSString stringWithFormat:@"%@/%@", v17, v59];
+  v73 = nameCopy;
+  v59 = nameCopy;
+  v20 = pathCopy;
+  v21 = [NSString stringWithFormat:@"%@/%@", pathCopy, v59];
   v22 = sub_100003824();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
@@ -936,71 +936,71 @@ LABEL_22:
 
   v23 = [v21 cStringUsingEncoding:4];
   v24 = open_dprotected_np(v23, 514, 4, 0, 420);
-  v25 = v19;
+  v25 = handlerCopy;
   *buf = _NSConcreteStackBlock;
   *&buf[8] = 3221225472;
   *&buf[16] = sub_10002EC2C;
   *&buf[24] = &unk_100056A78;
   v85 = v24;
   v83 = v25;
-  v84 = a10;
+  typeCopy = type;
   v26 = objc_retainBlock(buf);
 
   if (dword_100067DA0 >= 50)
   {
     v27 = sub_100003824();
-    v28 = v72;
+    v28 = arrayCopy;
     if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
     {
       sub_100034F48(v27);
     }
 
     (*(v26 + 2))(v26, 15);
-    v29 = v71;
-    v30 = v18;
+    v29 = queueCopy;
+    v30 = processNameCopy;
 LABEL_15:
     v33 = v73;
     goto LABEL_45;
   }
 
-  v28 = v72;
+  v28 = arrayCopy;
   if (v24 < 0)
   {
     v34 = sub_100003824();
-    v30 = v18;
+    v30 = processNameCopy;
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
       sub_100034E94();
     }
 
     (*(v26 + 2))(v26, 10);
-    v29 = v71;
+    v29 = queueCopy;
     goto LABEL_15;
   }
 
   v66 = v24;
   v80 = 0;
-  v31 = [NSJSONSerialization dataWithJSONObject:v72 options:0 error:&v80];
+  v31 = [NSJSONSerialization dataWithJSONObject:arrayCopy options:0 error:&v80];
   v67 = v80;
   v68 = v31;
   if (v31)
   {
-    v30 = v18;
+    v30 = processNameCopy;
     v65 = [[NSString alloc] initWithData:v31 encoding:4];
     if (v65)
     {
-      v64 = v18;
+      v64 = processNameCopy;
       v32 = +[HTPrefs sharedPrefs];
       v33 = v73;
       if ([v32 isInternal])
       {
-        v63 = 0;
+        shouldUploadToDiagPipe = 0;
       }
 
       else
       {
         v39 = +[HTPrefs sharedPrefs];
-        v63 = [v39 shouldUploadToDiagPipe];
+        shouldUploadToDiagPipe = [v39 shouldUploadToDiagPipe];
       }
 
       v40 = sub_100003824();
@@ -1011,16 +1011,16 @@ LABEL_15:
         v42 = v25;
         v43 = [v41 isInternal] ^ 1;
         v44 = +[HTPrefs sharedPrefs];
-        v45 = [v44 shouldUploadToDiagPipe];
+        shouldUploadToDiagPipe2 = [v44 shouldUploadToDiagPipe];
         *buf = 138544130;
         *&buf[4] = v64;
         *&buf[12] = 1024;
-        *&buf[14] = v63;
+        *&buf[14] = shouldUploadToDiagPipe;
         *&buf[18] = 1024;
         *&buf[20] = v43;
         v25 = v42;
         *&buf[24] = 1024;
-        *&buf[26] = v45;
+        *&buf[26] = shouldUploadToDiagPipe2;
         _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_INFO, "%{public}@: Tailspin filepaths will be scrubbed: %{BOOL}d (Customer build: %{BOOL}d, DiagnosticPipeline upload enabled: %{BOOL}d)", buf, 0x1Eu);
 
         v26 = v62;
@@ -1030,7 +1030,7 @@ LABEL_15:
       v79 = 0u;
       v76 = 0u;
       v77 = 0u;
-      v46 = v72;
+      v46 = arrayCopy;
       v47 = [v46 countByEnumeratingWithState:&v76 objects:v81 count:16];
       if (v47)
       {
@@ -1048,12 +1048,12 @@ LABEL_15:
 
             v51 = *(*(&v76 + 1) + 8 * i);
             v52 = [v51 objectForKeyedSubscript:@"isFirstPartyApp"];
-            v53 = [v52 BOOLValue];
+            bOOLValue = [v52 BOOLValue];
 
             v54 = [v51 objectForKeyedSubscript:@"IsThirdPartyDevSupportModeHang"];
-            v55 = [v54 BOOLValue];
+            bOOLValue2 = [v54 BOOLValue];
 
-            if ((v53 & 1) != 0 || !v55)
+            if ((bOOLValue & 1) != 0 || !bOOLValue2)
             {
               v56 = sub_100003824();
               v30 = v64;
@@ -1063,7 +1063,7 @@ LABEL_15:
               }
 
               v61 = 1;
-              v28 = v72;
+              v28 = arrayCopy;
               v33 = v73;
               v20 = v60;
               goto LABEL_38;
@@ -1080,7 +1080,7 @@ LABEL_15:
         }
 
         v61 = 0;
-        v28 = v72;
+        v28 = arrayCopy;
         v33 = v73;
         v20 = v60;
         v30 = v64;
@@ -1114,8 +1114,8 @@ LABEL_38:
       v74[3] = &unk_100056A28;
       v75 = v26;
       v58 = objc_retainBlock(v74);
-      v29 = v71;
-      sub_10002A64C(v66, a6, a7, v65, a9, a11, v61, v63, v71, v58);
+      v29 = queueCopy;
+      sub_10002A64C(v66, time, endTime, v65, pid, signposts, v61, shouldUploadToDiagPipe, queueCopy, v58);
 
       v36 = v67;
     }
@@ -1132,7 +1132,7 @@ LABEL_38:
 
       unlink(v23);
       (*(v26 + 2))(v26, 8);
-      v29 = v71;
+      v29 = queueCopy;
       v38 = 0;
     }
   }
@@ -1141,13 +1141,13 @@ LABEL_38:
   {
     v35 = sub_100003824();
     v36 = v67;
-    v30 = v18;
+    v30 = processNameCopy;
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      *&buf[4] = v18;
+      *&buf[4] = processNameCopy;
       *&buf[12] = 2114;
-      *&buf[14] = v72;
+      *&buf[14] = arrayCopy;
       *&buf[22] = 2114;
       *&buf[24] = v67;
       _os_log_error_impl(&_mh_execute_header, v35, OS_LOG_TYPE_ERROR, "%{public}@: Unable to serialize Info Dict into JSON: %{public}@ - %{public}@\n", buf, 0x20u);
@@ -1155,7 +1155,7 @@ LABEL_38:
 
     unlink(v23);
     (*(v26 + 2))(v26, 7);
-    v29 = v71;
+    v29 = queueCopy;
     v33 = v73;
   }
 

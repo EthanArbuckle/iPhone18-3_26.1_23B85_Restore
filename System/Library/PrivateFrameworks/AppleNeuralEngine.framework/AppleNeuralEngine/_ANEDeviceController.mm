@@ -1,8 +1,8 @@
 @interface _ANEDeviceController
-+ (_ANEDeviceController)controllerWithProgramHandle:(unint64_t)a3;
++ (_ANEDeviceController)controllerWithProgramHandle:(unint64_t)handle;
 + (id)sharedPrivilegedConnection;
 + (void)initialize;
-- (_ANEDeviceController)initWithProgramHandle:(unint64_t)a3 priviledged:(BOOL)a4;
+- (_ANEDeviceController)initWithProgramHandle:(unint64_t)handle priviledged:(BOOL)priviledged;
 - (void)start;
 - (void)stop;
 @end
@@ -51,14 +51,14 @@
   dispatch_sync(gANEControllerQueue, v2);
 }
 
-+ (_ANEDeviceController)controllerWithProgramHandle:(unint64_t)a3
++ (_ANEDeviceController)controllerWithProgramHandle:(unint64_t)handle
 {
-  v3 = [[a1 alloc] initWithProgramHandle:a3 priviledged:0];
+  v3 = [[self alloc] initWithProgramHandle:handle priviledged:0];
 
   return v3;
 }
 
-- (_ANEDeviceController)initWithProgramHandle:(unint64_t)a3 priviledged:(BOOL)a4
+- (_ANEDeviceController)initWithProgramHandle:(unint64_t)handle priviledged:(BOOL)priviledged
 {
   v7.receiver = self;
   v7.super_class = _ANEDeviceController;
@@ -67,8 +67,8 @@
   {
     result->_usecount = 0;
     result->_device = 0;
-    result->_programHandle = a3;
-    result->_isPrivileged = a4;
+    result->_programHandle = handle;
+    result->_isPrivileged = priviledged;
   }
 
   return result;

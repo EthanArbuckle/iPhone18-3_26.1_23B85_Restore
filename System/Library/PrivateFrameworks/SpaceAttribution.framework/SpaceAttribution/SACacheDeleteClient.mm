@@ -1,8 +1,8 @@
 @interface SACacheDeleteClient
-- (BOOL)getAsyncPurgeableInfoWithTimeout:(unint64_t)a3 results:(id *)a4 error:(id *)a5;
+- (BOOL)getAsyncPurgeableInfoWithTimeout:(unint64_t)timeout results:(id *)results error:(id *)error;
 - (SACacheDeleteClient)init;
-- (void)getPurgeableInfo:(id)a3 cached:(BOOL)a4 timeout:(unint64_t)a5 completionHandler:(id)a6;
-- (void)getPurgeableInfoAsync:(id)a3 cached:(BOOL)a4 completionHandler:(id)a5;
+- (void)getPurgeableInfo:(id)info cached:(BOOL)cached timeout:(unint64_t)timeout completionHandler:(id)handler;
+- (void)getPurgeableInfoAsync:(id)async cached:(BOOL)cached completionHandler:(id)handler;
 @end
 
 @implementation SACacheDeleteClient
@@ -28,11 +28,11 @@
   return v2;
 }
 
-- (void)getPurgeableInfo:(id)a3 cached:(BOOL)a4 timeout:(unint64_t)a5 completionHandler:(id)a6
+- (void)getPurgeableInfo:(id)info cached:(BOOL)cached timeout:(unint64_t)timeout completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = a6;
+  cachedCopy = cached;
+  infoCopy = info;
+  handlerCopy = handler;
   v11 = dispatch_group_create();
   v12 = v11;
   v44 = 0;
@@ -47,7 +47,7 @@
   v41 = sub_100005430;
   v42 = sub_100005440;
   v43 = 0;
-  if (v8)
+  if (cachedCopy)
   {
     v13 = 0;
   }
@@ -64,7 +64,7 @@
   v31 = sub_100005448;
   v32 = &unk_100064890;
   v35 = &v44;
-  v15 = v9;
+  v15 = infoCopy;
   v37 = v13;
   v33 = v15;
   v36 = &v38;
@@ -72,7 +72,7 @@
   v34 = v16;
   dispatch_async(v14, &v29);
 
-  if (dispatch_group_wait(v16, a5))
+  if (dispatch_group_wait(v16, timeout))
   {
     v17 = SALog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -87,15 +87,15 @@
     v27 = v39[5];
     v39[5] = v26;
 
-    if (v10)
+    if (handlerCopy)
     {
       v28 = 0;
 LABEL_11:
-      v10[2](v10, v28, v39[5]);
+      handlerCopy[2](handlerCopy, v28, v39[5]);
     }
   }
 
-  else if (v10)
+  else if (handlerCopy)
   {
     v28 = v45[5];
     goto LABEL_11;
@@ -105,39 +105,39 @@ LABEL_11:
   _Block_object_dispose(&v44, 8);
 }
 
-- (void)getPurgeableInfoAsync:(id)a3 cached:(BOOL)a4 completionHandler:(id)a5
+- (void)getPurgeableInfoAsync:(id)async cached:(BOOL)cached completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  asyncCopy = async;
+  handlerCopy = handler;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
   v31 = 1;
-  v10 = [(SACacheDeleteClient *)self purgeableInfoQueue];
+  purgeableInfoQueue = [(SACacheDeleteClient *)self purgeableInfoQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000057D0;
   block[3] = &unk_1000648B8;
-  v27 = a4;
+  cachedCopy = cached;
   block[4] = self;
   block[5] = &v28;
-  dispatch_sync(v10, block);
+  dispatch_sync(purgeableInfoQueue, block);
 
   if (v29[3])
   {
-    v11 = [(SACacheDeleteClient *)self dataGroup];
-    dispatch_group_enter(v11);
+    dataGroup = [(SACacheDeleteClient *)self dataGroup];
+    dispatch_group_enter(dataGroup);
 
     v12 = dispatch_get_global_queue(0, 0);
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1000058A0;
     v18[3] = &unk_100064980;
-    v22 = a4;
-    v19 = v8;
-    v20 = self;
-    v21 = v9;
-    v13 = v9;
+    cachedCopy2 = cached;
+    v19 = asyncCopy;
+    selfCopy = self;
+    v21 = handlerCopy;
+    v13 = handlerCopy;
     dispatch_async(v12, v18);
 
     v14 = v19;
@@ -155,16 +155,16 @@ LABEL_11:
     v23[2] = sub_10000587C;
     v23[3] = &unk_1000648E0;
     v24 = v16;
-    v25 = v9;
+    v25 = handlerCopy;
     v14 = v16;
-    v17 = v9;
+    v17 = handlerCopy;
     dispatch_async(&_dispatch_main_q, v23);
   }
 
   _Block_object_dispose(&v28, 8);
 }
 
-- (BOOL)getAsyncPurgeableInfoWithTimeout:(unint64_t)a3 results:(id *)a4 error:(id *)a5
+- (BOOL)getAsyncPurgeableInfoWithTimeout:(unint64_t)timeout results:(id *)results error:(id *)error
 {
   v31 = 0;
   v32 = &v31;
@@ -172,19 +172,19 @@ LABEL_11:
   v34 = sub_100005430;
   v35 = sub_100005440;
   v36 = 0;
-  v9 = [(SACacheDeleteClient *)self purgeableInfoQueue];
+  purgeableInfoQueue = [(SACacheDeleteClient *)self purgeableInfoQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100005F10;
   block[3] = &unk_1000649A8;
   block[4] = self;
   block[5] = &v31;
-  dispatch_sync(v9, block);
+  dispatch_sync(purgeableInfoQueue, block);
 
   v10 = v32[5];
   if (v10)
   {
-    v11 = dispatch_group_wait(v10, a3);
+    v11 = dispatch_group_wait(v10, timeout);
     v24 = 0;
     v25 = &v24;
     v26 = 0x3032000000;
@@ -197,7 +197,7 @@ LABEL_11:
     v21 = sub_100005430;
     v22 = sub_100005440;
     v23 = 0;
-    v12 = [(SACacheDeleteClient *)self purgeableInfoQueue];
+    purgeableInfoQueue2 = [(SACacheDeleteClient *)self purgeableInfoQueue];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_100005F5C;
@@ -205,30 +205,30 @@ LABEL_11:
     v17[4] = self;
     v17[5] = &v24;
     v17[6] = &v18;
-    dispatch_sync(v12, v17);
+    dispatch_sync(purgeableInfoQueue2, v17);
 
     v13 = v11 == 0;
     if (v11)
     {
-      if (a5)
+      if (error)
       {
         v37 = NSLocalizedDescriptionKey;
         v38 = @"Timeout waiting for async purgeable info.";
         v14 = [NSDictionary dictionaryWithObjects:&v38 forKeys:&v37 count:1];
-        *a5 = [NSError errorWithDomain:@"SACacheDeleteClientErrorDomain" code:100 userInfo:v14];
+        *error = [NSError errorWithDomain:@"SACacheDeleteClientErrorDomain" code:100 userInfo:v14];
       }
     }
 
     else
     {
-      if (a4)
+      if (results)
       {
-        *a4 = v25[5];
+        *results = v25[5];
       }
 
-      if (a5)
+      if (error)
       {
-        *a5 = v19[5];
+        *error = v19[5];
       }
     }
 
@@ -239,12 +239,12 @@ LABEL_11:
 
   else
   {
-    if (a5)
+    if (error)
     {
       v39 = NSLocalizedDescriptionKey;
       v40 = @"No async call has been made yet.";
       v15 = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
-      *a5 = [NSError errorWithDomain:@"SACacheDeleteClientErrorDomain" code:101 userInfo:v15];
+      *error = [NSError errorWithDomain:@"SACacheDeleteClientErrorDomain" code:101 userInfo:v15];
     }
 
     v13 = 0;

@@ -22,12 +22,12 @@
 
 - (id)description
 {
-  v3 = [(SDActivityRequestRecord *)self requestIdentifier];
-  v4 = [v3 UUIDString];
-  v5 = [(SDActivityRequestRecord *)self deviceIdentifier];
+  requestIdentifier = [(SDActivityRequestRecord *)self requestIdentifier];
+  uUIDString = [requestIdentifier UUIDString];
+  deviceIdentifier = [(SDActivityRequestRecord *)self deviceIdentifier];
   requestCreatedDate = self->_requestCreatedDate;
-  v7 = [(SDActivityRequestRecord *)self completionHandler];
-  if (v7)
+  completionHandler = [(SDActivityRequestRecord *)self completionHandler];
+  if (completionHandler)
   {
     v8 = @"YES";
   }
@@ -37,9 +37,9 @@
     v8 = @"NO";
   }
 
-  v9 = [(SDActivityRequestRecord *)self timeoutTimer];
-  v10 = [(SDActivityRequestRecord *)self error];
-  v11 = [NSString stringWithFormat:@"message/requestIdentifier:%@, deviceIdentifier:%@, requestCreated:%@, hasCompletionHandler:%@, _timeoutTimer:%@, error:%@", v4, v5, requestCreatedDate, v8, v9, v10];
+  timeoutTimer = [(SDActivityRequestRecord *)self timeoutTimer];
+  error = [(SDActivityRequestRecord *)self error];
+  v11 = [NSString stringWithFormat:@"message/requestIdentifier:%@, deviceIdentifier:%@, requestCreated:%@, hasCompletionHandler:%@, _timeoutTimer:%@, error:%@", uUIDString, deviceIdentifier, requestCreatedDate, v8, timeoutTimer, error];
 
   return v11;
 }

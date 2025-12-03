@@ -1,19 +1,19 @@
 @interface HFOrderedHomeKitItemData
-+ (id)dataWithUniqueIdentifier:(id)a3 title:(id)a4 dateAdded:(id)a5;
++ (id)dataWithUniqueIdentifier:(id)identifier title:(id)title dateAdded:(id)added;
 @end
 
 @implementation HFOrderedHomeKitItemData
 
-+ (id)dataWithUniqueIdentifier:(id)a3 title:(id)a4 dateAdded:(id)a5
++ (id)dataWithUniqueIdentifier:(id)identifier title:(id)title dateAdded:(id)added
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = objc_alloc_init(a1);
-  [v11 setUniqueIdentifier:v10];
+  addedCopy = added;
+  titleCopy = title;
+  identifierCopy = identifier;
+  v11 = objc_alloc_init(self);
+  [v11 setUniqueIdentifier:identifierCopy];
 
-  [v11 setTitle:v9];
-  [v11 setDateAdded:v8];
+  [v11 setTitle:titleCopy];
+  [v11 setDateAdded:addedCopy];
 
   return v11;
 }

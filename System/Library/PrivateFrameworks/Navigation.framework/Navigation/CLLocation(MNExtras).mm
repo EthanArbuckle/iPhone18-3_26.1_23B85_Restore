@@ -17,33 +17,33 @@
 
 - (uint64_t)_navigation_gtLog
 {
-  v1 = objc_getAssociatedObject(a1, &_navigation_gtLogKey);
+  v1 = objc_getAssociatedObject(self, &_navigation_gtLogKey);
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)_navigation_hasValidCourse
 {
-  [a1 course];
+  [self course];
   if (v2 < 0.0)
   {
     return 0;
   }
 
-  [a1 courseAccuracy];
+  [self courseAccuracy];
   if ((v4 & 0x80000000) == 0)
   {
-    [a1 courseAccuracy];
+    [self courseAccuracy];
     if (v5 < 180.0)
     {
       return 1;
@@ -55,27 +55,27 @@
 
 - (double)_navigation_geoCoordinate
 {
-  [a1 coordinate];
+  [self coordinate];
   v3 = v2;
-  [a1 coordinate];
+  [self coordinate];
   return v3;
 }
 
 - (double)_navigation_geoCoordinate3D
 {
-  [a1 coordinate];
+  [self coordinate];
   v3 = v2;
-  [a1 coordinate];
-  [a1 altitude];
+  [self coordinate];
+  [self altitude];
   return v3;
 }
 
 - (id)_navigation_geoLocation
 {
   v2 = objc_alloc(MEMORY[0x1E69A1E70]);
-  [a1 coordinate];
+  [self coordinate];
   v4 = v3;
-  [a1 coordinate];
+  [self coordinate];
   v5 = [v2 initWithLatitude:v4 longitude:?];
 
   return v5;
@@ -84,7 +84,7 @@
 - (void)_navigation_setGtLog:()MNExtras
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  objc_setAssociatedObject(a1, &_navigation_gtLogKey, v2, 1);
+  objc_setAssociatedObject(self, &_navigation_gtLogKey, v2, 1);
 }
 
 - (double)_navigation_rawShiftedCoordinate
@@ -97,11 +97,11 @@
 - (uint64_t)_navigation_locationDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  [a1 coordinate];
+  [self coordinate];
   v4 = v3;
-  [a1 coordinate];
+  [self coordinate];
   v6 = v5;
-  [a1 horizontalAccuracy];
+  [self horizontalAccuracy];
   return [v2 stringWithFormat:@"(%+.5f, %+.5f) ±%.2fm", v4, v6, v7];
 }
 
@@ -109,26 +109,26 @@
 {
   v48 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [v4 latLng];
-  [v5 lat];
+  latLng = [v4 latLng];
+  [latLng lat];
   v7 = v6;
-  v8 = [v4 latLng];
-  [v8 lng];
+  latLng2 = [v4 latLng];
+  [latLng2 lng];
   v10 = CLLocationCoordinate2DMake(v7, v9);
 
-  v11 = [v4 rawCoordinate];
-  [v11 lat];
+  rawCoordinate = [v4 rawCoordinate];
+  [rawCoordinate lat];
   v13 = v12;
-  v14 = [v4 rawCoordinate];
-  [v14 lng];
+  rawCoordinate2 = [v4 rawCoordinate];
+  [rawCoordinate2 lng];
   v16 = CLLocationCoordinate2DMake(v13, v15);
 
   if ([v4 hasCoarseMetadata])
   {
     v17 = MEMORY[0x1E696ACC8];
-    v18 = [v4 coarseMetadata];
+    coarseMetadata = [v4 coarseMetadata];
     v45 = 0;
-    v19 = [v17 archivedDataWithRootObject:v18 requiringSecureCoding:1 error:&v45];
+    v19 = [v17 archivedDataWithRootObject:coarseMetadata requiringSecureCoding:1 error:&v45];
     v20 = v45;
 
     if (!v19 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -154,7 +154,7 @@
   v27 = v26;
   [v4 speedAccuracy];
   v29 = v28;
-  v30 = [v4 altitude];
+  altitude = [v4 altitude];
   [v4 timestamp];
   v32 = v31;
   [v4 horizontalAccuracy];
@@ -172,18 +172,18 @@
     v38 = dword_1D328D4B0[v37];
   }
 
-  v39 = [v4 referenceFrame];
-  if (v39 == 1)
+  referenceFrame = [v4 referenceFrame];
+  if (referenceFrame == 1)
   {
     v40 = 1;
   }
 
   else
   {
-    v40 = 2 * (v39 == 2);
+    v40 = 2 * (referenceFrame == 2);
   }
 
-  v41 = [a1 initWithCoordinate:v38 rawCoordinate:v40 course:v19 rawCourse:v10.latitude courseAccuracy:v10.longitude speed:v16.latitude speedAccuracy:v16.longitude altitude:v44 timestamp:v23 horizontalAccuracy:v25 verticalAccuracy:v27 type:v29 referenceFrame:v30 serializedCoarseMetaData:{v32, v34, v36}];
+  v41 = [self initWithCoordinate:v38 rawCoordinate:v40 course:v19 rawCourse:v10.latitude courseAccuracy:v10.longitude speed:v16.latitude speedAccuracy:v16.longitude altitude:v44 timestamp:v23 horizontalAccuracy:v25 verticalAccuracy:v27 type:v29 referenceFrame:altitude serializedCoarseMetaData:{v32, v34, v36}];
 
   v42 = *MEMORY[0x1E69E9840];
   return v41;
@@ -215,12 +215,12 @@
   v45 = 0;
   if (a13)
   {
-    v21 = [a1 initWithClientLocation:&v24 coarseMetaData:a13];
+    v21 = [self initWithClientLocation:&v24 coarseMetaData:a13];
   }
 
   else
   {
-    v21 = [a1 initWithClientLocation:&v24];
+    v21 = [self initWithClientLocation:&v24];
   }
 
   v22 = v21;

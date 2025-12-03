@@ -50,7 +50,7 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(_PIPosterLayoutPropertiesResult *)self layoutVariant];
+  layoutVariant = [(_PIPosterLayoutPropertiesResult *)self layoutVariant];
   [(_PIPosterLayoutPropertiesResult *)self maxClockShift];
   v7 = v6;
   v8 = MEMORY[0x1E696B098];
@@ -67,7 +67,7 @@
   v22[2] = v17;
   v22[3] = v18;
   v19 = [v14 valueWithBytes:v22 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
-  v20 = [v3 stringWithFormat:@"<%@:%p variant:%ld, maxClockShift:%.2f, adaptive-vis:%@, vis: %@>", v4, self, v5, v7, v13, v19];
+  v20 = [v3 stringWithFormat:@"<%@:%p variant:%ld, maxClockShift:%.2f, adaptive-vis:%@, vis: %@>", v4, self, layoutVariant, v7, v13, v19];
 
   return v20;
 }

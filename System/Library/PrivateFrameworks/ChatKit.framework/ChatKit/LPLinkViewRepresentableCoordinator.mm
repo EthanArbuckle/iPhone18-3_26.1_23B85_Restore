@@ -1,14 +1,14 @@
 @interface LPLinkViewRepresentableCoordinator
 - (_TtC7ChatKit34LPLinkViewRepresentableCoordinator)init;
-- (id)_contextMenuActionsForLinkView:(id)a3;
+- (id)_contextMenuActionsForLinkView:(id)view;
 @end
 
 @implementation LPLinkViewRepresentableCoordinator
 
-- (id)_contextMenuActionsForLinkView:(id)a3
+- (id)_contextMenuActionsForLinkView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_190B19DE4();
 
   sub_1908D84D0();

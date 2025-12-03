@@ -1,25 +1,25 @@
 @interface PKInputPointPredictor
-- (double)predictedPointAtTimestamp:(uint64_t)a3@<X8> defaultPoint:(double)a4@<D0>;
-- (void)predictedPointForPoint:(uint64_t)a3@<X8> timestamp:(double)a4@<D0>;
+- (double)predictedPointAtTimestamp:(uint64_t)timestamp@<X8> defaultPoint:(double)point@<D0>;
+- (void)predictedPointForPoint:(uint64_t)point@<X8> timestamp:(double)timestamp@<D0>;
 @end
 
 @implementation PKInputPointPredictor
 
-- (void)predictedPointForPoint:(uint64_t)a3@<X8> timestamp:(double)a4@<D0>
+- (void)predictedPointForPoint:(uint64_t)point@<X8> timestamp:(double)timestamp@<D0>
 {
-  if (a1)
+  if (self)
   {
-    v8 = *(a1 + 552);
-    v9 = (a1 + 8);
+    v8 = *(self + 552);
+    v9 = (self + 8);
     if (v8 == 4)
     {
-      memmove(v9, (a1 + 144), 0x198uLL);
-      v10 = (a1 + 416);
+      memmove(v9, (self + 144), 0x198uLL);
+      v10 = (self + 416);
     }
 
     else
     {
-      *(a1 + 552) = v8 + 1;
+      *(self + 552) = v8 + 1;
       v10 = &v9[136 * v8];
     }
 
@@ -51,35 +51,35 @@
     v20 = *(a2 + 16);
     v21[0] = *a2;
     v21[1] = v20;
-    [(PKInputPointPredictor *)a1 predictedPointAtTimestamp:v21 defaultPoint:a3, a4];
+    [(PKInputPointPredictor *)self predictedPointAtTimestamp:v21 defaultPoint:point, timestamp];
   }
 
   else
   {
-    *(a3 + 128) = 0;
-    *(a3 + 96) = 0u;
-    *(a3 + 112) = 0u;
-    *(a3 + 64) = 0u;
-    *(a3 + 80) = 0u;
-    *(a3 + 32) = 0u;
-    *(a3 + 48) = 0u;
-    *a3 = 0u;
-    *(a3 + 16) = 0u;
+    *(point + 128) = 0;
+    *(point + 96) = 0u;
+    *(point + 112) = 0u;
+    *(point + 64) = 0u;
+    *(point + 80) = 0u;
+    *(point + 32) = 0u;
+    *(point + 48) = 0u;
+    *point = 0u;
+    *(point + 16) = 0u;
   }
 }
 
-- (double)predictedPointAtTimestamp:(uint64_t)a3@<X8> defaultPoint:(double)a4@<D0>
+- (double)predictedPointAtTimestamp:(uint64_t)timestamp@<X8> defaultPoint:(double)point@<D0>
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 552) > 3)
+    if (*(self + 552) > 3)
     {
-      v4 = a4 - *(a1 + 480);
+      v4 = point - *(self + 480);
       if (v4 > 0.0)
       {
         v5 = *MEMORY[0x1E695EFF8];
-        v6 = *(a1 + 72);
-        v7 = (a1 + 208);
+        v6 = *(self + 72);
+        v7 = (self + 208);
         v8 = 3;
         v9 = v6;
         while (1)
@@ -99,9 +99,9 @@
             __asm { FMOV            V4.2D, #3.0 }
 
             v17 = vdivq_f64(v5, _Q4);
-            v19 = *(a1 + 8);
-            v18 = *(a1 + 16);
-            v20 = (a1 + 144);
+            v19 = *(self + 8);
+            v18 = *(self + 16);
+            v20 = (self + 144);
             v21 = 0.0;
             v22 = 3;
             do
@@ -142,8 +142,8 @@
               }
             }
 
-            *a2 = vaddq_f64(*(a1 + 416), vmulq_n_f64(vmulq_n_f64(v17, v4), v30 * v29));
-            *(a2 + 64) = a4;
+            *a2 = vaddq_f64(*(self + 416), vmulq_n_f64(vmulq_n_f64(v17, v4), v30 * v29));
+            *(a2 + 64) = point;
             break;
           }
         }
@@ -151,32 +151,32 @@
     }
 
     v32 = *(a2 + 112);
-    *(a3 + 96) = *(a2 + 96);
-    *(a3 + 112) = v32;
-    *(a3 + 128) = *(a2 + 128);
+    *(timestamp + 96) = *(a2 + 96);
+    *(timestamp + 112) = v32;
+    *(timestamp + 128) = *(a2 + 128);
     v33 = *(a2 + 48);
-    *(a3 + 32) = *(a2 + 32);
-    *(a3 + 48) = v33;
+    *(timestamp + 32) = *(a2 + 32);
+    *(timestamp + 48) = v33;
     v34 = *(a2 + 80);
-    *(a3 + 64) = *(a2 + 64);
-    *(a3 + 80) = v34;
+    *(timestamp + 64) = *(a2 + 64);
+    *(timestamp + 80) = v34;
     v35 = *(a2 + 16);
-    *a3 = *a2;
-    *(a3 + 16) = v35;
+    *timestamp = *a2;
+    *(timestamp + 16) = v35;
   }
 
   else
   {
-    *(a3 + 128) = 0;
+    *(timestamp + 128) = 0;
     *&v35 = 0;
-    *(a3 + 96) = 0u;
-    *(a3 + 112) = 0u;
-    *(a3 + 64) = 0u;
-    *(a3 + 80) = 0u;
-    *(a3 + 32) = 0u;
-    *(a3 + 48) = 0u;
-    *a3 = 0u;
-    *(a3 + 16) = 0u;
+    *(timestamp + 96) = 0u;
+    *(timestamp + 112) = 0u;
+    *(timestamp + 64) = 0u;
+    *(timestamp + 80) = 0u;
+    *(timestamp + 32) = 0u;
+    *(timestamp + 48) = 0u;
+    *timestamp = 0u;
+    *(timestamp + 16) = 0u;
   }
 
   return *&v35;

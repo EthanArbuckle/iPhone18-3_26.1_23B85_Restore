@@ -1,16 +1,16 @@
 @interface SeymourUI_StandardFilterCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
-- (void)accessibilityApplyState:(BOOL)a3 disabled:(BOOL)a4;
+- (void)accessibilityApplyState:(BOOL)state disabled:(BOOL)disabled;
 @end
 
 @implementation SeymourUI_StandardFilterCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SeymourUI.StandardFilterCell" hasInstanceMethod:@"accessibilityApplyState:disabled:" withFullSignature:{"v", "B", "B", 0}];
-  [v3 validateClass:@"SeymourUI.StandardFilterCell" isKindOfClass:@"UICollectionViewCell"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SeymourUI.StandardFilterCell" hasInstanceMethod:@"accessibilityApplyState:disabled:" withFullSignature:{"v", "B", "B", 0}];
+  [validationsCopy validateClass:@"SeymourUI.StandardFilterCell" isKindOfClass:@"UICollectionViewCell"];
 }
 
 - (unint64_t)accessibilityTraits
@@ -20,28 +20,28 @@
   return *MEMORY[0x29EDC7F70] | [(SeymourUI_StandardFilterCellAccessibility *)&v3 accessibilityTraits];
 }
 
-- (void)accessibilityApplyState:(BOOL)a3 disabled:(BOOL)a4
+- (void)accessibilityApplyState:(BOOL)state disabled:(BOOL)disabled
 {
-  v4 = a4;
-  v5 = a3;
+  disabledCopy = disabled;
+  stateCopy = state;
   v11.receiver = self;
   v11.super_class = SeymourUI_StandardFilterCellAccessibility;
   [SeymourUI_StandardFilterCellAccessibility accessibilityApplyState:sel_accessibilityApplyState_disabled_ disabled:?];
-  if (!v5 || !v4)
+  if (!stateCopy || !disabledCopy)
   {
-    if (v4)
+    if (disabledCopy)
     {
-      v7 = [(SeymourUI_StandardFilterCellAccessibility *)self accessibilityTraits];
-      [(SeymourUI_StandardFilterCellAccessibility *)self setAccessibilityTraits:*MEMORY[0x29EDC7FA8] | v7];
+      accessibilityTraits = [(SeymourUI_StandardFilterCellAccessibility *)self accessibilityTraits];
+      [(SeymourUI_StandardFilterCellAccessibility *)self setAccessibilityTraits:*MEMORY[0x29EDC7FA8] | accessibilityTraits];
     }
 
     else
     {
       [(SeymourUI_StandardFilterCellAccessibility *)self setAccessibilityTraits:[(SeymourUI_StandardFilterCellAccessibility *)self accessibilityTraits]& ~*MEMORY[0x29EDC7FA8]];
-      if (v5)
+      if (stateCopy)
       {
-        v8 = [(SeymourUI_StandardFilterCellAccessibility *)self accessibilityTraits];
-        v9 = *MEMORY[0x29EDC7FC0] | v8;
+        accessibilityTraits2 = [(SeymourUI_StandardFilterCellAccessibility *)self accessibilityTraits];
+        v9 = *MEMORY[0x29EDC7FC0] | accessibilityTraits2;
 LABEL_8:
         [(SeymourUI_StandardFilterCellAccessibility *)self setAccessibilityTraits:v9];
         return;

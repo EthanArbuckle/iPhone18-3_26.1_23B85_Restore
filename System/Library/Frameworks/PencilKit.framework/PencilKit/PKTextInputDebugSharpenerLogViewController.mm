@@ -1,29 +1,29 @@
 @interface PKTextInputDebugSharpenerLogViewController
-- (PKTextInputDebugSharpenerLogViewController)initWithSharpenerLog:(id)a3;
-- (PKTextInputDebugSharpenerLogViewController)initWithSharpenerLogURL:(id)a3 error:(id *)a4;
+- (PKTextInputDebugSharpenerLogViewController)initWithSharpenerLog:(id)log;
+- (PKTextInputDebugSharpenerLogViewController)initWithSharpenerLogURL:(id)l error:(id *)error;
 - (id)_tableHeaderText;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_configureCell:(id)a3 asDrawingDisplayForEntry:(id)a4;
-- (void)_configureCell:(id)a3 withTitle:(id)a4 details:(id)a5;
-- (void)_handleActionButton:(id)a3;
-- (void)_handleRerunButton:(id)a3;
-- (void)_rerunRecognitionForEntryAtIndex:(int64_t)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_configureCell:(id)cell asDrawingDisplayForEntry:(id)entry;
+- (void)_configureCell:(id)cell withTitle:(id)title details:(id)details;
+- (void)_handleActionButton:(id)button;
+- (void)_handleRerunButton:(id)button;
+- (void)_rerunRecognitionForEntryAtIndex:(int64_t)index;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation PKTextInputDebugSharpenerLogViewController
 
-- (PKTextInputDebugSharpenerLogViewController)initWithSharpenerLogURL:(id)a3 error:(id *)a4
+- (PKTextInputDebugSharpenerLogViewController)initWithSharpenerLogURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [[PKTextInputDebugSharpenerLog alloc] initWithContentsOfURL:v6 error:a4];
+  lCopy = l;
+  v7 = [[PKTextInputDebugSharpenerLog alloc] initWithContentsOfURL:lCopy error:error];
   if (v7)
   {
     v8 = [(PKTextInputDebugSharpenerLogViewController *)self initWithSharpenerLog:v7];
-    v9 = v6;
+    v9 = lCopy;
     self = v8->_sharpenerLogURL;
     v8->_sharpenerLogURL = v9;
   }
@@ -36,19 +36,19 @@
   return v8;
 }
 
-- (PKTextInputDebugSharpenerLogViewController)initWithSharpenerLog:(id)a3
+- (PKTextInputDebugSharpenerLogViewController)initWithSharpenerLog:(id)log
 {
-  v5 = a3;
+  logCopy = log;
   v11.receiver = self;
   v11.super_class = PKTextInputDebugSharpenerLogViewController;
   v6 = [(PKTextInputDebugSharpenerLogViewController *)&v11 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sharpenerLog, a3);
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v6->_sharpenerLog, log);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     rerunResultsBySection = v7->__rerunResultsBySection;
-    v7->__rerunResultsBySection = v8;
+    v7->__rerunResultsBySection = dictionary;
   }
 
   return v7;
@@ -67,8 +67,8 @@
   [v4 setDelegate:self];
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v4 setAllowsSelection:0];
-  v5 = [(PKTextInputDebugSharpenerLogViewController *)self view];
-  [v5 addSubview:v4];
+  view = [(PKTextInputDebugSharpenerLogViewController *)self view];
+  [view addSubview:v4];
 
   [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"EntryCellText"];
   [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"EntryCellDrawing"];
@@ -79,11 +79,11 @@
 
   [v6 setNumberOfLines:0];
   [v6 setLineBreakMode:0];
-  v8 = [(PKTextInputDebugSharpenerLogViewController *)self _tableHeaderText];
-  [v6 setText:v8];
+  _tableHeaderText = [(PKTextInputDebugSharpenerLogViewController *)self _tableHeaderText];
+  [v6 setText:_tableHeaderText];
 
-  v9 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v6 setBackgroundColor:v9];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [v6 setBackgroundColor:systemBackgroundColor];
 
   v33 = v6;
   [v4 setTableHeaderView:v6];
@@ -92,43 +92,43 @@
   v11 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:9 target:self action:sel__handleActionButton_];
   v36[1] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:2];
-  v13 = [(PKTextInputDebugSharpenerLogViewController *)self navigationItem];
-  [v13 setRightBarButtonItems:v12];
+  navigationItem = [(PKTextInputDebugSharpenerLogViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItems:v12];
 
-  v14 = [(PKTextInputDebugSharpenerLogViewController *)self sharpenerLogURL];
+  sharpenerLogURL = [(PKTextInputDebugSharpenerLogViewController *)self sharpenerLogURL];
 
-  if (v14)
+  if (sharpenerLogURL)
   {
-    v15 = [(PKTextInputDebugSharpenerLogViewController *)self sharpenerLogURL];
-    v16 = [v15 lastPathComponent];
-    v17 = [(PKTextInputDebugSharpenerLogViewController *)self navigationItem];
-    [v17 setTitle:v16];
+    sharpenerLogURL2 = [(PKTextInputDebugSharpenerLogViewController *)self sharpenerLogURL];
+    lastPathComponent = [sharpenerLogURL2 lastPathComponent];
+    navigationItem2 = [(PKTextInputDebugSharpenerLogViewController *)self navigationItem];
+    [navigationItem2 setTitle:lastPathComponent];
   }
 
   else
   {
-    v15 = [(PKTextInputDebugSharpenerLogViewController *)self navigationItem];
-    [v15 setTitle:@"Pencil Sharpener Log"];
+    sharpenerLogURL2 = [(PKTextInputDebugSharpenerLogViewController *)self navigationItem];
+    [sharpenerLogURL2 setTitle:@"Pencil Sharpener Log"];
   }
 
-  v18 = [(PKTextInputDebugSharpenerLogViewController *)self view];
-  v19 = [v18 safeAreaLayoutGuide];
+  view2 = [(PKTextInputDebugSharpenerLogViewController *)self view];
+  safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
 
-  v32 = [v4 leadingAnchor];
-  v31 = [v19 leadingAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31 constant:0.0];
+  leadingAnchor = [v4 leadingAnchor];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v30 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
   v35[0] = v30;
-  v29 = [v4 trailingAnchor];
-  v28 = [v19 trailingAnchor];
-  v20 = [v29 constraintEqualToAnchor:v28 constant:0.0];
+  trailingAnchor = [v4 trailingAnchor];
+  trailingAnchor2 = [safeAreaLayoutGuide trailingAnchor];
+  v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:0.0];
   v35[1] = v20;
-  v21 = [v4 topAnchor];
-  v22 = [v19 topAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22 constant:0.0];
+  topAnchor = [v4 topAnchor];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v23 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
   v35[2] = v23;
-  v24 = [v4 bottomAnchor];
-  v25 = [v19 bottomAnchor];
-  v26 = [v24 constraintEqualToAnchor:v25 constant:0.0];
+  bottomAnchor = [v4 bottomAnchor];
+  bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+  v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
   v35[3] = v26;
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:4];
 
@@ -140,39 +140,39 @@
   v18.receiver = self;
   v18.super_class = PKTextInputDebugSharpenerLogViewController;
   [(PKTextInputDebugSharpenerLogViewController *)&v18 viewDidLayoutSubviews];
-  v3 = [(PKTextInputDebugSharpenerLogViewController *)self _tableHeaderLabel];
-  [v3 frame];
+  _tableHeaderLabel = [(PKTextInputDebugSharpenerLogViewController *)self _tableHeaderLabel];
+  [_tableHeaderLabel frame];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(PKTextInputDebugSharpenerLogViewController *)self _tableHeaderLabel];
-  v9 = [v8 superview];
-  [v9 bounds];
+  _tableHeaderLabel2 = [(PKTextInputDebugSharpenerLogViewController *)self _tableHeaderLabel];
+  superview = [_tableHeaderLabel2 superview];
+  [superview bounds];
   v11 = v10;
   v13 = v12;
 
-  v14 = [(PKTextInputDebugSharpenerLogViewController *)self _tableHeaderLabel];
-  [v14 sizeThatFits:{v11, v13}];
+  _tableHeaderLabel3 = [(PKTextInputDebugSharpenerLogViewController *)self _tableHeaderLabel];
+  [_tableHeaderLabel3 sizeThatFits:{v11, v13}];
   v16 = v15;
 
-  v17 = [(PKTextInputDebugSharpenerLogViewController *)self _tableHeaderLabel];
-  [v17 setFrame:{v5, v7, v11, v16}];
+  _tableHeaderLabel4 = [(PKTextInputDebugSharpenerLogViewController *)self _tableHeaderLabel];
+  [_tableHeaderLabel4 setFrame:{v5, v7, v11, v16}];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(PKTextInputDebugSharpenerLogViewController *)self sharpenerLog];
-  v4 = [v3 logEntries];
-  v5 = [v4 count];
+  sharpenerLog = [(PKTextInputDebugSharpenerLogViewController *)self sharpenerLog];
+  logEntries = [sharpenerLog logEntries];
+  v5 = [logEntries count];
 
   return v5;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(PKTextInputDebugSharpenerLogViewController *)self _rerunResultsBySection];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  _rerunResultsBySection = [(PKTextInputDebugSharpenerLogViewController *)self _rerunResultsBySection];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:section];
+  v7 = [_rerunResultsBySection objectForKeyedSubscript:v6];
 
   if (v7)
   {
@@ -185,37 +185,37 @@
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKTextInputDebugSharpenerLogViewController *)self sharpenerLog];
-  v9 = [v8 logEntries];
-  v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v6, "section")}];
+  pathCopy = path;
+  viewCopy = view;
+  sharpenerLog = [(PKTextInputDebugSharpenerLogViewController *)self sharpenerLog];
+  logEntries = [sharpenerLog logEntries];
+  v10 = [logEntries objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  if ([v6 row])
+  if ([pathCopy row])
   {
-    v11 = [v7 dequeueReusableCellWithIdentifier:@"EntryCellText"];
+    v11 = [viewCopy dequeueReusableCellWithIdentifier:@"EntryCellText"];
 
-    v12 = [(PKTextInputDebugSharpenerLogViewController *)self _rerunResultsBySection];
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v6, "section")}];
-    v14 = [v12 objectForKeyedSubscript:v13];
+    _rerunResultsBySection = [(PKTextInputDebugSharpenerLogViewController *)self _rerunResultsBySection];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(pathCopy, "section")}];
+    v14 = [_rerunResultsBySection objectForKeyedSubscript:v13];
 
-    if ([v6 row] == 1 && v14)
+    if ([pathCopy row] == 1 && v14)
     {
       [(PKTextInputDebugSharpenerLogViewController *)self _configureCell:v11 withTitle:@"Rerun Result" details:v14];
     }
 
     else
     {
-      v19 = [v10 mediumDescription];
-      [(PKTextInputDebugSharpenerLogViewController *)self _configureCell:v11 withTitle:0 details:v19];
+      mediumDescription = [v10 mediumDescription];
+      [(PKTextInputDebugSharpenerLogViewController *)self _configureCell:v11 withTitle:0 details:mediumDescription];
     }
   }
 
   else
   {
-    v15 = [v7 dequeueReusableCellWithIdentifier:@"EntryCellDrawing"];
+    v15 = [viewCopy dequeueReusableCellWithIdentifier:@"EntryCellDrawing"];
 
     v16 = MEMORY[0x1E69DC738];
     v17 = MEMORY[0x1E69DCAB8];
@@ -223,7 +223,7 @@
     v18 = [v17 systemImageNamed:@"arrow.clockwise.circle"];
     v14 = [v16 systemButtonWithImage:v18 target:self action:sel__handleRerunButton_];
 
-    [v14 setTag:{objc_msgSend(v6, "section")}];
+    [v14 setTag:{objc_msgSend(pathCopy, "section")}];
     [v11 setAccessoryView:v14];
     [(PKTextInputDebugSharpenerLogViewController *)self _configureCell:v11 asDrawingDisplayForEntry:v10];
   }
@@ -231,46 +231,46 @@
   return v11;
 }
 
-- (void)_configureCell:(id)a3 withTitle:(id)a4 details:(id)a5
+- (void)_configureCell:(id)cell withTitle:(id)title details:(id)details
 {
   v7 = MEMORY[0x1E69DB878];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  detailsCopy = details;
+  titleCopy = title;
+  cellCopy = cell;
   v11 = [v7 boldSystemFontOfSize:12.0];
-  v12 = [v10 textLabel];
-  [v12 setFont:v11];
+  textLabel = [cellCopy textLabel];
+  [textLabel setFont:v11];
 
-  v13 = [v10 textLabel];
-  [v13 setText:v9];
+  textLabel2 = [cellCopy textLabel];
+  [textLabel2 setText:titleCopy];
 
   v14 = [MEMORY[0x1E69DB878] systemFontOfSize:10.0];
-  v15 = [v10 detailTextLabel];
-  [v15 setFont:v14];
+  detailTextLabel = [cellCopy detailTextLabel];
+  [detailTextLabel setFont:v14];
 
-  v16 = [v10 detailTextLabel];
-  [v16 setNumberOfLines:0];
+  detailTextLabel2 = [cellCopy detailTextLabel];
+  [detailTextLabel2 setNumberOfLines:0];
 
-  v17 = [v10 detailTextLabel];
-  [v17 setLineBreakMode:0];
+  detailTextLabel3 = [cellCopy detailTextLabel];
+  [detailTextLabel3 setLineBreakMode:0];
 
-  v18 = [v10 detailTextLabel];
+  detailTextLabel4 = [cellCopy detailTextLabel];
 
-  [v18 setText:v8];
+  [detailTextLabel4 setText:detailsCopy];
 }
 
-- (void)_configureCell:(id)a3 asDrawingDisplayForEntry:(id)a4
+- (void)_configureCell:(id)cell asDrawingDisplayForEntry:(id)entry
 {
-  v5 = a3;
-  v6 = [a4 inputDrawing];
-  [v5 setDrawing:v6];
+  cellCopy = cell;
+  inputDrawing = [entry inputDrawing];
+  [cellCopy setDrawing:inputDrawing];
 }
 
 - (id)_tableHeaderText
 {
-  v2 = [(PKTextInputDebugSharpenerLogViewController *)self sharpenerLog];
-  v3 = [v2 metadataDictionary];
-  v4 = [v3 description];
+  sharpenerLog = [(PKTextInputDebugSharpenerLogViewController *)self sharpenerLog];
+  metadataDictionary = [sharpenerLog metadataDictionary];
+  v4 = [metadataDictionary description];
   v5 = [v4 mutableCopy];
 
   if ([v5 length] >= 5)
@@ -284,18 +284,18 @@
   return v5;
 }
 
-- (void)_handleActionButton:(id)a3
+- (void)_handleActionButton:(id)button
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKTextInputDebugSharpenerLogViewController *)self sharpenerLog];
-  v6 = [v5 logEntries];
+  buttonCopy = button;
+  sharpenerLog = [(PKTextInputDebugSharpenerLogViewController *)self sharpenerLog];
+  logEntries = [sharpenerLog logEntries];
 
-  if (v6)
+  if (logEntries)
   {
-    v7 = [(PKTextInputDebugSharpenerLogViewController *)self sharpenerLog];
+    sharpenerLog2 = [(PKTextInputDebugSharpenerLogViewController *)self sharpenerLog];
     v30 = 0;
-    v8 = [v7 writeLogToTemporaryDirectoryWithContentLevel:2 excludeEntyIndexes:0 error:&v30];
+    v8 = [sharpenerLog2 writeLogToTemporaryDirectoryWithContentLevel:2 excludeEntyIndexes:0 error:&v30];
     v9 = v30;
 
     if (v8)
@@ -327,8 +327,8 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v19 = [v12 popoverPresentationController];
-        [v19 setBarButtonItem:v4];
+        popoverPresentationController = [v12 popoverPresentationController];
+        [popoverPresentationController setBarButtonItem:buttonCopy];
       }
 
       [(PKTextInputDebugSharpenerLogViewController *)self presentViewController:v12 animated:1 completion:0];
@@ -337,7 +337,7 @@
       v26[2] = __66__PKTextInputDebugSharpenerLogViewController__handleActionButton___block_invoke;
       v26[3] = &unk_1E82D7120;
       v27 = v9;
-      v28 = self;
+      selfCopy = self;
       v29 = v8;
       [v12 setCompletionWithItemsHandler:v26];
     }
@@ -345,8 +345,8 @@
     else
     {
       v20 = MEMORY[0x1E69DC650];
-      v21 = [v9 localizedDescription];
-      v12 = [v20 alertControllerWithTitle:@"Error Saving Log Data" message:v21 preferredStyle:1];
+      localizedDescription = [v9 localizedDescription];
+      v12 = [v20 alertControllerWithTitle:@"Error Saving Log Data" message:localizedDescription preferredStyle:1];
 
       v22 = MEMORY[0x1E69DC648];
       v23 = _PencilKitBundle();
@@ -380,30 +380,30 @@ void __66__PKTextInputDebugSharpenerLogViewController__handleActionButton___bloc
   [v13 removeItemAtURL:*(a1 + 48) error:0];
 }
 
-- (void)_handleRerunButton:(id)a3
+- (void)_handleRerunButton:(id)button
 {
-  v5 = a3;
-  v4 = [(PKTextInputDebugSharpenerLogViewController *)self _currentEntryRerun];
+  buttonCopy = button;
+  _currentEntryRerun = [(PKTextInputDebugSharpenerLogViewController *)self _currentEntryRerun];
 
-  if (!v4)
+  if (!_currentEntryRerun)
   {
-    -[PKTextInputDebugSharpenerLogViewController _rerunRecognitionForEntryAtIndex:](self, "_rerunRecognitionForEntryAtIndex:", [v5 tag]);
+    -[PKTextInputDebugSharpenerLogViewController _rerunRecognitionForEntryAtIndex:](self, "_rerunRecognitionForEntryAtIndex:", [buttonCopy tag]);
   }
 }
 
-- (void)_rerunRecognitionForEntryAtIndex:(int64_t)a3
+- (void)_rerunRecognitionForEntryAtIndex:(int64_t)index
 {
-  if ((a3 & 0x8000000000000000) == 0)
+  if ((index & 0x8000000000000000) == 0)
   {
-    v5 = [(PKTextInputDebugSharpenerLogViewController *)self sharpenerLog];
-    v6 = [v5 logEntries];
-    v7 = [v6 count];
+    sharpenerLog = [(PKTextInputDebugSharpenerLogViewController *)self sharpenerLog];
+    logEntries = [sharpenerLog logEntries];
+    v7 = [logEntries count];
 
-    if (v7 > a3)
+    if (v7 > index)
     {
-      v8 = [(PKTextInputDebugSharpenerLogViewController *)self sharpenerLog];
-      v9 = [v8 logEntries];
-      v10 = [v9 objectAtIndexedSubscript:a3];
+      sharpenerLog2 = [(PKTextInputDebugSharpenerLogViewController *)self sharpenerLog];
+      logEntries2 = [sharpenerLog2 logEntries];
+      v10 = [logEntries2 objectAtIndexedSubscript:index];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -420,14 +420,14 @@ LABEL_8:
         v13 = [[PKTextInputDebugLogEntryRerun alloc] initWithLogEntry:v11];
         [(PKTextInputDebugSharpenerLogViewController *)self set_currentEntryRerun:v13];
 
-        v14 = [(PKTextInputDebugSharpenerLogViewController *)self _currentEntryRerun];
+        _currentEntryRerun = [(PKTextInputDebugSharpenerLogViewController *)self _currentEntryRerun];
         v21[0] = MEMORY[0x1E69E9820];
         v21[1] = 3221225472;
         v21[2] = __79__PKTextInputDebugSharpenerLogViewController__rerunRecognitionForEntryAtIndex___block_invoke;
         v21[3] = &unk_1E82D7198;
         v21[4] = self;
-        v21[5] = a3;
-        [v14 runWithCompletion:v21];
+        v21[5] = index;
+        [_currentEntryRerun runWithCompletion:v21];
 
 LABEL_11:
         return;
@@ -452,8 +452,8 @@ LABEL_11:
 LABEL_10:
       NSLog(&cfstr_ErrorLoadingEn.isa, v12);
       v15 = MEMORY[0x1E69DC650];
-      v16 = [v12 localizedDescription];
-      v11 = [v15 alertControllerWithTitle:@"Error Loading Archived Entry Data" message:v16 preferredStyle:1];
+      localizedDescription = [v12 localizedDescription];
+      v11 = [v15 alertControllerWithTitle:@"Error Loading Archived Entry Data" message:localizedDescription preferredStyle:1];
 
       v17 = MEMORY[0x1E69DC648];
       v18 = _PencilKitBundle();

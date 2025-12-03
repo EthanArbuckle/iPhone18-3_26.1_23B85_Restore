@@ -1,6 +1,6 @@
 @interface _DKCategoryCache
 + (id)sharedCached;
-- (id)categoryWithInteger:(int64_t)a3 type:(id)a4;
+- (id)categoryWithInteger:(int64_t)integer type:(id)type;
 @end
 
 @implementation _DKCategoryCache
@@ -17,30 +17,30 @@
   return v3;
 }
 
-- (id)categoryWithInteger:(int64_t)a3 type:(id)a4
+- (id)categoryWithInteger:(int64_t)integer type:(id)type
 {
-  v6 = a4;
+  typeCopy = type;
   if (categoryWithInteger_type__onceToken != -1)
   {
     [_DKCategoryCache categoryWithInteger:type:];
   }
 
-  if (a3 > 1)
+  if (integer > 1)
   {
     goto LABEL_8;
   }
 
-  if (!v6)
+  if (!typeCopy)
   {
-    v10 = @"?";
+    stringValue = @"?";
     goto LABEL_10;
   }
 
-  v7 = [v6 typeCode];
-  if (v7 != categoryWithInteger_type__BOOLTypeCode)
+  typeCode = [typeCopy typeCode];
+  if (typeCode != categoryWithInteger_type__BOOLTypeCode)
   {
-    v8 = [v6 typeCode];
-    if (v8 != categoryWithInteger_type__anyTypeCode)
+    typeCode2 = [typeCopy typeCode];
+    if (typeCode2 != categoryWithInteger_type__anyTypeCode)
     {
 LABEL_8:
       v11 = 0;
@@ -48,14 +48,14 @@ LABEL_8:
     }
   }
 
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v6, "typeCode")}];
-  v10 = [v9 stringValue];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(typeCopy, "typeCode")}];
+  stringValue = [v9 stringValue];
 
 LABEL_10:
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v14 = [v13 stringValue];
-  v15 = [v12 stringWithFormat:@"%@.%@", v14, v10];
+  v13 = [MEMORY[0x1E696AD98] numberWithInteger:integer];
+  stringValue2 = [v13 stringValue];
+  v15 = [v12 stringWithFormat:@"%@.%@", stringValue2, stringValue];
 
   v16 = [(_DKCategoryCache *)self objectForKey:v15];
   v17 = v16;
@@ -66,7 +66,7 @@ LABEL_10:
 
   else
   {
-    v11 = [[_DKCategory alloc] initWithInteger:a3 type:v6 cache:0];
+    v11 = [[_DKCategory alloc] initWithInteger:integer type:typeCopy cache:0];
     if (v11)
     {
       [(_DKCategoryCache *)self setObject:v11 forKey:v15];

@@ -1,33 +1,33 @@
 @interface UIPrintPageRenderer
-- (BOOL)_startPrintJobContext:(id)a3 printInfo:(id)a4 printSettings:(id)a5;
+- (BOOL)_startPrintJobContext:(id)context printInfo:(id)info printSettings:(id)settings;
 - (CGRect)paperRect;
 - (CGRect)printableRect;
 - (NSArray)printFormatters;
 - (NSArray)printFormattersForPageAtIndex:(NSInteger)pageIndex;
 - (int64_t)_maxFormatterPage;
 - (int64_t)_numberOfPages;
-- (void)_drawPage:(int64_t)a3 withScale:(double)a4 drawingToPDF:(BOOL)a5;
+- (void)_drawPage:(int64_t)page withScale:(double)scale drawingToPDF:(BOOL)f;
 - (void)_endPrintJobContext;
-- (void)_removePrintFormatter:(id)a3;
-- (void)_startPrintJobContext:(CGContext *)a3;
-- (void)_startSaveContext:(CGContext *)a3;
+- (void)_removePrintFormatter:(id)formatter;
+- (void)_startPrintJobContext:(CGContext *)context;
+- (void)_startSaveContext:(CGContext *)context;
 - (void)addPrintFormatter:(UIPrintFormatter *)formatter startingAtPageAtIndex:(NSInteger)pageIndex;
 - (void)drawPageAtIndex:(NSInteger)pageIndex inRect:(CGRect)printableRect;
 - (void)drawPrintFormatter:(UIPrintFormatter *)printFormatter forPageAtIndex:(NSInteger)pageIndex;
 - (void)setFooterHeight:(CGFloat)footerHeight;
 - (void)setHeaderHeight:(CGFloat)headerHeight;
-- (void)setPaperRect:(CGRect)a3;
+- (void)setPaperRect:(CGRect)rect;
 - (void)setPrintFormatters:(NSArray *)printFormatters;
-- (void)setPrintableRect:(CGRect)a3;
+- (void)setPrintableRect:(CGRect)rect;
 @end
 
 @implementation UIPrintPageRenderer
 
 - (NSArray)printFormatters
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  printFormatters = v2->_printFormatters;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  printFormatters = selfCopy->_printFormatters;
   if (printFormatters)
   {
     v4 = [(NSMutableArray *)printFormatters copy];
@@ -38,7 +38,7 @@
     v4 = MEMORY[0x277CBEBF8];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -47,19 +47,19 @@
 {
   v17 = *MEMORY[0x277D85DE8];
   v4 = printFormatters;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_printFormatters != v4)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_printFormatters != v4)
   {
     v6 = [(NSArray *)v4 mutableCopy];
-    v7 = v5->_printFormatters;
-    v5->_printFormatters = v6;
+    v7 = selfCopy->_printFormatters;
+    selfCopy->_printFormatters = v6;
 
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v8 = v5->_printFormatters;
+    v8 = selfCopy->_printFormatters;
     v9 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v9)
     {
@@ -74,7 +74,7 @@
             objc_enumerationMutation(v8);
           }
 
-          [*(*(&v12 + 1) + 8 * v11++) setPrintPageRenderer:{v5, v12}];
+          [*(*(&v12 + 1) + 8 * v11++) setPrintPageRenderer:{selfCopy, v12}];
         }
 
         while (v9 != v11);
@@ -85,7 +85,7 @@
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)addPrintFormatter:(UIPrintFormatter *)formatter startingAtPageAtIndex:(NSInteger)pageIndex
@@ -94,9 +94,9 @@
   if (v6)
   {
     v11 = v6;
-    v7 = self;
-    objc_sync_enter(v7);
-    printFormatters = v7->_printFormatters;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    printFormatters = selfCopy->_printFormatters;
     if (printFormatters)
     {
       [(NSMutableArray *)printFormatters addObject:v11];
@@ -105,13 +105,13 @@
     else
     {
       v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v11, 0}];
-      v10 = v7->_printFormatters;
-      v7->_printFormatters = v9;
+      v10 = selfCopy->_printFormatters;
+      selfCopy->_printFormatters = v9;
     }
 
-    [(UIPrintFormatter *)v11 setPrintPageRenderer:v7];
+    [(UIPrintFormatter *)v11 setPrintPageRenderer:selfCopy];
     [(UIPrintFormatter *)v11 setStartPage:pageIndex];
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
 
     v6 = v11;
   }
@@ -124,8 +124,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(UIPrintPageRenderer *)self printFormatters];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  printFormatters = [(UIPrintPageRenderer *)self printFormatters];
+  v5 = [printFormatters countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -137,7 +137,7 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(printFormatters);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -156,7 +156,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [printFormatters countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -170,14 +170,14 @@
   return v7;
 }
 
-- (void)_removePrintFormatter:(id)a3
+- (void)_removePrintFormatter:(id)formatter
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [v5 setPrintPageRenderer:0];
-  [(NSMutableArray *)v4->_printFormatters removeObject:v5];
-  objc_sync_exit(v4);
+  formatterCopy = formatter;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [formatterCopy setPrintPageRenderer:0];
+  [(NSMutableArray *)selfCopy->_printFormatters removeObject:formatterCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (int64_t)_maxFormatterPage
@@ -187,8 +187,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(UIPrintPageRenderer *)self printFormatters];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  printFormatters = [(UIPrintPageRenderer *)self printFormatters];
+  v3 = [printFormatters countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -200,7 +200,7 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(printFormatters);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
@@ -216,7 +216,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [printFormatters countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v4);
@@ -250,8 +250,8 @@
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(UIPrintPageRenderer *)self printFormatters];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    printFormatters = [(UIPrintPageRenderer *)self printFormatters];
+    v5 = [printFormatters countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -263,14 +263,14 @@
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(printFormatters);
           }
 
           [*(*(&v9 + 1) + 8 * v8++) _setNeedsRecalc];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [printFormatters countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -290,8 +290,8 @@
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(UIPrintPageRenderer *)self printFormatters];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    printFormatters = [(UIPrintPageRenderer *)self printFormatters];
+    v5 = [printFormatters countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -303,14 +303,14 @@
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(printFormatters);
           }
 
           [*(*(&v9 + 1) + 8 * v8++) _setNeedsRecalc];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [printFormatters countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -320,14 +320,14 @@
   }
 }
 
-- (void)setPaperRect:(CGRect)a3
+- (void)setPaperRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v18 = *MEMORY[0x277D85DE8];
-  if (!CGRectEqualToRect(self->_paperRect, a3))
+  if (!CGRectEqualToRect(self->_paperRect, rect))
   {
     self->_paperRect.origin.x = x;
     self->_paperRect.origin.y = y;
@@ -337,8 +337,8 @@
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [(UIPrintPageRenderer *)self printFormatters];
-    v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    printFormatters = [(UIPrintPageRenderer *)self printFormatters];
+    v9 = [printFormatters countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v9)
     {
       v10 = v9;
@@ -350,14 +350,14 @@
         {
           if (*v14 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(printFormatters);
           }
 
           [*(*(&v13 + 1) + 8 * v12++) _setNeedsRecalc];
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v10 = [printFormatters countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v10);
@@ -367,14 +367,14 @@
   }
 }
 
-- (void)setPrintableRect:(CGRect)a3
+- (void)setPrintableRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v18 = *MEMORY[0x277D85DE8];
-  if (!CGRectEqualToRect(self->_printableRect, a3))
+  if (!CGRectEqualToRect(self->_printableRect, rect))
   {
     self->_printableRect.origin.x = x;
     self->_printableRect.origin.y = y;
@@ -384,8 +384,8 @@
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [(UIPrintPageRenderer *)self printFormatters];
-    v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    printFormatters = [(UIPrintPageRenderer *)self printFormatters];
+    v9 = [printFormatters countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v9)
     {
       v10 = v9;
@@ -397,14 +397,14 @@
         {
           if (*v14 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(printFormatters);
           }
 
           [*(*(&v13 + 1) + 8 * v12++) _setNeedsRecalc];
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v10 = [printFormatters countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v10);
@@ -452,8 +452,8 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v14 = [(UIPrintPageRenderer *)self printFormatters];
-  v15 = [v14 countByEnumeratingWithState:&v21 objects:v28 count:16];
+  printFormatters = [(UIPrintPageRenderer *)self printFormatters];
+  v15 = [printFormatters countByEnumeratingWithState:&v21 objects:v28 count:16];
   if (v15)
   {
     v16 = v15;
@@ -464,7 +464,7 @@
       {
         if (*v22 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(printFormatters);
         }
 
         v19 = *(*(&v21 + 1) + 8 * i);
@@ -477,7 +477,7 @@
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v21 objects:v28 count:16];
+      v16 = [printFormatters countByEnumeratingWithState:&v21 objects:v28 count:16];
     }
 
     while (v16);
@@ -509,15 +509,15 @@
 
   else
   {
-    v9 = [(UIPrintPageRenderer *)self printCGContext];
-    v10 = v9;
-    if (v9)
+    printCGContext = [(UIPrintPageRenderer *)self printCGContext];
+    v10 = printCGContext;
+    if (printCGContext)
     {
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __57__UIPrintPageRenderer_drawPrintFormatter_forPageAtIndex___block_invoke_2;
       v11[3] = &unk_279A9CC10;
-      v12 = v9;
+      v12 = printCGContext;
       v13 = v8;
       dispatch_sync(MEMORY[0x277D85CD0], v11);
     }
@@ -551,18 +551,18 @@ void __57__UIPrintPageRenderer_drawPrintFormatter_forPageAtIndex___block_invoke_
   UIGraphicsPopContext();
 }
 
-- (BOOL)_startPrintJobContext:(id)a3 printInfo:(id)a4 printSettings:(id)a5
+- (BOOL)_startPrintJobContext:(id)context printInfo:(id)info printSettings:(id)settings
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 startJob:a5 ofType:*MEMORY[0x277D41100]])
+  contextCopy = context;
+  infoCopy = info;
+  if ([contextCopy startJob:settings ofType:*MEMORY[0x277D41100]])
   {
     v10 = 0;
   }
 
   else
   {
-    v11 = v8;
+    v11 = contextCopy;
     v12 = CGDataConsumerCreate(v11, _startPrintJobContext_printInfo_printSettings____consumerCallbacks);
     if (v12)
     {
@@ -570,9 +570,9 @@ void __57__UIPrintPageRenderer_drawPrintFormatter_forPageAtIndex___block_invoke_
       [(UIPrintPageRenderer *)self paperRect];
       v15 = v14;
       v17 = v16;
-      [v9 scalingFactor];
+      [infoCopy scalingFactor];
       v25.size.width = v20 * v15;
-      [v9 scalingFactor];
+      [infoCopy scalingFactor];
       v25.size.height = v21 * v17;
       v10 = CGPDFContextCreate(v13, &v25, 0);
       CFRelease(v13);
@@ -588,17 +588,17 @@ void __57__UIPrintPageRenderer_drawPrintFormatter_forPageAtIndex___block_invoke_
   }
 
   [(UIPrintPageRenderer *)self setPrintCGContext:v10];
-  v22 = [(UIPrintPageRenderer *)self printCGContext];
-  v23 = v22 != 0;
+  printCGContext = [(UIPrintPageRenderer *)self printCGContext];
+  v23 = printCGContext != 0;
 
   return v23;
 }
 
-- (void)_startPrintJobContext:(CGContext *)a3
+- (void)_startPrintJobContext:(CGContext *)context
 {
   [(UIPrintPageRenderer *)self setUsingPrintJobContext:1];
 
-  [(UIPrintPageRenderer *)self setPrintCGContext:a3];
+  [(UIPrintPageRenderer *)self setPrintCGContext:context];
 }
 
 - (void)_endPrintJobContext
@@ -613,40 +613,40 @@ void __57__UIPrintPageRenderer_drawPrintFormatter_forPageAtIndex___block_invoke_
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_startSaveContext:(CGContext *)a3
+- (void)_startSaveContext:(CGContext *)context
 {
   [(UIPrintPageRenderer *)self setUsingPrintJobContext:0];
 
-  [(UIPrintPageRenderer *)self setPrintCGContext:a3];
+  [(UIPrintPageRenderer *)self setPrintCGContext:context];
 }
 
-- (void)_drawPage:(int64_t)a3 withScale:(double)a4 drawingToPDF:(BOOL)a5
+- (void)_drawPage:(int64_t)page withScale:(double)scale drawingToPDF:(BOOL)f
 {
-  v5 = a5;
-  v9 = [(UIPrintPageRenderer *)self printCGContext];
-  if (v9)
+  fCopy = f;
+  printCGContext = [(UIPrintPageRenderer *)self printCGContext];
+  if (printCGContext)
   {
-    v10 = [(UIPrintPageRenderer *)self printCGContext];
+    printCGContext2 = [(UIPrintPageRenderer *)self printCGContext];
 
-    if (v5)
+    if (fCopy)
     {
-      CGPDFContextBeginPage(v10, 0);
+      CGPDFContextBeginPage(printCGContext2, 0);
     }
 
-    CGContextSaveGState(v10);
+    CGContextSaveGState(printCGContext2);
     [(UIPrintPageRenderer *)self paperRect];
-    CGContextTranslateCTM(v10, 0.0, v11 * a4);
-    CGContextScaleCTM(v10, a4, -a4);
-    CGAffineTransformMakeScale(&v12, a4, -a4);
+    CGContextTranslateCTM(printCGContext2, 0.0, v11 * scale);
+    CGContextScaleCTM(printCGContext2, scale, -scale);
+    CGAffineTransformMakeScale(&v12, scale, -scale);
     CGContextSetBaseCTM();
-    UIGraphicsPushContext(v10);
+    UIGraphicsPushContext(printCGContext2);
     [(UIPrintPageRenderer *)self printableRect];
-    [(UIPrintPageRenderer *)self drawPageAtIndex:a3 inRect:?];
+    [(UIPrintPageRenderer *)self drawPageAtIndex:page inRect:?];
     UIGraphicsPopContext();
-    CGContextRestoreGState(v10);
-    if (v5)
+    CGContextRestoreGState(printCGContext2);
+    if (fCopy)
     {
-      CGPDFContextEndPage(v10);
+      CGPDFContextEndPage(printCGContext2);
     }
   }
 }

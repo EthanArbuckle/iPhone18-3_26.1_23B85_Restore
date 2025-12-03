@@ -1,13 +1,13 @@
 @interface HDSampleAggregateCacheEntity
-+ (BOOL)deleteCacheForBucketIndexes:(id)a3 forQueryIdentifier:(id)a4 sourceEntity:(id)a5 generationNumber:(int64_t)a6 persistentAnchorDate:(id)a7 intervalComponents:(id)a8 profile:(id)a9 error:(id *)a10;
-+ (BOOL)enumerateCachedDataForQueryIdentifier:(id)a3 sourceEntity:(id)a4 profile:(id)a5 startIndex:(int64_t)a6 endIndex:(int64_t)a7 error:(id *)a8 enumerationHandler:(id)a9;
-+ (BOOL)insertCachedData:(id)a3 forQueryIdentifier:(id)a4 sourceEntity:(id)a5 generationNumber:(int64_t)a6 persistentAnchorDate:(id)a7 intervalComponents:(id)a8 profile:(id)a9 error:(id *)a10;
-+ (id)_owningCachedQueryEntityForQueryIdentifier:(void *)a3 sourceEntity:(void *)a4 database:(uint64_t)a5 error:;
-+ (id)_queryMetadataForIdentifier:(uint64_t)a1 sourceEntity:(void *)a2 generationNumber:(void *)a3 persistentAnchorDate:(void *)a4 intervalComponents:(void *)a5 profile:(void *)a6 transaction:(void *)a7 error:(void *)a8;
++ (BOOL)deleteCacheForBucketIndexes:(id)indexes forQueryIdentifier:(id)identifier sourceEntity:(id)entity generationNumber:(int64_t)number persistentAnchorDate:(id)date intervalComponents:(id)components profile:(id)profile error:(id *)self0;
++ (BOOL)enumerateCachedDataForQueryIdentifier:(id)identifier sourceEntity:(id)entity profile:(id)profile startIndex:(int64_t)index endIndex:(int64_t)endIndex error:(id *)error enumerationHandler:(id)handler;
++ (BOOL)insertCachedData:(id)data forQueryIdentifier:(id)identifier sourceEntity:(id)entity generationNumber:(int64_t)number persistentAnchorDate:(id)date intervalComponents:(id)components profile:(id)profile error:(id *)self0;
++ (id)_owningCachedQueryEntityForQueryIdentifier:(void *)identifier sourceEntity:(void *)entity database:(uint64_t)database error:;
++ (id)_queryMetadataForIdentifier:(uint64_t)identifier sourceEntity:(void *)entity generationNumber:(void *)number persistentAnchorDate:(void *)date intervalComponents:(void *)components profile:(void *)profile transaction:(void *)transaction error:(void *)error;
 + (id)foreignKeys;
-+ (id)pruneWithProfile:(id)a3 nowDate:(id)a4 limit:(unint64_t)a5 error:(id *)a6;
++ (id)pruneWithProfile:(id)profile nowDate:(id)date limit:(unint64_t)limit error:(id *)error;
 + (id)uniquedColumns;
-+ (int64_t)cachesExistForQueryIdentifier:(id)a3 sourceEntity:(id)a4 profile:(id)a5 error:(id *)a6;
++ (int64_t)cachesExistForQueryIdentifier:(id)identifier sourceEntity:(id)entity profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDSampleAggregateCacheEntity
@@ -36,30 +36,30 @@
   return v3;
 }
 
-+ (id)_queryMetadataForIdentifier:(uint64_t)a1 sourceEntity:(void *)a2 generationNumber:(void *)a3 persistentAnchorDate:(void *)a4 intervalComponents:(void *)a5 profile:(void *)a6 transaction:(void *)a7 error:(void *)a8
++ (id)_queryMetadataForIdentifier:(uint64_t)identifier sourceEntity:(void *)entity generationNumber:(void *)number persistentAnchorDate:(void *)date intervalComponents:(void *)components profile:(void *)profile transaction:(void *)transaction error:(void *)error
 {
-  v14 = a2;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
+  entityCopy = entity;
+  numberCopy = number;
+  dateCopy = date;
+  componentsCopy = components;
+  profileCopy = profile;
+  transactionCopy = transaction;
   v20 = objc_opt_self();
-  v21 = [v19 databaseForEntityClass:v20];
+  v21 = [transactionCopy databaseForEntityClass:v20];
 
   v42 = 0;
-  v22 = [(HDSampleAggregateCacheEntity *)v20 _owningCachedQueryEntityForQueryIdentifier:v14 sourceEntity:v15 database:v21 error:&v42];
+  v22 = [(HDSampleAggregateCacheEntity *)v20 _owningCachedQueryEntityForQueryIdentifier:entityCopy sourceEntity:numberCopy database:v21 error:&v42];
   v23 = v42;
   v24 = v23;
   if (!v22)
   {
     if (v23)
     {
-      if (a8)
+      if (error)
       {
         v26 = v23;
         v22 = 0;
-        *a8 = v24;
+        *error = v24;
       }
 
       else
@@ -71,17 +71,17 @@
 
     else
     {
-      v37 = a8;
+      errorCopy = error;
       v27 = [HDCachedQueryMetadata alloc];
-      v38 = [v15 persistentID];
-      v39 = [v18 daemon];
-      v28 = [v39 behavior];
-      v29 = [v28 currentOSBuild];
-      v30 = [(HDCachedQueryMetadata *)v27 initWithCachingIdentifier:v14 sourceEntityPersistentID:v38 buildVersion:v29 anchorDate:v16 intervalComponents:v17];
+      persistentID = [numberCopy persistentID];
+      daemon = [profileCopy daemon];
+      behavior = [daemon behavior];
+      currentOSBuild = [behavior currentOSBuild];
+      v30 = [(HDCachedQueryMetadata *)v27 initWithCachingIdentifier:entityCopy sourceEntityPersistentID:persistentID buildVersion:currentOSBuild anchorDate:dateCopy intervalComponents:componentsCopy];
 
       v31 = v30;
       v41 = 0;
-      v22 = [HDCachedQueryMetadataEntity insertCachedQueryMetadata:v30 profile:v18 error:&v41];
+      v22 = [HDCachedQueryMetadataEntity insertCachedQueryMetadata:v30 profile:profileCopy error:&v41];
       v32 = v41;
       v33 = v32;
       if (v22)
@@ -95,10 +95,10 @@
         if (v35)
         {
           v40 = v31;
-          if (v37)
+          if (errorCopy)
           {
             v35 = v35;
-            *v37 = v35;
+            *errorCopy = v35;
           }
 
           else
@@ -117,31 +117,31 @@
   return v22;
 }
 
-+ (id)_owningCachedQueryEntityForQueryIdentifier:(void *)a3 sourceEntity:(void *)a4 database:(uint64_t)a5 error:
++ (id)_owningCachedQueryEntityForQueryIdentifier:(void *)identifier sourceEntity:(void *)entity database:(uint64_t)database error:
 {
-  v8 = a4;
-  v9 = a3;
+  entityCopy = entity;
+  identifierCopy = identifier;
   v10 = a2;
   objc_opt_self();
-  v11 = HDCachedQueryMetadataEntityPredicateForQueryIdentifierAndSource(v10, v9);
+  v11 = HDCachedQueryMetadataEntityPredicateForQueryIdentifierAndSource(v10, identifierCopy);
 
-  v12 = [(HDSQLiteEntity *)HDCachedQueryMetadataEntity anyInDatabase:v8 predicate:v11 error:a5];
+  v12 = [(HDSQLiteEntity *)HDCachedQueryMetadataEntity anyInDatabase:entityCopy predicate:v11 error:database];
 
   return v12;
 }
 
-+ (BOOL)insertCachedData:(id)a3 forQueryIdentifier:(id)a4 sourceEntity:(id)a5 generationNumber:(int64_t)a6 persistentAnchorDate:(id)a7 intervalComponents:(id)a8 profile:(id)a9 error:(id *)a10
++ (BOOL)insertCachedData:(id)data forQueryIdentifier:(id)identifier sourceEntity:(id)entity generationNumber:(int64_t)number persistentAnchorDate:(id)date intervalComponents:(id)components profile:(id)profile error:(id *)self0
 {
   v49[4] = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  if (v17)
+  dataCopy = data;
+  identifierCopy = identifier;
+  entityCopy = entity;
+  dateCopy = date;
+  componentsCopy = components;
+  profileCopy = profile;
+  if (identifierCopy)
   {
-    if (v18)
+    if (entityCopy)
     {
       goto LABEL_3;
     }
@@ -149,37 +149,37 @@
 
   else
   {
-    v34 = [MEMORY[0x277CCA890] currentHandler];
-    [v34 handleFailureInMethod:a2 object:a1 file:@"HDSampleAggregateCacheEntity.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"queryIdentifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSampleAggregateCacheEntity.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"queryIdentifier != nil"}];
 
-    if (v18)
+    if (entityCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v35 = [MEMORY[0x277CCA890] currentHandler];
-  [v35 handleFailureInMethod:a2 object:a1 file:@"HDSampleAggregateCacheEntity.m" lineNumber:121 description:{@"Invalid parameter not satisfying: %@", @"sourceEntity != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDSampleAggregateCacheEntity.m" lineNumber:121 description:{@"Invalid parameter not satisfying: %@", @"sourceEntity != nil"}];
 
 LABEL_3:
-  if (!v21)
+  if (!profileCopy)
   {
-    v36 = [MEMORY[0x277CCA890] currentHandler];
-    [v36 handleFailureInMethod:a2 object:a1 file:@"HDSampleAggregateCacheEntity.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"profile != nil"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"HDSampleAggregateCacheEntity.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"profile != nil"}];
 
-    if (v19)
+    if (dateCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_9:
-    v37 = [MEMORY[0x277CCA890] currentHandler];
-    [v37 handleFailureInMethod:a2 object:a1 file:@"HDSampleAggregateCacheEntity.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"persistentAnchorDate != nil"}];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"HDSampleAggregateCacheEntity.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"persistentAnchorDate != nil"}];
 
     goto LABEL_5;
   }
 
-  if (!v19)
+  if (!dateCopy)
   {
     goto LABEL_9;
   }
@@ -190,28 +190,28 @@ LABEL_5:
   v49[2] = @"data";
   v49[3] = @"generation_number";
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:4];
-  v23 = [v21 database];
+  database = [profileCopy database];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __152__HDSampleAggregateCacheEntity_insertCachedData_forQueryIdentifier_sourceEntity_generationNumber_persistentAnchorDate_intervalComponents_profile_error___block_invoke;
   v39[3] = &unk_27862A458;
-  v40 = v17;
-  v41 = v18;
-  v47 = a1;
-  v48 = a6;
-  v42 = v19;
-  v43 = v20;
-  v44 = v21;
-  v45 = v16;
+  v40 = identifierCopy;
+  v41 = entityCopy;
+  selfCopy = self;
+  numberCopy = number;
+  v42 = dateCopy;
+  v43 = componentsCopy;
+  v44 = profileCopy;
+  v45 = dataCopy;
   v46 = v22;
   v24 = v22;
-  v25 = v16;
-  v26 = v21;
-  v27 = v20;
-  v28 = v19;
-  v29 = v18;
-  v30 = v17;
-  v31 = [a1 performWriteTransactionWithHealthDatabase:v23 error:a10 block:v39];
+  v25 = dataCopy;
+  v26 = profileCopy;
+  v27 = componentsCopy;
+  v28 = dateCopy;
+  v29 = entityCopy;
+  v30 = identifierCopy;
+  v31 = [self performWriteTransactionWithHealthDatabase:database error:error block:v39];
 
   v32 = *MEMORY[0x277D85DE8];
   return v31;
@@ -320,63 +320,63 @@ void __152__HDSampleAggregateCacheEntity_insertCachedData_forQueryIdentifier_sou
   JUMPOUT(0x22AAC6B40);
 }
 
-+ (BOOL)deleteCacheForBucketIndexes:(id)a3 forQueryIdentifier:(id)a4 sourceEntity:(id)a5 generationNumber:(int64_t)a6 persistentAnchorDate:(id)a7 intervalComponents:(id)a8 profile:(id)a9 error:(id *)a10
++ (BOOL)deleteCacheForBucketIndexes:(id)indexes forQueryIdentifier:(id)identifier sourceEntity:(id)entity generationNumber:(int64_t)number persistentAnchorDate:(id)date intervalComponents:(id)components profile:(id)profile error:(id *)self0
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  if (!v18)
+  indexesCopy = indexes;
+  identifierCopy = identifier;
+  entityCopy = entity;
+  dateCopy = date;
+  componentsCopy = components;
+  profileCopy = profile;
+  if (!identifierCopy)
   {
-    v32 = [MEMORY[0x277CCA890] currentHandler];
-    [v32 handleFailureInMethod:a2 object:a1 file:@"HDSampleAggregateCacheEntity.m" lineNumber:188 description:{@"Invalid parameter not satisfying: %@", @"queryIdentifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSampleAggregateCacheEntity.m" lineNumber:188 description:{@"Invalid parameter not satisfying: %@", @"queryIdentifier != nil"}];
   }
 
-  if (!v19)
+  if (!entityCopy)
   {
-    v33 = [MEMORY[0x277CCA890] currentHandler];
-    [v33 handleFailureInMethod:a2 object:a1 file:@"HDSampleAggregateCacheEntity.m" lineNumber:189 description:{@"Invalid parameter not satisfying: %@", @"sourceEntity != nil"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDSampleAggregateCacheEntity.m" lineNumber:189 description:{@"Invalid parameter not satisfying: %@", @"sourceEntity != nil"}];
 
-    if (v22)
+    if (profileCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_7:
-    v34 = [MEMORY[0x277CCA890] currentHandler];
-    [v34 handleFailureInMethod:a2 object:a1 file:@"HDSampleAggregateCacheEntity.m" lineNumber:190 description:{@"Invalid parameter not satisfying: %@", @"profile != nil"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"HDSampleAggregateCacheEntity.m" lineNumber:190 description:{@"Invalid parameter not satisfying: %@", @"profile != nil"}];
 
     goto LABEL_5;
   }
 
-  if (!v22)
+  if (!profileCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_5:
-  v23 = [v22 database];
+  database = [profileCopy database];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __163__HDSampleAggregateCacheEntity_deleteCacheForBucketIndexes_forQueryIdentifier_sourceEntity_generationNumber_persistentAnchorDate_intervalComponents_profile_error___block_invoke;
   v35[3] = &unk_278614530;
-  v36 = v18;
-  v37 = v19;
-  v42 = a1;
-  v43 = a6;
-  v38 = v20;
-  v39 = v21;
-  v40 = v22;
-  v41 = v17;
-  v24 = v17;
-  v25 = v22;
-  v26 = v21;
-  v27 = v20;
-  v28 = v19;
-  v29 = v18;
-  v30 = [a1 performWriteTransactionWithHealthDatabase:v23 error:a10 block:v35];
+  v36 = identifierCopy;
+  v37 = entityCopy;
+  selfCopy = self;
+  numberCopy = number;
+  v38 = dateCopy;
+  v39 = componentsCopy;
+  v40 = profileCopy;
+  v41 = indexesCopy;
+  v24 = indexesCopy;
+  v25 = profileCopy;
+  v26 = componentsCopy;
+  v27 = dateCopy;
+  v28 = entityCopy;
+  v29 = identifierCopy;
+  v30 = [self performWriteTransactionWithHealthDatabase:database error:error block:v35];
 
   return v30;
 }
@@ -401,31 +401,31 @@ uint64_t __163__HDSampleAggregateCacheEntity_deleteCacheForBucketIndexes_forQuer
   return v10;
 }
 
-+ (int64_t)cachesExistForQueryIdentifier:(id)a3 sourceEntity:(id)a4 profile:(id)a5 error:(id *)a6
++ (int64_t)cachesExistForQueryIdentifier:(id)identifier sourceEntity:(id)entity profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  entityCopy = entity;
+  profileCopy = profile;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
   v28 = 2;
-  v13 = [v12 database];
+  database = [profileCopy database];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __89__HDSampleAggregateCacheEntity_cachesExistForQueryIdentifier_sourceEntity_profile_error___block_invoke;
   v19[3] = &unk_27861DAA8;
-  v24 = a1;
-  v14 = v10;
+  selfCopy = self;
+  v14 = identifierCopy;
   v20 = v14;
-  v15 = v11;
+  v15 = entityCopy;
   v21 = v15;
-  v16 = v12;
+  v16 = profileCopy;
   v22 = v16;
   v23 = &v25;
-  LOBYTE(a6) = [(HDHealthEntity *)HDSampleAggregateCacheEntity performReadTransactionWithHealthDatabase:v13 error:a6 block:v19];
+  LOBYTE(error) = [(HDHealthEntity *)HDSampleAggregateCacheEntity performReadTransactionWithHealthDatabase:database error:error block:v19];
 
-  if (a6)
+  if (error)
   {
     v17 = v26[3];
   }
@@ -525,33 +525,33 @@ uint64_t __89__HDSampleAggregateCacheEntity_cachesExistForQueryIdentifier_source
   return v20;
 }
 
-+ (BOOL)enumerateCachedDataForQueryIdentifier:(id)a3 sourceEntity:(id)a4 profile:(id)a5 startIndex:(int64_t)a6 endIndex:(int64_t)a7 error:(id *)a8 enumerationHandler:(id)a9
++ (BOOL)enumerateCachedDataForQueryIdentifier:(id)identifier sourceEntity:(id)entity profile:(id)profile startIndex:(int64_t)index endIndex:(int64_t)endIndex error:(id *)error enumerationHandler:(id)handler
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a9;
-  if (a6 > a7)
+  identifierCopy = identifier;
+  entityCopy = entity;
+  profileCopy = profile;
+  handlerCopy = handler;
+  if (index > endIndex)
   {
-    v26 = [MEMORY[0x277CCA890] currentHandler];
-    [v26 handleFailureInMethod:a2 object:a1 file:@"HDSampleAggregateCacheEntity.m" lineNumber:275 description:{@"Invalid parameter not satisfying: %@", @"startIndex <= endIndex"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSampleAggregateCacheEntity.m" lineNumber:275 description:{@"Invalid parameter not satisfying: %@", @"startIndex <= endIndex"}];
   }
 
-  v20 = [v18 database];
+  database = [profileCopy database];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __136__HDSampleAggregateCacheEntity_enumerateCachedDataForQueryIdentifier_sourceEntity_profile_startIndex_endIndex_error_enumerationHandler___block_invoke;
   v27[3] = &unk_27862A480;
-  v28 = v16;
-  v29 = v17;
-  v32 = a6;
-  v33 = a7;
-  v30 = v19;
-  v31 = a1;
-  v21 = v19;
-  v22 = v17;
-  v23 = v16;
-  v24 = [(HDHealthEntity *)HDSampleAggregateCacheEntity performReadTransactionWithHealthDatabase:v20 error:a8 block:v27];
+  v28 = identifierCopy;
+  v29 = entityCopy;
+  indexCopy = index;
+  endIndexCopy = endIndex;
+  v30 = handlerCopy;
+  selfCopy = self;
+  v21 = handlerCopy;
+  v22 = entityCopy;
+  v23 = identifierCopy;
+  v24 = [(HDHealthEntity *)HDSampleAggregateCacheEntity performReadTransactionWithHealthDatabase:database error:error block:v27];
 
   return v24;
 }
@@ -666,30 +666,30 @@ uint64_t __136__HDSampleAggregateCacheEntity_enumerateCachedDataForQueryIdentifi
   return v6;
 }
 
-+ (id)pruneWithProfile:(id)a3 nowDate:(id)a4 limit:(unint64_t)a5 error:(id *)a6
++ (id)pruneWithProfile:(id)profile nowDate:(id)date limit:(unint64_t)limit error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  profileCopy = profile;
+  dateCopy = date;
   v11 = MEMORY[0x277CCACA8];
-  v12 = [a1 disambiguatedDatabaseTable];
-  v13 = [a1 disambiguatedDatabaseTable];
+  disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+  disambiguatedDatabaseTable2 = [self disambiguatedDatabaseTable];
   v14 = +[(HDSQLiteSchemaEntity *)HDCachedQueryMetadataEntity];
-  v15 = [v11 stringWithFormat:@"DELETE FROM %@                                                               WHERE ROWID IN(                                                                SELECT a.ROWID FROM %@ a                                                                 INNER JOIN %@ b ON (a.%@ = b.ROWID)                                                                     WHERE a.%@ < b.%@ OR a.%@ > b.%@ OR  a.%@ > b.%@                                                              )", v12, v13, v14, @"owning_query_id", @"bucket_index", 0x283C30628, @"bucket_index", 0x283C30648, @"generation_number", 0x283C26288, 0];;
+  v15 = [v11 stringWithFormat:@"DELETE FROM %@                                                               WHERE ROWID IN(                                                                SELECT a.ROWID FROM %@ a                                                                 INNER JOIN %@ b ON (a.%@ = b.ROWID)                                                                     WHERE a.%@ < b.%@ OR a.%@ > b.%@ OR  a.%@ > b.%@                                                              )", disambiguatedDatabaseTable, disambiguatedDatabaseTable2, v14, @"owning_query_id", @"bucket_index", 0x283C30628, @"bucket_index", 0x283C30648, @"generation_number", 0x283C26288, 0];;
 
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v16 = [v9 database];
+  database = [profileCopy database];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __69__HDSampleAggregateCacheEntity_pruneWithProfile_nowDate_limit_error___block_invoke;
   v19[3] = &unk_278614110;
   v19[4] = v15;
   v19[5] = &v20;
-  LODWORD(a6) = [a1 performWriteTransactionWithHealthDatabase:v16 error:a6 block:v19];
+  LODWORD(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v19];
 
-  if (a6)
+  if (error)
   {
     v17 = [MEMORY[0x277CCABB0] numberWithInt:*(v21 + 6)];
   }

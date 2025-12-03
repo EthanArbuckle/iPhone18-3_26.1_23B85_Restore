@@ -1,52 +1,52 @@
 @interface BSAuditHistoryItem
-+ (id)itemWithString:(id)a3;
-+ (id)itemWithWithFormat:(id)a3;
-- (BSAuditHistoryItem)initWithCoder:(id)a3;
-- (BSAuditHistoryItem)initWithXPCDictionary:(id)a3;
++ (id)itemWithString:(id)string;
++ (id)itemWithWithFormat:(id)format;
+- (BSAuditHistoryItem)initWithCoder:(id)coder;
+- (BSAuditHistoryItem)initWithXPCDictionary:(id)dictionary;
 - (NSString)description;
-- (void)_initWithString:(void *)a1;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)_initWithString:(void *)string;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation BSAuditHistoryItem
 
-- (void)_initWithString:(void *)a1
+- (void)_initWithString:(void *)string
 {
   v3 = a2;
-  if (a1)
+  if (string)
   {
-    v9.receiver = a1;
+    v9.receiver = string;
     v9.super_class = BSAuditHistoryItem;
-    a1 = objc_msgSendSuper2(&v9, sel_init);
-    if (a1)
+    string = objc_msgSendSuper2(&v9, sel_init);
+    if (string)
     {
       v4 = objc_alloc_init(MEMORY[0x1E695DF00]);
-      v5 = a1[1];
-      a1[1] = v4;
+      v5 = string[1];
+      string[1] = v4;
 
       v6 = [v3 copy];
-      v7 = a1[2];
-      a1[2] = v6;
+      v7 = string[2];
+      string[2] = v6;
     }
   }
 
-  return a1;
+  return string;
 }
 
-+ (id)itemWithString:(id)a3
++ (id)itemWithString:(id)string
 {
-  v4 = a3;
-  v5 = [(BSAuditHistoryItem *)[a1 alloc] _initWithString:v4];
+  stringCopy = string;
+  v5 = [(BSAuditHistoryItem *)[self alloc] _initWithString:stringCopy];
 
   return v5;
 }
 
-+ (id)itemWithWithFormat:(id)a3
++ (id)itemWithWithFormat:(id)format
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:v4 arguments:&v9];
-  v6 = [(BSAuditHistoryItem *)[a1 alloc] _initWithString:v5];
+  formatCopy = format;
+  v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:formatCopy arguments:&v9];
+  v6 = [(BSAuditHistoryItem *)[self alloc] _initWithString:v5];
 
   return v6;
 }
@@ -86,19 +86,19 @@ uint64_t __36__BSAuditHistoryItem__timeFormatter__block_invoke()
   return [v2 setDateFormat:@"HH:mm:ss.SSS"];
 }
 
-- (BSAuditHistoryItem)initWithXPCDictionary:(id)a3
+- (BSAuditHistoryItem)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = BSAuditHistoryItem;
   v5 = [(BSAuditHistoryItem *)&v11 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate:{BSDeserializeDoubleFromXPCDictionaryWithKey(v4, "date")}];
+    v6 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate:{BSDeserializeDoubleFromXPCDictionaryWithKey(dictionaryCopy, "date")}];
     date = v5->_date;
     v5->_date = v6;
 
-    v8 = BSCreateDeserializedStringFromXPCDictionaryWithKey(v4, "desc");
+    v8 = BSCreateDeserializedStringFromXPCDictionaryWithKey(dictionaryCopy, "desc");
     description = v5->_description;
     v5->_description = v8;
   }
@@ -106,27 +106,27 @@ uint64_t __36__BSAuditHistoryItem__timeFormatter__block_invoke()
   return v5;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   [(NSDate *)self->_date timeIntervalSinceReferenceDate];
-  BSSerializeDoubleToXPCDictionaryWithKey(v5, "date", v4);
-  BSSerializeStringToXPCDictionaryWithKey(self->_description, v5, "desc");
+  BSSerializeDoubleToXPCDictionaryWithKey(dictionaryCopy, "date", v4);
+  BSSerializeStringToXPCDictionaryWithKey(self->_description, dictionaryCopy, "desc");
 }
 
-- (BSAuditHistoryItem)initWithCoder:(id)a3
+- (BSAuditHistoryItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = BSAuditHistoryItem;
   v5 = [(BSAuditHistoryItem *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
     date = v5->_date;
     v5->_date = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"desc"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"desc"];
     description = v5->_description;
     v5->_description = v8;
   }
@@ -134,11 +134,11 @@ uint64_t __36__BSAuditHistoryItem__timeFormatter__block_invoke()
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_date forKey:@"date"];
-  [v4 encodeObject:self->_description forKey:@"desc"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_date forKey:@"date"];
+  [coderCopy encodeObject:self->_description forKey:@"desc"];
 }
 
 @end

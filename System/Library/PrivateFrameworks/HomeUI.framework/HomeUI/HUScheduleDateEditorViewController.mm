@@ -1,24 +1,24 @@
 @interface HUScheduleDateEditorViewController
-- (HUScheduleDateEditorViewController)initWithDate:(id)a3 editorContext:(unint64_t)a4 delegate:(id)a5;
+- (HUScheduleDateEditorViewController)initWithDate:(id)date editorContext:(unint64_t)context delegate:(id)delegate;
 - (HUScheduleDateEditorViewControllerDelegate)delegate;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_editorItemModule;
-- (id)buildItemModuleControllerForModule:(id)a3;
+- (id)buildItemModuleControllerForModule:(id)module;
 - (void)_saveChanges;
-- (void)doneButtonPressed:(id)a3;
+- (void)doneButtonPressed:(id)pressed;
 - (void)viewDidLoad;
 @end
 
 @implementation HUScheduleDateEditorViewController
 
-- (HUScheduleDateEditorViewController)initWithDate:(id)a3 editorContext:(unint64_t)a4 delegate:(id)a5
+- (HUScheduleDateEditorViewController)initWithDate:(id)date editorContext:(unint64_t)context delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a5;
-  if (!v9)
+  dateCopy = date;
+  delegateCopy = delegate;
+  if (!dateCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HUScheduleDateEditorViewController.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"date"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUScheduleDateEditorViewController.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"date"}];
   }
 
   v11 = [objc_alloc(MEMORY[0x277D14B08]) initWithDelegate:self];
@@ -26,9 +26,9 @@
   v18[1] = 3221225472;
   v18[2] = __74__HUScheduleDateEditorViewController_initWithDate_editorContext_delegate___block_invoke;
   v18[3] = &unk_277DBA558;
-  v12 = v9;
+  v12 = dateCopy;
   v19 = v12;
-  v20 = a4;
+  contextCopy = context;
   [v11 setItemModuleCreator:v18];
   v17.receiver = self;
   v17.super_class = HUScheduleDateEditorViewController;
@@ -36,8 +36,8 @@
   v14 = v13;
   if (v13)
   {
-    v13->_editorContext = a4;
-    objc_storeWeak(&v13->_delegate, v10);
+    v13->_editorContext = context;
+    objc_storeWeak(&v13->_delegate, delegateCopy);
   }
 
   return v14;
@@ -73,46 +73,46 @@ id __74__HUScheduleDateEditorViewController_initWithDate_editorContext_delegate_
   v4 = _HULocalizedStringWithDefaultValue(v3, v3, 1);
   [(HUScheduleDateEditorViewController *)self setTitle:v4];
   v5 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_doneButtonPressed_];
-  v6 = [(HUScheduleDateEditorViewController *)self navigationItem];
-  [v6 setRightBarButtonItem:v5];
+  navigationItem = [(HUScheduleDateEditorViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v5];
 
-  v7 = [(HUScheduleDateEditorViewController *)self navigationItem];
-  v8 = [v7 rightBarButtonItem];
-  [v8 setAccessibilityIdentifier:@"Home.Schedule.Editor.DoneButton"];
+  navigationItem2 = [(HUScheduleDateEditorViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem2 rightBarButtonItem];
+  [rightBarButtonItem setAccessibilityIdentifier:@"Home.Schedule.Editor.DoneButton"];
 }
 
-- (id)buildItemModuleControllerForModule:(id)a3
+- (id)buildItemModuleControllerForModule:(id)module
 {
-  v3 = a3;
+  moduleCopy = module;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    NSLog(&cfstr_UnexpectedModu.isa, v3);
+    NSLog(&cfstr_UnexpectedModu.isa, moduleCopy);
   }
 
-  v4 = [(HUItemModuleController *)[HUScheduleDateEditorItemModuleController alloc] initWithModule:v3];
+  v4 = [(HUItemModuleController *)[HUScheduleDateEditorItemModuleController alloc] initWithModule:moduleCopy];
 
   return v4;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = a3;
-  if ([a4 row] == 2)
+  viewCopy = view;
+  if ([path row] == 2)
   {
     v6 = 380.0;
   }
 
   else
   {
-    [v5 rowHeight];
+    [viewCopy rowHeight];
     v6 = v7;
   }
 
   return v6;
 }
 
-- (void)doneButtonPressed:(id)a3
+- (void)doneButtonPressed:(id)pressed
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = HFLogForCategory();
@@ -120,48 +120,48 @@ id __74__HUScheduleDateEditorViewController_initWithDate_editorContext_delegate_
   {
     v6 = NSStringFromSelector(a2);
     v9 = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = v6;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@:%@ Done button pressed", &v9, 0x16u);
   }
 
   [(HUScheduleDateEditorViewController *)self _saveChanges];
-  v7 = [(HUScheduleDateEditorViewController *)self navigationController];
-  v8 = [v7 popViewControllerAnimated:1];
+  navigationController = [(HUScheduleDateEditorViewController *)self navigationController];
+  v8 = [navigationController popViewControllerAnimated:1];
 }
 
 - (void)_saveChanges
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = [(HUScheduleDateEditorViewController *)self _editorItemModule];
+  _editorItemModule = [(HUScheduleDateEditorViewController *)self _editorItemModule];
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = NSStringFromSelector(a2);
-    v7 = [(HUScheduleDateEditorViewController *)self delegate];
-    v8 = [v4 editedDate];
+    delegate = [(HUScheduleDateEditorViewController *)self delegate];
+    editedDate = [_editorItemModule editedDate];
     v11 = 138413058;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
     v14 = v6;
     v15 = 2112;
-    v16 = v7;
+    v16 = delegate;
     v17 = 2112;
-    v18 = v8;
+    v18 = editedDate;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@:%@ Notifying delegate [%@] of updated schedule rule date [%@]", &v11, 0x2Au);
   }
 
-  v9 = [v4 editedDate];
-  v10 = [(HUScheduleDateEditorViewController *)self delegate];
-  [v10 didUpdateDate:self date:v9 editorContext:{objc_msgSend(v4, "editorContext")}];
+  editedDate2 = [_editorItemModule editedDate];
+  delegate2 = [(HUScheduleDateEditorViewController *)self delegate];
+  [delegate2 didUpdateDate:self date:editedDate2 editorContext:{objc_msgSend(_editorItemModule, "editorContext")}];
 }
 
 - (id)_editorItemModule
 {
-  v2 = [(HUItemTableViewController *)self itemManager];
-  v3 = [v2 itemModules];
-  v4 = [v3 na_firstObjectPassingTest:&__block_literal_global_55];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  itemModules = [itemManager itemModules];
+  v4 = [itemModules na_firstObjectPassingTest:&__block_literal_global_55];
 
   return v4;
 }

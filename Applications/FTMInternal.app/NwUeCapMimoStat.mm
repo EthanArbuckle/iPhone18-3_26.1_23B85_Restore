@@ -1,23 +1,23 @@
 @interface NwUeCapMimoStat
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMaxSchdMimoLyr:(BOOL)a3;
-- (void)setHasMaxUeRank:(BOOL)a3;
-- (void)setHasNwMimoCap:(BOOL)a3;
-- (void)setHasUeMimoCap:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMaxSchdMimoLyr:(BOOL)lyr;
+- (void)setHasMaxUeRank:(BOOL)rank;
+- (void)setHasNwMimoCap:(BOOL)cap;
+- (void)setHasUeMimoCap:(BOOL)cap;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NwUeCapMimoStat
 
-- (void)setHasNwMimoCap:(BOOL)a3
+- (void)setHasNwMimoCap:(BOOL)cap
 {
-  if (a3)
+  if (cap)
   {
     v3 = 8;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasUeMimoCap:(BOOL)a3
+- (void)setHasUeMimoCap:(BOOL)cap
 {
-  if (a3)
+  if (cap)
   {
     v3 = 16;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasMaxUeRank:(BOOL)a3
+- (void)setHasMaxUeRank:(BOOL)rank
 {
-  if (a3)
+  if (rank)
   {
     v3 = 4;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMaxSchdMimoLyr:(BOOL)a3
+- (void)setHasMaxSchdMimoLyr:(BOOL)lyr
 {
-  if (a3)
+  if (lyr)
   {
     v3 = 2;
   }
@@ -80,8 +80,8 @@
   v7.receiver = self;
   v7.super_class = NwUeCapMimoStat;
   v3 = [(NwUeCapMimoStat *)&v7 description];
-  v4 = [(NwUeCapMimoStat *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NwUeCapMimoStat *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -160,9 +160,9 @@ LABEL_7:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -228,14 +228,14 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[5] = self->_nwMimoCap;
-    *(v4 + 28) |= 8u;
+    toCopy[5] = self->_nwMimoCap;
+    *(toCopy + 28) |= 8u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -254,8 +254,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[6] = self->_ueMimoCap;
-  *(v4 + 28) |= 0x10u;
+  toCopy[6] = self->_ueMimoCap;
+  *(toCopy + 28) |= 0x10u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -269,8 +269,8 @@ LABEL_4:
   }
 
 LABEL_12:
-  v4[4] = self->_maxUeRank;
-  *(v4 + 28) |= 4u;
+  toCopy[4] = self->_maxUeRank;
+  *(toCopy + 28) |= 4u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -284,21 +284,21 @@ LABEL_5:
   }
 
 LABEL_13:
-  v4[2] = self->_maxRxAnt;
-  *(v4 + 28) |= 1u;
+  toCopy[2] = self->_maxRxAnt;
+  *(toCopy + 28) |= 1u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_6:
-    v4[3] = self->_maxSchdMimoLyr;
-    *(v4 + 28) |= 2u;
+    toCopy[3] = self->_maxSchdMimoLyr;
+    *(toCopy + 28) |= 2u;
   }
 
 LABEL_7:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -365,23 +365,23 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 28) & 8) == 0 || self->_nwMimoCap != *(v4 + 5))
+    if ((*(equalCopy + 28) & 8) == 0 || self->_nwMimoCap != *(equalCopy + 5))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 28) & 8) != 0)
+  else if ((*(equalCopy + 28) & 8) != 0)
   {
 LABEL_26:
     v5 = 0;
@@ -390,47 +390,47 @@ LABEL_26:
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 28) & 0x10) == 0 || self->_ueMimoCap != *(v4 + 6))
+    if ((*(equalCopy + 28) & 0x10) == 0 || self->_ueMimoCap != *(equalCopy + 6))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 28) & 0x10) != 0)
+  else if ((*(equalCopy + 28) & 0x10) != 0)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 28) & 4) == 0 || self->_maxUeRank != *(v4 + 4))
+    if ((*(equalCopy + 28) & 4) == 0 || self->_maxUeRank != *(equalCopy + 4))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 28) & 4) != 0)
+  else if ((*(equalCopy + 28) & 4) != 0)
   {
     goto LABEL_26;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_maxRxAnt != *(v4 + 2))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_maxRxAnt != *(equalCopy + 2))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_26;
   }
 
-  v5 = (*(v4 + 28) & 2) == 0;
+  v5 = (*(equalCopy + 28) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_maxSchdMimoLyr != *(v4 + 3))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_maxSchdMimoLyr != *(equalCopy + 3))
     {
       goto LABEL_26;
     }
@@ -511,15 +511,15 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 28);
+  fromCopy = from;
+  v5 = *(fromCopy + 28);
   if ((v5 & 8) != 0)
   {
-    self->_nwMimoCap = *(v4 + 5);
+    self->_nwMimoCap = *(fromCopy + 5);
     *&self->_has |= 8u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
     if ((v5 & 0x10) == 0)
     {
 LABEL_3:
@@ -532,14 +532,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 28) & 0x10) == 0)
+  else if ((*(fromCopy + 28) & 0x10) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_ueMimoCap = *(v4 + 6);
+  self->_ueMimoCap = *(fromCopy + 6);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 4) == 0)
   {
 LABEL_4:
@@ -552,9 +552,9 @@ LABEL_4:
   }
 
 LABEL_12:
-  self->_maxUeRank = *(v4 + 4);
+  self->_maxUeRank = *(fromCopy + 4);
   *&self->_has |= 4u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 1) == 0)
   {
 LABEL_5:
@@ -567,12 +567,12 @@ LABEL_5:
   }
 
 LABEL_13:
-  self->_maxRxAnt = *(v4 + 2);
+  self->_maxRxAnt = *(fromCopy + 2);
   *&self->_has |= 1u;
-  if ((*(v4 + 28) & 2) != 0)
+  if ((*(fromCopy + 28) & 2) != 0)
   {
 LABEL_6:
-    self->_maxSchdMimoLyr = *(v4 + 3);
+    self->_maxSchdMimoLyr = *(fromCopy + 3);
     *&self->_has |= 2u;
   }
 

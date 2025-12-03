@@ -1,56 +1,56 @@
 @interface JavaUtilHashMap_HashMapEntry
-- (BOOL)isEqual:(id)a3;
-- (JavaUtilHashMap_HashMapEntry)initWithId:(id)a3 withId:(id)a4 withInt:(int)a5 withJavaUtilHashMap_HashMapEntry:(id)a6;
-- (id)setValueWithId:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (JavaUtilHashMap_HashMapEntry)initWithId:(id)id withId:(id)withId withInt:(int)int withJavaUtilHashMap_HashMapEntry:(id)entry;
+- (id)setValueWithId:(id)id;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation JavaUtilHashMap_HashMapEntry
 
-- (JavaUtilHashMap_HashMapEntry)initWithId:(id)a3 withId:(id)a4 withInt:(int)a5 withJavaUtilHashMap_HashMapEntry:(id)a6
+- (JavaUtilHashMap_HashMapEntry)initWithId:(id)id withId:(id)withId withInt:(int)int withJavaUtilHashMap_HashMapEntry:(id)entry
 {
-  JreStrongAssign(&self->key_, a3);
-  JreStrongAssign(&self->value_, a4);
-  self->hash__ = a5;
-  JreStrongAssign(&self->next_, a6);
+  JreStrongAssign(&self->key_, id);
+  JreStrongAssign(&self->value_, withId);
+  self->hash__ = int;
+  JreStrongAssign(&self->next_, entry);
   return self;
 }
 
-- (id)setValueWithId:(id)a3
+- (id)setValueWithId:(id)id
 {
   value = self->value_;
-  JreStrongAssign(&self->value_, a3);
+  JreStrongAssign(&self->value_, id);
   return value;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (![JavaUtilMap_Entry_class_() isInstance:a3])
+  if (![JavaUtilMap_Entry_class_() isInstance:equal])
   {
     return 0;
   }
 
   v5 = JavaUtilMap_Entry_class_();
-  if (!a3)
+  if (!equal)
   {
     JreThrowNullPointerException();
   }
 
-  if (([v5 isInstance:a3] & 1) == 0)
+  if (([v5 isInstance:equal] & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
-  if (!LibcoreUtilObjects_equalWithId_withId_([a3 getKey], self->key_))
+  if (!LibcoreUtilObjects_equalWithId_withId_([equal getKey], self->key_))
   {
     return 0;
   }
 
-  v6 = [a3 getValue];
+  getValue = [equal getValue];
   value = self->value_;
 
-  return LibcoreUtilObjects_equalWithId_withId_(v6, value);
+  return LibcoreUtilObjects_equalWithId_withId_(getValue, value);
 }
 
 - (unint64_t)hash

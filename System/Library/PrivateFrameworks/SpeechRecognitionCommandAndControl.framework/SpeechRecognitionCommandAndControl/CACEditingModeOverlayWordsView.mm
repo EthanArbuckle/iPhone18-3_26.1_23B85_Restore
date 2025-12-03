@@ -1,42 +1,42 @@
 @interface CACEditingModeOverlayWordsView
-- (CACEditingModeOverlayWordsView)initWithFrame:(CGRect)a3;
-- (void)setLabels:(id)a3;
+- (CACEditingModeOverlayWordsView)initWithFrame:(CGRect)frame;
+- (void)setLabels:(id)labels;
 @end
 
 @implementation CACEditingModeOverlayWordsView
 
-- (CACEditingModeOverlayWordsView)initWithFrame:(CGRect)a3
+- (CACEditingModeOverlayWordsView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v13.receiver = self;
   v13.super_class = CACEditingModeOverlayWordsView;
   v7 = [(CACEditingModeOverlayWordsView *)&v13 initWithFrame:?];
-  v8 = [CACOverlayContainerView badgeViewContainerWithFrame:0 usingContrast:x, y, width, height];
+  height = [CACOverlayContainerView badgeViewContainerWithFrame:0 usingContrast:x, y, width, height];
   badgeContainer = v7->_badgeContainer;
-  v7->_badgeContainer = v8;
+  v7->_badgeContainer = height;
 
-  v10 = [CACOverlayContainerView badgeViewContainerWithFrame:1 usingContrast:x, y, width, height];
+  height2 = [CACOverlayContainerView badgeViewContainerWithFrame:1 usingContrast:x, y, width, height];
   contrastedBadgeContainer = v7->_contrastedBadgeContainer;
-  v7->_contrastedBadgeContainer = v10;
+  v7->_contrastedBadgeContainer = height2;
 
   [(CACEditingModeOverlayWordsView *)v7 addSubview:v7->_contrastedBadgeContainer];
   [(CACEditingModeOverlayWordsView *)v7 addSubview:v7->_badgeContainer];
   return v7;
 }
 
-- (void)setLabels:(id)a3
+- (void)setLabels:(id)labels
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  labelsCopy = labels;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v5 = [(UIView *)self->_badgeContainer subviews];
-  v6 = [v5 countByEnumeratingWithState:&v37 objects:v42 count:16];
+  subviews = [(UIView *)self->_badgeContainer subviews];
+  v6 = [subviews countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v6)
   {
     v7 = v6;
@@ -47,13 +47,13 @@
       {
         if (*v38 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v37 + 1) + 8 * i) removeFromSuperview];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v37 objects:v42 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v37 objects:v42 count:16];
     }
 
     while (v7);
@@ -63,8 +63,8 @@
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v10 = [(UIView *)self->_contrastedBadgeContainer subviews];
-  v11 = [v10 countByEnumeratingWithState:&v33 objects:v41 count:16];
+  subviews2 = [(UIView *)self->_contrastedBadgeContainer subviews];
+  v11 = [subviews2 countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (v11)
   {
     v12 = v11;
@@ -75,30 +75,30 @@
       {
         if (*v34 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(subviews2);
         }
 
         [*(*(&v33 + 1) + 8 * j) removeFromSuperview];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v33 objects:v41 count:16];
+      v12 = [subviews2 countByEnumeratingWithState:&v33 objects:v41 count:16];
     }
 
     while (v12);
   }
 
-  if ([v4 count])
+  if ([labelsCopy count])
   {
     v15 = 0;
     do
     {
-      v16 = [v4 objectAtIndexedSubscript:v15];
-      v17 = [v16 label];
+      v16 = [labelsCopy objectAtIndexedSubscript:v15];
+      label = [v16 label];
 
-      +[CACLabeledBadgeView sizeOfBadgeGivenNumberOfDisplayedDigits:arrowOrientation:badgePresentation:badgeIndicator:contrasted:](CACLabeledBadgeView, "sizeOfBadgeGivenNumberOfDisplayedDigits:arrowOrientation:badgePresentation:badgeIndicator:contrasted:", [v17 length], 0, 0, 0, UIAccessibilityDarkerSystemColorsEnabled());
+      +[CACLabeledBadgeView sizeOfBadgeGivenNumberOfDisplayedDigits:arrowOrientation:badgePresentation:badgeIndicator:contrasted:](CACLabeledBadgeView, "sizeOfBadgeGivenNumberOfDisplayedDigits:arrowOrientation:badgePresentation:badgeIndicator:contrasted:", [label length], 0, 0, 0, UIAccessibilityDarkerSystemColorsEnabled());
       v19 = v18;
       v21 = v20;
-      v22 = [v4 objectAtIndexedSubscript:v15];
+      v22 = [labelsCopy objectAtIndexedSubscript:v15];
       overlayType = self->_overlayType;
       v24 = overlayType & 0xF;
       [v22 frame];
@@ -117,19 +117,19 @@
         v28 = CGRectGetMidY(v44) + v21 * -0.5;
       }
 
-      v30 = [[CACLabeledBadgeView alloc] initWithFrame:v17 label:0 arrowOrientation:0 badgePresentation:0 badgeIndicator:v26, v28, v19, v21];
+      v30 = [[CACLabeledBadgeView alloc] initWithFrame:label label:0 arrowOrientation:0 badgePresentation:0 badgeIndicator:v26, v28, v19, v21];
       [(UIView *)self->_badgeContainer addSubview:v30];
       if (UIAccessibilityDarkerSystemColorsEnabled())
       {
         contrastedBadgeContainer = self->_contrastedBadgeContainer;
-        v32 = [(CACLabeledBadgeView *)v30 contrastedCopy];
-        [(UIView *)contrastedBadgeContainer addSubview:v32];
+        contrastedCopy = [(CACLabeledBadgeView *)v30 contrastedCopy];
+        [(UIView *)contrastedBadgeContainer addSubview:contrastedCopy];
       }
 
       ++v15;
     }
 
-    while (v15 < [v4 count]);
+    while (v15 < [labelsCopy count]);
   }
 }
 

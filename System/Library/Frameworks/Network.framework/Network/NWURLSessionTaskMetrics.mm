@@ -1,9 +1,9 @@
 @interface NWURLSessionTaskMetrics
 - (NSArray)transactionMetrics;
 - (NSDateInterval)taskInterval;
-- (NWURLSessionTaskMetrics)initWithCoder:(id)a3;
+- (NWURLSessionTaskMetrics)initWithCoder:(id)coder;
 - (unint64_t)redirectCount;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NWURLSessionTaskMetrics
@@ -100,7 +100,7 @@ uint64_t __40__NWURLSessionTaskMetrics_redirectCount__block_invoke(uint64_t a1, 
   v9 = 3221225472;
   v10 = __45__NWURLSessionTaskMetrics_transactionMetrics__block_invoke;
   v11 = &unk_1E6A2FF70;
-  v12 = self;
+  selfCopy = self;
   v13 = v3;
   v5 = v3;
   nw_http_client_metadata_enumerate_transactions(clientMetadata, &v8);
@@ -130,10 +130,10 @@ uint64_t __45__NWURLSessionTaskMetrics_transactionMetrics__block_invoke(uint64_t
   return 1;
 }
 
-- (NWURLSessionTaskMetrics)initWithCoder:(id)a3
+- (NWURLSessionTaskMetrics)initWithCoder:(id)coder
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -141,7 +141,7 @@ uint64_t __45__NWURLSessionTaskMetrics_transactionMetrics__block_invoke(uint64_t
   }
 
   v5 = MEMORY[0x1E69E9E80];
-  v6 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"clientMetadata"];
+  v6 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"clientMetadata"];
   v7 = v6;
   if (!v6)
   {
@@ -196,7 +196,7 @@ LABEL_83:
 
 LABEL_84:
 LABEL_85:
-          v19 = 0;
+          selfCopy = 0;
           goto LABEL_86;
         }
 
@@ -540,16 +540,16 @@ LABEL_79:
   }
 
   self = self;
-  v19 = self;
+  selfCopy = self;
 LABEL_86:
 
-  return v19;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v38 = *MEMORY[0x1E69E9840];
-  v24 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -747,7 +747,7 @@ LABEL_48:
       v9 = 0;
 LABEL_9:
 
-      [v24 encodeXPCObject:v9 forKey:@"clientMetadata"];
+      [coderCopy encodeXPCObject:v9 forKey:@"clientMetadata"];
       goto LABEL_10;
     }
 

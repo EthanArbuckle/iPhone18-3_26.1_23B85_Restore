@@ -1,9 +1,9 @@
 @interface ForcedReconfigurationCallbackContainer
-- (ForcedReconfigurationCallbackContainer)initWithLabel:(const void *)a3;
+- (ForcedReconfigurationCallbackContainer)initWithLabel:(const void *)label;
 - (id).cxx_construct;
-- (unint64_t)addCallback:(id)a3;
+- (unint64_t)addCallback:(id)callback;
 - (void)fireAll;
-- (void)removeCallback:(unint64_t)a3;
+- (void)removeCallback:(unint64_t)callback;
 @end
 
 @implementation ForcedReconfigurationCallbackContainer
@@ -53,18 +53,18 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeCallback:(unint64_t)a3
+- (void)removeCallback:(unint64_t)callback
 {
   callbacks = self->_callbacks;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:callback];
   [(NSMutableDictionary *)callbacks removeObjectForKey:?];
 }
 
-- (unint64_t)addCallback:(id)a3
+- (unint64_t)addCallback:(id)callback
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  callbackCopy = callback;
+  if (callbackCopy)
   {
     v5 = self->_callbackCounter + 1;
     do
@@ -97,7 +97,7 @@
     }
 
     v11 = self->_callbacks;
-    v12 = MEMORY[0x23EE7A570](v4);
+    v12 = MEMORY[0x23EE7A570](callbackCopy);
     v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v6];
     [(NSMutableDictionary *)v11 setObject:v12 forKey:v13];
   }
@@ -111,7 +111,7 @@
   return v6;
 }
 
-- (ForcedReconfigurationCallbackContainer)initWithLabel:(const void *)a3
+- (ForcedReconfigurationCallbackContainer)initWithLabel:(const void *)label
 {
   v9.receiver = self;
   v9.super_class = ForcedReconfigurationCallbackContainer;
@@ -119,7 +119,7 @@
   v5 = v4;
   if (v4)
   {
-    std::string::operator=(v4 + 1, a3);
+    std::string::operator=(v4 + 1, label);
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
     callbacks = v5->_callbacks;
     v5->_callbacks = v6;

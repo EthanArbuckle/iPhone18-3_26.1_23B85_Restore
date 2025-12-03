@@ -1,41 +1,41 @@
 @interface UITableViewCellLayoutManagerValue1
-- (CGSize)intrinsicContentSizeForCell:(id)a3 rowWidth:(double)a4;
-- (id)defaultDetailTextLabelFontForCell:(id)a3;
-- (id)detailTextLabelForCell:(id)a3;
-- (id)textLabelForCell:(id)a3;
-- (void)getTextLabelRect:(CGRect *)a3 detailTextLabelRect:(CGRect *)a4 forCell:(id)a5 rowWidth:(double)a6 forSizing:(BOOL)a7;
-- (void)layoutSubviewsOfCell:(id)a3;
+- (CGSize)intrinsicContentSizeForCell:(id)cell rowWidth:(double)width;
+- (id)defaultDetailTextLabelFontForCell:(id)cell;
+- (id)detailTextLabelForCell:(id)cell;
+- (id)textLabelForCell:(id)cell;
+- (void)getTextLabelRect:(CGRect *)rect detailTextLabelRect:(CGRect *)labelRect forCell:(id)cell rowWidth:(double)width forSizing:(BOOL)sizing;
+- (void)layoutSubviewsOfCell:(id)cell;
 @end
 
 @implementation UITableViewCellLayoutManagerValue1
 
-- (id)textLabelForCell:(id)a3
+- (id)textLabelForCell:(id)cell
 {
   v5.receiver = self;
   v5.super_class = UITableViewCellLayoutManagerValue1;
-  v3 = [(UITableViewCellLayoutManager *)&v5 defaultLabelForCell:a3];
+  v3 = [(UITableViewCellLayoutManager *)&v5 defaultLabelForCell:cell];
 
   return v3;
 }
 
-- (id)detailTextLabelForCell:(id)a3
+- (id)detailTextLabelForCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v5 = objc_opt_class();
   v15.receiver = self;
   v15.super_class = UITableViewCellLayoutManagerValue1;
-  v6 = [(UITableViewCellLayoutManager *)&v15 defaultLabelForCell:v4 ofClass:v5];
-  v7 = [v4 _constants];
-  v8 = [v4 _cellStyle];
-  v9 = [v4 traitCollection];
+  v6 = [(UITableViewCellLayoutManager *)&v15 defaultLabelForCell:cellCopy ofClass:v5];
+  _constants = [cellCopy _constants];
+  _cellStyle = [cellCopy _cellStyle];
+  traitCollection = [cellCopy traitCollection];
   v10 = [UICellConfigurationState _readonlyCellState:?];
-  v11 = [v7 defaultDetailTextColorForCellStyle:v8 traitCollection:v9 state:v10];
+  v11 = [_constants defaultDetailTextColorForCellStyle:_cellStyle traitCollection:traitCollection state:v10];
   [v6 setTextColor:v11];
 
-  v12 = [(UITableViewCellLayoutManagerValue1 *)self defaultDetailTextLabelFontForCell:v4];
+  v12 = [(UITableViewCellLayoutManagerValue1 *)self defaultDetailTextLabelFontForCell:cellCopy];
   [v6 setFont:v12];
 
-  LODWORD(self) = [(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:v4];
+  LODWORD(self) = [(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:cellCopy];
   if (self)
   {
     v13 = 4;
@@ -51,28 +51,28 @@
   return v6;
 }
 
-- (id)defaultDetailTextLabelFontForCell:(id)a3
+- (id)defaultDetailTextLabelFontForCell:(id)cell
 {
-  v3 = a3;
-  v4 = [v3 _constants];
-  v5 = [v3 _cellStyle];
+  cellCopy = cell;
+  _constants = [cellCopy _constants];
+  _cellStyle = [cellCopy _cellStyle];
 
-  v6 = [v4 defaultDetailTextFontForCellStyle:v5];
+  v6 = [_constants defaultDetailTextFontForCellStyle:_cellStyle];
 
   return v6;
 }
 
-- (void)getTextLabelRect:(CGRect *)a3 detailTextLabelRect:(CGRect *)a4 forCell:(id)a5 rowWidth:(double)a6 forSizing:(BOOL)a7
+- (void)getTextLabelRect:(CGRect *)rect detailTextLabelRect:(CGRect *)labelRect forCell:(id)cell rowWidth:(double)width forSizing:(BOOL)sizing
 {
-  v7 = a7;
-  v70 = a5;
-  [(UITableViewCellLayoutManager *)self textRectForCell:v70 rowWidth:v7 forSizing:a6];
+  sizingCopy = sizing;
+  cellCopy = cell;
+  [(UITableViewCellLayoutManager *)self textRectForCell:cellCopy rowWidth:sizingCopy forSizing:width];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [v70 _textLabel:0];
-  v21 = [v70 _detailTextLabel:0];
+  v20 = [cellCopy _textLabel:0];
+  v21 = [cellCopy _detailTextLabel:0];
   v22 = *MEMORY[0x1E695F060];
   v23 = *(MEMORY[0x1E695F060] + 8);
   v24 = v23;
@@ -84,10 +84,10 @@
     v24 = v27;
   }
 
-  v28 = v70;
+  v28 = cellCopy;
   if (v21)
   {
-    v29 = [(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:v70];
+    v29 = [(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:cellCopy];
     v30 = v17 - v25 + -6.0;
     if (v29)
     {
@@ -105,7 +105,7 @@
     }
 
     [(UITableViewCellLayoutManager *)self optimumSizeForLabel:v21 inTotalTextRect:0 minimizeWidthOnVerticalOverflow:0 preferSingleLineWidth:0.0, 0.0, v31, v19];
-    v28 = v70;
+    v28 = cellCopy;
     v22 = v32;
     v23 = v33;
   }
@@ -142,37 +142,37 @@
 
   v66 = v15;
   v35 = v22;
-  v39 = [v70 traitCollection];
-  v40 = [v39 userInterfaceIdiom];
+  traitCollection = [cellCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   v37 = 0.0;
   v38 = 0.0;
-  if (v40 != 3)
+  if (userInterfaceIdiom != 3)
   {
-    v41 = [v20 font];
-    [v41 ascender];
+    font = [v20 font];
+    [font ascender];
     v43 = v42;
-    v44 = [v21 font];
-    [v44 ascender];
+    font2 = [v21 font];
+    [font2 ascender];
     v46 = v45;
 
     if (v43 >= v46)
     {
-      v47 = [v20 font];
-      [v47 ascender];
+      font3 = [v20 font];
+      [font3 ascender];
       v54 = v53;
-      v50 = [v21 font];
-      [v50 ascender];
+      font4 = [v21 font];
+      [font4 ascender];
       v37 = round(v54 - v55);
     }
 
     else
     {
-      v47 = [v21 font];
-      [v47 ascender];
+      font3 = [v21 font];
+      [font3 ascender];
       v49 = v48;
-      v50 = [v20 font];
-      [v50 ascender];
+      font4 = [v20 font];
+      [font4 ascender];
       v38 = round(v49 - v51);
       v37 = 0.0;
     }
@@ -228,33 +228,33 @@ LABEL_23:
   v79.size.width = v35;
   v79.size.height = v67;
   v80 = CGRectOffset(v79, v13, v62);
-  if (a3)
+  if (rect)
   {
-    a3->origin.x = x;
-    a3->origin.y = y;
-    a3->size.width = width;
-    a3->size.height = height;
+    rect->origin.x = x;
+    rect->origin.y = y;
+    rect->size.width = width;
+    rect->size.height = height;
   }
 
-  if (a4)
+  if (labelRect)
   {
-    *a4 = v80;
+    *labelRect = v80;
   }
 }
 
-- (CGSize)intrinsicContentSizeForCell:(id)a3 rowWidth:(double)a4
+- (CGSize)intrinsicContentSizeForCell:(id)cell rowWidth:(double)width
 {
-  v6 = a3;
-  if ([(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:v6])
+  cellCopy = cell;
+  if ([(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:cellCopy])
   {
-    v7 = _UITableViewCellLayoutIntrinsicSizeForCellStackingLabels(self, v6, a4);
+    v7 = _UITableViewCellLayoutIntrinsicSizeForCellStackingLabels(self, cellCopy, width);
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = UITableViewCellLayoutManagerValue1;
-    [(UITableViewCellLayoutManager *)&v13 intrinsicContentSizeForCell:v6 rowWidth:a4];
+    [(UITableViewCellLayoutManager *)&v13 intrinsicContentSizeForCell:cellCopy rowWidth:width];
   }
 
   v9 = v7;
@@ -267,47 +267,47 @@ LABEL_23:
   return result;
 }
 
-- (void)layoutSubviewsOfCell:(id)a3
+- (void)layoutSubviewsOfCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v26.receiver = self;
   v26.super_class = UITableViewCellLayoutManagerValue1;
-  [(UITableViewCellLayoutManager *)&v26 layoutSubviewsOfCell:v4];
-  v5 = [v4 _textLabel:0];
+  [(UITableViewCellLayoutManager *)&v26 layoutSubviewsOfCell:cellCopy];
+  v5 = [cellCopy _textLabel:0];
   if (v5)
   {
     v6 = v5;
-    v7 = [v5 font];
-    [v7 pointSize];
+    font = [v5 font];
+    [font pointSize];
     v9 = v8;
 
     if (v9 == 0.0)
     {
-      v10 = [(UITableViewCellLayoutManager *)self defaultTextLabelFontForCell:v4];
+      v10 = [(UITableViewCellLayoutManager *)self defaultTextLabelFontForCell:cellCopy];
       [v6 setFont:v10];
     }
 
-    v11 = [v6 text];
-    v12 = v11;
-    if (v11 && [v11 length])
+    text = [v6 text];
+    v12 = text;
+    if (text && [text length])
     {
-      v13 = [v6 superview];
+      superview = [v6 superview];
 
-      if (v13)
+      if (superview)
       {
 LABEL_10:
 
         goto LABEL_11;
       }
 
-      v14 = [v4 contentView];
-      [v14 addSubview:v6];
+      contentView = [cellCopy contentView];
+      [contentView addSubview:v6];
     }
 
     else
     {
       [v6 removeFromSuperview];
-      v14 = v6;
+      contentView = v6;
       v6 = 0;
     }
 
@@ -315,11 +315,11 @@ LABEL_10:
   }
 
 LABEL_11:
-  v15 = [v4 _detailTextLabel:0];
+  v15 = [cellCopy _detailTextLabel:0];
   if (v15)
   {
     v16 = v15;
-    if ([(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:v4])
+    if ([(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:cellCopy])
     {
       v17 = 4;
     }
@@ -334,37 +334,37 @@ LABEL_11:
       [v16 setTextAlignment:v17];
     }
 
-    v18 = [v16 font];
-    [v18 pointSize];
+    font2 = [v16 font];
+    [font2 pointSize];
     v20 = v19;
 
     if (v20 == 0.0)
     {
-      v21 = [(UITableViewCellLayoutManagerValue1 *)self defaultDetailTextLabelFontForCell:v4];
+      v21 = [(UITableViewCellLayoutManagerValue1 *)self defaultDetailTextLabelFontForCell:cellCopy];
       [v16 setFont:v21];
     }
 
-    v22 = [v16 text];
-    v23 = v22;
-    if (v22 && [v22 length])
+    text2 = [v16 text];
+    v23 = text2;
+    if (text2 && [text2 length])
     {
-      v24 = [v16 superview];
+      superview2 = [v16 superview];
 
-      if (v24)
+      if (superview2)
       {
 LABEL_25:
 
         goto LABEL_26;
       }
 
-      v25 = [v4 contentView];
-      [v25 addSubview:v16];
+      contentView2 = [cellCopy contentView];
+      [contentView2 addSubview:v16];
     }
 
     else
     {
       [v16 removeFromSuperview];
-      v25 = v16;
+      contentView2 = v16;
       v16 = 0;
     }
 

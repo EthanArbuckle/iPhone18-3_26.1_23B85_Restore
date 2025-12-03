@@ -1,131 +1,131 @@
 @interface VNRequestForensics
-- (VNRequestForensics)initWithOriginalRequests:(id)a3;
-- (id)_humanReadableLabelForRequest:(id)a3;
-- (void)cachedObservationsWithKey:(id)a3 wereCheckedOnBehalfOfRequest:(id)a4;
-- (void)cachedObservationsWithKey:(id)a3 wereLocatedOnBehalfOfRequest:(id)a4;
-- (void)performedRequest:(id)a3 withError:(id)a4;
-- (void)performingOrderedDependentRequests:(id)a3 onBehalfOfRequest:(id)a4;
-- (void)performingRequest:(id)a3;
-- (void)request:(id)a3 cachedResultsWithObservationsCacheKey:(id)a4;
-- (void)setOrderedRequests:(id)a3;
+- (VNRequestForensics)initWithOriginalRequests:(id)requests;
+- (id)_humanReadableLabelForRequest:(id)request;
+- (void)cachedObservationsWithKey:(id)key wereCheckedOnBehalfOfRequest:(id)request;
+- (void)cachedObservationsWithKey:(id)key wereLocatedOnBehalfOfRequest:(id)request;
+- (void)performedRequest:(id)request withError:(id)error;
+- (void)performingOrderedDependentRequests:(id)requests onBehalfOfRequest:(id)request;
+- (void)performingRequest:(id)request;
+- (void)request:(id)request cachedResultsWithObservationsCacheKey:(id)key;
+- (void)setOrderedRequests:(id)requests;
 @end
 
 @implementation VNRequestForensics
 
-- (void)cachedObservationsWithKey:(id)a3 wereLocatedOnBehalfOfRequest:(id)a4
+- (void)cachedObservationsWithKey:(id)key wereLocatedOnBehalfOfRequest:(id)request
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [[_VNRequestForensicsRequestAndObservationsCacheKeyTuple alloc] initWithRequest:v6 observationsCacheKey:v14];
-  v8 = self;
-  objc_sync_enter(v8);
+  keyCopy = key;
+  requestCopy = request;
+  v7 = [[_VNRequestForensicsRequestAndObservationsCacheKeyTuple alloc] initWithRequest:requestCopy observationsCacheKey:keyCopy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v10 = [(_VNRequestForensicsRequestAndObservationsCacheKeyTuple *)v7 request];
-  v11 = [(VNRequestForensics *)v8 _humanReadableLabelForRequest:v10];
-  v12 = [(_VNRequestForensicsRequestAndObservationsCacheKeyTuple *)v7 observationsCacheKey];
-  v13 = [v9 initWithFormat:@"%@ hit %@", v11, v12];
+  request = [(_VNRequestForensicsRequestAndObservationsCacheKeyTuple *)v7 request];
+  v11 = [(VNRequestForensics *)selfCopy _humanReadableLabelForRequest:request];
+  observationsCacheKey = [(_VNRequestForensicsRequestAndObservationsCacheKeyTuple *)v7 observationsCacheKey];
+  v13 = [v9 initWithFormat:@"%@ hit %@", v11, observationsCacheKey];
 
-  [(NSMutableArray *)v8->_locatedCachedResultsOnBehalfOfRequest addObject:v7];
-  [(NSMutableArray *)v8->_ledger addObject:v13];
+  [(NSMutableArray *)selfCopy->_locatedCachedResultsOnBehalfOfRequest addObject:v7];
+  [(NSMutableArray *)selfCopy->_ledger addObject:v13];
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)cachedObservationsWithKey:(id)a3 wereCheckedOnBehalfOfRequest:(id)a4
+- (void)cachedObservationsWithKey:(id)key wereCheckedOnBehalfOfRequest:(id)request
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [[_VNRequestForensicsRequestAndObservationsCacheKeyTuple alloc] initWithRequest:v6 observationsCacheKey:v14];
-  v8 = self;
-  objc_sync_enter(v8);
+  keyCopy = key;
+  requestCopy = request;
+  v7 = [[_VNRequestForensicsRequestAndObservationsCacheKeyTuple alloc] initWithRequest:requestCopy observationsCacheKey:keyCopy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v10 = [(_VNRequestForensicsRequestAndObservationsCacheKeyTuple *)v7 request];
-  v11 = [(VNRequestForensics *)v8 _humanReadableLabelForRequest:v10];
-  v12 = [(_VNRequestForensicsRequestAndObservationsCacheKeyTuple *)v7 observationsCacheKey];
-  v13 = [v9 initWithFormat:@"%@ looked up %@", v11, v12];
+  request = [(_VNRequestForensicsRequestAndObservationsCacheKeyTuple *)v7 request];
+  v11 = [(VNRequestForensics *)selfCopy _humanReadableLabelForRequest:request];
+  observationsCacheKey = [(_VNRequestForensicsRequestAndObservationsCacheKeyTuple *)v7 observationsCacheKey];
+  v13 = [v9 initWithFormat:@"%@ looked up %@", v11, observationsCacheKey];
 
-  [(NSMutableArray *)v8->_checkedCachedResultsOnBehalfOfRequest addObject:v7];
-  [(NSMutableArray *)v8->_ledger addObject:v13];
+  [(NSMutableArray *)selfCopy->_checkedCachedResultsOnBehalfOfRequest addObject:v7];
+  [(NSMutableArray *)selfCopy->_ledger addObject:v13];
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)request:(id)a3 cachedResultsWithObservationsCacheKey:(id)a4
+- (void)request:(id)request cachedResultsWithObservationsCacheKey:(id)key
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = [[_VNRequestForensicsRequestAndObservationsCacheKeyTuple alloc] initWithRequest:v15 observationsCacheKey:v6];
-  v8 = self;
-  objc_sync_enter(v8);
+  requestCopy = request;
+  keyCopy = key;
+  v7 = [[_VNRequestForensicsRequestAndObservationsCacheKeyTuple alloc] initWithRequest:requestCopy observationsCacheKey:keyCopy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v10 = [(_VNRequestForensicsRequestAndObservationsCacheKeyTuple *)v7 request];
-  v11 = [(VNRequestForensics *)v8 _humanReadableLabelForRequest:v10];
-  v12 = [(_VNRequestForensicsRequestAndObservationsCacheKeyTuple *)v7 observationsCacheKey];
-  v13 = [v9 initWithFormat:@"%@ cached %@", v11, v12];
+  request = [(_VNRequestForensicsRequestAndObservationsCacheKeyTuple *)v7 request];
+  v11 = [(VNRequestForensics *)selfCopy _humanReadableLabelForRequest:request];
+  observationsCacheKey = [(_VNRequestForensicsRequestAndObservationsCacheKeyTuple *)v7 observationsCacheKey];
+  v13 = [v9 initWithFormat:@"%@ cached %@", v11, observationsCacheKey];
 
   v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ was already recorded as a cached result", v7];
-  [VNError VNAssert:[(NSMutableArray *)v8->_cachedRequestResults containsObject:v7]^ 1 log:v14];
-  [(NSMutableArray *)v8->_cachedRequestResults addObject:v7];
-  [(NSMutableArray *)v8->_ledger addObject:v13];
+  [VNError VNAssert:[(NSMutableArray *)selfCopy->_cachedRequestResults containsObject:v7]^ 1 log:v14];
+  [(NSMutableArray *)selfCopy->_cachedRequestResults addObject:v7];
+  [(NSMutableArray *)selfCopy->_ledger addObject:v13];
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)performedRequest:(id)a3 withError:(id)a4
+- (void)performedRequest:(id)request withError:(id)error
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [[_VNRequestForensicsRequestAndErrorTuple alloc] initWithRequest:v14 error:v6];
+  requestCopy = request;
+  errorCopy = error;
+  v7 = [[_VNRequestForensicsRequestAndErrorTuple alloc] initWithRequest:requestCopy error:errorCopy];
   v8 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v9 = self;
-  objc_sync_enter(v9);
-  v10 = [(_VNRequestForensicsRequestAndErrorTuple *)v7 request];
-  v11 = [(VNRequestForensics *)v9 _humanReadableLabelForRequest:v10];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  request = [(_VNRequestForensicsRequestAndErrorTuple *)v7 request];
+  v11 = [(VNRequestForensics *)selfCopy _humanReadableLabelForRequest:request];
   [v8 appendFormat:@"performed %@", v11];
 
-  v12 = [(_VNRequestForensicsRequestAndErrorTuple *)v7 error];
-  v13 = v12;
-  if (v12)
+  error = [(_VNRequestForensicsRequestAndErrorTuple *)v7 error];
+  v13 = error;
+  if (error)
   {
-    [v8 appendFormat:@", failed with %@", v12];
+    [v8 appendFormat:@", failed with %@", error];
   }
 
-  [(NSMutableArray *)v9->_performedRequests addObject:v7];
-  [(NSMutableArray *)v9->_ledger addObject:v8];
+  [(NSMutableArray *)selfCopy->_performedRequests addObject:v7];
+  [(NSMutableArray *)selfCopy->_ledger addObject:v8];
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)performingRequest:(id)a3
+- (void)performingRequest:(id)request
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
+  requestCopy = request;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v6 = [(VNRequestForensics *)v4 _humanReadableLabelForRequest:v8];
+  v6 = [(VNRequestForensics *)selfCopy _humanReadableLabelForRequest:requestCopy];
   v7 = [v5 initWithFormat:@"performing %@", v6];
 
-  [(NSMutableArray *)v4->_ledger addObject:v7];
-  objc_sync_exit(v4);
+  [(NSMutableArray *)selfCopy->_ledger addObject:v7];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)performingOrderedDependentRequests:(id)a3 onBehalfOfRequest:(id)a4
+- (void)performingOrderedDependentRequests:(id)requests onBehalfOfRequest:(id)request
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [[_VNRequestForensicsParentChildRequests alloc] initWithParentRequest:v7 orderedChildRequests:v6];
+  requestsCopy = requests;
+  requestCopy = request;
+  v8 = [[_VNRequestForensicsParentChildRequests alloc] initWithParentRequest:requestCopy orderedChildRequests:requestsCopy];
   v9 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v10 = self;
-  objc_sync_enter(v10);
-  v11 = [(VNRequestForensics *)v10 _humanReadableLabelForRequest:v7];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v11 = [(VNRequestForensics *)selfCopy _humanReadableLabelForRequest:requestCopy];
   [v9 appendFormat:@"%@ created", v11];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v12 = v6;
+  v12 = requestsCopy;
   v13 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v13)
   {
@@ -140,7 +140,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v16 = [(VNRequestForensics *)v10 _humanReadableLabelForRequest:*(*(&v17 + 1) + 8 * v15)];
+        v16 = [(VNRequestForensics *)selfCopy _humanReadableLabelForRequest:*(*(&v17 + 1) + 8 * v15)];
         [v9 appendFormat:@" %@", v16];
 
         ++v15;
@@ -153,34 +153,34 @@
     while (v13);
   }
 
-  [(NSMutableArray *)v10->_implicitRequests addObject:v8];
-  [(NSMutableArray *)v10->_ledger addObject:v9];
-  objc_sync_exit(v10);
+  [(NSMutableArray *)selfCopy->_implicitRequests addObject:v8];
+  [(NSMutableArray *)selfCopy->_ledger addObject:v9];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setOrderedRequests:(id)a3
+- (void)setOrderedRequests:(id)requests
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [VNError VNAssert:v4->_orderedRequests == 0 log:@"attempting to re-assign ordered requests"];
-  v5 = [v7 copy];
-  orderedRequests = v4->_orderedRequests;
-  v4->_orderedRequests = v5;
+  requestsCopy = requests;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [VNError VNAssert:selfCopy->_orderedRequests == 0 log:@"attempting to re-assign ordered requests"];
+  v5 = [requestsCopy copy];
+  orderedRequests = selfCopy->_orderedRequests;
+  selfCopy->_orderedRequests = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (VNRequestForensics)initWithOriginalRequests:(id)a3
+- (VNRequestForensics)initWithOriginalRequests:(id)requests
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestsCopy = requests;
   v34.receiver = self;
   v34.super_class = VNRequestForensics;
   v5 = [(VNRequestForensics *)&v34 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [requestsCopy copy];
     originalRequests = v5->_originalRequests;
     v5->_originalRequests = v6;
 
@@ -208,15 +208,15 @@
     ledger = v5->_ledger;
     v5->_ledger = v18;
 
-    v20 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     requestToHumanReadableLabelMap = v5->_requestToHumanReadableLabelMap;
-    v5->_requestToHumanReadableLabelMap = v20;
+    v5->_requestToHumanReadableLabelMap = strongToStrongObjectsMapTable;
 
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v22 = v4;
+    v22 = requestsCopy;
     v23 = [v22 countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v23)
     {
@@ -248,24 +248,24 @@
   return v5;
 }
 
-- (id)_humanReadableLabelForRequest:(id)a3
+- (id)_humanReadableLabelForRequest:(id)request
 {
-  v4 = a3;
-  if (v4)
+  requestCopy = request;
+  if (requestCopy)
   {
-    v5 = [(NSMapTable *)self->_requestToHumanReadableLabelMap objectForKey:v4];
-    if (!v5)
+    requestCopy = [(NSMapTable *)self->_requestToHumanReadableLabelMap objectForKey:requestCopy];
+    if (!requestCopy)
     {
       v6 = [(NSMapTable *)self->_requestToHumanReadableLabelMap count]+ 1;
       v7 = MEMORY[0x1E696AEC0];
       v8 = objc_opt_class();
-      v9 = VNRequestRevisionString(v8, [v4 resolvedRevision]);
-      v5 = [v7 stringWithFormat:@"%@ #%lu (%p)", v9, v6, v4];
+      v9 = VNRequestRevisionString(v8, [requestCopy resolvedRevision]);
+      requestCopy = [v7 stringWithFormat:@"%@ #%lu (%p)", v9, v6, requestCopy];
 
-      [(NSMapTable *)self->_requestToHumanReadableLabelMap setObject:v5 forKey:v4];
+      [(NSMapTable *)self->_requestToHumanReadableLabelMap setObject:requestCopy forKey:requestCopy];
     }
 
-    v10 = v5;
+    v10 = requestCopy;
   }
 
   else

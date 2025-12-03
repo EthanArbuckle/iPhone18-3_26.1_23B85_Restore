@@ -1,7 +1,7 @@
 @interface PUPhotoEditApertureButton
 - (CGRect)_pointerRect;
-- (PUPhotoEditApertureButton)initWithFrame:(CGRect)a3;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (PUPhotoEditApertureButton)initWithFrame:(CGRect)frame;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 @end
 
 @implementation PUPhotoEditApertureButton
@@ -22,7 +22,7 @@
   return result;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v5 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:self];
   v6 = [MEMORY[0x1E69DCDA0] effectWithPreview:v5];
@@ -33,18 +33,18 @@
   return v8;
 }
 
-- (PUPhotoEditApertureButton)initWithFrame:(CGRect)a3
+- (PUPhotoEditApertureButton)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = PUPhotoEditApertureButton;
-  v3 = [(PUPhotoEditApertureButton *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUPhotoEditApertureButton *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DCDB0]) initWithDelegate:v3];
     [(PUPhotoEditApertureButton *)v3 addInteraction:v4];
     v5 = +[PUInterfaceManager currentTheme];
-    v6 = [v5 photoEditingToolbarButtonSelectedColor];
-    [(PUPhotoEditApertureButton *)v3 setTintColor:v6];
+    photoEditingToolbarButtonSelectedColor = [v5 photoEditingToolbarButtonSelectedColor];
+    [(PUPhotoEditApertureButton *)v3 setTintColor:photoEditingToolbarButtonSelectedColor];
   }
 
   return v3;

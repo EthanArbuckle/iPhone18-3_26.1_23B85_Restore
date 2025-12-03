@@ -1,33 +1,33 @@
 @interface PKDiscoveryShelfView
-+ (id)viewForShelf:(id)a3 discoveryCardViewDelegate:(id)a4 itemIdentifier:(id)a5;
-- (PKDiscoveryShelfView)initWithFrame:(CGRect)a3;
++ (id)viewForShelf:(id)shelf discoveryCardViewDelegate:(id)delegate itemIdentifier:(id)identifier;
+- (PKDiscoveryShelfView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentInsets;
 @end
 
 @implementation PKDiscoveryShelfView
 
-+ (id)viewForShelf:(id)a3 discoveryCardViewDelegate:(id)a4 itemIdentifier:(id)a5
++ (id)viewForShelf:(id)shelf discoveryCardViewDelegate:(id)delegate itemIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 type];
+  shelfCopy = shelf;
+  delegateCopy = delegate;
+  identifierCopy = identifier;
+  type = [shelfCopy type];
   v11 = 0;
-  if (v10 <= 2)
+  if (type <= 2)
   {
-    if (v10 != 1)
+    if (type != 1)
     {
-      if (v10 != 2)
+      if (type != 2)
       {
         goto LABEL_16;
       }
 
-      v12 = v7;
-      v13 = [v12 media];
-      v14 = [v13 type];
+      v12 = shelfCopy;
+      media = [v12 media];
+      type2 = [media type];
 
       v15 = off_1E8004F60;
-      if (v14 != 2)
+      if (type2 != 2)
       {
         v15 = off_1E8004F50;
       }
@@ -41,25 +41,25 @@
     goto LABEL_12;
   }
 
-  if (v10 == 3)
+  if (type == 3)
   {
     v16 = PKDiscoverySpacerShelfView;
 LABEL_12:
-    v11 = [[v16 alloc] initWithShelf:v7];
+    v11 = [[v16 alloc] initWithShelf:shelfCopy];
     goto LABEL_13;
   }
 
-  if (v10 != 4)
+  if (type != 4)
   {
     goto LABEL_16;
   }
 
-  v11 = [[PKDiscoveryCallToActionShelfView alloc] initWithShelf:v7];
-  [(PKDiscoveryCallToActionShelfView *)v11 setDelegate:v8];
+  v11 = [[PKDiscoveryCallToActionShelfView alloc] initWithShelf:shelfCopy];
+  [(PKDiscoveryCallToActionShelfView *)v11 setDelegate:delegateCopy];
 LABEL_13:
-  if (v9 && v11)
+  if (identifierCopy && v11)
   {
-    [(PKDiscoveryShelfView *)v11 setItemIdentifier:v9];
+    [(PKDiscoveryShelfView *)v11 setItemIdentifier:identifierCopy];
   }
 
 LABEL_16:
@@ -67,15 +67,15 @@ LABEL_16:
   return v11;
 }
 
-- (PKDiscoveryShelfView)initWithFrame:(CGRect)a3
+- (PKDiscoveryShelfView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PKDiscoveryShelfView;
-  v3 = [(PKDiscoveryShelfView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDiscoveryShelfView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(PKDiscoveryShelfView *)v3 setBackgroundColor:v4];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(PKDiscoveryShelfView *)v3 setBackgroundColor:systemBackgroundColor];
   }
 
   return v3;

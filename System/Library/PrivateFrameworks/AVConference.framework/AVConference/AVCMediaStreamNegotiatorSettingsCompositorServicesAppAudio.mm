@@ -1,19 +1,19 @@
 @interface AVCMediaStreamNegotiatorSettingsCompositorServicesAppAudio
-- (AVCMediaStreamNegotiatorSettingsCompositorServicesAppAudio)initWithOptions:(id)a3 deviceRole:(unsigned __int8)a4 error:(id *)a5;
+- (AVCMediaStreamNegotiatorSettingsCompositorServicesAppAudio)initWithOptions:(id)options deviceRole:(unsigned __int8)role error:(id *)error;
 @end
 
 @implementation AVCMediaStreamNegotiatorSettingsCompositorServicesAppAudio
 
-- (AVCMediaStreamNegotiatorSettingsCompositorServicesAppAudio)initWithOptions:(id)a3 deviceRole:(unsigned __int8)a4 error:(id *)a5
+- (AVCMediaStreamNegotiatorSettingsCompositorServicesAppAudio)initWithOptions:(id)options deviceRole:(unsigned __int8)role error:(id *)error
 {
   v15 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = AVCMediaStreamNegotiatorSettingsCompositorServicesAppAudio;
-  v7 = [AVCMediaStreamNegotiatorSettings initWithOptions:sel_initWithOptions_deviceRole_defaultDirection_error_ deviceRole:a3 defaultDirection:? error:?];
+  v7 = [AVCMediaStreamNegotiatorSettings initWithOptions:sel_initWithOptions_deviceRole_defaultDirection_error_ deviceRole:options defaultDirection:? error:?];
   v8 = v7;
   if (v7)
   {
-    if ((a4 - 3) < 0xFEu)
+    if ((role - 3) < 0xFEu)
     {
       v10 = 0;
       v13 = @"Invalid device role";
@@ -59,9 +59,9 @@
     v13 = @"Failed super init";
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = v13;
+    *error = v13;
   }
 
   return 0;

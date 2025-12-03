@@ -12,67 +12,67 @@
 
 - (uint64_t)livePhotoVisibilityState
 {
-  v1 = [a1 photoIrisProperties];
-  v2 = [v1 photoIrisVisibilityState];
+  photoIrisProperties = [self photoIrisProperties];
+  photoIrisVisibilityState = [photoIrisProperties photoIrisVisibilityState];
 
-  return v2;
+  return photoIrisVisibilityState;
 }
 
 - (uint64_t)originalFilesize
 {
-  [a1 fetchPropertySetsIfNeeded];
-  v2 = [a1 originalMetadataProperties];
-  v3 = [v2 originalFilesize];
+  [self fetchPropertySetsIfNeeded];
+  originalMetadataProperties = [self originalMetadataProperties];
+  originalFilesize = [originalMetadataProperties originalFilesize];
 
-  return v3;
+  return originalFilesize;
 }
 
 - (uint64_t)originalEXIFOrientation
 {
-  [a1 fetchPropertySetsIfNeeded];
-  v2 = [a1 originalMetadataProperties];
-  v3 = [v2 originalExifOrientation];
+  [self fetchPropertySetsIfNeeded];
+  originalMetadataProperties = [self originalMetadataProperties];
+  originalExifOrientation = [originalMetadataProperties originalExifOrientation];
 
-  return v3;
+  return originalExifOrientation;
 }
 
 - (uint64_t)isTrimmableType
 {
-  if ([a1 isLivePhoto])
+  if ([self isLivePhoto])
   {
     return 1;
   }
 
-  return [a1 isVideo];
+  return [self isVideo];
 }
 
 - (uint64_t)isAnimatedImage
 {
-  if ([a1 hasAdjustments])
+  if ([self hasAdjustments])
   {
     return 0;
   }
 
-  if ([a1 isAnimatedGIF])
+  if ([self isAnimatedGIF])
   {
     return 1;
   }
 
-  return [a1 isHEICSequence];
+  return [self isHEICSequence];
 }
 
 - (void)photoIrisVideoDuration
 {
-  [a1 fetchPropertySetsIfNeeded];
+  [self fetchPropertySetsIfNeeded];
   *a2 = 0;
   a2[1] = 0;
   a2[2] = 0;
-  v4 = [a1 photoIrisProperties];
-  if (v4)
+  photoIrisProperties = [self photoIrisProperties];
+  if (photoIrisProperties)
   {
-    v5 = v4;
-    [v4 photoIrisVideoDuration];
-    v4 = v5;
+    v5 = photoIrisProperties;
+    [photoIrisProperties photoIrisVideoDuration];
+    photoIrisProperties = v5;
   }
 
   else
@@ -85,16 +85,16 @@
 
 - (void)photoIrisStillDisplayTime
 {
-  [a1 fetchPropertySetsIfNeeded];
+  [self fetchPropertySetsIfNeeded];
   *a2 = 0;
   a2[1] = 0;
   a2[2] = 0;
-  v4 = [a1 photoIrisProperties];
-  if (v4)
+  photoIrisProperties = [self photoIrisProperties];
+  if (photoIrisProperties)
   {
-    v5 = v4;
-    [v4 photoIrisStillDisplayTime];
-    v4 = v5;
+    v5 = photoIrisProperties;
+    [photoIrisProperties photoIrisStillDisplayTime];
+    photoIrisProperties = v5;
   }
 
   else

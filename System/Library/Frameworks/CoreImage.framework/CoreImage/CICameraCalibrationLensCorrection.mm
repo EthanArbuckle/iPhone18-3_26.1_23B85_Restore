@@ -1,9 +1,9 @@
 @interface CICameraCalibrationLensCorrection
 + (id)customAttributes;
-- (CGPoint)ReferenceensDistortionPointForPoint:(CGPoint)a3 lookupTable:(id)a4 distortionOpticalCenter:(CGPoint)a5 imageSize:(CGSize)a6;
-- (CGRect)regionOf:(int)a3 destRect:(CGRect)a4 userInfo:(id)a5;
+- (CGPoint)ReferenceensDistortionPointForPoint:(CGPoint)point lookupTable:(id)table distortionOpticalCenter:(CGPoint)center imageSize:(CGSize)size;
+- (CGRect)regionOf:(int)of destRect:(CGRect)rect userInfo:(id)info;
 - (id)outputImage;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation CICameraCalibrationLensCorrection
@@ -30,20 +30,20 @@
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:4];
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  v7 = [a4 isEqualToString:@"inputImage"];
-  if (a3)
+  v7 = [key isEqualToString:@"inputImage"];
+  if (value)
   {
     if (v7)
     {
-      v8 = [a3 depthData];
-      if (AVFDepthCameraCalibrationData(v8, v9))
+      depthData = [value depthData];
+      if (AVFDepthCameraCalibrationData(depthData, v9))
       {
         if (!self->inputAVCameraCalibrationData)
         {
-          v10 = [a3 depthData];
-          [(CICameraCalibrationLensCorrection *)self setValue:AVFDepthCameraCalibrationData(v10 forKey:v11), @"inputAVCameraCalibrationData"];
+          depthData2 = [value depthData];
+          [(CICameraCalibrationLensCorrection *)self setValue:AVFDepthCameraCalibrationData(depthData2 forKey:v11), @"inputAVCameraCalibrationData"];
         }
       }
     }
@@ -51,21 +51,21 @@
 
   v12.receiver = self;
   v12.super_class = CICameraCalibrationLensCorrection;
-  [(CICameraCalibrationLensCorrection *)&v12 setValue:a3 forKey:a4];
+  [(CICameraCalibrationLensCorrection *)&v12 setValue:value forKey:key];
 }
 
-- (CGPoint)ReferenceensDistortionPointForPoint:(CGPoint)a3 lookupTable:(id)a4 distortionOpticalCenter:(CGPoint)a5 imageSize:(CGSize)a6
+- (CGPoint)ReferenceensDistortionPointForPoint:(CGPoint)point lookupTable:(id)table distortionOpticalCenter:(CGPoint)center imageSize:(CGSize)size
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a6.width - a5.x;
+  y = center.y;
+  x = center.x;
+  v9 = size.width - center.x;
   if (x > v9)
   {
     v9 = x;
   }
 
   v10 = v9;
-  v11 = a6.height - a5.y;
+  v11 = size.height - center.y;
   if (y > v11)
   {
     v11 = y;
@@ -73,20 +73,20 @@
 
   v12 = v11;
   v13 = sqrtf((v12 * v12) + (v10 * v10));
-  v14 = a3.x - x;
-  v15 = a3.y - y;
+  v14 = point.x - x;
+  v15 = point.y - y;
   v16 = sqrtf((v15 * v15) + (v14 * v14));
-  v17 = [a4 bytes];
-  v18 = [a4 length] >> 2;
+  bytes = [table bytes];
+  v18 = [table length] >> 2;
   if (v16 >= v13)
   {
-    v20 = *(v17 + 4 * v18 - 4);
+    v20 = *(bytes + 4 * v18 - 4);
   }
 
   else
   {
     v19 = (v16 * (v18 - 1)) / v13;
-    v20 = ((v19 - v19) * *(v17 + 4 * v19 + 4)) + ((1.0 - (v19 - v19)) * *(v17 + 4 * v19));
+    v20 = ((v19 - v19) * *(bytes + 4 * v19 + 4)) + ((1.0 - (v19 - v19)) * *(bytes + 4 * v19));
   }
 
   v21 = v15 + (v20 * v15);
@@ -97,23 +97,23 @@
   return result;
 }
 
-- (CGRect)regionOf:(int)a3 destRect:(CGRect)a4 userInfo:(id)a5
+- (CGRect)regionOf:(int)of destRect:(CGRect)rect userInfo:(id)info
 {
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if (a3 < 1)
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (of < 1)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    v13 = [a5 valueForKey:@"inputExtent"];
+    height = rect.size.height;
+    width = rect.size.width;
+    v13 = [info valueForKey:@"inputExtent"];
     [v13 X];
     [v13 Y];
     [v13 Z];
     v64 = v14;
     [v13 W];
     v59 = v15;
-    v16 = [a5 valueForKey:@"lookUpTable"];
-    v17 = [a5 valueForKey:@"opticalCenter"];
+    v16 = [info valueForKey:@"lookUpTable"];
+    v17 = [info valueForKey:@"opticalCenter"];
     [v17 X];
     v63 = v18;
     [v17 Y];
@@ -238,7 +238,7 @@
 
   else
   {
-    v6 = [objc_msgSend(a5 valueForKey:{@"lookUpTableLength", a4.origin.x, a4.origin.y, a4.size.width, a4.size.height), "intValue"}];
+    v6 = [objc_msgSend(info valueForKey:{@"lookUpTableLength", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height), "intValue"}];
     v7 = 1.0;
     v8 = 0.0;
     v9 = 0.0;
@@ -287,9 +287,9 @@
 
     else
     {
-      v9 = [(NSNumber *)self->inputUseInverseLookUpTable BOOLValue];
+      bOOLValue = [(NSNumber *)self->inputUseInverseLookUpTable BOOLValue];
       inputAVCameraCalibrationData = self->inputAVCameraCalibrationData;
-      if (v9)
+      if (bOOLValue)
       {
         v11 = AVCameraCalibrationDataInverseLensDistortionLookupTable(inputAVCameraCalibrationData, v8);
       }

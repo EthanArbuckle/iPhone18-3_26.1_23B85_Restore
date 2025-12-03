@@ -1,36 +1,36 @@
 @interface LoopAudioComposer
-- (int)composeLoopWithAudio:(id)a3 withAudioSource:(id)a4 startTime:(id *)a5 fadeTime:(id *)a6 periodTime:(id *)a7 metadata:(id)a8 andOutputURL:(id)a9;
+- (int)composeLoopWithAudio:(id)audio withAudioSource:(id)source startTime:(id *)time fadeTime:(id *)fadeTime periodTime:(id *)periodTime metadata:(id)metadata andOutputURL:(id)l;
 @end
 
 @implementation LoopAudioComposer
 
-- (int)composeLoopWithAudio:(id)a3 withAudioSource:(id)a4 startTime:(id *)a5 fadeTime:(id *)a6 periodTime:(id *)a7 metadata:(id)a8 andOutputURL:(id)a9
+- (int)composeLoopWithAudio:(id)audio withAudioSource:(id)source startTime:(id *)time fadeTime:(id *)fadeTime periodTime:(id *)periodTime metadata:(id)metadata andOutputURL:(id)l
 {
-  v13 = a3;
-  v56 = a4;
-  v55 = a8;
-  v14 = a9;
-  time1.start = *a6;
+  audioCopy = audio;
+  sourceCopy = source;
+  metadataCopy = metadata;
+  lCopy = l;
+  time1.start = *fadeTime;
   v15 = MEMORY[0x277CC08F0];
   *time2 = *MEMORY[0x277CC08F0];
   *&time2[16] = *(MEMORY[0x277CC08F0] + 16);
   v16 = CMTimeCompare(&time1.start, time2);
-  v17 = [MEMORY[0x277CCAA00] defaultManager];
-  v18 = [v14 path];
-  v19 = [v17 fileExistsAtPath:v18];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [lCopy path];
+  v19 = [defaultManager fileExistsAtPath:path];
 
   if (v19)
   {
-    v20 = [MEMORY[0x277CCAA00] defaultManager];
-    v21 = [v14 path];
-    [v20 removeItemAtPath:v21 error:0];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    path2 = [lCopy path];
+    [defaultManager2 removeItemAtPath:path2 error:0];
   }
 
-  *&time1.start.value = *&a7->var0;
-  time1.start.epoch = a7->var3;
-  if (v13)
+  *&time1.start.value = *&periodTime->var0;
+  time1.start.epoch = periodTime->var3;
+  if (audioCopy)
   {
-    [v13 duration];
+    [audioCopy duration];
   }
 
   else
@@ -40,13 +40,13 @@
 
   if (CMTimeCompare(&time1.start, time2))
   {
-    var0 = a7->var0;
-    var1 = a7->var1;
-    if (v13)
+    var0 = periodTime->var0;
+    var1 = periodTime->var1;
+    if (audioCopy)
     {
-      [v13 duration];
+      [audioCopy duration];
       value = time1.start.value;
-      [v13 duration];
+      [audioCopy duration];
       v25 = *&time2[8];
     }
 
@@ -62,34 +62,34 @@
   }
 
   v26 = *MEMORY[0x277CE5EA8];
-  v27 = [v13 tracksWithMediaType:*MEMORY[0x277CE5EA8]];
+  v27 = [audioCopy tracksWithMediaType:*MEMORY[0x277CE5EA8]];
   v28 = [v27 count];
 
   if (v28)
   {
-    v29 = [v13 tracksWithMediaType:v26];
+    v29 = [audioCopy tracksWithMediaType:v26];
     v54 = [v29 objectAtIndex:0];
 
     v30 = *MEMORY[0x277CE5E48];
-    v31 = [v56 tracksWithMediaType:*MEMORY[0x277CE5E48]];
+    v31 = [sourceCopy tracksWithMediaType:*MEMORY[0x277CE5E48]];
     v32 = [v31 count];
 
     if (v32)
     {
-      v33 = [v56 tracksWithMediaType:v30];
+      v33 = [sourceCopy tracksWithMediaType:v30];
       v34 = [v33 objectAtIndex:0];
 
-      v52 = [MEMORY[0x277CE6548] composition];
-      v53 = [v52 addMutableTrackWithMediaType:v26 preferredTrackID:0];
+      composition = [MEMORY[0x277CE6548] composition];
+      v53 = [composition addMutableTrackWithMediaType:v26 preferredTrackID:0];
       *time2 = *&v15->value;
       *&time2[16] = v15->epoch;
-      duration = *a7;
+      duration = *periodTime;
       CMTimeRangeMake(&time1, time2, &duration);
       *time2 = *&v15->value;
       *&time2[16] = v15->epoch;
       [v53 insertTimeRange:&time1 ofTrack:v54 atTime:time2 error:0];
-      *time2 = *&a7->var0;
-      *&time2[16] = a7->var3;
+      *time2 = *&periodTime->var0;
+      *&time2[16] = periodTime->var3;
       if (v34)
       {
         [v34 timeRange];
@@ -116,19 +116,19 @@
         time1 = v58;
         [v53 setPreferredTransform:&time1];
         memset(time2, 0, 24);
-        *&time1.start.value = *&a7->var0;
-        time1.start.epoch = a7->var3;
-        duration = *a6;
+        *&time1.start.value = *&periodTime->var0;
+        time1.start.epoch = periodTime->var3;
+        duration = *fadeTime;
         CMTimeSubtract(time2, &time1.start, &duration);
         if (v16 <= 0)
         {
-          v43 = [v52 addMutableTrackWithMediaType:v30 preferredTrackID:0];
-          duration = *a5;
-          rhs = *a7;
+          v43 = [composition addMutableTrackWithMediaType:v30 preferredTrackID:0];
+          duration = *time;
+          rhs = *periodTime;
           CMTimeRangeMake(&time1, &duration, &rhs);
           duration = *v15;
           [v43 insertTimeRange:&time1 ofTrack:v34 atTime:&duration error:0];
-          v40 = 0;
+          audioMix = 0;
           v42 = 0;
           v49 = 0;
           v50 = 0;
@@ -136,24 +136,24 @@
 
         else
         {
-          v48 = [v52 addMutableTrackWithMediaType:v30 preferredTrackID:0];
-          v49 = [v52 addMutableTrackWithMediaType:v30 preferredTrackID:0];
-          v50 = [v52 addMutableTrackWithMediaType:v30 preferredTrackID:0];
-          *&time1.start.value = *&a6->var0;
-          time1.start.epoch = a6->var3;
+          v48 = [composition addMutableTrackWithMediaType:v30 preferredTrackID:0];
+          v49 = [composition addMutableTrackWithMediaType:v30 preferredTrackID:0];
+          v50 = [composition addMutableTrackWithMediaType:v30 preferredTrackID:0];
+          *&time1.start.value = *&fadeTime->var0;
+          time1.start.epoch = fadeTime->var3;
           duration = *v15;
           if (CMTimeCompare(&time1.start, &duration) >= 1)
           {
-            duration = *a5;
-            rhs = *a6;
+            duration = *time;
+            rhs = *fadeTime;
             CMTimeRangeMake(&time1, &duration, &rhs);
             duration = *time2;
             [v48 insertTimeRange:&time1 ofTrack:v34 atTime:&duration error:0];
-            *&time1.start.value = *&a5->var0;
-            time1.start.epoch = a5->var3;
-            rhs = *a7;
+            *&time1.start.value = *&time->var0;
+            time1.start.epoch = time->var3;
+            rhs = *periodTime;
             CMTimeAdd(&duration, &time1.start, &rhs);
-            rhs = *a6;
+            rhs = *fadeTime;
             CMTimeRangeMake(&time1, &duration, &rhs);
             duration = *time2;
             [v49 insertTimeRange:&time1 ofTrack:v34 atTime:&duration error:0];
@@ -164,9 +164,9 @@
           duration = *v15;
           if (CMTimeCompare(&time1.start, &duration) >= 1)
           {
-            *&time1.start.value = *&a5->var0;
-            time1.start.epoch = a5->var3;
-            rhs = *a6;
+            *&time1.start.value = *&time->var0;
+            time1.start.epoch = time->var3;
+            rhs = *fadeTime;
             CMTimeAdd(&duration, &time1.start, &rhs);
             rhs = *time2;
             CMTimeRangeMake(&time1, &duration, &rhs);
@@ -174,34 +174,34 @@
             [v50 insertTimeRange:&time1 ofTrack:v34 atTime:&duration error:0];
           }
 
-          v40 = [MEMORY[0x277CE6538] audioMix];
+          audioMix = [MEMORY[0x277CE6538] audioMix];
           v41 = [MEMORY[0x277CBEB18] arrayWithCapacity:0];
           *&time1.start.value = *time2;
           time1.start.epoch = *&time2[16];
-          duration = *a7;
+          duration = *periodTime;
           v42 = v48;
           sub_2418F7750(v49, v41, &time1.start, &duration, 1);
           *&time1.start.value = *time2;
           time1.start.epoch = *&time2[16];
-          duration = *a7;
+          duration = *periodTime;
           sub_2418F7750(v48, v41, &time1.start, &duration, 0);
-          [v40 setInputParameters:v41];
+          [audioMix setInputParameters:v41];
 
           v43 = 0;
         }
 
-        v44 = [MEMORY[0x277CE6400] exportPresetsCompatibleWithAsset:v13];
+        v44 = [MEMORY[0x277CE6400] exportPresetsCompatibleWithAsset:audioCopy];
         v45 = *MEMORY[0x277CE5C00];
         if ([*MEMORY[0x277CE5C00] isEqualToString:*MEMORY[0x277CE5C78]] & 1) != 0 || (objc_msgSend(v44, "containsObject:", v45))
         {
-          v46 = [objc_alloc(MEMORY[0x277CE6400]) initWithAsset:v52 presetName:v45];
-          [v46 setOutputURL:v14];
+          v46 = [objc_alloc(MEMORY[0x277CE6400]) initWithAsset:composition presetName:v45];
+          [v46 setOutputURL:lCopy];
           [v46 setOutputFileType:*MEMORY[0x277CE5DA8]];
           [v46 setShouldOptimizeForNetworkUse:1];
-          [v46 setAudioMix:v40];
-          if (v55)
+          [v46 setAudioMix:audioMix];
+          if (metadataCopy)
           {
-            [v46 setMetadata:v55];
+            [v46 setMetadata:metadataCopy];
           }
 
           if (sub_2418E86FC(v46))
@@ -225,8 +225,8 @@
 
       else
       {
-        v36 = a7->var0;
-        v37 = a7->var1;
+        v36 = periodTime->var0;
+        v37 = periodTime->var1;
         if (v34)
         {
           [v34 timeRange];

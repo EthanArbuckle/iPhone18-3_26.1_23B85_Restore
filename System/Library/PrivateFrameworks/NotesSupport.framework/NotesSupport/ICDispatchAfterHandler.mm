@@ -1,10 +1,10 @@
 @interface ICDispatchAfterHandler
 + (id)appLifeCycleHandler;
 - (ICDispatchAfterHandler)init;
-- (id)identifierForStringIdentifier:(id)a3;
+- (id)identifierForStringIdentifier:(id)identifier;
 - (void)cancelAll;
-- (void)cancelBlocksWithStringIdentifier:(id)a3;
-- (void)dispatchAfter:(double)a3 stringIdentifier:(id)a4 withBlock:(id)a5;
+- (void)cancelBlocksWithStringIdentifier:(id)identifier;
+- (void)dispatchAfter:(double)after stringIdentifier:(id)identifier withBlock:(id)block;
 @end
 
 @implementation ICDispatchAfterHandler
@@ -47,50 +47,50 @@ uint64_t __45__ICDispatchAfterHandler_appLifeCycleHandler__block_invoke()
   return v2;
 }
 
-- (id)identifierForStringIdentifier:(id)a3
+- (id)identifierForStringIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  identifierCopy = identifier;
+  v4 = identifierCopy;
+  if (identifierCopy)
   {
-    v5 = v3;
+    null = identifierCopy;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v6 = v5;
+  v6 = null;
 
   return v6;
 }
 
-- (void)dispatchAfter:(double)a3 stringIdentifier:(id)a4 withBlock:(id)a5
+- (void)dispatchAfter:(double)after stringIdentifier:(id)identifier withBlock:(id)block
 {
-  v14 = a5;
-  v8 = [(ICDispatchAfterHandler *)self identifierForStringIdentifier:a4];
+  blockCopy = block;
+  v8 = [(ICDispatchAfterHandler *)self identifierForStringIdentifier:identifier];
   v9 = objc_opt_class();
-  v10 = [(ICDispatchAfterHandler *)self identifierBlockMap];
-  v11 = [v10 objectForKeyedSubscript:v8];
+  identifierBlockMap = [(ICDispatchAfterHandler *)self identifierBlockMap];
+  v11 = [identifierBlockMap objectForKeyedSubscript:v8];
   v12 = ICCheckedDynamicCast(v9, v11);
 
   if (!v12)
   {
     v12 = [[ICDispatchAfterBlocks alloc] initWithIdentifier:v8];
-    v13 = [(ICDispatchAfterHandler *)self identifierBlockMap];
-    [v13 setObject:v12 forKeyedSubscript:v8];
+    identifierBlockMap2 = [(ICDispatchAfterHandler *)self identifierBlockMap];
+    [identifierBlockMap2 setObject:v12 forKeyedSubscript:v8];
   }
 
-  [(ICDispatchAfterBlocks *)v12 dispatchAfter:v14 withBlock:a3];
+  [(ICDispatchAfterBlocks *)v12 dispatchAfter:blockCopy withBlock:after];
 }
 
-- (void)cancelBlocksWithStringIdentifier:(id)a3
+- (void)cancelBlocksWithStringIdentifier:(id)identifier
 {
-  v8 = [(ICDispatchAfterHandler *)self identifierForStringIdentifier:a3];
+  v8 = [(ICDispatchAfterHandler *)self identifierForStringIdentifier:identifier];
   v4 = objc_opt_class();
-  v5 = [(ICDispatchAfterHandler *)self identifierBlockMap];
-  v6 = [v5 objectForKeyedSubscript:v8];
+  identifierBlockMap = [(ICDispatchAfterHandler *)self identifierBlockMap];
+  v6 = [identifierBlockMap objectForKeyedSubscript:v8];
   v7 = ICCheckedDynamicCast(v4, v6);
 
   [v7 cancelAll];
@@ -99,12 +99,12 @@ uint64_t __45__ICDispatchAfterHandler_appLifeCycleHandler__block_invoke()
 - (void)cancelAll
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [(ICDispatchAfterHandler *)self identifierBlockMap];
+  identifierBlockMap = [(ICDispatchAfterHandler *)self identifierBlockMap];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v3 = [identifierBlockMap countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -116,12 +116,12 @@ uint64_t __45__ICDispatchAfterHandler_appLifeCycleHandler__block_invoke()
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(identifierBlockMap);
         }
 
         v7 = *(*(&v11 + 1) + 8 * v6);
         v8 = objc_opt_class();
-        v9 = [v2 objectForKeyedSubscript:v7];
+        v9 = [identifierBlockMap objectForKeyedSubscript:v7];
         v10 = ICCheckedDynamicCast(v8, v9);
 
         [v10 cancelAll];
@@ -129,7 +129,7 @@ uint64_t __45__ICDispatchAfterHandler_appLifeCycleHandler__block_invoke()
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [identifierBlockMap countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);

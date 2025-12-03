@@ -1,25 +1,25 @@
 @interface RCPlaybackSettingSwitchCell
 - (BOOL)accessibilityActivate;
 - (NSString)title;
-- (RCPlaybackSettingSwitchCell)initWithFrame:(CGRect)a3;
+- (RCPlaybackSettingSwitchCell)initWithFrame:(CGRect)frame;
 - (UIColor)imageTint;
 - (UIImage)image;
-- (id)_cellAccessoriesWithSwitchState:(BOOL)a3;
+- (id)_cellAccessoriesWithSwitchState:(BOOL)state;
 - (unint64_t)accessibilityTraits;
 - (void)_didToggleSwitch;
-- (void)setImage:(id)a3;
-- (void)setImageTint:(id)a3;
-- (void)setSwitchState:(BOOL)a3;
-- (void)setTitle:(id)a3;
+- (void)setImage:(id)image;
+- (void)setImageTint:(id)tint;
+- (void)setSwitchState:(BOOL)state;
+- (void)setTitle:(id)title;
 @end
 
 @implementation RCPlaybackSettingSwitchCell
 
-- (RCPlaybackSettingSwitchCell)initWithFrame:(CGRect)a3
+- (RCPlaybackSettingSwitchCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = RCPlaybackSettingSwitchCell;
-  v3 = [(RCPlaybackSettingSwitchCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RCPlaybackSettingSwitchCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIListContentConfiguration cellConfiguration];
@@ -32,84 +32,84 @@
   return v3;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(RCPlaybackSettingSwitchCell *)self contentConfiguration];
-  [v5 setText:v4];
+  titleCopy = title;
+  contentConfiguration = [(RCPlaybackSettingSwitchCell *)self contentConfiguration];
+  [contentConfiguration setText:titleCopy];
 
-  [(RCPlaybackSettingSwitchCell *)self setContentConfiguration:v5];
+  [(RCPlaybackSettingSwitchCell *)self setContentConfiguration:contentConfiguration];
 }
 
 - (NSString)title
 {
-  v2 = [(RCPlaybackSettingSwitchCell *)self contentConfiguration];
-  v3 = [v2 text];
+  contentConfiguration = [(RCPlaybackSettingSwitchCell *)self contentConfiguration];
+  text = [contentConfiguration text];
 
-  return v3;
+  return text;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v5 = [(RCPlaybackSettingSwitchCell *)self contentConfiguration];
-  [v5 setImage:v4];
+  imageCopy = image;
+  contentConfiguration = [(RCPlaybackSettingSwitchCell *)self contentConfiguration];
+  [contentConfiguration setImage:imageCopy];
 
-  [(RCPlaybackSettingSwitchCell *)self setContentConfiguration:v5];
+  [(RCPlaybackSettingSwitchCell *)self setContentConfiguration:contentConfiguration];
 }
 
 - (UIImage)image
 {
-  v2 = [(RCPlaybackSettingSwitchCell *)self contentConfiguration];
-  v3 = [v2 image];
+  contentConfiguration = [(RCPlaybackSettingSwitchCell *)self contentConfiguration];
+  image = [contentConfiguration image];
 
-  return v3;
+  return image;
 }
 
-- (void)setImageTint:(id)a3
+- (void)setImageTint:(id)tint
 {
-  v4 = a3;
-  v6 = [(RCPlaybackSettingSwitchCell *)self contentConfiguration];
-  v5 = [v6 imageProperties];
-  [v5 setTintColor:v4];
+  tintCopy = tint;
+  contentConfiguration = [(RCPlaybackSettingSwitchCell *)self contentConfiguration];
+  imageProperties = [contentConfiguration imageProperties];
+  [imageProperties setTintColor:tintCopy];
 
-  [(RCPlaybackSettingSwitchCell *)self setContentConfiguration:v6];
+  [(RCPlaybackSettingSwitchCell *)self setContentConfiguration:contentConfiguration];
 }
 
 - (UIColor)imageTint
 {
-  v2 = [(RCPlaybackSettingSwitchCell *)self contentConfiguration];
-  v3 = [v2 imageProperties];
-  v4 = [v3 tintColor];
+  contentConfiguration = [(RCPlaybackSettingSwitchCell *)self contentConfiguration];
+  imageProperties = [contentConfiguration imageProperties];
+  tintColor = [imageProperties tintColor];
 
-  return v4;
+  return tintColor;
 }
 
-- (void)setSwitchState:(BOOL)a3
+- (void)setSwitchState:(BOOL)state
 {
   v4 = self->_switch;
   if (v4)
   {
 
-    [(UISwitch *)v4 setOn:a3];
+    [(UISwitch *)v4 setOn:state];
   }
 
   else
   {
-    v5 = [(RCPlaybackSettingSwitchCell *)self _cellAccessoriesWithSwitchState:a3];
+    v5 = [(RCPlaybackSettingSwitchCell *)self _cellAccessoriesWithSwitchState:state];
     [(RCPlaybackSettingSwitchCell *)self setAccessories:v5];
   }
 }
 
-- (id)_cellAccessoriesWithSwitchState:(BOOL)a3
+- (id)_cellAccessoriesWithSwitchState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v5 = objc_alloc_init(NSMutableArray);
   v6 = objc_alloc_init(UISwitch);
   v7 = self->_switch;
   self->_switch = v6;
 
-  [(UISwitch *)self->_switch setOn:v3];
+  [(UISwitch *)self->_switch setOn:stateCopy];
   [(UISwitch *)self->_switch addTarget:self action:"_didToggleSwitch" forControlEvents:4096];
   [(UISwitch *)self->_switch setIsAccessibilityElement:0];
   v8 = [[UICellAccessoryCustomView alloc] initWithCustomView:self->_switch placement:1];
@@ -122,16 +122,16 @@
 
 - (void)_didToggleSwitch
 {
-  v3 = [(RCPlaybackSettingCell *)self cellActionsDelegate];
-  [v3 didToggleSwitch:self toState:{-[UISwitch isOn](self->_switch, "isOn")}];
+  cellActionsDelegate = [(RCPlaybackSettingCell *)self cellActionsDelegate];
+  [cellActionsDelegate didToggleSwitch:self toState:{-[UISwitch isOn](self->_switch, "isOn")}];
 }
 
 - (unint64_t)accessibilityTraits
 {
   v5.receiver = self;
   v5.super_class = RCPlaybackSettingSwitchCell;
-  v3 = [(RCPlaybackSettingSwitchCell *)&v5 accessibilityTraits];
-  return [(UISwitch *)self->_switch accessibilityTraits]| v3;
+  accessibilityTraits = [(RCPlaybackSettingSwitchCell *)&v5 accessibilityTraits];
+  return [(UISwitch *)self->_switch accessibilityTraits]| accessibilityTraits;
 }
 
 - (BOOL)accessibilityActivate

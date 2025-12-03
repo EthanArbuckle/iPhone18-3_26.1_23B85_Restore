@@ -1,50 +1,50 @@
 @interface AVTAvatarAttributeEditorSectionColorItem
-- (AVTAvatarAttributeEditorSectionColorItem)initWithColor:(id)a3 skinColor:(id)a4 imageProvider:(id)a5 colorLayerProvider:(id)a6 avatarUpdater:(id)a7 derivedColorDependent:(BOOL)a8 selected:(BOOL)a9;
+- (AVTAvatarAttributeEditorSectionColorItem)initWithColor:(id)color skinColor:(id)skinColor imageProvider:(id)provider colorLayerProvider:(id)layerProvider avatarUpdater:(id)updater derivedColorDependent:(BOOL)dependent selected:(BOOL)selected;
 - (NSString)description;
 - (id)colorPreset;
 @end
 
 @implementation AVTAvatarAttributeEditorSectionColorItem
 
-- (AVTAvatarAttributeEditorSectionColorItem)initWithColor:(id)a3 skinColor:(id)a4 imageProvider:(id)a5 colorLayerProvider:(id)a6 avatarUpdater:(id)a7 derivedColorDependent:(BOOL)a8 selected:(BOOL)a9
+- (AVTAvatarAttributeEditorSectionColorItem)initWithColor:(id)color skinColor:(id)skinColor imageProvider:(id)provider colorLayerProvider:(id)layerProvider avatarUpdater:(id)updater derivedColorDependent:(BOOL)dependent selected:(BOOL)selected
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = a6;
-  v19 = [v18 providerForColorIntoLayer];
-  v20 = [v18 providerForGradientFromColor];
+  colorCopy = color;
+  skinColorCopy = skinColor;
+  updaterCopy = updater;
+  layerProviderCopy = layerProvider;
+  providerForColorIntoLayer = [layerProviderCopy providerForColorIntoLayer];
+  providerForGradientFromColor = [layerProviderCopy providerForGradientFromColor];
 
   v34.receiver = self;
   v34.super_class = AVTAvatarAttributeEditorSectionColorItem;
   v21 = [(AVTAvatarAttributeEditorSectionColorItem *)&v34 init];
   if (v21)
   {
-    v22 = [v15 identifier];
+    identifier = [colorCopy identifier];
     identifier = v21->_identifier;
-    v21->_identifier = v22;
+    v21->_identifier = identifier;
 
-    v24 = [v15 localizedName];
-    v25 = [v24 copy];
+    localizedName = [colorCopy localizedName];
+    v25 = [localizedName copy];
     localizedName = v21->_localizedName;
     v21->_localizedName = v25;
 
-    v27 = [v19 copy];
+    v27 = [providerForColorIntoLayer copy];
     layerContentProvider = v21->_layerContentProvider;
     v21->_layerContentProvider = v27;
 
-    v29 = [v20 copy];
+    v29 = [providerForGradientFromColor copy];
     gradientProvider = v21->_gradientProvider;
     v21->_gradientProvider = v29;
 
-    objc_storeStrong(&v21->_color, a3);
-    objc_storeStrong(&v21->_skinColor, a4);
-    v31 = [v17 copy];
+    objc_storeStrong(&v21->_color, color);
+    objc_storeStrong(&v21->_skinColor, skinColor);
+    v31 = [updaterCopy copy];
     avatarUpdater = v21->_avatarUpdater;
     v21->_avatarUpdater = v31;
 
-    v21->_hasDerivedColorDependency = a8;
-    v21->_selected = a9;
+    v21->_hasDerivedColorDependency = dependent;
+    v21->_selected = selected;
   }
 
   return v21;
@@ -57,8 +57,8 @@
   v3 = [(AVTAvatarAttributeEditorSectionColorItem *)&v8 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(AVTAvatarAttributeEditorSectionColorItem *)self localizedName];
-  [v4 appendFormat:@" color name: %@", v5];
+  localizedName = [(AVTAvatarAttributeEditorSectionColorItem *)self localizedName];
+  [v4 appendFormat:@" color name: %@", localizedName];
 
   if ([(AVTAvatarAttributeEditorSectionColorItem *)self isSelected])
   {
@@ -72,10 +72,10 @@
 
 - (id)colorPreset
 {
-  v2 = [(AVTAvatarAttributeEditorSectionColorItem *)self color];
-  v3 = [v2 baseColorPreset];
+  color = [(AVTAvatarAttributeEditorSectionColorItem *)self color];
+  baseColorPreset = [color baseColorPreset];
 
-  return v3;
+  return baseColorPreset;
 }
 
 @end

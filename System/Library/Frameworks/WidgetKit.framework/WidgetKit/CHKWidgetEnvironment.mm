@@ -1,9 +1,9 @@
 @interface CHKWidgetEnvironment
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CHKWidgetEnvironment)init;
 - (NSString)description;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHKWidgetEnvironment
@@ -23,11 +23,11 @@
   return [(CHKWidgetEnvironment *)&v6 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1922282B0();
     swift_unknownObjectRelease();
@@ -36,7 +36,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = WidgetEnvironment.Storage.isEqual(_:)(v8);
@@ -45,16 +45,16 @@
   return v6 & 1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  WidgetEnvironment.Storage.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  WidgetEnvironment.Storage.encode(with:)(coderCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   WidgetEnvironment.Storage.description.getter();
 
   v3 = sub_192227930();
@@ -64,7 +64,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = WidgetEnvironment.Storage.hash.getter();
 
   return v3;

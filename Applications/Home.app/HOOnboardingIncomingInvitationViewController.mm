@@ -3,47 +3,47 @@
 - (HOOnboardingChildViewControllerDelegate)delegate;
 - (HOOnboardingChildViewControllerNavigationBarDelegate)navigationBarDelegate;
 - (HOOnboardingIncomingInvitationFlowDelegate)incomingInvitationDelegate;
-- (HOOnboardingIncomingInvitationViewController)initWithIncomingInvitation:(id)a3 invitationHelper:(id)a4 incomingInvitationDelegate:(id)a5;
+- (HOOnboardingIncomingInvitationViewController)initWithIncomingInvitation:(id)invitation invitationHelper:(id)helper incomingInvitationDelegate:(id)delegate;
 - (void)_acceptInvitation;
-- (void)_cancelButton:(id)a3;
+- (void)_cancelButton:(id)button;
 - (void)_configureButtons;
 - (void)_continue;
-- (void)_declineInvitation:(id)a3;
-- (void)_handleMainActionButton:(id)a3;
+- (void)_declineInvitation:(id)invitation;
+- (void)_handleMainActionButton:(id)button;
 - (void)_hideSpinner;
-- (void)_ignoreInvitation:(id)a3;
-- (void)_ignoreOrReportAlert:(id)a3;
+- (void)_ignoreInvitation:(id)invitation;
+- (void)_ignoreOrReportAlert:(id)alert;
 - (void)_reallyAcceptInvitation;
-- (void)_reportJunk:(id)a3;
+- (void)_reportJunk:(id)junk;
 - (void)_showSpinner;
 - (void)_updateImageConstraints;
-- (void)homeManager:(id)a3 didAddHome:(id)a4;
-- (void)invitationResponseController:(id)a3 stateDidChange:(unint64_t)a4;
-- (void)invitationUtilityDidUpdateInformation:(id)a3;
+- (void)homeManager:(id)manager didAddHome:(id)home;
+- (void)invitationResponseController:(id)controller stateDidChange:(unint64_t)change;
+- (void)invitationUtilityDidUpdateInformation:(id)information;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation HOOnboardingIncomingInvitationViewController
 
-- (HOOnboardingIncomingInvitationViewController)initWithIncomingInvitation:(id)a3 invitationHelper:(id)a4 incomingInvitationDelegate:(id)a5
+- (HOOnboardingIncomingInvitationViewController)initWithIncomingInvitation:(id)invitation invitationHelper:(id)helper incomingInvitationDelegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v10)
+  invitationCopy = invitation;
+  helperCopy = helper;
+  delegateCopy = delegate;
+  if (helperCopy)
   {
-    [v10 setMode:1];
+    [helperCopy setMode:1];
   }
 
   else
   {
-    v10 = [[HUInvitationHelper alloc] initWithMode:1];
+    helperCopy = [[HUInvitationHelper alloc] initWithMode:1];
   }
 
-  [v10 setInvitation:v9];
-  v12 = [v10 detailText];
-  v13 = [v10 homeInvitationTitle];
-  if ([v10 isUnknownContact])
+  [helperCopy setInvitation:invitationCopy];
+  detailText = [helperCopy detailText];
+  homeInvitationTitle = [helperCopy homeInvitationTitle];
+  if ([helperCopy isUnknownContact])
   {
     v14 = @"person.crop.circle.badge.questionmark";
   }
@@ -55,24 +55,24 @@
 
   v37.receiver = self;
   v37.super_class = HOOnboardingIncomingInvitationViewController;
-  v15 = [(HOOnboardingIncomingInvitationViewController *)&v37 initWithTitle:v13 detailText:v12 symbolName:v14];
+  v15 = [(HOOnboardingIncomingInvitationViewController *)&v37 initWithTitle:homeInvitationTitle detailText:detailText symbolName:v14];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_invitationHelper, v10);
+    objc_storeStrong(&v15->_invitationHelper, helperCopy);
     [(HUInvitationHelper *)v16->_invitationHelper setDelegate:v16];
-    objc_storeWeak(&v16->_incomingInvitationDelegate, v11);
-    objc_storeStrong(&v16->_invitation, a3);
-    v17 = [[HUIncomingInvitationResponseController alloc] initWithDelegate:v16 invitation:v9];
+    objc_storeWeak(&v16->_incomingInvitationDelegate, delegateCopy);
+    objc_storeStrong(&v16->_invitation, invitation);
+    v17 = [[HUIncomingInvitationResponseController alloc] initWithDelegate:v16 invitation:invitationCopy];
     responseController = v16->_responseController;
     v16->_responseController = v17;
 
     v19 = HFLogForCategory();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v9 hf_prettyDescription];
+      hf_prettyDescription = [invitationCopy hf_prettyDescription];
       *buf = 138412290;
-      v39 = v20;
+      v39 = hf_prettyDescription;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Onboarding invitation %@", buf, 0xCu);
     }
 
@@ -97,8 +97,8 @@
 
     [(UIImageView *)v16->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)v16->_imageView setContentMode:v24];
-    v27 = [(HOOnboardingIncomingInvitationViewController *)v16 contentView];
-    [v27 addSubview:v16->_imageView];
+    contentView = [(HOOnboardingIncomingInvitationViewController *)v16 contentView];
+    [contentView addSubview:v16->_imageView];
 
     if ([(HMIncomingHomeInvitation *)v16->_invitation isInviteeRestrictedGuest])
     {
@@ -107,24 +107,24 @@
     }
 
     v29 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:v16 action:"_cancelButton:"];
-    v30 = [(HOOnboardingIncomingInvitationViewController *)v16 navigationItem];
-    [v30 setRightBarButtonItem:v29];
+    navigationItem = [(HOOnboardingIncomingInvitationViewController *)v16 navigationItem];
+    [navigationItem setRightBarButtonItem:v29];
 
     [(HOOnboardingIncomingInvitationViewController *)v16 setModalInPresentation:1];
     v31 = +[HFHomeKitDispatcher sharedDispatcher];
     [v31 addHomeManagerObserver:v16];
     [v31 addHomeObserver:v16];
-    if ([v9 isInviteeRestrictedGuest])
+    if ([invitationCopy isInviteeRestrictedGuest])
     {
-      v32 = [v9 restrictedGuestSchedule];
+      restrictedGuestSchedule = [invitationCopy restrictedGuestSchedule];
 
       v33 = off_1000C0D38;
-      if (v32)
+      if (restrictedGuestSchedule)
       {
         v33 = &off_1000C0D40;
       }
 
-      v34 = [objc_alloc(*v33) initWithIncomingInvitation:v9 invitationHelper:v10 incomingInvitationDelegate:v11];
+      v34 = [objc_alloc(*v33) initWithIncomingInvitation:invitationCopy invitationHelper:helperCopy incomingInvitationDelegate:delegateCopy];
       restrictedGuestNextViewController = v16->_restrictedGuestNextViewController;
       v16->_restrictedGuestNextViewController = v34;
     }
@@ -145,89 +145,89 @@
 
 - (HOOnboardingChildViewController)nextViewController
 {
-  v3 = [(HOOnboardingIncomingInvitationViewController *)self invitation];
-  v4 = [v3 isInviteeRestrictedGuest];
+  invitation = [(HOOnboardingIncomingInvitationViewController *)self invitation];
+  isInviteeRestrictedGuest = [invitation isInviteeRestrictedGuest];
 
-  if (v4)
+  if (isInviteeRestrictedGuest)
   {
-    v5 = [(HOOnboardingIncomingInvitationViewController *)self restrictedGuestNextViewController];
+    restrictedGuestNextViewController = [(HOOnboardingIncomingInvitationViewController *)self restrictedGuestNextViewController];
   }
 
   else
   {
-    v5 = 0;
+    restrictedGuestNextViewController = 0;
   }
 
-  return v5;
+  return restrictedGuestNextViewController;
 }
 
-- (void)homeManager:(id)a3 didAddHome:(id)a4
+- (void)homeManager:(id)manager didAddHome:(id)home
 {
-  v5 = a4;
+  homeCopy = home;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 136315394;
     v15 = "[HOOnboardingIncomingInvitationViewController homeManager:didAddHome:]";
     v16 = 2112;
-    v17 = v5;
+    v17 = homeCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "(%s) home = %@.", &v14, 0x16u);
   }
 
-  v7 = [v5 uuid];
-  v8 = [(HOOnboardingIncomingInvitationViewController *)self invitation];
-  v9 = [v8 homeUUID];
-  v10 = [v7 hmf_isEqualToUUID:v9];
+  uuid = [homeCopy uuid];
+  invitation = [(HOOnboardingIncomingInvitationViewController *)self invitation];
+  homeUUID = [invitation homeUUID];
+  v10 = [uuid hmf_isEqualToUUID:homeUUID];
 
   if (v10)
   {
-    v11 = [(HOOnboardingIncomingInvitationViewController *)self acceptedPendingAddHomeTimeoutCancellationToken];
-    [v11 cancel];
+    acceptedPendingAddHomeTimeoutCancellationToken = [(HOOnboardingIncomingInvitationViewController *)self acceptedPendingAddHomeTimeoutCancellationToken];
+    [acceptedPendingAddHomeTimeoutCancellationToken cancel];
 
     [(HOOnboardingIncomingInvitationViewController *)self setAcceptedPendingAddHomeTimeoutCancellationToken:0];
     v12 = +[HFHomeKitDispatcher sharedDispatcher];
-    [v12 setSelectedHome:v5 userInitiated:1];
+    [v12 setSelectedHome:homeCopy userInitiated:1];
 
-    v13 = [(HOOnboardingIncomingInvitationViewController *)self incomingInvitationDelegate];
-    [v13 invitationViewControllerDidAcceptInvitation:self];
+    incomingInvitationDelegate = [(HOOnboardingIncomingInvitationViewController *)self incomingInvitationDelegate];
+    [incomingInvitationDelegate invitationViewControllerDidAcceptInvitation:self];
   }
 }
 
-- (void)invitationResponseController:(id)a3 stateDidChange:(unint64_t)a4
+- (void)invitationResponseController:(id)controller stateDidChange:(unint64_t)change
 {
-  v6 = a3;
+  controllerCopy = controller;
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    [v6 state];
+    [controllerCopy state];
     v8 = HUStringFromIncomingInvitationResponseControllerState();
-    v9 = [v6 invitation];
-    v10 = [v9 hf_prettyDescription];
+    invitation = [controllerCopy invitation];
+    hf_prettyDescription = [invitation hf_prettyDescription];
     *buf = 136315650;
     v24 = "[HOOnboardingIncomingInvitationViewController invitationResponseController:stateDidChange:]";
     v25 = 2114;
     v26 = v8;
     v27 = 2112;
-    v28 = v10;
+    v28 = hf_prettyDescription;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "(%s) invitation state is %{public}@ for invitation %@", buf, 0x20u);
   }
 
-  switch(a4)
+  switch(change)
   {
     case 3uLL:
-      v16 = [(HOOnboardingIncomingInvitationViewController *)self incomingInvitationDelegate];
-      [v16 invitationViewControllerDidDecideLaterInvitation:self];
+      incomingInvitationDelegate = [(HOOnboardingIncomingInvitationViewController *)self incomingInvitationDelegate];
+      [incomingInvitationDelegate invitationViewControllerDidDecideLaterInvitation:self];
 
       break;
     case 2uLL:
-      if ([v6 response] == 1)
+      if ([controllerCopy response] == 1)
       {
-        v11 = [(HOOnboardingIncomingInvitationViewController *)self joiningHomeLabel];
+        joiningHomeLabel = [(HOOnboardingIncomingInvitationViewController *)self joiningHomeLabel];
         v12 = sub_100010644(@"HOJoiningHome_Label_Title");
-        [v11 setText:v12];
+        [joiningHomeLabel setText:v12];
 
-        v13 = [(HOOnboardingIncomingInvitationViewController *)self joiningHomeLabel];
-        [v13 sizeToFit];
+        joiningHomeLabel2 = [(HOOnboardingIncomingInvitationViewController *)self joiningHomeLabel];
+        [joiningHomeLabel2 sizeToFit];
 
         objc_initWeak(buf, self);
         v14 = +[NAScheduler mainThreadScheduler];
@@ -243,27 +243,27 @@
         objc_destroyWeak(buf);
       }
 
-      else if ([v6 response] == 2)
+      else if ([controllerCopy response] == 2)
       {
-        v17 = [(HOOnboardingIncomingInvitationViewController *)self incomingInvitationDelegate];
-        [v17 invitationViewControllerDidDeclineInvitation:self];
+        incomingInvitationDelegate2 = [(HOOnboardingIncomingInvitationViewController *)self incomingInvitationDelegate];
+        [incomingInvitationDelegate2 invitationViewControllerDidDeclineInvitation:self];
       }
 
-      else if ([v6 response] == 3)
+      else if ([controllerCopy response] == 3)
       {
-        v18 = [(HOOnboardingIncomingInvitationViewController *)self incomingInvitationDelegate];
-        [v18 invitationViewControllerDidIgnoreInvitation:self];
+        incomingInvitationDelegate3 = [(HOOnboardingIncomingInvitationViewController *)self incomingInvitationDelegate];
+        [incomingInvitationDelegate3 invitationViewControllerDidIgnoreInvitation:self];
       }
 
-      else if ([v6 response] == 4)
+      else if ([controllerCopy response] == 4)
       {
-        v19 = [(HOOnboardingIncomingInvitationViewController *)self incomingInvitationDelegate];
-        [v19 invitationViewControllerDidReportJunkInvitation:self];
+        incomingInvitationDelegate4 = [(HOOnboardingIncomingInvitationViewController *)self incomingInvitationDelegate];
+        [incomingInvitationDelegate4 invitationViewControllerDidReportJunkInvitation:self];
       }
 
       else
       {
-        v20 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 response]);
+        v20 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [controllerCopy response]);
         NSLog(@"Unexpected response %@", v20);
       }
 
@@ -274,11 +274,11 @@
   }
 }
 
-- (void)invitationUtilityDidUpdateInformation:(id)a3
+- (void)invitationUtilityDidUpdateInformation:(id)information
 {
   [(OBTrayButton *)self->_declineOrIgnoreInvitationButton removeTarget:self action:0 forControlEvents:64];
-  v4 = [(HOOnboardingIncomingInvitationViewController *)self buttonTray];
-  [v4 removeAllButtons];
+  buttonTray = [(HOOnboardingIncomingInvitationViewController *)self buttonTray];
+  [buttonTray removeAllButtons];
 
   [(HOOnboardingIncomingInvitationViewController *)self _configureButtons];
 }
@@ -286,24 +286,24 @@
 - (void)_configureButtons
 {
   v3 = sub_100010644(@"HHOUserIncomingInvitationView_ConsentNotice");
-  v4 = [(HOOnboardingIncomingInvitationViewController *)self invitationHelper];
-  v5 = [v4 invitation];
-  v6 = [v5 isInviteeRestrictedGuest];
+  invitationHelper = [(HOOnboardingIncomingInvitationViewController *)self invitationHelper];
+  invitation = [invitationHelper invitation];
+  isInviteeRestrictedGuest = [invitation isInviteeRestrictedGuest];
 
-  if (v6)
+  if (isInviteeRestrictedGuest)
   {
 
     v3 = 0;
   }
 
-  v7 = [(HOOnboardingIncomingInvitationViewController *)self buttonTray];
-  [v7 addCaptionText:v3];
+  buttonTray = [(HOOnboardingIncomingInvitationViewController *)self buttonTray];
+  [buttonTray addCaptionText:v3];
 
-  v8 = [(HOOnboardingIncomingInvitationViewController *)self invitationHelper];
-  v9 = [v8 isUnknownContact];
+  invitationHelper2 = [(HOOnboardingIncomingInvitationViewController *)self invitationHelper];
+  isUnknownContact = [invitationHelper2 isUnknownContact];
 
   v10 = +[OBBoldTrayButton boldButton];
-  if (v9)
+  if (isUnknownContact)
   {
     [(HOOnboardingIncomingInvitationViewController *)self setDeclineOrIgnoreInvitationButton:v10];
 
@@ -332,117 +332,117 @@
     v13 = @"HOUserIncomingInvitationView_DeclineButton";
   }
 
-  v14 = [(HOOnboardingIncomingInvitationViewController *)self declineOrIgnoreInvitationButton];
+  declineOrIgnoreInvitationButton = [(HOOnboardingIncomingInvitationViewController *)self declineOrIgnoreInvitationButton];
   v15 = sub_100010644(v13);
-  [v14 setTitle:v15 forState:0];
+  [declineOrIgnoreInvitationButton setTitle:v15 forState:0];
 
-  v16 = [(HOOnboardingIncomingInvitationViewController *)self declineOrIgnoreInvitationButton];
-  [v16 addTarget:self action:*v12 forControlEvents:64];
+  declineOrIgnoreInvitationButton2 = [(HOOnboardingIncomingInvitationViewController *)self declineOrIgnoreInvitationButton];
+  [declineOrIgnoreInvitationButton2 addTarget:self action:*v12 forControlEvents:64];
 
-  v17 = [(HOOnboardingIncomingInvitationViewController *)self headerView];
-  v18 = [(HOOnboardingIncomingInvitationViewController *)self invitationHelper];
-  v19 = [v18 homeInvitationTitle];
-  [v17 setTitle:v19];
+  headerView = [(HOOnboardingIncomingInvitationViewController *)self headerView];
+  invitationHelper3 = [(HOOnboardingIncomingInvitationViewController *)self invitationHelper];
+  homeInvitationTitle = [invitationHelper3 homeInvitationTitle];
+  [headerView setTitle:homeInvitationTitle];
 
-  v20 = [(HOOnboardingIncomingInvitationViewController *)self headerView];
-  v21 = [(HOOnboardingIncomingInvitationViewController *)self invitationHelper];
-  v22 = [v21 detailText];
-  [v20 setDetailText:v22];
+  headerView2 = [(HOOnboardingIncomingInvitationViewController *)self headerView];
+  invitationHelper4 = [(HOOnboardingIncomingInvitationViewController *)self invitationHelper];
+  detailText = [invitationHelper4 detailText];
+  [headerView2 setDetailText:detailText];
 
-  v23 = [(HOOnboardingIncomingInvitationViewController *)self mainActionButton];
-  [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
+  mainActionButton = [(HOOnboardingIncomingInvitationViewController *)self mainActionButton];
+  [mainActionButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v24 = [(HOOnboardingIncomingInvitationViewController *)self declineOrIgnoreInvitationButton];
-  [v24 setTranslatesAutoresizingMaskIntoConstraints:0];
+  declineOrIgnoreInvitationButton3 = [(HOOnboardingIncomingInvitationViewController *)self declineOrIgnoreInvitationButton];
+  [declineOrIgnoreInvitationButton3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v25 = sub_100010644(@"HOUserIncomingInvitationView_AcceptButton");
-  v26 = [(HOOnboardingIncomingInvitationViewController *)self mainActionButton];
-  [v26 setAccessibilityIdentifier:@"Home.Onboarding.Guest.JoinHome"];
+  mainActionButton2 = [(HOOnboardingIncomingInvitationViewController *)self mainActionButton];
+  [mainActionButton2 setAccessibilityIdentifier:@"Home.Onboarding.Guest.JoinHome"];
 
-  v27 = [(HOOnboardingIncomingInvitationViewController *)self invitation];
-  LODWORD(v22) = [v27 isInviteeRestrictedGuest];
+  invitation2 = [(HOOnboardingIncomingInvitationViewController *)self invitation];
+  LODWORD(detailText) = [invitation2 isInviteeRestrictedGuest];
 
-  if (v22)
+  if (detailText)
   {
     v28 = sub_100010644(@"HOIncomingInvitation_RestrictedGuest_JoinHomeButton");
 
     v29 = HFLogForCategory();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [(HOOnboardingIncomingInvitationViewController *)self invitation];
-      v31 = [v30 hf_prettyDescription];
-      v32 = [(HOOnboardingIncomingInvitationViewController *)self invitation];
+      invitation3 = [(HOOnboardingIncomingInvitationViewController *)self invitation];
+      hf_prettyDescription = [invitation3 hf_prettyDescription];
+      invitation4 = [(HOOnboardingIncomingInvitationViewController *)self invitation];
       v42 = 136315650;
       v43 = "[HOOnboardingIncomingInvitationViewController _configureButtons]";
       v44 = 2112;
-      v45 = v31;
+      v45 = hf_prettyDescription;
       v46 = 1024;
-      v47 = [v32 isInviteeRestrictedGuest];
+      isInviteeRestrictedGuest2 = [invitation4 isInviteeRestrictedGuest];
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "(%s) invitation = %@. isInviteeRestrictedGuest = %{BOOL}d", &v42, 0x1Cu);
     }
 
     v25 = v28;
   }
 
-  v33 = [(HOOnboardingIncomingInvitationViewController *)self mainActionButton];
-  [v33 setTitle:v25 forState:0];
+  mainActionButton3 = [(HOOnboardingIncomingInvitationViewController *)self mainActionButton];
+  [mainActionButton3 setTitle:v25 forState:0];
 
-  v34 = [(HOOnboardingIncomingInvitationViewController *)self mainActionButton];
-  [v34 addTarget:self action:"_handleMainActionButton:" forControlEvents:64];
+  mainActionButton4 = [(HOOnboardingIncomingInvitationViewController *)self mainActionButton];
+  [mainActionButton4 addTarget:self action:"_handleMainActionButton:" forControlEvents:64];
 
-  v35 = [(HOOnboardingIncomingInvitationViewController *)self invitationHelper];
-  v36 = [v35 isUnknownContact];
+  invitationHelper5 = [(HOOnboardingIncomingInvitationViewController *)self invitationHelper];
+  isUnknownContact2 = [invitationHelper5 isUnknownContact];
 
-  v37 = [(HOOnboardingIncomingInvitationViewController *)self buttonTray];
-  if (v36)
+  buttonTray2 = [(HOOnboardingIncomingInvitationViewController *)self buttonTray];
+  if (isUnknownContact2)
   {
-    v38 = [(HOOnboardingIncomingInvitationViewController *)self declineOrIgnoreInvitationButton];
-    [v37 addButton:v38];
+    declineOrIgnoreInvitationButton4 = [(HOOnboardingIncomingInvitationViewController *)self declineOrIgnoreInvitationButton];
+    [buttonTray2 addButton:declineOrIgnoreInvitationButton4];
 
-    v39 = [(HOOnboardingIncomingInvitationViewController *)self buttonTray];
+    buttonTray3 = [(HOOnboardingIncomingInvitationViewController *)self buttonTray];
     [(HOOnboardingIncomingInvitationViewController *)self mainActionButton];
   }
 
   else
   {
-    v40 = [(HOOnboardingIncomingInvitationViewController *)self mainActionButton];
-    [v37 addButton:v40];
+    mainActionButton5 = [(HOOnboardingIncomingInvitationViewController *)self mainActionButton];
+    [buttonTray2 addButton:mainActionButton5];
 
-    v39 = [(HOOnboardingIncomingInvitationViewController *)self buttonTray];
+    buttonTray3 = [(HOOnboardingIncomingInvitationViewController *)self buttonTray];
     [(HOOnboardingIncomingInvitationViewController *)self declineOrIgnoreInvitationButton];
   }
   v41 = ;
-  [v39 addButton:v41];
+  [buttonTray3 addButton:v41];
 }
 
 - (void)_updateImageConstraints
 {
-  v3 = [(HOOnboardingIncomingInvitationViewController *)self knownContactImageConstraints];
-  [NSLayoutConstraint deactivateConstraints:v3];
+  knownContactImageConstraints = [(HOOnboardingIncomingInvitationViewController *)self knownContactImageConstraints];
+  [NSLayoutConstraint deactivateConstraints:knownContactImageConstraints];
 
   [(HOOnboardingIncomingInvitationViewController *)self setKnownContactImageConstraints:&__NSArray0__struct];
-  v4 = [(HOOnboardingIncomingInvitationViewController *)self invitationHelper];
-  LODWORD(v3) = [v4 isUnknownContact];
+  invitationHelper = [(HOOnboardingIncomingInvitationViewController *)self invitationHelper];
+  LODWORD(knownContactImageConstraints) = [invitationHelper isUnknownContact];
 
-  v5 = [(HOOnboardingIncomingInvitationViewController *)self imageView];
-  v22 = v5;
-  if (v3)
+  imageView = [(HOOnboardingIncomingInvitationViewController *)self imageView];
+  v22 = imageView;
+  if (knownContactImageConstraints)
   {
-    [v5 setHidden:1];
+    [imageView setHidden:1];
   }
 
   else
   {
-    [v5 setHidden:0];
+    [imageView setHidden:0];
 
-    v6 = [(HOOnboardingIncomingInvitationViewController *)self mainActionButton];
-    [v6 bounds];
+    mainActionButton = [(HOOnboardingIncomingInvitationViewController *)self mainActionButton];
+    [mainActionButton bounds];
     v8 = v7;
 
     if (+[HFUtilities isAMac])
     {
-      v9 = [(HOOnboardingIncomingInvitationViewController *)self view];
-      [v9 frame];
+      view = [(HOOnboardingIncomingInvitationViewController *)self view];
+      [view frame];
       v11 = v10 * 0.65;
     }
 
@@ -451,44 +451,44 @@
       v11 = v8 + -82.0;
     }
 
-    v23 = [(UIImageView *)self->_imageView centerXAnchor];
-    v12 = [(HOOnboardingIncomingInvitationViewController *)self contentView];
-    v13 = [v12 centerXAnchor];
-    v14 = [v23 constraintEqualToAnchor:v13];
+    centerXAnchor = [(UIImageView *)self->_imageView centerXAnchor];
+    contentView = [(HOOnboardingIncomingInvitationViewController *)self contentView];
+    centerXAnchor2 = [contentView centerXAnchor];
+    v14 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v24[0] = v14;
-    v15 = [(UIImageView *)self->_imageView heightAnchor];
-    v16 = [(UIImageView *)self->_imageView widthAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    heightAnchor = [(UIImageView *)self->_imageView heightAnchor];
+    widthAnchor = [(UIImageView *)self->_imageView widthAnchor];
+    v17 = [heightAnchor constraintEqualToAnchor:widthAnchor];
     v24[1] = v17;
-    v18 = [(UIImageView *)self->_imageView widthAnchor];
-    v19 = [v18 constraintEqualToConstant:v11];
+    widthAnchor2 = [(UIImageView *)self->_imageView widthAnchor];
+    v19 = [widthAnchor2 constraintEqualToConstant:v11];
     v24[2] = v19;
     v20 = [NSArray arrayWithObjects:v24 count:3];
     [(HOOnboardingIncomingInvitationViewController *)self setKnownContactImageConstraints:v20];
 
-    v21 = [(HOOnboardingIncomingInvitationViewController *)self knownContactImageConstraints];
-    [NSLayoutConstraint activateConstraints:v21];
+    knownContactImageConstraints2 = [(HOOnboardingIncomingInvitationViewController *)self knownContactImageConstraints];
+    [NSLayoutConstraint activateConstraints:knownContactImageConstraints2];
   }
 }
 
-- (void)_ignoreOrReportAlert:(id)a3
+- (void)_ignoreOrReportAlert:(id)alert
 {
-  v19 = a3;
+  alertCopy = alert;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v27 = self;
+    selfCopy = self;
     v28 = 2112;
     v29 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped button", buf, 0x16u);
   }
 
   v7 = sub_100010644(@"HOUserIncomingInvitationView_UnknownInviteActionSheet_Title");
-  v8 = [(HOOnboardingIncomingInvitationViewController *)self invitation];
-  v9 = [v8 homeName];
-  v10 = [NSString stringWithValidatedFormat:v7 validFormatSpecifiers:@"%@" error:0, v9];
+  invitation = [(HOOnboardingIncomingInvitationViewController *)self invitation];
+  homeName = [invitation homeName];
+  v10 = [NSString stringWithValidatedFormat:v7 validFormatSpecifiers:@"%@" error:0, homeName];
 
   v11 = [UIAlertController alertControllerWithTitle:v10 message:0 preferredStyle:0];
   objc_initWeak(buf, self);
@@ -529,122 +529,122 @@
   objc_destroyWeak(buf);
 }
 
-- (void)_reportJunk:(id)a3
+- (void)_reportJunk:(id)junk
 {
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = NSStringFromSelector(a2);
     v8 = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped button", &v8, 0x16u);
   }
 
-  v7 = [(HOOnboardingIncomingInvitationViewController *)self responseController];
-  [v7 respondToInvitationWithResponse:4];
+  responseController = [(HOOnboardingIncomingInvitationViewController *)self responseController];
+  [responseController respondToInvitationWithResponse:4];
 }
 
-- (void)_cancelButton:(id)a3
+- (void)_cancelButton:(id)button
 {
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = NSStringFromSelector(a2);
     v12 = 138412546;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
     v15 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped button", &v12, 0x16u);
   }
 
   [(HOOnboardingIncomingInvitationViewController *)self setDidUserTriggerOnboardingDismissal:1];
-  v7 = [(HOOnboardingIncomingInvitationViewController *)self incomingInvitationDelegate];
+  incomingInvitationDelegate = [(HOOnboardingIncomingInvitationViewController *)self incomingInvitationDelegate];
   v8 = objc_opt_respondsToSelector();
 
-  v9 = [(HOOnboardingIncomingInvitationViewController *)self incomingInvitationDelegate];
-  v10 = v9;
+  incomingInvitationDelegate2 = [(HOOnboardingIncomingInvitationViewController *)self incomingInvitationDelegate];
+  v10 = incomingInvitationDelegate2;
   if (v8)
   {
-    v11 = [(HOOnboardingIncomingInvitationViewController *)self invitation];
-    [v10 didDecideLaterForInvitation:v11 viewController:self error:0];
+    invitation = [(HOOnboardingIncomingInvitationViewController *)self invitation];
+    [v10 didDecideLaterForInvitation:invitation viewController:self error:0];
   }
 
   else
   {
-    [v9 invitationViewControllerDidDecideLaterInvitation:self];
+    [incomingInvitationDelegate2 invitationViewControllerDidDecideLaterInvitation:self];
   }
 }
 
-- (void)_ignoreInvitation:(id)a3
+- (void)_ignoreInvitation:(id)invitation
 {
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = NSStringFromSelector(a2);
     v8 = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped button", &v8, 0x16u);
   }
 
-  v7 = [(HOOnboardingIncomingInvitationViewController *)self responseController];
-  [v7 respondToInvitationWithResponse:3];
+  responseController = [(HOOnboardingIncomingInvitationViewController *)self responseController];
+  [responseController respondToInvitationWithResponse:3];
 }
 
-- (void)_declineInvitation:(id)a3
+- (void)_declineInvitation:(id)invitation
 {
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = NSStringFromSelector(a2);
     v8 = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped button", &v8, 0x16u);
   }
 
   [(HOOnboardingIncomingInvitationViewController *)self setDidUserTriggerOnboardingDismissal:1];
-  v7 = [(HOOnboardingIncomingInvitationViewController *)self responseController];
-  [v7 respondToInvitationWithResponse:2];
+  responseController = [(HOOnboardingIncomingInvitationViewController *)self responseController];
+  [responseController respondToInvitationWithResponse:2];
 }
 
-- (void)_handleMainActionButton:(id)a3
+- (void)_handleMainActionButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 currentTitle];
-    v7 = [(HOOnboardingIncomingInvitationViewController *)self invitation];
-    v8 = [v7 hf_prettyDescription];
+    currentTitle = [buttonCopy currentTitle];
+    invitation = [(HOOnboardingIncomingInvitationViewController *)self invitation];
+    hf_prettyDescription = [invitation hf_prettyDescription];
     *buf = 136315650;
     v19 = "[HOOnboardingIncomingInvitationViewController _handleMainActionButton:]";
     v20 = 2112;
-    v21 = v6;
+    v21 = currentTitle;
     v22 = 2112;
-    v23 = v8;
+    v23 = hf_prettyDescription;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s User tapped %@ button. invitation = %@", buf, 0x20u);
   }
 
   v9 = [NSString stringWithFormat:@"(%s) Accepting invitation", "[HOOnboardingIncomingInvitationViewController _handleMainActionButton:]"];
-  v10 = [(HOOnboardingIncomingInvitationViewController *)self invitation];
-  v11 = [v10 isInviteeRestrictedGuest];
+  invitation2 = [(HOOnboardingIncomingInvitationViewController *)self invitation];
+  isInviteeRestrictedGuest = [invitation2 isInviteeRestrictedGuest];
   v12 = @"NO";
-  if (v11)
+  if (isInviteeRestrictedGuest)
   {
     v12 = @"YES";
   }
 
   v13 = [NSString stringWithFormat:@"%s invitation.isInviteeRestrictedGuest = %@.", "[HOOnboardingIncomingInvitationViewController _handleMainActionButton:]", v12];
 
-  v14 = [(HOOnboardingIncomingInvitationViewController *)self invitation];
-  v15 = [v14 isInviteeRestrictedGuest];
+  invitation3 = [(HOOnboardingIncomingInvitationViewController *)self invitation];
+  isInviteeRestrictedGuest2 = [invitation3 isInviteeRestrictedGuest];
 
-  if (v15)
+  if (isInviteeRestrictedGuest2)
   {
     v16 = [NSString stringWithFormat:@"%@. Continuing to next view controller.", v13];
 
@@ -668,15 +668,15 @@
 
 - (void)_continue
 {
-  v3 = [(HOOnboardingIncomingInvitationViewController *)self restrictedGuestNextViewController];
-  v4 = [v3 conformsToProtocol:&OBJC_PROTOCOL___HOOnboardingChildViewController];
+  restrictedGuestNextViewController = [(HOOnboardingIncomingInvitationViewController *)self restrictedGuestNextViewController];
+  v4 = [restrictedGuestNextViewController conformsToProtocol:&OBJC_PROTOCOL___HOOnboardingChildViewController];
 
   if (v4)
   {
-    v5 = [(HOOnboardingIncomingInvitationViewController *)self restrictedGuestNextViewController];
-    if ([v5 conformsToProtocol:&OBJC_PROTOCOL___HOOnboardingChildViewController])
+    restrictedGuestNextViewController2 = [(HOOnboardingIncomingInvitationViewController *)self restrictedGuestNextViewController];
+    if ([restrictedGuestNextViewController2 conformsToProtocol:&OBJC_PROTOCOL___HOOnboardingChildViewController])
     {
-      v6 = v5;
+      v6 = restrictedGuestNextViewController2;
     }
 
     else
@@ -686,46 +686,46 @@
 
     v7 = v6;
 
-    v8 = [(HOOnboardingIncomingInvitationViewController *)self delegate];
-    [v7 setDelegate:v8];
+    delegate = [(HOOnboardingIncomingInvitationViewController *)self delegate];
+    [v7 setDelegate:delegate];
   }
 
-  v10 = [(HOOnboardingIncomingInvitationViewController *)self navigationController];
-  v9 = [(HOOnboardingIncomingInvitationViewController *)self restrictedGuestNextViewController];
-  [v10 pushViewController:v9 animated:1];
+  navigationController = [(HOOnboardingIncomingInvitationViewController *)self navigationController];
+  restrictedGuestNextViewController3 = [(HOOnboardingIncomingInvitationViewController *)self restrictedGuestNextViewController];
+  [navigationController pushViewController:restrictedGuestNextViewController3 animated:1];
 }
 
 - (void)_acceptInvitation
 {
-  v4 = [(HOOnboardingIncomingInvitationViewController *)self invitationHelper];
-  v5 = [v4 isUnknownContact];
+  invitationHelper = [(HOOnboardingIncomingInvitationViewController *)self invitationHelper];
+  isUnknownContact = [invitationHelper isUnknownContact];
 
-  if (v5)
+  if (isUnknownContact)
   {
     v6 = HFLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(HOOnboardingIncomingInvitationViewController *)self invitation];
-      v8 = [v7 hf_prettyDescription];
-      v9 = [(HOOnboardingIncomingInvitationViewController *)self invitationHelper];
-      v10 = [v9 inviterContact];
+      invitation = [(HOOnboardingIncomingInvitationViewController *)self invitation];
+      hf_prettyDescription = [invitation hf_prettyDescription];
+      invitationHelper2 = [(HOOnboardingIncomingInvitationViewController *)self invitationHelper];
+      inviterContact = [invitationHelper2 inviterContact];
       *buf = 138412546;
-      v35 = v8;
+      v35 = hf_prettyDescription;
       v36 = 2112;
-      v37 = v10;
+      v37 = inviterContact;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "User invitation %@ is from unknown contact %@", buf, 0x16u);
     }
 
     v11 = sub_100010644(@"HOUserIncomingInvitationView_UnknownInviteAlert_Title");
-    v12 = [(HOOnboardingIncomingInvitationViewController *)self invitation];
-    v13 = [v12 homeName];
-    v27 = [NSString stringWithValidatedFormat:v11 validFormatSpecifiers:@"%@" error:0, v13];
+    invitation2 = [(HOOnboardingIncomingInvitationViewController *)self invitation];
+    homeName = [invitation2 homeName];
+    v27 = [NSString stringWithValidatedFormat:v11 validFormatSpecifiers:@"%@" error:0, homeName];
 
     v14 = sub_100010644(@"HOUserIncomingInvitationView_UnknownInviteAlert_Body");
-    v15 = [(HOOnboardingIncomingInvitationViewController *)self invitationHelper];
-    v16 = [v15 inviterContact];
-    v17 = [v16 givenName];
-    v18 = [NSString stringWithValidatedFormat:v14 validFormatSpecifiers:@"%@" error:0, v17];
+    invitationHelper3 = [(HOOnboardingIncomingInvitationViewController *)self invitationHelper];
+    inviterContact2 = [invitationHelper3 inviterContact];
+    givenName = [inviterContact2 givenName];
+    v18 = [NSString stringWithValidatedFormat:v14 validFormatSpecifiers:@"%@" error:0, givenName];
 
     v19 = [UIAlertController alertControllerWithTitle:v27 message:v18 preferredStyle:1];
     objc_initWeak(buf, self);
@@ -775,89 +775,89 @@
 
 - (void)_reallyAcceptInvitation
 {
-  v2 = [(HOOnboardingIncomingInvitationViewController *)self responseController];
-  [v2 respondToInvitationWithResponse:1];
+  responseController = [(HOOnboardingIncomingInvitationViewController *)self responseController];
+  [responseController respondToInvitationWithResponse:1];
 }
 
 - (void)_hideSpinner
 {
-  v3 = [(HOOnboardingIncomingInvitationViewController *)self spinner];
+  spinner = [(HOOnboardingIncomingInvitationViewController *)self spinner];
 
-  if (v3)
+  if (spinner)
   {
-    v4 = [(HOOnboardingIncomingInvitationViewController *)self spinner];
-    [v4 removeFromSuperview];
+    spinner2 = [(HOOnboardingIncomingInvitationViewController *)self spinner];
+    [spinner2 removeFromSuperview];
 
     [(HOOnboardingIncomingInvitationViewController *)self setSpinner:0];
   }
 
-  v5 = [(HOOnboardingIncomingInvitationViewController *)self joiningHomeLabel];
+  joiningHomeLabel = [(HOOnboardingIncomingInvitationViewController *)self joiningHomeLabel];
 
-  if (v5)
+  if (joiningHomeLabel)
   {
-    v6 = [(HOOnboardingIncomingInvitationViewController *)self joiningHomeLabel];
-    [v6 removeFromSuperview];
+    joiningHomeLabel2 = [(HOOnboardingIncomingInvitationViewController *)self joiningHomeLabel];
+    [joiningHomeLabel2 removeFromSuperview];
 
     [(HOOnboardingIncomingInvitationViewController *)self setJoiningHomeLabel:0];
   }
 
-  v7 = [(HOOnboardingIncomingInvitationViewController *)self mainActionButton];
-  [v7 setHidden:0];
+  mainActionButton = [(HOOnboardingIncomingInvitationViewController *)self mainActionButton];
+  [mainActionButton setHidden:0];
 
-  v8 = [(HOOnboardingIncomingInvitationViewController *)self declineOrIgnoreInvitationButton];
-  [v8 setHidden:0];
+  declineOrIgnoreInvitationButton = [(HOOnboardingIncomingInvitationViewController *)self declineOrIgnoreInvitationButton];
+  [declineOrIgnoreInvitationButton setHidden:0];
 
-  v9 = [(HOOnboardingIncomingInvitationViewController *)self view];
-  [v9 setNeedsLayout];
+  view = [(HOOnboardingIncomingInvitationViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (void)_showSpinner
 {
   [(HOOnboardingIncomingInvitationViewController *)self _hideSpinner];
   v3 = +[HFUtilities isAMac];
-  v4 = [(HOOnboardingIncomingInvitationViewController *)self buttonTray];
-  v5 = v4;
+  buttonTray = [(HOOnboardingIncomingInvitationViewController *)self buttonTray];
+  v5 = buttonTray;
   if (v3)
   {
-    [v4 setHidden:1];
+    [buttonTray setHidden:1];
   }
 
   else
   {
-    [v4 removeFromSuperview];
+    [buttonTray removeFromSuperview];
   }
 
   v6 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
   [(HOOnboardingIncomingInvitationViewController *)self setSpinner:v6];
 
-  v7 = [(HOOnboardingIncomingInvitationViewController *)self spinner];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  spinner = [(HOOnboardingIncomingInvitationViewController *)self spinner];
+  [spinner setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(HOOnboardingIncomingInvitationViewController *)self spinner];
-  [v8 sizeToFit];
+  spinner2 = [(HOOnboardingIncomingInvitationViewController *)self spinner];
+  [spinner2 sizeToFit];
 
-  v9 = [(HOOnboardingIncomingInvitationViewController *)self spinner];
-  [v9 startAnimating];
+  spinner3 = [(HOOnboardingIncomingInvitationViewController *)self spinner];
+  [spinner3 startAnimating];
 
   v10 = objc_alloc_init(UILabel);
   [(HOOnboardingIncomingInvitationViewController *)self setJoiningHomeLabel:v10];
 
-  v11 = [(HOOnboardingIncomingInvitationViewController *)self joiningHomeLabel];
-  [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+  joiningHomeLabel = [(HOOnboardingIncomingInvitationViewController *)self joiningHomeLabel];
+  [joiningHomeLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v12 = [(HOOnboardingIncomingInvitationViewController *)self joiningHomeLabel];
+  joiningHomeLabel2 = [(HOOnboardingIncomingInvitationViewController *)self joiningHomeLabel];
   v13 = [HUFontUtilities preferredFontForTextStyle:UIFontTextStyleTitle3 traits:32770];
-  [v12 setFont:v13];
+  [joiningHomeLabel2 setFont:v13];
 
-  v14 = [(HOOnboardingIncomingInvitationViewController *)self joiningHomeLabel];
+  joiningHomeLabel3 = [(HOOnboardingIncomingInvitationViewController *)self joiningHomeLabel];
   v15 = +[UIColor systemGrayColor];
-  [v14 setTextColor:v15];
+  [joiningHomeLabel3 setTextColor:v15];
 
   v16 = [UIStackView alloc];
-  v17 = [(HOOnboardingIncomingInvitationViewController *)self spinner];
-  v35[0] = v17;
-  v18 = [(HOOnboardingIncomingInvitationViewController *)self joiningHomeLabel];
-  v35[1] = v18;
+  spinner4 = [(HOOnboardingIncomingInvitationViewController *)self spinner];
+  v35[0] = spinner4;
+  joiningHomeLabel4 = [(HOOnboardingIncomingInvitationViewController *)self joiningHomeLabel];
+  v35[1] = joiningHomeLabel4;
   v19 = [NSArray arrayWithObjects:v35 count:2];
   v20 = [v16 initWithArrangedSubviews:v19];
 
@@ -865,41 +865,41 @@
   [v20 setAlignment:3];
   [v20 setDistribution:3];
   [v20 setSpacing:10.0];
-  v21 = [(HOOnboardingIncomingInvitationViewController *)self contentView];
-  [v21 addSubview:v20];
+  contentView = [(HOOnboardingIncomingInvitationViewController *)self contentView];
+  [contentView addSubview:v20];
 
-  v22 = [(HOOnboardingIncomingInvitationViewController *)self invitationHelper];
-  LODWORD(v18) = [v22 isUnknownContact];
+  invitationHelper = [(HOOnboardingIncomingInvitationViewController *)self invitationHelper];
+  LODWORD(joiningHomeLabel4) = [invitationHelper isUnknownContact];
 
-  v23 = [v20 topAnchor];
-  if (v18)
+  topAnchor = [v20 topAnchor];
+  if (joiningHomeLabel4)
   {
-    v24 = [(HOOnboardingIncomingInvitationViewController *)self contentView];
-    v25 = [v24 bottomAnchor];
-    v26 = [v23 constraintEqualToAnchor:v25 constant:20.0];
+    contentView2 = [(HOOnboardingIncomingInvitationViewController *)self contentView];
+    bottomAnchor = [contentView2 bottomAnchor];
+    v26 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:20.0];
     [v26 setActive:1];
 
-    v27 = [v20 centerXAnchor];
+    centerXAnchor = [v20 centerXAnchor];
     [(HOOnboardingIncomingInvitationViewController *)self contentView];
   }
 
   else
   {
-    v28 = [(HOOnboardingIncomingInvitationViewController *)self imageView];
-    v29 = [v28 bottomAnchor];
-    v30 = [v23 constraintEqualToAnchor:v29 constant:20.0];
+    imageView = [(HOOnboardingIncomingInvitationViewController *)self imageView];
+    bottomAnchor2 = [imageView bottomAnchor];
+    v30 = [topAnchor constraintEqualToAnchor:bottomAnchor2 constant:20.0];
     [v30 setActive:1];
 
-    v27 = [v20 centerXAnchor];
+    centerXAnchor = [v20 centerXAnchor];
     [(HOOnboardingIncomingInvitationViewController *)self imageView];
   }
   v31 = ;
-  v32 = [v31 centerXAnchor];
-  v33 = [v27 constraintEqualToAnchor:v32];
+  centerXAnchor2 = [v31 centerXAnchor];
+  v33 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v33 setActive:1];
 
-  v34 = [(HOOnboardingIncomingInvitationViewController *)self view];
-  [v34 setNeedsLayout];
+  view = [(HOOnboardingIncomingInvitationViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (HOOnboardingChildViewControllerNavigationBarDelegate)navigationBarDelegate

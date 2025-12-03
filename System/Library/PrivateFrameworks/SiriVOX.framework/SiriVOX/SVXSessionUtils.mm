@@ -1,73 +1,73 @@
 @interface SVXSessionUtils
-- (BOOL)isSpeechRecordingAllowedWithActivationContext:(id)a3;
-- (BOOL)isVoiceTriggerWithActivationContext:(id)a3;
-- (id)getLanguageCodeWithAllowsFallback:(BOOL)a3 preferences:(id)a4;
+- (BOOL)isSpeechRecordingAllowedWithActivationContext:(id)context;
+- (BOOL)isVoiceTriggerWithActivationContext:(id)context;
+- (id)getLanguageCodeWithAllowsFallback:(BOOL)fallback preferences:(id)preferences;
 @end
 
 @implementation SVXSessionUtils
 
-- (BOOL)isVoiceTriggerWithActivationContext:(id)a3
+- (BOOL)isVoiceTriggerWithActivationContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 source];
-  if (v4 == 6)
+  contextCopy = context;
+  source = [contextCopy source];
+  if (source == 6)
   {
-    v7 = 1;
+    isVoiceTrigger = 1;
   }
 
-  else if (v4 == 7)
+  else if (source == 7)
   {
-    v5 = [v3 requestInfo];
-    v6 = [v5 speechRequestOptions];
-    v7 = [v6 isVoiceTrigger];
+    requestInfo = [contextCopy requestInfo];
+    speechRequestOptions = [requestInfo speechRequestOptions];
+    isVoiceTrigger = [speechRequestOptions isVoiceTrigger];
   }
 
   else
   {
-    v7 = 0;
+    isVoiceTrigger = 0;
   }
 
-  return v7;
+  return isVoiceTrigger;
 }
 
-- (BOOL)isSpeechRecordingAllowedWithActivationContext:(id)a3
+- (BOOL)isSpeechRecordingAllowedWithActivationContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 source];
-  v5 = 0;
-  if (v4 <= 8)
+  contextCopy = context;
+  source = [contextCopy source];
+  isSpeechRequest = 0;
+  if (source <= 8)
   {
-    if (((1 << v4) & 0x156) != 0)
+    if (((1 << source) & 0x156) != 0)
     {
-      v5 = 1;
+      isSpeechRequest = 1;
     }
 
-    else if (v4 == 7)
+    else if (source == 7)
     {
-      v7 = [v3 requestInfo];
-      v5 = [v7 isSpeechRequest];
+      requestInfo = [contextCopy requestInfo];
+      isSpeechRequest = [requestInfo isSpeechRequest];
     }
   }
 
-  return v5;
+  return isSpeechRequest;
 }
 
-- (id)getLanguageCodeWithAllowsFallback:(BOOL)a3 preferences:(id)a4
+- (id)getLanguageCodeWithAllowsFallback:(BOOL)fallback preferences:(id)preferences
 {
-  v4 = a3;
+  fallbackCopy = fallback;
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if (!v5)
+  preferencesCopy = preferences;
+  if (!preferencesCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SVXSessionUtils getLanguageCodeWithAllowsFallback:preferences:]"];
-    [v16 handleFailureInFunction:v17 file:@"SVXSessionUtils.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"preferences != nil"}];
+    [currentHandler handleFailureInFunction:v17 file:@"SVXSessionUtils.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"preferences != nil"}];
   }
 
-  v6 = [v5 languageCode];
-  if ([(__CFString *)v6 length])
+  languageCode = [preferencesCopy languageCode];
+  if ([(__CFString *)languageCode length])
   {
-    v7 = v6;
+    v7 = languageCode;
     goto LABEL_19;
   }
 
@@ -75,7 +75,7 @@
   v9 = *MEMORY[0x277CEF098];
   if (!os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
   {
-    if (v4)
+    if (fallbackCopy)
     {
       goto LABEL_7;
     }
@@ -89,13 +89,13 @@ LABEL_18:
   *buf = 136315138;
   v19 = "[SVXSessionUtils getLanguageCodeWithAllowsFallback:preferences:]";
   _os_log_error_impl(&dword_2695B9000, v9, OS_LOG_TYPE_ERROR, "%s Siri language code is nil.", buf, 0xCu);
-  if (!v4)
+  if (!fallbackCopy)
   {
     goto LABEL_18;
   }
 
 LABEL_7:
-  v7 = [v5 bestSupportedLanguageCodeForLanguageCode:0];
+  v7 = [preferencesCopy bestSupportedLanguageCodeForLanguageCode:0];
 
   v10 = [(__CFString *)v7 length];
   v11 = *v8;

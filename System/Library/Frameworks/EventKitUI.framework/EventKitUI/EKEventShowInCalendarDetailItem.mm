@@ -1,24 +1,24 @@
 @interface EKEventShowInCalendarDetailItem
-- (EKEventShowInCalendarDetailItem)initWithModel:(id)a3;
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4;
+- (EKEventShowInCalendarDetailItem)initWithModel:(id)model;
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width;
 - (id)_dayPreviewViewController;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
-- (void)_datesForPreviewViewControllerWithStartDate:(id *)a3 endDate:(id *)a4;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
+- (void)_datesForPreviewViewControllerWithStartDate:(id *)date endDate:(id *)endDate;
 - (void)_reloadContainedViewControllerIfNeeded;
 @end
 
 @implementation EKEventShowInCalendarDetailItem
 
-- (EKEventShowInCalendarDetailItem)initWithModel:(id)a3
+- (EKEventShowInCalendarDetailItem)initWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = EKEventShowInCalendarDetailItem;
   v6 = [(EKEventShowInCalendarDetailItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_model, a3);
+    objc_storeStrong(&v6->_model, model);
   }
 
   return v7;
@@ -37,15 +37,15 @@
   }
 }
 
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width
 {
   v5.receiver = self;
   v5.super_class = EKEventShowInCalendarDetailItem;
-  [(EKEventDetailItem *)&v5 defaultCellHeightForSubitemAtIndex:a3 forWidth:a4];
+  [(EKEventDetailItem *)&v5 defaultCellHeightForSubitemAtIndex:index forWidth:width];
   return result;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   cell = self->_cell;
   if (!cell)
@@ -57,8 +57,8 @@
     [(EKUITableViewCell *)self->_cell setAccessoryType:1];
     v7 = EventKitUIBundle();
     v8 = [v7 localizedStringForKey:@"Show in Calendar" value:&stru_1F4EF6790 table:0];
-    v9 = [(EKUITableViewCell *)self->_cell textLabel];
-    [v9 setText:v8];
+    textLabel = [(EKUITableViewCell *)self->_cell textLabel];
+    [textLabel setText:v8];
 
     cell = self->_cell;
   }
@@ -66,38 +66,38 @@
   return cell;
 }
 
-- (void)_datesForPreviewViewControllerWithStartDate:(id *)a3 endDate:(id *)a4
+- (void)_datesForPreviewViewControllerWithStartDate:(id *)date endDate:(id *)endDate
 {
-  v19 = [(EKEvent *)self->super._event startDate];
-  v7 = [(EKEventShowInCalendarDetailItem *)self proposedTime];
+  startDate = [(EKEvent *)self->super._event startDate];
+  proposedTime = [(EKEventShowInCalendarDetailItem *)self proposedTime];
 
-  if (v7)
+  if (proposedTime)
   {
-    v8 = [(EKEventShowInCalendarDetailItem *)self proposedTime];
+    proposedTime2 = [(EKEventShowInCalendarDetailItem *)self proposedTime];
 
-    v9 = [(EKEvent *)self->super._event endDateUnadjustedForLegacyClients];
-    v10 = [(EKEvent *)self->super._event startDate];
-    [v9 timeIntervalSinceDate:v10];
+    endDateUnadjustedForLegacyClients = [(EKEvent *)self->super._event endDateUnadjustedForLegacyClients];
+    startDate2 = [(EKEvent *)self->super._event startDate];
+    [endDateUnadjustedForLegacyClients timeIntervalSinceDate:startDate2];
     v12 = v11;
 
     v13 = MEMORY[0x1E695DF00];
-    v14 = [(EKEventShowInCalendarDetailItem *)self proposedTime];
-    v15 = [v13 dateWithTimeInterval:v14 sinceDate:v12];
+    proposedTime3 = [(EKEventShowInCalendarDetailItem *)self proposedTime];
+    v15 = [v13 dateWithTimeInterval:proposedTime3 sinceDate:v12];
 
-    v16 = v8;
+    v16 = proposedTime2;
   }
 
   else
   {
     v15 = 0;
-    v16 = v19;
+    v16 = startDate;
   }
 
   v20 = v16;
   v17 = v16;
-  *a3 = v20;
+  *date = v20;
   v18 = v15;
-  *a4 = v15;
+  *endDate = v15;
 }
 
 - (id)_dayPreviewViewController

@@ -1,16 +1,16 @@
 @interface AVStreamDataAsset
-- (AVStreamDataAsset)initWithParser:(id)a3 tracks:(id)a4;
-- (id)copyAssetRemovingTrackID:(int)a3;
-- (id)copyAssetWithAdditionalTrackID:(int)a3 mediaType:(id)a4;
-- (id)formatDescriptionsForTrackID:(int)a3;
-- (id)mediaTypeForTrackID:(int)a3;
+- (AVStreamDataAsset)initWithParser:(id)parser tracks:(id)tracks;
+- (id)copyAssetRemovingTrackID:(int)d;
+- (id)copyAssetWithAdditionalTrackID:(int)d mediaType:(id)type;
+- (id)formatDescriptionsForTrackID:(int)d;
+- (id)mediaTypeForTrackID:(int)d;
 - (id)tracks;
 - (void)dealloc;
 @end
 
 @implementation AVStreamDataAsset
 
-- (AVStreamDataAsset)initWithParser:(id)a3 tracks:(id)a4
+- (AVStreamDataAsset)initWithParser:(id)parser tracks:(id)tracks
 {
   v9.receiver = self;
   v9.super_class = AVStreamDataAsset;
@@ -18,10 +18,10 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_weakReferenceToParser, a3);
-    v7->_inspector = -[AVStreamDataAssetInspector initWithTrackIDs:]([AVStreamDataAssetInspector alloc], "initWithTrackIDs:", [a4 allKeys]);
+    objc_storeWeak(&v6->_weakReferenceToParser, parser);
+    v7->_inspector = -[AVStreamDataAssetInspector initWithTrackIDs:]([AVStreamDataAssetInspector alloc], "initWithTrackIDs:", [tracks allKeys]);
     v7->_inspectorLoader = [[AVAssetSynchronousInspectorLoader alloc] initWithAssetInspector:v7->_inspector];
-    v7->_trackDictsByTrackID = [a4 copy];
+    v7->_trackDictsByTrackID = [tracks copy];
     v7->_tracksOnce = objc_alloc_init(AVDispatchOnce);
   }
 
@@ -35,32 +35,32 @@
   [(AVAsset *)&v3 dealloc];
 }
 
-- (id)copyAssetWithAdditionalTrackID:(int)a3 mediaType:(id)a4
+- (id)copyAssetWithAdditionalTrackID:(int)d mediaType:(id)type
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithInt:*&a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInt:*&d];
   [(NSDictionary *)self->_trackDictsByTrackID objectForKey:v6];
   v7 = [(NSDictionary *)self->_trackDictsByTrackID mutableCopy];
-  [v7 setObject:objc_msgSend(MEMORY[0x1E695DF20] forKey:{"dictionaryWithObjectsAndKeys:", a4, @"mediaType", 0), v6}];
+  [v7 setObject:objc_msgSend(MEMORY[0x1E695DF20] forKey:{"dictionaryWithObjectsAndKeys:", type, @"mediaType", 0), v6}];
   v8 = [AVStreamDataAsset alloc];
-  v9 = [(AVStreamDataAsset *)self parser];
+  parser = [(AVStreamDataAsset *)self parser];
 
-  return [(AVStreamDataAsset *)v8 initWithParser:v9 tracks:v7];
+  return [(AVStreamDataAsset *)v8 initWithParser:parser tracks:v7];
 }
 
-- (id)copyAssetRemovingTrackID:(int)a3
+- (id)copyAssetRemovingTrackID:(int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v5 = [(NSDictionary *)self->_trackDictsByTrackID mutableCopy];
   [v5 removeObjectForKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v3)}];
   v6 = [AVStreamDataAsset alloc];
-  v7 = [(AVStreamDataAsset *)self parser];
+  parser = [(AVStreamDataAsset *)self parser];
 
-  return [(AVStreamDataAsset *)v6 initWithParser:v7 tracks:v5];
+  return [(AVStreamDataAsset *)v6 initWithParser:parser tracks:v5];
 }
 
-- (id)mediaTypeForTrackID:(int)a3
+- (id)mediaTypeForTrackID:(int)d
 {
-  result = -[NSDictionary objectForKey:](self->_trackDictsByTrackID, "objectForKey:", [MEMORY[0x1E696AD98] numberWithInteger:a3]);
+  result = -[NSDictionary objectForKey:](self->_trackDictsByTrackID, "objectForKey:", [MEMORY[0x1E696AD98] numberWithInteger:d]);
   if (result)
   {
 
@@ -70,10 +70,10 @@
   return result;
 }
 
-- (id)formatDescriptionsForTrackID:(int)a3
+- (id)formatDescriptionsForTrackID:(int)d
 {
   v4[1] = *MEMORY[0x1E69E9840];
-  result = [-[NSDictionary objectForKey:](self->_trackDictsByTrackID objectForKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", *&a3)), "objectForKey:", @"formatDescription"}];
+  result = [-[NSDictionary objectForKey:](self->_trackDictsByTrackID objectForKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", *&d)), "objectForKey:", @"formatDescription"}];
   if (result)
   {
     v4[0] = result;

@@ -1,7 +1,7 @@
 @interface IMDPredicateToSQLConverter
-- (IMDPredicateToSQLConverter)initWithPredicate:(id)a3 keyPathsToColumns:(id)a4 columnPrefix:(id)a5;
+- (IMDPredicateToSQLConverter)initWithPredicate:(id)predicate keyPathsToColumns:(id)columns columnPrefix:(id)prefix;
 - (NSArray)parameters;
-- (void)bindParametersToSqliteWithStatement:(CSDBSqliteStatement *)a3;
+- (void)bindParametersToSqliteWithStatement:(CSDBSqliteStatement *)statement;
 @end
 
 @implementation IMDPredicateToSQLConverter
@@ -13,12 +13,12 @@
   return v3;
 }
 
-- (IMDPredicateToSQLConverter)initWithPredicate:(id)a3 keyPathsToColumns:(id)a4 columnPrefix:(id)a5
+- (IMDPredicateToSQLConverter)initWithPredicate:(id)predicate keyPathsToColumns:(id)columns columnPrefix:(id)prefix
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  predicateCopy = predicate;
+  columnsCopy = columns;
+  prefixCopy = prefix;
   v19.receiver = self;
   v19.super_class = IMDPredicateToSQLConverter;
   v11 = [(IMDPredicateToSQLConverter *)&v19 init];
@@ -28,9 +28,9 @@
     foundParameters = v11->_foundParameters;
     v11->_foundParameters = v12;
 
-    objc_storeStrong(&v11->_keyPathsToColumns, a4);
-    objc_storeStrong(&v11->_columnPrefix, a5);
-    v14 = sub_1B7B81744(v11, v8);
+    objc_storeStrong(&v11->_keyPathsToColumns, columns);
+    objc_storeStrong(&v11->_columnPrefix, prefix);
+    v14 = sub_1B7B81744(v11, predicateCopy);
     expression = v11->_expression;
     v11->_expression = v14;
   }
@@ -41,14 +41,14 @@
   return v16;
 }
 
-- (void)bindParametersToSqliteWithStatement:(CSDBSqliteStatement *)a3
+- (void)bindParametersToSqliteWithStatement:(CSDBSqliteStatement *)statement
 {
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = objc_msgSend_parameters(self, a2, a3, 0);
+  v3 = objc_msgSend_parameters(self, a2, statement, 0);
   v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v4, &v15, v19, 16);
   if (v5)
   {

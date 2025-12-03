@@ -1,35 +1,35 @@
 @interface MSTrackListCellConfiguration
 - ($3CC19D079FD0B010EE84973AA846B91B)position;
 - (BOOL)showContentRating;
-- (id)colorForLabelAtIndex:(unint64_t)a3 withModifiers:(unint64_t)a4;
-- (id)fontForLabelAtIndex:(unint64_t)a3;
-- (void)drawBackgroundWithModifiers:(unint64_t)a3;
+- (id)colorForLabelAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers;
+- (id)fontForLabelAtIndex:(unint64_t)index;
+- (void)drawBackgroundWithModifiers:(unint64_t)modifiers;
 - (void)reloadImages;
 - (void)reloadLayoutInformation;
 - (void)reloadStrings;
-- (void)setPosition:(id *)a3;
+- (void)setPosition:(id *)position;
 @end
 
 @implementation MSTrackListCellConfiguration
 
-- (void)setPosition:(id *)a3
+- (void)setPosition:(id *)position
 {
   p_position = &self->_position;
   position = self->_position;
-  v7 = *a3;
+  v7 = *position;
   if ((SUPositionEqualToPosition() & 1) == 0)
   {
-    v6 = *&a3->var2;
-    *&p_position->localIndex = *&a3->var0;
+    v6 = *&position->var2;
+    *&p_position->localIndex = *&position->var0;
     *&p_position->globalIndex = v6;
     [(SUCellConfiguration *)self setNeedsDisplay:1, *&v7.var0, *&v7.var2, *&position.localIndex, *&position.globalIndex];
   }
 }
 
-- (id)colorForLabelAtIndex:(unint64_t)a3 withModifiers:(unint64_t)a4
+- (id)colorForLabelAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers
 {
-  v4 = a4;
-  if ((a4 & 2) != 0)
+  modifiersCopy = modifiers;
+  if ((modifiers & 2) != 0)
   {
     v7 = MEMORY[0x277D75348];
 LABEL_8:
@@ -37,12 +37,12 @@ LABEL_8:
     return [v7 grayColor];
   }
 
-  if (a3 == 4)
+  if (index == 4)
   {
     if ([(SUCellConfigurationView *)[(SUCellConfiguration *)self view] highlightsOnlyContentView])
     {
       result = [MEMORY[0x277D75348] blackColor];
-      if (v4)
+      if (modifiersCopy)
       {
         return result;
       }
@@ -51,7 +51,7 @@ LABEL_8:
     else
     {
       result = [MEMORY[0x277D75348] whiteColor];
-      if (v4)
+      if (modifiersCopy)
       {
         return result;
       }
@@ -61,12 +61,12 @@ LABEL_8:
     goto LABEL_22;
   }
 
-  if (a3 == 3)
+  if (index == 3)
   {
     if ([(SUCellConfigurationView *)[(SUCellConfiguration *)self view] highlightsOnlyContentView])
     {
       result = SUTableCellGetHighlightedTextColor();
-      if (v4)
+      if (modifiersCopy)
       {
         return result;
       }
@@ -75,7 +75,7 @@ LABEL_8:
     else
     {
       result = [MEMORY[0x277D75348] whiteColor];
-      if (v4)
+      if (modifiersCopy)
       {
         return result;
       }
@@ -87,12 +87,12 @@ LABEL_22:
     return [v8 blackColor];
   }
 
-  if (a3 - 1 <= 1)
+  if (index - 1 <= 1)
   {
     if ([(SUCellConfigurationView *)[(SUCellConfiguration *)self view] highlightsOnlyContentView])
     {
       result = [MEMORY[0x277D75348] grayColor];
-      if (v4)
+      if (modifiersCopy)
       {
         return result;
       }
@@ -101,7 +101,7 @@ LABEL_22:
     else
     {
       result = [MEMORY[0x277D75348] whiteColor];
-      if (v4)
+      if (modifiersCopy)
       {
         return result;
       }
@@ -112,13 +112,13 @@ LABEL_22:
   }
 
   v9 = [objc_msgSend(*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D7FEF0]) "contentRating")];
-  v10 = [(SUCellConfigurationView *)[(SUCellConfiguration *)self view] highlightsOnlyContentView];
+  highlightsOnlyContentView = [(SUCellConfigurationView *)[(SUCellConfiguration *)self view] highlightsOnlyContentView];
   if (v9)
   {
-    if (v10)
+    if (highlightsOnlyContentView)
     {
       result = SUTableCellGetExplicitColor();
-      if (v4)
+      if (modifiersCopy)
       {
         return result;
       }
@@ -127,7 +127,7 @@ LABEL_22:
     else
     {
       result = [MEMORY[0x277D75348] whiteColor];
-      if (v4)
+      if (modifiersCopy)
       {
         return result;
       }
@@ -138,10 +138,10 @@ LABEL_22:
 
   else
   {
-    if (v10)
+    if (highlightsOnlyContentView)
     {
       result = SUTableCellGetCleanColor();
-      if (v4)
+      if (modifiersCopy)
       {
         return result;
       }
@@ -150,7 +150,7 @@ LABEL_22:
     else
     {
       result = [MEMORY[0x277D75348] whiteColor];
-      if (v4)
+      if (modifiersCopy)
       {
         return result;
       }
@@ -160,7 +160,7 @@ LABEL_22:
   }
 }
 
-- (void)drawBackgroundWithModifiers:(unint64_t)a3
+- (void)drawBackgroundWithModifiers:(unint64_t)modifiers
 {
   [objc_msgSend(MEMORY[0x277D75348] colorWithWhite:0.899999976 alpha:{1.0), "set"}];
   *&v6.size.height = *(&self->super.super.super.super.super._context + *MEMORY[0x277D7FEE8]);
@@ -170,12 +170,12 @@ LABEL_22:
   UIRectFill(v6);
   v5.receiver = self;
   v5.super_class = MSTrackListCellConfiguration;
-  [(SUCellConfiguration *)&v5 drawBackgroundWithModifiers:a3];
+  [(SUCellConfiguration *)&v5 drawBackgroundWithModifiers:modifiers];
 }
 
-- (id)fontForLabelAtIndex:(unint64_t)a3
+- (id)fontForLabelAtIndex:(unint64_t)index
 {
-  if (a3 - 1 < 2)
+  if (index - 1 < 2)
   {
     v8 = MEMORY[0x277D74300];
 
@@ -184,7 +184,7 @@ LABEL_22:
 
   else
   {
-    if (a3 == 3)
+    if (index == 3)
     {
       v5 = MEMORY[0x277D74300];
       v6 = 14.0;
@@ -192,7 +192,7 @@ LABEL_22:
       return [v5 boldSystemFontOfSize:v6];
     }
 
-    if (a3 == 4)
+    if (index == 4)
     {
       v5 = MEMORY[0x277D74300];
       v6 = 16.0;
@@ -402,13 +402,13 @@ LABEL_22:
   v20.super_class = MSTrackListCellConfiguration;
   [(SUMediaItemCellConfiguration *)&v20 reloadStrings];
   v3 = *MEMORY[0x277D7FEF0];
-  v4 = [*(&self->super.super.super.super.super.super.isa + v3) title];
+  title = [*(&self->super.super.super.super.super.super.isa + v3) title];
   v5 = *MEMORY[0x277D7FED8];
 
-  v6 = [v4 length];
+  v6 = [title length];
   if (v6)
   {
-    v6 = v4;
+    v6 = title;
   }
 
   (*(&self->super.super.super.super.super.super.isa + v5))[3] = v6;
@@ -418,23 +418,23 @@ LABEL_22:
     goto LABEL_13;
   }
 
-  v7 = [*(&self->super.super.super.super.super.super.isa + v3) itemType];
-  if (v7 == 11)
+  itemType = [*(&self->super.super.super.super.super.super.isa + v3) itemType];
+  if (itemType == 11)
   {
     goto LABEL_7;
   }
 
-  if (v7 == 1009)
+  if (itemType == 1009)
   {
-    v10 = [*(&self->super.super.super.super.super.super.isa + v3) humanReadableDescription];
+    humanReadableDescription = [*(&self->super.super.super.super.super.super.isa + v3) humanReadableDescription];
 LABEL_11:
-    v8 = v10;
+    v8 = humanReadableDescription;
     goto LABEL_12;
   }
 
-  if (v7 != 1007)
+  if (itemType != 1007)
   {
-    v10 = [*(&self->super.super.super.super.super.super.isa + v3) artistName];
+    humanReadableDescription = [*(&self->super.super.super.super.super.super.isa + v3) artistName];
     goto LABEL_11;
   }
 
@@ -452,11 +452,11 @@ LABEL_13:
 
   (*(&self->super.super.super.super.super.super.isa + v5))[2] = v11;
 
-  v12 = [*(&self->super.super.super.super.super.super.isa + v3) defaultStoreOffer];
-  v13 = v12;
-  if (v12)
+  defaultStoreOffer = [*(&self->super.super.super.super.super.super.isa + v3) defaultStoreOffer];
+  v13 = defaultStoreOffer;
+  if (defaultStoreOffer)
   {
-    if ([objc_msgSend(v12 "offerMedia")] < 1)
+    if ([objc_msgSend(defaultStoreOffer "offerMedia")] < 1)
     {
       v13 = 0;
     }
@@ -506,13 +506,13 @@ LABEL_13:
 {
   v5.receiver = self;
   v5.super_class = MSTrackListCellConfiguration;
-  v3 = [(SUMediaItemCellConfiguration *)&v5 showContentRating];
-  if (v3)
+  showContentRating = [(SUMediaItemCellConfiguration *)&v5 showContentRating];
+  if (showContentRating)
   {
-    LOBYTE(v3) = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D7FEE0]) shouldHideContentRating] ^ 1;
+    LOBYTE(showContentRating) = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D7FEE0]) shouldHideContentRating] ^ 1;
   }
 
-  return v3;
+  return showContentRating;
 }
 
 - ($3CC19D079FD0B010EE84973AA846B91B)position

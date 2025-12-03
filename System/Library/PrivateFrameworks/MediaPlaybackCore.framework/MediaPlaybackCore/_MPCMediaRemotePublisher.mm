@@ -1,71 +1,71 @@
 @interface _MPCMediaRemotePublisher
 - (MPCPlaybackEngine)playbackEngine;
-- (_MPCMediaRemotePublisher)initWithPlaybackEngine:(id)a3;
+- (_MPCMediaRemotePublisher)initWithPlaybackEngine:(id)engine;
 - (id)_exportableSessionTypes;
 - (id)_requirementsForSetPlaybackSession;
 - (id)_supportedSessionTypes;
-- (id)getQOSDialogForError:(id)a3 withItem:(id)a4;
-- (id)nowPlayingInfoCenter:(id)a3 artworkCatalogForContentItem:(id)a4;
-- (id)nowPlayingInfoCenter:(id)a3 artworkForContentItem:(id)a4 size:(CGSize)a5 completion:(id)a6;
-- (id)nowPlayingInfoCenter:(id)a3 childContentItemIDAtIndex:(int64_t)a4 ofItem:(id)a5;
-- (id)nowPlayingInfoCenter:(id)a3 contentItemForID:(id)a4;
-- (id)nowPlayingInfoCenter:(id)a3 contentItemIDForOffset:(int64_t)a4;
-- (id)nowPlayingInfoCenter:(id)a3 contentItemIDsFromOffset:(int64_t)a4 toOffset:(int64_t)a5 nowPlayingIndex:(int64_t *)a6;
-- (id)nowPlayingInfoCenter:(id)a3 infoForContentItem:(id)a4 completion:(id)a5;
-- (id)nowPlayingInfoCenter:(id)a3 lyricsForContentItem:(id)a4 completion:(id)a5;
-- (id)nowPlayingInfoCenter:(id)a3 remoteArtworkForContentItem:(id)a4 format:(id)a5 size:(CGSize)a6 completion:(id)a7;
-- (id)nowPlayingInfoCenter:(id)a3 transcriptAlignmentsForContentItem:(id)a4 completion:(id)a5;
-- (id)playbackQueueAuxilaryNowPlayingInfoForNowPlayingInfoCenter:(id)a3;
-- (id)playbackQueueIdentifierForNowPlayingInfoCenter:(id)a3;
-- (id)playbackQueuePropertiesForNowPlayingInfoCenter:(id)a3;
-- (id)stripCommandStatusForEVS:(id)a3;
+- (id)getQOSDialogForError:(id)error withItem:(id)item;
+- (id)nowPlayingInfoCenter:(id)center artworkCatalogForContentItem:(id)item;
+- (id)nowPlayingInfoCenter:(id)center artworkForContentItem:(id)item size:(CGSize)size completion:(id)completion;
+- (id)nowPlayingInfoCenter:(id)center childContentItemIDAtIndex:(int64_t)index ofItem:(id)item;
+- (id)nowPlayingInfoCenter:(id)center contentItemForID:(id)d;
+- (id)nowPlayingInfoCenter:(id)center contentItemIDForOffset:(int64_t)offset;
+- (id)nowPlayingInfoCenter:(id)center contentItemIDsFromOffset:(int64_t)offset toOffset:(int64_t)toOffset nowPlayingIndex:(int64_t *)index;
+- (id)nowPlayingInfoCenter:(id)center infoForContentItem:(id)item completion:(id)completion;
+- (id)nowPlayingInfoCenter:(id)center lyricsForContentItem:(id)item completion:(id)completion;
+- (id)nowPlayingInfoCenter:(id)center remoteArtworkForContentItem:(id)item format:(id)format size:(CGSize)size completion:(id)completion;
+- (id)nowPlayingInfoCenter:(id)center transcriptAlignmentsForContentItem:(id)item completion:(id)completion;
+- (id)playbackQueueAuxilaryNowPlayingInfoForNowPlayingInfoCenter:(id)center;
+- (id)playbackQueueIdentifierForNowPlayingInfoCenter:(id)center;
+- (id)playbackQueuePropertiesForNowPlayingInfoCenter:(id)center;
+- (id)stripCommandStatusForEVS:(id)s;
 - (unint64_t)vocalAttenuationUnavailabilityReasons;
-- (void)_MRPlaybackSessionMigratePostCallback:(id)a3 completion:(id)a4;
-- (void)_activeSharedSessionDidChange:(id)a3;
-- (void)_dispatchCommandEvent:(id)a3 completion:(id)a4;
-- (void)_durationAvailableNotification:(id)a3;
-- (void)_enqueueFallbackIntentIfNeededForCommandEvent:(id)a3 play:(BOOL)a4 completion:(id)a5;
+- (void)_MRPlaybackSessionMigratePostCallback:(id)callback completion:(id)completion;
+- (void)_activeSharedSessionDidChange:(id)change;
+- (void)_dispatchCommandEvent:(id)event completion:(id)completion;
+- (void)_durationAvailableNotification:(id)notification;
+- (void)_enqueueFallbackIntentIfNeededForCommandEvent:(id)event play:(BOOL)play completion:(id)completion;
 - (void)_initializeCommands;
-- (void)_leaveSharedSessionWithCommandID:(id)a3 completion:(id)a4;
-- (void)_likedStateChangedNotification:(id)a3;
-- (void)_performCommandEvent:(void *)a3 completion:;
-- (void)_performDebugEvent:(id)a3 completion:(id)a4;
-- (void)_performSkipChapterCommand:(unsigned int)a3 withCommandID:(id)a4 completion:(id)a5;
-- (void)_podcastsSkipIntervalDidChange:(id)a3;
+- (void)_leaveSharedSessionWithCommandID:(id)d completion:(id)completion;
+- (void)_likedStateChangedNotification:(id)notification;
+- (void)_performCommandEvent:(void *)event completion:;
+- (void)_performDebugEvent:(id)event completion:(id)completion;
+- (void)_performSkipChapterCommand:(unsigned int)command withCommandID:(id)d completion:(id)completion;
+- (void)_podcastsSkipIntervalDidChange:(id)change;
 - (void)_updateLaunchCommands;
 - (void)_updateSupportedCommands;
 - (void)becomeActive;
-- (void)becomeActiveIfNeededWithCommandID:(id)a3 completion:(id)a4;
-- (void)commandCenter:(id)a3 didDeliverCommandEvent:(id)a4;
-- (void)commandCenter:(id)a3 didTimeoutCommandEvent:(id)a4 statusHandler:(id)a5;
-- (void)deactivateAudioSessionIfIdle:(int64_t)a3;
+- (void)becomeActiveIfNeededWithCommandID:(id)d completion:(id)completion;
+- (void)commandCenter:(id)center didDeliverCommandEvent:(id)event;
+- (void)commandCenter:(id)center didTimeoutCommandEvent:(id)event statusHandler:(id)handler;
+- (void)deactivateAudioSessionIfIdle:(int64_t)idle;
 - (void)dealloc;
-- (void)engine:(id)a3 didChangeActionAtQueueEnd:(int64_t)a4;
-- (void)engine:(id)a3 didChangeQueueController:(id)a4;
-- (void)engine:(id)a3 didChangeQueueWithReason:(id)a4;
-- (void)engine:(id)a3 didChangeRepeatType:(int64_t)a4;
-- (void)engine:(id)a3 didChangeShuffleType:(int64_t)a4;
-- (void)engine:(id)a3 didChangeToItem:(id)a4;
-- (void)engine:(id)a3 didChangeToState:(unint64_t)a4;
-- (void)engine:(id)a3 didReceivePickedRouteChange:(id)a4;
-- (void)engineDidBlockVocalAttenuation:(id)a3;
-- (void)engineDidChangeTransitionSettings:(id)a3;
-- (void)engineDidChangeVocalAttenuationLevel:(id)a3;
-- (void)engineDidChangeVocalAttenuationState:(id)a3;
-- (void)engineDidEndSleepTimer:(id)a3;
-- (void)engineDidUnblockVocalAttenuation:(id)a3;
-- (void)getShouldRestoreStateWithCompletion:(id)a3;
-- (void)invalidateSessionTypesWithReason:(id)a3;
-- (void)leaveSharedSessionWithCommandID:(id)a3 remoteControlInterface:(id)a4 completion:(id)a5;
-- (void)nowPlayingInfoCenter:(id)a3 didEndMigrationWithIdentifier:(id)a4 error:(id)a5;
-- (void)nowPlayingInfoCenter:(id)a3 getTransportablePlaybackSessionRepresentationForRequest:(id)a4 completion:(id)a5;
-- (void)nowPlayingInfoCenter:(id)a3 willBeginSessionMigrationWithIdentifier:(id)a4;
-- (void)performSetQueue:(id)a3 installQueueBeforeLoaded:(BOOL)a4 donatedStartPlayerItem:(id)a5 completion:(id)a6;
-- (void)performSetQueueWithIntent:(id)a3 completion:(id)a4;
+- (void)engine:(id)engine didChangeActionAtQueueEnd:(int64_t)end;
+- (void)engine:(id)engine didChangeQueueController:(id)controller;
+- (void)engine:(id)engine didChangeQueueWithReason:(id)reason;
+- (void)engine:(id)engine didChangeRepeatType:(int64_t)type;
+- (void)engine:(id)engine didChangeShuffleType:(int64_t)type;
+- (void)engine:(id)engine didChangeToItem:(id)item;
+- (void)engine:(id)engine didChangeToState:(unint64_t)state;
+- (void)engine:(id)engine didReceivePickedRouteChange:(id)change;
+- (void)engineDidBlockVocalAttenuation:(id)attenuation;
+- (void)engineDidChangeTransitionSettings:(id)settings;
+- (void)engineDidChangeVocalAttenuationLevel:(id)level;
+- (void)engineDidChangeVocalAttenuationState:(id)state;
+- (void)engineDidEndSleepTimer:(id)timer;
+- (void)engineDidUnblockVocalAttenuation:(id)attenuation;
+- (void)getShouldRestoreStateWithCompletion:(id)completion;
+- (void)invalidateSessionTypesWithReason:(id)reason;
+- (void)leaveSharedSessionWithCommandID:(id)d remoteControlInterface:(id)interface completion:(id)completion;
+- (void)nowPlayingInfoCenter:(id)center didEndMigrationWithIdentifier:(id)identifier error:(id)error;
+- (void)nowPlayingInfoCenter:(id)center getTransportablePlaybackSessionRepresentationForRequest:(id)request completion:(id)completion;
+- (void)nowPlayingInfoCenter:(id)center willBeginSessionMigrationWithIdentifier:(id)identifier;
+- (void)performSetQueue:(id)queue installQueueBeforeLoaded:(BOOL)loaded donatedStartPlayerItem:(id)item completion:(id)completion;
+- (void)performSetQueueWithIntent:(id)intent completion:(id)completion;
 - (void)publishIfNeeded;
 - (void)reportUserBackgroundedApplication;
-- (void)stripMediaRemoteOptionsForEVS:(id)a3;
-- (void)updatePlaybackMetrics:(id)a3;
+- (void)stripMediaRemoteOptionsForEVS:(id)s;
+- (void)updatePlaybackMetrics:(id)metrics;
 @end
 
 @implementation _MPCMediaRemotePublisher
@@ -163,8 +163,8 @@
       if (MSVDeviceSupportsDelegatedIdentities())
       {
         v4 = +[MPCPlaybackAccountManager sharedManager];
-        v5 = [v4 anyDelegationHostingAccount];
-        v6 = v5 != 0;
+        anyDelegationHostingAccount = [v4 anyDelegationHostingAccount];
+        v6 = anyDelegationHostingAccount != 0;
       }
 
       else
@@ -184,7 +184,7 @@
     }
 
     v7 = +[MPCPlaybackAccountManager sharedManager];
-    v8 = [v7 accounts];
+    accounts = [v7 accounts];
 
     if (self)
     {
@@ -197,7 +197,7 @@
     }
 
     v10 = swift;
-    v11 = [(_MPCMediaRemotePublisher_Swift *)v10 getMigrationRequirementsFilterDataForAccounts:v8 features:v6];
+    v11 = [(_MPCMediaRemotePublisher_Swift *)v10 getMigrationRequirementsFilterDataForAccounts:accounts features:v6];
 
     v14[0] = @"features";
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v6];
@@ -213,17 +213,17 @@
 - (void)becomeActive
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-  v4 = [v3 engineID];
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  engineID = [playbackEngine engineID];
 
   v5 = os_log_create("com.apple.amp.mediaplaybackcore", "Publisher");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(MPNowPlayingInfoCenter *)self->_infoCenter playerPath];
+    playerPath = [(MPNowPlayingInfoCenter *)self->_infoCenter playerPath];
     v7 = 138543618;
-    v8 = v4;
+    v8 = engineID;
     v9 = 2114;
-    v10 = v6;
+    v10 = playerPath;
     _os_log_impl(&dword_1C5C61000, v5, OS_LOG_TYPE_DEFAULT, "[PUB:%{public}@] becomeActive | activating playerPath [] playerPath=%{public}@", &v7, 0x16u);
   }
 
@@ -233,15 +233,15 @@
 - (void)publishIfNeeded
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-  v4 = [v3 engineID];
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  engineID = [playbackEngine engineID];
   if (self->_commandUpdateScheduled)
   {
     v5 = os_log_create("com.apple.amp.mediaplaybackcore", "Publisher");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v15 = v4;
+      v15 = engineID;
       v6 = "[PUB:%{public}@] publishIfNeeded | ignoring [already scheduled]";
       v7 = v5;
       v8 = OS_LOG_TYPE_INFO;
@@ -263,7 +263,7 @@ LABEL_22:
     }
 
     *buf = 138543362;
-    v15 = v4;
+    v15 = engineID;
     v6 = "[PUB:%{public}@] publishIfNeeded | ignoring [state restore]";
 LABEL_20:
     v7 = v5;
@@ -271,7 +271,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (([v3 isStarted] & 1) == 0)
+  if (([playbackEngine isStarted] & 1) == 0)
   {
     v5 = os_log_create("com.apple.amp.mediaplaybackcore", "Publisher");
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -280,15 +280,15 @@ LABEL_20:
     }
 
     *buf = 138543362;
-    v15 = v4;
+    v15 = engineID;
     v6 = "[PUB:%{public}@] publishIfNeeded | ignoring [engine not started]";
     goto LABEL_20;
   }
 
   v9 = +[MPCPlaybackAccountManager sharedManager];
-  v10 = [v9 hasLoadedInitialAccounts];
+  hasLoadedInitialAccounts = [v9 hasLoadedInitialAccounts];
 
-  if ((v10 & 1) == 0)
+  if ((hasLoadedInitialAccounts & 1) == 0)
   {
     v5 = os_log_create("com.apple.amp.mediaplaybackcore", "Publisher");
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -297,7 +297,7 @@ LABEL_20:
     }
 
     *buf = 138543362;
-    v15 = v4;
+    v15 = engineID;
     v6 = "[PUB:%{public}@] publishIfNeeded | ignoring [waiting on accounts]";
     goto LABEL_20;
   }
@@ -308,7 +308,7 @@ LABEL_20:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v15 = v4;
+      v15 = engineID;
       _os_log_impl(&dword_1C5C61000, v11, OS_LOG_TYPE_DEFAULT, "[PUB:%{public}@] publishIfNeeded | initalizing []", buf, 0xCu);
     }
 
@@ -318,7 +318,7 @@ LABEL_20:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v15 = v4;
+      v15 = engineID;
       _os_log_impl(&dword_1C5C61000, v12, OS_LOG_TYPE_DEFAULT, "[PUB:%{public}@] publishIfNeeded | publishing [first publish]", buf, 0xCu);
     }
 
@@ -344,303 +344,303 @@ LABEL_23:
     _os_log_impl(&dword_1C5C61000, v3, OS_LOG_TYPE_DEFAULT, "[Publisher] _initializeCommands: first publish", v104, 2u);
   }
 
-  v4 = [(MPRemoteCommandCenter *)self->_commandCenter playCommand];
-  [v4 setUnsupportedReasons:0];
+  playCommand = [(MPRemoteCommandCenter *)self->_commandCenter playCommand];
+  [playCommand setUnsupportedReasons:0];
 
-  v5 = [(MPRemoteCommandCenter *)self->_commandCenter playCommand];
-  v6 = [v5 hasTargets];
+  playCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter playCommand];
+  hasTargets = [playCommand2 hasTargets];
 
-  if ((v6 & 1) == 0)
+  if ((hasTargets & 1) == 0)
   {
-    v7 = [(MPRemoteCommandCenter *)self->_commandCenter playCommand];
-    [v7 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+    playCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter playCommand];
+    [playCommand3 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
   }
 
-  v8 = [(MPRemoteCommandCenter *)self->_commandCenter pauseCommand];
-  [v8 setUnsupportedReasons:0];
+  pauseCommand = [(MPRemoteCommandCenter *)self->_commandCenter pauseCommand];
+  [pauseCommand setUnsupportedReasons:0];
 
-  v9 = [(MPRemoteCommandCenter *)self->_commandCenter pauseCommand];
-  v10 = [v9 hasTargets];
+  pauseCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter pauseCommand];
+  hasTargets2 = [pauseCommand2 hasTargets];
 
-  if ((v10 & 1) == 0)
+  if ((hasTargets2 & 1) == 0)
   {
-    v11 = [(MPRemoteCommandCenter *)self->_commandCenter pauseCommand];
-    [v11 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+    pauseCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter pauseCommand];
+    [pauseCommand3 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
   }
 
-  v12 = [(MPRemoteCommandCenter *)self->_commandCenter stopCommand];
-  [v12 setUnsupportedReasons:0];
+  stopCommand = [(MPRemoteCommandCenter *)self->_commandCenter stopCommand];
+  [stopCommand setUnsupportedReasons:0];
 
-  v13 = [(MPRemoteCommandCenter *)self->_commandCenter stopCommand];
-  v14 = [v13 hasTargets];
+  stopCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter stopCommand];
+  hasTargets3 = [stopCommand2 hasTargets];
 
-  if ((v14 & 1) == 0)
+  if ((hasTargets3 & 1) == 0)
   {
-    v15 = [(MPRemoteCommandCenter *)self->_commandCenter stopCommand];
-    [v15 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+    stopCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter stopCommand];
+    [stopCommand3 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
   }
 
-  v16 = [(MPRemoteCommandCenter *)self->_commandCenter togglePlayPauseCommand];
-  [v16 setUnsupportedReasons:0];
+  togglePlayPauseCommand = [(MPRemoteCommandCenter *)self->_commandCenter togglePlayPauseCommand];
+  [togglePlayPauseCommand setUnsupportedReasons:0];
 
-  v17 = [(MPRemoteCommandCenter *)self->_commandCenter togglePlayPauseCommand];
-  v18 = [v17 hasTargets];
+  togglePlayPauseCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter togglePlayPauseCommand];
+  hasTargets4 = [togglePlayPauseCommand2 hasTargets];
 
-  if ((v18 & 1) == 0)
+  if ((hasTargets4 & 1) == 0)
   {
-    v19 = [(MPRemoteCommandCenter *)self->_commandCenter togglePlayPauseCommand];
-    [v19 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+    togglePlayPauseCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter togglePlayPauseCommand];
+    [togglePlayPauseCommand3 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
   }
 
-  v20 = [(MPRemoteCommandCenter *)self->_commandCenter nextTrackCommand];
-  [v20 setUnsupportedReasons:0];
+  nextTrackCommand = [(MPRemoteCommandCenter *)self->_commandCenter nextTrackCommand];
+  [nextTrackCommand setUnsupportedReasons:0];
 
-  v21 = [(MPRemoteCommandCenter *)self->_commandCenter nextTrackCommand];
-  v22 = [v21 hasTargets];
+  nextTrackCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter nextTrackCommand];
+  hasTargets5 = [nextTrackCommand2 hasTargets];
 
-  if ((v22 & 1) == 0)
+  if ((hasTargets5 & 1) == 0)
   {
-    v23 = [(MPRemoteCommandCenter *)self->_commandCenter nextTrackCommand];
-    [v23 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+    nextTrackCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter nextTrackCommand];
+    [nextTrackCommand3 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
   }
 
-  v24 = [(MPRemoteCommandCenter *)self->_commandCenter previousTrackCommand];
-  [v24 setUnsupportedReasons:0];
+  previousTrackCommand = [(MPRemoteCommandCenter *)self->_commandCenter previousTrackCommand];
+  [previousTrackCommand setUnsupportedReasons:0];
 
-  v25 = [(MPRemoteCommandCenter *)self->_commandCenter previousTrackCommand];
-  v26 = [v25 hasTargets];
+  previousTrackCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter previousTrackCommand];
+  hasTargets6 = [previousTrackCommand2 hasTargets];
 
-  if ((v26 & 1) == 0)
+  if ((hasTargets6 & 1) == 0)
   {
-    v27 = [(MPRemoteCommandCenter *)self->_commandCenter previousTrackCommand];
-    [v27 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+    previousTrackCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter previousTrackCommand];
+    [previousTrackCommand3 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
   }
 
-  v28 = [(MPRemoteCommandCenter *)self->_commandCenter playItemInQueueCommand];
-  [v28 setUnsupportedReasons:0];
+  playItemInQueueCommand = [(MPRemoteCommandCenter *)self->_commandCenter playItemInQueueCommand];
+  [playItemInQueueCommand setUnsupportedReasons:0];
 
-  v29 = [(MPRemoteCommandCenter *)self->_commandCenter playItemInQueueCommand];
-  v30 = [v29 hasTargets];
+  playItemInQueueCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter playItemInQueueCommand];
+  hasTargets7 = [playItemInQueueCommand2 hasTargets];
 
-  if ((v30 & 1) == 0)
+  if ((hasTargets7 & 1) == 0)
   {
-    v31 = [(MPRemoteCommandCenter *)self->_commandCenter playItemInQueueCommand];
-    [v31 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+    playItemInQueueCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter playItemInQueueCommand];
+    [playItemInQueueCommand3 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
   }
 
   if (_os_feature_enabled_impl())
   {
-    v32 = [(MPRemoteCommandCenter *)self->_commandCenter performDialogActionCommand];
-    [v32 setUnsupportedReasons:0];
+    performDialogActionCommand = [(MPRemoteCommandCenter *)self->_commandCenter performDialogActionCommand];
+    [performDialogActionCommand setUnsupportedReasons:0];
 
-    v33 = [(MPRemoteCommandCenter *)self->_commandCenter performDialogActionCommand];
-    v34 = [v33 hasTargets];
+    performDialogActionCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter performDialogActionCommand];
+    hasTargets8 = [performDialogActionCommand2 hasTargets];
 
-    if ((v34 & 1) == 0)
+    if ((hasTargets8 & 1) == 0)
     {
-      v35 = [(MPRemoteCommandCenter *)self->_commandCenter performDialogActionCommand];
-      [v35 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      performDialogActionCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter performDialogActionCommand];
+      [performDialogActionCommand3 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
   }
 
-  v36 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackQueueCommand];
-  [v36 setUnsupportedReasons:0];
+  setPlaybackQueueCommand = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackQueueCommand];
+  [setPlaybackQueueCommand setUnsupportedReasons:0];
 
-  v37 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackQueueCommand];
-  v38 = [v37 hasTargets];
+  setPlaybackQueueCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackQueueCommand];
+  hasTargets9 = [setPlaybackQueueCommand2 hasTargets];
 
-  if ((v38 & 1) == 0)
+  if ((hasTargets9 & 1) == 0)
   {
-    v39 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackQueueCommand];
-    [v39 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+    setPlaybackQueueCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackQueueCommand];
+    [setPlaybackQueueCommand3 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
   }
 
-  v40 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackQueueCommand];
-  [v40 registerSupportedQueueType:8];
+  setPlaybackQueueCommand4 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackQueueCommand];
+  [setPlaybackQueueCommand4 registerSupportedQueueType:8];
 
-  v41 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackQueueCommand];
-  [v41 registerSupportedQueueType:7];
+  setPlaybackQueueCommand5 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackQueueCommand];
+  [setPlaybackQueueCommand5 registerSupportedQueueType:7];
 
   if (!+[MPCPlaybackEngine isSystemPodcasts])
   {
-    v42 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackQueueCommand];
-    [v42 registerSupportedCustomQueueIdentifier:@"com.apple.music.playbackqueue.radio"];
+    setPlaybackQueueCommand6 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackQueueCommand];
+    [setPlaybackQueueCommand6 registerSupportedCustomQueueIdentifier:@"com.apple.music.playbackqueue.radio"];
 
-    v43 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackQueueCommand];
-    [v43 registerSupportedCustomQueueIdentifier:@"com.apple.music.playbackqueue.tracklist"];
+    setPlaybackQueueCommand7 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackQueueCommand];
+    [setPlaybackQueueCommand7 registerSupportedCustomQueueIdentifier:@"com.apple.music.playbackqueue.tracklist"];
 
-    v44 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackQueueCommand];
-    [v44 registerSupportedCustomQueueIdentifier:@"com.apple.music.playbackqueue.sharedlistening"];
+    setPlaybackQueueCommand8 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackQueueCommand];
+    [setPlaybackQueueCommand8 registerSupportedCustomQueueIdentifier:@"com.apple.music.playbackqueue.sharedlistening"];
 
-    v45 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackQueueCommand];
-    [v45 registerSupportedCustomQueueIdentifier:@"com.apple.mediaplayer.playbackcontext"];
+    setPlaybackQueueCommand9 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackQueueCommand];
+    [setPlaybackQueueCommand9 registerSupportedCustomQueueIdentifier:@"com.apple.mediaplayer.playbackcontext"];
 
-    v46 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackQueueCommand];
-    [v46 registerSupportedCustomQueueIdentifier:@"com.apple.MediaPlaybackCore.playbackContextArchive-v1.opack"];
+    setPlaybackQueueCommand10 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackQueueCommand];
+    [setPlaybackQueueCommand10 registerSupportedCustomQueueIdentifier:@"com.apple.MediaPlaybackCore.playbackContextArchive-v1.opack"];
   }
 
-  v47 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackQueueCommand];
-  [v47 setTimeout:30.0];
+  setPlaybackQueueCommand11 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackQueueCommand];
+  [setPlaybackQueueCommand11 setTimeout:30.0];
 
-  v48 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackSessionCommand];
-  [v48 setTimeout:30.0];
+  setPlaybackSessionCommand = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackSessionCommand];
+  [setPlaybackSessionCommand setTimeout:30.0];
 
-  v49 = [(MPRemoteCommandCenter *)self->_commandCenter prepareForSetPlaybackQueueCommand];
-  [v49 setUnsupportedReasons:0];
+  prepareForSetPlaybackQueueCommand = [(MPRemoteCommandCenter *)self->_commandCenter prepareForSetPlaybackQueueCommand];
+  [prepareForSetPlaybackQueueCommand setUnsupportedReasons:0];
 
-  v50 = [(MPRemoteCommandCenter *)self->_commandCenter prepareForSetPlaybackQueueCommand];
-  v51 = [v50 hasTargets];
+  prepareForSetPlaybackQueueCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter prepareForSetPlaybackQueueCommand];
+  hasTargets10 = [prepareForSetPlaybackQueueCommand2 hasTargets];
 
-  if ((v51 & 1) == 0)
+  if ((hasTargets10 & 1) == 0)
   {
-    v52 = [(MPRemoteCommandCenter *)self->_commandCenter prepareForSetPlaybackQueueCommand];
-    [v52 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+    prepareForSetPlaybackQueueCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter prepareForSetPlaybackQueueCommand];
+    [prepareForSetPlaybackQueueCommand3 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
   }
 
-  v53 = [(MPRemoteCommandCenter *)self->_commandCenter prepareForSetPlaybackQueueCommand];
-  [v53 setSkipSerializedEventDelivery:1];
+  prepareForSetPlaybackQueueCommand4 = [(MPRemoteCommandCenter *)self->_commandCenter prepareForSetPlaybackQueueCommand];
+  [prepareForSetPlaybackQueueCommand4 setSkipSerializedEventDelivery:1];
 
-  v54 = [(MPRemoteCommandCenter *)self->_commandCenter prepareForSetPlaybackQueueCommand];
-  [v54 setTimeout:30.0];
+  prepareForSetPlaybackQueueCommand5 = [(MPRemoteCommandCenter *)self->_commandCenter prepareForSetPlaybackQueueCommand];
+  [prepareForSetPlaybackQueueCommand5 setTimeout:30.0];
 
-  v55 = [(MPRemoteCommandCenter *)self->_commandCenter insertIntoPlaybackQueueCommand];
-  [v55 setUnsupportedReasons:0];
+  insertIntoPlaybackQueueCommand = [(MPRemoteCommandCenter *)self->_commandCenter insertIntoPlaybackQueueCommand];
+  [insertIntoPlaybackQueueCommand setUnsupportedReasons:0];
 
-  v56 = [(MPRemoteCommandCenter *)self->_commandCenter insertIntoPlaybackQueueCommand];
-  v57 = [v56 hasTargets];
+  insertIntoPlaybackQueueCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter insertIntoPlaybackQueueCommand];
+  hasTargets11 = [insertIntoPlaybackQueueCommand2 hasTargets];
 
-  if ((v57 & 1) == 0)
+  if ((hasTargets11 & 1) == 0)
   {
-    v58 = [(MPRemoteCommandCenter *)self->_commandCenter insertIntoPlaybackQueueCommand];
-    [v58 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+    insertIntoPlaybackQueueCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter insertIntoPlaybackQueueCommand];
+    [insertIntoPlaybackQueueCommand3 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
   }
 
-  v59 = [(MPRemoteCommandCenter *)self->_commandCenter insertIntoPlaybackQueueCommand];
-  [v59 registerSupportedQueueType:7];
+  insertIntoPlaybackQueueCommand4 = [(MPRemoteCommandCenter *)self->_commandCenter insertIntoPlaybackQueueCommand];
+  [insertIntoPlaybackQueueCommand4 registerSupportedQueueType:7];
 
   if (!+[MPCPlaybackEngine isSystemPodcasts])
   {
-    v60 = [(MPRemoteCommandCenter *)self->_commandCenter insertIntoPlaybackQueueCommand];
-    [v60 registerSupportedCustomQueueIdentifier:@"com.apple.music.playbackqueue.radio"];
+    insertIntoPlaybackQueueCommand5 = [(MPRemoteCommandCenter *)self->_commandCenter insertIntoPlaybackQueueCommand];
+    [insertIntoPlaybackQueueCommand5 registerSupportedCustomQueueIdentifier:@"com.apple.music.playbackqueue.radio"];
 
-    v61 = [(MPRemoteCommandCenter *)self->_commandCenter insertIntoPlaybackQueueCommand];
-    [v61 registerSupportedCustomQueueIdentifier:@"com.apple.music.playbackqueue.tracklist"];
+    insertIntoPlaybackQueueCommand6 = [(MPRemoteCommandCenter *)self->_commandCenter insertIntoPlaybackQueueCommand];
+    [insertIntoPlaybackQueueCommand6 registerSupportedCustomQueueIdentifier:@"com.apple.music.playbackqueue.tracklist"];
 
-    v62 = [(MPRemoteCommandCenter *)self->_commandCenter insertIntoPlaybackQueueCommand];
-    [v62 registerSupportedCustomQueueIdentifier:@"com.apple.mediaplayer.playbackcontext"];
+    insertIntoPlaybackQueueCommand7 = [(MPRemoteCommandCenter *)self->_commandCenter insertIntoPlaybackQueueCommand];
+    [insertIntoPlaybackQueueCommand7 registerSupportedCustomQueueIdentifier:@"com.apple.mediaplayer.playbackcontext"];
   }
 
-  v63 = [(MPRemoteCommandCenter *)self->_commandCenter skipForwardCommand];
-  [v63 setPreferredIntervals:&unk_1F45998E0];
+  skipForwardCommand = [(MPRemoteCommandCenter *)self->_commandCenter skipForwardCommand];
+  [skipForwardCommand setPreferredIntervals:&unk_1F45998E0];
 
-  v64 = [(MPRemoteCommandCenter *)self->_commandCenter skipBackwardCommand];
-  [v64 setPreferredIntervals:&unk_1F45998F8];
+  skipBackwardCommand = [(MPRemoteCommandCenter *)self->_commandCenter skipBackwardCommand];
+  [skipBackwardCommand setPreferredIntervals:&unk_1F45998F8];
 
-  v65 = [(MPRemoteCommandCenter *)self->_commandCenter skipForwardCommand];
-  [v65 setUnsupportedReasons:0];
+  skipForwardCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter skipForwardCommand];
+  [skipForwardCommand2 setUnsupportedReasons:0];
 
-  v66 = [(MPRemoteCommandCenter *)self->_commandCenter skipForwardCommand];
-  v67 = [v66 hasTargets];
+  skipForwardCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter skipForwardCommand];
+  hasTargets12 = [skipForwardCommand3 hasTargets];
 
-  if ((v67 & 1) == 0)
+  if ((hasTargets12 & 1) == 0)
   {
-    v68 = [(MPRemoteCommandCenter *)self->_commandCenter skipForwardCommand];
-    [v68 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+    skipForwardCommand4 = [(MPRemoteCommandCenter *)self->_commandCenter skipForwardCommand];
+    [skipForwardCommand4 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
   }
 
-  v69 = [(MPRemoteCommandCenter *)self->_commandCenter skipBackwardCommand];
-  [v69 setUnsupportedReasons:0];
+  skipBackwardCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter skipBackwardCommand];
+  [skipBackwardCommand2 setUnsupportedReasons:0];
 
-  v70 = [(MPRemoteCommandCenter *)self->_commandCenter skipBackwardCommand];
-  v71 = [v70 hasTargets];
+  skipBackwardCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter skipBackwardCommand];
+  hasTargets13 = [skipBackwardCommand3 hasTargets];
 
-  if ((v71 & 1) == 0)
+  if ((hasTargets13 & 1) == 0)
   {
-    v72 = [(MPRemoteCommandCenter *)self->_commandCenter skipBackwardCommand];
-    [v72 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+    skipBackwardCommand4 = [(MPRemoteCommandCenter *)self->_commandCenter skipBackwardCommand];
+    [skipBackwardCommand4 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
   }
 
-  v73 = [(MPRemoteCommandCenter *)self->_commandCenter changeQueueEndActionCommand];
-  [v73 setUnsupportedReasons:0];
+  changeQueueEndActionCommand = [(MPRemoteCommandCenter *)self->_commandCenter changeQueueEndActionCommand];
+  [changeQueueEndActionCommand setUnsupportedReasons:0];
 
-  v74 = [(MPRemoteCommandCenter *)self->_commandCenter changeQueueEndActionCommand];
-  v75 = [v74 hasTargets];
+  changeQueueEndActionCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter changeQueueEndActionCommand];
+  hasTargets14 = [changeQueueEndActionCommand2 hasTargets];
 
-  if ((v75 & 1) == 0)
+  if ((hasTargets14 & 1) == 0)
   {
-    v76 = [(MPRemoteCommandCenter *)self->_commandCenter changeQueueEndActionCommand];
-    [v76 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+    changeQueueEndActionCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter changeQueueEndActionCommand];
+    [changeQueueEndActionCommand3 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
   }
 
   if (+[MPCPlaybackEngine isSystemMusic])
   {
-    v77 = [(MPRemoteCommandCenter *)self->_commandCenter likeCommand];
-    [v77 setUnsupportedReasons:0];
+    likeCommand = [(MPRemoteCommandCenter *)self->_commandCenter likeCommand];
+    [likeCommand setUnsupportedReasons:0];
 
-    v78 = [(MPRemoteCommandCenter *)self->_commandCenter likeCommand];
-    v79 = [v78 hasTargets];
+    likeCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter likeCommand];
+    hasTargets15 = [likeCommand2 hasTargets];
 
-    if ((v79 & 1) == 0)
+    if ((hasTargets15 & 1) == 0)
     {
-      v80 = [(MPRemoteCommandCenter *)self->_commandCenter likeCommand];
-      [v80 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      likeCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter likeCommand];
+      [likeCommand3 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    v81 = [MEMORY[0x1E696AAE8] mediaPlaybackCoreBundle];
-    v82 = [v81 localizedStringForKey:@"REMOTE_CONTROL_LIKE_TRACK_RADIO" value:&stru_1F454A698 table:@"MediaPlaybackCore"];
-    v83 = [(MPRemoteCommandCenter *)self->_commandCenter likeCommand];
-    [v83 setLocalizedTitle:v82];
+    mediaPlaybackCoreBundle = [MEMORY[0x1E696AAE8] mediaPlaybackCoreBundle];
+    v82 = [mediaPlaybackCoreBundle localizedStringForKey:@"REMOTE_CONTROL_LIKE_TRACK_RADIO" value:&stru_1F454A698 table:@"MediaPlaybackCore"];
+    likeCommand4 = [(MPRemoteCommandCenter *)self->_commandCenter likeCommand];
+    [likeCommand4 setLocalizedTitle:v82];
 
-    v84 = [MEMORY[0x1E696AAE8] mediaPlaybackCoreBundle];
-    v85 = [v84 localizedStringForKey:@"REMOTE_CONTROL_LIKE_TRACK_SHORT" value:&stru_1F454A698 table:@"MediaPlaybackCore"];
-    v86 = [(MPRemoteCommandCenter *)self->_commandCenter likeCommand];
-    [v86 setLocalizedShortTitle:v85];
+    mediaPlaybackCoreBundle2 = [MEMORY[0x1E696AAE8] mediaPlaybackCoreBundle];
+    v85 = [mediaPlaybackCoreBundle2 localizedStringForKey:@"REMOTE_CONTROL_LIKE_TRACK_SHORT" value:&stru_1F454A698 table:@"MediaPlaybackCore"];
+    likeCommand5 = [(MPRemoteCommandCenter *)self->_commandCenter likeCommand];
+    [likeCommand5 setLocalizedShortTitle:v85];
 
-    v87 = [(MPRemoteCommandCenter *)self->_commandCenter dislikeCommand];
-    [v87 setUnsupportedReasons:0];
+    dislikeCommand = [(MPRemoteCommandCenter *)self->_commandCenter dislikeCommand];
+    [dislikeCommand setUnsupportedReasons:0];
 
-    v88 = [(MPRemoteCommandCenter *)self->_commandCenter dislikeCommand];
-    LOBYTE(v85) = [v88 hasTargets];
+    dislikeCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter dislikeCommand];
+    LOBYTE(v85) = [dislikeCommand2 hasTargets];
 
     if ((v85 & 1) == 0)
     {
-      v89 = [(MPRemoteCommandCenter *)self->_commandCenter dislikeCommand];
-      [v89 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      dislikeCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter dislikeCommand];
+      [dislikeCommand3 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    v90 = [MEMORY[0x1E696AAE8] mediaPlaybackCoreBundle];
-    v91 = [v90 localizedStringForKey:@"REMOTE_CONTROL_DISLIKE_TRACK_RADIO" value:&stru_1F454A698 table:@"MediaPlaybackCore"];
-    v92 = [(MPRemoteCommandCenter *)self->_commandCenter dislikeCommand];
-    [v92 setLocalizedTitle:v91];
+    mediaPlaybackCoreBundle3 = [MEMORY[0x1E696AAE8] mediaPlaybackCoreBundle];
+    v91 = [mediaPlaybackCoreBundle3 localizedStringForKey:@"REMOTE_CONTROL_DISLIKE_TRACK_RADIO" value:&stru_1F454A698 table:@"MediaPlaybackCore"];
+    dislikeCommand4 = [(MPRemoteCommandCenter *)self->_commandCenter dislikeCommand];
+    [dislikeCommand4 setLocalizedTitle:v91];
 
-    v93 = [MEMORY[0x1E696AAE8] mediaPlaybackCoreBundle];
-    v94 = [v93 localizedStringForKey:@"REMOTE_CONTROL_DISLIKE_TRACK_SHORT" value:&stru_1F454A698 table:@"MediaPlaybackCore"];
-    v95 = [(MPRemoteCommandCenter *)self->_commandCenter dislikeCommand];
-    [v95 setLocalizedShortTitle:v94];
+    mediaPlaybackCoreBundle4 = [MEMORY[0x1E696AAE8] mediaPlaybackCoreBundle];
+    v94 = [mediaPlaybackCoreBundle4 localizedStringForKey:@"REMOTE_CONTROL_DISLIKE_TRACK_SHORT" value:&stru_1F454A698 table:@"MediaPlaybackCore"];
+    dislikeCommand5 = [(MPRemoteCommandCenter *)self->_commandCenter dislikeCommand];
+    [dislikeCommand5 setLocalizedShortTitle:v94];
   }
 
-  v96 = [(MPRemoteCommandCenter *)self->_commandCenter addNowPlayingItemToLibraryCommand];
-  [v96 setUnsupportedReasons:0];
+  addNowPlayingItemToLibraryCommand = [(MPRemoteCommandCenter *)self->_commandCenter addNowPlayingItemToLibraryCommand];
+  [addNowPlayingItemToLibraryCommand setUnsupportedReasons:0];
 
-  v97 = [(MPRemoteCommandCenter *)self->_commandCenter addNowPlayingItemToLibraryCommand];
-  v98 = [v97 hasTargets];
+  addNowPlayingItemToLibraryCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter addNowPlayingItemToLibraryCommand];
+  hasTargets16 = [addNowPlayingItemToLibraryCommand2 hasTargets];
 
-  if ((v98 & 1) == 0)
+  if ((hasTargets16 & 1) == 0)
   {
-    v99 = [(MPRemoteCommandCenter *)self->_commandCenter addNowPlayingItemToLibraryCommand];
-    [v99 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+    addNowPlayingItemToLibraryCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter addNowPlayingItemToLibraryCommand];
+    [addNowPlayingItemToLibraryCommand3 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
   }
 
-  v100 = [(MPRemoteCommandCenter *)self->_commandCenter addItemToLibraryCommand];
-  [v100 setUnsupportedReasons:0];
+  addItemToLibraryCommand = [(MPRemoteCommandCenter *)self->_commandCenter addItemToLibraryCommand];
+  [addItemToLibraryCommand setUnsupportedReasons:0];
 
-  v101 = [(MPRemoteCommandCenter *)self->_commandCenter addItemToLibraryCommand];
-  v102 = [v101 hasTargets];
+  addItemToLibraryCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter addItemToLibraryCommand];
+  hasTargets17 = [addItemToLibraryCommand2 hasTargets];
 
-  if ((v102 & 1) == 0)
+  if ((hasTargets17 & 1) == 0)
   {
-    v103 = [(MPRemoteCommandCenter *)self->_commandCenter addItemToLibraryCommand];
-    [v103 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+    addItemToLibraryCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter addItemToLibraryCommand];
+    [addItemToLibraryCommand3 addTarget:self action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
   }
 }
 
@@ -668,646 +668,646 @@ LABEL_23:
   spid = v5;
 
   WeakRetained = objc_loadWeakRetained(&self->_playbackEngine);
-  v8 = [WeakRetained queueController];
-  v9 = [v8 currentItem];
-  v10 = [v8 behaviorImpl];
-  v478 = [v10 isEmpty];
+  queueController = [WeakRetained queueController];
+  currentItem = [queueController currentItem];
+  behaviorImpl = [queueController behaviorImpl];
+  isEmpty = [behaviorImpl isEmpty];
 
-  v11 = [v8 behaviorType];
+  behaviorType = [queueController behaviorType];
   v12 = +[MPCPlaybackAccountManager sharedManager];
-  v13 = [v12 fallbackAccount];
-  v474 = [v13 hasCatalogPlaybackCapability];
+  fallbackAccount = [v12 fallbackAccount];
+  hasCatalogPlaybackCapability = [fallbackAccount hasCatalogPlaybackCapability];
 
-  v14 = [v8 sessionID];
-  v15 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackSessionCommand];
-  [v15 setCurrentPlaybackSessionIdentifier:v14];
+  sessionID = [queueController sessionID];
+  setPlaybackSessionCommand = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackSessionCommand];
+  [setPlaybackSessionCommand setCurrentPlaybackSessionIdentifier:sessionID];
 
   v16 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [v8 sessionID];
+    sessionID2 = [queueController sessionID];
     *buf = 138543618;
-    v500 = v17;
+    v500 = sessionID2;
     v501 = 2114;
-    v502 = v9;
+    v502 = currentItem;
     _os_log_impl(&dword_1C5C61000, v16, OS_LOG_TYPE_INFO, "[Publisher] _updateSupportedCommands sessionIdentifier=%{public}@ currentItem=%{public}@", buf, 0x16u);
   }
 
-  v18 = [v9 isAlwaysLive];
-  v19 = [(MPRemoteCommandCenter *)self->_commandCenter changePlaybackPositionCommand];
-  v20 = self;
-  v21 = [MEMORY[0x1E695DF70] array];
-  v22 = [MEMORY[0x1E695DF70] array];
-  v476 = v18;
-  if (v18)
+  isAlwaysLive = [currentItem isAlwaysLive];
+  changePlaybackPositionCommand = [(MPRemoteCommandCenter *)self->_commandCenter changePlaybackPositionCommand];
+  selfCopy = self;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  v476 = isAlwaysLive;
+  if (isAlwaysLive)
   {
-    [v21 addObject:@"live streaming content"];
+    [array addObject:@"live streaming content"];
   }
 
-  v23 = [(MPRemoteCommandCenter *)self->_commandCenter changePlaybackPositionCommand];
-  [v23 setCanBeControlledByScrubbing:v476 ^ 1u];
+  changePlaybackPositionCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter changePlaybackPositionCommand];
+  [changePlaybackPositionCommand2 setCanBeControlledByScrubbing:v476 ^ 1u];
 
-  v24 = [WeakRetained transcriptAlignmentController];
-  v25 = v24;
-  v481 = v9;
-  v472 = v11;
-  if (v24)
+  transcriptAlignmentController = [WeakRetained transcriptAlignmentController];
+  v25 = transcriptAlignmentController;
+  v481 = currentItem;
+  v472 = behaviorType;
+  if (transcriptAlignmentController)
   {
-    v26 = [v24 isEnabled];
+    isEnabled = [transcriptAlignmentController isEnabled];
   }
 
   else
   {
-    v26 = 0;
+    isEnabled = 0;
   }
 
-  v27 = [(MPRemoteCommandCenter *)self->_commandCenter changePlaybackPositionCommand];
-  [v27 setSupportsReferencePosition:v26];
+  changePlaybackPositionCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter changePlaybackPositionCommand];
+  [changePlaybackPositionCommand3 setSupportsReferencePosition:isEnabled];
 
-  if ([v21 count])
+  if ([array count])
   {
     v28 = v481;
     v29 = v472;
-    if (![v21 count])
+    if (![array count])
     {
-      v403 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v404 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-      [v403 handleFailureInFunction:v404 file:@"_MPCMediaRemotePublisher.m" lineNumber:1084 description:@"Must provide reason for unsupported command"];
+      [currentHandler handleFailureInFunction:v404 file:@"_MPCMediaRemotePublisher.m" lineNumber:1084 description:@"Must provide reason for unsupported command"];
     }
 
-    [v19 setUnsupportedReasons:v21];
-    if ([v19 hasTargets])
+    [changePlaybackPositionCommand setUnsupportedReasons:array];
+    if ([changePlaybackPositionCommand hasTargets])
     {
-      [v19 removeTarget:v20 action:sel__dispatchCommandEvent_completion_];
+      [changePlaybackPositionCommand removeTarget:selfCopy action:sel__dispatchCommandEvent_completion_];
     }
   }
 
   else
   {
-    [v19 setUnsupportedReasons:0];
+    [changePlaybackPositionCommand setUnsupportedReasons:0];
     v28 = v481;
     v29 = v472;
-    if (([v19 hasTargets] & 1) == 0)
+    if (([changePlaybackPositionCommand hasTargets] & 1) == 0)
     {
-      [v19 addTarget:v20 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      [changePlaybackPositionCommand addTarget:selfCopy action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    [v19 setEnabled:{objc_msgSend(v22, "count") == 0}];
-    [v19 setDisabledReasons:v22];
+    [changePlaybackPositionCommand setEnabled:{objc_msgSend(array2, "count") == 0}];
+    [changePlaybackPositionCommand setDisabledReasons:array2];
   }
 
-  v30 = [(MPRemoteCommandCenter *)self->_commandCenter changePlaybackRateCommand];
-  v31 = v20;
-  v32 = [MEMORY[0x1E695DF70] array];
-  v33 = [MEMORY[0x1E695DF70] array];
+  changePlaybackRateCommand = [(MPRemoteCommandCenter *)self->_commandCenter changePlaybackRateCommand];
+  v31 = selfCopy;
+  array3 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
   if (([v28 supportsRateChange] & 1) == 0)
   {
-    [v32 addObject:@"item does not support rate changes"];
+    [array3 addObject:@"item does not support rate changes"];
   }
 
   if (v476)
   {
-    [v32 addObject:@"live streaming content"];
+    [array3 addObject:@"live streaming content"];
   }
 
   if (v29 != 4)
   {
-    [v33 addObject:@"hidden for Music"];
+    [array4 addObject:@"hidden for Music"];
   }
 
-  if ([v32 count])
+  if ([array3 count])
   {
-    if (![v32 count])
+    if (![array3 count])
     {
-      v405 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v406 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-      [v405 handleFailureInFunction:v406 file:@"_MPCMediaRemotePublisher.m" lineNumber:1090 description:@"Must provide reason for unsupported command"];
+      [currentHandler2 handleFailureInFunction:v406 file:@"_MPCMediaRemotePublisher.m" lineNumber:1090 description:@"Must provide reason for unsupported command"];
     }
 
-    [v30 setUnsupportedReasons:v32];
-    if ([v30 hasTargets])
+    [changePlaybackRateCommand setUnsupportedReasons:array3];
+    if ([changePlaybackRateCommand hasTargets])
     {
-      [v30 removeTarget:v31 action:sel__dispatchCommandEvent_completion_];
+      [changePlaybackRateCommand removeTarget:v31 action:sel__dispatchCommandEvent_completion_];
     }
   }
 
   else
   {
-    [v30 setUnsupportedReasons:0];
-    if (([v30 hasTargets] & 1) == 0)
+    [changePlaybackRateCommand setUnsupportedReasons:0];
+    if (([changePlaybackRateCommand hasTargets] & 1) == 0)
     {
-      [v30 addTarget:v31 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      [changePlaybackRateCommand addTarget:v31 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    [v30 setEnabled:{objc_msgSend(v33, "count") == 0}];
-    [v30 setDisabledReasons:v33];
+    [changePlaybackRateCommand setEnabled:{objc_msgSend(array4, "count") == 0}];
+    [changePlaybackRateCommand setDisabledReasons:array4];
   }
 
-  v34 = [(MPRemoteCommandCenter *)self->_commandCenter setSleepTimerCommand];
+  setSleepTimerCommand = [(MPRemoteCommandCenter *)self->_commandCenter setSleepTimerCommand];
   v35 = v31;
-  v36 = [MEMORY[0x1E695DF70] array];
-  v37 = [MEMORY[0x1E695DF70] array];
+  array5 = [MEMORY[0x1E695DF70] array];
+  array6 = [MEMORY[0x1E695DF70] array];
   if (v29 != 4)
   {
-    [v36 addObject:@"sleep timers for podcasts"];
-    [v37 addObject:@"hidden for Music"];
+    [array5 addObject:@"sleep timers for podcasts"];
+    [array6 addObject:@"hidden for Music"];
   }
 
-  if ([v36 count])
+  if ([array5 count])
   {
-    if (![v36 count])
+    if (![array5 count])
     {
-      v407 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v408 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-      [v407 handleFailureInFunction:v408 file:@"_MPCMediaRemotePublisher.m" lineNumber:1095 description:@"Must provide reason for unsupported command"];
+      [currentHandler3 handleFailureInFunction:v408 file:@"_MPCMediaRemotePublisher.m" lineNumber:1095 description:@"Must provide reason for unsupported command"];
     }
 
-    [v34 setUnsupportedReasons:v36];
-    if ([v34 hasTargets])
+    [setSleepTimerCommand setUnsupportedReasons:array5];
+    if ([setSleepTimerCommand hasTargets])
     {
-      [v34 removeTarget:v35 action:sel__dispatchCommandEvent_completion_];
+      [setSleepTimerCommand removeTarget:v35 action:sel__dispatchCommandEvent_completion_];
     }
   }
 
   else
   {
-    [v34 setUnsupportedReasons:0];
-    if (([v34 hasTargets] & 1) == 0)
+    [setSleepTimerCommand setUnsupportedReasons:0];
+    if (([setSleepTimerCommand hasTargets] & 1) == 0)
     {
-      [v34 addTarget:v35 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      [setSleepTimerCommand addTarget:v35 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    [v34 setEnabled:{objc_msgSend(v37, "count") == 0}];
-    [v34 setDisabledReasons:v37];
+    [setSleepTimerCommand setEnabled:{objc_msgSend(array6, "count") == 0}];
+    [setSleepTimerCommand setDisabledReasons:array6];
   }
 
-  v38 = [(MPRemoteCommandCenter *)self->_commandCenter seekForwardCommand];
+  seekForwardCommand = [(MPRemoteCommandCenter *)self->_commandCenter seekForwardCommand];
   v39 = v35;
-  v40 = [MEMORY[0x1E695DF70] array];
-  v41 = [MEMORY[0x1E695DF70] array];
-  v42 = [v8 musicSharePlay];
+  array7 = [MEMORY[0x1E695DF70] array];
+  array8 = [MEMORY[0x1E695DF70] array];
+  musicSharePlay = [queueController musicSharePlay];
 
-  if (v42)
+  if (musicSharePlay)
   {
-    [v40 addObject:@"shared listening does not support FF"];
+    [array7 addObject:@"shared listening does not support FF"];
   }
 
   if (v476)
   {
-    [v40 addObject:@"live streaming content"];
+    [array7 addObject:@"live streaming content"];
   }
 
   if ([v28 isInOverlappedTransition])
   {
-    [v40 addObject:@"overlapped transitions do not support FF"];
+    [array7 addObject:@"overlapped transitions do not support FF"];
   }
 
-  if ([v40 count])
+  if ([array7 count])
   {
-    if (![v40 count])
+    if (![array7 count])
     {
-      v409 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v410 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-      [v409 handleFailureInFunction:v410 file:@"_MPCMediaRemotePublisher.m" lineNumber:1103 description:@"Must provide reason for unsupported command"];
+      [currentHandler4 handleFailureInFunction:v410 file:@"_MPCMediaRemotePublisher.m" lineNumber:1103 description:@"Must provide reason for unsupported command"];
     }
 
-    [v38 setUnsupportedReasons:v40];
-    if ([v38 hasTargets])
+    [seekForwardCommand setUnsupportedReasons:array7];
+    if ([seekForwardCommand hasTargets])
     {
-      [v38 removeTarget:v39 action:sel__dispatchCommandEvent_completion_];
+      [seekForwardCommand removeTarget:v39 action:sel__dispatchCommandEvent_completion_];
     }
   }
 
   else
   {
-    [v38 setUnsupportedReasons:0];
-    if (([v38 hasTargets] & 1) == 0)
+    [seekForwardCommand setUnsupportedReasons:0];
+    if (([seekForwardCommand hasTargets] & 1) == 0)
     {
-      [v38 addTarget:v39 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      [seekForwardCommand addTarget:v39 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    [v38 setEnabled:{objc_msgSend(v41, "count") == 0}];
-    [v38 setDisabledReasons:v41];
+    [seekForwardCommand setEnabled:{objc_msgSend(array8, "count") == 0}];
+    [seekForwardCommand setDisabledReasons:array8];
   }
 
-  v43 = [(MPRemoteCommandCenter *)self->_commandCenter seekBackwardCommand];
+  seekBackwardCommand = [(MPRemoteCommandCenter *)self->_commandCenter seekBackwardCommand];
   v44 = v39;
-  v45 = [MEMORY[0x1E695DF70] array];
-  v46 = [MEMORY[0x1E695DF70] array];
-  v47 = [v8 musicSharePlay];
+  array9 = [MEMORY[0x1E695DF70] array];
+  array10 = [MEMORY[0x1E695DF70] array];
+  musicSharePlay2 = [queueController musicSharePlay];
 
-  if (v47)
+  if (musicSharePlay2)
   {
-    [v45 addObject:@"shared listening does not support RW"];
+    [array9 addObject:@"shared listening does not support RW"];
   }
 
   if (v476)
   {
-    [v45 addObject:@"live streaming content"];
+    [array9 addObject:@"live streaming content"];
   }
 
   if ([v28 isInOverlappedTransition])
   {
-    [v45 addObject:@"overlapped transitions do not support RW"];
+    [array9 addObject:@"overlapped transitions do not support RW"];
   }
 
-  if ([v45 count])
+  if ([array9 count])
   {
-    if (![v45 count])
+    if (![array9 count])
     {
-      v411 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
       v412 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-      [v411 handleFailureInFunction:v412 file:@"_MPCMediaRemotePublisher.m" lineNumber:1111 description:@"Must provide reason for unsupported command"];
+      [currentHandler5 handleFailureInFunction:v412 file:@"_MPCMediaRemotePublisher.m" lineNumber:1111 description:@"Must provide reason for unsupported command"];
     }
 
-    [v43 setUnsupportedReasons:v45];
-    if ([v43 hasTargets])
+    [seekBackwardCommand setUnsupportedReasons:array9];
+    if ([seekBackwardCommand hasTargets])
     {
-      [v43 removeTarget:v44 action:sel__dispatchCommandEvent_completion_];
+      [seekBackwardCommand removeTarget:v44 action:sel__dispatchCommandEvent_completion_];
     }
   }
 
   else
   {
-    [v43 setUnsupportedReasons:0];
-    if (([v43 hasTargets] & 1) == 0)
+    [seekBackwardCommand setUnsupportedReasons:0];
+    if (([seekBackwardCommand hasTargets] & 1) == 0)
     {
-      [v43 addTarget:v44 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      [seekBackwardCommand addTarget:v44 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    [v43 setEnabled:{objc_msgSend(v46, "count") == 0}];
-    [v43 setDisabledReasons:v46];
+    [seekBackwardCommand setEnabled:{objc_msgSend(array10, "count") == 0}];
+    [seekBackwardCommand setDisabledReasons:array10];
   }
 
-  v48 = [v28 prefersSeekOverSkip];
+  prefersSeekOverSkip = [v28 prefersSeekOverSkip];
   if (!v28)
   {
-    v48 |= +[MPCPlaybackEngine isSystemPodcasts];
+    prefersSeekOverSkip |= +[MPCPlaybackEngine isSystemPodcasts];
   }
 
-  v49 = [(MPRemoteCommandCenter *)self->_commandCenter skipForwardCommand];
+  skipForwardCommand = [(MPRemoteCommandCenter *)self->_commandCenter skipForwardCommand];
   v50 = v44;
-  v51 = [MEMORY[0x1E695DF70] array];
-  v52 = [MEMORY[0x1E695DF70] array];
+  array11 = [MEMORY[0x1E695DF70] array];
+  array12 = [MEMORY[0x1E695DF70] array];
   if (v476)
   {
-    [v51 addObject:@"live streaming content"];
+    [array11 addObject:@"live streaming content"];
   }
 
-  if ((v48 & 1) == 0)
+  if ((prefersSeekOverSkip & 1) == 0)
   {
-    [v52 addObject:@"item prefers seek over skip"];
+    [array12 addObject:@"item prefers seek over skip"];
   }
 
-  if ([v51 count])
+  if ([array11 count])
   {
-    if (![v51 count])
+    if (![array11 count])
     {
-      v413 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
       v414 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-      [v413 handleFailureInFunction:v414 file:@"_MPCMediaRemotePublisher.m" lineNumber:1121 description:@"Must provide reason for unsupported command"];
+      [currentHandler6 handleFailureInFunction:v414 file:@"_MPCMediaRemotePublisher.m" lineNumber:1121 description:@"Must provide reason for unsupported command"];
 
       v28 = v481;
     }
 
-    [v49 setUnsupportedReasons:v51];
-    if ([v49 hasTargets])
+    [skipForwardCommand setUnsupportedReasons:array11];
+    if ([skipForwardCommand hasTargets])
     {
-      [v49 removeTarget:v50 action:sel__dispatchCommandEvent_completion_];
+      [skipForwardCommand removeTarget:v50 action:sel__dispatchCommandEvent_completion_];
     }
   }
 
   else
   {
-    [v49 setUnsupportedReasons:0];
-    if (([v49 hasTargets] & 1) == 0)
+    [skipForwardCommand setUnsupportedReasons:0];
+    if (([skipForwardCommand hasTargets] & 1) == 0)
     {
-      [v49 addTarget:v50 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      [skipForwardCommand addTarget:v50 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    [v49 setEnabled:{objc_msgSend(v52, "count") == 0}];
-    [v49 setDisabledReasons:v52];
+    [skipForwardCommand setEnabled:{objc_msgSend(array12, "count") == 0}];
+    [skipForwardCommand setDisabledReasons:array12];
   }
 
-  v53 = [(MPRemoteCommandCenter *)self->_commandCenter skipBackwardCommand];
+  skipBackwardCommand = [(MPRemoteCommandCenter *)self->_commandCenter skipBackwardCommand];
   v54 = v50;
-  v55 = [MEMORY[0x1E695DF70] array];
-  v56 = [MEMORY[0x1E695DF70] array];
+  array13 = [MEMORY[0x1E695DF70] array];
+  array14 = [MEMORY[0x1E695DF70] array];
   if (v476)
   {
-    [v55 addObject:@"live streaming content"];
+    [array13 addObject:@"live streaming content"];
   }
 
-  if ((v48 & 1) == 0)
+  if ((prefersSeekOverSkip & 1) == 0)
   {
-    [v56 addObject:@"item prefers seek over skip"];
+    [array14 addObject:@"item prefers seek over skip"];
   }
 
-  if ([v55 count])
+  if ([array13 count])
   {
-    if (![v55 count])
+    if (![array13 count])
     {
-      v415 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
       v416 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-      [v415 handleFailureInFunction:v416 file:@"_MPCMediaRemotePublisher.m" lineNumber:1125 description:@"Must provide reason for unsupported command"];
+      [currentHandler7 handleFailureInFunction:v416 file:@"_MPCMediaRemotePublisher.m" lineNumber:1125 description:@"Must provide reason for unsupported command"];
     }
 
-    [v53 setUnsupportedReasons:v55];
-    if ([v53 hasTargets])
+    [skipBackwardCommand setUnsupportedReasons:array13];
+    if ([skipBackwardCommand hasTargets])
     {
-      [v53 removeTarget:v54 action:sel__dispatchCommandEvent_completion_];
+      [skipBackwardCommand removeTarget:v54 action:sel__dispatchCommandEvent_completion_];
     }
   }
 
   else
   {
-    [v53 setUnsupportedReasons:0];
-    if (([v53 hasTargets] & 1) == 0)
+    [skipBackwardCommand setUnsupportedReasons:0];
+    if (([skipBackwardCommand hasTargets] & 1) == 0)
     {
-      [v53 addTarget:v54 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      [skipBackwardCommand addTarget:v54 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    [v53 setEnabled:{objc_msgSend(v56, "count") == 0}];
-    [v53 setDisabledReasons:v56];
+    [skipBackwardCommand setEnabled:{objc_msgSend(array14, "count") == 0}];
+    [skipBackwardCommand setDisabledReasons:array14];
   }
 
-  v57 = [(MPRemoteCommandCenter *)self->_commandCenter previousTrackCommand];
+  previousTrackCommand = [(MPRemoteCommandCenter *)self->_commandCenter previousTrackCommand];
   v58 = v54;
-  v59 = [MEMORY[0x1E695DF70] array];
-  v60 = [MEMORY[0x1E695DF70] array];
-  if (v478)
+  array15 = [MEMORY[0x1E695DF70] array];
+  array16 = [MEMORY[0x1E695DF70] array];
+  if (isEmpty)
   {
-    [v59 addObject:@"behavior has no items"];
+    [array15 addObject:@"behavior has no items"];
   }
 
   v61 = @"uninitialized queueController";
-  if (v8)
+  if (queueController)
   {
     v61 = 0;
   }
 
   v62 = v61;
-  v63 = [v28 contentItemID];
+  contentItemID = [v28 contentItemID];
   v490 = v62;
-  v64 = [v8 canPreviousTrackForContentItemID:v63 reason:&v490];
+  v64 = [queueController canPreviousTrackForContentItemID:contentItemID reason:&v490];
   v65 = v490;
 
   if ((v64 & 1) == 0)
   {
-    [v60 addObject:v65];
+    [array16 addObject:v65];
   }
 
-  if ([v59 count])
+  if ([array15 count])
   {
     v66 = v481;
-    if (![v59 count])
+    if (![array15 count])
     {
-      v417 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler8 = [MEMORY[0x1E696AAA8] currentHandler];
       v418 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-      [v417 handleFailureInFunction:v418 file:@"_MPCMediaRemotePublisher.m" lineNumber:1132 description:@"Must provide reason for unsupported command"];
+      [currentHandler8 handleFailureInFunction:v418 file:@"_MPCMediaRemotePublisher.m" lineNumber:1132 description:@"Must provide reason for unsupported command"];
     }
 
-    [v57 setUnsupportedReasons:v59];
-    if ([v57 hasTargets])
+    [previousTrackCommand setUnsupportedReasons:array15];
+    if ([previousTrackCommand hasTargets])
     {
-      [v57 removeTarget:v58 action:sel__dispatchCommandEvent_completion_];
+      [previousTrackCommand removeTarget:v58 action:sel__dispatchCommandEvent_completion_];
     }
   }
 
   else
   {
-    [v57 setUnsupportedReasons:0];
+    [previousTrackCommand setUnsupportedReasons:0];
     v66 = v481;
-    if (([v57 hasTargets] & 1) == 0)
+    if (([previousTrackCommand hasTargets] & 1) == 0)
     {
-      [v57 addTarget:v58 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      [previousTrackCommand addTarget:v58 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    [v57 setEnabled:{objc_msgSend(v60, "count") == 0}];
-    [v57 setDisabledReasons:v60];
+    [previousTrackCommand setEnabled:{objc_msgSend(array16, "count") == 0}];
+    [previousTrackCommand setDisabledReasons:array16];
   }
 
-  v67 = [(MPRemoteCommandCenter *)self->_commandCenter nextTrackCommand];
+  nextTrackCommand = [(MPRemoteCommandCenter *)self->_commandCenter nextTrackCommand];
   v68 = v58;
-  v69 = [MEMORY[0x1E695DF70] array];
-  v70 = [MEMORY[0x1E695DF70] array];
-  if (v478)
+  array17 = [MEMORY[0x1E695DF70] array];
+  array18 = [MEMORY[0x1E695DF70] array];
+  if (isEmpty)
   {
-    [v69 addObject:@"behavior has no items"];
+    [array17 addObject:@"behavior has no items"];
   }
 
   v71 = v62;
-  v72 = [v66 contentItemID];
+  contentItemID2 = [v66 contentItemID];
   v489 = v71;
-  v73 = [v8 canNextTrackForContentItemID:v72 reason:&v489];
+  v73 = [queueController canNextTrackForContentItemID:contentItemID2 reason:&v489];
   v74 = v489;
 
   if ((v73 & 1) == 0)
   {
-    [v70 addObject:v74];
+    [array18 addObject:v74];
   }
 
   if ([v481 isPlaceholder])
   {
-    [v70 addObject:@"loading item"];
+    [array18 addObject:@"loading item"];
   }
 
-  if ([v69 count])
+  if ([array17 count])
   {
-    if (![v69 count])
+    if (![array17 count])
     {
-      v419 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler9 = [MEMORY[0x1E696AAA8] currentHandler];
       v420 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-      [v419 handleFailureInFunction:v420 file:@"_MPCMediaRemotePublisher.m" lineNumber:1139 description:@"Must provide reason for unsupported command"];
+      [currentHandler9 handleFailureInFunction:v420 file:@"_MPCMediaRemotePublisher.m" lineNumber:1139 description:@"Must provide reason for unsupported command"];
     }
 
-    [v67 setUnsupportedReasons:v69];
-    if ([v67 hasTargets])
+    [nextTrackCommand setUnsupportedReasons:array17];
+    if ([nextTrackCommand hasTargets])
     {
-      [v67 removeTarget:v68 action:sel__dispatchCommandEvent_completion_];
+      [nextTrackCommand removeTarget:v68 action:sel__dispatchCommandEvent_completion_];
     }
   }
 
   else
   {
-    [v67 setUnsupportedReasons:0];
-    if (([v67 hasTargets] & 1) == 0)
+    [nextTrackCommand setUnsupportedReasons:0];
+    if (([nextTrackCommand hasTargets] & 1) == 0)
     {
-      [v67 addTarget:v68 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      [nextTrackCommand addTarget:v68 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    [v67 setEnabled:{objc_msgSend(v70, "count") == 0}];
-    [v67 setDisabledReasons:v70];
+    [nextTrackCommand setEnabled:{objc_msgSend(array18, "count") == 0}];
+    [nextTrackCommand setDisabledReasons:array18];
   }
 
-  v75 = [(MPRemoteCommandCenter *)self->_commandCenter createRadioStationCommand];
+  createRadioStationCommand = [(MPRemoteCommandCenter *)self->_commandCenter createRadioStationCommand];
   v76 = v68;
-  v77 = [MEMORY[0x1E695DF70] array];
-  v78 = [MEMORY[0x1E695DF70] array];
-  if (v478)
+  array19 = [MEMORY[0x1E695DF70] array];
+  array20 = [MEMORY[0x1E695DF70] array];
+  if (isEmpty)
   {
-    [v77 addObject:@"behavior has no items"];
+    [array19 addObject:@"behavior has no items"];
   }
 
-  v79 = [v8 upNextBehavior];
-  v80 = [v79 allowsQueueModifications];
+  upNextBehavior = [queueController upNextBehavior];
+  allowsQueueModifications = [upNextBehavior allowsQueueModifications];
 
-  if ((v80 & 1) == 0)
+  if ((allowsQueueModifications & 1) == 0)
   {
-    [v77 addObject:@"queue does not allow modification"];
+    [array19 addObject:@"queue does not allow modification"];
   }
 
-  if ((v474 & 1) == 0)
+  if ((hasCatalogPlaybackCapability & 1) == 0)
   {
-    [v77 addObject:@"active account does not allow subscription playback"];
+    [array19 addObject:@"active account does not allow subscription playback"];
   }
 
   if (v476)
   {
-    [v77 addObject:@"live streaming content"];
+    [array19 addObject:@"live streaming content"];
   }
 
   if ([v481 isPlaceholder])
   {
-    [v77 addObject:@"loading item"];
+    [array19 addObject:@"loading item"];
   }
 
-  v81 = [v481 modelGenericObject];
-  v82 = [v81 flattenedGenericObject];
-  v83 = [v82 type];
+  modelGenericObject = [v481 modelGenericObject];
+  flattenedGenericObject = [modelGenericObject flattenedGenericObject];
+  type = [flattenedGenericObject type];
 
-  if (v83 != 1)
+  if (type != 1)
   {
-    [v77 addObject:@"item is not a Song"];
+    [array19 addObject:@"item is not a Song"];
   }
 
-  if ([v77 count])
+  if ([array19 count])
   {
-    if (![v77 count])
+    if (![array19 count])
     {
-      v421 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler10 = [MEMORY[0x1E696AAA8] currentHandler];
       v422 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-      [v421 handleFailureInFunction:v422 file:@"_MPCMediaRemotePublisher.m" lineNumber:1148 description:@"Must provide reason for unsupported command"];
+      [currentHandler10 handleFailureInFunction:v422 file:@"_MPCMediaRemotePublisher.m" lineNumber:1148 description:@"Must provide reason for unsupported command"];
     }
 
-    [v75 setUnsupportedReasons:v77];
-    if ([v75 hasTargets])
+    [createRadioStationCommand setUnsupportedReasons:array19];
+    if ([createRadioStationCommand hasTargets])
     {
-      [v75 removeTarget:v76 action:sel__dispatchCommandEvent_completion_];
+      [createRadioStationCommand removeTarget:v76 action:sel__dispatchCommandEvent_completion_];
     }
   }
 
   else
   {
-    [v75 setUnsupportedReasons:0];
-    if (([v75 hasTargets] & 1) == 0)
+    [createRadioStationCommand setUnsupportedReasons:0];
+    if (([createRadioStationCommand hasTargets] & 1) == 0)
     {
-      [v75 addTarget:v76 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      [createRadioStationCommand addTarget:v76 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    [v75 setEnabled:{objc_msgSend(v78, "count") == 0}];
-    [v75 setDisabledReasons:v78];
+    [createRadioStationCommand setEnabled:{objc_msgSend(array20, "count") == 0}];
+    [createRadioStationCommand setDisabledReasons:array20];
   }
 
-  v84 = [(MPRemoteCommandCenter *)self->_commandCenter reorderQueueCommand];
+  reorderQueueCommand = [(MPRemoteCommandCenter *)self->_commandCenter reorderQueueCommand];
   v85 = v76;
-  v86 = [MEMORY[0x1E695DF70] array];
-  v87 = [MEMORY[0x1E695DF70] array];
-  if (v478)
+  array21 = [MEMORY[0x1E695DF70] array];
+  array22 = [MEMORY[0x1E695DF70] array];
+  if (isEmpty)
   {
-    [v86 addObject:@"behavior has no items"];
+    [array21 addObject:@"behavior has no items"];
   }
 
-  v88 = [v8 upNextBehavior];
-  v89 = [v88 allowsQueueModifications];
+  upNextBehavior2 = [queueController upNextBehavior];
+  allowsQueueModifications2 = [upNextBehavior2 allowsQueueModifications];
 
-  if ((v89 & 1) == 0)
+  if ((allowsQueueModifications2 & 1) == 0)
   {
-    [v86 addObject:@"queue does not allow modifications"];
+    [array21 addObject:@"queue does not allow modifications"];
   }
 
-  if ([v86 count])
+  if ([array21 count])
   {
-    if (![v86 count])
+    if (![array21 count])
     {
-      v423 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler11 = [MEMORY[0x1E696AAA8] currentHandler];
       v424 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-      [v423 handleFailureInFunction:v424 file:@"_MPCMediaRemotePublisher.m" lineNumber:1153 description:@"Must provide reason for unsupported command"];
+      [currentHandler11 handleFailureInFunction:v424 file:@"_MPCMediaRemotePublisher.m" lineNumber:1153 description:@"Must provide reason for unsupported command"];
     }
 
-    [v84 setUnsupportedReasons:v86];
-    if ([v84 hasTargets])
+    [reorderQueueCommand setUnsupportedReasons:array21];
+    if ([reorderQueueCommand hasTargets])
     {
-      [v84 removeTarget:v85 action:sel__dispatchCommandEvent_completion_];
+      [reorderQueueCommand removeTarget:v85 action:sel__dispatchCommandEvent_completion_];
     }
   }
 
   else
   {
-    [v84 setUnsupportedReasons:0];
-    if (([v84 hasTargets] & 1) == 0)
+    [reorderQueueCommand setUnsupportedReasons:0];
+    if (([reorderQueueCommand hasTargets] & 1) == 0)
     {
-      [v84 addTarget:v85 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      [reorderQueueCommand addTarget:v85 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    [v84 setEnabled:{objc_msgSend(v87, "count") == 0}];
-    [v84 setDisabledReasons:v87];
+    [reorderQueueCommand setEnabled:{objc_msgSend(array22, "count") == 0}];
+    [reorderQueueCommand setDisabledReasons:array22];
   }
 
-  v90 = [(MPRemoteCommandCenter *)self->_commandCenter removeFromPlaybackQueueCommand];
+  removeFromPlaybackQueueCommand = [(MPRemoteCommandCenter *)self->_commandCenter removeFromPlaybackQueueCommand];
   v91 = v85;
-  v92 = [MEMORY[0x1E695DF70] array];
-  v93 = [MEMORY[0x1E695DF70] array];
-  if (v478)
+  array23 = [MEMORY[0x1E695DF70] array];
+  array24 = [MEMORY[0x1E695DF70] array];
+  if (isEmpty)
   {
-    [v92 addObject:@"behavior has no items"];
+    [array23 addObject:@"behavior has no items"];
   }
 
-  v94 = [v8 upNextBehavior];
-  v95 = [v94 allowsQueueModifications];
+  upNextBehavior3 = [queueController upNextBehavior];
+  allowsQueueModifications3 = [upNextBehavior3 allowsQueueModifications];
 
-  if ((v95 & 1) == 0)
+  if ((allowsQueueModifications3 & 1) == 0)
   {
-    [v92 addObject:@"queue does not allow modifications"];
+    [array23 addObject:@"queue does not allow modifications"];
   }
 
-  if ([v92 count])
+  if ([array23 count])
   {
-    if (![v92 count])
+    if (![array23 count])
     {
-      v425 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler12 = [MEMORY[0x1E696AAA8] currentHandler];
       v426 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-      [v425 handleFailureInFunction:v426 file:@"_MPCMediaRemotePublisher.m" lineNumber:1157 description:@"Must provide reason for unsupported command"];
+      [currentHandler12 handleFailureInFunction:v426 file:@"_MPCMediaRemotePublisher.m" lineNumber:1157 description:@"Must provide reason for unsupported command"];
     }
 
-    [v90 setUnsupportedReasons:v92];
-    if ([v90 hasTargets])
+    [removeFromPlaybackQueueCommand setUnsupportedReasons:array23];
+    if ([removeFromPlaybackQueueCommand hasTargets])
     {
-      [v90 removeTarget:v91 action:sel__dispatchCommandEvent_completion_];
+      [removeFromPlaybackQueueCommand removeTarget:v91 action:sel__dispatchCommandEvent_completion_];
     }
   }
 
   else
   {
-    [v90 setUnsupportedReasons:0];
-    if (([v90 hasTargets] & 1) == 0)
+    [removeFromPlaybackQueueCommand setUnsupportedReasons:0];
+    if (([removeFromPlaybackQueueCommand hasTargets] & 1) == 0)
     {
-      [v90 addTarget:v91 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      [removeFromPlaybackQueueCommand addTarget:v91 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    [v90 setEnabled:{objc_msgSend(v93, "count") == 0}];
-    [v90 setDisabledReasons:v93];
+    [removeFromPlaybackQueueCommand setEnabled:{objc_msgSend(array24, "count") == 0}];
+    [removeFromPlaybackQueueCommand setDisabledReasons:array24];
   }
 
-  v475 = v8;
-  if (v8)
+  v475 = queueController;
+  if (queueController)
   {
-    v96 = [v8 music];
+    music = [queueController music];
 
-    if (v96)
+    if (music)
     {
       v473 = 0;
-      LODWORD(v8) = 1;
+      LODWORD(queueController) = 1;
     }
 
     else
@@ -1315,17 +1315,17 @@ LABEL_23:
       v97 = MEMORY[0x1E696AEC0];
       if (v472 >= 6)
       {
-        v98 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown/%lld", v472];
+        v472 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown/%lld", v472];
       }
 
       else
       {
-        v98 = off_1E8236FC0[v472];
+        v472 = off_1E8236FC0[v472];
       }
 
-      v473 = [v97 stringWithFormat:@"%@ behavior", v98];
+      v473 = [v97 stringWithFormat:@"%@ behavior", v472];
 
-      LODWORD(v8) = 0;
+      LODWORD(queueController) = 0;
     }
   }
 
@@ -1334,539 +1334,539 @@ LABEL_23:
     v473 = @"uninitialized queueController";
   }
 
-  v99 = [v475 music];
+  music2 = [v475 music];
   v488 = @"<MISSING REASON>";
-  v100 = [v99 canUserChangeRepeatTypeWithReason:&v488];
+  v100 = [music2 canUserChangeRepeatTypeWithReason:&v488];
   v469 = v488;
 
-  v101 = [v475 music];
-  v102 = [v101 repeatType];
+  music3 = [v475 music];
+  repeatType = [music3 repeatType];
 
-  v103 = [(MPRemoteCommandCenter *)self->_commandCenter changeRepeatModeCommand];
+  changeRepeatModeCommand = [(MPRemoteCommandCenter *)self->_commandCenter changeRepeatModeCommand];
   v104 = v91;
-  v105 = [MEMORY[0x1E695DF70] array];
-  v106 = [MEMORY[0x1E695DF70] array];
-  if ((v8 & 1) == 0)
+  array25 = [MEMORY[0x1E695DF70] array];
+  array26 = [MEMORY[0x1E695DF70] array];
+  if ((queueController & 1) == 0)
   {
-    [v105 addObject:v473];
+    [array25 addObject:v473];
   }
 
-  if (v478)
+  if (isEmpty)
   {
-    [v105 addObject:@"behavior has no items"];
+    [array25 addObject:@"behavior has no items"];
   }
 
   if ([WeakRetained disableRepeat])
   {
-    [v105 addObject:@"disabled for playback engine"];
+    [array25 addObject:@"disabled for playback engine"];
   }
 
   if (v476)
   {
-    [v105 addObject:@"live streaming content"];
+    [array25 addObject:@"live streaming content"];
   }
 
-  v107 = v8 ^ 1;
-  v108 = v8 ^ 1 | v100;
+  v107 = queueController ^ 1;
+  v108 = queueController ^ 1 | v100;
   if ((v108 & 1) == 0)
   {
-    [v105 addObject:v469];
+    [array25 addObject:v469];
   }
 
-  v109 = [(MPRemoteCommandCenter *)self->_commandCenter changeRepeatModeCommand];
-  [v109 setCurrentRepeatType:v102];
+  changeRepeatModeCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter changeRepeatModeCommand];
+  [changeRepeatModeCommand2 setCurrentRepeatType:repeatType];
 
-  if ([v105 count])
+  if ([array25 count])
   {
-    if (![v105 count])
+    if (![array25 count])
     {
-      v471 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler13 = [MEMORY[0x1E696AAA8] currentHandler];
       v427 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-      [v471 handleFailureInFunction:v427 file:@"_MPCMediaRemotePublisher.m" lineNumber:1184 description:@"Must provide reason for unsupported command"];
+      [currentHandler13 handleFailureInFunction:v427 file:@"_MPCMediaRemotePublisher.m" lineNumber:1184 description:@"Must provide reason for unsupported command"];
     }
 
-    [v103 setUnsupportedReasons:v105];
-    if ([v103 hasTargets])
+    [changeRepeatModeCommand setUnsupportedReasons:array25];
+    if ([changeRepeatModeCommand hasTargets])
     {
-      [v103 removeTarget:v104 action:sel__dispatchCommandEvent_completion_];
+      [changeRepeatModeCommand removeTarget:v104 action:sel__dispatchCommandEvent_completion_];
     }
   }
 
   else
   {
-    [v103 setUnsupportedReasons:0];
-    if (([v103 hasTargets] & 1) == 0)
+    [changeRepeatModeCommand setUnsupportedReasons:0];
+    if (([changeRepeatModeCommand hasTargets] & 1) == 0)
     {
-      [v103 addTarget:v104 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      [changeRepeatModeCommand addTarget:v104 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    [v103 setEnabled:{objc_msgSend(v106, "count") == 0}];
-    [v103 setDisabledReasons:v106];
+    [changeRepeatModeCommand setEnabled:{objc_msgSend(array26, "count") == 0}];
+    [changeRepeatModeCommand setDisabledReasons:array26];
   }
 
-  v110 = [(MPRemoteCommandCenter *)self->_commandCenter advanceRepeatModeCommand];
+  advanceRepeatModeCommand = [(MPRemoteCommandCenter *)self->_commandCenter advanceRepeatModeCommand];
   v111 = v104;
-  v112 = [MEMORY[0x1E695DF70] array];
-  v113 = [MEMORY[0x1E695DF70] array];
-  if ((v8 & 1) == 0)
+  array27 = [MEMORY[0x1E695DF70] array];
+  array28 = [MEMORY[0x1E695DF70] array];
+  if ((queueController & 1) == 0)
   {
-    [v112 addObject:v473];
+    [array27 addObject:v473];
   }
 
-  if (v478)
+  if (isEmpty)
   {
-    [v112 addObject:@"behavior has no items"];
+    [array27 addObject:@"behavior has no items"];
   }
 
   if ([WeakRetained disableRepeat])
   {
-    [v112 addObject:@"disabled for playback engine"];
+    [array27 addObject:@"disabled for playback engine"];
   }
 
   if (v476)
   {
-    [v112 addObject:@"live streaming content"];
+    [array27 addObject:@"live streaming content"];
   }
 
   if ((v108 & 1) == 0)
   {
-    [v112 addObject:v469];
+    [array27 addObject:v469];
   }
 
-  v114 = [(MPRemoteCommandCenter *)self->_commandCenter advanceRepeatModeCommand];
-  [v114 setCurrentRepeatType:v102];
+  advanceRepeatModeCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter advanceRepeatModeCommand];
+  [advanceRepeatModeCommand2 setCurrentRepeatType:repeatType];
 
-  if ([v112 count])
+  if ([array27 count])
   {
-    if (![v112 count])
+    if (![array27 count])
     {
-      v428 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler14 = [MEMORY[0x1E696AAA8] currentHandler];
       v429 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-      [v428 handleFailureInFunction:v429 file:@"_MPCMediaRemotePublisher.m" lineNumber:1194 description:@"Must provide reason for unsupported command"];
+      [currentHandler14 handleFailureInFunction:v429 file:@"_MPCMediaRemotePublisher.m" lineNumber:1194 description:@"Must provide reason for unsupported command"];
     }
 
-    [v110 setUnsupportedReasons:v112];
-    if ([v110 hasTargets])
+    [advanceRepeatModeCommand setUnsupportedReasons:array27];
+    if ([advanceRepeatModeCommand hasTargets])
     {
-      [v110 removeTarget:v111 action:sel__dispatchCommandEvent_completion_];
+      [advanceRepeatModeCommand removeTarget:v111 action:sel__dispatchCommandEvent_completion_];
     }
   }
 
   else
   {
-    [v110 setUnsupportedReasons:0];
-    if (([v110 hasTargets] & 1) == 0)
+    [advanceRepeatModeCommand setUnsupportedReasons:0];
+    if (([advanceRepeatModeCommand hasTargets] & 1) == 0)
     {
-      [v110 addTarget:v111 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      [advanceRepeatModeCommand addTarget:v111 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    [v110 setEnabled:{objc_msgSend(v113, "count") == 0}];
-    [v110 setDisabledReasons:v113];
+    [advanceRepeatModeCommand setEnabled:{objc_msgSend(array28, "count") == 0}];
+    [advanceRepeatModeCommand setDisabledReasons:array28];
   }
 
-  v115 = [v475 music];
+  music4 = [v475 music];
   v487 = @"<MISSING REASON>";
-  v116 = [v115 canUserChangeShuffleModeWithReason:&v487];
+  v116 = [music4 canUserChangeShuffleModeWithReason:&v487];
   v470 = v487;
 
-  v117 = [v475 music];
-  v118 = [v117 shuffleType];
+  music5 = [v475 music];
+  shuffleType = [music5 shuffleType];
 
-  v119 = [(MPRemoteCommandCenter *)self->_commandCenter changeShuffleModeCommand];
+  changeShuffleModeCommand = [(MPRemoteCommandCenter *)self->_commandCenter changeShuffleModeCommand];
   v120 = v111;
-  v121 = [MEMORY[0x1E695DF70] array];
-  v122 = [MEMORY[0x1E695DF70] array];
-  if ((v8 & 1) == 0)
+  array29 = [MEMORY[0x1E695DF70] array];
+  array30 = [MEMORY[0x1E695DF70] array];
+  if ((queueController & 1) == 0)
   {
-    [v121 addObject:v473];
+    [array29 addObject:v473];
   }
 
-  if (v478)
+  if (isEmpty)
   {
-    [v121 addObject:@"behavior has no items"];
+    [array29 addObject:@"behavior has no items"];
   }
 
   if ([WeakRetained disableShuffle])
   {
-    [v121 addObject:@"disabled for playback engine"];
+    [array29 addObject:@"disabled for playback engine"];
   }
 
   v123 = v107 | v116;
   if (((v107 | v116) & 1) == 0)
   {
-    [v121 addObject:v470];
+    [array29 addObject:v470];
   }
 
-  v124 = [(MPRemoteCommandCenter *)self->_commandCenter changeShuffleModeCommand];
-  [v124 setCurrentShuffleType:v118];
+  changeShuffleModeCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter changeShuffleModeCommand];
+  [changeShuffleModeCommand2 setCurrentShuffleType:shuffleType];
 
-  if ([v121 count])
+  if ([array29 count])
   {
-    if (![v121 count])
+    if (![array29 count])
     {
-      v430 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler15 = [MEMORY[0x1E696AAA8] currentHandler];
       v431 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-      [v430 handleFailureInFunction:v431 file:@"_MPCMediaRemotePublisher.m" lineNumber:1207 description:@"Must provide reason for unsupported command"];
+      [currentHandler15 handleFailureInFunction:v431 file:@"_MPCMediaRemotePublisher.m" lineNumber:1207 description:@"Must provide reason for unsupported command"];
     }
 
-    [v119 setUnsupportedReasons:v121];
-    if ([v119 hasTargets])
+    [changeShuffleModeCommand setUnsupportedReasons:array29];
+    if ([changeShuffleModeCommand hasTargets])
     {
-      [v119 removeTarget:v120 action:sel__dispatchCommandEvent_completion_];
+      [changeShuffleModeCommand removeTarget:v120 action:sel__dispatchCommandEvent_completion_];
     }
   }
 
   else
   {
-    [v119 setUnsupportedReasons:0];
-    if (([v119 hasTargets] & 1) == 0)
+    [changeShuffleModeCommand setUnsupportedReasons:0];
+    if (([changeShuffleModeCommand hasTargets] & 1) == 0)
     {
-      [v119 addTarget:v120 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      [changeShuffleModeCommand addTarget:v120 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    [v119 setEnabled:{objc_msgSend(v122, "count") == 0}];
-    [v119 setDisabledReasons:v122];
+    [changeShuffleModeCommand setEnabled:{objc_msgSend(array30, "count") == 0}];
+    [changeShuffleModeCommand setDisabledReasons:array30];
   }
 
-  v125 = [(MPRemoteCommandCenter *)self->_commandCenter advanceShuffleModeCommand];
+  advanceShuffleModeCommand = [(MPRemoteCommandCenter *)self->_commandCenter advanceShuffleModeCommand];
   v126 = v120;
-  v127 = [MEMORY[0x1E695DF70] array];
-  v128 = [MEMORY[0x1E695DF70] array];
-  if ((v8 & 1) == 0)
+  array31 = [MEMORY[0x1E695DF70] array];
+  array32 = [MEMORY[0x1E695DF70] array];
+  if ((queueController & 1) == 0)
   {
-    [v127 addObject:v473];
+    [array31 addObject:v473];
   }
 
-  if (v478)
+  if (isEmpty)
   {
-    [v127 addObject:@"behavior has no items"];
+    [array31 addObject:@"behavior has no items"];
   }
 
   if ([WeakRetained disableShuffle])
   {
-    [v127 addObject:@"disabled for playback engine"];
+    [array31 addObject:@"disabled for playback engine"];
   }
 
   if ((v123 & 1) == 0)
   {
-    [v127 addObject:v470];
+    [array31 addObject:v470];
   }
 
-  v129 = [(MPRemoteCommandCenter *)self->_commandCenter advanceShuffleModeCommand];
-  [v129 setCurrentShuffleType:v118];
+  advanceShuffleModeCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter advanceShuffleModeCommand];
+  [advanceShuffleModeCommand2 setCurrentShuffleType:shuffleType];
 
-  if ([v127 count])
+  if ([array31 count])
   {
-    if (![v127 count])
+    if (![array31 count])
     {
-      v432 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler16 = [MEMORY[0x1E696AAA8] currentHandler];
       v433 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-      [v432 handleFailureInFunction:v433 file:@"_MPCMediaRemotePublisher.m" lineNumber:1216 description:@"Must provide reason for unsupported command"];
+      [currentHandler16 handleFailureInFunction:v433 file:@"_MPCMediaRemotePublisher.m" lineNumber:1216 description:@"Must provide reason for unsupported command"];
     }
 
-    [v125 setUnsupportedReasons:v127];
-    if ([v125 hasTargets])
+    [advanceShuffleModeCommand setUnsupportedReasons:array31];
+    if ([advanceShuffleModeCommand hasTargets])
     {
-      [v125 removeTarget:v126 action:sel__dispatchCommandEvent_completion_];
+      [advanceShuffleModeCommand removeTarget:v126 action:sel__dispatchCommandEvent_completion_];
     }
   }
 
   else
   {
-    [v125 setUnsupportedReasons:0];
-    if (([v125 hasTargets] & 1) == 0)
+    [advanceShuffleModeCommand setUnsupportedReasons:0];
+    if (([advanceShuffleModeCommand hasTargets] & 1) == 0)
     {
-      [v125 addTarget:v126 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      [advanceShuffleModeCommand addTarget:v126 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    [v125 setEnabled:{objc_msgSend(v128, "count") == 0}];
-    [v125 setDisabledReasons:v128];
+    [advanceShuffleModeCommand setEnabled:{objc_msgSend(array32, "count") == 0}];
+    [advanceShuffleModeCommand setDisabledReasons:array32];
   }
 
-  v130 = [(MPRemoteCommandCenter *)self->_commandCenter reshuffleCommand];
+  reshuffleCommand = [(MPRemoteCommandCenter *)self->_commandCenter reshuffleCommand];
   v131 = v126;
-  v132 = [MEMORY[0x1E695DF70] array];
-  v133 = [MEMORY[0x1E695DF70] array];
-  if ((v8 & 1) == 0)
+  array33 = [MEMORY[0x1E695DF70] array];
+  array34 = [MEMORY[0x1E695DF70] array];
+  if ((queueController & 1) == 0)
   {
-    [v132 addObject:v473];
+    [array33 addObject:v473];
   }
 
-  if (v478)
+  if (isEmpty)
   {
-    [v132 addObject:@"behavior has no items"];
+    [array33 addObject:@"behavior has no items"];
   }
 
   if ([WeakRetained disableShuffle])
   {
-    [v132 addObject:@"disabled for playback engine"];
+    [array33 addObject:@"disabled for playback engine"];
   }
 
   if ((v123 & 1) == 0)
   {
-    [v132 addObject:v470];
+    [array33 addObject:v470];
   }
 
-  if ([v132 count])
+  if ([array33 count])
   {
-    if (![v132 count])
+    if (![array33 count])
     {
-      v434 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler17 = [MEMORY[0x1E696AAA8] currentHandler];
       v435 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-      [v434 handleFailureInFunction:v435 file:@"_MPCMediaRemotePublisher.m" lineNumber:1224 description:@"Must provide reason for unsupported command"];
+      [currentHandler17 handleFailureInFunction:v435 file:@"_MPCMediaRemotePublisher.m" lineNumber:1224 description:@"Must provide reason for unsupported command"];
     }
 
-    [v130 setUnsupportedReasons:v132];
-    if ([v130 hasTargets])
+    [reshuffleCommand setUnsupportedReasons:array33];
+    if ([reshuffleCommand hasTargets])
     {
-      [v130 removeTarget:v131 action:sel__dispatchCommandEvent_completion_];
+      [reshuffleCommand removeTarget:v131 action:sel__dispatchCommandEvent_completion_];
     }
   }
 
   else
   {
-    [v130 setUnsupportedReasons:0];
-    if (([v130 hasTargets] & 1) == 0)
+    [reshuffleCommand setUnsupportedReasons:0];
+    if (([reshuffleCommand hasTargets] & 1) == 0)
     {
-      [v130 addTarget:v131 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      [reshuffleCommand addTarget:v131 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    [v130 setEnabled:{objc_msgSend(v133, "count") == 0}];
-    [v130 setDisabledReasons:v133];
+    [reshuffleCommand setEnabled:{objc_msgSend(array34, "count") == 0}];
+    [reshuffleCommand setDisabledReasons:array34];
   }
 
-  v134 = [(MPRemoteCommandCenter *)self->_commandCenter changeQueueEndActionCommand];
+  changeQueueEndActionCommand = [(MPRemoteCommandCenter *)self->_commandCenter changeQueueEndActionCommand];
   v135 = v131;
-  v136 = [MEMORY[0x1E695DF70] array];
-  v137 = [MEMORY[0x1E695DF70] array];
-  if ((v8 & 1) == 0)
+  array35 = [MEMORY[0x1E695DF70] array];
+  array36 = [MEMORY[0x1E695DF70] array];
+  if ((queueController & 1) == 0)
   {
-    [v136 addObject:v473];
+    [array35 addObject:v473];
   }
 
-  if (v478)
+  if (isEmpty)
   {
-    [v136 addObject:@"behavior has no items"];
+    [array35 addObject:@"behavior has no items"];
   }
 
   if ([WeakRetained disableAutoPlay])
   {
-    [v136 addObject:@"disabled for playback engine"];
+    [array35 addObject:@"disabled for playback engine"];
   }
 
-  if (v8)
+  if (queueController)
   {
-    v138 = [MEMORY[0x1E695DF70] arrayWithCapacity:3];
-    v139 = [v475 music];
+    changeQueueEndActionCommand5 = [MEMORY[0x1E695DF70] arrayWithCapacity:3];
+    music6 = [v475 music];
     v140 = objc_opt_respondsToSelector();
 
     if (v140)
     {
-      v141 = [v475 music];
-      v142 = [v141 isSupportedQueueEndAction:0];
+      music7 = [v475 music];
+      v142 = [music7 isSupportedQueueEndAction:0];
 
       if (v142)
       {
-        [v138 addObject:&unk_1F4599478];
+        [changeQueueEndActionCommand5 addObject:&unk_1F4599478];
       }
 
-      v143 = [v475 music];
-      v144 = [v143 isSupportedQueueEndAction:2];
+      music8 = [v475 music];
+      v144 = [music8 isSupportedQueueEndAction:2];
 
       if (v144)
       {
-        [v138 addObject:&unk_1F4599490];
+        [changeQueueEndActionCommand5 addObject:&unk_1F4599490];
       }
 
-      v145 = [v475 music];
-      v146 = [v145 isSupportedQueueEndAction:3];
+      music9 = [v475 music];
+      v146 = [music9 isSupportedQueueEndAction:3];
 
       if (v146)
       {
-        [v138 addObject:&unk_1F45994A8];
+        [changeQueueEndActionCommand5 addObject:&unk_1F45994A8];
       }
     }
 
     else
     {
-      [v138 addObject:&unk_1F4599490];
-      if ((v478 & 1) == 0)
+      [changeQueueEndActionCommand5 addObject:&unk_1F4599490];
+      if ((isEmpty & 1) == 0)
       {
-        v149 = [v475 music];
+        music10 = [v475 music];
         v486 = 0;
-        v150 = [v149 canUserEnableAutoPlayWithReason:&v486];
+        v150 = [music10 canUserEnableAutoPlayWithReason:&v486];
         v151 = v486;
 
         if (v150)
         {
-          [v138 addObject:&unk_1F45994A8];
+          [changeQueueEndActionCommand5 addObject:&unk_1F45994A8];
         }
       }
     }
 
-    v152 = [v475 music];
+    music11 = [v475 music];
     v153 = objc_opt_respondsToSelector();
 
-    v154 = [v475 music];
-    v155 = v154;
+    music12 = [v475 music];
+    v155 = music12;
     if (v153)
     {
-      v156 = [v154 queueEndAction];
+      queueEndAction = [music12 queueEndAction];
     }
 
-    else if ([v154 autoPlayEnabled])
+    else if ([music12 autoPlayEnabled])
     {
-      v156 = 3;
+      queueEndAction = 3;
     }
 
     else
     {
-      v156 = 2;
+      queueEndAction = 2;
     }
 
     v148 = v481;
 
-    v157 = [(MPRemoteCommandCenter *)self->_commandCenter changeQueueEndActionCommand];
-    [v157 setCurrentQueueEndAction:v156];
+    changeQueueEndActionCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter changeQueueEndActionCommand];
+    [changeQueueEndActionCommand2 setCurrentQueueEndAction:queueEndAction];
 
-    v158 = [(MPRemoteCommandCenter *)self->_commandCenter changeQueueEndActionCommand];
-    [v158 setSupportedQueueEndActions:v138];
+    changeQueueEndActionCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter changeQueueEndActionCommand];
+    [changeQueueEndActionCommand3 setSupportedQueueEndActions:changeQueueEndActionCommand5];
   }
 
   else
   {
-    v147 = [(MPRemoteCommandCenter *)self->_commandCenter changeQueueEndActionCommand];
-    [v147 setCurrentQueueEndAction:1];
+    changeQueueEndActionCommand4 = [(MPRemoteCommandCenter *)self->_commandCenter changeQueueEndActionCommand];
+    [changeQueueEndActionCommand4 setCurrentQueueEndAction:1];
 
-    v138 = [(MPRemoteCommandCenter *)self->_commandCenter changeQueueEndActionCommand];
-    [v138 setSupportedQueueEndActions:MEMORY[0x1E695E0F0]];
+    changeQueueEndActionCommand5 = [(MPRemoteCommandCenter *)self->_commandCenter changeQueueEndActionCommand];
+    [changeQueueEndActionCommand5 setSupportedQueueEndActions:MEMORY[0x1E695E0F0]];
     v148 = v481;
   }
 
-  if ([v136 count])
+  if ([array35 count])
   {
-    if (![v136 count])
+    if (![array35 count])
     {
-      v436 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler18 = [MEMORY[0x1E696AAA8] currentHandler];
       v437 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-      [v436 handleFailureInFunction:v437 file:@"_MPCMediaRemotePublisher.m" lineNumber:1264 description:@"Must provide reason for unsupported command"];
+      [currentHandler18 handleFailureInFunction:v437 file:@"_MPCMediaRemotePublisher.m" lineNumber:1264 description:@"Must provide reason for unsupported command"];
     }
 
-    [v134 setUnsupportedReasons:v136];
-    if ([v134 hasTargets])
+    [changeQueueEndActionCommand setUnsupportedReasons:array35];
+    if ([changeQueueEndActionCommand hasTargets])
     {
-      [v134 removeTarget:v135 action:sel__dispatchCommandEvent_completion_];
+      [changeQueueEndActionCommand removeTarget:v135 action:sel__dispatchCommandEvent_completion_];
     }
   }
 
   else
   {
-    [v134 setUnsupportedReasons:0];
-    if (([v134 hasTargets] & 1) == 0)
+    [changeQueueEndActionCommand setUnsupportedReasons:0];
+    if (([changeQueueEndActionCommand hasTargets] & 1) == 0)
     {
-      [v134 addTarget:v135 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      [changeQueueEndActionCommand addTarget:v135 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    [v134 setEnabled:{objc_msgSend(v137, "count") == 0}];
-    [v134 setDisabledReasons:v137];
+    [changeQueueEndActionCommand setEnabled:{objc_msgSend(array36, "count") == 0}];
+    [changeQueueEndActionCommand setDisabledReasons:array36];
   }
 
-  v159 = [(MPRemoteCommandCenter *)self->_commandCenter shareQueueCommand];
+  shareQueueCommand = [(MPRemoteCommandCenter *)self->_commandCenter shareQueueCommand];
   v160 = v135;
-  v161 = [MEMORY[0x1E695DF70] array];
-  v162 = [MEMORY[0x1E695DF70] array];
-  if ((v8 & 1) == 0)
+  array37 = [MEMORY[0x1E695DF70] array];
+  array38 = [MEMORY[0x1E695DF70] array];
+  if ((queueController & 1) == 0)
   {
-    [v161 addObject:v473];
+    [array37 addObject:v473];
   }
 
   v163 = v475;
-  v164 = [v475 musicSharePlay];
+  musicSharePlay3 = [v475 musicSharePlay];
 
-  if (v164)
+  if (musicSharePlay3)
   {
-    [v161 addObject:@"already in shared listening mode"];
+    [array37 addObject:@"already in shared listening mode"];
   }
 
-  if (v478)
+  if (isEmpty)
   {
-    [v161 addObject:@"behavior has no items"];
+    [array37 addObject:@"behavior has no items"];
   }
 
   if (![v148 storeSubscriptionAdamID])
   {
-    [v161 addObject:@"item doesn't have subscription adam id"];
+    [array37 addObject:@"item doesn't have subscription adam id"];
   }
 
-  if ([v161 count])
+  if ([array37 count])
   {
-    if (![v161 count])
+    if (![array37 count])
     {
-      v438 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler19 = [MEMORY[0x1E696AAA8] currentHandler];
       v439 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-      [v438 handleFailureInFunction:v439 file:@"_MPCMediaRemotePublisher.m" lineNumber:1270 description:@"Must provide reason for unsupported command"];
+      [currentHandler19 handleFailureInFunction:v439 file:@"_MPCMediaRemotePublisher.m" lineNumber:1270 description:@"Must provide reason for unsupported command"];
     }
 
-    [v159 setUnsupportedReasons:v161];
-    if ([v159 hasTargets])
+    [shareQueueCommand setUnsupportedReasons:array37];
+    if ([shareQueueCommand hasTargets])
     {
-      [v159 removeTarget:v160 action:sel__dispatchCommandEvent_completion_];
+      [shareQueueCommand removeTarget:v160 action:sel__dispatchCommandEvent_completion_];
     }
   }
 
   else
   {
-    [v159 setUnsupportedReasons:0];
-    if (([v159 hasTargets] & 1) == 0)
+    [shareQueueCommand setUnsupportedReasons:0];
+    if (([shareQueueCommand hasTargets] & 1) == 0)
     {
-      [v159 addTarget:v160 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      [shareQueueCommand addTarget:v160 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    [v159 setEnabled:{objc_msgSend(v162, "count") == 0}];
-    [v159 setDisabledReasons:v162];
+    [shareQueueCommand setEnabled:{objc_msgSend(array38, "count") == 0}];
+    [shareQueueCommand setDisabledReasons:array38];
   }
 
-  v165 = [(MPRemoteCommandCenter *)self->_commandCenter shareQueueCommand];
-  [v165 setTimeout:30.0];
+  shareQueueCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter shareQueueCommand];
+  [shareQueueCommand2 setTimeout:30.0];
 
   if (!+[MPCPlaybackEngine isSystemPodcasts])
   {
     v166 = _os_feature_enabled_impl();
-    v167 = [MEMORY[0x1E69708A8] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
     v168 = +[MPCPlaybackAccountManager sharedManager];
-    v169 = [v168 fallbackAccount];
+    fallbackAccount2 = [v168 fallbackAccount];
 
-    v170 = [v167 _areTransitionsEnabledWithSubscription:{objc_msgSend(v169, "hasCatalogPlaybackCapability")}];
-    v464 = v169;
-    v465 = v167;
-    v171 = [v167 transitionStyleForUserWithCatalogPlaybackCapability:{objc_msgSend(v169, "hasCatalogPlaybackCapability")}];
-    v172 = [v475 transitionTogglable];
-    v173 = v172;
+    transitionsEnabled = [standardUserDefaults _areTransitionsEnabledWithSubscription:{objc_msgSend(fallbackAccount2, "hasCatalogPlaybackCapability")}];
+    v464 = fallbackAccount2;
+    v465 = standardUserDefaults;
+    transitionStyle = [standardUserDefaults transitionStyleForUserWithCatalogPlaybackCapability:{objc_msgSend(fallbackAccount2, "hasCatalogPlaybackCapability")}];
+    transitionTogglable = [v475 transitionTogglable];
+    v173 = transitionTogglable;
     v174 = 0;
     v175 = @"<MISSING REASON>";
-    if (v166 && v172)
+    if (v166 && transitionTogglable)
     {
       v485 = @"<MISSING REASON>";
-      v174 = [v172 canUserToggleTransitionsEnabledWithReason:&v485];
+      v174 = [transitionTogglable canUserToggleTransitionsEnabledWithReason:&v485];
       v175 = v485;
-      v170 = [v173 transitionsEnabled];
-      v171 = [v173 transitionStyle];
+      transitionsEnabled = [v173 transitionsEnabled];
+      transitionStyle = [v173 transitionStyle];
     }
 
     v479 = v175;
-    v176 = [(MPRemoteCommandCenter *)self->_commandCenter toggleTransitionsCommand];
+    toggleTransitionsCommand = [(MPRemoteCommandCenter *)self->_commandCenter toggleTransitionsCommand];
     v463 = v160;
-    v177 = [MEMORY[0x1E695DF70] array];
-    v178 = [MEMORY[0x1E695DF70] array];
-    v179 = v178;
+    array39 = [MEMORY[0x1E695DF70] array];
+    array40 = [MEMORY[0x1E695DF70] array];
+    v179 = array40;
     if ((v166 & 1) == 0)
     {
-      [v178 addObject:@"alchemy feature not enabled"];
+      [array40 addObject:@"alchemy feature not enabled"];
     }
 
-    v180 = [v475 musicSharePlay];
+    musicSharePlay4 = [v475 musicSharePlay];
 
-    if (v180)
+    if (musicSharePlay4)
     {
       [v179 addObject:@"shared listening does not support transitions"];
     }
@@ -1891,96 +1891,96 @@ LABEL_23:
       [v179 addObject:v479];
     }
 
-    v181 = [(MPRemoteCommandCenter *)self->_commandCenter toggleTransitionsCommand];
-    [v181 setActive:v170];
+    toggleTransitionsCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter toggleTransitionsCommand];
+    [toggleTransitionsCommand2 setActive:transitionsEnabled];
 
-    v182 = [(MPRemoteCommandCenter *)self->_commandCenter toggleTransitionsCommand];
-    [v182 setTransitionStyle:v171];
+    toggleTransitionsCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter toggleTransitionsCommand];
+    [toggleTransitionsCommand3 setTransitionStyle:transitionStyle];
 
     v163 = v475;
-    if ([v177 count])
+    if ([array39 count])
     {
       v183 = v463;
-      if (![v177 count])
+      if (![array39 count])
       {
-        v458 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler20 = [MEMORY[0x1E696AAA8] currentHandler];
         v459 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-        [v458 handleFailureInFunction:v459 file:@"_MPCMediaRemotePublisher.m" lineNumber:1309 description:@"Must provide reason for unsupported command"];
+        [currentHandler20 handleFailureInFunction:v459 file:@"_MPCMediaRemotePublisher.m" lineNumber:1309 description:@"Must provide reason for unsupported command"];
       }
 
-      [v176 setUnsupportedReasons:v177];
-      if ([v176 hasTargets])
+      [toggleTransitionsCommand setUnsupportedReasons:array39];
+      if ([toggleTransitionsCommand hasTargets])
       {
-        [v176 removeTarget:v463 action:sel__dispatchCommandEvent_completion_];
+        [toggleTransitionsCommand removeTarget:v463 action:sel__dispatchCommandEvent_completion_];
       }
     }
 
     else
     {
-      [v176 setUnsupportedReasons:0];
+      [toggleTransitionsCommand setUnsupportedReasons:0];
       v183 = v463;
-      if (([v176 hasTargets] & 1) == 0)
+      if (([toggleTransitionsCommand hasTargets] & 1) == 0)
       {
-        [v176 addTarget:v463 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+        [toggleTransitionsCommand addTarget:v463 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
       }
 
-      [v176 setEnabled:{objc_msgSend(v179, "count") == 0}];
-      [v176 setDisabledReasons:v179];
+      [toggleTransitionsCommand setEnabled:{objc_msgSend(v179, "count") == 0}];
+      [toggleTransitionsCommand setDisabledReasons:v179];
     }
   }
 
-  v184 = [(MPRemoteCommandCenter *)self->_commandCenter insertIntoPlaybackQueueCommand];
+  insertIntoPlaybackQueueCommand = [(MPRemoteCommandCenter *)self->_commandCenter insertIntoPlaybackQueueCommand];
   v185 = v160;
-  v186 = [MEMORY[0x1E695DF70] array];
-  v187 = [MEMORY[0x1E695DF70] array];
+  array41 = [MEMORY[0x1E695DF70] array];
+  array42 = [MEMORY[0x1E695DF70] array];
   v188 = [MEMORY[0x1E695DF70] arrayWithCapacity:4];
   if (v481)
   {
-    v189 = [v163 upNextBehavior];
+    upNextBehavior4 = [v163 upNextBehavior];
 
-    if (v189)
+    if (upNextBehavior4)
     {
-      v190 = [v163 upNextBehavior];
-      v191 = [v481 contentItemID];
-      v192 = [v190 isSupportedInsertionPosition:0 fromContentItemID:v191 reason:0];
+      upNextBehavior5 = [v163 upNextBehavior];
+      contentItemID3 = [v481 contentItemID];
+      v192 = [upNextBehavior5 isSupportedInsertionPosition:0 fromContentItemID:contentItemID3 reason:0];
 
       if (v192)
       {
         [v188 addObject:&unk_1F4599478];
       }
 
-      v193 = [v163 upNextBehavior];
-      v194 = [v481 contentItemID];
-      v195 = [v193 isSupportedInsertionPosition:1 fromContentItemID:v194 reason:0];
+      upNextBehavior6 = [v163 upNextBehavior];
+      contentItemID4 = [v481 contentItemID];
+      v195 = [upNextBehavior6 isSupportedInsertionPosition:1 fromContentItemID:contentItemID4 reason:0];
 
       if (v195 && ([v188 addObject:&unk_1F45994C0], objc_msgSend(v163, "music"), v196 = objc_claimAutoreleasedReturnValue(), v196, v196))
       {
-        v197 = [v163 music];
-        v198 = [v481 contentItemID];
-        v199 = [v197 lastSectionContentItemIDForTargetContentItemID:v198];
+        music13 = [v163 music];
+        contentItemID5 = [v481 contentItemID];
+        insertIntoPlaybackQueueCommand3 = [music13 lastSectionContentItemIDForTargetContentItemID:contentItemID5];
 
-        v200 = [(MPRemoteCommandCenter *)self->_commandCenter insertIntoPlaybackQueueCommand];
-        [v200 setLastSectionContentItemID:v199];
+        insertIntoPlaybackQueueCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter insertIntoPlaybackQueueCommand];
+        [insertIntoPlaybackQueueCommand2 setLastSectionContentItemID:insertIntoPlaybackQueueCommand3];
       }
 
       else
       {
-        v199 = [(MPRemoteCommandCenter *)self->_commandCenter insertIntoPlaybackQueueCommand];
-        [v199 setLastSectionContentItemID:0];
+        insertIntoPlaybackQueueCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter insertIntoPlaybackQueueCommand];
+        [insertIntoPlaybackQueueCommand3 setLastSectionContentItemID:0];
       }
 
-      v201 = [v163 upNextBehavior];
-      v202 = [v481 contentItemID];
-      v203 = [v201 isSupportedInsertionPosition:2 fromContentItemID:v202 reason:0];
+      upNextBehavior7 = [v163 upNextBehavior];
+      contentItemID6 = [v481 contentItemID];
+      v203 = [upNextBehavior7 isSupportedInsertionPosition:2 fromContentItemID:contentItemID6 reason:0];
 
       if (v203)
       {
         [v188 addObject:&unk_1F4599490];
       }
 
-      v204 = [v163 upNextBehavior];
-      v205 = [v481 contentItemID];
-      v206 = [v204 isSupportedInsertionPosition:3 fromContentItemID:v205 reason:0];
+      upNextBehavior8 = [v163 upNextBehavior];
+      contentItemID7 = [v481 contentItemID];
+      v206 = [upNextBehavior8 isSupportedInsertionPosition:3 fromContentItemID:contentItemID7 reason:0];
 
       if (v206)
       {
@@ -1989,175 +1989,175 @@ LABEL_23:
     }
   }
 
-  v207 = [(MPRemoteCommandCenter *)self->_commandCenter insertIntoPlaybackQueueCommand];
-  [v207 setSupportedInsertionPositions:v188];
+  insertIntoPlaybackQueueCommand4 = [(MPRemoteCommandCenter *)self->_commandCenter insertIntoPlaybackQueueCommand];
+  [insertIntoPlaybackQueueCommand4 setSupportedInsertionPositions:v188];
 
-  v208 = [v163 upNextBehavior];
+  upNextBehavior9 = [v163 upNextBehavior];
 
-  if (!v208)
+  if (!upNextBehavior9)
   {
-    [v187 addObject:@"current behavior is not upNextBehavior"];
+    [array42 addObject:@"current behavior is not upNextBehavior"];
   }
 
-  v209 = [v163 upNextBehavior];
-  v210 = [v209 allowsQueueModifications];
+  upNextBehavior10 = [v163 upNextBehavior];
+  allowsQueueModifications4 = [upNextBehavior10 allowsQueueModifications];
 
-  if ((v210 & 1) == 0)
+  if ((allowsQueueModifications4 & 1) == 0)
   {
-    [v187 addObject:@"queue does not allow modifications"];
+    [array42 addObject:@"queue does not allow modifications"];
   }
 
   if (!v481)
   {
-    [v187 addObject:@"no current item in queue"];
+    [array42 addObject:@"no current item in queue"];
   }
 
   if (![v188 count])
   {
-    [v187 addObject:@"queue does not support any insertion positions"];
+    [array42 addObject:@"queue does not support any insertion positions"];
   }
 
-  if ([v186 count])
+  if ([array41 count])
   {
     v211 = v481;
-    if (![v186 count])
+    if (![array41 count])
     {
-      v440 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler21 = [MEMORY[0x1E696AAA8] currentHandler];
       v441 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-      [v440 handleFailureInFunction:v441 file:@"_MPCMediaRemotePublisher.m" lineNumber:1350 description:@"Must provide reason for unsupported command"];
+      [currentHandler21 handleFailureInFunction:v441 file:@"_MPCMediaRemotePublisher.m" lineNumber:1350 description:@"Must provide reason for unsupported command"];
     }
 
-    [v184 setUnsupportedReasons:v186];
-    if ([v184 hasTargets])
+    [insertIntoPlaybackQueueCommand setUnsupportedReasons:array41];
+    if ([insertIntoPlaybackQueueCommand hasTargets])
     {
-      [v184 removeTarget:v185 action:sel__dispatchCommandEvent_completion_];
+      [insertIntoPlaybackQueueCommand removeTarget:v185 action:sel__dispatchCommandEvent_completion_];
     }
   }
 
   else
   {
-    [v184 setUnsupportedReasons:0];
+    [insertIntoPlaybackQueueCommand setUnsupportedReasons:0];
     v211 = v481;
-    if (([v184 hasTargets] & 1) == 0)
+    if (([insertIntoPlaybackQueueCommand hasTargets] & 1) == 0)
     {
-      [v184 addTarget:v185 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      [insertIntoPlaybackQueueCommand addTarget:v185 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    [v184 setEnabled:{objc_msgSend(v187, "count") == 0}];
-    [v184 setDisabledReasons:v187];
+    [insertIntoPlaybackQueueCommand setEnabled:{objc_msgSend(array42, "count") == 0}];
+    [insertIntoPlaybackQueueCommand setDisabledReasons:array42];
   }
 
-  v212 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackSessionCommand];
+  setPlaybackSessionCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackSessionCommand];
   v213 = v185;
-  v214 = [MEMORY[0x1E695DF70] array];
-  v215 = [MEMORY[0x1E695DF70] array];
-  v216 = [MEMORY[0x1E69708A8] standardUserDefaults];
-  v217 = [v216 disableQHO];
+  array43 = [MEMORY[0x1E695DF70] array];
+  array44 = [MEMORY[0x1E695DF70] array];
+  standardUserDefaults2 = [MEMORY[0x1E69708A8] standardUserDefaults];
+  disableQHO = [standardUserDefaults2 disableQHO];
 
-  if (v217)
+  if (disableQHO)
   {
-    [v214 addObject:@"QHO disabled by defaults"];
+    [array43 addObject:@"QHO disabled by defaults"];
   }
 
   if (([WeakRetained isQueueHandoffSupported] & 1) == 0)
   {
-    [v214 addObject:@"engine not configured for QHO"];
+    [array43 addObject:@"engine not configured for QHO"];
   }
 
-  v218 = [v213 _supportedSessionTypes];
-  v219 = [v213 _exportableSessionTypes];
-  v220 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackSessionCommand];
-  [v220 setSupportedSessionTypes:v218];
+  _supportedSessionTypes = [v213 _supportedSessionTypes];
+  _exportableSessionTypes = [v213 _exportableSessionTypes];
+  setPlaybackSessionCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackSessionCommand];
+  [setPlaybackSessionCommand3 setSupportedSessionTypes:_supportedSessionTypes];
 
-  v221 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackSessionCommand];
-  [v221 setExportableSessionTypes:v219];
+  setPlaybackSessionCommand4 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackSessionCommand];
+  [setPlaybackSessionCommand4 setExportableSessionTypes:_exportableSessionTypes];
 
-  if (![v218 count])
+  if (![_supportedSessionTypes count])
   {
-    [v214 addObject:@"no supported session types"];
+    [array43 addObject:@"no supported session types"];
   }
 
   if (_os_feature_enabled_impl())
   {
-    v222 = [v213 _requirementsForSetPlaybackSession];
-    v223 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackSessionCommand];
-    [v223 setRequirements:v222];
+    _requirementsForSetPlaybackSession = [v213 _requirementsForSetPlaybackSession];
+    setPlaybackSessionCommand5 = [(MPRemoteCommandCenter *)self->_commandCenter setPlaybackSessionCommand];
+    [setPlaybackSessionCommand5 setRequirements:_requirementsForSetPlaybackSession];
 
     v211 = v481;
   }
 
-  if ([v214 count])
+  if ([array43 count])
   {
-    if (![v214 count])
+    if (![array43 count])
     {
-      v442 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler22 = [MEMORY[0x1E696AAA8] currentHandler];
       v443 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-      [v442 handleFailureInFunction:v443 file:@"_MPCMediaRemotePublisher.m" lineNumber:1366 description:@"Must provide reason for unsupported command"];
+      [currentHandler22 handleFailureInFunction:v443 file:@"_MPCMediaRemotePublisher.m" lineNumber:1366 description:@"Must provide reason for unsupported command"];
     }
 
-    [v212 setUnsupportedReasons:v214];
-    if ([v212 hasTargets])
+    [setPlaybackSessionCommand2 setUnsupportedReasons:array43];
+    if ([setPlaybackSessionCommand2 hasTargets])
     {
-      [v212 removeTarget:v213 action:sel__dispatchCommandEvent_completion_];
+      [setPlaybackSessionCommand2 removeTarget:v213 action:sel__dispatchCommandEvent_completion_];
     }
   }
 
   else
   {
-    [v212 setUnsupportedReasons:0];
-    if (([v212 hasTargets] & 1) == 0)
+    [setPlaybackSessionCommand2 setUnsupportedReasons:0];
+    if (([setPlaybackSessionCommand2 hasTargets] & 1) == 0)
     {
-      [v212 addTarget:v213 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      [setPlaybackSessionCommand2 addTarget:v213 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    [v212 setEnabled:{objc_msgSend(v215, "count") == 0}];
-    [v212 setDisabledReasons:v215];
+    [setPlaybackSessionCommand2 setEnabled:{objc_msgSend(array44, "count") == 0}];
+    [setPlaybackSessionCommand2 setDisabledReasons:array44];
   }
 
-  v224 = [(MPRemoteCommandCenter *)self->_commandCenter delegateAccountCommand];
+  delegateAccountCommand = [(MPRemoteCommandCenter *)self->_commandCenter delegateAccountCommand];
   v225 = v213;
-  v226 = [MEMORY[0x1E695DF70] array];
-  v227 = [MEMORY[0x1E695DF70] array];
+  array45 = [MEMORY[0x1E695DF70] array];
+  array46 = [MEMORY[0x1E695DF70] array];
   if ((MSVDeviceSupportsDelegatedIdentities() & 1) == 0)
   {
-    [v226 addObject:@"device cannot accept delegate accounts"];
+    [array45 addObject:@"device cannot accept delegate accounts"];
   }
 
   v228 = 0x1E822D000uLL;
-  if ([v226 count])
+  if ([array45 count])
   {
-    if (![v226 count])
+    if (![array45 count])
     {
-      v444 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler23 = [MEMORY[0x1E696AAA8] currentHandler];
       v445 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-      [v444 handleFailureInFunction:v445 file:@"_MPCMediaRemotePublisher.m" lineNumber:1371 description:@"Must provide reason for unsupported command"];
+      [currentHandler23 handleFailureInFunction:v445 file:@"_MPCMediaRemotePublisher.m" lineNumber:1371 description:@"Must provide reason for unsupported command"];
     }
 
-    [v224 setUnsupportedReasons:v226];
-    if ([v224 hasTargets])
+    [delegateAccountCommand setUnsupportedReasons:array45];
+    if ([delegateAccountCommand hasTargets])
     {
-      [v224 removeTarget:v225 action:sel__dispatchCommandEvent_completion_];
+      [delegateAccountCommand removeTarget:v225 action:sel__dispatchCommandEvent_completion_];
     }
   }
 
   else
   {
-    [v224 setUnsupportedReasons:0];
-    if (([v224 hasTargets] & 1) == 0)
+    [delegateAccountCommand setUnsupportedReasons:0];
+    if (([delegateAccountCommand hasTargets] & 1) == 0)
     {
-      [v224 addTarget:v225 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      [delegateAccountCommand addTarget:v225 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    [v224 setEnabled:{objc_msgSend(v227, "count") == 0}];
-    [v224 setDisabledReasons:v227];
+    [delegateAccountCommand setEnabled:{objc_msgSend(array46, "count") == 0}];
+    [delegateAccountCommand setDisabledReasons:array46];
   }
 
   if (+[MPCPlaybackEngine isSystemPodcasts])
   {
-    v229 = [(MPRemoteCommandCenter *)self->_commandCenter enhanceDialogueCommand];
+    enhanceDialogueCommand = [(MPRemoteCommandCenter *)self->_commandCenter enhanceDialogueCommand];
     v230 = v225;
-    v231 = [MEMORY[0x1E695DF70] array];
-    v232 = [MEMORY[0x1E695DF70] array];
+    array47 = [MEMORY[0x1E695DF70] array];
+    array48 = [MEMORY[0x1E695DF70] array];
     if ([v211 conformsToProtocol:&unk_1F459C980])
     {
       v233 = v211;
@@ -2169,56 +2169,56 @@ LABEL_23:
     }
 
     v234 = v233;
-    if (_os_feature_enabled_impl() && v234 || ([v231 addObject:@"enhance dialogue for podcasts"], v234))
+    if (_os_feature_enabled_impl() && v234 || ([array47 addObject:@"enhance dialogue for podcasts"], v234))
     {
       if (([v234 supportsEnhanceDialogue] & 1) == 0)
       {
-        [v232 addObject:@"current route does not support enhance dialogue"];
+        [array48 addObject:@"current route does not support enhance dialogue"];
       }
 
-      v235 = [v234 isEnhanceDialogueActive];
+      isEnhanceDialogueActive = [v234 isEnhanceDialogueActive];
     }
 
     else
     {
-      [v232 addObject:@"current route does not support enhance dialogue"];
-      v235 = 0;
+      [array48 addObject:@"current route does not support enhance dialogue"];
+      isEnhanceDialogueActive = 0;
     }
 
-    v236 = [(MPRemoteCommandCenter *)self->_commandCenter enhanceDialogueCommand];
-    [v236 setActive:v235];
+    enhanceDialogueCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter enhanceDialogueCommand];
+    [enhanceDialogueCommand2 setActive:isEnhanceDialogueActive];
 
-    if ([v231 count])
+    if ([array47 count])
     {
       v228 = 0x1E822D000;
-      if (![v231 count])
+      if (![array47 count])
       {
-        v460 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler24 = [MEMORY[0x1E696AAA8] currentHandler];
         v461 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-        [v460 handleFailureInFunction:v461 file:@"_MPCMediaRemotePublisher.m" lineNumber:1381 description:@"Must provide reason for unsupported command"];
+        [currentHandler24 handleFailureInFunction:v461 file:@"_MPCMediaRemotePublisher.m" lineNumber:1381 description:@"Must provide reason for unsupported command"];
 
         v228 = 0x1E822D000;
       }
 
-      [v229 setUnsupportedReasons:v231];
+      [enhanceDialogueCommand setUnsupportedReasons:array47];
       v211 = v481;
-      if ([v229 hasTargets])
+      if ([enhanceDialogueCommand hasTargets])
       {
-        [v229 removeTarget:v230 action:sel__dispatchCommandEvent_completion_];
+        [enhanceDialogueCommand removeTarget:v230 action:sel__dispatchCommandEvent_completion_];
       }
     }
 
     else
     {
-      [v229 setUnsupportedReasons:0];
+      [enhanceDialogueCommand setUnsupportedReasons:0];
       v228 = 0x1E822D000uLL;
-      if (([v229 hasTargets] & 1) == 0)
+      if (([enhanceDialogueCommand hasTargets] & 1) == 0)
       {
-        [v229 addTarget:v230 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+        [enhanceDialogueCommand addTarget:v230 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
       }
 
-      [v229 setEnabled:{objc_msgSend(v232, "count") == 0}];
-      [v229 setDisabledReasons:v232];
+      [enhanceDialogueCommand setEnabled:{objc_msgSend(array48, "count") == 0}];
+      [enhanceDialogueCommand setDisabledReasons:array48];
       v211 = v481;
     }
   }
@@ -2227,17 +2227,17 @@ LABEL_23:
   {
     v237 = +[MPCPodcastsDefaultsHelper standard];
     v238 = [_MPCPodcastsPlaybackRateHelper alloc];
-    v239 = [WeakRetained player];
-    [v239 currentRate];
+    player = [WeakRetained player];
+    [player currentRate];
     v241 = v240;
-    v242 = [WeakRetained player];
-    v243 = [v242 state];
+    player2 = [WeakRetained player];
+    state = [player2 state];
     LODWORD(v244) = v241;
-    v245 = [(_MPCPodcastsPlaybackRateHelper *)v238 initWithCurrentRate:v243 playerState:v244];
+    v245 = [(_MPCPodcastsPlaybackRateHelper *)v238 initWithCurrentRate:state playerState:v244];
 
-    v246 = [(MPRemoteCommandCenter *)self->_commandCenter changePlaybackRateCommand];
+    changePlaybackRateCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter changePlaybackRateCommand];
     v247 = +[_MPCPodcastsPlaybackRateHelper supportedPlaybackRates];
-    [v246 setSupportedPlaybackRates:v247];
+    [changePlaybackRateCommand2 setSupportedPlaybackRates:v247];
 
     v248 = +[_MPCPodcastsPlaybackRateHelper extendedSupportedPlaybackRates];
     v249 = [v248 count];
@@ -2245,7 +2245,7 @@ LABEL_23:
     if (v249)
     {
       v250 = +[_MPCPodcastsPlaybackRateHelper extendedSupportedPlaybackRates];
-      [v246 setExtendedSupportedPlaybackRates:v250];
+      [changePlaybackRateCommand2 setExtendedSupportedPlaybackRates:v250];
     }
 
     if (v481)
@@ -2255,13 +2255,13 @@ LABEL_23:
       {
         if (([v481 conformsToProtocol:&unk_1F459C8B8] & 1) == 0)
         {
-          v462 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v462 handleFailureInMethod:v466 object:v225 file:@"_MPCMediaRemotePublisher.m" lineNumber:1405 description:@"Item does not conform to _MPCPodcastAVItemProvidingProtocol!"];
+          currentHandler25 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler25 handleFailureInMethod:v466 object:v225 file:@"_MPCMediaRemotePublisher.m" lineNumber:1405 description:@"Item does not conform to _MPCPodcastAVItemProvidingProtocol!"];
         }
 
         [v481 preferredPlaybackRate];
         [(_MPCPodcastsPlaybackRateHelper *)v245 currentDisplayRateWithSavedRate:?];
-        [v246 setPreferredRate:?];
+        [changePlaybackRateCommand2 setPreferredRate:?];
       }
     }
 
@@ -2270,34 +2270,34 @@ LABEL_23:
     v252 = [v251 numberWithDouble:?];
     v498 = v252;
     v253 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v498 count:1];
-    v254 = [(MPRemoteCommandCenter *)self->_commandCenter skipForwardCommand];
-    [v254 setPreferredIntervals:v253];
+    skipForwardCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter skipForwardCommand];
+    [skipForwardCommand2 setPreferredIntervals:v253];
 
     v255 = MEMORY[0x1E696AD98];
     [v237 skipBackwardInterval];
     v256 = [v255 numberWithDouble:?];
     v497 = v256;
     v257 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v497 count:1];
-    v258 = [(MPRemoteCommandCenter *)self->_commandCenter skipBackwardCommand];
-    [v258 setPreferredIntervals:v257];
+    skipBackwardCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter skipBackwardCommand];
+    [skipBackwardCommand2 setPreferredIntervals:v257];
 
-    v259 = [WeakRetained sleepTimerController];
-    [v259 time];
+    sleepTimerController = [WeakRetained sleepTimerController];
+    [sleepTimerController time];
     v261 = v260;
-    v262 = [(MPRemoteCommandCenter *)self->_commandCenter setSleepTimerCommand];
-    [v262 setTime:v261];
+    setSleepTimerCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter setSleepTimerCommand];
+    [setSleepTimerCommand2 setTime:v261];
 
-    v263 = [WeakRetained sleepTimerController];
-    v264 = [v263 stopMode];
-    v265 = [(MPRemoteCommandCenter *)self->_commandCenter setSleepTimerCommand];
-    [v265 setStopMode:v264];
+    sleepTimerController2 = [WeakRetained sleepTimerController];
+    stopMode = [sleepTimerController2 stopMode];
+    setSleepTimerCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter setSleepTimerCommand];
+    [setSleepTimerCommand3 setStopMode:stopMode];
 
     v211 = v481;
-    v266 = [WeakRetained sleepTimerController];
-    [v266 fireDate];
+    sleepTimerController3 = [WeakRetained sleepTimerController];
+    [sleepTimerController3 fireDate];
     v268 = v267;
-    v269 = [(MPRemoteCommandCenter *)self->_commandCenter setSleepTimerCommand];
-    [v269 setFireDate:v268];
+    setSleepTimerCommand4 = [(MPRemoteCommandCenter *)self->_commandCenter setSleepTimerCommand];
+    [setSleepTimerCommand4 setFireDate:v268];
 
     v163 = v475;
     goto LABEL_418;
@@ -2311,16 +2311,16 @@ LABEL_23:
     v271 = [v270 numberWithDouble:?];
     v496 = v271;
     v272 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v496 count:1];
-    v273 = [(MPRemoteCommandCenter *)self->_commandCenter skipForwardCommand];
-    [v273 setPreferredIntervals:v272];
+    skipForwardCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter skipForwardCommand];
+    [skipForwardCommand3 setPreferredIntervals:v272];
 
     v274 = MEMORY[0x1E696AD98];
     [v237 skipBackwardInterval];
     v245 = [v274 numberWithDouble:?];
     v495 = v245;
-    v246 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v495 count:1];
-    v266 = [(MPRemoteCommandCenter *)self->_commandCenter skipBackwardCommand];
-    [v266 setPreferredIntervals:v246];
+    changePlaybackRateCommand2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v495 count:1];
+    sleepTimerController3 = [(MPRemoteCommandCenter *)self->_commandCenter skipBackwardCommand];
+    [sleepTimerController3 setPreferredIntervals:changePlaybackRateCommand2];
 LABEL_418:
 
     v228 = 0x1E822D000uLL;
@@ -2338,147 +2338,147 @@ LABEL_418:
       v275 = 2;
     }
 
-    v276 = [(MPRemoteCommandCenter *)self->_commandCenter likeCommand];
-    [v276 setPresentationStyle:v275];
+    likeCommand = [(MPRemoteCommandCenter *)self->_commandCenter likeCommand];
+    [likeCommand setPresentationStyle:v275];
 
-    v277 = [v211 isLikedStateEnabled];
-    v278 = [(MPRemoteCommandCenter *)self->_commandCenter likeCommand];
-    [v278 setEnabled:v277];
+    isLikedStateEnabled = [v211 isLikedStateEnabled];
+    likeCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter likeCommand];
+    [likeCommand2 setEnabled:isLikedStateEnabled];
 
     v279 = [v211 likedState] == 2;
-    v280 = [(MPRemoteCommandCenter *)self->_commandCenter likeCommand];
-    [v280 setActive:v279];
+    likeCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter likeCommand];
+    [likeCommand3 setActive:v279];
 
-    v281 = [(MPRemoteCommandCenter *)self->_commandCenter dislikeCommand];
-    [v281 setPresentationStyle:v275];
+    dislikeCommand = [(MPRemoteCommandCenter *)self->_commandCenter dislikeCommand];
+    [dislikeCommand setPresentationStyle:v275];
 
-    v282 = [v211 isLikedStateEnabled];
-    v283 = [(MPRemoteCommandCenter *)self->_commandCenter dislikeCommand];
-    [v283 setEnabled:v282];
+    isLikedStateEnabled2 = [v211 isLikedStateEnabled];
+    dislikeCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter dislikeCommand];
+    [dislikeCommand2 setEnabled:isLikedStateEnabled2];
 
     v284 = [v211 likedState] == 3;
-    v285 = [(MPRemoteCommandCenter *)self->_commandCenter dislikeCommand];
-    [v285 setActive:v284];
+    dislikeCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter dislikeCommand];
+    [dislikeCommand3 setActive:v284];
   }
 
-  v286 = [v211 modelGenericObject];
-  v287 = [v286 flattenedGenericObject];
-  v288 = [v287 anyObject];
+  modelGenericObject2 = [v211 modelGenericObject];
+  flattenedGenericObject2 = [modelGenericObject2 flattenedGenericObject];
+  anyObject = [flattenedGenericObject2 anyObject];
 
-  v289 = [(MPRemoteCommandCenter *)self->_commandCenter addNowPlayingItemToLibraryCommand];
+  addNowPlayingItemToLibraryCommand = [(MPRemoteCommandCenter *)self->_commandCenter addNowPlayingItemToLibraryCommand];
   os_unfair_lock_lock(v225 + 4);
   v290 = *(v225 + 1);
   v483[0] = MEMORY[0x1E69E9820];
   v483[1] = 3221225472;
   v483[2] = __52___MPCMediaRemotePublisher__updateSupportedCommands__block_invoke;
   v483[3] = &unk_1E82368E0;
-  v477 = v289;
+  v477 = addNowPlayingItemToLibraryCommand;
   v484 = v477;
   [v290 setStatusBlock:v483];
-  v480 = v288;
-  [*(v225 + 1) configureWithModelObject:v288];
+  v480 = anyObject;
+  [*(v225 + 1) configureWithModelObject:anyObject];
   os_unfair_lock_unlock(v225 + 4);
-  v291 = [(MPRemoteCommandCenter *)self->_commandCenter ratingCommand];
+  ratingCommand = [(MPRemoteCommandCenter *)self->_commandCenter ratingCommand];
   v292 = v225;
-  v293 = [MEMORY[0x1E695DF70] array];
-  v294 = [MEMORY[0x1E695DF70] array];
+  array49 = [MEMORY[0x1E695DF70] array];
+  array50 = [MEMORY[0x1E695DF70] array];
   if (([v211 supportsRating] & 1) == 0)
   {
-    [v293 addObject:@"item does not support ratings"];
+    [array49 addObject:@"item does not support ratings"];
   }
 
-  if ([v293 count])
+  if ([array49 count])
   {
-    if (![v293 count])
+    if (![array49 count])
     {
-      v446 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler26 = [MEMORY[0x1E696AAA8] currentHandler];
       v447 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-      [v446 handleFailureInFunction:v447 file:@"_MPCMediaRemotePublisher.m" lineNumber:1465 description:@"Must provide reason for unsupported command"];
+      [currentHandler26 handleFailureInFunction:v447 file:@"_MPCMediaRemotePublisher.m" lineNumber:1465 description:@"Must provide reason for unsupported command"];
     }
 
-    [v291 setUnsupportedReasons:v293];
-    if ([v291 hasTargets])
+    [ratingCommand setUnsupportedReasons:array49];
+    if ([ratingCommand hasTargets])
     {
-      [v291 removeTarget:v292 action:sel__dispatchCommandEvent_completion_];
+      [ratingCommand removeTarget:v292 action:sel__dispatchCommandEvent_completion_];
     }
   }
 
   else
   {
-    [v291 setUnsupportedReasons:0];
-    if (([v291 hasTargets] & 1) == 0)
+    [ratingCommand setUnsupportedReasons:0];
+    if (([ratingCommand hasTargets] & 1) == 0)
     {
-      [v291 addTarget:v292 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      [ratingCommand addTarget:v292 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    [v291 setEnabled:{objc_msgSend(v294, "count") == 0}];
-    [v291 setDisabledReasons:v294];
+    [ratingCommand setEnabled:{objc_msgSend(array50, "count") == 0}];
+    [ratingCommand setDisabledReasons:array50];
   }
 
-  v295 = [(MPRemoteCommandCenter *)self->_commandCenter leaveSharedPlaybackSessionCommand];
+  leaveSharedPlaybackSessionCommand = [(MPRemoteCommandCenter *)self->_commandCenter leaveSharedPlaybackSessionCommand];
   v296 = v292;
-  v297 = [MEMORY[0x1E695DF70] array];
-  v298 = [MEMORY[0x1E695DF70] array];
-  v299 = [v163 musicSharePlay];
+  array51 = [MEMORY[0x1E695DF70] array];
+  array52 = [MEMORY[0x1E695DF70] array];
+  musicSharePlay5 = [v163 musicSharePlay];
 
-  if (!v299)
+  if (!musicSharePlay5)
   {
-    [v297 addObject:@"not in shared listening mode"];
+    [array51 addObject:@"not in shared listening mode"];
   }
 
-  v300 = [(MPRemoteCommandCenter *)self->_commandCenter leaveSharedPlaybackSessionCommand];
-  [v300 setSkipSerializedEventDelivery:1];
+  leaveSharedPlaybackSessionCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter leaveSharedPlaybackSessionCommand];
+  [leaveSharedPlaybackSessionCommand2 setSkipSerializedEventDelivery:1];
 
-  if ([v297 count])
+  if ([array51 count])
   {
-    if (![v297 count])
+    if (![array51 count])
     {
-      v448 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler27 = [MEMORY[0x1E696AAA8] currentHandler];
       v449 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-      [v448 handleFailureInFunction:v449 file:@"_MPCMediaRemotePublisher.m" lineNumber:1470 description:@"Must provide reason for unsupported command"];
+      [currentHandler27 handleFailureInFunction:v449 file:@"_MPCMediaRemotePublisher.m" lineNumber:1470 description:@"Must provide reason for unsupported command"];
     }
 
-    [v295 setUnsupportedReasons:v297];
-    if ([v295 hasTargets])
+    [leaveSharedPlaybackSessionCommand setUnsupportedReasons:array51];
+    if ([leaveSharedPlaybackSessionCommand hasTargets])
     {
-      [v295 removeTarget:v296 action:sel__dispatchCommandEvent_completion_];
+      [leaveSharedPlaybackSessionCommand removeTarget:v296 action:sel__dispatchCommandEvent_completion_];
     }
   }
 
   else
   {
-    [v295 setUnsupportedReasons:0];
-    if (([v295 hasTargets] & 1) == 0)
+    [leaveSharedPlaybackSessionCommand setUnsupportedReasons:0];
+    if (([leaveSharedPlaybackSessionCommand hasTargets] & 1) == 0)
     {
-      [v295 addTarget:v296 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      [leaveSharedPlaybackSessionCommand addTarget:v296 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    [v295 setEnabled:{objc_msgSend(v298, "count") == 0}];
-    [v295 setDisabledReasons:v298];
+    [leaveSharedPlaybackSessionCommand setEnabled:{objc_msgSend(array52, "count") == 0}];
+    [leaveSharedPlaybackSessionCommand setDisabledReasons:array52];
   }
 
-  v301 = [v296 vocalAttenuationUnavailabilityReasons];
-  v302 = [(MPRemoteCommandCenter *)self->_commandCenter prepareVocalsControlCommand];
+  vocalAttenuationUnavailabilityReasons = [v296 vocalAttenuationUnavailabilityReasons];
+  prepareVocalsControlCommand = [(MPRemoteCommandCenter *)self->_commandCenter prepareVocalsControlCommand];
   v303 = v296;
-  v304 = [MEMORY[0x1E695DF70] array];
-  v305 = [MEMORY[0x1E695DF70] array];
-  if (v301)
+  array53 = [MEMORY[0x1E695DF70] array];
+  array54 = [MEMORY[0x1E695DF70] array];
+  if (vocalAttenuationUnavailabilityReasons)
   {
-    [v304 addObject:@"vocal attenuation is not supported on this device"];
+    [array53 addObject:@"vocal attenuation is not supported on this device"];
   }
 
-  if ((v301 & 2) != 0)
+  if ((vocalAttenuationUnavailabilityReasons & 2) != 0)
   {
-    [v304 addObject:@"Active account cannot play catalog content"];
+    [array53 addObject:@"Active account cannot play catalog content"];
   }
 
-  if ((v301 & 0x10) != 0)
+  if ((vocalAttenuationUnavailabilityReasons & 0x10) != 0)
   {
-    v306 = [WeakRetained vocalAttenuationController];
-    v307 = v306;
-    if (v306)
+    vocalAttenuationController = [WeakRetained vocalAttenuationController];
+    v307 = vocalAttenuationController;
+    if (vocalAttenuationController)
     {
-      v308 = *(v306 + 80);
+      v308 = *(vocalAttenuationController + 80);
     }
 
     else
@@ -2487,15 +2487,15 @@ LABEL_418:
     }
 
     v309 = v308;
-    v310 = [v309 explanation];
-    [v304 addObject:v310];
+    explanation = [v309 explanation];
+    [array53 addObject:explanation];
   }
 
-  v311 = [WeakRetained vocalAttenuationController];
-  if (!v311 || (v312 = v311[9], v311, v312 != 2))
+  vocalAttenuationController2 = [WeakRetained vocalAttenuationController];
+  if (!vocalAttenuationController2 || (v312 = vocalAttenuationController2[9], vocalAttenuationController2, v312 != 2))
   {
-    v313 = [WeakRetained vocalAttenuationController];
-    if ([(MPCWhiskyController *)v313 isVocalAttenuationAvailable])
+    vocalAttenuationController3 = [WeakRetained vocalAttenuationController];
+    if ([(MPCWhiskyController *)vocalAttenuationController3 isVocalAttenuationAvailable])
     {
       v314 = @"engine is ready for vocal attenuation";
     }
@@ -2505,48 +2505,48 @@ LABEL_418:
       v314 = @"engine cannot prepare for vocal attenuation";
     }
 
-    [v305 addObject:v314];
+    [array54 addObject:v314];
   }
 
-  if ([v304 count])
+  if ([array53 count])
   {
-    if (![v304 count])
+    if (![array53 count])
     {
-      v450 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler28 = [MEMORY[0x1E696AAA8] currentHandler];
       v451 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-      [v450 handleFailureInFunction:v451 file:@"_MPCMediaRemotePublisher.m" lineNumber:1493 description:@"Must provide reason for unsupported command"];
+      [currentHandler28 handleFailureInFunction:v451 file:@"_MPCMediaRemotePublisher.m" lineNumber:1493 description:@"Must provide reason for unsupported command"];
     }
 
-    [v302 setUnsupportedReasons:v304];
-    if ([v302 hasTargets])
+    [prepareVocalsControlCommand setUnsupportedReasons:array53];
+    if ([prepareVocalsControlCommand hasTargets])
     {
-      [v302 removeTarget:v303 action:sel__dispatchCommandEvent_completion_];
+      [prepareVocalsControlCommand removeTarget:v303 action:sel__dispatchCommandEvent_completion_];
     }
   }
 
   else
   {
-    [v302 setUnsupportedReasons:0];
-    if (([v302 hasTargets] & 1) == 0)
+    [prepareVocalsControlCommand setUnsupportedReasons:0];
+    if (([prepareVocalsControlCommand hasTargets] & 1) == 0)
     {
-      [v302 addTarget:v303 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      [prepareVocalsControlCommand addTarget:v303 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    [v302 setEnabled:{objc_msgSend(v305, "count") == 0}];
-    [v302 setDisabledReasons:v305];
+    [prepareVocalsControlCommand setEnabled:{objc_msgSend(array54, "count") == 0}];
+    [prepareVocalsControlCommand setDisabledReasons:array54];
   }
 
-  v315 = [(MPRemoteCommandCenter *)self->_commandCenter vocalsControlCommand];
+  vocalsControlCommand = [(MPRemoteCommandCenter *)self->_commandCenter vocalsControlCommand];
   v316 = v303;
-  v317 = [MEMORY[0x1E695DF70] array];
-  v318 = [MEMORY[0x1E695DF70] array];
-  if (v301)
+  array55 = [MEMORY[0x1E695DF70] array];
+  array56 = [MEMORY[0x1E695DF70] array];
+  if (vocalAttenuationUnavailabilityReasons)
   {
-    [v317 addObject:@"vocal attenuation is not supported on this device"];
-    if ((v301 & 2) == 0)
+    [array55 addObject:@"vocal attenuation is not supported on this device"];
+    if ((vocalAttenuationUnavailabilityReasons & 2) == 0)
     {
 LABEL_471:
-      if ((v301 & 8) == 0)
+      if ((vocalAttenuationUnavailabilityReasons & 8) == 0)
       {
         goto LABEL_473;
       }
@@ -2555,24 +2555,24 @@ LABEL_471:
     }
   }
 
-  else if ((v301 & 2) == 0)
+  else if ((vocalAttenuationUnavailabilityReasons & 2) == 0)
   {
     goto LABEL_471;
   }
 
-  [v317 addObject:@"Active account cannot play catalog content"];
-  if ((v301 & 8) != 0)
+  [array55 addObject:@"Active account cannot play catalog content"];
+  if ((vocalAttenuationUnavailabilityReasons & 8) != 0)
   {
 LABEL_472:
-    [v317 addObject:@"vocal attenuation is disabled in shared listening mode"];
+    [array55 addObject:@"vocal attenuation is disabled in shared listening mode"];
   }
 
 LABEL_473:
-  v319 = [WeakRetained vocalAttenuationController];
-  v320 = v319;
-  if (v319)
+  vocalAttenuationController4 = [WeakRetained vocalAttenuationController];
+  v320 = vocalAttenuationController4;
+  if (vocalAttenuationController4)
   {
-    v321 = *(v319 + 80);
+    v321 = *(vocalAttenuationController4 + 80);
   }
 
   else
@@ -2584,32 +2584,32 @@ LABEL_473:
 
   if (!v322)
   {
-    v323 = [WeakRetained vocalAttenuationController];
-    v324 = [(MPCWhiskyController *)v323 isVocalAttenuationAvailable];
+    vocalAttenuationController5 = [WeakRetained vocalAttenuationController];
+    isVocalAttenuationAvailable = [(MPCWhiskyController *)vocalAttenuationController5 isVocalAttenuationAvailable];
 
-    if ((v324 & 1) == 0)
+    if ((isVocalAttenuationAvailable & 1) == 0)
     {
-      [v317 addObject:@"engine is not ready for vocal attenuation"];
+      [array55 addObject:@"engine is not ready for vocal attenuation"];
     }
   }
 
-  if ((v301 & 0x20) != 0)
+  if ((vocalAttenuationUnavailabilityReasons & 0x20) != 0)
   {
-    [v318 addObject:@"current item does not support vocal attenuation"];
+    [array56 addObject:@"current item does not support vocal attenuation"];
   }
 
-  v325 = [(MPRemoteCommandCenter *)self->_commandCenter vocalsControlCommand];
-  [v325 setDisabledReason:0];
+  vocalsControlCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter vocalsControlCommand];
+  [vocalsControlCommand2 setDisabledReason:0];
 
   if ([v481 supportsVocalAttenuation])
   {
-    if ((v301 & 0x10) != 0)
+    if ((vocalAttenuationUnavailabilityReasons & 0x10) != 0)
     {
-      v326 = [WeakRetained vocalAttenuationController];
-      v327 = v326;
-      if (v326)
+      vocalAttenuationController6 = [WeakRetained vocalAttenuationController];
+      v327 = vocalAttenuationController6;
+      if (vocalAttenuationController6)
       {
-        v328 = *(v326 + 80);
+        v328 = *(vocalAttenuationController6 + 80);
       }
 
       else
@@ -2618,15 +2618,15 @@ LABEL_473:
       }
 
       v329 = v328;
-      v330 = [v329 explanation];
-      [v318 addObject:v330];
+      explanation2 = [v329 explanation];
+      [array56 addObject:explanation2];
     }
 
-    v331 = [WeakRetained vocalAttenuationController];
-    v332 = v331;
-    if (v331)
+    vocalAttenuationController7 = [WeakRetained vocalAttenuationController];
+    v332 = vocalAttenuationController7;
+    if (vocalAttenuationController7)
     {
-      v333 = *(v331 + 80);
+      v333 = *(vocalAttenuationController7 + 80);
     }
 
     else
@@ -2638,257 +2638,257 @@ LABEL_473:
 
     if (v334)
     {
-      v335 = [WeakRetained vocalAttenuationController];
-      v336 = v335;
-      v337 = v335 ? *(v335 + 80) : 0;
+      vocalAttenuationController8 = [WeakRetained vocalAttenuationController];
+      v336 = vocalAttenuationController8;
+      v337 = vocalAttenuationController8 ? *(vocalAttenuationController8 + 80) : 0;
       v338 = v337;
-      v339 = [v338 reason];
+      reason = [v338 reason];
 
-      if (v339 <= 3)
+      if (reason <= 3)
       {
-        v340 = *(&unk_1C60454A0 + v339);
-        v341 = [(MPRemoteCommandCenter *)self->_commandCenter vocalsControlCommand];
-        [v341 setDisabledReason:v340];
+        v340 = *(&unk_1C60454A0 + reason);
+        vocalsControlCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter vocalsControlCommand];
+        [vocalsControlCommand3 setDisabledReason:v340];
       }
     }
   }
 
   [WeakRetained vocalLevel];
   v343 = v342;
-  v344 = [(MPRemoteCommandCenter *)self->_commandCenter vocalsControlCommand];
+  vocalsControlCommand4 = [(MPRemoteCommandCenter *)self->_commandCenter vocalsControlCommand];
   LODWORD(v345) = v343;
-  [v344 setVocalsLevel:v345];
+  [vocalsControlCommand4 setVocalsLevel:v345];
 
-  v346 = [WeakRetained vocalAttenuationController];
-  v347 = v346;
+  vocalAttenuationController9 = [WeakRetained vocalAttenuationController];
+  v347 = vocalAttenuationController9;
   v348 = 0;
   v349 = 0;
-  if (v346)
+  if (vocalAttenuationController9)
   {
-    v349 = *(v346 + 56);
+    v349 = *(vocalAttenuationController9 + 56);
   }
 
-  v350 = [(MPRemoteCommandCenter *)self->_commandCenter vocalsControlCommand];
+  vocalsControlCommand5 = [(MPRemoteCommandCenter *)self->_commandCenter vocalsControlCommand];
   LODWORD(v351) = v349;
-  [v350 setMinVocalsLevel:v351];
+  [vocalsControlCommand5 setMinVocalsLevel:v351];
 
-  v352 = [WeakRetained vocalAttenuationController];
-  v353 = v352;
-  if (v352)
+  vocalAttenuationController10 = [WeakRetained vocalAttenuationController];
+  v353 = vocalAttenuationController10;
+  if (vocalAttenuationController10)
   {
-    v348 = *(v352 + 60);
+    v348 = *(vocalAttenuationController10 + 60);
   }
 
-  v354 = [(MPRemoteCommandCenter *)self->_commandCenter vocalsControlCommand];
+  vocalsControlCommand6 = [(MPRemoteCommandCenter *)self->_commandCenter vocalsControlCommand];
   LODWORD(v355) = v348;
-  [v354 setMaxVocalsLevel:v355];
+  [vocalsControlCommand6 setMaxVocalsLevel:v355];
 
-  v356 = [WeakRetained isVocalAttenuationEnabled];
-  v357 = [(MPRemoteCommandCenter *)self->_commandCenter vocalsControlCommand];
-  [v357 setVocalsControlActive:v356];
+  isVocalAttenuationEnabled = [WeakRetained isVocalAttenuationEnabled];
+  vocalsControlCommand7 = [(MPRemoteCommandCenter *)self->_commandCenter vocalsControlCommand];
+  [vocalsControlCommand7 setVocalsControlActive:isVocalAttenuationEnabled];
 
-  v358 = [WeakRetained pickedRoute];
-  LODWORD(v357) = [v358 isAirPlayRoute];
-  v359 = [(MPRemoteCommandCenter *)self->_commandCenter vocalsControlCommand];
-  [v359 setContinuous:v357 ^ 1];
+  pickedRoute = [WeakRetained pickedRoute];
+  LODWORD(vocalsControlCommand7) = [pickedRoute isAirPlayRoute];
+  vocalsControlCommand8 = [(MPRemoteCommandCenter *)self->_commandCenter vocalsControlCommand];
+  [vocalsControlCommand8 setContinuous:vocalsControlCommand7 ^ 1];
 
-  if ([v317 count])
+  if ([array55 count])
   {
-    if (![v317 count])
+    if (![array55 count])
     {
-      v452 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler29 = [MEMORY[0x1E696AAA8] currentHandler];
       v453 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-      [v452 handleFailureInFunction:v453 file:@"_MPCMediaRemotePublisher.m" lineNumber:1541 description:@"Must provide reason for unsupported command"];
+      [currentHandler29 handleFailureInFunction:v453 file:@"_MPCMediaRemotePublisher.m" lineNumber:1541 description:@"Must provide reason for unsupported command"];
     }
 
-    [v315 setUnsupportedReasons:v317];
-    if ([v315 hasTargets])
+    [vocalsControlCommand setUnsupportedReasons:array55];
+    if ([vocalsControlCommand hasTargets])
     {
-      [v315 removeTarget:v316 action:sel__dispatchCommandEvent_completion_];
+      [vocalsControlCommand removeTarget:v316 action:sel__dispatchCommandEvent_completion_];
     }
   }
 
   else
   {
-    [v315 setUnsupportedReasons:0];
-    if (([v315 hasTargets] & 1) == 0)
+    [vocalsControlCommand setUnsupportedReasons:0];
+    if (([vocalsControlCommand hasTargets] & 1) == 0)
     {
-      [v315 addTarget:v316 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      [vocalsControlCommand addTarget:v316 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    [v315 setEnabled:{objc_msgSend(v318, "count") == 0}];
-    [v315 setDisabledReasons:v318];
+    [vocalsControlCommand setEnabled:{objc_msgSend(array56, "count") == 0}];
+    [vocalsControlCommand setDisabledReasons:array56];
   }
 
-  v360 = [v475 upNextBehavior];
-  v361 = [v481 contentItemID];
-  v362 = [v360 tailInsertionContentItemIDForTargetContentItemID:v361];
+  upNextBehavior11 = [v475 upNextBehavior];
+  contentItemID8 = [v481 contentItemID];
+  v362 = [upNextBehavior11 tailInsertionContentItemIDForTargetContentItemID:contentItemID8];
 
-  v363 = [(MPRemoteCommandCenter *)self->_commandCenter clearUpNextCommand];
+  clearUpNextCommand = [(MPRemoteCommandCenter *)self->_commandCenter clearUpNextCommand];
   v364 = v316;
-  v365 = [MEMORY[0x1E695DF70] array];
-  v366 = [MEMORY[0x1E695DF70] array];
-  v367 = [v475 upNextBehavior];
+  array57 = [MEMORY[0x1E695DF70] array];
+  array58 = [MEMORY[0x1E695DF70] array];
+  upNextBehavior12 = [v475 upNextBehavior];
 
-  if (!v367)
+  if (!upNextBehavior12)
   {
-    [v365 addObject:@"current behavior is not upNextBehavior"];
+    [array57 addObject:@"current behavior is not upNextBehavior"];
   }
 
-  v368 = [v475 upNextBehavior];
+  upNextBehavior13 = [v475 upNextBehavior];
   v369 = objc_opt_respondsToSelector();
 
   if ((v369 & 1) == 0)
   {
-    [v365 addObject:@"current behavior does not implement command"];
+    [array57 addObject:@"current behavior does not implement command"];
   }
 
   if (!v362)
   {
-    [v365 addObject:@"no active up next queue"];
+    [array57 addObject:@"no active up next queue"];
   }
 
   v370 = v481;
-  if ([v365 count])
+  if ([array57 count])
   {
-    if (![v365 count])
+    if (![array57 count])
     {
-      v454 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler30 = [MEMORY[0x1E696AAA8] currentHandler];
       v455 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-      [v454 handleFailureInFunction:v455 file:@"_MPCMediaRemotePublisher.m" lineNumber:1548 description:@"Must provide reason for unsupported command"];
+      [currentHandler30 handleFailureInFunction:v455 file:@"_MPCMediaRemotePublisher.m" lineNumber:1548 description:@"Must provide reason for unsupported command"];
     }
 
-    [v363 setUnsupportedReasons:v365];
-    if ([v363 hasTargets])
+    [clearUpNextCommand setUnsupportedReasons:array57];
+    if ([clearUpNextCommand hasTargets])
     {
-      [v363 removeTarget:v364 action:sel__dispatchCommandEvent_completion_];
+      [clearUpNextCommand removeTarget:v364 action:sel__dispatchCommandEvent_completion_];
     }
   }
 
   else
   {
-    [v363 setUnsupportedReasons:0];
-    if (([v363 hasTargets] & 1) == 0)
+    [clearUpNextCommand setUnsupportedReasons:0];
+    if (([clearUpNextCommand hasTargets] & 1) == 0)
     {
-      [v363 addTarget:v364 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      [clearUpNextCommand addTarget:v364 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    [v363 setEnabled:{objc_msgSend(v366, "count") == 0}];
-    [v363 setDisabledReasons:v366];
+    [clearUpNextCommand setEnabled:{objc_msgSend(array58, "count") == 0}];
+    [clearUpNextCommand setDisabledReasons:array58];
   }
 
-  v371 = [(MPRemoteCommandCenter *)self->_commandCenter clearUpcomingQueue];
+  clearUpcomingQueue = [(MPRemoteCommandCenter *)self->_commandCenter clearUpcomingQueue];
   v372 = v364;
-  v373 = [MEMORY[0x1E695DF70] array];
-  v374 = [MEMORY[0x1E695DF70] array];
-  v375 = [v475 upNextBehavior];
+  array59 = [MEMORY[0x1E695DF70] array];
+  array60 = [MEMORY[0x1E695DF70] array];
+  upNextBehavior14 = [v475 upNextBehavior];
 
-  if (!v375)
+  if (!upNextBehavior14)
   {
-    [v373 addObject:@"current behavior is not upNextBehavior"];
+    [array59 addObject:@"current behavior is not upNextBehavior"];
   }
 
-  v376 = [v475 upNextBehavior];
+  upNextBehavior15 = [v475 upNextBehavior];
   v377 = objc_opt_respondsToSelector();
 
   if ((v377 & 1) == 0)
   {
-    [v373 addObject:@"current behavior does not implement command"];
+    [array59 addObject:@"current behavior does not implement command"];
   }
 
-  if ([v373 count])
+  if ([array59 count])
   {
-    if (![v373 count])
+    if (![array59 count])
     {
-      v456 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler31 = [MEMORY[0x1E696AAA8] currentHandler];
       v457 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_MPCMediaRemotePublisher _updateSupportedCommands]"];
-      [v456 handleFailureInFunction:v457 file:@"_MPCMediaRemotePublisher.m" lineNumber:1553 description:@"Must provide reason for unsupported command"];
+      [currentHandler31 handleFailureInFunction:v457 file:@"_MPCMediaRemotePublisher.m" lineNumber:1553 description:@"Must provide reason for unsupported command"];
     }
 
-    [v371 setUnsupportedReasons:v373];
-    if ([v371 hasTargets])
+    [clearUpcomingQueue setUnsupportedReasons:array59];
+    if ([clearUpcomingQueue hasTargets])
     {
-      [v371 removeTarget:v372 action:sel__dispatchCommandEvent_completion_];
+      [clearUpcomingQueue removeTarget:v372 action:sel__dispatchCommandEvent_completion_];
     }
   }
 
   else
   {
-    [v371 setUnsupportedReasons:0];
-    if (([v371 hasTargets] & 1) == 0)
+    [clearUpcomingQueue setUnsupportedReasons:0];
+    if (([clearUpcomingQueue hasTargets] & 1) == 0)
     {
-      [v371 addTarget:v372 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      [clearUpcomingQueue addTarget:v372 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    [v371 setEnabled:{objc_msgSend(v374, "count") == 0}];
-    [v371 setDisabledReasons:v374];
+    [clearUpcomingQueue setEnabled:{objc_msgSend(array60, "count") == 0}];
+    [clearUpcomingQueue setDisabledReasons:array60];
   }
 
   if (MSVDeviceOSIsInternalInstall())
   {
-    v378 = [(MPRemoteCommandCenter *)self->_commandCenter stageConditionCommand];
-    [v378 setUnsupportedReasons:0];
+    stageConditionCommand = [(MPRemoteCommandCenter *)self->_commandCenter stageConditionCommand];
+    [stageConditionCommand setUnsupportedReasons:0];
 
-    v379 = [(MPRemoteCommandCenter *)self->_commandCenter stageConditionCommand];
-    v380 = [v379 hasTargets];
+    stageConditionCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter stageConditionCommand];
+    hasTargets = [stageConditionCommand2 hasTargets];
 
-    if ((v380 & 1) == 0)
+    if ((hasTargets & 1) == 0)
     {
-      v381 = [(MPRemoteCommandCenter *)self->_commandCenter stageConditionCommand];
-      [v381 addTarget:v372 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
+      stageConditionCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter stageConditionCommand];
+      [stageConditionCommand3 addTarget:v372 action:sel__dispatchCommandEvent_completion_ usingExtendedStatus:1];
     }
 
-    v382 = [(MPRemoteCommandCenter *)self->_commandCenter debugCommand];
-    v383 = [v382 hasTargets];
+    debugCommand = [(MPRemoteCommandCenter *)self->_commandCenter debugCommand];
+    hasTargets2 = [debugCommand hasTargets];
 
-    if ((v383 & 1) == 0)
+    if ((hasTargets2 & 1) == 0)
     {
-      v384 = [(MPRemoteCommandCenter *)self->_commandCenter debugCommand];
-      [v384 addTarget:v372 action:sel__performDebugEvent_completion_ usingExtendedStatus:1];
+      debugCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter debugCommand];
+      [debugCommand2 addTarget:v372 action:sel__performDebugEvent_completion_ usingExtendedStatus:1];
     }
 
-    v385 = [(MPRemoteCommandCenter *)self->_commandCenter debugCommand];
-    [v385 setSupportedSubsystems:&unk_1F4599910];
+    debugCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter debugCommand];
+    [debugCommand3 setSupportedSubsystems:&unk_1F4599910];
 
     v493[0] = @"com.apple.Music.performance";
     v386 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", v372[19]];
     v493[1] = @"com.apple.Music.queue";
     v494[0] = v386;
     v387 = MEMORY[0x1E696AEC0];
-    v388 = [v475 revisionString];
-    v389 = [v481 contentItemID];
-    v390 = [v387 stringWithFormat:@"%@&currentItem=%@", v388, v389];
-    v494[1] = v390;
+    revisionString = [v475 revisionString];
+    contentItemID9 = [v481 contentItemID];
+    v389 = [v387 stringWithFormat:@"%@&currentItem=%@", revisionString, contentItemID9];
+    v494[1] = v389;
     v391 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v494 forKeys:v493 count:2];
-    v392 = [(MPRemoteCommandCenter *)self->_commandCenter debugCommand];
-    [v392 setSubsystemRevisions:v391];
+    debugCommand4 = [(MPRemoteCommandCenter *)self->_commandCenter debugCommand];
+    [debugCommand4 setSubsystemRevisions:v391];
 
     v370 = v481;
   }
 
-  v393 = [(MPRemoteCommandCenter *)self->_commandCenter _debugCommandDescriptions];
-  v394 = [v393 msv_compactMap:&__block_literal_global_426];
+  _debugCommandDescriptions = [(MPRemoteCommandCenter *)self->_commandCenter _debugCommandDescriptions];
+  v394 = [_debugCommandDescriptions msv_compactMap:&__block_literal_global_426];
 
   v395 = v372[5];
   v396 = v394;
-  v397 = v395;
-  if (v396 == v397)
+  eventStream = v395;
+  if (v396 == eventStream)
   {
-    v399 = v396;
+    playbackEngine = v396;
     goto LABEL_543;
   }
 
-  v398 = [v396 isEqual:v397];
+  v398 = [v396 isEqual:eventStream];
 
   if ((v398 & 1) == 0)
   {
     objc_storeStrong(v372 + 5, v394);
-    v399 = [v372 playbackEngine];
-    v397 = [v399 eventStream];
+    playbackEngine = [v372 playbackEngine];
+    eventStream = [playbackEngine eventStream];
     v491 = @"remote-control-commands";
     v492 = v396;
     v400 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v492 forKeys:&v491 count:1];
-    [v397 emitEventType:@"remote-control-commands-changed" payload:v400];
+    [eventStream emitEventType:@"remote-control-commands-changed" payload:v400];
 
 LABEL_543:
   }
@@ -2905,8 +2905,8 @@ LABEL_543:
 - (id)_exportableSessionTypes
 {
   v32 = *MEMORY[0x1E69E9840];
-  v2 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-  if ([v2 isVocalAttenuationEnabled])
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  if ([playbackEngine isVocalAttenuationEnabled])
   {
     v3 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -2920,17 +2920,17 @@ LABEL_543:
 
   else
   {
-    v5 = [v2 queueController];
-    v3 = v5;
-    if (v5)
+    queueController = [playbackEngine queueController];
+    v3 = queueController;
+    if (queueController)
     {
-      v6 = [v5 currentItem];
-      v7 = v6;
-      if (v6)
+      currentItem = [queueController currentItem];
+      v7 = currentItem;
+      if (currentItem)
       {
-        v20 = v6;
-        v21 = v2;
-        v8 = [v6 contentItemID];
+        v20 = currentItem;
+        v21 = playbackEngine;
+        contentItemID = [currentItem contentItemID];
         v9 = +[MPCQueueController allKnownSessionTypes];
         v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
         v23 = 0u;
@@ -2954,7 +2954,7 @@ LABEL_543:
 
               v15 = *(*(&v23 + 1) + 8 * i);
               v22 = 0;
-              v16 = [v3 isExportableSessionType:v15 forContentItemID:v8 reason:&v22];
+              v16 = [v3 isExportableSessionType:v15 forContentItemID:contentItemID reason:&v22];
               v17 = v22;
               if (v16)
               {
@@ -2982,17 +2982,17 @@ LABEL_543:
         }
 
         v7 = v20;
-        v2 = v21;
+        playbackEngine = v21;
       }
 
       else
       {
-        v8 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
-        if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+        contentItemID = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
+        if (os_log_type_enabled(contentItemID, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
           v28 = v3;
-          _os_log_impl(&dword_1C5C61000, v8, OS_LOG_TYPE_DEFAULT, "[Publisher] _exportableSessionTypes empty [queueController: %p currentItem is nil]", buf, 0xCu);
+          _os_log_impl(&dword_1C5C61000, contentItemID, OS_LOG_TYPE_DEFAULT, "[Publisher] _exportableSessionTypes empty [queueController: %p currentItem is nil]", buf, 0xCu);
         }
 
         v4 = MEMORY[0x1E695E0F0];
@@ -3018,20 +3018,20 @@ LABEL_543:
 - (unint64_t)vocalAttenuationUnavailabilityReasons
 {
   v3 = +[MPCPlaybackAccountManager sharedManager];
-  v4 = [v3 activeAccount];
+  activeAccount = [v3 activeAccount];
 
-  v5 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-  v6 = [v5 queueController];
-  v7 = [v6 currentItem];
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  queueController = [playbackEngine queueController];
+  currentItem = [queueController currentItem];
   v8 = MSVDeviceSupportsVocalAttenuation();
-  v9 = [v4 hasCatalogPlaybackCapability];
-  v10 = [v6 musicSharePlay];
+  hasCatalogPlaybackCapability = [activeAccount hasCatalogPlaybackCapability];
+  musicSharePlay = [queueController musicSharePlay];
 
-  v11 = [v5 vocalAttenuationController];
-  v12 = v11;
-  if (v11)
+  vocalAttenuationController = [playbackEngine vocalAttenuationController];
+  v12 = vocalAttenuationController;
+  if (vocalAttenuationController)
   {
-    v13 = *(v11 + 80);
+    v13 = *(vocalAttenuationController + 80);
   }
 
   else
@@ -3040,12 +3040,12 @@ LABEL_543:
   }
 
   v14 = v8 ^ 1u;
-  if (!v9)
+  if (!hasCatalogPlaybackCapability)
   {
     v14 |= 2uLL;
   }
 
-  if (v10)
+  if (musicSharePlay)
   {
     v15 = v14 | 8;
   }
@@ -3067,7 +3067,7 @@ LABEL_543:
     v17 = v15;
   }
 
-  if (![v7 supportsVocalAttenuation])
+  if (![currentItem supportsVocalAttenuation])
   {
     v17 |= 0x20uLL;
   }
@@ -3075,10 +3075,10 @@ LABEL_543:
   return v17;
 }
 
-- (void)_MRPlaybackSessionMigratePostCallback:(id)a3 completion:(id)a4
+- (void)_MRPlaybackSessionMigratePostCallback:(id)callback completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  callbackCopy = callback;
+  completionCopy = completion;
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v30 = 0;
   v31 = &v30;
@@ -3086,28 +3086,28 @@ LABEL_543:
   v33 = __Block_byref_object_copy__20001;
   v34 = __Block_byref_object_dispose__20002;
   v35 = 0;
-  v9 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-  v10 = [v9 eventStream];
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  eventStream = [playbackEngine eventStream];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __77___MPCMediaRemotePublisher__MRPlaybackSessionMigratePostCallback_completion___block_invoke;
   v26[3] = &unk_1E8236E60;
-  v11 = v6;
+  v11 = callbackCopy;
   v27 = v11;
-  v12 = v7;
+  v12 = completionCopy;
   v28 = v12;
   v29 = &v30;
-  [v10 performQuery:v26];
+  [eventStream performQuery:v26];
 
   v13 = v31[5];
   if (v13)
   {
     v14 = [v13 objectForKeyedSubscript:@"metrics"];
-    v15 = [v14 firstObject];
+    firstObject = [v14 firstObject];
 
-    if (v15)
+    if (firstObject)
     {
-      v16 = [v15 objectForKeyedSubscript:@"raw"];
+      v16 = [firstObject objectForKeyedSubscript:@"raw"];
       [v8 addEntriesFromDictionary:v16];
     }
 
@@ -3136,26 +3136,26 @@ LABEL_543:
     mrMigratePostCallbackGuard = self->_mrMigratePostCallbackGuard;
     self->_mrMigratePostCallbackGuard = v20;
 
-    v15 = v24;
+    firstObject = v24;
   }
 
   _Block_object_dispose(&v30, 8);
 }
 
-- (void)_performSkipChapterCommand:(unsigned int)a3 withCommandID:(id)a4 completion:(id)a5
+- (void)_performSkipChapterCommand:(unsigned int)command withCommandID:(id)d completion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-  v11 = [v10 player];
-  [v11 currentTime];
+  dCopy = d;
+  completionCopy = completion;
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  player = [playbackEngine player];
+  [player currentTime];
   v13 = v12;
 
-  v14 = [v10 queueController];
-  v15 = [v14 currentItem];
+  queueController = [playbackEngine queueController];
+  currentItem = [queueController currentItem];
 
-  v16 = v15;
+  v16 = currentItem;
   if (!v16 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v20 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
@@ -3171,8 +3171,8 @@ LABEL_543:
     goto LABEL_10;
   }
 
-  v17 = [v16 chapters];
-  v18 = [v17 count];
+  chapters = [v16 chapters];
+  v18 = [chapters count];
 
   if (!v18)
   {
@@ -3189,14 +3189,14 @@ LABEL_543:
     goto LABEL_10;
   }
 
-  if (a3 == 101)
+  if (command == 101)
   {
     v19 = [v16 previousChapterBefore:v13];
 LABEL_16:
     v25 = v19;
     if (v19)
     {
-      v26 = [v10 player];
+      player2 = [playbackEngine player];
       [v25 startTime];
       v28 = v27;
       v30[0] = MEMORY[0x1E69E9820];
@@ -3205,9 +3205,9 @@ LABEL_16:
       v30[3] = &unk_1E8236E20;
       v31 = v16;
       v32 = v25;
-      v33 = v9;
+      v33 = completionCopy;
       v22 = v25;
-      [v26 jumpToTime:v8 identifier:v30 completion:v28];
+      [player2 jumpToTime:dCopy identifier:v30 completion:v28];
 
       v23 = v31;
       goto LABEL_11;
@@ -3216,7 +3216,7 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  if (a3 == 100)
+  if (command == 100)
   {
     v19 = [v16 nextChapterAfter:v13];
     goto LABEL_16;
@@ -3235,21 +3235,21 @@ LABEL_18:
   [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:2101 debugDescription:{@"Unable to find next chapter for current item: %@.", v16}];
   v22 = LABEL_10:;
   v23 = [v21 statusWithCode:200 error:v22];
-  (*(v9 + 2))(v9, v23);
+  (*(completionCopy + 2))(completionCopy, v23);
 LABEL_11:
 }
 
-- (void)performSetQueue:(id)a3 installQueueBeforeLoaded:(BOOL)a4 donatedStartPlayerItem:(id)a5 completion:(id)a6
+- (void)performSetQueue:(id)queue installQueueBeforeLoaded:(BOOL)loaded donatedStartPlayerItem:(id)item completion:(id)completion
 {
-  v7 = a4;
+  loadedCopy = loaded;
   v10 = MEMORY[0x1E6970970];
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
+  completionCopy = completion;
+  itemCopy = item;
+  queueCopy = queue;
   v14 = [v10 alloc];
-  v15 = [(_MPCMediaRemotePublisher *)self commandCenter];
-  v16 = [v15 setPlaybackQueueCommand];
-  v18 = [v14 initWithCommand:v16 playbackQueue:v13];
+  commandCenter = [(_MPCMediaRemotePublisher *)self commandCenter];
+  setPlaybackQueueCommand = [commandCenter setPlaybackQueueCommand];
+  v18 = [v14 initWithCommand:setPlaybackQueueCommand playbackQueue:queueCopy];
 
   if (self)
   {
@@ -3261,61 +3261,61 @@ LABEL_11:
     swift = 0;
   }
 
-  [(_MPCMediaRemotePublisher_Swift *)swift performSetQueueWithEvent:v18 installQueueBeforeLoaded:v7 donatedStartPlayerItem:v12 completion:v11];
+  [(_MPCMediaRemotePublisher_Swift *)swift performSetQueueWithEvent:v18 installQueueBeforeLoaded:loadedCopy donatedStartPlayerItem:itemCopy completion:completionCopy];
 }
 
-- (void)performSetQueueWithIntent:(id)a3 completion:(id)a4
+- (void)performSetQueueWithIntent:(id)intent completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  intentCopy = intent;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __65___MPCMediaRemotePublisher_performSetQueueWithIntent_completion___block_invoke;
   v10[3] = &unk_1E8236DF8;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v7;
-  v9 = v6;
+  selfCopy = self;
+  v13 = completionCopy;
+  v11 = intentCopy;
+  v8 = completionCopy;
+  v9 = intentCopy;
   [v9 getRemotePlaybackQueueWithDestination:1 completion:v10];
 }
 
-- (void)_dispatchCommandEvent:(id)a3 completion:(id)a4
+- (void)_dispatchCommandEvent:(id)event completion:(id)completion
 {
   v120 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v67 = a4;
-  v79 = self;
-  v71 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-  v77 = [v71 eventStream];
-  v7 = [v6 commandID];
-  v8 = [@"CommandBegin:" stringByAppendingString:v7];
-  v69 = [v77 eventDeliveryDeferralAssertionOfType:0 forReason:v8];
+  eventCopy = event;
+  completionCopy = completion;
+  selfCopy = self;
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  eventStream = [playbackEngine eventStream];
+  commandID = [eventCopy commandID];
+  v8 = [@"CommandBegin:" stringByAppendingString:commandID];
+  v69 = [eventStream eventDeliveryDeferralAssertionOfType:0 forReason:v8];
 
-  v9 = [v6 commandID];
-  v10 = [@"CommandEnd:" stringByAppendingString:v9];
-  [v6 timeout];
+  commandID2 = [eventCopy commandID];
+  v10 = [@"CommandEnd:" stringByAppendingString:commandID2];
+  [eventCopy timeout];
   if (v11 == 0.0)
   {
     v11 = 30.0;
   }
 
-  v66 = [v77 eventDeliveryDeferralAssertionOfType:1 forReason:v10 withTimeout:v11];
+  v66 = [eventStream eventDeliveryDeferralAssertionOfType:1 forReason:v10 withTimeout:v11];
 
   v94 = 0;
   v93 = 0u;
   v92 = 0u;
   MPCPlaybackEngineEventGetMonotonicTime(&v92);
-  v12 = [v6 commandID];
-  v13 = [@"CommandDispatch:" stringByAppendingString:v12];
+  commandID3 = [eventCopy commandID];
+  v13 = [@"CommandDispatch:" stringByAppendingString:commandID3];
 
   v14 = +[MPCCriticalSectionManager shared];
   v65 = [v14 takeAssertion:v13];
 
   v76 = v13;
-  if (v79)
+  if (selfCopy)
   {
-    v15 = [(_MPCMediaRemotePublisher *)v79 playbackEngine];
+    playbackEngine2 = [(_MPCMediaRemotePublisher *)selfCopy playbackEngine];
     v105[0] = 0;
     v105[1] = v105;
     v105[2] = 0x3032000000;
@@ -3338,7 +3338,7 @@ LABEL_11:
     *(&v114 + 1) = 3221225472;
     *&v115 = __62___MPCMediaRemotePublisher__backgroundTaskWithReason_timeout___block_invoke;
     *(&v115 + 1) = &unk_1E8239078;
-    v18 = v15;
+    v18 = playbackEngine2;
     v116 = v18;
     v19 = v76;
     v117 = v19;
@@ -3350,10 +3350,10 @@ LABEL_11:
     v21 = os_log_create("com.apple.amp.mediaplaybackcore", "Publisher");
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [v18 engineID];
+      engineID = [v18 engineID];
       v23 = v96[3];
       *buf = 138544130;
-      *&buf[4] = v22;
+      *&buf[4] = engineID;
       *&buf[12] = 2114;
       *&buf[14] = v19;
       *&buf[22] = 2048;
@@ -3368,9 +3368,9 @@ LABEL_11:
       v24 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
-        v25 = [v18 engineID];
+        engineID2 = [v18 engineID];
         *buf = 138543618;
-        *&buf[4] = v25;
+        *&buf[4] = engineID2;
         *&buf[12] = 2114;
         *&buf[14] = v19;
         _os_log_impl(&dword_1C5C61000, v24, OS_LOG_TYPE_ERROR, "[PUB:%{public}@] _backgroundTaskWithReason:%{public}@ | failed []", buf, 0x16u);
@@ -3409,17 +3409,17 @@ LABEL_11:
     v64 = 0;
   }
 
-  v72 = [v6 mediaRemoteCommandType];
-  ptr = [v6 commandID];
+  mediaRemoteCommandType = [eventCopy mediaRemoteCommandType];
+  ptr = [eventCopy commandID];
   v29 = os_log_create("com.apple.amp.mediaplaybackcore", "Analytics");
   spid = os_signpost_id_make_with_pointer(v29, ptr);
 
   v30 = os_log_create("com.apple.amp.mediaplaybackcore", "Analytics");
   v31 = v30;
   v32 = spid - 1;
-  if (v72)
+  if (mediaRemoteCommandType)
   {
-    if (v72 == 122)
+    if (mediaRemoteCommandType == 122)
     {
       if (v32 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v30))
       {
@@ -3432,7 +3432,7 @@ LABEL_20:
 
     else if (v32 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v30))
     {
-      v34 = MPCRemoteCommandDescriptionCopy(v72);
+      v34 = MPCRemoteCommandDescriptionCopy(mediaRemoteCommandType);
       LODWORD(v114) = 138543362;
       *(&v114 + 4) = v34;
       _os_signpost_emit_with_name_impl(&dword_1C5C61000, v31, OS_SIGNPOST_INTERVAL_BEGIN, spid, "PerformCommandOther", "command=%{public, signpost.telemetry:string1, name=command}@", &v114, 0xCu);
@@ -3446,60 +3446,60 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v35 = [v6 mediaRemoteOptions];
-  v75 = [v35 mutableCopy];
+  mediaRemoteOptions = [eventCopy mediaRemoteOptions];
+  v75 = [mediaRemoteOptions mutableCopy];
 
-  [(_MPCMediaRemotePublisher *)v79 stripMediaRemoteOptionsForEVS:v75];
-  v36 = [v6 mediaRemoteOptions];
-  v74 = [v36 objectForKeyedSubscript:*MEMORY[0x1E69B1268]];
+  [(_MPCMediaRemotePublisher *)selfCopy stripMediaRemoteOptionsForEVS:v75];
+  mediaRemoteOptions2 = [eventCopy mediaRemoteOptions];
+  v74 = [mediaRemoteOptions2 objectForKeyedSubscript:*MEMORY[0x1E69B1268]];
 
-  v37 = [v6 mediaRemoteOptions];
-  v38 = [v37 objectForKeyedSubscript:*MEMORY[0x1E69B10D0]];
+  mediaRemoteOptions3 = [eventCopy mediaRemoteOptions];
+  v38 = [mediaRemoteOptions3 objectForKeyedSubscript:*MEMORY[0x1E69B10D0]];
   v63 = v38 != 0;
 
-  if ([v6 mediaRemoteCommandType] == 122)
+  if ([eventCopy mediaRemoteCommandType] == 122)
   {
-    v39 = v6;
-    v40 = [v39 playbackQueue];
-    v41 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v40, "isRequestingImmediatePlayback")}];
+    v39 = eventCopy;
+    playbackQueue = [v39 playbackQueue];
+    v41 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(playbackQueue, "isRequestingImmediatePlayback")}];
 LABEL_30:
     v44 = v41;
 
     goto LABEL_32;
   }
 
-  if ([v6 mediaRemoteCommandType] == 133)
+  if ([eventCopy mediaRemoteCommandType] == 133)
   {
-    swift = v79;
-    if (v79)
+    swift = selfCopy;
+    if (selfCopy)
     {
-      swift = v79->_swift;
+      swift = selfCopy->_swift;
     }
 
     v43 = MEMORY[0x1E696AD98];
     v39 = swift;
-    v40 = v6;
-    v41 = [v43 numberWithBool:{objc_msgSend(v39, "getRequestingImmediatePlaybackFromSetPlaybackSessionCommandEvent:", v40)}];
+    playbackQueue = eventCopy;
+    v41 = [v43 numberWithBool:{objc_msgSend(v39, "getRequestingImmediatePlaybackFromSetPlaybackSessionCommandEvent:", playbackQueue)}];
     goto LABEL_30;
   }
 
   v44 = 0;
 LABEL_32:
   v107[0] = @"remote-control-id";
-  v68 = [v6 commandID];
-  v108[0] = v68;
+  commandID4 = [eventCopy commandID];
+  v108[0] = commandID4;
   v107[1] = @"remote-control-type";
-  v45 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v6, "mediaRemoteCommandType")}];
+  v45 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(eventCopy, "mediaRemoteCommandType")}];
   v108[1] = v45;
   v107[2] = @"remote-control-source";
-  v46 = [v6 sourceID];
-  v108[2] = v46;
+  sourceID = [eventCopy sourceID];
+  v108[2] = sourceID;
   v107[3] = @"remote-control-associated-participant-id";
-  v47 = [v6 associatedParticipantIdentifier];
-  v48 = v47;
-  if (!v47)
+  associatedParticipantIdentifier = [eventCopy associatedParticipantIdentifier];
+  null = associatedParticipantIdentifier;
+  if (!associatedParticipantIdentifier)
   {
-    v48 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v49 = MEMORY[0x1E695E0F8];
@@ -3508,30 +3508,30 @@ LABEL_32:
     v49 = v75;
   }
 
-  v108[3] = v48;
+  v108[3] = null;
   v108[4] = v49;
   v107[4] = @"remote-control-options";
   v107[5] = @"remote-control-queue-data";
-  v50 = v74;
+  null2 = v74;
   if (!v74)
   {
-    v50 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v108[5] = v50;
+  v108[5] = null2;
   v107[6] = @"remote-control-queue-start";
-  v51 = v44;
+  null3 = v44;
   if (!v44)
   {
-    v51 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v108[6] = v51;
+  v108[6] = null3;
   v52 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v108 forKeys:v107 count:7];
   v114 = v92;
   v115 = v93;
   v116 = v94;
-  [v77 emitEventType:@"remote-control-begin" payload:v52 atTime:&v114];
+  [eventStream emitEventType:@"remote-control-begin" payload:v52 atTime:&v114];
 
   if (!v44)
   {
@@ -3541,7 +3541,7 @@ LABEL_32:
   {
   }
 
-  if (!v47)
+  if (!associatedParticipantIdentifier)
   {
   }
 
@@ -3550,32 +3550,32 @@ LABEL_32:
   aBlock[1] = 3221225472;
   aBlock[2] = __61___MPCMediaRemotePublisher__dispatchCommandEvent_completion___block_invoke;
   aBlock[3] = &unk_1E82369C8;
-  aBlock[4] = v79;
-  v53 = v6;
-  v90 = v72;
+  aBlock[4] = selfCopy;
+  v53 = eventCopy;
+  v90 = mediaRemoteCommandType;
   v89 = spid;
   v91 = v63;
   v81 = v53;
   v82 = v44;
-  v54 = v71;
+  v54 = playbackEngine;
   v83 = v54;
   v84 = v64;
-  v85 = v77;
+  v85 = eventStream;
   v86 = v66;
   v87 = v65;
-  v88 = v67;
+  v88 = completionCopy;
   v55 = v65;
   v56 = v66;
-  v57 = v77;
-  v58 = v67;
+  v57 = eventStream;
+  v58 = completionCopy;
   v59 = v64;
   v78 = v44;
   v60 = _Block_copy(aBlock);
-  if (-[_MPCMediaRemotePublisher _commandRequiresMediaServices:](v79, "_commandRequiresMediaServices:", [v53 mediaRemoteCommandType]))
+  if (-[_MPCMediaRemotePublisher _commandRequiresMediaServices:](selfCopy, "_commandRequiresMediaServices:", [v53 mediaRemoteCommandType]))
   {
-    v61 = [v54 player];
-    v62 = [v53 commandID];
-    [v61 performWhenMediaServicesAreAvailable:v60 identifier:v62];
+    player = [v54 player];
+    commandID5 = [v53 commandID];
+    [player performWhenMediaServicesAreAvailable:v60 identifier:commandID5];
   }
 
   else
@@ -3584,31 +3584,31 @@ LABEL_32:
   }
 }
 
-- (void)_performCommandEvent:(void *)a3 completion:
+- (void)_performCommandEvent:(void *)event completion:
 {
   v584 = *MEMORY[0x1E69E9840];
   v423 = a2;
-  v422 = a3;
-  if (!a1)
+  eventCopy = event;
+  if (!self)
   {
     goto LABEL_38;
   }
 
-  v5 = [v423 mediaRemoteCommandType];
-  v6 = [a1 playbackEngine];
-  v421 = [v6 queueController];
-  v7 = MPCRemoteCommandDescriptionCopy(v5);
-  v8 = [v423 commandID];
+  mediaRemoteCommandType = [v423 mediaRemoteCommandType];
+  playbackEngine = [self playbackEngine];
+  queueController = [playbackEngine queueController];
+  v7 = MPCRemoteCommandDescriptionCopy(mediaRemoteCommandType);
+  commandID = [v423 commandID];
   v9 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v423 interfaceID];
+    interfaceID = [v423 interfaceID];
     *buf = 138543874;
     *&buf[4] = v7;
     *&buf[12] = 2114;
-    *&buf[14] = v8;
+    *&buf[14] = commandID;
     *&buf[22] = 2114;
-    v581 = v10;
+    v581 = interfaceID;
     _os_log_impl(&dword_1C5C61000, v9, OS_LOG_TYPE_DEFAULT, "[_MPCMediaRemotePublisher _performCommandEvent:completion:]: received MRMediaRemoteCommand type=%{public}@ id=%{public}@ interface=%{public}@", buf, 0x20u);
   }
 
@@ -3624,27 +3624,27 @@ LABEL_32:
   v572[3] = __Block_byref_object_copy__20001;
   v572[4] = __Block_byref_object_dispose__20002;
   v573 = 0;
-  objc_initWeak(&location, a1);
+  objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __60___MPCMediaRemotePublisher__performCommandEvent_completion___block_invoke;
   aBlock[3] = &unk_1E82369F0;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v11 = v423;
   v565 = v11;
   v569 = v572;
   v419 = COERCE_DOUBLE(v7);
   v566 = v419;
-  v12 = v8;
+  v12 = commandID;
   v567 = v12;
-  v568 = v422;
+  v568 = eventCopy;
   v570 = buf;
   v13 = _Block_copy(aBlock);
   v560[0] = MEMORY[0x1E69E9820];
   v560[1] = 3221225472;
   v560[2] = __60___MPCMediaRemotePublisher__performCommandEvent_completion___block_invoke_467;
   v560[3] = &unk_1E8236A18;
-  v14 = v6;
+  v14 = playbackEngine;
   v561 = v14;
   v15 = v12;
   v562 = v15;
@@ -3676,17 +3676,17 @@ LABEL_32:
   v20 = v19;
   v553 = v20;
   v415 = _Block_copy(v552);
-  v21 = [v20 contentItemID];
-  v22 = v21;
-  v414 = v21;
-  if (v5 > 25019)
+  contentItemID = [v20 contentItemID];
+  v22 = contentItemID;
+  v414 = contentItemID;
+  if (mediaRemoteCommandType > 25019)
   {
-    switch(v5)
+    switch(mediaRemoteCommandType)
     {
       case 0x61BC:
-        v34 = [v17 player];
-        v35 = [v34 currentItem];
-        v36 = v35 == 0;
+        player = [v17 player];
+        currentItem = [player currentItem];
+        v36 = currentItem == 0;
 
         if (v36)
         {
@@ -3698,8 +3698,8 @@ LABEL_32:
 
         else
         {
-          v37 = [v421 musicSharePlay];
-          v38 = v37 == 0;
+          musicSharePlay = [queueController musicSharePlay];
+          v38 = musicSharePlay == 0;
 
           if (v38)
           {
@@ -3714,8 +3714,8 @@ LABEL_32:
               _os_signpost_emit_with_name_impl(&dword_1C5C61000, v58, OS_SIGNPOST_INTERVAL_BEGIN, v56, "shareQueue:getTracklist", "", v574, 2u);
             }
 
-            v59 = [v421 music];
-            v60 = [v421 targetContentItemID];
+            music = [queueController music];
+            targetContentItemID = [queueController targetContentItemID];
             v436[0] = MEMORY[0x1E69E9820];
             v436[1] = 3221225472;
             v436[2] = __60___MPCMediaRemotePublisher__performCommandEvent_completion___block_invoke_748;
@@ -3723,13 +3723,13 @@ LABEL_32:
             v439 = v56;
             v438 = v18;
             v437 = v20;
-            [v59 getSharedQueueTracklistWithStartingContentItemID:v60 completion:v436];
+            [music getSharedQueueTracklistWithStartingContentItemID:targetContentItemID completion:v436];
           }
 
           else
           {
             v39 = MEMORY[0x1E69708F8];
-            v40 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:5 debugDescription:{@"Cannot get a shared queue tracklist [already in a shared queue] queueController=%@", v421}];
+            v40 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:5 debugDescription:{@"Cannot get a shared queue tracklist [already in a shared queue] queueController=%@", queueController}];
             v41 = [v39 statusWithCode:200 error:v40];
             (*(v18 + 2))(v18, v41);
           }
@@ -3737,15 +3737,15 @@ LABEL_32:
 
         break;
       case 0x61BD:
-        v42 = [v421 upNextBehavior];
+        upNextBehavior = [queueController upNextBehavior];
         v43 = objc_opt_respondsToSelector();
 
         if (v43)
         {
-          v44 = [v421 upNextBehavior];
-          v45 = [v17 queueController];
-          v46 = [v45 targetContentItemID];
-          [v44 clearAllItemsAfterContentItemID:v46];
+          upNextBehavior2 = [queueController upNextBehavior];
+          queueController2 = [v17 queueController];
+          targetContentItemID2 = [queueController2 targetContentItemID];
+          [upNextBehavior2 clearAllItemsAfterContentItemID:targetContentItemID2];
 
           [MEMORY[0x1E69708F8] successStatus];
         }
@@ -3761,21 +3761,21 @@ LABEL_32:
 
         break;
       case 0x18697:
-        v23 = [v20 mediaRemoteOptions];
-        v24 = [v23 objectForKeyedSubscript:*MEMORY[0x1E69B11A0]];
+        mediaRemoteOptions = [v20 mediaRemoteOptions];
+        v24 = [mediaRemoteOptions objectForKeyedSubscript:*MEMORY[0x1E69B11A0]];
 
-        v25 = [v20 mediaRemoteOptions];
-        v26 = [v25 objectForKeyedSubscript:*MEMORY[0x1E69B11C0]];
+        mediaRemoteOptions2 = [v20 mediaRemoteOptions];
+        v26 = [mediaRemoteOptions2 objectForKeyedSubscript:*MEMORY[0x1E69B11C0]];
 
-        v27 = *(a1 + 136);
+        v27 = *(self + 136);
         v435 = 0;
         [v27 sonicStageCondition:v26 forIdentifier:v24 error:&v435];
         v28 = COERCE_DOUBLE(v435);
 
         if (v28 == 0.0)
         {
-          v30 = [MEMORY[0x1E69708F8] successStatus];
-          (*(v18 + 2))(v18, v30);
+          successStatus = [MEMORY[0x1E69708F8] successStatus];
+          (*(v18 + 2))(v18, successStatus);
         }
 
         else
@@ -3788,8 +3788,8 @@ LABEL_32:
             _os_log_impl(&dword_1C5C61000, v29, OS_LOG_TYPE_ERROR, "[Publisher] MPCMediaRemoteCommandStageCondition - error:%{public}@", v574, 0xCu);
           }
 
-          v30 = [MEMORY[0x1E69708F8] statusWithCode:200 error:*&v28];
-          (*(v18 + 2))(v18, v30);
+          successStatus = [MEMORY[0x1E69708F8] statusWithCode:200 error:*&v28];
+          (*(v18 + 2))(v18, successStatus);
         }
 
         break;
@@ -3818,13 +3818,13 @@ LABEL_31:
     goto LABEL_36;
   }
 
-  switch(v5)
+  switch(mediaRemoteCommandType)
   {
     case 100:
     case 101:
-      if ([v421 behaviorType] == 4)
+      if ([queueController behaviorType] == 4)
       {
-        [a1 _performSkipChapterCommand:v5 withCommandID:v420 completion:v18];
+        [self _performSkipChapterCommand:mediaRemoteCommandType withCommandID:v420 completion:v18];
         goto LABEL_37;
       }
 
@@ -3868,49 +3868,49 @@ LABEL_31:
       goto LABEL_29;
     case 121:
       v152 = v20;
-      v153 = [v152 stationURL];
-      if (v153)
+      stationURL = [v152 stationURL];
+      if (stationURL)
       {
-        v154 = [MPCPlaybackIntent radioPlaybackIntentWithStationURL:v153];
+        v154 = [MPCPlaybackIntent radioPlaybackIntentWithStationURL:stationURL];
         [v154 setPlayActivityFeatureName:@"siri"];
-        v155 = [v152 contextID];
-        [v154 setSiriReferenceIdentifier:v155];
+        contextID = [v152 contextID];
+        [v154 setSiriReferenceIdentifier:contextID];
 
         v456[0] = MEMORY[0x1E69E9820];
         v456[1] = 3221225472;
         v456[2] = __60___MPCMediaRemotePublisher__performCommandEvent_completion___block_invoke_681;
         v456[3] = &unk_1E8236B80;
-        v156 = v154;
-        v457 = v156;
+        currentItem2 = v154;
+        v457 = currentItem2;
         v458 = v18;
-        [a1 performSetQueueWithIntent:v156 completion:v456];
+        [self performSetQueueWithIntent:currentItem2 completion:v456];
 
         v157 = v457;
       }
 
       else
       {
-        v306 = [v17 player];
-        v156 = [v306 currentItem];
+        player2 = [v17 player];
+        currentItem2 = [player2 currentItem];
 
-        if (v156)
+        if (currentItem2)
         {
-          v307 = [v156 modelGenericObject];
-          v413 = [v307 flattenedGenericObject];
+          modelGenericObject = [currentItem2 modelGenericObject];
+          flattenedGenericObject = [modelGenericObject flattenedGenericObject];
 
-          if ([v413 type] == 1)
+          if ([flattenedGenericObject type] == 1)
           {
-            v308 = [v413 song];
-            v309 = [MPCPlaybackIntent radioPlaybackIntentFromSong:v308];
+            song = [flattenedGenericObject song];
+            v309 = [MPCPlaybackIntent radioPlaybackIntentFromSong:song];
 
             [v309 setPlayActivityFeatureName:@"now_playing"];
-            v310 = [v152 contextID];
-            [v309 setSiriReferenceIdentifier:v310];
+            contextID2 = [v152 contextID];
+            [v309 setSiriReferenceIdentifier:contextID2];
 
             if (v309)
             {
-              v311 = [v421 music];
-              v312 = v311 == 0;
+              music2 = [queueController music];
+              v312 = music2 == 0;
 
               if (v312)
               {
@@ -3921,9 +3921,9 @@ LABEL_31:
                 v449 = v18;
                 v313 = v309;
                 v448 = v313;
-                [a1 performSetQueueWithIntent:v313 completion:v447];
+                [self performSetQueueWithIntent:v313 completion:v447];
 
-                v314 = v449;
+                song2 = v449;
               }
 
               else
@@ -3935,12 +3935,12 @@ LABEL_31:
                 v313 = v309;
                 v451 = v313;
                 v455 = v18;
-                v452 = v421;
-                v453 = v156;
-                v454 = a1;
+                v452 = queueController;
+                v453 = currentItem2;
+                selfCopy = self;
                 [v313 getRemotePlaybackQueueWithDestination:1 completion:v450];
 
-                v314 = v451;
+                song2 = v451;
               }
             }
 
@@ -3948,8 +3948,8 @@ LABEL_31:
             {
               v398 = MEMORY[0x1E69708F8];
               v399 = MEMORY[0x1E696ABC0];
-              v314 = [v413 song];
-              v400 = [v399 msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:3000 debugDescription:{@"Failed to get radio intent from song: %@", v314}];
+              song2 = [flattenedGenericObject song];
+              v400 = [v399 msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:3000 debugDescription:{@"Failed to get radio intent from song: %@", song2}];
               v401 = [v398 statusWithCode:200 error:v400];
               (*(v18 + 2))(v18, v401);
 
@@ -3959,7 +3959,7 @@ LABEL_31:
 
           else
           {
-            [v413 type];
+            [flattenedGenericObject type];
             v313 = NSStringFromMPModelGenericObjectType();
             v387 = _MPCLogCategoryPlayback();
             if (os_log_type_enabled(v387, OS_LOG_TYPE_ERROR))
@@ -3976,8 +3976,8 @@ LABEL_31:
             }
 
             v389 = MEMORY[0x1E69708F8];
-            v314 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:5 debugDescription:{@"Unsupported model object type %@", v313}];
-            v390 = [v389 statusWithCode:200 error:v314];
+            song2 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:5 debugDescription:{@"Unsupported model object type %@", v313}];
+            v390 = [v389 statusWithCode:200 error:song2];
             (*(v18 + 2))(v18, v390);
           }
         }
@@ -3985,18 +3985,18 @@ LABEL_31:
         else
         {
           v380 = MEMORY[0x1E69708F8];
-          v413 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:2 debugDescription:@"Cannot create station with seed item without current item"];
-          v313 = [v380 statusWithCode:100 error:v413];
+          flattenedGenericObject = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:2 debugDescription:@"Cannot create station with seed item without current item"];
+          v313 = [v380 statusWithCode:100 error:flattenedGenericObject];
           (*(v18 + 2))(v18, v313);
         }
 
-        v157 = v413;
+        v157 = flattenedGenericObject;
       }
 
       goto LABEL_36;
     case 122:
       v128 = v20;
-      v129 = *(a1 + 136);
+      v129 = *(self + 136);
       v459[0] = MEMORY[0x1E69E9820];
       v459[1] = 3221225472;
       v459[2] = __60___MPCMediaRemotePublisher__performCommandEvent_completion___block_invoke_2_664;
@@ -4006,64 +4006,64 @@ LABEL_31:
       v460 = v130;
       v461 = v17;
       v462 = v420;
-      v463 = a1;
+      selfCopy2 = self;
       [v129 performSetQueueWithEvent:v130 installQueueBeforeLoaded:1 donatedStartPlayerItem:0 completion:v459];
 
       goto LABEL_36;
     case 124:
       v124 = v20;
-      v125 = [v124 stopMode];
-      if (v125 > 1)
+      stopMode = [v124 stopMode];
+      if (stopMode > 1)
       {
-        if (v125 == 2)
+        if (stopMode == 2)
         {
-          v126 = [v17 sleepTimerController];
-          [v126 startSleepTimerForChapterEnd];
+          sleepTimerController = [v17 sleepTimerController];
+          [sleepTimerController startSleepTimerForChapterEnd];
         }
 
         else
         {
-          if (v125 != 3)
+          if (stopMode != 3)
           {
             goto LABEL_263;
           }
 
-          v126 = [v17 sleepTimerController];
-          [v126 startSleepTimerForItemEnd];
+          sleepTimerController = [v17 sleepTimerController];
+          [sleepTimerController startSleepTimerForItemEnd];
         }
       }
 
-      else if (v125)
+      else if (stopMode)
       {
-        if (v125 != 1)
+        if (stopMode != 1)
         {
           goto LABEL_263;
         }
 
-        v126 = [v17 sleepTimerController];
-        v127 = [v124 time];
-        [v127 doubleValue];
-        [v126 startSleepTimerWithTimeRemaining:?];
+        sleepTimerController = [v17 sleepTimerController];
+        time = [v124 time];
+        [time doubleValue];
+        [sleepTimerController startSleepTimerWithTimeRemaining:?];
       }
 
       else
       {
-        v126 = [v17 sleepTimerController];
-        [v126 reset];
+        sleepTimerController = [v17 sleepTimerController];
+        [sleepTimerController reset];
       }
 
 LABEL_263:
-      [a1 publishIfNeeded];
-      v352 = [MEMORY[0x1E69708F8] successStatus];
-      (*(v18 + 2))(v18, v352);
+      [self publishIfNeeded];
+      successStatus2 = [MEMORY[0x1E69708F8] successStatus];
+      (*(v18 + 2))(v18, successStatus2);
 
       goto LABEL_36;
     case 125:
       v134 = v20;
-      v135 = [v421 upNextBehavior];
-      v136 = [v135 allowsQueueModifications];
+      upNextBehavior3 = [queueController upNextBehavior];
+      allowsQueueModifications = [upNextBehavior3 allowsQueueModifications];
 
-      if ((v136 & 1) == 0)
+      if ((allowsQueueModifications & 1) == 0)
       {
         v286 = MEMORY[0x1E69708F8];
         v287 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:4 debugDescription:@"Cannot modify queue due to iAP lockout"];
@@ -4075,24 +4075,24 @@ LABEL_263:
 
       if ([v134 insertionPosition] == 3)
       {
-        v137 = [v134 insertAfterContentItemID];
-        v138 = v137 == 0;
+        insertAfterContentItemID = [v134 insertAfterContentItemID];
+        v138 = insertAfterContentItemID == 0;
 
         if (v138)
         {
           v393 = MEMORY[0x1E69708F8];
           v143 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:5 debugDescription:{@"Insert operation indicated specific insertion position type, but no content item ID provided."}];
-          v385 = [v393 statusWithCode:1006 error:v143];
-          (*(v18 + 2))(v18, v385);
+          v384 = [v393 statusWithCode:1006 error:v143];
+          (*(v18 + 2))(v18, v384);
           goto LABEL_308;
         }
       }
 
-      v139 = [v421 upNextBehavior];
-      v140 = [v134 insertionPosition];
-      v141 = [v421 targetContentItemID];
+      upNextBehavior4 = [queueController upNextBehavior];
+      insertionPosition = [v134 insertionPosition];
+      targetContentItemID3 = [queueController targetContentItemID];
       v504 = 0;
-      v142 = [v139 isSupportedInsertionPosition:v140 fromContentItemID:v141 reason:&v504];
+      v142 = [upNextBehavior4 isSupportedInsertionPosition:insertionPosition fromContentItemID:targetContentItemID3 reason:&v504];
       v143 = v504;
 
       if (v142)
@@ -4100,24 +4100,24 @@ LABEL_263:
         goto LABEL_100;
       }
 
-      v348 = [v421 music];
-      if (v348 && [v134 insertionPosition] == 2)
+      music3 = [queueController music];
+      if (music3 && [v134 insertionPosition] == 2)
       {
-        v349 = [v134 mediaRemoteOptions];
-        v350 = [v349 objectForKeyedSubscript:@"_MPCOverrideAllowsInsertionPositionLast"];
-        v351 = [v350 BOOLValue];
+        mediaRemoteOptions3 = [v134 mediaRemoteOptions];
+        v350 = [mediaRemoteOptions3 objectForKeyedSubscript:@"_MPCOverrideAllowsInsertionPositionLast"];
+        bOOLValue = [v350 BOOLValue];
 
-        if (v351)
+        if (bOOLValue)
         {
 LABEL_100:
-          v144 = [v421 upNextBehavior];
-          v145 = v144 == 0;
+          upNextBehavior5 = [queueController upNextBehavior];
+          v145 = upNextBehavior5 == 0;
 
           if (v145)
           {
             v394 = MEMORY[0x1E69708F8];
-            v385 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:5 debugDescription:@"InsertIntoPlaybackQueue not possible without up next behavior."];
-            v395 = [v394 statusWithCode:200 error:v385];
+            v384 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:5 debugDescription:@"InsertIntoPlaybackQueue not possible without up next behavior."];
+            v395 = [v394 statusWithCode:200 error:v384];
             (*(v18 + 2))(v18, v395);
           }
 
@@ -4127,17 +4127,17 @@ LABEL_100:
             v500[1] = 3221225472;
             v500[2] = __60___MPCMediaRemotePublisher__performCommandEvent_completion___block_invoke_602;
             v500[3] = &unk_1E8239198;
-            v146 = v421;
+            v146 = queueController;
             v501 = v146;
             v147 = v134;
             v502 = v147;
             v503 = v18;
             v148 = _Block_copy(v500);
-            v149 = [v147 mediaRemoteOptions];
-            v150 = [v149 objectForKey:@"MPCRemoteCommandEventOptionShouldPlayInsertedContent"];
-            v151 = [v150 BOOLValue];
+            mediaRemoteOptions4 = [v147 mediaRemoteOptions];
+            v150 = [mediaRemoteOptions4 objectForKey:@"MPCRemoteCommandEventOptionShouldPlayInsertedContent"];
+            bOOLValue2 = [v150 BOOLValue];
 
-            if (v151)
+            if (bOOLValue2)
             {
               v498[0] = MEMORY[0x1E69E9820];
               v498[1] = 3221225472;
@@ -4152,7 +4152,7 @@ LABEL_100:
               v148[2](v148);
             }
 
-            v385 = v501;
+            v384 = v501;
           }
 
           goto LABEL_308;
@@ -4165,18 +4165,18 @@ LABEL_100:
 
       v382 = MEMORY[0x1E69708F8];
       v383 = MEMORY[0x1E696ABC0];
-      v384 = [v134 insertionPosition];
-      if (v384 >= 5)
+      insertionPosition2 = [v134 insertionPosition];
+      if (insertionPosition2 >= 5)
       {
-        v385 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown/%ld", v384];
+        v384 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown/%ld", insertionPosition2];
       }
 
       else
       {
-        v385 = off_1E8236F98[v384];
+        v384 = off_1E8236F98[insertionPosition2];
       }
 
-      v396 = [v383 msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:5 debugDescription:{@"Insert operation indicated unsupported insertion position: %@ [%@]", v385, v143}];
+      v396 = [v383 msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:5 debugDescription:{@"Insert operation indicated unsupported insertion position: %@ [%@]", v384, v143}];
       v397 = [v382 statusWithCode:1006 error:v396];
       (*(v18 + 2))(v18, v397);
 
@@ -4185,14 +4185,14 @@ LABEL_308:
     case 127:
     case 128:
       v61 = v20;
-      v62 = [v61 mediaRemoteOptions];
-      v63 = [v62 objectForKey:*MEMORY[0x1E69B1270]];
-      v64 = [v63 longLongValue];
+      mediaRemoteOptions5 = [v61 mediaRemoteOptions];
+      v63 = [mediaRemoteOptions5 objectForKey:*MEMORY[0x1E69B1270]];
+      longLongValue = [v63 longLongValue];
 
-      v65 = [v17 player];
-      v411 = [v65 currentItem];
+      player3 = [v17 player];
+      currentItem3 = [player3 currentItem];
 
-      if (v64 && v64 != [v411 persistentID])
+      if (longLongValue && longLongValue != [currentItem3 persistentID])
       {
         v267 = objc_alloc(MEMORY[0x1E6970770]);
         v268 = objc_alloc(MEMORY[0x1E6970550]);
@@ -4201,34 +4201,34 @@ LABEL_308:
         v446[1] = 3221225472;
         v446[2] = __60___MPCMediaRemotePublisher__performCommandEvent_completion___block_invoke_715;
         v446[3] = &__block_descriptor_40_e49_v16__0__MPIdentifierSet_MPMutableIdentifierSet__8l;
-        v446[4] = v64;
+        v446[4] = longLongValue;
         v270 = [v268 initWithSource:@"MediaRemotePublisher" modelKind:v269 block:v446];
-        v68 = [v267 initWithIdentifiers:v270 block:&__block_literal_global_724];
+        anyObject = [v267 initWithIdentifiers:v270 block:&__block_literal_global_724];
 
-        v69 = 0;
+        currentStatus = 0;
         v70 = 1;
       }
 
       else
       {
-        v66 = [v411 modelGenericObject];
-        v67 = [v66 flattenedGenericObject];
-        v68 = [v67 anyObject];
+        modelGenericObject2 = [currentItem3 modelGenericObject];
+        flattenedGenericObject2 = [modelGenericObject2 flattenedGenericObject];
+        anyObject = [flattenedGenericObject2 anyObject];
 
-        os_unfair_lock_lock((a1 + 16));
-        v69 = [*(a1 + 8) currentStatus];
-        os_unfair_lock_unlock((a1 + 16));
+        os_unfair_lock_lock((self + 16));
+        currentStatus = [*(self + 8) currentStatus];
+        os_unfair_lock_unlock((self + 16));
         v70 = 0;
       }
 
-      if (v68)
+      if (anyObject)
       {
-        v271 = [MEMORY[0x1E69708F8] successStatus];
-        (*(v18 + 2))(v18, v271);
+        successStatus3 = [MEMORY[0x1E69708F8] successStatus];
+        (*(v18 + 2))(v18, successStatus3);
 
         if ([v61 isNegative])
         {
-          if (v69 == 1)
+          if (currentStatus == 1)
           {
             v272 = 1;
           }
@@ -4241,7 +4241,7 @@ LABEL_308:
           if (v272 == 1)
           {
             v273 = objc_alloc_init(MEMORY[0x1E69706A8]);
-            [v273 setModelObject:v68];
+            [v273 setModelObject:anyObject];
             [v273 performWithResponseHandler:&__block_literal_global_728];
 LABEL_181:
 
@@ -4251,7 +4251,7 @@ LABEL_181:
           goto LABEL_191;
         }
 
-        if (v69 == 1)
+        if (currentStatus == 1)
         {
           v276 = v70;
         }
@@ -4261,7 +4261,7 @@ LABEL_181:
           v276 = 1;
         }
 
-        if (v276 != 1 || ((v69 & 0xFFFFFFFFFFFFFFFELL) == 2 ? (v277 = 1) : (v277 = v70), v277 != 1))
+        if (v276 != 1 || ((currentStatus & 0xFFFFFFFFFFFFFFFELL) == 2 ? (v277 = 1) : (v277 = v70), v277 != 1))
         {
 LABEL_191:
 
@@ -4270,7 +4270,7 @@ LABEL_191:
 
         v273 = objc_alloc_init(MEMORY[0x1E6970818]);
         [v273 appendSection:&stru_1F454A698];
-        [v273 appendItem:v68];
+        [v273 appendItem:anyObject];
         v275 = objc_alloc_init(MEMORY[0x1E69706C0]);
         [v275 setShouldLibraryAdd:1];
         [v275 setModelObjects:v273];
@@ -4280,23 +4280,23 @@ LABEL_191:
       else
       {
         v274 = MEMORY[0x1E69708F8];
-        v273 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:3 debugDescription:{@"Unable to find item to add to library: trackID=%lld currentItem=%@", v64, v411}];
+        v273 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:3 debugDescription:{@"Unable to find item to add to library: trackID=%lld currentItem=%@", longLongValue, currentItem3}];
         v275 = [v274 statusWithCode:100 error:v273];
         (*(v18 + 2))(v18, v275);
       }
 
       goto LABEL_181;
     case 129:
-      if (v21)
+      if (contentItemID)
       {
-        v131 = [v421 upNextBehavior];
+        upNextBehavior6 = [queueController upNextBehavior];
         v469[0] = MEMORY[0x1E69E9820];
         v469[1] = 3221225472;
         v469[2] = __60___MPCMediaRemotePublisher__performCommandEvent_completion___block_invoke_13;
         v469[3] = &unk_1E8236B80;
         v471 = v18;
         v470 = v20;
-        [v131 removeContentItemID:v22 completion:v469];
+        [upNextBehavior6 removeContentItemID:v22 completion:v469];
       }
 
       else
@@ -4318,29 +4318,29 @@ LABEL_191:
       v172 = v171;
       v496 = v172;
       v173 = _Block_copy(v495);
-      v174 = [v172 insertBeforeContextItemID];
-      if ([v174 length])
+      insertBeforeContextItemID = [v172 insertBeforeContextItemID];
+      if ([insertBeforeContextItemID length])
       {
-        v175 = [v421 upNextBehavior];
-        [v175 moveContentItemID:v414 beforeContentItemID:v174 completion:v173];
+        upNextBehavior7 = [queueController upNextBehavior];
+        [upNextBehavior7 moveContentItemID:v414 beforeContentItemID:insertBeforeContextItemID completion:v173];
       }
 
       else
       {
-        v175 = [v172 insertAfterContextItemID];
-        if ([v175 length])
+        upNextBehavior7 = [v172 insertAfterContextItemID];
+        if ([upNextBehavior7 length])
         {
-          v323 = [v421 upNextBehavior];
-          [v323 moveContentItemID:v414 afterContentItemID:v175 completion:v173];
+          upNextBehavior8 = [queueController upNextBehavior];
+          [upNextBehavior8 moveContentItemID:v414 afterContentItemID:upNextBehavior7 completion:v173];
         }
       }
 
       goto LABEL_36;
     case 131:
 LABEL_16:
-      v31 = [v421 behaviorType];
-      v406 = v5 & 0xFFFFFFFE;
-      if (v31 != 4)
+      behaviorType = [queueController behaviorType];
+      v406 = mediaRemoteCommandType & 0xFFFFFFFE;
+      if (behaviorType != 4)
       {
         goto LABEL_21;
       }
@@ -4357,8 +4357,8 @@ LABEL_16:
       if (v324)
       {
 LABEL_21:
-        v33 = [v17 queueController];
-        [v33 currentItem];
+        queueController3 = [v17 queueController];
+        [queueController3 currentItem];
         v410 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
 
         objc_opt_class();
@@ -4372,19 +4372,19 @@ LABEL_21:
           v408 = 0;
         }
 
-        v72 = [v17 player];
-        [v72 currentTime];
+        player4 = [v17 player];
+        [player4 currentTime];
         v74 = v73;
 
-        v75 = [v408 chapters];
-        v404 = [v75 count];
+        chapters = [v408 chapters];
+        v404 = [chapters count];
 
         v76 = [v408 nextChapterAfter:v74];
 
         v77 = [v408 previousChapterBefore:v74];
 
-        v79 = v5 == 4 && v76 != 0 || v5 == 5 && v77 != 0;
-        if (v31 == 4 && v406 == 4)
+        v79 = mediaRemoteCommandType == 4 && v76 != 0 || mediaRemoteCommandType == 5 && v77 != 0;
+        if (behaviorType == 4 && v406 == 4)
         {
           v80 = +[MPCPodcastsDefaultsHelper standard];
           if ([v80 remoteSkipInsteadOfNextTrack] & 1) != 0 || (v418[2]())
@@ -4397,7 +4397,7 @@ LABEL_21:
 
             if (((v404 != 0) & ~v344 & v79) != 0)
             {
-              if (v5 == 4)
+              if (mediaRemoteCommandType == 4)
               {
                 v345 = 100;
               }
@@ -4407,22 +4407,22 @@ LABEL_21:
                 v345 = 101;
               }
 
-              [a1 _performSkipChapterCommand:v345 withCommandID:v420 completion:v18];
+              [self _performSkipChapterCommand:v345 withCommandID:v420 completion:v18];
               goto LABEL_278;
             }
           }
         }
 
-        v81 = [v20 mediaRemoteOptions];
-        v82 = [v81 objectForKeyedSubscript:*MEMORY[0x1E69B1270]];
-        v83 = [v82 longLongValue];
+        mediaRemoteOptions6 = [v20 mediaRemoteOptions];
+        v82 = [mediaRemoteOptions6 objectForKeyedSubscript:*MEMORY[0x1E69B1270]];
+        longLongValue2 = [v82 longLongValue];
 
-        v84 = v5 != 5;
-        if (v5 == 5)
+        v84 = mediaRemoteCommandType != 5;
+        if (mediaRemoteCommandType == 5)
         {
-          v85 = [*&v410 contentItemID];
+          contentItemID2 = [*&v410 contentItemID];
           v534 = 0;
-          v86 = [v421 canPreviousTrackForContentItemID:v85 reason:&v534];
+          v86 = [queueController canPreviousTrackForContentItemID:contentItemID2 reason:&v534];
           v407 = v534;
 
           if ((v86 & 1) == 0)
@@ -4448,9 +4448,9 @@ LABEL_21:
 
         else
         {
-          v91 = [*&v410 contentItemID];
+          contentItemID3 = [*&v410 contentItemID];
           v533 = 0;
-          v92 = [v421 canNextTrackForContentItemID:v91 reason:&v533];
+          v92 = [queueController canNextTrackForContentItemID:contentItemID3 reason:&v533];
           v407 = v533;
 
           if ((v92 & 1) == 0)
@@ -4474,17 +4474,17 @@ LABEL_21:
           }
         }
 
-        if (v414 || v83)
+        if (v414 || longLongValue2)
         {
-          v263 = *(a1 + 136);
+          v263 = *(self + 136);
           v529[0] = MEMORY[0x1E69E9820];
           v529[1] = 3221225472;
           v529[2] = __60___MPCMediaRemotePublisher__performCommandEvent_completion___block_invoke_530;
           v529[3] = &unk_1E8236B58;
-          v530 = v421;
+          v530 = queueController;
           v531 = v18;
-          v532 = v83;
-          [v263 findContentItemIDWithIncomingContentItemID:v414 trackID:v83 completion:v529];
+          v532 = longLongValue2;
+          [v263 findContentItemIDWithIncomingContentItemID:v414 trackID:longLongValue2 completion:v529];
 
           v89 = v530;
         }
@@ -4492,8 +4492,8 @@ LABEL_21:
         else
         {
           v93 = v20;
-          v94 = [v93 isRequestingDefermentToPlaybackQueuePosition];
-          if (v5 == 5)
+          isRequestingDefermentToPlaybackQueuePosition = [v93 isRequestingDefermentToPlaybackQueuePosition];
+          if (mediaRemoteCommandType == 5)
           {
             v95 = -1;
           }
@@ -4504,63 +4504,63 @@ LABEL_21:
           }
 
           v405 = v93;
-          v96 = [v93 mediaRemoteOptions];
-          v97 = [v96 objectForKeyedSubscript:@"MPCRemoteCommandEventOptionSkipImmediatelyKey"];
-          v98 = [v97 BOOLValue];
+          mediaRemoteOptions7 = [v93 mediaRemoteOptions];
+          v97 = [mediaRemoteOptions7 objectForKeyedSubscript:@"MPCRemoteCommandEventOptionSkipImmediatelyKey"];
+          bOOLValue3 = [v97 BOOLValue];
 
-          if ((v94 & 1) != 0 || ![v17 skipWithDirectionShouldJumpToItemStart:v84])
+          if ((isRequestingDefermentToPlaybackQueuePosition & 1) != 0 || ![v17 skipWithDirectionShouldJumpToItemStart:v84])
           {
             v523[0] = MEMORY[0x1E69E9820];
             v523[1] = 3221225472;
             v523[2] = __60___MPCMediaRemotePublisher__performCommandEvent_completion___block_invoke_3_542;
             v523[3] = &unk_1E8236BA8;
-            v524 = v421;
+            v524 = queueController;
             v525 = v17;
-            v99 = _Block_copy(v523);
-            if (*(a1 + 24))
+            player5 = _Block_copy(v523);
+            if (*(self + 24))
             {
-              v299 = *(a1 + 32) + v95;
-              *(a1 + 32) = v299;
-              if (v98)
+              v299 = *(self + 32) + v95;
+              *(self + 32) = v299;
+              if (bOOLValue3)
               {
-                v300 = [MEMORY[0x1E696AEC0] stringWithFormat:@"🛎  Forced [pending delta %ld]", v299];
+                v299 = [MEMORY[0x1E696AEC0] stringWithFormat:@"🛎  Forced [pending delta %ld]", v299];
                 v301 = *(*&buf[8] + 40);
-                *(*&buf[8] + 40) = v300;
+                *(*&buf[8] + 40) = v299;
 
                 v302 = 0;
               }
 
               else
               {
-                v366 = [MEMORY[0x1E696AEC0] stringWithFormat:@"⏲  Deferred [pending delta %ld]", v299];
+                v2992 = [MEMORY[0x1E696AEC0] stringWithFormat:@"⏲  Deferred [pending delta %ld]", v299];
                 v367 = *(*&buf[8] + 40);
-                *(*&buf[8] + 40) = v366;
+                *(*&buf[8] + 40) = v2992;
 
                 v302 = dispatch_time(0, 350000000);
               }
 
-              dispatch_source_set_timer(*(a1 + 24), v302, 0xFFFFFFFFFFFFFFFFLL, 0x5F5E100uLL);
+              dispatch_source_set_timer(*(self + 24), v302, 0xFFFFFFFFFFFFFFFFLL, 0x5F5E100uLL);
             }
 
             else
             {
               v358 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, MEMORY[0x1E69E96A0]);
-              v359 = *(a1 + 24);
-              *(a1 + 24) = v358;
+              v359 = *(self + 24);
+              *(self + 24) = v358;
 
-              v360 = *(a1 + 24);
+              v360 = *(self + 24);
               v361 = dispatch_time(0, 350000000);
               dispatch_source_set_timer(v360, v361, 0xFFFFFFFFFFFFFFFFLL, 0x5F5E100uLL);
-              v362 = *(a1 + 24);
+              v362 = *(self + 24);
               handler[0] = MEMORY[0x1E69E9820];
               handler[1] = 3221225472;
               handler[2] = __60___MPCMediaRemotePublisher__performCommandEvent_completion___block_invoke_5_558;
               handler[3] = &unk_1E8239170;
-              handler[4] = a1;
-              v363 = v99;
+              handler[4] = self;
+              v363 = player5;
               v522 = v363;
               dispatch_source_set_event_handler(v362, handler);
-              dispatch_resume(*(a1 + 24));
+              dispatch_resume(*(self + 24));
               v364 = [MEMORY[0x1E696AEC0] stringWithFormat:@"🛎  Immediate"];
               v365 = *(*&buf[8] + 40);
               *(*&buf[8] + 40) = v364;
@@ -4568,19 +4568,19 @@ LABEL_21:
               (*(v363 + 2))(v363, v95);
             }
 
-            v100 = [MEMORY[0x1E69708F8] successStatus];
-            (*(v18 + 2))(v18, v100);
+            successStatus4 = [MEMORY[0x1E69708F8] successStatus];
+            (*(v18 + 2))(v18, successStatus4);
             v105 = &v524;
             v106 = &v525;
           }
 
           else
           {
-            v99 = [v17 player];
-            v100 = [v17 player];
-            v101 = [v100 currentItem];
-            v102 = [v101 playbackInfoStartTime];
-            [v102 doubleValue];
+            player5 = [v17 player];
+            successStatus4 = [v17 player];
+            currentItem4 = [successStatus4 currentItem];
+            playbackInfoStartTime = [currentItem4 playbackInfoStartTime];
+            [playbackInfoStartTime doubleValue];
             v104 = v103;
             v526[0] = MEMORY[0x1E69E9820];
             v526[1] = 3221225472;
@@ -4588,7 +4588,7 @@ LABEL_21:
             v526[3] = &unk_1E8236B80;
             v528 = v18;
             v527 = v17;
-            [v99 jumpToTime:v420 identifier:v526 completion:v104];
+            [player5 jumpToTime:v420 identifier:v526 completion:v104];
 
             v105 = &v528;
             v106 = &v527;
@@ -4604,7 +4604,7 @@ LABEL_278:
       }
 
       v325 = +[MPCPodcastsDefaultsHelper standard];
-      if (v5 == 4)
+      if (mediaRemoteCommandType == 4)
       {
         [v325 skipForwardInterval];
         v416[2]();
@@ -4618,26 +4618,26 @@ LABEL_278:
 
       goto LABEL_36;
     case 132:
-      v176 = [v17 queueController];
-      v177 = [v176 behaviorType] == 4;
+      queueController4 = [v17 queueController];
+      v177 = [queueController4 behaviorType] == 4;
 
       if (v177)
       {
-        v178 = [MEMORY[0x1E69708F8] successStatus];
-        (*(v18 + 2))(v18, v178);
+        successStatus5 = [MEMORY[0x1E69708F8] successStatus];
+        (*(v18 + 2))(v18, successStatus5);
       }
 
       else
       {
-        v178 = v20;
-        [v178 userIdentity];
+        successStatus5 = v20;
+        [successStatus5 userIdentity];
         v289 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
         v290 = +[MPCPlaybackAccountManager sharedManager];
         v291 = [v290 accountForUserIdentity:*&v289];
 
         if (v291)
         {
-          v292 = [v17 leaseManager];
+          leaseManager = [v17 leaseManager];
           v465[0] = MEMORY[0x1E69E9820];
           v465[1] = 3221225472;
           v465[2] = __60___MPCMediaRemotePublisher__performCommandEvent_completion___block_invoke_650;
@@ -4645,9 +4645,9 @@ LABEL_278:
           v468 = v18;
           v466 = v291;
           v467 = *&v289;
-          [v292 prepareForPlaybackWithAccount:v466 completion:v465];
+          [leaseManager prepareForPlaybackWithAccount:v466 completion:v465];
 
-          v293 = v468;
+          successStatus6 = v468;
         }
 
         else
@@ -4660,8 +4660,8 @@ LABEL_278:
             _os_log_impl(&dword_1C5C61000, v356, OS_LOG_TYPE_ERROR, "❗️[Skipping PrepareForSetQueue] No playback account found for user identity: %@", v574, 0xCu);
           }
 
-          v293 = [MEMORY[0x1E69708F8] successStatus];
-          (*(v18 + 2))(v18, v293);
+          successStatus6 = [MEMORY[0x1E69708F8] successStatus];
+          (*(v18 + 2))(v18, successStatus6);
         }
       }
 
@@ -4678,7 +4678,7 @@ LABEL_278:
       goto LABEL_36;
     case 133:
       v132 = v20;
-      v133 = *(a1 + 136);
+      v133 = *(self + 136);
       [v133 performSetSessionWithEvent:v132 completion:v18];
 
       goto LABEL_36;
@@ -4687,18 +4687,18 @@ LABEL_278:
       v476[1] = 3221225472;
       v476[2] = __60___MPCMediaRemotePublisher__performCommandEvent_completion___block_invoke_9_625;
       v476[3] = &unk_1E8239170;
-      v477 = v421;
+      v477 = queueController;
       v478 = v18;
       [v477 performAllowingEditsToChangeCurrentItem:v476];
 
       goto LABEL_36;
     case 135:
       v159 = v20;
-      v160 = [v159 queueEndAction];
-      v161 = [v17 disableAutoPlay];
-      if (v160 == 3)
+      queueEndAction = [v159 queueEndAction];
+      disableAutoPlay = [v17 disableAutoPlay];
+      if (queueEndAction == 3)
       {
-        v162 = v161;
+        v162 = disableAutoPlay;
       }
 
       else
@@ -4709,61 +4709,61 @@ LABEL_278:
       if (v162 == 1)
       {
         v163 = MEMORY[0x1E69708F8];
-        v164 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:5 debugDescription:@"playback engine autoplay disabled"];
-        v165 = [v163 statusWithCode:200 error:v164];
+        v355 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:5 debugDescription:@"playback engine autoplay disabled"];
+        v165 = [v163 statusWithCode:200 error:v355];
         (*(v18 + 2))(v18, v165);
       }
 
       else
       {
-        v278 = [v421 music];
-        v279 = v278 == 0;
+        music4 = [queueController music];
+        v279 = music4 == 0;
 
         if (v279)
         {
           v353 = MEMORY[0x1E69708F8];
           v354 = MEMORY[0x1E696ABC0];
-          v355 = [v421 behaviorType];
-          if (v355 >= 6)
+          behaviorType2 = [queueController behaviorType];
+          if (behaviorType2 >= 6)
           {
-            v164 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown/%lld", v355];
+            v355 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown/%lld", behaviorType2];
           }
 
           else
           {
-            v164 = off_1E8236FC0[v355];
+            v355 = off_1E8236FC0[behaviorType2];
           }
 
-          v391 = [v354 msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:5 debugDescription:{@"unsupported command [%@ behavior]", v164}];
+          v391 = [v354 msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:5 debugDescription:{@"unsupported command [%@ behavior]", v355}];
           v392 = [v353 statusWithCode:200 error:v391];
           (*(v18 + 2))(v18, v392);
         }
 
         else
         {
-          v280 = [v421 music];
-          v281 = [v421 targetContentItemID];
-          v282 = v160 == 3;
+          music5 = [queueController music];
+          targetContentItemID4 = [queueController targetContentItemID];
+          v282 = queueEndAction == 3;
           v472[0] = MEMORY[0x1E69E9820];
           v472[1] = 3221225472;
           v472[2] = __60___MPCMediaRemotePublisher__performCommandEvent_completion___block_invoke_11_636;
           v472[3] = &unk_1E8236C48;
           v474 = v18;
-          v475 = v160 == 3;
+          v475 = queueEndAction == 3;
           v283 = v159;
           v473 = v283;
-          [v280 setAutoPlayEnabled:v282 targetContentItemID:v281 completion:v472];
+          [music5 setAutoPlayEnabled:v282 targetContentItemID:targetContentItemID4 completion:v472];
 
-          v284 = [v421 music];
+          music6 = [queueController music];
           LOBYTE(v282) = objc_opt_respondsToSelector();
 
           if (v282)
           {
-            v285 = [v421 music];
-            [v285 setQueueEndAction:objc_msgSend(v283 completion:{"queueEndAction"), &__block_literal_global_643}];
+            music7 = [queueController music];
+            [music7 setQueueEndAction:objc_msgSend(v283 completion:{"queueEndAction"), &__block_literal_global_643}];
           }
 
-          v164 = v474;
+          v355 = v474;
         }
       }
 
@@ -4774,67 +4774,67 @@ LABEL_278:
       v440[2] = __60___MPCMediaRemotePublisher__performCommandEvent_completion___block_invoke_741;
       v440[3] = &unk_1E8236D58;
       v441 = v18;
-      [a1 _leaveSharedSessionWithCommandID:v420 completion:v440];
+      [self _leaveSharedSessionWithCommandID:v420 completion:v440];
 
       goto LABEL_36;
     case 140:
-      v118 = [MEMORY[0x1E69708F8] successStatus];
-      (*(v18 + 2))(v18, v118);
+      successStatus7 = [MEMORY[0x1E69708F8] successStatus];
+      (*(v18 + 2))(v18, successStatus7);
 
       goto LABEL_36;
     case 142:
-      v166 = [v421 musicSharePlay];
-      v167 = v166 == 0;
+      musicSharePlay2 = [queueController musicSharePlay];
+      v167 = musicSharePlay2 == 0;
 
       if (v167)
       {
         v315 = v20;
-        v316 = [v17 isVocalAttenuationEnabled];
-        v317 = [v315 active];
-        v318 = v317 == 0;
+        isVocalAttenuationEnabled = [v17 isVocalAttenuationEnabled];
+        active = [v315 active];
+        v318 = active == 0;
 
         if (!v318)
         {
-          v319 = [v315 active];
-          [v17 setVocalAttenuationEnabled:{objc_msgSend(v319, "BOOLValue")}];
+          active2 = [v315 active];
+          [v17 setVocalAttenuationEnabled:{objc_msgSend(active2, "BOOLValue")}];
         }
 
-        v320 = [v17 isVocalAttenuationEnabled];
-        v321 = [v315 level];
-        if (v321)
+        isVocalAttenuationEnabled2 = [v17 isVocalAttenuationEnabled];
+        level = [v315 level];
+        if (level)
         {
-          v322 = [v315 level];
-          [v322 floatValue];
+          level2 = [v315 level];
+          [level2 floatValue];
         }
 
         else
         {
-          v322 = [MEMORY[0x1E69708A8] standardUserDefaults];
-          [v322 defaultVocalLevel];
+          level2 = [MEMORY[0x1E69708A8] standardUserDefaults];
+          [level2 defaultVocalLevel];
         }
 
         [v17 setVocalLevel:?];
 
-        if (v316 == v320)
+        if (isVocalAttenuationEnabled == isVocalAttenuationEnabled2)
         {
-          v381 = [MEMORY[0x1E69708F8] successStatus];
-          (*(v18 + 2))(v18, v381);
+          successStatus8 = [MEMORY[0x1E69708F8] successStatus];
+          (*(v18 + 2))(v18, successStatus8);
         }
 
         else
         {
-          [a1 publishIfNeeded];
+          [self publishIfNeeded];
           v430[0] = MEMORY[0x1E69E9820];
           v430[1] = 3221225472;
           v430[2] = __60___MPCMediaRemotePublisher__performCommandEvent_completion___block_invoke_772;
           v430[3] = &unk_1E8236DD0;
-          v434 = v316;
+          v434 = isVocalAttenuationEnabled;
           v431 = v17;
-          v432 = a1;
+          selfCopy3 = self;
           v433 = v18;
           [v431 reloadQueueForReason:1 completion:v430];
 
-          v381 = v431;
+          successStatus8 = v431;
         }
       }
 
@@ -4848,14 +4848,14 @@ LABEL_278:
 
       goto LABEL_36;
     case 143:
-      v179 = [v17 vocalAttenuationController];
-      if (v179 && (v180 = v179[9] == 2, v179, v180))
+      vocalAttenuationController = [v17 vocalAttenuationController];
+      if (vocalAttenuationController && (v180 = vocalAttenuationController[9] == 2, vocalAttenuationController, v180))
       {
-        v181 = [v17 vocalAttenuationController];
-        [(MPCWhiskyController *)v181 prepareForProcessing];
+        vocalAttenuationController2 = [v17 vocalAttenuationController];
+        [(MPCWhiskyController *)vocalAttenuationController2 prepareForProcessing];
 
-        v182 = [MEMORY[0x1E69708F8] successStatus];
-        (*(v18 + 2))(v18, v182);
+        successStatus9 = [MEMORY[0x1E69708F8] successStatus];
+        (*(v18 + 2))(v18, successStatus9);
       }
 
       else
@@ -4866,7 +4866,7 @@ LABEL_278:
 
       goto LABEL_36;
     case 144:
-      v119 = [v421 upNextBehavior];
+      upNextBehavior9 = [queueController upNextBehavior];
       v120 = objc_opt_respondsToSelector();
 
       if ((v120 & 1) == 0)
@@ -4874,15 +4874,15 @@ LABEL_278:
         goto LABEL_32;
       }
 
-      v121 = [v421 upNextBehavior];
-      v122 = [v17 queueController];
-      v123 = [v122 targetContentItemID];
-      [v121 clearUpNextAfterContentItemID:v123];
+      upNextBehavior10 = [queueController upNextBehavior];
+      queueController5 = [v17 queueController];
+      targetContentItemID5 = [queueController5 targetContentItemID];
+      [upNextBehavior10 clearUpNextAfterContentItemID:targetContentItemID5];
 
       [MEMORY[0x1E69708F8] successStatus];
       goto LABEL_28;
     case 145:
-      v183 = *(a1 + 136);
+      v183 = *(self + 136);
       v426[0] = MEMORY[0x1E69E9820];
       v426[1] = 3221225472;
       v426[2] = __60___MPCMediaRemotePublisher__performCommandEvent_completion___block_invoke_785;
@@ -4893,34 +4893,34 @@ LABEL_278:
 
       goto LABEL_36;
     case 146:
-      v158 = *(a1 + 136);
+      v158 = *(self + 136);
       [v158 delegateAccountEvent:v20 completion:v18];
 
       goto LABEL_36;
     case 147:
       v112 = v20;
-      v113 = [v421 currentItem];
-      if (![v113 conformsToProtocol:&unk_1F459C980])
+      currentItem5 = [queueController currentItem];
+      if (![currentItem5 conformsToProtocol:&unk_1F459C980])
       {
 
         goto LABEL_196;
       }
 
-      v114 = [v421 currentItem];
+      currentItem6 = [queueController currentItem];
 
-      if (!v114)
+      if (!currentItem6)
       {
 LABEL_196:
         v115 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:5 debugDescription:@"Current item is not enhancable"];
-        v114 = [MEMORY[0x1E69708F8] statusWithCode:200 error:v115];
-        (*(v18 + 2))(v18, v114);
+        currentItem6 = [MEMORY[0x1E69708F8] statusWithCode:200 error:v115];
+        (*(v18 + 2))(v18, currentItem6);
         goto LABEL_197;
       }
 
       v429 = 0;
-      [v114 setEnhanceDialogueActive:objc_msgSend(v112 error:{"isActive"), &v429}];
+      [currentItem6 setEnhanceDialogueActive:objc_msgSend(v112 error:{"isActive"), &v429}];
       v115 = v429;
-      [a1 publishIfNeeded];
+      [self publishIfNeeded];
       if (v115)
       {
         v116 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:3400 underlyingError:v115 debugDescription:@"Error activating enhance dialogue"];
@@ -4931,8 +4931,8 @@ LABEL_197:
         goto LABEL_36;
       }
 
-      v386 = [MEMORY[0x1E69708F8] successStatus];
-      (*(v18 + 2))(v18, v386);
+      successStatus10 = [MEMORY[0x1E69708F8] successStatus];
+      (*(v18 + 2))(v18, successStatus10);
 
 LABEL_36:
       v22 = v414;
@@ -4946,19 +4946,19 @@ LABEL_38:
 
       return;
     case 149:
-      v107 = [v421 transitionTogglable];
-      if (v107 && +[MPCPlaybackEngine deviceSupportsTransitions])
+      transitionTogglable = [queueController transitionTogglable];
+      if (transitionTogglable && +[MPCPlaybackEngine deviceSupportsTransitions])
       {
-        v108 = [v20 mediaRemoteOptions];
-        v109 = [v108 objectForKeyedSubscript:*MEMORY[0x1E69B1158]];
-        v110 = [v109 BOOLValue];
+        mediaRemoteOptions8 = [v20 mediaRemoteOptions];
+        v109 = [mediaRemoteOptions8 objectForKeyedSubscript:*MEMORY[0x1E69B1158]];
+        bOOLValue4 = [v109 BOOLValue];
 
         v424[0] = MEMORY[0x1E69E9820];
         v424[1] = 3221225472;
         v424[2] = __60___MPCMediaRemotePublisher__performCommandEvent_completion___block_invoke_789;
         v424[3] = &unk_1E8238D28;
         v425 = v18;
-        [v107 toggleTransitionsEnabledFromRemoteCommand:v110 completion:v424];
+        [transitionTogglable toggleTransitionsEnabledFromRemoteCommand:bOOLValue4 completion:v424];
         v111 = v425;
       }
 
@@ -4972,7 +4972,7 @@ LABEL_38:
 
       goto LABEL_36;
     default:
-      switch(v5)
+      switch(mediaRemoteCommandType)
       {
         case 0:
           v544[0] = MEMORY[0x1E69E9820];
@@ -4982,12 +4982,12 @@ LABEL_38:
           v550 = v18;
           v545 = v17;
           v551[1] = sel__performCommandEvent_completion_;
-          v546 = v421;
-          v547 = a1;
+          v546 = queueController;
+          selfCopy4 = self;
           v548 = v420;
           objc_copyWeak(v551, &location);
           v549 = v20;
-          [a1 becomeActiveIfNeededWithCommandID:v548 completion:v544];
+          [self becomeActiveIfNeededWithCommandID:v548 completion:v544];
 
           objc_destroyWeak(v551);
           goto LABEL_36;
@@ -5001,22 +5001,22 @@ LABEL_38:
           v540 = v18;
           v536 = v17;
           v537 = v420;
-          v538 = a1;
+          selfCopy5 = self;
           v539 = v20;
-          [a1 becomeActiveIfNeededWithCommandID:v537 completion:v535];
+          [self becomeActiveIfNeededWithCommandID:v537 completion:v535];
 
           goto LABEL_36;
         case 3:
           if ([v17 usesStopState])
           {
-            *(a1 + 73) = 1;
-            [a1 engine:v17 didChangeToState:3];
+            *(self + 73) = 1;
+            [self engine:v17 didChangeToState:3];
           }
 
 LABEL_143:
-          v218 = [v17 player];
-          v219 = [v218 currentItem];
-          v220 = v219 == 0;
+          player6 = [v17 player];
+          currentItem7 = [player6 currentItem];
+          v220 = currentItem7 == 0;
 
           if (v220)
           {
@@ -5028,19 +5028,19 @@ LABEL_143:
 
           else
           {
-            v221 = [v20 mediaRemoteOptions];
-            v222 = [v221 objectForKeyedSubscript:@"MPCRemoteCommandEventOptionPauseFadeoutDurationKey"];
+            mediaRemoteOptions9 = [v20 mediaRemoteOptions];
+            v222 = [mediaRemoteOptions9 objectForKeyedSubscript:@"MPCRemoteCommandEventOptionPauseFadeoutDurationKey"];
             [v222 doubleValue];
             v224 = v223;
 
-            v225 = [v17 player];
+            player7 = [v17 player];
             v541[0] = MEMORY[0x1E69E9820];
             v541[1] = 3221225472;
             v541[2] = __60___MPCMediaRemotePublisher__performCommandEvent_completion___block_invoke_7;
             v541[3] = &unk_1E8237458;
             v542 = v18;
             v543 = v224;
-            [v225 pauseWithFadeout:v420 identifier:v541 completion:v224];
+            [player7 pauseWithFadeout:v420 identifier:v541 completion:v224];
           }
 
           goto LABEL_36;
@@ -5048,13 +5048,13 @@ LABEL_143:
         case 5:
           goto LABEL_16;
         case 6:
-          v226 = [v421 music];
-          v227 = [v226 shuffleType];
+          music8 = [queueController music];
+          shuffleType = [music8 shuffleType];
 
-          v228 = v227 == 0;
+          v228 = shuffleType == 0;
           v229 = v20;
-          v230 = [v421 music];
-          v231 = [v421 targetContentItemID];
+          music9 = [queueController music];
+          targetContentItemID6 = [queueController targetContentItemID];
           v479[0] = MEMORY[0x1E69E9820];
           v479[1] = 3221225472;
           v479[2] = __60___MPCMediaRemotePublisher__performCommandEvent_completion___block_invoke_8_624;
@@ -5063,18 +5063,18 @@ LABEL_143:
           v482 = v228;
           v232 = v229;
           v480 = v232;
-          [v230 setShuffleType:v228 targetContentItemID:v231 completion:v479];
+          [music9 setShuffleType:v228 targetContentItemID:targetContentItemID6 completion:v479];
 
           goto LABEL_36;
         case 7:
-          v212 = [v421 music];
-          v213 = [v212 repeatType];
+          music10 = [queueController music];
+          repeatType = [music10 repeatType];
 
           v214 = v20;
-          v215 = [v421 music];
-          if (v213)
+          music11 = [queueController music];
+          if (repeatType)
           {
-            v216 = v213 == 2;
+            v216 = repeatType == 2;
           }
 
           else
@@ -5090,35 +5090,35 @@ LABEL_143:
           v490 = v216;
           v217 = v214;
           v488 = v217;
-          [v215 setRepeatType:v216 completion:v487];
+          [music11 setRepeatType:v216 completion:v487];
 
           goto LABEL_36;
         case 8:
-          *(a1 + 20) = 1;
-          v235 = [v421 currentItem];
-          v236 = [v235 supportsFastForward];
+          *(self + 20) = 1;
+          currentItem8 = [queueController currentItem];
+          supportsFastForward = [currentItem8 supportsFastForward];
 
           v517[0] = MEMORY[0x1E69E9820];
           v517[1] = 3221225472;
           v517[2] = __60___MPCMediaRemotePublisher__performCommandEvent_completion___block_invoke_7_566;
           v517[3] = &unk_1E8236B80;
-          v517[4] = a1;
+          v517[4] = self;
           v518 = v18;
-          [v17 beginScanningWithDirection:1 supportsRateChange:v236 identifier:v420 completion:v517];
+          [v17 beginScanningWithDirection:1 supportsRateChange:supportsFastForward identifier:v420 completion:v517];
 
           goto LABEL_36;
         case 9:
         case 11:
-          if (*(a1 + 21) & 1) != 0 || (*(a1 + 20))
+          if (*(self + 21) & 1) != 0 || (*(self + 20))
           {
-            *(a1 + 20) = 0;
-            v71 = [v17 player];
+            *(self + 20) = 0;
+            player8 = [v17 player];
             v515[0] = MEMORY[0x1E69E9820];
             v515[1] = 3221225472;
             v515[2] = __60___MPCMediaRemotePublisher__performCommandEvent_completion___block_invoke_8_573;
             v515[3] = &unk_1E8238D28;
             v516 = v18;
-            [v71 endScanningWithIdentifier:v420 completion:v515];
+            [player8 endScanningWithIdentifier:v420 completion:v515];
           }
 
           else
@@ -5131,17 +5131,17 @@ LABEL_143:
 
           goto LABEL_36;
         case 10:
-          *(a1 + 21) = 1;
-          v203 = [v421 currentItem];
-          v204 = [v203 supportsRewind];
+          *(self + 21) = 1;
+          currentItem9 = [queueController currentItem];
+          supportsRewind = [currentItem9 supportsRewind];
 
           v519[0] = MEMORY[0x1E69E9820];
           v519[1] = 3221225472;
           v519[2] = __60___MPCMediaRemotePublisher__performCommandEvent_completion___block_invoke_6_562;
           v519[3] = &unk_1E8236B80;
-          v519[4] = a1;
+          v519[4] = self;
           v520 = v18;
-          [v17 beginScanningWithDirection:0 supportsRateChange:v204 identifier:v420 completion:v519];
+          [v17 beginScanningWithDirection:0 supportsRateChange:supportsRewind identifier:v420 completion:v519];
 
           goto LABEL_36;
         case 17:
@@ -5154,33 +5154,33 @@ LABEL_143:
           goto LABEL_37;
         case 19:
           v184 = v20;
-          v185 = [v421 behaviorType];
+          behaviorType3 = [queueController behaviorType];
           [v184 playbackRate];
           v187 = v186;
-          if (v185 != 4)
+          if (behaviorType3 != 4)
           {
             goto LABEL_132;
           }
 
           v188 = [_MPCPodcastsPlaybackRateHelper alloc];
-          v189 = [v17 player];
-          [v189 currentRate];
+          player9 = [v17 player];
+          [player9 currentRate];
           v191 = v190;
-          v192 = [v17 player];
-          v193 = [v192 state];
+          player10 = [v17 player];
+          state = [player10 state];
           LODWORD(v194) = v191;
-          v195 = [(_MPCPodcastsPlaybackRateHelper *)v188 initWithCurrentRate:v193 playerState:v194];
+          v195 = [(_MPCPodcastsPlaybackRateHelper *)v188 initWithCurrentRate:state playerState:v194];
 
           if ([(_MPCPodcastsPlaybackRateHelper *)v195 canHandlePlaybackRateChangeForCommandEvent:v184])
           {
-            v196 = [v421 currentItem];
-            if (([v196 conformsToProtocol:&unk_1F459C8B8] & 1) == 0)
+            currentItem10 = [queueController currentItem];
+            if (([currentItem10 conformsToProtocol:&unk_1F459C8B8] & 1) == 0)
             {
-              v402 = [MEMORY[0x1E696AAA8] currentHandler];
-              [v402 handleFailureInMethod:sel__performCommandEvent_completion_ object:a1 file:@"_MPCMediaRemotePublisher.m" lineNumber:2960 description:@"Item does not conform to _MPCPodcastAVItemProvidingProtocol!"];
+              currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+              [currentHandler handleFailureInMethod:sel__performCommandEvent_completion_ object:self file:@"_MPCMediaRemotePublisher.m" lineNumber:2960 description:@"Item does not conform to _MPCPodcastAVItemProvidingProtocol!"];
             }
 
-            v197 = [v196 podcastUUID];
+            podcastUUID = [currentItem10 podcastUUID];
             if (v418[2]())
             {
               [(_MPCPodcastsPlaybackRateHelper *)v195 computedRateForChangePlaybackRateCommandEvent:v184];
@@ -5188,12 +5188,12 @@ LABEL_143:
             }
 
             *&v198 = v187;
-            [v196 setPreferredPlaybackRate:v198];
-            [(_MPCPodcastsPlaybackRateHelper *)v195 updatedPlaybackRateForChangePlaybackRateCommandEvent:v184 podcastUUID:v197];
+            [currentItem10 setPreferredPlaybackRate:v198];
+            [(_MPCPodcastsPlaybackRateHelper *)v195 updatedPlaybackRateForChangePlaybackRateCommandEvent:v184 podcastUUID:podcastUUID];
             v187 = v199;
 
 LABEL_132:
-            v200 = [v17 player];
+            player11 = [v17 player];
             v442[0] = MEMORY[0x1E69E9820];
             v442[1] = 3221225472;
             v442[2] = __60___MPCMediaRemotePublisher__performCommandEvent_completion___block_invoke_737;
@@ -5203,7 +5203,7 @@ LABEL_132:
             v443 = v201;
             objc_copyWeak(&v445, &location);
             *&v202 = v187;
-            [v200 setRate:v420 identifier:v442 completion:v202];
+            [player11 setRate:v420 identifier:v442 completion:v202];
 
             objc_destroyWeak(&v445);
           }
@@ -5227,41 +5227,41 @@ LABEL_132:
           v233 = v20;
           if (v22)
           {
-            v234 = v22;
+            contentItemID4 = v22;
           }
 
           else
           {
-            v332 = [v17 player];
-            v333 = [v332 currentItem];
-            v234 = [v333 contentItemID];
+            player12 = [v17 player];
+            currentItem11 = [player12 currentItem];
+            contentItemID4 = [currentItem11 contentItemID];
           }
 
-          v334 = [v17 queueController];
-          v335 = [v334 itemForContentItemID:v234];
+          queueController6 = [v17 queueController];
+          v335 = [queueController6 itemForContentItemID:contentItemID4];
 
           [v233 rating];
           [v335 setRating:?];
-          v336 = [MEMORY[0x1E69708F8] successStatus];
-          (*(v18 + 2))(v18, v336);
+          successStatus11 = [MEMORY[0x1E69708F8] successStatus];
+          (*(v18 + 2))(v18, successStatus11);
 
           goto LABEL_36;
         case 21:
           v205 = v20;
           if (v22)
           {
-            v206 = v22;
+            contentItemID5 = v22;
           }
 
           else
           {
-            v326 = [v17 player];
-            v327 = [v326 currentItem];
-            v206 = [v327 contentItemID];
+            player13 = [v17 player];
+            currentItem12 = [player13 currentItem];
+            contentItemID5 = [currentItem12 contentItemID];
           }
 
-          v328 = [v17 queueController];
-          v329 = [v328 itemForContentItemID:v206];
+          queueController7 = [v17 queueController];
+          v329 = [queueController7 itemForContentItemID:contentItemID5];
 
           if ([v205 isNegative])
           {
@@ -5270,8 +5270,8 @@ LABEL_132:
               goto LABEL_236;
             }
 
-            v330 = [v205 userIdentity];
-            [v329 setLikedState:1 forUserIdentity:v330];
+            userIdentity = [v205 userIdentity];
+            [v329 setLikedState:1 forUserIdentity:userIdentity];
           }
 
           else
@@ -5281,28 +5281,28 @@ LABEL_132:
               goto LABEL_236;
             }
 
-            v330 = [v205 userIdentity];
-            [v329 setLikedState:2 forUserIdentity:v330];
+            userIdentity = [v205 userIdentity];
+            [v329 setLikedState:2 forUserIdentity:userIdentity];
           }
 
-          [a1 publishIfNeeded];
+          [self publishIfNeeded];
           goto LABEL_236;
         case 22:
           v205 = v20;
           if (v22)
           {
-            v206 = v22;
+            contentItemID5 = v22;
           }
 
           else
           {
-            v337 = [v17 player];
-            v338 = [v337 currentItem];
-            v206 = [v338 contentItemID];
+            player14 = [v17 player];
+            currentItem13 = [player14 currentItem];
+            contentItemID5 = [currentItem13 contentItemID];
           }
 
-          v339 = [v17 queueController];
-          v329 = [v339 itemForContentItemID:v206];
+          queueController8 = [v17 queueController];
+          v329 = [queueController8 itemForContentItemID:contentItemID5];
 
           if ([v205 isNegative])
           {
@@ -5311,8 +5311,8 @@ LABEL_132:
               goto LABEL_236;
             }
 
-            v340 = [v205 userIdentity];
-            [v329 setLikedState:1 forUserIdentity:v340];
+            userIdentity2 = [v205 userIdentity];
+            [v329 setLikedState:1 forUserIdentity:userIdentity2];
           }
 
           else
@@ -5322,32 +5322,32 @@ LABEL_132:
               goto LABEL_236;
             }
 
-            v340 = [v205 userIdentity];
-            [v329 setLikedState:3 forUserIdentity:v340];
+            userIdentity2 = [v205 userIdentity];
+            [v329 setLikedState:3 forUserIdentity:userIdentity2];
           }
 
-          [a1 publishIfNeeded];
+          [self publishIfNeeded];
 LABEL_236:
-          v331 = [MEMORY[0x1E69708F8] successStatus];
-          (*(v18 + 2))(v18, v331);
+          successStatus12 = [MEMORY[0x1E69708F8] successStatus];
+          (*(v18 + 2))(v18, successStatus12);
 
           goto LABEL_36;
         case 24:
-          v241 = [v17 player];
-          v412 = [v241 currentItem];
+          player15 = [v17 player];
+          currentItem14 = [player15 currentItem];
 
-          if (v412)
+          if (currentItem14)
           {
             v409 = v20;
-            v242 = [v409 nowPlayingContentItemID];
-            v243 = v242 == 0;
+            nowPlayingContentItemID = [v409 nowPlayingContentItemID];
+            v243 = nowPlayingContentItemID == 0;
 
             if (!v243)
             {
-              v244 = [v409 nowPlayingContentItemID];
-              v245 = [v412 contentItemID];
-              v246 = v244;
-              v247 = v245;
+              nowPlayingContentItemID2 = [v409 nowPlayingContentItemID];
+              contentItemID6 = [currentItem14 contentItemID];
+              v246 = nowPlayingContentItemID2;
+              v247 = contentItemID6;
               v248 = v247;
               if (v246 == v247)
               {
@@ -5364,20 +5364,20 @@ LABEL_236:
                   {
                     [v409 nowPlayingContentItemID];
                     v251 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-                    v252 = [v412 contentItemID];
+                    contentItemID7 = [currentItem14 contentItemID];
                     *v574 = 138543618;
                     v575 = v251;
                     v576 = 2114;
-                    v577 = v252;
+                    v577 = contentItemID7;
                     _os_log_impl(&dword_1C5C61000, v250, OS_LOG_TYPE_ERROR, "❗️SeekToPlaybackPosition failed. Could not seek for non-current item id: %{public}@ [currentItem is %{public}@]", v574, 0x16u);
                   }
 
                   v253 = MEMORY[0x1E696ABC0];
-                  v254 = [v409 nowPlayingContentItemID];
-                  v255 = [v412 contentItemID];
-                  v256 = [v253 msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:3 debugDescription:{@"Cannot seek item (%@) with different current item (%@)", v254, v255}];
-                  v257 = [v256 mpc_remoteCommandStatus];
-                  (*(v18 + 2))(v18, v257);
+                  nowPlayingContentItemID3 = [v409 nowPlayingContentItemID];
+                  contentItemID8 = [currentItem14 contentItemID];
+                  v256 = [v253 msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:3 debugDescription:{@"Cannot seek item (%@) with different current item (%@)", nowPlayingContentItemID3, contentItemID8}];
+                  mpc_remoteCommandStatus = [v256 mpc_remoteCommandStatus];
+                  (*(v18 + 2))(v18, mpc_remoteCommandStatus);
 
                   goto LABEL_282;
                 }
@@ -5396,17 +5396,17 @@ LABEL_236:
             v342 = v409;
             v513 = v342;
             v370 = _Block_copy(v510);
-            v371 = [v342 referenceTime];
-            if (v371)
+            referenceTime = [v342 referenceTime];
+            if (referenceTime)
             {
-              v372 = [v342 referenceTime];
-              [v372 doubleValue];
+              referenceTime2 = [v342 referenceTime];
+              [referenceTime2 doubleValue];
 
-              v373 = [v368 transcriptAlignmentController];
+              transcriptAlignmentController = [v368 transcriptAlignmentController];
               [v342 positionTime];
               v375 = v374;
-              v376 = [v342 referenceTime];
-              [v376 doubleValue];
+              referenceTime3 = [v342 referenceTime];
+              [referenceTime3 doubleValue];
               v378 = v377;
               v505[0] = MEMORY[0x1E69E9820];
               v505[1] = 3221225472;
@@ -5417,9 +5417,9 @@ LABEL_236:
               v508 = v369;
               v379 = v370;
               v509 = v379;
-              [v373 resolveWith:v505 referenceTime:v375 completionHandler:v378];
+              [transcriptAlignmentController resolveWith:v505 referenceTime:v375 completionHandler:v378];
 
-              v254 = v511;
+              nowPlayingContentItemID3 = v511;
 LABEL_282:
 
               goto LABEL_36;
@@ -5442,26 +5442,26 @@ LABEL_282:
           goto LABEL_36;
         case 25:
           v237 = v20;
-          v238 = [v237 repeatType];
-          if (v238 >= 3)
+          repeatType2 = [v237 repeatType];
+          if (repeatType2 >= 3)
           {
             v297 = MEMORY[0x1E69708F8];
-            v240 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:5 debugDescription:{@"Unsupported repeatType %ld", v238}];
+            v240 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:5 debugDescription:{@"Unsupported repeatType %ld", repeatType2}];
             v298 = [v297 statusWithCode:200 error:v240];
             (*(v18 + 2))(v18, v298);
           }
 
           else
           {
-            v239 = [v421 music];
+            music12 = [queueController music];
             v491[0] = MEMORY[0x1E69E9820];
             v491[1] = 3221225472;
             v491[2] = __60___MPCMediaRemotePublisher__performCommandEvent_completion___block_invoke_5_612;
             v491[3] = &unk_1E8236C20;
             v493 = v18;
-            v494 = v238;
+            v494 = repeatType2;
             v492 = v237;
-            [v239 setRepeatType:v238 completion:v491];
+            [music12 setRepeatType:repeatType2 completion:v491];
 
             v240 = v493;
           }
@@ -5469,18 +5469,18 @@ LABEL_282:
           goto LABEL_36;
         case 26:
           v207 = v20;
-          v208 = [v207 shuffleType];
-          v209 = [v421 music];
-          v210 = [v421 targetContentItemID];
+          shuffleType2 = [v207 shuffleType];
+          music13 = [queueController music];
+          targetContentItemID7 = [queueController targetContentItemID];
           v483[0] = MEMORY[0x1E69E9820];
           v483[1] = 3221225472;
           v483[2] = __60___MPCMediaRemotePublisher__performCommandEvent_completion___block_invoke_7_620;
           v483[3] = &unk_1E8236C20;
           v485 = v18;
-          v486 = v208;
+          v486 = shuffleType2;
           v211 = v207;
           v484 = v211;
-          [v209 setShuffleType:v208 targetContentItemID:v210 completion:v483];
+          [music13 setShuffleType:shuffleType2 targetContentItemID:targetContentItemID7 completion:v483];
 
           goto LABEL_36;
         default:
@@ -5489,31 +5489,31 @@ LABEL_282:
   }
 }
 
-- (id)stripCommandStatusForEVS:(id)a3
+- (id)stripCommandStatusForEVS:(id)s
 {
   v41 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 dialog];
+  sCopy = s;
+  dialog = [sCopy dialog];
 
-  if (v4)
+  if (dialog)
   {
     v5 = MEMORY[0x1E69708E8];
-    v6 = [v3 dialog];
-    v7 = [v6 localizedTitle];
-    v8 = [v3 dialog];
-    v9 = [v8 localizedMessage];
-    v10 = [v5 dialogWithTitle:v7 message:v9];
+    dialog2 = [sCopy dialog];
+    localizedTitle = [dialog2 localizedTitle];
+    dialog3 = [sCopy dialog];
+    localizedMessage = [dialog3 localizedMessage];
+    v10 = [v5 dialogWithTitle:localizedTitle message:localizedMessage];
 
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v33 = v3;
-    v11 = [v3 dialog];
-    v12 = [v11 actions];
+    v33 = sCopy;
+    dialog4 = [sCopy dialog];
+    actions = [dialog4 actions];
 
-    obj = v12;
-    v13 = [v12 countByEnumeratingWithState:&v36 objects:v40 count:16];
+    obj = actions;
+    v13 = [actions countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (v13)
     {
       v14 = v13;
@@ -5528,17 +5528,17 @@ LABEL_282:
           }
 
           v17 = *(*(&v36 + 1) + 8 * i);
-          v18 = [v17 event];
-          v19 = v18;
-          if (v18)
+          event = [v17 event];
+          v19 = event;
+          if (event)
           {
-            v20 = [v18 mediaRemoteOptions];
-            v21 = [v20 mutableCopy];
+            mediaRemoteOptions = [event mediaRemoteOptions];
+            v21 = [mediaRemoteOptions mutableCopy];
 
             [(_MPCMediaRemotePublisher *)self stripMediaRemoteOptionsForEVS:v21];
             v22 = objc_alloc(MEMORY[0x1E69708E0]);
-            v23 = [v19 command];
-            v24 = [v22 initWithCommand:v23 mediaRemoteType:objc_msgSend(v19 options:{"mediaRemoteCommandType"), v21}];
+            command = [v19 command];
+            v24 = [v22 initWithCommand:command mediaRemoteType:objc_msgSend(v19 options:{"mediaRemoteCommandType"), v21}];
           }
 
           else
@@ -5547,8 +5547,8 @@ LABEL_282:
           }
 
           v25 = MEMORY[0x1E69708F0];
-          v26 = [v17 title];
-          v27 = [v25 actionWithTitle:v26 type:objc_msgSend(v17 commandEvent:{"type"), v24}];
+          title = [v17 title];
+          v27 = [v25 actionWithTitle:title type:objc_msgSend(v17 commandEvent:{"type"), v24}];
 
           [v10 addAction:v27];
         }
@@ -5560,44 +5560,44 @@ LABEL_282:
     }
 
     v28 = MEMORY[0x1E69708F8];
-    v3 = v33;
-    v29 = [v33 statusCode];
-    v30 = [v33 error];
-    v31 = [v28 statusWithCode:v29 dialog:v10 error:v30];
+    sCopy = v33;
+    statusCode = [v33 statusCode];
+    error = [v33 error];
+    v31 = [v28 statusWithCode:statusCode dialog:v10 error:error];
   }
 
   else
   {
-    v31 = v3;
+    v31 = sCopy;
   }
 
   return v31;
 }
 
-- (void)stripMediaRemoteOptionsForEVS:(id)a3
+- (void)stripMediaRemoteOptionsForEVS:(id)s
 {
   v3 = *MEMORY[0x1E69B1200];
-  v4 = a3;
-  [v4 setObject:0 forKeyedSubscript:v3];
-  [v4 setObject:0 forKeyedSubscript:*MEMORY[0x1E69B10B0]];
-  [v4 setObject:0 forKeyedSubscript:*MEMORY[0x1E69B1218]];
-  [v4 setObject:0 forKeyedSubscript:*MEMORY[0x1E69B1268]];
-  [v4 setObject:0 forKeyedSubscript:*MEMORY[0x1E69B1278]];
-  [v4 setObject:0 forKeyedSubscript:*MEMORY[0x1E69B10F0]];
-  [v4 setObject:0 forKeyedSubscript:*MEMORY[0x1E69B1098]];
-  [v4 setObject:0 forKeyedSubscript:@"playbackContext"];
-  [v4 setObject:0 forKeyedSubscript:@"sharedListeningIntentToken"];
-  [v4 setObject:0 forKeyedSubscript:@"kMRMediaRemoteOptionSenderID"];
+  sCopy = s;
+  [sCopy setObject:0 forKeyedSubscript:v3];
+  [sCopy setObject:0 forKeyedSubscript:*MEMORY[0x1E69B10B0]];
+  [sCopy setObject:0 forKeyedSubscript:*MEMORY[0x1E69B1218]];
+  [sCopy setObject:0 forKeyedSubscript:*MEMORY[0x1E69B1268]];
+  [sCopy setObject:0 forKeyedSubscript:*MEMORY[0x1E69B1278]];
+  [sCopy setObject:0 forKeyedSubscript:*MEMORY[0x1E69B10F0]];
+  [sCopy setObject:0 forKeyedSubscript:*MEMORY[0x1E69B1098]];
+  [sCopy setObject:0 forKeyedSubscript:@"playbackContext"];
+  [sCopy setObject:0 forKeyedSubscript:@"sharedListeningIntentToken"];
+  [sCopy setObject:0 forKeyedSubscript:@"kMRMediaRemoteOptionSenderID"];
 }
 
-- (void)_performDebugEvent:(id)a3 completion:(id)a4
+- (void)_performDebugEvent:(id)event completion:(id)completion
 {
-  v28 = a4;
-  v6 = a3;
-  v7 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-  v8 = [v6 mediaRemoteOptions];
+  completionCopy = completion;
+  eventCopy = event;
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  mediaRemoteOptions = [eventCopy mediaRemoteOptions];
 
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69B11C0]];
+  v9 = [mediaRemoteOptions objectForKeyedSubscript:*MEMORY[0x1E69B11C0]];
 
   v10 = v9;
   v11 = v10;
@@ -5610,15 +5610,15 @@ LABEL_282:
       v15 = v11;
       if (v15 == @"com.apple.Music.queue" || (v16 = v15, v17 = [(__CFString *)v15 isEqual:@"com.apple.Music.queue"], v16, v17))
       {
-        v18 = [v7 queueController];
-        v14 = v18;
-        if (v18)
+        queueController = [playbackEngine queueController];
+        v14 = queueController;
+        if (queueController)
         {
-          v19 = [v18 debugDescription];
+          v19 = [queueController debugDescription];
           v20 = MEMORY[0x1E69708F8];
           v21 = [v19 dataUsingEncoding:4];
           v22 = [v20 statusWithCode:0 customData:v21 type:@"com.public.text"];
-          v28[2](v28, v22);
+          completionCopy[2](completionCopy, v22);
         }
 
         else
@@ -5626,7 +5626,7 @@ LABEL_282:
           v27 = MEMORY[0x1E69708F8];
           v19 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:2 debugDescription:@"No queueController"];
           v21 = [v27 statusWithCode:100 error:v19];
-          v28[2](v28, v21);
+          completionCopy[2](completionCopy, v21);
         }
 
         goto LABEL_19;
@@ -5643,7 +5643,7 @@ LABEL_282:
       v24 = 200;
 LABEL_16:
       v14 = [v23 statusWithCode:v24];
-      v28[2](v28, v14);
+      completionCopy[2](completionCopy, v14);
       goto LABEL_20;
     }
   }
@@ -5667,37 +5667,37 @@ LABEL_16:
     [MEMORY[0x1E69708F8] statusWithCode:100];
   }
   v19 = ;
-  v28[2](v28, v19);
+  completionCopy[2](completionCopy, v19);
 LABEL_19:
 
 LABEL_20:
 }
 
-- (void)_enqueueFallbackIntentIfNeededForCommandEvent:(id)a3 play:(BOOL)a4 completion:(id)a5
+- (void)_enqueueFallbackIntentIfNeededForCommandEvent:(id)event play:(BOOL)play completion:(id)completion
 {
   v51 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-  v10 = [v9 engineID];
-  v11 = [v7 contextID];
-  if (!v11)
+  eventCopy = event;
+  completionCopy = completion;
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  engineID = [playbackEngine engineID];
+  contextID = [eventCopy contextID];
+  if (!contextID)
   {
     goto LABEL_8;
   }
 
-  v12 = v11;
-  v13 = [v7 contextID];
-  v14 = [v9 queueController];
-  v15 = [v14 sessionID];
-  v16 = v15;
-  if (v13 == v15)
+  v12 = contextID;
+  contextID2 = [eventCopy contextID];
+  queueController = [playbackEngine queueController];
+  sessionID = [queueController sessionID];
+  v16 = sessionID;
+  if (contextID2 == sessionID)
   {
 
     goto LABEL_8;
   }
 
-  v17 = [v13 isEqual:v15];
+  v17 = [contextID2 isEqual:sessionID];
 
   if (v17)
   {
@@ -5709,37 +5709,37 @@ LABEL_8:
   v18 = os_log_create("com.apple.amp.mediaplaybackcore", "Publisher");
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
-    v19 = [v7 commandID];
-    v20 = [v7 contextID];
-    v21 = [v9 queueController];
-    v22 = [v21 sessionID];
+    commandID = [eventCopy commandID];
+    contextID3 = [eventCopy contextID];
+    queueController2 = [playbackEngine queueController];
+    sessionID2 = [queueController2 sessionID];
     *buf = 138544130;
-    v44 = v10;
+    v44 = engineID;
     v45 = 2114;
-    v46 = v19;
+    v46 = commandID;
     v47 = 2114;
-    v48 = v20;
+    v48 = contextID3;
     v49 = 2114;
-    v50 = v22;
+    v50 = sessionID2;
     _os_log_impl(&dword_1C5C61000, v18, OS_LOG_TYPE_ERROR, "[PUB:%{public}@] _enqueueFallbackIntentIfNeeded | not using fallback intent [contextID does not match queueController.sessionID] commandID=%{public}@ contextID=%{public}@ sessionID=%{public}@", buf, 0x2Au);
   }
 
   v23 = 0;
 LABEL_9:
-  v24 = [v7 mediaRemoteOptions];
-  v25 = [v24 objectForKeyedSubscript:*MEMORY[0x1E69B1108]];
-  v26 = [v25 BOOLValue];
+  mediaRemoteOptions = [eventCopy mediaRemoteOptions];
+  v25 = [mediaRemoteOptions objectForKeyedSubscript:*MEMORY[0x1E69B1108]];
+  bOOLValue = [v25 BOOLValue];
 
-  if (v26)
+  if (bOOLValue)
   {
     v27 = os_log_create("com.apple.amp.mediaplaybackcore", "Publisher");
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      v28 = [v7 commandID];
+      commandID2 = [eventCopy commandID];
       *buf = 138543618;
-      v44 = v10;
+      v44 = engineID;
       v45 = 2114;
-      v46 = v28;
+      v46 = commandID2;
       _os_log_impl(&dword_1C5C61000, v27, OS_LOG_TYPE_ERROR, "[PUB:%{public}@] _enqueueFallbackIntentIfNeeded | not using fallback intent [disabled via command option] commandID=%{public}@", buf, 0x16u);
     }
 
@@ -5759,7 +5759,7 @@ LABEL_21:
     v34 = MEMORY[0x1E69708F8];
     v33 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:1 debugDescription:@"Failing due to no content in the player and fallback intent disabled."];
     v35 = [v34 statusWithCode:100 error:v33];
-    v8[2](v8, v35);
+    completionCopy[2](completionCopy, v35);
 
     goto LABEL_22;
   }
@@ -5767,11 +5767,11 @@ LABEL_21:
   v30 = os_log_create("com.apple.amp.mediaplaybackcore", "Publisher");
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = [v7 commandID];
+    commandID3 = [eventCopy commandID];
     *buf = 138543618;
-    v44 = v10;
+    v44 = engineID;
     v45 = 2114;
-    v46 = v31;
+    v46 = commandID3;
     _os_log_impl(&dword_1C5C61000, v30, OS_LOG_TYPE_DEFAULT, "[PUB:%{public}@] _enqueueFallbackIntentIfNeeded | fetching fallback intent [] commandID=%{public}@", buf, 0x16u);
   }
 
@@ -5789,42 +5789,42 @@ LABEL_21:
   v37[1] = 3221225472;
   v37[2] = __90___MPCMediaRemotePublisher__enqueueFallbackIntentIfNeededForCommandEvent_play_completion___block_invoke;
   v37[3] = &unk_1E8236890;
-  v38 = v10;
-  v39 = v7;
-  v42 = a4;
-  v40 = self;
-  v41 = v8;
+  v38 = engineID;
+  v39 = eventCopy;
+  playCopy = play;
+  selfCopy = self;
+  v41 = completionCopy;
   [(_MPCMediaRemotePublisher_Swift *)swift _getFallbackIntentForEvent:v39 withCompletion:v37];
 
   v33 = v38;
 LABEL_22:
 }
 
-- (void)deactivateAudioSessionIfIdle:(int64_t)a3
+- (void)deactivateAudioSessionIfIdle:(int64_t)idle
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-  v5 = [v4 engineID];
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  engineID = [playbackEngine engineID];
   v6 = os_log_create("com.apple.amp.mediaplaybackcore", "Publisher");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
-    v9 = v5;
+    v9 = engineID;
     v10 = 2048;
-    v11 = a3;
+    idleCopy = idle;
     _os_log_impl(&dword_1C5C61000, v6, OS_LOG_TYPE_DEFAULT, "[PUB:%{public}@] deactivateAudioSessionIfIdle | deactivating player [] token=%lld", &v8, 0x16u);
   }
 
-  v7 = [v4 player];
-  [v7 deactivateAudioSessionIfIdle:a3];
+  player = [playbackEngine player];
+  [player deactivateAudioSessionIfIdle:idle];
 }
 
-- (void)becomeActiveIfNeededWithCommandID:(id)a3 completion:(id)a4
+- (void)becomeActiveIfNeededWithCommandID:(id)d completion:(id)completion
 {
   v79[2] = *MEMORY[0x1E69E9840];
-  v38 = a3;
-  v37 = a4;
-  v7 = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  dCopy = d;
+  completionCopy = completion;
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
   v77[0] = 0;
   v77[1] = v77;
   v77[2] = 0x2020000000;
@@ -5849,36 +5849,36 @@ LABEL_22:
   }
 
   v12 = MSVNanoIDCreateTaggedPointer();
-  v13 = [v7 eventStream];
+  eventStream = [playbackEngine eventStream];
   v78[0] = @"session-activation-id";
   v78[1] = @"session-activation-command-id";
   v79[0] = v12;
-  v14 = v38;
-  if (!v38)
+  null = dCopy;
+  if (!dCopy)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v79[1] = v14;
+  v79[1] = null;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v79 forKeys:v78 count:2];
-  [v13 emitEventType:@"session-activation-begin" payload:v15];
+  [eventStream emitEventType:@"session-activation-begin" payload:v15];
 
-  if (!v38)
+  if (!dCopy)
   {
   }
 
-  v16 = [v7 engineID];
-  v17 = [v7 delegate];
+  engineID = [playbackEngine engineID];
+  delegate = [playbackEngine delegate];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __73___MPCMediaRemotePublisher_becomeActiveIfNeededWithCommandID_completion___block_invoke;
   aBlock[3] = &unk_1E8236680;
-  v18 = v16;
+  v18 = engineID;
   v70 = v18;
-  v19 = v17;
+  v19 = delegate;
   v71 = v19;
   v73 = v76;
-  v20 = v7;
+  v20 = playbackEngine;
   v72 = v20;
   v21 = _Block_copy(aBlock);
   v64[0] = MEMORY[0x1E69E9820];
@@ -5901,7 +5901,7 @@ LABEL_22:
   v58 = v25;
   v35 = v23;
   v59 = v35;
-  v60 = self;
+  selfCopy = self;
   v61 = v75;
   v62 = v77;
   v63 = a2;
@@ -5912,14 +5912,14 @@ LABEL_22:
   v48[3] = &unk_1E82367C8;
   v27 = v25;
   v49 = v27;
-  v50 = self;
+  selfCopy2 = self;
   v56 = v9;
   v28 = v12;
   v51 = v28;
   v53 = v75;
   v54 = v77;
   v55 = v76;
-  v29 = v37;
+  v29 = completionCopy;
   v52 = v29;
   v30 = _Block_copy(v48);
   v43[0] = MEMORY[0x1E69E9820];
@@ -5948,118 +5948,118 @@ LABEL_22:
   _Block_object_dispose(v77, 8);
 }
 
-- (void)_podcastsSkipIntervalDidChange:(id)a3
+- (void)_podcastsSkipIntervalDidChange:(id)change
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-  v5 = [v4 engineID];
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  engineID = [playbackEngine engineID];
 
   v6 = os_log_create("com.apple.amp.mediaplaybackcore", "Publisher");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v5;
+    v8 = engineID;
     _os_log_impl(&dword_1C5C61000, v6, OS_LOG_TYPE_DEFAULT, "[PUB:%{public}@] _podcastsSkipIntervalDidChange | publishing [notification]", &v7, 0xCu);
   }
 
   [(_MPCMediaRemotePublisher *)self publishIfNeeded];
 }
 
-- (void)_activeSharedSessionDidChange:(id)a3
+- (void)_activeSharedSessionDidChange:(id)change
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-  v6 = [v5 engineID];
+  changeCopy = change;
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  engineID = [playbackEngine engineID];
 
-  v7 = [v4 userInfo];
+  userInfo = [changeCopy userInfo];
 
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69B08D8]];
+  v8 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69B08D8]];
 
   if ([v8 isHosted] && (objc_msgSend(v8, "isPlaceholder") & 1) == 0)
   {
-    v9 = [v8 identifier];
+    identifier = [v8 identifier];
   }
 
   else
   {
-    v9 = 0;
+    identifier = 0;
   }
 
   v10 = os_log_create("com.apple.amp.mediaplaybackcore", "Publisher");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v15 = v6;
+    v15 = engineID;
     v16 = 2114;
-    v17 = v9;
+    v17 = identifier;
     _os_log_impl(&dword_1C5C61000, v10, OS_LOG_TYPE_DEFAULT, "[PUB:%{public}@] _activeSharedSessionDidChange | received [] newSessionID=%{public}@", buf, 0x16u);
   }
 
-  v13 = v6;
-  v11 = v6;
-  v12 = v9;
+  v13 = engineID;
+  v11 = engineID;
+  v12 = identifier;
   msv_dispatch_on_main_queue();
 }
 
-- (void)_likedStateChangedNotification:(id)a3
+- (void)_likedStateChangedNotification:(id)notification
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-  v5 = [v4 engineID];
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  engineID = [playbackEngine engineID];
 
   v6 = os_log_create("com.apple.amp.mediaplaybackcore", "Publisher");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v5;
+    v8 = engineID;
     _os_log_impl(&dword_1C5C61000, v6, OS_LOG_TYPE_DEFAULT, "[PUB:%{public}@] _likedStateChanged | publishing [notification]", &v7, 0xCu);
   }
 
   [(_MPCMediaRemotePublisher *)self publishIfNeeded];
 }
 
-- (void)_durationAvailableNotification:(id)a3
+- (void)_durationAvailableNotification:(id)notification
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v4 object];
-    v8 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-    v9 = [v8 engineID];
+    object2 = [notificationCopy object];
+    playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+    engineID = [playbackEngine engineID];
     v10 = os_log_create("com.apple.amp.mediaplaybackcore", "Publisher");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v17 = v9;
+      v17 = engineID;
       v18 = 2114;
-      v19 = v7;
+      v19 = object2;
       _os_log_impl(&dword_1C5C61000, v10, OS_LOG_TYPE_DEFAULT, "[PUB:%{public}@] _durationAvailable | received [] notificationItem=%{public}@", buf, 0x16u);
     }
 
-    v14 = v8;
-    v15 = v7;
-    v11 = v9;
-    v12 = v7;
-    v13 = v8;
+    v14 = playbackEngine;
+    v15 = object2;
+    v11 = engineID;
+    v12 = object2;
+    v13 = playbackEngine;
     msv_dispatch_on_main_queue();
   }
 }
 
-- (void)commandCenter:(id)a3 didTimeoutCommandEvent:(id)a4 statusHandler:(id)a5
+- (void)commandCenter:(id)center didTimeoutCommandEvent:(id)event statusHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-  v10 = [v9 eventStream];
-  v11 = [v7 commandID];
-  v12 = [@"CommandTimeout:" stringByAppendingString:v11];
-  v13 = [v10 eventDeliveryDeferralAssertionOfType:0 forReason:v12];
+  eventCopy = event;
+  handlerCopy = handler;
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  eventStream = [playbackEngine eventStream];
+  commandID = [eventCopy commandID];
+  v12 = [@"CommandTimeout:" stringByAppendingString:commandID];
+  v13 = [eventStream eventDeliveryDeferralAssertionOfType:0 forReason:v12];
 
   v28 = 0;
   v26 = 0u;
@@ -6074,82 +6074,82 @@ LABEL_22:
   v18[1] = 3221225472;
   v18[2] = __79___MPCMediaRemotePublisher_commandCenter_didTimeoutCommandEvent_statusHandler___block_invoke;
   v18[3] = &unk_1E82365E0;
-  v19 = v10;
-  v20 = v7;
+  v19 = eventStream;
+  v20 = eventCopy;
   v23 = v26;
   v24 = v27;
   v25 = v28;
   v21 = v13;
-  v22 = v8;
+  v22 = handlerCopy;
   v14 = v13;
-  v15 = v7;
-  v16 = v10;
-  v17 = v8;
+  v15 = eventCopy;
+  v16 = eventStream;
+  v17 = handlerCopy;
   [(_MPCMediaRemotePublisher *)self investigateTimeoutForEvent:v15 completion:v18];
 }
 
-- (void)commandCenter:(id)a3 didDeliverCommandEvent:(id)a4
+- (void)commandCenter:(id)center didDeliverCommandEvent:(id)event
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  eventCopy = event;
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
   v7 = os_log_create("com.apple.amp.mediaplaybackcore", "Publisher");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 engineID];
-    v9 = [v5 commandID];
-    v10 = MPCRemoteCommandDescriptionCopy([v5 mediaRemoteCommandType]);
+    engineID = [playbackEngine engineID];
+    commandID = [eventCopy commandID];
+    v10 = MPCRemoteCommandDescriptionCopy([eventCopy mediaRemoteCommandType]);
     *buf = 138543874;
-    v19 = v8;
+    v19 = engineID;
     v20 = 2114;
-    v21 = v9;
+    v21 = commandID;
     v22 = 2114;
     v23 = v10;
     _os_log_impl(&dword_1C5C61000, v7, OS_LOG_TYPE_DEFAULT, "[PUB:%{public}@] commandCenter:didDeliverCommandEvent: [%{public}@] command=%{public}@", buf, 0x20u);
   }
 
-  v11 = [v6 eventStream];
-  v12 = [v5 commandID];
-  v17[0] = v12;
+  eventStream = [playbackEngine eventStream];
+  commandID2 = [eventCopy commandID];
+  v17[0] = commandID2;
   v16[1] = @"remote-control-type";
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v5, "mediaRemoteCommandType")}];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(eventCopy, "mediaRemoteCommandType")}];
   v17[1] = v13;
   v16[2] = @"remote-control-source";
-  v14 = [v5 sourceID];
-  v17[2] = v14;
+  sourceID = [eventCopy sourceID];
+  v17[2] = sourceID;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:3];
-  [v11 emitEventType:@"remote-control-delivered" payload:v15];
+  [eventStream emitEventType:@"remote-control-delivered" payload:v15];
 }
 
-- (void)invalidateSessionTypesWithReason:(id)a3
+- (void)invalidateSessionTypesWithReason:(id)reason
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-  v6 = [v5 engineID];
+  reasonCopy = reason;
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  engineID = [playbackEngine engineID];
 
   v7 = os_log_create("com.apple.amp.mediaplaybackcore", "Publisher");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
-    v9 = v6;
+    v9 = engineID;
     v10 = 2114;
-    v11 = v4;
+    v11 = reasonCopy;
     _os_log_impl(&dword_1C5C61000, v7, OS_LOG_TYPE_DEFAULT, "[PUB:%{public}@] invalidateSessionTypes | publishing [%{public}@}]", &v8, 0x16u);
   }
 
   [(_MPCMediaRemotePublisher *)self publishIfNeeded];
 }
 
-- (void)engine:(id)a3 didChangeQueueController:(id)a4
+- (void)engine:(id)engine didChangeQueueController:(id)controller
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = [a3 engineID];
+  engineID = [engine engineID];
   v6 = os_log_create("com.apple.amp.mediaplaybackcore", "Publisher");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v5;
+    v9 = engineID;
     _os_log_impl(&dword_1C5C61000, v6, OS_LOG_TYPE_DEFAULT, "[PUB:%{public}@] engine:didChangeQueueController: | invalidating playback queue [queue changed]", &v8, 0xCu);
   }
 
@@ -6158,73 +6158,73 @@ LABEL_22:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v5;
+    v9 = engineID;
     _os_log_impl(&dword_1C5C61000, v7, OS_LOG_TYPE_DEFAULT, "[PUB:%{public}@] engine:didChangeQueueController: | publishing [queue changed]", &v8, 0xCu);
   }
 
   [(_MPCMediaRemotePublisher *)self publishIfNeeded];
 }
 
-- (void)engine:(id)a3 didReceivePickedRouteChange:(id)a4
+- (void)engine:(id)engine didReceivePickedRouteChange:(id)change
 {
   v9 = *MEMORY[0x1E69E9840];
-  v5 = [a3 engineID];
+  engineID = [engine engineID];
   v6 = os_log_create("com.apple.amp.mediaplaybackcore", "Publisher");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v5;
+    v8 = engineID;
     _os_log_impl(&dword_1C5C61000, v6, OS_LOG_TYPE_DEFAULT, "[PUB:%{public}@] engine:didReceivePickedRouteChange: | publishing [route changed]", &v7, 0xCu);
   }
 
   [(_MPCMediaRemotePublisher *)self publishIfNeeded];
 }
 
-- (void)engineDidEndSleepTimer:(id)a3
+- (void)engineDidEndSleepTimer:(id)timer
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = [a3 engineID];
+  engineID = [timer engineID];
   v5 = os_log_create("com.apple.amp.mediaplaybackcore", "Publisher");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = engineID;
     _os_log_impl(&dword_1C5C61000, v5, OS_LOG_TYPE_DEFAULT, "[PUB:%{public}@] engineDidEndSleepTimer | publishing [sleep timer ended]", &v6, 0xCu);
   }
 
   [(_MPCMediaRemotePublisher *)self publishIfNeeded];
 }
 
-- (void)engineDidUnblockVocalAttenuation:(id)a3
+- (void)engineDidUnblockVocalAttenuation:(id)attenuation
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = [a3 engineID];
+  engineID = [attenuation engineID];
   v5 = os_log_create("com.apple.amp.mediaplaybackcore", "Publisher");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = engineID;
     _os_log_impl(&dword_1C5C61000, v5, OS_LOG_TYPE_DEFAULT, "[PUB:%{public}@] engineDidUnblockVocalAttenuation | publishing [attenuation unblocked]", &v6, 0xCu);
   }
 
   [(_MPCMediaRemotePublisher *)self publishIfNeeded];
 }
 
-- (void)engineDidBlockVocalAttenuation:(id)a3
+- (void)engineDidBlockVocalAttenuation:(id)attenuation
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 engineID];
-  if ([v4 isVocalAttenuationEnabled])
+  attenuationCopy = attenuation;
+  engineID = [attenuationCopy engineID];
+  if ([attenuationCopy isVocalAttenuationEnabled])
   {
-    [v4 setVocalAttenuationEnabled:0];
+    [attenuationCopy setVocalAttenuationEnabled:0];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __59___MPCMediaRemotePublisher_engineDidBlockVocalAttenuation___block_invoke;
     v7[3] = &unk_1E8236588;
-    v8 = v5;
-    v9 = v4;
-    v10 = self;
+    v8 = engineID;
+    v9 = attenuationCopy;
+    selfCopy = self;
     [v9 reloadQueueForReason:1 completion:v7];
   }
 
@@ -6232,71 +6232,71 @@ LABEL_22:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = v5;
+    v12 = engineID;
     _os_log_impl(&dword_1C5C61000, v6, OS_LOG_TYPE_DEFAULT, "[PUB:%{public}@] engineDidBlockVocalAttenuation | publishing [attenuation blocked]", buf, 0xCu);
   }
 
   [(_MPCMediaRemotePublisher *)self publishIfNeeded];
 }
 
-- (void)engineDidChangeVocalAttenuationLevel:(id)a3
+- (void)engineDidChangeVocalAttenuationLevel:(id)level
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  levelCopy = level;
   v5 = os_log_create("com.apple.amp.mediaplaybackcore", "Publisher");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 engineID];
+    engineID = [levelCopy engineID];
     v7 = 138543362;
-    v8 = v6;
+    v8 = engineID;
     _os_log_impl(&dword_1C5C61000, v5, OS_LOG_TYPE_DEFAULT, "[PUB:%{public}@] engineDidChangeVocalAttenuationLevel | publishing []", &v7, 0xCu);
   }
 
   [(_MPCMediaRemotePublisher *)self publishIfNeeded];
 }
 
-- (void)engineDidChangeVocalAttenuationState:(id)a3
+- (void)engineDidChangeVocalAttenuationState:(id)state
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stateCopy = state;
   v5 = os_log_create("com.apple.amp.mediaplaybackcore", "Publisher");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 engineID];
+    engineID = [stateCopy engineID];
     v7 = 138543362;
-    v8 = v6;
+    v8 = engineID;
     _os_log_impl(&dword_1C5C61000, v5, OS_LOG_TYPE_DEFAULT, "[PUB:%{public}@] engineDidChangeVocalAttenuationState | publishing []", &v7, 0xCu);
   }
 
   [(_MPCMediaRemotePublisher *)self publishIfNeeded];
 }
 
-- (void)engineDidChangeTransitionSettings:(id)a3
+- (void)engineDidChangeTransitionSettings:(id)settings
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 queueController];
-  v6 = [v5 transitionTogglable];
-  if (v6)
+  settingsCopy = settings;
+  queueController = [settingsCopy queueController];
+  transitionTogglable = [queueController transitionTogglable];
+  if (transitionTogglable)
   {
-    v7 = [(MPRemoteCommandCenter *)self->_commandCenter toggleTransitionsCommand];
-    v8 = [v7 isActive];
+    toggleTransitionsCommand = [(MPRemoteCommandCenter *)self->_commandCenter toggleTransitionsCommand];
+    isActive = [toggleTransitionsCommand isActive];
 
-    v9 = [v6 transitionsEnabled];
-    if (v8 != v9)
+    transitionsEnabled = [transitionTogglable transitionsEnabled];
+    if (isActive != transitionsEnabled)
     {
-      v10 = v9;
-      v11 = [(MPRemoteCommandCenter *)self->_commandCenter toggleTransitionsCommand];
-      [v11 setActive:v10];
+      v10 = transitionsEnabled;
+      toggleTransitionsCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter toggleTransitionsCommand];
+      [toggleTransitionsCommand2 setActive:v10];
 
       v12 = os_log_create("com.apple.amp.mediaplaybackcore", "Publisher");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v4 engineID];
+        engineID = [settingsCopy engineID];
         v21 = 138543874;
-        v22 = v13;
+        v22 = engineID;
         v23 = 1024;
-        v24 = v8;
+        v24 = isActive;
         v25 = 1024;
         v26 = v10;
         _os_log_impl(&dword_1C5C61000, v12, OS_LOG_TYPE_DEFAULT, "[PUB:%{public}@] engineDidChangeTransitionSettings | publishing [changed enabled] previous=%{BOOL}u new=%{BOOL}u", &v21, 0x18u);
@@ -6305,24 +6305,24 @@ LABEL_22:
       [(_MPCMediaRemotePublisher *)self publishIfNeeded];
     }
 
-    v14 = [(MPRemoteCommandCenter *)self->_commandCenter toggleTransitionsCommand];
-    v15 = [v14 transitionStyle];
+    toggleTransitionsCommand3 = [(MPRemoteCommandCenter *)self->_commandCenter toggleTransitionsCommand];
+    transitionStyle = [toggleTransitionsCommand3 transitionStyle];
 
-    v16 = [v6 transitionStyle];
-    if (v15 != v16)
+    transitionStyle2 = [transitionTogglable transitionStyle];
+    if (transitionStyle != transitionStyle2)
     {
-      v17 = v16;
-      v18 = [(MPRemoteCommandCenter *)self->_commandCenter toggleTransitionsCommand];
-      [v18 setTransitionStyle:v17];
+      v17 = transitionStyle2;
+      toggleTransitionsCommand4 = [(MPRemoteCommandCenter *)self->_commandCenter toggleTransitionsCommand];
+      [toggleTransitionsCommand4 setTransitionStyle:v17];
 
       v19 = os_log_create("com.apple.amp.mediaplaybackcore", "Publisher");
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v4 engineID];
+        engineID2 = [settingsCopy engineID];
         v21 = 138543874;
-        v22 = v20;
+        v22 = engineID2;
         v23 = 1024;
-        v24 = v15;
+        v24 = transitionStyle;
         v25 = 1024;
         v26 = v17;
         _os_log_impl(&dword_1C5C61000, v19, OS_LOG_TYPE_DEFAULT, "[PUB:%{public}@] engineDidChangeTransitionSettings | publishing [changed style] previous=%d new=%d", &v21, 0x18u);
@@ -6333,26 +6333,26 @@ LABEL_22:
   }
 }
 
-- (void)engine:(id)a3 didChangeActionAtQueueEnd:(int64_t)a4
+- (void)engine:(id)engine didChangeActionAtQueueEnd:(int64_t)end
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(MPRemoteCommandCenter *)self->_commandCenter changeQueueEndActionCommand];
-  v8 = [v7 currentQueueEndAction];
+  engineCopy = engine;
+  changeQueueEndActionCommand = [(MPRemoteCommandCenter *)self->_commandCenter changeQueueEndActionCommand];
+  currentQueueEndAction = [changeQueueEndActionCommand currentQueueEndAction];
 
-  if (v8 != a4)
+  if (currentQueueEndAction != end)
   {
-    v9 = [(MPRemoteCommandCenter *)self->_commandCenter changeQueueEndActionCommand];
-    [v9 setCurrentQueueEndAction:a4];
+    changeQueueEndActionCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter changeQueueEndActionCommand];
+    [changeQueueEndActionCommand2 setCurrentQueueEndAction:end];
 
     v10 = os_log_create("com.apple.amp.mediaplaybackcore", "Publisher");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v6 engineID];
+      engineID = [engineCopy engineID];
       v12 = MPNSStringFromQueueEndAction();
       v13 = MPNSStringFromQueueEndAction();
       v14 = 138543874;
-      v15 = v11;
+      v15 = engineID;
       v16 = 2114;
       v17 = v12;
       v18 = 2114;
@@ -6364,32 +6364,32 @@ LABEL_22:
   }
 }
 
-- (void)engine:(id)a3 didChangeShuffleType:(int64_t)a4
+- (void)engine:(id)engine didChangeShuffleType:(int64_t)type
 {
-  v5 = [(MPRemoteCommandCenter *)self->_commandCenter changeShuffleModeCommand];
-  [v5 setCurrentShuffleType:a4];
+  changeShuffleModeCommand = [(MPRemoteCommandCenter *)self->_commandCenter changeShuffleModeCommand];
+  [changeShuffleModeCommand setCurrentShuffleType:type];
 }
 
-- (void)engine:(id)a3 didChangeRepeatType:(int64_t)a4
+- (void)engine:(id)engine didChangeRepeatType:(int64_t)type
 {
-  v5 = [(MPRemoteCommandCenter *)self->_commandCenter changeRepeatModeCommand];
-  [v5 setCurrentRepeatType:a4];
+  changeRepeatModeCommand = [(MPRemoteCommandCenter *)self->_commandCenter changeRepeatModeCommand];
+  [changeRepeatModeCommand setCurrentRepeatType:type];
 }
 
-- (void)engine:(id)a3 didChangeQueueWithReason:(id)a4
+- (void)engine:(id)engine didChangeQueueWithReason:(id)reason
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  reasonCopy = reason;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v8 = os_log_create("com.apple.amp.mediaplaybackcore", "Publisher");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 engineID];
+    engineID = [engineCopy engineID];
     v12 = 138543618;
-    v13 = v9;
+    v13 = engineID;
     v14 = 2114;
-    v15 = v7;
+    v15 = reasonCopy;
     _os_log_impl(&dword_1C5C61000, v8, OS_LOG_TYPE_DEFAULT, "[PUB:%{public}@] didChangeQueue | invalidating playback queue [%{public}@]", &v12, 0x16u);
   }
 
@@ -6397,24 +6397,24 @@ LABEL_22:
   v10 = os_log_create("com.apple.amp.mediaplaybackcore", "Publisher");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v6 engineID];
+    engineID2 = [engineCopy engineID];
     v12 = 138543618;
-    v13 = v11;
+    v13 = engineID2;
     v14 = 2114;
-    v15 = v7;
+    v15 = reasonCopy;
     _os_log_impl(&dword_1C5C61000, v10, OS_LOG_TYPE_DEFAULT, "[PUB:%{public}@] didChangeQueue | publishing [%{public}@]", &v12, 0x16u);
   }
 
   [(_MPCMediaRemotePublisher *)self publishIfNeeded];
 }
 
-- (void)engine:(id)a3 didChangeToState:(unint64_t)a4
+- (void)engine:(id)engine didChangeToState:(unint64_t)state
 {
-  if ([a3 usesStopState] && a4 != 3)
+  if ([engine usesStopState] && state != 3)
   {
-    if (a4 == 2 && self->_overrideStopState)
+    if (state == 2 && self->_overrideStopState)
     {
-      a4 = 3;
+      state = 3;
     }
 
     else
@@ -6425,16 +6425,16 @@ LABEL_22:
 
   infoCenter = self->_infoCenter;
 
-  [(MPNowPlayingInfoCenter *)infoCenter setPlaybackState:a4];
+  [(MPNowPlayingInfoCenter *)infoCenter setPlaybackState:state];
 }
 
-- (void)engine:(id)a3 didChangeToItem:(id)a4
+- (void)engine:(id)engine didChangeToItem:(id)item
 {
-  v5 = a3;
+  engineCopy = engine;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v6 = [v5 usesStopState];
+  usesStopState = [engineCopy usesStopState];
 
-  if (v6 && self->_overrideStopState)
+  if (usesStopState && self->_overrideStopState)
   {
     self->_overrideStopState = 0;
     [(MPNowPlayingInfoCenter *)self->_infoCenter setPlaybackState:2];
@@ -6445,14 +6445,14 @@ LABEL_22:
   [(_MPCMediaRemotePublisher *)self publishIfNeeded];
 }
 
-- (void)updatePlaybackMetrics:(id)a3
+- (void)updatePlaybackMetrics:(id)metrics
 {
-  v17 = a3;
-  v5 = [v17 objectForKeyedSubscript:@"metrics"];
-  v6 = [v5 firstObject];
+  metricsCopy = metrics;
+  v5 = [metricsCopy objectForKeyedSubscript:@"metrics"];
+  firstObject = [v5 firstObject];
 
   os_unfair_lock_lock(&self->_lock);
-  if (self->_mrMigratePostCallbackCompletion && v6 && ([(MSVBlockGuard *)self->_mrMigratePostCallbackGuard disarm]& 1) != 0)
+  if (self->_mrMigratePostCallbackCompletion && firstObject && ([(MSVBlockGuard *)self->_mrMigratePostCallbackGuard disarm]& 1) != 0)
   {
     v7 = _Block_copy(self->_mrMigratePostCallbackCompletion);
     mrMigratePostCallbackCompletion = self->_mrMigratePostCallbackCompletion;
@@ -6464,7 +6464,7 @@ LABEL_22:
     os_unfair_lock_unlock(&self->_lock);
     if (v7)
     {
-      v10 = [v6 objectForKeyedSubscript:@"raw"];
+      v10 = [firstObject objectForKeyedSubscript:@"raw"];
       v7[2](v7, v10, 0);
     }
   }
@@ -6476,42 +6476,42 @@ LABEL_22:
 
   if (MSVDeviceOSIsInternalInstall())
   {
-    v11 = [v6 objectForKeyedSubscript:@"segments"];
+    v11 = [firstObject objectForKeyedSubscript:@"segments"];
     [v11 msv_reduceIntoDouble:&__block_literal_global_81 by:0.0];
     v13 = v12;
     WeakRetained = objc_loadWeakRetained(&self->_playbackEngine);
-    v15 = [WeakRetained queueController];
-    v16 = [v15 currentItem];
+    queueController = [WeakRetained queueController];
+    currentItem = [queueController currentItem];
 
-    [v16 setLastPlayPerformanceTime:v13];
-    objc_storeStrong(&self->_lastPerformanceMetrics, a3);
+    [currentItem setLastPlayPerformanceTime:v13];
+    objc_storeStrong(&self->_lastPerformanceMetrics, metrics);
   }
 }
 
-- (void)_leaveSharedSessionWithCommandID:(id)a3 completion:(id)a4
+- (void)_leaveSharedSessionWithCommandID:(id)d completion:(id)completion
 {
-  v5 = a4;
-  v6 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-  v7 = [v6 queueController];
-  v8 = [v7 musicSharePlay];
+  completionCopy = completion;
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  queueController = [playbackEngine queueController];
+  musicSharePlay = [queueController musicSharePlay];
 
-  if (v8)
+  if (musicSharePlay)
   {
-    v9 = [v7 musicSharePlay];
-    [v9 endSynchronizedPlayback];
+    musicSharePlay2 = [queueController musicSharePlay];
+    [musicSharePlay2 endSynchronizedPlayback];
 
-    v10 = [v6 sessionManager];
-    v11 = [v10 stateRestorationSessionIdentifier];
+    sessionManager = [playbackEngine sessionManager];
+    stateRestorationSessionIdentifier = [sessionManager stateRestorationSessionIdentifier];
 
-    if ([v11 length])
+    if ([stateRestorationSessionIdentifier length])
     {
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __72___MPCMediaRemotePublisher__leaveSharedSessionWithCommandID_completion___block_invoke;
       v18[3] = &unk_1E8236B80;
       v18[4] = self;
-      v19 = v5;
-      [v6 loadSessionWithIdentifier:v11 completion:v18];
+      v19 = completionCopy;
+      [playbackEngine loadSessionWithIdentifier:stateRestorationSessionIdentifier completion:v18];
       v12 = v19;
     }
 
@@ -6522,7 +6522,7 @@ LABEL_22:
       v16[1] = 3221225472;
       v16[2] = __72___MPCMediaRemotePublisher__leaveSharedSessionWithCommandID_completion___block_invoke_3;
       v16[3] = &unk_1E8238D28;
-      v17 = v5;
+      v17 = completionCopy;
       [(_MPCMediaRemotePublisher *)self performSetQueue:v15 completion:v16];
 
       v12 = v17;
@@ -6532,86 +6532,86 @@ LABEL_22:
   else
   {
     v13 = MEMORY[0x1E69708F8];
-    v11 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:5 debugDescription:{@"Cannot leave shared session [not in shared session] queueController=%@", v7}];
-    v14 = [v13 statusWithCode:200 error:v11];
-    (*(v5 + 2))(v5, v14);
+    stateRestorationSessionIdentifier = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:5 debugDescription:{@"Cannot leave shared session [not in shared session] queueController=%@", queueController}];
+    v14 = [v13 statusWithCode:200 error:stateRestorationSessionIdentifier];
+    (*(completionCopy + 2))(completionCopy, v14);
   }
 }
 
-- (void)leaveSharedSessionWithCommandID:(id)a3 remoteControlInterface:(id)a4 completion:(id)a5
+- (void)leaveSharedSessionWithCommandID:(id)d remoteControlInterface:(id)interface completion:(id)completion
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (![v9 length])
+  dCopy = d;
+  interfaceCopy = interface;
+  completionCopy = completion;
+  if (![dCopy length])
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"_MPCMediaRemotePublisher.m" lineNumber:297 description:{@"Invalid parameter not satisfying: %@", @"commandID.length > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_MPCMediaRemotePublisher.m" lineNumber:297 description:{@"Invalid parameter not satisfying: %@", @"commandID.length > 0"}];
   }
 
-  if (![v10 length])
+  if (![interfaceCopy length])
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"_MPCMediaRemotePublisher.m" lineNumber:298 description:{@"Invalid parameter not satisfying: %@", @"remoteControlInterface.length > 0"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_MPCMediaRemotePublisher.m" lineNumber:298 description:{@"Invalid parameter not satisfying: %@", @"remoteControlInterface.length > 0"}];
   }
 
-  v12 = [(MPRemoteCommandCenter *)self->_commandCenter leaveSharedPlaybackSessionCommand];
+  leaveSharedPlaybackSessionCommand = [(MPRemoteCommandCenter *)self->_commandCenter leaveSharedPlaybackSessionCommand];
   v13 = objc_alloc(MEMORY[0x1E69708E0]);
-  v14 = [v12 mediaRemoteCommandType];
+  mediaRemoteCommandType = [leaveSharedPlaybackSessionCommand mediaRemoteCommandType];
   v15 = *MEMORY[0x1E69B1200];
   v23[0] = *MEMORY[0x1E69B10B0];
   v23[1] = v15;
-  v24[0] = v9;
-  v24[1] = v10;
+  v24[0] = dCopy;
+  v24[1] = interfaceCopy;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:2];
-  v17 = [v13 initWithCommand:v12 mediaRemoteType:v14 options:v16];
+  v17 = [v13 initWithCommand:leaveSharedPlaybackSessionCommand mediaRemoteType:mediaRemoteCommandType options:v16];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __94___MPCMediaRemotePublisher_leaveSharedSessionWithCommandID_remoteControlInterface_completion___block_invoke;
   v21[3] = &unk_1E8238C08;
-  v22 = v11;
-  v18 = v11;
-  [v12 invokeCommandWithEvent:v17 completion:v21];
+  v22 = completionCopy;
+  v18 = completionCopy;
+  [leaveSharedPlaybackSessionCommand invokeCommandWithEvent:v17 completion:v21];
 }
 
-- (id)getQOSDialogForError:(id)a3 withItem:(id)a4
+- (id)getQOSDialogForError:(id)error withItem:(id)item
 {
   if (self)
   {
     self = self->_swift;
   }
 
-  return [(_MPCMediaRemotePublisher *)self getSwiftQOSDialogForError:a3 withItem:a4];
+  return [(_MPCMediaRemotePublisher *)self getSwiftQOSDialogForError:error withItem:item];
 }
 
-- (void)getShouldRestoreStateWithCompletion:(id)a3
+- (void)getShouldRestoreStateWithCompletion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69708A8] standardUserDefaults];
-  if ([v5 shouldSkipNextStateRestoration])
+  completionCopy = completion;
+  standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+  if ([standardUserDefaults shouldSkipNextStateRestoration])
   {
-    [v5 clearShouldSkipNextStateRestoration];
+    [standardUserDefaults clearShouldSkipNextStateRestoration];
 LABEL_4:
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_8;
   }
 
-  if ([v5 disableStateRestoration])
+  if ([standardUserDefaults disableStateRestoration])
   {
     goto LABEL_4;
   }
 
-  v6 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-  v7 = [v6 engineID];
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  engineID = [playbackEngine engineID];
 
   v8 = os_log_create("com.apple.amp.mediaplaybackcore", "Publisher");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v15 = v7;
+    v15 = engineID;
     _os_log_impl(&dword_1C5C61000, v8, OS_LOG_TYPE_DEFAULT, "[PUB:%{public}@] getShouldRestoreState | begin []", buf, 0xCu);
   }
 
@@ -6620,9 +6620,9 @@ LABEL_4:
   v11[1] = 3221225472;
   v11[2] = __64___MPCMediaRemotePublisher_getShouldRestoreStateWithCompletion___block_invoke;
   v11[3] = &unk_1E8236540;
-  v12 = v7;
-  v13 = v4;
-  v10 = v7;
+  v12 = engineID;
+  v13 = completionCopy;
+  v10 = engineID;
   [v9 getPendingCommandTypesWithCompletion:v11];
 
 LABEL_8:
@@ -6630,19 +6630,19 @@ LABEL_8:
 
 - (void)reportUserBackgroundedApplication
 {
-  v3 = [(MPRemoteCommandCenter *)self->_commandCenter pauseCommand];
-  v5 = [v3 newCommandEvent];
+  pauseCommand = [(MPRemoteCommandCenter *)self->_commandCenter pauseCommand];
+  newCommandEvent = [pauseCommand newCommandEvent];
 
-  v4 = [(MPRemoteCommandCenter *)self->_commandCenter pauseCommand];
-  [v4 invokeCommandWithEvent:v5 completion:&__block_literal_global_20707];
+  pauseCommand2 = [(MPRemoteCommandCenter *)self->_commandCenter pauseCommand];
+  [pauseCommand2 invokeCommandWithEvent:newCommandEvent completion:&__block_literal_global_20707];
 }
 
 - (void)dealloc
 {
-  v3 = [(MPNowPlayingInfoCenter *)self->_infoCenter playerPath];
+  playerPath = [(MPNowPlayingInfoCenter *)self->_infoCenter playerPath];
   MRMediaRemotePlaybackSessionSetMigrateFinalizeCallback();
 
-  v4 = [(MPNowPlayingInfoCenter *)self->_infoCenter playerPath];
+  playerPath2 = [(MPNowPlayingInfoCenter *)self->_infoCenter playerPath];
   MRMediaRemotePlaybackSessionSetMigratePostCallback();
 
   [MPCQueueController unregisterPublisher:self];
@@ -6654,9 +6654,9 @@ LABEL_8:
   [(_MPCMediaRemotePublisher *)&v6 dealloc];
 }
 
-- (_MPCMediaRemotePublisher)initWithPlaybackEngine:(id)a3
+- (_MPCMediaRemotePublisher)initWithPlaybackEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v38.receiver = self;
   v38.super_class = _MPCMediaRemotePublisher;
   v5 = [(_MPCMediaRemotePublisher *)&v38 init];
@@ -6673,25 +6673,25 @@ LABEL_8:
     v37 = v8;
     dispatch_async(v7, block);
 
-    objc_storeWeak(&v8->_playbackEngine, v4);
-    [v4 addEngineObserver:v8];
+    objc_storeWeak(&v8->_playbackEngine, engineCopy);
+    [engineCopy addEngineObserver:v8];
     v9 = +[MPCPlaybackAccountManager sharedManager];
     [v9 registerObserver:v8];
 
-    v10 = [v4 initializationParameters];
-    v11 = [v10 remoteCommandCenter];
+    initializationParameters = [engineCopy initializationParameters];
+    remoteCommandCenter = [initializationParameters remoteCommandCenter];
     commandCenter = v8->_commandCenter;
-    v8->_commandCenter = v11;
+    v8->_commandCenter = remoteCommandCenter;
 
     [(MPRemoteCommandCenter *)v8->_commandCenter setWantsSerializedEventDelivery:1];
     [(MPRemoteCommandCenter *)v8->_commandCenter setDelegate:v8];
-    v13 = [v4 initializationParameters];
-    v14 = [v13 nowPlayingInfoCenter];
+    initializationParameters2 = [engineCopy initializationParameters];
+    nowPlayingInfoCenter = [initializationParameters2 nowPlayingInfoCenter];
     infoCenter = v8->_infoCenter;
-    v8->_infoCenter = v14;
+    v8->_infoCenter = nowPlayingInfoCenter;
 
     [(MPNowPlayingInfoCenter *)v8->_infoCenter setPlaybackQueueDataSource:v8];
-    [(MPNowPlayingInfoCenter *)v8->_infoCenter setPlaybackEngine:v4];
+    [(MPNowPlayingInfoCenter *)v8->_infoCenter setPlaybackEngine:engineCopy];
     v16 = [[_MPCMediaRemotePublisher_Swift alloc] initWithPublisher:v8];
     swift = v8->_swift;
     v8->_swift = v16;
@@ -6700,40 +6700,40 @@ LABEL_8:
     detective = v8->_detective;
     v8->_detective = v18;
 
-    v20 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     if (+[MPCPlaybackEngine isSystemMusic])
     {
-      [v20 addObserver:v8 selector:sel__activeSharedSessionDidChange_ name:*MEMORY[0x1E69B08D0] object:0];
-      v21 = [MEMORY[0x1E69B09A0] sharedLocalEndpoint];
-      v22 = [v21 groupSessionInfo];
-      v23 = [v22 identifier];
+      [defaultCenter addObserver:v8 selector:sel__activeSharedSessionDidChange_ name:*MEMORY[0x1E69B08D0] object:0];
+      mEMORY[0x1E69B09A0] = [MEMORY[0x1E69B09A0] sharedLocalEndpoint];
+      groupSessionInfo = [mEMORY[0x1E69B09A0] groupSessionInfo];
+      identifier = [groupSessionInfo identifier];
       hostingSharedSessionID = v8->_hostingSharedSessionID;
-      v8->_hostingSharedSessionID = v23;
+      v8->_hostingSharedSessionID = identifier;
 
-      [v20 addObserver:v8 selector:sel__likedStateChangedNotification_ name:*MEMORY[0x1E696F7C8] object:0];
+      [defaultCenter addObserver:v8 selector:sel__likedStateChangedNotification_ name:*MEMORY[0x1E696F7C8] object:0];
     }
 
-    [v20 addObserver:v8 selector:sel__durationAvailableNotification_ name:*MEMORY[0x1E696F7B8] object:0];
+    [defaultCenter addObserver:v8 selector:sel__durationAvailableNotification_ name:*MEMORY[0x1E696F7B8] object:0];
     if (+[MPCPlaybackEngine isSystemPodcasts])
     {
       v25 = +[MPCPodcastsDefaultsHelper standard];
-      v26 = [MEMORY[0x1E696AD80] podcastsSkipForwardIntervalDefaultDidChange];
-      [v20 addObserver:v8 selector:sel__podcastsSkipIntervalDidChange_ name:v26 object:v25];
+      podcastsSkipForwardIntervalDefaultDidChange = [MEMORY[0x1E696AD80] podcastsSkipForwardIntervalDefaultDidChange];
+      [defaultCenter addObserver:v8 selector:sel__podcastsSkipIntervalDidChange_ name:podcastsSkipForwardIntervalDefaultDidChange object:v25];
 
-      v27 = [MEMORY[0x1E696AD80] podcastsSkipBackwardIntervalDefaultDidChange];
-      [v20 addObserver:v8 selector:sel__podcastsSkipIntervalDidChange_ name:v27 object:v25];
+      podcastsSkipBackwardIntervalDefaultDidChange = [MEMORY[0x1E696AD80] podcastsSkipBackwardIntervalDefaultDidChange];
+      [defaultCenter addObserver:v8 selector:sel__podcastsSkipIntervalDidChange_ name:podcastsSkipBackwardIntervalDefaultDidChange object:v25];
     }
 
-    v28 = [MEMORY[0x1E69708A8] standardUserDefaults];
-    v29 = [v28 artworkCacheLimit];
-    [MEMORY[0x1E69704A0] setCacheLimit:v29 forCacheIdentifier:@"images" cacheReference:v8];
-    v30 = [v28 exportableArtworkCacheLimit];
-    [MEMORY[0x1E69704A0] setCacheLimit:v30 forCacheIdentifier:@"exportables" cacheReference:v8];
-    v31 = [(MPNowPlayingInfoCenter *)v8->_infoCenter playerPath];
+    standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+    artworkCacheLimit = [standardUserDefaults artworkCacheLimit];
+    [MEMORY[0x1E69704A0] setCacheLimit:artworkCacheLimit forCacheIdentifier:@"images" cacheReference:v8];
+    exportableArtworkCacheLimit = [standardUserDefaults exportableArtworkCacheLimit];
+    [MEMORY[0x1E69704A0] setCacheLimit:exportableArtworkCacheLimit forCacheIdentifier:@"exportables" cacheReference:v8];
+    playerPath = [(MPNowPlayingInfoCenter *)v8->_infoCenter playerPath];
     v35 = v8;
     MRMediaRemotePlaybackSessionSetMigrateFinalizeCallback();
 
-    v32 = [(MPNowPlayingInfoCenter *)v8->_infoCenter playerPath];
+    playerPath2 = [(MPNowPlayingInfoCenter *)v8->_infoCenter playerPath];
     v34 = v35;
     MRMediaRemotePlaybackSessionSetMigratePostCallback();
 
@@ -6743,109 +6743,109 @@ LABEL_8:
   return v6;
 }
 
-- (void)nowPlayingInfoCenter:(id)a3 didEndMigrationWithIdentifier:(id)a4 error:(id)a5
+- (void)nowPlayingInfoCenter:(id)center didEndMigrationWithIdentifier:(id)identifier error:(id)error
 {
   if (self)
   {
     self = self->_swift;
   }
 
-  [(_MPCMediaRemotePublisher *)self didEndMigration:a4 setPlaybackSessionCommandStatus:0 error:a5 completion:&__block_literal_global_973];
+  [(_MPCMediaRemotePublisher *)self didEndMigration:identifier setPlaybackSessionCommandStatus:0 error:error completion:&__block_literal_global_973];
 }
 
-- (void)nowPlayingInfoCenter:(id)a3 willBeginSessionMigrationWithIdentifier:(id)a4
+- (void)nowPlayingInfoCenter:(id)center willBeginSessionMigrationWithIdentifier:(id)identifier
 {
   if (self)
   {
     self = self->_swift;
   }
 
-  [(_MPCMediaRemotePublisher *)self willBeginSessionMigrationWithIdentifier:a4];
+  [(_MPCMediaRemotePublisher *)self willBeginSessionMigrationWithIdentifier:identifier];
 }
 
-- (void)nowPlayingInfoCenter:(id)a3 getTransportablePlaybackSessionRepresentationForRequest:(id)a4 completion:(id)a5
+- (void)nowPlayingInfoCenter:(id)center getTransportablePlaybackSessionRepresentationForRequest:(id)request completion:(id)completion
 {
   if (self)
   {
     self = self->_swift;
   }
 
-  [(_MPCMediaRemotePublisher *)self getTransportablePlaybackSessionRepresentationForRequest:a4 completion:a5];
+  [(_MPCMediaRemotePublisher *)self getTransportablePlaybackSessionRepresentationForRequest:request completion:completion];
 }
 
-- (id)nowPlayingInfoCenter:(id)a3 childContentItemIDAtIndex:(int64_t)a4 ofItem:(id)a5
+- (id)nowPlayingInfoCenter:(id)center childContentItemIDAtIndex:(int64_t)index ofItem:(id)item
 {
-  v7 = [a5 identifier];
-  v8 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-  v9 = [v8 queueController];
+  identifier = [item identifier];
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  queueController = [playbackEngine queueController];
 
-  v10 = [v9 itemForContentItemID:v7];
+  v10 = [queueController itemForContentItemID:identifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v11 = v10;
-    v12 = [v11 chapters];
-    v13 = [v12 count];
+    chapters = [v11 chapters];
+    v13 = [chapters count];
 
-    if (v13 <= a4)
+    if (v13 <= index)
     {
-      v16 = 0;
+      identifier2 = 0;
     }
 
     else
     {
-      v14 = [v11 chapters];
-      v15 = [v14 objectAtIndex:a4];
+      chapters2 = [v11 chapters];
+      v15 = [chapters2 objectAtIndex:index];
 
-      v16 = [v15 identifier];
+      identifier2 = [v15 identifier];
     }
   }
 
   else
   {
-    v16 = 0;
+    identifier2 = 0;
   }
 
-  return v16;
+  return identifier2;
 }
 
-- (id)nowPlayingInfoCenter:(id)a3 lyricsForContentItem:(id)a4 completion:(id)a5
+- (id)nowPlayingInfoCenter:(id)center lyricsForContentItem:(id)item completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  centerCopy = center;
+  itemCopy = item;
+  completionCopy = completion;
   v11 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
-  v12 = [v9 identifier];
-  v13 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-  v14 = [v13 queueController];
-  v15 = [v14 itemForContentItemID:v12];
+  identifier = [itemCopy identifier];
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  queueController = [playbackEngine queueController];
+  v15 = [queueController itemForContentItemID:identifier];
   if (objc_opt_respondsToSelector())
   {
-    v16 = [v15 nowPlayingInfoCenter:v8 lyricsForContentItem:v9 completion:v10];
+    v16 = [v15 nowPlayingInfoCenter:centerCopy lyricsForContentItem:itemCopy completion:completionCopy];
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   return v11;
 }
 
-- (id)nowPlayingInfoCenter:(id)a3 artworkCatalogForContentItem:(id)a4
+- (id)nowPlayingInfoCenter:(id)center artworkCatalogForContentItem:(id)item
 {
-  v5 = [a4 identifier];
-  v6 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-  v7 = [v6 queueController];
-  v8 = [v7 itemForContentItemID:v5];
-  v9 = [v6 player];
-  v10 = [v9 currentItem];
+  identifier = [item identifier];
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  queueController = [playbackEngine queueController];
+  v8 = [queueController itemForContentItemID:identifier];
+  player = [playbackEngine player];
+  currentItem = [player currentItem];
 
   v11 = 0.0;
-  if (v8 == v10)
+  if (v8 == currentItem)
   {
-    v12 = [v6 player];
-    [v12 currentTime];
+    player2 = [playbackEngine player];
+    [player2 currentTime];
     v11 = v13;
   }
 
@@ -6854,30 +6854,30 @@ LABEL_8:
   return v14;
 }
 
-- (id)nowPlayingInfoCenter:(id)a3 transcriptAlignmentsForContentItem:(id)a4 completion:(id)a5
+- (id)nowPlayingInfoCenter:(id)center transcriptAlignmentsForContentItem:(id)item completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v8 = MEMORY[0x1E696AE38];
-  v9 = a4;
+  itemCopy = item;
   v10 = [v8 progressWithTotalUnitCount:1];
-  v11 = [v9 identifier];
+  identifier = [itemCopy identifier];
 
-  v12 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-  v13 = [v12 queueController];
-  v14 = [v13 currentItem];
-  v15 = [v14 contentItemID];
-  if ([v15 isEqualToString:v11])
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  queueController = [playbackEngine queueController];
+  currentItem = [queueController currentItem];
+  contentItemID = [currentItem contentItemID];
+  if ([contentItemID isEqualToString:identifier])
   {
-    v16 = [v12 transcriptAlignmentController];
+    transcriptAlignmentController = [playbackEngine transcriptAlignmentController];
 
-    if (v16)
+    if (transcriptAlignmentController)
     {
-      v17 = [v12 transcriptAlignmentController];
-      [v17 startProcessing];
+      transcriptAlignmentController2 = [playbackEngine transcriptAlignmentController];
+      [transcriptAlignmentController2 startProcessing];
 
-      v18 = [v12 transcriptAlignmentController];
-      v19 = [v18 transcriptAlignments];
-      v7[2](v7, v19, 0);
+      transcriptAlignmentController3 = [playbackEngine transcriptAlignmentController];
+      transcriptAlignments = [transcriptAlignmentController3 transcriptAlignments];
+      completionCopy[2](completionCopy, transcriptAlignments, 0);
 
       [v10 setCompletedUnitCount:1];
       goto LABEL_6;
@@ -6889,29 +6889,29 @@ LABEL_8:
   }
 
   v20 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:3 debugDescription:@"Content item not found"];
-  (v7)[2](v7, 0, v20);
+  (completionCopy)[2](completionCopy, 0, v20);
 
 LABEL_6:
 
   return v10;
 }
 
-- (id)nowPlayingInfoCenter:(id)a3 infoForContentItem:(id)a4 completion:(id)a5
+- (id)nowPlayingInfoCenter:(id)center infoForContentItem:(id)item completion:(id)completion
 {
   v7 = MEMORY[0x1E696AE38];
-  v8 = a5;
-  v9 = a4;
+  completionCopy = completion;
+  itemCopy = item;
   v10 = [v7 progressWithTotalUnitCount:1];
-  v11 = [v9 identifier];
+  identifier = [itemCopy identifier];
 
-  v12 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-  v13 = [v12 queueController];
-  v14 = [v13 itemForContentItemID:v11];
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  queueController = [playbackEngine queueController];
+  v14 = [queueController itemForContentItemID:identifier];
   v15 = v14;
   if (v14)
   {
-    v16 = [v14 itemDescription];
-    v8[2](v8, v16, 0);
+    itemDescription = [v14 itemDescription];
+    completionCopy[2](completionCopy, itemDescription, 0);
 
     [v10 setCompletedUnitCount:1];
   }
@@ -6919,49 +6919,49 @@ LABEL_6:
   else
   {
     v17 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:3 debugDescription:@"Content item not found"];
-    (v8)[2](v8, 0, v17);
+    (completionCopy)[2](completionCopy, 0, v17);
   }
 
   return v10;
 }
 
-- (id)nowPlayingInfoCenter:(id)a3 remoteArtworkForContentItem:(id)a4 format:(id)a5 size:(CGSize)a6 completion:(id)a7
+- (id)nowPlayingInfoCenter:(id)center remoteArtworkForContentItem:(id)item format:(id)format size:(CGSize)size completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  if (*MEMORY[0x1E6970298] == v13 || [v13 isEqual:?])
+  centerCopy = center;
+  itemCopy = item;
+  formatCopy = format;
+  completionCopy = completion;
+  if (*MEMORY[0x1E6970298] == formatCopy || [formatCopy isEqual:?])
   {
-    v15 = [(_MPCMediaRemotePublisher *)self nowPlayingInfoCenter:v11 artworkCatalogForContentItem:v12];
+    v15 = [(_MPCMediaRemotePublisher *)self nowPlayingInfoCenter:centerCopy artworkCatalogForContentItem:itemCopy];
     [v15 setCacheIdentifier:@"exportables" forCacheReference:self];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __115___MPCMediaRemotePublisher_PlaybackQueue__nowPlayingInfoCenter_remoteArtworkForContentItem_format_size_completion___block_invoke;
     v18[3] = &unk_1E8236F78;
-    v19 = v14;
+    v19 = completionCopy;
     [v15 requestExportableArtworkPropertiesWithCompletion:v18];
   }
 
   else
   {
-    v16 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:29 debugDescription:{@"request for unknown remote artwork format: %@", v13}];
-    (*(v14 + 2))(v14, 0, v16);
+    v16 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:29 debugDescription:{@"request for unknown remote artwork format: %@", formatCopy}];
+    (*(completionCopy + 2))(completionCopy, 0, v16);
   }
 
   return 0;
 }
 
-- (id)nowPlayingInfoCenter:(id)a3 artworkForContentItem:(id)a4 size:(CGSize)a5 completion:(id)a6
+- (id)nowPlayingInfoCenter:(id)center artworkForContentItem:(id)item size:(CGSize)size completion:(id)completion
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = a6;
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
   v12 = MEMORY[0x1E696AE38];
-  v13 = a4;
-  v14 = a3;
+  itemCopy = item;
+  centerCopy = center;
   v15 = [v12 progressWithTotalUnitCount:1];
-  v16 = [(_MPCMediaRemotePublisher *)self nowPlayingInfoCenter:v14 artworkCatalogForContentItem:v13];
+  v16 = [(_MPCMediaRemotePublisher *)self nowPlayingInfoCenter:centerCopy artworkCatalogForContentItem:itemCopy];
 
   if (v16)
   {
@@ -6971,7 +6971,7 @@ LABEL_6:
     v19[1] = 3221225472;
     v19[2] = __102___MPCMediaRemotePublisher_PlaybackQueue__nowPlayingInfoCenter_artworkForContentItem_size_completion___block_invoke;
     v19[3] = &unk_1E8236F50;
-    v21 = v11;
+    v21 = completionCopy;
     v20 = v15;
     [v16 requestImageWithCompletion:v19];
   }
@@ -6979,44 +6979,44 @@ LABEL_6:
   else
   {
     Error = MRMediaRemoteCreateError();
-    (*(v11 + 2))(v11, 0, Error);
+    (*(completionCopy + 2))(completionCopy, 0, Error);
   }
 
   return v15;
 }
 
-- (id)nowPlayingInfoCenter:(id)a3 contentItemForID:(id)a4
+- (id)nowPlayingInfoCenter:(id)center contentItemForID:(id)d
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-  v7 = [v6 queueTranslator];
-  v8 = [v7 cachedQueueItemForContentItemID:v5];
+  dCopy = d;
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  queueTranslator = [playbackEngine queueTranslator];
+  v8 = [queueTranslator cachedQueueItemForContentItemID:dCopy];
 
   if (v8)
   {
-    v9 = [v8 contentItem];
+    contentItem = [v8 contentItem];
   }
 
   else
   {
-    v10 = [v6 queueController];
-    v11 = [v10 itemForContentItemID:v5];
-    v12 = [v11 contentItem];
-    v13 = [v10 currentItem];
-    if (!v12)
+    queueController = [playbackEngine queueController];
+    v11 = [queueController itemForContentItemID:dCopy];
+    contentItem2 = [v11 contentItem];
+    currentItem = [queueController currentItem];
+    if (!contentItem2)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v23 = v11;
-        v24 = v10;
+        v24 = queueController;
         v28 = 0u;
         v29 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v22 = v13;
-        obj = [v13 chapters];
+        v22 = currentItem;
+        obj = [currentItem chapters];
         v14 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
         if (v14)
         {
@@ -7032,16 +7032,16 @@ LABEL_6:
               }
 
               v18 = *(*(&v26 + 1) + 8 * i);
-              v19 = [v18 identifier];
-              v20 = [v19 isEqualToString:v5];
+              identifier = [v18 identifier];
+              v20 = [identifier isEqualToString:dCopy];
 
               if (v20)
               {
-                v9 = v18;
+                contentItem = v18;
 
                 v11 = v23;
-                v10 = v24;
-                v13 = v22;
+                queueController = v24;
+                currentItem = v22;
                 goto LABEL_15;
               }
             }
@@ -7057,26 +7057,26 @@ LABEL_6:
         }
 
         v11 = v23;
-        v10 = v24;
-        v13 = v22;
+        queueController = v24;
+        currentItem = v22;
       }
     }
 
-    v9 = v12;
+    contentItem = contentItem2;
 LABEL_15:
   }
 
-  return v9;
+  return contentItem;
 }
 
-- (id)nowPlayingInfoCenter:(id)a3 contentItemIDsFromOffset:(int64_t)a4 toOffset:(int64_t)a5 nowPlayingIndex:(int64_t *)a6
+- (id)nowPlayingInfoCenter:(id)center contentItemIDsFromOffset:(int64_t)offset toOffset:(int64_t)toOffset nowPlayingIndex:(int64_t *)index
 {
-  v9 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-  v10 = [v9 queueController];
-  v11 = v10;
-  if (v10)
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  queueController = [playbackEngine queueController];
+  v11 = queueController;
+  if (queueController)
   {
-    v12 = [v10 contentItemIDsFromOffset:a4 toOffset:a5 mode:1 nowPlayingIndex:a6];
+    v12 = [queueController contentItemIDsFromOffset:offset toOffset:toOffset mode:1 nowPlayingIndex:index];
   }
 
   else
@@ -7087,33 +7087,33 @@ LABEL_15:
   return v12;
 }
 
-- (id)nowPlayingInfoCenter:(id)a3 contentItemIDForOffset:(int64_t)a4
+- (id)nowPlayingInfoCenter:(id)center contentItemIDForOffset:(int64_t)offset
 {
-  v5 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-  v6 = [v5 queueController];
-  v7 = [v6 contentItemIDWithCurrentItemOffset:a4 mode:1 didReachEnd:0];
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  queueController = [playbackEngine queueController];
+  v7 = [queueController contentItemIDWithCurrentItemOffset:offset mode:1 didReachEnd:0];
 
   return v7;
 }
 
-- (id)playbackQueueAuxilaryNowPlayingInfoForNowPlayingInfoCenter:(id)a3
+- (id)playbackQueueAuxilaryNowPlayingInfoForNowPlayingInfoCenter:(id)center
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v3 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-  v4 = [v3 queueController];
-  v5 = [v4 music];
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  queueController = [playbackEngine queueController];
+  music = [queueController music];
 
-  if (v5)
+  if (music)
   {
-    v6 = [v4 currentItem];
-    v7 = [v3 eventStream];
+    currentItem = [queueController currentItem];
+    eventStream = [playbackEngine eventStream];
     v13 = MEMORY[0x1E69E9820];
     v14 = 3221225472;
     v15 = __102___MPCMediaRemotePublisher_PlaybackQueue__playbackQueueAuxilaryNowPlayingInfoForNowPlayingInfoCenter___block_invoke;
     v16 = &unk_1E8236F28;
-    v17 = v6;
-    v8 = v6;
-    v9 = [v7 performQueryReturningBOOL:&v13];
+    v17 = currentItem;
+    v8 = currentItem;
+    v9 = [eventStream performQueryReturningBOOL:&v13];
     v18 = *MEMORY[0x1E69B0EF8];
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{v9, v13, v14, v15, v16}];
     v19[0] = v10;
@@ -7128,49 +7128,49 @@ LABEL_15:
   return v11;
 }
 
-- (id)playbackQueuePropertiesForNowPlayingInfoCenter:(id)a3
+- (id)playbackQueuePropertiesForNowPlayingInfoCenter:(id)center
 {
-  v3 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-  v4 = [v3 queueController];
-  v5 = [v4 upNextBehavior];
-  if (v5)
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  queueController = [playbackEngine queueController];
+  upNextBehavior = [queueController upNextBehavior];
+  if (upNextBehavior)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
-    v7 = [v4 currentItem];
-    v8 = [v7 contentItemID];
-    v9 = [v5 tailInsertionContentItemIDForTargetContentItemID:v8];
-    [v6 setObject:v9 forKeyedSubscript:@"tailInsertionContentItemID"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    currentItem = [queueController currentItem];
+    contentItemID = [currentItem contentItemID];
+    v9 = [upNextBehavior tailInsertionContentItemIDForTargetContentItemID:contentItemID];
+    [dictionary setObject:v9 forKeyedSubscript:@"tailInsertionContentItemID"];
 
-    v10 = [v5 displayItemCount];
-    if (v10)
+    displayItemCount = [upNextBehavior displayItemCount];
+    if (displayItemCount)
     {
-      v11 = v10;
-      v12 = [v4 currentItem];
-      v13 = [v12 isRadioItem];
+      v11 = displayItemCount;
+      currentItem2 = [queueController currentItem];
+      isRadioItem = [currentItem2 isRadioItem];
 
-      if ((v13 & 1) == 0)
+      if ((isRadioItem & 1) == 0)
       {
         v14 = [MEMORY[0x1E696AD98] numberWithInteger:v11];
-        [v6 setObject:v14 forKeyedSubscript:@"totalItemCount"];
+        [dictionary setObject:v14 forKeyedSubscript:@"totalItemCount"];
       }
     }
   }
 
   else
   {
-    v6 = 0;
+    dictionary = 0;
   }
 
-  return v6;
+  return dictionary;
 }
 
-- (id)playbackQueueIdentifierForNowPlayingInfoCenter:(id)a3
+- (id)playbackQueueIdentifierForNowPlayingInfoCenter:(id)center
 {
-  v3 = [(_MPCMediaRemotePublisher *)self playbackEngine];
-  v4 = [v3 queueController];
-  v5 = [v4 sessionID];
+  playbackEngine = [(_MPCMediaRemotePublisher *)self playbackEngine];
+  queueController = [playbackEngine queueController];
+  sessionID = [queueController sessionID];
 
-  return v5;
+  return sessionID;
 }
 
 @end

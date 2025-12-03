@@ -1,53 +1,53 @@
 @interface HKSleepMetricsEngine
-+ (double)_timeIntervalForDate:(id)a3 sinceDate:(id)a4 calendar:(id)a5;
-+ (id)_computeStandardDeviationFor:(id)a3;
-+ (id)_dateComponentsForInterval:(double)a3 sinceDate:(id)a4 calendar:(id)a5;
-+ (id)_firstAsleepSegment:(id)a3;
-+ (id)_firstSegmentMatchingSleepValues:(id)a3 inPeriods:(id)a4;
-+ (id)_generateConsiderationIntervalFromDaySummaries:(id)a3 morningIndexRange:(id)a4;
-+ (id)_lastAsleepSegment:(id)a3;
-+ (id)_lastSegmentMatchingSleepValues:(id)a3 inPeriods:(id)a4;
-+ (id)sleepMetricsForDaySummaries:(id)a3 inMorningIndexRange:(id)a4;
-- (HKSleepMetricsEngine)initWithHealthStore:(id)a3;
-- (void)fetchSleepMetricsForMorningIndexRange:(id)a3 completion:(id)a4;
++ (double)_timeIntervalForDate:(id)date sinceDate:(id)sinceDate calendar:(id)calendar;
++ (id)_computeStandardDeviationFor:(id)for;
++ (id)_dateComponentsForInterval:(double)interval sinceDate:(id)date calendar:(id)calendar;
++ (id)_firstAsleepSegment:(id)segment;
++ (id)_firstSegmentMatchingSleepValues:(id)values inPeriods:(id)periods;
++ (id)_generateConsiderationIntervalFromDaySummaries:(id)summaries morningIndexRange:(id)range;
++ (id)_lastAsleepSegment:(id)segment;
++ (id)_lastSegmentMatchingSleepValues:(id)values inPeriods:(id)periods;
++ (id)sleepMetricsForDaySummaries:(id)summaries inMorningIndexRange:(id)range;
+- (HKSleepMetricsEngine)initWithHealthStore:(id)store;
+- (void)fetchSleepMetricsForMorningIndexRange:(id)range completion:(id)completion;
 @end
 
 @implementation HKSleepMetricsEngine
 
-- (HKSleepMetricsEngine)initWithHealthStore:(id)a3
+- (HKSleepMetricsEngine)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = HKSleepMetricsEngine;
   v6 = [(HKSleepMetricsEngine *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
+    objc_storeStrong(&v6->_healthStore, store);
   }
 
   return v7;
 }
 
-- (void)fetchSleepMetricsForMorningIndexRange:(id)a3 completion:(id)a4
+- (void)fetchSleepMetricsForMorningIndexRange:(id)range completion:(id)completion
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v7 = a4;
+  var1 = range.var1;
+  var0 = range.var0;
+  completionCopy = completion;
   v8 = [HKSleepDaySummaryQuery alloc];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __73__HKSleepMetricsEngine_fetchSleepMetricsForMorningIndexRange_completion___block_invoke;
   v16 = &unk_1E7381880;
-  v17 = self;
-  v18 = v7;
+  selfCopy = self;
+  v18 = completionCopy;
   v19 = var0;
   v20 = var1;
-  v9 = v7;
+  v9 = completionCopy;
   v10 = [(HKSleepDaySummaryQuery *)v8 initWithMorningIndexRange:var0 ascending:var1 limit:1 options:0 resultsHandler:1, &v13];
   v11 = [HKSleepDaySummaryCacheSettings alloc];
-  v12 = [(HKSleepDaySummaryCacheSettings *)v11 initWithIdentifier:@"SleepMetricsEngine" mode:0, v13, v14, v15, v16, v17];
-  [(HKSleepDaySummaryQuery *)v10 setCacheSettings:v12];
+  selfCopy = [(HKSleepDaySummaryCacheSettings *)v11 initWithIdentifier:@"SleepMetricsEngine" mode:0, v13, v14, v15, v16, selfCopy];
+  [(HKSleepDaySummaryQuery *)v10 setCacheSettings:selfCopy];
 
   [(HKQuery *)v10 setDebugIdentifier:@"SleepMetricsEngine"];
   [(HKHealthStore *)self->_healthStore executeQuery:v10];
@@ -71,25 +71,25 @@ void __73__HKSleepMetricsEngine_fetchSleepMetricsForMorningIndexRange_completion
   }
 }
 
-+ (id)sleepMetricsForDaySummaries:(id)a3 inMorningIndexRange:(id)a4
++ (id)sleepMetricsForDaySummaries:(id)summaries inMorningIndexRange:(id)range
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v247 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  summariesCopy = summaries;
   v164 = objc_alloc_init(MEMORY[0x1E696AD50]);
   v172 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v166 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v165 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v224 = a1;
+  selfCopy = self;
   v184 = var0;
   v185 = var1;
-  v208 = [a1 _generateConsiderationIntervalFromDaySummaries:v7 morningIndexRange:{var0, var1}];
+  v208 = [self _generateConsiderationIntervalFromDaySummaries:summariesCopy morningIndexRange:{var0, var1}];
   v243 = 0u;
   v244 = 0u;
   v241 = 0u;
   v242 = 0u;
-  obj = v7;
+  obj = summariesCopy;
   v214 = [obj countByEnumeratingWithState:&v241 objects:v246 count:16];
   if (!v214)
   {
@@ -115,7 +115,7 @@ void __73__HKSleepMetricsEngine_fetchSleepMetricsForMorningIndexRange_completion
     v178 = 0.0;
     v194 = 0.0;
     v196 = 0.0;
-    v133 = obj;
+    v171 = obj;
     v190 = 0.0;
     v192 = 0.0;
     v188 = 0.0;
@@ -179,8 +179,8 @@ void __73__HKSleepMetricsEngine_fetchSleepMetricsForMorningIndexRange_completion
       v230 = v11;
       if ((v210 & 1) == 0)
       {
-        v12 = [v11 morningIndex];
-        v13 = v12 >= v184 && v12 - v184 < v185;
+        morningIndex = [v11 morningIndex];
+        v13 = morningIndex >= v184 && morningIndex - v184 < v185;
         v11 = v230;
         if (!v13)
         {
@@ -188,8 +188,8 @@ void __73__HKSleepMetricsEngine_fetchSleepMetricsForMorningIndexRange_completion
         }
       }
 
-      v14 = [v11 dateInterval];
-      v220 = [v224 _generateStrategyWithSleepDayInterval:v14 considerationInterval:v208];
+      dateInterval = [v11 dateInterval];
+      v220 = [selfCopy _generateStrategyWithSleepDayInterval:dateInterval considerationInterval:v208];
 
       v228 = [v230 durationsForStrategy:v220];
       [v228 sleepDuration];
@@ -317,23 +317,23 @@ void __73__HKSleepMetricsEngine_fetchSleepMetricsForMorningIndexRange_completion
         }
 
         v206 = v43;
-        v218 = [v230 primarySchedule];
-        if (v218)
+        primarySchedule = [v230 primarySchedule];
+        if (primarySchedule)
         {
-          v44 = [v230 morningIndex];
-          v45 = [v230 calendar];
-          v216 = [v218 bedtimeDateIntervalForMorningIndex:v44 calendar:v45];
+          morningIndex2 = [v230 morningIndex];
+          calendar = [v230 calendar];
+          v216 = [primarySchedule bedtimeDateIntervalForMorningIndex:morningIndex2 calendar:calendar];
 
-          v225 = [v216 startDate];
-          if (v225)
+          startDate = [v216 startDate];
+          if (startDate)
           {
-            v46 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v225 duration:900.0];
+            v46 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:startDate duration:900.0];
             v240 = 0u;
             v238 = 0u;
             v239 = 0u;
             v237 = 0u;
-            v47 = [v230 periods];
-            v48 = [v47 countByEnumeratingWithState:&v237 objects:v245 count:16];
+            periods = [v230 periods];
+            v48 = [periods countByEnumeratingWithState:&v237 objects:v245 count:16];
             if (v48)
             {
               v49 = 0;
@@ -344,12 +344,12 @@ void __73__HKSleepMetricsEngine_fetchSleepMetricsForMorningIndexRange_completion
                 {
                   if (*v238 != v50)
                   {
-                    objc_enumerationMutation(v47);
+                    objc_enumerationMutation(periods);
                   }
 
                   v52 = *(*(&v237 + 1) + 8 * j);
-                  v53 = [v52 dateInterval];
-                  v54 = [v53 intersectsDateInterval:v46];
+                  dateInterval2 = [v52 dateInterval];
+                  v54 = [dateInterval2 intersectsDateInterval:v46];
 
                   if (v54)
                   {
@@ -360,9 +360,9 @@ void __73__HKSleepMetricsEngine_fetchSleepMetricsForMorningIndexRange_completion
                     goto LABEL_69;
                   }
 
-                  v55 = [v52 dateInterval];
-                  v56 = [v55 startDate];
-                  v57 = [v56 hk_isAfterOrEqualToDate:v225];
+                  dateInterval3 = [v52 dateInterval];
+                  startDate2 = [dateInterval3 startDate];
+                  v57 = [startDate2 hk_isAfterOrEqualToDate:startDate];
                   if (v49)
                   {
                     v58 = 0;
@@ -379,7 +379,7 @@ void __73__HKSleepMetricsEngine_fetchSleepMetricsForMorningIndexRange_completion
                   }
                 }
 
-                v48 = [v47 countByEnumeratingWithState:&v237 objects:v245 count:16];
+                v48 = [periods countByEnumeratingWithState:&v237 objects:v245 count:16];
                 if (v48)
                 {
                   continue;
@@ -392,9 +392,9 @@ LABEL_69:
 
               if (v49)
               {
-                v60 = [v49 dateInterval];
-                v61 = [v60 startDate];
-                [v61 timeIntervalSinceDate:v225];
+                dateInterval4 = [v49 dateInterval];
+                startDate3 = [dateInterval4 startDate];
+                [startDate3 timeIntervalSinceDate:startDate];
                 v63 = v62;
 
                 ++v168;
@@ -405,7 +405,7 @@ LABEL_69:
 
             else
             {
-              v49 = v47;
+              v49 = periods;
 LABEL_72:
             }
           }
@@ -444,9 +444,9 @@ LABEL_72:
         {
           if ([v230 hasNonZeroSleepDurationGoal])
           {
-            v74 = [v230 sleepDurationGoal];
+            sleepDurationGoal = [v230 sleepDurationGoal];
             v75 = +[HKUnit secondUnit];
-            [v74 doubleValueForUnit:v75];
+            [sleepDurationGoal doubleValueForUnit:v75];
             v77 = v76;
 
             v78 = v77 - v16;
@@ -462,28 +462,28 @@ LABEL_72:
           v73 = v230;
         }
 
-        v79 = [v73 periods];
-        v80 = [v79 firstObject];
+        periods2 = [v73 periods];
+        firstObject = [periods2 firstObject];
 
-        v81 = [v230 periods];
-        v82 = [v81 lastObject];
+        periods3 = [v230 periods];
+        lastObject = [periods3 lastObject];
 
-        if (v80 && v82)
+        if (firstObject && lastObject)
         {
-          v83 = [v80 dateInterval];
-          v84 = [v83 startDate];
-          v85 = [v230 dateInterval];
-          v86 = [v85 startDate];
-          v87 = [v230 calendar];
-          [v224 _timeIntervalForDate:v84 sinceDate:v86 calendar:v87];
+          dateInterval5 = [firstObject dateInterval];
+          startDate4 = [dateInterval5 startDate];
+          dateInterval6 = [v230 dateInterval];
+          startDate5 = [dateInterval6 startDate];
+          calendar2 = [v230 calendar];
+          [selfCopy _timeIntervalForDate:startDate4 sinceDate:startDate5 calendar:calendar2];
           v89 = v88;
 
-          v90 = [v82 dateInterval];
-          v91 = [v90 endDate];
-          v92 = [v230 dateInterval];
-          v93 = [v92 startDate];
-          v94 = [v230 calendar];
-          [v224 _timeIntervalForDate:v91 sinceDate:v93 calendar:v94];
+          dateInterval7 = [lastObject dateInterval];
+          endDate = [dateInterval7 endDate];
+          dateInterval8 = [v230 dateInterval];
+          startDate6 = [dateInterval8 startDate];
+          calendar3 = [v230 calendar];
+          [selfCopy _timeIntervalForDate:endDate sinceDate:startDate6 calendar:calendar3];
           v96 = v95;
 
           v177 = v177 + v96;
@@ -491,28 +491,28 @@ LABEL_72:
           ++v182;
         }
 
-        v97 = [v230 periods];
-        v226 = [v224 _firstInBedSegment:v97];
+        periods4 = [v230 periods];
+        v226 = [selfCopy _firstInBedSegment:periods4];
 
-        v98 = [v230 periods];
-        v99 = [v224 _lastInBedSegment:v98];
+        periods5 = [v230 periods];
+        v99 = [selfCopy _lastInBedSegment:periods5];
 
         if (v226 && v99)
         {
-          v100 = [v226 dateInterval];
-          v101 = [v100 startDate];
-          v102 = [v230 dateInterval];
-          v103 = [v102 startDate];
-          v104 = [v230 calendar];
-          [v224 _timeIntervalForDate:v101 sinceDate:v103 calendar:v104];
+          dateInterval9 = [v226 dateInterval];
+          startDate7 = [dateInterval9 startDate];
+          dateInterval10 = [v230 dateInterval];
+          startDate8 = [dateInterval10 startDate];
+          calendar4 = [v230 calendar];
+          [selfCopy _timeIntervalForDate:startDate7 sinceDate:startDate8 calendar:calendar4];
           v106 = v105;
 
-          v107 = [v99 dateInterval];
-          v108 = [v107 endDate];
-          v109 = [v230 dateInterval];
-          v110 = [v109 startDate];
-          v111 = [v230 calendar];
-          [v224 _timeIntervalForDate:v108 sinceDate:v110 calendar:v111];
+          dateInterval11 = [v99 dateInterval];
+          endDate2 = [dateInterval11 endDate];
+          dateInterval12 = [v230 dateInterval];
+          startDate9 = [dateInterval12 startDate];
+          calendar5 = [v230 calendar];
+          [selfCopy _timeIntervalForDate:endDate2 sinceDate:startDate9 calendar:calendar5];
           v113 = v112;
 
           v175 = v175 + v106;
@@ -520,28 +520,28 @@ LABEL_72:
           ++v181;
         }
 
-        v114 = [v230 periods];
-        v115 = [v224 _firstAsleepSegment:v114];
+        periods6 = [v230 periods];
+        v115 = [selfCopy _firstAsleepSegment:periods6];
 
-        v116 = [v230 periods];
-        v117 = [v224 _lastAsleepSegment:v116];
+        periods7 = [v230 periods];
+        v117 = [selfCopy _lastAsleepSegment:periods7];
 
         if (v115 && v117)
         {
-          v118 = [v115 dateInterval];
-          v119 = [v118 startDate];
-          v120 = [v230 dateInterval];
-          v121 = [v120 startDate];
-          v122 = [v230 calendar];
-          [v224 _timeIntervalForDate:v119 sinceDate:v121 calendar:v122];
+          dateInterval13 = [v115 dateInterval];
+          startDate10 = [dateInterval13 startDate];
+          dateInterval14 = [v230 dateInterval];
+          startDate11 = [dateInterval14 startDate];
+          calendar6 = [v230 calendar];
+          [selfCopy _timeIntervalForDate:startDate10 sinceDate:startDate11 calendar:calendar6];
           v124 = v123;
 
-          v125 = [v117 dateInterval];
-          v126 = [v125 endDate];
-          v127 = [v230 dateInterval];
-          v128 = [v127 startDate];
-          v129 = [v230 calendar];
-          [v224 _timeIntervalForDate:v126 sinceDate:v128 calendar:v129];
+          dateInterval15 = [v117 dateInterval];
+          endDate3 = [dateInterval15 endDate];
+          dateInterval16 = [v230 dateInterval];
+          startDate12 = [dateInterval16 startDate];
+          calendar7 = [v230 calendar];
+          [selfCopy _timeIntervalForDate:endDate3 sinceDate:startDate12 calendar:calendar7];
           v131 = v130;
 
           v173 = v173 + v124;
@@ -567,8 +567,8 @@ LABEL_72:
 
   else
   {
-    v132 = [MEMORY[0x1E696AD98] numberWithDouble:v167 / v168];
-    v215 = [HKQuantity hk_quantityWithSeconds:v132];
+    v168 = [MEMORY[0x1E696AD98] numberWithDouble:v167 / v168];
+    v215 = [HKQuantity hk_quantityWithSeconds:v168];
   }
 
   if (v171 < 1)
@@ -578,8 +578,8 @@ LABEL_72:
 
   else
   {
-    v133 = [MEMORY[0x1E696AD98] numberWithDouble:v170 / v171];
-    v213 = [HKQuantity hk_quantityWithSeconds:v133];
+    v171 = [MEMORY[0x1E696AD98] numberWithDouble:v170 / v171];
+    v213 = [HKQuantity hk_quantityWithSeconds:v171];
 LABEL_106:
   }
 
@@ -611,81 +611,81 @@ LABEL_106:
   [v164 hk_enumerateDayIndexRangesWithOptions:2 usingBlock:v232];
   if (v182 < 1)
   {
-    v193 = 0;
-    v195 = 0;
+    v182 = 0;
+    v1822 = 0;
   }
 
   else
   {
-    v134 = [obj lastObject];
-    v135 = [v134 calendar];
+    lastObject2 = [obj lastObject];
+    calendar8 = [lastObject2 calendar];
 
-    v136 = [obj lastObject];
-    v137 = [v136 dateInterval];
-    v138 = [v137 startDate];
+    lastObject3 = [obj lastObject];
+    dateInterval17 = [lastObject3 dateInterval];
+    startDate13 = [dateInterval17 startDate];
 
-    v193 = [v224 _dateComponentsForInterval:v138 sinceDate:v135 calendar:v178 / v182];
-    v195 = [v224 _dateComponentsForInterval:v138 sinceDate:v135 calendar:v177 / v182];
+    v182 = [selfCopy _dateComponentsForInterval:startDate13 sinceDate:calendar8 calendar:v178 / v182];
+    v1822 = [selfCopy _dateComponentsForInterval:startDate13 sinceDate:calendar8 calendar:v177 / v182];
   }
 
   if (v181 < 1)
   {
-    v189 = 0;
-    v191 = 0;
+    v1812 = 0;
+    v181 = 0;
     v146 = 0;
     v145 = 0;
   }
 
   else
   {
-    v139 = [obj lastObject];
-    v140 = [v139 calendar];
+    lastObject4 = [obj lastObject];
+    calendar9 = [lastObject4 calendar];
 
-    v141 = [obj lastObject];
-    v142 = [v141 dateInterval];
-    v143 = [v142 startDate];
+    lastObject5 = [obj lastObject];
+    dateInterval18 = [lastObject5 dateInterval];
+    startDate14 = [dateInterval18 startDate];
 
-    v191 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:v175 / v181];
+    v181 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:v175 / v181];
     v144 = v176 / v181;
     v145 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:v144];
-    v189 = [v224 _dateComponentsForInterval:v143 sinceDate:v140 calendar:v175 / v181];
-    v146 = [v224 _dateComponentsForInterval:v143 sinceDate:v140 calendar:v144];
+    v1812 = [selfCopy _dateComponentsForInterval:startDate14 sinceDate:calendar9 calendar:v175 / v181];
+    v146 = [selfCopy _dateComponentsForInterval:startDate14 sinceDate:calendar9 calendar:v144];
   }
 
   if (v180 < 1)
   {
-    v155 = 0;
+    v1802 = 0;
     v156 = 0;
-    v152 = 0;
+    v180 = 0;
     v154 = 0;
   }
 
   else
   {
-    v147 = [obj lastObject];
-    v148 = [v147 calendar];
+    lastObject6 = [obj lastObject];
+    calendar10 = [lastObject6 calendar];
 
-    v149 = [obj lastObject];
-    v150 = [v149 dateInterval];
-    v151 = [v150 startDate];
+    lastObject7 = [obj lastObject];
+    dateInterval19 = [lastObject7 dateInterval];
+    startDate15 = [dateInterval19 startDate];
 
-    v152 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:v173 / v180];
+    v180 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:v173 / v180];
     v153 = v174 / v180;
     v154 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:v153];
-    v155 = [v224 _dateComponentsForInterval:v151 sinceDate:v148 calendar:v173 / v180];
-    v156 = [v224 _dateComponentsForInterval:v151 sinceDate:v148 calendar:v153];
+    v1802 = [selfCopy _dateComponentsForInterval:startDate15 sinceDate:calendar10 calendar:v173 / v180];
+    v156 = [selfCopy _dateComponentsForInterval:startDate15 sinceDate:calendar10 calendar:v153];
   }
 
-  v157 = [v224 _computeStandardDeviationFor:v172];
-  v158 = [v224 _computeStandardDeviationFor:v166];
-  v159 = [v224 _computeStandardDeviationFor:v165];
+  v157 = [selfCopy _computeStandardDeviationFor:v172];
+  v158 = [selfCopy _computeStandardDeviationFor:v166];
+  v159 = [selfCopy _computeStandardDeviationFor:v165];
   v160 = [v164 count];
-  v161 = [HKSleepMetrics sleepMetricsWithMorningIndexRange:v184 sleepAnalysisAsleepCount:v185 sleepAnalysisInBedCount:v183 sleepAnalysisCount:v209 averageSleepDuration:v187 averageInBedDuration:v205 averageREMSleepDuration:v203 averageCoreSleepDuration:v211 averageDeepSleepDuration:v207 averageUnspecifiedSleepDuration:v201 averageAwakeDuration:v199 bedtimeAchievedCount:v197 sleepDurationGoalAchievedCount:v169 sleepDurationGoalStreakCount:v160 averageBedtimeMiss:v234[3] averageSleepDurationGoalMiss:v215 averageBedtime:v213 averageWakeTime:v193 averageInBedStartTime:v195 averageInBedEndTime:v189 averageSleepStartTime:v146 averageSleepEndTime:v155 standardDeviationActualTimeAsleep:v156 standardDeviationScheduledTimeAsleep:v157 standardDeviationActualVsScheduledTimeAsleep:v158 averageSleepStartOffset:v159 averageSleepEndOffset:v152 averageInBedStartOffset:v154 averageInBedEndOffset:v191, v145];
+  v145 = [HKSleepMetrics sleepMetricsWithMorningIndexRange:v184 sleepAnalysisAsleepCount:v185 sleepAnalysisInBedCount:v183 sleepAnalysisCount:v209 averageSleepDuration:v187 averageInBedDuration:v205 averageREMSleepDuration:v203 averageCoreSleepDuration:v211 averageDeepSleepDuration:v207 averageUnspecifiedSleepDuration:v201 averageAwakeDuration:v199 bedtimeAchievedCount:v197 sleepDurationGoalAchievedCount:v169 sleepDurationGoalStreakCount:v160 averageBedtimeMiss:v234[3] averageSleepDurationGoalMiss:v215 averageBedtime:v213 averageWakeTime:v182 averageInBedStartTime:v1822 averageInBedEndTime:v1812 averageSleepStartTime:v146 averageSleepEndTime:v1802 standardDeviationActualTimeAsleep:v156 standardDeviationScheduledTimeAsleep:v157 standardDeviationActualVsScheduledTimeAsleep:v158 averageSleepStartOffset:v159 averageSleepEndOffset:v180 averageInBedStartOffset:v154 averageInBedEndOffset:v181, v145];
 
   _Block_object_dispose(&v233, 8);
   v162 = *MEMORY[0x1E69E9840];
 
-  return v161;
+  return v145;
 }
 
 void *__72__HKSleepMetricsEngine_sleepMetricsForDaySummaries_inMorningIndexRange___block_invoke(void *result, uint64_t a2, uint64_t a3, _BYTE *a4)
@@ -725,13 +725,13 @@ LABEL_11:
   return result;
 }
 
-+ (id)_generateConsiderationIntervalFromDaySummaries:(id)a3 morningIndexRange:(id)a4
++ (id)_generateConsiderationIntervalFromDaySummaries:(id)summaries morningIndexRange:(id)range
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
+  summariesCopy = summaries;
+  v7 = summariesCopy;
   if (var0)
   {
     v8 = 0;
@@ -745,17 +745,17 @@ LABEL_11:
   if (!v8)
   {
     v9 = MEMORY[0x1E696AB80];
-    v10 = [v6 lastObject];
-    v11 = [v10 calendar];
-    if (v11)
+    lastObject = [summariesCopy lastObject];
+    calendar = [lastObject calendar];
+    if (calendar)
     {
-      v12 = [v9 hk_sleepDayIntervalForMorningIndexRange:var0 calendar:{var1, v11}];
+      v12 = [v9 hk_sleepDayIntervalForMorningIndexRange:var0 calendar:{var1, calendar}];
     }
 
     else
     {
-      v28 = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
-      v12 = [v9 hk_sleepDayIntervalForMorningIndexRange:var0 calendar:{var1, v28}];
+      hk_gregorianCalendar = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
+      v12 = [v9 hk_sleepDayIntervalForMorningIndexRange:var0 calendar:{var1, hk_gregorianCalendar}];
     }
 
     goto LABEL_29;
@@ -765,7 +765,7 @@ LABEL_11:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v13 = [v6 countByEnumeratingWithState:&v34 objects:v38 count:16];
+  v13 = [summariesCopy countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v13)
   {
     v14 = v13;
@@ -782,22 +782,22 @@ LABEL_11:
         }
 
         v19 = *(*(&v34 + 1) + 8 * i);
-        v20 = [v19 dateInterval];
-        v21 = [v20 startDate];
+        dateInterval = [v19 dateInterval];
+        startDate = [dateInterval startDate];
 
-        if (!v15 || ([v15 earlierDate:v21], v22 = objc_claimAutoreleasedReturnValue(), v22, v22 == v21))
+        if (!v15 || ([v15 earlierDate:startDate], v22 = objc_claimAutoreleasedReturnValue(), v22, v22 == startDate))
         {
-          v23 = v21;
+          v23 = startDate;
 
           v15 = v23;
         }
 
-        v24 = [v19 dateInterval];
-        v25 = [v24 endDate];
+        dateInterval2 = [v19 dateInterval];
+        endDate = [dateInterval2 endDate];
 
-        if (!v16 || ([v16 laterDate:v25], v26 = objc_claimAutoreleasedReturnValue(), v26, v26 == v25))
+        if (!v16 || ([v16 laterDate:endDate], v26 = objc_claimAutoreleasedReturnValue(), v26, v26 == endDate))
         {
-          v27 = v25;
+          v27 = endDate;
 
           v16 = v27;
         }
@@ -816,7 +816,7 @@ LABEL_11:
   }
 
   v29 = objc_alloc(MEMORY[0x1E696AB80]);
-  v30 = v15;
+  distantPast = v15;
   if (v15)
   {
     if (v16)
@@ -825,8 +825,8 @@ LABEL_11:
     }
 
 LABEL_33:
-    v33 = [MEMORY[0x1E695DF00] distantFuture];
-    v12 = [v29 initWithStartDate:v30 endDate:v33];
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+    v12 = [v29 initWithStartDate:distantPast endDate:distantFuture];
 
     if (v15)
     {
@@ -836,14 +836,14 @@ LABEL_33:
     goto LABEL_27;
   }
 
-  v30 = [MEMORY[0x1E695DF00] distantPast];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
   if (!v16)
   {
     goto LABEL_33;
   }
 
 LABEL_26:
-  v12 = [v29 initWithStartDate:v30 endDate:v16];
+  v12 = [v29 initWithStartDate:distantPast endDate:v16];
   if (!v15)
   {
 LABEL_27:
@@ -857,59 +857,59 @@ LABEL_29:
   return v12;
 }
 
-+ (double)_timeIntervalForDate:(id)a3 sinceDate:(id)a4 calendar:(id)a5
++ (double)_timeIntervalForDate:(id)date sinceDate:(id)sinceDate calendar:(id)calendar
 {
-  v6 = a4;
-  [a3 timeIntervalSinceReferenceDate];
+  sinceDateCopy = sinceDate;
+  [date timeIntervalSinceReferenceDate];
   v8 = v7;
-  [v6 timeIntervalSinceReferenceDate];
+  [sinceDateCopy timeIntervalSinceReferenceDate];
   v10 = v9;
 
   return v8 - v10;
 }
 
-+ (id)_dateComponentsForInterval:(double)a3 sinceDate:(id)a4 calendar:(id)a5
++ (id)_dateComponentsForInterval:(double)interval sinceDate:(id)date calendar:(id)calendar
 {
-  v6 = a3;
-  v7 = a5;
-  v8 = [v7 dateByAddingUnit:128 value:v6 toDate:a4 options:0];
-  v9 = [v7 components:224 fromDate:v8];
+  intervalCopy = interval;
+  calendarCopy = calendar;
+  v8 = [calendarCopy dateByAddingUnit:128 value:intervalCopy toDate:date options:0];
+  v9 = [calendarCopy components:224 fromDate:v8];
 
   return v9;
 }
 
-+ (id)_firstAsleepSegment:(id)a3
++ (id)_firstAsleepSegment:(id)segment
 {
-  v4 = a3;
+  segmentCopy = segment;
   v5 = _HKCategoryValueSleepAnalysisAsleepValues();
-  v6 = [a1 _firstSegmentMatchingSleepValues:v5 inPeriods:v4];
+  v6 = [self _firstSegmentMatchingSleepValues:v5 inPeriods:segmentCopy];
 
   return v6;
 }
 
-+ (id)_lastAsleepSegment:(id)a3
++ (id)_lastAsleepSegment:(id)segment
 {
-  v4 = a3;
+  segmentCopy = segment;
   v5 = _HKCategoryValueSleepAnalysisAsleepValues();
-  v6 = [a1 _lastSegmentMatchingSleepValues:v5 inPeriods:v4];
+  v6 = [self _lastSegmentMatchingSleepValues:v5 inPeriods:segmentCopy];
 
   return v6;
 }
 
-+ (id)_firstSegmentMatchingSleepValues:(id)a3 inPeriods:(id)a4
++ (id)_firstSegmentMatchingSleepValues:(id)values inPeriods:(id)periods
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  valuesCopy = values;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = a4;
-  v22 = [v6 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  periodsCopy = periods;
+  v22 = [periodsCopy countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v22)
   {
     v7 = *v29;
-    v23 = v6;
+    v23 = periodsCopy;
     v21 = *v29;
     do
     {
@@ -917,7 +917,7 @@ LABEL_29:
       {
         if (*v29 != v7)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(periodsCopy);
         }
 
         v9 = *(*(&v28 + 1) + 8 * i);
@@ -925,8 +925,8 @@ LABEL_29:
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v10 = [v9 segments];
-        v11 = [v10 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        segments = [v9 segments];
+        v11 = [segments countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v11)
         {
           v12 = v11;
@@ -937,23 +937,23 @@ LABEL_29:
             {
               if (*v25 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(segments);
               }
 
               v15 = *(*(&v24 + 1) + 8 * j);
               v16 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v15, "category")}];
-              v17 = [v5 containsObject:v16];
+              v17 = [valuesCopy containsObject:v16];
 
               if (v17)
               {
                 v18 = v15;
 
-                v6 = v23;
+                periodsCopy = v23;
                 goto LABEL_19;
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v24 objects:v32 count:16];
+            v12 = [segments countByEnumeratingWithState:&v24 objects:v32 count:16];
             if (v12)
             {
               continue;
@@ -963,7 +963,7 @@ LABEL_29:
           }
         }
 
-        v6 = v23;
+        periodsCopy = v23;
         v7 = v21;
       }
 
@@ -986,15 +986,15 @@ LABEL_19:
   return v18;
 }
 
-+ (id)_lastSegmentMatchingSleepValues:(id)a3 inPeriods:(id)a4
++ (id)_lastSegmentMatchingSleepValues:(id)values inPeriods:(id)periods
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  valuesCopy = values;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = a4;
+  obj = periods;
   v22 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
   v6 = 0;
   if (v22)
@@ -1016,8 +1016,8 @@ LABEL_19:
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v9 = [v8 segments];
-        v10 = [v9 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        segments = [v8 segments];
+        v10 = [segments countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v10)
         {
           v11 = v10;
@@ -1028,12 +1028,12 @@ LABEL_19:
             {
               if (*v25 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(segments);
               }
 
               v14 = *(*(&v24 + 1) + 8 * i);
               v15 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v14, "category")}];
-              v16 = [v5 containsObject:v15];
+              v16 = [valuesCopy containsObject:v15];
 
               if (v16)
               {
@@ -1043,7 +1043,7 @@ LABEL_19:
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v24 objects:v32 count:16];
+            v11 = [segments countByEnumeratingWithState:&v24 objects:v32 count:16];
           }
 
           while (v11);
@@ -1064,18 +1064,18 @@ LABEL_19:
   return v6;
 }
 
-+ (id)_computeStandardDeviationFor:(id)a3
++ (id)_computeStandardDeviationFor:(id)for
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  forCopy = for;
+  if ([forCopy count])
   {
-    v4 = [v3 count];
+    v4 = [forCopy count];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v5 = v3;
+    v5 = forCopy;
     v6 = [v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
     v7 = 0.0;
     v8 = 0.0;

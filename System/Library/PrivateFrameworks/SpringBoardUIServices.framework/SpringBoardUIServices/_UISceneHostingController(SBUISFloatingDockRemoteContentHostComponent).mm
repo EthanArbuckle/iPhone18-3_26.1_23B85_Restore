@@ -7,7 +7,7 @@
 - (void)floatingDockRemoteContentHostComponent
 {
   v2 = objc_opt_class();
-  v3 = [a1 componentForExtension:v2 ofClass:objc_opt_class()];
+  v3 = [self componentForExtension:v2 ofClass:objc_opt_class()];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)

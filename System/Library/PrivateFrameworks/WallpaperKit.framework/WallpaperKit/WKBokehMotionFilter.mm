@@ -1,13 +1,13 @@
 @interface WKBokehMotionFilter
 - (WKBokehMotionFilter)init;
-- (double)_clampPosition:(uint64_t)a1;
-- (double)_filterPosition:(double)a3;
-- (double)_orientPosition:(double)a3;
+- (double)_clampPosition:(uint64_t)position;
+- (double)_filterPosition:(double)position;
+- (double)_orientPosition:(double)position;
 - (double)displacement;
 - (double)filterCoefficient;
 - (double)position;
 - (float64_t)_rawPosition;
-- (float64_t)_transformPosition:(float64x2_t)a3;
+- (float64_t)_transformPosition:(float64x2_t)position;
 - (float64x2_t)updatePosition;
 - (uint64_t)setFilterCoefficient:(uint64_t)result;
 - (void)pauseDeviceMotionUpdates;
@@ -41,9 +41,9 @@
 
 - (void)startDeviceMotionUpdates
 {
-  if (a1)
+  if (self)
   {
-    [(WKBokehMotionManager *)*(a1 + 8) startDeviceMotionUpdates];
+    [(WKBokehMotionManager *)*(self + 8) startDeviceMotionUpdates];
   }
 }
 
@@ -69,12 +69,12 @@
 
 - (float64_t)_rawPosition
 {
-  if (a1)
+  if (self)
   {
-    v17 = [(WKBokehMotionManager *)*(a1 + 8) x];
-    v16 = [(WKBokehMotionFilter *)*(a1 + 8) filterCoefficient];
-    v2 = [(WKBokehMotionManager *)*(a1 + 8) z];
-    _Q2.f64[0] = v16;
+    v17 = [(WKBokehMotionManager *)*(self + 8) x];
+    filterCoefficient = [(WKBokehMotionFilter *)*(self + 8) filterCoefficient];
+    v2 = [(WKBokehMotionManager *)*(self + 8) z];
+    _Q2.f64[0] = filterCoefficient;
     _Q2.f64[1] = v17;
     _D1 = vcvt_f32_f64(_Q2);
     _S3 = _D1.i32[1];
@@ -104,9 +104,9 @@
   return v14.f64[1];
 }
 
-- (double)_orientPosition:(double)a3
+- (double)_orientPosition:(double)position
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
@@ -114,29 +114,29 @@
   switch([*MEMORY[0x1E69DDA98] activeInterfaceOrientation])
   {
     case 2:
-      a3 = -a2;
+      position = -a2;
       break;
     case 3:
-      a3 = -a3;
+      position = -position;
       break;
     case 4:
-      return a3;
+      return position;
     default:
-      a3 = a2;
+      position = a2;
       break;
   }
 
-  return a3;
+  return position;
 }
 
-- (float64_t)_transformPosition:(float64x2_t)a3
+- (float64_t)_transformPosition:(float64x2_t)position
 {
-  if (a1)
+  if (self)
   {
-    a3.f64[1] = a2;
+    position.f64[1] = a2;
     __asm { FMOV            V0.2D, #0.5 }
 
-    v8 = vmulq_f64(a3, _Q0);
+    v8 = vmulq_f64(position, _Q0);
     v9 = vdupq_n_s64(0x4059000000000000uLL);
     v10 = vdivq_f64(vrndaq_f64(vmulq_f64(v8, v9)), v9);
   }
@@ -149,9 +149,9 @@
   return v10.f64[1];
 }
 
-- (double)_clampPosition:(uint64_t)a1
+- (double)_clampPosition:(uint64_t)position
 {
-  if (!a1)
+  if (!position)
   {
     return OUTLINED_FUNCTION_0_2();
   }
@@ -164,54 +164,54 @@
   return fmin(a2, 0.5);
 }
 
-- (double)_filterPosition:(double)a3
+- (double)_filterPosition:(double)position
 {
-  if (!a1)
+  if (!self)
   {
     return OUTLINED_FUNCTION_0_2();
   }
 
-  v3 = a1[2];
+  v3 = self[2];
   v4 = v3;
   v5 = (1.0 - v3);
-  result = a2 * v5 + v4 * a1[3];
-  v7 = a3 * v5 + v4 * a1[4];
-  a1[3] = result;
-  a1[4] = v7;
+  result = a2 * v5 + v4 * self[3];
+  v7 = position * v5 + v4 * self[4];
+  self[3] = result;
+  self[4] = v7;
   return result;
 }
 
 - (double)position
 {
-  if (!a1)
+  if (!self)
   {
     return OUTLINED_FUNCTION_0_2();
   }
 
-  result = *(a1 + 24);
-  v2 = *(a1 + 32);
+  result = *(self + 24);
+  v2 = *(self + 32);
   return result;
 }
 
 - (double)displacement
 {
-  if (!a1)
+  if (!self)
   {
     return OUTLINED_FUNCTION_0_2();
   }
 
-  result = *(a1 + 40);
-  v2 = *(a1 + 48);
+  result = *(self + 40);
+  v2 = *(self + 48);
   return result;
 }
 
 - (float64x2_t)updatePosition
 {
-  if (a1)
+  if (self)
   {
-    v17 = *(a1 + 24);
-    v2 = [(WKBokehMotionFilter *)a1 _rawPosition];
-    v4.f64[0] = [(WKBokehMotionFilter *)a1 _orientPosition:v2, v3];
+    v17 = *(self + 24);
+    _rawPosition = [(WKBokehMotionFilter *)self _rawPosition];
+    v4.f64[0] = [(WKBokehMotionFilter *)self _orientPosition:_rawPosition, v3];
     v4.f64[1] = v5;
     __asm { FMOV            V1.2D, #0.5 }
 
@@ -220,11 +220,11 @@
     __asm { FMOV            V2.2D, #-0.5 }
 
     v14 = vminnmq_f64(vbslq_s8(vcgtq_f64(_Q2, v12), _Q2, v12), _Q1);
-    *_Q1.f64 = *(a1 + 16);
-    v15 = vmlaq_n_f64(vmulq_n_f64(v14, (1.0 - *_Q1.f64)), *(a1 + 24), *_Q1.f64);
-    *(a1 + 24) = v15;
+    *_Q1.f64 = *(self + 16);
+    v15 = vmlaq_n_f64(vmulq_n_f64(v14, (1.0 - *_Q1.f64)), *(self + 24), *_Q1.f64);
+    *(self + 24) = v15;
     result = vsubq_f64(v15, v17);
-    *(a1 + 40) = result;
+    *(self + 40) = result;
   }
 
   return result;
@@ -232,9 +232,9 @@
 
 - (double)filterCoefficient
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 16);
+    return *(self + 16);
   }
 
   else

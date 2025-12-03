@@ -1,6 +1,6 @@
 @interface AKFidoRequestProvider
-- (BOOL)signRequest:(id)a3 error:(id *)a4;
-- (BOOL)validateResponseData:(id)a3 error:(id *)a4;
+- (BOOL)signRequest:(id)request error:(id *)error;
+- (BOOL)validateResponseData:(id)data error:(id *)error;
 - (id)loadDelegate;
 @end
 
@@ -8,35 +8,35 @@
 
 - (id)loadDelegate
 {
-  v16 = self;
+  selfCopy = self;
   v15[1] = a2;
-  v3 = [(AKURLRequestProviderImpl *)self concreteAuthenticationContext];
-  [(AKAppleIDAuthenticationContext *)v3 set_shouldSendIdentityTokenForRemoteUI:1];
-  _objc_release(v3);
+  concreteAuthenticationContext = [(AKURLRequestProviderImpl *)self concreteAuthenticationContext];
+  [(AKAppleIDAuthenticationContext *)concreteAuthenticationContext set_shouldSendIdentityTokenForRemoteUI:1];
+  _objc_release(concreteAuthenticationContext);
   v4 = [AKDServerUIController alloc];
-  v5 = [(AKURLRequestProviderImpl *)v16 client];
+  client = [(AKURLRequestProviderImpl *)selfCopy client];
   v15[0] = [(AKDServerUIController *)v4 initWithClient:?];
-  _objc_release(v5);
+  _objc_release(client);
   v6 = v15[0];
-  v7 = [(AKURLRequestProviderImpl *)v16 concreteAuthenticationContext];
+  concreteAuthenticationContext2 = [(AKURLRequestProviderImpl *)selfCopy concreteAuthenticationContext];
   v14 = [v6 resourceLoadDelegateWithContext:?];
-  _objc_release(v7);
-  v8 = [(AKURLRequestProviderImpl *)v16 urlBagKey];
+  _objc_release(concreteAuthenticationContext2);
+  urlBagKey = [(AKURLRequestProviderImpl *)selfCopy urlBagKey];
   [v14 setInitialURLRequestKey:?];
-  _objc_release(v8);
-  v9 = [(AKURLRequestProviderImpl *)v16 urlBagKey];
+  _objc_release(urlBagKey);
+  urlBagKey2 = [(AKURLRequestProviderImpl *)selfCopy urlBagKey];
   [v14 setBagUrlKey:?];
-  _objc_release(v9);
-  v10 = [(AKURLRequestProviderImpl *)v16 dataCenterIdentifier];
+  _objc_release(urlBagKey2);
+  dataCenterIdentifier = [(AKURLRequestProviderImpl *)selfCopy dataCenterIdentifier];
   [v14 setDataCenterIdentifier:?];
-  _objc_release(v10);
+  _objc_release(dataCenterIdentifier);
   [v14 setShouldSendPhoneNumber:1];
   [v14 setShouldSendSigningHeaders:1];
-  v12 = [(AKURLRequestProviderImpl *)v16 concreteAuthenticationContext];
-  v11 = [(AKAppleIDAuthenticationContext *)v12 _identityToken];
+  concreteAuthenticationContext3 = [(AKURLRequestProviderImpl *)selfCopy concreteAuthenticationContext];
+  _identityToken = [(AKAppleIDAuthenticationContext *)concreteAuthenticationContext3 _identityToken];
   [v14 setIdentityToken:?];
-  _objc_release(v11);
-  _objc_release(v12);
+  _objc_release(_identityToken);
+  _objc_release(concreteAuthenticationContext3);
   v13 = _objc_retain(v14);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(v15, 0);
@@ -44,25 +44,25 @@
   return v13;
 }
 
-- (BOOL)signRequest:(id)a3 error:(id *)a4
+- (BOOL)signRequest:(id)request error:(id *)error
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v10 = a4;
-  v9.receiver = v12;
+  objc_storeStrong(location, request);
+  errorCopy = error;
+  v9.receiver = selfCopy;
   v9.super_class = AKFidoRequestProvider;
-  if ([(AKGrandSlamRequestProvider *)&v9 signRequest:location[0] error:a4])
+  if ([(AKGrandSlamRequestProvider *)&v9 signRequest:location[0] error:error])
   {
-    v7 = [(AKFidoRequestProvider *)v12 recoveryToken];
-    _objc_release(v7);
-    if (v7)
+    recoveryToken = [(AKFidoRequestProvider *)selfCopy recoveryToken];
+    _objc_release(recoveryToken);
+    if (recoveryToken)
     {
       v5 = location[0];
-      v6 = [(AKFidoRequestProvider *)v12 recoveryToken];
+      recoveryToken2 = [(AKFidoRequestProvider *)selfCopy recoveryToken];
       [v5 ak_addFidoRecoveryTokenHeader:?];
-      _objc_release(v6);
+      _objc_release(recoveryToken2);
     }
 
     v13 = 1;
@@ -77,16 +77,16 @@
   return v13 & 1;
 }
 
-- (BOOL)validateResponseData:(id)a3 error:(id *)a4
+- (BOOL)validateResponseData:(id)data error:(id *)error
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v17 = a4;
-  v15.receiver = v19;
+  objc_storeStrong(location, data);
+  errorCopy = error;
+  v15.receiver = selfCopy;
   v15.super_class = AKFidoRequestProvider;
-  v16 = [(AKGrandSlamRequestProvider *)&v15 validateResponseData:location[0] error:a4];
+  v16 = [(AKGrandSlamRequestProvider *)&v15 validateResponseData:location[0] error:error];
   if ((v16 & 1) == 1)
   {
     v14 = [AAFSerialization dictionaryFromObject:location[0] ofType:@"application/json"];
@@ -113,7 +113,7 @@
         _objc_release(v7);
         v8 = [NSError ak_errorWithCode:-7010 userInfo:v10];
         v4 = v8;
-        *v17 = v8;
+        *errorCopy = v8;
         v16 = 0;
         objc_storeStrong(&v10, 0);
       }
@@ -123,7 +123,7 @@
 
     else
     {
-      v17 = 0;
+      errorCopy = 0;
     }
 
     objc_storeStrong(&v14, 0);

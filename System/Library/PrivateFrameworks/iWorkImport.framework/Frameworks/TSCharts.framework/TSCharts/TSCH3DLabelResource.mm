@@ -1,41 +1,41 @@
 @interface TSCH3DLabelResource
-+ (id)resourceWithLabelAttributes:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)resourceWithLabelAttributes:(id)attributes;
+- (BOOL)isEqual:(id)equal;
 - (TSCH3DLabelResource)init;
-- (TSCH3DLabelResource)initWithLabelAttributes:(id)a3;
+- (TSCH3DLabelResource)initWithLabelAttributes:(id)attributes;
 - (id).cxx_construct;
 - (id)get;
 - (tvec2<float>)bitmapLabelRenderOffset;
 - (tvec2<float>)labelRenderOffset;
 - (tvec2<float>)labelSize;
 - (tvec2<float>)tightSize;
-- (tvec2<int>)labelSizeWithSamples:(double)a3;
-- (tvec2<int>)p_clampedLabelSampledSizeReturningClampedRatio:(float *)a3;
+- (tvec2<int>)labelSizeWithSamples:(double)samples;
+- (tvec2<int>)p_clampedLabelSampledSizeReturningClampedRatio:(float *)ratio;
 - (void)p_calculateSizeAndOffset;
-- (void)setAttributes:(id)a3;
-- (void)setString:(id)a3;
+- (void)setAttributes:(id)attributes;
+- (void)setString:(id)string;
 @end
 
 @implementation TSCH3DLabelResource
 
-+ (id)resourceWithLabelAttributes:(id)a3
++ (id)resourceWithLabelAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v10 = objc_msgSend_initWithLabelAttributes_(v5, v6, v7, v8, v9, v4);
+  attributesCopy = attributes;
+  v5 = [self alloc];
+  v10 = objc_msgSend_initWithLabelAttributes_(v5, v6, v7, v8, v9, attributesCopy);
 
   return v10;
 }
 
-- (TSCH3DLabelResource)initWithLabelAttributes:(id)a3
+- (TSCH3DLabelResource)initWithLabelAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v28.receiver = self;
   v28.super_class = TSCH3DLabelResource;
   v6 = [(TSCH3DResource *)&v28 initWithCaching:0];
   if (v6)
   {
-    if (!v4)
+    if (!attributesCopy)
     {
       v10 = MEMORY[0x277D81150];
       v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, v7, v8, v9, "[TSCH3DLabelResource initWithLabelAttributes:]");
@@ -45,7 +45,7 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22, v23, v24);
     }
 
-    v25 = objc_msgSend_copy(v4, v5, v7, v8, v9);
+    v25 = objc_msgSend_copy(attributesCopy, v5, v7, v8, v9);
     attributes = v6->_attributes;
     v6->_attributes = v25;
   }
@@ -60,11 +60,11 @@
   return 0;
 }
 
-- (void)setAttributes:(id)a3
+- (void)setAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = self->_attributes;
-  v41 = v4;
+  v41 = attributesCopy;
   if (v41 | v5)
   {
     isEqual = objc_msgSend_isEqual_(v5, v6, v7, v8, v9, v41);
@@ -96,11 +96,11 @@
   }
 }
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v9 = objc_msgSend_string(self->_attributes, v5, v6, v7, v8);
-  v85 = v4;
+  v85 = stringCopy;
   v11 = v9;
   v15 = v85;
   if (v85 | v11)
@@ -321,13 +321,13 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4[16];
+    v5 = equalCopy[16];
     v6 = self->_attributes;
     v8 = v5;
     if (v6 | v8)
@@ -381,7 +381,7 @@
   return v8;
 }
 
-- (tvec2<int>)p_clampedLabelSampledSizeReturningClampedRatio:(float *)a3
+- (tvec2<int>)p_clampedLabelSampledSizeReturningClampedRatio:(float *)ratio
 {
   v9 = v3;
   attributes = self->_attributes;
@@ -429,20 +429,20 @@
   }
 
   *v9 = vcvt_s32_f32(vrndp_f32(vadd_f32(vmul_n_f32(v76, v77.f32[0]), vdup_n_s32(0xBA83126F))));
-  if (a3)
+  if (ratio)
   {
-    *a3 = v77.f32[0];
+    *ratio = v77.f32[0];
   }
 
   return v56;
 }
 
-- (tvec2<int>)labelSizeWithSamples:(double)a3
+- (tvec2<int>)labelSizeWithSamples:(double)samples
 {
   v7 = v3;
-  v8 = objc_msgSend_labelSize(self, a2, a3, v4, v5);
-  v9 = a3;
-  *v7 = vcvt_s32_f32(vrndp_f32(vadd_f32(vmul_n_f32(v10, v9), vdup_n_s32(0xBA83126F))));
+  v8 = objc_msgSend_labelSize(self, a2, samples, v4, v5);
+  samplesCopy = samples;
+  *v7 = vcvt_s32_f32(vrndp_f32(vadd_f32(vmul_n_f32(v10, samplesCopy), vdup_n_s32(0xBA83126F))));
   return v8;
 }
 

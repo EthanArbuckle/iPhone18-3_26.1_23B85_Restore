@@ -1,15 +1,15 @@
 @interface IPInstallableStateSource
-- (IPInstallableStateSource)initWithRegistry:(id)a3;
+- (IPInstallableStateSource)initWithRegistry:(id)registry;
 - (IPStateObserver)observer;
 - (id)associatedRegistry;
 - (id)collationKey;
-- (id)currentProgressForSource:(id)a3 error:(id *)a4;
-- (id)currentStateWithError:(id *)a3;
-- (id)progressSourceWithError:(id *)a3;
+- (id)currentProgressForSource:(id)source error:(id *)error;
+- (id)currentStateWithError:(id *)error;
+- (id)progressSourceWithError:(id *)error;
 - (unint64_t)installableType;
 - (void)dealloc;
 - (void)noteInstallStarted;
-- (void)notifyOfUpdate:(id)a3;
+- (void)notifyOfUpdate:(id)update;
 - (void)resume;
 @end
 
@@ -22,14 +22,14 @@
   return WeakRetained;
 }
 
-- (IPInstallableStateSource)initWithRegistry:(id)a3
+- (IPInstallableStateSource)initWithRegistry:(id)registry
 {
-  v4 = a3;
+  registryCopy = registry;
   v5 = [(IPInstallableStateSource *)self init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_associatedRegistry, v4);
+    objc_storeWeak(&v5->_associatedRegistry, registryCopy);
     v6->_resumed = 0;
   }
 
@@ -51,7 +51,7 @@
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_254C69000, a2, OS_LOG_TYPE_FAULT, "Attempted to resume %@, which was already resumed!", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -81,7 +81,7 @@
   return 0;
 }
 
-- (id)currentStateWithError:(id *)a3
+- (id)currentStateWithError:(id *)error
 {
   OUTLINED_FUNCTION_1_1();
   objc_opt_class();
@@ -90,7 +90,7 @@
   return 0;
 }
 
-- (id)progressSourceWithError:(id *)a3
+- (id)progressSourceWithError:(id *)error
 {
   OUTLINED_FUNCTION_1_1();
   objc_opt_class();
@@ -99,7 +99,7 @@
   return 0;
 }
 
-- (id)currentProgressForSource:(id)a3 error:(id *)a4
+- (id)currentProgressForSource:(id)source error:(id *)error
 {
   OUTLINED_FUNCTION_1_1();
   objc_opt_class();
@@ -117,7 +117,7 @@
   NSRequestConcreteImplementation();
 }
 
-- (void)notifyOfUpdate:(id)a3
+- (void)notifyOfUpdate:(id)update
 {
   OUTLINED_FUNCTION_1_1();
   objc_opt_class();

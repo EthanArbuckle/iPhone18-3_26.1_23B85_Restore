@@ -1,10 +1,10 @@
 @interface CKHighlightsQueryController
-- (id)chatGUIDForSearchableItem:(id)a3;
+- (id)chatGUIDForSearchableItem:(id)item;
 - (id)createFoundItemsHandler;
-- (id)detailsFilterQueriesForChatGUIDs:(id)a3;
+- (id)detailsFilterQueriesForChatGUIDs:(id)ds;
 - (id)fetchAttributes;
 - (id)filterQueries;
-- (id)queryAttributesForText:(id)a3;
+- (id)queryAttributesForText:(id)text;
 @end
 
 @implementation CKHighlightsQueryController
@@ -35,10 +35,10 @@
   return v7;
 }
 
-- (id)queryAttributesForText:(id)a3
+- (id)queryAttributesForText:(id)text
 {
   v18 = *MEMORY[0x1E69E9840];
-  if ([a3 length])
+  if ([text length])
   {
     v3 = *MEMORY[0x1E6964C38];
     v13 = @"com_apple_mobilesms_lpDescription";
@@ -72,10 +72,10 @@
   v12[2] = *MEMORY[0x1E69E9840];
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%tu", 2];
   v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%tu", 6];
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v5 = [v4 isSWYAttachmentsEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isSWYAttachmentsEnabled = [mEMORY[0x1E69A8070] isSWYAttachmentsEnabled];
 
-  if (v5)
+  if (isSWYAttachmentsEnabled)
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ == %@ || %@ == %@", *MEMORY[0x1E69645D0], @"lnk", *MEMORY[0x1E69645D0], @"at"];
   }
@@ -93,16 +93,16 @@
   return v8;
 }
 
-- (id)detailsFilterQueriesForChatGUIDs:(id)a3
+- (id)detailsFilterQueriesForChatGUIDs:(id)ds
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  dsCopy = ds;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v3;
+  v5 = dsCopy;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v6)
   {
@@ -131,7 +131,7 @@
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__78;
   v17 = __Block_byref_object_dispose__78;
-  v18 = [MEMORY[0x1E696AEC0] string];
+  string = [MEMORY[0x1E696AEC0] string];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __64__CKHighlightsQueryController_detailsFilterQueriesForChatGUIDs___block_invoke;
@@ -261,24 +261,24 @@ void __54__CKHighlightsQueryController_createFoundItemsHandler__block_invoke(uin
   }
 }
 
-- (id)chatGUIDForSearchableItem:(id)a3
+- (id)chatGUIDForSearchableItem:(id)item
 {
-  v3 = a3;
-  v4 = [CKSpotlightQueryResultUtilities indexItemTypeForItem:v3];
+  itemCopy = item;
+  v4 = [CKSpotlightQueryResultUtilities indexItemTypeForItem:itemCopy];
   if ([v4 isEqualToString:@"at"])
   {
-    v5 = [v3 attributeSet];
+    attributeSet = [itemCopy attributeSet];
 
-    v6 = [v5 accountIdentifier];
-    v3 = v5;
+    accountIdentifier = [attributeSet accountIdentifier];
+    itemCopy = attributeSet;
   }
 
   else
   {
-    v6 = [v3 domainIdentifier];
+    accountIdentifier = [itemCopy domainIdentifier];
   }
 
-  return v6;
+  return accountIdentifier;
 }
 
 @end

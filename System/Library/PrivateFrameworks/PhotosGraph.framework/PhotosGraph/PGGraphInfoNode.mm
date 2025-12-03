@@ -1,17 +1,17 @@
 @interface PGGraphInfoNode
-+ (id)assetPropertiesWithNumberOfUtilityAssets:(unint64_t)a3 numberOfDefaultAssets:(unint64_t)a4 numberOfImprovedAssets:(unint64_t)a5 numberOfBetterAssets:(unint64_t)a6;
-+ (id)numberOfSelfies:(unint64_t)a3;
-+ (id)propertiesWithLastIncrementalUpdateInvocationOnDate:(id)a3;
-+ (id)routineInfoPropertiesWithServiceManager:(id)a3;
-+ (id)topTierScorePropertiesWithAestheticScore:(double)a3 aestheticScoreForTripKeyAsset:(double)a4;
-- (BOOL)hasProperties:(id)a3;
++ (id)assetPropertiesWithNumberOfUtilityAssets:(unint64_t)assets numberOfDefaultAssets:(unint64_t)defaultAssets numberOfImprovedAssets:(unint64_t)improvedAssets numberOfBetterAssets:(unint64_t)betterAssets;
++ (id)numberOfSelfies:(unint64_t)selfies;
++ (id)propertiesWithLastIncrementalUpdateInvocationOnDate:(id)date;
++ (id)routineInfoPropertiesWithServiceManager:(id)manager;
++ (id)topTierScorePropertiesWithAestheticScore:(double)score aestheticScoreForTripKeyAsset:(double)asset;
+- (BOOL)hasProperties:(id)properties;
 - (NSArray)languageIdentifiers;
 - (NSLocale)locale;
-- (PGGraphInfoNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5;
+- (PGGraphInfoNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties;
 - (double)topTierAestheticScore;
 - (double)topTierAestheticScoreForTripKeyAsset;
 - (id)propertyDictionary;
-- (void)setLocalProperties:(id)a3;
+- (void)setLocalProperties:(id)properties;
 @end
 
 @implementation PGGraphInfoNode
@@ -223,11 +223,11 @@
   return v16;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy && [propertiesCopy count])
   {
     v6 = [v5 objectForKeyedSubscript:@"creationDate"];
     v7 = v6;
@@ -726,202 +726,202 @@ LABEL_99:
   return v61;
 }
 
-- (void)setLocalProperties:(id)a3
+- (void)setLocalProperties:(id)properties
 {
-  v66 = a3;
-  v4 = [v66 objectForKeyedSubscript:@"creationDate"];
+  propertiesCopy = properties;
+  v4 = [propertiesCopy objectForKeyedSubscript:@"creationDate"];
   [v4 doubleValue];
   self->_creationDateTimeInterval = v5;
 
-  v6 = [v66 objectForKeyedSubscript:@"dateOfLastIncrementalUpdateInvocation"];
+  v6 = [propertiesCopy objectForKeyedSubscript:@"dateOfLastIncrementalUpdateInvocation"];
   [v6 doubleValue];
   self->_dateOfLastIncrementalUpdateInvocationTimeInterval = v7;
 
-  v8 = [v66 objectForKeyedSubscript:@"localeIdentifier"];
+  v8 = [propertiesCopy objectForKeyedSubscript:@"localeIdentifier"];
   localeIdentifier = self->_localeIdentifier;
   self->_localeIdentifier = v8;
 
-  v10 = [v66 objectForKeyedSubscript:@"languageIdentifiers"];
+  v10 = [propertiesCopy objectForKeyedSubscript:@"languageIdentifiers"];
   flattenedLanguageIdentifiers = self->_flattenedLanguageIdentifiers;
   self->_flattenedLanguageIdentifiers = v10;
 
-  v12 = [v66 objectForKeyedSubscript:@"geoServiceProviderID"];
+  v12 = [propertiesCopy objectForKeyedSubscript:@"geoServiceProviderID"];
   geoServiceProviderID = self->_geoServiceProviderID;
   self->_geoServiceProviderID = v12;
 
-  v14 = [v66 objectForKeyedSubscript:@"curationAlgorithmsVersion"];
+  v14 = [propertiesCopy objectForKeyedSubscript:@"curationAlgorithmsVersion"];
   self->_curationAlgorithmsVersion = [v14 unsignedIntegerValue];
 
-  v15 = [v66 objectForKeyedSubscript:@"memoriesAlgorithmsVersion"];
+  v15 = [propertiesCopy objectForKeyedSubscript:@"memoriesAlgorithmsVersion"];
   self->_memoriesAlgorithmsVersion = [v15 unsignedIntegerValue];
 
-  v16 = [v66 objectForKeyedSubscript:@"meaningAlgorithmsVersion"];
+  v16 = [propertiesCopy objectForKeyedSubscript:@"meaningAlgorithmsVersion"];
   self->_meaningAlgorithmsVersion = [v16 unsignedIntegerValue];
 
-  v17 = [v66 objectForKeyedSubscript:@"personActivityMeaningAlgorithmsVersion"];
+  v17 = [propertiesCopy objectForKeyedSubscript:@"personActivityMeaningAlgorithmsVersion"];
   self->_personActivityMeaningAlgorithmsVersion = [v17 unsignedIntegerValue];
 
-  v18 = [v66 objectForKeyedSubscript:@"relationshipAlgorithmsVersion"];
+  v18 = [propertiesCopy objectForKeyedSubscript:@"relationshipAlgorithmsVersion"];
   self->_relationshipAlgorithmsVersion = [v18 unsignedIntegerValue];
 
-  v19 = [v66 objectForKeyedSubscript:@"businessitemAlgorithmsVersion"];
+  v19 = [propertiesCopy objectForKeyedSubscript:@"businessitemAlgorithmsVersion"];
   self->_businessItemAlgorithmsVersion = [v19 unsignedIntegerValue];
 
-  v20 = [v66 objectForKeyedSubscript:@"publiceventAlgorithmsVersion"];
+  v20 = [propertiesCopy objectForKeyedSubscript:@"publiceventAlgorithmsVersion"];
   self->_publicEventAlgorithmsVersion = [v20 unsignedIntegerValue];
 
-  v21 = [v66 objectForKeyedSubscript:@"holidayAlgorithmsVersion"];
+  v21 = [propertiesCopy objectForKeyedSubscript:@"holidayAlgorithmsVersion"];
   self->_holidayAlgorithmsVersion = [v21 unsignedIntegerValue];
 
-  v22 = [v66 objectForKeyedSubscript:@"frequentlocationAlgorithmsVersion"];
+  v22 = [propertiesCopy objectForKeyedSubscript:@"frequentlocationAlgorithmsVersion"];
   self->_frequentLocationAlgorithmsVersion = [v22 unsignedIntegerValue];
 
-  v23 = [v66 objectForKeyedSubscript:@"autonamingAlgorithmsVersion"];
+  v23 = [propertiesCopy objectForKeyedSubscript:@"autonamingAlgorithmsVersion"];
   self->_autonamingAlgorithmsVersion = [v23 unsignedIntegerValue];
 
-  v24 = [v66 objectForKeyedSubscript:@"questionsVersion"];
+  v24 = [propertiesCopy objectForKeyedSubscript:@"questionsVersion"];
   self->_questionsVersion = [v24 unsignedIntegerValue];
 
-  v25 = [v66 objectForKeyedSubscript:@"tripKeyAssetAlgorithmsVersion"];
+  v25 = [propertiesCopy objectForKeyedSubscript:@"tripKeyAssetAlgorithmsVersion"];
   self->_tripKeyAssetAlgorithmsVersion = [v25 unsignedIntegerValue];
 
-  v26 = [v66 objectForKeyedSubscript:@"ageCategoryAlgorithmsVersion"];
+  v26 = [propertiesCopy objectForKeyedSubscript:@"ageCategoryAlgorithmsVersion"];
   self->_ageCategoryAlgorithmsVersion = [v26 unsignedIntegerValue];
 
-  v27 = [v66 objectForKeyedSubscript:@"memoryQualityAlgorithmsVersion"];
+  v27 = [propertiesCopy objectForKeyedSubscript:@"memoryQualityAlgorithmsVersion"];
   self->_memoryQualityAlgorithmsVersion = [v27 unsignedIntegerValue];
 
-  v28 = [v66 objectForKeyedSubscript:@"petAlgorithmsVersion"];
+  v28 = [propertiesCopy objectForKeyedSubscript:@"petAlgorithmsVersion"];
   self->_petAlgorithmsVersion = [v28 unsignedIntegerValue];
 
-  v29 = [v66 objectForKeyedSubscript:@"featuredPhotoAlgorithmsVersion"];
+  v29 = [propertiesCopy objectForKeyedSubscript:@"featuredPhotoAlgorithmsVersion"];
   self->_featuredPhotoAlgorithmsVersion = [v29 unsignedIntegerValue];
 
-  v30 = [v66 objectForKeyedSubscript:@"longTailFeaturedPhotoAlgorithmsVersion"];
+  v30 = [propertiesCopy objectForKeyedSubscript:@"longTailFeaturedPhotoAlgorithmsVersion"];
   self->_longTailFeaturedPhotoAlgorithmsVersion = [v30 unsignedIntegerValue];
 
-  v31 = [v66 objectForKeyedSubscript:@"sharedLibrarySuggestionsAlgorithmsVersion"];
+  v31 = [propertiesCopy objectForKeyedSubscript:@"sharedLibrarySuggestionsAlgorithmsVersion"];
   self->_sharedLibrarySuggestionsAlgorithmsVersion = [v31 unsignedIntegerValue];
 
-  v32 = [v66 objectForKeyedSubscript:@"sharedLibraryStartAlgorithmsVersion"];
+  v32 = [propertiesCopy objectForKeyedSubscript:@"sharedLibraryStartAlgorithmsVersion"];
   self->_sharedLibraryStartAlgorithmsVersion = [v32 unsignedIntegerValue];
 
-  v33 = [v66 objectForKeyedSubscript:@"sharedLibraryCameraLibrarySwitchAlgorithmsVersion"];
+  v33 = [propertiesCopy objectForKeyedSubscript:@"sharedLibraryCameraLibrarySwitchAlgorithmsVersion"];
   self->_sharedLibraryCameraLibrarySwitchAlgorithmsVersion = [v33 unsignedIntegerValue];
 
-  v34 = [v66 objectForKeyedSubscript:@"wallpaperAlgorithmsVersion"];
+  v34 = [propertiesCopy objectForKeyedSubscript:@"wallpaperAlgorithmsVersion"];
   self->_wallpaperAlgorithmsVersion = [v34 unsignedIntegerValue];
 
-  v35 = [v66 objectForKeyedSubscript:@"locationRepresentativeAssetAlgorithmsVersion"];
+  v35 = [propertiesCopy objectForKeyedSubscript:@"locationRepresentativeAssetAlgorithmsVersion"];
   self->_locationRepresentativeAssetAlgorithmsVersion = [v35 unsignedIntegerValue];
 
-  v36 = [v66 objectForKeyedSubscript:@"eventLabelingV2ModelVersion"];
+  v36 = [propertiesCopy objectForKeyedSubscript:@"eventLabelingV2ModelVersion"];
   self->_eventLabelingV2ModelVersion = [v36 integerValue];
 
-  v37 = [v66 objectForKeyedSubscript:@"personalTraitsEntityNamesVersion"];
+  v37 = [propertiesCopy objectForKeyedSubscript:@"personalTraitsEntityNamesVersion"];
   self->_personalTraitsEntityNamesVersion = [v37 integerValue];
 
-  v38 = [v66 objectForKeyedSubscript:@"canUseLocationDomain"];
+  v38 = [propertiesCopy objectForKeyedSubscript:@"canUseLocationDomain"];
   v39 = v38;
   if (v38)
   {
-    v40 = [v38 BOOLValue];
+    bOOLValue = [v38 BOOLValue];
   }
 
   else
   {
-    v40 = 1;
+    bOOLValue = 1;
   }
 
-  self->_canUseLocationDomain = v40;
-  v41 = [v66 objectForKeyedSubscript:@"routineAvailable"];
+  self->_canUseLocationDomain = bOOLValue;
+  v41 = [propertiesCopy objectForKeyedSubscript:@"routineAvailable"];
   self->_routineInfo.routineAvailable = [v41 BOOLValue];
 
-  v42 = [v66 objectForKeyedSubscript:@"routineNumberOfLocationsOfInterest"];
+  v42 = [propertiesCopy objectForKeyedSubscript:@"routineNumberOfLocationsOfInterest"];
   self->_routineInfo.numberOfLocationsOfInterest = [v42 unsignedIntegerValue];
 
-  v43 = [v66 objectForKeyedSubscript:@"routineNumberOfVisits"];
+  v43 = [propertiesCopy objectForKeyedSubscript:@"routineNumberOfVisits"];
   self->_routineInfo.numberOfVisits = [v43 unsignedIntegerValue];
 
-  v44 = [v66 objectForKeyedSubscript:@"routineNumberOfTimeMatches"];
+  v44 = [propertiesCopy objectForKeyedSubscript:@"routineNumberOfTimeMatches"];
   self->_routineInfo.numberOfTimeMatches = [v44 unsignedIntegerValue];
 
-  v45 = [v66 objectForKeyedSubscript:@"routineNumberOfClosebyLocationMatches"];
+  v45 = [propertiesCopy objectForKeyedSubscript:@"routineNumberOfClosebyLocationMatches"];
   self->_routineInfo.numberOfCloseByLocationMatches = [v45 unsignedIntegerValue];
 
-  v46 = [v66 objectForKeyedSubscript:@"routineNumberOfRemoteLocationMatches"];
+  v46 = [propertiesCopy objectForKeyedSubscript:@"routineNumberOfRemoteLocationMatches"];
   self->_routineInfo.numberOfRemoteLocationMatches = [v46 unsignedIntegerValue];
 
-  v47 = [v66 objectForKeyedSubscript:@"routineNumberofMatchRequests"];
+  v47 = [propertiesCopy objectForKeyedSubscript:@"routineNumberofMatchRequests"];
   self->_routineInfo.numberOfMatchRequests = [v47 unsignedIntegerValue];
 
-  v48 = [v66 objectForKeyedSubscript:@"routinePinningVisitsRatio"];
+  v48 = [propertiesCopy objectForKeyedSubscript:@"routinePinningVisitsRatio"];
   [v48 doubleValue];
   self->_routineInfo.pinningVisitsRatio = v49;
 
-  v50 = [v66 objectForKeyedSubscript:@"numberOfSelfies"];
+  v50 = [propertiesCopy objectForKeyedSubscript:@"numberOfSelfies"];
   self->_numberOfSelfies = [v50 unsignedIntegerValue];
 
-  v51 = [v66 objectForKeyedSubscript:@"topTierAestheticScore"];
+  v51 = [propertiesCopy objectForKeyedSubscript:@"topTierAestheticScore"];
   [v51 doubleValue];
   self->_topTierAestheticScore = v52;
 
-  v53 = [v66 objectForKeyedSubscript:@"topTierAestheticScoreForTripKeyAsset"];
+  v53 = [propertiesCopy objectForKeyedSubscript:@"topTierAestheticScoreForTripKeyAsset"];
   [v53 doubleValue];
   self->_topTierAestheticScoreForTripKeyAsset = v54;
 
-  v55 = [v66 objectForKeyedSubscript:@"numberOfUtilityAssets"];
+  v55 = [propertiesCopy objectForKeyedSubscript:@"numberOfUtilityAssets"];
   self->_numberOfUtilityAssets = [v55 unsignedIntegerValue];
 
-  v56 = [v66 objectForKeyedSubscript:@"numberOfDefaultAssets"];
+  v56 = [propertiesCopy objectForKeyedSubscript:@"numberOfDefaultAssets"];
   self->_numberOfDefaultAssets = [v56 unsignedIntegerValue];
 
-  v57 = [v66 objectForKeyedSubscript:@"numberOfImprovedAssets"];
+  v57 = [propertiesCopy objectForKeyedSubscript:@"numberOfImprovedAssets"];
   self->_numberOfImprovedAssets = [v57 unsignedIntegerValue];
 
-  v58 = [v66 objectForKeyedSubscript:@"numberOfBetterAssets"];
+  v58 = [propertiesCopy objectForKeyedSubscript:@"numberOfBetterAssets"];
   self->_numberOfBetterAssets = [v58 unsignedIntegerValue];
 
-  v59 = [v66 objectForKeyedSubscript:@"canAccessContactsStore"];
+  v59 = [propertiesCopy objectForKeyedSubscript:@"canAccessContactsStore"];
   v60 = v59;
   if (v59)
   {
-    v61 = [v59 BOOLValue];
+    bOOLValue2 = [v59 BOOLValue];
   }
 
   else
   {
-    v61 = 1;
+    bOOLValue2 = 1;
   }
 
-  self->_canAccessContactsStore = v61;
-  v62 = [v66 objectForKeyedSubscript:@"mergeCandidateConfidenceThreshold"];
+  self->_canAccessContactsStore = bOOLValue2;
+  v62 = [propertiesCopy objectForKeyedSubscript:@"mergeCandidateConfidenceThreshold"];
   [v62 doubleValue];
   self->_mergeCandidateConfidenceThreshold = v63;
 
-  v64 = [v66 objectForKeyedSubscript:@"IntelligencePlatformVersion"];
+  v64 = [propertiesCopy objectForKeyedSubscript:@"IntelligencePlatformVersion"];
   [v64 doubleValue];
   self->_intelligencePlatformVersion = v65;
 }
 
-- (PGGraphInfoNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5
+- (PGGraphInfoNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties
 {
-  v6 = a5;
+  propertiesCopy = properties;
   v7 = [(PGGraphNode *)self init];
   v8 = v7;
   if (v7)
   {
-    [(PGGraphInfoNode *)v7 setLocalProperties:v6];
+    [(PGGraphInfoNode *)v7 setLocalProperties:propertiesCopy];
   }
 
   return v8;
 }
 
-+ (id)numberOfSelfies:(unint64_t)a3
++ (id)numberOfSelfies:(unint64_t)selfies
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = @"numberOfSelfies";
-  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:selfies];
   v8[0] = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
@@ -930,14 +930,14 @@ LABEL_99:
   return v4;
 }
 
-+ (id)topTierScorePropertiesWithAestheticScore:(double)a3 aestheticScoreForTripKeyAsset:(double)a4
++ (id)topTierScorePropertiesWithAestheticScore:(double)score aestheticScoreForTripKeyAsset:(double)asset
 {
   v11[2] = *MEMORY[0x277D85DE8];
   v10[0] = @"topTierAestheticScore";
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:score];
   v10[1] = @"topTierAestheticScoreForTripKeyAsset";
   v11[0] = v5;
-  v6 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+  v6 = [MEMORY[0x277CCABB0] numberWithDouble:asset];
   v11[1] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
 
@@ -946,20 +946,20 @@ LABEL_99:
   return v7;
 }
 
-+ (id)assetPropertiesWithNumberOfUtilityAssets:(unint64_t)a3 numberOfDefaultAssets:(unint64_t)a4 numberOfImprovedAssets:(unint64_t)a5 numberOfBetterAssets:(unint64_t)a6
++ (id)assetPropertiesWithNumberOfUtilityAssets:(unint64_t)assets numberOfDefaultAssets:(unint64_t)defaultAssets numberOfImprovedAssets:(unint64_t)improvedAssets numberOfBetterAssets:(unint64_t)betterAssets
 {
   v17[4] = *MEMORY[0x277D85DE8];
   v16[0] = @"numberOfUtilityAssets";
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:assets];
   v17[0] = v9;
   v16[1] = @"numberOfDefaultAssets";
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:defaultAssets];
   v17[1] = v10;
   v16[2] = @"numberOfImprovedAssets";
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:improvedAssets];
   v17[2] = v11;
   v16[3] = @"numberOfBetterAssets";
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:betterAssets];
   v17[3] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:4];
 
@@ -968,35 +968,35 @@ LABEL_99:
   return v13;
 }
 
-+ (id)routineInfoPropertiesWithServiceManager:(id)a3
++ (id)routineInfoPropertiesWithServiceManager:(id)manager
 {
   v20[8] = *MEMORY[0x277D85DE8];
   v19[0] = @"routineAvailable";
   v3 = MEMORY[0x277CCABB0];
-  v4 = a3;
-  v5 = [v3 numberWithBool:{objc_msgSend(v4, "routineIsAvailable")}];
+  managerCopy = manager;
+  v5 = [v3 numberWithBool:{objc_msgSend(managerCopy, "routineIsAvailable")}];
   v20[0] = v5;
   v19[1] = @"routineNumberOfLocationsOfInterest";
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "numberOfLocationsOfInterest")}];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(managerCopy, "numberOfLocationsOfInterest")}];
   v20[1] = v6;
   v19[2] = @"routineNumberOfVisits";
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "numberOfVisits")}];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(managerCopy, "numberOfVisits")}];
   v20[2] = v7;
   v19[3] = @"routineNumberOfTimeMatches";
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "numberOfTimeMatches")}];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(managerCopy, "numberOfTimeMatches")}];
   v20[3] = v8;
   v19[4] = @"routineNumberOfClosebyLocationMatches";
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "numberOfCloseByLocationMatches")}];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(managerCopy, "numberOfCloseByLocationMatches")}];
   v20[4] = v9;
   v19[5] = @"routineNumberOfRemoteLocationMatches";
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "numberOfRemoteLocationMatches")}];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(managerCopy, "numberOfRemoteLocationMatches")}];
   v20[5] = v10;
   v19[6] = @"routineNumberofMatchRequests";
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "numberOfMatchRequests")}];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(managerCopy, "numberOfMatchRequests")}];
   v20[6] = v11;
   v19[7] = @"routinePinningVisitsRatio";
   v12 = MEMORY[0x277CCABB0];
-  [v4 pinningVisitsRatio];
+  [managerCopy pinningVisitsRatio];
   v14 = v13;
 
   v15 = [v12 numberWithDouble:v14];
@@ -1008,12 +1008,12 @@ LABEL_99:
   return v16;
 }
 
-+ (id)propertiesWithLastIncrementalUpdateInvocationOnDate:(id)a3
++ (id)propertiesWithLastIncrementalUpdateInvocationOnDate:(id)date
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v8 = @"dateOfLastIncrementalUpdateInvocation";
   v3 = MEMORY[0x277CCABB0];
-  [a3 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
   v4 = [v3 numberWithDouble:?];
   v9[0] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];

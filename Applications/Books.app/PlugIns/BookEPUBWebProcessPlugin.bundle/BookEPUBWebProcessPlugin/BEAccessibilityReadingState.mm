@@ -1,7 +1,7 @@
 @interface BEAccessibilityReadingState
 + (id)currentReadingState;
-+ (void)registerBookContentElement:(id)a3;
-+ (void)registerBookContentWrapper:(id)a3;
++ (void)registerBookContentElement:(id)element;
++ (void)registerBookContentWrapper:(id)wrapper;
 - (BEAccessibilityReadingState)init;
 - (CGRect)primaryVisibleContentRect;
 - (CGRect)secondaryVisibleContentRect;
@@ -9,11 +9,11 @@
 - (id)description;
 - (void)documentChanged;
 - (void)invalidateCaches;
-- (void)setCurrentPageLocation:(int64_t)a3;
-- (void)setCurrentPageNumber:(int64_t)a3;
-- (void)setIsPaginated:(BOOL)a3;
-- (void)setScreenHeight:(int64_t)a3;
-- (void)setScreenWidth:(int64_t)a3;
+- (void)setCurrentPageLocation:(int64_t)location;
+- (void)setCurrentPageNumber:(int64_t)number;
+- (void)setIsPaginated:(BOOL)paginated;
+- (void)setScreenHeight:(int64_t)height;
+- (void)setScreenWidth:(int64_t)width;
 @end
 
 @implementation BEAccessibilityReadingState
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = sub_FAA4;
   block[3] = &unk_208C0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_26DA0 != -1)
   {
     dispatch_once(&qword_26DA0, block);
@@ -56,8 +56,8 @@
   v4 = [NSNumber numberWithInteger:[(BEAccessibilityReadingState *)self currentPageLocation]];
   v5 = [NSNumber numberWithInteger:[(BEAccessibilityReadingState *)self currentPageLength]];
   v6 = [NSNumber numberWithUnsignedInteger:[(BEAccessibilityReadingState *)self pageCount]];
-  v7 = [(BEAccessibilityReadingState *)self visibleAnnotations];
-  v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v7 count]);
+  visibleAnnotations = [(BEAccessibilityReadingState *)self visibleAnnotations];
+  v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [visibleAnnotations count]);
   v9 = [NSNumber numberWithBool:[(BEAccessibilityReadingState *)self isVisiblePageBookmarked]];
   v10 = [NSNumber numberWithUnsignedInteger:[(BEAccessibilityReadingState *)self bookLayout]];
   v11 = [NSNumber numberWithBool:[(BEAccessibilityReadingState *)self isFixedLayoutBook]];
@@ -68,65 +68,65 @@
 
 - (_NSRange)currentPage
 {
-  v3 = [(BEAccessibilityReadingState *)self currentPageLocation];
-  v4 = [(BEAccessibilityReadingState *)self currentPageLength];
-  v5 = v3;
-  result.length = v4;
+  currentPageLocation = [(BEAccessibilityReadingState *)self currentPageLocation];
+  currentPageLength = [(BEAccessibilityReadingState *)self currentPageLength];
+  v5 = currentPageLocation;
+  result.length = currentPageLength;
   result.location = v5;
   return result;
 }
 
-- (void)setCurrentPageLocation:(int64_t)a3
+- (void)setCurrentPageLocation:(int64_t)location
 {
-  if (self->_currentPageLocation != a3)
+  if (self->_currentPageLocation != location)
   {
-    self->_currentPageLocation = a3;
+    self->_currentPageLocation = location;
   }
 }
 
-- (void)setCurrentPageNumber:(int64_t)a3
+- (void)setCurrentPageNumber:(int64_t)number
 {
-  if (self->_currentPageNumber != a3)
+  if (self->_currentPageNumber != number)
   {
-    self->_currentPageNumber = a3;
+    self->_currentPageNumber = number;
   }
 }
 
-- (void)setScreenHeight:(int64_t)a3
+- (void)setScreenHeight:(int64_t)height
 {
-  if (self->_screenHeight != a3)
+  if (self->_screenHeight != height)
   {
-    self->_screenHeight = a3;
+    self->_screenHeight = height;
   }
 }
 
-- (void)setScreenWidth:(int64_t)a3
+- (void)setScreenWidth:(int64_t)width
 {
-  if (self->_screenWidth != a3)
+  if (self->_screenWidth != width)
   {
-    self->_screenWidth = a3;
+    self->_screenWidth = width;
   }
 }
 
-- (void)setIsPaginated:(BOOL)a3
+- (void)setIsPaginated:(BOOL)paginated
 {
-  if (self->_isPaginated != a3)
+  if (self->_isPaginated != paginated)
   {
-    self->_isPaginated = a3;
+    self->_isPaginated = paginated;
     [(BEAccessibilityReadingState *)self documentChanged];
   }
 }
 
 - (void)documentChanged
 {
-  v2 = [(BEAccessibilityReadingState *)self knownBookContentElements];
-  v3 = [v2 allObjects];
+  knownBookContentElements = [(BEAccessibilityReadingState *)self knownBookContentElements];
+  allObjects = [knownBookContentElements allObjects];
 
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = v3;
+  v4 = allObjects;
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
@@ -166,14 +166,14 @@
 
 - (void)invalidateCaches
 {
-  v2 = [(BEAccessibilityReadingState *)self knownBookContentElements];
-  v3 = [v2 allObjects];
+  knownBookContentElements = [(BEAccessibilityReadingState *)self knownBookContentElements];
+  allObjects = [knownBookContentElements allObjects];
 
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = v3;
+  v4 = allObjects;
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
@@ -201,33 +201,33 @@
   }
 }
 
-+ (void)registerBookContentElement:(id)a3
++ (void)registerBookContentElement:(id)element
 {
-  v8 = a3;
-  v4 = [a1 currentReadingState];
-  v5 = [v4 knownBookContentElements];
+  elementCopy = element;
+  currentReadingState = [self currentReadingState];
+  knownBookContentElements = [currentReadingState knownBookContentElements];
 
-  v6 = [v5 allObjects];
-  v7 = [v6 containsObject:v8];
+  allObjects = [knownBookContentElements allObjects];
+  v7 = [allObjects containsObject:elementCopy];
 
   if ((v7 & 1) == 0)
   {
-    [v5 addPointer:v8];
+    [knownBookContentElements addPointer:elementCopy];
   }
 }
 
-+ (void)registerBookContentWrapper:(id)a3
++ (void)registerBookContentWrapper:(id)wrapper
 {
-  v8 = a3;
-  v4 = [a1 currentReadingState];
-  v5 = [v4 knownBookContentElements];
+  wrapperCopy = wrapper;
+  currentReadingState = [self currentReadingState];
+  knownBookContentElements = [currentReadingState knownBookContentElements];
 
-  v6 = [v5 allObjects];
-  v7 = [v6 containsObject:v8];
+  allObjects = [knownBookContentElements allObjects];
+  v7 = [allObjects containsObject:wrapperCopy];
 
   if ((v7 & 1) == 0)
   {
-    [v5 addPointer:v8];
+    [knownBookContentElements addPointer:wrapperCopy];
   }
 }
 

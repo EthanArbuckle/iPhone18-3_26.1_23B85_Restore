@@ -86,9 +86,9 @@
   v10 = __sincos_stret(v8);
   v11 = sin(v9 + v9);
   v12 = [CIVector vectorWithX:v10.__cosval * v10.__cosval / ((v4 + v4) * v4) + v10.__sinval * v10.__sinval / ((v7 + v7) * v7) Y:(v11 / (v7 * 4.0 * v7) - v11 / (v4 * 4.0 * v4)) Z:v10.__sinval * v10.__sinval / ((v4 + v4) * v4) + v10.__cosval * v10.__cosval / ((v7 + v7) * v7) W:v57];
-  v13 = [(CIPortraitLightingContourV2 *)self _extractRed];
+  _extractRed = [(CIPortraitLightingContourV2 *)self _extractRed];
   inputImage = self->super.inputImage;
-  v14 = [v13 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", &inputImage, 1), CGRectInfinite.origin.x, CGRectInfinite.origin.y, CGRectInfinite.size.width, CGRectInfinite.size.height}];
+  v14 = [_extractRed applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", &inputImage, 1), CGRectInfinite.origin.x, CGRectInfinite.origin.y, CGRectInfinite.size.width, CGRectInfinite.size.height}];
   [(CIImage *)self->super.inputImage extent];
   v15 = [v14 imageByCroppingToRect:?];
   [(CIImage *)self->super.inputImage extent];
@@ -99,12 +99,12 @@
   v20 = [v16 imageByApplyingGaussianBlurWithSigma:(v18 * v19)];
   [(CIImage *)self->super.inputImage extent];
   v21 = [v20 imageByCroppingToRect:?];
-  v22 = [(CIPortraitLightingContourV2 *)self _cheapEdgePreserve];
+  _cheapEdgePreserve = [(CIPortraitLightingContourV2 *)self _cheapEdgePreserve];
   [(CIImage *)self->super.inputImage extent];
   v59[0] = v15;
   v59[1] = v21;
-  v27 = [v22 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v59, 2), v23, v24, v25, v26}];
-  v28 = [(CIPortraitLightingContourV2 *)self _contourLightKernel];
+  v27 = [_cheapEdgePreserve applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v59, 2), v23, v24, v25, v26}];
+  _contourLightKernel = [(CIPortraitLightingContourV2 *)self _contourLightKernel];
   [(CIVector *)self->super.inputEyes X];
   v30 = v29;
   [(CIVector *)self->super.inputEyes Z];
@@ -138,7 +138,7 @@
   v58[5] = inputStrength;
   *&v45 = v44 * v44;
   v58[6] = [NSNumber numberWithFloat:v45];
-  return [v28 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v58, 7), v46, v48, v50, v52}];
+  return [_contourLightKernel applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v58, 7), v46, v48, v50, v52}];
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface ICQOpportunityFlowSpecification
-- (ICQOpportunityFlowSpecification)initWithServerDictionary:(id)a3;
-- (void)makeActionsFromServerDict:(id)a3;
-- (void)makeMessageFromServerDict:(id)a3;
+- (ICQOpportunityFlowSpecification)initWithServerDictionary:(id)dictionary;
+- (void)makeActionsFromServerDict:(id)dict;
+- (void)makeMessageFromServerDict:(id)dict;
 @end
 
 @implementation ICQOpportunityFlowSpecification
 
-- (ICQOpportunityFlowSpecification)initWithServerDictionary:(id)a3
+- (ICQOpportunityFlowSpecification)initWithServerDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = ICQOpportunityFlowSpecification;
   v5 = [(ICQOpportunityFlowSpecification *)&v21 init];
@@ -18,7 +18,7 @@
     goto LABEL_5;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"title"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"title"];
   title = v5->_title;
   v5->_title = v6;
 
@@ -51,7 +51,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"imageDetails"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"imageDetails"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -77,8 +77,8 @@ LABEL_13:
   imageDetails = v5->_imageDetails;
   v5->_imageDetails = v10;
 
-  [(ICQOpportunityFlowSpecification *)v5 makeMessageFromServerDict:v4];
-  [(ICQOpportunityFlowSpecification *)v5 makeActionsFromServerDict:v4];
+  [(ICQOpportunityFlowSpecification *)v5 makeMessageFromServerDict:dictionaryCopy];
+  [(ICQOpportunityFlowSpecification *)v5 makeActionsFromServerDict:dictionaryCopy];
 
 LABEL_5:
   v12 = v5;
@@ -88,11 +88,11 @@ LABEL_15:
   return v12;
 }
 
-- (void)makeMessageFromServerDict:(id)a3
+- (void)makeMessageFromServerDict:(id)dict
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"message"];
+  dictCopy = dict;
+  v5 = [dictCopy objectForKeyedSubscript:@"message"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -107,7 +107,7 @@ LABEL_15:
       v8 = 138412546;
       v9 = @"message";
       v10 = 2112;
-      v11 = v4;
+      v11 = dictCopy;
       _os_log_impl(&dword_275572000, v6, OS_LOG_TYPE_DEFAULT, "Missing message property %@ in opportunityBubble: %@", &v8, 0x16u);
     }
   }
@@ -115,17 +115,17 @@ LABEL_15:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)makeActionsFromServerDict:(id)a3
+- (void)makeActionsFromServerDict:(id)dict
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"actions"];
+  dictCopy = dict;
+  v5 = [dictCopy objectForKeyedSubscript:@"actions"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v27 = self;
+    selfCopy = self;
     v28 = v5;
-    v29 = v4;
+    v29 = dictCopy;
     v6 = v5;
     v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v6, "count")}];
     v35 = 0u;
@@ -233,13 +233,13 @@ LABEL_15:
     }
 
     v22 = [v7 copy];
-    actions = v27->_actions;
-    v27->_actions = v22;
+    actions = selfCopy->_actions;
+    selfCopy->_actions = v22;
     v24 = v7;
     v5 = v28;
 LABEL_28:
 
-    v4 = v29;
+    dictCopy = v29;
   }
 
   else
@@ -250,7 +250,7 @@ LABEL_28:
       *buf = 138412546;
       v41 = @"actions";
       v42 = 2112;
-      v43 = v4;
+      v43 = dictCopy;
       _os_log_impl(&dword_275572000, v8, OS_LOG_TYPE_DEFAULT, "Missing message property %@ in opportunityBubble: %@", buf, 0x16u);
     }
   }

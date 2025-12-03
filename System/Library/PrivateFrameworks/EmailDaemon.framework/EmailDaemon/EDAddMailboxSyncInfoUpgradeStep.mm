@@ -1,6 +1,6 @@
 @interface EDAddMailboxSyncInfoUpgradeStep
 + (id)log;
-+ (int)runWithConnection:(id)a3;
++ (int)runWithConnection:(id)connection;
 @end
 
 @implementation EDAddMailboxSyncInfoUpgradeStep
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __38__EDAddMailboxSyncInfoUpgradeStep_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_7 != -1)
   {
     dispatch_once(&log_onceToken_7, block);
@@ -30,10 +30,10 @@ void __38__EDAddMailboxSyncInfoUpgradeStep_log__block_invoke(uint64_t a1)
   log_log_7 = v1;
 }
 
-+ (int)runWithConnection:(id)a3
++ (int)runWithConnection:(id)connection
 {
-  v3 = a3;
-  v4 = sqlite3_exec([v3 sqlDB], "ALTER TABLE mailboxes ADD COLUMN sync_info BLOB;", 0, 0, 0);
+  connectionCopy = connection;
+  v4 = sqlite3_exec([connectionCopy sqlDB], "ALTER TABLE mailboxes ADD COLUMN sync_info BLOB;", 0, 0, 0);
 
   return v4;
 }

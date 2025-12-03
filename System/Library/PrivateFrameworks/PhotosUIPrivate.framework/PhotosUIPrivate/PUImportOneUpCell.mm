@@ -1,17 +1,17 @@
 @interface PUImportOneUpCell
-- (PUImportOneUpCell)initWithCoder:(id)a3;
-- (PUImportOneUpCell)initWithFrame:(CGRect)a3;
+- (PUImportOneUpCell)initWithCoder:(id)coder;
+- (PUImportOneUpCell)initWithFrame:(CGRect)frame;
 - (PUImportOneUpCellDisplayDelegate)displayDelegate;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)prepareForReuse;
 - (void)refreshThumbnail;
-- (void)setImage:(id)a3 isPlaceholder:(BOOL)a4;
-- (void)setImportItem:(id)a3;
+- (void)setImage:(id)image isPlaceholder:(BOOL)placeholder;
+- (void)setImportItem:(id)item;
 - (void)updateBadge;
-- (void)updateDebugLabel:(id)a3;
-- (void)updatePhotoViewForImportItem:(id)a3;
+- (void)updateDebugLabel:(id)label;
+- (void)updatePhotoViewForImportItem:(id)item;
 - (void)updateSelectedVisualAppearance;
 @end
 
@@ -24,13 +24,13 @@
   return WeakRetained;
 }
 
-- (void)updateDebugLabel:(id)a3
+- (void)updateDebugLabel:(id)label
 {
-  v4 = a3;
-  v10 = v4;
-  if (v4)
+  labelCopy = label;
+  v10 = labelCopy;
+  if (labelCopy)
   {
-    v5 = v4;
+    v5 = labelCopy;
     if (!self->_debugTextField)
     {
       v6 = objc_alloc(MEMORY[0x1E69DD0B0]);
@@ -40,13 +40,13 @@
 
       [(UITextField *)self->_debugTextField setTextAlignment:1];
       [(UITextField *)self->_debugTextField setAdjustsFontSizeToFitWidth:1];
-      v9 = [MEMORY[0x1E69DC888] whiteColor];
-      [(UITextField *)self->_debugTextField setBackgroundColor:v9];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [(UITextField *)self->_debugTextField setBackgroundColor:whiteColor];
 
       [(UITextField *)self->_debugTextField setEnabled:0];
       [(PUImportOneUpCell *)self addSubview:self->_debugTextField];
       [(PUImportOneUpCell *)self setNeedsLayout];
-      v4 = v10;
+      labelCopy = v10;
       v5 = v10;
     }
   }
@@ -56,56 +56,56 @@
     v5 = &stru_1F2AC6818;
   }
 
-  [(UITextField *)self->_debugTextField setHidden:[(__CFString *)v4 length]== 0];
+  [(UITextField *)self->_debugTextField setHidden:[(__CFString *)labelCopy length]== 0];
   [(UITextField *)self->_debugTextField setText:v5];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PUImportOneUpCell.m" lineNumber:211 description:@"Expecting main thread only for cell signals"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUImportOneUpCell.m" lineNumber:211 description:@"Expecting main thread only for cell signals"];
   }
 
-  if ([(PUImportOneUpCell *)self contextForObservingViewModelChanges]== a5)
+  if ([(PUImportOneUpCell *)self contextForObservingViewModelChanges]== context)
   {
-    if (a4)
+    if (change)
     {
-      v9 = [(PUImportOneUpCell *)self importItem];
-      -[PUImportOneUpCell setSelected:](self, "setSelected:", [v9 isSelected]);
+      importItem = [(PUImportOneUpCell *)self importItem];
+      -[PUImportOneUpCell setSelected:](self, "setSelected:", [importItem isSelected]);
 
       LOBYTE(v10) = 1;
     }
 
     else
     {
-      v10 = (a4 >> 2) & 1;
+      v10 = (change >> 2) & 1;
     }
 
-    v11 = a4 & 1;
-    if ((a4 & 8) != 0)
+    v11 = change & 1;
+    if ((change & 8) != 0)
     {
-      v12 = [(PUImportOneUpCell *)self importItem];
-      v13 = [v12 isDuplicate];
+      importItem2 = [(PUImportOneUpCell *)self importItem];
+      isDuplicate = [importItem2 isDuplicate];
 
-      LOBYTE(v10) = v10 | v13;
+      LOBYTE(v10) = v10 | isDuplicate;
     }
 
-    if ((a4 & 2) != 0)
+    if ((change & 2) != 0)
     {
-      v14 = [(PUImportOneUpCell *)self importItem];
-      -[PUImportOneUpCell setSelected:](self, "setSelected:", [v14 isSelected]);
+      importItem3 = [(PUImportOneUpCell *)self importItem];
+      -[PUImportOneUpCell setSelected:](self, "setSelected:", [importItem3 isSelected]);
 
       LOBYTE(v10) = 1;
       v11 = 1;
     }
 
-    v15 = ((a4 & 0x10) != 0) | v10;
-    if ((a4 & 0x80) != 0 && [(PUImportOneUpCell *)self thumbnailRequestID])
+    v15 = ((change & 0x10) != 0) | v10;
+    if ((change & 0x80) != 0 && [(PUImportOneUpCell *)self thumbnailRequestID])
     {
-      v16 = [(PUImportOneUpCell *)self displayDelegate];
-      [v16 importOneUpCell:self didRequestCancellationOfThumbnailRequestWithID:{-[PUImportOneUpCell thumbnailRequestID](self, "thumbnailRequestID")}];
+      displayDelegate = [(PUImportOneUpCell *)self displayDelegate];
+      [displayDelegate importOneUpCell:self didRequestCancellationOfThumbnailRequestWithID:{-[PUImportOneUpCell thumbnailRequestID](self, "thumbnailRequestID")}];
 
       [(PUImportOneUpCell *)self setThumbnailRequestID:0];
     }
@@ -137,70 +137,70 @@
 
 - (void)updateBadge
 {
-  v3 = [(PUImportOneUpCell *)self importItem];
-  v4 = [v3 isDeleted];
+  importItem = [(PUImportOneUpCell *)self importItem];
+  isDeleted = [importItem isDeleted];
 
-  if ((v4 & 1) == 0)
+  if ((isDeleted & 1) == 0)
   {
-    v6 = [(PUImportOneUpCell *)self displayDelegate];
-    v5 = [(PUImportOneUpCell *)self importItem];
-    [v6 importOneUpCell:self requestedBadgeUpdateForImportItem:v5];
+    displayDelegate = [(PUImportOneUpCell *)self displayDelegate];
+    importItem2 = [(PUImportOneUpCell *)self importItem];
+    [displayDelegate importOneUpCell:self requestedBadgeUpdateForImportItem:importItem2];
   }
 }
 
-- (void)setImage:(id)a3 isPlaceholder:(BOOL)a4
+- (void)setImage:(id)image isPlaceholder:(BOOL)placeholder
 {
-  v4 = a4;
-  v10 = a3;
-  v6 = [(PUPhotosSharingGridCell *)self photoView];
-  v7 = [v6 contentHelper];
+  placeholderCopy = placeholder;
+  imageCopy = image;
+  photoView = [(PUPhotosSharingGridCell *)self photoView];
+  contentHelper = [photoView contentHelper];
 
-  [v10 size];
-  [v7 setPhotoSize:?];
-  [v7 setFillMode:!v4];
-  if (v4)
+  [imageCopy size];
+  [contentHelper setPhotoSize:?];
+  [contentHelper setFillMode:!placeholderCopy];
+  if (placeholderCopy)
   {
-    v8 = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
-    [v7 setBackgroundColor:v8];
+    quaternarySystemFillColor = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
+    [contentHelper setBackgroundColor:quaternarySystemFillColor];
   }
 
   else
   {
-    [v7 setBackgroundColor:0];
+    [contentHelper setBackgroundColor:0];
   }
 
-  [v7 setPhotoImage:v10];
-  v9 = [(PUImportOneUpCell *)self importItem];
-  [(PUImportOneUpCell *)self updatePhotoViewForImportItem:v9];
+  [contentHelper setPhotoImage:imageCopy];
+  importItem = [(PUImportOneUpCell *)self importItem];
+  [(PUImportOneUpCell *)self updatePhotoViewForImportItem:importItem];
 }
 
 - (void)refreshThumbnail
 {
-  v4 = [(PUImportOneUpCell *)self importItem];
-  v5 = [v4 isDeleted];
+  importItem = [(PUImportOneUpCell *)self importItem];
+  isDeleted = [importItem isDeleted];
 
-  if ((v5 & 1) == 0)
+  if ((isDeleted & 1) == 0)
   {
-    v6 = [(PUImportOneUpCell *)self displayDelegate];
+    displayDelegate = [(PUImportOneUpCell *)self displayDelegate];
 
-    if (!v6)
+    if (!displayDelegate)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"PUImportOneUpCell.m" lineNumber:162 description:@"Missing thumbnail provider"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUImportOneUpCell.m" lineNumber:162 description:@"Missing thumbnail provider"];
     }
 
-    v7 = [(PUImportOneUpCell *)self importItem];
+    importItem2 = [(PUImportOneUpCell *)self importItem];
     objc_initWeak(&location, self);
-    v8 = [(PUImportOneUpCell *)self displayDelegate];
-    v9 = [(PUImportOneUpCell *)self importItem];
+    displayDelegate2 = [(PUImportOneUpCell *)self displayDelegate];
+    importItem3 = [(PUImportOneUpCell *)self importItem];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __37__PUImportOneUpCell_refreshThumbnail__block_invoke;
     v12[3] = &unk_1E7B77848;
     objc_copyWeak(&v14, &location);
-    v10 = v7;
+    v10 = importItem2;
     v13 = v10;
-    -[PUImportOneUpCell setThumbnailRequestID:](self, "setThumbnailRequestID:", [v8 importOneUpCell:self requestedThumbnailForImportItem:v9 completion:v12]);
+    -[PUImportOneUpCell setThumbnailRequestID:](self, "setThumbnailRequestID:", [displayDelegate2 importOneUpCell:self requestedThumbnailForImportItem:importItem3 completion:v12]);
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
@@ -230,27 +230,27 @@ void __37__PUImportOneUpCell_refreshThumbnail__block_invoke(uint64_t a1, void *a
 
 - (void)updateSelectedVisualAppearance
 {
-  v3 = [(PUImportOneUpCell *)self importItem];
-  v4 = [v3 isSelected];
+  importItem = [(PUImportOneUpCell *)self importItem];
+  isSelected = [importItem isSelected];
 
   v5 = 1.0;
-  if (v4)
+  if (isSelected)
   {
     +[PUImportOneUpCell alphaForSelectedCells];
     v5 = v6;
   }
 
-  v8 = [(PUPhotosSharingGridCell *)self photoView];
-  v7 = [v8 contentHelper];
-  [v7 setContentAlpha:v5];
+  photoView = [(PUPhotosSharingGridCell *)self photoView];
+  contentHelper = [photoView contentHelper];
+  [contentHelper setContentAlpha:v5];
 }
 
-- (void)updatePhotoViewForImportItem:(id)a3
+- (void)updatePhotoViewForImportItem:(id)item
 {
-  v4 = [a3 importAsset];
-  if ([v4 isHDR])
+  importAsset = [item importAsset];
+  if ([importAsset isHDR])
   {
-    if ([v4 isImage])
+    if ([importAsset isImage])
     {
       v5 = 4;
     }
@@ -266,57 +266,57 @@ void __37__PUImportOneUpCell_refreshThumbnail__block_invoke(uint64_t a1, void *a
     v5 = 0;
   }
 
-  v6 = [v4 isBurst];
-  v7 = [v4 isSDOF];
+  isBurst = [importAsset isBurst];
+  isSDOF = [importAsset isSDOF];
   v8 = 0;
-  if ([v4 isMovie])
+  if ([importAsset isMovie])
   {
-    v9 = [v4 durationTimeInterval];
-    [v9 doubleValue];
+    durationTimeInterval = [importAsset durationTimeInterval];
+    [durationTimeInterval doubleValue];
     v8 = v10;
   }
 
   v11 = *MEMORY[0x1E695F060];
   v12 = *(MEMORY[0x1E695F060] + 8);
-  v13 = [(PUPhotosSharingGridCell *)self photoView];
-  v14 = [v13 contentHelper];
-  v15 = [v14 photoImage];
+  photoView = [(PUPhotosSharingGridCell *)self photoView];
+  contentHelper = [photoView contentHelper];
+  photoImage = [contentHelper photoImage];
 
   v16 = v12;
   v17 = v11;
-  if (v15)
+  if (photoImage)
   {
-    v18 = [(PUPhotosSharingGridCell *)self photoView];
-    v19 = [v18 contentHelper];
-    v20 = [v19 photoImage];
-    [v20 size];
+    photoView2 = [(PUPhotosSharingGridCell *)self photoView];
+    contentHelper2 = [photoView2 contentHelper];
+    photoImage2 = [contentHelper2 photoImage];
+    [photoImage2 size];
     v17 = v21;
     v16 = v22;
   }
 
   if (v17 == v11 && v16 == v12)
   {
-    v25 = [(PUImportOneUpCell *)self importItem];
-    v24 = [v25 isPanoramicImage];
+    importItem = [(PUImportOneUpCell *)self importItem];
+    isPanoramicImage = [importItem isPanoramicImage];
   }
 
   else
   {
-    v24 = [MEMORY[0x1E69C3610] hasPanoramaImageDimensions:{v17, v16}];
+    isPanoramicImage = [MEMORY[0x1E69C3610] hasPanoramaImageDimensions:{v17, v16}];
   }
 
   v26 = v5 | 8;
-  if (!v6)
+  if (!isBurst)
   {
     v26 = v5;
   }
 
-  if (v7)
+  if (isSDOF)
   {
     v26 |= 0x10uLL;
   }
 
-  if (v24)
+  if (isPanoramicImage)
   {
     v27 = v26 | 2;
   }
@@ -326,37 +326,37 @@ void __37__PUImportOneUpCell_refreshThumbnail__block_invoke(uint64_t a1, void *a
     v27 = v26;
   }
 
-  v28 = [(PUPhotosSharingGridCell *)self photoView];
-  v29 = [v28 contentHelper];
+  photoView3 = [(PUPhotosSharingGridCell *)self photoView];
+  contentHelper3 = [photoView3 contentHelper];
   v32[0] = v27;
   v32[1] = v8;
   v32[2] = 0;
   v32[3] = 0;
-  [v29 setBadgeInfo:v32];
+  [contentHelper3 setBadgeInfo:v32];
 
-  v30 = [(PUPhotosSharingGridCell *)self photoView];
-  v31 = [v30 contentHelper];
-  [v31 setBadgeStyle:7];
+  photoView4 = [(PUPhotosSharingGridCell *)self photoView];
+  contentHelper4 = [photoView4 contentHelper];
+  [contentHelper4 setBadgeStyle:7];
 }
 
-- (void)setImportItem:(id)a3
+- (void)setImportItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   importItem = self->_importItem;
-  if (importItem != v5)
+  if (importItem != itemCopy)
   {
-    v9 = v5;
+    v9 = itemCopy;
     [(PXImportItemViewModel *)importItem unregisterChangeObserver:self context:[(PUImportOneUpCell *)self contextForObservingViewModelChanges]];
-    objc_storeStrong(&self->_importItem, a3);
-    v7 = [(PUImportOneUpCell *)self importItem];
-    -[PUImportOneUpCell setSelected:](self, "setSelected:", [v7 isSelected]);
+    objc_storeStrong(&self->_importItem, item);
+    importItem = [(PUImportOneUpCell *)self importItem];
+    -[PUImportOneUpCell setSelected:](self, "setSelected:", [importItem isSelected]);
 
-    v8 = [(PUImportOneUpCell *)self importItem];
-    [(PUImportOneUpCell *)self updatePhotoViewForImportItem:v8];
+    importItem2 = [(PUImportOneUpCell *)self importItem];
+    [(PUImportOneUpCell *)self updatePhotoViewForImportItem:importItem2];
 
     [(PUImportOneUpCell *)self updateSelectedVisualAppearance];
     [(PXImportItemViewModel *)self->_importItem registerChangeObserver:self context:[(PUImportOneUpCell *)self contextForObservingViewModelChanges]];
-    v5 = v9;
+    itemCopy = v9;
   }
 }
 
@@ -371,8 +371,8 @@ void __37__PUImportOneUpCell_refreshThumbnail__block_invoke(uint64_t a1, void *a
 
   if ([(PUImportOneUpCell *)self thumbnailRequestID])
   {
-    v4 = [(PUImportOneUpCell *)self displayDelegate];
-    [v4 importOneUpCell:self didRequestCancellationOfThumbnailRequestWithID:{-[PUImportOneUpCell thumbnailRequestID](self, "thumbnailRequestID")}];
+    displayDelegate = [(PUImportOneUpCell *)self displayDelegate];
+    [displayDelegate importOneUpCell:self didRequestCancellationOfThumbnailRequestWithID:{-[PUImportOneUpCell thumbnailRequestID](self, "thumbnailRequestID")}];
 
     [(PUImportOneUpCell *)self setThumbnailRequestID:0];
   }
@@ -385,8 +385,8 @@ void __37__PUImportOneUpCell_refreshThumbnail__block_invoke(uint64_t a1, void *a
 
   if ([(PUImportOneUpCell *)self thumbnailRequestID])
   {
-    v4 = [(PUImportOneUpCell *)self displayDelegate];
-    [v4 importOneUpCell:self didRequestCancellationOfThumbnailRequestWithID:{-[PUImportOneUpCell thumbnailRequestID](self, "thumbnailRequestID")}];
+    displayDelegate = [(PUImportOneUpCell *)self displayDelegate];
+    [displayDelegate importOneUpCell:self didRequestCancellationOfThumbnailRequestWithID:{-[PUImportOneUpCell thumbnailRequestID](self, "thumbnailRequestID")}];
 
     [(PUImportOneUpCell *)self setThumbnailRequestID:0];
   }
@@ -396,11 +396,11 @@ void __37__PUImportOneUpCell_refreshThumbnail__block_invoke(uint64_t a1, void *a
   [(PUImportOneUpCell *)&v5 dealloc];
 }
 
-- (PUImportOneUpCell)initWithCoder:(id)a3
+- (PUImportOneUpCell)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = PUImportOneUpCell;
-  v3 = [(PUImportOneUpCell *)&v7 initWithCoder:a3];
+  v3 = [(PUImportOneUpCell *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -411,11 +411,11 @@ void __37__PUImportOneUpCell_refreshThumbnail__block_invoke(uint64_t a1, void *a
   return v4;
 }
 
-- (PUImportOneUpCell)initWithFrame:(CGRect)a3
+- (PUImportOneUpCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PUImportOneUpCell;
-  v3 = [(PUPhotosSharingGridCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUPhotosSharingGridCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

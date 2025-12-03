@@ -1,25 +1,25 @@
 @interface SSRVoiceProfileMetadataManager
-+ (BOOL)isUtteranceImplicitlyTrained:(id)a3;
-+ (BOOL)isUtteranceImplicitlyTrainedFromMetaDict:(id)a3;
-+ (id)_getBaseMetaDictionaryForUtterancePath:(id)a3;
-+ (id)getUtteranceEnrollmentType:(id)a3;
-+ (id)getUtterancePhIdFromMetaDict:(id)a3;
-+ (id)loadMetadataJsonObjectFromMetadataFile:(id)a3;
-+ (id)readVoiceTriggerRePromptMetadata:(id)a3;
-+ (id)recordedTimeStampFromFileName:(id)a3;
-+ (id)recordedTimeStampOfFile:(id)a3;
-+ (void)_writeMetaDict:(id)a3 forUtterancePath:(id)a4;
-+ (void)saveUtteranceMetadataForUtterance:(id)a3 enrollmentType:(id)a4 isHandheldEnrollment:(BOOL)a5 triggerSource:(id)a6 audioInput:(id)a7 otherBiometricResult:(unint64_t)a8 containsPayload:(BOOL)a9;
-+ (void)saveVoiceTriggeRePromptMetadata:(id)a3;
++ (BOOL)isUtteranceImplicitlyTrained:(id)trained;
++ (BOOL)isUtteranceImplicitlyTrainedFromMetaDict:(id)dict;
++ (id)_getBaseMetaDictionaryForUtterancePath:(id)path;
++ (id)getUtteranceEnrollmentType:(id)type;
++ (id)getUtterancePhIdFromMetaDict:(id)dict;
++ (id)loadMetadataJsonObjectFromMetadataFile:(id)file;
++ (id)readVoiceTriggerRePromptMetadata:(id)metadata;
++ (id)recordedTimeStampFromFileName:(id)name;
++ (id)recordedTimeStampOfFile:(id)file;
++ (void)_writeMetaDict:(id)dict forUtterancePath:(id)path;
++ (void)saveUtteranceMetadataForUtterance:(id)utterance enrollmentType:(id)type isHandheldEnrollment:(BOOL)enrollment triggerSource:(id)source audioInput:(id)input otherBiometricResult:(unint64_t)result containsPayload:(BOOL)payload;
++ (void)saveVoiceTriggeRePromptMetadata:(id)metadata;
 @end
 
 @implementation SSRVoiceProfileMetadataManager
 
-+ (id)loadMetadataJsonObjectFromMetadataFile:(id)a3
++ (id)loadMetadataJsonObjectFromMetadataFile:(id)file
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v3];
+  fileCopy = file;
+  v4 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:fileCopy];
   if (v4)
   {
     v12 = 0;
@@ -33,7 +33,7 @@
         *buf = 136315650;
         v14 = "+[SSRVoiceProfileMetadataManager loadMetadataJsonObjectFromMetadataFile:]";
         v15 = 2114;
-        v16 = v3;
+        v16 = fileCopy;
         v17 = 2114;
         v18 = v6;
         _os_log_error_impl(&dword_225E12000, v7, OS_LOG_TYPE_ERROR, "%s Json-Err reading metaVersionFile: %{public}@: err: %{public}@", buf, 0x20u);
@@ -56,7 +56,7 @@
       *buf = 136315394;
       v14 = "+[SSRVoiceProfileMetadataManager loadMetadataJsonObjectFromMetadataFile:]";
       v15 = 2114;
-      v16 = v3;
+      v16 = fileCopy;
       _os_log_error_impl(&dword_225E12000, v9, OS_LOG_TYPE_ERROR, "%s ERR: Unexpected. metaVersionFileData is empty while the file exists at: %{public}@", buf, 0x16u);
     }
 
@@ -68,22 +68,22 @@
   return v8;
 }
 
-+ (id)recordedTimeStampFromFileName:(id)a3
++ (id)recordedTimeStampFromFileName:(id)name
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  nameCopy = name;
+  v4 = nameCopy;
+  if (nameCopy)
   {
-    v5 = [v3 lastPathComponent];
-    v6 = [v5 stringByDeletingPathExtension];
+    lastPathComponent = [nameCopy lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
     v7 = objc_alloc_init(MEMORY[0x277CCA968]);
     v8 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:@"en_US_POSIX"];
     [v7 setLocale:v8];
 
     [v7 setDateFormat:@"yyyyMMdd-HHmmss"];
-    v9 = [v7 dateFromString:v6];
+    v9 = [v7 dateFromString:stringByDeletingPathExtension];
   }
 
   else
@@ -104,19 +104,19 @@
   return v9;
 }
 
-+ (id)recordedTimeStampOfFile:(id)a3
++ (id)recordedTimeStampOfFile:(id)file
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = [a3 path];
-  v5 = [v4 stringByDeletingPathExtension];
-  v6 = [v5 stringByAppendingPathExtension:@"json"];
+  path = [file path];
+  stringByDeletingPathExtension = [path stringByDeletingPathExtension];
+  v6 = [stringByDeletingPathExtension stringByAppendingPathExtension:@"json"];
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  LOBYTE(v5) = [v7 fileExistsAtPath:v6];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  LOBYTE(stringByDeletingPathExtension) = [defaultManager fileExistsAtPath:v6];
 
-  if (v5)
+  if (stringByDeletingPathExtension)
   {
-    v8 = [a1 loadMetadataJsonObjectFromMetadataFile:v6];
+    v8 = [self loadMetadataJsonObjectFromMetadataFile:v6];
     v9 = v8;
     if (v8)
     {
@@ -163,18 +163,18 @@
   return v13;
 }
 
-+ (id)getUtteranceEnrollmentType:(id)a3
++ (id)getUtteranceEnrollmentType:(id)type
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  typeCopy = type;
+  v4 = typeCopy;
+  if (typeCopy)
   {
-    v5 = [v3 URLByDeletingPathExtension];
-    v6 = [v5 URLByAppendingPathExtension:@"json"];
+    uRLByDeletingPathExtension = [typeCopy URLByDeletingPathExtension];
+    v6 = [uRLByDeletingPathExtension URLByAppendingPathExtension:@"json"];
 
-    v7 = [v6 path];
-    v8 = [SSRVoiceProfileMetadataManager loadMetadataJsonObjectFromMetadataFile:v7];
+    path = [v6 path];
+    v8 = [SSRVoiceProfileMetadataManager loadMetadataJsonObjectFromMetadataFile:path];
 
     if (v8)
     {
@@ -203,8 +203,8 @@
         _os_log_error_impl(&dword_225E12000, v13, OS_LOG_TYPE_ERROR, "%s ERR: metaDict from file %{public}@ isnt a dictionary - %{public}@", &v17, 0x20u);
       }
 
-      v14 = [MEMORY[0x277D01708] sharedInstance];
-      [v14 submitVoiceIdIssueReport:*MEMORY[0x277D01A88]];
+      mEMORY[0x277D01708] = [MEMORY[0x277D01708] sharedInstance];
+      [mEMORY[0x277D01708] submitVoiceIdIssueReport:*MEMORY[0x277D01A88]];
     }
 
     v10 = 0;
@@ -229,19 +229,19 @@ LABEL_15:
   return v10;
 }
 
-+ (BOOL)isUtteranceImplicitlyTrained:(id)a3
++ (BOOL)isUtteranceImplicitlyTrained:(id)trained
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  trainedCopy = trained;
+  v5 = trainedCopy;
+  if (trainedCopy)
   {
-    v6 = [v4 path];
-    v7 = [SSRVoiceProfileMetadataManager loadMetadataJsonObjectFromMetadataFile:v6];
+    path = [trainedCopy path];
+    v7 = [SSRVoiceProfileMetadataManager loadMetadataJsonObjectFromMetadataFile:path];
 
     if (v7)
     {
-      v8 = [a1 isUtteranceImplicitlyTrainedFromMetaDict:v7];
+      v8 = [self isUtteranceImplicitlyTrainedFromMetaDict:v7];
     }
 
     else
@@ -267,11 +267,11 @@ LABEL_15:
   return v8;
 }
 
-+ (id)getUtterancePhIdFromMetaDict:(id)a3
++ (id)getUtterancePhIdFromMetaDict:(id)dict
 {
-  if (a3)
+  if (dict)
   {
-    v4 = [a3 objectForKeyedSubscript:@"phId"];
+    v4 = [dict objectForKeyedSubscript:@"phId"];
   }
 
   else
@@ -282,14 +282,14 @@ LABEL_15:
   return v4;
 }
 
-+ (BOOL)isUtteranceImplicitlyTrainedFromMetaDict:(id)a3
++ (BOOL)isUtteranceImplicitlyTrainedFromMetaDict:(id)dict
 {
-  if (!a3)
+  if (!dict)
   {
     return 0;
   }
 
-  v3 = [a3 objectForKeyedSubscript:@"trainingType"];
+  v3 = [dict objectForKeyedSubscript:@"trainingType"];
   v4 = v3;
   if (v3)
   {
@@ -304,17 +304,17 @@ LABEL_15:
   return v5;
 }
 
-+ (void)_writeMetaDict:(id)a3 forUtterancePath:(id)a4
++ (void)_writeMetaDict:(id)dict forUtterancePath:(id)path
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dictCopy = dict;
+  pathCopy = path;
+  if (pathCopy)
   {
-    if (v5)
+    if (dictCopy)
     {
       v15 = 0;
-      v7 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v5 options:1 error:&v15];
+      v7 = [MEMORY[0x277CCAAA0] dataWithJSONObject:dictCopy options:1 error:&v15];
       v8 = v15;
       if (v8)
       {
@@ -327,17 +327,17 @@ LABEL_13:
         }
 
         v10 = v9;
-        v11 = [v8 localizedDescription];
+        localizedDescription = [v8 localizedDescription];
         *buf = 136315394;
         v17 = "+[SSRVoiceProfileMetadataManager _writeMetaDict:forUtterancePath:]";
         v18 = 2114;
-        v19 = v11;
+        v19 = localizedDescription;
         _os_log_error_impl(&dword_225E12000, v10, OS_LOG_TYPE_ERROR, "%s ::: Error creating json Metadata: %{public}@", buf, 0x16u);
       }
 
       else
       {
-        v10 = [v6 stringByReplacingOccurrencesOfString:@".wav" withString:@".json"];
+        v10 = [pathCopy stringByReplacingOccurrencesOfString:@".wav" withString:@".json"];
         [v7 writeToFile:v10 atomically:0];
       }
 
@@ -372,22 +372,22 @@ LABEL_14:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_getBaseMetaDictionaryForUtterancePath:(id)a3
++ (id)_getBaseMetaDictionaryForUtterancePath:(id)path
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v4 = [MEMORY[0x277D018F8] deviceProductType];
-    v12[0] = v4;
+    deviceProductType = [MEMORY[0x277D018F8] deviceProductType];
+    v12[0] = deviceProductType;
     v11[1] = @"productVersion";
-    v5 = [MEMORY[0x277D018F8] deviceProductVersion];
-    v12[1] = v5;
+    deviceProductVersion = [MEMORY[0x277D018F8] deviceProductVersion];
+    v12[1] = deviceProductVersion;
     v11[2] = @"buildVersion";
-    v6 = [MEMORY[0x277D018F8] deviceBuildVersion];
+    deviceBuildVersion = [MEMORY[0x277D018F8] deviceBuildVersion];
     v11[3] = @"utteranceWav";
-    v12[2] = v6;
-    v12[3] = v3;
+    v12[2] = deviceBuildVersion;
+    v12[3] = pathCopy;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:4];
   }
 
@@ -409,23 +409,23 @@ LABEL_14:
   return v7;
 }
 
-+ (void)saveUtteranceMetadataForUtterance:(id)a3 enrollmentType:(id)a4 isHandheldEnrollment:(BOOL)a5 triggerSource:(id)a6 audioInput:(id)a7 otherBiometricResult:(unint64_t)a8 containsPayload:(BOOL)a9
++ (void)saveUtteranceMetadataForUtterance:(id)utterance enrollmentType:(id)type isHandheldEnrollment:(BOOL)enrollment triggerSource:(id)source audioInput:(id)input otherBiometricResult:(unint64_t)result containsPayload:(BOOL)payload
 {
-  v12 = a5;
+  enrollmentCopy = enrollment;
   v31 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a7;
-  if (v15)
+  utteranceCopy = utterance;
+  typeCopy = type;
+  sourceCopy = source;
+  inputCopy = input;
+  if (utteranceCopy)
   {
     v19 = MEMORY[0x277CBEB38];
-    v20 = [a1 _getBaseMetaDictionaryForUtterancePath:v15];
+    v20 = [self _getBaseMetaDictionaryForUtterancePath:utteranceCopy];
     v21 = [v19 dictionaryWithDictionary:v20];
 
-    if (v16)
+    if (typeCopy)
     {
-      v22 = v16;
+      v22 = typeCopy;
     }
 
     else
@@ -434,7 +434,7 @@ LABEL_14:
     }
 
     [v21 setObject:v22 forKeyedSubscript:@"trainingType"];
-    if (v12)
+    if (enrollmentCopy)
     {
       v23 = @"near-field";
     }
@@ -445,18 +445,18 @@ LABEL_14:
     }
 
     [v21 setObject:v23 forKeyedSubscript:@"handheld"];
-    v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a8];
+    v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:result];
     [v21 setObject:v24 forKeyedSubscript:@"otherSourceProfileMatch"];
 
-    [v21 setObject:v17 forKeyedSubscript:@"triggerSource"];
-    [v21 setObject:v18 forKeyedSubscript:@"audioInputSource"];
-    v25 = [MEMORY[0x277D018F8] timeStampWithSaltGrain];
-    [v21 setObject:v25 forKeyedSubscript:@"grainedDate"];
+    [v21 setObject:sourceCopy forKeyedSubscript:@"triggerSource"];
+    [v21 setObject:inputCopy forKeyedSubscript:@"audioInputSource"];
+    timeStampWithSaltGrain = [MEMORY[0x277D018F8] timeStampWithSaltGrain];
+    [v21 setObject:timeStampWithSaltGrain forKeyedSubscript:@"grainedDate"];
 
-    v26 = [MEMORY[0x277CCABB0] numberWithBool:a9];
+    v26 = [MEMORY[0x277CCABB0] numberWithBool:payload];
     [v21 setObject:v26 forKeyedSubscript:@"containsPayload"];
 
-    [a1 _writeMetaDict:v21 forUtterancePath:v15];
+    [self _writeMetaDict:v21 forUtterancePath:utteranceCopy];
   }
 
   else
@@ -473,11 +473,11 @@ LABEL_14:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)readVoiceTriggerRePromptMetadata:(id)a3
++ (id)readVoiceTriggerRePromptMetadata:(id)metadata
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v3];
+  metadataCopy = metadata;
+  v4 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:metadataCopy];
   if (v4)
   {
     v14 = 0;
@@ -491,7 +491,7 @@ LABEL_14:
         *buf = 136315650;
         v16 = "+[SSRVoiceProfileMetadataManager readVoiceTriggerRePromptMetadata:]";
         v17 = 2114;
-        v18 = v3;
+        v18 = metadataCopy;
         v19 = 2114;
         v20 = v6;
         _os_log_error_impl(&dword_225E12000, v7, OS_LOG_TYPE_ERROR, "%s Json-Err reading metaVersionDict: %{public}@: err: %{public}@", buf, 0x20u);
@@ -528,7 +528,7 @@ LABEL_14:
       *buf = 136315394;
       v16 = "+[SSRVoiceProfileMetadataManager readVoiceTriggerRePromptMetadata:]";
       v17 = 2114;
-      v18 = v3;
+      v18 = metadataCopy;
       _os_log_error_impl(&dword_225E12000, v9, OS_LOG_TYPE_ERROR, "%s ERR: Unexpected. metaVersionFileData is empty while the file exists at: %{public}@", buf, 0x16u);
     }
 
@@ -540,25 +540,25 @@ LABEL_14:
   return v8;
 }
 
-+ (void)saveVoiceTriggeRePromptMetadata:(id)a3
++ (void)saveVoiceTriggeRePromptMetadata:(id)metadata
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  metadataCopy = metadata;
+  if (metadataCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x277CCA968]);
     v5 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:@"en_US_POSIX"];
     [v4 setLocale:v5];
 
     [v4 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    v6 = [MEMORY[0x277CBEB38] dictionary];
-    [v6 setObject:@"TRUE" forKeyedSubscript:@"RePrompt_Finished"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary setObject:@"TRUE" forKeyedSubscript:@"RePrompt_Finished"];
     v7 = [MEMORY[0x277CBEAA8] now];
     v8 = [v4 stringFromDate:v7];
-    [v6 setObject:v8 forKeyedSubscript:@"RePrompt_Date"];
+    [dictionary setObject:v8 forKeyedSubscript:@"RePrompt_Date"];
 
     v16 = 0;
-    v9 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v6 options:1 error:&v16];
+    v9 = [MEMORY[0x277CCAAA0] dataWithJSONObject:dictionary options:1 error:&v16];
     v10 = v16;
     if (v10)
     {
@@ -566,18 +566,18 @@ LABEL_14:
       if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_ERROR))
       {
         v12 = v11;
-        v13 = [v10 localizedDescription];
+        localizedDescription = [v10 localizedDescription];
         *buf = 136315394;
         v18 = "+[SSRVoiceProfileMetadataManager saveVoiceTriggeRePromptMetadata:]";
         v19 = 2114;
-        v20 = v13;
+        v20 = localizedDescription;
         _os_log_error_impl(&dword_225E12000, v12, OS_LOG_TYPE_ERROR, "%s ::: Error creating json RePrompt Metadata: %{public}@", buf, 0x16u);
       }
     }
 
     else
     {
-      [v9 writeToFile:v3 atomically:0];
+      [v9 writeToFile:metadataCopy atomically:0];
     }
   }
 

@@ -1,15 +1,15 @@
 @interface SCRCWeakReferenceContainer
-- (BOOL)isEqual:(id)a3;
-- (SCRCWeakReferenceContainer)initWithObject:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SCRCWeakReferenceContainer)initWithObject:(id)object;
 - (id)autoreleasedReference;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation SCRCWeakReferenceContainer
 
-- (SCRCWeakReferenceContainer)initWithObject:(id)a3
+- (SCRCWeakReferenceContainer)initWithObject:(id)object
 {
   v7.receiver = self;
   v7.super_class = SCRCWeakReferenceContainer;
@@ -17,7 +17,7 @@
   v5 = v4;
   if (v4)
   {
-    objc_initWeak(&v4->_weakReference, a3);
+    objc_initWeak(&v4->_weakReference, object);
   }
 
   return v5;
@@ -33,43 +33,43 @@
 
 - (id)autoreleasedReference
 {
-  v2 = [(SCRCWeakReferenceContainer *)self strongReference];
+  strongReference = [(SCRCWeakReferenceContainer *)self strongReference];
 
-  return v2;
+  return strongReference;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(SCRCWeakReferenceContainer *)self strongReference];
-  v3 = [v2 hash];
+  strongReference = [(SCRCWeakReferenceContainer *)self strongReference];
+  v3 = [strongReference hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(SCRCWeakReferenceContainer *)self strongReference];
-    v6 = [a3 strongReference];
-    v7 = v5 == v6 || [v5 isEqual:v6];
+    strongReference = [(SCRCWeakReferenceContainer *)self strongReference];
+    strongReference2 = [equal strongReference];
+    v7 = strongReference == strongReference2 || [strongReference isEqual:strongReference2];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = SCRCWeakReferenceContainer;
-    return [(SCRCWeakReferenceContainer *)&v9 isEqual:a3];
+    return [(SCRCWeakReferenceContainer *)&v9 isEqual:equal];
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(SCRCWeakReferenceContainer *)self strongReference];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithObject:", v4}];
+  strongReference = [(SCRCWeakReferenceContainer *)self strongReference];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithObject:", strongReference}];
 
   return v5;
 }

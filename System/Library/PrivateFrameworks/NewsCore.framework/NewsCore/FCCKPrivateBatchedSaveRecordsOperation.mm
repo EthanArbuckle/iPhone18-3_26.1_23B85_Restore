@@ -3,7 +3,7 @@
 - (FCCKPrivateBatchedSaveRecordsOperation)init;
 - (void)_continueModifying;
 - (void)_subdivideRemainingBatches;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -38,9 +38,9 @@
 - (BOOL)validateOperation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(FCCKPrivateBatchedSaveRecordsOperation *)self database];
+  database = [(FCCKPrivateBatchedSaveRecordsOperation *)self database];
 
-  if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!database && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"modify operation must have a database"];
     v9 = 136315906;
@@ -54,8 +54,8 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v9, 0x26u);
   }
 
-  v4 = [(FCCKPrivateBatchedSaveRecordsOperation *)self database];
-  v5 = v4 != 0;
+  database2 = [(FCCKPrivateBatchedSaveRecordsOperation *)self database];
+  v5 = database2 != 0;
 
   v6 = *MEMORY[0x1E69E9840];
   return v5;
@@ -63,27 +63,27 @@
 
 - (void)performOperation
 {
-  v3 = [(FCCKPrivateBatchedSaveRecordsOperation *)self recordsToSave];
-  v4 = [v3 count];
+  recordsToSave = [(FCCKPrivateBatchedSaveRecordsOperation *)self recordsToSave];
+  v4 = [recordsToSave count];
 
   if (v4)
   {
-    v5 = [(FCCKPrivateBatchedSaveRecordsOperation *)self remainingBatchesOfRecordsToSave];
-    v6 = [(FCCKPrivateBatchedSaveRecordsOperation *)self recordsToSave];
-    [v5 addObject:v6];
+    remainingBatchesOfRecordsToSave = [(FCCKPrivateBatchedSaveRecordsOperation *)self remainingBatchesOfRecordsToSave];
+    recordsToSave2 = [(FCCKPrivateBatchedSaveRecordsOperation *)self recordsToSave];
+    [remainingBatchesOfRecordsToSave addObject:recordsToSave2];
 
-    v7 = [(FCCKPrivateBatchedSaveRecordsOperation *)self remainingBatchesOfRecordsToSave];
-    v8 = [v7 firstObject];
-    v9 = [v8 count];
+    remainingBatchesOfRecordsToSave2 = [(FCCKPrivateBatchedSaveRecordsOperation *)self remainingBatchesOfRecordsToSave];
+    firstObject = [remainingBatchesOfRecordsToSave2 firstObject];
+    v9 = [firstObject count];
 
     if (v9 >= 0x191)
     {
       do
       {
         [(FCCKPrivateBatchedSaveRecordsOperation *)self _subdivideRemainingBatches];
-        v10 = [(FCCKPrivateBatchedSaveRecordsOperation *)self remainingBatchesOfRecordsToSave];
-        v11 = [v10 firstObject];
-        v12 = [v11 count];
+        remainingBatchesOfRecordsToSave3 = [(FCCKPrivateBatchedSaveRecordsOperation *)self remainingBatchesOfRecordsToSave];
+        firstObject2 = [remainingBatchesOfRecordsToSave3 firstObject];
+        v12 = [firstObject2 count];
       }
 
       while (v12 > 0x190);
@@ -93,39 +93,39 @@
   [(FCCKPrivateBatchedSaveRecordsOperation *)self _continueModifying];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
-    v5 = [(FCCKPrivateBatchedSaveRecordsOperation *)self resultErrorsByRecordID];
-    v6 = [v5 count];
+    resultErrorsByRecordID = [(FCCKPrivateBatchedSaveRecordsOperation *)self resultErrorsByRecordID];
+    v6 = [resultErrorsByRecordID count];
 
     if (v6)
     {
       v7 = MEMORY[0x1E696ABC0];
       v8 = *MEMORY[0x1E695B740];
       v15 = *MEMORY[0x1E695B798];
-      v9 = [(FCCKPrivateBatchedSaveRecordsOperation *)self resultErrorsByRecordID];
-      v16[0] = v9;
+      resultErrorsByRecordID2 = [(FCCKPrivateBatchedSaveRecordsOperation *)self resultErrorsByRecordID];
+      v16[0] = resultErrorsByRecordID2;
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-      v4 = [v7 errorWithDomain:v8 code:2 userInfo:v10];
+      errorCopy = [v7 errorWithDomain:v8 code:2 userInfo:v10];
     }
 
     else
     {
-      v4 = 0;
+      errorCopy = 0;
     }
   }
 
-  v11 = [(FCCKPrivateBatchedSaveRecordsOperation *)self saveRecordsCompletionBlock];
+  saveRecordsCompletionBlock = [(FCCKPrivateBatchedSaveRecordsOperation *)self saveRecordsCompletionBlock];
 
-  if (v11)
+  if (saveRecordsCompletionBlock)
   {
-    v12 = [(FCCKPrivateBatchedSaveRecordsOperation *)self saveRecordsCompletionBlock];
-    v13 = [(FCCKPrivateBatchedSaveRecordsOperation *)self resultSavedRecords];
-    (v12)[2](v12, v13, v4);
+    saveRecordsCompletionBlock2 = [(FCCKPrivateBatchedSaveRecordsOperation *)self saveRecordsCompletionBlock];
+    resultSavedRecords = [(FCCKPrivateBatchedSaveRecordsOperation *)self resultSavedRecords];
+    (saveRecordsCompletionBlock2)[2](saveRecordsCompletionBlock2, resultSavedRecords, errorCopy);
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -133,13 +133,13 @@
 
 - (void)_continueModifying
 {
-  v3 = [(FCCKPrivateBatchedSaveRecordsOperation *)self remainingBatchesOfRecordsToSave];
-  v4 = [v3 firstObject];
+  remainingBatchesOfRecordsToSave = [(FCCKPrivateBatchedSaveRecordsOperation *)self remainingBatchesOfRecordsToSave];
+  firstObject = [remainingBatchesOfRecordsToSave firstObject];
 
-  if ([v4 count])
+  if ([firstObject count])
   {
     v5 = objc_alloc_init(FCCKPrivateSaveRecordsOperation);
-    [(FCCKPrivateSaveRecordsOperation *)v5 setRecordsToSave:v4];
+    [(FCCKPrivateSaveRecordsOperation *)v5 setRecordsToSave:firstObject];
     [(FCCKPrivateSaveRecordsOperation *)v5 setSavePolicy:[(FCCKPrivateBatchedSaveRecordsOperation *)self savePolicy]];
     [(FCCKPrivateDatabaseOperation *)v5 setSkipPreflight:[(FCCKPrivateBatchedSaveRecordsOperation *)self skipPreflight]];
     [(FCCKPrivateDatabaseOperation *)v5 setIdentityLossResponse:[(FCCKPrivateBatchedSaveRecordsOperation *)self identityLossResponse]];
@@ -150,8 +150,8 @@
     v7[4] = self;
     [(FCCKPrivateSaveRecordsOperation *)v5 setSaveRecordsCompletionBlock:v7];
     [(FCOperation *)self associateChildOperation:v5];
-    v6 = [(FCCKPrivateBatchedSaveRecordsOperation *)self database];
-    [(FCCKPrivateDatabase *)v6 addOperation:v5];
+    database = [(FCCKPrivateBatchedSaveRecordsOperation *)self database];
+    [(FCCKPrivateDatabase *)database addOperation:v5];
   }
 
   else
@@ -208,11 +208,11 @@ void __60__FCCKPrivateBatchedSaveRecordsOperation__continueModifying__block_invo
 - (void)_subdivideRemainingBatches
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(FCCKPrivateBatchedSaveRecordsOperation *)self remainingBatchesOfRecordsToSave];
-  v4 = [v3 copy];
+  remainingBatchesOfRecordsToSave = [(FCCKPrivateBatchedSaveRecordsOperation *)self remainingBatchesOfRecordsToSave];
+  v4 = [remainingBatchesOfRecordsToSave copy];
 
-  v5 = [(FCCKPrivateBatchedSaveRecordsOperation *)self remainingBatchesOfRecordsToSave];
-  [v5 removeAllObjects];
+  remainingBatchesOfRecordsToSave2 = [(FCCKPrivateBatchedSaveRecordsOperation *)self remainingBatchesOfRecordsToSave];
+  [remainingBatchesOfRecordsToSave2 removeAllObjects];
 
   v20 = 0u;
   v21 = 0u;
@@ -237,11 +237,11 @@ void __60__FCCKPrivateBatchedSaveRecordsOperation__continueModifying__block_invo
         v12 = [v11 count] >> 1;
         v13 = [v11 subarrayWithRange:{0, v12}];
         v14 = [v11 subarrayWithRange:{v12, objc_msgSend(v11, "count") - v12}];
-        v15 = [(FCCKPrivateBatchedSaveRecordsOperation *)self remainingBatchesOfRecordsToSave];
-        [v15 addObject:v13];
+        remainingBatchesOfRecordsToSave3 = [(FCCKPrivateBatchedSaveRecordsOperation *)self remainingBatchesOfRecordsToSave];
+        [remainingBatchesOfRecordsToSave3 addObject:v13];
 
-        v16 = [(FCCKPrivateBatchedSaveRecordsOperation *)self remainingBatchesOfRecordsToSave];
-        [v16 addObject:v14];
+        remainingBatchesOfRecordsToSave4 = [(FCCKPrivateBatchedSaveRecordsOperation *)self remainingBatchesOfRecordsToSave];
+        [remainingBatchesOfRecordsToSave4 addObject:v14];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];

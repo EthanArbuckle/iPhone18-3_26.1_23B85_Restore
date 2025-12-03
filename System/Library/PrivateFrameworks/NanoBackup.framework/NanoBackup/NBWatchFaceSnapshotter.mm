@@ -1,17 +1,17 @@
 @interface NBWatchFaceSnapshotter
-+ (id)captureWatchFaceForPairingID:(id)a3 toFilePath:(id)a4;
-- (NBWatchFaceSnapshotter)initWithPairingID:(id)a3;
++ (id)captureWatchFaceForPairingID:(id)d toFilePath:(id)path;
+- (NBWatchFaceSnapshotter)initWithPairingID:(id)d;
 - (id)snapshotImage;
-- (void)snapshotImageUpdated:(id)a3;
-- (void)snapshotImageWithBlock:(id)a3;
+- (void)snapshotImageUpdated:(id)updated;
+- (void)snapshotImageWithBlock:(id)block;
 @end
 
 @implementation NBWatchFaceSnapshotter
 
-+ (id)captureWatchFaceForPairingID:(id)a3 toFilePath:(id)a4
++ (id)captureWatchFaceForPairingID:(id)d toFilePath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  pathCopy = path;
   if (qword_100034AB8 != -1)
   {
     sub_10001D750();
@@ -19,17 +19,17 @@
 
   if (qword_100034AB0)
   {
-    v7 = [objc_alloc(objc_opt_class()) initWithPairingID:v5];
-    v8 = [v7 snapshotImage];
-    v9 = v8;
-    if (v8)
+    v7 = [objc_alloc(objc_opt_class()) initWithPairingID:dCopy];
+    snapshotImage = [v7 snapshotImage];
+    v9 = snapshotImage;
+    if (snapshotImage)
     {
-      v10 = UIImagePNGRepresentation(v8);
+      v10 = UIImagePNGRepresentation(snapshotImage);
       v11 = v10;
       if (v10)
       {
         v21 = 0;
-        [v10 writeToFile:v6 options:1073741825 error:&v21];
+        [v10 writeToFile:pathCopy options:1073741825 error:&v21];
         v12 = v21;
         if (v12)
         {
@@ -42,7 +42,7 @@
             *buf = 134218498;
             v23 = v16;
             v24 = 2112;
-            v25 = v6;
+            v25 = pathCopy;
             v26 = 2112;
             v27 = v13;
             _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Failed to write clock face data (%lu bytes) to (%@) with error: (%@)", buf, 0x20u);
@@ -92,17 +92,17 @@ LABEL_20:
   return v13;
 }
 
-- (NBWatchFaceSnapshotter)initWithPairingID:(id)a3
+- (NBWatchFaceSnapshotter)initWithPairingID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = NBWatchFaceSnapshotter;
   v6 = [(NBWatchFaceSnapshotter *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pairingID, a3);
-    v8 = [[NTKLibrarySelectedFaceSnapshotProvider alloc] initWithDeviceUUID:v5];
+    objc_storeStrong(&v6->_pairingID, d);
+    v8 = [[NTKLibrarySelectedFaceSnapshotProvider alloc] initWithDeviceUUID:dCopy];
     snapshotProvider = v7->_snapshotProvider;
     v7->_snapshotProvider = v8;
 
@@ -164,20 +164,20 @@ LABEL_20:
   return v8;
 }
 
-- (void)snapshotImageWithBlock:(id)a3
+- (void)snapshotImageWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100001D00;
   block[3] = &unk_10002C740;
   block[4] = self;
-  v6 = v4;
+  v6 = blockCopy;
   v14 = v6;
   dispatch_async(queue, block);
-  v7 = [(NTKLibrarySelectedFaceSnapshotProvider *)self->_snapshotProvider snapshotImage];
-  if (v7)
+  snapshotImage = [(NTKLibrarySelectedFaceSnapshotProvider *)self->_snapshotProvider snapshotImage];
+  if (snapshotImage)
   {
     v8 = nb_daemon_log;
     if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
@@ -192,14 +192,14 @@ LABEL_20:
     v10[2] = sub_100001D54;
     v10[3] = &unk_10002C768;
     v10[4] = self;
-    v11 = v7;
+    v11 = snapshotImage;
     dispatch_async(v9, v10);
   }
 }
 
-- (void)snapshotImageUpdated:(id)a3
+- (void)snapshotImageUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   v5 = nb_daemon_log;
   if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
   {
@@ -213,8 +213,8 @@ LABEL_20:
   v8[2] = sub_100001F48;
   v8[3] = &unk_10002C768;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = updatedCopy;
+  v7 = updatedCopy;
   dispatch_async(queue, v8);
 }
 

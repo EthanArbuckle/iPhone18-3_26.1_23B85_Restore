@@ -1,26 +1,26 @@
 @interface SearchTemplateController
-- (CGRect)_searchBar:(id)a3 proposedSearchFieldFrame:(CGRect)a4;
-- (_TtC8VideosUI24SearchTemplateController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)accountChanged:(id)a3;
-- (void)handleWithKeyboardShowNotification:(id)a3;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)searchBarSearchButtonClicked:(id)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)vui_didMoveToParentViewController:(id)a3;
-- (void)vui_viewDidAppear:(BOOL)a3;
-- (void)vui_viewDidDisappear:(BOOL)a3;
+- (CGRect)_searchBar:(id)bar proposedSearchFieldFrame:(CGRect)frame;
+- (_TtC8VideosUI24SearchTemplateController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)accountChanged:(id)changed;
+- (void)handleWithKeyboardShowNotification:(id)notification;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)searchBarSearchButtonClicked:(id)clicked;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)vui_didMoveToParentViewController:(id)controller;
+- (void)vui_viewDidAppear:(BOOL)appear;
+- (void)vui_viewDidDisappear:(BOOL)disappear;
 - (void)vui_viewDidLayoutSubviews;
 - (void)vui_viewDidLoad;
-- (void)vui_viewWillAppear:(BOOL)a3;
-- (void)vui_viewWillDisappear:(BOOL)a3;
-- (void)willDismissSearchController:(id)a3;
-- (void)willPresentSearchController:(id)a3;
+- (void)vui_viewWillAppear:(BOOL)appear;
+- (void)vui_viewWillDisappear:(BOOL)disappear;
+- (void)willDismissSearchController:(id)controller;
+- (void)willPresentSearchController:(id)controller;
 @end
 
 @implementation SearchTemplateController
 
-- (void)accountChanged:(id)a3
+- (void)accountChanged:(id)changed
 {
   OUTLINED_FUNCTION_44_11();
   sub_1E41FDF34();
@@ -38,58 +38,58 @@
 
 - (void)vui_viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E3942DA8();
 }
 
-- (void)vui_viewWillAppear:(BOOL)a3
+- (void)vui_viewWillAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   v4 = OUTLINED_FUNCTION_10_0();
   sub_1E3943230(v4);
 }
 
-- (void)vui_viewDidAppear:(BOOL)a3
+- (void)vui_viewDidAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   v4 = OUTLINED_FUNCTION_10_0();
   sub_1E3943AD8(v4);
 }
 
-- (void)vui_viewWillDisappear:(BOOL)a3
+- (void)vui_viewWillDisappear:(BOOL)disappear
 {
-  v3 = self;
+  selfCopy = self;
   v4 = OUTLINED_FUNCTION_10_0();
   sub_1E39440D0(v4);
 }
 
-- (void)vui_viewDidDisappear:(BOOL)a3
+- (void)vui_viewDidDisappear:(BOOL)disappear
 {
-  v3 = self;
+  selfCopy = self;
   v4 = OUTLINED_FUNCTION_10_0();
   sub_1E394418C(v4);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
-  sub_1E394423C(a4, width, height);
+  sub_1E394423C(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
 - (void)vui_viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E394476C();
 }
 
-- (void)vui_didMoveToParentViewController:(id)a3
+- (void)vui_didMoveToParentViewController:(id)controller
 {
   OUTLINED_FUNCTION_44_11();
   v5 = v3;
@@ -98,50 +98,50 @@
   sub_1E3944A4C(v3);
 }
 
-- (_TtC8VideosUI24SearchTemplateController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8VideosUI24SearchTemplateController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1E4205F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1E3944F70();
 }
 
-- (void)willDismissSearchController:(id)a3
+- (void)willDismissSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E3945660();
 }
 
-- (void)willPresentSearchController:(id)a3
+- (void)willPresentSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
-  sub_1E3945C68(v4);
+  sub_1E3945C68(controllerCopy);
 }
 
-- (void)searchBarSearchButtonClicked:(id)a3
+- (void)searchBarSearchButtonClicked:(id)clicked
 {
-  v4 = a3;
-  v5 = self;
+  clickedCopy = clicked;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E3945DD4();
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
-  v4 = a3;
-  v5 = self;
+  clickedCopy = clicked;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
-  sub_1E39468A4(v4);
+  sub_1E39468A4(clickedCopy);
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
   OUTLINED_FUNCTION_44_11();
   sub_1E4205F14();
@@ -150,7 +150,7 @@
   sub_1E3946C90();
 }
 
-- (CGRect)_searchBar:(id)a3 proposedSearchFieldFrame:(CGRect)a4
+- (CGRect)_searchBar:(id)bar proposedSearchFieldFrame:(CGRect)frame
 {
   OUTLINED_FUNCTION_44_11();
   v6 = v4;
@@ -167,7 +167,7 @@
   return result;
 }
 
-- (void)handleWithKeyboardShowNotification:(id)a3
+- (void)handleWithKeyboardShowNotification:(id)notification
 {
   OUTLINED_FUNCTION_44_11();
   sub_1E41FDF34();

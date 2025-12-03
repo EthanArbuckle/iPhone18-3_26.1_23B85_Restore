@@ -1,11 +1,11 @@
 @interface OADColorMap
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OADColorMap)init;
 - (id)description;
-- (int)mappingForIndex:(int)a3;
+- (int)mappingForIndex:(int)index;
 - (unint64_t)hash;
-- (void)addDefaultMappings:(BOOL)a3;
-- (void)addMapping:(int)a3 index:(int)a4;
+- (void)addDefaultMappings:(BOOL)mappings;
+- (void)addMapping:(int)mapping index:(int)index;
 @end
 
 @implementation OADColorMap
@@ -25,31 +25,31 @@
   return v2;
 }
 
-- (int)mappingForIndex:(int)a3
+- (int)mappingForIndex:(int)index
 {
   mMappings = self->mMappings;
-  v4 = [MEMORY[0x277CCABB0] numberWithInt:*&a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInt:*&index];
   v5 = [(NSMutableDictionary *)mMappings objectForKey:v4];
 
   LODWORD(v4) = [v5 intValue];
   return v4;
 }
 
-- (void)addMapping:(int)a3 index:(int)a4
+- (void)addMapping:(int)mapping index:(int)index
 {
-  v4 = *&a4;
+  v4 = *&index;
   mMappings = self->mMappings;
-  v7 = [MEMORY[0x277CCABB0] numberWithInt:*&a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithInt:*&mapping];
   v6 = [MEMORY[0x277CCABB0] numberWithInt:v4];
   [(NSMutableDictionary *)mMappings setObject:v7 forKey:v6];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(NSMutableDictionary *)self->mMappings isEqualToDictionary:v4[1]];
+    v5 = [(NSMutableDictionary *)self->mMappings isEqualToDictionary:equalCopy[1]];
   }
 
   else
@@ -77,10 +77,10 @@
   return v2;
 }
 
-- (void)addDefaultMappings:(BOOL)a3
+- (void)addDefaultMappings:(BOOL)mappings
 {
-  v3 = a3;
-  if (a3)
+  mappingsCopy = mappings;
+  if (mappings)
   {
     v5 = 3;
   }
@@ -90,7 +90,7 @@
     v5 = 2;
   }
 
-  if (a3)
+  if (mappings)
   {
     v6 = 2;
   }
@@ -101,7 +101,7 @@
   }
 
   [OADColorMap addMapping:"addMapping:index:" index:?];
-  [(OADColorMap *)self addMapping:!v3 index:1];
+  [(OADColorMap *)self addMapping:!mappingsCopy index:1];
   [(OADColorMap *)self addMapping:v5 index:2];
   [(OADColorMap *)self addMapping:v6 index:3];
   [(OADColorMap *)self addMapping:4 index:4];

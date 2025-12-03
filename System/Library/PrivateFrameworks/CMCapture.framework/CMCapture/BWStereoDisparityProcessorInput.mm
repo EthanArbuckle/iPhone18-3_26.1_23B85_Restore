@@ -1,7 +1,7 @@
 @interface BWStereoDisparityProcessorInput
-- (BWStereoDisparityProcessorInput)initWithSettings:(id)a3 portType:(id)a4;
+- (BWStereoDisparityProcessorInput)initWithSettings:(id)settings portType:(id)type;
 - (id)description;
-- (void)addSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (void)addSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 - (void)dealloc;
 @end
 
@@ -26,27 +26,27 @@
   [(BWStillImageProcessorControllerInput *)&v5 dealloc];
 }
 
-- (BWStereoDisparityProcessorInput)initWithSettings:(id)a3 portType:(id)a4
+- (BWStereoDisparityProcessorInput)initWithSettings:(id)settings portType:(id)type
 {
   v8.receiver = self;
   v8.super_class = BWStereoDisparityProcessorInput;
-  v5 = [(BWStillImageProcessorControllerInput *)&v8 initWithSettings:a3 portType:a4];
+  v5 = [(BWStillImageProcessorControllerInput *)&v8 initWithSettings:settings portType:type];
   if (v5)
   {
-    v6 = ([objc_msgSend(a3 "captureSettings")] & 0x20000) != 0 && objc_msgSend(objc_msgSend(a3, "captureSettings"), "captureType") == 10;
+    v6 = ([objc_msgSend(settings "captureSettings")] & 0x20000) != 0 && objc_msgSend(objc_msgSend(settings, "captureSettings"), "captureType") == 10;
     v5->_equalizeTeleGainToMatchReference = v6;
-    v5->_emitAuxiliaryInput = [objc_msgSend(objc_msgSend(a3 "requestedSettings")] != 0;
-    v5->_expectedPortTypes = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:{objc_msgSend(objc_msgSend(a3, "captureSettings"), "portTypes")}];
+    v5->_emitAuxiliaryInput = [objc_msgSend(objc_msgSend(settings "requestedSettings")] != 0;
+    v5->_expectedPortTypes = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:{objc_msgSend(objc_msgSend(settings, "captureSettings"), "portTypes")}];
   }
 
   return v5;
 }
 
-- (void)addSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)addSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  if (a3)
+  if (buffer)
   {
-    if ([objc_msgSend(CMGetAttachment(a3 *off_1E798A3C8])
+    if ([objc_msgSend(CMGetAttachment(buffer *off_1E798A3C8])
     {
       v5 = 48;
     }
@@ -63,7 +63,7 @@
       CFRelease(v7);
     }
 
-    *v6 = CFRetain(a3);
+    *v6 = CFRetain(buffer);
     delegate = self->_delegate;
 
     [(BWStereoDisparityProcessorInputDelegate *)delegate inputReceivedNewInputData:self];

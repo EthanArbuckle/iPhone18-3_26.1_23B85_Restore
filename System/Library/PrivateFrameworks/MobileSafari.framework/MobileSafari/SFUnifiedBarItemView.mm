@@ -1,32 +1,32 @@
 @interface SFUnifiedBarItemView
 - (BOOL)_relinquishedGlassView;
 - (BOOL)_shouldHidePlatterView;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (CACornerRadii)cornerRadii;
 - (CGRect)squishedGlassFrame;
 - (SFUnifiedBarItem)item;
-- (SFUnifiedBarItemView)initWithFrame:(CGRect)a3;
+- (SFUnifiedBarItemView)initWithFrame:(CGRect)frame;
 - (UIDragPreviewParameters)previewParameters;
 - (id)_makeSeparator;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_applyFilters;
 - (void)_applyGlass;
-- (void)_applyPlatterColor:(id)a3;
-- (void)_applyThemeToPlatterView:(id)a3;
+- (void)_applyPlatterColor:(id)color;
+- (void)_applyThemeToPlatterView:(id)view;
 - (void)_buttonShapesEnabledDidChange;
-- (void)_disableVibrancyIfNeededForTheme:(id)a3;
+- (void)_disableVibrancyIfNeededForTheme:(id)theme;
 - (void)_layOutContentView;
 - (void)_layOutCutoutBorder;
 - (void)_layOutGlass;
 - (void)_layOutSeparators;
 - (void)_layOutShadowView;
-- (void)_setHasFilterView:(BOOL)a3;
-- (void)_setHasHighlightView:(BOOL)a3;
-- (void)_setShowsCutoutBorderEffects:(BOOL)a3;
-- (void)_setShowsCutoutBorderEraser:(BOOL)a3;
-- (void)_setShowsGlass:(BOOL)a3;
-- (void)_setShowsPlatter:(BOOL)a3;
-- (void)_setUsesShadowView:(BOOL)a3;
+- (void)_setHasFilterView:(BOOL)view;
+- (void)_setHasHighlightView:(BOOL)view;
+- (void)_setShowsCutoutBorderEffects:(BOOL)effects;
+- (void)_setShowsCutoutBorderEraser:(BOOL)eraser;
+- (void)_setShowsGlass:(BOOL)glass;
+- (void)_setShowsPlatter:(BOOL)platter;
+- (void)_setUsesShadowView:(BOOL)view;
 - (void)_updateBackgroundAlpha;
 - (void)_updateContentAlpha;
 - (void)_updateHighlightColor;
@@ -36,35 +36,35 @@
 - (void)_updateShowsCutoutBorder;
 - (void)layoutSubviews;
 - (void)reclaimGlassView;
-- (void)setBarBackgroundAlpha:(double)a3;
-- (void)setBarMetrics:(id)a3;
-- (void)setBarTheme:(id)a3;
-- (void)setContentAlpha:(double)a3;
-- (void)setContentBlurRadius:(double)a3;
-- (void)setCornerRadii:(CACornerRadii *)a3;
-- (void)setCutoutBorderCopyGroupName:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setItemsNeedEraserBasedCutoutBorder:(BOOL)a3;
-- (void)setPlatterStyle:(int64_t)a3;
-- (void)setSeparatorOutset:(double)a3;
-- (void)setSeparatorVerticalInset:(double)a3;
-- (void)setShouldEnableCopyCutoutBorder:(BOOL)a3;
-- (void)setShowsSeparators:(BOOL)a3;
-- (void)setSquishTransformFactor:(double)a3;
-- (void)setThemeColorVisibility:(double)a3;
-- (void)setVisibleSeparatorEdges:(unint64_t)a3;
+- (void)setBarBackgroundAlpha:(double)alpha;
+- (void)setBarMetrics:(id)metrics;
+- (void)setBarTheme:(id)theme;
+- (void)setContentAlpha:(double)alpha;
+- (void)setContentBlurRadius:(double)radius;
+- (void)setCornerRadii:(CACornerRadii *)radii;
+- (void)setCutoutBorderCopyGroupName:(id)name;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setItemsNeedEraserBasedCutoutBorder:(BOOL)border;
+- (void)setPlatterStyle:(int64_t)style;
+- (void)setSeparatorOutset:(double)outset;
+- (void)setSeparatorVerticalInset:(double)inset;
+- (void)setShouldEnableCopyCutoutBorder:(BOOL)border;
+- (void)setShowsSeparators:(BOOL)separators;
+- (void)setSquishTransformFactor:(double)factor;
+- (void)setThemeColorVisibility:(double)visibility;
+- (void)setVisibleSeparatorEdges:(unint64_t)edges;
 - (void)updateConstraints;
 - (void)updateCornerRadius;
 @end
 
 @implementation SFUnifiedBarItemView
 
-- (SFUnifiedBarItemView)initWithFrame:(CGRect)a3
+- (SFUnifiedBarItemView)initWithFrame:(CGRect)frame
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = SFUnifiedBarItemView;
-  v3 = [(SFUnifiedBarItemView *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFUnifiedBarItemView *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -80,22 +80,22 @@
     v8 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979928]];
     v19[0] = v8;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
-    v10 = [(UIView *)v4->_contentView layer];
-    [v10 setFilters:v9];
+    layer = [(UIView *)v4->_contentView layer];
+    [layer setFilters:v9];
 
     v11 = *MEMORY[0x1E69796E8];
-    v12 = [(UIView *)v4->_contentView layer];
-    [v12 setCornerCurve:v11];
+    layer2 = [(UIView *)v4->_contentView layer];
+    [layer2 setCornerCurve:v11];
 
     [(SFUnifiedBarItemView *)v4 addSubview:v4->_contentView];
     v13 = +[SFUnifiedBarTheme defaultTheme];
     [(SFUnifiedBarItemView *)v4 setBarTheme:v13];
 
-    v14 = [(SFUnifiedBarItemView *)v4 layer];
-    [v14 setCornerCurve:v11];
+    layer3 = [(SFUnifiedBarItemView *)v4 layer];
+    [layer3 setCornerCurve:v11];
 
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v4 selector:sel__buttonShapesEnabledDidChange name:*MEMORY[0x1E69DD8A8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__buttonShapesEnabledDidChange name:*MEMORY[0x1E69DD8A8] object:0];
 
     v16 = v4;
   }
@@ -160,26 +160,26 @@
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  v4 = self;
+  selfCopy = self;
   v9.receiver = self;
   v9.super_class = SFUnifiedBarItemView;
-  v5 = [(SFUnifiedBarItemView *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(SFUnifiedBarItemView *)&v9 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
-  if ((!v5 || !v4->_occluded) && v5 != v4->_contentView)
+  if ((!v5 || !selfCopy->_occluded) && v5 != selfCopy->_contentView)
   {
-    v4 = v5;
+    selfCopy = v5;
   }
 
-  v7 = v4;
+  v7 = selfCopy;
 
   return v7;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -190,22 +190,22 @@
   {
     v7.receiver = self;
     v7.super_class = SFUnifiedBarItemView;
-    v5 = [(SFUnifiedBarItemView *)&v7 gestureRecognizerShouldBegin:v4];
+    v5 = [(SFUnifiedBarItemView *)&v7 gestureRecognizerShouldBegin:beginCopy];
   }
 
   return v5;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  if ([(SFUnifiedBarItemView *)self isHighlighted]!= a3)
+  highlightedCopy = highlighted;
+  if ([(SFUnifiedBarItemView *)self isHighlighted]!= highlighted)
   {
     v7.receiver = self;
     v7.super_class = SFUnifiedBarItemView;
-    [(SFUnifiedBarItemView *)&v7 setHighlighted:v3];
+    [(SFUnifiedBarItemView *)&v7 setHighlighted:highlightedCopy];
     v5 = 0.2;
-    if (!v3)
+    if (!highlightedCopy)
     {
       v5 = 0.5;
     }
@@ -227,16 +227,16 @@ uint64_t __39__SFUnifiedBarItemView_setHighlighted___block_invoke(uint64_t a1)
   return [v2 _updatePlatterEffect];
 }
 
-- (void)_setShowsPlatter:(BOOL)a3
+- (void)_setShowsPlatter:(BOOL)platter
 {
   v42[4] = *MEMORY[0x1E69E9840];
-  if ((((self->_platterView == 0) ^ a3) & 1) == 0)
+  if ((((self->_platterView == 0) ^ platter) & 1) == 0)
   {
-    v3 = a3;
-    v5 = [(SFUnifiedBarItemView *)self layer];
-    [v5 setAllowsGroupOpacity:!v3];
+    platterCopy = platter;
+    layer = [(SFUnifiedBarItemView *)self layer];
+    [layer setAllowsGroupOpacity:!platterCopy];
 
-    if (v3)
+    if (platterCopy)
     {
       v6 = objc_alloc_init(SFUnifiedBarItemPlatterView);
       platterView = self->_platterView;
@@ -253,21 +253,21 @@ uint64_t __39__SFUnifiedBarItemView_setHighlighted___block_invoke(uint64_t a1)
       [(UIVisualEffectView *)self->_platterFillView setTranslatesAutoresizingMaskIntoConstraints:0];
       [(SFUnifiedBarItemView *)self insertSubview:self->_platterView belowSubview:self->_contentView];
       [(SFUnifiedBarItemView *)self insertSubview:self->_platterFillView belowSubview:self->_contentView];
-      v39 = [(SFUnifiedBarItemPlatterView *)self->_platterView leadingAnchor];
-      v37 = [(SFUnifiedBarItemView *)self leadingAnchor];
-      v35 = [v39 constraintEqualToAnchor:v37];
+      leadingAnchor = [(SFUnifiedBarItemPlatterView *)self->_platterView leadingAnchor];
+      leadingAnchor2 = [(SFUnifiedBarItemView *)self leadingAnchor];
+      v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v42[0] = v35;
-      v33 = [(SFUnifiedBarItemPlatterView *)self->_platterView topAnchor];
-      v31 = [(SFUnifiedBarItemView *)self topAnchor];
-      v10 = [v33 constraintEqualToAnchor:v31];
+      topAnchor = [(SFUnifiedBarItemPlatterView *)self->_platterView topAnchor];
+      topAnchor2 = [(SFUnifiedBarItemView *)self topAnchor];
+      v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v42[1] = v10;
-      v11 = [(SFUnifiedBarItemView *)self trailingAnchor];
-      v12 = [(SFUnifiedBarItemPlatterView *)self->_platterView trailingAnchor];
-      v13 = [v11 constraintEqualToAnchor:v12];
+      trailingAnchor = [(SFUnifiedBarItemView *)self trailingAnchor];
+      trailingAnchor2 = [(SFUnifiedBarItemPlatterView *)self->_platterView trailingAnchor];
+      v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v42[2] = v13;
-      v14 = [(SFUnifiedBarItemView *)self bottomAnchor];
-      v15 = [(SFUnifiedBarItemPlatterView *)self->_platterView bottomAnchor];
-      v16 = [v14 constraintEqualToAnchor:v15];
+      bottomAnchor = [(SFUnifiedBarItemView *)self bottomAnchor];
+      bottomAnchor2 = [(SFUnifiedBarItemPlatterView *)self->_platterView bottomAnchor];
+      v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v42[3] = v16;
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:4];
       platterViewConstraints = self->_platterViewConstraints;
@@ -275,21 +275,21 @@ uint64_t __39__SFUnifiedBarItemView_setHighlighted___block_invoke(uint64_t a1)
 
       [MEMORY[0x1E696ACD8] activateConstraints:self->_platterViewConstraints];
       v32 = MEMORY[0x1E696ACD8];
-      v40 = [(UIVisualEffectView *)self->_platterFillView leadingAnchor];
-      v38 = [(SFUnifiedBarItemView *)self leadingAnchor];
-      v36 = [v40 constraintEqualToAnchor:v38];
+      leadingAnchor3 = [(UIVisualEffectView *)self->_platterFillView leadingAnchor];
+      leadingAnchor4 = [(SFUnifiedBarItemView *)self leadingAnchor];
+      v36 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
       v41[0] = v36;
-      v34 = [(UIVisualEffectView *)self->_platterFillView topAnchor];
-      v19 = [(SFUnifiedBarItemView *)self topAnchor];
-      v20 = [v34 constraintEqualToAnchor:v19];
+      topAnchor3 = [(UIVisualEffectView *)self->_platterFillView topAnchor];
+      topAnchor4 = [(SFUnifiedBarItemView *)self topAnchor];
+      v20 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
       v41[1] = v20;
-      v21 = [(SFUnifiedBarItemView *)self trailingAnchor];
-      v22 = [(UIVisualEffectView *)self->_platterFillView trailingAnchor];
-      v23 = [v21 constraintEqualToAnchor:v22];
+      trailingAnchor3 = [(SFUnifiedBarItemView *)self trailingAnchor];
+      trailingAnchor4 = [(UIVisualEffectView *)self->_platterFillView trailingAnchor];
+      v23 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
       v41[2] = v23;
-      v24 = [(SFUnifiedBarItemView *)self bottomAnchor];
-      v25 = [(UIVisualEffectView *)self->_platterFillView bottomAnchor];
-      v26 = [v24 constraintEqualToAnchor:v25];
+      bottomAnchor3 = [(SFUnifiedBarItemView *)self bottomAnchor];
+      bottomAnchor4 = [(UIVisualEffectView *)self->_platterFillView bottomAnchor];
+      v26 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
       v41[3] = v26;
       v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:4];
       [v32 activateConstraints:v27];
@@ -311,10 +311,10 @@ uint64_t __39__SFUnifiedBarItemView_setHighlighted___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_setShowsCutoutBorderEffects:(BOOL)a3
+- (void)_setShowsCutoutBorderEffects:(BOOL)effects
 {
   cutoutBorderCopyView = self->_cutoutBorderCopyView;
-  if (a3)
+  if (effects)
   {
     if (!cutoutBorderCopyView)
     {
@@ -323,12 +323,12 @@ uint64_t __39__SFUnifiedBarItemView_setHighlighted___block_invoke(uint64_t a1)
       self->_cutoutBorderCopyView = v5;
 
       cutoutBorderCopyGroupName = self->_cutoutBorderCopyGroupName;
-      v8 = [(_UIVisualEffectBackdropView *)self->_cutoutBorderCopyView captureGroup];
-      [v8 setGroupName:cutoutBorderCopyGroupName];
+      captureGroup = [(_UIVisualEffectBackdropView *)self->_cutoutBorderCopyView captureGroup];
+      [captureGroup setGroupName:cutoutBorderCopyGroupName];
 
       v9 = *MEMORY[0x1E69796E8];
-      v10 = [(_UIVisualEffectBackdropView *)self->_cutoutBorderCopyView layer];
-      [v10 setCornerCurve:v9];
+      layer = [(_UIVisualEffectBackdropView *)self->_cutoutBorderCopyView layer];
+      [layer setCornerCurve:v9];
 
       [(_UIVisualEffectBackdropView *)self->_cutoutBorderCopyView setUserInteractionEnabled:0];
       v11 = objc_alloc_init(SFUnifiedBarItemPlatterView);
@@ -359,11 +359,11 @@ uint64_t __39__SFUnifiedBarItemView_setHighlighted___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_setShowsCutoutBorderEraser:(BOOL)a3
+- (void)_setShowsCutoutBorderEraser:(BOOL)eraser
 {
-  v4 = !a3;
-  v5 = [(SFUnifiedBarItemView *)self layer];
-  [v5 setAllowsGroupBlending:v4];
+  v4 = !eraser;
+  layer = [(SFUnifiedBarItemView *)self layer];
+  [layer setAllowsGroupBlending:v4];
 
   cutoutBorderEraserView = self->_cutoutBorderEraserView;
   if (v4)
@@ -382,16 +382,16 @@ uint64_t __39__SFUnifiedBarItemView_setHighlighted___block_invoke(uint64_t a1)
     v8 = self->_cutoutBorderEraserView;
     self->_cutoutBorderEraserView = v7;
 
-    v9 = [MEMORY[0x1E69DC888] blackColor];
-    [(UIView *)self->_cutoutBorderEraserView setBackgroundColor:v9];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(UIView *)self->_cutoutBorderEraserView setBackgroundColor:blackColor];
 
     v10 = *MEMORY[0x1E69798E8];
-    v11 = [(UIView *)self->_cutoutBorderEraserView layer];
-    [v11 setCompositingFilter:v10];
+    layer2 = [(UIView *)self->_cutoutBorderEraserView layer];
+    [layer2 setCompositingFilter:v10];
 
     v12 = *MEMORY[0x1E69796E8];
-    v13 = [(UIView *)self->_cutoutBorderEraserView layer];
-    [v13 setCornerCurve:v12];
+    layer3 = [(UIView *)self->_cutoutBorderEraserView layer];
+    [layer3 setCornerCurve:v12];
 
     [(UIView *)self->_cutoutBorderEraserView setUserInteractionEnabled:0];
     v14 = self->_cutoutBorderEraserView;
@@ -400,25 +400,25 @@ uint64_t __39__SFUnifiedBarItemView_setHighlighted___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setBarMetrics:(id)a3
+- (void)setBarMetrics:(id)metrics
 {
-  v5 = a3;
-  if (self->_barMetrics != v5)
+  metricsCopy = metrics;
+  if (self->_barMetrics != metricsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_barMetrics, a3);
+    v6 = metricsCopy;
+    objc_storeStrong(&self->_barMetrics, metrics);
     [(SFUnifiedBarItemView *)self setNeedsLayout];
-    v5 = v6;
+    metricsCopy = v6;
   }
 }
 
-- (void)setBarTheme:(id)a3
+- (void)setBarTheme:(id)theme
 {
-  v5 = a3;
+  themeCopy = theme;
   if ((WBSIsEqual() & 1) == 0)
   {
-    [(SFUnifiedBarItemView *)self _disableVibrancyIfNeededForTheme:v5];
-    objc_storeStrong(&self->_barTheme, a3);
+    [(SFUnifiedBarItemView *)self _disableVibrancyIfNeededForTheme:themeCopy];
+    objc_storeStrong(&self->_barTheme, theme);
     [(SFUnifiedBarItemView *)self _updatePlatterEffect];
     [(SFUnifiedBarItemView *)self _applyGlass];
     [(SFUnifiedBarItemView *)self _applyFilters];
@@ -426,27 +426,27 @@ uint64_t __39__SFUnifiedBarItemView_setHighlighted___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setPlatterStyle:(int64_t)a3
+- (void)setPlatterStyle:(int64_t)style
 {
-  if (self->_platterStyle == a3)
+  if (self->_platterStyle == style)
   {
     return;
   }
 
-  v5 = a3 == 0;
-  v6 = [(SFUnifiedBarItemView *)self layer];
-  [v6 setAllowsGroupOpacity:v5];
+  v5 = style == 0;
+  layer = [(SFUnifiedBarItemView *)self layer];
+  [layer setAllowsGroupOpacity:v5];
 
-  self->_platterStyle = a3;
+  self->_platterStyle = style;
   v7 = 1;
-  if (a3 <= 0xD)
+  if (style <= 0xD)
   {
-    if (((1 << a3) & 0xB81) != 0)
+    if (((1 << style) & 0xB81) != 0)
     {
       v7 = 0;
     }
 
-    else if (a3 == 13)
+    else if (style == 13)
     {
       [(UIView *)self->_contentView setClipsToBounds:0];
       LOBYTE(v8) = 0;
@@ -455,9 +455,9 @@ uint64_t __39__SFUnifiedBarItemView_setHighlighted___block_invoke(uint64_t a1)
   }
 
   [(UIView *)self->_contentView setClipsToBounds:v7];
-  if (a3 <= 0xD)
+  if (style <= 0xD)
   {
-    v8 = 0x1C00u >> a3;
+    v8 = 0x1C00u >> style;
   }
 
   else
@@ -467,8 +467,8 @@ uint64_t __39__SFUnifiedBarItemView_setHighlighted___block_invoke(uint64_t a1)
 
 LABEL_8:
   [(SFUnifiedBarItemView *)self _setShowsGlass:v8 & 1];
-  [(SFUnifiedBarItemView *)self _setHasFilterView:a3 == 13];
-  [(SFUnifiedBarItemView *)self _setShowsPlatter:(a3 - 1) < 6];
+  [(SFUnifiedBarItemView *)self _setHasFilterView:style == 13];
+  [(SFUnifiedBarItemView *)self _setShowsPlatter:(style - 1) < 6];
   [(SFUnifiedBarItemView *)self _updateShowsCutoutBorder];
   [(SFUnifiedBarItemView *)self _updatePlatterEffect];
   [(SFUnifiedBarItemView *)self _updateHasHighlightView];
@@ -478,11 +478,11 @@ LABEL_8:
   [(SFUnifiedBarItemView *)self setNeedsLayout];
 }
 
-- (void)setItemsNeedEraserBasedCutoutBorder:(BOOL)a3
+- (void)setItemsNeedEraserBasedCutoutBorder:(BOOL)border
 {
-  if (self->_itemsNeedEraserBasedCutoutBorder != a3)
+  if (self->_itemsNeedEraserBasedCutoutBorder != border)
   {
-    self->_itemsNeedEraserBasedCutoutBorder = a3;
+    self->_itemsNeedEraserBasedCutoutBorder = border;
     [(SFUnifiedBarItemView *)self _updateShowsCutoutBorder];
   }
 }
@@ -524,19 +524,19 @@ LABEL_8:
   [(UIView *)cutoutBorderEraserView setFrame:x, y, width, height];
 }
 
-- (void)_disableVibrancyIfNeededForTheme:(id)a3
+- (void)_disableVibrancyIfNeededForTheme:(id)theme
 {
-  v4 = a3;
-  v5 = [(SFThemeColorBarTheme *)self->_barTheme themeColor];
-  if (v5)
+  themeCopy = theme;
+  themeColor = [(SFThemeColorBarTheme *)self->_barTheme themeColor];
+  if (themeColor)
   {
   }
 
   else
   {
-    v6 = [v4 themeColor];
+    themeColor2 = [themeCopy themeColor];
 
-    if (v6)
+    if (themeColor2)
     {
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
@@ -578,8 +578,8 @@ uint64_t __57__SFUnifiedBarItemView__disableVibrancyIfNeededForTheme___block_inv
   [(SFUnifiedBarItemView *)self _updateHighlightColor];
   if (self->_platterStyle)
   {
-    v3 = [(SFThemeColorBarTheme *)self->_barTheme themeColor];
-    if (v3 || [(SFUnifiedBarTheme *)self->_barTheme isPrivate])
+    themeColor = [(SFThemeColorBarTheme *)self->_barTheme themeColor];
+    if (themeColor || [(SFUnifiedBarTheme *)self->_barTheme isPrivate])
     {
       LOBYTE(v4) = 0;
     }
@@ -601,12 +601,12 @@ uint64_t __57__SFUnifiedBarItemView__disableVibrancyIfNeededForTheme___block_inv
     v5 = v4 & 1;
     if (self->_hovering)
     {
-      v6 = 1;
+      isHighlighted = 1;
     }
 
     else
     {
-      v6 = [(SFUnifiedBarItemView *)self isHighlighted];
+      isHighlighted = [(SFUnifiedBarItemView *)self isHighlighted];
     }
 
     if (self->_shouldEnableCopyCutoutBorder)
@@ -630,7 +630,7 @@ uint64_t __57__SFUnifiedBarItemView__disableVibrancyIfNeededForTheme___block_inv
     aBlock[3] = &unk_1E721B388;
     v21 = v4 & 1;
     aBlock[4] = self;
-    v22 = v6;
+    v22 = isHighlighted;
     v8 = _Block_copy(aBlock);
     v9 = v8;
     lastAppliedPlatterStyle = self->_lastAppliedPlatterStyle;
@@ -807,36 +807,36 @@ LABEL_11:
   }
 }
 
-- (void)_applyThemeToPlatterView:(id)a3
+- (void)_applyThemeToPlatterView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   barTheme = self->_barTheme;
-  v10 = v4;
-  v6 = [v4 effectView];
-  [(SFThemeColorBarTheme *)barTheme applyBackdropEffectsToView:v6];
+  v10 = viewCopy;
+  effectView = [viewCopy effectView];
+  [(SFThemeColorBarTheme *)barTheme applyBackdropEffectsToView:effectView];
 
-  v7 = [(SFThemeColorBarTheme *)self->_barTheme themeColor];
+  themeColor = [(SFThemeColorBarTheme *)self->_barTheme themeColor];
 
-  if (v7)
+  if (themeColor)
   {
-    v8 = [v10 effectView];
-    v9 = [v8 contentView];
-    [v9 setBackgroundColor:0];
+    effectView2 = [v10 effectView];
+    contentView = [effectView2 contentView];
+    [contentView setBackgroundColor:0];
   }
 }
 
-- (void)_applyPlatterColor:(id)a3
+- (void)_applyPlatterColor:(id)color
 {
-  v4 = a3;
-  v5 = [(UIVisualEffectView *)self->_platterFillView contentView];
-  v6 = v5;
+  colorCopy = color;
+  contentView = [(UIVisualEffectView *)self->_platterFillView contentView];
+  v6 = contentView;
   if (self->_platterStyle == 3)
   {
-    v7 = [(SFUnifiedBarItemView *)self traitCollection];
-    v8 = [v4 resolvedColorWithTraitCollection:v7];
+    traitCollection = [(SFUnifiedBarItemView *)self traitCollection];
+    layer4 = [colorCopy resolvedColorWithTraitCollection:traitCollection];
 
     v16 = 0.0;
-    [v8 getRed:0 green:0 blue:0 alpha:&v16];
+    [layer4 getRed:0 green:0 blue:0 alpha:&v16];
     barBackgroundAlpha = 0.0;
     if (![(SFUnifiedBarTheme *)self->_barTheme isPrivate])
     {
@@ -845,32 +845,32 @@ LABEL_11:
 
     if (self->_hovering || [(SFUnifiedBarItemView *)self isHighlighted])
     {
-      [v6 setBackgroundColor:v4];
+      [v6 setBackgroundColor:colorCopy];
     }
 
     else
     {
-      v11 = [v8 colorWithAlphaComponent:(1.0 - barBackgroundAlpha) * v16];
+      v11 = [layer4 colorWithAlphaComponent:(1.0 - barBackgroundAlpha) * v16];
       [v6 setBackgroundColor:v11];
     }
 
-    v12 = [v8 colorWithAlphaComponent:barBackgroundAlpha * v16];
-    v13 = [v12 CGColor];
-    v14 = [v6 layer];
-    [v14 setBorderColor:v13];
+    v12 = [layer4 colorWithAlphaComponent:barBackgroundAlpha * v16];
+    cGColor = [v12 CGColor];
+    layer = [v6 layer];
+    [layer setBorderColor:cGColor];
 
-    v15 = [v6 layer];
-    [v15 setBorderWidth:1.0];
+    layer2 = [v6 layer];
+    [layer2 setBorderWidth:1.0];
   }
 
   else
   {
-    [v5 setBackgroundColor:v4];
-    v10 = [v6 layer];
-    [v10 setBorderColor:0];
+    [contentView setBackgroundColor:colorCopy];
+    layer3 = [v6 layer];
+    [layer3 setBorderColor:0];
 
-    v8 = [v6 layer];
-    [v8 setBorderWidth:0.0];
+    layer4 = [v6 layer];
+    [layer4 setBorderWidth:0.0];
   }
 }
 
@@ -896,59 +896,59 @@ LABEL_11:
   }
 
   [(SFUnifiedBarItemView *)self setOverrideUserInterfaceStyle:v5];
-  v6 = [(SFUnifiedBarItemView *)self glassView];
-  [v6 setOverrideUserInterfaceStyle:v5];
+  glassView = [(SFUnifiedBarItemView *)self glassView];
+  [glassView setOverrideUserInterfaceStyle:v5];
 }
 
-- (void)setCutoutBorderCopyGroupName:(id)a3
+- (void)setCutoutBorderCopyGroupName:(id)name
 {
-  v7 = a3;
+  nameCopy = name;
   if ((WBSIsEqual() & 1) == 0)
   {
-    v4 = [v7 copy];
+    v4 = [nameCopy copy];
     cutoutBorderCopyGroupName = self->_cutoutBorderCopyGroupName;
     self->_cutoutBorderCopyGroupName = v4;
 
-    v6 = [(_UIVisualEffectBackdropView *)self->_cutoutBorderCopyView captureGroup];
-    [v6 setGroupName:v7];
+    captureGroup = [(_UIVisualEffectBackdropView *)self->_cutoutBorderCopyView captureGroup];
+    [captureGroup setGroupName:nameCopy];
 
-    [(SFUnifiedBarItemSeparatorView *)self->_leadingSeparator setBackdropGroupName:v7];
-    [(SFUnifiedBarItemSeparatorView *)self->_trailingSeparator setBackdropGroupName:v7];
+    [(SFUnifiedBarItemSeparatorView *)self->_leadingSeparator setBackdropGroupName:nameCopy];
+    [(SFUnifiedBarItemSeparatorView *)self->_trailingSeparator setBackdropGroupName:nameCopy];
   }
 }
 
-- (void)setBarBackgroundAlpha:(double)a3
+- (void)setBarBackgroundAlpha:(double)alpha
 {
-  if (self->_barBackgroundAlpha != a3)
+  if (self->_barBackgroundAlpha != alpha)
   {
-    self->_barBackgroundAlpha = a3;
+    self->_barBackgroundAlpha = alpha;
     [(SFUnifiedBarItemView *)self _updatePlatterEffect];
   }
 }
 
-- (void)setShouldEnableCopyCutoutBorder:(BOOL)a3
+- (void)setShouldEnableCopyCutoutBorder:(BOOL)border
 {
-  if (self->_shouldEnableCopyCutoutBorder != a3)
+  if (self->_shouldEnableCopyCutoutBorder != border)
   {
-    self->_shouldEnableCopyCutoutBorder = a3;
+    self->_shouldEnableCopyCutoutBorder = border;
     [(SFUnifiedBarItemView *)self _updatePlatterEffect];
   }
 }
 
-- (void)setThemeColorVisibility:(double)a3
+- (void)setThemeColorVisibility:(double)visibility
 {
-  if (self->_themeColorVisibility != a3)
+  if (self->_themeColorVisibility != visibility)
   {
-    self->_themeColorVisibility = a3;
+    self->_themeColorVisibility = visibility;
     [(SFUnifiedBarItemView *)self _updateBackgroundAlpha];
   }
 }
 
 - (void)_updateBackgroundAlpha
 {
-  v3 = [(SFThemeColorBarTheme *)self->_barTheme themeColor];
+  themeColor = [(SFThemeColorBarTheme *)self->_barTheme themeColor];
   v4 = SFBarBackgroundAlphaForSquishTransformFactor(self->_squishTransformFactor);
-  if (v3)
+  if (themeColor)
   {
     v5 = _SFInterpolate(1.0 - 0.85, 0.0, self->_themeColorVisibility);
   }
@@ -960,26 +960,26 @@ LABEL_11:
 
   [(UIVisualEffectView *)self->_platterFillView setAlpha:v4];
   [(UIImageView *)self->_shadowView setAlpha:v4];
-  v6 = [(SFUnifiedBarTheme *)self->_barTheme overridePlatterColor];
-  v7 = v6;
-  if (!v6 || (v8 = v6, (self->_platterStyle - 1) >= 5))
+  overridePlatterColor = [(SFUnifiedBarTheme *)self->_barTheme overridePlatterColor];
+  v7 = overridePlatterColor;
+  if (!overridePlatterColor || (v8 = overridePlatterColor, (self->_platterStyle - 1) >= 5))
   {
-    v8 = v3;
+    v8 = themeColor;
   }
 
   v9 = v8;
   v10 = [v9 colorWithAlphaComponent:v4];
   [(SFUnifiedBarItemPlatterView *)self->_platterView setBackgroundColor:v10];
 
-  v11 = [(SFUnifiedBarItemPlatterView *)self->_platterView effectView];
-  [v11 setAlpha:v4 * v5];
+  effectView = [(SFUnifiedBarItemPlatterView *)self->_platterView effectView];
+  [effectView setAlpha:v4 * v5];
 
   v12 = ceil(v4);
-  v13 = [v3 colorWithAlphaComponent:v12];
+  v13 = [themeColor colorWithAlphaComponent:v12];
 
   [(SFUnifiedBarItemPlatterView *)self->_cutoutBorderPlatterView setBackgroundColor:v13];
-  v14 = [(SFUnifiedBarItemPlatterView *)self->_cutoutBorderPlatterView effectView];
-  [v14 setAlpha:v12 * v5];
+  effectView2 = [(SFUnifiedBarItemPlatterView *)self->_cutoutBorderPlatterView effectView];
+  [effectView2 setAlpha:v12 * v5];
 
   if (self->_squishTransformFactor >= 1.0)
   {
@@ -1004,17 +1004,17 @@ LABEL_11:
     return 0;
   }
 
-  v3 = [(SFUnifiedBarTheme *)self->_barTheme overridePlatterColor];
-  v4 = v3 == 0;
+  overridePlatterColor = [(SFUnifiedBarTheme *)self->_barTheme overridePlatterColor];
+  v4 = overridePlatterColor == 0;
 
   return v4;
 }
 
-- (void)setSquishTransformFactor:(double)a3
+- (void)setSquishTransformFactor:(double)factor
 {
-  if (self->_squishTransformFactor != a3)
+  if (self->_squishTransformFactor != factor)
   {
-    self->_squishTransformFactor = a3;
+    self->_squishTransformFactor = factor;
     [(SFUnifiedBarItemView *)self _updateContentAlpha];
 
     [(SFUnifiedBarItemView *)self _updateBackgroundAlpha];
@@ -1034,8 +1034,8 @@ LABEL_11:
   v14 = [v4 bezierPathWithRoundedRect:v6 cornerRadius:{v8, v10, v12, v13}];
   [v3 setVisiblePath:v14];
 
-  v15 = [(SFThemeColorBarTheme *)self->_barTheme themeColor];
-  v16 = [v15 colorWithAlphaComponent:1.0];
+  themeColor = [(SFThemeColorBarTheme *)self->_barTheme themeColor];
+  v16 = [themeColor colorWithAlphaComponent:1.0];
   if (v16)
   {
     [v3 setBackgroundColor:v16];
@@ -1043,9 +1043,9 @@ LABEL_11:
 
   else
   {
-    v17 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    v18 = [(SFUnifiedBarItemView *)self traitCollection];
-    v19 = [v17 resolvedColorWithTraitCollection:v18];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    traitCollection = [(SFUnifiedBarItemView *)self traitCollection];
+    v19 = [systemBackgroundColor resolvedColorWithTraitCollection:traitCollection];
     [v3 setBackgroundColor:v19];
   }
 
@@ -1067,29 +1067,29 @@ LABEL_11:
   v7 = self->_cornerRadii.minXMinY;
   v45 = self->_cornerRadii.maxXMinY;
   v46 = v7;
-  v8 = [(SFUnifiedBarItemView *)self layer];
-  [v8 setCornerRadii:&v43];
+  layer = [(SFUnifiedBarItemView *)self layer];
+  [layer setCornerRadii:&v43];
 
-  v9 = [(UIView *)self->_contentView layer];
+  layer2 = [(UIView *)self->_contentView layer];
   v43 = minXMaxY;
   v44 = v48;
   v45 = maxXMinY;
   v46 = v50;
-  [v9 setCornerRadii:&v43];
+  [layer2 setCornerRadii:&v43];
 
-  v10 = [(UIView *)self->_filterView layer];
+  layer3 = [(UIView *)self->_filterView layer];
   v43 = minXMaxY;
   v44 = v48;
   v45 = maxXMinY;
   v46 = v50;
-  [v10 setCornerRadii:&v43];
+  [layer3 setCornerRadii:&v43];
 
-  v11 = [(UIView *)self->_highlightView layer];
+  layer4 = [(UIView *)self->_highlightView layer];
   v43 = minXMaxY;
   v44 = v48;
   v45 = maxXMinY;
   v46 = v50;
-  [v11 setCornerRadii:&v43];
+  [layer4 setCornerRadii:&v43];
 
   if (self->_platterStyle == 6 && !UIAccessibilityButtonShapesEnabled())
   {
@@ -1107,19 +1107,19 @@ LABEL_11:
   v14 = p_minXMaxY[3];
   v41 = p_minXMaxY[2];
   v42 = v14;
-  v15 = [(SFUnifiedBarItemPlatterView *)self->_platterView layer];
+  layer5 = [(SFUnifiedBarItemPlatterView *)self->_platterView layer];
   v43 = v39;
   v44 = v40;
   v45 = v41;
   v46 = v42;
-  [v15 setCornerRadii:&v43];
+  [layer5 setCornerRadii:&v43];
 
-  v16 = [(UIVisualEffectView *)self->_platterFillView layer];
+  layer6 = [(UIVisualEffectView *)self->_platterFillView layer];
   v43 = minXMaxY;
   v44 = v48;
   v45 = maxXMinY;
   v46 = v50;
-  [v16 setCornerRadii:&v43];
+  [layer6 setCornerRadii:&v43];
 
   v45 = 0;
   v46 = 0;
@@ -1149,47 +1149,47 @@ LABEL_11:
   v32 = v44;
   v33 = v45;
   v34 = v46;
-  v20 = [(_UIVisualEffectBackdropView *)self->_cutoutBorderCopyView layer];
+  layer7 = [(_UIVisualEffectBackdropView *)self->_cutoutBorderCopyView layer];
   v35 = v31;
   v36 = v32;
   v37 = v33;
   v38 = v34;
-  [v20 setCornerRadii:&v35];
+  [layer7 setCornerRadii:&v35];
 
   v27 = v43;
   v28 = v44;
   v29 = v45;
   v30 = v46;
-  v21 = [(SFUnifiedBarItemPlatterView *)self->_cutoutBorderPlatterView layer];
+  layer8 = [(SFUnifiedBarItemPlatterView *)self->_cutoutBorderPlatterView layer];
   v35 = v27;
   v36 = v28;
   v37 = v29;
   v38 = v30;
-  [v21 setCornerRadii:&v35];
+  [layer8 setCornerRadii:&v35];
 
   v23 = v43;
   v24 = v44;
   v25 = v45;
   v26 = v46;
-  v22 = [(UIView *)self->_cutoutBorderEraserView layer];
+  layer9 = [(UIView *)self->_cutoutBorderEraserView layer];
   v35 = v23;
   v36 = v24;
   v37 = v25;
   v38 = v26;
-  [v22 setCornerRadii:&v35];
+  [layer9 setCornerRadii:&v35];
 }
 
-- (void)setCornerRadii:(CACornerRadii *)a3
+- (void)setCornerRadii:(CACornerRadii *)radii
 {
   p_cornerRadii = &self->_cornerRadii;
   cornerRadii = self->_cornerRadii;
-  v9 = *a3;
+  v9 = *radii;
   if ((CACornerRadiiEqualToRadii() & 1) == 0)
   {
-    minXMaxY = a3->minXMaxY;
-    maxXMaxY = a3->maxXMaxY;
-    minXMinY = a3->minXMinY;
-    p_cornerRadii->maxXMinY = a3->maxXMinY;
+    minXMaxY = radii->minXMaxY;
+    maxXMaxY = radii->maxXMaxY;
+    minXMinY = radii->minXMinY;
+    p_cornerRadii->maxXMinY = radii->maxXMinY;
     p_cornerRadii->minXMinY = minXMinY;
     p_cornerRadii->minXMaxY = minXMaxY;
     p_cornerRadii->maxXMaxY = maxXMaxY;
@@ -1207,27 +1207,27 @@ LABEL_11:
   }
 
   [(UIView *)self->_contentView setAlpha:v4];
-  v5 = [(SFUnifiedBarItemView *)self _titleView];
-  [v5 setAlpha:v4];
+  _titleView = [(SFUnifiedBarItemView *)self _titleView];
+  [_titleView setAlpha:v4];
 }
 
-- (void)setContentAlpha:(double)a3
+- (void)setContentAlpha:(double)alpha
 {
-  if (self->_contentAlpha != a3)
+  if (self->_contentAlpha != alpha)
   {
-    self->_contentAlpha = a3;
+    self->_contentAlpha = alpha;
     [(SFUnifiedBarItemView *)self _updateContentAlpha];
   }
 }
 
-- (void)setContentBlurRadius:(double)a3
+- (void)setContentBlurRadius:(double)radius
 {
-  if (self->_contentBlurRadius != a3)
+  if (self->_contentBlurRadius != radius)
   {
-    self->_contentBlurRadius = a3;
-    v5 = [(UIView *)self->_contentView layer];
-    v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-    [v5 setValue:v4 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+    self->_contentBlurRadius = radius;
+    layer = [(UIView *)self->_contentView layer];
+    v4 = [MEMORY[0x1E696AD98] numberWithDouble:radius];
+    [layer setValue:v4 forKeyPath:@"filters.gaussianBlur.inputRadius"];
   }
 }
 
@@ -1251,13 +1251,13 @@ LABEL_11:
 - (void)_applyFilters
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SFUnifiedBarItemView *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
-  v5 = [(SFUnifiedBarItemView *)self traitCollection];
-  v6 = [v5 accessibilityContrast];
-  if (v4 == 2)
+  traitCollection = [(SFUnifiedBarItemView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  traitCollection2 = [(SFUnifiedBarItemView *)self traitCollection];
+  accessibilityContrast = [traitCollection2 accessibilityContrast];
+  if (userInterfaceStyle == 2)
   {
-    if (v6 == 1)
+    if (accessibilityContrast == 1)
     {
       if (darkModeHighContrastFilter_onceToken != -1)
       {
@@ -1278,7 +1278,7 @@ LABEL_11:
     }
   }
 
-  else if (v6 == 1)
+  else if (accessibilityContrast == 1)
   {
     if (lightModeHighContrastFilter_onceToken != -1)
     {
@@ -1302,17 +1302,17 @@ LABEL_11:
   v8 = MEMORY[0x1E695DEC8];
   v9 = v12[0];
   v10 = [v8 arrayWithObjects:v12 count:1];
-  v11 = [(UIView *)self->_filterView layer];
+  layer = [(UIView *)self->_filterView layer];
 
-  [v11 setFilters:v10];
+  [layer setFilters:v10];
 }
 
-- (void)_setHasFilterView:(BOOL)a3
+- (void)_setHasFilterView:(BOOL)view
 {
   filterView = self->_filterView;
-  if ((((filterView == 0) ^ a3) & 1) == 0)
+  if ((((filterView == 0) ^ view) & 1) == 0)
   {
-    if (a3)
+    if (view)
     {
       v5 = objc_alloc(MEMORY[0x1E69DD250]);
       [(SFUnifiedBarItemView *)self bounds];
@@ -1321,17 +1321,17 @@ LABEL_11:
       self->_filterView = v6;
 
       [(UIView *)self->_filterView setAutoresizingMask:18];
-      v8 = [MEMORY[0x1E69DC888] blackColor];
-      [(UIView *)self->_filterView setBackgroundColor:v8];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      [(UIView *)self->_filterView setBackgroundColor:blackColor];
 
       [(SFUnifiedBarItemView *)self insertSubview:self->_filterView belowSubview:self->_contentView];
       [(SFUnifiedBarItemView *)self _applyFilters];
-      v13 = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
-      v9 = [(SFUnifiedBarItemView *)self registerForTraitChanges:v13 withAction:sel__applyFilters];
+      systemTraitsAffectingColorAppearance = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
+      v9 = [(SFUnifiedBarItemView *)self registerForTraitChanges:systemTraitsAffectingColorAppearance withAction:sel__applyFilters];
       filterTraitChangeRegistration = self->_filterTraitChangeRegistration;
       self->_filterTraitChangeRegistration = v9;
 
-      v11 = v13;
+      v11 = systemTraitsAffectingColorAppearance;
     }
 
     else
@@ -1354,13 +1354,13 @@ LABEL_11:
   {
     [(UIView *)self safari_setFlexibleGlassBackgroundEnabled:0];
     glassView = self->_glassView;
-    v6 = [(_SFBarTheme *)self->_barTheme glassURLFieldTintColor];
-    [(UIView *)glassView safari_setFlexibleGlassBackgroundEnabled:1 withTintColor:v6];
+    glassURLFieldTintColor = [(_SFBarTheme *)self->_barTheme glassURLFieldTintColor];
+    [(UIView *)glassView safari_setFlexibleGlassBackgroundEnabled:1 withTintColor:glassURLFieldTintColor];
 
-    v7 = [(_SFBarTheme *)self->_barTheme glassURLFieldUserInterfaceStyle];
+    glassURLFieldUserInterfaceStyle = [(_SFBarTheme *)self->_barTheme glassURLFieldUserInterfaceStyle];
     contentView = self->_contentView;
 
-    [(UIView *)contentView setOverrideUserInterfaceStyle:v7];
+    [(UIView *)contentView setOverrideUserInterfaceStyle:glassURLFieldUserInterfaceStyle];
   }
 
   else if (platterStyle == 11)
@@ -1405,12 +1405,12 @@ LABEL_11:
       [(SFUnifiedBarItemView *)self bounds];
       [(UIView *)self->_glassView setFrame:?];
       [(SFUnifiedBarItemView *)self cornerRadii];
-      v7 = [(UIView *)self->_glassView layer];
+      layer = [(UIView *)self->_glassView layer];
       v17[0] = v17[4];
       v17[1] = v17[5];
       v17[2] = v17[6];
       v17[3] = v17[7];
-      [v7 setCornerRadii:v17];
+      [layer setCornerRadii:v17];
     }
 
     else
@@ -1436,11 +1436,11 @@ LABEL_11:
   }
 }
 
-- (void)_setShowsGlass:(BOOL)a3
+- (void)_setShowsGlass:(BOOL)glass
 {
-  if ((((self->_glassView == 0) ^ a3) & 1) == 0)
+  if ((((self->_glassView == 0) ^ glass) & 1) == 0)
   {
-    if (a3)
+    if (glass)
     {
       v4 = [SFCommandForwardingView alloc];
       [(SFUnifiedBarItemView *)self bounds];
@@ -1449,8 +1449,8 @@ LABEL_11:
       self->_glassView = v5;
 
       v7 = *MEMORY[0x1E69796E8];
-      v8 = [(UIView *)self->_glassView layer];
-      [v8 setCornerCurve:v7];
+      layer = [(UIView *)self->_glassView layer];
+      [layer setCornerCurve:v7];
 
       [(SFUnifiedBarItemView *)self _applyGlass];
       [(SFUnifiedBarItemView *)self addSubview:self->_glassView];
@@ -1496,10 +1496,10 @@ uint64_t __39__SFUnifiedBarItemView__setShowsGlass___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_setHasHighlightView:(BOOL)a3
+- (void)_setHasHighlightView:(BOOL)view
 {
   highlightView = self->_highlightView;
-  if (a3)
+  if (view)
   {
     if (!highlightView)
     {
@@ -1531,8 +1531,8 @@ uint64_t __39__SFUnifiedBarItemView__setShowsGlass___block_invoke(uint64_t a1)
   {
     if (self->_hovering || ([(SFUnifiedBarItemView *)self isHighlighted]& 1) != 0)
     {
-      v4 = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
-      [(UIView *)self->_highlightView setBackgroundColor:v4];
+      tertiarySystemFillColor = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
+      [(UIView *)self->_highlightView setBackgroundColor:tertiarySystemFillColor];
     }
 
     else
@@ -1544,12 +1544,12 @@ uint64_t __39__SFUnifiedBarItemView__setShowsGlass___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_setUsesShadowView:(BOOL)a3
+- (void)_setUsesShadowView:(BOOL)view
 {
   shadowView = self->_shadowView;
-  if ((((shadowView == 0) ^ a3) & 1) == 0)
+  if ((((shadowView == 0) ^ view) & 1) == 0)
   {
-    if (a3)
+    if (view)
     {
       v5 = objc_alloc(MEMORY[0x1E69DCAE0]);
       if (shadowImage_onceToken != -1)
@@ -1590,8 +1590,8 @@ uint64_t __43__SFUnifiedBarItemView__setUsesShadowView___block_invoke(uint64_t a
 
 - (void)_layOutShadowView
 {
-  v3 = [(UIImageView *)self->_shadowView image];
-  [v3 scale];
+  image = [(UIImageView *)self->_shadowView image];
+  [image scale];
   v5 = v4;
 
   [(SFUnifiedBarItemView *)self bounds];
@@ -1607,20 +1607,20 @@ uint64_t __43__SFUnifiedBarItemView__setUsesShadowView___block_invoke(uint64_t a
   [(UIImageView *)shadowView setFrame:v13.origin.x, v13.origin.y, v13.size.width, v13.size.height];
 }
 
-- (void)setShowsSeparators:(BOOL)a3
+- (void)setShowsSeparators:(BOOL)separators
 {
-  if (self->_showsSeparators != a3)
+  if (self->_showsSeparators != separators)
   {
-    self->_showsSeparators = a3;
-    if (a3)
+    self->_showsSeparators = separators;
+    if (separators)
     {
-      v4 = [(SFUnifiedBarItemView *)self _makeSeparator];
+      _makeSeparator = [(SFUnifiedBarItemView *)self _makeSeparator];
       leadingSeparator = self->_leadingSeparator;
-      self->_leadingSeparator = v4;
+      self->_leadingSeparator = _makeSeparator;
 
-      v6 = [(SFUnifiedBarItemView *)self _makeSeparator];
+      _makeSeparator2 = [(SFUnifiedBarItemView *)self _makeSeparator];
       trailingSeparator = self->_trailingSeparator;
-      self->_trailingSeparator = v6;
+      self->_trailingSeparator = _makeSeparator2;
 
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
@@ -1652,11 +1652,11 @@ uint64_t __43__SFUnifiedBarItemView_setShowsSeparators___block_invoke(uint64_t a
   return [v2 _layOutSeparators];
 }
 
-- (void)setVisibleSeparatorEdges:(unint64_t)a3
+- (void)setVisibleSeparatorEdges:(unint64_t)edges
 {
-  if (self->_visibleSeparatorEdges != a3)
+  if (self->_visibleSeparatorEdges != edges)
   {
-    self->_visibleSeparatorEdges = a3;
+    self->_visibleSeparatorEdges = edges;
     [(SFUnifiedBarItemView *)self _updateSeparatorVisibility];
   }
 }
@@ -1711,22 +1711,22 @@ uint64_t __50__SFUnifiedBarItemView__updateSeparatorVisibility__block_invoke(uin
   return [v4 setAlpha:v2];
 }
 
-- (void)setSeparatorOutset:(double)a3
+- (void)setSeparatorOutset:(double)outset
 {
-  if (self->_separatorOutset != a3)
+  if (self->_separatorOutset != outset)
   {
-    self->_separatorOutset = a3;
+    self->_separatorOutset = outset;
     [(SFUnifiedBarItemView *)self setNeedsUpdateConstraints];
 
     [(SFUnifiedBarItemView *)self setNeedsLayout];
   }
 }
 
-- (void)setSeparatorVerticalInset:(double)a3
+- (void)setSeparatorVerticalInset:(double)inset
 {
-  if (self->_separatorVerticalInset != a3)
+  if (self->_separatorVerticalInset != inset)
   {
-    self->_separatorVerticalInset = a3;
+    self->_separatorVerticalInset = inset;
     [(SFUnifiedBarItemView *)self setNeedsLayout];
   }
 }
@@ -1741,7 +1741,7 @@ uint64_t __50__SFUnifiedBarItemView__updateSeparatorVisibility__block_invoke(uin
   v11 = &unk_1E721B400;
   v5 = v3;
   v12 = v5;
-  v13 = self;
+  selfCopy = self;
   [v4 performWithoutAnimation:&v8];
   [(SFUnifiedBarItemView *)self addSubview:v5, v8, v9, v10, v11];
   v6 = v5;
@@ -1770,7 +1770,7 @@ uint64_t __38__SFUnifiedBarItemView__makeSeparator__block_invoke(uint64_t a1)
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UIView *)self _sf_usesLeftToRightLayout];
+  _sf_usesLeftToRightLayout = [(UIView *)self _sf_usesLeftToRightLayout];
   +[SFUnifiedBarMetrics separatorWidth];
   v13 = v12;
   v21.origin.x = v4;
@@ -1779,14 +1779,14 @@ uint64_t __38__SFUnifiedBarItemView__makeSeparator__block_invoke(uint64_t a1)
   v21.size.height = v10;
   v14 = fmax(CGRectGetHeight(v21) + self->_separatorVerticalInset * -2.0, 0.0);
   v15 = _SFCeilingFloatToPixels(self->_separatorOutset);
-  [(SFUnifiedBarItemSeparatorView *)self->_leadingSeparator setFrame:_SFFlipRectInCoordinateSpace(!v11, -v13 - v15, self->_separatorVerticalInset, v13, v14, v4, v6, v8, v10)];
+  [(SFUnifiedBarItemSeparatorView *)self->_leadingSeparator setFrame:_SFFlipRectInCoordinateSpace(!_sf_usesLeftToRightLayout, -v13 - v15, self->_separatorVerticalInset, v13, v14, v4, v6, v8, v10)];
   v22.origin.x = v4;
   v22.origin.y = v6;
   v22.size.width = v8;
   v22.size.height = v10;
   MaxX = CGRectGetMaxX(v22);
   v17 = _SFFloorFloatToPixels(self->_separatorOutset);
-  v18 = _SFFlipRectInCoordinateSpace(!v11, MaxX + v17, self->_separatorVerticalInset, v13, v14, v4, v6, v8, v10);
+  v18 = _SFFlipRectInCoordinateSpace(!_sf_usesLeftToRightLayout, MaxX + v17, self->_separatorVerticalInset, v13, v14, v4, v6, v8, v10);
   trailingSeparator = self->_trailingSeparator;
 
   [(SFUnifiedBarItemSeparatorView *)trailingSeparator setFrame:v18];

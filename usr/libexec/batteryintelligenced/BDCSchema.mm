@@ -1,10 +1,10 @@
 @interface BDCSchema
 + (id)sharedBDCSchema;
 - (BDCSchema)init;
-- (id)bdcNameForColumnName:(id)a3 atVersion:(id)a4;
-- (id)bdcStreamNameforKey:(id)a3 atVersion:(id)a4;
-- (int)columnIndexForColumnName:(id)a3 atVersion:(id)a4;
-- (int)maxColumnIndexForBDCStream:(id)a3 atVersion:(id)a4;
+- (id)bdcNameForColumnName:(id)name atVersion:(id)version;
+- (id)bdcStreamNameforKey:(id)key atVersion:(id)version;
+- (int)columnIndexForColumnName:(id)name atVersion:(id)version;
+- (int)maxColumnIndexForBDCStream:(id)stream atVersion:(id)version;
 @end
 
 @implementation BDCSchema
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_10001D8C4;
   block[3] = &unk_100048718;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000579A8 != -1)
   {
     dispatch_once(&qword_1000579A8, block);
@@ -90,9 +90,9 @@
   return v2;
 }
 
-- (id)bdcStreamNameforKey:(id)a3 atVersion:(id)a4
+- (id)bdcStreamNameforKey:(id)key atVersion:(id)version
 {
-  v5 = a3;
+  keyCopy = key;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -112,9 +112,9 @@
           objc_enumerationMutation(v6);
         }
 
-        if ([*(*(&v14 + 1) + 8 * i) isEqualToString:{v5, v14}])
+        if ([*(*(&v14 + 1) + 8 * i) isEqualToString:{keyCopy, v14}])
         {
-          v12 = [(NSDictionary *)self->_versionSchemaMap objectForKeyedSubscript:v5];
+          v12 = [(NSDictionary *)self->_versionSchemaMap objectForKeyedSubscript:keyCopy];
           v11 = [v12 objectForKeyedSubscript:@"StreamName"];
 
           goto LABEL_11;
@@ -137,50 +137,50 @@ LABEL_11:
   return v11;
 }
 
-- (int)maxColumnIndexForBDCStream:(id)a3 atVersion:(id)a4
+- (int)maxColumnIndexForBDCStream:(id)stream atVersion:(id)version
 {
-  v6 = a4;
-  if ([a3 isEqual:@"BDC_SBC"] && (-[NSDictionary objectForKeyedSubscript:](self->_versionSchemaMap, "objectForKeyedSubscript:", v6), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  versionCopy = version;
+  if ([stream isEqual:@"BDC_SBC"] && (-[NSDictionary objectForKeyedSubscript:](self->_versionSchemaMap, "objectForKeyedSubscript:", versionCopy), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v8 = v7;
     v9 = [v7 objectForKeyedSubscript:@"maxColumnIdx"];
-    v10 = [v9 intValue];
+    intValue = [v9 intValue];
   }
 
   else
   {
-    v10 = -1;
+    intValue = -1;
   }
 
-  return v10;
+  return intValue;
 }
 
-- (int)columnIndexForColumnName:(id)a3 atVersion:(id)a4
+- (int)columnIndexForColumnName:(id)name atVersion:(id)version
 {
-  v6 = a3;
-  v7 = [(NSDictionary *)self->_versionSchemaMap objectForKeyedSubscript:a4];
+  nameCopy = name;
+  v7 = [(NSDictionary *)self->_versionSchemaMap objectForKeyedSubscript:version];
   v8 = v7;
-  if (v7 && ([v7 objectForKeyedSubscript:v6], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v7 && ([v7 objectForKeyedSubscript:nameCopy], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v10 = v9;
     v11 = [v9 objectForKeyedSubscript:@"ColumnIndexinCSV"];
-    v12 = [v11 intValue];
+    intValue = [v11 intValue];
   }
 
   else
   {
-    v12 = -1;
+    intValue = -1;
   }
 
-  return v12;
+  return intValue;
 }
 
-- (id)bdcNameForColumnName:(id)a3 atVersion:(id)a4
+- (id)bdcNameForColumnName:(id)name atVersion:(id)version
 {
-  v6 = a3;
-  v7 = [(NSDictionary *)self->_versionSchemaMap objectForKeyedSubscript:a4];
+  nameCopy = name;
+  v7 = [(NSDictionary *)self->_versionSchemaMap objectForKeyedSubscript:version];
   v8 = v7;
-  if (v7 && ([v7 objectForKeyedSubscript:v6], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v7 && ([v7 objectForKeyedSubscript:nameCopy], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v10 = v9;
     v11 = [v9 objectForKeyedSubscript:@"ColumnName"];

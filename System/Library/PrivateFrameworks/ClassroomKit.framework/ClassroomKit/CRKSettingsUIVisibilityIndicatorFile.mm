@@ -7,8 +7,8 @@
 
 + (id)fileURL
 {
-  v2 = [MEMORY[0x277CCAA00] crk_nonContainerizedHomeDirectoryURL];
-  v3 = [v2 URLByAppendingPathComponent:@"Library/studentd/settingsUIVisible"];
+  crk_nonContainerizedHomeDirectoryURL = [MEMORY[0x277CCAA00] crk_nonContainerizedHomeDirectoryURL];
+  v3 = [crk_nonContainerizedHomeDirectoryURL URLByAppendingPathComponent:@"Library/studentd/settingsUIVisible"];
 
   return v3;
 }
@@ -21,8 +21,8 @@
   if (v2)
   {
     v3 = [CRKFileBackedMarker alloc];
-    v4 = [objc_opt_class() fileURL];
-    v5 = [(CRKFileBackedMarker *)v3 initWithFileURL:v4];
+    fileURL = [objc_opt_class() fileURL];
+    v5 = [(CRKFileBackedMarker *)v3 initWithFileURL:fileURL];
     mFileMarker = v2->mFileMarker;
     v2->mFileMarker = v5;
   }

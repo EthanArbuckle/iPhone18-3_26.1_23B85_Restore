@@ -1,60 +1,60 @@
 @interface UITextLoupeSession
-+ (id)_beginLoupeSessionAtPoint:(CGPoint)a3 fromSelectionWidgetView:(id)a4 inView:(id)a5 orientation:(unint64_t)a6;
-+ (id)_makeLoupeViewForSourceView:(id)a3 selectionWidget:(id)a4 orientation:(unint64_t)a5;
-- (CGPoint)_locationInContainerCoordinateSpace:(CGPoint)a3;
++ (id)_beginLoupeSessionAtPoint:(CGPoint)point fromSelectionWidgetView:(id)view inView:(id)inView orientation:(unint64_t)orientation;
++ (id)_makeLoupeViewForSourceView:(id)view selectionWidget:(id)widget orientation:(unint64_t)orientation;
+- (CGPoint)_locationInContainerCoordinateSpace:(CGPoint)space;
 - (UIView)interactionView;
 - (UIWindow)containerWindow;
 - (_UITextLoupeSessionDelegate)delegate;
-- (void)_invalidateAnimated:(BOOL)a3;
-- (void)_moveToPoint:(CGPoint)a3 withCaretRect:(CGRect)a4 selectionWidget:(id)a5 trackingCaret:(BOOL)a6;
+- (void)_invalidateAnimated:(BOOL)animated;
+- (void)_moveToPoint:(CGPoint)point withCaretRect:(CGRect)rect selectionWidget:(id)widget trackingCaret:(BOOL)caret;
 - (void)_updateStatusBarVisibility;
 - (void)dealloc;
-- (void)setModelPosition:(CGPoint)a3;
+- (void)setModelPosition:(CGPoint)position;
 @end
 
 @implementation UITextLoupeSession
 
-+ (id)_makeLoupeViewForSourceView:(id)a3 selectionWidget:(id)a4 orientation:(unint64_t)a5
++ (id)_makeLoupeViewForSourceView:(id)view selectionWidget:(id)widget orientation:(unint64_t)orientation
 {
-  v7 = a4;
-  v8 = a3;
+  widgetCopy = widget;
+  viewCopy = view;
   if (+[UITextSelectionDisplayInteraction isModernSelectionViewEnabled])
   {
     _UISolariumEnabled();
-    v9 = [objc_alloc(objc_opt_class()) initWithSourceView:v8];
+    v9 = [objc_alloc(objc_opt_class()) initWithSourceView:viewCopy];
 
-    [(_UITextLightLoupeView *)v9 setAnimatableSelectionWidget:v7];
-    [(_UITextLightLoupeView *)v9 setOrientation:a5];
+    [(_UITextLightLoupeView *)v9 setAnimatableSelectionWidget:widgetCopy];
+    [(_UITextLightLoupeView *)v9 setOrientation:orientation];
   }
 
   else
   {
-    v9 = [[_UITextLightLoupeView alloc] initWithSourceView:v8];
+    v9 = [[_UITextLightLoupeView alloc] initWithSourceView:viewCopy];
   }
 
   return v9;
 }
 
-+ (id)_beginLoupeSessionAtPoint:(CGPoint)a3 fromSelectionWidgetView:(id)a4 inView:(id)a5 orientation:(unint64_t)a6
++ (id)_beginLoupeSessionAtPoint:(CGPoint)point fromSelectionWidgetView:(id)view inView:(id)inView orientation:(unint64_t)orientation
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v57 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = [v12 window];
-  v14 = [v13 _isRemoteKeyboardWindow];
+  viewCopy = view;
+  inViewCopy = inView;
+  window = [inViewCopy window];
+  _isRemoteKeyboardWindow = [window _isRemoteKeyboardWindow];
 
-  if (v14)
+  if (_isRemoteKeyboardWindow)
   {
-    v15 = [v12 window];
+    window2 = [inViewCopy window];
   }
 
   else
   {
-    if (v12)
+    if (inViewCopy)
     {
-      [v12 keyboardSceneDelegate];
+      [inViewCopy keyboardSceneDelegate];
     }
 
     else
@@ -70,7 +70,7 @@
         if (os_log_type_enabled(v53, OS_LOG_TYPE_FAULT))
         {
           LODWORD(buf.m11) = 138412290;
-          *(&buf.m11 + 4) = v12;
+          *(&buf.m11 + 4) = inViewCopy;
           _os_log_fault_impl(&dword_188A29000, v53, OS_LOG_TYPE_FAULT, "Could not find keyboard scene delegate for interaction view %@.", &buf, 0xCu);
         }
       }
@@ -82,17 +82,17 @@
       if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
       {
         LODWORD(buf.m11) = 138412290;
-        *(&buf.m11 + 4) = v12;
+        *(&buf.m11 + 4) = inViewCopy;
         _os_log_impl(&dword_188A29000, v54, OS_LOG_TYPE_ERROR, "Could not find keyboard scene delegate for interaction view %@.", &buf, 0xCu);
       }
     }
 
-    v15 = [v16 containerWindow];
+    window2 = [v16 containerWindow];
   }
 
   if (os_variant_has_internal_diagnostics())
   {
-    if (v15)
+    if (window2)
     {
       goto LABEL_11;
     }
@@ -109,7 +109,7 @@ LABEL_37:
     goto LABEL_28;
   }
 
-  if (!v15)
+  if (!window2)
   {
     v52 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1ED4A2F90) + 8);
     if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
@@ -122,18 +122,18 @@ LABEL_37:
   }
 
 LABEL_11:
-  if (([v11 conformsToProtocol:&unk_1EFEE5710] & 1) == 0)
+  if (([viewCopy conformsToProtocol:&unk_1EFEE5710] & 1) == 0)
   {
 
-    v11 = 0;
+    viewCopy = 0;
   }
 
-  v17 = [a1 _makeLoupeViewForSourceView:v12 selectionWidget:v11 orientation:a6];
-  [v15 addSubview:v17];
-  v18 = [v17 containerCoordinateSpace];
-  if (v18)
+  v17 = [self _makeLoupeViewForSourceView:inViewCopy selectionWidget:viewCopy orientation:orientation];
+  [window2 addSubview:v17];
+  containerCoordinateSpace = [v17 containerCoordinateSpace];
+  if (containerCoordinateSpace)
   {
-    [v11 frame];
+    [viewCopy frame];
     v19 = v59.origin.x;
     v20 = v59.origin.y;
     width = v59.size.width;
@@ -145,13 +145,13 @@ LABEL_11:
     }
 
     v23 = objc_alloc_init(UITextLoupeSession);
-    [(UITextLoupeSession *)v23 setInteractionView:v12];
+    [(UITextLoupeSession *)v23 setInteractionView:inViewCopy];
     [(UITextLoupeSession *)v23 setLoupeView:v17];
-    [(UITextLoupeSession *)v23 setContainerWindow:v15];
+    [(UITextLoupeSession *)v23 setContainerWindow:window2];
     [v17 preferredSize];
     v25 = v24;
     v27 = v26;
-    if (v11 && ([v11 superview], v28 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "convertRect:fromCoordinateSpace:", v28, v19, v20, width, height), v30 = v29, v28, v30 > v27))
+    if (viewCopy && ([viewCopy superview], v28 = objc_claimAutoreleasedReturnValue(), objc_msgSend(containerCoordinateSpace, "convertRect:fromCoordinateSpace:", v28, v19, v20, width, height), v30 = v29, v28, v30 > v27))
     {
       [(UITextLoupeSession *)v23 invalidate];
       v49 = 0;
@@ -166,32 +166,32 @@ LABEL_11:
       [v17 setModelPosition:?];
       [v17 constrainedModelPositionForPosition:{v32, v34}];
       [v17 setCenter:?];
-      v35 = [v12 tintColor];
+      tintColor = [inViewCopy tintColor];
       if (objc_opt_respondsToSelector())
       {
-        v36 = [v12 insertionPointColor];
+        insertionPointColor = [inViewCopy insertionPointColor];
 
-        v35 = v36;
+        tintColor = insertionPointColor;
       }
 
-      [v17 setTintColor:v35];
-      v37 = [v12 window];
+      [v17 setTintColor:tintColor];
+      window3 = [inViewCopy window];
 
-      if (v15 != v37)
+      if (window2 != window3)
       {
-        v38 = [v12 window];
-        [v38 bounds];
+        window4 = [inViewCopy window];
+        [window4 bounds];
         v40 = v39;
         v42 = v41;
-        v43 = [v12 window];
-        [v15 convertPoint:v43 fromWindow:{v40, v42}];
+        window5 = [inViewCopy window];
+        [window2 convertPoint:window5 fromWindow:{v40, v42}];
         v45 = v44;
         v47 = v46;
 
         CATransform3DMakeTranslation(&v55, v45, v47, 0.0);
-        v48 = [v17 layer];
+        layer = [v17 layer];
         buf = v55;
-        [v48 setSublayerTransform:&buf];
+        [layer setSublayerTransform:&buf];
       }
 
       [v17 setVisible:0 animated:0 completion:0];
@@ -212,15 +212,15 @@ LABEL_28:
   return v49;
 }
 
-- (CGPoint)_locationInContainerCoordinateSpace:(CGPoint)a3
+- (CGPoint)_locationInContainerCoordinateSpace:(CGPoint)space
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(UITextLoupeSession *)self interactionView];
-  v7 = [(UITextLoupeSession *)self loupeView];
-  v8 = [v7 containerCoordinateSpace];
+  y = space.y;
+  x = space.x;
+  interactionView = [(UITextLoupeSession *)self interactionView];
+  loupeView = [(UITextLoupeSession *)self loupeView];
+  containerCoordinateSpace = [loupeView containerCoordinateSpace];
 
-  [v8 convertPoint:v6 fromCoordinateSpace:{x, y}];
+  [containerCoordinateSpace convertPoint:interactionView fromCoordinateSpace:{x, y}];
   v10 = v9;
   v12 = v11;
 
@@ -231,39 +231,39 @@ LABEL_28:
   return result;
 }
 
-- (void)_moveToPoint:(CGPoint)a3 withCaretRect:(CGRect)a4 selectionWidget:(id)a5 trackingCaret:(BOOL)a6
+- (void)_moveToPoint:(CGPoint)point withCaretRect:(CGRect)rect selectionWidget:(id)widget trackingCaret:(BOOL)caret
 {
-  v6 = a6;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3.y;
-  v12 = a3.x;
-  v14 = a5;
+  caretCopy = caret;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v11 = point.y;
+  v12 = point.x;
+  widgetCopy = widget;
   if (!self->_invalidated)
   {
-    v33 = v14;
-    v15 = [(UITextLoupeSession *)self loupeView];
-    v16 = [v15 containerCoordinateSpace];
+    v33 = widgetCopy;
+    loupeView = [(UITextLoupeSession *)self loupeView];
+    containerCoordinateSpace = [loupeView containerCoordinateSpace];
 
-    if (v16 && (-[UITextLoupeSession interactionView](self, "interactionView"), v17 = objc_claimAutoreleasedReturnValue(), [v17 window], v18 = objc_claimAutoreleasedReturnValue(), v18, v17, v18))
+    if (containerCoordinateSpace && (-[UITextLoupeSession interactionView](self, "interactionView"), v17 = objc_claimAutoreleasedReturnValue(), [v17 window], v18 = objc_claimAutoreleasedReturnValue(), v18, v17, v18))
     {
       if (v33)
       {
-        v19 = [(UITextLoupeSession *)self loupeView];
-        v20 = [v19 animatableSelectionWidget];
+        loupeView2 = [(UITextLoupeSession *)self loupeView];
+        animatableSelectionWidget = [loupeView2 animatableSelectionWidget];
 
-        if (v20 != v33)
+        if (animatableSelectionWidget != v33)
         {
-          v21 = [(UITextLoupeSession *)self loupeView];
-          [v21 setAnimatableSelectionWidget:v33];
+          loupeView3 = [(UITextLoupeSession *)self loupeView];
+          [loupeView3 setAnimatableSelectionWidget:v33];
 
-          v22 = [(UITextLoupeSession *)self loupeView];
-          [v22 setVisible:0 animated:0 completion:0];
+          loupeView4 = [(UITextLoupeSession *)self loupeView];
+          [loupeView4 setVisible:0 animated:0 completion:0];
 
-          v23 = [(UITextLoupeSession *)self loupeView];
-          [v23 setVisible:1 animated:1 completion:0];
+          loupeView5 = [(UITextLoupeSession *)self loupeView];
+          [loupeView5 setVisible:1 animated:1 completion:0];
         }
       }
 
@@ -271,7 +271,7 @@ LABEL_28:
       v35.origin.y = y;
       v35.size.width = width;
       v35.size.height = height;
-      if (CGRectIsNull(v35) || !v6)
+      if (CGRectIsNull(v35) || !caretCopy)
       {
         v24 = v11;
       }
@@ -284,22 +284,22 @@ LABEL_28:
       [(UITextLoupeSession *)self setModelPosition:v12, v24];
       if (self->_gestureTuning)
       {
-        v25 = [(UITextLoupeSession *)self gestureTuning];
-        [v25 lineBreakProgress];
+        gestureTuning = [(UITextLoupeSession *)self gestureTuning];
+        [gestureTuning lineBreakProgress];
         v27 = v26;
 
-        v28 = [(UITextLoupeSession *)self loupeView];
-        [v28 setDismissalProgress:v27];
+        loupeView6 = [(UITextLoupeSession *)self loupeView];
+        [loupeView6 setDismissalProgress:v27];
 
         if (v27 >= 0.85)
         {
-          v29 = [(UITextLoupeSession *)self loupeView];
-          v30 = [v29 visible];
+          loupeView7 = [(UITextLoupeSession *)self loupeView];
+          visible = [loupeView7 visible];
 
-          if (v30)
+          if (visible)
           {
-            v31 = [(UITextLoupeSession *)self loupeView];
-            [v31 setVisible:0 animated:1 completion:0];
+            loupeView8 = [(UITextLoupeSession *)self loupeView];
+            [loupeView8 setVisible:0 animated:1 completion:0];
           }
         }
       }
@@ -309,21 +309,21 @@ LABEL_28:
 
     else
     {
-      v32 = [(UITextLoupeSession *)self loupeView];
-      [v32 setVisible:0];
+      loupeView9 = [(UITextLoupeSession *)self loupeView];
+      [loupeView9 setVisible:0];
     }
 
-    v14 = v33;
+    widgetCopy = v33;
   }
 }
 
-- (void)setModelPosition:(CGPoint)a3
+- (void)setModelPosition:(CGPoint)position
 {
-  [(UITextLoupeSession *)self _locationInContainerCoordinateSpace:a3.x, a3.y];
+  [(UITextLoupeSession *)self _locationInContainerCoordinateSpace:position.x, position.y];
   v5 = v4;
   v7 = v6;
-  v8 = [(UITextLoupeSession *)self loupeView];
-  [v8 setModelPosition:{v5, v7}];
+  loupeView = [(UITextLoupeSession *)self loupeView];
+  [loupeView setModelPosition:{v5, v7}];
 }
 
 - (void)_updateStatusBarVisibility
@@ -331,15 +331,15 @@ LABEL_28:
   WeakRetained = objc_loadWeakRetained(&self->_containerWindow);
   v21 = __UIStatusBarManagerForWindow(WeakRetained);
 
-  v4 = [(UITextLoupeSession *)self loupeView];
-  [v4 frame];
+  loupeView = [(UITextLoupeSession *)self loupeView];
+  [loupeView frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(UITextLoupeSession *)self loupeView];
-  if ([v13 visible])
+  loupeView2 = [(UITextLoupeSession *)self loupeView];
+  if ([loupeView2 visible])
   {
     [v21 _statusBarFrameIgnoringVisibility];
     v24.origin.x = v14;
@@ -383,9 +383,9 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)_invalidateAnimated:(BOOL)a3
+- (void)_invalidateAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   self->_invalidated = 1;
   if (self->_isHidingStatusBar)
   {
@@ -396,20 +396,20 @@ LABEL_9:
     [v6 _setOverridingStatusBarHidden:0 animationParameters:v7];
   }
 
-  if (v3)
+  if (animatedCopy)
   {
     objc_initWeak(&location, self);
-    v8 = [(UITextLoupeSession *)self loupeView];
-    v9 = [(UITextLoupeSession *)self delegate];
+    loupeView = [(UITextLoupeSession *)self loupeView];
+    delegate = [(UITextLoupeSession *)self delegate];
     loupeView = self->_loupeView;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __42__UITextLoupeSession__invalidateAnimated___block_invoke;
     v14[3] = &unk_1E712BA38;
-    v11 = v8;
+    v11 = loupeView;
     v15 = v11;
     objc_copyWeak(&v17, &location);
-    v12 = v9;
+    v12 = delegate;
     v16 = v12;
     [(_UITextLoupeView *)loupeView setVisible:0 animated:1 completion:v14];
 

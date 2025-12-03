@@ -1,123 +1,123 @@
 @interface MTLToolsComputeCommandEncoder
 - (BOOL)encodeEndIf;
 - (BOOL)encodeEndWhile;
-- (MTLToolsComputeCommandEncoder)initWithComputeCommandEncoder:(id)a3 parent:(id)a4 descriptor:(id)a5;
+- (MTLToolsComputeCommandEncoder)initWithComputeCommandEncoder:(id)encoder parent:(id)parent descriptor:(id)descriptor;
 - (id)endEncodingAndRetrieveProgramAddressTable;
 - (id)newKernelDebugInfo;
 - (unint64_t)dispatchType;
-- (void)dispatchThreadgroups:(id *)a3 threadsPerThreadgroup:(id *)a4;
-- (void)dispatchThreadgroupsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4 threadsPerThreadgroup:(id *)a5;
-- (void)dispatchThreads:(id *)a3 threadsPerThreadgroup:(id *)a4;
-- (void)dispatchThreadsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4;
+- (void)dispatchThreadgroups:(id *)threadgroups threadsPerThreadgroup:(id *)threadgroup;
+- (void)dispatchThreadgroupsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset threadsPerThreadgroup:(id *)threadgroup;
+- (void)dispatchThreads:(id *)threads threadsPerThreadgroup:(id *)threadgroup;
+- (void)dispatchThreadsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset;
 - (void)encodeStartDoWhile;
 - (void)encodeStartElse;
-- (void)executeCommandsInBuffer:(id)a3 indirectBuffer:(id)a4 indirectBufferOffset:(unint64_t)a5;
-- (void)executeCommandsInBuffer:(id)a3 withRange:(_NSRange)a4;
+- (void)executeCommandsInBuffer:(id)buffer indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)offset;
+- (void)executeCommandsInBuffer:(id)buffer withRange:(_NSRange)range;
 - (void)insertCompressedTextureReinterpretationFlush;
-- (void)memoryBarrierWithResources:(const void *)a3 count:(unint64_t)a4;
-- (void)memoryBarrierWithScope:(unint64_t)a3;
-- (void)setAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6;
-- (void)setBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setBufferOffset:(unint64_t)a3 attributeStride:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 attributeStrides:(const unint64_t *)a5 withRange:(_NSRange)a6;
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setBytes:(const void *)a3 length:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6;
-- (void)setComputePipelineState:(id)a3;
-- (void)setImageblockWidth:(unint64_t)a3 height:(unint64_t)a4;
-- (void)setIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setSamplerState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6;
-- (void)setSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6;
-- (void)setSamplerStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setStageInRegion:(id *)a3;
-- (void)setStageInRegionWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4;
-- (void)setTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setThreadgroupDistributionMode:(int64_t)a3;
-- (void)setThreadgroupMemoryLength:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setToolsDispatchBufferSPI:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)updateFence:(id)a3;
-- (void)useHeap:(id)a3;
-- (void)useHeaps:(const void *)a3 count:(unint64_t)a4;
-- (void)useResidencySet:(id)a3;
-- (void)useResidencySets:(const void *)a3 count:(unint64_t)a4;
-- (void)useResource:(id)a3 usage:(unint64_t)a4;
-- (void)useResourceGroup:(id)a3 usage:(unint64_t)a4;
-- (void)useResources:(const void *)a3 count:(unint64_t)a4 usage:(unint64_t)a5;
-- (void)waitForFence:(id)a3;
+- (void)memoryBarrierWithResources:(const void *)resources count:(unint64_t)count;
+- (void)memoryBarrierWithScope:(unint64_t)scope;
+- (void)setAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index;
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset attributeStride:(unint64_t)stride atIndex:(unint64_t)index;
+- (void)setBufferOffset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setBufferOffset:(unint64_t)offset attributeStride:(unint64_t)stride atIndex:(unint64_t)index;
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets attributeStrides:(const unint64_t *)strides withRange:(_NSRange)range;
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setBytes:(const void *)bytes length:(unint64_t)length attributeStride:(unint64_t)stride atIndex:(unint64_t)index;
+- (void)setComputePipelineState:(id)state;
+- (void)setImageblockWidth:(unint64_t)width height:(unint64_t)height;
+- (void)setIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setSamplerState:(id)state atIndex:(unint64_t)index;
+- (void)setSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index;
+- (void)setSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range;
+- (void)setSamplerStates:(const void *)states withRange:(_NSRange)range;
+- (void)setStageInRegion:(id *)region;
+- (void)setStageInRegionWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset;
+- (void)setTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setThreadgroupDistributionMode:(int64_t)mode;
+- (void)setThreadgroupMemoryLength:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setToolsDispatchBufferSPI:(unint64_t)i atIndex:(unint64_t)index;
+- (void)setVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)updateFence:(id)fence;
+- (void)useHeap:(id)heap;
+- (void)useHeaps:(const void *)heaps count:(unint64_t)count;
+- (void)useResidencySet:(id)set;
+- (void)useResidencySets:(const void *)sets count:(unint64_t)count;
+- (void)useResource:(id)resource usage:(unint64_t)usage;
+- (void)useResourceGroup:(id)group usage:(unint64_t)usage;
+- (void)useResources:(const void *)resources count:(unint64_t)count usage:(unint64_t)usage;
+- (void)waitForFence:(id)fence;
 @end
 
 @implementation MTLToolsComputeCommandEncoder
 
-- (MTLToolsComputeCommandEncoder)initWithComputeCommandEncoder:(id)a3 parent:(id)a4 descriptor:(id)a5
+- (MTLToolsComputeCommandEncoder)initWithComputeCommandEncoder:(id)encoder parent:(id)parent descriptor:(id)descriptor
 {
   v11.receiver = self;
   v11.super_class = MTLToolsComputeCommandEncoder;
-  v7 = [(MTLToolsCommandEncoder *)&v11 initWithBaseObject:a3 parent:?];
+  v7 = [(MTLToolsCommandEncoder *)&v11 initWithBaseObject:encoder parent:?];
   v8 = v7;
-  if (a5 && v7)
+  if (descriptor && v7)
   {
     for (i = 0; i != 4; ++i)
     {
-      [a4 addRetainedObject:{objc_msgSend(objc_msgSend(objc_msgSend(a5, "sampleBufferAttachments"), "objectAtIndexedSubscript:", i), "sampleBuffer")}];
+      [parent addRetainedObject:{objc_msgSend(objc_msgSend(objc_msgSend(descriptor, "sampleBufferAttachments"), "objectAtIndexedSubscript:", i), "sampleBuffer")}];
     }
   }
 
   return v8;
 }
 
-- (void)setComputePipelineState:(id)a3
+- (void)setComputePipelineState:(id)state
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [state baseObject];
 
-  [v5 setComputePipelineState:v6];
+  [baseObject setComputePipelineState:baseObject2];
 }
 
-- (void)setBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v8 setBytes:a3 length:a4 atIndex:a5];
+  [baseObject setBytes:bytes length:length atIndex:index];
 }
 
-- (void)setBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setBufferOffset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 setBufferOffset:a3 atIndex:a4];
+  [baseObject setBufferOffset:offset atIndex:index];
 }
 
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v9 = [(MTLToolsObject *)self baseObject];
-  v10 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
 
-  [v9 setBuffer:v10 offset:a4 atIndex:a5];
+  [baseObject setBuffer:baseObject2 offset:offset atIndex:index];
 }
 
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v14[31] = *MEMORY[0x277D85DE8];
-  if (a5.length)
+  if (range.length)
   {
-    v9 = a3;
+    buffersCopy = buffers;
     v10 = v14;
-    v11 = a5.length;
+    v11 = range.length;
     do
     {
-      [(MTLToolsCommandEncoder *)self addRetainedObject:*v9];
-      v12 = *v9++;
+      [(MTLToolsCommandEncoder *)self addRetainedObject:*buffersCopy];
+      v12 = *buffersCopy++;
       *v10++ = [v12 baseObject];
       --v11;
     }
@@ -129,29 +129,29 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset attributeStride:(unint64_t)stride atIndex:(unint64_t)index
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v11 = [(MTLToolsObject *)self baseObject];
-  v12 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
 
-  [v11 setBuffer:v12 offset:a4 attributeStride:a5 atIndex:a6];
+  [baseObject setBuffer:baseObject2 offset:offset attributeStride:stride atIndex:index];
 }
 
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 attributeStrides:(const unint64_t *)a5 withRange:(_NSRange)a6
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets attributeStrides:(const unint64_t *)strides withRange:(_NSRange)range
 {
-  length = a6.length;
-  location = a6.location;
+  length = range.length;
+  location = range.location;
   v16[31] = *MEMORY[0x277D85DE8];
-  if (a6.length)
+  if (range.length)
   {
-    v11 = a3;
+    buffersCopy = buffers;
     v12 = v16;
-    v13 = a6.length;
+    v13 = range.length;
     do
     {
-      [(MTLToolsCommandEncoder *)self addRetainedObject:*v11];
-      v14 = *v11++;
+      [(MTLToolsCommandEncoder *)self addRetainedObject:*buffersCopy];
+      v14 = *buffersCopy++;
       *v12++ = [v14 baseObject];
       --v13;
     }
@@ -163,43 +163,43 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setBufferOffset:(unint64_t)a3 attributeStride:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setBufferOffset:(unint64_t)offset attributeStride:(unint64_t)stride atIndex:(unint64_t)index
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v8 setBufferOffset:a3 attributeStride:a4 atIndex:a5];
+  [baseObject setBufferOffset:offset attributeStride:stride atIndex:index];
 }
 
-- (void)setBytes:(const void *)a3 length:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6
+- (void)setBytes:(const void *)bytes length:(unint64_t)length attributeStride:(unint64_t)stride atIndex:(unint64_t)index
 {
-  v10 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v10 setBytes:a3 length:a4 attributeStride:a5 atIndex:a6];
+  [baseObject setBytes:bytes length:length attributeStride:stride atIndex:index];
 }
 
-- (void)setTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setTexture:(id)texture atIndex:(unint64_t)index
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v7 = [(MTLToolsObject *)self baseObject];
-  v8 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
 
-  [v7 setTexture:v8 atIndex:a4];
+  [baseObject setTexture:baseObject2 atIndex:index];
 }
 
-- (void)setTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setTextures:(const void *)textures withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v13 = *MEMORY[0x277D85DE8];
-  if (a4.length)
+  if (range.length)
   {
-    v7 = a3;
+    texturesCopy = textures;
     v8 = v12;
-    v9 = a4.length;
+    v9 = range.length;
     do
     {
-      [(MTLToolsCommandEncoder *)self addRetainedObject:*v7];
-      v10 = *v7++;
+      [(MTLToolsCommandEncoder *)self addRetainedObject:*texturesCopy];
+      v10 = *texturesCopy++;
       *v8++ = [v10 baseObject];
       --v9;
     }
@@ -211,29 +211,29 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSamplerState:(id)a3 atIndex:(unint64_t)a4
+- (void)setSamplerState:(id)state atIndex:(unint64_t)index
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v7 = [(MTLToolsObject *)self baseObject];
-  v8 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [state baseObject];
 
-  [v7 setSamplerState:v8 atIndex:a4];
+  [baseObject setSamplerState:baseObject2 atIndex:index];
 }
 
-- (void)setSamplerStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setSamplerStates:(const void *)states withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v13 = *MEMORY[0x277D85DE8];
-  if (a4.length)
+  if (range.length)
   {
-    v7 = a3;
+    statesCopy = states;
     v8 = v12;
-    v9 = a4.length;
+    v9 = range.length;
     do
     {
-      [(MTLToolsCommandEncoder *)self addRetainedObject:*v7];
-      v10 = *v7++;
+      [(MTLToolsCommandEncoder *)self addRetainedObject:*statesCopy];
+      v10 = *statesCopy++;
       *v8++ = [v10 baseObject];
       --v9;
     }
@@ -245,31 +245,31 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6
+- (void)setSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v11 = [(MTLToolsObject *)self baseObject];
-  v12 = [a3 baseObject];
-  *&v13 = a4;
-  *&v14 = a5;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [state baseObject];
+  *&v13 = clamp;
+  *&v14 = maxClamp;
 
-  [v11 setSamplerState:v12 lodMinClamp:a6 lodMaxClamp:v13 atIndex:v14];
+  [baseObject setSamplerState:baseObject2 lodMinClamp:index lodMaxClamp:v13 atIndex:v14];
 }
 
-- (void)setSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6
+- (void)setSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range
 {
-  length = a6.length;
-  location = a6.location;
+  length = range.length;
+  location = range.location;
   v17 = *MEMORY[0x277D85DE8];
-  if (a6.length)
+  if (range.length)
   {
-    v11 = a3;
+    statesCopy = states;
     v12 = v16;
-    v13 = a6.length;
+    v13 = range.length;
     do
     {
-      [(MTLToolsCommandEncoder *)self addRetainedObject:*v11];
-      v14 = *v11++;
+      [(MTLToolsCommandEncoder *)self addRetainedObject:*statesCopy];
+      v14 = *statesCopy++;
       *v12++ = [v14 baseObject];
       --v13;
     }
@@ -281,125 +281,125 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setThreadgroupMemoryLength:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setThreadgroupMemoryLength:(unint64_t)length atIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 setThreadgroupMemoryLength:a3 atIndex:a4];
+  [baseObject setThreadgroupMemoryLength:length atIndex:index];
 }
 
-- (void)dispatchThreadgroups:(id *)a3 threadsPerThreadgroup:(id *)a4
+- (void)dispatchThreadgroups:(id *)threadgroups threadsPerThreadgroup:(id *)threadgroup
 {
-  v6 = [(MTLToolsObject *)self baseObject];
-  v8 = *a3;
-  v7 = *a4;
-  [v6 dispatchThreadgroups:&v8 threadsPerThreadgroup:&v7];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v8 = *threadgroups;
+  v7 = *threadgroup;
+  [baseObject dispatchThreadgroups:&v8 threadsPerThreadgroup:&v7];
 }
 
-- (void)setStageInRegion:(id *)a3
+- (void)setStageInRegion:(id *)region
 {
-  v4 = [(MTLToolsObject *)self baseObject];
-  v5 = *&a3->var0.var2;
-  v6[0] = *&a3->var0.var0;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v5 = *&region->var0.var2;
+  v6[0] = *&region->var0.var0;
   v6[1] = v5;
-  v6[2] = *&a3->var1.var1;
-  [v4 setStageInRegion:v6];
+  v6[2] = *&region->var1.var1;
+  [baseObject setStageInRegion:v6];
 }
 
-- (void)setStageInRegionWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4
+- (void)setStageInRegionWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v7 = [(MTLToolsObject *)self baseObject];
-  v8 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
 
-  [v7 setStageInRegionWithIndirectBuffer:v8 indirectBufferOffset:a4];
+  [baseObject setStageInRegionWithIndirectBuffer:baseObject2 indirectBufferOffset:offset];
 }
 
-- (void)setImageblockWidth:(unint64_t)a3 height:(unint64_t)a4
+- (void)setImageblockWidth:(unint64_t)width height:(unint64_t)height
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 setImageblockWidth:a3 height:a4];
+  [baseObject setImageblockWidth:width height:height];
 }
 
-- (void)dispatchThreadgroupsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4 threadsPerThreadgroup:(id *)a5
-{
-  [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v9 = [(MTLToolsObject *)self baseObject];
-  v10 = [a3 baseObject];
-  v11 = *a5;
-  [v9 dispatchThreadgroupsWithIndirectBuffer:v10 indirectBufferOffset:a4 threadsPerThreadgroup:&v11];
-}
-
-- (void)dispatchThreads:(id *)a3 threadsPerThreadgroup:(id *)a4
-{
-  v6 = [(MTLToolsObject *)self baseObject];
-  v8 = *a3;
-  v7 = *a4;
-  [v6 dispatchThreads:&v8 threadsPerThreadgroup:&v7];
-}
-
-- (void)dispatchThreadsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4
+- (void)dispatchThreadgroupsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset threadsPerThreadgroup:(id *)threadgroup
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v7 = [(MTLToolsObject *)self baseObject];
-  v8 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
+  v11 = *threadgroup;
+  [baseObject dispatchThreadgroupsWithIndirectBuffer:baseObject2 indirectBufferOffset:offset threadsPerThreadgroup:&v11];
+}
 
-  [v7 dispatchThreadsWithIndirectBuffer:v8 indirectBufferOffset:a4];
+- (void)dispatchThreads:(id *)threads threadsPerThreadgroup:(id *)threadgroup
+{
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v8 = *threads;
+  v7 = *threadgroup;
+  [baseObject dispatchThreads:&v8 threadsPerThreadgroup:&v7];
+}
+
+- (void)dispatchThreadsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset
+{
+  [(MTLToolsCommandEncoder *)self addRetainedObject:?];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
+
+  [baseObject dispatchThreadsWithIndirectBuffer:baseObject2 indirectBufferOffset:offset];
 }
 
 - (id)newKernelDebugInfo
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 newKernelDebugInfo];
+  return [baseObject newKernelDebugInfo];
 }
 
-- (void)updateFence:(id)a3
+- (void)updateFence:(id)fence
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [fence baseObject];
 
-  [v5 updateFence:v6];
+  [baseObject updateFence:baseObject2];
 }
 
-- (void)waitForFence:(id)a3
+- (void)waitForFence:(id)fence
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [fence baseObject];
 
-  [v5 waitForFence:v6];
+  [baseObject waitForFence:baseObject2];
 }
 
-- (void)useResource:(id)a3 usage:(unint64_t)a4
+- (void)useResource:(id)resource usage:(unint64_t)usage
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v7 = [(MTLToolsObject *)self baseObject];
-  v8 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [resource baseObject];
 
-  [v7 useResource:v8 usage:a4];
+  [baseObject useResource:baseObject2 usage:usage];
 }
 
-- (void)useResources:(const void *)a3 count:(unint64_t)a4 usage:(unint64_t)a5
+- (void)useResources:(const void *)resources count:(unint64_t)count usage:(unint64_t)usage
 {
-  std::vector<objc_object  {objcproto11MTLResource}*>::vector[abi:ne200100](__p, a4);
-  if (a4)
+  std::vector<objc_object  {objcproto11MTLResource}*>::vector[abi:ne200100](__p, count);
+  if (count)
   {
     v9 = 0;
     do
     {
-      [(MTLToolsCommandEncoder *)self addRetainedObject:a3[v9]];
-      v10 = [a3[v9] baseObject];
-      *(__p[0] + v9++) = v10;
+      [(MTLToolsCommandEncoder *)self addRetainedObject:resources[v9]];
+      baseObject = [resources[v9] baseObject];
+      *(__p[0] + v9++) = baseObject;
     }
 
-    while (a4 != v9);
+    while (count != v9);
   }
 
-  v11 = [(MTLToolsObject *)self baseObject];
-  [v11 useResources:__p[0] count:a4 usage:a5];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 useResources:__p[0] count:count usage:usage];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -407,33 +407,33 @@
   }
 }
 
-- (void)useHeap:(id)a3
+- (void)useHeap:(id)heap
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [heap baseObject];
 
-  [v5 useHeap:v6];
+  [baseObject useHeap:baseObject2];
 }
 
-- (void)useHeaps:(const void *)a3 count:(unint64_t)a4
+- (void)useHeaps:(const void *)heaps count:(unint64_t)count
 {
-  std::vector<objc_object  {objcproto7MTLHeap}*>::vector[abi:ne200100](__p, a4);
-  if (a4)
+  std::vector<objc_object  {objcproto7MTLHeap}*>::vector[abi:ne200100](__p, count);
+  if (count)
   {
     v7 = 0;
     do
     {
-      [(MTLToolsCommandEncoder *)self addRetainedObject:a3[v7]];
-      v8 = [a3[v7] baseObject];
-      *(__p[0] + v7++) = v8;
+      [(MTLToolsCommandEncoder *)self addRetainedObject:heaps[v7]];
+      baseObject = [heaps[v7] baseObject];
+      *(__p[0] + v7++) = baseObject;
     }
 
-    while (a4 != v7);
+    while (count != v7);
   }
 
-  v9 = [(MTLToolsObject *)self baseObject];
-  [v9 useHeaps:__p[0] count:a4];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 useHeaps:__p[0] count:count];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -441,58 +441,58 @@
   }
 }
 
-- (void)executeCommandsInBuffer:(id)a3 withRange:(_NSRange)a4
+- (void)executeCommandsInBuffer:(id)buffer withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v8 = [(MTLToolsObject *)self baseObject];
-  v9 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
 
-  [v8 executeCommandsInBuffer:v9 withRange:{location, length}];
+  [baseObject executeCommandsInBuffer:baseObject2 withRange:{location, length}];
 }
 
-- (void)executeCommandsInBuffer:(id)a3 indirectBuffer:(id)a4 indirectBufferOffset:(unint64_t)a5
+- (void)executeCommandsInBuffer:(id)buffer indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)offset
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v9 = [(MTLToolsObject *)self baseObject];
-  v10 = [a3 baseObject];
-  v11 = [a4 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
+  baseObject3 = [indirectBuffer baseObject];
 
-  [v9 executeCommandsInBuffer:v10 indirectBuffer:v11 indirectBufferOffset:a5];
+  [baseObject executeCommandsInBuffer:baseObject2 indirectBuffer:baseObject3 indirectBufferOffset:offset];
 }
 
 - (unint64_t)dispatchType
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 dispatchType];
+  return [baseObject dispatchType];
 }
 
-- (void)memoryBarrierWithScope:(unint64_t)a3
+- (void)memoryBarrierWithScope:(unint64_t)scope
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 memoryBarrierWithScope:a3];
+  [baseObject memoryBarrierWithScope:scope];
 }
 
-- (void)memoryBarrierWithResources:(const void *)a3 count:(unint64_t)a4
+- (void)memoryBarrierWithResources:(const void *)resources count:(unint64_t)count
 {
-  std::vector<objc_object  {objcproto11MTLResource}*>::vector[abi:ne200100](__p, a4);
-  if (a4)
+  std::vector<objc_object  {objcproto11MTLResource}*>::vector[abi:ne200100](__p, count);
+  if (count)
   {
     v7 = 0;
     do
     {
-      v8 = [a3[v7] baseObject];
-      *(__p[0] + v7++) = v8;
+      baseObject = [resources[v7] baseObject];
+      *(__p[0] + v7++) = baseObject;
     }
 
-    while (a4 != v7);
+    while (count != v7);
   }
 
-  v9 = [(MTLToolsObject *)self baseObject];
-  [v9 memoryBarrierWithResources:__p[0] count:a4];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 memoryBarrierWithResources:__p[0] count:count];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -500,30 +500,30 @@
   }
 }
 
-- (void)setVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
-  v7 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [table baseObject];
 
-  [v6 setVisibleFunctionTable:v7 atBufferIndex:a4];
+  [baseObject setVisibleFunctionTable:baseObject2 atBufferIndex:index];
 }
 
-- (void)setVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  std::vector<objc_object  {objcproto23MTLVisibleFunctionTable}*>::vector[abi:ne200100](__p, a4.length);
+  length = range.length;
+  location = range.location;
+  std::vector<objc_object  {objcproto23MTLVisibleFunctionTable}*>::vector[abi:ne200100](__p, range.length);
   if (length)
   {
     for (i = 0; i != length; ++i)
     {
-      v9 = [a3[i] baseObject];
-      *(__p[0] + i) = v9;
+      baseObject = [tables[i] baseObject];
+      *(__p[0] + i) = baseObject;
     }
   }
 
-  v10 = [(MTLToolsObject *)self baseObject];
-  [v10 setVisibleFunctionTables:__p[0] withBufferRange:{location, length}];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 setVisibleFunctionTables:__p[0] withBufferRange:{location, length}];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -531,30 +531,30 @@
   }
 }
 
-- (void)setIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
-  v7 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [table baseObject];
 
-  [v6 setIntersectionFunctionTable:v7 atBufferIndex:a4];
+  [baseObject setIntersectionFunctionTable:baseObject2 atBufferIndex:index];
 }
 
-- (void)setIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  std::vector<objc_object  {objcproto28MTLIntersectionFunctionTable}*>::vector[abi:ne200100](__p, a4.length);
+  length = range.length;
+  location = range.location;
+  std::vector<objc_object  {objcproto28MTLIntersectionFunctionTable}*>::vector[abi:ne200100](__p, range.length);
   if (length)
   {
     for (i = 0; i != length; ++i)
     {
-      v9 = [a3[i] baseObject];
-      *(__p[0] + i) = v9;
+      baseObject = [tables[i] baseObject];
+      *(__p[0] + i) = baseObject;
     }
   }
 
-  v10 = [(MTLToolsObject *)self baseObject];
-  [v10 setIntersectionFunctionTables:__p[0] withBufferRange:{location, length}];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 setIntersectionFunctionTables:__p[0] withBufferRange:{location, length}];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -562,97 +562,97 @@
   }
 }
 
-- (void)setAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
-  v7 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [structure baseObject];
 
-  [v6 setAccelerationStructure:v7 atBufferIndex:a4];
+  [baseObject setAccelerationStructure:baseObject2 atBufferIndex:index];
 }
 
-- (void)useResourceGroup:(id)a3 usage:(unint64_t)a4
+- (void)useResourceGroup:(id)group usage:(unint64_t)usage
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 useResourceGroup:a3 usage:a4];
+  [baseObject useResourceGroup:group usage:usage];
 }
 
 - (void)insertCompressedTextureReinterpretationFlush
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 insertCompressedTextureReinterpretationFlush];
+  [baseObject insertCompressedTextureReinterpretationFlush];
 }
 
 - (void)encodeStartDoWhile
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 encodeStartDoWhile];
+  [baseObject encodeStartDoWhile];
 }
 
 - (BOOL)encodeEndWhile
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 encodeEndWhile];
+  return [baseObject encodeEndWhile];
 }
 
 - (void)encodeStartElse
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 encodeStartElse];
+  [baseObject encodeStartElse];
 }
 
 - (BOOL)encodeEndIf
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 encodeEndIf];
+  return [baseObject encodeEndIf];
 }
 
 - (id)endEncodingAndRetrieveProgramAddressTable
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 endEncodingAndRetrieveProgramAddressTable];
+  return [baseObject endEncodingAndRetrieveProgramAddressTable];
 }
 
-- (void)setThreadgroupDistributionMode:(int64_t)a3
+- (void)setThreadgroupDistributionMode:(int64_t)mode
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setThreadgroupDistributionMode:a3];
+  [baseObject setThreadgroupDistributionMode:mode];
 }
 
-- (void)useResidencySet:(id)a3
+- (void)useResidencySet:(id)set
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [set baseObject];
 
-  [v5 useResidencySet:v6];
+  [baseObject useResidencySet:baseObject2];
 }
 
-- (void)useResidencySets:(const void *)a3 count:(unint64_t)a4
+- (void)useResidencySets:(const void *)sets count:(unint64_t)count
 {
-  std::vector<objc_object  {objcproto15MTLResidencySet}*>::vector[abi:ne200100](__p, a4);
-  if (a4)
+  std::vector<objc_object  {objcproto15MTLResidencySet}*>::vector[abi:ne200100](__p, count);
+  if (count)
   {
     v7 = 0;
     do
     {
-      [(MTLToolsCommandEncoder *)self addRetainedObject:a3[v7]];
-      v8 = [a3[v7] baseObject];
-      *(__p[0] + v7++) = v8;
+      [(MTLToolsCommandEncoder *)self addRetainedObject:sets[v7]];
+      baseObject = [sets[v7] baseObject];
+      *(__p[0] + v7++) = baseObject;
     }
 
-    while (a4 != v7);
+    while (count != v7);
   }
 
-  v9 = [(MTLToolsObject *)self baseObject];
-  [v9 useResidencySets:__p[0] count:a4];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 useResidencySets:__p[0] count:count];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -660,11 +660,11 @@
   }
 }
 
-- (void)setToolsDispatchBufferSPI:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setToolsDispatchBufferSPI:(unint64_t)i atIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 setToolsDispatchBufferSPI:a3 atIndex:a4];
+  [baseObject setToolsDispatchBufferSPI:i atIndex:index];
 }
 
 @end

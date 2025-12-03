@@ -1,9 +1,9 @@
 @interface CKDZoneIDCacheTable
 + (id)dbProperties;
-- (BOOL)removeRowID:(id)a3 error:(id *)a4;
+- (BOOL)removeRowID:(id)d error:(id *)error;
 - (CKDZoneIDCacheTable)init;
-- (id)entryForZoneID:(id)a3 addIfNotFound:(BOOL)a4 error:(id *)a5;
-- (id)zoneIDForRowID:(id)a3 error:(id *)a4;
+- (id)entryForZoneID:(id)d addIfNotFound:(BOOL)found error:(id *)error;
+- (id)zoneIDForRowID:(id)d error:(id *)error;
 @end
 
 @implementation CKDZoneIDCacheTable
@@ -28,11 +28,11 @@
   return v2;
 }
 
-- (id)entryForZoneID:(id)a3 addIfNotFound:(BOOL)a4 error:(id *)a5
+- (id)entryForZoneID:(id)d addIfNotFound:(BOOL)found error:(id *)error
 {
-  v6 = a4;
+  foundCopy = found;
   v24[1] = *MEMORY[0x277D85DE8];
-  v8 = objc_msgSend_sqliteRepresentation(a3, a2, a3);
+  v8 = objc_msgSend_sqliteRepresentation(d, a2, d);
   v23 = @"zoneIDString";
   v24[0] = v8;
   v10 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v9, v24, &v23, 1);
@@ -44,14 +44,14 @@
   {
 LABEL_2:
     v14 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_7;
     }
 
 LABEL_6:
     v15 = v13;
-    *a5 = v13;
+    *error = v13;
     goto LABEL_7;
   }
 
@@ -61,7 +61,7 @@ LABEL_5:
     v14 = v12;
     v13 = 0;
     v12 = v14;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -69,7 +69,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v6)
+  if (foundCopy)
   {
     v18 = [CKDZoneIDCacheEntry alloc];
     v12 = objc_msgSend_initWithZoneIDString_(v18, v19, v8);
@@ -86,7 +86,7 @@ LABEL_5:
   v14 = 0;
   v13 = 0;
   v12 = 0;
-  if (a5)
+  if (error)
   {
     goto LABEL_6;
   }
@@ -98,10 +98,10 @@ LABEL_7:
   return v14;
 }
 
-- (id)zoneIDForRowID:(id)a3 error:(id *)a4
+- (id)zoneIDForRowID:(id)d error:(id *)error
 {
   v18 = 0;
-  v5 = objc_msgSend_entryWithPrimaryKey_error_(self, a2, a3, &v18);
+  v5 = objc_msgSend_entryWithPrimaryKey_error_(self, a2, d, &v18);
   v8 = v18;
   if (v8)
   {
@@ -130,28 +130,28 @@ LABEL_7:
     }
   }
 
-  if (a4)
+  if (error)
   {
     v16 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v10;
 }
 
-- (BOOL)removeRowID:(id)a3 error:(id *)a4
+- (BOOL)removeRowID:(id)d error:(id *)error
 {
-  v6 = objc_msgSend_deletePrimaryKeyValue_(self, a2, a3);
+  v6 = objc_msgSend_deletePrimaryKeyValue_(self, a2, d);
   if (v6 && objc_msgSend_CKIsNoMatchingRowError_(MEMORY[0x277CCA9B8], v5, v6))
   {
 
     v6 = 0;
   }
 
-  if (a4)
+  if (error)
   {
     v7 = v6;
-    *a4 = v6;
+    *error = v6;
   }
 
   return v6 == 0;

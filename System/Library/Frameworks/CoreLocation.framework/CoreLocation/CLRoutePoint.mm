@@ -1,28 +1,28 @@
 @interface CLRoutePoint
-- (BOOL)isEqual:(id)a3;
-- (CLRoutePoint)initWithCoder:(id)a3;
-- (CLRoutePoint)initWithLatitude:(double)a3 longitude:(double)a4 altitude:(double)a5 odometer:(double)a6 timestamp:(double)a7 signalEnvironmentType:(int)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CLRoutePoint)initWithCoder:(id)coder;
+- (CLRoutePoint)initWithLatitude:(double)latitude longitude:(double)longitude altitude:(double)altitude odometer:(double)odometer timestamp:(double)timestamp signalEnvironmentType:(int)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLRoutePoint
 
-- (CLRoutePoint)initWithLatitude:(double)a3 longitude:(double)a4 altitude:(double)a5 odometer:(double)a6 timestamp:(double)a7 signalEnvironmentType:(int)a8
+- (CLRoutePoint)initWithLatitude:(double)latitude longitude:(double)longitude altitude:(double)altitude odometer:(double)odometer timestamp:(double)timestamp signalEnvironmentType:(int)type
 {
   v15.receiver = self;
   v15.super_class = CLRoutePoint;
   result = [(CLRoutePoint *)&v15 init];
   if (result)
   {
-    result->_latitude_deg = a3;
-    result->_longitude_deg = a4;
-    result->_altitude_m = a5;
-    result->_odometer_m = a6;
-    result->_timestamp_s = a7;
-    result->_signalEnvironmentType = a8;
+    result->_latitude_deg = latitude;
+    result->_longitude_deg = longitude;
+    result->_altitude_m = altitude;
+    result->_odometer_m = odometer;
+    result->_timestamp_s = timestamp;
+    result->_signalEnvironmentType = type;
   }
 
   return result;
@@ -44,11 +44,11 @@
   return [v3 stringWithFormat:@"<%@ latitude: %.7lf, longitude: %.7lf, altitude: %.3lf, odometer: %.3lf, timestamp: %.3lf, signalEnvironment: %d>", v4, v6, v8, v10, v12, v13, -[CLRoutePoint signalEnvironmentType](self, "signalEnvironmentType")];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   [(CLRoutePoint *)self latitude_deg];
   v6 = v5;
-  [a3 latitude_deg];
+  [equal latitude_deg];
   if (vabdd_f64(v6, v7) >= 0.0000001)
   {
     return 0;
@@ -56,7 +56,7 @@
 
   [(CLRoutePoint *)self longitude_deg];
   v9 = v8;
-  [a3 longitude_deg];
+  [equal longitude_deg];
   if (vabdd_f64(v9, v10) >= 0.0000001)
   {
     return 0;
@@ -64,7 +64,7 @@
 
   [(CLRoutePoint *)self altitude_m];
   v12 = v11;
-  [a3 altitude_m];
+  [equal altitude_m];
   if (vabdd_f64(v12, v13) >= 0.0000001)
   {
     return 0;
@@ -72,7 +72,7 @@
 
   [(CLRoutePoint *)self odometer_m];
   v15 = v14;
-  [a3 odometer_m];
+  [equal odometer_m];
   if (vabdd_f64(v15, v16) >= 0.0000001)
   {
     return 0;
@@ -80,14 +80,14 @@
 
   [(CLRoutePoint *)self timestamp_s];
   v18 = v17;
-  [a3 timestamp_s];
+  [equal timestamp_s];
   if (vabdd_f64(v18, v19) >= 0.0000001)
   {
     return 0;
   }
 
-  v20 = [(CLRoutePoint *)self signalEnvironmentType];
-  return v20 == [a3 signalEnvironmentType];
+  signalEnvironmentType = [(CLRoutePoint *)self signalEnvironmentType];
+  return signalEnvironmentType == [equal signalEnvironmentType];
 }
 
 - (unint64_t)hash
@@ -110,9 +110,9 @@
   return v10 ^ v12 ^ [(CLRoutePoint *)self signalEnvironmentType];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [(CLRoutePoint *)self latitude_deg];
   *(v4 + 16) = v5;
   [(CLRoutePoint *)self longitude_deg];
@@ -127,41 +127,41 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   [(CLRoutePoint *)self latitude_deg];
-  [a3 encodeDouble:@"latitude" forKey:?];
+  [coder encodeDouble:@"latitude" forKey:?];
   [(CLRoutePoint *)self longitude_deg];
-  [a3 encodeDouble:@"longitude" forKey:?];
+  [coder encodeDouble:@"longitude" forKey:?];
   [(CLRoutePoint *)self altitude_m];
-  [a3 encodeDouble:@"altitude" forKey:?];
+  [coder encodeDouble:@"altitude" forKey:?];
   [(CLRoutePoint *)self odometer_m];
-  [a3 encodeDouble:@"odometer" forKey:?];
+  [coder encodeDouble:@"odometer" forKey:?];
   [(CLRoutePoint *)self timestamp_s];
-  [a3 encodeDouble:@"timestamp" forKey:?];
-  v5 = [(CLRoutePoint *)self signalEnvironmentType];
+  [coder encodeDouble:@"timestamp" forKey:?];
+  signalEnvironmentType = [(CLRoutePoint *)self signalEnvironmentType];
 
-  [a3 encodeInteger:v5 forKey:@"signalEnvironment"];
+  [coder encodeInteger:signalEnvironmentType forKey:@"signalEnvironment"];
 }
 
-- (CLRoutePoint)initWithCoder:(id)a3
+- (CLRoutePoint)initWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = CLRoutePoint;
   v4 = [(CLRoutePoint *)&v11 init];
   if (v4)
   {
-    [a3 decodeDoubleForKey:@"latitude"];
+    [coder decodeDoubleForKey:@"latitude"];
     v4->_latitude_deg = v5;
-    [a3 decodeDoubleForKey:@"longitude"];
+    [coder decodeDoubleForKey:@"longitude"];
     v4->_longitude_deg = v6;
-    [a3 decodeDoubleForKey:@"altitude"];
+    [coder decodeDoubleForKey:@"altitude"];
     v4->_altitude_m = v7;
-    [a3 decodeDoubleForKey:@"odometer"];
+    [coder decodeDoubleForKey:@"odometer"];
     v4->_odometer_m = v8;
-    [a3 decodeDoubleForKey:@"timestamp"];
+    [coder decodeDoubleForKey:@"timestamp"];
     v4->_timestamp_s = v9;
-    v4->_signalEnvironmentType = [a3 decodeIntegerForKey:@"signalEnvironment"];
+    v4->_signalEnvironmentType = [coder decodeIntegerForKey:@"signalEnvironment"];
   }
 
   return v4;

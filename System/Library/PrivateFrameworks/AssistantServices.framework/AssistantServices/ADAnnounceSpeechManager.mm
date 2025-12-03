@@ -1,18 +1,18 @@
 @interface ADAnnounceSpeechManager
-+ (double)_bargeInTimeThresholdForType:(int64_t)a3;
++ (double)_bargeInTimeThresholdForType:(int64_t)type;
 - (ADAnnounceSpeechManager)init;
 - (ADAnnounceSpeechManagerDelegate)delegate;
 - (BOOL)isAttending;
 - (id)_attendingServiceClient;
 - (id)_osmedDetector;
-- (void)_attendingStoppedWithReason:(int64_t)a3;
+- (void)_attendingStoppedWithReason:(int64_t)reason;
 - (void)_resetDetector;
-- (void)_startAttendingForSpeechPauseWithType:(int64_t)a3 completion:(id)a4;
-- (void)_startAttendingForSpeechWithType:(int64_t)a3 forAnnouncementType:(int64_t)a4 completion:(id)a5;
-- (void)attendingStoppedWithReason:(int64_t)a3;
+- (void)_startAttendingForSpeechPauseWithType:(int64_t)type completion:(id)completion;
+- (void)_startAttendingForSpeechWithType:(int64_t)type forAnnouncementType:(int64_t)announcementType completion:(id)completion;
+- (void)attendingStoppedWithReason:(int64_t)reason;
 - (void)didTransitionToTriggerlessListening;
-- (void)startAttendingForPauseInSpeechWithType:(int64_t)a3 completion:(id)a4;
-- (void)startAttendingForSpeechWithType:(int64_t)a3 forAnnouncementType:(int64_t)a4 completion:(id)a5;
+- (void)startAttendingForPauseInSpeechWithType:(int64_t)type completion:(id)completion;
+- (void)startAttendingForSpeechWithType:(int64_t)type forAnnouncementType:(int64_t)announcementType completion:(id)completion;
 - (void)stopAttending;
 @end
 
@@ -35,19 +35,19 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%s ", &v11, 0xCu);
   }
 
-  v4 = [(ADAnnounceSpeechManager *)self _osmedDetector];
-  v5 = [v4 isListening];
+  _osmedDetector = [(ADAnnounceSpeechManager *)self _osmedDetector];
+  isListening = [_osmedDetector isListening];
 
-  if (v5)
+  if (isListening)
   {
-    v6 = [(ADAnnounceSpeechManager *)self _osmedDetector];
-    [v6 stopListening];
+    _osmedDetector2 = [(ADAnnounceSpeechManager *)self _osmedDetector];
+    [_osmedDetector2 stopListening];
   }
 
   if (self->_isAttendingWithAttendingService)
   {
-    v7 = [(ADAnnounceSpeechManager *)self _attendingServiceClient];
-    [v7 stopAttendingWithReason:4];
+    _attendingServiceClient = [(ADAnnounceSpeechManager *)self _attendingServiceClient];
+    [_attendingServiceClient stopAttendingWithReason:4];
   }
 
   deviceID = self->_deviceID;
@@ -126,9 +126,9 @@
   if (!osmedDetector)
   {
     v4 = +[ADOpportuneSpeakingModule sharedModule];
-    v5 = [v4 stateManager];
+    stateManager = [v4 stateManager];
 
-    v6 = [[ADOpportuneSpeakingModuleEdgeDetector alloc] initWithQueue:self->_queue stateManager:v5];
+    v6 = [[ADOpportuneSpeakingModuleEdgeDetector alloc] initWithQueue:self->_queue stateManager:stateManager];
     v7 = self->_osmedDetector;
     self->_osmedDetector = v6;
 
@@ -154,12 +154,12 @@
   return attendingServiceClient;
 }
 
-- (void)_attendingStoppedWithReason:(int64_t)a3
+- (void)_attendingStoppedWithReason:(int64_t)reason
 {
-  if (a3 != 4)
+  if (reason != 4)
   {
     p_delegate = &self->_delegate;
-    if (a3 == 1)
+    if (reason == 1)
     {
       WeakRetained = objc_loadWeakRetained(p_delegate);
       [WeakRetained speechManager:self detectedSpeechForListeningType:1 atHostTime:0 shouldHandleActivation:0.0];
@@ -175,7 +175,7 @@
   self->_isAttendingWithAttendingService = 0;
 }
 
-- (void)attendingStoppedWithReason:(int64_t)a3
+- (void)attendingStoppedWithReason:(int64_t)reason
 {
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -183,7 +183,7 @@
     *buf = 136315394;
     v9 = "[ADAnnounceSpeechManager attendingStoppedWithReason:]";
     v10 = 2048;
-    v11 = a3;
+    reasonCopy = reason;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s attendingStoppedWithReason: %lu", buf, 0x16u);
   }
 
@@ -193,13 +193,13 @@
   v7[2] = sub_100073360;
   v7[3] = &unk_10051D770;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = reason;
   dispatch_async(queue, v7);
 }
 
-- (void)_startAttendingForSpeechPauseWithType:(int64_t)a3 completion:(id)a4
+- (void)_startAttendingForSpeechPauseWithType:(int64_t)type completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = +[AFPreferences sharedPreferences];
   v18[0] = 0;
   v18[1] = v18;
@@ -217,27 +217,27 @@
   block[2] = sub_1000734B0;
   block[3] = &unk_10050F578;
   block[4] = self;
-  v13 = v6;
+  v13 = completionCopy;
   v15 = v17;
-  v16 = a3;
+  typeCopy = type;
   v14 = v18;
-  v11 = v6;
+  v11 = completionCopy;
   dispatch_async(queue, block);
 
   _Block_object_dispose(v17, 8);
   _Block_object_dispose(v18, 8);
 }
 
-- (void)_startAttendingForSpeechWithType:(int64_t)a3 forAnnouncementType:(int64_t)a4 completion:(id)a5
+- (void)_startAttendingForSpeechWithType:(int64_t)type forAnnouncementType:(int64_t)announcementType completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  if ((a3 - 3) >= 2 && a3)
+  if ((type - 3) >= 2 && type)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       v9 = +[AFFeatureFlags isRingtoneOverA2DPEnabled];
       v10 = AFSiriLogContextDaemon;
@@ -279,9 +279,9 @@
     v16[3] = &unk_10050F4B0;
     v16[4] = self;
     v18 = &v21;
-    v17 = v8;
-    v19 = a3;
-    v20 = a4;
+    v17 = completionCopy;
+    typeCopy = type;
+    announcementTypeCopy = announcementType;
     [v15 fetchCurrentlyRoutedHeadphonesCBUUIDWithCompletion:v16];
   }
 
@@ -296,27 +296,27 @@
     }
 
     v15 = [AFError errorWithCode:7200 description:0];
-    (*(v8 + 2))(v8, v15);
+    (*(completionCopy + 2))(completionCopy, v15);
   }
 
   _Block_object_dispose(&v21, 8);
 }
 
-- (void)startAttendingForPauseInSpeechWithType:(int64_t)a3 completion:(id)a4
+- (void)startAttendingForPauseInSpeechWithType:(int64_t)type completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 > 2)
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (type > 2)
   {
-    if ((a3 == 3 || a3 == 4) && v6)
+    if ((type == 3 || type == 4) && completionCopy)
     {
-      (*(v6 + 2))(v6, 1, 0);
+      (*(completionCopy + 2))(completionCopy, 1, 0);
     }
   }
 
-  else if ((a3 - 1) >= 2)
+  else if ((type - 1) >= 2)
   {
-    if (!a3 && v6)
+    if (!type && completionCopy)
     {
       v9 = [AFError errorWithCode:7200];
       (v7)[2](v7, 0, v9);
@@ -331,17 +331,17 @@
     block[2] = sub_100074ABC;
     block[3] = &unk_10051BFA8;
     block[4] = self;
-    v12 = a3;
-    v11 = v6;
+    typeCopy = type;
+    v11 = completionCopy;
     dispatch_async(queue, block);
   }
 }
 
-- (void)startAttendingForSpeechWithType:(int64_t)a3 forAnnouncementType:(int64_t)a4 completion:(id)a5
+- (void)startAttendingForSpeechWithType:(int64_t)type forAnnouncementType:(int64_t)announcementType completion:(id)completion
 {
-  v8 = a5;
-  v9 = v8;
-  if ((a3 - 1) < 2)
+  completionCopy = completion;
+  v9 = completionCopy;
+  if ((type - 1) < 2)
   {
     queue = self->_queue;
     v12[0] = _NSConcreteStackBlock;
@@ -349,24 +349,24 @@
     v12[2] = sub_100074C94;
     v12[3] = &unk_100517610;
     v12[4] = self;
-    v14 = a3;
-    v15 = a4;
-    v13 = v8;
+    typeCopy = type;
+    announcementTypeCopy = announcementType;
+    v13 = completionCopy;
     dispatch_async(queue, v12);
   }
 
-  else if ((a3 - 3) >= 2)
+  else if ((type - 3) >= 2)
   {
-    if (!a3 && v8)
+    if (!type && completionCopy)
     {
       v11 = [AFError errorWithCode:7200 description:0 underlyingError:0];
       (v9)[2](v9, v11);
     }
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    (*(v8 + 2))(v8, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -389,18 +389,18 @@
   return v2;
 }
 
-+ (double)_bargeInTimeThresholdForType:(int64_t)a3
++ (double)_bargeInTimeThresholdForType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
 
-    __AFPreferencesAnnounceCallsBargeInTime(a1, a2);
+    __AFPreferencesAnnounceCallsBargeInTime(self, a2);
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
 
-    __AFPreferencesSpokenNotificationQuickIgnoreTime(a1, a2);
+    __AFPreferencesSpokenNotificationQuickIgnoreTime(self, a2);
   }
 
   else

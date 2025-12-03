@@ -21,8 +21,8 @@
   v16[1] = *MEMORY[0x277D85DE8];
   v6 = a3;
   v7 = a4;
-  v8 = [MEMORY[0x277D0C010] proxyForLocalPlayer];
-  v9 = [v8 utilityService];
+  proxyForLocalPlayer = [MEMORY[0x277D0C010] proxyForLocalPlayer];
+  utilityService = [proxyForLocalPlayer utilityService];
   v16[0] = *MEMORY[0x277D0BFA0];
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
   v13[0] = MEMORY[0x277D85DD0];
@@ -31,10 +31,10 @@
   v13[3] = &unk_27966CD88;
   v14 = v6;
   v15 = v7;
-  v13[4] = a1;
+  v13[4] = self;
   v11 = v6;
   v12 = v7;
-  [v9 getStoreBagValuesForKeys:v10 handler:v13];
+  [utilityService getStoreBagValuesForKeys:v10 handler:v13];
 }
 
 - (void)showBannerWithTitle:()AuthenticationExtras message:touchHandler:completionHandler:
@@ -43,8 +43,8 @@
   v11 = a5;
   v12 = a4;
   v13 = a3;
-  [a1 dismissOnboardingUIIfPresent];
-  [a1 setIsWelcomeOrSignInBannerEnqueued:1];
+  [self dismissOnboardingUIIfPresent];
+  [self setIsWelcomeOrSignInBannerEnqueued:1];
   [GKNotificationBanner showBannerWithTitle:v13 message:v12 touchHandler:v11 completionHandler:v10];
 }
 
@@ -54,8 +54,8 @@
   v11 = a5;
   v12 = a4;
   v13 = a3;
-  [a1 dismissOnboardingUIIfPresent];
-  [a1 setIsWelcomeOrSignInBannerEnqueued:1];
+  [self dismissOnboardingUIIfPresent];
+  [self setIsWelcomeOrSignInBannerEnqueued:1];
   [GKNotificationBanner showWelcomeBannerWithTitle:v13 message:v12 touchHandler:v11 completionHandler:v10];
 }
 
@@ -67,10 +67,10 @@
 
 - (uint64_t)shouldShowOnBoardingUI
 {
-  v0 = [MEMORY[0x277CCA8D8] mainBundle];
-  v1 = [v0 _gkIsEligibleForOnboardingUI];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  _gkIsEligibleForOnboardingUI = [mainBundle _gkIsEligibleForOnboardingUI];
 
-  return v1;
+  return _gkIsEligibleForOnboardingUI;
 }
 
 - (void)showOnboardingUIFromViewController:()AuthenticationExtras signInOrigin:
@@ -88,17 +88,17 @@
     v24 = v6;
     v9 = MEMORY[0x277CCABB0];
     log = v8;
-    v10 = [v9 numberWithBool:{objc_msgSend(a1, "hasPhoto")}];
+    v10 = [v9 numberWithBool:{objc_msgSend(self, "hasPhoto")}];
     v11 = [MEMORY[0x277CCABB0] numberWithBool:GKIsAvatarEditingSupported()];
     v12 = MEMORY[0x277CCABB0];
-    v22 = [a1 internal];
-    v13 = [v12 numberWithBool:{objc_msgSend(v22, "isDefaultNickname")}];
+    internal = [self internal];
+    v13 = [v12 numberWithBool:{objc_msgSend(internal, "isDefaultNickname")}];
     v14 = MEMORY[0x277CCABB0];
-    v15 = [a1 internal];
-    v16 = [v14 numberWithBool:{objc_msgSend(v15, "isDefaultPrivacyVisibility")}];
+    internal2 = [self internal];
+    v16 = [v14 numberWithBool:{objc_msgSend(internal2, "isDefaultPrivacyVisibility")}];
     v17 = MEMORY[0x277CCABB0];
-    v18 = [a1 internal];
-    v19 = [v17 numberWithBool:{objc_msgSend(v18, "isDefaultContactsIntegrationConsent")}];
+    internal3 = [self internal];
+    v19 = [v17 numberWithBool:{objc_msgSend(internal3, "isDefaultContactsIntegrationConsent")}];
     *buf = 138413314;
     v26 = v10;
     v27 = 2112;
@@ -116,14 +116,14 @@
 
   v20 = objc_alloc_init(GKHostedAuthenticateViewController);
   [(GKHostedAuthenticateViewController *)v20 setOrigin:a4];
-  [a1 setSignInViewController:v20];
+  [self setSignInViewController:v20];
   [(GKHostedAuthenticateViewController *)v20 setCompletionHandler:&__block_literal_global_45];
   [(GKHostedAuthenticateViewController *)v20 setRemoteViewReadyHandler:&__block_literal_global_49];
-  v21 = [MEMORY[0x277D0C138] local];
-  [v21 hideAccessPoint];
+  local = [MEMORY[0x277D0C138] local];
+  [local hideAccessPoint];
 
   [(GKHostedAuthenticateViewController *)v20 continueWithMode:2];
-  [a1 setShouldPreserveOnboardingUI:1];
+  [self setShouldPreserveOnboardingUI:1];
 }
 
 - (void)authenticationShowGreenBuddyUIForLocalPlayer:()AuthenticationExtras withCompletionHandler:
@@ -144,7 +144,7 @@
     _os_log_impl(&dword_24DE53000, v10, OS_LOG_TYPE_INFO, "authenticationShowGreenBuddyUIForLocalPlayer", buf, 2u);
   }
 
-  [a1 reportAuthenticatingWithGreenBuddyInvocation];
+  [self reportAuthenticatingWithGreenBuddyInvocation];
   if (([MEMORY[0x277D0C048] isGameCenter] & 1) == 0)
   {
     v11 = objc_alloc_init(GKHostedAuthenticateViewController);
@@ -164,7 +164,7 @@
       _os_log_impl(&dword_24DE53000, v12, OS_LOG_TYPE_INFO, "Creating sign in view controller for authorise: %@", buf, 0xCu);
     }
 
-    objc_initWeak(buf, a1);
+    objc_initWeak(buf, self);
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __106__GKLocalPlayer_AuthenticationExtras__authenticationShowGreenBuddyUIForLocalPlayer_withCompletionHandler___block_invoke;
@@ -178,10 +178,10 @@
     v17 = __106__GKLocalPlayer_AuthenticationExtras__authenticationShowGreenBuddyUIForLocalPlayer_withCompletionHandler___block_invoke_3;
     v18 = &unk_27966CE20;
     v19 = v14;
-    v20 = a1;
+    selfCopy = self;
     [(GKHostedAuthenticateViewController *)v11 setRemoteViewReadyHandler:&v15];
     [(GKHostedAuthenticateViewController *)v11 continueWithMode:1, v15, v16, v17, v18];
-    [a1 setShowingInGameUI:1];
+    [self setShowingInGameUI:1];
 
     objc_destroyWeak(&v23);
     objc_destroyWeak(buf);
@@ -206,13 +206,13 @@
     _os_log_impl(&dword_24DE53000, v12, OS_LOG_TYPE_INFO, "authenticationShowSignInUIForLocalPlayer", buf, 2u);
   }
 
-  [a1 reportAuthenticatingWithAuthKitInvocation];
-  if ([a1 didShowOnboardingInOverlayWithSignInOrigin:a4])
+  [self reportAuthenticatingWithAuthKitInvocation];
+  if ([self didShowOnboardingInOverlayWithSignInOrigin:a4])
   {
     [MEMORY[0x277D0C858] didShowFullscreen];
-    v13 = [MEMORY[0x277D0C010] proxyForLocalPlayer];
-    v14 = [(GKHostedAuthenticateViewController *)v13 accountService];
-    [v14 didShowFullscreenSignIn];
+    proxyForLocalPlayer = [MEMORY[0x277D0C010] proxyForLocalPlayer];
+    accountService = [(GKHostedAuthenticateViewController *)proxyForLocalPlayer accountService];
+    [accountService didShowFullscreenSignIn];
 
 LABEL_16:
     goto LABEL_17;
@@ -220,10 +220,10 @@ LABEL_16:
 
   if (([MEMORY[0x277D0C048] isGameCenter] & 1) == 0)
   {
-    if (![v8 enteringForeground] || (objc_msgSend(v8, "signInViewController"), (v15 = objc_claimAutoreleasedReturnValue()) == 0) || (v16 = objc_msgSend(a1, "isAuthenticating"), v15, v16))
+    if (![v8 enteringForeground] || (objc_msgSend(v8, "signInViewController"), (v15 = objc_claimAutoreleasedReturnValue()) == 0) || (v16 = objc_msgSend(self, "isAuthenticating"), v15, v16))
     {
-      v13 = objc_alloc_init(GKHostedAuthenticateViewController);
-      [v8 setSignInViewController:v13];
+      proxyForLocalPlayer = objc_alloc_init(GKHostedAuthenticateViewController);
+      [v8 setSignInViewController:proxyForLocalPlayer];
       v17 = *v10;
       if (!*v10)
       {
@@ -234,13 +234,13 @@ LABEL_16:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v29 = v13;
+        v29 = proxyForLocalPlayer;
         v30 = 2112;
         v31 = v8;
         _os_log_impl(&dword_24DE53000, v17, OS_LOG_TYPE_INFO, "Creating sign in view controller for authenticate: %@ for localPlayer:%@", buf, 0x16u);
       }
 
-      objc_initWeak(buf, a1);
+      objc_initWeak(buf, self);
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __95__GKLocalPlayer_AuthenticationExtras__authenticationShowSignInUIForLocalPlayer_origin_dismiss___block_invoke;
@@ -250,20 +250,20 @@ LABEL_16:
       v25 = v19;
       v27[1] = a4;
       v26 = v9;
-      [(GKHostedAuthenticateViewController *)v13 setCompletionHandler:v24];
+      [(GKHostedAuthenticateViewController *)proxyForLocalPlayer setCompletionHandler:v24];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __95__GKLocalPlayer_AuthenticationExtras__authenticationShowSignInUIForLocalPlayer_origin_dismiss___block_invoke_3;
       v22[3] = &unk_27966C438;
       v23 = v19;
-      [(GKHostedAuthenticateViewController *)v13 setRemoteViewReadyHandler:v22];
-      [(GKHostedAuthenticateViewController *)v13 continueWithMode:0];
+      [(GKHostedAuthenticateViewController *)proxyForLocalPlayer setRemoteViewReadyHandler:v22];
+      [(GKHostedAuthenticateViewController *)proxyForLocalPlayer continueWithMode:0];
       [MEMORY[0x277D0C858] didShowFullscreen];
-      v20 = [MEMORY[0x277D0C010] proxyForLocalPlayer];
-      v21 = [v20 accountService];
-      [v21 didShowFullscreenSignIn];
+      proxyForLocalPlayer2 = [MEMORY[0x277D0C010] proxyForLocalPlayer];
+      accountService2 = [proxyForLocalPlayer2 accountService];
+      [accountService2 didShowFullscreenSignIn];
 
-      [a1 setShowingInGameUI:1];
+      [self setShowingInGameUI:1];
       objc_destroyWeak(v27);
       objc_destroyWeak(buf);
       goto LABEL_16;
@@ -312,9 +312,9 @@ LABEL_17:
 - (void)updateAccessPointUponReturnToForeground
 {
   v0 = +[GKAccessPoint shared];
-  v1 = [v0 isActive];
+  isActive = [v0 isActive];
 
-  if (v1)
+  if (isActive)
   {
     v2 = +[GKAccessPoint shared];
     [v2 configureIfNeeded];

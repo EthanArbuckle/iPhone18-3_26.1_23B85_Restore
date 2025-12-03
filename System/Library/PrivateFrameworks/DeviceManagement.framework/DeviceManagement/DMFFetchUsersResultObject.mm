@@ -1,21 +1,21 @@
 @interface DMFFetchUsersResultObject
-- (DMFFetchUsersResultObject)initWithCoder:(id)a3;
-- (DMFFetchUsersResultObject)initWithUsers:(id)a3;
+- (DMFFetchUsersResultObject)initWithCoder:(id)coder;
+- (DMFFetchUsersResultObject)initWithUsers:(id)users;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFFetchUsersResultObject
 
-- (DMFFetchUsersResultObject)initWithUsers:(id)a3
+- (DMFFetchUsersResultObject)initWithUsers:(id)users
 {
-  v4 = a3;
+  usersCopy = users;
   v9.receiver = self;
   v9.super_class = DMFFetchUsersResultObject;
   v5 = [(CATTaskResultObject *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [usersCopy copy];
     users = v5->_users;
     v5->_users = v6;
   }
@@ -23,18 +23,18 @@
   return v5;
 }
 
-- (DMFFetchUsersResultObject)initWithCoder:(id)a3
+- (DMFFetchUsersResultObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = DMFFetchUsersResultObject;
-  v5 = [(CATTaskResultObject *)&v12 initWithCoder:v4];
+  v5 = [(CATTaskResultObject *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"users"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"users"];
     users = v5->_users;
     v5->_users = v9;
   }
@@ -42,21 +42,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = DMFFetchUsersResultObject;
-  v4 = a3;
-  [(CATTaskResultObject *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskResultObject *)&v6 encodeWithCoder:coderCopy];
   v5 = [(DMFFetchUsersResultObject *)self users:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"users"];
+  [coderCopy encodeObject:v5 forKey:@"users"];
 }
 
 - (id)description
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [(DMFFetchUsersResultObject *)self users];
-  v3 = [v2 sortedArrayUsingComparator:&__block_literal_global_15];
+  users = [(DMFFetchUsersResultObject *)self users];
+  v3 = [users sortedArrayUsingComparator:&__block_literal_global_15];
 
   v4 = [MEMORY[0x1E696AD60] stringWithString:@"["];
   v13 = 0u;

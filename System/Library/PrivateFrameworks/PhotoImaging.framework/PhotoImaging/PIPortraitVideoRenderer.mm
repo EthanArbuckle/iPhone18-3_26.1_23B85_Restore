@@ -1,10 +1,10 @@
 @interface PIPortraitVideoRenderer
-+ (void)renderOnDevice:(id)a3 colorSize:(id)a4 disparitySize:(id)a5 quality:(int)a6 debugMode:(int64_t)a7 globalRenderingMetadata:(id)a8 usingBlock:(id)a9;
++ (void)renderOnDevice:(id)device colorSize:(id)size disparitySize:(id)disparitySize quality:(int)quality debugMode:(int64_t)mode globalRenderingMetadata:(id)metadata usingBlock:(id)block;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)colorSize;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)disparitySize;
-- (PIPortraitVideoRenderer)initWithDevice:(id)a3 colorSize:(id)a4 disparitySize:(id)a5 quality:(int)a6 debugMode:(int64_t)a7;
+- (PIPortraitVideoRenderer)initWithDevice:(id)device colorSize:(id)size disparitySize:(id)disparitySize quality:(int)quality debugMode:(int64_t)mode;
 - (id)description;
-- (void)prepareToRenderWithMetadata:(id)a3;
+- (void)prepareToRenderWithMetadata:(id)metadata;
 @end
 
 @implementation PIPortraitVideoRenderer
@@ -27,10 +27,10 @@
   return result;
 }
 
-- (void)prepareToRenderWithMetadata:(id)a3
+- (void)prepareToRenderWithMetadata:(id)metadata
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  metadataCopy = metadata;
   renderPipeline = self->_renderPipeline;
   renderState = self->_renderState;
   if ((renderPipeline == 0) != (renderState == 0))
@@ -40,7 +40,7 @@
     {
       v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Expected _renderPipeline and _renderState to be allocated at the same time"];
       v33 = 138543362;
-      v34 = v25;
+      selfCopy2 = v25;
       _os_log_error_impl(&dword_1C7694000, v24, OS_LOG_TYPE_ERROR, "Fail: %{public}@", &v33, 0xCu);
     }
 
@@ -54,11 +54,11 @@
       {
         self = dispatch_get_specific(*v26);
         v29 = MEMORY[0x1E696AF00];
-        v30 = self;
-        v31 = [v29 callStackSymbols];
-        v32 = [v31 componentsJoinedByString:@"\n"];
+        selfCopy = self;
+        callStackSymbols = [v29 callStackSymbols];
+        v32 = [callStackSymbols componentsJoinedByString:@"\n"];
         v33 = 138543618;
-        v34 = self;
+        selfCopy2 = self;
         v35 = 2114;
         v36 = v32;
         _os_log_error_impl(&dword_1C7694000, v7, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", &v33, 0x16u);
@@ -70,7 +70,7 @@
       self = [MEMORY[0x1E696AF00] callStackSymbols];
       v28 = [(PIPortraitVideoRenderer *)self componentsJoinedByString:@"\n"];
       v33 = 138543362;
-      v34 = v28;
+      selfCopy2 = v28;
       _os_log_error_impl(&dword_1C7694000, v7, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v33, 0xCu);
     }
 
@@ -78,18 +78,18 @@
     goto LABEL_27;
   }
 
-  v7 = v4;
+  v7 = metadataCopy;
   if (!renderPipeline)
   {
     v8 = objc_alloc(MEMORY[0x1E69C4FA8]);
-    v9 = [(PIPortraitVideoRenderer *)self device];
+    device = [(PIPortraitVideoRenderer *)self device];
     [(PIPortraitVideoRenderer *)self colorSize];
     NUPixelSizeToCGSize();
     v11 = v10;
     v13 = v12;
     [(PIPortraitVideoRenderer *)self disparitySize];
     NUPixelSizeToCGSize();
-    v16 = [v8 initWithDevice:v9 version:1 colorSize:v11 disparitySize:{v13, v14, v15}];
+    v16 = [v8 initWithDevice:device version:1 colorSize:v11 disparitySize:{v13, v14, v15}];
 
     [v16 setDebugRendering:{-[PIPortraitVideoRenderer debugMode](self, "debugMode")}];
     [v16 setUseRGBA:1];
@@ -132,7 +132,7 @@ LABEL_15:
       if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_INFO))
       {
         v33 = 134217984;
-        v34 = v7;
+        selfCopy2 = v7;
         _os_log_impl(&dword_1C7694000, v21, OS_LOG_TYPE_INFO, "CINE: allocating new renderState with metadata: %p", &v33, 0xCu);
       }
 
@@ -156,21 +156,21 @@ LABEL_18:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MTLDevice *)self->_device name];
-  v6 = [v3 stringWithFormat:@"<%@:%p device:%@ color=%ldx%ld disparity=%ldx%ld quality=%d debug=%ld>", v4, self, v5, self->_colorSize.width, self->_colorSize.height, self->_disparitySize.width, self->_disparitySize.height, self->_quality, self->_debugMode];
+  name = [(MTLDevice *)self->_device name];
+  v6 = [v3 stringWithFormat:@"<%@:%p device:%@ color=%ldx%ld disparity=%ldx%ld quality=%d debug=%ld>", v4, self, name, self->_colorSize.width, self->_colorSize.height, self->_disparitySize.width, self->_disparitySize.height, self->_quality, self->_debugMode];
 
   return v6;
 }
 
-- (PIPortraitVideoRenderer)initWithDevice:(id)a3 colorSize:(id)a4 disparitySize:(id)a5 quality:(int)a6 debugMode:(int64_t)a7
+- (PIPortraitVideoRenderer)initWithDevice:(id)device colorSize:(id)size disparitySize:(id)disparitySize quality:(int)quality debugMode:(int64_t)mode
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v10 = a4.var1;
-  v11 = a4.var0;
+  var1 = disparitySize.var1;
+  var0 = disparitySize.var0;
+  v10 = size.var1;
+  v11 = size.var0;
   v63 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  if (!v13)
+  deviceCopy = device;
+  if (!deviceCopy)
   {
     v18 = NUAssertLogger_11997();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -181,7 +181,7 @@ LABEL_18:
       _os_log_error_impl(&dword_1C7694000, v18, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v20 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v22 = NUAssertLogger_11997();
     v23 = os_log_type_enabled(v22, OS_LOG_TYPE_ERROR);
@@ -189,11 +189,11 @@ LABEL_18:
     {
       if (v23)
       {
-        v41 = dispatch_get_specific(*v20);
+        v41 = dispatch_get_specific(*callStackSymbols);
         v42 = MEMORY[0x1E696AF00];
         v43 = v41;
-        v20 = [v42 callStackSymbols];
-        v44 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v42 callStackSymbols];
+        v44 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v60 = v41;
         v61 = 2114;
@@ -204,10 +204,10 @@ LABEL_18:
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v60 = v20;
+      v60 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -215,7 +215,7 @@ LABEL_18:
     goto LABEL_29;
   }
 
-  v14 = v13;
+  v14 = deviceCopy;
   if (NUPixelSizeIsEmpty())
   {
     v25 = NUAssertLogger_11997();
@@ -227,7 +227,7 @@ LABEL_18:
       _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v20 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v27 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v22 = NUAssertLogger_11997();
     v28 = os_log_type_enabled(v22, OS_LOG_TYPE_ERROR);
@@ -235,10 +235,10 @@ LABEL_18:
     {
       if (v28)
       {
-        v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v20 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v60 = v20;
+        v60 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -251,11 +251,11 @@ LABEL_31:
 LABEL_29:
     if (v28)
     {
-      v45 = dispatch_get_specific(*v20);
+      v45 = dispatch_get_specific(*callStackSymbols);
       v46 = MEMORY[0x1E696AF00];
       v47 = v45;
-      v20 = [v46 callStackSymbols];
-      v48 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v46 callStackSymbols];
+      v48 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v60 = v45;
       v61 = 2114;
@@ -277,7 +277,7 @@ LABEL_29:
       _os_log_error_impl(&dword_1C7694000, v30, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v20 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v32 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v22 = NUAssertLogger_11997();
     v33 = os_log_type_enabled(v22, OS_LOG_TYPE_ERROR);
@@ -285,10 +285,10 @@ LABEL_29:
     {
       if (v33)
       {
-        v34 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v20 = [v34 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v60 = v20;
+        v60 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -301,11 +301,11 @@ LABEL_34:
 LABEL_32:
     if (v33)
     {
-      v49 = dispatch_get_specific(*v20);
+      v49 = dispatch_get_specific(*callStackSymbols);
       v50 = MEMORY[0x1E696AF00];
       v51 = v49;
-      v20 = [v50 callStackSymbols];
-      v52 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v50 callStackSymbols];
+      v52 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v60 = v49;
       v61 = 2114;
@@ -316,7 +316,7 @@ LABEL_32:
     goto LABEL_34;
   }
 
-  if (a6 >= 0x65)
+  if (quality >= 0x65)
   {
     v35 = NUAssertLogger_11997();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -327,7 +327,7 @@ LABEL_32:
       _os_log_error_impl(&dword_1C7694000, v35, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v20 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v37 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v22 = NUAssertLogger_11997();
     v38 = os_log_type_enabled(v22, OS_LOG_TYPE_ERROR);
@@ -335,8 +335,8 @@ LABEL_32:
     {
       if (v38)
       {
-        v39 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v40 = [v39 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v40 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v60 = v40;
         _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -348,11 +348,11 @@ LABEL_32:
 LABEL_35:
     if (v38)
     {
-      v53 = dispatch_get_specific(*v20);
+      v53 = dispatch_get_specific(*callStackSymbols);
       v54 = MEMORY[0x1E696AF00];
       v55 = v53;
-      v56 = [v54 callStackSymbols];
-      v57 = [v56 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [v54 callStackSymbols];
+      v57 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v60 = v53;
       v61 = 2114;
@@ -375,20 +375,20 @@ LABEL_37:
   v15->_colorSize.height = v10;
   v15->_disparitySize.width = var0;
   v15->_disparitySize.height = var1;
-  v15->_quality = a6;
-  v15->_debugMode = a7;
+  v15->_quality = quality;
+  v15->_debugMode = mode;
   return v15;
 }
 
-+ (void)renderOnDevice:(id)a3 colorSize:(id)a4 disparitySize:(id)a5 quality:(int)a6 debugMode:(int64_t)a7 globalRenderingMetadata:(id)a8 usingBlock:(id)a9
++ (void)renderOnDevice:(id)device colorSize:(id)size disparitySize:(id)disparitySize quality:(int)quality debugMode:(int64_t)mode globalRenderingMetadata:(id)metadata usingBlock:(id)block
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v10 = a4.var1;
-  v11 = a4.var0;
-  v12 = a3;
-  v13 = a8;
-  v14 = a9;
+  var1 = disparitySize.var1;
+  var0 = disparitySize.var0;
+  v10 = size.var1;
+  v11 = size.var0;
+  deviceCopy = device;
+  metadataCopy = metadata;
+  blockCopy = block;
   if (renderOnDevice_colorSize_disparitySize_quality_debugMode_globalRenderingMetadata_usingBlock__onceToken != -1)
   {
     dispatch_once(&renderOnDevice_colorSize_disparitySize_quality_debugMode_globalRenderingMetadata_usingBlock__onceToken, &__block_literal_global_16_12052);
@@ -405,18 +405,18 @@ LABEL_37:
   block[1] = 3221225472;
   block[2] = __119__PIPortraitVideoRenderer_renderOnDevice_colorSize_disparitySize_quality_debugMode_globalRenderingMetadata_usingBlock___block_invoke_19;
   block[3] = &unk_1E82AAD28;
-  v16 = v12;
+  v16 = deviceCopy;
   v39 = v11;
   v40 = v10;
   v41 = var0;
   v42 = var1;
-  v44 = a6;
-  v43 = a7;
-  v45 = v14 == &__block_literal_global_12049;
+  qualityCopy = quality;
+  modeCopy = mode;
+  v45 = blockCopy == &__block_literal_global_12049;
   v37 = v16;
   v38 = &v46;
   dispatch_sync(v15, block);
-  v17 = v13;
+  v17 = metadataCopy;
   if (v47[5])
   {
     v18 = renderOnDevice_colorSize_disparitySize_quality_debugMode_globalRenderingMetadata_usingBlock__s_poolQueue;
@@ -427,7 +427,7 @@ LABEL_37:
     v35 = &v46;
     v34 = v17;
     dispatch_sync(v18, v33);
-    (*(v14 + 2))(v14, *(v47[5] + 8), *(v47[5] + 16));
+    (*(blockCopy + 2))(blockCopy, *(v47[5] + 8), *(v47[5] + 16));
     v19 = [MEMORY[0x1E695DF00] now];
     v20 = renderOnDevice_colorSize_disparitySize_quality_debugMode_globalRenderingMetadata_usingBlock__s_poolQueue;
     v30[0] = MEMORY[0x1E69E9820];

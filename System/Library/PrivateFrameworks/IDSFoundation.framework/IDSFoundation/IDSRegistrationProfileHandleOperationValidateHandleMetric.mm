@@ -1,5 +1,5 @@
 @interface IDSRegistrationProfileHandleOperationValidateHandleMetric
-- (IDSRegistrationProfileHandleOperationValidateHandleMetric)initWithGuid:(id)a3 success:(BOOL)a4 connectionType:(unsigned int)a5 resultCode:(unsigned int)a6 registrationError:(unsigned int)a7 vettingStatus:(unsigned int)a8 genericError:(id)a9 URLError:(id)a10 POSIXError:(id)a11;
+- (IDSRegistrationProfileHandleOperationValidateHandleMetric)initWithGuid:(id)guid success:(BOOL)success connectionType:(unsigned int)type resultCode:(unsigned int)code registrationError:(unsigned int)error vettingStatus:(unsigned int)status genericError:(id)genericError URLError:(id)self0 POSIXError:(id)self1;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -8,10 +8,10 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(IDSRegistrationProfileHandleOperationValidateHandleMetric *)self guid];
-  if (v4)
+  guid = [(IDSRegistrationProfileHandleOperationValidateHandleMetric *)self guid];
+  if (guid)
   {
-    CFDictionarySetValue(v3, @"guid", v4);
+    CFDictionarySetValue(v3, @"guid", guid);
   }
 
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[IDSRegistrationProfileHandleOperationValidateHandleMetric success](self, "success")}];
@@ -44,48 +44,48 @@
     CFDictionarySetValue(v3, @"vettingStatus", v9);
   }
 
-  v10 = [(IDSRegistrationProfileHandleOperationValidateHandleMetric *)self genericError];
-  if (v10)
+  genericError = [(IDSRegistrationProfileHandleOperationValidateHandleMetric *)self genericError];
+  if (genericError)
   {
-    CFDictionarySetValue(v3, @"genericError", v10);
+    CFDictionarySetValue(v3, @"genericError", genericError);
   }
 
-  v11 = [(IDSRegistrationProfileHandleOperationValidateHandleMetric *)self URLError];
-  if (v11)
+  uRLError = [(IDSRegistrationProfileHandleOperationValidateHandleMetric *)self URLError];
+  if (uRLError)
   {
-    CFDictionarySetValue(v3, @"URLError", v11);
+    CFDictionarySetValue(v3, @"URLError", uRLError);
   }
 
-  v12 = [(IDSRegistrationProfileHandleOperationValidateHandleMetric *)self POSIXError];
-  if (v12)
+  pOSIXError = [(IDSRegistrationProfileHandleOperationValidateHandleMetric *)self POSIXError];
+  if (pOSIXError)
   {
-    CFDictionarySetValue(v3, @"POSIXError", v12);
+    CFDictionarySetValue(v3, @"POSIXError", pOSIXError);
   }
 
   return v3;
 }
 
-- (IDSRegistrationProfileHandleOperationValidateHandleMetric)initWithGuid:(id)a3 success:(BOOL)a4 connectionType:(unsigned int)a5 resultCode:(unsigned int)a6 registrationError:(unsigned int)a7 vettingStatus:(unsigned int)a8 genericError:(id)a9 URLError:(id)a10 POSIXError:(id)a11
+- (IDSRegistrationProfileHandleOperationValidateHandleMetric)initWithGuid:(id)guid success:(BOOL)success connectionType:(unsigned int)type resultCode:(unsigned int)code registrationError:(unsigned int)error vettingStatus:(unsigned int)status genericError:(id)genericError URLError:(id)self0 POSIXError:(id)self1
 {
-  v24 = a3;
-  v15 = a9;
-  v16 = a10;
-  v17 = a11;
+  guidCopy = guid;
+  genericErrorCopy = genericError;
+  lErrorCopy = lError;
+  xErrorCopy = xError;
   v25.receiver = self;
   v25.super_class = IDSRegistrationProfileHandleOperationValidateHandleMetric;
   v18 = [(IDSRegistrationProfileHandleOperationValidateHandleMetric *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_guid, a3);
-    v19->_success = a4;
-    v19->_connectionType = a5;
-    v19->_resultCode = a6;
-    v19->_registrationError = a7;
-    v19->_vettingStatus = a8;
-    objc_storeStrong(&v19->_genericError, a9);
-    objc_storeStrong(&v19->_URLError, a10);
-    objc_storeStrong(&v19->_POSIXError, a11);
+    objc_storeStrong(&v18->_guid, guid);
+    v19->_success = success;
+    v19->_connectionType = type;
+    v19->_resultCode = code;
+    v19->_registrationError = error;
+    v19->_vettingStatus = status;
+    objc_storeStrong(&v19->_genericError, genericError);
+    objc_storeStrong(&v19->_URLError, lError);
+    objc_storeStrong(&v19->_POSIXError, xError);
   }
 
   return v19;

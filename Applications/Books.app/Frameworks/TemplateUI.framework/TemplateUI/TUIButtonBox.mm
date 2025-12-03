@@ -1,25 +1,25 @@
 @interface TUIButtonBox
-+ (id)_metricsForButtonType:(unint64_t)a3;
-+ (unint64_t)buttonRoleFromString:(id)a3;
-+ (unint64_t)buttonTypeFromString:(id)a3;
-- (void)setStateMap:(id)a3;
++ (id)_metricsForButtonType:(unint64_t)type;
++ (unint64_t)buttonRoleFromString:(id)string;
++ (unint64_t)buttonTypeFromString:(id)string;
+- (void)setStateMap:(id)map;
 @end
 
 @implementation TUIButtonBox
 
-- (void)setStateMap:(id)a3
+- (void)setStateMap:(id)map
 {
-  v4 = a3;
-  v19 = self;
+  mapCopy = map;
+  selfCopy = self;
   v24.receiver = self;
   v24.super_class = TUIButtonBox;
-  [(TUIStatefulElementBox *)&v24 setStateMap:v4];
-  v5 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v4 count]);
+  [(TUIStatefulElementBox *)&v24 setStateMap:mapCopy];
+  v5 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [mapCopy count]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v4;
+  v6 = mapCopy;
   v7 = [v6 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v7)
   {
@@ -37,13 +37,13 @@
         v11 = *(*(&v20 + 1) + 8 * i);
         v12 = objc_opt_class();
         v13 = [v6 objectForKeyedSubscript:v11];
-        v14 = [v13 submodel];
-        v15 = TUIDynamicCast(v12, v14);
+        submodel = [v13 submodel];
+        v15 = TUIDynamicCast(v12, submodel);
 
-        v16 = [v15 attributes];
-        if (v16)
+        attributes = [v15 attributes];
+        if (attributes)
         {
-          [v5 setObject:v16 forKeyedSubscript:v11];
+          [v5 setObject:attributes forKeyedSubscript:v11];
         }
       }
 
@@ -64,16 +64,16 @@
     v18 = 0;
   }
 
-  objc_storeStrong(&v19->_stateButtonAttributesMap, v18);
+  objc_storeStrong(&selfCopy->_stateButtonAttributesMap, v18);
   if (v17)
   {
   }
 }
 
-+ (unint64_t)buttonTypeFromString:(id)a3
++ (unint64_t)buttonTypeFromString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
+  stringCopy = string;
+  v4 = stringCopy;
   if (qword_2E65C8 != -1)
   {
     sub_19BCC0();
@@ -83,27 +83,27 @@
     }
 
 LABEL_5:
-    v6 = 0;
+    unsignedIntegerValue = 0;
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!stringCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
   v5 = [qword_2E65C0 objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
 LABEL_6:
-  return v6;
+  return unsignedIntegerValue;
 }
 
-+ (unint64_t)buttonRoleFromString:(id)a3
++ (unint64_t)buttonRoleFromString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
+  stringCopy = string;
+  v4 = stringCopy;
   if (qword_2E65D8 != -1)
   {
     sub_19BCD4();
@@ -113,24 +113,24 @@ LABEL_6:
     }
 
 LABEL_5:
-    v6 = 0;
+    unsignedIntegerValue = 0;
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!stringCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
   v5 = [qword_2E65D0 objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
 LABEL_6:
-  return v6;
+  return unsignedIntegerValue;
 }
 
-+ (id)_metricsForButtonType:(unint64_t)a3
++ (id)_metricsForButtonType:(unint64_t)type
 {
   if (qword_2E65E8 != -1)
   {
@@ -138,7 +138,7 @@ LABEL_6:
   }
 
   v4 = qword_2E65E0;
-  v5 = [NSNumber numberWithUnsignedInteger:a3];
+  v5 = [NSNumber numberWithUnsignedInteger:type];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   return v6;

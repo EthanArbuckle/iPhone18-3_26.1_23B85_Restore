@@ -1,20 +1,20 @@
 @interface CAMPhotoFormatStatusIndicator
-+ (id)localizedTitleForFormat:(id)a3;
++ (id)localizedTitleForFormat:(id)format;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)advancedFormat;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)essentialFormat;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)photoFormat;
-- (CAMPhotoFormatStatusIndicator)initWithFrame:(CGRect)a3;
-- (void)setAllowedFormats:(id)a3 essentialFormatIndex:(unint64_t)a4 advancedFormatIndex:(unint64_t)a5;
-- (void)setPhotoFormat:(id)a3 animated:(BOOL)a4;
+- (CAMPhotoFormatStatusIndicator)initWithFrame:(CGRect)frame;
+- (void)setAllowedFormats:(id)formats essentialFormatIndex:(unint64_t)index advancedFormatIndex:(unint64_t)formatIndex;
+- (void)setPhotoFormat:(id)format animated:(BOOL)animated;
 @end
 
 @implementation CAMPhotoFormatStatusIndicator
 
-- (CAMPhotoFormatStatusIndicator)initWithFrame:(CGRect)a3
+- (CAMPhotoFormatStatusIndicator)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CAMPhotoFormatStatusIndicator;
-  v3 = [(CAMExpandingControl *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMExpandingControl *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -24,17 +24,17 @@
   return v4;
 }
 
-+ (id)localizedTitleForFormat:(id)a3
++ (id)localizedTitleForFormat:(id)format
 {
-  var1 = a3.var1;
-  if (a3.var0 > 2uLL)
+  var1 = format.var1;
+  if (format.var0 > 2uLL)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = CAMLocalizedFrameworkString(off_1E76FCAF0[a3.var0], 0);
+    v4 = CAMLocalizedFrameworkString(off_1E76FCAF0[format.var0], 0);
   }
 
   v5 = 0;
@@ -76,38 +76,38 @@ LABEL_13:
   return v9;
 }
 
-- (void)setAllowedFormats:(id)a3 essentialFormatIndex:(unint64_t)a4 advancedFormatIndex:(unint64_t)a5
+- (void)setAllowedFormats:(id)formats essentialFormatIndex:(unint64_t)index advancedFormatIndex:(unint64_t)formatIndex
 {
-  v9 = a3;
-  if (![v9 isEqualToArray:self->_allowedFormats] || self->__essentialFormatIndex != a4 || self->__advancedFormatIndex != a5)
+  formatsCopy = formats;
+  if (![formatsCopy isEqualToArray:self->_allowedFormats] || self->__essentialFormatIndex != index || self->__advancedFormatIndex != formatIndex)
   {
-    objc_storeStrong(&self->_allowedFormats, a3);
-    self->__essentialFormatIndex = a4;
-    self->__advancedFormatIndex = a5;
-    v10 = [v9 objectAtIndexedSubscript:a4];
+    objc_storeStrong(&self->_allowedFormats, formats);
+    self->__essentialFormatIndex = index;
+    self->__advancedFormatIndex = formatIndex;
+    v10 = [formatsCopy objectAtIndexedSubscript:index];
     v24 = 0;
     [v10 getValue:&v24 size:16];
     self->_essentialFormat = v24;
 
-    v11 = [v9 objectAtIndexedSubscript:a5];
+    v11 = [formatsCopy objectAtIndexedSubscript:formatIndex];
     v24 = 0;
     [v11 getValue:&v24 size:16];
     self->_advancedFormat = v24;
 
-    v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
+    v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(formatsCopy, "count")}];
     v13 = objc_alloc_init(CAMExpandingControlMenuItemConfiguration);
     v16 = MEMORY[0x1E69E9820];
     v17 = 3221225472;
     v18 = __92__CAMPhotoFormatStatusIndicator_setAllowedFormats_essentialFormatIndex_advancedFormatIndex___block_invoke;
     v19 = &unk_1E76FCAD0;
-    v20 = self;
+    selfCopy = self;
     v21 = v13;
     v22 = v12;
-    v23 = a4;
+    indexCopy = index;
     v14 = v12;
     v15 = v13;
-    [v9 enumerateObjectsUsingBlock:&v16];
-    [(CAMExpandingControl *)self setMenu:v14, v16, v17, v18, v19, v20];
+    [formatsCopy enumerateObjectsUsingBlock:&v16];
+    [(CAMExpandingControl *)self setMenu:v14, v16, v17, v18, v19, selfCopy];
   }
 }
 
@@ -144,10 +144,10 @@ void __92__CAMPhotoFormatStatusIndicator_setAllowedFormats_essentialFormatIndex_
 
 - ($0AC6E346AE4835514AAA8AC86D8F4844)photoFormat
 {
-  v2 = [(CAMExpandingControl *)self selectedState];
+  selectedState = [(CAMExpandingControl *)self selectedState];
   v7 = 0;
   v8 = 0;
-  [v2 getValue:&v7 size:16];
+  [selectedState getValue:&v7 size:16];
   v3 = v7;
   v4 = v8;
 
@@ -158,12 +158,12 @@ void __92__CAMPhotoFormatStatusIndicator_setAllowedFormats_essentialFormatIndex_
   return result;
 }
 
-- (void)setPhotoFormat:(id)a3 animated:(BOOL)a4
+- (void)setPhotoFormat:(id)format animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  v6 = [MEMORY[0x1E696B098] valueWithBytes:&v7 objCType:"{?=qq}"];
-  [(CAMExpandingControl *)self setSelectedState:v6 animated:v4];
+  animatedCopy = animated;
+  formatCopy = format;
+  v6 = [MEMORY[0x1E696B098] valueWithBytes:&formatCopy objCType:"{?=qq}"];
+  [(CAMExpandingControl *)self setSelectedState:v6 animated:animatedCopy];
 }
 
 - ($0AC6E346AE4835514AAA8AC86D8F4844)essentialFormat

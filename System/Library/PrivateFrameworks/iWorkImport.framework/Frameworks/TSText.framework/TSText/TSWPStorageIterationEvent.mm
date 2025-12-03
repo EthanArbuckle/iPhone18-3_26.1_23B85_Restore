@@ -1,52 +1,52 @@
 @interface TSWPStorageIterationEvent
-+ (id)characterEventWithRange:(_NSRange)a3;
-+ (id)eventWithType:(int)a3 providerIdentifier:(id)a4 range:(_NSRange)a5 object:(id)a6;
-- (TSWPStorageIterationEvent)initWithType:(int)a3 providerIdentifier:(id)a4 range:(_NSRange)a5 object:(id)a6;
++ (id)characterEventWithRange:(_NSRange)range;
++ (id)eventWithType:(int)type providerIdentifier:(id)identifier range:(_NSRange)range object:(id)object;
+- (TSWPStorageIterationEvent)initWithType:(int)type providerIdentifier:(id)identifier range:(_NSRange)range object:(id)object;
 - (_NSRange)range;
 - (id)description;
 @end
 
 @implementation TSWPStorageIterationEvent
 
-- (TSWPStorageIterationEvent)initWithType:(int)a3 providerIdentifier:(id)a4 range:(_NSRange)a5 object:(id)a6
+- (TSWPStorageIterationEvent)initWithType:(int)type providerIdentifier:(id)identifier range:(_NSRange)range object:(id)object
 {
-  length = a5.length;
-  location = a5.location;
-  v12 = a4;
-  v13 = a6;
+  length = range.length;
+  location = range.location;
+  identifierCopy = identifier;
+  objectCopy = object;
   v17.receiver = self;
   v17.super_class = TSWPStorageIterationEvent;
   v14 = [(TSWPStorageIterationEvent *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_type = a3;
+    v14->_type = type;
     v14->_range.location = location;
     v14->_range.length = length;
-    objc_storeStrong(&v14->_identifier, a4);
-    objc_storeStrong(&v15->_object, a6);
+    objc_storeStrong(&v14->_identifier, identifier);
+    objc_storeStrong(&v15->_object, object);
   }
 
   return v15;
 }
 
-+ (id)eventWithType:(int)a3 providerIdentifier:(id)a4 range:(_NSRange)a5 object:(id)a6
++ (id)eventWithType:(int)type providerIdentifier:(id)identifier range:(_NSRange)range object:(id)object
 {
-  length = a5.length;
-  location = a5.location;
-  v9 = *&a3;
-  v10 = a4;
-  v11 = a6;
+  length = range.length;
+  location = range.location;
+  v9 = *&type;
+  identifierCopy = identifier;
+  objectCopy = object;
   v12 = [TSWPStorageIterationEvent alloc];
-  v14 = objc_msgSend_initWithType_providerIdentifier_range_object_(v12, v13, v9, v10, location, length, v11);
+  v14 = objc_msgSend_initWithType_providerIdentifier_range_object_(v12, v13, v9, identifierCopy, location, length, objectCopy);
 
   return v14;
 }
 
-+ (id)characterEventWithRange:(_NSRange)a3
++ (id)characterEventWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v5 = [TSWPStorageIterationEvent alloc];
   v7 = objc_msgSend_initWithCharacterRange_(v5, v6, location, length);
 

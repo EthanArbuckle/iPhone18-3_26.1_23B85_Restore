@@ -1,38 +1,38 @@
 @interface SRDismissalClassificationController
-- (BOOL)canPresentSurveyForContext:(id)a3;
-- (BOOL)classifyRequestAsUnintendedWithContext:(id)a3;
-- (BOOL)shouldMitigateBasedOnActivationHistory:(id)a3;
+- (BOOL)canPresentSurveyForContext:(id)context;
+- (BOOL)classifyRequestAsUnintendedWithContext:(id)context;
+- (BOOL)shouldMitigateBasedOnActivationHistory:(id)history;
 - (id)duetSharedQueue;
-- (void)presentSurveyNotificationWithContext:(id)a3 activationHistory:(id)a4 withCompletion:(id)a5;
-- (void)queryStreamForCountOfEventsWithCompletion:(id)a3;
-- (void)recordDismissalEventWithContext:(id)a3 markAsUnintended:(BOOL)a4;
-- (void)recordDismissalMetricWithContext:(id)a3 inputType:(int64_t)a4 previousLongPressBehavior:(int64_t)a5 longPressBehavior:(int64_t)a6;
-- (void)recordMitigationEndMetricWithContext:(id)a3 activationHistory:(id)a4 numberOfDaysSinceLastChange:(int64_t)a5;
-- (void)recordMitigationStartMetricWithContext:(id)a3 activationHistory:(id)a4 numberOfDaysSinceLastChange:(int64_t)a5;
-- (void)requestMitigationStatusBasedOnRequestClassification:(BOOL)a3 withRequestSource:(int64_t)a4 withCompletion:(id)a5;
+- (void)presentSurveyNotificationWithContext:(id)context activationHistory:(id)history withCompletion:(id)completion;
+- (void)queryStreamForCountOfEventsWithCompletion:(id)completion;
+- (void)recordDismissalEventWithContext:(id)context markAsUnintended:(BOOL)unintended;
+- (void)recordDismissalMetricWithContext:(id)context inputType:(int64_t)type previousLongPressBehavior:(int64_t)behavior longPressBehavior:(int64_t)pressBehavior;
+- (void)recordMitigationEndMetricWithContext:(id)context activationHistory:(id)history numberOfDaysSinceLastChange:(int64_t)change;
+- (void)recordMitigationStartMetricWithContext:(id)context activationHistory:(id)history numberOfDaysSinceLastChange:(int64_t)change;
+- (void)requestMitigationStatusBasedOnRequestClassification:(BOOL)classification withRequestSource:(int64_t)source withCompletion:(id)completion;
 @end
 
 @implementation SRDismissalClassificationController
 
-- (void)requestMitigationStatusBasedOnRequestClassification:(BOOL)a3 withRequestSource:(int64_t)a4 withCompletion:(id)a5
+- (void)requestMitigationStatusBasedOnRequestClassification:(BOOL)classification withRequestSource:(int64_t)source withCompletion:(id)completion
 {
-  v6 = a3;
-  v8 = a5;
-  v9 = [(SRDismissalClassificationController *)self _supportsMitigationOnSource:a4];
+  classificationCopy = classification;
+  completionCopy = completion;
+  v9 = [(SRDismissalClassificationController *)self _supportsMitigationOnSource:source];
   v10 = v9;
-  if (v6 && v9)
+  if (classificationCopy && v9)
   {
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000825F0;
     v12[3] = &unk_100168C00;
     v12[4] = self;
-    v13 = v8;
+    v13 = completionCopy;
     v14 = 1;
     [(SRDismissalClassificationController *)self queryStreamForCountOfEventsWithCompletion:v12];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
     v11 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -40,32 +40,32 @@
       *buf = 136315650;
       v16 = "[SRDismissalClassificationController requestMitigationStatusBasedOnRequestClassification:withRequestSource:withCompletion:]";
       v17 = 1024;
-      v18 = v6;
+      v18 = classificationCopy;
       v19 = 1024;
       v20 = v10;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s #HWButtonMitigation Mitigation not needed (unintended: %d, sourceSupportsMitigation: %d)", buf, 0x18u);
     }
 
-    (*(v8 + 2))(v8, 0, v10, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, v10, 0, 0);
   }
 }
 
-- (BOOL)shouldMitigateBasedOnActivationHistory:(id)a3
+- (BOOL)shouldMitigateBasedOnActivationHistory:(id)history
 {
-  if (a3)
+  if (history)
   {
-    v3 = a3;
-    v4 = [v3 countOfIntendedActivations];
-    v5 = [v3 countOfUnintendedActivations];
+    historyCopy = history;
+    countOfIntendedActivations = [historyCopy countOfIntendedActivations];
+    countOfUnintendedActivations = [historyCopy countOfUnintendedActivations];
 
-    if (v4)
+    if (countOfIntendedActivations)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = v5 > 9;
+      v6 = countOfUnintendedActivations > 9;
     }
 
     v7 = v6;
@@ -88,12 +88,12 @@
   return v7;
 }
 
-- (void)presentSurveyNotificationWithContext:(id)a3 activationHistory:(id)a4 withCompletion:(id)a5
+- (void)presentSurveyNotificationWithContext:(id)context activationHistory:(id)history withCompletion:(id)completion
 {
-  v13 = a5;
-  v7 = a4;
-  v8 = a3;
-  if ([v8 isDeviceUnlocked])
+  completionCopy = completion;
+  historyCopy = history;
+  contextCopy = context;
+  if ([contextCopy isDeviceUnlocked])
   {
     v9 = 1;
   }
@@ -103,19 +103,19 @@
     v9 = 2;
   }
 
-  v10 = [v8 requestSource];
-  v11 = [v8 dismissalReason];
+  requestSource = [contextCopy requestSource];
+  dismissalReason = [contextCopy dismissalReason];
 
-  [SRUIDSurveyNotificationUtility postSiriInternalUIDSurveyNotification:v9 activationHistory:v7 requestSource:v10 dismissalReason:v11];
-  v12 = v13;
-  if (v13)
+  [SRUIDSurveyNotificationUtility postSiriInternalUIDSurveyNotification:v9 activationHistory:historyCopy requestSource:requestSource dismissalReason:dismissalReason];
+  v12 = completionCopy;
+  if (completionCopy)
   {
-    (*(v13 + 2))(v13);
-    v12 = v13;
+    (*(completionCopy + 2))(completionCopy);
+    v12 = completionCopy;
   }
 }
 
-- (BOOL)canPresentSurveyForContext:(id)a3
+- (BOOL)canPresentSurveyForContext:(id)context
 {
   v3 = +[SRUIDSurveyEnablementUtility meetsThresholdForPresenting];
   v4 = +[SRUIDSurveyEnablementUtility isSurveyEnabled];
@@ -150,25 +150,25 @@
   return v3;
 }
 
-- (void)recordDismissalEventWithContext:(id)a3 markAsUnintended:(BOOL)a4
+- (void)recordDismissalEventWithContext:(id)context markAsUnintended:(BOOL)unintended
 {
-  v4 = a4;
-  v6 = a3;
+  unintendedCopy = unintended;
+  contextCopy = context;
   v25[0] = @"requestSource";
-  v7 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 requestSource]);
+  v7 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [contextCopy requestSource]);
   v26[0] = v7;
   v25[1] = @"dismissalReason";
-  v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 dismissalReason]);
+  v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [contextCopy dismissalReason]);
   v26[1] = v8;
   v25[2] = @"unintended";
-  v9 = [NSNumber numberWithBool:v4];
+  v9 = [NSNumber numberWithBool:unintendedCopy];
   v26[2] = v9;
   v10 = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:3];
 
   v11 = +[_DKSystemEventStreams siriServiceStream];
-  v12 = [v11 name];
+  name = [v11 name];
 
-  v13 = [(SRDismissalClassificationController *)self duetSharedQueue];
+  duetSharedQueue = [(SRDismissalClassificationController *)self duetSharedQueue];
   AFRecordCoreDuetEventWithStream();
 
   v14 = AFSiriLogContextConnection;
@@ -179,18 +179,18 @@
     v17 = 2112;
     v18 = @"com.apple.siri.ui.dismissal.duet";
     v19 = 2112;
-    v20 = v12;
+    v20 = name;
     v21 = 2112;
-    v22 = v6;
+    v22 = contextCopy;
     v23 = 2112;
     v24 = v10;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s #survey Sending event %@ to stream %@ with context: %@, metadata: %@", &v15, 0x34u);
   }
 }
 
-- (void)queryStreamForCountOfEventsWithCompletion:(id)a3
+- (void)queryStreamForCountOfEventsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(_DKEventQuery);
   v6 = +[_DKSystemEventStreams siriServiceStream];
   v29 = v6;
@@ -241,48 +241,48 @@
   v19 = v13;
   v23 = v19;
   v25 = buf;
-  v20 = v4;
+  v20 = completionCopy;
   v24 = v20;
   [(_DKKnowledgeQuerying *)knowledgeStore executeQuery:v5 responseQueue:0 withCompletion:v21];
 
   _Block_object_dispose(buf, 8);
 }
 
-- (void)recordDismissalMetricWithContext:(id)a3 inputType:(int64_t)a4 previousLongPressBehavior:(int64_t)a5 longPressBehavior:(int64_t)a6
+- (void)recordDismissalMetricWithContext:(id)context inputType:(int64_t)type previousLongPressBehavior:(int64_t)behavior longPressBehavior:(int64_t)pressBehavior
 {
-  v7 = a3;
-  v6 = v7;
+  contextCopy = context;
+  v6 = contextCopy;
   AnalyticsSendEventLazy();
 }
 
-- (void)recordMitigationStartMetricWithContext:(id)a3 activationHistory:(id)a4 numberOfDaysSinceLastChange:(int64_t)a5
+- (void)recordMitigationStartMetricWithContext:(id)context activationHistory:(id)history numberOfDaysSinceLastChange:(int64_t)change
 {
-  v6 = a3;
-  v9 = a4;
-  v7 = v6;
-  v8 = v9;
+  contextCopy = context;
+  historyCopy = history;
+  v7 = contextCopy;
+  v8 = historyCopy;
   AnalyticsSendEventLazy();
 }
 
-- (void)recordMitigationEndMetricWithContext:(id)a3 activationHistory:(id)a4 numberOfDaysSinceLastChange:(int64_t)a5
+- (void)recordMitigationEndMetricWithContext:(id)context activationHistory:(id)history numberOfDaysSinceLastChange:(int64_t)change
 {
-  v6 = a3;
-  v9 = a4;
-  v7 = v6;
-  v8 = v9;
+  contextCopy = context;
+  historyCopy = history;
+  v7 = contextCopy;
+  v8 = historyCopy;
   AnalyticsSendEventLazy();
 }
 
-- (BOOL)classifyRequestAsUnintendedWithContext:(id)a3
+- (BOOL)classifyRequestAsUnintendedWithContext:(id)context
 {
-  v4 = a3;
-  v5 = -[SRDismissalClassificationController isDismissalReasonEligibleForSurvey:](self, "isDismissalReasonEligibleForSurvey:", [v4 dismissalReason]);
-  v6 = [v4 contentPresentationState] != 2 && (objc_msgSend(v4, "siriState") != 2 || objc_msgSend(v4, "dismissalReason") == 32) || objc_msgSend(v4, "dismissalReason") == 53;
+  contextCopy = context;
+  v5 = -[SRDismissalClassificationController isDismissalReasonEligibleForSurvey:](self, "isDismissalReasonEligibleForSurvey:", [contextCopy dismissalReason]);
+  v6 = [contextCopy contentPresentationState] != 2 && (objc_msgSend(contextCopy, "siriState") != 2 || objc_msgSend(contextCopy, "dismissalReason") == 32) || objc_msgSend(contextCopy, "dismissalReason") == 53;
   v7 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    [v4 dismissalReason];
+    [contextCopy dismissalReason];
     v9 = SASDismissalReasonGetName();
     v11 = 136316162;
     v12 = "[SRDismissalClassificationController classifyRequestAsUnintendedWithContext:]";
@@ -293,7 +293,7 @@
     v17 = 1024;
     v18 = v6;
     v19 = 2048;
-    v20 = [v4 siriState];
+    siriState = [contextCopy siriState];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s isDismissalReasonEligible: %d (%@), isEligibleBasedOnContentState: %d (%ld)", &v11, 0x2Cu);
   }
 

@@ -1,16 +1,16 @@
 @interface RepairDoneViewController
-- (void)handleActionButton:(id)a3;
-- (void)handleDismissButton:(id)a3;
-- (void)handleReportBugButton:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)handleActionButton:(id)button;
+- (void)handleDismissButton:(id)button;
+- (void)handleReportBugButton:(id)button;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation RepairDoneViewController
 
-- (void)handleReportBugButton:(id)a3
+- (void)handleReportBugButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   v25[0] = @"Classification";
   v25[1] = @"ComponentID";
   v26[0] = @"Serious Bug";
@@ -84,9 +84,9 @@
   }
 }
 
-- (void)handleDismissButton:(id)a3
+- (void)handleDismissButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (dword_1001BED68 <= 30 && (dword_1001BED68 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -95,9 +95,9 @@
   [self->super._mainController dismiss:5];
 }
 
-- (void)handleActionButton:(id)a3
+- (void)handleActionButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (dword_1001BED68 <= 30 && (dword_1001BED68 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -125,9 +125,9 @@
   [mainController dismiss:v6 completion:v9];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BED68 <= 30 && (dword_1001BED68 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -135,12 +135,12 @@
 
   v5.receiver = self;
   v5.super_class = RepairDoneViewController;
-  [(RepairDoneViewController *)&v5 viewDidDisappear:v3];
+  [(RepairDoneViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BED68 <= 30 && (dword_1001BED68 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -148,7 +148,7 @@
 
   v22.receiver = self;
   v22.super_class = RepairDoneViewController;
-  [(SVSBaseViewController *)&v22 viewWillAppear:v3];
+  [(SVSBaseViewController *)&v22 viewWillAppear:appearCopy];
   v12 = *(&self->_doneButton + 1);
   if (!v12)
   {
@@ -176,8 +176,8 @@
 
     [*(&self->_imageView + 1) setHidden:IsAppleInternalBuild() == 0];
 LABEL_12:
-    v16 = [self->super._mainController productImage];
-    [*(&self->_infoLabel + 1) setImage:v16];
+    productImage = [self->super._mainController productImage];
+    [*(&self->_infoLabel + 1) setImage:productImage];
     goto LABEL_13;
   }
 
@@ -186,12 +186,12 @@ LABEL_12:
 
   v14 = @"AS_WIFI_NOT_CONNECTED_DETAIL";
 LABEL_10:
-  v16 = sub_10012794C(@"Localizable", v14);
-  [*(&self->_titleLabel + 1) setText:v16];
+  productImage = sub_10012794C(@"Localizable", v14);
+  [*(&self->_titleLabel + 1) setText:productImage];
 LABEL_13:
 
-  v21 = [(SVSBaseViewController *)self containerView];
-  [v21 setSwipeDismissible:1];
+  containerView = [(SVSBaseViewController *)self containerView];
+  [containerView setSwipeDismissible:1];
 }
 
 @end

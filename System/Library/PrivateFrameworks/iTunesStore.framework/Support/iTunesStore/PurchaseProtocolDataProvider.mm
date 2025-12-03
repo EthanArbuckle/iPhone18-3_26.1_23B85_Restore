@@ -1,21 +1,21 @@
 @interface PurchaseProtocolDataProvider
-- (BOOL)_processBuyFailuresFromDictionary:(id)a3 error:(id *)a4;
-- (BOOL)_runServerAuthenticationOperation:(id)a3 error:(id *)a4;
-- (BOOL)processDictionary:(id)a3 error:(id *)a4;
-- (void)_performActionsForButton:(id)a3 withDialog:(id)a4;
+- (BOOL)_processBuyFailuresFromDictionary:(id)dictionary error:(id *)error;
+- (BOOL)_runServerAuthenticationOperation:(id)operation error:(id *)error;
+- (BOOL)processDictionary:(id)dictionary error:(id *)error;
+- (void)_performActionsForButton:(id)button withDialog:(id)dialog;
 @end
 
 @implementation PurchaseProtocolDataProvider
 
-- (void)_performActionsForButton:(id)a3 withDialog:(id)a4
+- (void)_performActionsForButton:(id)button withDialog:(id)dialog
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [v9 actionType];
-  switch(v7)
+  buttonCopy = button;
+  dialogCopy = dialog;
+  actionType = [buttonCopy actionType];
+  switch(actionType)
   {
     case 1u:
-      if ([v9 urlType] != 1)
+      if ([buttonCopy urlType] != 1)
       {
         break;
       }
@@ -23,33 +23,33 @@
       goto LABEL_6;
     case 4u:
 LABEL_6:
-      [v9 performDefaultActionForDialog:v6];
+      [buttonCopy performDefaultActionForDialog:dialogCopy];
       break;
     case 3u:
-      v8 = [v9 parameter];
-      [(PurchaseProtocolDataProvider *)self setRedirectActionParameters:v8];
+      parameter = [buttonCopy parameter];
+      [(PurchaseProtocolDataProvider *)self setRedirectActionParameters:parameter];
 
       break;
   }
 }
 
-- (BOOL)processDictionary:(id)a3 error:(id *)a4
+- (BOOL)processDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = PurchaseProtocolDataProvider;
   v16 = 0;
-  v7 = [(DaemonProtocolDataProvider *)&v15 processDictionary:v6 error:&v16];
+  v7 = [(DaemonProtocolDataProvider *)&v15 processDictionary:dictionaryCopy error:&v16];
   v8 = v16;
   v9 = v8;
   if (v7)
   {
     v14 = v8;
-    v10 = [(PurchaseProtocolDataProvider *)self _processBuyFailuresFromDictionary:v6 error:&v14];
+    v10 = [(PurchaseProtocolDataProvider *)self _processBuyFailuresFromDictionary:dictionaryCopy error:&v14];
     v11 = v14;
 
     v9 = v11;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -58,7 +58,7 @@ LABEL_6:
   else
   {
     v10 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -67,7 +67,7 @@ LABEL_6:
   if (!v10)
   {
     v12 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_7:
@@ -75,9 +75,9 @@ LABEL_7:
   return v10;
 }
 
-- (BOOL)_processBuyFailuresFromDictionary:(id)a3 error:(id *)a4
+- (BOOL)_processBuyFailuresFromDictionary:(id)dictionary error:(id *)error
 {
-  v5 = [a3 objectForKey:kISFailureTypeKey];
+  v5 = [dictionary objectForKey:kISFailureTypeKey];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     v7 = 0;
@@ -85,12 +85,12 @@ LABEL_7:
     goto LABEL_58;
   }
 
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
   v7 = 0;
   v8 = 1;
-  if (v6 > 3901)
+  if (intValue > 3901)
   {
-    if (v6 == 3902)
+    if (intValue == 3902)
     {
       v9 = +[SSLogConfig sharedDaemonConfig];
       if (!v9)
@@ -98,19 +98,19 @@ LABEL_7:
         v9 = +[SSLogConfig sharedConfig];
       }
 
-      v28 = [v9 shouldLog];
+      shouldLog = [v9 shouldLog];
       if ([v9 shouldLogToDisk])
       {
-        v29 = v28 | 2;
+        v29 = shouldLog | 2;
       }
 
       else
       {
-        v29 = v28;
+        v29 = shouldLog;
       }
 
-      v30 = [v9 OSLogObject];
-      if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v9 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v29 &= 2u;
       }
@@ -122,7 +122,7 @@ LABEL_7:
         v38 = 138543618;
         v39 = v31;
         v40 = 1024;
-        v41 = [v5 intValue];
+        intValue2 = [v5 intValue];
         LODWORD(v37) = 18;
         v33 = _os_log_send_and_compose_impl();
 
@@ -131,7 +131,7 @@ LABEL_7:
           goto LABEL_55;
         }
 
-        v30 = [NSString stringWithCString:v33 encoding:4, &v38, v37];
+        oSLogObject = [NSString stringWithCString:v33 encoding:4, &v38, v37];
         free(v33);
         SSFileLog();
       }
@@ -139,7 +139,7 @@ LABEL_7:
 
     else
     {
-      if (v6 != 3903)
+      if (intValue != 3903)
       {
         goto LABEL_58;
       }
@@ -150,19 +150,19 @@ LABEL_7:
         v9 = +[SSLogConfig sharedConfig];
       }
 
-      v16 = [v9 shouldLog];
+      shouldLog2 = [v9 shouldLog];
       if ([v9 shouldLogToDisk])
       {
-        v17 = v16 | 2;
+        v17 = shouldLog2 | 2;
       }
 
       else
       {
-        v17 = v16;
+        v17 = shouldLog2;
       }
 
-      v18 = [v9 OSLogObject];
-      if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v9 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v17 &= 2u;
       }
@@ -174,7 +174,7 @@ LABEL_7:
         v38 = 138543618;
         v39 = v19;
         v40 = 1024;
-        v41 = [v5 intValue];
+        intValue2 = [v5 intValue];
         LODWORD(v37) = 18;
         v21 = _os_log_send_and_compose_impl();
 
@@ -183,14 +183,14 @@ LABEL_7:
           goto LABEL_55;
         }
 
-        v18 = [NSString stringWithCString:v21 encoding:4, &v38, v37];
+        oSLogObject2 = [NSString stringWithCString:v21 encoding:4, &v38, v37];
         free(v21);
         SSFileLog();
       }
     }
   }
 
-  else if (v6 == 3900)
+  else if (intValue == 3900)
   {
     v9 = +[SSLogConfig sharedDaemonConfig];
     if (!v9)
@@ -198,19 +198,19 @@ LABEL_7:
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v22 = [v9 shouldLog];
+    shouldLog3 = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v23 = v22 | 2;
+      v23 = shouldLog3 | 2;
     }
 
     else
     {
-      v23 = v22;
+      v23 = shouldLog3;
     }
 
-    v24 = [v9 OSLogObject];
-    if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+    oSLogObject3 = [v9 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
     {
       v23 &= 2u;
     }
@@ -222,7 +222,7 @@ LABEL_7:
       v38 = 138543618;
       v39 = v25;
       v40 = 1024;
-      v41 = [v5 intValue];
+      intValue2 = [v5 intValue];
       LODWORD(v37) = 18;
       v27 = _os_log_send_and_compose_impl();
 
@@ -231,7 +231,7 @@ LABEL_7:
         goto LABEL_55;
       }
 
-      v24 = [NSString stringWithCString:v27 encoding:4, &v38, v37];
+      oSLogObject3 = [NSString stringWithCString:v27 encoding:4, &v38, v37];
       free(v27);
       SSFileLog();
     }
@@ -239,7 +239,7 @@ LABEL_7:
 
   else
   {
-    if (v6 != 3901)
+    if (intValue != 3901)
     {
       goto LABEL_58;
     }
@@ -250,19 +250,19 @@ LABEL_7:
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v10 = [v9 shouldLog];
+    shouldLog4 = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog4 | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog4;
     }
 
-    v12 = [v9 OSLogObject];
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    oSLogObject4 = [v9 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
     {
       v11 &= 2u;
     }
@@ -274,7 +274,7 @@ LABEL_7:
       v38 = 138543618;
       v39 = v13;
       v40 = 1024;
-      v41 = [v5 intValue];
+      intValue2 = [v5 intValue];
       LODWORD(v37) = 18;
       v15 = _os_log_send_and_compose_impl();
 
@@ -283,7 +283,7 @@ LABEL_7:
         goto LABEL_55;
       }
 
-      v12 = [NSString stringWithCString:v15 encoding:4, &v38, v37];
+      oSLogObject4 = [NSString stringWithCString:v15 encoding:4, &v38, v37];
       free(v15);
       SSFileLog();
     }
@@ -293,11 +293,11 @@ LABEL_55:
 
   v34 = SSError();
   v7 = v34;
-  if (a4)
+  if (error)
   {
     v35 = v34;
     v8 = 0;
-    *a4 = v7;
+    *error = v7;
   }
 
   else
@@ -310,9 +310,9 @@ LABEL_58:
   return v8;
 }
 
-- (BOOL)_runServerAuthenticationOperation:(id)a3 error:(id *)a4
+- (BOOL)_runServerAuthenticationOperation:(id)operation error:(id *)error
 {
-  v5 = a3;
+  operationCopy = operation;
   v86 = 0;
   v87 = &v86;
   v88 = 0x3032000000;
@@ -323,7 +323,7 @@ LABEL_58:
   v83 = &v82;
   v84 = 0x2020000000;
   v85 = 0;
-  [v5 setPerformsButtonAction:0];
+  [operationCopy setPerformsButtonAction:0];
   v78 = 0;
   v79 = &v78;
   v80 = 0x2020000000;
@@ -335,33 +335,33 @@ LABEL_58:
   v76 = sub_1000CFFA0;
   v77 = 0;
   v63 = [NSString stringWithFormat:@"%@", objc_opt_class()];
-  v6 = [v5 dialog];
-  v7 = [v6 paymentSheet];
+  dialog = [operationCopy dialog];
+  paymentSheet = [dialog paymentSheet];
 
-  if (!v7)
+  if (!paymentSheet)
   {
 LABEL_47:
     v41 = v87;
     obj = v87[5];
-    v42 = [(PurchaseProtocolDataProvider *)self runSubOperation:v5 error:&obj, v59];
+    v42 = [(PurchaseProtocolDataProvider *)self runSubOperation:operationCopy error:&obj, v59];
     objc_storeStrong(v41 + 5, obj);
     *(v83 + 24) = v42;
     goto LABEL_48;
   }
 
-  v61 = [v5 authenticationContext];
-  v8 = [[DisplayPaymentSheetOperation alloc] initWithPaymentSheet:v7];
-  v9 = [v61 requiredUniqueIdentifier];
-  [(DisplayPaymentSheetOperation *)v8 setAccountIdentifier:v9];
+  authenticationContext = [operationCopy authenticationContext];
+  v8 = [[DisplayPaymentSheetOperation alloc] initWithPaymentSheet:paymentSheet];
+  requiredUniqueIdentifier = [authenticationContext requiredUniqueIdentifier];
+  [(DisplayPaymentSheetOperation *)v8 setAccountIdentifier:requiredUniqueIdentifier];
 
-  v10 = [v7 defaultAuthKitAuthenticationContext];
-  [(DisplayPaymentSheetOperation *)v8 setAuthenticationContext:v10];
+  defaultAuthKitAuthenticationContext = [paymentSheet defaultAuthKitAuthenticationContext];
+  [(DisplayPaymentSheetOperation *)v8 setAuthenticationContext:defaultAuthKitAuthenticationContext];
 
-  v11 = [v7 dialogId];
-  [(DisplayPaymentSheetOperation *)v8 setDialogId:v11];
+  dialogId = [paymentSheet dialogId];
+  [(DisplayPaymentSheetOperation *)v8 setDialogId:dialogId];
 
-  v12 = [*&self->super.ISProtocolDataProvider_opaque[OBJC_IVAR___ISDataProvider__authenticationContext] accountName];
-  [(DisplayPaymentSheetOperation *)v8 setAccountName:v12];
+  accountName = [*&self->super.ISProtocolDataProvider_opaque[OBJC_IVAR___ISDataProvider__authenticationContext] accountName];
+  [(DisplayPaymentSheetOperation *)v8 setAccountName:accountName];
 
   v66[0] = _NSConcreteStackBlock;
   v66[1] = 3221225472;
@@ -383,23 +383,23 @@ LABEL_47:
       v26 = +[SSLogConfig sharedConfig];
     }
 
-    v27 = [v26 shouldLog];
-    v28 = [v26 shouldLogToDisk];
-    v29 = [v26 OSLogObject];
-    v30 = v29;
-    if (v28)
+    shouldLog = [v26 shouldLog];
+    shouldLogToDisk = [v26 shouldLogToDisk];
+    oSLogObject = [v26 OSLogObject];
+    v30 = oSLogObject;
+    if (shouldLogToDisk)
     {
-      v27 |= 2u;
+      shouldLog |= 2u;
     }
 
-    if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
-      v31 = v27;
+      v31 = shouldLog;
     }
 
     else
     {
-      v31 = v27 & 2;
+      v31 = shouldLog & 2;
     }
 
     if (v31)
@@ -432,23 +432,23 @@ LABEL_47:
     v15 = +[SSLogConfig sharedConfig];
   }
 
-  v16 = [v15 shouldLog];
-  v17 = [v15 shouldLogToDisk];
-  v18 = [v15 OSLogObject];
-  v19 = v18;
-  if (v17)
+  shouldLog2 = [v15 shouldLog];
+  shouldLogToDisk2 = [v15 shouldLogToDisk];
+  oSLogObject2 = [v15 OSLogObject];
+  v19 = oSLogObject2;
+  if (shouldLogToDisk2)
   {
-    v16 |= 2u;
+    shouldLog2 |= 2u;
   }
 
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = v16;
+    v20 = shouldLog2;
   }
 
   else
   {
-    v20 = v16 & 2;
+    v20 = shouldLog2 & 2;
   }
 
   if (v20)
@@ -480,8 +480,8 @@ LABEL_14:
     goto LABEL_41;
   }
 
-  v24 = [v22 domain];
-  if ([v24 isEqualToString:SSErrorDomain])
+  domain = [v22 domain];
+  if ([domain isEqualToString:SSErrorDomain])
   {
     v25 = [v23 code] == 140;
 
@@ -501,21 +501,21 @@ LABEL_14:
     v26 = +[SSLogConfig sharedConfig];
   }
 
-  v33 = [v26 shouldLog];
-  v34 = [v26 shouldLogToDisk];
-  v35 = [v26 OSLogObject];
-  v30 = v35;
-  if (v34)
+  shouldLog3 = [v26 shouldLog];
+  shouldLogToDisk3 = [v26 shouldLogToDisk];
+  oSLogObject3 = [v26 OSLogObject];
+  v30 = oSLogObject3;
+  if (shouldLogToDisk3)
   {
-    v33 |= 2u;
+    shouldLog3 |= 2u;
   }
 
-  if (!os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+  if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
   {
-    v33 &= 2u;
+    shouldLog3 &= 2u;
   }
 
-  if (!v33)
+  if (!shouldLog3)
   {
     goto LABEL_39;
   }
@@ -544,13 +544,13 @@ LABEL_40:
 LABEL_41:
   if (*(v83 + 24) == 1)
   {
-    v39 = [v5 authenticationContext];
-    v40 = [v39 mutableCopy];
+    authenticationContext2 = [operationCopy authenticationContext];
+    v40 = [authenticationContext2 mutableCopy];
 
     if (v73[5])
     {
       [v40 setPasswordEquivalentToken:?];
-      [v5 setAuthenticationContext:v40];
+      [operationCopy setAuthenticationContext:v40];
     }
   }
 
@@ -560,7 +560,7 @@ LABEL_41:
   }
 
 LABEL_48:
-  v43 = [v5 selectedButton];
+  selectedButton = [operationCopy selectedButton];
   if ((v83[3] & 1) == 0)
   {
     v47 = +[SSLogConfig sharedDaemonConfig];
@@ -569,23 +569,23 @@ LABEL_48:
       v47 = +[SSLogConfig sharedConfig];
     }
 
-    v48 = [v47 shouldLog];
-    v49 = [v47 shouldLogToDisk];
-    v50 = [v47 OSLogObject];
-    v51 = v50;
-    if (v49)
+    shouldLog4 = [v47 shouldLog];
+    shouldLogToDisk4 = [v47 shouldLogToDisk];
+    oSLogObject4 = [v47 OSLogObject];
+    v51 = oSLogObject4;
+    if (shouldLogToDisk4)
     {
-      v48 |= 2u;
+      shouldLog4 |= 2u;
     }
 
-    if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
     {
-      v52 = v48;
+      v52 = shouldLog4;
     }
 
     else
     {
-      v52 = v48 & 2;
+      v52 = shouldLog4 & 2;
     }
 
     if (v52)
@@ -604,8 +604,8 @@ LABEL_48:
       {
 LABEL_61:
 
-        v46 = [v5 dialog];
-        [v43 performDefaultActionForDialog:v46];
+        dialog2 = [operationCopy dialog];
+        [selectedButton performDefaultActionForDialog:dialog2];
         goto LABEL_62;
       }
 
@@ -617,21 +617,21 @@ LABEL_61:
     goto LABEL_61;
   }
 
-  v44 = [v5 dialog];
-  [(PurchaseProtocolDataProvider *)self _performActionsForButton:v43 withDialog:v44];
+  dialog3 = [operationCopy dialog];
+  [(PurchaseProtocolDataProvider *)self _performActionsForButton:selectedButton withDialog:dialog3];
 
-  -[PurchaseProtocolDataProvider setAuthenticatedAccountCredentialSource:](self, "setAuthenticatedAccountCredentialSource:", [v5 authenticatedAccountCredentialSource]);
-  v45 = [v5 authenticatedAccountDSID];
-  [(PurchaseProtocolDataProvider *)self setAuthenticatedAccountDSID:v45];
+  -[PurchaseProtocolDataProvider setAuthenticatedAccountCredentialSource:](self, "setAuthenticatedAccountCredentialSource:", [operationCopy authenticatedAccountCredentialSource]);
+  authenticatedAccountDSID = [operationCopy authenticatedAccountDSID];
+  [(PurchaseProtocolDataProvider *)self setAuthenticatedAccountDSID:authenticatedAccountDSID];
 
-  v46 = [v5 redirectURL];
-  [(PurchaseProtocolDataProvider *)self setRedirectURL:v46];
+  dialog2 = [operationCopy redirectURL];
+  [(PurchaseProtocolDataProvider *)self setRedirectURL:dialog2];
 LABEL_62:
 
   v57 = *(v83 + 24);
-  if (a4 && (v83[3] & 1) == 0)
+  if (error && (v83[3] & 1) == 0)
   {
-    *a4 = v87[5];
+    *error = v87[5];
     v57 = *(v83 + 24);
   }
 

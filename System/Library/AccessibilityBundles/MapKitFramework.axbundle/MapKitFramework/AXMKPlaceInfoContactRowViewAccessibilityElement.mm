@@ -6,10 +6,10 @@
 
 - (id)accessibilityDragSourceDescriptors
 {
-  v2 = [(AXMKPlaceInfoContactRowViewAccessibilityElement *)self accessibilityContainer];
-  v3 = [v2 accessibilityDragSourceDescriptors];
+  accessibilityContainer = [(AXMKPlaceInfoContactRowViewAccessibilityElement *)self accessibilityContainer];
+  accessibilityDragSourceDescriptors = [accessibilityContainer accessibilityDragSourceDescriptors];
 
-  return v3;
+  return accessibilityDragSourceDescriptors;
 }
 
 @end

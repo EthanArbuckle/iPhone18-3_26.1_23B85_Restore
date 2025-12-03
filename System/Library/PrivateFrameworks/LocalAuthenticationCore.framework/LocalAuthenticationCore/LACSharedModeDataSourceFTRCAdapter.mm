@@ -1,10 +1,10 @@
 @interface LACSharedModeDataSourceFTRCAdapter
 + (id)_callCenter;
 + (id)_workQueue;
-- (LACSharedModeDataSourceFTRCAdapter)initWithReplyQueue:(id)a3;
-- (void)_performFetchSharedModeWithCompletion:(id)a3;
+- (LACSharedModeDataSourceFTRCAdapter)initWithReplyQueue:(id)queue;
+- (void)_performFetchSharedModeWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)fetchSharedModeWithOptions:(id)a3 completion:(id)a4;
+- (void)fetchSharedModeWithOptions:(id)options completion:(id)completion;
 @end
 
 @implementation LACSharedModeDataSourceFTRCAdapter
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __49__LACSharedModeDataSourceFTRCAdapter__callCenter__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_callCenter_onceToken != -1)
   {
     dispatch_once(&_callCenter_onceToken, block);
@@ -32,7 +32,7 @@
   block[1] = 3221225472;
   block[2] = __48__LACSharedModeDataSourceFTRCAdapter__workQueue__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_workQueue_onceToken != -1)
   {
     dispatch_once(&_workQueue_onceToken, block);
@@ -47,35 +47,35 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1B0233000, a2, OS_LOG_TYPE_DEBUG, "%{public}@ deallocated", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (LACSharedModeDataSourceFTRCAdapter)initWithReplyQueue:(id)a3
+- (LACSharedModeDataSourceFTRCAdapter)initWithReplyQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = LACSharedModeDataSourceFTRCAdapter;
   v6 = [(LACSharedModeDataSourceFTRCAdapter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_replyQueue, a3);
+    objc_storeStrong(&v6->_replyQueue, queue);
   }
 
   return v7;
 }
 
-- (void)fetchSharedModeWithOptions:(id)a3 completion:(id)a4
+- (void)fetchSharedModeWithOptions:(id)options completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v8 = +[LACFlags sharedInstance];
-  v9 = [v8 featureFlagEssoniteClickEnabled];
+  featureFlagEssoniteClickEnabled = [v8 featureFlagEssoniteClickEnabled];
 
-  if ((v9 & 1) == 0)
+  if ((featureFlagEssoniteClickEnabled & 1) == 0)
   {
     v12 = +[LACSharedMode defaultSharedMode];
     v13 = LACLogSharedMode();
@@ -98,7 +98,7 @@
 
 LABEL_12:
 
-    v7[2](v7, v12);
+    completionCopy[2](completionCopy, v12);
     goto LABEL_13;
   }
 
@@ -106,20 +106,20 @@ LABEL_12:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B0233000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ will start query", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v11 = [objc_opt_class() _workQueue];
+  _workQueue = [objc_opt_class() _workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __76__LACSharedModeDataSourceFTRCAdapter_fetchSharedModeWithOptions_completion___block_invoke;
   block[3] = &unk_1E7A95DC0;
   block[4] = self;
   objc_copyWeak(&v17, buf);
-  v16 = v7;
-  dispatch_async(v11, block);
+  v16 = completionCopy;
+  dispatch_async(_workQueue, block);
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(buf);
@@ -184,24 +184,24 @@ uint64_t __76__LACSharedModeDataSourceFTRCAdapter_fetchSharedModeWithOptions_com
   return result;
 }
 
-- (void)_performFetchSharedModeWithCompletion:(id)a3
+- (void)_performFetchSharedModeWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_opt_class() _callCenter];
-  v6 = [v5 countOfCallsPassingTest:&__block_literal_global_5];
+  completionCopy = completion;
+  _callCenter = [objc_opt_class() _callCenter];
+  v6 = [_callCenter countOfCallsPassingTest:&__block_literal_global_5];
 
   if (v6)
   {
     objc_initWeak(location, self);
-    v7 = [objc_opt_class() _callCenter];
+    _callCenter2 = [objc_opt_class() _callCenter];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __76__LACSharedModeDataSourceFTRCAdapter__performFetchSharedModeWithCompletion___block_invoke_28;
     v11[3] = &unk_1E7A95E30;
     objc_copyWeak(&v13, location);
-    v12 = v4;
-    [v7 fetchAnonymousXPCEndpoint:v11];
+    v12 = completionCopy;
+    [_callCenter2 fetchAnonymousXPCEndpoint:v11];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(location);
@@ -220,7 +220,7 @@ uint64_t __76__LACSharedModeDataSourceFTRCAdapter_fetchSharedModeWithOptions_com
       _os_log_impl(&dword_1B0233000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ falling back to %{public}@ because the TUCallCenter has no active calls", location, 0x16u);
     }
 
-    (*(v4 + 2))(v4, v8);
+    (*(completionCopy + 2))(completionCopy, v8);
   }
 
   v10 = *MEMORY[0x1E69E9840];

@@ -1,18 +1,18 @@
 @interface HomeMatterServicesCoordinator
 - (_TtC13HomeKitDaemon29HomeMatterServicesCoordinator)init;
-- (void)startWithCompletionHandler:(id)a3;
-- (void)stopWithCompletionHandler:(id)a3;
+- (void)startWithCompletionHandler:(id)handler;
+- (void)stopWithCompletionHandler:(id)handler;
 @end
 
 @implementation HomeMatterServicesCoordinator
 
-- (void)startWithCompletionHandler:(id)a3
+- (void)startWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -28,17 +28,17 @@
   v13[3] = 0;
   v13[4] = &unk_22A582EB8;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_229859F70(0, 0, v8, &unk_22A582EC0, v13);
 }
 
-- (void)stopWithCompletionHandler:(id)a3
+- (void)stopWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -54,7 +54,7 @@
   v13[3] = 0;
   v13[4] = &unk_22A57B590;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_229859F70(0, 0, v8, &unk_22A581CC0, v13);
 }
 

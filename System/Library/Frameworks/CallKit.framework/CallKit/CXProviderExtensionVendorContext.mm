@@ -1,25 +1,25 @@
 @interface CXProviderExtensionVendorContext
 - (CXProviderExtensionVendorContextDelegate)delegate;
 - (id)remoteObjectProxy;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (void)actionCompleted:(id)a3 completionHandler:(id)a4;
-- (void)commitTransaction:(id)a3;
-- (void)handleActionTimeout:(id)a3;
-- (void)handleAudioSessionActivationStateChangedTo:(id)a3;
-- (void)registerWithConfiguration:(id)a3;
-- (void)reportAudioFinishedForCallWithUUID:(id)a3;
-- (void)reportCallWithUUID:(id)a3 changedFrequencyData:(id)a4 forDirection:(int64_t)a5;
-- (void)reportCallWithUUID:(id)a3 changedMeterLevel:(float)a4 forDirection:(int64_t)a5;
-- (void)reportCallWithUUID:(id)a3 crossDeviceIdentifier:(id)a4 changedBytesOfDataUsed:(int64_t)a5;
-- (void)reportCallWithUUID:(id)a3 endedAtDate:(id)a4 privateReason:(int64_t)a5 failureContext:(id)a6;
-- (void)reportCallWithUUID:(id)a3 receivedDTMFUpdate:(id)a4;
-- (void)reportCallWithUUID:(id)a3 updated:(id)a4;
-- (void)reportNewIncomingCallWithUUID:(id)a3 update:(id)a4 reply:(id)a5;
-- (void)reportNewOutgoingCallWithUUID:(id)a3 update:(id)a4;
-- (void)reportOutgoingCallWithUUID:(id)a3 connectedAtDate:(id)a4;
-- (void)reportOutgoingCallWithUUID:(id)a3 sentInvitationAtDate:(id)a4;
-- (void)reportOutgoingCallWithUUID:(id)a3 startedConnectingAtDate:(id)a4;
-- (void)requestTransaction:(id)a3 completionHandler:(id)a4;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (void)actionCompleted:(id)completed completionHandler:(id)handler;
+- (void)commitTransaction:(id)transaction;
+- (void)handleActionTimeout:(id)timeout;
+- (void)handleAudioSessionActivationStateChangedTo:(id)to;
+- (void)registerWithConfiguration:(id)configuration;
+- (void)reportAudioFinishedForCallWithUUID:(id)d;
+- (void)reportCallWithUUID:(id)d changedFrequencyData:(id)data forDirection:(int64_t)direction;
+- (void)reportCallWithUUID:(id)d changedMeterLevel:(float)level forDirection:(int64_t)direction;
+- (void)reportCallWithUUID:(id)d crossDeviceIdentifier:(id)identifier changedBytesOfDataUsed:(int64_t)used;
+- (void)reportCallWithUUID:(id)d endedAtDate:(id)date privateReason:(int64_t)reason failureContext:(id)context;
+- (void)reportCallWithUUID:(id)d receivedDTMFUpdate:(id)update;
+- (void)reportCallWithUUID:(id)d updated:(id)updated;
+- (void)reportNewIncomingCallWithUUID:(id)d update:(id)update reply:(id)reply;
+- (void)reportNewOutgoingCallWithUUID:(id)d update:(id)update;
+- (void)reportOutgoingCallWithUUID:(id)d connectedAtDate:(id)date;
+- (void)reportOutgoingCallWithUUID:(id)d sentInvitationAtDate:(id)date;
+- (void)reportOutgoingCallWithUUID:(id)d startedConnectingAtDate:(id)date;
+- (void)requestTransaction:(id)transaction completionHandler:(id)handler;
 @end
 
 @implementation CXProviderExtensionVendorContext
@@ -28,382 +28,382 @@
 {
   v4.receiver = self;
   v4.super_class = CXProviderExtensionVendorContext;
-  v2 = [(CXProviderExtensionContext *)&v4 remoteObjectProxy];
+  remoteObjectProxy = [(CXProviderExtensionContext *)&v4 remoteObjectProxy];
 
-  return v2;
+  return remoteObjectProxy;
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
   v5.receiver = self;
   v5.super_class = CXProviderExtensionVendorContext;
-  v3 = [(CXProviderExtensionContext *)&v5 remoteObjectProxyWithErrorHandler:a3];
+  v3 = [(CXProviderExtensionContext *)&v5 remoteObjectProxyWithErrorHandler:handler];
 
   return v3;
 }
 
-- (void)registerWithConfiguration:(id)a3
+- (void)registerWithConfiguration:(id)configuration
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = CXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[CXProviderExtensionVendorContext registerWithConfiguration:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = configurationCopy;
     _os_log_impl(&dword_1B47F3000, v5, OS_LOG_TYPE_DEFAULT, "Sending %s with configuration: %@", &v8, 0x16u);
   }
 
-  v6 = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
-  [v6 registerWithConfiguration:v4];
+  remoteObjectProxy = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
+  [remoteObjectProxy registerWithConfiguration:configurationCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportNewIncomingCallWithUUID:(id)a3 update:(id)a4 reply:(id)a5
+- (void)reportNewIncomingCallWithUUID:(id)d update:(id)update reply:(id)reply
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  updateCopy = update;
+  replyCopy = reply;
   v11 = CXDefaultLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 UUIDString];
+    uUIDString = [dCopy UUIDString];
     v15 = 136315650;
     v16 = "[CXProviderExtensionVendorContext reportNewIncomingCallWithUUID:update:reply:]";
     v17 = 2112;
-    v18 = v12;
+    v18 = uUIDString;
     v19 = 2112;
-    v20 = v9;
+    v20 = updateCopy;
     _os_log_impl(&dword_1B47F3000, v11, OS_LOG_TYPE_DEFAULT, "Sending %s with UUID: %@ update: %@", &v15, 0x20u);
   }
 
-  v13 = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
-  [v13 reportNewIncomingCallWithUUID:v8 update:v9 completion:v10];
+  remoteObjectProxy = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
+  [remoteObjectProxy reportNewIncomingCallWithUUID:dCopy update:updateCopy completion:replyCopy];
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportCallWithUUID:(id)a3 updated:(id)a4
+- (void)reportCallWithUUID:(id)d updated:(id)updated
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  updatedCopy = updated;
   v8 = CXDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 UUIDString];
+    uUIDString = [dCopy UUIDString];
     v12 = 136315650;
     v13 = "[CXProviderExtensionVendorContext reportCallWithUUID:updated:]";
     v14 = 2112;
-    v15 = v9;
+    v15 = uUIDString;
     v16 = 2112;
-    v17 = v7;
+    v17 = updatedCopy;
     _os_log_impl(&dword_1B47F3000, v8, OS_LOG_TYPE_DEFAULT, "Sending %s with UUID: %@ update: %@", &v12, 0x20u);
   }
 
-  v10 = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
-  [v10 reportCallWithUUID:v6 updated:v7];
+  remoteObjectProxy = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
+  [remoteObjectProxy reportCallWithUUID:dCopy updated:updatedCopy];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportCallWithUUID:(id)a3 receivedDTMFUpdate:(id)a4
+- (void)reportCallWithUUID:(id)d receivedDTMFUpdate:(id)update
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  updateCopy = update;
   v8 = CXDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 UUIDString];
+    uUIDString = [dCopy UUIDString];
     v12 = 136315650;
     v13 = "[CXProviderExtensionVendorContext reportCallWithUUID:receivedDTMFUpdate:]";
     v14 = 2112;
-    v15 = v9;
+    v15 = uUIDString;
     v16 = 2112;
-    v17 = v7;
+    v17 = updateCopy;
     _os_log_impl(&dword_1B47F3000, v8, OS_LOG_TYPE_DEFAULT, "Sending %s with UUID: %@ dtmfUpdate: %@", &v12, 0x20u);
   }
 
-  v10 = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
-  [v10 reportCallWithUUID:v6 receivedDTMFUpdate:v7];
+  remoteObjectProxy = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
+  [remoteObjectProxy reportCallWithUUID:dCopy receivedDTMFUpdate:updateCopy];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportOutgoingCallWithUUID:(id)a3 sentInvitationAtDate:(id)a4
+- (void)reportOutgoingCallWithUUID:(id)d sentInvitationAtDate:(id)date
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  dateCopy = date;
   v8 = CXDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 UUIDString];
+    uUIDString = [dCopy UUIDString];
     v12 = 136315650;
     v13 = "[CXProviderExtensionVendorContext reportOutgoingCallWithUUID:sentInvitationAtDate:]";
     v14 = 2112;
-    v15 = v9;
+    v15 = uUIDString;
     v16 = 2112;
-    v17 = v7;
+    v17 = dateCopy;
     _os_log_impl(&dword_1B47F3000, v8, OS_LOG_TYPE_DEFAULT, "Sending %s with UUID: %@ dateSentInvitation: %@", &v12, 0x20u);
   }
 
-  v10 = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
-  [v10 reportOutgoingCallWithUUID:v6 sentInvitationAtDate:v7];
+  remoteObjectProxy = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
+  [remoteObjectProxy reportOutgoingCallWithUUID:dCopy sentInvitationAtDate:dateCopy];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportOutgoingCallWithUUID:(id)a3 startedConnectingAtDate:(id)a4
+- (void)reportOutgoingCallWithUUID:(id)d startedConnectingAtDate:(id)date
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  dateCopy = date;
   v8 = CXDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 UUIDString];
+    uUIDString = [dCopy UUIDString];
     v12 = 136315650;
     v13 = "[CXProviderExtensionVendorContext reportOutgoingCallWithUUID:startedConnectingAtDate:]";
     v14 = 2112;
-    v15 = v9;
+    v15 = uUIDString;
     v16 = 2112;
-    v17 = v7;
+    v17 = dateCopy;
     _os_log_impl(&dword_1B47F3000, v8, OS_LOG_TYPE_DEFAULT, "Sending %s with UUID: %@ dateStartedConnecting: %@", &v12, 0x20u);
   }
 
-  v10 = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
-  [v10 reportOutgoingCallWithUUID:v6 startedConnectingAtDate:v7];
+  remoteObjectProxy = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
+  [remoteObjectProxy reportOutgoingCallWithUUID:dCopy startedConnectingAtDate:dateCopy];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportOutgoingCallWithUUID:(id)a3 connectedAtDate:(id)a4
+- (void)reportOutgoingCallWithUUID:(id)d connectedAtDate:(id)date
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  dateCopy = date;
   v8 = CXDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 UUIDString];
+    uUIDString = [dCopy UUIDString];
     v12 = 136315650;
     v13 = "[CXProviderExtensionVendorContext reportOutgoingCallWithUUID:connectedAtDate:]";
     v14 = 2112;
-    v15 = v9;
+    v15 = uUIDString;
     v16 = 2112;
-    v17 = v7;
+    v17 = dateCopy;
     _os_log_impl(&dword_1B47F3000, v8, OS_LOG_TYPE_DEFAULT, "Sending %s with UUID: %@ dateConnected: %@", &v12, 0x20u);
   }
 
-  v10 = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
-  [v10 reportOutgoingCallWithUUID:v6 connectedAtDate:v7];
+  remoteObjectProxy = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
+  [remoteObjectProxy reportOutgoingCallWithUUID:dCopy connectedAtDate:dateCopy];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportCallWithUUID:(id)a3 endedAtDate:(id)a4 privateReason:(int64_t)a5 failureContext:(id)a6
+- (void)reportCallWithUUID:(id)d endedAtDate:(id)date privateReason:(int64_t)reason failureContext:(id)context
 {
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dCopy = d;
+  dateCopy = date;
+  contextCopy = context;
   v13 = CXDefaultLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v10 UUIDString];
+    uUIDString = [dCopy UUIDString];
     v17 = 136316162;
     v18 = "[CXProviderExtensionVendorContext reportCallWithUUID:endedAtDate:privateReason:failureContext:]";
     v19 = 2112;
-    v20 = v14;
+    v20 = uUIDString;
     v21 = 2112;
-    v22 = v11;
+    v22 = dateCopy;
     v23 = 2048;
-    v24 = a5;
+    reasonCopy = reason;
     v25 = 2112;
-    v26 = v12;
+    v26 = contextCopy;
     _os_log_impl(&dword_1B47F3000, v13, OS_LOG_TYPE_DEFAULT, "Sending %s with UUID: %@ dateEnded: %@ privateEndedReason: %ld failureContext: %@", &v17, 0x34u);
   }
 
-  v15 = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
-  [v15 reportCallWithUUID:v10 endedAtDate:v11 privateReason:a5 failureContext:v12];
+  remoteObjectProxy = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
+  [remoteObjectProxy reportCallWithUUID:dCopy endedAtDate:dateCopy privateReason:reason failureContext:contextCopy];
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportAudioFinishedForCallWithUUID:(id)a3
+- (void)reportAudioFinishedForCallWithUUID:(id)d
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = CXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 UUIDString];
+    uUIDString = [dCopy UUIDString];
     v9 = 136315394;
     v10 = "[CXProviderExtensionVendorContext reportAudioFinishedForCallWithUUID:]";
     v11 = 2112;
-    v12 = v6;
+    v12 = uUIDString;
     _os_log_impl(&dword_1B47F3000, v5, OS_LOG_TYPE_DEFAULT, "Sending %s with UUID: %@", &v9, 0x16u);
   }
 
-  v7 = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
-  [v7 reportAudioFinishedForCallWithUUID:v4];
+  remoteObjectProxy = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
+  [remoteObjectProxy reportAudioFinishedForCallWithUUID:dCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportCallWithUUID:(id)a3 changedFrequencyData:(id)a4 forDirection:(int64_t)a5
+- (void)reportCallWithUUID:(id)d changedFrequencyData:(id)data forDirection:(int64_t)direction
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
-  [v10 reportCallWithUUID:v9 changedFrequencyData:v8 forDirection:a5];
+  dataCopy = data;
+  dCopy = d;
+  remoteObjectProxy = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
+  [remoteObjectProxy reportCallWithUUID:dCopy changedFrequencyData:dataCopy forDirection:direction];
 }
 
-- (void)reportCallWithUUID:(id)a3 changedMeterLevel:(float)a4 forDirection:(int64_t)a5
+- (void)reportCallWithUUID:(id)d changedMeterLevel:(float)level forDirection:(int64_t)direction
 {
-  v8 = a3;
-  v10 = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
-  *&v9 = a4;
-  [v10 reportCallWithUUID:v8 changedMeterLevel:a5 forDirection:v9];
+  dCopy = d;
+  remoteObjectProxy = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
+  *&v9 = level;
+  [remoteObjectProxy reportCallWithUUID:dCopy changedMeterLevel:direction forDirection:v9];
 }
 
-- (void)reportCallWithUUID:(id)a3 crossDeviceIdentifier:(id)a4 changedBytesOfDataUsed:(int64_t)a5
+- (void)reportCallWithUUID:(id)d crossDeviceIdentifier:(id)identifier changedBytesOfDataUsed:(int64_t)used
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  identifierCopy = identifier;
   v10 = CXDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v8 UUIDString];
+    uUIDString = [dCopy UUIDString];
     v14 = 136315906;
     v15 = "[CXProviderExtensionVendorContext reportCallWithUUID:crossDeviceIdentifier:changedBytesOfDataUsed:]";
     v16 = 2112;
-    v17 = v11;
+    v17 = uUIDString;
     v18 = 2112;
-    v19 = v9;
+    v19 = identifierCopy;
     v20 = 2048;
-    v21 = a5;
+    usedCopy = used;
     _os_log_impl(&dword_1B47F3000, v10, OS_LOG_TYPE_DEFAULT, "Sending %s with UUID: %@ crossDeviceIdentifier: %@ bytesOfDataUsed: %ld", &v14, 0x2Au);
   }
 
-  v12 = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
-  [v12 reportCallWithUUID:v8 crossDeviceIdentifier:v9 changedBytesOfDataUsed:a5];
+  remoteObjectProxy = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
+  [remoteObjectProxy reportCallWithUUID:dCopy crossDeviceIdentifier:identifierCopy changedBytesOfDataUsed:used];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportNewOutgoingCallWithUUID:(id)a3 update:(id)a4
+- (void)reportNewOutgoingCallWithUUID:(id)d update:(id)update
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
-  [v8 reportNewOutgoingCallWithUUID:v7 update:v6];
+  updateCopy = update;
+  dCopy = d;
+  remoteObjectProxy = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
+  [remoteObjectProxy reportNewOutgoingCallWithUUID:dCopy update:updateCopy];
 }
 
-- (void)requestTransaction:(id)a3 completionHandler:(id)a4
+- (void)requestTransaction:(id)transaction completionHandler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  transactionCopy = transaction;
+  handlerCopy = handler;
   v8 = CXDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136315394;
     v12 = "[CXProviderExtensionVendorContext requestTransaction:completionHandler:]";
     v13 = 2112;
-    v14 = v6;
+    v14 = transactionCopy;
     _os_log_impl(&dword_1B47F3000, v8, OS_LOG_TYPE_DEFAULT, "Sending %s with transaction: %@", &v11, 0x16u);
   }
 
-  v9 = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
-  [v9 requestTransaction:v6 reply:v7];
+  remoteObjectProxy = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
+  [remoteObjectProxy requestTransaction:transactionCopy reply:handlerCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)actionCompleted:(id)a3 completionHandler:(id)a4
+- (void)actionCompleted:(id)completed completionHandler:(id)handler
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  completedCopy = completed;
   v6 = CXDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[CXProviderExtensionVendorContext actionCompleted:completionHandler:]";
     v11 = 2112;
-    v12 = v5;
+    v12 = completedCopy;
     _os_log_impl(&dword_1B47F3000, v6, OS_LOG_TYPE_DEFAULT, "Sending %s with action: %@", &v9, 0x16u);
   }
 
-  v7 = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
-  [v7 actionCompleted:v5];
+  remoteObjectProxy = [(CXProviderExtensionVendorContext *)self remoteObjectProxy];
+  [remoteObjectProxy actionCompleted:completedCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)commitTransaction:(id)a3
+- (void)commitTransaction:(id)transaction
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = CXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[CXProviderExtensionVendorContext commitTransaction:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = transactionCopy;
     _os_log_impl(&dword_1B47F3000, v5, OS_LOG_TYPE_DEFAULT, "Received %s with transaction: %@", &v8, 0x16u);
   }
 
-  v6 = [(CXProviderExtensionVendorContext *)self delegate];
-  [v6 providerExtensionVendorContext:self receivedCommittedTransaction:v4];
+  delegate = [(CXProviderExtensionVendorContext *)self delegate];
+  [delegate providerExtensionVendorContext:self receivedCommittedTransaction:transactionCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleActionTimeout:(id)a3
+- (void)handleActionTimeout:(id)timeout
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  timeoutCopy = timeout;
   v5 = CXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[CXProviderExtensionVendorContext handleActionTimeout:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = timeoutCopy;
     _os_log_impl(&dword_1B47F3000, v5, OS_LOG_TYPE_DEFAULT, "Received %s with action: %@", &v8, 0x16u);
   }
 
-  v6 = [(CXProviderExtensionVendorContext *)self delegate];
-  [v6 providerExtensionVendorContext:self handledActionTimeout:v4];
+  delegate = [(CXProviderExtensionVendorContext *)self delegate];
+  [delegate providerExtensionVendorContext:self handledActionTimeout:timeoutCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleAudioSessionActivationStateChangedTo:(id)a3
+- (void)handleAudioSessionActivationStateChangedTo:(id)to
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v5 = CXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[CXProviderExtensionVendorContext handleAudioSessionActivationStateChangedTo:]";
     v10 = 1024;
-    v11 = [v4 BOOLValue];
+    bOOLValue = [toCopy BOOLValue];
     _os_log_impl(&dword_1B47F3000, v5, OS_LOG_TYPE_DEFAULT, "Received %s with active: %d", &v8, 0x12u);
   }
 
-  v6 = [(CXProviderExtensionVendorContext *)self delegate];
-  [v6 providerExtensionVendorContext:self handledAudioSessionActivationStateChangedTo:{objc_msgSend(v4, "BOOLValue")}];
+  delegate = [(CXProviderExtensionVendorContext *)self delegate];
+  [delegate providerExtensionVendorContext:self handledAudioSessionActivationStateChangedTo:{objc_msgSend(toCopy, "BOOLValue")}];
 
   v7 = *MEMORY[0x1E69E9840];
 }

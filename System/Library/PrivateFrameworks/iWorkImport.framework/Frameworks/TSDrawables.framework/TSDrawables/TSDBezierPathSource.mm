@@ -1,34 +1,34 @@
 @interface TSDBezierPathSource
-+ (id)pathSourceWithBezierPath:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)pathSourceWithBezierPath:(id)path;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)transformToNaturalSize;
 - (CGSize)naturalSize;
-- (TSDBezierPathSource)initWithArchive:(const void *)a3 andBezierArchive:(const void *)a4;
-- (TSDBezierPathSource)initWithBezierPath:(id)a3;
-- (TSDBezierPathSource)initWithNaturalSize:(CGSize)a3;
+- (TSDBezierPathSource)initWithArchive:(const void *)archive andBezierArchive:(const void *)bezierArchive;
+- (TSDBezierPathSource)initWithBezierPath:(id)path;
+- (TSDBezierPathSource)initWithNaturalSize:(CGSize)size;
 - (id)bezierPathWithoutFlips;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)inferredAccessibilityDescription;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
 - (unint64_t)hash;
-- (void)p_setBezierPath:(id)a3;
-- (void)saveToArchive:(void *)a3;
-- (void)saveToArchive:(void *)a3 andBezierArchive:(void *)a4;
-- (void)setNaturalSize:(CGSize)a3;
+- (void)p_setBezierPath:(id)path;
+- (void)saveToArchive:(void *)archive;
+- (void)saveToArchive:(void *)archive andBezierArchive:(void *)bezierArchive;
+- (void)setNaturalSize:(CGSize)size;
 @end
 
 @implementation TSDBezierPathSource
 
-- (TSDBezierPathSource)initWithArchive:(const void *)a3 andBezierArchive:(const void *)a4
+- (TSDBezierPathSource)initWithArchive:(const void *)archive andBezierArchive:(const void *)bezierArchive
 {
-  if ((*(a4 + 16) & 4) != 0)
+  if ((*(bezierArchive + 16) & 4) != 0)
   {
     v12 = objc_alloc(MEMORY[0x277D81160]);
-    if (*(a4 + 5))
+    if (*(bezierArchive + 5))
     {
-      v10 = objc_msgSend_initWithArchive_(v12, v13, *(a4 + 5));
+      v10 = objc_msgSend_initWithArchive_(v12, v13, *(bezierArchive + 5));
     }
 
     else
@@ -40,7 +40,7 @@
   else
   {
     v7 = objc_alloc(MEMORY[0x277D81160]);
-    v9 = *(a4 + 3) & 0xFFFFFFFFFFFFFFFELL;
+    v9 = *(bezierArchive + 3) & 0xFFFFFFFFFFFFFFFELL;
     if (*(v9 + 23) < 0)
     {
       v9 = *v9;
@@ -54,10 +54,10 @@
   v17 = v15;
   if (v15)
   {
-    objc_msgSend_loadSharedFromArchive_(v15, v16, a3);
-    if ((*(a4 + 16) & 2) != 0)
+    objc_msgSend_loadSharedFromArchive_(v15, v16, archive);
+    if ((*(bezierArchive + 16) & 2) != 0)
     {
-      TSPCGSizeCreateFromMessage(*(a4 + 4));
+      TSPCGSizeCreateFromMessage(*(bezierArchive + 4));
       v19 = v18;
       v21 = v20;
       if ((TSUSizeHasNaNComponents() & 1) == 0)
@@ -71,39 +71,39 @@
   return v17;
 }
 
-- (void)saveToArchive:(void *)a3 andBezierArchive:(void *)a4
+- (void)saveToArchive:(void *)archive andBezierArchive:(void *)bezierArchive
 {
-  objc_msgSend_saveSharedToArchive_(self, a2, a3);
+  objc_msgSend_saveSharedToArchive_(self, a2, archive);
   mPath = self->mPath;
-  *(a4 + 4) |= 4u;
-  v8 = *(a4 + 5);
+  *(bezierArchive + 4) |= 4u;
+  v8 = *(bezierArchive + 5);
   if (!v8)
   {
-    v9 = *(a4 + 1);
+    v9 = *(bezierArchive + 1);
     if (v9)
     {
       v9 = *(v9 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v8 = MEMORY[0x277C9BAC0](v9);
-    *(a4 + 5) = v8;
+    *(bezierArchive + 5) = v8;
   }
 
   objc_msgSend_saveToArchive_(mPath, v6, v8);
   width = self->mNaturalSize.width;
   height = self->mNaturalSize.height;
-  *(a4 + 4) |= 2u;
-  v12 = *(a4 + 4);
+  *(bezierArchive + 4) |= 2u;
+  v12 = *(bezierArchive + 4);
   if (!v12)
   {
-    v13 = *(a4 + 1);
+    v13 = *(bezierArchive + 1);
     if (v13)
     {
       v13 = *(v13 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v12 = MEMORY[0x277C9BAD0](v13);
-    *(a4 + 4) = v12;
+    *(bezierArchive + 4) = v12;
   }
 
   v14 = width;
@@ -112,43 +112,43 @@
   TSPCGSizeCopyToMessage(*&v14, v12);
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
-  *(a3 + 4) |= 0x10u;
-  v5 = *(a3 + 7);
+  *(archive + 4) |= 0x10u;
+  v5 = *(archive + 7);
   if (!v5)
   {
-    v6 = *(a3 + 1);
+    v6 = *(archive + 1);
     if (v6)
     {
       v6 = *(v6 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v5 = google::protobuf::Arena::CreateMaybeMessage<TSD::BezierPathSourceArchive>(v6);
-    *(a3 + 7) = v5;
+    *(archive + 7) = v5;
   }
 
-  objc_msgSend_saveToArchive_andBezierArchive_(self, a2, a3, v5);
+  objc_msgSend_saveToArchive_andBezierArchive_(self, a2, archive, v5);
 }
 
-+ (id)pathSourceWithBezierPath:(id)a3
++ (id)pathSourceWithBezierPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = objc_alloc(objc_opt_class());
-  v6 = objc_msgSend_initWithBezierPath_(v4, v5, v3);
+  v6 = objc_msgSend_initWithBezierPath_(v4, v5, pathCopy);
 
   return v6;
 }
 
-- (TSDBezierPathSource)initWithBezierPath:(id)a3
+- (TSDBezierPathSource)initWithBezierPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v24.receiver = self;
   v24.super_class = TSDBezierPathSource;
   v7 = [(TSDBezierPathSource *)&v24 init];
   if (v7)
   {
-    if (objc_msgSend_elementCount(v4, v5, v6) < 1)
+    if (objc_msgSend_elementCount(pathCopy, v5, v6) < 1)
     {
       v10 = *(MEMORY[0x277CBF398] + 16);
       v11 = *(MEMORY[0x277CBF398] + 24);
@@ -156,7 +156,7 @@
 
     else
     {
-      objc_msgSend_controlPointBounds(v4, v8, v9);
+      objc_msgSend_controlPointBounds(pathCopy, v8, v9);
     }
 
     v12 = v10 == *MEMORY[0x277CBF3A8] && v11 == *(MEMORY[0x277CBF3A8] + 8);
@@ -165,17 +165,17 @@
       v13 = MEMORY[0x277D81150];
       v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[TSDBezierPathSource initWithBezierPath:]");
       v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDBezierPathSource.m");
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v17, v14, v16, 46, 0, "Ignoring invalid bezier path %@", v4);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v17, v14, v16, 46, 0, "Ignoring invalid bezier path %@", pathCopy);
 
       objc_msgSend_logFullBacktrace(MEMORY[0x277D81150], v18, v19);
       v22 = objc_msgSend_bezierPathWithDefaultsForErrorCases(MEMORY[0x277D81160], v20, v21);
 
-      v4 = v22;
+      pathCopy = v22;
     }
 
-    if (v4)
+    if (pathCopy)
     {
-      objc_msgSend_p_setBezierPath_(v7, v8, v4);
+      objc_msgSend_p_setBezierPath_(v7, v8, pathCopy);
     }
 
     else
@@ -188,19 +188,19 @@
   return v7;
 }
 
-- (TSDBezierPathSource)initWithNaturalSize:(CGSize)a3
+- (TSDBezierPathSource)initWithNaturalSize:(CGSize)size
 {
-  v5 = objc_msgSend_bezierPathWithRect_(MEMORY[0x277D81160], a2, v3, 0.0, 0.0, a3.width, a3.height);
+  v5 = objc_msgSend_bezierPathWithRect_(MEMORY[0x277D81160], a2, v3, 0.0, 0.0, size.width, size.height);
   v7 = objc_msgSend_initWithBezierPath_(self, v6, v5);
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = objc_msgSend_copy(self->mPath, a2, a3);
+  v5 = objc_msgSend_copy(self->mPath, a2, zone);
   v6 = objc_opt_class();
-  v8 = objc_msgSend_allocWithZone_(v6, v7, a3);
+  v8 = objc_msgSend_allocWithZone_(v6, v7, zone);
   v10 = objc_msgSend_initWithBezierPath_(v8, v9, v5);
   hasHorizontalFlip = objc_msgSend_hasHorizontalFlip(self, v11, v12);
   objc_msgSend_setHasHorizontalFlip_(v10, v14, hasHorizontalFlip);
@@ -221,10 +221,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -233,7 +233,7 @@
   {
     objc_opt_class();
     v5 = TSUDynamicCast();
-    if (v5 && (v11.receiver = self, v11.super_class = TSDBezierPathSource, [(TSDPathSource *)&v11 isEqual:v4]) && ((mPath = self->mPath, v8 = *(v5 + 40), mPath == v8) || objc_msgSend_isEqual_(mPath, v6, v8)) && self->mIsRectangular == *(v5 + 48))
+    if (v5 && (v11.receiver = self, v11.super_class = TSDBezierPathSource, [(TSDPathSource *)&v11 isEqual:equalCopy]) && ((mPath = self->mPath, v8 = *(v5 + 40), mPath == v8) || objc_msgSend_isEqual_(mPath, v6, v8)) && self->mIsRectangular == *(v5 + 48))
     {
       v9 = TSUNearlyEqualSizes();
     }
@@ -273,9 +273,9 @@
   return v6;
 }
 
-- (void)setNaturalSize:(CGSize)a3
+- (void)setNaturalSize:(CGSize)size
 {
-  self->mNaturalSize = a3;
+  self->mNaturalSize = size;
   mBezierPathWithoutFlips = self->mBezierPathWithoutFlips;
   self->mBezierPathWithoutFlips = 0;
 }
@@ -354,10 +354,10 @@
   return v6;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
   v67 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   v8 = TSUCheckedDynamicCast();
   if (self->mIsRectangular == *(v8 + 48) && (v9 = objc_msgSend_elementCount(self->mPath, v6, v7), v9 == objc_msgSend_elementCount(*(v8 + 40), v10, v11)) && (isCircular = objc_msgSend_isCircular(self->mPath, v12, v13), isCircular == objc_msgSend_isCircular(*(v8 + 40), v15, v16)) && (isDiamond = objc_msgSend_isDiamond(self->mPath, v17, v18), isDiamond == objc_msgSend_isDiamond(*(v8 + 40), v20, v21)) && (isTriangular = objc_msgSend_isTriangular(self->mPath, v22, v23), isTriangular == objc_msgSend_isTriangular(*(v8 + 40), v25, v26)) && ((v31 = objc_msgSend_elementCount(self->mPath, v27, v28), v31 != objc_msgSend_elementCount(*(v8 + 40), v32, v33)) || (objc_msgSend_localizationKey(self, v34, v35), v36 = objc_claimAutoreleasedReturnValue(), objc_msgSend_localizationKey(v8, v37, v38), v39 = objc_claimAutoreleasedReturnValue(), v40 = sub_2767977FC(v36, v39), v39, v36, v40)))
@@ -433,9 +433,9 @@ LABEL_24:
   return v29;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v5 = a4;
+  objectCopy = object;
   objc_opt_class();
   v6 = TSUCheckedDynamicCast();
 
@@ -450,10 +450,10 @@ LABEL_24:
   return v17;
 }
 
-- (void)p_setBezierPath:(id)a3
+- (void)p_setBezierPath:(id)path
 {
-  v6 = a3;
-  if (!v6)
+  pathCopy = path;
+  if (!pathCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[TSDBezierPathSource p_setBezierPath:]");
@@ -463,18 +463,18 @@ LABEL_24:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v12, v13);
   }
 
-  objc_msgSend_bounds(v6, v4, v5);
+  objc_msgSend_bounds(pathCopy, v4, v5);
   v15 = v14;
   v17 = v16;
   if ((TSUNearlyEqualPoints() & 1) == 0)
   {
     CGAffineTransformMakeTranslation(&v28, -v15, -v17);
-    objc_msgSend_transformUsingAffineTransform_(v6, v18, &v28);
+    objc_msgSend_transformUsingAffineTransform_(pathCopy, v18, &v28);
   }
 
   mPath = self->mPath;
-  self->mPath = v6;
-  v20 = v6;
+  self->mPath = pathCopy;
+  v20 = pathCopy;
 
   objc_msgSend_bounds(self->mPath, v21, v22);
   self->mNaturalSize.width = v23;

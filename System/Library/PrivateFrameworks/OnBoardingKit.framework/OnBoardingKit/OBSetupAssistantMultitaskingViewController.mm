@@ -1,50 +1,50 @@
 @interface OBSetupAssistantMultitaskingViewController
-- (OBSetupAssistantMultitaskingViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (OBSetupAssistantMultitaskingViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (OBSetupAssistantMultitaskingViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (OBSetupAssistantMultitaskingViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (double)_headerTopOffset;
 - (double)contentViewsTopPaddingFromBottomOfHeader;
-- (void)addMultitaskingBulletedListItemWithTitle:(id)a3 description:(id)a4 symbolName:(id)a5;
+- (void)addMultitaskingBulletedListItemWithTitle:(id)title description:(id)description symbolName:(id)name;
 - (void)setupBulletedListIfNeeded;
 - (void)viewDidLoad;
 @end
 
 @implementation OBSetupAssistantMultitaskingViewController
 
-- (OBSetupAssistantMultitaskingViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (OBSetupAssistantMultitaskingViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  titleCopy = title;
+  textCopy = text;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = OBSetupAssistantMultitaskingViewController;
-  v13 = [(OBWelcomeController *)&v17 initWithTitle:v10 detailText:v11 symbolName:v12 contentLayout:a6];
+  v13 = [(OBWelcomeController *)&v17 initWithTitle:titleCopy detailText:textCopy symbolName:nameCopy contentLayout:layout];
   if (v13)
   {
-    v14 = [(OBHeaderView *)[OBSetupAssistantMultitaskingHeaderView alloc] initWithTitle:v10 detailText:v11 symbolName:v12 animated:1];
+    v14 = [(OBHeaderView *)[OBSetupAssistantMultitaskingHeaderView alloc] initWithTitle:titleCopy detailText:textCopy symbolName:nameCopy animated:1];
     [(OBWelcomeController *)v13 setHeaderView:v14];
 
-    v15 = [(OBWelcomeController *)v13 headerView];
-    [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+    headerView = [(OBWelcomeController *)v13 headerView];
+    [headerView setTranslatesAutoresizingMaskIntoConstraints:0];
   }
 
   return v13;
 }
 
-- (OBSetupAssistantMultitaskingViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (OBSetupAssistantMultitaskingViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  titleCopy = title;
+  textCopy = text;
+  iconCopy = icon;
   v17.receiver = self;
   v17.super_class = OBSetupAssistantMultitaskingViewController;
-  v13 = [(OBWelcomeController *)&v17 initWithTitle:v10 detailText:v11 icon:v12 contentLayout:a6];
+  v13 = [(OBWelcomeController *)&v17 initWithTitle:titleCopy detailText:textCopy icon:iconCopy contentLayout:layout];
   if (v13)
   {
-    v14 = [(OBHeaderView *)[OBSetupAssistantMultitaskingHeaderView alloc] initWithTitle:v10 detailText:v11 icon:v12];
+    v14 = [(OBHeaderView *)[OBSetupAssistantMultitaskingHeaderView alloc] initWithTitle:titleCopy detailText:textCopy icon:iconCopy];
     [(OBWelcomeController *)v13 setHeaderView:v14];
 
-    v15 = [(OBWelcomeController *)v13 headerView];
-    [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+    headerView = [(OBWelcomeController *)v13 headerView];
+    [headerView setTranslatesAutoresizingMaskIntoConstraints:0];
   }
 
   return v13;
@@ -61,69 +61,69 @@
 - (void)setupBulletedListIfNeeded
 {
   v46[4] = *MEMORY[0x1E69E9840];
-  v3 = [(OBWelcomeController *)self bulletedList];
+  bulletedList = [(OBWelcomeController *)self bulletedList];
 
-  if (!v3)
+  if (!bulletedList)
   {
     v4 = objc_alloc_init(OBSetupAssistantMultitaskingBulletedList);
     [(OBWelcomeController *)self setBulletedList:v4];
 
-    v5 = [(OBWelcomeController *)self bulletedList];
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+    bulletedList2 = [(OBWelcomeController *)self bulletedList];
+    [bulletedList2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v6 = [(OBWelcomeController *)self contentView];
-    v7 = [(OBWelcomeController *)self bulletedList];
-    [v6 addSubview:v7];
+    contentView = [(OBWelcomeController *)self contentView];
+    bulletedList3 = [(OBWelcomeController *)self bulletedList];
+    [contentView addSubview:bulletedList3];
 
     [(OBSetupAssistantMultitaskingViewController *)self contentViewsTopPaddingFromBottomOfHeader];
     v9 = v8;
-    v10 = [(OBWelcomeController *)self contentViewTopOffsetConstraint];
-    [v10 setActive:0];
+    contentViewTopOffsetConstraint = [(OBWelcomeController *)self contentViewTopOffsetConstraint];
+    [contentViewTopOffsetConstraint setActive:0];
 
-    v11 = [(OBWelcomeController *)self contentView];
-    v12 = [v11 topAnchor];
-    v13 = [(OBWelcomeController *)self headerView];
-    v14 = [v13 bottomAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14 constant:v9];
+    contentView2 = [(OBWelcomeController *)self contentView];
+    topAnchor = [contentView2 topAnchor];
+    headerView = [(OBWelcomeController *)self headerView];
+    bottomAnchor = [headerView bottomAnchor];
+    v15 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:v9];
     [(OBWelcomeController *)self setContentViewTopOffsetConstraint:v15];
 
-    v16 = [(OBWelcomeController *)self contentViewTopOffsetConstraint];
-    [v16 setActive:1];
+    contentViewTopOffsetConstraint2 = [(OBWelcomeController *)self contentViewTopOffsetConstraint];
+    [contentViewTopOffsetConstraint2 setActive:1];
 
-    v17 = [(OBWelcomeController *)self contentView];
-    v18 = [v17 leadingAnchor];
-    v19 = [(OBWelcomeController *)self bulletedList];
-    v20 = [v19 leadingAnchor];
-    v21 = [v18 constraintEqualToAnchor:v20];
-    v22 = [(OBWelcomeController *)self bulletedList];
-    [v22 setLeadingConstraint:v21];
+    contentView3 = [(OBWelcomeController *)self contentView];
+    leadingAnchor = [contentView3 leadingAnchor];
+    bulletedList4 = [(OBWelcomeController *)self bulletedList];
+    leadingAnchor2 = [bulletedList4 leadingAnchor];
+    v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+    bulletedList5 = [(OBWelcomeController *)self bulletedList];
+    [bulletedList5 setLeadingConstraint:v21];
 
-    v23 = [(OBWelcomeController *)self contentView];
-    v24 = [v23 trailingAnchor];
-    v25 = [(OBWelcomeController *)self bulletedList];
-    v26 = [v25 trailingAnchor];
-    v27 = [v24 constraintEqualToAnchor:v26];
-    v28 = [(OBWelcomeController *)self bulletedList];
-    [v28 setTrailingConstraint:v27];
+    contentView4 = [(OBWelcomeController *)self contentView];
+    trailingAnchor = [contentView4 trailingAnchor];
+    bulletedList6 = [(OBWelcomeController *)self bulletedList];
+    trailingAnchor2 = [bulletedList6 trailingAnchor];
+    v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+    bulletedList7 = [(OBWelcomeController *)self bulletedList];
+    [bulletedList7 setTrailingConstraint:v27];
 
     v40 = MEMORY[0x1E696ACD8];
-    v45 = [(OBWelcomeController *)self bulletedList];
-    v44 = [v45 leadingConstraint];
-    v46[0] = v44;
-    v43 = [(OBWelcomeController *)self bulletedList];
-    v42 = [v43 trailingConstraint];
-    v46[1] = v42;
-    v41 = [(OBWelcomeController *)self contentView];
-    v29 = [v41 topAnchor];
-    v30 = [(OBWelcomeController *)self bulletedList];
-    v31 = [v30 topAnchor];
-    v32 = [v29 constraintEqualToAnchor:v31];
+    bulletedList8 = [(OBWelcomeController *)self bulletedList];
+    leadingConstraint = [bulletedList8 leadingConstraint];
+    v46[0] = leadingConstraint;
+    bulletedList9 = [(OBWelcomeController *)self bulletedList];
+    trailingConstraint = [bulletedList9 trailingConstraint];
+    v46[1] = trailingConstraint;
+    contentView5 = [(OBWelcomeController *)self contentView];
+    topAnchor2 = [contentView5 topAnchor];
+    bulletedList10 = [(OBWelcomeController *)self bulletedList];
+    topAnchor3 = [bulletedList10 topAnchor];
+    v32 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
     v46[2] = v32;
-    v33 = [(OBWelcomeController *)self contentView];
-    v34 = [v33 bottomAnchor];
-    v35 = [(OBWelcomeController *)self bulletedList];
-    v36 = [v35 bottomAnchor];
-    v37 = [v34 constraintEqualToAnchor:v36];
+    contentView6 = [(OBWelcomeController *)self contentView];
+    bottomAnchor2 = [contentView6 bottomAnchor];
+    bulletedList11 = [(OBWelcomeController *)self bulletedList];
+    bottomAnchor3 = [bulletedList11 bottomAnchor];
+    v37 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v46[3] = v37;
     v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:4];
     [v40 activateConstraints:v38];
@@ -132,32 +132,32 @@
   v39 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addMultitaskingBulletedListItemWithTitle:(id)a3 description:(id)a4 symbolName:(id)a5
+- (void)addMultitaskingBulletedListItemWithTitle:(id)title description:(id)description symbolName:(id)name
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  nameCopy = name;
+  descriptionCopy = description;
+  titleCopy = title;
   [(OBSetupAssistantMultitaskingViewController *)self loadViewIfNeeded];
   [(OBSetupAssistantMultitaskingViewController *)self setupBulletedListIfNeeded];
-  v11 = [(OBWelcomeController *)self bulletedList];
-  [v11 addItemWithTitle:v10 description:v9 symbolName:v8];
+  bulletedList = [(OBWelcomeController *)self bulletedList];
+  [bulletedList addItemWithTitle:titleCopy description:descriptionCopy symbolName:nameCopy];
 }
 
 - (double)_headerTopOffset
 {
   v3 = +[OBDevice currentDevice];
-  v4 = [v3 type];
+  type = [v3 type];
 
-  if (v4 == 2)
+  if (type == 2)
   {
     v5 = +[OBDevice currentDevice];
-    v6 = [v5 isMiniPad];
+    isMiniPad = [v5 isMiniPad];
 
     v7 = 0.0;
-    if ((v6 & 1) == 0)
+    if ((isMiniPad & 1) == 0)
     {
-      v8 = [(OBSetupAssistantMultitaskingViewController *)self view];
-      [v8 bounds];
+      view = [(OBSetupAssistantMultitaskingViewController *)self view];
+      [view bounds];
       v7 = v9 * 0.045;
     }
   }
@@ -176,10 +176,10 @@
 - (double)contentViewsTopPaddingFromBottomOfHeader
 {
   v3 = +[OBDevice currentDevice];
-  v4 = [v3 templateType];
+  templateType = [v3 templateType];
 
   result = 22.0;
-  if (v4 != 6)
+  if (templateType != 6)
   {
     v6.receiver = self;
     v6.super_class = OBSetupAssistantMultitaskingViewController;

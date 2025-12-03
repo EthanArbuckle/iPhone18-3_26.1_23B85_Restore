@@ -1,54 +1,54 @@
 @interface TVPPlaylist
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3;
-- (BOOL)_isMediaItemExplicit:(id)a3;
-- (BOOL)changeToActiveListIndex:(unint64_t)a3 withContext:(id)a4;
-- (BOOL)isEqualToPlaylist:(id)a3;
-- (BOOL)moreItemsAvailable:(int64_t)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
++ (id)keyPathsForValuesAffectingValueForKey:(id)key;
+- (BOOL)_isMediaItemExplicit:(id)explicit;
+- (BOOL)changeToActiveListIndex:(unint64_t)index withContext:(id)context;
+- (BOOL)isEqualToPlaylist:(id)playlist;
+- (BOOL)moreItemsAvailable:(int64_t)available;
 - (NSArray)upcomingItems;
-- (TVPPlaylist)initWithMediaItems:(id)a3 index:(int64_t)a4 isCollection:(BOOL)a5;
+- (TVPPlaylist)initWithMediaItems:(id)items index:(int64_t)index isCollection:(BOOL)collection;
 - (unint64_t)_nextActiveListIndex;
 - (unint64_t)_previousActiveListIndex;
-- (void)_shuffle:(BOOL)a3;
-- (void)_updateCurrent:(BOOL)a3 andNextItems:(BOOL)a4 withContext:(id)a5;
-- (void)addItem:(id)a3;
-- (void)addItems:(id)a3;
-- (void)addItemsToUpNext:(id)a3;
-- (void)changeMedia:(int64_t)a3 withContext:(id)a4;
-- (void)insertItem:(id)a3 atIndex:(unint64_t)a4;
-- (void)insertItems:(id)a3 atIndexes:(id)a4;
-- (void)removeItemAtIndex:(unint64_t)a3;
-- (void)removeItemsAtIndexes:(id)a3;
-- (void)setEndAction:(int64_t)a3;
-- (void)setRepeatMode:(int64_t)a3;
-- (void)setSkipExplicit:(BOOL)a3;
-- (void)setUpcomingItemsLimit:(unint64_t)a3;
-- (void)setWindowed:(BOOL)a3;
+- (void)_shuffle:(BOOL)_shuffle;
+- (void)_updateCurrent:(BOOL)current andNextItems:(BOOL)items withContext:(id)context;
+- (void)addItem:(id)item;
+- (void)addItems:(id)items;
+- (void)addItemsToUpNext:(id)next;
+- (void)changeMedia:(int64_t)media withContext:(id)context;
+- (void)insertItem:(id)item atIndex:(unint64_t)index;
+- (void)insertItems:(id)items atIndexes:(id)indexes;
+- (void)removeItemAtIndex:(unint64_t)index;
+- (void)removeItemsAtIndexes:(id)indexes;
+- (void)setEndAction:(int64_t)action;
+- (void)setRepeatMode:(int64_t)mode;
+- (void)setSkipExplicit:(BOOL)explicit;
+- (void)setUpcomingItemsLimit:(unint64_t)limit;
+- (void)setWindowed:(BOOL)windowed;
 @end
 
 @implementation TVPPlaylist
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"shuffleEnabled"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"endAction"))
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"shuffleEnabled"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"endAction"))
   {
     v5 = 0;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___TVPPlaylist;
-    v5 = objc_msgSendSuper2(&v7, sel_automaticallyNotifiesObserversForKey_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_automaticallyNotifiesObserversForKey_, keyCopy);
   }
 
   return v5;
 }
 
-- (TVPPlaylist)initWithMediaItems:(id)a3 index:(int64_t)a4 isCollection:(BOOL)a5
+- (TVPPlaylist)initWithMediaItems:(id)items index:(int64_t)index isCollection:(BOOL)collection
 {
-  v7 = a3;
+  itemsCopy = items;
   v14.receiver = self;
   v14.super_class = TVPPlaylist;
   v8 = [(TVPPlaylist *)&v14 init];
@@ -57,14 +57,14 @@
   {
     v8->_upcomingItemsLimit = 20;
     v8->_endAction = 0;
-    v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v7];
+    v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:itemsCopy];
     trackList = v9->_trackList;
     v9->_trackList = v10;
 
     objc_storeStrong(&v9->_activeList, v9->_trackList);
     shuffledItems = v9->_shuffledItems;
     v9->_shuffledItems = 0;
-    v9->_activeListIndex = a4;
+    v9->_activeListIndex = index;
 
     [(TVPPlaylist *)v9 _updateCurrent:0 andNextItems:0 withContext:0];
   }
@@ -72,49 +72,49 @@
   return v9;
 }
 
-- (BOOL)isEqualToPlaylist:(id)a3
+- (BOOL)isEqualToPlaylist:(id)playlist
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  playlistCopy = playlist;
+  v5 = playlistCopy;
+  if (playlistCopy)
   {
-    if (self == v4)
+    if (self == playlistCopy)
     {
       v14 = 1;
       goto LABEL_10;
     }
 
-    v6 = [(TVPPlaylist *)self trackList];
-    v7 = [v6 count];
-    v8 = [(TVPPlaylist *)v5 trackList];
-    v9 = [v8 count];
+    trackList = [(TVPPlaylist *)self trackList];
+    v7 = [trackList count];
+    trackList2 = [(TVPPlaylist *)v5 trackList];
+    v9 = [trackList2 count];
 
     if (v7 == v9)
     {
-      v10 = [(TVPPlaylist *)self repeatMode];
-      if (v10 == [(TVPPlaylist *)v5 repeatMode])
+      repeatMode = [(TVPPlaylist *)self repeatMode];
+      if (repeatMode == [(TVPPlaylist *)v5 repeatMode])
       {
-        v11 = [(TVPPlaylist *)self shuffleEnabled];
-        if (v11 == [(TVPPlaylist *)v5 shuffleEnabled])
+        shuffleEnabled = [(TVPPlaylist *)self shuffleEnabled];
+        if (shuffleEnabled == [(TVPPlaylist *)v5 shuffleEnabled])
         {
-          v12 = [(TVPPlaylist *)self endAction];
-          if (v12 == [(TVPPlaylist *)v5 endAction])
+          endAction = [(TVPPlaylist *)self endAction];
+          if (endAction == [(TVPPlaylist *)v5 endAction])
           {
-            v13 = [(TVPPlaylist *)self skipExplicit];
-            if (v13 == [(TVPPlaylist *)v5 skipExplicit])
+            skipExplicit = [(TVPPlaylist *)self skipExplicit];
+            if (skipExplicit == [(TVPPlaylist *)v5 skipExplicit])
             {
               v20 = 0;
               v21 = &v20;
               v22 = 0x2020000000;
               v23 = 1;
-              v16 = [(TVPPlaylist *)self trackList];
+              trackList3 = [(TVPPlaylist *)self trackList];
               v17[0] = MEMORY[0x277D85DD0];
               v17[1] = 3221225472;
               v17[2] = __33__TVPPlaylist_isEqualToPlaylist___block_invoke;
               v17[3] = &unk_279D7B938;
               v18 = v5;
               v19 = &v20;
-              [v16 enumerateObjectsUsingBlock:v17];
+              [trackList3 enumerateObjectsUsingBlock:v17];
 
               v14 = *(v21 + 24);
               _Block_object_dispose(&v20, 8);
@@ -147,18 +147,18 @@ void __33__TVPPlaylist_isEqualToPlaylist___block_invoke(uint64_t a1, void *a2, u
   }
 }
 
-- (void)changeMedia:(int64_t)a3 withContext:(id)a4
+- (void)changeMedia:(int64_t)media withContext:(id)context
 {
   v6 = MEMORY[0x277CCAB98];
-  v7 = a4;
-  v8 = [v6 defaultCenter];
-  [v8 postNotificationName:@"TVPPlaylistMediaChangeRequestedNotification" object:self userInfo:v7];
+  contextCopy = context;
+  defaultCenter = [v6 defaultCenter];
+  [defaultCenter postNotificationName:@"TVPPlaylistMediaChangeRequestedNotification" object:self userInfo:contextCopy];
 
-  v20 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v7];
+  v20 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:contextCopy];
 
   if (self->_windowed)
   {
-    if (a3 == 1)
+    if (media == 1)
     {
       goto LABEL_28;
     }
@@ -179,9 +179,9 @@ void __33__TVPPlaylist_isEqualToPlaylist___block_invoke(uint64_t a1, void *a2, u
     goto LABEL_24;
   }
 
-  if (a3 != 1)
+  if (media != 1)
   {
-    if (a3)
+    if (media)
     {
       goto LABEL_28;
     }
@@ -191,8 +191,8 @@ void __33__TVPPlaylist_isEqualToPlaylist___block_invoke(uint64_t a1, void *a2, u
     {
       if (repeatMode == 1)
       {
-        v11 = [(TVPPlaylist *)self _nextActiveListIndex];
-        self->_activeListIndex = v11 % [(NSMutableArray *)self->_trackList count];
+        _nextActiveListIndex = [(TVPPlaylist *)self _nextActiveListIndex];
+        self->_activeListIndex = _nextActiveListIndex % [(NSMutableArray *)self->_trackList count];
       }
 
       else
@@ -200,9 +200,9 @@ void __33__TVPPlaylist_isEqualToPlaylist___block_invoke(uint64_t a1, void *a2, u
         activeListIndex = self->_activeListIndex;
         if (activeListIndex < [(NSArray *)self->_activeList count])
         {
-          v19 = [(TVPPlaylist *)self _nextActiveListIndex];
-          self->_activeListIndex = v19;
-          if (v19 == [(NSArray *)self->_activeList count])
+          _nextActiveListIndex2 = [(TVPPlaylist *)self _nextActiveListIndex];
+          self->_activeListIndex = _nextActiveListIndex2;
+          if (_nextActiveListIndex2 == [(NSArray *)self->_activeList count])
           {
             [v20 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"TVPPlaylistDidHitEndKey"];
           }
@@ -272,31 +272,31 @@ LABEL_27:
 LABEL_28:
 }
 
-- (BOOL)changeToActiveListIndex:(unint64_t)a3 withContext:(id)a4
+- (BOOL)changeToActiveListIndex:(unint64_t)index withContext:(id)context
 {
-  v6 = a4;
-  if ([(NSArray *)self->_activeList count]<= a3 || [(TVPPlaylist *)self skipExplicit]&& ([(NSArray *)self->_activeList objectAtIndex:a3], v7 = objc_claimAutoreleasedReturnValue(), v8 = [(TVPPlaylist *)self _isMediaItemExplicit:v7], v7, v8))
+  contextCopy = context;
+  if ([(NSArray *)self->_activeList count]<= index || [(TVPPlaylist *)self skipExplicit]&& ([(NSArray *)self->_activeList objectAtIndex:index], v7 = objc_claimAutoreleasedReturnValue(), v8 = [(TVPPlaylist *)self _isMediaItemExplicit:v7], v7, v8))
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v6];
+    v10 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:contextCopy];
     v11 = v10;
     if (self->_windowed)
     {
       [v10 setObject:&unk_287E59678 forKey:@"direction"];
-      [(NSMutableArray *)self->_trackList removeObjectsInRange:0, a3 - 1];
+      [(NSMutableArray *)self->_trackList removeObjectsInRange:0, index - 1];
       self->_activeListIndex = 0;
     }
 
     else
     {
-      v12 = [MEMORY[0x277CCABB0] numberWithInteger:self->_activeListIndex >= a3];
-      [v11 setObject:v12 forKey:@"direction"];
+      index = [MEMORY[0x277CCABB0] numberWithInteger:self->_activeListIndex >= index];
+      [v11 setObject:index forKey:@"direction"];
 
-      self->_activeListIndex = a3;
+      self->_activeListIndex = index;
     }
 
     [(TVPPlaylist *)self _updateCurrent:0 andNextItems:0 withContext:v11];
@@ -364,41 +364,41 @@ LABEL_28:
   return v4;
 }
 
-- (BOOL)_isMediaItemExplicit:(id)a3
+- (BOOL)_isMediaItemExplicit:(id)explicit
 {
-  v3 = a3;
-  v4 = [v3 mediaItemMetadataForProperty:@"TVPMediaItemMetadataContentRatingDomain"];
-  v5 = [v3 mediaItemMetadataForProperty:@"TVPMediaItemMetadataContentRatingIsExplicitMusic"];
+  explicitCopy = explicit;
+  v4 = [explicitCopy mediaItemMetadataForProperty:@"TVPMediaItemMetadataContentRatingDomain"];
+  v5 = [explicitCopy mediaItemMetadataForProperty:@"TVPMediaItemMetadataContentRatingIsExplicitMusic"];
 
   if ([v4 isEqualToString:@"music"])
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setSkipExplicit:(BOOL)a3
+- (void)setSkipExplicit:(BOOL)explicit
 {
-  if (self->_skipExplicit != a3)
+  if (self->_skipExplicit != explicit)
   {
-    self->_skipExplicit = a3;
+    self->_skipExplicit = explicit;
     [(TVPPlaylist *)self _updateCurrent:1 andNextItems:1 withContext:0];
   }
 }
 
-- (BOOL)moreItemsAvailable:(int64_t)a3
+- (BOOL)moreItemsAvailable:(int64_t)available
 {
   windowed = self->_windowed;
-  result = a3 == 0;
+  result = available == 0;
   if (!windowed)
   {
-    if (a3)
+    if (available)
     {
       if ((self->_repeatMode - 1) < 2)
       {
@@ -419,22 +419,22 @@ LABEL_28:
   return result;
 }
 
-- (void)_updateCurrent:(BOOL)a3 andNextItems:(BOOL)a4 withContext:(id)a5
+- (void)_updateCurrent:(BOOL)current andNextItems:(BOOL)items withContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  itemsCopy = items;
+  currentCopy = current;
   v29[1] = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  if (v9)
+  contextCopy = context;
+  if (contextCopy)
   {
-    objc_storeStrong(&self->_changeContext, a5);
+    objc_storeStrong(&self->_changeContext, context);
   }
 
   upcomingItems = self->_upcomingItems;
   self->_upcomingItems = 0;
 
   [(TVPPlaylist *)self willChangeValueForKey:@"upcomingItems"];
-  v11 = [(TVPPlaylist *)self upcomingItems];
+  upcomingItems = [(TVPPlaylist *)self upcomingItems];
   activeListIndex = self->_activeListIndex;
   v13 = 0;
   if (activeListIndex < [(NSArray *)self->_activeList count])
@@ -442,14 +442,14 @@ LABEL_28:
     v13 = [(NSArray *)self->_activeList objectAtIndexedSubscript:self->_activeListIndex];
   }
 
-  if (v7 && v13 == self->_currentMediaItem)
+  if (currentCopy && v13 == self->_currentMediaItem)
   {
     v27 = 0;
   }
 
   else
   {
-    if (!v9)
+    if (!contextCopy)
     {
       v28 = @"direction";
       v29[0] = &unk_287E59678;
@@ -462,10 +462,10 @@ LABEL_28:
     v27 = 1;
   }
 
-  if ([v11 count])
+  if ([upcomingItems count])
   {
-    v15 = [v11 objectAtIndexedSubscript:0];
-    if (!v6)
+    v15 = [upcomingItems objectAtIndexedSubscript:0];
+    if (!itemsCopy)
     {
       goto LABEL_15;
     }
@@ -474,7 +474,7 @@ LABEL_28:
   else
   {
     v15 = 0;
-    if (!v6)
+    if (!itemsCopy)
     {
 LABEL_15:
       [(TVPPlaylist *)self willChangeValueForKey:@"nextMediaItem"];
@@ -583,38 +583,38 @@ LABEL_16:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setWindowed:(BOOL)a3
+- (void)setWindowed:(BOOL)windowed
 {
-  if (a3 && self->_endAction != 2)
+  if (windowed && self->_endAction != 2)
   {
     [(TVPPlaylist *)self setEndAction:2];
   }
 
-  self->_windowed = a3;
+  self->_windowed = windowed;
 
   [(TVPPlaylist *)self _updateCurrent:1 andNextItems:1 withContext:0];
 }
 
-- (void)setEndAction:(int64_t)a3
+- (void)setEndAction:(int64_t)action
 {
-  if (!self->_windowed && self->_endAction != a3)
+  if (!self->_windowed && self->_endAction != action)
   {
     [(TVPPlaylist *)self willChangeValueForKey:@"endAction"];
-    self->_endAction = a3;
+    self->_endAction = action;
 
     [(TVPPlaylist *)self didChangeValueForKey:@"endAction"];
   }
 }
 
-- (void)_shuffle:(BOOL)a3
+- (void)_shuffle:(BOOL)_shuffle
 {
-  v3 = a3;
+  _shuffleCopy = _shuffle;
   v5 = [(NSMutableArray *)self->_trackList mutableCopy];
   shuffledItems = self->_shuffledItems;
   self->_shuffledItems = v5;
 
   [(NSMutableArray *)self->_shuffledItems tvp_shuffle];
-  if (v3 && self->_currentMediaItem)
+  if (_shuffleCopy && self->_currentMediaItem)
   {
     [(NSMutableArray *)self->_shuffledItems removeObject:?];
     [(NSMutableArray *)self->_shuffledItems insertObject:self->_currentMediaItem atIndex:0];
@@ -626,52 +626,52 @@ LABEL_16:
   objc_storeStrong(&self->_activeList, v7);
 }
 
-- (void)setRepeatMode:(int64_t)a3
+- (void)setRepeatMode:(int64_t)mode
 {
-  if (self->_repeatMode != a3 && [(TVPPlaylist *)self supportsRepeat])
+  if (self->_repeatMode != mode && [(TVPPlaylist *)self supportsRepeat])
   {
-    self->_repeatMode = a3;
+    self->_repeatMode = mode;
 
     [(TVPPlaylist *)self _updateCurrent:1 andNextItems:1 withContext:0];
   }
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
   trackList = self->_trackList;
-  v5 = a3;
-  [(TVPPlaylist *)self insertItem:v5 atIndex:[(NSMutableArray *)trackList count]];
+  itemCopy = item;
+  [(TVPPlaylist *)self insertItem:itemCopy atIndex:[(NSMutableArray *)trackList count]];
 }
 
-- (void)addItems:(id)a3
+- (void)addItems:(id)items
 {
   v4 = MEMORY[0x277CCAA78];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithIndexesInRange:{-[NSMutableArray count](self->_trackList, "count"), objc_msgSend(v5, "count")}];
-  [(TVPPlaylist *)self insertItems:v5 atIndexes:v6];
+  itemsCopy = items;
+  v6 = [[v4 alloc] initWithIndexesInRange:{-[NSMutableArray count](self->_trackList, "count"), objc_msgSend(itemsCopy, "count")}];
+  [(TVPPlaylist *)self insertItems:itemsCopy atIndexes:v6];
 }
 
-- (void)insertItem:(id)a3 atIndex:(unint64_t)a4
+- (void)insertItem:(id)item atIndex:(unint64_t)index
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([(NSMutableArray *)self->_trackList count]< a4)
+  itemCopy = item;
+  if ([(NSMutableArray *)self->_trackList count]< index)
   {
-    a4 = [(NSMutableArray *)self->_trackList count];
+    index = [(NSMutableArray *)self->_trackList count];
   }
 
-  v10[0] = v6;
+  v10[0] = itemCopy;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
-  v8 = [MEMORY[0x277CCAA78] indexSetWithIndex:a4];
+  v8 = [MEMORY[0x277CCAA78] indexSetWithIndex:index];
   [(TVPPlaylist *)self insertItems:v7 atIndexes:v8];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)insertItems:(id)a3 atIndexes:(id)a4
+- (void)insertItems:(id)items atIndexes:(id)indexes
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  indexesCopy = indexes;
   activeListIndex = self->_activeListIndex;
   if (activeListIndex < [(NSArray *)self->_activeList count])
   {
@@ -692,7 +692,7 @@ LABEL_16:
     v10[5] = &v15;
     v10[6] = &v11;
     v10[7] = v9;
-    [v7 enumerateRangesUsingBlock:v10];
+    [indexesCopy enumerateRangesUsingBlock:v10];
     self->_activeListIndex += v16[3];
     self->_upNextIndex += v12[3];
     _Block_object_dispose(&v11, 8);
@@ -701,13 +701,13 @@ LABEL_16:
 
   if (self->_shuffleEnabled)
   {
-    [(NSMutableArray *)self->_shuffledItems insertObjects:v6 atIndexes:v7];
-    [(NSMutableArray *)self->_trackList addObjectsFromArray:v6];
+    [(NSMutableArray *)self->_shuffledItems insertObjects:itemsCopy atIndexes:indexesCopy];
+    [(NSMutableArray *)self->_trackList addObjectsFromArray:itemsCopy];
   }
 
   else
   {
-    [(NSMutableArray *)self->_trackList insertObjects:v6 atIndexes:v7];
+    [(NSMutableArray *)self->_trackList insertObjects:itemsCopy atIndexes:indexesCopy];
   }
 
   [(TVPPlaylist *)self _updateCurrent:1 andNextItems:1 withContext:0];
@@ -728,16 +728,16 @@ void *__37__TVPPlaylist_insertItems_atIndexes___block_invoke(void *result, unint
   return result;
 }
 
-- (void)removeItemAtIndex:(unint64_t)a3
+- (void)removeItemAtIndex:(unint64_t)index
 {
-  v4 = [MEMORY[0x277CCAA78] indexSetWithIndex:a3];
+  v4 = [MEMORY[0x277CCAA78] indexSetWithIndex:index];
   [(TVPPlaylist *)self removeItemsAtIndexes:v4];
 }
 
-- (void)removeItemsAtIndexes:(id)a3
+- (void)removeItemsAtIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = [v4 containsIndex:self->_activeListIndex];
+  indexesCopy = indexes;
+  v5 = [indexesCopy containsIndex:self->_activeListIndex];
   if (self->_shuffleEnabled)
   {
     v6 = objc_alloc_init(MEMORY[0x277CCAB58]);
@@ -745,20 +745,20 @@ void *__37__TVPPlaylist_insertItems_atIndexes___block_invoke(void *result, unint
     v16 = 3221225472;
     v17 = __36__TVPPlaylist_removeItemsAtIndexes___block_invoke;
     v18 = &unk_279D7B988;
-    v19 = self;
+    selfCopy = self;
     v20 = v6;
     v7 = v6;
-    [v4 enumerateIndexesUsingBlock:&v15];
-    [(NSMutableArray *)self->_trackList removeObjectsAtIndexes:v7, v15, v16, v17, v18, v19];
-    [(NSMutableArray *)self->_shuffledItems removeObjectsAtIndexes:v4];
+    [indexesCopy enumerateIndexesUsingBlock:&v15];
+    [(NSMutableArray *)self->_trackList removeObjectsAtIndexes:v7, v15, v16, v17, v18, selfCopy];
+    [(NSMutableArray *)self->_shuffledItems removeObjectsAtIndexes:indexesCopy];
   }
 
   else
   {
-    [(NSMutableArray *)self->_trackList removeObjectsAtIndexes:v4];
+    [(NSMutableArray *)self->_trackList removeObjectsAtIndexes:indexesCopy];
   }
 
-  v8 = [v4 countOfIndexesInRange:{0, self->_activeListIndex}];
+  v8 = [indexesCopy countOfIndexesInRange:{0, self->_activeListIndex}];
   activeListIndex = self->_activeListIndex;
   v10 = activeListIndex >= v8;
   v11 = activeListIndex - v8;
@@ -768,7 +768,7 @@ void *__37__TVPPlaylist_insertItems_atIndexes___block_invoke(void *result, unint
   }
 
   self->_activeListIndex = v11;
-  v12 = [v4 countOfIndexesInRange:{0, self->_upNextIndex}];
+  v12 = [indexesCopy countOfIndexesInRange:{0, self->_upNextIndex}];
   upNextIndex = self->_upNextIndex;
   v10 = upNextIndex >= v12;
   v14 = upNextIndex - v12;
@@ -877,36 +877,36 @@ unint64_t __36__TVPPlaylist_removeItemsAtIndexes___block_invoke(uint64_t a1, uin
   return v16;
 }
 
-- (void)setUpcomingItemsLimit:(unint64_t)a3
+- (void)setUpcomingItemsLimit:(unint64_t)limit
 {
-  if (a3 <= 1)
+  if (limit <= 1)
   {
-    v3 = 1;
+    limitCopy = 1;
   }
 
   else
   {
-    v3 = a3;
+    limitCopy = limit;
   }
 
-  self->_upcomingItemsLimit = v3;
+  self->_upcomingItemsLimit = limitCopy;
 }
 
-- (void)addItemsToUpNext:(id)a3
+- (void)addItemsToUpNext:(id)next
 {
-  v4 = a3;
-  v5 = [(TVPPlaylist *)self upNextIndex];
-  v6 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{v5, objc_msgSend(v4, "count")}];
-  [(TVPPlaylist *)self insertItems:v4 atIndexes:v6];
+  nextCopy = next;
+  upNextIndex = [(TVPPlaylist *)self upNextIndex];
+  v6 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{upNextIndex, objc_msgSend(nextCopy, "count")}];
+  [(TVPPlaylist *)self insertItems:nextCopy atIndexes:v6];
 }
 
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3
++ (id)keyPathsForValuesAffectingValueForKey:(id)key
 {
-  v4 = a3;
-  v8.receiver = a1;
+  keyCopy = key;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___TVPPlaylist;
-  v5 = objc_msgSendSuper2(&v8, sel_keyPathsForValuesAffectingValueForKey_, v4);
-  if (([v4 isEqualToString:@"supportsShuffle"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"supportsRepeat"))
+  v5 = objc_msgSendSuper2(&v8, sel_keyPathsForValuesAffectingValueForKey_, keyCopy);
+  if (([keyCopy isEqualToString:@"supportsShuffle"] & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"supportsRepeat"))
   {
     v6 = [v5 setByAddingObject:@"windowed"];
 

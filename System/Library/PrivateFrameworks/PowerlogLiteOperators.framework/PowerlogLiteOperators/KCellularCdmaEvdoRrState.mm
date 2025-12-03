@@ -1,26 +1,26 @@
 @interface KCellularCdmaEvdoRrState
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCurrNormalizedState:(id)a3;
+- (int)StringAsCurrNormalizedState:(id)state;
 - (int)currNormalizedState;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCurrAtState:(BOOL)a3;
-- (void)setHasCurrNormalizedState:(BOOL)a3;
-- (void)setHasPrevAtState:(BOOL)a3;
-- (void)setHasPrevStateDurMs:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCurrAtState:(BOOL)state;
+- (void)setHasCurrNormalizedState:(BOOL)state;
+- (void)setHasPrevAtState:(BOOL)state;
+- (void)setHasPrevStateDurMs:(BOOL)ms;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCellularCdmaEvdoRrState
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 32;
   }
@@ -33,9 +33,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasPrevAtState:(BOOL)a3
+- (void)setHasPrevAtState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 8;
   }
@@ -48,9 +48,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasCurrAtState:(BOOL)a3
+- (void)setHasCurrAtState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }
@@ -63,9 +63,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasPrevStateDurMs:(BOOL)a3
+- (void)setHasPrevStateDurMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 16;
   }
@@ -91,9 +91,9 @@
   }
 }
 
-- (void)setHasCurrNormalizedState:(BOOL)a3
+- (void)setHasCurrNormalizedState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 4;
   }
@@ -106,65 +106,65 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsCurrNormalizedState:(id)a3
+- (int)StringAsCurrNormalizedState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"KPS_STATE_OFF_OR_AIRPLANE_MODE"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"KPS_STATE_OFF_OR_AIRPLANE_MODE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"KPS_STATE_OOS_IDLE"])
+  else if ([stateCopy isEqualToString:@"KPS_STATE_OOS_IDLE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"KPS_STATE_OOS_NETWORK_SCAN"])
+  else if ([stateCopy isEqualToString:@"KPS_STATE_OOS_NETWORK_SCAN"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"KPS_STATE_IDLE"])
+  else if ([stateCopy isEqualToString:@"KPS_STATE_IDLE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"KPS_STATE_ESTABLISHING"])
+  else if ([stateCopy isEqualToString:@"KPS_STATE_ESTABLISHING"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"KPS_STATE_CONNECTED"])
+  else if ([stateCopy isEqualToString:@"KPS_STATE_CONNECTED"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"KPS_STATE_RELEASING"])
+  else if ([stateCopy isEqualToString:@"KPS_STATE_RELEASING"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"KPS_STATE_TX_RX_SUSPENDED"])
+  else if ([stateCopy isEqualToString:@"KPS_STATE_TX_RX_SUSPENDED"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"KPS_STATE_OOS_SRLTE_NETWORK_SCAN"])
+  else if ([stateCopy isEqualToString:@"KPS_STATE_OOS_SRLTE_NETWORK_SCAN"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"KPS_STATE_OOS_HYBRID_NETWORK_SCAN"])
+  else if ([stateCopy isEqualToString:@"KPS_STATE_OOS_HYBRID_NETWORK_SCAN"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"KPS_STATE_SRLTE_IDLE"])
+  else if ([stateCopy isEqualToString:@"KPS_STATE_SRLTE_IDLE"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"KPS_STATE_HYBRID_IDLE"])
+  else if ([stateCopy isEqualToString:@"KPS_STATE_HYBRID_IDLE"])
   {
     v4 = 11;
   }
@@ -183,20 +183,20 @@
   v8.receiver = self;
   v8.super_class = KCellularCdmaEvdoRrState;
   v4 = [(KCellularCdmaEvdoRrState *)&v8 description];
-  v5 = [(KCellularCdmaEvdoRrState *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(KCellularCdmaEvdoRrState *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v5 forKey:@"timestamp"];
+    [dictionary setObject:v5 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 0x20) == 0)
@@ -217,7 +217,7 @@ LABEL_3:
   }
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_subsId];
-  [v3 setObject:v6 forKey:@"subs_id"];
+  [dictionary setObject:v6 forKey:@"subs_id"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -233,7 +233,7 @@ LABEL_4:
 
 LABEL_10:
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_prevAtState];
-  [v3 setObject:v7 forKey:@"prev_at_state"];
+  [dictionary setObject:v7 forKey:@"prev_at_state"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -246,7 +246,7 @@ LABEL_5:
 
 LABEL_12:
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_prevStateDurMs];
-    [v3 setObject:v9 forKey:@"prev_state_dur_ms"];
+    [dictionary setObject:v9 forKey:@"prev_state_dur_ms"];
 
     if ((*&self->_has & 4) == 0)
     {
@@ -265,14 +265,14 @@ LABEL_13:
       v11 = off_278261028[currNormalizedState];
     }
 
-    [v3 setObject:v11 forKey:@"curr_normalized_state"];
+    [dictionary setObject:v11 forKey:@"curr_normalized_state"];
 
     goto LABEL_17;
   }
 
 LABEL_11:
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_currAtState];
-  [v3 setObject:v8 forKey:@"curr_at_state"];
+  [dictionary setObject:v8 forKey:@"curr_at_state"];
 
   has = self->_has;
   if ((has & 0x10) != 0)
@@ -288,12 +288,12 @@ LABEL_6:
 
 LABEL_17:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -374,14 +374,14 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 36) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 36) |= 1u;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -400,8 +400,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 8) = self->_subsId;
-  *(v4 + 36) |= 0x20u;
+  *(toCopy + 8) = self->_subsId;
+  *(toCopy + 36) |= 0x20u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -415,8 +415,8 @@ LABEL_4:
   }
 
 LABEL_13:
-  *(v4 + 6) = self->_prevAtState;
-  *(v4 + 36) |= 8u;
+  *(toCopy + 6) = self->_prevAtState;
+  *(toCopy + 36) |= 8u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -430,8 +430,8 @@ LABEL_5:
   }
 
 LABEL_14:
-  *(v4 + 4) = self->_currAtState;
-  *(v4 + 36) |= 2u;
+  *(toCopy + 4) = self->_currAtState;
+  *(toCopy + 36) |= 2u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -445,21 +445,21 @@ LABEL_6:
   }
 
 LABEL_15:
-  *(v4 + 7) = self->_prevStateDurMs;
-  *(v4 + 36) |= 0x10u;
+  *(toCopy + 7) = self->_prevStateDurMs;
+  *(toCopy + 36) |= 0x10u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_7:
-    *(v4 + 5) = self->_currNormalizedState;
-    *(v4 + 36) |= 4u;
+    *(toCopy + 5) = self->_currNormalizedState;
+    *(toCopy + 36) |= 4u;
   }
 
 LABEL_8:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -541,23 +541,23 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_31;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
 LABEL_31:
     v5 = 0;
@@ -566,60 +566,60 @@ LABEL_31:
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 36) & 0x20) == 0 || self->_subsId != *(v4 + 8))
+    if ((*(equalCopy + 36) & 0x20) == 0 || self->_subsId != *(equalCopy + 8))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 36) & 0x20) != 0)
+  else if ((*(equalCopy + 36) & 0x20) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 36) & 8) == 0 || self->_prevAtState != *(v4 + 6))
+    if ((*(equalCopy + 36) & 8) == 0 || self->_prevAtState != *(equalCopy + 6))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 36) & 8) != 0)
+  else if ((*(equalCopy + 36) & 8) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_currAtState != *(v4 + 4))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_currAtState != *(equalCopy + 4))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 36) & 0x10) == 0 || self->_prevStateDurMs != *(v4 + 7))
+    if ((*(equalCopy + 36) & 0x10) == 0 || self->_prevStateDurMs != *(equalCopy + 7))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 36) & 0x10) != 0)
+  else if ((*(equalCopy + 36) & 0x10) != 0)
   {
     goto LABEL_31;
   }
 
-  v5 = (*(v4 + 36) & 4) == 0;
+  v5 = (*(equalCopy + 36) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0 || self->_currNormalizedState != *(v4 + 5))
+    if ((*(equalCopy + 36) & 4) == 0 || self->_currNormalizedState != *(equalCopy + 5))
     {
       goto LABEL_31;
     }
@@ -714,15 +714,15 @@ LABEL_7:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 36);
+  fromCopy = from;
+  v5 = *(fromCopy + 36);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
     if ((v5 & 0x20) == 0)
     {
 LABEL_3:
@@ -735,14 +735,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 36) & 0x20) == 0)
+  else if ((*(fromCopy + 36) & 0x20) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_subsId = *(v4 + 8);
+  self->_subsId = *(fromCopy + 8);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 8) == 0)
   {
 LABEL_4:
@@ -755,9 +755,9 @@ LABEL_4:
   }
 
 LABEL_13:
-  self->_prevAtState = *(v4 + 6);
+  self->_prevAtState = *(fromCopy + 6);
   *&self->_has |= 8u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 2) == 0)
   {
 LABEL_5:
@@ -770,9 +770,9 @@ LABEL_5:
   }
 
 LABEL_14:
-  self->_currAtState = *(v4 + 4);
+  self->_currAtState = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x10) == 0)
   {
 LABEL_6:
@@ -785,12 +785,12 @@ LABEL_6:
   }
 
 LABEL_15:
-  self->_prevStateDurMs = *(v4 + 7);
+  self->_prevStateDurMs = *(fromCopy + 7);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 36) & 4) != 0)
+  if ((*(fromCopy + 36) & 4) != 0)
   {
 LABEL_7:
-    self->_currNormalizedState = *(v4 + 5);
+    self->_currNormalizedState = *(fromCopy + 5);
     *&self->_has |= 4u;
   }
 

@@ -1,13 +1,13 @@
 @interface SASettingShowAndPerformSettingsAction
-- (id)_ad_aceSettingsResponseCommandRepresentationForSiriResponse:(id)a3;
+- (id)_ad_aceSettingsResponseCommandRepresentationForSiriResponse:(id)response;
 - (id)_ad_settingsRequestRepresentation;
 @end
 
 @implementation SASettingShowAndPerformSettingsAction
 
-- (id)_ad_aceSettingsResponseCommandRepresentationForSiriResponse:(id)a3
+- (id)_ad_aceSettingsResponseCommandRepresentationForSiriResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -26,10 +26,10 @@
 
 - (id)_ad_settingsRequestRepresentation
 {
-  v2 = [(SASettingShowAndPerformSettingsAction *)self settingsAction];
-  v3 = [v2 _ad_settingsRequestRepresentation];
+  settingsAction = [(SASettingShowAndPerformSettingsAction *)self settingsAction];
+  _ad_settingsRequestRepresentation = [settingsAction _ad_settingsRequestRepresentation];
 
-  return v3;
+  return _ad_settingsRequestRepresentation;
 }
 
 @end

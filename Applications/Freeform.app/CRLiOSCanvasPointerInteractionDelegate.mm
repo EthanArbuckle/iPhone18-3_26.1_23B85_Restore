@@ -1,37 +1,37 @@
 @interface CRLiOSCanvasPointerInteractionDelegate
-- (CRLiOSCanvasPointerInteractionDelegate)initWithInteractiveCanvasController:(id)a3;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (CRLiOSCanvasPointerInteractionDelegate)initWithInteractiveCanvasController:(id)controller;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 @end
 
 @implementation CRLiOSCanvasPointerInteractionDelegate
 
-- (CRLiOSCanvasPointerInteractionDelegate)initWithInteractiveCanvasController:(id)a3
+- (CRLiOSCanvasPointerInteractionDelegate)initWithInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = CRLiOSCanvasPointerInteractionDelegate;
   v5 = [(CRLiOSCanvasPointerInteractionDelegate *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_icc, v4);
+    objc_storeWeak(&v5->_icc, controllerCopy);
   }
 
   return v6;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  interactionCopy = interaction;
+  requestCopy = request;
+  regionCopy = region;
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v12 = [WeakRetained layerHost];
-  v13 = [v12 asiOSCVC];
+  layerHost = [WeakRetained layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
 
-  [v9 location];
-  if (([v13 i_allowCanvasInteraction:v8 atPoint:?] & 1) == 0)
+  [requestCopy location];
+  if (([asiOSCVC i_allowCanvasInteraction:interactionCopy atPoint:?] & 1) == 0)
   {
     lastCursor = self->_lastCursor;
     self->_lastCursor = 0;
@@ -40,14 +40,14 @@
     goto LABEL_40;
   }
 
-  v108 = [CRLCursorPlatformObject cursorPlatformObjectWithPointerRegionRequest:v9];
+  v108 = [CRLCursorPlatformObject cursorPlatformObjectWithPointerRegionRequest:requestCopy];
   v14 = objc_loadWeakRetained(&self->_icc);
-  [v9 location];
+  [requestCopy location];
   [v14 convertBoundsToUnscaledPoint:?];
   v16 = v15;
   v18 = v17;
 
-  if (([v13 currentlyTrackingIndirectPointerTouch] & 1) == 0)
+  if (([asiOSCVC currentlyTrackingIndirectPointerTouch] & 1) == 0)
   {
     lastCursorUpdatingSource = self->_lastCursorUpdatingSource;
     self->_lastCursorUpdatingSource = 0;
@@ -64,30 +64,30 @@
       v41 = v40;
       v42 = v38;
       v105 = v37;
-      v43 = v41;
+      reverseObjectEnumerator = v41;
       v44 = v42;
       v39 = CRLMetalContext;
       v51 = sub_1003035DC(v44, 1, v45, v46, v47, v48, v49, v50, &OBJC_PROTOCOL___CRLiOSCursorUpdatingSource);
       v52 = self->_lastCursorUpdatingSource;
       self->_lastCursorUpdatingSource = v51;
 
-      v53 = v43;
+      v53 = reverseObjectEnumerator;
     }
 
     else
     {
-      v54 = [v13 delegate];
+      delegate = [asiOSCVC delegate];
       if (objc_opt_respondsToSelector())
       {
-        v55 = [v54 currentDocumentMode];
-        v53 = [v55 cursorAtPoint:v108 withCursorPlatformObject:{v16, v18}];
+        currentDocumentMode = [delegate currentDocumentMode];
+        v53 = [currentDocumentMode cursorAtPoint:v108 withCursorPlatformObject:{v16, v18}];
 
         if (v53)
         {
           v105 = 0;
 LABEL_32:
-          v84 = [&v39[88] defaultCursor];
-          if (v53 == v84)
+          defaultCursor = [&v39[88] defaultCursor];
+          if (v53 == defaultCursor)
           {
             v85 = 0;
           }
@@ -102,9 +102,9 @@ LABEL_32:
           v86 = self->_lastCursor;
           if (v86)
           {
-            v87 = [(CRLCursor *)v86 identifierSuffix];
+            identifierSuffix = [(CRLCursor *)v86 identifierSuffix];
             v88 = v105;
-            v89 = [NSString stringWithFormat:@"%p-%@", v105, v87];
+            v89 = [NSString stringWithFormat:@"%p-%@", v105, identifierSuffix];
 
             [(CRLCursor *)self->_lastCursor activeScaledRect];
             v34 = [UIPointerRegion regionWithRect:v89 identifier:?];
@@ -125,18 +125,18 @@ LABEL_32:
       }
 
       v102 = v37;
-      v103 = v8;
-      v104 = v10;
+      v103 = interactionCopy;
+      v104 = regionCopy;
       v111 = 0u;
       v112 = 0u;
       v109 = 0u;
       v110 = 0u;
       v56 = objc_loadWeakRetained(&self->_icc);
-      v57 = [v56 editorController];
-      v58 = [v57 currentEditors];
-      v43 = [v58 reverseObjectEnumerator];
+      editorController = [v56 editorController];
+      currentEditors = [editorController currentEditors];
+      reverseObjectEnumerator = [currentEditors reverseObjectEnumerator];
 
-      v59 = [v43 countByEnumeratingWithState:&v109 objects:v114 count:16];
+      v59 = [reverseObjectEnumerator countByEnumeratingWithState:&v109 objects:v114 count:16];
       if (v59)
       {
         v60 = v59;
@@ -147,7 +147,7 @@ LABEL_32:
           {
             if (*v110 != v61)
             {
-              objc_enumerationMutation(v43);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
             v63 = *(*(&v109 + 1) + 8 * i);
@@ -162,8 +162,8 @@ LABEL_32:
                 v83 = self->_lastCursorUpdatingSource;
                 self->_lastCursorUpdatingSource = v82;
 
-                v8 = v103;
-                v10 = v104;
+                interactionCopy = v103;
+                regionCopy = v104;
                 v37 = v102;
                 v39 = CRLMetalContext;
                 goto LABEL_31;
@@ -171,7 +171,7 @@ LABEL_32:
             }
           }
 
-          v60 = [v43 countByEnumeratingWithState:&v109 objects:v114 count:16];
+          v60 = [reverseObjectEnumerator countByEnumeratingWithState:&v109 objects:v114 count:16];
           if (v60)
           {
             continue;
@@ -190,8 +190,8 @@ LABEL_32:
       {
         v105 = 0;
         v106 = v66;
-        v8 = v103;
-        v10 = v104;
+        interactionCopy = v103;
+        regionCopy = v104;
         v37 = v102;
         v39 = CRLMetalContext;
         goto LABEL_32;
@@ -200,8 +200,8 @@ LABEL_32:
       v39 = CRLMetalContext;
       v67 = +[CRLCursor defaultCursor];
 
-      v8 = v103;
-      v10 = v104;
+      interactionCopy = v103;
+      regionCopy = v104;
       v37 = v102;
       if (v53 == v67)
       {
@@ -212,7 +212,7 @@ LABEL_32:
 
       v68 = v66;
       v75 = sub_1003035DC(v68, 1, v69, v70, v71, v72, v73, v74, &OBJC_PROTOCOL___CRLiOSCursorUpdatingSource);
-      v43 = self->_lastCursorUpdatingSource;
+      reverseObjectEnumerator = self->_lastCursorUpdatingSource;
       self->_lastCursorUpdatingSource = v75;
       v105 = v68;
       v106 = v68;
@@ -229,7 +229,7 @@ LABEL_31:
     v19 = self->_lastCursorUpdatingSource;
     if (v19 && [(CRLiOSCursorUpdatingSource *)v19 wantsOpportunityToUpdateCursorDuringDrag])
     {
-      v21 = v8;
+      v21 = interactionCopy;
       v22 = objc_opt_class();
       v23 = sub_100014370(v22, *p_lastCursorUpdatingSource);
       v30 = sub_1003035DC(*p_lastCursorUpdatingSource, 1, v24, v25, v26, v27, v28, v29, &OBJC_PROTOCOL___CRLEditor);
@@ -284,12 +284,12 @@ LABEL_46:
       v92 = self->_lastCursor;
       if (v92)
       {
-        v93 = v10;
+        v93 = regionCopy;
         v94 = self->_lastCursorUpdatingSource;
-        v95 = [(CRLCursor *)v92 identifierSuffix];
+        identifierSuffix2 = [(CRLCursor *)v92 identifierSuffix];
         v101 = v94;
-        v10 = v93;
-        v96 = [NSString stringWithFormat:@"%p-%@", v101, v95];
+        regionCopy = v93;
+        v96 = [NSString stringWithFormat:@"%p-%@", v101, identifierSuffix2];
 
         [(CRLCursor *)self->_lastCursor activeScaledRect];
         v34 = [UIPointerRegion regionWithRect:v96 identifier:?];
@@ -300,11 +300,11 @@ LABEL_46:
         v34 = 0;
       }
 
-      v8 = v21;
+      interactionCopy = v21;
       goto LABEL_39;
     }
 
-    v34 = v10;
+    v34 = regionCopy;
     [(CRLCursor *)self->_lastCursor setConstrainedAxes:0];
   }
 
@@ -320,26 +320,26 @@ LABEL_40:
   return v34;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = [(CRLCursor *)self->_lastCursor effect:a3];
+  v5 = [(CRLCursor *)self->_lastCursor effect:interaction];
 
   if (v5)
   {
-    v6 = [(CRLCursor *)self->_lastCursor effect];
-    v7 = [UIPointerStyle styleWithEffect:v6 shape:0];
+    effect = [(CRLCursor *)self->_lastCursor effect];
+    v7 = [UIPointerStyle styleWithEffect:effect shape:0];
 LABEL_5:
     v9 = v7;
 
     goto LABEL_6;
   }
 
-  v8 = [(CRLCursor *)self->_lastCursor shape];
+  shape = [(CRLCursor *)self->_lastCursor shape];
 
-  if (v8)
+  if (shape)
   {
-    v6 = [(CRLCursor *)self->_lastCursor shape];
-    v7 = [UIPointerStyle styleWithShape:v6 constrainedAxes:[(CRLCursor *)self->_lastCursor constrainedAxes]];
+    effect = [(CRLCursor *)self->_lastCursor shape];
+    v7 = [UIPointerStyle styleWithShape:effect constrainedAxes:[(CRLCursor *)self->_lastCursor constrainedAxes]];
     goto LABEL_5;
   }
 

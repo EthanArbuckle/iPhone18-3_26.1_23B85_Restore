@@ -18,29 +18,29 @@
 - (CAFTestDevEventWithParamsControl)testDevEventWithParamsControl;
 - (id)testAccEventNoParamsHandler;
 - (id)testAccEventWithParamsHandler;
-- (void)_controlDidUpdate:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)setTestAccEventNoParamsHandler:(id)a3;
-- (void)setTestAccEventWithParamsHandler:(id)a3;
+- (void)_controlDidUpdate:(id)update;
+- (void)registerObserver:(id)observer;
+- (void)setTestAccEventNoParamsHandler:(id)handler;
+- (void)setTestAccEventWithParamsHandler:(id)handler;
 - (void)testDevEventNoParams;
-- (void)unregisterObserver:(id)a3;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFTestControlEvent
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFTestControlEvent;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -53,12 +53,12 @@
   [(CAFService *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -90,37 +90,37 @@
 
 - (void)testDevEventNoParams
 {
-  v2 = [(CAFTestControlEvent *)self testDevEventNoParamsControl];
-  if (v2)
+  testDevEventNoParamsControl = [(CAFTestControlEvent *)self testDevEventNoParamsControl];
+  if (testDevEventNoParamsControl)
   {
-    v3 = v2;
-    [v2 testDevEventNoParams];
-    v2 = v3;
+    v3 = testDevEventNoParamsControl;
+    [testDevEventNoParamsControl testDevEventNoParams];
+    testDevEventNoParamsControl = v3;
   }
 }
 
 - (BOOL)hasTestDevEventNoParams
 {
-  v2 = [(CAFTestControlEvent *)self testDevEventNoParamsControl];
-  v3 = v2 != 0;
+  testDevEventNoParamsControl = [(CAFTestControlEvent *)self testDevEventNoParamsControl];
+  v3 = testDevEventNoParamsControl != 0;
 
   return v3;
 }
 
 - (BOOL)testDevEventNoParamsError
 {
-  v2 = [(CAFTestControlEvent *)self testDevEventNoParamsControl];
-  v3 = [v2 hasErrorState];
+  testDevEventNoParamsControl = [(CAFTestControlEvent *)self testDevEventNoParamsControl];
+  hasErrorState = [testDevEventNoParamsControl hasErrorState];
 
-  return v3;
+  return hasErrorState;
 }
 
 - (BOOL)testDevEventNoParamsDisabled
 {
-  v2 = [(CAFTestControlEvent *)self testDevEventNoParamsControl];
-  v3 = [v2 isDisabled];
+  testDevEventNoParamsControl = [(CAFTestControlEvent *)self testDevEventNoParamsControl];
+  isDisabled = [testDevEventNoParamsControl isDisabled];
 
-  return v3;
+  return isDisabled;
 }
 
 - (CAFTestDevEventWithParamsControl)testDevEventWithParamsControl
@@ -142,26 +142,26 @@
 
 - (BOOL)hasTestDevEventWithParams
 {
-  v2 = [(CAFTestControlEvent *)self testDevEventWithParamsControl];
-  v3 = v2 != 0;
+  testDevEventWithParamsControl = [(CAFTestControlEvent *)self testDevEventWithParamsControl];
+  v3 = testDevEventWithParamsControl != 0;
 
   return v3;
 }
 
 - (BOOL)testDevEventWithParamsError
 {
-  v2 = [(CAFTestControlEvent *)self testDevEventWithParamsControl];
-  v3 = [v2 hasErrorState];
+  testDevEventWithParamsControl = [(CAFTestControlEvent *)self testDevEventWithParamsControl];
+  hasErrorState = [testDevEventWithParamsControl hasErrorState];
 
-  return v3;
+  return hasErrorState;
 }
 
 - (BOOL)testDevEventWithParamsDisabled
 {
-  v2 = [(CAFTestControlEvent *)self testDevEventWithParamsControl];
-  v3 = [v2 isDisabled];
+  testDevEventWithParamsControl = [(CAFTestControlEvent *)self testDevEventWithParamsControl];
+  isDisabled = [testDevEventWithParamsControl isDisabled];
 
-  return v3;
+  return isDisabled;
 }
 
 - (CAFTestAccEventNoParamsControl)testAccEventNoParamsControl
@@ -183,23 +183,23 @@
 
 - (id)testAccEventNoParamsHandler
 {
-  v2 = [(CAFTestControlEvent *)self testAccEventNoParamsControl];
-  v3 = [v2 handler];
+  testAccEventNoParamsControl = [(CAFTestControlEvent *)self testAccEventNoParamsControl];
+  handler = [testAccEventNoParamsControl handler];
 
-  return v3;
+  return handler;
 }
 
-- (void)setTestAccEventNoParamsHandler:(id)a3
+- (void)setTestAccEventNoParamsHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CAFTestControlEvent *)self testAccEventNoParamsControl];
-  [v5 setHandler:v4];
+  handlerCopy = handler;
+  testAccEventNoParamsControl = [(CAFTestControlEvent *)self testAccEventNoParamsControl];
+  [testAccEventNoParamsControl setHandler:handlerCopy];
 }
 
 - (BOOL)hasTestAccEventNoParams
 {
-  v2 = [(CAFTestControlEvent *)self testAccEventNoParamsControl];
-  v3 = v2 != 0;
+  testAccEventNoParamsControl = [(CAFTestControlEvent *)self testAccEventNoParamsControl];
+  v3 = testAccEventNoParamsControl != 0;
 
   return v3;
 }
@@ -223,42 +223,42 @@
 
 - (id)testAccEventWithParamsHandler
 {
-  v2 = [(CAFTestControlEvent *)self testAccEventWithParamsControl];
-  v3 = [v2 handler];
+  testAccEventWithParamsControl = [(CAFTestControlEvent *)self testAccEventWithParamsControl];
+  handler = [testAccEventWithParamsControl handler];
 
-  return v3;
+  return handler;
 }
 
-- (void)setTestAccEventWithParamsHandler:(id)a3
+- (void)setTestAccEventWithParamsHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CAFTestControlEvent *)self testAccEventWithParamsControl];
-  [v5 setHandler:v4];
+  handlerCopy = handler;
+  testAccEventWithParamsControl = [(CAFTestControlEvent *)self testAccEventWithParamsControl];
+  [testAccEventWithParamsControl setHandler:handlerCopy];
 }
 
 - (BOOL)hasTestAccEventWithParams
 {
-  v2 = [(CAFTestControlEvent *)self testAccEventWithParamsControl];
-  v3 = v2 != 0;
+  testAccEventWithParamsControl = [(CAFTestControlEvent *)self testAccEventWithParamsControl];
+  v3 = testAccEventWithParamsControl != 0;
 
   return v3;
 }
 
-- (void)_controlDidUpdate:(id)a3
+- (void)_controlDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 controlType];
-  if ([v5 isEqual:@"0x00000000FF00002C"])
+  updateCopy = update;
+  controlType = [updateCopy controlType];
+  if ([controlType isEqual:@"0x00000000FF00002C"])
   {
-    v6 = [v4 uniqueIdentifier];
-    v7 = [(CAFTestControlEvent *)self testDevEventNoParamsControl];
-    v8 = [v7 uniqueIdentifier];
-    v9 = [v6 isEqual:v8];
+    uniqueIdentifier = [updateCopy uniqueIdentifier];
+    testDevEventNoParamsControl = [(CAFTestControlEvent *)self testDevEventNoParamsControl];
+    uniqueIdentifier2 = [testDevEventNoParamsControl uniqueIdentifier];
+    v9 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
     if (v9)
     {
-      v10 = [(CAFService *)self observers];
-      [v10 testControlEventServiceDidUpdateTestDevEventNoParams:self];
+      observers = [(CAFService *)self observers];
+      [observers testControlEventServiceDidUpdateTestDevEventNoParams:self];
 LABEL_8:
 
       goto LABEL_9;
@@ -269,40 +269,40 @@ LABEL_8:
   {
   }
 
-  v10 = [v4 controlType];
-  if (![v10 isEqual:@"0x00000000FF00002D"])
+  observers = [updateCopy controlType];
+  if (![observers isEqual:@"0x00000000FF00002D"])
   {
     goto LABEL_8;
   }
 
-  v11 = [v4 uniqueIdentifier];
-  v12 = [(CAFTestControlEvent *)self testDevEventWithParamsControl];
-  v13 = [v12 uniqueIdentifier];
-  v14 = [v11 isEqual:v13];
+  uniqueIdentifier3 = [updateCopy uniqueIdentifier];
+  testDevEventWithParamsControl = [(CAFTestControlEvent *)self testDevEventWithParamsControl];
+  uniqueIdentifier4 = [testDevEventWithParamsControl uniqueIdentifier];
+  v14 = [uniqueIdentifier3 isEqual:uniqueIdentifier4];
 
   if (v14)
   {
-    v10 = [(CAFService *)self observers];
-    [v10 testControlEventServiceDidUpdateTestDevEventWithParams:self];
+    observers = [(CAFService *)self observers];
+    [observers testControlEventServiceDidUpdateTestDevEventWithParams:self];
     goto LABEL_8;
   }
 
 LABEL_9:
   v15.receiver = self;
   v15.super_class = CAFTestControlEvent;
-  [(CAFService *)&v15 _controlDidUpdate:v4];
+  [(CAFService *)&v15 _controlDidUpdate:updateCopy];
 }
 
 - (BOOL)registeredForTestDevEventNoParams
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x00000000FF00002C"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x00000000FF00002C"];
 
   return v10;
 }
@@ -310,13 +310,13 @@ LABEL_9:
 - (BOOL)registeredForTestDevEventWithParams
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x00000000FF00002D"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x00000000FF00002D"];
 
   return v10;
 }
@@ -324,13 +324,13 @@ LABEL_9:
 - (BOOL)registeredForTestAccEventNoParams
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x00000000FF000032"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x00000000FF000032"];
 
   return v10;
 }
@@ -338,13 +338,13 @@ LABEL_9:
 - (BOOL)registeredForTestAccEventWithParams
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x00000000FF000033"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x00000000FF000033"];
 
   return v10;
 }

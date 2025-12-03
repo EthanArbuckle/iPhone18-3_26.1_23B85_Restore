@@ -1,34 +1,34 @@
 @interface THWFreeTransformableRepGestureTargetHandler
-- (BOOL)canHandleGesture:(id)a3;
-- (BOOL)freeTransformControllerShouldAllowPinchDown:(id)a3;
-- (BOOL)freeTransformControllerShouldMoveFreeTransformViewAboveStatusBar:(id)a3;
-- (BOOL)freeTransformControllerShouldUpdateAngleAfterBegin:(id)a3;
-- (BOOL)freeTransformControllerShouldUsedTracedShadowPath:(id)a3;
-- (BOOL)freeTransformControllerWantsCurtainFadeOut:(id)a3;
-- (BOOL)freeTransformControllerWantsShadow:(id)a3;
-- (BOOL)handleGesture:(id)a3;
+- (BOOL)canHandleGesture:(id)gesture;
+- (BOOL)freeTransformControllerShouldAllowPinchDown:(id)down;
+- (BOOL)freeTransformControllerShouldMoveFreeTransformViewAboveStatusBar:(id)bar;
+- (BOOL)freeTransformControllerShouldUpdateAngleAfterBegin:(id)begin;
+- (BOOL)freeTransformControllerShouldUsedTracedShadowPath:(id)path;
+- (BOOL)freeTransformControllerWantsCurtainFadeOut:(id)out;
+- (BOOL)freeTransformControllerWantsShadow:(id)shadow;
+- (BOOL)handleGesture:(id)gesture;
 - (BOOL)interactionEnabled;
-- (CGRect)freeTransformControllerRectForCompletionAnimation:(id)a3;
-- (CGSize)curtainSizeForFreeTransformController:(id)a3;
+- (CGRect)freeTransformControllerRectForCompletionAnimation:(id)animation;
+- (CGSize)curtainSizeForFreeTransformController:(id)controller;
 - (THWFreeTransformController)ftc;
-- (THWFreeTransformableRepGestureTargetHandler)initWithFreeTransformableRep:(id)a3 handler:(id)a4;
-- (id)curtainColorForFreeTransformController:(id)a3;
-- (id)freeTransformControllerStyledRep:(id)a3;
-- (id)shadowPathForFreeTransformController:(id)a3;
-- (id)unmovingParentViewForFreeTransformController:(id)a3;
-- (void)freeTransformControllerDidBegin:(id)a3;
-- (void)freeTransformControllerDidEnd:(id)a3 passedThreshold:(BOOL)a4;
-- (void)freeTransformControllerDidFinishFreeTransforming:(id)a3 passedThreshold:(BOOL)a4 completionBlock:(id)a5;
-- (void)freeTransformControllerWillFadeOutCurtain:(id)a3;
-- (void)freeTransformControllerWillMoveTargetLayer:(id)a3;
+- (THWFreeTransformableRepGestureTargetHandler)initWithFreeTransformableRep:(id)rep handler:(id)handler;
+- (id)curtainColorForFreeTransformController:(id)controller;
+- (id)freeTransformControllerStyledRep:(id)rep;
+- (id)shadowPathForFreeTransformController:(id)controller;
+- (id)unmovingParentViewForFreeTransformController:(id)controller;
+- (void)freeTransformControllerDidBegin:(id)begin;
+- (void)freeTransformControllerDidEnd:(id)end passedThreshold:(BOOL)threshold;
+- (void)freeTransformControllerDidFinishFreeTransforming:(id)transforming passedThreshold:(BOOL)threshold completionBlock:(id)block;
+- (void)freeTransformControllerWillFadeOutCurtain:(id)curtain;
+- (void)freeTransformControllerWillMoveTargetLayer:(id)layer;
 - (void)p_cleanupAfterFreeTransform;
-- (void)p_setupFreeTransformControllerWithGesture:(id)a3;
-- (void)willBeginHandlingGesture:(id)a3;
+- (void)p_setupFreeTransformControllerWithGesture:(id)gesture;
+- (void)willBeginHandlingGesture:(id)gesture;
 @end
 
 @implementation THWFreeTransformableRepGestureTargetHandler
 
-- (THWFreeTransformableRepGestureTargetHandler)initWithFreeTransformableRep:(id)a3 handler:(id)a4
+- (THWFreeTransformableRepGestureTargetHandler)initWithFreeTransformableRep:(id)rep handler:(id)handler
 {
   v9.receiver = self;
   v9.super_class = THWFreeTransformableRepGestureTargetHandler;
@@ -36,8 +36,8 @@
   v7 = v6;
   if (v6)
   {
-    [(THWFreeTransformableRepGestureTargetHandler *)v6 setRep:a3];
-    [(THWFreeTransformableRepGestureTargetHandler *)v7 setHandler:a4];
+    [(THWFreeTransformableRepGestureTargetHandler *)v6 setRep:rep];
+    [(THWFreeTransformableRepGestureTargetHandler *)v7 setHandler:handler];
   }
 
   return v7;
@@ -73,21 +73,21 @@
 
 - (THWFreeTransformController)ftc
 {
-  v2 = [(THWFreeTransformableRepHandler *)[(THWFreeTransformableRepGestureTargetHandler *)self handler] freeTransformController];
-  if (!v2)
+  freeTransformController = [(THWFreeTransformableRepHandler *)[(THWFreeTransformableRepGestureTargetHandler *)self handler] freeTransformController];
+  if (!freeTransformController)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  return v2;
+  return freeTransformController;
 }
 
-- (void)p_setupFreeTransformControllerWithGesture:(id)a3
+- (void)p_setupFreeTransformControllerWithGesture:(id)gesture
 {
   if ([(THWFreeTransformController *)[(THWFreeTransformableRepGestureTargetHandler *)self ftc] delegate]!= self)
   {
-    v5 = [a3 freeTransformDelegate];
-    if (v5 != [(THWFreeTransformableRepHandler *)[(THWFreeTransformableRepGestureTargetHandler *)self handler] freeTransformController])
+    freeTransformDelegate = [gesture freeTransformDelegate];
+    if (freeTransformDelegate != [(THWFreeTransformableRepHandler *)[(THWFreeTransformableRepGestureTargetHandler *)self handler] freeTransformController])
     {
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
@@ -103,7 +103,7 @@
     }
 
     [(THWFreeTransformController *)[(THWFreeTransformableRepGestureTargetHandler *)self ftc] setDelegate:self];
-    [(THWFreeTransformController *)[(THWFreeTransformableRepGestureTargetHandler *)self ftc] setTransformGR:a3];
+    [(THWFreeTransformController *)[(THWFreeTransformableRepGestureTargetHandler *)self ftc] setTransformGR:gesture];
     [(THWFreeTransformController *)[(THWFreeTransformableRepGestureTargetHandler *)self ftc] setTargetLayer:[[(THWFreeTransformableRepGestureTargetHandler *)self rep] transformLayer]];
     v6 = 0.75;
     if (([[(THWFreeTransformableRepGestureTargetHandler *)self rep] isExpanded]& 1) == 0)
@@ -131,15 +131,15 @@
     }
 
     [(THWFreeTransformController *)[(THWFreeTransformableRepGestureTargetHandler *)self ftc] setBounceUpOnly:v7];
-    v8 = [[(THWFreeTransformableRepGestureTargetHandler *)self rep] transformLayer];
-    if (v8)
+    transformLayer = [[(THWFreeTransformableRepGestureTargetHandler *)self rep] transformLayer];
+    if (transformLayer)
     {
-      v9 = v8;
-      v10 = [(THWFreeTransformableRepHandler *)[(THWFreeTransformableRepGestureTargetHandler *)self handler] hostCanvasLayer];
+      v9 = transformLayer;
+      hostCanvasLayer = [(THWFreeTransformableRepHandler *)[(THWFreeTransformableRepGestureTargetHandler *)self handler] hostCanvasLayer];
       [v9 frame];
-      [v10 convertRect:objc_msgSend(v9 fromLayer:{"superlayer"), v11, v12, v13, v14}];
+      [hostCanvasLayer convertRect:objc_msgSend(v9 fromLayer:{"superlayer"), v11, v12, v13, v14}];
 
-      [a3 recenterOnTargetWithRectInView:?];
+      [gesture recenterOnTargetWithRectInView:?];
     }
   }
 }
@@ -153,38 +153,38 @@
   [(THWFreeTransformController *)v3 setTransformGR:0];
 }
 
-- (void)freeTransformControllerWillFadeOutCurtain:(id)a3
+- (void)freeTransformControllerWillFadeOutCurtain:(id)curtain
 {
   [(THWFreeTransformableRepGestureTargetHandler *)self handler];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(THWFreeTransformableRepGestureTargetHandler *)self handler];
+    handler = [(THWFreeTransformableRepGestureTargetHandler *)self handler];
     v5 = [(THWFreeTransformableRepGestureTargetHandler *)self rep];
     v6 = [(THWFreeTransformableRepGestureTargetHandler *)self rep];
 
-    [(THWFreeTransformableRepHandler *)v4 freeTransformWillFadeOutCurtain:v5 expandableRep:v6];
+    [(THWFreeTransformableRepHandler *)handler freeTransformWillFadeOutCurtain:v5 expandableRep:v6];
   }
 }
 
-- (BOOL)freeTransformControllerWantsCurtainFadeOut:(id)a3
+- (BOOL)freeTransformControllerWantsCurtainFadeOut:(id)out
 {
   v3 = [(THWFreeTransformableRepGestureTargetHandler *)self rep];
 
   return [(THWFreeTransformableRep *)v3 isExpanded];
 }
 
-- (id)curtainColorForFreeTransformController:(id)a3
+- (id)curtainColorForFreeTransformController:(id)controller
 {
-  v3 = [(THWFreeTransformableRepGestureTargetHandler *)self handler];
+  handler = [(THWFreeTransformableRepGestureTargetHandler *)self handler];
 
-  return [(THWFreeTransformableRepHandler *)v3 curtainColorForFreeTransform];
+  return [(THWFreeTransformableRepHandler *)handler curtainColorForFreeTransform];
 }
 
-- (CGSize)curtainSizeForFreeTransformController:(id)a3
+- (CGSize)curtainSizeForFreeTransformController:(id)controller
 {
   width = CGSizeZero.width;
   height = CGSizeZero.height;
-  if (-[THWFreeTransformableRep isExpanded](-[THWFreeTransformableRepGestureTargetHandler rep](self, "rep", a3), "isExpanded") && [-[THWFreeTransformableRepHandler hostCanvasLayer](-[THWFreeTransformableRepGestureTargetHandler handler](self "handler")])
+  if (-[THWFreeTransformableRep isExpanded](-[THWFreeTransformableRepGestureTargetHandler rep](self, "rep", controller), "isExpanded") && [-[THWFreeTransformableRepHandler hostCanvasLayer](-[THWFreeTransformableRepGestureTargetHandler handler](self "handler")])
   {
     [objc_msgSend(-[THWFreeTransformableRepHandler hostCanvasLayer](-[THWFreeTransformableRepGestureTargetHandler handler](self "handler")];
     width = v6;
@@ -198,28 +198,28 @@
   return result;
 }
 
-- (void)freeTransformControllerDidBegin:(id)a3
+- (void)freeTransformControllerDidBegin:(id)begin
 {
-  v4 = [(THWFreeTransformableRepGestureTargetHandler *)self handler];
+  handler = [(THWFreeTransformableRepGestureTargetHandler *)self handler];
   v5 = [(THWFreeTransformableRepGestureTargetHandler *)self rep];
   v6 = [(THWFreeTransformableRepGestureTargetHandler *)self rep];
 
-  [(THWFreeTransformableRepHandler *)v4 freeTransformDidBeginWithRep:v5 expandableRep:v6];
+  [(THWFreeTransformableRepHandler *)handler freeTransformDidBeginWithRep:v5 expandableRep:v6];
 }
 
-- (BOOL)freeTransformControllerShouldUpdateAngleAfterBegin:(id)a3
+- (BOOL)freeTransformControllerShouldUpdateAngleAfterBegin:(id)begin
 {
   v3 = [(THWFreeTransformableRepGestureTargetHandler *)self rep];
 
   return [(THWFreeTransformableRep *)v3 isExpanded];
 }
 
-- (CGRect)freeTransformControllerRectForCompletionAnimation:(id)a3
+- (CGRect)freeTransformControllerRectForCompletionAnimation:(id)animation
 {
-  v4 = [(THWFreeTransformableRepGestureTargetHandler *)self handler];
+  handler = [(THWFreeTransformableRepGestureTargetHandler *)self handler];
   v5 = [(THWFreeTransformableRepGestureTargetHandler *)self rep];
 
-  [(THWFreeTransformableRepHandler *)v4 rectForCompletionAnimationWithRep:v5];
+  [(THWFreeTransformableRepHandler *)handler rectForCompletionAnimationWithRep:v5];
   result.size.height = v9;
   result.size.width = v8;
   result.origin.y = v7;
@@ -227,48 +227,48 @@
   return result;
 }
 
-- (void)freeTransformControllerDidEnd:(id)a3 passedThreshold:(BOOL)a4
+- (void)freeTransformControllerDidEnd:(id)end passedThreshold:(BOOL)threshold
 {
-  v4 = a4;
+  thresholdCopy = threshold;
   [[(THWFreeTransformableRepGestureTargetHandler *)self rep] freeTransformDidEnd];
   [(THWFreeTransformableRepGestureTargetHandler *)self rep];
   if (objc_opt_respondsToSelector())
   {
-    [[(THWFreeTransformableRepGestureTargetHandler *)self rep] freeTransformDidEndPassedThreshold:v4];
+    [[(THWFreeTransformableRepGestureTargetHandler *)self rep] freeTransformDidEndPassedThreshold:thresholdCopy];
   }
 
   [(THWFreeTransformableRepGestureTargetHandler *)self p_cleanupAfterFreeTransform];
 }
 
-- (id)unmovingParentViewForFreeTransformController:(id)a3
+- (id)unmovingParentViewForFreeTransformController:(id)controller
 {
-  v3 = [[(THWFreeTransformableRepGestureTargetHandler *)self rep] interactiveCanvasController];
+  interactiveCanvasController = [[(THWFreeTransformableRepGestureTargetHandler *)self rep] interactiveCanvasController];
 
-  return [v3 canvasView];
+  return [interactiveCanvasController canvasView];
 }
 
-- (void)freeTransformControllerDidFinishFreeTransforming:(id)a3 passedThreshold:(BOOL)a4 completionBlock:(id)a5
+- (void)freeTransformControllerDidFinishFreeTransforming:(id)transforming passedThreshold:(BOOL)threshold completionBlock:(id)block
 {
-  v6 = a4;
-  v9 = [(THWFreeTransformableRepGestureTargetHandler *)self handler];
+  thresholdCopy = threshold;
+  handler = [(THWFreeTransformableRepGestureTargetHandler *)self handler];
   v10 = [(THWFreeTransformableRepGestureTargetHandler *)self rep];
   v11 = [(THWFreeTransformableRepGestureTargetHandler *)self rep];
-  if (v6)
+  if (thresholdCopy)
   {
 
-    [(THWFreeTransformableRepHandler *)v9 freeTransformDidEndWithRep:v10 expandableRep:v11 completionBlock:a5];
+    [(THWFreeTransformableRepHandler *)handler freeTransformDidEndWithRep:v10 expandableRep:v11 completionBlock:block];
   }
 
   else
   {
-    [(THWFreeTransformableRepHandler *)v9 freeTransformDidCancelWithRep:v10 expandableRep:v11];
+    [(THWFreeTransformableRepHandler *)handler freeTransformDidCancelWithRep:v10 expandableRep:v11];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v14 = sub_189F34;
     v15 = &unk_45AEA8;
-    v16 = self;
-    v17 = a5;
-    if ([objc_msgSend(a3 "transformGR")] == &dword_4)
+    selfCopy = self;
+    blockCopy = block;
+    if ([objc_msgSend(transforming "transformGR")] == &dword_4)
     {
       v14(v13);
     }
@@ -280,16 +280,16 @@
         [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
       }
 
-      v12 = [[(THWFreeTransformableRepGestureTargetHandler *)self rep] animationController];
-      [v12 setSource:{-[THWFreeTransformableRepGestureTargetHandler rep](self, "rep")}];
-      [v12 setDestination:{-[THWFreeTransformableRepGestureTargetHandler rep](self, "rep")}];
-      [v12 setHostLayer:{objc_msgSend(objc_msgSend(-[THWFreeTransformableRep interactiveCanvasController](-[THWFreeTransformableRepGestureTargetHandler rep](self, "rep"), "interactiveCanvasController"), "layerHost"), "canvasLayer")}];
-      [v12 presentAnimationWithCompletionBlock:v13 overshoot:{-[THWFreeTransformableRep isExpanded](-[THWFreeTransformableRepGestureTargetHandler rep](self, "rep"), "isExpanded") ^ 1}];
+      animationController = [[(THWFreeTransformableRepGestureTargetHandler *)self rep] animationController];
+      [animationController setSource:{-[THWFreeTransformableRepGestureTargetHandler rep](self, "rep")}];
+      [animationController setDestination:{-[THWFreeTransformableRepGestureTargetHandler rep](self, "rep")}];
+      [animationController setHostLayer:{objc_msgSend(objc_msgSend(-[THWFreeTransformableRep interactiveCanvasController](-[THWFreeTransformableRepGestureTargetHandler rep](self, "rep"), "interactiveCanvasController"), "layerHost"), "canvasLayer")}];
+      [animationController presentAnimationWithCompletionBlock:v13 overshoot:{-[THWFreeTransformableRep isExpanded](-[THWFreeTransformableRepGestureTargetHandler rep](self, "rep"), "isExpanded") ^ 1}];
     }
   }
 }
 
-- (BOOL)freeTransformControllerShouldMoveFreeTransformViewAboveStatusBar:(id)a3
+- (BOOL)freeTransformControllerShouldMoveFreeTransformViewAboveStatusBar:(id)bar
 {
   [(THWFreeTransformableRepGestureTargetHandler *)self rep];
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -302,7 +302,7 @@
   return [(THWFreeTransformableRep *)v4 freeTransformShouldMoveAboveStatusBar];
 }
 
-- (id)freeTransformControllerStyledRep:(id)a3
+- (id)freeTransformControllerStyledRep:(id)rep
 {
   [(THWFreeTransformableRepGestureTargetHandler *)self rep];
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -315,32 +315,32 @@
   return [(THWFreeTransformableRep *)v4 styledRep];
 }
 
-- (void)freeTransformControllerWillMoveTargetLayer:(id)a3
+- (void)freeTransformControllerWillMoveTargetLayer:(id)layer
 {
   [(THWFreeTransformableRepGestureTargetHandler *)self rep];
   if (objc_opt_respondsToSelector())
   {
     v5 = [(THWFreeTransformableRepGestureTargetHandler *)self rep];
 
-    [(THWFreeTransformableRep *)v5 freeTransformWillMoveTargetLayer:a3];
+    [(THWFreeTransformableRep *)v5 freeTransformWillMoveTargetLayer:layer];
   }
 }
 
-- (id)shadowPathForFreeTransformController:(id)a3
+- (id)shadowPathForFreeTransformController:(id)controller
 {
   v3 = [(THWFreeTransformableRepGestureTargetHandler *)self rep];
 
   return [(THWFreeTransformableRep *)v3 shadowPath];
 }
 
-- (BOOL)freeTransformControllerShouldUsedTracedShadowPath:(id)a3
+- (BOOL)freeTransformControllerShouldUsedTracedShadowPath:(id)path
 {
   v3 = [(THWFreeTransformableRepGestureTargetHandler *)self rep];
 
   return [(THWFreeTransformableRep *)v3 freeTransformUseTracedShadowPath];
 }
 
-- (BOOL)freeTransformControllerWantsShadow:(id)a3
+- (BOOL)freeTransformControllerWantsShadow:(id)shadow
 {
   [(THWFreeTransformableRepGestureTargetHandler *)self rep];
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -353,40 +353,40 @@
   return [(THWFreeTransformableRep *)v4 freeTransformWantsShadow];
 }
 
-- (BOOL)freeTransformControllerShouldAllowPinchDown:(id)a3
+- (BOOL)freeTransformControllerShouldAllowPinchDown:(id)down
 {
-  v4 = [(THWFreeTransformableRepHandler *)[(THWFreeTransformableRepGestureTargetHandler *)self handler] hostCanvasLayer];
-  v5 = [[(THWFreeTransformableRepGestureTargetHandler *)self rep] isExpanded];
-  if (v5)
+  hostCanvasLayer = [(THWFreeTransformableRepHandler *)[(THWFreeTransformableRepGestureTargetHandler *)self handler] hostCanvasLayer];
+  isExpanded = [[(THWFreeTransformableRepGestureTargetHandler *)self rep] isExpanded];
+  if (isExpanded)
   {
-    if ([v4 allowsPinchZoom])
+    if ([hostCanvasLayer allowsPinchZoom])
     {
-      [v4 viewScale];
+      [hostCanvasLayer viewScale];
       v7 = v6;
-      [v4 minimumPinchViewScale];
-      LOBYTE(v5) = vabdd_f64(v7, v8) < 0.00999999978;
+      [hostCanvasLayer minimumPinchViewScale];
+      LOBYTE(isExpanded) = vabdd_f64(v7, v8) < 0.00999999978;
     }
 
     else
     {
-      LOBYTE(v5) = 1;
+      LOBYTE(isExpanded) = 1;
     }
   }
 
-  return v5;
+  return isExpanded;
 }
 
-- (BOOL)canHandleGesture:(id)a3
+- (BOOL)canHandleGesture:(id)gesture
 {
-  v5 = [(THWFreeTransformableRepGestureTargetHandler *)self interactionEnabled];
-  if (v5)
+  interactionEnabled = [(THWFreeTransformableRepGestureTargetHandler *)self interactionEnabled];
+  if (interactionEnabled)
   {
-    v6 = [a3 gestureKind];
-    if (v6 != TSDFreeTransform)
+    gestureKind = [gesture gestureKind];
+    if (gestureKind != TSDFreeTransform)
     {
 LABEL_3:
-      LOBYTE(v5) = 0;
-      return v5;
+      LOBYTE(interactionEnabled) = 0;
+      return interactionEnabled;
     }
 
     objc_opt_class();
@@ -398,8 +398,8 @@ LABEL_3:
 
     if ([v7 freeTransformDelegate])
     {
-      v8 = [v7 freeTransformDelegate];
-      if (v8 != [(THWFreeTransformableRepGestureTargetHandler *)self ftc])
+      freeTransformDelegate = [v7 freeTransformDelegate];
+      if (freeTransformDelegate != [(THWFreeTransformableRepGestureTargetHandler *)self ftc])
       {
         goto LABEL_3;
       }
@@ -438,10 +438,10 @@ LABEL_3:
       v31.size.height = height;
       v31.origin.y = y;
       v31.size.width = width;
-      v5 = CGRectContainsPoint(v31, v27);
-      if (!v5)
+      interactionEnabled = CGRectContainsPoint(v31, v27);
+      if (!interactionEnabled)
       {
-        return v5;
+        return interactionEnabled;
       }
     }
 
@@ -459,37 +459,37 @@ LABEL_3:
     if (objc_opt_respondsToSelector())
     {
       v20 = [(THWFreeTransformableRepGestureTargetHandler *)self rep];
-      [a3 naturalLocationForRep:{-[THWFreeTransformableRepGestureTargetHandler rep](self, "rep")}];
+      [gesture naturalLocationForRep:{-[THWFreeTransformableRepGestureTargetHandler rep](self, "rep")}];
       v21 = [(THWFreeTransformableRep *)v20 hitRep:?];
       v22 = [(THWFreeTransformableRepGestureTargetHandler *)self rep];
 
-      LOBYTE(v5) = [(THWFreeTransformableRep *)v22 freeTransformMayBeginOverRep:v21];
+      LOBYTE(interactionEnabled) = [(THWFreeTransformableRep *)v22 freeTransformMayBeginOverRep:v21];
     }
 
     else
     {
-      LOBYTE(v5) = 1;
+      LOBYTE(interactionEnabled) = 1;
     }
   }
 
-  return v5;
+  return interactionEnabled;
 }
 
-- (BOOL)handleGesture:(id)a3
+- (BOOL)handleGesture:(id)gesture
 {
-  v5 = [(THWFreeTransformableRepGestureTargetHandler *)self interactionEnabled];
-  if (v5)
+  interactionEnabled = [(THWFreeTransformableRepGestureTargetHandler *)self interactionEnabled];
+  if (interactionEnabled)
   {
-    v6 = [a3 gestureKind];
-    if (v6 == TSDFreeTransform)
+    gestureKind = [gesture gestureKind];
+    if (gestureKind == TSDFreeTransform)
     {
       objc_opt_class();
       v7 = TSUDynamicCast();
       if (v7)
       {
         v8 = v7;
-        v9 = [a3 gestureState];
-        if (v9 == 1)
+        gestureState = [gesture gestureState];
+        if (gestureState == 1)
         {
           [(THWFreeTransformableRepGestureTargetHandler *)self rep];
           if (objc_opt_respondsToSelector())
@@ -501,7 +501,7 @@ LABEL_3:
         }
 
         [-[THWFreeTransformableRepHandler freeTransformController](-[THWFreeTransformableRepGestureTargetHandler handler](self "handler")];
-        if (v9 - 3 <= 1)
+        if (gestureState - 3 <= 1)
         {
           [objc_msgSend(-[THWFreeTransformableRepHandler freeTransformController](-[THWFreeTransformableRepGestureTargetHandler handler](self "handler")];
           [-[THWFreeTransformableRepHandler freeTransformController](-[THWFreeTransformableRepGestureTargetHandler handler](self "handler")];
@@ -513,22 +513,22 @@ LABEL_3:
         [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
       }
 
-      LOBYTE(v5) = 1;
+      LOBYTE(interactionEnabled) = 1;
     }
 
     else
     {
-      LOBYTE(v5) = 0;
+      LOBYTE(interactionEnabled) = 0;
     }
   }
 
-  return v5;
+  return interactionEnabled;
 }
 
-- (void)willBeginHandlingGesture:(id)a3
+- (void)willBeginHandlingGesture:(id)gesture
 {
-  v4 = [a3 gestureKind];
-  if (v4 == TSDFreeTransform)
+  gestureKind = [gesture gestureKind];
+  if (gestureKind == TSDFreeTransform)
   {
     objc_opt_class();
     v5 = TSUDynamicCast();
@@ -539,16 +539,16 @@ LABEL_3:
 
     if ([v5 freeTransformDelegate])
     {
-      v6 = [v5 freeTransformDelegate];
-      if (v6 != [(THWFreeTransformableRepHandler *)[(THWFreeTransformableRepGestureTargetHandler *)self handler] freeTransformController])
+      freeTransformDelegate = [v5 freeTransformDelegate];
+      if (freeTransformDelegate != [(THWFreeTransformableRepHandler *)[(THWFreeTransformableRepGestureTargetHandler *)self handler] freeTransformController])
       {
         [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
       }
     }
 
-    v7 = [(THWFreeTransformableRepHandler *)[(THWFreeTransformableRepGestureTargetHandler *)self handler] freeTransformController];
+    freeTransformController = [(THWFreeTransformableRepHandler *)[(THWFreeTransformableRepGestureTargetHandler *)self handler] freeTransformController];
 
-    [v5 setFreeTransformDelegate:v7];
+    [v5 setFreeTransformDelegate:freeTransformController];
   }
 }
 

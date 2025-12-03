@@ -1,21 +1,21 @@
 @interface TIRecentInputs
-+ (BOOL)identifierIsSystemIdentifier:(id)a3;
-+ (BOOL)validateInputFormat:(id)a3 forIdentifier:(id)a4;
-+ (id)_lexiconPathForLocalIdentifier:(id)a3;
-+ (id)_sanitizeRecentInputString:(id)a3;
-+ (id)recentInputAtPath:(id)a3;
-+ (id)recentInputForIdentifier:(id)a3;
-+ (void)clearRecentInputForIdentifier:(id)a3;
-+ (void)recentInputForIdentifier:(id)a3 completionHandler:(id)a4;
-+ (void)removeInput:(id)a3 forSystemIdentifier:(id)a4;
-+ (void)requestLexiconForRecentInputIdentifier:(id)a3 completionHandler:(id)a4;
-+ (void)requestRemovalOfLexiconForRecentInputIdentifier:(id)a3;
-+ (void)storeInput:(id)a3 forLocalIdentifier:(id)a4;
-+ (void)storeInput:(id)a3 forSystemIdentifier:(id)a4;
-+ (void)storeInput:(id)a3 forSystemIdentifier:(id)a4 atPath:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)lexiconByRemovingEntry:(id)a3;
-- (id)lexiconWithAdditionalEntry:(id)a3 maximumSize:(int64_t)a4;
++ (BOOL)identifierIsSystemIdentifier:(id)identifier;
++ (BOOL)validateInputFormat:(id)format forIdentifier:(id)identifier;
++ (id)_lexiconPathForLocalIdentifier:(id)identifier;
++ (id)_sanitizeRecentInputString:(id)string;
++ (id)recentInputAtPath:(id)path;
++ (id)recentInputForIdentifier:(id)identifier;
++ (void)clearRecentInputForIdentifier:(id)identifier;
++ (void)recentInputForIdentifier:(id)identifier completionHandler:(id)handler;
++ (void)removeInput:(id)input forSystemIdentifier:(id)identifier;
++ (void)requestLexiconForRecentInputIdentifier:(id)identifier completionHandler:(id)handler;
++ (void)requestRemovalOfLexiconForRecentInputIdentifier:(id)identifier;
++ (void)storeInput:(id)input forLocalIdentifier:(id)identifier;
++ (void)storeInput:(id)input forSystemIdentifier:(id)identifier;
++ (void)storeInput:(id)input forSystemIdentifier:(id)identifier atPath:(id)path;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)lexiconByRemovingEntry:(id)entry;
+- (id)lexiconWithAdditionalEntry:(id)entry maximumSize:(int64_t)size;
 - (void)storeIfNecessary;
 @end
 
@@ -25,16 +25,16 @@
 {
   if ([(TIRecentInputs *)self needsSync])
   {
-    v3 = [(TIRecentInputs *)self filePath];
+    filePath = [(TIRecentInputs *)self filePath];
 
-    if (v3)
+    if (filePath)
     {
       v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
       if (v7)
       {
         v4 = MEMORY[0x1E695DFF8];
-        v5 = [(TIRecentInputs *)self filePath];
-        v6 = [v4 fileURLWithPath:v5];
+        filePath2 = [(TIRecentInputs *)self filePath];
+        v6 = [v4 fileURLWithPath:filePath2];
         [v7 writeToURL:v6 atomically:1];
       }
 
@@ -43,13 +43,13 @@
   }
 }
 
-- (id)lexiconByRemovingEntry:(id)a3
+- (id)lexiconByRemovingEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [(TILexicon *)self entries];
-  v6 = [v5 mutableCopy];
+  entryCopy = entry;
+  entries = [(TILexicon *)self entries];
+  v6 = [entries mutableCopy];
 
-  v7 = [v6 indexOfObject:v4];
+  v7 = [v6 indexOfObject:entryCopy];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [v6 removeObjectAtIndex:v7];
@@ -57,44 +57,44 @@
 
   v8 = [(TILexicon *)TIRecentInputs lexiconWithEntries:v6];
   [v8 setNeedsSync:1];
-  v9 = [(TIRecentInputs *)self filePath];
-  [v8 setFilePath:v9];
+  filePath = [(TIRecentInputs *)self filePath];
+  [v8 setFilePath:filePath];
 
   return v8;
 }
 
-- (id)lexiconWithAdditionalEntry:(id)a3 maximumSize:(int64_t)a4
+- (id)lexiconWithAdditionalEntry:(id)entry maximumSize:(int64_t)size
 {
-  v6 = a3;
-  v7 = [(TILexicon *)self entries];
-  v8 = [v7 mutableCopy];
+  entryCopy = entry;
+  entries = [(TILexicon *)self entries];
+  v8 = [entries mutableCopy];
 
-  v9 = [v8 indexOfObject:v6];
+  v9 = [v8 indexOfObject:entryCopy];
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [v8 removeObjectAtIndex:v9];
   }
 
-  [v8 insertObject:v6 atIndex:0];
+  [v8 insertObject:entryCopy atIndex:0];
   v10 = v8;
   v11 = v10;
-  if ([v10 count] > a4)
+  if ([v10 count] > size)
   {
-    v11 = [v10 subarrayWithRange:{0, a4}];
+    v11 = [v10 subarrayWithRange:{0, size}];
   }
 
   v12 = [(TILexicon *)TIRecentInputs lexiconWithEntries:v11];
   [v12 setNeedsSync:1];
-  v13 = [(TIRecentInputs *)self filePath];
-  [v12 setFilePath:v13];
+  filePath = [(TIRecentInputs *)self filePath];
+  [v12 setFilePath:filePath];
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(TILexicon *)self entries];
-  v5 = [(TILexicon *)TIRecentInputs lexiconWithEntries:v4];
+  entries = [(TILexicon *)self entries];
+  v5 = [(TILexicon *)TIRecentInputs lexiconWithEntries:entries];
 
   *(v5 + 16) = self->_needsSync;
   v6 = [(NSString *)self->_filePath copy];
@@ -104,49 +104,49 @@
   return v5;
 }
 
-+ (BOOL)identifierIsSystemIdentifier:(id)a3
++ (BOOL)identifierIsSystemIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"TIEmailRecentInputIdentifier"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"TIEmailRecentInputIdentifier"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"TISearchRecentInputIdentifier"];
+    v4 = [identifierCopy isEqualToString:@"TISearchRecentInputIdentifier"];
   }
 
   return v4;
 }
 
-+ (void)clearRecentInputForIdentifier:(id)a3
++ (void)clearRecentInputForIdentifier:(id)identifier
 {
-  v6 = a3;
-  if ([a1 identifierIsSystemIdentifier:?])
+  identifierCopy = identifier;
+  if ([self identifierIsSystemIdentifier:?])
   {
-    [a1 requestRemovalOfLexiconForRecentInputIdentifier:v6];
+    [self requestRemovalOfLexiconForRecentInputIdentifier:identifierCopy];
   }
 
-  else if (v6)
+  else if (identifierCopy)
   {
-    v4 = [a1 _lexiconPathForLocalIdentifier:v6];
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    [v5 removeItemAtPath:v4 error:0];
+    v4 = [self _lexiconPathForLocalIdentifier:identifierCopy];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager removeItemAtPath:v4 error:0];
   }
 }
 
-+ (BOOL)validateInputFormat:(id)a3 forIdentifier:(id)a4
++ (BOOL)validateInputFormat:(id)format forIdentifier:(id)identifier
 {
-  v5 = a3;
-  if ([a4 isEqualToString:@"TIEmailRecentInputIdentifier"])
+  formatCopy = format;
+  if ([identifier isEqualToString:@"TIEmailRecentInputIdentifier"])
   {
     if (validateInputFormat_forIdentifier__onceToken != -1)
     {
       dispatch_once(&validateInputFormat_forIdentifier__onceToken, &__block_literal_global_109);
     }
 
-    v6 = [validateInputFormat_forIdentifier__regExEmail numberOfMatchesInString:v5 options:0 range:{0, objc_msgSend(v5, "length")}] != 0;
+    v6 = [validateInputFormat_forIdentifier__regExEmail numberOfMatchesInString:formatCopy options:0 range:{0, objc_msgSend(formatCopy, "length")}] != 0;
   }
 
   else
@@ -166,18 +166,18 @@ void __52__TIRecentInputs_validateInputFormat_forIdentifier___block_invoke()
   }
 }
 
-+ (void)storeInput:(id)a3 forSystemIdentifier:(id)a4
++ (void)storeInput:(id)input forSystemIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  inputCopy = input;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (inputCopy && identifierCopy)
   {
-    v15 = [a1 _sanitizeRecentInputString:v6];
+    v15 = [self _sanitizeRecentInputString:inputCopy];
 
     if (v15)
     {
-      if ([a1 identifierIsSystemIdentifier:v8] && objc_msgSend(a1, "validateInputFormat:forIdentifier:", v15, v8))
+      if ([self identifierIsSystemIdentifier:v8] && objc_msgSend(self, "validateInputFormat:forIdentifier:", v15, v8))
       {
         if (_recentLexiconDispatchQueue_onceToken != -1)
         {
@@ -209,17 +209,17 @@ void __52__TIRecentInputs_validateInputFormat_forIdentifier___block_invoke()
 
   else
   {
-    v15 = v6;
+    v15 = inputCopy;
   }
 }
 
-+ (void)removeInput:(id)a3 forSystemIdentifier:(id)a4
++ (void)removeInput:(id)input forSystemIdentifier:(id)identifier
 {
-  v6 = a4;
-  v11 = [a1 _sanitizeRecentInputString:a3];
-  if (v11 && [a1 identifierIsSystemIdentifier:v6])
+  identifierCopy = identifier;
+  v11 = [self _sanitizeRecentInputString:input];
+  if (v11 && [self identifierIsSystemIdentifier:identifierCopy])
   {
-    v7 = [a1 _lexiconPathForLocalIdentifier:v6];
+    v7 = [self _lexiconPathForLocalIdentifier:identifierCopy];
     v8 = [TIRecentInputs recentInputAtPath:v7];
     v9 = [TILexiconEntry entryWithDocumentText:v11 userInput:v11];
     v10 = [v8 lexiconByRemovingEntry:v9];
@@ -228,14 +228,14 @@ void __52__TIRecentInputs_validateInputFormat_forIdentifier___block_invoke()
   }
 }
 
-+ (void)storeInput:(id)a3 forSystemIdentifier:(id)a4 atPath:(id)a5
++ (void)storeInput:(id)input forSystemIdentifier:(id)identifier atPath:(id)path
 {
-  v8 = a4;
-  v9 = a5;
-  v13 = [a1 _sanitizeRecentInputString:a3];
-  if (v13 && [a1 identifierIsSystemIdentifier:v8] && objc_msgSend(a1, "validateInputFormat:forIdentifier:", v13, v8))
+  identifierCopy = identifier;
+  pathCopy = path;
+  v13 = [self _sanitizeRecentInputString:input];
+  if (v13 && [self identifierIsSystemIdentifier:identifierCopy] && objc_msgSend(self, "validateInputFormat:forIdentifier:", v13, identifierCopy))
   {
-    v10 = [TIRecentInputs recentInputAtPath:v9];
+    v10 = [TIRecentInputs recentInputAtPath:pathCopy];
     v11 = [TILexiconEntry entryWithDocumentText:v13 userInput:v13];
     v12 = [v10 lexiconWithAdditionalEntry:v11 maximumSize:7];
 
@@ -243,14 +243,14 @@ void __52__TIRecentInputs_validateInputFormat_forIdentifier___block_invoke()
   }
 }
 
-+ (void)storeInput:(id)a3 forLocalIdentifier:(id)a4
++ (void)storeInput:(id)input forLocalIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [a1 _sanitizeRecentInputString:a3];
+  identifierCopy = identifier;
+  v7 = [self _sanitizeRecentInputString:input];
   v11 = v7;
-  if (v6 && v7 && ([a1 identifierIsSystemIdentifier:v6] & 1) == 0 && objc_msgSend(a1, "validateInputFormat:forIdentifier:", v11, v6))
+  if (identifierCopy && v7 && ([self identifierIsSystemIdentifier:identifierCopy] & 1) == 0 && objc_msgSend(self, "validateInputFormat:forIdentifier:", v11, identifierCopy))
   {
-    v8 = [a1 recentInputForIdentifier:v6];
+    v8 = [self recentInputForIdentifier:identifierCopy];
     v9 = [TILexiconEntry entryWithDocumentText:v11 userInput:v11];
     v10 = [v8 lexiconWithAdditionalEntry:v9 maximumSize:7];
 
@@ -258,13 +258,13 @@ void __52__TIRecentInputs_validateInputFormat_forIdentifier___block_invoke()
   }
 }
 
-+ (id)_sanitizeRecentInputString:(id)a3
++ (id)_sanitizeRecentInputString:(id)string
 {
-  v3 = a3;
-  if (v3)
+  stringCopy = string;
+  if (stringCopy)
   {
     v4 = [MEMORY[0x1E696AEC0] _stringWithUnichar:65532];
-    v5 = [v3 stringByReplacingOccurrencesOfString:v4 withString:&stru_1EF56D550];
+    v5 = [stringCopy stringByReplacingOccurrencesOfString:v4 withString:&stru_1EF56D550];
   }
 
   else
@@ -281,27 +281,27 @@ void __52__TIRecentInputs_validateInputFormat_forIdentifier___block_invoke()
   return v5;
 }
 
-+ (void)recentInputForIdentifier:(id)a3 completionHandler:(id)a4
++ (void)recentInputForIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v9 = a3;
-  v6 = a4;
-  if ([a1 identifierIsSystemIdentifier:v9])
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if ([self identifierIsSystemIdentifier:identifierCopy])
   {
-    [a1 requestLexiconForRecentInputIdentifier:v9 completionHandler:v6];
+    [self requestLexiconForRecentInputIdentifier:identifierCopy completionHandler:handlerCopy];
   }
 
-  else if (v9 && v6)
+  else if (identifierCopy && handlerCopy)
   {
-    v7 = [a1 _lexiconPathForLocalIdentifier:v9];
-    v8 = [a1 recentInputAtPath:v7];
-    v6[2](v6, v8);
+    v7 = [self _lexiconPathForLocalIdentifier:identifierCopy];
+    v8 = [self recentInputAtPath:v7];
+    handlerCopy[2](handlerCopy, v8);
   }
 }
 
-+ (id)recentInputForIdentifier:(id)a3
++ (id)recentInputForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([a1 identifierIsSystemIdentifier:v4])
+  identifierCopy = identifier;
+  if ([self identifierIsSystemIdentifier:identifierCopy])
   {
     v14 = 0;
     v15 = &v14;
@@ -317,7 +317,7 @@ void __52__TIRecentInputs_validateInputFormat_forIdentifier___block_invoke()
     v12 = v5;
     v13 = &v14;
     v6 = v5;
-    [a1 requestLexiconForRecentInputIdentifier:v4 completionHandler:v11];
+    [self requestLexiconForRecentInputIdentifier:identifierCopy completionHandler:v11];
     v7 = dispatch_time(0, 3000000000);
     dispatch_semaphore_wait(v6, v7);
     v8 = v15[5];
@@ -325,10 +325,10 @@ void __52__TIRecentInputs_validateInputFormat_forIdentifier___block_invoke()
     _Block_object_dispose(&v14, 8);
   }
 
-  else if (v4)
+  else if (identifierCopy)
   {
-    v9 = [a1 _lexiconPathForLocalIdentifier:v4];
-    v8 = [a1 recentInputAtPath:v9];
+    v9 = [self _lexiconPathForLocalIdentifier:identifierCopy];
+    v8 = [self recentInputAtPath:v9];
   }
 
   else
@@ -350,12 +350,12 @@ void __43__TIRecentInputs_recentInputForIdentifier___block_invoke(uint64_t a1, v
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (id)_lexiconPathForLocalIdentifier:(id)a3
++ (id)_lexiconPathForLocalIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (v3)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v4 = v3;
+    v4 = identifierCopy;
   }
 
   else
@@ -368,8 +368,8 @@ void __43__TIRecentInputs_recentInputForIdentifier___block_invoke(uint64_t a1, v
 
   v7 = [v6 stringByAppendingPathComponent:@"Keyboard"];
 
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  [v8 _web_createDirectoryAtPathWithIntermediateDirectories:v7 attributes:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager _web_createDirectoryAtPathWithIntermediateDirectories:v7 attributes:0];
 
   v9 = [v7 stringByAppendingPathComponent:v4];
 
@@ -378,12 +378,12 @@ void __43__TIRecentInputs_recentInputForIdentifier___block_invoke(uint64_t a1, v
   return v10;
 }
 
-+ (void)requestRemovalOfLexiconForRecentInputIdentifier:(id)a3
++ (void)requestRemovalOfLexiconForRecentInputIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (v3)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v10 = v3;
+    v10 = identifierCopy;
     if (_recentLexiconDispatchQueue_onceToken != -1)
     {
       dispatch_once(&_recentLexiconDispatchQueue_onceToken, &__block_literal_global_149);
@@ -404,18 +404,18 @@ void __43__TIRecentInputs_recentInputForIdentifier___block_invoke(uint64_t a1, v
       [v8 requestRemovalOfLexiconForRecentInputIdentifier:v10];
     }
 
-    v3 = v10;
+    identifierCopy = v10;
   }
 }
 
-+ (void)requestLexiconForRecentInputIdentifier:(id)a3 completionHandler:(id)a4
++ (void)requestLexiconForRecentInputIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (handlerCopy)
   {
-    if (v5)
+    if (identifierCopy)
     {
       if (_recentLexiconDispatchQueue_onceToken != -1)
       {
@@ -439,7 +439,7 @@ void __43__TIRecentInputs_recentInputForIdentifier___block_invoke(uint64_t a1, v
       v13 = v12;
       if (v12)
       {
-        [v12 requestLexiconForRecentInputIdentifier:v5 completionHandler:v11];
+        [v12 requestLexiconForRecentInputIdentifier:identifierCopy completionHandler:v11];
       }
 
       else
@@ -450,7 +450,7 @@ void __43__TIRecentInputs_recentInputForIdentifier___block_invoke(uint64_t a1, v
 
     else
     {
-      (*(v6 + 2))(v6, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 }
@@ -463,11 +463,11 @@ uint64_t __75__TIRecentInputs_requestLexiconForRecentInputIdentifier_completionH
   return v3();
 }
 
-+ (id)recentInputAtPath:(id)a3
++ (id)recentInputAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = MEMORY[0x1E695DEF0];
-  v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:v3];
+  v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy];
   v6 = [v4 dataWithContentsOfURL:v5 options:1 error:0];
 
   if (!v6 || ([MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v6 error:0], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
@@ -475,7 +475,7 @@ uint64_t __75__TIRecentInputs_requestLexiconForRecentInputIdentifier_completionH
     v7 = [(TILexicon *)TIRecentInputs lexiconWithEntries:MEMORY[0x1E695E0F0]];
   }
 
-  [v7 setFilePath:v3];
+  [v7 setFilePath:pathCopy];
 
   return v7;
 }

@@ -7,9 +7,9 @@
 - (id)identifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 moduleDescriptorType];
-  v4 = [a1 tagID];
-  v5 = [v2 stringWithFormat:@"%d-%@", v3, v4];
+  moduleDescriptorType = [self moduleDescriptorType];
+  tagID = [self tagID];
+  v5 = [v2 stringWithFormat:@"%d-%@", moduleDescriptorType, tagID];
 
   return v5;
 }

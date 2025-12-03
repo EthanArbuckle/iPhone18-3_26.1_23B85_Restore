@@ -1,41 +1,41 @@
 @interface SLWebTokenHandlerResponse
-- (SLWebTokenHandlerResponse)initWithTokenResponse:(id)a3 usernames:(id)a4 displayname:(id)a5;
+- (SLWebTokenHandlerResponse)initWithTokenResponse:(id)response usernames:(id)usernames displayname:(id)displayname;
 @end
 
 @implementation SLWebTokenHandlerResponse
 
-- (SLWebTokenHandlerResponse)initWithTokenResponse:(id)a3 usernames:(id)a4 displayname:(id)a5
+- (SLWebTokenHandlerResponse)initWithTokenResponse:(id)response usernames:(id)usernames displayname:(id)displayname
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  responseCopy = response;
+  usernamesCopy = usernames;
+  displaynameCopy = displayname;
   v23.receiver = self;
   v23.super_class = SLWebTokenHandlerResponse;
   v11 = [(SLWebTokenHandlerResponse *)&v23 init];
   if (v11)
   {
-    v12 = [v8 token];
+    token = [responseCopy token];
     token = v11->_token;
-    v11->_token = v12;
+    v11->_token = token;
 
-    v14 = [v8 refreshToken];
+    refreshToken = [responseCopy refreshToken];
     refreshToken = v11->_refreshToken;
-    v11->_refreshToken = v14;
+    v11->_refreshToken = refreshToken;
 
-    v16 = [v8 idToken];
+    idToken = [responseCopy idToken];
     idToken = v11->_idToken;
-    v11->_idToken = v16;
+    v11->_idToken = idToken;
 
-    v18 = [v8 expiryDate];
+    expiryDate = [responseCopy expiryDate];
     expiryDate = v11->_expiryDate;
-    v11->_expiryDate = v18;
+    v11->_expiryDate = expiryDate;
 
-    v20 = [v8 grantedDataclasses];
+    grantedDataclasses = [responseCopy grantedDataclasses];
     grantedDataclasses = v11->_grantedDataclasses;
-    v11->_grantedDataclasses = v20;
+    v11->_grantedDataclasses = grantedDataclasses;
 
-    objc_storeStrong(&v11->_displayName, a5);
-    objc_storeStrong(&v11->_usernames, a4);
+    objc_storeStrong(&v11->_displayName, displayname);
+    objc_storeStrong(&v11->_usernames, usernames);
   }
 
   return v11;

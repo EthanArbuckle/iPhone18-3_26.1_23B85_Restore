@@ -3,7 +3,7 @@
 - (GKHostedChallengeIssueController)delegate;
 - (id)extensionObjectProxy;
 - (void)extensionIsCanceling;
-- (void)messageFromExtension:(id)a3;
+- (void)messageFromExtension:(id)extension;
 @end
 
 @implementation GKChallengeIssueHostViewController
@@ -43,13 +43,13 @@ void __56__GKChallengeIssueHostViewController_challengeExtension__block_invoke()
   }
 }
 
-- (void)messageFromExtension:(id)a3
+- (void)messageFromExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v5 = MEMORY[0x277CCAAC8];
   v6 = GKExtensionProtocolSecureCodedClasses();
   v19 = 0;
-  v7 = [v5 unarchivedObjectOfClasses:v6 fromData:v4 error:&v19];
+  v7 = [v5 unarchivedObjectOfClasses:v6 fromData:extensionCopy error:&v19];
   v8 = v19;
 
   if (v8)
@@ -67,9 +67,9 @@ void __56__GKChallengeIssueHostViewController_challengeExtension__block_invoke()
   }
 
   v11 = [v7 objectForKeyedSubscript:@"MessageCommandKey"];
-  v12 = [v11 integerValue];
+  integerValue = [v11 integerValue];
 
-  if (v12 == 45)
+  if (integerValue == 45)
   {
     v13 = [v7 objectForKeyedSubscript:@"PlayerList"];
     v14 = v13;
@@ -84,15 +84,15 @@ void __56__GKChallengeIssueHostViewController_challengeExtension__block_invoke()
     }
 
     v16 = [v7 objectForKeyedSubscript:@"ChallengeMessage"];
-    v17 = [(GKChallengeIssueHostViewController *)self delegate];
-    [v17 doneWithPlayers:v15 message:v16];
+    delegate = [(GKChallengeIssueHostViewController *)self delegate];
+    [delegate doneWithPlayers:v15 message:v16];
   }
 
   else
   {
     v18.receiver = self;
     v18.super_class = GKChallengeIssueHostViewController;
-    [(GKExtensionRemoteViewController *)&v18 messageFromExtension:v4];
+    [(GKExtensionRemoteViewController *)&v18 messageFromExtension:extensionCopy];
   }
 }
 
@@ -107,18 +107,18 @@ id __59__GKChallengeIssueHostViewController_messageFromExtension___block_invoke(
 
 - (void)extensionIsCanceling
 {
-  v2 = [(GKChallengeIssueHostViewController *)self delegate];
-  [v2 doneWithPlayers:0 message:0];
+  delegate = [(GKChallengeIssueHostViewController *)self delegate];
+  [delegate doneWithPlayers:0 message:0];
 }
 
 - (id)extensionObjectProxy
 {
-  v3 = [(GKExtensionRemoteViewController *)self extension];
-  v4 = [(GKExtensionRemoteViewController *)self requestIdentifier];
-  v5 = [v3 _extensionContextForUUID:v4];
+  extension = [(GKExtensionRemoteViewController *)self extension];
+  requestIdentifier = [(GKExtensionRemoteViewController *)self requestIdentifier];
+  v5 = [extension _extensionContextForUUID:requestIdentifier];
 
-  v6 = [v5 _auxiliaryConnection];
-  v7 = [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_8_0];
+  _auxiliaryConnection = [v5 _auxiliaryConnection];
+  v7 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_8_0];
 
   return v7;
 }

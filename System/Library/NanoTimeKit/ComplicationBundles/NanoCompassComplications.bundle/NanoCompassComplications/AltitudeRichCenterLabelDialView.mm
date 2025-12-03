@@ -1,25 +1,25 @@
 @interface AltitudeRichCenterLabelDialView
 - (id)_newBottomView;
 - (id)_newTopView;
-- (id)initFullColorImageViewWithDevice:(id)a3 withLayoutConstants:(LayoutConstants *)a4;
+- (id)initFullColorImageViewWithDevice:(id)device withLayoutConstants:(LayoutConstants *)constants;
 - (id)monochromeOtherViews;
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4;
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason;
 - (void)layoutLabelInCenterWithTopAndBottomAssets;
 @end
 
 @implementation AltitudeRichCenterLabelDialView
 
-- (id)initFullColorImageViewWithDevice:(id)a3 withLayoutConstants:(LayoutConstants *)a4
+- (id)initFullColorImageViewWithDevice:(id)device withLayoutConstants:(LayoutConstants *)constants
 {
-  v7 = a3;
+  deviceCopy = device;
   v32.receiver = self;
   v32.super_class = AltitudeRichCenterLabelDialView;
-  v8 = [(AltitudeRichDialView *)&v32 initFullColorImageViewWithDevice:v7];
+  v8 = [(AltitudeRichDialView *)&v32 initFullColorImageViewWithDevice:deviceCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(v8 + 56, a3);
-    v12 = objc_msgSend_systemFontOfSize_weight_design_(MEMORY[0x277CBBB08], v10, a4->var2, v11, a4->var0, a4->var1);
+    objc_storeStrong(v8 + 56, device);
+    v12 = objc_msgSend_systemFontOfSize_weight_design_(MEMORY[0x277CBBB08], v10, constants->var2, v11, constants->var0, constants->var1);
     v16 = objc_msgSend_CLKFontWithLocalizedLowerCaseSmallCaps(v12, v13, v14, v15);
 
     v17 = objc_opt_new();
@@ -31,7 +31,7 @@
 
     objc_msgSend_setFont_(v9[57], v25, v16, v26);
     objc_msgSend_setTextAlignment_(v9[57], v27, 1, v28);
-    v9[58] = *&a4->var4;
+    v9[58] = *&constants->var4;
     objc_msgSend_addSubview_(v9, v29, v9[57], v30);
   }
 
@@ -42,19 +42,19 @@
 {
   v8.receiver = self;
   v8.super_class = AltitudeRichCenterLabelDialView;
-  v3 = [(AltitudeRichDialView *)&v8 monochromeOtherViews];
-  v6 = objc_msgSend_arrayByAddingObject_(v3, v4, self->_altitudeLabel, v5);
+  monochromeOtherViews = [(AltitudeRichDialView *)&v8 monochromeOtherViews];
+  v6 = objc_msgSend_arrayByAddingObject_(monochromeOtherViews, v4, self->_altitudeLabel, v5);
 
   return v6;
 }
 
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason
 {
-  v6 = a3;
+  providerCopy = provider;
   v53.receiver = self;
   v53.super_class = AltitudeRichCenterLabelDialView;
-  [(NanoCompassBaseRichView *)&v53 configureWithImageProvider:v6 reason:a4];
-  v10 = objc_msgSend_metadata(v6, v7, v8, v9);
+  [(NanoCompassBaseRichView *)&v53 configureWithImageProvider:providerCopy reason:reason];
+  v10 = objc_msgSend_metadata(providerCopy, v7, v8, v9);
   v13 = objc_msgSend_objectForKeyedSubscript_(v10, v11, @"altitude", v12);
 
   v17 = objc_msgSend_null(MEMORY[0x277CBEB68], v14, v15, v16);
@@ -66,7 +66,7 @@
     v13 = 0;
   }
 
-  v24 = objc_msgSend_metadata(v6, v21, v22, v23);
+  v24 = objc_msgSend_metadata(providerCopy, v21, v22, v23);
   v27 = objc_msgSend_objectForKeyedSubscript_(v24, v25, @"nodata", v26);
   v31 = objc_msgSend_BOOLValue(v27, v28, v29, v30);
 

@@ -1,6 +1,6 @@
 @interface CRLLogHelper
 + (id)sharedInstance;
-- (BOOL)incrementThrottleCountAndCheckThottleMax:(unint64_t)a3;
+- (BOOL)incrementThrottleCountAndCheckThottleMax:(unint64_t)max;
 @end
 
 @implementation CRLLogHelper
@@ -24,12 +24,12 @@ void __30__CRLLogHelper_sharedInstance__block_invoke(id a1)
   _objc_release_x1();
 }
 
-- (BOOL)incrementThrottleCountAndCheckThottleMax:(unint64_t)a3
+- (BOOL)incrementThrottleCountAndCheckThottleMax:(unint64_t)max
 {
-  v5 = [(CRLLogHelper *)self throttleCount];
+  throttleCount = [(CRLLogHelper *)self throttleCount];
   [(CRLLogHelper *)self setThrottleCount:[(CRLLogHelper *)self throttleCount]+ 1];
-  v6 = [(CRLLogHelper *)self lastThrottleCheck];
-  if (v5 == a3)
+  lastThrottleCheck = [(CRLLogHelper *)self lastThrottleCheck];
+  if (throttleCount == max)
   {
     if (CRLPerformanceCat_init_token != -1)
     {
@@ -44,14 +44,14 @@ void __30__CRLLogHelper_sharedInstance__block_invoke(id a1)
     }
   }
 
-  if (v5 < a3 || !v6)
+  if (throttleCount < max || !lastThrottleCheck)
   {
     goto LABEL_16;
   }
 
-  [v6 timeIntervalSinceNow];
+  [lastThrottleCheck timeIntervalSinceNow];
   v9 = v8;
-  [v6 timeIntervalSinceNow];
+  [lastThrottleCheck timeIntervalSinceNow];
   if (v10 < -300.0)
   {
     if (CRLPerformanceCat_init_token != -1)

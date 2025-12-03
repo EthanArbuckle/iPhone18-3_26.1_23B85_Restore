@@ -1,5 +1,5 @@
 @interface WKImagePreviewViewController
-- (WKImagePreviewViewController)initWithCGImage:(RetainPtr<CGImage *>)a3 defaultActions:(RetainPtr<NSArray>)a4 elementInfo:(RetainPtr<_WKActivatedElementInfo>)a5;
+- (WKImagePreviewViewController)initWithCGImage:(RetainPtr<CGImage *>)image defaultActions:(RetainPtr<NSArray>)actions elementInfo:(RetainPtr<_WKActivatedElementInfo>)info;
 - (id).cxx_construct;
 - (id)previewActionItems;
 - (void)loadView;
@@ -17,14 +17,14 @@
   [-[WKImagePreviewViewController view](self "view")];
 }
 
-- (WKImagePreviewViewController)initWithCGImage:(RetainPtr<CGImage *>)a3 defaultActions:(RetainPtr<NSArray>)a4 elementInfo:(RetainPtr<_WKActivatedElementInfo>)a5
+- (WKImagePreviewViewController)initWithCGImage:(RetainPtr<CGImage *>)image defaultActions:(RetainPtr<NSArray>)actions elementInfo:(RetainPtr<_WKActivatedElementInfo>)info
 {
   v34.receiver = self;
   v34.super_class = WKImagePreviewViewController;
   v8 = [(WKImagePreviewViewController *)&v34 initWithNibName:0 bundle:0];
   if (v8)
   {
-    v9 = *a3.m_ptr;
+    v9 = *image.m_ptr;
     if (v9)
     {
       CFRetain(v9);
@@ -77,7 +77,7 @@
     [(UIImageView *)v8->_imageView.m_ptr frame];
     [(UIImageView *)v24 setFrame:v26];
     [(WKImagePreviewViewController *)v8 setPreferredContentSize:v16, v18];
-    isa = a4.m_ptr->super.isa;
+    isa = actions.m_ptr->super.isa;
     if (isa)
     {
       v28 = isa;
@@ -89,7 +89,7 @@
     {
     }
 
-    v30 = a5.m_ptr->super.isa;
+    v30 = info.m_ptr->super.isa;
     if (v30)
     {
       v31 = v30;
@@ -122,7 +122,7 @@
 - (id)previewActionItems
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -144,16 +144,16 @@
 
         v8 = *(*(&v15 + 1) + 8 * i);
         v9 = MEMORY[0x1E69DCE00];
-        v10 = [v8 title];
+        title = [v8 title];
         v14[0] = MEMORY[0x1E69E9820];
         v14[1] = 3221225472;
         v14[2] = __50__WKImagePreviewViewController_previewActionItems__block_invoke;
         v14[3] = &unk_1E7631018;
         v14[4] = v8;
         v14[5] = self;
-        v11 = [v9 actionWithTitle:v10 style:0 handler:v14];
+        v11 = [v9 actionWithTitle:title style:0 handler:v14];
         [v11 setImage:{+[_WKElementAction imageForElementActionType:](_WKElementAction, "imageForElementActionType:", objc_msgSend(v8, "type"))}];
-        [v3 addObject:v11];
+        [array addObject:v11];
       }
 
       v5 = [(NSArray *)obj countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -162,7 +162,7 @@
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 - (id).cxx_construct

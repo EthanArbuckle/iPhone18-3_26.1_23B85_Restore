@@ -1,22 +1,22 @@
 @interface BKFinishedAssetManager
-- (void)managedObjectBackgroundMonitor:(id)a3 didSaveNotify:(id)a4;
-- (void)removeFinishedDownloadsWithThreshhold:(double)a3;
+- (void)managedObjectBackgroundMonitor:(id)monitor didSaveNotify:(id)notify;
+- (void)removeFinishedDownloadsWithThreshhold:(double)threshhold;
 @end
 
 @implementation BKFinishedAssetManager
 
-- (void)removeFinishedDownloadsWithThreshhold:(double)a3
+- (void)removeFinishedDownloadsWithThreshhold:(double)threshhold
 {
-  v4 = self;
-  FinishedAssetManager.removeFinishedDownloads(threshhold:)(a3);
+  selfCopy = self;
+  FinishedAssetManager.removeFinishedDownloads(threshhold:)(threshhold);
 }
 
-- (void)managedObjectBackgroundMonitor:(id)a3 didSaveNotify:(id)a4
+- (void)managedObjectBackgroundMonitor:(id)monitor didSaveNotify:(id)notify
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10070360C(v7);
+  monitorCopy = monitor;
+  notifyCopy = notify;
+  selfCopy = self;
+  sub_10070360C(notifyCopy);
 }
 
 @end

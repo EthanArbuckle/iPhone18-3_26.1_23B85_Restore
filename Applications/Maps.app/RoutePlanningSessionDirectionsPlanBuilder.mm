@@ -1,114 +1,114 @@
 @interface RoutePlanningSessionDirectionsPlanBuilder
-- (RoutePlanningSessionDirectionsPlanBuilder)initWithRoutePlanningSession:(id)a3 fidelity:(unint64_t)a4;
-- (RoutePlanningSessionDirectionsPlanBuilder)initWithSessionStack:(id)a3 fidelity:(unint64_t)a4;
-- (id)_timingForTransportType:(int64_t)a3;
+- (RoutePlanningSessionDirectionsPlanBuilder)initWithRoutePlanningSession:(id)session fidelity:(unint64_t)fidelity;
+- (RoutePlanningSessionDirectionsPlanBuilder)initWithSessionStack:(id)stack fidelity:(unint64_t)fidelity;
+- (id)_timingForTransportType:(int64_t)type;
 - (id)_transitPreferences;
 - (id)buildDirectionsPlan;
-- (void)_addOriginDestinationToPlan:(id)a3;
-- (void)_addTimingToPlan:(id)a3;
-- (void)_addTransitOptionsToPlan:(id)a3;
+- (void)_addOriginDestinationToPlan:(id)plan;
+- (void)_addTimingToPlan:(id)plan;
+- (void)_addTransitOptionsToPlan:(id)plan;
 @end
 
 @implementation RoutePlanningSessionDirectionsPlanBuilder
 
-- (id)_timingForTransportType:(int64_t)a3
+- (id)_timingForTransportType:(int64_t)type
 {
-  v4 = [(RoutePlanningSessionDirectionsPlanBuilder *)self session];
-  v5 = [v4 configuration];
-  v6 = [v5 routeLoadingTaskFactory];
+  session = [(RoutePlanningSessionDirectionsPlanBuilder *)self session];
+  configuration = [session configuration];
+  routeLoadingTaskFactory = [configuration routeLoadingTaskFactory];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 transportTypeInformation];
-    v8 = [v7 requestInfoProviderForTransportType:a3];
+    transportTypeInformation = [routeLoadingTaskFactory transportTypeInformation];
+    v8 = [transportTypeInformation requestInfoProviderForTransportType:type];
 
-    v9 = [v8 timing];
+    timing = [v8 timing];
   }
 
   else
   {
-    v9 = 0;
+    timing = 0;
   }
 
-  return v9;
+  return timing;
 }
 
 - (id)_transitPreferences
 {
-  v2 = [(RoutePlanningSessionDirectionsPlanBuilder *)self session];
-  v3 = [v2 configuration];
-  v4 = [v3 routeLoadingTaskFactory];
+  session = [(RoutePlanningSessionDirectionsPlanBuilder *)self session];
+  configuration = [session configuration];
+  routeLoadingTaskFactory = [configuration routeLoadingTaskFactory];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 transportTypeInformation];
-    v6 = [v5 requestInfoProviderForTransportType:3];
+    transportTypeInformation = [routeLoadingTaskFactory transportTypeInformation];
+    v6 = [transportTypeInformation requestInfoProviderForTransportType:3];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 transitPreferences];
+      transitPreferences = [v6 transitPreferences];
     }
 
     else
     {
-      v7 = 0;
+      transitPreferences = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    transitPreferences = 0;
   }
 
-  return v7;
+  return transitPreferences;
 }
 
-- (void)_addTimingToPlan:(id)a3
+- (void)_addTimingToPlan:(id)plan
 {
-  v12 = a3;
-  v4 = [(RoutePlanningSessionDirectionsPlanBuilder *)self session];
-  v5 = -[RoutePlanningSessionDirectionsPlanBuilder _timingForTransportType:](self, "_timingForTransportType:", [v4 currentTransportType]);
+  planCopy = plan;
+  session = [(RoutePlanningSessionDirectionsPlanBuilder *)self session];
+  v5 = -[RoutePlanningSessionDirectionsPlanBuilder _timingForTransportType:](self, "_timingForTransportType:", [session currentTransportType]);
 
-  v6 = [v5 departureDate];
+  departureDate = [v5 departureDate];
 
-  if (v6)
+  if (departureDate)
   {
-    v7 = [v5 departureDate];
-    [v7 timeIntervalSinceReferenceDate];
-    [v12 setDepartureTime:?];
+    departureDate2 = [v5 departureDate];
+    [departureDate2 timeIntervalSinceReferenceDate];
+    [planCopy setDepartureTime:?];
   }
 
   else
   {
-    v8 = [v5 arrivalDate];
+    arrivalDate = [v5 arrivalDate];
 
-    if (v8)
+    if (arrivalDate)
     {
-      v7 = [v5 arrivalDate];
-      [v7 timeIntervalSinceReferenceDate];
-      [v12 setArrivalTime:?];
+      departureDate2 = [v5 arrivalDate];
+      [departureDate2 timeIntervalSinceReferenceDate];
+      [planCopy setArrivalTime:?];
     }
 
     else
     {
-      v7 = [(RoutePlanningSessionDirectionsPlanBuilder *)self session];
-      if ([v7 currentTransportType] == 3)
+      departureDate2 = [(RoutePlanningSessionDirectionsPlanBuilder *)self session];
+      if ([departureDate2 currentTransportType] == 3)
       {
-        v9 = [(RoutePlanningSessionDirectionsPlanBuilder *)self session];
-        v10 = [v9 startDate];
+        session2 = [(RoutePlanningSessionDirectionsPlanBuilder *)self session];
+        startDate = [session2 startDate];
 
-        if (!v10)
+        if (!startDate)
         {
           goto LABEL_9;
         }
 
-        v7 = [(RoutePlanningSessionDirectionsPlanBuilder *)self session];
-        v11 = [v7 startDate];
-        [v11 timeIntervalSinceReferenceDate];
-        [v12 setDepartureTime:?];
+        departureDate2 = [(RoutePlanningSessionDirectionsPlanBuilder *)self session];
+        startDate2 = [departureDate2 startDate];
+        [startDate2 timeIntervalSinceReferenceDate];
+        [planCopy setDepartureTime:?];
       }
     }
   }
@@ -116,55 +116,55 @@
 LABEL_9:
 }
 
-- (void)_addTransitOptionsToPlan:(id)a3
+- (void)_addTransitOptionsToPlan:(id)plan
 {
-  v12 = a3;
-  v4 = [(RoutePlanningSessionDirectionsPlanBuilder *)self session];
-  v5 = [v4 currentTransportType];
+  planCopy = plan;
+  session = [(RoutePlanningSessionDirectionsPlanBuilder *)self session];
+  currentTransportType = [session currentTransportType];
 
-  if (v5 == 3)
+  if (currentTransportType == 3)
   {
-    v6 = [(RoutePlanningSessionDirectionsPlanBuilder *)self _transitPreferences];
-    if (v6)
+    _transitPreferences = [(RoutePlanningSessionDirectionsPlanBuilder *)self _transitPreferences];
+    if (_transitPreferences)
     {
       v7 = [DirectionsPlanTransitPreferences alloc];
-      v8 = [v6 transitOptions];
-      v9 = [(DirectionsPlanTransitPreferences *)v7 initWithGEOTransitOptions:v8];
-      [v12 setTransitPreferences:v9];
+      transitOptions = [_transitPreferences transitOptions];
+      v9 = [(DirectionsPlanTransitPreferences *)v7 initWithGEOTransitOptions:transitOptions];
+      [planCopy setTransitPreferences:v9];
 
-      [v12 setTransitPrioritization:{objc_msgSend(v6, "sortOption")}];
-      v10 = [v6 surchargeOption];
+      [planCopy setTransitPrioritization:{objc_msgSend(_transitPreferences, "sortOption")}];
+      surchargeOption = [_transitPreferences surchargeOption];
 
-      if (v10)
+      if (surchargeOption)
       {
-        v11 = [v6 surchargeOption];
-        [v12 setTransitSurchargeOption:{objc_msgSend(v11, "integerValue")}];
+        surchargeOption2 = [_transitPreferences surchargeOption];
+        [planCopy setTransitSurchargeOption:{objc_msgSend(surchargeOption2, "integerValue")}];
       }
     }
   }
 }
 
-- (void)_addOriginDestinationToPlan:(id)a3
+- (void)_addOriginDestinationToPlan:(id)plan
 {
-  v4 = a3;
-  v5 = [(RoutePlanningSessionDirectionsPlanBuilder *)self navigationSession];
-  v6 = [v5 waypointController];
+  planCopy = plan;
+  navigationSession = [(RoutePlanningSessionDirectionsPlanBuilder *)self navigationSession];
+  waypointController = [navigationSession waypointController];
 
-  v7 = [v6 originWaypoint];
-  v8 = [v6 displayedWaypoints];
-  if (![v8 count] || !v7)
+  originWaypoint = [waypointController originWaypoint];
+  displayedWaypoints = [waypointController displayedWaypoints];
+  if (![displayedWaypoints count] || !originWaypoint)
   {
-    v29 = [(RoutePlanningSessionDirectionsPlanBuilder *)self session];
-    v30 = [v29 resolvedWaypoints];
+    session = [(RoutePlanningSessionDirectionsPlanBuilder *)self session];
+    resolvedWaypoints = [session resolvedWaypoints];
 
-    if ([v30 areAllValidWaypoints])
+    if ([resolvedWaypoints areAllValidWaypoints])
     {
-      v66 = v7;
+      v66 = originWaypoint;
       v76 = 0u;
       v77 = 0u;
       v74 = 0u;
       v75 = 0u;
-      v31 = v30;
+      v31 = resolvedWaypoints;
       v32 = [v31 countByEnumeratingWithState:&v74 objects:v85 count:16];
       if (v32)
       {
@@ -180,8 +180,8 @@ LABEL_9:
             }
 
             v36 = *(*(&v74 + 1) + 8 * i);
-            v37 = [v4 routeRequestStorage];
-            [v37 addWaypoints:v36];
+            routeRequestStorage = [planCopy routeRequestStorage];
+            [routeRequestStorage addWaypoints:v36];
           }
 
           v33 = [v31 countByEnumeratingWithState:&v74 objects:v85 count:16];
@@ -191,19 +191,19 @@ LABEL_9:
       }
 
       v38 = +[NSUUID UUID];
-      v39 = [v38 UUIDString];
+      uUIDString = [v38 UUIDString];
 
       v40 = sub_100028730();
-      v7 = v66;
+      originWaypoint = v66;
       if (!os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
       {
         goto LABEL_47;
       }
 
-      v41 = self;
-      if (!v41)
+      selfCopy = self;
+      if (!selfCopy)
       {
-        v46 = @"<nil>";
+        selfCopy = @"<nil>";
         goto LABEL_46;
       }
 
@@ -211,59 +211,59 @@ LABEL_9:
       v43 = NSStringFromClass(v42);
       if (objc_opt_respondsToSelector())
       {
-        v44 = [(RoutePlanningSessionDirectionsPlanBuilder *)v41 performSelector:"accessibilityIdentifier"];
+        v44 = [(RoutePlanningSessionDirectionsPlanBuilder *)selfCopy performSelector:"accessibilityIdentifier"];
         v45 = v44;
         if (v44 && ![v44 isEqualToString:v43])
         {
-          v46 = [NSString stringWithFormat:@"%@<%p, %@>", v43, v41, v45];
+          selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v43, selfCopy, v45];
 
           goto LABEL_33;
         }
       }
 
-      v46 = [NSString stringWithFormat:@"%@<%p>", v43, v41];
+      selfCopy = [NSString stringWithFormat:@"%@<%p>", v43, selfCopy];
 LABEL_33:
 
-      v7 = v66;
+      originWaypoint = v66;
 LABEL_46:
 
       *buf = 138543618;
-      v87 = v46;
+      v87 = selfCopy;
       v88 = 2112;
-      v89 = v39;
+      v89 = uUIDString;
       _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_INFO, "[%{public}@] Waypoints for directions plan are from navigation : %@", buf, 0x16u);
 
 LABEL_47:
-      v60 = [v4 routeRequestStorage];
-      v61 = [v60 waypoints];
-      v62 = sub_10099F8F0(v61);
+      routeRequestStorage2 = [planCopy routeRequestStorage];
+      waypoints = [routeRequestStorage2 waypoints];
+      v62 = sub_10099F8F0(waypoints);
 
       v63 = dispatch_get_global_queue(0, 0);
       v71[0] = _NSConcreteStackBlock;
       v71[1] = 3221225472;
       v71[2] = sub_100A25710;
       v71[3] = &unk_101661A90;
-      v72 = v39;
+      v72 = uUIDString;
       v73 = v62;
       v59 = v62;
-      v48 = v39;
+      configuration = uUIDString;
       dispatch_async(v63, v71);
 
       goto LABEL_51;
     }
 
-    v47 = [(RoutePlanningSessionDirectionsPlanBuilder *)self session];
-    v48 = [v47 configuration];
+    session2 = [(RoutePlanningSessionDirectionsPlanBuilder *)self session];
+    configuration = [session2 configuration];
 
-    v49 = [v48 waypointRequests];
+    waypointRequests = [configuration waypointRequests];
     v68[0] = _NSConcreteStackBlock;
     v68[1] = 3221225472;
     v68[2] = sub_100A257C4;
     v68[3] = &unk_101632038;
-    v31 = v30;
+    v31 = resolvedWaypoints;
     v69 = v31;
-    v70 = v4;
-    [v49 enumerateObjectsUsingBlock:v68];
+    v70 = planCopy;
+    [waypointRequests enumerateObjectsUsingBlock:v68];
 
     v50 = sub_100028730();
     if (!os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
@@ -274,25 +274,25 @@ LABEL_50:
       goto LABEL_51;
     }
 
-    v51 = self;
-    if (!v51)
+    selfCopy2 = self;
+    if (!selfCopy2)
     {
-      v57 = @"<nil>";
+      selfCopy2 = @"<nil>";
       goto LABEL_49;
     }
 
-    v67 = v7;
+    v67 = originWaypoint;
     v52 = objc_opt_class();
     v53 = NSStringFromClass(v52);
     if (objc_opt_respondsToSelector())
     {
       v54 = v53;
-      v55 = [(RoutePlanningSessionDirectionsPlanBuilder *)v51 performSelector:"accessibilityIdentifier"];
+      v55 = [(RoutePlanningSessionDirectionsPlanBuilder *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v56 = v55;
       if (v55 && ![v55 isEqualToString:v54])
       {
         v64 = v54;
-        v57 = [NSString stringWithFormat:@"%@<%p, %@>", v54, v51, v56];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v54, selfCopy2, v56];
 
         v53 = v64;
         goto LABEL_41;
@@ -301,28 +301,28 @@ LABEL_50:
       v53 = v54;
     }
 
-    v57 = [NSString stringWithFormat:@"%@<%p>", v53, v51];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v53, selfCopy2];
 LABEL_41:
 
-    v7 = v67;
+    originWaypoint = v67;
 LABEL_49:
 
     *buf = 138543362;
-    v87 = v57;
+    v87 = selfCopy2;
     _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_INFO, "[%{public}@] Waypoints for directions plan are planning waypoints", buf, 0xCu);
 
     goto LABEL_50;
   }
 
-  v9 = [v4 routeRequestStorage];
-  v65 = v7;
-  [v9 addWaypoints:v7];
+  routeRequestStorage3 = [planCopy routeRequestStorage];
+  v65 = originWaypoint;
+  [routeRequestStorage3 addWaypoints:originWaypoint];
 
   v83 = 0u;
   v84 = 0u;
   v81 = 0u;
   v82 = 0u;
-  v10 = v8;
+  v10 = displayedWaypoints;
   v11 = [v10 countByEnumeratingWithState:&v81 objects:v90 count:16];
   if (v11)
   {
@@ -338,8 +338,8 @@ LABEL_49:
         }
 
         v15 = *(*(&v81 + 1) + 8 * j);
-        v16 = [v4 routeRequestStorage];
-        [v16 addWaypoints:v15];
+        routeRequestStorage4 = [planCopy routeRequestStorage];
+        [routeRequestStorage4 addWaypoints:v15];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v81 objects:v90 count:16];
@@ -349,11 +349,11 @@ LABEL_49:
   }
 
   v17 = +[NSUUID UUID];
-  v18 = [v17 UUIDString];
+  uUIDString2 = [v17 UUIDString];
 
-  v19 = [v4 routeRequestStorage];
-  v20 = [v19 waypoints];
-  v21 = sub_10099F8F0(v20);
+  routeRequestStorage5 = [planCopy routeRequestStorage];
+  waypoints2 = [routeRequestStorage5 waypoints];
+  v21 = sub_10099F8F0(waypoints2);
 
   v22 = sub_100028730();
   if (!os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
@@ -361,10 +361,10 @@ LABEL_49:
     goto LABEL_44;
   }
 
-  v23 = self;
-  if (!v23)
+  selfCopy3 = self;
+  if (!selfCopy3)
   {
-    v28 = @"<nil>";
+    selfCopy3 = @"<nil>";
     goto LABEL_43;
   }
 
@@ -372,24 +372,24 @@ LABEL_49:
   v25 = NSStringFromClass(v24);
   if (objc_opt_respondsToSelector())
   {
-    v26 = [(RoutePlanningSessionDirectionsPlanBuilder *)v23 performSelector:"accessibilityIdentifier"];
+    v26 = [(RoutePlanningSessionDirectionsPlanBuilder *)selfCopy3 performSelector:"accessibilityIdentifier"];
     v27 = v26;
     if (v26 && ![v26 isEqualToString:v25])
     {
-      v28 = [NSString stringWithFormat:@"%@<%p, %@>", v25, v23, v27];
+      selfCopy3 = [NSString stringWithFormat:@"%@<%p, %@>", v25, selfCopy3, v27];
 
       goto LABEL_17;
     }
   }
 
-  v28 = [NSString stringWithFormat:@"%@<%p>", v25, v23];
+  selfCopy3 = [NSString stringWithFormat:@"%@<%p>", v25, selfCopy3];
 LABEL_17:
 
 LABEL_43:
   *buf = 138543618;
-  v87 = v28;
+  v87 = selfCopy3;
   v88 = 2112;
-  v89 = v18;
+  v89 = uUIDString2;
   _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "[%{public}@] Waypoints for directions plan are from navigation : %@", buf, 0x16u);
 
 LABEL_44:
@@ -398,14 +398,14 @@ LABEL_44:
   block[1] = 3221225472;
   block[2] = sub_100A2565C;
   block[3] = &unk_101661A90;
-  v79 = v18;
+  v79 = uUIDString2;
   v80 = v21;
-  v48 = v21;
-  v31 = v18;
+  configuration = v21;
+  v31 = uUIDString2;
   dispatch_async(v58, block);
 
   v59 = v79;
-  v7 = v65;
+  originWaypoint = v65;
 LABEL_51:
 }
 
@@ -414,8 +414,8 @@ LABEL_51:
   v3 = objc_alloc_init(DirectionsPlan);
   v4 = objc_alloc_init(GEOStorageRouteRequestStorage);
   [(DirectionsPlan *)v3 setRouteRequestStorage:v4];
-  v5 = [(RoutePlanningSessionDirectionsPlanBuilder *)self session];
-  v6 = [v5 currentTransportType] - 2;
+  session = [(RoutePlanningSessionDirectionsPlanBuilder *)self session];
+  v6 = [session currentTransportType] - 2;
   if (v6 > 3)
   {
     v7 = 0;
@@ -426,28 +426,28 @@ LABEL_51:
     v7 = dword_101212C30[v6];
   }
 
-  v8 = [(DirectionsPlan *)v3 routeRequestStorage];
-  [v8 setTransportType:v7];
+  routeRequestStorage = [(DirectionsPlan *)v3 routeRequestStorage];
+  [routeRequestStorage setTransportType:v7];
 
   [(DirectionsPlan *)v3 setDisplayMethod:1];
-  v9 = [(RoutePlanningSessionDirectionsPlanBuilder *)self session];
-  v10 = [v9 currentRouteCollection];
+  session2 = [(RoutePlanningSessionDirectionsPlanBuilder *)self session];
+  currentRouteCollection = [session2 currentRouteCollection];
 
-  if (v10)
+  if (currentRouteCollection)
   {
-    -[DirectionsPlan setCurrentRouteIndex:](v3, "setCurrentRouteIndex:", [v10 currentRouteIndex]);
+    -[DirectionsPlan setCurrentRouteIndex:](v3, "setCurrentRouteIndex:", [currentRouteCollection currentRouteIndex]);
   }
 
-  v11 = [v10 currentRoute];
-  if (v11)
+  currentRoute = [currentRouteCollection currentRoute];
+  if (currentRoute)
   {
-    v12 = [[GEOURLRouteHandle alloc] initWithRoute:v11 fidelity:{-[RoutePlanningSessionDirectionsPlanBuilder fidelity](self, "fidelity")}];
-    v13 = [(DirectionsPlan *)v3 routeRequestStorage];
-    [v13 setRouteHandle:v12];
+    v12 = [[GEOURLRouteHandle alloc] initWithRoute:currentRoute fidelity:{-[RoutePlanningSessionDirectionsPlanBuilder fidelity](self, "fidelity")}];
+    routeRequestStorage2 = [(DirectionsPlan *)v3 routeRequestStorage];
+    [routeRequestStorage2 setRouteHandle:v12];
   }
 
-  v14 = [v10 currentRoute];
-  v15 = [DirectionsPlan _maps_expiryDateForRoute:v14];
+  currentRoute2 = [currentRouteCollection currentRoute];
+  v15 = [DirectionsPlan _maps_expiryDateForRoute:currentRoute2];
   [v15 timeIntervalSinceReferenceDate];
   [(DirectionsPlan *)v3 setExpiryTime:?];
 
@@ -457,10 +457,10 @@ LABEL_51:
   v16 = sub_100028730();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = self;
-    if (!v17)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v22 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_17;
     }
 
@@ -468,34 +468,34 @@ LABEL_51:
     v19 = NSStringFromClass(v18);
     if (objc_opt_respondsToSelector())
     {
-      v20 = [(RoutePlanningSessionDirectionsPlanBuilder *)v17 performSelector:"accessibilityIdentifier"];
+      v20 = [(RoutePlanningSessionDirectionsPlanBuilder *)selfCopy performSelector:"accessibilityIdentifier"];
       v21 = v20;
       if (v20 && ![v20 isEqualToString:v19])
       {
-        v22 = [NSString stringWithFormat:@"%@<%p, %@>", v19, v17, v21];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v19, selfCopy, v21];
 
         goto LABEL_15;
       }
     }
 
-    v22 = [NSString stringWithFormat:@"%@<%p>", v19, v17];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v19, selfCopy];
 LABEL_15:
 
 LABEL_17:
-    v23 = v22;
-    v24 = [(DirectionsPlan *)v3 displayMethod];
-    if (v24 >= 3)
+    v23 = selfCopy;
+    displayMethod = [(DirectionsPlan *)v3 displayMethod];
+    if (displayMethod >= 3)
     {
-      v25 = [NSString stringWithFormat:@"(unknown: %i)", v24];
+      v25 = [NSString stringWithFormat:@"(unknown: %i)", displayMethod];
     }
 
     else
     {
-      v25 = *(&off_101632058 + v24);
+      v25 = *(&off_101632058 + displayMethod);
     }
 
     v26 = v25;
-    v27 = [v4 waypointsCount];
+    waypointsCount = [v4 waypointsCount];
     [(DirectionsPlan *)v3 expiryTime];
     v28 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
 
@@ -504,7 +504,7 @@ LABEL_17:
     v32 = 2114;
     v33 = v25;
     v34 = 2048;
-    v35 = v27;
+    v35 = waypointsCount;
     v36 = 2112;
     v37 = v28;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "[%{public}@] Preparing directions plan (%{public}@, %lu waypoints, expires: %@)", buf, 0x2Au);
@@ -513,10 +513,10 @@ LABEL_17:
   return v3;
 }
 
-- (RoutePlanningSessionDirectionsPlanBuilder)initWithRoutePlanningSession:(id)a3 fidelity:(unint64_t)a4
+- (RoutePlanningSessionDirectionsPlanBuilder)initWithRoutePlanningSession:(id)session fidelity:(unint64_t)fidelity
 {
-  v6 = a3;
-  if (!v6)
+  sessionCopy = session;
+  if (!sessionCopy)
   {
     v10 = sub_10006D178();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -545,16 +545,16 @@ LABEL_17:
     }
   }
 
-  v13 = v6;
+  v13 = sessionCopy;
   v7 = [NSArray arrayWithObjects:&v13 count:1];
-  v8 = [(RoutePlanningSessionDirectionsPlanBuilder *)self initWithSessionStack:v7 fidelity:a4];
+  v8 = [(RoutePlanningSessionDirectionsPlanBuilder *)self initWithSessionStack:v7 fidelity:fidelity];
 
   return v8;
 }
 
-- (RoutePlanningSessionDirectionsPlanBuilder)initWithSessionStack:(id)a3 fidelity:(unint64_t)a4
+- (RoutePlanningSessionDirectionsPlanBuilder)initWithSessionStack:(id)stack fidelity:(unint64_t)fidelity
 {
-  v6 = a3;
+  stackCopy = stack;
   v25.receiver = self;
   v25.super_class = RoutePlanningSessionDirectionsPlanBuilder;
   v7 = [(RoutePlanningSessionDirectionsPlanBuilder *)&v25 init];
@@ -566,13 +566,13 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v7->_fidelity = a4;
+  v7->_fidelity = fidelity;
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = [v6 reverseObjectEnumerator];
-  v10 = [v9 countByEnumeratingWithState:&v21 objects:v28 count:16];
+  reverseObjectEnumerator = [stackCopy reverseObjectEnumerator];
+  v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v21 objects:v28 count:16];
   if (v10)
   {
     v11 = v10;
@@ -583,7 +583,7 @@ LABEL_21:
       {
         if (*v22 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
@@ -595,7 +595,7 @@ LABEL_21:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v21 objects:v28 count:16];
+      v11 = [reverseObjectEnumerator countByEnumeratingWithState:&v21 objects:v28 count:16];
       if (v11)
       {
         continue;
@@ -609,19 +609,19 @@ LABEL_12:
 
   if (v8->_session)
   {
-    v15 = [v6 indexOfObject:?] + 1;
-    if (v15 < [v6 count])
+    v15 = [stackCopy indexOfObject:?] + 1;
+    if (v15 < [stackCopy count])
     {
       while (1)
       {
-        v16 = [v6 objectAtIndexedSubscript:v15];
+        v16 = [stackCopy objectAtIndexedSubscript:v15];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           break;
         }
 
-        if (++v15 >= [v6 count])
+        if (++v15 >= [stackCopy count])
         {
           goto LABEL_21;
         }
@@ -638,7 +638,7 @@ LABEL_12:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v27 = v6;
+    v27 = stackCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "No route planning session present in stack: %@", buf, 0xCu);
   }
 

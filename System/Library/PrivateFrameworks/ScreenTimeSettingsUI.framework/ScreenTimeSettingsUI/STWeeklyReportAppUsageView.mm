@@ -1,23 +1,23 @@
 @interface STWeeklyReportAppUsageView
-- (STWeeklyReportAppUsageView)initWithUsageReport:(id)a3 useVibrancy:(BOOL)a4;
-- (id)_appImageSubviewWithImage:(id)a3 dimension:(double)a4;
-- (void)_didFetchIcon:(id)a3;
+- (STWeeklyReportAppUsageView)initWithUsageReport:(id)report useVibrancy:(BOOL)vibrancy;
+- (id)_appImageSubviewWithImage:(id)image dimension:(double)dimension;
+- (void)_didFetchIcon:(id)icon;
 @end
 
 @implementation STWeeklyReportAppUsageView
 
-- (STWeeklyReportAppUsageView)initWithUsageReport:(id)a3 useVibrancy:(BOOL)a4
+- (STWeeklyReportAppUsageView)initWithUsageReport:(id)report useVibrancy:(BOOL)vibrancy
 {
-  v4 = a4;
+  vibrancyCopy = vibrancy;
   v85 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  reportCopy = report;
   v83.receiver = self;
   v83.super_class = STWeeklyReportAppUsageView;
   v8 = [(STWeeklyReportAppUsageView *)&v83 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_report, a3);
+    objc_storeStrong(&v8->_report, report);
     v10 = objc_opt_new();
     titleLabel = v9->_titleLabel;
     v9->_titleLabel = v10;
@@ -25,8 +25,8 @@
     v12 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
     [(UILabel *)v9->_titleLabel setFont:v12];
 
-    v13 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v9->_titleLabel setTextColor:v13];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v9->_titleLabel setTextColor:secondaryLabelColor];
 
     v14 = MEMORY[0x277CCACA8];
     v15 = +[STScreenTimeSettingsUIBundle bundle];
@@ -38,33 +38,33 @@
     [(UILabel *)v9->_titleLabel sizeToFit];
     [(STWeeklyReportAppUsageView *)v9 addSubview:v9->_titleLabel];
     v18 = objc_opt_new();
-    v77 = v7;
-    if (v4)
+    v77 = reportCopy;
+    if (vibrancyCopy)
     {
       v19 = [MEMORY[0x277D75D00] widgetEffectForVibrancyStyle:102];
       v20 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v19];
       [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
       [(STWeeklyReportAppUsageView *)v9 addSubview:v20];
-      v21 = [v20 contentView];
-      [v21 addSubview:v9->_titleLabel];
-      v22 = [v20 topAnchor];
-      v23 = [(STWeeklyReportAppUsageView *)v9 topAnchor];
-      v24 = [v22 constraintEqualToAnchor:v23];
+      contentView = [v20 contentView];
+      [contentView addSubview:v9->_titleLabel];
+      topAnchor = [v20 topAnchor];
+      topAnchor2 = [(STWeeklyReportAppUsageView *)v9 topAnchor];
+      v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
       [v18 addObject:v24];
 
-      v25 = [v20 leadingAnchor];
-      v26 = [(STWeeklyReportAppUsageView *)v9 leadingAnchor];
-      v27 = [v25 constraintEqualToAnchor:v26];
+      leadingAnchor = [v20 leadingAnchor];
+      leadingAnchor2 = [(STWeeklyReportAppUsageView *)v9 leadingAnchor];
+      v27 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       [v18 addObject:v27];
 
-      v28 = [v20 bottomAnchor];
-      v29 = [(STWeeklyReportAppUsageView *)v9 bottomAnchor];
-      v30 = [v28 constraintEqualToAnchor:v29];
+      bottomAnchor = [v20 bottomAnchor];
+      bottomAnchor2 = [(STWeeklyReportAppUsageView *)v9 bottomAnchor];
+      v30 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       [v18 addObject:v30];
 
-      v31 = [v20 trailingAnchor];
-      v32 = [(STWeeklyReportAppUsageView *)v9 trailingAnchor];
-      v33 = [v31 constraintEqualToAnchor:v32];
+      trailingAnchor = [v20 trailingAnchor];
+      trailingAnchor2 = [(STWeeklyReportAppUsageView *)v9 trailingAnchor];
+      v33 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       [v18 addObject:v33];
 
       v34 = 0.0;
@@ -77,14 +77,14 @@
       v34 = -16.0;
     }
 
-    v36 = [(UILabel *)v9->_titleLabel leadingAnchor];
-    v37 = [(STWeeklyReportAppUsageView *)v9 leadingAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37 constant:v35];
+    leadingAnchor3 = [(UILabel *)v9->_titleLabel leadingAnchor];
+    leadingAnchor4 = [(STWeeklyReportAppUsageView *)v9 leadingAnchor];
+    v38 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v35];
     [v18 addObject:v38];
 
-    v39 = [(UILabel *)v9->_titleLabel topAnchor];
-    v40 = [(STWeeklyReportAppUsageView *)v9 topAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40 constant:10.0];
+    topAnchor3 = [(UILabel *)v9->_titleLabel topAnchor];
+    topAnchor4 = [(STWeeklyReportAppUsageView *)v9 topAnchor];
+    v41 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:10.0];
     [v18 addObject:v41];
 
     v42 = objc_opt_new();
@@ -96,24 +96,24 @@
     [(UIStackView *)v9->_appImageStackView setDistribution:3];
     [(UIStackView *)v9->_appImageStackView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(STWeeklyReportAppUsageView *)v9 addSubview:v9->_appImageStackView];
-    v44 = [(UIStackView *)v9->_appImageStackView topAnchor];
-    v45 = [(UILabel *)v9->_titleLabel bottomAnchor];
-    v46 = [v44 constraintEqualToAnchor:v45 constant:7.0];
+    topAnchor5 = [(UIStackView *)v9->_appImageStackView topAnchor];
+    bottomAnchor3 = [(UILabel *)v9->_titleLabel bottomAnchor];
+    v46 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3 constant:7.0];
     [v18 addObject:v46];
 
-    v47 = [(UIStackView *)v9->_appImageStackView leadingAnchor];
-    v48 = [(STWeeklyReportAppUsageView *)v9 leadingAnchor];
-    v49 = [v47 constraintEqualToAnchor:v48 constant:v35];
+    leadingAnchor5 = [(UIStackView *)v9->_appImageStackView leadingAnchor];
+    leadingAnchor6 = [(STWeeklyReportAppUsageView *)v9 leadingAnchor];
+    v49 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:v35];
     [v18 addObject:v49];
 
-    v50 = [(UIStackView *)v9->_appImageStackView trailingAnchor];
-    v51 = [(STWeeklyReportAppUsageView *)v9 trailingAnchor];
-    v52 = [v50 constraintEqualToAnchor:v51 constant:v34];
+    trailingAnchor3 = [(UIStackView *)v9->_appImageStackView trailingAnchor];
+    trailingAnchor4 = [(STWeeklyReportAppUsageView *)v9 trailingAnchor];
+    v52 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:v34];
     [v18 addObject:v52];
 
-    v53 = [(STWeeklyReportAppUsageView *)v9 bottomAnchor];
-    v54 = [(UIStackView *)v9->_appImageStackView bottomAnchor];
-    v55 = [v53 constraintEqualToAnchor:v54 constant:16.0];
+    bottomAnchor4 = [(STWeeklyReportAppUsageView *)v9 bottomAnchor];
+    bottomAnchor5 = [(UIStackView *)v9->_appImageStackView bottomAnchor];
+    v55 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:16.0];
     [v18 addObject:v55];
 
     [MEMORY[0x277CCAAD0] activateConstraints:v18];
@@ -121,12 +121,12 @@
     v76 = v18;
     if ([v56 count])
     {
-      v57 = [MEMORY[0x277D4BD98] sharedCache];
+      mEMORY[0x277D4BD98] = [MEMORY[0x277D4BD98] sharedCache];
     }
 
     else
     {
-      v57 = 0;
+      mEMORY[0x277D4BD98] = 0;
     }
 
     v81 = 0u;
@@ -152,13 +152,13 @@
           v63 = *(*(&v79 + 1) + 8 * i);
           if (v61 == 0.0)
           {
-            v64 = [*(*(&v79 + 1) + 8 * i) totalUsage];
-            [v64 doubleValue];
+            totalUsage = [*(*(&v79 + 1) + 8 * i) totalUsage];
+            [totalUsage doubleValue];
             v61 = v65;
           }
 
-          v66 = [v63 totalUsage];
-          [v66 doubleValue];
+          totalUsage2 = [v63 totalUsage];
+          [totalUsage2 doubleValue];
           v68 = v67;
 
           if (v61 <= 0.0 || (v69 = v68 / v61 * 40.0, v70 = 15.0, v69 >= 15.0) && (v70 = v69, v69 > 40.0))
@@ -166,18 +166,18 @@
             v70 = 40.0;
           }
 
-          v71 = [v63 image];
-          if (v71)
+          image = [v63 image];
+          if (image)
           {
-            v72 = [(STWeeklyReportAppUsageView *)v9 _appImageSubviewWithImage:v71 dimension:v70];
+            v72 = [(STWeeklyReportAppUsageView *)v9 _appImageSubviewWithImage:image dimension:v70];
             [(UIStackView *)v9->_appImageStackView addArrangedSubview:v72];
             [(NSMutableArray *)v9->_topEightImageItems addObject:v63];
             v73 = [MEMORY[0x277CCABB0] numberWithDouble:v70];
             [(NSMutableDictionary *)v9->_dimensionByUsageItem setObject:v73 forKeyedSubscript:v63];
           }
 
-          v74 = [v63 budgetItemIdentifier];
-          [v57 addObserver:v9 selector:sel__didFetchIcon_ bundleIdentifier:v74];
+          budgetItemIdentifier = [v63 budgetItemIdentifier];
+          [mEMORY[0x277D4BD98] addObserver:v9 selector:sel__didFetchIcon_ bundleIdentifier:budgetItemIdentifier];
         }
 
         v59 = [obj countByEnumeratingWithState:&v79 objects:v84 count:16];
@@ -186,17 +186,17 @@
       while (v59);
     }
 
-    v7 = v77;
+    reportCopy = v77;
   }
 
   return v9;
 }
 
-- (void)_didFetchIcon:(id)a3
+- (void)_didFetchIcon:(id)icon
 {
   v35 = *MEMORY[0x277D85DE8];
-  v27 = [a3 userInfo];
-  v4 = [v27 objectForKeyedSubscript:*MEMORY[0x277D4BDC8]];
+  userInfo = [icon userInfo];
+  v4 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D4BDC8]];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -219,35 +219,35 @@
         }
 
         v9 = *(*(&v30 + 1) + 8 * v8);
-        v10 = [v9 budgetItemIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        budgetItemIdentifier = [v9 budgetItemIdentifier];
+        v11 = [budgetItemIdentifier isEqualToString:v4];
 
         if (v11)
         {
-          v12 = [v9 image];
-          if (v12)
+          image = [v9 image];
+          if (image)
           {
-            v13 = [(STWeeklyReportAppUsageView *)self topEightImageItems];
-            v14 = [v13 indexOfObject:v9];
+            topEightImageItems = [(STWeeklyReportAppUsageView *)self topEightImageItems];
+            v14 = [topEightImageItems indexOfObject:v9];
 
-            v15 = [(STWeeklyReportAppUsageView *)self appImageStackView];
-            [v15 arrangedSubviews];
+            appImageStackView = [(STWeeklyReportAppUsageView *)self appImageStackView];
+            [appImageStackView arrangedSubviews];
             v16 = v7;
             v18 = v17 = v4;
             v19 = [v18 objectAtIndexedSubscript:v14];
 
-            v20 = [(STWeeklyReportAppUsageView *)self appImageStackView];
-            [v20 removeArrangedSubview:v19];
+            appImageStackView2 = [(STWeeklyReportAppUsageView *)self appImageStackView];
+            [appImageStackView2 removeArrangedSubview:v19];
 
             [v19 removeFromSuperview];
-            v21 = [(STWeeklyReportAppUsageView *)self dimensionByUsageItem];
-            v22 = [v21 objectForKeyedSubscript:v9];
+            dimensionByUsageItem = [(STWeeklyReportAppUsageView *)self dimensionByUsageItem];
+            v22 = [dimensionByUsageItem objectForKeyedSubscript:v9];
             [v22 doubleValue];
             v24 = v23;
 
-            v25 = [(STWeeklyReportAppUsageView *)self _appImageSubviewWithImage:v12 dimension:v24];
-            v26 = [(STWeeklyReportAppUsageView *)self appImageStackView];
-            [v26 insertArrangedSubview:v25 atIndex:v14];
+            v25 = [(STWeeklyReportAppUsageView *)self _appImageSubviewWithImage:image dimension:v24];
+            appImageStackView3 = [(STWeeklyReportAppUsageView *)self appImageStackView];
+            [appImageStackView3 insertArrangedSubview:v25 atIndex:v14];
 
             v4 = v17;
             v7 = v16;
@@ -266,23 +266,23 @@
   }
 }
 
-- (id)_appImageSubviewWithImage:(id)a3 dimension:(double)a4
+- (id)_appImageSubviewWithImage:(id)image dimension:(double)dimension
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  imageCopy = image;
   v6 = objc_opt_new();
-  v7 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v5];
+  v7 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:imageCopy];
 
-  [v7 setSize:{a4, a4}];
+  [v7 setSize:{dimension, dimension}];
   [v6 addSubview:v7];
   v8 = MEMORY[0x277CCAAD0];
-  v9 = [v7 centerXAnchor];
-  v10 = [v6 centerXAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  centerXAnchor = [v7 centerXAnchor];
+  centerXAnchor2 = [v6 centerXAnchor];
+  v11 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v17[0] = v11;
-  v12 = [v7 bottomAnchor];
-  v13 = [v6 bottomAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  bottomAnchor = [v7 bottomAnchor];
+  bottomAnchor2 = [v6 bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v17[1] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
   [v8 activateConstraints:v15];

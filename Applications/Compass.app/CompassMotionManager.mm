@@ -3,7 +3,7 @@
 - (CompassMotionManager)init;
 - (id)testMotion;
 - (void)generateTestDeviceMotionArray;
-- (void)setConfiguredForTesting:(BOOL)a3;
+- (void)setConfiguredForTesting:(BOOL)testing;
 @end
 
 @implementation CompassMotionManager
@@ -23,9 +23,9 @@
   return v2;
 }
 
-- (void)setConfiguredForTesting:(BOOL)a3
+- (void)setConfiguredForTesting:(BOOL)testing
 {
-  if (self->_configuredForTesting == a3)
+  if (self->_configuredForTesting == testing)
   {
     if (!self->_configuredForTesting)
     {
@@ -35,8 +35,8 @@
 
   else
   {
-    self->_configuredForTesting = a3;
-    if (!a3)
+    self->_configuredForTesting = testing;
+    if (!testing)
     {
       return;
     }

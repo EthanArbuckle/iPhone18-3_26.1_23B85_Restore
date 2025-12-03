@@ -1,25 +1,25 @@
 @interface CAFTestAccEventNoParamsControl
 + (void)load;
-- (void)_didNotifyWithValue:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)_didNotifyWithValue:(id)value;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFTestAccEventNoParamsControl
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFTestAccEventNoParamsControl;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2846ABC08])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_2846ABC08])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -32,12 +32,12 @@
   [(CAFControl *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2846ABC08])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_2846ABC08])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -50,14 +50,14 @@
   [(CAFControl *)&v6 unregisterObserver:v5];
 }
 
-- (void)_didNotifyWithValue:(id)a3
+- (void)_didNotifyWithValue:(id)value
 {
-  v4 = [(CAFTestAccEventNoParamsControl *)self handler];
+  handler = [(CAFTestAccEventNoParamsControl *)self handler];
 
-  if (v4)
+  if (handler)
   {
-    v5 = [(CAFTestAccEventNoParamsControl *)self handler];
-    v5[2]();
+    handler2 = [(CAFTestAccEventNoParamsControl *)self handler];
+    handler2[2]();
   }
 }
 

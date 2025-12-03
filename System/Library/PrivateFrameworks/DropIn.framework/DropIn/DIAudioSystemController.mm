@@ -1,19 +1,19 @@
 @interface DIAudioSystemController
 - (BOOL)isDownlinkMuted;
 - (BOOL)isUplinkMuted;
-- (DIAudioSystemController)initWithConnectionManager:(id)a3;
+- (DIAudioSystemController)initWithConnectionManager:(id)manager;
 - (DIAudioSystemControllerDelegate)delegate;
 - (DIXPCConnectionManager)connectionManager;
 - (void)dealloc;
-- (void)didUpdateDownlinkMuteStatus:(BOOL)a3;
-- (void)didUpdateUplinkMuteStatus:(BOOL)a3;
+- (void)didUpdateDownlinkMuteStatus:(BOOL)status;
+- (void)didUpdateUplinkMuteStatus:(BOOL)status;
 @end
 
 @implementation DIAudioSystemController
 
-- (DIAudioSystemController)initWithConnectionManager:(id)a3
+- (DIAudioSystemController)initWithConnectionManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = DIAudioSystemController;
   v5 = [(DIAudioSystemController *)&v11 init];
@@ -24,9 +24,9 @@
     v5->_lock = v6;
 
     *&v5->_needsInitialUplinkMuteStatus = 257;
-    v8 = objc_storeWeak(&v5->_connectionManager, v4);
-    v9 = [v4 dispatcher];
-    [v9 setAudioStatusDelegate:v5];
+    v8 = objc_storeWeak(&v5->_connectionManager, managerCopy);
+    dispatcher = [managerCopy dispatcher];
+    [dispatcher setAudioStatusDelegate:v5];
   }
 
   return v5;
@@ -51,23 +51,23 @@
 
 - (BOOL)isUplinkMuted
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(DIAudioSystemController *)self lock];
+  lock = [(DIAudioSystemController *)self lock];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __40__DIAudioSystemController_isUplinkMuted__block_invoke;
   v5[3] = &unk_278FB8DB8;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  [v3 di_synchronize:v5];
+  [lock di_synchronize:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __40__DIAudioSystemController_isUplinkMuted__block_invoke(uint64_t a1)
@@ -189,23 +189,23 @@ LABEL_6:
 
 - (BOOL)isDownlinkMuted
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(DIAudioSystemController *)self lock];
+  lock = [(DIAudioSystemController *)self lock];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __42__DIAudioSystemController_isDownlinkMuted__block_invoke;
   v5[3] = &unk_278FB8DB8;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  [v3 di_synchronize:v5];
+  [lock di_synchronize:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __42__DIAudioSystemController_isDownlinkMuted__block_invoke(uint64_t a1)
@@ -325,32 +325,32 @@ LABEL_6:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didUpdateDownlinkMuteStatus:(BOOL)a3
+- (void)didUpdateDownlinkMuteStatus:(BOOL)status
 {
-  v5 = [(DIAudioSystemController *)self lock];
+  lock = [(DIAudioSystemController *)self lock];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __55__DIAudioSystemController_didUpdateDownlinkMuteStatus___block_invoke;
   v13[3] = &unk_278FB8E70;
   v13[4] = self;
-  v14 = a3;
-  [v5 di_synchronize:v13];
+  statusCopy = status;
+  [lock di_synchronize:v13];
 
-  v6 = [(DIAudioSystemController *)self delegate];
+  delegate = [(DIAudioSystemController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(DIAudioSystemController *)self connectionManager];
-    v9 = [v8 manager];
-    v10 = [v9 clientQueue];
+    connectionManager = [(DIAudioSystemController *)self connectionManager];
+    manager = [connectionManager manager];
+    clientQueue = [manager clientQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __55__DIAudioSystemController_didUpdateDownlinkMuteStatus___block_invoke_2;
     v11[3] = &unk_278FB8E70;
     v11[4] = self;
-    v12 = a3;
-    [DIUtilities onQueue:v10 block:v11];
+    statusCopy2 = status;
+    [DIUtilities onQueue:clientQueue block:v11];
   }
 }
 
@@ -360,32 +360,32 @@ void __55__DIAudioSystemController_didUpdateDownlinkMuteStatus___block_invoke_2(
   [v2 controller:*(a1 + 32) didUpdateDownlinkMuteStatus:*(a1 + 40)];
 }
 
-- (void)didUpdateUplinkMuteStatus:(BOOL)a3
+- (void)didUpdateUplinkMuteStatus:(BOOL)status
 {
-  v5 = [(DIAudioSystemController *)self lock];
+  lock = [(DIAudioSystemController *)self lock];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __53__DIAudioSystemController_didUpdateUplinkMuteStatus___block_invoke;
   v13[3] = &unk_278FB8E70;
   v13[4] = self;
-  v14 = a3;
-  [v5 di_synchronize:v13];
+  statusCopy = status;
+  [lock di_synchronize:v13];
 
-  v6 = [(DIAudioSystemController *)self delegate];
+  delegate = [(DIAudioSystemController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(DIAudioSystemController *)self connectionManager];
-    v9 = [v8 manager];
-    v10 = [v9 clientQueue];
+    connectionManager = [(DIAudioSystemController *)self connectionManager];
+    manager = [connectionManager manager];
+    clientQueue = [manager clientQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __53__DIAudioSystemController_didUpdateUplinkMuteStatus___block_invoke_2;
     v11[3] = &unk_278FB8E70;
     v11[4] = self;
-    v12 = a3;
-    [DIUtilities onQueue:v10 block:v11];
+    statusCopy2 = status;
+    [DIUtilities onQueue:clientQueue block:v11];
   }
 }
 

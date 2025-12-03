@@ -1,58 +1,58 @@
 @interface _INPBArchivedObject
-- (BOOL)isEqual:(id)a3;
-- (_INPBArchivedObject)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBArchivedObject)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)setMessageData:(id)a3;
-- (void)setTypeName:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setMessageData:(id)data;
+- (void)setTypeName:(id)name;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBArchivedObject
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_messageData)
   {
-    v4 = [(_INPBArchivedObject *)self messageData];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"messageData"];
+    messageData = [(_INPBArchivedObject *)self messageData];
+    v5 = [messageData copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"messageData"];
   }
 
   if (self->_typeName)
   {
-    v6 = [(_INPBArchivedObject *)self typeName];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"typeName"];
+    typeName = [(_INPBArchivedObject *)self typeName];
+    v7 = [typeName copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"typeName"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_INPBArchivedObject *)self messageData];
-  v6 = [v4 messageData];
-  if ((v5 != 0) == (v6 == 0))
+  messageData = [(_INPBArchivedObject *)self messageData];
+  messageData2 = [equalCopy messageData];
+  if ((messageData != 0) == (messageData2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_INPBArchivedObject *)self messageData];
-  if (v7)
+  messageData3 = [(_INPBArchivedObject *)self messageData];
+  if (messageData3)
   {
-    v8 = v7;
-    v9 = [(_INPBArchivedObject *)self messageData];
-    v10 = [v4 messageData];
-    v11 = [v9 isEqual:v10];
+    v8 = messageData3;
+    messageData4 = [(_INPBArchivedObject *)self messageData];
+    messageData5 = [equalCopy messageData];
+    v11 = [messageData4 isEqual:messageData5];
 
     if (!v11)
     {
@@ -64,12 +64,12 @@
   {
   }
 
-  v5 = [(_INPBArchivedObject *)self typeName];
-  v6 = [v4 typeName];
-  if ((v5 != 0) != (v6 == 0))
+  messageData = [(_INPBArchivedObject *)self typeName];
+  messageData2 = [equalCopy typeName];
+  if ((messageData != 0) != (messageData2 == 0))
   {
-    v12 = [(_INPBArchivedObject *)self typeName];
-    if (!v12)
+    typeName = [(_INPBArchivedObject *)self typeName];
+    if (!typeName)
     {
 
 LABEL_15:
@@ -77,10 +77,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_INPBArchivedObject *)self typeName];
-    v15 = [v4 typeName];
-    v16 = [v14 isEqual:v15];
+    v13 = typeName;
+    typeName2 = [(_INPBArchivedObject *)self typeName];
+    typeName3 = [equalCopy typeName];
+    v16 = [typeName2 isEqual:typeName3];
 
     if (v16)
     {
@@ -100,74 +100,74 @@ LABEL_13:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBArchivedObject allocWithZone:](_INPBArchivedObject init];
-  v6 = [(NSData *)self->_messageData copyWithZone:a3];
+  v6 = [(NSData *)self->_messageData copyWithZone:zone];
   [(_INPBArchivedObject *)v5 setMessageData:v6];
 
-  v7 = [(NSString *)self->_typeName copyWithZone:a3];
+  v7 = [(NSString *)self->_typeName copyWithZone:zone];
   [(_INPBArchivedObject *)v5 setTypeName:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBArchivedObject *)self data];
+  coderCopy = coder;
+  data = [(_INPBArchivedObject *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBArchivedObject)initWithCoder:(id)a3
+- (_INPBArchivedObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBArchivedObject *)self initWithData:v6];
+    self = [(_INPBArchivedObject *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(_INPBArchivedObject *)self messageData];
+  toCopy = to;
+  messageData = [(_INPBArchivedObject *)self messageData];
 
-  if (v4)
+  if (messageData)
   {
     messageData = self->_messageData;
     PBDataWriterWriteDataField();
   }
 
-  v6 = [(_INPBArchivedObject *)self typeName];
+  typeName = [(_INPBArchivedObject *)self typeName];
 
-  if (v6)
+  if (typeName)
   {
     typeName = self->_typeName;
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setTypeName:(id)a3
+- (void)setTypeName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   typeName = self->_typeName;
   self->_typeName = v4;
 
   MEMORY[0x1EEE66BB8](v4, typeName);
 }
 
-- (void)setMessageData:(id)a3
+- (void)setMessageData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   messageData = self->_messageData;
   self->_messageData = v4;
 

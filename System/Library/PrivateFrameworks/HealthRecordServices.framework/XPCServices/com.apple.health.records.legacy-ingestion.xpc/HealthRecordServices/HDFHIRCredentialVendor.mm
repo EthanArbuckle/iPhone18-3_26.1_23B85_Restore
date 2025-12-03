@@ -1,18 +1,18 @@
 @interface HDFHIRCredentialVendor
 - (HDFHIRCredentialResult)currentResult;
 - (HDFHIRCredentialVendor)init;
-- (HDFHIRCredentialVendor)initWithCredential:(id)a3;
+- (HDFHIRCredentialVendor)initWithCredential:(id)credential;
 - (HDFHIRCredentialVendorDelegate)delegate;
-- (void)_queue_dispatchResult:(id)a3 clientCompletion:(id)a4;
-- (void)_queue_enqueueRefreshForResult:(id)a3 clientCompletion:(id)a4;
-- (void)_queue_fetchOrRefreshCredentialWithClientCompletion:(id)a3;
-- (void)_queue_handleDelegateRefreshCompletionForInitialResult:(id)a3 refreshResult:(id)a4;
-- (void)_queue_performRefreshRequestTaskForResult:(id)a3;
+- (void)_queue_dispatchResult:(id)result clientCompletion:(id)completion;
+- (void)_queue_enqueueRefreshForResult:(id)result clientCompletion:(id)completion;
+- (void)_queue_fetchOrRefreshCredentialWithClientCompletion:(id)completion;
+- (void)_queue_handleDelegateRefreshCompletionForInitialResult:(id)result refreshResult:(id)refreshResult;
+- (void)_queue_performRefreshRequestTaskForResult:(id)result;
 - (void)_queue_releaseDelegate;
 - (void)_queue_retainDelegate;
-- (void)_setCurrentResultSync:(id)a3;
-- (void)fetchOrRefreshCredentialWithCompletion:(id)a3;
-- (void)setCurrentResult:(id)a3;
+- (void)_setCurrentResultSync:(id)sync;
+- (void)fetchOrRefreshCredentialWithCompletion:(id)completion;
+- (void)setCurrentResult:(id)result;
 @end
 
 @implementation HDFHIRCredentialVendor
@@ -25,9 +25,9 @@
   return 0;
 }
 
-- (HDFHIRCredentialVendor)initWithCredential:(id)a3
+- (HDFHIRCredentialVendor)initWithCredential:(id)credential
 {
-  v4 = a3;
+  credentialCopy = credential;
   v15.receiver = self;
   v15.super_class = HDFHIRCredentialVendor;
   v5 = [(HDFHIRCredentialVendor *)&v15 init];
@@ -45,7 +45,7 @@
     queue = v5->_queue;
     v5->_queue = v10;
 
-    v12 = [[HDFHIRCredentialResult alloc] _initWithCredential:v4 authResponse:0];
+    v12 = [[HDFHIRCredentialResult alloc] _initWithCredential:credentialCopy authResponse:0];
     currentResult = v5->_currentResult;
     v5->_currentResult = v12;
   }
@@ -53,65 +53,65 @@
   return v5;
 }
 
-- (void)fetchOrRefreshCredentialWithCompletion:(id)a3
+- (void)fetchOrRefreshCredentialWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000037CC;
   v7[3] = &unk_100018538;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_queue_fetchOrRefreshCredentialWithClientCompletion:(id)a3
+- (void)_queue_fetchOrRefreshCredentialWithClientCompletion:(id)completion
 {
   queue = self->_queue;
-  v5 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(queue);
   [(HDFHIRCredentialVendor *)self _queue_retainDelegate];
-  v6 = [(HDFHIRCredentialVendor *)self currentResult];
-  if ([v6 shouldRefresh])
+  currentResult = [(HDFHIRCredentialVendor *)self currentResult];
+  if ([currentResult shouldRefresh])
   {
-    [(HDFHIRCredentialVendor *)self _queue_enqueueRefreshForResult:v6 clientCompletion:v5];
+    [(HDFHIRCredentialVendor *)self _queue_enqueueRefreshForResult:currentResult clientCompletion:completionCopy];
   }
 
   else
   {
-    [(HDFHIRCredentialVendor *)self _queue_dispatchResult:v6 clientCompletion:v5];
+    [(HDFHIRCredentialVendor *)self _queue_dispatchResult:currentResult clientCompletion:completionCopy];
   }
 
   [(HDFHIRCredentialVendor *)self _queue_releaseDelegate];
 }
 
-- (void)_queue_dispatchResult:(id)a3 clientCompletion:(id)a4
+- (void)_queue_dispatchResult:(id)result clientCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   clientQueue = self->_clientQueue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000394C;
   v11[3] = &unk_100018560;
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
+  v12 = resultCopy;
+  v13 = completionCopy;
+  v9 = resultCopy;
+  v10 = completionCopy;
   dispatch_async(clientQueue, v11);
 }
 
-- (void)_queue_enqueueRefreshForResult:(id)a3 clientCompletion:(id)a4
+- (void)_queue_enqueueRefreshForResult:(id)result clientCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   if (![(HDFHIRCredentialVendor *)self _queue_hasInFlightRefreshTask])
   {
-    [(HDFHIRCredentialVendor *)self _queue_performRefreshRequestTaskForResult:v6];
+    [(HDFHIRCredentialVendor *)self _queue_performRefreshRequestTaskForResult:resultCopy];
   }
 
   v8 = self->_inFlightRefreshResultPromise;
@@ -122,15 +122,15 @@
   v13[2] = sub_100003A8C;
   v13[3] = &unk_100018560;
   v14 = v8;
-  v15 = v7;
+  v15 = completionCopy;
   v11 = v8;
-  v12 = v7;
+  v12 = completionCopy;
   dispatch_group_notify(inFlightRefreshCompletionGroup, clientQueue, v13);
 }
 
-- (void)_queue_performRefreshRequestTaskForResult:(id)a3
+- (void)_queue_performRefreshRequestTaskForResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   dispatch_assert_queue_V2(self->_queue);
   if ([(HDFHIRCredentialVendor *)self _queue_hasInFlightRefreshTask])
   {
@@ -153,55 +153,55 @@
 
   dispatch_group_enter(self->_inFlightRefreshCompletionGroup);
   strongDelegate = self->_strongDelegate;
-  v10 = [v4 credential];
+  credential = [resultCopy credential];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100003C20;
   v12[3] = &unk_1000185B0;
   v12[4] = self;
-  v13 = v4;
-  v11 = v4;
-  [(HDFHIRCredentialVendorDelegate *)strongDelegate credentialVendor:self refreshCredential:v10 completion:v12];
+  v13 = resultCopy;
+  v11 = resultCopy;
+  [(HDFHIRCredentialVendorDelegate *)strongDelegate credentialVendor:self refreshCredential:credential completion:v12];
 }
 
-- (void)_queue_handleDelegateRefreshCompletionForInitialResult:(id)a3 refreshResult:(id)a4
+- (void)_queue_handleDelegateRefreshCompletionForInitialResult:(id)result refreshResult:(id)refreshResult
 {
-  v21 = a4;
+  refreshResultCopy = refreshResult;
   queue = self->_queue;
-  v7 = a3;
+  resultCopy = result;
   dispatch_assert_queue_V2(queue);
-  v8 = [v21 authResponse];
+  authResponse = [refreshResultCopy authResponse];
 
-  if (v8)
+  if (authResponse)
   {
-    v9 = [v21 authResponse];
-    v10 = [v7 _resultWithAuthResponse:v9];
+    authResponse2 = [refreshResultCopy authResponse];
+    v10 = [resultCopy _resultWithAuthResponse:authResponse2];
   }
 
   else
   {
-    v11 = [v21 error];
+    error = [refreshResultCopy error];
 
-    if (!v11)
+    if (!error)
     {
       sub_10000BBA0();
     }
 
-    v9 = [v21 error];
-    v10 = [v7 _resultWithRefreshError:v9];
+    authResponse2 = [refreshResultCopy error];
+    v10 = [resultCopy _resultWithRefreshError:authResponse2];
   }
 
   v12 = v10;
 
   [(HDFHIRCredentialVendor *)self _setCurrentResultSync:v12];
-  v13 = [(HDFHIRCredentialVendor *)self credentialResultDidUpdateHandler];
-  if (v13)
+  credentialResultDidUpdateHandler = [(HDFHIRCredentialVendor *)self credentialResultDidUpdateHandler];
+  if (credentialResultDidUpdateHandler)
   {
-    v14 = [v21 endStates];
-    v15 = v14;
-    if (v14)
+    endStates = [refreshResultCopy endStates];
+    v15 = endStates;
+    if (endStates)
     {
-      v16 = v14;
+      v16 = endStates;
     }
 
     else
@@ -211,7 +211,7 @@
 
     v17 = v16;
 
-    (v13)[2](v13, v12, v17);
+    (credentialResultDidUpdateHandler)[2](credentialResultDidUpdateHandler, v12, v17);
   }
 
   [(_HDFHIRCredentialResultPromise *)self->_inFlightRefreshResultPromise fulfillWithResult:v12];
@@ -231,9 +231,9 @@
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_strongDelegateRetainCount)
   {
-    v3 = [(HDFHIRCredentialVendor *)self delegate];
+    delegate = [(HDFHIRCredentialVendor *)self delegate];
     strongDelegate = self->_strongDelegate;
-    self->_strongDelegate = v3;
+    self->_strongDelegate = delegate;
 
     if (!self->_strongDelegate)
     {
@@ -286,23 +286,23 @@
   return v4;
 }
 
-- (void)setCurrentResult:(id)a3
+- (void)setCurrentResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   credentialResultQueue = self->_credentialResultQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000416C;
   v7[3] = &unk_100018600;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = resultCopy;
+  v6 = resultCopy;
   dispatch_async(credentialResultQueue, v7);
 }
 
-- (void)_setCurrentResultSync:(id)a3
+- (void)_setCurrentResultSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   dispatch_assert_queue_not_V2(self->_credentialResultQueue);
   credentialResultQueue = self->_credentialResultQueue;
   v7[0] = _NSConcreteStackBlock;
@@ -310,8 +310,8 @@
   v7[2] = sub_100004224;
   v7[3] = &unk_100018600;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = syncCopy;
+  v6 = syncCopy;
   dispatch_sync(credentialResultQueue, v7);
 }
 

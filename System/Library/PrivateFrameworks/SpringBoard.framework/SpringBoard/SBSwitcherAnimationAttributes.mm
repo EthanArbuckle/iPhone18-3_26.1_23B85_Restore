@@ -1,28 +1,28 @@
 @interface SBSwitcherAnimationAttributes
-- (id)_copyWithClass:(Class)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_copyWithClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SBSwitcherAnimationAttributes
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
 
   return [(SBSwitcherAnimationAttributes *)self _copyWithClass:v4];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
 
   return [(SBSwitcherAnimationAttributes *)self _copyWithClass:v4];
 }
 
-- (id)_copyWithClass:(Class)a3
+- (id)_copyWithClass:(Class)class
 {
-  v4 = objc_alloc_init(a3);
+  v4 = objc_alloc_init(class);
   [v4 setUpdateMode:self->_updateMode];
   [v4 setLayoutUpdateMode:self->_layoutUpdateMode];
   [v4 setPositionUpdateMode:self->_positionUpdateMode];

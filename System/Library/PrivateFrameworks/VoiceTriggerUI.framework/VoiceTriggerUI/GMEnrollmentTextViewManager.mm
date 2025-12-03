@@ -1,14 +1,14 @@
 @interface GMEnrollmentTextViewManager
 - (_TtC14VoiceTriggerUI27GMEnrollmentTextViewManager)init;
-- (id)createViewControllerWithEnrollmentViewModel:(id)a3;
+- (id)createViewControllerWithEnrollmentViewModel:(id)model;
 @end
 
 @implementation GMEnrollmentTextViewManager
 
-- (id)createViewControllerWithEnrollmentViewModel:(id)a3
+- (id)createViewControllerWithEnrollmentViewModel:(id)model
 {
   v4 = objc_allocWithZone(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_28089BD98, &unk_272935480));
-  v5 = a3;
+  modelCopy = model;
   v6 = sub_27292DB64();
 
   return v6;

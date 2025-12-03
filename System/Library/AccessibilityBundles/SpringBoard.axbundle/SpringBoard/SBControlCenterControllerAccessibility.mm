@@ -1,5 +1,5 @@
 @interface SBControlCenterControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_didEndTransition;
 - (void)_willBeginTransition;
@@ -7,14 +7,14 @@
 
 @implementation SBControlCenterControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBControlCenterController" hasInstanceVariable:@"_viewController" withType:"UIViewController<CCUIMainViewController><CCUIMainViewControllerPPTSupporting>"];
-  [v3 validateClass:@"SBControlCenterController" hasInstanceMethod:@"_willBeginTransition" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBControlCenterController" hasInstanceMethod:@"_didEndTransition" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"AXSBHearingAidDeviceController" hasClassMethod:@"sharedController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AXSBHearingAidDeviceController" hasInstanceMethod:@"showHearingAidControl:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBControlCenterController" hasInstanceVariable:@"_viewController" withType:"UIViewController<CCUIMainViewController><CCUIMainViewControllerPPTSupporting>"];
+  [validationsCopy validateClass:@"SBControlCenterController" hasInstanceMethod:@"_willBeginTransition" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBControlCenterController" hasInstanceMethod:@"_didEndTransition" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"AXSBHearingAidDeviceController" hasClassMethod:@"sharedController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AXSBHearingAidDeviceController" hasInstanceMethod:@"showHearingAidControl:" withFullSignature:{"v", "B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

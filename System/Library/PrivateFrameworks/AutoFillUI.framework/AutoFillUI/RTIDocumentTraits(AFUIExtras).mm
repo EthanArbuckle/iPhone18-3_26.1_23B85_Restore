@@ -6,11 +6,11 @@
 
 - (uint64_t)_isExplicitAutoFillInvocation
 {
-  if ([a1 isExplicitAutoFillMode])
+  if ([self isExplicitAutoFillMode])
   {
-    v2 = [a1 autofillMode];
-    v3 = 0x282u >> v2;
-    if (v2 > 9)
+    autofillMode = [self autofillMode];
+    v3 = 0x282u >> autofillMode;
+    if (autofillMode > 9)
     {
       LOBYTE(v3) = 0;
     }

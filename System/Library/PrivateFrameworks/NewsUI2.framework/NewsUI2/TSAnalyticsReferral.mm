@@ -1,20 +1,20 @@
 @interface TSAnalyticsReferral
 - (TSAnalyticsReferral)init;
-- (TSAnalyticsReferral)initWithUserActivityType:(id)a3 creativeID:(id)a4 campaignID:(id)a5 campaignType:(id)a6 referringApplication:(id)a7 referringURL:(id)a8 widgetModeGroupID:(id)a9 widgetEngagement:(id)a10 appOpenedByUserActivity:(BOOL)a11 appSessionStartMethod:(int)a12 appSessionStartNotificationType:(int)a13;
+- (TSAnalyticsReferral)initWithUserActivityType:(id)type creativeID:(id)d campaignID:(id)iD campaignType:(id)campaignType referringApplication:(id)application referringURL:(id)l widgetModeGroupID:(id)groupID widgetEngagement:(id)self0 appOpenedByUserActivity:(BOOL)self1 appSessionStartMethod:(int)self2 appSessionStartNotificationType:(int)self3;
 @end
 
 @implementation TSAnalyticsReferral
 
-- (TSAnalyticsReferral)initWithUserActivityType:(id)a3 creativeID:(id)a4 campaignID:(id)a5 campaignType:(id)a6 referringApplication:(id)a7 referringURL:(id)a8 widgetModeGroupID:(id)a9 widgetEngagement:(id)a10 appOpenedByUserActivity:(BOOL)a11 appSessionStartMethod:(int)a12 appSessionStartNotificationType:(int)a13
+- (TSAnalyticsReferral)initWithUserActivityType:(id)type creativeID:(id)d campaignID:(id)iD campaignType:(id)campaignType referringApplication:(id)application referringURL:(id)l widgetModeGroupID:(id)groupID widgetEngagement:(id)self0 appOpenedByUserActivity:(BOOL)self1 appSessionStartMethod:(int)self2 appSessionStartNotificationType:(int)self3
 {
-  if (a3)
+  if (type)
   {
     v18 = sub_219BF5414();
     v49 = v19;
     v50 = v18;
-    v21 = a9;
-    v20 = a10;
-    if (a4)
+    groupIDCopy2 = groupID;
+    engagementCopy2 = engagement;
+    if (d)
     {
       goto LABEL_3;
     }
@@ -22,7 +22,7 @@
 LABEL_6:
     v47 = 0;
     v48 = 0;
-    if (a5)
+    if (iD)
     {
       goto LABEL_4;
     }
@@ -32,9 +32,9 @@ LABEL_6:
 
   v49 = 0;
   v50 = 0;
-  v21 = a9;
-  v20 = a10;
-  if (!a4)
+  groupIDCopy2 = groupID;
+  engagementCopy2 = engagement;
+  if (!d)
   {
     goto LABEL_6;
   }
@@ -43,7 +43,7 @@ LABEL_3:
   v22 = sub_219BF5414();
   v47 = v23;
   v48 = v22;
-  if (a5)
+  if (iD)
   {
 LABEL_4:
     v24 = sub_219BF5414();
@@ -56,18 +56,18 @@ LABEL_7:
   v45 = 0;
   v46 = 0;
 LABEL_8:
-  v26 = a6;
-  v27 = a7;
-  v28 = a8;
-  v29 = v21;
-  v42 = v20;
-  if (v26)
+  campaignTypeCopy = campaignType;
+  applicationCopy = application;
+  lCopy = l;
+  v29 = groupIDCopy2;
+  v42 = engagementCopy2;
+  if (campaignTypeCopy)
   {
     v30 = sub_219BF5414();
     v43 = v31;
     v44 = v30;
 
-    if (v27)
+    if (applicationCopy)
     {
       goto LABEL_10;
     }
@@ -75,7 +75,7 @@ LABEL_8:
 LABEL_13:
     v32 = 0;
     v34 = 0;
-    if (v28)
+    if (lCopy)
     {
       goto LABEL_11;
     }
@@ -85,7 +85,7 @@ LABEL_13:
 
   v43 = 0;
   v44 = 0;
-  if (!v27)
+  if (!applicationCopy)
   {
     goto LABEL_13;
   }
@@ -94,7 +94,7 @@ LABEL_10:
   v32 = sub_219BF5414();
   v34 = v33;
 
-  if (v28)
+  if (lCopy)
   {
 LABEL_11:
     v35 = sub_219BF5414();
@@ -119,7 +119,7 @@ LABEL_15:
     v40 = 0;
   }
 
-  return AnalyticsReferral.init(userActivityType:creativeID:campaignID:campaignType:referringApplication:referringURL:widgetModeGroupID:widgetEngagement:appOpenedByUserActivity:appSessionStartMethod:appSessionStartNotificationType:)(v50, v49, v48, v47, v46, v45, v44, v43, v32, v34, v35, v37, v38, v40, v42, a11, a12, a13);
+  return AnalyticsReferral.init(userActivityType:creativeID:campaignID:campaignType:referringApplication:referringURL:widgetModeGroupID:widgetEngagement:appOpenedByUserActivity:appSessionStartMethod:appSessionStartNotificationType:)(v50, v49, v48, v47, v46, v45, v44, v43, v32, v34, v35, v37, v38, v40, v42, activity, method, notificationType);
 }
 
 - (TSAnalyticsReferral)init

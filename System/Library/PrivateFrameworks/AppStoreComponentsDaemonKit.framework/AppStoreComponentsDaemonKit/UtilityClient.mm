@@ -1,34 +1,34 @@
 @interface UtilityClient
 - (_TtC27AppStoreComponentsDaemonKit13UtilityClient)init;
-- (void)openURL:(id)a3 withReplyHandler:(id)a4;
-- (void)restoreAppStoreWithReplyHandler:(id)a3;
+- (void)openURL:(id)l withReplyHandler:(id)handler;
+- (void)restoreAppStoreWithReplyHandler:(id)handler;
 @end
 
 @implementation UtilityClient
 
-- (void)openURL:(id)a3 withReplyHandler:(id)a4
+- (void)openURL:(id)l withReplyHandler:(id)handler
 {
   v6 = sub_22273731C();
   v7 = *(v6 - 8);
   v8 = *(v7 + 64);
   MEMORY[0x28223BE20](v6);
   v10 = &v14 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   sub_2227372FC();
   v12 = swift_allocObject();
   *(v12 + 16) = v11;
-  v13 = self;
+  selfCopy = self;
   sub_222730818(v10, sub_2227113C4, v12);
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)restoreAppStoreWithReplyHandler:(id)a3
+- (void)restoreAppStoreWithReplyHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_2227309BC(sub_222710B60, v5);
 }
 

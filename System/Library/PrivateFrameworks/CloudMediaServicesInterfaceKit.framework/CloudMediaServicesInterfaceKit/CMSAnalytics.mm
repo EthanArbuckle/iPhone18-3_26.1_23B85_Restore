@@ -1,15 +1,15 @@
 @interface CMSAnalytics
-+ (void)sendContentFailureEvent:(id)a3;
++ (void)sendContentFailureEvent:(id)event;
 @end
 
 @implementation CMSAnalytics
 
-+ (void)sendContentFailureEvent:(id)a3
++ (void)sendContentFailureEvent:(id)event
 {
-  v3 = a3;
-  v4 = [v3 eventName];
-  v6 = v3;
-  v5 = v3;
+  eventCopy = event;
+  eventName = [eventCopy eventName];
+  v6 = eventCopy;
+  v5 = eventCopy;
   AnalyticsSendEventLazy();
 }
 

@@ -1,15 +1,15 @@
 @interface SBSystemApertureCaptureVisibilityShimViewController
 - (BOOL)_isOriginalContentCloned;
-- (SBSystemApertureCaptureVisibilityShimViewController)initWithContentViewController:(id)a3;
+- (SBSystemApertureCaptureVisibilityShimViewController)initWithContentViewController:(id)controller;
 - (id)newDefaultVisibilityAnimator;
 - (void)_updateClonedVisibility;
 - (void)_updatePortalVisibility;
 - (void)_updateSnapshotVisibility;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setContentsDifferOnClonedDisplay:(BOOL)a3;
-- (void)setVisibleInSnapshots:(BOOL)a3;
-- (void)setVisibleOnClonedDisplay:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setContentsDifferOnClonedDisplay:(BOOL)display;
+- (void)setVisibleInSnapshots:(BOOL)snapshots;
+- (void)setVisibleOnClonedDisplay:(BOOL)display;
 - (void)viewDidLoad;
 @end
 
@@ -17,11 +17,11 @@
 
 - (void)_updateSnapshotVisibility
 {
-  v8 = [(UIViewController *)self->_contentViewController view];
-  v3 = [v8 layer];
-  v4 = [v3 disableUpdateMask];
+  view = [(UIViewController *)self->_contentViewController view];
+  layer = [view layer];
+  disableUpdateMask = [layer disableUpdateMask];
 
-  v5 = v4 & 0xFFFFFFFD;
+  v5 = disableUpdateMask & 0xFFFFFFFD;
   if (self->_visibleInSnapshots)
   {
     v6 = 0;
@@ -32,18 +32,18 @@
     v6 = 2;
   }
 
-  v7 = [v8 layer];
-  [v7 setDisableUpdateMask:v6 | v5];
+  layer2 = [view layer];
+  [layer2 setDisableUpdateMask:v6 | v5];
 }
 
 - (BOOL)_isOriginalContentCloned
 {
-  v2 = [(UIViewController *)self->_contentViewController view];
-  v3 = [v2 _fbsDisplayConfiguration];
-  v4 = [v3 CADisplay];
-  v5 = [v4 isCloned];
+  view = [(UIViewController *)self->_contentViewController view];
+  _fbsDisplayConfiguration = [view _fbsDisplayConfiguration];
+  cADisplay = [_fbsDisplayConfiguration CADisplay];
+  isCloned = [cADisplay isCloned];
 
-  return v5;
+  return isCloned;
 }
 
 - (id)newDefaultVisibilityAnimator
@@ -73,9 +73,9 @@
   [(_UIPortalView *)self->_clonedDisplayPortalView setAlpha:v2];
 }
 
-- (SBSystemApertureCaptureVisibilityShimViewController)initWithContentViewController:(id)a3
+- (SBSystemApertureCaptureVisibilityShimViewController)initWithContentViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = SBSystemApertureCaptureVisibilityShimViewController;
   v6 = [(SBSystemApertureCaptureVisibilityShimViewController *)&v10 initWithNibName:0 bundle:0];
@@ -85,7 +85,7 @@
     settings = v6->_settings;
     v6->_settings = v7;
 
-    objc_storeStrong(&v6->_contentViewController, a3);
+    objc_storeStrong(&v6->_contentViewController, controller);
   }
 
   return v6;
@@ -96,22 +96,22 @@
   v27.receiver = self;
   v27.super_class = SBSystemApertureCaptureVisibilityShimViewController;
   [(SBSystemApertureCaptureVisibilityShimViewController *)&v27 viewDidLoad];
-  v3 = [(SBSystemApertureCaptureVisibilityShimViewController *)self view];
-  v4 = [(SBSystemApertureCaptureVisibilityShimViewController *)self view];
-  [v4 bounds];
+  view = [(SBSystemApertureCaptureVisibilityShimViewController *)self view];
+  view2 = [(SBSystemApertureCaptureVisibilityShimViewController *)self view];
+  [view2 bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  [(SBSystemApertureCaptureVisibilityShimViewController *)self bs_addChildViewController:self->_contentViewController withSuperview:v3];
-  v13 = [(UIViewController *)self->_contentViewController view];
-  [v13 setFrame:{v6, v8, v10, v12}];
-  [v13 setAutoresizingMask:18];
-  v14 = [v13 layer];
-  [v14 setDisableUpdateMask:2];
+  [(SBSystemApertureCaptureVisibilityShimViewController *)self bs_addChildViewController:self->_contentViewController withSuperview:view];
+  view3 = [(UIViewController *)self->_contentViewController view];
+  [view3 setFrame:{v6, v8, v10, v12}];
+  [view3 setAutoresizingMask:18];
+  layer = [view3 layer];
+  [layer setDisableUpdateMask:2];
 
-  v15 = [objc_alloc(MEMORY[0x277D76180]) initWithSourceView:v13];
+  v15 = [objc_alloc(MEMORY[0x277D76180]) initWithSourceView:view3];
   displayPortalView = self->_displayPortalView;
   self->_displayPortalView = v15;
 
@@ -122,37 +122,37 @@
   [(_UIPortalView *)self->_displayPortalView setAllowsHitTesting:1];
   [(_UIPortalView *)self->_displayPortalView setFrame:v6, v8, v10, v12];
   [(_UIPortalView *)self->_displayPortalView setAutoresizingMask:18];
-  v17 = [(_UIPortalView *)self->_displayPortalView layer];
-  [v17 setDisableUpdateMask:1042];
+  layer2 = [(_UIPortalView *)self->_displayPortalView layer];
+  [layer2 setDisableUpdateMask:1042];
 
-  [v3 addSubview:self->_displayPortalView];
-  v18 = [objc_alloc(MEMORY[0x277D76180]) initWithSourceView:v13];
+  [view addSubview:self->_displayPortalView];
+  v18 = [objc_alloc(MEMORY[0x277D76180]) initWithSourceView:view3];
   clonedDisplayPortalView = self->_clonedDisplayPortalView;
   self->_clonedDisplayPortalView = v18;
 
   [(_UIPortalView *)self->_clonedDisplayPortalView setUserInteractionEnabled:0];
-  v20 = [(_UIPortalView *)self->_clonedDisplayPortalView layer];
-  [v20 setAllowsHitTesting:0];
+  layer3 = [(_UIPortalView *)self->_clonedDisplayPortalView layer];
+  [layer3 setAllowsHitTesting:0];
 
   [(_UIPortalView *)self->_clonedDisplayPortalView setMatchesPosition:1];
   [(_UIPortalView *)self->_clonedDisplayPortalView setMatchesTransform:1];
   [(_UIPortalView *)self->_clonedDisplayPortalView setHidesSourceView:1];
   [(_UIPortalView *)self->_clonedDisplayPortalView setFrame:v6, v8, v10, v12];
   [(_UIPortalView *)self->_clonedDisplayPortalView setAutoresizingMask:18];
-  v21 = [(_UIPortalView *)self->_clonedDisplayPortalView layer];
-  [v21 setDisableUpdateMask:3];
+  layer4 = [(_UIPortalView *)self->_clonedDisplayPortalView layer];
+  [layer4 setDisableUpdateMask:3];
 
-  v22 = [(_UIPortalView *)self->_clonedDisplayPortalView layer];
-  [v22 setAllowsGroupOpacity:1];
+  layer5 = [(_UIPortalView *)self->_clonedDisplayPortalView layer];
+  [layer5 setAllowsGroupOpacity:1];
 
   [(_UIPortalView *)self->_clonedDisplayPortalView setAlpha:1.0];
-  [v3 addSubview:self->_clonedDisplayPortalView];
+  [view addSubview:self->_clonedDisplayPortalView];
   [(SBSystemApertureCaptureVisibilityShimViewController *)self _updateClonedVisibility];
-  v23 = [(UIViewController *)self->_contentViewController view];
-  v24 = [v23 _fbsDisplayConfiguration];
-  v25 = [v24 CADisplay];
+  view4 = [(UIViewController *)self->_contentViewController view];
+  _fbsDisplayConfiguration = [view4 _fbsDisplayConfiguration];
+  cADisplay = [_fbsDisplayConfiguration CADisplay];
   observedDisplay = self->_observedDisplay;
-  self->_observedDisplay = v25;
+  self->_observedDisplay = cADisplay;
 
   [(CADisplay *)self->_observedDisplay addObserver:self forKeyPath:@"cloned" options:1 context:0];
   [(SBSystemApertureCaptureVisibilityShimViewController *)self _updatePortalVisibility];
@@ -166,29 +166,29 @@
   [(SBSystemApertureCaptureVisibilityShimViewController *)&v3 dealloc];
 }
 
-- (void)setVisibleOnClonedDisplay:(BOOL)a3
+- (void)setVisibleOnClonedDisplay:(BOOL)display
 {
-  if (self->_visibleOnClonedDisplay != a3)
+  if (self->_visibleOnClonedDisplay != display)
   {
-    self->_visibleOnClonedDisplay = a3;
+    self->_visibleOnClonedDisplay = display;
     [(SBSystemApertureCaptureVisibilityShimViewController *)self _updateClonedVisibility];
   }
 }
 
-- (void)setVisibleInSnapshots:(BOOL)a3
+- (void)setVisibleInSnapshots:(BOOL)snapshots
 {
-  if (self->_visibleInSnapshots != a3)
+  if (self->_visibleInSnapshots != snapshots)
   {
-    self->_visibleInSnapshots = a3;
+    self->_visibleInSnapshots = snapshots;
     [(SBSystemApertureCaptureVisibilityShimViewController *)self _updateSnapshotVisibility];
   }
 }
 
-- (void)setContentsDifferOnClonedDisplay:(BOOL)a3
+- (void)setContentsDifferOnClonedDisplay:(BOOL)display
 {
-  if (self->_contentsDifferOnClonedDisplay != a3)
+  if (self->_contentsDifferOnClonedDisplay != display)
   {
-    self->_contentsDifferOnClonedDisplay = a3;
+    self->_contentsDifferOnClonedDisplay = display;
     [(SBSystemApertureCaptureVisibilityShimViewController *)self _updatePortalVisibility];
   }
 }
@@ -210,23 +210,23 @@
   [(_UIPortalView *)self->_clonedDisplayPortalView setHidden:!contentsDifferOnClonedDisplay];
   if (contentsDifferOnClonedDisplay)
   {
-    v4 = [(UIViewController *)self->_contentViewController view];
+    view = [(UIViewController *)self->_contentViewController view];
   }
 
   else
   {
-    v4 = 0;
+    view = 0;
   }
 
-  v5 = v4;
-  [(_UIPortalView *)self->_displayPortalView setSourceView:v4];
+  v5 = view;
+  [(_UIPortalView *)self->_displayPortalView setSourceView:view];
   [(_UIPortalView *)self->_clonedDisplayPortalView setSourceView:v5];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a4;
-  if ([a3 isEqualToString:@"cloned"] && BSEqualObjects())
+  objectCopy = object;
+  if ([path isEqualToString:@"cloned"] && BSEqualObjects())
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;

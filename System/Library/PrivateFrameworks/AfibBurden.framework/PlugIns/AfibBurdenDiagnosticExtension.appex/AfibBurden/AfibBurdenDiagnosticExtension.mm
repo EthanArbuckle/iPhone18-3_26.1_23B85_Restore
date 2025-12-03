@@ -1,6 +1,6 @@
 @interface AfibBurdenDiagnosticExtension
 - (id)attachmentList;
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation AfibBurdenDiagnosticExtension
@@ -19,24 +19,24 @@
   return v4;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   v4 = ab_get_framework_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v46 = v3;
+    v46 = parametersCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "attachmentsForParameters: %{public}@", buf, 0xCu);
   }
 
-  v5 = [v3 objectForKeyedSubscript:@"DEExtensionHostAppKey"];
+  v5 = [parametersCopy objectForKeyedSubscript:@"DEExtensionHostAppKey"];
   if (([v5 isEqualToString:@"com.apple.taptoradard"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"com.apple.TapToRadar"))
   {
-    v6 = [v3 objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
-    v7 = [v6 BOOLValue];
+    v6 = [parametersCopy objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
+    bOOLValue = [v6 BOOLValue];
 
-    if ((v7 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       v30 = ab_get_framework_log();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))

@@ -1,8 +1,8 @@
 @interface SBStatusBarBackgroundActivityDescriptor
-- (BOOL)isEqual:(id)a3;
-- (SBStatusBarBackgroundActivityDescriptor)initWithBackgroundActivityIdentifier:(id)a3 pid:(int)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SBStatusBarBackgroundActivityDescriptor)initWithBackgroundActivityIdentifier:(id)identifier pid:(int)pid;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)hash;
@@ -12,34 +12,34 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendString:self->_backgroundActivityIdentifier];
-  v5 = [v3 appendInt64:self->_pid];
-  v6 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendString:self->_backgroundActivityIdentifier];
+  v5 = [builder appendInt64:self->_pid];
+  v6 = [builder hash];
 
   return v6;
 }
 
-- (SBStatusBarBackgroundActivityDescriptor)initWithBackgroundActivityIdentifier:(id)a3 pid:(int)a4
+- (SBStatusBarBackgroundActivityDescriptor)initWithBackgroundActivityIdentifier:(id)identifier pid:(int)pid
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = SBStatusBarBackgroundActivityDescriptor;
   v8 = [(SBStatusBarBackgroundActivityDescriptor *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_backgroundActivityIdentifier, a3);
-    v9->_pid = a4;
+    objc_storeStrong(&v8->_backgroundActivityIdentifier, identifier);
+    v9->_pid = pid;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -49,13 +49,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       pid = self->_pid;
       if (pid == [(SBStatusBarBackgroundActivityDescriptor *)v5 pid])
       {
         backgroundActivityIdentifier = self->_backgroundActivityIdentifier;
-        v8 = [(SBStatusBarBackgroundActivityDescriptor *)v5 backgroundActivityIdentifier];
-        v9 = [(NSString *)backgroundActivityIdentifier isEqualToString:v8];
+        backgroundActivityIdentifier = [(SBStatusBarBackgroundActivityDescriptor *)v5 backgroundActivityIdentifier];
+        v9 = [(NSString *)backgroundActivityIdentifier isEqualToString:backgroundActivityIdentifier];
       }
 
       else
@@ -73,7 +73,7 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   backgroundActivityIdentifier = self->_backgroundActivityIdentifier;
@@ -82,20 +82,20 @@
   return [v4 initWithBackgroundActivityIdentifier:backgroundActivityIdentifier pid:pid];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBStatusBarBackgroundActivityDescriptor *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBStatusBarBackgroundActivityDescriptor *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBStatusBarBackgroundActivityDescriptor *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBStatusBarBackgroundActivityDescriptor *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder

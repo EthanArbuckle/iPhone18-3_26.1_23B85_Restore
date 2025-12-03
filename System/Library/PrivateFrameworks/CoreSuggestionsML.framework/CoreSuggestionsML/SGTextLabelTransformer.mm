@@ -1,45 +1,45 @@
 @interface SGTextLabelTransformer
-+ (id)_preprocessedLabelsWithLabels:(id)a3 andPreprocessor:(id)a4;
-+ (id)withMethods:(id)a3 withLabelStrings:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTextLabelTransformer:(id)a3;
-- (SGTextLabelTransformer)initWithMethods:(id)a3 withLabelStrings:(id)a4;
-- (SGTextLabelTransformer)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5;
-- (SGTextLabelTransformer)initWithPreprocessor:(id)a3 labeler:(id)a4;
-- (id)toPlistWithChunks:(id)a3;
-- (id)transform:(id)a3;
++ (id)_preprocessedLabelsWithLabels:(id)labels andPreprocessor:(id)preprocessor;
++ (id)withMethods:(id)methods withLabelStrings:(id)strings;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTextLabelTransformer:(id)transformer;
+- (SGTextLabelTransformer)initWithMethods:(id)methods withLabelStrings:(id)strings;
+- (SGTextLabelTransformer)initWithPlist:(id)plist chunks:(id)chunks context:(id)context;
+- (SGTextLabelTransformer)initWithPreprocessor:(id)preprocessor labeler:(id)labeler;
+- (id)toPlistWithChunks:(id)chunks;
+- (id)transform:(id)transform;
 @end
 
 @implementation SGTextLabelTransformer
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGTextLabelTransformer *)self isEqualToTextLabelTransformer:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGTextLabelTransformer *)self isEqualToTextLabelTransformer:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToTextLabelTransformer:(id)a3
+- (BOOL)isEqualToTextLabelTransformer:(id)transformer
 {
-  v4 = a3;
-  if (!v4)
+  transformerCopy = transformer;
+  if (!transformerCopy)
   {
     goto LABEL_4;
   }
 
   v5 = self->_preprocessor;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == transformerCopy[1])
   {
   }
 
@@ -57,7 +57,7 @@ LABEL_4:
 
   v9 = self->_labeler;
   v10 = v9;
-  if (v9 == v4[2])
+  if (v9 == transformerCopy[2])
   {
     v8 = 1;
   }
@@ -71,36 +71,36 @@ LABEL_10:
   return v8;
 }
 
-- (SGTextLabelTransformer)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5
+- (SGTextLabelTransformer)initWithPlist:(id)plist chunks:(id)chunks context:(id)context
 {
   v8 = MEMORY[0x277D41F60];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  contextCopy = context;
+  chunksCopy = chunks;
+  plistCopy = plist;
   v12 = [v8 alloc];
   v13 = [v12 initWithClassNameKey:*MEMORY[0x277D41F98]];
-  v14 = [v11 objectForKeyedSubscript:@"PREPROCESSOR"];
-  v15 = [v13 readObjectWithPlist:v14 chunks:v10 context:v9];
-  v16 = [v11 objectForKeyedSubscript:@"LABELER"];
+  v14 = [plistCopy objectForKeyedSubscript:@"PREPROCESSOR"];
+  v15 = [v13 readObjectWithPlist:v14 chunks:chunksCopy context:contextCopy];
+  v16 = [plistCopy objectForKeyedSubscript:@"LABELER"];
 
-  v17 = [v13 readObjectWithPlist:v16 chunks:v10 context:v9];
+  v17 = [v13 readObjectWithPlist:v16 chunks:chunksCopy context:contextCopy];
 
   v18 = [(SGTextLabelTransformer *)self initWithPreprocessor:v15 labeler:v17];
   return v18;
 }
 
-- (id)toPlistWithChunks:(id)a3
+- (id)toPlistWithChunks:(id)chunks
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D41F60];
-  v5 = a3;
+  chunksCopy = chunks;
   v6 = [v4 alloc];
   v7 = [v6 initWithClassNameKey:*MEMORY[0x277D41F98]];
   v13[0] = @"PREPROCESSOR";
-  v8 = [v7 writeToPlistWithObject:self->_preprocessor andChunks:v5];
+  v8 = [v7 writeToPlistWithObject:self->_preprocessor andChunks:chunksCopy];
   v13[1] = @"LABELER";
   v14[0] = v8;
-  v9 = [v7 writeToPlistWithObject:self->_labeler andChunks:v5];
+  v9 = [v7 writeToPlistWithObject:self->_labeler andChunks:chunksCopy];
 
   v14[1] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
@@ -110,9 +110,9 @@ LABEL_10:
   return v10;
 }
 
-- (id)transform:(id)a3
+- (id)transform:(id)transform
 {
-  v4 = a3;
+  transformCopy = transform;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -120,20 +120,20 @@ LABEL_10:
   }
 
   labeler = self->_labeler;
-  v6 = [(SGStringPreprocessingTransformer *)self->_preprocessor transform:v4];
+  v6 = [(SGStringPreprocessingTransformer *)self->_preprocessor transform:transformCopy];
   v7 = [(SGStringLabelingTransformer *)labeler transform:v6];
 
   return v7;
 }
 
-- (SGTextLabelTransformer)initWithPreprocessor:(id)a3 labeler:(id)a4
+- (SGTextLabelTransformer)initWithPreprocessor:(id)preprocessor labeler:(id)labeler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  preprocessorCopy = preprocessor;
+  labelerCopy = labeler;
+  v10 = labelerCopy;
+  if (preprocessorCopy)
   {
-    if (v9)
+    if (labelerCopy)
     {
       goto LABEL_3;
     }
@@ -141,8 +141,8 @@ LABEL_10:
 
   else
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"SGTextLabelTransformer.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"preprocessor"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGTextLabelTransformer.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"preprocessor"}];
 
     if (v10)
     {
@@ -150,8 +150,8 @@ LABEL_10:
     }
   }
 
-  v15 = [MEMORY[0x277CCA890] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"SGTextLabelTransformer.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"labeler"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGTextLabelTransformer.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"labeler"}];
 
 LABEL_3:
   v16.receiver = self;
@@ -160,21 +160,21 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_preprocessor, a3);
-    objc_storeStrong(&v12->_labeler, a4);
+    objc_storeStrong(&v11->_preprocessor, preprocessor);
+    objc_storeStrong(&v12->_labeler, labeler);
   }
 
   return v12;
 }
 
-- (SGTextLabelTransformer)initWithMethods:(id)a3 withLabelStrings:(id)a4
+- (SGTextLabelTransformer)initWithMethods:(id)methods withLabelStrings:(id)strings
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  methodsCopy = methods;
+  stringsCopy = strings;
+  v9 = stringsCopy;
+  if (methodsCopy)
   {
-    if (v8)
+    if (stringsCopy)
     {
       goto LABEL_3;
     }
@@ -182,8 +182,8 @@ LABEL_3:
 
   else
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"SGTextLabelTransformer.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"methods"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGTextLabelTransformer.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"methods"}];
 
     if (v9)
     {
@@ -191,8 +191,8 @@ LABEL_3:
     }
   }
 
-  v18 = [MEMORY[0x277CCA890] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"SGTextLabelTransformer.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"labels"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGTextLabelTransformer.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"labels"}];
 
 LABEL_3:
   v19.receiver = self;
@@ -200,7 +200,7 @@ LABEL_3:
   v10 = [(SGTextLabelTransformer *)&v19 init];
   if (v10)
   {
-    v11 = [SGStringPreprocessingTransformer withMethods:v7];
+    v11 = [SGStringPreprocessingTransformer withMethods:methodsCopy];
     preprocessor = v10->_preprocessor;
     v10->_preprocessor = v11;
 
@@ -213,38 +213,38 @@ LABEL_3:
   return v10;
 }
 
-+ (id)_preprocessedLabelsWithLabels:(id)a3 andPreprocessor:(id)a4
++ (id)_preprocessedLabelsWithLabels:(id)labels andPreprocessor:(id)preprocessor
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  labelsCopy = labels;
+  preprocessorCopy = preprocessor;
+  if (!labelsCopy)
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:a1 file:@"SGTextLabelTransformer.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"labels"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGTextLabelTransformer.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"labels"}];
   }
 
-  v9 = [v7 valueForKeyPath:@"@unionOfArrays.self"];
+  v9 = [labelsCopy valueForKeyPath:@"@unionOfArrays.self"];
   if (!v9)
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:a1 file:@"SGTextLabelTransformer.m" lineNumber:56 description:@"SGTextLabelTransformer: Unexpected null value for flattened labels"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGTextLabelTransformer.m" lineNumber:56 description:@"SGTextLabelTransformer: Unexpected null value for flattened labels"];
   }
 
   v26 = v9;
-  v27 = v8;
-  v10 = [v8 transformBatch:v9];
-  v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v7, "count")}];
-  if ([v7 count])
+  v27 = preprocessorCopy;
+  v10 = [preprocessorCopy transformBatch:v9];
+  v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(labelsCopy, "count")}];
+  if ([labelsCopy count])
   {
     v12 = 0;
     v13 = 0;
     do
     {
       v14 = objc_alloc(MEMORY[0x277CBEB18]);
-      v15 = [v7 objectAtIndexedSubscript:v12];
+      v15 = [labelsCopy objectAtIndexedSubscript:v12];
       v16 = [v14 initWithCapacity:{objc_msgSend(v15, "count")}];
 
-      v17 = [v7 objectAtIndexedSubscript:v12];
+      v17 = [labelsCopy objectAtIndexedSubscript:v12];
       v18 = [v17 count];
 
       if (v18)
@@ -256,7 +256,7 @@ LABEL_3:
           [v16 addObject:v20];
 
           ++v19;
-          v21 = [v7 objectAtIndexedSubscript:v12];
+          v21 = [labelsCopy objectAtIndexedSubscript:v12];
           v22 = [v21 count];
         }
 
@@ -269,17 +269,17 @@ LABEL_3:
       ++v12;
     }
 
-    while (v12 < [v7 count]);
+    while (v12 < [labelsCopy count]);
   }
 
   return v11;
 }
 
-+ (id)withMethods:(id)a3 withLabelStrings:(id)a4
++ (id)withMethods:(id)methods withLabelStrings:(id)strings
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithMethods:v7 withLabelStrings:v6];
+  stringsCopy = strings;
+  methodsCopy = methods;
+  v8 = [[self alloc] initWithMethods:methodsCopy withLabelStrings:stringsCopy];
 
   return v8;
 }

@@ -3,28 +3,28 @@
 - (BOOL)_useVibrantBlendMode;
 - (CGImage)bezelItemBackgroundImage;
 - (CGImage)bezelItemSelectedBackgroundImage;
-- (CGPath)gridCenterPointPathWithAvailableFrame:(CGRect)a3;
+- (CGPath)gridCenterPointPathWithAvailableFrame:(CGRect)frame;
 - (CGRect)bezelItemBackgroundImageContentsCenter;
-- (CGRect)gridCenterPointFrameWithAvailableFrame:(CGRect)a3;
+- (CGRect)gridCenterPointFrameWithAvailableFrame:(CGRect)frame;
 - (CGSize)gridShadowOffset;
 - (CGSize)previewShadowOffset;
 - (double)controlArrowHeadLargeSideLength;
 - (double)controlArrowHeadSmallSideLength;
 - (double)controlArrowOutlineThickness;
 - (double)controlArrowThickness;
-- (double)cursorRoundedRectCornerRadiusForSize:(CGSize)a3;
+- (double)cursorRoundedRectCornerRadiusForSize:(CGSize)size;
 - (double)grayFingerInnerCircleInnerRadius;
 - (double)grayFingerInnerCircleOuterRadius;
 - (double)grayFingerInnerRadius;
 - (double)grayFingerOuterRadius;
-- (double)pointPickerPromptCornerRadiusForSize:(CGSize)a3;
+- (double)pointPickerPromptCornerRadiusForSize:(CGSize)size;
 - (double)rotation90ControlNearestRadius;
 - (double)rotationControlCurveRadius;
 - (double)scannerCursorOutlineThickness;
 - (double)scannerCursorThickness;
-- (id)gridCenterPointImageWithAvailableSize:(CGSize)a3;
+- (id)gridCenterPointImageWithAvailableSize:(CGSize)size;
 - (int64_t)menuKnockoutBorderOverlayBlendMode;
-- (void)_drawCrosshairWithSize:(CGSize)a3 lineThickness:(double)a4;
+- (void)_drawCrosshairWithSize:(CGSize)size lineThickness:(double)thickness;
 - (void)dealloc;
 - (void)unloadResources;
 @end
@@ -75,10 +75,10 @@
 - (double)scannerCursorThickness
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchScannerCursorHighVisibilityEnabled];
+  assistiveTouchScannerCursorHighVisibilityEnabled = [v2 assistiveTouchScannerCursorHighVisibilityEnabled];
 
   result = 3.0;
-  if (v3)
+  if (assistiveTouchScannerCursorHighVisibilityEnabled)
   {
     return 12.0;
   }
@@ -89,10 +89,10 @@
 - (double)scannerCursorOutlineThickness
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchScannerCursorHighVisibilityEnabled];
+  assistiveTouchScannerCursorHighVisibilityEnabled = [v2 assistiveTouchScannerCursorHighVisibilityEnabled];
 
   result = 6.0;
-  if (v3)
+  if (assistiveTouchScannerCursorHighVisibilityEnabled)
   {
     return 15.0;
   }
@@ -100,10 +100,10 @@
   return result;
 }
 
-- (double)cursorRoundedRectCornerRadiusForSize:(CGSize)a3
+- (double)cursorRoundedRectCornerRadiusForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (_UISolariumEnabled())
   {
 
@@ -113,10 +113,10 @@
   else
   {
     v7 = +[AXSettings sharedInstance];
-    v8 = [v7 assistiveTouchScannerCursorHighVisibilityEnabled];
+    assistiveTouchScannerCursorHighVisibilityEnabled = [v7 assistiveTouchScannerCursorHighVisibilityEnabled];
 
     result = 8.0;
-    if (v8)
+    if (assistiveTouchScannerCursorHighVisibilityEnabled)
     {
       [(SCATStyleProvider *)self cursorHighVisibilityMultiplier];
       return v9 * 0.5 * 8.0;
@@ -126,10 +126,10 @@
   return result;
 }
 
-- (double)pointPickerPromptCornerRadiusForSize:(CGSize)a3
+- (double)pointPickerPromptCornerRadiusForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (!_UISolariumEnabled())
   {
     return 10.0;
@@ -148,63 +148,63 @@
   return result;
 }
 
-- (void)_drawCrosshairWithSize:(CGSize)a3 lineThickness:(double)a4
+- (void)_drawCrosshairWithSize:(CGSize)size lineThickness:(double)thickness
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = (a3.width - a4) * 0.5;
+  height = size.height;
+  width = size.width;
+  v7 = (size.width - thickness) * 0.5;
   v8 = 0;
   v9 = height;
-  UIRectFill(*(&a4 - 2));
+  UIRectFill(*(&thickness - 2));
   v11 = 0;
   v12 = width;
-  v13 = a4;
+  thicknessCopy = thickness;
 
-  v10 = (height - a4) * 0.5;
+  v10 = (height - thickness) * 0.5;
   UIRectFill(*&v11);
 }
 
-- (CGRect)gridCenterPointFrameWithAvailableFrame:(CGRect)a3
+- (CGRect)gridCenterPointFrameWithAvailableFrame:(CGRect)frame
 {
-  if (a3.size.width >= a3.size.height)
+  if (frame.size.width >= frame.size.height)
   {
-    height = a3.size.height;
+    height = frame.size.height;
   }
 
   else
   {
-    height = a3.size.width;
+    height = frame.size.width;
   }
 
   v4 = fmin(height * 0.6, 100.0);
-  v5.origin.x = a3.origin.x + (a3.size.width - v4) * 0.5;
-  v5.origin.y = a3.origin.y + (a3.size.height - v4) * 0.5;
+  v5.origin.x = frame.origin.x + (frame.size.width - v4) * 0.5;
+  v5.origin.y = frame.origin.y + (frame.size.height - v4) * 0.5;
   v5.size.width = v4;
   v5.size.height = v4;
   return CGRectIntegral(v5);
 }
 
-- (CGPath)gridCenterPointPathWithAvailableFrame:(CGRect)a3
+- (CGPath)gridCenterPointPathWithAvailableFrame:(CGRect)frame
 {
-  [(SCATStyleProvider *)self gridCenterPointFrameWithAvailableFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SCATStyleProvider *)self gridCenterPointFrameWithAvailableFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3 * 0.5;
   *&v3 = v3 * 0.5;
   v6 = [UIBezierPath bezierPathWithArcCenter:1 radius:v4 startAngle:v5 * 0.5 endAngle:roundf(*&v3) clockwise:0.0, 6.28318531];
-  v7 = [v6 CGPath];
+  cGPath = [v6 CGPath];
 
-  return v7;
+  return cGPath;
 }
 
-- (id)gridCenterPointImageWithAvailableSize:(CGSize)a3
+- (id)gridCenterPointImageWithAvailableSize:(CGSize)size
 {
-  if (a3.width >= a3.height)
+  if (size.width >= size.height)
   {
-    a3.width = a3.height;
+    size.width = size.height;
   }
 
-  v4 = a3.width * 0.6;
-  v5 = a3.width * 0.6;
-  if (a3.width * 0.6 >= 100.0)
+  v4 = size.width * 0.6;
+  v5 = size.width * 0.6;
+  if (size.width * 0.6 >= 100.0)
   {
     cachedGridCenterPointImage = self->_cachedGridCenterPointImage;
     if (cachedGridCenterPointImage)
@@ -229,8 +229,8 @@
 
   [v8 scannerCursorOutlineThickness];
   [(SCATStyleProvider *)self _drawCrosshairWithSize:v5 lineThickness:v5, v13];
-  v14 = [v8 scannerBlueColor];
-  [v14 set];
+  scannerBlueColor = [v8 scannerBlueColor];
+  [scannerBlueColor set];
 
   [v8 scannerCursorThickness];
   [(SCATStyleProvider *)self _drawCrosshairWithSize:v5 lineThickness:v5, v15];
@@ -377,9 +377,9 @@ LABEL_10:
     width = CGRectZero.size.width;
     height = CGRectZero.size.height;
     v7 = [UIColor colorWithRed:0.117647059 green:0.117647059 blue:0.117647059 alpha:1.0];
-    v8 = [v7 CGColor];
+    cGColor = [v7 CGColor];
     v9 = [UIColor colorWithRed:0.117647059 green:0.117647059 blue:0.117647059 alpha:1.0];
-    self->_bezelItemBackgroundImage = sub_1000C5640(v8, [v9 CGColor], 0.0, 0.0, 200.0, 200.0, CGRectZero.origin.x, y, width, height, 1.0, 5.0, 3.5);
+    self->_bezelItemBackgroundImage = sub_1000C5640(cGColor, [v9 CGColor], 0.0, 0.0, 200.0, 200.0, CGRectZero.origin.x, y, width, height, 1.0, 5.0, 3.5);
 
     return self->_bezelItemBackgroundImage;
   }
@@ -396,9 +396,9 @@ LABEL_10:
     width = CGRectZero.size.width;
     height = CGRectZero.size.height;
     v7 = [UIColor colorWithRed:0.352941185 green:0.352941176 blue:0.352941176 alpha:1.0];
-    v8 = [v7 CGColor];
+    cGColor = [v7 CGColor];
     v9 = [UIColor colorWithRed:0.352941185 green:0.352941176 blue:0.352941176 alpha:1.0];
-    self->_bezelItemSelectedBackgroundImage = sub_1000C5640(v8, [v9 CGColor], 0.0, 0.0, 200.0, 200.0, CGRectZero.origin.x, y, width, height, 1.0, 5.0, 3.5);
+    self->_bezelItemSelectedBackgroundImage = sub_1000C5640(cGColor, [v9 CGColor], 0.0, 0.0, 200.0, 200.0, CGRectZero.origin.x, y, width, height, 1.0, 5.0, 3.5);
 
     return self->_bezelItemSelectedBackgroundImage;
   }

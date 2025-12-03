@@ -14,15 +14,15 @@
     v6 = IMAttachmentsLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(IMFileTransfer *)self guid];
+      guid = [(IMFileTransfer *)self guid];
       v13 = 138412546;
-      v14 = v7;
+      v14 = guid;
       v15 = 2112;
       v16 = v5;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Not fast sending transfer %@ due to server override %@", &v13, 0x16u);
     }
 
-    v8 = 0;
+    isSticker2 = 0;
   }
 
   else
@@ -30,9 +30,9 @@
     v9 = IMAttachmentsLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(IMFileTransfer *)self isSticker];
+      isSticker = [(IMFileTransfer *)self isSticker];
       v11 = @"NO";
-      if (v10)
+      if (isSticker)
       {
         v11 = @"YES";
       }
@@ -44,10 +44,10 @@
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "shouldFastSend serverbag %@,  isSticker %@", &v13, 0x16u);
     }
 
-    v8 = [(IMFileTransfer *)self isSticker];
+    isSticker2 = [(IMFileTransfer *)self isSticker];
   }
 
-  return v8;
+  return isSticker2;
 }
 
 @end

@@ -15,7 +15,7 @@
 {
   v8 = a3;
   v9 = a5;
-  v10 = [a1 unsaltedBookmarkDataWithItemResolutionString:v8 serverZoneMangledID:a4];
+  v10 = [self unsaltedBookmarkDataWithItemResolutionString:v8 serverZoneMangledID:a4];
   if (v9)
   {
     v11 = [v8 brc_SHA1WithSalt:v9];
@@ -41,8 +41,8 @@
 {
   v5 = MEMORY[0x277CCACA8];
   v6 = a3;
-  v7 = [a4 aliasTargetContainerString];
-  v8 = [v5 stringWithFormat:@"%@/%@", v7, v6];
+  aliasTargetContainerString = [a4 aliasTargetContainerString];
+  v8 = [v5 stringWithFormat:@"%@/%@", aliasTargetContainerString, v6];
 
   return v8;
 }
@@ -51,20 +51,20 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [v6 mangledID];
-  v9 = [v6 session];
+  mangledID = [v6 mangledID];
+  session = [v6 session];
 
-  v10 = [v9 accountFacade];
-  v11 = [v10 accountDSID];
-  v12 = [a1 bookmarkDataWithItemResolutionString:v7 serverZoneMangledID:v8 saltAccountDSID:v11];
+  accountFacade = [session accountFacade];
+  accountDSID = [accountFacade accountDSID];
+  v12 = [self bookmarkDataWithItemResolutionString:v7 serverZoneMangledID:mangledID saltAccountDSID:accountDSID];
 
   return v12;
 }
 
 + (id)itemResolutionStringWithDocumentID:()BRCBookmarkAdditions
 {
-  v3 = [a3 stringValue];
-  v4 = [@"docID:" stringByAppendingString:v3];
+  stringValue = [a3 stringValue];
+  v4 = [@"docID:" stringByAppendingString:stringValue];
 
   return v4;
 }
@@ -72,8 +72,8 @@
 + (id)bookmarkDataWithDocumentID:()BRCBookmarkAdditions serverZone:
 {
   v6 = a4;
-  v7 = [a1 itemResolutionStringWithDocumentID:a3];
-  v8 = [a1 bookmarkDataWithItemResolutionString:v7 serverZone:v6];
+  v7 = [self itemResolutionStringWithDocumentID:a3];
+  v8 = [self bookmarkDataWithItemResolutionString:v7 serverZone:v6];
 
   return v8;
 }
@@ -81,7 +81,7 @@
 - (uint64_t)parseUnsaltedBookmarkDataWithItemID:()BRCBookmarkAdditions mangledID:error:
 {
   v40 = *MEMORY[0x277D85DE8];
-  v9 = [a1 componentsSeparatedByString:@"/"];
+  v9 = [self componentsSeparatedByString:@"/"];
   if ([v9 count] == 2)
   {
     v10 = objc_alloc(MEMORY[0x277CFAE60]);
@@ -110,7 +110,7 @@
         goto LABEL_27;
       }
 
-      v23 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"unsaltedBookmarkData" value:a1];
+      v23 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"unsaltedBookmarkData" value:self];
       if (v23)
       {
         v24 = brc_bread_crumbs();
@@ -144,7 +144,7 @@
 
     else
     {
-      v15 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"unsaltedBookmarkData" value:a1];
+      v15 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"unsaltedBookmarkData" value:self];
       if (v15)
       {
         v20 = brc_bread_crumbs();
@@ -184,7 +184,7 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v12 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"unsaltedBookmarkData" value:a1];
+  v12 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"unsaltedBookmarkData" value:self];
   if (v12)
   {
     v17 = brc_bread_crumbs();
@@ -231,7 +231,7 @@ LABEL_28:
 {
   v75 = *MEMORY[0x277D85DE8];
   v14 = a3;
-  v15 = [a1 componentsSeparatedByString:@"/"];
+  v15 = [self componentsSeparatedByString:@"/"];
   if ([v15 count] == 3)
   {
     v64 = a4;
@@ -244,12 +244,12 @@ LABEL_28:
     v20 = v16;
     v21 = [objc_alloc(MEMORY[0x277CFAE60]) initWithAliasTargetContainerString:v16];
     v65 = v18;
-    v22 = [v18 accountFacade];
-    v23 = [v22 accountDSID];
+    accountFacade = [v18 accountFacade];
+    accountDSID = [accountFacade accountDSID];
 
     v24 = v17;
-    v63 = v23;
-    v25 = [v17 brc_SHA1WithSalt:v23];
+    v63 = accountDSID;
+    v25 = [v17 brc_SHA1WithSalt:accountDSID];
     v66 = v19;
     v62 = v25;
     if (([v19 isEqualToString:v25] & 1) == 0 && (objc_msgSend(v19, "isEqualToString:", @"BRGetFileNameFromServerInfoBlob") & 1) == 0)
@@ -264,7 +264,7 @@ LABEL_28:
         v69 = 2112;
         v70 = v25;
         v71 = 2112;
-        v72 = a1;
+        selfCopy = self;
         v73 = 2112;
         v74 = v43;
         _os_log_error_impl(&dword_223E7A000, v44, 0x90u, "[ERROR] checksum from bookmark %@ is not equal to expected checksum %@ for %@%@", buf, 0x2Au);
@@ -312,9 +312,9 @@ LABEL_28:
       }
 
       v32 = MEMORY[0x277CCABB0];
-      v33 = [v28 objectAtIndexedSubscript:1];
-      v34 = [v32 numberWithInteger:{objc_msgSend(v33, "integerValue")}];
-      v35 = *v64;
+      dbRowID2 = [v28 objectAtIndexedSubscript:1];
+      v34 = [v32 numberWithInteger:{objc_msgSend(dbRowID2, "integerValue")}];
+      dbRowID = *v64;
       *v64 = v34;
     }
 
@@ -324,22 +324,22 @@ LABEL_28:
       if ([v26 isShared])
       {
         v41 = [v65 sharedClientZoneByMangledID:v26];
-        v35 = [v41 dbRowID];
-        v33 = 0;
+        dbRowID = [v41 dbRowID];
+        dbRowID2 = 0;
       }
 
       else
       {
         v41 = [v65 appLibraryByMangledID:v26];
-        v33 = [v41 dbRowID];
-        v35 = 0;
+        dbRowID2 = [v41 dbRowID];
+        dbRowID = 0;
       }
 
       v31 = v64;
 
       if (a5)
       {
-        v45 = [[BRCItemID alloc] initWithString:v59 libraryRowID:v33 sharedZoneRowID:v35];
+        v45 = [[BRCItemID alloc] initWithString:v59 libraryRowID:dbRowID2 sharedZoneRowID:dbRowID];
         v46 = *a5;
         *a5 = v45;
       }
@@ -356,7 +356,7 @@ LABEL_28:
 LABEL_29:
     if (a5 && v31 && !*a5 && !*v31)
     {
-      v52 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"bookmarkData" value:a1];
+      v52 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"bookmarkData" value:self];
       if (v52)
       {
         v53 = brc_bread_crumbs();
@@ -374,7 +374,7 @@ LABEL_29:
 
           v70 = v57;
           v71 = 2112;
-          v72 = v52;
+          selfCopy = v52;
           v73 = 2112;
           v74 = v53;
           _os_log_error_impl(&dword_223E7A000, v54, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
@@ -416,7 +416,7 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  v27 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"bookmarkData" value:a1];
+  v27 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"bookmarkData" value:self];
   if (v27)
   {
     v36 = a8;
@@ -435,7 +435,7 @@ LABEL_41:
 
       v70 = v56;
       v71 = 2112;
-      v72 = v27;
+      selfCopy = v27;
       v73 = 2112;
       v74 = v37;
       _os_log_error_impl(&dword_223E7A000, v38, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);

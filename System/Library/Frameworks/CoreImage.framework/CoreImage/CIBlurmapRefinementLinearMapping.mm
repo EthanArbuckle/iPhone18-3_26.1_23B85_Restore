@@ -13,15 +13,15 @@
     inputImage = self->inputImage;
     if (self->inputSecondaryImage)
     {
-      v5 = [(CIBlurmapRefinementLinearMapping *)self kernel];
+      kernel = [(CIBlurmapRefinementLinearMapping *)self kernel];
     }
 
     else
     {
-      v5 = [(CIBlurmapRefinementLinearMapping *)self kernelNoSecondaryImage];
+      kernel = [(CIBlurmapRefinementLinearMapping *)self kernelNoSecondaryImage];
     }
 
-    v6 = v5;
+    v6 = kernel;
     inputSecondaryImage = self->inputSecondaryImage;
     if (inputSecondaryImage)
     {

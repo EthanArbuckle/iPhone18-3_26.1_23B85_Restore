@@ -1,25 +1,25 @@
 @interface BSUIItemDescriptionCache
 + (BSUIItemDescriptionCache)sharedInstance;
-+ (id)_persistentStoreDirectoryWithSubfolder:(id)a3;
-+ (void)_recreatePersistentStoreDirectoryWithSubfolder:(id)a3;
++ (id)_persistentStoreDirectoryWithSubfolder:(id)subfolder;
++ (void)_recreatePersistentStoreDirectoryWithSubfolder:(id)subfolder;
 - (BOOL)q_evictCacheEntriesFromDatabase;
-- (BSUIItemDescriptionCache)initWithMaxItemCount:(unint64_t)a3 subfolder:(id)a4;
+- (BSUIItemDescriptionCache)initWithMaxItemCount:(unint64_t)count subfolder:(id)subfolder;
 - (id)_managedObjectModel;
 - (id)_persistentStoreCoordinator;
-- (id)itemDescriptionsFromIdentifiers:(id)a3;
-- (id)q_itemDescriptionFromCachedItemDescription:(id)a3 moc:(id)a4;
-- (id)q_updateDatabaseWithNewProfiles:(id)a3 expirationDate:(id)a4 moc:(id)a5;
-- (id)sq_fetchCachedItemDescriptionsForIdentifiers:(id)a3 moc:(id)a4;
-- (id)sq_fetchItemDescriptionsForIdentifiers:(id)a3 moc:(id)a4;
-- (id)sq_queueCacheRequestForIdentifier:(id)a3;
-- (id)sq_queueNetworkRequestForIdentifier:(id)a3;
-- (void)_fetchItemDescriptionFromCacheForIdentifier:(id)a3 completion:(id)a4;
-- (void)_fetchWithCompletion:(id)a3;
+- (id)itemDescriptionsFromIdentifiers:(id)identifiers;
+- (id)q_itemDescriptionFromCachedItemDescription:(id)description moc:(id)moc;
+- (id)q_updateDatabaseWithNewProfiles:(id)profiles expirationDate:(id)date moc:(id)moc;
+- (id)sq_fetchCachedItemDescriptionsForIdentifiers:(id)identifiers moc:(id)moc;
+- (id)sq_fetchItemDescriptionsForIdentifiers:(id)identifiers moc:(id)moc;
+- (id)sq_queueCacheRequestForIdentifier:(id)identifier;
+- (id)sq_queueNetworkRequestForIdentifier:(id)identifier;
+- (void)_fetchItemDescriptionFromCacheForIdentifier:(id)identifier completion:(id)completion;
+- (void)_fetchWithCompletion:(id)completion;
 - (void)_flush;
-- (void)q_populateCachedDescription:(id)a3 productProfile:(id)a4 expirationDate:(id)a5;
-- (void)sampleDownloadURLForAssetID:(id)a3 completion:(id)a4;
-- (void)updateWithProfileDictionaries:(id)a3 expirationDate:(id)a4 requestedIdentifiers:(id)a5;
-- (void)updateWithProfiles:(id)a3 expirationDate:(id)a4 requestedIdentifiers:(id)a5;
+- (void)q_populateCachedDescription:(id)description productProfile:(id)profile expirationDate:(id)date;
+- (void)sampleDownloadURLForAssetID:(id)d completion:(id)completion;
+- (void)updateWithProfileDictionaries:(id)dictionaries expirationDate:(id)date requestedIdentifiers:(id)identifiers;
+- (void)updateWithProfiles:(id)profiles expirationDate:(id)date requestedIdentifiers:(id)identifiers;
 @end
 
 @implementation BSUIItemDescriptionCache
@@ -36,9 +36,9 @@
   return v3;
 }
 
-- (BSUIItemDescriptionCache)initWithMaxItemCount:(unint64_t)a3 subfolder:(id)a4
+- (BSUIItemDescriptionCache)initWithMaxItemCount:(unint64_t)count subfolder:(id)subfolder
 {
-  v7 = a4;
+  subfolderCopy = subfolder;
   v26.receiver = self;
   v26.super_class = BSUIItemDescriptionCache;
   v8 = [(BSUIItemDescriptionCache *)&v26 init];
@@ -67,15 +67,15 @@
     coalescingFetch = v16->_coalescingFetch;
     v16->_coalescingFetch = v17;
 
-    v16->_maxItemCount = a3;
-    objc_storeStrong(&v16->_testSubfolder, a4);
+    v16->_maxItemCount = count;
+    objc_storeStrong(&v16->_testSubfolder, subfolder);
     v19 = [[NSManagedObjectContext alloc] initWithConcurrencyType:1];
     moc = v16->_moc;
     v16->_moc = v19;
 
     v21 = v16->_moc;
-    v22 = [(BSUIItemDescriptionCache *)v16 _persistentStoreCoordinator];
-    [(NSManagedObjectContext *)v21 setPersistentStoreCoordinator:v22];
+    _persistentStoreCoordinator = [(BSUIItemDescriptionCache *)v16 _persistentStoreCoordinator];
+    [(NSManagedObjectContext *)v21 setPersistentStoreCoordinator:_persistentStoreCoordinator];
 
     [(NSManagedObjectContext *)v16->_moc setUndoManager:0];
   }
@@ -83,17 +83,17 @@
   return v8;
 }
 
-- (void)updateWithProfileDictionaries:(id)a3 expirationDate:(id)a4 requestedIdentifiers:(id)a5
+- (void)updateWithProfileDictionaries:(id)dictionaries expirationDate:(id)date requestedIdentifiers:(id)identifiers
 {
-  v7 = a3;
-  v20 = a4;
-  v8 = a5;
+  dictionariesCopy = dictionaries;
+  dateCopy = date;
+  identifiersCopy = identifiers;
   v9 = objc_alloc_init(NSMutableDictionary);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = v7;
+  v10 = dictionariesCopy;
   v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v11)
   {
@@ -129,27 +129,27 @@
     while (v12);
   }
 
-  [(BSUIItemDescriptionCache *)self updateWithProfiles:v9 expirationDate:v20 requestedIdentifiers:v8];
+  [(BSUIItemDescriptionCache *)self updateWithProfiles:v9 expirationDate:dateCopy requestedIdentifiers:identifiersCopy];
 }
 
-- (void)updateWithProfiles:(id)a3 expirationDate:(id)a4 requestedIdentifiers:(id)a5
+- (void)updateWithProfiles:(id)profiles expirationDate:(id)date requestedIdentifiers:(id)identifiers
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  profilesCopy = profiles;
+  dateCopy = date;
+  identifiersCopy = identifiers;
   [(BSUIItemDescriptionCache *)self moc];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_2FDC4;
   v15[3] = &unk_388098;
   v15[4] = self;
-  v16 = v8;
-  v18 = v17 = v9;
-  v19 = v10;
-  v11 = v10;
+  v16 = profilesCopy;
+  v18 = v17 = dateCopy;
+  v19 = identifiersCopy;
+  v11 = identifiersCopy;
   v12 = v18;
-  v13 = v9;
-  v14 = v8;
+  v13 = dateCopy;
+  v14 = profilesCopy;
   [v12 performBlockAndWait:v15];
 }
 
@@ -159,10 +159,10 @@
   [v2 performBlockAndWait:&stru_3880B8];
 }
 
-- (void)_fetchItemDescriptionFromCacheForIdentifier:(id)a3 completion:(id)a4
+- (void)_fetchItemDescriptionFromCacheForIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = [(BSUIItemDescriptionCache *)self moc];
   v9 = [(BSUIItemDescriptionCache *)self moc];
   v13[0] = _NSConcreteStackBlock;
@@ -170,25 +170,25 @@
   v13[2] = sub_301B8;
   v13[3] = &unk_3880E0;
   v13[4] = self;
-  v14 = v6;
+  v14 = identifierCopy;
   v15 = v8;
-  v16 = v7;
-  v10 = v7;
+  v16 = completionCopy;
+  v10 = completionCopy;
   v11 = v8;
-  v12 = v6;
+  v12 = identifierCopy;
   [v9 performBlock:v13];
 }
 
-- (id)sq_fetchCachedItemDescriptionsForIdentifiers:(id)a3 moc:(id)a4
+- (id)sq_fetchCachedItemDescriptionsForIdentifiers:(id)identifiers moc:(id)moc
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  mocCopy = moc;
   v8 = [NSFetchRequest fetchRequestWithEntityName:@"BSUICachedItemDescription"];
-  v9 = [NSPredicate predicateWithFormat:@"%K in %@ AND %K != NULL", @"storeID", v6, @"fileSize"];
+  v9 = [NSPredicate predicateWithFormat:@"%K in %@ AND %K != NULL", @"storeID", identifiersCopy, @"fileSize"];
   [v8 setPredicate:v9];
 
   v32 = 0;
-  v10 = [v7 executeFetchRequest:v8 error:&v32];
+  v10 = [mocCopy executeFetchRequest:v8 error:&v32];
   v11 = v32;
   if (v11)
   {
@@ -249,7 +249,7 @@
   {
 
     v27 = 0;
-    [v7 save:&v27];
+    [mocCopy save:&v27];
     v11 = v27;
     if (v11)
     {
@@ -289,11 +289,11 @@
   return v25;
 }
 
-- (id)sq_fetchItemDescriptionsForIdentifiers:(id)a3 moc:(id)a4
+- (id)sq_fetchItemDescriptionsForIdentifiers:(id)identifiers moc:(id)moc
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BSUIItemDescriptionCache *)self sq_fetchCachedItemDescriptionsForIdentifiers:v6 moc:v7];
+  identifiersCopy = identifiers;
+  mocCopy = moc;
+  v8 = [(BSUIItemDescriptionCache *)self sq_fetchCachedItemDescriptionsForIdentifiers:identifiersCopy moc:mocCopy];
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -313,21 +313,21 @@
   return v9;
 }
 
-- (id)sq_queueCacheRequestForIdentifier:(id)a3
+- (id)sq_queueCacheRequestForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(NSMapTable *)self->_futuresByIdentifier objectForKey:v4];
+    v5 = [(NSMapTable *)self->_futuresByIdentifier objectForKey:identifierCopy];
     if (!v5)
     {
       v5 = objc_alloc_init(BCMutableFutureValue);
-      [(NSMapTable *)self->_futuresByIdentifier setObject:v5 forKey:v4];
+      [(NSMapTable *)self->_futuresByIdentifier setObject:v5 forKey:identifierCopy];
     }
 
-    if (([(NSMutableArray *)self->_identifiersQueuedForCache containsObject:v4]& 1) == 0)
+    if (([(NSMutableArray *)self->_identifiersQueuedForCache containsObject:identifierCopy]& 1) == 0)
     {
-      [(NSMutableArray *)self->_identifiersQueuedForCache addObject:v4];
+      [(NSMutableArray *)self->_identifiersQueuedForCache addObject:identifierCopy];
     }
   }
 
@@ -339,21 +339,21 @@
   return v5;
 }
 
-- (id)sq_queueNetworkRequestForIdentifier:(id)a3
+- (id)sq_queueNetworkRequestForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(NSMapTable *)self->_futuresByIdentifier objectForKey:v4];
+    v5 = [(NSMapTable *)self->_futuresByIdentifier objectForKey:identifierCopy];
     if (!v5)
     {
       v5 = objc_alloc_init(BCMutableFutureValue);
-      [(NSMapTable *)self->_futuresByIdentifier setObject:v5 forKey:v4];
+      [(NSMapTable *)self->_futuresByIdentifier setObject:v5 forKey:identifierCopy];
     }
 
-    if (([(NSMutableArray *)self->_identifiersQueuedForNetwork containsObject:v4]& 1) == 0)
+    if (([(NSMutableArray *)self->_identifiersQueuedForNetwork containsObject:identifierCopy]& 1) == 0)
     {
-      [(NSMutableArray *)self->_identifiersQueuedForNetwork addObject:v4];
+      [(NSMutableArray *)self->_identifiersQueuedForNetwork addObject:identifierCopy];
     }
   }
 
@@ -365,25 +365,25 @@
   return v5;
 }
 
-- (void)_fetchWithCompletion:(id)a3
+- (void)_fetchWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(BSUIItemDescriptionCache *)self moc];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_30B0C;
   v7[3] = &unk_3878F0;
   v8 = v7[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = completionCopy;
+  v5 = completionCopy;
   v6 = v8;
   [v6 performBlock:v7];
 }
 
-- (id)itemDescriptionsFromIdentifiers:(id)a3
+- (id)itemDescriptionsFromIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  identifiersCopy = identifiers;
+  v5 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -393,9 +393,9 @@
   v13 = 3221225472;
   v14 = sub_31204;
   v15 = &unk_388178;
-  v7 = v4;
+  v7 = identifiersCopy;
   v16 = v7;
-  v17 = self;
+  selfCopy = self;
   v8 = v5;
   v18 = v8;
   v19 = &v20;
@@ -403,7 +403,7 @@
 
   if (*(v21 + 24) == 1)
   {
-    [(BUCoalescingCallBlock *)self->_coalescingFetch signalWithCompletion:&stru_388198, v12, v13, v14, v15, v16, v17];
+    [(BUCoalescingCallBlock *)self->_coalescingFetch signalWithCompletion:&stru_388198, v12, v13, v14, v15, v16, selfCopy];
   }
 
   v9 = v18;
@@ -414,27 +414,27 @@
   return v10;
 }
 
-- (void)sampleDownloadURLForAssetID:(id)a3 completion:(id)a4
+- (void)sampleDownloadURLForAssetID:(id)d completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = sub_30830;
   v19 = sub_30840;
   v7 = +[BSUIItemDescriptionCache sharedInstance];
-  v21 = v5;
+  v21 = dCopy;
   v8 = [NSArray arrayWithObjects:&v21 count:1];
   v9 = [v7 itemDescriptionsFromIdentifiers:v8];
-  v20 = [v9 objectForKey:v5];
+  v20 = [v9 objectForKey:dCopy];
 
   v10 = v16[5];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_3153C;
   v12[3] = &unk_3881C0;
-  v11 = v6;
+  v11 = completionCopy;
   v13 = v11;
   v14 = &v15;
   [v10 get:v12];
@@ -442,19 +442,19 @@
   _Block_object_dispose(&v15, 8);
 }
 
-+ (id)_persistentStoreDirectoryWithSubfolder:(id)a3
++ (id)_persistentStoreDirectoryWithSubfolder:(id)subfolder
 {
-  v3 = a3;
+  subfolderCopy = subfolder;
   v4 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v5 = [v4 lastObject];
+  lastObject = [v4 lastObject];
 
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v5 stringByAppendingPathComponent:v7];
+  v8 = [lastObject stringByAppendingPathComponent:v7];
 
-  if ([v3 length])
+  if ([subfolderCopy length])
   {
-    v9 = [v8 stringByAppendingPathComponent:v3];
+    v9 = [v8 stringByAppendingPathComponent:subfolderCopy];
 
     v8 = v9;
   }
@@ -462,13 +462,13 @@
   return v8;
 }
 
-+ (void)_recreatePersistentStoreDirectoryWithSubfolder:(id)a3
++ (void)_recreatePersistentStoreDirectoryWithSubfolder:(id)subfolder
 {
-  v6 = [a1 _persistentStoreDirectoryWithSubfolder:a3];
+  v6 = [self _persistentStoreDirectoryWithSubfolder:subfolder];
   v3 = [NSURL fileURLWithPath:v6 isDirectory:1];
   v4 = +[NSFileManager defaultManager];
-  v5 = [v3 relativePath];
-  [v4 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:0];
+  relativePath = [v3 relativePath];
+  [v4 createDirectoryAtPath:relativePath withIntermediateDirectories:1 attributes:0 error:0];
 }
 
 - (id)_managedObjectModel
@@ -498,8 +498,8 @@
   if (!psc)
   {
     v4 = [NSPersistentStoreCoordinator alloc];
-    v5 = [(BSUIItemDescriptionCache *)self _managedObjectModel];
-    v6 = [v4 initWithManagedObjectModel:v5];
+    _managedObjectModel = [(BSUIItemDescriptionCache *)self _managedObjectModel];
+    v6 = [v4 initWithManagedObjectModel:_managedObjectModel];
     v7 = self->_psc;
     self->_psc = v6;
 
@@ -509,15 +509,15 @@
     v29[1] = &__kCFBooleanTrue;
     v8 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:2];
     v9 = objc_opt_class();
-    v10 = [(BSUIItemDescriptionCache *)self testSubfolder];
-    v11 = [v9 _persistentStoreDirectoryWithSubfolder:v10];
+    testSubfolder = [(BSUIItemDescriptionCache *)self testSubfolder];
+    v11 = [v9 _persistentStoreDirectoryWithSubfolder:testSubfolder];
 
-    v12 = [objc_opt_class() _persistentStoreFileName];
+    _persistentStoreFileName = [objc_opt_class() _persistentStoreFileName];
     v13 = objc_opt_class();
-    v14 = [(BSUIItemDescriptionCache *)self testSubfolder];
-    [v13 _recreatePersistentStoreDirectoryWithSubfolder:v14];
+    testSubfolder2 = [(BSUIItemDescriptionCache *)self testSubfolder];
+    [v13 _recreatePersistentStoreDirectoryWithSubfolder:testSubfolder2];
 
-    v15 = [v11 stringByAppendingPathComponent:v12];
+    v15 = [v11 stringByAppendingPathComponent:_persistentStoreFileName];
     v16 = [NSURL fileURLWithPath:v15 isDirectory:0];
     v17 = self->_psc;
     v27 = 0;
@@ -529,8 +529,8 @@
       [v20 removeItemAtPath:v11 error:0];
 
       v21 = objc_opt_class();
-      v22 = [(BSUIItemDescriptionCache *)self testSubfolder];
-      [v21 _recreatePersistentStoreDirectoryWithSubfolder:v22];
+      testSubfolder3 = [(BSUIItemDescriptionCache *)self testSubfolder];
+      [v21 _recreatePersistentStoreDirectoryWithSubfolder:testSubfolder3];
 
       v23 = self->_psc;
       v26 = v19;
@@ -546,82 +546,82 @@
   return psc;
 }
 
-- (void)q_populateCachedDescription:(id)a3 productProfile:(id)a4 expirationDate:(id)a5
+- (void)q_populateCachedDescription:(id)description productProfile:(id)profile expirationDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 adamId];
-  [v7 setStoreID:v10];
+  descriptionCopy = description;
+  profileCopy = profile;
+  dateCopy = date;
+  adamId = [profileCopy adamId];
+  [descriptionCopy setStoreID:adamId];
 
   v29 = 1.5;
-  v11 = [v8 artworkURLTemplateAspect:&v29];
-  [v7 setArtworkURLTemplate:v11];
+  v11 = [profileCopy artworkURLTemplateAspect:&v29];
+  [descriptionCopy setArtworkURLTemplate:v11];
 
   v12 = [NSNumber numberWithDouble:v29];
-  [v7 setArtworkAspect:v12];
+  [descriptionCopy setArtworkAspect:v12];
 
-  v13 = [v8 standardNotes];
-  if (v13)
+  standardNotes = [profileCopy standardNotes];
+  if (standardNotes)
   {
-    [v7 setRawNotes:v13];
+    [descriptionCopy setRawNotes:standardNotes];
   }
 
   else
   {
-    v14 = [v8 standardDescription];
-    [v7 setRawNotes:v14];
+    standardDescription = [profileCopy standardDescription];
+    [descriptionCopy setRawNotes:standardDescription];
   }
 
-  v15 = [v8 title];
-  [v7 setTitle:v15];
+  title = [profileCopy title];
+  [descriptionCopy setTitle:title];
 
-  v16 = [v8 author];
-  [v7 setAuthor:v16];
+  author = [profileCopy author];
+  [descriptionCopy setAuthor:author];
 
-  [v8 averageRating];
+  [profileCopy averageRating];
   v17 = [NSNumber numberWithDouble:?];
-  [v7 setAverageRating:v17];
+  [descriptionCopy setAverageRating:v17];
 
-  v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 ratingCount]);
-  [v7 setRatingCount:v18];
+  v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [profileCopy ratingCount]);
+  [descriptionCopy setRatingCount:v18];
 
-  [v7 setExpirationDate:v9];
+  [descriptionCopy setExpirationDate:dateCopy];
   v19 = +[NSDate date];
-  [v7 setLastAccessDate:v19];
+  [descriptionCopy setLastAccessDate:v19];
 
-  v20 = [v8 productURL];
-  v21 = [v20 absoluteString];
-  [v7 setProductURL:v21];
+  productURL = [profileCopy productURL];
+  absoluteString = [productURL absoluteString];
+  [descriptionCopy setProductURL:absoluteString];
 
-  v22 = [v8 priceString];
-  [v7 setPriceString:v22];
+  priceString = [profileCopy priceString];
+  [descriptionCopy setPriceString:priceString];
 
-  v23 = [v8 actionTextWithType:1];
-  [v7 setActionString:v23];
+  v23 = [profileCopy actionTextWithType:1];
+  [descriptionCopy setActionString:v23];
 
-  v24 = [v8 buyParameters];
-  [v7 setBuyParameters:v24];
+  buyParameters = [profileCopy buyParameters];
+  [descriptionCopy setBuyParameters:buyParameters];
 
-  v25 = [v8 bookSampleDownloadURL];
-  v26 = [v25 absoluteString];
-  [v7 setSampleDownloadURL:v26];
+  bookSampleDownloadURL = [profileCopy bookSampleDownloadURL];
+  absoluteString2 = [bookSampleDownloadURL absoluteString];
+  [descriptionCopy setSampleDownloadURL:absoluteString2];
 
-  v27 = [v8 kind];
-  [v7 setKind:v27];
+  kind = [profileCopy kind];
+  [descriptionCopy setKind:kind];
 
-  v28 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v8 fileSize]);
-  [v7 setFileSize:v28];
+  v28 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [profileCopy fileSize]);
+  [descriptionCopy setFileSize:v28];
 }
 
-- (id)q_updateDatabaseWithNewProfiles:(id)a3 expirationDate:(id)a4 moc:(id)a5
+- (id)q_updateDatabaseWithNewProfiles:(id)profiles expirationDate:(id)date moc:(id)moc
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  profilesCopy = profiles;
+  dateCopy = date;
+  mocCopy = moc;
   v36 = objc_opt_new();
   v10 = +[NSDate date];
-  v11 = v8;
+  v11 = dateCopy;
   [v10 timeIntervalSinceDate:v11];
   v13 = v11;
   if (fabs(v12) < 30.0)
@@ -638,8 +638,8 @@
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v34 = v7;
-    v15 = v7;
+    v34 = profilesCopy;
+    v15 = profilesCopy;
     v16 = [v15 countByEnumeratingWithState:&v38 objects:v48 count:16];
     if (v16)
     {
@@ -660,8 +660,8 @@
           v22 = BUDynamicCast();
 
           v23 = [BSUICachedItemDescription alloc];
-          v24 = [NSEntityDescription entityForName:@"BSUICachedItemDescription" inManagedObjectContext:v9];
-          v25 = [(BSUICachedItemDescription *)v23 initWithEntity:v24 insertIntoManagedObjectContext:v9];
+          v24 = [NSEntityDescription entityForName:@"BSUICachedItemDescription" inManagedObjectContext:mocCopy];
+          v25 = [(BSUICachedItemDescription *)v23 initWithEntity:v24 insertIntoManagedObjectContext:mocCopy];
 
           [(BSUIItemDescriptionCache *)self q_populateCachedDescription:v25 productProfile:v22 expirationDate:v14];
           [v36 setObject:v25 forKeyedSubscript:v20];
@@ -674,7 +674,7 @@
     }
 
     v11 = v33;
-    v7 = v34;
+    profilesCopy = v34;
     v10 = v32;
     v13 = v14;
   }
@@ -682,7 +682,7 @@
   if ([v36 count])
   {
     v37 = 0;
-    [v9 save:&v37];
+    [mocCopy save:&v37];
     v26 = v37;
     if (v26)
     {
@@ -835,8 +835,8 @@
 
   else
   {
-    v26 = [(BSUIItemDescriptionCache *)self maxItemCount];
-    if (v26 >= [v21 count])
+    maxItemCount = [(BSUIItemDescriptionCache *)self maxItemCount];
+    if (maxItemCount >= [v21 count])
     {
       if (!v13)
       {
@@ -849,13 +849,13 @@
     {
       do
       {
-        v27 = [v21 objectAtIndexedSubscript:v26];
+        v27 = [v21 objectAtIndexedSubscript:maxItemCount];
         [v4 deleteObject:v27];
 
-        ++v26;
+        ++maxItemCount;
       }
 
-      while (v26 < [v21 count]);
+      while (maxItemCount < [v21 count]);
     }
   }
 
@@ -894,20 +894,20 @@ LABEL_33:
   return v13;
 }
 
-- (id)q_itemDescriptionFromCachedItemDescription:(id)a3 moc:(id)a4
+- (id)q_itemDescriptionFromCachedItemDescription:(id)description moc:(id)moc
 {
-  v6 = a3;
-  v7 = a4;
+  descriptionCopy = description;
+  mocCopy = moc;
   v8 = [BSUIItemDescription alloc];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_328E0;
   v14[3] = &unk_388210;
-  v15 = v7;
-  v16 = v6;
+  v15 = mocCopy;
+  v16 = descriptionCopy;
   v17 = a2;
-  v9 = v6;
-  v10 = v7;
+  v9 = descriptionCopy;
+  v10 = mocCopy;
   v11 = [BCLazyValue objectAsyncProducer:v14];
   v12 = [(BSUIItemDescription *)v8 initWithCachedItemDescription:v9 lazyNotes:v11];
 

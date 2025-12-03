@@ -1,25 +1,25 @@
 @interface _RECrossedFeature
-- (BOOL)isEqual:(id)a3;
-- (_RECrossedFeature)initWithFeatures:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_RECrossedFeature)initWithFeatures:(id)features;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_computeHash;
-- (void)_replaceDependentFeature:(id)a3 withFeature:(id)a4;
+- (void)_replaceDependentFeature:(id)feature withFeature:(id)withFeature;
 - (void)_updateFeaturesArray;
 @end
 
 @implementation _RECrossedFeature
 
-- (_RECrossedFeature)initWithFeatures:(id)a3
+- (_RECrossedFeature)initWithFeatures:(id)features
 {
   v51 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  featuresCopy = features;
   v38 = +[(REFeatureSet *)REMutableFeatureSet];
   v4 = +[REMLModel featureBitWidth];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  obj = v3;
+  obj = featuresCopy;
   v5 = [obj countByEnumeratingWithState:&v45 objects:v50 count:16];
   if (v5)
   {
@@ -37,22 +37,22 @@
         }
 
         v11 = *(*(&v45 + 1) + 8 * i);
-        v12 = [v11 _bitCount];
-        if (v12 < 0)
+        _bitCount = [v11 _bitCount];
+        if (_bitCount < 0)
         {
           RERaiseInternalException(v9, @"Feature %@ cannot be crossed. It may need to be transformed first", v13, v14, v15, v16, v17, v18, v11);
         }
 
         else
         {
-          v19 = v12 + v7;
-          if (v12 + v7 <= v4)
+          v19 = _bitCount + v7;
+          if (_bitCount + v7 <= v4)
           {
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v20 = [v11 _dependentFeatures];
-              [v38 unionFeatureSet:v20];
+              _dependentFeatures = [v11 _dependentFeatures];
+              [v38 unionFeatureSet:_dependentFeatures];
             }
 
             else
@@ -87,7 +87,7 @@
 
     [(_RECrossedFeature *)v21 _updateFeaturesArray];
     v21->_bitCount = 0;
-    v24 = [MEMORY[0x277CCAB68] string];
+    string = [MEMORY[0x277CCAB68] string];
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
@@ -109,13 +109,13 @@
           }
 
           v31 = *(*(&v40 + 1) + 8 * j);
-          if ([v24 length])
+          if ([string length])
           {
-            [v24 appendString:@"X"];
+            [string appendString:@"X"];
           }
 
-          v32 = [v31 name];
-          [v24 appendString:v32];
+          name = [v31 name];
+          [string appendString:name];
 
           if ([v31 featureType] == 2)
           {
@@ -136,7 +136,7 @@
       v29 = 1;
     }
 
-    v33 = [v24 copy];
+    v33 = [string copy];
     name = v21->_name;
     v21->_name = v33;
 
@@ -148,10 +148,10 @@
   return v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -161,7 +161,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (self->_featureType == v5->_featureType)
       {
@@ -195,13 +195,13 @@
   return v11;
 }
 
-- (void)_replaceDependentFeature:(id)a3 withFeature:(id)a4
+- (void)_replaceDependentFeature:(id)feature withFeature:(id)withFeature
 {
-  v20 = a4;
-  v6 = a3;
-  v7 = [v6 name];
-  v8 = [v20 name];
-  v9 = [v7 isEqualToString:v8];
+  withFeatureCopy = withFeature;
+  featureCopy = feature;
+  name = [featureCopy name];
+  name2 = [withFeatureCopy name];
+  v9 = [name isEqualToString:name2];
 
   if ((v9 & 1) == 0)
   {
@@ -209,9 +209,9 @@
   }
 
   v16 = [(REFeatureSet *)self->_dependentFeatures mutableCopy];
-  [v16 removeFeature:v6];
+  [v16 removeFeature:featureCopy];
 
-  [v16 addFeature:v20];
+  [v16 addFeature:withFeatureCopy];
   v17 = [v16 copy];
   dependentFeatures = self->_dependentFeatures;
   self->_dependentFeatures = v17;
@@ -222,8 +222,8 @@
 
 - (void)_updateFeaturesArray
 {
-  v5 = [(REFeatureSet *)self->_dependentFeatures allFeatures];
-  v3 = [v5 sortedArrayUsingComparator:&__block_literal_global_75];
+  allFeatures = [(REFeatureSet *)self->_dependentFeatures allFeatures];
+  v3 = [allFeatures sortedArrayUsingComparator:&__block_literal_global_75];
   features = self->_features;
   self->_features = v3;
 }
@@ -265,9 +265,9 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   features = self->_features;
 
   return [v4 initWithFeatures:features];

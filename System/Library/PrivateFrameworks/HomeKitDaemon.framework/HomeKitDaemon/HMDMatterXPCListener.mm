@@ -1,16 +1,16 @@
 @interface HMDMatterXPCListener
 + (id)logCategory;
-- (BOOL)connection:(id)a3 allowsOperationWithHome:(id)a4 operationType:(int64_t)a5 nodeId:(id)a6 commandId:(id)a7 endpointId:(id)a8 clusterId:(id)a9 attributeId:(id)a10;
-- (BOOL)connection:(id)a3 sendMessagePayloadToPrimaryResident:(id)a4 responseHandler:(id)a5 timeout:(double)a6 error:(id *)a7;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)sendMessage:(id)a3 homeUUID:(id)a4 timeout:(double)a5 error:(id *)a6;
+- (BOOL)connection:(id)connection allowsOperationWithHome:(id)home operationType:(int64_t)type nodeId:(id)id commandId:(id)commandId endpointId:(id)endpointId clusterId:(id)clusterId attributeId:(id)self0;
+- (BOOL)connection:(id)connection sendMessagePayloadToPrimaryResident:(id)resident responseHandler:(id)handler timeout:(double)timeout error:(id *)error;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)sendMessage:(id)message homeUUID:(id)d timeout:(double)timeout error:(id *)error;
 - (HMDHomeManager)homeManager;
-- (HMDMatterXPCListener)initWithHomeManager:(id)a3;
-- (id)_homeForUUID:(id)a3;
-- (id)_runningModeToString:(int64_t)a3;
-- (int64_t)runningModeForHomeUUID:(id)a3;
-- (void)handleInHomeGeoChangeNotification:(id)a3;
-- (void)handlePrimaryResidentUpdateNotification:(id)a3;
+- (HMDMatterXPCListener)initWithHomeManager:(id)manager;
+- (id)_homeForUUID:(id)d;
+- (id)_runningModeToString:(int64_t)string;
+- (int64_t)runningModeForHomeUUID:(id)d;
+- (void)handleInHomeGeoChangeNotification:(id)notification;
+- (void)handlePrimaryResidentUpdateNotification:(id)notification;
 - (void)start;
 - (void)stop;
 @end
@@ -24,16 +24,16 @@
   return WeakRetained;
 }
 
-- (BOOL)sendMessage:(id)a3 homeUUID:(id)a4 timeout:(double)a5 error:(id *)a6
+- (BOOL)sendMessage:(id)message homeUUID:(id)d timeout:(double)timeout error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = [(HMDMatterXPCListener *)self _homeForUUID:v11];
+  messageCopy = message;
+  dCopy = d;
+  v12 = [(HMDMatterXPCListener *)self _homeForUUID:dCopy];
   if (!v12)
   {
     v15 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -54,24 +54,24 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (a5 != 0.0)
+  if (timeout != 0.0)
   {
-    v13 = [v10 mutableCopy];
-    [v13 setTimeout:a5];
+    v13 = [messageCopy mutableCopy];
+    [v13 setTimeout:timeout];
     v14 = [v13 copy];
 
-    v10 = v14;
+    messageCopy = v14;
   }
 
-  if (![v12 sendMatterHMFMessageRequest:v10])
+  if (![v12 sendMatterHMFMessageRequest:messageCopy])
   {
-    if (a6)
+    if (error)
     {
-      *a6 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:11];
+      *error = [MEMORY[0x277CCA9B8] hmfErrorWithCode:11];
     }
 
     v15 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -82,9 +82,9 @@ LABEL_14:
     v28 = 138543874;
     v29 = v21;
     v30 = 2112;
-    v31 = v10;
+    v31 = messageCopy;
     v32 = 2112;
-    v33 = v11;
+    v33 = dCopy;
     v22 = "%{public}@ *** MTRPluginClientConnection sendMessage: %@ homeUUID: %@  failed";
     v23 = v17;
     v24 = 32;
@@ -92,7 +92,7 @@ LABEL_14:
   }
 
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy3 = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
@@ -100,11 +100,11 @@ LABEL_14:
     v28 = 138544130;
     v29 = v18;
     v30 = 2112;
-    v31 = v10;
+    v31 = messageCopy;
     v32 = 2112;
-    v33 = v11;
+    v33 = dCopy;
     v34 = 2048;
-    v35 = a5;
+    timeoutCopy = timeout;
     _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_DEBUG, "%{public}@MTRPluginClientConnection sendMessage: %@ homeUUID: %@  succeeded timeout: %f", &v28, 0x2Au);
   }
 
@@ -116,11 +116,11 @@ LABEL_16:
   return v19;
 }
 
-- (int64_t)runningModeForHomeUUID:(id)a3
+- (int64_t)runningModeForHomeUUID:(id)d
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDMatterXPCListener *)self _homeForUUID:v4];
+  dCopy = d;
+  v5 = [(HMDMatterXPCListener *)self _homeForUUID:dCopy];
   v6 = v5;
   if (v5)
   {
@@ -135,12 +135,12 @@ LABEL_16:
     }
 
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [(HMDMatterXPCListener *)v9 _runningModeToString:v7];
+      v12 = [(HMDMatterXPCListener *)selfCopy _runningModeToString:v7];
       v17 = 138544130;
       v18 = v11;
       v19 = 2112;
@@ -156,7 +156,7 @@ LABEL_16:
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -164,7 +164,7 @@ LABEL_16:
       v17 = 138543618;
       v18 = v14;
       v19 = 2112;
-      v20 = v4;
+      v20 = dCopy;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_ERROR, "%{public}@No home found for UUID: %@", &v17, 0x16u);
     }
 
@@ -176,15 +176,15 @@ LABEL_16:
   return v7;
 }
 
-- (void)handleInHomeGeoChangeNotification:(id)a3
+- (void)handleInHomeGeoChangeNotification:(id)notification
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = object;
   }
 
   else
@@ -195,16 +195,16 @@ LABEL_16:
   v7 = v6;
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 uuid];
+    uuid = [v7 uuid];
     v26 = 138543618;
     v27 = v11;
     v28 = 2112;
-    v29 = v12;
+    v29 = uuid;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Matter XPC Listener Handling InHomeGeo change notification for home UUID: %@", &v26, 0x16u);
   }
 
@@ -222,7 +222,7 @@ LABEL_16:
     }
 
     v14 = objc_autoreleasePoolPush();
-    v15 = v9;
+    v15 = selfCopy;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
@@ -240,15 +240,15 @@ LABEL_16:
     }
 
     objc_autoreleasePoolPop(v14);
-    v19 = [MEMORY[0x277D26768] sharedInstance];
-    v20 = [v7 uuid];
-    [v19 runningModeForHomeUUID:v20 runningModeChanged:v13];
+    mEMORY[0x277D26768] = [MEMORY[0x277D26768] sharedInstance];
+    uuid2 = [v7 uuid];
+    [mEMORY[0x277D26768] runningModeForHomeUUID:uuid2 runningModeChanged:v13];
   }
 
   else
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = v9;
+    v22 = selfCopy;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -264,12 +264,12 @@ LABEL_16:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handlePrimaryResidentUpdateNotification:(id)a3
+- (void)handlePrimaryResidentUpdateNotification:(id)notification
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"HMDResidentDeviceHomeUUIDNotificationKey"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"HMDResidentDeviceHomeUUIDNotificationKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -286,8 +286,8 @@ LABEL_16:
 
   if (!v8)
   {
-    v9 = [v4 userInfo];
-    v10 = [v9 objectForKeyedSubscript:@"HMDResidentDeviceManagerHomeUUIDNotificationKey"];
+    userInfo2 = [notificationCopy userInfo];
+    v10 = [userInfo2 objectForKeyedSubscript:@"HMDResidentDeviceManagerHomeUUIDNotificationKey"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -304,7 +304,7 @@ LABEL_16:
   }
 
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -317,7 +317,7 @@ LABEL_16:
   }
 
   objc_autoreleasePoolPop(v12);
-  v16 = [(HMDMatterXPCListener *)v13 _homeForUUID:v6];
+  v16 = [(HMDMatterXPCListener *)selfCopy _homeForUUID:v6];
   v17 = v16;
   if (v16)
   {
@@ -332,7 +332,7 @@ LABEL_16:
     }
 
     v19 = objc_autoreleasePoolPush();
-    v20 = v13;
+    v20 = selfCopy;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
@@ -350,15 +350,15 @@ LABEL_16:
     }
 
     objc_autoreleasePoolPop(v19);
-    v24 = [MEMORY[0x277D26768] sharedInstance];
-    v25 = [v17 uuid];
-    [v24 runningModeForHomeUUID:v25 runningModeChanged:v18];
+    mEMORY[0x277D26768] = [MEMORY[0x277D26768] sharedInstance];
+    uuid = [v17 uuid];
+    [mEMORY[0x277D26768] runningModeForHomeUUID:uuid runningModeChanged:v18];
   }
 
   else
   {
     v26 = objc_autoreleasePoolPush();
-    v27 = v13;
+    v27 = selfCopy;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
@@ -374,32 +374,32 @@ LABEL_16:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_runningModeToString:(int64_t)a3
+- (id)_runningModeToString:(int64_t)string
 {
-  if (a3 > 2)
+  if (string > 2)
   {
     return @"Undefined";
   }
 
   else
   {
-    return off_27867CDD0[a3];
+    return off_27867CDD0[string];
   }
 }
 
-- (BOOL)connection:(id)a3 sendMessagePayloadToPrimaryResident:(id)a4 responseHandler:(id)a5 timeout:(double)a6 error:(id *)a7
+- (BOOL)connection:(id)connection sendMessagePayloadToPrimaryResident:(id)resident responseHandler:(id)handler timeout:(double)timeout error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = [v11 homeUUID];
-  v15 = [(HMDMatterXPCListener *)self _homeForUUID:v14];
+  connectionCopy = connection;
+  residentCopy = resident;
+  handlerCopy = handler;
+  homeUUID = [connectionCopy homeUUID];
+  v15 = [(HMDMatterXPCListener *)self _homeForUUID:homeUUID];
 
   if (!v15)
   {
     v17 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -416,9 +416,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v16 = [v15 sendMatterMessagePayloadToPrimaryResident:v12 timeout:v13 responseHandler:a6];
+  v16 = [v15 sendMatterMessagePayloadToPrimaryResident:residentCopy timeout:handlerCopy responseHandler:timeout];
   v17 = objc_autoreleasePoolPush();
-  v18 = self;
+  selfCopy2 = self;
   v19 = HMFGetOSLogHandle();
   v20 = v19;
   if ((v16 & 1) == 0)
@@ -451,46 +451,46 @@ LABEL_12:
   return v22;
 }
 
-- (BOOL)connection:(id)a3 allowsOperationWithHome:(id)a4 operationType:(int64_t)a5 nodeId:(id)a6 commandId:(id)a7 endpointId:(id)a8 clusterId:(id)a9 attributeId:(id)a10
+- (BOOL)connection:(id)connection allowsOperationWithHome:(id)home operationType:(int64_t)type nodeId:(id)id commandId:(id)commandId endpointId:(id)endpointId clusterId:(id)clusterId attributeId:(id)self0
 {
   v62 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v55 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
+  connectionCopy = connection;
+  homeCopy = home;
+  idCopy = id;
+  commandIdCopy = commandId;
+  endpointIdCopy = endpointId;
+  clusterIdCopy = clusterId;
+  attributeIdCopy = attributeId;
   v21 = objc_autoreleasePoolPush();
-  v22 = self;
+  selfCopy = self;
   v23 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
   {
     HMFGetLogIdentifier();
-    v25 = v24 = v17;
+    v25 = v24 = commandIdCopy;
     *buf = 138543874;
     v57 = v25;
     v58 = 2112;
-    v59 = v15;
+    v59 = connectionCopy;
     v60 = 2112;
-    v61 = v16;
+    v61 = homeCopy;
     _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_DEBUG, "%{public}@connection:%@, allowsOperationWithHome %@", buf, 0x20u);
 
-    v17 = v24;
+    commandIdCopy = v24;
   }
 
   objc_autoreleasePoolPop(v21);
-  v26 = [v15 context];
-  v27 = [v26 objectForKey:@"HMDMTRPluginClientConnectionHMDProcessInfo"];
+  context = [connectionCopy context];
+  v27 = [context objectForKey:@"HMDMTRPluginClientConnectionHMDProcessInfo"];
 
   if (v27)
   {
-    if (v16)
+    if (homeCopy)
     {
-      v28 = [(HMDMatterXPCListener *)v22 _homeForUUID:v16];
+      v28 = [(HMDMatterXPCListener *)selfCopy _homeForUUID:homeCopy];
       if (v28)
       {
-        if ([v27 isForegrounded] & 1) != 0 || (objc_msgSend(v15, "backgroundModeEntitled"))
+        if ([v27 isForegrounded] & 1) != 0 || (objc_msgSend(connectionCopy, "backgroundModeEntitled"))
         {
           v29 = 1;
 LABEL_19:
@@ -499,35 +499,35 @@ LABEL_19:
         }
 
         context = objc_autoreleasePoolPush();
-        v22;
+        selfCopy;
         v41 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
         {
           HMFGetLogIdentifier();
-          v54 = v16;
-          v45 = v15;
-          v46 = v20;
-          v47 = v19;
-          v48 = v18;
-          v50 = v49 = v17;
+          v54 = homeCopy;
+          v45 = connectionCopy;
+          v46 = attributeIdCopy;
+          v47 = clusterIdCopy;
+          v48 = endpointIdCopy;
+          v50 = v49 = commandIdCopy;
           *buf = 138543362;
           v57 = v50;
           _os_log_impl(&dword_229538000, v41, OS_LOG_TYPE_ERROR, "%{public}@MTRPluginClientConnection is not foregrounded, and not allowed to run in background, denying access", buf, 0xCu);
 
-          v17 = v49;
-          v18 = v48;
-          v19 = v47;
-          v20 = v46;
-          v15 = v45;
-          v16 = v54;
+          commandIdCopy = v49;
+          endpointIdCopy = v48;
+          clusterIdCopy = v47;
+          attributeIdCopy = v46;
+          connectionCopy = v45;
+          homeCopy = v54;
         }
       }
 
       else
       {
-        v53 = v17;
+        v53 = commandIdCopy;
         context = objc_autoreleasePoolPush();
-        v40 = v22;
+        v40 = selfCopy;
         v41 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
         {
@@ -535,11 +535,11 @@ LABEL_19:
           *buf = 138543618;
           v57 = v42;
           v58 = 2112;
-          v59 = v16;
+          v59 = homeCopy;
           _os_log_impl(&dword_229538000, v41, OS_LOG_TYPE_ERROR, "%{public}@MTRPluginClientConnection supplied an invalid home, denying access (UUID: %@)", buf, 0x16u);
         }
 
-        v17 = v53;
+        commandIdCopy = v53;
       }
 
       objc_autoreleasePoolPop(context);
@@ -548,17 +548,17 @@ LABEL_19:
     }
 
     v30 = objc_autoreleasePoolPush();
-    v31 = v22;
+    v31 = selfCopy;
     v32 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
       HMFGetLogIdentifier();
       v52 = 0;
-      v33 = v15;
-      v34 = v20;
-      v35 = v19;
-      v36 = v18;
-      v38 = v37 = v17;
+      v33 = connectionCopy;
+      v34 = attributeIdCopy;
+      v35 = clusterIdCopy;
+      v36 = endpointIdCopy;
+      v38 = v37 = commandIdCopy;
       *buf = 138543362;
       v57 = v38;
       v39 = "%{public}@MTRPluginClientConnection passed in an empty homeUUID, denying access";
@@ -569,29 +569,29 @@ LABEL_19:
   else
   {
     v30 = objc_autoreleasePoolPush();
-    v31 = v22;
+    v31 = selfCopy;
     v32 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
       HMFGetLogIdentifier();
-      v52 = v16;
-      v33 = v15;
-      v34 = v20;
-      v35 = v19;
-      v36 = v18;
-      v38 = v37 = v17;
+      v52 = homeCopy;
+      v33 = connectionCopy;
+      v34 = attributeIdCopy;
+      v35 = clusterIdCopy;
+      v36 = endpointIdCopy;
+      v38 = v37 = commandIdCopy;
       *buf = 138543362;
       v57 = v38;
       v39 = "%{public}@MTRPluginClientConnection had no process info attached to it, denying access";
 LABEL_13:
       _os_log_impl(&dword_229538000, v32, OS_LOG_TYPE_ERROR, v39, buf, 0xCu);
 
-      v17 = v37;
-      v18 = v36;
-      v19 = v35;
-      v20 = v34;
-      v15 = v33;
-      v16 = v52;
+      commandIdCopy = v37;
+      endpointIdCopy = v36;
+      clusterIdCopy = v35;
+      attributeIdCopy = v34;
+      connectionCopy = v33;
+      homeCopy = v52;
     }
   }
 
@@ -603,18 +603,18 @@ LABEL_20:
   return v29;
 }
 
-- (id)_homeForUUID:(id)a3
+- (id)_homeForUUID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(HMDMatterXPCListener *)self homeManager];
-  v6 = [v5 homes];
+  homeManager = [(HMDMatterXPCListener *)self homeManager];
+  homes = [homeManager homes];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [homes countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -624,12 +624,12 @@ LABEL_20:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(homes);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 uuid];
-        v12 = [v11 isEqual:v4];
+        uuid = [v10 uuid];
+        v12 = [uuid isEqual:dCopy];
 
         if (v12)
         {
@@ -638,7 +638,7 @@ LABEL_20:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [homes countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -655,13 +655,13 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v63 = *MEMORY[0x277D85DE8];
-  v52 = a3;
-  v6 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -669,15 +669,15 @@ LABEL_11:
     *buf = 138543618;
     *&buf[4] = v10;
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = connectionCopy;
     _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@New Matter XPC connection requested: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v7);
   v11 = *MEMORY[0x277D6C258];
-  if (v6)
+  if (connectionCopy)
   {
-    [v6 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -687,7 +687,7 @@ LABEL_11:
 
   if (TCCAccessCheckAuditToken())
   {
-    v12 = [v6 valueForEntitlement:@"com.apple.developer.homekit"];
+    v12 = [connectionCopy valueForEntitlement:@"com.apple.developer.homekit"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -701,7 +701,7 @@ LABEL_11:
 
     v14 = v13;
 
-    v15 = [v6 valueForEntitlement:@"com.apple.private.homekit"];
+    v15 = [connectionCopy valueForEntitlement:@"com.apple.private.homekit"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -717,7 +717,7 @@ LABEL_11:
 
     if ([v14 BOOLValue] & 1) != 0 || (objc_msgSend(v51, "BOOLValue"))
     {
-      v17 = [v6 valueForEntitlement:@"com.apple.developer.homekit.background-mode"];
+      v17 = [connectionCopy valueForEntitlement:@"com.apple.developer.homekit.background-mode"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -731,9 +731,9 @@ LABEL_11:
 
       v19 = v18;
 
-      v20 = [v19 BOOLValue];
+      bOOLValue = [v19 BOOLValue];
       v21 = objc_autoreleasePoolPush();
-      v22 = v8;
+      v22 = selfCopy;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
@@ -747,24 +747,24 @@ LABEL_11:
       }
 
       objc_autoreleasePoolPop(v21);
-      v26 = [v6 processIdentifier];
-      v27 = [(os_unfair_lock_s *)v22 processMonitor];
-      v28 = [objc_alloc(MEMORY[0x277CD1F30]) initWithXPCConnection:v6];
-      v29 = [v27 processInfoForXPCConnection:v28];
+      processIdentifier = [connectionCopy processIdentifier];
+      processMonitor = [(os_unfair_lock_s *)v22 processMonitor];
+      v28 = [objc_alloc(MEMORY[0x277CD1F30]) initWithXPCConnection:connectionCopy];
+      v29 = [processMonitor processInfoForXPCConnection:v28];
 
       v60 = @"HMDMTRPluginClientConnectionHMDProcessInfo";
       v61 = v29;
       v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v61 forKeys:&v60 count:1];
       v31 = objc_alloc(MEMORY[0x277D26758]);
-      v32 = [(os_unfair_lock_s *)v22 delegateQueue];
-      v33 = [v31 initWithClientConnection:v6 backgroundModeEntitled:v20 pid:v26 context:v30 delegate:v22 delegateQueue:v32];
+      delegateQueue = [(os_unfair_lock_s *)v22 delegateQueue];
+      v33 = [v31 initWithClientConnection:connectionCopy backgroundModeEntitled:bOOLValue pid:processIdentifier context:v30 delegate:v22 delegateQueue:delegateQueue];
 
-      v34 = [MEMORY[0x277D26768] sharedInstance];
-      [v34 addClientConnection:v33];
+      mEMORY[0x277D26768] = [MEMORY[0x277D26768] sharedInstance];
+      [mEMORY[0x277D26768] addClientConnection:v33];
 
       os_unfair_lock_lock_with_options();
-      v35 = [(os_unfair_lock_s *)v22 mutableConnections];
-      [v35 addObject:v33];
+      mutableConnections = [(os_unfair_lock_s *)v22 mutableConnections];
+      [mutableConnections addObject:v33];
 
       os_unfair_lock_unlock(v22 + 2);
       v56[0] = MEMORY[0x277D85DD0];
@@ -772,23 +772,23 @@ LABEL_11:
       v56[2] = __59__HMDMatterXPCListener_listener_shouldAcceptNewConnection___block_invoke;
       v56[3] = &unk_27867CD88;
       v56[4] = v22;
-      v59 = v26;
+      v59 = processIdentifier;
       v36 = v33;
       v57 = v36;
       v58 = v29;
       v37 = v29;
-      [v6 setInvalidationHandler:v56];
+      [connectionCopy setInvalidationHandler:v56];
       v53[0] = MEMORY[0x277D85DD0];
       v53[1] = 3221225472;
       v53[2] = __59__HMDMatterXPCListener_listener_shouldAcceptNewConnection___block_invoke_2;
       v53[3] = &unk_27867CDB0;
-      v55 = v26;
+      v55 = processIdentifier;
       v53[4] = v22;
       v54 = v36;
       v38 = v36;
-      [v6 setInterruptionHandler:v53];
-      v39 = [(os_unfair_lock_s *)v22 workQueue];
-      [v6 _setQueue:v39];
+      [connectionCopy setInterruptionHandler:v53];
+      workQueue = [(os_unfair_lock_s *)v22 workQueue];
+      [connectionCopy _setQueue:workQueue];
 
       [v38 resume];
       v40 = 1;
@@ -797,7 +797,7 @@ LABEL_11:
     else
     {
       v45 = objc_autoreleasePoolPush();
-      v46 = v8;
+      v46 = selfCopy;
       v47 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
       {
@@ -805,7 +805,7 @@ LABEL_11:
         *buf = 138543618;
         *&buf[4] = v48;
         *&buf[12] = 2112;
-        *&buf[14] = v6;
+        *&buf[14] = connectionCopy;
         _os_log_impl(&dword_229538000, v47, OS_LOG_TYPE_INFO, "%{public}@Matter XPC connection does not have required HomeKit entitlements: %@", buf, 0x16u);
       }
 
@@ -817,7 +817,7 @@ LABEL_11:
   else
   {
     v41 = objc_autoreleasePoolPush();
-    v42 = v8;
+    v42 = selfCopy;
     v43 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
     {
@@ -825,7 +825,7 @@ LABEL_11:
       *buf = 138543618;
       *&buf[4] = v44;
       *&buf[12] = 2112;
-      *&buf[14] = v6;
+      *&buf[14] = connectionCopy;
       _os_log_impl(&dword_229538000, v43, OS_LOG_TYPE_DEFAULT, "%{public}@Matter XPC connection has no permission to access Home data: %@", buf, 0x16u);
     }
 
@@ -915,14 +915,14 @@ void __59__HMDMatterXPCListener_listener_shouldAcceptNewConnection___block_invok
 {
   if ((_os_feature_enabled_impl() & 1) != 0 || HM_FEATURE_RVC_DEFAULTS_ENABLED())
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self];
 
-    v4 = [MEMORY[0x277D26768] sharedInstance];
-    [v4 stop];
+    mEMORY[0x277D26768] = [MEMORY[0x277D26768] sharedInstance];
+    [mEMORY[0x277D26768] stop];
 
-    v5 = [(HMDMatterXPCListener *)self listener];
-    [v5 suspend];
+    listener = [(HMDMatterXPCListener *)self listener];
+    [listener suspend];
   }
 }
 
@@ -931,23 +931,23 @@ void __59__HMDMatterXPCListener_listener_shouldAcceptNewConnection___block_invok
   v18 = *MEMORY[0x277D85DE8];
   if ((_os_feature_enabled_impl() & 1) != 0 || HM_FEATURE_RVC_DEFAULTS_ENABLED())
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:self selector:sel_handlePrimaryResidentUpdateNotification_ name:@"HMDResidentDeviceConfirmedStateChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_handlePrimaryResidentUpdateNotification_ name:@"HMDResidentDeviceConfirmedStateChangedNotification" object:0];
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:self selector:sel_handlePrimaryResidentUpdateNotification_ name:@"HMDResidentDeviceManagerUpdateResidentNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_handlePrimaryResidentUpdateNotification_ name:@"HMDResidentDeviceManagerUpdateResidentNotification" object:0];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:self selector:sel_handlePrimaryResidentUpdateNotification_ name:@"HMDResidentDeviceManagerUpdatePrimaryResidentNotification" object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:self selector:sel_handlePrimaryResidentUpdateNotification_ name:@"HMDResidentDeviceManagerUpdatePrimaryResidentNotification" object:0];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:self selector:sel_handleInHomeGeoChangeNotification_ name:@"HMDHomeDidLeaveHomeNotificationKey" object:0];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:self selector:sel_handleInHomeGeoChangeNotification_ name:@"HMDHomeDidLeaveHomeNotificationKey" object:0];
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:self selector:sel_handleInHomeGeoChangeNotification_ name:@"HMDHomeDidArriveHomeNotificationKey" object:0];
+    defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter5 addObserver:self selector:sel_handleInHomeGeoChangeNotification_ name:@"HMDHomeDidArriveHomeNotificationKey" object:0];
 
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
@@ -958,20 +958,20 @@ void __59__HMDMatterXPCListener_listener_shouldAcceptNewConnection___block_invok
     }
 
     objc_autoreleasePoolPop(v8);
-    v12 = [MEMORY[0x277D26768] sharedInstance];
-    v13 = [(HMDMatterXPCListener *)v9 workQueue];
-    [v12 startWithDelegate:v9 queue:v13];
+    mEMORY[0x277D26768] = [MEMORY[0x277D26768] sharedInstance];
+    workQueue = [(HMDMatterXPCListener *)selfCopy workQueue];
+    [mEMORY[0x277D26768] startWithDelegate:selfCopy queue:workQueue];
 
-    v14 = [(HMDMatterXPCListener *)v9 listener];
-    [v14 resume];
+    listener = [(HMDMatterXPCListener *)selfCopy listener];
+    [listener resume];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDMatterXPCListener)initWithHomeManager:(id)a3
+- (HMDMatterXPCListener)initWithHomeManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v30.receiver = self;
   v30.super_class = HMDMatterXPCListener;
   v5 = [(HMDMatterXPCListener *)&v30 init];
@@ -980,16 +980,16 @@ void __59__HMDMatterXPCListener_listener_shouldAcceptNewConnection___block_invok
   {
     v5->_lock._os_unfair_lock_opaque = 0;
     v7 = HMDispatchQueueNameString();
-    v8 = [v7 UTF8String];
+    uTF8String = [v7 UTF8String];
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v10 = dispatch_queue_create(v8, v9);
+    v10 = dispatch_queue_create(uTF8String, v9);
     delegateQueue = v6->_delegateQueue;
     v6->_delegateQueue = v10;
 
     v12 = HMDispatchQueueNameString();
-    v13 = [v12 UTF8String];
+    uTF8String2 = [v12 UTF8String];
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v15 = dispatch_queue_create(v13, v14);
+    v15 = dispatch_queue_create(uTF8String2, v14);
     workQueue = v6->_workQueue;
     v6->_workQueue = v15;
 
@@ -1000,11 +1000,11 @@ void __59__HMDMatterXPCListener_listener_shouldAcceptNewConnection___block_invok
 
     [(NSXPCListener *)v6->_listener _setQueue:v6->_workQueue];
     [(NSXPCListener *)v6->_listener setDelegate:v6];
-    objc_storeWeak(&v6->_homeManager, v4);
+    objc_storeWeak(&v6->_homeManager, managerCopy);
     v20 = HMDispatchQueueNameString();
-    v21 = [v20 UTF8String];
+    uTF8String3 = [v20 UTF8String];
     v22 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v23 = dispatch_queue_create(v21, v22);
+    v23 = dispatch_queue_create(uTF8String3, v22);
     processMonitorQueue = v6->_processMonitorQueue;
     v6->_processMonitorQueue = v23;
 

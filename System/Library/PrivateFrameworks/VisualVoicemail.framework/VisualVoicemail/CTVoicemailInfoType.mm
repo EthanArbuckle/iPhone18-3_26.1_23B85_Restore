@@ -1,5 +1,5 @@
 @interface CTVoicemailInfoType
-+ (id)voicemailInfoTypeForDictionaryRepresentation:(id)a3;
++ (id)voicemailInfoTypeForDictionaryRepresentation:(id)representation;
 - (NSNotification)vmd_notification;
 - (id)description;
 @end
@@ -27,18 +27,18 @@
   return v6;
 }
 
-+ (id)voicemailInfoTypeForDictionaryRepresentation:(id)a3
++ (id)voicemailInfoTypeForDictionaryRepresentation:(id)representation
 {
-  v3 = a3;
+  representationCopy = representation;
   v4 = objc_alloc_init(CTVoicemailInfoType);
-  v5 = [v3 objectForKeyedSubscript:kCTIndicatorsVoiceMailAvailable];
+  v5 = [representationCopy objectForKeyedSubscript:kCTIndicatorsVoiceMailAvailable];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     -[CTVoicemailInfoType setAvailable:](v4, "setAvailable:", [v5 BOOLValue]);
   }
 
-  v6 = [v3 objectForKeyedSubscript:kCTIndicatorsVoiceMailCount];
+  v6 = [representationCopy objectForKeyedSubscript:kCTIndicatorsVoiceMailCount];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -46,7 +46,7 @@
     [(CTVoicemailInfoType *)v4 setCount:v6];
   }
 
-  v7 = [v3 objectForKeyedSubscript:kCTIndicatorsVoiceMailIsMWI];
+  v7 = [representationCopy objectForKeyedSubscript:kCTIndicatorsVoiceMailIsMWI];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -54,7 +54,7 @@
     -[CTVoicemailInfoType setIsVoiceMailMWI:](v4, "setIsVoiceMailMWI:", [v7 BOOLValue]);
   }
 
-  v8 = [v3 objectForKeyedSubscript:kCTIndicatorsVoiceMailIsNetworkOriginated];
+  v8 = [representationCopy objectForKeyedSubscript:kCTIndicatorsVoiceMailIsNetworkOriginated];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -62,7 +62,7 @@
     -[CTVoicemailInfoType setIsNetworkOriginated:](v4, "setIsNetworkOriginated:", [v8 BOOLValue]);
   }
 
-  v9 = [v3 objectForKeyedSubscript:kCTIndicatorsVoiceMailURL];
+  v9 = [representationCopy objectForKeyedSubscript:kCTIndicatorsVoiceMailURL];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -75,8 +75,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v9 absoluteString];
-      [(CTVoicemailInfoType *)v4 setUrl:v10];
+      absoluteString = [v9 absoluteString];
+      [(CTVoicemailInfoType *)v4 setUrl:absoluteString];
     }
   }
 

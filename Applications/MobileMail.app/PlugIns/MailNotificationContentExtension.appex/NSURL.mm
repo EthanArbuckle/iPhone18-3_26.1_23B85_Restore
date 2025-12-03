@@ -1,6 +1,6 @@
 @interface NSURL
-+ (id)mf_URLForMessageLibraryID:(id)a3 externalID:(id)a4;
-+ (id)mf_fileURLInTempAppendingTimestampedPathComponent:(id)a3 withExtension:(id)a4;
++ (id)mf_URLForMessageLibraryID:(id)d externalID:(id)iD;
++ (id)mf_fileURLInTempAppendingTimestampedPathComponent:(id)component withExtension:(id)extension;
 - (BOOL)mf_isDocumentURL;
 - (BOOL)mf_isInternallyHandleable;
 - (BOOL)mf_isMailCleanupDashboardURL;
@@ -11,19 +11,19 @@
 
 @implementation NSURL
 
-+ (id)mf_URLForMessageLibraryID:(id)a3 externalID:(id)a4
++ (id)mf_URLForMessageLibraryID:(id)d externalID:(id)iD
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v7 = objc_alloc_init(NSURLComponents);
   [v7 setScheme:EMAppleMailURLScheme];
   [v7 setHost:@"message"];
-  v8 = [NSString stringWithFormat:@"/%@", v5];
-  [v7 setPath:v8];
+  dCopy = [NSString stringWithFormat:@"/%@", dCopy];
+  [v7 setPath:dCopy];
 
-  if (v6)
+  if (iDCopy)
   {
-    v9 = [NSURLQueryItem queryItemWithName:@"uuid" value:v6];
+    v9 = [NSURLQueryItem queryItemWithName:@"uuid" value:iDCopy];
     v13 = v9;
     v10 = [NSArray arrayWithObjects:&v13 count:1];
     [v7 setQueryItems:v10];
@@ -34,24 +34,24 @@
   return v11;
 }
 
-+ (id)mf_fileURLInTempAppendingTimestampedPathComponent:(id)a3 withExtension:(id)a4
++ (id)mf_fileURLInTempAppendingTimestampedPathComponent:(id)component withExtension:(id)extension
 {
-  v5 = a3;
-  v6 = a4;
+  componentCopy = component;
+  extensionCopy = extension;
   v7 = NSTemporaryDirectory();
   v8 = [NSURL fileURLWithPath:v7];
-  v9 = [v8 ef_URLByAppendingTimestampedPathComponent:v5 withExtension:v6];
+  v9 = [v8 ef_URLByAppendingTimestampedPathComponent:componentCopy withExtension:extensionCopy];
 
   return v9;
 }
 
 - (BOOL)mf_isInternallyHandleable
 {
-  v3 = [(NSURL *)self scheme];
-  if ([v3 caseInsensitiveCompare:EMMailToURLScheme] && objc_msgSend(v3, "caseInsensitiveCompare:", EMAppleMailReplyURLScheme) && objc_msgSend(v3, "caseInsensitiveCompare:", EMAppleMailForwardURLScheme) && objc_msgSend(v3, "caseInsensitiveCompare:", EMMessageIDURLScheme) && objc_msgSend(v3, "caseInsensitiveCompare:", EMAppleMailHandoffPayloadURLScheme) && objc_msgSend(v3, "caseInsensitiveCompare:", EMAppleMailShowVIPMessagesURLScheme) && objc_msgSend(v3, "caseInsensitiveCompare:", EMAppleMailShowVIPSettingsURLScheme))
+  scheme = [(NSURL *)self scheme];
+  if ([scheme caseInsensitiveCompare:EMMailToURLScheme] && objc_msgSend(scheme, "caseInsensitiveCompare:", EMAppleMailReplyURLScheme) && objc_msgSend(scheme, "caseInsensitiveCompare:", EMAppleMailForwardURLScheme) && objc_msgSend(scheme, "caseInsensitiveCompare:", EMMessageIDURLScheme) && objc_msgSend(scheme, "caseInsensitiveCompare:", EMAppleMailHandoffPayloadURLScheme) && objc_msgSend(scheme, "caseInsensitiveCompare:", EMAppleMailShowVIPMessagesURLScheme) && objc_msgSend(scheme, "caseInsensitiveCompare:", EMAppleMailShowVIPSettingsURLScheme))
   {
-    v4 = [(NSURL *)self searchResultIdentifier];
-    v5 = v4 == 0;
+    searchResultIdentifier = [(NSURL *)self searchResultIdentifier];
+    v5 = searchResultIdentifier == 0;
   }
 
   else
@@ -69,8 +69,8 @@
     return 0;
   }
 
-  v3 = [(NSURL *)self pathComponents];
-  v4 = [v3 count] > 1;
+  pathComponents = [(NSURL *)self pathComponents];
+  v4 = [pathComponents count] > 1;
 
   return v4;
 }
@@ -83,31 +83,31 @@
   }
 
   v3 = qword_1000425F8;
-  v4 = [(NSURL *)self scheme];
-  LOBYTE(v3) = [v3 ef_caseInsensitiveIsEqualToString:v4];
+  scheme = [(NSURL *)self scheme];
+  LOBYTE(v3) = [v3 ef_caseInsensitiveIsEqualToString:scheme];
 
   return v3;
 }
 
 - (BOOL)mf_isMailCleanupDashboardURL
 {
-  v2 = [(NSURL *)self absoluteString];
-  v3 = [v2 containsString:@"origin=mailCleanupDashboard"];
+  absoluteString = [(NSURL *)self absoluteString];
+  v3 = [absoluteString containsString:@"origin=mailCleanupDashboard"];
 
   return v3;
 }
 
 - (id)mf_messageCriterion
 {
-  v3 = [(NSURL *)self em_internalMessageID];
-  if (v3)
+  em_internalMessageID = [(NSURL *)self em_internalMessageID];
+  if (em_internalMessageID)
   {
-    v4 = [[NSString alloc] initWithFormat:@"%lld", objc_msgSend(v3, "databaseID")];
+    v4 = [[NSString alloc] initWithFormat:@"%lld", objc_msgSend(em_internalMessageID, "databaseID")];
     v5 = [MFMessageCriterion criterionForLibraryID:v4];
-    v6 = [v3 externalID];
-    if (v6)
+    externalID = [em_internalMessageID externalID];
+    if (externalID)
     {
-      v7 = [[MFMessageCriterion alloc] initWithType:36 qualifier:3 expression:v6];
+      v7 = [[MFMessageCriterion alloc] initWithType:36 qualifier:3 expression:externalID];
       v13[0] = v5;
       v13[1] = v7;
       v8 = [NSArray arrayWithObjects:v13 count:2];
@@ -122,10 +122,10 @@
     goto LABEL_13;
   }
 
-  v10 = [(NSURL *)self em_messageIDHeader];
-  if (v10)
+  em_messageIDHeader = [(NSURL *)self em_messageIDHeader];
+  if (em_messageIDHeader)
   {
-    v9 = [[MFMessageCriterion alloc] initWithType:1 qualifier:3 expression:v10];
+    v9 = [[MFMessageCriterion alloc] initWithType:1 qualifier:3 expression:em_messageIDHeader];
     [v9 setCriterionIdentifier:ECMessageHeaderKeyMessageID];
 LABEL_12:
 
@@ -138,10 +138,10 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v11 = [(NSURL *)self lastPathComponent];
-  if (v11)
+  lastPathComponent = [(NSURL *)self lastPathComponent];
+  if (lastPathComponent)
   {
-    v9 = [MFMessageCriterion criterionForDocumentID:v11];
+    v9 = [MFMessageCriterion criterionForDocumentID:lastPathComponent];
 
     goto LABEL_12;
   }
@@ -156,11 +156,11 @@ LABEL_13:
 {
   if ([(NSURL *)self ef_hasScheme:EMAppleMailURLScheme]&& [(NSURL *)self ef_hasHost:@"conversation"])
   {
-    v3 = [(NSURL *)self pathComponents];
-    if ([v3 count] == 2)
+    pathComponents = [(NSURL *)self pathComponents];
+    if ([pathComponents count] == 2)
     {
-      v4 = [v3 lastObject];
-      v5 = [[MFMessageCriterion alloc] initWithType:34 qualifier:3 expression:v4];
+      lastObject = [pathComponents lastObject];
+      v5 = [[MFMessageCriterion alloc] initWithType:34 qualifier:3 expression:lastObject];
     }
 
     else

@@ -1,18 +1,18 @@
 @interface WebPDFViewAccessibility
-- (BOOL)hasSpaces:(CGPDFTextString *)a3;
+- (BOOL)hasSpaces:(CGPDFTextString *)spaces;
 - (id)_accessibilityPages;
 - (id)accessibilityContainer;
-- (id)accessibilityElementAtIndex:(int64_t)a3;
-- (id)accessibilityHitTest:(CGPoint)a3;
+- (id)accessibilityElementAtIndex:(int64_t)index;
+- (id)accessibilityHitTest:(CGPoint)test;
 - (int64_t)accessibilityElementCount;
-- (int64_t)indexOfAccessibilityElement:(id)a3;
+- (int64_t)indexOfAccessibilityElement:(id)element;
 @end
 
 @implementation WebPDFViewAccessibility
 
 - (id)_accessibilityPages
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MEMORY[0x29EDC7620];
   v4 = [(WebPDFViewAccessibility *)self _accessibilityValueForKey:*MEMORY[0x29EDC7620]];
   if (v4)
@@ -21,8 +21,8 @@
   }
 
   v4 = [objc_allocWithZone(MEMORY[0x29EDB8DE8]) init];
-  [(WebPDFViewAccessibility *)v2 _accessibilitySetRetainedValue:v4 forKey:*v3];
-  v5 = [(WebPDFViewAccessibility *)v2 doc];
+  [(WebPDFViewAccessibility *)selfCopy _accessibilitySetRetainedValue:v4 forKey:*v3];
+  v5 = [(WebPDFViewAccessibility *)selfCopy doc];
   NumberOfPages = CGPDFDocumentGetNumberOfPages(v5);
   if (!NumberOfPages)
   {
@@ -32,7 +32,7 @@
   v7 = NumberOfPages;
   v8 = 1;
   v67 = v4;
-  v68 = v2;
+  v68 = selfCopy;
   v66 = v5;
   v69 = NumberOfPages;
   do
@@ -47,7 +47,7 @@
     v11 = v10;
     v71 = v8;
     Length = CGPDFTextStringGetLength();
-    v13 = [(WebPDFViewAccessibility *)v2 hasSpaces:v11];
+    v13 = [(WebPDFViewAccessibility *)selfCopy hasSpaces:v11];
     v14 = 0.0900000036;
     if (v13)
     {
@@ -395,7 +395,7 @@ LABEL_85:
       v17 = malloc_type_realloc(ptr, 32 * v25, 0x1000040E0EAB150uLL);
     }
 
-    v2 = v68;
+    selfCopy = v68;
     v5 = v66;
 LABEL_98:
     v62 = [MEMORY[0x29EDBA0F8] stringWithCharacters:v15 length:{v25, v66}];
@@ -403,7 +403,7 @@ LABEL_98:
     free(v16);
     free(v17);
     CGPDFTextStringRelease();
-    v63 = [objc_allocWithZone(UIAccessibilityPDFElement) initWithAccessibilityContainer:v2];
+    v63 = [objc_allocWithZone(UIAccessibilityPDFElement) initWithAccessibilityContainer:selfCopy];
     v8 = v71;
     [v63 setPage:v71 - 1];
     v7 = v69;
@@ -424,51 +424,51 @@ LABEL_100:
 
 - (id)accessibilityContainer
 {
-  v2 = self;
-  if (v2)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v3 = v2;
+    v3 = selfCopy;
     while (([(WebPDFViewAccessibility *)v3 isMemberOfClass:NSClassFromString(&cfstr_Webview.isa)]& 1) == 0)
     {
-      v4 = [(WebPDFViewAccessibility *)v3 superview];
+      superview = [(WebPDFViewAccessibility *)v3 superview];
 
-      v3 = v4;
-      if (!v4)
+      v3 = superview;
+      if (!superview)
       {
         goto LABEL_11;
       }
     }
 
-    v5 = [(WebPDFViewAccessibility *)v3 accessibilityContainer];
+    accessibilityContainer = [(WebPDFViewAccessibility *)v3 accessibilityContainer];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v5;
+      superview = accessibilityContainer;
     }
 
     else
     {
-      v4 = 0;
+      superview = 0;
     }
   }
 
   else
   {
-    v4 = 0;
+    superview = 0;
   }
 
 LABEL_11:
 
-  return v4;
+  return superview;
 }
 
-- (id)accessibilityHitTest:(CGPoint)a3
+- (id)accessibilityHitTest:(CGPoint)test
 {
-  [(WebPDFViewAccessibility *)self convertPoint:0 toView:a3.x, a3.y];
+  [(WebPDFViewAccessibility *)self convertPoint:0 toView:test.x, test.y];
   v5 = v4;
   v7 = v6;
-  v8 = [(WebPDFViewAccessibility *)self accessibilityElementCount];
-  if (v8 < 1)
+  accessibilityElementCount = [(WebPDFViewAccessibility *)self accessibilityElementCount];
+  if (accessibilityElementCount < 1)
   {
 LABEL_5:
     v11 = 0;
@@ -476,7 +476,7 @@ LABEL_5:
 
   else
   {
-    v9 = v8;
+    v9 = accessibilityElementCount;
     v10 = 0;
     while (1)
     {
@@ -501,30 +501,30 @@ LABEL_5:
 
 - (int64_t)accessibilityElementCount
 {
-  v2 = [(WebPDFViewAccessibility *)self _accessibilityPages];
-  v3 = [v2 count];
+  _accessibilityPages = [(WebPDFViewAccessibility *)self _accessibilityPages];
+  v3 = [_accessibilityPages count];
 
   return v3;
 }
 
-- (id)accessibilityElementAtIndex:(int64_t)a3
+- (id)accessibilityElementAtIndex:(int64_t)index
 {
-  v4 = [(WebPDFViewAccessibility *)self _accessibilityPages];
-  v5 = [v4 objectAtIndex:a3];
+  _accessibilityPages = [(WebPDFViewAccessibility *)self _accessibilityPages];
+  v5 = [_accessibilityPages objectAtIndex:index];
 
   return v5;
 }
 
-- (int64_t)indexOfAccessibilityElement:(id)a3
+- (int64_t)indexOfAccessibilityElement:(id)element
 {
-  v4 = a3;
-  v5 = [(WebPDFViewAccessibility *)self _accessibilityPages];
-  v6 = [v5 indexOfObject:v4];
+  elementCopy = element;
+  _accessibilityPages = [(WebPDFViewAccessibility *)self _accessibilityPages];
+  v6 = [_accessibilityPages indexOfObject:elementCopy];
 
   return v6;
 }
 
-- (BOOL)hasSpaces:(CGPDFTextString *)a3
+- (BOOL)hasSpaces:(CGPDFTextString *)spaces
 {
   Length = CGPDFTextStringGetLength();
   if (Length >= 0x200)

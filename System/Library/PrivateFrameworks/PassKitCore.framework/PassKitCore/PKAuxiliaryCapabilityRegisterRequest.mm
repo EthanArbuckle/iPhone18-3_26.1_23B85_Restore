@@ -1,37 +1,37 @@
 @interface PKAuxiliaryCapabilityRegisterRequest
 - (id)_dataToSign;
 - (id)_groupedKeyMaterial;
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5;
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information;
 @end
 
 @implementation PKAuxiliaryCapabilityRegisterRequest
 
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information
 {
   v27[6] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(PKAuxiliaryCapabilityWebServiceRequest *)self pass];
+  identifierCopy = identifier;
+  informationCopy = information;
+  lCopy = l;
+  pass = [(PKAuxiliaryCapabilityWebServiceRequest *)self pass];
   v27[0] = @"devices";
-  v27[1] = v8;
+  v27[1] = identifierCopy;
   v27[2] = @"passes";
-  v12 = [v11 passTypeIdentifier];
-  v27[3] = v12;
-  v13 = [v11 serialNumber];
-  v27[4] = v13;
+  passTypeIdentifier = [pass passTypeIdentifier];
+  v27[3] = passTypeIdentifier;
+  serialNumber = [pass serialNumber];
+  v27[4] = serialNumber;
   v27[5] = @"register";
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:6];
-  v15 = [(PKAuxiliaryCapabilityWebServiceRequest *)self _murlRequestWithServiceURL:v10 endpointComponents:v14 queryParameters:0 appleAccountInformation:v9];
+  v15 = [(PKAuxiliaryCapabilityWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:v14 queryParameters:0 appleAccountInformation:informationCopy];
 
-  v16 = [MEMORY[0x1E695DF90] dictionary];
-  [v16 setObject:self->_validCertificatesOnDevice forKey:@"validCertificatesOnDevice"];
-  [v16 setObject:self->_dpanIdentifiers forKey:@"dpanIdentifiers"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:self->_validCertificatesOnDevice forKey:@"validCertificatesOnDevice"];
+  [dictionary setObject:self->_dpanIdentifiers forKey:@"dpanIdentifiers"];
   if (self->_externalSupplementalPrivateDataString)
   {
     v17 = objc_alloc_init(MEMORY[0x1E695DF90]);
     [v17 setObject:self->_externalSupplementalPrivateDataString forKey:@"externalSupplementalPrivateData"];
-    [v16 setObject:v17 forKey:@"supplementaryRegistrationInfo"];
+    [dictionary setObject:v17 forKey:@"supplementaryRegistrationInfo"];
   }
 
   deviceOwnedKeyMaterials = self->_deviceOwnedKeyMaterials;
@@ -39,8 +39,8 @@
   v23 = 3221225472;
   v24 = __107__PKAuxiliaryCapabilityRegisterRequest__urlRequestWithServiceURL_deviceIdentifier_appleAccountInformation___block_invoke;
   v25 = &unk_1E79CC6D8;
-  v26 = v16;
-  v19 = v16;
+  v26 = dictionary;
+  v19 = dictionary;
   [(NSDictionary *)deviceOwnedKeyMaterials enumerateKeysAndObjectsUsingBlock:&v22];
   v20 = [objc_opt_class() _HTTPBodyWithDictionary:{v19, v22, v23, v24, v25}];
   [v15 setHTTPBody:v20];
@@ -109,9 +109,9 @@ void __107__PKAuxiliaryCapabilityRegisterRequest__urlRequestWithServiceURL_devic
   v14 = [v12 objectForKeyedSubscript:@"deviceSignatures"];
   v11[2](v11, v14);
 
-  v15 = [v10 SHA256Hash];
+  sHA256Hash = [v10 SHA256Hash];
 
-  return v15;
+  return sHA256Hash;
 }
 
 void __51__PKAuxiliaryCapabilityRegisterRequest__dataToSign__block_invoke(uint64_t a1, void *a2)

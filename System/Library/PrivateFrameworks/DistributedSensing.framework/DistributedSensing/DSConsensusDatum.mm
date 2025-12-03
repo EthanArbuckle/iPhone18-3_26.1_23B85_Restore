@@ -1,23 +1,23 @@
 @interface DSConsensusDatum
-- (DSConsensusDatum)initWithIdentifier:(id)a3 andConfidence:(unsigned __int8)a4 atTime:(id)a5;
+- (DSConsensusDatum)initWithIdentifier:(id)identifier andConfidence:(unsigned __int8)confidence atTime:(id)time;
 - (void)printInfo;
 @end
 
 @implementation DSConsensusDatum
 
-- (DSConsensusDatum)initWithIdentifier:(id)a3 andConfidence:(unsigned __int8)a4 atTime:(id)a5
+- (DSConsensusDatum)initWithIdentifier:(id)identifier andConfidence:(unsigned __int8)confidence atTime:(id)time
 {
-  v9 = a3;
-  v10 = a5;
+  identifierCopy = identifier;
+  timeCopy = time;
   v14.receiver = self;
   v14.super_class = DSConsensusDatum;
   v11 = [(DSConsensusDatum *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_identifier, a3);
-    v12->_confidence = a4;
-    objc_storeStrong(&v12->_time, a5);
+    objc_storeStrong(&v11->_identifier, identifier);
+    v12->_confidence = confidence;
+    objc_storeStrong(&v12->_time, time);
   }
 
   return v12;
@@ -36,7 +36,7 @@
   v4 = logObjDSConsensus;
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(NSString *)self->_identifier UTF8String];
+    uTF8String = [(NSString *)self->_identifier UTF8String];
     confidence = self->_confidence;
     if (confidence <= 6)
     {
@@ -68,7 +68,7 @@
 LABEL_16:
           v8 = [v3 stringFromDate:self->_time];
           v10 = 136315650;
-          v11 = v5;
+          v11 = uTF8String;
           v12 = 2080;
           v13 = v7;
           v14 = 2112;

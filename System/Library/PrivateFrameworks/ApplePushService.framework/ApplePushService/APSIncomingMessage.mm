@@ -6,9 +6,9 @@
 - (int64_t)priority;
 - (unint64_t)pushType;
 - (unsigned)pushFlags;
-- (void)setIncomingInterface:(int64_t)a3;
-- (void)setPriority:(int64_t)a3;
-- (void)setPushType:(unint64_t)a3;
+- (void)setIncomingInterface:(int64_t)interface;
+- (void)setPriority:(int64_t)priority;
+- (void)setPushType:(unint64_t)type;
 @end
 
 @implementation APSIncomingMessage
@@ -16,9 +16,9 @@
 - (BOOL)isTracingEnabled
 {
   v2 = [(APSIncomingMessage *)self objectForKey:@"APSIncomingMessageTracingEnabled"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (int64_t)priority
@@ -49,50 +49,50 @@
 - (BOOL)wasFromStorage
 {
   v2 = [(APSIncomingMessage *)self objectForKey:@"APSIncomingMessageFromStorage"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)wasLastMessageFromStorage
 {
   v2 = [(APSIncomingMessage *)self objectForKey:@"APSIncomingMessageLastMessageFromStorage"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (unint64_t)pushType
 {
   v2 = [(APSIncomingMessage *)self objectForKey:@"APSIncomingMessagePushType"];
-  v3 = [v2 unsignedShortValue];
+  unsignedShortValue = [v2 unsignedShortValue];
 
-  return v3;
+  return unsignedShortValue;
 }
 
 - (unsigned)pushFlags
 {
   v2 = [(APSIncomingMessage *)self objectForKey:@"APSIncomingMessagePushFlags"];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
-- (void)setPriority:(int64_t)a3
+- (void)setPriority:(int64_t)priority
 {
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:priority];
   [(APSIncomingMessage *)self setObject:v4 forKey:@"APSProtocolMessagePriority"];
 }
 
-- (void)setPushType:(unint64_t)a3
+- (void)setPushType:(unint64_t)type
 {
-  v4 = [NSNumber numberWithUnsignedShort:a3];
+  v4 = [NSNumber numberWithUnsignedShort:type];
   [(APSIncomingMessage *)self setObject:v4 forKey:@"APSIncomingMessagePushType"];
 }
 
-- (void)setIncomingInterface:(int64_t)a3
+- (void)setIncomingInterface:(int64_t)interface
 {
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:interface];
   [(APSIncomingMessage *)self setObject:v4 forKey:@"APSIncomingMessageIncomingInterfaceKey"];
 }
 
@@ -103,15 +103,15 @@
   if (v3 && xpc_dictionary_get_BOOL(v3, "com.apple.aps.incoming-message-interface"))
   {
     v5 = [(APSIncomingMessage *)self objectForKey:@"APSIncomingMessageIncomingInterfaceKey"];
-    v6 = [v5 integerValue];
+    integerValue = [v5 integerValue];
   }
 
   else
   {
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
 @end

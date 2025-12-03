@@ -1,22 +1,22 @@
 @interface CHDLegendEntry
-- (CHDLegendEntry)initWithResources:(id)a3;
+- (CHDLegendEntry)initWithResources:(id)resources;
 - (id)description;
 - (id)font;
-- (void)setFont:(id)a3;
+- (void)setFont:(id)font;
 @end
 
 @implementation CHDLegendEntry
 
-- (CHDLegendEntry)initWithResources:(id)a3
+- (CHDLegendEntry)initWithResources:(id)resources
 {
-  v4 = a3;
+  resourcesCopy = resources;
   v8.receiver = self;
   v8.super_class = CHDLegendEntry;
   v5 = [(CHDLegendEntry *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mResources, v4);
+    objc_storeWeak(&v5->mResources, resourcesCopy);
     v6->mFontIndex = -1;
     v6->mEntryIndex = -1;
   }
@@ -27,18 +27,18 @@
 - (id)font
 {
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v4 = [WeakRetained fonts];
-  v5 = [v4 objectAtIndex:self->mFontIndex];
+  fonts = [WeakRetained fonts];
+  v5 = [fonts objectAtIndex:self->mFontIndex];
 
   return v5;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v6 = a3;
+  fontCopy = font;
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v5 = [WeakRetained fonts];
-  self->mFontIndex = [v5 addOrEquivalentObject:v6];
+  fonts = [WeakRetained fonts];
+  self->mFontIndex = [fonts addOrEquivalentObject:fontCopy];
 }
 
 - (id)description

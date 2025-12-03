@@ -3,7 +3,7 @@
 + (id)capabilities;
 + (id)defaultUserActionFetcher;
 + (id)idsIDQueryControllerWrapper;
-+ (id)recentsManagerWithSchedulerProvider:(id)a3;
++ (id)recentsManagerWithSchedulerProvider:(id)provider;
 + (id)suggestionsService;
 @end
 
@@ -18,10 +18,10 @@
 
 + (id)suggestionsService
 {
-  v2 = [(objc_class *)getSGSuggestionsServiceClass() serviceForContacts];
-  [v2 setSyncTimeout:0.2];
+  serviceForContacts = [(objc_class *)getSGSuggestionsServiceClass() serviceForContacts];
+  [serviceForContacts setSyncTimeout:0.2];
 
-  return v2;
+  return serviceForContacts;
 }
 
 + (id)idsIDQueryControllerWrapper
@@ -45,8 +45,8 @@
 
   v4 = v3;
   _Block_object_dispose(&v9, 8);
-  v5 = [v3 sharedInstance];
-  v6 = [v2 initWithController:v5];
+  sharedInstance = [v3 sharedInstance];
+  v6 = [v2 initWithController:sharedInstance];
 
   return v6;
 }
@@ -65,12 +65,12 @@
   return v2;
 }
 
-+ (id)recentsManagerWithSchedulerProvider:(id)a3
++ (id)recentsManagerWithSchedulerProvider:(id)provider
 {
   v3 = getCRRecentContactsLibraryClass_50636;
-  v4 = a3;
+  providerCopy = provider;
   v5 = objc_alloc_init(v3());
-  v6 = [objc_alloc(MEMORY[0x1E6996B38]) initWithRecentsLibrary:v5 schedulerProvider:v4];
+  v6 = [objc_alloc(MEMORY[0x1E6996B38]) initWithRecentsLibrary:v5 schedulerProvider:providerCopy];
 
   return v6;
 }

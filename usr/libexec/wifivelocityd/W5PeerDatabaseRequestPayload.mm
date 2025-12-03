@@ -1,22 +1,22 @@
 @interface W5PeerDatabaseRequestPayload
-+ (id)payloadFromDictionary:(id)a3;
-- (W5PeerDatabaseRequestPayload)initWithRequest:(id)a3;
++ (id)payloadFromDictionary:(id)dictionary;
+- (W5PeerDatabaseRequestPayload)initWithRequest:(id)request;
 - (id)encode;
 @end
 
 @implementation W5PeerDatabaseRequestPayload
 
-+ (id)payloadFromDictionary:(id)a3
++ (id)payloadFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithRequest:v3];
+  dictionaryCopy = dictionary;
+  v4 = [objc_alloc(objc_opt_class()) initWithRequest:dictionaryCopy];
 
   return v4;
 }
 
-- (W5PeerDatabaseRequestPayload)initWithRequest:(id)a3
+- (W5PeerDatabaseRequestPayload)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_autoreleasePoolPush();
   v6 = sub_10009A49C();
   if (os_signpost_enabled(v6))
@@ -39,13 +39,13 @@
     *buf = 136315394;
     v53 = "[W5PeerDatabaseRequestPayload initWithRequest:]";
     v54 = 2112;
-    v55 = v4;
+    v55 = requestCopy;
     LODWORD(v46) = 22;
     v45 = buf;
     _os_log_send_and_compose_impl();
   }
 
-  v9 = [v4 objectForKey:@"version"];
+  v9 = [requestCopy objectForKey:@"version"];
   v7->_version = v9;
   if (!v9)
   {
@@ -62,11 +62,11 @@ LABEL_41:
       goto LABEL_30;
     }
 
-    v26 = [v4 objectForKey:@"fetchRequestNSDataUncompressed"];
+    v26 = [requestCopy objectForKey:@"fetchRequestNSDataUncompressed"];
 
     if (v26)
     {
-      v27 = [v4 objectForKey:@"fetchRequestNSDataUncompressed"];
+      v27 = [requestCopy objectForKey:@"fetchRequestNSDataUncompressed"];
       if (v27)
       {
         v11 = v27;
@@ -83,9 +83,9 @@ LABEL_41:
 
         v30 = objc_opt_class();
         v31 = objc_opt_class();
-        v14 = [NSSet setWithObjects:v30, v31, objc_opt_class(), 0];
+        getPairOfBuffersFromPool = [NSSet setWithObjects:v30, v31, objc_opt_class(), 0];
         v49 = 0;
-        v32 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v14 fromData:v11 error:&v49];
+        v32 = [NSKeyedUnarchiver unarchivedObjectOfClasses:getPairOfBuffersFromPool fromData:v11 error:&v49];
         v24 = v49;
         fetchRequest = v7->_fetchRequest;
         v7->_fetchRequest = v32;
@@ -95,7 +95,7 @@ LABEL_41:
       goto LABEL_30;
     }
 
-    v40 = [v4 objectForKey:@"fetchRequestNSData"];
+    v40 = [requestCopy objectForKey:@"fetchRequestNSData"];
 
     if (!v40)
     {
@@ -103,12 +103,12 @@ LABEL_41:
     }
   }
 
-  v10 = [v4 objectForKey:{@"fetchRequestNSData", v45, v46}];
+  v10 = [requestCopy objectForKey:{@"fetchRequestNSData", v45, v46}];
   if (!v10)
   {
 LABEL_30:
-    v14 = sub_100098A04();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    getPairOfBuffersFromPool = sub_100098A04();
+    if (os_log_type_enabled(getPairOfBuffersFromPool, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315138;
       v53 = "[W5PeerDatabaseRequestPayload initWithRequest:]";
@@ -122,16 +122,16 @@ LABEL_30:
   v11 = v10;
   p_info = W5PeerSnifferListener.info;
   v13 = +[W5BufferPool sharedW5BufferPool];
-  v14 = [v13 getPairOfBuffersFromPool];
+  getPairOfBuffersFromPool = [v13 getPairOfBuffersFromPool];
 
-  if ([v14 count]> 1)
+  if ([getPairOfBuffersFromPool count]> 1)
   {
-    v47 = v4;
+    v47 = requestCopy;
     v48 = v5;
-    fetchRequest = [v14 firstObject];
-    v16 = [v14 lastObject];
+    fetchRequest = [getPairOfBuffersFromPool firstObject];
+    lastObject = [getPairOfBuffersFromPool lastObject];
     compression_encode_scratch_buffer_size(COMPRESSION_LZFSE);
-    v17 = compression_decode_buffer([fetchRequest mutableBytes], objc_msgSend(fetchRequest, "length"), objc_msgSend(v11, "bytes"), objc_msgSend(v11, "length"), objc_msgSend(v16, "mutableBytes"), COMPRESSION_LZFSE);
+    v17 = compression_decode_buffer([fetchRequest mutableBytes], objc_msgSend(fetchRequest, "length"), objc_msgSend(v11, "bytes"), objc_msgSend(v11, "length"), objc_msgSend(lastObject, "mutableBytes"), COMPRESSION_LZFSE);
     v18 = sub_100098A04();
     v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
     if (v17)
@@ -158,7 +158,7 @@ LABEL_30:
       v25 = v7->_fetchRequest;
       v7->_fetchRequest = v23;
 
-      v4 = v47;
+      requestCopy = v47;
       p_info = (W5PeerSnifferListener + 32);
     }
 
@@ -179,18 +179,18 @@ LABEL_30:
       v24 = 0;
     }
 
-    v34 = [p_info + 176 sharedW5BufferPool];
-    [v34 returnBufferToPool:fetchRequest];
+    sharedW5BufferPool = [p_info + 176 sharedW5BufferPool];
+    [sharedW5BufferPool returnBufferToPool:fetchRequest];
 
-    v35 = [p_info + 176 sharedW5BufferPool];
-    [v35 returnBufferToPool:v16];
+    sharedW5BufferPool2 = [p_info + 176 sharedW5BufferPool];
+    [sharedW5BufferPool2 returnBufferToPool:lastObject];
 
     v5 = v48;
 LABEL_24:
 
     v36 = v7->_fetchRequest;
-    v14 = sub_100098A04();
-    v37 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
+    getPairOfBuffersFromPool = sub_100098A04();
+    v37 = os_log_type_enabled(getPairOfBuffersFromPool, OS_LOG_TYPE_DEFAULT);
     if (v36)
     {
       if (v37)
@@ -278,8 +278,8 @@ LABEL_40:
 
   if (!self->_version)
   {
-    v11 = sub_100098A04();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    getPairOfBuffersFromPool = sub_100098A04();
+    if (os_log_type_enabled(getPairOfBuffersFromPool, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315138;
       v40 = "[W5PeerDatabaseRequestPayload encode]";
@@ -291,18 +291,18 @@ LABEL_40:
     goto LABEL_31;
   }
 
-  v6 = [(W5PeerDatabaseRequestPayload *)self version];
-  [v4 setObject:v6 forKey:@"version"];
+  version = [(W5PeerDatabaseRequestPayload *)self version];
+  [v4 setObject:version forKey:@"version"];
 
-  v7 = [(W5PeerDatabaseRequestPayload *)self fetchRequest];
+  fetchRequest = [(W5PeerDatabaseRequestPayload *)self fetchRequest];
   v38 = 0;
-  v8 = [NSKeyedArchiver archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v38];
+  v8 = [NSKeyedArchiver archivedDataWithRootObject:fetchRequest requiringSecureCoding:1 error:&v38];
   v9 = v38;
 
   if (!v8)
   {
-    v11 = sub_100098A04();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    getPairOfBuffersFromPool = sub_100098A04();
+    if (os_log_type_enabled(getPairOfBuffersFromPool, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
       v40 = "[W5PeerDatabaseRequestPayload encode]";
@@ -326,9 +326,9 @@ LABEL_40:
     {
 LABEL_6:
       v10 = +[W5BufferPool sharedW5BufferPool];
-      v11 = [v10 getPairOfBuffersFromPool];
+      getPairOfBuffersFromPool = [v10 getPairOfBuffersFromPool];
 
-      if ([v11 count]<= 1)
+      if ([getPairOfBuffersFromPool count]<= 1)
       {
         v31 = sub_100098A04();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -343,10 +343,10 @@ LABEL_6:
 
       v37 = v9;
       v12 = v3;
-      v13 = [v11 firstObject];
-      v14 = [v11 lastObject];
+      firstObject = [getPairOfBuffersFromPool firstObject];
+      lastObject = [getPairOfBuffersFromPool lastObject];
       compression_encode_scratch_buffer_size(COMPRESSION_LZFSE);
-      v15 = compression_encode_buffer([v13 mutableBytes], objc_msgSend(v13, "length"), objc_msgSend(v8, "bytes"), objc_msgSend(v8, "length"), objc_msgSend(v14, "mutableBytes"), COMPRESSION_LZFSE);
+      v15 = compression_encode_buffer([firstObject mutableBytes], objc_msgSend(firstObject, "length"), objc_msgSend(v8, "bytes"), objc_msgSend(v8, "length"), objc_msgSend(lastObject, "mutableBytes"), COMPRESSION_LZFSE);
       v16 = sub_100098A04();
       v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
       if (v15)
@@ -365,15 +365,15 @@ LABEL_6:
           _os_log_send_and_compose_impl();
         }
 
-        v16 = +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", [v13 mutableBytes], v15);
+        v16 = +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", [firstObject mutableBytes], v15);
         [v4 setObject:v16 forKey:@"fetchRequestNSData"];
       }
 
       else if (v17)
       {
         v21 = [v8 length];
-        v22 = [v13 length];
-        v23 = [v14 length];
+        v22 = [firstObject length];
+        v23 = [lastObject length];
         *buf = 136315906;
         v40 = "[W5PeerDatabaseRequestPayload encode]";
         v41 = 2048;
@@ -388,10 +388,10 @@ LABEL_6:
       }
 
       v24 = +[W5BufferPool sharedW5BufferPool];
-      [v24 returnBufferToPool:v13];
+      [v24 returnBufferToPool:firstObject];
 
       v25 = +[W5BufferPool sharedW5BufferPool];
-      [v25 returnBufferToPool:v14];
+      [v25 returnBufferToPool:lastObject];
 
       v3 = v12;
       v9 = v37;
@@ -438,8 +438,8 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v11 = sub_100098A04();
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  getPairOfBuffersFromPool = sub_100098A04();
+  if (os_log_type_enabled(getPairOfBuffersFromPool, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
     v40 = "[W5PeerDatabaseRequestPayload encode]";

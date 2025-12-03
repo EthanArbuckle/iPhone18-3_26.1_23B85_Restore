@@ -1,10 +1,10 @@
 @interface MPSCNNBatchNormalizationState
-+ (id)temporaryStateWithCommandBuffer:(id)a3 numberOfFeatureChannels:(unint64_t)a4 epsilon:(float)a5 batchNormalization:(id)a6;
++ (id)temporaryStateWithCommandBuffer:(id)buffer numberOfFeatureChannels:(unint64_t)channels epsilon:(float)epsilon batchNormalization:(id)normalization;
 - (id)beta;
 - (id)gamma;
 - (id)gradientForBeta;
 - (id)gradientForGamma;
-- (id)initDeferredWithDevice:(id)a3 numberOfFeatureChannels:(unint64_t)a4 epsilon:(float)a5 batchNormalization:(id)a6;
+- (id)initDeferredWithDevice:(id)device numberOfFeatureChannels:(unint64_t)channels epsilon:(float)epsilon batchNormalization:(id)normalization;
 - (id)mean;
 - (id)variance;
 - (void)dealloc;
@@ -13,37 +13,37 @@
 
 @implementation MPSCNNBatchNormalizationState
 
-+ (id)temporaryStateWithCommandBuffer:(id)a3 numberOfFeatureChannels:(unint64_t)a4 epsilon:(float)a5 batchNormalization:(id)a6
++ (id)temporaryStateWithCommandBuffer:(id)buffer numberOfFeatureChannels:(unint64_t)channels epsilon:(float)epsilon batchNormalization:(id)normalization
 {
-  v11 = (4 * a4 + 12) & 0xFFFFFFFFFFFFFFF0;
+  v11 = (4 * channels + 12) & 0xFFFFFFFFFFFFFFF0;
   v12 = objc_autoreleasePoolPush();
   v19 = objc_msgSend_resourceListWithBufferSizes_(MEMORY[0x277CD72A0], v13, v11, v14, v15, v16, v17, v18, v11, v11, v11, 0);
   v20 = v19;
   objc_autoreleasePoolPop(v12);
-  v26 = objc_msgSend_temporaryStateWithCommandBuffer_resourceList_(a1, v21, a3, v19, v22, v23, v24, v25);
+  v26 = objc_msgSend_temporaryStateWithCommandBuffer_resourceList_(self, v21, buffer, v19, v22, v23, v24, v25);
 
-  *(v26 + 304) = a4;
+  *(v26 + 304) = channels;
   *(v26 + 296) = 0;
-  *(v26 + 312) = a5;
-  *(v26 + 288) = a6;
+  *(v26 + 312) = epsilon;
+  *(v26 + 288) = normalization;
   return v26;
 }
 
-- (id)initDeferredWithDevice:(id)a3 numberOfFeatureChannels:(unint64_t)a4 epsilon:(float)a5 batchNormalization:(id)a6
+- (id)initDeferredWithDevice:(id)device numberOfFeatureChannels:(unint64_t)channels epsilon:(float)epsilon batchNormalization:(id)normalization
 {
-  v11 = (4 * a4 + 12) & 0xFFFFFFFFFFFFFFF0;
+  v11 = (4 * channels + 12) & 0xFFFFFFFFFFFFFFF0;
   v12 = objc_autoreleasePoolPush();
   v19 = objc_msgSend_resourceListWithBufferSizes_(MEMORY[0x277CD72A0], v13, v11, v14, v15, v16, v17, v18, v11, v11, v11, 0);
   v22.receiver = self;
   v22.super_class = MPSCNNBatchNormalizationState;
-  v20 = [(MPSState *)&v22 initWithDevice:a3 resourceList:v19];
+  v20 = [(MPSState *)&v22 initWithDevice:device resourceList:v19];
   objc_autoreleasePoolPop(v12);
   if (v20)
   {
-    v20->_numberOfFeatureChannels = a4;
+    v20->_numberOfFeatureChannels = channels;
     v20->_accumulationCount = 0;
-    v20->_epsilon = a5;
-    v20->_batchNormalization = a6;
+    v20->_epsilon = epsilon;
+    v20->_batchNormalization = normalization;
   }
 
   return v20;
@@ -125,14 +125,14 @@ LABEL_3:
 {
   if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7470]) & 1) != 0 && !*(&self->super.super.super.isa + *MEMORY[0x277CD7478]))
   {
-    v4 = self;
+    selfCopy = self;
     v12 = MTLReportFailureTypeEnabled();
-    self = v4;
+    self = selfCopy;
     if (v12)
     {
-      objc_msgSend_debugDescription(v4, v5, v6, v7, v8, v9, v10, v11);
+      objc_msgSend_debugDescription(selfCopy, v5, v6, v7, v8, v9, v10, v11);
       MTLReportFailure();
-      self = v4;
+      self = selfCopy;
     }
   }
 
@@ -151,14 +151,14 @@ LABEL_3:
 {
   if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7470]) & 1) != 0 && !*(&self->super.super.super.isa + *MEMORY[0x277CD7478]))
   {
-    v4 = self;
+    selfCopy = self;
     v12 = MTLReportFailureTypeEnabled();
-    self = v4;
+    self = selfCopy;
     if (v12)
     {
-      objc_msgSend_debugDescription(v4, v5, v6, v7, v8, v9, v10, v11);
+      objc_msgSend_debugDescription(selfCopy, v5, v6, v7, v8, v9, v10, v11);
       MTLReportFailure();
-      self = v4;
+      self = selfCopy;
     }
   }
 
@@ -177,14 +177,14 @@ LABEL_3:
 {
   if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7470]) & 1) != 0 && !*(&self->super.super.super.isa + *MEMORY[0x277CD7478]))
   {
-    v6 = self;
+    selfCopy = self;
     v14 = MTLReportFailureTypeEnabled();
-    self = v6;
+    self = selfCopy;
     if (v14)
     {
-      objc_msgSend_debugDescription(v6, v7, v8, v9, v10, v11, v12, v13);
+      objc_msgSend_debugDescription(selfCopy, v7, v8, v9, v10, v11, v12, v13);
       MTLReportFailure();
-      self = v6;
+      self = selfCopy;
     }
   }
 
@@ -210,14 +210,14 @@ LABEL_3:
 {
   if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7470]) & 1) != 0 && !*(&self->super.super.super.isa + *MEMORY[0x277CD7478]))
   {
-    v6 = self;
+    selfCopy = self;
     v14 = MTLReportFailureTypeEnabled();
-    self = v6;
+    self = selfCopy;
     if (v14)
     {
-      objc_msgSend_debugDescription(v6, v7, v8, v9, v10, v11, v12, v13);
+      objc_msgSend_debugDescription(selfCopy, v7, v8, v9, v10, v11, v12, v13);
       MTLReportFailure();
-      self = v6;
+      self = selfCopy;
     }
   }
 
@@ -243,14 +243,14 @@ LABEL_3:
 {
   if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7470]) & 1) != 0 && !*(&self->super.super.super.isa + *MEMORY[0x277CD7478]))
   {
-    v6 = self;
+    selfCopy = self;
     v14 = MTLReportFailureTypeEnabled();
-    self = v6;
+    self = selfCopy;
     if (v14)
     {
-      objc_msgSend_debugDescription(v6, v7, v8, v9, v10, v11, v12, v13);
+      objc_msgSend_debugDescription(selfCopy, v7, v8, v9, v10, v11, v12, v13);
       MTLReportFailure();
-      self = v6;
+      self = selfCopy;
     }
   }
 
@@ -276,14 +276,14 @@ LABEL_3:
 {
   if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7470]) & 1) != 0 && !*(&self->super.super.super.isa + *MEMORY[0x277CD7478]))
   {
-    v6 = self;
+    selfCopy = self;
     v14 = MTLReportFailureTypeEnabled();
-    self = v6;
+    self = selfCopy;
     if (v14)
     {
-      objc_msgSend_debugDescription(v6, v7, v8, v9, v10, v11, v12, v13);
+      objc_msgSend_debugDescription(selfCopy, v7, v8, v9, v10, v11, v12, v13);
       MTLReportFailure();
-      self = v6;
+      self = selfCopy;
     }
   }
 

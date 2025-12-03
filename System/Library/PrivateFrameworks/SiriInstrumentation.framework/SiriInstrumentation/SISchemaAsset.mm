@@ -1,26 +1,26 @@
 @interface SISchemaAsset
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaAsset)initWithDictionary:(id)a3;
-- (SISchemaAsset)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaAsset)initWithDictionary:(id)dictionary;
+- (SISchemaAsset)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaAsset
 
-- (SISchemaAsset)initWithDictionary:(id)a3
+- (SISchemaAsset)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = SISchemaAsset;
   v5 = [(SISchemaAsset *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"trialNamespace"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"trialNamespace"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(SISchemaAsset *)v5 setTrialNamespace:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"assetName"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"assetName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(SISchemaAsset *)v5 setAssetName:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"assetVersion"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"assetVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(SISchemaAsset *)v5 setAssetVersion:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"assetLocale"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"assetLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (SISchemaAsset)initWithJSON:(id)a3
+- (SISchemaAsset)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaAsset *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaAsset *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaAsset *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -93,7 +93,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [(SISchemaAsset *)self assetLocale]- 1;
@@ -107,42 +107,42 @@
       v5 = off_1E78E3200[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"assetLocale"];
+    [dictionary setObject:v5 forKeyedSubscript:@"assetLocale"];
   }
 
   if (self->_assetName)
   {
-    v6 = [(SISchemaAsset *)self assetName];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"assetName"];
+    assetName = [(SISchemaAsset *)self assetName];
+    v7 = [assetName copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"assetName"];
   }
 
   if (self->_assetVersion)
   {
-    v8 = [(SISchemaAsset *)self assetVersion];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    assetVersion = [(SISchemaAsset *)self assetVersion];
+    dictionaryRepresentation = [assetVersion dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"assetVersion"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"assetVersion"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"assetVersion"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"assetVersion"];
     }
   }
 
   if (self->_trialNamespace)
   {
-    v11 = [(SISchemaAsset *)self trialNamespace];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"trialNamespace"];
+    trialNamespace = [(SISchemaAsset *)self trialNamespace];
+    v12 = [trialNamespace copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"trialNamespace"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -163,28 +163,28 @@
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(SISchemaAsset *)self trialNamespace];
-  v6 = [v4 trialNamespace];
-  if ((v5 != 0) == (v6 == 0))
+  trialNamespace = [(SISchemaAsset *)self trialNamespace];
+  trialNamespace2 = [equalCopy trialNamespace];
+  if ((trialNamespace != 0) == (trialNamespace2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(SISchemaAsset *)self trialNamespace];
-  if (v7)
+  trialNamespace3 = [(SISchemaAsset *)self trialNamespace];
+  if (trialNamespace3)
   {
-    v8 = v7;
-    v9 = [(SISchemaAsset *)self trialNamespace];
-    v10 = [v4 trialNamespace];
-    v11 = [v9 isEqual:v10];
+    v8 = trialNamespace3;
+    trialNamespace4 = [(SISchemaAsset *)self trialNamespace];
+    trialNamespace5 = [equalCopy trialNamespace];
+    v11 = [trialNamespace4 isEqual:trialNamespace5];
 
     if (!v11)
     {
@@ -196,20 +196,20 @@
   {
   }
 
-  v5 = [(SISchemaAsset *)self assetName];
-  v6 = [v4 assetName];
-  if ((v5 != 0) == (v6 == 0))
+  trialNamespace = [(SISchemaAsset *)self assetName];
+  trialNamespace2 = [equalCopy assetName];
+  if ((trialNamespace != 0) == (trialNamespace2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(SISchemaAsset *)self assetName];
-  if (v12)
+  assetName = [(SISchemaAsset *)self assetName];
+  if (assetName)
   {
-    v13 = v12;
-    v14 = [(SISchemaAsset *)self assetName];
-    v15 = [v4 assetName];
-    v16 = [v14 isEqual:v15];
+    v13 = assetName;
+    assetName2 = [(SISchemaAsset *)self assetName];
+    assetName3 = [equalCopy assetName];
+    v16 = [assetName2 isEqual:assetName3];
 
     if (!v16)
     {
@@ -221,22 +221,22 @@
   {
   }
 
-  v5 = [(SISchemaAsset *)self assetVersion];
-  v6 = [v4 assetVersion];
-  if ((v5 != 0) == (v6 == 0))
+  trialNamespace = [(SISchemaAsset *)self assetVersion];
+  trialNamespace2 = [equalCopy assetVersion];
+  if ((trialNamespace != 0) == (trialNamespace2 == 0))
   {
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  v17 = [(SISchemaAsset *)self assetVersion];
-  if (v17)
+  assetVersion = [(SISchemaAsset *)self assetVersion];
+  if (assetVersion)
   {
-    v18 = v17;
-    v19 = [(SISchemaAsset *)self assetVersion];
-    v20 = [v4 assetVersion];
-    v21 = [v19 isEqual:v20];
+    v18 = assetVersion;
+    assetVersion2 = [(SISchemaAsset *)self assetVersion];
+    assetVersion3 = [equalCopy assetVersion];
+    v21 = [assetVersion2 isEqual:assetVersion3];
 
     if (!v21)
     {
@@ -248,9 +248,9 @@ LABEL_16:
   {
   }
 
-  if ((*&self->_has & 1) == (v4[36] & 1))
+  if ((*&self->_has & 1) == (equalCopy[36] & 1))
   {
-    if ((*&self->_has & 1) == 0 || (assetLocale = self->_assetLocale, assetLocale == [v4 assetLocale]))
+    if ((*&self->_has & 1) == 0 || (assetLocale = self->_assetLocale, assetLocale == [equalCopy assetLocale]))
     {
       v22 = 1;
       goto LABEL_18;
@@ -264,28 +264,28 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(SISchemaAsset *)self trialNamespace];
+  toCopy = to;
+  trialNamespace = [(SISchemaAsset *)self trialNamespace];
 
-  if (v4)
+  if (trialNamespace)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(SISchemaAsset *)self assetName];
+  assetName = [(SISchemaAsset *)self assetName];
 
-  if (v5)
+  if (assetName)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(SISchemaAsset *)self assetVersion];
+  assetVersion = [(SISchemaAsset *)self assetVersion];
 
-  if (v6)
+  if (assetVersion)
   {
-    v7 = [(SISchemaAsset *)self assetVersion];
+    assetVersion2 = [(SISchemaAsset *)self assetVersion];
     PBDataWriterWriteSubmessage();
   }
 
@@ -295,17 +295,17 @@ LABEL_18:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = SISchemaAsset;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SISchemaAsset *)self assetVersion:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(SISchemaAsset *)self deleteAssetVersion];
   }

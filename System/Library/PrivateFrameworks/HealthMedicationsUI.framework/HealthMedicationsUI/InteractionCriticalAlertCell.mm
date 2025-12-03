@@ -1,19 +1,19 @@
 @interface InteractionCriticalAlertCell
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 - (void)awakeFromNib;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation InteractionCriticalAlertCell
 
 - (void)awakeFromNib
 {
-  v2 = self;
+  selfCopy = self;
   sub_22825D3E8();
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = sub_228391350();
   v5 = *(v4 - 8);
@@ -21,19 +21,19 @@
   MEMORY[0x28223BE20](v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_228391340();
-  v9 = self;
+  selfCopy = self;
   sub_22825D5B4();
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   sub_22817A958(0, &qword_27D825178, 0x277D75C68);
   sub_228205394();
   v6 = sub_228392480();
-  v7 = self;
-  v8 = a4;
+  selfCopy = self;
+  eventCopy = event;
   v9 = sub_22820213C(v6);
   if (v9 && (v10 = v9, v11 = sub_22825D998(), v12 = MEMORY[0x22AAB66C0](v10, v11, 36.0, 36.0), v11, v10, (v12 & 1) != 0))
   {
@@ -43,20 +43,20 @@
   {
     v13 = sub_228392470();
 
-    v14.receiver = v7;
+    v14.receiver = selfCopy;
     v14.super_class = type metadata accessor for InteractionCriticalAlertCell();
-    [(InteractionCriticalAlertCell *)&v14 touchesBegan:v13 withEvent:v8];
+    [(InteractionCriticalAlertCell *)&v14 touchesBegan:v13 withEvent:eventCopy];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   sub_22817A958(0, &qword_27D825178, 0x277D75C68);
   sub_228205394();
   v6 = sub_228392480();
-  v7 = a4;
-  v8 = self;
-  sub_22825F2BC(v6, a4);
+  eventCopy = event;
+  selfCopy = self;
+  sub_22825F2BC(v6, event);
 }
 
 @end

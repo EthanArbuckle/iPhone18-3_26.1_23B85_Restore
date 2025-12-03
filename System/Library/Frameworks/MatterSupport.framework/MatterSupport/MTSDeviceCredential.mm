@@ -1,33 +1,33 @@
 @interface MTSDeviceCredential
-- (BOOL)isEqual:(id)a3;
-- (MTSDeviceCredential)initWithCertificationDeclaration:(id)a3 deviceAttestationCertificate:(id)a4 productAttestationIntermediateCertificate:(id)a5;
-- (MTSDeviceCredential)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MTSDeviceCredential)initWithCertificationDeclaration:(id)declaration deviceAttestationCertificate:(id)certificate productAttestationIntermediateCertificate:(id)intermediateCertificate;
+- (MTSDeviceCredential)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTSDeviceCredential
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MTSDeviceCredential *)self certificationDeclaration];
-  [v4 encodeObject:v5 forKey:@"MTSDC.ck.certificationDeclaration"];
+  coderCopy = coder;
+  certificationDeclaration = [(MTSDeviceCredential *)self certificationDeclaration];
+  [coderCopy encodeObject:certificationDeclaration forKey:@"MTSDC.ck.certificationDeclaration"];
 
-  v6 = [(MTSDeviceCredential *)self deviceAttestationCertificate];
-  [v4 encodeObject:v6 forKey:@"MTSDC.ck.deviceAttestationCertificate"];
+  deviceAttestationCertificate = [(MTSDeviceCredential *)self deviceAttestationCertificate];
+  [coderCopy encodeObject:deviceAttestationCertificate forKey:@"MTSDC.ck.deviceAttestationCertificate"];
 
-  v7 = [(MTSDeviceCredential *)self productAttestationIntermediateCertificate];
-  [v4 encodeObject:v7 forKey:@"MTSDC.ck.productAttestationIntermediateCertificate"];
+  productAttestationIntermediateCertificate = [(MTSDeviceCredential *)self productAttestationIntermediateCertificate];
+  [coderCopy encodeObject:productAttestationIntermediateCertificate forKey:@"MTSDC.ck.productAttestationIntermediateCertificate"];
 }
 
-- (MTSDeviceCredential)initWithCoder:(id)a3
+- (MTSDeviceCredential)initWithCoder:(id)coder
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSDC.ck.certificationDeclaration"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSDC.ck.deviceAttestationCertificate"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSDC.ck.productAttestationIntermediateCertificate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSDC.ck.certificationDeclaration"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSDC.ck.deviceAttestationCertificate"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSDC.ck.productAttestationIntermediateCertificate"];
   v8 = v7;
   if (v5)
   {
@@ -42,7 +42,7 @@
   if (v9 || v7 == 0)
   {
     v11 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -64,8 +64,8 @@
 
   else
   {
-    v14 = [(MTSDeviceCredential *)self initWithCertificationDeclaration:v5 deviceAttestationCertificate:v6 productAttestationIntermediateCertificate:v7];
-    v15 = v14;
+    selfCopy = [(MTSDeviceCredential *)self initWithCertificationDeclaration:v5 deviceAttestationCertificate:v6 productAttestationIntermediateCertificate:v7];
+    v15 = selfCopy;
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -74,23 +74,23 @@
 
 - (unint64_t)hash
 {
-  v3 = [(MTSDeviceCredential *)self certificationDeclaration];
-  v4 = [v3 hash];
-  v5 = [(MTSDeviceCredential *)self deviceAttestationCertificate];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(MTSDeviceCredential *)self productAttestationIntermediateCertificate];
-  v8 = [v7 hash];
+  certificationDeclaration = [(MTSDeviceCredential *)self certificationDeclaration];
+  v4 = [certificationDeclaration hash];
+  deviceAttestationCertificate = [(MTSDeviceCredential *)self deviceAttestationCertificate];
+  v6 = [deviceAttestationCertificate hash] ^ v4;
+  productAttestationIntermediateCertificate = [(MTSDeviceCredential *)self productAttestationIntermediateCertificate];
+  v8 = [productAttestationIntermediateCertificate hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -101,17 +101,17 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(MTSDeviceCredential *)self certificationDeclaration];
-    v8 = [v6 certificationDeclaration];
-    if ([v7 isEqual:v8])
+    certificationDeclaration = [(MTSDeviceCredential *)self certificationDeclaration];
+    certificationDeclaration2 = [v6 certificationDeclaration];
+    if ([certificationDeclaration isEqual:certificationDeclaration2])
     {
-      v9 = [(MTSDeviceCredential *)self deviceAttestationCertificate];
-      v10 = [v6 deviceAttestationCertificate];
-      if ([v9 isEqual:v10])
+      deviceAttestationCertificate = [(MTSDeviceCredential *)self deviceAttestationCertificate];
+      deviceAttestationCertificate2 = [v6 deviceAttestationCertificate];
+      if ([deviceAttestationCertificate isEqual:deviceAttestationCertificate2])
       {
-        v11 = [(MTSDeviceCredential *)self productAttestationIntermediateCertificate];
-        v12 = [v6 productAttestationIntermediateCertificate];
-        v13 = [v11 isEqual:v12];
+        productAttestationIntermediateCertificate = [(MTSDeviceCredential *)self productAttestationIntermediateCertificate];
+        productAttestationIntermediateCertificate2 = [v6 productAttestationIntermediateCertificate];
+        v13 = [productAttestationIntermediateCertificate isEqual:productAttestationIntermediateCertificate2];
       }
 
       else
@@ -134,26 +134,26 @@
   return v13;
 }
 
-- (MTSDeviceCredential)initWithCertificationDeclaration:(id)a3 deviceAttestationCertificate:(id)a4 productAttestationIntermediateCertificate:(id)a5
+- (MTSDeviceCredential)initWithCertificationDeclaration:(id)declaration deviceAttestationCertificate:(id)certificate productAttestationIntermediateCertificate:(id)intermediateCertificate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  declarationCopy = declaration;
+  certificateCopy = certificate;
+  intermediateCertificateCopy = intermediateCertificate;
+  if (!declarationCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  if (!v9)
+  if (!certificateCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  v11 = v10;
-  if (!v10)
+  v11 = intermediateCertificateCopy;
+  if (!intermediateCertificateCopy)
   {
 LABEL_9:
     v20 = _HMFPreconditionFailure();
@@ -165,11 +165,11 @@ LABEL_9:
   v12 = [(MTSDeviceCredential *)&v22 init];
   if (v12)
   {
-    v13 = [v8 copy];
+    v13 = [declarationCopy copy];
     certificationDeclaration = v12->_certificationDeclaration;
     v12->_certificationDeclaration = v13;
 
-    v15 = [v9 copy];
+    v15 = [certificateCopy copy];
     deviceAttestationCertificate = v12->_deviceAttestationCertificate;
     v12->_deviceAttestationCertificate = v15;
 

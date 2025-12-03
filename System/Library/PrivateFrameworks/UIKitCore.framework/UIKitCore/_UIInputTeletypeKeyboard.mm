@@ -52,8 +52,8 @@
 
 - (void)invalidate
 {
-  v2 = [(_UIInputTeletypeKeyboard *)self appKeyboard];
-  [v2 invalidate];
+  appKeyboard = [(_UIInputTeletypeKeyboard *)self appKeyboard];
+  [appKeyboard invalidate];
 }
 
 @end

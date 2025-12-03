@@ -1,70 +1,70 @@
 @interface HKStateOfMind
-+ (id)stateOfMindWithDate:(id)a3 kind:(int64_t)a4 valence:(double)a5 labels:(id)a6 associations:(id)a7 context:(id)a8 metadata:(id)a9;
-+ (id)stateOfMindWithDate:(id)a3 reflectiveInterval:(int64_t)a4 valence:(double)a5 labels:(id)a6 domains:(id)a7 context:(id)a8 metadata:(id)a9;
-+ (id)validateArgumentsWithKind:(int64_t)a3 valence:(double)a4;
-+ (id)validateArgumentsWithKind:(int64_t)a3 valence:(double)a4 labels:(id)a5 associations:(id)a6;
-+ (id)validateAssociations:(id)a3;
-+ (id)validateKind:(int64_t)a3;
-+ (id)validateLabels:(id)a3;
-+ (id)validateValence:(double)a3;
++ (id)stateOfMindWithDate:(id)date kind:(int64_t)kind valence:(double)valence labels:(id)labels associations:(id)associations context:(id)context metadata:(id)metadata;
++ (id)stateOfMindWithDate:(id)date reflectiveInterval:(int64_t)interval valence:(double)valence labels:(id)labels domains:(id)domains context:(id)context metadata:(id)metadata;
++ (id)validateArgumentsWithKind:(int64_t)kind valence:(double)valence;
++ (id)validateArgumentsWithKind:(int64_t)kind valence:(double)valence labels:(id)labels associations:(id)associations;
++ (id)validateAssociations:(id)associations;
++ (id)validateKind:(int64_t)kind;
++ (id)validateLabels:(id)labels;
++ (id)validateValence:(double)valence;
 - (BOOL)hasAnyUnknownDomain;
-- (BOOL)isEquivalent:(id)a3;
-- (HKStateOfMind)initWithCoder:(id)a3;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
+- (BOOL)isEquivalent:(id)equivalent;
+- (HKStateOfMind)initWithCoder:(id)coder;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
 - (id)description;
-- (id)sanitizedSample:(id)a3 forEntitlements:(id)a4;
+- (id)sanitizedSample:(id)sample forEntitlements:(id)entitlements;
 - (int64_t)valenceClassification;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)valenceClassification;
 @end
 
 @implementation HKStateOfMind
 
-- (id)sanitizedSample:(id)a3 forEntitlements:(id)a4
+- (id)sanitizedSample:(id)sample forEntitlements:(id)entitlements
 {
-  v5 = a3;
-  v6 = a4;
+  sampleCopy = sample;
+  entitlementsCopy = entitlements;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v8 = v5;
-  v9 = v8;
+  v8 = sampleCopy;
+  _copyByArchiving = v8;
   if (isKindOfClass)
   {
-    v9 = v8;
-    if (([v6 hasEntitlement:@"com.apple.private.healthkit"] & 1) == 0)
+    _copyByArchiving = v8;
+    if (([entitlementsCopy hasEntitlement:@"com.apple.private.healthkit"] & 1) == 0)
     {
-      v9 = v8;
-      if (([v6 hasPrivateAccessEntitlementWithIdentifier:@"mental-health"] & 1) == 0)
+      _copyByArchiving = v8;
+      if (([entitlementsCopy hasPrivateAccessEntitlementWithIdentifier:@"mental-health"] & 1) == 0)
       {
-        v10 = [v8 context];
+        context = [v8 context];
 
-        v9 = v8;
-        if (v10)
+        _copyByArchiving = v8;
+        if (context)
         {
-          v9 = [v8 _copyByArchiving];
+          _copyByArchiving = [v8 _copyByArchiving];
 
-          [v9 _setContext:0];
+          [_copyByArchiving _setContext:0];
         }
       }
     }
   }
 
-  return v9;
+  return _copyByArchiving;
 }
 
-+ (id)stateOfMindWithDate:(id)a3 kind:(int64_t)a4 valence:(double)a5 labels:(id)a6 associations:(id)a7 context:(id)a8 metadata:(id)a9
++ (id)stateOfMindWithDate:(id)date kind:(int64_t)kind valence:(double)valence labels:(id)labels associations:(id)associations context:(id)context metadata:(id)metadata
 {
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a3;
+  labelsCopy = labels;
+  associationsCopy = associations;
+  contextCopy = context;
+  metadataCopy = metadata;
+  dateCopy = date;
   v21 = +[(HKObjectType *)HKStateOfMindType];
-  v22 = [v19 count];
+  v22 = [metadataCopy count];
   v30[0] = MEMORY[0x1E69E9820];
   if (v22)
   {
-    v23 = v19;
+    v23 = metadataCopy;
   }
 
   else
@@ -75,17 +75,17 @@
   v30[1] = 3221225472;
   v30[2] = __87__HKStateOfMind_stateOfMindWithDate_kind_valence_labels_associations_context_metadata___block_invoke;
   v30[3] = &unk_1E737E770;
-  v35 = a5;
-  v31 = v16;
-  v32 = v17;
-  v33 = v18;
-  v34 = a4;
-  v29.receiver = a1;
+  valenceCopy = valence;
+  v31 = labelsCopy;
+  v32 = associationsCopy;
+  v33 = contextCopy;
+  kindCopy = kind;
+  v29.receiver = self;
   v29.super_class = &OBJC_METACLASS___HKStateOfMind;
-  v24 = v18;
-  v25 = v17;
-  v26 = v16;
-  v27 = objc_msgSendSuper2(&v29, sel__newSampleFromDatesWithType_startDate_endDate_device_metadata_config_, v21, v20, v20, 0, v23, v30);
+  v24 = contextCopy;
+  v25 = associationsCopy;
+  v26 = labelsCopy;
+  v27 = objc_msgSendSuper2(&v29, sel__newSampleFromDatesWithType_startDate_endDate_device_metadata_config_, v21, dateCopy, dateCopy, 0, v23, v30);
 
   return v27;
 }
@@ -110,14 +110,14 @@ void __87__HKStateOfMind_stateOfMindWithDate_kind_valence_labels_associations_co
   objc_storeStrong(v5 + 16, v4);
 }
 
-+ (id)stateOfMindWithDate:(id)a3 reflectiveInterval:(int64_t)a4 valence:(double)a5 labels:(id)a6 domains:(id)a7 context:(id)a8 metadata:(id)a9
++ (id)stateOfMindWithDate:(id)date reflectiveInterval:(int64_t)interval valence:(double)valence labels:(id)labels domains:(id)domains context:(id)context metadata:(id)metadata
 {
-  v16 = a9;
-  v17 = a8;
-  v18 = a6;
-  v19 = a3;
-  v20 = [a7 hk_map:&__block_literal_global_58];
-  v21 = [a1 stateOfMindWithDate:v19 kind:a4 valence:v18 labels:v20 associations:v17 context:v16 metadata:a5];
+  metadataCopy = metadata;
+  contextCopy = context;
+  labelsCopy = labels;
+  dateCopy = date;
+  v20 = [domains hk_map:&__block_literal_global_58];
+  v21 = [self stateOfMindWithDate:dateCopy kind:interval valence:labelsCopy labels:v20 associations:contextCopy context:metadataCopy metadata:valence];
 
   return v21;
 }
@@ -139,9 +139,9 @@ uint64_t __96__HKStateOfMind_stateOfMindWithDate_reflectiveInterval_valence_labe
     [(HKStateOfMind *)a2 valenceClassification];
   }
 
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
-  return v6;
+  return integerValue;
 }
 
 uint64_t __24__HKStateOfMind_domains__block_invoke(uint64_t a1, void *a2)
@@ -154,18 +154,18 @@ uint64_t __24__HKStateOfMind_domains__block_invoke(uint64_t a1, void *a2)
 
 - (BOOL)hasAnyUnknownDomain
 {
-  v2 = [(HKStateOfMind *)self domains];
-  v3 = [v2 hk_containsObjectPassingTest:&__block_literal_global_336];
+  domains = [(HKStateOfMind *)self domains];
+  v3 = [domains hk_containsObjectPassingTest:&__block_literal_global_336];
 
   return v3;
 }
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
-  var0 = a3.var0;
+  var0 = configuration.var0;
   v13.receiver = self;
   v13.super_class = HKStateOfMind;
-  v5 = [(HKSample *)&v13 _validateWithConfiguration:a3.var0, a3.var1];
+  v5 = [(HKSample *)&v13 _validateWithConfiguration:configuration.var0, configuration.var1];
   v6 = v5;
   if (v5)
   {
@@ -194,17 +194,17 @@ uint64_t __24__HKStateOfMind_domains__block_invoke(uint64_t a1, void *a2)
   return v11;
 }
 
-+ (id)validateArgumentsWithKind:(int64_t)a3 valence:(double)a4 labels:(id)a5 associations:(id)a6
++ (id)validateArgumentsWithKind:(int64_t)kind valence:(double)valence labels:(id)labels associations:(id)associations
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = [objc_opt_class() validateArgumentsWithKind:a3 valence:a4];
+  labelsCopy = labels;
+  associationsCopy = associations;
+  v11 = [objc_opt_class() validateArgumentsWithKind:kind valence:valence];
   if (!v11)
   {
-    v11 = [objc_opt_class() validateLabels:v9];
+    v11 = [objc_opt_class() validateLabels:labelsCopy];
     if (!v11)
     {
-      v11 = [objc_opt_class() validateAssociations:v10];
+      v11 = [objc_opt_class() validateAssociations:associationsCopy];
     }
   }
 
@@ -213,20 +213,20 @@ uint64_t __24__HKStateOfMind_domains__block_invoke(uint64_t a1, void *a2)
   return v12;
 }
 
-+ (id)validateArgumentsWithKind:(int64_t)a3 valence:(double)a4
++ (id)validateArgumentsWithKind:(int64_t)kind valence:(double)valence
 {
-  v5 = [objc_opt_class() validateKind:a3];
+  v5 = [objc_opt_class() validateKind:kind];
   if (!v5)
   {
-    v5 = [objc_opt_class() validateValence:a4];
+    v5 = [objc_opt_class() validateValence:valence];
   }
 
   return v5;
 }
 
-+ (id)validateKind:(int64_t)a3
++ (id)validateKind:(int64_t)kind
 {
-  if ((a3 - 3) > 0xFFFFFFFFFFFFFFFDLL)
+  if ((kind - 3) > 0xFFFFFFFFFFFFFFFDLL)
   {
     v4 = 0;
   }
@@ -239,9 +239,9 @@ uint64_t __24__HKStateOfMind_domains__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-+ (id)validateValence:(double)a3
++ (id)validateValence:(double)valence
 {
-  if (fabs(a3) <= 1.0)
+  if (fabs(valence) <= 1.0)
   {
     v4 = 0;
   }
@@ -254,9 +254,9 @@ uint64_t __24__HKStateOfMind_domains__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-+ (id)validateLabels:(id)a3
++ (id)validateLabels:(id)labels
 {
-  if ([a3 hk_containsObjectPassingTest:&__block_literal_global_351])
+  if ([labels hk_containsObjectPassingTest:&__block_literal_global_351])
   {
     v4 = [MEMORY[0x1E696ABC0] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:@"One or more HKStateOfMind labels are not supported"];
   }
@@ -269,9 +269,9 @@ uint64_t __24__HKStateOfMind_domains__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-+ (id)validateAssociations:(id)a3
++ (id)validateAssociations:(id)associations
 {
-  if ([a3 hk_containsObjectPassingTest:&__block_literal_global_356])
+  if ([associations hk_containsObjectPassingTest:&__block_literal_global_356])
   {
     v4 = [MEMORY[0x1E696ABC0] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:@"One or more HKStateOfMind associations are not supported"];
   }
@@ -284,17 +284,17 @@ uint64_t __24__HKStateOfMind_domains__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (BOOL)isEquivalent:(id)a3
+- (BOOL)isEquivalent:(id)equivalent
 {
-  v4 = a3;
+  equivalentCopy = equivalent;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v11.receiver = self;
     v11.super_class = HKStateOfMind;
-    if ([(HKSample *)&v11 isEquivalent:v4])
+    if ([(HKSample *)&v11 isEquivalent:equivalentCopy])
     {
-      v5 = v4;
+      v5 = equivalentCopy;
       v6 = v5;
       if (self->_kind != v5[12] || self->_valence != *(v5 + 13) || ![(NSArray *)self->_labels isEqual:v5[14]]|| ![(NSArray *)self->_associations isEqual:v6[15]])
       {
@@ -335,20 +335,20 @@ LABEL_13:
 - (id)description
 {
   v3 = [(NSArray *)self->_labels hk_map:&__block_literal_global_369];
-  v4 = [(HKStateOfMind *)self domains];
-  v5 = [v4 hk_map:&__block_literal_global_371];
+  domains = [(HKStateOfMind *)self domains];
+  v5 = [domains hk_map:&__block_literal_global_371];
 
   v6 = MEMORY[0x1E696AEC0];
   v7 = objc_opt_class();
-  v8 = [(HKSample *)self startDate];
-  v9 = [(HKStateOfMind *)self reflectiveInterval];
+  startDate = [(HKSample *)self startDate];
+  reflectiveInterval = [(HKStateOfMind *)self reflectiveInterval];
   v10 = @"<unknown>";
-  if (v9 == 2)
+  if (reflectiveInterval == 2)
   {
     v10 = @"daily";
   }
 
-  if (v9 == 1)
+  if (reflectiveInterval == 1)
   {
     v10 = @"momentary";
   }
@@ -357,7 +357,7 @@ LABEL_13:
   valence = self->_valence;
   v13 = v10;
   v14 = [v11 numberWithDouble:valence];
-  v15 = [v6 stringWithFormat:@"<%@:%p date: %@, kind: %@, valence: %@, labels: %@, associations: %@>", v7, self, v8, v13, v14, v3, v5, 0];
+  v15 = [v6 stringWithFormat:@"<%@:%p date: %@, kind: %@, valence: %@, labels: %@, associations: %@>", v7, self, startDate, v13, v14, v3, v5, 0];
 
   return v15;
 }
@@ -376,45 +376,45 @@ __CFString *__28__HKStateOfMind_description__block_invoke_2(uint64_t a1, void *a
   return NSStringFromHKStateOfMindDomain(v2);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = HKStateOfMind;
-  [(HKSample *)&v6 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_kind forKey:@"ReflectiveInterval"];
-  [v4 encodeDouble:@"Valence" forKey:self->_valence];
-  [v4 encodeObject:self->_labels forKey:@"Labels"];
-  [v4 encodeObject:self->_associations forKey:@"Domains"];
+  [(HKSample *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_kind forKey:@"ReflectiveInterval"];
+  [coderCopy encodeDouble:@"Valence" forKey:self->_valence];
+  [coderCopy encodeObject:self->_labels forKey:@"Labels"];
+  [coderCopy encodeObject:self->_associations forKey:@"Domains"];
   context = self->_context;
   if (context)
   {
-    [v4 encodeObject:context forKey:@"Context"];
+    [coderCopy encodeObject:context forKey:@"Context"];
   }
 }
 
-- (HKStateOfMind)initWithCoder:(id)a3
+- (HKStateOfMind)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = HKStateOfMind;
-  v5 = [(HKSample *)&v16 initWithCoder:v4];
+  v5 = [(HKSample *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_kind = [v4 decodeIntegerForKey:@"ReflectiveInterval"];
-    [v4 decodeDoubleForKey:@"Valence"];
+    v5->_kind = [coderCopy decodeIntegerForKey:@"ReflectiveInterval"];
+    [coderCopy decodeDoubleForKey:@"Valence"];
     v5->_valence = v6;
     v7 = [MEMORY[0x1E695DFD8] hk_typesForArrayOf:objc_opt_class()];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"Labels"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"Labels"];
     labels = v5->_labels;
     v5->_labels = v8;
 
     v10 = [MEMORY[0x1E695DFD8] hk_typesForArrayOf:objc_opt_class()];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"Domains"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"Domains"];
     associations = v5->_associations;
     v5->_associations = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Context"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Context"];
     context = v5->_context;
     v5->_context = v13;
   }
@@ -424,8 +424,8 @@ __CFString *__28__HKStateOfMind_description__block_invoke_2(uint64_t a1, void *a
 
 - (void)valenceClassification
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"HKStateOfMind.m" lineNumber:744 description:@"Initialized state of mind objects should always hold validated valence values"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"HKStateOfMind.m" lineNumber:744 description:@"Initialized state of mind objects should always hold validated valence values"];
 }
 
 @end

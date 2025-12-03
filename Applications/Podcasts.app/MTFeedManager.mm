@@ -1,10 +1,10 @@
 @interface MTFeedManager
 + (MTFeedManager)sharedInstance;
 - (BOOL)isUpdating;
-- (BOOL)isUpdatingShowWithUrl:(id)a3 storeID:(int64_t)a4;
-- (void)handleEventsForBackgroundURLSessionFor:(id)a3 completionHandler:(id)a4;
-- (void)updateFeedForFeedUrl:(id)a3 cloudSyncFeedUrl:(id)a4 podcastStoreId:(int64_t)a5 triggerBy:(id)a6 userInitiated:(BOOL)a7 forceBootstrap:(BOOL)a8 useBackgroundFetch:(BOOL)a9 source:(int64_t)a10 isSubscribing:(BOOL)a11 telemetryIdentifier:(id)a12 feedDownloadedHook:(id)a13 preProcessFeedHook:(id)a14 postProcessFeedHook:(id)a15 completion:(id)a16;
-- (void)updateFeedForFeedUrl:(id)a3 cloudSyncFeedUrl:(id)a4 podcastStoreId:(int64_t)a5 triggerBy:(id)a6 userInitiated:(BOOL)a7 forceBootstrap:(BOOL)a8 useBackgroundFetch:(BOOL)a9 source:(int64_t)a10 telemetryIdentifier:(id)a11 completion:(id)a12;
+- (BOOL)isUpdatingShowWithUrl:(id)url storeID:(int64_t)d;
+- (void)handleEventsForBackgroundURLSessionFor:(id)for completionHandler:(id)handler;
+- (void)updateFeedForFeedUrl:(id)url cloudSyncFeedUrl:(id)feedUrl podcastStoreId:(int64_t)id triggerBy:(id)by userInitiated:(BOOL)initiated forceBootstrap:(BOOL)bootstrap useBackgroundFetch:(BOOL)fetch source:(int64_t)self0 isSubscribing:(BOOL)self1 telemetryIdentifier:(id)self2 feedDownloadedHook:(id)self3 preProcessFeedHook:(id)self4 postProcessFeedHook:(id)self5 completion:(id)self6;
+- (void)updateFeedForFeedUrl:(id)url cloudSyncFeedUrl:(id)feedUrl podcastStoreId:(int64_t)id triggerBy:(id)by userInitiated:(BOOL)initiated forceBootstrap:(BOOL)bootstrap useBackgroundFetch:(BOOL)fetch source:(int64_t)self0 telemetryIdentifier:(id)self1 completion:(id)self2;
 @end
 
 @implementation MTFeedManager
@@ -21,12 +21,12 @@
   return v3;
 }
 
-- (void)updateFeedForFeedUrl:(id)a3 cloudSyncFeedUrl:(id)a4 podcastStoreId:(int64_t)a5 triggerBy:(id)a6 userInitiated:(BOOL)a7 forceBootstrap:(BOOL)a8 useBackgroundFetch:(BOOL)a9 source:(int64_t)a10 telemetryIdentifier:(id)a11 completion:(id)a12
+- (void)updateFeedForFeedUrl:(id)url cloudSyncFeedUrl:(id)feedUrl podcastStoreId:(int64_t)id triggerBy:(id)by userInitiated:(BOOL)initiated forceBootstrap:(BOOL)bootstrap useBackgroundFetch:(BOOL)fetch source:(int64_t)self0 telemetryIdentifier:(id)self1 completion:(id)self2
 {
-  v12 = a8;
-  v44 = a7;
-  v43 = a5;
-  v46 = self;
+  bootstrapCopy = bootstrap;
+  initiatedCopy = initiated;
+  idCopy = id;
+  selfCopy = self;
   v15 = sub_100168088(&unk_10057D668);
   __chkstk_darwin(v15 - 8);
   v17 = &v39 - v16;
@@ -37,9 +37,9 @@
   v21 = *(v45 - 8);
   __chkstk_darwin(v45);
   v23 = &v39 - ((v22 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v24 = _Block_copy(a12);
+  v24 = _Block_copy(completion);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a4)
+  if (feedUrl)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v25 = 0;
@@ -51,7 +51,7 @@
   }
 
   (*(v21 + 56))(v20, v25, 1, v45);
-  if (a6)
+  if (by)
   {
     v26 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v28 = v27;
@@ -63,14 +63,14 @@
     v28 = 0;
   }
 
-  v41 = a9;
+  fetchCopy = fetch;
   v42 = v17;
-  if (!a11)
+  if (!identifier)
   {
     v34 = type metadata accessor for UUID();
     (*(*(v34 - 8) + 56))(v17, 1, 1, v34);
-    v35 = v46;
-    v32 = a10;
+    v35 = selfCopy;
+    sourceCopy2 = source;
     if (v24)
     {
       goto LABEL_9;
@@ -85,10 +85,10 @@ LABEL_11:
   v29 = type metadata accessor for UUID();
   v30 = *(*(v29 - 8) + 56);
   v40 = v23;
-  v31 = v46;
+  v31 = selfCopy;
   v30(v17, 0, 1, v29);
   v23 = v40;
-  v32 = a10;
+  sourceCopy2 = source;
   if (!v24)
   {
     goto LABEL_11;
@@ -100,9 +100,9 @@ LABEL_9:
   v24 = sub_1002D6FF4;
 LABEL_12:
   v36 = v42;
-  v37 = v12;
-  v38 = v46;
-  FeedManager.updateFeed(forFeedUrl:cloudSyncFeedUrl:podcastStoreId:triggerBy:userInitiated:forceBootstrap:useBackgroundFetch:source:telemetryIdentifier:completion:)(v23, v20, v43, v26, v28, v44, v37, v41, v32, v42, v24, v33);
+  v37 = bootstrapCopy;
+  v38 = selfCopy;
+  FeedManager.updateFeed(forFeedUrl:cloudSyncFeedUrl:podcastStoreId:triggerBy:userInitiated:forceBootstrap:useBackgroundFetch:source:telemetryIdentifier:completion:)(v23, v20, idCopy, v26, v28, initiatedCopy, v37, fetchCopy, sourceCopy2, v42, v24, v33);
   sub_1000112B4(v24);
 
   sub_100009104(v36, &unk_10057D668);
@@ -110,12 +110,12 @@ LABEL_12:
   (*(v21 + 8))(v23, v45);
 }
 
-- (void)updateFeedForFeedUrl:(id)a3 cloudSyncFeedUrl:(id)a4 podcastStoreId:(int64_t)a5 triggerBy:(id)a6 userInitiated:(BOOL)a7 forceBootstrap:(BOOL)a8 useBackgroundFetch:(BOOL)a9 source:(int64_t)a10 isSubscribing:(BOOL)a11 telemetryIdentifier:(id)a12 feedDownloadedHook:(id)a13 preProcessFeedHook:(id)a14 postProcessFeedHook:(id)a15 completion:(id)a16
+- (void)updateFeedForFeedUrl:(id)url cloudSyncFeedUrl:(id)feedUrl podcastStoreId:(int64_t)id triggerBy:(id)by userInitiated:(BOOL)initiated forceBootstrap:(BOOL)bootstrap useBackgroundFetch:(BOOL)fetch source:(int64_t)self0 isSubscribing:(BOOL)self1 telemetryIdentifier:(id)self2 feedDownloadedHook:(id)self3 preProcessFeedHook:(id)self4 postProcessFeedHook:(id)self5 completion:(id)self6
 {
-  v58 = a7;
-  v59 = a8;
-  v56 = a5;
-  v60 = self;
+  initiatedCopy = initiated;
+  bootstrapCopy = bootstrap;
+  idCopy = id;
+  selfCopy = self;
   v18 = sub_100168088(&unk_10057D668);
   __chkstk_darwin(v18 - 8);
   v20 = v51 - v19;
@@ -127,13 +127,13 @@ LABEL_12:
   v63 = v24;
   __chkstk_darwin(v24);
   v26 = v51 - ((v25 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v27 = _Block_copy(a13);
-  v53 = _Block_copy(a14);
-  v28 = _Block_copy(a15);
-  v29 = _Block_copy(a16);
+  v27 = _Block_copy(hook);
+  v53 = _Block_copy(feedHook);
+  v28 = _Block_copy(processFeedHook);
+  v29 = _Block_copy(completion);
   v61 = v26;
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a4)
+  if (feedUrl)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v30 = 0;
@@ -145,13 +145,13 @@ LABEL_12:
   }
 
   (*(v62 + 56))(v23, v30, 1, v63);
-  v31 = v60;
-  if (a6)
+  v31 = selfCopy;
+  if (by)
   {
     v54 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v55 = v32;
     v57 = v23;
-    if (a12)
+    if (identifier)
     {
 LABEL_6:
       static UUID._unconditionallyBridgeFromObjectiveC(_:)();
@@ -168,7 +168,7 @@ LABEL_6:
     v54 = 0;
     v55 = 0;
     v57 = v23;
-    if (a12)
+    if (identifier)
     {
       goto LABEL_6;
     }
@@ -207,7 +207,7 @@ LABEL_11:
 
   v41 = 0;
 LABEL_14:
-  v52 = a9;
+  fetchCopy = fetch;
   if (v28)
   {
     v42 = swift_allocObject();
@@ -239,9 +239,9 @@ LABEL_14:
   v51[0] = v39;
   v51[1] = v41;
   v46 = v53;
-  v47 = v60;
+  v47 = selfCopy;
   v48 = v57;
-  FeedManager.updateFeed(forFeedUrl:cloudSyncFeedUrl:podcastStoreId:triggerBy:userInitiated:forceBootstrap:useBackgroundFetch:source:isSubscribing:telemetryIdentifier:feedDownloadedHook:preProcessFeedHook:postProcessFeedHook:completion:)(v61, v57, v56, v54, v55, v58, v59, v52, a10, a11, v44, v53, v40, v49, v50, v43, v42, v38, v45);
+  FeedManager.updateFeed(forFeedUrl:cloudSyncFeedUrl:podcastStoreId:triggerBy:userInitiated:forceBootstrap:useBackgroundFetch:source:isSubscribing:telemetryIdentifier:feedDownloadedHook:preProcessFeedHook:postProcessFeedHook:completion:)(v61, v57, idCopy, v54, v55, initiatedCopy, bootstrapCopy, fetchCopy, source, subscribing, v44, v53, v40, v49, v50, v43, v42, v38, v45);
   sub_1000112B4(v38);
   sub_1000112B4(v43);
   sub_1000112B4(v51[0]);
@@ -252,12 +252,12 @@ LABEL_14:
   (*(v62 + 8))(v61, v63);
 }
 
-- (BOOL)isUpdatingShowWithUrl:(id)a3 storeID:(int64_t)a4
+- (BOOL)isUpdatingShowWithUrl:(id)url storeID:(int64_t)d
 {
   sub_100168088(&qword_100574040);
   __chkstk_darwin();
   v8 = &v14 - v7;
-  if (a3)
+  if (url)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = type metadata accessor for URL();
@@ -270,16 +270,16 @@ LABEL_14:
     (*(*(v10 - 8) + 56))(v8, 1, 1, v10);
   }
 
-  v11 = self;
-  v12 = FeedManager.isUpdatingShow(url:storeID:)(v8, a4);
+  selfCopy = self;
+  v12 = FeedManager.isUpdatingShow(url:storeID:)(v8, d);
 
   sub_100009104(v8, &qword_100574040);
   return v12 & 1;
 }
 
-- (void)handleEventsForBackgroundURLSessionFor:(id)a3 completionHandler:(id)a4
+- (void)handleEventsForBackgroundURLSessionFor:(id)for completionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
   v9 = swift_allocObject();
@@ -290,14 +290,14 @@ LABEL_14:
   v10[4] = v8;
   v10[5] = sub_10019C604;
   v10[6] = v9;
-  v11 = self;
+  selfCopy = self;
 
   sub_1002D4B98(sub_1002D6FF0, v10);
 }
 
 - (BOOL)isUpdating
 {
-  v2 = self;
+  selfCopy = self;
   v3 = FeedManager.isUpdating.getter();
 
   return v3 & 1;

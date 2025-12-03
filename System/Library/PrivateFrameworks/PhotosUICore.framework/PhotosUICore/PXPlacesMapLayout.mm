@@ -1,7 +1,7 @@
 @interface PXPlacesMapLayout
-- (PXPlacesMapLayout)initWithDataSource:(id)a3;
+- (PXPlacesMapLayout)initWithDataSource:(id)source;
 - (PXPlacesMapPipelineComponentProvider)pipelineComponentProvider;
-- (id)layoutForViewPort:(id)a3 andDataSourceChange:(id)a4;
+- (id)layoutForViewPort:(id)port andDataSourceChange:(id)change;
 @end
 
 @implementation PXPlacesMapLayout
@@ -13,33 +13,33 @@
   return WeakRetained;
 }
 
-- (id)layoutForViewPort:(id)a3 andDataSourceChange:(id)a4
+- (id)layoutForViewPort:(id)port andDataSourceChange:(id)change
 {
   v37 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  portCopy = port;
+  changeCopy = change;
+  if (!portCopy)
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"PXPlacesMapLayout.m" lineNumber:36 description:@"-[PXPlacesMapSimpleLayout layout] viewPort cannot be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPlacesMapLayout.m" lineNumber:36 description:@"-[PXPlacesMapSimpleLayout layout] viewPort cannot be nil"];
   }
 
-  v9 = [(PXPlacesMapLayout *)self dataSource];
+  dataSource = [(PXPlacesMapLayout *)self dataSource];
 
-  if (!v9)
+  if (!dataSource)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"PXPlacesMapLayout.m" lineNumber:37 description:@"-[PXPlacesMapSimpleLayout layout] dataSource cannot be nil"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPlacesMapLayout.m" lineNumber:37 description:@"-[PXPlacesMapSimpleLayout layout] dataSource cannot be nil"];
   }
 
   v10 = objc_alloc_init(PXPlacesMapLayoutResultImpl);
-  [v7 mapRect];
+  [portCopy mapRect];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(PXPlacesMapLayout *)self dataSource];
-  v20 = [v19 findItemsInMapRect:{v12, v14, v16, v18}];
+  dataSource2 = [(PXPlacesMapLayout *)self dataSource];
+  v20 = [dataSource2 findItemsInMapRect:{v12, v14, v16, v18}];
 
   v34 = 0u;
   v35 = 0u;
@@ -77,14 +77,14 @@
   return v10;
 }
 
-- (PXPlacesMapLayout)initWithDataSource:(id)a3
+- (PXPlacesMapLayout)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v6 = [(PXPlacesMapLayout *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
   }
 
   return v7;

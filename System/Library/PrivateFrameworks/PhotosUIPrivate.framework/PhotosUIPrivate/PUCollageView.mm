@@ -1,17 +1,17 @@
 @interface PUCollageView
 - (CGSize)collageSize;
-- (CGSize)imageSizeForItemAtIndex:(int64_t)a3;
-- (PUCollageView)initWithFrame:(CGRect)a3;
+- (CGSize)imageSizeForItemAtIndex:(int64_t)index;
+- (PUCollageView)initWithFrame:(CGRect)frame;
 - (void)_updateImageViews;
 - (void)_updateRoundedCornerOverlayView;
 - (void)layoutSubviews;
-- (void)setCollageSize:(CGSize)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setHasRoundedCorners:(BOOL)a3 withCornersBackgroundColor:(id)a4;
-- (void)setImage:(id)a3 forItemAtIndex:(int64_t)a4;
-- (void)setImageSize:(CGSize)a3 forItemAtIndex:(int64_t)a4;
-- (void)setNumberOfItems:(int64_t)a3;
-- (void)setSubitemCornerRadius:(double)a3;
+- (void)setCollageSize:(CGSize)size;
+- (void)setCornerRadius:(double)radius;
+- (void)setHasRoundedCorners:(BOOL)corners withCornersBackgroundColor:(id)color;
+- (void)setImage:(id)image forItemAtIndex:(int64_t)index;
+- (void)setImageSize:(CGSize)size forItemAtIndex:(int64_t)index;
+- (void)setNumberOfItems:(int64_t)items;
+- (void)setSubitemCornerRadius:(double)radius;
 @end
 
 @implementation PUCollageView
@@ -29,19 +29,19 @@
 {
   if ([(PUCollageView *)self hasRoundedCorners])
   {
-    v3 = [(PUCollageView *)self numberOfItems];
-    v4 = [(PUCollageView *)self _roundedCornerOverlayView];
-    v5 = v4;
-    if (v3 == 1)
+    numberOfItems = [(PUCollageView *)self numberOfItems];
+    _roundedCornerOverlayView = [(PUCollageView *)self _roundedCornerOverlayView];
+    _roundedCornerOverlayView2 = _roundedCornerOverlayView;
+    if (numberOfItems == 1)
     {
-      if (!v4)
+      if (!_roundedCornerOverlayView)
       {
         v6 = objc_alloc(MEMORY[0x1E69C3978]);
         [(PUCollageView *)self bounds];
-        v5 = [v6 initWithFrame:?];
-        [(PUCollageView *)self addSubview:v5];
-        [(PUCollageView *)self _setRoundedCornerOverlayView:v5];
-        [(PUCollageView *)self bringSubviewToFront:v5];
+        _roundedCornerOverlayView2 = [v6 initWithFrame:?];
+        [(PUCollageView *)self addSubview:_roundedCornerOverlayView2];
+        [(PUCollageView *)self _setRoundedCornerOverlayView:_roundedCornerOverlayView2];
+        [(PUCollageView *)self bringSubviewToFront:_roundedCornerOverlayView2];
       }
 
       v7[0] = MEMORY[0x1E69E9820];
@@ -49,22 +49,22 @@
       v7[2] = __48__PUCollageView__updateRoundedCornerOverlayView__block_invoke;
       v7[3] = &unk_1E7B7C3C0;
       v7[4] = self;
-      [v5 performChanges:v7];
+      [_roundedCornerOverlayView2 performChanges:v7];
       goto LABEL_9;
     }
   }
 
   else
   {
-    v5 = [(PUCollageView *)self _roundedCornerOverlayView];
+    _roundedCornerOverlayView2 = [(PUCollageView *)self _roundedCornerOverlayView];
   }
 
-  if (!v5)
+  if (!_roundedCornerOverlayView2)
   {
     return;
   }
 
-  [v5 removeFromSuperview];
+  [_roundedCornerOverlayView2 removeFromSuperview];
   [(PUCollageView *)self _setRoundedCornerOverlayView:0];
 LABEL_9:
 }
@@ -92,23 +92,23 @@ void __48__PUCollageView__updateRoundedCornerOverlayView__block_invoke(uint64_t 
   subitemCornerRadius = 0.0;
   if (self->_hasRoundedCorners && [(PUCollageView *)self numberOfItems]>= 2 && (subitemCornerRadius = self->_subitemCornerRadius, subitemCornerRadius > 0.0))
   {
-    v4 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   }
 
   else
   {
-    v4 = 0;
+    whiteColor = 0;
   }
 
-  v5 = [(PUCollageView *)self _imageViews];
-  v6 = [v5 firstObject];
-  if (v6)
+  _imageViews = [(PUCollageView *)self _imageViews];
+  firstObject = [_imageViews firstObject];
+  if (firstObject)
   {
-    v7 = v6;
-    v8 = [(PUCollageView *)self _imageViews];
-    v9 = [v8 firstObject];
-    v10 = [v9 layer];
-    [v10 cornerRadius];
+    v7 = firstObject;
+    _imageViews2 = [(PUCollageView *)self _imageViews];
+    firstObject2 = [_imageViews2 firstObject];
+    layer = [firstObject2 layer];
+    [layer cornerRadius];
     v12 = v11;
 
     if (v12 != subitemCornerRadius)
@@ -117,8 +117,8 @@ void __48__PUCollageView__updateRoundedCornerOverlayView__block_invoke(uint64_t 
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v13 = [(PUCollageView *)self _imageViews];
-      v14 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      _imageViews3 = [(PUCollageView *)self _imageViews];
+      v14 = [_imageViews3 countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v14)
       {
         v15 = v14;
@@ -129,18 +129,18 @@ void __48__PUCollageView__updateRoundedCornerOverlayView__block_invoke(uint64_t 
           {
             if (*v22 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(_imageViews3);
             }
 
             v18 = *(*(&v21 + 1) + 8 * i);
-            v19 = [v18 layer];
-            [v19 setCornerRadius:subitemCornerRadius];
+            layer2 = [v18 layer];
+            [layer2 setCornerRadius:subitemCornerRadius];
 
-            v20 = [v18 layer];
-            [v20 setBackgroundColor:{objc_msgSend(v4, "CGColor")}];
+            layer3 = [v18 layer];
+            [layer3 setBackgroundColor:{objc_msgSend(whiteColor, "CGColor")}];
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
+          v15 = [_imageViews3 countByEnumeratingWithState:&v21 objects:v25 count:16];
         }
 
         while (v15);
@@ -153,66 +153,66 @@ void __48__PUCollageView__updateRoundedCornerOverlayView__block_invoke(uint64_t 
   }
 }
 
-- (void)setHasRoundedCorners:(BOOL)a3 withCornersBackgroundColor:(id)a4
+- (void)setHasRoundedCorners:(BOOL)corners withCornersBackgroundColor:(id)color
 {
-  v5 = a3;
-  v7 = a4;
-  if (self->_hasRoundedCorners != v5 || self->_cornersBackgroundColor != v7)
+  cornersCopy = corners;
+  colorCopy = color;
+  if (self->_hasRoundedCorners != cornersCopy || self->_cornersBackgroundColor != colorCopy)
   {
-    self->_hasRoundedCorners = v5;
-    v8 = v7;
-    objc_storeStrong(&self->_cornersBackgroundColor, a4);
+    self->_hasRoundedCorners = cornersCopy;
+    v8 = colorCopy;
+    objc_storeStrong(&self->_cornersBackgroundColor, color);
     [(PUCollageView *)self _updateImageViews];
     [(PUCollageView *)self _updateRoundedCornerOverlayView];
-    v7 = v8;
+    colorCopy = v8;
   }
 }
 
-- (void)setSubitemCornerRadius:(double)a3
+- (void)setSubitemCornerRadius:(double)radius
 {
-  if (self->_subitemCornerRadius != a3)
+  if (self->_subitemCornerRadius != radius)
   {
-    self->_subitemCornerRadius = a3;
+    self->_subitemCornerRadius = radius;
     [(PUCollageView *)self _updateImageViews];
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(PUCollageView *)self _updateRoundedCornerOverlayView];
   }
 }
 
-- (void)setImage:(id)a3 forItemAtIndex:(int64_t)a4
+- (void)setImage:(id)image forItemAtIndex:(int64_t)index
 {
-  v8 = a3;
-  if ([(PUCollageView *)self _numberOfImageViews]> a4)
+  imageCopy = image;
+  if ([(PUCollageView *)self _numberOfImageViews]> index)
   {
-    v6 = [(PUCollageView *)self _imageViews];
-    v7 = [v6 objectAtIndex:a4];
+    _imageViews = [(PUCollageView *)self _imageViews];
+    v7 = [_imageViews objectAtIndex:index];
 
-    [v7 setImage:v8];
+    [v7 setImage:imageCopy];
   }
 }
 
-- (void)setImageSize:(CGSize)a3 forItemAtIndex:(int64_t)a4
+- (void)setImageSize:(CGSize)size forItemAtIndex:(int64_t)index
 {
-  height = a3.height;
-  width = a3.width;
-  if ([(PUCollageView *)self _numberOfImageViews]> a4)
+  height = size.height;
+  width = size.width;
+  if ([(PUCollageView *)self _numberOfImageViews]> index)
   {
-    v8 = [(PUCollageView *)self _imageSizes];
-    [v8 replacePointerAtIndex:a4 withPointer:{objc_msgSend(MEMORY[0x1E696B098], "valueWithCGSize:", width, height)}];
+    _imageSizes = [(PUCollageView *)self _imageSizes];
+    [_imageSizes replacePointerAtIndex:index withPointer:{objc_msgSend(MEMORY[0x1E696B098], "valueWithCGSize:", width, height)}];
     [(PUCollageView *)self setNeedsLayout];
   }
 }
 
-- (CGSize)imageSizeForItemAtIndex:(int64_t)a3
+- (CGSize)imageSizeForItemAtIndex:(int64_t)index
 {
-  if ([(PUCollageView *)self _numberOfImageViews]<= a3)
+  if ([(PUCollageView *)self _numberOfImageViews]<= index)
   {
     v8 = *MEMORY[0x1E695F060];
     v10 = *(MEMORY[0x1E695F060] + 8);
@@ -220,8 +220,8 @@ void __48__PUCollageView__updateRoundedCornerOverlayView__block_invoke(uint64_t 
 
   else
   {
-    v5 = [(PUCollageView *)self _imageSizes];
-    v6 = [v5 pointerAtIndex:a3];
+    _imageSizes = [(PUCollageView *)self _imageSizes];
+    v6 = [_imageSizes pointerAtIndex:index];
 
     [v6 CGSizeValue];
     v8 = v7;
@@ -235,11 +235,11 @@ void __48__PUCollageView__updateRoundedCornerOverlayView__block_invoke(uint64_t 
   return result;
 }
 
-- (void)setNumberOfItems:(int64_t)a3
+- (void)setNumberOfItems:(int64_t)items
 {
-  if (self->_numberOfItems != a3)
+  if (self->_numberOfItems != items)
   {
-    self->_numberOfItems = a3;
+    self->_numberOfItems = items;
     [(PUCollageView *)self _updateImageViews];
     [(PUCollageView *)self _updateRoundedCornerOverlayView];
 
@@ -247,11 +247,11 @@ void __48__PUCollageView__updateRoundedCornerOverlayView__block_invoke(uint64_t 
   }
 }
 
-- (void)setCollageSize:(CGSize)a3
+- (void)setCollageSize:(CGSize)size
 {
-  if (a3.width != self->_collageSize.width || a3.height != self->_collageSize.height)
+  if (size.width != self->_collageSize.width || size.height != self->_collageSize.height)
   {
-    self->_collageSize = a3;
+    self->_collageSize = size;
     [(PUCollageView *)self setNeedsLayout];
   }
 }
@@ -277,17 +277,17 @@ void __48__PUCollageView__updateRoundedCornerOverlayView__block_invoke(uint64_t 
   v62.size.width = v8;
   v62.size.height = v10;
   v16 = CGRectGetMidY(v62) + v14 * -0.5;
-  v52 = [(PUCollageView *)self _imageViews];
-  v17 = [(PUCollageView *)self numberOfItems];
-  v18 = [objc_opt_class() maximumNumberOfItems];
-  if (v17 >= v18)
+  _imageViews = [(PUCollageView *)self _imageViews];
+  numberOfItems = [(PUCollageView *)self numberOfItems];
+  maximumNumberOfItems = [objc_opt_class() maximumNumberOfItems];
+  if (numberOfItems >= maximumNumberOfItems)
   {
-    v19 = v18;
+    v19 = maximumNumberOfItems;
   }
 
   else
   {
-    v19 = v17;
+    v19 = numberOfItems;
   }
 
   v20 = *(MEMORY[0x1E695F058] + 16);
@@ -421,7 +421,7 @@ void __48__PUCollageView__updateRoundedCornerOverlayView__block_invoke(uint64_t 
     v41 = &v54;
     do
     {
-      v42 = [v52 objectAtIndex:v40];
+      v42 = [_imageViews objectAtIndex:v40];
       v43 = *(v41 - 2);
       v44 = *(v41 - 1);
       v45 = *v41;
@@ -436,19 +436,19 @@ void __48__PUCollageView__updateRoundedCornerOverlayView__block_invoke(uint64_t 
     while (v40 < [(PUCollageView *)self _numberOfImageViews]);
   }
 
-  v47 = [(PUCollageView *)self _roundedCornerOverlayView];
-  v48 = v47;
-  if (v47)
+  _roundedCornerOverlayView = [(PUCollageView *)self _roundedCornerOverlayView];
+  v48 = _roundedCornerOverlayView;
+  if (_roundedCornerOverlayView)
   {
-    [v47 setFrame:{v15, v16, v12, v14}];
+    [_roundedCornerOverlayView setFrame:{v15, v16, v12, v14}];
   }
 }
 
-- (PUCollageView)initWithFrame:(CGRect)a3
+- (PUCollageView)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = PUCollageView;
-  v3 = [(PUCollageView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUCollageView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = 3;
@@ -469,15 +469,15 @@ void __48__PUCollageView__updateRoundedCornerOverlayView__block_invoke(uint64_t 
     }
 
     while (v4);
-    v11 = [MEMORY[0x1E696AE08] strongObjectsPointerArray];
-    [(NSPointerArray *)v11 setCount:3];
+    strongObjectsPointerArray = [MEMORY[0x1E696AE08] strongObjectsPointerArray];
+    [(NSPointerArray *)strongObjectsPointerArray setCount:3];
     v3->__numberOfImageViews = 3;
     v12 = [v5 copy];
     imageViews = v3->__imageViews;
     v3->__imageViews = v12;
 
     imageSizes = v3->__imageSizes;
-    v3->__imageSizes = v11;
+    v3->__imageSizes = strongObjectsPointerArray;
 
     [(PUCollageView *)v3 setCornerRadius:10.0];
     [(PUCollageView *)v3 setClipsToBounds:1];

@@ -1,33 +1,33 @@
 @interface MFNanoServerMessageContentLoader
-- (MFNanoServerMessageContentLoader)initWithMessageId:(id)a3 highPriority:(BOOL)a4 pairedDeviceInfo:(id)a5 delegate:(id)a6;
-- (id)_attachmentForURL:(id)a3 mimePart:(id)a4;
+- (MFNanoServerMessageContentLoader)initWithMessageId:(id)id highPriority:(BOOL)priority pairedDeviceInfo:(id)info delegate:(id)delegate;
+- (id)_attachmentForURL:(id)l mimePart:(id)part;
 - (id)_attemptToLoadLibraryMessageWithContentFromDatabase;
-- (id)_libraryMessageForMessageId:(id)a3;
-- (id)_monitoredOperationWithBlock:(id)a3;
-- (id)_nanoAttachmentForURL:(id)a3 mimePart:(id)a4;
+- (id)_libraryMessageForMessageId:(id)id;
+- (id)_monitoredOperationWithBlock:(id)block;
+- (id)_nanoAttachmentForURL:(id)l mimePart:(id)part;
 - (int64_t)priority;
 - (void)_downloadContent;
 - (void)_notifyDelegateDidFinish;
 - (void)_notifyDelegateOfFailure;
-- (void)_notifyDelegateThatReceivedAttachment:(id)a3 forContentId:(id)a4 loadedProtected:(BOOL)a5;
-- (void)_notifyDelegateThatReceivedImageAttachment:(id)a3 forContentId:(id)a4 loadedProtected:(BOOL)a5;
-- (void)_notifyDelegateThatReceivedMailContent:(id)a3 forMessage:(id)a4 loadedProtected:(BOOL)a5;
-- (void)_parseContentFromMessageAndNotifyDelegate:(id)a3 loadedProtected:(BOOL)a4;
+- (void)_notifyDelegateThatReceivedAttachment:(id)attachment forContentId:(id)id loadedProtected:(BOOL)protected;
+- (void)_notifyDelegateThatReceivedImageAttachment:(id)attachment forContentId:(id)id loadedProtected:(BOOL)protected;
+- (void)_notifyDelegateThatReceivedMailContent:(id)content forMessage:(id)message loadedProtected:(BOOL)protected;
+- (void)_parseContentFromMessageAndNotifyDelegate:(id)delegate loadedProtected:(BOOL)protected;
 - (void)_startContentLoadProcess;
-- (void)_startLoadingAttachments:(id)a3 messageBody:(id)a4 loadedProtected:(BOOL)a5;
+- (void)_startLoadingAttachments:(id)attachments messageBody:(id)body loadedProtected:(BOOL)protected;
 - (void)cancel;
 - (void)dealloc;
-- (void)notifyContentsAvailable:(id)a3 forMessage:(id)a4;
-- (void)setHighPriority:(BOOL)a3;
+- (void)notifyContentsAvailable:(id)available forMessage:(id)message;
+- (void)setHighPriority:(BOOL)priority;
 @end
 
 @implementation MFNanoServerMessageContentLoader
 
-- (MFNanoServerMessageContentLoader)initWithMessageId:(id)a3 highPriority:(BOOL)a4 pairedDeviceInfo:(id)a5 delegate:(id)a6
+- (MFNanoServerMessageContentLoader)initWithMessageId:(id)id highPriority:(BOOL)priority pairedDeviceInfo:(id)info delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  idCopy = id;
+  infoCopy = info;
+  delegateCopy = delegate;
   v26.receiver = self;
   v26.super_class = MFNanoServerMessageContentLoader;
   v14 = [(MFNanoServerMessageContentLoader *)&v26 init];
@@ -35,14 +35,14 @@
   v16 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_messageId, a3);
+    objc_storeStrong(&v14->_messageId, id);
     v17 = +[NSDate date];
     requestDate = v16->_requestDate;
     v16->_requestDate = v17;
 
-    v16->_highPriority = a4;
-    objc_storeStrong(&v15->_pairedDeviceInfo, a5);
-    objc_storeStrong(&v15->_delegate, a6);
+    v16->_highPriority = priority;
+    objc_storeStrong(&v15->_pairedDeviceInfo, info);
+    objc_storeStrong(&v15->_delegate, delegate);
     v19 = objc_alloc_init(NSMutableSet);
     monitoredOperations = v16->_monitoredOperations;
     v16->_monitoredOperations = v19;
@@ -87,22 +87,22 @@
   [(NSLock *)self->_monitoredOperationsLock lock];
   [(NSMutableSet *)self->_monitoredOperations makeObjectsPerformSelector:"cancel"];
   [(NSLock *)self->_monitoredOperationsLock unlock];
-  v5 = [(MFLibraryMessage *)self->_messageForDownload account];
+  account = [(MFLibraryMessage *)self->_messageForDownload account];
   v4 = [MessageBodyLoader loaderForAccount:?];
   [v4 removeSingleMessageClient:self];
 }
 
-- (void)setHighPriority:(BOOL)a3
+- (void)setHighPriority:(BOOL)priority
 {
-  if (self->_highPriority != a3)
+  if (self->_highPriority != priority)
   {
-    v3 = a3;
+    priorityCopy = priority;
     v5 = MFLogGeneral();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       messageId = self->_messageId;
       v12[0] = 67109378;
-      v12[1] = v3;
+      v12[1] = priorityCopy;
       v13 = 2114;
       v14 = messageId;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#Nano Setting MFNanoServerMessageContentLoader to high priority: %d, messageId: %{public}@", v12, 0x12u);
@@ -110,16 +110,16 @@
 
     if (self->_contentQueuedForDownload)
     {
-      v7 = [(MFLibraryMessage *)self->_messageForDownload account];
-      v8 = [MessageBodyLoader loaderForAccount:v7];
+      account = [(MFLibraryMessage *)self->_messageForDownload account];
+      v8 = [MessageBodyLoader loaderForAccount:account];
       [v8 removeSingleMessageClient:self];
 
       contentQueuedForDownload = self->_contentQueuedForDownload;
-      self->_highPriority = v3;
+      self->_highPriority = priorityCopy;
       if (contentQueuedForDownload)
       {
-        v10 = [(MFLibraryMessage *)self->_messageForDownload account];
-        v11 = [MessageBodyLoader loaderForAccount:v10];
+        account2 = [(MFLibraryMessage *)self->_messageForDownload account];
+        v11 = [MessageBodyLoader loaderForAccount:account2];
 
         [v11 addSingleMessageClient:self];
         if (self->_highPriority)
@@ -131,7 +131,7 @@
 
     else
     {
-      self->_highPriority = v3;
+      self->_highPriority = priorityCopy;
     }
   }
 }
@@ -149,9 +149,9 @@
   }
 }
 
-- (void)notifyContentsAvailable:(id)a3 forMessage:(id)a4
+- (void)notifyContentsAvailable:(id)available forMessage:(id)message
 {
-  v5 = a4;
+  messageCopy = message;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -164,7 +164,7 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#Nano MessageBodyLoader returned content for: %{public}@", &v9, 0xCu);
     }
 
-    [(MFNanoServerMessageContentLoader *)self _parseContentFromMessageAndNotifyDelegate:v5 loadedProtected:0];
+    [(MFNanoServerMessageContentLoader *)self _parseContentFromMessageAndNotifyDelegate:messageCopy loadedProtected:0];
   }
 
   else
@@ -204,31 +204,31 @@
 - (id)_attemptToLoadLibraryMessageWithContentFromDatabase
 {
   v2 = [NSURL URLWithString:self->_messageId];
-  v3 = [v2 mf_messageCriterion];
+  mf_messageCriterion = [v2 mf_messageCriterion];
   v4 = +[MFMailMessageLibrary defaultInstance];
-  v5 = [v4 messagesMatchingCriterion:v3 options:36904];
+  v5 = [v4 messagesMatchingCriterion:mf_messageCriterion options:36904];
 
-  v6 = [v5 firstObject];
-  v7 = v6;
-  if (v6)
+  firstObject = [v5 firstObject];
+  v7 = firstObject;
+  if (firstObject)
   {
-    v8 = [v6 summary];
+    summary = [firstObject summary];
 
-    if (v8)
+    if (summary)
     {
-      v9 = [v7 mailbox];
-      v10 = [v9 store];
-      [v7 setMessageStore:v10];
-      v8 = v7;
+      mailbox = [v7 mailbox];
+      store = [mailbox store];
+      [v7 setMessageStore:store];
+      summary = v7;
     }
   }
 
   else
   {
-    v8 = 0;
+    summary = 0;
   }
 
-  return v8;
+  return summary;
 }
 
 - (void)_downloadContent
@@ -241,19 +241,19 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     messageId = self->_messageId;
-    v7 = [(MFLibraryMessage *)self->_messageForDownload remoteID];
-    v8 = [(MFLibraryMessage *)self->_messageForDownload globalMessageID];
+    remoteID = [(MFLibraryMessage *)self->_messageForDownload remoteID];
+    globalMessageID = [(MFLibraryMessage *)self->_messageForDownload globalMessageID];
     v11 = 138543874;
     v12 = messageId;
     v13 = 2114;
-    v14 = v7;
+    v14 = remoteID;
     v15 = 2048;
-    v16 = v8;
+    v16 = globalMessageID;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#Nano Attempting to download message with id: %{public}@, remoteId: %{public}@, globalMessageId: %lld", &v11, 0x20u);
   }
 
-  v9 = [(MFLibraryMessage *)self->_messageForDownload account];
-  v10 = [MessageBodyLoader loaderForAccount:v9];
+  account = [(MFLibraryMessage *)self->_messageForDownload account];
+  v10 = [MessageBodyLoader loaderForAccount:account];
 
   [v10 addSingleMessageClient:self];
   if (self->_highPriority)
@@ -264,7 +264,7 @@
   self->_contentQueuedForDownload = 1;
 }
 
-- (void)_parseContentFromMessageAndNotifyDelegate:(id)a3 loadedProtected:(BOOL)a4
+- (void)_parseContentFromMessageAndNotifyDelegate:(id)delegate loadedProtected:(BOOL)protected
 {
   v16 = 0;
   v17 = &v16;
@@ -277,31 +277,31 @@
   v10 = sub_10008E000;
   v11 = &unk_1001599B8;
   v14 = &v16;
-  v12 = self;
-  v5 = a3;
-  v13 = v5;
-  v15 = a4;
-  v6 = [(MFNanoServerMessageContentLoader *)v12 _monitoredOperationWithBlock:&v8];
+  selfCopy = self;
+  delegateCopy = delegate;
+  v13 = delegateCopy;
+  protectedCopy = protected;
+  v6 = [(MFNanoServerMessageContentLoader *)selfCopy _monitoredOperationWithBlock:&v8];
   v7 = v17[5];
   v17[5] = v6;
 
-  [qword_100185A80 addOperation:{v17[5], v8, v9, v10, v11, v12}];
+  [qword_100185A80 addOperation:{v17[5], v8, v9, v10, v11, selfCopy}];
   _Block_object_dispose(&v16, 8);
 }
 
-- (void)_startLoadingAttachments:(id)a3 messageBody:(id)a4 loadedProtected:(BOOL)a5
+- (void)_startLoadingAttachments:(id)attachments messageBody:(id)body loadedProtected:(BOOL)protected
 {
-  v8 = a3;
-  v16 = a4;
+  attachmentsCopy = attachments;
+  bodyCopy = body;
   v34[0] = 0;
   v34[1] = v34;
   v34[2] = 0x2020000000;
-  v34[3] = [v8 count];
+  v34[3] = [attachmentsCopy count];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v8;
+  obj = attachmentsCopy;
   v9 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v9)
   {
@@ -328,10 +328,10 @@
         v17[2] = sub_10008E7A4;
         v17[3] = &unk_1001599E0;
         v21 = &v24;
-        v18 = v16;
+        v18 = bodyCopy;
         v19 = v12;
-        v23 = a5;
-        v20 = self;
+        protectedCopy = protected;
+        selfCopy = self;
         v22 = v34;
         v13 = [(MFNanoServerMessageContentLoader *)self _monitoredOperationWithBlock:v17];
         v14 = v25[5];
@@ -353,22 +353,22 @@
   _Block_object_dispose(v34, 8);
 }
 
-- (void)_notifyDelegateThatReceivedMailContent:(id)a3 forMessage:(id)a4 loadedProtected:(BOOL)a5
+- (void)_notifyDelegateThatReceivedMailContent:(id)content forMessage:(id)message loadedProtected:(BOOL)protected
 {
-  v8 = a3;
-  v9 = a4;
+  contentCopy = content;
+  messageCopy = message;
   v10 = MFLogGeneral();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v13 = [v9 messageId];
-    v14 = [v9 accountId];
-    v15 = [v9 mailboxId];
+    messageId = [messageCopy messageId];
+    accountId = [messageCopy accountId];
+    mailboxId = [messageCopy mailboxId];
     *buf = 138543874;
-    v21 = v13;
+    v21 = messageId;
     v22 = 2114;
-    v23 = v14;
+    v23 = accountId;
     v24 = 2114;
-    v25 = v15;
+    v25 = mailboxId;
     _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "#Nano Sending message, ID: '%{public}@', account: '%{public}@', mailbox: '%{public}@'.", buf, 0x20u);
   }
 
@@ -377,41 +377,41 @@
   v16[2] = sub_10008ED34;
   v16[3] = &unk_100157170;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = a5;
-  v11 = v9;
-  v12 = v8;
+  v17 = contentCopy;
+  v18 = messageCopy;
+  protectedCopy = protected;
+  v11 = messageCopy;
+  v12 = contentCopy;
   dispatch_async(&_dispatch_main_q, v16);
 }
 
-- (void)_notifyDelegateThatReceivedImageAttachment:(id)a3 forContentId:(id)a4 loadedProtected:(BOOL)a5
+- (void)_notifyDelegateThatReceivedImageAttachment:(id)attachment forContentId:(id)id loadedProtected:(BOOL)protected
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10008EE18;
   v9[3] = &unk_100157170;
   v9[4] = self;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v7 = v11;
-  v8 = v10;
+  attachmentCopy = attachment;
+  idCopy = id;
+  protectedCopy = protected;
+  v7 = idCopy;
+  v8 = attachmentCopy;
   dispatch_async(&_dispatch_main_q, v9);
 }
 
-- (void)_notifyDelegateThatReceivedAttachment:(id)a3 forContentId:(id)a4 loadedProtected:(BOOL)a5
+- (void)_notifyDelegateThatReceivedAttachment:(id)attachment forContentId:(id)id loadedProtected:(BOOL)protected
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10008EEFC;
   v9[3] = &unk_100157170;
   v9[4] = self;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v7 = v11;
-  v8 = v10;
+  attachmentCopy = attachment;
+  idCopy = id;
+  protectedCopy = protected;
+  v7 = idCopy;
+  v8 = attachmentCopy;
   dispatch_async(&_dispatch_main_q, v9);
 }
 
@@ -435,73 +435,73 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (id)_nanoAttachmentForURL:(id)a3 mimePart:(id)a4
+- (id)_nanoAttachmentForURL:(id)l mimePart:(id)part
 {
-  v6 = a4;
-  v7 = [(MFNanoServerMessageContentLoader *)self _attachmentForURL:a3 mimePart:v6];
-  v8 = [v7 isImageFile];
+  partCopy = part;
+  v7 = [(MFNanoServerMessageContentLoader *)self _attachmentForURL:l mimePart:partCopy];
+  isImageFile = [v7 isImageFile];
   v9 = NNMKImageAttachment_ptr;
-  if (!v8)
+  if (!isImageFile)
   {
     v9 = NNMKAttachment_ptr;
   }
 
   v10 = objc_alloc_init(*v9);
-  v11 = [v7 contentID];
-  [v10 setContentId:v11];
+  contentID = [v7 contentID];
+  [v10 setContentId:contentID];
 
-  v12 = [v7 fileName];
-  [v10 setFileName:v12];
+  fileName = [v7 fileName];
+  [v10 setFileName:fileName];
 
   [v10 setFileSize:{3 * (objc_msgSend(v7, "encodedFileSize") >> 2)}];
-  v13 = [v6 partNumber];
-  [v10 setMimePartNumber:v13];
+  partNumber = [partCopy partNumber];
+  [v10 setMimePartNumber:partNumber];
 
   [v10 setType:{objc_msgSend(v7, "nanoAttachmentType")}];
 
   return v10;
 }
 
-- (id)_attachmentForURL:(id)a3 mimePart:(id)a4
+- (id)_attachmentForURL:(id)l mimePart:(id)part
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  partCopy = part;
   v7 = sub_100027C70();
-  v8 = [v7 defaultAttachmentManager];
-  v9 = [v8 attachmentForURL:v5 error:0];
+  defaultAttachmentManager = [v7 defaultAttachmentManager];
+  v9 = [defaultAttachmentManager attachmentForURL:lCopy error:0];
 
-  [v9 setPart:v6];
-  v10 = [v6 type];
-  v11 = [v6 subtype];
-  v12 = [NSString stringWithFormat:@"%@/%@", v10, v11];
+  [v9 setPart:partCopy];
+  type = [partCopy type];
+  subtype = [partCopy subtype];
+  v12 = [NSString stringWithFormat:@"%@/%@", type, subtype];
   [v9 setMimeType:v12];
 
-  v13 = [v6 attachmentFilename];
-  [v9 setFileName:v13];
+  attachmentFilename = [partCopy attachmentFilename];
+  [v9 setFileName:attachmentFilename];
 
-  [v9 setEncodedFileSize:{objc_msgSend(v6, "approximateRawSize")}];
-  v14 = [v6 disposition];
-  [v9 setDisposition:v14];
+  [v9 setEncodedFileSize:{objc_msgSend(partCopy, "approximateRawSize")}];
+  disposition = [partCopy disposition];
+  [v9 setDisposition:disposition];
 
   return v9;
 }
 
-- (id)_libraryMessageForMessageId:(id)a3
+- (id)_libraryMessageForMessageId:(id)id
 {
-  v3 = [NSURL URLWithString:a3];
-  v4 = [v3 mf_messageCriterion];
+  v3 = [NSURL URLWithString:id];
+  mf_messageCriterion = [v3 mf_messageCriterion];
   v5 = +[MFMailMessageLibrary defaultInstance];
-  v6 = [v5 messagesMatchingCriterion:v4 options:6144];
+  v6 = [v5 messagesMatchingCriterion:mf_messageCriterion options:6144];
 
-  v7 = [v6 firstObject];
-  v8 = [v7 mailbox];
-  v9 = [v8 store];
-  [v7 setMessageStore:v9];
+  firstObject = [v6 firstObject];
+  mailbox = [firstObject mailbox];
+  store = [mailbox store];
+  [firstObject setMessageStore:store];
 
-  return v7;
+  return firstObject;
 }
 
-- (id)_monitoredOperationWithBlock:(id)a3
+- (id)_monitoredOperationWithBlock:(id)block
 {
   v14 = 0;
   v15 = &v14;
@@ -513,9 +513,9 @@
   v11[1] = 3221225472;
   v11[2] = sub_10008F648;
   v11[3] = &unk_100159A08;
-  v4 = a3;
+  blockCopy = block;
   v11[4] = self;
-  v12 = v4;
+  v12 = blockCopy;
   v13 = &v14;
   v5 = [NSBlockOperation blockOperationWithBlock:v11];
   v6 = v15[5];

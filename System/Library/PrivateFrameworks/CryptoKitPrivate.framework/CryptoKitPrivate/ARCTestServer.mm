@@ -1,6 +1,6 @@
 @interface ARCTestServer
 - (ARCTestServer)init;
-- (id)respondWithRequestData:(id)a3 error:(id *)a4;
+- (id)respondWithRequestData:(id)data error:(id *)error;
 @end
 
 @implementation ARCTestServer
@@ -20,9 +20,9 @@
   return v2;
 }
 
-- (id)respondWithRequestData:(id)a3 error:(id *)a4
+- (id)respondWithRequestData:(id)data error:(id *)error
 {
-  v5 = [(ARCServer *)self->_server respondWithRequestData:a3 error:?];
+  v5 = [(ARCServer *)self->_server respondWithRequestData:data error:?];
   if (v5)
   {
     v6 = [[ARCResponse alloc] initWithResponseData:v5];
@@ -31,7 +31,7 @@
   else
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"ARC.error" code:1 userInfo:0];
-    *a4 = v6 = 0;
+    *error = v6 = 0;
   }
 
   return v6;

@@ -18,12 +18,12 @@
   }
 
   v5 = options;
-  v6 = [(ASDRequestOptions *)v5 items];
+  items = [(ASDRequestOptions *)v5 items];
 
   v7 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 count];
+    v8 = [items count];
     if (self)
     {
       client = self->super._client;
@@ -35,13 +35,13 @@
     }
 
     v10 = client;
-    v11 = [(XPCClient *)v10 clientID];
+    clientID = [(XPCClient *)v10 clientID];
     *buf = 138412802;
     v47 = v3;
     v48 = 2048;
     v49 = v8;
     v50 = 2114;
-    v51 = v11;
+    v51 = clientID;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[%@] Restoring %ld app(s) for client: %{public}@", buf, 0x20u);
   }
 
@@ -56,13 +56,13 @@
   }
 
   v13 = v12;
-  v14 = [(ASDRequestOptions *)v13 createsPlaceholders];
+  createsPlaceholders = [(ASDRequestOptions *)v13 createsPlaceholders];
 
-  if (v14)
+  if (createsPlaceholders)
   {
-    if ([v6 count])
+    if ([items count])
     {
-      v15 = [[ASDCreatePlaceholdersRequestOptions alloc] initWithApplicationMetadata:v6];
+      v15 = [[ASDCreatePlaceholdersRequestOptions alloc] initWithApplicationMetadata:items];
       if (self)
       {
         v16 = self->super._options;
@@ -150,9 +150,9 @@
   }
 
   v27 = v26;
-  v28 = [(ASDRequestOptions *)v27 skipCoordinatorCompletion];
+  skipCoordinatorCompletion = [(ASDRequestOptions *)v27 skipCoordinatorCompletion];
 
-  if (v28)
+  if (skipCoordinatorCompletion)
   {
     v29 = ASDLogHandleForCategory();
     if (os_log_type_enabled(&v29->super.super.super, OS_LOG_TYPE_DEFAULT))
@@ -176,11 +176,11 @@
     }
 
     v31 = v30;
-    v32 = [(XPCClient *)v31 clientID];
-    v34 = v32;
+    clientID2 = [(XPCClient *)v31 clientID];
+    v34 = clientID2;
     if (v29)
     {
-      objc_setProperty_nonatomic_copy(v29, v33, v32, 40);
+      objc_setProperty_nonatomic_copy(v29, v33, clientID2, 40);
 
       objc_setProperty_nonatomic_copy(v29, v35, v3, 48);
     }
@@ -200,8 +200,8 @@
     }
 
     v37 = v36;
-    v38 = [(XPCClient *)v37 clientID];
-    v40 = [NSString stringWithFormat:@"Restore applications request for client %@", v38];
+    clientID3 = [(XPCClient *)v37 clientID];
+    v40 = [NSString stringWithFormat:@"Restore applications request for client %@", clientID3];
     if (v29)
     {
       objc_setProperty_nonatomic_copy(v29, v39, v40, 56);

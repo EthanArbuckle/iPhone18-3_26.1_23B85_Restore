@@ -1,7 +1,7 @@
 @interface UIRemoteControlEvent
 - (id)_allWindows;
 - (id)_init;
-- (void)_simpleRemoteActionNotification:(id)a3;
+- (void)_simpleRemoteActionNotification:(id)notification;
 - (void)dealloc;
 @end
 
@@ -11,20 +11,20 @@
 {
   v5.receiver = self;
   v5.super_class = UIRemoteControlEvent;
-  v2 = [(UIEvent *)&v5 _init];
-  if (v2)
+  _init = [(UIEvent *)&v5 _init];
+  if (_init)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel__simpleRemoteActionNotification_ name:@"UIApplicationSimpleRemoteActionNotification" object:UIApp];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:_init selector:sel__simpleRemoteActionNotification_ name:@"UIApplicationSimpleRemoteActionNotification" object:UIApp];
   }
 
-  return v2;
+  return _init;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIApplicationSimpleRemoteActionNotification" object:UIApp];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIApplicationSimpleRemoteActionNotification" object:UIApp];
 
   v4.receiver = self;
   v4.super_class = UIRemoteControlEvent;
@@ -33,10 +33,10 @@
 
 - (id)_allWindows
 {
-  v2 = [UIApp keyWindow];
-  if (v2)
+  keyWindow = [UIApp keyWindow];
+  if (keyWindow)
   {
-    v3 = [MEMORY[0x1E695DFD8] setWithObject:v2];
+    v3 = [MEMORY[0x1E695DFD8] setWithObject:keyWindow];
   }
 
   else
@@ -47,15 +47,15 @@
   return v3;
 }
 
-- (void)_simpleRemoteActionNotification:(id)a3
+- (void)_simpleRemoteActionNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"UIApplicationSimpleRemoteActionType"];
-  v6 = [v5 integerValue];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:@"UIApplicationSimpleRemoteActionType"];
+  integerValue = [v5 integerValue];
 
-  if (v6 <= 0x15 && ((0x3BC0E7u >> v6) & 1) != 0)
+  if (integerValue <= 0x15 && ((0x3BC0E7u >> integerValue) & 1) != 0)
   {
-    v7 = qword_18A67BD10[v6];
+    v7 = qword_18A67BD10[integerValue];
     if (self)
     {
       WeakRetained = objc_loadWeakRetained(&self->super._eventEnvironment);

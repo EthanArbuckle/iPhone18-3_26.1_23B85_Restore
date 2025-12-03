@@ -3,7 +3,7 @@
 - (LACCompanionAuthenticationEnvironment)environment;
 - (LACEligibilityHelping)eligibilityHelper;
 - (LACPhoneIntegrationEnvironmentProvider)init;
-- (LACPhoneIntegrationEnvironmentProvider)initWithEligibilityHelper:(id)a3 sharingManager:(id)a4 workQueue:(id)a5;
+- (LACPhoneIntegrationEnvironmentProvider)initWithEligibilityHelper:(id)helper sharingManager:(id)manager workQueue:(id)queue;
 - (LACSharingManaging)sharingManager;
 - (void)dealloc;
 @end
@@ -12,26 +12,26 @@
 
 - (LACCompanionAuthenticationEnvironment)environment
 {
-  v2 = self;
-  v3 = [objc_allocWithZone(LACCompanionAuthenticationEnvironment) initWithFeatureAvailable:-[LACPhoneIntegrationEnvironmentProvider isFeatureAvailable](v2 featureSupported:{sel_isFeatureAvailable), LACPhoneIntegrationEnvironmentProvider.isFeatureSupported.getter() & 1}];
+  selfCopy = self;
+  v3 = [objc_allocWithZone(LACCompanionAuthenticationEnvironment) initWithFeatureAvailable:-[LACPhoneIntegrationEnvironmentProvider isFeatureAvailable](selfCopy featureSupported:{sel_isFeatureAvailable), LACPhoneIntegrationEnvironmentProvider.isFeatureSupported.getter() & 1}];
 
   return v3;
 }
 
 - (BOOL)isFeatureAvailable
 {
-  v2 = self;
+  selfCopy = self;
   if (LACPhoneIntegrationEnvironmentProvider.isFeatureSupported.getter())
   {
-    v3 = [(LACPhoneIntegrationEnvironmentProvider *)v2 hasPairedDevices];
+    hasPairedDevices = [(LACPhoneIntegrationEnvironmentProvider *)selfCopy hasPairedDevices];
   }
 
   else
   {
-    v3 = 0;
+    hasPairedDevices = 0;
   }
 
-  return v3;
+  return hasPairedDevices;
 }
 
 - (LACSharingManaging)sharingManager
@@ -50,19 +50,19 @@
   return v3;
 }
 
-- (LACPhoneIntegrationEnvironmentProvider)initWithEligibilityHelper:(id)a3 sharingManager:(id)a4 workQueue:(id)a5
+- (LACPhoneIntegrationEnvironmentProvider)initWithEligibilityHelper:(id)helper sharingManager:(id)manager workQueue:(id)queue
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  return LACPhoneIntegrationEnvironmentProvider.init(eligibilityHelper:sharingManager:work:)(a3, a4, a5);
+  return LACPhoneIntegrationEnvironmentProvider.init(eligibilityHelper:sharingManager:work:)(helper, manager, queue);
 }
 
 - (void)dealloc
 {
   v2 = *(&self->super.isa + OBJC_IVAR___LACPhoneIntegrationEnvironmentProvider_subscription);
-  v3 = self;
+  selfCopy = self;
   AKSEventsUnregister();
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = LACPhoneIntegrationEnvironmentProvider;
   [(LACPhoneIntegrationEnvironmentProvider *)&v4 dealloc];
 }

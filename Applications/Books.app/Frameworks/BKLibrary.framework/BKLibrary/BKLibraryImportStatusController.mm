@@ -72,8 +72,8 @@
   block[3] = &unk_D5528;
   block[4] = self;
   dispatch_sync(iVarQueue, block);
-  v4 = [(BKLibraryImportStatusController *)self coalescedStatusChange];
-  [v4 signalWithCompletion:&stru_D7170];
+  coalescedStatusChange = [(BKLibraryImportStatusController *)self coalescedStatusChange];
+  [coalescedStatusChange signalWithCompletion:&stru_D7170];
 }
 
 - (void)completeImportOperation
@@ -85,8 +85,8 @@
   block[3] = &unk_D5528;
   block[4] = self;
   dispatch_sync(iVarQueue, block);
-  v4 = [(BKLibraryImportStatusController *)self coalescedStatusChange];
-  [v4 signalWithCompletion:&stru_D7190];
+  coalescedStatusChange = [(BKLibraryImportStatusController *)self coalescedStatusChange];
+  [coalescedStatusChange signalWithCompletion:&stru_D7190];
 }
 
 - (void)failImportOperation
@@ -98,8 +98,8 @@
   block[3] = &unk_D5528;
   block[4] = self;
   dispatch_sync(iVarQueue, block);
-  v4 = [(BKLibraryImportStatusController *)self coalescedStatusChange];
-  [v4 signalWithCompletion:&stru_D71B0];
+  coalescedStatusChange = [(BKLibraryImportStatusController *)self coalescedStatusChange];
+  [coalescedStatusChange signalWithCompletion:&stru_D71B0];
 }
 
 @end

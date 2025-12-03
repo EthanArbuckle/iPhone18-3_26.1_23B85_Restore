@@ -1,21 +1,21 @@
 @interface CHBBubbleSeries
-+ (id)chdSeriesWithState:(id)a3;
++ (id)chdSeriesWithState:(id)state;
 @end
 
 @implementation CHBBubbleSeries
 
-+ (id)chdSeriesWithState:(id)a3
++ (id)chdSeriesWithState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = [CHDBubbleSeries alloc];
-  v5 = [v3 chart];
-  v6 = [(CHDSeries *)v4 initWithChart:v5];
+  chart = [stateCopy chart];
+  v6 = [(CHDSeries *)v4 initWithChart:chart];
 
-  v7 = [v3 xlCurrentDefaultSeriesFormat];
-  if (v7)
+  xlCurrentDefaultSeriesFormat = [stateCopy xlCurrentDefaultSeriesFormat];
+  if (xlCurrentDefaultSeriesFormat)
   {
-    v8 = *(v7 + 81);
-    v9 = *(v7 + 87);
+    v8 = *(xlCurrentDefaultSeriesFormat + 81);
+    v9 = *(xlCurrentDefaultSeriesFormat + 87);
   }
 
   else

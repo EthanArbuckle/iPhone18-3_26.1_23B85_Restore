@@ -1,18 +1,18 @@
 @interface PKPaymentTransactionMapsUpdateProcessorRequest
-- (BOOL)coalesceWithConfigurations:(id)a3;
-- (PKPaymentTransactionMapsUpdateProcessorRequest)initWithConfigurations:(id)a3;
+- (BOOL)coalesceWithConfigurations:(id)configurations;
+- (PKPaymentTransactionMapsUpdateProcessorRequest)initWithConfigurations:(id)configurations;
 - (id)mapIdentifiers;
 @end
 
 @implementation PKPaymentTransactionMapsUpdateProcessorRequest
 
-- (PKPaymentTransactionMapsUpdateProcessorRequest)initWithConfigurations:(id)a3
+- (PKPaymentTransactionMapsUpdateProcessorRequest)initWithConfigurations:(id)configurations
 {
-  v4 = a3;
+  configurationsCopy = configurations;
   v5 = [(PKPaymentTransactionMapsUpdateProcessorRequest *)self init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [configurationsCopy mutableCopy];
     configurations = v5->_configurations;
     v5->_configurations = v6;
   }
@@ -20,14 +20,14 @@
   return v5;
 }
 
-- (BOOL)coalesceWithConfigurations:(id)a3
+- (BOOL)coalesceWithConfigurations:(id)configurations
 {
-  v4 = a3;
+  configurationsCopy = configurations;
   v5 = [(NSMutableArray *)self->_configurations count];
   v6 = 100 - v5;
-  if (100 - v5 >= [v4 count])
+  if (100 - v5 >= [configurationsCopy count])
   {
-    v6 = [v4 count];
+    v6 = [configurationsCopy count];
   }
 
   if (v5 == 100 || v6 < 1)
@@ -35,19 +35,19 @@
     v8 = 0;
   }
 
-  else if ([v4 count])
+  else if ([configurationsCopy count])
   {
     do
     {
-      v9 = [v4 anyObject];
-      [(NSMutableArray *)self->_configurations addObject:v9];
-      [v4 removeObject:v9];
+      anyObject = [configurationsCopy anyObject];
+      [(NSMutableArray *)self->_configurations addObject:anyObject];
+      [configurationsCopy removeObject:anyObject];
 
       --v6;
     }
 
     while (v6);
-    v8 = [v4 count] == 0;
+    v8 = [configurationsCopy count] == 0;
   }
 
   else

@@ -1,14 +1,14 @@
 @interface TVPProgressiveJumpingScrubber
 - (TVPPlayer)player;
-- (double)_nextTimeToAdvanceFromTime:(double)a3;
-- (void)_skipTimerFired:(id)a3;
+- (double)_nextTimeToAdvanceFromTime:(double)time;
+- (void)_skipTimerFired:(id)fired;
 - (void)cancelScrub;
-- (void)startScrubWithRate:(double)a3;
+- (void)startScrubWithRate:(double)rate;
 @end
 
 @implementation TVPProgressiveJumpingScrubber
 
-- (void)startScrubWithRate:(double)a3
+- (void)startScrubWithRate:(double)rate
 {
   WeakRetained = objc_loadWeakRetained(&self->_player);
 
@@ -18,14 +18,14 @@
     self->_skipAdjustPeriod = 0.5;
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     v7 = -5.0;
-    if (a3 > 0.0)
+    if (rate > 0.0)
     {
       v7 = 5.0;
     }
 
     self->_skipAdjustTime = v7;
     self->_nextSkipAdjustTime = v6;
-    self->_rate = a3;
+    self->_rate = rate;
     v8 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__skipTimerFired_ selector:0 userInfo:1 repeats:0.5];
     skipTimer = self->_skipTimer;
     self->_skipTimer = v8;
@@ -41,7 +41,7 @@
   self->_skipTimer = 0;
 }
 
-- (double)_nextTimeToAdvanceFromTime:(double)a3
+- (double)_nextTimeToAdvanceFromTime:(double)time
 {
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   nextSkipAdjustTime = self->_nextSkipAdjustTime;
@@ -65,9 +65,9 @@
       self->_skipCount = 10;
     }
 
-    if (self->_skipAdjustTime + self->_skipAdjustTime * (v9 * v9) * 3.0 / 100.0 + a3 >= 0.0)
+    if (self->_skipAdjustTime + self->_skipAdjustTime * (v9 * v9) * 3.0 / 100.0 + time >= 0.0)
     {
-      return self->_skipAdjustTime + self->_skipAdjustTime * (v9 * v9) * 3.0 / 100.0 + a3;
+      return self->_skipAdjustTime + self->_skipAdjustTime * (v9 * v9) * 3.0 / 100.0 + time;
     }
 
     else
@@ -76,10 +76,10 @@
     }
   }
 
-  return a3;
+  return time;
 }
 
-- (void)_skipTimerFired:(id)a3
+- (void)_skipTimerFired:(id)fired
 {
   WeakRetained = objc_loadWeakRetained(&self->_player);
 

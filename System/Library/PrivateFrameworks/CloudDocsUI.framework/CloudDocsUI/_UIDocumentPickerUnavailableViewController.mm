@@ -1,19 +1,19 @@
 @interface _UIDocumentPickerUnavailableViewController
-- (_UIDocumentPickerUnavailableViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_buttonBackgroundImageForState:(unint64_t)a3 traits:(id)a4;
-- (void)_buttonPressed:(id)a3;
+- (_UIDocumentPickerUnavailableViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_buttonBackgroundImageForState:(unint64_t)state traits:(id)traits;
+- (void)_buttonPressed:(id)pressed;
 - (void)dealloc;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation _UIDocumentPickerUnavailableViewController
 
-- (_UIDocumentPickerUnavailableViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_UIDocumentPickerUnavailableViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v156[2] = *MEMORY[0x277D85DE8];
   v153.receiver = self;
   v153.super_class = _UIDocumentPickerUnavailableViewController;
-  v4 = [(_UIDocumentPickerUnavailableViewController *)&v153 initWithNibName:a3 bundle:a4];
+  v4 = [(_UIDocumentPickerUnavailableViewController *)&v153 initWithNibName:name bundle:bundle];
   if (!v4)
   {
     return v4;
@@ -31,114 +31,114 @@
   v10 = objc_alloc_init(MEMORY[0x277D755E8]);
   [(_UIDocumentPickerUnavailableViewController *)v4 setLeadImageView:v10];
 
-  v11 = [(_UIDocumentPickerUnavailableViewController *)v4 view];
-  v12 = [(_UIDocumentPickerUnavailableViewController *)v4 leadImageView];
-  [v11 addSubview:v12];
+  view = [(_UIDocumentPickerUnavailableViewController *)v4 view];
+  leadImageView = [(_UIDocumentPickerUnavailableViewController *)v4 leadImageView];
+  [view addSubview:leadImageView];
 
-  v13 = [(_UIDocumentPickerUnavailableViewController *)v4 leadImageView];
-  [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+  leadImageView2 = [(_UIDocumentPickerUnavailableViewController *)v4 leadImageView];
+  [leadImageView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v14 = [(_UIDocumentPickerUnavailableViewController *)v4 leadImageView];
-  v15 = [v14 centerXAnchor];
-  v16 = [(_UIDocumentPickerUnavailableViewController *)v4 view];
-  v17 = [v16 centerXAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
+  leadImageView3 = [(_UIDocumentPickerUnavailableViewController *)v4 leadImageView];
+  centerXAnchor = [leadImageView3 centerXAnchor];
+  view2 = [(_UIDocumentPickerUnavailableViewController *)v4 view];
+  centerXAnchor2 = [view2 centerXAnchor];
+  v18 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v18 setActive:1];
 
-  v19 = [(_UIDocumentPickerUnavailableViewController *)v4 leadImageView];
-  v20 = [v19 topAnchor];
-  v21 = [(_UIDocumentPickerUnavailableViewController *)v4 view];
-  v22 = [v21 topAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
+  leadImageView4 = [(_UIDocumentPickerUnavailableViewController *)v4 leadImageView];
+  topAnchor = [leadImageView4 topAnchor];
+  view3 = [(_UIDocumentPickerUnavailableViewController *)v4 view];
+  topAnchor2 = [view3 topAnchor];
+  v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [(_UIDocumentPickerUnavailableViewController *)v4 setTopConstraint:v23];
 
-  v24 = [(_UIDocumentPickerUnavailableViewController *)v4 topConstraint];
-  [v24 setActive:1];
+  topConstraint = [(_UIDocumentPickerUnavailableViewController *)v4 topConstraint];
+  [topConstraint setActive:1];
 
   v25 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(_UIDocumentPickerUnavailableViewController *)v4 setTitleLabel:v25];
 
-  v26 = [(_UIDocumentPickerUnavailableViewController *)v4 titleLabel];
-  [v26 setNumberOfLines:1];
+  titleLabel = [(_UIDocumentPickerUnavailableViewController *)v4 titleLabel];
+  [titleLabel setNumberOfLines:1];
 
-  v27 = [(_UIDocumentPickerUnavailableViewController *)v4 titleLabel];
-  [v27 setTextAlignment:1];
+  titleLabel2 = [(_UIDocumentPickerUnavailableViewController *)v4 titleLabel];
+  [titleLabel2 setTextAlignment:1];
 
   v28 = [MEMORY[0x277D74300] _lightSystemFontOfSize:32.0];
-  v29 = [(_UIDocumentPickerUnavailableViewController *)v4 titleLabel];
-  [v29 setFont:v28];
+  titleLabel3 = [(_UIDocumentPickerUnavailableViewController *)v4 titleLabel];
+  [titleLabel3 setFont:v28];
 
-  v30 = [(_UIDocumentPickerUnavailableViewController *)v4 view];
-  v31 = [(_UIDocumentPickerUnavailableViewController *)v4 titleLabel];
-  [v30 addSubview:v31];
+  view4 = [(_UIDocumentPickerUnavailableViewController *)v4 view];
+  titleLabel4 = [(_UIDocumentPickerUnavailableViewController *)v4 titleLabel];
+  [view4 addSubview:titleLabel4];
 
-  v32 = [(_UIDocumentPickerUnavailableViewController *)v4 titleLabel];
-  [v32 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel5 = [(_UIDocumentPickerUnavailableViewController *)v4 titleLabel];
+  [titleLabel5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v33 = [(_UIDocumentPickerUnavailableViewController *)v4 titleLabel];
-  v34 = [v33 centerXAnchor];
-  v35 = [(_UIDocumentPickerUnavailableViewController *)v4 view];
-  v36 = [v35 centerXAnchor];
-  v37 = [v34 constraintEqualToAnchor:v36];
+  titleLabel6 = [(_UIDocumentPickerUnavailableViewController *)v4 titleLabel];
+  centerXAnchor3 = [titleLabel6 centerXAnchor];
+  view5 = [(_UIDocumentPickerUnavailableViewController *)v4 view];
+  centerXAnchor4 = [view5 centerXAnchor];
+  v37 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   [v37 setActive:1];
 
-  v38 = [(_UIDocumentPickerUnavailableViewController *)v4 titleLabel];
-  v39 = [v38 lastBaselineAnchor];
-  v40 = [(_UIDocumentPickerUnavailableViewController *)v4 leadImageView];
-  v41 = [v40 bottomAnchor];
-  v42 = [v39 constraintEqualToAnchor:v41];
+  titleLabel7 = [(_UIDocumentPickerUnavailableViewController *)v4 titleLabel];
+  lastBaselineAnchor = [titleLabel7 lastBaselineAnchor];
+  leadImageView5 = [(_UIDocumentPickerUnavailableViewController *)v4 leadImageView];
+  bottomAnchor = [leadImageView5 bottomAnchor];
+  v42 = [lastBaselineAnchor constraintEqualToAnchor:bottomAnchor];
   [(_UIDocumentPickerUnavailableViewController *)v4 setImageToTitleConstraint:v42];
 
-  v43 = [(_UIDocumentPickerUnavailableViewController *)v4 imageToTitleConstraint];
-  [v43 setActive:1];
+  imageToTitleConstraint = [(_UIDocumentPickerUnavailableViewController *)v4 imageToTitleConstraint];
+  [imageToTitleConstraint setActive:1];
 
   v44 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(_UIDocumentPickerUnavailableViewController *)v4 setTextLabel:v44];
 
-  v45 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel];
-  [v45 setNumberOfLines:0];
+  textLabel = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel];
+  [textLabel setNumberOfLines:0];
 
-  v46 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel];
-  [v46 setTextAlignment:1];
+  textLabel2 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel];
+  [textLabel2 setTextAlignment:1];
 
-  v47 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel];
+  textLabel3 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel];
   v152 = v7;
-  [v47 setFont:v7];
+  [textLabel3 setFont:v7];
 
-  v48 = [(_UIDocumentPickerUnavailableViewController *)v4 view];
-  v49 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel];
-  [v48 addSubview:v49];
+  view6 = [(_UIDocumentPickerUnavailableViewController *)v4 view];
+  textLabel4 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel];
+  [view6 addSubview:textLabel4];
 
-  v50 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel];
-  [v50 setTranslatesAutoresizingMaskIntoConstraints:0];
+  textLabel5 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel];
+  [textLabel5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v141 = MEMORY[0x277CCAAD0];
-  v150 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel];
-  v146 = [v150 leftAnchor];
-  v148 = [(_UIDocumentPickerUnavailableViewController *)v4 view];
-  v143 = [v148 layoutMarginsGuide];
-  v51 = [v143 leftAnchor];
-  v52 = [v146 constraintEqualToAnchor:v51];
+  textLabel6 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel];
+  leftAnchor = [textLabel6 leftAnchor];
+  view7 = [(_UIDocumentPickerUnavailableViewController *)v4 view];
+  layoutMarginsGuide = [view7 layoutMarginsGuide];
+  leftAnchor2 = [layoutMarginsGuide leftAnchor];
+  v52 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v156[0] = v52;
-  v53 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel];
-  v54 = [v53 rightAnchor];
-  v55 = [(_UIDocumentPickerUnavailableViewController *)v4 view];
-  v56 = [v55 layoutMarginsGuide];
-  v57 = [v56 rightAnchor];
-  v58 = [v54 constraintEqualToAnchor:v57];
+  textLabel7 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel];
+  rightAnchor = [textLabel7 rightAnchor];
+  view8 = [(_UIDocumentPickerUnavailableViewController *)v4 view];
+  layoutMarginsGuide2 = [view8 layoutMarginsGuide];
+  rightAnchor2 = [layoutMarginsGuide2 rightAnchor];
+  v58 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v156[1] = v58;
   v59 = [MEMORY[0x277CBEA60] arrayWithObjects:v156 count:2];
   [v141 activateConstraints:v59];
 
-  v60 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel];
-  v61 = [v60 firstBaselineAnchor];
-  v62 = [(_UIDocumentPickerUnavailableViewController *)v4 titleLabel];
-  v63 = [v62 lastBaselineAnchor];
-  v64 = [v61 constraintEqualToAnchor:v63];
+  textLabel8 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel];
+  firstBaselineAnchor = [textLabel8 firstBaselineAnchor];
+  titleLabel8 = [(_UIDocumentPickerUnavailableViewController *)v4 titleLabel];
+  lastBaselineAnchor2 = [titleLabel8 lastBaselineAnchor];
+  v64 = [firstBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor2];
   [(_UIDocumentPickerUnavailableViewController *)v4 setTitleToTextConstraint:v64];
 
-  v65 = [(_UIDocumentPickerUnavailableViewController *)v4 titleToTextConstraint];
-  [v65 setActive:1];
+  titleToTextConstraint = [(_UIDocumentPickerUnavailableViewController *)v4 titleToTextConstraint];
+  [titleToTextConstraint setActive:1];
 
   if (+[_UIDocumentPickerDescriptor cloudMigrationStatus]<= 1)
   {
@@ -186,80 +186,80 @@ LABEL_7:
   v78 = 1;
 LABEL_8:
 
-  v80 = [(_UIDocumentPickerUnavailableViewController *)v4 titleLabel];
+  titleLabel9 = [(_UIDocumentPickerUnavailableViewController *)v4 titleLabel];
   v149 = v67;
-  [v80 setText:v67];
+  [titleLabel9 setText:v67];
 
-  v81 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel];
+  textLabel9 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel];
   v147 = v69;
-  [v81 setText:v69];
+  [textLabel9 setText:v69];
 
-  v82 = [(_UIDocumentPickerUnavailableViewController *)v4 leadImageView];
-  [v82 setHidden:v78];
+  leadImageView6 = [(_UIDocumentPickerUnavailableViewController *)v4 leadImageView];
+  [leadImageView6 setHidden:v78];
 
-  v83 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel];
+  textLabel10 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel];
   v151 = v73;
   if ([v71 length])
   {
     v84 = objc_alloc_init(MEMORY[0x277D756B8]);
     [(_UIDocumentPickerUnavailableViewController *)v4 setTextLabel2:v84];
 
-    v85 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel2];
-    [v85 setNumberOfLines:0];
+    textLabel22 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel2];
+    [textLabel22 setNumberOfLines:0];
 
-    v86 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel2];
-    [v86 setTextAlignment:1];
+    textLabel23 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel2];
+    [textLabel23 setTextAlignment:1];
 
-    v87 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel2];
-    [v87 setFont:v152];
+    textLabel24 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel2];
+    [textLabel24 setFont:v152];
 
-    v88 = [(_UIDocumentPickerUnavailableViewController *)v4 view];
-    v89 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel2];
-    [v88 addSubview:v89];
+    view9 = [(_UIDocumentPickerUnavailableViewController *)v4 view];
+    textLabel25 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel2];
+    [view9 addSubview:textLabel25];
 
-    v90 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel2];
-    [v90 setTranslatesAutoresizingMaskIntoConstraints:0];
+    textLabel26 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel2];
+    [textLabel26 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v144 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel2];
+    textLabel27 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel2];
 
-    v91 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel2];
-    v92 = [v91 firstBaselineAnchor];
-    v93 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel];
-    v94 = [v93 lastBaselineAnchor];
-    v95 = [v92 constraintEqualToAnchor:v94];
+    textLabel28 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel2];
+    firstBaselineAnchor2 = [textLabel28 firstBaselineAnchor];
+    textLabel11 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel];
+    lastBaselineAnchor3 = [textLabel11 lastBaselineAnchor];
+    v95 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor3];
     [(_UIDocumentPickerUnavailableViewController *)v4 setTextToTextConstraint:v95];
 
     v134 = MEMORY[0x277CCAAD0];
-    v142 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel2];
-    v139 = [v142 leftAnchor];
-    v140 = [(_UIDocumentPickerUnavailableViewController *)v4 view];
-    v138 = [v140 layoutMarginsGuide];
-    v137 = [v138 leftAnchor];
-    v136 = [v139 constraintEqualToAnchor:v137];
+    textLabel29 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel2];
+    leftAnchor3 = [textLabel29 leftAnchor];
+    view10 = [(_UIDocumentPickerUnavailableViewController *)v4 view];
+    layoutMarginsGuide3 = [view10 layoutMarginsGuide];
+    leftAnchor4 = [layoutMarginsGuide3 leftAnchor];
+    v136 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
     v155[0] = v136;
-    v135 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel2];
-    v132 = [v135 rightAnchor];
-    v133 = [(_UIDocumentPickerUnavailableViewController *)v4 view];
-    v131 = [v133 layoutMarginsGuide];
-    v130 = [v131 rightAnchor];
-    v96 = [v132 constraintEqualToAnchor:v130];
+    textLabel210 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel2];
+    rightAnchor3 = [textLabel210 rightAnchor];
+    view11 = [(_UIDocumentPickerUnavailableViewController *)v4 view];
+    layoutMarginsGuide4 = [view11 layoutMarginsGuide];
+    rightAnchor4 = [layoutMarginsGuide4 rightAnchor];
+    v96 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
     v155[1] = v96;
-    v97 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel2];
-    v98 = [v97 centerXAnchor];
-    v99 = [(_UIDocumentPickerUnavailableViewController *)v4 view];
-    v100 = [v99 centerXAnchor];
-    v101 = [v98 constraintEqualToAnchor:v100];
+    textLabel211 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel2];
+    centerXAnchor5 = [textLabel211 centerXAnchor];
+    view12 = [(_UIDocumentPickerUnavailableViewController *)v4 view];
+    centerXAnchor6 = [view12 centerXAnchor];
+    v101 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     v155[2] = v101;
-    v102 = [(_UIDocumentPickerUnavailableViewController *)v4 textToTextConstraint];
-    v155[3] = v102;
+    textToTextConstraint = [(_UIDocumentPickerUnavailableViewController *)v4 textToTextConstraint];
+    v155[3] = textToTextConstraint;
     v103 = [MEMORY[0x277CBEA60] arrayWithObjects:v155 count:4];
     [v134 activateConstraints:v103];
 
     v73 = v151;
-    v104 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel2];
-    [v104 setText:v71];
+    textLabel212 = [(_UIDocumentPickerUnavailableViewController *)v4 textLabel2];
+    [textLabel212 setText:v71];
 
-    v83 = v144;
+    textLabel10 = textLabel27;
   }
 
   if (v73)
@@ -267,76 +267,76 @@ LABEL_8:
     v105 = [BRTintColorButton buttonWithType:0];
     [(_UIDocumentPickerUnavailableViewController *)v4 setButton:v105];
 
-    v106 = [(_UIDocumentPickerUnavailableViewController *)v4 button];
-    [v106 setTitle:v73 forState:0];
+    button = [(_UIDocumentPickerUnavailableViewController *)v4 button];
+    [button setTitle:v73 forState:0];
 
-    v107 = [(_UIDocumentPickerUnavailableViewController *)v4 button];
-    [v107 setTranslatesAutoresizingMaskIntoConstraints:0];
+    button2 = [(_UIDocumentPickerUnavailableViewController *)v4 button];
+    [button2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v108 = [(_UIDocumentPickerUnavailableViewController *)v4 button];
-    [v108 addTarget:v4 action:sel__buttonPressed_ forControlEvents:64];
+    button3 = [(_UIDocumentPickerUnavailableViewController *)v4 button];
+    [button3 addTarget:v4 action:sel__buttonPressed_ forControlEvents:64];
 
     v109 = [MEMORY[0x277D74300] _thinSystemFontOfSize:26.0];
-    v110 = [(_UIDocumentPickerUnavailableViewController *)v4 button];
-    v111 = [v110 titleLabel];
-    [v111 setFont:v109];
+    button4 = [(_UIDocumentPickerUnavailableViewController *)v4 button];
+    titleLabel10 = [button4 titleLabel];
+    [titleLabel10 setFont:v109];
 
-    v112 = [(_UIDocumentPickerUnavailableViewController *)v4 view];
-    v113 = [(_UIDocumentPickerUnavailableViewController *)v4 button];
-    [v112 addSubview:v113];
+    view13 = [(_UIDocumentPickerUnavailableViewController *)v4 view];
+    button5 = [(_UIDocumentPickerUnavailableViewController *)v4 button];
+    [view13 addSubview:button5];
 
-    v114 = [(_UIDocumentPickerUnavailableViewController *)v4 button];
-    v115 = [v114 topAnchor];
-    v116 = [v83 lastBaselineAnchor];
-    [v115 constraintEqualToAnchor:v116];
-    v117 = v145 = v83;
+    button6 = [(_UIDocumentPickerUnavailableViewController *)v4 button];
+    topAnchor3 = [button6 topAnchor];
+    lastBaselineAnchor4 = [textLabel10 lastBaselineAnchor];
+    [topAnchor3 constraintEqualToAnchor:lastBaselineAnchor4];
+    v117 = v145 = textLabel10;
     [(_UIDocumentPickerUnavailableViewController *)v4 setTextToButtonConstraint:v117];
 
     v118 = MEMORY[0x277CCAAD0];
-    v119 = [(_UIDocumentPickerUnavailableViewController *)v4 button];
-    v120 = [v119 centerXAnchor];
-    v121 = [(_UIDocumentPickerUnavailableViewController *)v4 view];
-    v122 = [v121 centerXAnchor];
-    [v120 constraintEqualToAnchor:v122];
+    button7 = [(_UIDocumentPickerUnavailableViewController *)v4 button];
+    centerXAnchor7 = [button7 centerXAnchor];
+    view14 = [(_UIDocumentPickerUnavailableViewController *)v4 view];
+    centerXAnchor8 = [view14 centerXAnchor];
+    [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
     v124 = v123 = v71;
     v154[0] = v124;
-    v125 = [(_UIDocumentPickerUnavailableViewController *)v4 textToButtonConstraint];
-    v154[1] = v125;
+    textToButtonConstraint = [(_UIDocumentPickerUnavailableViewController *)v4 textToButtonConstraint];
+    v154[1] = textToButtonConstraint;
     v126 = [MEMORY[0x277CBEA60] arrayWithObjects:v154 count:2];
     v127 = v118;
-    v83 = v145;
+    textLabel10 = v145;
     [v127 activateConstraints:v126];
 
     v71 = v123;
     v73 = v151;
   }
 
-  v128 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v128 addObserver:v4 selector:sel__fontSizeDidChange_ name:*MEMORY[0x277D76810] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:v4 selector:sel__fontSizeDidChange_ name:*MEMORY[0x277D76810] object:0];
 
   return v4;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76810] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76810] object:0];
 
   v4.receiver = self;
   v4.super_class = _UIDocumentPickerUnavailableViewController;
   [(_UIDocumentPickerUnavailableViewController *)&v4 dealloc];
 }
 
-- (void)_buttonPressed:(id)a3
+- (void)_buttonPressed:(id)pressed
 {
-  v5 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  v4 = [(_UIDocumentPickerUnavailableViewController *)self buttonURL];
-  [v5 openSensitiveURL:v4 withOptions:0];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  buttonURL = [(_UIDocumentPickerUnavailableViewController *)self buttonURL];
+  [defaultWorkspace openSensitiveURL:buttonURL withOptions:0];
 }
 
-- (id)_buttonBackgroundImageForState:(unint64_t)a3 traits:(id)a4
+- (id)_buttonBackgroundImageForState:(unint64_t)state traits:(id)traits
 {
-  [a4 displayScale];
+  [traits displayScale];
   __asm { FMOV            V0.2D, #7.0 }
 
   v9 = _UIGraphicsDrawIntoImageContextWithOptions();
@@ -348,23 +348,23 @@ LABEL_8:
   return v11;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v70 = [(_UIDocumentPickerUnavailableViewController *)self traitCollection];
-  v4 = [(_UIDocumentPickerUnavailableViewController *)self view];
-  v5 = [v4 window];
-  v6 = [v5 screen];
-  [v6 _referenceBounds];
+  traitCollection = [(_UIDocumentPickerUnavailableViewController *)self traitCollection];
+  view = [(_UIDocumentPickerUnavailableViewController *)self view];
+  window = [view window];
+  screen = [window screen];
+  [screen _referenceBounds];
   v8 = v7;
 
   v9 = MEMORY[0x277D755B8];
   v10 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
-  v11 = [v9 imageNamed:@"iCloudNoDocs" inBundle:v10 compatibleWithTraitCollection:v70];
+  v11 = [v9 imageNamed:@"iCloudNoDocs" inBundle:v10 compatibleWithTraitCollection:traitCollection];
 
   [v11 alignmentRectInsets];
   if (v12 == 0.0)
   {
-    [v70 displayScale];
+    [traitCollection displayScale];
     if (fabs(v13 + -1.0) >= 2.22044605e-16)
     {
       if (fabs(v13 + -2.0) >= 2.22044605e-16)
@@ -394,8 +394,8 @@ LABEL_8:
   }
 
 LABEL_9:
-  v16 = [(_UIDocumentPickerUnavailableViewController *)self leadImageView];
-  [v16 setImage:v11];
+  leadImageView = [(_UIDocumentPickerUnavailableViewController *)self leadImageView];
+  [leadImageView setImage:v11];
 
   v17 = MEMORY[0x277D74300];
   v18 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D76918] addingSymbolicTraits:0 options:1];
@@ -405,10 +405,10 @@ LABEL_9:
   v21 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D769D0] addingSymbolicTraits:0 options:1];
   v22 = [v20 fontWithDescriptor:v21 size:0.0];
 
-  [v70 displayScale];
+  [traitCollection displayScale];
   v24 = v23;
-  v25 = [(_UIDocumentPickerUnavailableViewController *)self topConstraint];
-  v26 = v25;
+  topConstraint = [(_UIDocumentPickerUnavailableViewController *)self topConstraint];
+  v26 = topConstraint;
   v27 = 28.0;
   if (v8 <= 480.0)
   {
@@ -426,74 +426,74 @@ LABEL_9:
     v29 = 20.0;
   }
 
-  [v25 setConstant:v28];
+  [topConstraint setConstant:v28];
 
   v30 = [MEMORY[0x277D74300] _lightSystemFontOfSize:32.0];
   v31 = MEMORY[0x277D74300];
   [v19 _scaledValueForValue:32.0];
   v32 = [v31 _lightSystemFontOfSize:?];
-  v33 = [(_UIDocumentPickerUnavailableViewController *)self titleLabel];
-  [v33 setFont:v32];
+  titleLabel = [(_UIDocumentPickerUnavailableViewController *)self titleLabel];
+  [titleLabel setFont:v32];
 
-  v34 = [(_UIDocumentPickerUnavailableViewController *)self textLabel];
-  [v34 setFont:v19];
+  textLabel = [(_UIDocumentPickerUnavailableViewController *)self textLabel];
+  [textLabel setFont:v19];
 
-  v35 = [(_UIDocumentPickerUnavailableViewController *)self textLabel2];
-  [v35 setFont:v19];
+  textLabel2 = [(_UIDocumentPickerUnavailableViewController *)self textLabel2];
+  [textLabel2 setFont:v19];
 
-  v36 = [(_UIDocumentPickerUnavailableViewController *)self button];
-  v37 = [v36 titleLabel];
-  [v37 setFont:v22];
+  button = [(_UIDocumentPickerUnavailableViewController *)self button];
+  titleLabel2 = [button titleLabel];
+  [titleLabel2 setFont:v22];
 
-  v38 = [(_UIDocumentPickerUnavailableViewController *)self button];
-  v39 = [(_UIDocumentPickerUnavailableViewController *)self traitCollection];
-  v40 = [(_UIDocumentPickerUnavailableViewController *)self _buttonBackgroundImageForState:0 traits:v39];
-  [v38 setBackgroundImage:v40 forState:0];
+  button2 = [(_UIDocumentPickerUnavailableViewController *)self button];
+  traitCollection2 = [(_UIDocumentPickerUnavailableViewController *)self traitCollection];
+  v40 = [(_UIDocumentPickerUnavailableViewController *)self _buttonBackgroundImageForState:0 traits:traitCollection2];
+  [button2 setBackgroundImage:v40 forState:0];
 
-  v41 = [(_UIDocumentPickerUnavailableViewController *)self button];
-  v42 = [(_UIDocumentPickerUnavailableViewController *)self button];
-  v43 = [v42 tintColor];
-  [v41 setTitleColor:v43 forState:0];
+  button3 = [(_UIDocumentPickerUnavailableViewController *)self button];
+  button4 = [(_UIDocumentPickerUnavailableViewController *)self button];
+  tintColor = [button4 tintColor];
+  [button3 setTitleColor:tintColor forState:0];
 
-  v44 = [(_UIDocumentPickerUnavailableViewController *)self button];
-  v45 = [(_UIDocumentPickerUnavailableViewController *)self traitCollection];
-  v46 = [(_UIDocumentPickerUnavailableViewController *)self _buttonBackgroundImageForState:1 traits:v45];
-  [v44 setBackgroundImage:v46 forState:1];
+  button5 = [(_UIDocumentPickerUnavailableViewController *)self button];
+  traitCollection3 = [(_UIDocumentPickerUnavailableViewController *)self traitCollection];
+  v46 = [(_UIDocumentPickerUnavailableViewController *)self _buttonBackgroundImageForState:1 traits:traitCollection3];
+  [button5 setBackgroundImage:v46 forState:1];
 
-  v47 = [(_UIDocumentPickerUnavailableViewController *)self button];
-  v48 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v47 setTitleColor:v48 forState:1];
+  button6 = [(_UIDocumentPickerUnavailableViewController *)self button];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [button6 setTitleColor:systemBackgroundColor forState:1];
 
-  v49 = [(_UIDocumentPickerUnavailableViewController *)self view];
+  view2 = [(_UIDocumentPickerUnavailableViewController *)self view];
   UIRoundToViewScale();
   v51 = v50;
-  v52 = [(_UIDocumentPickerUnavailableViewController *)self view];
+  view3 = [(_UIDocumentPickerUnavailableViewController *)self view];
   UIFloorToViewScale();
   v54 = v53;
-  v55 = [(_UIDocumentPickerUnavailableViewController *)self button];
-  [v55 setContentEdgeInsets:{v51, 11.0, v54, 11.0}];
+  button7 = [(_UIDocumentPickerUnavailableViewController *)self button];
+  [button7 setContentEdgeInsets:{v51, 11.0, v54, 11.0}];
 
   [v32 _bodyLeading];
   v57 = v56 * 23.0;
   [v30 _bodyLeading];
   v59 = v29 + v57 / v58;
-  v60 = [(_UIDocumentPickerUnavailableViewController *)self imageToTitleConstraint];
-  [v60 setConstant:v59];
+  imageToTitleConstraint = [(_UIDocumentPickerUnavailableViewController *)self imageToTitleConstraint];
+  [imageToTitleConstraint setConstant:v59];
 
   [v19 _scaledValueForValue:36.0];
   v62 = v61;
-  v63 = [(_UIDocumentPickerUnavailableViewController *)self titleToTextConstraint];
-  [v63 setConstant:v62];
+  titleToTextConstraint = [(_UIDocumentPickerUnavailableViewController *)self titleToTextConstraint];
+  [titleToTextConstraint setConstant:v62];
 
   [v19 _scaledValueForValue:28.0];
   v65 = v64;
-  v66 = [(_UIDocumentPickerUnavailableViewController *)self textToTextConstraint];
-  [v66 setConstant:v65];
+  textToTextConstraint = [(_UIDocumentPickerUnavailableViewController *)self textToTextConstraint];
+  [textToTextConstraint setConstant:v65];
 
   [v19 _scaledValueForValue:24.0];
   v68 = v67;
-  v69 = [(_UIDocumentPickerUnavailableViewController *)self textToButtonConstraint];
-  [v69 setConstant:v68];
+  textToButtonConstraint = [(_UIDocumentPickerUnavailableViewController *)self textToButtonConstraint];
+  [textToButtonConstraint setConstant:v68];
 }
 
 @end

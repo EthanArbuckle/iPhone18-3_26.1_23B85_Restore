@@ -1,64 +1,64 @@
 @interface RTTAbbreviationTapGestureRecognizer
 - (RTTUIAbbreviationView)abbrevationView;
-- (void)ignoreTouch:(id)a3 forEvent:(id)a4;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)ignoreTouch:(id)touch forEvent:(id)event;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation RTTAbbreviationTapGestureRecognizer
 
-- (void)ignoreTouch:(id)a3 forEvent:(id)a4
+- (void)ignoreTouch:(id)touch forEvent:(id)event
 {
-  v4 = [(RTTAbbreviationTapGestureRecognizer *)self abbrevationView:a3];
+  v4 = [(RTTAbbreviationTapGestureRecognizer *)self abbrevationView:touch];
   [v4 setHighlighted:0];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = RTTAbbreviationTapGestureRecognizer;
-  [(RTTAbbreviationTapGestureRecognizer *)&v6 touchesBegan:a3 withEvent:a4];
-  v5 = [(RTTAbbreviationTapGestureRecognizer *)self abbrevationView];
-  [v5 setHighlighted:1];
+  [(RTTAbbreviationTapGestureRecognizer *)&v6 touchesBegan:began withEvent:event];
+  abbrevationView = [(RTTAbbreviationTapGestureRecognizer *)self abbrevationView];
+  [abbrevationView setHighlighted:1];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = RTTAbbreviationTapGestureRecognizer;
-  [(RTTAbbreviationTapGestureRecognizer *)&v6 touchesEnded:a3 withEvent:a4];
-  v5 = [(RTTAbbreviationTapGestureRecognizer *)self abbrevationView];
-  [v5 setHighlighted:0];
+  [(RTTAbbreviationTapGestureRecognizer *)&v6 touchesEnded:ended withEvent:event];
+  abbrevationView = [(RTTAbbreviationTapGestureRecognizer *)self abbrevationView];
+  [abbrevationView setHighlighted:0];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v12.receiver = self;
   v12.super_class = RTTAbbreviationTapGestureRecognizer;
-  v6 = a3;
-  [(RTTAbbreviationTapGestureRecognizer *)&v12 touchesMoved:v6 withEvent:a4];
-  v7 = [v6 anyObject];
+  movedCopy = moved;
+  [(RTTAbbreviationTapGestureRecognizer *)&v12 touchesMoved:movedCopy withEvent:event];
+  anyObject = [movedCopy anyObject];
 
-  v8 = [v7 view];
-  v9 = [v8 superview];
-  v10 = [(RTTAbbreviationTapGestureRecognizer *)self abbrevationView];
+  view = [anyObject view];
+  superview = [view superview];
+  abbrevationView = [(RTTAbbreviationTapGestureRecognizer *)self abbrevationView];
 
-  if (v9 != v10)
+  if (superview != abbrevationView)
   {
-    v11 = [(RTTAbbreviationTapGestureRecognizer *)self abbrevationView];
-    [v11 setHighlighted:0];
+    abbrevationView2 = [(RTTAbbreviationTapGestureRecognizer *)self abbrevationView];
+    [abbrevationView2 setHighlighted:0];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = RTTAbbreviationTapGestureRecognizer;
-  [(RTTAbbreviationTapGestureRecognizer *)&v6 touchesCancelled:a3 withEvent:a4];
-  v5 = [(RTTAbbreviationTapGestureRecognizer *)self abbrevationView];
-  [v5 setHighlighted:0];
+  [(RTTAbbreviationTapGestureRecognizer *)&v6 touchesCancelled:cancelled withEvent:event];
+  abbrevationView = [(RTTAbbreviationTapGestureRecognizer *)self abbrevationView];
+  [abbrevationView setHighlighted:0];
 }
 
 - (RTTUIAbbreviationView)abbrevationView

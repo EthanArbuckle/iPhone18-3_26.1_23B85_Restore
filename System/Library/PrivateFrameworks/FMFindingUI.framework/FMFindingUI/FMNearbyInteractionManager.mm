@@ -8,13 +8,13 @@
 
 - (void)applicationDidEnterBackground
 {
-  v2 = self;
+  selfCopy = self;
   sub_24A562F38();
 }
 
 - (void)applicationWillEnterForeground
 {
-  v2 = self;
+  selfCopy = self;
   sub_24A562F90();
 }
 

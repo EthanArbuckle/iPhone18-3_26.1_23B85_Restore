@@ -1,38 +1,38 @@
 @interface MTPromise
-+ (BOOL)_errorIsCanceledError:(id)a3;
-+ (MTPromise)promiseWithAll:(id)a3;
-+ (MTPromise)promiseWithAny:(id)a3;
-+ (MTPromise)promiseWithComposition:(id)a3;
-+ (MTPromise)promiseWithError:(id)a3;
-+ (MTPromise)promiseWithResult:(id)a3;
-+ (id)_findUnfinishedPromise:(id)a3;
++ (BOOL)_errorIsCanceledError:(id)error;
++ (MTPromise)promiseWithAll:(id)all;
++ (MTPromise)promiseWithAny:(id)any;
++ (MTPromise)promiseWithComposition:(id)composition;
++ (MTPromise)promiseWithError:(id)error;
++ (MTPromise)promiseWithResult:(id)result;
++ (id)_findUnfinishedPromise:(id)promise;
 + (id)_globalPromiseStorage;
 + (id)_globalPromiseStorageAccessQueue;
-+ (id)_resultOfComposition:(id)a3 errors:(id)a4;
-+ (void)_configureAllPromise:(id)a3 withResults:(id)a4 promises:(id)a5 currentPromiseIndex:(unint64_t)a6;
-+ (void)_configureAnyPromise:(id)a3 withPromises:(id)a4 currentPromiseIndex:(unint64_t)a5;
-+ (void)_finishPromise:(id)a3 withPromise:(id)a4;
-+ (void)_setupCompositePromise:(id)a3 composition:(id)a4;
-+ (void)cancelPromisesInComposition:(id)a3;
++ (id)_resultOfComposition:(id)composition errors:(id)errors;
++ (void)_configureAllPromise:(id)promise withResults:(id)results promises:(id)promises currentPromiseIndex:(unint64_t)index;
++ (void)_configureAnyPromise:(id)promise withPromises:(id)promises currentPromiseIndex:(unint64_t)index;
++ (void)_finishPromise:(id)promise withPromise:(id)withPromise;
++ (void)_setupCompositePromise:(id)promise composition:(id)composition;
++ (void)cancelPromisesInComposition:(id)composition;
 - (BOOL)_isFinished;
 - (BOOL)cancel;
-- (BOOL)finishWithResult:(id)a3 error:(id)a4;
+- (BOOL)finishWithResult:(id)result error:(id)error;
 - (BOOL)isCancelled;
 - (BOOL)isFinished;
 - (MTPromise)init;
 - (id)BOOLCompletionHandlerAdapter;
-- (id)catchWithBlock:(id)a3;
+- (id)catchWithBlock:(id)block;
 - (id)completionHandlerAdapter;
 - (id)errorOnlyCompletionHandlerAdapter;
 - (id)nilValueCompletionHandlerAdapter;
-- (id)resultBeforeDate:(id)a3 error:(id *)a4;
-- (id)resultWithError:(id *)a3;
-- (id)resultWithTimeout:(double)a3 error:(id *)a4;
-- (id)thenWithBlock:(id)a3;
-- (void)_addBlock:(id)a3 orCallWithResult:(id)a4;
-- (void)addErrorBlock:(id)a3;
-- (void)addFinishBlock:(id)a3;
-- (void)addSuccessBlock:(id)a3;
+- (id)resultBeforeDate:(id)date error:(id *)error;
+- (id)resultWithError:(id *)error;
+- (id)resultWithTimeout:(double)timeout error:(id *)error;
+- (id)thenWithBlock:(id)block;
+- (void)_addBlock:(id)block orCallWithResult:(id)result;
+- (void)addErrorBlock:(id)block;
+- (void)addFinishBlock:(id)block;
+- (void)addSuccessBlock:(id)block;
 @end
 
 @implementation MTPromise
@@ -94,35 +94,35 @@ void __17__MTPromise_init__block_invoke(uint64_t a1)
   [v2 addObject:*(a1 + 32)];
 }
 
-+ (id)_resultOfComposition:(id)a3 errors:(id)a4
++ (id)_resultOfComposition:(id)composition errors:(id)errors
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  compositionCopy = composition;
+  errorsCopy = errors;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v6 promiseResult];
-    v9 = [v8 error];
-    v10 = v9;
-    if (v7 && v9)
+    promiseResult = [compositionCopy promiseResult];
+    error = [promiseResult error];
+    v10 = error;
+    if (errorsCopy && error)
     {
-      [v7 addObject:v9];
+      [errorsCopy addObject:error];
     }
 
-    v11 = [v8 result];
-    v12 = v11;
-    if (v11)
+    result = [promiseResult result];
+    v12 = result;
+    if (result)
     {
-      v13 = v11;
+      null = result;
     }
 
     else
     {
-      v13 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
     }
 
-    v21 = v13;
+    v21 = null;
   }
 
   else
@@ -130,12 +130,12 @@ void __17__MTPromise_init__block_invoke(uint64_t a1)
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+      v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(compositionCopy, "count")}];
       v38 = 0u;
       v39 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v15 = v6;
+      v15 = compositionCopy;
       v16 = [v15 countByEnumeratingWithState:&v38 objects:v43 count:16];
       if (v16)
       {
@@ -150,7 +150,7 @@ void __17__MTPromise_init__block_invoke(uint64_t a1)
               objc_enumerationMutation(v15);
             }
 
-            v20 = [a1 _resultOfComposition:*(*(&v38 + 1) + 8 * i) errors:v7];
+            v20 = [self _resultOfComposition:*(*(&v38 + 1) + 8 * i) errors:errorsCopy];
             [v14 addObject:v20];
           }
 
@@ -168,13 +168,13 @@ void __17__MTPromise_init__block_invoke(uint64_t a1)
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v22 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+        v22 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(compositionCopy, "count")}];
         v34 = 0u;
         v35 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v33 = v6;
-        v23 = v6;
+        v33 = compositionCopy;
+        v23 = compositionCopy;
         v24 = [v23 countByEnumeratingWithState:&v34 objects:v42 count:16];
         if (v24)
         {
@@ -191,7 +191,7 @@ void __17__MTPromise_init__block_invoke(uint64_t a1)
 
               v28 = *(*(&v34 + 1) + 8 * j);
               v29 = [v23 objectForKeyedSubscript:v28];
-              v30 = [a1 _resultOfComposition:v29 errors:v7];
+              v30 = [self _resultOfComposition:v29 errors:errorsCopy];
               [v22 setObject:v30 forKeyedSubscript:v28];
             }
 
@@ -202,12 +202,12 @@ void __17__MTPromise_init__block_invoke(uint64_t a1)
         }
 
         v21 = [v22 copy];
-        v6 = v33;
+        compositionCopy = v33;
       }
 
       else
       {
-        v21 = v6;
+        v21 = compositionCopy;
       }
     }
   }
@@ -217,21 +217,21 @@ void __17__MTPromise_init__block_invoke(uint64_t a1)
   return v21;
 }
 
-+ (id)_findUnfinishedPromise:(id)a3
++ (id)_findUnfinishedPromise:(id)promise
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  promiseCopy = promise;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v4 isFinished])
+    if ([promiseCopy isFinished])
     {
       v5 = 0;
     }
 
     else
     {
-      v5 = v4;
+      v5 = promiseCopy;
     }
 
     v6 = v5;
@@ -245,7 +245,7 @@ void __17__MTPromise_init__block_invoke(uint64_t a1)
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v7 = v4;
+    v7 = promiseCopy;
     v8 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v8)
     {
@@ -260,7 +260,7 @@ void __17__MTPromise_init__block_invoke(uint64_t a1)
             objc_enumerationMutation(v7);
           }
 
-          v12 = [a1 _findUnfinishedPromise:*(*(&v24 + 1) + 8 * i)];
+          v12 = [self _findUnfinishedPromise:*(*(&v24 + 1) + 8 * i)];
           if (v12)
           {
             v6 = v12;
@@ -290,7 +290,7 @@ LABEL_25:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = v4;
+    v7 = promiseCopy;
     v13 = [v7 countByEnumeratingWithState:&v20 objects:v28 count:16];
     if (v13)
     {
@@ -306,7 +306,7 @@ LABEL_25:
           }
 
           v17 = [v7 objectForKeyedSubscript:{*(*(&v20 + 1) + 8 * j), v20}];
-          v6 = [a1 _findUnfinishedPromise:v17];
+          v6 = [self _findUnfinishedPromise:v17];
 
           if (v6)
           {
@@ -338,43 +338,43 @@ LABEL_29:
   return v6;
 }
 
-+ (void)_setupCompositePromise:(id)a3 composition:(id)a4
++ (void)_setupCompositePromise:(id)promise composition:(id)composition
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 _findUnfinishedPromise:v7];
+  promiseCopy = promise;
+  compositionCopy = composition;
+  v8 = [self _findUnfinishedPromise:compositionCopy];
   if (v8)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __61__MTPromise_Composition___setupCompositePromise_composition___block_invoke;
     v10[3] = &unk_2798CDE40;
-    v13 = a1;
-    v11 = v6;
-    v12 = v7;
+    selfCopy = self;
+    v11 = promiseCopy;
+    v12 = compositionCopy;
     [v8 addFinishBlock:v10];
   }
 
   else
   {
-    v9 = [a1 _resultOfComposition:v7 errors:0];
-    [v6 finishWithResult:v9];
+    v9 = [self _resultOfComposition:compositionCopy errors:0];
+    [promiseCopy finishWithResult:v9];
   }
 }
 
-+ (MTPromise)promiseWithComposition:(id)a3
++ (MTPromise)promiseWithComposition:(id)composition
 {
-  v4 = a3;
+  compositionCopy = composition;
   v5 = objc_alloc_init(objc_opt_class());
-  [a1 _setupCompositePromise:v5 composition:v4];
+  [self _setupCompositePromise:v5 composition:compositionCopy];
 
   return v5;
 }
 
-+ (void)cancelPromisesInComposition:(id)a3
++ (void)cancelPromisesInComposition:(id)composition
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  compositionCopy = composition;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -385,7 +385,7 @@ LABEL_29:
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v4 = v3;
+      v4 = compositionCopy;
       v5 = [v4 countByEnumeratingWithState:&v19 objects:v24 count:16];
       if (v5)
       {
@@ -423,7 +423,7 @@ LABEL_29:
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v4 = v3;
+      v4 = compositionCopy;
       v10 = [v4 countByEnumeratingWithState:&v15 objects:v23 count:16];
       if (v10)
       {
@@ -451,60 +451,60 @@ LABEL_29:
     goto LABEL_21;
   }
 
-  [v3 cancel];
+  [compositionCopy cancel];
 LABEL_21:
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (MTPromise)promiseWithError:(id)a3
++ (MTPromise)promiseWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 finishWithError:v3];
+  [v4 finishWithError:errorCopy];
 
   return v4;
 }
 
-+ (MTPromise)promiseWithResult:(id)a3
++ (MTPromise)promiseWithResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 finishWithResult:v3];
+  [v4 finishWithResult:resultCopy];
 
   return v4;
 }
 
-+ (MTPromise)promiseWithAll:(id)a3
++ (MTPromise)promiseWithAll:(id)all
 {
-  v3 = a3;
+  allCopy = all;
   v4 = objc_alloc_init(objc_opt_class());
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  [objc_opt_class() _configureAllPromise:v4 withResults:v5 promises:v3 currentPromiseIndex:0];
+  [objc_opt_class() _configureAllPromise:v4 withResults:v5 promises:allCopy currentPromiseIndex:0];
 
   return v4;
 }
 
-+ (MTPromise)promiseWithAny:(id)a3
++ (MTPromise)promiseWithAny:(id)any
 {
-  v3 = a3;
+  anyCopy = any;
   v4 = objc_alloc_init(objc_opt_class());
-  [objc_opt_class() _configureAnyPromise:v4 withPromises:v3 currentPromiseIndex:0];
+  [objc_opt_class() _configureAnyPromise:v4 withPromises:anyCopy currentPromiseIndex:0];
 
   return v4;
 }
 
 - (BOOL)isCancelled
 {
-  v3 = [(MTPromise *)self stateLock];
-  [v3 lock];
+  stateLock = [(MTPromise *)self stateLock];
+  [stateLock lock];
 
   if ([(MTPromise *)self _isFinished])
   {
     v4 = objc_opt_class();
-    v5 = [(MTPromise *)self promiseResult];
-    v6 = [v5 error];
-    v7 = [v4 _errorIsCanceledError:v6];
+    promiseResult = [(MTPromise *)self promiseResult];
+    error = [promiseResult error];
+    v7 = [v4 _errorIsCanceledError:error];
   }
 
   else
@@ -512,34 +512,34 @@ LABEL_21:
     v7 = 0;
   }
 
-  v8 = [(MTPromise *)self stateLock];
-  [v8 unlock];
+  stateLock2 = [(MTPromise *)self stateLock];
+  [stateLock2 unlock];
 
   return v7;
 }
 
 - (BOOL)isFinished
 {
-  v3 = [(MTPromise *)self stateLock];
-  [v3 lock];
+  stateLock = [(MTPromise *)self stateLock];
+  [stateLock lock];
 
-  LOBYTE(v3) = [(MTPromise *)self _isFinished];
-  v4 = [(MTPromise *)self stateLock];
-  [v4 unlock];
+  LOBYTE(stateLock) = [(MTPromise *)self _isFinished];
+  stateLock2 = [(MTPromise *)self stateLock];
+  [stateLock2 unlock];
 
-  return v3;
+  return stateLock;
 }
 
-- (void)addErrorBlock:(id)a3
+- (void)addErrorBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MTPromise *)self completionBlocks];
+  blockCopy = block;
+  completionBlocks = [(MTPromise *)self completionBlocks];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __27__MTPromise_addErrorBlock___block_invoke;
   v11[3] = &unk_2798CEBD8;
-  v12 = v5;
-  v13 = v4;
+  v12 = completionBlocks;
+  v13 = blockCopy;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __27__MTPromise_addErrorBlock___block_invoke_2;
@@ -551,16 +551,16 @@ LABEL_21:
   [(MTPromise *)self _addBlock:v11 orCallWithResult:v8];
 }
 
-- (void)addFinishBlock:(id)a3
+- (void)addFinishBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MTPromise *)self completionBlocks];
+  blockCopy = block;
+  completionBlocks = [(MTPromise *)self completionBlocks];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __28__MTPromise_addFinishBlock___block_invoke;
   v11[3] = &unk_2798CEBD8;
-  v12 = v5;
-  v13 = v4;
+  v12 = completionBlocks;
+  v13 = blockCopy;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __28__MTPromise_addFinishBlock___block_invoke_2;
@@ -572,16 +572,16 @@ LABEL_21:
   [(MTPromise *)self _addBlock:v11 orCallWithResult:v8];
 }
 
-- (void)addSuccessBlock:(id)a3
+- (void)addSuccessBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MTPromise *)self completionBlocks];
+  blockCopy = block;
+  completionBlocks = [(MTPromise *)self completionBlocks];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __29__MTPromise_addSuccessBlock___block_invoke;
   v11[3] = &unk_2798CEBD8;
-  v12 = v5;
-  v13 = v4;
+  v12 = completionBlocks;
+  v13 = blockCopy;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __29__MTPromise_addSuccessBlock___block_invoke_2;
@@ -593,61 +593,61 @@ LABEL_21:
   [(MTPromise *)self _addBlock:v11 orCallWithResult:v8];
 }
 
-- (id)resultBeforeDate:(id)a3 error:(id *)a4
+- (id)resultBeforeDate:(id)date error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MTPromise *)self stateLock];
-  v8 = [v7 lockWhenCondition:1 beforeDate:v6];
+  dateCopy = date;
+  stateLock = [(MTPromise *)self stateLock];
+  v8 = [stateLock lockWhenCondition:1 beforeDate:dateCopy];
 
   if (v8)
   {
-    v15 = [(MTPromise *)self promiseResult];
-    v16 = [(MTPromise *)self stateLock];
-    [v16 unlock];
+    promiseResult = [(MTPromise *)self promiseResult];
+    stateLock2 = [(MTPromise *)self stateLock];
+    [stateLock2 unlock];
 
-    v17 = [v15 result];
+    result = [promiseResult result];
 
-    if (a4 && !v17)
+    if (error && !result)
     {
-      *a4 = [v15 error];
+      *error = [promiseResult error];
     }
 
-    v18 = [v15 result];
+    result2 = [promiseResult result];
   }
 
-  else if (a4)
+  else if (error)
   {
     MTError(400, 0, v9, v10, v11, v12, v13, v14, 0);
-    *a4 = v18 = 0;
+    *error = result2 = 0;
   }
 
   else
   {
-    v18 = 0;
+    result2 = 0;
   }
 
-  return v18;
+  return result2;
 }
 
-- (id)resultWithError:(id *)a3
+- (id)resultWithError:(id *)error
 {
-  v5 = [MEMORY[0x277CBEAA8] distantFuture];
-  v6 = [(MTPromise *)self resultBeforeDate:v5 error:a3];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v6 = [(MTPromise *)self resultBeforeDate:distantFuture error:error];
 
   return v6;
 }
 
-- (id)resultWithTimeout:(double)a3 error:(id *)a4
+- (id)resultWithTimeout:(double)timeout error:(id *)error
 {
-  v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:a3];
-  v7 = [(MTPromise *)self resultBeforeDate:v6 error:a4];
+  v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:timeout];
+  v7 = [(MTPromise *)self resultBeforeDate:v6 error:error];
 
   return v7;
 }
 
-- (id)catchWithBlock:(id)a3
+- (id)catchWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc_init(MTPromise);
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x277D85DD0];
@@ -655,7 +655,7 @@ LABEL_21:
   v11[2] = __28__MTPromise_catchWithBlock___block_invoke;
   v11[3] = &unk_2798CEC28;
   objc_copyWeak(&v14, &location);
-  v6 = v4;
+  v6 = blockCopy;
   v13 = v6;
   v7 = v5;
   v12 = v7;
@@ -687,9 +687,9 @@ void __28__MTPromise_catchWithBlock___block_invoke(uint64_t a1, void *a2, void *
   [objc_opt_class() _finishPromise:*(a1 + 32) withPromise:v7];
 }
 
-- (id)thenWithBlock:(id)a3
+- (id)thenWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc_init(MTPromise);
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x277D85DD0];
@@ -697,7 +697,7 @@ void __28__MTPromise_catchWithBlock___block_invoke(uint64_t a1, void *a2, void *
   v11[2] = __27__MTPromise_thenWithBlock___block_invoke;
   v11[3] = &unk_2798CEC28;
   objc_copyWeak(&v14, &location);
-  v6 = v4;
+  v6 = blockCopy;
   v13 = v6;
   v7 = v5;
   v12 = v7;
@@ -737,19 +737,19 @@ void __27__MTPromise_thenWithBlock___block_invoke(uint64_t a1, void *a2, void *a
   return self;
 }
 
-- (BOOL)finishWithResult:(id)a3 error:(id)a4
+- (BOOL)finishWithResult:(id)result error:(id)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  resultCopy = result;
+  errorCopy = error;
+  v8 = errorCopy;
+  if (resultCopy && errorCopy)
   {
     v9 = MTMetricsKitOSLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v29 = v6;
+      v29 = resultCopy;
       v30 = 2112;
       v31 = v8;
       v10 = "MetricsKit: Someone is finishing a promise with both a result and an error. This will result in both the success and error blocks being called. result = %@ error = %@";
@@ -762,7 +762,7 @@ LABEL_8:
 
   else
   {
-    if (v6 | v7)
+    if (resultCopy | errorCopy)
     {
       goto LABEL_10;
     }
@@ -779,18 +779,18 @@ LABEL_8:
   }
 
 LABEL_10:
-  v13 = [(MTPromise *)self stateLock];
-  [v13 lock];
+  stateLock = [(MTPromise *)self stateLock];
+  [stateLock lock];
 
-  v14 = [(MTPromise *)self stateLock];
-  v15 = [v14 condition];
+  stateLock2 = [(MTPromise *)self stateLock];
+  condition = [stateLock2 condition];
 
-  if (v15 == 1)
+  if (condition == 1)
   {
     v20 = objc_opt_class();
-    v21 = [(MTPromise *)self promiseResult];
-    v22 = [v21 error];
-    if ([v20 _errorIsCanceledError:v22])
+    promiseResult = [(MTPromise *)self promiseResult];
+    error = [promiseResult error];
+    if ([v20 _errorIsCanceledError:error])
     {
     }
 
@@ -803,27 +803,27 @@ LABEL_10:
         goto LABEL_16;
       }
 
-      v21 = MTMetricsKitOSLog();
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
+      promiseResult = MTMetricsKitOSLog();
+      if (os_log_type_enabled(promiseResult, OS_LOG_TYPE_DEBUG))
       {
         *buf = 0;
-        _os_log_impl(&dword_258F4B000, v21, OS_LOG_TYPE_DEBUG, "MetricsKit: Someone is attempting to finish a finished MTPromise.", buf, 2u);
+        _os_log_impl(&dword_258F4B000, promiseResult, OS_LOG_TYPE_DEBUG, "MetricsKit: Someone is attempting to finish a finished MTPromise.", buf, 2u);
       }
     }
 
 LABEL_16:
-    v16 = [(MTPromise *)self stateLock];
-    [(MTPromiseResult *)v16 unlock];
+    stateLock3 = [(MTPromise *)self stateLock];
+    [(MTPromiseResult *)stateLock3 unlock];
     goto LABEL_17;
   }
 
-  v16 = [[MTPromiseResult alloc] initWithResult:v6 error:v8];
-  [(MTPromise *)self setPromiseResult:v16];
-  v17 = [(MTPromise *)self stateLock];
-  [v17 unlockWithCondition:1];
+  stateLock3 = [[MTPromiseResult alloc] initWithResult:resultCopy error:v8];
+  [(MTPromise *)self setPromiseResult:stateLock3];
+  stateLock4 = [(MTPromise *)self stateLock];
+  [stateLock4 unlockWithCondition:1];
 
-  v18 = [(MTPromise *)self completionBlocks];
-  [v18 flushCompletionBlocksWithPromiseResult:v16];
+  completionBlocks = [(MTPromise *)self completionBlocks];
+  [completionBlocks flushCompletionBlocksWithPromiseResult:stateLock3];
 
   objc_initWeak(buf, self);
   v19 = +[MTPromise _globalPromiseStorageAccessQueue];
@@ -839,7 +839,7 @@ LABEL_16:
 LABEL_17:
 
   v24 = *MEMORY[0x277D85DE8];
-  return v15 != 1;
+  return condition != 1;
 }
 
 void __36__MTPromise_finishWithResult_error___block_invoke(uint64_t a1)
@@ -984,55 +984,55 @@ void __45__MTPromise_nilValueCompletionHandlerAdapter__block_invoke(uint64_t a1,
   }
 }
 
-- (void)_addBlock:(id)a3 orCallWithResult:(id)a4
+- (void)_addBlock:(id)block orCallWithResult:(id)result
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(MTPromise *)self stateLock];
-  [v7 lock];
+  blockCopy = block;
+  resultCopy = result;
+  stateLock = [(MTPromise *)self stateLock];
+  [stateLock lock];
 
-  v8 = [(MTPromise *)self promiseResult];
-  if (v8)
+  promiseResult = [(MTPromise *)self promiseResult];
+  if (promiseResult)
   {
-    v9 = [(MTPromise *)self stateLock];
-    [v9 unlock];
+    stateLock2 = [(MTPromise *)self stateLock];
+    [stateLock2 unlock];
 
-    v6[2](v6, v8);
+    resultCopy[2](resultCopy, promiseResult);
   }
 
   else
   {
-    v11[2]();
-    v10 = [(MTPromise *)self stateLock];
-    [v10 unlock];
+    blockCopy[2]();
+    stateLock3 = [(MTPromise *)self stateLock];
+    [stateLock3 unlock];
   }
 }
 
-+ (void)_configureAllPromise:(id)a3 withResults:(id)a4 promises:(id)a5 currentPromiseIndex:(unint64_t)a6
++ (void)_configureAllPromise:(id)promise withResults:(id)results promises:(id)promises currentPromiseIndex:(unint64_t)index
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v12 objectAtIndexedSubscript:a6];
-  objc_initWeak(&location, a1);
+  promiseCopy = promise;
+  resultsCopy = results;
+  promisesCopy = promises;
+  v13 = [promisesCopy objectAtIndexedSubscript:index];
+  objc_initWeak(&location, self);
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __75__MTPromise__configureAllPromise_withResults_promises_currentPromiseIndex___block_invoke;
   v23[3] = &unk_2798CECC8;
   objc_copyWeak(v27, &location);
-  v14 = v11;
+  v14 = resultsCopy;
   v24 = v14;
-  v27[1] = a6;
-  v15 = v12;
+  v27[1] = index;
+  v15 = promisesCopy;
   v25 = v15;
-  v16 = v10;
+  v16 = promiseCopy;
   v26 = v16;
   [v13 addSuccessBlock:v23];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __75__MTPromise__configureAllPromise_withResults_promises_currentPromiseIndex___block_invoke_2;
   v19[3] = &unk_2798CECF0;
-  v22 = a6;
+  indexCopy = index;
   v17 = v15;
   v20 = v17;
   v18 = v16;
@@ -1073,20 +1073,20 @@ void __75__MTPromise__configureAllPromise_withResults_promises_currentPromiseInd
   [*(a1 + 40) finishWithError:v5];
 }
 
-+ (void)_configureAnyPromise:(id)a3 withPromises:(id)a4 currentPromiseIndex:(unint64_t)a5
++ (void)_configureAnyPromise:(id)promise withPromises:(id)promises currentPromiseIndex:(unint64_t)index
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 objectAtIndexedSubscript:a5];
-  objc_initWeak(&location, a1);
+  promiseCopy = promise;
+  promisesCopy = promises;
+  v10 = [promisesCopy objectAtIndexedSubscript:index];
+  objc_initWeak(&location, self);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __67__MTPromise__configureAnyPromise_withPromises_currentPromiseIndex___block_invoke;
   v19[3] = &unk_2798CED18;
-  v22 = a5;
-  v11 = v9;
+  indexCopy = index;
+  v11 = promisesCopy;
   v20 = v11;
-  v12 = v8;
+  v12 = promiseCopy;
   v21 = v12;
   [v10 addSuccessBlock:v19];
   v15[0] = MEMORY[0x277D85DD0];
@@ -1094,7 +1094,7 @@ void __75__MTPromise__configureAllPromise_withResults_promises_currentPromiseInd
   v15[2] = __67__MTPromise__configureAnyPromise_withPromises_currentPromiseIndex___block_invoke_2;
   v15[3] = &unk_2798CED40;
   objc_copyWeak(v18, &location);
-  v18[1] = a5;
+  v18[1] = index;
   v13 = v11;
   v16 = v13;
   v14 = v12;
@@ -1133,13 +1133,13 @@ void __67__MTPromise__configureAnyPromise_withPromises_currentPromiseIndex___blo
   }
 }
 
-+ (BOOL)_errorIsCanceledError:(id)a3
++ (BOOL)_errorIsCanceledError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:*MEMORY[0x277CCA050]])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277CCA050]])
   {
-    v5 = [v3 code] == 3072;
+    v5 = [errorCopy code] == 3072;
   }
 
   else
@@ -1150,24 +1150,24 @@ void __67__MTPromise__configureAnyPromise_withPromises_currentPromiseIndex___blo
   return v5;
 }
 
-+ (void)_finishPromise:(id)a3 withPromise:(id)a4
++ (void)_finishPromise:(id)promise withPromise:(id)withPromise
 {
-  v5 = a3;
+  promiseCopy = promise;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __40__MTPromise__finishPromise_withPromise___block_invoke;
   v11[3] = &unk_2798CED68;
-  v6 = v5;
+  v6 = promiseCopy;
   v12 = v6;
-  v7 = a4;
-  [v7 addSuccessBlock:v11];
+  withPromiseCopy = withPromise;
+  [withPromiseCopy addSuccessBlock:v11];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __40__MTPromise__finishPromise_withPromise___block_invoke_2;
   v9[3] = &unk_2798CDFB8;
   v10 = v6;
   v8 = v6;
-  [v7 addErrorBlock:v9];
+  [withPromiseCopy addErrorBlock:v9];
 }
 
 uint64_t __34__MTPromise__globalPromiseStorage__block_invoke()
@@ -1186,8 +1186,8 @@ uint64_t __45__MTPromise__globalPromiseStorageAccessQueue__block_invoke()
 
 - (BOOL)_isFinished
 {
-  v2 = [(MTPromise *)self stateLock];
-  v3 = [v2 condition] == 1;
+  stateLock = [(MTPromise *)self stateLock];
+  v3 = [stateLock condition] == 1;
 
   return v3;
 }

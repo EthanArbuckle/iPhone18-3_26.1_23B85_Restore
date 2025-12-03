@@ -47,9 +47,9 @@
     *(v2 + 552) = xmmword_1E4297910;
     *(v2 + 728) = xmmword_1E4297900;
     *(v2 + 744) = xmmword_1E4297920;
-    v11 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     v12 = *(v3 + 45);
-    *(v3 + 45) = v11;
+    *(v3 + 45) = whiteColor;
 
     *(v3 + 600) = xmmword_1E42971A0;
     *(v3 + 616) = xmmword_1E42971A0;
@@ -61,9 +61,9 @@
     *(v3 + 568) = xmmword_1E42971B0;
     *(v3 + 584) = xmmword_1E42971B0;
     *(v3 + 41) = 0x4072C00000000000;
-    v13 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
     v14 = *(v3 + 43);
-    *(v3 + 43) = v13;
+    *(v3 + 43) = whiteColor2;
 
     *(v3 + 44) = 0x4008000000000000;
     *(v3 + 48) = 0x4062C00000000000;
@@ -93,8 +93,8 @@
     [v19 setTextStyle:13];
     [v19 setNumberOfLines:3];
     [v19 setFontWeight:5];
-    v20 = [MEMORY[0x1E69DC888] whiteColor];
-    [v19 setColor:v20];
+    whiteColor3 = [MEMORY[0x1E69DC888] whiteColor];
+    [v19 setColor:whiteColor3];
 
     [v19 setMargin:{0.0, 3.0, 0.0, 0.0}];
     [v19 setFontSize:10.0];
@@ -107,8 +107,8 @@
     [v23 setTextStyle:13];
     [v23 setNumberOfLines:3];
     [v23 setFontWeight:5];
-    v24 = [MEMORY[0x1E69DC888] whiteColor];
-    [v23 setColor:v24];
+    whiteColor4 = [MEMORY[0x1E69DC888] whiteColor];
+    [v23 setColor:whiteColor4];
 
     [v23 setMargin:{0.0, 1.5, 0.0, 0.0}];
     [v23 setFontSize:7.0];

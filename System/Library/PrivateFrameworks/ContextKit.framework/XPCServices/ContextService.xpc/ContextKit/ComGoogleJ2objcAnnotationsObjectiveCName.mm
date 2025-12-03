@@ -1,19 +1,19 @@
 @interface ComGoogleJ2objcAnnotationsObjectiveCName
 + (id)__annotations;
-- (ComGoogleJ2objcAnnotationsObjectiveCName)initWithValue:(id)a3;
+- (ComGoogleJ2objcAnnotationsObjectiveCName)initWithValue:(id)value;
 - (id)annotationType;
 @end
 
 @implementation ComGoogleJ2objcAnnotationsObjectiveCName
 
-- (ComGoogleJ2objcAnnotationsObjectiveCName)initWithValue:(id)a3
+- (ComGoogleJ2objcAnnotationsObjectiveCName)initWithValue:(id)value
 {
   v6.receiver = self;
   v6.super_class = ComGoogleJ2objcAnnotationsObjectiveCName;
   v4 = [(ComGoogleJ2objcAnnotationsObjectiveCName *)&v6 init];
   if (v4)
   {
-    v4->value_ = a3;
+    v4->value_ = value;
   }
 
   return v4;

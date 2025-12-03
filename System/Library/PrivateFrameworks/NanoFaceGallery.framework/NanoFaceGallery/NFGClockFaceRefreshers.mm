@@ -1,14 +1,14 @@
 @interface NFGClockFaceRefreshers
-+ (id)galleryRefresherForDevice:(id)a3;
++ (id)galleryRefresherForDevice:(id)device;
 - (NFGClockFaceRefreshers)init;
 @end
 
 @implementation NFGClockFaceRefreshers
 
-+ (id)galleryRefresherForDevice:(id)a3
++ (id)galleryRefresherForDevice:(id)device
 {
-  v3 = a3;
-  v4 = sub_25B0DCB18(v3);
+  deviceCopy = device;
+  v4 = sub_25B0DCB18(deviceCopy);
 
   return v4;
 }

@@ -1,37 +1,37 @@
 @interface BLStreamingKeyRequest
-- (BLStreamingKeyRequest)initWithMediaItem:(id)a3 loadingRequest:(id)a4;
-- (void)_performStreamingKeyRequestForHLSAsset:(id)a3;
+- (BLStreamingKeyRequest)initWithMediaItem:(id)item loadingRequest:(id)request;
+- (void)_performStreamingKeyRequestForHLSAsset:(id)asset;
 - (void)execute;
-- (void)performRequestWithResponseHandler:(id)a3;
+- (void)performRequestWithResponseHandler:(id)handler;
 @end
 
 @implementation BLStreamingKeyRequest
 
-- (BLStreamingKeyRequest)initWithMediaItem:(id)a3 loadingRequest:(id)a4
+- (BLStreamingKeyRequest)initWithMediaItem:(id)item loadingRequest:(id)request
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  requestCopy = request;
   v12 = objc_msgSend_init(self, v9, v10, v11);
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong((v12 + 320), a3);
-    objc_storeStrong(&v13->_loadingRequest, a4);
+    objc_storeStrong((v12 + 320), item);
+    objc_storeStrong(&v13->_loadingRequest, request);
   }
 
   return v13;
 }
 
-- (void)performRequestWithResponseHandler:(id)a3
+- (void)performRequestWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_241D15D34;
   v8[3] = &unk_278D158A0;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = handlerCopy;
+  v5 = handlerCopy;
   objc_msgSend_performRequestWithCompletionHandler_(self, v6, v8, v7);
 }
 
@@ -53,10 +53,10 @@
   objc_msgSend_performRequestWithResponseHandler_(v12, v13, v15, v14);
 }
 
-- (void)_performStreamingKeyRequestForHLSAsset:(id)a3
+- (void)_performStreamingKeyRequestForHLSAsset:(id)asset
 {
   v4 = MEMORY[0x277D7FC30];
-  v5 = a3;
+  assetCopy = asset;
   v6 = [v4 alloc];
   active = objc_msgSend_initWithActiveAccountAllowAuthenticationOnceADay_bl(v6, v7, v8, v9);
   v11 = objc_alloc(MEMORY[0x277D7FBE0]);
@@ -66,11 +66,11 @@
 
   objc_msgSend_setShouldIncludeDeviceGUID_(self->_secureKeyRequest, v15, 1, v16);
   v17 = self->_secureKeyRequest;
-  v21 = objc_msgSend_keyCertificateURL(v5, v18, v19, v20);
+  v21 = objc_msgSend_keyCertificateURL(assetCopy, v18, v19, v20);
   objc_msgSend_setCertificateURL_(v17, v22, v21, v23);
 
   v24 = self->_secureKeyRequest;
-  v28 = objc_msgSend_keyServerURL(v5, v25, v26, v27);
+  v28 = objc_msgSend_keyServerURL(assetCopy, v25, v26, v27);
 
   objc_msgSend_setKeyServerURL_(v24, v29, v28, v30);
   objc_msgSend_setITunesStoreRequest_(self->_secureKeyRequest, v31, 1, v32);

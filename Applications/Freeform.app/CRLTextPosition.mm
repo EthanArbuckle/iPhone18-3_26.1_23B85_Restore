@@ -1,45 +1,45 @@
 @interface CRLTextPosition
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TtC8Freeform15CRLTextPosition)init;
-- (id)clampedTo:(id)a3;
-- (id)init:(int64_t)a3 caretAffinity:(unint64_t)a4;
-- (id)offset:(int64_t)a3 in:(id)a4;
-- (int64_t)compare:(id)a3;
+- (id)clampedTo:(id)to;
+- (id)init:(int64_t)init caretAffinity:(unint64_t)affinity;
+- (id)offset:(int64_t)offset in:(id)in;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation CRLTextPosition
 
-- (id)init:(int64_t)a3 caretAffinity:(unint64_t)a4
+- (id)init:(int64_t)init caretAffinity:(unint64_t)affinity
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.isa + OBJC_IVAR____TtC8Freeform15CRLTextPosition_insertionEdge) = 0;
-  *(&self->super.super.isa + OBJC_IVAR____TtC8Freeform15CRLTextPosition_location) = a3;
-  *(&self->super.super.isa + OBJC_IVAR____TtC8Freeform15CRLTextPosition_caretAffinity) = a4;
+  *(&self->super.super.isa + OBJC_IVAR____TtC8Freeform15CRLTextPosition_location) = init;
+  *(&self->super.super.isa + OBJC_IVAR____TtC8Freeform15CRLTextPosition_caretAffinity) = affinity;
   v9.receiver = self;
   v9.super_class = ObjectType;
   return [(CRLTextPosition *)&v9 init];
 }
 
-- (id)offset:(int64_t)a3 in:(id)a4
+- (id)offset:(int64_t)offset in:(id)in
 {
-  v6 = a4;
-  v7 = self;
-  v8 = sub_100B7FBAC(a3, v6);
+  inCopy = in;
+  selfCopy = self;
+  v8 = sub_100B7FBAC(offset, inCopy);
 
   return v8;
 }
 
-- (id)clampedTo:(id)a3
+- (id)clampedTo:(id)to
 {
   ObjectType = swift_getObjectType();
-  v6 = a3;
-  v7 = self;
-  v8 = [v6 range];
-  v10 = v8;
-  v11 = *(&v7->super.super.isa + OBJC_IVAR____TtC8Freeform15CRLTextPosition_location);
-  if (v11 >= v8)
+  toCopy = to;
+  selfCopy = self;
+  range = [toCopy range];
+  v10 = range;
+  v11 = *(&selfCopy->super.super.isa + OBJC_IVAR____TtC8Freeform15CRLTextPosition_location);
+  if (v11 >= range)
   {
-    v12 = sub_100B80808(v8, v9);
+    v12 = sub_100B80808(range, v9);
     if (v12 >= v11)
     {
       v10 = v11;
@@ -56,11 +56,11 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -69,7 +69,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_100B802EC(v8);
@@ -85,11 +85,11 @@
   return result;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   swift_getObjectType();
 
-  return sub_100B807A4(a3, self);
+  return sub_100B807A4(compare, self);
 }
 
 @end

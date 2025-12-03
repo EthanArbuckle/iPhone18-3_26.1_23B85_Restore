@@ -1,16 +1,16 @@
 @interface AAUISettingsHelper
-+ (void)repairPrimaryAppleAccountInViewController:(id)a3 completion:(id)a4;
-+ (void)showAccountRecoveryFromViewController:(id)a3 accountManager:(id)a4;
-+ (void)showAccountRecoveryFromViewController:(id)a3 accountManager:(id)a4 highlightRowIdentifier:(id)a5;
++ (void)repairPrimaryAppleAccountInViewController:(id)controller completion:(id)completion;
++ (void)showAccountRecoveryFromViewController:(id)controller accountManager:(id)manager;
++ (void)showAccountRecoveryFromViewController:(id)controller accountManager:(id)manager highlightRowIdentifier:(id)identifier;
 @end
 
 @implementation AAUISettingsHelper
 
-+ (void)showAccountRecoveryFromViewController:(id)a3 accountManager:(id)a4
++ (void)showAccountRecoveryFromViewController:(id)controller accountManager:(id)manager
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  managerCopy = manager;
   v8 = _AAUILogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -21,18 +21,18 @@
     _os_log_impl(&dword_1C5355000, v8, OS_LOG_TYPE_DEFAULT, "%@: Starting Account recovery flow.", buf, 0xCu);
   }
 
-  objc_initWeak(buf, v6);
-  objc_initWeak(&location, v7);
+  objc_initWeak(buf, controllerCopy);
+  objc_initWeak(&location, managerCopy);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __75__AAUISettingsHelper_showAccountRecoveryFromViewController_accountManager___block_invoke;
   v12[3] = &unk_1E820DBA8;
   objc_copyWeak(&v14, buf);
   objc_copyWeak(v15, &location);
-  v11 = v7;
+  v11 = managerCopy;
   v13 = v11;
-  v15[1] = a1;
-  [a1 repairPrimaryAppleAccountInViewController:v6 completion:v12];
+  v15[1] = self;
+  [self repairPrimaryAppleAccountInViewController:controllerCopy completion:v12];
 
   objc_destroyWeak(v15);
   objc_destroyWeak(&v14);
@@ -94,12 +94,12 @@ void __75__AAUISettingsHelper_showAccountRecoveryFromViewController_accountManag
   objc_destroyWeak(&to);
 }
 
-+ (void)showAccountRecoveryFromViewController:(id)a3 accountManager:(id)a4 highlightRowIdentifier:(id)a5
++ (void)showAccountRecoveryFromViewController:(id)controller accountManager:(id)manager highlightRowIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  managerCopy = manager;
+  identifierCopy = identifier;
   v11 = _AAUILogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -110,18 +110,18 @@ void __75__AAUISettingsHelper_showAccountRecoveryFromViewController_accountManag
     _os_log_impl(&dword_1C5355000, v11, OS_LOG_TYPE_DEFAULT, "%@: Starting Account recovery flow.", buf, 0xCu);
   }
 
-  objc_initWeak(buf, v8);
-  objc_initWeak(&location, v9);
+  objc_initWeak(buf, controllerCopy);
+  objc_initWeak(&location, managerCopy);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __98__AAUISettingsHelper_showAccountRecoveryFromViewController_accountManager_highlightRowIdentifier___block_invoke;
   v15[3] = &unk_1E820DBA8;
   objc_copyWeak(&v17, buf);
   objc_copyWeak(v18, &location);
-  v14 = v9;
+  v14 = managerCopy;
   v16 = v14;
-  v18[1] = a1;
-  [a1 repairPrimaryAppleAccountInViewController:v8 completion:v15];
+  v18[1] = self;
+  [self repairPrimaryAppleAccountInViewController:controllerCopy completion:v15];
 
   objc_destroyWeak(v18);
   objc_destroyWeak(&v17);
@@ -183,14 +183,14 @@ void __98__AAUISettingsHelper_showAccountRecoveryFromViewController_accountManag
   objc_destroyWeak(&to);
 }
 
-+ (void)repairPrimaryAppleAccountInViewController:(id)a3 completion:(id)a4
++ (void)repairPrimaryAppleAccountInViewController:(id)controller completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  controllerCopy = controller;
   v8 = [[AAUID2DEncryptionFlowContext alloc] initWithType:2];
-  v7 = [[AAUIManateeStateValidator alloc] initWithFlowContext:v8 withPresentingViewController:v6];
+  v7 = [[AAUIManateeStateValidator alloc] initWithFlowContext:v8 withPresentingViewController:controllerCopy];
 
-  [(AAUIManateeStateValidator *)v7 repairIfPrimaryAppleAccountIsCDP:v5];
+  [(AAUIManateeStateValidator *)v7 repairIfPrimaryAppleAccountIsCDP:completionCopy];
 }
 
 @end

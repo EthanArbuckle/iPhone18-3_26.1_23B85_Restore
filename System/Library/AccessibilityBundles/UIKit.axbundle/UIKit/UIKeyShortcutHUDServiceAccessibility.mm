@@ -1,19 +1,19 @@
 @interface UIKeyShortcutHUDServiceAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_requestHUDDismissal;
-- (void)handleKeyboardEvent:(id)a3;
+- (void)handleKeyboardEvent:(id)event;
 @end
 
 @implementation UIKeyShortcutHUDServiceAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"UIKeyShortcutHUDService";
   v4 = "v";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
@@ -25,7 +25,7 @@
 
 - (void)_requestHUDDismissal
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = UIKeyShortcutHUDServiceAccessibility;
@@ -33,13 +33,13 @@
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);
 }
 
-- (void)handleKeyboardEvent:(id)a3
+- (void)handleKeyboardEvent:(id)event
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7.receiver = v9;
+  objc_storeStrong(location, event);
+  v7.receiver = selfCopy;
   v7.super_class = UIKeyShortcutHUDServiceAccessibility;
   [(UIKeyShortcutHUDServiceAccessibility *)&v7 handleKeyboardEvent:location[0]];
   v6 = [location[0] safeIntegerForKey:@"modifierFlags"];
@@ -52,7 +52,7 @@
   v5 = v3;
   if (UIAccessibilityIsVoiceOverRunning() || (_UIAccessibilityFullKeyboardAccessEnabled()) && v5)
   {
-    v4 = MEMORY[0x29EDC9748](v9);
+    v4 = MEMORY[0x29EDC9748](selfCopy);
     AXPerformSafeBlock();
     objc_storeStrong(&v4, 0);
   }

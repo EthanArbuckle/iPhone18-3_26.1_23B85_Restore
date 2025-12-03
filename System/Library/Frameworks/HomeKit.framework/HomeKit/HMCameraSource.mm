@@ -1,7 +1,7 @@
 @interface HMCameraSource
 + (id)logCategory;
 - (HMCameraSource)init;
-- (HMCameraSource)initWithProfileUniqueIdentifier:(id)a3 slotIdentifier:(id)a4 aspectRatio:(double)a5;
+- (HMCameraSource)initWithProfileUniqueIdentifier:(id)identifier slotIdentifier:(id)slotIdentifier aspectRatio:(double)ratio;
 - (HMCameraView)cameraView;
 - (id)logIdentifier;
 @end
@@ -18,32 +18,32 @@
 - (id)logIdentifier
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(HMCameraSource *)self profileUniqueIdentifier];
-  v5 = [(HMCameraSource *)self slotIdentifier];
-  v6 = [v3 stringWithFormat:@"%@/%@", v4, v5];
+  profileUniqueIdentifier = [(HMCameraSource *)self profileUniqueIdentifier];
+  slotIdentifier = [(HMCameraSource *)self slotIdentifier];
+  v6 = [v3 stringWithFormat:@"%@/%@", profileUniqueIdentifier, slotIdentifier];
 
   return v6;
 }
 
-- (HMCameraSource)initWithProfileUniqueIdentifier:(id)a3 slotIdentifier:(id)a4 aspectRatio:(double)a5
+- (HMCameraSource)initWithProfileUniqueIdentifier:(id)identifier slotIdentifier:(id)slotIdentifier aspectRatio:(double)ratio
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  identifierCopy = identifier;
+  slotIdentifierCopy = slotIdentifier;
+  if (!identifierCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = slotIdentifierCopy;
+  if (!slotIdentifierCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (a5 == 0.0)
+  if (ratio == 0.0)
   {
 LABEL_9:
     v17 = _HMFPreconditionFailure();
@@ -55,7 +55,7 @@ LABEL_9:
   v11 = [(HMCameraSource *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     profileUniqueIdentifier = v11->_profileUniqueIdentifier;
     v11->_profileUniqueIdentifier = v12;
 
@@ -63,7 +63,7 @@ LABEL_9:
     slotIdentifier = v11->_slotIdentifier;
     v11->_slotIdentifier = v14;
 
-    v11->_aspectRatio = a5;
+    v11->_aspectRatio = ratio;
   }
 
   return v11;

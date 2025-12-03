@@ -1,7 +1,7 @@
 @interface _ADCloudKitIntentsCapabilitiesStoreHelper
 - (id)recordBuilder;
 - (id)tableDescription;
-- (void)createIndicesForTableInDatabase:(id)a3;
+- (void)createIndicesForTableInDatabase:(id)database;
 @end
 
 @implementation _ADCloudKitIntentsCapabilitiesStoreHelper
@@ -21,12 +21,12 @@
   return recordBuilder;
 }
 
-- (void)createIndicesForTableInDatabase:(id)a3
+- (void)createIndicesForTableInDatabase:(id)database
 {
-  v3 = a3;
-  sub_1001BFED0(@"intents_capabilities", @"app_id", v3);
-  sub_1001BFED0(@"intents_capabilities", @"intent_name", v3);
-  sub_1001BFED0(@"intents_capabilities", @"device_id", v3);
+  databaseCopy = database;
+  sub_1001BFED0(@"intents_capabilities", @"app_id", databaseCopy);
+  sub_1001BFED0(@"intents_capabilities", @"intent_name", databaseCopy);
+  sub_1001BFED0(@"intents_capabilities", @"device_id", databaseCopy);
 }
 
 - (id)tableDescription

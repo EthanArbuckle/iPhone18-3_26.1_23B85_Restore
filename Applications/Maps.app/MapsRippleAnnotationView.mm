@@ -1,23 +1,23 @@
 @interface MapsRippleAnnotationView
-- (MapsRippleAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
+- (MapsRippleAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
 @end
 
 @implementation MapsRippleAnnotationView
 
-- (MapsRippleAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (MapsRippleAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
-  v6 = a3;
+  annotationCopy = annotation;
   v11.receiver = self;
   v11.super_class = MapsRippleAnnotationView;
-  v7 = [(MapsRippleAnnotationView *)&v11 initWithAnnotation:v6 reuseIdentifier:a4];
+  v7 = [(MapsRippleAnnotationView *)&v11 initWithAnnotation:annotationCopy reuseIdentifier:identifier];
   if (v7)
   {
-    v8 = [v6 rippleView];
-    [v8 frame];
+    rippleView = [annotationCopy rippleView];
+    [rippleView frame];
     [(MapsRippleAnnotationView *)v7 setFrame:?];
 
-    v9 = [v6 rippleView];
-    [(MapsRippleAnnotationView *)v7 addSubview:v9];
+    rippleView2 = [annotationCopy rippleView];
+    [(MapsRippleAnnotationView *)v7 addSubview:rippleView2];
   }
 
   return v7;

@@ -1,57 +1,57 @@
 @interface BSMutableAnimationSettings
-- (void)setBeginTime:(double)a3;
-- (void)setDelay:(double)a3;
-- (void)setDuration:(double)a3;
-- (void)setHighFrameRateReason:(unsigned int)a3;
+- (void)setBeginTime:(double)time;
+- (void)setDelay:(double)delay;
+- (void)setDuration:(double)duration;
+- (void)setHighFrameRateReason:(unsigned int)reason;
 @end
 
 @implementation BSMutableAnimationSettings
 
-- (void)setDelay:(double)a3
+- (void)setDelay:(double)delay
 {
   if (self)
   {
     os_unfair_lock_lock(&self->super._lock);
-    self->super._lock_delay = a3;
+    self->super._lock_delay = delay;
 
     os_unfair_lock_unlock(&self->super._lock);
   }
 }
 
-- (void)setHighFrameRateReason:(unsigned int)a3
+- (void)setHighFrameRateReason:(unsigned int)reason
 {
   if (self)
   {
     os_unfair_lock_lock(&self->super._lock);
-    self->super._lock_highFrameRateReason = a3;
+    self->super._lock_highFrameRateReason = reason;
 
     os_unfair_lock_unlock(&self->super._lock);
   }
 }
 
-- (void)setBeginTime:(double)a3
+- (void)setBeginTime:(double)time
 {
   if (self)
   {
     os_unfair_lock_lock(&self->super._lock);
-    self->super._lock_beginTime = a3;
+    self->super._lock_beginTime = time;
 
     os_unfair_lock_unlock(&self->super._lock);
   }
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
   if (self)
   {
     if (self->super._isSpring)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v5 handleFailureInMethod:sel__setDuration_ object:self file:@"BSAnimationSettings.m" lineNumber:604 description:@"cannot set duration on a spring animation"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__setDuration_ object:self file:@"BSAnimationSettings.m" lineNumber:604 description:@"cannot set duration on a spring animation"];
     }
 
     os_unfair_lock_lock(&self->super._lock);
-    self->super._lock_storedDuration = a3;
+    self->super._lock_storedDuration = duration;
 
     os_unfair_lock_unlock(&self->super._lock);
   }

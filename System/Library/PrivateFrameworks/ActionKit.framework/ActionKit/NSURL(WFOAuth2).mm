@@ -14,29 +14,29 @@
   }
 
   v4 = a3;
-  v5 = [a1 wfo_normalizedURLComponents];
-  v6 = [v4 wfo_normalizedURLComponents];
+  wfo_normalizedURLComponents = [self wfo_normalizedURLComponents];
+  wfo_normalizedURLComponents2 = [v4 wfo_normalizedURLComponents];
 
-  v7 = [v5 isEqual:v6];
+  v7 = [wfo_normalizedURLComponents isEqual:wfo_normalizedURLComponents2];
   return v7;
 }
 
 - (id)wfo_normalizedURLComponents
 {
   v1 = MEMORY[0x277CCACE0];
-  v2 = [a1 absoluteURL];
-  v3 = [v1 componentsWithURL:v2 resolvingAgainstBaseURL:0];
+  absoluteURL = [self absoluteURL];
+  v3 = [v1 componentsWithURL:absoluteURL resolvingAgainstBaseURL:0];
 
   [v3 setQuery:0];
   [v3 setFragment:0];
-  v4 = [v3 path];
-  v5 = [v4 hasSuffix:@"/"];
+  path = [v3 path];
+  v5 = [path hasSuffix:@"/"];
 
   if (v5)
   {
-    v6 = [v3 path];
-    v7 = [v3 path];
-    v8 = [v6 substringToIndex:{objc_msgSend(v7, "length") - 1}];
+    path2 = [v3 path];
+    path3 = [v3 path];
+    v8 = [path2 substringToIndex:{objc_msgSend(path3, "length") - 1}];
     [v3 setPath:v8];
   }
 
@@ -48,12 +48,12 @@
   v4 = a3;
   if ([v4 count])
   {
-    v5 = [MEMORY[0x277CCACE0] componentsWithURL:a1 resolvingAgainstBaseURL:0];
-    v6 = [v5 queryItems];
-    if (v6)
+    v5 = [MEMORY[0x277CCACE0] componentsWithURL:self resolvingAgainstBaseURL:0];
+    queryItems = [v5 queryItems];
+    if (queryItems)
     {
-      v7 = [v5 queryItems];
-      v8 = [v7 arrayByAddingObjectsFromArray:v4];
+      queryItems2 = [v5 queryItems];
+      v8 = [queryItems2 arrayByAddingObjectsFromArray:v4];
       [v5 setQueryItems:v8];
     }
 
@@ -62,15 +62,15 @@
       [v5 setQueryItems:v4];
     }
 
-    v9 = [v5 URL];
+    selfCopy = [v5 URL];
   }
 
   else
   {
-    v9 = a1;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

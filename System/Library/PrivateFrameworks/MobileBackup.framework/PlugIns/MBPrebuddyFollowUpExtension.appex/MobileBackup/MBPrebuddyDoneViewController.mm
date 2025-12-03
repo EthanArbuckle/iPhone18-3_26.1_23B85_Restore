@@ -1,10 +1,10 @@
 @interface MBPrebuddyDoneViewController
 + (id)_phoneTransferImage;
-- (MBPrebuddyDoneViewController)initWithFlow:(id)a3;
+- (MBPrebuddyDoneViewController)initWithFlow:(id)flow;
 - (MBViewControllerFlow)flow;
 - (void)_setUp;
-- (void)didTapHighlightedText:(id)a3;
-- (void)didTapPrimaryButton:(id)a3;
+- (void)didTapHighlightedText:(id)text;
+- (void)didTapPrimaryButton:(id)button;
 - (void)viewDidLoad;
 @end
 
@@ -13,16 +13,16 @@
 + (id)_phoneTransferImage
 {
   v3 = +[MBPrebuddyManager twoDeviceImageName];
-  v4 = [NSBundle bundleForClass:a1];
+  v4 = [NSBundle bundleForClass:self];
   v5 = [UIImage imageNamed:v3 inBundle:v4];
   v6 = [v5 imageWithRenderingMode:2];
 
   return v6;
 }
 
-- (MBPrebuddyDoneViewController)initWithFlow:(id)a3
+- (MBPrebuddyDoneViewController)initWithFlow:(id)flow
 {
-  v4 = a3;
+  flowCopy = flow;
   v5 = MBLocalizedStringFromTable();
   v6 = MBLocalizedStringFromTable();
   v9.receiver = self;
@@ -31,7 +31,7 @@
 
   if (v7)
   {
-    objc_storeWeak(&v7->_flow, v4);
+    objc_storeWeak(&v7->_flow, flowCopy);
   }
 
   return v7;
@@ -43,8 +43,8 @@
   v4.super_class = MBPrebuddyDoneViewController;
   [(MBPrebuddyDoneViewController *)&v4 viewDidLoad];
   [(MBPrebuddyDoneViewController *)self _setUp];
-  v3 = [(MBPrebuddyDoneViewController *)self navigationItem];
-  [v3 setHidesBackButton:1];
+  navigationItem = [(MBPrebuddyDoneViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 }
 
 - (void)_setUp
@@ -55,12 +55,12 @@
 
   [v3 addTarget:self action:"didTapPrimaryButton:" forEvents:0x2000];
   v54 = v3;
-  v5 = [v3 titleLabel];
+  titleLabel = [v3 titleLabel];
   LODWORD(v6) = 1036831949;
-  [v5 _setHyphenationFactor:v6];
+  [titleLabel _setHyphenationFactor:v6];
 
-  v7 = [(MBPrebuddyDoneViewController *)self buttonTray];
-  [v7 addButton:v3];
+  buttonTray = [(MBPrebuddyDoneViewController *)self buttonTray];
+  [buttonTray addButton:v3];
 
   v8 = [MBPrebuddyBulletedIconTextView alloc];
   v9 = [UIImage systemImageNamed:@"icloud.and.arrow.up"];
@@ -72,10 +72,10 @@
   v53 = v12;
   [(MBPrebuddyBulletedIconTextView *)v12 setTranslatesAutoresizingMaskIntoConstraints:0];
   v14 = [MBPrebuddyBulletedIconTextView alloc];
-  v15 = [objc_opt_class() _phoneTransferImage];
+  _phoneTransferImage = [objc_opt_class() _phoneTransferImage];
   v16 = MBLocalizedStringFromTable();
   v17 = MBLocalizedStringFromTable();
-  v18 = [(MBPrebuddyBulletedIconTextView *)v14 initWithImage:v15 title:v16 detail:v17 tappableText:0];
+  v18 = [(MBPrebuddyBulletedIconTextView *)v14 initWithImage:_phoneTransferImage title:v16 detail:v17 tappableText:0];
 
   v19 = v18;
   v52 = v18;
@@ -105,48 +105,48 @@
   [(UIStackView *)self->_bulletedStack setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIStackView *)self->_bulletedStack setSpacing:25.0];
   [(UIStackView *)self->_bulletedStack setAxis:1];
-  v31 = [(MBPrebuddyDoneViewController *)self contentView];
-  [v31 addSubview:self->_bulletedStack];
+  contentView = [(MBPrebuddyDoneViewController *)self contentView];
+  [contentView addSubview:self->_bulletedStack];
 
-  v49 = [(UIStackView *)self->_bulletedStack leadingAnchor];
-  v50 = [(MBPrebuddyDoneViewController *)self contentView];
-  v48 = [v50 leadingAnchor];
-  v47 = [v49 constraintEqualToAnchor:v48];
+  leadingAnchor = [(UIStackView *)self->_bulletedStack leadingAnchor];
+  contentView2 = [(MBPrebuddyDoneViewController *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v47 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v55[0] = v47;
-  v45 = [(UIStackView *)self->_bulletedStack topAnchor];
-  v46 = [(MBPrebuddyDoneViewController *)self contentView];
-  v44 = [v46 topAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44];
+  topAnchor = [(UIStackView *)self->_bulletedStack topAnchor];
+  contentView3 = [(MBPrebuddyDoneViewController *)self contentView];
+  topAnchor2 = [contentView3 topAnchor];
+  v43 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v55[1] = v43;
-  v32 = [(UIStackView *)self->_bulletedStack trailingAnchor];
-  v33 = [(MBPrebuddyDoneViewController *)self contentView];
-  v34 = [v33 trailingAnchor];
-  v35 = [v32 constraintEqualToAnchor:v34];
+  trailingAnchor = [(UIStackView *)self->_bulletedStack trailingAnchor];
+  contentView4 = [(MBPrebuddyDoneViewController *)self contentView];
+  trailingAnchor2 = [contentView4 trailingAnchor];
+  v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v55[2] = v35;
-  v36 = [(UIStackView *)self->_bulletedStack bottomAnchor];
-  v37 = [(MBPrebuddyDoneViewController *)self contentView];
-  v38 = [v37 bottomAnchor];
+  bottomAnchor = [(UIStackView *)self->_bulletedStack bottomAnchor];
+  contentView5 = [(MBPrebuddyDoneViewController *)self contentView];
+  bottomAnchor2 = [contentView5 bottomAnchor];
   [(UIStackView *)self->_bulletedStack spacing];
-  v40 = [v36 constraintEqualToAnchor:v38 constant:v39 * -2.0];
+  v40 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v39 * -2.0];
   v55[3] = v40;
   v41 = [NSArray arrayWithObjects:v55 count:4];
   [NSLayoutConstraint activateConstraints:v41];
 
-  v42 = [(MBPrebuddyDoneViewController *)self navigationItem];
-  [v42 _setBackgroundHidden:1];
+  navigationItem = [(MBPrebuddyDoneViewController *)self navigationItem];
+  [navigationItem _setBackgroundHidden:1];
 }
 
-- (void)didTapPrimaryButton:(id)a3
+- (void)didTapPrimaryButton:(id)button
 {
-  v4 = [(MBPrebuddyDoneViewController *)self navigationController];
-  v5 = [v4 view];
-  [v5 setUserInteractionEnabled:0];
+  navigationController = [(MBPrebuddyDoneViewController *)self navigationController];
+  view = [navigationController view];
+  [view setUserInteractionEnabled:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_flow);
   [WeakRetained mb_didTapNextFromViewController:self];
 }
 
-- (void)didTapHighlightedText:(id)a3
+- (void)didTapHighlightedText:(id)text
 {
   v3 = MBLocalizedStringFromTable();
   v5 = [NSURL URLWithString:v3];

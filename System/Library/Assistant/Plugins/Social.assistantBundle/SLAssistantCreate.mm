@@ -1,8 +1,8 @@
 @interface SLAssistantCreate
 - (void)_cleanupHandler;
-- (void)_finishWithCompletion:(id)a3 result:(id)a4;
+- (void)_finishWithCompletion:(id)completion result:(id)result;
 - (void)dealloc;
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4;
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper;
 @end
 
 @implementation SLAssistantCreate
@@ -34,18 +34,18 @@
   [(SLAssistantCreate *)&v3 dealloc];
 }
 
-- (void)_finishWithCompletion:(id)a3 result:(id)a4
+- (void)_finishWithCompletion:(id)completion result:(id)result
 {
   [(SLAssistantCreate *)self _cleanupHandler];
-  v6 = *(a3 + 2);
+  v6 = *(completion + 2);
 
-  v6(a3, a4);
+  v6(completion, result);
 }
 
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper
 {
-  [(SLAssistantCreate *)self _cleanupHandler:a3];
-  v6 = [(SLAssistantCreate *)self object];
+  [(SLAssistantCreate *)self _cleanupHandler:completion];
+  object = [(SLAssistantCreate *)self object];
   handlerObject = self->_handlerObject;
   if (handlerObject)
   {
@@ -54,18 +54,18 @@
     v11[2] = sub_1594;
     v11[3] = &unk_8198;
     v11[4] = self;
-    v11[5] = a3;
+    v11[5] = completion;
     [(SLAssistantServiceHandler *)handlerObject performCreateWithObject:self completion:v11];
   }
 
   else
   {
-    v10 = v6;
+    v10 = object;
     _SLLog();
     v8 = [+[SACommandFailed commandFailedWithReason:](SACommandFailed dictionary:@"Received object of unknown type."];
-    v9 = *(a3 + 2);
+    v9 = *(completion + 2);
 
-    v9(a3, v8);
+    v9(completion, v8);
   }
 }
 

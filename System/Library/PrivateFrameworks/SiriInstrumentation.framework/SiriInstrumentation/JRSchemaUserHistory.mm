@@ -1,30 +1,30 @@
 @interface JRSchemaUserHistory
-- (BOOL)isEqual:(id)a3;
-- (JRSchemaUserHistory)initWithDictionary:(id)a3;
-- (JRSchemaUserHistory)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (JRSchemaUserHistory)initWithDictionary:(id)dictionary;
+- (JRSchemaUserHistory)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (float)historicalContextAtIndex:(unint64_t)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (float)historicalContextAtIndex:(unint64_t)index;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addHistoricalContext:(float)a3;
-- (void)addHistoricalLocationContext:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addHistoricalContext:(float)context;
+- (void)addHistoricalLocationContext:(id)context;
+- (void)writeTo:(id)to;
 @end
 
 @implementation JRSchemaUserHistory
 
-- (JRSchemaUserHistory)initWithDictionary:(id)a3
+- (JRSchemaUserHistory)initWithDictionary:(id)dictionary
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v38.receiver = self;
   v38.super_class = JRSchemaUserHistory;
   v5 = [(JRSchemaUserHistory *)&v38 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"toolId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"toolId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,10 +32,10 @@
       [(JRSchemaUserHistory *)v5 setToolId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"historicalContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"historicalContext"];
     objc_opt_class();
     v28 = v6;
-    v29 = v4;
+    v29 = dictionaryCopy;
     if (objc_opt_isKindOfClass())
     {
       v36 = 0u;
@@ -78,11 +78,11 @@
       }
 
       v6 = v28;
-      v4 = v29;
+      dictionaryCopy = v29;
       v8 = v9;
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"historicalFeedback"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"historicalFeedback"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,7 +90,7 @@
       [(JRSchemaUserHistory *)v5 setHistoricalFeedback:?];
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"historicalLocationContext"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"historicalLocationContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -134,7 +134,7 @@
       }
 
       v6 = v28;
-      v4 = v29;
+      dictionaryCopy = v29;
       v8 = v27;
     }
 
@@ -144,30 +144,30 @@
   return v5;
 }
 
-- (JRSchemaUserHistory)initWithJSON:(id)a3
+- (JRSchemaUserHistory)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(JRSchemaUserHistory *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(JRSchemaUserHistory *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(JRSchemaUserHistory *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -181,12 +181,12 @@
 - (id)dictionaryRepresentation
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_historicalContexts count])
   {
-    v4 = [(JRSchemaUserHistory *)self historicalContexts];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"historicalContext"];
+    historicalContexts = [(JRSchemaUserHistory *)self historicalContexts];
+    v5 = [historicalContexts copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"historicalContext"];
   }
 
   if (*&self->_has)
@@ -194,12 +194,12 @@
     v6 = MEMORY[0x1E696AD98];
     [(JRSchemaUserHistory *)self historicalFeedback];
     v7 = [v6 numberWithFloat:?];
-    [v3 setObject:v7 forKeyedSubscript:@"historicalFeedback"];
+    [dictionary setObject:v7 forKeyedSubscript:@"historicalFeedback"];
   }
 
   if ([(NSArray *)self->_historicalLocationContexts count])
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -219,16 +219,16 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
-          if (v14)
+          dictionaryRepresentation = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v8 addObject:v14];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v15 = [MEMORY[0x1E695DFB0] null];
-            [v8 addObject:v15];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -238,28 +238,28 @@
       while (v11);
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"historicalLocationContext"];
+    [dictionary setObject:array forKeyedSubscript:@"historicalLocationContext"];
   }
 
   if (self->_toolId)
   {
-    v16 = [(JRSchemaUserHistory *)self toolId];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    toolId = [(JRSchemaUserHistory *)self toolId];
+    dictionaryRepresentation2 = [toolId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"toolId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"toolId"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"toolId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"toolId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v20];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v20];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -307,28 +307,28 @@
   return v4 ^ v3 ^ v7 ^ [(NSArray *)self->_historicalLocationContexts hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(JRSchemaUserHistory *)self toolId];
-  v6 = [v4 toolId];
-  if ((v5 != 0) == (v6 == 0))
+  toolId = [(JRSchemaUserHistory *)self toolId];
+  toolId2 = [equalCopy toolId];
+  if ((toolId != 0) == (toolId2 == 0))
   {
     goto LABEL_19;
   }
 
-  v7 = [(JRSchemaUserHistory *)self toolId];
-  if (v7)
+  toolId3 = [(JRSchemaUserHistory *)self toolId];
+  if (toolId3)
   {
-    v8 = v7;
-    v9 = [(JRSchemaUserHistory *)self toolId];
-    v10 = [v4 toolId];
-    v11 = [v9 isEqual:v10];
+    v8 = toolId3;
+    toolId4 = [(JRSchemaUserHistory *)self toolId];
+    toolId5 = [equalCopy toolId];
+    v11 = [toolId4 isEqual:toolId5];
 
     if (!v11)
     {
@@ -340,20 +340,20 @@
   {
   }
 
-  v5 = [(JRSchemaUserHistory *)self historicalContexts];
-  v6 = [v4 historicalContexts];
-  if ((v5 != 0) == (v6 == 0))
+  toolId = [(JRSchemaUserHistory *)self historicalContexts];
+  toolId2 = [equalCopy historicalContexts];
+  if ((toolId != 0) == (toolId2 == 0))
   {
     goto LABEL_19;
   }
 
-  v12 = [(JRSchemaUserHistory *)self historicalContexts];
-  if (v12)
+  historicalContexts = [(JRSchemaUserHistory *)self historicalContexts];
+  if (historicalContexts)
   {
-    v13 = v12;
-    v14 = [(JRSchemaUserHistory *)self historicalContexts];
-    v15 = [v4 historicalContexts];
-    v16 = [v14 isEqual:v15];
+    v13 = historicalContexts;
+    historicalContexts2 = [(JRSchemaUserHistory *)self historicalContexts];
+    historicalContexts3 = [equalCopy historicalContexts];
+    v16 = [historicalContexts2 isEqual:historicalContexts3];
 
     if (!v16)
     {
@@ -365,7 +365,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[40] & 1))
+  if ((*&self->_has & 1) != (equalCopy[40] & 1))
   {
     goto LABEL_20;
   }
@@ -373,19 +373,19 @@
   if (*&self->_has)
   {
     historicalFeedback = self->_historicalFeedback;
-    [v4 historicalFeedback];
+    [equalCopy historicalFeedback];
     if (historicalFeedback != v18)
     {
       goto LABEL_20;
     }
   }
 
-  v5 = [(JRSchemaUserHistory *)self historicalLocationContexts];
-  v6 = [v4 historicalLocationContexts];
-  if ((v5 != 0) != (v6 == 0))
+  toolId = [(JRSchemaUserHistory *)self historicalLocationContexts];
+  toolId2 = [equalCopy historicalLocationContexts];
+  if ((toolId != 0) != (toolId2 == 0))
   {
-    v19 = [(JRSchemaUserHistory *)self historicalLocationContexts];
-    if (!v19)
+    historicalLocationContexts = [(JRSchemaUserHistory *)self historicalLocationContexts];
+    if (!historicalLocationContexts)
     {
 
 LABEL_23:
@@ -393,10 +393,10 @@ LABEL_23:
       goto LABEL_21;
     }
 
-    v20 = v19;
-    v21 = [(JRSchemaUserHistory *)self historicalLocationContexts];
-    v22 = [v4 historicalLocationContexts];
-    v23 = [v21 isEqual:v22];
+    v20 = historicalLocationContexts;
+    historicalLocationContexts2 = [(JRSchemaUserHistory *)self historicalLocationContexts];
+    historicalLocationContexts3 = [equalCopy historicalLocationContexts];
+    v23 = [historicalLocationContexts2 isEqual:historicalLocationContexts3];
 
     if (v23)
     {
@@ -416,15 +416,15 @@ LABEL_21:
   return v24;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(JRSchemaUserHistory *)self toolId];
+  toCopy = to;
+  toolId = [(JRSchemaUserHistory *)self toolId];
 
-  if (v5)
+  if (toolId)
   {
-    v6 = [(JRSchemaUserHistory *)self toolId];
+    toolId2 = [(JRSchemaUserHistory *)self toolId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -497,72 +497,72 @@ LABEL_21:
   }
 }
 
-- (void)addHistoricalLocationContext:(id)a3
+- (void)addHistoricalLocationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   historicalLocationContexts = self->_historicalLocationContexts;
-  v8 = v4;
+  v8 = contextCopy;
   if (!historicalLocationContexts)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_historicalLocationContexts;
-    self->_historicalLocationContexts = v6;
+    self->_historicalLocationContexts = array;
 
-    v4 = v8;
+    contextCopy = v8;
     historicalLocationContexts = self->_historicalLocationContexts;
   }
 
-  [(NSArray *)historicalLocationContexts addObject:v4];
+  [(NSArray *)historicalLocationContexts addObject:contextCopy];
 }
 
-- (float)historicalContextAtIndex:(unint64_t)a3
+- (float)historicalContextAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_historicalContexts objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_historicalContexts objectAtIndexedSubscript:index];
   [v3 floatValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)addHistoricalContext:(float)a3
+- (void)addHistoricalContext:(float)context
 {
   historicalContexts = self->_historicalContexts;
   if (!historicalContexts)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_historicalContexts;
-    self->_historicalContexts = v6;
+    self->_historicalContexts = array;
 
     historicalContexts = self->_historicalContexts;
   }
 
-  *&v8 = a3;
+  *&v8 = context;
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
   [(NSArray *)historicalContexts addObject:v9];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v12.receiver = self;
   v12.super_class = JRSchemaUserHistory;
-  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:4])
+  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:4])
   {
     [(JRSchemaUserHistory *)self deleteToolId];
   }
 
-  v6 = [(JRSchemaUserHistory *)self toolId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  toolId = [(JRSchemaUserHistory *)self toolId];
+  v7 = [toolId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(JRSchemaUserHistory *)self deleteToolId];
   }
 
-  v9 = [(JRSchemaUserHistory *)self historicalLocationContexts];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  historicalLocationContexts = [(JRSchemaUserHistory *)self historicalLocationContexts];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:historicalLocationContexts underConditions:policyCopy];
   [(JRSchemaUserHistory *)self setHistoricalLocationContexts:v10];
 
   return v5;

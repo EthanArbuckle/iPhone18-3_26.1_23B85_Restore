@@ -1,8 +1,8 @@
 @interface _APRSFreezerInterface
 + (id)sharedInstance;
 - (_APRSFreezerInterface)init;
-- (void)updateFreezer:(id)a3;
-- (void)updateFreezerRecommendations:(id)a3 forDemotion:(BOOL)a4;
+- (void)updateFreezer:(id)freezer;
+- (void)updateFreezerRecommendations:(id)recommendations forDemotion:(BOOL)demotion;
 @end
 
 @implementation _APRSFreezerInterface
@@ -34,21 +34,21 @@
   return v3;
 }
 
-- (void)updateFreezer:(id)a3
+- (void)updateFreezer:(id)freezer
 {
-  v4 = a3;
-  [(_APRSFreezerInterface *)self updateFreezer:v4 forDemotion:0];
+  freezerCopy = freezer;
+  [(_APRSFreezerInterface *)self updateFreezer:freezerCopy forDemotion:0];
   v5 = +[_APRSMetricRecorder sharedInstance];
-  [v5 checkFrozenApps:v4];
+  [v5 checkFrozenApps:freezerCopy];
 }
 
-- (void)updateFreezerRecommendations:(id)a3 forDemotion:(BOOL)a4
+- (void)updateFreezerRecommendations:(id)recommendations forDemotion:(BOOL)demotion
 {
-  v4 = a4;
-  v6 = a3;
+  demotionCopy = demotion;
+  recommendationsCopy = recommendations;
   log = self->_log;
   v8 = os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (demotionCopy)
   {
     if (!v8)
     {
@@ -56,7 +56,7 @@
     }
 
     *v36 = 138412290;
-    *&v36[4] = v6;
+    *&v36[4] = recommendationsCopy;
     v9 = "Removing from freezer recommendations %@";
   }
 
@@ -68,29 +68,29 @@
     }
 
     *v36 = 138412290;
-    *&v36[4] = v6;
+    *&v36[4] = recommendationsCopy;
     v9 = "Updating freezer recommendations to %@";
   }
 
   _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, v9, v36, 0xCu);
 LABEL_7:
-  if ([v6 count])
+  if ([recommendationsCopy count])
   {
-    v10 = [v6 count];
+    v10 = [recommendationsCopy count];
     v11 = v10;
     v30 = &v25[-6 * v10];
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v31 = [v6 allObjects];
-    v12 = [v31 countByEnumeratingWithState:&v32 objects:v37 count:16];
+    allObjects = [recommendationsCopy allObjects];
+    v12 = [allObjects countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v12)
     {
       v25[1] = v25;
-      v26 = v4;
-      v27 = self;
-      v28 = v6;
+      v26 = demotionCopy;
+      selfCopy = self;
+      v28 = recommendationsCopy;
       v13 = 0;
       v14 = *v33;
       v29 = v11 + 1;
@@ -105,7 +105,7 @@ LABEL_7:
         {
           if (*v33 != v14)
           {
-            objc_enumerationMutation(v31);
+            objc_enumerationMutation(allObjects);
           }
 
           v19 = *(*(&v32 + 1) + 8 * v15);
@@ -125,12 +125,12 @@ LABEL_7:
         }
 
         while (v12 != v15);
-        v12 = [v31 countByEnumeratingWithState:&v32 objects:v37 count:16];
+        v12 = [allObjects countByEnumeratingWithState:&v32 objects:v37 count:16];
       }
 
       while (v12);
-      self = v27;
-      v6 = v28;
+      self = selfCopy;
+      recommendationsCopy = v28;
     }
 
     v21 = memorystatus_control();

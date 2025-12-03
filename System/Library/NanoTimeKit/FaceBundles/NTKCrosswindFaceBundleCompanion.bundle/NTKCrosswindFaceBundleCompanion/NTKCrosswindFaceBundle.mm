@@ -1,27 +1,27 @@
 @interface NTKCrosswindFaceBundle
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryPigmentsForDevice:(id)a3;
-- (id)heroFacesForDevice:(id)a3;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryPigmentsForDevice:(id)device;
+- (id)heroFacesForDevice:(id)device;
 @end
 
 @implementation NTKCrosswindFaceBundle
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [objc_opt_class() identifier];
-  v5 = [NTKCrosswindFace bundledFaceWithIdentifier:v4 forDevice:v3 initCustomization:0];
+  deviceCopy = device;
+  identifier = [objc_opt_class() identifier];
+  v5 = [NTKCrosswindFace bundledFaceWithIdentifier:identifier forDevice:deviceCopy initCustomization:0];
 
   return v5;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v21.receiver = self;
   v21.super_class = NTKCrosswindFaceBundle;
-  v5 = [(NTKCrosswindFaceBundle *)&v21 galleryFacesForDevice:v4];
+  v5 = [(NTKCrosswindFaceBundle *)&v21 galleryFacesForDevice:deviceCopy];
   if (NTKShowCarbonara())
   {
     v6 = [CLKWidgetComplicationDescriptor alloc];
@@ -64,17 +64,17 @@
   return v5;
 }
 
-- (id)galleryPigmentsForDevice:(id)a3
+- (id)galleryPigmentsForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[NSMutableArray array];
-  if ([v4 isRunningNapiliGMOrLater])
+  if ([deviceCopy isRunningNapiliGMOrLater])
   {
     [v5 addObjectsFromArray:&off_10A60];
-    v6 = [(NTKCrosswindFaceBundle *)self defaultFaceForDevice:v4];
+    v6 = [(NTKCrosswindFaceBundle *)self defaultFaceForDevice:deviceCopy];
     v7 = [v6 defaultOptionForCustomEditMode:10 slot:0];
-    v8 = [v7 fullname];
-    v9 = [v8 isEqualToString:@"crosswind.special.hero-iris"];
+    fullname = [v7 fullname];
+    v9 = [fullname isEqualToString:@"crosswind.special.hero-iris"];
 
     if (v9)
     {
@@ -83,25 +83,25 @@
 
     else
     {
-      v10 = [v7 fullname];
-      [v5 addObject:v10];
+      fullname2 = [v7 fullname];
+      [v5 addObject:fullname2];
     }
   }
 
   return v5;
 }
 
-- (id)heroFacesForDevice:(id)a3
+- (id)heroFacesForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 supportsPDRCapability:3669496134])
+  deviceCopy = device;
+  if ([deviceCopy supportsPDRCapability:3669496134])
   {
     v5 = &__NSArray0__struct;
   }
 
   else
   {
-    v6 = [(NTKCrosswindFaceBundle *)self defaultFaceForDevice:v4];
+    v6 = [(NTKCrosswindFaceBundle *)self defaultFaceForDevice:deviceCopy];
     v7 = [[NTKFaceBundleSortableGalleryFace alloc] initWithFace:v6 priority:300];
     v9 = v7;
     v5 = [NSArray arrayWithObjects:&v9 count:1];

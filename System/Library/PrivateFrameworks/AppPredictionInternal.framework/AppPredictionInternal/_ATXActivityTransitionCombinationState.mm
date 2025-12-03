@@ -1,9 +1,9 @@
 @interface _ATXActivityTransitionCombinationState
-- (BOOL)hasSameTopActivityAndConfidenceAsOther:(id)a3;
+- (BOOL)hasSameTopActivityAndConfidenceAsOther:(id)other;
 - (_ATXActivityTransitionCombinationState)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)endTransitionWithTimestamp:(double)a3;
-- (id)newStateFromTransition:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)endTransitionWithTimestamp:(double)timestamp;
+- (id)newStateFromTransition:(id)transition;
 - (id)startTransition;
 - (id)topActivityWithConfidence;
 @end
@@ -31,66 +31,66 @@
   return result;
 }
 
-- (id)newStateFromTransition:(id)a3
+- (id)newStateFromTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   v5 = [(_ATXActivityTransitionCombinationState *)self copy];
-  if ([v4 isEntryEvent])
+  if ([transitionCopy isEntryEvent])
   {
-    v6 = [v4 inferredActivityType];
+    inferredActivityType = [transitionCopy inferredActivityType];
   }
 
   else
   {
-    v6 = 14;
+    inferredActivityType = 14;
   }
 
   v7 = 0.0;
-  if ([v4 isEntryEvent])
+  if ([transitionCopy isEntryEvent])
   {
-    [v4 confidence];
+    [transitionCopy confidence];
     v7 = v8;
   }
 
-  v9 = [v4 source];
-  v10 = [v9 isEqualToString:@"timeBasedInferredActivity"];
+  source = [transitionCopy source];
+  v10 = [source isEqualToString:@"timeBasedInferredActivity"];
 
   if (v10)
   {
-    [v5 setTimeBasedActivity:v6];
+    [v5 setTimeBasedActivity:inferredActivityType];
     [v5 setTimeBasedConfidence:v7];
   }
 
   else
   {
-    v11 = [v4 source];
-    v12 = [v11 isEqualToString:@"appLaunchInferredActivity"];
+    source2 = [transitionCopy source];
+    v12 = [source2 isEqualToString:@"appLaunchInferredActivity"];
 
     if (v12)
     {
-      [v5 setAppLaunchActivity:v6];
+      [v5 setAppLaunchActivity:inferredActivityType];
       [v5 setAppLaunchConfidence:v7];
     }
 
     else
     {
-      v13 = [v4 source];
-      v14 = [v13 isEqualToString:@"heuristicInferredActivity"];
+      source3 = [transitionCopy source];
+      v14 = [source3 isEqualToString:@"heuristicInferredActivity"];
 
       if (v14)
       {
-        [v5 setHeuristicActivity:v6];
+        [v5 setHeuristicActivity:inferredActivityType];
         [v5 setHeuristicConfidence:v7];
       }
 
       else
       {
-        v15 = [v4 source];
-        v16 = [v15 isEqualToString:@"computedModeActivity"];
+        source4 = [transitionCopy source];
+        v16 = [source4 isEqualToString:@"computedModeActivity"];
 
         if (v16)
         {
-          [v5 setComputedModeActivity:v6];
+          [v5 setComputedModeActivity:inferredActivityType];
           [v5 setComputedModeConfidence:v7];
         }
 
@@ -99,20 +99,20 @@
           v17 = __atxlog_handle_modes();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
           {
-            [(_ATXActivityTransitionCombinationState *)self newStateFromTransition:v4, v17];
+            [(_ATXActivityTransitionCombinationState *)self newStateFromTransition:transitionCopy, v17];
           }
         }
       }
     }
   }
 
-  [v4 transitionTime];
+  [transitionCopy transitionTime];
   [v5 setTimestamp:?];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_ATXActivityTransitionCombinationState allocWithZone:?]];
   [(_ATXActivityTransitionCombinationState *)v4 setTimeBasedActivity:[(_ATXActivityTransitionCombinationState *)self timeBasedActivity]];
@@ -186,8 +186,8 @@
         }
 
         v26 = *(*(&v59 + 1) + 8 * i);
-        v27 = [v26 first];
-        v28 = [v20 objectForKeyedSubscript:v27];
+        first = [v26 first];
+        v28 = [v20 objectForKeyedSubscript:first];
         v29 = v28;
         if (!v28)
         {
@@ -198,11 +198,11 @@
         v31 = v30;
 
         v32 = MEMORY[0x277CCABB0];
-        v33 = [v26 second];
-        [v33 doubleValue];
+        second = [v26 second];
+        [second doubleValue];
         v35 = [v32 numberWithDouble:v31 + v34];
-        v36 = [v26 first];
-        [v20 setObject:v35 forKeyedSubscript:v36];
+        first2 = [v26 first];
+        [v20 setObject:v35 forKeyedSubscript:first2];
       }
 
       v23 = [v21 countByEnumeratingWithState:&v59 objects:v64 count:16];
@@ -265,49 +265,49 @@
 
 - (id)startTransition
 {
-  v3 = [(_ATXActivityTransitionCombinationState *)self topActivityWithConfidence];
-  v4 = [v3 first];
-  v5 = [v4 integerValue];
+  topActivityWithConfidence = [(_ATXActivityTransitionCombinationState *)self topActivityWithConfidence];
+  first = [topActivityWithConfidence first];
+  integerValue = [first integerValue];
 
   v6 = [ATXUnifiedInferredActivityTransition alloc];
   [(_ATXActivityTransitionCombinationState *)self timestamp];
   v8 = v7;
-  v9 = [v3 second];
-  [v9 doubleValue];
-  v11 = [(ATXUnifiedInferredActivityTransition *)v6 initFromTransitionTime:1 isEntryEvent:@"unifiedInferredActivity" source:v5 activityType:v8 confidence:v10];
+  second = [topActivityWithConfidence second];
+  [second doubleValue];
+  v11 = [(ATXUnifiedInferredActivityTransition *)v6 initFromTransitionTime:1 isEntryEvent:@"unifiedInferredActivity" source:integerValue activityType:v8 confidence:v10];
 
   return v11;
 }
 
-- (id)endTransitionWithTimestamp:(double)a3
+- (id)endTransitionWithTimestamp:(double)timestamp
 {
-  v4 = [(_ATXActivityTransitionCombinationState *)self topActivityWithConfidence];
-  v5 = [v4 first];
-  v6 = [v5 integerValue];
+  topActivityWithConfidence = [(_ATXActivityTransitionCombinationState *)self topActivityWithConfidence];
+  first = [topActivityWithConfidence first];
+  integerValue = [first integerValue];
 
   v7 = [ATXUnifiedInferredActivityTransition alloc];
-  v8 = [v4 second];
-  [v8 doubleValue];
-  v10 = [(ATXUnifiedInferredActivityTransition *)v7 initFromTransitionTime:0 isEntryEvent:@"unifiedInferredActivity" source:v6 activityType:a3 confidence:v9];
+  second = [topActivityWithConfidence second];
+  [second doubleValue];
+  v10 = [(ATXUnifiedInferredActivityTransition *)v7 initFromTransitionTime:0 isEntryEvent:@"unifiedInferredActivity" source:integerValue activityType:timestamp confidence:v9];
 
   return v10;
 }
 
-- (BOOL)hasSameTopActivityAndConfidenceAsOther:(id)a3
+- (BOOL)hasSameTopActivityAndConfidenceAsOther:(id)other
 {
-  v4 = a3;
-  v5 = [(_ATXActivityTransitionCombinationState *)self topActivityWithConfidence];
-  v6 = [v4 topActivityWithConfidence];
+  otherCopy = other;
+  topActivityWithConfidence = [(_ATXActivityTransitionCombinationState *)self topActivityWithConfidence];
+  topActivityWithConfidence2 = [otherCopy topActivityWithConfidence];
 
-  v7 = [v5 first];
-  v8 = [v6 first];
-  if ([v7 isEqualToNumber:v8])
+  first = [topActivityWithConfidence first];
+  first2 = [topActivityWithConfidence2 first];
+  if ([first isEqualToNumber:first2])
   {
-    v9 = [v5 second];
-    [v9 doubleValue];
+    second = [topActivityWithConfidence second];
+    [second doubleValue];
     v11 = v10;
-    v12 = [v6 second];
-    [v12 doubleValue];
+    second2 = [topActivityWithConfidence2 second];
+    [second2 doubleValue];
     v14 = v11 - v13;
 
     v15 = -v14;

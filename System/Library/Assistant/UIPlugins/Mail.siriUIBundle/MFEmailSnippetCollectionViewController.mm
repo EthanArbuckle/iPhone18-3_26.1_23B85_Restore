@@ -1,34 +1,34 @@
 @interface MFEmailSnippetCollectionViewController
-- (BOOL)search:(id)a3 didFindResults:(id)a4;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (MFEmailSnippetCollectionViewController)initWithAceObject:(id)a3;
-- (double)desiredHeightForWidth:(double)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (BOOL)search:(id)search didFindResults:(id)results;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (MFEmailSnippetCollectionViewController)initWithAceObject:(id)object;
+- (double)desiredHeightForWidth:(double)width;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)headerPunchOut;
 - (id)sashItem;
-- (id)speakableNamespaceProviderForAceObject:(id)a3;
-- (id)viewControllerForSnippet:(id)a3 error:(id *)a4;
+- (id)speakableNamespaceProviderForAceObject:(id)object;
+- (id)viewControllerForSnippet:(id)snippet error:(id *)error;
 - (void)_prepareSiriSnippetContents;
 - (void)_prepareSiriSnippetViewController;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)composeView:(id)a3 wantsOpenURL:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)composeView:(id)view wantsOpenURL:(id)l;
 - (void)loadView;
-- (void)search:(id)a3 didFinishWithError:(id)a4;
+- (void)search:(id)search didFinishWithError:(id)error;
 - (void)wasAddedToTranscript;
 @end
 
 @implementation MFEmailSnippetCollectionViewController
 
-- (MFEmailSnippetCollectionViewController)initWithAceObject:(id)a3
+- (MFEmailSnippetCollectionViewController)initWithAceObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v12.receiver = self;
   v12.super_class = MFEmailSnippetCollectionViewController;
   v5 = [(MFEmailSnippetCollectionViewController *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    [(MFEmailSnippetCollectionViewController *)v5 setSnippet:v4];
+    [(MFEmailSnippetCollectionViewController *)v5 setSnippet:objectCopy];
     [(MFEmailSnippetCollectionViewController *)v6 setLoading:1];
     v7 = objc_alloc_init(NSMutableArray);
     emailURLs = v6->_emailURLs;
@@ -46,12 +46,12 @@
 
 - (void)_prepareSiriSnippetViewController
 {
-  v27 = [(MFEmailSnippetCollectionViewController *)self snippet];
+  snippet = [(MFEmailSnippetCollectionViewController *)self snippet];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = [v27 emails];
+  obj = [snippet emails];
   v3 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v3)
   {
@@ -86,16 +86,16 @@ LABEL_3:
 
       v9 = *(*(&v30 + 1) + 8 * v5);
       emailURLs = self->_emailURLs;
-      v11 = [v9 identifier];
-      [(NSMutableArray *)emailURLs addObject:v11];
+      identifier = [v9 identifier];
+      [(NSMutableArray *)emailURLs addObject:identifier];
 
       v12 = [MFAssistantEmail alloc];
-      v13 = [v9 dictionary];
-      v14 = [(MFAssistantEmail *)v12 initWithDictionary:v13];
+      dictionary = [v9 dictionary];
+      v14 = [(MFAssistantEmail *)v12 initWithDictionary:dictionary];
 
       emails = self->_emails;
-      v16 = [v9 identifier];
-      [(NSMutableDictionary *)emails setObject:v14 forKey:v16];
+      identifier2 = [v9 identifier];
+      [(NSMutableDictionary *)emails setObject:v14 forKey:identifier2];
 
       if (v3 == ++v5)
       {
@@ -118,7 +118,7 @@ LABEL_3:
       viewCell = self->_viewCell;
       self->_viewCell = 0;
 
-      v24 = 0;
+      reuseIdentifier = 0;
       goto LABEL_18;
     }
 
@@ -137,10 +137,10 @@ LABEL_3:
   v23 = self->_viewCell;
   self->_viewCell = v21;
 
-  v24 = [(__objc2_class *)*v22 reuseIdentifier];
+  reuseIdentifier = [(__objc2_class *)*v22 reuseIdentifier];
 LABEL_18:
   viewCellReuseIdentifier = self->_viewCellReuseIdentifier;
-  self->_viewCellReuseIdentifier = v24;
+  self->_viewCellReuseIdentifier = reuseIdentifier;
 
   [(MFEmailSnippetCollectionViewController *)self setDefaultViewInsets:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
 }
@@ -159,9 +159,9 @@ LABEL_18:
     self->_emailContentPromise = v3;
 
     v5 = [MFAssistant loadEmailContentForEmails:self->_emailURLs delegate:self];
-    v6 = [(EFPromise *)self->_emailContentPromise future];
+    future = [(EFPromise *)self->_emailContentPromise future];
     v14 = 0;
-    v7 = [v6 resultWithTimeout:&v14 error:5.0];
+    v7 = [future resultWithTimeout:&v14 error:5.0];
     v8 = v14;
 
     if (!v7)
@@ -183,8 +183,8 @@ LABEL_18:
       v12 = MFLogGeneral();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v13 = [v8 ef_publicDescription];
-        sub_B564(v13, buf, v12);
+        ef_publicDescription = [v8 ef_publicDescription];
+        sub_B564(ef_publicDescription, buf, v12);
       }
     }
 
@@ -196,15 +196,15 @@ LABEL_9:
   }
 }
 
-- (double)desiredHeightForWidth:(double)a3
+- (double)desiredHeightForWidth:(double)width
 {
   if (([(MFEmailSnippetCollectionViewController *)self isViewLoaded]& 1) == 0)
   {
     [(MFEmailSnippetCollectionViewController *)self loadView];
   }
 
-  v4 = [(MFEmailSnippetCollectionViewController *)self collectionViewLayout];
-  [v4 collectionViewContentSize];
+  collectionViewLayout = [(MFEmailSnippetCollectionViewController *)self collectionViewLayout];
+  [collectionViewLayout collectionViewContentSize];
   v6 = v5;
 
   result = v6 + 10.0;
@@ -223,8 +223,8 @@ LABEL_9:
   [(MFEmailSnippetCollectionViewController *)&v4 loadView];
   if (self->_viewCell)
   {
-    v3 = [(MFEmailSnippetCollectionViewController *)self collectionView];
-    [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:self->_viewCellReuseIdentifier];
+    collectionView = [(MFEmailSnippetCollectionViewController *)self collectionView];
+    [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:self->_viewCellReuseIdentifier];
   }
 
   [(MFEmailSnippetCollectionViewController *)self _prepareSiriSnippetContents];
@@ -243,24 +243,24 @@ LABEL_9:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (id)viewControllerForSnippet:(id)a3 error:(id *)a4
+- (id)viewControllerForSnippet:(id)snippet error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(objc_opt_class()) initWithAceObject:v5];
+  snippetCopy = snippet;
+  v6 = [objc_alloc(objc_opt_class()) initWithAceObject:snippetCopy];
   v7 = v6;
-  if (a4 && !v6)
+  if (error && !v6)
   {
-    *a4 = [NSError errorWithDomain:SiriUISnippetPluginErrorDomain code:101 userInfo:0];
-    v7 = [[SiriUIErrorSnippetViewController alloc] initWithError:*a4];
+    *error = [NSError errorWithDomain:SiriUISnippetPluginErrorDomain code:101 userInfo:0];
+    v7 = [[SiriUIErrorSnippetViewController alloc] initWithError:*error];
   }
 
   return v7;
 }
 
-- (id)speakableNamespaceProviderForAceObject:(id)a3
+- (id)speakableNamespaceProviderForAceObject:(id)object
 {
-  v3 = a3;
-  v4 = [[MFEmailSnippetMailProvider alloc] initWithAceObject:v3];
+  objectCopy = object;
+  v4 = [[MFEmailSnippetMailProvider alloc] initWithAceObject:objectCopy];
 
   return v4;
 }
@@ -277,8 +277,8 @@ LABEL_9:
   if (self->_snippetType == 1)
   {
     v3 = objc_alloc_init(SAUIAppPunchOut);
-    v4 = [(SiriUIContentCollectionViewCell *)self->_viewCell draftURL];
-    [v3 setPunchOutUri:v4];
+    draftURL = [(SiriUIContentCollectionViewCell *)self->_viewCell draftURL];
+    [v3 setPunchOutUri:draftURL];
   }
 
   else
@@ -289,17 +289,17 @@ LABEL_9:
   return v3;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(MFEmailSnippetCollectionViewController *)self collectionView];
-  v7 = [v6 dequeueReusableCellWithReuseIdentifier:self->_viewCellReuseIdentifier forIndexPath:v5];
+  pathCopy = path;
+  collectionView = [(MFEmailSnippetCollectionViewController *)self collectionView];
+  v7 = [collectionView dequeueReusableCellWithReuseIdentifier:self->_viewCellReuseIdentifier forIndexPath:pathCopy];
 
   v8 = [(NSMutableArray *)self->_emailURLs count];
-  if (v8 > [v5 row])
+  if (v8 > [pathCopy row])
   {
     emails = self->_emails;
-    v10 = -[NSMutableArray objectAtIndex:](self->_emailURLs, "objectAtIndex:", [v5 row]);
+    v10 = -[NSMutableArray objectAtIndex:](self->_emailURLs, "objectAtIndex:", [pathCopy row]);
     v11 = [(NSMutableDictionary *)emails objectForKey:v10];
 
     v12 = MFLogGeneral();
@@ -326,7 +326,7 @@ LABEL_9:
       }
 
       [v7 setHasChevron:0];
-      v14 = [v5 row];
+      v14 = [pathCopy row];
       v15 = v14 != [(NSMutableArray *)self->_emailURLs count]- 1;
     }
 
@@ -339,11 +339,11 @@ LABEL_10:
   return v7;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a5;
+  pathCopy = path;
   v7 = [(NSMutableArray *)self->_emailURLs count];
-  if (v7 <= [v6 row])
+  if (v7 <= [pathCopy row])
   {
     width = CGSizeZero.width;
     height = CGSizeZero.height;
@@ -353,13 +353,13 @@ LABEL_10:
   {
     viewCell = self->_viewCell;
     emails = self->_emails;
-    v10 = -[NSMutableArray objectAtIndex:](self->_emailURLs, "objectAtIndex:", [v6 row]);
+    v10 = -[NSMutableArray objectAtIndex:](self->_emailURLs, "objectAtIndex:", [pathCopy row]);
     v11 = [(NSMutableDictionary *)emails objectForKey:v10];
     [(SiriUIContentCollectionViewCell *)viewCell setEmail:v11];
 
     v12 = self->_viewCell;
-    v13 = [(MFEmailSnippetCollectionViewController *)self delegate];
-    [v13 siriViewControllerExpectedWidth:self];
+    delegate = [(MFEmailSnippetCollectionViewController *)self delegate];
+    [delegate siriViewControllerExpectedWidth:self];
     [(SiriUIContentCollectionViewCell *)v12 sizeThatFits:?];
     width = v14;
     height = v16;
@@ -372,19 +372,19 @@ LABEL_10:
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v10 = a4;
+  pathCopy = path;
   v5 = [(NSMutableArray *)self->_emailURLs count];
-  if (v5 > [v10 item])
+  if (v5 > [pathCopy item])
   {
     snippetType = self->_snippetType;
     if (snippetType == 1)
     {
-      v8 = [(MFEmailSnippetCollectionViewController *)self headerPunchOut];
-      v7 = [v8 punchOutUri];
+      headerPunchOut = [(MFEmailSnippetCollectionViewController *)self headerPunchOut];
+      punchOutUri = [headerPunchOut punchOutUri];
 
-      if (!v7)
+      if (!punchOutUri)
       {
         goto LABEL_8;
       }
@@ -397,27 +397,27 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v7 = -[NSMutableArray objectAtIndex:](self->_emailURLs, "objectAtIndex:", [v10 row]);
-      if (!v7)
+      punchOutUri = -[NSMutableArray objectAtIndex:](self->_emailURLs, "objectAtIndex:", [pathCopy row]);
+      if (!punchOutUri)
       {
         goto LABEL_8;
       }
     }
 
-    v9 = [(MFEmailSnippetCollectionViewController *)self delegate];
-    [v9 siriViewController:self openURL:v7 completion:0];
+    delegate = [(MFEmailSnippetCollectionViewController *)self delegate];
+    [delegate siriViewController:self openURL:punchOutUri completion:0];
   }
 
 LABEL_8:
 }
 
-- (BOOL)search:(id)a3 didFindResults:(id)a4
+- (BOOL)search:(id)search didFindResults:(id)results
 {
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  obj = a4;
+  obj = results;
   v5 = [obj countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
@@ -455,18 +455,18 @@ LABEL_8:
   return 1;
 }
 
-- (void)search:(id)a3 didFinishWithError:(id)a4
+- (void)search:(id)search didFinishWithError:(id)error
 {
-  v6 = a4;
-  v5 = [(EFPromise *)self->_emailContentPromise errorOnlyCompletionHandlerAdapter];
-  (v5)[2](v5, v6);
+  errorCopy = error;
+  errorOnlyCompletionHandlerAdapter = [(EFPromise *)self->_emailContentPromise errorOnlyCompletionHandlerAdapter];
+  (errorOnlyCompletionHandlerAdapter)[2](errorOnlyCompletionHandlerAdapter, errorCopy);
 }
 
-- (void)composeView:(id)a3 wantsOpenURL:(id)a4
+- (void)composeView:(id)view wantsOpenURL:(id)l
 {
-  v6 = a4;
-  v5 = [(MFEmailSnippetCollectionViewController *)self delegate];
-  [v5 siriViewController:self openURL:v6 completion:0];
+  lCopy = l;
+  delegate = [(MFEmailSnippetCollectionViewController *)self delegate];
+  [delegate siriViewController:self openURL:lCopy completion:0];
 }
 
 @end

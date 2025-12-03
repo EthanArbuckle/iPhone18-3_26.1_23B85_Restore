@@ -1,46 +1,46 @@
 @interface AVCaptureProprietaryDefaultsSingleton
-+ (__CVBuffer)imageForKey:(id)a3 fillWidth:(int)a4 fillHeight:(int)a5;
++ (__CVBuffer)imageForKey:(id)key fillWidth:(int)width fillHeight:(int)height;
 + (id)cameraHistoryDownplayOverrideList;
-+ (id)objectForKey:(id)a3;
-+ (id)objectsForWildcardKey:(id)a3;
-+ (id)proprietaryDefaultsDomainForAuditToken:(id *)a3;
++ (id)objectForKey:(id)key;
++ (id)objectsForWildcardKey:(id)key;
++ (id)proprietaryDefaultsDomainForAuditToken:(id *)token;
 + (id)proprietaryDefaultsSingleton;
 + (int)retryPriorFailedKeyObservationRegistrations;
-+ (void)addObserver:(id)a3 forKey:(id)a4 callHandlerForInitialValue:(BOOL)a5 defaultChangedHandler:(id)a6;
++ (void)addObserver:(id)observer forKey:(id)key callHandlerForInitialValue:(BOOL)value defaultChangedHandler:(id)handler;
 + (void)initialize;
-+ (void)removeObserver:(id)a3 forKey:(id)a4;
-+ (void)setObject:(id)a3 forKey:(id)a4;
-+ (void)setObject:(id)a3 forWildcardKey:(id)a4;
-+ (void)updateCameraHistory:(id)a3 withCameraInfo:(id)a4 maxLength:(unint64_t)a5 updateCameraHistoryDownplayOverrideList:(BOOL)a6 cameraCanBeInOverrideList:(BOOL)a7;
-+ (void)updateCameraOverrideHistory:(id)a3 withCameraInfo:(id)a4 setOverride:(BOOL)a5;
++ (void)removeObserver:(id)observer forKey:(id)key;
++ (void)setObject:(id)object forKey:(id)key;
++ (void)setObject:(id)object forWildcardKey:(id)key;
++ (void)updateCameraHistory:(id)history withCameraInfo:(id)info maxLength:(unint64_t)length updateCameraHistoryDownplayOverrideList:(BOOL)list cameraCanBeInOverrideList:(BOOL)overrideList;
++ (void)updateCameraOverrideHistory:(id)history withCameraInfo:(id)info setOverride:(BOOL)override;
 + (void)updateProprietaryDefaultsSource;
 - (AVCaptureProprietaryDefaultsSingleton)init;
-- (__CVBuffer)imageForKey:(id)a3 fillWidth:(int)a4 fillHeight:(int)a5;
+- (__CVBuffer)imageForKey:(id)key fillWidth:(int)width fillHeight:(int)height;
 - (id)cameraHistoryDownplayOverrideList;
-- (id)objectForKey:(id)a3;
-- (id)objectsForWildcardKey:(id)a3;
-- (id)proprietaryDefaultsDomainForAuditToken:(id *)a3;
-- (int)_registerWithServerToObserveKey:(id)a3;
+- (id)objectForKey:(id)key;
+- (id)objectsForWildcardKey:(id)key;
+- (id)proprietaryDefaultsDomainForAuditToken:(id *)token;
+- (int)_registerWithServerToObserveKey:(id)key;
 - (int)retryPriorFailedKeyObservationRegistrations;
-- (void)_handleDefaultChangedNotificationForKey:(id)a3 newValue:(id)a4 handlersForKeyObservers:(id)a5 callHandlersAsync:(BOOL)a6;
-- (void)_handleNotification:(id)a3 payload:(id)a4;
-- (void)_runBlockOnProprietaryDefaultsSourceQueueSync:(id)a3;
-- (void)_updateProprietaryDefaultsSource:(BOOL)a3;
-- (void)addObserver:(id)a3 forKey:(id)a4 callHandlerForInitialValue:(BOOL)a5 defaultChangedHandler:(id)a6;
+- (void)_handleDefaultChangedNotificationForKey:(id)key newValue:(id)value handlersForKeyObservers:(id)observers callHandlersAsync:(BOOL)async;
+- (void)_handleNotification:(id)notification payload:(id)payload;
+- (void)_runBlockOnProprietaryDefaultsSourceQueueSync:(id)sync;
+- (void)_updateProprietaryDefaultsSource:(BOOL)source;
+- (void)addObserver:(id)observer forKey:(id)key callHandlerForInitialValue:(BOOL)value defaultChangedHandler:(id)handler;
 - (void)dealloc;
-- (void)removeObserver:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forWildcardKey:(id)a4;
-- (void)unobserveChangesForKey:(id)a3;
-- (void)updateCameraHistory:(id)a3 withCameraInfo:(id)a4 maxLength:(unint64_t)a5 updateCameraHistoryDownplayOverrideList:(BOOL)a6 cameraCanBeInOverrideList:(BOOL)a7;
-- (void)updateCameraOverrideHistory:(id)a3 withCameraInfo:(id)a4 setOverride:(BOOL)a5;
+- (void)removeObserver:(id)observer forKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setObject:(id)object forWildcardKey:(id)key;
+- (void)unobserveChangesForKey:(id)key;
+- (void)updateCameraHistory:(id)history withCameraInfo:(id)info maxLength:(unint64_t)length updateCameraHistoryDownplayOverrideList:(BOOL)list cameraCanBeInOverrideList:(BOOL)overrideList;
+- (void)updateCameraOverrideHistory:(id)history withCameraInfo:(id)info setOverride:(BOOL)override;
 @end
 
 @implementation AVCaptureProprietaryDefaultsSingleton
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -148,56 +148,56 @@ uint64_t __74__AVCaptureProprietaryDefaultsSingleton_cameraHistoryDownplayOverri
   return result;
 }
 
-+ (void)addObserver:(id)a3 forKey:(id)a4 callHandlerForInitialValue:(BOOL)a5 defaultChangedHandler:(id)a6
++ (void)addObserver:(id)observer forKey:(id)key callHandlerForInitialValue:(BOOL)value defaultChangedHandler:(id)handler
 {
-  v7 = a5;
+  valueCopy = value;
   v10 = +[AVCaptureProprietaryDefaultsSingleton proprietaryDefaultsSingleton];
 
-  [v10 addObserver:a3 forKey:a4 callHandlerForInitialValue:v7 defaultChangedHandler:a6];
+  [v10 addObserver:observer forKey:key callHandlerForInitialValue:valueCopy defaultChangedHandler:handler];
 }
 
-+ (void)removeObserver:(id)a3 forKey:(id)a4
++ (void)removeObserver:(id)observer forKey:(id)key
 {
   v6 = +[AVCaptureProprietaryDefaultsSingleton proprietaryDefaultsSingleton];
 
-  [v6 removeObserver:a3 forKey:a4];
+  [v6 removeObserver:observer forKey:key];
 }
 
-+ (id)objectForKey:(id)a3
++ (id)objectForKey:(id)key
 {
   v4 = +[AVCaptureProprietaryDefaultsSingleton proprietaryDefaultsSingleton];
 
-  return [v4 objectForKey:a3];
+  return [v4 objectForKey:key];
 }
 
-+ (void)setObject:(id)a3 forKey:(id)a4
++ (void)setObject:(id)object forKey:(id)key
 {
   v6 = +[AVCaptureProprietaryDefaultsSingleton proprietaryDefaultsSingleton];
 
-  [v6 setObject:a3 forKey:a4];
+  [v6 setObject:object forKey:key];
 }
 
-+ (id)objectsForWildcardKey:(id)a3
++ (id)objectsForWildcardKey:(id)key
 {
   v4 = +[AVCaptureProprietaryDefaultsSingleton proprietaryDefaultsSingleton];
 
-  return [v4 objectsForWildcardKey:a3];
+  return [v4 objectsForWildcardKey:key];
 }
 
-+ (void)setObject:(id)a3 forWildcardKey:(id)a4
++ (void)setObject:(id)object forWildcardKey:(id)key
 {
   v6 = +[AVCaptureProprietaryDefaultsSingleton proprietaryDefaultsSingleton];
 
-  [v6 setObject:a3 forWildcardKey:a4];
+  [v6 setObject:object forWildcardKey:key];
 }
 
-+ (__CVBuffer)imageForKey:(id)a3 fillWidth:(int)a4 fillHeight:(int)a5
++ (__CVBuffer)imageForKey:(id)key fillWidth:(int)width fillHeight:(int)height
 {
-  v5 = *&a5;
-  v6 = *&a4;
+  v5 = *&height;
+  v6 = *&width;
   v8 = +[AVCaptureProprietaryDefaultsSingleton proprietaryDefaultsSingleton];
 
-  return [v8 imageForKey:a3 fillWidth:v6 fillHeight:v5];
+  return [v8 imageForKey:key fillWidth:v6 fillHeight:v5];
 }
 
 + (int)retryPriorFailedKeyObservationRegistrations
@@ -207,30 +207,30 @@ uint64_t __74__AVCaptureProprietaryDefaultsSingleton_cameraHistoryDownplayOverri
   return [v2 retryPriorFailedKeyObservationRegistrations];
 }
 
-+ (id)proprietaryDefaultsDomainForAuditToken:(id *)a3
++ (id)proprietaryDefaultsDomainForAuditToken:(id *)token
 {
   v4 = +[AVCaptureProprietaryDefaultsSingleton proprietaryDefaultsSingleton];
-  v5 = *&a3->var0[4];
-  v7[0] = *a3->var0;
+  v5 = *&token->var0[4];
+  v7[0] = *token->var0;
   v7[1] = v5;
   return [v4 proprietaryDefaultsDomainForAuditToken:v7];
 }
 
-+ (void)updateCameraHistory:(id)a3 withCameraInfo:(id)a4 maxLength:(unint64_t)a5 updateCameraHistoryDownplayOverrideList:(BOOL)a6 cameraCanBeInOverrideList:(BOOL)a7
++ (void)updateCameraHistory:(id)history withCameraInfo:(id)info maxLength:(unint64_t)length updateCameraHistoryDownplayOverrideList:(BOOL)list cameraCanBeInOverrideList:(BOOL)overrideList
 {
-  v7 = a7;
-  v8 = a6;
+  overrideListCopy = overrideList;
+  listCopy = list;
   v12 = +[AVCaptureProprietaryDefaultsSingleton proprietaryDefaultsSingleton];
 
-  [v12 updateCameraHistory:a3 withCameraInfo:a4 maxLength:a5 updateCameraHistoryDownplayOverrideList:v8 cameraCanBeInOverrideList:v7];
+  [v12 updateCameraHistory:history withCameraInfo:info maxLength:length updateCameraHistoryDownplayOverrideList:listCopy cameraCanBeInOverrideList:overrideListCopy];
 }
 
-+ (void)updateCameraOverrideHistory:(id)a3 withCameraInfo:(id)a4 setOverride:(BOOL)a5
++ (void)updateCameraOverrideHistory:(id)history withCameraInfo:(id)info setOverride:(BOOL)override
 {
-  v5 = a5;
+  overrideCopy = override;
   v8 = +[AVCaptureProprietaryDefaultsSingleton proprietaryDefaultsSingleton];
 
-  [v8 updateCameraOverrideHistory:a3 withCameraInfo:a4 setOverride:v5];
+  [v8 updateCameraOverrideHistory:history withCameraInfo:info setOverride:overrideCopy];
 }
 
 - (void)dealloc
@@ -247,9 +247,9 @@ uint64_t __74__AVCaptureProprietaryDefaultsSingleton_cameraHistoryDownplayOverri
   [(AVCaptureProprietaryDefaultsSingleton *)&v4 dealloc];
 }
 
-- (void)addObserver:(id)a3 forKey:(id)a4 callHandlerForInitialValue:(BOOL)a5 defaultChangedHandler:(id)a6
+- (void)addObserver:(id)observer forKey:(id)key callHandlerForInitialValue:(BOOL)value defaultChangedHandler:(id)handler
 {
-  if (!a3)
+  if (!observer)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695D940];
@@ -257,7 +257,7 @@ uint64_t __74__AVCaptureProprietaryDefaultsSingleton_cameraHistoryDownplayOverri
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!key)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695D940];
@@ -265,13 +265,13 @@ uint64_t __74__AVCaptureProprietaryDefaultsSingleton_cameraHistoryDownplayOverri
     goto LABEL_8;
   }
 
-  if (!a6)
+  if (!handler)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695D940];
     v8 = @"defaultChangedHandler must not be nil";
 LABEL_8:
-    objc_exception_throw([v6 exceptionWithName:v7 reason:v8 userInfo:{0, a6}]);
+    objc_exception_throw([v6 exceptionWithName:v7 reason:v8 userInfo:{0, handler}]);
   }
 
   v9[0] = MEMORY[0x1E69E9820];
@@ -279,10 +279,10 @@ LABEL_8:
   v9[2] = __109__AVCaptureProprietaryDefaultsSingleton_addObserver_forKey_callHandlerForInitialValue_defaultChangedHandler___block_invoke;
   v9[3] = &unk_1E786FD78;
   v9[4] = self;
-  v9[5] = a4;
-  v9[6] = a3;
-  v9[7] = a6;
-  v10 = a5;
+  v9[5] = key;
+  v9[6] = observer;
+  v9[7] = handler;
+  valueCopy = value;
   [(AVCaptureProprietaryDefaultsSingleton *)self _runBlockOnProprietaryDefaultsSourceQueueSync:v9];
 }
 
@@ -335,9 +335,9 @@ LABEL_9:
   return result;
 }
 
-- (void)removeObserver:(id)a3 forKey:(id)a4
+- (void)removeObserver:(id)observer forKey:(id)key
 {
-  if (!a3)
+  if (!observer)
   {
     v4 = MEMORY[0x1E695DF30];
     v5 = *MEMORY[0x1E695D940];
@@ -345,7 +345,7 @@ LABEL_9:
     goto LABEL_6;
   }
 
-  if (!a4)
+  if (!key)
   {
     v4 = MEMORY[0x1E695DF30];
     v5 = *MEMORY[0x1E695D940];
@@ -359,8 +359,8 @@ LABEL_6:
   v7[2] = __63__AVCaptureProprietaryDefaultsSingleton_removeObserver_forKey___block_invoke;
   v7[3] = &unk_1E786EFD0;
   v7[4] = self;
-  v7[5] = a4;
-  v7[6] = a3;
+  v7[5] = key;
+  v7[6] = observer;
   [(AVCaptureProprietaryDefaultsSingleton *)self _runBlockOnProprietaryDefaultsSourceQueueSync:v7];
 }
 
@@ -404,7 +404,7 @@ void *__63__AVCaptureProprietaryDefaultsSingleton_removeObserver_forKey___block_
   return result;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   v6 = 0;
   v7 = &v6;
@@ -417,7 +417,7 @@ void *__63__AVCaptureProprietaryDefaultsSingleton_removeObserver_forKey___block_
   v5[2] = __54__AVCaptureProprietaryDefaultsSingleton_objectForKey___block_invoke;
   v5[3] = &unk_1E786FDA0;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = key;
   v5[6] = &v6;
   [(AVCaptureProprietaryDefaultsSingleton *)self _runBlockOnProprietaryDefaultsSourceQueueSync:v5];
   v3 = v7[5];
@@ -448,7 +448,7 @@ id __54__AVCaptureProprietaryDefaultsSingleton_objectForKey___block_invoke(void 
   return v7;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
   v9 = 0;
   v10 = &v9;
@@ -461,14 +461,14 @@ id __54__AVCaptureProprietaryDefaultsSingleton_objectForKey___block_invoke(void 
   v8[2] = __58__AVCaptureProprietaryDefaultsSingleton_setObject_forKey___block_invoke;
   v8[3] = &unk_1E786FDC8;
   v8[4] = self;
-  v8[5] = a4;
-  v8[6] = a3;
+  v8[5] = key;
+  v8[6] = object;
   v8[7] = &v9;
   [(AVCaptureProprietaryDefaultsSingleton *)self _runBlockOnProprietaryDefaultsSourceQueueSync:v8];
   v7 = v10[5];
   if (v7)
   {
-    [(AVCaptureProprietaryDefaultsSingleton *)self _handleDefaultChangedNotificationForKey:a4 newValue:a3 handlersForKeyObservers:v7 callHandlersAsync:0];
+    [(AVCaptureProprietaryDefaultsSingleton *)self _handleDefaultChangedNotificationForKey:key newValue:object handlersForKeyObservers:v7 callHandlersAsync:0];
   }
 
   _Block_object_dispose(&v9, 8);
@@ -506,7 +506,7 @@ void __58__AVCaptureProprietaryDefaultsSingleton_setObject_forKey___block_invoke
   }
 }
 
-- (id)objectsForWildcardKey:(id)a3
+- (id)objectsForWildcardKey:(id)key
 {
   v6 = 0;
   v7 = &v6;
@@ -519,7 +519,7 @@ void __58__AVCaptureProprietaryDefaultsSingleton_setObject_forKey___block_invoke
   v5[2] = __63__AVCaptureProprietaryDefaultsSingleton_objectsForWildcardKey___block_invoke;
   v5[3] = &unk_1E786FDA0;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = key;
   v5[6] = &v6;
   [(AVCaptureProprietaryDefaultsSingleton *)self _runBlockOnProprietaryDefaultsSourceQueueSync:v5];
   v3 = v7[5];
@@ -553,7 +553,7 @@ void *__63__AVCaptureProprietaryDefaultsSingleton_objectsForWildcardKey___block_
   return result;
 }
 
-- (void)setObject:(id)a3 forWildcardKey:(id)a4
+- (void)setObject:(id)object forWildcardKey:(id)key
 {
   v10 = 0;
   v11 = &v10;
@@ -566,8 +566,8 @@ void *__63__AVCaptureProprietaryDefaultsSingleton_objectsForWildcardKey___block_
   v9[2] = __66__AVCaptureProprietaryDefaultsSingleton_setObject_forWildcardKey___block_invoke;
   v9[3] = &unk_1E786FDC8;
   v9[4] = self;
-  v9[5] = a4;
-  v9[6] = a3;
+  v9[5] = key;
+  v9[6] = object;
   v9[7] = &v10;
   [(AVCaptureProprietaryDefaultsSingleton *)self _runBlockOnProprietaryDefaultsSourceQueueSync:v9];
   v7 = v11[5];
@@ -576,7 +576,7 @@ void *__63__AVCaptureProprietaryDefaultsSingleton_objectsForWildcardKey___block_
   v8[2] = __66__AVCaptureProprietaryDefaultsSingleton_setObject_forWildcardKey___block_invoke_2;
   v8[3] = &unk_1E786FDF0;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = object;
   [v7 enumerateKeysAndObjectsUsingBlock:v8];
 
   _Block_object_dispose(&v10, 8);
@@ -663,7 +663,7 @@ id __66__AVCaptureProprietaryDefaultsSingleton_setObject_forWildcardKey___block_
   return result;
 }
 
-- (__CVBuffer)imageForKey:(id)a3 fillWidth:(int)a4 fillHeight:(int)a5
+- (__CVBuffer)imageForKey:(id)key fillWidth:(int)width fillHeight:(int)height
 {
   v10 = 0;
   v11 = &v10;
@@ -674,9 +674,9 @@ id __66__AVCaptureProprietaryDefaultsSingleton_setObject_forWildcardKey___block_
   v7[2] = __74__AVCaptureProprietaryDefaultsSingleton_imageForKey_fillWidth_fillHeight___block_invoke;
   v7[3] = &unk_1E786FE18;
   v7[4] = self;
-  v7[5] = a3;
-  v8 = a5;
-  v9 = a4;
+  v7[5] = key;
+  heightCopy = height;
+  widthCopy = width;
   v7[6] = &v10;
   [(AVCaptureProprietaryDefaultsSingleton *)self _runBlockOnProprietaryDefaultsSourceQueueSync:v7];
   v5 = v11[3];
@@ -948,7 +948,7 @@ LABEL_4:
   return result;
 }
 
-- (int)_registerWithServerToObserveKey:(id)a3
+- (int)_registerWithServerToObserveKey:(id)key
 {
   proprietaryDefaultsSource = self->_proprietaryDefaultsSource;
   if (!proprietaryDefaultsSource)
@@ -968,10 +968,10 @@ LABEL_4:
     return -12782;
   }
 
-  return v6(proprietaryDefaultsSource, a3);
+  return v6(proprietaryDefaultsSource, key);
 }
 
-- (id)proprietaryDefaultsDomainForAuditToken:(id *)a3
+- (id)proprietaryDefaultsDomainForAuditToken:(id *)token
 {
   v9 = 0;
   v10 = &v9;
@@ -983,8 +983,8 @@ LABEL_4:
   v6[1] = 3221225472;
   v6[2] = __80__AVCaptureProprietaryDefaultsSingleton_proprietaryDefaultsDomainForAuditToken___block_invoke;
   v6[3] = &unk_1E786FE68;
-  v3 = *&a3->var0[4];
-  v7 = *a3->var0;
+  v3 = *&token->var0[4];
+  v7 = *token->var0;
   v8 = v3;
   v6[4] = self;
   v6[5] = &v9;
@@ -1021,7 +1021,7 @@ uint64_t __80__AVCaptureProprietaryDefaultsSingleton_proprietaryDefaultsDomainFo
   return result;
 }
 
-- (void)updateCameraHistory:(id)a3 withCameraInfo:(id)a4 maxLength:(unint64_t)a5 updateCameraHistoryDownplayOverrideList:(BOOL)a6 cameraCanBeInOverrideList:(BOOL)a7
+- (void)updateCameraHistory:(id)history withCameraInfo:(id)info maxLength:(unint64_t)length updateCameraHistoryDownplayOverrideList:(BOOL)list cameraCanBeInOverrideList:(BOOL)overrideList
 {
   v19 = 0;
   v20 = &v19;
@@ -1040,18 +1040,18 @@ uint64_t __80__AVCaptureProprietaryDefaultsSingleton_proprietaryDefaultsDomainFo
   v10[2] = __152__AVCaptureProprietaryDefaultsSingleton_updateCameraHistory_withCameraInfo_maxLength_updateCameraHistoryDownplayOverrideList_cameraCanBeInOverrideList___block_invoke;
   v10[3] = &unk_1E786FE90;
   v10[4] = self;
-  v10[5] = a3;
-  v11 = a6;
-  v12 = a7;
-  v10[6] = a4;
+  v10[5] = history;
+  listCopy = list;
+  overrideListCopy = overrideList;
+  v10[6] = info;
   v10[7] = &v13;
   v10[8] = &v19;
-  v10[9] = a5;
+  v10[9] = length;
   [(AVCaptureProprietaryDefaultsSingleton *)self _runBlockOnProprietaryDefaultsSourceQueueSync:v10];
   v9 = v20[5];
   if (v9)
   {
-    [(AVCaptureProprietaryDefaultsSingleton *)self _handleDefaultChangedNotificationForKey:a3 newValue:v14[5] handlersForKeyObservers:v9 callHandlersAsync:0];
+    [(AVCaptureProprietaryDefaultsSingleton *)self _handleDefaultChangedNotificationForKey:history newValue:v14[5] handlersForKeyObservers:v9 callHandlersAsync:0];
   }
 
   _Block_object_dispose(&v13, 8);
@@ -1098,7 +1098,7 @@ void __152__AVCaptureProprietaryDefaultsSingleton_updateCameraHistory_withCamera
   }
 }
 
-- (void)updateCameraOverrideHistory:(id)a3 withCameraInfo:(id)a4 setOverride:(BOOL)a5
+- (void)updateCameraOverrideHistory:(id)history withCameraInfo:(id)info setOverride:(BOOL)override
 {
   v21 = 0;
   v22 = &v21;
@@ -1117,9 +1117,9 @@ void __152__AVCaptureProprietaryDefaultsSingleton_updateCameraHistory_withCamera
   v13[2] = __96__AVCaptureProprietaryDefaultsSingleton_updateCameraOverrideHistory_withCameraInfo_setOverride___block_invoke;
   v13[3] = &unk_1E786FEB8;
   v13[4] = self;
-  v13[5] = a3;
-  v14 = a5;
-  v13[6] = a4;
+  v13[5] = history;
+  overrideCopy = override;
+  v13[6] = info;
   v13[7] = &v15;
   v13[8] = &v21;
   [(AVCaptureProprietaryDefaultsSingleton *)self _runBlockOnProprietaryDefaultsSourceQueueSync:v13];
@@ -1136,7 +1136,7 @@ void __152__AVCaptureProprietaryDefaultsSingleton_updateCameraHistory_withCamera
       v7 = v22[5];
     }
 
-    [(AVCaptureProprietaryDefaultsSingleton *)self _handleDefaultChangedNotificationForKey:a3 newValue:v16[5] handlersForKeyObservers:v7 callHandlersAsync:0, v9, v10];
+    [(AVCaptureProprietaryDefaultsSingleton *)self _handleDefaultChangedNotificationForKey:history newValue:v16[5] handlersForKeyObservers:v7 callHandlersAsync:0, v9, v10];
   }
 
   _Block_object_dispose(&v15, 8);
@@ -1221,7 +1221,7 @@ void __96__AVCaptureProprietaryDefaultsSingleton_updateCameraOverrideHistory_wit
   [v2 _updateProprietaryDefaultsSource:1];
 }
 
-- (void)_updateProprietaryDefaultsSource:(BOOL)a3
+- (void)_updateProprietaryDefaultsSource:(BOOL)source
 {
   if (AVCaptureIsRunningInMediaserverd())
   {
@@ -1234,8 +1234,8 @@ void __96__AVCaptureProprietaryDefaultsSingleton_updateCameraOverrideHistory_wit
   }
 
   v5 = v4;
-  v6 = [v4 firstObject];
-  if (!v6)
+  firstObject = [v4 firstObject];
+  if (!firstObject)
   {
     v12 = 0;
     v11 = 0;
@@ -1250,7 +1250,7 @@ void __96__AVCaptureProprietaryDefaultsSingleton_updateCameraOverrideHistory_wit
   v10[2] = __74__AVCaptureProprietaryDefaultsSingleton__updateProprietaryDefaultsSource___block_invoke;
   v10[3] = &unk_1E786ECD0;
   v10[4] = self;
-  v10[5] = v6;
+  v10[5] = firstObject;
   [(AVCaptureProprietaryDefaultsSingleton *)self _runBlockOnProprietaryDefaultsSourceQueueSync:v10];
   if (v5)
   {
@@ -1328,12 +1328,12 @@ void *__74__AVCaptureProprietaryDefaultsSingleton__updateProprietaryDefaultsSour
   return result;
 }
 
-- (void)_handleNotification:(id)a3 payload:(id)a4
+- (void)_handleNotification:(id)notification payload:(id)payload
 {
-  if ([a3 isEqualToString:*MEMORY[0x1E6990528]])
+  if ([notification isEqualToString:*MEMORY[0x1E6990528]])
   {
-    v6 = [a4 objectForKeyedSubscript:*MEMORY[0x1E6990868]];
-    v7 = [a4 objectForKeyedSubscript:*MEMORY[0x1E6990870]];
+    v6 = [payload objectForKeyedSubscript:*MEMORY[0x1E6990868]];
+    v7 = [payload objectForKeyedSubscript:*MEMORY[0x1E6990870]];
     if (v6)
     {
       v8 = v7 == 0;
@@ -1357,7 +1357,7 @@ void *__74__AVCaptureProprietaryDefaultsSingleton__updateProprietaryDefaultsSour
   }
 }
 
-- (void)unobserveChangesForKey:(id)a3
+- (void)unobserveChangesForKey:(id)key
 {
   proprietaryDefaultsSource = self->_proprietaryDefaultsSource;
   if (proprietaryDefaultsSource)
@@ -1369,30 +1369,30 @@ void *__74__AVCaptureProprietaryDefaultsSingleton__updateProprietaryDefaultsSour
       if (v6)
       {
 
-        v6(proprietaryDefaultsSource, a3);
+        v6(proprietaryDefaultsSource, key);
       }
     }
   }
 }
 
-- (void)_handleDefaultChangedNotificationForKey:(id)a3 newValue:(id)a4 handlersForKeyObservers:(id)a5 callHandlersAsync:(BOOL)a6
+- (void)_handleDefaultChangedNotificationForKey:(id)key newValue:(id)value handlersForKeyObservers:(id)observers callHandlersAsync:(BOOL)async
 {
-  v6 = a6;
+  asyncCopy = async;
   context = objc_autoreleasePoolPush();
-  if (a5 || (v27 = 0, v28 = &v27, v29 = 0x3052000000, v30 = __Block_byref_object_copy__6, v31 = __Block_byref_object_dispose__6, v32 = 0, v26[0] = MEMORY[0x1E69E9820], v26[1] = 3221225472, v26[2] = __132__AVCaptureProprietaryDefaultsSingleton__handleDefaultChangedNotificationForKey_newValue_handlersForKeyObservers_callHandlersAsync___block_invoke, v26[3] = &unk_1E786FF08, v26[5] = a3, v26[6] = &v27, v26[4] = self, [(AVCaptureProprietaryDefaultsSingleton *)self _runBlockOnProprietaryDefaultsSourceQueueSync:v26, context], a5 = v28[5], _Block_object_dispose(&v27, 8), a5))
+  if (observers || (v27 = 0, v28 = &v27, v29 = 0x3052000000, v30 = __Block_byref_object_copy__6, v31 = __Block_byref_object_dispose__6, v32 = 0, v26[0] = MEMORY[0x1E69E9820], v26[1] = 3221225472, v26[2] = __132__AVCaptureProprietaryDefaultsSingleton__handleDefaultChangedNotificationForKey_newValue_handlersForKeyObservers_callHandlersAsync___block_invoke, v26[3] = &unk_1E786FF08, v26[5] = key, v26[6] = &v27, v26[4] = self, [(AVCaptureProprietaryDefaultsSingleton *)self _runBlockOnProprietaryDefaultsSourceQueueSync:v26, context], observers = v28[5], _Block_object_dispose(&v27, 8), observers))
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      a4 = 0;
+      value = 0;
     }
 
-    v10 = [objc_msgSend(a5 keyEnumerator];
+    keyEnumerator = [objc_msgSend(observers keyEnumerator];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v11 = [v10 countByEnumeratingWithState:&v22 objects:v21 count:16];
+    v11 = [keyEnumerator countByEnumeratingWithState:&v22 objects:v21 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1403,14 +1403,14 @@ void *__74__AVCaptureProprietaryDefaultsSingleton__updateProprietaryDefaultsSour
         {
           if (*v23 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v15 = *(*(&v22 + 1) + 8 * i);
-          v16 = [a5 objectForKey:v15];
+          v16 = [observers objectForKey:v15];
           if (v16)
           {
-            if (v6)
+            if (asyncCopy)
             {
               proprietaryDefaultChangeNotificationCallbackQueue = self->_proprietaryDefaultChangeNotificationCallbackQueue;
               block[0] = MEMORY[0x1E69E9820];
@@ -1418,20 +1418,20 @@ void *__74__AVCaptureProprietaryDefaultsSingleton__updateProprietaryDefaultsSour
               block[2] = __132__AVCaptureProprietaryDefaultsSingleton__handleDefaultChangedNotificationForKey_newValue_handlersForKeyObservers_callHandlersAsync___block_invoke_2;
               block[3] = &unk_1E786FF30;
               block[4] = v15;
-              block[5] = a3;
-              block[6] = a4;
+              block[5] = key;
+              block[6] = value;
               block[7] = v16;
               dispatch_async(proprietaryDefaultChangeNotificationCallbackQueue, block);
             }
 
             else
             {
-              (*(v16 + 16))(v16, a3, a4);
+              (*(v16 + 16))(v16, key, value);
             }
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v22 objects:v21 count:16];
+        v12 = [keyEnumerator countByEnumeratingWithState:&v22 objects:v21 count:16];
       }
 
       while (v12);
@@ -1463,14 +1463,14 @@ void __132__AVCaptureProprietaryDefaultsSingleton__handleDefaultChangedNotificat
   v3 = *(a1 + 32);
 }
 
-- (void)_runBlockOnProprietaryDefaultsSourceQueueSync:(id)a3
+- (void)_runBlockOnProprietaryDefaultsSourceQueueSync:(id)sync
 {
   label = dispatch_queue_get_label(0);
   if (label && !strncmp(label, self->_proprietaryDefaultsSourceQueueLabel, self->_proprietaryDefaultsSourceQueueLabelLength))
   {
-    v7 = *(a3 + 2);
+    v7 = *(sync + 2);
 
-    v7(a3);
+    v7(sync);
   }
 
   else
@@ -1480,7 +1480,7 @@ void __132__AVCaptureProprietaryDefaultsSingleton__handleDefaultChangedNotificat
     block[1] = 3221225472;
     block[2] = __87__AVCaptureProprietaryDefaultsSingleton__runBlockOnProprietaryDefaultsSourceQueueSync___block_invoke;
     block[3] = &unk_1E786F798;
-    block[4] = a3;
+    block[4] = sync;
     dispatch_sync(proprietaryDefaultsSourceQueue, block);
   }
 }

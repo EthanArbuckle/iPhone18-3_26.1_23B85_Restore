@@ -1,13 +1,13 @@
 @interface CloudKitSchemaCKClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (CloudKitSchemaCKChangeReported)cloudKitChangeReported;
-- (CloudKitSchemaCKClientEvent)initWithDictionary:(id)a3;
-- (CloudKitSchemaCKClientEvent)initWithJSON:(id)a3;
+- (CloudKitSchemaCKClientEvent)initWithDictionary:(id)dictionary;
+- (CloudKitSchemaCKClientEvent)initWithJSON:(id)n;
 - (CloudKitSchemaCKErrorReported)cloudKitErrorReported;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -16,22 +16,22 @@
 - (unint64_t)hash;
 - (void)deleteCloudKitChangeReported;
 - (void)deleteCloudKitErrorReported;
-- (void)setCloudKitChangeReported:(id)a3;
-- (void)setCloudKitErrorReported:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setCloudKitChangeReported:(id)reported;
+- (void)setCloudKitErrorReported:(id)reported;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CloudKitSchemaCKClientEvent
 
-- (CloudKitSchemaCKClientEvent)initWithDictionary:(id)a3
+- (CloudKitSchemaCKClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = CloudKitSchemaCKClientEvent;
   v5 = [(CloudKitSchemaCKClientEvent *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,7 +39,7 @@
       [(CloudKitSchemaCKClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"cloudKitErrorReported"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"cloudKitErrorReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,7 +47,7 @@
       [(CloudKitSchemaCKClientEvent *)v5 setCloudKitErrorReported:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"cloudKitChangeReported"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"cloudKitChangeReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -61,30 +61,30 @@
   return v5;
 }
 
-- (CloudKitSchemaCKClientEvent)initWithJSON:(id)a3
+- (CloudKitSchemaCKClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CloudKitSchemaCKClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CloudKitSchemaCKClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CloudKitSchemaCKClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -97,58 +97,58 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_cloudKitChangeReported)
   {
-    v4 = [(CloudKitSchemaCKClientEvent *)self cloudKitChangeReported];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    cloudKitChangeReported = [(CloudKitSchemaCKClientEvent *)self cloudKitChangeReported];
+    dictionaryRepresentation = [cloudKitChangeReported dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"cloudKitChangeReported"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"cloudKitChangeReported"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"cloudKitChangeReported"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"cloudKitChangeReported"];
     }
   }
 
   if (self->_cloudKitErrorReported)
   {
-    v7 = [(CloudKitSchemaCKClientEvent *)self cloudKitErrorReported];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    cloudKitErrorReported = [(CloudKitSchemaCKClientEvent *)self cloudKitErrorReported];
+    dictionaryRepresentation2 = [cloudKitErrorReported dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"cloudKitErrorReported"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"cloudKitErrorReported"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"cloudKitErrorReported"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"cloudKitErrorReported"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v10 = [(CloudKitSchemaCKClientEvent *)self eventMetadata];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    eventMetadata = [(CloudKitSchemaCKClientEvent *)self eventMetadata];
+    dictionaryRepresentation3 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"eventMetadata"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -158,34 +158,34 @@
   return v4 ^ [(CloudKitSchemaCKChangeReported *)self->_cloudKitChangeReported hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_18;
   }
 
-  v6 = [(CloudKitSchemaCKClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(CloudKitSchemaCKClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_17;
   }
 
-  v8 = [(CloudKitSchemaCKClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(CloudKitSchemaCKClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(CloudKitSchemaCKClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(CloudKitSchemaCKClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -197,20 +197,20 @@
   {
   }
 
-  v6 = [(CloudKitSchemaCKClientEvent *)self cloudKitErrorReported];
-  v7 = [v4 cloudKitErrorReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(CloudKitSchemaCKClientEvent *)self cloudKitErrorReported];
+  eventMetadata2 = [equalCopy cloudKitErrorReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_17;
   }
 
-  v13 = [(CloudKitSchemaCKClientEvent *)self cloudKitErrorReported];
-  if (v13)
+  cloudKitErrorReported = [(CloudKitSchemaCKClientEvent *)self cloudKitErrorReported];
+  if (cloudKitErrorReported)
   {
-    v14 = v13;
-    v15 = [(CloudKitSchemaCKClientEvent *)self cloudKitErrorReported];
-    v16 = [v4 cloudKitErrorReported];
-    v17 = [v15 isEqual:v16];
+    v14 = cloudKitErrorReported;
+    cloudKitErrorReported2 = [(CloudKitSchemaCKClientEvent *)self cloudKitErrorReported];
+    cloudKitErrorReported3 = [equalCopy cloudKitErrorReported];
+    v17 = [cloudKitErrorReported2 isEqual:cloudKitErrorReported3];
 
     if (!v17)
     {
@@ -222,12 +222,12 @@
   {
   }
 
-  v6 = [(CloudKitSchemaCKClientEvent *)self cloudKitChangeReported];
-  v7 = [v4 cloudKitChangeReported];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(CloudKitSchemaCKClientEvent *)self cloudKitChangeReported];
+  eventMetadata2 = [equalCopy cloudKitChangeReported];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v18 = [(CloudKitSchemaCKClientEvent *)self cloudKitChangeReported];
-    if (!v18)
+    cloudKitChangeReported = [(CloudKitSchemaCKClientEvent *)self cloudKitChangeReported];
+    if (!cloudKitChangeReported)
     {
 
 LABEL_21:
@@ -235,10 +235,10 @@ LABEL_21:
       goto LABEL_19;
     }
 
-    v19 = v18;
-    v20 = [(CloudKitSchemaCKClientEvent *)self cloudKitChangeReported];
-    v21 = [v4 cloudKitChangeReported];
-    v22 = [v20 isEqual:v21];
+    v19 = cloudKitChangeReported;
+    cloudKitChangeReported2 = [(CloudKitSchemaCKClientEvent *)self cloudKitChangeReported];
+    cloudKitChangeReported3 = [equalCopy cloudKitChangeReported];
+    v22 = [cloudKitChangeReported2 isEqual:cloudKitChangeReported3];
 
     if (v22)
     {
@@ -258,34 +258,34 @@ LABEL_19:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(CloudKitSchemaCKClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(CloudKitSchemaCKClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(CloudKitSchemaCKClientEvent *)self eventMetadata];
+    eventMetadata2 = [(CloudKitSchemaCKClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(CloudKitSchemaCKClientEvent *)self cloudKitErrorReported];
+  cloudKitErrorReported = [(CloudKitSchemaCKClientEvent *)self cloudKitErrorReported];
 
-  if (v6)
+  if (cloudKitErrorReported)
   {
-    v7 = [(CloudKitSchemaCKClientEvent *)self cloudKitErrorReported];
+    cloudKitErrorReported2 = [(CloudKitSchemaCKClientEvent *)self cloudKitErrorReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(CloudKitSchemaCKClientEvent *)self cloudKitChangeReported];
+  cloudKitChangeReported = [(CloudKitSchemaCKClientEvent *)self cloudKitChangeReported];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (cloudKitChangeReported)
   {
-    v10 = [(CloudKitSchemaCKClientEvent *)self cloudKitChangeReported];
+    cloudKitChangeReported2 = [(CloudKitSchemaCKClientEvent *)self cloudKitChangeReported];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
@@ -314,21 +314,21 @@ LABEL_19:
   return v3;
 }
 
-- (void)setCloudKitChangeReported:(id)a3
+- (void)setCloudKitChangeReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   cloudKitErrorReported = self->_cloudKitErrorReported;
   self->_cloudKitErrorReported = 0;
 
   v6 = 101;
-  if (!v4)
+  if (!reportedCopy)
   {
     v6 = 0;
   }
 
   self->_whichEvent_Type = v6;
   cloudKitChangeReported = self->_cloudKitChangeReported;
-  self->_cloudKitChangeReported = v4;
+  self->_cloudKitChangeReported = reportedCopy;
 }
 
 - (void)deleteCloudKitErrorReported
@@ -356,33 +356,33 @@ LABEL_19:
   return v3;
 }
 
-- (void)setCloudKitErrorReported:(id)a3
+- (void)setCloudKitErrorReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   cloudKitChangeReported = self->_cloudKitChangeReported;
   self->_cloudKitChangeReported = 0;
 
   v6 = 100;
-  if (!v4)
+  if (!reportedCopy)
   {
     v6 = 0;
   }
 
   self->_whichEvent_Type = v6;
   cloudKitErrorReported = self->_cloudKitErrorReported;
-  self->_cloudKitErrorReported = v4;
+  self->_cloudKitErrorReported = reportedCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(CloudKitSchemaCKClientEvent *)self whichEvent_Type];
+  whichEvent_Type = [(CloudKitSchemaCKClientEvent *)self whichEvent_Type];
   v3 = @"com.apple.aiml.siri.cloudkit.CKClientEvent";
-  if (v2 == 101)
+  if (whichEvent_Type == 101)
   {
     v3 = @"com.apple.aiml.siri.cloudkit.CKClientEvent.CKChangeReported";
   }
 
-  if (v2 == 100)
+  if (whichEvent_Type == 100)
   {
     return @"com.apple.aiml.siri.cloudkit.CKClientEvent.CKErrorReported";
   }
@@ -393,35 +393,35 @@ LABEL_19:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = CloudKitSchemaCKClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(CloudKitSchemaCKClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(CloudKitSchemaCKClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(CloudKitSchemaCKClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(CloudKitSchemaCKClientEvent *)self cloudKitErrorReported];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  cloudKitErrorReported = [(CloudKitSchemaCKClientEvent *)self cloudKitErrorReported];
+  v10 = [cloudKitErrorReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(CloudKitSchemaCKClientEvent *)self deleteCloudKitErrorReported];
   }
 
-  v12 = [(CloudKitSchemaCKClientEvent *)self cloudKitChangeReported];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  cloudKitChangeReported = [(CloudKitSchemaCKClientEvent *)self cloudKitChangeReported];
+  v13 = [cloudKitChangeReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(CloudKitSchemaCKClientEvent *)self deleteCloudKitChangeReported];
   }
@@ -439,82 +439,82 @@ LABEL_19:
 
 - (int)componentName
 {
-  v2 = [(CloudKitSchemaCKClientEvent *)self eventMetadata];
-  v3 = [v2 ckId];
+  eventMetadata = [(CloudKitSchemaCKClientEvent *)self eventMetadata];
+  ckId = [eventMetadata ckId];
 
-  if (v3)
+  if (ckId)
   {
-    v4 = [v3 value];
-    if (v4)
+    value = [ckId value];
+    if (value)
     {
-      v5 = [v3 value];
-      v6 = [v5 length];
+      value2 = [ckId value];
+      v6 = [value2 length];
 
       if (v6)
       {
-        LODWORD(v4) = 63;
+        LODWORD(value) = 63;
       }
 
       else
       {
-        LODWORD(v4) = 0;
+        LODWORD(value) = 0;
       }
     }
   }
 
   else
   {
-    LODWORD(v4) = 0;
+    LODWORD(value) = 0;
   }
 
-  return v4;
+  return value;
 }
 
 - (id)getComponentId
 {
-  v2 = [(CloudKitSchemaCKClientEvent *)self eventMetadata];
-  v3 = [v2 ckId];
+  eventMetadata = [(CloudKitSchemaCKClientEvent *)self eventMetadata];
+  ckId = [eventMetadata ckId];
 
-  if (!v3)
+  if (!ckId)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 value];
-  if (!v4)
+  value = [ckId value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 value];
-  v6 = [v5 length];
+  value2 = [ckId value];
+  v6 = [value2 length];
 
   if (v6)
   {
-    v4 = v3;
+    value = ckId;
   }
 
   else
   {
 LABEL_5:
-    v4 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v4;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(CloudKitSchemaCKClientEvent *)self whichEvent_Type];
-  if (v3 == 100)
+  whichEvent_Type = [(CloudKitSchemaCKClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type == 100)
   {
     v4 = &OBJC_IVAR___CloudKitSchemaCKClientEvent__cloudKitErrorReported;
     goto LABEL_5;
   }
 
-  if (v3 == 101)
+  if (whichEvent_Type == 101)
   {
     v4 = &OBJC_IVAR___CloudKitSchemaCKClientEvent__cloudKitChangeReported;
 LABEL_5:
@@ -528,15 +528,15 @@ LABEL_7:
   return v5;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
   v3 = @"cloudKitChangeReported";
-  if (a3 != 101)
+  if (tag != 101)
   {
     v3 = 0;
   }
 
-  if (a3 == 100)
+  if (tag == 100)
   {
     return @"cloudKitErrorReported";
   }

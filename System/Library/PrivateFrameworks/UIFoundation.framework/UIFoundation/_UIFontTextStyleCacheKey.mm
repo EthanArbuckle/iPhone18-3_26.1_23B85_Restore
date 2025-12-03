@@ -1,5 +1,5 @@
 @interface _UIFontTextStyleCacheKey
-- (BOOL)_isEqualToKey:(id)a3;
+- (BOOL)_isEqualToKey:(id)key;
 - (void)dealloc;
 @end
 
@@ -12,17 +12,17 @@
   [(_UIFontTextStyleCacheKey *)&v3 dealloc];
 }
 
-- (BOOL)_isEqualToKey:(id)a3
+- (BOOL)_isEqualToKey:(id)key
 {
-  if (self->super._hash == *(a3 + 1))
+  if (self->super._hash == *(key + 1))
   {
     textStyle = self->_textStyle;
-    if (textStyle == *(a3 + 3) || (v6 = [(NSString *)textStyle isEqualToString:?]))
+    if (textStyle == *(key + 3) || (v6 = [(NSString *)textStyle isEqualToString:?]))
     {
       contentSizeCategory = self->_contentSizeCategory;
-      if (contentSizeCategory == *(a3 + 4) || (v6 = [(NSString *)contentSizeCategory isEqualToString:?]))
+      if (contentSizeCategory == *(key + 4) || (v6 = [(NSString *)contentSizeCategory isEqualToString:?]))
       {
-        LOBYTE(v6) = self->_textLegibility == *(a3 + 16);
+        LOBYTE(v6) = self->_textLegibility == *(key + 16);
       }
     }
   }

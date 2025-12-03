@@ -1,14 +1,14 @@
 @interface SBHIconStateArchiverListProperties
-- (void)setGridSizeClassDomain:(uint64_t)a1;
+- (void)setGridSizeClassDomain:(uint64_t)domain;
 @end
 
 @implementation SBHIconStateArchiverListProperties
 
-- (void)setGridSizeClassDomain:(uint64_t)a1
+- (void)setGridSizeClassDomain:(uint64_t)domain
 {
-  if (a1)
+  if (domain)
   {
-    objc_storeStrong((a1 + 48), a2);
+    objc_storeStrong((domain + 48), a2);
   }
 }
 

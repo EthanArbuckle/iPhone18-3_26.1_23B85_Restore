@@ -1,49 +1,49 @@
 @interface SBFLockScreenDateViewController
 - (BOOL)_supportsCoaching;
-- (BOOL)isHostingViewController:(id)a3;
+- (BOOL)isHostingViewController:(id)controller;
 - (BOOL)isSubtitleHidden;
 - (NSString)description;
-- (SBFLockScreenDateViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SBFLockScreenDateViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (double)_timeAnimationIntervalToUse;
 - (double)backgroundAlpha;
-- (id)_timelinesForDateInterval:(id)a3;
+- (id)_timelinesForDateInterval:(id)interval;
 - (id)dateViewIfExists;
 - (void)_addObservers;
-- (void)_backlightLuminanceChangedForEnvironment:(id)a3 previousTraitCollection:(id)a4;
+- (void)_backlightLuminanceChangedForEnvironment:(id)environment previousTraitCollection:(id)collection;
 - (void)_handleTimeZoneChange;
 - (void)_startUpdateTimer;
 - (void)_stopUpdateTimer;
 - (void)_updateAlternateCalendar;
 - (void)_updateAnimatesTimeChanges;
-- (void)_updateForLuminanceFromTraitEnvironment:(id)a3;
+- (void)_updateForLuminanceFromTraitEnvironment:(id)environment;
 - (void)_updateFormat;
 - (void)_updateFormatIfEnabled;
 - (void)_updateLegibilityStrength;
 - (void)_updateState;
 - (void)_updateView;
-- (void)_updateWithFrameSpecifier:(id)a3;
+- (void)_updateWithFrameSpecifier:(id)specifier;
 - (void)dealloc;
 - (void)loadView;
-- (void)setAlternateDateEnabled:(BOOL)a3;
-- (void)setBackgroundAlpha:(double)a3;
-- (void)setCustomSubtitle:(id)a3 withPriority:(int64_t)a4 withTimeout:(double)a5;
-- (void)setCustomSubtitleView:(id)a3;
-- (void)setDateProvider:(id)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setRestrictsVibrancy:(BOOL)a3;
-- (void)setScreenOff:(BOOL)a3;
-- (void)setShowCompactTime:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSubtitleHidden:(BOOL)a3;
-- (void)setTimeAlpha:(double)a3 subtitleAlpha:(double)a4;
-- (void)setTimeSupportsStretch:(BOOL)a3;
-- (void)setView:(id)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)setAlternateDateEnabled:(BOOL)enabled;
+- (void)setBackgroundAlpha:(double)alpha;
+- (void)setCustomSubtitle:(id)subtitle withPriority:(int64_t)priority withTimeout:(double)timeout;
+- (void)setCustomSubtitleView:(id)view;
+- (void)setDateProvider:(id)provider;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setRestrictsVibrancy:(BOOL)vibrancy;
+- (void)setScreenOff:(BOOL)off;
+- (void)setShowCompactTime:(BOOL)time animated:(BOOL)animated;
+- (void)setSubtitleHidden:(BOOL)hidden;
+- (void)setTimeAlpha:(double)alpha subtitleAlpha:(double)subtitleAlpha;
+- (void)setTimeSupportsStretch:(BOOL)stretch;
+- (void)setView:(id)view;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 - (void)updateTimeNow;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation SBFLockScreenDateViewController
@@ -52,34 +52,34 @@
 {
   if ([(SBFLockScreenDateViewController *)self isViewLoaded])
   {
-    v3 = [(SBFLockScreenDateViewController *)self dateView];
+    dateView = [(SBFLockScreenDateViewController *)self dateView];
   }
 
   else
   {
-    v3 = 0;
+    dateView = 0;
   }
 
-  return v3;
+  return dateView;
 }
 
 - (void)_updateLegibilityStrength
 {
-  v6 = [(SBFLockScreenDateViewController *)self dateViewIfExists];
-  v3 = [(SBFLockScreenDateViewController *)self legibilitySettings];
-  v4 = [v3 style];
+  dateViewIfExists = [(SBFLockScreenDateViewController *)self dateViewIfExists];
+  legibilitySettings = [(SBFLockScreenDateViewController *)self legibilitySettings];
+  style = [legibilitySettings style];
 
   v5 = +[SBFLegibilityDomain rootSettings];
-  [v5 timeStrengthForStyle:v4];
-  [v6 setTimeLegibilityStrength:?];
-  [v5 dateStrengthForStyle:v4];
-  [v6 setSubtitleLegibilityStrength:?];
+  [v5 timeStrengthForStyle:style];
+  [dateViewIfExists setTimeLegibilityStrength:?];
+  [v5 dateStrengthForStyle:style];
+  [dateViewIfExists setSubtitleLegibilityStrength:?];
 }
 
 - (BOOL)_supportsCoaching
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  [currentDevice userInterfaceIdiom];
 
   return _os_feature_enabled_impl();
 }
@@ -94,9 +94,9 @@
 
   else
   {
-    v3 = [(SBFLockScreenDateViewController *)self dateViewIfExists];
-    v4 = [(SBFDateProviding *)self->_dateProvider date];
-    [v3 setDate:v4];
+    dateViewIfExists = [(SBFLockScreenDateViewController *)self dateViewIfExists];
+    date = [(SBFDateProviding *)self->_dateProvider date];
+    [dateViewIfExists setDate:date];
 
     [(SBFLockScreenDateViewController *)self _startUpdateTimer];
   }
@@ -138,7 +138,7 @@
 - (void)_updateState
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = MEMORY[0x1BFB4C500](*a1);
+  v3 = MEMORY[0x1BFB4C500](*self);
   v4 = 138412290;
   v5 = v3;
   _os_log_debug_impl(&dword_1BEA11000, a2, OS_LOG_TYPE_DEBUG, "Date view controller disabled updates: %@", &v4, 0xCu);
@@ -174,20 +174,20 @@
 
 - (void)_updateFormat
 {
-  v3 = [(SBFLockScreenDateViewController *)self dateViewIfExists];
-  [v3 updateFormat];
+  dateViewIfExists = [(SBFLockScreenDateViewController *)self dateViewIfExists];
+  [dateViewIfExists updateFormat];
 
   [(SBFLockScreenDateViewController *)self _updateView];
 }
 
-- (SBFLockScreenDateViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SBFLockScreenDateViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v34.receiver = self;
   v34.super_class = SBFLockScreenDateViewController;
-  v8 = [(SBFLockScreenDateViewController *)&v34 initWithNibName:v6 bundle:v7];
+  v8 = [(SBFLockScreenDateViewController *)&v34 initWithNibName:nameCopy bundle:bundleCopy];
   v9 = v8;
   if (v8)
   {
@@ -231,16 +231,16 @@
       v18 = v17;
       _Block_object_dispose(&v36, 8);
       v19 = [v17 alloc];
-      v20 = [MEMORY[0x1E69DC888] systemRedColor];
-      v21 = [v19 initWithElements:-1 date:0 textColor:v20];
+      systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+      v21 = [v19 initWithElements:-1 date:0 textColor:systemRedColor];
       prominentDisplayViewController = v9->_prominentDisplayViewController;
       v9->_prominentDisplayViewController = v21;
 
-      v23 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v23 addObserver:v9 selector:sel__updateAlternateCalendar name:*MEMORY[0x1E6966B78] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v9 selector:sel__updateAlternateCalendar name:*MEMORY[0x1E6966B78] object:0];
 
-      v24 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v24 addObserver:v9 selector:sel__updateAlternateCalendar name:*MEMORY[0x1E695D8F0] object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:v9 selector:sel__updateAlternateCalendar name:*MEMORY[0x1E695D8F0] object:0];
 
       [(SBFLockScreenDateViewController *)v9 _updateAlternateCalendar];
     }
@@ -252,8 +252,8 @@
     v9->_luminanceTraitChangeRegistration = v26;
 
     [(SBFLockScreenDateViewController *)v9 _updateForLuminanceFromTraitEnvironment:v9];
-    v28 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v28 addObserver:v9 selector:sel__lowPowerModeDidChange_ name:*MEMORY[0x1E696A7D8] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v9 selector:sel__lowPowerModeDidChange_ name:*MEMORY[0x1E696A7D8] object:0];
 
     [(SBFLockScreenDateViewController *)v9 _updateAnimatesTimeChanges];
     v29 = v9;
@@ -294,16 +294,16 @@ void __58__SBFLockScreenDateViewController_initWithNibName_bundle___block_invoke
   v5 = [v3 appendBool:self->_screenOff withName:@"screenOff"];
   v6 = [v3 appendBool:!self->_disablesUpdates withName:@"wantsPreciseTime"];
   v7 = [v3 appendBool:self->_timerToken != 0 withName:@"preciseTimeEnabled"];
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (void)setScreenOff:(BOOL)a3
+- (void)setScreenOff:(BOOL)off
 {
-  if (self->_screenOff != a3)
+  if (self->_screenOff != off)
   {
-    self->_screenOff = a3;
+    self->_screenOff = off;
     [(SBFLockScreenDateViewController *)self _updateState];
     if (self->_screenOff)
     {
@@ -315,84 +315,84 @@ void __58__SBFLockScreenDateViewController_initWithNibName_bundle___block_invoke
 
 - (BOOL)isSubtitleHidden
 {
-  v2 = [(SBFLockScreenDateViewController *)self dateViewIfExists];
-  v3 = [v2 isSubtitleHidden];
+  dateViewIfExists = [(SBFLockScreenDateViewController *)self dateViewIfExists];
+  isSubtitleHidden = [dateViewIfExists isSubtitleHidden];
 
-  return v3;
+  return isSubtitleHidden;
 }
 
-- (void)setSubtitleHidden:(BOOL)a3
+- (void)setSubtitleHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(SBFLockScreenDateViewController *)self dateView];
-  [v4 setSubtitleHidden:v3];
+  hiddenCopy = hidden;
+  dateView = [(SBFLockScreenDateViewController *)self dateView];
+  [dateView setSubtitleHidden:hiddenCopy];
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v5 = a3;
-  if (self->_legibilitySettings != v5)
+  settingsCopy = settings;
+  if (self->_legibilitySettings != settingsCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_legibilitySettings, a3);
+    v7 = settingsCopy;
+    objc_storeStrong(&self->_legibilitySettings, settings);
     [(SBFLockScreenDateViewController *)self _updateLegibilityStrength];
-    v6 = [(SBFLockScreenDateViewController *)self dateView];
-    [v6 setLegibilitySettings:self->_legibilitySettings];
+    dateView = [(SBFLockScreenDateViewController *)self dateView];
+    [dateView setLegibilitySettings:self->_legibilitySettings];
 
-    v5 = v7;
+    settingsCopy = v7;
   }
 }
 
-- (void)setRestrictsVibrancy:(BOOL)a3
+- (void)setRestrictsVibrancy:(BOOL)vibrancy
 {
-  if (self->_restrictsVibrancy != a3)
+  if (self->_restrictsVibrancy != vibrancy)
   {
-    self->_restrictsVibrancy = a3;
-    [(CSProminentDisplayViewController *)self->_prominentDisplayViewController setEffectType:a3];
+    self->_restrictsVibrancy = vibrancy;
+    [(CSProminentDisplayViewController *)self->_prominentDisplayViewController setEffectType:vibrancy];
   }
 }
 
-- (void)setTimeAlpha:(double)a3 subtitleAlpha:(double)a4
+- (void)setTimeAlpha:(double)alpha subtitleAlpha:(double)subtitleAlpha
 {
-  v6 = [(SBFLockScreenDateViewController *)self dateViewIfExists];
-  [v6 setTimeAlpha:a3 subtitleAlpha:a4];
+  dateViewIfExists = [(SBFLockScreenDateViewController *)self dateViewIfExists];
+  [dateViewIfExists setTimeAlpha:alpha subtitleAlpha:subtitleAlpha];
 }
 
-- (void)setTimeSupportsStretch:(BOOL)a3
+- (void)setTimeSupportsStretch:(BOOL)stretch
 {
-  v3 = a3;
-  v4 = [(SBFLockScreenDateViewController *)self dateViewIfExists];
-  [v4 setTimeSupportsStretch:v3];
+  stretchCopy = stretch;
+  dateViewIfExists = [(SBFLockScreenDateViewController *)self dateViewIfExists];
+  [dateViewIfExists setTimeSupportsStretch:stretchCopy];
 }
 
-- (void)setBackgroundAlpha:(double)a3
+- (void)setBackgroundAlpha:(double)alpha
 {
-  v4 = [(CSProminentDisplayViewController *)self->_prominentDisplayViewController backgroundView];
-  [v4 setAlpha:a3];
+  backgroundView = [(CSProminentDisplayViewController *)self->_prominentDisplayViewController backgroundView];
+  [backgroundView setAlpha:alpha];
 }
 
 - (double)backgroundAlpha
 {
-  v2 = [(CSProminentDisplayViewController *)self->_prominentDisplayViewController backgroundView];
-  [v2 alpha];
+  backgroundView = [(CSProminentDisplayViewController *)self->_prominentDisplayViewController backgroundView];
+  [backgroundView alpha];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setCustomSubtitleView:(id)a3
+- (void)setCustomSubtitleView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBFLockScreenDateViewController *)self dateViewIfExists];
-  [v5 setCustomSubtitleView:v4];
+  viewCopy = view;
+  dateViewIfExists = [(SBFLockScreenDateViewController *)self dateViewIfExists];
+  [dateViewIfExists setCustomSubtitleView:viewCopy];
 }
 
-- (void)setCustomSubtitle:(id)a3 withPriority:(int64_t)a4 withTimeout:(double)a5
+- (void)setCustomSubtitle:(id)subtitle withPriority:(int64_t)priority withTimeout:(double)timeout
 {
-  v8 = a3;
+  subtitleCopy = subtitle;
   prominentDisplayViewController = self->_prominentDisplayViewController;
-  v11 = v8;
-  if (v8)
+  v11 = subtitleCopy;
+  if (subtitleCopy)
   {
     if ([(SBFLockScreenDateViewController *)self _supportsCoaching])
     {
@@ -404,35 +404,35 @@ void __58__SBFLockScreenDateViewController_initWithNibName_bundle___block_invoke
       v10 = 0;
     }
 
-    [(CSProminentDisplayViewController *)prominentDisplayViewController setTransientSubtitleText:v10 priority:[(SBFLockScreenDateViewController *)self _prominentDisplaySubtitlePriorityForPriority:a4] timeout:a5];
+    [(CSProminentDisplayViewController *)prominentDisplayViewController setTransientSubtitleText:v10 priority:[(SBFLockScreenDateViewController *)self _prominentDisplaySubtitlePriorityForPriority:priority] timeout:timeout];
   }
 
   else
   {
-    [(CSProminentDisplayViewController *)prominentDisplayViewController clearTransientSubtitleForPriority:[(SBFLockScreenDateViewController *)self _prominentDisplaySubtitlePriorityForPriority:a4]];
+    [(CSProminentDisplayViewController *)prominentDisplayViewController clearTransientSubtitleForPriority:[(SBFLockScreenDateViewController *)self _prominentDisplaySubtitlePriorityForPriority:priority]];
   }
 }
 
-- (void)setAlternateDateEnabled:(BOOL)a3
+- (void)setAlternateDateEnabled:(BOOL)enabled
 {
-  if (self->_alternateDateEnabled != a3)
+  if (self->_alternateDateEnabled != enabled)
   {
-    self->_alternateDateEnabled = a3;
+    self->_alternateDateEnabled = enabled;
     [(SBFLockScreenDateViewController *)self _updateAlternateCalendar];
   }
 }
 
-- (void)setDateProvider:(id)a3
+- (void)setDateProvider:(id)provider
 {
-  v4 = a3;
-  if (!v4)
+  providerCopy = provider;
+  if (!providerCopy)
   {
-    v4 = objc_alloc_init(SBFDefaultDateProvider);
+    providerCopy = objc_alloc_init(SBFDefaultDateProvider);
   }
 
-  if (self->_dateProvider != v4)
+  if (self->_dateProvider != providerCopy)
   {
-    obj = v4;
+    obj = providerCopy;
     [(SBFLockScreenDateViewController *)self _stopUpdateTimer];
     objc_storeStrong(&self->_dateProvider, obj);
     if (!self->_disablesUpdates)
@@ -441,7 +441,7 @@ void __58__SBFLockScreenDateViewController_initWithNibName_bundle___block_invoke
     }
 
     [(SBFLockScreenDateViewController *)self _updateFormatIfEnabled];
-    v4 = obj;
+    providerCopy = obj;
   }
 }
 
@@ -452,40 +452,40 @@ void __48__SBFLockScreenDateViewController_updateTimeNow__block_invoke(uint64_t 
   [v3 setDate:v2];
 }
 
-- (void)setShowCompactTime:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowCompactTime:(BOOL)time animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  timeCopy = time;
   if (_os_feature_enabled_impl())
   {
     prominentDisplayViewController = self->_prominentDisplayViewController;
 
-    [(CSProminentDisplayViewController *)prominentDisplayViewController setShowsCompactTime:v5 animated:v4];
+    [(CSProminentDisplayViewController *)prominentDisplayViewController setShowsCompactTime:timeCopy animated:animatedCopy];
   }
 }
 
-- (BOOL)isHostingViewController:(id)a3
+- (BOOL)isHostingViewController:(id)controller
 {
   if (!self->_prominentDisplayViewController)
   {
     return 0;
   }
 
-  v4 = [a3 parentViewController];
-  v5 = v4 == self->_prominentDisplayViewController;
+  parentViewController = [controller parentViewController];
+  v5 = parentViewController == self->_prominentDisplayViewController;
 
   return v5;
 }
 
-- (void)_updateForLuminanceFromTraitEnvironment:(id)a3
+- (void)_updateForLuminanceFromTraitEnvironment:(id)environment
 {
-  v4 = [a3 traitCollection];
-  v5 = [v4 _backlightLuminance];
+  traitCollection = [environment traitCollection];
+  _backlightLuminance = [traitCollection _backlightLuminance];
 
   [(SBFLockScreenDateViewController *)self _timeAnimationIntervalToUse];
   v7 = v6;
   luminanceChangeAnimationResponse = self->_luminanceChangeAnimationResponse;
-  if (v5 == 1)
+  if (_backlightLuminance == 1)
   {
     [(CSProminentDisplayViewController *)self->_prominentDisplayViewController setUsesLightTimeFontVariant:1 response:self->_luminanceChangeAnimationResponse];
     [(SBFLockScreenDateViewController *)self _updateAnimatesTimeChanges];
@@ -506,16 +506,16 @@ void __48__SBFLockScreenDateViewController_updateTimeNow__block_invoke(uint64_t 
   }
 }
 
-- (void)_backlightLuminanceChangedForEnvironment:(id)a3 previousTraitCollection:(id)a4
+- (void)_backlightLuminanceChangedForEnvironment:(id)environment previousTraitCollection:(id)collection
 {
-  v9 = a3;
-  v6 = [a4 _backlightLuminance] == 1;
-  v7 = [(SBFLockScreenDateViewController *)self traitCollection];
-  v8 = [v7 _backlightLuminance];
+  environmentCopy = environment;
+  v6 = [collection _backlightLuminance] == 1;
+  traitCollection = [(SBFLockScreenDateViewController *)self traitCollection];
+  _backlightLuminance = [traitCollection _backlightLuminance];
 
-  if (((v6 ^ (v8 != 1)) & 1) == 0)
+  if (((v6 ^ (_backlightLuminance != 1)) & 1) == 0)
   {
-    [(SBFLockScreenDateViewController *)self _updateForLuminanceFromTraitEnvironment:v9];
+    [(SBFLockScreenDateViewController *)self _updateForLuminanceFromTraitEnvironment:environmentCopy];
   }
 }
 
@@ -528,8 +528,8 @@ void __48__SBFLockScreenDateViewController_updateTimeNow__block_invoke(uint64_t 
   {
     [(SBFLockScreenDateViewController *)self addChildViewController:self->_prominentDisplayViewController];
     [(SBFLockScreenDateView *)v6 setProminentDisplayViewController:self->_prominentDisplayViewController];
-    v4 = [(CSProminentDisplayViewController *)self->_prominentDisplayViewController view];
-    [(SBFLockScreenDateView *)v6 addSubview:v4];
+    view = [(CSProminentDisplayViewController *)self->_prominentDisplayViewController view];
+    [(SBFLockScreenDateView *)v6 addSubview:view];
 
     [(CSProminentDisplayViewController *)self->_prominentDisplayViewController didMoveToParentViewController:self];
   }
@@ -537,40 +537,40 @@ void __48__SBFLockScreenDateViewController_updateTimeNow__block_invoke(uint64_t 
   [(SBFLockScreenDateView *)v6 setLegibilitySettings:self->_legibilitySettings];
   [(SBFLockScreenDateViewController *)self setView:v6];
   [(SBFLockScreenDateViewController *)self _updateLegibilityStrength];
-  v5 = [(SBFDateProviding *)self->_dateProvider date];
-  [(SBFLockScreenDateView *)v6 setDate:v5];
+  date = [(SBFDateProviding *)self->_dateProvider date];
+  [(SBFLockScreenDateView *)v6 setDate:date];
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
   v5.receiver = self;
   v5.super_class = SBFLockScreenDateViewController;
   [(SBFLockScreenDateViewController *)&v5 setView:?];
-  if (!a3)
+  if (!view)
   {
     [(SBFLockScreenDateViewController *)self _stopUpdateTimer];
   }
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = SBFLockScreenDateViewController;
   [(SBFLockScreenDateViewController *)&v5 willMoveToParentViewController:?];
-  if (!a3)
+  if (!controller)
   {
     [(SBFLockScreenDateViewController *)self setView:0];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = SBFLockScreenDateViewController;
   [(SBFLockScreenDateViewController *)&v6 viewWillAppear:?];
   self->_isVisible = 1;
-  if (v3)
+  if (appearCopy)
   {
     [(SBFLockScreenDateViewController *)self _updateState];
   }
@@ -586,14 +586,14 @@ void __48__SBFLockScreenDateViewController_updateTimeNow__block_invoke(uint64_t 
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = SBFLockScreenDateViewController;
   [(SBFLockScreenDateViewController *)&v6 viewDidDisappear:?];
   self->_isVisible = 0;
-  if (v3)
+  if (disappearCopy)
   {
     [(SBFLockScreenDateViewController *)self _updateState];
   }
@@ -609,104 +609,104 @@ void __48__SBFLockScreenDateViewController_updateTimeNow__block_invoke(uint64_t 
   }
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
-  v6 = a3;
+  disappearCopy = disappear;
+  windowCopy = window;
   v10.receiver = self;
   v10.super_class = SBFLockScreenDateViewController;
-  [(SBFLockScreenDateViewController *)&v10 viewDidMoveToWindow:v6 shouldAppearOrDisappear:v4];
-  v7 = [(CSProminentDisplayViewController *)self->_prominentDisplayViewController backgroundView];
-  v8 = [v7 layer];
+  [(SBFLockScreenDateViewController *)&v10 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
+  backgroundView = [(CSProminentDisplayViewController *)self->_prominentDisplayViewController backgroundView];
+  layer = [backgroundView layer];
 
-  if (v6)
+  if (windowCopy)
   {
-    v9 = [SBFAnimationUtilities matchMoveAnimationForPinningToView:v6];
-    [v8 addAnimation:v9 forKey:@"SBFLockScreenDateViewControllerProminentBackgroundMatchMoveAnimation"];
+    v9 = [SBFAnimationUtilities matchMoveAnimationForPinningToView:windowCopy];
+    [layer addAnimation:v9 forKey:@"SBFLockScreenDateViewControllerProminentBackgroundMatchMoveAnimation"];
   }
 
   else
   {
-    [v8 removeAnimationForKey:@"SBFLockScreenDateViewControllerProminentBackgroundMatchMoveAnimation"];
+    [layer removeAnimationForKey:@"SBFLockScreenDateViewControllerProminentBackgroundMatchMoveAnimation"];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v16.receiver = self;
   v16.super_class = SBFLockScreenDateViewController;
-  v7 = a4;
-  [(SBFLockScreenDateViewController *)&v16 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(CSProminentDisplayViewController *)self->_prominentDisplayViewController backgroundView];
-  v9 = [v8 layer];
+  coordinatorCopy = coordinator;
+  [(SBFLockScreenDateViewController *)&v16 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  backgroundView = [(CSProminentDisplayViewController *)self->_prominentDisplayViewController backgroundView];
+  layer = [backgroundView layer];
 
-  v10 = [v9 animationForKey:@"SBFLockScreenDateViewControllerProminentBackgroundMatchMoveAnimation"];
-  [v9 removeAnimationForKey:@"SBFLockScreenDateViewControllerProminentBackgroundMatchMoveAnimation"];
+  v10 = [layer animationForKey:@"SBFLockScreenDateViewControllerProminentBackgroundMatchMoveAnimation"];
+  [layer removeAnimationForKey:@"SBFLockScreenDateViewControllerProminentBackgroundMatchMoveAnimation"];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __86__SBFLockScreenDateViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v13[3] = &unk_1E8080830;
-  v14 = v9;
+  v14 = layer;
   v15 = v10;
   v11 = v10;
-  v12 = v9;
-  [v7 animateAlongsideTransition:0 completion:v13];
+  v12 = layer;
+  [coordinatorCopy animateAlongsideTransition:0 completion:v13];
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v5 = a3;
+  settingsCopy = settings;
   v6 = +[SBFLegibilityDomain rootSettings];
 
-  if (v6 == v5)
+  if (v6 == settingsCopy)
   {
 
     [(SBFLockScreenDateViewController *)self _updateLegibilityStrength];
   }
 }
 
-- (void)_updateWithFrameSpecifier:(id)a3
+- (void)_updateWithFrameSpecifier:(id)specifier
 {
-  v15 = a3;
-  v4 = [(SBFLockScreenDateViewController *)self dateViewIfExists];
-  if (v15)
+  specifierCopy = specifier;
+  dateViewIfExists = [(SBFLockScreenDateViewController *)self dateViewIfExists];
+  if (specifierCopy)
   {
-    v5 = [v15 presentationInterval];
-    v6 = [v5 startDate];
-    [v4 setDate:v6];
+    presentationInterval = [specifierCopy presentationInterval];
+    startDate = [presentationInterval startDate];
+    [dateViewIfExists setDate:startDate];
 
-    LODWORD(v5) = [(SBAlwaysOnDefaults *)self->_alwaysOnDefaults useDebugColors];
-    v7 = [(SBFLockScreenDateViewController *)self dateViewIfExists];
-    v8 = v7;
-    if (v5)
+    LODWORD(presentationInterval) = [(SBAlwaysOnDefaults *)self->_alwaysOnDefaults useDebugColors];
+    dateViewIfExists2 = [(SBFLockScreenDateViewController *)self dateViewIfExists];
+    dateViewIfExists3 = dateViewIfExists2;
+    if (presentationInterval)
     {
       v9 = objc_alloc(MEMORY[0x1E69DD5B8]);
-      v10 = [MEMORY[0x1E69DC888] systemYellowColor];
-      v11 = [MEMORY[0x1E69DC888] systemRedColor];
-      v12 = [MEMORY[0x1E69DC888] systemBlueColor];
-      v13 = [v9 initWithStyle:0 primaryColor:v10 secondaryColor:v11 shadowColor:v12];
-      [v8 setLegibilitySettings:v13];
+      systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+      systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+      systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+      v13 = [v9 initWithStyle:0 primaryColor:systemYellowColor secondaryColor:systemRedColor shadowColor:systemBlueColor];
+      [dateViewIfExists3 setLegibilitySettings:v13];
     }
 
     else
     {
-      [v7 setLegibilitySettings:self->_legibilitySettings];
+      [dateViewIfExists2 setLegibilitySettings:self->_legibilitySettings];
     }
   }
 
   else
   {
-    [v4 setLegibilitySettings:self->_legibilitySettings];
+    [dateViewIfExists setLegibilitySettings:self->_legibilitySettings];
 
-    v8 = [(SBFLockScreenDateViewController *)self dateViewIfExists];
-    v14 = [(SBFDateProviding *)self->_dateProvider date];
-    [v8 setDate:v14];
+    dateViewIfExists3 = [(SBFLockScreenDateViewController *)self dateViewIfExists];
+    date = [(SBFDateProviding *)self->_dateProvider date];
+    [dateViewIfExists3 setDate:date];
   }
 }
 
-- (id)_timelinesForDateInterval:(id)a3
+- (id)_timelinesForDateInterval:(id)interval
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E698E508];
@@ -720,14 +720,14 @@ void __48__SBFLockScreenDateViewController_updateTimeNow__block_invoke(uint64_t 
 
 - (void)_updateAlternateCalendar
 {
-  v3 = [MEMORY[0x1E6966B80] sharedPreferences];
-  v6 = [v3 overlayCalendarID];
+  mEMORY[0x1E6966B80] = [MEMORY[0x1E6966B80] sharedPreferences];
+  overlayCalendarID = [mEMORY[0x1E6966B80] overlayCalendarID];
 
-  if ([v6 length] && self->_alternateDateEnabled)
+  if ([overlayCalendarID length] && self->_alternateDateEnabled)
   {
     prominentDisplayViewController = self->_prominentDisplayViewController;
-    v5 = [MEMORY[0x1E69AAE08] localeForCalendarID:v6];
-    [(CSProminentDisplayViewController *)prominentDisplayViewController setAlternateCalendarIdentifier:v6 locale:v5];
+    v5 = [MEMORY[0x1E69AAE08] localeForCalendarID:overlayCalendarID];
+    [(CSProminentDisplayViewController *)prominentDisplayViewController setAlternateCalendarIdentifier:overlayCalendarID locale:v5];
   }
 
   else
@@ -738,11 +738,11 @@ void __48__SBFLockScreenDateViewController_updateTimeNow__block_invoke(uint64_t 
 
 - (void)_addObservers
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel__updateFormat name:*MEMORY[0x1E698E5B0] object:0];
-  [v4 addObserver:self selector:sel__updateView name:*MEMORY[0x1E69DDC48] object:0];
-  [v4 addObserver:self selector:sel__updateView name:*MEMORY[0x1E69DD8E0] object:0];
-  [v4 addObserver:self selector:sel__handleTimeZoneChange name:*MEMORY[0x1E695DA68] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__updateFormat name:*MEMORY[0x1E698E5B0] object:0];
+  [defaultCenter addObserver:self selector:sel__updateView name:*MEMORY[0x1E69DDC48] object:0];
+  [defaultCenter addObserver:self selector:sel__updateView name:*MEMORY[0x1E69DD8E0] object:0];
+  [defaultCenter addObserver:self selector:sel__handleTimeZoneChange name:*MEMORY[0x1E695DA68] object:0];
   v3 = +[SBFLegibilityDomain rootSettings];
   [v3 addKeyObserver:self];
 }
@@ -776,9 +776,9 @@ void __52__SBFLockScreenDateViewController__startUpdateTimer__block_invoke_2(uin
 
 - (double)_timeAnimationIntervalToUse
 {
-  v3 = [(CSProminentDisplayViewController *)self->_prominentDisplayViewController animatesTimeChanges];
+  animatesTimeChanges = [(CSProminentDisplayViewController *)self->_prominentDisplayViewController animatesTimeChanges];
   result = 0.0;
-  if (v3)
+  if (animatesTimeChanges)
   {
     [(CSProminentDisplayViewController *)self->_prominentDisplayViewController timeChangeAnimationDuration];
     if (result == 0.0)
@@ -792,12 +792,12 @@ void __52__SBFLockScreenDateViewController__startUpdateTimer__block_invoke_2(uin
 
 - (void)_updateAnimatesTimeChanges
 {
-  v6 = [MEMORY[0x1E696AE30] processInfo];
-  v3 = [v6 isLowPowerModeEnabled];
-  v4 = [(SBFLockScreenDateViewController *)self traitCollection];
-  v5 = [v4 _backlightLuminance] != 1;
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
+  traitCollection = [(SBFLockScreenDateViewController *)self traitCollection];
+  v5 = [traitCollection _backlightLuminance] != 1;
 
-  [(CSProminentDisplayViewController *)self->_prominentDisplayViewController setAnimatesTimeChanges:v5 & (v3 ^ 1u)];
+  [(CSProminentDisplayViewController *)self->_prominentDisplayViewController setAnimatesTimeChanges:v5 & (isLowPowerModeEnabled ^ 1u)];
 }
 
 @end

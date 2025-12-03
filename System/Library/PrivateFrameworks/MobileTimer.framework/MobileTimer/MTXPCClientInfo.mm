@@ -1,7 +1,7 @@
 @interface MTXPCClientInfo
-+ (id)clientInfoForConnection:(id)a3 clientLink:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (MTXPCClientInfo)initWithConnection:(id)a3 clientLink:(id)a4;
++ (id)clientInfoForConnection:(id)connection clientLink:(id)link;
+- (BOOL)isEqual:(id)equal;
+- (MTXPCClientInfo)initWithConnection:(id)connection clientLink:(id)link;
 - (NSString)description;
 - (NSString)processName;
 - (id)sourceIdentifier;
@@ -13,8 +13,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(MTXPCClientInfo *)self connection];
-  v3 = [v2 hash];
+  connection = [(MTXPCClientInfo *)self connection];
+  v3 = [connection hash];
 
   return v3;
 }
@@ -23,11 +23,11 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MTXPCClientInfo *)self processName];
+  processName = [(MTXPCClientInfo *)self processName];
   v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[MTXPCClientInfo processID](self, "processID")}];
-  v7 = [(MTXPCClientInfo *)self connectedDate];
-  v8 = [(MTXPCClientInfo *)self connection];
-  v9 = [v3 stringWithFormat:@"<%@:%p ProcessName: %@ ProcessID: %@ Connected: %@ Connection: %@>", v4, self, v5, v6, v7, v8];
+  connectedDate = [(MTXPCClientInfo *)self connectedDate];
+  connection = [(MTXPCClientInfo *)self connection];
+  v9 = [v3 stringWithFormat:@"<%@:%p ProcessName: %@ ProcessID: %@ Connected: %@ Connection: %@>", v4, self, processName, v6, connectedDate, connection];
 
   return v9;
 }
@@ -46,45 +46,45 @@
 
 - (int)processID
 {
-  v2 = [(MTXPCClientInfo *)self connection];
-  v3 = [v2 processIdentifier];
+  connection = [(MTXPCClientInfo *)self connection];
+  processIdentifier = [connection processIdentifier];
 
-  return v3;
+  return processIdentifier;
 }
 
-+ (id)clientInfoForConnection:(id)a3 clientLink:(id)a4
++ (id)clientInfoForConnection:(id)connection clientLink:(id)link
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithConnection:v6 clientLink:v5];
+  linkCopy = link;
+  connectionCopy = connection;
+  v7 = [objc_alloc(objc_opt_class()) initWithConnection:connectionCopy clientLink:linkCopy];
 
   return v7;
 }
 
-- (MTXPCClientInfo)initWithConnection:(id)a3 clientLink:(id)a4
+- (MTXPCClientInfo)initWithConnection:(id)connection clientLink:(id)link
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  linkCopy = link;
   v14.receiver = self;
   v14.super_class = MTXPCClientInfo;
   v9 = [(MTXPCClientInfo *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_connection, a3);
-    objc_storeStrong(&v10->_clientLink, a4);
-    v11 = [MEMORY[0x1E695DF00] date];
+    objc_storeStrong(&v9->_connection, connection);
+    objc_storeStrong(&v10->_clientLink, link);
+    date = [MEMORY[0x1E695DF00] date];
     connectedDate = v10->_connectedDate;
-    v10->_connectedDate = v11;
+    v10->_connectedDate = date;
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -94,9 +94,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(MTXPCClientInfo *)self connection];
-      v6 = [(MTXPCClientInfo *)v4 connection];
-      v7 = [v5 isEqual:v6];
+      connection = [(MTXPCClientInfo *)self connection];
+      connection2 = [(MTXPCClientInfo *)equalCopy connection];
+      v7 = [connection isEqual:connection2];
     }
 
     else
@@ -111,8 +111,8 @@
 - (id)sourceIdentifier
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MTXPCClientInfo *)self processName];
-  v5 = [v3 stringWithFormat:@"%@-%d", v4, -[MTXPCClientInfo processID](self, "processID")];
+  processName = [(MTXPCClientInfo *)self processName];
+  v5 = [v3 stringWithFormat:@"%@-%d", processName, -[MTXPCClientInfo processID](self, "processID")];
 
   return v5;
 }

@@ -3,24 +3,24 @@
 - (AXMAVCaptureSessionNodeDelegate)captureSessionNodeDelegate;
 - (AXMAVCaptureSessionNodeFrameDelegate)frameDelegate;
 - (AXMCaptureVideoDataOutput)axVideoDataOutput;
-- (void)addVideoDataOutputWithAVCaptureSession:(id)a3 queue:(id)a4;
-- (void)autoTriggerVideoFrameEventsWithAVCaptureSession:(id)a3 options:(id)a4 delegate:(id)a5;
-- (void)beginFrameEventsWithAVCaptureSession:(id)a3 delegate:(id)a4 queue:(id)a5;
-- (void)captureOutput:(id)a3 didDropSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5;
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5;
-- (void)captureSessionNode:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5;
+- (void)addVideoDataOutputWithAVCaptureSession:(id)session queue:(id)queue;
+- (void)autoTriggerVideoFrameEventsWithAVCaptureSession:(id)session options:(id)options delegate:(id)delegate;
+- (void)beginFrameEventsWithAVCaptureSession:(id)session delegate:(id)delegate queue:(id)queue;
+- (void)captureOutput:(id)output didDropSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection;
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection;
+- (void)captureSessionNode:(id)node didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection;
 - (void)endAutoTriggerOfVideoFrameEvents;
 - (void)endVideoFrameEvents;
 - (void)nodeInitialize;
-- (void)setShouldProcessRemotely:(BOOL)a3;
-- (void)triggerWithSampleBuffer:(opaqueCMSampleBuffer *)a3 interfaceOrientation:(int64_t)a4 mirrored:(BOOL)a5 options:(id)a6 userContext:(id)a7;
+- (void)setShouldProcessRemotely:(BOOL)remotely;
+- (void)triggerWithSampleBuffer:(opaqueCMSampleBuffer *)buffer interfaceOrientation:(int64_t)orientation mirrored:(BOOL)mirrored options:(id)options userContext:(id)context;
 @end
 
 @implementation AXMAVCaptureSessionNode
 
-- (void)setShouldProcessRemotely:(BOOL)a3
+- (void)setShouldProcessRemotely:(BOOL)remotely
 {
-  if (a3)
+  if (remotely)
   {
     v5 = MEMORY[0x1E695DF30];
     v6 = *MEMORY[0x1E695D930];
@@ -45,11 +45,11 @@
   [(AXMSourceNode *)&v2 nodeInitialize];
 }
 
-- (void)autoTriggerVideoFrameEventsWithAVCaptureSession:(id)a3 options:(id)a4 delegate:(id)a5
+- (void)autoTriggerVideoFrameEventsWithAVCaptureSession:(id)session options:(id)options delegate:(id)delegate
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  optionsCopy = options;
+  delegateCopy = delegate;
   if (!self->_autotrigger_queue)
   {
     v10 = dispatch_queue_create("AXMAVCaptureSessionNode-avkit-queue", 0);
@@ -57,9 +57,9 @@
     self->_autotrigger_queue = v10;
   }
 
-  [(AXMAVCaptureSessionNode *)self setCaptureSessionNodeDelegate:v9];
-  [(AXMAVCaptureSessionNode *)self setAnalysisOptions:v8];
-  [(AXMAVCaptureSessionNode *)self beginFrameEventsWithAVCaptureSession:v12 delegate:self queue:self->_autotrigger_queue];
+  [(AXMAVCaptureSessionNode *)self setCaptureSessionNodeDelegate:delegateCopy];
+  [(AXMAVCaptureSessionNode *)self setAnalysisOptions:optionsCopy];
+  [(AXMAVCaptureSessionNode *)self beginFrameEventsWithAVCaptureSession:sessionCopy delegate:self queue:self->_autotrigger_queue];
 }
 
 - (AXMCaptureVideoDataOutput)axVideoDataOutput
@@ -79,78 +79,78 @@
   return axVideoDataOutput;
 }
 
-- (void)addVideoDataOutputWithAVCaptureSession:(id)a3 queue:(id)a4
+- (void)addVideoDataOutputWithAVCaptureSession:(id)session queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AXMAVCaptureSessionNode *)self axVideoDataOutput];
-  [v8 setSampleBufferDelegate:self queue:v7];
+  sessionCopy = session;
+  queueCopy = queue;
+  axVideoDataOutput = [(AXMAVCaptureSessionNode *)self axVideoDataOutput];
+  [axVideoDataOutput setSampleBufferDelegate:self queue:queueCopy];
 
-  v9 = [(AXMAVCaptureSessionNode *)self axVideoDataOutput];
-  LODWORD(v8) = [v6 canAddOutput:v9];
+  axVideoDataOutput2 = [(AXMAVCaptureSessionNode *)self axVideoDataOutput];
+  LODWORD(axVideoDataOutput) = [sessionCopy canAddOutput:axVideoDataOutput2];
 
-  if (v8)
+  if (axVideoDataOutput)
   {
-    v10 = [(AXMAVCaptureSessionNode *)self axVideoDataOutput];
-    [v6 addOutput:v10];
+    axVideoDataOutput3 = [(AXMAVCaptureSessionNode *)self axVideoDataOutput];
+    [sessionCopy addOutput:axVideoDataOutput3];
 
-    [(AXMAVCaptureSessionNode *)self setCaptureSession:v6];
-    v11 = [(AXMVisionEngineNode *)self delegate];
-    [v11 captureSessionNodeDidBeginProcessingFrames:self];
+    [(AXMAVCaptureSessionNode *)self setCaptureSession:sessionCopy];
+    delegate = [(AXMVisionEngineNode *)self delegate];
+    [delegate captureSessionNodeDidBeginProcessingFrames:self];
   }
 
   else
   {
-    v11 = AXMediaLogCommon();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    delegate = AXMediaLogCommon();
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
     {
-      [AXMAVCaptureSessionNode addVideoDataOutputWithAVCaptureSession:v11 queue:?];
+      [AXMAVCaptureSessionNode addVideoDataOutputWithAVCaptureSession:delegate queue:?];
     }
   }
 }
 
-- (void)beginFrameEventsWithAVCaptureSession:(id)a3 delegate:(id)a4 queue:(id)a5
+- (void)beginFrameEventsWithAVCaptureSession:(id)session delegate:(id)delegate queue:(id)queue
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  sessionCopy = session;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  if (sessionCopy)
   {
-    v11 = [(AXMAVCaptureSessionNode *)self captureSession];
+    captureSession = [(AXMAVCaptureSessionNode *)self captureSession];
 
-    if (v11)
+    if (captureSession)
     {
-      v12 = AXMediaLogCommon();
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
+      outputs = AXMediaLogCommon();
+      if (os_log_type_enabled(outputs, OS_LOG_TYPE_FAULT))
       {
-        [AXMAVCaptureSessionNode beginFrameEventsWithAVCaptureSession:v12 delegate:? queue:?];
+        [AXMAVCaptureSessionNode beginFrameEventsWithAVCaptureSession:outputs delegate:? queue:?];
       }
     }
 
     else
     {
-      [(AXMAVCaptureSessionNode *)self setFrameDelegate:v9];
-      v12 = [v8 outputs];
-      v13 = [v12 ax_filteredArrayUsingBlock:&__block_literal_global_38_0];
+      [(AXMAVCaptureSessionNode *)self setFrameDelegate:delegateCopy];
+      outputs = [sessionCopy outputs];
+      v13 = [outputs ax_filteredArrayUsingBlock:&__block_literal_global_38_0];
       if ([v13 count])
       {
         v14 = AXMediaLogCommon();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
           WeakRetained = objc_loadWeakRetained(&self->_captureSession);
-          v16 = [v13 firstObject];
+          firstObject = [v13 firstObject];
           v17 = 138412546;
           v18 = WeakRetained;
           v19 = 2112;
-          v20 = v16;
+          v20 = firstObject;
           _os_log_impl(&dword_1AE37B000, v14, OS_LOG_TYPE_DEFAULT, "Capture session '%@' already has output '%@'", &v17, 0x16u);
         }
       }
 
       else
       {
-        [(AXMAVCaptureSessionNode *)self addVideoDataOutputWithAVCaptureSession:v8 queue:v10];
+        [(AXMAVCaptureSessionNode *)self addVideoDataOutputWithAVCaptureSession:sessionCopy queue:queueCopy];
       }
     }
   }
@@ -175,14 +175,14 @@ uint64_t __79__AXMAVCaptureSessionNode_beginFrameEventsWithAVCaptureSession_dele
 - (void)endVideoFrameEvents
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [(AXMAVCaptureSessionNode *)self captureSession];
-  v4 = [MEMORY[0x1E695DF70] array];
+  captureSession = [(AXMAVCaptureSessionNode *)self captureSession];
+  array = [MEMORY[0x1E695DF70] array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [v3 outputs];
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  outputs = [captureSession outputs];
+  v6 = [outputs countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -193,18 +193,18 @@ uint64_t __79__AXMAVCaptureSessionNode_beginFrameEventsWithAVCaptureSession_dele
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(outputs);
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v4 addObject:v10];
+          [array addObject:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v7 = [outputs countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v7);
@@ -214,7 +214,7 @@ uint64_t __79__AXMAVCaptureSessionNode_beginFrameEventsWithAVCaptureSession_dele
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = v4;
+  v11 = array;
   v12 = [v11 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v12)
   {
@@ -231,7 +231,7 @@ uint64_t __79__AXMAVCaptureSessionNode_beginFrameEventsWithAVCaptureSession_dele
 
         v16 = *(*(&v18 + 1) + 8 * j);
         [v16 setSampleBufferDelegate:0 queue:{0, v18}];
-        [v3 removeOutput:v16];
+        [captureSession removeOutput:v16];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v18 objects:v26 count:16];
@@ -242,40 +242,40 @@ uint64_t __79__AXMAVCaptureSessionNode_beginFrameEventsWithAVCaptureSession_dele
 
   [(AXMAVCaptureSessionNode *)self setFrameDelegate:0];
   [(AXMAVCaptureSessionNode *)self setCaptureSession:0];
-  v17 = [(AXMVisionEngineNode *)self delegate];
-  [v17 captureSessionNodeDidEndProcessingFrames:self];
+  delegate = [(AXMVisionEngineNode *)self delegate];
+  [delegate captureSessionNodeDidEndProcessingFrames:self];
 }
 
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection
 {
-  v12 = a3;
-  v8 = a5;
-  if (a4)
+  outputCopy = output;
+  connectionCopy = connection;
+  if (buffer)
   {
-    v9 = [(AXMVisionEngineNode *)self delegate];
-    v10 = [v9 engineWillAcceptTiggerWithSource:self];
+    delegate = [(AXMVisionEngineNode *)self delegate];
+    v10 = [delegate engineWillAcceptTiggerWithSource:self];
 
     if (v10)
     {
-      if (CMSampleBufferGetImageBuffer(a4))
+      if (CMSampleBufferGetImageBuffer(buffer))
       {
-        v11 = [(AXMAVCaptureSessionNode *)self frameDelegate];
-        [v11 captureSessionNode:self didOutputSampleBuffer:a4 fromConnection:v8];
+        frameDelegate = [(AXMAVCaptureSessionNode *)self frameDelegate];
+        [frameDelegate captureSessionNode:self didOutputSampleBuffer:buffer fromConnection:connectionCopy];
       }
     }
   }
 }
 
-- (void)triggerWithSampleBuffer:(opaqueCMSampleBuffer *)a3 interfaceOrientation:(int64_t)a4 mirrored:(BOOL)a5 options:(id)a6 userContext:(id)a7
+- (void)triggerWithSampleBuffer:(opaqueCMSampleBuffer *)buffer interfaceOrientation:(int64_t)orientation mirrored:(BOOL)mirrored options:(id)options userContext:(id)context
 {
-  v8 = a5;
+  mirroredCopy = mirrored;
   v22[2] = *MEMORY[0x1E69E9840];
-  v12 = a6;
-  v13 = a7;
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+  optionsCopy = options;
+  contextCopy = context;
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
   if (ImageBuffer)
   {
-    v15 = [AXMPixelBufferWrapper wrapperWithPixelBuffer:ImageBuffer orientation:AXMEXIFOrientationFromInterfaceOrientation(a4, v8)];
+    v15 = [AXMPixelBufferWrapper wrapperWithPixelBuffer:ImageBuffer orientation:AXMEXIFOrientationFromInterfaceOrientation(orientation, mirroredCopy)];
     v16 = [AXMPipelineContextInput inputWithPixelBuffer:v15];
     v21[0] = @"input";
     v21[1] = @"diagnosticsEnabled";
@@ -283,33 +283,33 @@ uint64_t __79__AXMAVCaptureSessionNode_beginFrameEventsWithAVCaptureSession_dele
     v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[AXMVisionEngineNode areDiagnosticsEnabled](self, "areDiagnosticsEnabled")}];
     v22[1] = v17;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:2];
-    v19 = [AXMVisionPipelineContext contextWithSourceParameters:v18 options:v12];
+    v19 = [AXMVisionPipelineContext contextWithSourceParameters:v18 options:optionsCopy];
 
     [v19 setShouldCallCompletionHandlersForEmptyResultSet:1];
-    [v19 setUserContext:v13];
+    [v19 setUserContext:contextCopy];
     [(AXMSourceNode *)self triggerWithContext:v19 cacheKey:0 resultHandler:0];
-    v20 = [(AXMVisionEngineNode *)self delegate];
-    [v20 captureSessionNodeWillProcessFrame:self];
+    delegate = [(AXMVisionEngineNode *)self delegate];
+    [delegate captureSessionNodeWillProcessFrame:self];
   }
 }
 
-- (void)captureOutput:(id)a3 didDropSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didDropSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection
 {
-  v6 = [(AXMVisionEngineNode *)self delegate:a3];
+  v6 = [(AXMVisionEngineNode *)self delegate:output];
   [v6 captureSessionNodeDidDropFrame:self];
 }
 
-- (void)captureSessionNode:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5
+- (void)captureSessionNode:(id)node didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection
 {
-  v7 = a5;
-  v8 = [(AXMAVCaptureSessionNode *)self captureSessionNodeDelegate];
-  v9 = [v8 interfaceOrientationForCaptureSessionNode:self];
+  connectionCopy = connection;
+  captureSessionNodeDelegate = [(AXMAVCaptureSessionNode *)self captureSessionNodeDelegate];
+  v9 = [captureSessionNodeDelegate interfaceOrientationForCaptureSessionNode:self];
 
-  v12 = [AXMAVUtilities videoDeviceFromConnection:v7];
+  v12 = [AXMAVUtilities videoDeviceFromConnection:connectionCopy];
 
   v10 = [AXMAVUtilities isMirroredVideoDevice:v12];
-  v11 = [(AXMAVCaptureSessionNode *)self analysisOptions];
-  [(AXMAVCaptureSessionNode *)self triggerWithSampleBuffer:a4 interfaceOrientation:v9 mirrored:v10 options:v11 userContext:0];
+  analysisOptions = [(AXMAVCaptureSessionNode *)self analysisOptions];
+  [(AXMAVCaptureSessionNode *)self triggerWithSampleBuffer:buffer interfaceOrientation:v9 mirrored:v10 options:analysisOptions userContext:0];
 }
 
 - (AXMAVCaptureSessionNodeDelegate)captureSessionNodeDelegate

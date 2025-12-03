@@ -1,7 +1,7 @@
 @interface SKGNameKeys
 + (id)labels;
-- (SKGNameKeys)initWithNameKeyNode:(id)a3 inGraph:(id)a4;
-- (void)enumerateNameKeysInGraph:(id)a3 usingBlock:(id)a4;
+- (SKGNameKeys)initWithNameKeyNode:(id)node inGraph:(id)graph;
+- (void)enumerateNameKeysInGraph:(id)graph usingBlock:(id)block;
 @end
 
 @implementation SKGNameKeys
@@ -25,33 +25,33 @@
   return v3;
 }
 
-- (SKGNameKeys)initWithNameKeyNode:(id)a3 inGraph:(id)a4
+- (SKGNameKeys)initWithNameKeyNode:(id)node inGraph:(id)graph
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 graph];
-  v9 = [v7 graph];
-  v10 = [v6 filter];
-  v11 = [v9 nodeIdentifiersMatchingFilter:v10];
+  nodeCopy = node;
+  graphCopy = graph;
+  graph = [graphCopy graph];
+  graph2 = [graphCopy graph];
+  filter = [nodeCopy filter];
+  v11 = [graph2 nodeIdentifiersMatchingFilter:filter];
   v14.receiver = self;
   v14.super_class = SKGNameKeys;
-  v12 = [(MAElementCollection *)&v14 initWithGraph:v8 elementIdentifiers:v11];
+  v12 = [(MAElementCollection *)&v14 initWithGraph:graph elementIdentifiers:v11];
 
   return v12;
 }
 
-- (void)enumerateNameKeysInGraph:(id)a3 usingBlock:(id)a4
+- (void)enumerateNameKeysInGraph:(id)graph usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  graphCopy = graph;
+  blockCopy = block;
   v8 = objc_autoreleasePoolPush();
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __51__SKGNameKeys_enumerateNameKeysInGraph_usingBlock___block_invoke;
   v11[3] = &unk_27893DB98;
-  v9 = v6;
+  v9 = graphCopy;
   v12 = v9;
-  v10 = v7;
+  v10 = blockCopy;
   v13 = v10;
   [(MANodeCollection *)self enumerateNodesUsingBlock:v11];
 

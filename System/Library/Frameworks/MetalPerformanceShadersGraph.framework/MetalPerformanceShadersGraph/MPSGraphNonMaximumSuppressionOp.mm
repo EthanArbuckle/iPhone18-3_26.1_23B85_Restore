@@ -1,31 +1,31 @@
 @interface MPSGraphNonMaximumSuppressionOp
-- (MPSGraphNonMaximumSuppressionOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 iouThreshold:(float)a6 scoreThreshold:(float)a7 perClassSuppression:(BOOL)a8 coordinateMode:(unint64_t)a9 name:(id)a10;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (MPSGraphNonMaximumSuppressionOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies iouThreshold:(float)threshold scoreThreshold:(float)scoreThreshold perClassSuppression:(BOOL)suppression coordinateMode:(unint64_t)mode name:(id)self0;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphNonMaximumSuppressionOp
 
-- (MPSGraphNonMaximumSuppressionOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 iouThreshold:(float)a6 scoreThreshold:(float)a7 perClassSuppression:(BOOL)a8 coordinateMode:(unint64_t)a9 name:(id)a10
+- (MPSGraphNonMaximumSuppressionOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies iouThreshold:(float)threshold scoreThreshold:(float)scoreThreshold perClassSuppression:(BOOL)suppression coordinateMode:(unint64_t)mode name:(id)self0
 {
-  self->_scoreThreshold = a6;
-  *&self->_perClassSuppression = a7;
-  *(&self->_perClassSuppression + 4) = a8;
-  self->_coordinateMode = a9;
-  return [(MPSGraphOperation *)self initWithGraph:a3 inputTensors:a4 controlDependencies:a5 name:a10];
+  self->_scoreThreshold = threshold;
+  *&self->_perClassSuppression = scoreThreshold;
+  *(&self->_perClassSuppression + 4) = suppression;
+  self->_coordinateMode = mode;
+  return [(MPSGraphOperation *)self initWithGraph:graph inputTensors:tensors controlDependencies:dependencies name:name];
 }
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
   v38[38] = *MEMORY[0x1E69E9840];
-  v29 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphNonMaximumSuppressionOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphNonMaximumSuppressionOps.mm", __p);
-  v11 = MPSSymbolTable::getLocationByInsertingOp<mlir::mps::SampleGridOp>(a4, a3, __p, 0x3Eu, v29);
+  v11 = MPSSymbolTable::getLocationByInsertingOp<mlir::mps::SampleGridOp>(table, builder, __p, 0x3Eu, nameCopy);
   if (v31 < 0)
   {
     operator delete(__p[0]);
-    v12 = *a5;
-    v13 = *(a5 + 1);
-    v14 = v13 - *a5;
+    v12 = *values;
+    v13 = *(values + 1);
+    v14 = v13 - *values;
     if (v14 == 32)
     {
       goto LABEL_3;
@@ -34,9 +34,9 @@
 
   else
   {
-    v12 = *a5;
-    v13 = *(a5 + 1);
-    v14 = v13 - *a5;
+    v12 = *values;
+    v13 = *(values + 1);
+    v14 = v13 - *values;
     if (v14 == 32)
     {
 LABEL_3:
@@ -75,8 +75,8 @@ LABEL_8:
   }
 
   mlir::OperationState::OperationState(v38, v11, v24);
-  mlir::mps::NonMaximumSuppressionOp::build(a3, v38, v20, v21, v15, v18, v19, *(&self->_perClassSuppression + 4), coordinateMode, 0);
-  v26 = mlir::OpBuilder::create(a3, v38);
+  mlir::mps::NonMaximumSuppressionOp::build(builder, v38, v20, v21, v15, v18, v19, *(&self->_perClassSuppression + 4), coordinateMode, 0);
+  v26 = mlir::OpBuilder::create(builder, v38);
   v27 = *(v26[6] + 16);
   mlir::OperationState::~OperationState(v38);
   if (v27 != &mlir::detail::TypeIDResolver<mlir::mps::NonMaximumSuppressionOp,void>::id)

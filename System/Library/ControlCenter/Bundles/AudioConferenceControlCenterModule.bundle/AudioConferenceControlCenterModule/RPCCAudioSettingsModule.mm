@@ -1,7 +1,7 @@
 @interface RPCCAudioSettingsModule
 - (RPCCAudioSettingsModule)init;
-- (id)backgroundViewControllerForContext:(id)a3;
-- (id)contentViewControllerForContext:(id)a3;
+- (id)backgroundViewControllerForContext:(id)context;
+- (id)contentViewControllerForContext:(id)context;
 - (void)dealloc;
 @end
 
@@ -21,33 +21,33 @@
   [(RPCCAudioSettingsModule *)&v2 dealloc];
 }
 
-- (id)contentViewControllerForContext:(id)a3
+- (id)contentViewControllerForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = _os_feature_enabled_impl();
-  v6 = [v4 environment];
+  environment = [contextCopy environment];
   v7 = &off_2C6F8;
-  if (((v6 != &dword_0 + 1) & v5) == 0)
+  if (((environment != &dword_0 + 1) & v5) == 0)
   {
     v7 = off_2C6F0;
   }
 
   v8 = objc_alloc_init(*v7);
-  [v8 setShouldLoadFromSensor:{objc_msgSend(v4, "environment") != &dword_0 + 2}];
+  [v8 setShouldLoadFromSensor:{objc_msgSend(contextCopy, "environment") != &dword_0 + 2}];
   [v8 setContentModuleContext:self->_contentModuleContext];
   objc_storeStrong(&self->_currentContentViewController, v8);
 
   return v8;
 }
 
-- (id)backgroundViewControllerForContext:(id)a3
+- (id)backgroundViewControllerForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = _os_feature_enabled_impl();
-  if ([v4 environment] == &dword_0 + 1 || (v5 & 1) == 0)
+  if ([contextCopy environment] == &dword_0 + 1 || (v5 & 1) == 0)
   {
     v7 = objc_alloc_init(RPCCAudioSettingsModuleBackgroundViewController);
-    -[RPCCAudioSettingsModuleBackgroundViewController setShouldLoadFromSensor:](v7, "setShouldLoadFromSensor:", [v4 environment] != &dword_0 + 2);
+    -[RPCCAudioSettingsModuleBackgroundViewController setShouldLoadFromSensor:](v7, "setShouldLoadFromSensor:", [contextCopy environment] != &dword_0 + 2);
     [(RPCCAudioSettingsModuleBackgroundViewController *)v7 setContentModuleContext:self->_contentModuleContext];
     [(RPCCAudioSettingsModuleBackgroundViewController *)v7 setContentViewController:self->_currentContentViewController];
     backgroundViewController = self->_backgroundViewController;

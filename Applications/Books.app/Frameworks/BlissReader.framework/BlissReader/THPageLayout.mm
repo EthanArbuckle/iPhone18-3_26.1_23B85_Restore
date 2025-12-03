@@ -2,41 +2,41 @@
 - (BOOL)isCompactFlowPresentation;
 - (BOOL)isExpanded;
 - (BOOL)isReflowablePresentation;
-- (CGPoint)originOfCharacterIndex:(unint64_t)a3;
-- (CGRect)bodyRectForChildLayout:(id)a3;
+- (CGPoint)originOfCharacterIndex:(unint64_t)index;
+- (CGRect)bodyRectForChildLayout:(id)layout;
 - (Class)repClassOverride;
 - (NSArray)floatingDrawableLayouts;
 - (THPageController)pageController;
-- (THPageLayout)initWithInfo:(id)a3;
-- (id)additionalDependenciesForChildLayout:(id)a3;
+- (THPageLayout)initWithInfo:(id)info;
+- (id)additionalDependenciesForChildLayout:(id)layout;
 - (id)computeLayoutGeometry;
 - (id)firstChildTarget;
 - (id)firstTarget;
 - (id)floatingDrawableInfos;
-- (id)insertValidatedChildLayoutForInfo:(id)a3;
+- (id)insertValidatedChildLayoutForInfo:(id)info;
 - (id)lastChildTarget;
 - (id)lastTarget;
-- (id)p_insertChildLayoutForInfo:(id)a3;
+- (id)p_insertChildLayoutForInfo:(id)info;
 - (id)p_orderedChildInfos;
-- (unint64_t)firstBodyCharacterIndexOverlappingPageRect:(CGRect)a3;
+- (unint64_t)firstBodyCharacterIndexOverlappingPageRect:(CGRect)rect;
 - (unint64_t)pageIndex;
 - (unint64_t)relativePageIndex;
-- (void)addAttachmentLayout:(id)a3;
+- (void)addAttachmentLayout:(id)layout;
 - (void)dealloc;
-- (void)p_addLayoutsForInfos:(id)a3 toArray:(id)a4;
+- (void)p_addLayoutsForInfos:(id)infos toArray:(id)array;
 - (void)p_insertBodyAndValidatedFloatingLayouts;
 - (void)validate;
-- (void)wasAddedToLayoutController:(id)a3;
-- (void)willBeRemovedFromLayoutController:(id)a3;
+- (void)wasAddedToLayoutController:(id)controller;
+- (void)willBeRemovedFromLayoutController:(id)controller;
 @end
 
 @implementation THPageLayout
 
-- (THPageLayout)initWithInfo:(id)a3
+- (THPageLayout)initWithInfo:(id)info
 {
   v5.receiver = self;
   v5.super_class = THPageLayout;
-  v3 = [(THPageLayout *)&v5 initWithInfo:a3];
+  v3 = [(THPageLayout *)&v5 initWithInfo:info];
   if (v3)
   {
     v3->mBodyLayouts = objc_alloc_init(NSMutableArray);
@@ -66,16 +66,16 @@
 
 - (BOOL)isCompactFlowPresentation
 {
-  v3 = [(THPageLayout *)self delegate];
+  delegate = [(THPageLayout *)self delegate];
 
-  return [(THWWidgetLayoutDelegate *)v3 widgetLayoutIsCompactFlow:self];
+  return [(THWWidgetLayoutDelegate *)delegate widgetLayoutIsCompactFlow:self];
 }
 
 - (BOOL)isReflowablePresentation
 {
-  v3 = [(THPageLayout *)self delegate];
+  delegate = [(THPageLayout *)self delegate];
 
-  return [(THWWidgetLayoutDelegate *)v3 widgetLayoutIsReflowablePresentation:self];
+  return [(THWWidgetLayoutDelegate *)delegate widgetLayoutIsReflowablePresentation:self];
 }
 
 - (Class)repClassOverride
@@ -88,17 +88,17 @@
 
   else
   {
-    v4 = [(THPageLayout *)self info];
+    info = [(THPageLayout *)self info];
 
-    return [v4 repClass];
+    return [info repClass];
   }
 }
 
 - (unint64_t)relativePageIndex
 {
-  v2 = [(THPageLayout *)self info];
+  info = [(THPageLayout *)self info];
 
-  return [v2 relativePageIndexInParent];
+  return [info relativePageIndexInParent];
 }
 
 - (THPageController)pageController
@@ -117,9 +117,9 @@
   return [v4 pageController];
 }
 
-- (CGRect)bodyRectForChildLayout:(id)a3
+- (CGRect)bodyRectForChildLayout:(id)layout
 {
-  v3 = [objc_msgSend(a3 "info")];
+  v3 = [objc_msgSend(layout "info")];
 
   [v3 boundsBeforeRotation];
   result.size.height = v7;
@@ -131,9 +131,9 @@
 
 - (id)floatingDrawableInfos
 {
-  v2 = [(THPageLayout *)self info];
+  info = [(THPageLayout *)self info];
 
-  return [v2 floatingDrawables];
+  return [info floatingDrawables];
 }
 
 - (NSArray)floatingDrawableLayouts
@@ -143,29 +143,29 @@
   return v3;
 }
 
-- (void)addAttachmentLayout:(id)a3
+- (void)addAttachmentLayout:(id)layout
 {
-  if ([objc_msgSend(a3 "info")])
+  if ([objc_msgSend(layout "info")])
   {
     v5 = 0;
 LABEL_3:
-    [(THPageLayout *)self insertChild:a3 atIndex:v5];
+    [(THPageLayout *)self insertChild:layout atIndex:v5];
 
-    [a3 updateChildrenFromInfo];
+    [layout updateChildrenFromInfo];
     return;
   }
 
   v6 = [-[THPageLayout info](self "info")];
-  v7 = [v6 zOrderOfDrawable:{objc_msgSend(a3, "info")}];
-  v8 = [(THPageLayout *)self children];
-  v9 = [v8 count];
+  v7 = [v6 zOrderOfDrawable:{objc_msgSend(layout, "info")}];
+  children = [(THPageLayout *)self children];
+  v9 = [children count];
   if (v9)
   {
     v10 = v9;
     v5 = 0;
     while (1)
     {
-      v11 = [v6 zOrderOfDrawable:{objc_msgSend(objc_msgSend(v8, "objectAtIndex:", v5), "info")}];
+      v11 = [v6 zOrderOfDrawable:{objc_msgSend(objc_msgSend(children, "objectAtIndex:", v5), "info")}];
       if (v7 < v11)
       {
         break;
@@ -192,28 +192,28 @@ LABEL_3:
 
 - (unint64_t)pageIndex
 {
-  v2 = [(THPageLayout *)self info];
+  info = [(THPageLayout *)self info];
 
-  return [v2 relativePageIndexInParent];
+  return [info relativePageIndexInParent];
 }
 
-- (void)wasAddedToLayoutController:(id)a3
+- (void)wasAddedToLayoutController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = THPageLayout;
-  [(THPageLayout *)&v4 wasAddedToLayoutController:a3];
+  [(THPageLayout *)&v4 wasAddedToLayoutController:controller];
   [(THPageController *)[(THPageLayout *)self pageController] i_registerPageLayout:self];
 }
 
-- (void)willBeRemovedFromLayoutController:(id)a3
+- (void)willBeRemovedFromLayoutController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = THPageLayout;
-  [(THPageLayout *)&v4 willBeRemovedFromLayoutController:a3];
+  [(THPageLayout *)&v4 willBeRemovedFromLayoutController:controller];
   [(THPageController *)[(THPageLayout *)self pageController] i_unregisterPageLayout:self];
 }
 
-- (id)additionalDependenciesForChildLayout:(id)a3
+- (id)additionalDependenciesForChildLayout:(id)layout
 {
   if (![-[THPageLayout floatingDrawableInfos](self "floatingDrawableInfos")])
   {
@@ -223,18 +223,18 @@ LABEL_3:
   return [(THPageLayout *)self bodyLayouts];
 }
 
-- (unint64_t)firstBodyCharacterIndexOverlappingPageRect:(CGRect)a3
+- (unint64_t)firstBodyCharacterIndexOverlappingPageRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [(THPageLayout *)self bodyLayouts];
-  v8 = [(NSArray *)v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  bodyLayouts = [(THPageLayout *)self bodyLayouts];
+  v8 = [(NSArray *)bodyLayouts countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (!v8)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -249,7 +249,7 @@ LABEL_3:
     {
       if (*v17 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(bodyLayouts);
       }
 
       v13 = [*(*(&v16 + 1) + 8 * i) firstCharacterIndexOverlappingPageRect:{x, y, width, height}];
@@ -274,21 +274,21 @@ LABEL_3:
       }
     }
 
-    v9 = [(NSArray *)v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v9 = [(NSArray *)bodyLayouts countByEnumeratingWithState:&v16 objects:v20 count:16];
   }
 
   while (v9);
   return v11;
 }
 
-- (CGPoint)originOfCharacterIndex:(unint64_t)a3
+- (CGPoint)originOfCharacterIndex:(unint64_t)index
 {
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [(THPageLayout *)self bodyLayouts];
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  bodyLayouts = [(THPageLayout *)self bodyLayouts];
+  v6 = [(NSArray *)bodyLayouts countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v6)
   {
     v7 = v6;
@@ -301,12 +301,12 @@ LABEL_3:
       {
         if (*v23 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(bodyLayouts);
         }
 
         v12 = *(*(&v22 + 1) + 8 * i);
-        v13 = [v12 columnRange];
-        if (v13 <= a3 && v13 + v14 >= a3 + 1)
+        columnRange = [v12 columnRange];
+        if (columnRange <= index && columnRange + v14 >= index + 1)
         {
           v19 = v12;
           goto LABEL_22;
@@ -320,7 +320,7 @@ LABEL_3:
         v9 |= v14 != 0;
       }
 
-      v7 = [(NSArray *)v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v7 = [(NSArray *)bodyLayouts countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v7)
       {
         continue;
@@ -331,15 +331,15 @@ LABEL_3:
 
     if (v9)
     {
-      if (a3)
+      if (index)
       {
-        --a3;
-        v16 = [v8 columnRange];
-        if (a3 >= v16 && a3 - v16 < v17)
+        --index;
+        columnRange2 = [v8 columnRange];
+        if (index >= columnRange2 && index - columnRange2 < v17)
         {
           v19 = v8;
 LABEL_22:
-          [v19 pageOriginOfCharacterIndex:a3];
+          [v19 pageOriginOfCharacterIndex:index];
           goto LABEL_26;
         }
 
@@ -364,10 +364,10 @@ LABEL_26:
 
 - (id)p_orderedChildInfos
 {
-  v3 = [(THPageLayout *)self info];
+  info = [(THPageLayout *)self info];
   v4 = [[NSMutableSet alloc] initWithArray:{-[THPageLayout floatingDrawableInfos](self, "floatingDrawableInfos")}];
-  [v4 addObjectsFromArray:{objc_msgSend(v3, "modelBodyInfos")}];
-  v5 = [objc_msgSend(objc_msgSend(v3 "drawablesZOrder")];
+  [v4 addObjectsFromArray:{objc_msgSend(info, "modelBodyInfos")}];
+  v5 = [objc_msgSend(objc_msgSend(info "drawablesZOrder")];
 
   return v5;
 }
@@ -375,12 +375,12 @@ LABEL_26:
 - (void)p_insertBodyAndValidatedFloatingLayouts
 {
   v3 = [-[THPageLayout info](self "info")];
-  v4 = [(THPageLayout *)self p_orderedChildInfos];
+  p_orderedChildInfos = [(THPageLayout *)self p_orderedChildInfos];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [p_orderedChildInfos countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -391,7 +391,7 @@ LABEL_26:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(p_orderedChildInfos);
         }
 
         v9 = *(*(&v10 + 1) + 8 * i);
@@ -409,7 +409,7 @@ LABEL_26:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [p_orderedChildInfos countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -429,8 +429,8 @@ LABEL_26:
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v3 = [(THPageLayout *)self bodyLayouts];
-    v4 = [(NSArray *)v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+    bodyLayouts = [(THPageLayout *)self bodyLayouts];
+    v4 = [(NSArray *)bodyLayouts countByEnumeratingWithState:&v8 objects:v13 count:16];
     if (v4)
     {
       v5 = v4;
@@ -442,7 +442,7 @@ LABEL_26:
         {
           if (*v9 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(bodyLayouts);
           }
 
           [-[THPageLayout layoutController](self "layoutController")];
@@ -450,7 +450,7 @@ LABEL_26:
         }
 
         while (v5 != v7);
-        v5 = [(NSArray *)v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+        v5 = [(NSArray *)bodyLayouts countByEnumeratingWithState:&v8 objects:v13 count:16];
       }
 
       while (v5);
@@ -462,11 +462,11 @@ LABEL_26:
 
 - (id)computeLayoutGeometry
 {
-  v3 = [(THPageLayout *)self i_layoutGeometryProvider];
-  if (v3)
+  i_layoutGeometryProvider = [(THPageLayout *)self i_layoutGeometryProvider];
+  if (i_layoutGeometryProvider)
   {
 
-    return [v3 layoutGeometryForLayout:self];
+    return [i_layoutGeometryProvider layoutGeometryForLayout:self];
   }
 
   else
@@ -484,12 +484,12 @@ LABEL_26:
   }
 }
 
-- (id)p_insertChildLayoutForInfo:(id)a3
+- (id)p_insertChildLayoutForInfo:(id)info
 {
   v5 = [-[THPageLayout layoutController](self "layoutController")];
   if (!v5)
   {
-    v5 = [objc_alloc(objc_msgSend(a3 "layoutClass"))];
+    v5 = [objc_alloc(objc_msgSend(info "layoutClass"))];
     if (v5)
     {
       objc_opt_class();
@@ -506,9 +506,9 @@ LABEL_26:
   return v5;
 }
 
-- (id)insertValidatedChildLayoutForInfo:(id)a3
+- (id)insertValidatedChildLayoutForInfo:(id)info
 {
-  v4 = [(THPageLayout *)self p_insertChildLayoutForInfo:a3];
+  v4 = [(THPageLayout *)self p_insertChildLayoutForInfo:info];
   v5 = v4;
   if (v4)
   {
@@ -519,13 +519,13 @@ LABEL_26:
   return v5;
 }
 
-- (void)p_addLayoutsForInfos:(id)a3 toArray:(id)a4
+- (void)p_addLayoutsForInfos:(id)infos toArray:(id)array
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [infos countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -537,15 +537,15 @@ LABEL_26:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(infos);
         }
 
-        [a4 addObject:{-[THPageLayout p_insertChildLayoutForInfo:](self, "p_insertChildLayoutForInfo:", *(*(&v11 + 1) + 8 * v10))}];
+        [array addObject:{-[THPageLayout p_insertChildLayoutForInfo:](self, "p_insertChildLayoutForInfo:", *(*(&v11 + 1) + 8 * v10))}];
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [infos countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);

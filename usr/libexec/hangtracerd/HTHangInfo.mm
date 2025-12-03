@@ -2,9 +2,9 @@
 + (double)getHangWaitTimeout;
 + (id)allHangs;
 + (id)firstHang;
-+ (void)addHang:(id)a3;
++ (void)addHang:(id)hang;
 + (void)cleanupAllHangs;
-- (HTHangInfo)initWithPid:(int)a3 threadID:(unint64_t)a4 startTime:(unint64_t)a5 endTime:(unint64_t)a6 reportedTime:(unint64_t)a7 blownFenceID:(unint64_t)a8 hangSubtype:(int64_t)a9 isFirstPartyApp:(BOOL)a10 isThirdPartyDevSupportModeHang:(BOOL)a11 displayedInHUD:(BOOL)a12 serviceName:(id)a13 reason:(id)a14 processName:(id)a15 processPath:(id)a16 userActionData:(id)a17 recentStateInfo:(id)a18;
+- (HTHangInfo)initWithPid:(int)pid threadID:(unint64_t)d startTime:(unint64_t)time endTime:(unint64_t)endTime reportedTime:(unint64_t)reportedTime blownFenceID:(unint64_t)iD hangSubtype:(int64_t)subtype isFirstPartyApp:(BOOL)self0 isThirdPartyDevSupportModeHang:(BOOL)self1 displayedInHUD:(BOOL)self2 serviceName:(id)self3 reason:(id)self4 processName:(id)self5 processPath:(id)self6 userActionData:(id)self7 recentStateInfo:(id)self8;
 - (NSDictionary)infoDict;
 - (NSString)hangDescription;
 @end
@@ -28,9 +28,9 @@
   return v6;
 }
 
-+ (void)addHang:(id)a3
++ (void)addHang:(id)hang
 {
-  v3 = a3;
+  hangCopy = hang;
   if (qword_1000679A8 != -1)
   {
     sub_100031604();
@@ -39,37 +39,37 @@
   if (![qword_1000679B0 count])
   {
     v4 = objc_alloc_init(NSUUID);
-    v5 = [v4 UUIDString];
+    uUIDString = [v4 UUIDString];
     v6 = qword_1000679B8;
-    qword_1000679B8 = v5;
+    qword_1000679B8 = uUIDString;
   }
 
-  v7 = [v3 startTime];
-  if (v7 < qword_1000679C0)
+  startTime = [hangCopy startTime];
+  if (startTime < qword_1000679C0)
   {
-    qword_1000679C0 = [v3 startTime];
+    qword_1000679C0 = [hangCopy startTime];
   }
 
-  v8 = [v3 endTime];
-  if (v8 > qword_1000679A0)
+  endTime = [hangCopy endTime];
+  if (endTime > qword_1000679A0)
   {
-    qword_1000679A0 = [v3 endTime];
+    qword_1000679A0 = [hangCopy endTime];
   }
 
-  v9 = [v3 reportedTime];
-  if (v9 > qword_1000679C8)
+  reportedTime = [hangCopy reportedTime];
+  if (reportedTime > qword_1000679C8)
   {
-    qword_1000679C8 = [v3 reportedTime];
+    qword_1000679C8 = [hangCopy reportedTime];
   }
 
-  v10 = [qword_1000679B0 indexOfObject:v3 inSortedRange:0 options:objc_msgSend(qword_1000679B0 usingComparator:{"count"), 1024, &stru_1000551C8}];
-  [qword_1000679B0 insertObject:v3 atIndex:v10];
+  v10 = [qword_1000679B0 indexOfObject:hangCopy inSortedRange:0 options:objc_msgSend(qword_1000679B0 usingComparator:{"count"), 1024, &stru_1000551C8}];
+  [qword_1000679B0 insertObject:hangCopy atIndex:v10];
   v11 = sub_100003824();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v3 hangDescription];
+    hangDescription = [hangCopy hangDescription];
     v13 = 138543362;
-    v14 = v12;
+    v14 = hangDescription;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ added to tailspin capture", &v13, 0xCu);
   }
 }
@@ -99,8 +99,8 @@
 
         v4 = *(*(&v10 + 1) + 8 * v6);
 
-        v8 = [v4 startTime];
-        if (v8 == qword_1000679C0)
+        startTime = [v4 startTime];
+        if (startTime == qword_1000679C0)
         {
           v3 = v4;
           v4 = v2;
@@ -154,16 +154,16 @@ LABEL_11:
 - (NSDictionary)infoDict
 {
   v3 = +[HTPrefs sharedPrefs];
-  v4 = [v3 enablementPrefix];
-  if (v4)
+  enablementPrefix = [v3 enablementPrefix];
+  if (enablementPrefix)
   {
     v5 = +[HTPrefs sharedPrefs];
-    v6 = [v5 enablementPrefix];
+    enablementPrefix2 = [v5 enablementPrefix];
   }
 
   else
   {
-    v6 = &stru_100057080;
+    enablementPrefix2 = &stru_100057080;
   }
 
   if (!self->_userActionData || (v7 = [[NSString alloc] initWithBytes:-[NSData bytes](self->_userActionData length:"bytes") encoding:{-[NSData length](self->_userActionData, "length"), 4}]) == 0)
@@ -220,10 +220,10 @@ LABEL_11:
   v34[13] = v13;
   v34[14] = v7;
   v31 = v7;
-  v32 = v6;
+  v32 = enablementPrefix2;
   v33[14] = @"UserAction";
   v33[15] = @"EnablementType";
-  v34[15] = v6;
+  v34[15] = enablementPrefix2;
   v33[16] = @"DisplayedInHUD";
   v14 = [NSNumber numberWithBool:self->_displayedInHUD];
   v34[16] = v14;
@@ -265,54 +265,54 @@ LABEL_11:
   return v19;
 }
 
-- (HTHangInfo)initWithPid:(int)a3 threadID:(unint64_t)a4 startTime:(unint64_t)a5 endTime:(unint64_t)a6 reportedTime:(unint64_t)a7 blownFenceID:(unint64_t)a8 hangSubtype:(int64_t)a9 isFirstPartyApp:(BOOL)a10 isThirdPartyDevSupportModeHang:(BOOL)a11 displayedInHUD:(BOOL)a12 serviceName:(id)a13 reason:(id)a14 processName:(id)a15 processPath:(id)a16 userActionData:(id)a17 recentStateInfo:(id)a18
+- (HTHangInfo)initWithPid:(int)pid threadID:(unint64_t)d startTime:(unint64_t)time endTime:(unint64_t)endTime reportedTime:(unint64_t)reportedTime blownFenceID:(unint64_t)iD hangSubtype:(int64_t)subtype isFirstPartyApp:(BOOL)self0 isThirdPartyDevSupportModeHang:(BOOL)self1 displayedInHUD:(BOOL)self2 serviceName:(id)self3 reason:(id)self4 processName:(id)self5 processPath:(id)self6 userActionData:(id)self7 recentStateInfo:(id)self8
 {
-  v22 = a13;
-  v23 = a14;
-  v24 = a15;
-  v25 = a16;
-  v26 = a17;
-  v27 = a18;
+  nameCopy = name;
+  reasonCopy = reason;
+  processNameCopy = processName;
+  pathCopy = path;
+  dataCopy = data;
+  infoCopy = info;
   v50.receiver = self;
   v50.super_class = HTHangInfo;
   v28 = [(HTHangInfo *)&v50 init];
   if (v28)
   {
-    v46 = v27;
-    v29 = a6;
+    v46 = infoCopy;
+    endTimeCopy = endTime;
     v30 = objc_alloc_init(NSUUID);
-    v31 = [v30 UUIDString];
+    uUIDString = [v30 UUIDString];
     hangUUID = v28->_hangUUID;
-    v28->_hangUUID = v31;
+    v28->_hangUUID = uUIDString;
 
-    v28->_pid = a3;
-    v28->_tid = a4;
-    v28->_startTime = a5;
-    v28->_endTime = v29;
-    v28->_reportedTime = a7;
-    v28->_blownFenceID = a8;
-    v28->_hangSubType = a9;
-    v28->_isFirstPartyApp = a10;
-    v28->_isThirdPartyDevSupportModeHang = a11;
-    v27 = v46;
-    v28->_displayedInHUD = a12;
-    v33 = [v22 copy];
+    v28->_pid = pid;
+    v28->_tid = d;
+    v28->_startTime = time;
+    v28->_endTime = endTimeCopy;
+    v28->_reportedTime = reportedTime;
+    v28->_blownFenceID = iD;
+    v28->_hangSubType = subtype;
+    v28->_isFirstPartyApp = app;
+    v28->_isThirdPartyDevSupportModeHang = hang;
+    infoCopy = v46;
+    v28->_displayedInHUD = uD;
+    v33 = [nameCopy copy];
     serviceName = v28->_serviceName;
     v28->_serviceName = v33;
 
-    v35 = [v23 copy];
+    v35 = [reasonCopy copy];
     reason = v28->_reason;
     v28->_reason = v35;
 
-    v37 = [v24 copy];
+    v37 = [processNameCopy copy];
     processName = v28->_processName;
     v28->_processName = v37;
 
-    v39 = [v25 copy];
+    v39 = [pathCopy copy];
     processPath = v28->_processPath;
     v28->_processPath = v39;
 
-    v41 = [v26 copy];
+    v41 = [dataCopy copy];
     userActionData = v28->_userActionData;
     v28->_userActionData = v41;
 
@@ -380,11 +380,11 @@ LABEL_11:
           v10 = sub_1000024F8(v2 - v5);
           v11 = sub_1000024F8(v2 - qword_1000679C8);
           v12 = +[HTPrefs sharedPrefs];
-          v13 = [v12 hangWaitTimeoutDurationMSec];
+          hangWaitTimeoutDurationMSec = [v12 hangWaitTimeoutDurationMSec];
 
           v14 = 0.0;
           v15 = 0.0;
-          if (v10 < v13)
+          if (v10 < hangWaitTimeoutDurationMSec)
           {
             v16 = +[HTPrefs sharedPrefs];
             v15 = [v16 hangWaitTimeoutDurationMSec] - v10;
@@ -413,18 +413,18 @@ LABEL_11:
           }
 
           v20 = +[HTPrefs sharedPrefs];
-          v21 = [v20 consecutiveHangWaitTimeoutDurationMSec];
+          consecutiveHangWaitTimeoutDurationMSec = [v20 consecutiveHangWaitTimeoutDurationMSec];
 
-          if (v11 < v21)
+          if (v11 < consecutiveHangWaitTimeoutDurationMSec)
           {
             v22 = +[HTPrefs sharedPrefs];
-            v23 = [v22 consecutiveHangWaitTimeoutDurationMSec];
+            consecutiveHangWaitTimeoutDurationMSec2 = [v22 consecutiveHangWaitTimeoutDurationMSec];
 
             if (v15 >= 250.0)
             {
-              if (v23 - v11 <= v15 + -250.0)
+              if (consecutiveHangWaitTimeoutDurationMSec2 - v11 <= v15 + -250.0)
               {
-                v18 = v23 - v11;
+                v18 = consecutiveHangWaitTimeoutDurationMSec2 - v11;
               }
 
               else

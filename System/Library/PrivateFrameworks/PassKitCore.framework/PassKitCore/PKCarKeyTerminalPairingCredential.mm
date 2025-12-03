@@ -1,30 +1,30 @@
 @interface PKCarKeyTerminalPairingCredential
-- (BOOL)_isEqualToCredential:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKCarKeyTerminalPairingCredential)initWithConfiguration:(id)a3 productIdentifier:(id)a4;
+- (BOOL)_isEqualToCredential:(id)credential;
+- (BOOL)isEqual:(id)equal;
+- (PKCarKeyTerminalPairingCredential)initWithConfiguration:(id)configuration productIdentifier:(id)identifier;
 - (id)description;
 @end
 
 @implementation PKCarKeyTerminalPairingCredential
 
-- (PKCarKeyTerminalPairingCredential)initWithConfiguration:(id)a3 productIdentifier:(id)a4
+- (PKCarKeyTerminalPairingCredential)initWithConfiguration:(id)configuration productIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
   v9 = [(PKPaymentCredential *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_configuration, a3);
-    objc_storeStrong(&v10->_productIdentifier, a4);
+    objc_storeStrong(&v9->_configuration, configuration);
+    objc_storeStrong(&v10->_productIdentifier, identifier);
     [(PKPaymentCredential *)v10 setDeletable:1];
-    if ([v8 isEqualToString:@"carKey"])
+    if ([identifierCopy isEqualToString:@"carKey"])
     {
       [(PKPaymentCredential *)v10 setCredentialType:301];
     }
 
-    v11 = [v7 localizedDescription];
-    [(PKPaymentCredential *)v10 setLongDescription:v11];
+    localizedDescription = [configurationCopy localizedDescription];
+    [(PKPaymentCredential *)v10 setLongDescription:localizedDescription];
   }
 
   return v10;
@@ -41,10 +41,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -52,29 +52,29 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKCarKeyTerminalPairingCredential *)self _isEqualToCredential:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKCarKeyTerminalPairingCredential *)self _isEqualToCredential:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)_isEqualToCredential:(id)a3
+- (BOOL)_isEqualToCredential:(id)credential
 {
-  if (!a3)
+  if (!credential)
   {
     return 0;
   }
 
   configuration = self->_configuration;
-  v4 = a3;
-  v5 = [(PKAddCarKeyPassConfiguration *)configuration pairedReaderIdentifier];
-  v6 = v4[14];
+  credentialCopy = credential;
+  pairedReaderIdentifier = [(PKAddCarKeyPassConfiguration *)configuration pairedReaderIdentifier];
+  v6 = credentialCopy[14];
 
-  v7 = [v6 pairedReaderIdentifier];
-  v8 = v7;
-  if (v5)
+  pairedReaderIdentifier2 = [v6 pairedReaderIdentifier];
+  v8 = pairedReaderIdentifier2;
+  if (pairedReaderIdentifier)
   {
-    v9 = v7 == 0;
+    v9 = pairedReaderIdentifier2 == 0;
   }
 
   else
@@ -84,12 +84,12 @@
 
   if (v9)
   {
-    v10 = v5 == v7;
+    v10 = pairedReaderIdentifier == pairedReaderIdentifier2;
   }
 
   else
   {
-    v10 = [v5 isEqual:v7];
+    v10 = [pairedReaderIdentifier isEqual:pairedReaderIdentifier2];
   }
 
   return v10;

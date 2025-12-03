@@ -1,24 +1,24 @@
 @interface TSTRunningTotalContext
-- (BOOL)isMissingRunningTotalFieldForAggIndex:(unsigned __int16)a3;
-- (TSKUIDStructCoord)getPreviousUidCoordForAggIndex:(SEL)a3 fromNewUidCoord:(unsigned __int16)a4 addNewUidCoordEvenIfNotFound:(const TSKUIDStructCoord *)a5;
-- (TSTRunningTotalContext)initWithGroupBySet:(id)a3;
+- (BOOL)isMissingRunningTotalFieldForAggIndex:(unsigned __int16)index;
+- (TSKUIDStructCoord)getPreviousUidCoordForAggIndex:(SEL)index fromNewUidCoord:(unsigned __int16)coord addNewUidCoordEvenIfNotFound:(const TSKUIDStructCoord *)found;
+- (TSTRunningTotalContext)initWithGroupBySet:(id)set;
 - (id).cxx_construct;
 @end
 
 @implementation TSTRunningTotalContext
 
-- (TSTRunningTotalContext)initWithGroupBySet:(id)a3
+- (TSTRunningTotalContext)initWithGroupBySet:(id)set
 {
   v61 = *MEMORY[0x277D85DE8];
-  v52 = a3;
+  setCopy = set;
   v58.receiver = self;
   v58.super_class = TSTRunningTotalContext;
   v5 = [(TSTRunningTotalContext *)&v58 init];
   if (v5)
   {
     v51 = v5;
-    objc_storeStrong(&v5->_groupBySet, a3);
-    v10 = objc_msgSend_aggregates(v52, v6, v7, v8, v9);
+    objc_storeStrong(&v5->_groupBySet, set);
+    v10 = objc_msgSend_aggregates(setCopy, v6, v7, v8, v9);
     if (objc_msgSend_count(v10, v11, v12, v13, v14))
     {
       v57 = 0;
@@ -45,7 +45,7 @@
             {
               v29 = objc_msgSend_runningTotalGroupingColumnUid(v28, v21, v22, v23, v24);
               v31 = v30;
-              v35 = objc_msgSend_rowGroupings(v52, v30, v32, v33, v34);
+              v35 = objc_msgSend_rowGroupings(setCopy, v30, v32, v33, v34);
               v38 = objc_msgSend_groupingColumnForColumnUID_(v35, v36, v29, v31, v37);
 
               if (v38)
@@ -56,7 +56,7 @@
 
               else
               {
-                v45 = objc_msgSend_columnGroupings(v52, v39, v40, v41, v42);
+                v45 = objc_msgSend_columnGroupings(setCopy, v39, v40, v41, v42);
                 v38 = objc_msgSend_groupingColumnForColumnUID_(v45, v46, v29, v31, v47);
 
                 v43 = v38 == 0;
@@ -93,10 +93,10 @@
   return v49;
 }
 
-- (BOOL)isMissingRunningTotalFieldForAggIndex:(unsigned __int16)a3
+- (BOOL)isMissingRunningTotalFieldForAggIndex:(unsigned __int16)index
 {
-  v6 = a3;
-  v3 = sub_2210C3024(&self->_runAggrForAggIndex.__table_.__bucket_list_.__ptr_, &v6);
+  indexCopy = index;
+  v3 = sub_2210C3024(&self->_runAggrForAggIndex.__table_.__bucket_list_.__ptr_, &indexCopy);
   if (v3)
   {
     v4 = *(v3 + 41);
@@ -110,25 +110,25 @@
   return v4 & 1;
 }
 
-- (TSKUIDStructCoord)getPreviousUidCoordForAggIndex:(SEL)a3 fromNewUidCoord:(unsigned __int16)a4 addNewUidCoordEvenIfNotFound:(const TSKUIDStructCoord *)a5
+- (TSKUIDStructCoord)getPreviousUidCoordForAggIndex:(SEL)index fromNewUidCoord:(unsigned __int16)coord addNewUidCoordEvenIfNotFound:(const TSKUIDStructCoord *)found
 {
   v6 = a6;
-  v42 = a4;
-  v10 = sub_2210C3024(&self->_runAggrForAggIndex.__table_.__bucket_list_.__ptr_, &v42);
+  coordCopy = coord;
+  v10 = sub_2210C3024(&self->_runAggrForAggIndex.__table_.__bucket_list_.__ptr_, &coordCopy);
   if (!v10)
   {
     return TSKMakeInvalidUIDStructCoord();
   }
 
   v13 = v10;
-  v14 = objc_msgSend_groupValueTupleForUuidCoord_createIfMissing_(self->_groupBySet, v11, a5, 0, v12);
+  v14 = objc_msgSend_groupValueTupleForUuidCoord_createIfMissing_(self->_groupBySet, v11, found, 0, v12);
   v17 = 16;
   if (*(v13 + 40))
   {
     v17 = 0;
   }
 
-  v41 = *(&a5->_column + v17);
+  v41 = *(&found->_column + v17);
   if (v14)
   {
     goto LABEL_5;
@@ -139,7 +139,7 @@
     return TSKMakeInvalidUIDStructCoord();
   }
 
-  v14 = objc_msgSend_groupValueTupleForUuidCoord_createIfMissing_(self->_groupBySet, v15, a5, 1, v16, v41);
+  v14 = objc_msgSend_groupValueTupleForUuidCoord_createIfMissing_(self->_groupBySet, v15, found, 1, v16, v41);
   if (!v14)
   {
     v30 = MEMORY[0x277D81150];
@@ -153,8 +153,8 @@
 
 LABEL_5:
   v18 = v14;
-  v43 = &v42;
-  v19 = sub_221300D50(&self->_valuesForRunningAggregatePerRunDirectionUid.__table_.__bucket_list_.__ptr_, &v42);
+  v43 = &coordCopy;
+  v19 = sub_221300D50(&self->_valuesForRunningAggregatePerRunDirectionUid.__table_.__bucket_list_.__ptr_, &coordCopy);
   v20 = sub_2210875C4(v19 + 3, &v41);
   if (!v20)
   {
@@ -172,7 +172,7 @@ LABEL_5:
   v25 = v20[4];
   if (v25)
   {
-    objc_msgSend_getUidCoordforRunningAggregate_tupleForCoord_newUidCoord_addNewUidCoordEvenIfNotFound_inContext_(v25, v21, (v13 + 3), v18, a5, v6, self);
+    objc_msgSend_getUidCoordforRunningAggregate_tupleForCoord_newUidCoord_addNewUidCoordEvenIfNotFound_inContext_(v25, v21, (v13 + 3), v18, found, v6, self);
   }
 
   return result;

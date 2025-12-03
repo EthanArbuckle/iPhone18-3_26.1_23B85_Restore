@@ -2,21 +2,21 @@
 - (BOOL)_canNavigateBack;
 - (BOOL)_canPopViewController;
 - (BOOL)_defaultLocationIsRecentsTab;
-- (BOOL)_navigationControllerShouldUseBuiltinInteractionController:(id)a3;
+- (BOOL)_navigationControllerShouldUseBuiltinInteractionController:(id)controller;
 - (BOOL)canGoToEnclosingFolder;
 - (BOOL)canLoadAdditionalParents;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)canPerformGoToEnclosingFolder;
 - (BOOL)canResetHierarchyController;
 - (BOOL)establishFirstResponder;
 - (BOOL)establishFirstResponderIfNeeded;
 - (BOOL)infoPanelPreviewingMultipleItems;
-- (BOOL)isBrowserCurrentLocation:(id)a3;
+- (BOOL)isBrowserCurrentLocation:(id)location;
 - (BOOL)isInUserTriggeredSelectionMode;
 - (BOOL)prefersTabBarHidden;
 - (BOOL)presentationContextShowsProvidersAsBrowserRoot;
 - (DOCConcreteLocation)displayedRootLocation;
-- (DOCFullDocumentManagerViewController)initWithConfiguration:(id)a3 sourceObserver:(id)a4;
+- (DOCFullDocumentManagerViewController)initWithConfiguration:(id)configuration sourceObserver:(id)observer;
 - (DOCFullDocumentManagerViewControllerDelegate)fullDocumentManagerDelegate;
 - (DOCSourceObserver)sourceObserver;
 - (NSArray)keyCommands;
@@ -28,132 +28,132 @@
 - (_TtC26DocumentManagerExecutables19DOCSearchController)effectiveSearchController;
 - (_TtC26DocumentManagerExecutables29DOCBrowserContainerController)effectiveBrowserViewController;
 - (_TtP26DocumentManagerExecutables27DOCScannedDocumentReceiving_)doc_documentScannerReceivingTarget;
-- (id)_navigationControllerDimmingColorForParallaxTransition:(id)a3;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
+- (id)_navigationControllerDimmingColorForParallaxTransition:(id)transition;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
 - (id)currentItemCollectionViewController;
 - (id)currentViewController;
-- (id)pickerOperationTitleFor:(id)a3 useShortTitle:(BOOL)a4;
-- (id)provideColumnViewControllerWithContains:(id)a3;
-- (id)provideContainerControllerAt:(id)a3 from:(id)a4 isUserInteraction:(BOOL)a5 isBrowsingTrash:(BOOL)a6;
-- (id)targetForAction:(SEL)a3 withSender:(id)a4;
-- (int64_t)pickerOperationFor:(id)a3;
+- (id)pickerOperationTitleFor:(id)for useShortTitle:(BOOL)title;
+- (id)provideColumnViewControllerWithContains:(id)contains;
+- (id)provideContainerControllerAt:(id)at from:(id)from isUserInteraction:(BOOL)interaction isBrowsingTrash:(BOOL)trash;
+- (id)targetForAction:(SEL)action withSender:(id)sender;
+- (int64_t)pickerOperationFor:(id)for;
 - (unint64_t)effectiveTabSwitcherTab;
 - (void)_navigateBack;
 - (void)activateContainerViewControllersIfNeeded;
-- (void)beginForcedNavigationTransitionChromeIfNeeded:(id)a3 appearingViewController:(id)a4 animated:(BOOL)a5;
-- (void)beginLoadingAdditionalParents:(id)a3;
-- (void)beginRenameOf:(id)a3;
+- (void)beginForcedNavigationTransitionChromeIfNeeded:(id)needed appearingViewController:(id)controller animated:(BOOL)animated;
+- (void)beginLoadingAdditionalParents:(id)parents;
+- (void)beginRenameOf:(id)of;
 - (void)clearDroppedLocationsAfterSwitchingViewStyle;
-- (void)columnViewController:(id)a3 didShowItemControllers:(id)a4;
-- (void)configureColumnViewController:(id)a3;
-- (void)createNewFolderIn:(id)a3 moving:(id)a4;
-- (void)dataSource:(id)a3 didUpdate:(id)a4 animated:(BOOL)a5;
-- (void)dataSource:(id)a3 willSwitchFrom:(int64_t)a4 to:(int64_t)a5;
+- (void)columnViewController:(id)controller didShowItemControllers:(id)controllers;
+- (void)configureColumnViewController:(id)controller;
+- (void)createNewFolderIn:(id)in moving:(id)moving;
+- (void)dataSource:(id)source didUpdate:(id)update animated:(BOOL)animated;
+- (void)dataSource:(id)source willSwitchFrom:(int64_t)from to:(int64_t)to;
 - (void)dealloc;
 - (void)didChangeEnvironmentSupportsColumnView;
-- (void)didCommitPreviewOf:(id)a3;
-- (void)didConfirmPickIn:(id)a3;
-- (void)didDismissSearchController:(id)a3;
-- (void)didDismissSearchResultsController:(id)a3;
-- (void)didFinishGatheringItemsAndThumbnailsWithSender:(id)a3;
+- (void)didCommitPreviewOf:(id)of;
+- (void)didConfirmPickIn:(id)in;
+- (void)didDismissSearchController:(id)controller;
+- (void)didDismissSearchResultsController:(id)controller;
+- (void)didFinishGatheringItemsAndThumbnailsWithSender:(id)sender;
 - (void)didIndicateCancelPicker;
-- (void)didPresentSearchController:(id)a3;
-- (void)didPresentSearchResultsController:(id)a3;
-- (void)didSelectItem:(id)a3 atParentLocation:(id)a4 wasAlreadySelected:(BOOL)a5 onlyRevealIfColumn:(BOOL)a6;
-- (void)didSelectLocation:(id)a3 atParentLocation:(id)a4;
-- (void)didTapLocationOf:(id)a3;
-- (void)didTapOnUnselectableItem:(id)a3;
-- (void)didToggleEditStateWithEditing:(BOOL)a3 in:(id)a4;
-- (void)dismissSearchAlongsideCoordinator:(id)a3;
-- (void)doc_commonInitWithSourceObserver:(id)a3;
+- (void)didPresentSearchController:(id)controller;
+- (void)didPresentSearchResultsController:(id)controller;
+- (void)didSelectItem:(id)item atParentLocation:(id)location wasAlreadySelected:(BOOL)selected onlyRevealIfColumn:(BOOL)column;
+- (void)didSelectLocation:(id)location atParentLocation:(id)parentLocation;
+- (void)didTapLocationOf:(id)of;
+- (void)didTapOnUnselectableItem:(id)item;
+- (void)didToggleEditStateWithEditing:(BOOL)editing in:(id)in;
+- (void)dismissSearchAlongsideCoordinator:(id)coordinator;
+- (void)doc_commonInitWithSourceObserver:(id)observer;
 - (void)doc_updateBarButtonTrackingViewsIfNecessary;
-- (void)documentCameraViewController:(id)a3 didFinishWithScan:(id)a4;
-- (void)documentCameraViewControllerDidCancel:(id)a3;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
-- (void)documentPickerWasCancelled:(id)a3;
+- (void)documentCameraViewController:(id)controller didFinishWithScan:(id)scan;
+- (void)documentCameraViewControllerDidCancel:(id)cancel;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
+- (void)documentPickerWasCancelled:(id)cancelled;
 - (void)effectiveBrowserViewController;
 - (void)effectiveSearchController;
-- (void)endForcedNavigationTransitionChrome:(id)a3 appearingViewController:(id)a4;
+- (void)endForcedNavigationTransitionChrome:(id)chrome appearingViewController:(id)controller;
 - (void)ensureInternalNavigationControllerIsInstalled;
-- (void)fullDocumentManagerViewControllerDidFinishLoading:(id)a3;
-- (void)importScannedDocumentAt:(id)a3 presentingController:(id)a4 importToCurrentLocation:(BOOL)a5;
+- (void)fullDocumentManagerViewControllerDidFinishLoading:(id)loading;
+- (void)importScannedDocumentAt:(id)at presentingController:(id)controller importToCurrentLocation:(BOOL)location;
 - (void)installDebugMenuGesture;
 - (void)invokeDebugGathering;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)performConnectToServer:(id)a3;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)performConnectToServer:(id)server;
 - (void)performCreateDocument;
-- (void)performCreateDocumentOrOpenNewWindow:(id)a3;
-- (void)performDismiss:(id)a3;
-- (void)performEjectMedium:(id)a3;
-- (void)performFind:(id)a3;
-- (void)performGoBackInHistory:(id)a3;
-- (void)performGoForwardInHistory:(id)a3;
-- (void)performGoToLocation:(id)a3;
-- (void)performGroupByDate:(id)a3;
-- (void)performGroupByKind:(id)a3;
-- (void)performGroupByNone:(id)a3;
-- (void)performGroupBySharedBy:(id)a3;
-- (void)performGroupBySize:(id)a3;
-- (void)performShowDebugMenu:(id)a3;
-- (void)performSortByDateAdded:(id)a3;
-- (void)performSortByDateCreated:(id)a3;
-- (void)performSortByDateLastOpened:(id)a3;
-- (void)performSortByDateModified:(id)a3;
-- (void)performSortByKind:(id)a3;
-- (void)performSortByName:(id)a3;
-- (void)performSortBySharedBy:(id)a3;
-- (void)performSortBySize:(id)a3;
-- (void)performSortByTags:(id)a3;
-- (void)performViewAsColumns:(id)a3;
-- (void)performViewAsIcons:(id)a3;
-- (void)performViewAsList:(id)a3;
-- (void)performViewAsUserSizeLarger:(id)a3;
-- (void)performViewAsUserSizeSmaller:(id)a3;
-- (void)popToRootViewControllerAnimated:(BOOL)a3;
+- (void)performCreateDocumentOrOpenNewWindow:(id)window;
+- (void)performDismiss:(id)dismiss;
+- (void)performEjectMedium:(id)medium;
+- (void)performFind:(id)find;
+- (void)performGoBackInHistory:(id)history;
+- (void)performGoForwardInHistory:(id)history;
+- (void)performGoToLocation:(id)location;
+- (void)performGroupByDate:(id)date;
+- (void)performGroupByKind:(id)kind;
+- (void)performGroupByNone:(id)none;
+- (void)performGroupBySharedBy:(id)by;
+- (void)performGroupBySize:(id)size;
+- (void)performShowDebugMenu:(id)menu;
+- (void)performSortByDateAdded:(id)added;
+- (void)performSortByDateCreated:(id)created;
+- (void)performSortByDateLastOpened:(id)opened;
+- (void)performSortByDateModified:(id)modified;
+- (void)performSortByKind:(id)kind;
+- (void)performSortByName:(id)name;
+- (void)performSortBySharedBy:(id)by;
+- (void)performSortBySize:(id)size;
+- (void)performSortByTags:(id)tags;
+- (void)performViewAsColumns:(id)columns;
+- (void)performViewAsIcons:(id)icons;
+- (void)performViewAsList:(id)list;
+- (void)performViewAsUserSizeLarger:(id)larger;
+- (void)performViewAsUserSizeSmaller:(id)smaller;
+- (void)popToRootViewControllerAnimated:(BOOL)animated;
 - (void)preloadLaunchServiceDatabase;
-- (void)presentDebugMenuForLongPress:(id)a3;
-- (void)presentDebugMenuForMultipleTaps:(id)a3;
+- (void)presentDebugMenuForLongPress:(id)press;
+- (void)presentDebugMenuForMultipleTaps:(id)taps;
 - (void)resetNavigationStepwise;
-- (void)revealDocumentAtURL:(id)a3 importIfNeeded:(BOOL)a4 updateLastUsedDate:(BOOL)a5 completion:(id)a6;
-- (void)revealLocation:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setAdditionalLeadingNavigationBarButtonItems:(id)a3;
-- (void)setAdditionalTrailingNavigationBarButtonItems:(id)a3;
-- (void)setAllowsPickingMultipleItems:(BOOL)a3;
-- (void)setCustomActions:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setEnvironmentSupportsColumnView:(BOOL)a3;
-- (void)setPickerContext:(id)a3;
-- (void)setRootViewController:(id)a3;
-- (void)setShortDebugID:(id)a3;
-- (void)showLocation:(id)a3 animated:(BOOL)a4 withCompletionBlock:(id)a5;
-- (void)showLocation:(id)a3 fromRootAnimated:(BOOL)a4 withCompletionBlock:(id)a5;
-- (void)splitViewWillChangeFrom:(int64_t)a3 to:(int64_t)a4 alongsideCoordinator:(id)a5;
+- (void)revealDocumentAtURL:(id)l importIfNeeded:(BOOL)needed updateLastUsedDate:(BOOL)date completion:(id)completion;
+- (void)revealLocation:(id)location animated:(BOOL)animated completion:(id)completion;
+- (void)setAdditionalLeadingNavigationBarButtonItems:(id)items;
+- (void)setAdditionalTrailingNavigationBarButtonItems:(id)items;
+- (void)setAllowsPickingMultipleItems:(BOOL)items;
+- (void)setCustomActions:(id)actions;
+- (void)setDelegate:(id)delegate;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setEnvironmentSupportsColumnView:(BOOL)view;
+- (void)setPickerContext:(id)context;
+- (void)setRootViewController:(id)controller;
+- (void)setShortDebugID:(id)d;
+- (void)showLocation:(id)location animated:(BOOL)animated withCompletionBlock:(id)block;
+- (void)showLocation:(id)location fromRootAnimated:(BOOL)animated withCompletionBlock:(id)block;
+- (void)splitViewWillChangeFrom:(int64_t)from to:(int64_t)to alongsideCoordinator:(id)coordinator;
 - (void)splitViewWillDidExpand;
-- (void)swift_commonInitWith:(id)a3;
-- (void)swift_navigationController:(id)a3 didShow:(id)a4 animated:(BOOL)a5;
-- (void)swift_navigationController:(id)a3 willShow:(id)a4 animated:(BOOL)a5;
+- (void)swift_commonInitWith:(id)with;
+- (void)swift_navigationController:(id)controller didShow:(id)show animated:(BOOL)animated;
+- (void)swift_navigationController:(id)controller willShow:(id)show animated:(BOOL)animated;
 - (void)swift_viewDidLoad;
-- (void)updateAvailableDisplayModesWithAnimated:(BOOL)a3;
+- (void)updateAvailableDisplayModesWithAnimated:(BOOL)animated;
 - (void)updateCustomActions;
 - (void)updateNavigationBarPrefersLargeTitles;
 - (void)updateRelatedViewControllersWithCurrentHierarchy;
-- (void)validateCommand:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)validateCommand:(id)command;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willDismissSearchController:(id)a3;
-- (void)willDismissSearchResultsController:(id)a3;
-- (void)willPresentSearchController:(id)a3;
-- (void)willPresentSearchResultsController:(id)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willDismissSearchController:(id)controller;
+- (void)willDismissSearchResultsController:(id)controller;
+- (void)willPresentSearchController:(id)controller;
+- (void)willPresentSearchResultsController:(id)controller;
 @end
 
 @implementation DOCFullDocumentManagerViewController
@@ -178,28 +178,28 @@ void __68__DOCFullDocumentManagerViewController_preloadLaunchServiceDatabase__bl
   v1 = [v0 bundleIdentifier];
 }
 
-- (DOCFullDocumentManagerViewController)initWithConfiguration:(id)a3 sourceObserver:(id)a4
+- (DOCFullDocumentManagerViewController)initWithConfiguration:(id)configuration sourceObserver:(id)observer
 {
-  v6 = a4;
+  observerCopy = observer;
   v10.receiver = self;
   v10.super_class = DOCFullDocumentManagerViewController;
-  v7 = [(UIDocumentBrowserViewController *)&v10 initWithConfiguration:a3];
+  v7 = [(UIDocumentBrowserViewController *)&v10 initWithConfiguration:configuration];
   v8 = v7;
   if (v7)
   {
-    [(DOCFullDocumentManagerViewController *)v7 doc_commonInitWithSourceObserver:v6];
+    [(DOCFullDocumentManagerViewController *)v7 doc_commonInitWithSourceObserver:observerCopy];
   }
 
   return v8;
 }
 
-- (void)doc_commonInitWithSourceObserver:(id)a3
+- (void)doc_commonInitWithSourceObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   [(DOCFullDocumentManagerViewController *)self preloadLaunchServiceDatabase];
-  v5 = [MEMORY[0x277CCAD78] UUID];
-  v6 = [v5 UUIDString];
-  v7 = [v6 substringToIndex:6];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v7 = [uUIDString substringToIndex:6];
   shortDebugID = self->_shortDebugID;
   self->_shortDebugID = v7;
 
@@ -207,22 +207,22 @@ void __68__DOCFullDocumentManagerViewController_preloadLaunchServiceDatabase__bl
   displayModeHandler = self->_displayModeHandler;
   self->_displayModeHandler = v9;
 
-  objc_storeWeak(&self->_sourceObserver, v4);
+  objc_storeWeak(&self->_sourceObserver, observerCopy);
   v11 = [_TtC26DocumentManagerExecutables25DOCItemCollectionViewPool alloc];
-  v12 = [(UIDocumentBrowserViewController *)self configuration];
-  v13 = [(DOCItemCollectionViewPool *)v11 initWithConfiguration:v12];
+  configuration = [(UIDocumentBrowserViewController *)self configuration];
+  v13 = [(DOCItemCollectionViewPool *)v11 initWithConfiguration:configuration];
   itemCollectionViewPool = self->_itemCollectionViewPool;
   self->_itemCollectionViewPool = v13;
 
   v15 = [_TtC26DocumentManagerExecutables42DOCFullDocumentManagerNavigationController alloc];
-  v16 = [(UIDocumentBrowserViewController *)self configuration];
-  v17 = [(DOCFullDocumentManagerNavigationController *)v15 initWithConfiguration:v16];
+  configuration2 = [(UIDocumentBrowserViewController *)self configuration];
+  v17 = [(DOCFullDocumentManagerNavigationController *)v15 initWithConfiguration:configuration2];
   internalNavigationController = self->_internalNavigationController;
   self->_internalNavigationController = v17;
 
   v19 = [_TtC26DocumentManagerExecutables22DOCHierarchyController alloc];
-  v20 = [(UIDocumentBrowserViewController *)self configuration];
-  v21 = [(DOCHierarchyController *)v19 initWithConfiguration:v20 sourceObserver:v4 minParentLocations:100];
+  configuration3 = [(UIDocumentBrowserViewController *)self configuration];
+  v21 = [(DOCHierarchyController *)v19 initWithConfiguration:configuration3 sourceObserver:observerCopy minParentLocations:100];
   [(DOCFullDocumentManagerViewController *)self setHierarchyController:v21];
 
   [(DOCHierarchyController *)self->_hierarchyController addObserver:self forKeyPath:@"lastLocation" options:1 context:DOCFullDocumentManagerViewControllerContext];
@@ -242,47 +242,47 @@ void __68__DOCFullDocumentManagerViewController_preloadLaunchServiceDatabase__bl
   }
 
   v24 = [_TtC26DocumentManagerExecutables18DOCDocumentManager alloc];
-  v25 = [(UIDocumentBrowserViewController *)self configuration];
-  v26 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
-  v27 = [(DOCDocumentManager *)v24 initWithConfiguration:v25 sourceObserver:v4 hierarchyController:v26];
+  configuration4 = [(UIDocumentBrowserViewController *)self configuration];
+  hierarchyController = [(DOCFullDocumentManagerViewController *)self hierarchyController];
+  v27 = [(DOCDocumentManager *)v24 initWithConfiguration:configuration4 sourceObserver:observerCopy hierarchyController:hierarchyController];
   [(DOCFullDocumentManagerViewController *)self setDocumentManager:v27];
 
   v28 = [_TtC26DocumentManagerExecutables22DOCLocationChangePacer alloc];
-  v29 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
-  v30 = [(DOCLocationChangePacer *)v28 initWithHierarchyController:v29];
+  hierarchyController2 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
+  v30 = [(DOCLocationChangePacer *)v28 initWithHierarchyController:hierarchyController2];
   locationChangePacer = self->_locationChangePacer;
   self->_locationChangePacer = v30;
 
   v32 = [_TtC26DocumentManagerExecutables30DOCBrowserNavigationDataSource alloc];
-  v33 = [(UIDocumentBrowserViewController *)self configuration];
-  v34 = [(DOCFullDocumentManagerViewController *)self sourceObserver];
-  v35 = [(DOCBrowserNavigationDataSource *)v32 initWithConfiguration:v33 sourceObserver:v34];
+  configuration5 = [(UIDocumentBrowserViewController *)self configuration];
+  sourceObserver = [(DOCFullDocumentManagerViewController *)self sourceObserver];
+  v35 = [(DOCBrowserNavigationDataSource *)v32 initWithConfiguration:configuration5 sourceObserver:sourceObserver];
   dataSource = self->_dataSource;
   self->_dataSource = v35;
 
-  v37 = [(DOCFullDocumentManagerViewController *)self dataSource];
-  [v37 setItemProvider:self];
+  dataSource = [(DOCFullDocumentManagerViewController *)self dataSource];
+  [dataSource setItemProvider:self];
 
-  v38 = [(DOCFullDocumentManagerViewController *)self dataSource];
-  [v38 setUpdateObserver:self];
+  dataSource2 = [(DOCFullDocumentManagerViewController *)self dataSource];
+  [dataSource2 setUpdateObserver:self];
 
-  v39 = [(DOCFullDocumentManagerViewController *)self dataSource];
-  v40 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
-  [v40 setDelegate:v39];
+  dataSource3 = [(DOCFullDocumentManagerViewController *)self dataSource];
+  hierarchyController3 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
+  [hierarchyController3 setDelegate:dataSource3];
 
   [(UINavigationController *)self->_internalNavigationController setDelegate:self];
-  v41 = [(DOCFullDocumentManagerViewController *)self documentManager];
-  [v41 setDocumentBrowser:self];
+  documentManager = [(DOCFullDocumentManagerViewController *)self documentManager];
+  [documentManager setDocumentBrowser:self];
 
   WeakRetained = objc_loadWeakRetained(&self->_sourceObserver);
   [(DOCFullDocumentManagerViewController *)self swift_commonInitWith:WeakRetained];
 
   [(DOCFullDocumentManagerViewController *)self setCustomActions:MEMORY[0x277CBEBF8]];
-  v43 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v43 addObserver:self selector:sel_fullDocumentManagerViewControllerDidFinishLoading_ name:@"DOCFullDocumentManagerViewControllerDidFinishLoadingNotificationName" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_fullDocumentManagerViewControllerDidFinishLoading_ name:@"DOCFullDocumentManagerViewControllerDidFinishLoadingNotificationName" object:0];
 
-  v44 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v44 addObserver:self selector:sel_itemCollectionViewControllerDidLoad name:@"DOCItemCollectionViewDidLoadContents" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_itemCollectionViewControllerDidLoad name:@"DOCItemCollectionViewDidLoadContents" object:0];
 
   self->_userChangedDefaultSaveLocationToken = 0;
   objc_initWeak(&location, self);
@@ -325,11 +325,11 @@ void __73__DOCFullDocumentManagerViewController_doc_commonInitWithSourceObserver
   objc_destroyWeak(&to);
 }
 
-- (void)setShortDebugID:(id)a3
+- (void)setShortDebugID:(id)d
 {
-  objc_storeStrong(&self->_shortDebugID, a3);
-  v5 = a3;
-  [(DOCBrowserNavigationDataSource *)self->_dataSource setShortDebugID:v5];
+  objc_storeStrong(&self->_shortDebugID, d);
+  dCopy = d;
+  [(DOCBrowserNavigationDataSource *)self->_dataSource setShortDebugID:dCopy];
 }
 
 - (NSString)description
@@ -346,16 +346,16 @@ void __73__DOCFullDocumentManagerViewController_doc_commonInitWithSourceObserver
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"DOCFullDocumentManagerViewControllerDidFinishLoadingNotificationName" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"DOCFullDocumentManagerViewControllerDidFinishLoadingNotificationName" object:0];
 
   [(DOCHierarchyController *)self->_hierarchyController removeObserver:self forKeyPath:@"lastLocation"];
   [(DOCHierarchyController *)self->_hierarchyController removeObserver:self forKeyPath:@"effectiveRootLocation"];
   [(DOCHierarchyController *)self->_hierarchyController removeObserver:self forKeyPath:@"locations"];
   if ([(DOCFullDocumentManagerViewController *)self isViewLoaded])
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 removeObserver:self];
   }
 
   userChangedDefaultSaveLocationToken = self->_userChangedDefaultSaveLocationToken;
@@ -370,21 +370,21 @@ void __73__DOCFullDocumentManagerViewController_doc_commonInitWithSourceObserver
   [(UIDocumentBrowserViewController *)&v6 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v11 = a3;
-  v12 = v11;
-  if (DOCFullDocumentManagerViewControllerContext == a6)
+  pathCopy = path;
+  v12 = pathCopy;
+  if (DOCFullDocumentManagerViewControllerContext == context)
   {
-    if (([v11 isEqualToString:@"locations"] & 1) != 0 || (objc_msgSend(v12, "isEqualToString:", @"lastLocation") & 1) != 0 || objc_msgSend(v12, "isEqualToString:", @"effectiveRootLocation"))
+    if (([pathCopy isEqualToString:@"locations"] & 1) != 0 || (objc_msgSend(v12, "isEqualToString:", @"lastLocation") & 1) != 0 || objc_msgSend(v12, "isEqualToString:", @"effectiveRootLocation"))
     {
       [(DOCFullDocumentManagerViewController *)self updateRelatedViewControllersWithCurrentHierarchy];
     }
 
     else
     {
-      v13 = [MEMORY[0x277CCA890] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"DOCFullDocumentManagerViewController.m" lineNumber:208 description:{@"Unhandled keyPath: %@", v12}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"DOCFullDocumentManagerViewController.m" lineNumber:208 description:{@"Unhandled keyPath: %@", v12}];
     }
   }
 
@@ -392,18 +392,18 @@ void __73__DOCFullDocumentManagerViewController_doc_commonInitWithSourceObserver
   {
     v14.receiver = self;
     v14.super_class = DOCFullDocumentManagerViewController;
-    [(DOCFullDocumentManagerViewController *)&v14 observeValueForKeyPath:v11 ofObject:a4 change:a5 context:a6];
+    [(DOCFullDocumentManagerViewController *)&v14 observeValueForKeyPath:pathCopy ofObject:object change:change context:context];
   }
 }
 
 - (BOOL)_defaultLocationIsRecentsTab
 {
-  v2 = [(UIDocumentBrowserViewController *)self configuration];
-  v3 = [v2 defaultLocation];
-  v4 = [v3 sourceIdentifier];
+  configuration = [(UIDocumentBrowserViewController *)self configuration];
+  defaultLocation = [configuration defaultLocation];
+  sourceIdentifier = [defaultLocation sourceIdentifier];
   v5 = *MEMORY[0x277D060F8];
 
-  if (v4 != v5)
+  if (sourceIdentifier != v5)
   {
     return 0;
   }
@@ -420,8 +420,8 @@ void __73__DOCFullDocumentManagerViewController_doc_commonInitWithSourceObserver
   [(DOCFullDocumentManagerViewController *)self updateNavigationBarPrefersLargeTitles];
   if (!self->_viewDidLoadResetLocationDisabled)
   {
-    v3 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
-    [v3 resetWithDefaultLocationWithAnimated:0];
+    hierarchyController = [(DOCFullDocumentManagerViewController *)self hierarchyController];
+    [hierarchyController resetWithDefaultLocationWithAnimated:0];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_sourceObserver);
@@ -436,29 +436,29 @@ void __73__DOCFullDocumentManagerViewController_doc_commonInitWithSourceObserver
     [(UITapGestureRecognizer *)self->_multiTapDebugGestureRecognizer setNumberOfTapsRequired:4];
     [(UITapGestureRecognizer *)self->_multiTapDebugGestureRecognizer setNumberOfTouchesRequired:2];
     [(UITapGestureRecognizer *)self->_multiTapDebugGestureRecognizer setDelegate:self];
-    v7 = [(UINavigationController *)self->_internalNavigationController navigationBar];
-    [v7 addGestureRecognizer:self->_multiTapDebugGestureRecognizer];
+    navigationBar = [(UINavigationController *)self->_internalNavigationController navigationBar];
+    [navigationBar addGestureRecognizer:self->_multiTapDebugGestureRecognizer];
   }
 
   [(DOCFullDocumentManagerViewController *)self swift_viewDidLoad];
   [(DOCFullDocumentManagerViewController *)self installDebugMenuGesture];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v6.receiver = self;
   v6.super_class = DOCFullDocumentManagerViewController;
-  v4 = a3;
-  [(UIDocumentBrowserViewController *)&v6 setDelegate:v4];
+  delegateCopy = delegate;
+  [(UIDocumentBrowserViewController *)&v6 setDelegate:delegateCopy];
   v5 = [(DOCFullDocumentManagerViewController *)self documentManager:v6.receiver];
-  [v5 setUiBrowserDelegate:v4];
+  [v5 setUiBrowserDelegate:delegateCopy];
 }
 
 - (BOOL)_canNavigateBack
 {
-  v2 = [(DOCFullDocumentManagerViewController *)self internalNavigationController];
-  v3 = [v2 viewControllers];
-  v4 = [v3 count] > 1;
+  internalNavigationController = [(DOCFullDocumentManagerViewController *)self internalNavigationController];
+  viewControllers = [internalNavigationController viewControllers];
+  v4 = [viewControllers count] > 1;
 
   return v4;
 }
@@ -468,14 +468,14 @@ void __73__DOCFullDocumentManagerViewController_doc_commonInitWithSourceObserver
   if ([(DOCFullDocumentManagerViewController *)self _canPopViewController]&& [(DOCFullDocumentManagerViewController *)self _canNavigateBack])
   {
     [(DOCFullDocumentManagerViewController *)self setEditing:0];
-    v4 = [(DOCFullDocumentManagerViewController *)self internalNavigationController];
-    v3 = [v4 popViewControllerAnimated:1];
+    internalNavigationController = [(DOCFullDocumentManagerViewController *)self internalNavigationController];
+    v3 = [internalNavigationController popViewControllerAnimated:1];
   }
 }
 
-- (void)setAllowsPickingMultipleItems:(BOOL)a3
+- (void)setAllowsPickingMultipleItems:(BOOL)items
 {
-  v3 = a3;
+  itemsCopy = items;
   v18 = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = DOCFullDocumentManagerViewController;
@@ -484,10 +484,10 @@ void __73__DOCFullDocumentManagerViewController_doc_commonInitWithSourceObserver
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(DOCFullDocumentManagerViewController *)self internalNavigationController];
-  v6 = [v5 viewControllers];
+  internalNavigationController = [(DOCFullDocumentManagerViewController *)self internalNavigationController];
+  viewControllers = [internalNavigationController viewControllers];
 
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  v7 = [viewControllers countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -499,21 +499,21 @@ void __73__DOCFullDocumentManagerViewController_doc_commonInitWithSourceObserver
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(viewControllers);
         }
 
         v11 = *(*(&v12 + 1) + 8 * v10);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v11 setAllowsPickingMultipleItems:v3];
+          [v11 setAllowsPickingMultipleItems:itemsCopy];
         }
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v8 = [viewControllers countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v8);
@@ -524,24 +524,24 @@ void __73__DOCFullDocumentManagerViewController_doc_commonInitWithSourceObserver
 
 - (BOOL)canResetHierarchyController
 {
-  v2 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
-  v3 = [v2 isResetBeingPerformed];
+  hierarchyController = [(DOCFullDocumentManagerViewController *)self hierarchyController];
+  isResetBeingPerformed = [hierarchyController isResetBeingPerformed];
 
-  return v3 ^ 1;
+  return isResetBeingPerformed ^ 1;
 }
 
-- (void)setRootViewController:(id)a3
+- (void)setRootViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_rootViewController != v5)
+  controllerCopy = controller;
+  if (self->_rootViewController != controllerCopy)
   {
-    v20 = v5;
-    [(UIViewController *)v5 doc_removeFromParentWithRemoveSubviewBlock:0];
+    v20 = controllerCopy;
+    [(UIViewController *)controllerCopy doc_removeFromParentWithRemoveSubviewBlock:0];
     v6 = self->_rootViewController;
-    objc_storeStrong(&self->_rootViewController, a3);
-    v7 = [(DOCFullDocumentManagerViewController *)self internalNavigationController];
-    v8 = [v7 viewControllers];
-    v9 = [v8 mutableCopy];
+    objc_storeStrong(&self->_rootViewController, controller);
+    internalNavigationController = [(DOCFullDocumentManagerViewController *)self internalNavigationController];
+    viewControllers = [internalNavigationController viewControllers];
+    v9 = [viewControllers mutableCopy];
 
     if (v6)
     {
@@ -555,25 +555,25 @@ void __73__DOCFullDocumentManagerViewController_doc_commonInitWithSourceObserver
 
     else
     {
-      v11 = [(DOCFullDocumentManagerViewController *)self dataSource];
-      v10 = [v11 currentViewStyle] != 3 || objc_msgSend(v9, "count") == 0;
+      dataSource = [(DOCFullDocumentManagerViewController *)self dataSource];
+      v10 = [dataSource currentViewStyle] != 3 || objc_msgSend(v9, "count") == 0;
     }
 
-    v12 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
-    v13 = [v12 lastLocation];
+    hierarchyController = [(DOCFullDocumentManagerViewController *)self hierarchyController];
+    lastLocation = [hierarchyController lastLocation];
 
-    if (v13)
+    if (lastLocation)
     {
-      v14 = [v13 sourceIdentifier];
-      if (v14 == *MEMORY[0x277D05D98])
+      sourceIdentifier = [lastLocation sourceIdentifier];
+      if (sourceIdentifier == *MEMORY[0x277D05D98])
       {
         v16 = 0;
       }
 
       else
       {
-        v15 = [v13 sourceIdentifier];
-        v16 = v15 != *MEMORY[0x277D05DB0];
+        sourceIdentifier2 = [lastLocation sourceIdentifier];
+        v16 = sourceIdentifier2 != *MEMORY[0x277D05DB0];
       }
     }
 
@@ -595,25 +595,25 @@ void __73__DOCFullDocumentManagerViewController_doc_commonInitWithSourceObserver
         [v9 insertObject:v20 atIndex:0];
       }
 
-      v19 = [(DOCFullDocumentManagerViewController *)self internalNavigationController];
-      [v19 setViewControllers:v9];
+      internalNavigationController2 = [(DOCFullDocumentManagerViewController *)self internalNavigationController];
+      [internalNavigationController2 setViewControllers:v9];
     }
 
     else
     {
-      v18 = [(DOCFullDocumentManagerViewController *)self internalNavigationController];
-      [v18 setViewControllers:MEMORY[0x277CBEBF8]];
+      internalNavigationController3 = [(DOCFullDocumentManagerViewController *)self internalNavigationController];
+      [internalNavigationController3 setViewControllers:MEMORY[0x277CBEBF8]];
 
       if (![(DOCFullDocumentManagerViewController *)self canResetHierarchyController])
       {
 LABEL_27:
 
-        v5 = v20;
+        controllerCopy = v20;
         goto LABEL_28;
       }
 
-      v19 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
-      [v19 resetWithDefaultLocationWithAnimated:0];
+      internalNavigationController2 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
+      [internalNavigationController2 resetWithDefaultLocationWithAnimated:0];
     }
 
     goto LABEL_27;
@@ -622,52 +622,52 @@ LABEL_27:
 LABEL_28:
 }
 
-- (void)popToRootViewControllerAnimated:(BOOL)a3
+- (void)popToRootViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(DOCFullDocumentManagerViewController *)self rootViewController];
+  animatedCopy = animated;
+  rootViewController = [(DOCFullDocumentManagerViewController *)self rootViewController];
 
-  v6 = [(DOCFullDocumentManagerViewController *)self internalNavigationController];
-  v13 = v6;
-  if (v5)
+  internalNavigationController = [(DOCFullDocumentManagerViewController *)self internalNavigationController];
+  internalNavigationController2 = internalNavigationController;
+  if (rootViewController)
   {
-    v7 = [v6 viewControllers];
-    v8 = [(DOCFullDocumentManagerViewController *)self rootViewController];
-    v9 = [v7 containsObject:v8];
+    viewControllers = [internalNavigationController viewControllers];
+    rootViewController2 = [(DOCFullDocumentManagerViewController *)self rootViewController];
+    v9 = [viewControllers containsObject:rootViewController2];
 
     if (!v9)
     {
       return;
     }
 
-    v13 = [(DOCFullDocumentManagerViewController *)self internalNavigationController];
-    v10 = [(DOCFullDocumentManagerViewController *)self rootViewController];
-    v11 = [v13 popToViewController:v10 animated:v3];
+    internalNavigationController2 = [(DOCFullDocumentManagerViewController *)self internalNavigationController];
+    rootViewController3 = [(DOCFullDocumentManagerViewController *)self rootViewController];
+    v11 = [internalNavigationController2 popToViewController:rootViewController3 animated:animatedCopy];
   }
 
   else
   {
-    v12 = [v6 popToRootViewControllerAnimated:v3];
+    v12 = [internalNavigationController popToRootViewControllerAnimated:animatedCopy];
   }
 }
 
 - (id)currentViewController
 {
-  v2 = [(DOCFullDocumentManagerViewController *)self internalNavigationController];
-  v3 = [v2 topViewController];
+  internalNavigationController = [(DOCFullDocumentManagerViewController *)self internalNavigationController];
+  topViewController = [internalNavigationController topViewController];
 
-  return v3;
+  return topViewController;
 }
 
 - (id)currentItemCollectionViewController
 {
-  v2 = [(DOCFullDocumentManagerViewController *)self effectiveBrowserViewController];
-  v3 = [v2 contentViewController];
+  effectiveBrowserViewController = [(DOCFullDocumentManagerViewController *)self effectiveBrowserViewController];
+  contentViewController = [effectiveBrowserViewController contentViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = contentViewController;
   }
 
   else
@@ -678,11 +678,11 @@ LABEL_28:
   return v4;
 }
 
-- (void)showLocation:(id)a3 animated:(BOOL)a4 withCompletionBlock:(id)a5
+- (void)showLocation:(id)location animated:(BOOL)animated withCompletionBlock:(id)block
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  locationCopy = location;
+  blockCopy = block;
   v10 = MEMORY[0x277D06310];
   v11 = *MEMORY[0x277D06310];
   if (!*MEMORY[0x277D06310])
@@ -693,29 +693,29 @@ LABEL_28:
 
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    [DOCFullDocumentManagerViewController showLocation:v8 animated:v11 withCompletionBlock:?];
+    [DOCFullDocumentManagerViewController showLocation:locationCopy animated:v11 withCompletionBlock:?];
   }
 
-  self->_viewDidLoadResetLocationDisabled = v8 != 0;
-  v12 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
-  v13 = v12;
-  if (v8)
+  self->_viewDidLoadResetLocationDisabled = locationCopy != 0;
+  hierarchyController = [(DOCFullDocumentManagerViewController *)self hierarchyController];
+  v13 = hierarchyController;
+  if (locationCopy)
   {
-    [v12 resetWith:v8 animated:v6 completionHandler:v9];
+    [hierarchyController resetWith:locationCopy animated:animatedCopy completionHandler:blockCopy];
   }
 
   else
   {
-    v14 = [MEMORY[0x277D05EA8] emptyLocation];
-    [v13 resetWith:v14 animated:v6 completionHandler:v9];
+    emptyLocation = [MEMORY[0x277D05EA8] emptyLocation];
+    [v13 resetWith:emptyLocation animated:animatedCopy completionHandler:blockCopy];
   }
 }
 
-- (void)showLocation:(id)a3 fromRootAnimated:(BOOL)a4 withCompletionBlock:(id)a5
+- (void)showLocation:(id)location fromRootAnimated:(BOOL)animated withCompletionBlock:(id)block
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  locationCopy = location;
+  blockCopy = block;
   v10 = MEMORY[0x277D06310];
   v11 = *MEMORY[0x277D06310];
   if (!*MEMORY[0x277D06310])
@@ -729,26 +729,26 @@ LABEL_28:
     [DOCFullDocumentManagerViewController showLocation:fromRootAnimated:withCompletionBlock:];
   }
 
-  self->_viewDidLoadResetLocationDisabled = v8 != 0;
-  v12 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
-  v13 = v12;
-  if (v8)
+  self->_viewDidLoadResetLocationDisabled = locationCopy != 0;
+  hierarchyController = [(DOCFullDocumentManagerViewController *)self hierarchyController];
+  v13 = hierarchyController;
+  if (locationCopy)
   {
-    [v12 resetFromRootWith:v8 animated:v6 completionHandler:v9];
+    [hierarchyController resetFromRootWith:locationCopy animated:animatedCopy completionHandler:blockCopy];
   }
 
   else
   {
-    v14 = [MEMORY[0x277D05EA8] emptyLocation];
-    [v13 resetFromRootWith:v14 animated:v6 completionHandler:v9];
+    emptyLocation = [MEMORY[0x277D05EA8] emptyLocation];
+    [v13 resetFromRootWith:emptyLocation animated:animatedCopy completionHandler:blockCopy];
   }
 }
 
-- (void)revealLocation:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)revealLocation:(id)location animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  locationCopy = location;
+  completionCopy = completion;
   v10 = MEMORY[0x277D06310];
   v11 = *MEMORY[0x277D06310];
   if (!*MEMORY[0x277D06310])
@@ -762,22 +762,22 @@ LABEL_28:
     [DOCFullDocumentManagerViewController revealLocation:animated:completion:];
   }
 
-  self->_viewDidLoadResetLocationDisabled = v8 != 0;
-  v12 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
-  v13 = v8;
-  if (!v8)
+  self->_viewDidLoadResetLocationDisabled = locationCopy != 0;
+  hierarchyController = [(DOCFullDocumentManagerViewController *)self hierarchyController];
+  emptyLocation = locationCopy;
+  if (!locationCopy)
   {
-    v13 = [MEMORY[0x277D05EA8] emptyLocation];
+    emptyLocation = [MEMORY[0x277D05EA8] emptyLocation];
   }
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __75__DOCFullDocumentManagerViewController_revealLocation_animated_completion___block_invoke;
   v15[3] = &unk_278FA1EA8;
-  v16 = v9;
-  v14 = v9;
-  [v12 revealLocation:v13 animated:v6 completion:v15];
-  if (!v8)
+  v16 = completionCopy;
+  v14 = completionCopy;
+  [hierarchyController revealLocation:emptyLocation animated:animatedCopy completion:v15];
+  if (!locationCopy)
   {
   }
 }
@@ -793,20 +793,20 @@ uint64_t __75__DOCFullDocumentManagerViewController_revealLocation_animated_comp
   return result;
 }
 
-- (void)setAdditionalTrailingNavigationBarButtonItems:(id)a3
+- (void)setAdditionalTrailingNavigationBarButtonItems:(id)items
 {
   v22 = *MEMORY[0x277D85DE8];
   v20.receiver = self;
   v20.super_class = DOCFullDocumentManagerViewController;
-  [(UIDocumentBrowserViewController *)&v20 setAdditionalTrailingNavigationBarButtonItems:a3];
+  [(UIDocumentBrowserViewController *)&v20 setAdditionalTrailingNavigationBarButtonItems:items];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(DOCFullDocumentManagerViewController *)self internalNavigationController];
-  v5 = [v4 viewControllers];
+  internalNavigationController = [(DOCFullDocumentManagerViewController *)self internalNavigationController];
+  viewControllers = [internalNavigationController viewControllers];
 
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v21 count:16];
+  v6 = [viewControllers countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -818,7 +818,7 @@ uint64_t __75__DOCFullDocumentManagerViewController_revealLocation_animated_comp
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(viewControllers);
         }
 
         v10 = *(*(&v16 + 1) + 8 * v9);
@@ -826,8 +826,8 @@ uint64_t __75__DOCFullDocumentManagerViewController_revealLocation_animated_comp
         if (objc_opt_isKindOfClass() & 1) != 0 || (v11 = v10, objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v11, (isKindOfClass))
         {
           v13 = objc_alloc(MEMORY[0x277CBEA60]);
-          v14 = [(UIDocumentBrowserViewController *)self additionalTrailingNavigationBarButtonItems];
-          v15 = [v13 initWithArray:v14 copyItems:1];
+          additionalTrailingNavigationBarButtonItems = [(UIDocumentBrowserViewController *)self additionalTrailingNavigationBarButtonItems];
+          v15 = [v13 initWithArray:additionalTrailingNavigationBarButtonItems copyItems:1];
           [v10 setAdditionalTrailingNavigationBarButtonItems:v15];
         }
 
@@ -835,27 +835,27 @@ uint64_t __75__DOCFullDocumentManagerViewController_revealLocation_animated_comp
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v21 count:16];
+      v7 = [viewControllers countByEnumeratingWithState:&v16 objects:v21 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)setAdditionalLeadingNavigationBarButtonItems:(id)a3
+- (void)setAdditionalLeadingNavigationBarButtonItems:(id)items
 {
   v20 = *MEMORY[0x277D85DE8];
   v18.receiver = self;
   v18.super_class = DOCFullDocumentManagerViewController;
-  [(UIDocumentBrowserViewController *)&v18 setAdditionalLeadingNavigationBarButtonItems:a3];
+  [(UIDocumentBrowserViewController *)&v18 setAdditionalLeadingNavigationBarButtonItems:items];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(DOCFullDocumentManagerViewController *)self internalNavigationController];
-  v5 = [v4 viewControllers];
+  internalNavigationController = [(DOCFullDocumentManagerViewController *)self internalNavigationController];
+  viewControllers = [internalNavigationController viewControllers];
 
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  v6 = [viewControllers countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -867,7 +867,7 @@ uint64_t __75__DOCFullDocumentManagerViewController_revealLocation_animated_comp
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(viewControllers);
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
@@ -875,8 +875,8 @@ uint64_t __75__DOCFullDocumentManagerViewController_revealLocation_animated_comp
         if (objc_opt_isKindOfClass())
         {
           v11 = objc_alloc(MEMORY[0x277CBEA60]);
-          v12 = [(UIDocumentBrowserViewController *)self additionalLeadingNavigationBarButtonItems];
-          v13 = [v11 initWithArray:v12 copyItems:1];
+          additionalLeadingNavigationBarButtonItems = [(UIDocumentBrowserViewController *)self additionalLeadingNavigationBarButtonItems];
+          v13 = [v11 initWithArray:additionalLeadingNavigationBarButtonItems copyItems:1];
           [v10 setAdditionalLeadingNavigationBarButtonItems:v13];
         }
 
@@ -884,33 +884,33 @@ uint64_t __75__DOCFullDocumentManagerViewController_revealLocation_animated_comp
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v7 = [viewControllers countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(DOCFullDocumentManagerViewController *)self isEditing]!= a3)
+  animatedCopy = animated;
+  editingCopy = editing;
+  if ([(DOCFullDocumentManagerViewController *)self isEditing]!= editing)
   {
     v10.receiver = self;
     v10.super_class = DOCFullDocumentManagerViewController;
-    [(UIDocumentBrowserViewController *)&v10 setEditing:v5 animated:v4];
+    [(UIDocumentBrowserViewController *)&v10 setEditing:editingCopy animated:animatedCopy];
     [(DOCFullDocumentManagerViewController *)self willChangeValueForKey:@"editing"];
-    v7 = [(DOCFullDocumentManagerViewController *)self internalNavigationController];
-    v8 = [v7 topViewController];
+    internalNavigationController = [(DOCFullDocumentManagerViewController *)self internalNavigationController];
+    topViewController = [internalNavigationController topViewController];
 
-    v9 = v8;
+    v9 = topViewController;
     objc_opt_class();
-    LOBYTE(v8) = objc_opt_isKindOfClass();
+    LOBYTE(topViewController) = objc_opt_isKindOfClass();
 
-    if ((v8 & 1) == 0)
+    if ((topViewController & 1) == 0)
     {
-      [v9 setEditing:v5 animated:v4];
+      [v9 setEditing:editingCopy animated:animatedCopy];
     }
 
     [(DOCFullDocumentManagerViewController *)self didChangeValueForKey:@"editing"];
@@ -919,8 +919,8 @@ uint64_t __75__DOCFullDocumentManagerViewController_revealLocation_animated_comp
 
 - (_TtC26DocumentManagerExecutables29DOCBrowserContainerController)effectiveBrowserViewController
 {
-  v3 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
-  v4 = [v3 locations];
+  hierarchyController = [(DOCFullDocumentManagerViewController *)self hierarchyController];
+  locations = [hierarchyController locations];
 
   v5 = MEMORY[0x277D06310];
   v6 = *MEMORY[0x277D06310];
@@ -935,47 +935,47 @@ uint64_t __75__DOCFullDocumentManagerViewController_revealLocation_animated_comp
     [(DOCFullDocumentManagerViewController *)v6 effectiveBrowserViewController];
   }
 
-  v7 = [v4 lastObject];
-  v8 = [v7 fileProviderItem];
+  lastObject = [locations lastObject];
+  fileProviderItem = [lastObject fileProviderItem];
 
-  if (!v8 || ([v8 isFolder] & 1) != 0)
+  if (!fileProviderItem || ([fileProviderItem isFolder] & 1) != 0)
   {
-    v9 = [(DOCFullDocumentManagerViewController *)self dataSource];
-    v10 = [v9 currentContainers];
-    v11 = v10;
+    dataSource = [(DOCFullDocumentManagerViewController *)self dataSource];
+    currentContainers = [dataSource currentContainers];
+    v11 = currentContainers;
 LABEL_8:
-    v12 = [v10 lastObject];
+    lastObject2 = [currentContainers lastObject];
     goto LABEL_9;
   }
 
-  v15 = [(DOCFullDocumentManagerViewController *)self dataSource];
-  v16 = [v15 currentContainers];
-  v17 = [v16 count] - 2;
+  dataSource2 = [(DOCFullDocumentManagerViewController *)self dataSource];
+  currentContainers2 = [dataSource2 currentContainers];
+  v17 = [currentContainers2 count] - 2;
 
-  v9 = [(DOCFullDocumentManagerViewController *)self dataSource];
-  v10 = [v9 currentContainers];
-  v11 = v10;
+  dataSource = [(DOCFullDocumentManagerViewController *)self dataSource];
+  currentContainers = [dataSource currentContainers];
+  v11 = currentContainers;
   if (v17 < 0)
   {
     goto LABEL_8;
   }
 
-  v12 = [v10 objectAtIndexedSubscript:v17];
+  lastObject2 = [currentContainers objectAtIndexedSubscript:v17];
 LABEL_9:
-  v13 = v12;
+  v13 = lastObject2;
 
   return v13;
 }
 
 - (_TtC26DocumentManagerExecutables19DOCSearchController)effectiveSearchController
 {
-  v3 = [(DOCFullDocumentManagerViewController *)self dataSource];
-  v4 = [v3 currentViewControllers];
-  v5 = [v4 lastObject];
-  v6 = [v5 navigationItem];
-  v7 = [v6 searchController];
+  dataSource = [(DOCFullDocumentManagerViewController *)self dataSource];
+  currentViewControllers = [dataSource currentViewControllers];
+  lastObject = [currentViewControllers lastObject];
+  navigationItem = [lastObject navigationItem];
+  searchController = [navigationItem searchController];
 
-  if (v7 || (-[DOCFullDocumentManagerViewController currentViewController](self, "currentViewController"), v8 = objc_claimAutoreleasedReturnValue(), [v8 navigationItem], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "searchController"), v7 = objc_claimAutoreleasedReturnValue(), v9, v8, v7))
+  if (searchController || (-[DOCFullDocumentManagerViewController currentViewController](self, "currentViewController"), v8 = objc_claimAutoreleasedReturnValue(), [v8 navigationItem], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "searchController"), searchController = objc_claimAutoreleasedReturnValue(), v9, v8, searchController))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -988,30 +988,30 @@ LABEL_9:
     }
   }
 
-  return v7;
+  return searchController;
 }
 
 - (BOOL)_canPopViewController
 {
-  v2 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
-  v3 = [v2 isFetchingLocations];
+  hierarchyController = [(DOCFullDocumentManagerViewController *)self hierarchyController];
+  isFetchingLocations = [hierarchyController isFetchingLocations];
 
-  return v3 ^ 1;
+  return isFetchingLocations ^ 1;
 }
 
 - (BOOL)canGoToEnclosingFolder
 {
-  v3 = [(DOCHierarchyController *)self->_hierarchyController lastLocation];
-  if ([v3 isRoot])
+  lastLocation = [(DOCHierarchyController *)self->_hierarchyController lastLocation];
+  if ([lastLocation isRoot])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(DOCHierarchyController *)self->_hierarchyController lastLocation];
-    v6 = [v5 fileProviderItem];
-    v4 = v6 != 0;
+    lastLocation2 = [(DOCHierarchyController *)self->_hierarchyController lastLocation];
+    fileProviderItem = [lastLocation2 fileProviderItem];
+    v4 = fileProviderItem != 0;
   }
 
   return v4;
@@ -1032,94 +1032,94 @@ LABEL_9:
   return [(DOCFullDocumentManagerViewController *)self isInUserTriggeredSelectionMode];
 }
 
-- (void)setCustomActions:(id)a3
+- (void)setCustomActions:(id)actions
 {
   v4.receiver = self;
   v4.super_class = DOCFullDocumentManagerViewController;
-  [(UIDocumentBrowserViewController *)&v4 setCustomActions:a3];
+  [(UIDocumentBrowserViewController *)&v4 setCustomActions:actions];
   [(DOCFullDocumentManagerViewController *)self updateCustomActions];
 }
 
-- (void)dismissSearchAlongsideCoordinator:(id)a3
+- (void)dismissSearchAlongsideCoordinator:(id)coordinator
 {
-  v5 = a3;
-  v4 = [(DOCFullDocumentManagerViewController *)self effectiveSearchController];
-  if ([v4 isActive])
+  coordinatorCopy = coordinator;
+  effectiveSearchController = [(DOCFullDocumentManagerViewController *)self effectiveSearchController];
+  if ([effectiveSearchController isActive])
   {
-    [v4 deactivateAlongsideContainingTransitionCoordinator:v5];
+    [effectiveSearchController deactivateAlongsideContainingTransitionCoordinator:coordinatorCopy];
   }
 }
 
-- (void)beginForcedNavigationTransitionChromeIfNeeded:(id)a3 appearingViewController:(id)a4 animated:(BOOL)a5
+- (void)beginForcedNavigationTransitionChromeIfNeeded:(id)needed appearingViewController:(id)controller animated:(BOOL)animated
 {
-  v5 = a5;
-  v15 = a3;
-  v8 = a4;
-  v9 = [v15 lastOperation];
-  v10 = _itemCollectionViewControllerIn(v8);
+  animatedCopy = animated;
+  neededCopy = needed;
+  controllerCopy = controller;
+  lastOperation = [neededCopy lastOperation];
+  v10 = _itemCollectionViewControllerIn(controllerCopy);
   v11 = v10;
-  if (v5 && v9 == 2 && [v10 needsForcedUnderNavBarAppearanceOnAppear])
+  if (animatedCopy && lastOperation == 2 && [v10 needsForcedUnderNavBarAppearanceOnAppear])
   {
-    v12 = [v15 navigationBar];
-    v13 = [v12 standardAppearance];
-    v14 = [v8 navigationItem];
-    [v14 setScrollEdgeAppearance:v13];
+    navigationBar = [neededCopy navigationBar];
+    standardAppearance = [navigationBar standardAppearance];
+    navigationItem = [controllerCopy navigationItem];
+    [navigationItem setScrollEdgeAppearance:standardAppearance];
 
     self->_resetNavBarScrollEdgeAfterPop = 1;
   }
 }
 
-- (void)endForcedNavigationTransitionChrome:(id)a3 appearingViewController:(id)a4
+- (void)endForcedNavigationTransitionChrome:(id)chrome appearingViewController:(id)controller
 {
   if (self->_resetNavBarScrollEdgeAfterPop)
   {
-    v5 = [a4 navigationItem];
-    [v5 setScrollEdgeAppearance:0];
+    navigationItem = [controller navigationItem];
+    [navigationItem setScrollEdgeAppearance:0];
 
     self->_resetNavBarScrollEdgeAfterPop = 0;
   }
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  if (a4)
+  if (viewController)
   {
-    [(DOCFullDocumentManagerViewController *)self swift_navigationController:a3 willShow:a4 animated:a5];
+    [(DOCFullDocumentManagerViewController *)self swift_navigationController:controller willShow:viewController animated:animated];
   }
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   v48 = a2;
   v64 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  [(DOCFullDocumentManagerViewController *)self endForcedNavigationTransitionChrome:v8 appearingViewController:v9];
-  v10 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
-  [v10 invalidateAllAssertions];
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  [(DOCFullDocumentManagerViewController *)self endForcedNavigationTransitionChrome:controllerCopy appearingViewController:viewControllerCopy];
+  hierarchyController = [(DOCFullDocumentManagerViewController *)self hierarchyController];
+  [hierarchyController invalidateAllAssertions];
 
-  v11 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
-  v12 = [v11 locations];
+  hierarchyController2 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
+  locations = [hierarchyController2 locations];
 
-  v53 = v12;
-  v13 = [v12 count];
-  v14 = [v8 viewControllers];
-  v15 = [v14 count];
+  v53 = locations;
+  v13 = [locations count];
+  viewControllers = [controllerCopy viewControllers];
+  v15 = [viewControllers count];
   objc_opt_class();
-  v52 = v14;
+  v52 = viewControllers;
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     v49 = v13;
-    v50 = v5;
+    v50 = animatedCopy;
     v16 = objc_opt_new();
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v51 = v8;
-    v17 = [v8 viewControllers];
-    v18 = [v17 countByEnumeratingWithState:&v58 objects:v63 count:16];
+    v51 = controllerCopy;
+    viewControllers2 = [controllerCopy viewControllers];
+    v18 = [viewControllers2 countByEnumeratingWithState:&v58 objects:v63 count:16];
     if (v18)
     {
       v19 = v18;
@@ -1130,7 +1130,7 @@ LABEL_9:
         {
           if (*v59 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(viewControllers2);
           }
 
           v22 = *(*(&v58 + 1) + 8 * i);
@@ -1147,7 +1147,7 @@ LABEL_9:
           [v16 addObject:{v22, v48}];
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v58 objects:v63 count:16];
+        v19 = [viewControllers2 countByEnumeratingWithState:&v58 objects:v63 count:16];
       }
 
       while (v19);
@@ -1160,29 +1160,29 @@ LABEL_9:
     }
 
     objc_opt_class();
-    v8 = v51;
+    controllerCopy = v51;
     if (objc_opt_isKindOfClass())
     {
-      v24 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
-      v25 = [v24 effectiveRootLocation];
+      hierarchyController3 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
+      effectiveRootLocation = [hierarchyController3 effectiveRootLocation];
 
-      if (v25)
+      if (effectiveRootLocation)
       {
-        v26 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
-        v27 = [v26 effectiveLocations];
-        v23 = [v27 count];
+        hierarchyController4 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
+        effectiveLocations = [hierarchyController4 effectiveLocations];
+        v23 = [effectiveLocations count];
       }
     }
 
     if (v23 > [v16 count] && -[DOCFullDocumentManagerViewController updateLocationsAfterPopTransition](self, "updateLocationsAfterPopTransition"))
     {
-      v28 = [v51 childViewControllers];
-      v29 = [v28 firstObject];
+      childViewControllers = [v51 childViewControllers];
+      firstObject = [childViewControllers firstObject];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
-      v31 = [v51 childViewControllers];
-      v32 = [v31 count] - (isKindOfClass & 1);
+      childViewControllers2 = [v51 childViewControllers];
+      v32 = [childViewControllers2 count] - (isKindOfClass & 1);
 
       if (v32 <= 0)
       {
@@ -1194,24 +1194,24 @@ LABEL_9:
         [DOCFullDocumentManagerViewController navigationController:didShowViewController:animated:];
       }
 
-      v33 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
-      [v33 removeTrailingLocationCount:v23 - v32 animated:0];
+      hierarchyController5 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
+      [hierarchyController5 removeTrailingLocationCount:v23 - v32 animated:0];
 
-      v8 = v51;
+      controllerCopy = v51;
     }
 
-    v5 = v50;
+    animatedCopy = v50;
   }
 
   else if (v15)
   {
     if (v15 != 1)
     {
-      v47 = [MEMORY[0x277CCA890] currentHandler];
-      [v47 handleFailureInMethod:v48 object:self file:@"DOCFullDocumentManagerViewController.m" lineNumber:631 description:{@"If we are transitioning to a view controller that is not the browser view controller, it should be the only one in the view hierarchy"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:v48 object:self file:@"DOCFullDocumentManagerViewController.m" lineNumber:631 description:{@"If we are transitioning to a view controller that is not the browser view controller, it should be the only one in the view hierarchy"}];
     }
 
-    v42 = v9;
+    v42 = viewControllerCopy;
     objc_opt_class();
     v43 = objc_opt_isKindOfClass();
 
@@ -1222,13 +1222,13 @@ LABEL_9:
 
     if ([(DOCFullDocumentManagerViewController *)self canResetHierarchyController])
     {
-      v44 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
-      v45 = [v44 hasPendingLocationChange];
+      hierarchyController6 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
+      hasPendingLocationChange = [hierarchyController6 hasPendingLocationChange];
 
-      if ((v45 & 1) == 0)
+      if ((hasPendingLocationChange & 1) == 0)
       {
-        v46 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
-        [v46 reset];
+        hierarchyController7 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
+        [hierarchyController7 reset];
       }
     }
   }
@@ -1245,8 +1245,8 @@ LABEL_9:
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v34 = [v9 containerControllers];
-    v35 = [v34 countByEnumeratingWithState:&v54 objects:v62 count:16];
+    containerControllers = [viewControllerCopy containerControllers];
+    v35 = [containerControllers countByEnumeratingWithState:&v54 objects:v62 count:16];
     if (v35)
     {
       v36 = v35;
@@ -1257,13 +1257,13 @@ LABEL_9:
         {
           if (*v55 != v37)
           {
-            objc_enumerationMutation(v34);
+            objc_enumerationMutation(containerControllers);
           }
 
           [*(*(&v54 + 1) + 8 * j) setPreventAppearanceForwarding:{0, v48}];
         }
 
-        v36 = [v34 countByEnumeratingWithState:&v54 objects:v62 count:16];
+        v36 = [containerControllers countByEnumeratingWithState:&v54 objects:v62 count:16];
       }
 
       while (v36);
@@ -1275,23 +1275,23 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v9 setPreventAppearanceForwarding:0];
+      [viewControllerCopy setPreventAppearanceForwarding:0];
     }
   }
 
   [(DOCFullDocumentManagerViewController *)self setUpdateLocationsAfterPopTransition:0, v48];
-  v39 = [(UIDocumentBrowserViewController *)self configuration];
-  v40 = [v39 sceneIdentifier];
-  v41 = [DOCTabbedBrowserViewController globalTabbedBrowserControllerForIdentifier:v40];
+  configuration = [(UIDocumentBrowserViewController *)self configuration];
+  sceneIdentifier = [configuration sceneIdentifier];
+  v41 = [DOCTabbedBrowserViewController globalTabbedBrowserControllerForIdentifier:sceneIdentifier];
   [v41 updateLocationTitleFromCurrentState];
 
-  [(DOCFullDocumentManagerViewController *)self swift_navigationController:v8 didShow:v9 animated:v5];
+  [(DOCFullDocumentManagerViewController *)self swift_navigationController:controllerCopy didShow:viewControllerCopy animated:animatedCopy];
 }
 
-- (BOOL)_navigationControllerShouldUseBuiltinInteractionController:(id)a3
+- (BOOL)_navigationControllerShouldUseBuiltinInteractionController:(id)controller
 {
-  v4 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
-  if ([v4 isFetchingLocations])
+  hierarchyController = [(DOCFullDocumentManagerViewController *)self hierarchyController];
+  if ([hierarchyController isFetchingLocations])
   {
     LOBYTE(v5) = 0;
   }
@@ -1304,15 +1304,15 @@ LABEL_9:
   return v5;
 }
 
-- (id)_navigationControllerDimmingColorForParallaxTransition:(id)a3
+- (id)_navigationControllerDimmingColorForParallaxTransition:(id)transition
 {
-  v3 = [(DOCFullDocumentManagerViewController *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(DOCFullDocumentManagerViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v4 == 1)
+  if (userInterfaceStyle == 1)
   {
-    v5 = [MEMORY[0x277D75348] blackColor];
-    v6 = [v5 colorWithAlphaComponent:0.03];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    v6 = [blackColor colorWithAlphaComponent:0.03];
   }
 
   else
@@ -1323,34 +1323,34 @@ LABEL_9:
   return v6;
 }
 
-- (void)columnViewController:(id)a3 didShowItemControllers:(id)a4
+- (void)columnViewController:(id)controller didShowItemControllers:(id)controllers
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
-  [v7 invalidateAllAssertions];
+  controllersCopy = controllers;
+  hierarchyController = [(DOCFullDocumentManagerViewController *)self hierarchyController];
+  [hierarchyController invalidateAllAssertions];
 
-  v8 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
-  v9 = [v8 locations];
+  hierarchyController2 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
+  locations = [hierarchyController2 locations];
 
-  v10 = [v9 count];
-  if (a3)
+  v10 = [locations count];
+  if (controller)
   {
     v11 = v10;
-    v12 = [MEMORY[0x277CBEB18] arrayWithArray:v6];
+    v12 = [MEMORY[0x277CBEB18] arrayWithArray:controllersCopy];
     if (!v11)
     {
       [DOCFullDocumentManagerViewController columnViewController:didShowItemControllers:];
     }
 
-    v13 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
-    v14 = [v13 effectiveRootLocation];
+    hierarchyController3 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
+    effectiveRootLocation = [hierarchyController3 effectiveRootLocation];
 
-    if (v14)
+    if (effectiveRootLocation)
     {
-      v15 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
-      v16 = [v15 effectiveLocations];
-      v11 = [v16 count];
+      hierarchyController4 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
+      effectiveLocations = [hierarchyController4 effectiveLocations];
+      v11 = [effectiveLocations count];
     }
 
     if (v11 > [v12 count] && -[DOCFullDocumentManagerViewController updateLocationsAfterPopTransition](self, "updateLocationsAfterPopTransition"))
@@ -1360,8 +1360,8 @@ LABEL_9:
         [DOCFullDocumentManagerViewController columnViewController:didShowItemControllers:];
       }
 
-      v17 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
-      [v17 removeTrailingLocationCount:1 animated:0];
+      hierarchyController5 = [(DOCFullDocumentManagerViewController *)self hierarchyController];
+      [hierarchyController5 removeTrailingLocationCount:1 animated:0];
     }
   }
 
@@ -1369,7 +1369,7 @@ LABEL_9:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v18 = v6;
+  v18 = controllersCopy;
   v19 = [v18 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v19)
   {
@@ -1396,29 +1396,29 @@ LABEL_9:
   }
 
   [(DOCFullDocumentManagerViewController *)self setUpdateLocationsAfterPopTransition:0];
-  v23 = [(UIDocumentBrowserViewController *)self configuration];
-  v24 = [v23 sceneIdentifier];
-  v25 = [DOCTabbedBrowserViewController globalTabbedBrowserControllerForIdentifier:v24];
+  configuration = [(UIDocumentBrowserViewController *)self configuration];
+  sceneIdentifier = [configuration sceneIdentifier];
+  v25 = [DOCTabbedBrowserViewController globalTabbedBrowserControllerForIdentifier:sceneIdentifier];
   [v25 updateLocationTitleFromCurrentState];
 }
 
-- (void)revealDocumentAtURL:(id)a3 importIfNeeded:(BOOL)a4 updateLastUsedDate:(BOOL)a5 completion:(id)a6
+- (void)revealDocumentAtURL:(id)l importIfNeeded:(BOOL)needed updateLastUsedDate:(BOOL)date completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a6;
+  dateCopy = date;
+  lCopy = l;
+  completionCopy = completion;
   [(DOCFullDocumentManagerViewController *)self dismissSearch];
   [(DOCFullDocumentManagerViewController *)self setEditing:0 animated:1];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNeeded_updateLastUsedDate_completion___block_invoke;
   aBlock[3] = &unk_278FA2060;
-  v12 = v11;
+  v12 = completionCopy;
   v35 = v12;
   v13 = _Block_copy(aBlock);
-  v14 = [(UIDocumentBrowserViewController *)self configuration];
-  v15 = [v14 sceneIdentifier];
-  v16 = [_TtC26DocumentManagerExecutables21DOCInteractionManager sharedManagerFor:v15];
+  configuration = [(UIDocumentBrowserViewController *)self configuration];
+  sceneIdentifier = [configuration sceneIdentifier];
+  v16 = [_TtC26DocumentManagerExecutables21DOCInteractionManager sharedManagerFor:sceneIdentifier];
   [v16 setLastSelectedNode:0];
 
   v29[0] = MEMORY[0x277D85DD0];
@@ -1427,13 +1427,13 @@ LABEL_9:
   v29[3] = &unk_278FA20B0;
   v17 = v13;
   v32 = v17;
-  v18 = v10;
-  v33 = a4;
+  v18 = lCopy;
+  neededCopy = needed;
   v30 = v18;
-  v31 = self;
+  selfCopy = self;
   v19 = _Block_copy(v29);
   v20 = v19;
-  if (v7)
+  if (dateCopy)
   {
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
@@ -1447,7 +1447,7 @@ LABEL_9:
 
   else
   {
-    v23 = [MEMORY[0x277CC6408] defaultManager];
+    defaultManager = [MEMORY[0x277CC6408] defaultManager];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNeeded_updateLastUsedDate_completion___block_invoke_7;
@@ -1455,7 +1455,7 @@ LABEL_9:
     v21 = &v26;
     v26 = v20;
     v24 = v20;
-    [v23 fetchItemForURL:v18 completionHandler:v25];
+    [defaultManager fetchItemForURL:v18 completionHandler:v25];
   }
 }
 
@@ -1532,30 +1532,30 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
 
   else
   {
-    v6 = [(DOCFullDocumentManagerViewController *)self primaryContentScrollView];
-    [v6 _scrollToTopIfPossible:1];
+    primaryContentScrollView = [(DOCFullDocumentManagerViewController *)self primaryContentScrollView];
+    [primaryContentScrollView _scrollToTopIfPossible:1];
   }
 }
 
-- (void)setEnvironmentSupportsColumnView:(BOOL)a3
+- (void)setEnvironmentSupportsColumnView:(BOOL)view
 {
-  if (self->_environmentSupportsColumnView != a3)
+  if (self->_environmentSupportsColumnView != view)
   {
-    self->_environmentSupportsColumnView = a3;
+    self->_environmentSupportsColumnView = view;
     [(DOCFullDocumentManagerViewController *)self didChangeEnvironmentSupportsColumnView];
   }
 }
 
-- (void)setPickerContext:(id)a3
+- (void)setPickerContext:(id)context
 {
-  v5 = a3;
-  if (self->_pickerContext != v5)
+  contextCopy = context;
+  if (self->_pickerContext != contextCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_pickerContext, a3);
+    v6 = contextCopy;
+    objc_storeStrong(&self->_pickerContext, context);
     [(DOCPickerFilenameView *)self->_pickerFilenameView setPickerContext:self->_pickerContext];
     [(DOCHierarchyController *)self->_hierarchyController setPickerContext:self->_pickerContext];
-    v5 = v6;
+    contextCopy = v6;
   }
 }
 
@@ -1573,7 +1573,7 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
   return WeakRetained;
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
   v8 = 0;
   v5 = objc_allocWithZone(type metadata accessor for DOCModalBlurViewControllerTransition());
@@ -1582,7 +1582,7 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
   return v6;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   v6 = 1;
   v3 = objc_allocWithZone(type metadata accessor for DOCModalBlurViewControllerTransition());
@@ -1593,41 +1593,41 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
 
 - (void)invokeDebugGathering
 {
-  v2 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.invokeDebugGathering()();
 }
 
 - (void)installDebugMenuGesture
 {
-  v2 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.installDebugMenuGesture()();
 }
 
-- (void)presentDebugMenuForLongPress:(id)a3
+- (void)presentDebugMenuForLongPress:(id)press
 {
-  v4 = a3;
-  v5 = self;
-  if ([v4 state] == 1)
+  pressCopy = press;
+  selfCopy = self;
+  if ([pressCopy state] == 1)
   {
     DOCFullDocumentManagerViewController.presentDebugMenu()();
   }
 }
 
-- (void)presentDebugMenuForMultipleTaps:(id)a3
+- (void)presentDebugMenuForMultipleTaps:(id)taps
 {
-  v4 = a3;
-  v5 = self;
-  if ([v4 state] == 3)
+  tapsCopy = taps;
+  selfCopy = self;
+  if ([tapsCopy state] == 3)
   {
     DOCFullDocumentManagerViewController.presentDebugMenu()();
   }
 }
 
-- (void)performShowDebugMenu:(id)a3
+- (void)performShowDebugMenu:(id)menu
 {
-  if (a3)
+  if (menu)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -1636,7 +1636,7 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   DOCFullDocumentManagerViewController.presentDebugMenu()();
@@ -1644,26 +1644,26 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
   outlined destroy of Any?(v6);
 }
 
-- (void)didTapOnUnselectableItem:(id)a3
+- (void)didTapOnUnselectableItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  DOCFullDocumentManagerViewController.didTapOn(unselectableItem:)(v4);
+  itemCopy = item;
+  selfCopy = self;
+  DOCFullDocumentManagerViewController.didTapOn(unselectableItem:)(itemCopy);
 }
 
-- (void)didConfirmPickIn:(id)a3
+- (void)didConfirmPickIn:(id)in
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  DOCFullDocumentManagerViewController.didConfirmPick(in:)(a3);
+  selfCopy = self;
+  DOCFullDocumentManagerViewController.didConfirmPick(in:)(in);
   swift_unknownObjectRelease();
 }
 
-- (id)pickerOperationTitleFor:(id)a3 useShortTitle:(BOOL)a4
+- (id)pickerOperationTitleFor:(id)for useShortTitle:(BOOL)title
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = DOCFullDocumentManagerViewController.pickerOperationTitle(for:useShortTitle:)(a3, a4);
+  selfCopy = self;
+  v8 = DOCFullDocumentManagerViewController.pickerOperationTitle(for:useShortTitle:)(for, title);
   v10 = v9;
   swift_unknownObjectRelease();
 
@@ -1672,22 +1672,22 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
   return v11;
 }
 
-- (int64_t)pickerOperationFor:(id)a3
+- (int64_t)pickerOperationFor:(id)for
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = DOCFullDocumentManagerViewController._pickerOperation(for:)(a3);
+  selfCopy = self;
+  v6 = DOCFullDocumentManagerViewController._pickerOperation(for:)(for);
   if (_UISolariumEnabled())
   {
-    v7 = [(DOCFullDocumentManagerViewController *)v5 pickerOperationTitleFor:a3 useShortTitle:0];
+    v7 = [(DOCFullDocumentManagerViewController *)selfCopy pickerOperationTitleFor:for useShortTitle:0];
     v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v10 = v9;
 
-    v11 = [(DOCFullDocumentManagerViewController *)v5 pickerFilenameView];
-    if (v11)
+    pickerFilenameView = [(DOCFullDocumentManagerViewController *)selfCopy pickerFilenameView];
+    if (pickerFilenameView)
     {
-      v12 = v11;
-      (*((*MEMORY[0x277D85000] & *v11) + 0x128))(v8, v10);
+      v12 = pickerFilenameView;
+      (*((*MEMORY[0x277D85000] & *pickerFilenameView) + 0x128))(v8, v10);
       swift_unknownObjectRelease();
     }
 
@@ -1707,21 +1707,21 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
 
 - (_TtP26DocumentManagerExecutables27DOCScannedDocumentReceiving_)doc_documentScannerReceivingTarget
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCFullDocumentManagerViewController.doc_documentScannerReceivingTarget.getter();
 
   return v3;
 }
 
-- (void)documentCameraViewControllerDidCancel:(id)a3
+- (void)documentCameraViewControllerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v8 = self;
-  v5 = [(DOCFullDocumentManagerViewController *)v8 effectiveBrowserViewController];
-  if (v5)
+  cancelCopy = cancel;
+  selfCopy = self;
+  effectiveBrowserViewController = [(DOCFullDocumentManagerViewController *)selfCopy effectiveBrowserViewController];
+  if (effectiveBrowserViewController)
   {
-    v6 = v5;
-    v7 = (*((*MEMORY[0x277D85000] & *v5) + 0xE8))();
+    v6 = effectiveBrowserViewController;
+    v7 = (*((*MEMORY[0x277D85000] & *effectiveBrowserViewController) + 0xE8))();
 
     if (v7)
     {
@@ -1729,26 +1729,26 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
       if (swift_dynamicCastClass())
       {
 
-        [(DOCFullDocumentManagerViewController *)v4 dismissViewControllerAnimated:1 completion:0];
+        [(DOCFullDocumentManagerViewController *)cancelCopy dismissViewControllerAnimated:1 completion:0];
       }
 
       else
       {
 
-        v4 = v8;
-        v8 = v7;
+        cancelCopy = selfCopy;
+        selfCopy = v7;
       }
     }
   }
 }
 
-- (void)documentCameraViewController:(id)a3 didFinishWithScan:(id)a4
+- (void)documentCameraViewController:(id)controller didFinishWithScan:(id)scan
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = self;
-  v8 = [(DOCFullDocumentManagerViewController *)v7 effectiveBrowserViewController];
-  if (v8 && (v9 = v8, v10 = (*((*MEMORY[0x277D85000] & *v8) + 0xE8))(), v9, v10))
+  controllerCopy = controller;
+  scanCopy = scan;
+  selfCopy = self;
+  effectiveBrowserViewController = [(DOCFullDocumentManagerViewController *)selfCopy effectiveBrowserViewController];
+  if (effectiveBrowserViewController && (v9 = effectiveBrowserViewController, v10 = (*((*MEMORY[0x277D85000] & *effectiveBrowserViewController) + 0xE8))(), v9, v10))
   {
     type metadata accessor for DOCItemCollectionViewController(0);
     v11 = swift_dynamicCastClass();
@@ -1757,17 +1757,17 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
       v12 = v11;
       v13 = swift_allocObject();
       *(v13 + 16) = v12;
-      *(v13 + 24) = v15;
-      v14 = v15;
+      *(v13 + 24) = controllerCopy;
+      v14 = controllerCopy;
       v10 = v10;
-      specialized DOCDocumentScannerWriter.convertToPDFAndWrite(document:completionHandler:)(v6, closure #1 in UIViewController.doc_documentCameraViewController(_:didFinishWith:)partial apply, v13);
+      specialized DOCDocumentScannerWriter.convertToPDFAndWrite(document:completionHandler:)(scanCopy, closure #1 in UIViewController.doc_documentCameraViewController(_:didFinishWith:)partial apply, v13);
     }
 
     else
     {
     }
 
-    v7 = v10;
+    selfCopy = v10;
   }
 
   else
@@ -1777,82 +1777,82 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
 
 - (UIViewControllerTransitionCoordinator)hierarchyChangeTransitionCoordinator
 {
-  v2 = self;
-  v3 = [(DOCFullDocumentManagerViewController *)v2 internalNavigationController];
-  v4 = [(UINavigationController *)v3 transitionCoordinator];
+  selfCopy = self;
+  internalNavigationController = [(DOCFullDocumentManagerViewController *)selfCopy internalNavigationController];
+  transitionCoordinator = [(UINavigationController *)internalNavigationController transitionCoordinator];
 
-  return v4;
+  return transitionCoordinator;
 }
 
-- (void)dataSource:(id)a3 willSwitchFrom:(int64_t)a4 to:(int64_t)a5
+- (void)dataSource:(id)source willSwitchFrom:(int64_t)from to:(int64_t)to
 {
-  v7 = a3;
-  v8 = self;
-  specialized DOCFullDocumentManagerViewController.dataSource(_:willSwitchFrom:to:)(a5);
+  sourceCopy = source;
+  selfCopy = self;
+  specialized DOCFullDocumentManagerViewController.dataSource(_:willSwitchFrom:to:)(to);
 }
 
-- (void)dataSource:(id)a3 didUpdate:(id)a4 animated:(BOOL)a5
+- (void)dataSource:(id)source didUpdate:(id)update animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   type metadata accessor for NSMutableAttributedString(0, lazy cache variable for type metadata for UIViewController);
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = a3;
-  v10 = self;
-  DOCFullDocumentManagerViewController.dataSource(_:didUpdate:animated:)(v9, v8, v5);
+  sourceCopy = source;
+  selfCopy = self;
+  DOCFullDocumentManagerViewController.dataSource(_:didUpdate:animated:)(sourceCopy, v8, animatedCopy);
 }
 
 - (void)clearDroppedLocationsAfterSwitchingViewStyle
 {
   type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for DOCConcreteLocation);
-  v4 = self;
+  selfCopy = self;
   isa = Array._bridgeToObjectiveC()().super.isa;
-  [(DOCFullDocumentManagerViewController *)v4 setDroppedLocationsAfterSwitchingDisplayMode:isa];
+  [(DOCFullDocumentManagerViewController *)selfCopy setDroppedLocationsAfterSwitchingDisplayMode:isa];
 }
 
 - (BOOL)presentationContextShowsProvidersAsBrowserRoot
 {
-  v2 = self;
-  v3 = [(DOCFullDocumentManagerViewController *)v2 traitCollection];
-  v4 = [v3 sourceOutlineStyle];
+  selfCopy = self;
+  traitCollection = [(DOCFullDocumentManagerViewController *)selfCopy traitCollection];
+  sourceOutlineStyle = [traitCollection sourceOutlineStyle];
 
-  return v4 == 1;
+  return sourceOutlineStyle == 1;
 }
 
-- (id)provideContainerControllerAt:(id)a3 from:(id)a4 isUserInteraction:(BOOL)a5 isBrowsingTrash:(BOOL)a6
+- (id)provideContainerControllerAt:(id)at from:(id)from isUserInteraction:(BOOL)interaction isBrowsingTrash:(BOOL)trash
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
-  v13 = DOCFullDocumentManagerViewController.provideContainerController(at:from:isUserInteraction:isBrowsingTrash:)(v10, a4, a5, a6);
+  atCopy = at;
+  fromCopy = from;
+  selfCopy = self;
+  v13 = DOCFullDocumentManagerViewController.provideContainerController(at:from:isUserInteraction:isBrowsingTrash:)(atCopy, from, interaction, trash);
 
   return v13;
 }
 
-- (id)provideColumnViewControllerWithContains:(id)a3
+- (id)provideColumnViewControllerWithContains:(id)contains
 {
   type metadata accessor for DOCBrowserContainerController();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
-  v6 = [(UIDocumentBrowserViewController *)v5 configuration];
+  selfCopy = self;
+  configuration = [(UIDocumentBrowserViewController *)selfCopy configuration];
   v7 = objc_allocWithZone(type metadata accessor for DOCColumnViewController(0));
-  v8 = specialized DOCColumnViewController.init(configuration:)(v6);
+  v8 = specialized DOCColumnViewController.init(configuration:)(configuration);
 
   (*((*MEMORY[0x277D85000] & *v8) + 0xB8))(v4);
-  [(DOCFullDocumentManagerViewController *)v5 configureColumnViewController:v8];
+  [(DOCFullDocumentManagerViewController *)selfCopy configureColumnViewController:v8];
 
   return v8;
 }
 
-- (void)configureColumnViewController:(id)a3
+- (void)configureColumnViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  specialized DOCFullDocumentManagerViewController.configureColumnViewController(_:)(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  specialized DOCFullDocumentManagerViewController.configureColumnViewController(_:)(controllerCopy);
 }
 
 - (NSArray)keyCommands
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCFullDocumentManagerViewController.keyCommands.getter();
 
   if (v3)
@@ -1869,58 +1869,58 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
   return v4.super.isa;
 }
 
-- (void)performFind:(id)a3
+- (void)performFind:(id)find
 {
-  v4 = a3;
-  v5 = self;
+  findCopy = find;
+  selfCopy = self;
   specialized DOCFullDocumentManagerViewController.performFind(_:)();
 }
 
 - (BOOL)canPerformGoToEnclosingFolder
 {
-  v2 = self;
-  v3 = [(DOCFullDocumentManagerViewController *)v2 dataSource];
-  v4 = (*((*MEMORY[0x277D85000] & *v3) + 0x188))();
+  selfCopy = self;
+  dataSource = [(DOCFullDocumentManagerViewController *)selfCopy dataSource];
+  v4 = (*((*MEMORY[0x277D85000] & *dataSource) + 0x188))();
 
   if (v4 == 3)
   {
-    v5 = 0;
+    _canNavigateBack = 0;
   }
 
   else
   {
-    v5 = [(DOCFullDocumentManagerViewController *)v2 _canNavigateBack];
+    _canNavigateBack = [(DOCFullDocumentManagerViewController *)selfCopy _canNavigateBack];
   }
 
-  return v5;
+  return _canNavigateBack;
 }
 
-- (void)performGoBackInHistory:(id)a3
+- (void)performGoBackInHistory:(id)history
 {
-  v4 = a3;
-  v5 = self;
+  historyCopy = history;
+  selfCopy = self;
   specialized DOCFullDocumentManagerViewController.performGoBackInHistory(_:)(closure #1 in DOCFullDocumentManagerViewController.browserHistoryController.getterpartial apply, 0);
 }
 
-- (void)performGoForwardInHistory:(id)a3
+- (void)performGoForwardInHistory:(id)history
 {
-  v4 = a3;
-  v5 = self;
+  historyCopy = history;
+  selfCopy = self;
   specialized DOCFullDocumentManagerViewController.performGoBackInHistory(_:)(closure #1 in DOCFullDocumentManagerViewController.browserHistoryController.getterpartial apply, 1);
 }
 
-- (void)performViewAsIcons:(id)a3
+- (void)performViewAsIcons:(id)icons
 {
-  v3 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.changeDisplayModeAndNotify(_:)(0);
 }
 
-- (void)performViewAsList:(id)a3
+- (void)performViewAsList:(id)list
 {
   v4 = objc_opt_self();
-  v7 = self;
-  v5 = [v4 outlineView];
-  LODWORD(v4) = [v5 isEnabled];
+  selfCopy = self;
+  outlineView = [v4 outlineView];
+  LODWORD(v4) = [outlineView isEnabled];
 
   if (v4)
   {
@@ -1935,147 +1935,147 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
   DOCFullDocumentManagerViewController.changeDisplayModeAndNotify(_:)(v6);
 }
 
-- (void)performViewAsColumns:(id)a3
+- (void)performViewAsColumns:(id)columns
 {
-  v3 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.changeDisplayModeAndNotify(_:)(3);
 }
 
-- (void)performViewAsUserSizeSmaller:(id)a3
+- (void)performViewAsUserSizeSmaller:(id)smaller
 {
   v4 = 1;
-  v3 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.changeUserSizeSetting(direction:)(&v4);
 }
 
-- (void)performViewAsUserSizeLarger:(id)a3
+- (void)performViewAsUserSizeLarger:(id)larger
 {
   v4 = 0;
-  v3 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.changeUserSizeSetting(direction:)(&v4);
 }
 
-- (void)performSortByName:(id)a3
+- (void)performSortByName:(id)name
 {
   v4 = 2;
-  v3 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.performSortBy(_:)(&v4);
 }
 
-- (void)performSortByDateModified:(id)a3
+- (void)performSortByDateModified:(id)modified
 {
   v4 = 0;
-  v3 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.performSortBy(_:)(&v4);
 }
 
-- (void)performSortByDateCreated:(id)a3
+- (void)performSortByDateCreated:(id)created
 {
   v4 = 7;
-  v3 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.performSortBy(_:)(&v4);
 }
 
-- (void)performSortByDateLastOpened:(id)a3
+- (void)performSortByDateLastOpened:(id)opened
 {
   v4 = 1;
-  v3 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.performSortBy(_:)(&v4);
 }
 
-- (void)performSortByDateAdded:(id)a3
+- (void)performSortByDateAdded:(id)added
 {
   v4 = 8;
-  v3 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.performSortBy(_:)(&v4);
 }
 
-- (void)performSortBySize:(id)a3
+- (void)performSortBySize:(id)size
 {
   v4 = 4;
-  v3 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.performSortBy(_:)(&v4);
 }
 
-- (void)performSortByKind:(id)a3
+- (void)performSortByKind:(id)kind
 {
   v4 = 5;
-  v3 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.performSortBy(_:)(&v4);
 }
 
-- (void)performSortByTags:(id)a3
+- (void)performSortByTags:(id)tags
 {
   v4 = 3;
-  v3 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.performSortBy(_:)(&v4);
 }
 
-- (void)performSortBySharedBy:(id)a3
+- (void)performSortBySharedBy:(id)by
 {
   v4 = 6;
-  v3 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.performSortBy(_:)(&v4);
 }
 
-- (void)performGroupByNone:(id)a3
+- (void)performGroupByNone:(id)none
 {
-  v4 = a3;
-  v5 = self;
+  noneCopy = none;
+  selfCopy = self;
   specialized DOCFullDocumentManagerViewController.performGroupByNone(_:)();
 }
 
-- (void)performGroupByKind:(id)a3
+- (void)performGroupByKind:(id)kind
 {
   v4 = 4;
-  v3 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.performGroupBy(_:)(&v4);
 }
 
-- (void)performGroupByDate:(id)a3
+- (void)performGroupByDate:(id)date
 {
   v4 = 0;
-  v3 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.performGroupBy(_:)(&v4);
 }
 
-- (void)performGroupBySize:(id)a3
+- (void)performGroupBySize:(id)size
 {
   v4 = 3;
-  v3 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.performGroupBy(_:)(&v4);
 }
 
-- (void)performGroupBySharedBy:(id)a3
+- (void)performGroupBySharedBy:(id)by
 {
   v4 = 5;
-  v3 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.performGroupBy(_:)(&v4);
 }
 
-- (void)performCreateDocumentOrOpenNewWindow:(id)a3
+- (void)performCreateDocumentOrOpenNewWindow:(id)window
 {
-  v4 = a3;
-  v5 = self;
-  DOCFullDocumentManagerViewController.performCreateDocumentOrOpenNewWindow(_:)(v4);
+  windowCopy = window;
+  selfCopy = self;
+  DOCFullDocumentManagerViewController.performCreateDocumentOrOpenNewWindow(_:)(windowCopy);
 }
 
 - (void)performCreateDocument
 {
-  v3 = self;
-  v2 = [(DOCFullDocumentManagerViewController *)v3 documentManager];
-  (*((*MEMORY[0x277D85000] & *v2) + 0x110))(0);
+  selfCopy = self;
+  documentManager = [(DOCFullDocumentManagerViewController *)selfCopy documentManager];
+  (*((*MEMORY[0x277D85000] & *documentManager) + 0x110))(0);
 }
 
-- (void)performEjectMedium:(id)a3
+- (void)performEjectMedium:(id)medium
 {
-  v9 = self;
-  v3 = [(DOCFullDocumentManagerViewController *)v9 effectiveBrowserViewController];
-  if (v3)
+  selfCopy = self;
+  effectiveBrowserViewController = [(DOCFullDocumentManagerViewController *)selfCopy effectiveBrowserViewController];
+  if (effectiveBrowserViewController)
   {
-    v4 = v3;
+    v4 = effectiveBrowserViewController;
     v5 = MEMORY[0x277D85000];
-    v6 = (*((*MEMORY[0x277D85000] & *v3) + 0xE8))();
+    v6 = (*((*MEMORY[0x277D85000] & *effectiveBrowserViewController) + 0xE8))();
 
     if (v6)
     {
@@ -2084,54 +2084,54 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
       if (v7)
       {
         v8 = (*((*v5 & *v7) + 0xA68))();
-        (*((*v5 & v8->super.super.super.super.isa) + 0x288))(v9);
+        (*((*v5 & v8->super.super.super.super.isa) + 0x288))(selfCopy);
       }
 
       else
       {
-        v8 = v9;
-        v9 = v6;
+        v8 = selfCopy;
+        selfCopy = v6;
       }
     }
   }
 }
 
-- (void)performGoToLocation:(id)a3
+- (void)performGoToLocation:(id)location
 {
-  v3 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.presentGoToLocation()();
 }
 
-- (void)performConnectToServer:(id)a3
+- (void)performConnectToServer:(id)server
 {
   v5 = objc_opt_self();
-  v6 = a3;
-  v10 = self;
-  v7 = [(UIDocumentBrowserViewController *)v10 configuration];
-  v8 = [(DOCConfiguration *)v7 sceneIdentifier];
+  serverCopy = server;
+  selfCopy = self;
+  configuration = [(UIDocumentBrowserViewController *)selfCopy configuration];
+  sceneIdentifier = [(DOCConfiguration *)configuration sceneIdentifier];
 
-  v9 = [v5 globalTabbedBrowserControllerForIdentifier_];
-  [v9 performConnectToServer_];
+  globalTabbedBrowserControllerForIdentifier_ = [v5 globalTabbedBrowserControllerForIdentifier_];
+  [globalTabbedBrowserControllerForIdentifier_ performConnectToServer_];
 }
 
-- (void)performDismiss:(id)a3
+- (void)performDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
-  DOCFullDocumentManagerViewController.performDismiss(_:)(v4);
+  dismissCopy = dismiss;
+  selfCopy = self;
+  DOCFullDocumentManagerViewController.performDismiss(_:)(dismissCopy);
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v4 = a3;
-  v5 = self;
-  DOCFullDocumentManagerViewController.validate(_:)(v4);
+  commandCopy = command;
+  selfCopy = self;
+  DOCFullDocumentManagerViewController.validate(_:)(commandCopy);
 }
 
 - (BOOL)isInUserTriggeredSelectionMode
 {
-  v2 = self;
-  if ([(DOCFullDocumentManagerViewController *)v2 isEditing]&& (v3 = [(DOCFullDocumentManagerViewController *)v2 effectiveBrowserViewController]) != 0 && (v4 = MEMORY[0x277D85000], v5 = v3, v6 = (*((*MEMORY[0x277D85000] & *v3) + 0xE8))(), v5, v6))
+  selfCopy = self;
+  if ([(DOCFullDocumentManagerViewController *)selfCopy isEditing]&& (v3 = [(DOCFullDocumentManagerViewController *)selfCopy effectiveBrowserViewController]) != 0 && (v4 = MEMORY[0x277D85000], v5 = v3, v6 = (*((*MEMORY[0x277D85000] & *v3) + 0xE8))(), v5, v6))
   {
     v7 = (*((*v4 & *v6) + 0x160))();
   }
@@ -2144,32 +2144,32 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
   return v7 & 1;
 }
 
-- (void)didSelectItem:(id)a3 atParentLocation:(id)a4 wasAlreadySelected:(BOOL)a5 onlyRevealIfColumn:(BOOL)a6
+- (void)didSelectItem:(id)item atParentLocation:(id)location wasAlreadySelected:(BOOL)selected onlyRevealIfColumn:(BOOL)column
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
-  DOCFullDocumentManagerViewController.didSelect(_:at:wasAlreadySelected:onlyRevealIfColumnMode:)(v10, a4, v7, a6);
+  selectedCopy = selected;
+  itemCopy = item;
+  locationCopy = location;
+  selfCopy = self;
+  DOCFullDocumentManagerViewController.didSelect(_:at:wasAlreadySelected:onlyRevealIfColumnMode:)(itemCopy, location, selectedCopy, column);
 }
 
-- (void)didSelectLocation:(id)a3 atParentLocation:(id)a4
+- (void)didSelectLocation:(id)location atParentLocation:(id)parentLocation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  DOCFullDocumentManagerViewController.didSelect(_:at:)(v6, a4);
+  locationCopy = location;
+  parentLocationCopy = parentLocation;
+  selfCopy = self;
+  DOCFullDocumentManagerViewController.didSelect(_:at:)(locationCopy, parentLocation);
 }
 
-- (void)didCommitPreviewOf:(id)a3
+- (void)didCommitPreviewOf:(id)of
 {
   v5 = objc_opt_self();
-  v6 = a3;
-  v7 = self;
-  v8 = [v5 defaultManager];
+  ofCopy = of;
+  selfCopy = self;
+  defaultManager = [v5 defaultManager];
   v9 = swift_allocObject();
-  *(v9 + 16) = v6;
-  *(v9 + 24) = v7;
+  *(v9 + 16) = ofCopy;
+  *(v9 + 24) = selfCopy;
   v13[4] = closure #1 in DOCFullDocumentManagerViewController.didCommitPreview(of:)partial apply;
   v13[5] = v9;
   v13[0] = MEMORY[0x277D85DD0];
@@ -2177,57 +2177,57 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
   v13[2] = thunk for @escaping @callee_guaranteed @Sendable (@in_guaranteed URL?, @guaranteed Error?) -> ();
   v13[3] = &block_descriptor_149_0;
   v10 = _Block_copy(v13);
-  v11 = v6;
-  v12 = v7;
+  v11 = ofCopy;
+  v12 = selfCopy;
 
-  [v8 fetchURLForItem:v11 completionHandler:v10];
+  [defaultManager fetchURLForItem:v11 completionHandler:v10];
 
   _Block_release(v10);
 }
 
-- (void)didTapLocationOf:(id)a3
+- (void)didTapLocationOf:(id)of
 {
-  v4 = a3;
-  v5 = self;
-  DOCFullDocumentManagerViewController.didTapLocation(of:)(v4);
+  ofCopy = of;
+  selfCopy = self;
+  DOCFullDocumentManagerViewController.didTapLocation(of:)(ofCopy);
 }
 
 - (void)didIndicateCancelPicker
 {
-  v2 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.didIndicateCancelPicker()();
 }
 
-- (void)didToggleEditStateWithEditing:(BOOL)a3 in:(id)a4
+- (void)didToggleEditStateWithEditing:(BOOL)editing in:(id)in
 {
-  v5 = a4;
-  v6 = self;
+  inCopy = in;
+  selfCopy = self;
   specialized DOCFullDocumentManagerViewController.didToggleEditState(editing:in:)();
 }
 
-- (void)didFinishGatheringItemsAndThumbnailsWithSender:(id)a3
+- (void)didFinishGatheringItemsAndThumbnailsWithSender:(id)sender
 {
-  v5 = a3;
-  v6 = self;
-  DOCFullDocumentManagerViewController.didFinishGatheringItemsAndThumbnails(sender:)(a3);
+  senderCopy = sender;
+  selfCopy = self;
+  DOCFullDocumentManagerViewController.didFinishGatheringItemsAndThumbnails(sender:)(sender);
 }
 
 - (BOOL)canLoadAdditionalParents
 {
-  v2 = self;
-  v3 = [(DOCFullDocumentManagerViewController *)v2 hierarchyController];
+  selfCopy = self;
+  hierarchyController = [(DOCFullDocumentManagerViewController *)selfCopy hierarchyController];
   IsHidingParent = DOCHierarchyController.effectiveRootLocationIsHidingParentLocations.getter();
 
   return IsHidingParent & 1;
 }
 
-- (void)beginLoadingAdditionalParents:(id)a3
+- (void)beginLoadingAdditionalParents:(id)parents
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(parents);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v8 = self;
-  v6 = [(DOCFullDocumentManagerViewController *)v8 hierarchyController];
+  selfCopy = self;
+  hierarchyController = [(DOCFullDocumentManagerViewController *)selfCopy hierarchyController];
   v7 = swift_allocObject();
   *(v7 + 16) = partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned ObjCBool) -> ();
   *(v7 + 24) = v5;
@@ -2235,10 +2235,10 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
   DOCHierarchyController.loadAllParentsHiddenByEffectiveRootLocation(_:)(closure #1 in DOCFullDocumentManagerViewController.beginLoadingAdditionalParents(_:)partial apply, v7);
 }
 
-- (BOOL)isBrowserCurrentLocation:(id)a3
+- (BOOL)isBrowserCurrentLocation:(id)location
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   v5 = DOCFullDocumentManagerViewController.isBrowserCurrentLocation(_:)();
   swift_unknownObjectRelease();
 
@@ -2247,56 +2247,56 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
 
 - (BOOL)infoPanelPreviewingMultipleItems
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCFullDocumentManagerViewController.infoPanelPreviewingMultipleItems()();
 
   return v3;
 }
 
-- (void)beginRenameOf:(id)a3
+- (void)beginRenameOf:(id)of
 {
-  v4 = a3;
-  v5 = self;
-  DOCFullDocumentManagerViewController.beginRename(of:)(v4);
+  ofCopy = of;
+  selfCopy = self;
+  DOCFullDocumentManagerViewController.beginRename(of:)(ofCopy);
 }
 
-- (void)createNewFolderIn:(id)a3 moving:(id)a4
+- (void)createNewFolderIn:(id)in moving:(id)moving
 {
-  v4 = a4;
-  if (a4)
+  movingCopy = moving;
+  if (moving)
   {
     type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for FPItem);
-    v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    movingCopy = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v7 = a3;
-  v8 = self;
-  DOCFullDocumentManagerViewController.createNewFolder(in:moving:)(v7, v4);
+  inCopy = in;
+  selfCopy = self;
+  DOCFullDocumentManagerViewController.createNewFolder(in:moving:)(inCopy, movingCopy);
 }
 
-- (void)importScannedDocumentAt:(id)a3 presentingController:(id)a4 importToCurrentLocation:(BOOL)a5
+- (void)importScannedDocumentAt:(id)at presentingController:(id)controller importToCurrentLocation:(BOOL)location
 {
   v8 = type metadata accessor for URL();
   v9 = *(v8 - 8);
   MEMORY[0x28223BE20](v8, v10);
   v12 = &v15 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  v13 = a4;
-  v14 = self;
-  DOCFullDocumentManagerViewController.importScannedDocument(at:presentingController:importToCurrentLocation:)(v12, v13, a5);
+  controllerCopy = controller;
+  selfCopy = self;
+  DOCFullDocumentManagerViewController.importScannedDocument(at:presentingController:importToCurrentLocation:)(v12, controllerCopy, location);
 
   (*(v9 + 8))(v12, v8);
 }
 
-- (void)documentPickerWasCancelled:(id)a3
+- (void)documentPickerWasCancelled:(id)cancelled
 {
-  v6 = self;
+  selfCopy = self;
   if (specialized static DOCDocumentScannerUtil.canPresentScanner.getter())
   {
-    v3 = [(DOCFullDocumentManagerViewController *)v6 pickerPresentingController];
-    if (v3)
+    pickerPresentingController = [(DOCFullDocumentManagerViewController *)selfCopy pickerPresentingController];
+    if (pickerPresentingController)
     {
-      v4 = v3;
+      v4 = pickerPresentingController;
       objc_opt_self();
       v5 = swift_dynamicCastObjCClass();
       if (v5)
@@ -2306,28 +2306,28 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
     }
   }
 
-  [(DOCFullDocumentManagerViewController *)v6 setPickerPresentingController:0];
+  [(DOCFullDocumentManagerViewController *)selfCopy setPickerPresentingController:0];
 }
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
-  v6 = self;
-  v4 = [(DOCFullDocumentManagerViewController *)v6 pickerPresentingController];
-  if (v4)
+  selfCopy = self;
+  pickerPresentingController = [(DOCFullDocumentManagerViewController *)selfCopy pickerPresentingController];
+  if (pickerPresentingController)
   {
-    v5 = v4;
-    [(UIViewController *)v4 dismissViewControllerAnimated:1 completion:0];
+    v5 = pickerPresentingController;
+    [(UIViewController *)pickerPresentingController dismissViewControllerAnimated:1 completion:0];
   }
 
-  [(DOCFullDocumentManagerViewController *)v6 setPickerPresentingController:0];
+  [(DOCFullDocumentManagerViewController *)selfCopy setPickerPresentingController:0];
 }
 
 - (BOOL)establishFirstResponderIfNeeded
 {
-  v2 = self;
-  if ([(DOCFullDocumentManagerViewController *)v2 needsFirstResponder]&& [(DOCFullDocumentManagerViewController *)v2 establishFirstResponder])
+  selfCopy = self;
+  if ([(DOCFullDocumentManagerViewController *)selfCopy needsFirstResponder]&& [(DOCFullDocumentManagerViewController *)selfCopy establishFirstResponder])
   {
-    [(DOCFullDocumentManagerViewController *)v2 setNeedsFirstResponder:0];
+    [(DOCFullDocumentManagerViewController *)selfCopy setNeedsFirstResponder:0];
     v3 = 1;
   }
 
@@ -2341,7 +2341,7 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
 
 - (BOOL)establishFirstResponder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCFullDocumentManagerViewController.establishFirstResponder()();
 
   return v3;
@@ -2349,15 +2349,15 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
 
 - (unint64_t)effectiveTabSwitcherTab
 {
-  v2 = self;
-  v3 = [(DOCFullDocumentManagerViewController *)v2 hierarchyController];
+  selfCopy = self;
+  hierarchyController = [(DOCFullDocumentManagerViewController *)selfCopy hierarchyController];
   v4 = DOCHierarchyController.locationForDeterminingCurrentEffectiveTab.getter();
   if (v4)
   {
     v5 = v4;
-    v6 = [v4 effectiveTabSwitcherTab];
+    effectiveTabSwitcherTab = [v4 effectiveTabSwitcherTab];
 
-    return v6;
+    return effectiveTabSwitcherTab;
   }
 
   else
@@ -2365,27 +2365,27 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
 
     v8 = OBJC_IVAR____TtC26DocumentManagerExecutables22DOCHierarchyController_defaultTab;
     swift_beginAccess();
-    v9 = *(v3 + v8);
+    v9 = *(hierarchyController + v8);
 
     return v9;
   }
 }
 
-- (void)swift_commonInitWith:(id)a3
+- (void)swift_commonInitWith:(id)with
 {
-  v4 = a3;
-  v5 = self;
-  DOCFullDocumentManagerViewController.swift_commonInit(with:)(v4);
+  withCopy = with;
+  selfCopy = self;
+  DOCFullDocumentManagerViewController.swift_commonInit(with:)(withCopy);
 }
 
-- (void)fullDocumentManagerViewControllerDidFinishLoading:(id)a3
+- (void)fullDocumentManagerViewControllerDidFinishLoading:(id)loading
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   MEMORY[0x28223BE20](v4, v6);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.fullDocumentManagerViewControllerDidFinishLoading(_:)(v8);
 
   (*(v5 + 8))(v8, v4);
@@ -2393,13 +2393,13 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
 
 - (void)activateContainerViewControllersIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.activateContainerViewControllersIfNeeded()();
 }
 
 - (DOCConcreteLocation)displayedRootLocation
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCFullDocumentManagerViewController.displayedRootLocation.getter();
 
   return v3;
@@ -2407,13 +2407,13 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
 
 - (void)updateRelatedViewControllersWithCurrentHierarchy
 {
-  v2 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.updateRelatedViewControllersWithCurrentHierarchy()();
 }
 
 - (NSArray)preferredFocusEnvironments
 {
-  v2 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.preferredFocusEnvironments.getter();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&_sSo18UIFocusEnvironment_pMd);
@@ -2422,11 +2422,11 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
   return v3.super.isa;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -2435,20 +2435,20 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = DOCFullDocumentManagerViewController.canPerformAction(_:withSender:)(a3, v10);
+  v8 = DOCFullDocumentManagerViewController.canPerformAction(_:withSender:)(action, v10);
 
   outlined destroy of CharacterSet?(v10, &_sypSgMd);
   return v8 & 1;
 }
 
-- (id)targetForAction:(SEL)a3 withSender:(id)a4
+- (id)targetForAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -2457,10 +2457,10 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
   else
   {
     memset(v16, 0, sizeof(v16));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  DOCFullDocumentManagerViewController.target(forAction:withSender:)(a3, v16, v17);
+  DOCFullDocumentManagerViewController.target(forAction:withSender:)(action, v16, v17);
 
   outlined destroy of CharacterSet?(v16, &_sypSgMd);
   v8 = v18;
@@ -2486,130 +2486,130 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
 
 - (void)ensureInternalNavigationControllerIsInstalled
 {
-  v2 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.ensureInternalNavigationControllerIsInstalled()();
 }
 
 - (void)swift_viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.swift_viewDidLoad()();
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
+  disappearCopy = disappear;
   v8.receiver = self;
   v8.super_class = DOCFullDocumentManagerViewController;
-  v6 = self;
-  v7 = a3;
-  [(UIDocumentBrowserViewController *)&v8 viewDidMoveToWindow:v7 shouldAppearOrDisappear:v4];
-  if (v7)
+  selfCopy = self;
+  windowCopy = window;
+  [(UIDocumentBrowserViewController *)&v8 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
+  if (windowCopy)
   {
-    [(DOCFullDocumentManagerViewController *)v6 updateAvailableDisplayModesWithAnimated:1, v8.receiver, v8.super_class];
+    [(DOCFullDocumentManagerViewController *)selfCopy updateAvailableDisplayModesWithAnimated:1, v8.receiver, v8.super_class];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  DOCFullDocumentManagerViewController.viewWillDisappear(_:)(a3);
+  selfCopy = self;
+  DOCFullDocumentManagerViewController.viewWillDisappear(_:)(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = DOCFullDocumentManagerViewController;
-  [(DOCFullDocumentManagerViewController *)&v3 viewDidDisappear:a3];
+  [(DOCFullDocumentManagerViewController *)&v3 viewDidDisappear:disappear];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = DOCFullDocumentManagerViewController;
-  v4 = self;
-  [(UIDocumentBrowserViewController *)&v5 viewWillAppear:v3];
+  selfCopy = self;
+  [(UIDocumentBrowserViewController *)&v5 viewWillAppear:appearCopy];
   DOCFullDocumentManagerViewController.updateBrowserLayoutConfigurationTraits()();
-  [(DOCFullDocumentManagerViewController *)v4 updateAvailableDisplayModesWithAnimated:0, v5.receiver, v5.super_class];
+  [(DOCFullDocumentManagerViewController *)selfCopy updateAvailableDisplayModesWithAnimated:0, v5.receiver, v5.super_class];
   DOCFullDocumentManagerViewController.clearLastOpenedItem()();
   DOCFullDocumentManagerViewController.setupPickerFilenameViewIfNeeded()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = DOCFullDocumentManagerViewController;
-  v4 = self;
-  [(DOCFullDocumentManagerViewController *)&v5 viewDidAppear:v3];
-  [(DOCFullDocumentManagerViewController *)v4 updateCustomActions:v5.receiver];
+  selfCopy = self;
+  [(DOCFullDocumentManagerViewController *)&v5 viewDidAppear:appearCopy];
+  [(DOCFullDocumentManagerViewController *)selfCopy updateCustomActions:v5.receiver];
 }
 
 - (void)didChangeEnvironmentSupportsColumnView
 {
-  v4 = self;
-  v2 = [(DOCFullDocumentManagerViewController *)v4 viewIfLoaded];
-  v3 = [v2 window];
+  selfCopy = self;
+  viewIfLoaded = [(DOCFullDocumentManagerViewController *)selfCopy viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (v3)
+  if (window)
   {
 
-    [(DOCFullDocumentManagerViewController *)v4 updateAvailableDisplayModesWithAnimated:1];
+    [(DOCFullDocumentManagerViewController *)selfCopy updateAvailableDisplayModesWithAnimated:1];
   }
 }
 
-- (void)updateAvailableDisplayModesWithAnimated:(BOOL)a3
+- (void)updateAvailableDisplayModesWithAnimated:(BOOL)animated
 {
-  v4 = self;
-  DOCFullDocumentManagerViewController.updateAvailableDisplayModes(animated:)(a3);
+  selfCopy = self;
+  DOCFullDocumentManagerViewController.updateAvailableDisplayModes(animated:)(animated);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  DOCFullDocumentManagerViewController.viewWillTransition(to:with:)(a4, width, height);
+  selfCopy = self;
+  DOCFullDocumentManagerViewController.viewWillTransition(to:with:)(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
 - (void)splitViewWillDidExpand
 {
-  v2 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.splitViewWillDidExpand()();
 }
 
-- (void)splitViewWillChangeFrom:(int64_t)a3 to:(int64_t)a4 alongsideCoordinator:(id)a5
+- (void)splitViewWillChangeFrom:(int64_t)from to:(int64_t)to alongsideCoordinator:(id)coordinator
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  specialized DOCFullDocumentManagerViewController.splitViewWillChange(from:to:alongsideCoordinator:)(a5);
+  selfCopy = self;
+  specialized DOCFullDocumentManagerViewController.splitViewWillChange(from:to:alongsideCoordinator:)(coordinator);
   swift_unknownObjectRelease();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.viewDidLayoutSubviews()();
 }
 
 - (void)updateNavigationBarPrefersLargeTitles
 {
-  v2 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.updateNavigationBarPrefersLargeTitles()();
 }
 
 - (UIScrollView)primaryContentScrollView
 {
-  v2 = self;
-  v3 = [(DOCFullDocumentManagerViewController *)v2 internalNavigationController];
-  v4 = [(UINavigationController *)v3 topViewController];
+  selfCopy = self;
+  internalNavigationController = [(DOCFullDocumentManagerViewController *)selfCopy internalNavigationController];
+  topViewController = [(UINavigationController *)internalNavigationController topViewController];
 
-  if (v4)
+  if (topViewController)
   {
-    v5 = [(UIViewController *)v4 contentScrollViewForEdge:1];
+    v5 = [(UIViewController *)topViewController contentScrollViewForEdge:1];
   }
 
   else
@@ -2620,30 +2620,30 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
   return v5;
 }
 
-- (void)swift_navigationController:(id)a3 willShow:(id)a4 animated:(BOOL)a5
+- (void)swift_navigationController:(id)controller willShow:(id)show animated:(BOOL)animated
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  DOCFullDocumentManagerViewController.swift_navigationController(_:willShow:animated:)(v8, v9, a5);
+  controllerCopy = controller;
+  showCopy = show;
+  selfCopy = self;
+  DOCFullDocumentManagerViewController.swift_navigationController(_:willShow:animated:)(controllerCopy, showCopy, animated);
 }
 
-- (void)swift_navigationController:(id)a3 didShow:(id)a4 animated:(BOOL)a5
+- (void)swift_navigationController:(id)controller didShow:(id)show animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  specialized DOCFullDocumentManagerViewController.swift_navigationController(_:didShow:animated:)(v8);
+  controllerCopy = controller;
+  showCopy = show;
+  selfCopy = self;
+  specialized DOCFullDocumentManagerViewController.swift_navigationController(_:didShow:animated:)(showCopy);
 }
 
 - (UITraitCollection)traitCollectionExpectedForSearchPresentation
 {
-  v2 = self;
-  v3 = [(DOCFullDocumentManagerViewController *)v2 effectiveBrowserViewController];
-  if (v3)
+  selfCopy = self;
+  effectiveBrowserViewController = [(DOCFullDocumentManagerViewController *)selfCopy effectiveBrowserViewController];
+  if (effectiveBrowserViewController)
   {
-    v4 = v3;
-    v5 = (*((*MEMORY[0x277D85000] & *v3) + 0xE8))();
+    v4 = effectiveBrowserViewController;
+    v5 = (*((*MEMORY[0x277D85000] & *effectiveBrowserViewController) + 0xE8))();
 
     if (v5)
     {
@@ -2651,91 +2651,91 @@ void __105__DOCFullDocumentManagerViewController_revealDocumentAtURL_importIfNee
       v6 = swift_dynamicCastClass();
       if (v6)
       {
-        v7 = [v6 traitCollection];
+        traitCollection = [v6 traitCollection];
 
-        v2 = v5;
+        selfCopy = v5;
         goto LABEL_7;
       }
     }
   }
 
-  v7 = [(DOCFullDocumentManagerViewController *)v2 traitCollection];
+  traitCollection = [(DOCFullDocumentManagerViewController *)selfCopy traitCollection];
 LABEL_7:
 
-  return v7;
+  return traitCollection;
 }
 
-- (void)willPresentSearchController:(id)a3
+- (void)willPresentSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  DOCFullDocumentManagerViewController.willPresentSearchController(_:)(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  DOCFullDocumentManagerViewController.willPresentSearchController(_:)(controllerCopy);
 }
 
-- (void)didPresentSearchController:(id)a3
+- (void)didPresentSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  DOCFullDocumentManagerViewController.updateSearchPresentationState(for:to:)(v4, [v4 showsSearchResultsController]);
+  controllerCopy = controller;
+  selfCopy = self;
+  DOCFullDocumentManagerViewController.updateSearchPresentationState(for:to:)(controllerCopy, [controllerCopy showsSearchResultsController]);
 }
 
-- (void)willDismissSearchController:(id)a3
+- (void)willDismissSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  DOCFullDocumentManagerViewController.willDismissSearchController(_:)(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  DOCFullDocumentManagerViewController.willDismissSearchController(_:)(controllerCopy);
 }
 
-- (void)didDismissSearchController:(id)a3
+- (void)didDismissSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  DOCFullDocumentManagerViewController.didDismissSearchController(_:)(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  DOCFullDocumentManagerViewController.didDismissSearchController(_:)(controllerCopy);
 }
 
-- (void)willPresentSearchResultsController:(id)a3
+- (void)willPresentSearchResultsController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  DOCFullDocumentManagerViewController.willPresentSearchResultsController(_:)(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  DOCFullDocumentManagerViewController.willPresentSearchResultsController(_:)(controllerCopy);
 }
 
-- (void)didPresentSearchResultsController:(id)a3
+- (void)didPresentSearchResultsController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  DOCFullDocumentManagerViewController.updateSearchPresentationState(for:to:)(v4, 1);
+  controllerCopy = controller;
+  selfCopy = self;
+  DOCFullDocumentManagerViewController.updateSearchPresentationState(for:to:)(controllerCopy, 1);
 }
 
-- (void)willDismissSearchResultsController:(id)a3
+- (void)willDismissSearchResultsController:(id)controller
 {
   v5 = objc_opt_self();
-  v6 = a3;
-  v10 = self;
-  v7 = [(UIDocumentBrowserViewController *)v10 configuration];
-  v8 = [(DOCConfiguration *)v7 sceneIdentifier];
+  controllerCopy = controller;
+  selfCopy = self;
+  configuration = [(UIDocumentBrowserViewController *)selfCopy configuration];
+  sceneIdentifier = [(DOCConfiguration *)configuration sceneIdentifier];
 
-  v9 = [v5 globalTabbedBrowserControllerForIdentifier_];
-  if (v9)
+  globalTabbedBrowserControllerForIdentifier_ = [v5 globalTabbedBrowserControllerForIdentifier_];
+  if (globalTabbedBrowserControllerForIdentifier_)
   {
-    [v9 willDismissSearchResultsController_];
+    [globalTabbedBrowserControllerForIdentifier_ willDismissSearchResultsController_];
   }
 
-  (*((*MEMORY[0x277D85000] & **&v6[OBJC_IVAR____TtC26DocumentManagerExecutables19DOCSearchController_resultCollectionViewController]) + 0x1308))();
+  (*((*MEMORY[0x277D85000] & **&controllerCopy[OBJC_IVAR____TtC26DocumentManagerExecutables19DOCSearchController_resultCollectionViewController]) + 0x1308))();
 }
 
-- (void)didDismissSearchResultsController:(id)a3
+- (void)didDismissSearchResultsController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  DOCFullDocumentManagerViewController.updateSearchPresentationState(for:to:)(v4, 0);
+  controllerCopy = controller;
+  selfCopy = self;
+  DOCFullDocumentManagerViewController.updateSearchPresentationState(for:to:)(controllerCopy, 0);
 }
 
 - (void)updateCustomActions
 {
-  v4 = self;
-  v2 = [(DOCFullDocumentManagerViewController *)v4 actionManager];
-  isa = [(UIDocumentBrowserViewController *)v4 customActions];
+  selfCopy = self;
+  actionManager = [(DOCFullDocumentManagerViewController *)selfCopy actionManager];
+  isa = [(UIDocumentBrowserViewController *)selfCopy customActions];
   if (!isa)
   {
     type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for UIDocumentBrowserAction);
@@ -2743,12 +2743,12 @@ LABEL_7:
     isa = Array._bridgeToObjectiveC()().super.isa;
   }
 
-  [(DOCActionManager *)v2 setActions:isa];
+  [(DOCActionManager *)actionManager setActions:isa];
 }
 
 - (void)doc_updateBarButtonTrackingViewsIfNecessary
 {
-  v2 = self;
+  selfCopy = self;
   DOCFullDocumentManagerViewController.doc_updateBarButtonTrackingViewsIfNecessary()();
 }
 
@@ -2786,28 +2786,28 @@ LABEL_7:
 - (void)effectiveBrowserViewController
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a1;
-  v4 = [a2 lastObject];
-  v5 = [a2 lastObject];
-  v6 = [v5 fileProviderItem];
-  v7 = [a2 lastObject];
-  v8 = [v7 sourceIdentifier];
-  v9 = [a2 lastObject];
+  selfCopy = self;
+  lastObject = [a2 lastObject];
+  lastObject2 = [a2 lastObject];
+  fileProviderItem = [lastObject2 fileProviderItem];
+  lastObject3 = [a2 lastObject];
+  sourceIdentifier = [lastObject3 sourceIdentifier];
+  lastObject4 = [a2 lastObject];
   v10 = 138413058;
-  v11 = v4;
+  v11 = lastObject;
   v12 = 2112;
-  v13 = v6;
+  v13 = fileProviderItem;
   v14 = 2112;
-  v15 = v8;
+  v15 = sourceIdentifier;
   v16 = 1024;
-  v17 = [v9 isFPV2];
-  _os_log_debug_impl(&dword_2493AC000, v3, OS_LOG_TYPE_DEBUG, "Last location is %@: item %@, source identifier %@, isFPV2 %d", &v10, 0x26u);
+  isFPV2 = [lastObject4 isFPV2];
+  _os_log_debug_impl(&dword_2493AC000, selfCopy, OS_LOG_TYPE_DEBUG, "Last location is %@: item %@, source identifier %@, isFPV2 %d", &v10, 0x26u);
 }
 
 - (void)effectiveSearchController
 {
   OUTLINED_FUNCTION_1();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_1();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }

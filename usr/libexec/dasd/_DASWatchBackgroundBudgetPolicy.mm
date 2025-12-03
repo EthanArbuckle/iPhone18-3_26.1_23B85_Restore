@@ -1,12 +1,12 @@
 @interface _DASWatchBackgroundBudgetPolicy
 + (id)policyInstance;
-- (BOOL)applicationForActivity:(id)a3 isDisallowedWithContext:(id)a4;
-- (BOOL)appliesToActivity:(id)a3;
-- (BOOL)sessionInProgress:(id)a3;
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4;
+- (BOOL)applicationForActivity:(id)activity isDisallowedWithContext:(id)context;
+- (BOOL)appliesToActivity:(id)activity;
+- (BOOL)sessionInProgress:(id)progress;
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state;
 - (_DASWatchBackgroundBudgetPolicy)init;
 - (id)initializeTriggers;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 @end
 
 @implementation _DASWatchBackgroundBudgetPolicy
@@ -104,9 +104,9 @@
     ineligibleAppsKeyPath = v3->_ineligibleAppsKeyPath;
     v3->_ineligibleAppsKeyPath = v13;
 
-    v15 = [(_DASWatchBackgroundBudgetPolicy *)v3 initializeTriggers];
+    initializeTriggers = [(_DASWatchBackgroundBudgetPolicy *)v3 initializeTriggers];
     triggers = v3->_triggers;
-    v3->_triggers = v15;
+    v3->_triggers = initializeTriggers;
   }
 
   return v3;
@@ -118,7 +118,7 @@
   block[1] = 3221225472;
   block[2] = sub_100075124;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B4A8 != -1)
   {
     dispatch_once(&qword_10020B4A8, block);
@@ -129,61 +129,61 @@
   return v2;
 }
 
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state
 {
-  v5 = a4;
-  if ([a3 isEqualToString:@"com.apple.duetactivityscheduler.session.inprogress"])
+  stateCopy = state;
+  if ([trigger isEqualToString:@"com.apple.duetactivityscheduler.session.inprogress"])
   {
     v6 = +[_CDContextQueries keyPathForBacklightOnStatus];
-    v7 = [v5 objectForKeyedSubscript:v6];
-    v8 = [v7 BOOLValue];
+    v7 = [stateCopy objectForKeyedSubscript:v6];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:_DASBudgetDictionaryKey];
+  activityCopy = activity;
+  userInfo = [activityCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:_DASBudgetDictionaryKey];
 
   if (v5)
   {
-    v6 = 1;
+    requestsApplicationLaunch = 1;
   }
 
   else
   {
-    v6 = [v3 requestsApplicationLaunch];
+    requestsApplicationLaunch = [activityCopy requestsApplicationLaunch];
   }
 
-  return v6;
+  return requestsApplicationLaunch;
 }
 
-- (BOOL)sessionInProgress:(id)a3
+- (BOOL)sessionInProgress:(id)progress
 {
-  v3 = [a3 objectForKeyedSubscript:self->_sessionInProgressKeyPath];
-  v4 = [v3 BOOLValue];
+  v3 = [progress objectForKeyedSubscript:self->_sessionInProgressKeyPath];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)applicationForActivity:(id)a3 isDisallowedWithContext:(id)a4
+- (BOOL)applicationForActivity:(id)activity isDisallowedWithContext:(id)context
 {
-  v6 = a3;
-  v7 = [a4 objectForKeyedSubscript:self->_ineligibleAppsKeyPath];
+  activityCopy = activity;
+  v7 = [context objectForKeyedSubscript:self->_ineligibleAppsKeyPath];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [v6 relatedApplications];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  relatedApplications = [activityCopy relatedApplications];
+  v9 = [relatedApplications countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = *v14;
@@ -193,7 +193,7 @@
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(relatedApplications);
         }
 
         if ([v7 containsObject:*(*(&v13 + 1) + 8 * i)])
@@ -203,7 +203,7 @@
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [relatedApplications countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v9)
       {
         continue;
@@ -218,45 +218,45 @@ LABEL_11:
   return v9;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  stateCopy = state;
   v8 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:@"Watch Background Budget Policy"];
-  v9 = [(_DASWatchBackgroundBudgetPolicy *)self applicationForActivity:v6 isDisallowedWithContext:v7];
-  v10 = [v6 relatedApplications];
-  v11 = v10;
+  v9 = [(_DASWatchBackgroundBudgetPolicy *)self applicationForActivity:activityCopy isDisallowedWithContext:stateCopy];
+  relatedApplications = [activityCopy relatedApplications];
+  v11 = relatedApplications;
   if (v9)
   {
-    v12 = [v10 description];
-    v13 = [v12 stringByReplacingOccurrencesOfString:@"\n" withString:{@", "}];
+    v12 = [relatedApplications description];
+    firstObject = [v12 stringByReplacingOccurrencesOfString:@"\n" withString:{@", "}];
 
-    v14 = [NSString stringWithFormat:@"%@ is disallowed", v13];
+    v14 = [NSString stringWithFormat:@"%@ is disallowed", firstObject];
     [(_DASPolicyResponseRationale *)v8 addRationaleForCondition:v14 withRequiredValue:0.0 withCurrentValue:1.0];
 
     v15 = +[_DASDaemon sharedInstance];
-    v16 = [NSSet setWithObject:v6];
+    v16 = [NSSet setWithObject:activityCopy];
     [v15 cancelActivities:v16];
 
     v17 = [_DASPolicyResponse policyResponseWithDecision:100 validityDuration:v8 rationale:0x384uLL];
     goto LABEL_16;
   }
 
-  v13 = [v10 firstObject];
+  firstObject = [relatedApplications firstObject];
 
-  v18 = [v6 userInfo];
-  v19 = [v18 objectForKeyedSubscript:_DASBudgetDictionaryKey];
+  userInfo = [activityCopy userInfo];
+  v19 = [userInfo objectForKeyedSubscript:_DASBudgetDictionaryKey];
 
   if ([v19 isEqualToString:@"/watch/launch/queries"])
   {
-    v20 = [v7 objectForKeyedSubscript:self->_queriesKeyPath];
-    v21 = [v20 objectForKeyedSubscript:v13];
-    v22 = [v21 intValue];
+    v20 = [stateCopy objectForKeyedSubscript:self->_queriesKeyPath];
+    v21 = [v20 objectForKeyedSubscript:firstObject];
+    intValue = [v21 intValue];
 
-    if (!v22)
+    if (!intValue)
     {
       [(_DASPolicyResponseRationale *)v8 addRationaleForCondition:@"queriesBudgetValue" withRequiredValue:1.0 withCurrentValue:0.0];
-      v23 = [v7 objectForKeyedSubscript:self->_launchBudgetKeyPath];
+      v23 = [stateCopy objectForKeyedSubscript:self->_launchBudgetKeyPath];
 
       v20 = v23;
     }
@@ -268,13 +268,13 @@ LABEL_11:
   {
     snapshotBudgetKeyPath = self->_snapshotBudgetKeyPath;
 LABEL_10:
-    v20 = [v7 objectForKeyedSubscript:snapshotBudgetKeyPath];
+    v20 = [stateCopy objectForKeyedSubscript:snapshotBudgetKeyPath];
 LABEL_11:
-    v25 = [v20 objectForKeyedSubscript:v13];
-    v26 = [v25 intValue];
+    v25 = [v20 objectForKeyedSubscript:firstObject];
+    intValue2 = [v25 intValue];
 
-    [(_DASPolicyResponseRationale *)v8 addRationaleForCondition:@"budgetValue" withRequiredValue:1.0 withCurrentValue:v26];
-    if (v26 <= 0)
+    [(_DASPolicyResponseRationale *)v8 addRationaleForCondition:@"budgetValue" withRequiredValue:1.0 withCurrentValue:intValue2];
+    if (intValue2 <= 0)
     {
       v27 = 33;
     }

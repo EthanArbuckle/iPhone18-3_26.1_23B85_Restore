@@ -1,17 +1,17 @@
 @interface TAMetricsVisit
 - (NSString)description;
-- (TAMetricsVisit)initWithSnapshotHistory:(id)a3 andAddress:(id)a4 andVisitFilterSettings:(id)a5;
+- (TAMetricsVisit)initWithSnapshotHistory:(id)history andAddress:(id)address andVisitFilterSettings:(id)settings;
 - (id)descriptionDictionary;
 @end
 
 @implementation TAMetricsVisit
 
-- (TAMetricsVisit)initWithSnapshotHistory:(id)a3 andAddress:(id)a4 andVisitFilterSettings:(id)a5
+- (TAMetricsVisit)initWithSnapshotHistory:(id)history andAddress:(id)address andVisitFilterSettings:(id)settings
 {
   v115 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  historyCopy = history;
+  addressCopy = address;
+  settingsCopy = settings;
   v112.receiver = self;
   v112.super_class = TAMetricsVisit;
   v11 = [(TAMetricsVisit *)&v112 init];
@@ -23,50 +23,50 @@ LABEL_44:
   }
 
   v12 = 0;
-  if (v8 && v9 && v10)
+  if (historyCopy && addressCopy && settingsCopy)
   {
-    if ([v8 count])
+    if ([historyCopy count])
     {
-      v13 = [v8 lastObject];
-      v14 = v13;
-      if (v13)
+      lastObject = [historyCopy lastObject];
+      v14 = lastObject;
+      if (lastObject)
       {
-        if ([v13 isClosed])
+        if ([lastObject isClosed])
         {
-          v15 = [v14 latestUtAdvertisements];
-          v16 = [v15 objectForKey:v9];
+          latestUtAdvertisements = [v14 latestUtAdvertisements];
+          v16 = [latestUtAdvertisements objectForKey:addressCopy];
 
           if (v16)
           {
-            v17 = [v9 copy];
+            v17 = [addressCopy copy];
             v18 = *(v11 + 1);
             *(v11 + 1) = v17;
 
-            v19 = [v14 representativeVisit];
-            [v19 coordinate];
+            representativeVisit = [v14 representativeVisit];
+            [representativeVisit coordinate];
             *(v11 + 10) = v20;
 
-            v21 = [v14 representativeVisit];
-            [v21 coordinate];
+            representativeVisit2 = [v14 representativeVisit];
+            [representativeVisit2 coordinate];
             *(v11 + 11) = v22;
 
-            v23 = [v14 getArrivalDelay];
+            getArrivalDelay = [v14 getArrivalDelay];
             v24 = *(v11 + 8);
-            *(v11 + 8) = v23;
+            *(v11 + 8) = getArrivalDelay;
 
-            v25 = [v14 getDepartureDelay];
+            getDepartureDelay = [v14 getDepartureDelay];
             v26 = *(v11 + 9);
-            *(v11 + 9) = v25;
+            *(v11 + 9) = getDepartureDelay;
 
-            [v10 entryDisplayOnBudget];
+            [settingsCopy entryDisplayOnBudget];
             [v14 getDurationOfVisitEntryConsideredWithDisplayOnBudget:?];
             *(v11 + 6) = v27;
-            [v10 exitDisplayOnBudget];
+            [settingsCopy exitDisplayOnBudget];
             [v14 getDurationOfVisitExitConsideredWithDisplayOnBudget:?];
             *(v11 + 7) = v28;
-            v29 = [v14 latestUtAdvertisements];
-            v90 = v9;
-            v30 = [v29 objectForKey:v9];
+            latestUtAdvertisements2 = [v14 latestUtAdvertisements];
+            v90 = addressCopy;
+            v30 = [latestUtAdvertisements2 objectForKey:addressCopy];
             v31 = *(v11 + 13);
             *(v11 + 13) = v30;
 
@@ -75,12 +75,12 @@ LABEL_44:
             v34 = vaddq_s64(*(v11 + 2), v32);
             *(v11 + 1) = v33;
             *(v11 + 2) = v34;
-            v35 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
             v36 = [TALocationLite alloc];
-            v37 = [v14 representativeVisit];
-            v38 = [v37 getDate];
-            v39 = [v14 representativeVisit];
-            [v39 coordinate];
+            representativeVisit3 = [v14 representativeVisit];
+            getDate = [representativeVisit3 getDate];
+            representativeVisit4 = [v14 representativeVisit];
+            [representativeVisit4 coordinate];
             v41 = v40;
             [v14 representativeVisit];
             v42 = v100 = v11;
@@ -89,20 +89,20 @@ LABEL_44:
             [v14 representativeVisit];
             v45 = v96 = v14;
             [v45 horizontalAccuracy];
-            v47 = [(TALocationLite *)v36 initWithTimestamp:v38 latitude:v41 longitude:v44 horizontalAccuracy:v46];
+            v47 = [(TALocationLite *)v36 initWithTimestamp:getDate latitude:v41 longitude:v44 horizontalAccuracy:v46];
 
             v48 = v14;
             v11 = v100;
 
-            v93 = v35;
-            [v35 addObject:v47];
+            v93 = array;
+            [array addObject:v47];
             v49 = v47;
             v108 = 0u;
             v109 = 0u;
             v110 = 0u;
             v111 = 0u;
-            v91 = v8;
-            obj = [v8 reverseObjectEnumerator];
+            v91 = historyCopy;
+            obj = [historyCopy reverseObjectEnumerator];
             v50 = [obj countByEnumeratingWithState:&v108 objects:v114 count:16];
             v92 = v49;
             if (v50)
@@ -135,24 +135,24 @@ LABEL_44:
                     v101 = v54;
                     v102 = v53;
                     v57 = [TALocationLite alloc];
-                    v58 = [v56 representativeVisit];
-                    v59 = [v58 getDate];
-                    v60 = [v56 representativeVisit];
-                    [v60 coordinate];
+                    representativeVisit5 = [v56 representativeVisit];
+                    getDate2 = [representativeVisit5 getDate];
+                    representativeVisit6 = [v56 representativeVisit];
+                    [representativeVisit6 coordinate];
                     v62 = v61;
-                    v63 = [v56 representativeVisit];
-                    [v63 coordinate];
+                    representativeVisit7 = [v56 representativeVisit];
+                    [representativeVisit7 coordinate];
                     v65 = v64;
-                    v66 = [v56 representativeVisit];
-                    [v66 horizontalAccuracy];
-                    v49 = [(TALocationLite *)v57 initWithTimestamp:v59 latitude:v62 longitude:v65 horizontalAccuracy:v67];
+                    representativeVisit8 = [v56 representativeVisit];
+                    [representativeVisit8 horizontalAccuracy];
+                    v49 = [(TALocationLite *)v57 initWithTimestamp:getDate2 latitude:v62 longitude:v65 horizontalAccuracy:v67];
 
                     v11 = v100;
-                    v68 = [v10 minNSigmaBetweenVisits];
-                    [v10 minInterVisitDistance];
-                    v69 = [TALocationLite distanceFromLocation:v49 toLocation:v103 satisfyNSigma:v68 satisfyMinDistance:?];
-                    v70 = [v56 latestUtAdvertisements];
-                    v71 = [v70 objectForKey:v100[1]];
+                    minNSigmaBetweenVisits = [settingsCopy minNSigmaBetweenVisits];
+                    [settingsCopy minInterVisitDistance];
+                    v69 = [TALocationLite distanceFromLocation:v49 toLocation:v103 satisfyNSigma:minNSigmaBetweenVisits satisfyMinDistance:?];
+                    latestUtAdvertisements3 = [v56 latestUtAdvertisements];
+                    v71 = [latestUtAdvertisements3 objectForKey:v100[1]];
 
                     if (v71)
                     {
@@ -202,9 +202,9 @@ LABEL_44:
                             }
 
                             v81 = *(*(&v104 + 1) + 8 * i);
-                            v82 = [v10 minNSigmaBetweenVisits];
-                            [v10 minInterVisitDistance];
-                            v79 = [TALocationLite distanceFromLocation:v49 toLocation:v81 satisfyNSigma:v82 satisfyMinDistance:?];
+                            minNSigmaBetweenVisits2 = [settingsCopy minNSigmaBetweenVisits];
+                            [settingsCopy minInterVisitDistance];
+                            v79 = [TALocationLite distanceFromLocation:v49 toLocation:v81 satisfyNSigma:minNSigmaBetweenVisits2 satisfyMinDistance:?];
                           }
 
                           v77 = [v75 countByEnumeratingWithState:&v104 objects:v113 count:16];
@@ -288,8 +288,8 @@ LABEL_34:
               while (v51);
             }
 
-            v9 = v90;
-            v8 = v91;
+            addressCopy = v90;
+            historyCopy = v91;
             goto LABEL_44;
           }
         }
@@ -308,29 +308,29 @@ LABEL_47:
 - (id)descriptionDictionary
 {
   v38[13] = *MEMORY[0x277D85DE8];
-  v3 = [(TAMetricsVisit *)self visitEntryDelay];
+  visitEntryDelay = [(TAMetricsVisit *)self visitEntryDelay];
   v4 = 0.0;
   v5 = 0.0;
-  if (v3)
+  if (visitEntryDelay)
   {
-    v6 = [(TAMetricsVisit *)self visitEntryDelay];
-    [v6 duration];
+    visitEntryDelay2 = [(TAMetricsVisit *)self visitEntryDelay];
+    [visitEntryDelay2 duration];
     v5 = v7;
   }
 
-  v8 = [(TAMetricsVisit *)self visitExitDelay];
-  if (v8)
+  visitExitDelay = [(TAMetricsVisit *)self visitExitDelay];
+  if (visitExitDelay)
   {
-    v9 = [(TAMetricsVisit *)self visitExitDelay];
-    [v9 duration];
+    visitExitDelay2 = [(TAMetricsVisit *)self visitExitDelay];
+    [visitExitDelay2 duration];
     v4 = v10;
   }
 
-  v11 = [(TAMetricsVisit *)self distanceToPreviousSeenVisit];
-  if (v11)
+  distanceToPreviousSeenVisit = [(TAMetricsVisit *)self distanceToPreviousSeenVisit];
+  if (distanceToPreviousSeenVisit)
   {
-    v12 = [(TAMetricsVisit *)self distanceToPreviousSeenVisit];
-    [v12 doubleValue];
+    distanceToPreviousSeenVisit2 = [(TAMetricsVisit *)self distanceToPreviousSeenVisit];
+    [distanceToPreviousSeenVisit2 doubleValue];
     v14 = v13;
   }
 
@@ -344,9 +344,9 @@ LABEL_47:
   v36 = NSStringFromClass(v15);
   v38[0] = v36;
   v37[1] = @"Address";
-  v35 = [(TAMetricsVisit *)self address];
-  v34 = [v35 hexString];
-  v38[1] = v34;
+  address = [(TAMetricsVisit *)self address];
+  hexString = [address hexString];
+  v38[1] = hexString;
   v37[2] = @"TotalVisitCount";
   v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[TAMetricsVisit totalVisitCount](self, "totalVisitCount")}];
   v38[2] = v33;
@@ -397,9 +397,9 @@ LABEL_47:
 
 - (NSString)description
 {
-  v3 = [(TAMetricsVisit *)self descriptionDictionary];
+  descriptionDictionary = [(TAMetricsVisit *)self descriptionDictionary];
   v10 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:v3 error:&v10];
+  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:descriptionDictionary error:&v10];
   v5 = v10;
   if (v5)
   {
@@ -409,15 +409,15 @@ LABEL_47:
       [(TAOutgoingRequests *)v6 description];
     }
 
-    v7 = [MEMORY[0x277CCACA8] string];
+    string = [MEMORY[0x277CCACA8] string];
   }
 
   else
   {
-    v7 = v4;
+    string = v4;
   }
 
-  v8 = v7;
+  v8 = string;
 
   return v8;
 }

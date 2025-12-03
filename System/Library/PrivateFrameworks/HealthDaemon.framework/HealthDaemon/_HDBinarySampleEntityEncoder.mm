@@ -1,7 +1,7 @@
 @interface _HDBinarySampleEntityEncoder
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6;
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
-- (id)objectForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)objectForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
 - (id)orderedProperties;
 @end
 
@@ -10,8 +10,8 @@
 - (id)orderedProperties
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = [(HDEntityEncoder *)self purpose];
-  if (v4 == 1)
+  purpose = [(HDEntityEncoder *)self purpose];
+  if (purpose == 1)
   {
     v11 = @"payload";
     v5 = &v11;
@@ -19,7 +19,7 @@
 
   else
   {
-    if (v4)
+    if (purpose)
     {
       goto LABEL_6;
     }
@@ -29,9 +29,9 @@
   }
 
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v5 count:1];
-  v7 = [(HDEntityEncoder *)self superclassEncoder];
-  v8 = [v7 orderedProperties];
-  v2 = [v6 arrayByAddingObjectsFromArray:v8];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  orderedProperties = [superclassEncoder orderedProperties];
+  v2 = [v6 arrayByAddingObjectsFromArray:orderedProperties];
 
 LABEL_6:
   v9 = *MEMORY[0x277D85DE8];
@@ -39,10 +39,10 @@ LABEL_6:
   return v2;
 }
 
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v8 = [(HDEntityEncoder *)self superclassEncoder];
-  v9 = [v8 codableRepresentationForPersistentID:a3 row:a4 error:a5];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  v9 = [superclassEncoder codableRepresentationForPersistentID:d row:row error:error];
 
   if (v9)
   {
@@ -60,10 +60,10 @@ LABEL_6:
   return v10;
 }
 
-- (id)objectForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)objectForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
   v9 = HDSQLiteColumnWithName();
-  if (MEMORY[0x22AAC6CD0](a4, v9))
+  if (MEMORY[0x22AAC6CD0](row, v9))
   {
     v10 = 0;
   }
@@ -74,7 +74,7 @@ LABEL_6:
   }
 
   v11 = [objc_alloc(objc_msgSend(v10 "dataObjectClass"))];
-  if ([(_HDBinarySampleEntityEncoder *)self applyPropertiesToObject:v11 persistentID:a3 row:a4 error:a5])
+  if ([(_HDBinarySampleEntityEncoder *)self applyPropertiesToObject:v11 persistentID:d row:row error:error])
   {
     v12 = v11;
   }
@@ -87,16 +87,16 @@ LABEL_6:
   return v12;
 }
 
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v10 = a3;
-  v11 = [(HDEntityEncoder *)self superclassEncoder];
-  v12 = [v11 applyPropertiesToObject:v10 persistentID:a4 row:a5 error:a6];
+  objectCopy = object;
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  v12 = [superclassEncoder applyPropertiesToObject:objectCopy persistentID:d row:row error:error];
 
   if (v12)
   {
     v13 = HDSQLiteColumnWithNameAsData();
-    [v10 _setPayload:v13];
+    [objectCopy _setPayload:v13];
   }
 
   return v12;

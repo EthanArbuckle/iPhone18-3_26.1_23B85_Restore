@@ -10,8 +10,8 @@
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 view];
-  [v3 setAccessibilityViewIsModal:1];
+  view = [v2 view];
+  [view setAccessibilityViewIsModal:1];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

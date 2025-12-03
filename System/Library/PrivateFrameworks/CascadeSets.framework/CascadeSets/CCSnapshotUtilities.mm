@@ -1,30 +1,30 @@
 @interface CCSnapshotUtilities
-+ (id)_filenameWithTimestamp:(id)a3 set:(id)a4 format:(unsigned __int8)a5;
-+ (id)pathFromDate:(id)a3;
-+ (id)snapshotSets:(id)a3 directory:(id)a4 useCase:(id)a5 format:(unsigned __int8)a6 date:(id)a7 error:(id *)a8;
++ (id)_filenameWithTimestamp:(id)timestamp set:(id)set format:(unsigned __int8)format;
++ (id)pathFromDate:(id)date;
++ (id)snapshotSets:(id)sets directory:(id)directory useCase:(id)case format:(unsigned __int8)format date:(id)date error:(id *)error;
 @end
 
 @implementation CCSnapshotUtilities
 
-+ (id)_filenameWithTimestamp:(id)a3 set:(id)a4 format:(unsigned __int8)a5
++ (id)_filenameWithTimestamp:(id)timestamp set:(id)set format:(unsigned __int8)format
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  formatCopy = format;
+  timestampCopy = timestamp;
+  setCopy = set;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v9 = CCTypeIdentifierRegistryBridge();
-    v10 = [v9 setIdentifierForItemType:{objc_msgSend(v8, "itemType")}];
+    v10 = [v9 setIdentifierForItemType:{objc_msgSend(setCopy, "itemType")}];
 
-    v11 = [v8 descriptors];
-    v12 = [v11 count];
+    descriptors = [setCopy descriptors];
+    v12 = [descriptors count];
 
     if (v12)
     {
       v13 = MEMORY[0x1E696AEC0];
-      v14 = [v8 encodedDescriptors];
-      v15 = [v13 stringWithFormat:@"_[%@]", v14];
+      encodedDescriptors = [setCopy encodedDescriptors];
+      v15 = [v13 stringWithFormat:@"_[%@]", encodedDescriptors];
     }
 
     else
@@ -32,19 +32,19 @@
       v15 = &stru_1F2EBB700;
     }
 
-    if (v5 == 1)
+    if (formatCopy == 1)
     {
       v17 = @"dat";
     }
 
     else
     {
-      if (v5 != 2)
+      if (formatCopy != 2)
       {
         v18 = __biome_log_for_category();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
-          [CCSnapshotUtilities _filenameWithTimestamp:v5 set:v18 format:?];
+          [CCSnapshotUtilities _filenameWithTimestamp:formatCopy set:v18 format:?];
         }
 
         v16 = 0;
@@ -54,7 +54,7 @@
       v17 = @"json";
     }
 
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@_%@.%@", v10, v15, v7, v17];
+    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@_%@.%@", v10, v15, timestampCopy, v17];
 LABEL_16:
 
     goto LABEL_17;
@@ -63,7 +63,7 @@ LABEL_16:
   v10 = __biome_log_for_category();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    [CCSnapshotUtilities _filenameWithTimestamp:v8 set:v10 format:?];
+    [CCSnapshotUtilities _filenameWithTimestamp:setCopy set:v10 format:?];
   }
 
   v16 = 0;
@@ -72,46 +72,46 @@ LABEL_17:
   return v16;
 }
 
-+ (id)pathFromDate:(id)a3
++ (id)pathFromDate:(id)date
 {
   v3 = MEMORY[0x1E696AB78];
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_alloc_init(v3);
   [v5 setDateFormat:@"yyyy.MM.dd_hh-mm-ss.SSSZZZ"];
-  v6 = [v5 stringFromDate:v4];
+  v6 = [v5 stringFromDate:dateCopy];
 
   return v6;
 }
 
-+ (id)snapshotSets:(id)a3 directory:(id)a4 useCase:(id)a5 format:(unsigned __int8)a6 date:(id)a7 error:(id *)a8
++ (id)snapshotSets:(id)sets directory:(id)directory useCase:(id)case format:(unsigned __int8)format date:(id)date error:(id *)error
 {
-  v45 = a6;
+  formatCopy = format;
   v58 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v39 = a5;
-  v35 = a7;
-  v44 = [objc_opt_class() pathFromDate:v35];
+  setsCopy = sets;
+  directoryCopy = directory;
+  caseCopy = case;
+  dateCopy = date;
+  v44 = [objc_opt_class() pathFromDate:dateCopy];
   v13 = __biome_log_for_category();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109890;
-    *v57 = [v11 count];
+    *v57 = [setsCopy count];
     *&v57[4] = 2112;
     *&v57[6] = v44;
     *&v57[14] = 2112;
-    *&v57[16] = v12;
+    *&v57[16] = directoryCopy;
     *&v57[24] = 2112;
-    *&v57[26] = v11;
+    *&v57[26] = setsCopy;
     _os_log_impl(&dword_1B6DB2000, v13, OS_LOG_TYPE_DEFAULT, "Capturing %u set snapshot(s) with timestamp: %@ to directory: %@ [%@]", buf, 0x26u);
   }
 
-  v46 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v11, "count")}];
+  v46 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(setsCopy, "count")}];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = v11;
+  obj = setsCopy;
   v43 = [obj countByEnumeratingWithState:&v49 objects:v55 count:16];
   v14 = 0;
   if (v43)
@@ -119,7 +119,7 @@ LABEL_17:
     v41 = *v50;
     v37 = *MEMORY[0x1E696A278];
     v38 = *MEMORY[0x1E696A250];
-    v42 = v12;
+    v42 = directoryCopy;
     do
     {
       v15 = 0;
@@ -133,16 +133,16 @@ LABEL_17:
 
         v17 = *(*(&v49 + 1) + 8 * v15);
         v18 = objc_autoreleasePoolPush();
-        v19 = [objc_opt_class() _filenameWithTimestamp:v44 set:v17 format:v45];
-        v20 = [MEMORY[0x1E695DFF8] fileURLWithPath:v19 isDirectory:0 relativeToURL:v12];
+        v19 = [objc_opt_class() _filenameWithTimestamp:v44 set:v17 format:formatCopy];
+        v20 = [MEMORY[0x1E695DFF8] fileURLWithPath:v19 isDirectory:0 relativeToURL:directoryCopy];
         v21 = [MEMORY[0x1E695DFC0] outputStreamWithURL:v20 append:0];
         [v21 open];
         if ([v21 streamStatus] != 2)
         {
           v28 = MEMORY[0x1E696ABC0];
           v53 = v37;
-          v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to open NSOutputStream with filename: %@ directory: %@", v19, v12];
-          v54 = v29;
+          directoryCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to open NSOutputStream with filename: %@ directory: %@", v19, directoryCopy];
+          v54 = directoryCopy;
           v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v54 forKeys:&v53 count:1];
           v14 = [v28 errorWithDomain:v38 code:-1000 userInfo:v30];
 
@@ -162,7 +162,7 @@ LABEL_17:
         }
 
         v48 = v16;
-        v22 = [v17 serializeWithUseCase:v39 error:&v48];
+        v22 = [v17 serializeWithUseCase:caseCopy error:&v48];
         v14 = v48;
 
         if (!v22)
@@ -184,7 +184,7 @@ LABEL_20:
         }
 
         v47 = v14;
-        v23 = [v22 writeToStream:v21 format:v45 error:&v47];
+        v23 = [v22 writeToStream:v21 format:formatCopy error:&v47];
         v24 = v47;
 
         v25 = __biome_log_for_category();
@@ -221,7 +221,7 @@ LABEL_20:
 
         v14 = v24;
 LABEL_25:
-        v12 = v42;
+        directoryCopy = v42;
 
         objc_autoreleasePoolPop(v18);
         if (!v27)
@@ -242,7 +242,7 @@ LABEL_25:
 
 LABEL_28:
 
-  CCSetError(a8, v14);
+  CCSetError(error, v14);
   v33 = *MEMORY[0x1E69E9840];
 
   return v46;

@@ -1,16 +1,16 @@
 @interface _GCSystemButtonServerConnection
 - (_GCSystemButtonClientInterface)client;
-- (_GCSystemButtonServerConnection)initWithMachServiceName:(id)a3;
-- (void)setClient:(id)a3;
+- (_GCSystemButtonServerConnection)initWithMachServiceName:(id)name;
+- (void)setClient:(id)client;
 @end
 
 @implementation _GCSystemButtonServerConnection
 
-- (_GCSystemButtonServerConnection)initWithMachServiceName:(id)a3
+- (_GCSystemButtonServerConnection)initWithMachServiceName:(id)name
 {
   v4 = MEMORY[0x1E696B0B8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithMachServiceName:v5 options:4096];
+  nameCopy = name;
+  v6 = [[v4 alloc] initWithMachServiceName:nameCopy options:4096];
 
   v7 = _GCSystemButtonClientInterface();
   [v6 setExportedInterface:v7];
@@ -28,17 +28,17 @@
 
 - (_GCSystemButtonClientInterface)client
 {
-  v2 = [(GCIPCRemoteConnection *)self connection];
-  v3 = [v2 exportedObject];
+  connection = [(GCIPCRemoteConnection *)self connection];
+  exportedObject = [connection exportedObject];
 
-  return v3;
+  return exportedObject;
 }
 
-- (void)setClient:(id)a3
+- (void)setClient:(id)client
 {
-  v4 = a3;
-  v5 = [(GCIPCRemoteConnection *)self connection];
-  [v5 setExportedObject:v4];
+  clientCopy = client;
+  connection = [(GCIPCRemoteConnection *)self connection];
+  [connection setExportedObject:clientCopy];
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface SCATGridPointPickerViewController
 - (BOOL)_isVisible;
-- (BOOL)handleInputAction:(id)a3 withElement:(id)a4;
-- (CGPath)scannerPathForPointPickerCenterPoint:(id)a3;
-- (CGRect)scannerFrameForPointPickerCenterPoint:(id)a3;
-- (CGRect)scannerFrameForPointPickerGroup:(id)a3;
-- (CGRect)scannerFrameForPointPickerSquare:(id)a3;
+- (BOOL)handleInputAction:(id)action withElement:(id)element;
+- (CGPath)scannerPathForPointPickerCenterPoint:(id)point;
+- (CGRect)scannerFrameForPointPickerCenterPoint:(id)point;
+- (CGRect)scannerFrameForPointPickerGroup:(id)group;
+- (CGRect)scannerFrameForPointPickerSquare:(id)square;
 - (NSIndexPath)currentSelectionPath;
 - (NSString)description;
 - (id)_scannableElements;
-- (id)_scannableElementsAtSelectionPath:(id)a3;
-- (id)elementAfter:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5;
-- (id)elementBefore:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5;
-- (id)firstElementWithOptions:(int *)a3;
-- (id)generateElementsForGroup:(id)a3;
-- (id)lastElementWithOptions:(int *)a3;
-- (void)driver:(id)a3 didFocusOnContext:(id)a4 oldContext:(id)a5;
-- (void)setCurrentSelectionPath:(id)a3;
+- (id)_scannableElementsAtSelectionPath:(id)path;
+- (id)elementAfter:(id)after didWrap:(BOOL *)wrap options:(int *)options;
+- (id)elementBefore:(id)before didWrap:(BOOL *)wrap options:(int *)options;
+- (id)firstElementWithOptions:(int *)options;
+- (id)generateElementsForGroup:(id)group;
+- (id)lastElementWithOptions:(int *)options;
+- (void)driver:(id)driver didFocusOnContext:(id)context oldContext:(id)oldContext;
+- (void)setCurrentSelectionPath:(id)path;
 @end
 
 @implementation SCATGridPointPickerViewController
@@ -25,29 +25,29 @@
   v8.receiver = self;
   v8.super_class = SCATGridPointPickerViewController;
   v3 = [(SCATGridPointPickerViewController *)&v8 description];
-  v4 = [(SCATPointPickerViewController *)self prompt];
-  v5 = [(SCATGridPointPickerViewController *)self currentSelectionPath];
-  v6 = [v3 stringByAppendingFormat:@" - prompt %@, current selection path %@", v4, v5];
+  prompt = [(SCATPointPickerViewController *)self prompt];
+  currentSelectionPath = [(SCATGridPointPickerViewController *)self currentSelectionPath];
+  v6 = [v3 stringByAppendingFormat:@" - prompt %@, current selection path %@", prompt, currentSelectionPath];
 
   return v6;
 }
 
 - (BOOL)_isVisible
 {
-  v2 = [(SCATGridPointPickerViewController *)self view];
-  v3 = [v2 superview];
-  v4 = v3 != 0;
+  view = [(SCATGridPointPickerViewController *)self view];
+  superview = [view superview];
+  v4 = superview != 0;
 
   return v4;
 }
 
-- (id)_scannableElementsAtSelectionPath:(id)a3
+- (id)_scannableElementsAtSelectionPath:(id)path
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  pathCopy = path;
+  v5 = pathCopy;
+  if (pathCopy)
   {
-    v6 = v4;
+    v6 = pathCopy;
   }
 
   else
@@ -66,20 +66,20 @@
   else
   {
     v11 = [(SCATGridPointPickerViewController *)self _showsRowsForSelectionPath:v5];
-    v12 = [(SCATGridPointPickerViewController *)self pointPickerView];
-    v13 = v12;
+    pointPickerView = [(SCATGridPointPickerViewController *)self pointPickerView];
+    v13 = pointPickerView;
     v25 = v7;
     if (v11)
     {
-      v14 = [v12 numberOfRows];
+      numberOfRows = [pointPickerView numberOfRows];
     }
 
     else
     {
-      v14 = [v12 numberOfColumns];
+      numberOfRows = [pointPickerView numberOfColumns];
     }
 
-    v15 = v14;
+    v15 = numberOfRows;
 
     v10 = [NSMutableArray arrayWithCapacity:v15 + 1];
     v16 = [(SCATPointPickerElement *)[SCATPointPickerCenterPoint alloc] initWithSelectionPath:v5];
@@ -134,41 +134,41 @@
 
 - (id)_scannableElements
 {
-  v3 = [(SCATGridPointPickerViewController *)self currentSelectionPath];
-  v4 = [(SCATGridPointPickerViewController *)self _scannableElementsAtSelectionPath:v3];
+  currentSelectionPath = [(SCATGridPointPickerViewController *)self currentSelectionPath];
+  v4 = [(SCATGridPointPickerViewController *)self _scannableElementsAtSelectionPath:currentSelectionPath];
 
   return v4;
 }
 
 - (NSIndexPath)currentSelectionPath
 {
-  v2 = [(SCATGridPointPickerViewController *)self pointPickerView];
-  v3 = [v2 currentSelectionPath];
+  pointPickerView = [(SCATGridPointPickerViewController *)self pointPickerView];
+  currentSelectionPath = [pointPickerView currentSelectionPath];
 
-  return v3;
+  return currentSelectionPath;
 }
 
-- (void)setCurrentSelectionPath:(id)a3
+- (void)setCurrentSelectionPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SCATGridPointPickerViewController *)self pointPickerView];
-  [v5 setCurrentSelectionPath:v4];
+  pathCopy = path;
+  pointPickerView = [(SCATGridPointPickerViewController *)self pointPickerView];
+  [pointPickerView setCurrentSelectionPath:pathCopy];
 }
 
-- (CGRect)scannerFrameForPointPickerSquare:(id)a3
+- (CGRect)scannerFrameForPointPickerSquare:(id)square
 {
-  v4 = a3;
-  v5 = [(SCATGridPointPickerViewController *)self pointPickerView];
-  v6 = [v4 selectionPath];
+  squareCopy = square;
+  pointPickerView = [(SCATGridPointPickerViewController *)self pointPickerView];
+  selectionPath = [squareCopy selectionPath];
 
-  [v5 frameForSelectionPath:v6];
+  [pointPickerView frameForSelectionPath:selectionPath];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [(SCATGridPointPickerViewController *)self pointPickerView];
-  [HNDScreen convertRect:v15 fromView:v8, v10, v12, v14];
+  pointPickerView2 = [(SCATGridPointPickerViewController *)self pointPickerView];
+  [HNDScreen convertRect:pointPickerView2 fromView:v8, v10, v12, v14];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -185,20 +185,20 @@
   return result;
 }
 
-- (CGRect)scannerFrameForPointPickerCenterPoint:(id)a3
+- (CGRect)scannerFrameForPointPickerCenterPoint:(id)point
 {
-  v4 = a3;
-  v5 = [(SCATGridPointPickerViewController *)self pointPickerView];
-  v6 = [v4 selectionPath];
+  pointCopy = point;
+  pointPickerView = [(SCATGridPointPickerViewController *)self pointPickerView];
+  selectionPath = [pointCopy selectionPath];
 
-  [v5 frameForCenterPointAtSelectionPath:v6];
+  [pointPickerView frameForCenterPointAtSelectionPath:selectionPath];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [(SCATGridPointPickerViewController *)self pointPickerView];
-  [HNDScreen convertRect:v15 fromView:v8, v10, v12, v14];
+  pointPickerView2 = [(SCATGridPointPickerViewController *)self pointPickerView];
+  [HNDScreen convertRect:pointPickerView2 fromView:v8, v10, v12, v14];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -215,30 +215,30 @@
   return result;
 }
 
-- (CGPath)scannerPathForPointPickerCenterPoint:(id)a3
+- (CGPath)scannerPathForPointPickerCenterPoint:(id)point
 {
-  v4 = a3;
-  v5 = [(SCATGridPointPickerViewController *)self pointPickerView];
-  v6 = [v4 selectionPath];
+  pointCopy = point;
+  pointPickerView = [(SCATGridPointPickerViewController *)self pointPickerView];
+  selectionPath = [pointCopy selectionPath];
 
-  v7 = [v5 pathForCenterPointAtSelectionPath:v6];
+  v7 = [pointPickerView pathForCenterPointAtSelectionPath:selectionPath];
   return v7;
 }
 
-- (CGRect)scannerFrameForPointPickerGroup:(id)a3
+- (CGRect)scannerFrameForPointPickerGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(SCATGridPointPickerViewController *)self pointPickerView];
-  v6 = [v4 selectionPath];
+  groupCopy = group;
+  pointPickerView = [(SCATGridPointPickerViewController *)self pointPickerView];
+  selectionPath = [groupCopy selectionPath];
 
-  [v5 frameForSelectionPath:v6];
+  [pointPickerView frameForSelectionPath:selectionPath];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [(SCATGridPointPickerViewController *)self pointPickerView];
-  [HNDScreen convertRect:v15 fromView:v8, v10, v12, v14];
+  pointPickerView2 = [(SCATGridPointPickerViewController *)self pointPickerView];
+  [HNDScreen convertRect:pointPickerView2 fromView:v8, v10, v12, v14];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -255,49 +255,49 @@
   return result;
 }
 
-- (id)generateElementsForGroup:(id)a3
+- (id)generateElementsForGroup:(id)group
 {
-  v4 = [a3 selectionPath];
-  v5 = [(SCATGridPointPickerViewController *)self _scannableElementsAtSelectionPath:v4];
+  selectionPath = [group selectionPath];
+  v5 = [(SCATGridPointPickerViewController *)self _scannableElementsAtSelectionPath:selectionPath];
 
   return v5;
 }
 
-- (id)firstElementWithOptions:(int *)a3
+- (id)firstElementWithOptions:(int *)options
 {
-  v3 = [(SCATGridPointPickerViewController *)self _scannableElements];
-  v4 = [v3 objectAtIndex:0];
+  _scannableElements = [(SCATGridPointPickerViewController *)self _scannableElements];
+  v4 = [_scannableElements objectAtIndex:0];
 
   return v4;
 }
 
-- (id)lastElementWithOptions:(int *)a3
+- (id)lastElementWithOptions:(int *)options
 {
-  v3 = [(SCATGridPointPickerViewController *)self _scannableElements];
-  v4 = [v3 lastObject];
+  _scannableElements = [(SCATGridPointPickerViewController *)self _scannableElements];
+  lastObject = [_scannableElements lastObject];
 
-  return v4;
+  return lastObject;
 }
 
-- (id)elementAfter:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5
+- (id)elementAfter:(id)after didWrap:(BOOL *)wrap options:(int *)options
 {
-  v7 = a3;
-  v8 = [v7 parentGroup];
+  afterCopy = after;
+  parentGroup = [afterCopy parentGroup];
 
-  if (v8)
+  if (parentGroup)
   {
-    v9 = [v7 parentGroup];
-    v10 = [v9 nextSiblingOfChild:v7 didWrap:a4];
+    parentGroup2 = [afterCopy parentGroup];
+    v10 = [parentGroup2 nextSiblingOfChild:afterCopy didWrap:wrap];
 
     goto LABEL_11;
   }
 
-  v9 = [(SCATGridPointPickerViewController *)self _scannableElementsAtSelectionPath:0];
-  v11 = [v9 indexOfObject:v7];
+  parentGroup2 = [(SCATGridPointPickerViewController *)self _scannableElementsAtSelectionPath:0];
+  v11 = [parentGroup2 indexOfObject:afterCopy];
 
   if (v11 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v13 = [v9 count] - 1;
+    v13 = [parentGroup2 count] - 1;
     v12 = v11 >= v13;
     if (v11 < v13)
     {
@@ -309,8 +309,8 @@
       v14 = 0;
     }
 
-    v10 = [v9 objectAtIndex:v14];
-    if (!a4)
+    v10 = [parentGroup2 objectAtIndex:v14];
+    if (!wrap)
     {
       goto LABEL_11;
     }
@@ -320,10 +320,10 @@
 
   v12 = 0;
   v10 = 0;
-  if (a4)
+  if (wrap)
   {
 LABEL_10:
-    *a4 = v12;
+    *wrap = v12;
   }
 
 LABEL_11:
@@ -331,27 +331,27 @@ LABEL_11:
   return v10;
 }
 
-- (id)elementBefore:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5
+- (id)elementBefore:(id)before didWrap:(BOOL *)wrap options:(int *)options
 {
-  v7 = a3;
-  v8 = [v7 parentGroup];
+  beforeCopy = before;
+  parentGroup = [beforeCopy parentGroup];
 
-  if (v8)
+  if (parentGroup)
   {
-    v9 = [v7 parentGroup];
-    v10 = [v9 previousSiblingOfChild:v7 didWrap:a4];
+    parentGroup2 = [beforeCopy parentGroup];
+    lastObject = [parentGroup2 previousSiblingOfChild:beforeCopy didWrap:wrap];
 
     goto LABEL_9;
   }
 
-  v9 = [(SCATGridPointPickerViewController *)self _scannableElementsAtSelectionPath:0];
-  v11 = [v9 indexOfObject:v7];
+  parentGroup2 = [(SCATGridPointPickerViewController *)self _scannableElementsAtSelectionPath:0];
+  v11 = [parentGroup2 indexOfObject:beforeCopy];
 
   if (!v11)
   {
-    v10 = [v9 lastObject];
+    lastObject = [parentGroup2 lastObject];
     v12 = 1;
-    if (!a4)
+    if (!wrap)
     {
       goto LABEL_9;
     }
@@ -362,55 +362,55 @@ LABEL_11:
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v12 = 0;
-    v10 = 0;
-    if (!a4)
+    lastObject = 0;
+    if (!wrap)
     {
       goto LABEL_9;
     }
 
 LABEL_8:
-    *a4 = v12;
+    *wrap = v12;
     goto LABEL_9;
   }
 
-  v10 = [v9 objectAtIndex:v11 - 1];
+  lastObject = [parentGroup2 objectAtIndex:v11 - 1];
   v12 = 0;
-  if (a4)
+  if (wrap)
   {
     goto LABEL_8;
   }
 
 LABEL_9:
 
-  return v10;
+  return lastObject;
 }
 
-- (void)driver:(id)a3 didFocusOnContext:(id)a4 oldContext:(id)a5
+- (void)driver:(id)driver didFocusOnContext:(id)context oldContext:(id)oldContext
 {
-  v6 = a4;
-  v5 = v6;
+  contextCopy = context;
+  v5 = contextCopy;
   AXPerformBlockOnMainThread();
 }
 
-- (BOOL)handleInputAction:(id)a3 withElement:(id)a4
+- (BOOL)handleInputAction:(id)action withElement:(id)element
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v7 isGroup] & 1) == 0 && (objc_msgSend(v6, "action") == 100 || objc_msgSend(v6, "action") == 103 || objc_msgSend(v6, "action") == 109))
+  actionCopy = action;
+  elementCopy = element;
+  if (([elementCopy isGroup] & 1) == 0 && (objc_msgSend(actionCopy, "action") == 100 || objc_msgSend(actionCopy, "action") == 103 || objc_msgSend(actionCopy, "action") == 109))
   {
     [(SCATGridPointPickerViewController *)self _resetGrid];
-    v9 = v7;
-    v10 = [(SCATGridPointPickerViewController *)self pointPickerView];
-    v11 = [v9 selectionPath];
+    v9 = elementCopy;
+    pointPickerView = [(SCATGridPointPickerViewController *)self pointPickerView];
+    selectionPath = [v9 selectionPath];
 
-    [v10 frameForSelectionPath:v11];
+    [pointPickerView frameForSelectionPath:selectionPath];
     AX_CGRectGetCenter();
     v13 = v12;
     v15 = v14;
 
-    v16 = [(SCATPointPickerViewController *)self pointPicker];
+    pointPicker = [(SCATPointPickerViewController *)self pointPicker];
     v8 = 1;
-    [v16 _savePoint:1 andNotifyDelegate:{v13, v15}];
+    [pointPicker _savePoint:1 andNotifyDelegate:{v13, v15}];
   }
 
   else

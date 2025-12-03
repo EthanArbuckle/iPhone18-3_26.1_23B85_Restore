@@ -1,11 +1,11 @@
 @interface FMDBluetoothDiscoveryToken
 - (BOOL)isDiscoveryActive;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (FMDBluetoothDiscoveryToken)init;
 - (FMDBluetoothDiscoveryTokenDelegate)delegate;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)startDiscoveryForDuration:(double)a3;
+- (void)startDiscoveryForDuration:(double)duration;
 - (void)stopDiscovery;
 @end
 
@@ -25,15 +25,15 @@
   return v2;
 }
 
-- (void)startDiscoveryForDuration:(double)a3
+- (void)startDiscoveryForDuration:(double)duration
 {
-  v4 = [NSDate dateWithTimeIntervalSinceNow:a3];
+  v4 = [NSDate dateWithTimeIntervalSinceNow:duration];
   [(FMDBluetoothDiscoveryToken *)self setEndDate:v4];
 
-  v5 = [(FMDBluetoothDiscoveryToken *)self delegate];
-  if (v5)
+  delegate = [(FMDBluetoothDiscoveryToken *)self delegate];
+  if (delegate)
   {
-    v6 = v5;
+    v6 = delegate;
     if (objc_opt_respondsToSelector())
     {
       [v6 discoveryRequestedStart:self];
@@ -45,10 +45,10 @@
 
 - (void)stopDiscovery
 {
-  v3 = [(FMDBluetoothDiscoveryToken *)self delegate];
-  if (v3)
+  delegate = [(FMDBluetoothDiscoveryToken *)self delegate];
+  if (delegate)
   {
-    v4 = v3;
+    v4 = delegate;
     if (objc_opt_respondsToSelector())
     {
       [v4 discoveryRequestedStop:self];
@@ -60,10 +60,10 @@
 
 - (BOOL)isDiscoveryActive
 {
-  v3 = [(FMDBluetoothDiscoveryToken *)self delegate];
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(FMDBluetoothDiscoveryToken *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 isDiscoveryActive:self];
+    v4 = [delegate isDiscoveryActive:self];
   }
 
   else
@@ -76,17 +76,17 @@
 
 - (NSString)description
 {
-  v2 = self;
-  v3 = [(FMDBluetoothDiscoveryToken *)v2 endDate];
-  v4 = [NSString stringWithFormat:@"%p-%@", v2, v3];
+  selfCopy = self;
+  endDate = [(FMDBluetoothDiscoveryToken *)selfCopy endDate];
+  v4 = [NSString stringWithFormat:@"%p-%@", selfCopy, endDate];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -96,7 +96,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = [(FMDBluetoothDiscoveryToken *)self hash];
       v7 = [(FMDBluetoothDiscoveryToken *)v5 hash];
 
@@ -114,8 +114,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(FMDBluetoothDiscoveryToken *)self uuid];
-  v3 = [v2 hash];
+  uuid = [(FMDBluetoothDiscoveryToken *)self uuid];
+  v3 = [uuid hash];
 
   return v3;
 }

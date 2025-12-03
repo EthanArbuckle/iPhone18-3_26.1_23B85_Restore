@@ -1,30 +1,30 @@
 @interface HDElectrocardiogramSessionServer
-+ (BOOL)validateConfiguration:(id)a3 client:(id)a4 error:(id *)a5;
++ (BOOL)validateConfiguration:(id)configuration client:(id)client error:(id *)error;
 + (id)requiredEntitlements;
-- (HDElectrocardiogramSessionServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDElectrocardiogramSessionServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (void)connectionInterrupted;
 - (void)connectionInvalidated;
-- (void)remote_abortWithCompletion:(id)a3;
-- (void)remote_startWithCompletion:(id)a3;
+- (void)remote_abortWithCompletion:(id)completion;
+- (void)remote_startWithCompletion:(id)completion;
 @end
 
 @implementation HDElectrocardiogramSessionServer
 
-- (HDElectrocardiogramSessionServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDElectrocardiogramSessionServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
+  configurationCopy = configuration;
   v17.receiver = self;
   v17.super_class = HDElectrocardiogramSessionServer;
-  v11 = [(HDStandardTaskServer *)&v17 initWithUUID:a3 configuration:v10 client:a5 delegate:a6];
+  v11 = [(HDStandardTaskServer *)&v17 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
   if (v11)
   {
     v12 = HKCreateSerialDispatchQueue();
     queue = v11->_queue;
     v11->_queue = v12;
 
-    v14 = [v10 sessionConfiguration];
+    sessionConfiguration = [configurationCopy sessionConfiguration];
     sessionConfiguration = v11->_sessionConfiguration;
-    v11->_sessionConfiguration = v14;
+    v11->_sessionConfiguration = sessionConfiguration;
   }
 
   return v11;
@@ -40,16 +40,16 @@
   return v2;
 }
 
-+ (BOOL)validateConfiguration:(id)a3 client:(id)a4 error:(id *)a5
++ (BOOL)validateConfiguration:(id)configuration client:(id)client error:(id *)error
 {
-  v6 = [a3 sessionConfiguration];
+  sessionConfiguration = [configuration sessionConfiguration];
 
-  if (!v6)
+  if (!sessionConfiguration)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:3 description:@"Session configuration is nil"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"Session configuration is nil"];
   }
 
-  return v6 != 0;
+  return sessionConfiguration != 0;
 }
 
 - (void)connectionInvalidated
@@ -74,17 +74,17 @@
   dispatch_async(queue, block);
 }
 
-- (void)remote_startWithCompletion:(id)a3
+- (void)remote_startWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__HDElectrocardiogramSessionServer_remote_startWithCompletion___block_invoke;
   v7[3] = &unk_278614E28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -140,17 +140,17 @@ void __63__HDElectrocardiogramSessionServer_remote_startWithCompletion___block_i
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_abortWithCompletion:(id)a3
+- (void)remote_abortWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__HDElectrocardiogramSessionServer_remote_abortWithCompletion___block_invoke;
   v7[3] = &unk_278614E28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 

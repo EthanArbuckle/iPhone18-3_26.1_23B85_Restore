@@ -1,10 +1,10 @@
 @interface _SYStreamGuts
-- (id)propertyForKey:(id)a3;
-- (void)createRunloopSourceForStream:(id)a3;
+- (id)propertyForKey:(id)key;
+- (void)createRunloopSourceForStream:(id)stream;
 - (void)dealloc;
-- (void)postStreamEvent:(unint64_t)a3 forStream:(id)a4;
-- (void)setEventHandler:(id)a3 queue:(id)a4;
-- (void)storeProperty:(id)a3 forKey:(id)a4;
+- (void)postStreamEvent:(unint64_t)event forStream:(id)stream;
+- (void)setEventHandler:(id)handler queue:(id)queue;
+- (void)storeProperty:(id)property forKey:(id)key;
 @end
 
 @implementation _SYStreamGuts
@@ -28,13 +28,13 @@
   [(_SYStreamGuts *)&v5 dealloc];
 }
 
-- (void)setEventHandler:(id)a3 queue:(id)a4
+- (void)setEventHandler:(id)handler queue:(id)queue
 {
-  v6 = a4;
-  v12 = v6;
-  if (a3 && v6)
+  queueCopy = queue;
+  v12 = queueCopy;
+  if (handler && queueCopy)
   {
-    v7 = [a3 copy];
+    v7 = [handler copy];
     handler = self->_handler;
     self->_handler = v7;
 
@@ -53,7 +53,7 @@
   }
 }
 
-- (void)createRunloopSourceForStream:(id)a3
+- (void)createRunloopSourceForStream:(id)stream
 {
   v5 = MEMORY[0x1E69E9A60];
   if (!mach_port_allocate(*MEMORY[0x1E69E9A60], 1u, &self->_port))
@@ -67,7 +67,7 @@
     }
 
     context.version = 1;
-    context.info = a3;
+    context.info = stream;
     memset(&context.retain, 0, 40);
     context.schedule = __SYZlibStreamGetPort;
     context.cancel = __SYZlibStreamPerform;
@@ -75,9 +75,9 @@
   }
 }
 
-- (void)postStreamEvent:(unint64_t)a3 forStream:(id)a4
+- (void)postStreamEvent:(unint64_t)event forStream:(id)stream
 {
-  v6 = a4;
+  streamCopy = stream;
   if (self->_queue)
   {
     v7 = [self->_handler copy];
@@ -87,45 +87,45 @@
     block[2] = __43___SYStreamGuts_postStreamEvent_forStream___block_invoke;
     block[3] = &unk_1E86C9F60;
     v12 = v7;
-    v11 = v6;
-    v13 = a3;
+    v11 = streamCopy;
+    eventCopy = event;
     v9 = v7;
     dispatch_async(queue, block);
   }
 
   else if (self->_runloopSource)
   {
-    _TryPostEvent(a3, self, 1);
+    _TryPostEvent(event, self, 1);
   }
 }
 
-- (void)storeProperty:(id)a3 forKey:(id)a4
+- (void)storeProperty:(id)property forKey:(id)key
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  propertyStore = v7->_propertyStore;
-  if (v11 && !propertyStore)
+  propertyCopy = property;
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  propertyStore = selfCopy->_propertyStore;
+  if (propertyCopy && !propertyStore)
   {
     v9 = objc_opt_new();
-    v10 = v7->_propertyStore;
-    v7->_propertyStore = v9;
+    v10 = selfCopy->_propertyStore;
+    selfCopy->_propertyStore = v9;
 
-    propertyStore = v7->_propertyStore;
+    propertyStore = selfCopy->_propertyStore;
   }
 
-  [(NSMutableDictionary *)propertyStore setObject:v11 forKeyedSubscript:v6];
-  objc_sync_exit(v7);
+  [(NSMutableDictionary *)propertyStore setObject:propertyCopy forKeyedSubscript:keyCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (id)propertyForKey:(id)a3
+- (id)propertyForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_propertyStore objectForKeyedSubscript:v4];
-  objc_sync_exit(v5);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_propertyStore objectForKeyedSubscript:keyCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }

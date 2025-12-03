@@ -1,7 +1,7 @@
 @interface _NSInflectionRuleExplicit
-- (BOOL)isEqual:(id)a3;
-- (_NSInflectionRuleExplicit)initWithAttributesDictionary:(id)a3;
-- (_NSInflectionRuleExplicit)initWithMorphology:(id)a3 agreeWithArgument:(int64_t)a4 agreeWithConcept:(int64_t)a5 referentConcept:(int64_t)a6;
+- (BOOL)isEqual:(id)equal;
+- (_NSInflectionRuleExplicit)initWithAttributesDictionary:(id)dictionary;
+- (_NSInflectionRuleExplicit)initWithMorphology:(id)morphology agreeWithArgument:(int64_t)argument agreeWithConcept:(int64_t)concept referentConcept:(int64_t)referentConcept;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -18,13 +18,13 @@
   [(_NSInflectionRuleExplicit *)&v3 dealloc];
 }
 
-- (_NSInflectionRuleExplicit)initWithAttributesDictionary:(id)a3
+- (_NSInflectionRuleExplicit)initWithAttributesDictionary:(id)dictionary
 {
   v12 = *MEMORY[0x1E69E9840];
-  [a3 objectForKeyedSubscript:@"NSInflectionAgreementArgument"];
+  [dictionary objectForKeyedSubscript:@"NSInflectionAgreementArgument"];
   if (_NSIsNSNumber())
   {
-    v5 = [objc_msgSend(a3 objectForKeyedSubscript:{@"NSInflectionAgreementArgument", "integerValue"}];
+    v5 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"NSInflectionAgreementArgument", "integerValue"}];
   }
 
   else
@@ -32,10 +32,10 @@
     v5 = 0;
   }
 
-  [a3 objectForKeyedSubscript:@"NSInflectionAgreementConcept"];
+  [dictionary objectForKeyedSubscript:@"NSInflectionAgreementConcept"];
   if (_NSIsNSNumber())
   {
-    v6 = [objc_msgSend(a3 objectForKeyedSubscript:{@"NSInflectionAgreementConcept", "integerValue"}];
+    v6 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"NSInflectionAgreementConcept", "integerValue"}];
   }
 
   else
@@ -43,10 +43,10 @@
     v6 = 0;
   }
 
-  [a3 objectForKeyedSubscript:@"NSInflectionReferentConcept"];
+  [dictionary objectForKeyedSubscript:@"NSInflectionReferentConcept"];
   if (_NSIsNSNumber())
   {
-    v7 = [objc_msgSend(a3 objectForKeyedSubscript:{@"NSInflectionReferentConcept", "integerValue"}];
+    v7 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"NSInflectionReferentConcept", "integerValue"}];
   }
 
   else
@@ -54,8 +54,8 @@
     v7 = 0;
   }
 
-  v8 = [a3 objectForKeyedSubscript:@"NSInflect"];
-  if (!v8)
+  morphology = [dictionary objectForKeyedSubscript:@"NSInflect"];
+  if (!morphology)
   {
 LABEL_13:
     if (v5)
@@ -69,18 +69,18 @@ LABEL_13:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v8 morphology];
+    morphology = [morphology morphology];
     goto LABEL_13;
   }
 
-  v8 = 0;
+  morphology = 0;
   if (v5)
   {
     goto LABEL_20;
   }
 
 LABEL_16:
-  if (!v6 && !v7 && !v8)
+  if (!v6 && !v7 && !morphology)
   {
 
     return 0;
@@ -89,32 +89,32 @@ LABEL_16:
 LABEL_20:
   v11.receiver = self;
   v11.super_class = _NSInflectionRuleExplicit;
-  v9 = [(NSInflectionRule *)&v11 _init];
-  if (v9)
+  _init = [(NSInflectionRule *)&v11 _init];
+  if (_init)
   {
-    v9->_morphology = [v8 copy];
-    v9->_agreeWithConcept = v6;
-    v9->_agreeWithArgument = v5;
-    v9->_referentConcept = v7;
+    _init->_morphology = [morphology copy];
+    _init->_agreeWithConcept = v6;
+    _init->_agreeWithArgument = v5;
+    _init->_referentConcept = v7;
   }
 
-  return v9;
+  return _init;
 }
 
-- (_NSInflectionRuleExplicit)initWithMorphology:(id)a3 agreeWithArgument:(int64_t)a4 agreeWithConcept:(int64_t)a5 referentConcept:(int64_t)a6
+- (_NSInflectionRuleExplicit)initWithMorphology:(id)morphology agreeWithArgument:(int64_t)argument agreeWithConcept:(int64_t)concept referentConcept:(int64_t)referentConcept
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a3 || a5 | a4 | a6)
+  if (morphology || concept | argument | referentConcept)
   {
     v12.receiver = self;
     v12.super_class = _NSInflectionRuleExplicit;
-    v10 = [(NSInflectionRule *)&v12 _init];
-    if (v10)
+    _init = [(NSInflectionRule *)&v12 _init];
+    if (_init)
     {
-      v10->_morphology = [a3 copy];
-      v10->_agreeWithConcept = a5;
-      v10->_agreeWithArgument = a4;
-      v10->_referentConcept = a6;
+      _init->_morphology = [morphology copy];
+      _init->_agreeWithConcept = concept;
+      _init->_agreeWithArgument = argument;
+      _init->_referentConcept = referentConcept;
     }
   }
 
@@ -124,7 +124,7 @@ LABEL_20:
     return 0;
   }
 
-  return v10;
+  return _init;
 }
 
 - (id)description
@@ -174,12 +174,12 @@ LABEL_20:
 {
   v3 = [objc_opt_class() hash];
   v4 = [(NSMorphology *)[(_NSInflectionRuleExplicit *)self morphology] hash]^ v3;
-  v5 = [(_NSInflectionRuleExplicit *)self referentConcept];
-  v6 = v5 ^ [(_NSInflectionRuleExplicit *)self agreeWithConcept];
+  referentConcept = [(_NSInflectionRuleExplicit *)self referentConcept];
+  v6 = referentConcept ^ [(_NSInflectionRuleExplicit *)self agreeWithConcept];
   return v4 ^ v6 ^ [(_NSInflectionRuleExplicit *)self agreeWithArgument];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -187,16 +187,16 @@ LABEL_20:
     goto LABEL_7;
   }
 
-  if (!-[_NSInflectionRuleExplicit morphology](self, "morphology") || (v5 = -[NSMorphology isEqual:](-[_NSInflectionRuleExplicit morphology](self, "morphology"), "isEqual:", [a3 morphology])))
+  if (!-[_NSInflectionRuleExplicit morphology](self, "morphology") || (v5 = -[NSMorphology isEqual:](-[_NSInflectionRuleExplicit morphology](self, "morphology"), "isEqual:", [equal morphology])))
   {
-    v6 = [(_NSInflectionRuleExplicit *)self referentConcept];
-    if (v6 == [a3 referentConcept])
+    referentConcept = [(_NSInflectionRuleExplicit *)self referentConcept];
+    if (referentConcept == [equal referentConcept])
     {
-      v7 = [(_NSInflectionRuleExplicit *)self agreeWithConcept];
-      if (v7 == [a3 agreeWithConcept])
+      agreeWithConcept = [(_NSInflectionRuleExplicit *)self agreeWithConcept];
+      if (agreeWithConcept == [equal agreeWithConcept])
       {
-        v8 = [(_NSInflectionRuleExplicit *)self agreeWithArgument];
-        LOBYTE(v5) = v8 == [a3 agreeWithArgument];
+        agreeWithArgument = [(_NSInflectionRuleExplicit *)self agreeWithArgument];
+        LOBYTE(v5) = agreeWithArgument == [equal agreeWithArgument];
         return v5;
       }
     }

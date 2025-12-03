@@ -1,7 +1,7 @@
 @interface BCCloudAssetManager
 + (id)sharedManager;
 + (id)sharedService;
-+ (void)deleteCloudDataWithCompletion:(id)a3;
++ (void)deleteCloudDataWithCompletion:(id)completion;
 - (NSManagedObjectModel)objectModel;
 - (id)assetDetailManagerInstance;
 - (id)assetReviewManagerInstance;
@@ -9,8 +9,8 @@
 - (id)readingNowDetailManagerInstance;
 - (id)storeAssetManagerInstance;
 - (void)dealloc;
-- (void)dissociateCloudDataFromSyncWithCompletion:(id)a3;
-- (void)hasSaltChangedWithCompletion:(id)a3;
+- (void)dissociateCloudDataFromSyncWithCompletion:(id)completion;
+- (void)hasSaltChangedWithCompletion:(id)completion;
 @end
 
 @implementation BCCloudAssetManager
@@ -43,21 +43,21 @@
   {
     v3 = +[BCCloudKitController sharedInstance];
     v4 = [BCCloudDataSource alloc];
-    v5 = [(BCCloudAssetManager *)v2 objectModel];
-    v6 = [(BCCloudDataSource *)v4 initWithManagedObjectModel:v5 nameOnDisk:@"BCAssetData"];
+    objectModel = [(BCCloudAssetManager *)v2 objectModel];
+    v6 = [(BCCloudDataSource *)v4 initWithManagedObjectModel:objectModel nameOnDisk:@"BCAssetData"];
     assetDataSource = v2->_assetDataSource;
     v2->_assetDataSource = v6;
 
     v8 = [BCCloudChangeTokenController alloc];
-    v9 = [(BCCloudDataSource *)v2->_assetDataSource managedObjectContext];
-    v10 = [(BCCloudChangeTokenController *)v8 initWithMOC:v9 zoneName:@"AssetZone" cloudKitController:v3];
+    managedObjectContext = [(BCCloudDataSource *)v2->_assetDataSource managedObjectContext];
+    v10 = [(BCCloudChangeTokenController *)v8 initWithMOC:managedObjectContext zoneName:@"AssetZone" cloudKitController:v3];
     changeTokenController = v2->_changeTokenController;
     v2->_changeTokenController = v10;
 
     v12 = [BDSSaltVersionIdentifierManager alloc];
     v13 = v2->_changeTokenController;
-    v14 = [v3 privateCloudDatabaseController];
-    v15 = [(BDSSaltVersionIdentifierManager *)v12 initWithZoneDataManager:v2 tokenController:v13 databaseController:v14];
+    privateCloudDatabaseController = [v3 privateCloudDatabaseController];
+    v15 = [(BDSSaltVersionIdentifierManager *)v12 initWithZoneDataManager:v2 tokenController:v13 databaseController:privateCloudDatabaseController];
     saltVersionIdentifierManager = v2->_saltVersionIdentifierManager;
     v2->_saltVersionIdentifierManager = v15;
 
@@ -117,7 +117,7 @@
 - (id)assetDetailManagerInstance
 {
   objc_opt_class();
-  v3 = [(BCCloudAssetManager *)self assetDetailManager];
+  assetDetailManager = [(BCCloudAssetManager *)self assetDetailManager];
   v4 = BUDynamicCast();
 
   return v4;
@@ -126,7 +126,7 @@
 - (id)readingNowDetailManagerInstance
 {
   objc_opt_class();
-  v3 = [(BCCloudAssetManager *)self readingNowDetailManager];
+  readingNowDetailManager = [(BCCloudAssetManager *)self readingNowDetailManager];
   v4 = BUDynamicCast();
 
   return v4;
@@ -135,7 +135,7 @@
 - (id)assetReviewManagerInstance
 {
   objc_opt_class();
-  v3 = [(BCCloudAssetManager *)self assetReviewManager];
+  assetReviewManager = [(BCCloudAssetManager *)self assetReviewManager];
   v4 = BUDynamicCast();
 
   return v4;
@@ -144,27 +144,27 @@
 - (id)storeAssetManagerInstance
 {
   objc_opt_class();
-  v3 = [(BCCloudAssetManager *)self storeAssetManager];
+  storeAssetManager = [(BCCloudAssetManager *)self storeAssetManager];
   v4 = BUDynamicCast();
 
   return v4;
 }
 
-- (void)hasSaltChangedWithCompletion:(id)a3
+- (void)hasSaltChangedWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [(BCCloudAssetManager *)self storeAssetManagerInstance];
-  [v5 bds_addObjectIfNotNil:v6];
+  storeAssetManagerInstance = [(BCCloudAssetManager *)self storeAssetManagerInstance];
+  [v5 bds_addObjectIfNotNil:storeAssetManagerInstance];
 
-  v7 = [(BCCloudAssetManager *)self assetDetailManagerInstance];
-  [v5 bds_addObjectIfNotNil:v7];
+  assetDetailManagerInstance = [(BCCloudAssetManager *)self assetDetailManagerInstance];
+  [v5 bds_addObjectIfNotNil:assetDetailManagerInstance];
 
-  v8 = [(BCCloudAssetManager *)self readingNowDetailManagerInstance];
-  [v5 bds_addObjectIfNotNil:v8];
+  readingNowDetailManagerInstance = [(BCCloudAssetManager *)self readingNowDetailManagerInstance];
+  [v5 bds_addObjectIfNotNil:readingNowDetailManagerInstance];
 
-  v9 = [(BCCloudAssetManager *)self assetReviewManagerInstance];
-  [v5 bds_addObjectIfNotNil:v9];
+  assetReviewManagerInstance = [(BCCloudAssetManager *)self assetReviewManagerInstance];
+  [v5 bds_addObjectIfNotNil:assetReviewManagerInstance];
 
   v10 = sub_10000DC08();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -174,12 +174,12 @@
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "BCCloudAssetManager hasSaltChangedWithCompletion with managers:%@", &v11, 0xCu);
   }
 
-  [v5 bds_chainUntilNoErrorCompletionSelectorCallsForSelector:"hasSaltChangedWithCompletion:" completion:v4];
+  [v5 bds_chainUntilNoErrorCompletionSelectorCallsForSelector:"hasSaltChangedWithCompletion:" completion:completionCopy];
 }
 
-- (void)dissociateCloudDataFromSyncWithCompletion:(id)a3
+- (void)dissociateCloudDataFromSyncWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_100002660();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -187,27 +187,27 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "BCCloudAssetManager dissociateCloudDataFromSyncWithCompletion - Service mode - non watch", v12, 2u);
   }
 
-  v6 = [(BCCloudAssetManager *)self storeAssetManagerInstance];
-  v13[0] = v6;
-  v7 = [(BCCloudAssetManager *)self assetDetailManagerInstance];
-  v13[1] = v7;
-  v8 = [(BCCloudAssetManager *)self readingNowDetailManagerInstance];
-  v13[2] = v8;
-  v9 = [(BCCloudAssetManager *)self assetReviewManagerInstance];
-  v13[3] = v9;
-  v10 = [(BCCloudAssetManager *)self changeTokenController];
-  v13[4] = v10;
+  storeAssetManagerInstance = [(BCCloudAssetManager *)self storeAssetManagerInstance];
+  v13[0] = storeAssetManagerInstance;
+  assetDetailManagerInstance = [(BCCloudAssetManager *)self assetDetailManagerInstance];
+  v13[1] = assetDetailManagerInstance;
+  readingNowDetailManagerInstance = [(BCCloudAssetManager *)self readingNowDetailManagerInstance];
+  v13[2] = readingNowDetailManagerInstance;
+  assetReviewManagerInstance = [(BCCloudAssetManager *)self assetReviewManagerInstance];
+  v13[3] = assetReviewManagerInstance;
+  changeTokenController = [(BCCloudAssetManager *)self changeTokenController];
+  v13[4] = changeTokenController;
   v11 = [NSArray arrayWithObjects:v13 count:5];
-  [v11 bds_chainSuccessAndErrorCompletionSelectorCallsForSelector:"dissociateCloudDataFromSyncWithCompletion:" completion:v4];
+  [v11 bds_chainSuccessAndErrorCompletionSelectorCallsForSelector:"dissociateCloudDataFromSyncWithCompletion:" completion:completionCopy];
 }
 
-+ (void)deleteCloudDataWithCompletion:(id)a3
++ (void)deleteCloudDataWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[BULogUtilities shared];
-  v5 = [v4 verboseLoggingEnabled];
+  verboseLoggingEnabled = [v4 verboseLoggingEnabled];
 
-  if (v5)
+  if (verboseLoggingEnabled)
   {
     v6 = sub_10000DB80();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -217,7 +217,7 @@
     }
   }
 
-  [BCCloudDataSource deleteCloudDataWithCompletion:v3];
+  [BCCloudDataSource deleteCloudDataWithCompletion:completionCopy];
 }
 
 @end

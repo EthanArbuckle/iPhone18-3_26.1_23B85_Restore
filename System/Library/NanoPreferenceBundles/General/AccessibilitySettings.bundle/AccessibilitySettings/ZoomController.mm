@@ -2,8 +2,8 @@
 - (id)areZoomHandGesturesEnabled;
 - (id)instructionsText;
 - (id)specifiers;
-- (id)zoomEnabled:(id)a3;
-- (void)setZoomEnabled:(id)a3 specifier:(id)a4;
+- (id)zoomEnabled:(id)enabled;
+- (void)setZoomEnabled:(id)enabled specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -14,10 +14,10 @@
   v6.receiver = self;
   v6.super_class = ZoomController;
   [(AccessibilityBridgeBaseController *)&v6 viewDidLoad];
-  v3 = [(ZoomController *)self table];
+  table = [(ZoomController *)self table];
   v4 = objc_opt_class();
   v5 = +[(PSTableCell *)BridgeZoomLabeledSliderCell];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
 - (id)specifiers
@@ -30,7 +30,7 @@
     v4 = [(ZoomController *)self loadSpecifiersFromPlistName:@"ZoomSettings" target:self];
     v5 = [v4 mutableCopy];
 
-    v28 = self;
+    selfCopy = self;
     v6 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:&stru_284E770C0 target:self set:0 get:0 detail:0 cell:-1 edit:0];
     [v6 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
     v7 = *MEMORY[0x277D3FFB8];
@@ -75,8 +75,8 @@
 
             if (v20)
             {
-              v21 = [(ZoomController *)v28 instructionsText];
-              [v14 setProperty:v21 forKey:v26];
+              instructionsText = [(ZoomController *)selfCopy instructionsText];
+              [v14 setProperty:instructionsText forKey:v26];
             }
           }
 
@@ -90,10 +90,10 @@
       while (v11);
     }
 
-    v22 = *(&v28->super.super.super.super.super.super.isa + v25);
-    *(&v28->super.super.super.super.super.super.isa + v25) = v8;
+    v22 = *(&selfCopy->super.super.super.super.super.super.isa + v25);
+    *(&selfCopy->super.super.super.super.super.super.isa + v25) = v8;
 
-    v3 = *(&v28->super.super.super.super.super.super.isa + v25);
+    v3 = *(&selfCopy->super.super.super.super.super.super.isa + v25);
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -101,22 +101,22 @@
   return v3;
 }
 
-- (void)setZoomEnabled:(id)a3 specifier:(id)a4
+- (void)setZoomEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [v5 BOOLValue];
+  enabledCopy = enabled;
+  bOOLValue = [enabledCopy BOOLValue];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __43__ZoomController_setZoomEnabled_specifier___block_invoke;
   v15 = &unk_278B909B0;
-  v16 = self;
-  v17 = v5;
-  v7 = v5;
+  selfCopy = self;
+  v17 = enabledCopy;
+  v7 = enabledCopy;
   v8 = _Block_copy(&v12);
   v9 = [(ZoomController *)self areZoomHandGesturesEnabled:v12];
-  v10 = [v9 BOOLValue];
+  bOOLValue2 = [v9 BOOLValue];
 
-  if (AXActivePairedDeviceSupportsHasEltonEnabled() && v6 && v10)
+  if (AXActivePairedDeviceSupportsHasEltonEnabled() && bOOLValue && bOOLValue2)
   {
     v11 = settingsLocString(@"GREY_FEATURE_NAME_ZOOM", @"AccessibilitySettings-elton");
     [(AccessibilityBridgeBaseController *)self presentDisableEltonAlert:v11 greyOptional:1 confirmBlock:v8 disableGreyBlock:&__block_literal_global_5];
@@ -134,11 +134,11 @@ void __43__ZoomController_setZoomEnabled_specifier___block_invoke_2()
   [v0 setZoomHandGestures:0];
 }
 
-- (id)zoomEnabled:(id)a3
+- (id)zoomEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  v5 = [v3 numberWithBool:{objc_msgSend(v4, "BOOLForKey:", @"ZoomTouchEnabled"}];
+  accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  v5 = [v3 numberWithBool:{objc_msgSend(accessibilityDomainAccessor, "BOOLForKey:", @"ZoomTouchEnabled"}];
 
   return v5;
 }
@@ -146,8 +146,8 @@ void __43__ZoomController_setZoomEnabled_specifier___block_invoke_2()
 - (id)areZoomHandGesturesEnabled
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [MEMORY[0x277D7A910] sharedInstance];
-  v4 = [v2 numberWithBool:{objc_msgSend(v3, "zoomHandGesturesEnabled")}];
+  mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+  v4 = [v2 numberWithBool:{objc_msgSend(mEMORY[0x277D7A910], "zoomHandGesturesEnabled")}];
 
   return v4;
 }

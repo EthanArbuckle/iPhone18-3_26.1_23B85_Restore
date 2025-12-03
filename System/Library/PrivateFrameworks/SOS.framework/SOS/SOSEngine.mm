@@ -1,56 +1,56 @@
 @interface SOSEngine
 + (BOOL)authorizedToUseContactStore;
-+ (id)GPSCoordinatesURLForLocation:(id)a3;
-+ (id)_sosMessageForLocation:(id)a3 isFirstMessage:(BOOL)a4 myFullName:(id)a5 myFirstName:(id)a6 reason:(int64_t)a7 recipientReason:(unint64_t)a8;
-+ (id)additionalTextForCallbackNumber:(id)a3;
-+ (id)additionalTextForCallbackNumber:(id)a3 fullName:(id)a4 firstName:(id)a5;
++ (id)GPSCoordinatesURLForLocation:(id)location;
++ (id)_sosMessageForLocation:(id)location isFirstMessage:(BOOL)message myFullName:(id)name myFirstName:(id)firstName reason:(int64_t)reason recipientReason:(unint64_t)recipientReason;
++ (id)additionalTextForCallbackNumber:(id)number;
++ (id)additionalTextForCallbackNumber:(id)number fullName:(id)name firstName:(id)firstName;
 + (id)contactStore;
-+ (id)firstNameForContact:(id)a3;
-+ (id)fullNameForContact:(id)a3;
-+ (id)getUrlForTrigger:(int64_t)a3;
++ (id)firstNameForContact:(id)contact;
++ (id)fullNameForContact:(id)contact;
++ (id)getUrlForTrigger:(int64_t)trigger;
 + (id)locationShifter;
-+ (id)mapTriggerToActivationReason:(int64_t)a3;
++ (id)mapTriggerToActivationReason:(int64_t)reason;
 + (id)meContact;
 + (id)sharedInstance;
-+ (void)_sendCKMessage:(id)a3 failureBlock:(id)a4;
-+ (void)_sendMessage:(id)a3 location:(id)a4 recipients:(id)a5 recipientReasonMessages:(id)a6 useStandalone:(BOOL)a7 critical:(BOOL)a8 failureBlock:(id)a9;
++ (void)_sendCKMessage:(id)message failureBlock:(id)block;
++ (void)_sendMessage:(id)message location:(id)location recipients:(id)recipients recipientReasonMessages:(id)messages useStandalone:(BOOL)standalone critical:(BOOL)critical failureBlock:(id)block;
 + (void)preloadContactStoreIfNecessary;
-+ (void)shiftedLocationWithLocation:(id)a3 completion:(id)a4;
-- (BOOL)isTriggerEnabled:(int64_t)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)locationIsValidToSend:(id)a3;
++ (void)shiftedLocationWithLocation:(id)location completion:(id)completion;
+- (BOOL)isTriggerEnabled:(int64_t)enabled;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)locationIsValidToSend:(id)send;
 - (SOSEngine)init;
 - (SOSEngine)initWithoutEntitlement;
 - (SOSFlowManagerCoexProtocol)sosFlowManager;
-- (void)SOSSendingLocationUpdateChanged:(id)a3;
+- (void)SOSSendingLocationUpdateChanged:(id)changed;
 - (void)_checkEmergencyCallStatus;
 - (void)_checkSOSCallStatus;
-- (void)_onEmergencyCallStatusChanged:(id)a3;
-- (void)_tuCallCenterStatusChanged:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
-- (void)broadcastUpdatedSOSStatus:(id)a3;
+- (void)_onEmergencyCallStatusChanged:(id)changed;
+- (void)_tuCallCenterStatusChanged:(id)changed;
+- (void)applicationsDidUninstall:(id)uninstall;
+- (void)broadcastUpdatedSOSStatus:(id)status;
 - (void)contactStoreDidChange;
 - (void)databaseWasRebuilt;
 - (void)dealloc;
-- (void)didDismissSOSBeforeSOSCall:(int64_t)a3;
-- (void)dismissSOSWithCompletion:(id)a3;
+- (void)didDismissSOSBeforeSOSCall:(int64_t)call;
+- (void)dismissSOSWithCompletion:(id)completion;
 - (void)fetchMedicalIDName;
-- (void)handoffFallbackWithUUID:(id)a3 trigger:(int64_t)a4;
-- (void)mostRecentLocationSentWithCompletion:(id)a3;
+- (void)handoffFallbackWithUUID:(id)d trigger:(int64_t)trigger;
+- (void)mostRecentLocationSentWithCompletion:(id)completion;
 - (void)notifyEmergencyReasonToSafetyBuddy;
 - (void)notifyEmergencyReasonToSafetyBuddyForInternalDevices;
-- (void)notifySafetyKitWithSOSStatus:(id)a3;
-- (void)retriggerSOSWithUUID:(id)a3 trigger:(int64_t)a4;
-- (void)sosPersistentTimerLocationManagerTimerFired:(id)a3 location:(id)a4;
+- (void)notifySafetyKitWithSOSStatus:(id)status;
+- (void)retriggerSOSWithUUID:(id)d trigger:(int64_t)trigger;
+- (void)sosPersistentTimerLocationManagerTimerFired:(id)fired location:(id)location;
 - (void)start;
-- (void)startSendingLocationUpdateForReason:(int64_t)a3 WithCompletion:(id)a4;
-- (void)startSendingLocationUpdateWithCompletion:(id)a3;
+- (void)startSendingLocationUpdateForReason:(int64_t)reason WithCompletion:(id)completion;
+- (void)startSendingLocationUpdateWithCompletion:(id)completion;
 - (void)stopSendingLocationUpdate;
-- (void)syncState:(id)a3;
-- (void)triggerSOSWithUUID:(id)a3 triggerMechanism:(int64_t)a4 source:(int64_t)a5 completion:(id)a6;
-- (void)updateCurrentSOSButtonPressState:(id)a3;
-- (void)updateCurrentSOSInitiationState:(int64_t)a3;
-- (void)updateCurrentSOSInteractiveState:(int64_t)a3;
+- (void)syncState:(id)state;
+- (void)triggerSOSWithUUID:(id)d triggerMechanism:(int64_t)mechanism source:(int64_t)source completion:(id)completion;
+- (void)updateCurrentSOSButtonPressState:(id)state;
+- (void)updateCurrentSOSInitiationState:(int64_t)state;
+- (void)updateCurrentSOSInteractiveState:(int64_t)state;
 - (void)willStartSendingLocationUpdate;
 @end
 
@@ -60,13 +60,13 @@
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CBEB18]);
-  v4 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v5 = [v4 currentCalls];
-  v6 = [v3 initWithArray:v5];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  currentCalls = [mEMORY[0x277D6EDF8] currentCalls];
+  v6 = [v3 initWithArray:currentCalls];
 
-  v7 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v8 = [v7 callsOnDefaultPairedDevice];
-  [v6 addObjectsFromArray:v8];
+  mEMORY[0x277D6EDF8]2 = [MEMORY[0x277D6EDF8] sharedInstance];
+  callsOnDefaultPairedDevice = [mEMORY[0x277D6EDF8]2 callsOnDefaultPairedDevice];
+  [v6 addObjectsFromArray:callsOnDefaultPairedDevice];
 
   v17 = 0u;
   v18 = 0u;
@@ -114,13 +114,13 @@ LABEL_12:
 {
   v20 = *MEMORY[0x277D85DE8];
   v2 = objc_alloc(MEMORY[0x277CBEB18]);
-  v3 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v4 = [v3 currentCalls];
-  v5 = [v2 initWithArray:v4];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  currentCalls = [mEMORY[0x277D6EDF8] currentCalls];
+  v5 = [v2 initWithArray:currentCalls];
 
-  v6 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v7 = [v6 callsOnDefaultPairedDevice];
-  [v5 addObjectsFromArray:v7];
+  mEMORY[0x277D6EDF8]2 = [MEMORY[0x277D6EDF8] sharedInstance];
+  callsOnDefaultPairedDevice = [mEMORY[0x277D6EDF8]2 callsOnDefaultPairedDevice];
+  [v5 addObjectsFromArray:callsOnDefaultPairedDevice];
 
   v17 = 0u;
   v18 = 0u;
@@ -171,15 +171,15 @@ LABEL_12:
   if ([SOSEntitlement currentProcessHasEntitlement:@"com.apple.sos.trigger"])
   {
     self = [(SOSEngine *)self initWithoutEntitlement];
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (SOSEngine)initWithoutEntitlement
@@ -200,7 +200,7 @@ LABEL_12:
     clientConnections = v2->_clientConnections;
     v2->_clientConnections = v4;
 
-    v6 = [getSAServerClass() sharedInstance];
+    sharedInstance = [getSAServerClass() sharedInstance];
     v7 = objc_opt_new();
     contactsManager = v2->_contactsManager;
     v2->_contactsManager = v7;
@@ -214,21 +214,21 @@ LABEL_12:
     sosStatusManager = v2->_sosStatusManager;
     v2->_sosStatusManager = v11;
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:v2 selector:sel_SOSSendingLocationUpdateChanged_ name:@"SOSSendingLocationUpdateChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_SOSSendingLocationUpdateChanged_ name:@"SOSSendingLocationUpdateChangedNotification" object:0];
 
     v14 = +[SOSCoordinator sharedInstance];
     sosCoordinator = v2->_sosCoordinator;
     v2->_sosCoordinator = v14;
 
     [(SOSCoordinator *)v2->_sosCoordinator addObserver:v2->_sosStatusManager];
-    v16 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v16 addObserver:v2];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace addObserver:v2];
 
     v17 = MEMORY[0x277D85CD0];
     dispatch_async(MEMORY[0x277D85CD0], &__block_literal_global_4);
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 addObserver:v2 selector:sel__tuCallCenterStatusChanged_ name:*MEMORY[0x277D6EFF0] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__tuCallCenterStatusChanged_ name:*MEMORY[0x277D6EFF0] object:0];
 
     objc_initWeak(buf, v2);
     block[0] = MEMORY[0x277D85DD0];
@@ -285,13 +285,13 @@ void __35__SOSEngine_initWithoutEntitlement__block_invoke_3(uint64_t a1)
 - (void)start
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 objectForKey:@"SOSSendingLocationUpdateStopTimeKey"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults objectForKey:@"SOSSendingLocationUpdateStopTimeKey"];
 
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEAA8] date];
-    v6 = [v5 compare:v4] == 1;
+    date = [MEMORY[0x277CBEAA8] date];
+    v6 = [date compare:v4] == 1;
 
     v7 = sos_default_log();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -348,11 +348,11 @@ void __18__SOSEngine_start__block_invoke(uint64_t a1)
 - (void)dealloc
 {
   [(SOSCoordinator *)self->_sosCoordinator removeObserver:self->_sosStatusManager];
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v3 removeObserver:self];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace removeObserver:self];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = SOSEngine;
@@ -365,7 +365,7 @@ void __18__SOSEngine_start__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __27__SOSEngine_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_0 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_0, block);
@@ -383,14 +383,14 @@ uint64_t __27__SOSEngine_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_tuCallCenterStatusChanged:(id)a3
+- (void)_tuCallCenterStatusChanged:(id)changed
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  changedCopy = changed;
+  v5 = changedCopy;
+  if (changedCopy)
   {
-    v6 = [v4 name];
-    v7 = [v6 isEqualToString:*MEMORY[0x277D6EFF0]];
+    name = [changedCopy name];
+    v7 = [name isEqualToString:*MEMORY[0x277D6EFF0]];
 
     v8 = sos_default_log();
     v9 = v8;
@@ -416,19 +416,19 @@ uint64_t __27__SOSEngine_sharedInstance__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_onEmergencyCallStatusChanged:(id)a3
+- (void)_onEmergencyCallStatusChanged:(id)changed
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  changedCopy = changed;
+  v5 = changedCopy;
+  if (changedCopy)
   {
-    v6 = [v4 isActive];
+    isActive = [changedCopy isActive];
   }
 
   else
   {
-    v6 = 0;
+    isActive = 0;
   }
 
   v7 = sos_default_log();
@@ -438,27 +438,27 @@ uint64_t __27__SOSEngine_sharedInstance__block_invoke(uint64_t a1)
     v10[0] = 67109376;
     v10[1] = isEmergencyCallOngoing;
     v11 = 1024;
-    v12 = v6;
+    v12 = isActive;
     _os_log_impl(&dword_264323000, v7, OS_LOG_TYPE_DEFAULT, "SOSEngine,isEmergencyCallOngoing updated, from, %{BOOL}d, to %{BOOL}d", v10, 0xEu);
   }
 
-  self->_isEmergencyCallOngoing = v6;
+  self->_isEmergencyCallOngoing = isActive;
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)SOSSendingLocationUpdateChanged:(id)a3
+- (void)SOSSendingLocationUpdateChanged:(id)changed
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SOSEngine *)self isSendingLocationUpdate];
+  changedCopy = changed;
+  isSendingLocationUpdate = [(SOSEngine *)self isSendingLocationUpdate];
   v6 = self->_clientConnections;
   objc_sync_enter(v6);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(SOSEngine *)self clientConnections];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  clientConnections = [(SOSEngine *)self clientConnections];
+  v8 = [clientConnections countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = *v14;
@@ -469,17 +469,17 @@ uint64_t __27__SOSEngine_sharedInstance__block_invoke(uint64_t a1)
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(clientConnections);
         }
 
         v11 = [*(*(&v13 + 1) + 8 * v10) remoteObjectProxyWithErrorHandler:&__block_literal_global_369];
-        [v11 setSendingLocationUpdate:v5];
+        [v11 setSendingLocationUpdate:isSendingLocationUpdate];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [clientConnections countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -499,22 +499,22 @@ void __45__SOSEngine_SOSSendingLocationUpdateChanged___block_invoke(uint64_t a1,
   }
 }
 
-- (void)updateCurrentSOSInitiationState:(int64_t)a3
+- (void)updateCurrentSOSInitiationState:(int64_t)state
 {
   v23 = *MEMORY[0x277D85DE8];
   v5 = sos_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(SOSEngine *)self clientConnections];
+    clientConnections = [(SOSEngine *)self clientConnections];
     *buf = 134218242;
-    v20 = a3;
+    stateCopy = state;
     v21 = 2112;
-    v22 = v6;
+    v22 = clientConnections;
     _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "Attempting to update current sos initiation state to %ld for connections: %@", buf, 0x16u);
   }
 
-  self->_currentSOSInitiationState = a3;
-  if (!a3)
+  self->_currentSOSInitiationState = state;
+  if (!state)
   {
     [(SOSPersistentTimerLocationManager *)self->_sosPersistentTimerLocationManager stopRequestingLocationUpdates];
   }
@@ -525,8 +525,8 @@ void __45__SOSEngine_SOSSendingLocationUpdateChanged___block_invoke(uint64_t a1,
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(SOSEngine *)self clientConnections];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  clientConnections2 = [(SOSEngine *)self clientConnections];
+  v9 = [clientConnections2 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = *v15;
@@ -537,17 +537,17 @@ void __45__SOSEngine_SOSSendingLocationUpdateChanged___block_invoke(uint64_t a1,
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(clientConnections2);
         }
 
         v12 = [*(*(&v14 + 1) + 8 * v11) remoteObjectProxyWithErrorHandler:&__block_literal_global_371];
-        [v12 updateClientCurrentSOSInitiationState:a3];
+        [v12 updateClientCurrentSOSInitiationState:state];
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [clientConnections2 countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -567,29 +567,29 @@ void __45__SOSEngine_updateCurrentSOSInitiationState___block_invoke(uint64_t a1,
   }
 }
 
-- (void)updateCurrentSOSInteractiveState:(int64_t)a3
+- (void)updateCurrentSOSInteractiveState:(int64_t)state
 {
   v25 = *MEMORY[0x277D85DE8];
   v5 = sos_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(SOSEngine *)self clientConnections];
+    clientConnections = [(SOSEngine *)self clientConnections];
     *buf = 134218242;
-    v22 = a3;
+    stateCopy = state;
     v23 = 2112;
-    v24 = v6;
+    v24 = clientConnections;
     _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "Attempting to update current sos interactive state to %ld for connections: %@", buf, 0x16u);
   }
 
-  self->_currentSOSInteractiveState = a3;
+  self->_currentSOSInteractiveState = state;
   obj = self->_clientConnections;
   objc_sync_enter(obj);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [(SOSEngine *)self clientConnections];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  clientConnections2 = [(SOSEngine *)self clientConnections];
+  v8 = [clientConnections2 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = *v17;
@@ -599,14 +599,14 @@ void __45__SOSEngine_updateCurrentSOSInitiationState___block_invoke(uint64_t a1,
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(clientConnections2);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = [v11 remoteObjectProxyWithErrorHandler:&__block_literal_global_373];
         if (objc_opt_respondsToSelector())
         {
-          [v12 updateClientCurrentSOSInteractiveState:a3];
+          [v12 updateClientCurrentSOSInteractiveState:state];
         }
 
         else
@@ -615,13 +615,13 @@ void __45__SOSEngine_updateCurrentSOSInitiationState___block_invoke(uint64_t a1,
           if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v22 = v11;
+            stateCopy = v11;
             _os_log_error_impl(&dword_264323000, v13, OS_LOG_TYPE_ERROR, "Could not send client a current interactive state due to client protocol error for connection %@", buf, 0xCu);
           }
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [clientConnections2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -641,30 +641,30 @@ void __46__SOSEngine_updateCurrentSOSInteractiveState___block_invoke(uint64_t a1
   }
 }
 
-- (void)updateCurrentSOSButtonPressState:(id)a3
+- (void)updateCurrentSOSButtonPressState:(id)state
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  stateCopy = state;
   v6 = sos_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(SOSEngine *)self clientConnections];
+    clientConnections = [(SOSEngine *)self clientConnections];
     *buf = 138412546;
-    v21 = v5;
+    v21 = stateCopy;
     v22 = 2112;
-    v23 = v7;
+    v23 = clientConnections;
     _os_log_impl(&dword_264323000, v6, OS_LOG_TYPE_DEFAULT, "SOSEngine,attempting to update current sos button press state to %@ for connections: %@", buf, 0x16u);
   }
 
-  objc_storeStrong(&self->_currentSOSButtonPressState, a3);
+  objc_storeStrong(&self->_currentSOSButtonPressState, state);
   v8 = self->_clientConnections;
   objc_sync_enter(v8);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [(SOSEngine *)self clientConnections];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  clientConnections2 = [(SOSEngine *)self clientConnections];
+  v10 = [clientConnections2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = *v16;
@@ -675,17 +675,17 @@ void __46__SOSEngine_updateCurrentSOSInteractiveState___block_invoke(uint64_t a1
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(clientConnections2);
         }
 
         v13 = [*(*(&v15 + 1) + 8 * v12) remoteObjectProxyWithErrorHandler:&__block_literal_global_377];
-        [v13 updateClientCurrentSOSButtonPressState:v5];
+        [v13 updateClientCurrentSOSButtonPressState:stateCopy];
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [clientConnections2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
@@ -705,14 +705,14 @@ void __46__SOSEngine_updateCurrentSOSButtonPressState___block_invoke(uint64_t a1
   }
 }
 
-- (void)dismissSOSWithCompletion:(id)a3
+- (void)dismissSOSWithCompletion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   obj = self->_clientConnections;
   objc_sync_enter(obj);
-  v5 = [(SOSEngine *)self clientConnections];
-  v6 = [v5 count];
+  clientConnections = [(SOSEngine *)self clientConnections];
+  v6 = [clientConnections count];
 
   v29[0] = 0;
   v29[1] = v29;
@@ -726,8 +726,8 @@ void __46__SOSEngine_updateCurrentSOSButtonPressState___block_invoke(uint64_t a1
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [(SOSEngine *)self clientConnections];
-  v8 = [v7 countByEnumeratingWithState:&v23 objects:v30 count:16];
+  clientConnections2 = [(SOSEngine *)self clientConnections];
+  v8 = [clientConnections2 countByEnumeratingWithState:&v23 objects:v30 count:16];
   if (v8)
   {
     v9 = *v24;
@@ -738,7 +738,7 @@ void __46__SOSEngine_updateCurrentSOSButtonPressState___block_invoke(uint64_t a1
       {
         if (*v24 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(clientConnections2);
         }
 
         v11 = *(*(&v23 + 1) + 8 * v10);
@@ -746,7 +746,7 @@ void __46__SOSEngine_updateCurrentSOSButtonPressState___block_invoke(uint64_t a1
         v21[1] = 3221225472;
         v21[2] = __38__SOSEngine_dismissSOSWithCompletion___block_invoke;
         v21[3] = &unk_279B53980;
-        v12 = v4;
+        v12 = completionCopy;
         v22 = v12;
         v13 = [v11 remoteObjectProxyWithErrorHandler:v21];
         v16[0] = MEMORY[0x277D85DD0];
@@ -763,7 +763,7 @@ void __46__SOSEngine_updateCurrentSOSButtonPressState___block_invoke(uint64_t a1
       }
 
       while (v8 != v10);
-      v8 = [v7 countByEnumeratingWithState:&v23 objects:v30 count:16];
+      v8 = [clientConnections2 countByEnumeratingWithState:&v23 objects:v30 count:16];
     }
 
     while (v8);
@@ -824,7 +824,7 @@ uint64_t __38__SOSEngine_dismissSOSWithCompletion___block_invoke_2(uint64_t resu
   return result;
 }
 
-- (void)didDismissSOSBeforeSOSCall:(int64_t)a3
+- (void)didDismissSOSBeforeSOSCall:(int64_t)call
 {
   v17 = *MEMORY[0x277D85DE8];
   v5 = self->_clientConnections;
@@ -833,8 +833,8 @@ uint64_t __38__SOSEngine_dismissSOSWithCompletion___block_invoke_2(uint64_t resu
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(SOSEngine *)self clientConnections];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  clientConnections = [(SOSEngine *)self clientConnections];
+  v7 = [clientConnections countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = *v13;
@@ -845,17 +845,17 @@ uint64_t __38__SOSEngine_dismissSOSWithCompletion___block_invoke_2(uint64_t resu
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(clientConnections);
         }
 
         v10 = [*(*(&v12 + 1) + 8 * v9) remoteObjectProxyWithErrorHandler:&__block_literal_global_381];
-        [v10 didDismissClientSOSBeforeSOSCall:a3];
+        [v10 didDismissClientSOSBeforeSOSCall:call];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [clientConnections countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -875,14 +875,14 @@ void __40__SOSEngine_didDismissSOSBeforeSOSCall___block_invoke(uint64_t a1, void
   }
 }
 
-- (void)broadcastUpdatedSOSStatus:(id)a3
+- (void)broadcastUpdatedSOSStatus:(id)status
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  statusCopy = status;
   v5 = sos_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 description];
+    v6 = [statusCopy description];
     *buf = 138412290;
     v20 = v6;
     _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "SOSEngine, broadcasting SOSStatus: %@", buf, 0xCu);
@@ -894,8 +894,8 @@ void __40__SOSEngine_didDismissSOSBeforeSOSCall___block_invoke(uint64_t a1, void
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(SOSEngine *)self clientConnections];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  clientConnections = [(SOSEngine *)self clientConnections];
+  v9 = [clientConnections countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = *v15;
@@ -906,17 +906,17 @@ void __40__SOSEngine_didDismissSOSBeforeSOSCall___block_invoke(uint64_t a1, void
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(clientConnections);
         }
 
         v12 = [*(*(&v14 + 1) + 8 * v11) remoteObjectProxyWithErrorHandler:&__block_literal_global_383];
-        [v12 didUpdateSOSStatus:v4];
+        [v12 didUpdateSOSStatus:statusCopy];
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [clientConnections countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -936,52 +936,52 @@ void __39__SOSEngine_broadcastUpdatedSOSStatus___block_invoke(uint64_t a1, void 
   }
 }
 
-- (void)notifySafetyKitWithSOSStatus:(id)a3
+- (void)notifySafetyKitWithSOSStatus:(id)status
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 resolution] == 4)
+  statusCopy = status;
+  if ([statusCopy resolution] == 4)
   {
-    v4 = [getSAServerClass() sharedInstance];
-    [v4 startMonitoringLocation];
+    sharedInstance = [getSAServerClass() sharedInstance];
+    [sharedInstance startMonitoringLocation];
   }
 
-  if ([v3 trigger] == 7)
+  if ([statusCopy trigger] == 7)
   {
-    v5 = [v3 resolution];
-    if (v5)
+    resolution = [statusCopy resolution];
+    if (resolution)
     {
-      v6 = v5 == 4;
+      v6 = resolution == 4;
       v7 = sos_default_log();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 136315394;
         v14 = "[SOSEngine notifySafetyKitWithSOSStatus:]";
         v15 = 2112;
-        v16 = v3;
+        v16 = statusCopy;
         _os_log_impl(&dword_264323000, v7, OS_LOG_TYPE_DEFAULT, "%s - Notifying clients most recent kappa event, %@", &v13, 0x16u);
       }
 
-      v8 = [getSAServerClass() sharedInstance];
-      v9 = [v3 timeOfDetection];
-      v10 = [v3 timeOfResolution];
-      [v8 notifyCrashDetectedAt:v9 resolvedAt:v10 resolvedWithResponse:v6 completion:&__block_literal_global_386];
+      sharedInstance2 = [getSAServerClass() sharedInstance];
+      timeOfDetection = [statusCopy timeOfDetection];
+      timeOfResolution = [statusCopy timeOfResolution];
+      [sharedInstance2 notifyCrashDetectedAt:timeOfDetection resolvedAt:timeOfResolution resolvedWithResponse:v6 completion:&__block_literal_global_386];
 
-      v11 = [getSAServerClass() sharedInstance];
-      [v11 stopMonitoringLocation];
+      sharedInstance3 = [getSAServerClass() sharedInstance];
+      [sharedInstance3 stopMonitoringLocation];
     }
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sosPersistentTimerLocationManagerTimerFired:(id)a3 location:(id)a4
+- (void)sosPersistentTimerLocationManagerTimerFired:(id)fired location:(id)location
 {
   v53 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  locationCopy = location;
   if ([(SOSEngine *)self notificationEnabledAndContactsExist])
   {
-    v6 = [(SOSEngine *)self locationIsValidToSend:v5];
+    v6 = [(SOSEngine *)self locationIsValidToSend:locationCopy];
     v7 = sos_default_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -990,35 +990,35 @@ void __39__SOSEngine_broadcastUpdatedSOSStatus___block_invoke(uint64_t a1, void 
       v45 = 1024;
       v46 = v6;
       v47 = 2112;
-      *v48 = v5;
+      *v48 = locationCopy;
       _os_log_impl(&dword_264323000, v7, OS_LOG_TYPE_DEFAULT, "%s - isLocationValid: %d location: %@", &v43, 0x1Cu);
     }
 
     if (!v6)
     {
 
-      v5 = 0;
+      locationCopy = 0;
     }
 
-    v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v9 = v8;
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v9 = standardUserDefaults;
     if (!self->_timeLastMessageSent)
     {
 LABEL_36:
       v31 = objc_opt_class();
-      v32 = [(SOSContactsManager *)self->_contactsManager phoneNumbersToMessage];
-      [v31 _sendMessageToRecipients:v32 withLocation:v5 isFirstMessage:self->_timeLastMessageSent == 0 medicalIDName:self->_medicalIDName Reason:self->_notifyContactsReason];
+      phoneNumbersToMessage = [(SOSContactsManager *)self->_contactsManager phoneNumbersToMessage];
+      [v31 _sendMessageToRecipients:phoneNumbersToMessage withLocation:locationCopy isFirstMessage:self->_timeLastMessageSent == 0 medicalIDName:self->_medicalIDName Reason:self->_notifyContactsReason];
 
-      objc_storeStrong(&self->_lastLocationSent, v5);
+      objc_storeStrong(&self->_lastLocationSent, locationCopy);
       DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
       CFNotificationCenterPostNotification(DarwinNotifyCenter, @"SOSMostRecentLocationSentChangedNotification", 0, 0, 1u);
-      v34 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       timeLastMessageSent = self->_timeLastMessageSent;
-      self->_timeLastMessageSent = v34;
+      self->_timeLastMessageSent = date;
 
 LABEL_37:
-      v36 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v37 = [v36 objectForKey:@"SOSSendingLocationUpdateStopTimeKey"];
+      standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v37 = [standardUserDefaults2 objectForKey:@"SOSSendingLocationUpdateStopTimeKey"];
 
       if (v37 && ([MEMORY[0x277CBEAA8] date], v38 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend(v38, "compare:", v37), v38, v39 == 1))
       {
@@ -1047,7 +1047,7 @@ LABEL_37:
       goto LABEL_46;
     }
 
-    v10 = [v8 objectForKey:@"locationUpdateTimerIntervalSeconds"];
+    v10 = [standardUserDefaults objectForKey:@"locationUpdateTimerIntervalSeconds"];
     v11 = v10;
     if (v10)
     {
@@ -1088,9 +1088,9 @@ LABEL_37:
     v22 = -v21;
     v23 = v13 - v19;
     lastLocationSent = self->_lastLocationSent;
-    if (v5 && lastLocationSent)
+    if (locationCopy && lastLocationSent)
     {
-      [v5 distanceFromLocation:?];
+      [locationCopy distanceFromLocation:?];
       if (v23 <= v22 && v25 > v18)
       {
         v20 = 1;
@@ -1102,7 +1102,7 @@ LABEL_37:
       lastLocationSent = self->_lastLocationSent;
     }
 
-    if (v5)
+    if (locationCopy)
     {
       v27 = lastLocationSent == 0;
     }
@@ -1129,7 +1129,7 @@ LABEL_33:
       v49 = 2112;
       v50 = v30;
       v51 = 2112;
-      v52 = v5;
+      v52 = locationCopy;
       _os_log_impl(&dword_264323000, v29, OS_LOG_TYPE_DEFAULT, "%s - okToSend: %d timeIntervalOk: %d distanceIntervalOk: %d _lastLocationSent: %@ location: %@", &v43, 0x32u);
     }
 
@@ -1174,14 +1174,14 @@ void __87__SOSEngine__sendMessageToRecipients_withLocation_isFirstMessage_medica
   }
 }
 
-+ (void)_sendMessage:(id)a3 location:(id)a4 recipients:(id)a5 recipientReasonMessages:(id)a6 useStandalone:(BOOL)a7 critical:(BOOL)a8 failureBlock:(id)a9
++ (void)_sendMessage:(id)message location:(id)location recipients:(id)recipients recipientReasonMessages:(id)messages useStandalone:(BOOL)standalone critical:(BOOL)critical failureBlock:(id)block
 {
   v36 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a9;
-  v19 = a4;
+  messageCopy = message;
+  recipientsCopy = recipients;
+  messagesCopy = messages;
+  blockCopy = block;
+  locationCopy = location;
   v20 = sos_default_log();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
@@ -1194,18 +1194,18 @@ void __87__SOSEngine__sendMessageToRecipients_withLocation_isFirstMessage_medica
   v26[1] = 3221225472;
   v26[2] = __106__SOSEngine__sendMessage_location_recipients_recipientReasonMessages_useStandalone_critical_failureBlock___block_invoke;
   v26[3] = &unk_279B53A18;
-  v27 = v16;
-  v28 = v15;
-  v30 = v18;
-  v31 = a1;
-  v32 = a7;
-  v33 = a8;
-  v29 = v17;
-  v21 = v18;
-  v22 = v17;
-  v23 = v15;
-  v24 = v16;
-  [a1 shiftedLocationWithLocation:v19 completion:v26];
+  v27 = recipientsCopy;
+  v28 = messageCopy;
+  v30 = blockCopy;
+  selfCopy = self;
+  standaloneCopy = standalone;
+  criticalCopy = critical;
+  v29 = messagesCopy;
+  v21 = blockCopy;
+  v22 = messagesCopy;
+  v23 = messageCopy;
+  v24 = recipientsCopy;
+  [self shiftedLocationWithLocation:locationCopy completion:v26];
 
   v25 = *MEMORY[0x277D85DE8];
 }
@@ -1249,26 +1249,26 @@ void __106__SOSEngine__sendMessage_location_recipients_recipientReasonMessages_u
   [*(a1 + 64) _sendCKMessage:v7 failureBlock:*(a1 + 56)];
 }
 
-+ (void)_sendCKMessage:(id)a3 failureBlock:(id)a4
++ (void)_sendCKMessage:(id)message failureBlock:(id)block
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 copy];
+  messageCopy = message;
+  blockCopy = block;
+  v7 = [messageCopy copy];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __41__SOSEngine__sendCKMessage_failureBlock___block_invoke;
   v18 = &unk_279B53510;
   v8 = v7;
   v19 = v8;
-  v9 = v6;
+  v9 = blockCopy;
   v20 = v9;
-  [v5 setFailureBlock:&v15];
+  [messageCopy setFailureBlock:&v15];
   v10 = sos_default_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v5;
+    *(&buf + 4) = messageCopy;
     _os_log_impl(&dword_264323000, v10, OS_LOG_TYPE_DEFAULT, "Asking CKSOSUtilities to send message: %@", &buf, 0xCu);
   }
 
@@ -1290,8 +1290,8 @@ void __106__SOSEngine__sendMessage_location_recipients_recipientReasonMessages_u
 
   v12 = v11;
   _Block_object_dispose(&v21, 8);
-  v13 = [v11 sharedUtilities];
-  [v13 sendMessage:v5];
+  sharedUtilities = [v11 sharedUtilities];
+  [sharedUtilities sendMessage:messageCopy];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -1355,24 +1355,24 @@ void __28__SOSEngine_locationShifter__block_invoke()
   locationShifter_sLocationShifter = v2;
 }
 
-+ (void)shiftedLocationWithLocation:(id)a3 completion:(id)a4
++ (void)shiftedLocationWithLocation:(id)location completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  locationCopy = location;
+  completionCopy = completion;
+  if (!locationCopy)
   {
     goto LABEL_5;
   }
 
-  v8 = [a1 locationShifter];
-  if (!v8)
+  locationShifter = [self locationShifter];
+  if (!locationShifter)
   {
     goto LABEL_5;
   }
 
-  v9 = v8;
-  v10 = [a1 locationShifter];
-  v11 = [objc_opt_class() isLocationShiftRequiredForLocation:v6];
+  v9 = locationShifter;
+  locationShifter2 = [self locationShifter];
+  v11 = [objc_opt_class() isLocationShiftRequiredForLocation:locationCopy];
 
   if (v11)
   {
@@ -1381,16 +1381,16 @@ void __28__SOSEngine_locationShifter__block_invoke()
     block[1] = 3221225472;
     block[2] = __52__SOSEngine_shiftedLocationWithLocation_completion___block_invoke;
     block[3] = &unk_279B53AB8;
-    v15 = v7;
-    v16 = a1;
-    v14 = v6;
+    v15 = completionCopy;
+    selfCopy = self;
+    v14 = locationCopy;
     dispatch_async(v12, block);
   }
 
   else
   {
 LABEL_5:
-    (*(v7 + 2))(v7, v6);
+    (*(completionCopy + 2))(completionCopy, locationCopy);
   }
 }
 
@@ -1550,21 +1550,21 @@ LABEL_11:
 LABEL_14:
   if (+[SOSUtilities mostRecentlyUsedSOSTriggerMechanism]== 7)
   {
-    v8 = [getSAServerClass() sharedInstance];
-    [v8 startMonitoringLocation];
+    sharedInstance = [getSAServerClass() sharedInstance];
+    [sharedInstance startMonitoringLocation];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startSendingLocationUpdateForReason:(int64_t)a3 WithCompletion:(id)a4
+- (void)startSendingLocationUpdateForReason:(int64_t)reason WithCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if ([(SOSEngine *)self notificationEnabledAndContactsExist])
   {
-    self->_notifyContactsReason = a3;
+    self->_notifyContactsReason = reason;
     [(SOSEngine *)self notifyEmergencyReasonToSafetyBuddy];
-    [(SOSEngine *)self startSendingLocationUpdateWithCompletion:v6];
+    [(SOSEngine *)self startSendingLocationUpdateWithCompletion:completionCopy];
   }
 
   else
@@ -1576,7 +1576,7 @@ LABEL_14:
       _os_log_impl(&dword_264323000, v7, OS_LOG_TYPE_DEFAULT, "No valid contacts to message", v8, 2u);
     }
 
-    (*(v6 + 2))(v6, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -1599,14 +1599,14 @@ LABEL_14:
   {
     if (v3)
     {
-      v7 = [v3 trigger];
+      trigger = [v3 trigger];
       v8 = sos_default_log();
       v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-      if (v7 <= 6)
+      if (trigger <= 6)
       {
-        if (v7)
+        if (trigger)
         {
-          if (v7 == 5)
+          if (trigger == 5)
           {
             if (v9)
             {
@@ -1618,7 +1618,7 @@ LABEL_14:
             goto LABEL_37;
           }
 
-          if (v7 == 6)
+          if (trigger == 6)
           {
             if (v9)
             {
@@ -1655,7 +1655,7 @@ LABEL_17:
         goto LABEL_38;
       }
 
-      if (v7 == 7)
+      if (trigger == 7)
       {
         if (v9)
         {
@@ -1667,7 +1667,7 @@ LABEL_17:
         goto LABEL_37;
       }
 
-      if (v7 == 8)
+      if (trigger == 8)
       {
         if (v9)
         {
@@ -1679,7 +1679,7 @@ LABEL_17:
         goto LABEL_37;
       }
 
-      if (v7 != 9)
+      if (trigger != 9)
       {
         goto LABEL_28;
       }
@@ -1771,10 +1771,10 @@ LABEL_38:
   }
 }
 
-- (void)startSendingLocationUpdateWithCompletion:(id)a3
+- (void)startSendingLocationUpdateWithCompletion:(id)completion
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = sos_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1788,8 +1788,8 @@ LABEL_38:
   v8[2] = __54__SOSEngine_startSendingLocationUpdateWithCompletion___block_invoke;
   v8[3] = &unk_279B53510;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(MEMORY[0x277D85CD0], v8);
 
   v7 = *MEMORY[0x277D85DE8];
@@ -1876,36 +1876,36 @@ uint64_t __54__SOSEngine_startSendingLocationUpdateWithCompletion___block_invoke
   }
 
   [(SOSPersistentTimerLocationManager *)self->_sosPersistentTimerLocationManager invalidateTimer];
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v4 removeObjectForKey:@"SOSSendingLocationUpdateStopTimeKey"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults removeObjectForKey:@"SOSSendingLocationUpdateStopTimeKey"];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v8 = @"SOSSendingLocationUpdateValueKey";
   v9 = MEMORY[0x277CBEC28];
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v9 forKeys:&v8 count:1];
-  [v5 postNotificationName:@"SOSSendingLocationUpdateChangedNotification" object:0 userInfo:v6];
+  [defaultCenter postNotificationName:@"SOSSendingLocationUpdateChangedNotification" object:0 userInfo:v6];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)mostRecentLocationSentWithCompletion:(id)a3
+- (void)mostRecentLocationSentWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_opt_class();
   lastLocationSent = self->_lastLocationSent;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __50__SOSEngine_mostRecentLocationSentWithCompletion___block_invoke;
   v8[3] = &unk_279B53AE0;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [v5 shiftedLocationWithLocation:lastLocationSent completion:v8];
 }
 
-- (void)syncState:(id)a3
+- (void)syncState:(id)state
 {
-  v5 = a3;
-  (*(a3 + 2))(v5, [(SOSEngine *)self isSendingLocationUpdate], self->_currentSOSInitiationState, self->_currentSOSInteractiveState, self->_currentSOSButtonPressState);
+  stateCopy = state;
+  (*(state + 2))(stateCopy, [(SOSEngine *)self isSendingLocationUpdate], self->_currentSOSInitiationState, self->_currentSOSInteractiveState, self->_currentSOSButtonPressState);
 }
 
 + (id)meContact
@@ -1932,11 +1932,11 @@ uint64_t __54__SOSEngine_startSendingLocationUpdateWithCompletion___block_invoke
   return v9;
 }
 
-+ (id)fullNameForContact:(id)a3
++ (id)fullNameForContact:(id)contact
 {
-  if (a3)
+  if (contact)
   {
-    v4 = [MEMORY[0x277CBDA78] stringFromContact:a3 style:0];
+    v4 = [MEMORY[0x277CBDA78] stringFromContact:contact style:0];
   }
 
   else
@@ -1947,11 +1947,11 @@ uint64_t __54__SOSEngine_startSendingLocationUpdateWithCompletion___block_invoke
   return v4;
 }
 
-+ (id)firstNameForContact:(id)a3
++ (id)firstNameForContact:(id)contact
 {
-  if (a3)
+  if (contact)
   {
-    v4 = [MEMORY[0x277CBDA78] stringFromContact:a3 style:1000];
+    v4 = [MEMORY[0x277CBDA78] stringFromContact:contact style:1000];
   }
 
   else
@@ -1962,36 +1962,36 @@ uint64_t __54__SOSEngine_startSendingLocationUpdateWithCompletion___block_invoke
   return v4;
 }
 
-+ (id)_sosMessageForLocation:(id)a3 isFirstMessage:(BOOL)a4 myFullName:(id)a5 myFirstName:(id)a6 reason:(int64_t)a7 recipientReason:(unint64_t)a8
++ (id)_sosMessageForLocation:(id)location isFirstMessage:(BOOL)message myFullName:(id)name myFirstName:(id)firstName reason:(int64_t)reason recipientReason:(unint64_t)recipientReason
 {
   v61[2] = *MEMORY[0x277D85DE8];
-  v12 = a5;
-  v13 = a6;
-  if ([(__CFString *)v12 length]&& ![(__CFString *)v13 length])
+  nameCopy = name;
+  firstNameCopy = firstName;
+  if ([(__CFString *)nameCopy length]&& ![(__CFString *)firstNameCopy length])
   {
-    v14 = v12;
+    v14 = nameCopy;
 
-    v13 = v14;
+    firstNameCopy = v14;
   }
 
   v15 = @"_NO_NAME";
-  if ([(__CFString *)v12 length]&& [(__CFString *)v13 length])
+  if ([(__CFString *)nameCopy length]&& [(__CFString *)firstNameCopy length])
   {
     v15 = @"_HAS_NAME";
   }
 
   v16 = v15;
   v17 = @"_HAS_LOCATION";
-  if (a7 == 2)
+  if (reason == 2)
   {
-    if (!a3)
+    if (!location)
     {
       v17 = @"_NO_LOCATION";
     }
 
     v21 = v17;
     v52 = @"EMERGENCY_TYPE_KAPPA_TRIGGER";
-    if (a4)
+    if (message)
     {
       v20 = @"KAPPA";
       v22 = @"_PHONE";
@@ -2003,7 +2003,7 @@ uint64_t __54__SOSEngine_startSendingLocationUpdateWithCompletion___block_invoke
   {
     v18 = @"EMERGENCY_TYPE_SOS_TRIGGER";
     v19 = @"EMERGENCY";
-    if (a7)
+    if (reason)
     {
       v19 = 0;
     }
@@ -2013,7 +2013,7 @@ uint64_t __54__SOSEngine_startSendingLocationUpdateWithCompletion___block_invoke
       v18 = @"EMERGENCY_TYPE_SOS_TRIGGER";
     }
 
-    if (a7 == 1)
+    if (reason == 1)
     {
       v20 = @"NEWTON";
     }
@@ -2023,19 +2023,19 @@ uint64_t __54__SOSEngine_startSendingLocationUpdateWithCompletion___block_invoke
       v20 = v19;
     }
 
-    if (a7 == 1)
+    if (reason == 1)
     {
       v18 = @"EMERGENCY_TYPE_NEWTON_TRIGGER";
     }
 
     v52 = v18;
-    if (!a3)
+    if (!location)
     {
       v17 = @"_NO_LOCATION";
     }
 
     v21 = v17;
-    if (a4)
+    if (message)
     {
       v22 = &stru_2875C9CD8;
 LABEL_24:
@@ -2049,16 +2049,16 @@ LABEL_24:
   [MEMORY[0x277CCACA8] stringWithFormat:@"EMERGENCY_TEXT_MESSAGE_SUBSEQUENT%@%@", v16, v21, v48, v49];
   v23 = LABEL_26:;
   v24 = @"_EMERGENCYCONTACT";
-  if (a8 == 2)
+  if (recipientReason == 2)
   {
     v24 = @"_CHECKIN";
   }
 
   v55 = v16;
   v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"EMERGENCY_TEXT_MESSAGE_RECIPIENT%@%@", v24, v16];
-  if (v12)
+  if (nameCopy)
   {
-    v26 = v12;
+    v26 = nameCopy;
   }
 
   else
@@ -2068,9 +2068,9 @@ LABEL_24:
 
   v27 = v26;
 
-  if (v13)
+  if (firstNameCopy)
   {
-    v28 = v13;
+    v28 = firstNameCopy;
   }
 
   else
@@ -2119,14 +2119,14 @@ LABEL_24:
   return v44;
 }
 
-+ (id)GPSCoordinatesURLForLocation:(id)a3
++ (id)GPSCoordinatesURLForLocation:(id)location
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  locationCopy = location;
+  v4 = locationCopy;
+  if (locationCopy)
   {
     v5 = MEMORY[0x277CCACA8];
-    [v3 coordinate];
+    [locationCopy coordinate];
     v7 = v6;
     [v4 coordinate];
     v9 = [v5 stringWithFormat:@"https://maps.apple.com/?ll=%.5f, %.5f", v7, v8];
@@ -2134,8 +2134,8 @@ LABEL_24:
     {
       v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v11 = [v10 localizedStringForKey:@"EMERGENCY_PIN_LABEL" value:&stru_2875C9CD8 table:0];
-      v12 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
-      v13 = [v11 stringByAddingPercentEncodingWithAllowedCharacters:v12];
+      uRLQueryAllowedCharacterSet = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
+      v13 = [v11 stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
       if ([v13 length])
       {
@@ -2155,23 +2155,23 @@ LABEL_24:
   return v9;
 }
 
-+ (id)additionalTextForCallbackNumber:(id)a3
++ (id)additionalTextForCallbackNumber:(id)number
 {
-  v4 = a3;
-  v5 = [a1 meContact];
-  v6 = [a1 fullNameForContact:v5];
-  v7 = [a1 firstNameForContact:v5];
-  v8 = [a1 additionalTextForCallbackNumber:v4 fullName:v6 firstName:v7];
+  numberCopy = number;
+  meContact = [self meContact];
+  v6 = [self fullNameForContact:meContact];
+  v7 = [self firstNameForContact:meContact];
+  v8 = [self additionalTextForCallbackNumber:numberCopy fullName:v6 firstName:v7];
 
   return v8;
 }
 
-+ (id)additionalTextForCallbackNumber:(id)a3 fullName:(id)a4 firstName:(id)a5
++ (id)additionalTextForCallbackNumber:(id)number fullName:(id)name firstName:(id)firstName
 {
-  v6 = a3;
-  v7 = a5;
-  v8 = [v7 length];
-  if ([v6 length])
+  numberCopy = number;
+  firstNameCopy = firstName;
+  v8 = [firstNameCopy length];
+  if ([numberCopy length])
   {
     v9 = MEMORY[0x277CCACA8];
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -2179,14 +2179,14 @@ LABEL_24:
     if (!v8)
     {
       v12 = [v10 localizedStringForKey:@"EMERGENCY_TEXT_CALLBACK_NUMBER_ADDITION_NO_NAME" value:&stru_2875C9CD8 table:0];
-      [v9 stringWithFormat:v12, v6, v15];
+      [v9 stringWithFormat:v12, numberCopy, v15];
       goto LABEL_8;
     }
 
     v12 = [v10 localizedStringForKey:@"EMERGENCY_TEXT_CALLBACK_NUMBER_ADDITION_HAS_NAME" value:&stru_2875C9CD8 table:0];
-    v15 = v6;
+    v15 = numberCopy;
 LABEL_6:
-    [v9 stringWithFormat:v12, v7, v15];
+    [v9 stringWithFormat:v12, firstNameCopy, v15];
     v13 = LABEL_8:;
 
     goto LABEL_9;
@@ -2206,35 +2206,35 @@ LABEL_9:
   return v13;
 }
 
-- (BOOL)locationIsValidToSend:(id)a3
+- (BOOL)locationIsValidToSend:(id)send
 {
   *&v27[13] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  sendCopy = send;
   v4 = sos_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v24 = 136315394;
     v25 = "[SOSEngine locationIsValidToSend:]";
     v26 = 2112;
-    *v27 = v3;
+    *v27 = sendCopy;
     _os_log_impl(&dword_264323000, v4, OS_LOG_TYPE_DEFAULT, "%s - location: %@", &v24, 0x16u);
   }
 
-  if (v3)
+  if (sendCopy)
   {
-    [v3 horizontalAccuracy];
+    [sendCopy horizontalAccuracy];
     if (v5 >= 0.0)
     {
-      [v3 horizontalAccuracy];
+      [sendCopy horizontalAccuracy];
       if (v10 <= 165.0)
       {
-        v16 = [v3 integrity];
-        v17 = v16;
-        if (v16 == *MEMORY[0x277CE4288] || v16 == *MEMORY[0x277CE4280])
+        integrity = [sendCopy integrity];
+        v17 = integrity;
+        if (integrity == *MEMORY[0x277CE4288] || integrity == *MEMORY[0x277CE4280])
         {
-          v19 = [v3 timestamp];
-          v6 = v19;
-          if (v19 && ([v19 timeIntervalSinceNow], v20 < -180.0))
+          timestamp = [sendCopy timestamp];
+          v6 = timestamp;
+          if (timestamp && ([timestamp timeIntervalSinceNow], v20 < -180.0))
           {
             v21 = sos_default_log();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -2252,7 +2252,7 @@ LABEL_9:
             v21 = sos_default_log();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
             {
-              [v3 horizontalAccuracy];
+              [sendCopy horizontalAccuracy];
               v24 = 134218498;
               v25 = v23;
               v26 = 1024;
@@ -2285,7 +2285,7 @@ LABEL_9:
         v6 = sos_default_log();
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
         {
-          [v3 horizontalAccuracy];
+          [sendCopy horizontalAccuracy];
           v24 = 134217984;
           v25 = v11;
           v8 = "Rejecting location - horizontalAccuracy > 165.0: %f";
@@ -2299,7 +2299,7 @@ LABEL_9:
       v6 = sos_default_log();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        [v3 horizontalAccuracy];
+        [sendCopy horizontalAccuracy];
         v24 = 134217984;
         v25 = v7;
         v8 = "Rejecting location - horizontalAccuracy < 0.0: %f";
@@ -2324,7 +2324,7 @@ LABEL_15:
   return v9;
 }
 
-- (void)retriggerSOSWithUUID:(id)a3 trigger:(int64_t)a4
+- (void)retriggerSOSWithUUID:(id)d trigger:(int64_t)trigger
 {
   v13 = *MEMORY[0x277D85DE8];
   if (self->_isEmergencyCallOngoing)
@@ -2342,7 +2342,7 @@ LABEL_15:
 
   else
   {
-    v5 = [SOSEngine getUrlForTrigger:a4];
+    v5 = [SOSEngine getUrlForTrigger:trigger];
     if (v5)
     {
       v6 = +[SOSStatusManager sharedInstance];
@@ -2356,8 +2356,8 @@ LABEL_15:
         _os_log_impl(&dword_264323000, v7, OS_LOG_TYPE_DEFAULT, "SOSEngine,opening retrigger URL,%@", &v11, 0xCu);
       }
 
-      v8 = [MEMORY[0x277CC1E80] defaultWorkspace];
-      [v8 openURL:v5 configuration:0 completionHandler:&__block_literal_global_495];
+      defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+      [defaultWorkspace openURL:v5 configuration:0 completionHandler:&__block_literal_global_495];
     }
 
     else
@@ -2369,8 +2369,8 @@ LABEL_15:
         _os_log_impl(&dword_264323000, v9, OS_LOG_TYPE_DEFAULT, "SOSEngine,no URL to launch for retrigger", &v11, 2u);
       }
 
-      v8 = +[SOSStatusManager sharedInstance];
-      [v8 updateSOSFlowState:0];
+      defaultWorkspace = +[SOSStatusManager sharedInstance];
+      [defaultWorkspace updateSOSFlowState:0];
     }
   }
 
@@ -2400,10 +2400,10 @@ void __42__SOSEngine_retriggerSOSWithUUID_trigger___block_invoke(uint64_t a1, ui
   }
 }
 
-- (void)handoffFallbackWithUUID:(id)a3 trigger:(int64_t)a4
+- (void)handoffFallbackWithUUID:(id)d trigger:(int64_t)trigger
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   v7 = +[SOSUtilities currentDeviceSOSStatus];
   v8 = v7;
   if (v7 && [v7 shouldRejectNewSOSTriggers])
@@ -2436,11 +2436,11 @@ LABEL_8:
 
   else
   {
-    v9 = [SOSEngine getUrlForTrigger:a4];
+    v9 = [SOSEngine getUrlForTrigger:trigger];
     if (v9)
     {
       v13 = +[SOSStatusManager sharedInstance];
-      [v13 sosTriggeredWithUUID:v6 trigger:a4 source:0];
+      [v13 sosTriggeredWithUUID:dCopy trigger:trigger source:0];
 
       v14 = sos_default_log();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -2450,17 +2450,17 @@ LABEL_8:
         _os_log_impl(&dword_264323000, v14, OS_LOG_TYPE_DEFAULT, "SOSEngine,opening handoff fallback URL,%@", &v17, 0xCu);
       }
 
-      v15 = [MEMORY[0x277CC1E80] defaultWorkspace];
-      [v15 openURL:v9 configuration:0 completionHandler:&__block_literal_global_497];
+      defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+      [defaultWorkspace openURL:v9 configuration:0 completionHandler:&__block_literal_global_497];
     }
 
     else
     {
-      v15 = sos_default_log();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      defaultWorkspace = sos_default_log();
+      if (os_log_type_enabled(defaultWorkspace, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v17) = 0;
-        _os_log_impl(&dword_264323000, v15, OS_LOG_TYPE_DEFAULT, "SOSEngine,no URL to launch for handoff fallback", &v17, 2u);
+        _os_log_impl(&dword_264323000, defaultWorkspace, OS_LOG_TYPE_DEFAULT, "SOSEngine,no URL to launch for handoff fallback", &v17, 2u);
       }
     }
   }
@@ -2491,23 +2491,23 @@ void __45__SOSEngine_handoffFallbackWithUUID_trigger___block_invoke(uint64_t a1,
   }
 }
 
-- (void)triggerSOSWithUUID:(id)a3 triggerMechanism:(int64_t)a4 source:(int64_t)a5 completion:(id)a6
+- (void)triggerSOSWithUUID:(id)d triggerMechanism:(int64_t)mechanism source:(int64_t)source completion:(id)completion
 {
   v39 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  if (!v10)
+  dCopy = d;
+  completionCopy = completion;
+  if (!dCopy)
   {
-    v10 = [MEMORY[0x277CCAD78] UUID];
+    dCopy = [MEMORY[0x277CCAD78] UUID];
   }
 
   v12 = sos_default_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v36 = v10;
+    v36 = dCopy;
     v37 = 1024;
-    v38 = a4;
+    mechanismCopy = mechanism;
     _os_log_impl(&dword_264323000, v12, OS_LOG_TYPE_DEFAULT, "SOSEngine,SOS triggered,uuid,%@,mechanism,%d", buf, 0x12u);
   }
 
@@ -2522,13 +2522,13 @@ void __45__SOSEngine_handoffFallbackWithUUID_trigger___block_invoke(uint64_t a1,
       _os_log_impl(&dword_264323000, v15, OS_LOG_TYPE_DEFAULT, "SOSEngine, sos flow already active, rejecting", buf, 2u);
     }
 
-    if (v11)
+    if (completionCopy)
     {
-      v11[2](v11, 2);
+      completionCopy[2](completionCopy, 2);
     }
 
-    v16 = [(SOSEngine *)self coreAnalyticsReporter];
-    [v16 reportSOSRejectedWithTrigger:a4 currentTriggerMechanism:{objc_msgSend(v13, "trigger")}];
+    coreAnalyticsReporter = [(SOSEngine *)self coreAnalyticsReporter];
+    [coreAnalyticsReporter reportSOSRejectedWithTrigger:mechanism currentTriggerMechanism:{objc_msgSend(v13, "trigger")}];
 LABEL_14:
 
     goto LABEL_45;
@@ -2543,41 +2543,41 @@ LABEL_14:
       _os_log_impl(&dword_264323000, v17, OS_LOG_TYPE_DEFAULT, "SOSEngine, emergency call is ongoing, rejecting", buf, 2u);
     }
 
-    if (v11)
+    if (completionCopy)
     {
-      v11[2](v11, 6);
+      completionCopy[2](completionCopy, 6);
     }
 
     goto LABEL_45;
   }
 
-  if (![(SOSEngine *)self isTriggerEnabled:a4])
+  if (![(SOSEngine *)self isTriggerEnabled:mechanism])
   {
     v24 = sos_default_log();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v36) = a4;
+      LODWORD(v36) = mechanism;
       _os_log_impl(&dword_264323000, v24, OS_LOG_TYPE_DEFAULT, "SOSEngine,trigger (%d) not enabled", buf, 8u);
     }
 
-    if (v11)
+    if (completionCopy)
     {
-      v11[2](v11, 4);
+      completionCopy[2](completionCopy, 4);
     }
 
-    v16 = +[SOSStatusManager sharedInstance];
-    [v16 sosTriggerDisabledWithUUID:v10 trigger:a4];
+    coreAnalyticsReporter = +[SOSStatusManager sharedInstance];
+    [coreAnalyticsReporter sosTriggerDisabledWithUUID:dCopy trigger:mechanism];
     goto LABEL_14;
   }
 
   v18 = +[SOSCoordinator sharedInstance];
-  v19 = [v18 shouldHandoffToPairedDevice:a4];
+  v19 = [v18 shouldHandoffToPairedDevice:mechanism];
 
   if (v19)
   {
     v20 = +[SOSCoordinator sharedInstance];
-    v21 = [v20 tryPushToPairedDeviceWithUUID:v10 triggerMechanism:a4];
+    v21 = [v20 tryPushToPairedDeviceWithUUID:dCopy triggerMechanism:mechanism];
 
     if (v21)
     {
@@ -2589,11 +2589,11 @@ LABEL_14:
       }
 
       v23 = +[SOSStatusManager sharedInstance];
-      [v23 sosTriggerPushedToPairedDeviceWithUUID:v10 trigger:a4];
+      [v23 sosTriggerPushedToPairedDeviceWithUUID:dCopy trigger:mechanism];
 
-      if (v11)
+      if (completionCopy)
       {
-        v11[2](v11, 5);
+        completionCopy[2](completionCopy, 5);
       }
 
       goto LABEL_45;
@@ -2610,11 +2610,11 @@ LABEL_14:
     }
   }
 
-  v26 = [SOSEngine getUrlForTrigger:a4];
+  v26 = [SOSEngine getUrlForTrigger:mechanism];
   if (v26)
   {
     v27 = +[SOSStatusManager sharedInstance];
-    [v27 sosTriggeredWithUUID:v10 trigger:a4 source:a5];
+    [v27 sosTriggeredWithUUID:dCopy trigger:mechanism source:source];
 
     v28 = sos_default_log();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -2624,16 +2624,16 @@ LABEL_14:
       _os_log_impl(&dword_264323000, v28, OS_LOG_TYPE_DEFAULT, "SOSEngine,opening URL,%@", buf, 0xCu);
     }
 
-    v29 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __67__SOSEngine_triggerSOSWithUUID_triggerMechanism_source_completion___block_invoke;
     v33[3] = &unk_279B53B28;
-    v34 = v11;
-    [v29 openURL:v26 configuration:0 completionHandler:v33];
+    v34 = completionCopy;
+    [defaultWorkspace openURL:v26 configuration:0 completionHandler:v33];
 
-    v30 = [(SOSEngine *)self coreAnalyticsReporter];
-    [v30 reportSOSTriggered:a4];
+    coreAnalyticsReporter2 = [(SOSEngine *)self coreAnalyticsReporter];
+    [coreAnalyticsReporter2 reportSOSTriggered:mechanism];
   }
 
   else
@@ -2645,9 +2645,9 @@ LABEL_14:
       _os_log_impl(&dword_264323000, v31, OS_LOG_TYPE_DEFAULT, "SOSEngine,no URL to launch", buf, 2u);
     }
 
-    if (v11)
+    if (completionCopy)
     {
-      v11[2](v11, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
@@ -2697,26 +2697,26 @@ LABEL_10:
   }
 }
 
-- (BOOL)isTriggerEnabled:(int64_t)a3
+- (BOOL)isTriggerEnabled:(int64_t)enabled
 {
-  v3 = a3;
-  if (a3 > 9)
+  enabledCopy = enabled;
+  if (enabled > 9)
   {
     v5 = sos_default_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(SOSEngine *)v3 isTriggerEnabled:v5];
+      [(SOSEngine *)enabledCopy isTriggerEnabled:v5];
     }
 
     return 0;
   }
 
-  else if (((1 << a3) & 0x35F) != 0)
+  else if (((1 << enabled) & 0x35F) != 0)
   {
     return 1;
   }
 
-  else if (a3 == 5)
+  else if (enabled == 5)
   {
 
     return +[SOSUtilities newtonTriggersEmergencySOS];
@@ -2729,12 +2729,12 @@ LABEL_10:
   }
 }
 
-+ (id)getUrlForTrigger:(int64_t)a3
++ (id)getUrlForTrigger:(int64_t)trigger
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277CCACE0]);
   [v4 setScheme:@"telSOS"];
-  v5 = [SOSEngine mapTriggerToActivationReason:a3];
+  v5 = [SOSEngine mapTriggerToActivationReason:trigger];
   v6 = [MEMORY[0x277CCAD18] queryItemWithName:@"reason" value:v5];
   v11[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
@@ -2747,18 +2747,18 @@ LABEL_10:
   return v8;
 }
 
-+ (id)mapTriggerToActivationReason:(int64_t)a3
++ (id)mapTriggerToActivationReason:(int64_t)reason
 {
-  v3 = a3;
-  if (a3 < 8 && ((0x8Fu >> a3) & 1) != 0)
+  reasonCopy = reason;
+  if (reason < 8 && ((0x8Fu >> reason) & 1) != 0)
   {
-    return off_279B53C08[a3];
+    return off_279B53C08[reason];
   }
 
   v5 = sos_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(SOSEngine *)v3 mapTriggerToActivationReason:v5];
+    [(SOSEngine *)reasonCopy mapTriggerToActivationReason:v5];
   }
 
   return @"SOSRemoteAlertActivationReasonActivatingForSOSWithVolumeLockHold";
@@ -2766,8 +2766,8 @@ LABEL_10:
 
 - (void)contactStoreDidChange
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"SOSFriendsChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SOSFriendsChangedNotification" object:0];
 }
 
 + (void)preloadContactStoreIfNecessary
@@ -2776,7 +2776,7 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = __43__SOSEngine_preloadContactStoreIfNecessary__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (preloadContactStoreIfNecessary_once_1 != -1)
   {
     dispatch_once(&preloadContactStoreIfNecessary_once_1, block);
@@ -2818,7 +2818,7 @@ uint64_t __43__SOSEngine_preloadContactStoreIfNecessary__block_invoke_2(uint64_t
   v8 = __Block_byref_object_copy__1;
   v9 = __Block_byref_object_dispose__1;
   v10 = 0;
-  [a1 preloadContactStoreIfNecessary];
+  [self preloadContactStoreIfNecessary];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __25__SOSEngine_contactStore__block_invoke;
@@ -2889,15 +2889,15 @@ void __31__SOSEngine_fetchMedicalIDName__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  uninstallCopy = uninstall;
+  v5 = [uninstallCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2908,11 +2908,11 @@ void __31__SOSEngine_fetchMedicalIDName__block_invoke(uint64_t a1, void *a2)
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(uninstallCopy);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) bundleIdentifier];
-        v10 = [v9 isEqualToString:@"com.apple.MobileSMS"];
+        bundleIdentifier = [*(*(&v13 + 1) + 8 * i) bundleIdentifier];
+        v10 = [bundleIdentifier isEqualToString:@"com.apple.MobileSMS"];
 
         if (v10)
         {
@@ -2926,7 +2926,7 @@ void __31__SOSEngine_fetchMedicalIDName__block_invoke(uint64_t a1, void *a2)
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [uninstallCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -2980,21 +2980,21 @@ uint64_t __31__SOSEngine_databaseWasRebuilt__block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.sos.trigger"];
-  v7 = [v6 BOOLValue];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.sos.trigger"];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __48__SOSEngine_listener_shouldAcceptNewConnection___block_invoke;
     v12[3] = &unk_279B53BA0;
-    v13 = v5;
-    v14 = self;
+    v13 = connectionCopy;
+    selfCopy = self;
     dispatch_async(MEMORY[0x277D85CD0], v12);
     v8 = v13;
   }
@@ -3005,7 +3005,7 @@ uint64_t __31__SOSEngine_databaseWasRebuilt__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *v16 = v5;
+      *v16 = connectionCopy;
       *&v16[8] = 2112;
       *&v16[10] = @"com.apple.sos.trigger";
       _os_log_impl(&dword_264323000, v8, OS_LOG_TYPE_DEFAULT, "[WARN] SOSEngine,New connection %@ missing entitlement: %@", buf, 0x16u);
@@ -3016,14 +3016,14 @@ uint64_t __31__SOSEngine_databaseWasRebuilt__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109378;
-    *v16 = v7;
+    *v16 = bOOLValue;
     *&v16[4] = 2112;
-    *&v16[6] = v5;
+    *&v16[6] = connectionCopy;
     _os_log_impl(&dword_264323000, v9, OS_LOG_TYPE_DEFAULT, "SOSEngine,shouldAcceptNewConnection: %d for connection: %@", buf, 0x12u);
   }
 
   v10 = *MEMORY[0x277D85DE8];
-  return v7;
+  return bOOLValue;
 }
 
 void __48__SOSEngine_listener_shouldAcceptNewConnection___block_invoke(uint64_t a1)

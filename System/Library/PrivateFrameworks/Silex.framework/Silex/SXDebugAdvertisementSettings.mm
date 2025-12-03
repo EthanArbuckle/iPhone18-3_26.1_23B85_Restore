@@ -1,24 +1,24 @@
 @interface SXDebugAdvertisementSettings
-- (SXDebugAdvertisementSettings)initWithFrequency:(unint64_t)a3 bannerType:(id)a4 layout:(id)a5 distanceFromMedia:(_SXConvertibleValue)a6;
+- (SXDebugAdvertisementSettings)initWithFrequency:(unint64_t)frequency bannerType:(id)type layout:(id)layout distanceFromMedia:(_SXConvertibleValue)media;
 - (_SXConvertibleValue)distanceFromMedia;
 @end
 
 @implementation SXDebugAdvertisementSettings
 
-- (SXDebugAdvertisementSettings)initWithFrequency:(unint64_t)a3 bannerType:(id)a4 layout:(id)a5 distanceFromMedia:(_SXConvertibleValue)a6
+- (SXDebugAdvertisementSettings)initWithFrequency:(unint64_t)frequency bannerType:(id)type layout:(id)layout distanceFromMedia:(_SXConvertibleValue)media
 {
-  unit = a6.unit;
-  value = a6.value;
-  v11 = a4;
-  v12 = a5;
+  unit = media.unit;
+  value = media.value;
+  typeCopy = type;
+  layoutCopy = layout;
   v18.receiver = self;
   v18.super_class = SXDebugAdvertisementSettings;
   v13 = [(SXDebugAdvertisementSettings *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    v13->_frequency = a3;
-    v15 = v11;
+    v13->_frequency = frequency;
+    v15 = typeCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,7 +54,7 @@
     }
 
     v14->_bannerType = v16;
-    objc_storeStrong(&v14->_layout, a5);
+    objc_storeStrong(&v14->_layout, layout);
     v14->_distanceFromMedia.value = value;
     v14->_distanceFromMedia.unit = unit;
   }

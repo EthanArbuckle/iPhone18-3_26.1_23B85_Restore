@@ -1,18 +1,18 @@
 @interface CBDigitizerFilter
-+ (CBDigitizerFilterTouchProperties)loadTouchProperties:(SEL)a3;
++ (CBDigitizerFilterTouchProperties)loadTouchProperties:(SEL)properties;
 - (BOOL)isObstructed;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4;
-- (CBDigitizerFilter)initWithALSNode:(id)a3 andLogCategory:(const char *)a4;
-- (id)filterEvent:(id)a3;
-- (id)handleALSEvent:(id)a3;
-- (id)handleDigitizerEvent:(id)a3;
-- (id)newHospotForLocationX:(float)a3 andY:(float)a4;
+- (BOOL)setProperty:(id)property forKey:(id)key;
+- (CBDigitizerFilter)initWithALSNode:(id)node andLogCategory:(const char *)category;
+- (id)filterEvent:(id)event;
+- (id)handleALSEvent:(id)event;
+- (id)handleDigitizerEvent:(id)event;
+- (id)newHospotForLocationX:(float)x andY:(float)y;
 - (id)newHotspot;
 - (id)newHotspotForOrientation;
 - (void)dealloc;
-- (void)overrideHotspotWithCenterX:(float)a3 andCenterY:(float)a4;
-- (void)setIsActive:(BOOL)a3;
-- (void)setTriggered:(int64_t)a3 forHotspot:(id)a4;
+- (void)overrideHotspotWithCenterX:(float)x andCenterY:(float)y;
+- (void)setIsActive:(BOOL)active;
+- (void)setTriggered:(int64_t)triggered forHotspot:(id)hotspot;
 @end
 
 @implementation CBDigitizerFilter
@@ -28,27 +28,27 @@
   return v3;
 }
 
-- (CBDigitizerFilter)initWithALSNode:(id)a3 andLogCategory:(const char *)a4
+- (CBDigitizerFilter)initWithALSNode:(id)node andLogCategory:(const char *)category
 {
   v23 = *MEMORY[0x1E69E9840];
-  v21 = self;
+  selfCopy = self;
   v20 = a2;
-  v19 = a3;
-  v18 = a4;
+  nodeCopy = node;
+  categoryCopy = category;
   v17.receiver = self;
   v17.super_class = CBDigitizerFilter;
-  v21 = [(CBDigitizerFilter *)&v17 init];
-  if (v21)
+  selfCopy = [(CBDigitizerFilter *)&v17 init];
+  if (selfCopy)
   {
-    v4 = os_log_create("com.apple.CoreBrightness.CBDigitizerFilter", v18);
-    v21->super._logHandle = v4;
-    v5 = [v19 orientation];
-    v21->_orientation = v5;
-    v6 = [v19 digitizerFilterWindow];
-    v21->_behavior = v6;
-    if (v21->super._logHandle)
+    v4 = os_log_create("com.apple.CoreBrightness.CBDigitizerFilter", categoryCopy);
+    selfCopy->super._logHandle = v4;
+    orientation = [nodeCopy orientation];
+    selfCopy->_orientation = orientation;
+    digitizerFilterWindow = [nodeCopy digitizerFilterWindow];
+    selfCopy->_behavior = digitizerFilterWindow;
+    if (selfCopy->super._logHandle)
     {
-      logHandle = v21->super._logHandle;
+      logHandle = selfCopy->super._logHandle;
     }
 
     else
@@ -68,48 +68,48 @@
 
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
     {
-      __os_log_helper_16_2_1_8_64(v22, v19);
+      __os_log_helper_16_2_1_8_64(v22, nodeCopy);
       _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_INFO, "Creating digitizer filter for ALS [%@]", v22, 0xCu);
     }
 
-    v21->_hotspot = 0;
-    v21->_isActive = 1;
-    if ([v19 overrideHotspot])
+    selfCopy->_hotspot = 0;
+    selfCopy->_isActive = 1;
+    if ([nodeCopy overrideHotspot])
     {
-      v13 = v21;
-      [objc_msgSend(v19 "overrideHotspot")];
+      v13 = selfCopy;
+      [objc_msgSend(nodeCopy "overrideHotspot")];
       v14 = v7;
-      [objc_msgSend(v19 "overrideHotspot")];
+      [objc_msgSend(nodeCopy "overrideHotspot")];
       LODWORD(v9) = v8;
       LODWORD(v10) = v14;
       v11 = [(CBDigitizerFilter *)v13 newHospotForLocationX:v10 andY:v9];
-      v21->_hotspot = v11;
+      selfCopy->_hotspot = v11;
     }
 
-    v21->_firstDigitizerEvent = 0;
+    selfCopy->_firstDigitizerEvent = 0;
   }
 
   *MEMORY[0x1E69E9840];
-  return v21;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   if (self->super._logHandle)
   {
-    MEMORY[0x1E69E5920](v5->super._logHandle);
-    v5->super._logHandle = 0;
+    MEMORY[0x1E69E5920](selfCopy->super._logHandle);
+    selfCopy->super._logHandle = 0;
   }
 
-  *&v2 = MEMORY[0x1E69E5920](v5->_hotspot).n128_u64[0];
-  v3.receiver = v5;
+  *&v2 = MEMORY[0x1E69E5920](selfCopy->_hotspot).n128_u64[0];
+  v3.receiver = selfCopy;
   v3.super_class = CBDigitizerFilter;
   [(CBDigitizerFilter *)&v3 dealloc];
 }
 
-- (void)setIsActive:(BOOL)a3
+- (void)setIsActive:(BOOL)active
 {
   v8 = *MEMORY[0x1E69E9840];
   if (self->super._logHandle)
@@ -134,34 +134,34 @@
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_0_2_4_0_4_0(v7, self->_isActive, a3);
+    __os_log_helper_16_0_2_4_0_4_0(v7, self->_isActive, active);
     _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "Changing active=%d to %d", v7, 0xEu);
   }
 
-  self->_isActive = a3;
+  self->_isActive = active;
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4
+- (BOOL)setProperty:(id)property forKey:(id)key
 {
   v39 = *MEMORY[0x1E69E9840];
   v30 = 0;
-  if ([a4 isEqual:@"AutoBrightnessTouchEnabled"])
+  if ([key isEqual:@"AutoBrightnessTouchEnabled"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      -[CBDigitizerFilter setIsActive:](self, "setIsActive:", [a3 BOOLValue]);
+      -[CBDigitizerFilter setIsActive:](self, "setIsActive:", [property BOOLValue]);
       v30 = 1;
     }
   }
 
-  else if ([a4 isEqual:@"AutoBrightnessTouchDelay"])
+  else if ([key isEqual:@"AutoBrightnessTouchDelay"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a3 floatValue];
+      [property floatValue];
       v29 = v4;
       if (self->super._logHandle)
       {
@@ -196,12 +196,12 @@
     }
   }
 
-  else if ([a4 isEqual:@"AutoBrightnessTouchRadius"])
+  else if ([key isEqual:@"AutoBrightnessTouchRadius"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a3 floatValue];
+      [property floatValue];
       v28 = (((v7 * 2.54) * 1000.0) * (v7 * 2.54)) * 1000.0;
       if (self->super._logHandle)
       {
@@ -239,23 +239,23 @@
   if (objc_opt_isKindOfClass())
   {
     v27 = self->_hotspot;
-    if ([a4 isEqual:@"AutoBrightnessTouchDelay"])
+    if ([key isEqual:@"AutoBrightnessTouchDelay"])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [a3 floatValue];
+        [property floatValue];
         [(CBDigitizerHotspot *)v27 setTouchTriggerBaseDelay:v8];
         v30 = 1;
       }
     }
 
-    else if ([a4 isEqual:@"AutoBrightnessTouchBufferPivot"])
+    else if ([key isEqual:@"AutoBrightnessTouchBufferPivot"])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v26 = [a3 intValue];
+        intValue = [property intValue];
         if (self->super._logHandle)
         {
           v18 = self->super._logHandle;
@@ -278,21 +278,21 @@
 
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
-          __os_log_helper_16_0_2_4_0_4_0(v36, [(CBDigitizerHotspot *)v27 touchBufferPivot], v26);
+          __os_log_helper_16_0_2_4_0_4_0(v36, [(CBDigitizerHotspot *)v27 touchBufferPivot], intValue);
           _os_log_impl(&dword_1DE8E5000, v18, OS_LOG_TYPE_DEFAULT, "Changing touch buffer pivot=%d to %d", v36, 0xEu);
         }
 
-        [(CBDigitizerHotspot *)v27 setTouchBufferPivot:v26];
+        [(CBDigitizerHotspot *)v27 setTouchBufferPivot:intValue];
         v30 = 1;
       }
     }
 
-    else if ([a4 isEqual:@"AutoBrightnessTouchBufferMaxCount"])
+    else if ([key isEqual:@"AutoBrightnessTouchBufferMaxCount"])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v25 = [a3 intValue];
+        intValue2 = [property intValue];
         if (self->super._logHandle)
         {
           v16 = self->super._logHandle;
@@ -315,21 +315,21 @@
 
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
-          __os_log_helper_16_0_2_4_0_4_0(v35, [(CBDigitizerHotspot *)v27 touchBufferMaxCount], v25);
+          __os_log_helper_16_0_2_4_0_4_0(v35, [(CBDigitizerHotspot *)v27 touchBufferMaxCount], intValue2);
           _os_log_impl(&dword_1DE8E5000, v16, OS_LOG_TYPE_DEFAULT, "Changing touch buffer max count=%d to %d", v35, 0xEu);
         }
 
-        [(CBDigitizerHotspot *)v27 setTouchBufferMaxCount:v25];
+        [(CBDigitizerHotspot *)v27 setTouchBufferMaxCount:intValue2];
         v30 = 1;
       }
     }
 
-    else if ([a4 isEqual:@"AutoBrightnessTouchBufferWindowS"])
+    else if ([key isEqual:@"AutoBrightnessTouchBufferWindowS"])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [a3 floatValue];
+        [property floatValue];
         v24 = v9;
         if (self->super._logHandle)
         {
@@ -369,43 +369,43 @@
   return v30 & 1;
 }
 
-- (void)overrideHotspotWithCenterX:(float)a3 andCenterY:(float)a4
+- (void)overrideHotspotWithCenterX:(float)x andCenterY:(float)y
 {
   v4 = MEMORY[0x1E69E5920](self->_hotspot);
-  v4.n128_f32[0] = a3;
-  *&v5 = a4;
+  v4.n128_f32[0] = x;
+  *&v5 = y;
   self->_hotspot = [(CBDigitizerFilter *)self newHospotForLocationX:v4.n128_f64[0] andY:v5];
 }
 
-- (id)filterEvent:(id)a3
+- (id)filterEvent:(id)event
 {
-  v4 = [a3 eventType];
-  if (v4 == 11)
+  eventType = [event eventType];
+  if (eventType == 11)
   {
-    return [(CBDigitizerFilter *)self handleDigitizerEvent:a3];
+    return [(CBDigitizerFilter *)self handleDigitizerEvent:event];
   }
 
-  if (v4 == 12)
+  if (eventType == 12)
   {
-    return [(CBDigitizerFilter *)self handleALSEvent:a3];
+    return [(CBDigitizerFilter *)self handleALSEvent:event];
   }
 
-  return a3;
+  return event;
 }
 
-- (id)handleALSEvent:(id)a3
+- (id)handleALSEvent:(id)event
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (event)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([a3 firstALSSample] & 1) == 0)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([event firstALSSample] & 1) == 0)
     {
-      v9 = [(CBDigitizerHotspot *)self->_hotspot orientation];
-      if (v9 == [a3 orientation])
+      orientation = [(CBDigitizerHotspot *)self->_hotspot orientation];
+      if (orientation == [event orientation])
       {
         hotspot = self->_hotspot;
-        [a3 timestamp];
+        [event timestamp];
         if ([(CBDigitizerHotspot *)hotspot isClearedAt:?])
         {
           [(CBDigitizerFilter *)self setTriggered:0 forHotspot:self->_hotspot];
@@ -435,33 +435,33 @@
 
           if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
           {
-            v5 = [a3 orientation];
-            [a3 timestamp];
-            __os_log_helper_16_2_3_4_0_8_0_8_64(v12, v5, COERCE__INT64(v3), self->_hotspot);
+            orientation2 = [event orientation];
+            [event timestamp];
+            __os_log_helper_16_2_3_4_0_8_0_8_64(v12, orientation2, COERCE__INT64(v3), self->_hotspot);
             _os_log_debug_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEBUG, "Hotspot for ALS %d: timestamp = %.2f marked as obstructed hotspot = [%@]", v12, 0x1Cu);
           }
 
-          [a3 setObstructed:1];
+          [event setObstructed:1];
         }
       }
     }
   }
 
   *MEMORY[0x1E69E9840];
-  return a3;
+  return event;
 }
 
-- (id)handleDigitizerEvent:(id)a3
+- (id)handleDigitizerEvent:(id)event
 {
   v49 = *MEMORY[0x1E69E9840];
-  v46 = self;
+  selfCopy = self;
   v45 = a2;
-  v44 = a3;
+  eventCopy = event;
   if (!self->_firstDigitizerEvent)
   {
-    if (v46->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      logHandle = v46->super._logHandle;
+      logHandle = selfCopy->super._logHandle;
     }
 
     else
@@ -489,47 +489,47 @@
       _os_log_debug_impl(&dword_1DE8E5000, log, type, "First digitizer event -> load touch properties", v41, 2u);
     }
 
-    p_props = &v46->_props;
-    +[CBDigitizerFilter loadTouchProperties:](CBDigitizerFilter, "loadTouchProperties:", [v44 service]);
+    p_props = &selfCopy->_props;
+    +[CBDigitizerFilter loadTouchProperties:](CBDigitizerFilter, "loadTouchProperties:", [eventCopy service]);
     *&p_props->digitizerWidth = v39;
     p_props->touchHotSpotSquared = v40;
-    if (!v46->_hotspot)
+    if (!selfCopy->_hotspot)
     {
-      v46->_hotspot = [(CBDigitizerFilter *)v46 newHotspotForOrientation];
+      selfCopy->_hotspot = [(CBDigitizerFilter *)selfCopy newHotspotForOrientation];
     }
 
-    v46->_firstDigitizerEvent = 1;
+    selfCopy->_firstDigitizerEvent = 1;
   }
 
-  v38 = [v44 copyChildren];
-  if (!v38)
+  copyChildren = [eventCopy copyChildren];
+  if (!copyChildren)
   {
     v3 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v38 = [v3 initWithObjects:{v44, 0}];
+    copyChildren = [v3 initWithObjects:{eventCopy, 0}];
   }
 
-  if (v38)
+  if (copyChildren)
   {
     v37 = 0;
-    for (i = 0; i < [v38 count]; ++i)
+    for (i = 0; i < [copyChildren count]; ++i)
     {
-      [v38 objectAtIndexedSubscript:i];
+      [copyChildren objectAtIndexedSubscript:i];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v35 = [objc_msgSend(v38 objectAtIndexedSubscript:{i), "integerValueForKey:", 720905}] != 0;
-        [objc_msgSend(v38 objectAtIndexedSubscript:{i), "floatValueForKey:", 720896}];
+        v35 = [objc_msgSend(copyChildren objectAtIndexedSubscript:{i), "integerValueForKey:", 720905}] != 0;
+        [objc_msgSend(copyChildren objectAtIndexedSubscript:{i), "floatValueForKey:", 720896}];
         v34 = v4;
-        [objc_msgSend(v38 objectAtIndexedSubscript:{i), "floatValueForKey:", 720897}];
-        v33 = v34 * v46->_props.digitizerWidth;
-        v32 = v5 * v46->_props.digitizerHeight;
-        [(CBDigitizerHotspot *)v46->_hotspot center_X];
+        [objc_msgSend(copyChildren objectAtIndexedSubscript:{i), "floatValueForKey:", 720897}];
+        v33 = v34 * selfCopy->_props.digitizerWidth;
+        v32 = v5 * selfCopy->_props.digitizerHeight;
+        [(CBDigitizerHotspot *)selfCopy->_hotspot center_X];
         v31 = v6 - v33;
-        [(CBDigitizerHotspot *)v46->_hotspot center_Y];
+        [(CBDigitizerHotspot *)selfCopy->_hotspot center_Y];
         v30 = ((v7 - v32) * (v7 - v32)) + (v31 * v31);
-        if (v46->super._logHandle)
+        if (selfCopy->super._logHandle)
         {
-          v24 = v46->super._logHandle;
+          v24 = selfCopy->super._logHandle;
         }
 
         else
@@ -549,15 +549,15 @@
 
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
         {
-          [objc_msgSend(v38 objectAtIndexedSubscript:{i), "floatValueForKey:", 720904}];
+          [objc_msgSend(copyChildren objectAtIndexedSubscript:{i), "floatValueForKey:", 720904}];
           *&v18 = v9;
-          [objc_msgSend(v38 objectAtIndexedSubscript:{i), "floatValueForKey:", 720917}];
+          [objc_msgSend(copyChildren objectAtIndexedSubscript:{i), "floatValueForKey:", 720917}];
           *&v19 = v10;
-          [objc_msgSend(v38 objectAtIndexedSubscript:{i), "floatValueForKey:", 720916}];
+          [objc_msgSend(copyChildren objectAtIndexedSubscript:{i), "floatValueForKey:", 720916}];
           *&v20 = v11;
-          v21 = [(CBDigitizerHotspot *)v46->_hotspot orientation];
+          orientation = [(CBDigitizerHotspot *)selfCopy->_hotspot orientation];
           v22 = 0;
-          if (v30 < v46->_props.touchHotSpotSquared)
+          if (v30 < selfCopy->_props.touchHotSpotSquared)
           {
             v22 = v35;
           }
@@ -568,29 +568,29 @@
             v12 = "un";
           }
 
-          __os_log_helper_16_2_8_8_0_8_0_8_0_8_0_8_0_4_0_4_0_8_32(v48, COERCE__INT64(v33), COERCE__INT64(v32), v18, v19, v20, v35, v21, v12);
+          __os_log_helper_16_2_8_8_0_8_0_8_0_8_0_8_0_4_0_4_0_8_32(v48, COERCE__INT64(v33), COERCE__INT64(v32), v18, v19, v20, v35, orientation, v12);
           _os_log_debug_impl(&dword_1DE8E5000, v24, OS_LOG_TYPE_DEBUG, "Multitouch event - X: %f, Y: %f, range: %f, minor r: %f, major r: %f, touch: %d, ALS[%d] obstruction %sdetected", v48, 0x4Au);
         }
 
         *&v8 = v30;
-        if (v30 < v46->_props.touchHotSpotSquared && v35)
+        if (v30 < selfCopy->_props.touchHotSpotSquared && v35)
         {
           v37 = 1;
-          [(CBDigitizerFilter *)v46 setTriggered:1 forHotspot:v46->_hotspot, v8];
+          [(CBDigitizerFilter *)selfCopy setTriggered:1 forHotspot:selfCopy->_hotspot, v8];
           break;
         }
       }
     }
 
-    if ((v37 & 1) == 0 && [(CBDigitizerHotspot *)v46->_hotspot triggered]== 1)
+    if ((v37 & 1) == 0 && [(CBDigitizerHotspot *)selfCopy->_hotspot triggered]== 1)
     {
-      [(CBDigitizerFilter *)v46 setTriggered:2 forHotspot:v46->_hotspot];
-      hotspot = v46->_hotspot;
-      [v44 timestamp];
+      [(CBDigitizerFilter *)selfCopy setTriggered:2 forHotspot:selfCopy->_hotspot];
+      hotspot = selfCopy->_hotspot;
+      [eventCopy timestamp];
       [(CBDigitizerHotspot *)hotspot setTouchReleaseTime:?];
-      if (v46->super._logHandle)
+      if (selfCopy->super._logHandle)
       {
-        v16 = v46->super._logHandle;
+        v16 = selfCopy->super._logHandle;
       }
 
       else
@@ -610,22 +610,22 @@
 
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
-        [(CBDigitizerHotspot *)v46->_hotspot touchTriggerDelay];
+        [(CBDigitizerHotspot *)selfCopy->_hotspot touchTriggerDelay];
         __os_log_helper_16_0_1_8_0(v47, COERCE__INT64(v13));
         _os_log_impl(&dword_1DE8E5000, v16, OS_LOG_TYPE_INFO, "Touch release delay %f", v47, 0xCu);
       }
     }
   }
 
-  MEMORY[0x1E69E5920](v38);
+  MEMORY[0x1E69E5920](copyChildren);
   *MEMORY[0x1E69E9840];
-  return v44;
+  return eventCopy;
 }
 
-+ (CBDigitizerFilterTouchProperties)loadTouchProperties:(SEL)a3
++ (CBDigitizerFilterTouchProperties)loadTouchProperties:(SEL)properties
 {
   v35 = a2;
-  v34 = a3;
+  propertiesCopy = properties;
   v33 = a4;
   v32 = 0;
   *&retstr->digitizerWidth = 0;
@@ -781,22 +781,22 @@
   }
 }
 
-- (id)newHospotForLocationX:(float)a3 andY:(float)a4
+- (id)newHospotForLocationX:(float)x andY:(float)y
 {
-  v7 = [(CBDigitizerFilter *)self newHotspot];
-  *&v4 = a3;
-  [v7 setCenter_X:v4];
-  *&v5 = a4;
-  [v7 setCenter_Y:v5];
-  [v7 setOrientation:self->_orientation];
-  return v7;
+  newHotspot = [(CBDigitizerFilter *)self newHotspot];
+  *&v4 = x;
+  [newHotspot setCenter_X:v4];
+  *&v5 = y;
+  [newHotspot setCenter_Y:v5];
+  [newHotspot setOrientation:self->_orientation];
+  return newHotspot;
 }
 
 - (id)newHotspotForOrientation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v17 = [(CBDigitizerFilter *)self newHotspot];
-  [v17 setOrientation:self->_orientation];
+  newHotspot = [(CBDigitizerFilter *)self newHotspot];
+  [newHotspot setOrientation:self->_orientation];
   orientation = self->_orientation;
   switch(orientation)
   {
@@ -804,47 +804,47 @@
       goto LABEL_9;
     case 2:
       *&v2 = self->_props.deviceCenterX;
-      [v17 setCenter_X:v2];
+      [newHotspot setCenter_X:v2];
       *&v4 = self->_props.digitizerHeight;
-      [v17 setCenter_Y:v4];
+      [newHotspot setCenter_Y:v4];
       break;
     case 3:
       *&v2 = self->_props.digitizerWidth;
-      [v17 setCenter_X:v2];
+      [newHotspot setCenter_X:v2];
       *&v3 = self->_props.deviceCenterY;
-      [v17 setCenter_Y:v3];
+      [newHotspot setCenter_Y:v3];
       break;
     case 4:
-      [v17 setCenter_X:0.0];
+      [newHotspot setCenter_X:0.0];
       *&v5 = self->_props.deviceCenterY;
-      [v17 setCenter_Y:v5];
+      [newHotspot setCenter_Y:v5];
       break;
     case 5:
       *&v2 = self->_props.digitizerWidth;
-      [v17 setCenter_X:v2];
-      [v17 setCenter_Y:0.0];
+      [newHotspot setCenter_X:v2];
+      [newHotspot setCenter_Y:0.0];
       break;
     case 6:
-      [v17 setCenter_X:?];
+      [newHotspot setCenter_X:?];
       LODWORD(v6) = 0;
-      [v17 setCenter_Y:v6];
+      [newHotspot setCenter_Y:v6];
       break;
     case 7:
       *&v2 = self->_props.digitizerWidth;
-      [v17 setCenter_X:v2];
+      [newHotspot setCenter_X:v2];
       *&v7 = self->_props.digitizerHeight;
-      [v17 setCenter_Y:v7];
+      [newHotspot setCenter_Y:v7];
       break;
     case 8:
-      [v17 setCenter_X:0.0];
+      [newHotspot setCenter_X:0.0];
       *&v8 = self->_props.digitizerHeight;
-      [v17 setCenter_Y:v8];
+      [newHotspot setCenter_Y:v8];
       break;
     default:
 LABEL_9:
       *&v2 = self->_props.deviceCenterX;
-      [v17 setCenter_X:v2];
-      [v17 setCenter_Y:0.0];
+      [newHotspot setCenter_X:v2];
+      [newHotspot setCenter_Y:0.0];
       break;
   }
 
@@ -870,22 +870,22 @@ LABEL_9:
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
   {
-    v12 = [v17 orientation];
-    [v17 center_X];
+    orientation = [newHotspot orientation];
+    [newHotspot center_X];
     *&v13 = v9;
-    [v17 center_Y];
-    __os_log_helper_16_0_3_4_0_8_0_8_0(v19, v12, v13, COERCE__INT64(v10));
+    [newHotspot center_Y];
+    __os_log_helper_16_0_3_4_0_8_0_8_0(v19, orientation, v13, COERCE__INT64(v10));
     _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_INFO, "Hotspot for ALS %d: centerX %f centerY %f", v19, 0x1Cu);
   }
 
   *MEMORY[0x1E69E9840];
-  return v17;
+  return newHotspot;
 }
 
-- (void)setTriggered:(int64_t)a3 forHotspot:(id)a4
+- (void)setTriggered:(int64_t)triggered forHotspot:(id)hotspot
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a3 != [a4 triggered])
+  if (triggered != [hotspot triggered])
   {
     if (self->super._logHandle)
     {
@@ -909,14 +909,14 @@ LABEL_9:
 
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
     {
-      __os_log_helper_16_2_4_4_0_4_0_8_32_8_32(v13, [a4 orientation], -[CBDigitizerFilter isActive](self, "isActive"), (&kTouchStateStr)[objc_msgSend(a4, "triggered")], (&kTouchStateStr)[a3]);
+      __os_log_helper_16_2_4_4_0_4_0_8_32_8_32(v13, [hotspot orientation], -[CBDigitizerFilter isActive](self, "isActive"), (&kTouchStateStr)[objc_msgSend(hotspot, "triggered")], (&kTouchStateStr)[triggered]);
       _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_INFO, "Hotspot for ALS %d: active = %d changed = %s to %s", v13, 0x22u);
     }
 
-    [a4 setTriggered:a3];
-    if (!a3)
+    [hotspot setTriggered:triggered];
+    if (!triggered)
     {
-      [a4 touchTriggerDelay];
+      [hotspot touchTriggerDelay];
       [CBAnalytics touchOcclusionElapsedDelay:?];
     }
 

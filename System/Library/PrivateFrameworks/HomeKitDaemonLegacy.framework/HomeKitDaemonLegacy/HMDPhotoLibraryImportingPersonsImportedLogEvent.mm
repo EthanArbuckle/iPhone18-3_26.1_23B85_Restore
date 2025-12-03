@@ -1,5 +1,5 @@
 @interface HMDPhotoLibraryImportingPersonsImportedLogEvent
-- (HMDPhotoLibraryImportingPersonsImportedLogEvent)initWithTotalNumberOfImportedPersons:(int64_t)a3 numberOfNamedImportedPersons:(int64_t)a4;
+- (HMDPhotoLibraryImportingPersonsImportedLogEvent)initWithTotalNumberOfImportedPersons:(int64_t)persons numberOfNamedImportedPersons:(int64_t)importedPersons;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -23,15 +23,15 @@
   return v7;
 }
 
-- (HMDPhotoLibraryImportingPersonsImportedLogEvent)initWithTotalNumberOfImportedPersons:(int64_t)a3 numberOfNamedImportedPersons:(int64_t)a4
+- (HMDPhotoLibraryImportingPersonsImportedLogEvent)initWithTotalNumberOfImportedPersons:(int64_t)persons numberOfNamedImportedPersons:(int64_t)importedPersons
 {
   v7.receiver = self;
   v7.super_class = HMDPhotoLibraryImportingPersonsImportedLogEvent;
   result = [(HMMLogEvent *)&v7 init];
   if (result)
   {
-    result->_totalNumberOfImportedPersons = a3;
-    result->_numberOfNamedImportedPersons = a4;
+    result->_totalNumberOfImportedPersons = persons;
+    result->_numberOfNamedImportedPersons = importedPersons;
   }
 
   return result;

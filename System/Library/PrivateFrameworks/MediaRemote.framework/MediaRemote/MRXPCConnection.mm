@@ -1,13 +1,13 @@
 @interface MRXPCConnection
-- (MRXPCConnection)initWithConnection:(id)a3 queue:(id)a4 defaultReplyQueue:(id)a5;
-- (id)sendSyncMessage:(id)a3 error:(id *)a4;
-- (id)sendSyncMessageWithType:(unint64_t)a3 error:(id *)a4;
+- (MRXPCConnection)initWithConnection:(id)connection queue:(id)queue defaultReplyQueue:(id)replyQueue;
+- (id)sendSyncMessage:(id)message error:(id *)error;
+- (id)sendSyncMessageWithType:(unint64_t)type error:(id *)error;
 - (void)_registerCallbacks;
-- (void)addCustomXPCHandler:(id)a3 forKey:(unint64_t)a4;
+- (void)addCustomXPCHandler:(id)handler forKey:(unint64_t)key;
 - (void)dealloc;
-- (void)removeCustomXPCHandler:(unint64_t)a3;
-- (void)sendMessage:(id)a3 queue:(id)a4 reply:(id)a5;
-- (void)sendMessageWithType:(unint64_t)a3 queue:(id)a4 reply:(id)a5;
+- (void)removeCustomXPCHandler:(unint64_t)handler;
+- (void)sendMessage:(id)message queue:(id)queue reply:(id)reply;
+- (void)sendMessageWithType:(unint64_t)type queue:(id)queue reply:(id)reply;
 @end
 
 @implementation MRXPCConnection
@@ -134,26 +134,26 @@ void __37__MRXPCConnection__registerCallbacks__block_invoke_28(uint64_t a1)
   [(MRXPCConnection *)&v3 dealloc];
 }
 
-- (MRXPCConnection)initWithConnection:(id)a3 queue:(id)a4 defaultReplyQueue:(id)a5
+- (MRXPCConnection)initWithConnection:(id)connection queue:(id)queue defaultReplyQueue:(id)replyQueue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  connectionCopy = connection;
+  queueCopy = queue;
+  replyQueueCopy = replyQueue;
   v17.receiver = self;
   v17.super_class = MRXPCConnection;
   v12 = [(MRXPCConnection *)&v17 init];
   if (v12)
   {
-    if (!v9)
+    if (!connectionCopy)
     {
       [MRXPCConnection initWithConnection:queue:defaultReplyQueue:];
     }
 
-    objc_storeStrong(&v12->_connection, a3);
-    objc_storeStrong(&v12->_defaultReplyQueue, a5);
-    if (v10)
+    objc_storeStrong(&v12->_connection, connection);
+    objc_storeStrong(&v12->_defaultReplyQueue, replyQueue);
+    if (queueCopy)
     {
-      xpc_connection_set_target_queue(v12->_connection, v10);
+      xpc_connection_set_target_queue(v12->_connection, queueCopy);
     }
 
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -167,18 +167,18 @@ void __37__MRXPCConnection__registerCallbacks__block_invoke_28(uint64_t a1)
   return v12;
 }
 
-- (void)addCustomXPCHandler:(id)a3 forKey:(unint64_t)a4
+- (void)addCustomXPCHandler:(id)handler forKey:(unint64_t)key
 {
-  v6 = a3;
+  handlerCopy = handler;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46__MRXPCConnection_addCustomXPCHandler_forKey___block_invoke;
   block[3] = &unk_1E769BF28;
-  v10 = v6;
-  v11 = a4;
+  v10 = handlerCopy;
+  keyCopy = key;
   block[4] = self;
-  v8 = v6;
+  v8 = handlerCopy;
   dispatch_sync(serialQueue, block);
 }
 
@@ -209,7 +209,7 @@ void __46__MRXPCConnection_addCustomXPCHandler_forKey___block_invoke(void *a1)
   [v7 setObject:v8 forKey:v9];
 }
 
-- (void)removeCustomXPCHandler:(unint64_t)a3
+- (void)removeCustomXPCHandler:(unint64_t)handler
 {
   serialQueue = self->_serialQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -217,7 +217,7 @@ void __46__MRXPCConnection_addCustomXPCHandler_forKey___block_invoke(void *a1)
   v4[2] = __42__MRXPCConnection_removeCustomXPCHandler___block_invoke;
   v4[3] = &unk_1E769C018;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = handler;
   dispatch_sync(serialQueue, v4);
 }
 
@@ -228,25 +228,25 @@ void __42__MRXPCConnection_removeCustomXPCHandler___block_invoke(uint64_t a1)
   [v1 removeObjectForKey:v2];
 }
 
-- (void)sendMessageWithType:(unint64_t)a3 queue:(id)a4 reply:(id)a5
+- (void)sendMessageWithType:(unint64_t)type queue:(id)queue reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = MRCreateXPCMessage(a3);
-  [(MRXPCConnection *)self sendMessage:v10 queue:v9 reply:v8];
+  replyCopy = reply;
+  queueCopy = queue;
+  v10 = MRCreateXPCMessage(type);
+  [(MRXPCConnection *)self sendMessage:v10 queue:queueCopy reply:replyCopy];
 }
 
-- (void)sendMessage:(id)a3 queue:(id)a4 reply:(id)a5
+- (void)sendMessage:(id)message queue:(id)queue reply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  messageCopy = message;
+  queueCopy = queue;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    if (!v10)
+    if (!queueCopy)
     {
-      v10 = self->_defaultReplyQueue;
-      if (!v10)
+      queueCopy = self->_defaultReplyQueue;
+      if (!queueCopy)
       {
         [MRXPCConnection sendMessage:a2 queue:self reply:?];
       }
@@ -257,13 +257,13 @@ void __42__MRXPCConnection_removeCustomXPCHandler___block_invoke(uint64_t a1)
     handler[1] = 3221225472;
     handler[2] = __43__MRXPCConnection_sendMessage_queue_reply___block_invoke;
     handler[3] = &unk_1E769C4D0;
-    v14 = v11;
-    xpc_connection_send_message_with_reply(connection, v9, v10, handler);
+    v14 = replyCopy;
+    xpc_connection_send_message_with_reply(connection, messageCopy, queueCopy, handler);
   }
 
   else
   {
-    xpc_connection_send_message(self->_connection, v9);
+    xpc_connection_send_message(self->_connection, messageCopy);
   }
 }
 
@@ -297,19 +297,19 @@ LABEL_7:
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)sendSyncMessageWithType:(unint64_t)a3 error:(id *)a4
+- (id)sendSyncMessageWithType:(unint64_t)type error:(id *)error
 {
-  v6 = MRCreateXPCMessage(a3);
-  v7 = [(MRXPCConnection *)self sendSyncMessage:v6 error:a4];
+  v6 = MRCreateXPCMessage(type);
+  v7 = [(MRXPCConnection *)self sendSyncMessage:v6 error:error];
 
   return v7;
 }
 
-- (id)sendSyncMessage:(id)a3 error:(id *)a4
+- (id)sendSyncMessage:(id)message error:(id *)error
 {
-  v5 = xpc_connection_send_message_with_reply_sync(self->_connection, a3);
+  v5 = xpc_connection_send_message_with_reply_sync(self->_connection, message);
   v6 = v5;
-  if (a4)
+  if (error)
   {
     if (v5 == MEMORY[0x1E69E9E18])
     {
@@ -322,7 +322,7 @@ LABEL_7:
     {
       if (v5 != MEMORY[0x1E69E9E20])
       {
-        *a4 = MRCreateClientErrorFromXPCMessage(v5);
+        *error = MRCreateClientErrorFromXPCMessage(v5);
         goto LABEL_8;
       }
 
@@ -331,7 +331,7 @@ LABEL_7:
       v9 = [v10 initWithMRError:1 format:{@"Connection invalid with error=%@", v8}];
     }
 
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_8:

@@ -1,24 +1,24 @@
 @interface _TUIElementShelfBuilder
-- (void)addModel:(id)a3;
-- (void)configureWithChildNode:(id)a3 attributes:(id)a4;
+- (void)addModel:(id)model;
+- (void)configureWithChildNode:(id)node attributes:(id)attributes;
 @end
 
 @implementation _TUIElementShelfBuilder
 
-- (void)configureWithChildNode:(id)a3 attributes:(id)a4
+- (void)configureWithChildNode:(id)node attributes:(id)attributes
 {
-  v5 = [a4 stringForAttribute:178 node:a3.var0];
+  v5 = [attributes stringForAttribute:178 node:node.var0];
   role = self->_role;
   self->_role = v5;
 }
 
-- (void)addModel:(id)a3
+- (void)addModel:(id)model
 {
-  if (a3)
+  if (model)
   {
-    v4 = a3;
+    modelCopy = model;
     v5 = [[TUISingleModelContainerWithRole alloc] initWithRole:self->_role];
-    v8 = v4;
+    v8 = modelCopy;
     v6 = [NSArray arrayWithObjects:&v8 count:1];
     [(TUISingleModelContainer *)v5 updateModelChildren:v6];
 

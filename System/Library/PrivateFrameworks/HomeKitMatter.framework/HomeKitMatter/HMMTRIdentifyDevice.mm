@@ -1,9 +1,9 @@
 @interface HMMTRIdentifyDevice
 + (id)logCategory;
-- (HMMTRIdentifyDevice)initWithDevice:(id)a3 topology:(id)a4 queue:(id)a5;
-- (id)bridgeIdentifyEndpointWithAggregatorEndpoint:(id)a3;
+- (HMMTRIdentifyDevice)initWithDevice:(id)device topology:(id)topology queue:(id)queue;
+- (id)bridgeIdentifyEndpointWithAggregatorEndpoint:(id)endpoint;
 - (id)logIdentifier;
-- (void)identifyBridgeWithAggregatorEndpoint:(id)a3 completionHandler:(id)a4;
+- (void)identifyBridgeWithAggregatorEndpoint:(id)endpoint completionHandler:(id)handler;
 @end
 
 @implementation HMMTRIdentifyDevice
@@ -11,20 +11,20 @@
 - (id)logIdentifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMMTRIdentifyDevice *)self device];
-  v4 = [v3 nodeID];
-  v5 = [v2 stringWithFormat:@"%@", v4];
+  device = [(HMMTRIdentifyDevice *)self device];
+  nodeID = [device nodeID];
+  v5 = [v2 stringWithFormat:@"%@", nodeID];
 
   return v5;
 }
 
-- (id)bridgeIdentifyEndpointWithAggregatorEndpoint:(id)a3
+- (id)bridgeIdentifyEndpointWithAggregatorEndpoint:(id)endpoint
 {
   v76 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMMTRIdentifyDevice *)self device];
-  v6 = [(HMMTRIdentifyDevice *)self queue];
-  v7 = [(HMMTRIdentifyDevice *)self mtrClusterDescriptorWithDevice:v5 endpoint:0 queue:v6];
+  endpointCopy = endpoint;
+  device = [(HMMTRIdentifyDevice *)self device];
+  queue = [(HMMTRIdentifyDevice *)self queue];
+  v7 = [(HMMTRIdentifyDevice *)self mtrClusterDescriptorWithDevice:device endpoint:0 queue:queue];
 
   v8 = objc_alloc_init(MEMORY[0x277CD54D8]);
   v9 = [v7 readAttributePartsListWithParams:v8];
@@ -47,10 +47,10 @@
 
     if (v12)
     {
-      v13 = [(HMMTRIdentifyDevice *)self device];
-      v14 = [v4 unsignedIntValue];
-      v15 = [(HMMTRIdentifyDevice *)self queue];
-      v16 = [(HMMTRIdentifyDevice *)self mtrClusterDescriptorWithDevice:v13 endpoint:v14 queue:v15];
+      device2 = [(HMMTRIdentifyDevice *)self device];
+      unsignedIntValue = [endpointCopy unsignedIntValue];
+      queue2 = [(HMMTRIdentifyDevice *)self queue];
+      v16 = [(HMMTRIdentifyDevice *)self mtrClusterDescriptorWithDevice:device2 endpoint:unsignedIntValue queue:queue2];
 
       v17 = objc_alloc_init(MEMORY[0x277CD54D8]);
       v18 = [v16 readAttributePartsListWithParams:v17];
@@ -91,7 +91,7 @@
             v60 = v18;
             v61 = v16;
             v62 = v7;
-            v63 = v4;
+            v63 = endpointCopy;
             v26 = *v68;
             while (2)
             {
@@ -103,10 +103,10 @@
                 }
 
                 v28 = *(*(&v67 + 1) + 8 * i);
-                v29 = [(HMMTRIdentifyDevice *)self device];
-                v30 = [v28 unsignedIntValue];
-                v31 = [(HMMTRIdentifyDevice *)self queue];
-                v32 = [(HMMTRIdentifyDevice *)self mtrClusterDescriptorWithDevice:v29 endpoint:v30 queue:v31];
+                device3 = [(HMMTRIdentifyDevice *)self device];
+                unsignedIntValue2 = [v28 unsignedIntValue];
+                queue3 = [(HMMTRIdentifyDevice *)self queue];
+                v32 = [(HMMTRIdentifyDevice *)self mtrClusterDescriptorWithDevice:device3 endpoint:unsignedIntValue2 queue:queue3];
 
                 v33 = objc_alloc_init(MEMORY[0x277CD54D8]);
                 v34 = [v32 readAttributeServerListWithParams:v33];
@@ -148,7 +148,7 @@
             v38 = 0;
 LABEL_38:
             v7 = v62;
-            v4 = v63;
+            endpointCopy = v63;
             v18 = v60;
             v16 = v61;
             v21 = v66;
@@ -167,7 +167,7 @@ LABEL_38:
         {
           v52 = v18;
           v53 = objc_autoreleasePoolPush();
-          v54 = self;
+          selfCopy = self;
           v55 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
           {
@@ -192,7 +192,7 @@ LABEL_38:
       else
       {
         v47 = objc_autoreleasePoolPush();
-        v48 = self;
+        selfCopy2 = self;
         v49 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
         {
@@ -201,7 +201,7 @@ LABEL_38:
           *buf = 138543618;
           v73 = v51;
           v74 = 2112;
-          v75 = v4;
+          v75 = endpointCopy;
           _os_log_impl(&dword_22AEAE000, v49, OS_LOG_TYPE_ERROR, "%{public}@Failed to read aggregator %@ parts list", buf, 0x16u);
 
           v16 = v50;
@@ -216,7 +216,7 @@ LABEL_38:
     else
     {
       v43 = objc_autoreleasePoolPush();
-      v44 = self;
+      selfCopy3 = self;
       v45 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
       {
@@ -236,7 +236,7 @@ LABEL_38:
   else
   {
     v39 = objc_autoreleasePoolPush();
-    v40 = self;
+    selfCopy4 = self;
     v41 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
     {
@@ -255,21 +255,21 @@ LABEL_38:
   return v38;
 }
 
-- (void)identifyBridgeWithAggregatorEndpoint:(id)a3 completionHandler:(id)a4
+- (void)identifyBridgeWithAggregatorEndpoint:(id)endpoint completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 unsignedIntValue];
+  endpointCopy = endpoint;
+  handlerCopy = handler;
+  unsignedIntValue = [endpointCopy unsignedIntValue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __78__HMMTRIdentifyDevice_identifyBridgeWithAggregatorEndpoint_completionHandler___block_invoke;
   v11[3] = &unk_2786F0C38;
-  v12 = v6;
-  v13 = v7;
+  v12 = endpointCopy;
+  v13 = handlerCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
-  [(HMMTRIdentifyDevice *)self _identifyClusterPresentAtEndpoint:v8 completionHandler:v11];
+  v9 = endpointCopy;
+  v10 = handlerCopy;
+  [(HMMTRIdentifyDevice *)self _identifyClusterPresentAtEndpoint:unsignedIntValue completionHandler:v11];
 }
 
 void __78__HMMTRIdentifyDevice_identifyBridgeWithAggregatorEndpoint_completionHandler___block_invoke(id *a1, int a2, void *a3)
@@ -994,20 +994,20 @@ void __63__HMMTRIdentifyDevice__issueIdentifyCommand_completionHandler___block_i
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (HMMTRIdentifyDevice)initWithDevice:(id)a3 topology:(id)a4 queue:(id)a5
+- (HMMTRIdentifyDevice)initWithDevice:(id)device topology:(id)topology queue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  deviceCopy = device;
+  topologyCopy = topology;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = HMMTRIdentifyDevice;
   v12 = [(HMMTRIdentifyDevice *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_device, a3);
-    objc_storeStrong(&v13->_topology, a4);
-    objc_storeStrong(&v13->_queue, a5);
+    objc_storeStrong(&v12->_device, device);
+    objc_storeStrong(&v13->_topology, topology);
+    objc_storeStrong(&v13->_queue, queue);
   }
 
   return v13;

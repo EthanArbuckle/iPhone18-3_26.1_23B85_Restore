@@ -1,17 +1,17 @@
 @interface BMAppContextualActions
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMAppContextualActions)initWithIdentifier:(id)a3 appName:(id)a4 actionName:(id)a5 content:(id)a6 parameter:(id)a7;
-- (BMAppContextualActions)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMAppContextualActions)initWithIdentifier:(id)identifier appName:(id)name actionName:(id)actionName content:(id)content parameter:(id)parameter;
+- (BMAppContextualActions)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_contentJSONArray;
 - (id)_parameterJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMAppContextualActions
@@ -36,25 +36,25 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMAppContextualActions *)self identifier];
-    v7 = [v5 identifier];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    identifier = [(BMAppContextualActions *)self identifier];
+    identifier2 = [v5 identifier];
+    v8 = identifier2;
+    if (identifier == identifier2)
     {
     }
 
     else
     {
-      v9 = [(BMAppContextualActions *)self identifier];
-      v10 = [v5 identifier];
-      v11 = [v9 isEqual:v10];
+      identifier3 = [(BMAppContextualActions *)self identifier];
+      identifier4 = [v5 identifier];
+      v11 = [identifier3 isEqual:identifier4];
 
       if (!v11)
       {
@@ -62,18 +62,18 @@
       }
     }
 
-    v13 = [(BMAppContextualActions *)self appName];
-    v14 = [v5 appName];
-    v15 = v14;
-    if (v13 == v14)
+    appName = [(BMAppContextualActions *)self appName];
+    appName2 = [v5 appName];
+    v15 = appName2;
+    if (appName == appName2)
     {
     }
 
     else
     {
-      v16 = [(BMAppContextualActions *)self appName];
-      v17 = [v5 appName];
-      v18 = [v16 isEqual:v17];
+      appName3 = [(BMAppContextualActions *)self appName];
+      appName4 = [v5 appName];
+      v18 = [appName3 isEqual:appName4];
 
       if (!v18)
       {
@@ -81,18 +81,18 @@
       }
     }
 
-    v19 = [(BMAppContextualActions *)self actionName];
-    v20 = [v5 actionName];
-    v21 = v20;
-    if (v19 == v20)
+    actionName = [(BMAppContextualActions *)self actionName];
+    actionName2 = [v5 actionName];
+    v21 = actionName2;
+    if (actionName == actionName2)
     {
     }
 
     else
     {
-      v22 = [(BMAppContextualActions *)self actionName];
-      v23 = [v5 actionName];
-      v24 = [v22 isEqual:v23];
+      actionName3 = [(BMAppContextualActions *)self actionName];
+      actionName4 = [v5 actionName];
+      v24 = [actionName3 isEqual:actionName4];
 
       if (!v24)
       {
@@ -100,18 +100,18 @@
       }
     }
 
-    v25 = [(BMAppContextualActions *)self content];
-    v26 = [v5 content];
-    v27 = v26;
-    if (v25 == v26)
+    content = [(BMAppContextualActions *)self content];
+    content2 = [v5 content];
+    v27 = content2;
+    if (content == content2)
     {
     }
 
     else
     {
-      v28 = [(BMAppContextualActions *)self content];
-      v29 = [v5 content];
-      v30 = [v28 isEqual:v29];
+      content3 = [(BMAppContextualActions *)self content];
+      content4 = [v5 content];
+      v30 = [content3 isEqual:content4];
 
       if (!v30)
       {
@@ -123,18 +123,18 @@ LABEL_23:
       }
     }
 
-    v31 = [(BMAppContextualActions *)self parameter];
-    v32 = [v5 parameter];
-    if (v31 == v32)
+    parameter = [(BMAppContextualActions *)self parameter];
+    parameter2 = [v5 parameter];
+    if (parameter == parameter2)
     {
       v12 = 1;
     }
 
     else
     {
-      v33 = [(BMAppContextualActions *)self parameter];
-      v34 = [v5 parameter];
-      v12 = [v33 isEqual:v34];
+      parameter3 = [(BMAppContextualActions *)self parameter];
+      parameter4 = [v5 parameter];
+      v12 = [parameter3 isEqual:parameter4];
     }
 
     goto LABEL_23;
@@ -149,56 +149,56 @@ LABEL_24:
 - (id)jsonDictionary
 {
   v23[5] = *MEMORY[0x1E69E9840];
-  v3 = [(BMAppContextualActions *)self identifier];
-  v4 = [(BMAppContextualActions *)self appName];
-  v5 = [(BMAppContextualActions *)self actionName];
-  v6 = [(BMAppContextualActions *)self _contentJSONArray];
-  v7 = [(BMAppContextualActions *)self _parameterJSONArray];
+  identifier = [(BMAppContextualActions *)self identifier];
+  appName = [(BMAppContextualActions *)self appName];
+  actionName = [(BMAppContextualActions *)self actionName];
+  _contentJSONArray = [(BMAppContextualActions *)self _contentJSONArray];
+  _parameterJSONArray = [(BMAppContextualActions *)self _parameterJSONArray];
   v18 = @"identifier";
-  v8 = v3;
-  if (!v3)
+  null = identifier;
+  if (!identifier)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16 = v8;
-  v23[0] = v8;
+  v16 = null;
+  v23[0] = null;
   v19 = @"appName";
-  v9 = v4;
-  if (!v4)
+  null2 = appName;
+  if (!appName)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[1] = v9;
+  v23[1] = null2;
   v20 = @"actionName";
-  v10 = v5;
-  if (!v5)
+  null3 = actionName;
+  if (!actionName)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[2] = v10;
+  v23[2] = null3;
   v21 = @"content";
-  v11 = v6;
-  if (!v6)
+  null4 = _contentJSONArray;
+  if (!_contentJSONArray)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v11;
+  v23[3] = null4;
   v22 = @"parameter";
-  v12 = v7;
-  if (!v7)
+  null5 = _parameterJSONArray;
+  if (!_parameterJSONArray)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v12;
+  v23[4] = null5;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v18 count:{5, v16}];
-  if (v7)
+  if (_parameterJSONArray)
   {
-    if (v6)
+    if (_contentJSONArray)
     {
       goto LABEL_13;
     }
@@ -207,10 +207,10 @@ LABEL_24:
   else
   {
 
-    if (v6)
+    if (_contentJSONArray)
     {
 LABEL_13:
-      if (v5)
+      if (actionName)
       {
         goto LABEL_14;
       }
@@ -219,17 +219,17 @@ LABEL_13:
     }
   }
 
-  if (v5)
+  if (actionName)
   {
 LABEL_14:
-    if (v4)
+    if (appName)
     {
       goto LABEL_15;
     }
 
 LABEL_22:
 
-    if (v3)
+    if (identifier)
     {
       goto LABEL_16;
     }
@@ -239,13 +239,13 @@ LABEL_22:
 
 LABEL_21:
 
-  if (!v4)
+  if (!appName)
   {
     goto LABEL_22;
   }
 
 LABEL_15:
-  if (v3)
+  if (identifier)
   {
     goto LABEL_16;
   }
@@ -266,8 +266,8 @@ LABEL_16:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMAppContextualActions *)self parameter];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  parameter = [(BMAppContextualActions *)self parameter];
+  v5 = [parameter countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -278,14 +278,14 @@ LABEL_16:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(parameter);
         }
 
         v9 = [*(*(&v12 + 1) + 8 * i) base64EncodedStringWithOptions:0];
         [v3 addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [parameter countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -304,8 +304,8 @@ LABEL_16:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMAppContextualActions *)self content];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  content = [(BMAppContextualActions *)self content];
+  v5 = [content countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -316,14 +316,14 @@ LABEL_16:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(content);
         }
 
         v9 = [*(*(&v12 + 1) + 8 * i) base64EncodedStringWithOptions:0];
         [v3 addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [content countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -334,17 +334,17 @@ LABEL_16:
   return v3;
 }
 
-- (BMAppContextualActions)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMAppContextualActions)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v107[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"identifier"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v30 = objc_alloc(MEMORY[0x1E696ABC0]);
         v31 = *MEMORY[0x1E698F240];
@@ -357,7 +357,7 @@ LABEL_16:
         v35 = [v34 initWithDomain:v31 code:2 userInfo:v33];
         v8 = 0;
         v36 = 0;
-        *a4 = v35;
+        *error = v35;
         goto LABEL_71;
       }
 
@@ -374,13 +374,13 @@ LABEL_16:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"appName"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"appName"];
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v40 = v9;
         v41 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -396,7 +396,7 @@ LABEL_16:
         v46 = [v45 initWithDomain:v42 code:2 userInfo:?];
         v32 = 0;
         v36 = 0;
-        *a4 = v46;
+        *error = v46;
         goto LABEL_70;
       }
 
@@ -413,7 +413,7 @@ LABEL_16:
     v78 = 0;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"actionName"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"actionName"];
   v77 = v7;
   v75 = v9;
   v79 = v10;
@@ -422,7 +422,7 @@ LABEL_16:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v47 = objc_alloc(MEMORY[0x1E696ABC0]);
         v48 = *MEMORY[0x1E698F240];
@@ -433,7 +433,7 @@ LABEL_16:
         v49 = [v47 initWithDomain:v48 code:2 userInfo:v15];
         v39 = 0;
         v36 = 0;
-        *a4 = v49;
+        *error = v49;
         v32 = v78;
         goto LABEL_68;
       }
@@ -452,15 +452,15 @@ LABEL_16:
     v74 = 0;
   }
 
-  v12 = [v6 objectForKeyedSubscript:@"content"];
-  v13 = [MEMORY[0x1E695DFB0] null];
-  v14 = [v12 isEqual:v13];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"content"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v14 = [v12 isEqual:null];
 
   if (v14)
   {
-    v76 = a4;
-    v72 = self;
-    v73 = v6;
+    errorCopy3 = error;
+    selfCopy2 = self;
+    v73 = dictionaryCopy;
 
     v12 = 0;
   }
@@ -472,7 +472,7 @@ LABEL_16:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v36 = 0;
           v32 = v78;
@@ -481,7 +481,7 @@ LABEL_16:
         }
 
         v55 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v56 = a4;
+        errorCopy2 = error;
         v57 = *MEMORY[0x1E698F240];
         v100 = *MEMORY[0x1E696A578];
         v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"content"];
@@ -489,14 +489,14 @@ LABEL_16:
         v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v101 forKeys:&v100 count:1];
         v58 = [v55 initWithDomain:v57 code:2 userInfo:v21];
         v36 = 0;
-        *v56 = v58;
+        *errorCopy2 = v58;
         goto LABEL_58;
       }
     }
 
-    v76 = a4;
-    v72 = self;
-    v73 = v6;
+    errorCopy3 = error;
+    selfCopy2 = self;
+    v73 = dictionaryCopy;
   }
 
   v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v12, "count")}];
@@ -527,7 +527,7 @@ LABEL_16:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (v76)
+        if (errorCopy3)
         {
           v24 = objc_alloc(MEMORY[0x1E696ABC0]);
           v25 = *MEMORY[0x1E698F240];
@@ -538,11 +538,11 @@ LABEL_16:
           v28 = v24;
           v29 = v25;
 LABEL_38:
-          v6 = v73;
+          dictionaryCopy = v73;
           v39 = v74;
           v8 = v71;
           v32 = v78;
-          *v76 = [v28 initWithDomain:v29 code:2 userInfo:v27];
+          *errorCopy3 = [v28 initWithDomain:v29 code:2 userInfo:v27];
 
           v36 = 0;
           v21 = v12;
@@ -552,8 +552,8 @@ LABEL_38:
 LABEL_41:
         v36 = 0;
         v21 = v12;
-        self = v72;
-        v6 = v73;
+        self = selfCopy2;
+        dictionaryCopy = v73;
         v8 = v71;
 LABEL_58:
         v32 = v78;
@@ -564,7 +564,7 @@ LABEL_58:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v76)
+        if (errorCopy3)
         {
           v37 = objc_alloc(MEMORY[0x1E696ABC0]);
           v38 = *MEMORY[0x1E698F240];
@@ -590,10 +590,10 @@ LABEL_58:
   while (v17);
 LABEL_26:
 
-  v6 = v73;
+  dictionaryCopy = v73;
   v21 = [v73 objectForKeyedSubscript:@"parameter"];
-  v22 = [MEMORY[0x1E695DFB0] null];
-  v23 = [v21 isEqual:v22];
+  null2 = [MEMORY[0x1E695DFB0] null];
+  v23 = [v21 isEqual:null2];
 
   if (v23)
   {
@@ -607,7 +607,7 @@ LABEL_26:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (v76)
+      if (errorCopy3)
       {
         v66 = objc_alloc(MEMORY[0x1E696ABC0]);
         v67 = *MEMORY[0x1E698F240];
@@ -615,7 +615,7 @@ LABEL_26:
         v26 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"parameter"];
         v94 = v26;
         v68 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v94 forKeys:&v93 count:1];
-        *v76 = [v66 initWithDomain:v67 code:2 userInfo:v68];
+        *errorCopy3 = [v66 initWithDomain:v67 code:2 userInfo:v68];
 
         v36 = 0;
         v32 = v78;
@@ -624,7 +624,7 @@ LABEL_26:
       }
 
       v36 = 0;
-      self = v72;
+      self = selfCopy2;
       goto LABEL_58;
     }
   }
@@ -658,11 +658,11 @@ LABEL_46:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = v73;
+        dictionaryCopy = v73;
         v39 = v74;
         v8 = v71;
         v32 = v78;
-        if (v76)
+        if (errorCopy3)
         {
           v70 = objc_alloc(MEMORY[0x1E696ABC0]);
           v69 = *MEMORY[0x1E698F240];
@@ -674,7 +674,7 @@ LABEL_46:
           v62 = &v90;
 LABEL_64:
           v63 = [v60 dictionaryWithObjects:v61 forKeys:v62 count:1];
-          *v76 = [v70 initWithDomain:v69 code:2 userInfo:v63];
+          *errorCopy3 = [v70 initWithDomain:v69 code:2 userInfo:v63];
         }
 
 LABEL_65:
@@ -686,11 +686,11 @@ LABEL_65:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v6 = v73;
+        dictionaryCopy = v73;
         v39 = v74;
         v8 = v71;
         v32 = v78;
-        if (v76)
+        if (errorCopy3)
         {
           v70 = objc_alloc(MEMORY[0x1E696ABC0]);
           v69 = *MEMORY[0x1E698F240];
@@ -729,12 +729,12 @@ LABEL_55:
   v8 = v71;
   v32 = v78;
   v39 = v74;
-  v36 = [(BMAppContextualActions *)v72 initWithIdentifier:v71 appName:v78 actionName:v74 content:v15 parameter:v26];
-  v72 = v36;
-  v6 = v73;
+  v36 = [(BMAppContextualActions *)selfCopy2 initWithIdentifier:v71 appName:v78 actionName:v74 content:v15 parameter:v26];
+  selfCopy2 = v36;
+  dictionaryCopy = v73;
 LABEL_66:
 
-  self = v72;
+  self = selfCopy2;
 LABEL_67:
 
 LABEL_68:
@@ -755,15 +755,15 @@ LABEL_72:
 {
   v3 = objc_opt_new();
   [(BMAppContextualActions *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
@@ -846,9 +846,9 @@ LABEL_72:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v32.receiver = self;
   v32.super_class = BMAppContextualActions;
   v5 = [(BMEventBase *)&v32 init];
@@ -859,12 +859,12 @@ LABEL_72:
 
   v6 = objc_opt_new();
   v7 = objc_opt_new();
-  v8 = [v4 position];
-  if (v8 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -875,18 +875,18 @@ LABEL_72:
       while (1)
       {
         v33 = 0;
-        v12 = [v4 position] + 1;
-        if (v12 >= [v4 position] && (v13 = objc_msgSend(v4, "position") + 1, v13 <= objc_msgSend(v4, "length")))
+        v12 = [fromCopy position] + 1;
+        if (v12 >= [fromCopy position] && (v13 = objc_msgSend(fromCopy, "position") + 1, v13 <= objc_msgSend(fromCopy, "length")))
         {
-          v14 = [v4 data];
-          [v14 getBytes:&v33 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v11 |= (v33 & 0x7F) << v9;
@@ -903,9 +903,9 @@ LABEL_72:
         }
       }
 
-      v16 = [v4 hasError] ? 0 : v11;
+      v16 = [fromCopy hasError] ? 0 : v11;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v16 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v16 & 7) == 4)
       {
         break;
       }
@@ -974,10 +974,10 @@ LABEL_37:
       }
 
 LABEL_34:
-      v24 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v24 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
   v25 = [v6 copy];
@@ -988,8 +988,8 @@ LABEL_34:
   parameter = v5->_parameter;
   v5->_parameter = v27;
 
-  v29 = [v4 hasError];
-  if (v29)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_39:
     v30 = 0;
@@ -1007,34 +1007,34 @@ LABEL_40:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMAppContextualActions *)self identifier];
-  v5 = [(BMAppContextualActions *)self appName];
-  v6 = [(BMAppContextualActions *)self actionName];
-  v7 = [(BMAppContextualActions *)self content];
-  v8 = [(BMAppContextualActions *)self parameter];
-  v9 = [v3 initWithFormat:@"BMAppContextualActions with identifier: %@, appName: %@, actionName: %@, content: %@, parameter: %@", v4, v5, v6, v7, v8];
+  identifier = [(BMAppContextualActions *)self identifier];
+  appName = [(BMAppContextualActions *)self appName];
+  actionName = [(BMAppContextualActions *)self actionName];
+  content = [(BMAppContextualActions *)self content];
+  parameter = [(BMAppContextualActions *)self parameter];
+  v9 = [v3 initWithFormat:@"BMAppContextualActions with identifier: %@, appName: %@, actionName: %@, content: %@, parameter: %@", identifier, appName, actionName, content, parameter];
 
   return v9;
 }
 
-- (BMAppContextualActions)initWithIdentifier:(id)a3 appName:(id)a4 actionName:(id)a5 content:(id)a6 parameter:(id)a7
+- (BMAppContextualActions)initWithIdentifier:(id)identifier appName:(id)name actionName:(id)actionName content:(id)content parameter:(id)parameter
 {
-  v19 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  nameCopy = name;
+  actionNameCopy = actionName;
+  contentCopy = content;
+  parameterCopy = parameter;
   v20.receiver = self;
   v20.super_class = BMAppContextualActions;
   v17 = [(BMEventBase *)&v20 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v17->_identifier, a3);
-    objc_storeStrong(&v17->_appName, a4);
-    objc_storeStrong(&v17->_actionName, a5);
-    objc_storeStrong(&v17->_content, a6);
-    objc_storeStrong(&v17->_parameter, a7);
+    objc_storeStrong(&v17->_identifier, identifier);
+    objc_storeStrong(&v17->_appName, name);
+    objc_storeStrong(&v17->_actionName, actionName);
+    objc_storeStrong(&v17->_content, content);
+    objc_storeStrong(&v17->_parameter, parameter);
   }
 
   return v17;
@@ -1077,13 +1077,13 @@ id __33__BMAppContextualActions_columns__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
     v4 = MEMORY[0x1E69C65B8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithData:v5];
+    dataCopy = data;
+    v6 = [[v4 alloc] initWithData:dataCopy];
 
     v7 = [[BMAppContextualActions alloc] initByReadFrom:v6];
     v8 = v7;

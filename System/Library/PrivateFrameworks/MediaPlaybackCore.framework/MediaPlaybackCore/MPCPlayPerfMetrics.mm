@@ -1,6 +1,6 @@
 @interface MPCPlayPerfMetrics
-+ (id)playMetricsWithErrorSignature:(id)a3 event:(id)a4 cursor:(id)a5;
-+ (id)playMetricsWithItemReadyForMetricsEvent:(id)a3 cursor:(id)a4;
++ (id)playMetricsWithErrorSignature:(id)signature event:(id)event cursor:(id)cursor;
++ (id)playMetricsWithItemReadyForMetricsEvent:(id)event cursor:(id)cursor;
 - (MPCPlayPerfMetrics)init;
 - (NSDictionary)AVPlayerItemPerformanceMetrics;
 - (NSDictionary)formatInfo;
@@ -79,114 +79,114 @@
 - (NSString)siriRefId;
 - (NSString)storefront;
 - (NSString)treatmentID;
-- (id)_buildSegmentForComponent:(void *)a3 subcomponent:(void *)a4 duration:;
+- (id)_buildSegmentForComponent:(void *)component subcomponent:(void *)subcomponent duration:;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)jsonObject;
-- (void)_addComplexityToSegment:(void *)a3 complexity:(int)a4 when:;
-- (void)_addOptimizationToSegment:(void *)a3 optimization:(uint64_t)a4 when:;
-- (void)_addStepToSegment:(void *)a3 name:(void *)a4 duration:(char)a5 options:;
-- (void)addAssetSelectionWithCursor:(id)a3 itemIDPayload:(id)a4;
-- (void)addEnvironmentInfoWithCursor:(id)a3;
-- (void)addNetworkTimesWithScopedCursor:(id)a3;
-- (void)addPlaybackBehaviorWithCursor:(id)a3;
-- (void)addQueueMetadata:(id)a3;
-- (void)addSessionActivationTimesWithScopedCursor:(id)a3;
-- (void)addSharePlayWithCursor:(id)a3;
-- (void)set_AVPlayerItemPerformanceMetrics:(id)a3;
-- (void)set_assetCacheAge:(id)a3;
-- (void)set_assetLoadWaitTime:(id)a3;
-- (void)set_assetLocation:(id)a3;
-- (void)set_assetProtectionType:(id)a3;
-- (void)set_assetSource:(id)a3;
-- (void)set_assetType:(id)a3;
-- (void)set_bagWaitTime:(id)a3;
-- (void)set_checkpointAssetLoadBegin:(id)a3;
-- (void)set_checkpointAssetLoadEnd:(id)a3;
-- (void)set_checkpointFirstAudioFrame:(id)a3;
-- (void)set_checkpointLikelyToKeepUp:(id)a3;
-- (void)set_checkpointMRPlay:(id)a3;
-- (void)set_checkpointMRSetQueueBegin:(id)a3;
-- (void)set_checkpointPlay:(id)a3;
-- (void)set_checkpointRateOne:(id)a3;
-- (void)set_checkpointRateZero:(id)a3;
-- (void)set_checkpointReadyToPlay:(id)a3;
-- (void)set_checkpointSetQueueBegin:(id)a3;
-- (void)set_checkpointSetQueueEnd:(id)a3;
-- (void)set_endpointType:(id)a3;
-- (void)set_errorResolution:(id)a3;
-- (void)set_errorSignature:(id)a3;
-- (void)set_eventTime:(id)a3;
-- (void)set_eventType:(id)a3;
-- (void)set_experimentID:(id)a3;
-- (void)set_featureName:(id)a3;
-- (void)set_firstAudioFrameWaitTime:(id)a3;
-- (void)set_formatInfo:(id)a3;
-- (void)set_hasAccountInfo:(id)a3;
-- (void)set_hasOfflinePlaybackKeys:(id)a3;
-- (void)set_hasOnlinePlaybackKeys:(id)a3;
-- (void)set_hlsMetadataWaitTime:(id)a3;
-- (void)set_isActiveAccount:(id)a3;
-- (void)set_isAutoPlayEnabled:(id)a3;
-- (void)set_isDelegatedPlayback:(id)a3;
-- (void)set_isFirstPlay:(id)a3;
-- (void)set_isRemoteSetQueue:(id)a3;
-- (void)set_isReplacingPlayback:(id)a3;
-- (void)set_isSharePlay:(id)a3;
-- (void)set_isShuffled:(id)a3;
-- (void)set_itemIdentifier:(id)a3;
-- (void)set_itemMetadata:(id)a3;
-- (void)set_leaseWaitTime:(id)a3;
-- (void)set_lookupWaitTime:(id)a3;
-- (void)set_mediaRedownloadWaitTime:(id)a3;
-- (void)set_networkType:(id)a3;
-- (void)set_nextItemWaitTime:(id)a3;
-- (void)set_playCommandSendTime:(id)a3;
-- (void)set_playCommandWaitTime:(id)a3;
-- (void)set_queueCommandType:(id)a3;
-- (void)set_queueLoadWaitTime:(id)a3;
-- (void)set_queueType:(id)a3;
-- (void)set_rateChangeWaitTime:(id)a3;
-- (void)set_readyToPlayStatusWaitTime:(id)a3;
-- (void)set_routeInfo:(id)a3;
-- (void)set_sectionIdentifier:(id)a3;
-- (void)set_seekBeforePlaying:(id)a3;
-- (void)set_sessionActivationAVTime:(id)a3;
-- (void)set_sessionActivationClientTime:(id)a3;
-- (void)set_sessionActivationWaitTime:(id)a3;
-- (void)set_setQueueCommandSendTime:(id)a3;
-- (void)set_siriRefId:(id)a3;
-- (void)set_storefront:(id)a3;
-- (void)set_subscriptionAssetLoadWaitTime:(id)a3;
-- (void)set_subscriptionType:(id)a3;
-- (void)set_suzeLeaseWaitTime:(id)a3;
-- (void)set_timeSinceBoot:(id)a3;
-- (void)set_timeSinceLaunch:(id)a3;
-- (void)set_timeSincePaused:(id)a3;
-- (void)set_treatmentID:(id)a3;
-- (void)set_vocalsControlActive:(id)a3;
+- (void)_addComplexityToSegment:(void *)segment complexity:(int)complexity when:;
+- (void)_addOptimizationToSegment:(void *)segment optimization:(uint64_t)optimization when:;
+- (void)_addStepToSegment:(void *)segment name:(void *)name duration:(char)duration options:;
+- (void)addAssetSelectionWithCursor:(id)cursor itemIDPayload:(id)payload;
+- (void)addEnvironmentInfoWithCursor:(id)cursor;
+- (void)addNetworkTimesWithScopedCursor:(id)cursor;
+- (void)addPlaybackBehaviorWithCursor:(id)cursor;
+- (void)addQueueMetadata:(id)metadata;
+- (void)addSessionActivationTimesWithScopedCursor:(id)cursor;
+- (void)addSharePlayWithCursor:(id)cursor;
+- (void)set_AVPlayerItemPerformanceMetrics:(id)metrics;
+- (void)set_assetCacheAge:(id)age;
+- (void)set_assetLoadWaitTime:(id)time;
+- (void)set_assetLocation:(id)location;
+- (void)set_assetProtectionType:(id)type;
+- (void)set_assetSource:(id)source;
+- (void)set_assetType:(id)type;
+- (void)set_bagWaitTime:(id)time;
+- (void)set_checkpointAssetLoadBegin:(id)begin;
+- (void)set_checkpointAssetLoadEnd:(id)end;
+- (void)set_checkpointFirstAudioFrame:(id)frame;
+- (void)set_checkpointLikelyToKeepUp:(id)up;
+- (void)set_checkpointMRPlay:(id)play;
+- (void)set_checkpointMRSetQueueBegin:(id)begin;
+- (void)set_checkpointPlay:(id)play;
+- (void)set_checkpointRateOne:(id)one;
+- (void)set_checkpointRateZero:(id)zero;
+- (void)set_checkpointReadyToPlay:(id)play;
+- (void)set_checkpointSetQueueBegin:(id)begin;
+- (void)set_checkpointSetQueueEnd:(id)end;
+- (void)set_endpointType:(id)type;
+- (void)set_errorResolution:(id)resolution;
+- (void)set_errorSignature:(id)signature;
+- (void)set_eventTime:(id)time;
+- (void)set_eventType:(id)type;
+- (void)set_experimentID:(id)d;
+- (void)set_featureName:(id)name;
+- (void)set_firstAudioFrameWaitTime:(id)time;
+- (void)set_formatInfo:(id)info;
+- (void)set_hasAccountInfo:(id)info;
+- (void)set_hasOfflinePlaybackKeys:(id)keys;
+- (void)set_hasOnlinePlaybackKeys:(id)keys;
+- (void)set_hlsMetadataWaitTime:(id)time;
+- (void)set_isActiveAccount:(id)account;
+- (void)set_isAutoPlayEnabled:(id)enabled;
+- (void)set_isDelegatedPlayback:(id)playback;
+- (void)set_isFirstPlay:(id)play;
+- (void)set_isRemoteSetQueue:(id)queue;
+- (void)set_isReplacingPlayback:(id)playback;
+- (void)set_isSharePlay:(id)play;
+- (void)set_isShuffled:(id)shuffled;
+- (void)set_itemIdentifier:(id)identifier;
+- (void)set_itemMetadata:(id)metadata;
+- (void)set_leaseWaitTime:(id)time;
+- (void)set_lookupWaitTime:(id)time;
+- (void)set_mediaRedownloadWaitTime:(id)time;
+- (void)set_networkType:(id)type;
+- (void)set_nextItemWaitTime:(id)time;
+- (void)set_playCommandSendTime:(id)time;
+- (void)set_playCommandWaitTime:(id)time;
+- (void)set_queueCommandType:(id)type;
+- (void)set_queueLoadWaitTime:(id)time;
+- (void)set_queueType:(id)type;
+- (void)set_rateChangeWaitTime:(id)time;
+- (void)set_readyToPlayStatusWaitTime:(id)time;
+- (void)set_routeInfo:(id)info;
+- (void)set_sectionIdentifier:(id)identifier;
+- (void)set_seekBeforePlaying:(id)playing;
+- (void)set_sessionActivationAVTime:(id)time;
+- (void)set_sessionActivationClientTime:(id)time;
+- (void)set_sessionActivationWaitTime:(id)time;
+- (void)set_setQueueCommandSendTime:(id)time;
+- (void)set_siriRefId:(id)id;
+- (void)set_storefront:(id)set_storefront;
+- (void)set_subscriptionAssetLoadWaitTime:(id)time;
+- (void)set_subscriptionType:(id)type;
+- (void)set_suzeLeaseWaitTime:(id)time;
+- (void)set_timeSinceBoot:(id)boot;
+- (void)set_timeSinceLaunch:(id)launch;
+- (void)set_timeSincePaused:(id)paused;
+- (void)set_treatmentID:(id)d;
+- (void)set_vocalsControlActive:(id)active;
 @end
 
 @implementation MPCPlayPerfMetrics
 
-- (void)addEnvironmentInfoWithCursor:(id)a3
+- (void)addEnvironmentInfoWithCursor:(id)cursor
 {
-  v6 = [a3 findPreviousEventWithType:@"network-type-changed" matchingPayload:0];
-  v4 = [v6 payload];
-  v5 = [v4 objectForKeyedSubscript:@"network-type"];
+  v6 = [cursor findPreviousEventWithType:@"network-type-changed" matchingPayload:0];
+  payload = [v6 payload];
+  v5 = [payload objectForKeyedSubscript:@"network-type"];
   [(MPCPlayPerfMetrics *)self set_networkType:v5];
 }
 
-- (void)addAssetSelectionWithCursor:(id)a3 itemIDPayload:(id)a4
+- (void)addAssetSelectionWithCursor:(id)cursor itemIDPayload:(id)payload
 {
   v68 = *MEMORY[0x1E69E9840];
-  v43 = a3;
-  v44 = a4;
-  v42 = [v43 findPreviousEventWithType:@"asset-selection" matchingPayload:?];
+  cursorCopy = cursor;
+  payloadCopy = payload;
+  v42 = [cursorCopy findPreviousEventWithType:@"asset-selection" matchingPayload:?];
   if (v42)
   {
-    v6 = [v42 payload];
-    v7 = [v6 objectForKeyedSubscript:@"asset-load-info"];
+    payload = [v42 payload];
+    v7 = [payload objectForKeyedSubscript:@"asset-load-info"];
 
     v8 = [v7 objectForKeyedSubscript:@"item-asset-type"];
     [(MPCPlayPerfMetrics *)self set_assetType:v8];
@@ -233,7 +233,7 @@
   v45[2] = __64__MPCPlayPerfMetrics_addAssetSelectionWithCursor_itemIDPayload___block_invoke;
   v45[3] = &unk_1E82322F0;
   v45[4] = &v46;
-  [v43 enumeratePreviousEventsWithType:@"audio-format-changed" matchingPayload:v44 usingBlock:v45];
+  [cursorCopy enumeratePreviousEventsWithType:@"audio-format-changed" matchingPayload:payloadCopy usingBlock:v45];
   v19 = v47[5];
   if (v19)
   {
@@ -267,27 +267,27 @@
     [(MPCPlayPerfMetrics *)self set_formatInfo:v28];
   }
 
-  v29 = [v43 findPreviousEventWithType:@"item-configuration-end" matchingPayload:v44];
+  v29 = [cursorCopy findPreviousEventWithType:@"item-configuration-end" matchingPayload:payloadCopy];
   v30 = v29;
   if (v29)
   {
-    v31 = [v29 payload];
-    v32 = [v31 objectForKeyedSubscript:@"hls-metadata-wait-time"];
+    payload2 = [v29 payload];
+    v32 = [payload2 objectForKeyedSubscript:@"hls-metadata-wait-time"];
     [(MPCPlayPerfMetrics *)self set_hlsMetadataWaitTime:v32];
 
-    v33 = [v30 payload];
-    v34 = [v33 objectForKeyedSubscript:@"audio-route"];
+    payload3 = [v30 payload];
+    v34 = [payload3 objectForKeyedSubscript:@"audio-route"];
 
     if (v34)
     {
       v35 = v34;
       v52 = @"name";
-      v36 = [v35 name];
-      v37 = v36;
+      name = [v35 name];
+      v37 = name;
       v38 = &stru_1F454A698;
-      if (v36)
+      if (name)
       {
-        v38 = v36;
+        v38 = name;
       }
 
       v60 = v38;
@@ -316,10 +316,10 @@ void __64__MPCPlayPerfMetrics_addAssetSelectionWithCursor_itemIDPayload___block_
   *a3 = *(*(*(a1 + 32) + 8) + 40) != 0;
 }
 
-- (void)addSessionActivationTimesWithScopedCursor:(id)a3
+- (void)addSessionActivationTimesWithScopedCursor:(id)cursor
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  cursorCopy = cursor;
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x3032000000;
@@ -349,7 +349,7 @@ void __64__MPCPlayPerfMetrics_addAssetSelectionWithCursor_itemIDPayload___block_
   v9[5] = &v18;
   v9[6] = &v14;
   v9[7] = &v10;
-  [v4 enumeratePreviousEventsWithTypes:v5 usingBlock:v9];
+  [cursorCopy enumeratePreviousEventsWithTypes:v5 usingBlock:v9];
 
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:v19[3]];
   [(MPCPlayPerfMetrics *)self set_sessionActivationWaitTime:v6];
@@ -421,12 +421,12 @@ void __64__MPCPlayPerfMetrics_addSessionActivationTimesWithScopedCursor___block_
 LABEL_9:
 }
 
-- (void)addNetworkTimesWithScopedCursor:(id)a3
+- (void)addNetworkTimesWithScopedCursor:(id)cursor
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
-  v6 = [v4 dictionary];
+  cursorCopy = cursor;
+  dictionary = [v4 dictionary];
   v17 = @"blocks-playback";
   v18[0] = MEMORY[0x1E695E118];
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
@@ -435,9 +435,9 @@ LABEL_9:
   v15[2] = __54__MPCPlayPerfMetrics_addNetworkTimesWithScopedCursor___block_invoke;
   v15[3] = &unk_1E8231DD0;
   v15[4] = self;
-  v16 = v6;
-  v8 = v6;
-  [v5 enumeratePreviousEventsWithType:@"network-operation" matchingPayload:v7 usingBlock:v15];
+  v16 = dictionary;
+  v8 = dictionary;
+  [cursorCopy enumeratePreviousEventsWithType:@"network-operation" matchingPayload:v7 usingBlock:v15];
 
   v9 = [v8 objectForKeyedSubscript:&unk_1F4599070];
   [(MPCPlayPerfMetrics *)self set_bagWaitTime:v9];
@@ -519,33 +519,33 @@ void __54__MPCPlayPerfMetrics_addNetworkTimesWithScopedCursor___block_invoke(uin
 LABEL_11:
 }
 
-- (void)addSharePlayWithCursor:(id)a3
+- (void)addSharePlayWithCursor:(id)cursor
 {
-  v8 = [a3 findPreviousEventWithType:@"session-begin" matchingPayload:0];
-  v4 = [v8 payload];
-  v5 = [v4 objectForKeyedSubscript:@"behavior-type"];
-  v6 = [v5 integerValue];
+  v8 = [cursor findPreviousEventWithType:@"session-begin" matchingPayload:0];
+  payload = [v8 payload];
+  v5 = [payload objectForKeyedSubscript:@"behavior-type"];
+  integerValue = [v5 integerValue];
 
-  v7 = [MEMORY[0x1E696AD98] numberWithInt:v6 == 3];
+  v7 = [MEMORY[0x1E696AD98] numberWithInt:integerValue == 3];
   [(MPCPlayPerfMetrics *)self set_isSharePlay:v7];
 }
 
-- (void)addPlaybackBehaviorWithCursor:(id)a3
+- (void)addPlaybackBehaviorWithCursor:(id)cursor
 {
-  v4 = [a3 findPreviousEventWithType:@"playback-behavior-changed" matchingPayload:0];
+  v4 = [cursor findPreviousEventWithType:@"playback-behavior-changed" matchingPayload:0];
   if (v4)
   {
     v14 = v4;
-    v5 = [v4 payload];
-    v6 = [v5 objectForKeyedSubscript:@"playback-behavior-metadata"];
+    payload = [v4 payload];
+    v6 = [payload objectForKeyedSubscript:@"playback-behavior-metadata"];
     v7 = [v6 objectForKeyedSubscript:@"shuffle-type"];
-    v8 = [v7 intValue];
+    intValue = [v7 intValue];
 
-    v9 = [MEMORY[0x1E696AD98] numberWithInt:v8 != 0];
+    v9 = [MEMORY[0x1E696AD98] numberWithInt:intValue != 0];
     [(MPCPlayPerfMetrics *)self set_isShuffled:v9];
 
-    v10 = [v14 payload];
-    v11 = [v10 objectForKeyedSubscript:@"playback-behavior-metadata"];
+    payload2 = [v14 payload];
+    v11 = [payload2 objectForKeyedSubscript:@"playback-behavior-metadata"];
     v12 = [v11 objectForKeyedSubscript:@"autoplay-mode"];
     LODWORD(v7) = [v12 intValue];
 
@@ -556,13 +556,13 @@ LABEL_11:
   }
 }
 
-- (void)addQueueMetadata:(id)a3
+- (void)addQueueMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"feature-name"];
+  metadataCopy = metadata;
+  v5 = [metadataCopy objectForKeyedSubscript:@"feature-name"];
   [(MPCPlayPerfMetrics *)self set_featureName:v5];
 
-  v6 = [v4 objectForKeyedSubscript:@"siri-ref-id"];
+  v6 = [metadataCopy objectForKeyedSubscript:@"siri-ref-id"];
 
   [(MPCPlayPerfMetrics *)self set_siriRefId:v6];
 }
@@ -571,113 +571,113 @@ LABEL_11:
 {
   v131[4] = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:1];
-  v4 = [(MPCPlayPerfMetrics *)self eventType];
-  if (v4 == @"FirstItem" || (v5 = v4, v6 = [(__CFString *)v4 isEqual:@"FirstItem"], v5, v5, v6))
+  eventType = [(MPCPlayPerfMetrics *)self eventType];
+  if (eventType == @"FirstItem" || (v5 = eventType, v6 = [(__CFString *)eventType isEqual:@"FirstItem"], v5, v5, v6))
   {
-    v7 = [MEMORY[0x1E695DF70] array];
-    v8 = [MEMORY[0x1E695DF70] array];
-    v9 = [(MPCPlayPerfMetrics *)self setQueueCommandSendTime];
-    v10 = [(MPCPlayPerfMetrics *)self _buildSegmentForComponent:@"SendQueue" subcomponent:v9 duration:?];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    setQueueCommandSendTime = [(MPCPlayPerfMetrics *)self setQueueCommandSendTime];
+    v10 = [(MPCPlayPerfMetrics *)self _buildSegmentForComponent:@"SendQueue" subcomponent:setQueueCommandSendTime duration:?];
 
-    v11 = [(MPCPlayPerfMetrics *)self isRemoteSetQueue];
-    -[MPCPlayPerfMetrics _addComplexityToSegment:complexity:when:](self, v10, @"WHA", [v11 BOOLValue]);
+    isRemoteSetQueue = [(MPCPlayPerfMetrics *)self isRemoteSetQueue];
+    -[MPCPlayPerfMetrics _addComplexityToSegment:complexity:when:](self, v10, @"WHA", [isRemoteSetQueue BOOLValue]);
 
-    [v7 addObject:v10];
-    v12 = [(MPCPlayPerfMetrics *)self sessionActivationWaitTime];
-    v13 = [(MPCPlayPerfMetrics *)self _buildSegmentForComponent:@"SessionActivation" subcomponent:v12 duration:?];
+    [array addObject:v10];
+    sessionActivationWaitTime = [(MPCPlayPerfMetrics *)self sessionActivationWaitTime];
+    v13 = [(MPCPlayPerfMetrics *)self _buildSegmentForComponent:@"SessionActivation" subcomponent:sessionActivationWaitTime duration:?];
 
-    v14 = [(MPCPlayPerfMetrics *)self routeInfo];
-    v15 = [v14 objectForKeyedSubscript:@"type"];
-    v16 = [v15 integerValue];
+    routeInfo = [(MPCPlayPerfMetrics *)self routeInfo];
+    v15 = [routeInfo objectForKeyedSubscript:@"type"];
+    integerValue = [v15 integerValue];
 
-    [(MPCPlayPerfMetrics *)self _addComplexityToSegment:v13 complexity:@"Bluetooth" when:(v16 & 0xFFFFFFFFFFFFFFFELL) == 4];
-    [(MPCPlayPerfMetrics *)self _addComplexityToSegment:v13 complexity:@"AirPlay" when:v16 == 9];
+    [(MPCPlayPerfMetrics *)self _addComplexityToSegment:v13 complexity:@"Bluetooth" when:(integerValue & 0xFFFFFFFFFFFFFFFELL) == 4];
+    [(MPCPlayPerfMetrics *)self _addComplexityToSegment:v13 complexity:@"AirPlay" when:integerValue == 9];
     v17 = MEMORY[0x1E696AD98];
-    v18 = [(MPCPlayPerfMetrics *)self sessionActivationWaitTime];
-    [v18 doubleValue];
+    sessionActivationWaitTime2 = [(MPCPlayPerfMetrics *)self sessionActivationWaitTime];
+    [sessionActivationWaitTime2 doubleValue];
     v20 = v19;
-    v21 = [(MPCPlayPerfMetrics *)self sessionActivationAVTime];
-    [v21 doubleValue];
+    sessionActivationAVTime = [(MPCPlayPerfMetrics *)self sessionActivationAVTime];
+    [sessionActivationAVTime doubleValue];
     v23 = v20 - v22;
-    v24 = [(MPCPlayPerfMetrics *)self sessionActivationClientTime];
-    [v24 doubleValue];
+    sessionActivationClientTime = [(MPCPlayPerfMetrics *)self sessionActivationClientTime];
+    [sessionActivationClientTime doubleValue];
     v26 = [v17 numberWithDouble:v23 - v25];
     [(MPCPlayPerfMetrics *)self _addStepToSegment:v13 name:@"StackInit" duration:v26 options:0];
 
-    v27 = [(MPCPlayPerfMetrics *)self sessionActivationAVTime];
-    [(MPCPlayPerfMetrics *)self _addStepToSegment:v13 name:@"AVAudioSession" duration:v27 options:0];
+    sessionActivationAVTime2 = [(MPCPlayPerfMetrics *)self sessionActivationAVTime];
+    [(MPCPlayPerfMetrics *)self _addStepToSegment:v13 name:@"AVAudioSession" duration:sessionActivationAVTime2 options:0];
 
-    v28 = [(MPCPlayPerfMetrics *)self sessionActivationClientTime];
-    [v28 doubleValue];
+    sessionActivationClientTime2 = [(MPCPlayPerfMetrics *)self sessionActivationClientTime];
+    [sessionActivationClientTime2 doubleValue];
     v30 = v29;
 
     if (v30 > 0.0)
     {
-      v31 = [(MPCPlayPerfMetrics *)self sessionActivationClientTime];
-      [(MPCPlayPerfMetrics *)self _addStepToSegment:v13 name:@"Delegate" duration:v31 options:0];
+      sessionActivationClientTime3 = [(MPCPlayPerfMetrics *)self sessionActivationClientTime];
+      [(MPCPlayPerfMetrics *)self _addStepToSegment:v13 name:@"Delegate" duration:sessionActivationClientTime3 options:0];
     }
 
-    [v7 addObject:v13];
+    [array addObject:v13];
 
-    v32 = [(MPCPlayPerfMetrics *)self queueLoadWaitTime];
-    v33 = [(MPCPlayPerfMetrics *)self _buildSegmentForComponent:@"QueueLoad" subcomponent:v32 duration:?];
+    queueLoadWaitTime = [(MPCPlayPerfMetrics *)self queueLoadWaitTime];
+    v33 = [(MPCPlayPerfMetrics *)self _buildSegmentForComponent:@"QueueLoad" subcomponent:queueLoadWaitTime duration:?];
 
-    v34 = [(MPCPlayPerfMetrics *)self siriRefId];
+    siriRefId = [(MPCPlayPerfMetrics *)self siriRefId];
 
-    if (v34)
+    if (siriRefId)
     {
-      v35 = [(MPCPlayPerfMetrics *)self assetSource];
-      if ([v35 integerValue] <= 2)
+      assetSource = [(MPCPlayPerfMetrics *)self assetSource];
+      if ([assetSource integerValue] <= 2)
       {
         [(MPCPlayPerfMetrics *)self _addOptimizationToSegment:v33 optimization:@"SiriAssetInfo" when:0];
       }
 
       else
       {
-        v36 = [(MPCPlayPerfMetrics *)self assetSource];
-        -[MPCPlayPerfMetrics _addOptimizationToSegment:optimization:when:](self, v33, @"SiriAssetInfo", [v36 integerValue] < 6);
+        assetSource2 = [(MPCPlayPerfMetrics *)self assetSource];
+        -[MPCPlayPerfMetrics _addOptimizationToSegment:optimization:when:](self, v33, @"SiriAssetInfo", [assetSource2 integerValue] < 6);
       }
     }
 
-    v40 = [(MPCPlayPerfMetrics *)self lookupWaitTime];
-    [(MPCPlayPerfMetrics *)self _addStepToSegment:v33 name:@"Queue" duration:v40 options:1];
+    lookupWaitTime = [(MPCPlayPerfMetrics *)self lookupWaitTime];
+    [(MPCPlayPerfMetrics *)self _addStepToSegment:v33 name:@"Queue" duration:lookupWaitTime options:1];
 
-    [v7 addObject:v33];
-    v41 = [(MPCPlayPerfMetrics *)self assetLoadWaitTime];
-    v42 = [(MPCPlayPerfMetrics *)self _buildSegmentForComponent:@"AssetLoad" subcomponent:v41 duration:?];
+    [array addObject:v33];
+    assetLoadWaitTime = [(MPCPlayPerfMetrics *)self assetLoadWaitTime];
+    v42 = [(MPCPlayPerfMetrics *)self _buildSegmentForComponent:@"AssetLoad" subcomponent:assetLoadWaitTime duration:?];
 
-    v43 = [(MPCPlayPerfMetrics *)self bagWaitTime];
-    [(MPCPlayPerfMetrics *)self _addStepToSegment:v42 name:@"Bag" duration:v43 options:1];
+    bagWaitTime = [(MPCPlayPerfMetrics *)self bagWaitTime];
+    [(MPCPlayPerfMetrics *)self _addStepToSegment:v42 name:@"Bag" duration:bagWaitTime options:1];
 
-    v44 = [(MPCPlayPerfMetrics *)self leaseWaitTime];
-    [(MPCPlayPerfMetrics *)self _addStepToSegment:v42 name:@"Lease" duration:v44 options:1];
+    leaseWaitTime = [(MPCPlayPerfMetrics *)self leaseWaitTime];
+    [(MPCPlayPerfMetrics *)self _addStepToSegment:v42 name:@"Lease" duration:leaseWaitTime options:1];
 
-    v45 = [(MPCPlayPerfMetrics *)self suzeLeaseWaitTime];
-    [(MPCPlayPerfMetrics *)self _addStepToSegment:v42 name:@"SuzeLease" duration:v45 options:1];
+    suzeLeaseWaitTime = [(MPCPlayPerfMetrics *)self suzeLeaseWaitTime];
+    [(MPCPlayPerfMetrics *)self _addStepToSegment:v42 name:@"SuzeLease" duration:suzeLeaseWaitTime options:1];
 
-    v46 = [(MPCPlayPerfMetrics *)self subscriptionAssetLoadWaitTime];
-    [(MPCPlayPerfMetrics *)self _addStepToSegment:v42 name:@"MZPlay: SubPlaybackDispatch" duration:v46 options:1];
+    subscriptionAssetLoadWaitTime = [(MPCPlayPerfMetrics *)self subscriptionAssetLoadWaitTime];
+    [(MPCPlayPerfMetrics *)self _addStepToSegment:v42 name:@"MZPlay: SubPlaybackDispatch" duration:subscriptionAssetLoadWaitTime options:1];
 
-    v47 = [(MPCPlayPerfMetrics *)self mediaRedownloadWaitTime];
-    [(MPCPlayPerfMetrics *)self _addStepToSegment:v42 name:@"MZPlay: PaidRedownload" duration:v47 options:1];
+    mediaRedownloadWaitTime = [(MPCPlayPerfMetrics *)self mediaRedownloadWaitTime];
+    [(MPCPlayPerfMetrics *)self _addStepToSegment:v42 name:@"MZPlay: PaidRedownload" duration:mediaRedownloadWaitTime options:1];
 
-    v48 = [(MPCPlayPerfMetrics *)self hlsMetadataWaitTime];
-    v49 = [(MPCPlayPerfMetrics *)self assetLocation];
-    -[MPCPlayPerfMetrics _addStepToSegment:name:duration:options:](self, v42, @"HLS MVP", v48, [v49 integerValue] == 0);
+    hlsMetadataWaitTime = [(MPCPlayPerfMetrics *)self hlsMetadataWaitTime];
+    assetLocation = [(MPCPlayPerfMetrics *)self assetLocation];
+    -[MPCPlayPerfMetrics _addStepToSegment:name:duration:options:](self, v42, @"HLS MVP", hlsMetadataWaitTime, [assetLocation integerValue] == 0);
 
-    v50 = [(MPCPlayPerfMetrics *)self assetLocation];
-    v51 = [v50 integerValue];
+    assetLocation2 = [(MPCPlayPerfMetrics *)self assetLocation];
+    integerValue2 = [assetLocation2 integerValue];
 
-    if (v51)
+    if (integerValue2)
     {
-      if (v51 == 3)
+      if (integerValue2 == 3)
       {
         v52 = @"Downloaded";
       }
 
       else
       {
-        if (v51 != 1)
+        if (integerValue2 != 1)
         {
           goto LABEL_21;
         }
@@ -685,7 +685,7 @@ LABEL_11:
         v52 = @"Cached";
       }
 
-      v53 = self;
+      selfCopy2 = self;
       v54 = v42;
       v55 = 1;
     }
@@ -693,25 +693,25 @@ LABEL_11:
     else
     {
       v52 = @"Cached";
-      v53 = self;
+      selfCopy2 = self;
       v54 = v42;
       v55 = 0;
     }
 
-    [(MPCPlayPerfMetrics *)v53 _addOptimizationToSegment:v54 optimization:v52 when:v55];
+    [(MPCPlayPerfMetrics *)selfCopy2 _addOptimizationToSegment:v54 optimization:v52 when:v55];
 LABEL_21:
-    v56 = [(MPCPlayPerfMetrics *)self assetSource];
-    v57 = [v56 integerValue];
+    assetSource3 = [(MPCPlayPerfMetrics *)self assetSource];
+    integerValue3 = [assetSource3 integerValue];
 
-    if ((v57 - 3) >= 3)
+    if ((integerValue3 - 3) >= 3)
     {
-      if (v57 != 6)
+      if (integerValue3 != 6)
       {
         goto LABEL_29;
       }
 
       v61 = @"SOD";
-      v62 = self;
+      selfCopy4 = self;
       v63 = v42;
       v64 = 0;
     }
@@ -719,55 +719,55 @@ LABEL_21:
     else
     {
       [(MPCPlayPerfMetrics *)self _addOptimizationToSegment:v42 optimization:@"SOD" when:1];
-      v58 = [(MPCPlayPerfMetrics *)self assetSource];
-      if ([v58 integerValue] != 5)
+      assetSource4 = [(MPCPlayPerfMetrics *)self assetSource];
+      if ([assetSource4 integerValue] != 5)
       {
 
 LABEL_29:
-        [v7 addObject:v42];
+        [array addObject:v42];
 
-        v65 = [(MPCPlayPerfMetrics *)self readyToPlayStatusWaitTime];
-        v66 = [(MPCPlayPerfMetrics *)self _buildSegmentForComponent:@"ReadyToPlay" subcomponent:v65 duration:?];
+        readyToPlayStatusWaitTime = [(MPCPlayPerfMetrics *)self readyToPlayStatusWaitTime];
+        v66 = [(MPCPlayPerfMetrics *)self _buildSegmentForComponent:@"ReadyToPlay" subcomponent:readyToPlayStatusWaitTime duration:?];
 
-        v67 = [(MPCPlayPerfMetrics *)self assetType];
-        -[MPCPlayPerfMetrics _addComplexityToSegment:complexity:when:](self, v66, @"HLS", [v67 integerValue] > 1);
+        assetType = [(MPCPlayPerfMetrics *)self assetType];
+        -[MPCPlayPerfMetrics _addComplexityToSegment:complexity:when:](self, v66, @"HLS", [assetType integerValue] > 1);
 
-        [v7 addObject:v66];
-        v68 = [(MPCPlayPerfMetrics *)self playCommandSendTime];
-        v69 = [(MPCPlayPerfMetrics *)self _buildSegmentForComponent:@"SendPlay" subcomponent:v68 duration:?];
+        [array addObject:v66];
+        playCommandSendTime = [(MPCPlayPerfMetrics *)self playCommandSendTime];
+        v69 = [(MPCPlayPerfMetrics *)self _buildSegmentForComponent:@"SendPlay" subcomponent:playCommandSendTime duration:?];
 
-        v70 = [(MPCPlayPerfMetrics *)self isRemoteSetQueue];
-        -[MPCPlayPerfMetrics _addComplexityToSegment:complexity:when:](self, v69, @"WHA", [v70 BOOLValue]);
+        isRemoteSetQueue2 = [(MPCPlayPerfMetrics *)self isRemoteSetQueue];
+        -[MPCPlayPerfMetrics _addComplexityToSegment:complexity:when:](self, v69, @"WHA", [isRemoteSetQueue2 BOOLValue]);
 
-        [v7 addObject:v69];
-        v71 = [(MPCPlayPerfMetrics *)self rateChangeWaitTime];
-        v72 = [(MPCPlayPerfMetrics *)self _buildSegmentForComponent:@"ChangeRate" subcomponent:v71 duration:?];
+        [array addObject:v69];
+        rateChangeWaitTime = [(MPCPlayPerfMetrics *)self rateChangeWaitTime];
+        v72 = [(MPCPlayPerfMetrics *)self _buildSegmentForComponent:@"ChangeRate" subcomponent:rateChangeWaitTime duration:?];
 
-        v73 = [(MPCPlayPerfMetrics *)self assetLocation];
-        v74 = [v73 integerValue];
+        assetLocation3 = [(MPCPlayPerfMetrics *)self assetLocation];
+        integerValue4 = [assetLocation3 integerValue];
 
-        if (v74 == 3)
+        if (integerValue4 == 3)
         {
-          v75 = [(MPCPlayPerfMetrics *)self hasOfflinePlaybackKeys];
-          -[MPCPlayPerfMetrics _addComplexityToSegment:complexity:when:](self, v72, @"No Offline Slot", [v75 BOOLValue] ^ 1);
+          hasOfflinePlaybackKeys = [(MPCPlayPerfMetrics *)self hasOfflinePlaybackKeys];
+          -[MPCPlayPerfMetrics _addComplexityToSegment:complexity:when:](self, v72, @"No Offline Slot", [hasOfflinePlaybackKeys BOOLValue] ^ 1);
         }
 
-        [v7 addObject:v72];
+        [array addObject:v72];
 
-        v76 = [(MPCPlayPerfMetrics *)self firstAudioFrameWaitTime];
-        v77 = [(MPCPlayPerfMetrics *)self _buildSegmentForComponent:@"FirstAudioFrame" subcomponent:v76 duration:?];
+        firstAudioFrameWaitTime = [(MPCPlayPerfMetrics *)self firstAudioFrameWaitTime];
+        v77 = [(MPCPlayPerfMetrics *)self _buildSegmentForComponent:@"FirstAudioFrame" subcomponent:firstAudioFrameWaitTime duration:?];
 
-        [v7 addObject:v77];
-        v78 = [(MPCPlayPerfMetrics *)self endpointType];
-        v79 = [v78 integerValue];
+        [array addObject:v77];
+        endpointType = [(MPCPlayPerfMetrics *)self endpointType];
+        integerValue5 = [endpointType integerValue];
 
-        if ((v79 - 1) <= 2)
+        if ((integerValue5 - 1) <= 2)
         {
-          [v8 addObject:off_1E8231E18[v79 - 1]];
+          [array2 addObject:off_1E8231E18[integerValue5 - 1]];
         }
 
-        v80 = [(MPCPlayPerfMetrics *)self assetType];
-        v81 = [v80 integerValue] - 1;
+        assetType2 = [(MPCPlayPerfMetrics *)self assetType];
+        v81 = [assetType2 integerValue] - 1;
         if (v81 > 4)
         {
           v82 = @"Unspecified";
@@ -778,64 +778,64 @@ LABEL_29:
           v82 = off_1E8231E30[v81];
         }
 
-        [v8 addObject:v82];
+        [array2 addObject:v82];
 
-        v83 = [(MPCPlayPerfMetrics *)self formatInfo];
-        v84 = [v83 objectForKeyedSubscript:@"sampleRate"];
-        v85 = [v84 integerValue];
+        formatInfo = [(MPCPlayPerfMetrics *)self formatInfo];
+        v84 = [formatInfo objectForKeyedSubscript:@"sampleRate"];
+        integerValue6 = [v84 integerValue];
 
-        if (v85 >= 1)
+        if (integerValue6 >= 1)
         {
           v86 = MEMORY[0x1E696AEC0];
-          v87 = [(MPCPlayPerfMetrics *)self formatInfo];
-          v88 = [v87 objectForKeyedSubscript:@"sampleRate"];
-          v89 = [v86 stringWithFormat:@"%ldKHz", objc_msgSend(v88, "integerValue") / 1000];
-          [v8 addObject:v89];
+          formatInfo2 = [(MPCPlayPerfMetrics *)self formatInfo];
+          v88 = [formatInfo2 objectForKeyedSubscript:@"sampleRate"];
+          1000 = [v86 stringWithFormat:@"%ldKHz", objc_msgSend(v88, "integerValue") / 1000];
+          [array2 addObject:1000];
         }
 
-        v90 = [(MPCPlayPerfMetrics *)self formatInfo];
-        v91 = [v90 objectForKeyedSubscript:@"bitrate"];
-        v92 = [v91 integerValue];
+        formatInfo3 = [(MPCPlayPerfMetrics *)self formatInfo];
+        v91 = [formatInfo3 objectForKeyedSubscript:@"bitrate"];
+        integerValue7 = [v91 integerValue];
 
-        if (v92 >= 1)
+        if (integerValue7 >= 1)
         {
           v93 = MEMORY[0x1E696AEC0];
-          v94 = [(MPCPlayPerfMetrics *)self formatInfo];
-          v95 = [v94 objectForKeyedSubscript:@"bitrate"];
-          v96 = [v93 stringWithFormat:@"%ldKbps", objc_msgSend(v95, "integerValue") / 1000];
-          [v8 addObject:v96];
+          formatInfo4 = [(MPCPlayPerfMetrics *)self formatInfo];
+          v95 = [formatInfo4 objectForKeyedSubscript:@"bitrate"];
+          10002 = [v93 stringWithFormat:@"%ldKbps", objc_msgSend(v95, "integerValue") / 1000];
+          [array2 addObject:10002];
         }
 
-        v97 = [(MPCPlayPerfMetrics *)self formatInfo];
-        v98 = [v97 objectForKeyedSubscript:@"channelLayout"];
-        v99 = [v98 integerValue];
+        formatInfo5 = [(MPCPlayPerfMetrics *)self formatInfo];
+        v98 = [formatInfo5 objectForKeyedSubscript:@"channelLayout"];
+        integerValue8 = [v98 integerValue];
 
-        if (v99)
+        if (integerValue8)
         {
-          v100 = [(MPCPlayPerfMetrics *)self formatInfo];
-          v101 = [v100 objectForKeyedSubscript:@"channelLayout"];
-          v102 = [v101 integerValue];
+          formatInfo6 = [(MPCPlayPerfMetrics *)self formatInfo];
+          v101 = [formatInfo6 objectForKeyedSubscript:@"channelLayout"];
+          integerValue9 = [v101 integerValue];
 
-          v103 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ldch", v102];
-          [v8 addObject:v103];
+          v102 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ldch", integerValue9];
+          [array2 addObject:v102];
         }
 
-        v104 = [(MPCPlayPerfMetrics *)self assetProtectionType];
-        v105 = [v104 integerValue];
+        assetProtectionType = [(MPCPlayPerfMetrics *)self assetProtectionType];
+        integerValue10 = [assetProtectionType integerValue];
 
-        if (v105)
+        if (integerValue10)
         {
-          if (v105 == 2)
+          if (integerValue10 == 2)
           {
-            v107 = [(MPCPlayPerfMetrics *)self assetType];
-            v108 = [v107 integerValue];
+            assetType3 = [(MPCPlayPerfMetrics *)self assetType];
+            integerValue11 = [assetType3 integerValue];
 
-            if (v108 == 1)
+            if (integerValue11 == 1)
             {
-              v109 = [(MPCPlayPerfMetrics *)self assetSource];
-              v110 = [v109 integerValue];
+              assetSource5 = [(MPCPlayPerfMetrics *)self assetSource];
+              integerValue12 = [assetSource5 integerValue];
 
-              if (v110 == 5)
+              if (integerValue12 == 5)
               {
                 v106 = @"DRM:miniSINF";
               }
@@ -854,36 +854,36 @@ LABEL_29:
 
           else
           {
-            if (v105 != 1)
+            if (integerValue10 != 1)
             {
 LABEL_53:
               v111 = objc_alloc_init(MEMORY[0x1E695DF90]);
-              v112 = [(MPCPlayPerfMetrics *)self assetLoadWaitTime];
-              [v111 setObject:v112 forKeyedSubscript:@"MPP_assetLoadWaitTime"];
+              assetLoadWaitTime2 = [(MPCPlayPerfMetrics *)self assetLoadWaitTime];
+              [v111 setObject:assetLoadWaitTime2 forKeyedSubscript:@"MPP_assetLoadWaitTime"];
 
-              v113 = [(MPCPlayPerfMetrics *)self assetLocation];
-              [v111 setObject:v113 forKeyedSubscript:@"MPP_assetLocation"];
+              assetLocation4 = [(MPCPlayPerfMetrics *)self assetLocation];
+              [v111 setObject:assetLocation4 forKeyedSubscript:@"MPP_assetLocation"];
 
-              v114 = [(MPCPlayPerfMetrics *)self assetType];
-              [v111 setObject:v114 forKeyedSubscript:@"MPP_assetType"];
+              assetType4 = [(MPCPlayPerfMetrics *)self assetType];
+              [v111 setObject:assetType4 forKeyedSubscript:@"MPP_assetType"];
 
-              v115 = [(MPCPlayPerfMetrics *)self endpointType];
-              [v111 setObject:v115 forKeyedSubscript:@"MPP_endpointType"];
+              endpointType2 = [(MPCPlayPerfMetrics *)self endpointType];
+              [v111 setObject:endpointType2 forKeyedSubscript:@"MPP_endpointType"];
 
-              v116 = [(MPCPlayPerfMetrics *)self firstAudioFrameWaitTime];
-              [v111 setObject:v116 forKeyedSubscript:@"MPP_firstAudioFrameWaitTime"];
+              firstAudioFrameWaitTime2 = [(MPCPlayPerfMetrics *)self firstAudioFrameWaitTime];
+              [v111 setObject:firstAudioFrameWaitTime2 forKeyedSubscript:@"MPP_firstAudioFrameWaitTime"];
 
-              v117 = [(MPCPlayPerfMetrics *)self hasOnlinePlaybackKeys];
-              [v111 setObject:v117 forKeyedSubscript:@"MPP_hasOnlinePlaybackKeys"];
+              hasOnlinePlaybackKeys = [(MPCPlayPerfMetrics *)self hasOnlinePlaybackKeys];
+              [v111 setObject:hasOnlinePlaybackKeys forKeyedSubscript:@"MPP_hasOnlinePlaybackKeys"];
 
-              v118 = [(MPCPlayPerfMetrics *)self isFirstPlay];
-              [v111 setObject:v118 forKeyedSubscript:@"MPP_isFirstPlay"];
+              isFirstPlay = [(MPCPlayPerfMetrics *)self isFirstPlay];
+              [v111 setObject:isFirstPlay forKeyedSubscript:@"MPP_isFirstPlay"];
 
-              v119 = [(MPCPlayPerfMetrics *)self queueLoadWaitTime];
-              [v111 setObject:v119 forKeyedSubscript:@"MPP_queueLoadWaitTime"];
+              queueLoadWaitTime2 = [(MPCPlayPerfMetrics *)self queueLoadWaitTime];
+              [v111 setObject:queueLoadWaitTime2 forKeyedSubscript:@"MPP_queueLoadWaitTime"];
 
-              v120 = [(MPCPlayPerfMetrics *)self readyToPlayStatusWaitTime];
-              [v111 setObject:v120 forKeyedSubscript:@"MPP_readyToPlayWaitTime"];
+              readyToPlayStatusWaitTime2 = [(MPCPlayPerfMetrics *)self readyToPlayStatusWaitTime];
+              [v111 setObject:readyToPlayStatusWaitTime2 forKeyedSubscript:@"MPP_readyToPlayWaitTime"];
 
               v121 = MEMORY[0x1E696AD98];
               [(NSDate *)self->_firstAudioFrameDate timeIntervalSinceReferenceDate];
@@ -893,10 +893,10 @@ LABEL_53:
               v130[0] = @"name";
               v130[1] = @"segments";
               v131[0] = @"MPP";
-              v131[1] = v7;
+              v131[1] = array;
               v130[2] = @"tags";
               v130[3] = @"raw";
-              v131[2] = v8;
+              v131[2] = array2;
               v131[3] = v111;
               v123 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v131 forKeys:v130 count:4];
               [v3 addObject:v123];
@@ -913,38 +913,38 @@ LABEL_53:
           v106 = @"DRM:None";
         }
 
-        [v8 addObject:v106];
+        [array2 addObject:v106];
         goto LABEL_53;
       }
 
-      v59 = [(MPCPlayPerfMetrics *)self assetType];
-      v60 = [v59 integerValue];
+      assetType5 = [(MPCPlayPerfMetrics *)self assetType];
+      integerValue13 = [assetType5 integerValue];
 
-      if (v60 != 1)
+      if (integerValue13 != 1)
       {
         goto LABEL_29;
       }
 
       v61 = @"miniSINF";
-      v62 = self;
+      selfCopy4 = self;
       v63 = v42;
       v64 = 1;
     }
 
-    [(MPCPlayPerfMetrics *)v62 _addOptimizationToSegment:v63 optimization:v61 when:v64];
+    [(MPCPlayPerfMetrics *)selfCopy4 _addOptimizationToSegment:v63 optimization:v61 when:v64];
     goto LABEL_29;
   }
 
-  v37 = [(MPCPlayPerfMetrics *)self eventType];
-  if (v37 == @"NextItem" || (v38 = v37, v39 = [(__CFString *)v37 isEqual:@"NextItem"], v38, v38, v39))
+  eventType2 = [(MPCPlayPerfMetrics *)self eventType];
+  if (eventType2 == @"NextItem" || (v38 = eventType2, v39 = [(__CFString *)eventType2 isEqual:@"NextItem"], v38, v38, v39))
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v128[0] = @"name";
     v128[1] = @"segments";
     v129[0] = @"GAP";
-    v129[1] = v7;
-    v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v129 forKeys:v128 count:2];
-    [v3 addObject:v8];
+    v129[1] = array;
+    array2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v129 forKeys:v128 count:2];
+    [v3 addObject:array2];
 LABEL_54:
   }
 
@@ -955,37 +955,37 @@ LABEL_54:
   return v124;
 }
 
-- (id)_buildSegmentForComponent:(void *)a3 subcomponent:(void *)a4 duration:
+- (id)_buildSegmentForComponent:(void *)component subcomponent:(void *)subcomponent duration:
 {
   v19[6] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v6 = MEMORY[0x1E695DF90];
     v18[0] = @"component";
     v18[1] = @"subcomponent";
     v19[0] = a2;
-    v19[1] = a3;
-    v7 = &unk_1F4599AB0;
-    if (a4)
+    v19[1] = component;
+    subcomponentCopy = &unk_1F4599AB0;
+    if (subcomponent)
     {
-      v7 = a4;
+      subcomponentCopy = subcomponent;
     }
 
-    v19[2] = v7;
+    v19[2] = subcomponentCopy;
     v18[2] = @"duration";
     v18[3] = @"complexities";
     v8 = MEMORY[0x1E695DF70];
-    v9 = a4;
-    v10 = a3;
+    subcomponentCopy2 = subcomponent;
+    componentCopy = component;
     v11 = a2;
-    v12 = [v8 array];
-    v19[3] = v12;
+    array = [v8 array];
+    v19[3] = array;
     v18[4] = @"optimizations";
-    v13 = [MEMORY[0x1E695DF90] dictionary];
-    v19[4] = v13;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v19[4] = dictionary;
     v18[5] = @"steps";
-    v14 = [MEMORY[0x1E695DF70] array];
-    v19[5] = v14;
+    array2 = [MEMORY[0x1E695DF70] array];
+    v19[5] = array2;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:6];
     v16 = [v6 dictionaryWithDictionary:v15];
   }
@@ -998,32 +998,32 @@ LABEL_54:
   return v16;
 }
 
-- (void)_addComplexityToSegment:(void *)a3 complexity:(int)a4 when:
+- (void)_addComplexityToSegment:(void *)segment complexity:(int)complexity when:
 {
-  if (a1 && a4)
+  if (self && complexity)
   {
-    v5 = a3;
+    segmentCopy = segment;
     v6 = [a2 objectForKeyedSubscript:@"complexities"];
-    [v6 addObject:v5];
+    [v6 addObject:segmentCopy];
   }
 }
 
-- (void)_addStepToSegment:(void *)a3 name:(void *)a4 duration:(char)a5 options:
+- (void)_addStepToSegment:(void *)segment name:(void *)name duration:(char)duration options:
 {
   v14[3] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if (a4)
+    if (name)
     {
-      v8 = a4;
-      v9 = a3;
+      nameCopy = name;
+      segmentCopy = segment;
       v10 = [a2 objectForKeyedSubscript:@"steps"];
       v13[0] = @"name";
       v13[1] = @"duration";
-      v14[0] = v9;
-      v14[1] = v8;
+      v14[0] = segmentCopy;
+      v14[1] = nameCopy;
       v13[2] = @"isNetworkBound";
-      v11 = [MEMORY[0x1E696AD98] numberWithBool:a5 & 1];
+      v11 = [MEMORY[0x1E696AD98] numberWithBool:duration & 1];
       v14[2] = v11;
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:3];
 
@@ -1032,36 +1032,36 @@ LABEL_54:
   }
 }
 
-- (void)_addOptimizationToSegment:(void *)a3 optimization:(uint64_t)a4 when:
+- (void)_addOptimizationToSegment:(void *)segment optimization:(uint64_t)optimization when:
 {
-  if (a1)
+  if (self)
   {
-    v6 = a3;
+    segmentCopy = segment;
     v8 = [a2 objectForKeyedSubscript:@"optimizations"];
-    v7 = [MEMORY[0x1E696AD98] numberWithBool:a4];
-    [v8 setObject:v7 forKeyedSubscript:v6];
+    v7 = [MEMORY[0x1E696AD98] numberWithBool:optimization];
+    [v8 setObject:v7 forKeyedSubscript:segmentCopy];
   }
 }
 
 - (id)description
 {
-  v3 = [(MPCPlayPerfMetrics *)self data];
-  v4 = [v3 mutableCopy];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v4 = [data mutableCopy];
 
-  v5 = [(MPCPlayPerfMetrics *)self musicTotalTime];
-  [v4 setObject:v5 forKeyedSubscript:@"totalTime"];
+  musicTotalTime = [(MPCPlayPerfMetrics *)self musicTotalTime];
+  [v4 setObject:musicTotalTime forKeyedSubscript:@"totalTime"];
 
-  v6 = [(MPCPlayPerfMetrics *)self musicWaitTime];
-  [v4 setObject:v6 forKeyedSubscript:@"musicWaitTime"];
+  musicWaitTime = [(MPCPlayPerfMetrics *)self musicWaitTime];
+  [v4 setObject:musicWaitTime forKeyedSubscript:@"musicWaitTime"];
 
-  v7 = [(MPCPlayPerfMetrics *)self mediaPlayerTime];
-  [v4 setObject:v7 forKeyedSubscript:@"mediaPlayerTime"];
+  mediaPlayerTime = [(MPCPlayPerfMetrics *)self mediaPlayerTime];
+  [v4 setObject:mediaPlayerTime forKeyedSubscript:@"mediaPlayerTime"];
 
-  v8 = [(MPCPlayPerfMetrics *)self avTime];
-  [v4 setObject:v8 forKeyedSubscript:@"avTime"];
+  avTime = [(MPCPlayPerfMetrics *)self avTime];
+  [v4 setObject:avTime forKeyedSubscript:@"avTime"];
 
-  v9 = [(MPCPlayPerfMetrics *)self networkTime];
-  [v4 setObject:v9 forKeyedSubscript:@"networkTime"];
+  networkTime = [(MPCPlayPerfMetrics *)self networkTime];
+  [v4 setObject:networkTime forKeyedSubscript:@"networkTime"];
 
   v10 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v4 options:0 error:0];
   v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v10 encoding:4];
@@ -1072,28 +1072,28 @@ LABEL_54:
 
 - (id)dictionaryRepresentation
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 copy];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data copy];
 
   return v3;
 }
 
 - (NSNumber)avTime
 {
-  v3 = [(MPCPlayPerfMetrics *)self eventType];
-  v4 = [v3 isEqualToString:@"FirstItem"];
+  eventType = [(MPCPlayPerfMetrics *)self eventType];
+  v4 = [eventType isEqualToString:@"FirstItem"];
 
   if (v4)
   {
     v5 = MEMORY[0x1E696AD98];
-    v6 = [(MPCPlayPerfMetrics *)self readyToPlayStatusWaitTime];
-    [v6 doubleValue];
+    readyToPlayStatusWaitTime = [(MPCPlayPerfMetrics *)self readyToPlayStatusWaitTime];
+    [readyToPlayStatusWaitTime doubleValue];
     v8 = v7;
-    v9 = [(MPCPlayPerfMetrics *)self firstAudioFrameWaitTime];
-    [v9 doubleValue];
+    firstAudioFrameWaitTime = [(MPCPlayPerfMetrics *)self firstAudioFrameWaitTime];
+    [firstAudioFrameWaitTime doubleValue];
     v11 = v8 + v10;
-    v12 = [(MPCPlayPerfMetrics *)self sessionActivationAVTime];
-    [v12 doubleValue];
+    sessionActivationAVTime = [(MPCPlayPerfMetrics *)self sessionActivationAVTime];
+    [sessionActivationAVTime doubleValue];
     v14 = [v5 numberWithDouble:v11 + v13];
   }
 
@@ -1107,32 +1107,32 @@ LABEL_54:
 
 - (NSNumber)networkTime
 {
-  v3 = [(MPCPlayPerfMetrics *)self eventType];
-  v4 = [v3 isEqualToString:@"FirstItem"];
+  eventType = [(MPCPlayPerfMetrics *)self eventType];
+  v4 = [eventType isEqualToString:@"FirstItem"];
 
   if (v4)
   {
     v5 = MEMORY[0x1E696AD98];
-    v6 = [(MPCPlayPerfMetrics *)self lookupWaitTime];
-    [v6 doubleValue];
+    lookupWaitTime = [(MPCPlayPerfMetrics *)self lookupWaitTime];
+    [lookupWaitTime doubleValue];
     v8 = v7;
-    v9 = [(MPCPlayPerfMetrics *)self bagWaitTime];
-    [v9 doubleValue];
+    bagWaitTime = [(MPCPlayPerfMetrics *)self bagWaitTime];
+    [bagWaitTime doubleValue];
     v11 = v8 + v10;
-    v12 = [(MPCPlayPerfMetrics *)self leaseWaitTime];
-    [v12 doubleValue];
+    leaseWaitTime = [(MPCPlayPerfMetrics *)self leaseWaitTime];
+    [leaseWaitTime doubleValue];
     v14 = v11 + v13;
-    v15 = [(MPCPlayPerfMetrics *)self suzeLeaseWaitTime];
-    [v15 doubleValue];
+    suzeLeaseWaitTime = [(MPCPlayPerfMetrics *)self suzeLeaseWaitTime];
+    [suzeLeaseWaitTime doubleValue];
     v17 = v14 + v16;
-    v18 = [(MPCPlayPerfMetrics *)self subscriptionAssetLoadWaitTime];
-    [v18 doubleValue];
+    subscriptionAssetLoadWaitTime = [(MPCPlayPerfMetrics *)self subscriptionAssetLoadWaitTime];
+    [subscriptionAssetLoadWaitTime doubleValue];
     v20 = v17 + v19;
-    v21 = [(MPCPlayPerfMetrics *)self mediaRedownloadWaitTime];
-    [v21 doubleValue];
+    mediaRedownloadWaitTime = [(MPCPlayPerfMetrics *)self mediaRedownloadWaitTime];
+    [mediaRedownloadWaitTime doubleValue];
     v23 = v20 + v22;
-    v24 = [(MPCPlayPerfMetrics *)self hlsMetadataWaitTime];
-    [v24 doubleValue];
+    hlsMetadataWaitTime = [(MPCPlayPerfMetrics *)self hlsMetadataWaitTime];
+    [hlsMetadataWaitTime doubleValue];
     v26 = [v5 numberWithDouble:v23 + v25];
   }
 
@@ -1146,50 +1146,50 @@ LABEL_54:
 
 - (NSNumber)mediaPlayerTime
 {
-  v3 = [(MPCPlayPerfMetrics *)self eventType];
-  v4 = [v3 isEqualToString:@"FirstItem"];
+  eventType = [(MPCPlayPerfMetrics *)self eventType];
+  v4 = [eventType isEqualToString:@"FirstItem"];
 
   if (v4)
   {
     v41 = MEMORY[0x1E696AD98];
-    v45 = [(MPCPlayPerfMetrics *)self sessionActivationWaitTime];
-    [v45 doubleValue];
+    sessionActivationWaitTime = [(MPCPlayPerfMetrics *)self sessionActivationWaitTime];
+    [sessionActivationWaitTime doubleValue];
     v6 = v5;
-    v44 = [(MPCPlayPerfMetrics *)self queueLoadWaitTime];
-    [v44 doubleValue];
+    queueLoadWaitTime = [(MPCPlayPerfMetrics *)self queueLoadWaitTime];
+    [queueLoadWaitTime doubleValue];
     v8 = v6 + v7;
-    v43 = [(MPCPlayPerfMetrics *)self assetLoadWaitTime];
-    [v43 doubleValue];
+    assetLoadWaitTime = [(MPCPlayPerfMetrics *)self assetLoadWaitTime];
+    [assetLoadWaitTime doubleValue];
     v10 = v8 + v9;
-    v42 = [(MPCPlayPerfMetrics *)self rateChangeWaitTime];
-    [v42 doubleValue];
+    rateChangeWaitTime = [(MPCPlayPerfMetrics *)self rateChangeWaitTime];
+    [rateChangeWaitTime doubleValue];
     v12 = v10 + v11;
-    v13 = [(MPCPlayPerfMetrics *)self sessionActivationAVTime];
-    [v13 doubleValue];
+    sessionActivationAVTime = [(MPCPlayPerfMetrics *)self sessionActivationAVTime];
+    [sessionActivationAVTime doubleValue];
     v15 = v12 - v14;
-    v16 = [(MPCPlayPerfMetrics *)self sessionActivationClientTime];
-    [v16 doubleValue];
+    sessionActivationClientTime = [(MPCPlayPerfMetrics *)self sessionActivationClientTime];
+    [sessionActivationClientTime doubleValue];
     v18 = v15 - v17;
-    v19 = [(MPCPlayPerfMetrics *)self lookupWaitTime];
-    [v19 doubleValue];
+    lookupWaitTime = [(MPCPlayPerfMetrics *)self lookupWaitTime];
+    [lookupWaitTime doubleValue];
     v21 = v18 - v20;
-    v22 = [(MPCPlayPerfMetrics *)self bagWaitTime];
-    [v22 doubleValue];
+    bagWaitTime = [(MPCPlayPerfMetrics *)self bagWaitTime];
+    [bagWaitTime doubleValue];
     v24 = v21 - v23;
-    v25 = [(MPCPlayPerfMetrics *)self leaseWaitTime];
-    [v25 doubleValue];
+    leaseWaitTime = [(MPCPlayPerfMetrics *)self leaseWaitTime];
+    [leaseWaitTime doubleValue];
     v27 = v24 - v26;
-    v28 = [(MPCPlayPerfMetrics *)self suzeLeaseWaitTime];
-    [v28 doubleValue];
+    suzeLeaseWaitTime = [(MPCPlayPerfMetrics *)self suzeLeaseWaitTime];
+    [suzeLeaseWaitTime doubleValue];
     v30 = v27 - v29;
-    v31 = [(MPCPlayPerfMetrics *)self subscriptionAssetLoadWaitTime];
-    [v31 doubleValue];
+    subscriptionAssetLoadWaitTime = [(MPCPlayPerfMetrics *)self subscriptionAssetLoadWaitTime];
+    [subscriptionAssetLoadWaitTime doubleValue];
     v33 = v30 - v32;
-    v34 = [(MPCPlayPerfMetrics *)self mediaRedownloadWaitTime];
-    [v34 doubleValue];
+    mediaRedownloadWaitTime = [(MPCPlayPerfMetrics *)self mediaRedownloadWaitTime];
+    [mediaRedownloadWaitTime doubleValue];
     v36 = v33 - v35;
-    v37 = [(MPCPlayPerfMetrics *)self hlsMetadataWaitTime];
-    [v37 doubleValue];
+    hlsMetadataWaitTime = [(MPCPlayPerfMetrics *)self hlsMetadataWaitTime];
+    [hlsMetadataWaitTime doubleValue];
     v39 = [v41 numberWithDouble:v36 - v38];
   }
 
@@ -1203,22 +1203,22 @@ LABEL_54:
 
 - (NSNumber)musicWaitTime
 {
-  v3 = [(MPCPlayPerfMetrics *)self eventType];
-  v4 = [v3 isEqualToString:@"FirstItem"];
+  eventType = [(MPCPlayPerfMetrics *)self eventType];
+  v4 = [eventType isEqualToString:@"FirstItem"];
 
   if (v4)
   {
-    v5 = [(MPCPlayPerfMetrics *)self playCommandWaitTime];
+    playCommandWaitTime = [(MPCPlayPerfMetrics *)self playCommandWaitTime];
 
-    if (v5)
+    if (playCommandWaitTime)
     {
       v6 = MEMORY[0x1E696AD98];
-      v7 = [(MPCPlayPerfMetrics *)self playCommandSendTime];
-      [v7 doubleValue];
+      playCommandSendTime = [(MPCPlayPerfMetrics *)self playCommandSendTime];
+      [playCommandSendTime doubleValue];
       v9 = v8;
 
-      v10 = [(MPCPlayPerfMetrics *)self playCommandWaitTime];
-      [v10 doubleValue];
+      playCommandWaitTime2 = [(MPCPlayPerfMetrics *)self playCommandWaitTime];
+      [playCommandWaitTime2 doubleValue];
       v12 = -v11;
 
       if (v9 < v12)
@@ -1226,69 +1226,69 @@ LABEL_54:
         v9 = v12;
       }
 
-      v13 = [(MPCPlayPerfMetrics *)self rateChangeWaitTime];
-      [v13 doubleValue];
+      rateChangeWaitTime = [(MPCPlayPerfMetrics *)self rateChangeWaitTime];
+      [rateChangeWaitTime doubleValue];
       v15 = v9 + v14;
-      v16 = [(MPCPlayPerfMetrics *)self firstAudioFrameWaitTime];
-      [v16 doubleValue];
-      v18 = [v6 numberWithDouble:v15 + v17];
+      firstAudioFrameWaitTime = [(MPCPlayPerfMetrics *)self firstAudioFrameWaitTime];
+      [firstAudioFrameWaitTime doubleValue];
+      musicTotalTime = [v6 numberWithDouble:v15 + v17];
     }
 
     else
     {
-      v18 = [(MPCPlayPerfMetrics *)self musicTotalTime];
+      musicTotalTime = [(MPCPlayPerfMetrics *)self musicTotalTime];
     }
   }
 
   else
   {
-    v18 = 0;
+    musicTotalTime = 0;
   }
 
-  return v18;
+  return musicTotalTime;
 }
 
 - (NSNumber)musicTotalTime
 {
-  v3 = [(MPCPlayPerfMetrics *)self eventType];
-  v4 = [v3 isEqualToString:@"FirstItem"];
+  eventType = [(MPCPlayPerfMetrics *)self eventType];
+  v4 = [eventType isEqualToString:@"FirstItem"];
 
   if (v4)
   {
-    v5 = [(MPCPlayPerfMetrics *)self setQueueCommandSendTime];
-    [v5 doubleValue];
+    setQueueCommandSendTime = [(MPCPlayPerfMetrics *)self setQueueCommandSendTime];
+    [setQueueCommandSendTime doubleValue];
     v7 = v6;
-    v8 = [(MPCPlayPerfMetrics *)self sessionActivationWaitTime];
-    [v8 doubleValue];
+    sessionActivationWaitTime = [(MPCPlayPerfMetrics *)self sessionActivationWaitTime];
+    [sessionActivationWaitTime doubleValue];
     v10 = v7 + v9;
-    v11 = [(MPCPlayPerfMetrics *)self queueLoadWaitTime];
-    [v11 doubleValue];
+    queueLoadWaitTime = [(MPCPlayPerfMetrics *)self queueLoadWaitTime];
+    [queueLoadWaitTime doubleValue];
     v13 = v10 + v12;
-    v14 = [(MPCPlayPerfMetrics *)self assetLoadWaitTime];
-    [v14 doubleValue];
+    assetLoadWaitTime = [(MPCPlayPerfMetrics *)self assetLoadWaitTime];
+    [assetLoadWaitTime doubleValue];
     v16 = v13 + v15;
-    v17 = [(MPCPlayPerfMetrics *)self readyToPlayStatusWaitTime];
-    [v17 doubleValue];
+    readyToPlayStatusWaitTime = [(MPCPlayPerfMetrics *)self readyToPlayStatusWaitTime];
+    [readyToPlayStatusWaitTime doubleValue];
     v19 = v16 + v18;
-    v20 = [(MPCPlayPerfMetrics *)self rateChangeWaitTime];
-    [v20 doubleValue];
+    rateChangeWaitTime = [(MPCPlayPerfMetrics *)self rateChangeWaitTime];
+    [rateChangeWaitTime doubleValue];
     v22 = v19 + v21;
-    v23 = [(MPCPlayPerfMetrics *)self firstAudioFrameWaitTime];
-    [v23 doubleValue];
+    firstAudioFrameWaitTime = [(MPCPlayPerfMetrics *)self firstAudioFrameWaitTime];
+    [firstAudioFrameWaitTime doubleValue];
     v25 = v22 + v24;
-    v26 = [(MPCPlayPerfMetrics *)self sessionActivationClientTime];
-    [v26 doubleValue];
+    sessionActivationClientTime = [(MPCPlayPerfMetrics *)self sessionActivationClientTime];
+    [sessionActivationClientTime doubleValue];
     v28 = v25 - v27;
 
-    v29 = [(MPCPlayPerfMetrics *)self playCommandWaitTime];
+    playCommandWaitTime = [(MPCPlayPerfMetrics *)self playCommandWaitTime];
 
-    if (v29)
+    if (playCommandWaitTime)
     {
-      v30 = [(MPCPlayPerfMetrics *)self playCommandSendTime];
-      [v30 doubleValue];
+      playCommandSendTime = [(MPCPlayPerfMetrics *)self playCommandSendTime];
+      [playCommandSendTime doubleValue];
       v32 = v31;
-      v33 = [(MPCPlayPerfMetrics *)self playCommandWaitTime];
-      [v33 doubleValue];
+      playCommandWaitTime2 = [(MPCPlayPerfMetrics *)self playCommandWaitTime];
+      [playCommandWaitTime2 doubleValue];
       v35 = v34;
 
       if (v35 <= 0.0)
@@ -1324,1104 +1324,1104 @@ LABEL_54:
   v2 = [(MPCPlayPerfMetrics *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
-    [(MPCPlayPerfMetrics *)v2 setData:v3];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(MPCPlayPerfMetrics *)v2 setData:dictionary];
   }
 
   return v2;
 }
 
-- (void)set_checkpointFirstAudioFrame:(id)a3
+- (void)set_checkpointFirstAudioFrame:(id)frame
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"checkpointFirstAudioFrame"];
+  frameCopy = frame;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:frameCopy forKeyedSubscript:@"checkpointFirstAudioFrame"];
 }
 
 - (NSNumber)checkpointFirstAudioFrame
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"checkpointFirstAudioFrame"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"checkpointFirstAudioFrame"];
 
   return v3;
 }
 
-- (void)set_checkpointRateOne:(id)a3
+- (void)set_checkpointRateOne:(id)one
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"checkpointRateOne"];
+  oneCopy = one;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:oneCopy forKeyedSubscript:@"checkpointRateOne"];
 }
 
 - (NSNumber)checkpointRateOne
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"checkpointRateOne"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"checkpointRateOne"];
 
   return v3;
 }
 
-- (void)set_checkpointReadyToPlay:(id)a3
+- (void)set_checkpointReadyToPlay:(id)play
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"checkpointReadyToPlay"];
+  playCopy = play;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:playCopy forKeyedSubscript:@"checkpointReadyToPlay"];
 }
 
 - (NSNumber)checkpointReadyToPlay
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"checkpointReadyToPlay"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"checkpointReadyToPlay"];
 
   return v3;
 }
 
-- (void)set_checkpointLikelyToKeepUp:(id)a3
+- (void)set_checkpointLikelyToKeepUp:(id)up
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"checkpointLikelyToKeepUp"];
+  upCopy = up;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:upCopy forKeyedSubscript:@"checkpointLikelyToKeepUp"];
 }
 
 - (NSNumber)checkpointLikelyToKeepUp
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"checkpointLikelyToKeepUp"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"checkpointLikelyToKeepUp"];
 
   return v3;
 }
 
-- (void)set_checkpointAssetLoadEnd:(id)a3
+- (void)set_checkpointAssetLoadEnd:(id)end
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"checkpointAssetLoadEnd"];
+  endCopy = end;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:endCopy forKeyedSubscript:@"checkpointAssetLoadEnd"];
 }
 
 - (NSNumber)checkpointAssetLoadEnd
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"checkpointAssetLoadEnd"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"checkpointAssetLoadEnd"];
 
   return v3;
 }
 
-- (void)set_checkpointAssetLoadBegin:(id)a3
+- (void)set_checkpointAssetLoadBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"checkpointAssetLoadBegin"];
+  beginCopy = begin;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:beginCopy forKeyedSubscript:@"checkpointAssetLoadBegin"];
 }
 
 - (NSNumber)checkpointAssetLoadBegin
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"checkpointAssetLoadBegin"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"checkpointAssetLoadBegin"];
 
   return v3;
 }
 
-- (void)set_checkpointPlay:(id)a3
+- (void)set_checkpointPlay:(id)play
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"checkpointPlay"];
+  playCopy = play;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:playCopy forKeyedSubscript:@"checkpointPlay"];
 }
 
 - (NSNumber)checkpointPlay
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"checkpointPlay"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"checkpointPlay"];
 
   return v3;
 }
 
-- (void)set_checkpointMRPlay:(id)a3
+- (void)set_checkpointMRPlay:(id)play
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"checkpointMRPlay"];
+  playCopy = play;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:playCopy forKeyedSubscript:@"checkpointMRPlay"];
 }
 
 - (NSNumber)checkpointMRPlay
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"checkpointMRPlay"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"checkpointMRPlay"];
 
   return v3;
 }
 
-- (void)set_checkpointSetQueueEnd:(id)a3
+- (void)set_checkpointSetQueueEnd:(id)end
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"checkpointSetQueueEnd"];
+  endCopy = end;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:endCopy forKeyedSubscript:@"checkpointSetQueueEnd"];
 }
 
 - (NSNumber)checkpointSetQueueEnd
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"checkpointSetQueueEnd"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"checkpointSetQueueEnd"];
 
   return v3;
 }
 
-- (void)set_checkpointRateZero:(id)a3
+- (void)set_checkpointRateZero:(id)zero
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"checkpointRateZero"];
+  zeroCopy = zero;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:zeroCopy forKeyedSubscript:@"checkpointRateZero"];
 }
 
 - (NSNumber)checkpointRateZero
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"checkpointRateZero"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"checkpointRateZero"];
 
   return v3;
 }
 
-- (void)set_checkpointSetQueueBegin:(id)a3
+- (void)set_checkpointSetQueueBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"checkpointSetQueueBegin"];
+  beginCopy = begin;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:beginCopy forKeyedSubscript:@"checkpointSetQueueBegin"];
 }
 
 - (NSNumber)checkpointSetQueueBegin
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"checkpointSetQueueBegin"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"checkpointSetQueueBegin"];
 
   return v3;
 }
 
-- (void)set_checkpointMRSetQueueBegin:(id)a3
+- (void)set_checkpointMRSetQueueBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"checkpointMRSetQueueBegin"];
+  beginCopy = begin;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:beginCopy forKeyedSubscript:@"checkpointMRSetQueueBegin"];
 }
 
 - (NSNumber)checkpointMRSetQueueBegin
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"checkpointMRSetQueueBegin"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"checkpointMRSetQueueBegin"];
 
   return v3;
 }
 
-- (void)set_sessionActivationClientTime:(id)a3
+- (void)set_sessionActivationClientTime:(id)time
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"sessionActivationClientTime"];
+  timeCopy = time;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:timeCopy forKeyedSubscript:@"sessionActivationClientTime"];
 }
 
 - (NSNumber)sessionActivationClientTime
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"sessionActivationClientTime"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"sessionActivationClientTime"];
 
   return v3;
 }
 
-- (void)set_sessionActivationAVTime:(id)a3
+- (void)set_sessionActivationAVTime:(id)time
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"sessionActivationAVTime"];
+  timeCopy = time;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:timeCopy forKeyedSubscript:@"sessionActivationAVTime"];
 }
 
 - (NSNumber)sessionActivationAVTime
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"sessionActivationAVTime"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"sessionActivationAVTime"];
 
   return v3;
 }
 
-- (void)set_sessionActivationWaitTime:(id)a3
+- (void)set_sessionActivationWaitTime:(id)time
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"sessionActivationWaitTime"];
+  timeCopy = time;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:timeCopy forKeyedSubscript:@"sessionActivationWaitTime"];
 }
 
 - (NSNumber)sessionActivationWaitTime
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"sessionActivationWaitTime"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"sessionActivationWaitTime"];
 
   return v3;
 }
 
-- (void)set_hlsMetadataWaitTime:(id)a3
+- (void)set_hlsMetadataWaitTime:(id)time
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"hlsMetadataWaitTime"];
+  timeCopy = time;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:timeCopy forKeyedSubscript:@"hlsMetadataWaitTime"];
 }
 
 - (NSNumber)hlsMetadataWaitTime
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"hlsMetadataWaitTime"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"hlsMetadataWaitTime"];
 
   return v3;
 }
 
-- (void)set_mediaRedownloadWaitTime:(id)a3
+- (void)set_mediaRedownloadWaitTime:(id)time
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"mediaRedownloadWaitTime"];
+  timeCopy = time;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:timeCopy forKeyedSubscript:@"mediaRedownloadWaitTime"];
 }
 
 - (NSNumber)mediaRedownloadWaitTime
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"mediaRedownloadWaitTime"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"mediaRedownloadWaitTime"];
 
   return v3;
 }
 
-- (void)set_subscriptionAssetLoadWaitTime:(id)a3
+- (void)set_subscriptionAssetLoadWaitTime:(id)time
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"subscriptionAssetLoadWaitTime"];
+  timeCopy = time;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:timeCopy forKeyedSubscript:@"subscriptionAssetLoadWaitTime"];
 }
 
 - (NSNumber)subscriptionAssetLoadWaitTime
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"subscriptionAssetLoadWaitTime"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"subscriptionAssetLoadWaitTime"];
 
   return v3;
 }
 
-- (void)set_suzeLeaseWaitTime:(id)a3
+- (void)set_suzeLeaseWaitTime:(id)time
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"suzeLeaseWaitTime"];
+  timeCopy = time;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:timeCopy forKeyedSubscript:@"suzeLeaseWaitTime"];
 }
 
 - (NSNumber)suzeLeaseWaitTime
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"suzeLeaseWaitTime"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"suzeLeaseWaitTime"];
 
   return v3;
 }
 
-- (void)set_leaseWaitTime:(id)a3
+- (void)set_leaseWaitTime:(id)time
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"leaseWaitTime"];
+  timeCopy = time;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:timeCopy forKeyedSubscript:@"leaseWaitTime"];
 }
 
 - (NSNumber)leaseWaitTime
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"leaseWaitTime"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"leaseWaitTime"];
 
   return v3;
 }
 
-- (void)set_bagWaitTime:(id)a3
+- (void)set_bagWaitTime:(id)time
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"bagWaitTime"];
+  timeCopy = time;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:timeCopy forKeyedSubscript:@"bagWaitTime"];
 }
 
 - (NSNumber)bagWaitTime
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"bagWaitTime"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"bagWaitTime"];
 
   return v3;
 }
 
-- (void)set_lookupWaitTime:(id)a3
+- (void)set_lookupWaitTime:(id)time
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"lookupWaitTime"];
+  timeCopy = time;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:timeCopy forKeyedSubscript:@"lookupWaitTime"];
 }
 
 - (NSNumber)lookupWaitTime
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"lookupWaitTime"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"lookupWaitTime"];
 
   return v3;
 }
 
-- (void)set_nextItemWaitTime:(id)a3
+- (void)set_nextItemWaitTime:(id)time
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"nextItemWaitTime"];
+  timeCopy = time;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:timeCopy forKeyedSubscript:@"nextItemWaitTime"];
 }
 
 - (NSNumber)nextItemWaitTime
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"nextItemWaitTime"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"nextItemWaitTime"];
 
   return v3;
 }
 
-- (void)set_firstAudioFrameWaitTime:(id)a3
+- (void)set_firstAudioFrameWaitTime:(id)time
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"firstAudioFrameWaitTime"];
+  timeCopy = time;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:timeCopy forKeyedSubscript:@"firstAudioFrameWaitTime"];
 }
 
 - (NSNumber)firstAudioFrameWaitTime
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"firstAudioFrameWaitTime"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"firstAudioFrameWaitTime"];
 
   return v3;
 }
 
-- (void)set_rateChangeWaitTime:(id)a3
+- (void)set_rateChangeWaitTime:(id)time
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"rateChangeWaitTime"];
+  timeCopy = time;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:timeCopy forKeyedSubscript:@"rateChangeWaitTime"];
 }
 
 - (NSNumber)rateChangeWaitTime
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"rateChangeWaitTime"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"rateChangeWaitTime"];
 
   return v3;
 }
 
-- (void)set_playCommandWaitTime:(id)a3
+- (void)set_playCommandWaitTime:(id)time
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"playCommandWaitTime"];
+  timeCopy = time;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:timeCopy forKeyedSubscript:@"playCommandWaitTime"];
 }
 
 - (NSNumber)playCommandWaitTime
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"playCommandWaitTime"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"playCommandWaitTime"];
 
   return v3;
 }
 
-- (void)set_readyToPlayStatusWaitTime:(id)a3
+- (void)set_readyToPlayStatusWaitTime:(id)time
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"readyToPlayStatusWaitTime"];
+  timeCopy = time;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:timeCopy forKeyedSubscript:@"readyToPlayStatusWaitTime"];
 }
 
 - (NSNumber)readyToPlayStatusWaitTime
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"readyToPlayStatusWaitTime"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"readyToPlayStatusWaitTime"];
 
   return v3;
 }
 
-- (void)set_assetLoadWaitTime:(id)a3
+- (void)set_assetLoadWaitTime:(id)time
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"assetLoadWaitTime"];
+  timeCopy = time;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:timeCopy forKeyedSubscript:@"assetLoadWaitTime"];
 }
 
 - (NSNumber)assetLoadWaitTime
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"assetLoadWaitTime"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"assetLoadWaitTime"];
 
   return v3;
 }
 
-- (void)set_queueLoadWaitTime:(id)a3
+- (void)set_queueLoadWaitTime:(id)time
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"queueLoadWaitTime"];
+  timeCopy = time;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:timeCopy forKeyedSubscript:@"queueLoadWaitTime"];
 }
 
 - (NSNumber)queueLoadWaitTime
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"queueLoadWaitTime"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"queueLoadWaitTime"];
 
   return v3;
 }
 
-- (void)set_playCommandSendTime:(id)a3
+- (void)set_playCommandSendTime:(id)time
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"playCommandSendTime"];
+  timeCopy = time;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:timeCopy forKeyedSubscript:@"playCommandSendTime"];
 }
 
 - (NSNumber)playCommandSendTime
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"playCommandSendTime"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"playCommandSendTime"];
 
   return v3;
 }
 
-- (void)set_setQueueCommandSendTime:(id)a3
+- (void)set_setQueueCommandSendTime:(id)time
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"setQueueCommandSendTime"];
+  timeCopy = time;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:timeCopy forKeyedSubscript:@"setQueueCommandSendTime"];
 }
 
 - (NSNumber)setQueueCommandSendTime
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"setQueueCommandSendTime"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"setQueueCommandSendTime"];
 
   return v3;
 }
 
-- (void)set_timeSincePaused:(id)a3
+- (void)set_timeSincePaused:(id)paused
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"timeSincePaused"];
+  pausedCopy = paused;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:pausedCopy forKeyedSubscript:@"timeSincePaused"];
 }
 
 - (NSNumber)timeSincePaused
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"timeSincePaused"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"timeSincePaused"];
 
   return v3;
 }
 
-- (void)set_timeSinceLaunch:(id)a3
+- (void)set_timeSinceLaunch:(id)launch
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"timeSinceLaunch"];
+  launchCopy = launch;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:launchCopy forKeyedSubscript:@"timeSinceLaunch"];
 }
 
 - (NSNumber)timeSinceLaunch
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"timeSinceLaunch"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"timeSinceLaunch"];
 
   return v3;
 }
 
-- (void)set_timeSinceBoot:(id)a3
+- (void)set_timeSinceBoot:(id)boot
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"timeSinceBoot"];
+  bootCopy = boot;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:bootCopy forKeyedSubscript:@"timeSinceBoot"];
 }
 
 - (NSNumber)timeSinceBoot
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"timeSinceBoot"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"timeSinceBoot"];
 
   return v3;
 }
 
-- (void)set_AVPlayerItemPerformanceMetrics:(id)a3
+- (void)set_AVPlayerItemPerformanceMetrics:(id)metrics
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"AVPlayerItemPerformanceMetrics"];
+  metricsCopy = metrics;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:metricsCopy forKeyedSubscript:@"AVPlayerItemPerformanceMetrics"];
 }
 
 - (NSDictionary)AVPlayerItemPerformanceMetrics
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"AVPlayerItemPerformanceMetrics"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"AVPlayerItemPerformanceMetrics"];
 
   return v3;
 }
 
-- (void)set_assetProtectionType:(id)a3
+- (void)set_assetProtectionType:(id)type
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"assetProtectionType"];
+  typeCopy = type;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:typeCopy forKeyedSubscript:@"assetProtectionType"];
 }
 
 - (NSNumber)assetProtectionType
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"assetProtectionType"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"assetProtectionType"];
 
   return v3;
 }
 
-- (void)set_vocalsControlActive:(id)a3
+- (void)set_vocalsControlActive:(id)active
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"vocalsControlActive"];
+  activeCopy = active;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:activeCopy forKeyedSubscript:@"vocalsControlActive"];
 }
 
 - (NSNumber)vocalsControlActive
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"vocalsControlActive"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"vocalsControlActive"];
 
   return v3;
 }
 
-- (void)set_treatmentID:(id)a3
+- (void)set_treatmentID:(id)d
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"treatmentID"];
+  dCopy = d;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:dCopy forKeyedSubscript:@"treatmentID"];
 }
 
 - (NSString)treatmentID
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"treatmentID"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"treatmentID"];
 
   return v3;
 }
 
-- (void)set_experimentID:(id)a3
+- (void)set_experimentID:(id)d
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"experimentID"];
+  dCopy = d;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:dCopy forKeyedSubscript:@"experimentID"];
 }
 
 - (NSString)experimentID
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"experimentID"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"experimentID"];
 
   return v3;
 }
 
-- (void)set_storefront:(id)a3
+- (void)set_storefront:(id)set_storefront
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"storefront"];
+  set_storefrontCopy = set_storefront;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:set_storefrontCopy forKeyedSubscript:@"storefront"];
 }
 
 - (NSString)storefront
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"storefront"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"storefront"];
 
   return v3;
 }
 
-- (void)set_queueCommandType:(id)a3
+- (void)set_queueCommandType:(id)type
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"queueCommandType"];
+  typeCopy = type;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:typeCopy forKeyedSubscript:@"queueCommandType"];
 }
 
 - (NSNumber)queueCommandType
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"queueCommandType"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"queueCommandType"];
 
   return v3;
 }
 
-- (void)set_seekBeforePlaying:(id)a3
+- (void)set_seekBeforePlaying:(id)playing
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"seekBeforePlaying"];
+  playingCopy = playing;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:playingCopy forKeyedSubscript:@"seekBeforePlaying"];
 }
 
 - (NSNumber)seekBeforePlaying
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"seekBeforePlaying"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"seekBeforePlaying"];
 
   return v3;
 }
 
-- (void)set_isActiveAccount:(id)a3
+- (void)set_isActiveAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"isActiveAccount"];
+  accountCopy = account;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:accountCopy forKeyedSubscript:@"isActiveAccount"];
 }
 
 - (NSNumber)isActiveAccount
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"isActiveAccount"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"isActiveAccount"];
 
   return v3;
 }
 
-- (void)set_hasAccountInfo:(id)a3
+- (void)set_hasAccountInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"hasAccountInfo"];
+  infoCopy = info;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:infoCopy forKeyedSubscript:@"hasAccountInfo"];
 }
 
 - (NSNumber)hasAccountInfo
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"hasAccountInfo"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"hasAccountInfo"];
 
   return v3;
 }
 
-- (void)set_errorSignature:(id)a3
+- (void)set_errorSignature:(id)signature
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"errorSignature"];
+  signatureCopy = signature;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:signatureCopy forKeyedSubscript:@"errorSignature"];
 }
 
 - (NSString)errorSignature
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"errorSignature"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"errorSignature"];
 
   return v3;
 }
 
-- (void)set_errorResolution:(id)a3
+- (void)set_errorResolution:(id)resolution
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"errorResolution"];
+  resolutionCopy = resolution;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:resolutionCopy forKeyedSubscript:@"errorResolution"];
 }
 
 - (NSNumber)errorResolution
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"errorResolution"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"errorResolution"];
 
   return v3;
 }
 
-- (void)set_isReplacingPlayback:(id)a3
+- (void)set_isReplacingPlayback:(id)playback
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"isReplacingPlayback"];
+  playbackCopy = playback;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:playbackCopy forKeyedSubscript:@"isReplacingPlayback"];
 }
 
 - (NSNumber)isReplacingPlayback
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"isReplacingPlayback"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"isReplacingPlayback"];
 
   return v3;
 }
 
-- (void)set_isFirstPlay:(id)a3
+- (void)set_isFirstPlay:(id)play
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"isFirstPlay"];
+  playCopy = play;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:playCopy forKeyedSubscript:@"isFirstPlay"];
 }
 
 - (NSNumber)isFirstPlay
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"isFirstPlay"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"isFirstPlay"];
 
   return v3;
 }
 
-- (void)set_networkType:(id)a3
+- (void)set_networkType:(id)type
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"networkType"];
+  typeCopy = type;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:typeCopy forKeyedSubscript:@"networkType"];
 }
 
 - (NSNumber)networkType
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"networkType"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"networkType"];
 
   return v3;
 }
 
-- (void)set_routeInfo:(id)a3
+- (void)set_routeInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"routeInfo"];
+  infoCopy = info;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:infoCopy forKeyedSubscript:@"routeInfo"];
 }
 
 - (NSDictionary)routeInfo
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"routeInfo"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"routeInfo"];
 
   return v3;
 }
 
-- (void)set_formatInfo:(id)a3
+- (void)set_formatInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"formatInfo"];
+  infoCopy = info;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:infoCopy forKeyedSubscript:@"formatInfo"];
 }
 
 - (NSDictionary)formatInfo
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"formatInfo"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"formatInfo"];
 
   return v3;
 }
 
-- (void)set_hasOfflinePlaybackKeys:(id)a3
+- (void)set_hasOfflinePlaybackKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"hasOfflinePlaybackKeys"];
+  keysCopy = keys;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:keysCopy forKeyedSubscript:@"hasOfflinePlaybackKeys"];
 }
 
 - (NSNumber)hasOfflinePlaybackKeys
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"hasOfflinePlaybackKeys"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"hasOfflinePlaybackKeys"];
 
   return v3;
 }
 
-- (void)set_hasOnlinePlaybackKeys:(id)a3
+- (void)set_hasOnlinePlaybackKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"hasOnlinePlaybackKeys"];
+  keysCopy = keys;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:keysCopy forKeyedSubscript:@"hasOnlinePlaybackKeys"];
 }
 
 - (NSNumber)hasOnlinePlaybackKeys
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"hasOnlinePlaybackKeys"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"hasOnlinePlaybackKeys"];
 
   return v3;
 }
 
-- (void)set_isDelegatedPlayback:(id)a3
+- (void)set_isDelegatedPlayback:(id)playback
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"isDelegatedPlayback"];
+  playbackCopy = playback;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:playbackCopy forKeyedSubscript:@"isDelegatedPlayback"];
 }
 
 - (NSNumber)isDelegatedPlayback
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"isDelegatedPlayback"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"isDelegatedPlayback"];
 
   return v3;
 }
 
-- (void)set_subscriptionType:(id)a3
+- (void)set_subscriptionType:(id)type
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"subscriptionType"];
+  typeCopy = type;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:typeCopy forKeyedSubscript:@"subscriptionType"];
 }
 
 - (NSNumber)subscriptionType
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"subscriptionType"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"subscriptionType"];
 
   return v3;
 }
 
-- (void)set_endpointType:(id)a3
+- (void)set_endpointType:(id)type
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"endpointType"];
+  typeCopy = type;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:typeCopy forKeyedSubscript:@"endpointType"];
 }
 
 - (NSNumber)endpointType
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"endpointType"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"endpointType"];
 
   return v3;
 }
 
-- (void)set_assetCacheAge:(id)a3
+- (void)set_assetCacheAge:(id)age
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"assetCacheAge"];
+  ageCopy = age;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:ageCopy forKeyedSubscript:@"assetCacheAge"];
 }
 
 - (NSNumber)assetCacheAge
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"assetCacheAge"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"assetCacheAge"];
 
   return v3;
 }
 
-- (void)set_assetLocation:(id)a3
+- (void)set_assetLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"assetLocation"];
+  locationCopy = location;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:locationCopy forKeyedSubscript:@"assetLocation"];
 }
 
 - (NSNumber)assetLocation
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"assetLocation"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"assetLocation"];
 
   return v3;
 }
 
-- (void)set_assetSource:(id)a3
+- (void)set_assetSource:(id)source
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"assetSource"];
+  sourceCopy = source;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:sourceCopy forKeyedSubscript:@"assetSource"];
 }
 
 - (NSNumber)assetSource
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"assetSource"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"assetSource"];
 
   return v3;
 }
 
-- (void)set_assetType:(id)a3
+- (void)set_assetType:(id)type
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"assetType"];
+  typeCopy = type;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:typeCopy forKeyedSubscript:@"assetType"];
 }
 
 - (NSNumber)assetType
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"assetType"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"assetType"];
 
   return v3;
 }
 
-- (void)set_isSharePlay:(id)a3
+- (void)set_isSharePlay:(id)play
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"isSharePlay"];
+  playCopy = play;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:playCopy forKeyedSubscript:@"isSharePlay"];
 }
 
 - (NSNumber)isSharePlay
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"isSharePlay"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"isSharePlay"];
 
   return v3;
 }
 
-- (void)set_isAutoPlayEnabled:(id)a3
+- (void)set_isAutoPlayEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"isAutoPlayEnabled"];
+  enabledCopy = enabled;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:enabledCopy forKeyedSubscript:@"isAutoPlayEnabled"];
 }
 
 - (NSNumber)isAutoPlayEnabled
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"isAutoPlayEnabled"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"isAutoPlayEnabled"];
 
   return v3;
 }
 
-- (void)set_isShuffled:(id)a3
+- (void)set_isShuffled:(id)shuffled
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"isShuffled"];
+  shuffledCopy = shuffled;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:shuffledCopy forKeyedSubscript:@"isShuffled"];
 }
 
 - (NSNumber)isShuffled
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"isShuffled"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"isShuffled"];
 
   return v3;
 }
 
-- (void)set_isRemoteSetQueue:(id)a3
+- (void)set_isRemoteSetQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"isRemoteSetQueue"];
+  queueCopy = queue;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:queueCopy forKeyedSubscript:@"isRemoteSetQueue"];
 }
 
 - (NSNumber)isRemoteSetQueue
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"isRemoteSetQueue"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"isRemoteSetQueue"];
 
   return v3;
 }
 
-- (void)set_queueType:(id)a3
+- (void)set_queueType:(id)type
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"queueType"];
+  typeCopy = type;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:typeCopy forKeyedSubscript:@"queueType"];
 }
 
 - (NSString)queueType
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"queueType"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"queueType"];
 
   return v3;
 }
 
-- (void)set_siriRefId:(id)a3
+- (void)set_siriRefId:(id)id
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"siriRefId"];
+  idCopy = id;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:idCopy forKeyedSubscript:@"siriRefId"];
 }
 
 - (NSString)siriRefId
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"siriRefId"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"siriRefId"];
 
   return v3;
 }
 
-- (void)set_featureName:(id)a3
+- (void)set_featureName:(id)name
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"featureName"];
+  nameCopy = name;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:nameCopy forKeyedSubscript:@"featureName"];
 }
 
 - (NSString)featureName
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"featureName"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"featureName"];
 
   return v3;
 }
 
-- (void)set_itemMetadata:(id)a3
+- (void)set_itemMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"itemMetadata"];
+  metadataCopy = metadata;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:metadataCopy forKeyedSubscript:@"itemMetadata"];
 }
 
 - (NSDictionary)itemMetadata
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"itemMetadata"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"itemMetadata"];
 
   return v3;
 }
 
-- (void)set_itemIdentifier:(id)a3
+- (void)set_itemIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"itemIdentifier"];
+  identifierCopy = identifier;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:identifierCopy forKeyedSubscript:@"itemIdentifier"];
 }
 
 - (NSString)itemIdentifier
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"itemIdentifier"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"itemIdentifier"];
 
   return v3;
 }
 
-- (void)set_sectionIdentifier:(id)a3
+- (void)set_sectionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"sectionIdentifier"];
+  identifierCopy = identifier;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:identifierCopy forKeyedSubscript:@"sectionIdentifier"];
 }
 
 - (NSString)sectionIdentifier
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"sectionIdentifier"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"sectionIdentifier"];
 
   return v3;
 }
 
-- (void)set_eventTime:(id)a3
+- (void)set_eventTime:(id)time
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"eventTime"];
+  timeCopy = time;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:timeCopy forKeyedSubscript:@"eventTime"];
 }
 
 - (NSNumber)eventTime
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"eventTime"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"eventTime"];
 
   return v3;
 }
 
-- (void)set_eventType:(id)a3
+- (void)set_eventType:(id)type
 {
-  v4 = a3;
-  v5 = [(MPCPlayPerfMetrics *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"eventType"];
+  typeCopy = type;
+  data = [(MPCPlayPerfMetrics *)self data];
+  [data setObject:typeCopy forKeyedSubscript:@"eventType"];
 }
 
 - (NSString)eventType
 {
-  v2 = [(MPCPlayPerfMetrics *)self data];
-  v3 = [v2 objectForKeyedSubscript:@"eventType"];
+  data = [(MPCPlayPerfMetrics *)self data];
+  v3 = [data objectForKeyedSubscript:@"eventType"];
 
   return v3;
 }
 
-+ (id)playMetricsWithErrorSignature:(id)a3 event:(id)a4 cursor:(id)a5
++ (id)playMetricsWithErrorSignature:(id)signature event:(id)event cursor:(id)cursor
 {
   v71[2] = *MEMORY[0x1E69E9840];
-  v44 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 payload];
-  v10 = [v9 objectForKeyedSubscript:@"queue-section-id"];
+  signatureCopy = signature;
+  eventCopy = event;
+  cursorCopy = cursor;
+  payload = [eventCopy payload];
+  v10 = [payload objectForKeyedSubscript:@"queue-section-id"];
 
-  v11 = [v7 payload];
-  v47 = [v11 objectForKeyedSubscript:@"queue-item-id"];
+  payload2 = [eventCopy payload];
+  v47 = [payload2 objectForKeyedSubscript:@"queue-item-id"];
 
   v45 = 0;
   if (v10 && v47)
@@ -2433,7 +2433,7 @@ LABEL_54:
     v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v71 forKeys:v70 count:2];
   }
 
-  v46 = [v8 findPreviousEventWithType:@"queue-add" matchingPayload:0];
+  v46 = [cursorCopy findPreviousEventWithType:@"queue-add" matchingPayload:0];
   if (v46)
   {
     *buf = 0;
@@ -2454,13 +2454,13 @@ LABEL_54:
     v48[3] = &unk_1E8231DA8;
     v48[4] = buf;
     v48[5] = &v49;
-    [v8 enumeratePreviousEventsWithType:@"remote-control-begin" usingBlock:v48];
+    [cursorCopy enumeratePreviousEventsWithType:@"remote-control-begin" usingBlock:v48];
     v12 = v50[5];
     if (!v12)
     {
-      v32 = [v8 findPreviousEventWithType:@"session-begin" matchingPayload:0];
-      v33 = [v32 payload];
-      v34 = [v33 objectForKeyedSubscript:@"session-id"];
+      v32 = [cursorCopy findPreviousEventWithType:@"session-begin" matchingPayload:0];
+      payload3 = [v32 payload];
+      v34 = [payload3 objectForKeyedSubscript:@"session-id"];
 
       if (!v34)
       {
@@ -2472,7 +2472,7 @@ LABEL_54:
       v65 = @"session-id";
       v66 = v34;
       v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v66 forKeys:&v65 count:1];
-      v12 = [v8 findPreviousEventWithType:@"session-restore-begin" matchingPayload:v35];
+      v12 = [cursorCopy findPreviousEventWithType:@"session-restore-begin" matchingPayload:v35];
 
       if (!v12)
       {
@@ -2482,42 +2482,42 @@ LABEL_54:
 
     if (*(*&buf[8] + 40))
     {
-      v13 = [v8 cursorFromEvent:v7 untilEvent:v12];
+      v13 = [cursorCopy cursorFromEvent:eventCopy untilEvent:v12];
       v14 = objc_alloc_init(MPCPlayPerfMetrics);
       [(MPCPlayPerfMetrics *)v14 set_eventType:@"PlayError"];
       v15 = MEMORY[0x1E696AD98];
-      v16 = [v7 date];
-      [v16 timeIntervalSince1970];
+      date = [eventCopy date];
+      [date timeIntervalSince1970];
       v17 = [v15 numberWithDouble:?];
       [(MPCPlayPerfMetrics *)v14 set_eventTime:v17];
 
       [(MPCPlayPerfMetrics *)v14 set_sectionIdentifier:v10];
       [(MPCPlayPerfMetrics *)v14 set_itemIdentifier:v47];
-      v18 = [v46 payload];
-      v43 = [v18 objectForKeyedSubscript:@"queue-reporting-metadata"];
+      payload4 = [v46 payload];
+      v43 = [payload4 objectForKeyedSubscript:@"queue-reporting-metadata"];
 
       [(MPCPlayPerfMetrics *)v14 addQueueMetadata:v43];
       [(MPCPlayPerfMetrics *)v14 addPlaybackBehaviorWithCursor:v13];
       [(MPCPlayPerfMetrics *)v14 addSharePlayWithCursor:v13];
-      [(MPCPlayPerfMetrics *)v14 addEnvironmentInfoWithCursor:v8];
+      [(MPCPlayPerfMetrics *)v14 addEnvironmentInfoWithCursor:cursorCopy];
       if (v45)
       {
         [(MPCPlayPerfMetrics *)v14 addAssetSelectionWithCursor:v13 itemIDPayload:v45];
         v55 = @"queue-section-id";
         v56 = v10;
         v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v56 forKeys:&v55 count:1];
-        v41 = [v8 findPreviousEventWithType:@"container-begin" matchingPayload:v19];
+        v41 = [cursorCopy findPreviousEventWithType:@"container-begin" matchingPayload:v19];
 
-        v42 = [v8 findPreviousEventWithType:@"item-begin" matchingPayload:v45];
-        v20 = [v42 payload];
-        v21 = [v20 objectForKeyedSubscript:@"item-metadata"];
+        v42 = [cursorCopy findPreviousEventWithType:@"item-begin" matchingPayload:v45];
+        payload5 = [v42 payload];
+        v21 = [payload5 objectForKeyedSubscript:@"item-metadata"];
         [(MPCPlayPerfMetrics *)v14 set_itemMetadata:v21];
 
-        v22 = [v41 payload];
-        v40 = [v22 objectForKeyedSubscript:@"container-kind"];
+        payload6 = [v41 payload];
+        v40 = [payload6 objectForKeyedSubscript:@"container-kind"];
 
-        v23 = [v42 payload];
-        v39 = [v23 objectForKeyedSubscript:@"item-kind"];
+        payload7 = [v42 payload];
+        v39 = [payload7 objectForKeyedSubscript:@"item-kind"];
 
         v24 = MEMORY[0x1E696AEC0];
         v25 = [v43 objectForKeyedSubscript:@"playback-context-class-name"];
@@ -2527,7 +2527,7 @@ LABEL_54:
         [(MPCPlayPerfMetrics *)v14 set_queueType:v28];
       }
 
-      [(MPCPlayPerfMetrics *)v14 set_errorSignature:v44];
+      [(MPCPlayPerfMetrics *)v14 set_errorSignature:signatureCopy];
 
 LABEL_20:
       _Block_object_dispose(&v49, 8);
@@ -2540,12 +2540,12 @@ LABEL_17:
     v13 = os_log_create("com.apple.amp.mediaplaybackcore", "Analytics");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v36 = [v7 type];
-      v37 = [v7 identifier];
+      type = [eventCopy type];
+      identifier = [eventCopy identifier];
       *v57 = 138413058;
-      v58 = v36;
+      v58 = type;
       v59 = 2114;
-      v60 = v37;
+      v60 = identifier;
       v61 = 2114;
       v62 = v10;
       v63 = 2114;
@@ -2560,12 +2560,12 @@ LABEL_17:
   v29 = os_log_create("com.apple.amp.mediaplaybackcore", "Analytics");
   if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
   {
-    v30 = [v7 type];
-    v31 = [v7 identifier];
+    type2 = [eventCopy type];
+    identifier2 = [eventCopy identifier];
     *buf = 138413058;
-    *&buf[4] = v30;
+    *&buf[4] = type2;
     *&buf[12] = 2114;
-    *&buf[14] = v31;
+    *&buf[14] = identifier2;
     *&buf[22] = 2114;
     v68 = v10;
     LOWORD(v69) = 2114;
@@ -2615,29 +2615,29 @@ LABEL_14:
 LABEL_15:
 }
 
-+ (id)playMetricsWithItemReadyForMetricsEvent:(id)a3 cursor:(id)a4
++ (id)playMetricsWithItemReadyForMetricsEvent:(id)event cursor:(id)cursor
 {
   v335[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v271 = v7;
-  v9 = [v7 payload];
-  v10 = [v9 objectForKeyedSubscript:@"queue-section-id"];
+  eventCopy = event;
+  cursorCopy = cursor;
+  v271 = eventCopy;
+  payload = [eventCopy payload];
+  v10 = [payload objectForKeyedSubscript:@"queue-section-id"];
 
-  v11 = [v7 payload];
-  v273 = [v11 objectForKeyedSubscript:@"queue-item-id"];
+  payload2 = [eventCopy payload];
+  v273 = [payload2 objectForKeyedSubscript:@"queue-item-id"];
 
   if (!v10)
   {
-    v249 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v249 handleFailureInMethod:a2 object:a1 file:@"MPCPlayPerfMetrics.m" lineNumber:319 description:@"Section identifier in first audio frame event can't be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCPlayPerfMetrics.m" lineNumber:319 description:@"Section identifier in first audio frame event can't be nil"];
   }
 
   v12 = v273;
   if (!v273)
   {
-    v250 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v250 handleFailureInMethod:a2 object:a1 file:@"MPCPlayPerfMetrics.m" lineNumber:320 description:@"Item identifier in first audio frame event can't be nil"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPCPlayPerfMetrics.m" lineNumber:320 description:@"Item identifier in first audio frame event can't be nil"];
 
     v12 = 0;
   }
@@ -2647,10 +2647,10 @@ LABEL_15:
   v335[0] = v10;
   v335[1] = v12;
   v274 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v335 forKeys:v334 count:2];
-  v13 = [v8 findPreviousEventWithType:@"item-first-audio-frame" matchingPayload:v274];
+  v13 = [cursorCopy findPreviousEventWithType:@"item-first-audio-frame" matchingPayload:v274];
   if (v13)
   {
-    v270 = [v8 cursorFromEvent:v13 untilEvent:0];
+    v270 = [cursorCopy cursorFromEvent:v13 untilEvent:0];
 
     *buf = 0;
     *&buf[8] = buf;
@@ -2676,8 +2676,8 @@ LABEL_15:
     if (!v14 && v269)
     {
       v15 = [v270 findPreviousEventWithType:@"session-begin" matchingPayload:0];
-      v16 = [v15 payload];
-      v17 = [v16 objectForKeyedSubscript:@"session-id"];
+      payload3 = [v15 payload];
+      v17 = [payload3 objectForKeyedSubscript:@"session-id"];
 
       if (v17)
       {
@@ -2715,9 +2715,9 @@ LABEL_15:
       log = os_log_create("com.apple.amp.mediaplaybackcore", "Analytics");
       if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
       {
-        v86 = [v7 identifier];
+        identifier = [eventCopy identifier];
         *v322 = 138543874;
-        *&v322[4] = v86;
+        *&v322[4] = identifier;
         *&v322[12] = 2114;
         *&v322[14] = v10;
         *&v322[22] = 2114;
@@ -2749,9 +2749,9 @@ LABEL_15:
       v87 = os_log_create("com.apple.amp.mediaplaybackcore", "Analytics");
       if (os_log_type_enabled(v87, OS_LOG_TYPE_ERROR))
       {
-        v88 = [v13 identifier];
+        identifier2 = [v13 identifier];
         *v312 = 138543874;
-        *&v312[4] = v88;
+        *&v312[4] = identifier2;
         *&v312[12] = 2114;
         *&v312[14] = v10;
         *&v312[22] = 2114;
@@ -2764,7 +2764,7 @@ LABEL_15:
     }
 
     v272 = objc_alloc_init(MPCPlayPerfMetrics);
-    v28 = v27;
+    payload17 = v27;
     if (v27)
     {
       v29 = @"NextItem";
@@ -2777,24 +2777,24 @@ LABEL_15:
 
     [(MPCPlayPerfMetrics *)v272 set_eventType:v29];
     v30 = MEMORY[0x1E696AD98];
-    v31 = [v13 date];
-    [v31 timeIntervalSince1970];
+    date = [v13 date];
+    [date timeIntervalSince1970];
     v32 = [v30 numberWithDouble:?];
     [(MPCPlayPerfMetrics *)v272 set_eventTime:v32];
 
     [(MPCPlayPerfMetrics *)v272 set_sectionIdentifier:v10];
     [(MPCPlayPerfMetrics *)v272 set_itemIdentifier:v273];
-    v33 = [v302[5] payload];
-    v34 = [v33 objectForKeyedSubscript:@"remote-control-options"];
+    payload4 = [v302[5] payload];
+    v34 = [payload4 objectForKeyedSubscript:@"remote-control-options"];
     v35 = [v34 objectForKeyedSubscript:*MEMORY[0x1E69B1158]];
     [(MPCPlayPerfMetrics *)v272 set_isRemoteSetQueue:v35];
 
-    v36 = [v302[5] payload];
-    v37 = [v36 objectForKeyedSubscript:@"remote-control-type"];
+    payload5 = [v302[5] payload];
+    v37 = [payload5 objectForKeyedSubscript:@"remote-control-type"];
     [(MPCPlayPerfMetrics *)v272 set_queueCommandType:v37];
 
-    v38 = [*(*&v322[8] + 40) payload];
-    v265 = [v38 objectForKeyedSubscript:@"queue-reporting-metadata"];
+    payload6 = [*(*&v322[8] + 40) payload];
+    v265 = [payload6 objectForKeyedSubscript:@"queue-reporting-metadata"];
 
     [(MPCPlayPerfMetrics *)v272 addQueueMetadata:v265];
     [(MPCPlayPerfMetrics *)v272 addPlaybackBehaviorWithCursor:log];
@@ -2816,16 +2816,16 @@ LABEL_15:
       [v41 snapshotWithDomain:*MEMORY[0x1E69B1340] type:@"Bug" subType:@"FirstAudioFrameBug" context:@"FirstAudioFrameBeforeItemBegin" triggerThresholdValues:0 events:v42 completion:0];
     }
 
-    v43 = [v40 payload];
-    v44 = [v43 objectForKeyedSubscript:@"item-metadata"];
+    payload7 = [v40 payload];
+    v44 = [payload7 objectForKeyedSubscript:@"item-metadata"];
     [(MPCPlayPerfMetrics *)v272 set_itemMetadata:v44];
     v262 = v40;
 
-    v45 = [v263 payload];
-    v261 = [v45 objectForKeyedSubscript:@"container-kind"];
+    payload8 = [v263 payload];
+    v261 = [payload8 objectForKeyedSubscript:@"container-kind"];
 
-    v46 = [v40 payload];
-    v260 = [v46 objectForKeyedSubscript:@"item-kind"];
+    payload9 = [v40 payload];
+    v260 = [payload9 objectForKeyedSubscript:@"item-kind"];
 
     v47 = MEMORY[0x1E696AEC0];
     v48 = [v265 objectForKeyedSubscript:@"playback-context-class-name"];
@@ -2836,33 +2836,33 @@ LABEL_15:
 
     v266 = [log findPreviousEventWithType:@"item-resume" matchingPayload:v274];
     v52 = MEMORY[0x1E696AD98];
-    v53 = [v266 payload];
-    v54 = [v53 objectForKeyedSubscript:@"item-start-position"];
+    payload10 = [v266 payload];
+    v54 = [payload10 objectForKeyedSubscript:@"item-start-position"];
     [v54 doubleValue];
     v56 = [v52 numberWithInt:v55 > 0.0];
     [(MPCPlayPerfMetrics *)v272 set_seekBeforePlaying:v56];
 
-    v57 = [v266 payload];
-    v58 = [v57 objectForKeyedSubscript:@"supports-vocal-attenuation"];
-    LODWORD(v53) = [v58 BOOLValue];
+    payload11 = [v266 payload];
+    v58 = [payload11 objectForKeyedSubscript:@"supports-vocal-attenuation"];
+    LODWORD(payload10) = [v58 BOOLValue];
 
-    v59 = [v266 payload];
-    v60 = [v59 objectForKeyedSubscript:@"vocal-attenuation-available"];
+    payload12 = [v266 payload];
+    v60 = [payload12 objectForKeyedSubscript:@"vocal-attenuation-available"];
     LODWORD(v54) = [v60 BOOLValue];
 
-    v61 = [v266 payload];
-    v62 = [v61 objectForKeyedSubscript:@"vocal-attenuation-enabled"];
-    v63 = [v62 BOOLValue];
+    payload13 = [v266 payload];
+    v62 = [payload13 objectForKeyedSubscript:@"vocal-attenuation-enabled"];
+    bOOLValue = [v62 BOOLValue];
 
-    v64 = [v266 payload];
-    v65 = [v64 objectForKeyedSubscript:@"vocal-attenuation-configured"];
+    payload14 = [v266 payload];
+    v65 = [payload14 objectForKeyedSubscript:@"vocal-attenuation-configured"];
     LODWORD(v62) = [v65 BOOLValue];
 
-    v66 = [MEMORY[0x1E696AD98] numberWithInt:v53 & v62 & v54 & v63];
+    v66 = [MEMORY[0x1E696AD98] numberWithInt:payload10 & v62 & v54 & bOOLValue];
     [(MPCPlayPerfMetrics *)v272 set_vocalsControlActive:v66];
 
-    v67 = [v271 payload];
-    v264 = [v67 objectForKeyedSubscript:@"av-player-item-performance-metrics"];
+    payload15 = [v271 payload];
+    v264 = [payload15 objectForKeyedSubscript:@"av-player-item-performance-metrics"];
 
     if (v264)
     {
@@ -2874,15 +2874,15 @@ LABEL_15:
     v70 = [MEMORY[0x1E696AD98] numberWithDouble:{objc_msgSend(v13, "monotonicTimeNanoSeconds") / 1000000000.0}];
     [(MPCPlayPerfMetrics *)v272 set_timeSinceBoot:v70];
 
-    v71 = MEMORY[0x1E696AD98];
-    v72 = [v13 date];
-    [v72 timeIntervalSince1970];
+    payload18 = MEMORY[0x1E696AD98];
+    date2 = [v13 date];
+    [date2 timeIntervalSince1970];
     v74 = v73;
     MSVGetProcessLaunchTime();
-    v76 = [v71 numberWithDouble:v74 - v75];
+    v76 = [payload18 numberWithDouble:v74 - v75];
     [(MPCPlayPerfMetrics *)v272 set_timeSinceLaunch:v76];
 
-    if (v28)
+    if (payload17)
     {
       v77 = [log findPreviousEventWithType:@"item-end" matchingPayload:0];
       v78 = v77;
@@ -2893,8 +2893,8 @@ LABEL_15:
 
       v79 = v78;
 
-      v80 = [v13 payload];
-      v81 = [v80 objectForKeyedSubscript:@"event-time-offset"];
+      payload16 = [v13 payload];
+      v81 = [payload16 objectForKeyedSubscript:@"event-time-offset"];
       [v81 doubleValue];
       v83 = v82;
 
@@ -2913,7 +2913,7 @@ LABEL_135:
       _Block_object_dispose(&v301, 8);
       _Block_object_dispose(buf, 8);
 
-      v8 = v270;
+      cursorCopy = v270;
       goto LABEL_136;
     }
 
@@ -2925,9 +2925,9 @@ LABEL_135:
     v91 = MEMORY[0x1E696AD98];
     if (v90)
     {
-      v28 = [v90 payload];
-      v72 = [v28 objectForKeyedSubscript:@"item-did-play-to-end"];
-      if ([v72 BOOLValue])
+      payload17 = [v90 payload];
+      date2 = [payload17 objectForKeyedSubscript:@"item-did-play-to-end"];
+      if ([date2 BOOLValue])
       {
         v92 = 0;
         v93 = 0;
@@ -2935,9 +2935,9 @@ LABEL_135:
 
       else
       {
-        v71 = [v79 payload];
-        v63 = [v71 objectForKeyedSubscript:@"item-end-position"];
-        [v63 doubleValue];
+        payload18 = [v79 payload];
+        bOOLValue = [payload18 objectForKeyedSubscript:@"item-end-position"];
+        [bOOLValue doubleValue];
         v93 = v94 > 0.0;
         v92 = 1;
       }
@@ -2963,22 +2963,22 @@ LABEL_135:
     v257 = [log findPreviousEventWithType:@"error-resolution" matchingPayload:0];
     if (v257)
     {
-      v96 = [v257 payload];
-      v97 = [v96 objectForKeyedSubscript:@"resolution-type"];
+      payload19 = [v257 payload];
+      v97 = [payload19 objectForKeyedSubscript:@"resolution-type"];
       [(MPCPlayPerfMetrics *)v272 set_errorResolution:v97];
 
-      v98 = [v257 payload];
-      v99 = [v98 objectForKeyedSubscript:@"error-for-resolution"];
+      payload20 = [v257 payload];
+      v99 = [payload20 objectForKeyedSubscript:@"error-for-resolution"];
 
       if (v99)
       {
-        v100 = [v99 msv_analyticSignature];
-        [(MPCPlayPerfMetrics *)v272 set_errorSignature:v100];
+        msv_analyticSignature = [v99 msv_analyticSignature];
+        [(MPCPlayPerfMetrics *)v272 set_errorSignature:msv_analyticSignature];
       }
     }
 
-    v101 = [*(*&v322[8] + 40) payload];
-    v256 = [v101 objectForKeyedSubscript:@"account-id"];
+    payload21 = [*(*&v322[8] + 40) payload];
+    v256 = [payload21 objectForKeyedSubscript:@"account-id"];
 
     v318[0] = @"account-begin";
     v318[1] = @"account-update";
@@ -3005,13 +3005,13 @@ LABEL_135:
 
     if (v259)
     {
-      v105 = [v259 payload];
-      v106 = [v105 objectForKeyedSubscript:@"account-metadata"];
+      payload22 = [v259 payload];
+      v106 = [payload22 objectForKeyedSubscript:@"account-metadata"];
       v107 = [v106 objectForKeyedSubscript:@"active"];
       [(MPCPlayPerfMetrics *)v272 set_isActiveAccount:v107];
 
-      v108 = [v259 payload];
-      v109 = [v108 objectForKeyedSubscript:@"account-metadata"];
+      payload23 = [v259 payload];
+      v109 = [payload23 objectForKeyedSubscript:@"account-metadata"];
       v110 = [v109 objectForKeyedSubscript:@"subscription-status"];
 
       if (v110)
@@ -3020,8 +3020,8 @@ LABEL_135:
         [(MPCPlayPerfMetrics *)v272 set_subscriptionType:v111];
       }
 
-      v112 = [v259 payload];
-      v113 = [v112 objectForKeyedSubscript:@"account-metadata"];
+      payload24 = [v259 payload];
+      v113 = [payload24 objectForKeyedSubscript:@"account-metadata"];
       v114 = [v113 objectForKeyedSubscript:@"store-front-id"];
       [(MPCPlayPerfMetrics *)v272 set_storefront:v114];
     }
@@ -3029,15 +3029,15 @@ LABEL_135:
     [(MPCPlayPerfMetrics *)v272 addNetworkTimesWithScopedCursor:log];
     [(MPCPlayPerfMetrics *)v272 addSessionActivationTimesWithScopedCursor:log];
     v115 = v302[5];
-    v116 = [v115 payload];
-    v117 = [v116 objectForKeyedSubscript:@"remote-control-options"];
+    payload25 = [v115 payload];
+    v117 = [payload25 objectForKeyedSubscript:@"remote-control-options"];
     v252 = *MEMORY[0x1E69B1088];
     v118 = [v117 objectForKeyedSubscript:?];
 
     if (v118)
     {
-      v119 = [v115 date];
-      [v119 timeIntervalSinceReferenceDate];
+      date3 = [v115 date];
+      [date3 timeIntervalSinceReferenceDate];
       v121 = v120;
       [v118 doubleValue];
       v123 = v122;
@@ -3049,20 +3049,20 @@ LABEL_65:
         v125 = MEMORY[0x1E696AD98];
         [v269 durationSinceEvent:{v267, v124}];
         v127 = v126;
-        v128 = [(MPCPlayPerfMetrics *)v272 sessionActivationWaitTime];
-        [v128 doubleValue];
-        v130 = [v125 numberWithDouble:v127 - v129];
-        [(MPCPlayPerfMetrics *)v272 set_queueLoadWaitTime:v130];
+        sessionActivationWaitTime = [(MPCPlayPerfMetrics *)v272 sessionActivationWaitTime];
+        [sessionActivationWaitTime doubleValue];
+        v129 = [v125 numberWithDouble:v127 - v129];
+        [(MPCPlayPerfMetrics *)v272 set_queueLoadWaitTime:v129];
 
         v131 = *(*&buf[8] + 40);
-        v132 = [v131 payload];
-        v133 = [v132 objectForKeyedSubscript:@"remote-control-options"];
+        payload26 = [v131 payload];
+        v133 = [payload26 objectForKeyedSubscript:@"remote-control-options"];
         v134 = [v133 objectForKeyedSubscript:v252];
 
         if (v134)
         {
-          v135 = [v131 date];
-          [v135 timeIntervalSinceReferenceDate];
+          date4 = [v131 date];
+          [date4 timeIntervalSinceReferenceDate];
           v137 = v136;
           [v134 doubleValue];
           v139 = v138;
@@ -3102,8 +3102,8 @@ LABEL_65:
           {
             v149 = MEMORY[0x1E696AD98];
             [v148 durationSinceEvent:v143];
-            v151 = [v149 numberWithDouble:v150 - v140];
-            [(MPCPlayPerfMetrics *)v272 set_playCommandWaitTime:v151];
+            v140 = [v149 numberWithDouble:v150 - v140];
+            [(MPCPlayPerfMetrics *)v272 set_playCommandWaitTime:v140];
 
             v148 = v302[5];
           }
@@ -3111,8 +3111,8 @@ LABEL_65:
           v152 = MEMORY[0x1E696AD98];
           if (v148)
           {
-            v153 = [(MPCPlayPerfMetrics *)v272 readyToPlayStatusWaitTime];
-            [v153 doubleValue];
+            readyToPlayStatusWaitTime = [(MPCPlayPerfMetrics *)v272 readyToPlayStatusWaitTime];
+            [readyToPlayStatusWaitTime doubleValue];
             v155 = v154;
 
             [v143 durationSinceEvent:v302[5]];
@@ -3124,8 +3124,8 @@ LABEL_65:
 
           else
           {
-            v157 = [(MPCPlayPerfMetrics *)v272 readyToPlayStatusWaitTime];
-            [v157 doubleValue];
+            readyToPlayStatusWaitTime2 = [(MPCPlayPerfMetrics *)v272 readyToPlayStatusWaitTime];
+            [readyToPlayStatusWaitTime2 doubleValue];
             v159 = v158;
 
             [v143 durationSinceEvent:*(*&buf[8] + 40)];
@@ -3175,8 +3175,8 @@ LABEL_65:
           v166 = [MEMORY[0x1E696AD98] numberWithDouble:v165];
           [(MPCPlayPerfMetrics *)v272 set_rateChangeWaitTime:v166];
 
-          v167 = [v13 payload];
-          v168 = [v167 objectForKeyedSubscript:@"event-time-offset"];
+          payload27 = [v13 payload];
+          v168 = [payload27 objectForKeyedSubscript:@"event-time-offset"];
           [v168 doubleValue];
           v170 = v169;
 
@@ -3185,8 +3185,8 @@ LABEL_65:
           v173 = [v171 numberWithDouble:{fmax(v170 + v172, 0.0)}];
           [(MPCPlayPerfMetrics *)v272 set_firstAudioFrameWaitTime:v173];
 
-          v174 = [v13 date];
-          v175 = [v174 dateByAddingTimeInterval:v170];
+          date5 = [v13 date];
+          v175 = [date5 dateByAddingTimeInterval:v170];
           [(MPCPlayPerfMetrics *)v272 setFirstAudioFrameDate:v175];
 
           v162 = v270;
@@ -3200,8 +3200,8 @@ LABEL_65:
 
         if (v255)
         {
-          v178 = [v255 type];
-          v179 = [v178 isEqualToString:@"item-pause"];
+          type = [v255 type];
+          v179 = [type isEqualToString:@"item-pause"];
 
           if (v179)
           {
@@ -3220,8 +3220,8 @@ LABEL_65:
         v182 = v302[5];
         if (v182)
         {
-          v183 = [v182 payload];
-          v184 = [v183 objectForKeyedSubscript:@"remote-control-options"];
+          payload28 = [v182 payload];
+          v184 = [payload28 objectForKeyedSubscript:@"remote-control-options"];
           v185 = [v184 objectForKeyedSubscript:v252];
 
           if (v185)
@@ -3255,8 +3255,8 @@ LABEL_65:
           [(MPCPlayPerfMetrics *)v272 set_checkpointSetQueueBegin:v192];
 
           v309 = @"remote-control-id";
-          v193 = [v302[5] payload];
-          v194 = [v193 objectForKeyedSubscript:@"remote-control-id"];
+          payload29 = [v302[5] payload];
+          v194 = [payload29 objectForKeyedSubscript:@"remote-control-id"];
           v310 = v194;
           v195 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v310 forKeys:&v309 count:1];
           v196 = [log findPreviousEventWithType:@"remote-control-end" matchingPayload:v195];
@@ -3282,8 +3282,8 @@ LABEL_65:
         v202 = *(*&buf[8] + 40);
         if (v202)
         {
-          v203 = [v202 payload];
-          v204 = [v203 objectForKeyedSubscript:@"remote-control-options"];
+          payload30 = [v202 payload];
+          v204 = [payload30 objectForKeyedSubscript:@"remote-control-options"];
           v205 = [v204 objectForKeyedSubscript:v252];
 
           if (v205)
@@ -3360,8 +3360,8 @@ LABEL_65:
           [(MPCPlayPerfMetrics *)v272 set_checkpointRateOne:v223];
         }
 
-        v224 = [v13 payload];
-        v225 = [v224 objectForKeyedSubscript:@"event-time-offset"];
+        payload31 = [v13 payload];
+        v225 = [payload31 objectForKeyedSubscript:@"event-time-offset"];
         [v225 doubleValue];
         v227 = v226;
 
@@ -3397,8 +3397,8 @@ LABEL_65:
         v235 = [v231 numberWithUnsignedLongLong:v234];
         [(MPCPlayPerfMetrics *)v272 set_checkpointFirstAudioFrame:v235];
 
-        v236 = [(MPCPlayPerfMetrics *)v272 setQueueCommandSendTime];
-        [v236 doubleValue];
+        setQueueCommandSendTime = [(MPCPlayPerfMetrics *)v272 setQueueCommandSendTime];
+        [setQueueCommandSendTime doubleValue];
         v238 = v237;
         v239 = v237 > 120.0;
 
@@ -3412,8 +3412,8 @@ LABEL_65:
           v240 = 0;
         }
 
-        v241 = [(MPCPlayPerfMetrics *)v272 musicTotalTime];
-        [v241 doubleValue];
+        musicTotalTime = [(MPCPlayPerfMetrics *)v272 musicTotalTime];
+        [musicTotalTime doubleValue];
         v243 = v242 > 300.0;
 
         if (v243)
@@ -3429,8 +3429,8 @@ LABEL_65:
         if (v243 || v238 > 120.0)
         {
           v245 = MEMORY[0x1E69B13D8];
-          v246 = [(MPCPlayPerfMetrics *)v272 dictionaryRepresentation];
-          v308 = v246;
+          dictionaryRepresentation = [(MPCPlayPerfMetrics *)v272 dictionaryRepresentation];
+          v308 = dictionaryRepresentation;
           v247 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v308 count:1];
           [v245 snapshotWithDomain:*MEMORY[0x1E69B1340] type:@"Bug" subType:@"PlayPerf" context:v244 triggerThresholdValues:0 events:v247 completion:0];
         }
@@ -3452,9 +3452,9 @@ LABEL_65:
   v23 = os_log_create("com.apple.amp.mediaplaybackcore", "Analytics");
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
-    v24 = [v7 identifier];
+    identifier3 = [eventCopy identifier];
     *buf = 138543874;
-    *&buf[4] = v24;
+    *&buf[4] = identifier3;
     *&buf[12] = 2114;
     *&buf[14] = v10;
     *&buf[22] = 2114;

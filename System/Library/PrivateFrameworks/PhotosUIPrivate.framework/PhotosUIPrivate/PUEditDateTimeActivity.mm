@@ -1,27 +1,27 @@
 @interface PUEditDateTimeActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (id)activityViewController;
 @end
 
 @implementation PUEditDateTimeActivity
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (![a3 count])
+  if (![items count])
   {
     return 0;
   }
 
-  v4 = [(PXActivity *)self itemSourceController];
-  v5 = [v4 assets];
-  v6 = [v5 array];
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  assets = [itemSourceController assets];
+  array = [assets array];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v6;
+  v7 = array;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -62,13 +62,13 @@ LABEL_12:
 - (id)activityViewController
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PXActivity *)self itemSourceController];
-  v4 = [v3 assets];
-  v5 = [v4 array];
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  assets = [itemSourceController assets];
+  array = [assets array];
 
-  v6 = [MEMORY[0x1E6978650] transientAssetCollectionWithAssets:v5 title:0];
+  v6 = [MEMORY[0x1E6978650] transientAssetCollectionWithAssets:array title:0];
   v7 = MEMORY[0x1E6978830];
-  v8 = [v5 objectAtIndexedSubscript:0];
+  v8 = [array objectAtIndexedSubscript:0];
   v9 = [v7 fetchOptionsWithPhotoLibrary:0 orObject:v8];
 
   v15[0] = *MEMORY[0x1E6978CA8];

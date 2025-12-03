@@ -1,16 +1,16 @@
 @interface NTKTimelapseFace
 + (id)_complicationSlotDescriptors;
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
 + (id)_orderedComplicationSlots;
-- (BOOL)_snapshotContext:(id)a3 isStaleRelativeToContext:(id)a4;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
+- (BOOL)_snapshotContext:(id)context isStaleRelativeToContext:(id)toContext;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
 - (id)_complicationMigrationPaths;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (id)_localizedNameForComplicationSlot:(id)a3;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (int64_t)_editModeForOldEncodingIndex:(int64_t)a3;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)_localizedNameForComplicationSlot:(id)slot;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (int64_t)_editModeForOldEncodingIndex:(int64_t)index;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKTimelapseFace
@@ -41,17 +41,17 @@
   return v2;
 }
 
-- (id)_localizedNameForComplicationSlot:(id)a3
+- (id)_localizedNameForComplicationSlot:(id)slot
 {
-  v3 = a3;
-  if ([v3 isEqualToString:NTKComplicationSlotTopRight])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:NTKComplicationSlotTopRight])
   {
     v4 = @"TOP";
   }
 
   else
   {
-    v5 = [v3 isEqualToString:NTKComplicationSlotBottom];
+    v5 = [slotCopy isEqualToString:NTKComplicationSlotBottom];
     v4 = @"BOTTOM";
     if (!v5)
     {
@@ -65,19 +65,19 @@
   return v7;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v4 = [(NTKTimelapseFace *)self device:a3];
+  v4 = [(NTKTimelapseFace *)self device:mode];
   v5 = [NTKTimelapseThemeEditOption optionWithTimelapseTheme:0 forDevice:v4];
 
   return v5;
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  if (a3 == 12)
+  if (mode == 12)
   {
-    v4 = [@"EDIT_MODE_LABEL_TIMELAPSE_CONTENT" stringByAppendingString:{@"_COMPANION", a4}];
+    v4 = [@"EDIT_MODE_LABEL_TIMELAPSE_CONTENT" stringByAppendingString:{@"_COMPANION", device}];
     v5 = [@"Timelapse" stringByAppendingString:@"-Companion"];
     v6 = [NTKTimelapseFaceBundle localizedStringForKey:v4 table:v5 comment:@"Location"];
   }
@@ -90,53 +90,53 @@
   return v6;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v4 = [(NTKTimelapseFace *)self device:a3];
+  v4 = [(NTKTimelapseFace *)self device:mode];
   v5 = [NTKTimelapseThemeEditOption numberOfOptionsForDevice:v4];
 
   return v5;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = [(NTKTimelapseFace *)self device:a3];
-  v7 = [NTKTimelapseThemeEditOption optionAtIndex:a3 forDevice:v6];
+  v6 = [(NTKTimelapseFace *)self device:index];
+  v7 = [NTKTimelapseThemeEditOption optionAtIndex:index forDevice:v6];
 
   return v7;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a3;
-  v7 = [(NTKTimelapseFace *)self device];
-  v8 = [NTKTimelapseThemeEditOption indexOfOption:v6 forDevice:v7];
+  optionCopy = option;
+  device = [(NTKTimelapseFace *)self device];
+  v8 = [NTKTimelapseThemeEditOption indexOfOption:optionCopy forDevice:device];
 
   return v8;
 }
 
-- (BOOL)_snapshotContext:(id)a3 isStaleRelativeToContext:(id)a4
+- (BOOL)_snapshotContext:(id)context isStaleRelativeToContext:(id)toContext
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  toContextCopy = toContext;
   v10.receiver = self;
   v10.super_class = NTKTimelapseFace;
-  if (-[NTKTimelapseFace _snapshotContext:isStaleRelativeToContext:](&v10, "_snapshotContext:isStaleRelativeToContext:", v6, v7) || ![v6 calendarDateMatchesContext:v7])
+  if (-[NTKTimelapseFace _snapshotContext:isStaleRelativeToContext:](&v10, "_snapshotContext:isStaleRelativeToContext:", contextCopy, toContextCopy) || ![contextCopy calendarDateMatchesContext:toContextCopy])
   {
     LOBYTE(v8) = 1;
   }
 
   else
   {
-    v8 = [v6 localeMatchesContext:v7] ^ 1;
+    v8 = [contextCopy localeMatchesContext:toContextCopy] ^ 1;
   }
 
   return v8;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 12)
+  if (mode == 12)
   {
     v4 = objc_opt_class();
   }
@@ -149,9 +149,9 @@
   return v4;
 }
 
-- (int64_t)_editModeForOldEncodingIndex:(int64_t)a3
+- (int64_t)_editModeForOldEncodingIndex:(int64_t)index
 {
-  if (a3)
+  if (index)
   {
     return 0;
   }

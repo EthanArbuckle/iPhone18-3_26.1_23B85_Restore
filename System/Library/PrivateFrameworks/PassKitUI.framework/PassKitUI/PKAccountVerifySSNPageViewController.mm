@@ -1,26 +1,26 @@
 @interface PKAccountVerifySSNPageViewController
-- (PKAccountVerifySSNPageViewController)initWithAccount:(id)a3 context:(int64_t)a4;
+- (PKAccountVerifySSNPageViewController)initWithAccount:(id)account context:(int64_t)context;
 - (void)_cancelPressed;
-- (void)_showSpinner:(BOOL)a3;
+- (void)_showSpinner:(BOOL)spinner;
 - (void)_terminateFlow;
-- (void)handleNextButtonTapped:(id)a3;
+- (void)handleNextButtonTapped:(id)tapped;
 - (void)viewDidLoad;
 @end
 
 @implementation PKAccountVerifySSNPageViewController
 
-- (PKAccountVerifySSNPageViewController)initWithAccount:(id)a3 context:(int64_t)a4
+- (PKAccountVerifySSNPageViewController)initWithAccount:(id)account context:(int64_t)context
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v19 = a3;
+  accountCopy = account;
   v6 = [MEMORY[0x1E69B8DD0] paymentSetupFieldWithIdentifier:*MEMORY[0x1E69BC228]];
   v7 = [MEMORY[0x1E69B8DD0] paymentSetupFieldWithIdentifier:*MEMORY[0x1E69BC190]];
-  v8 = [v6 identifier];
+  identifier = [v6 identifier];
   v9 = objc_alloc(MEMORY[0x1E69B8E38]);
   v26[0] = v6;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
   v23 = v7;
-  v24 = v8;
+  v24 = identifier;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v23 count:1];
   v25 = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
@@ -28,16 +28,16 @@
 
   v20.receiver = self;
   v20.super_class = PKAccountVerifySSNPageViewController;
-  v14 = [(PKPaymentSetupFieldsViewController *)&v20 initWithWebService:0 context:a4 setupDelegate:0 setupFieldsModel:v13];
+  v14 = [(PKPaymentSetupFieldsViewController *)&v20 initWithWebService:0 context:context setupDelegate:0 setupFieldsModel:v13];
   if (v14)
   {
-    v21 = v8;
+    v21 = identifier;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
     v22 = v15;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
     [(PKPaymentSetupFieldsViewController *)v14 setSectionIdentifiers:v16];
 
-    objc_storeStrong(&v14->_account, a3);
+    objc_storeStrong(&v14->_account, account);
   }
 
   return v14;
@@ -58,12 +58,12 @@
   [v3 setAccessibilityIdentifier:*MEMORY[0x1E69B9708]];
 }
 
-- (void)_showSpinner:(BOOL)a3
+- (void)_showSpinner:(BOOL)spinner
 {
-  v3 = a3;
-  self->_isLoading = a3;
-  v5 = [(PKPaymentSetupTableViewController *)self dockView];
-  if (v3)
+  spinnerCopy = spinner;
+  self->_isLoading = spinner;
+  dockView = [(PKPaymentSetupTableViewController *)self dockView];
+  if (spinnerCopy)
   {
     [(PKPaymentSetupFieldsViewController *)self showActivitySpinnerWithTitle:0 subtitle:0];
   }
@@ -73,10 +73,10 @@
     [(PKPaymentSetupFieldsViewController *)self hideActivitySpinner];
   }
 
-  [v5 setButtonsEnabled:!v3];
+  [dockView setButtonsEnabled:!spinnerCopy];
 }
 
-- (void)handleNextButtonTapped:(id)a3
+- (void)handleNextButtonTapped:(id)tapped
 {
   [(PKAccountVerifySSNPageViewController *)self _showSpinner:1];
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -85,20 +85,20 @@
   aBlock[3] = &unk_1E8011D28;
   aBlock[4] = self;
   v4 = _Block_copy(aBlock);
-  v5 = [MEMORY[0x1E69B8EF8] sharedService];
+  mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
   v6 = objc_alloc_init(MEMORY[0x1E69B8488]);
   [v6 setDestination:3];
-  v7 = [(PKAccount *)self->_account accountBaseURL];
-  [v6 setBaseURL:v7];
+  accountBaseURL = [(PKAccount *)self->_account accountBaseURL];
+  [v6 setBaseURL:accountBaseURL];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __63__PKAccountVerifySSNPageViewController_handleNextButtonTapped___block_invoke_2;
   v10[3] = &unk_1E801C858;
-  v11 = v5;
+  v11 = mEMORY[0x1E69B8EF8];
   v12 = v4;
   v10[4] = self;
-  v8 = v5;
+  v8 = mEMORY[0x1E69B8EF8];
   v9 = v4;
   [v8 accountServiceCertificatesWithRequest:v6 completion:v10];
 }
@@ -258,33 +258,33 @@ void __63__PKAccountVerifySSNPageViewController_handleNextButtonTapped___block_i
 
 - (void)_cancelPressed
 {
-  v3 = [(PKPaymentSetupFieldsViewController *)self setupDelegate];
-  v5 = v3;
-  if (v3)
+  setupDelegate = [(PKPaymentSetupFieldsViewController *)self setupDelegate];
+  v5 = setupDelegate;
+  if (setupDelegate)
   {
-    [v3 viewControllerDidCancelSetupFlow:self];
+    [setupDelegate viewControllerDidCancelSetupFlow:self];
   }
 
   else
   {
-    v4 = [(PKAccountVerifySSNPageViewController *)self presentingViewController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PKAccountVerifySSNPageViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
 - (void)_terminateFlow
 {
-  v3 = [(PKPaymentSetupFieldsViewController *)self setupDelegate];
-  v5 = v3;
-  if (v3)
+  setupDelegate = [(PKPaymentSetupFieldsViewController *)self setupDelegate];
+  v5 = setupDelegate;
+  if (setupDelegate)
   {
-    [v3 viewControllerDidTerminateSetupFlow:self];
+    [setupDelegate viewControllerDidTerminateSetupFlow:self];
   }
 
   else
   {
-    v4 = [(PKAccountVerifySSNPageViewController *)self presentingViewController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PKAccountVerifySSNPageViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 

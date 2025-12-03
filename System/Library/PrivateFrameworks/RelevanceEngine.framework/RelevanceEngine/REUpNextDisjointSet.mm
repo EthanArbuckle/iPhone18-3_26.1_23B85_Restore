@@ -1,15 +1,15 @@
 @interface REUpNextDisjointSet
-- (BOOL)addItemDidTriggerException:(id)a3;
-- (BOOL)containsItem:(id)a3;
-- (BOOL)isItem:(id)a3 connectedToItem:(id)a4;
+- (BOOL)addItemDidTriggerException:(id)exception;
+- (BOOL)containsItem:(id)item;
+- (BOOL)isItem:(id)item connectedToItem:(id)toItem;
 - (REUpNextDisjointSet)init;
-- (id)allItemsConnectedToItem:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)allItemsConnectedToItem:(id)item;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)addItem:(id)a3;
-- (void)connectItem:(id)a3 withItem:(id)a4;
+- (void)addItem:(id)item;
+- (void)connectItem:(id)item withItem:(id)withItem;
 - (void)dealloc;
-- (void)removeItem:(id)a3;
+- (void)removeItem:(id)item;
 @end
 
 @implementation REUpNextDisjointSet
@@ -54,8 +54,8 @@
 
         v8 = [(NSMapTable *)self->_nodes objectForKey:*(*(&v12 + 1) + 8 * v7)];
         [v8 setParent:0];
-        v9 = [v8 children];
-        [v9 removeAllObjects];
+        children = [v8 children];
+        [children removeAllObjects];
 
         ++v7;
       }
@@ -73,7 +73,7 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v33 = *MEMORY[0x277D85DE8];
   v4 = [[REUpNextDisjointSet allocWithZone:?]];
@@ -117,8 +117,8 @@
         if (v13)
         {
           v14 = [(NSMapTable *)self->_nodes objectForKey:v11];
-          v15 = [v14 rootNode];
-          (v6)[2](v6, v15, 0);
+          rootNode = [v14 rootNode];
+          (v6)[2](v6, rootNode, 0);
         }
       }
 
@@ -197,59 +197,59 @@ void __36__REUpNextDisjointSet_copyWithZone___block_invoke(uint64_t a1, void *a2
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)addItemDidTriggerException:(id)a3
+- (BOOL)addItemDidTriggerException:(id)exception
 {
-  v4 = a3;
-  v5 = [(REUpNextDisjointSet *)self containsItem:v4];
+  exceptionCopy = exception;
+  v5 = [(REUpNextDisjointSet *)self containsItem:exceptionCopy];
   if (v5)
   {
     v6 = RELogForDomain(3);
     if (os_log_type_enabled(&v6->super, OS_LOG_TYPE_ERROR))
     {
-      [(REUpNextDisjointSet *)v4 addItemDidTriggerException:&v6->super];
+      [(REUpNextDisjointSet *)exceptionCopy addItemDidTriggerException:&v6->super];
     }
   }
 
   else
   {
-    v6 = [[REUpNextSetNode alloc] initWithItem:v4];
-    [(NSMapTable *)self->_nodes setObject:v6 forKey:v4];
+    v6 = [[REUpNextSetNode alloc] initWithItem:exceptionCopy];
+    [(NSMapTable *)self->_nodes setObject:v6 forKey:exceptionCopy];
   }
 
   return v5;
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   if ([(REUpNextDisjointSet *)self containsItem:?])
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Item %@ already in disjoint set %@", v5, self}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Item %@ already in disjoint set %@", itemCopy, self}];
   }
 
-  v4 = [[REUpNextSetNode alloc] initWithItem:v5];
-  [(NSMapTable *)self->_nodes setObject:v4 forKey:v5];
+  v4 = [[REUpNextSetNode alloc] initWithItem:itemCopy];
+  [(NSMapTable *)self->_nodes setObject:v4 forKey:itemCopy];
 }
 
-- (void)removeItem:(id)a3
+- (void)removeItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v4 = [(NSMapTable *)self->_nodes objectForKey:?];
   if (!v4)
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Item %@ not in disjoint set %@", v5, self}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Item %@ not in disjoint set %@", itemCopy, self}];
   }
 
   [v4 remove];
-  [(NSMapTable *)self->_nodes removeObjectForKey:v5];
+  [(NSMapTable *)self->_nodes removeObjectForKey:itemCopy];
 }
 
-- (void)connectItem:(id)a3 withItem:(id)a4
+- (void)connectItem:(id)item withItem:(id)withItem
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(NSMapTable *)self->_nodes objectForKey:v10];
-  v8 = [(NSMapTable *)self->_nodes objectForKey:v6];
+  itemCopy = item;
+  withItemCopy = withItem;
+  v7 = [(NSMapTable *)self->_nodes objectForKey:itemCopy];
+  v8 = [(NSMapTable *)self->_nodes objectForKey:withItemCopy];
   v9 = v8;
   if (v7)
   {
@@ -261,33 +261,33 @@ void __36__REUpNextDisjointSet_copyWithZone___block_invoke(uint64_t a1, void *a2
 
   else
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Item %@ not in disjoint set %@", v10, self}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Item %@ not in disjoint set %@", itemCopy, self}];
     if (v9)
     {
       goto LABEL_3;
     }
   }
 
-  [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Item %@ not in disjoint set %@", v6, self}];
+  [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Item %@ not in disjoint set %@", withItemCopy, self}];
 LABEL_3:
   [v7 join:v9];
 }
 
-- (BOOL)containsItem:(id)a3
+- (BOOL)containsItem:(id)item
 {
-  v3 = [(NSMapTable *)self->_nodes objectForKey:a3];
+  v3 = [(NSMapTable *)self->_nodes objectForKey:item];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)allItemsConnectedToItem:(id)a3
+- (id)allItemsConnectedToItem:(id)item
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_nodes objectForKey:v4];
+  itemCopy = item;
+  v5 = [(NSMapTable *)self->_nodes objectForKey:itemCopy];
   if (!v5)
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Item %@ not in disjoint set %@", v4, self}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Item %@ not in disjoint set %@", itemCopy, self}];
   }
 
   v6 = [MEMORY[0x277CBEB58] set];
@@ -308,8 +308,8 @@ LABEL_3:
   v16 = &v17;
   v9 = MEMORY[0x22AABC5E0](v13);
   objc_storeWeak(v18 + 5, v9);
-  v10 = [v7 rootNode];
-  (v9)[2](v9, v10);
+  rootNode = [v7 rootNode];
+  (v9)[2](v9, rootNode);
   v11 = [v8 copy];
 
   _Block_object_dispose(&v17, 8);
@@ -367,23 +367,23 @@ void __47__REUpNextDisjointSet_allItemsConnectedToItem___block_invoke(void *a1, 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isItem:(id)a3 connectedToItem:(id)a4
+- (BOOL)isItem:(id)item connectedToItem:(id)toItem
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMapTable *)self->_nodes objectForKey:v6];
-  v9 = [(NSMapTable *)self->_nodes objectForKey:v7];
+  itemCopy = item;
+  toItemCopy = toItem;
+  v8 = [(NSMapTable *)self->_nodes objectForKey:itemCopy];
+  v9 = [(NSMapTable *)self->_nodes objectForKey:toItemCopy];
   v10 = v9;
   if (!v8)
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Item %@ not in disjoint set %@", v6, self}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Item %@ not in disjoint set %@", itemCopy, self}];
     if (v10)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Item %@ not in disjoint set %@", v7, self}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Item %@ not in disjoint set %@", toItemCopy, self}];
     goto LABEL_3;
   }
 
@@ -393,9 +393,9 @@ LABEL_5:
   }
 
 LABEL_3:
-  v11 = [v8 rootNode];
-  v12 = [v10 rootNode];
-  v13 = [v11 isEqual:v12];
+  rootNode = [v8 rootNode];
+  rootNode2 = [v10 rootNode];
+  v13 = [rootNode isEqual:rootNode2];
 
   return v13;
 }

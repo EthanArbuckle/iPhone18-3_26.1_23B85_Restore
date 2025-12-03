@@ -1,17 +1,17 @@
 @interface ICBaseNoteResultsCollectionViewCell
-- (CGRect)estimatedBoundsForLabel:(id)a3;
+- (CGRect)estimatedBoundsForLabel:(id)label;
 - (CGRect)estimatedSummaryLabelFrame;
 - (CGRect)estimatedTitleLabelFrame;
-- (ICBaseNoteResultsCollectionViewCell)initWithCoder:(id)a3;
-- (ICBaseNoteResultsCollectionViewCell)initWithFrame:(CGRect)a3;
+- (ICBaseNoteResultsCollectionViewCell)initWithCoder:(id)coder;
+- (ICBaseNoteResultsCollectionViewCell)initWithFrame:(CGRect)frame;
 - (ICNoteResultsCollaboratorsBadgeView)collaboratorsBadgeView;
 - (NSArray)cloudSharingParticipantNames;
 - (void)layoutSubviews;
 - (void)loadConfigurationDataAndUpdate;
 - (void)registerForTraitChanges;
-- (void)setConfiguration:(id)a3 synchronously:(BOOL)a4;
-- (void)setEstimatedSummaryLabelFrame:(CGRect)a3;
-- (void)setEstimatedTitleLabelFrame:(CGRect)a3;
+- (void)setConfiguration:(id)configuration synchronously:(BOOL)synchronously;
+- (void)setEstimatedSummaryLabelFrame:(CGRect)frame;
+- (void)setEstimatedTitleLabelFrame:(CGRect)frame;
 - (void)synchronouslyLoadConfigurationDataAndUpdate;
 - (void)updateConfigurationAttributes;
 - (void)updateEstimatedLabelFrames;
@@ -20,11 +20,11 @@
 
 @implementation ICBaseNoteResultsCollectionViewCell
 
-- (ICBaseNoteResultsCollectionViewCell)initWithFrame:(CGRect)a3
+- (ICBaseNoteResultsCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ICBaseNoteResultsCollectionViewCell;
-  v3 = [(ICBaseNoteResultsCollectionViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICBaseNoteResultsCollectionViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -34,11 +34,11 @@
   return v4;
 }
 
-- (ICBaseNoteResultsCollectionViewCell)initWithCoder:(id)a3
+- (ICBaseNoteResultsCollectionViewCell)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ICBaseNoteResultsCollectionViewCell;
-  v3 = [(ICBaseNoteResultsCollectionViewCell *)&v6 initWithCoder:a3];
+  v3 = [(ICBaseNoteResultsCollectionViewCell *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -68,36 +68,36 @@
 
 - (NSArray)cloudSharingParticipantNames
 {
-  v3 = [(ICBaseNoteResultsCollectionViewCell *)self collaboratorsBadgeView];
-  v4 = [v3 share];
-  v5 = [v4 participants];
-  v6 = [(ICBaseNoteResultsCollectionViewCell *)self collaboratorsBadgeView];
-  v7 = +[CKShareParticipant ic_displayableNames:maximumNamesCount:](CKShareParticipant, "ic_displayableNames:maximumNamesCount:", v5, [v6 displayedAvatarCount]);
+  collaboratorsBadgeView = [(ICBaseNoteResultsCollectionViewCell *)self collaboratorsBadgeView];
+  share = [collaboratorsBadgeView share];
+  participants = [share participants];
+  collaboratorsBadgeView2 = [(ICBaseNoteResultsCollectionViewCell *)self collaboratorsBadgeView];
+  v7 = +[CKShareParticipant ic_displayableNames:maximumNamesCount:](CKShareParticipant, "ic_displayableNames:maximumNamesCount:", participants, [collaboratorsBadgeView2 displayedAvatarCount]);
 
   return v7;
 }
 
-- (void)setConfiguration:(id)a3 synchronously:(BOOL)a4
+- (void)setConfiguration:(id)configuration synchronously:(BOOL)synchronously
 {
-  v4 = a4;
-  v10 = a3;
-  objc_storeStrong(&self->_configuration, a3);
+  synchronouslyCopy = synchronously;
+  configurationCopy = configuration;
+  objc_storeStrong(&self->_configuration, configuration);
   [(ICBaseNoteResultsCollectionViewCell *)self updateConfigurationAttributes];
-  v7 = [v10 note];
+  note = [configurationCopy note];
   objc_opt_class();
   v8 = ICClassAndProtocolCast();
   [(ICBaseNoteResultsCollectionViewCell *)self ic_annotateWithNote:v8, &OBJC_PROTOCOL___ICSearchIndexableNote];
 
-  if ([v10 isDataLoaded])
+  if ([configurationCopy isDataLoaded])
   {
     [(ICBaseNoteResultsCollectionViewCell *)self updateFromConfiguration];
   }
 
-  else if (v4)
+  else if (synchronouslyCopy)
   {
-    v9 = [v10 searchResult];
+    searchResult = [configurationCopy searchResult];
 
-    if (v9)
+    if (searchResult)
     {
       [(ICBaseNoteResultsCollectionViewCell *)self setSettingConfigurationForSearchResult:1];
       [(ICBaseNoteResultsCollectionViewCell *)self configureColorsForSearchResult];
@@ -117,10 +117,10 @@
 
 - (void)loadConfigurationDataAndUpdate
 {
-  v3 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-  v4 = [v3 searchResult];
+  configuration = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+  searchResult = [configuration searchResult];
 
-  if (v4)
+  if (searchResult)
   {
 
     [(ICBaseNoteResultsCollectionViewCell *)self synchronouslyLoadConfigurationDataAndUpdate];
@@ -128,50 +128,50 @@
 
   else
   {
-    v5 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+    configuration2 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100137078;
     v6[3] = &unk_100645E30;
     v6[4] = self;
-    [v5 loadDataWithCompletion:v6];
+    [configuration2 loadDataWithCompletion:v6];
   }
 }
 
 - (void)synchronouslyLoadConfigurationDataAndUpdate
 {
-  v3 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-  [v3 synchronouslyLoadData];
+  configuration = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+  [configuration synchronouslyLoadData];
 
   [(ICBaseNoteResultsCollectionViewCell *)self updateFromConfiguration];
 }
 
 - (void)updateViewStateProperties
 {
-  v3 = [(ICBaseNoteResultsCollectionViewCell *)self titleLabelFont];
-  v4 = [(ICBaseNoteResultsCollectionViewCell *)self titleLabel];
-  [v4 setFont:v3];
+  titleLabelFont = [(ICBaseNoteResultsCollectionViewCell *)self titleLabelFont];
+  titleLabel = [(ICBaseNoteResultsCollectionViewCell *)self titleLabel];
+  [titleLabel setFont:titleLabelFont];
 
   v26 = NSFontAttributeName;
-  v5 = [(ICBaseNoteResultsCollectionViewCell *)self titleLabel];
-  v6 = [v5 font];
-  v27 = v6;
+  titleLabel2 = [(ICBaseNoteResultsCollectionViewCell *)self titleLabel];
+  font = [titleLabel2 font];
+  v27 = font;
   v7 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
   [(ICBaseNoteResultsCollectionViewCell *)self setTitleLabelAttributes:v7];
 
-  v8 = [(ICBaseNoteResultsCollectionViewCell *)self summaryLabelFont];
-  v9 = [(ICBaseNoteResultsCollectionViewCell *)self summaryLabel];
-  [v9 setFont:v8];
+  summaryLabelFont = [(ICBaseNoteResultsCollectionViewCell *)self summaryLabelFont];
+  summaryLabel = [(ICBaseNoteResultsCollectionViewCell *)self summaryLabel];
+  [summaryLabel setFont:summaryLabelFont];
 
   v24[0] = NSFontAttributeName;
-  v10 = [(ICBaseNoteResultsCollectionViewCell *)self summaryLabel];
-  v11 = [v10 font];
-  v25[0] = v11;
+  summaryLabel2 = [(ICBaseNoteResultsCollectionViewCell *)self summaryLabel];
+  font2 = [summaryLabel2 font];
+  v25[0] = font2;
   v24[1] = NSForegroundColorAttributeName;
-  v12 = [(ICBaseNoteResultsCollectionViewCell *)self summaryLabel];
-  v13 = [v12 textColor];
-  v14 = v13;
-  if (!v13)
+  summaryLabel3 = [(ICBaseNoteResultsCollectionViewCell *)self summaryLabel];
+  textColor = [summaryLabel3 textColor];
+  v14 = textColor;
+  if (!textColor)
   {
     v14 = +[UIColor tertiaryLabelColor];
   }
@@ -180,20 +180,20 @@
   v15 = [NSDictionary dictionaryWithObjects:v25 forKeys:v24 count:2];
   [(ICBaseNoteResultsCollectionViewCell *)self setSummaryLabelAttributes:v15];
 
-  if (!v13)
+  if (!textColor)
   {
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v16 = [(ICBaseNoteResultsCollectionViewCell *)self folderAndAccountLabelFont];
-    v17 = [(ICBaseNoteResultsCollectionViewCell *)self folderAndAccountLabel];
-    [v17 setFont:v16];
+    folderAndAccountLabelFont = [(ICBaseNoteResultsCollectionViewCell *)self folderAndAccountLabelFont];
+    folderAndAccountLabel = [(ICBaseNoteResultsCollectionViewCell *)self folderAndAccountLabel];
+    [folderAndAccountLabel setFont:folderAndAccountLabelFont];
 
     v22 = NSFontAttributeName;
-    v18 = [(ICBaseNoteResultsCollectionViewCell *)self folderAndAccountLabel];
-    v19 = [v18 font];
-    v23 = v19;
+    folderAndAccountLabel2 = [(ICBaseNoteResultsCollectionViewCell *)self folderAndAccountLabel];
+    font3 = [folderAndAccountLabel2 font];
+    v23 = font3;
     v20 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
     [(ICBaseNoteResultsCollectionViewCell *)self setFolderAndAccountLabelAttributes:v20];
   }
@@ -211,38 +211,38 @@
 
 - (void)updateEstimatedLabelFrames
 {
-  v3 = [(ICBaseNoteResultsCollectionViewCell *)self titleLabel];
-  [(ICBaseNoteResultsCollectionViewCell *)self estimatedBoundsForLabel:v3];
+  titleLabel = [(ICBaseNoteResultsCollectionViewCell *)self titleLabel];
+  [(ICBaseNoteResultsCollectionViewCell *)self estimatedBoundsForLabel:titleLabel];
   [(ICBaseNoteResultsCollectionViewCell *)self setEstimatedTitleLabelFrame:?];
 
-  v4 = [(ICBaseNoteResultsCollectionViewCell *)self summaryLabel];
-  [(ICBaseNoteResultsCollectionViewCell *)self estimatedBoundsForLabel:v4];
+  summaryLabel = [(ICBaseNoteResultsCollectionViewCell *)self summaryLabel];
+  [(ICBaseNoteResultsCollectionViewCell *)self estimatedBoundsForLabel:summaryLabel];
   [(ICBaseNoteResultsCollectionViewCell *)self setEstimatedSummaryLabelFrame:?];
 }
 
-- (void)setEstimatedTitleLabelFrame:(CGRect)a3
+- (void)setEstimatedTitleLabelFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  self->_estimatedTitleLabelFrame = a3;
-  v7 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-  [v7 setEstimatedTitleLabelFrame:{x, y, width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  self->_estimatedTitleLabelFrame = frame;
+  configuration = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+  [configuration setEstimatedTitleLabelFrame:{x, y, width, height}];
 }
 
-- (void)setEstimatedSummaryLabelFrame:(CGRect)a3
+- (void)setEstimatedSummaryLabelFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  self->_estimatedSummaryLabelFrame = a3;
-  v7 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-  [v7 setEstimatedSummaryLabelFrame:{x, y, width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  self->_estimatedSummaryLabelFrame = frame;
+  configuration = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+  [configuration setEstimatedSummaryLabelFrame:{x, y, width, height}];
 }
 
-- (CGRect)estimatedBoundsForLabel:(id)a3
+- (CGRect)estimatedBoundsForLabel:(id)label
 {
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
@@ -257,17 +257,17 @@
 
 - (void)updateConfigurationAttributes
 {
-  v18 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-  v3 = [(ICBaseNoteResultsCollectionViewCell *)self titleLabelAttributes];
-  v4 = [(ICBaseNoteResultsCollectionViewCell *)self summaryLabelAttributes];
-  v5 = [(ICBaseNoteResultsCollectionViewCell *)self folderAndAccountLabelAttributes];
+  configuration = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+  titleLabelAttributes = [(ICBaseNoteResultsCollectionViewCell *)self titleLabelAttributes];
+  summaryLabelAttributes = [(ICBaseNoteResultsCollectionViewCell *)self summaryLabelAttributes];
+  folderAndAccountLabelAttributes = [(ICBaseNoteResultsCollectionViewCell *)self folderAndAccountLabelAttributes];
   [(ICBaseNoteResultsCollectionViewCell *)self estimatedTitleLabelFrame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
   [(ICBaseNoteResultsCollectionViewCell *)self estimatedSummaryLabelFrame];
-  [v18 updateTitleLabelAttributes:v3 summaryLabelAttributes:v4 folderAndAccountLabelAttributes:v5 estimatedTitleLabelFrame:v7 estimatedSummaryLabelFrame:{v9, v11, v13, v14, v15, v16, v17}];
+  [configuration updateTitleLabelAttributes:titleLabelAttributes summaryLabelAttributes:summaryLabelAttributes folderAndAccountLabelAttributes:folderAndAccountLabelAttributes estimatedTitleLabelFrame:v7 estimatedSummaryLabelFrame:{v9, v11, v13, v14, v15, v16, v17}];
 }
 
 - (void)registerForTraitChanges

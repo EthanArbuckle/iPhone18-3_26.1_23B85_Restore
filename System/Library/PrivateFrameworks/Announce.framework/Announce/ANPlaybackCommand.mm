@@ -2,42 +2,42 @@
 + (ANPlaybackCommand)nextCommand;
 + (ANPlaybackCommand)previousCommand;
 + (ANPlaybackCommand)stopCommand;
-+ (id)playCommandWithOptions:(unint64_t)a3 announcementIdentifiers:(id)a4;
-- (ANPlaybackCommand)initWithCoder:(id)a3;
-- (ANPlaybackCommand)initWithPlaybackOperation:(unint64_t)a3 options:(unint64_t)a4 announcementIdentifiers:(id)a5;
-- (ANPlaybackCommand)initWithPlaybackOperation:(unint64_t)a3 options:(unint64_t)a4 forRecipient:(id)a5;
++ (id)playCommandWithOptions:(unint64_t)options announcementIdentifiers:(id)identifiers;
+- (ANPlaybackCommand)initWithCoder:(id)coder;
+- (ANPlaybackCommand)initWithPlaybackOperation:(unint64_t)operation options:(unint64_t)options announcementIdentifiers:(id)identifiers;
+- (ANPlaybackCommand)initWithPlaybackOperation:(unint64_t)operation options:(unint64_t)options forRecipient:(id)recipient;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ANPlaybackCommand
 
-- (ANPlaybackCommand)initWithPlaybackOperation:(unint64_t)a3 options:(unint64_t)a4 announcementIdentifiers:(id)a5
+- (ANPlaybackCommand)initWithPlaybackOperation:(unint64_t)operation options:(unint64_t)options announcementIdentifiers:(id)identifiers
 {
-  v9 = a5;
+  identifiersCopy = identifiers;
   v13.receiver = self;
   v13.super_class = ANPlaybackCommand;
   v10 = [(ANPlaybackCommand *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_operation = a3;
-    v10->_options = a4;
-    objc_storeStrong(&v10->_announcementIdentifiers, a5);
+    v10->_operation = operation;
+    v10->_options = options;
+    objc_storeStrong(&v10->_announcementIdentifiers, identifiers);
   }
 
   return v11;
 }
 
-- (ANPlaybackCommand)initWithPlaybackOperation:(unint64_t)a3 options:(unint64_t)a4 forRecipient:(id)a5
+- (ANPlaybackCommand)initWithPlaybackOperation:(unint64_t)operation options:(unint64_t)options forRecipient:(id)recipient
 {
   v8.receiver = self;
   v8.super_class = ANPlaybackCommand;
-  result = [(ANPlaybackCommand *)&v8 init:a3];
+  result = [(ANPlaybackCommand *)&v8 init:operation];
   if (result)
   {
-    result->_operation = a3;
-    result->_options = a4;
+    result->_operation = operation;
+    result->_options = options;
   }
 
   return result;
@@ -45,12 +45,12 @@
 
 - (id)description
 {
-  v3 = [(ANPlaybackCommand *)self operation];
-  if (v3 > 1)
+  operation = [(ANPlaybackCommand *)self operation];
+  if (operation > 1)
   {
-    if (v3 != 2)
+    if (operation != 2)
     {
-      if (v3 == 3)
+      if (operation == 3)
       {
         v4 = @"Previous";
         goto LABEL_11;
@@ -64,9 +64,9 @@
 
   else
   {
-    if (v3)
+    if (operation)
     {
-      if (v3 == 1)
+      if (operation == 1)
       {
         v4 = @"Stop";
         goto LABEL_11;
@@ -78,11 +78,11 @@ LABEL_8:
     }
 
     v5 = MEMORY[0x277CCACA8];
-    v6 = [(ANPlaybackCommand *)self options];
-    v7 = [(ANPlaybackCommand *)self announcementIdentifiers];
-    v8 = [v7 count];
-    v9 = [(ANPlaybackCommand *)self announcementIdentifiers];
-    v4 = [v5 stringWithFormat:@"Play [options = %lu, count = %lu, %@]", v6, v8, v9];
+    options = [(ANPlaybackCommand *)self options];
+    announcementIdentifiers = [(ANPlaybackCommand *)self announcementIdentifiers];
+    v8 = [announcementIdentifiers count];
+    announcementIdentifiers2 = [(ANPlaybackCommand *)self announcementIdentifiers];
+    v4 = [v5 stringWithFormat:@"Play [options = %lu, count = %lu, %@]", options, v8, announcementIdentifiers2];
   }
 
 LABEL_11:
@@ -90,10 +90,10 @@ LABEL_11:
   return v4;
 }
 
-+ (id)playCommandWithOptions:(unint64_t)a3 announcementIdentifiers:(id)a4
++ (id)playCommandWithOptions:(unint64_t)options announcementIdentifiers:(id)identifiers
 {
-  v5 = a4;
-  v6 = [[ANPlaybackCommand alloc] initWithPlaybackOperation:0 options:a3 announcementIdentifiers:v5];
+  identifiersCopy = identifiers;
+  v6 = [[ANPlaybackCommand alloc] initWithPlaybackOperation:0 options:options announcementIdentifiers:identifiersCopy];
 
   return v6;
 }
@@ -122,36 +122,36 @@ LABEL_11:
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   operation = self->_operation;
-  v8 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:operation];
-  [v8 encodeObject:v6 forKey:@"Command"];
+  [coderCopy encodeObject:v6 forKey:@"Command"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_options];
-  [v8 encodeObject:v7 forKey:@"Options"];
+  [coderCopy encodeObject:v7 forKey:@"Options"];
 
-  [v8 encodeObject:self->_announcementIdentifiers forKey:@"AnnouncementIdentifiers"];
+  [coderCopy encodeObject:self->_announcementIdentifiers forKey:@"AnnouncementIdentifiers"];
 }
 
-- (ANPlaybackCommand)initWithCoder:(id)a3
+- (ANPlaybackCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = ANPlaybackCommand;
   v5 = [(ANPlaybackCommand *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Command"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Command"];
     v5->_operation = [v6 unsignedIntegerValue];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Options"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Options"];
     v5->_options = [v7 unsignedIntegerValue];
     v8 = MEMORY[0x277CBEB98];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"AnnouncementIdentifiers"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"AnnouncementIdentifiers"];
     announcementIdentifiers = v5->_announcementIdentifiers;
     v5->_announcementIdentifiers = v11;
   }

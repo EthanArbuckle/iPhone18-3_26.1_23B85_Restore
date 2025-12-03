@@ -1,11 +1,11 @@
 @interface HMDSiriEndpointEnablementLogEventFactory
 + (id)logCategory;
 - (HMDHouseholdMetricsDataSource)dataSource;
-- (HMDSiriEndpointEnablementLogEventFactory)initWithDataSource:(id)a3;
-- (id)coalescedLogEventsFromLogEvents:(id)a3 homeUUID:(id)a4;
-- (id)logEventsFromDictionary:(id)a3;
-- (id)logEventsPopulatedForHomeWithUUID:(id)a3 associatedWithDate:(id)a4;
-- (id)serializeLogEvents:(id)a3;
+- (HMDSiriEndpointEnablementLogEventFactory)initWithDataSource:(id)source;
+- (id)coalescedLogEventsFromLogEvents:(id)events homeUUID:(id)d;
+- (id)logEventsFromDictionary:(id)dictionary;
+- (id)logEventsPopulatedForHomeWithUUID:(id)d associatedWithDate:(id)date;
+- (id)serializeLogEvents:(id)events;
 @end
 
 @implementation HMDSiriEndpointEnablementLogEventFactory
@@ -17,16 +17,16 @@
   return WeakRetained;
 }
 
-- (id)coalescedLogEventsFromLogEvents:(id)a3 homeUUID:(id)a4
+- (id)coalescedLogEventsFromLogEvents:(id)events homeUUID:(id)d
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  eventsCopy = events;
+  dCopy = d;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v7 = [eventsCopy countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v7)
   {
     v8 = v7;
@@ -39,7 +39,7 @@
       {
         if (*v23 != v11)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(eventsCopy);
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
@@ -58,21 +58,21 @@
 
         if (v15)
         {
-          v16 = [v15 numCapableSiriEndpointAccessories];
-          if (v10 <= v16)
+          numCapableSiriEndpointAccessories = [v15 numCapableSiriEndpointAccessories];
+          if (v10 <= numCapableSiriEndpointAccessories)
           {
-            v10 = v16;
+            v10 = numCapableSiriEndpointAccessories;
           }
 
-          v17 = [v15 numEnabledSiriEndpointAccessories];
-          if (v9 <= v17)
+          numEnabledSiriEndpointAccessories = [v15 numEnabledSiriEndpointAccessories];
+          if (v9 <= numEnabledSiriEndpointAccessories)
           {
-            v9 = v17;
+            v9 = numEnabledSiriEndpointAccessories;
           }
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v8 = [eventsCopy countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v8);
@@ -84,7 +84,7 @@
     v10 = 0;
   }
 
-  v18 = [[HMDSiriEndpointEnablementLogEvent alloc] initWithHomeUUID:v6 numCapableSiriEndpoints:v10 numEnabledSiriEndpoints:v9];
+  v18 = [[HMDSiriEndpointEnablementLogEvent alloc] initWithHomeUUID:dCopy numCapableSiriEndpoints:v10 numEnabledSiriEndpoints:v9];
   v26 = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
 
@@ -93,11 +93,11 @@
   return v19;
 }
 
-- (id)logEventsFromDictionary:(id)a3
+- (id)logEventsFromDictionary:(id)dictionary
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [[HMDSiriEndpointEnablementLogEvent alloc] initWithDictionary:v3];
+  dictionaryCopy = dictionary;
+  v4 = [[HMDSiriEndpointEnablementLogEvent alloc] initWithDictionary:dictionaryCopy];
 
   if (v4)
   {
@@ -115,13 +115,13 @@
   return v5;
 }
 
-- (id)serializeLogEvents:(id)a3
+- (id)serializeLogEvents:(id)events
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count] == 1)
+  eventsCopy = events;
+  if ([eventsCopy count] == 1)
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
+    v5 = [eventsCopy objectAtIndexedSubscript:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -135,15 +135,15 @@
 
     v7 = v6;
 
-    v8 = [v7 serializedMetric];
+    serializedMetric = [v7 serializedMetric];
   }
 
   else
   {
-    if ([v4 count])
+    if ([eventsCopy count])
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
@@ -151,34 +151,34 @@
         v15 = 138543618;
         v16 = v12;
         v17 = 2048;
-        v18 = [v4 count];
+        v18 = [eventsCopy count];
         _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_ERROR, "%{public}@We are trying to serialize %lu HMDSiriEndpointEnablementLogEvent objects, which is impossible", &v15, 0x16u);
       }
 
       objc_autoreleasePoolPop(v9);
     }
 
-    v8 = 0;
+    serializedMetric = 0;
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return serializedMetric;
 }
 
-- (id)logEventsPopulatedForHomeWithUUID:(id)a3 associatedWithDate:(id)a4
+- (id)logEventsPopulatedForHomeWithUUID:(id)d associatedWithDate:(id)date
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  dateCopy = date;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = [(HMDSiriEndpointEnablementLogEventFactory *)self dataSource];
-  v9 = [v8 homeDataSources];
+  dataSource = [(HMDSiriEndpointEnablementLogEventFactory *)self dataSource];
+  homeDataSources = [dataSource homeDataSources];
 
-  v10 = [v9 countByEnumeratingWithState:&v25 objects:v34 count:16];
+  v10 = [homeDataSources countByEnumeratingWithState:&v25 objects:v34 count:16];
   if (v10)
   {
     v11 = v10;
@@ -189,12 +189,12 @@
       {
         if (*v26 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(homeDataSources);
         }
 
         v14 = *(*(&v25 + 1) + 8 * i);
-        v15 = [v14 uuid];
-        v16 = [v15 isEqual:v6];
+        uuid = [v14 uuid];
+        v16 = [uuid isEqual:dCopy];
 
         if (v16)
         {
@@ -206,7 +206,7 @@
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v25 objects:v34 count:16];
+      v11 = [homeDataSources countByEnumeratingWithState:&v25 objects:v34 count:16];
       if (v11)
       {
         continue;
@@ -217,7 +217,7 @@
   }
 
   v17 = objc_autoreleasePoolPush();
-  v18 = self;
+  selfCopy = self;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
@@ -225,7 +225,7 @@
     *buf = 138543618;
     v30 = v20;
     v31 = 2112;
-    v32 = v6;
+    v32 = dCopy;
     _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_ERROR, "%{public}@No home found with UUID %@", buf, 0x16u);
   }
 
@@ -238,16 +238,16 @@ LABEL_13:
   return v21;
 }
 
-- (HMDSiriEndpointEnablementLogEventFactory)initWithDataSource:(id)a3
+- (HMDSiriEndpointEnablementLogEventFactory)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v8.receiver = self;
   v8.super_class = HMDSiriEndpointEnablementLogEventFactory;
   v5 = [(HMDSiriEndpointEnablementLogEventFactory *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_dataSource, v4);
+    objc_storeWeak(&v5->_dataSource, sourceCopy);
   }
 
   return v6;

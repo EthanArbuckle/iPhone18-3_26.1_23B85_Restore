@@ -1,5 +1,5 @@
 @interface PLChangeHandlingContainer
-- (PLChangeHandlingContainer)initWithLibraryBundle:(id)a3 changePublisher:(id)a4 libraryServicesManager:(id)a5 persistentStoreCoordinator:(id)a6;
+- (PLChangeHandlingContainer)initWithLibraryBundle:(id)bundle changePublisher:(id)publisher libraryServicesManager:(id)manager persistentStoreCoordinator:(id)coordinator;
 - (void)dealloc;
 - (void)start;
 - (void)stop;
@@ -16,7 +16,7 @@
     v4 = 138412546;
     v5 = objc_opt_class();
     v6 = 2048;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "%@ %p start", &v4, 0x16u);
   }
 
@@ -32,7 +32,7 @@
     *buf = 138412546;
     v6 = objc_opt_class();
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "%@ %p dealloc", buf, 0x16u);
   }
 
@@ -50,7 +50,7 @@
     v4 = 138412546;
     v5 = objc_opt_class();
     v6 = 2048;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "%@ %p stop", &v4, 0x16u);
   }
 
@@ -60,20 +60,20 @@
   [(PLCoreDataChangeMerger *)self->_changeMerger invalidate];
 }
 
-- (PLChangeHandlingContainer)initWithLibraryBundle:(id)a3 changePublisher:(id)a4 libraryServicesManager:(id)a5 persistentStoreCoordinator:(id)a6
+- (PLChangeHandlingContainer)initWithLibraryBundle:(id)bundle changePublisher:(id)publisher libraryServicesManager:(id)manager persistentStoreCoordinator:(id)coordinator
 {
   v38 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  bundleCopy = bundle;
+  publisherCopy = publisher;
+  managerCopy = manager;
+  coordinatorCopy = coordinator;
   v31.receiver = self;
   v31.super_class = PLChangeHandlingContainer;
   v14 = [(PLChangeHandlingContainer *)&v31 init];
   if (v14)
   {
-    v15 = [v10 libraryURL];
-    v16 = [v15 copy];
+    libraryURL = [bundleCopy libraryURL];
+    v16 = [libraryURL copy];
     libraryURL = v14->_libraryURL;
     v14->_libraryURL = v16;
 
@@ -90,12 +90,12 @@
     changeMerger = v14->_changeMerger;
     v14->_changeMerger = v20;
 
-    objc_storeStrong(&v14->_changePublisher, a4);
-    v22 = [[PLChangeNode alloc] initWithLibraryURL:v14->_libraryURL changeMerger:v14->_changeMerger changePublisher:v14->_changePublisher libraryServicesManager:v12];
+    objc_storeStrong(&v14->_changePublisher, publisher);
+    v22 = [[PLChangeNode alloc] initWithLibraryURL:v14->_libraryURL changeMerger:v14->_changeMerger changePublisher:v14->_changePublisher libraryServicesManager:managerCopy];
     changeNode = v14->_changeNode;
     v14->_changeNode = v22;
 
-    v24 = [[PLPersistentHistoryChangeDistributor alloc] initWithPersistentStoreCoordinator:v13 bundle:v10 changeMerger:v14->_changeMerger];
+    v24 = [[PLPersistentHistoryChangeDistributor alloc] initWithPersistentStoreCoordinator:coordinatorCopy bundle:bundleCopy changeMerger:v14->_changeMerger];
     persistentHistoryChangeDistributor = v14->_persistentHistoryChangeDistributor;
     v14->_persistentHistoryChangeDistributor = v24;
 

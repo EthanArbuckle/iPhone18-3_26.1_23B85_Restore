@@ -1,20 +1,20 @@
 @interface PIBrushStrokeHistory
-- (PIBrushStrokeHistory)initWithData:(id)a3 error:(id *)a4;
-- (PIBrushStrokeHistory)initWithEntries:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)exportDataWithError:(id *)a3;
+- (PIBrushStrokeHistory)initWithData:(id)data error:(id *)error;
+- (PIBrushStrokeHistory)initWithEntries:(id)entries;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)exportDataWithError:(id *)error;
 - (unint64_t)entryCount;
-- (void)_playbackHistoryIndex:(unint64_t)a3 toReceiver:(id)a4 options:(unint64_t)a5 pauseInterval:(double)a6 completion:(id)a7;
-- (void)addEntry:(id)a3;
-- (void)playbackHistoryToReceiver:(id)a3 options:(unint64_t)a4 pauseInterval:(double)a5 completion:(id)a6;
+- (void)_playbackHistoryIndex:(unint64_t)index toReceiver:(id)receiver options:(unint64_t)options pauseInterval:(double)interval completion:(id)completion;
+- (void)addEntry:(id)entry;
+- (void)playbackHistoryToReceiver:(id)receiver options:(unint64_t)options pauseInterval:(double)interval completion:(id)completion;
 @end
 
 @implementation PIBrushStrokeHistory
 
-- (id)exportDataWithError:(id *)a3
+- (id)exportDataWithError:(id *)error
 {
   v46 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!error)
   {
     v21 = NUAssertLogger_18063();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -36,8 +36,8 @@
         v29 = dispatch_get_specific(*v23);
         v30 = MEMORY[0x1E696AF00];
         v31 = v29;
-        v32 = [v30 callStackSymbols];
-        v33 = [v32 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v30 callStackSymbols];
+        v33 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v43 = v29;
         v44 = 2114;
@@ -48,8 +48,8 @@
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v28 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v43 = v28;
       _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -58,13 +58,13 @@
     _NUAssertFailHandler();
   }
 
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v6 = [(PIBrushStrokeHistory *)self entries];
-  v7 = [v6 countByEnumeratingWithState:&v35 objects:v41 count:16];
+  entries = [(PIBrushStrokeHistory *)self entries];
+  v7 = [entries countByEnumeratingWithState:&v35 objects:v41 count:16];
   if (v7)
   {
     v8 = v7;
@@ -75,21 +75,21 @@
       {
         if (*v36 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(entries);
         }
 
-        v11 = [*(*(&v35 + 1) + 8 * i) dictionaryRepresentation];
-        [v5 addObject:v11];
+        dictionaryRepresentation = [*(*(&v35 + 1) + 8 * i) dictionaryRepresentation];
+        [array addObject:dictionaryRepresentation];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v35 objects:v41 count:16];
+      v8 = [entries countByEnumeratingWithState:&v35 objects:v41 count:16];
     }
 
     while (v8);
   }
 
   v39 = @"entries";
-  v40 = v5;
+  v40 = array;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
   v34 = 0;
   v13 = [MEMORY[0x1E696AE40] dataWithPropertyList:v12 format:200 options:0 error:&v34];
@@ -106,31 +106,31 @@
     v18 = [v16 errorWithCode:1 reason:@"Failed to serialize cleanup interaction history" object:self underlyingError:v17];
     v19 = v18;
 
-    *a3 = v18;
+    *error = v18;
   }
 
   return v14;
 }
 
-- (void)playbackHistoryToReceiver:(id)a3 options:(unint64_t)a4 pauseInterval:(double)a5 completion:(id)a6
+- (void)playbackHistoryToReceiver:(id)receiver options:(unint64_t)options pauseInterval:(double)interval completion:(id)completion
 {
-  v13 = a3;
-  v10 = a6;
-  v11 = [(PIBrushStrokeHistory *)self entries];
-  v12 = [v11 count];
+  receiverCopy = receiver;
+  completionCopy = completion;
+  entries = [(PIBrushStrokeHistory *)self entries];
+  v12 = [entries count];
 
   if (v12)
   {
-    [(PIBrushStrokeHistory *)self _playbackHistoryIndex:0 toReceiver:v13 options:a4 pauseInterval:v10 completion:a5];
+    [(PIBrushStrokeHistory *)self _playbackHistoryIndex:0 toReceiver:receiverCopy options:options pauseInterval:completionCopy completion:interval];
   }
 }
 
-- (void)_playbackHistoryIndex:(unint64_t)a3 toReceiver:(id)a4 options:(unint64_t)a5 pauseInterval:(double)a6 completion:(id)a7
+- (void)_playbackHistoryIndex:(unint64_t)index toReceiver:(id)receiver options:(unint64_t)options pauseInterval:(double)interval completion:(id)completion
 {
-  v12 = a4;
-  v13 = a7;
-  v14 = [(PIBrushStrokeHistory *)self entries];
-  v15 = [v14 objectAtIndexedSubscript:a3];
+  receiverCopy = receiver;
+  completionCopy = completion;
+  entries = [(PIBrushStrokeHistory *)self entries];
+  v15 = [entries objectAtIndexedSubscript:index];
 
   if (v15)
   {
@@ -139,12 +139,12 @@
     v43[2] = __90__PIBrushStrokeHistory__playbackHistoryIndex_toReceiver_options_pauseInterval_completion___block_invoke;
     v43[3] = &unk_1E82AB750;
     v43[4] = self;
-    v46 = a3;
-    v45 = v13;
-    v16 = v12;
+    indexCopy = index;
+    v45 = completionCopy;
+    v16 = receiverCopy;
     v44 = v16;
-    v47 = a5;
-    v48 = a6;
+    optionsCopy = options;
+    intervalCopy = interval;
     v17 = MEMORY[0x1CCA61740](v43);
     if ([v15 entryType])
     {
@@ -162,7 +162,7 @@ LABEL_17:
       v36[1] = 3221225472;
       v36[2] = __90__PIBrushStrokeHistory__playbackHistoryIndex_toReceiver_options_pauseInterval_completion___block_invoke_6;
       v36[3] = &unk_1E82AB778;
-      v38 = a6;
+      intervalCopy2 = interval;
       v37 = v17;
       [v16 addObjectRemovalAtImageSpacePoint:v36 completion:{v19, v21}];
       v22 = v37;
@@ -170,8 +170,8 @@ LABEL_17:
 
     else
     {
-      v23 = [v15 brushStroke];
-      [v23 pointAtIndex:0];
+      brushStroke = [v15 brushStroke];
+      [brushStroke pointAtIndex:0];
       v25 = v24;
       v27 = v26;
 
@@ -187,30 +187,30 @@ LABEL_17:
       }
 
       v22 = [v16 brushStrokeExclusionMaskForStrokeStartingAtImageSpacePoint:v25 withRadius:{v27, v29}];
-      v30 = [v15 skipSegmentationIntersections];
-      v31 = [v15 brushStroke];
-      if (v30 & 1) != 0 || (a5)
+      skipSegmentationIntersections = [v15 skipSegmentationIntersections];
+      brushStroke2 = [v15 brushStroke];
+      if (skipSegmentationIntersections & 1) != 0 || (options)
       {
-        v33 = [v15 closedShape];
-        if (a5)
+        closedShape = [v15 closedShape];
+        if (options)
         {
           v34 = 0;
         }
 
         else
         {
-          v34 = v33;
+          v34 = closedShape;
         }
 
-        v35 = [v15 needsFacePixellation];
+        needsFacePixellation = [v15 needsFacePixellation];
         v41[0] = MEMORY[0x1E69E9820];
         v41[1] = 3221225472;
         v41[2] = __90__PIBrushStrokeHistory__playbackHistoryIndex_toReceiver_options_pauseInterval_completion___block_invoke_2;
         v41[3] = &unk_1E82AB778;
-        *&v42[1] = a6;
+        *&v42[1] = interval;
         v32 = v42;
         v42[0] = v17;
-        [v16 addImageSpaceInpaintingStroke:v31 exclusionMask:v22 closeAndFillStroke:v34 needsFacePixellation:v35 recordStroke:1 completion:v41];
+        [v16 addImageSpaceInpaintingStroke:brushStroke2 exclusionMask:v22 closeAndFillStroke:v34 needsFacePixellation:needsFacePixellation recordStroke:1 completion:v41];
       }
 
       else
@@ -219,10 +219,10 @@ LABEL_17:
         v39[1] = 3221225472;
         v39[2] = __90__PIBrushStrokeHistory__playbackHistoryIndex_toReceiver_options_pauseInterval_completion___block_invoke_4;
         v39[3] = &unk_1E82AB778;
-        *&v40[1] = a6;
+        *&v40[1] = interval;
         v32 = v40;
         v40[0] = v17;
-        [v16 addObjectRemovalUsingImageSpaceStroke:v31 exclusionMask:v22 completion:v39];
+        [v16 addObjectRemovalUsingImageSpaceStroke:brushStroke2 exclusionMask:v22 completion:v39];
       }
     }
 
@@ -297,34 +297,34 @@ void __90__PIBrushStrokeHistory__playbackHistoryIndex_toReceiver_options_pauseIn
   dispatch_after(v2, MEMORY[0x1E69E96A0], block);
 }
 
-- (void)addEntry:(id)a3
+- (void)addEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [(PIBrushStrokeHistory *)self entries];
-  [v5 addObject:v4];
+  entryCopy = entry;
+  entries = [(PIBrushStrokeHistory *)self entries];
+  [entries addObject:entryCopy];
 }
 
 - (unint64_t)entryCount
 {
-  v2 = [(PIBrushStrokeHistory *)self entries];
-  v3 = [v2 count];
+  entries = [(PIBrushStrokeHistory *)self entries];
+  v3 = [entries count];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   entries = self->_entries;
 
   return [v4 initWithEntries:entries];
 }
 
-- (PIBrushStrokeHistory)initWithData:(id)a3 error:(id *)a4
+- (PIBrushStrokeHistory)initWithData:(id)data error:(id *)error
 {
   v53 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  dataCopy = data;
+  if (!dataCopy)
   {
     v20 = NUAssertLogger_18063();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -335,7 +335,7 @@ void __90__PIBrushStrokeHistory__playbackHistoryIndex_toReceiver_options_pauseIn
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v22 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v24 = NUAssertLogger_18063();
     v25 = os_log_type_enabled(v24, OS_LOG_TYPE_ERROR);
@@ -343,11 +343,11 @@ void __90__PIBrushStrokeHistory__playbackHistoryIndex_toReceiver_options_pauseIn
     {
       if (v25)
       {
-        v33 = dispatch_get_specific(*v22);
+        v33 = dispatch_get_specific(*callStackSymbols);
         v34 = MEMORY[0x1E696AF00];
         v35 = v33;
-        v22 = [v34 callStackSymbols];
-        v36 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v34 callStackSymbols];
+        v36 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v50 = v33;
         v51 = 2114;
@@ -358,10 +358,10 @@ void __90__PIBrushStrokeHistory__playbackHistoryIndex_toReceiver_options_pauseIn
 
     else if (v25)
     {
-      v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v26 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v50 = v22;
+      v50 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -369,7 +369,7 @@ void __90__PIBrushStrokeHistory__playbackHistoryIndex_toReceiver_options_pauseIn
     goto LABEL_32;
   }
 
-  if (!a4)
+  if (!error)
   {
     v27 = NUAssertLogger_18063();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -380,7 +380,7 @@ void __90__PIBrushStrokeHistory__playbackHistoryIndex_toReceiver_options_pauseIn
       _os_log_error_impl(&dword_1C7694000, v27, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v22 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v29 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v24 = NUAssertLogger_18063();
     v30 = os_log_type_enabled(v24, OS_LOG_TYPE_ERROR);
@@ -388,8 +388,8 @@ void __90__PIBrushStrokeHistory__playbackHistoryIndex_toReceiver_options_pauseIn
     {
       if (v30)
       {
-        v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v32 = [v31 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v32 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v50 = v32;
         _os_log_error_impl(&dword_1C7694000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -401,11 +401,11 @@ void __90__PIBrushStrokeHistory__playbackHistoryIndex_toReceiver_options_pauseIn
 LABEL_32:
     if (v30)
     {
-      v37 = dispatch_get_specific(*v22);
+      v37 = dispatch_get_specific(*callStackSymbols);
       v38 = MEMORY[0x1E696AF00];
       v39 = v37;
-      v40 = [v38 callStackSymbols];
-      v41 = [v40 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v38 callStackSymbols];
+      v41 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v50 = v37;
       v51 = 2114;
@@ -418,7 +418,7 @@ LABEL_34:
     _NUAssertFailHandler();
   }
 
-  v7 = v6;
+  v7 = dataCopy;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if ([v7 length])
   {
@@ -463,12 +463,12 @@ LABEL_34:
         goto LABEL_14;
       }
 
-      *a4 = [MEMORY[0x1E69B3A48] missingError:@"Missing brush stroke entries" object:v9];
+      *error = [MEMORY[0x1E69B3A48] missingError:@"Missing brush stroke entries" object:v9];
     }
 
     else
     {
-      *a4 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to deserialize brush stroke history data" object:v7 underlyingError:v10];
+      *error = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to deserialize brush stroke history data" object:v7 underlyingError:v10];
     }
 
     v18 = 0;
@@ -482,13 +482,13 @@ LABEL_18:
   return v18;
 }
 
-- (PIBrushStrokeHistory)initWithEntries:(id)a3
+- (PIBrushStrokeHistory)initWithEntries:(id)entries
 {
   v8.receiver = self;
   v8.super_class = PIBrushStrokeHistory;
-  v3 = a3;
+  entriesCopy = entries;
   v4 = [(PIBrushStrokeHistory *)&v8 init];
-  v5 = [v3 mutableCopy];
+  v5 = [entriesCopy mutableCopy];
 
   entries = v4->_entries;
   v4->_entries = v5;

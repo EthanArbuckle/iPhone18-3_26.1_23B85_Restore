@@ -12,12 +12,12 @@
 - (void)pu_dismissViewControllerAnimated:()CustomTransitions interactive:completion:
 {
   v8 = a5;
-  v9 = [a1 presentedViewController];
-  v10 = [v9 pu_modalTransition];
-  v11 = v10;
+  presentedViewController = [self presentedViewController];
+  pu_modalTransition = [presentedViewController pu_modalTransition];
+  v11 = pu_modalTransition;
   if (a3)
   {
-    [v10 setStartedInteractively:a4];
+    [pu_modalTransition setStartedInteractively:a4];
   }
 
   v15[0] = MEMORY[0x1E69E9820];
@@ -25,12 +25,12 @@
   v15[2] = __95__UIViewController_CustomTransitions__pu_dismissViewControllerAnimated_interactive_completion___block_invoke;
   v15[3] = &unk_1E7B80CB0;
   v16 = v11;
-  v17 = v9;
+  v17 = presentedViewController;
   v18 = v8;
   v12 = v8;
-  v13 = v9;
+  v13 = presentedViewController;
   v14 = v11;
-  [a1 dismissViewControllerAnimated:a3 completion:v15];
+  [self dismissViewControllerAnimated:a3 completion:v15];
 }
 
 - (void)pu_presentViewController:()CustomTransitions transition:animated:interactive:completion:
@@ -38,56 +38,56 @@
   v13 = a7;
   v14 = a4;
   v17 = a3;
-  v15 = [v17 transitioningDelegate];
+  transitioningDelegate = [v17 transitioningDelegate];
 
-  if (v15)
+  if (transitioningDelegate)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"UIViewController+CustomTransitions.m" lineNumber:72 description:@"expected no transitioningDelegate"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIViewController+CustomTransitions.m" lineNumber:72 description:@"expected no transitioningDelegate"];
   }
 
   [v17 setTransitioningDelegate:v14];
   [v17 pu_setModalTransition:v14];
   [v14 setStartedInteractively:a6];
 
-  [a1 presentViewController:v17 animated:a5 completion:v13];
+  [self presentViewController:v17 animated:a5 completion:v13];
 }
 
 - (id)pu_currentInteractiveNavigationTransition
 {
-  v1 = [a1 pu_navigationTransition];
-  if (([v1 isInteractive] & 1) == 0)
+  pu_navigationTransition = [self pu_navigationTransition];
+  if (([pu_navigationTransition isInteractive] & 1) == 0)
   {
 
-    v1 = 0;
+    pu_navigationTransition = 0;
   }
 
-  return v1;
+  return pu_navigationTransition;
 }
 
 - (id)pu_currentInteractiveModalTransition
 {
-  v1 = [a1 pu_modalTransition];
-  if (([v1 isInteractive] & 1) == 0)
+  pu_modalTransition = [self pu_modalTransition];
+  if (([pu_modalTransition isInteractive] & 1) == 0)
   {
 
-    v1 = 0;
+    pu_modalTransition = 0;
   }
 
-  return v1;
+  return pu_modalTransition;
 }
 
 - (void)pu_restoreNavigationTransition
 {
-  v2 = objc_getAssociatedObject(a1, "com.apple.photosui.previousNavigationTransition");
-  [a1 pu_setNavigationTransition:v2];
+  v2 = objc_getAssociatedObject(self, "com.apple.photosui.previousNavigationTransition");
+  [self pu_setNavigationTransition:v2];
 }
 
 - (void)pu_removeNavigationTransition
 {
-  v2 = [a1 pu_navigationTransition];
-  objc_setAssociatedObject(a1, "com.apple.photosui.previousNavigationTransition", v2, 1);
-  [a1 pu_setNavigationTransition:0];
+  pu_navigationTransition = [self pu_navigationTransition];
+  objc_setAssociatedObject(self, "com.apple.photosui.previousNavigationTransition", pu_navigationTransition, 1);
+  [self pu_setNavigationTransition:0];
 }
 
 @end

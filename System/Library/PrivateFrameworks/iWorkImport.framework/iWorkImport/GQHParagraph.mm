@@ -1,22 +1,22 @@
 @interface GQHParagraph
-+ (BOOL)retrieveFontSizeForFirstCharacter:(id)a3 fontSize:(float *)a4;
-+ (BOOL)setupBulletStatesForParagraphStyle:(id)a3 paragraph:(id)a4 state:(id)a5 bulletStates:(__CFDictionary *)a6;
-+ (__CFDictionary)prepareBullet:(id)a3 paragraph:(id)a4 style:(id)a5 state:(id)a6 bulletStates:(__CFDictionary *)a7 showBullet:(BOOL)a8;
-+ (id)getBulletStyle:(id)a3 level:(int)a4;
-+ (int)handleBookmark:(id)a3 state:(id)a4;
-+ (int)handleInlineList:(id)a3 state:(id)a4;
-+ (int)handleLink:(id)a3 state:(id)a4;
-+ (int)mapParagraphStyle:(id)a3 paragraph:(id)a4 state:(id)a5 bulletStates:(__CFDictionary *)a6 isMultiColumn:(BOOL)a7;
-+ (void)mapBullet:(__CFDictionary *)a3 state:(id)a4;
++ (BOOL)retrieveFontSizeForFirstCharacter:(id)character fontSize:(float *)size;
++ (BOOL)setupBulletStatesForParagraphStyle:(id)style paragraph:(id)paragraph state:(id)state bulletStates:(__CFDictionary *)states;
++ (__CFDictionary)prepareBullet:(id)bullet paragraph:(id)paragraph style:(id)style state:(id)state bulletStates:(__CFDictionary *)states showBullet:(BOOL)showBullet;
++ (id)getBulletStyle:(id)style level:(int)level;
++ (int)handleBookmark:(id)bookmark state:(id)state;
++ (int)handleInlineList:(id)list state:(id)state;
++ (int)handleLink:(id)link state:(id)state;
++ (int)mapParagraphStyle:(id)style paragraph:(id)paragraph state:(id)state bulletStates:(__CFDictionary *)states isMultiColumn:(BOOL)column;
++ (void)mapBullet:(__CFDictionary *)bullet state:(id)state;
 @end
 
 @implementation GQHParagraph
 
-+ (int)handleInlineList:(id)a3 state:(id)a4
++ (int)handleInlineList:(id)list state:(id)state
 {
-  v6 = [a3 children];
-  Count = CFArrayGetCount(v6);
-  v8 = [GQHTextSpan nonWhitespaceCount:v6];
+  children = [list children];
+  Count = CFArrayGetCount(children);
+  v8 = [GQHTextSpan nonWhitespaceCount:children];
   v9 = Count;
   if (Count)
   {
@@ -24,21 +24,21 @@
     v11 = v8;
     while (1)
     {
-      ValueAtIndex = CFArrayGetValueAtIndex(v6, v10);
+      ValueAtIndex = CFArrayGetValueAtIndex(children, v10);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          [a4 inContent];
+          [state inContent];
         }
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = [GQHTextSpan handleSpan:ValueAtIndex checkForTrailingBlanks:v10 >= v11 state:a4];
+        v13 = [GQHTextSpan handleSpan:ValueAtIndex checkForTrailingBlanks:v10 >= v11 state:state];
 LABEL_12:
         v14 = v13;
         goto LABEL_13;
@@ -47,44 +47,44 @@ LABEL_12:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = [a1 handleLink:ValueAtIndex state:a4];
+        v13 = [self handleLink:ValueAtIndex state:state];
         goto LABEL_12;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = [a1 handleBookmark:ValueAtIndex state:a4];
+        v13 = [self handleBookmark:ValueAtIndex state:state];
         goto LABEL_12;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v15 = [a4 htmlDoc];
+        htmlDoc = [state htmlDoc];
       }
 
       else
       {
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
-        v15 = [a4 htmlDoc];
+        htmlDoc = [state htmlDoc];
         if ((isKindOfClass & 1) == 0)
         {
-          v14 = [GQHTextSpan handleTextListChild:ValueAtIndex outputBlanks:v10 < v11 state:a4];
+          v14 = [GQHTextSpan handleTextListChild:ValueAtIndex outputBlanks:v10 < v11 state:state];
           goto LABEL_13;
         }
       }
 
-      v29 = v15;
-      [v15 startElement:"span"];
-      if ([a4 implicitStyle])
+      v29 = htmlDoc;
+      [htmlDoc startElement:"span"];
+      if ([state implicitStyle])
       {
         break;
       }
 
 LABEL_46:
-      v14 = [GQHTextSpan handleTextListChild:ValueAtIndex outputBlanks:v10 < v11 state:a4];
+      v14 = [GQHTextSpan handleTextListChild:ValueAtIndex outputBlanks:v10 < v11 state:state];
       [v29 endElement];
 LABEL_13:
       if (++v10 >= v9 || v14 != 1)
@@ -94,11 +94,11 @@ LABEL_13:
     }
 
     v32 = 0;
-    v17 = [a4 implicitStyle];
+    implicitStyle = [state implicitStyle];
     v18 = objc_alloc_init(GQHStyle);
-    if (![v17 hasValueForIntProperty:21 value:&v32])
+    if (![implicitStyle hasValueForIntProperty:21 value:&v32])
     {
-      if ([v17 hasValueForIntProperty:20 value:&v32])
+      if ([implicitStyle hasValueForIntProperty:20 value:&v32])
       {
         if (v32 < 1)
         {
@@ -127,11 +127,11 @@ LABEL_13:
       if (v32 != 1)
       {
 LABEL_32:
-        v22 = a1;
+        selfCopy = self;
         v30 = 0;
         v31 = 0;
-        v23 = [v17 hasValueForIntProperty:11 value:&v31];
-        v24 = [v17 hasValueForIntProperty:7 value:&v30];
+        v23 = [implicitStyle hasValueForIntProperty:11 value:&v31];
+        v24 = [implicitStyle hasValueForIntProperty:7 value:&v30];
         if (v30)
         {
           v25 = v24;
@@ -156,12 +156,12 @@ LABEL_32:
             [(GQHStyle *)v18 addAttribute:off_9CF48 value:off_9D018];
           }
 
-          a1 = v22;
+          self = selfCopy;
         }
 
         else
         {
-          a1 = v22;
+          self = selfCopy;
           if (v25)
           {
             v27 = &off_9D088;
@@ -175,8 +175,8 @@ LABEL_32:
           [(GQHStyle *)v18 addAttribute:off_9CF48 value:*v27];
         }
 
-        [GQHTextSpan handleTextBackgroundForStyle:v17 destStyle:v18 state:a4];
-        [(GQHStyle *)v18 setStyleOnCurrentNode:a4];
+        [GQHTextSpan handleTextBackgroundForStyle:implicitStyle destStyle:v18 state:state];
+        [(GQHStyle *)v18 setStyleOnCurrentNode:state];
 
         goto LABEL_46;
       }
@@ -186,92 +186,92 @@ LABEL_32:
     }
 
     [(GQHStyle *)v18 addAttribute:v19 value:*v20];
-    [GQHTextStyle reduceFontSizeForSuperscriptedText:v17 style:v18 state:a4];
+    [GQHTextStyle reduceFontSizeForSuperscriptedText:implicitStyle style:v18 state:state];
     goto LABEL_32;
   }
 
   return 1;
 }
 
-+ (int)handleLink:(id)a3 state:(id)a4
++ (int)handleLink:(id)link state:(id)state
 {
-  v7 = [a4 htmlDoc];
-  v8 = [a3 href];
-  if ([a4 shouldMapLinkWithUrl:v8] && (v9 = +[GQHUtils createHtmlHrefForLinkUri:state:](GQHUtils, "createHtmlHrefForLinkUri:state:", v8, a4)) != 0)
+  htmlDoc = [state htmlDoc];
+  href = [link href];
+  if ([state shouldMapLinkWithUrl:href] && (v9 = +[GQHUtils createHtmlHrefForLinkUri:state:](GQHUtils, "createHtmlHrefForLinkUri:state:", href, state)) != 0)
   {
     v10 = v9;
-    [v7 startElement:"a"];
-    [v7 setAttribute:"href" cfStringValue:v10];
+    [htmlDoc startElement:"a"];
+    [htmlDoc setAttribute:"href" cfStringValue:v10];
     CFRelease(v10);
-    [v7 setAttribute:"title" cfStringValue:v8];
+    [htmlDoc setAttribute:"title" cfStringValue:href];
   }
 
   else
   {
-    [v7 startElement:"span"];
+    [htmlDoc startElement:"span"];
   }
 
-  if ([a3 characterStyle])
+  if ([link characterStyle])
   {
     v11 = objc_alloc_init(GQHStyle);
-    +[GQHTextStyle mapStyle:style:state:](GQHTextStyle, "mapStyle:style:state:", [a3 characterStyle], v11, a4);
-    -[GQHStyle setStyleOnCurrentNode:mappingBaseStyleClass:baseClassType:](v11, "setStyleOnCurrentNode:mappingBaseStyleClass:baseClassType:", a4, [a3 characterStyle], objc_opt_class());
+    +[GQHTextStyle mapStyle:style:state:](GQHTextStyle, "mapStyle:style:state:", [link characterStyle], v11, state);
+    -[GQHStyle setStyleOnCurrentNode:mappingBaseStyleClass:baseClassType:](v11, "setStyleOnCurrentNode:mappingBaseStyleClass:baseClassType:", state, [link characterStyle], objc_opt_class());
   }
 
-  v12 = [a1 handleInlineList:a3 state:a4];
-  [v7 endElement];
+  v12 = [self handleInlineList:link state:state];
+  [htmlDoc endElement];
   return v12;
 }
 
-+ (int)handleBookmark:(id)a3 state:(id)a4
++ (int)handleBookmark:(id)bookmark state:(id)state
 {
-  v7 = [a4 htmlDoc];
-  v8 = [a3 name];
-  if (v8)
+  htmlDoc = [state htmlDoc];
+  name = [bookmark name];
+  if (name)
   {
-    v9 = v8;
-    [v7 startElement:"a"];
-    [v7 setAttribute:"name" cfStringValue:v9];
-    [v7 endElement];
+    v9 = name;
+    [htmlDoc startElement:"a"];
+    [htmlDoc setAttribute:"name" cfStringValue:v9];
+    [htmlDoc endElement];
   }
 
-  return [a1 handleInlineList:a3 state:a4];
+  return [self handleInlineList:bookmark state:state];
 }
 
-+ (BOOL)setupBulletStatesForParagraphStyle:(id)a3 paragraph:(id)a4 state:(id)a5 bulletStates:(__CFDictionary *)a6
++ (BOOL)setupBulletStatesForParagraphStyle:(id)style paragraph:(id)paragraph state:(id)state bulletStates:(__CFDictionary *)states
 {
-  v9 = [a3 valueForObjectProperty:{38, a4, a5}];
+  v9 = [style valueForObjectProperty:{38, paragraph, state}];
   if (!v9)
   {
     return 0;
   }
 
   v10 = v9;
-  v11 = v9;
+  parent = v9;
   if ([v9 parent])
   {
-    v11 = v10;
+    parent = v10;
     do
     {
-      v11 = [v11 parent];
+      parent = [parent parent];
     }
 
-    while ([v11 parent]);
+    while ([parent parent]);
   }
 
   value = 0;
-  if (!CFDictionaryGetValueIfPresent(a6, v11, &value))
+  if (!CFDictionaryGetValueIfPresent(states, parent, &value))
   {
     value = objc_alloc_init(GQHBulletState);
-    CFDictionaryAddValue(a6, v11, value);
+    CFDictionaryAddValue(states, parent, value);
   }
 
-  v12 = [a4 listLevel];
-  v13 = v12;
+  listLevel = [paragraph listLevel];
+  v13 = listLevel;
   v14 = 0;
-  if ((v12 & 0x80000000) == 0 && dword_9CDF8 >= v12)
+  if ((listLevel & 0x80000000) == 0 && dword_9CDF8 >= listLevel)
   {
-    [value setCurrentLevel:v12];
+    [value setCurrentLevel:listLevel];
     v15 = [v10 valueForObjectProperty:55];
     if (v15)
     {
@@ -299,35 +299,35 @@ LABEL_32:
     }
 
     v21 = ValueAtIndex;
-    v22 = [ValueAtIndex type];
-    switch(v22)
+    type = [ValueAtIndex type];
+    switch(type)
     {
       case 2u:
-        v25 = [v21 label];
-        if (!v25)
+        label = [v21 label];
+        if (!label)
         {
           goto LABEL_28;
         }
 
-        v26 = v25;
-        if (![v25 labelType])
+        v26 = label;
+        if (![label labelType])
         {
           goto LABEL_28;
         }
 
-        v27 = [v26 format];
-        v33.length = CFStringGetLength(v27);
+        format = [v26 format];
+        v33.length = CFStringGetLength(format);
         v33.location = 0;
-        v28 = CFStringFindWithOptions(v27, @"P", v33, 1uLL, 0);
-        v29 = [a4 restartList];
-        if ([value listStyleAtLevel:v13] == v11 && (v29 & 1) == 0 && objc_msgSend(value, "hasNumberAtLevel:", v13))
+        v28 = CFStringFindWithOptions(format, @"P", v33, 1uLL, 0);
+        restartList = [paragraph restartList];
+        if ([value listStyleAtLevel:v13] == parent && (restartList & 1) == 0 && objc_msgSend(value, "hasNumberAtLevel:", v13))
         {
           v30 = ([value numberAtLevel:v13] + 1);
         }
 
         else
         {
-          v30 = [a3 valueForIntProperty:39];
+          v30 = [style valueForIntProperty:39];
         }
 
         [value setNumber:v30 level:v13];
@@ -353,7 +353,7 @@ LABEL_18:
         [value setType:0 level:v13];
         v14 = 0;
 LABEL_29:
-        [value setListStyle:v11 atLevel:v13];
+        [value setListStyle:parent atLevel:v13];
         return v14;
       default:
 LABEL_28:
@@ -368,33 +368,33 @@ LABEL_28:
   return v14;
 }
 
-+ (__CFDictionary)prepareBullet:(id)a3 paragraph:(id)a4 style:(id)a5 state:(id)a6 bulletStates:(__CFDictionary *)a7 showBullet:(BOOL)a8
++ (__CFDictionary)prepareBullet:(id)bullet paragraph:(id)paragraph style:(id)style state:(id)state bulletStates:(__CFDictionary *)states showBullet:(BOOL)showBullet
 {
-  v8 = a8;
-  v15 = [a3 valueForObjectProperty:38];
+  showBulletCopy = showBullet;
+  v15 = [bullet valueForObjectProperty:38];
   if (!v15)
   {
     return 0;
   }
 
   v16 = v15;
-  v17 = v15;
+  parent = v15;
   if ([v15 parent])
   {
-    v17 = v16;
+    parent = v16;
     do
     {
-      v17 = [v17 parent];
+      parent = [parent parent];
     }
 
-    while ([v17 parent]);
+    while ([parent parent]);
   }
 
   value = 0;
-  if (!CFDictionaryGetValueIfPresent(a7, v17, &value))
+  if (!CFDictionaryGetValueIfPresent(states, parent, &value))
   {
     value = objc_alloc_init(GQHBulletState);
-    CFDictionaryAddValue(a7, v17, value);
+    CFDictionaryAddValue(states, parent, value);
   }
 
   v18 = [v16 valueForObjectProperty:56];
@@ -405,62 +405,62 @@ LABEL_28:
   }
 
   v20 = ValueAtIndex;
-  v21 = [ValueAtIndex type];
-  v51 = [value currentLevel];
+  type = [ValueAtIndex type];
+  currentLevel = [value currentLevel];
   v22 = 0;
-  if (!v21)
+  if (!type)
   {
     return 0;
   }
 
-  if (v21 != 2)
+  if (type != 2)
   {
     goto LABEL_22;
   }
 
-  v23 = [v20 label];
-  v22 = v23;
-  if (!v23)
+  label = [v20 label];
+  v22 = label;
+  if (!label)
   {
     goto LABEL_22;
   }
 
-  v24 = [(__CFString *)v23 labelType];
-  v25 = [(__CFString *)v22 format];
-  v26 = v25;
-  if (v24)
+  labelType = [(__CFString *)label labelType];
+  format = [(__CFString *)v22 format];
+  v26 = format;
+  if (labelType)
   {
-    v57.length = CFStringGetLength(v25);
+    v57.length = CFStringGetLength(format);
     v57.location = 0;
     if (!CFStringFindWithOptions(v26, @"P", v57, 1uLL, 0))
     {
-      v30 = [(__CFString *)v22 labelType];
-      v22 = +[GQHBulletState createLabelStr:number:](GQHBulletState, "createLabelStr:number:", v30, [value numberAtLevel:v51]);
+      labelType2 = [(__CFString *)v22 labelType];
+      v22 = +[GQHBulletState createLabelStr:number:](GQHBulletState, "createLabelStr:number:", labelType2, [value numberAtLevel:currentLevel]);
       CFStringAppend(v22, @".");
       goto LABEL_22;
     }
 
-    MutableCopy = [value createTieredNumberStringForLevel:v51];
+    MutableCopy = [value createTieredNumberStringForLevel:currentLevel];
   }
 
   else
   {
-    MutableCopy = CFStringCreateMutableCopy(0, 0, v25);
+    MutableCopy = CFStringCreateMutableCopy(0, 0, format);
   }
 
   v22 = MutableCopy;
 LABEL_22:
   v55 = 0;
-  v31 = [a3 overridesFloatProperty:23 value:&v55 + 4];
-  v50 = [a3 overridesFloatProperty:24 value:&v55];
-  if (v8)
+  v31 = [bullet overridesFloatProperty:23 value:&v55 + 4];
+  v50 = [bullet overridesFloatProperty:24 value:&v55];
+  if (showBulletCopy)
   {
     v48 = v31;
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-    v32 = [value bulletIndentForLevel:v51];
-    v49 = [value textIndentForLevel:v51];
+    v32 = [value bulletIndentForLevel:currentLevel];
+    v49 = [value textIndentForLevel:currentLevel];
     v54 = 0;
-    if ([a5 getAttribute:off_9CEF0 trblValue:&v54])
+    if ([style getAttribute:off_9CEF0 trblValue:&v54])
     {
       v33 = v54;
       v34 = v54;
@@ -473,44 +473,44 @@ LABEL_22:
     }
 
     [(GQHTrbl *)v34 setLeft:(*&v55 + (v49 + v32))];
-    [a5 addAttribute:off_9CEF0 trblValue:v54];
+    [style addAttribute:off_9CEF0 trblValue:v54];
 
-    v35 = [a1 getBulletStyle:v16 level:v51];
+    v35 = [self getBulletStyle:v16 level:currentLevel];
     if (v35)
     {
-      v36 = v35;
+      bulletCopy = v35;
     }
 
     else
     {
-      v36 = a3;
+      bulletCopy = bullet;
     }
 
     v37 = objc_alloc_init(GQHStyle);
-    [GQHTextStyle mapStyle:v36 style:v37 state:a6];
+    [GQHTextStyle mapStyle:bulletCopy style:v37 state:state];
     v53 = 0;
-    if ([v16 overridesObjectProperty:57 value:&v53] && objc_msgSend(objc_msgSend(v53, "objectAtIndex:", v51), "scaleWithText"))
+    if ([v16 overridesObjectProperty:57 value:&v53] && objc_msgSend(objc_msgSend(v53, "objectAtIndex:", currentLevel), "scaleWithText"))
     {
       v52 = 0.0;
-      if (![GQHParagraph retrieveFontSizeForFirstCharacter:a4 fontSize:&v52])
+      if (![GQHParagraph retrieveFontSizeForFirstCharacter:paragraph fontSize:&v52])
       {
-        [a3 hasValueForFloatProperty:2 value:&v52];
+        [bullet hasValueForFloatProperty:2 value:&v52];
       }
 
       v38 = v52;
       if (v52 != 0.0)
       {
-        v39 = [a6 textScale];
+        textScale = [state textScale];
         v38 = v52;
-        if (v39)
+        if (textScale)
         {
-          v38 = floorf((v52 * [a6 textScale]) / 100.0);
+          v38 = floorf((v52 * [state textScale]) / 100.0);
           v52 = v38;
         }
       }
 
       v40 = off_9CE78;
-      [objc_msgSend(v53 objectAtIndex:{v51), "scale"}];
+      [objc_msgSend(v53 objectAtIndex:{currentLevel), "scale"}];
       [(GQHStyle *)v37 addAttribute:v40 intValue:(v38 * v41)];
     }
 
@@ -528,7 +528,7 @@ LABEL_22:
       CFDictionarySetValue(Mutable, @"BulletString", v22);
     }
 
-    else if ([value typeAtlevel:v51] == 4)
+    else if ([value typeAtlevel:currentLevel] == 4)
     {
       v42 = xmlStrlen("&bull;");
       v43 = CFDataCreate(0, "&bull;", v42);
@@ -549,64 +549,64 @@ LABEL_22:
     CFRelease(v22);
   }
 
-  if (((v31 | v50) & 1) != 0 || [a6 outlineLevel])
+  if (((v31 | v50) & 1) != 0 || [state outlineLevel])
   {
     v45 = off_9CF38;
     v46 = llroundf(*(&v55 + 1) - *&v55);
-    v47 = [a6 outlineLevel];
-    [a5 addAttribute:v45 pxValue:v46 + dword_9D2A8 * v47];
+    outlineLevel = [state outlineLevel];
+    [style addAttribute:v45 pxValue:v46 + dword_9D2A8 * outlineLevel];
   }
 
   return Mutable;
 }
 
-+ (void)mapBullet:(__CFDictionary *)a3 state:(id)a4
++ (void)mapBullet:(__CFDictionary *)bullet state:(id)state
 {
-  Value = CFDictionaryGetValue(a3, @"BulletStyle");
-  v7 = CFDictionaryGetValue(a3, @"BulletCharRef");
-  v8 = CFDictionaryGetValue(a3, @"BulletString");
+  Value = CFDictionaryGetValue(bullet, @"BulletStyle");
+  v7 = CFDictionaryGetValue(bullet, @"BulletCharRef");
+  v8 = CFDictionaryGetValue(bullet, @"BulletString");
   if (Value)
   {
     v9 = v8;
-    v10 = [a4 htmlDoc];
-    [v10 startElement:"span"];
-    [Value setStyleOnCurrentNode:a4];
+    htmlDoc = [state htmlDoc];
+    [htmlDoc startElement:"span"];
+    [Value setStyleOnCurrentNode:state];
     if (v9)
     {
-      [v10 addContent:v9];
+      [htmlDoc addContent:v9];
     }
 
     else if (v7)
     {
-      [v10 addCharRef:CFDataGetBytePtr(v7)];
+      [htmlDoc addCharRef:CFDataGetBytePtr(v7)];
     }
 
-    [v10 endElement];
+    [htmlDoc endElement];
   }
 }
 
-+ (id)getBulletStyle:(id)a3 level:(int)a4
++ (id)getBulletStyle:(id)style level:(int)level
 {
   v5 = 0;
-  [a3 overridesObjectProperty:(a4 + 58) value:&v5];
+  [style overridesObjectProperty:(level + 58) value:&v5];
   return v5;
 }
 
-+ (BOOL)retrieveFontSizeForFirstCharacter:(id)a3 fontSize:(float *)a4
++ (BOOL)retrieveFontSizeForFirstCharacter:(id)character fontSize:(float *)size
 {
-  v5 = [a3 children];
-  if (CFArrayGetCount(v5) < 1)
+  children = [character children];
+  if (CFArrayGetCount(children) < 1)
   {
     return 0;
   }
 
-  ValueAtIndex = CFArrayGetValueAtIndex(v5, 0);
+  ValueAtIndex = CFArrayGetValueAtIndex(children, 0);
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v7 = [ValueAtIndex characterStyle];
+    characterStyle = [ValueAtIndex characterStyle];
 
-    return [v7 hasValueForFloatProperty:2 value:a4];
+    return [characterStyle hasValueForFloatProperty:2 value:size];
   }
 
   objc_opt_class();
@@ -615,21 +615,21 @@ LABEL_22:
     return 0;
   }
 
-  return [GQHParagraph retrieveFontSizeForFirstCharacter:ValueAtIndex fontSize:a4];
+  return [GQHParagraph retrieveFontSizeForFirstCharacter:ValueAtIndex fontSize:size];
 }
 
-+ (int)mapParagraphStyle:(id)a3 paragraph:(id)a4 state:(id)a5 bulletStates:(__CFDictionary *)a6 isMultiColumn:(BOOL)a7
++ (int)mapParagraphStyle:(id)style paragraph:(id)paragraph state:(id)state bulletStates:(__CFDictionary *)states isMultiColumn:(BOOL)column
 {
-  v7 = a7;
+  columnCopy = column;
   v32 = 0.0;
-  if (([a1 setupBulletStatesForParagraphStyle:? paragraph:? state:? bulletStates:?] & 1) != 0 || objc_msgSend(a3, "hasValueForFloatProperty:value:", 30, &v32) && (*&v13 = v32, v32 != 0.0))
+  if (([self setupBulletStatesForParagraphStyle:? paragraph:? state:? bulletStates:?] & 1) != 0 || objc_msgSend(style, "hasValueForFloatProperty:value:", 30, &v32) && (*&v13 = v32, v32 != 0.0))
   {
     v14 = 0;
   }
 
   else
   {
-    v15 = [a3 hasValueForFloatProperty:31 value:{&v32, v13}] ^ 1;
+    v15 = [style hasValueForFloatProperty:31 value:{&v32, v13}] ^ 1;
     if (v32 == 0.0)
     {
       v14 = 1;
@@ -641,63 +641,63 @@ LABEL_22:
     }
   }
 
-  v30 = 0;
-  v31 = 0;
-  v16 = [a3 overridesIntProperty:17 value:&v31];
-  v17 = [a3 overridesIntProperty:18 value:&v30];
+  outlineStyleType = 0;
+  outlineLevel = 0;
+  v16 = [style overridesIntProperty:17 value:&outlineLevel];
+  v17 = [style overridesIntProperty:18 value:&outlineStyleType];
   if (v16)
   {
-    [a5 setOutlineLevel:v31];
+    [state setOutlineLevel:outlineLevel];
   }
 
   if (v17)
   {
-    [a5 setOutlineStyleType:v30];
+    [state setOutlineStyleType:outlineStyleType];
   }
 
-  if ([a5 useOutline])
+  if ([state useOutline])
   {
-    v31 = [a5 outlineLevel];
-    v30 = [a5 outlineStyleType];
-    if (v30 == 1)
+    outlineLevel = [state outlineLevel];
+    outlineStyleType = [state outlineStyleType];
+    if (outlineStyleType == 1)
     {
-      ++v31;
+      ++outlineLevel;
     }
   }
 
-  if (!v14 || (v18 = [a5 implicitStyle], v19 = objc_msgSend(a5, "coloredBackground"), (v20 = objc_msgSend(a5, "cachedClassStringForTextStyle:implicitStyle:isColoredBackground:outlineLevel:outlineType:isSpan:", a3, v18, v19, v31, v30, 0)) == 0))
+  if (!v14 || (v18 = [state implicitStyle], v19 = objc_msgSend(state, "coloredBackground"), (v20 = objc_msgSend(state, "cachedClassStringForTextStyle:implicitStyle:isColoredBackground:outlineLevel:outlineType:isSpan:", style, v18, v19, outlineLevel, outlineStyleType, 0)) == 0))
   {
     v21 = objc_alloc_init(GQHStyle);
-    [GQHParagraphStyle mapStyle:a3 style:v21 state:a5];
+    [GQHParagraphStyle mapStyle:style style:v21 state:state];
     v29 = 0;
-    if ([a3 hasValueForFloatProperty:30 value:&v29] && !objc_msgSend(a5, "paragraphIndex"))
+    if ([style hasValueForFloatProperty:30 value:&v29] && !objc_msgSend(state, "paragraphIndex"))
     {
       [(GQHStyle *)v21 addAttribute:off_9CED0 intValue:0];
     }
 
-    if ([a3 hasValueForFloatProperty:31 value:&v29])
+    if ([style hasValueForFloatProperty:31 value:&v29])
     {
-      v22 = [a5 paragraphIndex];
-      if (v22 == [a5 paragraphCount] - 1)
+      paragraphIndex = [state paragraphIndex];
+      if (paragraphIndex == [state paragraphCount] - 1)
       {
         [(GQHStyle *)v21 addAttribute:off_9CEB8 intValue:0];
       }
     }
 
-    v23 = [a1 prepareBullet:a3 paragraph:a4 style:v21 state:a5 bulletStates:a6 showBullet:{(objc_msgSend(a4, "isBlank") | v7) ^ 1}];
+    v23 = [self prepareBullet:style paragraph:paragraph style:v21 state:state bulletStates:states showBullet:{(objc_msgSend(paragraph, "isBlank") | columnCopy) ^ 1}];
     if (v14)
     {
       cf = 0;
-      [GQHStyle createBaseStyleClassString:a3 classString:&cf classType:objc_opt_class() state:a5];
-      v24 = [a5 implicitStyle];
-      v25 = [a5 coloredBackground];
+      [GQHStyle createBaseStyleClassString:style classString:&cf classType:objc_opt_class() state:state];
+      implicitStyle = [state implicitStyle];
+      coloredBackground = [state coloredBackground];
       v26 = cf;
       if (!cf)
       {
         v26 = &stru_85620;
       }
 
-      v20 = [a5 addCachedClassStringForTextStyle:a3 implicitStyle:v24 isColoredBackground:v25 outlineLevel:v31 outlineType:v30 isSpan:0 baseClassString:v26 cssCachedStyle:v21];
+      v20 = [state addCachedClassStringForTextStyle:style implicitStyle:implicitStyle isColoredBackground:coloredBackground outlineLevel:outlineLevel outlineType:outlineStyleType isSpan:0 baseClassString:v26 cssCachedStyle:v21];
       if (cf)
       {
         CFRelease(cf);
@@ -711,11 +711,11 @@ LABEL_22:
 
     else
     {
-      [(GQHStyle *)v21 setStyleOnCurrentNode:a5 mappingBaseStyleClass:a3 baseClassType:objc_opt_class()];
+      [(GQHStyle *)v21 setStyleOnCurrentNode:state mappingBaseStyleClass:style baseClassType:objc_opt_class()];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [a5 setCurrentParagraphStyle:v21 baseStyle:a3 cachedClass:0];
+        [state setCurrentParagraphStyle:v21 baseStyle:style cachedClass:0];
       }
 
       v20 = 0;
@@ -732,17 +732,17 @@ LABEL_34:
       }
     }
 
-    [a1 mapBullet:v23 state:a5];
+    [self mapBullet:v23 state:state];
     CFRelease(v23);
     goto LABEL_34;
   }
 
 LABEL_35:
-  [objc_msgSend(a5 "htmlDoc")];
+  [objc_msgSend(state "htmlDoc")];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a5 setCurrentParagraphStyle:0 baseStyle:0 cachedClass:v20];
+    [state setCurrentParagraphStyle:0 baseStyle:0 cachedClass:v20];
   }
 
   return 1;

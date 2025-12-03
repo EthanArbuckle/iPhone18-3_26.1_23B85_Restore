@@ -1,44 +1,44 @@
 @interface CNSharingProfileAudienceDataSource
-- (CNSharingProfileAudienceDataSource)initWithSelectedSharingAudience:(unint64_t)a3;
-- (id)itemForIndex:(unint64_t)a3;
+- (CNSharingProfileAudienceDataSource)initWithSelectedSharingAudience:(unint64_t)audience;
+- (id)itemForIndex:(unint64_t)index;
 - (id)sectionFooterLabel;
 - (id)sectionHeaderLabel;
-- (unint64_t)indexForSharingAudience:(unint64_t)a3;
-- (unint64_t)sharingAudienceForIndex:(unint64_t)a3;
-- (unint64_t)sharingAudienceForItem:(id)a3;
-- (void)didSelectItemAtIndex:(unint64_t)a3;
+- (unint64_t)indexForSharingAudience:(unint64_t)audience;
+- (unint64_t)sharingAudienceForIndex:(unint64_t)index;
+- (unint64_t)sharingAudienceForItem:(id)item;
+- (void)didSelectItemAtIndex:(unint64_t)index;
 - (void)reloadItems;
-- (void)setSelectedSharingAudience:(unint64_t)a3;
+- (void)setSelectedSharingAudience:(unint64_t)audience;
 @end
 
 @implementation CNSharingProfileAudienceDataSource
 
-- (void)didSelectItemAtIndex:(unint64_t)a3
+- (void)didSelectItemAtIndex:(unint64_t)index
 {
-  if ([(NSArray *)self->_items count]> a3)
+  if ([(NSArray *)self->_items count]> index)
   {
     items = self->_items;
     v8 = self->_selectedItem;
-    v6 = [(NSArray *)items objectAtIndexedSubscript:a3];
+    v6 = [(NSArray *)items objectAtIndexedSubscript:index];
     [(CNSharingProfileRowItem *)v8 setIsSelected:0];
     [(CNSharingProfileRowItem *)v6 setIsSelected:1];
     selectedItem = self->_selectedItem;
     self->_selectedItem = v6;
 
-    self->_selectedSharingAudience = [(CNSharingProfileAudienceDataSource *)self sharingAudienceForIndex:a3];
+    self->_selectedSharingAudience = [(CNSharingProfileAudienceDataSource *)self sharingAudienceForIndex:index];
   }
 }
 
-- (id)itemForIndex:(unint64_t)a3
+- (id)itemForIndex:(unint64_t)index
 {
-  if ([(NSArray *)self->_items count]<= a3)
+  if ([(NSArray *)self->_items count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_items objectAtIndexedSubscript:a3];
+    v5 = [(NSArray *)self->_items objectAtIndexedSubscript:index];
   }
 
   return v5;
@@ -114,41 +114,41 @@ LABEL_7:
   }
 }
 
-- (unint64_t)sharingAudienceForIndex:(unint64_t)a3
+- (unint64_t)sharingAudienceForIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_valuesArray objectAtIndexedSubscript:a3];
-  v4 = [v3 integerValue];
+  v3 = [(NSArray *)self->_valuesArray objectAtIndexedSubscript:index];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (unint64_t)indexForSharingAudience:(unint64_t)a3
+- (unint64_t)indexForSharingAudience:(unint64_t)audience
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:audience];
   v5 = [(NSArray *)self->_valuesArray indexOfObject:v4];
 
   return v5;
 }
 
-- (unint64_t)sharingAudienceForItem:(id)a3
+- (unint64_t)sharingAudienceForItem:(id)item
 {
-  v4 = [(NSArray *)self->_items indexOfObject:a3];
+  v4 = [(NSArray *)self->_items indexOfObject:item];
 
   return [(CNSharingProfileAudienceDataSource *)self sharingAudienceForIndex:v4];
 }
 
-- (void)setSelectedSharingAudience:(unint64_t)a3
+- (void)setSelectedSharingAudience:(unint64_t)audience
 {
-  if (self->_selectedSharingAudience != a3)
+  if (self->_selectedSharingAudience != audience)
   {
-    self->_selectedSharingAudience = a3;
+    self->_selectedSharingAudience = audience;
     v5 = [(CNSharingProfileAudienceDataSource *)self indexForSharingAudience:?];
 
     [(CNSharingProfileAudienceDataSource *)self didSelectItemAtIndex:v5];
   }
 }
 
-- (CNSharingProfileAudienceDataSource)initWithSelectedSharingAudience:(unint64_t)a3
+- (CNSharingProfileAudienceDataSource)initWithSelectedSharingAudience:(unint64_t)audience
 {
   v8.receiver = self;
   v8.super_class = CNSharingProfileAudienceDataSource;
@@ -156,7 +156,7 @@ LABEL_7:
   v5 = v4;
   if (v4)
   {
-    v4->_selectedSharingAudience = a3;
+    v4->_selectedSharingAudience = audience;
     [(CNSharingProfileAudienceDataSource *)v4 reloadItems];
     v6 = v5;
   }

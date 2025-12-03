@@ -1,46 +1,46 @@
 @interface MADAutoAssetSecure
-+ (BOOL)doesDescriptorInvolveGrafting:(id)a3 forDescriptor:(id)a4;
-+ (BOOL)doesDescriptorInvolvePersonalization:(id)a3 forDescriptor:(id)a4;
-+ (BOOL)doesDescriptorInvolveSecureOperations:(id)a3 forDescriptor:(id)a4;
-+ (BOOL)doesSetDescriptorInvolveSecureOperations:(id)a3 forSetDescriptor:(id)a4 withAutoAssetDescriptors:(id)a5;
-+ (BOOL)graftOrMount:(id)a3 ofSecureAssetBundle:(id)a4 withAccessOptions:(id)a5 accessMechanismPtr:(int64_t *)a6 errorPtr:(id *)a7;
-+ (BOOL)graftSecureAsset:(id)a3 secureAssetBundle:(id)a4 forSetDescriptor:(id)a5 forAssetID:(id)a6 withSelector:(id)a7 accessMechanismPtr:(int64_t *)a8 error:(id *)a9;
-+ (BOOL)isCodeAsset:(id)a3 forDescriptor:(id)a4;
-+ (BOOL)isErrorDueToDeviceBeingLocked:(id)a3;
-+ (BOOL)isGraftedOrMounted:(id)a3 forDescriptor:(id)a4;
-+ (BOOL)isPersonalizationOrGraftingRequired:(id)a3 forDescriptor:(id)a4;
-+ (BOOL)isPersonalizationOrGraftingRequired:(id)a3 forSetDescriptor:(id)a4;
-+ (BOOL)isPersonalizationRequired:(id)a3 forDescriptor:(id)a4;
-+ (BOOL)isPersonalizationRequired:(id)a3 forSetDescriptor:(id)a4;
-+ (BOOL)isPrePersonalized:(id)a3 forDescriptor:(id)a4;
-+ (BOOL)isSecureAsset:(id)a3 forDescriptor:(id)a4;
-+ (BOOL)readyToCommitPrePersonalized:(id)a3 forSetDescriptor:(id)a4;
-+ (BOOL)ungraft:(id)a3 forDescriptor:(id)a4 ungraftingError:(id *)a5;
-+ (BOOL)ungraftAll:(id)a3 forSetDescriptor:(id)a4 withAutoAssetDescriptors:(id)a5 ungraftingError:(id *)a6;
-+ (BOOL)ungraftOrUnmount:(id)a3 ofSecureAssetBundle:(id)a4 withAccessOptions:(id)a5 accessMechanismPtr:(int64_t *)a6 errorPtr:(id *)a7;
-+ (id)_secureAssetBundleSummary:(id)a3;
++ (BOOL)doesDescriptorInvolveGrafting:(id)grafting forDescriptor:(id)descriptor;
++ (BOOL)doesDescriptorInvolvePersonalization:(id)personalization forDescriptor:(id)descriptor;
++ (BOOL)doesDescriptorInvolveSecureOperations:(id)operations forDescriptor:(id)descriptor;
++ (BOOL)doesSetDescriptorInvolveSecureOperations:(id)operations forSetDescriptor:(id)descriptor withAutoAssetDescriptors:(id)descriptors;
++ (BOOL)graftOrMount:(id)mount ofSecureAssetBundle:(id)bundle withAccessOptions:(id)options accessMechanismPtr:(int64_t *)ptr errorPtr:(id *)errorPtr;
++ (BOOL)graftSecureAsset:(id)asset secureAssetBundle:(id)bundle forSetDescriptor:(id)descriptor forAssetID:(id)d withSelector:(id)selector accessMechanismPtr:(int64_t *)ptr error:(id *)error;
++ (BOOL)isCodeAsset:(id)asset forDescriptor:(id)descriptor;
++ (BOOL)isErrorDueToDeviceBeingLocked:(id)locked;
++ (BOOL)isGraftedOrMounted:(id)mounted forDescriptor:(id)descriptor;
++ (BOOL)isPersonalizationOrGraftingRequired:(id)required forDescriptor:(id)descriptor;
++ (BOOL)isPersonalizationOrGraftingRequired:(id)required forSetDescriptor:(id)descriptor;
++ (BOOL)isPersonalizationRequired:(id)required forDescriptor:(id)descriptor;
++ (BOOL)isPersonalizationRequired:(id)required forSetDescriptor:(id)descriptor;
++ (BOOL)isPrePersonalized:(id)personalized forDescriptor:(id)descriptor;
++ (BOOL)isSecureAsset:(id)asset forDescriptor:(id)descriptor;
++ (BOOL)readyToCommitPrePersonalized:(id)personalized forSetDescriptor:(id)descriptor;
++ (BOOL)ungraft:(id)ungraft forDescriptor:(id)descriptor ungraftingError:(id *)error;
++ (BOOL)ungraftAll:(id)all forSetDescriptor:(id)descriptor withAutoAssetDescriptors:(id)descriptors ungraftingError:(id *)error;
++ (BOOL)ungraftOrUnmount:(id)unmount ofSecureAssetBundle:(id)bundle withAccessOptions:(id)options accessMechanismPtr:(int64_t *)ptr errorPtr:(id *)errorPtr;
++ (id)_secureAssetBundleSummary:(id)summary;
 + (id)autoAssetSecure;
-+ (id)buildGraftFailureError:(id)a3 withUnderlyingError:(id)a4;
-+ (id)commitPrePersonalizedSync:(id)a3 committingSelectors:(id)a4;
-+ (id)getGraftPath:(id)a3 forDescriptor:(id)a4;
-+ (id)latestDownloadedAtomicInstanceEntries:(id)a3 forSetDescriptor:(id)a4 withAvailableForUseError:(id *)a5;
-+ (id)localContentURL:(id)a3 forAssetType:(id)a4 assetId:(id)a5;
-+ (id)localContentURL:(id)a3 forDescriptor:(id)a4;
-+ (id)secureAssetBundle:(id)a3 forSetAtomicEntry:(id)a4;
-+ (id)secureBundleForAssetType:(id)a3 assetId:(id)a4;
-+ (int64_t)secureOperationGraftOrMount:(int64_t)a3;
-+ (int64_t)secureOperationUngraftOrUnmount:(int64_t)a3;
-+ (void)commitPrePersonalized:(id)a3 committingSelectors:(id)a4 completion:(id)a5;
-+ (void)depersonalizeIfSecure:(id)a3 forDescriptor:(id)a4;
-+ (void)graftDownloaded:(id)a3 graftingDescriptor:(id)a4 setDescriptor:(id)a5 completion:(id)a6;
-+ (void)mapToExclave:(id)a3 forDescriptor:(id)a4 completion:(id)a5;
-+ (void)personalizeDownloaded:(id)a3 personalizingDescriptor:(id)a4 allowingNetwork:(BOOL)a5 committingPersonalization:(BOOL)a6 completion:(id)a7;
-+ (void)personalizeGraftDownloaded:(id)a3 forDescriptor:(id)a4 setDescriptor:(id)a5 allowingNetwork:(BOOL)a6 completion:(id)a7;
-+ (void)personalizeSetDownloaded:(id)a3 forSetDescriptor:(id)a4 shouldGraft:(BOOL)a5 allowingNetwork:(BOOL)a6 withAutoAssetDescriptors:(id)a7 completion:(id)a8;
++ (id)buildGraftFailureError:(id)error withUnderlyingError:(id)underlyingError;
++ (id)commitPrePersonalizedSync:(id)sync committingSelectors:(id)selectors;
++ (id)getGraftPath:(id)path forDescriptor:(id)descriptor;
++ (id)latestDownloadedAtomicInstanceEntries:(id)entries forSetDescriptor:(id)descriptor withAvailableForUseError:(id *)error;
++ (id)localContentURL:(id)l forAssetType:(id)type assetId:(id)id;
++ (id)localContentURL:(id)l forDescriptor:(id)descriptor;
++ (id)secureAssetBundle:(id)bundle forSetAtomicEntry:(id)entry;
++ (id)secureBundleForAssetType:(id)type assetId:(id)id;
++ (int64_t)secureOperationGraftOrMount:(int64_t)mount;
++ (int64_t)secureOperationUngraftOrUnmount:(int64_t)unmount;
++ (void)commitPrePersonalized:(id)personalized committingSelectors:(id)selectors completion:(id)completion;
++ (void)depersonalizeIfSecure:(id)secure forDescriptor:(id)descriptor;
++ (void)graftDownloaded:(id)downloaded graftingDescriptor:(id)descriptor setDescriptor:(id)setDescriptor completion:(id)completion;
++ (void)mapToExclave:(id)exclave forDescriptor:(id)descriptor completion:(id)completion;
++ (void)personalizeDownloaded:(id)downloaded personalizingDescriptor:(id)descriptor allowingNetwork:(BOOL)network committingPersonalization:(BOOL)personalization completion:(id)completion;
++ (void)personalizeGraftDownloaded:(id)downloaded forDescriptor:(id)descriptor setDescriptor:(id)setDescriptor allowingNetwork:(BOOL)network completion:(id)completion;
++ (void)personalizeSetDownloaded:(id)downloaded forSetDescriptor:(id)descriptor shouldGraft:(BOOL)graft allowingNetwork:(BOOL)network withAutoAssetDescriptors:(id)descriptors completion:(id)completion;
 + (void)removeAllPersisted;
-+ (void)ungraftIfNotAccessible:(id)a3;
++ (void)ungraftIfNotAccessible:(id)accessible;
 - (MADAutoAssetSecure)init;
-- (void)_personalizeGraftSetDownloaded:(id)a3 forSetDescriptor:(id)a4 allowingNetwork:(BOOL)a5 requiringPersonalization:(id)a6 requiringGrafting:(id)a7 shouldGraft:(BOOL)a8 completion:(id)a9;
+- (void)_personalizeGraftSetDownloaded:(id)downloaded forSetDescriptor:(id)descriptor allowingNetwork:(BOOL)network requiringPersonalization:(id)personalization requiringGrafting:(id)grafting shouldGraft:(BOOL)graft completion:(id)completion;
 @end
 
 @implementation MADAutoAssetSecure
@@ -57,9 +57,9 @@ LABEL_13:
     goto LABEL_17;
   }
 
-  v3 = [@"com.apple.MobileAsset.daemon.secureProtectionQueue" UTF8String];
+  uTF8String = [@"com.apple.MobileAsset.daemon.secureProtectionQueue" UTF8String];
   v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v5 = dispatch_queue_create(v3, v4);
+  v5 = dispatch_queue_create(uTF8String, v4);
   secureProtectionQueue = v2->_secureProtectionQueue;
   v2->_secureProtectionQueue = v5;
 
@@ -153,9 +153,9 @@ LABEL_13:
             }
 
             v13 = *(*(&v21 + 1) + 8 * i);
-            v14 = [v13 integerValue];
+            integerValue = [v13 integerValue];
             v15 = [v8 objectForKeyedSubscript:v13];
-            [SUCoreErrorInformation attributesOfErrorForDomain:@"SecureMobileAssetErrorDomain" withCode:v14 codeName:v15];
+            [SUCoreErrorInformation attributesOfErrorForDomain:@"SecureMobileAssetErrorDomain" withCode:integerValue codeName:v15];
           }
 
           v10 = [v8 countByEnumeratingWithState:&v21 objects:v27 count:16];
@@ -204,27 +204,27 @@ void __37__MADAutoAssetSecure_autoAssetSecure__block_invoke(id a1)
   _objc_release_x1();
 }
 
-+ (BOOL)doesDescriptorInvolvePersonalization:(id)a3 forDescriptor:(id)a4
++ (BOOL)doesDescriptorInvolvePersonalization:(id)personalization forDescriptor:(id)descriptor
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NSString alloc] initWithFormat:@"%@:doesDescriptorInvolvePersonalization", v6];
+  descriptorCopy = descriptor;
+  personalizationCopy = personalization;
+  personalizationCopy = [[NSString alloc] initWithFormat:@"%@:doesDescriptorInvolvePersonalization", personalizationCopy];
 
-  v8 = [v5 metadata];
-  v9 = [v8 safeBooleanForKey:@"__RequiresPersonalization"];
+  metadata = [descriptorCopy metadata];
+  v9 = [metadata safeBooleanForKey:@"__RequiresPersonalization"];
 
   if (v9)
   {
     v10 = _MADLog(@"SecureMA");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [v5 summary];
+      summary = [descriptorCopy summary];
       *buf = 138543874;
-      v14 = v7;
+      v14 = personalizationCopy;
       v15 = 2114;
       v16 = @"Y";
       v17 = 2114;
-      v18 = v11;
+      v18 = summary;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEBUG, "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} determined secure attribute | involvesPersonalization:%{public}@ | autoAssetDescriptor:%{public}@", buf, 0x20u);
     }
   }
@@ -232,25 +232,25 @@ void __37__MADAutoAssetSecure_autoAssetSecure__block_invoke(id a1)
   return v9;
 }
 
-+ (BOOL)doesDescriptorInvolveGrafting:(id)a3 forDescriptor:(id)a4
++ (BOOL)doesDescriptorInvolveGrafting:(id)grafting forDescriptor:(id)descriptor
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NSString alloc] initWithFormat:@"%@:doesDescriptorInvolveGrafting", v6];
+  descriptorCopy = descriptor;
+  graftingCopy = grafting;
+  graftingCopy = [[NSString alloc] initWithFormat:@"%@:doesDescriptorInvolveGrafting", graftingCopy];
 
-  v8 = [v5 metadata];
-  v9 = [v8 safeBooleanForKey:@"__ContainsCryptexContents"];
+  metadata = [descriptorCopy metadata];
+  v9 = [metadata safeBooleanForKey:@"__ContainsCryptexContents"];
 
   if (v9)
   {
     v10 = _MADLog(@"SecureMA");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [v5 summary];
+      summary = [descriptorCopy summary];
       *buf = 138543618;
-      v14 = v7;
+      v14 = graftingCopy;
       v15 = 2114;
-      v16 = v11;
+      v16 = summary;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEBUG, "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} determined secure attribute | involvesGrafting:Y | autoAssetDescriptor:%{public}@", buf, 0x16u);
     }
   }
@@ -258,28 +258,28 @@ void __37__MADAutoAssetSecure_autoAssetSecure__block_invoke(id a1)
   return v9;
 }
 
-+ (BOOL)doesDescriptorInvolveSecureOperations:(id)a3 forDescriptor:(id)a4
++ (BOOL)doesDescriptorInvolveSecureOperations:(id)operations forDescriptor:(id)descriptor
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NSString alloc] initWithFormat:@"%@:doesDescriptorInvolveSecureOperations", v6];
+  descriptorCopy = descriptor;
+  operationsCopy = operations;
+  operationsCopy = [[NSString alloc] initWithFormat:@"%@:doesDescriptorInvolveSecureOperations", operationsCopy];
 
-  LOBYTE(v6) = [MADAutoAssetSecure doesDescriptorInvolvePersonalization:v7 forDescriptor:v5];
-  v8 = [MADAutoAssetSecure doesDescriptorInvolveGrafting:v7 forDescriptor:v5];
+  LOBYTE(operationsCopy) = [MADAutoAssetSecure doesDescriptorInvolvePersonalization:operationsCopy forDescriptor:descriptorCopy];
+  v8 = [MADAutoAssetSecure doesDescriptorInvolveGrafting:operationsCopy forDescriptor:descriptorCopy];
 
-  return (v6 | v8) & 1;
+  return (operationsCopy | v8) & 1;
 }
 
-+ (BOOL)doesSetDescriptorInvolveSecureOperations:(id)a3 forSetDescriptor:(id)a4 withAutoAssetDescriptors:(id)a5
++ (BOOL)doesSetDescriptorInvolveSecureOperations:(id)operations forSetDescriptor:(id)descriptor withAutoAssetDescriptors:(id)descriptors
 {
-  v6 = a3;
-  v7 = a5;
-  v8 = [[NSString alloc] initWithFormat:@"%@:doesSetDescriptorInvolveSecureOperations", v6];
+  operationsCopy = operations;
+  descriptorsCopy = descriptors;
+  operationsCopy = [[NSString alloc] initWithFormat:@"%@:doesSetDescriptorInvolveSecureOperations", operationsCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v7;
+  v9 = descriptorsCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -295,7 +295,7 @@ void __37__MADAutoAssetSecure_autoAssetSecure__block_invoke(id a1)
         }
 
         v14 = *(*(&v17 + 1) + 8 * i);
-        if ([MADAutoAssetSecure doesDescriptorInvolvePersonalization:v8 forDescriptor:v14]|| [MADAutoAssetSecure doesDescriptorInvolveGrafting:v8 forDescriptor:v14])
+        if ([MADAutoAssetSecure doesDescriptorInvolvePersonalization:operationsCopy forDescriptor:v14]|| [MADAutoAssetSecure doesDescriptorInvolveGrafting:operationsCopy forDescriptor:v14])
         {
           v15 = 1;
           goto LABEL_13;
@@ -323,11 +323,11 @@ LABEL_13:
   return v15;
 }
 
-+ (BOOL)isSecureAsset:(id)a3 forDescriptor:(id)a4
++ (BOOL)isSecureAsset:(id)asset forDescriptor:(id)descriptor
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NSString alloc] initWithFormat:@"%@:isSecureAsset", v6];
+  descriptorCopy = descriptor;
+  assetCopy = asset;
+  assetCopy = [[NSString alloc] initWithFormat:@"%@:isSecureAsset", assetCopy];
 
   v8 = +[MADAutoAssetSecure autoAssetSecure];
   if (!v8)
@@ -335,11 +335,11 @@ LABEL_13:
     v12 = _MADLog(@"Auto");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v5 summary];
+      summary = [descriptorCopy summary];
       *buf = 138543618;
-      v20 = v7;
+      v20 = assetCopy;
       v21 = 2114;
-      v22 = v16;
+      v22 = summary;
       v17 = "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} no MADAutoAssetSecure instance | autoAssetDescriptor:%{public}@";
 LABEL_11:
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, v17, buf, 0x16u);
@@ -351,20 +351,20 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v9 = [v5 assetType];
-  v10 = [v5 assetId];
-  v11 = [MADAutoAssetSecure secureBundleForAssetType:v9 assetId:v10];
+  assetType = [descriptorCopy assetType];
+  assetId = [descriptorCopy assetId];
+  v11 = [MADAutoAssetSecure secureBundleForAssetType:assetType assetId:assetId];
 
   if (!v11)
   {
     v12 = _MADLog(@"SecureMA");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v5 summary];
+      summary = [descriptorCopy summary];
       *buf = 138543618;
-      v20 = v7;
+      v20 = assetCopy;
       v21 = 2114;
-      v22 = v16;
+      v22 = summary;
       v17 = "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} unable to initialize SecureMobileAssetBundle | autoAssetDescriptor:%{public}@";
       goto LABEL_11;
     }
@@ -382,13 +382,13 @@ LABEL_12:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = [MADAutoAssetSecure _secureAssetBundleSummary:v11];
-    v14 = [v5 summary];
+    summary2 = [descriptorCopy summary];
     *buf = 138543874;
-    v20 = v7;
+    v20 = assetCopy;
     v21 = 2114;
     v22 = v13;
     v23 = 2114;
-    v24 = v14;
+    v24 = summary2;
     _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} determined secure attribute | isSecureAsset:Y | secureAssetBundle:%{public}@ | autoAssetDescriptor:%{public}@", buf, 0x20u);
   }
 
@@ -399,11 +399,11 @@ LABEL_14:
   return v15;
 }
 
-+ (id)secureAssetBundle:(id)a3 forSetAtomicEntry:(id)a4
++ (id)secureAssetBundle:(id)bundle forSetAtomicEntry:(id)entry
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NSString alloc] initWithFormat:@"%@:secureAssetBundle_forSetAtomicEntry:", v6];
+  entryCopy = entry;
+  bundleCopy = bundle;
+  bundleCopy = [[NSString alloc] initWithFormat:@"%@:secureAssetBundle_forSetAtomicEntry:", bundleCopy];
 
   v8 = +[MADAutoAssetSecure autoAssetSecure];
   if (!v8)
@@ -414,11 +414,11 @@ LABEL_14:
       goto LABEL_10;
     }
 
-    v13 = [v5 summary];
+    summary = [entryCopy summary];
     *buf = 138543618;
-    v17 = v7;
+    v17 = bundleCopy;
     v18 = 2114;
-    v19 = v13;
+    v19 = summary;
     v14 = "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} no MADAutoAssetSecure instance | setAtomicEntry:%{public}@";
 LABEL_9:
     _os_log_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, v14, buf, 0x16u);
@@ -426,10 +426,10 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v9 = [v5 fullAssetSelector];
-  v10 = [v9 assetType];
-  v11 = [v5 assetID];
-  v12 = [MADAutoAssetSecure secureBundleForAssetType:v10 assetId:v11];
+  fullAssetSelector = [entryCopy fullAssetSelector];
+  assetType = [fullAssetSelector assetType];
+  assetID = [entryCopy assetID];
+  v12 = [MADAutoAssetSecure secureBundleForAssetType:assetType assetId:assetID];
 
   if (!v12)
   {
@@ -439,11 +439,11 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    v13 = [v5 summary];
+    summary = [entryCopy summary];
     *buf = 138543618;
-    v17 = v7;
+    v17 = bundleCopy;
     v18 = 2114;
-    v19 = v13;
+    v19 = summary;
     v14 = "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} unable to initialize SecureMobileAssetBundle | setAtomicEntry:%{public}@";
     goto LABEL_9;
   }
@@ -458,11 +458,11 @@ LABEL_10:
   return v12;
 }
 
-+ (BOOL)isPersonalizationRequired:(id)a3 forDescriptor:(id)a4
++ (BOOL)isPersonalizationRequired:(id)required forDescriptor:(id)descriptor
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NSString alloc] initWithFormat:@"%@:isPersonalizationRequired", v6];
+  descriptorCopy = descriptor;
+  requiredCopy = required;
+  requiredCopy = [[NSString alloc] initWithFormat:@"%@:isPersonalizationRequired", requiredCopy];
 
   v8 = +[MADAutoAssetSecure autoAssetSecure];
   if (!v8)
@@ -470,11 +470,11 @@ LABEL_10:
     v13 = _MADLog(@"Auto");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v5 summary];
+      summary = [descriptorCopy summary];
       *buf = 138543618;
-      v20 = v7;
+      v20 = requiredCopy;
       v21 = 2114;
-      v22 = v14;
+      v22 = summary;
       v15 = "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} no MADAutoAssetSecure instance | autoAssetDescriptor:%{public}@";
 LABEL_10:
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_ERROR, v15, buf, 0x16u);
@@ -488,20 +488,20 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v9 = [v5 assetType];
-  v10 = [v5 assetId];
-  v11 = [MADAutoAssetSecure secureBundleForAssetType:v9 assetId:v10];
+  assetType = [descriptorCopy assetType];
+  assetId = [descriptorCopy assetId];
+  v11 = [MADAutoAssetSecure secureBundleForAssetType:assetType assetId:assetId];
 
   if (!v11)
   {
     v13 = _MADLog(@"SecureMA");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v5 summary];
+      summary = [descriptorCopy summary];
       *buf = 138543618;
-      v20 = v7;
+      v20 = requiredCopy;
       v21 = 2114;
-      v22 = v14;
+      v22 = summary;
       v15 = "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} unable to initialize SecureMobileAssetBundle | autoAssetDescriptor:%{public}@";
       goto LABEL_10;
     }
@@ -515,13 +515,13 @@ LABEL_12:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v17 = [MADAutoAssetSecure _secureAssetBundleSummary:v11];
-      v18 = [v5 summary];
+      summary2 = [descriptorCopy summary];
       *buf = 138543874;
-      v20 = v7;
+      v20 = requiredCopy;
       v21 = 2114;
       v22 = v17;
       v23 = 2114;
-      v24 = v18;
+      v24 = summary2;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} determined secure attribute | personalizationRequired:Y | secureAssetBundle:%{public}@ | autoAssetDescriptor:%{public}@", buf, 0x20u);
     }
 
@@ -535,11 +535,11 @@ LABEL_13:
   return v12;
 }
 
-+ (BOOL)isCodeAsset:(id)a3 forDescriptor:(id)a4
++ (BOOL)isCodeAsset:(id)asset forDescriptor:(id)descriptor
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NSString alloc] initWithFormat:@"%@:isCodeAsset", v6];
+  descriptorCopy = descriptor;
+  assetCopy = asset;
+  assetCopy = [[NSString alloc] initWithFormat:@"%@:isCodeAsset", assetCopy];
 
   v8 = +[MADAutoAssetSecure autoAssetSecure];
   if (!v8)
@@ -547,11 +547,11 @@ LABEL_13:
     v12 = _MADLog(@"Auto");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v5 summary];
+      summary = [descriptorCopy summary];
       *buf = 138543618;
-      v20 = v7;
+      v20 = assetCopy;
       v21 = 2114;
-      v22 = v16;
+      v22 = summary;
       v17 = "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} no MADAutoAssetSecure instance | autoAssetDescriptor:%{public}@";
 LABEL_11:
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, v17, buf, 0x16u);
@@ -563,20 +563,20 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v9 = [v5 assetType];
-  v10 = [v5 assetId];
-  v11 = [MADAutoAssetSecure secureBundleForAssetType:v9 assetId:v10];
+  assetType = [descriptorCopy assetType];
+  assetId = [descriptorCopy assetId];
+  v11 = [MADAutoAssetSecure secureBundleForAssetType:assetType assetId:assetId];
 
   if (!v11)
   {
     v12 = _MADLog(@"SecureMA");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v5 summary];
+      summary = [descriptorCopy summary];
       *buf = 138543618;
-      v20 = v7;
+      v20 = assetCopy;
       v21 = 2114;
-      v22 = v16;
+      v22 = summary;
       v17 = "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} unable to initialize SecureMobileAssetBundle | autoAssetDescriptor:%{public}@";
       goto LABEL_11;
     }
@@ -594,13 +594,13 @@ LABEL_12:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = [MADAutoAssetSecure _secureAssetBundleSummary:v11];
-    v14 = [v5 summary];
+    summary2 = [descriptorCopy summary];
     *buf = 138543874;
-    v20 = v7;
+    v20 = assetCopy;
     v21 = 2114;
     v22 = v13;
     v23 = 2114;
-    v24 = v14;
+    v24 = summary2;
     _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} determined secure attribute | secureAssetBundle:%{public}@ | autoAssetDescriptor:%{public}@", buf, 0x20u);
   }
 
@@ -611,11 +611,11 @@ LABEL_14:
   return v15;
 }
 
-+ (BOOL)isPersonalizationOrGraftingRequired:(id)a3 forDescriptor:(id)a4
++ (BOOL)isPersonalizationOrGraftingRequired:(id)required forDescriptor:(id)descriptor
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NSString alloc] initWithFormat:@"%@:isPersonalizationOrGraftingRequired", v6];
+  descriptorCopy = descriptor;
+  requiredCopy = required;
+  requiredCopy = [[NSString alloc] initWithFormat:@"%@:isPersonalizationOrGraftingRequired", requiredCopy];
 
   v8 = +[MADAutoAssetSecure autoAssetSecure];
   if (!v8)
@@ -623,11 +623,11 @@ LABEL_14:
     v11 = _MADLog(@"Auto");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v5 summary];
+      summary = [descriptorCopy summary];
       *buf = 138543618;
-      v24 = v7;
+      v24 = requiredCopy;
       v25 = 2114;
-      v26 = v13;
+      v26 = summary;
       v14 = "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} no MADAutoAssetSecure instance| autoAssetDescriptor:%{public}@";
 LABEL_9:
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_ERROR, v14, buf, 0x16u);
@@ -639,20 +639,20 @@ LABEL_10:
     goto LABEL_23;
   }
 
-  v9 = [v5 assetType];
-  v10 = [v5 assetId];
-  v11 = [MADAutoAssetSecure secureBundleForAssetType:v9 assetId:v10];
+  assetType = [descriptorCopy assetType];
+  assetId = [descriptorCopy assetId];
+  v11 = [MADAutoAssetSecure secureBundleForAssetType:assetType assetId:assetId];
 
   if (!v11)
   {
     v11 = _MADLog(@"SecureMA");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v5 summary];
+      summary = [descriptorCopy summary];
       *buf = 138543618;
-      v24 = v7;
+      v24 = requiredCopy;
       v25 = 2114;
-      v26 = v13;
+      v26 = summary;
       v14 = "[AUTO-SECURE] {%{public}@} unable to initialize SecureMobileAssetBundle | autoAssetDescriptor:%{public}@";
       goto LABEL_9;
     }
@@ -701,9 +701,9 @@ LABEL_10:
 
     v22 = v17;
     v19 = [MADAutoAssetSecure _secureAssetBundleSummary:v11];
-    v20 = [v5 summary];
+    summary2 = [descriptorCopy summary];
     *buf = 138544386;
-    v24 = v7;
+    v24 = requiredCopy;
     v25 = 2114;
     v26 = v18;
     v27 = 2114;
@@ -711,7 +711,7 @@ LABEL_10:
     v29 = 2114;
     v30 = v19;
     v31 = 2114;
-    v32 = v20;
+    v32 = summary2;
     _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} determined secure attribute | personalizationRequired:%{public}@ | graftingRequired:%{public}@ | secureAssetBundle:%{public}@ | autoAssetDescriptor:%{public}@", buf, 0x34u);
   }
 
@@ -719,11 +719,11 @@ LABEL_23:
   return v12 | v15;
 }
 
-+ (BOOL)isGraftedOrMounted:(id)a3 forDescriptor:(id)a4
++ (BOOL)isGraftedOrMounted:(id)mounted forDescriptor:(id)descriptor
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NSString alloc] initWithFormat:@"%@:isGraftedOrMounted", v6];
+  descriptorCopy = descriptor;
+  mountedCopy = mounted;
+  mountedCopy = [[NSString alloc] initWithFormat:@"%@:isGraftedOrMounted", mountedCopy];
 
   v8 = +[MADAutoAssetSecure autoAssetSecure];
   if (!v8)
@@ -731,11 +731,11 @@ LABEL_23:
     v12 = _MADLog(@"Auto");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v5 summary];
+      summary = [descriptorCopy summary];
       *buf = 138543618;
-      v20 = v7;
+      v20 = mountedCopy;
       v21 = 2114;
-      v22 = v16;
+      v22 = summary;
       v17 = "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} no MADAutoAssetSecure instance | autoAssetDescriptor:%{public}@";
 LABEL_11:
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, v17, buf, 0x16u);
@@ -747,20 +747,20 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v9 = [v5 assetType];
-  v10 = [v5 assetId];
-  v11 = [MADAutoAssetSecure secureBundleForAssetType:v9 assetId:v10];
+  assetType = [descriptorCopy assetType];
+  assetId = [descriptorCopy assetId];
+  v11 = [MADAutoAssetSecure secureBundleForAssetType:assetType assetId:assetId];
 
   if (!v11)
   {
     v12 = _MADLog(@"SecureMA");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v5 summary];
+      summary = [descriptorCopy summary];
       *buf = 138543618;
-      v20 = v7;
+      v20 = mountedCopy;
       v21 = 2114;
-      v22 = v16;
+      v22 = summary;
       v17 = "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} unable to initialize SecureMobileAssetBundle | autoAssetDescriptor:%{public}@";
       goto LABEL_11;
     }
@@ -778,13 +778,13 @@ LABEL_12:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = [MADAutoAssetSecure _secureAssetBundleSummary:v11];
-    v14 = [v5 summary];
+    summary2 = [descriptorCopy summary];
     *buf = 138543874;
-    v20 = v7;
+    v20 = mountedCopy;
     v21 = 2114;
     v22 = v13;
     v23 = 2114;
-    v24 = v14;
+    v24 = summary2;
     _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} determined secure attribute | graftedOrMounted:Y | secureAssetBundle:%{public}@ | autoAssetDescriptor:%{public}@", buf, 0x20u);
   }
 
@@ -795,11 +795,11 @@ LABEL_14:
   return v15;
 }
 
-+ (BOOL)isPrePersonalized:(id)a3 forDescriptor:(id)a4
++ (BOOL)isPrePersonalized:(id)personalized forDescriptor:(id)descriptor
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NSString alloc] initWithFormat:@"%@:isPrePersonalized", v6];
+  descriptorCopy = descriptor;
+  personalizedCopy = personalized;
+  personalizedCopy = [[NSString alloc] initWithFormat:@"%@:isPrePersonalized", personalizedCopy];
 
   v8 = +[MADAutoAssetSecure autoAssetSecure];
   if (!v8)
@@ -807,11 +807,11 @@ LABEL_14:
     v12 = _MADLog(@"Auto");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v5 summary];
+      summary = [descriptorCopy summary];
       *buf = 138543618;
-      v20 = v7;
+      v20 = personalizedCopy;
       v21 = 2114;
-      v22 = v16;
+      v22 = summary;
       v17 = "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} no MADAutoAssetSecure instance | autoAssetDescriptor:%{public}@";
 LABEL_11:
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, v17, buf, 0x16u);
@@ -823,20 +823,20 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v9 = [v5 assetType];
-  v10 = [v5 assetId];
-  v11 = [MADAutoAssetSecure secureBundleForAssetType:v9 assetId:v10];
+  assetType = [descriptorCopy assetType];
+  assetId = [descriptorCopy assetId];
+  v11 = [MADAutoAssetSecure secureBundleForAssetType:assetType assetId:assetId];
 
   if (!v11)
   {
     v12 = _MADLog(@"SecureMA");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v5 summary];
+      summary = [descriptorCopy summary];
       *buf = 138543618;
-      v20 = v7;
+      v20 = personalizedCopy;
       v21 = 2114;
-      v22 = v16;
+      v22 = summary;
       v17 = "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} unable to initialize SecureMobileAssetBundle | autoAssetDescriptor:%{public}@";
       goto LABEL_11;
     }
@@ -854,13 +854,13 @@ LABEL_12:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = [MADAutoAssetSecure _secureAssetBundleSummary:v11];
-    v14 = [v5 summary];
+    summary2 = [descriptorCopy summary];
     *buf = 138543874;
-    v20 = v7;
+    v20 = personalizedCopy;
     v21 = 2114;
     v22 = v13;
     v23 = 2114;
-    v24 = v14;
+    v24 = summary2;
     _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} determined secure attribute | prePersonalized:Y | secureAssetBundle:%{public}@ | autoAssetDescriptor:%{public}@", buf, 0x20u);
   }
 
@@ -871,21 +871,21 @@ LABEL_14:
   return v15;
 }
 
-+ (id)getGraftPath:(id)a3 forDescriptor:(id)a4
++ (id)getGraftPath:(id)path forDescriptor:(id)descriptor
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NSString alloc] initWithFormat:@"%@:getGraftPath", v6];
+  descriptorCopy = descriptor;
+  pathCopy = path;
+  pathCopy = [[NSString alloc] initWithFormat:@"%@:getGraftPath", pathCopy];
 
-  if ([MADAutoAssetSecure isGraftedOrMounted:v7 forDescriptor:v5])
+  if ([MADAutoAssetSecure isGraftedOrMounted:pathCopy forDescriptor:descriptorCopy])
   {
-    v8 = [v5 assetType];
-    v9 = [v5 assetId];
-    v10 = [MADAutoAssetSecure secureBundleForAssetType:v8 assetId:v9];
+    assetType = [descriptorCopy assetType];
+    assetId = [descriptorCopy assetId];
+    v10 = [MADAutoAssetSecure secureBundleForAssetType:assetType assetId:assetId];
 
     if (v10)
     {
-      v11 = [v10 accessPath];
+      accessPath = [v10 accessPath];
     }
 
     else
@@ -893,50 +893,50 @@ LABEL_14:
       v12 = _MADLog(@"Auto");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v13 = [v5 summary];
+        summary = [descriptorCopy summary];
         *buf = 138543618;
-        v16 = v7;
+        v16 = pathCopy;
         v17 = 2114;
-        v18 = v13;
+        v18 = summary;
         _os_log_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} unable to initialize SecureMobileAssetBundle | autoAssetDescriptor:%{public}@", buf, 0x16u);
       }
 
-      v11 = 0;
+      accessPath = 0;
     }
   }
 
   else
   {
-    v11 = 0;
+    accessPath = 0;
   }
 
-  return v11;
+  return accessPath;
 }
 
-+ (void)depersonalizeIfSecure:(id)a3 forDescriptor:(id)a4
++ (void)depersonalizeIfSecure:(id)secure forDescriptor:(id)descriptor
 {
-  v5 = a3;
-  v6 = a4;
+  secureCopy = secure;
+  descriptorCopy = descriptor;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v7 = _os_activity_create(&dword_0, "MADSecure:depersonalizeIfSecure", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v7, &state);
 
-  v8 = [[NSString alloc] initWithFormat:@"%@:depersonalizeIfSecure", v5];
+  secureCopy = [[NSString alloc] initWithFormat:@"%@:depersonalizeIfSecure", secureCopy];
   v9 = +[MADAutoAssetSecure autoAssetSecure];
-  if ([MADAutoAssetSecure doesDescriptorInvolvePersonalization:v8 forDescriptor:v6])
+  if ([MADAutoAssetSecure doesDescriptorInvolvePersonalization:secureCopy forDescriptor:descriptorCopy])
   {
     if (v9)
     {
-      v10 = [v6 assetType];
-      v11 = [v6 assetId];
-      v12 = [MADAutoAssetSecure secureBundleForAssetType:v10 assetId:v11];
+      assetType = [descriptorCopy assetType];
+      assetId = [descriptorCopy assetId];
+      v12 = [MADAutoAssetSecure secureBundleForAssetType:assetType assetId:assetId];
 
       v13 = [MAAutoAssetSelector alloc];
-      v14 = [v6 assetType];
-      v15 = [v6 assetSpecifier];
-      v16 = [v6 assetVersion];
-      v39 = [v13 initForAssetType:v14 withAssetSpecifier:v15 matchingAssetVersion:v16];
+      assetType2 = [descriptorCopy assetType];
+      assetSpecifier = [descriptorCopy assetSpecifier];
+      assetVersion = [descriptorCopy assetVersion];
+      v39 = [v13 initForAssetType:assetType2 withAssetSpecifier:assetSpecifier matchingAssetVersion:assetVersion];
 
       if (v12)
       {
@@ -948,16 +948,16 @@ LABEL_14:
           v19 = _MADLog(@"SecureMA");
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
           {
-            v20 = [v6 summary];
+            summary = [descriptorCopy summary];
             *buf = 138543618;
-            v44 = v8;
+            v44 = secureCopy;
             v45 = 2114;
-            v46 = v20;
+            v46 = summary;
             _os_log_impl(&dword_0, v19, OS_LOG_TYPE_DEFAULT, "\n[AUTO-SECURE][AUTO-PERSONALIZATION-REMOVE] {%{public}@}  depersonalize SUCCESS| autoAssetDescriptor:%{public}@", buf, 0x16u);
           }
 
-          v21 = [v6 assetId];
-          [MADAutoAssetHistory recordOperation:1201 toHistoryType:6 fromLayer:6 forAssetID:v21 withSelector:v39];
+          assetId2 = [descriptorCopy assetId];
+          [MADAutoAssetHistory recordOperation:1201 toHistoryType:6 fromLayer:6 forAssetID:assetId2 withSelector:v39];
         }
 
         else
@@ -965,20 +965,20 @@ LABEL_14:
           v24 = _MADLog(@"SecureMA");
           if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
           {
-            v25 = [v18 checkedDescription];
-            v26 = [v6 summary];
+            checkedDescription = [v18 checkedDescription];
+            summary2 = [descriptorCopy summary];
             *buf = 138543874;
-            v44 = v8;
+            v44 = secureCopy;
             v45 = 2114;
-            v46 = v25;
+            v46 = checkedDescription;
             v47 = 2114;
-            v48 = v26;
+            v48 = summary2;
             _os_log_impl(&dword_0, v24, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE][AUTO-PERSONALIZATION-REMOVE] {%{public}@}  depersonalize ERROR | error:%{public}@ | autoAssetDescriptor:%{public}@", buf, 0x20u);
           }
 
-          [MADAutoAssetControlManager analyticsReportSecureOperationResults:v39 clientName:0 secureReason:0 operation:8 fromLocation:v8 mountError:0 graftError:0 personalizeError:v18 mapToExclaveError:0];
-          v21 = [v6 assetId];
-          [MADAutoAssetHistory recordFailedOperation:1201 fromLayer:6 forAssetID:v21 withSelector:v39 failingWithError:v18];
+          [MADAutoAssetControlManager analyticsReportSecureOperationResults:v39 clientName:0 secureReason:0 operation:8 fromLocation:secureCopy mountError:0 graftError:0 personalizeError:v18 mapToExclaveError:0];
+          assetId2 = [descriptorCopy assetId];
+          [MADAutoAssetHistory recordFailedOperation:1201 fromLayer:6 forAssetID:assetId2 withSelector:v39 failingWithError:v18];
         }
 
         if (+[MAAIRBEventReporter isAvailable])
@@ -988,10 +988,10 @@ LABEL_14:
           v38 = [(MAAIRBMobileAssetOperationMetadata *)v27 initWithCode:1201 name:v28];
 
           v29 = [MAAIRBMobileAssetAssetSelector alloc];
-          v30 = [v39 assetType];
-          v31 = [v39 assetSpecifier];
-          v32 = [v39 assetVersion];
-          v33 = [(MAAIRBMobileAssetAssetSelector *)v29 initWithAssetType:v30 assetSpecifier:v31 assetVersion:v32];
+          assetType3 = [v39 assetType];
+          assetSpecifier2 = [v39 assetSpecifier];
+          assetVersion2 = [v39 assetVersion];
+          v33 = [(MAAIRBMobileAssetAssetSelector *)v29 initWithAssetType:assetType3 assetSpecifier:assetSpecifier2 assetVersion:assetVersion2];
 
           v34 = [MAAIRBAppleIntelligenceAssetDeliveryEventType typeSecure:v38 assetSelector:v33 type:0 secureOperationMetadata:0];
           v35 = [MAAIRBAppleIntelligenceAssetDeliveryEvent alloc];
@@ -1020,11 +1020,11 @@ LABEL_14:
         v18 = _MADLog(@"SecureMA");
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
-          v23 = [v6 summary];
+          summary3 = [descriptorCopy summary];
           *buf = 138543618;
-          v44 = v8;
+          v44 = secureCopy;
           v45 = 2114;
-          v46 = v23;
+          v46 = summary3;
           _os_log_impl(&dword_0, v18, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE][AUTO-PERSONALIZATION-REMOVE] {%{public}@}  unable to initialize SecureMobileAssetBundle | autoAssetDescriptor:%{public}@", buf, 0x16u);
         }
       }
@@ -1035,11 +1035,11 @@ LABEL_14:
       v12 = _MADLog(@"Auto");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v22 = [v6 summary];
+        summary4 = [descriptorCopy summary];
         *buf = 138543618;
-        v44 = v8;
+        v44 = secureCopy;
         v45 = 2114;
-        v46 = v22;
+        v46 = summary4;
         _os_log_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE][AUTO-PERSONALIZATION-REMOVE] {%{public}@}  no MADAutoAssetSecure instance | autoAssetDescriptor:%{public}@", buf, 0x16u);
       }
     }
@@ -1048,17 +1048,17 @@ LABEL_14:
   os_activity_scope_leave(&state);
 }
 
-+ (id)secureBundleForAssetType:(id)a3 assetId:(id)a4
++ (id)secureBundleForAssetType:(id)type assetId:(id)id
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = getAutoLocalUrlFromTypeAndIdWithPurpose(v5, v6, 2, @"auto");
+  typeCopy = type;
+  idCopy = id;
+  v7 = getAutoLocalUrlFromTypeAndIdWithPurpose(typeCopy, idCopy, 2, @"auto");
   if (v7)
   {
     v8 = [SecureMobileAssetBundle alloc];
-    v9 = [v7 path];
-    v10 = [v9 stringByDeletingLastPathComponent];
-    v11 = [(SecureMobileAssetBundle *)v8 initWithPath:v10];
+    path = [v7 path];
+    stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
+    v11 = [(SecureMobileAssetBundle *)v8 initWithPath:stringByDeletingLastPathComponent];
 
     if (v11)
     {
@@ -1069,9 +1069,9 @@ LABEL_14:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v17 = 138543874;
-      v18 = v5;
+      v18 = typeCopy;
       v19 = 2114;
-      v20 = v6;
+      v20 = idCopy;
       v21 = 2114;
       v22 = v7;
       v13 = "\n[AUTO-SECURE][LOCAL-CONTENT-URL] {secureBundleForAssetType} unable to initialize secureAssetBundle | assetType:%{public}@ | assetId:%{public}@ | localContentURLBasePath:%{public}@";
@@ -1088,9 +1088,9 @@ LABEL_7:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v17 = 138543618;
-      v18 = v5;
+      v18 = typeCopy;
       v19 = 2114;
-      v20 = v6;
+      v20 = idCopy;
       v13 = "\n[AUTO-SECURE][LOCAL-CONTENT-URL] {secureBundleForAssetType} unable to get localContentURLBase | assetType:%{public}@ | assetId:%{public}@";
       v14 = v12;
       v15 = 22;
@@ -1104,31 +1104,31 @@ LABEL_9:
   return v11;
 }
 
-+ (id)localContentURL:(id)a3 forDescriptor:(id)a4
++ (id)localContentURL:(id)l forDescriptor:(id)descriptor
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 assetType];
-  v8 = [v5 assetId];
+  descriptorCopy = descriptor;
+  lCopy = l;
+  assetType = [descriptorCopy assetType];
+  assetId = [descriptorCopy assetId];
 
-  v9 = [MADAutoAssetSecure localContentURL:v6 forAssetType:v7 assetId:v8];
+  v9 = [MADAutoAssetSecure localContentURL:lCopy forAssetType:assetType assetId:assetId];
 
   return v9;
 }
 
-+ (id)localContentURL:(id)a3 forAssetType:(id)a4 assetId:(id)a5
++ (id)localContentURL:(id)l forAssetType:(id)type assetId:(id)id
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [[NSString alloc] initWithFormat:@"%@:localContentURL", v9];
+  typeCopy = type;
+  idCopy = id;
+  lCopy = l;
+  lCopy = [[NSString alloc] initWithFormat:@"%@:localContentURL", lCopy];
 
-  v11 = getAutoLocalUrlFromTypeAndIdWithPurpose(v7, v8, 2, @"auto");
+  v11 = getAutoLocalUrlFromTypeAndIdWithPurpose(typeCopy, idCopy, 2, @"auto");
   if (v11)
   {
     v12 = v11;
     v13 = +[MADAutoAssetSecure autoAssetSecure];
-    v14 = [MADAutoAssetSecure secureBundleForAssetType:v7 assetId:v8];
+    v14 = [MADAutoAssetSecure secureBundleForAssetType:typeCopy assetId:idCopy];
     if (![v14 isSecureMobileAsset])
     {
       goto LABEL_38;
@@ -1172,26 +1172,26 @@ LABEL_9:
             v24 = @"NO";
           }
 
-          v31 = v10;
+          v31 = lCopy;
           v32 = 2114;
           v33 = v23;
           v34 = 2114;
           v35 = v24;
           v36 = 2114;
-          v37 = v7;
+          v37 = typeCopy;
           v38 = 2114;
-          v39 = v8;
+          v39 = idCopy;
           v22 = "\n[AUTO-SECURE][LOCAL-CONTENT-URL] {%{public}@} SecureMobileAssetBundle is not available | isSecureMobileAsset:%{public}@ | isAccessible:%{public}@ | assetType:%{public}@ | assetId:%{public}@";
           goto LABEL_50;
         }
 
-        v15 = [v14 accessPath];
+        accessPath = [v14 accessPath];
 
-        if (v15)
+        if (accessPath)
         {
           v16 = [NSURL alloc];
-          v17 = [v14 accessPath];
-          v18 = [v16 initWithString:v17];
+          accessPath2 = [v14 accessPath];
+          v18 = [v16 initWithString:accessPath2];
 
           v12 = v18;
           if (!v18)
@@ -1220,15 +1220,15 @@ LABEL_9:
                 v20 = @"NO";
               }
 
-              v31 = v10;
+              v31 = lCopy;
               v32 = 2114;
               v33 = v19;
               v34 = 2114;
               v35 = v20;
               v36 = 2114;
-              v37 = v7;
+              v37 = typeCopy;
               v38 = 2114;
-              v39 = v8;
+              v39 = idCopy;
               _os_log_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE][LOCAL-CONTENT-URL] {%{public}@} SecureMobileAssetBundle accessible yet no accessPath | isSecureMobileAsset:%{public}@ | isAccessible:%{public}@ | assetType:%{public}@ | assetId:%{public}@", buf, 0x34u);
             }
 
@@ -1264,15 +1264,15 @@ LABEL_38:
             v29 = @"NO";
           }
 
-          v31 = v10;
+          v31 = lCopy;
           v32 = 2114;
           v33 = v28;
           v34 = 2114;
           v35 = v29;
           v36 = 2114;
-          v37 = v7;
+          v37 = typeCopy;
           v38 = 2114;
-          v39 = v8;
+          v39 = idCopy;
           v22 = "\n[AUTO-SECURE][LOCAL-CONTENT-URL] {%{public}@} SecureMobileAssetBundle accessible yet no accessPath | isSecureMobileAsset:%{public}@ | isAccessible:%{public}@ | assetType:%{public}@ | assetId:%{public}@";
 LABEL_50:
           v25 = v21;
@@ -1294,11 +1294,11 @@ LABEL_37:
       }
 
       *buf = 138543874;
-      v31 = v10;
+      v31 = lCopy;
       v32 = 2114;
-      v33 = v7;
+      v33 = typeCopy;
       v34 = 2114;
-      v35 = v8;
+      v35 = idCopy;
       v22 = "\n[AUTO-SECURE][LOCAL-CONTENT-URL] {%{public}@} unable to initialize SecureMobileAssetBundle | assetType:%{public}@ | assetId:%{public}@";
     }
 
@@ -1311,11 +1311,11 @@ LABEL_37:
       }
 
       *buf = 138543874;
-      v31 = v10;
+      v31 = lCopy;
       v32 = 2114;
-      v33 = v7;
+      v33 = typeCopy;
       v34 = 2114;
-      v35 = v8;
+      v35 = idCopy;
       v22 = "\n[AUTO-SECURE][LOCAL-CONTENT-URL] {%{public}@} no MADAutoAssetSecure instance | assetType:%{public}@ | assetId:%{public}@";
     }
 
@@ -1330,11 +1330,11 @@ LABEL_35:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543874;
-    v31 = v10;
+    v31 = lCopy;
     v32 = 2114;
-    v33 = v7;
+    v33 = typeCopy;
     v34 = 2114;
-    v35 = v8;
+    v35 = idCopy;
     _os_log_impl(&dword_0, v13, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE][LOCAL-CONTENT-URL] {%{public}@} unable to form default URL [before considering whether secure-asset] | assetType:%{public}@ | assetId:%{public}@", buf, 0x20u);
   }
 
@@ -1344,17 +1344,17 @@ LABEL_39:
   return v12;
 }
 
-+ (id)latestDownloadedAtomicInstanceEntries:(id)a3 forSetDescriptor:(id)a4 withAvailableForUseError:(id *)a5
++ (id)latestDownloadedAtomicInstanceEntries:(id)entries forSetDescriptor:(id)descriptor withAvailableForUseError:(id *)error
 {
-  v80 = a3;
-  v82 = a4;
-  v76 = [v82 latestDowloadedAtomicInstanceEntries];
+  entriesCopy = entries;
+  descriptorCopy = descriptor;
+  latestDowloadedAtomicInstanceEntries = [descriptorCopy latestDowloadedAtomicInstanceEntries];
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v6 = _os_activity_create(&dword_0, "MADSecure:latestDownloadedAtomicInstanceEntries", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v6, &state);
 
-  v7 = [[NSString alloc] initWithFormat:@"%@:latestDownloadedAtomicInstanceEntries", v80];
+  entriesCopy = [[NSString alloc] initWithFormat:@"%@:latestDownloadedAtomicInstanceEntries", entriesCopy];
   v74 = +[MADAutoAssetSecure autoAssetSecure];
   if (v74)
   {
@@ -1363,8 +1363,8 @@ LABEL_39:
     v93 = 0u;
     v90 = 0u;
     v91 = 0u;
-    v9 = [v82 latestDowloadedAtomicInstanceEntries];
-    v10 = [v9 countByEnumeratingWithState:&v90 objects:v107 count:16];
+    latestDowloadedAtomicInstanceEntries2 = [descriptorCopy latestDowloadedAtomicInstanceEntries];
+    v10 = [latestDowloadedAtomicInstanceEntries2 countByEnumeratingWithState:&v90 objects:v107 count:16];
     if (!v10)
     {
       v86 = 0;
@@ -1373,9 +1373,9 @@ LABEL_39:
 
     v86 = 0;
     v84 = *v91;
-    v79 = v7;
+    v79 = entriesCopy;
     v78 = v8;
-    obj = v9;
+    obj = latestDowloadedAtomicInstanceEntries2;
     while (1)
     {
       v85 = v10;
@@ -1388,14 +1388,14 @@ LABEL_39:
 
         v12 = *(*(&v90 + 1) + 8 * i);
         context = objc_autoreleasePoolPush();
-        v13 = [v12 fullAssetSelector];
-        v14 = [v13 assetType];
-        v15 = [v12 assetID];
-        v16 = getAutoLocalUrlFromTypeAndIdWithPurpose(v14, v15, 2, @"auto");
+        fullAssetSelector = [v12 fullAssetSelector];
+        assetType = [fullAssetSelector assetType];
+        assetID = [v12 assetID];
+        v16 = getAutoLocalUrlFromTypeAndIdWithPurpose(assetType, assetID, 2, @"auto");
 
         if (v16)
         {
-          v17 = [a1 secureAssetBundle:v7 forSetAtomicEntry:v12];
+          v17 = [self secureAssetBundle:entriesCopy forSetAtomicEntry:v12];
           v18 = v17;
           if (!v17)
           {
@@ -1406,22 +1406,22 @@ LABEL_39:
           if ([v17 isAccessible])
           {
             v19 = [NSURL alloc];
-            v20 = [v18 accessPath];
-            v21 = [v19 initWithString:v20];
+            accessPath = [v18 accessPath];
+            v21 = [v19 initWithString:accessPath];
 
             if (!v21)
             {
               v22 = _MADLog(@"SecureMA");
               if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
               {
-                v23 = [v82 summary];
-                v24 = [v12 summary];
+                summary = [descriptorCopy summary];
+                summary2 = [v12 summary];
                 *buf = 138543874;
-                v96 = v7;
+                v96 = entriesCopy;
                 v97 = 2114;
-                v98 = v23;
+                v98 = summary;
                 v99 = 2114;
-                v100 = v24;
+                v100 = summary2;
                 _os_log_impl(&dword_0, v22, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE]LATEST-DOWNLOADED] {%{public}@} accessible secure-bundle with no local content URL | setDescriptor:%{public}@ | nextAtomicEntry:%{public}@", buf, 0x20u);
               }
 
@@ -1437,10 +1437,10 @@ LABEL_39:
 
 LABEL_20:
             v30 = [MANAutoAssetSetAtomicEntry alloc];
-            v31 = [v12 fullAssetSelector];
-            v32 = [v12 assetID];
-            v33 = [v12 assetAttributes];
-            v34 = -[MANAutoAssetSetAtomicEntry initWithFullAssetSelector:withAssetID:withLocalContentURL:withAssetAttributes:inhibitedFromEmergencyRemoval:](v30, "initWithFullAssetSelector:withAssetID:withLocalContentURL:withAssetAttributes:inhibitedFromEmergencyRemoval:", v31, v32, v21, v33, [v12 inhibitedFromEmergencyRemoval]);
+            fullAssetSelector2 = [v12 fullAssetSelector];
+            assetID2 = [v12 assetID];
+            assetAttributes = [v12 assetAttributes];
+            v34 = -[MANAutoAssetSetAtomicEntry initWithFullAssetSelector:withAssetID:withLocalContentURL:withAssetAttributes:inhibitedFromEmergencyRemoval:](v30, "initWithFullAssetSelector:withAssetID:withLocalContentURL:withAssetAttributes:inhibitedFromEmergencyRemoval:", fullAssetSelector2, assetID2, v21, assetAttributes, [v12 inhibitedFromEmergencyRemoval]);
 
             if (v34)
             {
@@ -1472,19 +1472,19 @@ LABEL_20:
                   v56 = @"NO";
                 }
 
-                v57 = [v82 summary];
-                v58 = [v12 summary];
+                summary3 = [descriptorCopy summary];
+                summary4 = [v12 summary];
                 *buf = 138544386;
                 v96 = v79;
                 v97 = 2114;
                 v98 = v55;
-                v7 = v79;
+                entriesCopy = v79;
                 v99 = 2114;
                 v100 = v56;
                 v101 = 2114;
-                v102 = v57;
+                v102 = summary3;
                 v103 = 2114;
-                v104 = v58;
+                v104 = summary4;
                 _os_log_impl(&dword_0, v54, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE]LATEST-DOWNLOADED] {%{public}@} unable to create atomic-entry with determined local content URL | isSecureMobileAsset:%{public}@ | isAccessible:%{public}@) | setDescriptor:%{public}@ | nextAtomicEntry:%{public}@", buf, 0x34u);
 
                 v8 = v78;
@@ -1492,7 +1492,7 @@ LABEL_20:
 
               if (!v86)
               {
-                v86 = [MAAutoAssetError buildError:6101 fromOperation:v80 underlyingError:0 withDescription:@"Unable to allocate atomic-entry-with-asset-path"];
+                v86 = [MAAutoAssetError buildError:6101 fromOperation:entriesCopy underlyingError:0 withDescription:@"Unable to allocate atomic-entry-with-asset-path"];
               }
             }
 
@@ -1526,19 +1526,19 @@ LABEL_20:
                   v61 = @"NO";
                 }
 
-                v62 = [v82 summary];
-                v63 = [v12 summary];
+                summary5 = [descriptorCopy summary];
+                summary6 = [v12 summary];
                 *buf = 138544386;
                 v96 = v79;
                 v97 = 2114;
                 v98 = v60;
                 v99 = 2114;
                 v100 = v61;
-                v7 = v79;
+                entriesCopy = v79;
                 v101 = 2114;
-                v102 = v62;
+                v102 = summary5;
                 v103 = 2114;
-                v104 = v63;
+                v104 = summary6;
                 _os_log_impl(&dword_0, v59, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE]LATEST-DOWNLOADED] {%{public}@} SecureMobileAssetBundle is not available and not personalized | isSecureMobileAsset:%{public}@ | isAccessible:%{public}@ | setDescriptor:%{public}@ | nextAtomicEntry:%{public}@", buf, 0x34u);
               }
 
@@ -1547,7 +1547,7 @@ LABEL_20:
                 v25 = 6535;
                 v26 = @"At point where all secure content should be personalized yet secure-not-personalized enncountered";
 LABEL_72:
-                v86 = [MAAutoAssetError buildError:v25 fromOperation:v80 underlyingError:0 withDescription:v26];
+                v86 = [MAAutoAssetError buildError:v25 fromOperation:entriesCopy underlyingError:0 withDescription:v26];
               }
 
 LABEL_59:
@@ -1579,26 +1579,26 @@ LABEL_59:
                 v37 = @"NO";
               }
 
-              v38 = [v82 summary];
-              v39 = [v12 summary];
+              summary7 = [descriptorCopy summary];
+              summary8 = [v12 summary];
               *buf = 138544386;
               v96 = v79;
               v97 = 2114;
               v98 = v36;
               v99 = 2114;
               v100 = v37;
-              v7 = v79;
+              entriesCopy = v79;
               v101 = 2114;
-              v102 = v38;
+              v102 = summary7;
               v103 = 2114;
-              v104 = v39;
+              v104 = summary8;
               _os_log_impl(&dword_0, v35, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE]LATEST-DOWNLOADED] {%{public}@} SecureMobileAssetBundle is personalized but not available. Attempting to graft | isSecureMobileAsset:%{public}@ | isAccessible:%{public}@ | setDescriptor:%{public}@ | nextAtomicEntry:%{public}@", buf, 0x34u);
             }
 
-            v40 = [v12 assetID];
-            v41 = [v12 fullAssetSelector];
+            assetID3 = [v12 assetID];
+            fullAssetSelector3 = [v12 fullAssetSelector];
             v88 = 0;
-            [a1 graftSecureAsset:v7 secureAssetBundle:v18 forSetDescriptor:v82 forAssetID:v40 withSelector:v41 accessMechanismPtr:&v89 error:&v88];
+            [self graftSecureAsset:entriesCopy secureAssetBundle:v18 forSetDescriptor:descriptorCopy forAssetID:assetID3 withSelector:fullAssetSelector3 accessMechanismPtr:&v89 error:&v88];
             v42 = v88;
 
             if (v42)
@@ -1606,9 +1606,9 @@ LABEL_59:
               v43 = _MADLog(@"SecureMA");
               if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
               {
-                v44 = [v18 isSecureMobileAsset];
+                isSecureMobileAsset = [v18 isSecureMobileAsset];
                 v45 = @"NO";
-                if (v44)
+                if (isSecureMobileAsset)
                 {
                   v45 = @"YES";
                 }
@@ -1624,26 +1624,26 @@ LABEL_59:
                   v46 = @"NO";
                 }
 
-                v47 = [v82 summary];
-                v48 = [v12 summary];
+                summary9 = [descriptorCopy summary];
+                summary10 = [v12 summary];
                 *buf = 138544642;
                 v96 = v79;
                 v97 = 2114;
                 v98 = v77;
                 v99 = 2114;
                 v100 = v46;
-                v7 = v79;
+                entriesCopy = v79;
                 v101 = 2114;
-                v102 = v47;
+                v102 = summary9;
                 v103 = 2114;
-                v104 = v48;
+                v104 = summary10;
                 v105 = 2114;
                 v106 = v42;
                 _os_log_impl(&dword_0, v43, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE]LATEST-DOWNLOADED] {%{public}@} Failed to graft SecureMobileAssetBundle | isSecureMobileAsset:%{public}@ | isAccessible:%{public}@ | setDescriptor:%{public}@ | nextAtomicEntry:%{public}@ | error:%{public}@", buf, 0x3Eu);
               }
 
-              v49 = [v12 fullAssetSelector];
-              v50 = [v82 clientDomainName];
+              fullAssetSelector4 = [v12 fullAssetSelector];
+              clientDomainName = [descriptorCopy clientDomainName];
               v51 = [MADAutoAssetSecure secureOperationGraftOrMount:v89];
               if (v89 == 2)
               {
@@ -1665,7 +1665,7 @@ LABEL_59:
                 v53 = 0;
               }
 
-              [MADAutoAssetControlManager analyticsReportSecureOperationResults:v49 clientName:v50 secureReason:0 operation:v51 fromLocation:v7 mountError:v52 graftError:v53 personalizeError:0 mapToExclaveError:0, v74];
+              [MADAutoAssetControlManager analyticsReportSecureOperationResults:fullAssetSelector4 clientName:clientDomainName secureReason:0 operation:v51 fromLocation:entriesCopy mountError:v52 graftError:v53 personalizeError:0 mapToExclaveError:0, v74];
 
               if (!v86)
               {
@@ -1676,8 +1676,8 @@ LABEL_59:
             else
             {
               v64 = [NSURL alloc];
-              v65 = [v18 accessPath];
-              v21 = [v64 initWithString:v65];
+              accessPath2 = [v18 accessPath];
+              v21 = [v64 initWithString:accessPath2];
 
               if (v21)
               {
@@ -1687,20 +1687,20 @@ LABEL_59:
               v66 = _MADLog(@"SecureMA");
               if (os_log_type_enabled(v66, OS_LOG_TYPE_ERROR))
               {
-                v67 = [v82 summary];
-                v68 = [v12 summary];
+                summary11 = [descriptorCopy summary];
+                summary12 = [v12 summary];
                 *buf = 138543874;
-                v96 = v7;
+                v96 = entriesCopy;
                 v97 = 2114;
-                v98 = v67;
+                v98 = summary11;
                 v99 = 2114;
-                v100 = v68;
+                v100 = summary12;
                 _os_log_impl(&dword_0, v66, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE]LATEST-DOWNLOADED] {%{public}@} unable to allocate local-content-URL for accessible secure asset | setDescriptor:%{public}@ | nextAtomicEntry:%{public}@", buf, 0x20u);
               }
 
               if (!v86)
               {
-                v86 = [MAAutoAssetError buildError:6111 fromOperation:v80 underlyingError:0 withDescription:@"Unable to allocate local-content-URL for accessible secure asset"];
+                v86 = [MAAutoAssetError buildError:6111 fromOperation:entriesCopy underlyingError:0 withDescription:@"Unable to allocate local-content-URL for accessible secure asset"];
               }
             }
           }
@@ -1711,33 +1711,33 @@ LABEL_59:
         v27 = _MADLog(@"SecureMA");
         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
         {
-          v28 = [v82 summary];
-          v29 = [v12 summary];
+          summary13 = [descriptorCopy summary];
+          summary14 = [v12 summary];
           *buf = 138543874;
-          v96 = v7;
+          v96 = entriesCopy;
           v97 = 2114;
-          v98 = v28;
+          v98 = summary13;
           v99 = 2114;
-          v100 = v29;
+          v100 = summary14;
           _os_log_impl(&dword_0, v27, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE]LATEST-DOWNLOADED] {%{public}@} unable to form default URL [before considering whether secure-asset] | setDescriptor:%{public}@ | nextAtomicEntry:%{public}@", buf, 0x20u);
         }
 
         if (!v86)
         {
-          v86 = [MAAutoAssetError buildError:6111 fromOperation:v80 underlyingError:0 withDescription:@"Unable to form default URL [before considering whether secure-asset]"];
+          v86 = [MAAutoAssetError buildError:6111 fromOperation:entriesCopy underlyingError:0 withDescription:@"Unable to form default URL [before considering whether secure-asset]"];
         }
 
 LABEL_60:
         objc_autoreleasePoolPop(context);
       }
 
-      v9 = obj;
+      latestDowloadedAtomicInstanceEntries2 = obj;
       v10 = [obj countByEnumeratingWithState:&v90 objects:v107 count:16];
       if (!v10)
       {
 LABEL_84:
 
-        v76 = v8;
+        latestDowloadedAtomicInstanceEntries = v8;
         goto LABEL_85;
       }
     }
@@ -1746,43 +1746,43 @@ LABEL_84:
   v69 = _MADLog(@"Auto");
   if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
   {
-    v70 = [v82 summary];
+    summary15 = [descriptorCopy summary];
     *buf = 138543618;
-    v96 = v7;
+    v96 = entriesCopy;
     v97 = 2114;
-    v98 = v70;
+    v98 = summary15;
     _os_log_impl(&dword_0, v69, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE]LATEST-DOWNLOADED] {%{public}@} no MADAutoAssetSecure instance | setDescriptor:%{public}@", buf, 0x16u);
   }
 
-  v86 = [MAAutoAssetError buildError:6101 fromOperation:v80 underlyingError:0 withDescription:@"Unable to locate auto-asset-secure interface"];
+  v86 = [MAAutoAssetError buildError:6101 fromOperation:entriesCopy underlyingError:0 withDescription:@"Unable to locate auto-asset-secure interface"];
 LABEL_85:
-  if (a5)
+  if (error)
   {
     v71 = v86;
-    *a5 = v86;
+    *error = v86;
   }
 
-  v72 = v76;
+  v72 = latestDowloadedAtomicInstanceEntries;
 
   os_activity_scope_leave(&state);
 
   return v72;
 }
 
-+ (void)personalizeDownloaded:(id)a3 personalizingDescriptor:(id)a4 allowingNetwork:(BOOL)a5 committingPersonalization:(BOOL)a6 completion:(id)a7
++ (void)personalizeDownloaded:(id)downloaded personalizingDescriptor:(id)descriptor allowingNetwork:(BOOL)network committingPersonalization:(BOOL)personalization completion:(id)completion
 {
-  v8 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a7;
+  personalizationCopy = personalization;
+  downloadedCopy = downloaded;
+  descriptorCopy = descriptor;
+  completionCopy = completion;
   v13 = [NSString alloc];
   v14 = @"pre-";
-  if (v8)
+  if (personalizationCopy)
   {
     v14 = &stru_4BD3F0;
   }
 
-  v15 = [v13 initWithFormat:@"%@:%@personalizeDownloaded", v10, v14];
+  v15 = [v13 initWithFormat:@"%@:%@personalizeDownloaded", downloadedCopy, v14];
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v16 = _os_activity_create(&dword_0, "MADSecure:personalizeDownloaded", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -1790,37 +1790,37 @@ LABEL_85:
 
   v17 = +[MADAutoAssetSecure autoAssetSecure];
   v18 = [MAAutoAssetSelector alloc];
-  v19 = [v11 assetType];
-  v20 = [v11 assetSpecifier];
-  v21 = [v11 assetVersion];
-  v42 = [v18 initForAssetType:v19 withAssetSpecifier:v20 matchingAssetVersion:v21];
+  assetType = [descriptorCopy assetType];
+  assetSpecifier = [descriptorCopy assetSpecifier];
+  assetVersion = [descriptorCopy assetVersion];
+  v42 = [v18 initForAssetType:assetType withAssetSpecifier:assetSpecifier matchingAssetVersion:assetVersion];
 
   if (v17)
   {
-    v22 = [@"com.apple.MobileAsset.daemon.secureWaitedOperationQueue" UTF8String];
+    uTF8String = [@"com.apple.MobileAsset.daemon.secureWaitedOperationQueue" UTF8String];
     v23 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v24 = dispatch_queue_create(v22, v23);
+    v24 = dispatch_queue_create(uTF8String, v23);
 
     v39 = v17;
-    v40 = v10;
+    v40 = downloadedCopy;
     if (v24)
     {
       v25 = v15;
-      v26 = v12;
+      v26 = completionCopy;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = __121__MADAutoAssetSecure_personalizeDownloaded_personalizingDescriptor_allowingNetwork_committingPersonalization_completion___block_invoke_1237;
       block[3] = &unk_4B3070;
       v27 = &v44;
-      v44 = v11;
+      v44 = descriptorCopy;
       v28 = &v45;
       v29 = v25;
       v45 = v25;
       v30 = &v47;
       v31 = v26;
       v47 = v26;
-      v48 = a5;
-      v49 = v8;
+      networkCopy = network;
+      v49 = personalizationCopy;
       v32 = v42;
       v46 = v42;
       dispatch_async(v24, block);
@@ -1832,7 +1832,7 @@ LABEL_85:
       v33 = +[SUCore sharedCore];
       v36 = [v33 selectCompletionQueue:0];
       v37 = v15;
-      v38 = v12;
+      v38 = completionCopy;
       v50[0] = _NSConcreteStackBlock;
       v50[1] = 3221225472;
       v50[2] = __121__MADAutoAssetSecure_personalizeDownloaded_personalizingDescriptor_allowingNetwork_committingPersonalization_completion___block_invoke_1233;
@@ -1841,7 +1841,7 @@ LABEL_85:
       v29 = v37;
       v51 = v37;
       v28 = &v52;
-      v52 = v11;
+      v52 = descriptorCopy;
       v30 = &v53;
       v31 = v38;
       v53 = v38;
@@ -1850,10 +1850,10 @@ LABEL_85:
       v32 = v42;
     }
 
-    v12 = v31;
+    completionCopy = v31;
     v15 = v29;
     v17 = v39;
-    v10 = v40;
+    downloadedCopy = v40;
   }
 
   else
@@ -1865,8 +1865,8 @@ LABEL_85:
     v54[2] = __121__MADAutoAssetSecure_personalizeDownloaded_personalizingDescriptor_allowingNetwork_committingPersonalization_completion___block_invoke;
     v54[3] = &unk_4B3020;
     v55 = v15;
-    v56 = v11;
-    v57 = v12;
+    v56 = descriptorCopy;
+    v57 = completionCopy;
     dispatch_async(v35, v54);
 
     v24 = v55;
@@ -2220,11 +2220,11 @@ void __121__MADAutoAssetSecure_personalizeDownloaded_personalizingDescriptor_all
   }
 }
 
-+ (id)commitPrePersonalizedSync:(id)a3 committingSelectors:(id)a4
++ (id)commitPrePersonalizedSync:(id)sync committingSelectors:(id)selectors
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[NSString alloc] initWithFormat:@"%@:commitPrePersonalizedSync", v5];
+  syncCopy = sync;
+  selectorsCopy = selectors;
+  syncCopy = [[NSString alloc] initWithFormat:@"%@:commitPrePersonalizedSync", syncCopy];
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v8 = _os_activity_create(&dword_0, "MADSecure:commitPrePersonalizedSync", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -2239,36 +2239,36 @@ void __121__MADAutoAssetSecure_personalizeDownloaded_personalizingDescriptor_all
   v32 = 0;
   if (v9)
   {
-    if ([v6 count])
+    if ([selectorsCopy count])
     {
-      v10 = [v9 secureProtectionQueue];
+      secureProtectionQueue = [v9 secureProtectionQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = __68__MADAutoAssetSecure_commitPrePersonalizedSync_committingSelectors___block_invoke;
       block[3] = &unk_4B2BD0;
-      v24 = v6;
+      v24 = selectorsCopy;
       v26 = &v27;
-      v25 = v7;
-      dispatch_sync(v10, block);
+      v25 = syncCopy;
+      dispatch_sync(secureProtectionQueue, block);
 
       v11 = v24;
     }
 
     else
     {
-      v16 = [MAAutoAssetError buildError:6110 fromOperation:v7 underlyingError:0 withDescription:@"no assetSelectors to be committed"];
+      v16 = [MAAutoAssetError buildError:6110 fromOperation:syncCopy underlyingError:0 withDescription:@"no assetSelectors to be committed"];
       v17 = v28[5];
       v28[5] = v16;
 
       v11 = _MADLog(@"SecureMA");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v18 = [v28[5] checkedDescription];
-        v19 = [v6 count];
+        checkedDescription = [v28[5] checkedDescription];
+        v19 = [selectorsCopy count];
         *buf = 138543874;
-        v35 = v7;
+        v35 = syncCopy;
         v36 = 2114;
-        v37 = v18;
+        v37 = checkedDescription;
         v38 = 2048;
         v39 = v19;
         _os_log_impl(&dword_0, v11, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE][AUTO-COMMIT] {%{public}@} empty asset-selectors ERROR | error:%{public}@ | assetSelectors:%ld", buf, 0x20u);
@@ -2278,19 +2278,19 @@ void __121__MADAutoAssetSecure_personalizeDownloaded_personalizingDescriptor_all
 
   else
   {
-    v12 = [MAAutoAssetError buildError:6101 fromOperation:v7 underlyingError:0 withDescription:@"no MADAutoAssetSecure instance"];
+    v12 = [MAAutoAssetError buildError:6101 fromOperation:syncCopy underlyingError:0 withDescription:@"no MADAutoAssetSecure instance"];
     v13 = v28[5];
     v28[5] = v12;
 
     v11 = _MADLog(@"Auto");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v28[5] checkedDescription];
-      v15 = [v6 count];
+      checkedDescription2 = [v28[5] checkedDescription];
+      v15 = [selectorsCopy count];
       *buf = 138543874;
-      v35 = v7;
+      v35 = syncCopy;
       v36 = 2114;
-      v37 = v14;
+      v37 = checkedDescription2;
       v38 = 2048;
       v39 = v15;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE][AUTO-COMMIT] {%{public}@} no MADAutoAssetSecure instance - commit ERROR | error:%{public}@ | assetSelectors:%ld", buf, 0x20u);
@@ -2299,7 +2299,7 @@ void __121__MADAutoAssetSecure_personalizeDownloaded_personalizingDescriptor_all
 
   if (v28[5])
   {
-    [MADAutoAssetHistory recordFailedOperation:1207 fromLayer:6 withSelectors:v6 failingWithError:?];
+    [MADAutoAssetHistory recordFailedOperation:1207 fromLayer:6 withSelectors:selectorsCopy failingWithError:?];
     v20 = v28[5];
   }
 
@@ -2358,12 +2358,12 @@ void __68__MADAutoAssetSecure_commitPrePersonalizedSync_committingSelectors___bl
   }
 }
 
-+ (void)commitPrePersonalized:(id)a3 committingSelectors:(id)a4 completion:(id)a5
++ (void)commitPrePersonalized:(id)personalized committingSelectors:(id)selectors completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [[NSString alloc] initWithFormat:@"%@:commitPrePersonalized", v7];
+  personalizedCopy = personalized;
+  selectorsCopy = selectors;
+  completionCopy = completion;
+  personalizedCopy = [[NSString alloc] initWithFormat:@"%@:commitPrePersonalized", personalizedCopy];
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v11 = _os_activity_create(&dword_0, "MADSecure:commitPrePersonalized", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -2372,18 +2372,18 @@ void __68__MADAutoAssetSecure_commitPrePersonalizedSync_committingSelectors___bl
   v12 = +[MADAutoAssetSecure autoAssetSecure];
   if (!v12)
   {
-    v13 = +[SUCore sharedCore];
-    v17 = [v13 selectCompletionQueue:0];
+    secureProtectionQueue = +[SUCore sharedCore];
+    v17 = [secureProtectionQueue selectCompletionQueue:0];
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
     v27[2] = __75__MADAutoAssetSecure_commitPrePersonalized_committingSelectors_completion___block_invoke;
     v27[3] = &unk_4B3020;
     v14 = &v28;
-    v28 = v10;
+    v28 = personalizedCopy;
     v15 = &v29;
-    v29 = v8;
+    v29 = selectorsCopy;
     v16 = &v30;
-    v30 = v9;
+    v30 = completionCopy;
     v18 = v27;
 LABEL_6:
     dispatch_async(v17, v18);
@@ -2391,36 +2391,36 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (![v8 count])
+  if (![selectorsCopy count])
   {
-    v13 = +[SUCore sharedCore];
-    v17 = [v13 selectCompletionQueue:0];
+    secureProtectionQueue = +[SUCore sharedCore];
+    v17 = [secureProtectionQueue selectCompletionQueue:0];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = __75__MADAutoAssetSecure_commitPrePersonalized_committingSelectors_completion___block_invoke_1266;
     v23[3] = &unk_4B3020;
     v14 = &v24;
-    v24 = v10;
+    v24 = personalizedCopy;
     v15 = &v25;
-    v25 = v8;
+    v25 = selectorsCopy;
     v16 = &v26;
-    v26 = v9;
+    v26 = completionCopy;
     v18 = v23;
     goto LABEL_6;
   }
 
-  v13 = [v12 secureProtectionQueue];
+  secureProtectionQueue = [v12 secureProtectionQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __75__MADAutoAssetSecure_commitPrePersonalized_committingSelectors_completion___block_invoke_1267;
   block[3] = &unk_4B3020;
   v14 = &v20;
-  v20 = v8;
+  v20 = selectorsCopy;
   v15 = &v21;
-  v21 = v10;
+  v21 = personalizedCopy;
   v16 = &v22;
-  v22 = v9;
-  dispatch_async(v13, block);
+  v22 = completionCopy;
+  dispatch_async(secureProtectionQueue, block);
 LABEL_7:
 
   os_activity_scope_leave(&state);
@@ -2523,29 +2523,29 @@ void __75__MADAutoAssetSecure_commitPrePersonalized_committingSelectors_completi
   dispatch_async(v12, v14);
 }
 
-+ (BOOL)graftSecureAsset:(id)a3 secureAssetBundle:(id)a4 forSetDescriptor:(id)a5 forAssetID:(id)a6 withSelector:(id)a7 accessMechanismPtr:(int64_t *)a8 error:(id *)a9
++ (BOOL)graftSecureAsset:(id)asset secureAssetBundle:(id)bundle forSetDescriptor:(id)descriptor forAssetID:(id)d withSelector:(id)selector accessMechanismPtr:(int64_t *)ptr error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = [[NSString alloc] initWithFormat:@"%@:graftSecureAsset", v13];
+  assetCopy = asset;
+  bundleCopy = bundle;
+  descriptorCopy = descriptor;
+  dCopy = d;
+  selectorCopy = selector;
+  assetCopy = [[NSString alloc] initWithFormat:@"%@:graftSecureAsset", assetCopy];
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v19 = _os_activity_create(&dword_0, "MADSecure:graftSecureAsset", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v19, &state);
 
-  if ([v14 isAccessible])
+  if ([bundleCopy isAccessible])
   {
     v20 = _MADLog(@"Auto");
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v21 = [v14 assetBundlePath];
+      assetBundlePath = [bundleCopy assetBundlePath];
       *buf = 138543618;
-      v39 = v18;
+      v39 = assetCopy;
       v40 = 2114;
-      v41 = v21;
+      v41 = assetBundlePath;
       _os_log_impl(&dword_0, v20, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE][AUTO-GRAFT] {%{public}@} already grafted | SecureMobileAssetBundle:%{public}@", buf, 0x16u);
     }
 
@@ -2555,19 +2555,19 @@ void __75__MADAutoAssetSecure_commitPrePersonalized_committingSelectors_completi
 
   if (+[MADAutoAssetControlManager preferenceSecureSimulateGraftFailure])
   {
-    v22 = [MAAutoAssetError buildError:6538 fromOperation:v18 underlyingError:0 withDescription:@"simulated failure to graft due to device being locked"];
+    v22 = [MAAutoAssetError buildError:6538 fromOperation:assetCopy underlyingError:0 withDescription:@"simulated failure to graft due to device being locked"];
   }
 
   else
   {
     v33 = objc_opt_new();
-    if (v15)
+    if (descriptorCopy)
     {
       v37[0] = @"/private/var/MobileAsset/AssetsV2/locks";
-      v24 = [v15 clientDomainName];
-      v37[1] = v24;
-      v25 = [v15 assetSetIdentifier];
-      v37[2] = v25;
+      clientDomainName = [descriptorCopy clientDomainName];
+      v37[1] = clientDomainName;
+      assetSetIdentifier = [descriptorCopy assetSetIdentifier];
+      v37[2] = assetSetIdentifier;
       v37[3] = @"shared_locks";
       v26 = [NSArray arrayWithObjects:v37 count:4];
       v27 = [NSString pathWithComponents:v26];
@@ -2581,46 +2581,46 @@ void __75__MADAutoAssetSecure_commitPrePersonalized_committingSelectors_completi
       v27 = _MADLog(@"Auto");
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
-        v29 = [v14 assetBundlePath];
+        assetBundlePath2 = [bundleCopy assetBundlePath];
         *buf = 138543362;
-        v39 = v29;
+        v39 = assetBundlePath2;
         _os_log_impl(&dword_0, v27, OS_LOG_TYPE_DEFAULT, "\n[AUTO-SECURE][AUTO-GRAFT] SecureMobileAssetBundle at %{public}@ is being grafted but lacks a set-descriptor.", buf, 0xCu);
       }
     }
 
     v35 = 0;
-    v30 = [MADAutoAssetSecure graftOrMount:v18 ofSecureAssetBundle:v14 withAccessOptions:v33 accessMechanismPtr:a8 errorPtr:&v35];
+    v30 = [MADAutoAssetSecure graftOrMount:assetCopy ofSecureAssetBundle:bundleCopy withAccessOptions:v33 accessMechanismPtr:ptr errorPtr:&v35];
     v22 = v35;
 
     if (v30)
     {
-      [MADAutoAssetHistory recordOperation:1202 toHistoryType:6 fromLayer:6 forAssetID:v16 withSelector:v17];
+      [MADAutoAssetHistory recordOperation:1202 toHistoryType:6 fromLayer:6 forAssetID:dCopy withSelector:selectorCopy];
 LABEL_5:
       v23 = 1;
       goto LABEL_15;
     }
   }
 
-  [MADAutoAssetHistory recordFailedOperation:1202 fromLayer:6 forAssetID:v16 withSelector:v17 failingWithError:v22];
+  [MADAutoAssetHistory recordFailedOperation:1202 fromLayer:6 forAssetID:dCopy withSelector:selectorCopy failingWithError:v22];
   v23 = 0;
 LABEL_15:
-  if (a9)
+  if (error)
   {
     v31 = v22;
-    *a9 = v22;
+    *error = v22;
   }
 
   os_activity_scope_leave(&state);
   return v23;
 }
 
-+ (void)graftDownloaded:(id)a3 graftingDescriptor:(id)a4 setDescriptor:(id)a5 completion:(id)a6
++ (void)graftDownloaded:(id)downloaded graftingDescriptor:(id)descriptor setDescriptor:(id)setDescriptor completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v36 = a5;
-  v12 = a6;
-  v13 = [[NSString alloc] initWithFormat:@"%@:graftDownloaded", v10];
+  downloadedCopy = downloaded;
+  descriptorCopy = descriptor;
+  setDescriptorCopy = setDescriptor;
+  completionCopy = completion;
+  downloadedCopy = [[NSString alloc] initWithFormat:@"%@:graftDownloaded", downloadedCopy];
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v14 = _os_activity_create(&dword_0, "MADSecure:graftDownloaded", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -2628,34 +2628,34 @@ LABEL_15:
 
   v15 = +[MADAutoAssetSecure autoAssetSecure];
   v16 = [MAAutoAssetSelector alloc];
-  v17 = [v11 assetType];
-  v18 = [v11 assetSpecifier];
-  v19 = [v11 assetVersion];
-  v20 = [v16 initForAssetType:v17 withAssetSpecifier:v18 matchingAssetVersion:v19];
+  assetType = [descriptorCopy assetType];
+  assetSpecifier = [descriptorCopy assetSpecifier];
+  assetVersion = [descriptorCopy assetVersion];
+  v20 = [v16 initForAssetType:assetType withAssetSpecifier:assetSpecifier matchingAssetVersion:assetVersion];
 
   v34 = v15;
-  v35 = v10;
+  v35 = downloadedCopy;
   if (v15)
   {
-    v21 = [v15 secureProtectionQueue];
+    secureProtectionQueue = [v15 secureProtectionQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __82__MADAutoAssetSecure_graftDownloaded_graftingDescriptor_setDescriptor_completion___block_invoke_1283;
     block[3] = &unk_4B3138;
     v22 = &v38;
     v23 = &v39;
-    v38 = v11;
-    v39 = v13;
+    v38 = descriptorCopy;
+    v39 = downloadedCopy;
     v24 = v42;
-    v42[0] = v12;
-    v42[1] = a1;
-    v25 = v36;
-    v40 = v36;
+    v42[0] = completionCopy;
+    v42[1] = self;
+    v25 = setDescriptorCopy;
+    v40 = setDescriptorCopy;
     v41 = v20;
-    v26 = v12;
-    v27 = v13;
-    v28 = v11;
-    dispatch_async(v21, block);
+    v26 = completionCopy;
+    v27 = downloadedCopy;
+    v28 = descriptorCopy;
+    dispatch_async(secureProtectionQueue, block);
 
     v29 = v40;
   }
@@ -2670,16 +2670,16 @@ LABEL_15:
     v43[3] = &unk_4B3020;
     v22 = &v44;
     v23 = &v45;
-    v44 = v13;
-    v45 = v11;
+    v44 = downloadedCopy;
+    v45 = descriptorCopy;
     v24 = &v46;
-    v46 = v12;
-    v31 = v12;
-    v32 = v13;
-    v33 = v11;
+    v46 = completionCopy;
+    v31 = completionCopy;
+    v32 = downloadedCopy;
+    v33 = descriptorCopy;
     dispatch_async(v30, v43);
 
-    v25 = v36;
+    v25 = setDescriptorCopy;
   }
 
   os_activity_scope_leave(&state);
@@ -2927,14 +2927,14 @@ id __82__MADAutoAssetSecure_graftDownloaded_graftingDescriptor_setDescriptor_com
   return [MADAutoAssetControlManager analyticsReportSecureOperationResults:v13 clientName:0 secureReason:0 operation:v14 fromLocation:*(a1 + 32) mountError:v17 graftError:v16 personalizeError:0 mapToExclaveError:0];
 }
 
-+ (void)personalizeGraftDownloaded:(id)a3 forDescriptor:(id)a4 setDescriptor:(id)a5 allowingNetwork:(BOOL)a6 completion:(id)a7
++ (void)personalizeGraftDownloaded:(id)downloaded forDescriptor:(id)descriptor setDescriptor:(id)setDescriptor allowingNetwork:(BOOL)network completion:(id)completion
 {
-  v8 = a6;
-  v11 = a3;
-  v12 = a4;
-  v22 = a5;
-  v13 = a7;
-  v14 = [[NSString alloc] initWithFormat:@"%@:personalizeGraftDownloaded", v11];
+  networkCopy = network;
+  downloadedCopy = downloaded;
+  descriptorCopy = descriptor;
+  setDescriptorCopy = setDescriptor;
+  completionCopy = completion;
+  downloadedCopy = [[NSString alloc] initWithFormat:@"%@:personalizeGraftDownloaded", downloadedCopy];
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v15 = _os_activity_create(&dword_0, "MADSecure:personalizeGraftDownloaded", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -2947,12 +2947,12 @@ id __82__MADAutoAssetSecure_graftDownloaded_graftingDescriptor_setDescriptor_com
     v23[1] = 3221225472;
     v23[2] = __104__MADAutoAssetSecure_personalizeGraftDownloaded_forDescriptor_setDescriptor_allowingNetwork_completion___block_invoke_1295;
     v23[3] = &unk_4B31B0;
-    v24 = v11;
-    v25 = v12;
-    v26 = v22;
-    v27 = v14;
-    v28 = v13;
-    [MADAutoAssetSecure personalizeDownloaded:v24 personalizingDescriptor:v25 allowingNetwork:v8 committingPersonalization:1 completion:v23];
+    v24 = downloadedCopy;
+    v25 = descriptorCopy;
+    v26 = setDescriptorCopy;
+    v27 = downloadedCopy;
+    v28 = completionCopy;
+    [MADAutoAssetSecure personalizeDownloaded:v24 personalizingDescriptor:v25 allowingNetwork:networkCopy committingPersonalization:1 completion:v23];
     v17 = &v24;
     v18 = &v25;
     v19 = &v26;
@@ -2969,11 +2969,11 @@ id __82__MADAutoAssetSecure_graftDownloaded_graftingDescriptor_setDescriptor_com
     block[2] = __104__MADAutoAssetSecure_personalizeGraftDownloaded_forDescriptor_setDescriptor_allowingNetwork_completion___block_invoke;
     block[3] = &unk_4B3020;
     v17 = &v30;
-    v30 = v14;
+    v30 = downloadedCopy;
     v18 = &v31;
-    v31 = v12;
+    v31 = descriptorCopy;
     v19 = &v32;
-    v32 = v13;
+    v32 = completionCopy;
     dispatch_async(v21, block);
   }
 
@@ -3137,45 +3137,45 @@ uint64_t __104__MADAutoAssetSecure_personalizeGraftDownloaded_forDescriptor_setD
   return (*(*(a1 + 56) + 16))();
 }
 
-+ (BOOL)ungraft:(id)a3 forDescriptor:(id)a4 ungraftingError:(id *)a5
++ (BOOL)ungraft:(id)ungraft forDescriptor:(id)descriptor ungraftingError:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[NSString alloc] initWithFormat:@"%@:ungraft", v6];
+  ungraftCopy = ungraft;
+  descriptorCopy = descriptor;
+  ungraftCopy = [[NSString alloc] initWithFormat:@"%@:ungraft", ungraftCopy];
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v9 = _os_activity_create(&dword_0, "MADSecure:ungraft", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v9, &state);
 
   v10 = [MAAutoAssetSelector alloc];
-  v11 = [v7 assetType];
-  v12 = [v7 assetSpecifier];
-  v13 = [v7 assetVersion];
-  v14 = [v10 initForAssetType:v11 withAssetSpecifier:v12 matchingAssetVersion:v13];
+  assetType = [descriptorCopy assetType];
+  assetSpecifier = [descriptorCopy assetSpecifier];
+  assetVersion = [descriptorCopy assetVersion];
+  v14 = [v10 initForAssetType:assetType withAssetSpecifier:assetSpecifier matchingAssetVersion:assetVersion];
 
-  v15 = [v7 assetType];
-  v16 = [v7 assetId];
-  v17 = [MADAutoAssetSecure secureBundleForAssetType:v15 assetId:v16];
+  assetType2 = [descriptorCopy assetType];
+  assetId = [descriptorCopy assetId];
+  v17 = [MADAutoAssetSecure secureBundleForAssetType:assetType2 assetId:assetId];
 
-  if (v7 && v17)
+  if (descriptorCopy && v17)
   {
     v18 = objc_alloc_init(NSMutableArray);
     *buf = 0;
-    [v18 addObject:v7];
+    [v18 addObject:descriptorCopy];
     v19 = objc_opt_new();
     v30 = 0;
-    v20 = [MADAutoAssetSecure ungraftOrUnmount:v8 ofSecureAssetBundle:v17 withAccessOptions:v19 accessMechanismPtr:buf errorPtr:&v30];
+    v20 = [MADAutoAssetSecure ungraftOrUnmount:ungraftCopy ofSecureAssetBundle:v17 withAccessOptions:v19 accessMechanismPtr:buf errorPtr:&v30];
     v21 = v30;
 
-    v22 = [v7 assetId];
+    assetId2 = [descriptorCopy assetId];
     if (v20)
     {
-      [MADAutoAssetHistory recordOperation:1203 toHistoryType:6 fromLayer:6 forAssetID:v22 withSelector:v14];
+      [MADAutoAssetHistory recordOperation:1203 toHistoryType:6 fromLayer:6 forAssetID:assetId2 withSelector:v14];
     }
 
     else
     {
-      [MADAutoAssetHistory recordFailedOperation:1203 fromLayer:6 forAssetID:v22 withSelector:v14 failingWithError:v21];
+      [MADAutoAssetHistory recordFailedOperation:1203 fromLayer:6 forAssetID:assetId2 withSelector:v14 failingWithError:v21];
     }
 
     v24 = [MADAutoAssetSecure secureOperationUngraftOrUnmount:*buf];
@@ -3199,7 +3199,7 @@ uint64_t __104__MADAutoAssetSecure_personalizeGraftDownloaded_forDescriptor_setD
       v26 = 0;
     }
 
-    [MADAutoAssetControlManager analyticsReportSecureOperationResults:v14 clientName:0 secureReason:0 operation:v24 fromLocation:v8 mountError:v25 graftError:v26 personalizeError:0 mapToExclaveError:0];
+    [MADAutoAssetControlManager analyticsReportSecureOperationResults:v14 clientName:0 secureReason:0 operation:v24 fromLocation:ungraftCopy mountError:v25 graftError:v26 personalizeError:0 mapToExclaveError:0];
   }
 
   else
@@ -3207,22 +3207,22 @@ uint64_t __104__MADAutoAssetSecure_personalizeGraftDownloaded_forDescriptor_setD
     v18 = _MADLog(@"Auto");
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      if (v7)
+      if (descriptorCopy)
       {
-        v23 = [v7 summary];
+        summary = [descriptorCopy summary];
       }
 
       else
       {
-        v23 = @"N";
+        summary = @"N";
       }
 
       *buf = 138543618;
-      *&buf[4] = v8;
+      *&buf[4] = ungraftCopy;
       v33 = 2114;
-      v34 = v23;
+      v34 = summary;
       _os_log_impl(&dword_0, v18, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE][AUTO-GRAFT-REMOVE] {%{public}@} ungraft|unmount unable to initialize SecureMobileAssetBundle | autoAssetDescriptor:%{public}@", buf, 0x16u);
-      if (v7)
+      if (descriptorCopy)
       {
       }
     }
@@ -3231,23 +3231,23 @@ uint64_t __104__MADAutoAssetSecure_personalizeGraftDownloaded_forDescriptor_setD
     v20 = 0;
   }
 
-  if (a5)
+  if (error)
   {
     v27 = v21;
-    *a5 = v21;
+    *error = v21;
   }
 
   os_activity_scope_leave(&state);
   return v20;
 }
 
-+ (void)personalizeSetDownloaded:(id)a3 forSetDescriptor:(id)a4 shouldGraft:(BOOL)a5 allowingNetwork:(BOOL)a6 withAutoAssetDescriptors:(id)a7 completion:(id)a8
++ (void)personalizeSetDownloaded:(id)downloaded forSetDescriptor:(id)descriptor shouldGraft:(BOOL)graft allowingNetwork:(BOOL)network withAutoAssetDescriptors:(id)descriptors completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v31 = a7;
-  v33 = a8;
-  v32 = [[NSString alloc] initWithFormat:@"%@:personalizeGraftSetDownloaded", v12];
+  downloadedCopy = downloaded;
+  descriptorCopy = descriptor;
+  descriptorsCopy = descriptors;
+  completionCopy = completion;
+  downloadedCopy = [[NSString alloc] initWithFormat:@"%@:personalizeGraftSetDownloaded", downloadedCopy];
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v14 = _os_activity_create(&dword_0, "MADSecure:personalizeSetDownloaded", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -3256,14 +3256,14 @@ uint64_t __104__MADAutoAssetSecure_personalizeGraftDownloaded_forDescriptor_setD
   v34 = +[MADAutoAssetSecure autoAssetSecure];
   if (v34)
   {
-    v29 = v13;
+    v29 = descriptorCopy;
     v15 = objc_alloc_init(NSMutableArray);
     v16 = objc_alloc_init(NSMutableArray);
     v49 = 0u;
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v17 = v31;
+    v17 = descriptorsCopy;
     v18 = [v17 countByEnumeratingWithState:&v47 objects:v56 count:16];
     if (v18)
     {
@@ -3278,12 +3278,12 @@ uint64_t __104__MADAutoAssetSecure_personalizeGraftDownloaded_forDescriptor_setD
           }
 
           v21 = *(*(&v47 + 1) + 8 * i);
-          if (v21 && [MADAutoAssetSecure doesDescriptorInvolvePersonalization:v12 forDescriptor:*(*(&v47 + 1) + 8 * i)])
+          if (v21 && [MADAutoAssetSecure doesDescriptorInvolvePersonalization:downloadedCopy forDescriptor:*(*(&v47 + 1) + 8 * i)])
           {
             [v15 addObject:v21];
           }
 
-          if ([MADAutoAssetSecure doesDescriptorInvolveGrafting:v12 forDescriptor:v21])
+          if ([MADAutoAssetSecure doesDescriptorInvolveGrafting:downloadedCopy forDescriptor:v21])
           {
             [v16 addObject:v21];
           }
@@ -3297,21 +3297,21 @@ uint64_t __104__MADAutoAssetSecure_personalizeGraftDownloaded_forDescriptor_setD
 
     if ([v15 count] || objc_msgSend(v16, "count"))
     {
-      v22 = [v34 secureProtectionQueue];
+      secureProtectionQueue = [v34 secureProtectionQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = __128__MADAutoAssetSecure_personalizeSetDownloaded_forSetDescriptor_shouldGraft_allowingNetwork_withAutoAssetDescriptors_completion___block_invoke_1305;
       block[3] = &unk_4B3200;
       v39 = v15;
-      v40 = v32;
+      v40 = downloadedCopy;
       v41 = v16;
-      v45 = a6;
-      v13 = v29;
+      networkCopy = network;
+      descriptorCopy = v29;
       v42 = v29;
-      v44 = v33;
+      v44 = completionCopy;
       v43 = v34;
-      v46 = a5;
-      dispatch_async(v22, block);
+      graftCopy = graft;
+      dispatch_async(secureProtectionQueue, block);
 
       v23 = &v39;
       v24 = &v40;
@@ -3326,11 +3326,11 @@ uint64_t __104__MADAutoAssetSecure_personalizeGraftDownloaded_forDescriptor_setD
       v35[1] = 3221225472;
       v35[2] = __128__MADAutoAssetSecure_personalizeSetDownloaded_forSetDescriptor_shouldGraft_allowingNetwork_withAutoAssetDescriptors_completion___block_invoke_2;
       v35[3] = &unk_4B31D8;
-      v37 = v33;
+      v37 = completionCopy;
       v36 = v29;
       dispatch_async(v28, v35);
 
-      v13 = v29;
+      descriptorCopy = v29;
       v23 = &v37;
       v24 = &v36;
     }
@@ -3344,9 +3344,9 @@ uint64_t __104__MADAutoAssetSecure_personalizeGraftDownloaded_forDescriptor_setD
     v51[1] = 3221225472;
     v51[2] = __128__MADAutoAssetSecure_personalizeSetDownloaded_forSetDescriptor_shouldGraft_allowingNetwork_withAutoAssetDescriptors_completion___block_invoke;
     v51[3] = &unk_4B3020;
-    v52 = v32;
-    v53 = v13;
-    v54 = v33;
+    v52 = downloadedCopy;
+    v53 = descriptorCopy;
+    v54 = completionCopy;
     dispatch_async(v27, v51);
 
     v15 = v52;
@@ -3551,16 +3551,16 @@ void __128__MADAutoAssetSecure_personalizeSetDownloaded_forSetDescriptor_shouldG
   (*(*(a1 + 48) + 16))();
 }
 
-+ (BOOL)isPersonalizationRequired:(id)a3 forSetDescriptor:(id)a4
++ (BOOL)isPersonalizationRequired:(id)required forSetDescriptor:(id)descriptor
 {
-  v20 = a3;
-  v22 = a4;
+  requiredCopy = required;
+  descriptorCopy = descriptor;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v5 = _os_activity_create(&dword_0, "MADSecure:isPersonalizationRequired", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v5, &state);
 
-  v21 = [[NSString alloc] initWithFormat:@"%@:isPersonalizationRequired", v20];
+  requiredCopy = [[NSString alloc] initWithFormat:@"%@:isPersonalizationRequired", requiredCopy];
   v19 = +[MADAutoAssetSecure autoAssetSecure];
   if (v19)
   {
@@ -3568,8 +3568,8 @@ void __128__MADAutoAssetSecure_personalizeSetDownloaded_forSetDescriptor_shouldG
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v6 = [v22 latestDowloadedAtomicInstanceEntries];
-    v7 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
+    latestDowloadedAtomicInstanceEntries = [descriptorCopy latestDowloadedAtomicInstanceEntries];
+    v7 = [latestDowloadedAtomicInstanceEntries countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v7)
     {
       v8 = *v24;
@@ -3579,16 +3579,16 @@ void __128__MADAutoAssetSecure_personalizeSetDownloaded_forSetDescriptor_shouldG
         {
           if (*v24 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(latestDowloadedAtomicInstanceEntries);
           }
 
           v10 = *(*(&v23 + 1) + 8 * i);
           if (v10)
           {
-            v11 = [*(*(&v23 + 1) + 8 * i) fullAssetSelector];
-            v12 = [v11 assetType];
-            v13 = [v10 assetID];
-            v14 = [MADAutoAssetSecure secureBundleForAssetType:v12 assetId:v13];
+            fullAssetSelector = [*(*(&v23 + 1) + 8 * i) fullAssetSelector];
+            assetType = [fullAssetSelector assetType];
+            assetID = [v10 assetID];
+            v14 = [MADAutoAssetSecure secureBundleForAssetType:assetType assetId:assetID];
 
             if (v14)
             {
@@ -3605,18 +3605,18 @@ void __128__MADAutoAssetSecure_personalizeSetDownloaded_forSetDescriptor_shouldG
               v15 = _MADLog(@"SecureMA");
               if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
               {
-                v16 = [v22 summary];
+                summary = [descriptorCopy summary];
                 *buf = 138543618;
-                v30 = v21;
+                v30 = requiredCopy;
                 v31 = 2114;
-                v32 = v16;
+                v32 = summary;
                 _os_log_impl(&dword_0, v15, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} unable to initialize SecureMobileAssetBundle | setDescriptor:%{public}@", buf, 0x16u);
               }
             }
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
+        v7 = [latestDowloadedAtomicInstanceEntries countByEnumeratingWithState:&v23 objects:v28 count:16];
       }
 
       while (v7);
@@ -3625,15 +3625,15 @@ void __128__MADAutoAssetSecure_personalizeSetDownloaded_forSetDescriptor_shouldG
 
   else
   {
-    v6 = _MADLog(@"Auto");
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    latestDowloadedAtomicInstanceEntries = _MADLog(@"Auto");
+    if (os_log_type_enabled(latestDowloadedAtomicInstanceEntries, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v22 summary];
+      summary2 = [descriptorCopy summary];
       *buf = 138543618;
-      v30 = v21;
+      v30 = requiredCopy;
       v31 = 2114;
-      v32 = v17;
-      _os_log_impl(&dword_0, v6, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} unable to locate shared auto-asset-secure instance | setDescriptor:%{public}@", buf, 0x16u);
+      v32 = summary2;
+      _os_log_impl(&dword_0, latestDowloadedAtomicInstanceEntries, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} unable to locate shared auto-asset-secure instance | setDescriptor:%{public}@", buf, 0x16u);
     }
 
     LOBYTE(v7) = 0;
@@ -3645,23 +3645,23 @@ LABEL_22:
   return v7;
 }
 
-+ (BOOL)readyToCommitPrePersonalized:(id)a3 forSetDescriptor:(id)a4
++ (BOOL)readyToCommitPrePersonalized:(id)personalized forSetDescriptor:(id)descriptor
 {
-  v5 = a3;
-  v6 = a4;
-  v26 = [[NSString alloc] initWithFormat:@"%@:isPersonalizationRequired", v5];
+  personalizedCopy = personalized;
+  descriptorCopy = descriptor;
+  personalizedCopy = [[NSString alloc] initWithFormat:@"%@:isPersonalizationRequired", personalizedCopy];
   v7 = +[MADAutoAssetSecure autoAssetSecure];
   if (!v7)
   {
-    v8 = _MADLog(@"Auto");
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    latestDowloadedAtomicInstanceEntries = _MADLog(@"Auto");
+    if (os_log_type_enabled(latestDowloadedAtomicInstanceEntries, OS_LOG_TYPE_ERROR))
     {
-      v20 = [v6 summary];
+      summary = [descriptorCopy summary];
       *buf = 138543618;
-      v33 = v26;
+      v33 = personalizedCopy;
       v34 = 2114;
-      v35 = v20;
-      _os_log_impl(&dword_0, v8, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} unable to locate shared auto-asset-secure instance | setDescriptor:%{public}@", buf, 0x16u);
+      v35 = summary;
+      _os_log_impl(&dword_0, latestDowloadedAtomicInstanceEntries, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} unable to locate shared auto-asset-secure instance | setDescriptor:%{public}@", buf, 0x16u);
     }
 
     goto LABEL_22;
@@ -3671,8 +3671,8 @@ LABEL_22:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = [v6 latestDowloadedAtomicInstanceEntries];
-  v9 = [v8 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  latestDowloadedAtomicInstanceEntries = [descriptorCopy latestDowloadedAtomicInstanceEntries];
+  v9 = [latestDowloadedAtomicInstanceEntries countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (!v9)
   {
 LABEL_22:
@@ -3682,8 +3682,8 @@ LABEL_22:
 
   v10 = v9;
   v23 = v7;
-  v24 = v5;
-  v25 = v6;
+  v24 = personalizedCopy;
+  v25 = descriptorCopy;
   v11 = *v28;
   do
   {
@@ -3691,16 +3691,16 @@ LABEL_22:
     {
       if (*v28 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(latestDowloadedAtomicInstanceEntries);
       }
 
       v13 = *(*(&v27 + 1) + 8 * i);
       if (v13)
       {
-        v14 = [*(*(&v27 + 1) + 8 * i) fullAssetSelector];
-        v15 = [v14 assetType];
-        v16 = [v13 assetID];
-        v17 = [MADAutoAssetSecure secureBundleForAssetType:v15 assetId:v16];
+        fullAssetSelector = [*(*(&v27 + 1) + 8 * i) fullAssetSelector];
+        assetType = [fullAssetSelector assetType];
+        assetID = [v13 assetID];
+        v17 = [MADAutoAssetSecure secureBundleForAssetType:assetType assetId:assetID];
 
         if (v17)
         {
@@ -3717,48 +3717,48 @@ LABEL_22:
           v18 = _MADLog(@"SecureMA");
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
-            v19 = [v25 summary];
+            summary2 = [v25 summary];
             *buf = 138543618;
-            v33 = v26;
+            v33 = personalizedCopy;
             v34 = 2114;
-            v35 = v19;
+            v35 = summary2;
             _os_log_impl(&dword_0, v18, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} unable to initialize SecureMobileAssetBundle | setDescriptor:%{public}@", buf, 0x16u);
           }
         }
       }
     }
 
-    v10 = [v8 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    v10 = [latestDowloadedAtomicInstanceEntries countByEnumeratingWithState:&v27 objects:v31 count:16];
   }
 
   while (v10);
   v21 = 1;
 LABEL_23:
   v7 = v23;
-  v5 = v24;
-  v6 = v25;
+  personalizedCopy = v24;
+  descriptorCopy = v25;
 LABEL_24:
 
   return v21;
 }
 
-+ (BOOL)isPersonalizationOrGraftingRequired:(id)a3 forSetDescriptor:(id)a4
++ (BOOL)isPersonalizationOrGraftingRequired:(id)required forSetDescriptor:(id)descriptor
 {
-  v5 = a3;
-  v6 = a4;
-  v26 = [[NSString alloc] initWithFormat:@"%@:isPersonalizationOrGraftingRequired", v5];
+  requiredCopy = required;
+  descriptorCopy = descriptor;
+  requiredCopy = [[NSString alloc] initWithFormat:@"%@:isPersonalizationOrGraftingRequired", requiredCopy];
   v7 = +[MADAutoAssetSecure autoAssetSecure];
   if (!v7)
   {
-    v8 = _MADLog(@"SecureMA");
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    latestDowloadedAtomicInstanceEntries = _MADLog(@"SecureMA");
+    if (os_log_type_enabled(latestDowloadedAtomicInstanceEntries, OS_LOG_TYPE_ERROR))
     {
-      v20 = [v6 summary];
+      summary = [descriptorCopy summary];
       *buf = 138543618;
-      v33 = v26;
+      v33 = requiredCopy;
       v34 = 2114;
-      v35 = v20;
-      _os_log_impl(&dword_0, v8, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} unable to locate shared auto-asset-secure instance | setDescriptor:%{public}@", buf, 0x16u);
+      v35 = summary;
+      _os_log_impl(&dword_0, latestDowloadedAtomicInstanceEntries, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} unable to locate shared auto-asset-secure instance | setDescriptor:%{public}@", buf, 0x16u);
     }
 
     goto LABEL_22;
@@ -3768,8 +3768,8 @@ LABEL_24:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = [v6 latestDowloadedAtomicInstanceEntries];
-  v9 = [v8 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  latestDowloadedAtomicInstanceEntries = [descriptorCopy latestDowloadedAtomicInstanceEntries];
+  v9 = [latestDowloadedAtomicInstanceEntries countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (!v9)
   {
 LABEL_22:
@@ -3779,8 +3779,8 @@ LABEL_22:
 
   v10 = v9;
   v23 = v7;
-  v24 = v5;
-  v25 = v6;
+  v24 = requiredCopy;
+  v25 = descriptorCopy;
   v11 = *v28;
   do
   {
@@ -3788,16 +3788,16 @@ LABEL_22:
     {
       if (*v28 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(latestDowloadedAtomicInstanceEntries);
       }
 
       v13 = *(*(&v27 + 1) + 8 * i);
       if (v13)
       {
-        v14 = [*(*(&v27 + 1) + 8 * i) fullAssetSelector];
-        v15 = [v14 assetType];
-        v16 = [v13 assetID];
-        v17 = [MADAutoAssetSecure secureBundleForAssetType:v15 assetId:v16];
+        fullAssetSelector = [*(*(&v27 + 1) + 8 * i) fullAssetSelector];
+        assetType = [fullAssetSelector assetType];
+        assetID = [v13 assetID];
+        v17 = [MADAutoAssetSecure secureBundleForAssetType:assetType assetId:assetID];
 
         if (v17)
         {
@@ -3814,37 +3814,37 @@ LABEL_22:
           v18 = _MADLog(@"SecureMA");
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
-            v19 = [v25 summary];
+            summary2 = [v25 summary];
             *buf = 138543618;
-            v33 = v26;
+            v33 = requiredCopy;
             v34 = 2114;
-            v35 = v19;
+            v35 = summary2;
             _os_log_impl(&dword_0, v18, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE][AUTO-DETERMINE] {%{public}@} unable to initialize SecureMobileAssetBundle | setDescriptor:%{public}@", buf, 0x16u);
           }
         }
       }
     }
 
-    v10 = [v8 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    v10 = [latestDowloadedAtomicInstanceEntries countByEnumeratingWithState:&v27 objects:v31 count:16];
   }
 
   while (v10);
   v21 = 0;
 LABEL_23:
   v7 = v23;
-  v5 = v24;
-  v6 = v25;
+  requiredCopy = v24;
+  descriptorCopy = v25;
 LABEL_24:
 
   return v21;
 }
 
-+ (BOOL)ungraftAll:(id)a3 forSetDescriptor:(id)a4 withAutoAssetDescriptors:(id)a5 ungraftingError:(id *)a6
++ (BOOL)ungraftAll:(id)all forSetDescriptor:(id)descriptor withAutoAssetDescriptors:(id)descriptors ungraftingError:(id *)error
 {
-  v8 = a3;
-  v35 = a4;
-  v37 = a5;
-  v41 = [[NSString alloc] initWithFormat:@"%@:ungraftAll", v8];
+  allCopy = all;
+  descriptorCopy = descriptor;
+  descriptorsCopy = descriptors;
+  allCopy = [[NSString alloc] initWithFormat:@"%@:ungraftAll", allCopy];
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v9 = _os_activity_create(&dword_0, "MADSecure:ungraftAll", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -3855,7 +3855,7 @@ LABEL_24:
   v38 = v39 != 0;
   if (!v39)
   {
-    v17 = [MAAutoAssetError buildError:6101 fromOperation:v41 underlyingError:0 withDescription:@"no MADAutoAssetSecure instance"];
+    v17 = [MAAutoAssetError buildError:6101 fromOperation:allCopy underlyingError:0 withDescription:@"no MADAutoAssetSecure instance"];
     if (v17)
     {
       goto LABEL_28;
@@ -3865,18 +3865,18 @@ LABEL_32:
     v27 = _MADLog(@"Auto");
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [v35 summary];
-      v31 = v30;
+      summary = [descriptorCopy summary];
+      v31 = summary;
       v32 = @"N";
       *buf = 138543874;
-      v53 = v41;
+      v53 = allCopy;
       v54 = 2114;
       if (v38)
       {
         v32 = @"Y";
       }
 
-      v55 = v30;
+      v55 = summary;
       v56 = 2114;
       v57 = v32;
       _os_log_impl(&dword_0, v27, OS_LOG_TYPE_DEFAULT, "\n[AUTO-SECURE][AUTO-GRAFT-REMOVE-ALL] {%{public}@} ungraft|unmount SUCCESS | setDescriptor:%{public}@ | ungraftingRequired:%{public}@", buf, 0x20u);
@@ -3890,7 +3890,7 @@ LABEL_32:
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v10 = v37;
+  v10 = descriptorsCopy;
   v11 = [v10 countByEnumeratingWithState:&v47 objects:v59 count:16];
   if (!v11)
   {
@@ -3912,7 +3912,7 @@ LABEL_31:
       }
 
       v15 = *(*(&v47 + 1) + 8 * i);
-      if (v15 && [MADAutoAssetSecure isSecureAsset:v8 forDescriptor:*(*(&v47 + 1) + 8 * i)])
+      if (v15 && [MADAutoAssetSecure isSecureAsset:allCopy forDescriptor:*(*(&v47 + 1) + 8 * i)])
       {
         [v40 addObject:v15];
         v12 = 1;
@@ -3951,7 +3951,7 @@ LABEL_31:
         v21 = *(*(&v43 + 1) + 8 * j);
         v22 = objc_autoreleasePoolPush();
         v42 = 0;
-        v23 = [MADAutoAssetSecure ungraft:v41 forDescriptor:v21 ungraftingError:&v42];
+        v23 = [MADAutoAssetSecure ungraft:allCopy forDescriptor:v21 ungraftingError:&v42];
         v24 = v42;
         v25 = v24;
         if (v17)
@@ -3987,35 +3987,35 @@ LABEL_28:
   v27 = _MADLog(@"Auto");
   if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
   {
-    v28 = [v17 checkedDescription];
-    v29 = [v35 summary];
+    checkedDescription = [v17 checkedDescription];
+    summary2 = [descriptorCopy summary];
     *buf = 138543874;
-    v53 = v41;
+    v53 = allCopy;
     v54 = 2114;
-    v55 = v28;
+    v55 = checkedDescription;
     v56 = 2114;
-    v57 = v29;
+    v57 = summary2;
     _os_log_impl(&dword_0, v27, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE][AUTO-GRAFT-REMOVE-ALL] {%{public}@} ungraft|unmount ERROR | error:%{public}@ | setDescriptor:%{public}@", buf, 0x20u);
   }
 
 LABEL_37:
 
-  if (a6)
+  if (error)
   {
     v33 = v17;
-    *a6 = v17;
+    *error = v17;
   }
 
   os_activity_scope_leave(&state);
   return v38;
 }
 
-+ (void)mapToExclave:(id)a3 forDescriptor:(id)a4 completion:(id)a5
++ (void)mapToExclave:(id)exclave forDescriptor:(id)descriptor completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [[NSString alloc] initWithFormat:@"%@:mapToExclave", v7];
+  exclaveCopy = exclave;
+  descriptorCopy = descriptor;
+  completionCopy = completion;
+  exclaveCopy = [[NSString alloc] initWithFormat:@"%@:mapToExclave", exclaveCopy];
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v11 = _os_activity_create(&dword_0, "MADSecure:mapToExclave", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -4023,30 +4023,30 @@ LABEL_37:
 
   v12 = +[MADAutoAssetSecure autoAssetSecure];
   v13 = [MAAutoAssetSelector alloc];
-  v14 = [v8 assetType];
-  v15 = [v8 assetSpecifier];
-  v16 = [v8 assetVersion];
-  v33 = [v13 initForAssetType:v14 withAssetSpecifier:v15 matchingAssetVersion:v16];
+  assetType = [descriptorCopy assetType];
+  assetSpecifier = [descriptorCopy assetSpecifier];
+  assetVersion = [descriptorCopy assetVersion];
+  v33 = [v13 initForAssetType:assetType withAssetSpecifier:assetSpecifier matchingAssetVersion:assetVersion];
 
   if (v12)
   {
-    v17 = [@"com.apple.MobileAsset.daemon.secureWaitedOperationQueue" UTF8String];
+    uTF8String = [@"com.apple.MobileAsset.daemon.secureWaitedOperationQueue" UTF8String];
     v18 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v19 = dispatch_queue_create(v17, v18);
+    v19 = dispatch_queue_create(uTF8String, v18);
 
     v31 = v12;
-    v32 = v7;
+    v32 = exclaveCopy;
     if (v19)
     {
-      v20 = v9;
+      v20 = completionCopy;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = __60__MADAutoAssetSecure_mapToExclave_forDescriptor_completion___block_invoke_1318;
       block[3] = &unk_4B30C0;
       v21 = &v35;
-      v35 = v8;
+      v35 = descriptorCopy;
       v22 = &v36;
-      v36 = v10;
+      v36 = exclaveCopy;
       v23 = &v37;
       v24 = v33;
       v37 = v33;
@@ -4060,15 +4060,15 @@ LABEL_37:
     {
       v26 = +[SUCore sharedCore];
       v29 = [v26 selectCompletionQueue:0];
-      v30 = v9;
+      v30 = completionCopy;
       v39[0] = _NSConcreteStackBlock;
       v39[1] = 3221225472;
       v39[2] = __60__MADAutoAssetSecure_mapToExclave_forDescriptor_completion___block_invoke_1317;
       v39[3] = &unk_4B3020;
       v21 = &v40;
-      v40 = v10;
+      v40 = exclaveCopy;
       v22 = &v41;
-      v41 = v8;
+      v41 = descriptorCopy;
       v23 = &v42;
       v25 = v30;
       v42 = v30;
@@ -4078,8 +4078,8 @@ LABEL_37:
     }
 
     v12 = v31;
-    v7 = v32;
-    v9 = v25;
+    exclaveCopy = v32;
+    completionCopy = v25;
   }
 
   else
@@ -4090,9 +4090,9 @@ LABEL_37:
     v43[1] = 3221225472;
     v43[2] = __60__MADAutoAssetSecure_mapToExclave_forDescriptor_completion___block_invoke;
     v43[3] = &unk_4B3020;
-    v44 = v10;
-    v45 = v8;
-    v46 = v9;
+    v44 = exclaveCopy;
+    v45 = descriptorCopy;
+    v46 = completionCopy;
     dispatch_async(v28, v43);
 
     v19 = v44;
@@ -4303,25 +4303,25 @@ void __60__MADAutoAssetSecure_mapToExclave_forDescriptor_completion___block_invo
   }
 }
 
-+ (void)ungraftIfNotAccessible:(id)a3
++ (void)ungraftIfNotAccessible:(id)accessible
 {
-  v3 = a3;
+  accessibleCopy = accessible;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v4 = _os_activity_create(&dword_0, "MADSecure:ungraftIfNotAccessible", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v4, &state);
 
-  v5 = [[SecureMobileAssetBundle alloc] initWithPath:v3];
+  v5 = [[SecureMobileAssetBundle alloc] initWithPath:accessibleCopy];
   v6 = v5;
   if (!v5)
   {
-    v7 = _MADLog(@"Auto");
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    assetValues = _MADLog(@"Auto");
+    if (os_log_type_enabled(assetValues, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      *&buf[4] = v3;
+      *&buf[4] = accessibleCopy;
       v8 = "\n[AUTO-SECURE][AUTO-GRAFT-REMOVE] {ungraftIfNotAccessible} unable to create secure asset bundle | assetPath:%{public}@";
-      v9 = v7;
+      v9 = assetValues;
       v10 = OS_LOG_TYPE_ERROR;
       goto LABEL_8;
     }
@@ -4335,9 +4335,9 @@ LABEL_24:
   {
     if (![(SecureMobileAssetBundle *)v6 isAccessible])
     {
-      v7 = [(SecureMobileAssetBundle *)v6 assetValues];
-      v11 = [v7 safeObjectForKey:@"AssetType" ofClass:objc_opt_class()];
-      if (!v11 || ([v7 safeObjectForKey:@"AssetSpecifier" ofClass:objc_opt_class()], v12 = objc_claimAutoreleasedReturnValue(), v13 = v12 == 0, v12, v11, v13))
+      assetValues = [(SecureMobileAssetBundle *)v6 assetValues];
+      v11 = [assetValues safeObjectForKey:@"AssetType" ofClass:objc_opt_class()];
+      if (!v11 || ([assetValues safeObjectForKey:@"AssetSpecifier" ofClass:objc_opt_class()], v12 = objc_claimAutoreleasedReturnValue(), v13 = v12 == 0, v12, v11, v13))
       {
         v17 = _MADLog(@"Auto");
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -4350,8 +4350,8 @@ LABEL_24:
       else
       {
         v14 = [MAAutoAssetSelector alloc];
-        v15 = [v7 objectForKeyedSubscript:@"AssetType"];
-        v16 = [v7 objectForKeyedSubscript:@"AssetSpecifier"];
+        v15 = [assetValues objectForKeyedSubscript:@"AssetType"];
+        v16 = [assetValues objectForKeyedSubscript:@"AssetSpecifier"];
         v17 = [v14 initForAssetType:v15 withAssetSpecifier:v16];
 
         *buf = 0;
@@ -4397,13 +4397,13 @@ LABEL_24:
       goto LABEL_24;
     }
 
-    v7 = _MADLog(@"Auto");
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    assetValues = _MADLog(@"Auto");
+    if (os_log_type_enabled(assetValues, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      *&buf[4] = v3;
+      *&buf[4] = accessibleCopy;
       v8 = "\n[AUTO-SECURE][AUTO-GRAFT-REMOVE] {ungraftIfNotAccessible} remains accessible | assetPath:%{public}@";
-      v9 = v7;
+      v9 = assetValues;
       v10 = OS_LOG_TYPE_DEFAULT;
 LABEL_8:
       _os_log_impl(&dword_0, v9, v10, v8, buf, 0xCu);
@@ -4418,26 +4418,26 @@ LABEL_25:
   os_activity_scope_leave(&state);
 }
 
-+ (BOOL)isErrorDueToDeviceBeingLocked:(id)a3
++ (BOOL)isErrorDueToDeviceBeingLocked:(id)locked
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  lockedCopy = locked;
+  v4 = lockedCopy;
+  if (!lockedCopy)
   {
     v7 = 0;
     goto LABEL_8;
   }
 
-  v5 = [v3 domain];
-  if (![SUCore stringIsEqual:v5 to:@"com.apple.MobileAssetError.AutoAsset"])
+  domain = [lockedCopy domain];
+  if (![SUCore stringIsEqual:domain to:@"com.apple.MobileAssetError.AutoAsset"])
   {
 
     goto LABEL_7;
   }
 
-  v6 = [v4 code];
+  code = [v4 code];
 
-  if (v6 != ".framework/PowerLog")
+  if (code != ".framework/PowerLog")
   {
 LABEL_7:
     v7 = [SecureMobileAssetBundle isErrorDueToDeviceBeingLocked:v4];
@@ -4450,11 +4450,11 @@ LABEL_8:
   return v7;
 }
 
-+ (id)buildGraftFailureError:(id)a3 withUnderlyingError:(id)a4
++ (id)buildGraftFailureError:(id)error withUnderlyingError:(id)underlyingError
 {
-  v5 = a4;
-  v6 = a3;
-  if ([SecureMobileAssetBundle isErrorDueToDeviceBeingLocked:v5])
+  underlyingErrorCopy = underlyingError;
+  errorCopy = error;
+  if ([SecureMobileAssetBundle isErrorDueToDeviceBeingLocked:underlyingErrorCopy])
   {
     v7 = @"Graft of secure mobile asset failed due to device being locked";
     v8 = 6538;
@@ -4466,23 +4466,23 @@ LABEL_8:
     v8 = 6107;
   }
 
-  v9 = [MAAutoAssetError buildError:v8 fromOperation:v6 underlyingError:v5 withDescription:v7];
+  v9 = [MAAutoAssetError buildError:v8 fromOperation:errorCopy underlyingError:underlyingErrorCopy withDescription:v7];
 
   return v9;
 }
 
-- (void)_personalizeGraftSetDownloaded:(id)a3 forSetDescriptor:(id)a4 allowingNetwork:(BOOL)a5 requiringPersonalization:(id)a6 requiringGrafting:(id)a7 shouldGraft:(BOOL)a8 completion:(id)a9
+- (void)_personalizeGraftSetDownloaded:(id)downloaded forSetDescriptor:(id)descriptor allowingNetwork:(BOOL)network requiringPersonalization:(id)personalization requiringGrafting:(id)grafting shouldGraft:(BOOL)graft completion:(id)completion
 {
-  v14 = a4;
-  v15 = a6;
-  v36 = a7;
-  v16 = a9;
-  v17 = a3;
-  v18 = [[NSString alloc] initWithFormat:@"%@:_personalizeGraftSetDownloaded", v17];
+  descriptorCopy = descriptor;
+  personalizationCopy = personalization;
+  graftingCopy = grafting;
+  completionCopy = completion;
+  downloadedCopy = downloaded;
+  downloadedCopy = [[NSString alloc] initWithFormat:@"%@:_personalizeGraftSetDownloaded", downloadedCopy];
 
-  v19 = [@"com.apple.MobileAsset.daemon.secureWaitedOperationQueue" UTF8String];
+  uTF8String = [@"com.apple.MobileAsset.daemon.secureWaitedOperationQueue" UTF8String];
   v20 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v21 = dispatch_queue_create(v19, v20);
+  v21 = dispatch_queue_create(uTF8String, v20);
 
   if (v21)
   {
@@ -4491,21 +4491,21 @@ LABEL_8:
     block[2] = __152__MADAutoAssetSecure__personalizeGraftSetDownloaded_forSetDescriptor_allowingNetwork_requiringPersonalization_requiringGrafting_shouldGraft_completion___block_invoke_1341;
     block[3] = &unk_4B3250;
     v22 = &v38;
-    v23 = v15;
-    v24 = v15;
+    v23 = personalizationCopy;
+    v24 = personalizationCopy;
     v25 = &v39;
     v38 = v23;
-    v39 = v18;
-    v43 = a5;
+    v39 = downloadedCopy;
+    networkCopy = network;
     v26 = &v40;
-    v40 = v14;
-    v44 = a8;
-    v27 = v36;
-    v41 = v36;
-    v42 = v16;
-    v28 = v16;
-    v29 = v14;
-    v30 = v18;
+    v40 = descriptorCopy;
+    graftCopy = graft;
+    v27 = graftingCopy;
+    v41 = graftingCopy;
+    v42 = completionCopy;
+    v28 = completionCopy;
+    v29 = descriptorCopy;
+    v30 = downloadedCopy;
     dispatch_async(v21, block);
 
     v31 = v41;
@@ -4520,18 +4520,18 @@ LABEL_8:
     v45[2] = __152__MADAutoAssetSecure__personalizeGraftSetDownloaded_forSetDescriptor_allowingNetwork_requiringPersonalization_requiringGrafting_shouldGraft_completion___block_invoke;
     v45[3] = &unk_4B3020;
     v22 = &v46;
-    v24 = v15;
+    v24 = personalizationCopy;
     v25 = &v47;
-    v46 = v18;
-    v47 = v14;
+    v46 = downloadedCopy;
+    v47 = descriptorCopy;
     v26 = &v48;
-    v48 = v16;
-    v33 = v16;
-    v34 = v14;
-    v35 = v18;
+    v48 = completionCopy;
+    v33 = completionCopy;
+    v34 = descriptorCopy;
+    v35 = downloadedCopy;
     dispatch_async(v32, v45);
 
-    v27 = v36;
+    v27 = graftingCopy;
   }
 }
 
@@ -5165,28 +5165,28 @@ LABEL_97:
   dispatch_async(v148, block);
 }
 
-+ (BOOL)graftOrMount:(id)a3 ofSecureAssetBundle:(id)a4 withAccessOptions:(id)a5 accessMechanismPtr:(int64_t *)a6 errorPtr:(id *)a7
++ (BOOL)graftOrMount:(id)mount ofSecureAssetBundle:(id)bundle withAccessOptions:(id)options accessMechanismPtr:(int64_t *)ptr errorPtr:(id *)errorPtr
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a3;
-  v14 = [[NSString alloc] initWithFormat:@"%@:graftOrMount", v13];
+  bundleCopy = bundle;
+  optionsCopy = options;
+  mountCopy = mount;
+  mountCopy = [[NSString alloc] initWithFormat:@"%@:graftOrMount", mountCopy];
 
   v27 = 0;
-  v15 = [v11 beginAccessWithOptions:v12 accessMechanismPtr:a6 errorPtr:&v27];
+  v15 = [bundleCopy beginAccessWithOptions:optionsCopy accessMechanismPtr:ptr errorPtr:&v27];
 
   v16 = v27;
-  v17 = v16;
+  assetBundlePath2 = v16;
   if (v15)
   {
     v18 = _MADLog(@"SecureMA");
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v11 assetBundlePath];
+      assetBundlePath = [bundleCopy assetBundlePath];
       *buf = 138543618;
-      v29 = v14;
+      v29 = mountCopy;
       v30 = 2114;
-      v31 = v19;
+      v31 = assetBundlePath;
       _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "\n[AUTO-SECURE][AUTO-GRAFT] {%{public}@:} graft|mount SUCCESS | secureMobileAssetBundle:%{public}@", buf, 0x16u);
     }
   }
@@ -5195,61 +5195,61 @@ LABEL_97:
   {
     if (v16)
     {
-      v20 = [MADAutoAssetSecure buildGraftFailureError:v14 withUnderlyingError:v16];
+      v20 = [MADAutoAssetSecure buildGraftFailureError:mountCopy withUnderlyingError:v16];
     }
 
     else
     {
       v21 = [NSString alloc];
-      v17 = [v11 assetBundlePath];
-      v22 = [v21 initWithFormat:@"unable to beginAccessWithOptions for secure asset (no underlying error provided) | secureAssetBundle:%@", v17];
-      v20 = [MAAutoAssetError buildError:6534 fromOperation:v14 underlyingError:0 withDescription:v22];
+      assetBundlePath2 = [bundleCopy assetBundlePath];
+      v22 = [v21 initWithFormat:@"unable to beginAccessWithOptions for secure asset (no underlying error provided) | secureAssetBundle:%@", assetBundlePath2];
+      v20 = [MAAutoAssetError buildError:6534 fromOperation:mountCopy underlyingError:0 withDescription:v22];
     }
 
     v18 = _MADLog(@"SecureMA");
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v23 = [v11 assetBundlePath];
-      v24 = [v20 checkedDescription];
+      assetBundlePath3 = [bundleCopy assetBundlePath];
+      checkedDescription = [v20 checkedDescription];
       *buf = 138543874;
-      v29 = v14;
+      v29 = mountCopy;
       v30 = 2114;
-      v31 = v23;
+      v31 = assetBundlePath3;
       v32 = 2114;
-      v33 = v24;
+      v33 = checkedDescription;
       _os_log_impl(&dword_0, v18, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE][AUTO-GRAFT] {%{public}@:} graft|mount ERROR | secureMobileAssetBundle:%{public}@ | secureOperationError:%{public}@", buf, 0x20u);
     }
 
-    v17 = v20;
+    assetBundlePath2 = v20;
   }
 
-  if (a7)
+  if (errorPtr)
   {
-    v25 = v17;
-    *a7 = v17;
+    v25 = assetBundlePath2;
+    *errorPtr = assetBundlePath2;
   }
 
   return v15;
 }
 
-+ (BOOL)ungraftOrUnmount:(id)a3 ofSecureAssetBundle:(id)a4 withAccessOptions:(id)a5 accessMechanismPtr:(int64_t *)a6 errorPtr:(id *)a7
++ (BOOL)ungraftOrUnmount:(id)unmount ofSecureAssetBundle:(id)bundle withAccessOptions:(id)options accessMechanismPtr:(int64_t *)ptr errorPtr:(id *)errorPtr
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a3;
-  v14 = [[NSString alloc] initWithFormat:@"%@:ungraftOrUnmount", v13];
+  bundleCopy = bundle;
+  optionsCopy = options;
+  unmountCopy = unmount;
+  unmountCopy = [[NSString alloc] initWithFormat:@"%@:ungraftOrUnmount", unmountCopy];
 
   v28 = 0;
-  v15 = [v11 endAccessWithOptions:v12 accessMechanismPtr:a6 errorPtr:&v28];
+  v15 = [bundleCopy endAccessWithOptions:optionsCopy accessMechanismPtr:ptr errorPtr:&v28];
 
   v16 = v28;
   v17 = v16;
   if ((v15 & 1) == 0 && !v16)
   {
     v18 = [NSString alloc];
-    v19 = [v11 assetBundlePath];
-    v20 = [v18 initWithFormat:@"unable to endAccessWithOptions for secure asset (no underlying error provided) | secureAssetBundle:%@", v19];
-    v17 = [MAAutoAssetError buildError:6534 fromOperation:v14 underlyingError:0 withDescription:v20];
+    assetBundlePath = [bundleCopy assetBundlePath];
+    v20 = [v18 initWithFormat:@"unable to endAccessWithOptions for secure asset (no underlying error provided) | secureAssetBundle:%@", assetBundlePath];
+    v17 = [MAAutoAssetError buildError:6534 fromOperation:unmountCopy underlyingError:0 withDescription:v20];
   }
 
   v21 = _MADLog(@"SecureMA");
@@ -5258,50 +5258,50 @@ LABEL_97:
   {
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v11 assetBundlePath];
+      assetBundlePath2 = [bundleCopy assetBundlePath];
       *buf = 138543618;
-      v30 = v14;
+      v30 = unmountCopy;
       v31 = 2114;
-      v32 = v23;
+      v32 = assetBundlePath2;
       _os_log_impl(&dword_0, v22, OS_LOG_TYPE_DEFAULT, "\n[AUTO-SECURE][AUTO-GRAFT] {%{public}@:} ungraft|unmount SUCCESS | secureMobileAssetBundle:%{public}@", buf, 0x16u);
     }
   }
 
   else if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
   {
-    v24 = [v11 assetBundlePath];
-    v25 = [v17 checkedDescription];
+    assetBundlePath3 = [bundleCopy assetBundlePath];
+    checkedDescription = [v17 checkedDescription];
     *buf = 138543874;
-    v30 = v14;
+    v30 = unmountCopy;
     v31 = 2114;
-    v32 = v24;
+    v32 = assetBundlePath3;
     v33 = 2114;
-    v34 = v25;
+    v34 = checkedDescription;
     _os_log_impl(&dword_0, v22, OS_LOG_TYPE_ERROR, "\n[AUTO-SECURE][AUTO-GRAFT] {%{public}@:} ungraft|unmount ERROR | secureMobileAssetBundle:%{public}@ | secureOperationError:%{public}@", buf, 0x20u);
   }
 
-  if (a7)
+  if (errorPtr)
   {
     v26 = v17;
-    *a7 = v17;
+    *errorPtr = v17;
   }
 
   return v15;
 }
 
-+ (id)_secureAssetBundleSummary:(id)a3
++ (id)_secureAssetBundleSummary:(id)summary
 {
-  v3 = a3;
-  if ([v3 manifestType] == &dword_0 + 1)
+  summaryCopy = summary;
+  if ([summaryCopy manifestType] == &dword_0 + 1)
   {
     v4 = @"Classic";
   }
 
   else
   {
-    v5 = [v3 manifestType];
+    manifestType = [summaryCopy manifestType];
     v4 = @"UNKNOWN_MANIFEST_TYPE";
-    if (v5 == &dword_0 + 2)
+    if (manifestType == &dword_0 + 2)
     {
       v4 = @"Code";
     }
@@ -5309,8 +5309,8 @@ LABEL_97:
 
   v21 = v4;
   v20 = [NSString alloc];
-  v6 = @"N";
-  if ([v3 isSecureMobileAsset])
+  assetBundlePath2 = @"N";
+  if ([summaryCopy isSecureMobileAsset])
   {
     v7 = @"Y";
   }
@@ -5321,7 +5321,7 @@ LABEL_97:
   }
 
   v19 = v7;
-  if ([v3 isPersonalized])
+  if ([summaryCopy isPersonalized])
   {
     v8 = @"Y";
   }
@@ -5332,7 +5332,7 @@ LABEL_97:
   }
 
   v18 = v8;
-  if ([v3 isPersonalizedManifestStaged])
+  if ([summaryCopy isPersonalizedManifestStaged])
   {
     v9 = @"Y";
   }
@@ -5342,7 +5342,7 @@ LABEL_97:
     v9 = @"N";
   }
 
-  if ([v3 isAccessible])
+  if ([summaryCopy isAccessible])
   {
     v10 = @"Y";
   }
@@ -5352,25 +5352,25 @@ LABEL_97:
     v10 = @"N";
   }
 
-  v11 = [v3 assetBundlePath];
-  if (v11)
+  assetBundlePath = [summaryCopy assetBundlePath];
+  if (assetBundlePath)
   {
-    v6 = [v3 assetBundlePath];
+    assetBundlePath2 = [summaryCopy assetBundlePath];
   }
 
-  v12 = [v3 accessPath];
-  if (v12)
+  accessPath = [summaryCopy accessPath];
+  if (accessPath)
   {
-    v13 = [v3 accessPath];
+    accessPath2 = [summaryCopy accessPath];
   }
 
   else
   {
-    v13 = @"N";
+    accessPath2 = @"N";
   }
 
-  v14 = [v3 secureInfoPlist];
-  if (v14)
+  secureInfoPlist = [summaryCopy secureInfoPlist];
+  if (secureInfoPlist)
   {
     v15 = @"Y";
   }
@@ -5380,22 +5380,22 @@ LABEL_97:
     v15 = @"N";
   }
 
-  v16 = [v20 initWithFormat:@"(isSecureMobileAsset:%@ | isPersonalized:%@ | isPersonalizedManifestStaged:%@ | manifest:%@ | isAccessible:%@ | assetBundlePath:%@ | accessPath:%@ | secureInfoPlist:%@)", v19, v18, v9, v21, v10, v6, v13, v15];
+  v16 = [v20 initWithFormat:@"(isSecureMobileAsset:%@ | isPersonalized:%@ | isPersonalizedManifestStaged:%@ | manifest:%@ | isAccessible:%@ | assetBundlePath:%@ | accessPath:%@ | secureInfoPlist:%@)", v19, v18, v9, v21, v10, assetBundlePath2, accessPath2, v15];
 
-  if (v12)
+  if (accessPath)
   {
   }
 
-  if (v11)
+  if (assetBundlePath)
   {
   }
 
   return v16;
 }
 
-+ (int64_t)secureOperationGraftOrMount:(int64_t)a3
++ (int64_t)secureOperationGraftOrMount:(int64_t)mount
 {
-  if (a3 == 1)
+  if (mount == 1)
   {
     return 3;
   }
@@ -5406,9 +5406,9 @@ LABEL_97:
   }
 }
 
-+ (int64_t)secureOperationUngraftOrUnmount:(int64_t)a3
++ (int64_t)secureOperationUngraftOrUnmount:(int64_t)unmount
 {
-  if (a3 == 1)
+  if (unmount == 1)
   {
     return 5;
   }
@@ -5425,13 +5425,13 @@ LABEL_97:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 secureProtectionQueue];
+    secureProtectionQueue = [v2 secureProtectionQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __40__MADAutoAssetSecure_removeAllPersisted__block_invoke;
     block[3] = &unk_4B2AA0;
     v7 = v3;
-    dispatch_sync(v4, block);
+    dispatch_sync(secureProtectionQueue, block);
 
     v5 = v7;
   }

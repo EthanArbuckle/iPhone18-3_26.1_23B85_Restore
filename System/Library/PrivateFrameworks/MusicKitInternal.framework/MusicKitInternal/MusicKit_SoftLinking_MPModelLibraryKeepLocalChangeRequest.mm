@@ -1,7 +1,7 @@
 @interface MusicKit_SoftLinking_MPModelLibraryKeepLocalChangeRequest
 - (MusicKit_SoftLinking_MPModelLibraryKeepLocalChangeRequest)init;
-- (void)setEnableState:(int64_t)a3;
-- (void)setModelObject:(id)a3;
+- (void)setEnableState:(int64_t)state;
+- (void)setModelObject:(id)object;
 @end
 
 @implementation MusicKit_SoftLinking_MPModelLibraryKeepLocalChangeRequest
@@ -39,26 +39,26 @@
   return v2;
 }
 
-- (void)setModelObject:(id)a3
+- (void)setModelObject:(id)object
 {
-  objc_storeStrong(&self->_modelObject, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_modelObject, object);
+  objectCopy = object;
   underlyingLibraryKeepLocalChangeRequest = self->_underlyingLibraryKeepLocalChangeRequest;
-  v7 = [v5 _underlyingModelObject];
-  [(MPModelLibraryKeepLocalChangeRequest *)underlyingLibraryKeepLocalChangeRequest setModelObject:v7];
+  _underlyingModelObject = [objectCopy _underlyingModelObject];
+  [(MPModelLibraryKeepLocalChangeRequest *)underlyingLibraryKeepLocalChangeRequest setModelObject:_underlyingModelObject];
 }
 
-- (void)setEnableState:(int64_t)a3
+- (void)setEnableState:(int64_t)state
 {
-  self->_enableState = a3;
-  if (a3 >= 5)
+  self->_enableState = state;
+  if (state >= 5)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = a3 - 1;
+    v3 = state - 1;
   }
 
   [(MPModelLibraryKeepLocalChangeRequest *)self->_underlyingLibraryKeepLocalChangeRequest setEnableState:v3];

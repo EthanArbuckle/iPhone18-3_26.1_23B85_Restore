@@ -1,73 +1,73 @@
 @interface COHomeKitAdapter
 + (COHomeKitAdapter)sharedInstance;
-+ (void)setSharedInstance:(id)a3;
++ (void)setSharedInstance:(id)instance;
 - (BOOL)hasOptedToHH2;
-- (BOOL)isAlarmsCollectionSetting:(id)a3 forAccessory:(id)a4 inHome:(id)a5;
+- (BOOL)isAlarmsCollectionSetting:(id)setting forAccessory:(id)accessory inHome:(id)home;
 - (BOOL)isReady;
-- (COHomeKitAdapter)initWithHomeManager:(id)a3 MediaGroupsDaemon:(id)a4;
+- (COHomeKitAdapter)initWithHomeManager:(id)manager MediaGroupsDaemon:(id)daemon;
 - (HMHomeManager)homekit;
 - (HMMediaSystem)currentMediaSystem;
-- (id)accessoriesForSiriContextTargetReference:(id)a3;
-- (id)accessoriesInMediaSystem:(id)a3 inHome:(id)a4;
-- (id)accessoriesInRoom:(id)a3 inHome:(id)a4;
-- (id)accessoriesInZone:(id)a3 inHome:(id)a4;
-- (id)accessoryWithUniqueIdentifier:(id)a3;
-- (id)addAlarm:(id)a3 toAccessory:(id)a4 inHome:(id)a5;
-- (id)alarmsCollectionForAccessory:(id)a3 inHome:(id)a4 isMediaSystem:(BOOL *)a5;
-- (id)alarmsForAccessory:(id)a3 inHome:(id)a4;
-- (id)allAccessoriesForSiriContextTargetReference:(id)a3;
-- (id)homeForAccessory:(id)a3;
-- (id)identifiersForAccessoriesAssociatedWithAccessory:(id)a3 inHome:(id)a4;
-- (id)mediaSystemForAccessory:(id)a3 inHome:(id)a4;
-- (id)registerMediaSystemUpdateHandler:(id)a3;
-- (id)removeAlarm:(id)a3 fromAccessory:(id)a4 inHome:(id)a5;
-- (id)roomForAccessory:(id)a3 inHome:(id)a4;
-- (id)settingsForKeyPath:(id)a3 fromSettings:(id)a4;
-- (id)settingsForKeyPath:(id)a3 onAccessory:(id)a4;
-- (id)settingsForKeyPath:(id)a3 onMediaObject:(id)a4;
-- (id)updateAlarm:(id)a3 onAccessory:(id)a4 inHome:(id)a5;
-- (id)zoneForAccessory:(id)a3 inHome:(id)a4;
-- (void)_addAudioDestinationControllerListenerForAccessory:(id)a3 home:(id)a4;
-- (void)_postUsersChangedNotificationForHome:(id)a3;
-- (void)_removeAudioDestinationControllerListenerForAccessory:(id)a3 home:(id)a4;
-- (void)_withLock:(id)a3;
-- (void)audioDestinationControllerDidUpdateForAccessory:(id)a3 inHome:(id)a4;
-- (void)home:(id)a3 didAddAccessory:(id)a4;
-- (void)home:(id)a3 didAddMediaSystem:(id)a4;
-- (void)home:(id)a3 didAddRoom:(id)a4;
-- (void)home:(id)a3 didAddRoom:(id)a4 toZone:(id)a5;
-- (void)home:(id)a3 didAddUser:(id)a4;
-- (void)home:(id)a3 didAddZone:(id)a4;
-- (void)home:(id)a3 didRemoveAccessory:(id)a4;
-- (void)home:(id)a3 didRemoveMediaSystem:(id)a4;
-- (void)home:(id)a3 didRemoveRoom:(id)a4;
-- (void)home:(id)a3 didRemoveUser:(id)a4;
-- (void)home:(id)a3 didRemoveZone:(id)a4;
-- (void)home:(id)a3 didUpdateRoom:(id)a4 forAccessory:(id)a5;
-- (void)homeManager:(id)a3 didAddHome:(id)a4;
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4;
-- (void)homeManager:(id)a3 didUpdateAuthorizationStatus:(unint64_t)a4;
-- (void)homeManager:(id)a3 didUpdateStatus:(unint64_t)a4;
-- (void)homeManagerDidUpdateCurrentHome:(id)a3;
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (id)accessoriesForSiriContextTargetReference:(id)reference;
+- (id)accessoriesInMediaSystem:(id)system inHome:(id)home;
+- (id)accessoriesInRoom:(id)room inHome:(id)home;
+- (id)accessoriesInZone:(id)zone inHome:(id)home;
+- (id)accessoryWithUniqueIdentifier:(id)identifier;
+- (id)addAlarm:(id)alarm toAccessory:(id)accessory inHome:(id)home;
+- (id)alarmsCollectionForAccessory:(id)accessory inHome:(id)home isMediaSystem:(BOOL *)system;
+- (id)alarmsForAccessory:(id)accessory inHome:(id)home;
+- (id)allAccessoriesForSiriContextTargetReference:(id)reference;
+- (id)homeForAccessory:(id)accessory;
+- (id)identifiersForAccessoriesAssociatedWithAccessory:(id)accessory inHome:(id)home;
+- (id)mediaSystemForAccessory:(id)accessory inHome:(id)home;
+- (id)registerMediaSystemUpdateHandler:(id)handler;
+- (id)removeAlarm:(id)alarm fromAccessory:(id)accessory inHome:(id)home;
+- (id)roomForAccessory:(id)accessory inHome:(id)home;
+- (id)settingsForKeyPath:(id)path fromSettings:(id)settings;
+- (id)settingsForKeyPath:(id)path onAccessory:(id)accessory;
+- (id)settingsForKeyPath:(id)path onMediaObject:(id)object;
+- (id)updateAlarm:(id)alarm onAccessory:(id)accessory inHome:(id)home;
+- (id)zoneForAccessory:(id)accessory inHome:(id)home;
+- (void)_addAudioDestinationControllerListenerForAccessory:(id)accessory home:(id)home;
+- (void)_postUsersChangedNotificationForHome:(id)home;
+- (void)_removeAudioDestinationControllerListenerForAccessory:(id)accessory home:(id)home;
+- (void)_withLock:(id)lock;
+- (void)audioDestinationControllerDidUpdateForAccessory:(id)accessory inHome:(id)home;
+- (void)home:(id)home didAddAccessory:(id)accessory;
+- (void)home:(id)home didAddMediaSystem:(id)system;
+- (void)home:(id)home didAddRoom:(id)room;
+- (void)home:(id)home didAddRoom:(id)room toZone:(id)zone;
+- (void)home:(id)home didAddUser:(id)user;
+- (void)home:(id)home didAddZone:(id)zone;
+- (void)home:(id)home didRemoveAccessory:(id)accessory;
+- (void)home:(id)home didRemoveMediaSystem:(id)system;
+- (void)home:(id)home didRemoveRoom:(id)room;
+- (void)home:(id)home didRemoveUser:(id)user;
+- (void)home:(id)home didRemoveZone:(id)zone;
+- (void)home:(id)home didUpdateRoom:(id)room forAccessory:(id)accessory;
+- (void)homeManager:(id)manager didAddHome:(id)home;
+- (void)homeManager:(id)manager didRemoveHome:(id)home;
+- (void)homeManager:(id)manager didUpdateAuthorizationStatus:(unint64_t)status;
+- (void)homeManager:(id)manager didUpdateStatus:(unint64_t)status;
+- (void)homeManagerDidUpdateCurrentHome:(id)home;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 - (void)prewarm;
-- (void)setCurrentMediaSystem:(id)a3;
-- (void)unregisterMediaSystemUpdateHandler:(id)a3;
+- (void)setCurrentMediaSystem:(id)system;
+- (void)unregisterMediaSystemUpdateHandler:(id)handler;
 @end
 
 @implementation COHomeKitAdapter
 
-- (COHomeKitAdapter)initWithHomeManager:(id)a3 MediaGroupsDaemon:(id)a4
+- (COHomeKitAdapter)initWithHomeManager:(id)manager MediaGroupsDaemon:(id)daemon
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  daemonCopy = daemon;
   v22.receiver = self;
   v22.super_class = COHomeKitAdapter;
   v9 = [(COHomeKitAdapter *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_homekit, a3);
+    objc_storeStrong(&v9->_homekit, manager);
     v11 = objc_alloc_init(MEMORY[0x277CCA928]);
     condition = v10->_condition;
     v10->_condition = v11;
@@ -76,7 +76,7 @@
     mediaSystemUpdateHandlers = v10->_mediaSystemUpdateHandlers;
     v10->_mediaSystemUpdateHandlers = v13;
 
-    objc_storeStrong(&v10->_mediaGroupsDaemon, a4);
+    objc_storeStrong(&v10->_mediaGroupsDaemon, daemon);
     v15 = objc_alloc_init(MEMORY[0x277CBEAC0]);
     audioDestinationControllerListeners = v10->_audioDestinationControllerListeners;
     v10->_audioDestinationControllerListeners = v15;
@@ -92,8 +92,8 @@
 
       else
       {
-        v20 = [(HMHomeManager *)v18 status];
-        v19 = (v20 & 0x21) != 1 || (v20 & 0x10) != 0;
+        status = [(HMHomeManager *)v18 status];
+        v19 = (status & 0x21) != 1 || (status & 0x10) != 0;
       }
 
       v10->_ready = v19;
@@ -110,7 +110,7 @@
   v3 = _COHomeKitAdapterSharedInstance;
   if (!v3)
   {
-    v4 = objc_alloc_init(a1);
+    v4 = objc_alloc_init(self);
     v5 = _COHomeKitAdapterSharedInstance;
     _COHomeKitAdapterSharedInstance = v4;
 
@@ -122,12 +122,12 @@
   return v3;
 }
 
-+ (void)setSharedInstance:(id)a3
++ (void)setSharedInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   os_unfair_lock_lock(&_COHomeKitAdapterSharedInstanceLock);
   v4 = _COHomeKitAdapterSharedInstance;
-  _COHomeKitAdapterSharedInstance = v3;
+  _COHomeKitAdapterSharedInstance = instanceCopy;
 
   os_unfair_lock_unlock(&_COHomeKitAdapterSharedInstanceLock);
 }
@@ -153,7 +153,7 @@
 - (void)prewarm
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CCACC8] callStackSymbols];
+  callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
   OUTLINED_FUNCTION_1_3(&dword_244378000, v0, v1, "%p request to prewarm HomeKit from %@", v2, v3, v4, v5, 2u);
 
   v6 = *MEMORY[0x277D85DE8];
@@ -161,10 +161,10 @@
 
 - (BOOL)hasOptedToHH2
 {
-  v2 = [(COHomeKitAdapter *)self homekit];
-  v3 = [v2 hasOptedToHH2];
+  homekit = [(COHomeKitAdapter *)self homekit];
+  hasOptedToHH2 = [homekit hasOptedToHH2];
 
-  return v3;
+  return hasOptedToHH2;
 }
 
 - (HMHomeManager)homekit
@@ -183,8 +183,8 @@
   v11[4] = self;
   v11[5] = &v12;
   [(COHomeKitAdapter *)self _withLock:v11];
-  v3 = [(COHomeKitAdapter *)self condition];
-  [v3 lock];
+  condition = [(COHomeKitAdapter *)self condition];
+  [condition lock];
   if (!self->_ready)
   {
     *&v4 = 134217984;
@@ -195,18 +195,18 @@
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         *buf = v10;
-        v19 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_244378000, v5, OS_LOG_TYPE_DEFAULT, "%p having to wait for HomeKit to come ready!", buf, 0xCu);
       }
 
-      [v3 wait];
+      [condition wait];
       if (self->_ready)
       {
         v6 = COCoreLogForCategory(7);
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
         {
           *buf = v10;
-          v19 = self;
+          selfCopy2 = self;
           _os_log_impl(&dword_244378000, v6, OS_LOG_TYPE_DEFAULT, "%p is able to move forward again.", buf, 0xCu);
         }
 
@@ -218,7 +218,7 @@
     }
   }
 
-  [v3 unlock];
+  [condition unlock];
   v7 = v13[5];
 
   _Block_object_dispose(&v12, 8);
@@ -270,11 +270,11 @@ void __27__COHomeKitAdapter_homekit__block_invoke(uint64_t a1)
   objc_storeStrong(v12, v3);
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -300,9 +300,9 @@ void __27__COHomeKitAdapter_homekit__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)setCurrentMediaSystem:(id)a3
+- (void)setCurrentMediaSystem:(id)system
 {
-  v4 = a3;
+  systemCopy = system;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -313,9 +313,9 @@ void __27__COHomeKitAdapter_homekit__block_invoke(uint64_t a1)
   v7[1] = 3221225472;
   v7[2] = __42__COHomeKitAdapter_setCurrentMediaSystem___block_invoke;
   v7[3] = &unk_278E15700;
-  v5 = v4;
+  v5 = systemCopy;
   v8 = v5;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   [(COHomeKitAdapter *)self _withLock:v7];
   v6 = v12[5];
@@ -473,18 +473,18 @@ void __42__COHomeKitAdapter_setCurrentMediaSystem___block_invoke_25(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)accessoryWithUniqueIdentifier:(id)a3
+- (id)accessoryWithUniqueIdentifier:(id)identifier
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = [(COHomeKitAdapter *)self homekit];
-  v6 = [v5 homes];
+  homekit = [(COHomeKitAdapter *)self homekit];
+  homes = [homekit homes];
 
-  v22 = [v6 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  v22 = [homes countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v22)
   {
     v7 = *v28;
@@ -495,7 +495,7 @@ void __42__COHomeKitAdapter_setCurrentMediaSystem___block_invoke_25(uint64_t a1)
       {
         if (*v28 != v7)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(homes);
         }
 
         v9 = *(*(&v27 + 1) + 8 * i);
@@ -503,8 +503,8 @@ void __42__COHomeKitAdapter_setCurrentMediaSystem___block_invoke_25(uint64_t a1)
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v10 = [v9 accessories];
-        v11 = [v10 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        accessories = [v9 accessories];
+        v11 = [accessories countByEnumeratingWithState:&v23 objects:v31 count:16];
         if (v11)
         {
           v12 = v11;
@@ -515,12 +515,12 @@ void __42__COHomeKitAdapter_setCurrentMediaSystem___block_invoke_25(uint64_t a1)
             {
               if (*v24 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(accessories);
               }
 
               v15 = *(*(&v23 + 1) + 8 * j);
-              v16 = [v15 uniqueIdentifier];
-              v17 = [v16 isEqual:v4];
+              uniqueIdentifier = [v15 uniqueIdentifier];
+              v17 = [uniqueIdentifier isEqual:identifierCopy];
 
               if (v17)
               {
@@ -530,7 +530,7 @@ void __42__COHomeKitAdapter_setCurrentMediaSystem___block_invoke_25(uint64_t a1)
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v23 objects:v31 count:16];
+            v12 = [accessories countByEnumeratingWithState:&v23 objects:v31 count:16];
             if (v12)
             {
               continue;
@@ -543,14 +543,14 @@ void __42__COHomeKitAdapter_setCurrentMediaSystem___block_invoke_25(uint64_t a1)
         v7 = v21;
       }
 
-      v22 = [v6 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v22 = [homes countByEnumeratingWithState:&v27 objects:v32 count:16];
     }
 
     while (v22);
   }
 
-  v6 = COCoreLogForCategory(7);
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  homes = COCoreLogForCategory(7);
+  if (os_log_type_enabled(homes, OS_LOG_TYPE_ERROR))
   {
     [COHomeKitAdapter accessoryWithUniqueIdentifier:];
   }
@@ -563,32 +563,32 @@ LABEL_20:
   return v18;
 }
 
-- (id)identifiersForAccessoriesAssociatedWithAccessory:(id)a3 inHome:(id)a4
+- (id)identifiersForAccessoriesAssociatedWithAccessory:(id)accessory inHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  homeCopy = home;
   v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v9 = [(COHomeKitAdapter *)self mediaSystemForAccessory:v6 inHome:v7];
+  v9 = [(COHomeKitAdapter *)self mediaSystemForAccessory:accessoryCopy inHome:homeCopy];
   if (v9)
   {
-    v10 = [(COHomeKitAdapter *)self accessoriesInMediaSystem:v9 inHome:v7];
+    uniqueIdentifier = [(COHomeKitAdapter *)self accessoriesInMediaSystem:v9 inHome:homeCopy];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __76__COHomeKitAdapter_identifiersForAccessoriesAssociatedWithAccessory_inHome___block_invoke;
     v13[3] = &unk_278E16838;
     v14 = v8;
-    [v10 enumerateObjectsUsingBlock:v13];
+    [uniqueIdentifier enumerateObjectsUsingBlock:v13];
   }
 
   else
   {
-    v10 = [v6 uniqueIdentifier];
-    [v8 addObject:v10];
+    uniqueIdentifier = [accessoryCopy uniqueIdentifier];
+    [v8 addObject:uniqueIdentifier];
   }
 
-  v11 = [v8 allObjects];
+  allObjects = [v8 allObjects];
 
-  return v11;
+  return allObjects;
 }
 
 void __76__COHomeKitAdapter_identifiersForAccessoriesAssociatedWithAccessory_inHome___block_invoke(uint64_t a1, void *a2)
@@ -598,14 +598,14 @@ void __76__COHomeKitAdapter_identifiersForAccessoriesAssociatedWithAccessory_inH
   [v2 addObject:v3];
 }
 
-- (id)mediaSystemForAccessory:(id)a3 inHome:(id)a4
+- (id)mediaSystemForAccessory:(id)accessory inHome:(id)home
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COHomeKitAdapter *)self homekit];
-  v9 = [v8 homes];
-  v10 = [v9 containsObject:v7];
+  accessoryCopy = accessory;
+  homeCopy = home;
+  homekit = [(COHomeKitAdapter *)self homekit];
+  homes = [homekit homes];
+  v10 = [homes containsObject:homeCopy];
 
   if (v10)
   {
@@ -613,12 +613,12 @@ void __76__COHomeKitAdapter_identifiersForAccessoriesAssociatedWithAccessory_inH
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v11 = [v7 mediaSystems];
-    v27 = [v11 countByEnumeratingWithState:&v34 objects:v39 count:16];
+    mediaSystems = [homeCopy mediaSystems];
+    v27 = [mediaSystems countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v27)
     {
       v12 = *v35;
-      v29 = v11;
+      v29 = mediaSystems;
       v26 = *v35;
       do
       {
@@ -626,7 +626,7 @@ void __76__COHomeKitAdapter_identifiersForAccessoriesAssociatedWithAccessory_inH
         {
           if (*v35 != v12)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(mediaSystems);
           }
 
           v14 = *(*(&v34 + 1) + 8 * i);
@@ -635,8 +635,8 @@ void __76__COHomeKitAdapter_identifiersForAccessoriesAssociatedWithAccessory_inH
           v32 = 0u;
           v33 = 0u;
           v28 = v14;
-          v15 = [v14 components];
-          v16 = [v15 countByEnumeratingWithState:&v30 objects:v38 count:16];
+          components = [v14 components];
+          v16 = [components countByEnumeratingWithState:&v30 objects:v38 count:16];
           if (v16)
           {
             v17 = v16;
@@ -647,23 +647,23 @@ void __76__COHomeKitAdapter_identifiersForAccessoriesAssociatedWithAccessory_inH
               {
                 if (*v31 != v18)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(components);
                 }
 
-                v20 = [*(*(&v30 + 1) + 8 * j) mediaProfile];
-                v21 = [v20 accessory];
-                v22 = [v21 isEqual:v6];
+                mediaProfile = [*(*(&v30 + 1) + 8 * j) mediaProfile];
+                accessory = [mediaProfile accessory];
+                v22 = [accessory isEqual:accessoryCopy];
 
                 if (v22)
                 {
                   v23 = v28;
 
-                  v11 = v29;
+                  mediaSystems = v29;
                   goto LABEL_21;
                 }
               }
 
-              v17 = [v15 countByEnumeratingWithState:&v30 objects:v38 count:16];
+              v17 = [components countByEnumeratingWithState:&v30 objects:v38 count:16];
               if (v17)
               {
                 continue;
@@ -674,7 +674,7 @@ void __76__COHomeKitAdapter_identifiersForAccessoriesAssociatedWithAccessory_inH
           }
 
           v12 = v26;
-          v11 = v29;
+          mediaSystems = v29;
         }
 
         v23 = 0;
@@ -702,16 +702,16 @@ LABEL_21:
   return v23;
 }
 
-- (id)accessoriesInMediaSystem:(id)a3 inHome:(id)a4
+- (id)accessoriesInMediaSystem:(id)system inHome:(id)home
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  systemCopy = system;
+  homeCopy = home;
   v8 = objc_alloc_init(MEMORY[0x277CBEA60]);
-  v9 = [v6 components];
-  v10 = [(COHomeKitAdapter *)self homekit];
-  v11 = [v10 homes];
-  v12 = [v11 containsObject:v7];
+  components = [systemCopy components];
+  homekit = [(COHomeKitAdapter *)self homekit];
+  homes = [homekit homes];
+  v12 = [homes containsObject:homeCopy];
 
   if (v12)
   {
@@ -719,7 +719,7 @@ LABEL_21:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v13 = v9;
+    v13 = components;
     v14 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v14)
     {
@@ -734,12 +734,12 @@ LABEL_21:
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v23 + 1) + 8 * i) mediaProfile];
-          v19 = [v18 accessory];
+          mediaProfile = [*(*(&v23 + 1) + 8 * i) mediaProfile];
+          accessory = [mediaProfile accessory];
 
-          if (v19)
+          if (accessory)
           {
-            v20 = [v8 arrayByAddingObject:v19];
+            v20 = [v8 arrayByAddingObject:accessory];
 
             v8 = v20;
           }
@@ -757,18 +757,18 @@ LABEL_21:
   return v8;
 }
 
-- (id)homeForAccessory:(id)a3
+- (id)homeForAccessory:(id)accessory
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoryCopy = accessory;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(COHomeKitAdapter *)self homekit];
-  v6 = [v5 homes];
+  homekit = [(COHomeKitAdapter *)self homekit];
+  homes = [homekit homes];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [homes countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -778,12 +778,12 @@ LABEL_21:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(homes);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 accessories];
-        v12 = [v11 containsObject:v4];
+        accessories = [v10 accessories];
+        v12 = [accessories containsObject:accessoryCopy];
 
         if (v12)
         {
@@ -792,7 +792,7 @@ LABEL_21:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [homes countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -809,19 +809,19 @@ LABEL_11:
   return v7;
 }
 
-- (id)zoneForAccessory:(id)a3 inHome:(id)a4
+- (id)zoneForAccessory:(id)accessory inHome:(id)home
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(COHomeKitAdapter *)self roomForAccessory:a3 inHome:v6];
+  homeCopy = home;
+  v7 = [(COHomeKitAdapter *)self roomForAccessory:accessory inHome:homeCopy];
   if (v7)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [v6 zones];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    zones = [homeCopy zones];
+    v9 = [zones countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = *v18;
@@ -831,12 +831,12 @@ LABEL_11:
         {
           if (*v18 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(zones);
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
-          v13 = [v12 rooms];
-          v14 = [v13 containsObject:v7];
+          rooms = [v12 rooms];
+          v14 = [rooms containsObject:v7];
 
           if (v14)
           {
@@ -845,7 +845,7 @@ LABEL_11:
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v9 = [zones countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v9)
         {
           continue;
@@ -868,18 +868,18 @@ LABEL_12:
   return v9;
 }
 
-- (id)accessoriesInZone:(id)a3 inHome:(id)a4
+- (id)accessoriesInZone:(id)zone inHome:(id)home
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  zoneCopy = zone;
+  homeCopy = home;
   v8 = objc_alloc_init(MEMORY[0x277CBEA60]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = [v6 rooms];
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  rooms = [zoneCopy rooms];
+  v10 = [rooms countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -892,10 +892,10 @@ LABEL_12:
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(rooms);
         }
 
-        v15 = [(COHomeKitAdapter *)self accessoriesInRoom:*(*(&v18 + 1) + 8 * v13) inHome:v7];
+        v15 = [(COHomeKitAdapter *)self accessoriesInRoom:*(*(&v18 + 1) + 8 * v13) inHome:homeCopy];
         v8 = [v14 arrayByAddingObjectsFromArray:v15];
 
         ++v13;
@@ -903,7 +903,7 @@ LABEL_12:
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v11 = [rooms countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v11);
@@ -914,17 +914,17 @@ LABEL_12:
   return v8;
 }
 
-- (id)roomForAccessory:(id)a3 inHome:(id)a4
+- (id)roomForAccessory:(id)accessory inHome:(id)home
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  homeCopy = home;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [v7 rooms];
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  rooms = [homeCopy rooms];
+  v9 = [rooms countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = v9;
@@ -935,12 +935,12 @@ LABEL_12:
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(rooms);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        v14 = [(COHomeKitAdapter *)self accessoriesInRoom:v13 inHome:v7];
-        v15 = [v14 containsObject:v6];
+        v14 = [(COHomeKitAdapter *)self accessoriesInRoom:v13 inHome:homeCopy];
+        v15 = [v14 containsObject:accessoryCopy];
 
         if (v15)
         {
@@ -949,7 +949,7 @@ LABEL_12:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v10 = [rooms countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v10)
       {
         continue;
@@ -967,20 +967,20 @@ LABEL_11:
   return v16;
 }
 
-- (id)accessoriesInRoom:(id)a3 inHome:(id)a4
+- (id)accessoriesInRoom:(id)room inHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COHomeKitAdapter *)self homekit];
-  v9 = [v8 homes];
-  if ([v9 containsObject:v7])
+  roomCopy = room;
+  homeCopy = home;
+  homekit = [(COHomeKitAdapter *)self homekit];
+  homes = [homekit homes];
+  if ([homes containsObject:homeCopy])
   {
-    v10 = [v7 rooms];
-    v11 = [v10 containsObject:v6];
+    rooms = [homeCopy rooms];
+    v11 = [rooms containsObject:roomCopy];
 
     if (v11)
     {
-      v12 = [v6 accessories];
+      accessories = [roomCopy accessories];
       goto LABEL_6;
     }
   }
@@ -989,31 +989,31 @@ LABEL_11:
   {
   }
 
-  v12 = MEMORY[0x277CBEBF8];
+  accessories = MEMORY[0x277CBEBF8];
 LABEL_6:
 
-  return v12;
+  return accessories;
 }
 
-- (id)settingsForKeyPath:(id)a3 fromSettings:(id)a4
+- (id)settingsForKeyPath:(id)path fromSettings:(id)settings
 {
   v50 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  pathCopy = path;
+  settingsCopy = settings;
   if (settingsForKeyPath_fromSettings__onceToken != -1)
   {
     [COHomeKitAdapter settingsForKeyPath:fromSettings:];
   }
 
-  v7 = [v5 componentsSeparatedByString:@"."];
+  v7 = [pathCopy componentsSeparatedByString:@"."];
   v38 = [v7 count];
   if (v38 && ([v7 firstObject], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", *MEMORY[0x277CCEDC0]), v8, v9))
   {
-    v10 = [v6 rootGroup];
-    if (v10)
+    rootGroup = [settingsCopy rootGroup];
+    if (rootGroup)
     {
-      v35 = v6;
-      v36 = v5;
+      v35 = settingsCopy;
+      v36 = pathCopy;
       v11 = 1;
       v37 = v7;
       do
@@ -1025,8 +1025,8 @@ LABEL_6:
         v46 = 0u;
         v43 = 0u;
         v44 = 0u;
-        v14 = [v10 groups];
-        v15 = [v14 countByEnumeratingWithState:&v43 objects:v49 count:16];
+        groups = [rootGroup groups];
+        v15 = [groups countByEnumeratingWithState:&v43 objects:v49 count:16];
         if (v15)
         {
           v16 = v15;
@@ -1037,23 +1037,23 @@ LABEL_6:
             {
               if (*v44 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(groups);
               }
 
               v19 = *(*(&v43 + 1) + 8 * i);
-              v20 = [v19 keyPath];
-              v21 = [v20 isEqualToString:v13];
+              keyPath = [v19 keyPath];
+              v21 = [keyPath isEqualToString:v13];
 
               if (v21)
               {
                 v22 = v19;
 
-                v10 = v22;
+                rootGroup = v22;
                 goto LABEL_17;
               }
             }
 
-            v16 = [v14 countByEnumeratingWithState:&v43 objects:v49 count:16];
+            v16 = [groups countByEnumeratingWithState:&v43 objects:v49 count:16];
             if (v16)
             {
               continue;
@@ -1066,7 +1066,7 @@ LABEL_17:
           v7 = v37;
         }
 
-        if (!v10)
+        if (!rootGroup)
         {
           break;
         }
@@ -1075,15 +1075,15 @@ LABEL_17:
       }
 
       while (v11 <= v38);
-      if (v10)
+      if (rootGroup)
       {
-        v23 = [v10 keyPath];
-        v5 = v36;
-        v24 = [v23 isEqualToString:v36];
+        keyPath2 = [rootGroup keyPath];
+        pathCopy = v36;
+        v24 = [keyPath2 isEqualToString:v36];
 
         if (v24)
         {
-          v25 = [v10 settings];
+          settings = [rootGroup settings];
         }
 
         else
@@ -1092,35 +1092,35 @@ LABEL_17:
           v42 = 0u;
           v39 = 0u;
           v40 = 0u;
-          v26 = [v10 settings];
-          v25 = [v26 countByEnumeratingWithState:&v39 objects:v48 count:16];
-          if (v25)
+          settings2 = [rootGroup settings];
+          settings = [settings2 countByEnumeratingWithState:&v39 objects:v48 count:16];
+          if (settings)
           {
             v27 = v7;
             v28 = *v40;
             while (2)
             {
-              for (j = 0; j != v25; j = j + 1)
+              for (j = 0; j != settings; j = j + 1)
               {
                 if (*v40 != v28)
                 {
-                  objc_enumerationMutation(v26);
+                  objc_enumerationMutation(settings2);
                 }
 
                 v30 = *(*(&v39 + 1) + 8 * j);
-                v31 = [v30 keyPath];
-                v32 = [v31 isEqualToString:v36];
+                keyPath3 = [v30 keyPath];
+                v32 = [keyPath3 isEqualToString:v36];
 
                 if (v32)
                 {
                   v47 = v30;
-                  v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v47 count:1];
+                  settings = [MEMORY[0x277CBEA60] arrayWithObjects:&v47 count:1];
                   goto LABEL_36;
                 }
               }
 
-              v25 = [v26 countByEnumeratingWithState:&v39 objects:v48 count:16];
-              if (v25)
+              settings = [settings2 countByEnumeratingWithState:&v39 objects:v48 count:16];
+              if (settings)
               {
                 continue;
               }
@@ -1136,27 +1136,27 @@ LABEL_36:
 
       else
       {
-        v25 = 0;
-        v5 = v36;
+        settings = 0;
+        pathCopy = v36;
       }
 
-      v6 = v35;
+      settingsCopy = v35;
     }
 
     else
     {
-      v25 = 0;
+      settings = 0;
     }
   }
 
   else
   {
-    v25 = 0;
+    settings = 0;
   }
 
   v33 = *MEMORY[0x277D85DE8];
 
-  return v25;
+  return settings;
 }
 
 void __52__COHomeKitAdapter_settingsForKeyPath_fromSettings___block_invoke()
@@ -1170,26 +1170,26 @@ void __52__COHomeKitAdapter_settingsForKeyPath_fromSettings___block_invoke()
   [MEMORY[0x277CD1688] setItemValueClasses:v5 forKeyPath:@"root.mobileTimer.alarms"];
 }
 
-- (id)settingsForKeyPath:(id)a3 onAccessory:(id)a4
+- (id)settingsForKeyPath:(id)path onAccessory:(id)accessory
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 settings];
-  v9 = [(COHomeKitAdapter *)self settingsForKeyPath:v6 fromSettings:v8];
+  pathCopy = path;
+  accessoryCopy = accessory;
+  settings = [accessoryCopy settings];
+  v9 = [(COHomeKitAdapter *)self settingsForKeyPath:pathCopy fromSettings:settings];
 
   if (!v9)
   {
     v10 = COCoreLogForCategory(7);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v7 uniqueIdentifier];
+      uniqueIdentifier = [accessoryCopy uniqueIdentifier];
       v14 = 134218498;
-      v15 = self;
+      selfCopy = self;
       v16 = 2112;
-      v17 = v6;
+      v17 = pathCopy;
       v18 = 2112;
-      v19 = v13;
+      v19 = uniqueIdentifier;
       _os_log_error_impl(&dword_244378000, v10, OS_LOG_TYPE_ERROR, "%p was not able to retrieve %@ for accessory %@!", &v14, 0x20u);
     }
   }
@@ -1199,13 +1199,13 @@ void __52__COHomeKitAdapter_settingsForKeyPath_fromSettings___block_invoke()
   return v9;
 }
 
-- (id)settingsForKeyPath:(id)a3 onMediaObject:(id)a4
+- (id)settingsForKeyPath:(id)path onMediaObject:(id)object
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 settings];
-  v9 = [(COHomeKitAdapter *)self settingsForKeyPath:v6 fromSettings:v8];
+  pathCopy = path;
+  objectCopy = object;
+  settings = [objectCopy settings];
+  v9 = [(COHomeKitAdapter *)self settingsForKeyPath:pathCopy fromSettings:settings];
 
   if (!v9)
   {
@@ -1213,11 +1213,11 @@ void __52__COHomeKitAdapter_settingsForKeyPath_fromSettings___block_invoke()
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v13 = 134218498;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
-      v16 = v6;
+      v16 = pathCopy;
       v17 = 2112;
-      v18 = v7;
+      v18 = objectCopy;
       _os_log_error_impl(&dword_244378000, v10, OS_LOG_TYPE_ERROR, "%p was not able to retrieve %@ for %@!", &v13, 0x20u);
     }
   }
@@ -1227,16 +1227,16 @@ void __52__COHomeKitAdapter_settingsForKeyPath_fromSettings___block_invoke()
   return v9;
 }
 
-- (id)registerMediaSystemUpdateHandler:(id)a3
+- (id)registerMediaSystemUpdateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__COHomeKitAdapter_registerMediaSystemUpdateHandler___block_invoke;
   v8[3] = &unk_278E16240;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = handlerCopy;
+  v5 = handlerCopy;
   [(COHomeKitAdapter *)self _withLock:v8];
   v6 = MEMORY[0x245D5FF10](v5);
 
@@ -1250,16 +1250,16 @@ void __53__COHomeKitAdapter_registerMediaSystemUpdateHandler___block_invoke(uint
   [v3 addObject:v2];
 }
 
-- (void)unregisterMediaSystemUpdateHandler:(id)a3
+- (void)unregisterMediaSystemUpdateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__COHomeKitAdapter_unregisterMediaSystemUpdateHandler___block_invoke;
   v6[3] = &unk_278E156B0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(COHomeKitAdapter *)self _withLock:v6];
 }
 
@@ -1270,40 +1270,40 @@ void __55__COHomeKitAdapter_unregisterMediaSystemUpdateHandler___block_invoke(ui
   [v3 removeObject:v2];
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homesCopy = homes;
   v5 = COCoreLogForCategory(7);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [COHomeKitAdapter homeManagerDidUpdateHomes:v5];
   }
 
-  v6 = [(COHomeKitAdapter *)self condition];
-  [v6 lock];
+  condition = [(COHomeKitAdapter *)self condition];
+  [condition lock];
   if (!self->_ready)
   {
     v7 = COCoreLogForCategory(7);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v30 = self;
+      selfCopy = self;
       _os_log_impl(&dword_244378000, v7, OS_LOG_TYPE_DEFAULT, "%p is marking HomeKit ready!", buf, 0xCu);
     }
 
     self->_ready = 1;
-    [v6 broadcast];
+    [condition broadcast];
   }
 
-  [v6 unlock];
-  v8 = [(COHomeKitAdapter *)self currentAccessory];
-  if (v8)
+  [condition unlock];
+  currentAccessory = [(COHomeKitAdapter *)self currentAccessory];
+  if (currentAccessory)
   {
-    v9 = [(COHomeKitAdapter *)self homeForAccessory:v8];
+    v9 = [(COHomeKitAdapter *)self homeForAccessory:currentAccessory];
     if (v9)
     {
-      v10 = [(COHomeKitAdapter *)self mediaSystemForAccessory:v8 inHome:v9];
+      v10 = [(COHomeKitAdapter *)self mediaSystemForAccessory:currentAccessory inHome:v9];
     }
 
     else
@@ -1314,12 +1314,12 @@ void __55__COHomeKitAdapter_unregisterMediaSystemUpdateHandler___block_invoke(ui
     [(COHomeKitAdapter *)self setCurrentMediaSystem:v10];
   }
 
-  v11 = [(COHomeKitAdapter *)self mediaGroupsDaemon];
+  mediaGroupsDaemon = [(COHomeKitAdapter *)self mediaGroupsDaemon];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = [v4 homes];
+  obj = [homesCopy homes];
   v12 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v12)
   {
@@ -1336,19 +1336,19 @@ void __55__COHomeKitAdapter_unregisterMediaSystemUpdateHandler___block_invoke(ui
 
         v16 = *(*(&v24 + 1) + 8 * i);
         [v16 setDelegate:self];
-        if (v11)
+        if (mediaGroupsDaemon)
         {
-          [v11 addHomeKitHome:v16];
+          [mediaGroupsDaemon addHomeKitHome:v16];
         }
 
-        v17 = [v16 accessories];
+        accessories = [v16 accessories];
         v23[0] = MEMORY[0x277D85DD0];
         v23[1] = 3221225472;
         v23[2] = __46__COHomeKitAdapter_homeManagerDidUpdateHomes___block_invoke;
         v23[3] = &unk_278E16860;
         v23[4] = self;
         v23[5] = v16;
-        [v17 enumerateObjectsUsingBlock:v23];
+        [accessories enumerateObjectsUsingBlock:v23];
       }
 
       v13 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -1358,21 +1358,21 @@ void __55__COHomeKitAdapter_unregisterMediaSystemUpdateHandler___block_invoke(ui
   }
 
   v18 = [MEMORY[0x277CCAB88] notificationWithName:@"COHomeKitAdapterSignificantHomeChangeNotification" object:self];
-  v19 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v19 postNotification:v18];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotification:v18];
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)homeManager:(id)a3 didUpdateAuthorizationStatus:(unint64_t)a4
+- (void)homeManager:(id)manager didUpdateAuthorizationStatus:(unint64_t)status
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(COHomeKitAdapter *)self condition];
-  [v6 lock];
+  managerCopy = manager;
+  condition = [(COHomeKitAdapter *)self condition];
+  [condition lock];
   if (!self->_ready)
   {
-    v7 = v5;
+    v7 = managerCopy;
     if ([v7 authorizationStatus] == 1 || (v8 = objc_msgSend(v7, "status"), (v8 & 0x21) != 1))
     {
 
@@ -1395,28 +1395,28 @@ void __55__COHomeKitAdapter_unregisterMediaSystemUpdateHandler___block_invoke(ui
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 134217984;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_244378000, v11, OS_LOG_TYPE_DEFAULT, "%p not waiting for home updates.  Marking HomeKit ready now!", &v13, 0xCu);
     }
 
-    [v6 broadcast];
+    [condition broadcast];
   }
 
 LABEL_10:
-  [v6 unlock];
+  [condition unlock];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)homeManager:(id)a3 didUpdateStatus:(unint64_t)a4
+- (void)homeManager:(id)manager didUpdateStatus:(unint64_t)status
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(COHomeKitAdapter *)self condition];
-  [v6 lock];
+  managerCopy = manager;
+  condition = [(COHomeKitAdapter *)self condition];
+  [condition lock];
   if (!self->_ready)
   {
-    v7 = v5;
+    v7 = managerCopy;
     if ([v7 authorizationStatus] == 1 || (v8 = objc_msgSend(v7, "status"), (v8 & 0x21) != 1))
     {
 
@@ -1439,110 +1439,110 @@ LABEL_10:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 134217984;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_244378000, v11, OS_LOG_TYPE_DEFAULT, "%p got impatient for home updates.  Marking HomeKit ready now!", &v13, 0xCu);
     }
 
-    [v6 broadcast];
+    [condition broadcast];
   }
 
 LABEL_10:
-  [v6 unlock];
+  [condition unlock];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)homeManager:(id)a3 didAddHome:(id)a4
+- (void)homeManager:(id)manager didAddHome:(id)home
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  homeCopy = home;
   v6 = COCoreLogForCategory(1);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
-    v19 = v5;
+    v19 = homeCopy;
     _os_log_impl(&dword_244378000, v6, OS_LOG_TYPE_DEFAULT, "%p Added Home %@", buf, 0x16u);
   }
 
-  [v5 setDelegate:self];
+  [homeCopy setDelegate:self];
   v7 = [MEMORY[0x277CCAB88] notificationWithName:@"COHomeKitAdapterSignificantHomeChangeNotification" object:self];
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 postNotification:v7];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotification:v7];
 
-  v9 = [(COHomeKitAdapter *)self mediaGroupsDaemon];
-  v10 = v9;
-  if (v9)
+  mediaGroupsDaemon = [(COHomeKitAdapter *)self mediaGroupsDaemon];
+  v10 = mediaGroupsDaemon;
+  if (mediaGroupsDaemon)
   {
-    [v9 addHomeKitHome:v5];
+    [mediaGroupsDaemon addHomeKitHome:homeCopy];
   }
 
-  v11 = [v5 accessories];
+  accessories = [homeCopy accessories];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __43__COHomeKitAdapter_homeManager_didAddHome___block_invoke;
   v14[3] = &unk_278E16860;
   v14[4] = self;
-  v15 = v5;
-  v12 = v5;
-  [v11 enumerateObjectsUsingBlock:v14];
+  v15 = homeCopy;
+  v12 = homeCopy;
+  [accessories enumerateObjectsUsingBlock:v14];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)homeManagerDidUpdateCurrentHome:(id)a3
+- (void)homeManagerDidUpdateCurrentHome:(id)home
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   v5 = COCoreLogForCategory(1);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134217984;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_244378000, v5, OS_LOG_TYPE_DEFAULT, "%p Updated Current Home", &v9, 0xCu);
   }
 
-  v6 = [(COHomeKitAdapter *)self mediaGroupsDaemon];
-  if (v6)
+  mediaGroupsDaemon = [(COHomeKitAdapter *)self mediaGroupsDaemon];
+  if (mediaGroupsDaemon)
   {
-    v7 = [v4 currentHome];
-    if (v7)
+    currentHome = [homeCopy currentHome];
+    if (currentHome)
     {
-      [v6 addHomeKitHome:v7];
+      [mediaGroupsDaemon addHomeKitHome:currentHome];
     }
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4
+- (void)homeManager:(id)manager didRemoveHome:(id)home
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  homeCopy = home;
   v6 = COCoreLogForCategory(1);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v21 = self;
+    selfCopy = self;
     v22 = 2112;
-    v23 = v5;
+    v23 = homeCopy;
     _os_log_impl(&dword_244378000, v6, OS_LOG_TYPE_DEFAULT, "%p Removed Home %@", buf, 0x16u);
   }
 
   v7 = [MEMORY[0x277CCAB88] notificationWithName:@"COHomeKitAdapterSignificantHomeChangeNotification" object:self];
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 postNotification:v7];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotification:v7];
 
-  v9 = [v5 accessories];
+  accessories = [homeCopy accessories];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __46__COHomeKitAdapter_homeManager_didRemoveHome___block_invoke;
   v17 = &unk_278E16860;
-  v18 = self;
-  v10 = v5;
+  selfCopy2 = self;
+  v10 = homeCopy;
   v19 = v10;
-  [v9 enumerateObjectsUsingBlock:&v14];
+  [accessories enumerateObjectsUsingBlock:&v14];
 
   v11 = [(COHomeKitAdapter *)self mediaGroupsDaemon:v14];
   v12 = v11;
@@ -1554,15 +1554,15 @@ LABEL_10:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)home:(id)a3 didAddAccessory:(id)a4
+- (void)home:(id)home didAddAccessory:(id)accessory
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COHomeKitAdapter *)self currentAccessory];
-  v9 = [v8 uniqueIdentifier];
-  v10 = [v7 uniqueIdentifier];
-  v11 = [v9 isEqual:v10];
+  homeCopy = home;
+  accessoryCopy = accessory;
+  currentAccessory = [(COHomeKitAdapter *)self currentAccessory];
+  uniqueIdentifier = [currentAccessory uniqueIdentifier];
+  uniqueIdentifier2 = [accessoryCopy uniqueIdentifier];
+  v11 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
   if (v11)
   {
@@ -1570,38 +1570,38 @@ LABEL_10:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 134218242;
-      v19 = self;
+      selfCopy = self;
       v20 = 2112;
-      v21 = v7;
+      v21 = accessoryCopy;
       _os_log_impl(&dword_244378000, v12, OS_LOG_TYPE_DEFAULT, "%p Added Accessory %@", &v18, 0x16u);
     }
 
     v13 = [MEMORY[0x277CCAB88] notificationWithName:@"COHomeKitAdapterSignificantHomeChangeNotification" object:self];
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 postNotification:v13];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotification:v13];
   }
 
-  v15 = [(COHomeKitAdapter *)self mediaGroupsDaemon];
-  v16 = v15;
-  if (v15)
+  mediaGroupsDaemon = [(COHomeKitAdapter *)self mediaGroupsDaemon];
+  v16 = mediaGroupsDaemon;
+  if (mediaGroupsDaemon)
   {
-    [v15 addHomeKitAccessory:v7 fromHome:v6];
+    [mediaGroupsDaemon addHomeKitAccessory:accessoryCopy fromHome:homeCopy];
   }
 
-  [(COHomeKitAdapter *)self _addAudioDestinationControllerListenerForAccessory:v7 home:v6];
+  [(COHomeKitAdapter *)self _addAudioDestinationControllerListenerForAccessory:accessoryCopy home:homeCopy];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)home:(id)a3 didRemoveAccessory:(id)a4
+- (void)home:(id)home didRemoveAccessory:(id)accessory
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COHomeKitAdapter *)self currentAccessory];
-  v9 = [v8 uniqueIdentifier];
-  v10 = [v7 uniqueIdentifier];
-  v11 = [v9 isEqual:v10];
+  homeCopy = home;
+  accessoryCopy = accessory;
+  currentAccessory = [(COHomeKitAdapter *)self currentAccessory];
+  uniqueIdentifier = [currentAccessory uniqueIdentifier];
+  uniqueIdentifier2 = [accessoryCopy uniqueIdentifier];
+  v11 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
   if (v11)
   {
@@ -1609,38 +1609,38 @@ LABEL_10:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 134218242;
-      v19 = self;
+      selfCopy = self;
       v20 = 2112;
-      v21 = v7;
+      v21 = accessoryCopy;
       _os_log_impl(&dword_244378000, v12, OS_LOG_TYPE_DEFAULT, "%p Removed Accessory %@", &v18, 0x16u);
     }
 
     v13 = [MEMORY[0x277CCAB88] notificationWithName:@"COHomeKitAdapterSignificantHomeChangeNotification" object:self];
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 postNotification:v13];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotification:v13];
   }
 
-  v15 = [(COHomeKitAdapter *)self mediaGroupsDaemon];
-  v16 = v15;
-  if (v15)
+  mediaGroupsDaemon = [(COHomeKitAdapter *)self mediaGroupsDaemon];
+  v16 = mediaGroupsDaemon;
+  if (mediaGroupsDaemon)
   {
-    [v15 removeHomeKitAccessory:v7 fromHome:v6];
+    [mediaGroupsDaemon removeHomeKitAccessory:accessoryCopy fromHome:homeCopy];
   }
 
-  [(COHomeKitAdapter *)self _removeAudioDestinationControllerListenerForAccessory:v7 home:v6];
+  [(COHomeKitAdapter *)self _removeAudioDestinationControllerListenerForAccessory:accessoryCopy home:homeCopy];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)home:(id)a3 didUpdateRoom:(id)a4 forAccessory:(id)a5
+- (void)home:(id)home didUpdateRoom:(id)room forAccessory:(id)accessory
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [(COHomeKitAdapter *)self currentAccessory];
-  v10 = [v9 uniqueIdentifier];
-  v11 = [v8 uniqueIdentifier];
-  v12 = [v10 isEqual:v11];
+  homeCopy = home;
+  accessoryCopy = accessory;
+  currentAccessory = [(COHomeKitAdapter *)self currentAccessory];
+  uniqueIdentifier = [currentAccessory uniqueIdentifier];
+  uniqueIdentifier2 = [accessoryCopy uniqueIdentifier];
+  v12 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
   if (v12)
   {
@@ -1648,37 +1648,37 @@ LABEL_10:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 134218242;
-      v20 = self;
+      selfCopy = self;
       v21 = 2112;
-      v22 = v8;
+      v22 = accessoryCopy;
       _os_log_impl(&dword_244378000, v13, OS_LOG_TYPE_DEFAULT, "%p Updated Room for Accessory  %@", &v19, 0x16u);
     }
 
     v14 = [MEMORY[0x277CCAB88] notificationWithName:@"COHomeKitAdapterSignificantHomeChangeNotification" object:self];
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 postNotification:v14];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotification:v14];
   }
 
-  v16 = [(COHomeKitAdapter *)self mediaGroupsDaemon];
-  v17 = v16;
-  if (v16)
+  mediaGroupsDaemon = [(COHomeKitAdapter *)self mediaGroupsDaemon];
+  v17 = mediaGroupsDaemon;
+  if (mediaGroupsDaemon)
   {
-    [v16 addHomeKitHome:v7];
+    [mediaGroupsDaemon addHomeKitHome:homeCopy];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)home:(id)a3 didAddRoom:(id)a4
+- (void)home:(id)home didAddRoom:(id)room
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COHomeKitAdapter *)self currentAccessory];
-  if (v8)
+  homeCopy = home;
+  roomCopy = room;
+  currentAccessory = [(COHomeKitAdapter *)self currentAccessory];
+  if (currentAccessory)
   {
-    v9 = [(COHomeKitAdapter *)self roomForAccessory:v8 inHome:v6];
-    v10 = [v9 isEqual:v7];
+    v9 = [(COHomeKitAdapter *)self roomForAccessory:currentAccessory inHome:homeCopy];
+    v10 = [v9 isEqual:roomCopy];
 
     if (v10)
     {
@@ -1686,72 +1686,72 @@ LABEL_10:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 134218242;
-        v18 = self;
+        selfCopy = self;
         v19 = 2112;
-        v20 = v7;
+        v20 = roomCopy;
         _os_log_impl(&dword_244378000, v11, OS_LOG_TYPE_DEFAULT, "%p Added Room  %@", &v17, 0x16u);
       }
 
       v12 = [MEMORY[0x277CCAB88] notificationWithName:@"COHomeKitAdapterSignificantHomeChangeNotification" object:self];
-      v13 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v13 postNotification:v12];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotification:v12];
     }
   }
 
-  v14 = [(COHomeKitAdapter *)self mediaGroupsDaemon];
-  v15 = v14;
-  if (v14)
+  mediaGroupsDaemon = [(COHomeKitAdapter *)self mediaGroupsDaemon];
+  v15 = mediaGroupsDaemon;
+  if (mediaGroupsDaemon)
   {
-    [v14 addHomeKitRoom:v7 fromHome:v6];
+    [mediaGroupsDaemon addHomeKitRoom:roomCopy fromHome:homeCopy];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)home:(id)a3 didRemoveRoom:(id)a4
+- (void)home:(id)home didRemoveRoom:(id)room
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COHomeKitAdapter *)self currentAccessory];
-  if (v8)
+  homeCopy = home;
+  roomCopy = room;
+  currentAccessory = [(COHomeKitAdapter *)self currentAccessory];
+  if (currentAccessory)
   {
     v9 = COCoreLogForCategory(1);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 134218242;
-      v16 = self;
+      selfCopy = self;
       v17 = 2112;
-      v18 = v7;
+      v18 = roomCopy;
       _os_log_impl(&dword_244378000, v9, OS_LOG_TYPE_DEFAULT, "%p Removed Room  %@", &v15, 0x16u);
     }
 
     v10 = [MEMORY[0x277CCAB88] notificationWithName:@"COHomeKitAdapterSignificantHomeChangeNotification" object:self];
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 postNotification:v10];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotification:v10];
   }
 
-  v12 = [(COHomeKitAdapter *)self mediaGroupsDaemon];
-  v13 = v12;
-  if (v12)
+  mediaGroupsDaemon = [(COHomeKitAdapter *)self mediaGroupsDaemon];
+  v13 = mediaGroupsDaemon;
+  if (mediaGroupsDaemon)
   {
-    [v12 removeHomeKitRoom:v7 fromHome:v6];
+    [mediaGroupsDaemon removeHomeKitRoom:roomCopy fromHome:homeCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)home:(id)a3 didAddRoom:(id)a4 toZone:(id)a5
+- (void)home:(id)home didAddRoom:(id)room toZone:(id)zone
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(COHomeKitAdapter *)self currentAccessory];
-  if (v11)
+  homeCopy = home;
+  roomCopy = room;
+  zoneCopy = zone;
+  currentAccessory = [(COHomeKitAdapter *)self currentAccessory];
+  if (currentAccessory)
   {
-    v12 = [(COHomeKitAdapter *)self zoneForAccessory:v11 inHome:v8];
-    v13 = [v12 isEqual:v10];
+    v12 = [(COHomeKitAdapter *)self zoneForAccessory:currentAccessory inHome:homeCopy];
+    v13 = [v12 isEqual:zoneCopy];
 
     if (v13)
     {
@@ -1759,38 +1759,38 @@ LABEL_10:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v20 = 134218242;
-        v21 = self;
+        selfCopy = self;
         v22 = 2112;
-        v23 = v9;
+        v23 = roomCopy;
         _os_log_impl(&dword_244378000, v14, OS_LOG_TYPE_DEFAULT, "%p Updated Zone for Room %@", &v20, 0x16u);
       }
 
       v15 = [MEMORY[0x277CCAB88] notificationWithName:@"COHomeKitAdapterSignificantHomeChangeNotification" object:self];
-      v16 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v16 postNotification:v15];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotification:v15];
     }
   }
 
-  v17 = [(COHomeKitAdapter *)self mediaGroupsDaemon];
-  v18 = v17;
-  if (v17)
+  mediaGroupsDaemon = [(COHomeKitAdapter *)self mediaGroupsDaemon];
+  v18 = mediaGroupsDaemon;
+  if (mediaGroupsDaemon)
   {
-    [v17 addHomeKitHome:v8];
+    [mediaGroupsDaemon addHomeKitHome:homeCopy];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)home:(id)a3 didAddZone:(id)a4
+- (void)home:(id)home didAddZone:(id)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COHomeKitAdapter *)self currentAccessory];
-  if (v8)
+  homeCopy = home;
+  zoneCopy = zone;
+  currentAccessory = [(COHomeKitAdapter *)self currentAccessory];
+  if (currentAccessory)
   {
-    v9 = [(COHomeKitAdapter *)self zoneForAccessory:v8 inHome:v6];
-    v10 = [v9 isEqual:v7];
+    v9 = [(COHomeKitAdapter *)self zoneForAccessory:currentAccessory inHome:homeCopy];
+    v10 = [v9 isEqual:zoneCopy];
 
     if (v10)
     {
@@ -1798,117 +1798,117 @@ LABEL_10:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 134218242;
-        v18 = self;
+        selfCopy = self;
         v19 = 2112;
-        v20 = v7;
+        v20 = zoneCopy;
         _os_log_impl(&dword_244378000, v11, OS_LOG_TYPE_DEFAULT, "%p Added Zone  %@", &v17, 0x16u);
       }
 
       v12 = [MEMORY[0x277CCAB88] notificationWithName:@"COHomeKitAdapterSignificantHomeChangeNotification" object:self];
-      v13 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v13 postNotification:v12];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotification:v12];
     }
   }
 
-  v14 = [(COHomeKitAdapter *)self mediaGroupsDaemon];
-  v15 = v14;
-  if (v14)
+  mediaGroupsDaemon = [(COHomeKitAdapter *)self mediaGroupsDaemon];
+  v15 = mediaGroupsDaemon;
+  if (mediaGroupsDaemon)
   {
-    [v14 addHomeKitZone:v7 fromHome:v6];
+    [mediaGroupsDaemon addHomeKitZone:zoneCopy fromHome:homeCopy];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)home:(id)a3 didRemoveZone:(id)a4
+- (void)home:(id)home didRemoveZone:(id)zone
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COHomeKitAdapter *)self currentAccessory];
-  if (v8)
+  homeCopy = home;
+  zoneCopy = zone;
+  currentAccessory = [(COHomeKitAdapter *)self currentAccessory];
+  if (currentAccessory)
   {
     v9 = COCoreLogForCategory(1);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 134218242;
-      v16 = self;
+      selfCopy = self;
       v17 = 2112;
-      v18 = v7;
+      v18 = zoneCopy;
       _os_log_impl(&dword_244378000, v9, OS_LOG_TYPE_DEFAULT, "%p Removed Zone  %@", &v15, 0x16u);
     }
 
     v10 = [MEMORY[0x277CCAB88] notificationWithName:@"COHomeKitAdapterSignificantHomeChangeNotification" object:self];
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 postNotification:v10];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotification:v10];
   }
 
-  v12 = [(COHomeKitAdapter *)self mediaGroupsDaemon];
-  v13 = v12;
-  if (v12)
+  mediaGroupsDaemon = [(COHomeKitAdapter *)self mediaGroupsDaemon];
+  v13 = mediaGroupsDaemon;
+  if (mediaGroupsDaemon)
   {
-    [v12 removeHomeKitZone:v7 fromHome:v6];
+    [mediaGroupsDaemon removeHomeKitZone:zoneCopy fromHome:homeCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)home:(id)a3 didAddMediaSystem:(id)a4
+- (void)home:(id)home didAddMediaSystem:(id)system
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  systemCopy = system;
   v8 = COCoreLogForCategory(1);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 134218242;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
-    v19 = v7;
+    v19 = systemCopy;
     _os_log_impl(&dword_244378000, v8, OS_LOG_TYPE_DEFAULT, "%p Added Media System %@", &v16, 0x16u);
   }
 
-  v9 = [(COHomeKitAdapter *)self currentAccessory];
-  if (v9)
+  currentAccessory = [(COHomeKitAdapter *)self currentAccessory];
+  if (currentAccessory)
   {
-    v10 = [(COHomeKitAdapter *)self mediaSystemForAccessory:v9 inHome:v6];
-    if ([v10 isEqual:v7])
+    v10 = [(COHomeKitAdapter *)self mediaSystemForAccessory:currentAccessory inHome:homeCopy];
+    if ([v10 isEqual:systemCopy])
     {
-      [(COHomeKitAdapter *)self setCurrentMediaSystem:v7];
+      [(COHomeKitAdapter *)self setCurrentMediaSystem:systemCopy];
     }
   }
 
   v11 = [MEMORY[0x277CCAB88] notificationWithName:@"COHomeKitAdapterSignificantHomeChangeNotification" object:self];
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v12 postNotification:v11];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotification:v11];
 
-  v13 = [(COHomeKitAdapter *)self mediaGroupsDaemon];
-  v14 = v13;
-  if (v13)
+  mediaGroupsDaemon = [(COHomeKitAdapter *)self mediaGroupsDaemon];
+  v14 = mediaGroupsDaemon;
+  if (mediaGroupsDaemon)
   {
-    [v13 addHomeKitMediaSystem:v7 fromHome:v6];
+    [mediaGroupsDaemon addHomeKitMediaSystem:systemCopy fromHome:homeCopy];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)home:(id)a3 didRemoveMediaSystem:(id)a4
+- (void)home:(id)home didRemoveMediaSystem:(id)system
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  systemCopy = system;
   v8 = COCoreLogForCategory(1);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 134218242;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
-    v19 = v7;
+    v19 = systemCopy;
     _os_log_impl(&dword_244378000, v8, OS_LOG_TYPE_DEFAULT, "%p Removed Media System %@", &v16, 0x16u);
   }
 
-  v9 = [(COHomeKitAdapter *)self currentMediaSystem];
-  v10 = [v7 isEqual:v9];
+  currentMediaSystem = [(COHomeKitAdapter *)self currentMediaSystem];
+  v10 = [systemCopy isEqual:currentMediaSystem];
 
   if (v10)
   {
@@ -1916,104 +1916,104 @@ LABEL_10:
   }
 
   v11 = [MEMORY[0x277CCAB88] notificationWithName:@"COHomeKitAdapterSignificantHomeChangeNotification" object:self];
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v12 postNotification:v11];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotification:v11];
 
-  v13 = [(COHomeKitAdapter *)self mediaGroupsDaemon];
-  v14 = v13;
-  if (v13)
+  mediaGroupsDaemon = [(COHomeKitAdapter *)self mediaGroupsDaemon];
+  v14 = mediaGroupsDaemon;
+  if (mediaGroupsDaemon)
   {
-    [v13 removeHomeKitMediaSystem:v7 fromHome:v6];
+    [mediaGroupsDaemon removeHomeKitMediaSystem:systemCopy fromHome:homeCopy];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)home:(id)a3 didAddUser:(id)a4
+- (void)home:(id)home didAddUser:(id)user
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  homeCopy = home;
   v6 = COCoreLogForCategory(1);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v5;
+    v11 = homeCopy;
     _os_log_impl(&dword_244378000, v6, OS_LOG_TYPE_DEFAULT, "%p User added to home %@", &v8, 0x16u);
   }
 
-  [(COHomeKitAdapter *)self _postUsersChangedNotificationForHome:v5];
+  [(COHomeKitAdapter *)self _postUsersChangedNotificationForHome:homeCopy];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)home:(id)a3 didRemoveUser:(id)a4
+- (void)home:(id)home didRemoveUser:(id)user
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  homeCopy = home;
   v6 = COCoreLogForCategory(1);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v5;
+    v11 = homeCopy;
     _os_log_impl(&dword_244378000, v6, OS_LOG_TYPE_DEFAULT, "%p User removed from home %@", &v8, 0x16u);
   }
 
-  [(COHomeKitAdapter *)self _postUsersChangedNotificationForHome:v5];
+  [(COHomeKitAdapter *)self _postUsersChangedNotificationForHome:homeCopy];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioDestinationControllerDidUpdateForAccessory:(id)a3 inHome:(id)a4
+- (void)audioDestinationControllerDidUpdateForAccessory:(id)accessory inHome:(id)home
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  homeCopy = home;
   v8 = COCoreLogForCategory(1);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 134218242;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v6;
+    v15 = accessoryCopy;
     _os_log_impl(&dword_244378000, v8, OS_LOG_TYPE_DEFAULT, "%p audio destination controller updated for %@", &v12, 0x16u);
   }
 
-  v9 = [(COHomeKitAdapter *)self mediaGroupsDaemon];
-  v10 = v9;
-  if (v9)
+  mediaGroupsDaemon = [(COHomeKitAdapter *)self mediaGroupsDaemon];
+  v10 = mediaGroupsDaemon;
+  if (mediaGroupsDaemon)
   {
-    [v9 addHomeKitAccessory:v6 fromHome:v7];
+    [mediaGroupsDaemon addHomeKitAccessory:accessoryCopy fromHome:homeCopy];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addAudioDestinationControllerListenerForAccessory:(id)a3 home:(id)a4
+- (void)_addAudioDestinationControllerListenerForAccessory:(id)accessory home:(id)home
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 category];
-  v9 = [v8 categoryType];
-  v10 = [v9 isEqualToString:*MEMORY[0x277CCE870]];
+  accessoryCopy = accessory;
+  homeCopy = home;
+  category = [accessoryCopy category];
+  categoryType = [category categoryType];
+  v10 = [categoryType isEqualToString:*MEMORY[0x277CCE870]];
 
   if (v10)
   {
-    v11 = [(COHomeKitAdapter *)self audioDestinationControllerListeners];
-    v12 = [v7 uniqueIdentifier];
-    v19[0] = v12;
-    v13 = [v6 uniqueIdentifier];
-    v19[1] = v13;
+    audioDestinationControllerListeners = [(COHomeKitAdapter *)self audioDestinationControllerListeners];
+    uniqueIdentifier = [homeCopy uniqueIdentifier];
+    v19[0] = uniqueIdentifier;
+    uniqueIdentifier2 = [accessoryCopy uniqueIdentifier];
+    v19[1] = uniqueIdentifier2;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
 
-    v15 = [v11 objectForKey:v14];
+    v15 = [audioDestinationControllerListeners objectForKey:v14];
 
     if (!v15)
     {
-      v16 = [v11 mutableCopy];
-      v17 = [[_COHomeKitAudioDestinationControllerListener alloc] initWitAccessory:v6 home:v7 delegate:self];
+      v16 = [audioDestinationControllerListeners mutableCopy];
+      v17 = [[_COHomeKitAudioDestinationControllerListener alloc] initWitAccessory:accessoryCopy home:homeCopy delegate:self];
       [v16 setObject:v17 forKey:v14];
       [(COHomeKitAdapter *)self setAudioDestinationControllerListeners:v16];
     }
@@ -2022,24 +2022,24 @@ LABEL_10:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeAudioDestinationControllerListenerForAccessory:(id)a3 home:(id)a4
+- (void)_removeAudioDestinationControllerListenerForAccessory:(id)accessory home:(id)home
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(COHomeKitAdapter *)self audioDestinationControllerListeners];
-  v9 = [v6 uniqueIdentifier];
+  homeCopy = home;
+  accessoryCopy = accessory;
+  audioDestinationControllerListeners = [(COHomeKitAdapter *)self audioDestinationControllerListeners];
+  uniqueIdentifier = [homeCopy uniqueIdentifier];
 
-  v15[0] = v9;
-  v10 = [v7 uniqueIdentifier];
+  v15[0] = uniqueIdentifier;
+  uniqueIdentifier2 = [accessoryCopy uniqueIdentifier];
 
-  v15[1] = v10;
+  v15[1] = uniqueIdentifier2;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
 
-  v12 = [v8 objectForKey:v11];
+  v12 = [audioDestinationControllerListeners objectForKey:v11];
   if (v12)
   {
-    v13 = [v8 mutableCopy];
+    v13 = [audioDestinationControllerListeners mutableCopy];
     [v13 removeObjectForKey:v11];
     [(COHomeKitAdapter *)self setAudioDestinationControllerListeners:v13];
   }
@@ -2047,23 +2047,23 @@ LABEL_10:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postUsersChangedNotificationForHome:(id)a3
+- (void)_postUsersChangedNotificationForHome:(id)home
 {
-  v10 = a3;
-  v4 = [(COHomeKitAdapter *)self homekit];
-  v5 = [v4 currentAccessory];
-  v6 = [objc_alloc(MEMORY[0x277CCAB88]) initWithName:@"COHomeKitAdapterUsersChangedInHome" object:v10 userInfo:0];
-  if (!v5 || (-[COHomeKitAdapter homeForAccessory:](self, "homeForAccessory:", v5), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isEqual:v10], v7, v8))
+  homeCopy = home;
+  homekit = [(COHomeKitAdapter *)self homekit];
+  currentAccessory = [homekit currentAccessory];
+  v6 = [objc_alloc(MEMORY[0x277CCAB88]) initWithName:@"COHomeKitAdapterUsersChangedInHome" object:homeCopy userInfo:0];
+  if (!currentAccessory || (-[COHomeKitAdapter homeForAccessory:](self, "homeForAccessory:", currentAccessory), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isEqual:homeCopy], v7, v8))
   {
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 postNotification:v6];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotification:v6];
   }
 }
 
-- (id)alarmsCollectionForAccessory:(id)a3 inHome:(id)a4 isMediaSystem:(BOOL *)a5
+- (id)alarmsCollectionForAccessory:(id)accessory inHome:(id)home isMediaSystem:(BOOL *)system
 {
-  v8 = a3;
-  v9 = [(COHomeKitAdapter *)self mediaSystemForAccessory:v8 inHome:a4];
+  accessoryCopy = accessory;
+  v9 = [(COHomeKitAdapter *)self mediaSystemForAccessory:accessoryCopy inHome:home];
   if (v9)
   {
     v10 = [(COHomeKitAdapter *)self settingsForKeyPath:@"root.mobileTimer.alarms" onMediaObject:v9];
@@ -2072,16 +2072,16 @@ LABEL_10:
 
   else
   {
-    v10 = [(COHomeKitAdapter *)self settingsForKeyPath:@"root.mobileTimer.alarms" onAccessory:v8];
+    v10 = [(COHomeKitAdapter *)self settingsForKeyPath:@"root.mobileTimer.alarms" onAccessory:accessoryCopy];
     v11 = 0;
   }
 
-  *a5 = v11;
-  v12 = [v10 firstObject];
+  *system = v11;
+  firstObject = [v10 firstObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = v12;
+    v13 = firstObject;
   }
 
   else
@@ -2094,22 +2094,22 @@ LABEL_10:
   return v13;
 }
 
-- (BOOL)isAlarmsCollectionSetting:(id)a3 forAccessory:(id)a4 inHome:(id)a5
+- (BOOL)isAlarmsCollectionSetting:(id)setting forAccessory:(id)accessory inHome:(id)home
 {
   v11 = 0;
-  v8 = a3;
-  v9 = [(COHomeKitAdapter *)self alarmsCollectionForAccessory:a4 inHome:a5 isMediaSystem:&v11];
-  LOBYTE(a4) = [v9 isEqual:v8];
+  settingCopy = setting;
+  v9 = [(COHomeKitAdapter *)self alarmsCollectionForAccessory:accessory inHome:home isMediaSystem:&v11];
+  LOBYTE(accessory) = [v9 isEqual:settingCopy];
 
-  return a4;
+  return accessory;
 }
 
-- (id)alarmsForAccessory:(id)a3 inHome:(id)a4
+- (id)alarmsForAccessory:(id)accessory inHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  homeCopy = home;
   v27 = 0;
-  v8 = [(COHomeKitAdapter *)self alarmsCollectionForAccessory:v6 inHome:v7 isMediaSystem:&v27];
+  v8 = [(COHomeKitAdapter *)self alarmsCollectionForAccessory:accessoryCopy inHome:homeCopy isMediaSystem:&v27];
   if (v8)
   {
     v9 = COTimerSiriContextTargetReferenceForAccessory();
@@ -2120,7 +2120,7 @@ LABEL_10:
     v24 = __Block_byref_object_copy__27;
     v25 = __Block_byref_object_dispose__27;
     v26 = objc_alloc_init(MEMORY[0x277CBEA60]);
-    v11 = [v8 co_alarms];
+    co_alarms = [v8 co_alarms];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __64__COHomeKitAdapter_COMeshAlarmAddOn__alarmsForAccessory_inHome___block_invoke;
@@ -2131,7 +2131,7 @@ LABEL_10:
     v13 = v10;
     v18 = v13;
     v19 = &v21;
-    [v11 enumerateObjectsUsingBlock:v16];
+    [co_alarms enumerateObjectsUsingBlock:v16];
 
     v14 = v22[5];
     _Block_object_dispose(&v21, 8);
@@ -2165,27 +2165,27 @@ void __64__COHomeKitAdapter_COMeshAlarmAddOn__alarmsForAccessory_inHome___block_
   *(v6 + 40) = v5;
 }
 
-- (id)accessoriesForSiriContextTargetReference:(id)a3
+- (id)accessoriesForSiriContextTargetReference:(id)reference
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  referenceCopy = reference;
   v4 = objc_alloc_init(MEMORY[0x277CBEA60]);
-  v5 = [MEMORY[0x277CCACE0] componentsWithString:v3];
-  v6 = [v5 scheme];
-  if ([v6 isEqualToString:@"siri-hk-target"])
+  v5 = [MEMORY[0x277CCACE0] componentsWithString:referenceCopy];
+  scheme = [v5 scheme];
+  if ([scheme isEqualToString:@"siri-hk-target"])
   {
-    v7 = [v5 path];
-    v8 = [v7 isEqualToString:@"accessory"];
+    path = [v5 path];
+    v8 = [path isEqualToString:@"accessory"];
 
     if (v8)
     {
-      v25 = v3;
+      v25 = referenceCopy;
       v29 = 0u;
       v30 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v9 = [v5 queryItems];
-      v10 = [v9 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      queryItems = [v5 queryItems];
+      v10 = [queryItems countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v10)
       {
         v11 = v10;
@@ -2196,18 +2196,18 @@ void __64__COHomeKitAdapter_COMeshAlarmAddOn__alarmsForAccessory_inHome___block_
           {
             if (*v28 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(queryItems);
             }
 
             v14 = *(*(&v27 + 1) + 8 * i);
-            v15 = [v14 name];
-            v16 = [@"identifier" isEqualToString:v15];
+            name = [v14 name];
+            v16 = [@"identifier" isEqualToString:name];
 
             if (v16)
             {
               v17 = objc_alloc(MEMORY[0x277CCAD78]);
-              v18 = [v14 value];
-              v19 = [v17 initWithUUIDString:v18];
+              value = [v14 value];
+              v19 = [v17 initWithUUIDString:value];
 
               if (v19)
               {
@@ -2223,13 +2223,13 @@ void __64__COHomeKitAdapter_COMeshAlarmAddOn__alarmsForAccessory_inHome___block_
             }
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v27 objects:v31 count:16];
+          v11 = [queryItems countByEnumeratingWithState:&v27 objects:v31 count:16];
         }
 
         while (v11);
       }
 
-      v3 = v25;
+      referenceCopy = v25;
     }
   }
 
@@ -2242,27 +2242,27 @@ void __64__COHomeKitAdapter_COMeshAlarmAddOn__alarmsForAccessory_inHome___block_
   return v4;
 }
 
-- (id)allAccessoriesForSiriContextTargetReference:(id)a3
+- (id)allAccessoriesForSiriContextTargetReference:(id)reference
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  referenceCopy = reference;
   v4 = objc_alloc_init(MEMORY[0x277CBEA60]);
-  v5 = [MEMORY[0x277CCACE0] componentsWithString:v3];
-  v6 = [v5 scheme];
-  if ([v6 isEqualToString:@"siri-hk-target"])
+  v5 = [MEMORY[0x277CCACE0] componentsWithString:referenceCopy];
+  scheme = [v5 scheme];
+  if ([scheme isEqualToString:@"siri-hk-target"])
   {
-    v7 = [v5 path];
-    v8 = [v7 isEqualToString:@"accessory"];
+    path = [v5 path];
+    v8 = [path isEqualToString:@"accessory"];
 
     if (v8)
     {
-      v26 = v3;
+      v26 = referenceCopy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v9 = [v5 queryItems];
-      v10 = [v9 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      queryItems = [v5 queryItems];
+      v10 = [queryItems countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v10)
       {
         v11 = v10;
@@ -2273,24 +2273,24 @@ void __64__COHomeKitAdapter_COMeshAlarmAddOn__alarmsForAccessory_inHome___block_
           {
             if (*v29 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(queryItems);
             }
 
             v14 = *(*(&v28 + 1) + 8 * i);
-            v15 = [v14 name];
-            v16 = [@"identifier" isEqualToString:v15];
+            name = [v14 name];
+            v16 = [@"identifier" isEqualToString:name];
 
             if (v16)
             {
               v17 = objc_alloc(MEMORY[0x277CCAD78]);
-              v18 = [v14 value];
-              v19 = [v17 initWithUUIDString:v18];
+              value = [v14 value];
+              v19 = [v17 initWithUUIDString:value];
 
               if (!v19 || ([(COHomeKitAdapter *)self accessoryWithUniqueIdentifier:v19], (v20 = objc_claimAutoreleasedReturnValue()) == 0))
               {
 
                 v23 = 0;
-                v3 = v26;
+                referenceCopy = v26;
                 goto LABEL_17;
               }
 
@@ -2301,7 +2301,7 @@ void __64__COHomeKitAdapter_COMeshAlarmAddOn__alarmsForAccessory_inHome___block_
             }
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v28 objects:v32 count:16];
+          v11 = [queryItems countByEnumeratingWithState:&v28 objects:v32 count:16];
           if (v11)
           {
             continue;
@@ -2311,7 +2311,7 @@ void __64__COHomeKitAdapter_COMeshAlarmAddOn__alarmsForAccessory_inHome___block_
         }
       }
 
-      v3 = v26;
+      referenceCopy = v26;
     }
   }
 
@@ -2328,12 +2328,12 @@ LABEL_17:
   return v23;
 }
 
-- (id)addAlarm:(id)a3 toAccessory:(id)a4 inHome:(id)a5
+- (id)addAlarm:(id)alarm toAccessory:(id)accessory inHome:(id)home
 {
-  v8 = a3;
-  v9 = a4;
+  alarmCopy = alarm;
+  accessoryCopy = accessory;
   v18 = 0;
-  v10 = [(COHomeKitAdapter *)self alarmsCollectionForAccessory:v9 inHome:a5 isMediaSystem:&v18];
+  v10 = [(COHomeKitAdapter *)self alarmsCollectionForAccessory:accessoryCopy inHome:home isMediaSystem:&v18];
   if (v10)
   {
     v11 = objc_alloc_init(MEMORY[0x277D2C900]);
@@ -2343,7 +2343,7 @@ LABEL_17:
     v16[3] = &unk_278E15B38;
     v12 = v11;
     v17 = v12;
-    [v10 co_addAlarm:v8 completionHandler:v16];
+    [v10 co_addAlarm:alarmCopy completionHandler:v16];
     v13 = v17;
   }
 
@@ -2352,7 +2352,7 @@ LABEL_17:
     v14 = COCoreLogForCategory(2);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      [COHomeKitAdapter(COMeshAlarmAddOn) addAlarm:v9 toAccessory:? inHome:?];
+      [COHomeKitAdapter(COMeshAlarmAddOn) addAlarm:accessoryCopy toAccessory:? inHome:?];
     }
 
     v13 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:2 userInfo:0];
@@ -2376,12 +2376,12 @@ uint64_t __66__COHomeKitAdapter_COMeshAlarmAddOn__addAlarm_toAccessory_inHome___
   }
 }
 
-- (id)updateAlarm:(id)a3 onAccessory:(id)a4 inHome:(id)a5
+- (id)updateAlarm:(id)alarm onAccessory:(id)accessory inHome:(id)home
 {
-  v8 = a3;
-  v9 = a4;
+  alarmCopy = alarm;
+  accessoryCopy = accessory;
   v18 = 0;
-  v10 = [(COHomeKitAdapter *)self alarmsCollectionForAccessory:v9 inHome:a5 isMediaSystem:&v18];
+  v10 = [(COHomeKitAdapter *)self alarmsCollectionForAccessory:accessoryCopy inHome:home isMediaSystem:&v18];
   if (v10)
   {
     v11 = objc_alloc_init(MEMORY[0x277D2C900]);
@@ -2391,7 +2391,7 @@ uint64_t __66__COHomeKitAdapter_COMeshAlarmAddOn__addAlarm_toAccessory_inHome___
     v16[3] = &unk_278E15B38;
     v12 = v11;
     v17 = v12;
-    [v10 co_updateAlarm:v8 completionHandler:v16];
+    [v10 co_updateAlarm:alarmCopy completionHandler:v16];
     v13 = v17;
   }
 
@@ -2400,7 +2400,7 @@ uint64_t __66__COHomeKitAdapter_COMeshAlarmAddOn__addAlarm_toAccessory_inHome___
     v14 = COCoreLogForCategory(2);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      [COHomeKitAdapter(COMeshAlarmAddOn) updateAlarm:v9 onAccessory:? inHome:?];
+      [COHomeKitAdapter(COMeshAlarmAddOn) updateAlarm:accessoryCopy onAccessory:? inHome:?];
     }
 
     v13 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:2 userInfo:0];
@@ -2424,12 +2424,12 @@ uint64_t __69__COHomeKitAdapter_COMeshAlarmAddOn__updateAlarm_onAccessory_inHome
   }
 }
 
-- (id)removeAlarm:(id)a3 fromAccessory:(id)a4 inHome:(id)a5
+- (id)removeAlarm:(id)alarm fromAccessory:(id)accessory inHome:(id)home
 {
-  v8 = a3;
-  v9 = a4;
+  alarmCopy = alarm;
+  accessoryCopy = accessory;
   v18 = 0;
-  v10 = [(COHomeKitAdapter *)self alarmsCollectionForAccessory:v9 inHome:a5 isMediaSystem:&v18];
+  v10 = [(COHomeKitAdapter *)self alarmsCollectionForAccessory:accessoryCopy inHome:home isMediaSystem:&v18];
   if (v10)
   {
     v11 = objc_alloc_init(MEMORY[0x277D2C900]);
@@ -2439,7 +2439,7 @@ uint64_t __69__COHomeKitAdapter_COMeshAlarmAddOn__updateAlarm_onAccessory_inHome
     v16[3] = &unk_278E15B38;
     v12 = v11;
     v17 = v12;
-    [v10 co_removeAlarm:v8 completionHandler:v16];
+    [v10 co_removeAlarm:alarmCopy completionHandler:v16];
     v13 = v17;
   }
 
@@ -2448,7 +2448,7 @@ uint64_t __69__COHomeKitAdapter_COMeshAlarmAddOn__updateAlarm_onAccessory_inHome
     v14 = COCoreLogForCategory(2);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      [COHomeKitAdapter(COMeshAlarmAddOn) updateAlarm:v9 onAccessory:? inHome:?];
+      [COHomeKitAdapter(COMeshAlarmAddOn) updateAlarm:accessoryCopy onAccessory:? inHome:?];
     }
 
     v13 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:2 userInfo:0];

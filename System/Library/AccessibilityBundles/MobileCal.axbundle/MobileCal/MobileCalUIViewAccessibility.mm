@@ -1,42 +1,42 @@
 @interface MobileCalUIViewAccessibility
 - (BOOL)_accessibilityDrawsFocusRingWhenChildrenFocused;
-- (BOOL)_accessibilitySupportsContentSizeCategory:(id)a3;
+- (BOOL)_accessibilitySupportsContentSizeCategory:(id)category;
 @end
 
 @implementation MobileCalUIViewAccessibility
 
-- (BOOL)_accessibilitySupportsContentSizeCategory:(id)a3
+- (BOOL)_accessibilitySupportsContentSizeCategory:(id)category
 {
-  v4 = a3;
-  v5 = [(MobileCalUIViewAccessibility *)self accessibilityIdentification];
-  v6 = [v5 isEqualToString:@"_AXYearViewIdentifier"];
+  categoryCopy = category;
+  accessibilityIdentification = [(MobileCalUIViewAccessibility *)self accessibilityIdentification];
+  v6 = [accessibilityIdentification isEqualToString:@"_AXYearViewIdentifier"];
 
   if (v6)
   {
-    if ([v4 isEqualToString:*MEMORY[0x29EDC80A0]])
+    if ([categoryCopy isEqualToString:*MEMORY[0x29EDC80A0]])
     {
       v7 = 1;
       goto LABEL_10;
     }
 
-    v10 = [v4 isEqualToString:*MEMORY[0x29EDC8050]];
+    v10 = [categoryCopy isEqualToString:*MEMORY[0x29EDC8050]];
 LABEL_9:
     v7 = v10;
     goto LABEL_10;
   }
 
-  v8 = [(MobileCalUIViewAccessibility *)self accessibilityIdentification];
-  v9 = [v8 isEqualToString:@"_AXMonthViewIdentifier"];
+  accessibilityIdentification2 = [(MobileCalUIViewAccessibility *)self accessibilityIdentification];
+  v9 = [accessibilityIdentification2 isEqualToString:@"_AXMonthViewIdentifier"];
 
   if (!v9)
   {
     v12.receiver = self;
     v12.super_class = MobileCalUIViewAccessibility;
-    v10 = [(MobileCalUIViewAccessibility *)&v12 _accessibilitySupportsContentSizeCategory:v4];
+    v10 = [(MobileCalUIViewAccessibility *)&v12 _accessibilitySupportsContentSizeCategory:categoryCopy];
     goto LABEL_9;
   }
 
-  v7 = UIContentSizeCategoryCompareToCategory(v4, *MEMORY[0x29EDC80A8]) == NSOrderedDescending && UIContentSizeCategoryCompareToCategory(v4, *MEMORY[0x29EDC8068]) == NSOrderedAscending;
+  v7 = UIContentSizeCategoryCompareToCategory(categoryCopy, *MEMORY[0x29EDC80A8]) == NSOrderedDescending && UIContentSizeCategoryCompareToCategory(categoryCopy, *MEMORY[0x29EDC8068]) == NSOrderedAscending;
 LABEL_10:
 
   return v7;
@@ -49,16 +49,16 @@ LABEL_10:
     return 0;
   }
 
-  v3 = [(MobileCalUIViewAccessibility *)self accessibilityIdentification];
-  if ([v3 isEqualToString:@"_AXMonthViewIdentifier"])
+  accessibilityIdentification = [(MobileCalUIViewAccessibility *)self accessibilityIdentification];
+  if ([accessibilityIdentification isEqualToString:@"_AXMonthViewIdentifier"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(MobileCalUIViewAccessibility *)self accessibilityIdentification];
-    v4 = [v5 isEqualToString:@"_AXYearViewIdentifier"];
+    accessibilityIdentification2 = [(MobileCalUIViewAccessibility *)self accessibilityIdentification];
+    v4 = [accessibilityIdentification2 isEqualToString:@"_AXYearViewIdentifier"];
   }
 
   return v4;

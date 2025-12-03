@@ -7,16 +7,16 @@
 
 - (BOOL)throttleTimelineReload
 {
-  v3 = [(MTBaseAlarmWidgetProvider *)self lastReloadRequestDate];
+  lastReloadRequestDate = [(MTBaseAlarmWidgetProvider *)self lastReloadRequestDate];
 
-  if (!v3)
+  if (!lastReloadRequestDate)
   {
     return 0;
   }
 
   v4 = [MEMORY[0x1E695DF00] now];
-  v5 = [(MTBaseAlarmWidgetProvider *)self lastReloadRequestDate];
-  [v4 timeIntervalSinceDate:v5];
+  lastReloadRequestDate2 = [(MTBaseAlarmWidgetProvider *)self lastReloadRequestDate];
+  [v4 timeIntervalSinceDate:lastReloadRequestDate2];
   v7 = v6;
 
   if (v7 >= 2.0)
@@ -37,7 +37,7 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1B1F9F000, a2, OS_LOG_TYPE_ERROR, "%{public}@ widget refresh requested within throttle interval, dropping", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

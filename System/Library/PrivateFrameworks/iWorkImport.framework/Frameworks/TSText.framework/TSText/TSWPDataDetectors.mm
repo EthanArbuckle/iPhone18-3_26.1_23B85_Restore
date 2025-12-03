@@ -1,15 +1,15 @@
 @interface TSWPDataDetectors
-+ (BOOL)detectedDataInString:(id)a3 scanRange:(_NSRange)a4 withTextCheckingTypes:(unint64_t)a5;
-+ (id)calculateScanRanges:(id)a3 changedRange:(_NSRange)a4;
-+ (id)scanString:(id)a3 scanRanges:(id)a4;
-+ (void)registerDataDetectorClass:(Class)a3;
++ (BOOL)detectedDataInString:(id)string scanRange:(_NSRange)range withTextCheckingTypes:(unint64_t)types;
++ (id)calculateScanRanges:(id)ranges changedRange:(_NSRange)range;
++ (id)scanString:(id)string scanRanges:(id)ranges;
++ (void)registerDataDetectorClass:(Class)class;
 @end
 
 @implementation TSWPDataDetectors
 
-+ (void)registerDataDetectorClass:(Class)a3
++ (void)registerDataDetectorClass:(Class)class
 {
-  if (class_conformsToProtocol(a3, &unk_2886532A0))
+  if (class_conformsToProtocol(class, &unk_2886532A0))
   {
     v6 = qword_280A58460;
     if (!qword_280A58460)
@@ -21,16 +21,16 @@
       v6 = qword_280A58460;
     }
 
-    objc_msgSend_addObject_(v6, v4, a3);
+    objc_msgSend_addObject_(v6, v4, class);
   }
 }
 
-+ (id)calculateScanRanges:(id)a3 changedRange:(_NSRange)a4
++ (id)calculateScanRanges:(id)ranges changedRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  rangesCopy = ranges;
   v9 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v7, v8);
   v26 = 0u;
   v27 = 0u;
@@ -52,7 +52,7 @@
         }
 
         v16 = *(*(&v26 + 1) + 8 * i);
-        v17 = objc_msgSend_calculateScanRangeForString_changedRange_(v16, v12, v6, location, length);
+        v17 = objc_msgSend_calculateScanRangeForString_changedRange_(v16, v12, rangesCopy, location, length);
         v19 = objc_msgSend_valueWithRange_(MEMORY[0x277CCAE60], v18, v17, v18);
         v22 = objc_msgSend_detectorIdentifier(v16, v20, v21);
         objc_msgSend_setObject_forKeyedSubscript_(v9, v23, v19, v22);
@@ -67,11 +67,11 @@
   return v9;
 }
 
-+ (id)scanString:(id)a3 scanRanges:(id)a4
++ (id)scanString:(id)string scanRanges:(id)ranges
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  stringCopy = string;
+  rangesCopy = ranges;
   v29 = objc_msgSend_array(MEMORY[0x277CBEB18], v7, v8);
   v30 = 0u;
   v31 = 0u;
@@ -94,11 +94,11 @@
 
         v17 = *(*(&v30 + 1) + 8 * i);
         v18 = objc_msgSend_detectorIdentifier(v17, v12, v13);
-        v20 = objc_msgSend_objectForKeyedSubscript_(v6, v19, v18);
+        v20 = objc_msgSend_objectForKeyedSubscript_(rangesCopy, v19, v18);
         v23 = objc_msgSend_rangeValue(v20, v21, v22);
         if (v23 != 0x7FFFFFFFFFFFFFFFLL && v24 != 0)
         {
-          v27 = objc_msgSend_scanString_scanRange_(v17, v24, v5, v23, v24);
+          v27 = objc_msgSend_scanString_scanRange_(v17, v24, stringCopy, v23, v24);
           if (v27)
           {
             objc_msgSend_addObjectsFromArray_(v29, v26, v27);
@@ -115,12 +115,12 @@
   return v29;
 }
 
-+ (BOOL)detectedDataInString:(id)a3 scanRange:(_NSRange)a4 withTextCheckingTypes:(unint64_t)a5
++ (BOOL)detectedDataInString:(id)string scanRange:(_NSRange)range withTextCheckingTypes:(unint64_t)types
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  stringCopy = string;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -140,7 +140,7 @@
           objc_enumerationMutation(v9);
         }
 
-        if (objc_msgSend_detectedDataInString_scanRange_withTextCheckingTypes_(*(*(&v18 + 1) + 8 * i), v12, v8, location, length, a5, v18))
+        if (objc_msgSend_detectedDataInString_scanRange_withTextCheckingTypes_(*(*(&v18 + 1) + 8 * i), v12, stringCopy, location, length, types, v18))
         {
           v16 = 1;
           goto LABEL_11;

@@ -1,8 +1,8 @@
 @interface FAFollowupPushHandler
-- (BOOL)shouldProcess:(id)a3;
+- (BOOL)shouldProcess:(id)process;
 - (FAFollowupPushHandler)init;
-- (id)removeFamilyInvites:(id)a3;
-- (void)process:(id)a3;
+- (id)removeFamilyInvites:(id)invites;
+- (void)process:(id)process;
 @end
 
 @implementation FAFollowupPushHandler
@@ -23,36 +23,36 @@
   return v2;
 }
 
-- (BOOL)shouldProcess:(id)a3
+- (BOOL)shouldProcess:(id)process
 {
-  v3 = [a3 event];
-  v4 = [v3 isEqualToString:@"family_followups"];
+  event = [process event];
+  v4 = [event isEqualToString:@"family_followups"];
 
   return v4;
 }
 
-- (void)process:(id)a3
+- (void)process:(id)process
 {
-  v4 = a3;
+  processCopy = process;
   v5 = _FALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 payload];
+    payload = [processCopy payload];
     *buf = 138412290;
-    v21 = v6;
+    v21 = payload;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Processing family followup push with user info: %@.", buf, 0xCu);
   }
 
-  v7 = [v4 payload];
-  v8 = [v7 objectForKeyedSubscript:AKFollowUpPushPayloadKey];
+  payload2 = [processCopy payload];
+  v8 = [payload2 objectForKeyedSubscript:AKFollowUpPushPayloadKey];
 
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v9 = [v8 mutableCopy];
     v10 = [(FAFollowupPushHandler *)self removeFamilyInvites:v9];
 
-    v11 = [v4 altDSID];
-    [FAFollowupManager synchronizeFollowupWithPayload:v10 altDSID:v11];
+    altDSID = [processCopy altDSID];
+    [FAFollowupManager synchronizeFollowupWithPayload:v10 altDSID:altDSID];
   }
 
   else
@@ -75,21 +75,21 @@
     block[1] = 3221225472;
     block[2] = sub_10000C45C;
     block[3] = &unk_1000A66B8;
-    v17 = v4;
+    v17 = processCopy;
     v18 = v13;
     v15 = v13;
     dispatch_async(networkingQueue, block);
   }
 }
 
-- (id)removeFamilyInvites:(id)a3
+- (id)removeFamilyInvites:(id)invites
 {
-  v3 = a3;
+  invitesCopy = invites;
   if (_os_feature_enabled_impl())
   {
     v19 = cfuItemsField;
-    v20 = v3;
-    v4 = [v3 objectForKeyedSubscript:?];
+    v20 = invitesCopy;
+    v4 = [invitesCopy objectForKeyedSubscript:?];
     v5 = [v4 mutableCopy];
 
     v6 = _FALogSystem();
@@ -138,7 +138,7 @@
       while (v16 > 1);
     }
 
-    v3 = v20;
+    invitesCopy = v20;
     [v20 setObject:v5 forKeyedSubscript:v19];
     v17 = _FALogSystem();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -159,7 +159,7 @@
     }
   }
 
-  return v3;
+  return invitesCopy;
 }
 
 @end

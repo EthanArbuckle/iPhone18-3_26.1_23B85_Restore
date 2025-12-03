@@ -1,14 +1,14 @@
 @interface OITSULocalizationUtility
-+ (id)displayStringForIndexSet:(id)a3;
-+ (id)displayStringForStrings:(id)a3;
-+ (id)displayStringForStrings:(id)a3 itemSeparator:(id)a4 lastItemSeparator:(id)a5;
++ (id)displayStringForIndexSet:(id)set;
++ (id)displayStringForStrings:(id)strings;
++ (id)displayStringForStrings:(id)strings itemSeparator:(id)separator lastItemSeparator:(id)itemSeparator;
 @end
 
 @implementation OITSULocalizationUtility
 
-+ (id)displayStringForIndexSet:(id)a3
++ (id)displayStringForIndexSet:(id)set
 {
-  v4 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   if (displayStringForIndexSet__onceToken != -1)
   {
     +[OITSULocalizationUtility displayStringForIndexSet:];
@@ -18,9 +18,9 @@
   v6[1] = 3221225472;
   v6[2] = __53__OITSULocalizationUtility_displayStringForIndexSet___block_invoke_2;
   v6[3] = &unk_2799C6578;
-  v6[4] = v4;
-  [a3 enumerateRangesUsingBlock:v6];
-  return v4;
+  v6[4] = string;
+  [set enumerateRangesUsingBlock:v6];
+  return string;
 }
 
 id __53__OITSULocalizationUtility_displayStringForIndexSet___block_invoke()
@@ -51,7 +51,7 @@ uint64_t __53__OITSULocalizationUtility_displayStringForIndexSet___block_invoke_
   return result;
 }
 
-+ (id)displayStringForStrings:(id)a3
++ (id)displayStringForStrings:(id)strings
 {
   if (displayStringForStrings__onceToken != -1)
   {
@@ -60,7 +60,7 @@ uint64_t __53__OITSULocalizationUtility_displayStringForIndexSet___block_invoke_
 
   v5 = displayStringForStrings__sSeparator;
 
-  return [a1 displayStringForStrings:a3 itemSeparator:v5];
+  return [self displayStringForStrings:strings itemSeparator:v5];
 }
 
 id __52__OITSULocalizationUtility_displayStringForStrings___block_invoke()
@@ -70,20 +70,20 @@ id __52__OITSULocalizationUtility_displayStringForStrings___block_invoke()
   return result;
 }
 
-+ (id)displayStringForStrings:(id)a3 itemSeparator:(id)a4 lastItemSeparator:(id)a5
++ (id)displayStringForStrings:(id)strings itemSeparator:(id)separator lastItemSeparator:(id)itemSeparator
 {
-  v8 = [MEMORY[0x277CCAB68] string];
-  v9 = [a3 count];
+  string = [MEMORY[0x277CCAB68] string];
+  v9 = [strings count];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __84__OITSULocalizationUtility_displayStringForStrings_itemSeparator_lastItemSeparator___block_invoke;
   v11[3] = &unk_2799C67C0;
-  v11[4] = v8;
-  v11[5] = a4;
-  v11[6] = a5;
+  v11[4] = string;
+  v11[5] = separator;
+  v11[6] = itemSeparator;
   v11[7] = v9;
-  [a3 enumerateObjectsUsingBlock:v11];
-  return v8;
+  [strings enumerateObjectsUsingBlock:v11];
+  return string;
 }
 
 uint64_t __84__OITSULocalizationUtility_displayStringForStrings_itemSeparator_lastItemSeparator___block_invoke(void *a1, uint64_t a2, unint64_t a3)

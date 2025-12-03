@@ -1,19 +1,19 @@
 @interface PKAccountCredential
-- (BOOL)_isEqualToCredential:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKAccountCredential)initWithAccount:(id)a3;
+- (BOOL)_isEqualToCredential:(id)credential;
+- (BOOL)isEqual:(id)equal;
+- (PKAccountCredential)initWithAccount:(id)account;
 - (id)activationMethods;
-- (id)detailDescriptionWithEnvironment:(unint64_t)a3;
+- (id)detailDescriptionWithEnvironment:(unint64_t)environment;
 - (id)longDescription;
 - (unint64_t)hash;
 @end
 
 @implementation PKAccountCredential
 
-- (PKAccountCredential)initWithAccount:(id)a3
+- (PKAccountCredential)initWithAccount:(id)account
 {
-  v5 = a3;
-  if (v5)
+  accountCopy = account;
+  if (accountCopy)
   {
     v9.receiver = self;
     v9.super_class = PKAccountCredential;
@@ -21,7 +21,7 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_account, a3);
+      objc_storeStrong(&v6->_account, account);
       [(PKPaymentCredential *)v7 setCardType:1];
       [(PKPaymentCredential *)v7 setCredentialType:PKAccountCredentialType([(PKAccount *)v7->_account feature], v7->_account)];
     }
@@ -36,10 +36,10 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -47,22 +47,22 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKAccountCredential *)self _isEqualToCredential:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKAccountCredential *)self _isEqualToCredential:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)_isEqualToCredential:(id)a3
+- (BOOL)_isEqualToCredential:(id)credential
 {
   account = self->_account;
-  v4 = a3;
-  v5 = [(PKAccount *)account accountIdentifier];
-  v6 = [v4 account];
+  credentialCopy = credential;
+  accountIdentifier = [(PKAccount *)account accountIdentifier];
+  account = [credentialCopy account];
 
-  v7 = [v6 accountIdentifier];
-  v8 = v5;
-  v9 = v7;
+  accountIdentifier2 = [account accountIdentifier];
+  v8 = accountIdentifier;
+  v9 = accountIdentifier2;
   v10 = v9;
   if (v8 == v9)
   {
@@ -97,33 +97,33 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(PKAccount *)self->_account accountIdentifier];
-  [v3 safelyAddObject:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+  [array safelyAddObject:accountIdentifier];
 
-  v5 = PKCombinedHash(17, v3);
+  v5 = PKCombinedHash(17, array);
   return v5;
 }
 
 - (id)longDescription
 {
-  v2 = [(PKAccount *)self->_account feature];
+  feature = [(PKAccount *)self->_account feature];
 
-  return PKLocalizedFeatureString(@"APPLY_FLOW_ACCOUNT_TITLE", v2, 0, v3, v4, v5, v6, v7, v10);
+  return PKLocalizedFeatureString(@"APPLY_FLOW_ACCOUNT_TITLE", feature, 0, v3, v4, v5, v6, v7, v10);
 }
 
-- (id)detailDescriptionWithEnvironment:(unint64_t)a3
+- (id)detailDescriptionWithEnvironment:(unint64_t)environment
 {
   if ([(PKAccount *)self->_account type]== 1)
   {
-    v4 = [(PKAccount *)self->_account creditDetails];
-    v5 = [v4 accountSummary];
-    v6 = [v5 creditLimit];
+    creditDetails = [(PKAccount *)self->_account creditDetails];
+    accountSummary = [creditDetails accountSummary];
+    creditLimit = [accountSummary creditLimit];
 
-    if (v6)
+    if (creditLimit)
     {
-      v7 = [MEMORY[0x1E696AB90] notANumber];
-      v8 = [v6 isEqual:v7];
+      notANumber = [MEMORY[0x1E696AB90] notANumber];
+      v8 = [creditLimit isEqual:notANumber];
 
       if (v8)
       {
@@ -132,8 +132,8 @@
 
       else
       {
-        v10 = [v4 currencyCode];
-        v11 = PKFormattedCurrencyStringFromNumber(v6, v10);
+        currencyCode = [creditDetails currencyCode];
+        v11 = PKFormattedCurrencyStringFromNumber(creditLimit, currencyCode);
 
         v9 = PKLocalizedFeatureString(@"APPLY_ON_FILE_SUBTITLE", 2, @"%@", v12, v13, v14, v15, v16, v11);
       }

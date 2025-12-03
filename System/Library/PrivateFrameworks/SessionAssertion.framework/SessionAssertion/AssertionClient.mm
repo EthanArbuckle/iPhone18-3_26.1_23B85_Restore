@@ -1,14 +1,14 @@
 @interface AssertionClient
 - (void)didConnect;
-- (void)didInvalidate:(id)a3;
+- (void)didInvalidate:(id)invalidate;
 @end
 
 @implementation AssertionClient
 
-- (void)didInvalidate:(id)a3
+- (void)didInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = self;
+  invalidateCopy = invalidate;
+  selfCopy = self;
   v6 = sub_26579E344();
   v8 = v7;
 
@@ -31,7 +31,7 @@
 
 - (void)didConnect
 {
-  v2 = self;
+  selfCopy = self;
   AssertionClient.didConnect()();
 }
 

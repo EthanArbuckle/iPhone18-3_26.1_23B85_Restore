@@ -1,25 +1,25 @@
 @interface PLLibraryScopeRuleEvaluator
-- (PLLibraryScopeRuleEvaluator)initWithRules:(id)a3 andInterpreter:(id)a4;
+- (PLLibraryScopeRuleEvaluator)initWithRules:(id)rules andInterpreter:(id)interpreter;
 - (id)description;
-- (id)evaluateObjects:(id)a3 withResultEnumerationBlock:(id)a4;
+- (id)evaluateObjects:(id)objects withResultEnumerationBlock:(id)block;
 @end
 
 @implementation PLLibraryScopeRuleEvaluator
 
-- (id)evaluateObjects:(id)a3 withResultEnumerationBlock:(id)a4
+- (id)evaluateObjects:(id)objects withResultEnumerationBlock:(id)block
 {
   v79 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v46 = a4;
-  v40 = v6;
-  v52 = [v6 mutableCopy];
+  objectsCopy = objects;
+  blockCopy = block;
+  v40 = objectsCopy;
+  v52 = [objectsCopy mutableCopy];
   v47 = [MEMORY[0x1E695DFA8] set];
-  v7 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v49 = self;
+  selfCopy = self;
   obj = [(PLLibraryScopeRuleEvaluator *)self rules];
   v43 = [obj countByEnumeratingWithState:&v69 objects:v78 count:16];
   if (v43)
@@ -37,12 +37,12 @@ LABEL_3:
       v44 = v8;
       v9 = *(*(&v69 + 1) + 8 * v8);
       context = objc_autoreleasePoolPush();
-      v10 = [v9 allConditions];
+      allConditions = [v9 allConditions];
       v65 = 0u;
       v66 = 0u;
       v67 = 0u;
       v68 = 0u;
-      v48 = v10;
+      v48 = allConditions;
       v11 = [v48 countByEnumeratingWithState:&v65 objects:v77 count:16];
       if (v11)
       {
@@ -59,19 +59,19 @@ LABEL_3:
 
             v14 = *(*(&v65 + 1) + 8 * i);
             v15 = objc_autoreleasePoolPush();
-            v16 = [(PLLibraryScopeRuleEvaluator *)v49 interpreter];
-            v17 = [v16 evaluateObjects:v52 forCondition:v14];
+            interpreter = [(PLLibraryScopeRuleEvaluator *)selfCopy interpreter];
+            v17 = [interpreter evaluateObjects:v52 forCondition:v14];
 
             if ([v17 count])
             {
-              v18 = [v14 criteria];
-              if (v18 == 2)
+              criteria = [v14 criteria];
+              if (criteria == 2)
               {
                 [v47 minusSet:v17];
                 [v52 minusSet:v17];
               }
 
-              else if (v18 == 1)
+              else if (criteria == 1)
               {
                 [v47 unionSet:v17];
               }
@@ -95,7 +95,7 @@ LABEL_3:
                       objc_enumerationMutation(v19);
                     }
 
-                    [v7 setObject:v14 forKey:*(*(&v61 + 1) + 8 * j)];
+                    [strongToStrongObjectsMapTable setObject:v14 forKey:*(*(&v61 + 1) + 8 * j)];
                   }
 
                   v21 = [v19 countByEnumeratingWithState:&v61 objects:v76 count:16];
@@ -140,8 +140,8 @@ LABEL_3:
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v51 = [v7 keyEnumerator];
-  v25 = [v51 countByEnumeratingWithState:&v57 objects:v75 count:16];
+  keyEnumerator = [strongToStrongObjectsMapTable keyEnumerator];
+  v25 = [keyEnumerator countByEnumeratingWithState:&v57 objects:v75 count:16];
   if (v25)
   {
     v26 = v25;
@@ -152,18 +152,18 @@ LABEL_3:
       {
         if (*v58 != v27)
         {
-          objc_enumerationMutation(v51);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v29 = *(*(&v57 + 1) + 8 * k);
-        v30 = [v7 objectForKey:v29];
-        v31 = [v30 criteria];
+        v30 = [strongToStrongObjectsMapTable objectForKey:v29];
+        criteria2 = [v30 criteria];
         v74 = v30;
         v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v74 count:1];
-        v46[2](v46, v29, v31, v32);
+        blockCopy[2](blockCopy, v29, criteria2, v32);
       }
 
-      v26 = [v51 countByEnumeratingWithState:&v57 objects:v75 count:16];
+      v26 = [keyEnumerator countByEnumeratingWithState:&v57 objects:v75 count:16];
     }
 
     while (v26);
@@ -189,7 +189,7 @@ LABEL_3:
           objc_enumerationMutation(v33);
         }
 
-        v46[2](v46, *(*(&v53 + 1) + 8 * m), 0, v37);
+        blockCopy[2](blockCopy, *(*(&v53 + 1) + 8 * m), 0, v37);
       }
 
       v35 = [v33 countByEnumeratingWithState:&v53 objects:v73 count:16];
@@ -207,25 +207,25 @@ LABEL_3:
   v9.receiver = self;
   v9.super_class = PLLibraryScopeRuleEvaluator;
   v4 = [(PLLibraryScopeRuleEvaluator *)&v9 description];
-  v5 = [(PLLibraryScopeRuleEvaluator *)self interpreter];
-  v6 = [(PLLibraryScopeRuleEvaluator *)self rules];
-  v7 = [v3 stringWithFormat:@"%@ - interpreter: %@ rules: %@", v4, v5, v6];
+  interpreter = [(PLLibraryScopeRuleEvaluator *)self interpreter];
+  rules = [(PLLibraryScopeRuleEvaluator *)self rules];
+  v7 = [v3 stringWithFormat:@"%@ - interpreter: %@ rules: %@", v4, interpreter, rules];
 
   return v7;
 }
 
-- (PLLibraryScopeRuleEvaluator)initWithRules:(id)a3 andInterpreter:(id)a4
+- (PLLibraryScopeRuleEvaluator)initWithRules:(id)rules andInterpreter:(id)interpreter
 {
-  v6 = a3;
-  v7 = a4;
+  rulesCopy = rules;
+  interpreterCopy = interpreter;
   v11.receiver = self;
   v11.super_class = PLLibraryScopeRuleEvaluator;
   v8 = [(PLLibraryScopeRuleEvaluator *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(PLLibraryScopeRuleEvaluator *)v8 setRules:v6];
-    [(PLLibraryScopeRuleEvaluator *)v9 setInterpreter:v7];
+    [(PLLibraryScopeRuleEvaluator *)v8 setRules:rulesCopy];
+    [(PLLibraryScopeRuleEvaluator *)v9 setInterpreter:interpreterCopy];
   }
 
   return v9;

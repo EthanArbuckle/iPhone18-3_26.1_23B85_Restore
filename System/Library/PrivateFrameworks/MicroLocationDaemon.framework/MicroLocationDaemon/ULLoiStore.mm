@@ -1,19 +1,19 @@
 @interface ULLoiStore
 + (unsigned)maxEntriesInTable;
-- (BOOL)batchTransferRecordsUsingBatchSize:(unint64_t)a3 andLimit:(unint64_t)a4 intoTargetStore:(id)a5;
-- (BOOL)insertDataObjects:(const void *)a3;
-- (BOOL)updateLoiIds:(const void *)a3 withLoiGroupId:(const uuid *)a4 andLoiType:(const void *)a5;
-- (id)fetchLoiManagedObjectWithUUID:(const uuid *)a3 withManagedObjectContext:(id)a4;
-- (id)getLoiIdsInLoiGroupId:(const uuid *)a3;
+- (BOOL)batchTransferRecordsUsingBatchSize:(unint64_t)size andLimit:(unint64_t)limit intoTargetStore:(id)store;
+- (BOOL)insertDataObjects:(const void *)objects;
+- (BOOL)updateLoiIds:(const void *)ids withLoiGroupId:(const uuid *)id andLoiType:(const void *)type;
+- (id)fetchLoiManagedObjectWithUUID:(const uuid *)d withManagedObjectContext:(id)context;
+- (id)getLoiIdsInLoiGroupId:(const uuid *)id;
 - (id)insertDataObjects:;
-- (optional<boost::uuids::uuid>)getLoiGroupIdForLoi:(SEL)a3;
+- (optional<boost::uuids::uuid>)getLoiGroupIdForLoi:(SEL)loi;
 - (optional<std::string>)getLoiTypeForLoi:(optional<std::string> *__return_ptr)retstr;
 - (uint64_t)insertDataObjects:;
 - (unsigned)countDistinctLoiGroups;
-- (unsigned)countDistinctLoiTypes:(const void *)a3;
+- (unsigned)countDistinctLoiTypes:(const void *)types;
 - (vector<ULLoiDO,)fetchAllDistinctLoiGroups;
 - (vector<ULLoiDO,)fetchLoiIdEntriesInLoiGroupId:(ULLoiStore *)self;
-- (vector<ULLoiDO,)fetchLoiIdEntriesforLoiGroupIds:(ULLoiStore *)self withLimit:(SEL)a3;
+- (vector<ULLoiDO,)fetchLoiIdEntriesforLoiGroupIds:(ULLoiStore *)self withLimit:(SEL)limit;
 - (vector<boost::uuids::uuid,)getDistinctHomeLoiGroupIdsWithLimit:(ULLoiStore *)self;
 - (vector<boost::uuids::uuid,)getLoiGroupIdsForLois:(ULLoiStore *)self;
 @end
@@ -23,49 +23,49 @@
 + (unsigned)maxEntriesInTable
 {
   v2 = +[ULDefaultsSingleton shared];
-  v3 = [v2 defaultsDictionary];
+  defaultsDictionary = [v2 defaultsDictionary];
 
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULMiLoLoiTableMaxRows"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaultsDictionary objectForKey:v4];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v5 unsignedIntValue];
+    unsignedIntValue = [v5 unsignedIntValue];
   }
 
   else
   {
-    v6 = [&unk_286A71A00 unsignedIntValue];
+    unsignedIntValue = [&unk_286A71A00 unsignedIntValue];
   }
 
-  v7 = v6;
+  v7 = unsignedIntValue;
 
   return v7;
 }
 
-- (BOOL)insertDataObjects:(const void *)a3
+- (BOOL)insertDataObjects:(const void *)objects
 {
   v7[4] = *MEMORY[0x277D85DE8];
-  v6 = self;
+  selfCopy = self;
   v7[0] = &unk_286A56528;
-  v7[1] = &v6;
+  v7[1] = &selfCopy;
   v7[3] = v7;
-  inserted = ULDBUtils::insertDataObjects<ULLoiDO,ULLoiMO>(self, a3, v7);
+  inserted = ULDBUtils::insertDataObjects<ULLoiDO,ULLoiMO>(self, objects, v7);
   std::__function::__value_func<ULLoiMO * ()(ULLoiDO const&)>::~__value_func[abi:ne200100](v7);
   v4 = *MEMORY[0x277D85DE8];
   return inserted;
 }
 
-- (id)getLoiIdsInLoiGroupId:(const uuid *)a3
+- (id)getLoiIdsInLoiGroupId:(const uuid *)id
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a3];
-  v6 = [v5 UUIDString];
+  v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:id];
+  uUIDString = [v5 UUIDString];
 
   v7 = ULSettings::get<ULSettings::DatabaseSelectionLimit>();
-  if (a3->data[0])
+  if (id->data[0])
   {
 LABEL_2:
-    v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K=%@", @"loiGroupId", v6];
+    v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K=%@", @"loiGroupId", uUIDString];
     v9 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"lastSeenTimeStamp" ascending:0];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
@@ -81,7 +81,7 @@ LABEL_2:
     v15 = 1;
     while (v15 != 16)
     {
-      if (a3->data[v15++])
+      if (id->data[v15++])
       {
         if ((v15 - 2) < 0xF)
         {
@@ -92,7 +92,7 @@ LABEL_2:
       }
     }
 
-    v21[0] = v6;
+    v21[0] = uUIDString;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
   }
 
@@ -109,17 +109,17 @@ LABEL_2:
   retstr->var2 = 0;
   v7 = objc_autoreleasePoolPush();
   v8 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a4];
-  v9 = [v8 UUIDString];
+  uUIDString = [v8 UUIDString];
 
-  v10 = [MEMORY[0x277CBEB18] array];
-  v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K=%@", @"loiGroupId", v9];
-  [v10 addObject:v11];
+  array = [MEMORY[0x277CBEB18] array];
+  v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K=%@", @"loiGroupId", uUIDString];
+  [array addObject:v11];
 
   v12 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"lastSeenTimeStamp" ascending:0];
   v13 = ULSettings::get<ULSettings::DatabaseSelectionLimit>();
   v19[0] = v12;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
-  [(ULLoiStore *)self _fetchLoisByAndPredicates:v10 sortDescriptors:v14 andLimit:v13];
+  [(ULLoiStore *)self _fetchLoisByAndPredicates:array sortDescriptors:v14 andLimit:v13];
   std::vector<ULLoiDO>::__vdeallocate(retstr);
   *retstr = v17;
   memset(&v17, 0, sizeof(v17));
@@ -131,7 +131,7 @@ LABEL_2:
   return result;
 }
 
-- (vector<ULLoiDO,)fetchLoiIdEntriesforLoiGroupIds:(ULLoiStore *)self withLimit:(SEL)a3
+- (vector<ULLoiDO,)fetchLoiIdEntriesforLoiGroupIds:(ULLoiStore *)self withLimit:(SEL)limit
 {
   v19[1] = *MEMORY[0x277D85DE8];
   retstr->var0 = 0;
@@ -139,14 +139,14 @@ LABEL_2:
   retstr->var2 = 0;
   v9 = objc_autoreleasePoolPush();
   v10 = ULDBUtils::NSStringArrayFromBoostUUIDs(a4);
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K in %@", @"loiGroupId", v10];
-  [v11 addObject:v12];
+  [array addObject:v12];
 
   v13 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"lastSeenTimeStamp" ascending:0];
   v19[0] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
-  [(ULLoiStore *)self _fetchLoisByAndPredicates:v11 sortDescriptors:v14 andLimit:a5];
+  [(ULLoiStore *)self _fetchLoisByAndPredicates:array sortDescriptors:v14 andLimit:a5];
   std::vector<ULLoiDO>::__vdeallocate(retstr);
   *retstr = v17;
   memset(&v17, 0, sizeof(v17));
@@ -170,7 +170,7 @@ LABEL_2:
   v21 = &unk_25929B3B7;
   memset(v22, 0, sizeof(v22));
   v7 = objc_autoreleasePoolPush();
-  v8 = [(ULStore *)self managedObjectContext];
+  managedObjectContext = [(ULStore *)self managedObjectContext];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __39__ULLoiStore_fetchAllDistinctLoiGroups__block_invoke;
@@ -180,7 +180,7 @@ LABEL_2:
   v15 = v5;
   v13 = v9;
   v14 = &v16;
-  [v8 performBlockAndWait:v12];
+  [managedObjectContext performBlockAndWait:v12];
 
   objc_autoreleasePoolPop(v7);
   v10 = v17;
@@ -230,18 +230,18 @@ void __39__ULLoiStore_fetchAllDistinctLoiGroups__block_invoke(uint64_t a1)
   retstr->var0 = 0;
   retstr->var1 = 0;
   retstr->var2 = 0;
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v8 = MEMORY[0x277CCAC30];
   v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"home"];
   v10 = [v8 predicateWithFormat:@"%K=%@", @"loiType", v9];
-  [v7 addObject:v10];
+  [array addObject:v10];
 
   v11 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"lastSeenTimeStamp" ascending:0];
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
   v21[0] = v11;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
-  v15 = [(ULStore *)self fetchPropertyForEntityName:v13 propertyToFetch:@"loiGroupId" distinctResults:1 byAndPredicates:v7 sortDescriptors:v14 andLimit:a4];
+  v15 = [(ULStore *)self fetchPropertyForEntityName:v13 propertyToFetch:@"loiGroupId" distinctResults:1 byAndPredicates:array sortDescriptors:v14 andLimit:a4];
 
   ULDBUtils::boostUUIDsFromNSStringArray(v15, &v19);
   v16 = v20;
@@ -262,32 +262,32 @@ void __39__ULLoiStore_fetchAllDistinctLoiGroups__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (unsigned)countDistinctLoiTypes:(const void *)a3
+- (unsigned)countDistinctLoiTypes:(const void *)types
 {
-  v5 = [MEMORY[0x277CBEB18] array];
-  if (*(a3 + 23) >= 0)
+  array = [MEMORY[0x277CBEB18] array];
+  if (*(types + 23) >= 0)
   {
-    v6 = a3;
+    typesCopy = types;
   }
 
   else
   {
-    v6 = *a3;
+    typesCopy = *types;
   }
 
-  v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:v6];
+  v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:typesCopy];
   v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K=%@", @"loiType", v7];
-  [v5 addObject:v8];
+  [array addObject:v8];
 
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  v11 = [(ULStore *)self fetchPropertyForEntityName:v10 propertyToFetch:@"loiGroupId" distinctResults:1 byAndPredicates:v5 sortDescriptors:0 andLimit:0];
+  v11 = [(ULStore *)self fetchPropertyForEntityName:v10 propertyToFetch:@"loiGroupId" distinctResults:1 byAndPredicates:array sortDescriptors:0 andLimit:0];
 
   LODWORD(v10) = [v11 count];
   return v10;
 }
 
-- (optional<boost::uuids::uuid>)getLoiGroupIdForLoi:(SEL)a3
+- (optional<boost::uuids::uuid>)getLoiGroupIdForLoi:(SEL)loi
 {
   v22[1] = *MEMORY[0x277D85DE8];
   v19 = 0uLL;
@@ -295,16 +295,16 @@ void __39__ULLoiStore_fetchAllDistinctLoiGroups__block_invoke(uint64_t a1)
   std::vector<ULLoiDO>::reserve(&v19, 1uLL);
   v7 = objc_autoreleasePoolPush();
   v8 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a4];
-  v9 = [v8 UUIDString];
+  uUIDString = [v8 UUIDString];
 
-  v10 = [MEMORY[0x277CBEB18] array];
-  v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K=%@", @"loiId", v9];
-  [v10 addObject:v11];
+  array = [MEMORY[0x277CBEB18] array];
+  v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K=%@", @"loiId", uUIDString];
+  [array addObject:v11];
 
   v12 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"lastSeenTimeStamp" ascending:0];
   v22[0] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
-  [(ULLoiStore *)self _fetchLoisByAndPredicates:v10 sortDescriptors:v13 andLimit:1];
+  [(ULLoiStore *)self _fetchLoisByAndPredicates:array sortDescriptors:v13 andLimit:1];
   std::vector<ULLoiDO>::__vdeallocate(&v19);
   v19 = v17;
   v20 = v18;
@@ -343,16 +343,16 @@ void __39__ULLoiStore_fetchAllDistinctLoiGroups__block_invoke(uint64_t a1)
   std::vector<ULLoiDO>::reserve(&v19, 1uLL);
   v6 = objc_autoreleasePoolPush();
   v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:v3];
-  v8 = [v7 UUIDString];
+  uUIDString = [v7 UUIDString];
 
-  v9 = [MEMORY[0x277CBEB18] array];
-  v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K=%@", @"loiId", v8];
-  [v9 addObject:v10];
+  array = [MEMORY[0x277CBEB18] array];
+  v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K=%@", @"loiId", uUIDString];
+  [array addObject:v10];
 
   v11 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"lastSeenTimeStamp" ascending:0];
   v22[0] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
-  [v4 _fetchLoisByAndPredicates:v9 sortDescriptors:v12 andLimit:1];
+  [v4 _fetchLoisByAndPredicates:array sortDescriptors:v12 andLimit:1];
   std::vector<ULLoiDO>::__vdeallocate(&v19);
   v19 = v17;
   v20 = v18;
@@ -402,16 +402,16 @@ void __39__ULLoiStore_fetchAllDistinctLoiGroups__block_invoke(uint64_t a1)
     v7 = ULSettings::get<ULSettings::DatabaseSelectionLimit>();
     v8 = objc_autoreleasePoolPush();
     v9 = ULDBUtils::NSStringArrayFromBoostUUIDs(a4);
-    v10 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K in %@", @"loiId", v9];
-    [v10 addObject:v11];
+    [array addObject:v11];
 
     v12 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"lastSeenTimeStamp" ascending:0];
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
     v19[0] = v12;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
-    v16 = [(ULStore *)self fetchPropertyForEntityName:v14 propertyToFetch:@"loiGroupId" distinctResults:1 byAndPredicates:v10 sortDescriptors:v15 andLimit:v7];
+    v16 = [(ULStore *)self fetchPropertyForEntityName:v14 propertyToFetch:@"loiGroupId" distinctResults:1 byAndPredicates:array sortDescriptors:v15 andLimit:v7];
 
     objc_autoreleasePoolPop(v8);
     ULDBUtils::boostUUIDsFromNSStringArray(v16, retstr);
@@ -421,10 +421,10 @@ void __39__ULLoiStore_fetchAllDistinctLoiGroups__block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)updateLoiIds:(const void *)a3 withLoiGroupId:(const uuid *)a4 andLoiType:(const void *)a5
+- (BOOL)updateLoiIds:(const void *)ids withLoiGroupId:(const uuid *)id andLoiType:(const void *)type
 {
-  v5 = *a3;
-  v6 = *(a3 + 1);
+  v5 = *ids;
+  v6 = *(ids + 1);
   if (v5 == v6)
   {
     return 1;
@@ -467,7 +467,7 @@ void __39__ULLoiStore_fetchAllDistinctLoiGroups__block_invoke(uint64_t a1)
     }
 
     v17 = (16 * v13);
-    *v17 = *a4;
+    *v17 = *id;
     v11 = (16 * v13 + 16);
     v18 = v17 - (v46 - __p);
     memcpy(v18, __p, v46 - __p);
@@ -483,7 +483,7 @@ void __39__ULLoiStore_fetchAllDistinctLoiGroups__block_invoke(uint64_t a1)
 
   else
   {
-    *v46 = *a4;
+    *v46 = *id;
     v11 = v10 + 16;
   }
 
@@ -510,31 +510,31 @@ void __39__ULLoiStore_fetchAllDistinctLoiGroups__block_invoke(uint64_t a1)
   v24 = ULDBUtils::NSStringArrayFromBoostUUIDs(&__p);
   v25 = [v23 initWithArray:v24];
 
-  v26 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v27 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K in %@", @"loiId", v25];
-  [v26 addObject:v27];
+  [array addObject:v27];
 
   v28 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"lastSeenTimeStamp" ascending:0];
   v41 = 0;
   v42 = &v41;
   v43 = 0x2020000000;
   v44 = 0;
-  v29 = [(ULStore *)self managedObjectContext];
+  managedObjectContext = [(ULStore *)self managedObjectContext];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __53__ULLoiStore_updateLoiIds_withLoiGroupId_andLoiType___block_invoke;
   v34[3] = &unk_2798D4818;
   v34[4] = self;
-  v30 = v26;
+  v30 = array;
   v35 = v30;
   v31 = v28;
   v36 = v31;
-  v39 = a4;
-  v40 = a5;
+  idCopy = id;
+  typeCopy = type;
   v32 = v25;
   v37 = v32;
   v38 = &v41;
-  [v29 performBlockAndWait:v34];
+  [managedObjectContext performBlockAndWait:v34];
 
   v12 = *(v42 + 24);
   _Block_object_dispose(&v41, 8);
@@ -648,15 +648,15 @@ void __53__ULLoiStore_updateLoiIds_withLoiGroupId_andLoiType___block_invoke(uint
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)batchTransferRecordsUsingBatchSize:(unint64_t)a3 andLimit:(unint64_t)a4 intoTargetStore:(id)a5
+- (BOOL)batchTransferRecordsUsingBatchSize:(unint64_t)size andLimit:(unint64_t)limit intoTargetStore:(id)store
 {
-  v8 = a5;
+  storeCopy = store;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
   v9 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"lastSeenTimeStamp" ascending:0];
-  v10 = [(ULStore *)self managedObjectContext];
+  managedObjectContext = [(ULStore *)self managedObjectContext];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __74__ULLoiStore_batchTransferRecordsUsingBatchSize_andLimit_intoTargetStore___block_invoke;
@@ -665,16 +665,16 @@ void __53__ULLoiStore_updateLoiIds_withLoiGroupId_andLoiType___block_invoke(uint
   v14[4] = self;
   v11 = v9;
   v15 = v11;
-  v18 = a3;
-  v19 = a4;
-  v12 = v8;
+  sizeCopy = size;
+  limitCopy = limit;
+  v12 = storeCopy;
   v16 = v12;
-  [v10 performBlockAndWait:v14];
+  [managedObjectContext performBlockAndWait:v14];
 
-  LOBYTE(v8) = *(v21 + 24);
+  LOBYTE(storeCopy) = *(v21 + 24);
   _Block_object_dispose(&v20, 8);
 
-  return v8;
+  return storeCopy;
 }
 
 void __74__ULLoiStore_batchTransferRecordsUsingBatchSize_andLimit_intoTargetStore___block_invoke(void *a1)
@@ -690,9 +690,9 @@ void __74__ULLoiStore_batchTransferRecordsUsingBatchSize_andLimit_intoTargetStor
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchLoiManagedObjectWithUUID:(const uuid *)a3 withManagedObjectContext:(id)a4
+- (id)fetchLoiManagedObjectWithUUID:(const uuid *)d withManagedObjectContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -700,12 +700,12 @@ void __74__ULLoiStore_batchTransferRecordsUsingBatchSize_andLimit_intoTargetStor
   v27 = __Block_byref_object_dispose__25;
   v28 = 0;
   v7 = objc_autoreleasePoolPush();
-  v8 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a3];
-  v9 = [v8 UUIDString];
+  v8 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:d];
+  uUIDString = [v8 UUIDString];
 
-  v10 = [MEMORY[0x277CBEB18] array];
-  v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %@", @"loiId", v9];
-  [v10 addObject:v11];
+  array = [MEMORY[0x277CBEB18] array];
+  v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %@", @"loiId", uUIDString];
+  [array addObject:v11];
 
   v12 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"lastSeenTimeStamp" ascending:0];
   v18[0] = MEMORY[0x277D85DD0];
@@ -713,10 +713,10 @@ void __74__ULLoiStore_batchTransferRecordsUsingBatchSize_andLimit_intoTargetStor
   v18[2] = __69__ULLoiStore_fetchLoiManagedObjectWithUUID_withManagedObjectContext___block_invoke;
   v18[3] = &unk_2798D4840;
   v18[4] = self;
-  v13 = v10;
+  v13 = array;
   v19 = v13;
   v20 = v12;
-  v14 = v6;
+  v14 = contextCopy;
   v21 = v14;
   v22 = &v23;
   v15 = v12;
@@ -751,7 +751,7 @@ void __69__ULLoiStore_fetchLoiManagedObjectWithUUID_withManagedObjectContext___b
 - (uint64_t)insertDataObjects:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -762,8 +762,8 @@ void __69__ULLoiStore_fetchLoiManagedObjectWithUUID_withManagedObjectContext___b
 
 - (id)insertDataObjects:
 {
-  v3 = [**(a1 + 8) managedObjectContext];
-  v4 = [ULLoiMO createFromDO:a2 inManagedObjectContext:v3];
+  managedObjectContext = [**(self + 8) managedObjectContext];
+  v4 = [ULLoiMO createFromDO:a2 inManagedObjectContext:managedObjectContext];
 
   return v4;
 }

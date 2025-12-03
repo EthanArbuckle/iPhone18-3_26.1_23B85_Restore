@@ -1,25 +1,25 @@
 @interface TISKShiftKeyEvent
-- (void)reportInterKeyTiming:(id)a3 previousEvent:(id)a4;
-- (void)reportToSession:(id)a3;
+- (void)reportInterKeyTiming:(id)timing previousEvent:(id)event;
+- (void)reportToSession:(id)session;
 @end
 
 @implementation TISKShiftKeyEvent
 
-- (void)reportInterKeyTiming:(id)a3 previousEvent:(id)a4
+- (void)reportInterKeyTiming:(id)timing previousEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  timingCopy = timing;
+  eventCopy = event;
+  if (eventCopy)
   {
     v15.receiver = self;
     v15.super_class = TISKShiftKeyEvent;
-    [(TISKEvent *)&v15 reportInterKeyTiming:v6 previousEvent:v7];
+    [(TISKEvent *)&v15 reportInterKeyTiming:timingCopy previousEvent:eventCopy];
     [(TISKEvent *)self touchDownTimestamp];
     v9 = v8;
-    [v7 touchDownTimestamp];
+    [eventCopy touchDownTimestamp];
     v11 = v10;
-    v12 = [v7 type];
-    switch(v12)
+    type = [eventCopy type];
+    switch(type)
     {
       case 2:
         v13 = &kTISKSpaceToShiftMetric;
@@ -31,19 +31,19 @@
         v13 = &kTISKDeleteToShiftMetric;
 LABEL_8:
         v14 = [MEMORY[0x277CCABB0] numberWithDouble:v9 - v11];
-        [v6 addSample:v14 forKey:*v13];
+        [timingCopy addSample:v14 forKey:*v13];
 
         break;
     }
   }
 }
 
-- (void)reportToSession:(id)a3
+- (void)reportToSession:(id)session
 {
   v3 = kTISKNumberOfTappedKeysCounter;
-  v4 = a3;
-  [v4 addSample:&unk_28400BF10 forKey:v3];
-  [v4 addToCounterForRateMetric:1 forKey:kTISKTapTypingSpeed];
+  sessionCopy = session;
+  [sessionCopy addSample:&unk_28400BF10 forKey:v3];
+  [sessionCopy addToCounterForRateMetric:1 forKey:kTISKTapTypingSpeed];
 }
 
 @end

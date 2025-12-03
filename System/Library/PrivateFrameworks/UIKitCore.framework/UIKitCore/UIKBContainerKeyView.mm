@@ -1,11 +1,11 @@
 @interface UIKBContainerKeyView
 - (CGRect)drawFrame;
-- (UIKBContainerKeyView)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5;
-- (void)setDrawFrame:(CGRect)a3;
-- (void)setFactory:(id)a3;
+- (UIKBContainerKeyView)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key;
+- (void)setDrawFrame:(CGRect)frame;
+- (void)setFactory:(id)factory;
 - (void)setNeedsDisplay;
-- (void)setScreenTraits:(id)a3;
-- (void)updateSpecialtyKeyViewForKey:(id)a3 inKeyplane:(id)a4;
+- (void)setScreenTraits:(id)traits;
+- (void)updateSpecialtyKeyViewForKey:(id)key inKeyplane:(id)keyplane;
 @end
 
 @implementation UIKBContainerKeyView
@@ -18,25 +18,25 @@
   [(UIView *)self->_keyView setNeedsDisplay];
 }
 
-- (UIKBContainerKeyView)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5
+- (UIKBContainerKeyView)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  v12 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  keyplaneCopy = keyplane;
+  keyCopy = key;
   v19.receiver = self;
   v19.super_class = UIKBContainerKeyView;
-  v13 = [(UIView *)&v19 initWithFrame:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(UIView *)&v19 initWithFrame:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    [(UIView *)v13 setOpaque:0];
+    [(UIView *)height setOpaque:0];
     [(UIView *)v14 setUserInteractionEnabled:0];
     v15 = [UIKBKeyView alloc];
     [(UIView *)v14 bounds];
-    v16 = [(UIKBKeyView *)v15 initWithFrame:v11 keyplane:v12 key:?];
+    v16 = [(UIKBKeyView *)v15 initWithFrame:keyplaneCopy keyplane:keyCopy key:?];
     keyView = v14->_keyView;
     v14->_keyView = v16;
 
@@ -47,36 +47,36 @@
   return v14;
 }
 
-- (void)updateSpecialtyKeyViewForKey:(id)a3 inKeyplane:(id)a4
+- (void)updateSpecialtyKeyViewForKey:(id)key inKeyplane:(id)keyplane
 {
-  v17 = a3;
-  v6 = a4;
-  v7 = [(UIKBContainerKeyView *)self factory];
-  v8 = [v7 traitsForKey:v17 onKeyplane:v6];
+  keyCopy = key;
+  keyplaneCopy = keyplane;
+  factory = [(UIKBContainerKeyView *)self factory];
+  v8 = [factory traitsForKey:keyCopy onKeyplane:keyplaneCopy];
 
-  v9 = [(UIKBKeyView *)self->_keyView screenTraits];
+  screenTraits = [(UIKBKeyView *)self->_keyView screenTraits];
   v10 = objc_alloc_init(UIKBKeyViewAnimator);
-  v11 = [(UIKBKeyViewAnimator *)v10 keyViewClassForKey:v17 renderTraits:v8 screenTraits:v9];
+  v11 = [(UIKBKeyViewAnimator *)v10 keyViewClassForKey:keyCopy renderTraits:v8 screenTraits:screenTraits];
   keyView = self->_keyView;
   if (!keyView || ([(UIKBKeyView *)keyView isMemberOfClass:v11]& 1) == 0)
   {
     v13 = [v11 alloc];
     [(UIView *)self->_keyView frame];
-    v14 = [v13 initWithFrame:v6 keyplane:v17 key:?];
-    [(UIKBKeyView *)v14 updateForKeyplane:v6 key:v17];
+    v14 = [v13 initWithFrame:keyplaneCopy keyplane:keyCopy key:?];
+    [(UIKBKeyView *)v14 updateForKeyplane:keyplaneCopy key:keyCopy];
     v15 = self->_keyView;
     self->_keyView = v14;
     v16 = v14;
   }
 }
 
-- (void)setScreenTraits:(id)a3
+- (void)setScreenTraits:(id)traits
 {
   v5.receiver = self;
   v5.super_class = UIKBContainerKeyView;
-  v4 = a3;
-  [(UIKBKeyView *)&v5 setScreenTraits:v4];
-  [(UIKBKeyView *)self->_keyView setScreenTraits:v4, v5.receiver, v5.super_class];
+  traitsCopy = traits;
+  [(UIKBKeyView *)&v5 setScreenTraits:traitsCopy];
+  [(UIKBKeyView *)self->_keyView setScreenTraits:traitsCopy, v5.receiver, v5.super_class];
 }
 
 - (CGRect)drawFrame
@@ -89,12 +89,12 @@
   return result;
 }
 
-- (void)setDrawFrame:(CGRect)a3
+- (void)setDrawFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if ([(UIKBKeyView *)self isDynamicKey])
   {
     [(UIKBKeyView *)self->_keyView drawFrame];
@@ -113,15 +113,15 @@
   [(UIKBKeyView *)keyView setDrawFrame:x, y, width, height];
 }
 
-- (void)setFactory:(id)a3
+- (void)setFactory:(id)factory
 {
-  v4 = a3;
+  factoryCopy = factory;
   if ([(UIKBKeyView *)self isDynamicKey])
   {
     [(UIKBKeyView *)self->_keyView resetRenderedKeyState];
   }
 
-  [(UIKBKeyView *)self->_keyView setFactory:v4];
+  [(UIKBKeyView *)self->_keyView setFactory:factoryCopy];
 }
 
 @end

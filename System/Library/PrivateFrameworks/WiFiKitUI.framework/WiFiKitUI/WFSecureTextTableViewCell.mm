@@ -1,64 +1,64 @@
 @interface WFSecureTextTableViewCell
-- (WFSecureTextTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (WFSecureTextTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)awakeFromNib;
-- (void)setHideSecureText:(BOOL)a3;
+- (void)setHideSecureText:(BOOL)text;
 @end
 
 @implementation WFSecureTextTableViewCell
 
-- (WFSecureTextTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WFSecureTextTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v12.receiver = self;
   v12.super_class = WFSecureTextTableViewCell;
-  v4 = [(WFSecureTextTableViewCell *)&v12 initWithStyle:1 reuseIdentifier:a4];
-  v5 = [(WFSecureTextTableViewCell *)v4 defaultContentConfiguration];
-  v6 = [v5 secondaryTextProperties];
-  [v6 setNumberOfLines:0];
+  v4 = [(WFSecureTextTableViewCell *)&v12 initWithStyle:1 reuseIdentifier:identifier];
+  defaultContentConfiguration = [(WFSecureTextTableViewCell *)v4 defaultContentConfiguration];
+  secondaryTextProperties = [defaultContentConfiguration secondaryTextProperties];
+  [secondaryTextProperties setNumberOfLines:0];
 
-  v7 = [v5 secondaryTextProperties];
-  v8 = [v7 font];
-  v9 = [v8 copy];
+  secondaryTextProperties2 = [defaultContentConfiguration secondaryTextProperties];
+  font = [secondaryTextProperties2 font];
+  v9 = [font copy];
   placeholderFont = v4->_placeholderFont;
   v4->_placeholderFont = v9;
 
-  [(WFSecureTextTableViewCell *)v4 setContentConfiguration:v5];
+  [(WFSecureTextTableViewCell *)v4 setContentConfiguration:defaultContentConfiguration];
   return v4;
 }
 
-- (void)setHideSecureText:(BOOL)a3
+- (void)setHideSecureText:(BOOL)text
 {
-  v3 = a3;
-  v15 = [(WFSecureTextTableViewCell *)self contentConfiguration];
-  if (v3)
+  textCopy = text;
+  contentConfiguration = [(WFSecureTextTableViewCell *)self contentConfiguration];
+  if (textCopy)
   {
-    v5 = [(WFSecureTextTableViewCell *)self credentials];
-    v6 = [v5 placeholderStringWithMaxCharacters:20];
-    [v15 setSecondaryText:v6];
+    credentials = [(WFSecureTextTableViewCell *)self credentials];
+    v6 = [credentials placeholderStringWithMaxCharacters:20];
+    [contentConfiguration setSecondaryText:v6];
 
-    v7 = [(WFSecureTextTableViewCell *)self placeholderFont];
-    v8 = [v15 secondaryTextProperties];
-    [v8 setFont:v7];
+    placeholderFont = [(WFSecureTextTableViewCell *)self placeholderFont];
+    secondaryTextProperties = [contentConfiguration secondaryTextProperties];
+    [secondaryTextProperties setFont:placeholderFont];
   }
 
   else
   {
-    v9 = [v15 secondaryTextProperties];
-    [v9 setNumberOfLines:0];
+    secondaryTextProperties2 = [contentConfiguration secondaryTextProperties];
+    [secondaryTextProperties2 setNumberOfLines:0];
 
-    v10 = [(WFSecureTextTableViewCell *)self credentials];
-    [v15 setSecondaryText:v10];
+    credentials2 = [(WFSecureTextTableViewCell *)self credentials];
+    [contentConfiguration setSecondaryText:credentials2];
 
     v11 = MEMORY[0x277D74300];
-    v7 = [v15 secondaryTextProperties];
-    v8 = [v7 font];
-    [v8 pointSize];
+    placeholderFont = [contentConfiguration secondaryTextProperties];
+    secondaryTextProperties = [placeholderFont font];
+    [secondaryTextProperties pointSize];
     v12 = *MEMORY[0x277D74418];
     v13 = [v11 monospacedSystemFontOfSize:? weight:?];
-    v14 = [v15 secondaryTextProperties];
-    [v14 setFont:v13];
+    secondaryTextProperties3 = [contentConfiguration secondaryTextProperties];
+    [secondaryTextProperties3 setFont:v13];
   }
 
-  [(WFSecureTextTableViewCell *)self setContentConfiguration:v15];
+  [(WFSecureTextTableViewCell *)self setContentConfiguration:contentConfiguration];
 }
 
 - (void)awakeFromNib

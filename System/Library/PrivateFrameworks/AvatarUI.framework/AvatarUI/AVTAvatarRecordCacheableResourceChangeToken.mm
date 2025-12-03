@@ -1,59 +1,59 @@
 @interface AVTAvatarRecordCacheableResourceChangeToken
-- (AVTAvatarRecordCacheableResourceChangeToken)initWithEnvironment:(id)a3 recordIdentifier:(id)a4 changeHandler:(id)a5;
-- (void)handleNotification:(id)a3;
+- (AVTAvatarRecordCacheableResourceChangeToken)initWithEnvironment:(id)environment recordIdentifier:(id)identifier changeHandler:(id)handler;
+- (void)handleNotification:(id)notification;
 - (void)startObservingChanges;
 - (void)stopObservingChanges;
 @end
 
 @implementation AVTAvatarRecordCacheableResourceChangeToken
 
-- (AVTAvatarRecordCacheableResourceChangeToken)initWithEnvironment:(id)a3 recordIdentifier:(id)a4 changeHandler:(id)a5
+- (AVTAvatarRecordCacheableResourceChangeToken)initWithEnvironment:(id)environment recordIdentifier:(id)identifier changeHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  environmentCopy = environment;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = AVTAvatarRecordCacheableResourceChangeToken;
   v11 = [(AVTAvatarRecordCacheableResourceChangeToken *)&v19 init];
   if (v11)
   {
-    v12 = [v9 copy];
+    v12 = [identifierCopy copy];
     recordID = v11->_recordID;
     v11->_recordID = v12;
 
-    v14 = [v10 copy];
+    v14 = [handlerCopy copy];
     changeHandler = v11->_changeHandler;
     v11->_changeHandler = v14;
 
-    v16 = [v8 notificationCenter];
+    notificationCenter = [environmentCopy notificationCenter];
     notificationCenter = v11->_notificationCenter;
-    v11->_notificationCenter = v16;
+    v11->_notificationCenter = notificationCenter;
   }
 
   return v11;
 }
 
-- (void)handleNotification:(id)a3
+- (void)handleNotification:(id)notification
 {
-  v10 = a3;
-  v4 = [v10 _avtui_changedRecordIdentifiers];
-  if (!v4 || (v5 = v4, [v10 _avtui_changedRecordIdentifiers], v6 = objc_claimAutoreleasedReturnValue(), -[AVTAvatarRecordCacheableResourceChangeToken recordID](self, "recordID"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "containsObject:", v7), v7, v6, v5, v8))
+  notificationCopy = notification;
+  _avtui_changedRecordIdentifiers = [notificationCopy _avtui_changedRecordIdentifiers];
+  if (!_avtui_changedRecordIdentifiers || (v5 = _avtui_changedRecordIdentifiers, [notificationCopy _avtui_changedRecordIdentifiers], v6 = objc_claimAutoreleasedReturnValue(), -[AVTAvatarRecordCacheableResourceChangeToken recordID](self, "recordID"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "containsObject:", v7), v7, v6, v5, v8))
   {
-    v9 = [(AVTAvatarRecordCacheableResourceChangeToken *)self changeHandler];
-    v9[2]();
+    changeHandler = [(AVTAvatarRecordCacheableResourceChangeToken *)self changeHandler];
+    changeHandler[2]();
   }
 }
 
 - (void)startObservingChanges
 {
-  v3 = [(AVTAvatarRecordCacheableResourceChangeToken *)self notificationCenter];
-  [v3 addObserver:self selector:sel_handleNotification_ name:*MEMORY[0x1E698E308] object:0];
+  notificationCenter = [(AVTAvatarRecordCacheableResourceChangeToken *)self notificationCenter];
+  [notificationCenter addObserver:self selector:sel_handleNotification_ name:*MEMORY[0x1E698E308] object:0];
 }
 
 - (void)stopObservingChanges
 {
-  v3 = [(AVTAvatarRecordCacheableResourceChangeToken *)self notificationCenter];
-  [v3 removeObserver:self];
+  notificationCenter = [(AVTAvatarRecordCacheableResourceChangeToken *)self notificationCenter];
+  [notificationCenter removeObserver:self];
 }
 
 @end

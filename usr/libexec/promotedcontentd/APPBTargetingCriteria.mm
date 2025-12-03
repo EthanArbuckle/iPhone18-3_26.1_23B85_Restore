@@ -1,32 +1,32 @@
 @interface APPBTargetingCriteria
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addCriteriaValues:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCriteriaValues:(id)values;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBTargetingCriteria
 
-- (void)addCriteriaValues:(id)a3
+- (void)addCriteriaValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   criteriaValues = self->_criteriaValues;
-  v8 = v4;
+  v8 = valuesCopy;
   if (!criteriaValues)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_criteriaValues;
     self->_criteriaValues = v6;
 
-    v4 = v8;
+    valuesCopy = v8;
     criteriaValues = self->_criteriaValues;
   }
 
-  [(NSMutableArray *)criteriaValues addObject:v4];
+  [(NSMutableArray *)criteriaValues addObject:valuesCopy];
 }
 
 - (id)description
@@ -34,8 +34,8 @@
   v7.receiver = self;
   v7.super_class = APPBTargetingCriteria;
   v3 = [(APPBTargetingCriteria *)&v7 description];
-  v4 = [(APPBTargetingCriteria *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBTargetingCriteria *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -59,15 +59,15 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_criteriaIdentifier)
   {
     sub_1003942C8();
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteStringField();
   v13 = 0u;
   v14 = 0u;
@@ -101,30 +101,30 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  [v8 setCriteriaIdentifier:self->_criteriaIdentifier];
+  toCopy = to;
+  [toCopy setCriteriaIdentifier:self->_criteriaIdentifier];
   if ([(APPBTargetingCriteria *)self criteriaValuesCount])
   {
-    [v8 clearCriteriaValues];
-    v4 = [(APPBTargetingCriteria *)self criteriaValuesCount];
-    if (v4)
+    [toCopy clearCriteriaValues];
+    criteriaValuesCount = [(APPBTargetingCriteria *)self criteriaValuesCount];
+    if (criteriaValuesCount)
     {
-      v5 = v4;
+      v5 = criteriaValuesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(APPBTargetingCriteria *)self criteriaValuesAtIndex:i];
-        [v8 addCriteriaValues:v7];
+        [toCopy addCriteriaValues:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_criteriaIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_criteriaIdentifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -148,7 +148,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{zone, v15}];
         [v5 addCriteriaValues:v13];
 
         v12 = v12 + 1;
@@ -164,13 +164,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((criteriaIdentifier = self->_criteriaIdentifier, !(criteriaIdentifier | v4[1])) || -[NSString isEqual:](criteriaIdentifier, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((criteriaIdentifier = self->_criteriaIdentifier, !(criteriaIdentifier | equalCopy[1])) || -[NSString isEqual:](criteriaIdentifier, "isEqual:")))
   {
     criteriaValues = self->_criteriaValues;
-    if (criteriaValues | v4[2])
+    if (criteriaValues | equalCopy[2])
     {
       v7 = [(NSMutableArray *)criteriaValues isEqual:?];
     }
@@ -189,10 +189,10 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(APPBTargetingCriteria *)self setCriteriaIdentifier:?];
   }
@@ -201,7 +201,7 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {

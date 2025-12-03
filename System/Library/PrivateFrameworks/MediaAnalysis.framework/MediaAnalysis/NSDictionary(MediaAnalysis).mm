@@ -14,39 +14,39 @@
 
 - (uint64_t)vcp_version
 {
-  v1 = [a1 objectForKey:@"version"];
-  v2 = [v1 intValue];
+  v1 = [self objectForKey:@"version"];
+  intValue = [v1 intValue];
 
-  return v2;
+  return intValue;
 }
 
 - (uint64_t)vcp_types
 {
-  v1 = [a1 objectForKey:@"performedAnalysisTypes"];
-  v2 = [v1 unsignedIntegerValue];
+  v1 = [self objectForKey:@"performedAnalysisTypes"];
+  unsignedIntegerValue = [v1 unsignedIntegerValue];
 
-  return v2;
+  return unsignedIntegerValue;
 }
 
 - (uint64_t)vcp_flags
 {
-  v1 = [a1 objectForKey:@"flags"];
-  v2 = [v1 unsignedIntegerValue];
+  v1 = [self objectForKey:@"flags"];
+  unsignedIntegerValue = [v1 unsignedIntegerValue];
 
-  return v2;
+  return unsignedIntegerValue;
 }
 
 - (uint64_t)vcp_statsFlags
 {
-  v1 = [a1 objectForKey:@"statsFlags"];
-  v2 = [v1 unsignedLongValue];
+  v1 = [self objectForKey:@"statsFlags"];
+  unsignedLongValue = [v1 unsignedLongValue];
 
-  return v2;
+  return unsignedLongValue;
 }
 
 - (double)vcp_quality
 {
-  v1 = [a1 objectForKey:@"quality"];
+  v1 = [self objectForKey:@"quality"];
   v2 = v1;
   if (v1)
   {
@@ -64,8 +64,8 @@
 
 - (id)vcp_fingerprint
 {
-  v2 = [a1 objectForKey:@"masterFingerprint"];
-  v3 = [a1 objectForKey:@"adjustedFingerprint"];
+  v2 = [self objectForKey:@"masterFingerprint"];
+  v3 = [self objectForKey:@"adjustedFingerprint"];
   v4 = [VCPFingerprint fingerprintWithMaster:v2 adjusted:v3];
 
   return v4;
@@ -74,14 +74,14 @@
 - (id)vcp_actionsAggregated
 {
   v39 = *MEMORY[0x1E69E9840];
-  v28 = [MEMORY[0x1E695DF90] dictionary];
-  v2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v3 = [a1 vcp_results];
-  v4 = [v3 objectForKeyedSubscript:@"HumanActionClassificationResults"];
+  vcp_results = [self vcp_results];
+  v4 = [vcp_results objectForKeyedSubscript:@"HumanActionClassificationResults"];
 
   obj = v4;
   v26 = [v4 countByEnumeratingWithState:&v33 objects:v38 count:16];
@@ -126,15 +126,15 @@
                 [v13 floatValue];
                 v15 = v14;
 
-                v16 = [v2 objectForKeyedSubscript:v12];
-                if (!v16 || ([v2 objectForKeyedSubscript:v12], v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "floatValue"), v20 = v19 < v15, v18, v16, v20))
+                v16 = [dictionary2 objectForKeyedSubscript:v12];
+                if (!v16 || ([dictionary2 objectForKeyedSubscript:v12], v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "floatValue"), v20 = v19 < v15, v18, v16, v20))
                 {
                   *&v17 = v15;
                   v21 = [MEMORY[0x1E696AD98] numberWithFloat:v17];
-                  [v2 setObject:v21 forKeyedSubscript:v12];
+                  [dictionary2 setObject:v21 forKeyedSubscript:v12];
 
                   v22 = [v5 objectForKeyedSubscript:@"attributes"];
-                  [v28 setObject:v22 forKeyedSubscript:v12];
+                  [dictionary setObject:v22 forKeyedSubscript:v12];
                 }
               }
             }
@@ -152,15 +152,15 @@
     while (v26);
   }
 
-  return v28;
+  return dictionary;
 }
 
 - (id)vcp_queryActionResultForPHFace:()MediaAnalysis
 {
   v130[2] = *MEMORY[0x1E69E9840];
   v95 = a3;
-  v4 = [a1 vcp_results];
-  v5 = [v4 objectForKeyedSubscript:@"HumanActionClassificationResults"];
+  vcp_results = [self vcp_results];
+  v5 = [vcp_results objectForKeyedSubscript:@"HumanActionClassificationResults"];
 
   v93 = v5;
   if ([v5 count])
@@ -170,7 +170,7 @@
     v130[0] = MEMORY[0x1E695E118];
     v130[1] = &unk_1F49BB248;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v130 forKeys:v129 count:2];
-    v92 = MediaAnalysisPostProcessMovieHighlights(a1, v6, 0, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8));
+    v92 = MediaAnalysisPostProcessMovieHighlights(self, v6, 0, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8));
 
     v7 = [v92 objectForKeyedSubscript:@"MovieHighlightResults"];
     value = *MEMORY[0x1E6960C98];
@@ -207,17 +207,17 @@
       goto LABEL_106;
     }
 
-    v14 = [v95 faceClusteringProperties];
-    v15 = [v14 faceprint];
-    v90 = [v15 faceprintData];
+    faceClusteringProperties = [v95 faceClusteringProperties];
+    faceprint = [faceClusteringProperties faceprint];
+    faceprintData = [faceprint faceprintData];
 
-    if (!v90 || [v95 detectionType] != 1)
+    if (!faceprintData || [v95 detectionType] != 1)
     {
       if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v95 localIdentifier];
+        localIdentifier = [v95 localIdentifier];
         LODWORD(v126.start.value) = 138412290;
-        *(&v126.start.value + 4) = v19;
+        *(&v126.start.value + 4) = localIdentifier;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "queryActionResultForPHFace : no faceprint data for face: %@", &v126, 0xCu);
       }
 
@@ -225,7 +225,7 @@
     }
 
     v120 = 0;
-    v16 = [VCPVNImageprintWrapper generateVNImageprintWithType:0 archiveData:v90 andError:&v120];
+    v16 = [VCPVNImageprintWrapper generateVNImageprintWithType:0 archiveData:faceprintData andError:&v120];
     v17 = v120;
     if (v17)
     {
@@ -248,8 +248,8 @@ LABEL_106:
       goto LABEL_107;
     }
 
-    v20 = [v16 torsoprint];
-    v21 = v20 == 0;
+    torsoprint = [v16 torsoprint];
+    v21 = torsoprint == 0;
 
     if (v21)
     {
@@ -262,9 +262,9 @@ LABEL_106:
       goto LABEL_103;
     }
 
-    v83 = [v16 torsoprint];
+    torsoprint2 = [v16 torsoprint];
 
-    v81 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v118 = 0u;
     v119 = 0u;
     v116 = 0u;
@@ -359,11 +359,11 @@ LABEL_28:
           goto LABEL_119;
         }
 
-        if (v83)
+        if (torsoprint2)
         {
           v113 = 0;
           v87 = v32;
-          v33 = [v83 computeDistance:v32 withDistanceFunction:0 error:&v113];
+          v33 = [torsoprint2 computeDistance:v32 withDistanceFunction:0 error:&v113];
           v34 = v113;
           if (v34)
           {
@@ -383,10 +383,10 @@ LABEL_119:
 
           if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
           {
-            v35 = [v95 localIdentifier];
+            localIdentifier2 = [v95 localIdentifier];
             [v33 floatValue];
             LODWORD(range.start.value) = v80;
-            *(&range.start.value + 4) = v35;
+            *(&range.start.value + 4) = localIdentifier2;
             LOWORD(range.start.flags) = 2048;
             *(&range.start.flags + 2) = v36;
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "queryActionResultForPHFace : torsoprint distance with %@, %f", &range, 0x16u);
@@ -453,7 +453,7 @@ LABEL_119:
               dictionaryRepresentation = v51;
             }
 
-            [v81 addObject:{v28, v80}];
+            [array addObject:{v28, v80}];
 
             v26 = v50;
           }
@@ -504,7 +504,7 @@ LABEL_32:
           }
 
           v53 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:?];
-          if ([v81 count] >= 2)
+          if ([array count] >= 2)
           {
             memset(&v126, 0, sizeof(v126));
             v89 = v53;
@@ -564,7 +564,7 @@ LABEL_32:
             v103 = 0u;
             v100 = 0u;
             v101 = 0u;
-            obja = v81;
+            obja = array;
             v68 = [obja countByEnumeratingWithState:&v100 objects:v121 count:16];
             if (v68)
             {
@@ -655,41 +655,41 @@ LABEL_107:
 - (id)vcp_analysisDescriptionWithResultDetails:()MediaAnalysis
 {
   v5 = +[VCPLogManager dateFormatterDateTime];
-  v6 = [MEMORY[0x1E696AD60] string];
-  [v6 appendFormat:@"<version:%d, ", objc_msgSend(a1, "vcp_version")];
-  v7 = [a1 vcp_dateAnalyzed];
-  v8 = [v5 stringFromDate:v7];
-  [v6 appendFormat:@"dateAnalyzed:%@, ", v8];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendFormat:@"<version:%d, ", objc_msgSend(self, "vcp_version")];
+  vcp_dateAnalyzed = [self vcp_dateAnalyzed];
+  v8 = [v5 stringFromDate:vcp_dateAnalyzed];
+  [string appendFormat:@"dateAnalyzed:%@, ", v8];
 
-  v9 = [a1 vcp_dateModified];
-  v10 = [v5 stringFromDate:v9];
-  [v6 appendFormat:@"dateModified:%@, ", v10];
+  vcp_dateModified = [self vcp_dateModified];
+  v10 = [v5 stringFromDate:vcp_dateModified];
+  [string appendFormat:@"dateModified:%@, ", v10];
 
-  v11 = MediaAnalysisTypeShortDescription([a1 vcp_types]);
-  [v6 appendFormat:@"types:%@, ", v11];
+  v11 = MediaAnalysisTypeShortDescription([self vcp_types]);
+  [string appendFormat:@"types:%@, ", v11];
 
-  [v6 appendFormat:@"flags:%llu, ", objc_msgSend(a1, "vcp_flags")];
-  [v6 appendFormat:@"statsFlags:%lu, ", objc_msgSend(a1, "vcp_statsFlags")];
-  [a1 vcp_quality];
-  [v6 appendFormat:@"quality:%.3f, ", v12];
+  [string appendFormat:@"flags:%llu, ", objc_msgSend(self, "vcp_flags")];
+  [string appendFormat:@"statsFlags:%lu, ", objc_msgSend(self, "vcp_statsFlags")];
+  [self vcp_quality];
+  [string appendFormat:@"quality:%.3f, ", v12];
   if (a3)
   {
-    [v6 appendFormat:@"results:{"];
-    v13 = [a1 vcp_results];
+    [string appendFormat:@"results:{"];
+    vcp_results = [self vcp_results];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __72__NSDictionary_MediaAnalysis__vcp_analysisDescriptionWithResultDetails___block_invoke;
     v16[3] = &unk_1E83510B0;
-    v14 = v6;
+    v14 = string;
     v17 = v14;
-    [v13 enumerateKeysAndObjectsUsingBlock:v16];
+    [vcp_results enumerateKeysAndObjectsUsingBlock:v16];
 
     [v14 appendFormat:@"}"];
   }
 
-  [v6 appendString:@">"];
+  [string appendString:@">"];
 
-  return v6;
+  return string;
 }
 
 @end

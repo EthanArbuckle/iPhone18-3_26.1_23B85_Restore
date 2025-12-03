@@ -10,79 +10,79 @@
 
 - (uint64_t)dismissOverlayBackgroundViewController
 {
-  v1 = [a1 parentViewController];
-  if (!v1)
+  parentViewController = [self parentViewController];
+  if (!parentViewController)
   {
-    v1 = SUClientDispatch;
+    parentViewController = SUClientDispatch;
   }
 
-  return [(__objc2_class *)v1 dismissOverlayBackgroundViewController];
+  return [(__objc2_class *)parentViewController dismissOverlayBackgroundViewController];
 }
 
 - (uint64_t)overlayBackgroundViewController
 {
-  v1 = [a1 parentViewController];
-  if (!v1)
+  parentViewController = [self parentViewController];
+  if (!parentViewController)
   {
-    v1 = SUClientDispatch;
+    parentViewController = SUClientDispatch;
   }
 
-  return [(__objc2_class *)v1 overlayBackgroundViewController];
+  return [(__objc2_class *)parentViewController overlayBackgroundViewController];
 }
 
 - (uint64_t)presentOverlayBackgroundViewController:()SUOverlayBackgroundAdditions
 {
-  v4 = [a1 parentViewController];
-  if (!v4)
+  parentViewController = [self parentViewController];
+  if (!parentViewController)
   {
-    v4 = SUClientDispatch;
+    parentViewController = SUClientDispatch;
   }
 
-  return [(__objc2_class *)v4 presentOverlayBackgroundViewController:a3];
+  return [(__objc2_class *)parentViewController presentOverlayBackgroundViewController:a3];
 }
 
 - (BOOL)presentOverlayViewController:()SUOverlayBackgroundAdditions withTransition:
 {
-  v7 = [a1 overlayBackgroundViewController];
-  if (!v7)
+  overlayBackgroundViewController = [self overlayBackgroundViewController];
+  if (!overlayBackgroundViewController)
   {
     v8 = objc_alloc_init(SUOverlayBackgroundViewController);
     -[SUViewController setClientInterface:](v8, "setClientInterface:", [0 clientInterface]);
-    if ([a1 presentOverlayBackgroundViewController:v8])
+    if ([self presentOverlayBackgroundViewController:v8])
     {
-      v7 = v8;
+      overlayBackgroundViewController = v8;
     }
 
     else
     {
-      v7 = 0;
+      overlayBackgroundViewController = 0;
     }
   }
 
   if (![a3 clientInterface])
   {
-    [a3 setClientInterface:{-[SUViewController clientInterface](v7, "clientInterface")}];
+    [a3 setClientInterface:{-[SUViewController clientInterface](overlayBackgroundViewController, "clientInterface")}];
   }
 
-  [(SUOverlayBackgroundViewController *)v7 presentOverlay:a3 withTransition:a4];
-  return v7 != 0;
+  [(SUOverlayBackgroundViewController *)overlayBackgroundViewController presentOverlay:a3 withTransition:a4];
+  return overlayBackgroundViewController != 0;
 }
 
 - (uint64_t)presentViewController:()SUOverlayBackgroundAdditions inOverlayWithConfiguration:
 {
   objc_opt_class();
-  v7 = a3;
+  navigationController = a3;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v7 = [a3 navigationController];
+    navigationController = [a3 navigationController];
   }
 
-  [v7 setNavigationBarHidden:{objc_msgSend(a4, "shouldShowNavigationBar") ^ 1}];
+  [navigationController setNavigationBarHidden:{objc_msgSend(a4, "shouldShowNavigationBar") ^ 1}];
   v8 = [[SUOverlayViewController alloc] initWithOverlayConfiguration:a4];
   [(SUOverlayViewController *)v8 setBackViewController:a3];
   v9 = objc_alloc_init(SUOverlayTransition);
   -[SUOverlayTransition setType:](v9, "setType:", +[SUOverlayTransition transitionTypeFromString:](SUOverlayTransition, "transitionTypeFromString:", [a4 transitionName]));
-  v10 = [a1 presentOverlayViewController:v8 withTransition:v9];
+  v10 = [self presentOverlayViewController:v8 withTransition:v9];
 
   return v10;
 }

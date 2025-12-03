@@ -1,48 +1,48 @@
 @interface _UIStatusBarVoiceControlItem
-- (double)imageOpacityForVoiceControlType:(int64_t)a3;
-- (id)_overriddenStyleAttributesForVoiceControlType:(int64_t)a3;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
-- (id)imageForUpdate:(id)a3;
-- (id)overriddenStyleAttributesForData:(id)a3 identifier:(id)a4;
-- (id)systemImageNameForUpdate:(id)a3;
+- (double)imageOpacityForVoiceControlType:(int64_t)type;
+- (id)_overriddenStyleAttributesForVoiceControlType:(int64_t)type;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
+- (id)imageForUpdate:(id)update;
+- (id)overriddenStyleAttributesForData:(id)data identifier:(id)identifier;
+- (id)systemImageNameForUpdate:(id)update;
 @end
 
 @implementation _UIStatusBarVoiceControlItem
 
-- (id)overriddenStyleAttributesForData:(id)a3 identifier:(id)a4
+- (id)overriddenStyleAttributesForData:(id)data identifier:(id)identifier
 {
-  v5 = [a3 voiceControlEntry];
-  v6 = [v5 type];
+  voiceControlEntry = [data voiceControlEntry];
+  type = [voiceControlEntry type];
 
-  return [(_UIStatusBarVoiceControlItem *)self _overriddenStyleAttributesForVoiceControlType:v6];
+  return [(_UIStatusBarVoiceControlItem *)self _overriddenStyleAttributesForVoiceControlType:type];
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  itemCopy = item;
   v13.receiver = self;
   v13.super_class = _UIStatusBarVoiceControlItem;
-  v8 = [(_UIStatusBarIndicatorItem *)&v13 applyUpdate:v6 toDisplayItem:v7];
-  if ([v6 dataChanged])
+  v8 = [(_UIStatusBarIndicatorItem *)&v13 applyUpdate:updateCopy toDisplayItem:itemCopy];
+  if ([updateCopy dataChanged])
   {
-    v9 = [v6 data];
-    v10 = [v9 voiceControlEntry];
-    v11 = [v10 type];
+    data = [updateCopy data];
+    voiceControlEntry = [data voiceControlEntry];
+    type = [voiceControlEntry type];
 
-    [(_UIStatusBarVoiceControlItem *)self imageOpacityForVoiceControlType:v11];
-    [v7 setViewAlpha:?];
+    [(_UIStatusBarVoiceControlItem *)self imageOpacityForVoiceControlType:type];
+    [itemCopy setViewAlpha:?];
   }
 
   return v8;
 }
 
-- (id)systemImageNameForUpdate:(id)a3
+- (id)systemImageNameForUpdate:(id)update
 {
-  v3 = [a3 data];
-  v4 = [v3 voiceControlEntry];
+  data = [update data];
+  voiceControlEntry = [data voiceControlEntry];
 
-  if (([v4 type] - 1) >= 2)
+  if (([voiceControlEntry type] - 1) >= 2)
   {
     v5 = @"mic.slash.fill";
   }
@@ -55,12 +55,12 @@
   return v5;
 }
 
-- (id)imageForUpdate:(id)a3
+- (id)imageForUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v13.receiver = self;
   v13.super_class = _UIStatusBarVoiceControlItem;
-  v5 = [(_UIStatusBarIndicatorItem *)&v13 imageForUpdate:v4];
+  v5 = [(_UIStatusBarIndicatorItem *)&v13 imageForUpdate:updateCopy];
   if (_UIInternalPreferencesRevisionOnce != -1)
   {
     dispatch_once(&_UIInternalPreferencesRevisionOnce, &__block_literal_global_5_11);
@@ -84,11 +84,11 @@
 
       if (byte_1EA95E334)
       {
-        v9 = [v4 data];
-        v10 = [v9 voiceControlEntry];
-        v11 = [v10 type];
+        data = [updateCopy data];
+        voiceControlEntry = [data voiceControlEntry];
+        type = [voiceControlEntry type];
 
-        if (v11)
+        if (type)
         {
           [v5 _contentInsets];
           v12 = [v5 _imageWithContentInsets:?];
@@ -104,10 +104,10 @@ LABEL_4:
   return v5;
 }
 
-- (double)imageOpacityForVoiceControlType:(int64_t)a3
+- (double)imageOpacityForVoiceControlType:(int64_t)type
 {
   result = 0.65;
-  if ((a3 - 1) < 2)
+  if ((type - 1) < 2)
   {
     return 1.0;
   }
@@ -115,9 +115,9 @@ LABEL_4:
   return result;
 }
 
-- (id)_overriddenStyleAttributesForVoiceControlType:(int64_t)a3
+- (id)_overriddenStyleAttributesForVoiceControlType:(int64_t)type
 {
-  if ((a3 - 1) > 1)
+  if ((type - 1) > 1)
   {
     v3 = 0;
   }

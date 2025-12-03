@@ -1,25 +1,25 @@
 @interface DIPURLCache
 - (_TtC17CoreODIEssentials11DIPURLCache)init;
-- (_TtC17CoreODIEssentials11DIPURLCache)initWithMemoryCapacity:(int64_t)a3 diskCapacity:(int64_t)a4 directoryURL:(id)a5;
-- (_TtC17CoreODIEssentials11DIPURLCache)initWithMemoryCapacity:(int64_t)a3 diskCapacity:(int64_t)a4 diskPath:(id)a5;
-- (void)storeCachedResponse:(id)a3 forDataTask:(id)a4;
-- (void)storeCachedResponse:(id)a3 forRequest:(id)a4;
+- (_TtC17CoreODIEssentials11DIPURLCache)initWithMemoryCapacity:(int64_t)capacity diskCapacity:(int64_t)diskCapacity directoryURL:(id)l;
+- (_TtC17CoreODIEssentials11DIPURLCache)initWithMemoryCapacity:(int64_t)capacity diskCapacity:(int64_t)diskCapacity diskPath:(id)path;
+- (void)storeCachedResponse:(id)response forDataTask:(id)task;
+- (void)storeCachedResponse:(id)response forRequest:(id)request;
 @end
 
 @implementation DIPURLCache
 
-- (void)storeCachedResponse:(id)a3 forDataTask:(id)a4
+- (void)storeCachedResponse:(id)response forDataTask:(id)task
 {
-  v6 = a3;
-  v7 = a4;
-  v10 = self;
-  v8 = sub_1DAFE5358(v6);
+  responseCopy = response;
+  taskCopy = task;
+  selfCopy = self;
+  v8 = sub_1DAFE5358(responseCopy);
   if (v8)
   {
     v9 = v8;
-    v11.receiver = v10;
+    v11.receiver = selfCopy;
     v11.super_class = type metadata accessor for DIPURLCache();
-    [(NSURLCache *)&v11 storeCachedResponse:v9 forDataTask:v7];
+    [(NSURLCache *)&v11 storeCachedResponse:v9 forDataTask:taskCopy];
   }
 
   else
@@ -27,7 +27,7 @@
   }
 }
 
-- (void)storeCachedResponse:(id)a3 forRequest:(id)a4
+- (void)storeCachedResponse:(id)response forRequest:(id)request
 {
   v6 = sub_1DB09CBF4();
   v7 = *(v6 - 8);
@@ -35,28 +35,28 @@
   MEMORY[0x1EEE9AC00](v6, v9);
   v11 = &v18 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1DB09CBA4();
-  v12 = a3;
-  v13 = self;
-  v14 = sub_1DAFE5358(v12);
+  responseCopy = response;
+  selfCopy = self;
+  v14 = sub_1DAFE5358(responseCopy);
   if (v14)
   {
     v15 = v14;
     v16 = sub_1DB09CB84();
     v17 = type metadata accessor for DIPURLCache();
-    v18.receiver = v13;
+    v18.receiver = selfCopy;
     v18.super_class = v17;
     [(NSURLCache *)&v18 storeCachedResponse:v15 forRequest:v16];
 
-    v12 = v15;
-    v13 = v16;
+    responseCopy = v15;
+    selfCopy = v16;
   }
 
   (*(v7 + 8))(v11, v6);
 }
 
-- (_TtC17CoreODIEssentials11DIPURLCache)initWithMemoryCapacity:(int64_t)a3 diskCapacity:(int64_t)a4 diskPath:(id)a5
+- (_TtC17CoreODIEssentials11DIPURLCache)initWithMemoryCapacity:(int64_t)capacity diskCapacity:(int64_t)diskCapacity diskPath:(id)path
 {
-  if (a5)
+  if (path)
   {
     sub_1DB09D6C4();
     v8 = (&self->super.super.isa + OBJC_IVAR____TtC17CoreODIEssentials11DIPURLCache_logger);
@@ -75,12 +75,12 @@
 
   v13.receiver = self;
   v13.super_class = type metadata accessor for DIPURLCache();
-  v11 = [(NSURLCache *)&v13 initWithMemoryCapacity:a3 diskCapacity:a4 diskPath:v9];
+  v11 = [(NSURLCache *)&v13 initWithMemoryCapacity:capacity diskCapacity:diskCapacity diskPath:v9];
 
   return v11;
 }
 
-- (_TtC17CoreODIEssentials11DIPURLCache)initWithMemoryCapacity:(int64_t)a3 diskCapacity:(int64_t)a4 directoryURL:(id)a5
+- (_TtC17CoreODIEssentials11DIPURLCache)initWithMemoryCapacity:(int64_t)capacity diskCapacity:(int64_t)diskCapacity directoryURL:(id)l
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ECC0EAB0, &qword_1DB0A9530);
   v10 = *(*(v9 - 8) + 64);
@@ -88,7 +88,7 @@
   v14 = &v25 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v12, v15);
   v17 = &v25 - v16;
-  if (a5)
+  if (l)
   {
     sub_1DB09CF04();
     v18 = sub_1DB09CF64();
@@ -117,7 +117,7 @@
   v22 = type metadata accessor for DIPURLCache();
   v25.receiver = self;
   v25.super_class = v22;
-  v23 = [(NSURLCache *)&v25 initWithMemoryCapacity:a3 diskCapacity:a4 directoryURL:v21];
+  v23 = [(NSURLCache *)&v25 initWithMemoryCapacity:capacity diskCapacity:diskCapacity directoryURL:v21];
 
   sub_1DAF40AEC(v17, &unk_1ECC0EAB0, &qword_1DB0A9530);
   return v23;

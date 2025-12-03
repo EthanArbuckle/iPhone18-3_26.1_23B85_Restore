@@ -1,20 +1,20 @@
 @interface SIRINLUINTERNALSNLP_INTERMEDIATESpanFeaturizerResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALSNLP_INTERMEDIATESpanFeaturizerResponse
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   tensor = self->_tensor;
-  v6 = v4[1];
+  v6 = fromCopy[1];
   if (tensor)
   {
     if (v6)
@@ -31,13 +31,13 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     tensor = self->_tensor;
-    if (tensor | v4[1])
+    if (tensor | equalCopy[1])
     {
       v6 = [(SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor *)tensor isEqual:?];
     }
@@ -56,26 +56,26 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor *)self->_tensor copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor *)self->_tensor copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   tensor = self->_tensor;
   if (tensor)
   {
-    [a3 setTensor:tensor];
+    [to setTensor:tensor];
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_tensor)
   {
@@ -85,15 +85,15 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   tensor = self->_tensor;
   if (tensor)
   {
-    v5 = [(SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor *)tensor dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"tensor"];
+    dictionaryRepresentation = [(SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor *)tensor dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"tensor"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -102,8 +102,8 @@
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALSNLP_INTERMEDIATESpanFeaturizerResponse;
   v4 = [(SIRINLUINTERNALSNLP_INTERMEDIATESpanFeaturizerResponse *)&v8 description];
-  v5 = [(SIRINLUINTERNALSNLP_INTERMEDIATESpanFeaturizerResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALSNLP_INTERMEDIATESpanFeaturizerResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

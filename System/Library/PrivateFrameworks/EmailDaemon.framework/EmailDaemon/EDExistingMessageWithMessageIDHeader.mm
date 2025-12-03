@@ -1,22 +1,22 @@
 @interface EDExistingMessageWithMessageIDHeader
-- (EDExistingMessageWithMessageIDHeader)initWithMessageIDHash:(id)a3 serverMessage:(id)a4 messagePersistentID:(int64_t)a5;
+- (EDExistingMessageWithMessageIDHeader)initWithMessageIDHash:(id)hash serverMessage:(id)message messagePersistentID:(int64_t)d;
 @end
 
 @implementation EDExistingMessageWithMessageIDHeader
 
-- (EDExistingMessageWithMessageIDHeader)initWithMessageIDHash:(id)a3 serverMessage:(id)a4 messagePersistentID:(int64_t)a5
+- (EDExistingMessageWithMessageIDHeader)initWithMessageIDHash:(id)hash serverMessage:(id)message messagePersistentID:(int64_t)d
 {
-  v9 = a3;
-  v10 = a4;
+  hashCopy = hash;
+  messageCopy = message;
   v14.receiver = self;
   v14.super_class = EDExistingMessageWithMessageIDHeader;
   v11 = [(EDExistingMessageWithMessageIDHeader *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_messageIDHash, a3);
-    objc_storeStrong(&v12->_serverMessage, a4);
-    v12->_messagePersistentID = a5;
+    objc_storeStrong(&v11->_messageIDHash, hash);
+    objc_storeStrong(&v12->_serverMessage, message);
+    v12->_messagePersistentID = d;
   }
 
   return v12;

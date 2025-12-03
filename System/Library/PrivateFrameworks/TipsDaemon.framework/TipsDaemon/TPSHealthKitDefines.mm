@@ -1,6 +1,6 @@
 @interface TPSHealthKitDefines
-+ (id)featureAvailabilityContextForStatusType:(int64_t)a3;
-+ (id)identifierForFeature:(int64_t)a3;
++ (id)featureAvailabilityContextForStatusType:(int64_t)type;
++ (id)identifierForFeature:(int64_t)feature;
 + (id)sharedHealthStore;
 @end
 
@@ -25,24 +25,24 @@ uint64_t __40__TPSHealthKitDefines_sharedHealthStore__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)identifierForFeature:(int64_t)a3
++ (id)identifierForFeature:(int64_t)feature
 {
-  if ((a3 - 1) > 4)
+  if ((feature - 1) > 4)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = **(&unk_2789B0C00 + a3 - 1);
+    v4 = **(&unk_2789B0C00 + feature - 1);
   }
 
   return v4;
 }
 
-+ (id)featureAvailabilityContextForStatusType:(int64_t)a3
++ (id)featureAvailabilityContextForStatusType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = MEMORY[0x277CCBE88];
 LABEL_5:
@@ -51,7 +51,7 @@ LABEL_5:
     return v5;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v4 = MEMORY[0x277CCBE80];
     goto LABEL_5;

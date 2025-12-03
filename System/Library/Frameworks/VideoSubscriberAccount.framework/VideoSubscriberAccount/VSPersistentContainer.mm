@@ -2,10 +2,10 @@
 + (id)directoryURL;
 + (id)legacyDirectoryURL;
 + (void)directoryURL;
-- (VSPersistentContainer)initWithModelVersion:(int64_t)a3;
-- (id)insertDeveloperIdentityProviderInContext:(id)a3;
+- (VSPersistentContainer)initWithModelVersion:(int64_t)version;
+- (id)insertDeveloperIdentityProviderInContext:(id)context;
 - (void)migrateContainerIfNecessary;
-- (void)performBlock:(id)a3;
+- (void)performBlock:(id)block;
 @end
 
 @implementation VSPersistentContainer
@@ -14,14 +14,14 @@
 {
   v2 = objc_alloc_init(MEMORY[0x277CCAA00]);
   v3 = [v2 URLsForDirectory:9 inDomains:1];
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  v5 = [MEMORY[0x277CCA8D8] mainBundle];
-  v6 = [v5 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (v6)
+  if (bundleIdentifier)
   {
-    v7 = [v4 URLByAppendingPathComponent:v6];
+    v7 = [firstObject URLByAppendingPathComponent:bundleIdentifier];
   }
 
   else
@@ -36,21 +36,21 @@
 {
   v2 = objc_alloc_init(MEMORY[0x277CCAA00]);
   v3 = [v2 URLsForDirectory:5 inDomains:1];
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  if (!v4)
+  if (!firstObject)
   {
     v8 = 0;
     goto LABEL_22;
   }
 
-  v5 = [MEMORY[0x277CCA8D8] mainBundle];
-  v6 = [v5 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (!v6)
+  if (!bundleIdentifier)
   {
-    v10 = VSErrorLogObject();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    path2 = VSErrorLogObject();
+    if (os_log_type_enabled(path2, OS_LOG_TYPE_ERROR))
     {
       +[VSPersistentContainer directoryURL];
     }
@@ -59,12 +59,12 @@
     goto LABEL_21;
   }
 
-  v7 = [v4 URLByAppendingPathComponent:v6];
+  v7 = [firstObject URLByAppendingPathComponent:bundleIdentifier];
   v8 = v7;
   if (!v7)
   {
-    v10 = VSErrorLogObject();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    path2 = VSErrorLogObject();
+    if (os_log_type_enabled(path2, OS_LOG_TYPE_ERROR))
     {
       +[VSPersistentContainer directoryURL];
     }
@@ -72,26 +72,26 @@
     goto LABEL_21;
   }
 
-  v9 = [v7 path];
+  path = [v7 path];
 
-  if (!v9)
+  if (!path)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [directoryURL path] parameter must not be nil."];
   }
 
-  v10 = [v8 path];
+  path2 = [v8 path];
   v18 = 0;
-  v11 = [v2 createDirectoryAtPath:v10 withIntermediateDirectories:0 attributes:0 error:&v18];
+  v11 = [v2 createDirectoryAtPath:path2 withIntermediateDirectories:0 attributes:0 error:&v18];
   v12 = v18;
   v13 = v12;
   if ((v11 & 1) == 0)
   {
-    v14 = [v12 domain];
-    if ([v14 isEqual:*MEMORY[0x277CCA050]])
+    domain = [v12 domain];
+    if ([domain isEqual:*MEMORY[0x277CCA050]])
     {
-      v15 = [v13 code];
+      code = [v13 code];
 
-      if (v15 == 516)
+      if (code == 516)
       {
         goto LABEL_20;
       }
@@ -123,7 +123,7 @@ LABEL_22:
   _os_log_error_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (VSPersistentContainer)initWithModelVersion:(int64_t)a3
+- (VSPersistentContainer)initWithModelVersion:(int64_t)version
 {
   v22[1] = *MEMORY[0x277D85DE8];
   v21.receiver = self;
@@ -133,10 +133,10 @@ LABEL_22:
   if (v4)
   {
     [(VSPersistentContainer *)v4 migrateContainerIfNecessary];
-    v5->_modelVersion = a3;
-    v6 = [MEMORY[0x277CBE450] vs_developerModeModelForVersion:a3];
-    v7 = [objc_opt_class() directoryURL];
-    v8 = [v7 URLByAppendingPathComponent:@"DeveloperIdentityProviders.sqlite"];
+    v5->_modelVersion = version;
+    v6 = [MEMORY[0x277CBE450] vs_developerModeModelForVersion:version];
+    directoryURL = [objc_opt_class() directoryURL];
+    v8 = [directoryURL URLByAppendingPathComponent:@"DeveloperIdentityProviders.sqlite"];
     v9 = *MEMORY[0x277CBE2E8];
     v10 = [objc_alloc(MEMORY[0x277CBE4A0]) initWithName:@"Developer Identity Providers" managedObjectModel:v6];
     persistentContainer = v5->_persistentContainer;
@@ -162,12 +162,12 @@ LABEL_22:
     }
 
     [(NSPersistentContainer *)v5->_persistentContainer loadPersistentStoresWithCompletionHandler:&__block_literal_global_7];
-    v16 = [(NSPersistentContainer *)v5->_persistentContainer viewContext];
+    viewContext = [(NSPersistentContainer *)v5->_persistentContainer viewContext];
     viewContext = v5->_viewContext;
-    v5->_viewContext = v16;
+    v5->_viewContext = viewContext;
 
-    v18 = [(VSPersistentContainer *)v5 viewContext];
-    [v18 setMergePolicy:*MEMORY[0x277CBE1E0]];
+    viewContext2 = [(VSPersistentContainer *)v5 viewContext];
+    [viewContext2 setMergePolicy:*MEMORY[0x277CBE1E0]];
   }
 
   return v5;
@@ -193,26 +193,26 @@ void __46__VSPersistentContainer_initWithModelVersion___block_invoke(uint64_t a1
   }
 }
 
-- (id)insertDeveloperIdentityProviderInContext:(id)a3
+- (id)insertDeveloperIdentityProviderInContext:(id)context
 {
-  v3 = a3;
-  v4 = [[VSDeveloperIdentityProvider alloc] initWithContext:v3];
+  contextCopy = context;
+  v4 = [[VSDeveloperIdentityProvider alloc] initWithContext:contextCopy];
 
   return v4;
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(VSPersistentContainer *)self viewContext];
+  blockCopy = block;
+  viewContext = [(VSPersistentContainer *)self viewContext];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __38__VSPersistentContainer_performBlock___block_invoke;
   v8[3] = &unk_278B737F8;
-  v9 = v5;
-  v10 = v4;
-  v6 = v5;
-  v7 = v4;
+  v9 = viewContext;
+  v10 = blockCopy;
+  v6 = viewContext;
+  v7 = blockCopy;
   [v6 performBlock:v8];
 }
 

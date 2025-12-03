@@ -1,41 +1,41 @@
 @interface BWMotionAttachmentsNode
-- (BWMotionAttachmentsNode)initWithSensorIDDictionaryByPortType:(id)a3 cameraInfoByPortType:(id)a4 tuningParameters:(id)a5 activePortTypes:(id)a6 horizontalSensorBinningFactor:(int)a7 verticalSensorBinningFactor:(int)a8 maxSupportedFrameRate:(float)a9 motionAttachmentsMode:(int)a10 motionAttachmentsSource:(int)a11 motionCallbackThreadPriority:(unsigned int)a12 provideSourceVideoWithMotionAttachmentsOutput:(BOOL)a13 provideOfflineVISMotionDataOutput:(BOOL)a14 inputFormatIsProResRaw:(BOOL)a15 errorOut:(int *)a16;
+- (BWMotionAttachmentsNode)initWithSensorIDDictionaryByPortType:(id)type cameraInfoByPortType:(id)portType tuningParameters:(id)parameters activePortTypes:(id)types horizontalSensorBinningFactor:(int)factor verticalSensorBinningFactor:(int)binningFactor maxSupportedFrameRate:(float)rate motionAttachmentsMode:(int)self0 motionAttachmentsSource:(int)self1 motionCallbackThreadPriority:(unsigned int)self2 provideSourceVideoWithMotionAttachmentsOutput:(BOOL)self3 provideOfflineVISMotionDataOutput:(BOOL)self4 inputFormatIsProResRaw:(BOOL)self5 errorOut:(int *)self6;
 - (uint64_t)_flushIfRequiredForMarkerBuffer:(uint64_t)result;
 - (uint64_t)_setupSampleBufferProcessor;
 - (uint64_t)prepareForCurrentConfigurationToBecomeLive;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWMotionAttachmentsNode
 
-- (BWMotionAttachmentsNode)initWithSensorIDDictionaryByPortType:(id)a3 cameraInfoByPortType:(id)a4 tuningParameters:(id)a5 activePortTypes:(id)a6 horizontalSensorBinningFactor:(int)a7 verticalSensorBinningFactor:(int)a8 maxSupportedFrameRate:(float)a9 motionAttachmentsMode:(int)a10 motionAttachmentsSource:(int)a11 motionCallbackThreadPriority:(unsigned int)a12 provideSourceVideoWithMotionAttachmentsOutput:(BOOL)a13 provideOfflineVISMotionDataOutput:(BOOL)a14 inputFormatIsProResRaw:(BOOL)a15 errorOut:(int *)a16
+- (BWMotionAttachmentsNode)initWithSensorIDDictionaryByPortType:(id)type cameraInfoByPortType:(id)portType tuningParameters:(id)parameters activePortTypes:(id)types horizontalSensorBinningFactor:(int)factor verticalSensorBinningFactor:(int)binningFactor maxSupportedFrameRate:(float)rate motionAttachmentsMode:(int)self0 motionAttachmentsSource:(int)self1 motionCallbackThreadPriority:(unsigned int)self2 provideSourceVideoWithMotionAttachmentsOutput:(BOOL)self3 provideOfflineVISMotionDataOutput:(BOOL)self4 inputFormatIsProResRaw:(BOOL)self5 errorOut:(int *)self6
 {
-  v23 = self;
-  if (!a13 && !a14)
+  selfCopy = self;
+  if (!output && !dataOutput)
   {
     [BWMotionAttachmentsNode initWithSensorIDDictionaryByPortType:cameraInfoByPortType:tuningParameters:activePortTypes:horizontalSensorBinningFactor:verticalSensorBinningFactor:maxSupportedFrameRate:motionAttachmentsMode:motionAttachmentsSource:motionCallbackThreadPriority:provideSourceVideoWithMotionAttachmentsOutput:provideOfflineVISMotionDataOutput:inputFormatIsProResRaw:errorOut:];
-    return v23;
+    return selfCopy;
   }
 
   v61.receiver = self;
   v61.super_class = BWMotionAttachmentsNode;
   v24 = [(BWNode *)&v61 init];
-  v23 = v24;
+  selfCopy = v24;
   if (v24)
   {
-    if (a10)
+    if (mode)
     {
-      if (a10 != 2)
+      if (mode != 2)
       {
-        if (a10 == 1)
+        if (mode == 1)
         {
-          v48 = a7;
-          v49 = a8;
-          v50 = a14;
-          if (a11 == 1)
+          factorCopy6 = factor;
+          binningFactorCopy6 = binningFactor;
+          dataOutputCopy6 = dataOutput;
+          if (source == 1)
           {
             v60[0] = 0x1F2193190;
             v60[1] = 0x1F2193110;
@@ -66,11 +66,11 @@
         goto LABEL_16;
       }
 
-      if (a11 == 2)
+      if (source == 2)
       {
-        v48 = a7;
-        v49 = a8;
-        v50 = a14;
+        factorCopy6 = factor;
+        binningFactorCopy6 = binningFactor;
+        dataOutputCopy6 = dataOutput;
         v57[0] = 0x1F2193190;
         v57[1] = 0x1F21931B0;
         v28 = MEMORY[0x1E695DEC8];
@@ -80,14 +80,14 @@
 
       else
       {
-        if (a11 != 1)
+        if (source != 1)
         {
           goto LABEL_16;
         }
 
-        v48 = a7;
-        v49 = a8;
-        v50 = a14;
+        factorCopy6 = factor;
+        binningFactorCopy6 = binningFactor;
+        dataOutputCopy6 = dataOutput;
         v58 = 0x1F2193190;
         v28 = MEMORY[0x1E695DEC8];
         v29 = &v58;
@@ -100,13 +100,13 @@
 
     else
     {
-      switch(a11)
+      switch(source)
       {
         case 3:
-          v48 = a7;
-          v49 = a8;
-          v50 = a14;
-          v37 = vcvtps_s32_f32(0.042 / (1.0 / a9));
+          factorCopy6 = factor;
+          binningFactorCopy6 = binningFactor;
+          dataOutputCopy6 = dataOutput;
+          v37 = vcvtps_s32_f32(0.042 / (1.0 / rate));
           if (v37 <= 3)
           {
             v32 = 3;
@@ -124,9 +124,9 @@
           v34 = 2;
           break;
         case 2:
-          v48 = a7;
-          v49 = a8;
-          v50 = a14;
+          factorCopy6 = factor;
+          binningFactorCopy6 = binningFactor;
+          dataOutputCopy6 = dataOutput;
           v55[0] = 0x1F2193190;
           v55[1] = 0x1F21931B0;
           v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:2];
@@ -134,21 +134,21 @@
 LABEL_19:
           v32 = 1;
 LABEL_29:
-          v23->_emitMotionAttachmentsSBufForOfflineProResRawVIS = v50 && a15;
+          selfCopy->_emitMotionAttachmentsSBufForOfflineProResRawVIS = dataOutputCopy6 && raw;
           v38 = *off_1E798A970;
           v52[0] = *off_1E798A9B8;
           v52[1] = v38;
-          v53[0] = a3;
-          v53[1] = a4;
+          v53[0] = type;
+          v53[1] = portType;
           v39 = *off_1E798A9D0;
           v52[2] = *off_1E798A968;
           v52[3] = v39;
-          v53[2] = a6;
-          v53[3] = a5;
+          v53[2] = types;
+          v53[3] = parameters;
           v52[4] = *off_1E798A998;
-          v53[4] = [MEMORY[0x1E696AD98] numberWithInt:v48];
+          v53[4] = [MEMORY[0x1E696AD98] numberWithInt:factorCopy6];
           v52[5] = *off_1E798A9A0;
-          v53[5] = [MEMORY[0x1E696AD98] numberWithInt:v49];
+          v53[5] = [MEMORY[0x1E696AD98] numberWithInt:binningFactorCopy6];
           v52[6] = 0x1F2193090;
           v53[6] = [MEMORY[0x1E696AD98] numberWithInt:v36];
           v52[7] = 0x1F2193070;
@@ -156,15 +156,15 @@ LABEL_29:
           v53[8] = v35;
           v52[8] = 0x1F2193050;
           v52[9] = 0x1F21930B0;
-          v53[9] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a12];
-          v23->_optionsDict = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:v52 count:10];
-          v40 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v23];
+          v53[9] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:priority];
+          selfCopy->_optionsDict = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:v52 count:10];
+          v40 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:selfCopy];
           v41 = objc_alloc_init(BWVideoFormatRequirements);
           if (v35)
           {
             v42 = v32;
-            v43 = [v35 firstObject];
-            if ([v35 count] <= 1 && objc_msgSend(v43, "isEqualToString:", 0x1F21930D0))
+            firstObject = [v35 firstObject];
+            if ([v35 count] <= 1 && objc_msgSend(firstObject, "isEqualToString:", 0x1F21930D0))
             {
               [(BWNodeInput *)v40 setRetainedBufferCount:0];
             }
@@ -177,40 +177,40 @@ LABEL_29:
 
           [(BWNodeInput *)v40 setFormatRequirements:v41];
 
-          [(BWNode *)v23 addInput:v40];
-          if (a13)
+          [(BWNode *)selfCopy addInput:v40];
+          if (output)
           {
             [(BWNodeInput *)v40 setPassthroughMode:1];
-            v44 = [[BWNodeOutput alloc] initWithMediaType:1986618469 node:v23];
+            v44 = [[BWNodeOutput alloc] initWithMediaType:1986618469 node:selfCopy];
             v45 = objc_alloc_init(BWVideoFormatRequirements);
             [(BWNodeOutput *)v44 setName:@"Source Video With Motion Attachments"];
             [(BWNodeOutput *)v44 setPassthroughMode:1];
             [(BWNodeOutput *)v44 setFormatRequirements:v45];
 
-            [(BWNode *)v23 addOutput:v44];
-            v23->_sourceVideoWithMotionAttachmentsOutput = v44;
+            [(BWNode *)selfCopy addOutput:v44];
+            selfCopy->_sourceVideoWithMotionAttachmentsOutput = v44;
           }
 
-          if (v50)
+          if (dataOutputCopy6)
           {
-            v46 = [[BWNodeOutput alloc] initWithMediaType:1836016234 node:v23];
+            v46 = [[BWNodeOutput alloc] initWithMediaType:1836016234 node:selfCopy];
             v51 = *MEMORY[0x1E69629D8];
             -[BWNodeOutput setFormat:](v46, "setFormat:", +[BWMetadataObjectFormat formatWithMetadataIdentifiers:](BWMetadataObjectFormat, "formatWithMetadataIdentifiers:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v51 count:1]));
             [(BWNodeOutput *)v46 setName:@"Motion Attachments For Offline VIS"];
-            [(BWNode *)v23 addOutput:v46];
-            v23->_offlineVISMotionDataOutput = v46;
+            [(BWNode *)selfCopy addOutput:v46];
+            selfCopy->_offlineVISMotionDataOutput = v46;
           }
 
-          v23->_limitedGMErrorLogger = [[BWLimitedGMErrorLogger alloc] initWithName:@"MotionAttachments" maxLoggingCount:10];
+          selfCopy->_limitedGMErrorLogger = [[BWLimitedGMErrorLogger alloc] initWithName:@"MotionAttachments" maxLoggingCount:10];
 
-          [(BWNode *)v23 setSupportsLiveReconfiguration:1];
-          [(BWNode *)v23 setSupportsPrepareWhileRunning:1];
-          [(BWNode *)v23 setRequiresEndOfDataForConfigurationChanges:1];
-          return v23;
+          [(BWNode *)selfCopy setSupportsLiveReconfiguration:1];
+          [(BWNode *)selfCopy setSupportsPrepareWhileRunning:1];
+          [(BWNode *)selfCopy setRequiresEndOfDataForConfigurationChanges:1];
+          return selfCopy;
         case 1:
-          v48 = a7;
-          v49 = a8;
-          v50 = a14;
+          factorCopy6 = factor;
+          binningFactorCopy6 = binningFactor;
+          dataOutputCopy6 = dataOutput;
           v56 = 0x1F2193190;
           v31 = MEMORY[0x1E695DEC8];
           v32 = 1;
@@ -220,9 +220,9 @@ LABEL_29:
         default:
 LABEL_16:
 
-          v23 = 0;
-          *a16 = -12787;
-          return v23;
+          selfCopy = 0;
+          *out = -12787;
+          return selfCopy;
       }
 
       v35 = [v31 arrayWithObjects:v33 count:v34];
@@ -232,7 +232,7 @@ LABEL_16:
     goto LABEL_29;
   }
 
-  return v23;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -279,7 +279,7 @@ LABEL_16:
   }
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
   sampleBufferProcessor = self->_sampleBufferProcessor;
   if (sampleBufferProcessor)
@@ -294,17 +294,17 @@ LABEL_16:
   [(BWLimitedGMErrorLogger *)self->_limitedGMErrorLogger resetCurrentLoggingCounter];
   v9.receiver = self;
   v9.super_class = BWMotionAttachmentsNode;
-  [(BWNode *)&v9 didReachEndOfDataForConfigurationID:a3 input:a4];
+  [(BWNode *)&v9 didReachEndOfDataForConfigurationID:d input:input];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   memset(&v9, 0, sizeof(v9));
-  CMSampleBufferGetPresentationTimeStamp(&v9, a3);
-  if (BWSampleBufferIsMarkerBuffer(a3))
+  CMSampleBufferGetPresentationTimeStamp(&v9, buffer);
+  if (BWSampleBufferIsMarkerBuffer(buffer))
   {
-    [(BWMotionAttachmentsNode *)self _flushIfRequiredForMarkerBuffer:a3];
-    [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+    [(BWMotionAttachmentsNode *)self _flushIfRequiredForMarkerBuffer:buffer];
+    [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
   }
 
   else
@@ -314,14 +314,14 @@ LABEL_16:
     {
       if (self->_adjustsValidBufferRectForDarkShade)
       {
-        FigCaptureMetadataUtilitiesAdjustValidBufferRectForDarkShadeCropping(a3);
+        FigCaptureMetadataUtilitiesAdjustValidBufferRectForDarkShadeCropping(buffer);
         sampleBufferProcessor = self->_sampleBufferProcessor;
       }
 
       v7 = *(*(CMBaseObjectGetVTable() + 16) + 16);
       if (v7)
       {
-        v7(sampleBufferProcessor, a3);
+        v7(sampleBufferProcessor, buffer);
       }
     }
 
@@ -335,13 +335,13 @@ LABEL_16:
 
 - (uint64_t)_setupSampleBufferProcessor
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v3 = *MEMORY[0x1E695E480];
-  v4 = *(a1 + 136);
+  v4 = *(self + 136);
   v13 = 0;
   v5 = FigSampleBufferProcessorCreateForMotionAttachments(v3, v4, &v13);
   if (v5)
@@ -359,11 +359,11 @@ LABEL_16:
   else
   {
     v6 = v13;
-    *(a1 + 128) = v13;
+    *(self + 128) = v13;
     v7 = *(*(CMBaseObjectGetVTable() + 16) + 8);
     if (v7)
     {
-      v8 = v7(v6, man_maProcessorOutputReadyCallback, a1);
+      v8 = v7(v6, man_maProcessorOutputReadyCallback, self);
       if (!v8)
       {
         return v8;
@@ -380,14 +380,14 @@ LABEL_16:
   }
 
   FigDebugAssert3();
-  v9 = *(a1 + 128);
+  v9 = *(self + 128);
   if (v9)
   {
     CFRelease(v9);
-    *(a1 + 128) = 0;
+    *(self + 128) = 0;
   }
 
-  [*(a1 + 160) logErrorNumber:v8 errorString:{@"setup SBP", v11, v12}];
+  [*(self + 160) logErrorNumber:v8 errorString:{@"setup SBP", v11, v12}];
   return v8;
 }
 

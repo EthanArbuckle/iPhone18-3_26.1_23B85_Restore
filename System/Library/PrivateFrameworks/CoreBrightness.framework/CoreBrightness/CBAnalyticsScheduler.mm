@@ -1,9 +1,9 @@
 @interface CBAnalyticsScheduler
 + (id)sharedInstance;
 - (CBAnalyticsScheduler)init;
-- (int64_t)registerHandler:(id)a3;
+- (int64_t)registerHandler:(id)handler;
 - (void)dealloc;
-- (void)removeHandler:(int64_t)a3;
+- (void)removeHandler:(int64_t)handler;
 - (void)run;
 @end
 
@@ -11,15 +11,15 @@
 
 + (id)sharedInstance
 {
-  v11 = a1;
+  selfCopy = self;
   v10 = a2;
-  objc_sync_enter(a1);
+  objc_sync_enter(self);
   v4 = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __38__CBAnalyticsScheduler_sharedInstance__block_invoke;
   v8 = &unk_1E867B480;
-  v9 = v11;
+  v9 = selfCopy;
   v13 = &sharedInstance_onceToken;
   v12 = &v4;
   if (sharedInstance_onceToken != -1)
@@ -27,7 +27,7 @@
     dispatch_once(v13, v12);
   }
 
-  objc_sync_exit(a1);
+  objc_sync_exit(self);
   return sharedInstance__sharedObject;
 }
 
@@ -44,15 +44,15 @@ uint64_t __38__CBAnalyticsScheduler_sharedInstance__block_invoke(uint64_t a1)
 
 - (CBAnalyticsScheduler)init
 {
-  v24 = self;
+  selfCopy = self;
   v23 = a2;
   v22.receiver = self;
   v22.super_class = CBAnalyticsScheduler;
-  v24 = [(CBAnalyticsScheduler *)&v22 init];
-  if (v24)
+  selfCopy = [(CBAnalyticsScheduler *)&v22 init];
+  if (selfCopy)
   {
-    v24->_logHandle = os_log_create("com.apple.CoreBrightness.CBAnalyticsScheduler", "default");
-    if (!v24->_logHandle)
+    selfCopy->_logHandle = os_log_create("com.apple.CoreBrightness.CBAnalyticsScheduler", "default");
+    if (!selfCopy->_logHandle)
     {
       if (_COREBRIGHTNESS_LOG_DEFAULT)
       {
@@ -75,8 +75,8 @@ uint64_t __38__CBAnalyticsScheduler_sharedInstance__block_invoke(uint64_t a1)
       }
     }
 
-    v24->_requests = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v24->_requestId = 1;
+    selfCopy->_requests = objc_alloc_init(MEMORY[0x1E695DF90]);
+    selfCopy->_requestId = 1;
     v18 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v18, *MEMORY[0x1E69E9CB0], *MEMORY[0x1E69E9CF8]);
     xpc_dictionary_set_string(v18, *MEMORY[0x1E69E9D68], *MEMORY[0x1E69E9D70]);
@@ -86,7 +86,7 @@ uint64_t __38__CBAnalyticsScheduler_sharedInstance__block_invoke(uint64_t a1)
     v14 = 48;
     v15 = __Block_byref_object_copy__0;
     v16 = __Block_byref_object_dispose__0;
-    v17 = v24;
+    v17 = selfCopy;
     handler = MEMORY[0x1E69E9820];
     v7 = -1073741824;
     v8 = 0;
@@ -98,7 +98,7 @@ uint64_t __38__CBAnalyticsScheduler_sharedInstance__block_invoke(uint64_t a1)
     _Block_object_dispose(v12, 8);
   }
 
-  return v24;
+  return selfCopy;
 }
 
 - (void)run
@@ -148,11 +148,11 @@ uint64_t __27__CBAnalyticsScheduler_run__block_invoke(uint64_t a1, uint64_t a2, 
   return result;
 }
 
-- (int64_t)registerHandler:(id)a3
+- (int64_t)registerHandler:(id)handler
 {
   objc_sync_enter(self);
   context = objc_autoreleasePoolPush();
-  v7 = [a3 copy];
+  v7 = [handler copy];
   -[NSMutableDictionary setObject:forKey:](self->_requests, "setObject:forKey:", v7, [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_requestId]);
   requestId = self->_requestId;
   self->_requestId = requestId + 1;
@@ -161,29 +161,29 @@ uint64_t __27__CBAnalyticsScheduler_run__block_invoke(uint64_t a1, uint64_t a2, 
   return requestId;
 }
 
-- (void)removeHandler:(int64_t)a3
+- (void)removeHandler:(int64_t)handler
 {
   objc_sync_enter(self);
   context = objc_autoreleasePoolPush();
-  -[NSMutableDictionary removeObjectForKey:](self->_requests, "removeObjectForKey:", [MEMORY[0x1E696AD98] numberWithInteger:a3]);
+  -[NSMutableDictionary removeObjectForKey:](self->_requests, "removeObjectForKey:", [MEMORY[0x1E696AD98] numberWithInteger:handler]);
   objc_autoreleasePoolPop(context);
   objc_sync_exit(self);
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   xpc_activity_unregister("com.apple.CoreBrightness.Analytics");
-  if (v5->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    MEMORY[0x1E69E5920](v5->_logHandle);
-    v5->_logHandle = 0;
+    MEMORY[0x1E69E5920](selfCopy->_logHandle);
+    selfCopy->_logHandle = 0;
   }
 
-  *&v2 = MEMORY[0x1E69E5920](v5->_requests).n128_u64[0];
-  v5->_requests = 0;
-  v3.receiver = v5;
+  *&v2 = MEMORY[0x1E69E5920](selfCopy->_requests).n128_u64[0];
+  selfCopy->_requests = 0;
+  v3.receiver = selfCopy;
   v3.super_class = CBAnalyticsScheduler;
   [(CBAnalyticsScheduler *)&v3 dealloc];
 }

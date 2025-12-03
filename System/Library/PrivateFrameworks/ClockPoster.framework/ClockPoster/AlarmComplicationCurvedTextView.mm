@@ -1,11 +1,11 @@
 @interface AlarmComplicationCurvedTextView
-- (_TtC11ClockPoster31AlarmComplicationCurvedTextView)initWithCoder:(id)a3;
+- (_TtC11ClockPoster31AlarmComplicationCurvedTextView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation AlarmComplicationCurvedTextView
 
-- (_TtC11ClockPoster31AlarmComplicationCurvedTextView)initWithCoder:(id)a3
+- (_TtC11ClockPoster31AlarmComplicationCurvedTextView)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC11ClockPoster31AlarmComplicationCurvedTextView_pathProvider;
   *v4 = 0x4036000000000000;
@@ -23,7 +23,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E48CD6A8();
 }
 

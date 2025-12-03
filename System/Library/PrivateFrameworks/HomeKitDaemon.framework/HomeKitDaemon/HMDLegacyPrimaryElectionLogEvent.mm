@@ -8,11 +8,11 @@
 {
   v11[4] = *MEMORY[0x277D85DE8];
   v10[0] = @"reason";
-  v3 = [(HMDLegacyPrimaryElectionLogEvent *)self reason];
-  v11[0] = v3;
+  reason = [(HMDLegacyPrimaryElectionLogEvent *)self reason];
+  v11[0] = reason;
   v10[1] = @"criteria";
-  v4 = [(HMDLegacyPrimaryElectionLogEvent *)self criteria];
-  v11[1] = v4;
+  criteria = [(HMDLegacyPrimaryElectionLogEvent *)self criteria];
+  v11[1] = criteria;
   v10[2] = @"availableResidents";
   v5 = +[HMDLogEventHistograms configurationDataHistogram];
   v6 = [v5 intervalIndexForValue:{-[HMDLegacyPrimaryElectionLogEvent availableResidentCount](self, "availableResidentCount")}];

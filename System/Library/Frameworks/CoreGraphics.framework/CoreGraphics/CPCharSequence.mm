@@ -1,40 +1,40 @@
 @interface CPCharSequence
-- (BOOL)map:(void *)a3 passing:(void *)a4;
-- (BOOL)map:(void *)a3 whereNeighborsWith:(id)a4 passing:(void *)a5;
-- (BOOL)mapToPairs:(void *)a3 passing:(void *)a4;
-- (BOOL)mapToPairsWithIndex:(void *)a3 passing:(void *)a4;
-- (BOOL)mapWithIndex:(void *)a3 from:(unsigned int)a4 length:(unsigned int)a5 passing:(void *)a6;
-- (BOOL)mapWithIndex:(void *)a3 passing:(void *)a4;
-- (BOOL)removeSubsequences:(id)a3 whereTrue:(void *)a4 passing:(void *)a5;
-- (BOOL)removeToSubsequence:(id)a3 ifTrue:(void *)a4 passing:(void *)a5;
+- (BOOL)map:(void *)map passing:(void *)passing;
+- (BOOL)map:(void *)map whereNeighborsWith:(id)with passing:(void *)passing;
+- (BOOL)mapToPairs:(void *)pairs passing:(void *)passing;
+- (BOOL)mapToPairsWithIndex:(void *)index passing:(void *)passing;
+- (BOOL)mapWithIndex:(void *)index from:(unsigned int)from length:(unsigned int)length passing:(void *)passing;
+- (BOOL)mapWithIndex:(void *)index passing:(void *)passing;
+- (BOOL)removeSubsequences:(id)subsequences whereTrue:(void *)true passing:(void *)passing;
+- (BOOL)removeToSubsequence:(id)subsequence ifTrue:(void *)true passing:(void *)passing;
 - (CGRect)bounds;
-- (CGRect)boundsFrom:(unsigned int)a3 length:(unsigned int)a4;
+- (CGRect)boundsFrom:(unsigned int)from length:(unsigned int)length;
 - (CGRect)normalizedBounds;
-- (CPCharSequence)initWithChars:(CPPDFChar *)a3 length:(unsigned int)a4;
-- (CPCharSequence)initWithSizeFor:(unsigned int)a3;
-- (CPPDFChar)charAtIndex:(unsigned int)a3;
+- (CPCharSequence)initWithChars:(CPPDFChar *)chars length:(unsigned int)length;
+- (CPCharSequence)initWithSizeFor:(unsigned int)for;
+- (CPPDFChar)charAtIndex:(unsigned int)index;
 - (double)averageRotation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initSuper;
-- (id)newSubsequenceFrom:(unsigned int)a3 length:(unsigned int)a4;
-- (void)addChar:(CPPDFChar *)a3;
-- (void)addChars:(CPPDFChar *)a3 length:(unsigned int)a4;
-- (void)addChars:(CPPDFChar *)a3 length:(unsigned int)a4 ifTrue:(void *)a5 passing:(void *)a6;
-- (void)addCharsFromSequence:(id)a3;
-- (void)copyToSubsequence:(id)a3 from:(unsigned int)a4 length:(unsigned int)a5;
-- (void)copyToSubsequence:(id)a3 ifTrue:(void *)a4 passing:(void *)a5;
+- (id)newSubsequenceFrom:(unsigned int)from length:(unsigned int)length;
+- (void)addChar:(CPPDFChar *)char;
+- (void)addChars:(CPPDFChar *)chars length:(unsigned int)length;
+- (void)addChars:(CPPDFChar *)chars length:(unsigned int)length ifTrue:(void *)true passing:(void *)passing;
+- (void)addCharsFromSequence:(id)sequence;
+- (void)copyToSubsequence:(id)subsequence from:(unsigned int)from length:(unsigned int)length;
+- (void)copyToSubsequence:(id)subsequence ifTrue:(void *)true passing:(void *)passing;
 - (void)dealloc;
 - (void)dispose;
 - (void)finalize;
-- (void)merge:(id)a3 by:(void *)a4;
+- (void)merge:(id)merge by:(void *)by;
 - (void)removeAllChars;
 - (void)removeChar;
-- (void)removeCharAtIndex:(unsigned int)a3;
-- (void)removeFrom:(unsigned int)a3;
-- (void)replaceCharAtIndex:(unsigned int)a3 withChar:(CPPDFChar *)a4;
-- (void)resize:(unsigned int)a3;
-- (void)sortBy:(void *)a3;
-- (void)splitToSubsequences:(id)a3 whereTrue:(void *)a4 passing:(void *)a5;
+- (void)removeCharAtIndex:(unsigned int)index;
+- (void)removeFrom:(unsigned int)from;
+- (void)replaceCharAtIndex:(unsigned int)index withChar:(CPPDFChar *)char;
+- (void)resize:(unsigned int)resize;
+- (void)sortBy:(void *)by;
+- (void)splitToSubsequences:(id)subsequences whereTrue:(void *)true passing:(void *)passing;
 @end
 
 @implementation CPCharSequence
@@ -113,21 +113,21 @@
   return result;
 }
 
-- (CGRect)boundsFrom:(unsigned int)a3 length:(unsigned int)a4
+- (CGRect)boundsFrom:(unsigned int)from length:(unsigned int)length
 {
-  if (a4 + a3 > self->length)
+  if (length + from > self->length)
   {
     __assert_rtn("[CPCharSequence boundsFrom:length:]", "CPCharSequence.m", 776, "startIndex + numChars <= length");
   }
 
-  if (a4)
+  if (length)
   {
-    v4 = &self->charArray[a3];
+    v4 = &self->charArray[from];
     v5 = **v4;
     v6 = vaddq_f64(v5, (*v4)[1]);
-    if (a4 != 1)
+    if (length != 1)
     {
-      v7 = &v4[a4];
+      v7 = &v4[length];
       v8 = v4 + 1;
       do
       {
@@ -168,9 +168,9 @@
   return result;
 }
 
-- (BOOL)map:(void *)a3 whereNeighborsWith:(id)a4 passing:(void *)a5
+- (BOOL)map:(void *)map whereNeighborsWith:(id)with passing:(void *)passing
 {
-  v5 = *(a4 + 2);
+  v5 = *(with + 2);
   length = self->length;
   if (length)
   {
@@ -188,7 +188,7 @@
   }
 
   charArray = self->charArray;
-  v11 = *(a4 + 2);
+  v11 = *(with + 2);
   v12 = compareAnchorXIncreasingYDecreasing(charArray, v11);
   v13 = v12;
   v14 = &charArray[v12 < 1];
@@ -204,7 +204,7 @@
       {
         if (v13 >= 1)
         {
-          v20 = (a3)(*v14, *(v15 - 1), a5);
+          v20 = (map)(*v14, *(v15 - 1), passing);
           if (!v20)
           {
             return v20;
@@ -218,7 +218,7 @@
       {
         if (v13 <= 0)
         {
-          v20 = (a3)(*(v14 - 1), *v15, a5);
+          v20 = (map)(*(v14 - 1), *v15, passing);
           if (!v20)
           {
             return v20;
@@ -245,7 +245,7 @@
 LABEL_20:
   if (v17 > 0)
   {
-    v20 = (a3)(*v14, *(v15 - 1), a5);
+    v20 = (map)(*v14, *(v15 - 1), passing);
     if (!v20)
     {
       return v20;
@@ -256,7 +256,7 @@ LABEL_24:
     return v20;
   }
 
-  if ((a3)(*(v14 - 1), *v15, a5))
+  if ((map)(*(v14 - 1), *v15, passing))
   {
     goto LABEL_24;
   }
@@ -265,7 +265,7 @@ LABEL_24:
   return v20;
 }
 
-- (BOOL)mapToPairsWithIndex:(void *)a3 passing:(void *)a4
+- (BOOL)mapToPairsWithIndex:(void *)index passing:(void *)passing
 {
   length = self->length;
   if (length >= 2)
@@ -276,7 +276,7 @@ LABEL_24:
     v11 = charArray + 2;
     do
     {
-      v5 = (a3)(v8, *(v11 - 2), *(v11 - 1), a4);
+      v5 = (index)(v8, *(v11 - 2), *(v11 - 1), passing);
       v8 = (v8 + 1);
       if (v5)
       {
@@ -302,7 +302,7 @@ LABEL_24:
   return v5;
 }
 
-- (BOOL)mapToPairs:(void *)a3 passing:(void *)a4
+- (BOOL)mapToPairs:(void *)pairs passing:(void *)passing
 {
   length = self->length;
   if (length >= 2)
@@ -312,7 +312,7 @@ LABEL_24:
     v10 = charArray + 2;
     do
     {
-      v5 = (a3)(*(v10 - 2), *(v10 - 1), a4);
+      v5 = (pairs)(*(v10 - 2), *(v10 - 1), passing);
       if (v5)
       {
         v11 = v10 >= v9;
@@ -337,16 +337,16 @@ LABEL_24:
   return v5;
 }
 
-- (BOOL)mapWithIndex:(void *)a3 from:(unsigned int)a4 length:(unsigned int)a5 passing:(void *)a6
+- (BOOL)mapWithIndex:(void *)index from:(unsigned int)from length:(unsigned int)length passing:(void *)passing
 {
-  v6 = a5 + a4;
-  if (a5 + a4 > self->length)
+  v6 = length + from;
+  if (length + from > self->length)
   {
     __assert_rtn("[CPCharSequence mapWithIndex:from:length:passing:]", "CPCharSequence.m", 673, "pastEndIndex <= length");
   }
 
-  LODWORD(v7) = a4;
-  if (v6 <= a4)
+  LODWORD(v7) = from;
+  if (v6 <= from)
   {
     LOBYTE(v12) = 1;
   }
@@ -354,17 +354,17 @@ LABEL_24:
   else
   {
     charArray = self->charArray;
-    v12 = (a3)(*&a4, charArray[a4], a6);
+    v12 = (index)(*&from, charArray[from], passing);
     if (v12)
     {
       v13 = &charArray[v7 + 1];
-      v14 = a5 - 1;
+      v14 = length - 1;
       while (v14)
       {
         v7 = (v7 + 1);
         v15 = *v13++;
         --v14;
-        if (!(a3)(v7, v15, a6))
+        if (!(index)(v7, v15, passing))
         {
           goto LABEL_10;
         }
@@ -379,7 +379,7 @@ LABEL_10:
   return v12;
 }
 
-- (BOOL)mapWithIndex:(void *)a3 passing:(void *)a4
+- (BOOL)mapWithIndex:(void *)index passing:(void *)passing
 {
   if (self->length)
   {
@@ -387,7 +387,7 @@ LABEL_10:
     charArray = self->charArray;
     do
     {
-      v9 = (a3)(v7, charArray[v7], a4);
+      v9 = (index)(v7, charArray[v7], passing);
       if (!v9)
       {
         break;
@@ -407,7 +407,7 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)map:(void *)a3 passing:(void *)a4
+- (BOOL)map:(void *)map passing:(void *)passing
 {
   length = self->length;
   if (length)
@@ -417,7 +417,7 @@ LABEL_10:
     v9 = charArray + 1;
     do
     {
-      v10 = (a3)(*(v9 - 1), a4);
+      v10 = (map)(*(v9 - 1), passing);
       if (v10)
       {
         v11 = v9 >= v8;
@@ -442,7 +442,7 @@ LABEL_10:
   return v10;
 }
 
-- (BOOL)removeToSubsequence:(id)a3 ifTrue:(void *)a4 passing:(void *)a5
+- (BOOL)removeToSubsequence:(id)subsequence ifTrue:(void *)true passing:(void *)passing
 {
   if (!self->charArray)
   {
@@ -456,28 +456,28 @@ LABEL_10:
     while (1)
     {
       v11 = self->charArray[v9];
-      if ((a4)(v11, a5))
+      if ((true)(v11, passing))
       {
-        v12 = *(a3 + 2);
-        if (v12 >= *(a3 + 7))
+        v12 = *(subsequence + 2);
+        if (v12 >= *(subsequence + 7))
         {
-          [a3 resize:v12 + 1];
-          v13 = *(a3 + 2);
+          [subsequence resize:v12 + 1];
+          v13 = *(subsequence + 2);
           if (!v13)
           {
             goto LABEL_17;
           }
 
-          v12 = *(a3 + 2);
+          v12 = *(subsequence + 2);
         }
 
         else
         {
-          v13 = *(a3 + 2);
+          v13 = *(subsequence + 2);
         }
 
         *(v13 + 8 * v12) = v11;
-        *(a3 + 2) = v12 + 1;
+        *(subsequence + 2) = v12 + 1;
         if (self->sharedMemory)
         {
           if (v9 + 1 < self->length)
@@ -510,7 +510,7 @@ LABEL_17:
   return v10 < v9;
 }
 
-- (void)copyToSubsequence:(id)a3 ifTrue:(void *)a4 passing:(void *)a5
+- (void)copyToSubsequence:(id)subsequence ifTrue:(void *)true passing:(void *)passing
 {
   length = self->length;
   if (length)
@@ -519,28 +519,28 @@ LABEL_17:
     v10 = &charArray[length];
     do
     {
-      if ((a4)(*charArray, a5))
+      if ((true)(*charArray, passing))
       {
-        v11 = *(a3 + 2);
-        if (v11 >= *(a3 + 7))
+        v11 = *(subsequence + 2);
+        if (v11 >= *(subsequence + 7))
         {
-          [a3 resize:v11 + 1];
-          v12 = *(a3 + 2);
+          [subsequence resize:v11 + 1];
+          v12 = *(subsequence + 2);
           if (!v12)
           {
             return;
           }
 
-          v11 = *(a3 + 2);
+          v11 = *(subsequence + 2);
         }
 
         else
         {
-          v12 = *(a3 + 2);
+          v12 = *(subsequence + 2);
         }
 
         *(v12 + 8 * v11) = *charArray;
-        *(a3 + 2) = v11 + 1;
+        *(subsequence + 2) = v11 + 1;
       }
 
       ++charArray;
@@ -550,27 +550,27 @@ LABEL_17:
   }
 }
 
-- (void)copyToSubsequence:(id)a3 from:(unsigned int)a4 length:(unsigned int)a5
+- (void)copyToSubsequence:(id)subsequence from:(unsigned int)from length:(unsigned int)length
 {
-  if (a5 + a4 > self->length)
+  if (length + from > self->length)
   {
     __assert_rtn("[CPCharSequence copyToSubsequence:from:length:]", "CPCharSequence.m", 578, "startIndex + numChars <= length");
   }
 
-  if (a5 && self->charArray)
+  if (length && self->charArray)
   {
-    v9 = *(a3 + 2) + a5;
-    [a3 resize:v9];
-    v10 = *(a3 + 2);
+    v9 = *(subsequence + 2) + length;
+    [subsequence resize:v9];
+    v10 = *(subsequence + 2);
     if (v10)
     {
-      memcpy((v10 + 8 * *(a3 + 2)), &self->charArray[a4], 8 * a5);
-      *(a3 + 2) = v9;
+      memcpy((v10 + 8 * *(subsequence + 2)), &self->charArray[from], 8 * length);
+      *(subsequence + 2) = v9;
     }
   }
 }
 
-- (BOOL)removeSubsequences:(id)a3 whereTrue:(void *)a4 passing:(void *)a5
+- (BOOL)removeSubsequences:(id)subsequences whereTrue:(void *)true passing:(void *)passing
 {
   result = 0;
   length = self->length;
@@ -588,14 +588,14 @@ LABEL_17:
         while (1)
         {
           v15 = v14;
-          v16 = (a4)(*(charArray - 1), *charArray, a5);
+          v16 = (true)(*(charArray - 1), *charArray, passing);
           if (!v16 || (v12 & 1) == 0)
           {
             break;
           }
 
           v17 = [(CPCharSequence *)self newSubsequenceFrom:v11 length:(v15 - v11)];
-          [a3 addObject:v17];
+          [subsequences addObject:v17];
 
           v14 = (v15 + 1);
           ++charArray;
@@ -636,7 +636,7 @@ LABEL_17:
 
 LABEL_17:
       v18 = [(CPCharSequence *)self newSubsequenceFrom:v11 length:(v14 - v11)];
-      [a3 addObject:v18];
+      [subsequences addObject:v18];
 
       result = 1;
     }
@@ -648,7 +648,7 @@ LABEL_18:
   return result;
 }
 
-- (void)splitToSubsequences:(id)a3 whereTrue:(void *)a4 passing:(void *)a5
+- (void)splitToSubsequences:(id)subsequences whereTrue:(void *)true passing:(void *)passing
 {
   LODWORD(v5) = self->length;
   if (v5)
@@ -665,10 +665,10 @@ LABEL_18:
       v5 = 1;
       do
       {
-        if ((a4)(*(v11 - 1), *v11, a5))
+        if ((true)(*(v11 - 1), *v11, passing))
         {
           v12 = [(CPCharSequence *)self newSubsequenceFrom:v8 length:(v5 - v8)];
-          [a3 addObject:v12];
+          [subsequences addObject:v12];
 
           v8 = v5;
         }
@@ -680,21 +680,21 @@ LABEL_18:
       while (v5 < self->length);
     }
 
-    v13 = [(CPCharSequence *)self newSubsequenceFrom:v8 length:(v5 - v8), a5];
-    [a3 addObject:v13];
+    passing = [(CPCharSequence *)self newSubsequenceFrom:v8 length:(v5 - v8), passing];
+    [subsequences addObject:passing];
   }
 }
 
-- (id)newSubsequenceFrom:(unsigned int)a3 length:(unsigned int)a4
+- (id)newSubsequenceFrom:(unsigned int)from length:(unsigned int)length
 {
-  if (a4 + a3 > self->length)
+  if (length + from > self->length)
   {
     __assert_rtn("[CPCharSequence newSubsequenceFrom:length:]", "CPCharSequence.m", 493, "startIndex + newLength <= length");
   }
 
   v7 = [[CPCharSequence alloc] initWithSizeFor:0];
   v8 = v7;
-  if (a4 && v7)
+  if (length && v7)
   {
     if (!self->sharedMemory)
     {
@@ -703,8 +703,8 @@ LABEL_18:
       self->sharedMemory = v9;
     }
 
-    v8->length = a4;
-    v8->charArray = &self->charArray[a3];
+    v8->length = length;
+    v8->charArray = &self->charArray[from];
     v8->sharedMemory = self->sharedMemory;
     v8->wasMerged = self->wasMerged;
   }
@@ -712,9 +712,9 @@ LABEL_18:
   return v8;
 }
 
-- (void)merge:(id)a3 by:(void *)a4
+- (void)merge:(id)merge by:(void *)by
 {
-  v4 = *(a3 + 2);
+  v4 = *(merge + 2);
   if (v4)
   {
     v8 = self->length + v4;
@@ -722,7 +722,7 @@ LABEL_18:
     charArray = self->charArray;
     if (charArray)
     {
-      v10 = *(a3 + 2);
+      v10 = *(merge + 2);
       if (v10)
       {
         length = self->length;
@@ -736,7 +736,7 @@ LABEL_18:
         v14 = &charArray[v8 - 1];
         do
         {
-          v15 = (a4)(v13 - 1, v12 - 8);
+          v15 = (by)(v13 - 1, v12 - 8);
           if (v15 <= 0)
           {
             v16 = v12;
@@ -775,7 +775,7 @@ LABEL_17:
   }
 }
 
-- (void)sortBy:(void *)a3
+- (void)sortBy:(void *)by
 {
   if (self->sharedMemory)
   {
@@ -785,19 +785,19 @@ LABEL_17:
   charArray = self->charArray;
   length = self->length;
 
-  qsort(charArray, length, 8uLL, a3);
+  qsort(charArray, length, 8uLL, by);
 }
 
-- (void)removeFrom:(unsigned int)a3
+- (void)removeFrom:(unsigned int)from
 {
-  if (self->length <= a3)
+  if (self->length <= from)
   {
     __assert_rtn("[CPCharSequence removeFrom:]", "CPCharSequence.m", 399, "length > startIndex");
   }
 
-  if (a3)
+  if (from)
   {
-    self->length = a3;
+    self->length = from;
   }
 
   else
@@ -807,15 +807,15 @@ LABEL_17:
   }
 }
 
-- (void)removeCharAtIndex:(unsigned int)a3
+- (void)removeCharAtIndex:(unsigned int)index
 {
   length = self->length;
-  if (length <= a3)
+  if (length <= index)
   {
     __assert_rtn("[CPCharSequence removeCharAtIndex:]", "CPCharSequence.m", 382, "index < length");
   }
 
-  if (a3 + 1 < length)
+  if (index + 1 < length)
   {
     if (self->sharedMemory)
     {
@@ -823,17 +823,17 @@ LABEL_17:
       length = self->length;
     }
 
-    v6 = &self->charArray[a3];
-    memmove(v6, v6 + 1, 8 * (length + ~a3));
+    v6 = &self->charArray[index];
+    memmove(v6, v6 + 1, 8 * (length + ~index));
     length = self->length;
   }
 
   self->length = length - 1;
 }
 
-- (void)replaceCharAtIndex:(unsigned int)a3 withChar:(CPPDFChar *)a4
+- (void)replaceCharAtIndex:(unsigned int)index withChar:(CPPDFChar *)char
 {
-  if (self->length <= a3)
+  if (self->length <= index)
   {
     __assert_rtn("[CPCharSequence replaceCharAtIndex:withChar:]", "CPCharSequence.m", 369, "index < length");
   }
@@ -846,7 +846,7 @@ LABEL_17:
   charArray = self->charArray;
   if (charArray)
   {
-    charArray[a3] = a4;
+    charArray[index] = char;
   }
 }
 
@@ -880,9 +880,9 @@ LABEL_17:
   self->length = length - 1;
 }
 
-- (void)addCharsFromSequence:(id)a3
+- (void)addCharsFromSequence:(id)sequence
 {
-  v3 = *(a3 + 2);
+  v3 = *(sequence + 2);
   if (v3)
   {
     v6 = self->length + v3;
@@ -890,23 +890,23 @@ LABEL_17:
     charArray = self->charArray;
     if (charArray)
     {
-      memcpy(&charArray[self->length], *(a3 + 2), 8 * v3);
+      memcpy(&charArray[self->length], *(sequence + 2), 8 * v3);
       self->length = v6;
     }
   }
 }
 
-- (void)addChars:(CPPDFChar *)a3 length:(unsigned int)a4 ifTrue:(void *)a5 passing:(void *)a6
+- (void)addChars:(CPPDFChar *)chars length:(unsigned int)length ifTrue:(void *)true passing:(void *)passing
 {
-  if (a4)
+  if (length)
   {
-    v8 = a3;
+    charsCopy = chars;
     v10 = 0;
-    v11 = &a3[a4];
+    v11 = &chars[length];
     v12 = &self->charArray[self->length];
     do
     {
-      if ((a5)(v8, a6))
+      if ((true)(charsCopy, passing))
       {
         v13 = self->length + 1;
         self->length = v13;
@@ -922,47 +922,47 @@ LABEL_17:
           v12 = &charArray[v10];
         }
 
-        *v12++ = v8;
+        *v12++ = charsCopy;
         ++v10;
       }
 
-      ++v8;
+      ++charsCopy;
     }
 
-    while (v8 < v11);
+    while (charsCopy < v11);
   }
 }
 
-- (void)addChars:(CPPDFChar *)a3 length:(unsigned int)a4
+- (void)addChars:(CPPDFChar *)chars length:(unsigned int)length
 {
-  v7 = self->length + a4;
+  v7 = self->length + length;
   [(CPCharSequence *)self resize:v7];
   charArray = self->charArray;
   if (charArray)
   {
-    if (a4)
+    if (length)
     {
       v9 = 0;
-      v10 = &a3[a4];
-      if (v10 <= &a3[1])
+      v10 = &chars[length];
+      if (v10 <= &chars[1])
       {
-        v10 = a3 + 1;
+        v10 = chars + 1;
       }
 
       v11 = v10 - 1;
-      if (v11 == a3)
+      if (v11 == chars)
       {
-        v12 = a3;
+        charsCopy = chars;
       }
 
       else
       {
-        v12 = (&a3->var0.var0.origin.x + 1);
+        charsCopy = (&chars->var0.var0.origin.x + 1);
       }
 
-      v13 = v11 == a3;
+      v13 = v11 == chars;
       v14 = &charArray[self->length];
-      v15 = v11 - v12;
+      v15 = v11 - charsCopy;
       if (!v13)
       {
         ++v15;
@@ -972,7 +972,7 @@ LABEL_17:
       v17 = (v15 + 2) & 0x7FFFFFFFFFFFFFELL;
       do
       {
-        v18 = vaddq_s64(vdupq_n_s64(a3), xmmword_18439C660);
+        v18 = vaddq_s64(vdupq_n_s64(chars), xmmword_18439C660);
         v19 = vmovn_s64(vcgeq_u64(v16, vorrq_s8(vdupq_n_s64(v9), xmmword_18439C670)));
         if (v19.i8[0])
         {
@@ -985,7 +985,7 @@ LABEL_17:
         }
 
         v9 += 2;
-        a3 += 2;
+        chars += 2;
       }
 
       while (v17 != v9);
@@ -995,7 +995,7 @@ LABEL_17:
   }
 }
 
-- (void)addChar:(CPPDFChar *)a3
+- (void)addChar:(CPPDFChar *)char
 {
   length = self->length;
   if (length >= self->size)
@@ -1007,14 +1007,14 @@ LABEL_17:
   if (charArray)
   {
     v7 = self->length;
-    charArray[v7] = a3;
+    charArray[v7] = char;
     self->length = v7 + 1;
   }
 }
 
-- (CPPDFChar)charAtIndex:(unsigned int)a3
+- (CPPDFChar)charAtIndex:(unsigned int)index
 {
-  if (self->length <= a3)
+  if (self->length <= index)
   {
     __assert_rtn("[CPCharSequence charAtIndex:]", "CPCharSequence.m", 275, "index < length");
   }
@@ -1022,7 +1022,7 @@ LABEL_17:
   charArray = self->charArray;
   if (charArray)
   {
-    return charArray[a3];
+    return charArray[index];
   }
 
   else
@@ -1031,11 +1031,11 @@ LABEL_17:
   }
 }
 
-- (void)resize:(unsigned int)a3
+- (void)resize:(unsigned int)resize
 {
-  if (self->length <= a3)
+  if (self->length <= resize)
   {
-    length = a3;
+    length = resize;
   }
 
   else
@@ -1114,9 +1114,9 @@ LABEL_17:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = CPCopyObject(self, a3);
+  v4 = CPCopyObject(self, zone);
   if (v4)
   {
     if (!self->sharedMemory)
@@ -1183,33 +1183,33 @@ LABEL_17:
   return [(CPCharSequence *)&v3 init];
 }
 
-- (CPCharSequence)initWithChars:(CPPDFChar *)a3 length:(unsigned int)a4
+- (CPCharSequence)initWithChars:(CPPDFChar *)chars length:(unsigned int)length
 {
-  result = [(CPCharSequence *)self initWithSizeFor:*&a4];
+  result = [(CPCharSequence *)self initWithSizeFor:*&length];
   if (result)
   {
-    if (a4)
+    if (length)
     {
       v7 = 0;
-      v8 = &a3[a4];
-      if (v8 <= &a3[1])
+      v8 = &chars[length];
+      if (v8 <= &chars[1])
       {
-        v8 = a3 + 1;
+        v8 = chars + 1;
       }
 
       v9 = v8 - 1;
-      if (v9 == a3)
+      if (v9 == chars)
       {
-        v10 = a3;
+        charsCopy = chars;
       }
 
       else
       {
-        v10 = (&a3->var0.var0.origin.x + 1);
+        charsCopy = (&chars->var0.var0.origin.x + 1);
       }
 
-      v11 = v9 == a3;
-      v12 = v9 - v10;
+      v11 = v9 == chars;
+      v12 = v9 - charsCopy;
       charArray = result->charArray;
       v14 = v12 / 0xC0;
       if (!v11)
@@ -1221,7 +1221,7 @@ LABEL_17:
       v16 = (v14 + 2) & 0x7FFFFFFFFFFFFFELL;
       do
       {
-        v17 = vaddq_s64(vdupq_n_s64(a3), xmmword_18439C660);
+        v17 = vaddq_s64(vdupq_n_s64(chars), xmmword_18439C660);
         v18 = vmovn_s64(vcgeq_u64(v15, vorrq_s8(vdupq_n_s64(v7), xmmword_18439C670)));
         if (v18.i8[0])
         {
@@ -1234,29 +1234,29 @@ LABEL_17:
         }
 
         v7 += 2;
-        a3 += 2;
+        chars += 2;
       }
 
       while (v16 != v7);
     }
 
-    result->length = a4;
+    result->length = length;
   }
 
   return result;
 }
 
-- (CPCharSequence)initWithSizeFor:(unsigned int)a3
+- (CPCharSequence)initWithSizeFor:(unsigned int)for
 {
   v7.receiver = self;
   v7.super_class = CPCharSequence;
   v4 = [(CPCharSequence *)&v7 init];
   v5 = v4;
-  if (a3 && v4)
+  if (for && v4)
   {
-    v4->charArray = malloc_type_malloc(8 * a3, 0x2004093837F09uLL);
-    v5->previousSize = a3;
-    v5->size = a3;
+    v4->charArray = malloc_type_malloc(8 * for, 0x2004093837F09uLL);
+    v5->previousSize = for;
+    v5->size = for;
   }
 
   return v5;

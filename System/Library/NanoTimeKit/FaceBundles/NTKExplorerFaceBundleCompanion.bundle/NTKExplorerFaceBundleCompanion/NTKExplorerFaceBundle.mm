@@ -1,14 +1,14 @@
 @interface NTKExplorerFaceBundle
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryTitleForDevice:(id)a3;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryTitleForDevice:(id)device;
 @end
 
 @implementation NTKExplorerFaceBundle
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   if (NTKShowBlueRidgeUI())
   {
     v4 = 224;
@@ -19,15 +19,15 @@
     v4 = 24;
   }
 
-  v5 = [NTKExplorerFace defaultFaceOfStyle:v4 forDevice:v3];
+  v5 = [NTKExplorerFace defaultFaceOfStyle:v4 forDevice:deviceCopy];
 
   return v5;
 }
 
-- (id)galleryTitleForDevice:(id)a3
+- (id)galleryTitleForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 supportsPDRCapability:3669496134])
+  deviceCopy = device;
+  if ([deviceCopy supportsPDRCapability:3669496134])
   {
     v5 = 0;
   }
@@ -36,16 +36,16 @@
   {
     v7.receiver = self;
     v7.super_class = NTKExplorerFaceBundle;
-    v5 = [(NTKExplorerFaceBundle *)&v7 galleryTitleForDevice:v4];
+    v5 = [(NTKExplorerFaceBundle *)&v7 galleryTitleForDevice:deviceCopy];
   }
 
   return v5;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
-  [NTKExplorerFace isRestrictedForDevice:v4];
+  deviceCopy = device;
+  [NTKExplorerFace isRestrictedForDevice:deviceCopy];
   v5 = objc_opt_new();
   v12[0] = NTKComplicationSlotTopLeft;
   v12[1] = NTKComplicationSlotTopRight;
@@ -57,10 +57,10 @@
   v7 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:3];
   do
   {
-    v8 = [(NTKExplorerFaceBundle *)self defaultFaceForDevice:v4];
+    v8 = [(NTKExplorerFaceBundle *)self defaultFaceForDevice:deviceCopy];
     if (v8)
     {
-      v9 = [NTKDensityEditOption optionWithDensity:v6 forDevice:v4];
+      v9 = [NTKDensityEditOption optionWithDensity:v6 forDevice:deviceCopy];
       [v8 selectOption:v9 forCustomEditMode:11 slot:0];
 
       [v8 _setFaceGalleryComplicationTypesForSlots:v7];

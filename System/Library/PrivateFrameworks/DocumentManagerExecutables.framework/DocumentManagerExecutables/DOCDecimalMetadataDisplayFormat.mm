@@ -1,13 +1,13 @@
 @interface DOCDecimalMetadataDisplayFormat
 - (DOCDecimalMetadataDisplayFormat)init;
-- (id)_decimalDefaultFormattedDoubleValue:(double)a3;
-- (id)_decimalDisplayStringByFormattingDoubleValue:(double)a3;
-- (id)_decimalLengthFormattedDoubleValue:(double)a3;
-- (id)_integerFractionalDisplayStringByFormattingDoubleValue:(double)a3;
-- (id)displayStringForMetadataNumberValue:(id)a3;
-- (id)displayStringForMetadataStringValue:(id)a3;
-- (id)displayStringForMetadataValue:(id)a3;
-- (void)_configureNumberFormatter:(id)a3;
+- (id)_decimalDefaultFormattedDoubleValue:(double)value;
+- (id)_decimalDisplayStringByFormattingDoubleValue:(double)value;
+- (id)_decimalLengthFormattedDoubleValue:(double)value;
+- (id)_integerFractionalDisplayStringByFormattingDoubleValue:(double)value;
+- (id)displayStringForMetadataNumberValue:(id)value;
+- (id)displayStringForMetadataStringValue:(id)value;
+- (id)displayStringForMetadataValue:(id)value;
+- (void)_configureNumberFormatter:(id)formatter;
 @end
 
 @implementation DOCDecimalMetadataDisplayFormat
@@ -30,15 +30,15 @@
   return v3;
 }
 
-- (id)displayStringForMetadataValue:(id)a3
+- (id)displayStringForMetadataValue:(id)value
 {
-  v4 = a3;
-  if (v4)
+  valueCopy = value;
+  if (valueCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(DOCDecimalMetadataDisplayFormat *)self displayStringForMetadataStringValue:v4];
+      v5 = [(DOCDecimalMetadataDisplayFormat *)self displayStringForMetadataStringValue:valueCopy];
 LABEL_6:
       v6 = v5;
       goto LABEL_8;
@@ -47,7 +47,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(DOCDecimalMetadataDisplayFormat *)self displayStringForMetadataNumberValue:v4];
+      v5 = [(DOCDecimalMetadataDisplayFormat *)self displayStringForMetadataNumberValue:valueCopy];
       goto LABEL_6;
     }
   }
@@ -58,10 +58,10 @@ LABEL_8:
   return v6;
 }
 
-- (id)displayStringForMetadataStringValue:(id)a3
+- (id)displayStringForMetadataStringValue:(id)value
 {
-  v4 = a3;
-  v5 = [v4 componentsSeparatedByString:@"/"];
+  valueCopy = value;
+  v5 = [valueCopy componentsSeparatedByString:@"/"];
   v6 = [v5 count];
   v7 = MEMORY[0x277CCA980];
   if (v6 == 2)
@@ -79,11 +79,11 @@ LABEL_8:
 
   else
   {
-    v14 = [MEMORY[0x277CCA980] decimalNumberWithString:v4];
+    v14 = [MEMORY[0x277CCA980] decimalNumberWithString:valueCopy];
   }
 
-  v15 = [MEMORY[0x277CCA980] notANumber];
-  v16 = [v14 isEqual:v15];
+  notANumber = [MEMORY[0x277CCA980] notANumber];
+  v16 = [v14 isEqual:notANumber];
 
   if (v16)
   {
@@ -103,7 +103,7 @@ LABEL_8:
   if (v6 != 2)
   {
 LABEL_8:
-    [v4 doubleValue];
+    [valueCopy doubleValue];
     v19 = v20;
   }
 
@@ -115,9 +115,9 @@ LABEL_10:
   return v17;
 }
 
-- (id)displayStringForMetadataNumberValue:(id)a3
+- (id)displayStringForMetadataNumberValue:(id)value
 {
-  [a3 doubleValue];
+  [value doubleValue];
   v5 = v4;
   if ([(DOCDecimalMetadataDisplayFormat *)self prefersIntegerFractionalDisplay])
   {
@@ -139,10 +139,10 @@ LABEL_10:
   return v6;
 }
 
-- (id)_integerFractionalDisplayStringByFormattingDoubleValue:(double)a3
+- (id)_integerFractionalDisplayStringByFormattingDoubleValue:(double)value
 {
-  v4 = a3 > 0.0 && a3 < 1.0;
-  if (v4 && (LODWORD(v3) = vcvtad_u64_f64(1.0 / a3), vabdd_f64(a3, 1.0 / v3) < 0.001))
+  v4 = value > 0.0 && value < 1.0;
+  if (v4 && (LODWORD(v3) = vcvtad_u64_f64(1.0 / value), vabdd_f64(value, 1.0 / v3) < 0.001))
   {
     v5 = objc_opt_new();
     [v5 setNumberStyle:1];
@@ -162,25 +162,25 @@ LABEL_10:
   return v10;
 }
 
-- (id)_decimalDisplayStringByFormattingDoubleValue:(double)a3
+- (id)_decimalDisplayStringByFormattingDoubleValue:(double)value
 {
   if ([(DOCDecimalMetadataDisplayFormat *)self lengthUnits])
   {
-    [(DOCDecimalMetadataDisplayFormat *)self _decimalLengthFormattedDoubleValue:a3];
+    [(DOCDecimalMetadataDisplayFormat *)self _decimalLengthFormattedDoubleValue:value];
   }
 
   else
   {
-    [(DOCDecimalMetadataDisplayFormat *)self _decimalDefaultFormattedDoubleValue:a3];
+    [(DOCDecimalMetadataDisplayFormat *)self _decimalDefaultFormattedDoubleValue:value];
   }
   v5 = ;
-  v6 = [(DOCDecimalMetadataDisplayFormat *)self decimalFormatString];
-  v7 = [v6 length];
+  decimalFormatString = [(DOCDecimalMetadataDisplayFormat *)self decimalFormatString];
+  v7 = [decimalFormatString length];
 
   if (v7)
   {
-    v8 = [(DOCDecimalMetadataDisplayFormat *)self decimalFormatString];
-    v9 = [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:v8 validFormatSpecifiers:@"%@" error:0, v5];
+    decimalFormatString2 = [(DOCDecimalMetadataDisplayFormat *)self decimalFormatString];
+    v9 = [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:decimalFormatString2 validFormatSpecifiers:@"%@" error:0, v5];
 
     v5 = v9;
   }
@@ -188,32 +188,32 @@ LABEL_10:
   return v5;
 }
 
-- (id)_decimalLengthFormattedDoubleValue:(double)a3
+- (id)_decimalLengthFormattedDoubleValue:(double)value
 {
   v5 = objc_opt_new();
-  v6 = [v5 numberFormatter];
-  [(DOCDecimalMetadataDisplayFormat *)self _configureNumberFormatter:v6];
+  numberFormatter = [v5 numberFormatter];
+  [(DOCDecimalMetadataDisplayFormat *)self _configureNumberFormatter:numberFormatter];
 
-  v7 = [v5 stringFromValue:-[DOCDecimalMetadataDisplayFormat lengthUnits](self unit:{"lengthUnits"), a3}];
+  v7 = [v5 stringFromValue:-[DOCDecimalMetadataDisplayFormat lengthUnits](self unit:{"lengthUnits"), value}];
 
   return v7;
 }
 
-- (id)_decimalDefaultFormattedDoubleValue:(double)a3
+- (id)_decimalDefaultFormattedDoubleValue:(double)value
 {
   v5 = objc_opt_new();
   [(DOCDecimalMetadataDisplayFormat *)self _configureNumberFormatter:v5];
-  v6 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithDouble:value];
   v7 = [v5 stringFromNumber:v6];
 
   return v7;
 }
 
-- (void)_configureNumberFormatter:(id)a3
+- (void)_configureNumberFormatter:(id)formatter
 {
-  v4 = a3;
-  [v4 setNumberStyle:1];
-  [v4 setMaximumFractionDigits:{-[DOCDecimalMetadataDisplayFormat maxFractionalDigits](self, "maxFractionalDigits")}];
+  formatterCopy = formatter;
+  [formatterCopy setNumberStyle:1];
+  [formatterCopy setMaximumFractionDigits:{-[DOCDecimalMetadataDisplayFormat maxFractionalDigits](self, "maxFractionalDigits")}];
 }
 
 @end

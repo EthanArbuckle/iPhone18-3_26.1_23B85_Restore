@@ -1,45 +1,45 @@
 @interface PIRetouchSubsampleCacheNode
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
 - (id)retouchInputNode;
-- (int64_t)subsampleFactorForScale:(id)a3;
-- (void)_updateInputRegion:(id)a3 outputRegion:(id)a4 forStroke:(id)a5 geometry:(id)a6;
-- (void)resolveWithInputImage:(id)a3 retouchStrokes:(id)a4 cacheKey:(id)a5;
+- (int64_t)subsampleFactorForScale:(id)scale;
+- (void)_updateInputRegion:(id)region outputRegion:(id)outputRegion forStroke:(id)stroke geometry:(id)geometry;
+- (void)resolveWithInputImage:(id)image retouchStrokes:(id)strokes cacheKey:(id)key;
 @end
 
 @implementation PIRetouchSubsampleCacheNode
 
-- (void)resolveWithInputImage:(id)a3 retouchStrokes:(id)a4 cacheKey:(id)a5
+- (void)resolveWithInputImage:(id)image retouchStrokes:(id)strokes cacheKey:(id)key
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  keyCopy = key;
+  strokesCopy = strokes;
+  imageCopy = image;
   v11 = [PIRetouchSubsampleSourceNode alloc];
-  v12 = [(NURenderNode *)self settings];
-  v13 = [v12 objectForKeyedSubscript:@"detectedFaces"];
-  v14 = [(PIRetouchSourceNode *)v11 initWithInputImage:v10 retouchStrokes:v9 detectedFaces:v13 cacheKey:v8];
+  settings = [(NURenderNode *)self settings];
+  v13 = [settings objectForKeyedSubscript:@"detectedFaces"];
+  v14 = [(PIRetouchSourceNode *)v11 initWithInputImage:imageCopy retouchStrokes:strokesCopy detectedFaces:v13 cacheKey:keyCopy];
 
   [(NUCacheNode *)self resolveWithSourceNode:v14 error:0];
 }
 
-- (void)_updateInputRegion:(id)a3 outputRegion:(id)a4 forStroke:(id)a5 geometry:(id)a6
+- (void)_updateInputRegion:(id)region outputRegion:(id)outputRegion forStroke:(id)stroke geometry:(id)geometry
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  v22 = a3;
-  v13 = [v10 objectForKeyedSubscript:@"sourceOffset"];
+  strokeCopy = stroke;
+  geometryCopy = geometry;
+  outputRegionCopy = outputRegion;
+  regionCopy = region;
+  v13 = [strokeCopy objectForKeyedSubscript:@"sourceOffset"];
   v14 = [v13 objectForKeyedSubscript:@"x"];
   v15 = [v13 objectForKeyedSubscript:@"y"];
   [v14 doubleValue];
   [v15 doubleValue];
   v36 = 0u;
   v37 = 0u;
-  if (v11)
+  if (geometryCopy)
   {
-    [v11 extent];
+    [geometryCopy extent];
   }
 
-  v16 = [PIRepairUtilities brushStrokeFromRetouchStrokeDictionary:v10];
+  v16 = [PIRepairUtilities brushStrokeFromRetouchStrokeDictionary:strokeCopy];
   v17 = v16;
   v34 = 0u;
   v35 = 0u;
@@ -80,7 +80,7 @@
   v32 = v28;
   v33 = v29;
   NUScaleMake();
-  [v11 scaledSize];
+  [geometryCopy scaledSize];
   v28 = 0u;
   v29 = 0u;
   v26 = v32;
@@ -92,7 +92,7 @@
   v25 = v29;
   NUAlignPixelRectToPixelGrid();
   NUPixelRectIntersection();
-  [v12 addRect:&v24];
+  [outputRegionCopy addRect:&v24];
 
   v24 = 0u;
   v25 = 0u;
@@ -100,31 +100,31 @@
   v23[1] = v33;
   NUAlignPixelRectToPixelGrid();
   NUPixelRectIntersection();
-  [v22 addRect:v23];
+  [regionCopy addRect:v23];
 }
 
-- (int64_t)subsampleFactorForScale:(id)a3
+- (int64_t)subsampleFactorForScale:(id)scale
 {
   v4[0] = 0;
   v4[1] = 0;
-  return [MEMORY[0x1E69B3CE0] subsampleFactorForScale:a3.var0 additionalScale:{a3.var1, v4}];
+  return [MEMORY[0x1E69B3CE0] subsampleFactorForScale:scale.var0 additionalScale:{scale.var1, v4}];
 }
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v9 evaluationMode] == 1 && (v17[0] = 0, v17[1] = 0, v10 = MEMORY[0x1E69B3CE0], v11 = objc_msgSend(v9, "scale"), objc_msgSend(v10, "subsampleFactorForScale:additionalScale:", v11, v12, v17) == 1))
+  cacheCopy = cache;
+  stateCopy = state;
+  if ([stateCopy evaluationMode] == 1 && (v17[0] = 0, v17[1] = 0, v10 = MEMORY[0x1E69B3CE0], v11 = objc_msgSend(stateCopy, "scale"), objc_msgSend(v10, "subsampleFactorForScale:additionalScale:", v11, v12, v17) == 1))
   {
-    v13 = [(NUCacheNode *)self inputNode];
-    v14 = [v13 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:a5];
+    inputNode = [(NUCacheNode *)self inputNode];
+    v14 = [inputNode nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:error];
   }
 
   else
   {
     v16.receiver = self;
     v16.super_class = PIRetouchSubsampleCacheNode;
-    v14 = [(PIRetouchCacheNode *)&v16 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:a5];
+    v14 = [(PIRetouchCacheNode *)&v16 nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:error];
   }
 
   return v14;
@@ -144,7 +144,7 @@
       }
     }
 
-    v3 = [i inputNode];
+    inputNode = [i inputNode];
   }
 
   return i;

@@ -1,26 +1,26 @@
 @interface TCCDAssumedIdentityMonitor
-- (TCCDAssumedIdentityMonitor)initWithStateDirectoryPath:(id)a3;
+- (TCCDAssumedIdentityMonitor)initWithStateDirectoryPath:(id)path;
 - (id)_osStateDump;
 - (id)_serializeState;
-- (id)monitoredProcessesAssumingIdentityWithIdentifier:(id)a3;
+- (id)monitoredProcessesAssumingIdentityWithIdentifier:(id)identifier;
 - (void)_createOSStateHandler;
 - (void)_loadState;
 - (void)_saveState;
-- (void)startMonitoringProcess:(id)a3 assumingIdentity:(id)a4;
-- (void)stopMonitoringProcess:(id)a3;
+- (void)startMonitoringProcess:(id)process assumingIdentity:(id)identity;
+- (void)stopMonitoringProcess:(id)process;
 @end
 
 @implementation TCCDAssumedIdentityMonitor
 
-- (TCCDAssumedIdentityMonitor)initWithStateDirectoryPath:(id)a3
+- (TCCDAssumedIdentityMonitor)initWithStateDirectoryPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = TCCDAssumedIdentityMonitor;
   v5 = [(TCCDAssumedIdentityMonitor *)&v14 init];
   if (v5)
   {
-    v6 = [v4 stringByAppendingPathComponent:@"AssumedIdentityMonitorState"];
+    v6 = [pathCopy stringByAppendingPathComponent:@"AssumedIdentityMonitorState"];
     stateFilePath = v5->_stateFilePath;
     v5->_stateFilePath = v6;
 
@@ -43,7 +43,7 @@
 - (id)_serializeState
 {
   dispatch_assert_queue_V2(self->_queue);
-  v21 = self;
+  selfCopy = self;
   v22 = objc_opt_new();
   v29 = 0u;
   v30 = 0u;
@@ -70,7 +70,7 @@
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v8 = [(NSMutableDictionary *)v21->_assumedIdentityIdentifiersToProcesses objectForKeyedSubscript:v6];
+        v8 = [(NSMutableDictionary *)selfCopy->_assumedIdentityIdentifiersToProcesses objectForKeyedSubscript:v6];
         v9 = [v8 countByEnumeratingWithState:&v25 objects:v33 count:16];
         if (v9)
         {
@@ -140,10 +140,10 @@
 - (void)_saveState
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(TCCDAssumedIdentityMonitor *)self _serializeState];
+  _serializeState = [(TCCDAssumedIdentityMonitor *)self _serializeState];
   stateFilePath = self->_stateFilePath;
   v8 = 0;
-  v5 = [v3 writeToFile:stateFilePath options:1 error:&v8];
+  v5 = [_serializeState writeToFile:stateFilePath options:1 error:&v8];
   v6 = v8;
   if ((v5 & 1) == 0)
   {
@@ -183,11 +183,11 @@
   os_state_add_handler();
 }
 
-- (void)startMonitoringProcess:(id)a3 assumingIdentity:(id)a4
+- (void)startMonitoringProcess:(id)process assumingIdentity:(id)identity
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 client_type])
+  processCopy = process;
+  identityCopy = identity;
+  if ([identityCopy client_type])
   {
     v8 = tcc_assumed_identity_monitor_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -204,29 +204,29 @@
     block[2] = sub_100029CC8;
     block[3] = &unk_1000A5098;
     block[4] = self;
-    v11 = v7;
-    v12 = v6;
+    v11 = identityCopy;
+    v12 = processCopy;
     dispatch_async(queue, block);
   }
 }
 
-- (void)stopMonitoringProcess:(id)a3
+- (void)stopMonitoringProcess:(id)process
 {
-  v4 = a3;
+  processCopy = process;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100029E60;
   v7[3] = &unk_1000A50C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = processCopy;
+  v6 = processCopy;
   dispatch_async(queue, v7);
 }
 
-- (id)monitoredProcessesAssumingIdentityWithIdentifier:(id)a3
+- (id)monitoredProcessesAssumingIdentityWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -238,10 +238,10 @@
   block[1] = 3221225472;
   block[2] = sub_10002A184;
   block[3] = &unk_1000A5048;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 

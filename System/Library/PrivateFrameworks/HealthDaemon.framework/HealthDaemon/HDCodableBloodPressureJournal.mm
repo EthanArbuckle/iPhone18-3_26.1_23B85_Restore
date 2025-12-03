@@ -1,31 +1,31 @@
 @interface HDCodableBloodPressureJournal
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsJournalState:(id)a3;
-- (int)StringAsJournalType:(id)a3;
-- (int)StringAsScheduleType:(id)a3;
+- (int)StringAsJournalState:(id)state;
+- (int)StringAsJournalType:(id)type;
+- (int)StringAsScheduleType:(id)type;
 - (int)journalState;
 - (int)journalType;
 - (int)scheduleType;
 - (unint64_t)hash;
-- (void)addTimeInterval:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasJournalState:(BOOL)a3;
-- (void)setHasJournalType:(BOOL)a3;
-- (void)setHasScheduleType:(BOOL)a3;
-- (void)setHasStartDate:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addTimeInterval:(id)interval;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasJournalState:(BOOL)state;
+- (void)setHasJournalType:(BOOL)type;
+- (void)setHasScheduleType:(BOOL)type;
+- (void)setHasStartDate:(BOOL)date;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableBloodPressureJournal
 
-- (void)setHasStartDate:(BOOL)a3
+- (void)setHasStartDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -51,9 +51,9 @@
   }
 }
 
-- (void)setHasJournalType:(BOOL)a3
+- (void)setHasJournalType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -66,17 +66,17 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsJournalType:(id)a3
+- (int)StringAsJournalType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LearnHypertensionRisk"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"LearnHypertensionRisk"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"MonitorHypertension"];
+    v4 = [typeCopy isEqualToString:@"MonitorHypertension"];
   }
 
   return v4;
@@ -95,9 +95,9 @@
   }
 }
 
-- (void)setHasScheduleType:(BOOL)a3
+- (void)setHasScheduleType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 32;
   }
@@ -110,17 +110,17 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (int)StringAsScheduleType:(id)a3
+- (int)StringAsScheduleType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UserDefined"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UserDefined"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"TypicalDay"];
+    v4 = [typeCopy isEqualToString:@"TypicalDay"];
   }
 
   return v4;
@@ -139,9 +139,9 @@
   }
 }
 
-- (void)setHasJournalState:(BOOL)a3
+- (void)setHasJournalState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 8;
   }
@@ -154,43 +154,43 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsJournalState:(id)a3
+- (int)StringAsJournalState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Active"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"Active"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Closed"];
+    v4 = [stateCopy isEqualToString:@"Closed"];
   }
 
   return v4;
 }
 
-- (void)addTimeInterval:(id)a3
+- (void)addTimeInterval:(id)interval
 {
-  v4 = a3;
+  intervalCopy = interval;
   timeIntervals = self->_timeIntervals;
-  v8 = v4;
+  v8 = intervalCopy;
   if (!timeIntervals)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_timeIntervals;
     self->_timeIntervals = v6;
 
-    v4 = v8;
+    intervalCopy = v8;
     timeIntervals = self->_timeIntervals;
   }
 
-  [(NSMutableArray *)timeIntervals addObject:v4];
+  [(NSMutableArray *)timeIntervals addObject:intervalCopy];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -209,8 +209,8 @@
   v8.receiver = self;
   v8.super_class = HDCodableBloodPressureJournal;
   v4 = [(HDCodableBloodPressureJournal *)&v8 description];
-  v5 = [(HDCodableBloodPressureJournal *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableBloodPressureJournal *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -218,12 +218,12 @@
 - (id)dictionaryRepresentation
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   has = self->_has;
@@ -369,8 +369,8 @@ LABEL_29:
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
-          [v15 addObject:v21];
+          dictionaryRepresentation = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
+          [v15 addObject:dictionaryRepresentation];
         }
 
         v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -393,10 +393,10 @@ LABEL_29:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_uuid)
   {
     PBDataWriterWriteDataField();
@@ -503,21 +503,21 @@ LABEL_9:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_uuid)
   {
-    [v4 setUuid:?];
-    v4 = v10;
+    [toCopy setUuid:?];
+    toCopy = v10;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = *&self->_startDate;
-    *(v4 + 64) |= 2u;
+    *(toCopy + 2) = *&self->_startDate;
+    *(toCopy + 64) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -536,8 +536,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 1) = *&self->_endDate;
-  *(v4 + 64) |= 1u;
+  *(toCopy + 1) = *&self->_endDate;
+  *(toCopy + 64) |= 1u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -548,8 +548,8 @@ LABEL_6:
     }
 
 LABEL_21:
-    *(v4 + 10) = self->_scheduleType;
-    *(v4 + 64) |= 0x20u;
+    *(toCopy + 10) = self->_scheduleType;
+    *(toCopy + 64) |= 0x20u;
     if ((*&self->_has & 8) == 0)
     {
       goto LABEL_9;
@@ -559,8 +559,8 @@ LABEL_21:
   }
 
 LABEL_20:
-  *(v4 + 9) = self->_journalType;
-  *(v4 + 64) |= 0x10u;
+  *(toCopy + 9) = self->_journalType;
+  *(toCopy + 64) |= 0x10u;
   has = self->_has;
   if ((has & 0x20) != 0)
   {
@@ -571,18 +571,18 @@ LABEL_7:
   if ((has & 8) != 0)
   {
 LABEL_8:
-    *(v4 + 8) = self->_journalState;
-    *(v4 + 64) |= 8u;
+    *(toCopy + 8) = self->_journalState;
+    *(toCopy + 64) |= 8u;
   }
 
 LABEL_9:
   if ([(HDCodableBloodPressureJournal *)self timeIntervalsCount])
   {
     [v10 clearTimeIntervals];
-    v6 = [(HDCodableBloodPressureJournal *)self timeIntervalsCount];
-    if (v6)
+    timeIntervalsCount = [(HDCodableBloodPressureJournal *)self timeIntervalsCount];
+    if (timeIntervalsCount)
     {
-      v7 = v6;
+      v7 = timeIntervalsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(HDCodableBloodPressureJournal *)self timeIntervalAtIndex:i];
@@ -598,11 +598,11 @@ LABEL_9:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_uuid copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_uuid copyWithZone:zone];
   v7 = *(v5 + 56);
   *(v5 + 56) = v6;
 
@@ -688,7 +688,7 @@ LABEL_7:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v17 + 1) + 8 * i) copyWithZone:{a3, v17}];
+        v14 = [*(*(&v17 + 1) + 8 * i) copyWithZone:{zone, v17}];
         [v5 addTimeInterval:v14];
       }
 
@@ -708,16 +708,16 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_36;
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 7))
+  if (uuid | *(equalCopy + 7))
   {
     if (![(NSData *)uuid isEqual:?])
     {
@@ -726,74 +726,74 @@ LABEL_7:
   }
 
   has = self->_has;
-  v7 = *(v4 + 64);
+  v7 = *(equalCopy + 64);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_startDate != *(v4 + 2))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_startDate != *(equalCopy + 2))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 64) & 2) != 0)
+  else if ((*(equalCopy + 64) & 2) != 0)
   {
     goto LABEL_36;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_endDate != *(v4 + 1))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_endDate != *(equalCopy + 1))
     {
       goto LABEL_36;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 64) & 0x10) == 0 || self->_journalType != *(v4 + 9))
+    if ((*(equalCopy + 64) & 0x10) == 0 || self->_journalType != *(equalCopy + 9))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 64) & 0x10) != 0)
+  else if ((*(equalCopy + 64) & 0x10) != 0)
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 64) & 0x20) == 0 || self->_scheduleType != *(v4 + 10))
+    if ((*(equalCopy + 64) & 0x20) == 0 || self->_scheduleType != *(equalCopy + 10))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 64) & 0x20) != 0)
+  else if ((*(equalCopy + 64) & 0x20) != 0)
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 64) & 8) == 0 || self->_journalState != *(v4 + 8))
+    if ((*(equalCopy + 64) & 8) == 0 || self->_journalState != *(equalCopy + 8))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 64) & 8) != 0)
+  else if ((*(equalCopy + 64) & 8) != 0)
   {
     goto LABEL_36;
   }
 
   timeIntervals = self->_timeIntervals;
-  if (timeIntervals | *(v4 + 6))
+  if (timeIntervals | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)timeIntervals isEqual:?])
     {
@@ -803,13 +803,13 @@ LABEL_36:
     }
 
     has = self->_has;
-    v7 = *(v4 + 64);
+    v7 = *(equalCopy + 64);
   }
 
   v9 = (v7 & 4) == 0;
   if ((has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_timestamp != *(v4 + 3))
+    if ((v7 & 4) == 0 || self->_timestamp != *(equalCopy + 3))
     {
       goto LABEL_36;
     }
@@ -965,21 +965,21 @@ LABEL_24:
   return v6 ^ v3 ^ v10 ^ v14 ^ v15 ^ v16 ^ v17 ^ v20;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 7))
+  fromCopy = from;
+  if (*(fromCopy + 7))
   {
     [(HDCodableBloodPressureJournal *)self setUuid:?];
   }
 
-  v5 = *(v4 + 64);
+  v5 = *(fromCopy + 64);
   if ((v5 & 2) != 0)
   {
-    self->_startDate = *(v4 + 2);
+    self->_startDate = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 64);
+    v5 = *(fromCopy + 64);
     if ((v5 & 1) == 0)
     {
 LABEL_5:
@@ -992,14 +992,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 64) & 1) == 0)
+  else if ((*(fromCopy + 64) & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_endDate = *(v4 + 1);
+  self->_endDate = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = *(v4 + 64);
+  v5 = *(fromCopy + 64);
   if ((v5 & 0x10) == 0)
   {
 LABEL_6:
@@ -1012,9 +1012,9 @@ LABEL_6:
   }
 
 LABEL_21:
-  self->_journalType = *(v4 + 9);
+  self->_journalType = *(fromCopy + 9);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 64);
+  v5 = *(fromCopy + 64);
   if ((v5 & 0x20) == 0)
   {
 LABEL_7:
@@ -1027,12 +1027,12 @@ LABEL_7:
   }
 
 LABEL_22:
-  self->_scheduleType = *(v4 + 10);
+  self->_scheduleType = *(fromCopy + 10);
   *&self->_has |= 0x20u;
-  if ((*(v4 + 64) & 8) != 0)
+  if ((*(fromCopy + 64) & 8) != 0)
   {
 LABEL_8:
-    self->_journalState = *(v4 + 8);
+    self->_journalState = *(fromCopy + 8);
     *&self->_has |= 8u;
   }
 
@@ -1041,7 +1041,7 @@ LABEL_9:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = *(v4 + 6);
+  v6 = *(fromCopy + 6);
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -1065,9 +1065,9 @@ LABEL_9:
     while (v8);
   }
 
-  if ((*(v4 + 64) & 4) != 0)
+  if ((*(fromCopy + 64) & 4) != 0)
   {
-    self->_timestamp = *(v4 + 3);
+    self->_timestamp = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 

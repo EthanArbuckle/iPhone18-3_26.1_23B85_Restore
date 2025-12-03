@@ -4,23 +4,23 @@
 - (VtValue)defaultVtValue;
 - (double)doubleAtTime:(NSTimeInterval)time;
 - (float)floatAtTime:(NSTimeInterval)time;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)precision;
 - (void)resetWithDoubleArray:(const double *)valuesArray atTimes:(const NSTimeInterval *)timesArray count:(NSUInteger)count;
 - (void)resetWithFloatArray:(const float *)valuesArray atTimes:(const NSTimeInterval *)timesArray count:(NSUInteger)count;
-- (void)resetWithUsdAttribute:(const void *)a3 timeScale:(double)a4;
-- (void)resetWithUsdAttribute:(const void *)a3 timeScale:(double)a4 time:(double)a5;
+- (void)resetWithUsdAttribute:(const void *)attribute timeScale:(double)scale;
+- (void)resetWithUsdAttribute:(const void *)attribute timeScale:(double)scale time:(double)time;
 - (void)setDouble:(double)value atTime:(NSTimeInterval)time;
 - (void)setFloat:(float)value atTime:(NSTimeInterval)time;
 @end
 
 @implementation MDLAnimatedScalar
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = MDLAnimatedScalar;
-  return [(MDLAnimatedValue *)&v4 copyWithZone:a3];
+  return [(MDLAnimatedValue *)&v4 copyWithZone:zone];
 }
 
 - (unint64_t)precision
@@ -103,7 +103,7 @@ LABEL_11:
   return result;
 }
 
-- (void)resetWithUsdAttribute:(const void *)a3 timeScale:(double)a4
+- (void)resetWithUsdAttribute:(const void *)attribute timeScale:(double)scale
 {
   v11[2] = *MEMORY[0x277D85DE8];
   pxrInternal__aapl__pxrReserved__::UsdAttribute::GetTimeSamples();
@@ -138,7 +138,7 @@ LABEL_11:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetWithUsdAttribute:(const void *)a3 timeScale:(double)a4 time:(double)a5
+- (void)resetWithUsdAttribute:(const void *)attribute timeScale:(double)scale time:(double)time
 {
   v11[2] = *MEMORY[0x277D85DE8];
   v11[0] = 0;
@@ -146,7 +146,7 @@ LABEL_11:
   pxrInternal__aapl__pxrReserved__::UsdAttribute::Get();
   if ((sub_239F2940C(v11) & 1) != 0 || (sub_239E6A084(v11) & 1) != 0 || sub_239F24D70(v11))
   {
-    v9 = a5 * a4;
+    v9 = time * scale;
     sub_239E5F7D4(v10, v11);
     sub_239F237C8(&self->super._timeSampledData, &v9);
     sub_239E5B240(v10);

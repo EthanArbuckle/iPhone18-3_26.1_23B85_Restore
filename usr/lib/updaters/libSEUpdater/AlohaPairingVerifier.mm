@@ -1,17 +1,17 @@
 @interface AlohaPairingVerifier
-- (AlohaPairingVerifier)initWithController:(shared_ptr<SEUpdater:(const AlohaVerificationOptions *)a4 :P73BaseSEController>)a3 options:;
-- (BOOL)injectSEPKtoSSE:(id *)a3;
-- (BOOL)injectSEPKtoSSE_Debug:(id *)a3;
-- (BOOL)injectSEPKtoSSE_FDR:(id *)a3;
-- (id)getSharingRequestWithSignature:(id *)a3 withError:(id *)a4;
+- (AlohaPairingVerifier)initWithController:(shared_ptr<SEUpdater:(const AlohaVerificationOptions *)controller :P73BaseSEController>)a3 options:;
+- (BOOL)injectSEPKtoSSE:(id *)e;
+- (BOOL)injectSEPKtoSSE_Debug:(id *)debug;
+- (BOOL)injectSEPKtoSSE_FDR:(id *)r;
+- (id)getSharingRequestWithSignature:(id *)signature withError:(id *)error;
 - (id)performAlohaVerification;
-- (id)performAuthKeySharingWithAppleSSE:(id)a3 sharingRequest:(id)a4 requestSignature:(id)a5 resultSignature:(id *)a6 withError:(id *)a7;
+- (id)performAuthKeySharingWithAppleSSE:(id)e sharingRequest:(id)request requestSignature:(id)signature resultSignature:(id *)resultSignature withError:(id *)error;
 - (void)invalidate;
 @end
 
 @implementation AlohaPairingVerifier
 
-- (AlohaPairingVerifier)initWithController:(shared_ptr<SEUpdater:(const AlohaVerificationOptions *)a4 :P73BaseSEController>)a3 options:
+- (AlohaPairingVerifier)initWithController:(shared_ptr<SEUpdater:(const AlohaVerificationOptions *)controller :P73BaseSEController>)a3 options:
 {
   cntrl = a3.__cntrl_;
   ptr = a3.__ptr_;
@@ -136,20 +136,20 @@ LABEL_22:
   return v19;
 }
 
-- (BOOL)injectSEPKtoSSE:(id *)a3
+- (BOOL)injectSEPKtoSSE:(id *)e
 {
   if (self->_options->var0)
   {
-    return [(AlohaPairingVerifier *)self injectSEPKtoSSE_Debug:a3];
+    return [(AlohaPairingVerifier *)self injectSEPKtoSSE_Debug:e];
   }
 
   else
   {
-    return [(AlohaPairingVerifier *)self injectSEPKtoSSE_FDR:a3];
+    return [(AlohaPairingVerifier *)self injectSEPKtoSSE_FDR:e];
   }
 }
 
-- (BOOL)injectSEPKtoSSE_Debug:(id *)a3
+- (BOOL)injectSEPKtoSSE_Debug:(id *)debug
 {
   v42 = *MEMORY[0x29EDCA608];
   transceiver = self->_transceiver;
@@ -163,7 +163,7 @@ LABEL_22:
   v13 = v8;
   if (!v5 || v8 != 0 || v6 == 0 || v7 == 0)
   {
-    _ObjCLogOutError(a3, 0, "[AlohaPairingVerifier injectSEPKtoSSE_Debug:]", @"Failed to getSEPK : %@", v9, v10, v11, v12, v8);
+    _ObjCLogOutError(debug, 0, "[AlohaPairingVerifier injectSEPKtoSSE_Debug:]", @"Failed to getSEPK : %@", v9, v10, v11, v12, v8);
   }
 
   else
@@ -183,17 +183,17 @@ LABEL_22:
     {
       v41[2] = 3;
       v24 = v7;
-      v25 = [v7 bytes];
-      v26 = *v25;
-      *&v41[19] = *(v25 + 16);
+      bytes = [v7 bytes];
+      v26 = *bytes;
+      *&v41[19] = *(bytes + 16);
       *&v41[3] = v26;
       v27 = v6;
-      v28 = [v6 bytes];
-      *&v41[27] = *v28;
-      v29 = *(v28 + 16);
-      v30 = *(v28 + 32);
-      v31 = *(v28 + 48);
-      v41[91] = *(v28 + 64);
+      bytes2 = [v6 bytes];
+      *&v41[27] = *bytes2;
+      v29 = *(bytes2 + 16);
+      v30 = *(bytes2 + 32);
+      v31 = *(bytes2 + 48);
+      v41[91] = *(bytes2 + 64);
       *&v41[75] = v31;
       *&v41[59] = v30;
       *&v41[43] = v29;
@@ -209,7 +209,7 @@ LABEL_22:
       v23 = @"Error code %d received when setting SE PK in SSE";
     }
 
-    _ObjCLogOutError(a3, 0, "[AlohaPairingVerifier injectSEPKtoSSE_Debug:]", v23, v19, v20, v21, v22, v18);
+    _ObjCLogOutError(debug, 0, "[AlohaPairingVerifier injectSEPKtoSSE_Debug:]", v23, v19, v20, v21, v22, v18);
   }
 
   v33 = 0;
@@ -219,7 +219,7 @@ LABEL_19:
   return v33;
 }
 
-- (BOOL)injectSEPKtoSSE_FDR:(id *)a3
+- (BOOL)injectSEPKtoSSE_FDR:(id *)r
 {
   v38[3] = *MEMORY[0x29EDCA608];
   v36 = 0;
@@ -243,8 +243,8 @@ LABEL_19:
   if (v11 && !v12)
   {
     _ObjCLog(2, "[AlohaPairingVerifier injectSEPKtoSSE_FDR:]", &cfstr_PassingFdropti.isa, v9);
-    v17 = [v11 asHexString];
-    v18 = [v17 uppercaseString];
+    asHexString = [v11 asHexString];
+    uppercaseString = [asHexString uppercaseString];
 
     v33 = 0;
     v34 = &v36;
@@ -253,7 +253,7 @@ LABEL_19:
     if (!v19 || v36)
     {
       _ObjCLog(0, "[AlohaPairingVerifier injectSEPKtoSSE_FDR:]", &cfstr_ErrorFromAmfdr.isa, v36, v33, v34);
-      _ObjCLogWrapOutError(a3, v36, 0, "[AlohaPairingVerifier injectSEPKtoSSE_FDR:]", @"AMFDRSealingMapCopyLocalData", v26, v27, v28, v32);
+      _ObjCLogWrapOutError(r, v36, 0, "[AlohaPairingVerifier injectSEPKtoSSE_FDR:]", @"AMFDRSealingMapCopyLocalData", v26, v27, v28, v32);
     }
 
     else
@@ -266,7 +266,7 @@ LABEL_19:
         goto LABEL_10;
       }
 
-      _ObjCLogOutError(a3, 0, "[AlohaPairingVerifier injectSEPKtoSSE_FDR:]", @"SSESetSEPubKey returned %d\n", v21, v22, v23, v24, v20);
+      _ObjCLogOutError(r, 0, "[AlohaPairingVerifier injectSEPKtoSSE_FDR:]", @"SSESetSEPubKey returned %d\n", v21, v22, v23, v24, v20);
     }
 
     v25 = 0;
@@ -275,7 +275,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  _ObjCLogWrapOutError(a3, v12, 0, "[AlohaPairingVerifier injectSEPKtoSSE_FDR:]", @"Failed to copy SEID", v13, v14, v15, v31);
+  _ObjCLogWrapOutError(r, v12, 0, "[AlohaPairingVerifier injectSEPKtoSSE_FDR:]", @"Failed to copy SEID", v13, v14, v15, v31);
   v25 = 0;
 LABEL_11:
 
@@ -284,7 +284,7 @@ LABEL_11:
   return v25;
 }
 
-- (id)getSharingRequestWithSignature:(id *)a3 withError:(id *)a4
+- (id)getSharingRequestWithSignature:(id *)signature withError:(id *)error
 {
   transceiver = self->_transceiver;
   v22 = 0;
@@ -303,7 +303,7 @@ LABEL_11:
 
   if (!v13)
   {
-    _ObjCLogWrapOutError(a4, v8, 0, "[AlohaPairingVerifier getSharingRequestWithSignature:withError:]", @"Failed to get sharing request\n", v9, v10, v11, v21);
+    _ObjCLogWrapOutError(error, v8, 0, "[AlohaPairingVerifier getSharingRequestWithSignature:withError:]", @"Failed to get sharing request\n", v9, v10, v11, v21);
 LABEL_8:
     v19 = 0;
     goto LABEL_10;
@@ -312,28 +312,28 @@ LABEL_8:
   if ([v7 length] <= 0x40)
   {
     v14 = [v7 length];
-    _ObjCLogOutError(a4, 0, "[AlohaPairingVerifier getSharingRequestWithSignature:withError:]", @"Unexpected length for sharing request %u\n", v15, v16, v17, v18, v14);
+    _ObjCLogOutError(error, 0, "[AlohaPairingVerifier getSharingRequestWithSignature:withError:]", @"Unexpected length for sharing request %u\n", v15, v16, v17, v18, v14);
     goto LABEL_8;
   }
 
-  *a3 = [v7 subdataWithRange:{65, objc_msgSend(v7, "length") - 65}];
+  *signature = [v7 subdataWithRange:{65, objc_msgSend(v7, "length") - 65}];
   v19 = [v7 subdataWithRange:{0, 65}];
 LABEL_10:
 
   return v19;
 }
 
-- (id)performAuthKeySharingWithAppleSSE:(id)a3 sharingRequest:(id)a4 requestSignature:(id)a5 resultSignature:(id *)a6 withError:(id *)a7
+- (id)performAuthKeySharingWithAppleSSE:(id)e sharingRequest:(id)request requestSignature:(id)signature resultSignature:(id *)resultSignature withError:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  eCopy = e;
+  requestCopy = request;
+  signatureCopy = signature;
   v24 = 0;
   v25 = 0;
-  v14 = SSEPerformAuthKeySharing(v11, v12, v13, &v25, &v24);
+  v14 = SSEPerformAuthKeySharing(eCopy, requestCopy, signatureCopy, &v25, &v24);
   v15 = v25;
   v16 = v24;
-  *a6 = v16;
+  *resultSignature = v16;
   if (!v14 && v15 && v16)
   {
     v17 = v15;
@@ -341,11 +341,11 @@ LABEL_10:
 
   else
   {
-    _ObjCLog(0, "[AlohaPairingVerifier performAuthKeySharingWithAppleSSE:sharingRequest:requestSignature:resultSignature:withError:]", &cfstr_PerformedShari.isa, v11);
-    _ObjCLog(0, "[AlohaPairingVerifier performAuthKeySharingWithAppleSSE:sharingRequest:requestSignature:resultSignature:withError:]", &cfstr_Request.isa, v12);
-    _ObjCLog(0, "[AlohaPairingVerifier performAuthKeySharingWithAppleSSE:sharingRequest:requestSignature:resultSignature:withError:]", &cfstr_Requestsig.isa, v13);
-    v23 = *a6 == 0;
-    _ObjCLogOutError(a7, 0, "[AlohaPairingVerifier performAuthKeySharingWithAppleSSE:sharingRequest:requestSignature:resultSignature:withError:]", @"Bad status received when sharing auth key %d or nil for sharing result %d or nil for sharing result signature %d\n", v18, v19, v20, v21, v14);
+    _ObjCLog(0, "[AlohaPairingVerifier performAuthKeySharingWithAppleSSE:sharingRequest:requestSignature:resultSignature:withError:]", &cfstr_PerformedShari.isa, eCopy);
+    _ObjCLog(0, "[AlohaPairingVerifier performAuthKeySharingWithAppleSSE:sharingRequest:requestSignature:resultSignature:withError:]", &cfstr_Request.isa, requestCopy);
+    _ObjCLog(0, "[AlohaPairingVerifier performAuthKeySharingWithAppleSSE:sharingRequest:requestSignature:resultSignature:withError:]", &cfstr_Requestsig.isa, signatureCopy);
+    v23 = *resultSignature == 0;
+    _ObjCLogOutError(error, 0, "[AlohaPairingVerifier performAuthKeySharingWithAppleSSE:sharingRequest:requestSignature:resultSignature:withError:]", @"Bad status received when sharing auth key %d or nil for sharing result %d or nil for sharing result signature %d\n", v18, v19, v20, v21, v14);
     v17 = 0;
   }
 

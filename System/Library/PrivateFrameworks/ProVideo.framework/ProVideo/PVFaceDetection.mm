@@ -1,15 +1,15 @@
 @interface PVFaceDetection
-+ (id)faceDetection:(int64_t)a3 :(BOOL)a4 :(double)a5 :(BOOL)a6 :(double)a7 :(CGRect)a8 :(int64_t)a9 :(id *)a10 :(id)a11;
-+ (id)faceDetectionWithAngle:(int64_t)a3 :(BOOL)a4 :(double)a5 :(BOOL)a6 :(double)a7 :(CGRect)a8 :(double)a9 :(id *)a10 :(id)a11;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFaceDetection:(id)a3;
++ (id)faceDetection:(int64_t)detection :(BOOL)a4 :(double)a5 :(BOOL)a6 :(double)a7 :(CGRect)a8 :(int64_t)a9 :(id *)self0 :(id)self1;
++ (id)faceDetectionWithAngle:(int64_t)angle :(BOOL)a4 :(double)a5 :(BOOL)a6 :(double)a7 :(CGRect)a8 :(double)a9 :(id *)self0 :(id)self1;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFaceDetection:(id)detection;
 - (CGRect)boundingBox;
 - (id)debugDescription;
 @end
 
 @implementation PVFaceDetection
 
-+ (id)faceDetection:(int64_t)a3 :(BOOL)a4 :(double)a5 :(BOOL)a6 :(double)a7 :(CGRect)a8 :(int64_t)a9 :(id *)a10 :(id)a11
++ (id)faceDetection:(int64_t)detection :(BOOL)a4 :(double)a5 :(BOOL)a6 :(double)a7 :(CGRect)a8 :(int64_t)a9 :(id *)self0 :(id)self1
 {
   v12 = a9;
   height = a8.size.height;
@@ -19,7 +19,7 @@
   v22 = a11;
   v23 = objc_alloc_init(PVFaceDetection);
   v25 = v23;
-  v23->_ID = a3;
+  v23->_ID = detection;
   v23->_hasRollAngle = a4;
   v23->_hasYawAngle = a6;
   v23->_rollAngleInDegrees = a5;
@@ -45,7 +45,7 @@
   return v25;
 }
 
-+ (id)faceDetectionWithAngle:(int64_t)a3 :(BOOL)a4 :(double)a5 :(BOOL)a6 :(double)a7 :(CGRect)a8 :(double)a9 :(id *)a10 :(id)a11
++ (id)faceDetectionWithAngle:(int64_t)angle :(BOOL)a4 :(double)a5 :(BOOL)a6 :(double)a7 :(CGRect)a8 :(double)a9 :(id *)self0 :(id)self1
 {
   height = a8.size.height;
   width = a8.size.width;
@@ -53,7 +53,7 @@
   x = a8.origin.x;
   v22 = a11;
   v23 = objc_alloc_init(PVFaceDetection);
-  v23->_ID = a3;
+  v23->_ID = angle;
   v23->_hasRollAngle = a4;
   v23->_hasYawAngle = a6;
   v23->_rollAngleInDegrees = a5;
@@ -72,25 +72,25 @@
   return v23;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PVFaceDetection *)self isEqualToFaceDetection:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PVFaceDetection *)self isEqualToFaceDetection:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToFaceDetection:(id)a3
+- (BOOL)isEqualToFaceDetection:(id)detection
 {
-  v4 = a3;
+  detectionCopy = detection;
   v5 = [(PVFaceDetection *)self ID];
-  if (v5 == [v4 ID] && (v6 = -[PVFaceDetection hasRollAngle](self, "hasRollAngle"), v6 == objc_msgSend(v4, "hasRollAngle")) && (!-[PVFaceDetection hasRollAngle](self, "hasRollAngle") || (-[PVFaceDetection rollAngleInDegrees](self, "rollAngleInDegrees"), v8 = v7, objc_msgSend(v4, "rollAngleInDegrees"), v8 == v9)) && (v10 = -[PVFaceDetection hasYawAngle](self, "hasYawAngle"), v10 == objc_msgSend(v4, "hasYawAngle")) && (!-[PVFaceDetection hasYawAngle](self, "hasYawAngle") || (-[PVFaceDetection yawAngleInDegrees](self, "yawAngleInDegrees"), v12 = v11, objc_msgSend(v4, "yawAngleInDegrees"), v12 == v13)) && (-[PVFaceDetection boundingBox](self, "boundingBox"), v15 = v14, v17 = v16, v19 = v18, v21 = v20, objc_msgSend(v4, "boundingBox"), v34.origin.x = v22, v34.origin.y = v23, v34.size.width = v24, v34.size.height = v25, v33.origin.x = v15, v33.origin.y = v17, v33.size.width = v19, v33.size.height = v21, CGRectEqualToRect(v33, v34)) && (-[PVFaceDetection detectionHorizonAngle](self, "detectionHorizonAngle"), v27 = v26, objc_msgSend(v4, "detectionHorizonAngle"), v27 == v28))
+  if (v5 == [detectionCopy ID] && (v6 = -[PVFaceDetection hasRollAngle](self, "hasRollAngle"), v6 == objc_msgSend(detectionCopy, "hasRollAngle")) && (!-[PVFaceDetection hasRollAngle](self, "hasRollAngle") || (-[PVFaceDetection rollAngleInDegrees](self, "rollAngleInDegrees"), v8 = v7, objc_msgSend(detectionCopy, "rollAngleInDegrees"), v8 == v9)) && (v10 = -[PVFaceDetection hasYawAngle](self, "hasYawAngle"), v10 == objc_msgSend(detectionCopy, "hasYawAngle")) && (!-[PVFaceDetection hasYawAngle](self, "hasYawAngle") || (-[PVFaceDetection yawAngleInDegrees](self, "yawAngleInDegrees"), v12 = v11, objc_msgSend(detectionCopy, "yawAngleInDegrees"), v12 == v13)) && (-[PVFaceDetection boundingBox](self, "boundingBox"), v15 = v14, v17 = v16, v19 = v18, v21 = v20, objc_msgSend(detectionCopy, "boundingBox"), v34.origin.x = v22, v34.origin.y = v23, v34.size.width = v24, v34.size.height = v25, v33.origin.x = v15, v33.origin.y = v17, v33.size.width = v19, v33.size.height = v21, CGRectEqualToRect(v33, v34)) && (-[PVFaceDetection detectionHorizonAngle](self, "detectionHorizonAngle"), v27 = v26, objc_msgSend(detectionCopy, "detectionHorizonAngle"), v27 == v28))
   {
     [(PVFaceDetection *)self time];
-    if (v4)
+    if (detectionCopy)
     {
-      [v4 time];
+      [detectionCopy time];
     }
 
     else

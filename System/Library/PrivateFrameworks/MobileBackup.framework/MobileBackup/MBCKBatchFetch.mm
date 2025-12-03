@@ -1,39 +1,39 @@
 @interface MBCKBatchFetch
-- (BOOL)_handleCompletionForFetchInfo:(id)a3 record:(id)a4 error:(id)a5;
-- (BOOL)finishWithError:(id *)a3;
-- (MBCKBatchFetch)initWithOperationTracker:(id)a3;
+- (BOOL)_handleCompletionForFetchInfo:(id)info record:(id)record error:(id)error;
+- (BOOL)finishWithError:(id *)error;
+- (MBCKBatchFetch)initWithOperationTracker:(id)tracker;
 - (MBCKOperationTracker)ckOperationTracker;
-- (void)_fetchRecordsWithCompletion:(id)a3;
-- (void)_finishBatchedFetchesWithCompletion:(id)a3;
+- (void)_fetchRecordsWithCompletion:(id)completion;
+- (void)_finishBatchedFetchesWithCompletion:(id)completion;
 - (void)_flush;
-- (void)_flushBatchedFetches:(unint64_t)a3;
-- (void)_performCallbacksForFetchInfo:(id)a3 record:(id)a4 error:(id)a5;
-- (void)_scheduleBatchFetchOperationForFetchInfos:(id)a3;
-- (void)_sendBatchFetchOperationForFetchInfos:(id)a3;
+- (void)_flushBatchedFetches:(unint64_t)fetches;
+- (void)_performCallbacksForFetchInfo:(id)info record:(id)record error:(id)error;
+- (void)_scheduleBatchFetchOperationForFetchInfos:(id)infos;
+- (void)_sendBatchFetchOperationForFetchInfos:(id)infos;
 - (void)dealloc;
-- (void)fetchRecordWithID:(id)a3 assetSize:(int64_t)a4 completion:(id)a5;
-- (void)fetchRecordsWithCompletion:(id)a3;
-- (void)fetchRecordsWithIDs:(id)a3 progress:(id)a4 completion:(id)a5;
+- (void)fetchRecordWithID:(id)d assetSize:(int64_t)size completion:(id)completion;
+- (void)fetchRecordsWithCompletion:(id)completion;
+- (void)fetchRecordsWithIDs:(id)ds progress:(id)progress completion:(id)completion;
 @end
 
 @implementation MBCKBatchFetch
 
-- (MBCKBatchFetch)initWithOperationTracker:(id)a3
+- (MBCKBatchFetch)initWithOperationTracker:(id)tracker
 {
-  v4 = a3;
-  if (!v4)
+  trackerCopy = tracker;
+  if (!trackerCopy)
   {
     __assert_rtn("[MBCKBatchFetch initWithOperationTracker:]", "MBCKBatchFetch.m", 77, "tracker");
   }
 
-  v5 = v4;
-  v6 = [v4 ckOperationPolicy];
-  if (!v6)
+  v5 = trackerCopy;
+  ckOperationPolicy = [trackerCopy ckOperationPolicy];
+  if (!ckOperationPolicy)
   {
     __assert_rtn("[MBCKBatchFetch initWithOperationTracker:]", "MBCKBatchFetch.m", 79, "policy");
   }
 
-  v7 = v6;
+  v7 = ckOperationPolicy;
   v21.receiver = self;
   v21.super_class = MBCKBatchFetch;
   v8 = [(MBCKBatchFetch *)&v21 init];
@@ -82,30 +82,30 @@
   [(MBCKBatchFetch *)&v3 dealloc];
 }
 
-- (void)fetchRecordWithID:(id)a3 assetSize:(int64_t)a4 completion:(id)a5
+- (void)fetchRecordWithID:(id)d assetSize:(int64_t)size completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if (!v9)
+  dCopy = d;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     __assert_rtn("[MBCKBatchFetch fetchRecordWithID:assetSize:completion:]", "MBCKBatchFetch.m", 108, "completion");
   }
 
-  v10 = v9;
+  v10 = completionCopy;
   v11 = objc_autoreleasePoolPush();
   v12 = MBGetDefaultLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543618;
-    v56 = v8;
+    v56 = dCopy;
     v57 = 2114;
-    v58 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "=ck-fetch= Adding a fetch for %{public}@ to %{public}@", buf, 0x16u);
-    v52 = v8;
+    v52 = dCopy;
     _MBLog();
   }
 
-  if (v8)
+  if (dCopy)
   {
     v19 = atomic_load(&self->_started);
     v20 = v19 ^ 1;
@@ -122,15 +122,15 @@
     v22 = _MBAssert(v20 & 1, @"You can't add a new recordID to an already started batch", v13, v14, v15, v16, v17, v18, v52);
     if (v22)
     {
-      (v10)[2](v10, v8, 0, v22);
+      (v10)[2](v10, dCopy, 0, v22);
     }
 
     else
     {
-      v23 = self;
-      objc_sync_enter(v23);
-      v24 = [(MBCKBatchFetch *)v23 fetchSemaphore];
-      v25 = v24 == 0;
+      selfCopy2 = self;
+      objc_sync_enter(selfCopy2);
+      fetchSemaphore = [(MBCKBatchFetch *)selfCopy2 fetchSemaphore];
+      v25 = fetchSemaphore == 0;
 
       if (v25)
       {
@@ -157,7 +157,7 @@
           v29 = 0x7FFFFFFFLL;
         }
 
-        if (v23->_useGlobalThreadLimit)
+        if (selfCopy2->_useGlobalThreadLimit)
         {
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
@@ -169,25 +169,25 @@
             dispatch_once(&qword_100421788, block);
           }
 
-          [(MBCKBatchFetch *)v23 setFetchSemaphore:qword_100421780];
+          [(MBCKBatchFetch *)selfCopy2 setFetchSemaphore:qword_100421780];
         }
 
         else
         {
           v30 = dispatch_semaphore_create(v29);
-          [(MBCKBatchFetch *)v23 setFetchSemaphore:v30];
+          [(MBCKBatchFetch *)selfCopy2 setFetchSemaphore:v30];
         }
       }
 
-      v31 = [(MBCKBatchFetch *)v23 fetchInfosByRecordID];
-      v32 = [v31 objectForKeyedSubscript:v8];
+      fetchInfosByRecordID = [(MBCKBatchFetch *)selfCopy2 fetchInfosByRecordID];
+      v32 = [fetchInfosByRecordID objectForKeyedSubscript:dCopy];
 
       if (v32)
       {
-        v33 = [v32 callbacks];
-        v34 = [v10 copy];
-        v35 = objc_retainBlock(v34);
-        [v33 addObject:v35];
+        callbacks = [v32 callbacks];
+        fetchInfos = [v10 copy];
+        v35 = objc_retainBlock(fetchInfos);
+        [callbacks addObject:v35];
 
         v36 = 1;
         v37 = v32;
@@ -197,22 +197,22 @@
       {
         v37 = objc_opt_new();
         [v37 setState:0];
-        v38 = [v37 callbacks];
+        callbacks2 = [v37 callbacks];
         v39 = [v10 copy];
         v40 = objc_retainBlock(v39);
-        [v38 addObject:v40];
+        [callbacks2 addObject:v40];
 
-        [v37 setRecordID:v8];
-        if (a4)
+        [v37 setRecordID:dCopy];
+        if (size)
         {
-          [v37 setAssetSize:a4];
+          [v37 setAssetSize:size];
         }
 
         else
         {
-          v41 = [v37 recordID];
-          v42 = [v41 recordName];
-          v43 = [v42 componentsSeparatedByString:@":"];
+          recordID = [v37 recordID];
+          recordName = [recordID recordName];
+          v43 = [recordName componentsSeparatedByString:@":"];
 
           if ([v43 count] == 5)
           {
@@ -227,19 +227,19 @@
           }
         }
 
-        v47 = [(MBCKBatchFetch *)v23 ckOperationPolicy];
-        v33 = v47;
-        if (!v47)
+        ckOperationPolicy = [(MBCKBatchFetch *)selfCopy2 ckOperationPolicy];
+        callbacks = ckOperationPolicy;
+        if (!ckOperationPolicy)
         {
           __assert_rtn("[MBCKBatchFetch fetchRecordWithID:assetSize:completion:]", "MBCKBatchFetch.m", 166, "policy");
         }
 
-        v48 = [v47 maxBatchCount];
-        v49 = [v33 maxBatchFetchAssetSize];
-        if (-[MBCKBatchFetch fetchIncrementally](v23, "fetchIncrementally") && -[MBCKBatchFetch currentBatchCount](v23, "currentBatchCount") && (-[MBCKBatchFetch currentBatchCount](v23, "currentBatchCount") >= v48 || (v50 = -[MBCKBatchFetch currentBatchAssetSize](v23, "currentBatchAssetSize"), &v50[[v37 assetSize]] >= v49)))
+        maxBatchCount = [ckOperationPolicy maxBatchCount];
+        maxBatchFetchAssetSize = [callbacks maxBatchFetchAssetSize];
+        if (-[MBCKBatchFetch fetchIncrementally](selfCopy2, "fetchIncrementally") && -[MBCKBatchFetch currentBatchCount](selfCopy2, "currentBatchCount") && (-[MBCKBatchFetch currentBatchCount](selfCopy2, "currentBatchCount") >= maxBatchCount || (v50 = -[MBCKBatchFetch currentBatchAssetSize](selfCopy2, "currentBatchAssetSize"), &v50[[v37 assetSize]] >= maxBatchFetchAssetSize)))
         {
-          [(MBCKBatchFetch *)v23 setCurrentBatchCount:0];
-          [(MBCKBatchFetch *)v23 setCurrentBatchAssetSize:0];
+          [(MBCKBatchFetch *)selfCopy2 setCurrentBatchCount:0];
+          [(MBCKBatchFetch *)selfCopy2 setCurrentBatchAssetSize:0];
           v36 = 0;
         }
 
@@ -248,19 +248,19 @@
           v36 = 1;
         }
 
-        [(MBCKBatchFetch *)v23 setCurrentBatchCount:[(MBCKBatchFetch *)v23 currentBatchCount]+ 1];
-        -[MBCKBatchFetch setCurrentBatchAssetSize:](v23, "setCurrentBatchAssetSize:", [v37 assetSize] + -[MBCKBatchFetch currentBatchAssetSize](v23, "currentBatchAssetSize"));
-        v51 = [(MBCKBatchFetch *)v23 fetchInfosByRecordID];
-        [v51 setObject:v37 forKeyedSubscript:v8];
+        [(MBCKBatchFetch *)selfCopy2 setCurrentBatchCount:[(MBCKBatchFetch *)selfCopy2 currentBatchCount]+ 1];
+        -[MBCKBatchFetch setCurrentBatchAssetSize:](selfCopy2, "setCurrentBatchAssetSize:", [v37 assetSize] + -[MBCKBatchFetch currentBatchAssetSize](selfCopy2, "currentBatchAssetSize"));
+        fetchInfosByRecordID2 = [(MBCKBatchFetch *)selfCopy2 fetchInfosByRecordID];
+        [fetchInfosByRecordID2 setObject:v37 forKeyedSubscript:dCopy];
 
-        v34 = [(MBCKBatchFetch *)v23 fetchInfos];
-        [v34 addObject:v37];
+        fetchInfos = [(MBCKBatchFetch *)selfCopy2 fetchInfos];
+        [fetchInfos addObject:v37];
       }
 
-      objc_sync_exit(v23);
+      objc_sync_exit(selfCopy2);
       if (!((v32 != 0) | v36 & 1))
       {
-        [(MBCKBatchFetch *)v23 _flushBatchedFetches:1];
+        [(MBCKBatchFetch *)selfCopy2 _flushBatchedFetches:1];
       }
 
       v22 = 0;
@@ -276,32 +276,32 @@
   objc_autoreleasePoolPop(v11);
 }
 
-- (void)fetchRecordsWithIDs:(id)a3 progress:(id)a4 completion:(id)a5
+- (void)fetchRecordsWithIDs:(id)ds progress:(id)progress completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  dsCopy = ds;
+  progressCopy = progress;
+  completionCopy = completion;
+  if (!dsCopy)
   {
     __assert_rtn("[MBCKBatchFetch fetchRecordsWithIDs:progress:completion:]", "MBCKBatchFetch.m", 189, "recordIDs");
   }
 
-  if (!v9)
+  if (!progressCopy)
   {
     __assert_rtn("[MBCKBatchFetch fetchRecordsWithIDs:progress:completion:]", "MBCKBatchFetch.m", 190, "progress");
   }
 
-  if (!v10)
+  if (!completionCopy)
   {
     __assert_rtn("[MBCKBatchFetch fetchRecordsWithIDs:progress:completion:]", "MBCKBatchFetch.m", 191, "completion");
   }
 
-  v16 = v10;
-  v18 = v9;
+  v16 = completionCopy;
+  v18 = progressCopy;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
-  v32 = [v8 count];
+  v32 = [dsCopy count];
   if (v30[3])
   {
     v27[0] = 0;
@@ -314,7 +314,7 @@
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    obj = v8;
+    obj = dsCopy;
     v11 = [obj countByEnumeratingWithState:&v23 objects:v33 count:16];
     if (v11)
     {
@@ -334,7 +334,7 @@
           v19[2] = sub_10010A064;
           v19[3] = &unk_1003BEC68;
           v21 = v27;
-          v20 = v9;
+          v20 = progressCopy;
           v22 = &v29;
           [(MBCKBatchFetch *)self fetchRecordWithID:v14 completion:v19];
         }
@@ -366,38 +366,38 @@
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)_performCallbacksForFetchInfo:(id)a3 record:(id)a4 error:(id)a5
+- (void)_performCallbacksForFetchInfo:(id)info record:(id)record error:(id)error
 {
-  v8 = a3;
-  v26 = a4;
-  v25 = a5;
-  if ([v8 state] == 3)
+  infoCopy = info;
+  recordCopy = record;
+  errorCopy = error;
+  if ([infoCopy state] == 3)
   {
     v20 = +[NSAssertionHandler currentHandler];
-    v21 = [v8 recordID];
+    recordID = [infoCopy recordID];
     v22 = +[NSThread callStackSymbols];
-    [v20 handleFailureInMethod:a2 object:self file:@"MBCKBatchFetch.m" lineNumber:236 description:{@"We've already finished fetching record %@: %@", v21, v22}];
+    [v20 handleFailureInMethod:a2 object:self file:@"MBCKBatchFetch.m" lineNumber:236 description:{@"We've already finished fetching record %@: %@", recordID, v22}];
   }
 
-  v9 = [v8 recordID];
+  recordID2 = [infoCopy recordID];
   v10 = MBGetDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v38 = v9;
+    v38 = recordID2;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "=ck-fetch= Performing callbacks for fetch of record %{public}@", buf, 0xCu);
-    v23 = v9;
+    v23 = recordID2;
     _MBLog();
   }
 
-  [v8 setState:3];
-  v11 = [v8 callbacks];
-  [v8 setCallbacks:0];
+  [infoCopy setState:3];
+  callbacks = [infoCopy callbacks];
+  [infoCopy setCallbacks:0];
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v12 = v11;
+  v12 = callbacks;
   v13 = [v12 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v13)
   {
@@ -413,17 +413,17 @@
         }
 
         v17 = *(*(&v32 + 1) + 8 * i);
-        v18 = [(MBCKBatchFetch *)self callbackQueue];
+        callbackQueue = [(MBCKBatchFetch *)self callbackQueue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_10010A518;
         block[3] = &unk_1003BEC90;
         v31 = v17;
-        v28 = v9;
-        v29 = v26;
-        v30 = v25;
+        v28 = recordID2;
+        v29 = recordCopy;
+        v30 = errorCopy;
         v19 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
-        dispatch_async(v18, v19);
+        dispatch_async(callbackQueue, v19);
       }
 
       v14 = [v12 countByEnumeratingWithState:&v32 objects:v36 count:16];
@@ -433,30 +433,30 @@
   }
 }
 
-- (void)_finishBatchedFetchesWithCompletion:(id)a3
+- (void)_finishBatchedFetchesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MBCKBatchFetch *)v5 fetchInfos];
-  v7 = [v6 count];
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  fetchInfos = [(MBCKBatchFetch *)selfCopy fetchInfos];
+  v7 = [fetchInfos count];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   if (v7)
   {
-    [(MBCKBatchFetch *)v5 _fetchRecordsWithCompletion:v4];
+    [(MBCKBatchFetch *)selfCopy _fetchRecordsWithCompletion:completionCopy];
   }
 
   else
   {
-    if ([(MBCKBatchFetch *)v5 canceled])
+    if ([(MBCKBatchFetch *)selfCopy canceled])
     {
       [MBError errorWithCode:202 format:@"Batch fetch canceled"];
     }
 
     else
     {
-      [(MBCKBatchFetch *)v5 fetchError];
+      [(MBCKBatchFetch *)selfCopy fetchError];
     }
     v8 = ;
     v9 = MBGetDefaultLog();
@@ -466,7 +466,7 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v17 = v5;
+        v17 = selfCopy;
         v18 = 2112;
         v19 = v8;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "=ck-fetch= Failed %{public}@: %@", buf, 0x16u);
@@ -477,47 +477,47 @@
     else if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v17 = v5;
+      v17 = selfCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "=ck-fetch= Finished %{public}@", buf, 0xCu);
       _MBLog();
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      v11 = [(MBCKBatchFetch *)v5 callbackQueue];
+      callbackQueue = [(MBCKBatchFetch *)selfCopy callbackQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10010A7BC;
       block[3] = &unk_1003BE9A8;
-      v15 = v4;
+      v15 = completionCopy;
       v14 = v8;
       v12 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
-      dispatch_async(v11, v12);
+      dispatch_async(callbackQueue, v12);
     }
   }
 }
 
-- (BOOL)_handleCompletionForFetchInfo:(id)a3 record:(id)a4 error:(id)a5
+- (BOOL)_handleCompletionForFetchInfo:(id)info record:(id)record error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  infoCopy = info;
+  recordCopy = record;
+  errorCopy = error;
+  if (!infoCopy)
   {
     __assert_rtn("[MBCKBatchFetch _handleCompletionForFetchInfo:record:error:]", "MBCKBatchFetch.m", 275, "fetchInfo");
   }
 
-  v11 = v10;
-  if ([v8 state] != 3)
+  v11 = errorCopy;
+  if ([infoCopy state] != 3)
   {
-    v13 = [v8 recordID];
-    v14 = [v8 fetchAttempts];
+    recordID = [infoCopy recordID];
+    fetchAttempts = [infoCopy fetchAttempts];
     if (!v11)
     {
-      [v8 setError:0];
+      [infoCopy setError:0];
       v32 = MBGetDefaultLog();
       v33 = v32;
-      if (v14 == 1)
+      if (fetchAttempts == 1)
       {
         if (!os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
         {
@@ -525,7 +525,7 @@
         }
 
         *buf = 138543362;
-        v54 = v13;
+        v54 = recordID;
         _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEBUG, "=ck-fetch= Fetched record %{public}@", buf, 0xCu);
       }
 
@@ -537,9 +537,9 @@
         }
 
         *buf = 138543618;
-        v54 = v13;
+        v54 = recordID;
         v55 = 2048;
-        v56 = *&v14;
+        v56 = *&fetchAttempts;
         _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "=ck-fetch= Fetched record %{public}@ after %lu attempts", buf, 0x16u);
       }
 
@@ -552,52 +552,52 @@ LABEL_49:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v54 = v13;
+      v54 = recordID;
       v55 = 2112;
       v56 = *&v11;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "=ck-fetch= Handling fetch error for record %{public}@: %@", buf, 0x16u);
-      v49 = v13;
+      v49 = recordID;
       v51 = v11;
       _MBLog();
     }
 
-    v16 = [(MBCKBatchFetch *)self ckOperationTracker];
-    if (!v16)
+    ckOperationTracker = [(MBCKBatchFetch *)self ckOperationTracker];
+    if (!ckOperationTracker)
     {
       __assert_rtn("[MBCKBatchFetch _handleCompletionForFetchInfo:record:error:]", "MBCKBatchFetch.m", 285, "tracker");
     }
 
-    v17 = v16;
-    v18 = [(MBCKBatchFetch *)self ckOperationPolicy];
-    if (!v18)
+    v17 = ckOperationTracker;
+    ckOperationPolicy = [(MBCKBatchFetch *)self ckOperationPolicy];
+    if (!ckOperationPolicy)
     {
       __assert_rtn("[MBCKBatchFetch _handleCompletionForFetchInfo:record:error:]", "MBCKBatchFetch.m", 287, "policy");
     }
 
-    v19 = v18;
-    v52 = v14;
+    v19 = ckOperationPolicy;
+    v52 = fetchAttempts;
     v20 = v17;
-    [v18 retryAfterInterval];
+    [ckOperationPolicy retryAfterInterval];
     v22 = v21;
-    v23 = [v11 domain];
-    v24 = [v23 isEqualToString:CKErrorDomain];
+    domain = [v11 domain];
+    v24 = [domain isEqualToString:CKErrorDomain];
 
     if (v24)
     {
       v25 = fmax(v22, 1.0);
-      v26 = [v11 code];
-      if (v26 > 5)
+      code = [v11 code];
+      if (code > 5)
       {
-        if (v26 == 6)
+        if (code == 6)
         {
           v38 = MBGetDefaultLog();
           v27 = v17;
           if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543362;
-            v54 = v13;
+            v54 = recordID;
             _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_ERROR, "=ck-fetch= Fetch of record %{public}@ hit a service unavailable error", buf, 0xCu);
-            v49 = v13;
+            v49 = recordID;
             _MBLog();
           }
 
@@ -606,10 +606,10 @@ LABEL_49:
         }
 
         v27 = v17;
-        if (v26 != 7)
+        if (code != 7)
         {
           v28 = v52;
-          if (v26 != 23)
+          if (code != 23)
           {
             goto LABEL_47;
           }
@@ -618,9 +618,9 @@ LABEL_49:
           if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543362;
-            v54 = v13;
+            v54 = recordID;
             _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "=ck-fetch= Fetch of record %{public}@ got a zone busy error", buf, 0xCu);
-            v49 = v13;
+            v49 = recordID;
             _MBLog();
           }
 
@@ -631,9 +631,9 @@ LABEL_49:
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
-          v54 = v13;
+          v54 = recordID;
           _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_ERROR, "=ck-fetch= Fetch of record %{public}@ was rate limited", buf, 0xCu);
-          v49 = v13;
+          v49 = recordID;
           _MBLog();
         }
 
@@ -646,8 +646,8 @@ LABEL_46:
             goto LABEL_47;
           }
 
-          v41 = [v11 userInfo];
-          v37 = [v41 objectForKeyedSubscript:CKErrorRetryAfterKey];
+          userInfo = [v11 userInfo];
+          v37 = [userInfo objectForKeyedSubscript:CKErrorRetryAfterKey];
 
           if (v37)
           {
@@ -659,23 +659,23 @@ LABEL_46:
           v44 = MBGetDefaultLog();
           if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
           {
-            v45 = [v8 recordID];
+            recordID2 = [infoCopy recordID];
             *buf = 138543874;
-            v54 = v45;
+            v54 = recordID2;
             v55 = 2048;
             v56 = v43;
             v57 = 2048;
             v58 = v28;
             _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "=ck-fetch= Retrying fetch of record %{public}@ after %0.3fs and %lu attempts", buf, 0x20u);
 
-            v50 = [v8 recordID];
+            recordID3 = [infoCopy recordID];
             _MBLog();
           }
 
           v46 = [NSDate dateWithTimeIntervalSinceNow:v43];
-          [v8 setRetryDate:v46];
+          [infoCopy setRetryDate:v46];
 
-          [v8 setState:1];
+          [infoCopy setState:1];
           v12 = 0;
 LABEL_56:
 
@@ -683,15 +683,15 @@ LABEL_56:
         }
       }
 
-      else if (v26 == 2)
+      else if (code == 2)
       {
-        v35 = [v11 userInfo];
-        v36 = [v35 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
-        v37 = [v36 objectForKeyedSubscript:v13];
+        userInfo2 = [v11 userInfo];
+        v36 = [userInfo2 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
+        v37 = [v36 objectForKeyedSubscript:recordID];
 
         if (v37)
         {
-          v12 = [(MBCKBatchFetch *)self _handleCompletionForFetchInfo:v8 record:v9 error:v37];
+          v12 = [(MBCKBatchFetch *)self _handleCompletionForFetchInfo:infoCopy record:recordCopy error:v37];
           v27 = v20;
           goto LABEL_56;
         }
@@ -701,7 +701,7 @@ LABEL_56:
         if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
-          v54 = v13;
+          v54 = recordID;
           _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_ERROR, "=ck-fetch= No partial error found for record %{public}@", buf, 0xCu);
           _MBLog();
         }
@@ -711,11 +711,11 @@ LABEL_56:
 
       else
       {
-        if (v26 != 3)
+        if (code != 3)
         {
           v27 = v17;
           v28 = v52;
-          if (v26 != 4)
+          if (code != 4)
           {
             goto LABEL_47;
           }
@@ -724,9 +724,9 @@ LABEL_56:
           if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543362;
-            v54 = v13;
+            v54 = recordID;
             _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "=ck-fetch= Fetch of record %{public}@ hit a network failure error", buf, 0xCu);
-            v49 = v13;
+            v49 = recordID;
             _MBLog();
           }
 
@@ -740,9 +740,9 @@ LABEL_56:
         if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
-          v54 = v13;
+          v54 = recordID;
           _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_ERROR, "=ck-fetch= Fetch of record %{public}@ hit a network unavailable error", buf, 0xCu);
-          v49 = v13;
+          v49 = recordID;
           _MBLog();
         }
 
@@ -777,12 +777,12 @@ LABEL_41:
 
 LABEL_47:
 
-    [v8 setError:v11];
+    [infoCopy setError:v11];
     v33 = MBGetDefaultLog();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v54 = v13;
+      v54 = recordID;
       v55 = 2048;
       v56 = *&v28;
       v57 = 2112;
@@ -793,7 +793,7 @@ LABEL_47:
 
 LABEL_50:
 
-    [(MBCKBatchFetch *)self _performCallbacksForFetchInfo:v8 record:v9 error:v11];
+    [(MBCKBatchFetch *)self _performCallbacksForFetchInfo:infoCopy record:recordCopy error:v11];
     v12 = 1;
 LABEL_57:
 
@@ -806,22 +806,22 @@ LABEL_58:
   return v12;
 }
 
-- (void)_sendBatchFetchOperationForFetchInfos:(id)a3
+- (void)_sendBatchFetchOperationForFetchInfos:(id)infos
 {
-  v4 = a3;
-  v36 = [(MBCKBatchFetch *)self ckOperationTracker];
-  if (!v36)
+  infosCopy = infos;
+  ckOperationTracker = [(MBCKBatchFetch *)self ckOperationTracker];
+  if (!ckOperationTracker)
   {
     __assert_rtn("[MBCKBatchFetch _sendBatchFetchOperationForFetchInfos:]", "MBCKBatchFetch.m", 361, "tracker");
   }
 
-  v5 = [(MBCKBatchFetch *)self ckOperationPolicy];
-  if (!v5)
+  ckOperationPolicy = [(MBCKBatchFetch *)self ckOperationPolicy];
+  if (!ckOperationPolicy)
   {
     __assert_rtn("[MBCKBatchFetch _sendBatchFetchOperationForFetchInfos:]", "MBCKBatchFetch.m", 363, "policy");
   }
 
-  v37 = [v4 valueForKey:@"recordID"];
+  v37 = [infosCopy valueForKey:@"recordID"];
   v57[0] = 0;
   v57[1] = v57;
   v57[2] = 0x2020000000;
@@ -834,7 +834,7 @@ LABEL_58:
       v7 = v6;
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [v4 count];
+        v8 = [infosCopy count];
         *buf = 138412802;
         *&buf[4] = @"PrivilegedBatchRecordFetch";
         *&buf[12] = 2114;
@@ -844,14 +844,14 @@ LABEL_58:
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "=ck-fetch= Performing a %@ for %{public}@, c:%lu", buf, 0x20u);
       }
 
-      [v4 count];
+      [infosCopy count];
       _MBLog();
     }
 
     v9 = [NSPredicate predicateWithFormat:@"recordID IN %@", v37];
     v10 = [[CKQuery alloc] initWithRecordType:@"PrivilegedBatchRecordFetch" predicate:v9];
     v11 = [[CKQueryOperation alloc] initWithQuery:v10];
-    if ([v5 fetchAssets])
+    if ([ckOperationPolicy fetchAssets])
     {
       v12 = objc_opt_new();
       [v12 setSparseAware:&__kCFBooleanTrue];
@@ -870,7 +870,7 @@ LABEL_58:
       v15 = v14;
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [v4 count];
+        v16 = [infosCopy count];
         *buf = 138543618;
         *&buf[4] = self;
         *&buf[12] = 2048;
@@ -878,14 +878,14 @@ LABEL_58:
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "=ck-fetch= Fetching a batch for %{public}@, c:%lu", buf, 0x16u);
       }
 
-      [v4 count];
+      [infosCopy count];
       _MBLog();
     }
 
     v11 = [[CKFetchRecordsOperation alloc] initWithRecordIDs:v37];
-    if ([v5 fetchAssets])
+    if ([ckOperationPolicy fetchAssets])
     {
-      [v11 setShouldFetchAssetContent:{objc_msgSend(v5, "fetchAssets")}];
+      [v11 setShouldFetchAssetContent:{objc_msgSend(ckOperationPolicy, "fetchAssets")}];
     }
   }
 
@@ -897,7 +897,7 @@ LABEL_58:
   v54 = v57;
   v52[4] = self;
   objc_copyWeak(&v55, &location);
-  v17 = v4;
+  v17 = infosCopy;
   v53 = v17;
   v18 = objc_retainBlock(v52);
   v48[0] = _NSConcreteStackBlock;
@@ -952,10 +952,10 @@ LABEL_58:
     v26 = v24;
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [v11 operationID];
+      operationID = [v11 operationID];
       v28 = [v37 count];
       *buf = 138544130;
-      *&buf[4] = v27;
+      *&buf[4] = operationID;
       *&buf[12] = 2114;
       *&buf[14] = self;
       *&buf[22] = 2048;
@@ -965,28 +965,28 @@ LABEL_58:
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "=ck-fetch= Created operation %{public}@ for %{public}@, c:%lu, o:%ld", buf, 0x2Au);
     }
 
-    v29 = [v11 operationID];
+    operationID2 = [v11 operationID];
     [v37 count];
     _MBLog();
   }
 
-  v30 = [(MBCKBatchFetch *)self fetchGroup];
-  dispatch_group_enter(v30);
+  fetchGroup = [(MBCKBatchFetch *)self fetchGroup];
+  dispatch_group_enter(fetchGroup);
 
-  v31 = [(MBCKBatchFetch *)self callbackQueue];
+  callbackQueue = [(MBCKBatchFetch *)self callbackQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10010C45C;
   block[3] = &unk_1003BC5B8;
   block[4] = self;
-  v39 = v36;
+  v39 = ckOperationTracker;
   v40 = v11;
-  v41 = v5;
-  v32 = v5;
+  v41 = ckOperationPolicy;
+  v32 = ckOperationPolicy;
   v33 = v11;
-  v34 = v36;
+  v34 = ckOperationTracker;
   v35 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
-  dispatch_async(v31, v35);
+  dispatch_async(callbackQueue, v35);
 
   objc_destroyWeak(&v51);
   objc_destroyWeak(&v55);
@@ -995,20 +995,20 @@ LABEL_58:
   _Block_object_dispose(v57, 8);
 }
 
-- (void)_scheduleBatchFetchOperationForFetchInfos:(id)a3
+- (void)_scheduleBatchFetchOperationForFetchInfos:(id)infos
 {
-  v4 = a3;
-  if (![v4 count])
+  infosCopy = infos;
+  if (![infosCopy count])
   {
     __assert_rtn("[MBCKBatchFetch _scheduleBatchFetchOperationForFetchInfos:]", "MBCKBatchFetch.m", 502, "fetchInfos.count");
   }
 
-  v5 = [(MBCKBatchFetch *)self fetchGroup];
-  dispatch_group_enter(v5);
+  fetchGroup = [(MBCKBatchFetch *)self fetchGroup];
+  dispatch_group_enter(fetchGroup);
 
   v6 = +[NSDate now];
-  v7 = [(MBCKBatchFetch *)self fetchSemaphore];
-  dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
+  fetchSemaphore = [(MBCKBatchFetch *)self fetchSemaphore];
+  dispatch_semaphore_wait(fetchSemaphore, 0xFFFFFFFFFFFFFFFFLL);
 
   v8 = +[NSDate now];
   v30 = v6;
@@ -1019,7 +1019,7 @@ LABEL_58:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v11 = v4;
+  v11 = infosCopy;
   v12 = [v11 countByEnumeratingWithState:&v33 objects:v45 count:16];
   if (v12)
   {
@@ -1037,20 +1037,20 @@ LABEL_58:
         }
 
         v18 = *(*(&v33 + 1) + 8 * i);
-        v19 = [v18 retryDate];
-        v20 = v19;
-        if (v19)
+        retryDate = [v18 retryDate];
+        v20 = retryDate;
+        if (retryDate)
         {
           if (v15)
           {
-            v21 = [v15 laterDate:v19];
+            v21 = [v15 laterDate:retryDate];
 
             v15 = v21;
           }
 
           else
           {
-            v15 = v19;
+            v15 = retryDate;
           }
         }
 
@@ -1074,7 +1074,7 @@ LABEL_58:
   {
     v23 = [v11 count];
     *buf = 138544130;
-    v38 = self;
+    selfCopy2 = self;
     v39 = 2048;
     v40 = *&v23;
     v41 = 2048;
@@ -1094,7 +1094,7 @@ LABEL_58:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v38 = self;
+      selfCopy2 = self;
       v39 = 2048;
       v40 = v25;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "=ck-fetch= Scheduling a batch for %{public}@ in %0.3fs", buf, 0x16u);
@@ -1115,83 +1115,83 @@ LABEL_58:
   else
   {
     [(MBCKBatchFetch *)self _sendBatchFetchOperationForFetchInfos:v11];
-    v29 = [(MBCKBatchFetch *)self fetchGroup];
-    dispatch_group_leave(v29);
+    fetchGroup2 = [(MBCKBatchFetch *)self fetchGroup];
+    dispatch_group_leave(fetchGroup2);
   }
 }
 
-- (void)_flushBatchedFetches:(unint64_t)a3
+- (void)_flushBatchedFetches:(unint64_t)fetches
 {
-  if (!a3)
+  if (!fetches)
   {
     __assert_rtn("[MBCKBatchFetch _flushBatchedFetches:]", "MBCKBatchFetch.m", 537, "flushCount");
   }
 
-  v3 = a3;
-  v5 = [(MBCKBatchFetch *)self ckOperationPolicy];
-  v34 = v5;
-  v6 = v5;
-  if (!v5)
+  fetchesCopy = fetches;
+  ckOperationPolicy = [(MBCKBatchFetch *)self ckOperationPolicy];
+  v34 = ckOperationPolicy;
+  v6 = ckOperationPolicy;
+  if (!ckOperationPolicy)
   {
     __assert_rtn("[MBCKBatchFetch _flushBatchedFetches:]", "MBCKBatchFetch.m", 539, "policy");
   }
 
-  v35 = [v5 maxBatchCount];
-  v33 = [v6 maxBatchFetchAssetSize];
-  v36 = [(MBCKBatchFetch *)self fetchIncrementally];
+  maxBatchCount = [ckOperationPolicy maxBatchCount];
+  maxBatchFetchAssetSize = [v6 maxBatchFetchAssetSize];
+  fetchIncrementally = [(MBCKBatchFetch *)self fetchIncrementally];
   v37 = objc_opt_new();
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(MBCKBatchFetch *)v7 fetchInfos];
-  v9 = [v8 objectEnumerator];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  fetchInfos = [(MBCKBatchFetch *)selfCopy fetchInfos];
+  objectEnumerator = [fetchInfos objectEnumerator];
 
   v10 = 0;
   v11 = 0;
   while (1)
   {
-    v12 = [v9 nextObject];
+    nextObject = [objectEnumerator nextObject];
     v13 = [v10 count];
     v14 = v13;
-    if (!v12 && !v13)
+    if (!nextObject && !v13)
     {
-      v12 = 0;
+      nextObject = 0;
       goto LABEL_37;
     }
 
-    if (!v12)
+    if (!nextObject)
     {
-      v21 = 0;
+      integerValue = 0;
       goto LABEL_12;
     }
 
-    if ([v12 state])
+    if ([nextObject state])
     {
       goto LABEL_33;
     }
 
-    v15 = [v12 recordID];
-    v16 = [v15 recordName];
-    v17 = [v16 componentsSeparatedByString:@":"];
+    recordID = [nextObject recordID];
+    recordName = [recordID recordName];
+    v17 = [recordName componentsSeparatedByString:@":"];
 
     if ([v17 count] == 5 && (objc_msgSend(v17, "objectAtIndexedSubscript:", 0), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "isEqualToString:", @"F"), v18, v19))
     {
       v20 = [v17 objectAtIndexedSubscript:3];
-      v21 = [v20 integerValue];
+      integerValue = [v20 integerValue];
     }
 
     else
     {
-      v21 = 0;
+      integerValue = 0;
     }
 
-    if (((v14 != 0) & v36) != 1)
+    if (((v14 != 0) & fetchIncrementally) != 1)
     {
 LABEL_25:
 
       goto LABEL_26;
     }
 
-    if (v14 >= v35)
+    if (v14 >= maxBatchCount)
     {
       break;
     }
@@ -1201,7 +1201,7 @@ LABEL_25:
       goto LABEL_25;
     }
 
-    if (v21 + v11 >= v33)
+    if (integerValue + v11 >= maxBatchFetchAssetSize)
     {
       goto LABEL_12;
     }
@@ -1213,25 +1213,25 @@ LABEL_26:
       v25 = v24;
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
-        v26 = [v12 recordID];
+        recordID2 = [nextObject recordID];
         *buf = 138543362;
-        v44 = v26;
+        v44 = recordID2;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEBUG, "=ck-fetch= Adding record %{public}@ to fetch batch", buf, 0xCu);
       }
 
-      v32 = [v12 recordID];
+      recordID3 = [nextObject recordID];
       _MBLog();
     }
 
-    [v12 setState:2];
-    [v12 setFetchAttempts:{objc_msgSend(v12, "fetchAttempts") + 1}];
+    [nextObject setState:2];
+    [nextObject setFetchAttempts:{objc_msgSend(nextObject, "fetchAttempts") + 1}];
     if (!v10)
     {
       v10 = objc_opt_new();
     }
 
-    [v10 addObject:{v12, v32}];
-    v11 += v21;
+    [v10 addObject:{nextObject, recordID3}];
+    v11 += integerValue;
 LABEL_33:
   }
 
@@ -1247,19 +1247,19 @@ LABEL_12:
     *buf = 134217984;
     v44 = v14;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "=ck-fetch= Flushing %lu batched fetches", buf, 0xCu);
-    v32 = v14;
+    recordID3 = v14;
     _MBLog();
   }
 
   [v37 addObject:v10];
-  v23 = [(MBCKBatchFetch *)v7 fetchGroup];
-  dispatch_group_enter(v23);
+  fetchGroup = [(MBCKBatchFetch *)selfCopy fetchGroup];
+  dispatch_group_enter(fetchGroup);
 
-  if (--v3)
+  if (--fetchesCopy)
   {
     v11 = 0;
     v10 = 0;
-    if (!v12)
+    if (!nextObject)
     {
       goto LABEL_33;
     }
@@ -1275,7 +1275,7 @@ LABEL_37:
     __assert_rtn("[MBCKBatchFetch _flushBatchedFetches:]", "MBCKBatchFetch.m", 595, "!batch.count");
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
@@ -1294,9 +1294,9 @@ LABEL_37:
           objc_enumerationMutation(v27);
         }
 
-        [(MBCKBatchFetch *)v7 _scheduleBatchFetchOperationForFetchInfos:*(*(&v38 + 1) + 8 * i), v32];
-        v31 = [(MBCKBatchFetch *)v7 fetchGroup];
-        dispatch_group_leave(v31);
+        [(MBCKBatchFetch *)selfCopy _scheduleBatchFetchOperationForFetchInfos:*(*(&v38 + 1) + 8 * i), recordID3];
+        fetchGroup2 = [(MBCKBatchFetch *)selfCopy fetchGroup];
+        dispatch_group_leave(fetchGroup2);
       }
 
       v28 = [v27 countByEnumeratingWithState:&v38 objects:v42 count:16];
@@ -1306,26 +1306,26 @@ LABEL_37:
   }
 }
 
-- (void)_fetchRecordsWithCompletion:(id)a3
+- (void)_fetchRecordsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(MBCKBatchFetch *)self _flush];
-  v5 = [(MBCKBatchFetch *)self fetchGroup];
+  fetchGroup = [(MBCKBatchFetch *)self fetchGroup];
   v6 = dispatch_get_global_queue(17, 0);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10010D054;
   v9[3] = &unk_1003BD478;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = completionCopy;
+  v7 = completionCopy;
   v8 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v9);
-  dispatch_group_notify(v5, v6, v8);
+  dispatch_group_notify(fetchGroup, v6, v8);
 }
 
-- (void)fetchRecordsWithCompletion:(id)a3
+- (void)fetchRecordsWithCompletion:(id)completion
 {
-  v6 = a3;
+  completionCopy = completion;
   v4 = objc_autoreleasePoolPush();
   if (atomic_exchange(&self->_started, 1u))
   {
@@ -1333,11 +1333,11 @@ LABEL_37:
   }
 
   v5 = v4;
-  [(MBCKBatchFetch *)self _fetchRecordsWithCompletion:v6];
+  [(MBCKBatchFetch *)self _fetchRecordsWithCompletion:completionCopy];
   objc_autoreleasePoolPop(v5);
 }
 
-- (BOOL)finishWithError:(id *)a3
+- (BOOL)finishWithError:(id *)error
 {
   v11 = 0;
   v12 = &v11;
@@ -1354,9 +1354,9 @@ LABEL_37:
   v9 = v5;
   [(MBCKBatchFetch *)self fetchRecordsWithCompletion:v8];
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
-  if (a3)
+  if (error)
   {
-    *a3 = v12[5];
+    *error = v12[5];
   }
 
   v6 = v12[5] == 0;

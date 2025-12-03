@@ -1,16 +1,16 @@
 @interface PCPPredictedContext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsContextType:(id)a3;
+- (int)StringAsContextType:(id)type;
 - (int)contextType;
 - (unint64_t)hash;
-- (void)addSources:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasContextType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addSources:(id)sources;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasContextType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PCPPredictedContext
@@ -28,9 +28,9 @@
   }
 }
 
-- (void)setHasContextType:(BOOL)a3
+- (void)setHasContextType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -43,30 +43,30 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsContextType:(id)a3
+- (int)StringAsContextType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Location"])
+  else if ([typeCopy isEqualToString:@"Location"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Transition"])
+  else if ([typeCopy isEqualToString:@"Transition"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Activity"])
+  else if ([typeCopy isEqualToString:@"Activity"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Workout"])
+  else if ([typeCopy isEqualToString:@"Workout"])
   {
     v4 = 4;
   }
@@ -79,22 +79,22 @@
   return v4;
 }
 
-- (void)addSources:(id)a3
+- (void)addSources:(id)sources
 {
-  v4 = a3;
+  sourcesCopy = sources;
   sources = self->_sources;
-  v8 = v4;
+  v8 = sourcesCopy;
   if (!sources)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_sources;
     self->_sources = v6;
 
-    v4 = v8;
+    sourcesCopy = v8;
     sources = self->_sources;
   }
 
-  [(NSMutableArray *)sources addObject:v4];
+  [(NSMutableArray *)sources addObject:sourcesCopy];
 }
 
 - (id)description
@@ -103,8 +103,8 @@
   v8.receiver = self;
   v8.super_class = PCPPredictedContext;
   v4 = [(PCPPredictedContext *)&v8 description];
-  v5 = [(PCPPredictedContext *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PCPPredictedContext *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -112,7 +112,7 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -127,7 +127,7 @@
       v6 = off_1E83B8530[contextType];
     }
 
-    [v3 setObject:v6 forKey:@"contextType"];
+    [dictionary setObject:v6 forKey:@"contextType"];
 
     has = self->_has;
   }
@@ -135,14 +135,14 @@
   if (has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_probability];
-    [v3 setObject:v7 forKey:@"probability"];
+    [dictionary setObject:v7 forKey:@"probability"];
   }
 
   dateInterval = self->_dateInterval;
   if (dateInterval)
   {
-    v9 = [(PCPPredictedContextDateInterval *)dateInterval dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"dateInterval"];
+    dictionaryRepresentation = [(PCPPredictedContextDateInterval *)dateInterval dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"dateInterval"];
   }
 
   if ([(NSMutableArray *)self->_sources count])
@@ -167,8 +167,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation2 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v10 addObject:dictionaryRepresentation2];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -177,18 +177,18 @@
       while (v13);
     }
 
-    [v3 setObject:v10 forKey:@"sources"];
+    [dictionary setObject:v10 forKey:@"sources"];
   }
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -240,36 +240,36 @@
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[4] = self->_contextType;
-    *(v4 + 40) |= 2u;
+    toCopy[4] = self->_contextType;
+    *(toCopy + 40) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_probability;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = *&self->_probability;
+    *(toCopy + 40) |= 1u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if (self->_dateInterval)
   {
-    [v4 setDateInterval:?];
+    [toCopy setDateInterval:?];
   }
 
   if ([(PCPPredictedContext *)self sourcesCount])
   {
     [v10 clearSources];
-    v6 = [(PCPPredictedContext *)self sourcesCount];
-    if (v6)
+    sourcesCount = [(PCPPredictedContext *)self sourcesCount];
+    if (sourcesCount)
     {
-      v7 = v6;
+      v7 = sourcesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(PCPPredictedContext *)self sourcesAtIndex:i];
@@ -279,10 +279,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -298,7 +298,7 @@
     *(v5 + 40) |= 1u;
   }
 
-  v8 = [(PCPPredictedContextDateInterval *)self->_dateInterval copyWithZone:a3];
+  v8 = [(PCPPredictedContextDateInterval *)self->_dateInterval copyWithZone:zone];
   v9 = v6[3];
   v6[3] = v8;
 
@@ -321,7 +321,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * i) copyWithZone:{a3, v18}];
+        v15 = [*(*(&v18 + 1) + 8 * i) copyWithZone:{zone, v18}];
         [v6 addSources:v15];
       }
 
@@ -335,24 +335,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(equalCopy + 40);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_contextType != *(v4 + 4))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_contextType != *(equalCopy + 4))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
 LABEL_16:
     v8 = 0;
@@ -361,25 +361,25 @@ LABEL_16:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_probability != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_probability != *(equalCopy + 1))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_16;
   }
 
   dateInterval = self->_dateInterval;
-  if (dateInterval | *(v4 + 3) && ![(PCPPredictedContextDateInterval *)dateInterval isEqual:?])
+  if (dateInterval | *(equalCopy + 3) && ![(PCPPredictedContextDateInterval *)dateInterval isEqual:?])
   {
     goto LABEL_16;
   }
 
   sources = self->_sources;
-  if (sources | *(v4 + 4))
+  if (sources | *(equalCopy + 4))
   {
     v8 = [(NSMutableArray *)sources isEqual:?];
   }
@@ -446,22 +446,22 @@ LABEL_9:
   return v10 ^ [(NSMutableArray *)self->_sources hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 40);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 40);
   if ((v6 & 2) != 0)
   {
-    self->_contextType = *(v4 + 4);
+    self->_contextType = *(fromCopy + 4);
     *&self->_has |= 2u;
-    v6 = *(v4 + 40);
+    v6 = *(fromCopy + 40);
   }
 
   if (v6)
   {
-    self->_probability = *(v4 + 1);
+    self->_probability = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

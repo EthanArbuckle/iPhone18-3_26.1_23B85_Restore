@@ -1,21 +1,21 @@
 @interface PKPaymentSetupTransferCardView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PKPaymentSetupTransferCardDelegate)delegate;
-- (PKPaymentSetupTransferCardView)initWithFrame:(CGRect)a3;
+- (PKPaymentSetupTransferCardView)initWithFrame:(CGRect)frame;
 - (void)_createSubviews;
-- (void)_transferBalanceButtonTapped:(id)a3;
+- (void)_transferBalanceButtonTapped:(id)tapped;
 - (void)layoutSubviews;
 @end
 
 @implementation PKPaymentSetupTransferCardView
 
-- (PKPaymentSetupTransferCardView)initWithFrame:(CGRect)a3
+- (PKPaymentSetupTransferCardView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v12.receiver = self;
   v12.super_class = PKPaymentSetupTransferCardView;
-  v5 = [(PKPaymentSetupTransferCardView *)&v12 initWithFrame:a3.origin.x, a3.origin.y];
+  v5 = [(PKPaymentSetupTransferCardView *)&v12 initWithFrame:frame.origin.x, frame.origin.y];
   if (v5)
   {
     v6 = PKProvisioningBackgroundColor();
@@ -91,10 +91,10 @@ void __49__PKPaymentSetupTransferCardView__createSubviews__block_invoke_2(uint64
   [(UIButton *)self->_transferBalanceButton setFrame:v4 * 0.5 - v6 * 0.5, 20.0, v6, v7];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(PKPaymentSetupTransferCardView *)self bounds:a3.width];
+  width = fits.width;
+  [(PKPaymentSetupTransferCardView *)self bounds:fits.width];
   [(UIButton *)self->_transferBalanceButton sizeThatFits:width, v5];
   v7 = v6 + 20.0 + 70.0;
   v8 = width;
@@ -103,7 +103,7 @@ void __49__PKPaymentSetupTransferCardView__createSubviews__block_invoke_2(uint64
   return result;
 }
 
-- (void)_transferBalanceButtonTapped:(id)a3
+- (void)_transferBalanceButtonTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained didInitiateTransferExistingCard];

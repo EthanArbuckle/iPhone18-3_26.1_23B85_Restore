@@ -1,5 +1,5 @@
 @interface MUAmenityListSectionView
-- (MUAmenityListSectionView)initWithAmenityListConfiguration:(id)a3;
+- (MUAmenityListSectionView)initWithAmenityListConfiguration:(id)configuration;
 - (void)_moreButtonTapped;
 - (void)_performCompression;
 - (void)_performExpansion;
@@ -167,8 +167,8 @@ void __45__MUAmenityListSectionView__performExpansion__block_invoke(uint64_t a1)
   v62 = 0u;
   v63 = 0u;
   val = self;
-  v4 = [(MUAmenityListSectionConfiguration *)self->_configuration viewModels];
-  v5 = [v4 countByEnumeratingWithState:&v60 objects:v65 count:16];
+  viewModels = [(MUAmenityListSectionConfiguration *)self->_configuration viewModels];
+  v5 = [viewModels countByEnumeratingWithState:&v60 objects:v65 count:16];
   v6 = 0;
   if (v5)
   {
@@ -184,7 +184,7 @@ void __45__MUAmenityListSectionView__performExpansion__block_invoke(uint64_t a1)
       {
         if (*v61 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(viewModels);
         }
 
         v13 = *(*(&v60 + 1) + 8 * v12);
@@ -202,23 +202,23 @@ void __45__MUAmenityListSectionView__performExpansion__block_invoke(uint64_t a1)
       }
 
       while (v5 != v12);
-      v5 = [v4 countByEnumeratingWithState:&v60 objects:v65 count:16];
+      v5 = [viewModels countByEnumeratingWithState:&v60 objects:v65 count:16];
     }
 
     while (v5);
   }
 
-  v16 = [(MUAmenityListSectionConfiguration *)val->_configuration applePayConfiguration];
-  v17 = [v16 applePayRowAmenity];
-  v18 = v17 == 0;
+  applePayConfiguration = [(MUAmenityListSectionConfiguration *)val->_configuration applePayConfiguration];
+  applePayRowAmenity = [applePayConfiguration applePayRowAmenity];
+  v18 = applePayRowAmenity == 0;
 
   if (!v18)
   {
     v19 = [MUAmenityItemView alloc];
     v20 = [(MUAmenityItemView *)v19 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-    v21 = [(MUAmenityListSectionConfiguration *)val->_configuration applePayConfiguration];
-    v22 = [v21 applePayRowAmenity];
-    [(MUAmenityItemView *)v20 setViewModel:v22];
+    applePayConfiguration2 = [(MUAmenityListSectionConfiguration *)val->_configuration applePayConfiguration];
+    applePayRowAmenity2 = [applePayConfiguration2 applePayRowAmenity];
+    [(MUAmenityItemView *)v20 setViewModel:applePayRowAmenity2];
 
     applePayAmenityRowView = val->_applePayAmenityRowView;
     val->_applePayAmenityRowView = &v20->super.super;
@@ -228,10 +228,10 @@ void __45__MUAmenityListSectionView__performExpansion__block_invoke(uint64_t a1)
     [v3 addObject:v24];
   }
 
-  v25 = [(MUAmenityListSectionConfiguration *)val->_configuration applePayConfiguration];
-  v26 = [v25 showApplePayIcons];
+  applePayConfiguration3 = [(MUAmenityListSectionConfiguration *)val->_configuration applePayConfiguration];
+  showApplePayIcons = [applePayConfiguration3 showApplePayIcons];
 
-  if (v26)
+  if (showApplePayIcons)
   {
     v27 = [MUAmenityItemView alloc];
     v28 = [(MUAmenityItemView *)v27 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -243,13 +243,13 @@ void __45__MUAmenityListSectionView__performExpansion__block_invoke(uint64_t a1)
 
   if (v6)
   {
-    v55 = [MEMORY[0x1E69DC740] _mapsui_textButtonConfiguration];
+    _mapsui_textButtonConfiguration = [MEMORY[0x1E69DC740] _mapsui_textButtonConfiguration];
     v30 = _MULocalizedStringFromThisBundle(@"More [Amenities]");
-    [v55 setTitle:v30];
+    [_mapsui_textButtonConfiguration setTitle:v30];
 
-    v31 = [v55 title];
-    v32 = [v31 localizedUppercaseString];
-    [v55 setTitle:v32];
+    title = [_mapsui_textButtonConfiguration title];
+    localizedUppercaseString = [title localizedUppercaseString];
+    [_mapsui_textButtonConfiguration setTitle:localizedUppercaseString];
 
     objc_initWeak(&location, val);
     v33 = MEMORY[0x1E69DC738];
@@ -260,7 +260,7 @@ void __45__MUAmenityListSectionView__performExpansion__block_invoke(uint64_t a1)
     v57[3] = &unk_1E82196D0;
     objc_copyWeak(&v58, &location);
     v35 = [v34 actionWithHandler:v57];
-    v36 = [v33 buttonWithConfiguration:v55 primaryAction:v35];
+    v36 = [v33 buttonWithConfiguration:_mapsui_textButtonConfiguration primaryAction:v35];
     moreButton = val->_moreButton;
     val->_moreButton = v36;
 
@@ -272,21 +272,21 @@ void __45__MUAmenityListSectionView__performExpansion__block_invoke(uint64_t a1)
     [(UIButton *)val->_moreButton setAccessibilityIdentifier:@"AmenityListMoreButton"];
     [v39 addSubview:val->_moreButton];
     v48 = MEMORY[0x1E696ACD8];
-    v54 = [(UIButton *)val->_moreButton leadingAnchor];
-    v53 = [v39 leadingAnchor];
-    v52 = [v54 constraintEqualToAnchor:v53];
+    leadingAnchor = [(UIButton *)val->_moreButton leadingAnchor];
+    leadingAnchor2 = [v39 leadingAnchor];
+    v52 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v64[0] = v52;
-    v51 = [(UIButton *)val->_moreButton topAnchor];
-    v50 = [v39 topAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50 constant:3.0];
+    topAnchor = [(UIButton *)val->_moreButton topAnchor];
+    topAnchor2 = [v39 topAnchor];
+    v49 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:3.0];
     v64[1] = v49;
-    v40 = [(UIButton *)val->_moreButton bottomAnchor];
-    v41 = [v39 bottomAnchor];
-    v42 = [v40 constraintEqualToAnchor:v41];
+    bottomAnchor = [(UIButton *)val->_moreButton bottomAnchor];
+    bottomAnchor2 = [v39 bottomAnchor];
+    v42 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v64[2] = v42;
-    v43 = [(UIButton *)val->_moreButton trailingAnchor];
-    v44 = [v39 trailingAnchor];
-    v45 = [v43 constraintLessThanOrEqualToAnchor:v44];
+    trailingAnchor = [(UIButton *)val->_moreButton trailingAnchor];
+    trailingAnchor2 = [v39 trailingAnchor];
+    v45 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
     v64[3] = v45;
     v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:v64 count:4];
     [v48 activateConstraints:v46];
@@ -312,16 +312,16 @@ void __42__MUAmenityListSectionView__setupSubviews__block_invoke(uint64_t a1)
   }
 }
 
-- (MUAmenityListSectionView)initWithAmenityListConfiguration:(id)a3
+- (MUAmenityListSectionView)initWithAmenityListConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = MUAmenityListSectionView;
   v6 = [(MUPlaceVerticalCardContainerView *)&v9 initWithShowsSeparators:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     [(MUAmenityListSectionView *)v7 setAccessibilityIdentifier:@"AmenityList"];
     [(MUAmenityListSectionView *)v7 _setupSubviews];
   }

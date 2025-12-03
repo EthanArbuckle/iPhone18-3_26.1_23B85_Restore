@@ -1,12 +1,12 @@
 @interface FCVanityURLRedirectService
-- (BOOL)hasRedirectForURL:(id)a3;
+- (BOOL)hasRedirectForURL:(id)l;
 - (FCFetchedValueManager)vanityURLMappingManager;
 - (FCVanityURLRedirectService)init;
-- (FCVanityURLRedirectService)initWithContentContext:(id)a3;
-- (id)_destinationURLForURL:(id)a3;
+- (FCVanityURLRedirectService)initWithContentContext:(id)context;
+- (id)_destinationURLForURL:(id)l;
 - (void)acquireHoldTokenOnUnderlyingAssets;
-- (void)resolveURL:(id)a3 withQualityOfService:(int64_t)a4 completion:(id)a5;
-- (void)updateUnderlyingMappingWithQualityOfService:(int64_t)a3 completion:(id)a4;
+- (void)resolveURL:(id)l withQualityOfService:(int64_t)service completion:(id)completion;
+- (void)updateUnderlyingMappingWithQualityOfService:(int64_t)service completion:(id)completion;
 @end
 
 @implementation FCVanityURLRedirectService
@@ -18,17 +18,17 @@
   if (!vanityURLMappingManager)
   {
     v4 = [FCCoreConfigurationFetchedValueDescriptor alloc];
-    v5 = [(FCVanityURLRedirectService *)self contentContext];
-    v6 = [v5 configurationManager];
-    v7 = [(FCCoreConfigurationFetchedValueDescriptor *)v4 initWithConfigurationManager:v6];
+    contentContext = [(FCVanityURLRedirectService *)self contentContext];
+    configurationManager = [contentContext configurationManager];
+    v7 = [(FCCoreConfigurationFetchedValueDescriptor *)v4 initWithConfigurationManager:configurationManager];
 
     v8 = [[FCFetchedValueManager alloc] initWithDescriptor:v7];
     v9 = [[FCVanityURLConfigurationFetchedValueDescriptor alloc] initWithConfigurationManager:v8];
     v10 = [[FCFetchedValueManager alloc] initWithDescriptor:v9];
     v11 = [FCHeldPBCodableFetchedValueDescriptor alloc];
     v12 = objc_opt_class();
-    v13 = [(FCVanityURLRedirectService *)self contentContext];
-    v14 = [(FCHeldPBCodableFetchedValueDescriptor *)v11 initWithCodableClass:v12 contentContext:v13 resourceConfigurationManager:v10];
+    contentContext2 = [(FCVanityURLRedirectService *)self contentContext];
+    v14 = [(FCHeldPBCodableFetchedValueDescriptor *)v11 initWithCodableClass:v12 contentContext:contentContext2 resourceConfigurationManager:v10];
 
     v15 = [[FCFetchedValueManager alloc] initWithDescriptor:v14];
     v16 = self->_vanityURLMappingManager;
@@ -66,11 +66,11 @@
   objc_exception_throw(v6);
 }
 
-- (FCVanityURLRedirectService)initWithContentContext:(id)a3
+- (FCVanityURLRedirectService)initWithContentContext:(id)context
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  contextCopy = context;
+  if (!contextCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "contentContext"];
     *buf = 136315906;
@@ -90,27 +90,27 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contentContext, a3);
+    objc_storeStrong(&v6->_contentContext, context);
   }
 
   v8 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (BOOL)hasRedirectForURL:(id)a3
+- (BOOL)hasRedirectForURL:(id)l
 {
-  v3 = [(FCVanityURLRedirectService *)self destinationURLForURL:a3];
+  v3 = [(FCVanityURLRedirectService *)self destinationURLForURL:l];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)resolveURL:(id)a3 withQualityOfService:(int64_t)a4 completion:(id)a5
+- (void)resolveURL:(id)l withQualityOfService:(int64_t)service completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  lCopy = l;
+  completionCopy = completion;
+  if (!lCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "URL"];
     *buf = 136315906;
@@ -123,13 +123,13 @@
     v26 = v14;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v9)
+    if (completionCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
     goto LABEL_6;
   }
@@ -149,17 +149,17 @@
   }
 
 LABEL_6:
-  v10 = [(FCVanityURLRedirectService *)self vanityURLMappingManager];
+  vanityURLMappingManager = [(FCVanityURLRedirectService *)self vanityURLMappingManager];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __73__FCVanityURLRedirectService_resolveURL_withQualityOfService_completion___block_invoke;
   v16[3] = &unk_1E7C444E0;
-  v17 = v8;
-  v18 = v9;
+  v17 = lCopy;
+  v18 = completionCopy;
   v16[4] = self;
-  v11 = v8;
-  v12 = v9;
-  [v10 fetchValueWithCachePolicy:1 qualityOfService:a4 completion:v16];
+  v11 = lCopy;
+  v12 = completionCopy;
+  [vanityURLMappingManager fetchValueWithCachePolicy:1 qualityOfService:service completion:v16];
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -215,20 +215,20 @@ void __73__FCVanityURLRedirectService_resolveURL_withQualityOfService_completion
 
 - (void)acquireHoldTokenOnUnderlyingAssets
 {
-  v2 = [(FCVanityURLRedirectService *)self vanityURLMappingManager];
+  vanityURLMappingManager = [(FCVanityURLRedirectService *)self vanityURLMappingManager];
 }
 
-- (void)updateUnderlyingMappingWithQualityOfService:(int64_t)a3 completion:(id)a4
+- (void)updateUnderlyingMappingWithQualityOfService:(int64_t)service completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(FCVanityURLRedirectService *)self vanityURLMappingManager];
+  completionCopy = completion;
+  vanityURLMappingManager = [(FCVanityURLRedirectService *)self vanityURLMappingManager];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __85__FCVanityURLRedirectService_updateUnderlyingMappingWithQualityOfService_completion___block_invoke;
   v9[3] = &unk_1E7C44508;
-  v10 = v6;
-  v8 = v6;
-  [v7 fetchValueWithQualityOfService:a3 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [vanityURLMappingManager fetchValueWithQualityOfService:service completion:v9];
 }
 
 uint64_t __85__FCVanityURLRedirectService_updateUnderlyingMappingWithQualityOfService_completion___block_invoke(uint64_t a1)
@@ -242,11 +242,11 @@ uint64_t __85__FCVanityURLRedirectService_updateUnderlyingMappingWithQualityOfSe
   return result;
 }
 
-- (id)_destinationURLForURL:(id)a3
+- (id)_destinationURLForURL:(id)l
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  lCopy = l;
+  if (!lCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "URL"];
     *buf = 136315906;
@@ -260,14 +260,14 @@ uint64_t __85__FCVanityURLRedirectService_updateUnderlyingMappingWithQualityOfSe
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v5 = [(FCVanityURLRedirectService *)self vanityURLMappingManager];
-  v6 = [v5 value];
+  vanityURLMappingManager = [(FCVanityURLRedirectService *)self vanityURLMappingManager];
+  value = [vanityURLMappingManager value];
 
-  v7 = [v6 first];
-  if (v7)
+  first = [value first];
+  if (first)
   {
-    v8 = [[FCVanityURLMapper alloc] initWithVanityURLMapping:v7];
-    v9 = [(FCVanityURLMapper *)v8 URLForVanityURL:v4];
+    v8 = [[FCVanityURLMapper alloc] initWithVanityURLMapping:first];
+    v9 = [(FCVanityURLMapper *)v8 URLForVanityURL:lCopy];
   }
 
   else

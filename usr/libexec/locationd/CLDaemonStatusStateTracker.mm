@@ -1,42 +1,42 @@
 @interface CLDaemonStatusStateTracker
-- (BOOL)dumpState:(void *)a3 withSize:(unint64_t)a4 hints:(os_state_hints_s *)a5;
-- (CLDaemonStatusStateTracker)initWithQueue:(id)a3 identifier:(void *)a4 state:(id)a5;
+- (BOOL)dumpState:(void *)state withSize:(unint64_t)size hints:(os_state_hints_s *)hints;
+- (CLDaemonStatusStateTracker)initWithQueue:(id)queue identifier:(void *)identifier state:(id)state;
 - (id).cxx_construct;
-- (id)initInSilo:(id)a3 withIdentifier:(void *)a4 state:(id)a5;
+- (id)initInSilo:(id)silo withIdentifier:(void *)identifier state:(id)state;
 - (void)dealloc;
-- (void)setAirplaneMode:(BOOL)a3;
-- (void)setBatteryData:(Battery *)a3;
-- (void)setBatterySaverModeEnabled:(BOOL)a3;
-- (void)setReachability:(int)a3;
-- (void)setRestrictedMode:(BOOL)a3;
-- (void)setThermalLevel:(int)a3;
-- (void)setThermalPressure:(int)a3;
-- (void)updateState:(id)a3;
+- (void)setAirplaneMode:(BOOL)mode;
+- (void)setBatteryData:(Battery *)data;
+- (void)setBatterySaverModeEnabled:(BOOL)enabled;
+- (void)setReachability:(int)reachability;
+- (void)setRestrictedMode:(BOOL)mode;
+- (void)setThermalLevel:(int)level;
+- (void)setThermalPressure:(int)pressure;
+- (void)updateState:(id)state;
 @end
 
 @implementation CLDaemonStatusStateTracker
 
-- (id)initInSilo:(id)a3 withIdentifier:(void *)a4 state:(id)a5
+- (id)initInSilo:(id)silo withIdentifier:(void *)identifier state:(id)state
 {
-  [a3 assertInside];
-  v9 = [a3 queue];
+  [silo assertInside];
+  queue = [silo queue];
 
-  return [(CLDaemonStatusStateTracker *)self initWithQueue:v9 identifier:a4 state:a5];
+  return [(CLDaemonStatusStateTracker *)self initWithQueue:queue identifier:identifier state:state];
 }
 
-- (CLDaemonStatusStateTracker)initWithQueue:(id)a3 identifier:(void *)a4 state:(id)a5
+- (CLDaemonStatusStateTracker)initWithQueue:(id)queue identifier:(void *)identifier state:(id)state
 {
   v14.receiver = self;
   v14.super_class = CLDaemonStatusStateTracker;
-  v7 = [(CLDaemonStatusStateTracker *)&v14 initWithQueue:a3];
+  v7 = [(CLDaemonStatusStateTracker *)&v14 initWithQueue:queue];
   v8 = v7;
   if (!v7)
   {
     return v8;
   }
 
-  v7->_identifier = a4;
-  if (a5)
+  v7->_identifier = identifier;
+  if (state)
   {
     if (v7->_inTransaction)
     {
@@ -44,7 +44,7 @@
     }
 
     v7->_inTransaction = 1;
-    (*(a5 + 2))(a5, v7);
+    (*(state + 2))(state, v7);
     v8->_inTransaction = 0;
     if (qword_1025D47A0 != -1)
     {
@@ -57,7 +57,7 @@
       goto LABEL_10;
     }
 
-    v10 = [(CLDaemonStatusStateTracker *)v8 identifier];
+    identifier = [(CLDaemonStatusStateTracker *)v8 identifier];
     *buf = 68290562;
     v16 = 0;
     v17 = 2082;
@@ -67,7 +67,7 @@
     v21 = 2082;
     v22 = "DaemonStatus";
     v23 = 2050;
-    v24 = v10;
+    v24 = identifier;
     v25 = 2082;
     v26 = "init";
     v27 = 1040;
@@ -86,7 +86,7 @@ LABEL_10:
   v11 = off_1025D47A8;
   if (os_log_type_enabled(off_1025D47A8, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [(CLDaemonStatusStateTracker *)v8 identifier];
+    identifier2 = [(CLDaemonStatusStateTracker *)v8 identifier];
     *buf = 68290562;
     v16 = 0;
     v17 = 2082;
@@ -96,7 +96,7 @@ LABEL_10:
     v21 = 2082;
     v22 = "DaemonStatus";
     v23 = 2050;
-    v24 = v12;
+    v24 = identifier2;
     v25 = 2082;
     v26 = "lifecycle";
     v27 = 2050;
@@ -128,11 +128,11 @@ LABEL_10:
     v11 = 2082;
     v12 = "DaemonStatus";
     v13 = 2050;
-    v14 = [(CLDaemonStatusStateTracker *)self identifier];
+    identifier = [(CLDaemonStatusStateTracker *)self identifier];
     v15 = 2082;
     v16 = "lifecycle";
     v17 = 2050;
-    v18 = self;
+    selfCopy = self;
     v19 = 2050;
     v20 = 0;
     _os_log_impl(dword_100000000, v3, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:state transition, event:%{public, location:escape_only}s, state:%{public, location:escape_only}s, id:%{public}p, property:%{public, location:escape_only}s, old:%{public}p, new:%{public}p}", buf, 0x4Eu);
@@ -143,7 +143,7 @@ LABEL_10:
   [(CLDaemonStatusStateTracker *)&v4 dealloc];
 }
 
-- (void)setBatteryData:(Battery *)a3
+- (void)setBatteryData:(Battery *)data
 {
   if (!self->_inTransaction)
   {
@@ -164,7 +164,7 @@ LABEL_10:
       v12 = 2082;
       v13 = "DaemonStatus";
       v14 = 2050;
-      v15 = [(CLDaemonStatusStateTracker *)self identifier];
+      identifier = [(CLDaemonStatusStateTracker *)self identifier];
       v16 = 2082;
       v17 = "batteryData";
       v18 = 1040;
@@ -174,17 +174,17 @@ LABEL_10:
       v22 = 1040;
       v23 = 24;
       v24 = 2098;
-      v25 = a3;
+      dataCopy = data;
       _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:state transition, event:%{public, location:escape_only}s, state:%{public, location:escape_only}s, id:%{public}p, property:%{public, location:escape_only}s, old:%{public, location:CLDaemonStatus_Type::Battery}.*P, new:%{public, location:CLDaemonStatus_Type::Battery}.*P}", v7, 0x5Au);
     }
   }
 
-  v6 = *&a3->wasConnected;
-  *&self->_state.batteryData.level = *&a3->level;
+  v6 = *&data->wasConnected;
+  *&self->_state.batteryData.level = *&data->level;
   *&self->_state.batteryData.wasConnected = v6;
 }
 
-- (void)setReachability:(int)a3
+- (void)setReachability:(int)reachability
 {
   if (!self->_inTransaction)
   {
@@ -196,7 +196,7 @@ LABEL_10:
     v5 = off_1025D47A8;
     if (os_log_type_enabled(off_1025D47A8, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [(CLDaemonStatusStateTracker *)self identifier];
+      identifier = [(CLDaemonStatusStateTracker *)self identifier];
       reachability = self->_state.reachability;
       v8[0] = 68290562;
       v8[1] = 0;
@@ -207,21 +207,21 @@ LABEL_10:
       v13 = 2082;
       v14 = "DaemonStatus";
       v15 = 2050;
-      v16 = v6;
+      v16 = identifier;
       v17 = 2082;
       v18 = "reachability";
       v19 = 2050;
-      v20 = reachability;
+      reachabilityCopy = reachability;
       v21 = 2050;
-      v22 = a3;
+      reachabilityCopy2 = reachability;
       _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:state transition, event:%{public, location:escape_only}s, state:%{public, location:escape_only}s, id:%{public}p, property:%{public, location:escape_only}s, old:%{public, location:CLDaemonStatus_Type::Reachability}lld, new:%{public, location:CLDaemonStatus_Type::Reachability}lld}", v8, 0x4Eu);
     }
   }
 
-  self->_state.reachability = a3;
+  self->_state.reachability = reachability;
 }
 
-- (void)setThermalLevel:(int)a3
+- (void)setThermalLevel:(int)level
 {
   if (!self->_inTransaction)
   {
@@ -233,7 +233,7 @@ LABEL_10:
     v5 = off_1025D47A8;
     if (os_log_type_enabled(off_1025D47A8, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [(CLDaemonStatusStateTracker *)self identifier];
+      identifier = [(CLDaemonStatusStateTracker *)self identifier];
       thermalLevel = self->_state.thermalLevel;
       v8[0] = 68290562;
       v8[1] = 0;
@@ -244,21 +244,21 @@ LABEL_10:
       v13 = 2082;
       v14 = "DaemonStatus";
       v15 = 2050;
-      v16 = v6;
+      v16 = identifier;
       v17 = 2082;
       v18 = "thermalLevel";
       v19 = 1026;
       v20 = thermalLevel;
       v21 = 1026;
-      v22 = a3;
+      levelCopy = level;
       _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:state transition, event:%{public, location:escape_only}s, state:%{public, location:escape_only}s, id:%{public}p, property:%{public, location:escape_only}s, old:%{public}d, new:%{public}d}", v8, 0x46u);
     }
   }
 
-  self->_state.thermalLevel = a3;
+  self->_state.thermalLevel = level;
 }
 
-- (void)setThermalPressure:(int)a3
+- (void)setThermalPressure:(int)pressure
 {
   if (!self->_inTransaction)
   {
@@ -270,7 +270,7 @@ LABEL_10:
     v5 = off_1025D47A8;
     if (os_log_type_enabled(off_1025D47A8, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [(CLDaemonStatusStateTracker *)self identifier];
+      identifier = [(CLDaemonStatusStateTracker *)self identifier];
       thermalPressure = self->_state.thermalPressure;
       v8[0] = 68290562;
       v8[1] = 0;
@@ -281,23 +281,23 @@ LABEL_10:
       v13 = 2082;
       v14 = "DaemonStatus";
       v15 = 2050;
-      v16 = v6;
+      v16 = identifier;
       v17 = 2082;
       v18 = "thermalPressure";
       v19 = 1026;
       v20 = thermalPressure;
       v21 = 1026;
-      v22 = a3;
+      pressureCopy = pressure;
       _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:state transition, event:%{public, location:escape_only}s, state:%{public, location:escape_only}s, id:%{public}p, property:%{public, location:escape_only}s, old:%{public}d, new:%{public}d}", v8, 0x46u);
     }
   }
 
-  self->_state.thermalPressure = a3;
+  self->_state.thermalPressure = pressure;
 }
 
-- (void)setAirplaneMode:(BOOL)a3
+- (void)setAirplaneMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   if (!self->_inTransaction)
   {
     if (qword_1025D47A0 != -1)
@@ -308,7 +308,7 @@ LABEL_10:
     v5 = off_1025D47A8;
     if (os_log_type_enabled(off_1025D47A8, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [(CLDaemonStatusStateTracker *)self identifier];
+      identifier = [(CLDaemonStatusStateTracker *)self identifier];
       airplaneMode = self->_state.airplaneMode;
       v8[0] = 68290562;
       v8[1] = 0;
@@ -319,23 +319,23 @@ LABEL_10:
       v13 = 2082;
       v14 = "DaemonStatus";
       v15 = 2050;
-      v16 = v6;
+      v16 = identifier;
       v17 = 2082;
       v18 = "airplaneMode";
       v19 = 1026;
       v20 = airplaneMode;
       v21 = 1026;
-      v22 = v3;
+      v22 = modeCopy;
       _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:state transition, event:%{public, location:escape_only}s, state:%{public, location:escape_only}s, id:%{public}p, property:%{public, location:escape_only}s, old:%{public}hhd, new:%{public}hhd}", v8, 0x46u);
     }
   }
 
-  self->_state.airplaneMode = v3;
+  self->_state.airplaneMode = modeCopy;
 }
 
-- (void)setBatterySaverModeEnabled:(BOOL)a3
+- (void)setBatterySaverModeEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if (!self->_inTransaction)
   {
     if (qword_1025D47A0 != -1)
@@ -346,7 +346,7 @@ LABEL_10:
     v5 = off_1025D47A8;
     if (os_log_type_enabled(off_1025D47A8, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [(CLDaemonStatusStateTracker *)self identifier];
+      identifier = [(CLDaemonStatusStateTracker *)self identifier];
       batterySaverModeEnabled = self->_state.batterySaverModeEnabled;
       v8[0] = 68290562;
       v8[1] = 0;
@@ -357,23 +357,23 @@ LABEL_10:
       v13 = 2082;
       v14 = "DaemonStatus";
       v15 = 2050;
-      v16 = v6;
+      v16 = identifier;
       v17 = 2082;
       v18 = "batterySaverModeEnabled";
       v19 = 1026;
       v20 = batterySaverModeEnabled;
       v21 = 1026;
-      v22 = v3;
+      v22 = enabledCopy;
       _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:state transition, event:%{public, location:escape_only}s, state:%{public, location:escape_only}s, id:%{public}p, property:%{public, location:escape_only}s, old:%{public}hhd, new:%{public}hhd}", v8, 0x46u);
     }
   }
 
-  self->_state.batterySaverModeEnabled = v3;
+  self->_state.batterySaverModeEnabled = enabledCopy;
 }
 
-- (void)setRestrictedMode:(BOOL)a3
+- (void)setRestrictedMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   if (!self->_inTransaction)
   {
     if (qword_1025D47A0 != -1)
@@ -384,7 +384,7 @@ LABEL_10:
     v5 = off_1025D47A8;
     if (os_log_type_enabled(off_1025D47A8, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [(CLDaemonStatusStateTracker *)self identifier];
+      identifier = [(CLDaemonStatusStateTracker *)self identifier];
       restrictedMode = self->_state.restrictedMode;
       v8[0] = 68290562;
       v8[1] = 0;
@@ -395,21 +395,21 @@ LABEL_10:
       v13 = 2082;
       v14 = "DaemonStatus";
       v15 = 2050;
-      v16 = v6;
+      v16 = identifier;
       v17 = 2082;
       v18 = "restrictedMode";
       v19 = 1026;
       v20 = restrictedMode;
       v21 = 1026;
-      v22 = v3;
+      v22 = modeCopy;
       _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:state transition, event:%{public, location:escape_only}s, state:%{public, location:escape_only}s, id:%{public}p, property:%{public, location:escape_only}s, old:%{public}hhd, new:%{public}hhd}", v8, 0x46u);
     }
   }
 
-  self->_state.restrictedMode = v3;
+  self->_state.restrictedMode = modeCopy;
 }
 
-- (void)updateState:(id)a3
+- (void)updateState:(id)state
 {
   p_state = &self->_state;
   v4 = *&self->_state.batteryData.wasConnected;
@@ -418,11 +418,11 @@ LABEL_10:
   v9 = *&self->_state.thermalPressure;
   if (self->_inTransaction)
   {
-    (sub_1018E6390)(self, a2, a3);
+    (sub_1018E6390)(self, a2, state);
   }
 
   self->_inTransaction = 1;
-  (*(a3 + 2))(a3, self);
+  (*(state + 2))(state, self);
   self->_inTransaction = 0;
   if (qword_1025D47A0 != -1)
   {
@@ -456,9 +456,9 @@ LABEL_10:
   }
 }
 
-- (BOOL)dumpState:(void *)a3 withSize:(unint64_t)a4 hints:(os_state_hints_s *)a5
+- (BOOL)dumpState:(void *)state withSize:(unint64_t)size hints:(os_state_hints_s *)hints
 {
-  if (a4 <= 0x27)
+  if (size <= 0x27)
   {
     if (qword_1025D47A0 != -1)
     {
@@ -475,7 +475,7 @@ LABEL_10:
       v15 = 2050;
       v16 = 40;
       v17 = 2050;
-      v18 = a4;
+      sizeCopy2 = size;
       _os_log_impl(dword_100000000, v8, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:state dump failure, expected_size:%{public}lld, provided_size:%{public}lld}", &v11, 0x26u);
       if (qword_1025D47A0 != -1)
       {
@@ -493,7 +493,7 @@ LABEL_10:
       v15 = 2050;
       v16 = 40;
       v17 = 2050;
-      v18 = a4;
+      sizeCopy2 = size;
       _os_signpost_emit_with_name_impl(dword_100000000, v9, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "state dump failure", "{msg%{public}.0s:state dump failure, expected_size:%{public}lld, provided_size:%{public}lld}", &v11, 0x26u);
     }
   }
@@ -502,12 +502,12 @@ LABEL_10:
   {
     v6 = *&self->_state.thermalPressure;
     v7 = *&self->_state.batteryData.wasConnected;
-    *a3 = *&self->_state.batteryData.level;
-    *(a3 + 1) = v7;
-    *(a3 + 4) = v6;
+    *state = *&self->_state.batteryData.level;
+    *(state + 1) = v7;
+    *(state + 4) = v6;
   }
 
-  return a4 > 0x27;
+  return size > 0x27;
 }
 
 - (id).cxx_construct

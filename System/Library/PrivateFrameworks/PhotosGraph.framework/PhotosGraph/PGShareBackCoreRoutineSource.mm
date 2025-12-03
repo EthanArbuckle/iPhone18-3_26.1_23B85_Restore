@@ -1,35 +1,35 @@
 @interface PGShareBackCoreRoutineSource
-- (BOOL)suggesterInput:(id)a3 isCloseEnoughToLocation:(id)a4 inDateInterval:(id)a5;
-- (PGShareBackCoreRoutineSource)initWithRoutineService:(id)a3 loggingConnection:(id)a4;
-- (id)suggesterResultsForInputs:(id)a3 momentNodes:(id)a4 inGraph:(id)a5 error:(id *)a6;
+- (BOOL)suggesterInput:(id)input isCloseEnoughToLocation:(id)location inDateInterval:(id)interval;
+- (PGShareBackCoreRoutineSource)initWithRoutineService:(id)service loggingConnection:(id)connection;
+- (id)suggesterResultsForInputs:(id)inputs momentNodes:(id)nodes inGraph:(id)graph error:(id *)error;
 @end
 
 @implementation PGShareBackCoreRoutineSource
 
-- (BOOL)suggesterInput:(id)a3 isCloseEnoughToLocation:(id)a4 inDateInterval:(id)a5
+- (BOOL)suggesterInput:(id)input isCloseEnoughToLocation:(id)location inDateInterval:(id)interval
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 startDate];
-  v11 = [v9 endDate];
-  v12 = [v7 creationDate];
-  [v12 timeIntervalSinceDate:v10];
+  inputCopy = input;
+  locationCopy = location;
+  intervalCopy = interval;
+  startDate = [intervalCopy startDate];
+  endDate = [intervalCopy endDate];
+  creationDate = [inputCopy creationDate];
+  [creationDate timeIntervalSinceDate:startDate];
   v14 = fabs(v13);
-  [v12 timeIntervalSinceDate:v11];
+  [creationDate timeIntervalSinceDate:endDate];
   v16 = fmin(v14, fabs(v15));
-  v17 = [v9 containsDate:v12];
+  v17 = [intervalCopy containsDate:creationDate];
 
   if ((v17 & 1) == 0 && v16 > 7200.0)
   {
     goto LABEL_6;
   }
 
-  v18 = [v7 location];
-  [v8 distanceFromLocation:v18];
+  location = [inputCopy location];
+  [locationCopy distanceFromLocation:location];
   v20 = v19;
 
-  v21 = [MEMORY[0x277D3ACD0] locationIsCoarse:v8];
+  v21 = [MEMORY[0x277D3ACD0] locationIsCoarse:locationCopy];
   v22 = 125.0;
   if (v21)
   {
@@ -56,20 +56,20 @@ LABEL_6:
   return v23;
 }
 
-- (id)suggesterResultsForInputs:(id)a3 momentNodes:(id)a4 inGraph:(id)a5 error:(id *)a6
+- (id)suggesterResultsForInputs:(id)inputs momentNodes:(id)nodes inGraph:(id)graph error:(id *)error
 {
   v75 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v55 = self;
-  v10 = [(PGShareBackSource *)self loggingConnection];
+  inputsCopy = inputs;
+  nodesCopy = nodes;
+  selfCopy = self;
+  loggingConnection = [(PGShareBackSource *)self loggingConnection];
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v11 = v8;
+  v11 = inputsCopy;
   v12 = [v11 countByEnumeratingWithState:&v64 objects:v74 count:16];
-  oslog = v10;
+  oslog = loggingConnection;
   if (v12)
   {
     v13 = v12;
@@ -84,20 +84,20 @@ LABEL_6:
         }
 
         v16 = *(*(&v64 + 1) + 8 * i);
-        v17 = [v16 asset];
-        v18 = v17;
-        if (v17)
+        asset = [v16 asset];
+        v18 = asset;
+        if (asset)
         {
-          v19 = [v17 mediaAnalysisProperties];
-          v20 = [v19 syndicationProcessingValue];
+          mediaAnalysisProperties = [asset mediaAnalysisProperties];
+          syndicationProcessingValue = [mediaAnalysisProperties syndicationProcessingValue];
 
-          if ((v20 & 0x400) != 0)
+          if ((syndicationProcessingValue & 0x400) != 0)
           {
-            if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138477827;
               v69 = v16;
-              _os_log_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_DEFAULT, "[PGShareBackCoreRoutineSource] Suggester input %{private}@ previously matched with CoreRoutine visit", buf, 0xCu);
+              _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "[PGShareBackCoreRoutineSource] Suggester input %{private}@ previously matched with CoreRoutine visit", buf, 0xCu);
             }
 
             v38 = [PGShareBackSuggesterResult alloc];
@@ -121,7 +121,7 @@ LABEL_6:
     }
   }
 
-  if (([(CLSRoutineService *)v55->_routineService hasLocationsOfInterestInformation]& 1) != 0)
+  if (([(CLSRoutineService *)selfCopy->_routineService hasLocationsOfInterestInformation]& 1) != 0)
   {
     v21 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_45779];
     v22 = [v11 filteredArrayUsingPredicate:v21];
@@ -129,7 +129,7 @@ LABEL_6:
     if ([v22 count])
     {
       v23 = [PGShareBackSuggesterInput universalDateIntervalForSuggesterInputs:v11 withTimeIntervalPadding:7200.0];
-      v24 = [(CLSRoutineService *)v55->_routineService locationOfInterestVisitsInDateInterval:v23];
+      v24 = [(CLSRoutineService *)selfCopy->_routineService locationOfInterestVisitsInDateInterval:v23];
       if ([v24 count])
       {
         v62 = 0u;
@@ -142,7 +142,7 @@ LABEL_6:
         {
           v26 = *v61;
           v51 = v22;
-          v52 = v9;
+          v52 = nodesCopy;
           v49 = v24;
           v50 = v23;
           v48 = v25;
@@ -179,10 +179,10 @@ LABEL_6:
                     }
 
                     v33 = *(*(&v56 + 1) + 8 * j);
-                    v34 = [v28 locationOfInterest];
-                    v35 = [v34 location];
-                    v36 = [v28 visitInterval];
-                    v37 = [(PGShareBackCoreRoutineSource *)v55 suggesterInput:v33 isCloseEnoughToLocation:v35 inDateInterval:v36];
+                    locationOfInterest = [v28 locationOfInterest];
+                    location = [locationOfInterest location];
+                    visitInterval = [v28 visitInterval];
+                    v37 = [(PGShareBackCoreRoutineSource *)selfCopy suggesterInput:v33 isCloseEnoughToLocation:location inDateInterval:visitInterval];
 
                     if (v37)
                     {
@@ -196,7 +196,7 @@ LABEL_6:
                         _os_log_impl(&dword_22F0FC000, oslog, OS_LOG_TYPE_DEFAULT, "[PGShareBackCoreRoutineSource] Suggester input %{private}@ matched with CoreRoutine visit %{private}@", buf, 0x16u);
                       }
 
-                      v9 = v52;
+                      nodesCopy = v52;
                       v42 = [[PGShareBackSuggesterResult alloc] initWithInputs:v11 processingValue:1024 momentNodes:v52];
                       v41 = [MEMORY[0x277CBEA60] arrayWithObject:v42];
 
@@ -218,7 +218,7 @@ LABEL_6:
 
               v27 = v47 + 1;
               v22 = v51;
-              v9 = v52;
+              nodesCopy = v52;
               v24 = v49;
               v23 = v50;
               v25 = v48;
@@ -233,11 +233,11 @@ LABEL_6:
         }
       }
 
-      else if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+      else if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
         v69 = v23;
-        _os_log_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_INFO, "[PGShareBackCoreRoutineSource] Can't find core routine visits in date interval: %@", buf, 0xCu);
+        _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[PGShareBackCoreRoutineSource] Can't find core routine visits in date interval: %@", buf, 0xCu);
       }
 
       v41 = MEMORY[0x277CBEBF8];
@@ -246,10 +246,10 @@ LABEL_44:
 
     else
     {
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEBUG))
       {
         *buf = 0;
-        _os_log_debug_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_DEBUG, "[PGShareBackCoreRoutineSource] No inputs with valid location", buf, 2u);
+        _os_log_debug_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEBUG, "[PGShareBackCoreRoutineSource] No inputs with valid location", buf, 2u);
       }
 
       v41 = MEMORY[0x277CBEBF8];
@@ -258,10 +258,10 @@ LABEL_44:
 
   else
   {
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_INFO, "[PGShareBackCoreRoutineSource] Can't find any recent core routine visits", buf, 2u);
+      _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[PGShareBackCoreRoutineSource] Can't find any recent core routine visits", buf, 2u);
     }
 
     v41 = MEMORY[0x277CBEBF8];
@@ -282,16 +282,16 @@ BOOL __84__PGShareBackCoreRoutineSource_suggesterResultsForInputs_momentNodes_in
   return v3;
 }
 
-- (PGShareBackCoreRoutineSource)initWithRoutineService:(id)a3 loggingConnection:(id)a4
+- (PGShareBackCoreRoutineSource)initWithRoutineService:(id)service loggingConnection:(id)connection
 {
-  v7 = a3;
+  serviceCopy = service;
   v11.receiver = self;
   v11.super_class = PGShareBackCoreRoutineSource;
-  v8 = [(PGShareBackSource *)&v11 initWithLoggingConnection:a4];
+  v8 = [(PGShareBackSource *)&v11 initWithLoggingConnection:connection];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_routineService, a3);
+    objc_storeStrong(&v8->_routineService, service);
   }
 
   return v9;

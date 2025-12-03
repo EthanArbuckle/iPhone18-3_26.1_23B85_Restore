@@ -1,10 +1,10 @@
 @interface RPSiriDaemon
-- (BOOL)activateAndReturnError:(id *)a3;
+- (BOOL)activateAndReturnError:(id *)error;
 - (RPSiriDaemon)init;
-- (void)_handleSiriAudio:(id)a3;
-- (void)_handleSiriStart:(id)a3 options:(id)a4 responseHandler:(id)a5;
-- (void)_handleSiriStartWhileRecording:(id)a3 options:(id)a4 responseHandler:(id)a5;
-- (void)_handleSiriStop:(id)a3 options:(id)a4 responseHandler:(id)a5;
+- (void)_handleSiriAudio:(id)audio;
+- (void)_handleSiriStart:(id)start options:(id)options responseHandler:(id)handler;
+- (void)_handleSiriStartWhileRecording:(id)recording options:(id)options responseHandler:(id)handler;
+- (void)_handleSiriStop:(id)stop options:(id)options responseHandler:(id)handler;
 - (void)invalidate;
 @end
 
@@ -25,11 +25,11 @@
   return v3;
 }
 
-- (BOOL)activateAndReturnError:(id *)a3
+- (BOOL)activateAndReturnError:(id *)error
 {
-  v5 = [(RPMessageable *)self->_messenger dispatchQueue];
-  dispatchQueue = v5;
-  if (!v5)
+  dispatchQueue = [(RPMessageable *)self->_messenger dispatchQueue];
+  dispatchQueue = dispatchQueue;
+  if (!dispatchQueue)
   {
     dispatchQueue = self->_dispatchQueue;
   }
@@ -43,13 +43,13 @@
     if (dword_1001D4E40 <= 90 && (dword_1001D4E40 != -1 || _LogCategory_Initialize()))
     {
       sub_10012B2B0();
-      if (!a3)
+      if (!error)
       {
         goto LABEL_13;
       }
     }
 
-    else if (!a3)
+    else if (!error)
     {
 LABEL_13:
 
@@ -57,7 +57,7 @@ LABEL_13:
     }
 
     v10 = v9;
-    *a3 = v9;
+    *error = v9;
     goto LABEL_13;
   }
 
@@ -116,23 +116,23 @@ LABEL_14:
   self->_messenger = 0;
 }
 
-- (void)_handleSiriAudio:(id)a3
+- (void)_handleSiriAudio:(id)audio
 {
-  v4 = a3;
+  audioCopy = audio;
   siriAudioSession = self->_siriAudioSession;
   if (siriAudioSession)
   {
-    v7 = v4;
+    v7 = audioCopy;
     [(RPSiriAudioSession *)siriAudioSession receivedSiriAudioEvent:?];
 LABEL_3:
-    v4 = v7;
+    audioCopy = v7;
     goto LABEL_7;
   }
 
   if (dword_1001D4E40 <= 60)
   {
-    v7 = v4;
-    if (dword_1001D4E40 != -1 || (v6 = _LogCategory_Initialize(), v4 = v7, v6))
+    v7 = audioCopy;
+    if (dword_1001D4E40 != -1 || (v6 = _LogCategory_Initialize(), audioCopy = v7, v6))
     {
       sub_10012B328();
       goto LABEL_3;
@@ -142,38 +142,38 @@ LABEL_3:
 LABEL_7:
 }
 
-- (void)_handleSiriStart:(id)a3 options:(id)a4 responseHandler:(id)a5
+- (void)_handleSiriStart:(id)start options:(id)options responseHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v7 = RPErrorF();
-  (*(a5 + 2))(v6, 0, 0, v7);
+  (*(handler + 2))(handlerCopy, 0, 0, v7);
 }
 
-- (void)_handleSiriStop:(id)a3 options:(id)a4 responseHandler:(id)a5
+- (void)_handleSiriStop:(id)stop options:(id)options responseHandler:(id)handler
 {
-  v9 = a3;
-  v7 = a4;
-  v8 = a5;
+  stopCopy = stop;
+  optionsCopy = options;
+  handlerCopy = handler;
   if (dword_1001D4E40 <= 30 && (dword_1001D4E40 != -1 || _LogCategory_Initialize()))
   {
     sub_10012B348();
   }
 
-  (*(v8 + 2))(v8, &__NSDictionary0__struct, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, &__NSDictionary0__struct, 0, 0);
 }
 
-- (void)_handleSiriStartWhileRecording:(id)a3 options:(id)a4 responseHandler:(id)a5
+- (void)_handleSiriStartWhileRecording:(id)recording options:(id)options responseHandler:(id)handler
 {
-  v10 = a3;
-  v7 = a4;
-  v8 = a5;
+  recordingCopy = recording;
+  optionsCopy = options;
+  handlerCopy = handler;
   if (dword_1001D4E40 <= 30 && (dword_1001D4E40 != -1 || _LogCategory_Initialize()))
   {
     sub_10012B388();
   }
 
   v9 = RPErrorF();
-  (*(v8 + 2))(v8, 0, 0, v9);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, v9);
 }
 
 @end

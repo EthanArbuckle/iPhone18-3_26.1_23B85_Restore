@@ -1,6 +1,6 @@
 @interface _CRAppStateNavigationOwner
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToOwner:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToOwner:(id)owner;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -10,27 +10,27 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(_CRAppStateNavigationOwner *)self identifier];
-  v5 = [(_CRAppStateNavigationOwner *)self connection];
-  v6 = [v5 processIdentifier];
+  identifier = [(_CRAppStateNavigationOwner *)self identifier];
+  connection = [(_CRAppStateNavigationOwner *)self connection];
+  processIdentifier = [connection processIdentifier];
   v7 = sub_100042438([(_CRAppStateNavigationOwner *)self accNavRole]);
-  v8 = [(_CRAppStateNavigationOwner *)self connection];
-  v9 = [NSString stringWithFormat:@"<%@: %p %@(%d) accNavRole=%@ connection=%p>", v3, self, v4, v6, v7, v8];
+  connection2 = [(_CRAppStateNavigationOwner *)self connection];
+  v9 = [NSString stringWithFormat:@"<%@: %p %@(%d) accNavRole=%@ connection=%p>", v3, self, identifier, processIdentifier, v7, connection2];
 
   return v9;
 }
 
-- (BOOL)isEqualToOwner:(id)a3
+- (BOOL)isEqualToOwner:(id)owner
 {
-  v4 = a3;
-  v5 = [(_CRAppStateNavigationOwner *)self identifier];
-  v6 = [v4 identifier];
-  if ([v5 isEqualToString:v6])
+  ownerCopy = owner;
+  identifier = [(_CRAppStateNavigationOwner *)self identifier];
+  identifier2 = [ownerCopy identifier];
+  if ([identifier isEqualToString:identifier2])
   {
-    v7 = [(_CRAppStateNavigationOwner *)self connection];
-    v8 = [v7 processIdentifier];
-    v9 = [v4 connection];
-    v10 = v8 == [v9 processIdentifier];
+    connection = [(_CRAppStateNavigationOwner *)self connection];
+    processIdentifier = [connection processIdentifier];
+    connection2 = [ownerCopy connection];
+    v10 = processIdentifier == [connection2 processIdentifier];
   }
 
   else
@@ -41,10 +41,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -54,7 +54,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(_CRAppStateNavigationOwner *)self isEqualToOwner:v4];
+      v5 = [(_CRAppStateNavigationOwner *)self isEqualToOwner:equalCopy];
     }
 
     else
@@ -68,10 +68,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(_CRAppStateNavigationOwner *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(_CRAppStateNavigationOwner *)self connection];
-  v6 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v5 processIdentifier]);
+  identifier = [(_CRAppStateNavigationOwner *)self identifier];
+  v4 = [identifier hash];
+  connection = [(_CRAppStateNavigationOwner *)self connection];
+  v6 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [connection processIdentifier]);
   v7 = [v6 hash];
 
   return v7 ^ v4;

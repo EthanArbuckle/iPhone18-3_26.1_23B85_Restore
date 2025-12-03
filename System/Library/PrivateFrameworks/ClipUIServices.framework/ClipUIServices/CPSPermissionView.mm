@@ -1,25 +1,25 @@
 @interface CPSPermissionView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CPSPermissionView)initWithFrame:(CGRect)a3;
-- (void)configureWithAppName:(id)a3 requestsNotificationPermission:(BOOL)a4 requestsLocationConfirmationPermission:(BOOL)a5;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CPSPermissionView)initWithFrame:(CGRect)frame;
+- (void)configureWithAppName:(id)name requestsNotificationPermission:(BOOL)permission requestsLocationConfirmationPermission:(BOOL)confirmationPermission;
 - (void)layoutSubviews;
-- (void)permissionButtonTapped:(id)a3;
-- (void)setLocationConfirmationPermissionEnabled:(BOOL)a3 animated:(BOOL)a4;
-- (void)setNotificationPermissionEnabled:(BOOL)a3 animated:(BOOL)a4;
+- (void)permissionButtonTapped:(id)tapped;
+- (void)setLocationConfirmationPermissionEnabled:(BOOL)enabled animated:(BOOL)animated;
+- (void)setNotificationPermissionEnabled:(BOOL)enabled animated:(BOOL)animated;
 - (void)toggleLocationConfirmationPermission;
 - (void)toggleNotificationPermission;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)transitionViewAnimated:(BOOL)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)transitionViewAnimated:(BOOL)animated;
 @end
 
 @implementation CPSPermissionView
 
-- (CPSPermissionView)initWithFrame:(CGRect)a3
+- (CPSPermissionView)initWithFrame:(CGRect)frame
 {
   v35[5] = *MEMORY[0x277D85DE8];
   v34.receiver = self;
   v34.super_class = CPSPermissionView;
-  v3 = [(CPSPermissionView *)&v34 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CPSPermissionView *)&v34 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(CPSButton);
@@ -27,48 +27,48 @@
     v3->_permissionButton = v4;
 
     [(CPSButton *)v3->_permissionButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [MEMORY[0x277D75348] clearColor];
-    [(CPSButton *)v3->_permissionButton setBackgroundColor:v6];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(CPSButton *)v3->_permissionButton setBackgroundColor:clearColor];
 
     [(CPSButton *)v3->_permissionButton setAnimatesAlphaWhenHighlighted:1];
     [(CPSButton *)v3->_permissionButton setContentHorizontalAlignment:1];
     [(CPSButton *)v3->_permissionButton setContentEdgeInsets:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)];
-    v7 = [(CPSButton *)v3->_permissionButton titleLabel];
-    [v7 setAdjustsFontForContentSizeCategory:1];
+    titleLabel = [(CPSButton *)v3->_permissionButton titleLabel];
+    [titleLabel setAdjustsFontForContentSizeCategory:1];
 
-    v8 = [(CPSButton *)v3->_permissionButton titleLabel];
-    [v8 setNumberOfLines:0];
+    titleLabel2 = [(CPSButton *)v3->_permissionButton titleLabel];
+    [titleLabel2 setNumberOfLines:0];
 
-    v9 = [(CPSButton *)v3->_permissionButton titleLabel];
-    [v9 setLineBreakMode:0];
+    titleLabel3 = [(CPSButton *)v3->_permissionButton titleLabel];
+    [titleLabel3 setLineBreakMode:0];
 
     [(CPSButton *)v3->_permissionButton addTarget:v3 action:sel_permissionButtonTapped_ forControlEvents:64];
     [(CPSPermissionView *)v3 addSubview:v3->_permissionButton];
     v25 = MEMORY[0x277CCAAD0];
-    v33 = [(CPSButton *)v3->_permissionButton titleLabel];
-    v32 = [v33 leadingAnchor];
-    v31 = [(CPSPermissionView *)v3 leadingAnchor];
-    v30 = [v32 constraintEqualToAnchor:v31];
+    titleLabel4 = [(CPSButton *)v3->_permissionButton titleLabel];
+    leadingAnchor = [titleLabel4 leadingAnchor];
+    leadingAnchor2 = [(CPSPermissionView *)v3 leadingAnchor];
+    v30 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v35[0] = v30;
-    v29 = [(CPSButton *)v3->_permissionButton titleLabel];
-    v28 = [v29 topAnchor];
-    v27 = [(CPSPermissionView *)v3 topAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27];
+    titleLabel5 = [(CPSButton *)v3->_permissionButton titleLabel];
+    topAnchor = [titleLabel5 topAnchor];
+    topAnchor2 = [(CPSPermissionView *)v3 topAnchor];
+    v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v35[1] = v26;
-    v24 = [(CPSButton *)v3->_permissionButton titleLabel];
-    v23 = [v24 bottomAnchor];
-    v22 = [(CPSPermissionView *)v3 bottomAnchor];
-    v21 = [v23 constraintEqualToAnchor:v22];
+    titleLabel6 = [(CPSButton *)v3->_permissionButton titleLabel];
+    bottomAnchor = [titleLabel6 bottomAnchor];
+    bottomAnchor2 = [(CPSPermissionView *)v3 bottomAnchor];
+    v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v35[2] = v21;
-    v10 = [(CPSButton *)v3->_permissionButton titleLabel];
-    v11 = [v10 trailingAnchor];
-    v12 = [(CPSPermissionView *)v3 trailingAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    titleLabel7 = [(CPSButton *)v3->_permissionButton titleLabel];
+    trailingAnchor = [titleLabel7 trailingAnchor];
+    trailingAnchor2 = [(CPSPermissionView *)v3 trailingAnchor];
+    v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v35[3] = v13;
-    v14 = [(CPSButton *)v3->_permissionButton trailingAnchor];
-    v15 = [(CPSButton *)v3->_permissionButton titleLabel];
-    v16 = [v15 trailingAnchor];
-    v17 = [v14 constraintEqualToAnchor:v16];
+    trailingAnchor3 = [(CPSButton *)v3->_permissionButton trailingAnchor];
+    titleLabel8 = [(CPSButton *)v3->_permissionButton titleLabel];
+    trailingAnchor4 = [titleLabel8 trailingAnchor];
+    v17 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v35[4] = v17;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:5];
     [v25 activateConstraints:v18];
@@ -107,18 +107,18 @@
       v11 = [v9 initWithString:v10];
     }
 
-    v12 = [v11 string];
-    [(CPSButton *)self->_permissionButton setExtraTapTargetSubstring:v12];
+    string = [v11 string];
+    [(CPSButton *)self->_permissionButton setExtraTapTargetSubstring:string];
 
     v13 = *MEMORY[0x277D740C0];
-    v14 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [v8 addAttribute:v13 value:v14 range:{0, objc_msgSend(v8, "length")}];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [v8 addAttribute:v13 value:secondaryLabelColor range:{0, objc_msgSend(v8, "length")}];
 
     v15 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:@" "];
     [v8 appendAttributedString:v15];
 
-    v16 = [MEMORY[0x277D75348] systemBlueColor];
-    [v11 addAttribute:v13 value:v16 range:{0, objc_msgSend(v11, "length")}];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    [v11 addAttribute:v13 value:systemBlueColor range:{0, objc_msgSend(v11, "length")}];
 
     if (UIAccessibilityButtonShapesEnabled())
     {
@@ -129,8 +129,8 @@
     v17 = *MEMORY[0x277D740A8];
     v18 = MEMORY[0x277D74300];
     v19 = *MEMORY[0x277D76940];
-    v20 = [(CPSPermissionView *)self traitCollection];
-    v21 = [v18 _preferredFontForTextStyle:v19 design:0 variant:256 compatibleWithTraitCollection:v20];
+    traitCollection = [(CPSPermissionView *)self traitCollection];
+    v21 = [v18 _preferredFontForTextStyle:v19 design:0 variant:256 compatibleWithTraitCollection:traitCollection];
     [v8 addAttribute:v17 value:v21 range:{0, objc_msgSend(v8, "length")}];
 
     v22 = objc_alloc_init(MEMORY[0x277D74240]);
@@ -141,37 +141,37 @@
   }
 }
 
-- (void)configureWithAppName:(id)a3 requestsNotificationPermission:(BOOL)a4 requestsLocationConfirmationPermission:(BOOL)a5
+- (void)configureWithAppName:(id)name requestsNotificationPermission:(BOOL)permission requestsLocationConfirmationPermission:(BOOL)confirmationPermission
 {
-  v8 = a3;
+  nameCopy = name;
   [(CPSPermissionView *)self layoutIfNeeded];
   appName = self->_appName;
-  self->_appName = v8;
+  self->_appName = nameCopy;
 
-  self->_requestsNotificationPermission = a4;
-  self->_requestsLocationConfirmationPermission = a5;
+  self->_requestsNotificationPermission = permission;
+  self->_requestsLocationConfirmationPermission = confirmationPermission;
 
   [(CPSPermissionView *)self transitionViewAnimated:0];
 }
 
-- (void)permissionButtonTapped:(id)a3
+- (void)permissionButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   if (self->_requestsNotificationPermission)
   {
-    v7 = v4;
+    v7 = tappedCopy;
     if (self->_requestsLocationConfirmationPermission)
     {
-      v5 = [(CPSPermissionView *)self optionsAction];
+      optionsAction = [(CPSPermissionView *)self optionsAction];
 
-      v4 = v7;
-      if (!v5)
+      tappedCopy = v7;
+      if (!optionsAction)
       {
         goto LABEL_9;
       }
 
-      v6 = [(CPSPermissionView *)self optionsAction];
-      v6[2]();
+      optionsAction2 = [(CPSPermissionView *)self optionsAction];
+      optionsAction2[2]();
     }
 
     else
@@ -187,44 +187,44 @@
       goto LABEL_9;
     }
 
-    v7 = v4;
+    v7 = tappedCopy;
     [(CPSPermissionView *)self toggleLocationConfirmationPermission];
   }
 
-  v4 = v7;
+  tappedCopy = v7;
 LABEL_9:
 }
 
-- (void)setNotificationPermissionEnabled:(BOOL)a3 animated:(BOOL)a4
+- (void)setNotificationPermissionEnabled:(BOOL)enabled animated:(BOOL)animated
 {
-  if (self->_notificationPermissionEnabled != a3)
+  if (self->_notificationPermissionEnabled != enabled)
   {
-    v4 = a4;
+    animatedCopy = animated;
     [(CPSPermissionView *)self layoutIfNeeded];
-    self->_notificationPermissionEnabled = a3;
+    self->_notificationPermissionEnabled = enabled;
 
-    [(CPSPermissionView *)self transitionViewAnimated:v4];
+    [(CPSPermissionView *)self transitionViewAnimated:animatedCopy];
   }
 }
 
-- (void)setLocationConfirmationPermissionEnabled:(BOOL)a3 animated:(BOOL)a4
+- (void)setLocationConfirmationPermissionEnabled:(BOOL)enabled animated:(BOOL)animated
 {
-  if (self->_locationConfirmationPermissionEnabled != a3)
+  if (self->_locationConfirmationPermissionEnabled != enabled)
   {
-    v4 = a4;
+    animatedCopy = animated;
     [(CPSPermissionView *)self layoutIfNeeded];
-    self->_locationConfirmationPermissionEnabled = a3;
+    self->_locationConfirmationPermissionEnabled = enabled;
 
-    [(CPSPermissionView *)self transitionViewAnimated:v4];
+    [(CPSPermissionView *)self transitionViewAnimated:animatedCopy];
   }
 }
 
-- (void)transitionViewAnimated:(BOOL)a3
+- (void)transitionViewAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   self->_permissionTextNeedsUpdate = 1;
   [(CPSPermissionView *)self setNeedsLayout];
-  if (v3)
+  if (animatedCopy)
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
@@ -255,7 +255,7 @@ LABEL_9:
   [(CPSPermissionView *)self setLocationConfirmationPermissionEnabled:v3 animated:0];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   self->_permissionTextNeedsUpdate = 1;
   [(CPSPermissionView *)self setNeedsLayout];
@@ -263,14 +263,14 @@ LABEL_9:
   [(CPSPermissionView *)self layoutIfNeeded];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   v11.receiver = self;
   v11.super_class = CPSPermissionView;
-  if ([(CPSPermissionView *)&v11 pointInside:v7 withEvent:x, y])
+  if ([(CPSPermissionView *)&v11 pointInside:eventCopy withEvent:x, y])
   {
     v8 = 1;
   }
@@ -279,7 +279,7 @@ LABEL_9:
   {
     permissionButton = self->_permissionButton;
     [(CPSPermissionView *)self convertPoint:permissionButton toView:x, y];
-    v8 = [(CPSButton *)permissionButton pointInside:v7 withEvent:?];
+    v8 = [(CPSButton *)permissionButton pointInside:eventCopy withEvent:?];
   }
 
   return v8;

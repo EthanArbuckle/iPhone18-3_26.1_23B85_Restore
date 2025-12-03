@@ -1,91 +1,91 @@
 @interface RFAttribution
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (RFAttribution)initWithCoder:(id)a3;
-- (RFAttribution)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RFAttribution)initWithCoder:(id)coder;
+- (RFAttribution)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RFAttribution
 
-- (RFAttribution)initWithProtobuf:(id)a3
+- (RFAttribution)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v31.receiver = self;
   v31.super_class = RFAttribution;
   v5 = [(RFAttribution *)&v31 init];
   if (v5)
   {
-    v6 = [v4 title];
+    title = [protobufCopy title];
 
-    if (v6)
+    if (title)
     {
       v7 = [RFTextProperty alloc];
-      v8 = [v4 title];
-      v9 = [(RFTextProperty *)v7 initWithProtobuf:v8];
+      title2 = [protobufCopy title];
+      v9 = [(RFTextProperty *)v7 initWithProtobuf:title2];
       [(RFAttribution *)v5 setTitle:v9];
     }
 
-    v10 = [v4 subtitle];
+    subtitle = [protobufCopy subtitle];
 
-    if (v10)
+    if (subtitle)
     {
       v11 = [RFTextProperty alloc];
-      v12 = [v4 subtitle];
-      v13 = [(RFTextProperty *)v11 initWithProtobuf:v12];
+      subtitle2 = [protobufCopy subtitle];
+      v13 = [(RFTextProperty *)v11 initWithProtobuf:subtitle2];
       [(RFAttribution *)v5 setSubtitle:v13];
     }
 
-    v14 = [v4 image];
+    image = [protobufCopy image];
 
-    if (v14)
+    if (image)
     {
       v15 = [RFVisualProperty alloc];
-      v16 = [v4 image];
-      v17 = [(RFVisualProperty *)v15 initWithProtobuf:v16];
+      image2 = [protobufCopy image];
+      v17 = [(RFVisualProperty *)v15 initWithProtobuf:image2];
       [(RFAttribution *)v5 setImage:v17];
     }
 
-    if ([v4 index])
+    if ([protobufCopy index])
     {
-      v18 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "index")}];
+      v18 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "index")}];
       [(RFAttribution *)v5 setIndex:v18];
     }
 
-    v19 = [v4 localized_index];
+    localized_index = [protobufCopy localized_index];
 
-    if (v19)
+    if (localized_index)
     {
-      v20 = [v4 localized_index];
-      [(RFAttribution *)v5 setLocalized_index:v20];
+      localized_index2 = [protobufCopy localized_index];
+      [(RFAttribution *)v5 setLocalized_index:localized_index2];
     }
 
-    v21 = [v4 localized_separator];
+    localized_separator = [protobufCopy localized_separator];
 
-    if (v21)
+    if (localized_separator)
     {
-      v22 = [v4 localized_separator];
-      [(RFAttribution *)v5 setLocalized_separator:v22];
+      localized_separator2 = [protobufCopy localized_separator];
+      [(RFAttribution *)v5 setLocalized_separator:localized_separator2];
     }
 
-    v23 = [v4 locale];
+    locale = [protobufCopy locale];
 
-    if (v23)
+    if (locale)
     {
-      v24 = [v4 locale];
-      [(RFAttribution *)v5 setLocale:v24];
+      locale2 = [protobufCopy locale];
+      [(RFAttribution *)v5 setLocale:locale2];
     }
 
-    v25 = [v4 commandReference];
+    commandReference = [protobufCopy commandReference];
 
-    if (v25)
+    if (commandReference)
     {
       v26 = [SFCommandReference alloc];
-      v27 = [v4 commandReference];
-      v28 = [(SFCommandReference *)v26 initWithProtobuf:v27];
+      commandReference2 = [protobufCopy commandReference];
+      v28 = [(SFCommandReference *)v26 initWithProtobuf:commandReference2];
       [(RFAttribution *)v5 setCommandReference:v28];
     }
 
@@ -97,42 +97,42 @@
 
 - (unint64_t)hash
 {
-  v3 = [(RFAttribution *)self title];
-  v4 = [v3 hash];
-  v5 = [(RFAttribution *)self subtitle];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(RFAttribution *)self image];
-  v8 = [v7 hash];
-  v9 = [(RFAttribution *)self index];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(RFAttribution *)self localized_index];
-  v12 = [v11 hash];
-  v13 = [(RFAttribution *)self localized_separator];
-  v14 = v12 ^ [v13 hash];
-  v15 = [(RFAttribution *)self locale];
-  v16 = v10 ^ v14 ^ [v15 hash];
-  v17 = [(RFAttribution *)self commandReference];
-  v18 = [v17 hash];
+  title = [(RFAttribution *)self title];
+  v4 = [title hash];
+  subtitle = [(RFAttribution *)self subtitle];
+  v6 = [subtitle hash] ^ v4;
+  image = [(RFAttribution *)self image];
+  v8 = [image hash];
+  index = [(RFAttribution *)self index];
+  v10 = v6 ^ v8 ^ [index hash];
+  localized_index = [(RFAttribution *)self localized_index];
+  v12 = [localized_index hash];
+  localized_separator = [(RFAttribution *)self localized_separator];
+  v14 = v12 ^ [localized_separator hash];
+  locale = [(RFAttribution *)self locale];
+  v16 = v10 ^ v14 ^ [locale hash];
+  commandReference = [(RFAttribution *)self commandReference];
+  v18 = [commandReference hash];
 
   return v16 ^ v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(RFAttribution *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(RFAttribution *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
-      v6 = [(RFAttribution *)self title];
-      v7 = [(RFAttribution *)v5 title];
-      if ((v6 != 0) == (v7 == 0))
+      v5 = equalCopy;
+      title = [(RFAttribution *)self title];
+      title2 = [(RFAttribution *)v5 title];
+      if ((title != 0) == (title2 == 0))
       {
         v11 = 0;
 LABEL_26:
@@ -140,12 +140,12 @@ LABEL_26:
         goto LABEL_27;
       }
 
-      v8 = [(RFAttribution *)self title];
-      if (v8)
+      title3 = [(RFAttribution *)self title];
+      if (title3)
       {
-        v9 = [(RFAttribution *)self title];
-        v10 = [(RFAttribution *)v5 title];
-        if (![v9 isEqual:v10])
+        title4 = [(RFAttribution *)self title];
+        title5 = [(RFAttribution *)v5 title];
+        if (![title4 isEqual:title5])
         {
           v11 = 0;
 LABEL_24:
@@ -153,42 +153,42 @@ LABEL_24:
           goto LABEL_25;
         }
 
-        v71 = v10;
-        v72 = v9;
+        v71 = title5;
+        v72 = title4;
       }
 
-      v12 = [(RFAttribution *)self subtitle];
-      v13 = [(RFAttribution *)v5 subtitle];
-      if ((v12 != 0) == (v13 == 0))
+      subtitle = [(RFAttribution *)self subtitle];
+      subtitle2 = [(RFAttribution *)v5 subtitle];
+      if ((subtitle != 0) == (subtitle2 == 0))
       {
         goto LABEL_22;
       }
 
-      v14 = [(RFAttribution *)self subtitle];
-      if (v14)
+      subtitle3 = [(RFAttribution *)self subtitle];
+      if (subtitle3)
       {
-        v15 = [(RFAttribution *)self subtitle];
-        v68 = [(RFAttribution *)v5 subtitle];
-        v69 = v15;
-        if (![v15 isEqual:v68])
+        subtitle4 = [(RFAttribution *)self subtitle];
+        subtitle5 = [(RFAttribution *)v5 subtitle];
+        v69 = subtitle4;
+        if (![subtitle4 isEqual:subtitle5])
         {
           goto LABEL_20;
         }
       }
 
-      v70 = v14;
-      v16 = [(RFAttribution *)self image];
-      v17 = [(RFAttribution *)v5 image];
-      if ((v16 != 0) == (v17 == 0))
+      v70 = subtitle3;
+      image = [(RFAttribution *)self image];
+      image2 = [(RFAttribution *)v5 image];
+      if ((image != 0) == (image2 == 0))
       {
 
-        if (!v14)
+        if (!subtitle3)
         {
 LABEL_21:
 
 LABEL_22:
           v11 = 0;
-          if (!v8)
+          if (!title3)
           {
 LABEL_25:
 
@@ -203,20 +203,20 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      v65 = v16;
-      v66 = v17;
-      v67 = [(RFAttribution *)self image];
-      if (v67)
+      v65 = image;
+      v66 = image2;
+      image3 = [(RFAttribution *)self image];
+      if (image3)
       {
-        v18 = [(RFAttribution *)self image];
+        image4 = [(RFAttribution *)self image];
         [(RFAttribution *)v5 image];
-        v64 = v63 = v18;
-        if (![v18 isEqual:v64])
+        v64 = v63 = image4;
+        if (![image4 isEqual:v64])
         {
 LABEL_49:
 
 LABEL_50:
-          if (!v14)
+          if (!subtitle3)
           {
             goto LABEL_21;
           }
@@ -225,69 +225,69 @@ LABEL_50:
         }
       }
 
-      v20 = [(RFAttribution *)self index];
-      v21 = [(RFAttribution *)v5 index];
-      if ((v20 != 0) == (v21 == 0))
+      index = [(RFAttribution *)self index];
+      index2 = [(RFAttribution *)v5 index];
+      if ((index != 0) == (index2 == 0))
       {
 
         goto LABEL_48;
       }
 
-      v61 = v20;
-      v62 = v21;
-      v22 = [(RFAttribution *)self index];
-      if (v22)
+      v61 = index;
+      v62 = index2;
+      index3 = [(RFAttribution *)self index];
+      if (index3)
       {
-        v20 = [(RFAttribution *)self index];
-        v59 = [(RFAttribution *)v5 index];
-        if (![v20 isEqual:?])
+        index = [(RFAttribution *)self index];
+        index4 = [(RFAttribution *)v5 index];
+        if (![index isEqual:?])
         {
           goto LABEL_46;
         }
       }
 
-      v58 = v20;
-      v60 = v22;
-      v23 = [(RFAttribution *)self localized_index];
-      v24 = [(RFAttribution *)v5 localized_index];
-      if ((v23 != 0) == (v24 == 0))
+      v58 = index;
+      v60 = index3;
+      localized_index = [(RFAttribution *)self localized_index];
+      localized_index2 = [(RFAttribution *)v5 localized_index];
+      if ((localized_index != 0) == (localized_index2 == 0))
       {
 
         goto LABEL_45;
       }
 
-      v55 = v23;
-      v56 = v24;
-      v57 = [(RFAttribution *)self localized_index];
-      if (v57)
+      v55 = localized_index;
+      v56 = localized_index2;
+      localized_index3 = [(RFAttribution *)self localized_index];
+      if (localized_index3)
       {
-        v25 = [(RFAttribution *)self localized_index];
+        localized_index4 = [(RFAttribution *)self localized_index];
         [(RFAttribution *)v5 localized_index];
-        v54 = v53 = v25;
-        if (![v25 isEqual:v54])
+        v54 = v53 = localized_index4;
+        if (![localized_index4 isEqual:v54])
         {
           goto LABEL_43;
         }
       }
 
-      v26 = [(RFAttribution *)self localized_separator];
-      v27 = [(RFAttribution *)v5 localized_separator];
-      if ((v26 != 0) == (v27 == 0))
+      localized_separator = [(RFAttribution *)self localized_separator];
+      localized_separator2 = [(RFAttribution *)v5 localized_separator];
+      if ((localized_separator != 0) == (localized_separator2 == 0))
       {
 
-        if (!v57)
+        if (!localized_index3)
         {
 LABEL_44:
 
 LABEL_45:
-          v20 = v58;
-          if (!v22)
+          index = v58;
+          if (!index3)
           {
 LABEL_47:
 
 LABEL_48:
-            v14 = v70;
-            if (!v67)
+            subtitle3 = v70;
+            if (!image3)
             {
               goto LABEL_50;
             }
@@ -305,22 +305,22 @@ LABEL_43:
         goto LABEL_44;
       }
 
-      v51 = v26;
-      v52 = v27;
-      v28 = [(RFAttribution *)self localized_separator];
-      if (v28)
+      v51 = localized_separator;
+      v52 = localized_separator2;
+      localized_separator3 = [(RFAttribution *)self localized_separator];
+      if (localized_separator3)
       {
-        v29 = [(RFAttribution *)self localized_separator];
+        localized_separator4 = [(RFAttribution *)self localized_separator];
         [(RFAttribution *)v5 localized_separator];
-        v50 = v48 = v29;
-        if (![v29 isEqual:?])
+        v50 = v48 = localized_separator4;
+        if (![localized_separator4 isEqual:?])
         {
           v11 = 0;
           v34 = v50;
 LABEL_70:
 
 LABEL_71:
-          if (v57)
+          if (localized_index3)
           {
           }
 
@@ -328,7 +328,7 @@ LABEL_71:
           {
           }
 
-          if (v67)
+          if (image3)
           {
           }
 
@@ -336,18 +336,18 @@ LABEL_71:
           {
           }
 
-          if (!v8)
+          if (!title3)
           {
             goto LABEL_25;
           }
 
 LABEL_23:
-          v10 = v71;
-          v9 = v72;
+          title5 = v71;
+          title4 = v72;
           goto LABEL_24;
         }
 
-        v49 = v28;
+        v49 = localized_separator3;
       }
 
       else
@@ -355,24 +355,24 @@ LABEL_23:
         v49 = 0;
       }
 
-      v30 = [(RFAttribution *)self locale];
-      v31 = [(RFAttribution *)v5 locale];
-      if ((v30 != 0) == (v31 == 0))
+      locale = [(RFAttribution *)self locale];
+      locale2 = [(RFAttribution *)v5 locale];
+      if ((locale != 0) == (locale2 == 0))
       {
 
         v11 = 0;
         goto LABEL_69;
       }
 
-      v46 = v30;
-      v47 = v31;
-      v32 = [(RFAttribution *)self locale];
-      if (v32)
+      v46 = locale;
+      v47 = locale2;
+      locale3 = [(RFAttribution *)self locale];
+      if (locale3)
       {
-        v33 = [(RFAttribution *)self locale];
-        v43 = [(RFAttribution *)v5 locale];
-        v44 = v33;
-        if (![v33 isEqual:?])
+        locale4 = [(RFAttribution *)self locale];
+        locale5 = [(RFAttribution *)v5 locale];
+        v44 = locale4;
+        if (![locale4 isEqual:?])
         {
           v11 = 0;
           v38 = v54;
@@ -382,7 +382,7 @@ LABEL_67:
 
 LABEL_68:
 LABEL_69:
-          v28 = v49;
+          localized_separator3 = v49;
           v34 = v50;
           if (!v49)
           {
@@ -392,7 +392,7 @@ LABEL_69:
           goto LABEL_70;
         }
 
-        v45 = v32;
+        v45 = locale3;
       }
 
       else
@@ -400,9 +400,9 @@ LABEL_69:
         v45 = 0;
       }
 
-      v35 = [(RFAttribution *)self commandReference];
-      v36 = [(RFAttribution *)v5 commandReference];
-      if ((v35 != 0) == (v36 == 0))
+      commandReference = [(RFAttribution *)self commandReference];
+      commandReference2 = [(RFAttribution *)v5 commandReference];
+      if ((commandReference != 0) == (commandReference2 == 0))
       {
 
         v11 = 0;
@@ -410,13 +410,13 @@ LABEL_69:
 
       else
       {
-        v42 = v36;
-        v41 = [(RFAttribution *)self commandReference];
-        if (v41)
+        v42 = commandReference2;
+        commandReference3 = [(RFAttribution *)self commandReference];
+        if (commandReference3)
         {
-          v40 = [(RFAttribution *)self commandReference];
-          v37 = [(RFAttribution *)v5 commandReference];
-          v11 = [v40 isEqual:?];
+          commandReference4 = [(RFAttribution *)self commandReference];
+          commandReference5 = [(RFAttribution *)v5 commandReference];
+          v11 = [commandReference4 isEqual:?];
         }
 
         else
@@ -427,7 +427,7 @@ LABEL_69:
       }
 
       v38 = v54;
-      v32 = v45;
+      locale3 = v45;
       v39 = v46;
       if (!v45)
       {
@@ -445,39 +445,39 @@ LABEL_27:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(RFAttribution *)self title];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  title = [(RFAttribution *)self title];
+  v6 = [title copy];
   [v4 setTitle:v6];
 
-  v7 = [(RFAttribution *)self subtitle];
-  v8 = [v7 copy];
+  subtitle = [(RFAttribution *)self subtitle];
+  v8 = [subtitle copy];
   [v4 setSubtitle:v8];
 
-  v9 = [(RFAttribution *)self image];
-  v10 = [v9 copy];
+  image = [(RFAttribution *)self image];
+  v10 = [image copy];
   [v4 setImage:v10];
 
-  v11 = [(RFAttribution *)self index];
-  v12 = [v11 copy];
+  index = [(RFAttribution *)self index];
+  v12 = [index copy];
   [v4 setIndex:v12];
 
-  v13 = [(RFAttribution *)self localized_index];
-  v14 = [v13 copy];
+  localized_index = [(RFAttribution *)self localized_index];
+  v14 = [localized_index copy];
   [v4 setLocalized_index:v14];
 
-  v15 = [(RFAttribution *)self localized_separator];
-  v16 = [v15 copy];
+  localized_separator = [(RFAttribution *)self localized_separator];
+  v16 = [localized_separator copy];
   [v4 setLocalized_separator:v16];
 
-  v17 = [(RFAttribution *)self locale];
-  v18 = [v17 copy];
+  locale = [(RFAttribution *)self locale];
+  v18 = [locale copy];
   [v4 setLocale:v18];
 
-  v19 = [(RFAttribution *)self commandReference];
-  v20 = [v19 copy];
+  commandReference = [(RFAttribution *)self commandReference];
+  v20 = [commandReference copy];
   [v4 setCommandReference:v20];
 
   return v4;
@@ -486,31 +486,31 @@ LABEL_27:
 - (NSData)jsonData
 {
   v2 = [[_SFPBRFAttribution alloc] initWithFacade:self];
-  v3 = [(_SFPBRFAttribution *)v2 jsonData];
+  jsonData = [(_SFPBRFAttribution *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBRFAttribution alloc] initWithFacade:self];
-  v3 = [(_SFPBRFAttribution *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBRFAttribution *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBRFAttribution alloc] initWithFacade:self];
-  v5 = [(_SFPBRFAttribution *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBRFAttribution *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (RFAttribution)initWithCoder:(id)a3
+- (RFAttribution)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBRFAttribution alloc] initWithData:v5];
   v7 = [(RFAttribution *)self initWithProtobuf:v6];

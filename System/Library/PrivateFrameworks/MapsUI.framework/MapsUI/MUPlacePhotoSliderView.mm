@@ -1,22 +1,22 @@
 @interface MUPlacePhotoSliderView
 - (CGSize)_sizeForAttribution;
 - (CGSize)_sizeReplacingByZeroIfNegative:(CGSize)result;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (MUPlacePhotoSliderDelegate)delegate;
-- (MUPlacePhotoSliderView)initWithDataSource:(id)a3 photoTileSize:(CGSize)a4;
+- (MUPlacePhotoSliderView)initWithDataSource:(id)source photoTileSize:(CGSize)size;
 - (MUScrollAnalyticActionObserving)analyticsDelegate;
-- (id)attributionViewForAttribution:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5;
-- (id)imageViewForIndex:(unint64_t)a3;
+- (id)attributionViewForAttribution:(id)attribution;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier;
+- (id)imageViewForIndex:(unint64_t)index;
 - (void)_setupConstraints;
 - (void)_setupSubviews;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)enumerateImageViewsWithBlock:(id)a3;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)enumerateImageViewsWithBlock:(id)block;
 - (void)layoutSubviews;
-- (void)scrollToViewAtIndex:(unint64_t)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)updateViewsWithAlpha:(double)a3;
+- (void)scrollToViewAtIndex:(unint64_t)index;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)updateViewsWithAlpha:(double)alpha;
 @end
 
 @implementation MUPlacePhotoSliderView
@@ -49,8 +49,8 @@
 {
   v3 = objc_alloc_init(MEMORY[0x1E69DC848]);
   [v3 setInvalidateFlowLayoutDelegateMetrics:1];
-  v4 = [(UICollectionView *)self->_contentCollectionView collectionViewLayout];
-  [v4 invalidateLayoutWithContext:v3];
+  collectionViewLayout = [(UICollectionView *)self->_contentCollectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayoutWithContext:v3];
 
   v5.receiver = self;
   v5.super_class = MUPlacePhotoSliderView;
@@ -74,11 +74,11 @@
   return result;
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
   x = self->_beginAnalyticsScrollingPoint.x;
-  v6 = a5->x;
-  v7 = [(MUPlacePhotoSliderView *)self analyticsDelegate:a3];
+  v6 = offset->x;
+  v7 = [(MUPlacePhotoSliderView *)self analyticsDelegate:dragging];
   v8 = v7;
   if (x <= v6)
   {
@@ -91,18 +91,18 @@
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   p_beginAnalyticsScrollingPoint = &self->_beginAnalyticsScrollingPoint;
-  [a3 contentOffset];
+  [dragging contentOffset];
   p_beginAnalyticsScrollingPoint->x = v4;
   p_beginAnalyticsScrollingPoint->y = v5;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:v6];
+  pathCopy = path;
+  v7 = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:pathCopy];
   if (objc_opt_respondsToSelector() & 1) != 0 && (WeakRetained = objc_loadWeakRetained(&self->_dataSource), v9 = objc_opt_respondsToSelector(), WeakRetained, (v9) && (v10 = objc_loadWeakRetained(&self->_dataSource), v11 = [v10 photoSliderView:self shouldShowFullWidthForModel:v7], v10, v11))
   {
     [(UICollectionView *)self->_contentCollectionView frame];
@@ -116,7 +116,7 @@
 
   else
   {
-    v20 = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:v6];
+    v20 = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:pathCopy];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -144,14 +144,14 @@
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:a4];
+  v6 = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MUPlacePhotoSliderView *)self delegate];
-    [v5 photoSliderView:self didTapAttribution:v6];
+    delegate = [(MUPlacePhotoSliderView *)self delegate];
+    [delegate photoSliderView:self didTapAttribution:v6];
   }
 
   else
@@ -161,32 +161,32 @@
       goto LABEL_6;
     }
 
-    v5 = [(MUPlacePhotoSliderView *)self delegate];
-    [v5 photoSliderView:self didTapViewModel:v6];
+    delegate = [(MUPlacePhotoSliderView *)self delegate];
+    [delegate photoSliderView:self didTapViewModel:v6];
   }
 
 LABEL_6:
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  pathCopy = path;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v11 = +[MUPunchoutCollectionViewCell reuseIdentifier];
-    v12 = [v8 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v9];
+    v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:pathCopy];
 
-    [v12 setViewModel:v10];
+    [v12 setViewModel:identifierCopy];
   }
 
-  else if ([v10 conformsToProtocol:&unk_1F454DD90])
+  else if ([identifierCopy conformsToProtocol:&unk_1F454DD90])
   {
-    v13 = v10;
+    v13 = identifierCopy;
     v14 = +[MUPhotoTileCollectionViewCell reuseIdentifier];
-    v12 = [v8 dequeueReusableCellWithReuseIdentifier:v14 forIndexPath:v9];
+    v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v14 forIndexPath:pathCopy];
 
     [v12 setTargetFrameSize:{self->_photoTileSize.width, self->_photoTileSize.height}];
     [v12 setViewModel:v13];
@@ -204,16 +204,16 @@ LABEL_6:
   return v12;
 }
 
-- (void)enumerateImageViewsWithBlock:(id)a3
+- (void)enumerateImageViewsWithBlock:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(UICollectionView *)self->_contentCollectionView visibleCells];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  visibleCells = [(UICollectionView *)self->_contentCollectionView visibleCells];
+  v6 = [visibleCells countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -225,22 +225,22 @@ LABEL_6:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(visibleCells);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v10 contentImageView];
-          v4[2](v4, v11);
+          contentImageView = [v10 contentImageView];
+          blockCopy[2](blockCopy, contentImageView);
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [visibleCells countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -249,19 +249,19 @@ LABEL_6:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)scrollToViewAtIndex:(unint64_t)a3
+- (void)scrollToViewAtIndex:(unint64_t)index
 {
-  if ([(NSArray *)self->_photoModels count]> a3)
+  if ([(NSArray *)self->_photoModels count]> index)
   {
     contentCollectionView = self->_contentCollectionView;
-    v6 = [MEMORY[0x1E696AC88] indexPathForRow:a3 inSection:0];
+    v6 = [MEMORY[0x1E696AC88] indexPathForRow:index inSection:0];
     [(UICollectionView *)contentCollectionView scrollToItemAtIndexPath:v6 atScrollPosition:16 animated:0];
   }
 }
 
-- (id)attributionViewForAttribution:(id)a3
+- (id)attributionViewForAttribution:(id)attribution
 {
-  v4 = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource indexPathForItemIdentifier:a3];
+  v4 = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource indexPathForItemIdentifier:attribution];
   if (v4)
   {
     v5 = [(UICollectionView *)self->_contentCollectionView cellForItemAtIndexPath:v4];
@@ -275,15 +275,15 @@ LABEL_6:
   return v5;
 }
 
-- (void)updateViewsWithAlpha:(double)a3
+- (void)updateViewsWithAlpha:(double)alpha
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(UICollectionView *)self->_contentCollectionView visibleCells];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  visibleCells = [(UICollectionView *)self->_contentCollectionView visibleCells];
+  v5 = [visibleCells countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -295,14 +295,14 @@ LABEL_6:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(visibleCells);
         }
 
-        [*(*(&v10 + 1) + 8 * v8++) setAlpha:a3];
+        [*(*(&v10 + 1) + 8 * v8++) setAlpha:alpha];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [visibleCells countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -311,20 +311,20 @@ LABEL_6:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)imageViewForIndex:(unint64_t)a3
+- (id)imageViewForIndex:(unint64_t)index
 {
   contentCollectionView = self->_contentCollectionView;
-  v4 = [MEMORY[0x1E696AC88] indexPathForRow:a3 inSection:0];
+  v4 = [MEMORY[0x1E696AC88] indexPathForRow:index inSection:0];
   v5 = [(UICollectionView *)contentCollectionView cellForItemAtIndexPath:v4];
 
   objc_opt_class();
-  v6 = 0;
+  contentImageView = 0;
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 contentImageView];
+    contentImageView = [v5 contentImageView];
   }
 
-  return v6;
+  return contentImageView;
 }
 
 - (void)_setupConstraints
@@ -357,8 +357,8 @@ LABEL_6:
   self->_contentCollectionView = v4;
 
   [(UICollectionView *)self->_contentCollectionView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [MEMORY[0x1E69DC888] clearColor];
-  [(UICollectionView *)self->_contentCollectionView setBackgroundColor:v6];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UICollectionView *)self->_contentCollectionView setBackgroundColor:clearColor];
 
   [(UICollectionView *)self->_contentCollectionView setShowsHorizontalScrollIndicator:0];
   [(UICollectionView *)self->_contentCollectionView setDelegate:self];
@@ -384,18 +384,18 @@ LABEL_6:
   [(MUPlacePhotoSliderView *)self addSubview:self->_contentCollectionView];
 }
 
-- (MUPlacePhotoSliderView)initWithDataSource:(id)a3 photoTileSize:(CGSize)a4
+- (MUPlacePhotoSliderView)initWithDataSource:(id)source photoTileSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  sourceCopy = source;
   v11.receiver = self;
   v11.super_class = MUPlacePhotoSliderView;
   v8 = [(MUPlacePhotoSliderView *)&v11 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_dataSource, v7);
+    objc_storeWeak(&v8->_dataSource, sourceCopy);
     v9->_photoTileSize.width = width;
     v9->_photoTileSize.height = height;
     [(MUPlacePhotoSliderView *)v9 _setupSubviews];

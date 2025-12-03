@@ -1,13 +1,13 @@
 @interface HMDCloudSyncLegacyUploadLogEvent
-+ (id)uploadCompletedWithError:(id)a3;
++ (id)uploadCompletedWithError:(id)error;
 @end
 
 @implementation HMDCloudSyncLegacyUploadLogEvent
 
-+ (id)uploadCompletedWithError:(id)a3
++ (id)uploadCompletedWithError:(id)error
 {
-  v3 = a3;
-  v4 = [(HMDCloudSyncOperationLogEvent *)[HMDCloudSyncLegacyUploadLogEvent alloc] initWithError:v3];
+  errorCopy = error;
+  v4 = [(HMDCloudSyncOperationLogEvent *)[HMDCloudSyncLegacyUploadLogEvent alloc] initWithError:errorCopy];
 
   return v4;
 }

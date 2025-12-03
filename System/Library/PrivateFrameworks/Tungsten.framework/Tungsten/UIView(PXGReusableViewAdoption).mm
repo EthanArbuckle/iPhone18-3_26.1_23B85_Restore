@@ -14,13 +14,13 @@
 
 - (uint64_t)pxg_shiftPosition:()PXGReusableViewAdoption
 {
-  result = [a1 isFloating];
+  result = [self isFloating];
   if ((result & 1) == 0)
   {
-    [a1 center];
+    [self center];
     PXPointAdd();
 
-    return [a1 setCenter:?];
+    return [self setCenter:?];
   }
 
   return result;
@@ -29,16 +29,16 @@
 - (void)_setCornersWithStyle:()PXGReusableViewAdoption
 {
   v5 = fmaxf(fmaxf(a3[9], a3[10]), fmaxf(a3[11], a3[12]));
-  v6 = [a1 layer];
-  [v6 cornerRadius];
+  layer = [self layer];
+  [layer cornerRadius];
   v8 = v7;
 
   if (v8 != v5)
   {
-    v9 = [a1 layer];
-    [v9 setCornerRadius:v5];
+    layer2 = [self layer];
+    [layer2 setCornerRadius:v5];
 
-    [a1 setClipsToBounds:v5 != 0.0];
+    [self setClipsToBounds:v5 != 0.0];
   }
 
   v11 = a3[9];
@@ -79,13 +79,13 @@
     }
   }
 
-  v16 = [a1 layer];
-  v17 = [v16 maskedCorners];
+  layer3 = [self layer];
+  maskedCorners = [layer3 maskedCorners];
 
-  if (v17 != v15)
+  if (maskedCorners != v15)
   {
-    v18 = [a1 layer];
-    [v18 setMaskedCorners:v15];
+    layer4 = [self layer];
+    [layer4 setMaskedCorners:v15];
   }
 }
 
@@ -93,7 +93,7 @@
 {
   v13 = a3;
   v14 = a8;
-  v15 = a1;
+  selfCopy = self;
   PXRectWithCenterAndSize();
   v17 = v16;
   v19 = v18;
@@ -116,29 +116,29 @@
       if (objc_opt_isKindOfClass())
       {
 LABEL_10:
-        [v15 setUserData:v25];
+        [selfCopy setUserData:v25];
         goto LABEL_11;
       }
 
-      v90 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v93 = objc_opt_class();
       v92 = NSStringFromClass(v93);
-      v94 = [v25 px_descriptionForAssertionMessage];
-      [v90 handleFailureInMethod:a2 object:v15 file:@"PXGViewRenderer.m" lineNumber:1051 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"texture", v92, v94}];
+      px_descriptionForAssertionMessage = [v25 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"PXGViewRenderer.m" lineNumber:1051 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"texture", v92, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v90 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v91 = objc_opt_class();
       v92 = NSStringFromClass(v91);
-      [v90 handleFailureInMethod:a2 object:v15 file:@"PXGViewRenderer.m" lineNumber:1051 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"texture", v92}];
+      [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"PXGViewRenderer.m" lineNumber:1051 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"texture", v92}];
     }
 
     goto LABEL_10;
   }
 
-  v25 = v15;
+  v25 = selfCopy;
   if (v25)
   {
     objc_opt_class();
@@ -147,29 +147,29 @@ LABEL_10:
       goto LABEL_4;
     }
 
-    v70 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v82 = objc_opt_class();
     v72 = NSStringFromClass(v82);
-    v83 = [v25 px_descriptionForAssertionMessage];
-    [v70 handleFailureInMethod:a2 object:v25 file:@"PXGViewRenderer.m" lineNumber:1046 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"reusableView", v72, v83}];
+    px_descriptionForAssertionMessage2 = [v25 px_descriptionForAssertionMessage];
+    [currentHandler2 handleFailureInMethod:a2 object:v25 file:@"PXGViewRenderer.m" lineNumber:1046 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"reusableView", v72, px_descriptionForAssertionMessage2}];
   }
 
   else
   {
-    v70 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v71 = objc_opt_class();
     v72 = NSStringFromClass(v71);
-    [v70 handleFailureInMethod:a2 object:0 file:@"PXGViewRenderer.m" lineNumber:1046 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"reusableView", v72}];
+    [currentHandler2 handleFailureInMethod:a2 object:0 file:@"PXGViewRenderer.m" lineNumber:1046 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"reusableView", v72}];
   }
 
 LABEL_4:
   v26 = v13;
   if (!v26)
   {
-    v73 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
     v74 = objc_opt_class();
     v75 = NSStringFromClass(v74);
-    [v73 handleFailureInMethod:a2 object:v25 file:@"PXGViewRenderer.m" lineNumber:1047 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"texture", v75}];
+    [currentHandler3 handleFailureInMethod:a2 object:v25 file:@"PXGViewRenderer.m" lineNumber:1047 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"texture", v75}];
 LABEL_54:
 
     goto LABEL_6;
@@ -178,11 +178,11 @@ LABEL_54:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v73 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
     v84 = objc_opt_class();
     v75 = NSStringFromClass(v84);
-    v85 = [v26 px_descriptionForAssertionMessage];
-    [v73 handleFailureInMethod:a2 object:v25 file:@"PXGViewRenderer.m" lineNumber:1047 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"texture", v75, v85}];
+    px_descriptionForAssertionMessage3 = [v26 px_descriptionForAssertionMessage];
+    [currentHandler3 handleFailureInMethod:a2 object:v25 file:@"PXGViewRenderer.m" lineNumber:1047 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"texture", v75, px_descriptionForAssertionMessage3}];
 
     goto LABEL_54;
   }
@@ -209,29 +209,29 @@ LABEL_12:
       goto LABEL_15;
     }
 
-    v76 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
     v86 = objc_opt_class();
     v78 = NSStringFromClass(v86);
-    v87 = [v29 px_descriptionForAssertionMessage];
-    [v76 handleFailureInMethod:a2 object:v15 file:@"PXGViewRenderer.m" lineNumber:1057 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"texture", v78, v87}];
+    px_descriptionForAssertionMessage4 = [v29 px_descriptionForAssertionMessage];
+    [currentHandler4 handleFailureInMethod:a2 object:selfCopy file:@"PXGViewRenderer.m" lineNumber:1057 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"texture", v78, px_descriptionForAssertionMessage4}];
   }
 
   else
   {
-    v76 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
     v77 = objc_opt_class();
     v78 = NSStringFromClass(v77);
-    [v76 handleFailureInMethod:a2 object:v15 file:@"PXGViewRenderer.m" lineNumber:1057 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"texture", v78}];
+    [currentHandler4 handleFailureInMethod:a2 object:selfCopy file:@"PXGViewRenderer.m" lineNumber:1057 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"texture", v78}];
   }
 
 LABEL_15:
-  v30 = [v29 payload];
-  if (!v30)
+  payload = [v29 payload];
+  if (!payload)
   {
-    v79 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
     v80 = objc_opt_class();
     v81 = NSStringFromClass(v80);
-    [v79 handleFailureInMethod:a2 object:v15 file:@"PXGViewRenderer.m" lineNumber:1058 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"payloadTexture.payload", v81}];
+    [currentHandler5 handleFailureInMethod:a2 object:selfCopy file:@"PXGViewRenderer.m" lineNumber:1058 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"payloadTexture.payload", v81}];
 LABEL_58:
 
     goto LABEL_17;
@@ -240,84 +240,84 @@ LABEL_58:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v79 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
     v88 = objc_opt_class();
     v81 = NSStringFromClass(v88);
-    v89 = [v30 px_descriptionForAssertionMessage];
-    [v79 handleFailureInMethod:a2 object:v15 file:@"PXGViewRenderer.m" lineNumber:1058 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"payloadTexture.payload", v81, v89}];
+    px_descriptionForAssertionMessage5 = [payload px_descriptionForAssertionMessage];
+    [currentHandler5 handleFailureInMethod:a2 object:selfCopy file:@"PXGViewRenderer.m" lineNumber:1058 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"payloadTexture.payload", v81, px_descriptionForAssertionMessage5}];
 
     goto LABEL_58;
   }
 
 LABEL_17:
-  v31 = [v15 userData];
-  v32 = [v30 userData];
+  userData = [selfCopy userData];
+  userData2 = [payload userData];
 
-  if (v31 != v32)
+  if (userData != userData2)
   {
-    v33 = [v30 userData];
-    [v15 setUserData:v33];
+    userData3 = [payload userData];
+    [selfCopy setUserData:userData3];
   }
 
 LABEL_20:
-  v34 = [v15 layer];
-  [v34 zPosition];
+  layer = [selfCopy layer];
+  [layer zPosition];
   v36 = v35;
 
   if (v36 != v28)
   {
-    v37 = [v15 layer];
-    [v37 setZPosition:v28];
+    layer2 = [selfCopy layer];
+    [layer2 setZPosition:v28];
   }
 
-  v38 = [v15 _outermostLayer];
-  [v38 zPosition];
+  _outermostLayer = [selfCopy _outermostLayer];
+  [_outermostLayer zPosition];
   v40 = v39;
 
   if (v40 != v28)
   {
-    v41 = [v15 _outermostLayer];
-    [v41 setZPosition:v28];
+    _outermostLayer2 = [selfCopy _outermostLayer];
+    [_outermostLayer2 setZPosition:v28];
   }
 
-  [v15 alpha];
+  [selfCopy alpha];
   v42 = *a6;
   if (v43 != *a6)
   {
-    [v15 setAlpha:?];
+    [selfCopy setAlpha:?];
     v42 = *a6;
   }
 
-  if ([v15 isHidden] != (v42 == 0.0))
+  if ([selfCopy isHidden] != (v42 == 0.0))
   {
-    [v15 setHidden:v42 == 0.0];
+    [selfCopy setHidden:v42 == 0.0];
   }
 
   PXRectGetCenter();
   v45 = v44;
   v47 = v46;
-  [v15 center];
+  [selfCopy center];
   if (v45 != v49 || v47 != v48)
   {
-    [v15 setCenter:{v45, v47}];
+    [selfCopy setCenter:{v45, v47}];
   }
 
-  [v15 bounds];
+  [selfCopy bounds];
   if (v21 != v51 || v23 != v50)
   {
-    [v15 setBounds:{0.0, 0.0, v21, v23}];
+    [selfCopy setBounds:{0.0, 0.0, v21, v23}];
   }
 
   v96 = vcvtq_f64_f32(*(a6 + 72));
-  v52 = [v15 layer];
-  [v52 anchorPoint];
+  layer3 = [selfCopy layer];
+  [layer3 anchorPoint];
   v54 = v53;
   v56 = v55;
 
   if (v54 != v96.f64[0] || v56 != v96.f64[1])
   {
-    v57 = [v15 layer];
-    [v57 setAnchorPoint:*&v96];
+    layer4 = [selfCopy layer];
+    [layer4 setAnchorPoint:*&v96];
   }
 
   if (v14)
@@ -349,10 +349,10 @@ LABEL_40:
   CGAffineTransformMakeScale(&v97, *(a6 + 60), *(a6 + 60));
   CGAffineTransformRotate(&v98, &v97, v58);
   v97 = v98;
-  [v15 setTransform:&v97];
+  [selfCopy setTransform:&v97];
   v60 = *(a6 + 56) != 0.0;
-  v61 = [v15 layer];
-  [v61 setAllowsEdgeAntialiasing:v60];
+  layer5 = [selfCopy layer];
+  [layer5 setAllowsEdgeAntialiasing:v60];
 
   if (v14)
   {
@@ -390,34 +390,34 @@ LABEL_43:
     *&v66 = CGRectOffset(v100, -v17, -v19);
   }
 
-  [v15 setClippingRect:{v66, v67, v68, v69}];
-  [v15 _setCornersWithStyle:a6];
+  [selfCopy setClippingRect:{v66, v67, v68, v69}];
+  [selfCopy _setCornersWithStyle:a6];
 }
 
 - (uint64_t)pxg_prepareForReuse
 {
-  [a1 setHidden:0];
+  [self setHidden:0];
 
-  return [a1 prepareForReuse];
+  return [self prepareForReuse];
 }
 
 - (void)pxg_becomeReusable
 {
-  [a1 setHidden:1];
+  [self setHidden:1];
   v2 = *(MEMORY[0x277CBF2C0] + 16);
   v4[0] = *MEMORY[0x277CBF2C0];
   v4[1] = v2;
   v4[2] = *(MEMORY[0x277CBF2C0] + 32);
-  [a1 setTransform:v4];
-  v3 = a1;
-  [v3 setUserData:0];
-  [v3 becomeReusable];
+  [self setTransform:v4];
+  selfCopy = self;
+  [selfCopy setUserData:0];
+  [selfCopy becomeReusable];
 }
 
 - (BOOL)pxg_hasSuperview
 {
-  v1 = [a1 superview];
-  v2 = v1 != 0;
+  superview = [self superview];
+  v2 = superview != 0;
 
   return v2;
 }
@@ -425,36 +425,36 @@ LABEL_43:
 - (BOOL)pxg_isChildOfView:()PXGReusableViewAdoption
 {
   v4 = a3;
-  v5 = [a1 superview];
+  superview = [self superview];
 
-  return v5 == v4;
+  return superview == v4;
 }
 
 - (void)pxg_addToHostingView:()PXGReusableViewAdoption
 {
   v4 = *MEMORY[0x277CDA138];
   v6 = a3;
-  v5 = [a1 layer];
-  [v5 setCornerCurve:v4];
+  layer = [self layer];
+  [layer setCornerCurve:v4];
 
-  [v6 addHostedView:a1];
+  [v6 addHostedView:self];
 }
 
 - (void)pxg_addToScrollViewController:()PXGReusableViewAdoption floatingAxis:
 {
   v10 = a3;
   v6 = *MEMORY[0x277CDA138];
-  v7 = [a1 layer];
-  [v7 setCornerCurve:v6];
+  layer = [self layer];
+  [layer setCornerCurve:v6];
 
   if (a4 == 1)
   {
-    v8 = [v10 scrollView];
-    v9 = [objc_alloc(MEMORY[0x277D76220]) initWithScrollView:v8 edge:1 style:1];
-    [a1 addInteraction:v9];
+    scrollView = [v10 scrollView];
+    v9 = [objc_alloc(MEMORY[0x277D76220]) initWithScrollView:scrollView edge:1 style:1];
+    [self addInteraction:v9];
   }
 
-  [v10 addSubview:a1];
+  [v10 addSubview:self];
 }
 
 @end

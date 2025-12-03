@@ -1,33 +1,33 @@
 @interface PUPickerAssetPlaybackStyleFilter
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValidFilter;
-- (PUPickerAssetPlaybackStyleFilter)initWithCoder:(id)a3;
-- (PUPickerAssetPlaybackStyleFilter)initWithPlaybackStyle:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PUPickerAssetPlaybackStyleFilter)initWithCoder:(id)coder;
+- (PUPickerAssetPlaybackStyleFilter)initWithPlaybackStyle:(int64_t)style;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)generatedAssetPredicate;
 - (unint64_t)generatedPossibleAssetTypes;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PUPickerAssetPlaybackStyleFilter
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithInteger:{-[PUPickerAssetPlaybackStyleFilter playbackStyle](self, "playbackStyle")}];
-  [v5 encodeObject:v6 forKey:@"PUPickerAssetPlaybackStyleFilterDictionaryPlaybackStyleKey"];
+  [coderCopy encodeObject:v6 forKey:@"PUPickerAssetPlaybackStyleFilterDictionaryPlaybackStyleKey"];
 }
 
-- (PUPickerAssetPlaybackStyleFilter)initWithCoder:(id)a3
+- (PUPickerAssetPlaybackStyleFilter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = PUPickerAssetPlaybackStyleFilter;
   v5 = [(PUPickerAssetPlaybackStyleFilter *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PUPickerAssetPlaybackStyleFilterDictionaryPlaybackStyleKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PUPickerAssetPlaybackStyleFilterDictionaryPlaybackStyleKey"];
     v5->_playbackStyle = [v6 integerValue];
   }
 
@@ -46,39 +46,39 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PUPickerAssetPlaybackStyleFilter alloc];
-  v5 = [(PUPickerAssetPlaybackStyleFilter *)self playbackStyle];
+  playbackStyle = [(PUPickerAssetPlaybackStyleFilter *)self playbackStyle];
 
-  return [(PUPickerAssetPlaybackStyleFilter *)v4 initWithPlaybackStyle:v5];
+  return [(PUPickerAssetPlaybackStyleFilter *)v4 initWithPlaybackStyle:playbackStyle];
 }
 
 - (unint64_t)generatedPossibleAssetTypes
 {
-  v2 = [(PUPickerAssetPlaybackStyleFilter *)self playbackStyle];
-  if ((v2 - 1) > 4)
+  playbackStyle = [(PUPickerAssetPlaybackStyleFilter *)self playbackStyle];
+  if ((playbackStyle - 1) > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_1D2158AE0[v2 - 1];
+    return qword_1D2158AE0[playbackStyle - 1];
   }
 }
 
 - (id)generatedAssetPredicate
 {
-  v2 = [(PUPickerAssetPlaybackStyleFilter *)self playbackStyle];
-  if ((v2 - 1) > 4)
+  playbackStyle = [(PUPickerAssetPlaybackStyleFilter *)self playbackStyle];
+  if ((playbackStyle - 1) > 4)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(%K) == %d", @"playbackStyle", v2];
+    v3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(%K) == %d", @"playbackStyle", playbackStyle];
   }
 
   return v3;
@@ -87,11 +87,11 @@
 - (BOOL)isValidFilter
 {
   v10 = *MEMORY[0x1E69E9840];
-  v2 = [(PUPickerAssetPlaybackStyleFilter *)self playbackStyle];
-  v3 = v2 - 1;
-  if ((v2 - 1) >= 5)
+  playbackStyle = [(PUPickerAssetPlaybackStyleFilter *)self playbackStyle];
+  v3 = playbackStyle - 1;
+  if ((playbackStyle - 1) >= 5)
   {
-    v4 = v2;
+    v4 = playbackStyle;
     v5 = PLPickerGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
@@ -106,10 +106,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
     goto LABEL_8;
@@ -122,14 +122,14 @@
     goto LABEL_8;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   v6 = objc_opt_class();
   if (v5)
   {
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(PUPickerAssetPlaybackStyleFilter *)self playbackStyle];
-      v8 = v7 == [(PUPickerAssetPlaybackStyleFilter *)v5 playbackStyle];
+      playbackStyle = [(PUPickerAssetPlaybackStyleFilter *)self playbackStyle];
+      v8 = playbackStyle == [(PUPickerAssetPlaybackStyleFilter *)v5 playbackStyle];
 
 LABEL_8:
       return v8;
@@ -153,7 +153,7 @@ LABEL_8:
   return [(PUPickerAssetPlaybackStyleFilter *)v12 initWithPlaybackStyle:v13, v14];
 }
 
-- (PUPickerAssetPlaybackStyleFilter)initWithPlaybackStyle:(int64_t)a3
+- (PUPickerAssetPlaybackStyleFilter)initWithPlaybackStyle:(int64_t)style
 {
   v9.receiver = self;
   v9.super_class = PUPickerAssetPlaybackStyleFilter;
@@ -161,7 +161,7 @@ LABEL_8:
   v5 = v4;
   if (v4)
   {
-    v4->_playbackStyle = a3;
+    v4->_playbackStyle = style;
   }
 
   if ([(PUPickerAssetPlaybackStyleFilter *)v4 isValidFilter])

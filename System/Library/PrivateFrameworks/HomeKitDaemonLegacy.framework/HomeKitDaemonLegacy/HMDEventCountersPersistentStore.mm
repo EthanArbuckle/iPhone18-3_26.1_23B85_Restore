@@ -1,8 +1,8 @@
 @interface HMDEventCountersPersistentStore
-- (HMDEventCountersPersistentStore)initWithPersistentStore:(id)a3;
+- (HMDEventCountersPersistentStore)initWithPersistentStore:(id)store;
 - (HMDPersistentStore)persistentStore;
 - (id)unarchive;
-- (void)archiveDictionary:(id)a3;
+- (void)archiveDictionary:(id)dictionary;
 @end
 
 @implementation HMDEventCountersPersistentStore
@@ -18,14 +18,14 @@
 {
   v31[3] = *MEMORY[0x277D85DE8];
   v3 = eventCountersDataStoreLegacyPath;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:v3];
 
   if (v5)
   {
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v26 = 0;
-    [v6 removeItemAtPath:v3 error:&v26];
+    [defaultManager2 removeItemAtPath:v3 error:&v26];
   }
 
   v7 = eventCountersDataStorePath;
@@ -36,11 +36,11 @@
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:3];
   v10 = [v8 setByAddingObjectsFromArray:v9];
 
-  v11 = [(HMDEventCountersPersistentStore *)self persistentStore];
-  v12 = [v11 unarchiveDictionaryWithPath:v7 allowedClasses:v10 forKey:@"HMDEventCountersDataStoreKey"];
+  persistentStore = [(HMDEventCountersPersistentStore *)self persistentStore];
+  v12 = [persistentStore unarchiveDictionaryWithPath:v7 allowedClasses:v10 forKey:@"HMDEventCountersDataStoreKey"];
 
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   v16 = v15;
   if (!v12)
@@ -69,8 +69,8 @@
 
   objc_autoreleasePoolPop(v13);
   v18 = [v12 objectForKeyedSubscript:@"HMDEventCountersArchivedEventCountersModifiedDateKey"];
-  v19 = [MEMORY[0x277CBEAA8] date];
-  [v19 timeIntervalSinceDate:v18];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceDate:v18];
   v21 = v20;
 
   if (v21 > 86400.0)
@@ -89,32 +89,32 @@ LABEL_13:
   return v23;
 }
 
-- (void)archiveDictionary:(id)a3
+- (void)archiveDictionary:(id)dictionary
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
-  v11 = [v4 dictionary];
-  v6 = [v5 copy];
+  dictionaryCopy = dictionary;
+  dictionary = [v4 dictionary];
+  v6 = [dictionaryCopy copy];
 
-  [v11 setObject:v6 forKeyedSubscript:@"HMDEventCountersArchivedEventCountersKey"];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  [v11 setObject:v7 forKeyedSubscript:@"HMDEventCountersArchivedEventCountersModifiedDateKey"];
+  [dictionary setObject:v6 forKeyedSubscript:@"HMDEventCountersArchivedEventCountersKey"];
+  date = [MEMORY[0x277CBEAA8] date];
+  [dictionary setObject:date forKeyedSubscript:@"HMDEventCountersArchivedEventCountersModifiedDateKey"];
 
   v8 = eventCountersDataStorePath;
-  v9 = [(HMDEventCountersPersistentStore *)self persistentStore];
-  v10 = [v9 archiveDictionary:v11 withPath:v8 forKey:@"HMDEventCountersDataStoreKey"];
+  persistentStore = [(HMDEventCountersPersistentStore *)self persistentStore];
+  v10 = [persistentStore archiveDictionary:dictionary withPath:v8 forKey:@"HMDEventCountersDataStoreKey"];
 }
 
-- (HMDEventCountersPersistentStore)initWithPersistentStore:(id)a3
+- (HMDEventCountersPersistentStore)initWithPersistentStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v8.receiver = self;
   v8.super_class = HMDEventCountersPersistentStore;
   v5 = [(HMDEventCountersPersistentStore *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_persistentStore, v4);
+    objc_storeWeak(&v5->_persistentStore, storeCopy);
   }
 
   return v6;

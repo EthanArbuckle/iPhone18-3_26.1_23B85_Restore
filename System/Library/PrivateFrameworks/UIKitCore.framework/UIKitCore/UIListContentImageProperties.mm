@@ -1,23 +1,23 @@
 @interface UIListContentImageProperties
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)maximumSize;
 - (CGSize)reservedLayoutSize;
 - (UIColor)resolvedTintColorForTintColor:(UIColor *)tintColor;
 - (UIConfigurationColorTransformer)tintColorTransformer;
 - (UIListContentImageProperties)init;
-- (UIListContentImageProperties)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (UIListContentImageProperties)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)resolvedStrokeColorForTintColor:(id)a3;
+- (id)resolvedStrokeColorForTintColor:(id)color;
 - (id)strokeColorTransformer;
-- (uint64_t)_isEqualToProperties:(int)a3 compareImage:;
-- (uint64_t)_isEqualToPropertiesQuick:(int)a3 compareImage:;
-- (void)__setStrokeColorTransformer:(uint64_t)a1;
-- (void)_applyPropertiesFromDefaultProperties:(uint64_t)a1;
-- (void)_applyToImageView:(uint64_t)a1;
-- (void)_setTintColorTransformer:(uint64_t)a1;
-- (void)_setTintColorTransformerIdentifier:(uint64_t)a1;
-- (void)encodeWithCoder:(id)a3;
+- (uint64_t)_isEqualToProperties:(int)properties compareImage:;
+- (uint64_t)_isEqualToPropertiesQuick:(int)quick compareImage:;
+- (void)__setStrokeColorTransformer:(uint64_t)transformer;
+- (void)_applyPropertiesFromDefaultProperties:(uint64_t)properties;
+- (void)_applyToImageView:(uint64_t)view;
+- (void)_setTintColorTransformer:(uint64_t)transformer;
+- (void)_setTintColorTransformerIdentifier:(uint64_t)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIListContentImageProperties
@@ -55,43 +55,43 @@
   return result;
 }
 
-- (UIListContentImageProperties)initWithCoder:(id)a3
+- (UIListContentImageProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v48.receiver = self;
   v48.super_class = UIListContentImageProperties;
   v5 = [(UIListContentImageProperties *)&v48 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"image"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"image"];
     image = v5->_image;
     v5->_image = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preferredSymbolConfiguration"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preferredSymbolConfiguration"];
     preferredSymbolConfiguration = v5->_preferredSymbolConfiguration;
     v5->_preferredSymbolConfiguration = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tintColor"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tintColor"];
     tintColor = v5->_tintColor;
     v5->_tintColor = v10;
 
-    -[UIListContentImageProperties _setTintColorTransformerIdentifier:](v5, [v4 decodeIntegerForKey:@"tintColorTransformerIdentifier"]);
-    [v4 decodeDoubleForKey:@"cornerRadius"];
+    -[UIListContentImageProperties _setTintColorTransformerIdentifier:](v5, [coderCopy decodeIntegerForKey:@"tintColorTransformerIdentifier"]);
+    [coderCopy decodeDoubleForKey:@"cornerRadius"];
     v5->_cornerRadius = v12;
-    [v4 decodeCGSizeForKey:@"reservedLayoutSize"];
+    [coderCopy decodeCGSizeForKey:@"reservedLayoutSize"];
     v5->_reservedLayoutSize.width = v13;
     v5->_reservedLayoutSize.height = v14;
-    [v4 decodeCGSizeForKey:@"maximumSize"];
+    [coderCopy decodeCGSizeForKey:@"maximumSize"];
     v5->_maximumSize.width = v15;
     v5->_maximumSize.height = v16;
-    v5->_accessibilityIgnoresInvertColors = [v4 decodeBoolForKey:@"accessibilityIgnoresInvertColors"];
-    if ([v4 containsValueForKey:@"strokeColor"])
+    v5->_accessibilityIgnoresInvertColors = [coderCopy decodeBoolForKey:@"accessibilityIgnoresInvertColors"];
+    if ([coderCopy containsValueForKey:@"strokeColor"])
     {
-      v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"strokeColor"];
+      v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"strokeColor"];
       strokeColor = v5->_strokeColor;
       v5->_strokeColor = v17;
 
-      v19 = [v4 decodeIntegerForKey:@"strokeColorTransformerIdentifier"];
+      v19 = [coderCopy decodeIntegerForKey:@"strokeColorTransformerIdentifier"];
       v20 = _UIConfigurationColorTransformerForIdentifier(v19);
       strokeColorTransformer = v5->_strokeColorTransformer;
       v5->_strokeColorTransformer = v20;
@@ -107,7 +107,7 @@
       }
 
       v5->_strokeColorTransformerIdentifier = v22;
-      [v4 decodeDoubleForKey:@"strokeWidth"];
+      [coderCopy decodeDoubleForKey:@"strokeWidth"];
       v5->_strokeWidth = v23;
     }
 
@@ -118,16 +118,16 @@
       v5->_strokeColor = v24;
     }
 
-    if ([v4 containsValueForKey:@"monochromaticTreatment"])
+    if ([coderCopy containsValueForKey:@"monochromaticTreatment"])
     {
-      v5->__monochromaticTreatment = [v4 decodeIntegerForKey:@"monochromaticTreatment"];
+      v5->__monochromaticTreatment = [coderCopy decodeIntegerForKey:@"monochromaticTreatment"];
     }
 
     v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"preferredSymbolConfiguration"];
-    *&v5->_imageFlags = *&v5->_imageFlags & 0xFFFE | [v4 decodeBoolForKey:v26];
+    *&v5->_imageFlags = *&v5->_imageFlags & 0xFFFE | [coderCopy decodeBoolForKey:v26];
 
     v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"tintColor"];
-    if ([v4 decodeBoolForKey:v27])
+    if ([coderCopy decodeBoolForKey:v27])
     {
       v28 = 2;
     }
@@ -140,7 +140,7 @@
     *&v5->_imageFlags = *&v5->_imageFlags & 0xFFFD | v28;
 
     v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"tintColorTransformerIdentifier"];
-    if ([v4 decodeBoolForKey:v29])
+    if ([coderCopy decodeBoolForKey:v29])
     {
       v30 = 4;
     }
@@ -153,7 +153,7 @@
     *&v5->_imageFlags = *&v5->_imageFlags & 0xFFFB | v30;
 
     v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"cornerRadius"];
-    if ([v4 decodeBoolForKey:v31])
+    if ([coderCopy decodeBoolForKey:v31])
     {
       v32 = 8;
     }
@@ -166,7 +166,7 @@
     *&v5->_imageFlags = *&v5->_imageFlags & 0xFFF7 | v32;
 
     v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"reservedLayoutSize"];
-    if ([v4 decodeBoolForKey:v33])
+    if ([coderCopy decodeBoolForKey:v33])
     {
       v34 = 16;
     }
@@ -179,7 +179,7 @@
     *&v5->_imageFlags = *&v5->_imageFlags & 0xFFEF | v34;
 
     v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"maximumSize"];
-    if ([v4 decodeBoolForKey:v35])
+    if ([coderCopy decodeBoolForKey:v35])
     {
       v36 = 32;
     }
@@ -192,7 +192,7 @@
     *&v5->_imageFlags = *&v5->_imageFlags & 0xFFDF | v36;
 
     v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"accessibilityIgnoresInvertColors"];
-    if ([v4 decodeBoolForKey:v37])
+    if ([coderCopy decodeBoolForKey:v37])
     {
       v38 = 64;
     }
@@ -205,7 +205,7 @@
     *&v5->_imageFlags = *&v5->_imageFlags & 0xFFBF | v38;
 
     v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"strokeColor"];
-    if ([v4 decodeBoolForKey:v39])
+    if ([coderCopy decodeBoolForKey:v39])
     {
       v40 = 128;
     }
@@ -218,7 +218,7 @@
     *&v5->_imageFlags = *&v5->_imageFlags & 0xFF7F | v40;
 
     v41 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"strokeColorTransformerIdentifier"];
-    if ([v4 decodeBoolForKey:v41])
+    if ([coderCopy decodeBoolForKey:v41])
     {
       v42 = 256;
     }
@@ -231,7 +231,7 @@
     *&v5->_imageFlags = *&v5->_imageFlags & 0xFEFF | v42;
 
     v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"strokeWidth"];
-    if ([v4 decodeBoolForKey:v43])
+    if ([coderCopy decodeBoolForKey:v43])
     {
       v44 = 512;
     }
@@ -244,7 +244,7 @@
     *&v5->_imageFlags = *&v5->_imageFlags & 0xFDFF | v44;
 
     v45 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"monochromaticTreatment"];
-    if ([v4 decodeBoolForKey:v45])
+    if ([coderCopy decodeBoolForKey:v45])
     {
       v46 = 1024;
     }
@@ -260,15 +260,15 @@
   return v5;
 }
 
-- (void)_setTintColorTransformerIdentifier:(uint64_t)a1
+- (void)_setTintColorTransformerIdentifier:(uint64_t)identifier
 {
-  if (a1)
+  if (identifier)
   {
     v4 = _UIConfigurationColorTransformerForIdentifier(a2);
-    v5 = *(a1 + 40);
-    *(a1 + 40) = v4;
+    v5 = *(identifier + 40);
+    *(identifier + 40) = v4;
 
-    if (*(a1 + 40))
+    if (*(identifier + 40))
     {
       v6 = a2;
     }
@@ -278,74 +278,74 @@
       v6 = 0;
     }
 
-    *(a1 + 80) = v6;
+    *(identifier + 80) = v6;
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   image = self->_image;
-  v5 = a3;
-  [v5 encodeObject:image forKey:@"image"];
-  [v5 encodeObject:self->_preferredSymbolConfiguration forKey:@"preferredSymbolConfiguration"];
-  [v5 encodeObject:self->_tintColor forKey:@"tintColor"];
-  [v5 encodeInteger:self->_tintColorTransformerIdentifier forKey:@"tintColorTransformerIdentifier"];
-  [v5 encodeDouble:@"cornerRadius" forKey:self->_cornerRadius];
-  [v5 encodeCGSize:@"reservedLayoutSize" forKey:{self->_reservedLayoutSize.width, self->_reservedLayoutSize.height}];
-  [v5 encodeCGSize:@"maximumSize" forKey:{self->_maximumSize.width, self->_maximumSize.height}];
-  [v5 encodeBool:self->_accessibilityIgnoresInvertColors forKey:@"accessibilityIgnoresInvertColors"];
-  [v5 encodeObject:self->_strokeColor forKey:@"strokeColor"];
-  [v5 encodeInteger:self->_strokeColorTransformerIdentifier forKey:@"strokeColorTransformerIdentifier"];
-  [v5 encodeDouble:@"strokeWidth" forKey:self->_strokeWidth];
-  [v5 encodeInteger:self->__monochromaticTreatment forKey:@"monochromaticTreatment"];
+  coderCopy = coder;
+  [coderCopy encodeObject:image forKey:@"image"];
+  [coderCopy encodeObject:self->_preferredSymbolConfiguration forKey:@"preferredSymbolConfiguration"];
+  [coderCopy encodeObject:self->_tintColor forKey:@"tintColor"];
+  [coderCopy encodeInteger:self->_tintColorTransformerIdentifier forKey:@"tintColorTransformerIdentifier"];
+  [coderCopy encodeDouble:@"cornerRadius" forKey:self->_cornerRadius];
+  [coderCopy encodeCGSize:@"reservedLayoutSize" forKey:{self->_reservedLayoutSize.width, self->_reservedLayoutSize.height}];
+  [coderCopy encodeCGSize:@"maximumSize" forKey:{self->_maximumSize.width, self->_maximumSize.height}];
+  [coderCopy encodeBool:self->_accessibilityIgnoresInvertColors forKey:@"accessibilityIgnoresInvertColors"];
+  [coderCopy encodeObject:self->_strokeColor forKey:@"strokeColor"];
+  [coderCopy encodeInteger:self->_strokeColorTransformerIdentifier forKey:@"strokeColorTransformerIdentifier"];
+  [coderCopy encodeDouble:@"strokeWidth" forKey:self->_strokeWidth];
+  [coderCopy encodeInteger:self->__monochromaticTreatment forKey:@"monochromaticTreatment"];
   imageFlags = self->_imageFlags;
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"preferredSymbolConfiguration"];
-  [v5 encodeBool:imageFlags & 1 forKey:v7];
+  [coderCopy encodeBool:imageFlags & 1 forKey:v7];
 
   v8 = (*&self->_imageFlags >> 1) & 1;
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"tintColor"];
-  [v5 encodeBool:v8 forKey:v9];
+  [coderCopy encodeBool:v8 forKey:v9];
 
   v10 = (*&self->_imageFlags >> 2) & 1;
   v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"tintColorTransformerIdentifier"];
-  [v5 encodeBool:v10 forKey:v11];
+  [coderCopy encodeBool:v10 forKey:v11];
 
   v12 = (*&self->_imageFlags >> 3) & 1;
   v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"cornerRadius"];
-  [v5 encodeBool:v12 forKey:v13];
+  [coderCopy encodeBool:v12 forKey:v13];
 
   v14 = (*&self->_imageFlags >> 4) & 1;
   v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"reservedLayoutSize"];
-  [v5 encodeBool:v14 forKey:v15];
+  [coderCopy encodeBool:v14 forKey:v15];
 
   v16 = (*&self->_imageFlags >> 5) & 1;
   v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"maximumSize"];
-  [v5 encodeBool:v16 forKey:v17];
+  [coderCopy encodeBool:v16 forKey:v17];
 
   v18 = (*&self->_imageFlags >> 6) & 1;
   v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"accessibilityIgnoresInvertColors"];
-  [v5 encodeBool:v18 forKey:v19];
+  [coderCopy encodeBool:v18 forKey:v19];
 
   v20 = (*&self->_imageFlags >> 7) & 1;
   v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"strokeColor"];
-  [v5 encodeBool:v20 forKey:v21];
+  [coderCopy encodeBool:v20 forKey:v21];
 
   v22 = HIBYTE(*&self->_imageFlags) & 1;
   v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"strokeColorTransformerIdentifier"];
-  [v5 encodeBool:v22 forKey:v23];
+  [coderCopy encodeBool:v22 forKey:v23];
 
   v24 = (*&self->_imageFlags >> 9) & 1;
   v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"strokeWidth"];
-  [v5 encodeBool:v24 forKey:v25];
+  [coderCopy encodeBool:v24 forKey:v25];
 
   v26 = (*&self->_imageFlags >> 10) & 1;
   v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"monochromaticTreatment"];
-  [v5 encodeBool:v26 forKey:v27];
+  [coderCopy encodeBool:v26 forKey:v27];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -378,16 +378,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = [(UIListContentImageProperties *)self _isEqualToProperties:v5 compareImage:0];
   }
@@ -400,25 +400,25 @@
   return v6;
 }
 
-- (uint64_t)_isEqualToProperties:(int)a3 compareImage:
+- (uint64_t)_isEqualToProperties:(int)properties compareImage:
 {
   v5 = a2;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_24;
   }
 
-  if (([(UIListContentImageProperties *)a1 _isEqualToPropertiesQuick:v5 compareImage:a3]& 1) != 0)
+  if (([(UIListContentImageProperties *)self _isEqualToPropertiesQuick:v5 compareImage:properties]& 1) != 0)
   {
 LABEL_3:
     v6 = 1;
     goto LABEL_25;
   }
 
-  if (a3)
+  if (properties)
   {
     v7 = v5[2];
-    v8 = *(a1 + 16);
+    v8 = *(self + 16);
     v9 = v7;
     v10 = v9;
     if (v8 == v9)
@@ -441,13 +441,13 @@ LABEL_3:
     }
   }
 
-  if (*(a1 + 96) != v5[12])
+  if (*(self + 96) != v5[12])
   {
     goto LABEL_24;
   }
 
   v12 = v5[3];
-  v8 = *(a1 + 24);
+  v8 = *(self + 24);
   v13 = v12;
   v10 = v13;
   if (v8 == v13)
@@ -470,7 +470,7 @@ LABEL_3:
   }
 
   v15 = v5[4];
-  v8 = *(a1 + 32);
+  v8 = *(self + 32);
   v16 = v15;
   v10 = v16;
   if (v8 == v16)
@@ -494,24 +494,24 @@ LABEL_23:
   }
 
 LABEL_27:
-  v19 = *(a1 + 80);
-  if (v19 != v5[10] || v19 == 1 && *(a1 + 40) != v5[5] || *(a1 + 48) != *(v5 + 6))
+  v19 = *(self + 80);
+  if (v19 != v5[10] || v19 == 1 && *(self + 40) != v5[5] || *(self + 48) != *(v5 + 6))
   {
     goto LABEL_24;
   }
 
   v6 = 0;
-  if (*(a1 + 104) == *(v5 + 13) && *(a1 + 112) == *(v5 + 14))
+  if (*(self + 104) == *(v5 + 13) && *(self + 112) == *(v5 + 14))
   {
     v6 = 0;
-    if (*(a1 + 120) == *(v5 + 15) && *(a1 + 128) == *(v5 + 16))
+    if (*(self + 120) == *(v5 + 15) && *(self + 128) == *(v5 + 16))
     {
-      if (*(a1 + 12) == *(v5 + 12))
+      if (*(self + 12) == *(v5 + 12))
       {
-        if (_deferringTokenEqualToToken(*(a1 + 56), v5[7]))
+        if (_deferringTokenEqualToToken(*(self + 56), v5[7]))
         {
-          v20 = *(a1 + 88);
-          if (v20 == v5[11] && (v20 != 1 || *(a1 + 64) == v5[8]) && *(a1 + 72) == *(v5 + 9))
+          v20 = *(self + 88);
+          if (v20 == v5[11] && (v20 != 1 || *(self + 64) == v5[8]) && *(self + 72) == *(v5 + 9))
           {
             goto LABEL_3;
           }
@@ -528,27 +528,27 @@ LABEL_25:
   return v6;
 }
 
-- (uint64_t)_isEqualToPropertiesQuick:(int)a3 compareImage:
+- (uint64_t)_isEqualToPropertiesQuick:(int)quick compareImage:
 {
   v5 = a2;
   v6 = v5;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_29;
   }
 
-  if (v5 == a1)
+  if (v5 == self)
   {
     goto LABEL_27;
   }
 
-  if (a3 && *(a1 + 16) != v5[2] || *(a1 + 96) != v5[12])
+  if (quick && *(self + 16) != v5[2] || *(self + 96) != v5[12])
   {
     goto LABEL_29;
   }
 
   v7 = v5[3];
-  v8 = *(a1 + 24);
+  v8 = *(self + 24);
   v9 = v7;
   v10 = v9;
   if (v8 == v9)
@@ -573,45 +573,45 @@ LABEL_29:
     }
   }
 
-  if (*(a1 + 32) != *(v6 + 4))
+  if (*(self + 32) != *(v6 + 4))
   {
     goto LABEL_29;
   }
 
-  v12 = *(a1 + 80);
-  if (v12 != *(v6 + 10) || v12 == 1 && *(a1 + 40) != *(v6 + 5))
+  v12 = *(self + 80);
+  if (v12 != *(v6 + 10) || v12 == 1 && *(self + 40) != *(v6 + 5))
   {
     goto LABEL_29;
   }
 
-  if (*(a1 + 48) != v6[6])
+  if (*(self + 48) != v6[6])
   {
     goto LABEL_29;
   }
 
   v13 = 0;
-  if (*(a1 + 104) == v6[13] && *(a1 + 112) == v6[14])
+  if (*(self + 104) == v6[13] && *(self + 112) == v6[14])
   {
     v13 = 0;
-    if (*(a1 + 120) == v6[15] && *(a1 + 128) == v6[16])
+    if (*(self + 120) == v6[15] && *(self + 128) == v6[16])
     {
-      if (*(a1 + 12) != *(v6 + 12))
+      if (*(self + 12) != *(v6 + 12))
       {
         goto LABEL_29;
       }
 
-      if (*(a1 + 56) != *(v6 + 7))
+      if (*(self + 56) != *(v6 + 7))
       {
         goto LABEL_29;
       }
 
-      v14 = *(a1 + 88);
-      if (v14 != *(v6 + 11) || v14 == 1 && *(a1 + 64) != *(v6 + 8))
+      v14 = *(self + 88);
+      if (v14 != *(v6 + 11) || v14 == 1 && *(self + 64) != *(v6 + 8))
       {
         goto LABEL_29;
       }
 
-      if (*(a1 + 72) != v6[9])
+      if (*(self + 72) != v6[9])
       {
         goto LABEL_29;
       }
@@ -744,18 +744,18 @@ LABEL_30:
   return v38;
 }
 
-- (void)_applyToImageView:(uint64_t)a1
+- (void)_applyToImageView:(uint64_t)view
 {
   v3 = a2;
-  if (a1)
+  if (view)
   {
     v9 = v3;
-    [v3 setImage:*(a1 + 16)];
-    [v9 setPreferredSymbolConfiguration:*(a1 + 24)];
-    if (*(a1 + 32) || *(a1 + 40))
+    [v3 setImage:*(view + 16)];
+    [v9 setPreferredSymbolConfiguration:*(view + 24)];
+    if (*(view + 32) || *(view + 40))
     {
-      v4 = [(UIView *)v9 _ancestorTintColor];
-      v5 = [a1 resolvedTintColorForTintColor:v4];
+      _ancestorTintColor = [(UIView *)v9 _ancestorTintColor];
+      v5 = [view resolvedTintColorForTintColor:_ancestorTintColor];
     }
 
     else
@@ -764,16 +764,16 @@ LABEL_30:
     }
 
     [v9 setTintColor:v5];
-    v6 = [v9 tintColor];
-    v7 = [a1 _resolvedStrokeColorForTintColor:v6];
+    tintColor = [v9 tintColor];
+    v7 = [view _resolvedStrokeColorForTintColor:tintColor];
     [v9 _setStrokeColor:v7];
 
-    [v9 _setStrokeWidth:*(a1 + 72)];
-    [v9 setAccessibilityIgnoresInvertColors:*(a1 + 12)];
-    v8 = *(a1 + 96);
+    [v9 _setStrokeWidth:*(view + 72)];
+    [v9 setAccessibilityIgnoresInvertColors:*(view + 12)];
+    v8 = *(view + 96);
     if (v8 == -1)
     {
-      v8 = (*(a1 + 8) & 2) == 0;
+      v8 = (*(view + 8) & 2) == 0;
     }
 
     if (v8 == 1)
@@ -787,12 +787,12 @@ LABEL_30:
   }
 }
 
-- (void)_applyPropertiesFromDefaultProperties:(uint64_t)a1
+- (void)_applyPropertiesFromDefaultProperties:(uint64_t)properties
 {
   v3 = a2;
-  if (a1)
+  if (properties)
   {
-    v5 = *(a1 + 8);
+    v5 = *(properties + 8);
     v17 = v3;
     if (v5)
     {
@@ -814,8 +814,8 @@ LABEL_30:
         v6 = 0;
       }
 
-      objc_setProperty_nonatomic_copy(a1, v4, v6, 24);
-      v5 = *(a1 + 8);
+      objc_setProperty_nonatomic_copy(properties, v4, v6, 24);
+      v5 = *(properties + 8);
       v3 = v17;
       if ((v5 & 2) != 0)
       {
@@ -839,8 +839,8 @@ LABEL_4:
       v7 = 0;
     }
 
-    objc_storeStrong((a1 + 32), v7);
-    v5 = *(a1 + 8);
+    objc_storeStrong((properties + 32), v7);
+    v5 = *(properties + 8);
     v3 = v17;
     if ((v5 & 4) != 0)
     {
@@ -864,8 +864,8 @@ LABEL_20:
       v8 = 0;
     }
 
-    [(UIListContentImageProperties *)a1 _setTintColorTransformer:v8];
-    v5 = *(a1 + 8);
+    [(UIListContentImageProperties *)properties _setTintColorTransformer:v8];
+    v5 = *(properties + 8);
     v3 = v17;
     if ((v5 & 8) != 0)
     {
@@ -889,7 +889,7 @@ LABEL_23:
       v9 = 0;
     }
 
-    *(a1 + 48) = v9;
+    *(properties + 48) = v9;
     if ((v5 & 0x10) != 0)
     {
 LABEL_7:
@@ -912,7 +912,7 @@ LABEL_26:
       v10 = 0uLL;
     }
 
-    *(a1 + 104) = v10;
+    *(properties + 104) = v10;
     if ((v5 & 0x20) != 0)
     {
 LABEL_8:
@@ -935,7 +935,7 @@ LABEL_29:
       v11 = 0uLL;
     }
 
-    *(a1 + 120) = v11;
+    *(properties + 120) = v11;
     if ((v5 & 0x40) != 0)
     {
 LABEL_9:
@@ -958,7 +958,7 @@ LABEL_32:
       v12 = 0;
     }
 
-    *(a1 + 12) = v12 & 1;
+    *(properties + 12) = v12 & 1;
     if ((v5 & 0x80) != 0)
     {
 LABEL_10:
@@ -981,8 +981,8 @@ LABEL_35:
       v13 = 0;
     }
 
-    objc_storeStrong((a1 + 56), v13);
-    v5 = *(a1 + 8);
+    objc_storeStrong((properties + 56), v13);
+    v5 = *(properties + 8);
     v3 = v17;
     if ((v5 & 0x100) != 0)
     {
@@ -1006,8 +1006,8 @@ LABEL_38:
       v14 = 0;
     }
 
-    [(UIListContentImageProperties *)a1 __setStrokeColorTransformer:v14];
-    v5 = *(a1 + 8);
+    [(UIListContentImageProperties *)properties __setStrokeColorTransformer:v14];
+    v5 = *(properties + 8);
     v3 = v17;
     if ((v5 & 0x200) != 0)
     {
@@ -1028,7 +1028,7 @@ LABEL_44:
         v16 = 0;
       }
 
-      *(a1 + 96) = v16;
+      *(properties + 96) = v16;
       goto LABEL_47;
     }
 
@@ -1043,7 +1043,7 @@ LABEL_41:
       v15 = 0;
     }
 
-    *(a1 + 72) = v15;
+    *(properties + 72) = v15;
     if ((v5 & 0x400) != 0)
     {
       goto LABEL_47;
@@ -1055,29 +1055,29 @@ LABEL_41:
 LABEL_47:
 }
 
-- (void)_setTintColorTransformer:(uint64_t)a1
+- (void)_setTintColorTransformer:(uint64_t)transformer
 {
-  if (a1)
+  if (transformer)
   {
     v3 = a2;
-    *(a1 + 80) = _UIConfigurationIdentifierForColorTransformer(v3);
+    *(transformer + 80) = _UIConfigurationIdentifierForColorTransformer(v3);
     v4 = [v3 copy];
 
-    v5 = *(a1 + 40);
-    *(a1 + 40) = v4;
+    v5 = *(transformer + 40);
+    *(transformer + 40) = v4;
   }
 }
 
-- (void)__setStrokeColorTransformer:(uint64_t)a1
+- (void)__setStrokeColorTransformer:(uint64_t)transformer
 {
-  if (a1)
+  if (transformer)
   {
     v3 = a2;
-    *(a1 + 88) = _UIConfigurationIdentifierForColorTransformer(v3);
+    *(transformer + 88) = _UIConfigurationIdentifierForColorTransformer(v3);
     v4 = [v3 copy];
 
-    v5 = *(a1 + 64);
-    *(a1 + 64) = v4;
+    v5 = *(transformer + 64);
+    *(transformer + 64) = v4;
   }
 }
 
@@ -1122,14 +1122,14 @@ LABEL_47:
   return v10;
 }
 
-- (id)resolvedStrokeColorForTintColor:(id)a3
+- (id)resolvedStrokeColorForTintColor:(id)color
 {
-  v4 = a3;
-  v5 = v4;
+  colorCopy = color;
+  v5 = colorCopy;
   strokeColor = self->_strokeColor;
   if (!strokeColor)
   {
-    strokeColor = v4;
+    strokeColor = colorCopy;
   }
 
   v7 = strokeColor;

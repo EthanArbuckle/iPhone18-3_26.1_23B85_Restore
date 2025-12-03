@@ -1,12 +1,12 @@
 @interface SSErrorHandlerSession
 - (SSErrorHandlerSession)init;
-- (id)valueForProperty:(id)a3;
-- (void)_setControlConnection:(id)a3;
-- (void)_setErrorProperties:(id)a3;
-- (void)_setSessionID:(int64_t)a3;
+- (id)valueForProperty:(id)property;
+- (void)_setControlConnection:(id)connection;
+- (void)_setErrorProperties:(id)properties;
+- (void)_setSessionID:(int64_t)d;
 - (void)dealloc;
 - (void)performDefaultHandling;
-- (void)redirectToURL:(id)a3;
+- (void)redirectToURL:(id)l;
 - (void)retry;
 @end
 
@@ -50,15 +50,15 @@
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
     if (os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -106,7 +106,7 @@ void __47__SSErrorHandlerSession_performDefaultHandling__block_invoke(uint64_t a
   xpc_release(v2);
 }
 
-- (void)redirectToURL:(id)a3
+- (void)redirectToURL:(id)l
 {
   v23 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -117,15 +117,15 @@ void __47__SSErrorHandlerSession_performDefaultHandling__block_invoke(uint64_t a
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
     if (os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -160,7 +160,7 @@ void __47__SSErrorHandlerSession_performDefaultHandling__block_invoke(uint64_t a
   block[2] = __39__SSErrorHandlerSession_redirectToURL___block_invoke;
   block[3] = &unk_1E84AC458;
   block[4] = self;
-  block[5] = a3;
+  block[5] = l;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -186,15 +186,15 @@ void __39__SSErrorHandlerSession_redirectToURL___block_invoke(uint64_t a1)
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
     if (os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -242,7 +242,7 @@ void __30__SSErrorHandlerSession_retry__block_invoke(uint64_t a1)
   xpc_release(v2);
 }
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
   v7 = 0;
   v8 = &v7;
@@ -255,7 +255,7 @@ void __30__SSErrorHandlerSession_retry__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __42__SSErrorHandlerSession_valueForProperty___block_invoke;
   block[3] = &unk_1E84ADF80;
-  block[5] = a3;
+  block[5] = property;
   block[6] = &v7;
   block[4] = self;
   dispatch_sync(dispatchQueue, block);
@@ -271,7 +271,7 @@ id __42__SSErrorHandlerSession_valueForProperty___block_invoke(void *a1)
   return result;
 }
 
-- (void)_setControlConnection:(id)a3
+- (void)_setControlConnection:(id)connection
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -279,7 +279,7 @@ id __42__SSErrorHandlerSession_valueForProperty___block_invoke(void *a1)
   v4[2] = __47__SSErrorHandlerSession__setControlConnection___block_invoke;
   v4[3] = &unk_1E84AC458;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = connection;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -297,7 +297,7 @@ void *__47__SSErrorHandlerSession__setControlConnection___block_invoke(void *res
   return result;
 }
 
-- (void)_setErrorProperties:(id)a3
+- (void)_setErrorProperties:(id)properties
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -305,7 +305,7 @@ void *__47__SSErrorHandlerSession__setControlConnection___block_invoke(void *res
   v4[2] = __45__SSErrorHandlerSession__setErrorProperties___block_invoke;
   v4[3] = &unk_1E84AC458;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = properties;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -323,7 +323,7 @@ uint64_t __45__SSErrorHandlerSession__setErrorProperties___block_invoke(uint64_t
   return result;
 }
 
-- (void)_setSessionID:(int64_t)a3
+- (void)_setSessionID:(int64_t)d
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -331,7 +331,7 @@ uint64_t __45__SSErrorHandlerSession__setErrorProperties___block_invoke(uint64_t
   v4[2] = __39__SSErrorHandlerSession__setSessionID___block_invoke;
   v4[3] = &unk_1E84AD4C0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = d;
   dispatch_async(dispatchQueue, v4);
 }
 

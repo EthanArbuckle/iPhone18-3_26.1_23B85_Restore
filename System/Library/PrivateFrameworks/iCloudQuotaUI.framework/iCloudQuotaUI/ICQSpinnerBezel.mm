@@ -1,16 +1,16 @@
 @interface ICQSpinnerBezel
-- (ICQSpinnerBezel)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (ICQSpinnerBezel)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
 @end
 
 @implementation ICQSpinnerBezel
 
-- (ICQSpinnerBezel)initWithFrame:(CGRect)a3
+- (ICQSpinnerBezel)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = ICQSpinnerBezel;
-  v3 = [(ICQSpinnerBezel *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICQSpinnerBezel *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:101];
@@ -18,13 +18,13 @@
     v3->_spinner = v4;
 
     v6 = v3->_spinner;
-    v7 = [MEMORY[0x277D75348] whiteColor];
-    [(UIActivityIndicatorView *)v6 setColor:v7];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UIActivityIndicatorView *)v6 setColor:whiteColor];
 
     [(UIActivityIndicatorView *)v3->_spinner startAnimating];
     [(ICQSpinnerBezel *)v3 addSubview:v3->_spinner];
-    v8 = [MEMORY[0x277D75348] clearColor];
-    [(ICQSpinnerBezel *)v3 setBackgroundColor:v8];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(ICQSpinnerBezel *)v3 setBackgroundColor:clearColor];
   }
 
   return v3;
@@ -45,9 +45,9 @@
   [(UIActivityIndicatorView *)spinner setFrame:v9, v13];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(ICQSpinnerBezel *)self bounds:a3.origin.x];
+  [(ICQSpinnerBezel *)self bounds:rect.origin.x];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -56,8 +56,8 @@
   [v10 set];
 
   [v16 fill];
-  v11 = [MEMORY[0x277D75348] whiteColor];
-  [v11 set];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [whiteColor set];
 
   v12 = v9 * 0.5;
   v13 = floorf(v12);

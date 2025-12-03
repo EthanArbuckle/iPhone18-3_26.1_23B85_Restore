@@ -1,54 +1,54 @@
 @interface PETService
 + (void)clearAllLogs;
-+ (void)updateMobileAssetMetadataWithXPCActivity:(id)a3;
-- (BOOL)_writeUploadForTransparency:(id)a3;
++ (void)updateMobileAssetMetadataWithXPCActivity:(id)activity;
+- (BOOL)_writeUploadForTransparency:(id)transparency;
 - (PETService)init;
-- (void)_uploadBatchedDataToPFA:(id)a3 schema:(id)a4 messageGroup:(id)a5;
-- (void)_uploadGMSDataToPFA:(id)a3;
-- (void)_uploadToFBFv2WithUpload:(id)a3;
-- (void)_uploadToParsecWithUpload:(id)a3;
-- (void)_uploadWithUploadPackage:(id)a3;
+- (void)_uploadBatchedDataToPFA:(id)a schema:(id)schema messageGroup:(id)group;
+- (void)_uploadGMSDataToPFA:(id)a;
+- (void)_uploadToFBFv2WithUpload:(id)upload;
+- (void)_uploadToParsecWithUpload:(id)upload;
+- (void)_uploadWithUploadPackage:(id)package;
 - (void)upload;
 @end
 
 @implementation PETService
 
-- (void)_uploadWithUploadPackage:(id)a3
+- (void)_uploadWithUploadPackage:(id)package
 {
-  v4 = a3;
+  packageCopy = package;
   if ((+[_PASDeviceInfo isDNUEnabled]& 1) != 0)
   {
-    v5 = [v4 metadata];
-    v6 = [v5 messageGroup];
+    metadata = [packageCopy metadata];
+    messageGroup = [metadata messageGroup];
 
-    if (!v6)
+    if (!messageGroup)
     {
-      v7 = [v4 metadata];
-      [v7 setMessageGroup:@"null"];
+      metadata2 = [packageCopy metadata];
+      [metadata2 setMessageGroup:@"null"];
     }
 
-    if ([(PETService *)self _writeUploadForTransparency:v4])
+    if ([(PETService *)self _writeUploadForTransparency:packageCopy])
     {
       v8 = +[PETMetadata getCountryCode];
-      v9 = [v4 metadata];
-      if ([v9 isInternal])
+      metadata3 = [packageCopy metadata];
+      if ([metadata3 isInternal])
       {
-        v10 = [v4 metadata];
-        v11 = [v10 messageGroup];
-        v12 = [v11 isEqualToString:@"com.apple.generativefunctions.instrumentation.UberEvent"];
+        metadata4 = [packageCopy metadata];
+        messageGroup2 = [metadata4 messageGroup];
+        v12 = [messageGroup2 isEqualToString:@"com.apple.generativefunctions.instrumentation.UberEvent"];
 
         if (v12)
         {
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
           {
-            v13 = [v4 metadata];
-            v14 = [v13 messageGroup];
+            metadata5 = [packageCopy metadata];
+            messageGroup3 = [metadata5 messageGroup];
             v22 = 138412290;
-            v23 = v14;
+            v23 = messageGroup3;
             _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Found GMS Event Message Group: %@", &v22, 0xCu);
           }
 
-          [(PETService *)self _uploadGMSDataToPFA:v4];
+          [(PETService *)self _uploadGMSDataToPFA:packageCopy];
         }
       }
 
@@ -58,7 +58,7 @@
 
       if ([v8 isEqualToString:@"CN"])
       {
-        [(PETService *)self _uploadToFBFv2WithUpload:v4];
+        [(PETService *)self _uploadToFBFv2WithUpload:packageCopy];
 LABEL_26:
 
         goto LABEL_27;
@@ -72,28 +72,28 @@ LABEL_26:
           goto LABEL_23;
         }
 
-        v19 = [v4 metadata];
-        if ([v19 isInternal])
+        metadata6 = [packageCopy metadata];
+        if ([metadata6 isInternal])
         {
         }
 
         else
         {
-          v20 = [v4 metadata];
-          v21 = [v20 isSeed];
+          metadata7 = [packageCopy metadata];
+          isSeed = [metadata7 isSeed];
 
-          if (!v21)
+          if (!isSeed)
           {
             goto LABEL_23;
           }
         }
       }
 
-      [(PETService *)self _uploadToFBFv2WithUpload:v4];
+      [(PETService *)self _uploadToFBFv2WithUpload:packageCopy];
 LABEL_23:
       if ([v18 shouldUploadToParsec])
       {
-        [(PETService *)self _uploadToParsecWithUpload:v4];
+        [(PETService *)self _uploadToParsecWithUpload:packageCopy];
       }
 
       goto LABEL_26;
@@ -102,9 +102,9 @@ LABEL_23:
     v24[0] = @"reason";
     v24[1] = @"group";
     v25[0] = @"write_osa";
-    v15 = [v4 metadata];
-    v16 = [v15 messageGroup];
-    v25[1] = v16;
+    metadata8 = [packageCopy metadata];
+    messageGroup4 = [metadata8 messageGroup];
+    v25[1] = messageGroup4;
     v17 = [NSDictionary dictionaryWithObjects:v25 forKeys:v24 count:2];
     AnalyticsSendEvent();
 
@@ -124,17 +124,17 @@ LABEL_23:
 LABEL_27:
 }
 
-- (void)_uploadBatchedDataToPFA:(id)a3 schema:(id)a4 messageGroup:(id)a5
+- (void)_uploadBatchedDataToPFA:(id)a schema:(id)schema messageGroup:(id)group
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  aCopy = a;
+  schemaCopy = schema;
+  groupCopy = group;
   v10 = [FLLogger sharedLoggerWithPersistenceConfiguration:1];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v11 = v7;
+  v11 = aCopy;
   v12 = [v11 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v12)
   {
@@ -159,9 +159,9 @@ LABEL_27:
           v20[1] = 3221225472;
           v20[2] = sub_100002694;
           v20[3] = &unk_10000C4A8;
-          v21 = v9;
+          v21 = groupCopy;
           v22 = v17;
-          [v10 reportDataPlatformBatchedEvent:v17 forBundleID:@"com.apple.proactive" ofSchema:v8 completion:v20];
+          [v10 reportDataPlatformBatchedEvent:v17 forBundleID:@"com.apple.proactive" ofSchema:schemaCopy completion:v20];
           v18 = v21;
         }
 
@@ -170,14 +170,14 @@ LABEL_27:
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
           {
             *buf = v19;
-            v30 = v9;
+            v30 = groupCopy;
             _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "%@ is failed to upload to PFA backend", buf, 0xCu);
           }
 
           v27[0] = @"reason";
           v27[1] = @"group";
           v28[0] = @"PFA-backend is not available ";
-          v28[1] = v9;
+          v28[1] = groupCopy;
           v18 = [NSDictionary dictionaryWithObjects:v28 forKeys:v27 count:2, v19];
           AnalyticsSendEvent();
         }
@@ -193,19 +193,19 @@ LABEL_27:
   }
 }
 
-- (void)_uploadGMSDataToPFA:(id)a3
+- (void)_uploadGMSDataToPFA:(id)a
 {
-  v3 = a3;
+  aCopy = a;
   v4 = +[NSUUID UUID];
-  v5 = [v4 UUIDString];
+  uUIDString = [v4 UUIDString];
 
   v6 = +[NSMutableArray array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = v3;
-  obj = [v3 unaggregatedMessages];
+  v7 = aCopy;
+  obj = [aCopy unaggregatedMessages];
   v8 = [obj countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v8)
   {
@@ -223,19 +223,19 @@ LABEL_27:
 
         v12 = *(*(&v26 + 1) + 8 * v11);
         v13 = objc_opt_new();
-        v14 = [v12 name];
-        v15 = -[PETService _createMetadataFrom:submissionId:messageName:typeId:](self, "_createMetadataFrom:submissionId:messageName:typeId:", v7, v5, v14, [v12 typeId]);
+        name = [v12 name];
+        v15 = -[PETService _createMetadataFrom:submissionId:messageName:typeId:](self, "_createMetadataFrom:submissionId:messageName:typeId:", v7, uUIDString, name, [v12 typeId]);
         [v13 setMetadata:v15];
 
         v16 = [PBDataReader alloc];
-        v17 = [v12 rawBytes];
-        v18 = [v16 initWithData:v17];
+        rawBytes = [v12 rawBytes];
+        v18 = [v16 initWithData:rawBytes];
 
         v19 = objc_opt_new();
         COMAPPLEPROACTIVEGMSGMSUberEventReadFrom();
         [v13 setUberEvent:v19];
-        v20 = [v13 data];
-        [v6 addObject:v20];
+        data = [v13 data];
+        [v6 addObject:data];
 
         v11 = v11 + 1;
       }
@@ -257,27 +257,27 @@ LABEL_27:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Repackaged %lu GMS messages, ready for uploading to PFA with schema: %@", buf, 0x16u);
   }
 
-  v22 = [v7 metadata];
-  v23 = [v22 messageGroup];
-  [(PETService *)self _uploadBatchedDataToPFA:v6 schema:@"com.apple.proactive.gms.PetUploadEvent" messageGroup:v23];
+  metadata = [v7 metadata];
+  messageGroup = [metadata messageGroup];
+  [(PETService *)self _uploadBatchedDataToPFA:v6 schema:@"com.apple.proactive.gms.PetUploadEvent" messageGroup:messageGroup];
 }
 
-- (void)_uploadToParsecWithUpload:(id)a3
+- (void)_uploadToParsecWithUpload:(id)upload
 {
-  v3 = a3;
-  v4 = [v3 metadata];
-  [v4 setUploadService:1];
+  uploadCopy = upload;
+  metadata = [uploadCopy metadata];
+  [metadata setUploadService:1];
 
-  v5 = [v3 data];
+  data = [uploadCopy data];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Sending upload data to Parsec.", buf, 2u);
   }
 
-  v6 = [v3 metadata];
-  v7 = [v6 messageGroup];
-  v8 = [v7 isEqualToString:@"_aggregated"];
+  metadata2 = [uploadCopy metadata];
+  messageGroup = [metadata2 messageGroup];
+  v8 = [messageGroup isEqualToString:@"_aggregated"];
 
   if (v8)
   {
@@ -308,7 +308,7 @@ LABEL_27:
   v11 = v10;
   _Block_object_dispose(&v25, 8);
   v12 = [v10 alloc];
-  v13 = [v12 initWithType:v9 data:{v5, v25}];
+  v13 = [v12 initWithType:v9 data:{data, v25}];
   v25 = 0;
   v26 = &v25;
   v27 = 0x2050000000;
@@ -327,29 +327,29 @@ LABEL_27:
 
   v15 = v14;
   _Block_object_dispose(&v25, 8);
-  v16 = [v14 sharedSession];
-  v17 = v16;
-  if (v13 && v16)
+  sharedSession = [v14 sharedSession];
+  v17 = sharedSession;
+  if (v13 && sharedSession)
   {
-    [v16 sendCustomFeedback:v13];
+    [sharedSession sendCustomFeedback:v13];
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v3 metadata];
-      v19 = [v18 messageGroup];
-      v20 = [v5 length];
+      metadata3 = [uploadCopy metadata];
+      messageGroup2 = [metadata3 messageGroup];
+      v20 = [data length];
       *buf = 138412546;
-      *&buf[4] = v19;
+      *&buf[4] = messageGroup2;
       *&buf[12] = 2048;
       *&buf[14] = v20;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Upload data has been sent to Parsec. messageGroup: %@; size: %lu", buf, 0x16u);
     }
 
     v29[0] = @"message_group";
-    v21 = [v3 metadata];
-    v22 = [v21 messageGroup];
-    v30[0] = v22;
+    metadata4 = [uploadCopy metadata];
+    messageGroup3 = [metadata4 messageGroup];
+    v30[0] = messageGroup3;
     v29[1] = @"compressed_size";
-    v23 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v5 length]);
+    v23 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [data length]);
     v30[1] = v23;
     v29[2] = @"upload_service";
     v30[2] = @"parsec";
@@ -364,46 +364,46 @@ LABEL_27:
   }
 }
 
-- (void)_uploadToFBFv2WithUpload:(id)a3
+- (void)_uploadToFBFv2WithUpload:(id)upload
 {
-  v3 = a3;
-  v4 = [v3 metadata];
-  [v4 setUploadService:2];
+  uploadCopy = upload;
+  metadata = [uploadCopy metadata];
+  [metadata setUploadService:2];
 
-  [v3 clearUnaggregatedMessages];
-  [v3 clearAggregatedMessages];
-  v5 = [v3 data];
+  [uploadCopy clearUnaggregatedMessages];
+  [uploadCopy clearAggregatedMessages];
+  data = [uploadCopy data];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Sending upload data to FBFv2.", buf, 2u);
   }
 
-  v6 = [[PETSchemaPETUpload alloc] initWithData:v5];
-  v7 = [v6 wrapAsAnyEvent];
-  if (v7)
+  v6 = [[PETSchemaPETUpload alloc] initWithData:data];
+  wrapAsAnyEvent = [v6 wrapAsAnyEvent];
+  if (wrapAsAnyEvent)
   {
     v8 = +[FLLogger sharedLogger];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000038BC;
     v9[3] = &unk_10000C4A8;
-    v10 = v3;
-    v11 = v5;
-    [v8 reportSiriInstrumentationEvent:v7 forBundleID:@"com.apple.proactive.eventtracker" completion:v9];
+    v10 = uploadCopy;
+    v11 = data;
+    [v8 reportSiriInstrumentationEvent:wrapAsAnyEvent forBundleID:@"com.apple.proactive.eventtracker" completion:v9];
   }
 }
 
-- (BOOL)_writeUploadForTransparency:(id)a3
+- (BOOL)_writeUploadForTransparency:(id)transparency
 {
-  v4 = a3;
+  transparencyCopy = transparency;
   v5 = objc_opt_new();
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v6 = [v4 aggregatedMessages];
-  v7 = [v6 countByEnumeratingWithState:&v45 objects:v50 count:16];
+  aggregatedMessages = [transparencyCopy aggregatedMessages];
+  v7 = [aggregatedMessages countByEnumeratingWithState:&v45 objects:v50 count:16];
   if (v7)
   {
     v8 = v7;
@@ -414,14 +414,14 @@ LABEL_27:
       {
         if (*v46 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(aggregatedMessages);
         }
 
         v11 = [PETEventTracker2 formattedTextForAggregatedMessage:*(*(&v45 + 1) + 8 * i)];
         [v5 addObject:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v45 objects:v50 count:16];
+      v8 = [aggregatedMessages countByEnumeratingWithState:&v45 objects:v50 count:16];
     }
 
     while (v8);
@@ -449,22 +449,22 @@ LABEL_27:
   {
 LABEL_10:
     v14 = [PETServiceUploadAssembler alloc];
-    v15 = [(PETEventTracker2 *)self->_tracker rootDir];
-    v16 = [(PETServiceUploadAssembler *)v14 initWithRootDir:v15];
+    rootDir = [(PETEventTracker2 *)self->_tracker rootDir];
+    v16 = [(PETServiceUploadAssembler *)v14 initWithRootDir:rootDir];
 
     v33 = v16;
     if (v16)
     {
       v17 = objc_opt_new();
-      v18 = [v4 metadata];
-      v19 = [v18 messageGroup];
+      metadata = [transparencyCopy metadata];
+      messageGroup = [metadata messageGroup];
 
       v37 = 0u;
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v31 = v4;
-      obj = [v4 unaggregatedMessages];
+      v31 = transparencyCopy;
+      obj = [transparencyCopy unaggregatedMessages];
       v20 = [obj countByEnumeratingWithState:&v35 objects:v49 count:16];
       if (v20)
       {
@@ -480,8 +480,8 @@ LABEL_10:
             }
 
             v24 = *(*(&v35 + 1) + 8 * j);
-            v25 = [(PETServiceUploadAssembler *)v33 petConfig];
-            v26 = [PETEventTracker2 formattedTextForUnaggregatedMessage:v24 messageGroup:v19 config:v25];
+            petConfig = [(PETServiceUploadAssembler *)v33 petConfig];
+            v26 = [PETEventTracker2 formattedTextForUnaggregatedMessage:v24 messageGroup:messageGroup config:petConfig];
 
             [v17 addObject:v26];
           }
@@ -494,7 +494,7 @@ LABEL_10:
 
       if ([v17 count])
       {
-        v27 = [v19 stringByReplacingOccurrencesOfString:@"." withString:@"_"];
+        v27 = [messageGroup stringByReplacingOccurrencesOfString:@"." withString:@"_"];
         v28 = [@"proactive_event_tracker-" stringByAppendingString:v27];
         v34 = v17;
         v29 = OSAWriteLogForSubmission();
@@ -505,7 +505,7 @@ LABEL_10:
         v29 = 1;
       }
 
-      v4 = v31;
+      transparencyCopy = v31;
     }
 
     else
@@ -526,8 +526,8 @@ LABEL_10:
 - (void)upload
 {
   v3 = [PETServiceUploadAssembler alloc];
-  v4 = [(PETEventTracker2 *)self->_tracker rootDir];
-  v5 = [(PETServiceUploadAssembler *)v3 initWithRootDir:v4];
+  rootDir = [(PETEventTracker2 *)self->_tracker rootDir];
+  v5 = [(PETServiceUploadAssembler *)v3 initWithRootDir:rootDir];
 
   if (v5)
   {
@@ -543,7 +543,7 @@ LABEL_10:
     v8[2] = sub_100004220;
     v8[3] = &unk_10000C458;
     v9 = v5;
-    v10 = self;
+    selfCopy = self;
     [(PETEventTracker2 *)tracker enumerateMessageGroups:v8];
   }
 
@@ -599,15 +599,15 @@ LABEL_10:
 + (void)clearAllLogs
 {
   v3 = [[PETEventTracker2 alloc] initWithAsyncEnabled:0];
-  v2 = [v3 aggregateState];
-  [v2 reset];
+  aggregateState = [v3 aggregateState];
+  [aggregateState reset];
 
   [v3 clearLogStores];
 }
 
-+ (void)updateMobileAssetMetadataWithXPCActivity:(id)a3
++ (void)updateMobileAssetMetadataWithXPCActivity:(id)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   v4 = dispatch_queue_create("PETAsset-notifications", 0);
   v5 = [[_PASAsset2 alloc] initWithAssetTypeDescriptorPath:@"/System/Library/AssetTypeDescriptors/com.apple.MobileAsset.AssetTypeDescriptor.ProactiveEventTrackerAssets.plist" defaultBundlePath:0 matchingKeysAndValues:0 notificationQueue:v4 logHandle:&_os_log_default];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -616,7 +616,7 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Kicking off mobile asset metadata download.", buf, 2u);
   }
 
-  if (!xpc_activity_set_state(v3, 4) && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  if (!xpc_activity_set_state(activityCopy, 4) && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     *buf = 0;
     _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Error setting XPC activity state to CONTINUE", buf, 2u);
@@ -626,8 +626,8 @@ LABEL_10:
   v7[1] = 3221225472;
   v7[2] = sub_1000045B8;
   v7[3] = &unk_10000C4D0;
-  v8 = v3;
-  v6 = v3;
+  v8 = activityCopy;
+  v6 = activityCopy;
   [v5 downloadMetadataWithCompletion:v7];
 }
 

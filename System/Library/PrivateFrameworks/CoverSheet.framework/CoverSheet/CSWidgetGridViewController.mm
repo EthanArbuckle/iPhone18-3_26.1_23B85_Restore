@@ -1,35 +1,35 @@
 @interface CSWidgetGridViewController
-- (BOOL)interpretsViewAsContent:(id)a3;
-- (CSWidgetGridViewController)initWithComplicationManager:(id)a3 type:(unint64_t)a4 applicationInformer:(id)a5;
+- (BOOL)interpretsViewAsContent:(id)content;
+- (CSWidgetGridViewController)initWithComplicationManager:(id)manager type:(unint64_t)type applicationInformer:(id)informer;
 - (CSWidgetGridViewControllerDelegate)delegate;
 - (UIView)widgetGridContentView;
-- (id)_buildComplicationPresentationStateForTraitCollection:(id)a3 interfaceOrientation:(int64_t)a4;
+- (id)_buildComplicationPresentationStateForTraitCollection:(id)collection interfaceOrientation:(int64_t)orientation;
 - (id)_currentState;
 - (id)_widgetTintParameters;
 - (id)sceneHostEnvironmentEntriesForBacklightSession;
-- (void)_backlightLuminanceDidChange:(id)a3 previousTraitCollection:(id)a4;
+- (void)_backlightLuminanceDidChange:(id)change previousTraitCollection:(id)collection;
 - (void)_updateColors;
-- (void)_updateComplicationPresentationState:(id)a3 reason:(id)a4;
-- (void)_updateGridViewControllerOccluded:(BOOL)a3;
-- (void)_updatePresentationStyleForReason:(id)a3;
+- (void)_updateComplicationPresentationState:(id)state reason:(id)reason;
+- (void)_updateGridViewControllerOccluded:(BOOL)occluded;
+- (void)_updatePresentationStyleForReason:(id)reason;
 - (void)beginCancellingTouches;
 - (void)dealloc;
 - (void)endCancellingTouches;
-- (void)setComplicationDescriptors:(id)a3 iconLayout:(id)a4;
-- (void)setContentStyle:(id)a3;
-- (void)setNeedsNestedVibrancyEffectView:(BOOL)a3;
-- (void)setScreenOff:(BOOL)a3;
-- (void)setVibrancyConfiguration:(id)a3;
-- (void)setVisible:(BOOL)a3;
-- (void)updatePresentationStyleForNewOrientation:(int64_t)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setComplicationDescriptors:(id)descriptors iconLayout:(id)layout;
+- (void)setContentStyle:(id)style;
+- (void)setNeedsNestedVibrancyEffectView:(BOOL)view;
+- (void)setScreenOff:(BOOL)off;
+- (void)setVibrancyConfiguration:(id)configuration;
+- (void)setVisible:(BOOL)visible;
+- (void)updatePresentationStyleForNewOrientation:(int64_t)orientation;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)widgetGridModelDidUpdateContent:(id)a3;
-- (void)widgetGridViewController:(id)a3 didRequestLaunchForComplicationDescriptor:(id)a4 withAction:(id)a5;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)widgetGridModelDidUpdateContent:(id)content;
+- (void)widgetGridViewController:(id)controller didRequestLaunchForComplicationDescriptor:(id)descriptor withAction:(id)action;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CSWidgetGridViewController
@@ -42,11 +42,11 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = [(PRWidgetGridViewController *)self->_widgetGridViewController model];
-  v4 = [v3 complicationDescriptors];
+  model = [(PRWidgetGridViewController *)self->_widgetGridViewController model];
+  complicationDescriptors = [model complicationDescriptors];
 
-  obj = v4;
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  obj = complicationDescriptors;
+  v5 = [complicationDescriptors countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -61,14 +61,14 @@
         }
 
         v9 = [(PRWidgetGridViewController *)self->_widgetGridViewController widgetHostViewControllerForComplicationDescriptor:*(*(&v19 + 1) + 8 * i)];
-        v10 = [v9 backlightHostEnvironment];
-        if (v10)
+        backlightHostEnvironment = [v9 backlightHostEnvironment];
+        if (backlightHostEnvironment)
         {
-          v11 = [v9 widget];
-          v12 = [v11 extensionIdentity];
-          v13 = [v12 containerBundleIdentifier];
+          widget = [v9 widget];
+          extensionIdentity = [widget extensionIdentity];
+          containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
 
-          v14 = [MEMORY[0x277D65E08] entryWithSceneHostEnvironment:v10 bundleIdentifier:v13];
+          v14 = [MEMORY[0x277D65E08] entryWithSceneHostEnvironment:backlightHostEnvironment bundleIdentifier:containerBundleIdentifier];
           [v18 addObject:v14];
         }
       }
@@ -91,10 +91,10 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = [(PRWidgetGridViewController *)self->_widgetGridViewController model];
-  v4 = [v3 complicationDescriptors];
+  model = [(PRWidgetGridViewController *)self->_widgetGridViewController model];
+  complicationDescriptors = [model complicationDescriptors];
 
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v5 = [complicationDescriptors countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -105,13 +105,13 @@
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(complicationDescriptors);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
         v10 = [(PRWidgetGridViewController *)self->_widgetGridViewController widgetHostViewControllerForComplicationDescriptor:v9];
-        v11 = [v10 cancelTouchesForCurrentEventInHostedContent];
-        if (v11)
+        cancelTouchesForCurrentEventInHostedContent = [v10 cancelTouchesForCurrentEventInHostedContent];
+        if (cancelTouchesForCurrentEventInHostedContent)
         {
           if (!self->_cancelTouchesAssertionsByUniqueIdentifier)
           {
@@ -120,19 +120,19 @@
             self->_cancelTouchesAssertionsByUniqueIdentifier = v12;
           }
 
-          v14 = [v9 uniqueIdentifier];
-          v15 = [(NSMutableDictionary *)self->_cancelTouchesAssertionsByUniqueIdentifier objectForKey:v14];
+          uniqueIdentifier = [v9 uniqueIdentifier];
+          v15 = [(NSMutableDictionary *)self->_cancelTouchesAssertionsByUniqueIdentifier objectForKey:uniqueIdentifier];
           v16 = v15;
           if (v15)
           {
             [v15 invalidate];
           }
 
-          [(NSMutableDictionary *)self->_cancelTouchesAssertionsByUniqueIdentifier setObject:v11 forKey:v14];
+          [(NSMutableDictionary *)self->_cancelTouchesAssertionsByUniqueIdentifier setObject:cancelTouchesForCurrentEventInHostedContent forKey:uniqueIdentifier];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [complicationDescriptors countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
@@ -144,8 +144,8 @@
   lastKnownComplicationPresentationState = self->_lastKnownComplicationPresentationState;
   if (!lastKnownComplicationPresentationState)
   {
-    v4 = [(CSWidgetGridViewController *)self traitCollection];
-    v5 = [(CSWidgetGridViewController *)self _buildComplicationPresentationStateForTraitCollection:v4 interfaceOrientation:[(CSWidgetGridViewController *)self interfaceOrientation]];
+    traitCollection = [(CSWidgetGridViewController *)self traitCollection];
+    v5 = [(CSWidgetGridViewController *)self _buildComplicationPresentationStateForTraitCollection:traitCollection interfaceOrientation:[(CSWidgetGridViewController *)self interfaceOrientation]];
     v6 = self->_lastKnownComplicationPresentationState;
     self->_lastKnownComplicationPresentationState = v5;
 
@@ -157,21 +157,21 @@
   return v7;
 }
 
-- (CSWidgetGridViewController)initWithComplicationManager:(id)a3 type:(unint64_t)a4 applicationInformer:(id)a5
+- (CSWidgetGridViewController)initWithComplicationManager:(id)manager type:(unint64_t)type applicationInformer:(id)informer
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  managerCopy = manager;
+  informerCopy = informer;
   v21.receiver = self;
   v21.super_class = CSWidgetGridViewController;
   v11 = [(CSWidgetGridViewController *)&v21 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_complicationManager, a3);
+    objc_storeStrong(&v11->_complicationManager, manager);
     v13 = [CSWidgetGridModel alloc];
-    v14 = [(CSWidgetGridModel *)v13 initWithComplicationDescriptors:MEMORY[0x277CBEBF8] iconLayout:0 type:a4];
-    [(CSWidgetGridModel *)v14 setApplicationInformer:v10];
+    v14 = [(CSWidgetGridModel *)v13 initWithComplicationDescriptors:MEMORY[0x277CBEBF8] iconLayout:0 type:type];
+    [(CSWidgetGridModel *)v14 setApplicationInformer:informerCopy];
     [(PRWidgetGridModel *)v14 addWidgetGridModelObserver:v12];
     v15 = [objc_alloc(MEMORY[0x277D3EE80]) initWithModel:v14];
     widgetGridViewController = v12->_widgetGridViewController;
@@ -190,27 +190,27 @@
 
 - (void)dealloc
 {
-  v3 = [(PRWidgetGridViewController *)self->_widgetGridViewController model];
-  [v3 removeWidgetGridModelObserver:self];
+  model = [(PRWidgetGridViewController *)self->_widgetGridViewController model];
+  [model removeWidgetGridModelObserver:self];
 
   v4.receiver = self;
   v4.super_class = CSWidgetGridViewController;
   [(CSCoverSheetViewControllerBase *)&v4 dealloc];
 }
 
-- (void)setNeedsNestedVibrancyEffectView:(BOOL)a3
+- (void)setNeedsNestedVibrancyEffectView:(BOOL)view
 {
-  v3 = a3;
-  v5 = [(CSWidgetGridViewController *)self viewIfLoaded];
+  viewCopy = view;
+  viewIfLoaded = [(CSWidgetGridViewController *)self viewIfLoaded];
 
-  if (v5)
+  if (viewIfLoaded)
   {
-    if (self->_needsNestedVibrancyEffectView == v3)
+    if (self->_needsNestedVibrancyEffectView == viewCopy)
     {
       return;
     }
 
-    if (v3)
+    if (viewCopy)
     {
       vibrancyEffectView = self->_vibrancyEffectView;
       if (!vibrancyEffectView)
@@ -219,33 +219,33 @@
         v8 = self->_vibrancyEffectView;
         self->_vibrancyEffectView = v7;
 
-        v9 = [(CSWidgetGridViewController *)self view];
-        [v9 addSubview:self->_vibrancyEffectView];
+        view = [(CSWidgetGridViewController *)self view];
+        [view addSubview:self->_vibrancyEffectView];
 
         vibrancyEffectView = self->_vibrancyEffectView;
       }
 
-      v10 = [(BSUIVibrancyEffectView *)vibrancyEffectView contentView];
-      v11 = [(PRWidgetGridViewController *)self->_widgetGridViewController view];
-      [v10 addSubview:v11];
+      contentView = [(BSUIVibrancyEffectView *)vibrancyEffectView contentView];
+      view2 = [(PRWidgetGridViewController *)self->_widgetGridViewController view];
+      [contentView addSubview:view2];
 
       v12 = self->_vibrancyEffectView;
-      v13 = [(CSWidgetGridViewController *)self view];
-      [v13 bounds];
+      view3 = [(CSWidgetGridViewController *)self view];
+      [view3 bounds];
       [(BSUIVibrancyEffectView *)v12 setFrame:?];
 
-      v14 = [(PRWidgetGridViewController *)self->_widgetGridViewController view];
-      v15 = [(CSWidgetGridViewController *)self view];
-      [v15 bounds];
-      [v14 setFrame:?];
+      view4 = [(PRWidgetGridViewController *)self->_widgetGridViewController view];
+      view5 = [(CSWidgetGridViewController *)self view];
+      [view5 bounds];
+      [view4 setFrame:?];
 
       [(CSWidgetGridViewController *)self _updateColors];
     }
 
     else
     {
-      v16 = [(PRWidgetGridViewController *)self->_widgetGridViewController view];
-      [v16 removeFromSuperview];
+      view6 = [(PRWidgetGridViewController *)self->_widgetGridViewController view];
+      [view6 removeFromSuperview];
 
       [(BSUIVibrancyEffectView *)self->_vibrancyEffectView removeFromSuperview];
       v17 = self->_vibrancyEffectView;
@@ -254,13 +254,13 @@
       contentStyleRenderer = self->_contentStyleRenderer;
       self->_contentStyleRenderer = 0;
 
-      v19 = [(CSWidgetGridViewController *)self view];
-      v20 = [(PRWidgetGridViewController *)self->_widgetGridViewController view];
-      [v19 addSubview:v20];
+      view7 = [(CSWidgetGridViewController *)self view];
+      view8 = [(PRWidgetGridViewController *)self->_widgetGridViewController view];
+      [view7 addSubview:view8];
     }
   }
 
-  self->_needsNestedVibrancyEffectView = v3;
+  self->_needsNestedVibrancyEffectView = viewCopy;
 }
 
 - (void)viewDidLoad
@@ -274,49 +274,49 @@
     vibrancyEffectView = self->_vibrancyEffectView;
     self->_vibrancyEffectView = v3;
 
-    v5 = [(CSWidgetGridViewController *)self view];
-    [v5 addSubview:self->_vibrancyEffectView];
+    view = [(CSWidgetGridViewController *)self view];
+    [view addSubview:self->_vibrancyEffectView];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CSWidgetGridViewController;
-  [(CSCoverSheetViewControllerBase *)&v4 viewWillAppear:a3];
+  [(CSCoverSheetViewControllerBase *)&v4 viewWillAppear:appear];
   [(CSWidgetGridViewController *)self setVisible:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CSWidgetGridViewController;
-  [(CSCoverSheetViewControllerBase *)&v4 viewDidDisappear:a3];
+  [(CSCoverSheetViewControllerBase *)&v4 viewDidDisappear:disappear];
   [(CSWidgetGridViewController *)self setVisible:0];
 }
 
 - (UIView)widgetGridContentView
 {
-  v2 = [(CSWidgetGridViewController *)self widgetGridViewController];
-  v3 = [v2 view];
+  widgetGridViewController = [(CSWidgetGridViewController *)self widgetGridViewController];
+  view = [widgetGridViewController view];
 
-  return v3;
+  return view;
 }
 
-- (void)setComplicationDescriptors:(id)a3 iconLayout:(id)a4
+- (void)setComplicationDescriptors:(id)descriptors iconLayout:(id)layout
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(CSWidgetGridViewController *)self widgetGridViewController];
-  v8 = [v9 model];
-  [v8 setComplicationDescriptors:v7 iconLayout:v6];
+  layoutCopy = layout;
+  descriptorsCopy = descriptors;
+  widgetGridViewController = [(CSWidgetGridViewController *)self widgetGridViewController];
+  model = [widgetGridViewController model];
+  [model setComplicationDescriptors:descriptorsCopy iconLayout:layoutCopy];
 }
 
-- (void)setScreenOff:(BOOL)a3
+- (void)setScreenOff:(BOOL)off
 {
-  if (self->_screenOff != a3)
+  if (self->_screenOff != off)
   {
-    self->_screenOff = a3;
+    self->_screenOff = off;
     v4 = MEMORY[0x277CCACA8];
     v5 = NSStringFromBOOL();
     v6 = [v4 stringWithFormat:@"setScreenOff:%@", v5];
@@ -330,21 +330,21 @@
   }
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a3;
+  collectionCopy = collection;
   v11.receiver = self;
   v11.super_class = CSWidgetGridViewController;
-  v7 = a4;
-  [(CSWidgetGridViewController *)&v11 willTransitionToTraitCollection:v6 withTransitionCoordinator:v7];
+  coordinatorCopy = coordinator;
+  [(CSWidgetGridViewController *)&v11 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinatorCopy];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __88__CSWidgetGridViewController_willTransitionToTraitCollection_withTransitionCoordinator___block_invoke;
   v9[3] = &unk_27838CAE8;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [v7 animateAlongsideTransition:v9 completion:&__block_literal_global_25];
+  v10 = collectionCopy;
+  v8 = collectionCopy;
+  [coordinatorCopy animateAlongsideTransition:v9 completion:&__block_literal_global_25];
 }
 
 void __88__CSWidgetGridViewController_willTransitionToTraitCollection_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -354,57 +354,57 @@ void __88__CSWidgetGridViewController_willTransitionToTraitCollection_withTransi
   [v1 _updateComplicationPresentationState:v2 reason:@"willTransitionToTraitCollection:withTransitionCoordinator:"];
 }
 
-- (void)_backlightLuminanceDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_backlightLuminanceDidChange:(id)change previousTraitCollection:(id)collection
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  changeCopy = change;
+  collectionCopy = collection;
   v9 = SBLogDashBoard();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 _backlightLuminance];
-    v11 = [v7 traitCollection];
+    _backlightLuminance = [collectionCopy _backlightLuminance];
+    traitCollection = [changeCopy traitCollection];
     v15 = 134218240;
-    v16 = v10;
+    v16 = _backlightLuminance;
     v17 = 2048;
-    v18 = [v11 _backlightLuminance];
+    _backlightLuminance2 = [traitCollection _backlightLuminance];
     _os_log_impl(&dword_21EB05000, v9, OS_LOG_TYPE_DEFAULT, "[Widget Grid] Backlight luminance changed from %lu to %lu", &v15, 0x16u);
   }
 
-  v12 = [v7 traitCollection];
-  v13 = [(CSWidgetGridViewController *)self _buildComplicationPresentationStateForTraitCollection:v12 interfaceOrientation:[(CSWidgetGridViewController *)self interfaceOrientation]];
+  traitCollection2 = [changeCopy traitCollection];
+  v13 = [(CSWidgetGridViewController *)self _buildComplicationPresentationStateForTraitCollection:traitCollection2 interfaceOrientation:[(CSWidgetGridViewController *)self interfaceOrientation]];
   v14 = NSStringFromSelector(a2);
   [(CSWidgetGridViewController *)self _updateComplicationPresentationState:v13 reason:v14];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v19.receiver = self;
   v19.super_class = CSWidgetGridViewController;
-  v7 = a4;
-  [(CSCoverSheetViewControllerBase *)&v19 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(CSCoverSheetViewControllerBase *)&v19 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8 = SBFWindowForViewControllerTransition();
-  v9 = [v8 _toWindowOrientation];
+  _toWindowOrientation = [v8 _toWindowOrientation];
 
-  v10 = [(CSWidgetGridViewController *)self traitCollection];
-  v11 = [(CSWidgetGridViewController *)self _buildComplicationPresentationStateForTraitCollection:v10 interfaceOrientation:v9];
+  traitCollection = [(CSWidgetGridViewController *)self traitCollection];
+  v11 = [(CSWidgetGridViewController *)self _buildComplicationPresentationStateForTraitCollection:traitCollection interfaceOrientation:_toWindowOrientation];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __81__CSWidgetGridViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v16[3] = &unk_27838CAE8;
   v17 = v11;
-  v18 = self;
+  selfCopy = self;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __81__CSWidgetGridViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v13[3] = &unk_27838CAE8;
   v14 = v17;
-  v15 = self;
+  selfCopy2 = self;
   v12 = v17;
-  [v7 animateAlongsideTransition:v16 completion:v13];
+  [coordinatorCopy animateAlongsideTransition:v16 completion:v13];
 }
 
 uint64_t __81__CSWidgetGridViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -435,11 +435,11 @@ uint64_t __81__CSWidgetGridViewController_viewWillTransitionToSize_withTransitio
   return result;
 }
 
-- (void)setVisible:(BOOL)a3
+- (void)setVisible:(BOOL)visible
 {
-  if (self->_isVisible != a3)
+  if (self->_isVisible != visible)
   {
-    self->_isVisible = a3;
+    self->_isVisible = visible;
     v5 = MEMORY[0x277CCACA8];
     v7 = NSStringFromBOOL();
     v6 = [v5 stringWithFormat:@"setVisible:%@", v7];
@@ -453,22 +453,22 @@ uint64_t __81__CSWidgetGridViewController_viewWillTransitionToSize_withTransitio
   v7.super_class = CSWidgetGridViewController;
   [(CSCoverSheetViewControllerBase *)&v7 viewDidLayoutSubviews];
   vibrancyEffectView = self->_vibrancyEffectView;
-  v4 = [(CSWidgetGridViewController *)self view];
-  [v4 bounds];
+  view = [(CSWidgetGridViewController *)self view];
+  [view bounds];
   [(BSUIVibrancyEffectView *)vibrancyEffectView setFrame:?];
 
-  v5 = [(PRWidgetGridViewController *)self->_widgetGridViewController view];
-  v6 = [(CSWidgetGridViewController *)self view];
-  [v6 bounds];
-  [v5 setFrame:?];
+  view2 = [(PRWidgetGridViewController *)self->_widgetGridViewController view];
+  view3 = [(CSWidgetGridViewController *)self view];
+  [view3 bounds];
+  [view2 setFrame:?];
 }
 
-- (BOOL)interpretsViewAsContent:(id)a3
+- (BOOL)interpretsViewAsContent:(id)content
 {
-  v4 = a3;
-  if (v4 && self->_isVisible)
+  contentCopy = content;
+  if (contentCopy && self->_isVisible)
   {
-    v5 = [(PRWidgetGridViewController *)self->_widgetGridViewController interpretsViewAsContent:v4];
+    v5 = [(PRWidgetGridViewController *)self->_widgetGridViewController interpretsViewAsContent:contentCopy];
   }
 
   else
@@ -518,22 +518,22 @@ uint64_t __81__CSWidgetGridViewController_viewWillTransitionToSize_withTransitio
   [(NSMutableDictionary *)self->_cancelTouchesAssertionsByUniqueIdentifier removeAllObjects];
 }
 
-- (void)setVibrancyConfiguration:(id)a3
+- (void)setVibrancyConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_vibrancyConfiguration, a3);
+    objc_storeStrong(&self->_vibrancyConfiguration, configuration);
     [(CSWidgetGridViewController *)self _updateColors];
   }
 }
 
-- (void)setContentStyle:(id)a3
+- (void)setContentStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_contentStyle, a3);
+    objc_storeStrong(&self->_contentStyle, style);
     [(CSWidgetGridViewController *)self _updateColors];
   }
 }
@@ -571,40 +571,40 @@ uint64_t __81__CSWidgetGridViewController_viewWillTransitionToSize_withTransitio
   return v2;
 }
 
-- (void)updatePresentationStyleForNewOrientation:(int64_t)a3
+- (void)updatePresentationStyleForNewOrientation:(int64_t)orientation
 {
-  v5 = [(CSWidgetGridViewController *)self traitCollection];
-  v6 = [(CSWidgetGridViewController *)self _buildComplicationPresentationStateForTraitCollection:v5 interfaceOrientation:a3];
+  traitCollection = [(CSWidgetGridViewController *)self traitCollection];
+  v6 = [(CSWidgetGridViewController *)self _buildComplicationPresentationStateForTraitCollection:traitCollection interfaceOrientation:orientation];
 
   [(CSWidgetGridViewController *)self _updateComplicationPresentationState:v6 reason:@"Forced Orientation Change"];
 }
 
-- (id)_buildComplicationPresentationStateForTraitCollection:(id)a3 interfaceOrientation:(int64_t)a4
+- (id)_buildComplicationPresentationStateForTraitCollection:(id)collection interfaceOrientation:(int64_t)orientation
 {
-  v6 = a3;
+  collectionCopy = collection;
   v7 = [CSComplicationPresentationState alloc];
   isVisible = self->_isVisible;
   LOBYTE(self) = self->_screenOff;
-  v9 = [v6 _backlightLuminance];
+  _backlightLuminance = [collectionCopy _backlightLuminance];
 
-  v10 = [(CSComplicationPresentationState *)v7 initWithVisibility:self isScreenOff:v9 backlightLuminance:a4 interfaceOrientation:?];
+  v10 = [(CSComplicationPresentationState *)v7 initWithVisibility:self isScreenOff:_backlightLuminance backlightLuminance:orientation interfaceOrientation:?];
 
   return v10;
 }
 
-- (void)_updatePresentationStyleForReason:(id)a3
+- (void)_updatePresentationStyleForReason:(id)reason
 {
-  v4 = a3;
-  v6 = [(CSWidgetGridViewController *)self traitCollection];
-  v5 = [(CSWidgetGridViewController *)self _buildComplicationPresentationStateForTraitCollection:v6 interfaceOrientation:[(CSWidgetGridViewController *)self interfaceOrientation]];
-  [(CSWidgetGridViewController *)self _updateComplicationPresentationState:v5 reason:v4];
+  reasonCopy = reason;
+  traitCollection = [(CSWidgetGridViewController *)self traitCollection];
+  v5 = [(CSWidgetGridViewController *)self _buildComplicationPresentationStateForTraitCollection:traitCollection interfaceOrientation:[(CSWidgetGridViewController *)self interfaceOrientation]];
+  [(CSWidgetGridViewController *)self _updateComplicationPresentationState:v5 reason:reasonCopy];
 }
 
-- (void)_updateComplicationPresentationState:(id)a3 reason:(id)a4
+- (void)_updateComplicationPresentationState:(id)state reason:(id)reason
 {
   v42 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  stateCopy = state;
+  reasonCopy = reason;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__CSWidgetGridViewController__updateComplicationPresentationState_reason___block_invoke;
@@ -616,22 +616,22 @@ uint64_t __81__CSWidgetGridViewController_viewWillTransitionToSize_withTransitio
   }
 
   lastKnownComplicationPresentationState = self->_lastKnownComplicationPresentationState;
-  v10 = [(CSWidgetGridViewController *)self _currentState];
+  _currentState = [(CSWidgetGridViewController *)self _currentState];
   if (BSEqualObjects() && lastKnownComplicationPresentationState)
   {
     v11 = SBLogCoverSheetWidgets();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134219010;
-      v29 = self;
+      selfCopy4 = self;
       v30 = 2114;
       v31 = _updateComplicationPresentationState_reason__className;
       v32 = 2114;
-      v33 = v10;
+      v33 = _currentState;
       v34 = 2114;
-      v35 = v7;
+      v35 = stateCopy;
       v36 = 2114;
-      v37 = v8;
+      v37 = reasonCopy;
       _os_log_impl(&dword_21EB05000, v11, OS_LOG_TYPE_DEFAULT, "[%p/%{public}@] Bailing (equal state) on Presentation mode transition from %{public}@ -> %{public}@ for reason: %{public}@", buf, 0x34u);
     }
   }
@@ -644,36 +644,36 @@ uint64_t __81__CSWidgetGridViewController_viewWillTransitionToSize_withTransitio
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134219010;
-        v29 = self;
+        selfCopy4 = self;
         v30 = 2114;
         v31 = _updateComplicationPresentationState_reason__className;
         v32 = 2114;
-        v33 = v10;
+        v33 = _currentState;
         v34 = 2114;
-        v35 = v7;
+        v35 = stateCopy;
         v36 = 2114;
-        v37 = v8;
+        v37 = reasonCopy;
         _os_log_impl(&dword_21EB05000, v12, OS_LOG_TYPE_DEFAULT, "[%p/%{public}@] Proceeding w/ Presentation mode transition because we haven't done one yet, from %{public}@ -> %{public}@ for reason: %{public}@", buf, 0x34u);
       }
     }
 
-    objc_storeStrong(&self->_lastKnownComplicationPresentationState, a3);
-    v13 = [(CSComplicationPresentationState *)v7 suggestedComplicationPresentationMode]& 0xFFFFFFFFFFFFFFFELL;
-    v14 = [(CSWidgetGridViewController *)self widgetGridViewController];
-    v15 = [v14 model];
-    v16 = [v15 type];
+    objc_storeStrong(&self->_lastKnownComplicationPresentationState, state);
+    v13 = [(CSComplicationPresentationState *)stateCopy suggestedComplicationPresentationMode]& 0xFFFFFFFFFFFFFFFELL;
+    widgetGridViewController = [(CSWidgetGridViewController *)self widgetGridViewController];
+    model = [widgetGridViewController model];
+    type = [model type];
 
-    v17 = v13 == 2 && v16 != 1;
-    if (v16 == 1 && v13 == 2)
+    shouldPresentLandscapeComplications = v13 == 2 && type != 1;
+    if (type == 1 && v13 == 2)
     {
-      v17 = [(CSComplicationPresentationState *)v7 shouldPresentLandscapeComplications];
+      shouldPresentLandscapeComplications = [(CSComplicationPresentationState *)stateCopy shouldPresentLandscapeComplications];
     }
 
     v18 = SBLogCoverSheetWidgets();
     v19 = @"VISIBLE";
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      if (v17)
+      if (shouldPresentLandscapeComplications)
       {
         v20 = @"VISIBLE";
       }
@@ -684,21 +684,21 @@ uint64_t __81__CSWidgetGridViewController_viewWillTransitionToSize_withTransitio
       }
 
       *buf = 134219266;
-      v29 = self;
+      selfCopy4 = self;
       v30 = 2114;
       v31 = _updateComplicationPresentationState_reason__className;
       v32 = 2114;
       v33 = v20;
       v34 = 2114;
-      v35 = v10;
+      v35 = _currentState;
       v36 = 2114;
-      v37 = v7;
+      v37 = stateCopy;
       v38 = 2114;
-      v39 = v8;
+      v39 = reasonCopy;
       _os_log_impl(&dword_21EB05000, v18, OS_LOG_TYPE_DEFAULT, "[%p/%{public}@] Begin Presentation mode transition to %{public}@ for %{public}@ -> %{public}@ for reason: %{public}@", buf, 0x3Eu);
     }
 
-    if (v17)
+    if (shouldPresentLandscapeComplications)
     {
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
@@ -708,10 +708,10 @@ uint64_t __81__CSWidgetGridViewController_viewWillTransitionToSize_withTransitio
       [MEMORY[0x277D75D18] performWithoutAnimation:v26];
     }
 
-    [(PRWidgetGridViewController *)self->_widgetGridViewController bs_beginAppearanceTransition:v17 animated:0];
-    [(CSWidgetGridViewController *)self _updateGridViewControllerOccluded:v17 ^ 1];
-    [(PRWidgetGridViewController *)self->_widgetGridViewController bs_endAppearanceTransition:v17];
-    if ((v17 & 1) == 0)
+    [(PRWidgetGridViewController *)self->_widgetGridViewController bs_beginAppearanceTransition:shouldPresentLandscapeComplications animated:0];
+    [(CSWidgetGridViewController *)self _updateGridViewControllerOccluded:shouldPresentLandscapeComplications ^ 1];
+    [(PRWidgetGridViewController *)self->_widgetGridViewController bs_endAppearanceTransition:shouldPresentLandscapeComplications];
+    if ((shouldPresentLandscapeComplications & 1) == 0)
     {
       [(CSWidgetGridViewController *)self bs_removeChildViewController:self->_widgetGridViewController];
     }
@@ -720,27 +720,27 @@ uint64_t __81__CSWidgetGridViewController_viewWillTransitionToSize_withTransitio
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v21 = _updateComplicationPresentationState_reason__className;
-      if (!v17)
+      if (!shouldPresentLandscapeComplications)
       {
         v19 = @"OCCLUDED";
       }
 
-      v22 = [(CSWidgetGridViewController *)self widgetGridViewController];
-      v23 = [v22 model];
-      v24 = [v23 complicationDescriptors];
-      v25 = [v24 count];
+      widgetGridViewController2 = [(CSWidgetGridViewController *)self widgetGridViewController];
+      model2 = [widgetGridViewController2 model];
+      complicationDescriptors = [model2 complicationDescriptors];
+      v25 = [complicationDescriptors count];
       *buf = 134219522;
-      v29 = self;
+      selfCopy4 = self;
       v30 = 2114;
       v31 = v21;
       v32 = 2114;
       v33 = v19;
       v34 = 2114;
-      v35 = v10;
+      v35 = _currentState;
       v36 = 2114;
-      v37 = v7;
+      v37 = stateCopy;
       v38 = 2114;
-      v39 = v8;
+      v39 = reasonCopy;
       v40 = 2048;
       v41 = v25;
       _os_log_impl(&dword_21EB05000, v11, OS_LOG_TYPE_DEFAULT, "[%p/%{public}@] End Presentation mode transition to %{public}@ from %{public}@ -> %{public}@ completed for reason: %{public}@ for %lu widgets", buf, 0x48u);
@@ -774,34 +774,34 @@ void __74__CSWidgetGridViewController__updateComplicationPresentationState_reaso
   [*(a1 + 32) bs_addChildViewController:*(*(a1 + 32) + 1136) withSuperview:v3];
 }
 
-- (void)_updateGridViewControllerOccluded:(BOOL)a3
+- (void)_updateGridViewControllerOccluded:(BOOL)occluded
 {
-  v3 = a3;
-  v4 = [(PRWidgetGridViewController *)self->_widgetGridViewController view];
-  v5 = [v4 subviews];
-  v6 = [v5 firstObject];
+  occludedCopy = occluded;
+  view = [(PRWidgetGridViewController *)self->_widgetGridViewController view];
+  subviews = [view subviews];
+  firstObject = [subviews firstObject];
 
   if (objc_opt_respondsToSelector())
   {
-    [v6 setOccluded:v3];
+    [firstObject setOccluded:occludedCopy];
   }
 }
 
-- (void)widgetGridViewController:(id)a3 didRequestLaunchForComplicationDescriptor:(id)a4 withAction:(id)a5
+- (void)widgetGridViewController:(id)controller didRequestLaunchForComplicationDescriptor:(id)descriptor withAction:(id)action
 {
-  v13 = a4;
-  v7 = a5;
-  v8 = [(CSWidgetGridViewController *)self delegate];
+  descriptorCopy = descriptor;
+  actionCopy = action;
+  delegate = [(CSWidgetGridViewController *)self delegate];
 
-  if (!v8 || (WeakRetained = objc_loadWeakRetained(&self->_delegate), v10 = [WeakRetained widgetGridViewControllerShouldPreventLaunchFromWidget:self], WeakRetained, (v10 & 1) == 0))
+  if (!delegate || (WeakRetained = objc_loadWeakRetained(&self->_delegate), v10 = [WeakRetained widgetGridViewControllerShouldPreventLaunchFromWidget:self], WeakRetained, (v10 & 1) == 0))
   {
     complicationManager = self->_complicationManager;
-    v12 = [v13 widget];
-    [(CSComplicationManager *)complicationManager handleLaunchRequestForWidget:v12 withAction:v7];
+    widget = [descriptorCopy widget];
+    [(CSComplicationManager *)complicationManager handleLaunchRequestForWidget:widget withAction:actionCopy];
   }
 }
 
-- (void)widgetGridModelDidUpdateContent:(id)a3
+- (void)widgetGridModelDidUpdateContent:(id)content
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained widgetGridViewControllerDidUpdateComplicationDescriptors];

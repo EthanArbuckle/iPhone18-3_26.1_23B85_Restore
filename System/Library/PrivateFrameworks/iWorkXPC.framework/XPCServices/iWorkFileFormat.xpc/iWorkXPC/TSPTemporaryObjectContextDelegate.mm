@@ -1,8 +1,8 @@
 @interface TSPTemporaryObjectContextDelegate
-+ (id)temporaryObjectContextDelegateWithPackageDataForWrite:(id)a3 additionalDocumentPropertiesForWrite:(id)a4;
++ (id)temporaryObjectContextDelegateWithPackageDataForWrite:(id)write additionalDocumentPropertiesForWrite:(id)forWrite;
 - (TSPTemporaryObjectContextDelegate)init;
-- (id)persistenceWarningsForData:(id)a3 flags:(unint64_t)a4;
-- (void)context:(id)a3 canPerformUserActionUsingBlock:(id)a4;
+- (id)persistenceWarningsForData:(id)data flags:(unint64_t)flags;
+- (void)context:(id)context canPerformUserActionUsingBlock:(id)block;
 @end
 
 @implementation TSPTemporaryObjectContextDelegate
@@ -24,36 +24,36 @@
   return v2;
 }
 
-+ (id)temporaryObjectContextDelegateWithPackageDataForWrite:(id)a3 additionalDocumentPropertiesForWrite:(id)a4
++ (id)temporaryObjectContextDelegateWithPackageDataForWrite:(id)write additionalDocumentPropertiesForWrite:(id)forWrite
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[TSPTemporaryObjectContextDelegateWithPackageDataForWrite alloc] initWithPackageDataForWrite:v5 additionalDocumentPropertiesForWrite:v6];
+  writeCopy = write;
+  forWriteCopy = forWrite;
+  v7 = [[TSPTemporaryObjectContextDelegateWithPackageDataForWrite alloc] initWithPackageDataForWrite:writeCopy additionalDocumentPropertiesForWrite:forWriteCopy];
 
   return v7;
 }
 
-- (id)persistenceWarningsForData:(id)a3 flags:(unint64_t)a4
+- (id)persistenceWarningsForData:(id)data flags:(unint64_t)flags
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (v4)
+  flagsCopy = flags;
+  dataCopy = data;
+  v6 = dataCopy;
+  if (flagsCopy)
   {
     v12 = +[NSSet set];
   }
 
   else
   {
-    v7 = [v5 filename];
-    v8 = v7;
+    filename = [dataCopy filename];
+    v8 = filename;
     v9 = @"External";
-    if ((v4 & 2) == 0)
+    if ((flagsCopy & 2) == 0)
     {
       v9 = @"Package";
     }
 
-    v10 = [NSString stringWithFormat:@"%@ data %@ is missing.", v9, v7];
+    v10 = [NSString stringWithFormat:@"%@ data %@ is missing.", v9, filename];
 
     v11 = [TSUWarning warningWithMessage:v10];
     v12 = [NSSet setWithObject:v11];
@@ -62,12 +62,12 @@
   return v12;
 }
 
-- (void)context:(id)a3 canPerformUserActionUsingBlock:(id)a4
+- (void)context:(id)context canPerformUserActionUsingBlock:(id)block
 {
-  v4 = a4;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v4[2](v4, 1);
+    blockCopy[2](blockCopy, 1);
   }
 }
 

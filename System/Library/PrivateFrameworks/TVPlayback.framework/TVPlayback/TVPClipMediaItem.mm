@@ -1,32 +1,32 @@
 @interface TVPClipMediaItem
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)hasTrait:(id)a3;
-- (BOOL)isKindOfClass:(Class)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (TVPClipMediaItem)initWithMediaItem:(id)a3 clipTimeRange:(id)a4;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (id)mediaItemMetadataForProperty:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)_mediaItemMetadataWillOrDidChange:(id)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)hasTrait:(id)trait;
+- (BOOL)isKindOfClass:(Class)class;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (TVPClipMediaItem)initWithMediaItem:(id)item clipTimeRange:(id)range;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (id)mediaItemMetadataForProperty:(id)property;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)_mediaItemMetadataWillOrDidChange:(id)change;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
-- (void)setMediaItemMetadata:(id)a3 forProperty:(id)a4;
+- (void)forwardInvocation:(id)invocation;
+- (void)setMediaItemMetadata:(id)metadata forProperty:(id)property;
 @end
 
 @implementation TVPClipMediaItem
 
-- (TVPClipMediaItem)initWithMediaItem:(id)a3 clipTimeRange:(id)a4
+- (TVPClipMediaItem)initWithMediaItem:(id)item clipTimeRange:(id)range
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  rangeCopy = range;
   v27.receiver = self;
   v27.super_class = TVPClipMediaItem;
   v9 = [(TVPClipMediaItem *)&v27 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mediaItem, a3);
-    objc_storeStrong(&v10->_clipTimeRange, a4);
+    objc_storeStrong(&v9->_mediaItem, item);
+    objc_storeStrong(&v10->_clipTimeRange, range);
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     localMetadata = v10->_localMetadata;
     v10->_localMetadata = v11;
@@ -37,27 +37,27 @@
 
     v15 = v10->_localMetadata;
     v16 = MEMORY[0x277CCABB0];
-    [v8 startTime];
+    [rangeCopy startTime];
     v17 = [v16 numberWithDouble:?];
     [(NSMutableDictionary *)v15 setObject:v17 forKey:@"TVPMediaItemMetadataStartTime"];
 
     v18 = v10->_localMetadata;
     v19 = MEMORY[0x277CCABB0];
-    [v8 endTime];
+    [rangeCopy endTime];
     v20 = [v19 numberWithDouble:?];
     [(NSMutableDictionary *)v18 setObject:v20 forKey:@"TVPMediaItemMetadataForwardPlaybackEndTime"];
 
     v21 = v10->_localMetadata;
     v22 = MEMORY[0x277CCABB0];
-    [v8 startTime];
+    [rangeCopy startTime];
     v23 = [v22 numberWithDouble:?];
     [(NSMutableDictionary *)v21 setObject:v23 forKey:@"TVPMediaItemMetadataReversePlaybackEndTime"];
 
-    v24 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v24 addObserver:v10 selector:sel__mediaItemMetadataWillOrDidChange_ name:@"TVPMediaItemMetadataWillChangeNotification" object:v10->_mediaItem];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__mediaItemMetadataWillOrDidChange_ name:@"TVPMediaItemMetadataWillChangeNotification" object:v10->_mediaItem];
 
-    v25 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v25 addObserver:v10 selector:sel__mediaItemMetadataWillOrDidChange_ name:@"TVPMediaItemMetadataDidChangeNotification" object:v10->_mediaItem];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v10 selector:sel__mediaItemMetadataWillOrDidChange_ name:@"TVPMediaItemMetadataDidChangeNotification" object:v10->_mediaItem];
   }
 
   return v10;
@@ -65,84 +65,84 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = TVPClipMediaItem;
   [(TVPClipMediaItem *)&v4 dealloc];
 }
 
-- (BOOL)hasTrait:(id)a3
+- (BOOL)hasTrait:(id)trait
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"TVPMediaItemTraitIsScene"])
+  traitCopy = trait;
+  if ([traitCopy isEqualToString:@"TVPMediaItemTraitIsScene"])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [(TVPMediaItem *)self->_mediaItem hasTrait:v4];
+    v5 = [(TVPMediaItem *)self->_mediaItem hasTrait:traitCopy];
   }
 
   return v5;
 }
 
-- (void)setMediaItemMetadata:(id)a3 forProperty:(id)a4
+- (void)setMediaItemMetadata:(id)metadata forProperty:(id)property
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7 && [(NSSet *)self->_localMetadataKeys containsObject:v7])
+  metadataCopy = metadata;
+  propertyCopy = property;
+  if (propertyCopy && [(NSSet *)self->_localMetadataKeys containsObject:propertyCopy])
   {
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    v19 = v7;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    v19 = propertyCopy;
     v20 = @"TVPMediaItemMetadataChangesKey";
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
     v21[0] = v9;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-    [v8 postNotificationName:@"TVPMediaItemMetadataWillChangeNotification" object:self userInfo:v10];
+    [defaultCenter postNotificationName:@"TVPMediaItemMetadataWillChangeNotification" object:self userInfo:v10];
 
     localMetadata = self->_localMetadata;
-    if (v6)
+    if (metadataCopy)
     {
-      [(NSMutableDictionary *)localMetadata setObject:v6 forKey:v7];
+      [(NSMutableDictionary *)localMetadata setObject:metadataCopy forKey:propertyCopy];
     }
 
     else
     {
-      [(NSMutableDictionary *)localMetadata removeObjectForKey:v7];
+      [(NSMutableDictionary *)localMetadata removeObjectForKey:propertyCopy];
     }
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    v16 = v7;
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    v16 = propertyCopy;
     v17 = @"TVPMediaItemMetadataChangesKey";
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v16 count:1];
     v18 = v13;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-    [v12 postNotificationName:@"TVPMediaItemMetadataDidChangeNotification" object:self userInfo:v14];
+    [defaultCenter2 postNotificationName:@"TVPMediaItemMetadataDidChangeNotification" object:self userInfo:v14];
   }
 
   else
   {
-    [(TVPMediaItem *)self->_mediaItem setMediaItemMetadata:v6 forProperty:v7];
+    [(TVPMediaItem *)self->_mediaItem setMediaItemMetadata:metadataCopy forProperty:propertyCopy];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)mediaItemMetadataForProperty:(id)a3
+- (id)mediaItemMetadataForProperty:(id)property
 {
-  v4 = a3;
-  if (v4 && [(NSSet *)self->_localMetadataKeys containsObject:v4])
+  propertyCopy = property;
+  if (propertyCopy && [(NSSet *)self->_localMetadataKeys containsObject:propertyCopy])
   {
-    v5 = [(NSMutableDictionary *)self->_localMetadata objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_localMetadata objectForKey:propertyCopy];
   }
 
   else
   {
-    v5 = [(TVPMediaItem *)self->_mediaItem mediaItemMetadataForProperty:v4];
+    v5 = [(TVPMediaItem *)self->_mediaItem mediaItemMetadataForProperty:propertyCopy];
   }
 
   v6 = v5;
@@ -150,18 +150,18 @@
   return v6;
 }
 
-- (void)_mediaItemMetadataWillOrDidChange:(id)a3
+- (void)_mediaItemMetadataWillOrDidChange:(id)change
 {
   v4 = MEMORY[0x277CCAB98];
-  v5 = a3;
-  v8 = [v4 defaultCenter];
-  v6 = [v5 name];
-  v7 = [v5 userInfo];
+  changeCopy = change;
+  defaultCenter = [v4 defaultCenter];
+  name = [changeCopy name];
+  userInfo = [changeCopy userInfo];
 
-  [v8 postNotificationName:v6 object:self userInfo:v7];
+  [defaultCenter postNotificationName:name object:self userInfo:userInfo];
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   mediaItem = self->_mediaItem;
   if (objc_opt_respondsToSelector())
@@ -173,31 +173,31 @@
   {
     v8.receiver = self;
     v8.super_class = TVPClipMediaItem;
-    v6 = [(TVPClipMediaItem *)&v8 forwardingTargetForSelector:a3];
+    v6 = [(TVPClipMediaItem *)&v8 forwardingTargetForSelector:selector];
   }
 
   return v6;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   mediaItem = self->_mediaItem;
-  v5 = a3;
-  [v5 selector];
+  invocationCopy = invocation;
+  [invocationCopy selector];
   if (objc_opt_respondsToSelector())
   {
-    [v5 invokeWithTarget:self->_mediaItem];
+    [invocationCopy invokeWithTarget:self->_mediaItem];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = TVPClipMediaItem;
-    [(TVPClipMediaItem *)&v6 forwardInvocation:v5];
+    [(TVPClipMediaItem *)&v6 forwardInvocation:invocationCopy];
   }
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   mediaItem = self->_mediaItem;
   if (objc_opt_respondsToSelector())
@@ -207,13 +207,13 @@
 
   v7.receiver = self;
   v7.super_class = TVPClipMediaItem;
-  return [(TVPClipMediaItem *)&v7 respondsToSelector:a3];
+  return [(TVPClipMediaItem *)&v7 respondsToSelector:selector];
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  v4 = a3;
-  if (([(TVPMediaItem *)self->_mediaItem conformsToProtocol:v4]& 1) != 0)
+  protocolCopy = protocol;
+  if (([(TVPMediaItem *)self->_mediaItem conformsToProtocol:protocolCopy]& 1) != 0)
   {
     v5 = 1;
   }
@@ -222,26 +222,26 @@
   {
     v7.receiver = self;
     v7.super_class = TVPClipMediaItem;
-    v5 = [(TVPClipMediaItem *)&v7 conformsToProtocol:v4];
+    v5 = [(TVPClipMediaItem *)&v7 conformsToProtocol:protocolCopy];
   }
 
   return v5;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v5 = [(TVPMediaItem *)self->_mediaItem methodSignatureForSelector:?];
   if (!v5)
   {
     v7.receiver = self;
     v7.super_class = TVPClipMediaItem;
-    v5 = [(TVPClipMediaItem *)&v7 methodSignatureForSelector:a3];
+    v5 = [(TVPClipMediaItem *)&v7 methodSignatureForSelector:selector];
   }
 
   return v5;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   mediaItem = self->_mediaItem;
   if (objc_opt_isKindOfClass())
@@ -251,7 +251,7 @@
 
   v7.receiver = self;
   v7.super_class = TVPClipMediaItem;
-  return [(TVPClipMediaItem *)&v7 isKindOfClass:a3];
+  return [(TVPClipMediaItem *)&v7 isKindOfClass:class];
 }
 
 @end

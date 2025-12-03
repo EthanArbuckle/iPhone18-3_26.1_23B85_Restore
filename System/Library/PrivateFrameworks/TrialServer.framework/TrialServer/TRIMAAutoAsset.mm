@@ -1,16 +1,16 @@
 @interface TRIMAAutoAsset
 - (NSString)description;
-- (TRIMAAutoAsset)initWithAssetId:(id)a3 decryptionKey:(id)a4 error:(id *)a5;
-- (id)currentAssetSizeOnDiskUsingStatus:(id *)a3;
-- (id)currentLocksSync:(id *)a3;
+- (TRIMAAutoAsset)initWithAssetId:(id)id decryptionKey:(id)key error:(id *)error;
+- (id)currentAssetSizeOnDiskUsingStatus:(id *)status;
+- (id)currentLocksSync:(id *)sync;
 @end
 
 @implementation TRIMAAutoAsset
 
-- (TRIMAAutoAsset)initWithAssetId:(id)a3 decryptionKey:(id)a4 error:(id *)a5
+- (TRIMAAutoAsset)initWithAssetId:(id)id decryptionKey:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  idCopy = id;
+  keyCopy = key;
   v27.receiver = self;
   v27.super_class = TRIMAAutoAsset;
   v10 = [(TRIMAAutoAsset *)&v27 init];
@@ -20,12 +20,12 @@
     goto LABEL_4;
   }
 
-  [(TRIMAAutoAsset *)v10 setAssetId:v8];
+  [(TRIMAAutoAsset *)v10 setAssetId:idCopy];
   v12 = objc_alloc(MEMORY[0x277D289F8]);
-  v13 = [v8 type];
-  v14 = [v8 specifier];
-  v15 = [v8 version];
-  v16 = [v12 initForAssetType:v13 withAssetSpecifier:v14 matchingAssetVersion:v15 usingDecryptionKey:v9];
+  type = [idCopy type];
+  specifier = [idCopy specifier];
+  version = [idCopy version];
+  v16 = [v12 initForAssetType:type withAssetSpecifier:specifier matchingAssetVersion:version usingDecryptionKey:keyCopy];
   [(TRIMAAutoAsset *)v11 setAssetSelector:v16];
 
   v17 = objc_alloc(MEMORY[0x277D289E0]);
@@ -46,9 +46,9 @@ LABEL_4:
     goto LABEL_8;
   }
 
-  if (a5)
+  if (error)
   {
-    objc_storeStrong(a5, v21);
+    objc_storeStrong(error, v21);
   }
 
   v24 = 0;
@@ -57,18 +57,18 @@ LABEL_8:
   return v24;
 }
 
-- (id)currentLocksSync:(id *)a3
+- (id)currentLocksSync:(id *)sync
 {
   v5 = objc_opt_new();
-  v6 = [(MAAutoAsset *)self->_autoAsset currentStatusSync:a3];
+  v6 = [(MAAutoAsset *)self->_autoAsset currentStatusSync:sync];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 currentLockUsage];
-    v9 = v8;
-    if (v8)
+    currentLockUsage = [v6 currentLockUsage];
+    v9 = currentLockUsage;
+    if (currentLockUsage)
     {
-      v10 = v8;
+      v10 = currentLockUsage;
     }
 
     else
@@ -87,14 +87,14 @@ LABEL_8:
   return v11;
 }
 
-- (id)currentAssetSizeOnDiskUsingStatus:(id *)a3
+- (id)currentAssetSizeOnDiskUsingStatus:(id *)status
 {
-  v3 = [(MAAutoAsset *)self->_autoAsset currentStatusSync:a3];
+  v3 = [(MAAutoAsset *)self->_autoAsset currentStatusSync:status];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 availableForUseAttributes];
-    v6 = [v5 valueForKey:@"_UnarchivedSize"];
+    availableForUseAttributes = [v3 availableForUseAttributes];
+    v6 = [availableForUseAttributes valueForKey:@"_UnarchivedSize"];
   }
 
   else

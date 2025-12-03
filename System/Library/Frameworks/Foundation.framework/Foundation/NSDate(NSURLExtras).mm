@@ -7,7 +7,7 @@
 
 - (NSString)_web_RFC1123DateString
 {
-  [a1 timeIntervalSinceReferenceDate];
+  [self timeIntervalSinceReferenceDate];
   if (v1 < -1.26227808e10)
   {
     v1 = -1.26227808e10;
@@ -32,35 +32,35 @@
 
 - (uint64_t)_web_compareDay:()NSURLExtras
 {
-  if (a1 == a3)
+  if (self == a3)
   {
     return 0;
   }
 
   v5 = objc_alloc(MEMORY[0x1E695DEE8]);
   v6 = [v5 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
-  v7 = [v6 components:28 fromDate:a1];
+  v7 = [v6 components:28 fromDate:self];
   v8 = [v6 components:28 fromDate:a3];
-  v9 = [v7 year];
-  v10 = [v8 year];
-  if (v9 < v10)
+  year = [v7 year];
+  year2 = [v8 year];
+  if (year < year2)
   {
     return -1;
   }
 
-  if (v9 > v10)
+  if (year > year2)
   {
     return 1;
   }
 
-  v12 = [v7 month];
-  v13 = [v8 month];
-  if (v12 < v13)
+  month = [v7 month];
+  month2 = [v8 month];
+  if (month < month2)
   {
     return -1;
   }
 
-  if (v12 > v13)
+  if (month > month2)
   {
     return 1;
   }

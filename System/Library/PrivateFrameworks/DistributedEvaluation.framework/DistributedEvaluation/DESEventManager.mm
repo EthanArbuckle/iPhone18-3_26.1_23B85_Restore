@@ -1,13 +1,13 @@
 @interface DESEventManager
-+ (BOOL)allowEventForBundleID:(id)a3;
++ (BOOL)allowEventForBundleID:(id)d;
 @end
 
 @implementation DESEventManager
 
-+ (BOOL)allowEventForBundleID:(id)a3
++ (BOOL)allowEventForBundleID:(id)d
 {
-  v3 = a3;
-  v4 = v3;
+  dCopy = d;
+  v4 = dCopy;
   if (allowEventForBundleID__onceToken != -1)
   {
     +[DESEventManager allowEventForBundleID:];
@@ -21,7 +21,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!dCopy)
   {
     goto LABEL_5;
   }

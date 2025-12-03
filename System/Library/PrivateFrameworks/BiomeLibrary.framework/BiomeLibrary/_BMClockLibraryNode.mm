@@ -2,7 +2,7 @@
 + (id)Alarm;
 + (id)configurationForAlarm;
 + (id)storeConfigurationForAlarm;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -11,7 +11,7 @@
 + (id)Alarm
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForAlarm];
+  configurationForAlarm = [self configurationForAlarm];
   v3 = +[BMClockAlarm columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -23,7 +23,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Clock.Alarm" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Clock.Alarm" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Clock.Alarm" schema:v9 configuration:configurationForAlarm];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -32,13 +32,13 @@
 
 + (id)configurationForAlarm
 {
-  v3 = [a1 storeConfigurationForAlarm];
-  v4 = [a1 syncPolicyForAlarm];
+  storeConfigurationForAlarm = [self storeConfigurationForAlarm];
+  syncPolicyForAlarm = [self syncPolicyForAlarm];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"D1DE8907-5CEC-4728-B9DF-647F0C7F97D4"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Clock.Alarm" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:&unk_1EF3E83D0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.mobiletimer" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Clock.Alarm" eventClass:objc_opt_class() storeConfig:storeConfigurationForAlarm syncPolicy:syncPolicyForAlarm legacyNames:&unk_1EF3E83D0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.mobiletimer" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -51,19 +51,19 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"Alarm"])
+  if ([name isEqualToString:@"Alarm"])
   {
-    v4 = [a1 Alarm];
+    alarm = [self Alarm];
   }
 
   else
   {
-    v4 = 0;
+    alarm = 0;
   }
 
-  return v4;
+  return alarm;
 }
 
 + (id)validKeyPaths

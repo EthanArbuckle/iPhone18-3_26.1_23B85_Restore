@@ -1,26 +1,26 @@
 @interface CNUIAccountsFacade
-- (CNUIAccountsFacade)initWithAccountStore:(id)a3 requestRunner:(id)a4;
-- (void)fetchiCloudFamilyMembersWithCompletionHandler:(id)a3;
+- (CNUIAccountsFacade)initWithAccountStore:(id)store requestRunner:(id)runner;
+- (void)fetchiCloudFamilyMembersWithCompletionHandler:(id)handler;
 @end
 
 @implementation CNUIAccountsFacade
 
-- (void)fetchiCloudFamilyMembersWithCompletionHandler:(id)a3
+- (void)fetchiCloudFamilyMembersWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CNUIAccountsFacade *)self accountStore];
-  v6 = [(CNUIAccountsFacade *)self requestRunner];
-  v7 = [v5 aa_primaryAppleAccount];
-  if (v7)
+  handlerCopy = handler;
+  accountStore = [(CNUIAccountsFacade *)self accountStore];
+  requestRunner = [(CNUIAccountsFacade *)self requestRunner];
+  aa_primaryAppleAccount = [accountStore aa_primaryAppleAccount];
+  if (aa_primaryAppleAccount)
   {
-    v8 = [v5 aa_grandSlamAccountForiCloudAccount:v7];
-    v9 = [objc_alloc(getAAFamilyDetailsRequestClass()) initWithAppleAccount:v7 grandSlamAccount:v8 accountStore:v5];
+    v8 = [accountStore aa_grandSlamAccountForiCloudAccount:aa_primaryAppleAccount];
+    v9 = [objc_alloc(getAAFamilyDetailsRequestClass()) initWithAppleAccount:aa_primaryAppleAccount grandSlamAccount:v8 accountStore:accountStore];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __68__CNUIAccountsFacade_fetchiCloudFamilyMembersWithCompletionHandler___block_invoke;
     v10[3] = &unk_1E74E5858;
-    v11 = v4;
-    [v6 performRequest:v9 withHandler:v10];
+    v11 = handlerCopy;
+    [requestRunner performRequest:v9 withHandler:v10];
   }
 }
 
@@ -64,31 +64,31 @@ void __68__CNUIAccountsFacade_fetchiCloudFamilyMembersWithCompletionHandler___bl
   }
 }
 
-- (CNUIAccountsFacade)initWithAccountStore:(id)a3 requestRunner:(id)a4
+- (CNUIAccountsFacade)initWithAccountStore:(id)store requestRunner:(id)runner
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  runnerCopy = runner;
   v14.receiver = self;
   v14.super_class = CNUIAccountsFacade;
   v8 = [(CNUIAccountsFacade *)&v14 init];
   if (v8)
   {
-    if (v6)
+    if (storeCopy)
     {
-      v9 = v6;
+      defaultStore = storeCopy;
     }
 
     else
     {
-      v9 = [MEMORY[0x1E6959A48] defaultStore];
+      defaultStore = [MEMORY[0x1E6959A48] defaultStore];
     }
 
     accountStore = v8->_accountStore;
-    v8->_accountStore = v9;
+    v8->_accountStore = defaultStore;
 
-    if (v7)
+    if (runnerCopy)
     {
-      v11 = v7;
+      v11 = runnerCopy;
     }
 
     else

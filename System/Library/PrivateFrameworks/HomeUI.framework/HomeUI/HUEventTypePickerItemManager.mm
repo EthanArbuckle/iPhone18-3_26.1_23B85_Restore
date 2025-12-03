@@ -1,53 +1,53 @@
 @interface HUEventTypePickerItemManager
-- (BOOL)_hasMinimumRequiredTriggerableServices:(unint64_t)a3;
-- (BOOL)_hasMinimumRequiredTriggeringServices:(int64_t)a3;
-- (HUEventTypePickerItemManager)initWithTriggerBuilder:(id)a3 delegate:(id)a4;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
-- (id)_createCharacteristicItemForSource:(unint64_t)a3;
-- (id)_createLocationItemForType:(unint64_t)a3;
+- (BOOL)_hasMinimumRequiredTriggerableServices:(unint64_t)services;
+- (BOOL)_hasMinimumRequiredTriggeringServices:(int64_t)services;
+- (HUEventTypePickerItemManager)initWithTriggerBuilder:(id)builder delegate:(id)delegate;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
+- (id)_createCharacteristicItemForSource:(unint64_t)source;
+- (id)_createLocationItemForType:(unint64_t)type;
 - (id)_createTimeItem;
 @end
 
 @implementation HUEventTypePickerItemManager
 
-- (HUEventTypePickerItemManager)initWithTriggerBuilder:(id)a3 delegate:(id)a4
+- (HUEventTypePickerItemManager)initWithTriggerBuilder:(id)builder delegate:(id)delegate
 {
-  v7 = a3;
+  builderCopy = builder;
   v11.receiver = self;
   v11.super_class = HUEventTypePickerItemManager;
-  v8 = [(HFItemManager *)&v11 initWithDelegate:a4];
+  v8 = [(HFItemManager *)&v11 initWithDelegate:delegate];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_triggerBuilder, a3);
+    objc_storeStrong(&v8->_triggerBuilder, builder);
   }
 
   return v9;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v22[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D14850];
-  v5 = a3;
+  itemsCopy = items;
   v6 = [[v4 alloc] initWithIdentifier:@"HUEventTypePickerSectionIdentifierInstructions"];
-  v7 = [(HUEventTypePickerItemManager *)self instructionsItem];
-  v22[0] = v7;
+  instructionsItem = [(HUEventTypePickerItemManager *)self instructionsItem];
+  v22[0] = instructionsItem;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
   [v6 setItems:v8];
 
   v9 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUEventTypePickerSectionIdentifierTriggerTypes"];
-  v10 = [(HUEventTypePickerItemManager *)self leavingLocationEventItem];
-  v21[0] = v10;
-  v11 = [(HUEventTypePickerItemManager *)self arrivingAtLocationEventItem];
-  v21[1] = v11;
-  v12 = [(HUEventTypePickerItemManager *)self timerEventItem];
-  v21[2] = v12;
-  v13 = [(HUEventTypePickerItemManager *)self characteristicEventItem];
-  v21[3] = v13;
-  v14 = [(HUEventTypePickerItemManager *)self alarmEventItem];
-  v21[4] = v14;
+  leavingLocationEventItem = [(HUEventTypePickerItemManager *)self leavingLocationEventItem];
+  v21[0] = leavingLocationEventItem;
+  arrivingAtLocationEventItem = [(HUEventTypePickerItemManager *)self arrivingAtLocationEventItem];
+  v21[1] = arrivingAtLocationEventItem;
+  timerEventItem = [(HUEventTypePickerItemManager *)self timerEventItem];
+  v21[2] = timerEventItem;
+  characteristicEventItem = [(HUEventTypePickerItemManager *)self characteristicEventItem];
+  v21[3] = characteristicEventItem;
+  alarmEventItem = [(HUEventTypePickerItemManager *)self alarmEventItem];
+  v21[4] = alarmEventItem;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:5];
   [v9 setItems:v15];
 
@@ -55,12 +55,12 @@
   v20[0] = v6;
   v20[1] = v9;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
-  v18 = [v16 filterSections:v17 toDisplayedItems:v5];
+  v18 = [v16 filterSections:v17 toDisplayedItems:itemsCopy];
 
   return v18;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v26[6] = *MEMORY[0x277D85DE8];
   v4 = [HUInstructionsItem alloc];
@@ -74,8 +74,8 @@
   v8 = [(HUEventTypePickerItemManager *)self _createLocationItemForType:0];
   [(HUEventTypePickerItemManager *)self setArrivingAtLocationEventItem:v8];
 
-  v9 = [(HUEventTypePickerItemManager *)self _createTimeItem];
-  [(HUEventTypePickerItemManager *)self setTimerEventItem:v9];
+  _createTimeItem = [(HUEventTypePickerItemManager *)self _createTimeItem];
+  [(HUEventTypePickerItemManager *)self setTimerEventItem:_createTimeItem];
 
   v10 = [(HUEventTypePickerItemManager *)self _createCharacteristicItemForSource:1];
   [(HUEventTypePickerItemManager *)self setCharacteristicEventItem:v10];
@@ -85,18 +85,18 @@
 
   v12 = objc_alloc(MEMORY[0x277D14B40]);
   v13 = MEMORY[0x277CBEB98];
-  v14 = [(HUEventTypePickerItemManager *)self instructionsItem];
-  v26[0] = v14;
-  v15 = [(HUEventTypePickerItemManager *)self leavingLocationEventItem];
-  v26[1] = v15;
-  v16 = [(HUEventTypePickerItemManager *)self arrivingAtLocationEventItem];
-  v26[2] = v16;
-  v17 = [(HUEventTypePickerItemManager *)self timerEventItem];
-  v26[3] = v17;
-  v18 = [(HUEventTypePickerItemManager *)self characteristicEventItem];
-  v26[4] = v18;
-  v19 = [(HUEventTypePickerItemManager *)self alarmEventItem];
-  v26[5] = v19;
+  instructionsItem = [(HUEventTypePickerItemManager *)self instructionsItem];
+  v26[0] = instructionsItem;
+  leavingLocationEventItem = [(HUEventTypePickerItemManager *)self leavingLocationEventItem];
+  v26[1] = leavingLocationEventItem;
+  arrivingAtLocationEventItem = [(HUEventTypePickerItemManager *)self arrivingAtLocationEventItem];
+  v26[2] = arrivingAtLocationEventItem;
+  timerEventItem = [(HUEventTypePickerItemManager *)self timerEventItem];
+  v26[3] = timerEventItem;
+  characteristicEventItem = [(HUEventTypePickerItemManager *)self characteristicEventItem];
+  v26[4] = characteristicEventItem;
+  alarmEventItem = [(HUEventTypePickerItemManager *)self alarmEventItem];
+  v26[5] = alarmEventItem;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:6];
   v21 = [v13 setWithArray:v20];
   v22 = [v12 initWithItems:v21];
@@ -150,7 +150,7 @@ id __47__HUEventTypePickerItemManager__createTimeItem__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (id)_createLocationItemForType:(unint64_t)a3
+- (id)_createLocationItemForType:(unint64_t)type
 {
   objc_initWeak(&location, self);
   v4 = objc_alloc(MEMORY[0x277D14B38]);
@@ -159,7 +159,7 @@ id __47__HUEventTypePickerItemManager__createTimeItem__block_invoke(uint64_t a1)
   v7[2] = __59__HUEventTypePickerItemManager__createLocationItemForType___block_invoke;
   v7[3] = &unk_277DB8F60;
   objc_copyWeak(v8, &location);
-  v8[1] = a3;
+  v8[1] = type;
   v5 = [v4 initWithResultsBlock:v7];
   objc_destroyWeak(v8);
   objc_destroyWeak(&location);
@@ -257,7 +257,7 @@ uint64_t __59__HUEventTypePickerItemManager__createLocationItemForType___block_i
   }
 }
 
-- (id)_createCharacteristicItemForSource:(unint64_t)a3
+- (id)_createCharacteristicItemForSource:(unint64_t)source
 {
   objc_initWeak(&location, self);
   v4 = objc_alloc(MEMORY[0x277D14B38]);
@@ -266,7 +266,7 @@ uint64_t __59__HUEventTypePickerItemManager__createLocationItemForType___block_i
   v7[2] = __67__HUEventTypePickerItemManager__createCharacteristicItemForSource___block_invoke;
   v7[3] = &unk_277DB8F60;
   objc_copyWeak(v8, &location);
-  v8[1] = a3;
+  v8[1] = source;
   v5 = [v4 initWithResultsBlock:v7];
   objc_destroyWeak(v8);
   objc_destroyWeak(&location);
@@ -346,23 +346,23 @@ id __67__HUEventTypePickerItemManager__createCharacteristicItemForSource___block
   return v21;
 }
 
-- (BOOL)_hasMinimumRequiredTriggeringServices:(int64_t)a3
+- (BOOL)_hasMinimumRequiredTriggeringServices:(int64_t)services
 {
-  v4 = [(HFItemManager *)self home];
-  v5 = [v4 hf_allVisibleServices];
-  LOBYTE(a3) = [v5 count] >= a3;
+  home = [(HFItemManager *)self home];
+  hf_allVisibleServices = [home hf_allVisibleServices];
+  LOBYTE(services) = [hf_allVisibleServices count] >= services;
 
-  return a3;
+  return services;
 }
 
-- (BOOL)_hasMinimumRequiredTriggerableServices:(unint64_t)a3
+- (BOOL)_hasMinimumRequiredTriggerableServices:(unint64_t)services
 {
-  v5 = [(HFItemManager *)self home];
-  if ([v5 hf_enabledResidentsSupportsMediaActions])
+  home = [(HFItemManager *)self home];
+  if ([home hf_enabledResidentsSupportsMediaActions])
   {
-    v6 = [(HFItemManager *)self home];
-    v7 = [v6 hf_mediaAccessories];
-    v8 = [v7 count];
+    home2 = [(HFItemManager *)self home];
+    hf_mediaAccessories = [home2 hf_mediaAccessories];
+    v8 = [hf_mediaAccessories count];
   }
 
   else
@@ -370,10 +370,10 @@ id __67__HUEventTypePickerItemManager__createCharacteristicItemForSource___block
     v8 = 0;
   }
 
-  v9 = [v5 hf_allVisibleServices];
-  v10 = [v9 count] + v8;
+  hf_allVisibleServices = [home hf_allVisibleServices];
+  v10 = [hf_allVisibleServices count] + v8;
 
-  return v10 >= a3;
+  return v10 >= services;
 }
 
 @end

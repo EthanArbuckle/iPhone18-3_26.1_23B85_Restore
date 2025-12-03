@@ -1,33 +1,33 @@
 @interface PFAClockEnvelopeStatistics
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PFAClockEnvelopeStatistics)initWithDictionary:(id)a3;
-- (PFAClockEnvelopeStatistics)initWithJSON:(id)a3;
+- (PFAClockEnvelopeStatistics)initWithDictionary:(id)dictionary;
+- (PFAClockEnvelopeStatistics)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasTotalBytes:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasTotalBytes:(BOOL)bytes;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PFAClockEnvelopeStatistics
 
-- (PFAClockEnvelopeStatistics)initWithDictionary:(id)a3
+- (PFAClockEnvelopeStatistics)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = PFAClockEnvelopeStatistics;
   v5 = [(PFAClockEnvelopeStatistics *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"messageCount"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"messageCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PFAClockEnvelopeStatistics setMessageCount:](v5, "setMessageCount:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"totalBytes"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"totalBytes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (PFAClockEnvelopeStatistics)initWithJSON:(id)a3
+- (PFAClockEnvelopeStatistics)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PFAClockEnvelopeStatistics *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PFAClockEnvelopeStatistics *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PFAClockEnvelopeStatistics *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,12 +76,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PFAClockEnvelopeStatistics messageCount](self, "messageCount")}];
-    [v3 setObject:v5 forKeyedSubscript:@"messageCount"];
+    [dictionary setObject:v5 forKeyedSubscript:@"messageCount"];
 
     has = self->_has;
   }
@@ -89,12 +89,12 @@
   if ((has & 2) != 0)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[PFAClockEnvelopeStatistics totalBytes](self, "totalBytes")}];
-    [v3 setObject:v6 forKeyedSubscript:@"totalBytes"];
+    [dictionary setObject:v6 forKeyedSubscript:@"totalBytes"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -123,16 +123,16 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_10;
@@ -141,7 +141,7 @@ LABEL_3:
   if (*&has)
   {
     messageCount = self->_messageCount;
-    if (messageCount != [v4 messageCount])
+    if (messageCount != [equalCopy messageCount])
     {
 LABEL_10:
       v10 = 0;
@@ -149,7 +149,7 @@ LABEL_10:
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -161,7 +161,7 @@ LABEL_10:
   if (v8)
   {
     totalBytes = self->_totalBytes;
-    if (totalBytes != [v4 totalBytes])
+    if (totalBytes != [equalCopy totalBytes])
     {
       goto LABEL_10;
     }
@@ -173,28 +173,28 @@ LABEL_11:
   return v10;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)setHasTotalBytes:(BOOL)a3
+- (void)setHasTotalBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 2;
   }

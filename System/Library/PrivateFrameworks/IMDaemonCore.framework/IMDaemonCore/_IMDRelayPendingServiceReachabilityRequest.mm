@@ -1,31 +1,31 @@
 @interface _IMDRelayPendingServiceReachabilityRequest
 - (NSString)requestID;
-- (_IMDRelayPendingServiceReachabilityRequest)initWithRequest:(id)a3 responseHandler:(id)a4;
+- (_IMDRelayPendingServiceReachabilityRequest)initWithRequest:(id)request responseHandler:(id)handler;
 - (id)createIncompleteFinalResult;
-- (void)enumerateResponseHandlersWithBlock:(id)a3;
+- (void)enumerateResponseHandlersWithBlock:(id)block;
 @end
 
 @implementation _IMDRelayPendingServiceReachabilityRequest
 
-- (_IMDRelayPendingServiceReachabilityRequest)initWithRequest:(id)a3 responseHandler:(id)a4
+- (_IMDRelayPendingServiceReachabilityRequest)initWithRequest:(id)request responseHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = _IMDRelayPendingServiceReachabilityRequest;
   v9 = [(_IMDRelayPendingServiceReachabilityRequest *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_originalRequest, a3);
+    objc_storeStrong(&v9->_originalRequest, request);
     v11 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:0 valueOptions:0 capacity:0];
     responseHandlers = v10->_responseHandlers;
     v10->_responseHandlers = v11;
 
-    [(NSMapTable *)v10->_responseHandlers setObject:v8 forKey:v7];
-    v13 = [MEMORY[0x277CBEAA8] date];
+    [(NSMapTable *)v10->_responseHandlers setObject:handlerCopy forKey:requestCopy];
+    date = [MEMORY[0x277CBEAA8] date];
     lastUpdateTime = v10->_lastUpdateTime;
-    v10->_lastUpdateTime = v13;
+    v10->_lastUpdateTime = date;
   }
 
   return v10;
@@ -33,16 +33,16 @@
 
 - (NSString)requestID
 {
-  v2 = [(_IMDRelayPendingServiceReachabilityRequest *)self originalRequest];
-  v3 = [v2 requestID];
+  originalRequest = [(_IMDRelayPendingServiceReachabilityRequest *)self originalRequest];
+  requestID = [originalRequest requestID];
 
-  return v3;
+  return requestID;
 }
 
 - (id)createIncompleteFinalResult
 {
-  v3 = [(_IMDRelayPendingServiceReachabilityRequest *)self lastResult];
-  v4 = [v3 copy];
+  lastResult = [(_IMDRelayPendingServiceReachabilityRequest *)self lastResult];
+  v4 = [lastResult copy];
 
   if (v4)
   {
@@ -53,28 +53,28 @@
   else
   {
     v6 = MEMORY[0x277D1ABB0];
-    v7 = [(_IMDRelayPendingServiceReachabilityRequest *)self originalRequest];
-    v8 = [v7 serviceName];
-    v9 = [(_IMDRelayPendingServiceReachabilityRequest *)self originalRequest];
-    v10 = [v9 handleIDs];
-    v5 = [v6 finalResultForService:v8 handleIDs:v10 allAreReachable:0 allSupportEncryption:0 checkedServer:0 error:3];
+    originalRequest = [(_IMDRelayPendingServiceReachabilityRequest *)self originalRequest];
+    serviceName = [originalRequest serviceName];
+    originalRequest2 = [(_IMDRelayPendingServiceReachabilityRequest *)self originalRequest];
+    handleIDs = [originalRequest2 handleIDs];
+    v5 = [v6 finalResultForService:serviceName handleIDs:handleIDs allAreReachable:0 allSupportEncryption:0 checkedServer:0 error:3];
   }
 
   return v5;
 }
 
-- (void)enumerateResponseHandlersWithBlock:(id)a3
+- (void)enumerateResponseHandlersWithBlock:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(_IMDRelayPendingServiceReachabilityRequest *)self responseHandlers];
-  v6 = [v5 keyEnumerator];
+  responseHandlers = [(_IMDRelayPendingServiceReachabilityRequest *)self responseHandlers];
+  keyEnumerator = [responseHandlers keyEnumerator];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -86,19 +86,19 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v11 = *(*(&v15 + 1) + 8 * v10);
-        v12 = [(_IMDRelayPendingServiceReachabilityRequest *)self responseHandlers];
-        v13 = [v12 objectForKey:v11];
-        v4[2](v4, v11, v13);
+        responseHandlers2 = [(_IMDRelayPendingServiceReachabilityRequest *)self responseHandlers];
+        v13 = [responseHandlers2 objectForKey:v11];
+        blockCopy[2](blockCopy, v11, v13);
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);

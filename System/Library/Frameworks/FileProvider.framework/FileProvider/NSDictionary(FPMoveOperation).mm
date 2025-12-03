@@ -14,8 +14,8 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -26,28 +26,28 @@
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 underlyingObject];
+        underlyingObject = [v11 underlyingObject];
         if (v4)
         {
-          v13 = [v4 objectForKeyedSubscript:v12];
+          v13 = [v4 objectForKeyedSubscript:underlyingObject];
 
           if (v13)
           {
-            v14 = [v4 objectForKeyedSubscript:v12];
+            v14 = [v4 objectForKeyedSubscript:underlyingObject];
 
-            v12 = v14;
+            underlyingObject = v14;
           }
         }
 
-        v15 = [v6 objectForKeyedSubscript:v11];
-        [v5 setObject:v15 forKeyedSubscript:v12];
+        v15 = [selfCopy objectForKeyedSubscript:v11];
+        [v5 setObject:v15 forKeyedSubscript:underlyingObject];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
@@ -67,8 +67,8 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -79,29 +79,29 @@
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v11 underlyingObject];
+        underlyingObject = [v11 underlyingObject];
         if (v4)
         {
-          v13 = [v4 objectForKeyedSubscript:v12];
+          v13 = [v4 objectForKeyedSubscript:underlyingObject];
 
           if (v13)
           {
-            v14 = [v4 objectForKeyedSubscript:v12];
+            v14 = [v4 objectForKeyedSubscript:underlyingObject];
 
-            v12 = v14;
+            underlyingObject = v14;
           }
         }
 
-        v15 = [v6 objectForKeyedSubscript:v11];
-        v16 = [v15 underlyingObject];
-        [v5 setObject:v16 forKeyedSubscript:v12];
+        v15 = [selfCopy objectForKeyedSubscript:v11];
+        underlyingObject2 = [v15 underlyingObject];
+        [v5 setObject:underlyingObject2 forKeyedSubscript:underlyingObject];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v8);

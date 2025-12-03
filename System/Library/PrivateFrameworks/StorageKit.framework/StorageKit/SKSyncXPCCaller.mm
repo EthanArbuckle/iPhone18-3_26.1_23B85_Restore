@@ -1,15 +1,15 @@
 @interface SKSyncXPCCaller
-- (SKSyncXPCCaller)initWithHelperClient:(id)a3;
+- (SKSyncXPCCaller)initWithHelperClient:(id)client;
 - (id)syncRemoteObject;
-- (void)queueWithCompletionBlock:(id)a3;
+- (void)queueWithCompletionBlock:(id)block;
 - (void)wait;
 @end
 
 @implementation SKSyncXPCCaller
 
-- (SKSyncXPCCaller)initWithHelperClient:(id)a3
+- (SKSyncXPCCaller)initWithHelperClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v10.receiver = self;
   v10.super_class = SKSyncXPCCaller;
   v6 = [(SKSyncXPCCaller *)&v10 init];
@@ -19,7 +19,7 @@
     group = v6->_group;
     v6->_group = v7;
 
-    objc_storeStrong(&v6->_helperClient, a3);
+    objc_storeStrong(&v6->_helperClient, client);
   }
 
   return v6;
@@ -27,30 +27,30 @@
 
 - (id)syncRemoteObject
 {
-  v3 = [(SKSyncXPCCaller *)self helperClient];
-  v4 = [v3 hasDaemonAccess];
+  helperClient = [(SKSyncXPCCaller *)self helperClient];
+  hasDaemonAccess = [helperClient hasDaemonAccess];
 
-  if (v4)
+  if (hasDaemonAccess)
   {
-    v5 = [(SKSyncXPCCaller *)self group];
-    dispatch_group_enter(v5);
+    group = [(SKSyncXPCCaller *)self group];
+    dispatch_group_enter(group);
 
-    v6 = [(SKSyncXPCCaller *)self helperClient];
+    helperClient2 = [(SKSyncXPCCaller *)self helperClient];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __35__SKSyncXPCCaller_syncRemoteObject__block_invoke;
     v9[3] = &unk_279D1F948;
     v9[4] = self;
-    v7 = [v6 remoteObjectProxyWithSync:1 errorHandler:v9];
+    v7 = [helperClient2 remoteObjectProxyWithSync:1 errorHandler:v9];
   }
 
   else
   {
-    v6 = SKGetOSLog();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    helperClient2 = SKGetOSLog();
+    if (os_log_type_enabled(helperClient2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_26BBB8000, v6, OS_LOG_TYPE_DEFAULT, "Skipping sync command, no daemon access", buf, 2u);
+      _os_log_impl(&dword_26BBB8000, helperClient2, OS_LOG_TYPE_DEFAULT, "Skipping sync command, no daemon access", buf, 2u);
     }
 
     v7 = 0;
@@ -81,23 +81,23 @@ void __35__SKSyncXPCCaller_syncRemoteObject__block_invoke(uint64_t a1, void *a2)
 
 - (void)wait
 {
-  v2 = [(SKSyncXPCCaller *)self group];
-  dispatch_group_wait(v2, 0xFFFFFFFFFFFFFFFFLL);
+  group = [(SKSyncXPCCaller *)self group];
+  dispatch_group_wait(group, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (void)queueWithCompletionBlock:(id)a3
+- (void)queueWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SKSyncXPCCaller *)self helperClient];
-  v6 = [v5 xpcQueue];
+  blockCopy = block;
+  helperClient = [(SKSyncXPCCaller *)self helperClient];
+  xpcQueue = [helperClient xpcQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __44__SKSyncXPCCaller_queueWithCompletionBlock___block_invoke;
   v8[3] = &unk_279D1F678;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = blockCopy;
+  v7 = blockCopy;
+  dispatch_async(xpcQueue, v8);
 }
 
 void __44__SKSyncXPCCaller_queueWithCompletionBlock___block_invoke(uint64_t a1)

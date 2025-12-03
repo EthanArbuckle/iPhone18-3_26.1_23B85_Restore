@@ -1,16 +1,16 @@
 @interface WFWidgetConfigurationCardHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation WFWidgetConfigurationCardHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WFWidgetConfigurationCardHeaderView" hasInstanceMethod:@"labelsStackView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFWidgetConfigurationCardHeaderView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFWidgetConfigurationCardHeaderView" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WFWidgetConfigurationCardHeaderView" hasInstanceMethod:@"labelsStackView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFWidgetConfigurationCardHeaderView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFWidgetConfigurationCardHeaderView" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

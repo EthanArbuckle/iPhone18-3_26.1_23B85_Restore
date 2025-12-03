@@ -28,7 +28,7 @@
     }
 
 LABEL_10:
-    v8 = [a1 isEqual:v6];
+    v8 = [self isEqual:v6];
     goto LABEL_18;
   }
 
@@ -55,14 +55,14 @@ LABEL_10:
       }
 
       v10 = v9;
-      v8 = [v10 containsObject:a1];
+      v8 = [v10 containsObject:self];
 
       break;
     case 9:
       goto LABEL_10;
     case 10:
 LABEL_9:
-      v8 = [a1 isEqual:v6] ^ 1;
+      v8 = [self isEqual:v6] ^ 1;
       break;
   }
 

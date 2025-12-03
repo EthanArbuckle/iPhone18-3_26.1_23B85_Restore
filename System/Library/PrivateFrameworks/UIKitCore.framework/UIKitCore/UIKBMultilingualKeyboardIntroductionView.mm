@@ -1,9 +1,9 @@
 @interface UIKBMultilingualKeyboardIntroductionView
-+ (BOOL)shouldShowIntroductionForInputMode:(id)a3;
-+ (id)displayArtwork:(id)a3;
-+ (id)displayDescription:(id)a3;
-+ (id)displayTitle:(id)a3;
-- (UIKBMultilingualKeyboardIntroductionView)initWithInputMode:(id)a3 frame:(CGRect)a4;
++ (BOOL)shouldShowIntroductionForInputMode:(id)mode;
++ (id)displayArtwork:(id)artwork;
++ (id)displayDescription:(id)description;
++ (id)displayTitle:(id)title;
+- (UIKBMultilingualKeyboardIntroductionView)initWithInputMode:(id)mode frame:(CGRect)frame;
 - (void)_updateContainer;
 - (void)_updatePath;
 - (void)continueButtonTapped;
@@ -12,13 +12,13 @@
 
 @implementation UIKBMultilingualKeyboardIntroductionView
 
-+ (BOOL)shouldShowIntroductionForInputMode:(id)a3
++ (BOOL)shouldShowIntroductionForInputMode:(id)mode
 {
-  v4 = a3;
-  if (_os_feature_enabled_impl() && [objc_msgSend(a1 "superclass")] && _os_feature_enabled_impl())
+  modeCopy = mode;
+  if (_os_feature_enabled_impl() && [objc_msgSend(self "superclass")] && _os_feature_enabled_impl())
   {
-    v5 = [v4 multilingualSet];
-    v6 = [v5 count] > 1;
+    multilingualSet = [modeCopy multilingualSet];
+    v6 = [multilingualSet count] > 1;
   }
 
   else
@@ -29,10 +29,10 @@
   return v6;
 }
 
-+ (id)displayTitle:(id)a3
++ (id)displayTitle:(id)title
 {
-  v3 = [a3 identifier];
-  v4 = [MEMORY[0x1E695DF58] preferredLanguages];
+  identifier = [title identifier];
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
   v5 = TIInputModeGetMultilingualSetFromInputModesWithPreferredLanguages();
 
   v6 = [UIKeyboardInputMode _displayNameForMultilingualSet:v5 forDisplayInLists:0 usingDeviceLanguage:1 context:5];
@@ -43,11 +43,11 @@
   return v9;
 }
 
-+ (id)displayDescription:(id)a3
++ (id)displayDescription:(id)description
 {
-  v3 = a3;
-  v4 = [v3 softwareLayout];
-  v5 = [v4 containsString:@"-With-"];
+  descriptionCopy = description;
+  softwareLayout = [descriptionCopy softwareLayout];
+  v5 = [softwareLayout containsString:@"-With-"];
 
   if (v5)
   {
@@ -60,8 +60,8 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v8 = [v3 multilingualSet];
-  v9 = [v8 count];
+  multilingualSet = [descriptionCopy multilingualSet];
+  v9 = [multilingualSet count];
 
   if (v9 == 2)
   {
@@ -70,10 +70,10 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  if ([v3 isMultiscript])
+  if ([descriptionCopy isMultiscript])
   {
-    v13 = [v3 multilingualSet];
-    v14 = [v13 count];
+    multilingualSet2 = [descriptionCopy multilingualSet];
+    v14 = [multilingualSet2 count];
 
     if (v14 != 5)
     {
@@ -115,13 +115,13 @@ LABEL_6:
   return v11;
 }
 
-+ (id)displayArtwork:(id)a3
++ (id)displayArtwork:(id)artwork
 {
-  v3 = a3;
-  if ([v3 isMultiscript])
+  artworkCopy = artwork;
+  if ([artworkCopy isMultiscript])
   {
-    v4 = [v3 multiscriptSet];
-    v5 = [v4 count];
+    multiscriptSet = [artworkCopy multiscriptSet];
+    v5 = [multiscriptSet count];
     if (v5 <= 2)
     {
       v6 = 1;
@@ -132,24 +132,24 @@ LABEL_6:
       v6 = 2;
     }
 
-    v7 = [v4 objectAtIndexedSubscript:v5 > 2];
-    v8 = [v7 languageWithRegion];
+    v7 = [multiscriptSet objectAtIndexedSubscript:v5 > 2];
+    languageWithRegion = [v7 languageWithRegion];
 
-    v9 = [v4 objectAtIndexedSubscript:v6];
-    v10 = [v9 languageWithRegion];
+    v9 = [multiscriptSet objectAtIndexedSubscript:v6];
+    languageWithRegion2 = [v9 languageWithRegion];
 
-    v11 = [[UIKBMultilingualKeyboardArtworkView alloc] initWithLanguage1:v8 andLanguage2:v10];
+    v11 = [[UIKBMultilingualKeyboardArtworkView alloc] initWithLanguage1:languageWithRegion andLanguage2:languageWithRegion2];
   }
 
   else
   {
-    v12 = [v3 multilingualSet];
-    v13 = [v12 count];
+    multilingualSet = [artworkCopy multilingualSet];
+    v13 = [multilingualSet count];
 
     if (v13)
     {
-      v14 = [v3 multilingualSet];
-      v15 = [v14 count];
+      multilingualSet2 = [artworkCopy multilingualSet];
+      v15 = [multilingualSet2 count];
 
       if (v15 != 2)
       {
@@ -174,59 +174,59 @@ LABEL_6:
         }
       }
 
-      v16 = [v3 multilingualSet];
-      v17 = [v16 firstObject];
-      v18 = [v17 languageWithRegion];
+      multilingualSet3 = [artworkCopy multilingualSet];
+      firstObject = [multilingualSet3 firstObject];
+      languageWithRegion3 = [firstObject languageWithRegion];
 
-      v19 = [v3 multilingualSet];
-      v20 = [v19 lastObject];
-      v21 = [v20 languageWithRegion];
+      multilingualSet4 = [artworkCopy multilingualSet];
+      lastObject = [multilingualSet4 lastObject];
+      languageWithRegion4 = [lastObject languageWithRegion];
 
-      v11 = [[UIKBMultilingualKeyboardArtworkView alloc] initWithLanguage1:v18 andLanguage2:v21];
+      v11 = [[UIKBMultilingualKeyboardArtworkView alloc] initWithLanguage1:languageWithRegion3 andLanguage2:languageWithRegion4];
     }
 
     else
     {
-      v22 = [v3 multilingualLanguages];
-      v23 = [v22 firstObject];
+      multilingualLanguages = [artworkCopy multilingualLanguages];
+      firstObject2 = [multilingualLanguages firstObject];
 
-      v24 = [v3 multilingualLanguages];
-      v25 = [v24 lastObject];
+      multilingualLanguages2 = [artworkCopy multilingualLanguages];
+      lastObject2 = [multilingualLanguages2 lastObject];
 
-      v11 = [[UIKBMultilingualKeyboardArtworkView alloc] initWithLanguage1:v23 andLanguage2:v25];
+      v11 = [[UIKBMultilingualKeyboardArtworkView alloc] initWithLanguage1:firstObject2 andLanguage2:lastObject2];
     }
   }
 
   return v11;
 }
 
-- (UIKBMultilingualKeyboardIntroductionView)initWithInputMode:(id)a3 frame:(CGRect)a4
+- (UIKBMultilingualKeyboardIntroductionView)initWithInputMode:(id)mode frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v232[14] = *MEMORY[0x1E69E9840];
-  v215 = a3;
+  modeCopy = mode;
   v220.receiver = self;
   v220.super_class = UIKBMultilingualKeyboardIntroductionView;
-  v9 = [(UIView *)&v220 initWithFrame:x, y, width, height];
-  v10 = v9;
-  if (v9)
+  height = [(UIView *)&v220 initWithFrame:x, y, width, height];
+  v10 = height;
+  if (height)
   {
-    [(UIKBMultilingualKeyboardIntroductionView *)v9 setInputMode:v215];
+    [(UIKBMultilingualKeyboardIntroductionView *)height setInputMode:modeCopy];
     [(UIView *)v10 setAutoresizingMask:18];
-    v213 = [(UIView *)v10 _inheritedRenderConfig];
-    v11 = -[_UIBackdropView initWithStyle:]([_UIBackdropView alloc], "initWithStyle:", [v213 backdropStyle]);
+    _inheritedRenderConfig = [(UIView *)v10 _inheritedRenderConfig];
+    v11 = -[_UIBackdropView initWithStyle:]([_UIBackdropView alloc], "initWithStyle:", [_inheritedRenderConfig backdropStyle]);
     [(UIKBMultilingualKeyboardIntroductionView *)v10 setBackdropView:v11];
 
-    v12 = [(UIKBMultilingualKeyboardIntroductionView *)v10 backdropView];
-    [(UIView *)v10 addSubview:v12];
+    backdropView = [(UIKBMultilingualKeyboardIntroductionView *)v10 backdropView];
+    [(UIView *)v10 addSubview:backdropView];
 
-    v142 = [objc_opt_class() displayTitle:v215];
-    v141 = [objc_opt_class() displayDescription:v215];
+    v142 = [objc_opt_class() displayTitle:modeCopy];
+    v141 = [objc_opt_class() displayDescription:modeCopy];
     v140 = _UILocalizedStringInSystemLanguage(@"Continue", @"Continue");
-    if ([v213 lightKeyboard])
+    if ([_inheritedRenderConfig lightKeyboard])
     {
       +[UIColor blackColor];
     }
@@ -244,162 +244,162 @@ LABEL_6:
     v18 = [(UILabel *)v13 initWithFrame:*MEMORY[0x1E695F058], v15, v16, v17];
     [(UIKBMultilingualKeyboardIntroductionView *)v10 setTitleLabel:v18];
 
-    v19 = [(UIKBMultilingualKeyboardIntroductionView *)v10 titleLabel];
-    [v19 setTranslatesAutoresizingMaskIntoConstraints:0];
+    titleLabel = [(UIKBMultilingualKeyboardIntroductionView *)v10 titleLabel];
+    [titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v20 = [(UIKBMultilingualKeyboardIntroductionView *)v10 titleLabel];
-    [v20 setTextColor:v212];
+    titleLabel2 = [(UIKBMultilingualKeyboardIntroductionView *)v10 titleLabel];
+    [titleLabel2 setTextColor:v212];
 
-    v21 = [(UIKBMultilingualKeyboardIntroductionView *)v10 titleLabel];
-    [v21 setTextAlignment:1];
+    titleLabel3 = [(UIKBMultilingualKeyboardIntroductionView *)v10 titleLabel];
+    [titleLabel3 setTextAlignment:1];
 
-    v22 = [(UIKBMultilingualKeyboardIntroductionView *)v10 titleLabel];
-    [v22 setText:v142];
+    titleLabel4 = [(UIKBMultilingualKeyboardIntroductionView *)v10 titleLabel];
+    [titleLabel4 setText:v142];
 
-    v23 = [(UIKBMultilingualIntroductionView *)v10 titleLabelFont];
-    v24 = [(UIKBMultilingualKeyboardIntroductionView *)v10 titleLabel];
-    [v24 setFont:v23];
+    titleLabelFont = [(UIKBMultilingualIntroductionView *)v10 titleLabelFont];
+    titleLabel5 = [(UIKBMultilingualKeyboardIntroductionView *)v10 titleLabel];
+    [titleLabel5 setFont:titleLabelFont];
 
-    v25 = [(UIKBMultilingualKeyboardIntroductionView *)v10 titleLabel];
-    [(UIView *)v10 addSubview:v25];
+    titleLabel6 = [(UIKBMultilingualKeyboardIntroductionView *)v10 titleLabel];
+    [(UIView *)v10 addSubview:titleLabel6];
 
-    v26 = [objc_opt_class() displayArtwork:v215];
+    v26 = [objc_opt_class() displayArtwork:modeCopy];
     [(UIKBMultilingualKeyboardIntroductionView *)v10 setArtworkView:v26];
 
-    v27 = [(UIKBMultilingualKeyboardIntroductionView *)v10 artworkView];
-    [v27 setTranslatesAutoresizingMaskIntoConstraints:0];
+    artworkView = [(UIKBMultilingualKeyboardIntroductionView *)v10 artworkView];
+    [artworkView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v28 = [(UIKBMultilingualKeyboardIntroductionView *)v10 artworkView];
-    [(UIView *)v10 addSubview:v28];
+    artworkView2 = [(UIKBMultilingualKeyboardIntroductionView *)v10 artworkView];
+    [(UIView *)v10 addSubview:artworkView2];
 
     v29 = [[UILabel alloc] initWithFrame:v14, v15, v16, v17];
     [(UIKBMultilingualKeyboardIntroductionView *)v10 setDescriptionLabel:v29];
 
-    v30 = [(UIKBMultilingualKeyboardIntroductionView *)v10 descriptionLabel];
-    [v30 setTranslatesAutoresizingMaskIntoConstraints:0];
+    descriptionLabel = [(UIKBMultilingualKeyboardIntroductionView *)v10 descriptionLabel];
+    [descriptionLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v31 = [(UIKBMultilingualKeyboardIntroductionView *)v10 descriptionLabel];
-    [v31 setTextColor:v212];
+    descriptionLabel2 = [(UIKBMultilingualKeyboardIntroductionView *)v10 descriptionLabel];
+    [descriptionLabel2 setTextColor:v212];
 
-    v32 = [(UIKBMultilingualKeyboardIntroductionView *)v10 descriptionLabel];
-    [v32 setTextAlignment:1];
+    descriptionLabel3 = [(UIKBMultilingualKeyboardIntroductionView *)v10 descriptionLabel];
+    [descriptionLabel3 setTextAlignment:1];
 
-    v33 = [(UIKBMultilingualKeyboardIntroductionView *)v10 descriptionLabel];
-    [v33 setText:v141];
+    descriptionLabel4 = [(UIKBMultilingualKeyboardIntroductionView *)v10 descriptionLabel];
+    [descriptionLabel4 setText:v141];
 
-    v34 = [(UIKBMultilingualIntroductionView *)v10 descriptionLabelFont];
-    v35 = [(UIKBMultilingualKeyboardIntroductionView *)v10 descriptionLabel];
-    [v35 setFont:v34];
+    descriptionLabelFont = [(UIKBMultilingualIntroductionView *)v10 descriptionLabelFont];
+    descriptionLabel5 = [(UIKBMultilingualKeyboardIntroductionView *)v10 descriptionLabel];
+    [descriptionLabel5 setFont:descriptionLabelFont];
 
-    v36 = [(UIKBMultilingualIntroductionView *)v10 descriptionLabelNumberOfLines];
-    v37 = [(UIKBMultilingualKeyboardIntroductionView *)v10 descriptionLabel];
-    [v37 setNumberOfLines:v36];
+    descriptionLabelNumberOfLines = [(UIKBMultilingualIntroductionView *)v10 descriptionLabelNumberOfLines];
+    descriptionLabel6 = [(UIKBMultilingualKeyboardIntroductionView *)v10 descriptionLabel];
+    [descriptionLabel6 setNumberOfLines:descriptionLabelNumberOfLines];
 
-    v38 = [(UIKBMultilingualKeyboardIntroductionView *)v10 descriptionLabel];
-    [(UIView *)v10 addSubview:v38];
+    descriptionLabel7 = [(UIKBMultilingualKeyboardIntroductionView *)v10 descriptionLabel];
+    [(UIView *)v10 addSubview:descriptionLabel7];
 
     v39 = [[UIButton alloc] initWithFrame:v14, v15, v16, v17];
     [(UIKBMultilingualKeyboardIntroductionView *)v10 setContinueButton:v39];
 
-    v40 = [(UIKBMultilingualKeyboardIntroductionView *)v10 continueButton];
-    [v40 setTranslatesAutoresizingMaskIntoConstraints:0];
+    continueButton = [(UIKBMultilingualKeyboardIntroductionView *)v10 continueButton];
+    [continueButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v41 = [(UIKBMultilingualKeyboardIntroductionView *)v10 continueButton];
-    [v41 setTitle:v140 forState:0];
+    continueButton2 = [(UIKBMultilingualKeyboardIntroductionView *)v10 continueButton];
+    [continueButton2 setTitle:v140 forState:0];
 
-    v42 = [(UIKBMultilingualKeyboardIntroductionView *)v10 continueButton];
+    continueButton3 = [(UIKBMultilingualKeyboardIntroductionView *)v10 continueButton];
     v43 = +[UIColor linkColor];
-    [v42 setTitleColor:v43 forState:0];
+    [continueButton3 setTitleColor:v43 forState:0];
 
-    v44 = [(UIKBMultilingualKeyboardIntroductionView *)v10 continueButton];
+    continueButton4 = [(UIKBMultilingualKeyboardIntroductionView *)v10 continueButton];
     v45 = +[UIColor linkColor];
-    [v44 setTitleColor:v45 forState:0];
+    [continueButton4 setTitleColor:v45 forState:0];
 
-    v46 = [(UIKBMultilingualKeyboardIntroductionView *)v10 continueButton];
-    [v46 addTarget:v10 action:sel_continueButtonTapped forControlEvents:64];
+    continueButton5 = [(UIKBMultilingualKeyboardIntroductionView *)v10 continueButton];
+    [continueButton5 addTarget:v10 action:sel_continueButtonTapped forControlEvents:64];
 
-    v47 = [(UIKBMultilingualKeyboardIntroductionView *)v10 continueButton];
-    [(UIView *)v10 addSubview:v47];
+    continueButton6 = [(UIKBMultilingualKeyboardIntroductionView *)v10 continueButton];
+    [(UIView *)v10 addSubview:continueButton6];
 
-    v214 = [MEMORY[0x1E695DF70] array];
-    v48 = [(UIView *)v10 bottomAnchor];
-    v49 = [(UIKBMultilingualKeyboardIntroductionView *)v10 continueButton];
-    v50 = [v49 bottomAnchor];
-    v211 = [v48 constraintGreaterThanOrEqualToAnchor:v50 constant:35.0];
+    array = [MEMORY[0x1E695DF70] array];
+    bottomAnchor = [(UIView *)v10 bottomAnchor];
+    continueButton7 = [(UIKBMultilingualKeyboardIntroductionView *)v10 continueButton];
+    bottomAnchor2 = [continueButton7 bottomAnchor];
+    v211 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2 constant:35.0];
 
     LODWORD(v51) = 1148846080;
     [v211 setPriority:v51];
-    v208 = [(UIKBMultilingualKeyboardIntroductionView *)v10 artworkView];
-    v206 = [v208 topAnchor];
-    v202 = [(UIView *)v10 topAnchor];
-    v198 = [v206 constraintGreaterThanOrEqualToAnchor:v202 constant:15.0];
+    artworkView3 = [(UIKBMultilingualKeyboardIntroductionView *)v10 artworkView];
+    topAnchor = [artworkView3 topAnchor];
+    topAnchor2 = [(UIView *)v10 topAnchor];
+    v198 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:15.0];
     v232[0] = v198;
-    v194 = [(UIKBMultilingualKeyboardIntroductionView *)v10 artworkView];
-    v190 = [v194 centerXAnchor];
-    v186 = [(UIView *)v10 centerXAnchor];
-    v182 = [v190 constraintEqualToAnchor:v186];
+    artworkView4 = [(UIKBMultilingualKeyboardIntroductionView *)v10 artworkView];
+    centerXAnchor = [artworkView4 centerXAnchor];
+    centerXAnchor2 = [(UIView *)v10 centerXAnchor];
+    v182 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v232[1] = v182;
-    v180 = [(UIKBMultilingualKeyboardIntroductionView *)v10 artworkView];
-    v178 = [v180 heightAnchor];
-    v177 = [v178 constraintEqualToConstant:150.0];
+    artworkView5 = [(UIKBMultilingualKeyboardIntroductionView *)v10 artworkView];
+    heightAnchor = [artworkView5 heightAnchor];
+    v177 = [heightAnchor constraintEqualToConstant:150.0];
     v232[2] = v177;
-    v176 = [(UIKBMultilingualKeyboardIntroductionView *)v10 artworkView];
-    v175 = [v176 widthAnchor];
-    v174 = [(UIView *)v10 widthAnchor];
-    v173 = [v175 constraintEqualToAnchor:v174 multiplier:0.7];
+    artworkView6 = [(UIKBMultilingualKeyboardIntroductionView *)v10 artworkView];
+    widthAnchor = [artworkView6 widthAnchor];
+    widthAnchor2 = [(UIView *)v10 widthAnchor];
+    v173 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:0.7];
     v232[3] = v173;
-    v172 = [(UIKBMultilingualKeyboardIntroductionView *)v10 titleLabel];
-    v170 = [v172 topAnchor];
-    v171 = [(UIKBMultilingualKeyboardIntroductionView *)v10 artworkView];
-    v169 = [v171 bottomAnchor];
-    v168 = [v170 constraintEqualToAnchor:v169 constant:6.0];
+    titleLabel7 = [(UIKBMultilingualKeyboardIntroductionView *)v10 titleLabel];
+    topAnchor3 = [titleLabel7 topAnchor];
+    artworkView7 = [(UIKBMultilingualKeyboardIntroductionView *)v10 artworkView];
+    bottomAnchor3 = [artworkView7 bottomAnchor];
+    v168 = [topAnchor3 constraintEqualToAnchor:bottomAnchor3 constant:6.0];
     v232[4] = v168;
-    v167 = [(UIKBMultilingualKeyboardIntroductionView *)v10 titleLabel];
-    v166 = [v167 centerXAnchor];
-    v165 = [(UIView *)v10 centerXAnchor];
-    v164 = [v166 constraintEqualToAnchor:v165];
+    titleLabel8 = [(UIKBMultilingualKeyboardIntroductionView *)v10 titleLabel];
+    centerXAnchor3 = [titleLabel8 centerXAnchor];
+    centerXAnchor4 = [(UIView *)v10 centerXAnchor];
+    v164 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v232[5] = v164;
-    v163 = [(UIKBMultilingualKeyboardIntroductionView *)v10 descriptionLabel];
-    v161 = [v163 topAnchor];
-    v162 = [(UIKBMultilingualKeyboardIntroductionView *)v10 titleLabel];
-    v160 = [v162 bottomAnchor];
-    v159 = [v161 constraintEqualToAnchor:v160 constant:6.0];
+    descriptionLabel8 = [(UIKBMultilingualKeyboardIntroductionView *)v10 descriptionLabel];
+    topAnchor4 = [descriptionLabel8 topAnchor];
+    titleLabel9 = [(UIKBMultilingualKeyboardIntroductionView *)v10 titleLabel];
+    bottomAnchor4 = [titleLabel9 bottomAnchor];
+    v159 = [topAnchor4 constraintEqualToAnchor:bottomAnchor4 constant:6.0];
     v232[6] = v159;
-    v158 = [(UIKBMultilingualKeyboardIntroductionView *)v10 descriptionLabel];
-    v157 = [v158 centerXAnchor];
-    v156 = [(UIView *)v10 centerXAnchor];
-    v155 = [v157 constraintEqualToAnchor:v156];
+    descriptionLabel9 = [(UIKBMultilingualKeyboardIntroductionView *)v10 descriptionLabel];
+    centerXAnchor5 = [descriptionLabel9 centerXAnchor];
+    centerXAnchor6 = [(UIView *)v10 centerXAnchor];
+    v155 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     v232[7] = v155;
-    v154 = [(UIKBMultilingualKeyboardIntroductionView *)v10 descriptionLabel];
-    v153 = [v154 widthAnchor];
-    v152 = [(UIView *)v10 widthAnchor];
-    v151 = [v153 constraintEqualToAnchor:v152 multiplier:0.9];
+    descriptionLabel10 = [(UIKBMultilingualKeyboardIntroductionView *)v10 descriptionLabel];
+    widthAnchor3 = [descriptionLabel10 widthAnchor];
+    widthAnchor4 = [(UIView *)v10 widthAnchor];
+    v151 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4 multiplier:0.9];
     v232[8] = v151;
-    v150 = [(UIKBMultilingualKeyboardIntroductionView *)v10 continueButton];
-    v148 = [v150 topAnchor];
-    v149 = [(UIKBMultilingualKeyboardIntroductionView *)v10 descriptionLabel];
-    v147 = [v149 bottomAnchor];
-    v146 = [v148 constraintEqualToAnchor:v147 constant:15.0];
+    continueButton8 = [(UIKBMultilingualKeyboardIntroductionView *)v10 continueButton];
+    topAnchor5 = [continueButton8 topAnchor];
+    descriptionLabel11 = [(UIKBMultilingualKeyboardIntroductionView *)v10 descriptionLabel];
+    bottomAnchor5 = [descriptionLabel11 bottomAnchor];
+    v146 = [topAnchor5 constraintEqualToAnchor:bottomAnchor5 constant:15.0];
     v232[9] = v146;
-    v145 = [(UIKBMultilingualKeyboardIntroductionView *)v10 continueButton];
-    v144 = [v145 centerXAnchor];
-    v143 = [(UIView *)v10 centerXAnchor];
-    v52 = [v144 constraintEqualToAnchor:v143];
+    continueButton9 = [(UIKBMultilingualKeyboardIntroductionView *)v10 continueButton];
+    centerXAnchor7 = [continueButton9 centerXAnchor];
+    centerXAnchor8 = [(UIView *)v10 centerXAnchor];
+    v52 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
     v232[10] = v52;
-    v53 = [(UIKBMultilingualKeyboardIntroductionView *)v10 continueButton];
-    v54 = [v53 widthAnchor];
-    v55 = [(UIView *)v10 widthAnchor];
-    v56 = [v54 constraintEqualToAnchor:v55 multiplier:0.7];
+    continueButton10 = [(UIKBMultilingualKeyboardIntroductionView *)v10 continueButton];
+    widthAnchor5 = [continueButton10 widthAnchor];
+    widthAnchor6 = [(UIView *)v10 widthAnchor];
+    v56 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6 multiplier:0.7];
     v232[11] = v56;
-    v57 = [(UIKBMultilingualKeyboardIntroductionView *)v10 continueButton];
-    v58 = [v57 heightAnchor];
-    v59 = [v58 constraintEqualToConstant:21.0];
+    continueButton11 = [(UIKBMultilingualKeyboardIntroductionView *)v10 continueButton];
+    heightAnchor2 = [continueButton11 heightAnchor];
+    v59 = [heightAnchor2 constraintEqualToConstant:21.0];
     v232[12] = v59;
     v232[13] = v211;
     v60 = [MEMORY[0x1E695DEC8] arrayWithObjects:v232 count:14];
-    [v214 addObjectsFromArray:v60];
+    [array addObjectsFromArray:v60];
 
-    if ([v215 showsTransliterationCandidates])
+    if ([modeCopy showsTransliterationCandidates])
     {
       v222 = 0;
       v223 = &v222;
@@ -422,9 +422,9 @@ LABEL_6:
       v63 = objc_alloc_init(v61);
       [(UIKBMultilingualKeyboardIntroductionView *)v10 setPredictionView:v63];
 
-      v64 = [(UIView *)v10 _inheritedRenderConfig];
-      v65 = [(UIKBMultilingualKeyboardIntroductionView *)v10 predictionView];
-      [v65 setRenderConfig:v64];
+      _inheritedRenderConfig2 = [(UIView *)v10 _inheritedRenderConfig];
+      predictionView = [(UIKBMultilingualKeyboardIntroductionView *)v10 predictionView];
+      [predictionView setRenderConfig:_inheritedRenderConfig2];
 
       v66 = MEMORY[0x1E69D9570];
       v67 = [MEMORY[0x1E69D95F0] candidateWithUnchangedInput:&stru_1EFB14550];
@@ -435,105 +435,105 @@ LABEL_6:
       v231[2] = v69;
       v70 = [MEMORY[0x1E695DEC8] arrayWithObjects:v231 count:3];
       v71 = [v66 listWithCorrections:0 predictions:v70];
-      v72 = [(UIKBMultilingualKeyboardIntroductionView *)v10 predictionView];
-      [v72 setAutocorrectionList:v71];
+      predictionView2 = [(UIKBMultilingualKeyboardIntroductionView *)v10 predictionView];
+      [predictionView2 setAutocorrectionList:v71];
 
       v73 = objc_alloc_init(UIMultiscriptCandidateView);
       [(UIKBMultilingualKeyboardIntroductionView *)v10 setMultiscriptCandidateView:v73];
 
-      v74 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
-      [v74 setTranslatesAutoresizingMaskIntoConstraints:0];
+      multiscriptCandidateView = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
+      [multiscriptCandidateView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v75 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
-      [v75 setUserInteractionEnabled:0];
+      multiscriptCandidateView2 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
+      [multiscriptCandidateView2 setUserInteractionEnabled:0];
 
       v76 = [UIAction actionWithHandler:&__block_literal_global_476];
-      v77 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
-      [v77 setAlternativeCandidateAction:v76];
+      multiscriptCandidateView3 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
+      [multiscriptCandidateView3 setAlternativeCandidateAction:v76];
 
-      v78 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
-      v79 = [(UIKBMultilingualKeyboardIntroductionView *)v10 predictionView];
-      [v78 reloadArrangedSubviews:v79];
+      multiscriptCandidateView4 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
+      predictionView3 = [(UIKBMultilingualKeyboardIntroductionView *)v10 predictionView];
+      [multiscriptCandidateView4 reloadArrangedSubviews:predictionView3];
 
-      v80 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
-      [v80 setAlpha:0.5];
+      multiscriptCandidateView5 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
+      [multiscriptCandidateView5 setAlpha:0.5];
 
-      v81 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
-      [(UIView *)v10 addSubview:v81];
+      multiscriptCandidateView6 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
+      [(UIView *)v10 addSubview:multiscriptCandidateView6];
 
       v82 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-      v207 = [v82 systemInputAssistantViewController];
+      systemInputAssistantViewController = [v82 systemInputAssistantViewController];
 
-      v83 = [(UIView *)v10 traitCollection];
-      [v207 preferredHeightForTraitCollection:v83];
+      traitCollection = [(UIView *)v10 traitCollection];
+      [systemInputAssistantViewController preferredHeightForTraitCollection:traitCollection];
       v85 = v84;
 
       if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1 && !+[UIKeyboardImpl isFloating])
       {
-        v95 = [(UIView *)v10 traitCollection];
-        [v207 _centerViewWidthForTraitCollection:v95];
+        traitCollection2 = [(UIView *)v10 traitCollection];
+        [systemInputAssistantViewController _centerViewWidthForTraitCollection:traitCollection2];
         v97 = v96;
 
-        v209 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
-        v203 = [v209 topAnchor];
-        v199 = [(UIView *)v10 topAnchor];
-        v195 = [v203 constraintEqualToAnchor:v199];
+        multiscriptCandidateView7 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
+        topAnchor6 = [multiscriptCandidateView7 topAnchor];
+        topAnchor7 = [(UIView *)v10 topAnchor];
+        v195 = [topAnchor6 constraintEqualToAnchor:topAnchor7];
         v230[0] = v195;
-        v191 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
-        v187 = [v191 centerXAnchor];
-        v183 = [(UIView *)v10 centerXAnchor];
-        v86 = [v187 constraintEqualToAnchor:v183];
+        multiscriptCandidateView8 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
+        centerXAnchor9 = [multiscriptCandidateView8 centerXAnchor];
+        centerXAnchor10 = [(UIView *)v10 centerXAnchor];
+        v86 = [centerXAnchor9 constraintEqualToAnchor:centerXAnchor10];
         v230[1] = v86;
-        v87 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
-        v88 = [v87 widthAnchor];
-        v89 = [v88 constraintEqualToConstant:v97];
-        v230[2] = v89;
-        v90 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
-        v91 = [v90 heightAnchor];
-        v92 = [v91 constraintEqualToConstant:v85];
-        v230[3] = v92;
+        multiscriptCandidateView9 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
+        widthAnchor7 = [multiscriptCandidateView9 widthAnchor];
+        trailingAnchor = [widthAnchor7 constraintEqualToConstant:v97];
+        v230[2] = trailingAnchor;
+        multiscriptCandidateView10 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
+        heightAnchor3 = [multiscriptCandidateView10 heightAnchor];
+        v91HeightAnchor = [heightAnchor3 constraintEqualToConstant:v85];
+        v230[3] = v91HeightAnchor;
         v93 = [MEMORY[0x1E695DEC8] arrayWithObjects:v230 count:4];
-        [v214 addObjectsFromArray:v93];
+        [array addObjectsFromArray:v93];
       }
 
       else
       {
-        v209 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
-        v203 = [v209 topAnchor];
-        v199 = [(UIView *)v10 topAnchor];
-        v195 = [v203 constraintEqualToAnchor:v199];
+        multiscriptCandidateView7 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
+        topAnchor6 = [multiscriptCandidateView7 topAnchor];
+        topAnchor7 = [(UIView *)v10 topAnchor];
+        v195 = [topAnchor6 constraintEqualToAnchor:topAnchor7];
         v229[0] = v195;
-        v191 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
-        v187 = [v191 leadingAnchor];
-        v183 = [(UIView *)v10 leadingAnchor];
-        v86 = [v187 constraintEqualToAnchor:v183];
+        multiscriptCandidateView8 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
+        centerXAnchor9 = [multiscriptCandidateView8 leadingAnchor];
+        centerXAnchor10 = [(UIView *)v10 leadingAnchor];
+        v86 = [centerXAnchor9 constraintEqualToAnchor:centerXAnchor10];
         v229[1] = v86;
-        v87 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
-        v88 = [v87 trailingAnchor];
-        v89 = [(UIView *)v10 trailingAnchor];
-        v90 = [v88 constraintEqualToAnchor:v89];
-        v229[2] = v90;
-        v91 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
-        v92 = [v91 heightAnchor];
-        v93 = [v92 constraintEqualToConstant:v85];
+        multiscriptCandidateView9 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
+        widthAnchor7 = [multiscriptCandidateView9 trailingAnchor];
+        trailingAnchor = [(UIView *)v10 trailingAnchor];
+        multiscriptCandidateView10 = [widthAnchor7 constraintEqualToAnchor:trailingAnchor];
+        v229[2] = multiscriptCandidateView10;
+        heightAnchor3 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
+        v91HeightAnchor = [heightAnchor3 heightAnchor];
+        v93 = [v91HeightAnchor constraintEqualToConstant:v85];
         v229[3] = v93;
         v94 = [MEMORY[0x1E695DEC8] arrayWithObjects:v229 count:4];
-        [v214 addObjectsFromArray:v94];
+        [array addObjectsFromArray:v94];
       }
 
-      v98 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
-      v99 = [v98 arrangedSubviews];
-      v210 = [v99 lastObject];
+      multiscriptCandidateView11 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
+      arrangedSubviews = [multiscriptCandidateView11 arrangedSubviews];
+      lastObject = [arrangedSubviews lastObject];
 
-      if (v210)
+      if (lastObject)
       {
         v100 = objc_alloc_init(UIView);
         [(UIKBMultilingualKeyboardIntroductionView *)v10 setHighlight:v100];
 
-        v101 = [v213 lightKeyboard];
+        lightKeyboard = [_inheritedRenderConfig lightKeyboard];
         v102 = UIKeyboardGetLightCandidateHighlightColor();
         v103 = v102;
-        if (v101)
+        if (lightKeyboard)
         {
           v104 = v102;
         }
@@ -541,9 +541,9 @@ LABEL_6:
         else
         {
           v105 = +[UIDevice currentDevice];
-          v106 = [v105 userInterfaceIdiom];
+          userInterfaceIdiom = [v105 userInterfaceIdiom];
 
-          if ((v106 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+          if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
           {
             [UIColor colorWithRed:0.337254902 green:0.329411765 blue:0.333333333 alpha:1.0];
           }
@@ -555,86 +555,86 @@ LABEL_6:
           v104 = ;
         }
 
-        v107 = [(UIKBMultilingualKeyboardIntroductionView *)v10 highlight];
-        [v107 setBackgroundColor:v104];
+        highlight = [(UIKBMultilingualKeyboardIntroductionView *)v10 highlight];
+        [highlight setBackgroundColor:v104];
 
-        v108 = [(UIKBMultilingualKeyboardIntroductionView *)v10 highlight];
-        [v108 setTranslatesAutoresizingMaskIntoConstraints:0];
+        highlight2 = [(UIKBMultilingualKeyboardIntroductionView *)v10 highlight];
+        [highlight2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-        v109 = [(UIKBMultilingualKeyboardIntroductionView *)v10 highlight];
+        highlight3 = [(UIKBMultilingualKeyboardIntroductionView *)v10 highlight];
         v110 = v85 * 0.75;
-        [v109 _setCornerRadius:v110 * 0.5];
+        [highlight3 _setCornerRadius:v110 * 0.5];
 
-        v111 = [(UIKBMultilingualKeyboardIntroductionView *)v10 highlight];
-        [v111 setUserInteractionEnabled:0];
+        highlight4 = [(UIKBMultilingualKeyboardIntroductionView *)v10 highlight];
+        [highlight4 setUserInteractionEnabled:0];
 
-        v112 = [(UIKBMultilingualKeyboardIntroductionView *)v10 highlight];
-        v113 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
-        [(UIView *)v10 insertSubview:v112 belowSubview:v113];
+        highlight5 = [(UIKBMultilingualKeyboardIntroductionView *)v10 highlight];
+        multiscriptCandidateView12 = [(UIKBMultilingualKeyboardIntroductionView *)v10 multiscriptCandidateView];
+        [(UIView *)v10 insertSubview:highlight5 belowSubview:multiscriptCandidateView12];
 
-        v204 = [(UIKBMultilingualKeyboardIntroductionView *)v10 highlight];
-        v200 = [v204 centerXAnchor];
-        v196 = [v210 centerXAnchor];
-        v192 = [v200 constraintEqualToAnchor:v196 constant:-3.0];
+        highlight6 = [(UIKBMultilingualKeyboardIntroductionView *)v10 highlight];
+        centerXAnchor11 = [highlight6 centerXAnchor];
+        centerXAnchor12 = [lastObject centerXAnchor];
+        v192 = [centerXAnchor11 constraintEqualToAnchor:centerXAnchor12 constant:-3.0];
         v228[0] = v192;
-        v188 = [(UIKBMultilingualKeyboardIntroductionView *)v10 highlight];
-        v184 = [v188 centerYAnchor];
-        v114 = [v210 centerYAnchor];
-        v115 = [v184 constraintEqualToAnchor:v114 constant:2.0];
+        highlight7 = [(UIKBMultilingualKeyboardIntroductionView *)v10 highlight];
+        centerYAnchor = [highlight7 centerYAnchor];
+        centerYAnchor2 = [lastObject centerYAnchor];
+        v115 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:2.0];
         v228[1] = v115;
-        v116 = [(UIKBMultilingualKeyboardIntroductionView *)v10 highlight];
-        v117 = [v116 widthAnchor];
-        v118 = [v117 constraintEqualToConstant:v110];
+        highlight8 = [(UIKBMultilingualKeyboardIntroductionView *)v10 highlight];
+        widthAnchor8 = [highlight8 widthAnchor];
+        v118 = [widthAnchor8 constraintEqualToConstant:v110];
         v228[2] = v118;
-        v119 = [(UIKBMultilingualKeyboardIntroductionView *)v10 highlight];
-        v120 = [v119 heightAnchor];
-        v121 = [v120 constraintEqualToConstant:v110];
+        highlight9 = [(UIKBMultilingualKeyboardIntroductionView *)v10 highlight];
+        heightAnchor4 = [highlight9 heightAnchor];
+        v121 = [heightAnchor4 constraintEqualToConstant:v110];
         v228[3] = v121;
         v122 = [MEMORY[0x1E695DEC8] arrayWithObjects:v228 count:4];
-        [v214 addObjectsFromArray:v122];
+        [array addObjectsFromArray:v122];
       }
 
       v123 = objc_alloc_init(UIKBMultilingualIntroductionArrowView);
       [(UIKBMultilingualKeyboardIntroductionView *)v10 setArrowView:v123];
 
-      v124 = [(UIKBMultilingualKeyboardIntroductionView *)v10 arrowView];
-      [v124 setTranslatesAutoresizingMaskIntoConstraints:0];
+      arrowView = [(UIKBMultilingualKeyboardIntroductionView *)v10 arrowView];
+      [arrowView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v125 = [(UIKBMultilingualKeyboardIntroductionView *)v10 arrowView];
-      [(UIView *)v10 addSubview:v125];
+      arrowView2 = [(UIKBMultilingualKeyboardIntroductionView *)v10 arrowView];
+      [(UIView *)v10 addSubview:arrowView2];
 
-      v205 = [(UIKBMultilingualKeyboardIntroductionView *)v10 arrowView];
-      v201 = [v205 topAnchor];
-      v197 = [(UIView *)v10 topAnchor];
-      v193 = [v201 constraintEqualToAnchor:v197];
+      arrowView3 = [(UIKBMultilingualKeyboardIntroductionView *)v10 arrowView];
+      topAnchor8 = [arrowView3 topAnchor];
+      topAnchor9 = [(UIView *)v10 topAnchor];
+      v193 = [topAnchor8 constraintEqualToAnchor:topAnchor9];
       v227[0] = v193;
-      v189 = [(UIKBMultilingualKeyboardIntroductionView *)v10 arrowView];
-      v185 = [v189 leadingAnchor];
-      v181 = [(UIView *)v10 leadingAnchor];
-      v179 = [v185 constraintEqualToAnchor:v181];
+      arrowView4 = [(UIKBMultilingualKeyboardIntroductionView *)v10 arrowView];
+      leadingAnchor = [arrowView4 leadingAnchor];
+      leadingAnchor2 = [(UIView *)v10 leadingAnchor];
+      v179 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v227[1] = v179;
-      v126 = [(UIKBMultilingualKeyboardIntroductionView *)v10 arrowView];
-      v127 = [v126 bottomAnchor];
-      v128 = [(UIView *)v10 bottomAnchor];
-      v129 = [v127 constraintEqualToAnchor:v128];
+      arrowView5 = [(UIKBMultilingualKeyboardIntroductionView *)v10 arrowView];
+      bottomAnchor6 = [arrowView5 bottomAnchor];
+      bottomAnchor7 = [(UIView *)v10 bottomAnchor];
+      v129 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
       v227[2] = v129;
-      v130 = [(UIKBMultilingualKeyboardIntroductionView *)v10 arrowView];
-      v131 = [v130 trailingAnchor];
-      v132 = [(UIView *)v10 trailingAnchor];
-      v133 = [v131 constraintEqualToAnchor:v132];
+      arrowView6 = [(UIKBMultilingualKeyboardIntroductionView *)v10 arrowView];
+      trailingAnchor2 = [arrowView6 trailingAnchor];
+      trailingAnchor3 = [(UIView *)v10 trailingAnchor];
+      v133 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
       v227[3] = v133;
       v134 = [MEMORY[0x1E695DEC8] arrayWithObjects:v227 count:4];
-      [v214 addObjectsFromArray:v134];
+      [array addObjectsFromArray:v134];
     }
 
-    [MEMORY[0x1E69977A0] activateConstraints:v214];
+    [MEMORY[0x1E69977A0] activateConstraints:array];
     [(UIView *)v10 setSemanticContentAttribute:3];
     v218 = 0u;
     v219 = 0u;
     v216 = 0u;
     v217 = 0u;
-    v135 = [(UIView *)v10 subviews];
-    v136 = [v135 countByEnumeratingWithState:&v216 objects:v226 count:16];
+    subviews = [(UIView *)v10 subviews];
+    v136 = [subviews countByEnumeratingWithState:&v216 objects:v226 count:16];
     if (v136)
     {
       v137 = *v217;
@@ -644,13 +644,13 @@ LABEL_6:
         {
           if (*v217 != v137)
           {
-            objc_enumerationMutation(v135);
+            objc_enumerationMutation(subviews);
           }
 
           [*(*(&v216 + 1) + 8 * i) setSemanticContentAttribute:3];
         }
 
-        v136 = [v135 countByEnumeratingWithState:&v216 objects:v226 count:16];
+        v136 = [subviews countByEnumeratingWithState:&v216 objects:v226 count:16];
       }
 
       while (v136);
@@ -662,15 +662,15 @@ LABEL_6:
 
 - (void)layoutSubviews
 {
-  v3 = [(UIKBMultilingualKeyboardIntroductionView *)self highlight];
-  [v3 frame];
+  highlight = [(UIKBMultilingualKeyboardIntroductionView *)self highlight];
+  [highlight frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(UIKBMultilingualKeyboardIntroductionView *)self titleLabel];
-  [v12 frame];
+  titleLabel = [(UIKBMultilingualKeyboardIntroductionView *)self titleLabel];
+  [titleLabel frame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -680,8 +680,8 @@ LABEL_6:
   v24.super_class = UIKBMultilingualKeyboardIntroductionView;
   [(UIView *)&v24 layoutSubviews];
   [(UIKBMultilingualKeyboardIntroductionView *)self _updateContainer];
-  v21 = [(UIKBMultilingualKeyboardIntroductionView *)self titleLabel];
-  [v21 frame];
+  titleLabel2 = [(UIKBMultilingualKeyboardIntroductionView *)self titleLabel];
+  [titleLabel2 frame];
   v27.origin.x = v14;
   v27.origin.y = v16;
   v27.size.width = v18;
@@ -692,8 +692,8 @@ LABEL_6:
     goto LABEL_5;
   }
 
-  v22 = [(UIKBMultilingualKeyboardIntroductionView *)self highlight];
-  [v22 frame];
+  highlight2 = [(UIKBMultilingualKeyboardIntroductionView *)self highlight];
+  [highlight2 frame];
   v28.origin.x = v5;
   v28.origin.y = v7;
   v28.size.width = v9;
@@ -715,14 +715,14 @@ LABEL_5:
 
 - (void)_updatePath
 {
-  v3 = [(UIKBMultilingualKeyboardIntroductionView *)self arrowView];
+  arrowView = [(UIKBMultilingualKeyboardIntroductionView *)self arrowView];
 
-  if (v3)
+  if (arrowView)
   {
-    v4 = [(UIView *)self _shouldReverseLayoutDirection];
-    v5 = [(UIKBMultilingualKeyboardIntroductionView *)self titleLabel];
-    [v5 frame];
-    if (v4)
+    _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
+    titleLabel = [(UIKBMultilingualKeyboardIntroductionView *)self titleLabel];
+    [titleLabel frame];
+    if (_shouldReverseLayoutDirection)
     {
       MinX = CGRectGetMinX(*&v6);
       v11 = -15.0;
@@ -736,48 +736,48 @@ LABEL_5:
 
     v12 = MinX + v11;
 
-    v13 = [(UIKBMultilingualKeyboardIntroductionView *)self titleLabel];
-    [v13 frame];
+    titleLabel2 = [(UIKBMultilingualKeyboardIntroductionView *)self titleLabel];
+    [titleLabel2 frame];
     MidY = CGRectGetMidY(v21);
 
-    v15 = [(UIKBMultilingualKeyboardIntroductionView *)self highlight];
-    [v15 frame];
+    highlight = [(UIKBMultilingualKeyboardIntroductionView *)self highlight];
+    [highlight frame];
     MidX = CGRectGetMidX(v22);
-    v17 = [(UIKBMultilingualKeyboardIntroductionView *)self highlight];
-    [v17 frame];
+    highlight2 = [(UIKBMultilingualKeyboardIntroductionView *)self highlight];
+    [highlight2 frame];
     v18 = CGRectGetMaxY(v23) + 5.0;
 
-    v19 = [(UIKBMultilingualKeyboardIntroductionView *)self arrowView];
-    [v19 setStartPoint:v12 endPoint:{MidY, MidX, v18}];
+    arrowView2 = [(UIKBMultilingualKeyboardIntroductionView *)self arrowView];
+    [arrowView2 setStartPoint:v12 endPoint:{MidY, MidX, v18}];
   }
 }
 
 - (void)_updateContainer
 {
   [(UIView *)self setTranslatesAutoresizingMaskIntoConstraints:0];
-  v3 = [(UIView *)self _rootInputWindowController];
-  v4 = [v3 _inputAccessoryView];
+  _rootInputWindowController = [(UIView *)self _rootInputWindowController];
+  _inputAccessoryView = [_rootInputWindowController _inputAccessoryView];
 
-  v5 = [(UIView *)self _rootInputWindowController];
-  v6 = v5;
-  if (v4)
+  _rootInputWindowController2 = [(UIView *)self _rootInputWindowController];
+  _rootInputWindowController3 = _rootInputWindowController2;
+  if (_inputAccessoryView)
   {
-    v7 = [v5 _inputAccessoryView];
+    _inputAccessoryView2 = [_rootInputWindowController2 _inputAccessoryView];
     goto LABEL_11;
   }
 
-  v8 = [v5 _inputAssistantView];
-  v9 = [v8 superview];
-  if (v9)
+  _inputAssistantView = [_rootInputWindowController2 _inputAssistantView];
+  superview = [_inputAssistantView superview];
+  if (superview)
   {
-    v10 = v9;
+    v10 = superview;
     v11 = +[UIKeyboardImpl activeInstance];
-    v12 = [v11 _showsScribbleIconsInAssistantView];
+    _showsScribbleIconsInAssistantView = [v11 _showsScribbleIconsInAssistantView];
 
-    if ((v12 & 1) == 0)
+    if ((_showsScribbleIconsInAssistantView & 1) == 0)
     {
-      v6 = [(UIView *)self _rootInputWindowController];
-      v7 = [v6 _inputAssistantView];
+      _rootInputWindowController3 = [(UIView *)self _rootInputWindowController];
+      _inputAccessoryView2 = [_rootInputWindowController3 _inputAssistantView];
       goto LABEL_11;
     }
   }
@@ -786,31 +786,31 @@ LABEL_5:
   {
   }
 
-  v13 = [(UIView *)self _rootInputWindowController];
-  v14 = [v13 _inputView];
+  _rootInputWindowController4 = [(UIView *)self _rootInputWindowController];
+  _inputView = [_rootInputWindowController4 _inputView];
 
-  v15 = [(UIView *)self _rootInputWindowController];
-  v6 = v15;
-  if (v14)
+  _rootInputWindowController5 = [(UIView *)self _rootInputWindowController];
+  _rootInputWindowController3 = _rootInputWindowController5;
+  if (_inputView)
   {
-    [v15 _inputView];
+    [_rootInputWindowController5 _inputView];
   }
 
   else
   {
-    [v15 view];
+    [_rootInputWindowController5 view];
   }
-  v7 = ;
+  _inputAccessoryView2 = ;
 LABEL_11:
-  v16 = v7;
-  v40 = [v7 topAnchor];
+  v16 = _inputAccessoryView2;
+  topAnchor = [_inputAccessoryView2 topAnchor];
 
   v17 = +[UIKeyboardImpl isFloating];
-  v18 = [(UIView *)self _rootInputWindowController];
-  v19 = v18;
+  _rootInputWindowController6 = [(UIView *)self _rootInputWindowController];
+  v19 = _rootInputWindowController6;
   if (v17)
   {
-    v20 = [v18 _inputView];
+    _inputView2 = [_rootInputWindowController6 _inputView];
 
     +[UIKeyboardPopoverContainer contentInsets];
     v22 = -fabs(v21);
@@ -824,7 +824,7 @@ LABEL_11:
 
   else
   {
-    v20 = [v18 view];
+    _inputView2 = [_rootInputWindowController6 view];
 
     v26 = 0.0;
     v22 = 0.0;
@@ -832,23 +832,23 @@ LABEL_11:
     v28 = 0.0;
   }
 
-  v29 = [(UIView *)self topAnchor];
-  v30 = [v29 constraintEqualToAnchor:v40 constant:v22];
+  topAnchor2 = [(UIView *)self topAnchor];
+  v30 = [topAnchor2 constraintEqualToAnchor:topAnchor constant:v22];
   [v30 setActive:1];
 
-  v31 = [(UIView *)self bottomAnchor];
-  v32 = [v20 bottomAnchor];
-  v33 = [v31 constraintEqualToAnchor:v32 constant:v24];
+  bottomAnchor = [(UIView *)self bottomAnchor];
+  bottomAnchor2 = [_inputView2 bottomAnchor];
+  v33 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v24];
   [v33 setActive:1];
 
-  v34 = [(UIView *)self leftAnchor];
-  v35 = [v20 leftAnchor];
-  v36 = [v34 constraintEqualToAnchor:v35 constant:v26];
+  leftAnchor = [(UIView *)self leftAnchor];
+  leftAnchor2 = [_inputView2 leftAnchor];
+  v36 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:v26];
   [v36 setActive:1];
 
-  v37 = [(UIView *)self rightAnchor];
-  v38 = [v20 rightAnchor];
-  v39 = [v37 constraintEqualToAnchor:v38 constant:v28];
+  rightAnchor = [(UIView *)self rightAnchor];
+  rightAnchor2 = [_inputView2 rightAnchor];
+  v39 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:v28];
   [v39 setActive:1];
 }
 

@@ -1,23 +1,23 @@
 @interface HeadphoneSpecifier
 - (_TtC13HearingModeUI18HeadphoneSpecifier)init;
-- (_TtC13HearingModeUI18HeadphoneSpecifier)initWithName:(id)a3 target:(id)a4 set:(SEL)a5 get:(SEL)a6 detail:(Class)a7 cell:(int64_t)a8 edit:(Class)a9;
+- (_TtC13HearingModeUI18HeadphoneSpecifier)initWithName:(id)name target:(id)target set:(SEL)set get:(SEL)get detail:(Class)detail cell:(int64_t)cell edit:(Class)edit;
 - (id)specifierEnabled;
-- (void)buttonTappedWithSender:(id)a3;
-- (void)setSepcifierEnabledWithEnabled:(id)a3;
+- (void)buttonTappedWithSender:(id)sender;
+- (void)setSepcifierEnabledWithEnabled:(id)enabled;
 @end
 
 @implementation HeadphoneSpecifier
 
-- (void)buttonTappedWithSender:(id)a3
+- (void)buttonTappedWithSender:(id)sender
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_2520649D4();
   v5 = swift_unknownObjectRelease();
-  v6 = *(&v4->super.super.isa + OBJC_IVAR____TtC13HearingModeUI18HeadphoneSpecifier_buttonTapAction);
+  v6 = *(&selfCopy->super.super.isa + OBJC_IVAR____TtC13HearingModeUI18HeadphoneSpecifier_buttonTapAction);
   if (v6)
   {
-    v7 = *(&v4->super.target + OBJC_IVAR____TtC13HearingModeUI18HeadphoneSpecifier_buttonTapAction);
+    v7 = *(&selfCopy->super.target + OBJC_IVAR____TtC13HearingModeUI18HeadphoneSpecifier_buttonTapAction);
     v6(v5);
   }
 
@@ -30,30 +30,30 @@
   if (v2)
   {
     v3 = *(&self->super.target + OBJC_IVAR____TtC13HearingModeUI18HeadphoneSpecifier_getAction);
-    v4 = self;
+    selfCopy = self;
     v2 = v2();
   }
 
   return v2;
 }
 
-- (void)setSepcifierEnabledWithEnabled:(id)a3
+- (void)setSepcifierEnabledWithEnabled:(id)enabled
 {
   v3 = *(&self->super.super.isa + OBJC_IVAR____TtC13HearingModeUI18HeadphoneSpecifier_setAction);
   if (v3)
   {
     v6 = *(&self->super.target + OBJC_IVAR____TtC13HearingModeUI18HeadphoneSpecifier_setAction);
     swift_unknownObjectRetain();
-    v7 = self;
-    v3(a3);
+    selfCopy = self;
+    v3(enabled);
 
     swift_unknownObjectRelease();
   }
 }
 
-- (_TtC13HearingModeUI18HeadphoneSpecifier)initWithName:(id)a3 target:(id)a4 set:(SEL)a5 get:(SEL)a6 detail:(Class)a7 cell:(int64_t)a8 edit:(Class)a9
+- (_TtC13HearingModeUI18HeadphoneSpecifier)initWithName:(id)name target:(id)target set:(SEL)set get:(SEL)get detail:(Class)detail cell:(int64_t)cell edit:(Class)edit
 {
-  if (a4)
+  if (target)
   {
     swift_unknownObjectRetain();
     sub_2520649D4();

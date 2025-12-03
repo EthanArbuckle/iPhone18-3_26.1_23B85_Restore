@@ -3,7 +3,7 @@
 - (BOOL)enabled;
 - (DMDPersonalHotspotManager)init;
 - (void)dealloc;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation DMDPersonalHotspotManager
@@ -53,9 +53,9 @@
     if (v3)
     {
       v5 = [v3 objectForKeyedSubscript:@"State"];
-      v6 = [v5 intValue];
+      intValue = [v5 intValue];
 
-      v7 = v6 == 1023;
+      v7 = intValue == 1023;
       v8 = DMFPersonalHotspotLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
@@ -92,12 +92,12 @@
   return v7;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = [(DMDPersonalHotspotManager *)self netrbClient];
+  netrbClient = [(DMDPersonalHotspotManager *)self netrbClient];
   v4 = DMFPersonalHotspotLog();
   v5 = v4;
-  if (!v3)
+  if (!netrbClient)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {

@@ -1,85 +1,85 @@
 @interface HAPSystemKeychainStore
-+ (id)getDictionaryFromGenericData:(id)a3;
++ (id)getDictionaryFromGenericData:(id)data;
 + (id)logCategory;
-+ (id)serializeDictionary:(id)a3 options:(unint64_t)a4;
++ (id)serializeDictionary:(id)dictionary options:(unint64_t)options;
 + (id)systemStore;
-+ (id)updateAccessoryPairingGenericData:(id)a3 updatedControllerKeyIdentifier:(id)a4;
-- (BOOL)_getFirstAvailableControllerKeyChainItemForAccount:(id)a3 publicKey:(id *)a4 secretKey:(id *)a5 userName:(id *)a6 keyPair:(id *)a7 error:(id *)a8;
-- (BOOL)_savePairingIdentityToBackUpTableWithIdentifier:(id)a3 serializedKeyPair:(id)a4;
-- (BOOL)_updateKeychainItemWithPlatformIdentifier:(void *)a3 keychainItem:(id)a4 error:(id *)a5;
-- (BOOL)addKeychainItem:(id)a3 error:(id *)a4;
-- (BOOL)createAccessoryPairingKey:(id)a3 error:(id *)a4;
-- (BOOL)deleteAllPeripheralIdentifiers:(id *)a3;
-- (BOOL)deleteKeychainItem:(id)a3 error:(id *)a4;
-- (BOOL)deletePairingKeysForAccessory:(id)a3 error:(id *)a4;
-- (BOOL)deletePeripheralIdentifierForAccessoryIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)deserializeKeyPair:(id)a3 publicKey:(id *)a4 secretKey:(id *)a5 error:(id *)a6;
-- (BOOL)establishRelationshipBetweenAccessoryAndControllerKey:(id)a3 error:(id *)a4;
-- (BOOL)getAllAvailableControllerPublicKeys:(id *)a3 secretKeys:(id *)a4 userNames:(id *)a5 error:(id *)a6;
-- (BOOL)getControllerPublicKey:(id *)a3 secretKey:(id *)a4 keyPair:(id *)a5 username:(id *)a6 allowCreation:(BOOL)a7 error:(id *)a8;
-- (BOOL)getCurrentiCloudIdentifier:(id *)a3 controllerPairingIdentifier:(id *)a4 error:(id *)a5;
-- (BOOL)getOrCreateHH2ControllerKey:(id *)a3 secretKey:(id *)a4 keyPair:(id *)a5 username:(id *)a6;
-- (BOOL)isAccessoryAssociatedWithControllerKey:(id)a3 controllerID:(id *)a4;
++ (id)updateAccessoryPairingGenericData:(id)data updatedControllerKeyIdentifier:(id)identifier;
+- (BOOL)_getFirstAvailableControllerKeyChainItemForAccount:(id)account publicKey:(id *)key secretKey:(id *)secretKey userName:(id *)name keyPair:(id *)pair error:(id *)error;
+- (BOOL)_savePairingIdentityToBackUpTableWithIdentifier:(id)identifier serializedKeyPair:(id)pair;
+- (BOOL)_updateKeychainItemWithPlatformIdentifier:(void *)identifier keychainItem:(id)item error:(id *)error;
+- (BOOL)addKeychainItem:(id)item error:(id *)error;
+- (BOOL)createAccessoryPairingKey:(id)key error:(id *)error;
+- (BOOL)deleteAllPeripheralIdentifiers:(id *)identifiers;
+- (BOOL)deleteKeychainItem:(id)item error:(id *)error;
+- (BOOL)deletePairingKeysForAccessory:(id)accessory error:(id *)error;
+- (BOOL)deletePeripheralIdentifierForAccessoryIdentifier:(id)identifier error:(id *)error;
+- (BOOL)deserializeKeyPair:(id)pair publicKey:(id *)key secretKey:(id *)secretKey error:(id *)error;
+- (BOOL)establishRelationshipBetweenAccessoryAndControllerKey:(id)key error:(id *)error;
+- (BOOL)getAllAvailableControllerPublicKeys:(id *)keys secretKeys:(id *)secretKeys userNames:(id *)names error:(id *)error;
+- (BOOL)getControllerPublicKey:(id *)key secretKey:(id *)secretKey keyPair:(id *)pair username:(id *)username allowCreation:(BOOL)creation error:(id *)error;
+- (BOOL)getCurrentiCloudIdentifier:(id *)identifier controllerPairingIdentifier:(id *)pairingIdentifier error:(id *)error;
+- (BOOL)getOrCreateHH2ControllerKey:(id *)key secretKey:(id *)secretKey keyPair:(id *)pair username:(id *)username;
+- (BOOL)isAccessoryAssociatedWithControllerKey:(id)key controllerID:(id *)d;
 - (BOOL)isHH2Enabled;
-- (BOOL)isHH2KeyType:(id)a3;
-- (BOOL)registerAccessoryWithHomeKit:(id)a3 error:(id *)a4;
-- (BOOL)removeAccessoryKeyForName:(id)a3 error:(id *)a4;
-- (BOOL)removeAllAccessoryKeys:(id *)a3;
-- (BOOL)removeControllerKeyPairForIdentifier:(id)a3 leaveTombstone:(BOOL)a4 error:(id *)a5;
-- (BOOL)removeControllerKeyPairLeaveTombstone:(BOOL)a3 error:(id *)a4;
-- (BOOL)saveAppleMediaAccessoryPairingIdentity:(id)a3;
-- (BOOL)saveAppleMediaAccessorySensorPairingIdentity:(id)a3;
-- (BOOL)saveKeyPair:(id)a3 username:(id)a4 syncable:(BOOL)a5 error:(id *)a6;
-- (BOOL)savePairingIdentityToBackUpTable:(id)a3;
-- (BOOL)savePeripheralIdentifier:(id)a3 forAccessoryIdentifier:(id)a4 protocolVersion:(unint64_t)a5 resumeSessionID:(unint64_t)a6 error:(id *)a7;
-- (BOOL)savePublicKey:(id)a3 forAccessoryName:(id)a4 error:(id *)a5;
+- (BOOL)isHH2KeyType:(id)type;
+- (BOOL)registerAccessoryWithHomeKit:(id)kit error:(id *)error;
+- (BOOL)removeAccessoryKeyForName:(id)name error:(id *)error;
+- (BOOL)removeAllAccessoryKeys:(id *)keys;
+- (BOOL)removeControllerKeyPairForIdentifier:(id)identifier leaveTombstone:(BOOL)tombstone error:(id *)error;
+- (BOOL)removeControllerKeyPairLeaveTombstone:(BOOL)tombstone error:(id *)error;
+- (BOOL)saveAppleMediaAccessoryPairingIdentity:(id)identity;
+- (BOOL)saveAppleMediaAccessorySensorPairingIdentity:(id)identity;
+- (BOOL)saveKeyPair:(id)pair username:(id)username syncable:(BOOL)syncable error:(id *)error;
+- (BOOL)savePairingIdentityToBackUpTable:(id)table;
+- (BOOL)savePeripheralIdentifier:(id)identifier forAccessoryIdentifier:(id)accessoryIdentifier protocolVersion:(unint64_t)version resumeSessionID:(unint64_t)d error:(id *)error;
+- (BOOL)savePublicKey:(id)key forAccessoryName:(id)name error:(id *)error;
 - (BOOL)triggerPreferredHH2ControllerKeyRoll;
-- (BOOL)updateAccessoryPairingKey:(id)a3 error:(id *)a4;
-- (BOOL)updateActiveControllerPairingIdentifier:(id)a3;
-- (BOOL)updateCurrentiCloudIdentifier:(id)a3 controllerPairingIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)updateKeychainItem:(id)a3 createIfNeeded:(BOOL)a4 error:(id *)a5;
-- (BOOL)updatePeripheralIdentifier:(id)a3 forAccessoryIdentifier:(id)a4 protocolVersion:(unint64_t)a5 previousVersion:(unint64_t *)a6 resumeSessionID:(unint64_t)a7 error:(id *)a8;
+- (BOOL)updateAccessoryPairingKey:(id)key error:(id *)error;
+- (BOOL)updateActiveControllerPairingIdentifier:(id)identifier;
+- (BOOL)updateCurrentiCloudIdentifier:(id)identifier controllerPairingIdentifier:(id)pairingIdentifier error:(id *)error;
+- (BOOL)updateKeychainItem:(id)item createIfNeeded:(BOOL)needed error:(id *)error;
+- (BOOL)updatePeripheralIdentifier:(id)identifier forAccessoryIdentifier:(id)accessoryIdentifier protocolVersion:(unint64_t)version previousVersion:(unint64_t *)previousVersion resumeSessionID:(unint64_t)d error:(id *)error;
 - (HAPSystemKeychainStore)init;
 - (NSString)activeControllerPairingIdentifier;
-- (id)_allAccessoryPairingKeysIncludingHH2Key:(BOOL)a3;
-- (id)_auditKeychainItems:(id)a3 managedAccessories:(id)a4;
-- (id)_chooseHH2KeyFromMultipleHH2Keys:(id)a3;
-- (id)_getControllerKeychainItemError:(int *)a3;
-- (id)_getControllerKeychainItemForKeyType:(id)a3 error:(int *)a4;
-- (id)_lookupPairingIdentityFromBackUpTableWithIdentifier:(id)a3;
+- (id)_allAccessoryPairingKeysIncludingHH2Key:(BOOL)key;
+- (id)_auditKeychainItems:(id)items managedAccessories:(id)accessories;
+- (id)_chooseHH2KeyFromMultipleHH2Keys:(id)keys;
+- (id)_getControllerKeychainItemError:(int *)error;
+- (id)_getControllerKeychainItemForKeyType:(id)type error:(int *)error;
+- (id)_lookupPairingIdentityFromBackUpTableWithIdentifier:(id)identifier;
 - (id)allAccessoryPairingKeys;
-- (id)allKeychainItemsForType:(id)a3 identifier:(id)a4 syncable:(id)a5 error:(id *)a6;
-- (id)allKeysForType:(id)a3 error:(id *)a4;
-- (id)auditKeysOfManagedAccessories:(id)a3;
+- (id)allKeychainItemsForType:(id)type identifier:(id)identifier syncable:(id)syncable error:(id *)error;
+- (id)allKeysForType:(id)type error:(id *)error;
+- (id)auditKeysOfManagedAccessories:(id)accessories;
 - (id)countAccessoryPairingKeysForMetrics;
 - (id)dumpState;
-- (id)getAssociatedControllerKeyForAccessory:(id)a3;
-- (id)getHH2ControllerKeyWithIdentifier:(id)a3;
+- (id)getAssociatedControllerKeyForAccessory:(id)accessory;
+- (id)getHH2ControllerKeyWithIdentifier:(id)identifier;
 - (id)getPeripheralIdentifiersAndAccessoryNames;
 - (id)getPreferredHH2ControllerKey;
-- (id)pairingIdentityForAppleMediaAccessorySensorWithUUID:(id)a3;
-- (id)pairingIdentityForAppleMediaAccessoryWithUUID:(id)a3;
-- (id)pairingIdentityFromKeychainItem:(id)a3;
-- (id)readAccessoryPairingKeyForAccessory:(id)a3 error:(id *)a4;
-- (id)readControllerPairingKeyForAccessory:(id)a3 error:(id *)a4;
-- (id)readPeripheralIdentifierForAccessoryIdentifier:(id)a3 protocolVersion:(unint64_t *)a4 resumeSessionID:(unint64_t *)a5 error:(id *)a6;
-- (id)readPublicKeyForAccessoryName:(id)a3 registeredWithHomeKit:(BOOL *)a4 error:(id *)a5;
-- (int)_addKeychainItem:(id)a3 logDuplicateItemError:(BOOL)a4;
-- (int)_createControllerPublicKey:(id *)a3 secretKey:(id *)a4 keyPair:(id *)a5 username:(id *)a6;
+- (id)pairingIdentityForAppleMediaAccessorySensorWithUUID:(id)d;
+- (id)pairingIdentityForAppleMediaAccessoryWithUUID:(id)d;
+- (id)pairingIdentityFromKeychainItem:(id)item;
+- (id)readAccessoryPairingKeyForAccessory:(id)accessory error:(id *)error;
+- (id)readControllerPairingKeyForAccessory:(id)accessory error:(id *)error;
+- (id)readPeripheralIdentifierForAccessoryIdentifier:(id)identifier protocolVersion:(unint64_t *)version resumeSessionID:(unint64_t *)d error:(id *)error;
+- (id)readPublicKeyForAccessoryName:(id)name registeredWithHomeKit:(BOOL *)kit error:(id *)error;
+- (int)_addKeychainItem:(id)item logDuplicateItemError:(BOOL)error;
+- (int)_createControllerPublicKey:(id *)key secretKey:(id *)secretKey keyPair:(id *)pair username:(id *)username;
 - (int)_deleteAllPeripheralIdentifiers;
-- (int)_deletePeripheralIdentifierForAccessoryIdentifier:(id)a3;
-- (int)_getAllAvailableControllerPublicKeys:(id *)a3 secretKeys:(id *)a4 userNames:(id *)a5;
-- (int)_getControllerPublicKey:(id *)a3 secretKey:(id *)a4 keyPair:(id *)a5 username:(id *)a6;
-- (int)_getPeripheralIdentifier:(id *)a3 forAccessoryIdentifier:(id)a4 protocolVersion:(unint64_t *)a5 resumeSessionID:(unint64_t *)a6;
-- (int)_getPublicKey:(id *)a3 registeredWithHomeKit:(BOOL *)a4 forAccessoryName:(id)a5;
-- (int)_removeAccessoryKeyForName:(id)a3;
-- (int)_removeKeychainItem:(id)a3 leaveTombstone:(BOOL)a4;
-- (int)_savePeripheralIdentifier:(id)a3 forAccessoryIdentifier:(id)a4 protocolVersion:(unint64_t)a5 resumeSessionID:(unint64_t)a6;
-- (int)_savePublicKey:(id)a3 forAccessoryName:(id)a4;
-- (int)_updateCurrentiCloudIdentifier:(id)a3 controllerPairingIdentifier:(id)a4;
-- (int)createHH2ControllerKey:(id *)a3 secretKey:(id *)a4 keyPair:(id *)a5 username:(id *)a6;
-- (int)createHH2ControllerKeyWithUsername:(id)a3 publicKey:(id *)a4 secretKey:(id *)a5 keyPair:(id *)a6 username:(id *)a7;
-- (void)_updateKeychainItemToInvisible:(id)a3;
+- (int)_deletePeripheralIdentifierForAccessoryIdentifier:(id)identifier;
+- (int)_getAllAvailableControllerPublicKeys:(id *)keys secretKeys:(id *)secretKeys userNames:(id *)names;
+- (int)_getControllerPublicKey:(id *)key secretKey:(id *)secretKey keyPair:(id *)pair username:(id *)username;
+- (int)_getPeripheralIdentifier:(id *)identifier forAccessoryIdentifier:(id)accessoryIdentifier protocolVersion:(unint64_t *)version resumeSessionID:(unint64_t *)d;
+- (int)_getPublicKey:(id *)key registeredWithHomeKit:(BOOL *)kit forAccessoryName:(id)name;
+- (int)_removeAccessoryKeyForName:(id)name;
+- (int)_removeKeychainItem:(id)item leaveTombstone:(BOOL)tombstone;
+- (int)_savePeripheralIdentifier:(id)identifier forAccessoryIdentifier:(id)accessoryIdentifier protocolVersion:(unint64_t)version resumeSessionID:(unint64_t)d;
+- (int)_savePublicKey:(id)key forAccessoryName:(id)name;
+- (int)_updateCurrentiCloudIdentifier:(id)identifier controllerPairingIdentifier:(id)pairingIdentifier;
+- (int)createHH2ControllerKey:(id *)key secretKey:(id *)secretKey keyPair:(id *)pair username:(id *)username;
+- (int)createHH2ControllerKeyWithUsername:(id)username publicKey:(id *)key secretKey:(id *)secretKey keyPair:(id *)pair username:(id *)a7;
+- (void)_updateKeychainItemToInvisible:(id)invisible;
 - (void)configure;
 - (void)dealloc;
 - (void)ensureControllerKeyExistsForAllViews;
@@ -87,38 +87,38 @@
 
 @implementation HAPSystemKeychainStore
 
-- (id)_chooseHH2KeyFromMultipleHH2Keys:(id)a3
+- (id)_chooseHH2KeyFromMultipleHH2Keys:(id)keys
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  keysCopy = keys;
+  if (!keysCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
-  v6 = [v4 firstObject];
+  v5 = keysCopy;
+  firstObject = [keysCopy firstObject];
   if ([v5 count] < 2)
   {
-    v8 = v6;
+    firstObject2 = firstObject;
   }
 
   else
   {
     v7 = [v5 sortedArrayUsingComparator:&__block_literal_global_386];
-    v8 = [v7 firstObject];
+    firstObject2 = [v7 firstObject];
 
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [v8 account];
+      account = [firstObject2 account];
       v16 = 138543618;
       v17 = v12;
       v18 = 2112;
-      v19 = v13;
+      v19 = account;
       _os_log_impl(&dword_22AADC000, v11, OS_LOG_TYPE_INFO, "%{public}@Chosen HH2 Key : %@", &v16, 0x16u);
     }
 
@@ -127,7 +127,7 @@
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return firstObject2;
 }
 
 uint64_t __59__HAPSystemKeychainStore__chooseHH2KeyFromMultipleHH2Keys___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -140,10 +140,10 @@ uint64_t __59__HAPSystemKeychainStore__chooseHH2KeyFromMultipleHH2Keys___block_i
   return v7;
 }
 
-- (id)pairingIdentityForAppleMediaAccessorySensorWithUUID:(id)a3
+- (id)pairingIdentityForAppleMediaAccessorySensorWithUUID:(id)d
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v39 = 0;
   v5 = [(HAPSystemKeychainStore *)self allKeychainItemsForType:&unk_283EA9740 identifier:0 syncable:MEMORY[0x277CBEC28] error:&v39];
   v6 = v39;
@@ -163,7 +163,7 @@ uint64_t __59__HAPSystemKeychainStore__chooseHH2KeyFromMultipleHH2Keys___block_i
     if ([v5 count] >= 2)
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = self;
+      selfCopy = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
@@ -178,14 +178,14 @@ uint64_t __59__HAPSystemKeychainStore__chooseHH2KeyFromMultipleHH2Keys___block_i
       objc_autoreleasePoolPop(v14);
     }
 
-    v18 = [v5 firstObject];
-    v19 = [v18 valueData];
-    v20 = _deserializeDataToKeyPair(v19, buf, __s);
+    firstObject = [v5 firstObject];
+    valueData = [firstObject valueData];
+    v20 = _deserializeDataToKeyPair(valueData, buf, __s);
 
     if (v20)
     {
       v21 = objc_autoreleasePoolPush();
-      v22 = self;
+      selfCopy2 = self;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
@@ -213,14 +213,14 @@ uint64_t __59__HAPSystemKeychainStore__chooseHH2KeyFromMultipleHH2Keys___block_i
       if (v27 && v30)
       {
         v31 = objc_alloc(MEMORY[0x277D0F8A8]);
-        v32 = [v18 account];
-        v13 = [v31 initWithIdentifier:v32 publicKey:v27 privateKey:v30];
+        account = [firstObject account];
+        v13 = [v31 initWithIdentifier:account publicKey:v27 privateKey:v30];
       }
 
       else
       {
         v33 = objc_autoreleasePoolPush();
-        v34 = self;
+        selfCopy3 = self;
         v35 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
         {
@@ -239,7 +239,7 @@ uint64_t __59__HAPSystemKeychainStore__chooseHH2KeyFromMultipleHH2Keys___block_i
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy4 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -247,7 +247,7 @@ uint64_t __59__HAPSystemKeychainStore__chooseHH2KeyFromMultipleHH2Keys___block_i
       *buf = 138543618;
       v44 = v12;
       v45 = 2112;
-      v46 = v4;
+      v46 = dCopy;
       _os_log_impl(&dword_22AADC000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@Did not find the pairing identity for AMAS : %@", buf, 0x16u);
     }
 
@@ -260,29 +260,29 @@ uint64_t __59__HAPSystemKeychainStore__chooseHH2KeyFromMultipleHH2Keys___block_i
   return v13;
 }
 
-- (BOOL)saveAppleMediaAccessorySensorPairingIdentity:(id)a3
+- (BOOL)saveAppleMediaAccessorySensorPairingIdentity:(id)identity
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  identityCopy = identity;
+  if (!identityCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
-  v6 = [v4 publicKey];
-  v7 = [v6 data];
+  v5 = identityCopy;
+  publicKey = [identityCopy publicKey];
+  data = [publicKey data];
 
-  v8 = [v5 privateKey];
-  v9 = [v8 data];
+  privateKey = [v5 privateKey];
+  data2 = [privateKey data];
 
   v27 = 0;
-  v10 = _serializeKeyPairToData([v7 bytes], objc_msgSend(v9, "bytes"), &v27);
+  v10 = _serializeKeyPairToData([data bytes], objc_msgSend(data2, "bytes"), &v27);
   v11 = v27;
   if (v10)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -301,11 +301,11 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v17 = [v5 identifier];
-  v18 = [(HAPSystemKeychainStore *)self _saveKeyPair:v11 username:v17 syncable:0 keyType:&unk_283EA9740];
+  identifier = [v5 identifier];
+  v18 = [(HAPSystemKeychainStore *)self _saveKeyPair:v11 username:identifier syncable:0 keyType:&unk_283EA9740];
 
   v12 = objc_autoreleasePoolPush();
-  v19 = self;
+  selfCopy2 = self;
   v20 = HMFGetOSLogHandle();
   v14 = v20;
   if (v18)
@@ -313,12 +313,12 @@ LABEL_8:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       v15 = HMFGetLogIdentifier();
-      v21 = [v5 identifier];
+      identifier2 = [v5 identifier];
       v16 = HMErrorFromOSStatus(v18);
       *buf = 138543874;
       v29 = v15;
       v30 = 2112;
-      v31 = v21;
+      v31 = identifier2;
       v32 = 2112;
       v33 = v16;
       _os_log_impl(&dword_22AADC000, v14, OS_LOG_TYPE_ERROR, "%{public}@Unable to save apple media sensor accessory pairing identity %@ : %@", buf, 0x20u);
@@ -335,11 +335,11 @@ LABEL_9:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
     v25 = HMFGetLogIdentifier();
-    v26 = [v5 identifier];
+    identifier3 = [v5 identifier];
     *buf = 138543618;
     v29 = v25;
     v30 = 2112;
-    v31 = v26;
+    v31 = identifier3;
     _os_log_impl(&dword_22AADC000, v14, OS_LOG_TYPE_INFO, "%{public}@Successfully saved pairing identity for apple media sensor accessory %@ to keychain", buf, 0x16u);
   }
 
@@ -350,10 +350,10 @@ LABEL_10:
   return v22;
 }
 
-- (id)pairingIdentityForAppleMediaAccessoryWithUUID:(id)a3
+- (id)pairingIdentityForAppleMediaAccessoryWithUUID:(id)d
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v39 = 0;
   v5 = [(HAPSystemKeychainStore *)self allKeychainItemsForType:&unk_283EA9728 identifier:0 syncable:MEMORY[0x277CBEC28] error:&v39];
   v6 = v39;
@@ -373,7 +373,7 @@ LABEL_10:
     if ([v5 count] >= 2)
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = self;
+      selfCopy = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
@@ -388,14 +388,14 @@ LABEL_10:
       objc_autoreleasePoolPop(v14);
     }
 
-    v18 = [v5 firstObject];
-    v19 = [v18 valueData];
-    v20 = _deserializeDataToKeyPair(v19, buf, __s);
+    firstObject = [v5 firstObject];
+    valueData = [firstObject valueData];
+    v20 = _deserializeDataToKeyPair(valueData, buf, __s);
 
     if (v20)
     {
       v21 = objc_autoreleasePoolPush();
-      v22 = self;
+      selfCopy2 = self;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
@@ -423,14 +423,14 @@ LABEL_10:
       if (v27 && v30)
       {
         v31 = objc_alloc(MEMORY[0x277D0F8A8]);
-        v32 = [v18 account];
-        v13 = [v31 initWithIdentifier:v32 publicKey:v27 privateKey:v30];
+        account = [firstObject account];
+        v13 = [v31 initWithIdentifier:account publicKey:v27 privateKey:v30];
       }
 
       else
       {
         v33 = objc_autoreleasePoolPush();
-        v34 = self;
+        selfCopy3 = self;
         v35 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
         {
@@ -449,7 +449,7 @@ LABEL_10:
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy4 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -457,7 +457,7 @@ LABEL_10:
       *buf = 138543618;
       v44 = v12;
       v45 = 2112;
-      v46 = v4;
+      v46 = dCopy;
       _os_log_impl(&dword_22AADC000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@Did not find the pairing identity for AMA : %@", buf, 0x16u);
     }
 
@@ -470,29 +470,29 @@ LABEL_10:
   return v13;
 }
 
-- (BOOL)saveAppleMediaAccessoryPairingIdentity:(id)a3
+- (BOOL)saveAppleMediaAccessoryPairingIdentity:(id)identity
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  identityCopy = identity;
+  if (!identityCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
-  v6 = [v4 publicKey];
-  v7 = [v6 data];
+  v5 = identityCopy;
+  publicKey = [identityCopy publicKey];
+  data = [publicKey data];
 
-  v8 = [v5 privateKey];
-  v9 = [v8 data];
+  privateKey = [v5 privateKey];
+  data2 = [privateKey data];
 
   v27 = 0;
-  v10 = _serializeKeyPairToData([v7 bytes], objc_msgSend(v9, "bytes"), &v27);
+  v10 = _serializeKeyPairToData([data bytes], objc_msgSend(data2, "bytes"), &v27);
   v11 = v27;
   if (v10)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -511,11 +511,11 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v17 = [v5 identifier];
-  v18 = [(HAPSystemKeychainStore *)self _saveKeyPair:v11 username:v17 syncable:0 keyType:&unk_283EA9728];
+  identifier = [v5 identifier];
+  v18 = [(HAPSystemKeychainStore *)self _saveKeyPair:v11 username:identifier syncable:0 keyType:&unk_283EA9728];
 
   v12 = objc_autoreleasePoolPush();
-  v19 = self;
+  selfCopy2 = self;
   v20 = HMFGetOSLogHandle();
   v14 = v20;
   if (v18)
@@ -523,12 +523,12 @@ LABEL_8:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       v15 = HMFGetLogIdentifier();
-      v21 = [v5 identifier];
+      identifier2 = [v5 identifier];
       v16 = HMErrorFromOSStatus(v18);
       *buf = 138543874;
       v29 = v15;
       v30 = 2112;
-      v31 = v21;
+      v31 = identifier2;
       v32 = 2112;
       v33 = v16;
       _os_log_impl(&dword_22AADC000, v14, OS_LOG_TYPE_ERROR, "%{public}@Unable to save apple media accessory pairing identity %@ : %@", buf, 0x20u);
@@ -545,11 +545,11 @@ LABEL_9:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
     v25 = HMFGetLogIdentifier();
-    v26 = [v5 identifier];
+    identifier3 = [v5 identifier];
     *buf = 138543618;
     v29 = v25;
     v30 = 2112;
-    v31 = v26;
+    v31 = identifier3;
     _os_log_impl(&dword_22AADC000, v14, OS_LOG_TYPE_INFO, "%{public}@Successfully saved pairing identity for apple media accessory %@ to keychain", buf, 0x16u);
   }
 
@@ -560,18 +560,18 @@ LABEL_10:
   return v22;
 }
 
-- (id)getAssociatedControllerKeyForAccessory:(id)a3
+- (id)getAssociatedControllerKeyForAccessory:(id)accessory
 {
   v70 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  accessoryCopy = accessory;
+  if (!accessoryCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
+  v5 = accessoryCopy;
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -586,14 +586,14 @@ LABEL_10:
   objc_autoreleasePoolPop(v6);
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:1751216193];
   v61 = 0;
-  v11 = [(HAPSystemKeychainStore *)v7 _getKeychainItemsForAccessGroup:@"com.apple.hap.pairing" type:v10 account:v5 shouldReturnData:1 error:&v61];
+  v11 = [(HAPSystemKeychainStore *)selfCopy _getKeychainItemsForAccessGroup:@"com.apple.hap.pairing" type:v10 account:v5 shouldReturnData:1 error:&v61];
   v12 = v11;
   if (v11 && ![v11 hmf_isEmpty])
   {
     if ([v12 count] >= 2)
     {
       v19 = objc_autoreleasePoolPush();
-      v20 = v7;
+      v20 = selfCopy;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
@@ -608,10 +608,10 @@ LABEL_10:
       objc_autoreleasePoolPop(v19);
     }
 
-    v23 = [v12 firstObject];
+    firstObject = [v12 firstObject];
     v24 = objc_opt_class();
-    v25 = [v23 genericData];
-    v26 = [v24 getDictionaryFromGenericData:v25];
+    genericData = [firstObject genericData];
+    v26 = [v24 getDictionaryFromGenericData:genericData];
 
     if (v26)
     {
@@ -622,7 +622,7 @@ LABEL_10:
         v60 = 0;
         v57 = 0;
         v58 = 0;
-        v28 = [(HAPSystemKeychainStore *)v7 _getFirstAvailableControllerKeyChainItemForAccount:v27 publicKey:&v60 secretKey:&v59 userName:&v58 keyPair:0 error:&v57];
+        v28 = [(HAPSystemKeychainStore *)selfCopy _getFirstAvailableControllerKeyChainItemForAccount:v27 publicKey:&v60 secretKey:&v59 userName:&v58 keyPair:0 error:&v57];
         v29 = v60;
         v30 = v59;
         v55 = v58;
@@ -632,7 +632,7 @@ LABEL_10:
         if (!v28 || v31)
         {
           v44 = objc_autoreleasePoolPush();
-          v45 = v7;
+          v45 = selfCopy;
           v46 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
           {
@@ -660,7 +660,7 @@ LABEL_10:
           v52 = [objc_alloc(MEMORY[0x277D0F8B0]) initWithPairingKeyData:v29];
           v32 = [objc_alloc(MEMORY[0x277D0F8B0]) initWithPairingKeyData:v30];
           context = objc_autoreleasePoolPush();
-          v33 = v7;
+          v33 = selfCopy;
           v34 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
           {
@@ -685,7 +685,7 @@ LABEL_10:
       else
       {
         v40 = objc_autoreleasePoolPush();
-        v41 = v7;
+        v41 = selfCopy;
         v42 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
         {
@@ -705,7 +705,7 @@ LABEL_10:
     else
     {
       v36 = objc_autoreleasePoolPush();
-      v37 = v7;
+      v37 = selfCopy;
       v38 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
       {
@@ -725,7 +725,7 @@ LABEL_10:
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = v7;
+    v14 = selfCopy;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -749,16 +749,16 @@ LABEL_10:
   return v18;
 }
 
-- (BOOL)isHH2KeyType:(id)a3
+- (BOOL)isHH2KeyType:(id)type
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  typeCopy = type;
+  if (!typeCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
+  v5 = typeCopy;
   if ([(HAPSystemKeychainStore *)self isHH2Enabled])
   {
     v6 = objc_autoreleasePoolPush();
@@ -769,7 +769,7 @@ LABEL_10:
     if (v8 && ![v8 hmf_isEmpty])
     {
       v10 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy = self;
       v12 = HMFGetOSLogHandle();
       v14 = 1;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -786,7 +786,7 @@ LABEL_10:
     else
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = self;
+      selfCopy2 = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
@@ -814,17 +814,17 @@ LABEL_10:
   return v14;
 }
 
-- (id)pairingIdentityFromKeychainItem:(id)a3
+- (id)pairingIdentityFromKeychainItem:(id)item
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 valueData];
-  v6 = _deserializeDataToKeyPair(v5, v29, __s);
+  itemCopy = item;
+  valueData = [itemCopy valueData];
+  v6 = _deserializeDataToKeyPair(valueData, v29, __s);
 
   if (v6)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -852,14 +852,14 @@ LABEL_10:
     if (v14 && v17)
     {
       v18 = [HAPPairingIdentity alloc];
-      v19 = [v4 account];
-      v11 = [(HAPPairingIdentity *)v18 initWithIdentifier:v19 publicKey:v14 privateKey:v17 permissions:0];
+      account = [itemCopy account];
+      v11 = [(HAPPairingIdentity *)v18 initWithIdentifier:account publicKey:v14 privateKey:v17 permissions:0];
     }
 
     else
     {
       v20 = objc_autoreleasePoolPush();
-      v21 = self;
+      selfCopy2 = self;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
@@ -879,13 +879,13 @@ LABEL_10:
   return v11;
 }
 
-- (id)_lookupPairingIdentityFromBackUpTableWithIdentifier:(id)a3
+- (id)_lookupPairingIdentityFromBackUpTableWithIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [(HAPSystemKeychainStore *)self allKeysForType:&unk_283EA9710 error:0];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -893,7 +893,7 @@ LABEL_10:
     *buf = 138543874;
     v17 = v9;
     v18 = 2112;
-    v19 = v4;
+    v19 = identifierCopy;
     v20 = 2112;
     v21 = v5;
     _os_log_impl(&dword_22AADC000, v8, OS_LOG_TYPE_INFO, "%{public}@Was asked to look pairing key with identifier [%@] from the back up list: %@", buf, 0x20u);
@@ -904,8 +904,8 @@ LABEL_10:
   v14[1] = 3221225472;
   v14[2] = __78__HAPSystemKeychainStore__lookupPairingIdentityFromBackUpTableWithIdentifier___block_invoke;
   v14[3] = &unk_2786D38A8;
-  v15 = v4;
-  v10 = v4;
+  v15 = identifierCopy;
+  v10 = identifierCopy;
   v11 = [v5 na_firstObjectPassingTest:v14];
 
   v12 = *MEMORY[0x277D85DE8];
@@ -922,26 +922,26 @@ uint64_t __78__HAPSystemKeychainStore__lookupPairingIdentityFromBackUpTableWithI
   return v5;
 }
 
-- (BOOL)savePairingIdentityToBackUpTable:(id)a3
+- (BOOL)savePairingIdentityToBackUpTable:(id)table
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  tableCopy = table;
+  v5 = tableCopy;
+  if (tableCopy)
   {
-    v6 = [v4 publicKey];
-    v7 = [v6 data];
+    publicKey = [tableCopy publicKey];
+    data = [publicKey data];
 
-    v8 = [v5 privateKey];
-    v9 = [v8 data];
+    privateKey = [v5 privateKey];
+    data2 = [privateKey data];
 
     v25 = 0;
-    v10 = _serializeKeyPairToData([v7 bytes], objc_msgSend(v9, "bytes"), &v25);
+    v10 = _serializeKeyPairToData([data bytes], objc_msgSend(data2, "bytes"), &v25);
     v11 = v25;
     if (v10)
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = self;
+      selfCopy = self;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
@@ -960,15 +960,15 @@ uint64_t __78__HAPSystemKeychainStore__lookupPairingIdentityFromBackUpTableWithI
 
     else
     {
-      v22 = [v5 identifier];
-      v17 = [(HAPSystemKeychainStore *)self _savePairingIdentityToBackUpTableWithIdentifier:v22 serializedKeyPair:v11];
+      identifier = [v5 identifier];
+      v17 = [(HAPSystemKeychainStore *)self _savePairingIdentityToBackUpTableWithIdentifier:identifier serializedKeyPair:v11];
     }
   }
 
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy2 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -985,16 +985,16 @@ uint64_t __78__HAPSystemKeychainStore__lookupPairingIdentityFromBackUpTableWithI
   return v17;
 }
 
-- (BOOL)_savePairingIdentityToBackUpTableWithIdentifier:(id)a3 serializedKeyPair:(id)a4
+- (BOOL)_savePairingIdentityToBackUpTableWithIdentifier:(id)identifier serializedKeyPair:(id)pair
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  pairCopy = pair;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   v11 = v10;
-  if (v6 && v7)
+  if (identifierCopy && pairCopy)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -1002,7 +1002,7 @@ uint64_t __78__HAPSystemKeychainStore__lookupPairingIdentityFromBackUpTableWithI
       v27 = 138543618;
       v28 = v12;
       v29 = 2112;
-      v30 = v6;
+      v30 = identifierCopy;
     }
 
     objc_autoreleasePoolPop(v8);
@@ -1010,21 +1010,21 @@ uint64_t __78__HAPSystemKeychainStore__lookupPairingIdentityFromBackUpTableWithI
     [(HAPKeychainItem *)v13 setAccessGroup:@"com.apple.hap.pairing"];
     [(HAPKeychainItem *)v13 setLabel:@"HomeKit Pairing Identity Backup"];
     [(HAPKeychainItem *)v13 setItemDescription:@"Backup of identity used to pair with HomeKit accessories."];
-    [(HAPKeychainItem *)v13 setAccount:v6];
-    [(HAPKeychainItem *)v13 setValueData:v7];
+    [(HAPKeychainItem *)v13 setAccount:identifierCopy];
+    [(HAPKeychainItem *)v13 setValueData:pairCopy];
     [(HAPKeychainItem *)v13 setSyncable:0];
     [(HAPKeychainItem *)v13 setType:&unk_283EA9710];
-    v14 = [(HAPKeychainItem *)v13 type];
-    v15 = __viewHintForKeyType(v14);
+    type = [(HAPKeychainItem *)v13 type];
+    v15 = __viewHintForKeyType(type);
     [(HAPKeychainItem *)v13 setViewHint:v15];
 
-    v16 = [(HAPSystemKeychainStore *)v9 _addKeychainItem:v13 logDuplicateItemError:1];
+    v16 = [(HAPSystemKeychainStore *)selfCopy _addKeychainItem:v13 logDuplicateItemError:1];
     v17 = v16 == 0;
     if (v16)
     {
       v18 = v16;
       v19 = objc_autoreleasePoolPush();
-      v20 = v9;
+      v20 = selfCopy;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
@@ -1033,7 +1033,7 @@ uint64_t __78__HAPSystemKeychainStore__lookupPairingIdentityFromBackUpTableWithI
         v27 = 138543874;
         v28 = v22;
         v29 = 2112;
-        v30 = v6;
+        v30 = identifierCopy;
         v31 = 2112;
         v32 = v23;
       }
@@ -1050,9 +1050,9 @@ uint64_t __78__HAPSystemKeychainStore__lookupPairingIdentityFromBackUpTableWithI
       v27 = 138543874;
       v28 = v24;
       v29 = 2112;
-      v30 = v6;
+      v30 = identifierCopy;
       v31 = 2112;
-      v32 = v7;
+      v32 = pairCopy;
     }
 
     objc_autoreleasePoolPop(v8);
@@ -1080,7 +1080,7 @@ uint64_t __78__HAPSystemKeychainStore__lookupPairingIdentityFromBackUpTableWithI
     else
     {
       v6 = objc_autoreleasePoolPush();
-      v7 = self;
+      selfCopy = self;
       v8 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
@@ -1105,10 +1105,10 @@ uint64_t __78__HAPSystemKeychainStore__lookupPairingIdentityFromBackUpTableWithI
   return v10;
 }
 
-- (id)getHH2ControllerKeyWithIdentifier:(id)a3
+- (id)getHH2ControllerKeyWithIdentifier:(id)identifier
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   if ([(HAPSystemKeychainStore *)self isHH2Enabled])
   {
     v25 = 0;
@@ -1118,7 +1118,7 @@ uint64_t __78__HAPSystemKeychainStore__lookupPairingIdentityFromBackUpTableWithI
     v21 = 3221225472;
     v22 = __60__HAPSystemKeychainStore_getHH2ControllerKeyWithIdentifier___block_invoke;
     v23 = &unk_2786D37E0;
-    v7 = v4;
+    v7 = identifierCopy;
     v24 = v7;
     v8 = [v5 na_firstObjectPassingTest:&v20];
     if (v8)
@@ -1129,7 +1129,7 @@ uint64_t __78__HAPSystemKeychainStore__lookupPairingIdentityFromBackUpTableWithI
     else
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = self;
+      selfCopy = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
@@ -1144,11 +1144,11 @@ uint64_t __78__HAPSystemKeychainStore__lookupPairingIdentityFromBackUpTableWithI
       }
 
       objc_autoreleasePoolPop(v10);
-      v9 = [(HAPSystemKeychainStore *)v11 _lookupPairingIdentityFromBackUpTableWithIdentifier:v7, v20, v21, v22, v23];
+      v9 = [(HAPSystemKeychainStore *)selfCopy _lookupPairingIdentityFromBackUpTableWithIdentifier:v7, v20, v21, v22, v23];
       if (v9)
       {
         v14 = objc_autoreleasePoolPush();
-        v15 = v11;
+        v15 = selfCopy;
         v16 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
@@ -1184,7 +1184,7 @@ uint64_t __60__HAPSystemKeychainStore_getHH2ControllerKeyWithIdentifier___block_
   return v4;
 }
 
-- (BOOL)getOrCreateHH2ControllerKey:(id *)a3 secretKey:(id *)a4 keyPair:(id *)a5 username:(id *)a6
+- (BOOL)getOrCreateHH2ControllerKey:(id *)key secretKey:(id *)secretKey keyPair:(id *)pair username:(id *)username
 {
   v37 = *MEMORY[0x277D85DE8];
   if ([(HAPSystemKeychainStore *)self isHH2Enabled])
@@ -1206,7 +1206,7 @@ uint64_t __60__HAPSystemKeychainStore_getHH2ControllerKeyWithIdentifier___block_
     if (!v14)
     {
       v15 = objc_autoreleasePoolPush();
-      v16 = self;
+      selfCopy = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
@@ -1217,10 +1217,10 @@ uint64_t __60__HAPSystemKeychainStore_getHH2ControllerKeyWithIdentifier___block_
       }
 
       objc_autoreleasePoolPop(v15);
-      if ([(HAPSystemKeychainStore *)v16 createHH2ControllerKey:a3 secretKey:a4 keyPair:a5 username:a6])
+      if ([(HAPSystemKeychainStore *)selfCopy createHH2ControllerKey:key secretKey:secretKey keyPair:pair username:username])
       {
         v19 = objc_autoreleasePoolPush();
-        v20 = v16;
+        v20 = selfCopy;
         v21 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
@@ -1243,17 +1243,17 @@ LABEL_31:
     }
 
     v24 = [(HAPSystemKeychainStore *)self _chooseHH2KeyFromMultipleHH2Keys:v11];
-    v25 = [v24 valueData];
-    v26 = _deserializeDataToKeyPair(v25, buf, __s);
+    valueData = [v24 valueData];
+    v26 = _deserializeDataToKeyPair(valueData, buf, __s);
 
-    if (a3)
+    if (key)
     {
       if (!v26)
       {
         v27 = [MEMORY[0x277CBEA90] dataWithBytes:buf length:32];
-        *a3 = v27;
+        *key = v27;
 
-        if (!a4)
+        if (!secretKey)
         {
           goto LABEL_21;
         }
@@ -1261,33 +1261,33 @@ LABEL_31:
         goto LABEL_20;
       }
 
-      *a3 = 0;
+      *key = 0;
     }
 
-    if (!a4)
+    if (!secretKey)
     {
       goto LABEL_21;
     }
 
     if (v26)
     {
-      *a4 = 0;
+      *secretKey = 0;
       goto LABEL_21;
     }
 
 LABEL_20:
     v28 = [MEMORY[0x277CBEA90] dataWithBytes:__s length:32];
-    *a4 = v28;
+    *secretKey = v28;
 
 LABEL_21:
-    if (a5)
+    if (pair)
     {
       if (!v26)
       {
-        v29 = [v24 valueData];
-        *a5 = v29;
+        valueData2 = [v24 valueData];
+        *pair = valueData2;
 
-        if (!a6)
+        if (!username)
         {
           goto LABEL_29;
         }
@@ -1295,10 +1295,10 @@ LABEL_21:
         goto LABEL_28;
       }
 
-      *a5 = 0;
+      *pair = 0;
     }
 
-    if (!a6)
+    if (!username)
     {
 LABEL_29:
       memset_s(__s, 0x20uLL, 0, 0x20uLL);
@@ -1308,13 +1308,13 @@ LABEL_29:
 
     if (v26)
     {
-      *a6 = 0;
+      *username = 0;
       goto LABEL_29;
     }
 
 LABEL_28:
-    v30 = [v24 account];
-    *a6 = v30;
+    account = [v24 account];
+    *username = account;
 
     goto LABEL_29;
   }
@@ -1325,10 +1325,10 @@ LABEL_32:
   return v23;
 }
 
-- (int)createHH2ControllerKeyWithUsername:(id)a3 publicKey:(id *)a4 secretKey:(id *)a5 keyPair:(id *)a6 username:(id *)a7
+- (int)createHH2ControllerKeyWithUsername:(id)username publicKey:(id *)key secretKey:(id *)secretKey keyPair:(id *)pair username:(id *)a7
 {
   v55 = *MEMORY[0x277D85DE8];
-  v12 = a3;
+  usernameCopy = username;
   if ([(HAPSystemKeychainStore *)self isHH2Enabled])
   {
     cced25519_make_key_pair_compat();
@@ -1339,12 +1339,12 @@ LABEL_32:
     [(HAPKeychainItem *)v14 setAccessGroup:@"com.apple.hap.pairing"];
     [(HAPKeychainItem *)v14 setLabel:@"HomeKit Pairing Identity"];
     [(HAPKeychainItem *)v14 setItemDescription:@"Identity used to pair with HomeKit accessories."];
-    [(HAPKeychainItem *)v14 setAccount:v12];
+    [(HAPKeychainItem *)v14 setAccount:usernameCopy];
     [(HAPKeychainItem *)v14 setValueData:v13];
     [(HAPKeychainItem *)v14 setSyncable:1];
     [(HAPKeychainItem *)v14 setType:&unk_283EA9698];
-    v15 = [(HAPKeychainItem *)v14 type];
-    v16 = __viewHintForKeyType(v15);
+    type = [(HAPKeychainItem *)v14 type];
+    v16 = __viewHintForKeyType(type);
     [(HAPKeychainItem *)v14 setViewHint:v16];
 
     v17 = [(HAPSystemKeychainStore *)self _addKeychainItem:v14 logDuplicateItemError:1];
@@ -1352,46 +1352,46 @@ LABEL_32:
     {
       v45 = a7;
       context = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         HMFGetLogIdentifier();
         v20 = v43 = v13;
         HMErrorFromOSStatus(v17);
-        v21 = v42 = a6;
+        v21 = v42 = pair;
         *buf = 138543874;
         v48 = v20;
         v49 = 2112;
-        v50 = v12;
+        v50 = usernameCopy;
         v51 = 2112;
         v52 = v21;
         _os_log_impl(&dword_22AADC000, v19, OS_LOG_TYPE_ERROR, "%{public}@Failed to create HH2 controller key for username %@ with error: %@", buf, 0x20u);
 
-        a6 = v42;
+        pair = v42;
         v13 = v43;
       }
 
       objc_autoreleasePoolPop(context);
       a7 = v45;
-      if (a4)
+      if (key)
       {
-        *a4 = 0;
+        *key = 0;
       }
     }
 
-    else if (a4)
+    else if (key)
     {
       v22 = [MEMORY[0x277CBEA90] dataWithBytes:v54 length:32];
-      *a4 = v22;
+      *key = v22;
     }
 
-    if (a5)
+    if (secretKey)
     {
       if (!v17)
       {
         v30 = [MEMORY[0x277CBEA90] dataWithBytes:__s length:32];
-        *a5 = v30;
+        *secretKey = v30;
 
         if (!a7)
         {
@@ -1401,7 +1401,7 @@ LABEL_32:
         goto LABEL_14;
       }
 
-      *a5 = 0;
+      *secretKey = 0;
     }
 
     if (!a7)
@@ -1417,19 +1417,19 @@ LABEL_14:
 
     else
     {
-      v23 = v12;
+      v23 = usernameCopy;
     }
 
     *a7 = v23;
 LABEL_18:
-    if (a6)
+    if (pair)
     {
       if (v17)
       {
-        *a6 = 0;
+        *pair = 0;
 LABEL_22:
         v24 = objc_autoreleasePoolPush();
-        v25 = self;
+        selfCopy2 = self;
         v26 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
         {
@@ -1452,8 +1452,8 @@ LABEL_31:
         goto LABEL_32;
       }
 
-      v31 = [(HAPKeychainItem *)v14 valueData];
-      *a6 = v31;
+      valueData = [(HAPKeychainItem *)v14 valueData];
+      *pair = valueData;
     }
 
     else if (v17)
@@ -1462,9 +1462,9 @@ LABEL_31:
     }
 
     v32 = v13;
-    [(HAPSystemKeychainStore *)self _savePairingIdentityToBackUpTableWithIdentifier:v12 serializedKeyPair:v13];
+    [(HAPSystemKeychainStore *)self _savePairingIdentityToBackUpTableWithIdentifier:usernameCopy serializedKeyPair:v13];
     v33 = objc_autoreleasePoolPush();
-    v34 = self;
+    selfCopy3 = self;
     v35 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
     {
@@ -1492,40 +1492,40 @@ LABEL_32:
   return v17;
 }
 
-- (int)createHH2ControllerKey:(id *)a3 secretKey:(id *)a4 keyPair:(id *)a5 username:(id *)a6
+- (int)createHH2ControllerKey:(id *)key secretKey:(id *)secretKey keyPair:(id *)pair username:(id *)username
 {
-  v11 = [MEMORY[0x277CCAD78] UUID];
-  v12 = [v11 UUIDString];
-  LODWORD(a6) = [(HAPSystemKeychainStore *)self createHH2ControllerKeyWithUsername:v12 publicKey:a3 secretKey:a4 keyPair:a5 username:a6];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  LODWORD(username) = [(HAPSystemKeychainStore *)self createHH2ControllerKeyWithUsername:uUIDString publicKey:key secretKey:secretKey keyPair:pair username:username];
 
-  return a6;
+  return username;
 }
 
 - (BOOL)triggerPreferredHH2ControllerKeyRoll
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(HAPSystemKeychainStore *)self getPreferredHH2ControllerKey];
-  if (v3)
+  getPreferredHH2ControllerKey = [(HAPSystemKeychainStore *)self getPreferredHH2ControllerKey];
+  if (getPreferredHH2ControllerKey)
   {
-    v4 = 0;
+    uUIDString = 0;
     do
     {
-      v5 = v4;
-      v6 = [MEMORY[0x277CCAD78] UUID];
-      v4 = [v6 UUIDString];
+      v5 = uUIDString;
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
 
-      v7 = [v3 identifier];
-      v8 = [v4 compare:v7];
+      identifier = [getPreferredHH2ControllerKey identifier];
+      v8 = [uUIDString compare:identifier];
     }
 
     while (v8 == 1);
-    v9 = [(HAPSystemKeychainStore *)self createHH2ControllerKeyWithUsername:v4 publicKey:0 secretKey:0 keyPair:0 username:0]== 0;
+    v9 = [(HAPSystemKeychainStore *)self createHH2ControllerKeyWithUsername:uUIDString publicKey:0 secretKey:0 keyPair:0 username:0]== 0;
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -1545,21 +1545,21 @@ LABEL_32:
 
 - (id)allAccessoryPairingKeys
 {
-  v3 = [(HAPSystemKeychainStore *)self isHH2Enabled];
+  isHH2Enabled = [(HAPSystemKeychainStore *)self isHH2Enabled];
 
-  return [(HAPSystemKeychainStore *)self _allAccessoryPairingKeysIncludingHH2Key:v3];
+  return [(HAPSystemKeychainStore *)self _allAccessoryPairingKeysIncludingHH2Key:isHH2Enabled];
 }
 
 - (id)countAccessoryPairingKeysForMetrics
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = objc_autoreleasePoolPush();
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __61__HAPSystemKeychainStore_countAccessoryPairingKeysForMetrics__block_invoke;
   v11 = &unk_2786D3880;
-  v12 = self;
-  v5 = v3;
+  selfCopy = self;
+  v5 = dictionary;
   v13 = v5;
   [&unk_283EA9BA8 hmf_enumerateWithAutoreleasePoolUsingBlock:&v8];
 
@@ -1581,12 +1581,12 @@ void __61__HAPSystemKeychainStore_countAccessoryPairingKeysForMetrics__block_inv
   [v7 setObject:v8 forKey:v4];
 }
 
-- (id)_allAccessoryPairingKeysIncludingHH2Key:(BOOL)a3
+- (id)_allAccessoryPairingKeysIncludingHH2Key:(BOOL)key
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  keyCopy = key;
+  array = [MEMORY[0x277CBEB18] array];
   v6 = objc_autoreleasePoolPush();
-  if (v3)
+  if (keyCopy)
   {
     v7 = [&unk_283EA9B90 arrayByAddingObjectsFromArray:&unk_283EA9B78];
   }
@@ -1601,7 +1601,7 @@ void __61__HAPSystemKeychainStore_countAccessoryPairingKeysForMetrics__block_inv
   v10[2] = __66__HAPSystemKeychainStore__allAccessoryPairingKeysIncludingHH2Key___block_invoke;
   v10[3] = &unk_2786D3880;
   v10[4] = self;
-  v8 = v5;
+  v8 = array;
   v11 = v8;
   [v7 hmf_enumerateWithAutoreleasePoolUsingBlock:v10];
 
@@ -1661,22 +1661,22 @@ void __66__HAPSystemKeychainStore__allAccessoryPairingKeysIncludingHH2Key___bloc
   }
 }
 
-- (id)allKeysForType:(id)a3 error:(id *)a4
+- (id)allKeysForType:(id)type error:(id *)error
 {
   v6 = MEMORY[0x277CBEB18];
-  v7 = a3;
-  v8 = [v6 array];
+  typeCopy = type;
+  array = [v6 array];
   v22 = 0;
-  v9 = [(HAPSystemKeychainStore *)self allKeychainItemsForType:v7 identifier:0 syncable:MEMORY[0x277CBEC38] error:&v22];
+  v9 = [(HAPSystemKeychainStore *)self allKeychainItemsForType:typeCopy identifier:0 syncable:MEMORY[0x277CBEC38] error:&v22];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __47__HAPSystemKeychainStore_allKeysForType_error___block_invoke;
   v20[3] = &unk_2786D3830;
-  v10 = v8;
+  v10 = array;
   v21 = v10;
   [v9 hmf_enumerateWithAutoreleasePoolUsingBlock:v20];
   v19 = 0;
-  v11 = [(HAPSystemKeychainStore *)self allKeychainItemsForType:v7 identifier:0 syncable:MEMORY[0x277CBEC28] error:&v19];
+  v11 = [(HAPSystemKeychainStore *)self allKeychainItemsForType:typeCopy identifier:0 syncable:MEMORY[0x277CBEC28] error:&v19];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -1685,7 +1685,7 @@ void __66__HAPSystemKeychainStore__allAccessoryPairingKeysIncludingHH2Key___bloc
   v12 = v10;
   v18 = v12;
   [v11 hmf_enumerateWithAutoreleasePoolUsingBlock:v17];
-  if (a4)
+  if (error)
   {
     if (v22)
     {
@@ -1697,7 +1697,7 @@ void __66__HAPSystemKeychainStore__allAccessoryPairingKeysIncludingHH2Key___bloc
       v13 = v19;
     }
 
-    *a4 = v13;
+    *error = v13;
   }
 
   v14 = v18;
@@ -1732,16 +1732,16 @@ uint64_t __47__HAPSystemKeychainStore_allKeysForType_error___block_invoke_2(uint
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)isAccessoryAssociatedWithControllerKey:(id)a3 controllerID:(id *)a4
+- (BOOL)isAccessoryAssociatedWithControllerKey:(id)key controllerID:(id *)d
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  keyCopy = key;
+  if (!keyCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v7 = v6;
+  v7 = keyCopy;
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:1751216193];
   v9 = [(HAPSystemKeychainStore *)self allKeychainItemsForType:v8 identifier:v7 syncable:0 error:0];
 
@@ -1750,7 +1750,7 @@ uint64_t __47__HAPSystemKeychainStore_allKeysForType_error___block_invoke_2(uint
     if ([v9 count] >= 2)
     {
       v15 = objc_autoreleasePoolPush();
-      v16 = self;
+      selfCopy = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
@@ -1767,23 +1767,23 @@ uint64_t __47__HAPSystemKeychainStore_allKeysForType_error___block_invoke_2(uint
       v26[1] = 3221225472;
       v26[2] = __78__HAPSystemKeychainStore_isAccessoryAssociatedWithControllerKey_controllerID___block_invoke;
       v26[3] = &unk_2786D3830;
-      v26[4] = v16;
+      v26[4] = selfCopy;
       [v9 hmf_enumerateWithAutoreleasePoolUsingBlock:v26];
     }
 
-    v19 = [v9 firstObject];
+    firstObject = [v9 firstObject];
     v20 = objc_opt_class();
-    v21 = [v19 genericData];
-    v22 = [v20 getDictionaryFromGenericData:v21];
+    genericData = [firstObject genericData];
+    v22 = [v20 getDictionaryFromGenericData:genericData];
 
     if (v22)
     {
       v23 = [v22 objectForKeyedSubscript:@"ctrlKeyId"];
       v14 = v23 != 0;
-      if (a4 && v23)
+      if (d && v23)
       {
         v23 = v23;
-        *a4 = v23;
+        *d = v23;
       }
     }
 
@@ -1796,7 +1796,7 @@ uint64_t __47__HAPSystemKeychainStore_allKeysForType_error___block_invoke_2(uint
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -1837,69 +1837,69 @@ void __78__HAPSystemKeychainStore_isAccessoryAssociatedWithControllerKey_control
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)deletePairingKeysForAccessory:(id)a3 error:(id *)a4
+- (BOOL)deletePairingKeysForAccessory:(id)accessory error:(id *)error
 {
-  v6 = a3;
+  accessoryCopy = accessory;
   v7 = objc_alloc_init(HAPMutableKeychainItem);
   [(HAPKeychainItem *)v7 setAccessGroup:@"com.apple.hap.pairing"];
   [(HAPKeychainItem *)v7 setType:&unk_283EA9638];
-  v8 = [(HAPKeychainItem *)v7 type];
-  v9 = [HAPSystemKeychainStore viewHintForType:v8];
+  type = [(HAPKeychainItem *)v7 type];
+  v9 = [HAPSystemKeychainStore viewHintForType:type];
   [(HAPKeychainItem *)v7 setViewHint:v9];
 
-  [(HAPKeychainItem *)v7 setAccount:v6];
-  LOBYTE(a4) = [(HAPSystemKeychainStore *)self deleteKeychainItem:v7 error:a4];
+  [(HAPKeychainItem *)v7 setAccount:accessoryCopy];
+  LOBYTE(error) = [(HAPSystemKeychainStore *)self deleteKeychainItem:v7 error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)createAccessoryPairingKey:(id)a3 error:(id *)a4
+- (BOOL)createAccessoryPairingKey:(id)key error:(id *)error
 {
-  v6 = a3;
-  v7 = [[HAPMutableKeychainItem alloc] initWithPairingIdentity:v6];
+  keyCopy = key;
+  v7 = [[HAPMutableKeychainItem alloc] initWithPairingIdentity:keyCopy];
 
   [(HAPKeychainItem *)v7 setAccessGroup:@"com.apple.hap.pairing"];
   [(HAPKeychainItem *)v7 setType:&unk_283EA9638];
-  v8 = [(HAPKeychainItem *)v7 type];
-  v9 = [HAPSystemKeychainStore viewHintForType:v8];
+  type = [(HAPKeychainItem *)v7 type];
+  v9 = [HAPSystemKeychainStore viewHintForType:type];
   [(HAPKeychainItem *)v7 setViewHint:v9];
 
   [(HAPKeychainItem *)v7 setItemDescription:@"HomeKit accessory that has been paired with this account."];
   [(HAPKeychainItem *)v7 setLabel:@"Paired HomeKit Accessory"];
-  LOBYTE(a4) = [(HAPSystemKeychainStore *)self updateKeychainItem:v7 createIfNeeded:0 error:a4];
+  LOBYTE(error) = [(HAPSystemKeychainStore *)self updateKeychainItem:v7 createIfNeeded:0 error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)updateAccessoryPairingKey:(id)a3 error:(id *)a4
+- (BOOL)updateAccessoryPairingKey:(id)key error:(id *)error
 {
-  v6 = a3;
-  v7 = [[HAPMutableKeychainItem alloc] initWithPairingIdentity:v6];
+  keyCopy = key;
+  v7 = [[HAPMutableKeychainItem alloc] initWithPairingIdentity:keyCopy];
 
   [(HAPKeychainItem *)v7 setAccessGroup:@"com.apple.hap.pairing"];
   [(HAPKeychainItem *)v7 setType:&unk_283EA9638];
-  v8 = [(HAPKeychainItem *)v7 type];
-  v9 = [HAPSystemKeychainStore viewHintForType:v8];
+  type = [(HAPKeychainItem *)v7 type];
+  v9 = [HAPSystemKeychainStore viewHintForType:type];
   [(HAPKeychainItem *)v7 setViewHint:v9];
 
-  LOBYTE(a4) = [(HAPSystemKeychainStore *)self updateKeychainItem:v7 createIfNeeded:0 error:a4];
-  return a4;
+  LOBYTE(error) = [(HAPSystemKeychainStore *)self updateKeychainItem:v7 createIfNeeded:0 error:error];
+  return error;
 }
 
-- (id)readAccessoryPairingKeyForAccessory:(id)a3 error:(id *)a4
+- (id)readAccessoryPairingKeyForAccessory:(id)accessory error:(id *)error
 {
   v13 = 0;
-  if (a4)
+  if (error)
   {
-    v4 = a4;
+    errorCopy = error;
   }
 
   else
   {
-    v4 = &v13;
+    errorCopy = &v13;
   }
 
-  v5 = [(HAPSystemKeychainStore *)self allKeychainItemsForType:&unk_283EA9638 identifier:a3 syncable:MEMORY[0x277CBEC28] error:v4];
+  v5 = [(HAPSystemKeychainStore *)self allKeychainItemsForType:&unk_283EA9638 identifier:accessory syncable:MEMORY[0x277CBEC28] error:errorCopy];
   v6 = v5;
   if (v5)
   {
@@ -1908,8 +1908,8 @@ void __78__HAPSystemKeychainStore_isAccessoryAssociatedWithControllerKey_control
       if ([v6 count] == 1)
       {
         v7 = [HAPPairingIdentity alloc];
-        v8 = [v6 firstObject];
-        v9 = [(HAPPairingIdentity *)v7 initWithKeychainItem:v8];
+        firstObject = [v6 firstObject];
+        v9 = [(HAPPairingIdentity *)v7 initWithKeychainItem:firstObject];
 
         goto LABEL_12;
       }
@@ -1925,7 +1925,7 @@ void __78__HAPSystemKeychainStore_isAccessoryAssociatedWithControllerKey_control
     }
 
     [v10 hmfErrorWithCode:v11];
-    *v4 = v9 = 0;
+    *errorCopy = v9 = 0;
   }
 
   else
@@ -1938,47 +1938,47 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)addKeychainItem:(id)a3 error:(id *)a4
+- (BOOL)addKeychainItem:(id)item error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 viewHint];
+  itemCopy = item;
+  viewHint = [itemCopy viewHint];
 
-  if (!v7)
+  if (!viewHint)
   {
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  v8 = [v6 accessGroup];
+  accessGroup = [itemCopy accessGroup];
 
-  if (!v8)
+  if (!accessGroup)
   {
 LABEL_11:
     _HMFPreconditionFailure();
     goto LABEL_12;
   }
 
-  v9 = [v6 type];
+  type = [itemCopy type];
 
-  if (!v9)
+  if (!type)
   {
 LABEL_12:
     _HMFPreconditionFailure();
     goto LABEL_13;
   }
 
-  v10 = [v6 account];
+  account = [itemCopy account];
 
-  if (!v10)
+  if (!account)
   {
 LABEL_13:
     _HMFPreconditionFailure();
     goto LABEL_14;
   }
 
-  v11 = [v6 creationDate];
+  creationDate = [itemCopy creationDate];
 
-  if (!v11)
+  if (!creationDate)
   {
 LABEL_14:
     _HMFPreconditionFailure();
@@ -1989,8 +1989,8 @@ LABEL_15:
     _Unwind_Resume(v18);
   }
 
-  v12 = [v6 accessGroup];
-  v13 = [v12 isEqual:@"com.apple.hap.pairing"];
+  accessGroup2 = [itemCopy accessGroup];
+  v13 = [accessGroup2 isEqual:@"com.apple.hap.pairing"];
 
   if ((v13 & 1) == 0)
   {
@@ -2007,21 +2007,21 @@ LABEL_15:
   v26 = __Block_byref_object_copy__5207;
   v27 = __Block_byref_object_dispose__5208;
   v28 = 0;
-  v14 = [(HAPSystemKeychainStore *)self queue];
+  queue = [(HAPSystemKeychainStore *)self queue];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __48__HAPSystemKeychainStore_addKeychainItem_error___block_invoke;
   v19[3] = &unk_2786D4598;
   v19[4] = self;
-  v15 = v6;
+  v15 = itemCopy;
   v20 = v15;
   v21 = &v23;
   v22 = &v29;
-  dispatch_sync(v14, v19);
+  dispatch_sync(queue, v19);
 
-  if (a4)
+  if (error)
   {
-    *a4 = v24[5];
+    *error = v24[5];
   }
 
   v16 = *(v30 + 24);
@@ -2053,56 +2053,56 @@ uint64_t __48__HAPSystemKeychainStore_addKeychainItem_error___block_invoke(uint6
   return result;
 }
 
-- (BOOL)updateKeychainItem:(id)a3 createIfNeeded:(BOOL)a4 error:(id *)a5
+- (BOOL)updateKeychainItem:(id)item createIfNeeded:(BOOL)needed error:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 mutableCopy];
-  v10 = [v9 creationDate];
+  itemCopy = item;
+  v9 = [itemCopy mutableCopy];
+  creationDate = [v9 creationDate];
 
-  if (!v10)
+  if (!creationDate)
   {
-    v11 = [MEMORY[0x277CBEAA8] date];
-    [v9 setCreationDate:v11];
+    date = [MEMORY[0x277CBEAA8] date];
+    [v9 setCreationDate:date];
 
-    v12 = [v9 viewHint];
+    viewHint = [v9 viewHint];
 
-    if (!v12)
+    if (!viewHint)
     {
-      v13 = [v8 type];
-      v14 = __viewHintForKeyType(v13);
+      type = [itemCopy type];
+      v14 = __viewHintForKeyType(type);
       [v9 setViewHint:v14];
     }
   }
 
-  v15 = [v9 accessGroup];
+  accessGroup = [v9 accessGroup];
 
-  if (!v15)
+  if (!accessGroup)
   {
     _HMFPreconditionFailure();
     goto LABEL_13;
   }
 
-  v16 = [v9 type];
+  type2 = [v9 type];
 
-  if (!v16)
+  if (!type2)
   {
 LABEL_13:
     _HMFPreconditionFailure();
     goto LABEL_14;
   }
 
-  v17 = [v9 account];
+  account = [v9 account];
 
-  if (!v17)
+  if (!account)
   {
 LABEL_14:
     _HMFPreconditionFailure();
     goto LABEL_15;
   }
 
-  v18 = [v9 creationDate];
+  creationDate2 = [v9 creationDate];
 
-  if (!v18)
+  if (!creationDate2)
   {
 LABEL_15:
     _HMFPreconditionFailure();
@@ -2113,8 +2113,8 @@ LABEL_16:
     _Unwind_Resume(v25);
   }
 
-  v19 = [v9 accessGroup];
-  v20 = [v19 isEqual:@"com.apple.hap.pairing"];
+  accessGroup2 = [v9 accessGroup];
+  v20 = [accessGroup2 isEqual:@"com.apple.hap.pairing"];
 
   if ((v20 & 1) == 0)
   {
@@ -2131,22 +2131,22 @@ LABEL_16:
   v34 = __Block_byref_object_copy__5207;
   v35 = __Block_byref_object_dispose__5208;
   v36 = 0;
-  v21 = [(HAPSystemKeychainStore *)self queue];
+  queue = [(HAPSystemKeychainStore *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__HAPSystemKeychainStore_updateKeychainItem_createIfNeeded_error___block_invoke;
   block[3] = &unk_2786D3740;
   block[4] = self;
   v22 = v9;
-  v30 = a4;
+  neededCopy = needed;
   v27 = v22;
   v28 = &v31;
   v29 = &v37;
-  dispatch_sync(v21, block);
+  dispatch_sync(queue, block);
 
-  if (a5)
+  if (error)
   {
-    *a5 = v32[5];
+    *error = v32[5];
   }
 
   v23 = *(v38 + 24);
@@ -2298,36 +2298,36 @@ void __66__HAPSystemKeychainStore_updateKeychainItem_createIfNeeded_error___bloc
   }
 }
 
-- (BOOL)deleteKeychainItem:(id)a3 error:(id *)a4
+- (BOOL)deleteKeychainItem:(id)item error:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  itemCopy = item;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__5207;
   v24 = __Block_byref_object_dispose__5208;
   v25 = 0;
-  v7 = [(HAPSystemKeychainStore *)self queue];
+  queue = [(HAPSystemKeychainStore *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__HAPSystemKeychainStore_deleteKeychainItem_error___block_invoke;
   block[3] = &unk_2786D4F60;
   block[4] = self;
-  v8 = v6;
+  v8 = itemCopy;
   v18 = v8;
   v19 = &v20;
-  dispatch_sync(v7, block);
+  dispatch_sync(queue, block);
 
-  if (a4)
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   if (v21[5])
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -2372,12 +2372,12 @@ uint64_t __51__HAPSystemKeychainStore_deleteKeychainItem_error___block_invoke(ui
   return result;
 }
 
-- (id)allKeychainItemsForType:(id)a3 identifier:(id)a4 syncable:(id)a5 error:(id *)a6
+- (id)allKeychainItemsForType:(id)type identifier:(id)identifier syncable:(id)syncable error:(id *)error
 {
   v51 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  typeCopy = type;
+  identifierCopy = identifier;
+  syncableCopy = syncable;
   v39 = 0;
   v40 = &v39;
   v41 = 0x3032000000;
@@ -2390,39 +2390,39 @@ uint64_t __51__HAPSystemKeychainStore_deleteKeychainItem_error___block_invoke(ui
   v36 = __Block_byref_object_copy__5207;
   v37 = __Block_byref_object_dispose__5208;
   v38 = 0;
-  v13 = [(HAPSystemKeychainStore *)self queue];
+  queue = [(HAPSystemKeychainStore *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__HAPSystemKeychainStore_allKeychainItemsForType_identifier_syncable_error___block_invoke;
   block[3] = &unk_2786D50A0;
   v31 = &v39;
   block[4] = self;
-  v14 = v10;
+  v14 = typeCopy;
   v29 = v14;
-  v15 = v11;
+  v15 = identifierCopy;
   v30 = v15;
   v32 = &v33;
-  dispatch_sync(v13, block);
+  dispatch_sync(queue, block);
 
-  if (a6)
+  if (error)
   {
-    *a6 = v34[5];
+    *error = v34[5];
   }
 
   if (v34[5])
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       v19 = HMFGetLogIdentifier();
-      v20 = [v14 unsignedIntegerValue];
+      unsignedIntegerValue = [v14 unsignedIntegerValue];
       v21 = v34[5];
       *buf = 138543874;
       v46 = v19;
       v47 = 2048;
-      v48 = v20;
+      v48 = unsignedIntegerValue;
       v49 = 2112;
       v50 = v21;
       _os_log_impl(&dword_22AADC000, v18, OS_LOG_TYPE_ERROR, "%{public}@Unable to query keychain items for group %lu: %@", buf, 0x20u);
@@ -2435,13 +2435,13 @@ uint64_t __51__HAPSystemKeychainStore_deleteKeychainItem_error___block_invoke(ui
   else
   {
     v23 = v40[5];
-    if (v12)
+    if (syncableCopy)
     {
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __76__HAPSystemKeychainStore_allKeychainItemsForType_identifier_syncable_error___block_invoke_310;
       v26[3] = &unk_2786D37E0;
-      v27 = v12;
+      v27 = syncableCopy;
       v22 = [v23 na_filter:v26];
     }
 
@@ -2476,11 +2476,11 @@ void __76__HAPSystemKeychainStore_allKeychainItemsForType_identifier_syncable_er
   }
 }
 
-- (BOOL)_getFirstAvailableControllerKeyChainItemForAccount:(id)a3 publicKey:(id *)a4 secretKey:(id *)a5 userName:(id *)a6 keyPair:(id *)a7 error:(id *)a8
+- (BOOL)_getFirstAvailableControllerKeyChainItemForAccount:(id)account publicKey:(id *)key secretKey:(id *)secretKey userName:(id *)name keyPair:(id *)pair error:(id *)error
 {
   v64 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v43 = a5;
+  accountCopy = account;
+  secretKeyCopy = secretKey;
   if ([(HAPSystemKeychainStore *)self isHH2Enabled])
   {
     v13 = [&unk_283EA9B60 arrayByAddingObjectsFromArray:&unk_283EA9B48];
@@ -2491,8 +2491,8 @@ void __76__HAPSystemKeychainStore_allKeychainItemsForType_identifier_syncable_er
     v13 = &unk_283EA9B48;
   }
 
-  v46 = a8;
-  v47 = [MEMORY[0x277CBEB18] array];
+  errorCopy = error;
+  array = [MEMORY[0x277CBEB18] array];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
@@ -2515,7 +2515,7 @@ void __76__HAPSystemKeychainStore_allKeychainItemsForType_identifier_syncable_er
         v19 = *(*(&v48 + 1) + 8 * i);
         v20 = objc_autoreleasePoolPush();
         *buf = 0;
-        v21 = [(HAPSystemKeychainStore *)self _getKeychainItemsForAccessGroup:@"com.apple.hap.pairing" type:v19 account:v12 shouldReturnData:1 error:buf];
+        v21 = [(HAPSystemKeychainStore *)self _getKeychainItemsForAccessGroup:@"com.apple.hap.pairing" type:v19 account:accountCopy shouldReturnData:1 error:buf];
         v22 = v21;
         if (*buf)
         {
@@ -2529,7 +2529,7 @@ void __76__HAPSystemKeychainStore_allKeychainItemsForType_identifier_syncable_er
 
         if (!v23)
         {
-          [v47 addObjectsFromArray:v21];
+          [array addObjectsFromArray:v21];
 
           objc_autoreleasePoolPop(v20);
           goto LABEL_16;
@@ -2546,16 +2546,16 @@ void __76__HAPSystemKeychainStore_allKeychainItemsForType_identifier_syncable_er
 
 LABEL_16:
 
-  v24 = [v47 firstObject];
-  if (!v24)
+  firstObject = [array firstObject];
+  if (!firstObject)
   {
-    v25 = [0 account];
-    v26 = [v25 isEqualToString:v12];
+    account = [0 account];
+    v26 = [account isEqualToString:accountCopy];
 
     if (v26)
     {
       v27 = objc_autoreleasePoolPush();
-      v28 = self;
+      selfCopy = self;
       v29 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
@@ -2563,13 +2563,13 @@ LABEL_16:
         *buf = 138543618;
         v60 = v30;
         v61 = 2112;
-        v62 = v12;
+        v62 = accountCopy;
         _os_log_impl(&dword_22AADC000, v29, OS_LOG_TYPE_ERROR, "%{public}@Couldn't find the controller key for given account identifier : %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v27);
-      v31 = v46;
-      if (!v46)
+      v31 = errorCopy;
+      if (!errorCopy)
       {
         v33 = 0;
         goto LABEL_37;
@@ -2581,14 +2581,14 @@ LABEL_16:
     }
   }
 
-  v34 = [v24 valueData];
-  v35 = _deserializeDataToKeyPair(v34, buf, __s);
+  valueData = [firstObject valueData];
+  v35 = _deserializeDataToKeyPair(valueData, buf, __s);
 
   v33 = v35 == 0;
   if (v35)
   {
     v36 = objc_autoreleasePoolPush();
-    v37 = self;
+    selfCopy2 = self;
     v38 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
     {
@@ -2597,15 +2597,15 @@ LABEL_16:
       *v52 = 138543874;
       v53 = v39;
       v54 = 2112;
-      v55 = v12;
+      v55 = accountCopy;
       v56 = 2112;
       v57 = v40;
       _os_log_impl(&dword_22AADC000, v38, OS_LOG_TYPE_ERROR, "%{public}@Unable to deserialize the key for account : %@, Encountered error: %@", v52, 0x20u);
     }
 
     objc_autoreleasePoolPop(v36);
-    v31 = v46;
-    if (v46)
+    v31 = errorCopy;
+    if (errorCopy)
     {
       v32 = HMErrorFromOSStatus(v35);
 LABEL_27:
@@ -2615,24 +2615,24 @@ LABEL_27:
 
   else
   {
-    if (a4)
+    if (key)
     {
-      *a4 = [MEMORY[0x277CBEA90] dataWithBytes:buf length:32];
+      *key = [MEMORY[0x277CBEA90] dataWithBytes:buf length:32];
     }
 
-    if (v43)
+    if (secretKeyCopy)
     {
-      *v43 = [MEMORY[0x277CBEA90] dataWithBytes:__s length:32];
+      *secretKeyCopy = [MEMORY[0x277CBEA90] dataWithBytes:__s length:32];
     }
 
-    if (a6)
+    if (name)
     {
-      *a6 = [v24 account];
+      *name = [firstObject account];
     }
 
-    if (a7)
+    if (pair)
     {
-      *a7 = [v24 valueData];
+      *pair = [firstObject valueData];
     }
 
     memset_s(__s, 0x20uLL, 0, 0x20uLL);
@@ -2644,15 +2644,15 @@ LABEL_37:
   return v33;
 }
 
-- (id)readControllerPairingKeyForAccessory:(id)a3 error:(id *)a4
+- (id)readControllerPairingKeyForAccessory:(id)accessory error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  accessoryCopy = accessory;
   v30 = 0;
   v31 = 0;
   v28 = 0;
   v29 = 0;
-  v6 = [(HAPSystemKeychainStore *)self _getControllerPublicKey:&v31 secretKey:&v30 keyPair:0 username:&v29 allowCreation:0 forAccessory:v5 error:&v28];
+  v6 = [(HAPSystemKeychainStore *)self _getControllerPublicKey:&v31 secretKey:&v30 keyPair:0 username:&v29 allowCreation:0 forAccessory:accessoryCopy error:&v28];
   v7 = v31;
   v8 = v30;
   v9 = v29;
@@ -2665,7 +2665,7 @@ LABEL_37:
     if (!v13)
     {
       context = objc_autoreleasePoolPush();
-      v14 = self;
+      selfCopy = self;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
@@ -2678,11 +2678,11 @@ LABEL_37:
       }
 
       objc_autoreleasePoolPop(context);
-      if (a4)
+      if (error)
       {
         v16 = MEMORY[0x277CCA9B8];
-        v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to retrieve pairing identity for accessory : %@", v5];
-        *a4 = [v16 hapErrorWithCode:1 description:v17 reason:@"did not find pairing identity in keychain" suggestion:0 underlyingError:0];
+        accessoryCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to retrieve pairing identity for accessory : %@", accessoryCopy];
+        *error = [v16 hapErrorWithCode:1 description:accessoryCopy reason:@"did not find pairing identity in keychain" suggestion:0 underlyingError:0];
       }
     }
   }
@@ -2690,7 +2690,7 @@ LABEL_37:
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy2 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -2698,18 +2698,18 @@ LABEL_37:
       *buf = 138543874;
       v33 = v21;
       v34 = 2112;
-      v35 = v5;
+      v35 = accessoryCopy;
       v36 = 2112;
       v37 = v10;
       _os_log_impl(&dword_22AADC000, v20, OS_LOG_TYPE_ERROR, "%{public}@Failed to get the accessory pairing key for accessory : %@ : %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v18);
-    if (a4)
+    if (error)
     {
       v22 = v10;
       v13 = 0;
-      *a4 = v10;
+      *error = v10;
     }
 
     else
@@ -2768,7 +2768,7 @@ LABEL_37:
   return v5;
 }
 
-- (BOOL)deleteAllPeripheralIdentifiers:(id *)a3
+- (BOOL)deleteAllPeripheralIdentifiers:(id *)identifiers
 {
   v15 = 0;
   v16 = &v15;
@@ -2780,7 +2780,7 @@ LABEL_37:
   v12 = __Block_byref_object_copy__5207;
   v13 = __Block_byref_object_dispose__5208;
   v14 = 0;
-  v5 = [(HAPSystemKeychainStore *)self queue];
+  queue = [(HAPSystemKeychainStore *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__HAPSystemKeychainStore_deleteAllPeripheralIdentifiers___block_invoke;
@@ -2788,11 +2788,11 @@ LABEL_37:
   block[4] = self;
   block[5] = &v15;
   block[6] = &v9;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
-  if (a3)
+  if (identifiers)
   {
-    *a3 = v10[5];
+    *identifiers = v10[5];
   }
 
   v6 = *(v16 + 24);
@@ -2831,21 +2831,21 @@ void __57__HAPSystemKeychainStore_deleteAllPeripheralIdentifiers___block_invoke(
   v13 = __Block_byref_object_copy__5207;
   v14 = __Block_byref_object_dispose__5208;
   v15 = 0;
-  v3 = [(HAPSystemKeychainStore *)self queue];
+  queue = [(HAPSystemKeychainStore *)self queue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __67__HAPSystemKeychainStore_getPeripheralIdentifiersAndAccessoryNames__block_invoke;
   v9[3] = &unk_2786D6E60;
   v9[4] = self;
   v9[5] = &v10;
-  dispatch_sync(v3, v9);
+  dispatch_sync(queue, v9);
 
   v4 = v11[5];
   if (!v4)
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v6 = v11[5];
-    v11[5] = v5;
+    v11[5] = dictionary;
 
     v4 = v11[5];
   }
@@ -2941,18 +2941,18 @@ void __67__HAPSystemKeychainStore_getPeripheralIdentifiersAndAccessoryNames__blo
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (int)_getPeripheralIdentifier:(id *)a3 forAccessoryIdentifier:(id)a4 protocolVersion:(unint64_t *)a5 resumeSessionID:(unint64_t *)a6
+- (int)_getPeripheralIdentifier:(id *)identifier forAccessoryIdentifier:(id)accessoryIdentifier protocolVersion:(unint64_t *)version resumeSessionID:(unint64_t *)d
 {
   v27 = 0;
   v10 = MEMORY[0x277CCABB0];
-  v11 = a4;
+  accessoryIdentifierCopy = accessoryIdentifier;
   v12 = [v10 numberWithUnsignedInt:1751216194];
-  v13 = [(HAPSystemKeychainStore *)self _getKeychainItemsForAccessGroup:@"com.apple.hap.pairing" type:v12 account:v11 shouldReturnData:1 error:&v27];
+  v13 = [(HAPSystemKeychainStore *)self _getKeychainItemsForAccessGroup:@"com.apple.hap.pairing" type:v12 account:accessoryIdentifierCopy shouldReturnData:1 error:&v27];
 
   if (v27)
   {
     v17 = 0;
-    v18 = 0;
+    genericData = 0;
     v19 = 0;
     v14 = 0;
     goto LABEL_17;
@@ -2961,7 +2961,7 @@ void __67__HAPSystemKeychainStore_getPeripheralIdentifiersAndAccessoryNames__blo
   if ([v13 count] != 1)
   {
     v17 = 0;
-    v18 = 0;
+    genericData = 0;
     v19 = 0;
     v14 = 0;
     v27 = -6764;
@@ -2969,39 +2969,39 @@ void __67__HAPSystemKeychainStore_getPeripheralIdentifiersAndAccessoryNames__blo
   }
 
   v14 = [v13 objectAtIndexedSubscript:0];
-  v15 = [v14 valueData];
+  valueData = [v14 valueData];
   v26 = 0;
-  v16 = _deserializeUUID(v15, &v26);
+  v16 = _deserializeUUID(valueData, &v26);
   v17 = v26;
   v27 = v16;
 
   if (v27)
   {
-    v18 = 0;
+    genericData = 0;
     v19 = 0;
     goto LABEL_17;
   }
 
-  v18 = [v14 genericData];
+  genericData = [v14 genericData];
 
-  if (v18)
+  if (genericData)
   {
     v20 = MEMORY[0x277CCAC58];
-    v21 = [v14 genericData];
-    v18 = [v20 propertyListWithData:v21 options:0 format:0 error:0];
+    genericData2 = [v14 genericData];
+    genericData = [v20 propertyListWithData:genericData2 options:0 format:0 error:0];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
 
-      v18 = 0;
+      genericData = 0;
     }
   }
 
-  if (!a5)
+  if (!version)
   {
     v19 = 0;
-    if (!a6)
+    if (!d)
     {
       goto LABEL_17;
     }
@@ -3009,7 +3009,7 @@ void __67__HAPSystemKeychainStore_getPeripheralIdentifiersAndAccessoryNames__blo
     goto LABEL_14;
   }
 
-  v19 = [v18 objectForKeyedSubscript:@"BLE HomeKit Accessory Protocol Version"];
+  v19 = [genericData objectForKeyedSubscript:@"BLE HomeKit Accessory Protocol Version"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -3017,11 +3017,11 @@ void __67__HAPSystemKeychainStore_getPeripheralIdentifiersAndAccessoryNames__blo
     v19 = 0;
   }
 
-  *a5 = [v19 integerValue];
-  if (a6)
+  *version = [v19 integerValue];
+  if (d)
   {
 LABEL_14:
-    v22 = [v18 objectForKeyedSubscript:@"BLE Pair Resume Session ID"];
+    v22 = [genericData objectForKeyedSubscript:@"BLE Pair Resume Session ID"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -3029,12 +3029,12 @@ LABEL_14:
       v22 = 0;
     }
 
-    *a6 = [v22 longLongValue];
+    *d = [v22 longLongValue];
   }
 
 LABEL_17:
   v23 = v27;
-  if (a3)
+  if (identifier)
   {
     if (v27)
     {
@@ -3046,16 +3046,16 @@ LABEL_17:
       v24 = v17;
     }
 
-    *a3 = v24;
+    *identifier = v24;
     v23 = v27;
   }
 
   return v23;
 }
 
-- (id)readPeripheralIdentifierForAccessoryIdentifier:(id)a3 protocolVersion:(unint64_t *)a4 resumeSessionID:(unint64_t *)a5 error:(id *)a6
+- (id)readPeripheralIdentifierForAccessoryIdentifier:(id)identifier protocolVersion:(unint64_t *)version resumeSessionID:(unint64_t *)d error:(id *)error
 {
-  v10 = a3;
+  identifierCopy = identifier;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -3068,23 +3068,23 @@ LABEL_17:
   v24 = __Block_byref_object_copy__5207;
   v25 = __Block_byref_object_dispose__5208;
   v26 = 0;
-  v11 = [(HAPSystemKeychainStore *)self queue];
+  queue = [(HAPSystemKeychainStore *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __111__HAPSystemKeychainStore_readPeripheralIdentifierForAccessoryIdentifier_protocolVersion_resumeSessionID_error___block_invoke;
   v15[3] = &unk_2786D37B8;
   v15[4] = self;
   v17 = &v27;
-  v12 = v10;
-  v19 = a4;
-  v20 = a5;
+  v12 = identifierCopy;
+  versionCopy = version;
+  dCopy = d;
   v16 = v12;
   v18 = &v21;
-  dispatch_sync(v11, v15);
+  dispatch_sync(queue, v15);
 
-  if (a6)
+  if (error)
   {
-    *a6 = v22[5];
+    *error = v22[5];
   }
 
   v13 = v28[5];
@@ -3107,13 +3107,13 @@ void __111__HAPSystemKeychainStore_readPeripheralIdentifierForAccessoryIdentifie
   *(v5 + 40) = v4;
 }
 
-- (int)_deletePeripheralIdentifierForAccessoryIdentifier:(id)a3
+- (int)_deletePeripheralIdentifierForAccessoryIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v19 = 0;
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:1751216194];
-  v6 = [(HAPSystemKeychainStore *)self _getKeychainItemsForAccessGroup:@"com.apple.hap.pairing" type:v5 account:v4 shouldReturnData:1 error:&v19];
+  v6 = [(HAPSystemKeychainStore *)self _getKeychainItemsForAccessGroup:@"com.apple.hap.pairing" type:v5 account:identifierCopy shouldReturnData:1 error:&v19];
 
   v7 = v19;
   if (!v19)
@@ -3163,9 +3163,9 @@ LABEL_4:
   return v7;
 }
 
-- (BOOL)deletePeripheralIdentifierForAccessoryIdentifier:(id)a3 error:(id *)a4
+- (BOOL)deletePeripheralIdentifierForAccessoryIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -3176,21 +3176,21 @@ LABEL_4:
   v19 = __Block_byref_object_copy__5207;
   v20 = __Block_byref_object_dispose__5208;
   v21 = 0;
-  v7 = [(HAPSystemKeychainStore *)self queue];
+  queue = [(HAPSystemKeychainStore *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __81__HAPSystemKeychainStore_deletePeripheralIdentifierForAccessoryIdentifier_error___block_invoke;
   v11[3] = &unk_2786D4598;
-  v8 = v6;
+  v8 = identifierCopy;
   v12 = v8;
-  v13 = self;
+  selfCopy = self;
   v14 = &v16;
   v15 = &v22;
-  dispatch_sync(v7, v11);
+  dispatch_sync(queue, v11);
 
-  if (a4)
+  if (error)
   {
-    *a4 = v17[5];
+    *error = v17[5];
   }
 
   v9 = *(v23 + 24);
@@ -3225,10 +3225,10 @@ uint64_t __81__HAPSystemKeychainStore_deletePeripheralIdentifierForAccessoryIden
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)updatePeripheralIdentifier:(id)a3 forAccessoryIdentifier:(id)a4 protocolVersion:(unint64_t)a5 previousVersion:(unint64_t *)a6 resumeSessionID:(unint64_t)a7 error:(id *)a8
+- (BOOL)updatePeripheralIdentifier:(id)identifier forAccessoryIdentifier:(id)accessoryIdentifier protocolVersion:(unint64_t)version previousVersion:(unint64_t *)previousVersion resumeSessionID:(unint64_t)d error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
+  identifierCopy = identifier;
+  accessoryIdentifierCopy = accessoryIdentifier;
   v43 = 0;
   v44 = &v43;
   v45 = 0x2020000000;
@@ -3253,29 +3253,29 @@ uint64_t __81__HAPSystemKeychainStore_deletePeripheralIdentifierForAccessoryIden
   v33[1] = v33;
   v33[2] = 0x2020000000;
   v33[3] = 0;
-  v14 = [(HAPSystemKeychainStore *)self queue];
+  queue = [(HAPSystemKeychainStore *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __130__HAPSystemKeychainStore_updatePeripheralIdentifier_forAccessoryIdentifier_protocolVersion_previousVersion_resumeSessionID_error___block_invoke;
   block[3] = &unk_2786D3790;
-  v15 = v13;
+  v15 = accessoryIdentifierCopy;
   v22 = v15;
-  v23 = self;
+  selfCopy = self;
   v25 = &v37;
   v26 = v35;
   v27 = v34;
   v28 = v33;
-  v30 = a6;
-  v31 = a5;
-  v16 = v12;
-  v32 = a7;
+  previousVersionCopy = previousVersion;
+  versionCopy = version;
+  v16 = identifierCopy;
+  dCopy = d;
   v24 = v16;
   v29 = &v43;
-  dispatch_sync(v14, block);
+  dispatch_sync(queue, block);
 
-  if (a8)
+  if (error)
   {
-    *a8 = v38[5];
+    *error = v38[5];
   }
 
   v17 = *(v44 + 24);
@@ -3382,36 +3382,36 @@ void __130__HAPSystemKeychainStore_updatePeripheralIdentifier_forAccessoryIdenti
   }
 }
 
-- (int)_savePeripheralIdentifier:(id)a3 forAccessoryIdentifier:(id)a4 protocolVersion:(unint64_t)a5 resumeSessionID:(unint64_t)a6
+- (int)_savePeripheralIdentifier:(id)identifier forAccessoryIdentifier:(id)accessoryIdentifier protocolVersion:(unint64_t)version resumeSessionID:(unint64_t)d
 {
   v25[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  identifierCopy = identifier;
+  accessoryIdentifierCopy = accessoryIdentifier;
   v23[0] = @"BLE HomeKit Accessory Protocol Version";
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:version];
   v23[1] = @"BLE Pair Resume Session ID";
   v24[0] = v12;
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a6];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:d];
   v24[1] = v13;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:2];
 
   v25[0] = 0;
   v25[1] = 0;
-  if (v10)
+  if (identifierCopy)
   {
-    [v10 getUUIDBytes:v25];
+    [identifierCopy getUUIDBytes:v25];
     v15 = [MEMORY[0x277CBEA90] dataWithBytes:v25 length:16];
     v16 = objc_alloc_init(HAPKeychainItem);
     [(HAPKeychainItem *)v16 setAccessGroup:@"com.apple.hap.pairing"];
     v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:1751216194];
     [(HAPKeychainItem *)v16 setType:v17];
 
-    v18 = [@"BTLE HomeKit Accessory Identifier" stringByAppendingFormat:@": %@", v11];
-    [(HAPKeychainItem *)v16 setLabel:v18];
+    accessoryIdentifierCopy = [@"BTLE HomeKit Accessory Identifier" stringByAppendingFormat:@": %@", accessoryIdentifierCopy];
+    [(HAPKeychainItem *)v16 setLabel:accessoryIdentifierCopy];
 
     [(HAPKeychainItem *)v16 setItemDescription:@"Per-device persistent identifier for BTLE accessories that support HomeKit."];
     [(HAPKeychainItem *)v16 setSyncable:0];
-    [(HAPKeychainItem *)v16 setAccount:v11];
+    [(HAPKeychainItem *)v16 setAccount:accessoryIdentifierCopy];
     [(HAPKeychainItem *)v16 setValueData:v15];
     v19 = [MEMORY[0x277CCAC58] dataWithPropertyList:v14 format:200 options:0 error:0];
     [(HAPKeychainItem *)v16 setGenericData:v19];
@@ -3428,10 +3428,10 @@ void __130__HAPSystemKeychainStore_updatePeripheralIdentifier_forAccessoryIdenti
   return v20;
 }
 
-- (BOOL)savePeripheralIdentifier:(id)a3 forAccessoryIdentifier:(id)a4 protocolVersion:(unint64_t)a5 resumeSessionID:(unint64_t)a6 error:(id *)a7
+- (BOOL)savePeripheralIdentifier:(id)identifier forAccessoryIdentifier:(id)accessoryIdentifier protocolVersion:(unint64_t)version resumeSessionID:(unint64_t)d error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
+  identifierCopy = identifier;
+  accessoryIdentifierCopy = accessoryIdentifier;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
@@ -3442,25 +3442,25 @@ void __130__HAPSystemKeychainStore_updatePeripheralIdentifier_forAccessoryIdenti
   v29 = __Block_byref_object_copy__5207;
   v30 = __Block_byref_object_dispose__5208;
   v31 = 0;
-  v14 = [(HAPSystemKeychainStore *)self queue];
+  queue = [(HAPSystemKeychainStore *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __112__HAPSystemKeychainStore_savePeripheralIdentifier_forAccessoryIdentifier_protocolVersion_resumeSessionID_error___block_invoke;
   block[3] = &unk_2786D3768;
   block[4] = self;
-  v15 = v12;
+  v15 = identifierCopy;
   v20 = v15;
-  v16 = v13;
-  v24 = a5;
-  v25 = a6;
+  v16 = accessoryIdentifierCopy;
+  versionCopy = version;
+  dCopy = d;
   v21 = v16;
   v22 = &v32;
   v23 = &v26;
-  dispatch_sync(v14, block);
+  dispatch_sync(queue, block);
 
-  if (a7)
+  if (error)
   {
-    *a7 = v27[5];
+    *error = v27[5];
   }
 
   v17 = *(v33 + 24);
@@ -3492,17 +3492,17 @@ uint64_t __112__HAPSystemKeychainStore_savePeripheralIdentifier_forAccessoryIden
   return MEMORY[0x2821F96F8]();
 }
 
-- (int)_removeKeychainItem:(id)a3 leaveTombstone:(BOOL)a4
+- (int)_removeKeychainItem:(id)item leaveTombstone:(BOOL)tombstone
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (!v6 || ![v6 platformReference])
+  itemCopy = item;
+  v7 = itemCopy;
+  if (!itemCopy || ![itemCopy platformReference])
   {
     v22 = 4294960591;
 LABEL_11:
     v23 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
@@ -3519,46 +3519,46 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v8 = [v7 platformReference];
+  platformReference = [v7 platformReference];
   Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
-  CFDictionaryAddValue(Mutable, *MEMORY[0x277CDC5F0], v8);
+  CFDictionaryAddValue(Mutable, *MEMORY[0x277CDC5F0], platformReference);
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy2 = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     HMFGetLogIdentifier();
     v13 = v30 = self;
-    v14 = [v7 account];
-    v15 = [v7 label];
-    v16 = [v7 type];
+    account = [v7 account];
+    label = [v7 label];
+    type = [v7 type];
     *buf = 138544130;
     v32 = v13;
     v33 = 2112;
-    v34 = v14;
+    v34 = account;
     v35 = 2112;
-    v36 = v15;
+    v36 = label;
     v37 = 2080;
-    v38 = KeyTypeDescription(v16);
+    v38 = KeyTypeDescription(type);
     _os_log_impl(&dword_22AADC000, v12, OS_LOG_TYPE_INFO, "%{public}@Removing keychain item with account  %@(%@) keyType: %s", buf, 0x2Au);
 
     self = v30;
   }
 
   objc_autoreleasePoolPop(v10);
-  if ([v7 isSyncable] && !a4)
+  if ([v7 isSyncable] && !tombstone)
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = v11;
+    v18 = selfCopy2;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       v20 = HMFGetLogIdentifier();
-      v21 = [v7 account];
+      account2 = [v7 account];
       *buf = 138543618;
       v32 = v20;
       v33 = 2112;
-      v34 = v21;
+      v34 = account2;
       _os_log_impl(&dword_22AADC000, v19, OS_LOG_TYPE_INFO, "%{public}@Removing syncable keychain item with account %@ and not setting tombstone", buf, 0x16u);
     }
 
@@ -3579,41 +3579,41 @@ LABEL_14:
   return v22;
 }
 
-- (int)_addKeychainItem:(id)a3 logDuplicateItemError:(BOOL)a4
+- (int)_addKeychainItem:(id)item logDuplicateItemError:(BOOL)error
 {
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 accessGroup];
+  itemCopy = item;
+  accessGroup = [itemCopy accessGroup];
 
-  if (!v7)
+  if (!accessGroup)
   {
     goto LABEL_23;
   }
 
-  v8 = [v6 type];
+  type = [itemCopy type];
 
-  if (!v8)
+  if (!type)
   {
     goto LABEL_23;
   }
 
-  v9 = [v6 label];
+  label = [itemCopy label];
 
-  if (!v9)
+  if (!label)
   {
     goto LABEL_23;
   }
 
-  v10 = [v6 itemDescription];
+  itemDescription = [itemCopy itemDescription];
 
-  if (!v10)
+  if (!itemDescription)
   {
     goto LABEL_23;
   }
 
-  v11 = [v6 account];
+  account = [itemCopy account];
 
-  if (v11 && ([v6 valueData], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
+  if (account && ([itemCopy valueData], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
   {
     Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
     if (Mutable)
@@ -3621,46 +3621,46 @@ LABEL_14:
       v14 = Mutable;
       CFDictionaryAddValue(Mutable, *MEMORY[0x277CDC228], *MEMORY[0x277CDC238]);
       v15 = *MEMORY[0x277CDBEC8];
-      v16 = [v6 accessGroup];
-      CFDictionaryAddValue(v14, v15, v16);
+      accessGroup2 = [itemCopy accessGroup];
+      CFDictionaryAddValue(v14, v15, accessGroup2);
 
       CFDictionaryAddValue(v14, *MEMORY[0x277CDBED8], *MEMORY[0x277CDBEF0]);
       v17 = *MEMORY[0x277CDC188];
-      v18 = [v6 type];
-      CFDictionaryAddValue(v14, v17, v18);
+      type2 = [itemCopy type];
+      CFDictionaryAddValue(v14, v17, type2);
 
       v19 = *MEMORY[0x277CDC080];
-      v20 = [v6 label];
-      CFDictionaryAddValue(v14, v19, v20);
+      label2 = [itemCopy label];
+      CFDictionaryAddValue(v14, v19, label2);
 
       v21 = *MEMORY[0x277CDBFA0];
-      v22 = [v6 itemDescription];
-      CFDictionaryAddValue(v14, v21, v22);
+      itemDescription2 = [itemCopy itemDescription];
+      CFDictionaryAddValue(v14, v21, itemDescription2);
 
       v23 = *MEMORY[0x277CDBF20];
-      v24 = [v6 account];
-      CFDictionaryAddValue(v14, v23, v24);
+      account2 = [itemCopy account];
+      CFDictionaryAddValue(v14, v23, account2);
 
       v25 = *MEMORY[0x277CDC120];
-      v26 = [v6 label];
-      CFDictionaryAddValue(v14, v25, v26);
+      label3 = [itemCopy label];
+      CFDictionaryAddValue(v14, v25, label3);
 
-      v27 = [v6 genericData];
+      genericData = [itemCopy genericData];
 
-      if (v27)
+      if (genericData)
       {
         v28 = *MEMORY[0x277CDBFB8];
-        v29 = [v6 genericData];
-        CFDictionaryAddValue(v14, v28, v29);
+        genericData2 = [itemCopy genericData];
+        CFDictionaryAddValue(v14, v28, genericData2);
       }
 
       v30 = *MEMORY[0x277CDC5E8];
-      v31 = [v6 valueData];
-      CFDictionaryAddValue(v14, v30, v31);
+      valueData = [itemCopy valueData];
+      CFDictionaryAddValue(v14, v30, valueData);
 
-      v32 = [v6 isSyncable];
+      isSyncable = [itemCopy isSyncable];
       v33 = *MEMORY[0x277CBED28];
-      if (v32)
+      if (isSyncable)
       {
         v34 = *MEMORY[0x277CBED28];
       }
@@ -3671,38 +3671,38 @@ LABEL_14:
       }
 
       CFDictionaryAddValue(v14, *MEMORY[0x277CDC140], v34);
-      if ([v6 isSyncable])
+      if ([itemCopy isSyncable])
       {
         CFDictionaryAddValue(v14, *MEMORY[0x277CDBFC0], v33);
       }
 
-      v35 = [v6 viewHint];
+      viewHint = [itemCopy viewHint];
 
-      if (v35)
+      if (viewHint)
       {
         v36 = *MEMORY[0x277CDC138];
-        v37 = [v6 viewHint];
-        CFDictionaryAddValue(v14, v36, v37);
+        viewHint2 = [itemCopy viewHint];
+        CFDictionaryAddValue(v14, v36, viewHint2);
       }
 
       v38 = SecItemAdd(v14, 0);
       CFRelease(v14);
-      if (a4 || (v39 = -25299, v38 != -25299))
+      if (error || (v39 = -25299, v38 != -25299))
       {
         v40 = objc_autoreleasePoolPush();
-        v41 = self;
+        selfCopy = self;
         v42 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
         {
           v43 = HMFGetLogIdentifier();
-          v44 = [v6 account];
-          v45 = [v6 viewHint];
+          account3 = [itemCopy account];
+          viewHint3 = [itemCopy viewHint];
           v48 = 138544130;
           v49 = v43;
           v50 = 2112;
-          v51 = v44;
+          v51 = account3;
           v52 = 2112;
-          v53 = v45;
+          v53 = viewHint3;
           v54 = 2048;
           v55 = v38;
           _os_log_impl(&dword_22AADC000, v42, OS_LOG_TYPE_INFO, "%{public}@Adding keychain item for username %@ with viewHint %@ - error %ld", &v48, 0x2Au);
@@ -3729,20 +3729,20 @@ LABEL_23:
   return v39;
 }
 
-- (BOOL)_updateKeychainItemWithPlatformIdentifier:(void *)a3 keychainItem:(id)a4 error:(id *)a5
+- (BOOL)_updateKeychainItemWithPlatformIdentifier:(void *)identifier keychainItem:(id)item error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  if (!a3)
+  itemCopy = item;
+  if (!identifier)
   {
     _HMFPreconditionFailure();
     goto LABEL_14;
   }
 
-  v5 = v9;
-  v6 = [v9 valueData];
+  v5 = itemCopy;
+  valueData = [itemCopy valueData];
 
-  if (!v6)
+  if (!valueData)
   {
 LABEL_14:
     _HMFPreconditionFailure();
@@ -3755,16 +3755,16 @@ LABEL_14:
     goto LABEL_16;
   }
 
-  v6 = Mutable;
-  CFDictionaryAddValue(Mutable, *MEMORY[0x277CDC5F0], a3);
+  valueData = Mutable;
+  CFDictionaryAddValue(Mutable, *MEMORY[0x277CDC5F0], identifier);
   v11 = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
   if (!v11)
   {
 LABEL_15:
-    CFRelease(v6);
+    CFRelease(valueData);
 LABEL_16:
     v16 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -3774,10 +3774,10 @@ LABEL_16:
 
   v12 = v11;
   v13 = *MEMORY[0x277CDC5E8];
-  v14 = [v5 valueData];
-  CFDictionaryAddValue(v12, v13, v14);
+  valueData2 = [v5 valueData];
+  CFDictionaryAddValue(v12, v13, valueData2);
 
-  v15 = SecItemUpdate(v6, v12);
+  v15 = SecItemUpdate(valueData, v12);
   if (v15)
   {
     v16 = HMErrorFromOSStatus(v15);
@@ -3801,13 +3801,13 @@ LABEL_16:
     v16 = 0;
   }
 
-  CFRelease(v6);
+  CFRelease(valueData);
   CFRelease(v12);
-  if (a5)
+  if (error)
   {
 LABEL_11:
     v20 = v16;
-    *a5 = v16;
+    *error = v16;
   }
 
 LABEL_12:
@@ -3816,22 +3816,22 @@ LABEL_12:
   return v16 == 0;
 }
 
-- (void)_updateKeychainItemToInvisible:(id)a3
+- (void)_updateKeychainItemToInvisible:(id)invisible
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isSyncable])
+  invisibleCopy = invisible;
+  if ([invisibleCopy isSyncable])
   {
-    if (([v4 isInvisible] & 1) == 0)
+    if (([invisibleCopy isInvisible] & 1) == 0)
     {
-      if ([v4 platformReference])
+      if ([invisibleCopy platformReference])
       {
         Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
         if (Mutable)
         {
           v6 = Mutable;
-          v7 = [v4 platformReference];
-          CFDictionaryAddValue(v6, *MEMORY[0x277CDC5F0], v7);
+          platformReference = [invisibleCopy platformReference];
+          CFDictionaryAddValue(v6, *MEMORY[0x277CDC5F0], platformReference);
           v8 = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
           if (v8)
           {
@@ -3842,7 +3842,7 @@ LABEL_12:
             {
               v11 = v10;
               v12 = objc_autoreleasePoolPush();
-              v13 = self;
+              selfCopy = self;
               v14 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
               {
@@ -3875,17 +3875,17 @@ LABEL_12:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_auditKeychainItems:(id)a3 managedAccessories:(id)a4
+- (id)_auditKeychainItems:(id)items managedAccessories:(id)accessories
 {
   v74 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
-  v59 = [v7 allKeys];
-  v53 = v7;
-  v56 = [v7 mutableCopy];
+  itemsCopy = items;
+  accessoriesCopy = accessories;
+  array = [MEMORY[0x277CBEB18] array];
+  allKeys = [accessoriesCopy allKeys];
+  v53 = accessoriesCopy;
+  v56 = [accessoriesCopy mutableCopy];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   v12 = &OBJC_INSTANCE_METHODS_HAPSystemKeyCountProvider;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -3894,7 +3894,7 @@ LABEL_12:
     *buf = 138543618;
     v71 = v13;
     v72 = 2112;
-    v73 = v59;
+    v73 = allKeys;
     _os_log_impl(&dword_22AADC000, v11, OS_LOG_TYPE_INFO, "%{public}@Auditing keychain entries for accessories: %@", buf, 0x16u);
   }
 
@@ -3903,9 +3903,9 @@ LABEL_12:
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  obj = v6;
+  obj = itemsCopy;
   v14 = [obj countByEnumeratingWithState:&v64 objects:v69 count:16];
-  v55 = v8;
+  v55 = array;
   if (v14)
   {
     v16 = v14;
@@ -3923,18 +3923,18 @@ LABEL_12:
         }
 
         v19 = *(*(&v64 + 1) + 8 * i);
-        v20 = [v19 account];
-        if ([v59 containsObject:v20])
+        account = [v19 account];
+        if ([allKeys containsObject:account])
         {
-          v21 = [v53 hmf_dataForKey:v20];
+          v21 = [v53 hmf_dataForKey:account];
           if ([v19 matchesPublicKeyData:v21])
           {
-            [v56 removeObjectForKey:v20];
+            [v56 removeObjectForKey:account];
             goto LABEL_20;
           }
 
           v27 = objc_autoreleasePoolPush();
-          v28 = v10;
+          v28 = selfCopy;
           v29 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
           {
@@ -3942,7 +3942,7 @@ LABEL_12:
             *buf = v52;
             v71 = v30;
             v72 = 2112;
-            v73 = v20;
+            v73 = account;
             _os_log_impl(&dword_22AADC000, v29, OS_LOG_TYPE_INFO, "%{public}@Auditing keychain entries - will remove keychain item for accessory %@ due to data mismatch", buf, 0x16u);
           }
 
@@ -3952,16 +3952,16 @@ LABEL_12:
         else
         {
           v22 = objc_autoreleasePoolPush();
-          v23 = v10;
+          v23 = selfCopy;
           v24 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
           {
             v25 = HMFGetLogIdentifier();
-            v26 = [v19 account];
+            account2 = [v19 account];
             *buf = v52;
             v71 = v25;
             v72 = 2112;
-            v73 = v26;
+            v73 = account2;
             _os_log_impl(&dword_22AADC000, v24, OS_LOG_TYPE_INFO, "%{public}@Auditing keychain entries - will remove spurious keychain item - %@", buf, 0x16u);
           }
 
@@ -3969,11 +3969,11 @@ LABEL_12:
         }
 
         v31 = [HAPKeychainStoreRemovedAccessory alloc];
-        v32 = [v19 account];
-        v33 = [v19 creationDate];
-        v21 = [(HAPKeychainStoreRemovedAccessory *)v31 initWithName:v32 creationDate:v33];
+        account3 = [v19 account];
+        creationDate = [v19 creationDate];
+        v21 = [(HAPKeychainStoreRemovedAccessory *)v31 initWithName:account3 creationDate:creationDate];
 
-        v34 = [(HAPSystemKeychainStore *)v10 _removeKeychainItem:v19 leaveTombstone:1];
+        v34 = [(HAPSystemKeychainStore *)selfCopy _removeKeychainItem:v19 leaveTombstone:1];
         v17 = v34;
         if (v34)
         {
@@ -3981,7 +3981,7 @@ LABEL_12:
           [(HAPKeychainStoreRemovedAccessory *)v21 setRemoveError:v35];
         }
 
-        v8 = v55;
+        array = v55;
         [v55 addObject:v21];
 LABEL_20:
       }
@@ -4003,8 +4003,8 @@ LABEL_24:
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v37 = [v56 allKeys];
-  v38 = [v37 countByEnumeratingWithState:&v60 objects:v68 count:16];
+  allKeys2 = [v56 allKeys];
+  v38 = [allKeys2 countByEnumeratingWithState:&v60 objects:v68 count:16];
   if (v38)
   {
     v39 = v38;
@@ -4016,12 +4016,12 @@ LABEL_24:
       {
         if (*v61 != v40)
         {
-          objc_enumerationMutation(v37);
+          objc_enumerationMutation(allKeys2);
         }
 
         v42 = *(*(&v60 + 1) + 8 * j);
         v43 = objc_autoreleasePoolPush();
-        v44 = v10;
+        v44 = selfCopy;
         v45 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
         {
@@ -4041,12 +4041,12 @@ LABEL_24:
         {
 
           v49 = 0;
-          v8 = v55;
+          array = v55;
           goto LABEL_39;
         }
       }
 
-      v39 = [v37 countByEnumeratingWithState:&v60 objects:v68 count:16];
+      v39 = [allKeys2 countByEnumeratingWithState:&v60 objects:v68 count:16];
       if (v39)
       {
         continue;
@@ -4055,14 +4055,14 @@ LABEL_24:
       break;
     }
 
-    v8 = v55;
+    array = v55;
     goto LABEL_36;
   }
 
   if (v36)
   {
 LABEL_36:
-    v49 = v8;
+    v49 = array;
     goto LABEL_39;
   }
 
@@ -4074,25 +4074,25 @@ LABEL_39:
   return v49;
 }
 
-- (id)auditKeysOfManagedAccessories:(id)a3
+- (id)auditKeysOfManagedAccessories:(id)accessories
 {
-  v4 = a3;
+  accessoriesCopy = accessories;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__5207;
   v16 = __Block_byref_object_dispose__5208;
   v17 = 0;
-  v5 = [(HAPSystemKeychainStore *)self queue];
+  queue = [(HAPSystemKeychainStore *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__HAPSystemKeychainStore_auditKeysOfManagedAccessories___block_invoke;
   block[3] = &unk_2786D4F60;
-  v10 = v4;
+  v10 = accessoriesCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = accessoriesCopy;
+  dispatch_sync(queue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -4126,13 +4126,13 @@ void __56__HAPSystemKeychainStore_auditKeysOfManagedAccessories___block_invoke(u
   }
 }
 
-- (int)_removeAccessoryKeyForName:(id)a3
+- (int)_removeAccessoryKeyForName:(id)name
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v20 = 0;
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:1751216193];
-  v6 = [(HAPSystemKeychainStore *)self _getKeychainItemsForAccessGroup:@"com.apple.hap.pairing" type:v5 account:v4 shouldReturnData:1 error:&v20];
+  v6 = [(HAPSystemKeychainStore *)self _getKeychainItemsForAccessGroup:@"com.apple.hap.pairing" type:v5 account:nameCopy shouldReturnData:1 error:&v20];
 
   v7 = v20;
   if (!v20)
@@ -4176,7 +4176,7 @@ void __56__HAPSystemKeychainStore_auditKeysOfManagedAccessories___block_invoke(u
   return v7;
 }
 
-- (BOOL)removeAllAccessoryKeys:(id *)a3
+- (BOOL)removeAllAccessoryKeys:(id *)keys
 {
   v15 = 0;
   v16 = &v15;
@@ -4188,7 +4188,7 @@ void __56__HAPSystemKeychainStore_auditKeysOfManagedAccessories___block_invoke(u
   v12 = __Block_byref_object_copy__5207;
   v13 = __Block_byref_object_dispose__5208;
   v14 = 0;
-  v5 = [(HAPSystemKeychainStore *)self queue];
+  queue = [(HAPSystemKeychainStore *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__HAPSystemKeychainStore_removeAllAccessoryKeys___block_invoke;
@@ -4196,11 +4196,11 @@ void __56__HAPSystemKeychainStore_auditKeysOfManagedAccessories___block_invoke(u
   block[4] = self;
   block[5] = &v15;
   block[6] = &v9;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
-  if (a3)
+  if (keys)
   {
-    *a3 = v10[5];
+    *keys = v10[5];
   }
 
   v6 = *(v16 + 24);
@@ -4219,9 +4219,9 @@ void __49__HAPSystemKeychainStore_removeAllAccessoryKeys___block_invoke(uint64_t
   }
 }
 
-- (BOOL)removeAccessoryKeyForName:(id)a3 error:(id *)a4
+- (BOOL)removeAccessoryKeyForName:(id)name error:(id *)error
 {
-  v6 = a3;
+  nameCopy = name;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -4232,21 +4232,21 @@ void __49__HAPSystemKeychainStore_removeAllAccessoryKeys___block_invoke(uint64_t
   v19 = __Block_byref_object_copy__5207;
   v20 = __Block_byref_object_dispose__5208;
   v21 = 0;
-  v7 = [(HAPSystemKeychainStore *)self queue];
+  queue = [(HAPSystemKeychainStore *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __58__HAPSystemKeychainStore_removeAccessoryKeyForName_error___block_invoke;
   v11[3] = &unk_2786D4598;
-  v8 = v6;
+  v8 = nameCopy;
   v12 = v8;
-  v13 = self;
+  selfCopy = self;
   v14 = &v16;
   v15 = &v22;
-  dispatch_sync(v7, v11);
+  dispatch_sync(queue, v11);
 
-  if (a4)
+  if (error)
   {
-    *a4 = v17[5];
+    *error = v17[5];
   }
 
   v9 = *(v23 + 24);
@@ -4285,9 +4285,9 @@ void __58__HAPSystemKeychainStore_removeAccessoryKeyForName_error___block_invoke
   }
 }
 
-- (BOOL)registerAccessoryWithHomeKit:(id)a3 error:(id *)a4
+- (BOOL)registerAccessoryWithHomeKit:(id)kit error:(id *)error
 {
-  v6 = a3;
+  kitCopy = kit;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -4298,21 +4298,21 @@ void __58__HAPSystemKeychainStore_removeAccessoryKeyForName_error___block_invoke
   v19 = __Block_byref_object_copy__5207;
   v20 = __Block_byref_object_dispose__5208;
   v21 = 0;
-  v7 = [(HAPSystemKeychainStore *)self queue];
+  queue = [(HAPSystemKeychainStore *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __61__HAPSystemKeychainStore_registerAccessoryWithHomeKit_error___block_invoke;
   v11[3] = &unk_2786D4598;
-  v8 = v6;
+  v8 = kitCopy;
   v12 = v8;
-  v13 = self;
+  selfCopy = self;
   v14 = &v16;
   v15 = &v22;
-  dispatch_sync(v7, v11);
+  dispatch_sync(queue, v11);
 
-  if (a4)
+  if (error)
   {
-    *a4 = v17[5];
+    *error = v17[5];
   }
 
   v9 = *(v23 + 24);
@@ -4398,66 +4398,66 @@ void __61__HAPSystemKeychainStore_registerAccessoryWithHomeKit_error___block_inv
   }
 }
 
-- (BOOL)establishRelationshipBetweenAccessoryAndControllerKey:(id)a3 error:(id *)a4
+- (BOOL)establishRelationshipBetweenAccessoryAndControllerKey:(id)key error:(id *)error
 {
   v58 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  if (!v11)
+  keyCopy = key;
+  if (!keyCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_30;
   }
 
-  v4 = v11;
-  v5 = [v11 identifier];
+  v4 = keyCopy;
+  identifier = [keyCopy identifier];
 
-  if (!v5)
+  if (!identifier)
   {
 LABEL_30:
     _HMFPreconditionFailure();
     goto LABEL_31;
   }
 
-  v12 = [v4 identifier];
+  identifier2 = [v4 identifier];
 
-  if (v12)
+  if (identifier2)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [v4 identifier];
-      v18 = [v4 controllerKeyIdentifier];
+      identifier3 = [v4 identifier];
+      controllerKeyIdentifier = [v4 controllerKeyIdentifier];
       *buf = 138543874;
       v53 = v16;
       v54 = 2112;
-      v55 = v17;
+      v55 = identifier3;
       v56 = 2112;
-      v57 = v18;
+      v57 = controllerKeyIdentifier;
       _os_log_impl(&dword_22AADC000, v15, OS_LOG_TYPE_INFO, "%{public}@Establish relationship between Accessory : [%@] & controller key : [%@]", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v13);
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:1751216193];
+    identifier = [MEMORY[0x277CCABB0] numberWithUnsignedInt:1751216193];
     v47 = 0;
-    v19 = [v4 identifier];
-    self = [(HAPSystemKeychainStore *)v14 _getKeychainItemsForAccessGroup:@"com.apple.hap.pairing" type:v5 account:v19 shouldReturnData:1 error:&v47];
+    identifier4 = [v4 identifier];
+    self = [(HAPSystemKeychainStore *)selfCopy _getKeychainItemsForAccessGroup:@"com.apple.hap.pairing" type:identifier account:identifier4 shouldReturnData:1 error:&v47];
 
     if (!self || [(HAPSystemKeychainStore *)self hmf_isEmpty])
     {
       v20 = objc_autoreleasePoolPush();
-      v21 = v14;
+      v21 = selfCopy;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
         v23 = HMFGetLogIdentifier();
-        v24 = [v4 identifier];
+        identifier5 = [v4 identifier];
         *buf = 138543618;
         v53 = v23;
         v54 = 2112;
-        v55 = v24;
+        v55 = identifier5;
         _os_log_impl(&dword_22AADC000, v22, OS_LOG_TYPE_ERROR, "%{public}@Could not locate the accessory keychain item for : %@", buf, 0x16u);
       }
 
@@ -4466,16 +4466,16 @@ LABEL_30:
       goto LABEL_26;
     }
 
-    v8 = [(HAPSystemKeychainStore *)self firstObject];
+    firstObject = [(HAPSystemKeychainStore *)self firstObject];
     v26 = objc_opt_class();
-    v27 = [v8 genericData];
-    v28 = [v4 controllerKeyIdentifier];
-    v29 = [v26 updateAccessoryPairingGenericData:v27 updatedControllerKeyIdentifier:v28];
+    genericData = [firstObject genericData];
+    controllerKeyIdentifier2 = [v4 controllerKeyIdentifier];
+    v29 = [v26 updateAccessoryPairingGenericData:genericData updatedControllerKeyIdentifier:controllerKeyIdentifier2];
 
-    v6 = [v4 publicKey];
-    v7 = [v6 data];
+    publicKey = [v4 publicKey];
+    data = [publicKey data];
     v46 = v29;
-    if ([v7 bytes])
+    if ([data bytes])
     {
       DataToHexCStringEx();
 
@@ -4488,11 +4488,11 @@ LABEL_30:
       }
 
       v32 = Mutable;
-      v45 = v8;
-      if ([v8 platformReference])
+      v45 = firstObject;
+      if ([firstObject platformReference])
       {
-        v33 = [v8 platformReference];
-        CFDictionaryAddValue(v32, *MEMORY[0x277CDC5F0], v33);
+        platformReference = [firstObject platformReference];
+        CFDictionaryAddValue(v32, *MEMORY[0x277CDC5F0], platformReference);
         v34 = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
         if (v34)
         {
@@ -4506,7 +4506,7 @@ LABEL_30:
             v37 = v36;
             v44 = v30;
             context = objc_autoreleasePoolPush();
-            v38 = v14;
+            v38 = selfCopy;
             v39 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
             {
@@ -4520,9 +4520,9 @@ LABEL_30:
 
             objc_autoreleasePoolPop(context);
             v30 = v44;
-            if (a4)
+            if (error)
             {
-              *a4 = HMErrorFromOSStatus(v37);
+              *error = HMErrorFromOSStatus(v37);
             }
           }
 
@@ -4540,7 +4540,7 @@ LABEL_30:
       v35 = v32;
 LABEL_23:
       CFRelease(v35);
-      v8 = v45;
+      firstObject = v45;
 LABEL_24:
 
 LABEL_25:
@@ -4551,10 +4551,10 @@ LABEL_26:
 
 LABEL_31:
 
-    if (a4)
+    if (error)
     {
       HMErrorFromOSStatus(4294960591);
-      *a4 = v25 = 0;
+      *error = v25 = 0;
     }
 
     else
@@ -4565,10 +4565,10 @@ LABEL_31:
     goto LABEL_25;
   }
 
-  if (a4)
+  if (error)
   {
     HMErrorFromOSStatus(4294960591);
-    *a4 = v25 = 0;
+    *error = v25 = 0;
   }
 
   else
@@ -4582,11 +4582,11 @@ LABEL_27:
   return v25;
 }
 
-- (int)_savePublicKey:(id)a3 forAccessoryName:(id)a4
+- (int)_savePublicKey:(id)key forAccessoryName:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if ([a3 bytes])
+  nameCopy = name;
+  if ([key bytes])
   {
     DataToHexCStringEx();
     v7 = objc_alloc_init(HAPKeychainItem);
@@ -4594,12 +4594,12 @@ LABEL_27:
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:1751216193];
     [(HAPKeychainItem *)v7 setType:v8];
 
-    v9 = [@"Paired HomeKit Accessory" stringByAppendingFormat:@": %@", v6];
-    [(HAPKeychainItem *)v7 setLabel:v9];
+    nameCopy = [@"Paired HomeKit Accessory" stringByAppendingFormat:@": %@", nameCopy];
+    [(HAPKeychainItem *)v7 setLabel:nameCopy];
 
     [(HAPKeychainItem *)v7 setItemDescription:@"HomeKit accessory that has been paired with this account."];
     [(HAPKeychainItem *)v7 setSyncable:0];
-    [(HAPKeychainItem *)v7 setAccount:v6];
+    [(HAPKeychainItem *)v7 setAccount:nameCopy];
     v10 = [MEMORY[0x277CBEA90] dataWithBytes:v18 length:64];
     [(HAPKeychainItem *)v7 setValueData:v10];
 
@@ -4621,10 +4621,10 @@ LABEL_27:
   return v13;
 }
 
-- (BOOL)savePublicKey:(id)a3 forAccessoryName:(id)a4 error:(id *)a5
+- (BOOL)savePublicKey:(id)key forAccessoryName:(id)name error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  keyCopy = key;
+  nameCopy = name;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -4635,23 +4635,23 @@ LABEL_27:
   v23 = __Block_byref_object_copy__5207;
   v24 = __Block_byref_object_dispose__5208;
   v25 = 0;
-  v10 = [(HAPSystemKeychainStore *)self queue];
+  queue = [(HAPSystemKeychainStore *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__HAPSystemKeychainStore_savePublicKey_forAccessoryName_error___block_invoke;
   block[3] = &unk_2786D50A0;
   block[4] = self;
-  v11 = v8;
+  v11 = keyCopy;
   v16 = v11;
-  v12 = v9;
+  v12 = nameCopy;
   v17 = v12;
   v18 = &v20;
   v19 = &v26;
-  dispatch_sync(v10, block);
+  dispatch_sync(queue, block);
 
-  if (a5)
+  if (error)
   {
-    *a5 = v21[5];
+    *error = v21[5];
   }
 
   v13 = *(v27 + 24);
@@ -4707,19 +4707,19 @@ void __63__HAPSystemKeychainStore_savePublicKey_forAccessoryName_error___block_i
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (int)_getPublicKey:(id *)a3 registeredWithHomeKit:(BOOL *)a4 forAccessoryName:(id)a5
+- (int)_getPublicKey:(id *)key registeredWithHomeKit:(BOOL *)kit forAccessoryName:(id)name
 {
   v56 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  nameCopy = name;
   v47 = 0;
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:1751216193];
-  v10 = [(HAPSystemKeychainStore *)self _getKeychainItemsForAccessGroup:@"com.apple.hap.pairing" type:v9 account:v8 shouldReturnData:1 error:&v47];
+  v10 = [(HAPSystemKeychainStore *)self _getKeychainItemsForAccessGroup:@"com.apple.hap.pairing" type:v9 account:nameCopy shouldReturnData:1 error:&v47];
 
   v11 = v47;
   if (v47)
   {
-    v27 = 0;
-    if (!a3)
+    firstObject = 0;
+    if (!key)
     {
       goto LABEL_28;
     }
@@ -4728,7 +4728,7 @@ LABEL_25:
     if (!v11)
     {
       v36 = [MEMORY[0x277CBEA90] dataWithBytes:v48 length:32];
-      *a3 = v36;
+      *key = v36;
 
       v11 = v47;
       goto LABEL_28;
@@ -4739,10 +4739,10 @@ LABEL_25:
 
   if ([v10 count] != 1)
   {
-    v39 = a4;
-    v41 = a3;
+    kitCopy = kit;
+    keyCopy = key;
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -4753,11 +4753,11 @@ LABEL_25:
       v52 = 2048;
       v53 = v16;
       v54 = 2112;
-      v55 = v8;
+      v55 = nameCopy;
       _os_log_impl(&dword_22AADC000, v14, OS_LOG_TYPE_INFO, "%{public}@Invalid number of keychain items(%tu) for accessory '%@'", buf, 0x20u);
     }
 
-    v42 = v8;
+    v42 = nameCopy;
 
     objc_autoreleasePoolPop(v12);
     v45 = 0u;
@@ -4782,7 +4782,7 @@ LABEL_25:
 
           v22 = *(*(&v43 + 1) + 8 * i);
           v23 = objc_autoreleasePoolPush();
-          v24 = v13;
+          v24 = selfCopy;
           v25 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
           {
@@ -4803,42 +4803,42 @@ LABEL_25:
       while (v19);
     }
 
-    a3 = v41;
-    v8 = v42;
-    a4 = v39;
+    key = keyCopy;
+    nameCopy = v42;
+    kit = kitCopy;
     v10 = v40;
   }
 
   if ([v10 count] != 1)
   {
-    v27 = 0;
+    firstObject = 0;
     v11 = -6764;
     v47 = -6764;
-    if (!a3)
+    if (!key)
     {
       goto LABEL_28;
     }
 
 LABEL_26:
-    *a3 = 0;
+    *key = 0;
     goto LABEL_28;
   }
 
-  v27 = [v10 firstObject];
-  v28 = [v27 valueData];
-  v29 = [v28 bytes];
-  v30 = [v27 valueData];
-  v47 = _deserializePublicKey(v29, [v30 length]);
+  firstObject = [v10 firstObject];
+  valueData = [firstObject valueData];
+  bytes = [valueData bytes];
+  valueData2 = [firstObject valueData];
+  v47 = _deserializePublicKey(bytes, [valueData2 length]);
 
-  if (a4)
+  if (kit)
   {
-    v31 = [v27 genericData];
+    genericData = [firstObject genericData];
 
-    if (v31)
+    if (genericData)
     {
       v32 = MEMORY[0x277CCAC58];
-      v33 = [v27 genericData];
-      v34 = [v32 propertyListWithData:v33 options:0 format:0 error:0];
+      genericData2 = [firstObject genericData];
+      v34 = [v32 propertyListWithData:genericData2 options:0 format:0 error:0];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -4852,7 +4852,7 @@ LABEL_21:
           v35 = 0;
         }
 
-        *a4 = [v35 BOOLValue];
+        *kit = [v35 BOOLValue];
 
         goto LABEL_24;
       }
@@ -4864,7 +4864,7 @@ LABEL_21:
 
 LABEL_24:
   v11 = v47;
-  if (a3)
+  if (key)
   {
     goto LABEL_25;
   }
@@ -4875,9 +4875,9 @@ LABEL_28:
   return v11;
 }
 
-- (id)readPublicKeyForAccessoryName:(id)a3 registeredWithHomeKit:(BOOL *)a4 error:(id *)a5
+- (id)readPublicKeyForAccessoryName:(id)name registeredWithHomeKit:(BOOL *)kit error:(id *)error
 {
-  v8 = a3;
+  nameCopy = name;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -4890,22 +4890,22 @@ LABEL_28:
   v21 = __Block_byref_object_copy__5207;
   v22 = __Block_byref_object_dispose__5208;
   v23 = 0;
-  v9 = [(HAPSystemKeychainStore *)self queue];
+  queue = [(HAPSystemKeychainStore *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __84__HAPSystemKeychainStore_readPublicKeyForAccessoryName_registeredWithHomeKit_error___block_invoke;
   block[3] = &unk_2786D56D8;
   block[4] = self;
   v15 = &v24;
-  v17 = a4;
-  v10 = v8;
+  kitCopy = kit;
+  v10 = nameCopy;
   v14 = v10;
   v16 = &v18;
-  dispatch_sync(v9, block);
+  dispatch_sync(queue, block);
 
-  if (a5)
+  if (error)
   {
-    *a5 = v19[5];
+    *error = v19[5];
   }
 
   v11 = v25[5];
@@ -4928,11 +4928,11 @@ void __84__HAPSystemKeychainStore_readPublicKeyForAccessoryName_registeredWithHo
   *(v5 + 40) = v4;
 }
 
-- (BOOL)removeControllerKeyPairForIdentifier:(id)a3 leaveTombstone:(BOOL)a4 error:(id *)a5
+- (BOOL)removeControllerKeyPairForIdentifier:(id)identifier leaveTombstone:(BOOL)tombstone error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (v8)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v22 = 0;
     v23 = &v22;
@@ -4944,21 +4944,21 @@ void __84__HAPSystemKeychainStore_readPublicKeyForAccessoryName_registeredWithHo
     v28 = __Block_byref_object_copy__5207;
     v29 = __Block_byref_object_dispose__5208;
     v30 = 0;
-    v9 = [(HAPSystemKeychainStore *)self queue];
+    queue = [(HAPSystemKeychainStore *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __84__HAPSystemKeychainStore_removeControllerKeyPairForIdentifier_leaveTombstone_error___block_invoke;
     block[3] = &unk_2786D3740;
     block[4] = self;
-    v21 = a4;
-    v18 = v8;
+    tombstoneCopy = tombstone;
+    v18 = identifierCopy;
     p_buf = &buf;
     v20 = &v22;
-    dispatch_sync(v9, block);
+    dispatch_sync(queue, block);
 
-    if (a5)
+    if (error)
     {
-      *a5 = *(*(&buf + 1) + 40);
+      *error = *(*(&buf + 1) + 40);
     }
 
     v10 = *(v23 + 24);
@@ -4970,7 +4970,7 @@ void __84__HAPSystemKeychainStore_readPublicKeyForAccessoryName_registeredWithHo
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -4981,10 +4981,10 @@ void __84__HAPSystemKeychainStore_readPublicKeyForAccessoryName_registeredWithHo
     }
 
     objc_autoreleasePoolPop(v11);
-    if (a5)
+    if (error)
     {
       HMErrorFromOSStatus(4294960569);
-      *a5 = v10 = 0;
+      *error = v10 = 0;
     }
 
     else
@@ -5038,7 +5038,7 @@ void __84__HAPSystemKeychainStore_removeControllerKeyPairForIdentifier_leaveTomb
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)removeControllerKeyPairLeaveTombstone:(BOOL)a3 error:(id *)a4
+- (BOOL)removeControllerKeyPairLeaveTombstone:(BOOL)tombstone error:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -5050,20 +5050,20 @@ void __84__HAPSystemKeychainStore_removeControllerKeyPairForIdentifier_leaveTomb
   v15 = __Block_byref_object_copy__5207;
   v16 = __Block_byref_object_dispose__5208;
   v17 = 0;
-  v7 = [(HAPSystemKeychainStore *)self queue];
+  queue = [(HAPSystemKeychainStore *)self queue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __70__HAPSystemKeychainStore_removeControllerKeyPairLeaveTombstone_error___block_invoke;
   v10[3] = &unk_2786D3718;
-  v11 = a3;
+  tombstoneCopy = tombstone;
   v10[4] = self;
   v10[5] = &v18;
   v10[6] = &v12;
-  dispatch_sync(v7, v10);
+  dispatch_sync(queue, v10);
 
-  if (a4)
+  if (error)
   {
-    *a4 = v13[5];
+    *error = v13[5];
   }
 
   v8 = *(v19 + 24);
@@ -5113,7 +5113,7 @@ void __70__HAPSystemKeychainStore_removeControllerKeyPairLeaveTombstone_error___
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)getCurrentiCloudIdentifier:(id *)a3 controllerPairingIdentifier:(id *)a4 error:(id *)a5
+- (BOOL)getCurrentiCloudIdentifier:(id *)identifier controllerPairingIdentifier:(id *)pairingIdentifier error:(id *)error
 {
   v31 = 0;
   v32 = &v31;
@@ -5137,7 +5137,7 @@ void __70__HAPSystemKeychainStore_removeControllerKeyPairLeaveTombstone_error___
   v16 = __Block_byref_object_copy__5207;
   v17 = __Block_byref_object_dispose__5208;
   v18 = 0;
-  v9 = [(HAPSystemKeychainStore *)self queue];
+  queue = [(HAPSystemKeychainStore *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87__HAPSystemKeychainStore_getCurrentiCloudIdentifier_controllerPairingIdentifier_error___block_invoke;
@@ -5147,21 +5147,21 @@ void __70__HAPSystemKeychainStore_removeControllerKeyPairLeaveTombstone_error___
   block[6] = &v19;
   block[7] = &v13;
   block[8] = &v31;
-  dispatch_sync(v9, block);
+  dispatch_sync(queue, block);
 
-  if (a3)
+  if (identifier)
   {
-    *a3 = v26[5];
+    *identifier = v26[5];
   }
 
-  if (a4)
+  if (pairingIdentifier)
   {
-    *a4 = v20[5];
+    *pairingIdentifier = v20[5];
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = v14[5];
+    *error = v14[5];
   }
 
   v10 = *(v32 + 24);
@@ -5220,10 +5220,10 @@ void __87__HAPSystemKeychainStore_getCurrentiCloudIdentifier_controllerPairingId
   }
 }
 
-- (int)_updateCurrentiCloudIdentifier:(id)a3 controllerPairingIdentifier:(id)a4
+- (int)_updateCurrentiCloudIdentifier:(id)identifier controllerPairingIdentifier:(id)pairingIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  pairingIdentifierCopy = pairingIdentifier;
   v16 = 0;
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:1751216211];
   v9 = [(HAPSystemKeychainStore *)self _getKeychainItemsForAccessGroup:@"com.apple.hap.pairing" type:v8 account:0 shouldReturnData:1 error:&v16];
@@ -5231,7 +5231,7 @@ void __87__HAPSystemKeychainStore_getCurrentiCloudIdentifier_controllerPairingId
   if (![v9 count] || (objc_msgSend(v9, "firstObject"), v10 = objc_claimAutoreleasedReturnValue(), v16 = -[HAPSystemKeychainStore _removeKeychainItem:leaveTombstone:](self, "_removeKeychainItem:leaveTombstone:", v10, 1), v10, (v11 = v16) == 0))
   {
     v11 = 0;
-    if (v6 && v7)
+    if (identifierCopy && pairingIdentifierCopy)
     {
       v12 = objc_alloc_init(HAPKeychainItem);
       [(HAPKeychainItem *)v12 setAccessGroup:@"com.apple.hap.pairing"];
@@ -5241,8 +5241,8 @@ void __87__HAPSystemKeychainStore_getCurrentiCloudIdentifier_controllerPairingId
       [(HAPKeychainItem *)v12 setLabel:@"iCloud HomeKit Identifier"];
       [(HAPKeychainItem *)v12 setItemDescription:@"Per-device mapping between the current iCloud account and the HomeKit Pairing Identity."];
       [(HAPKeychainItem *)v12 setSyncable:0];
-      [(HAPKeychainItem *)v12 setAccount:v6];
-      v14 = [v7 dataUsingEncoding:4];
+      [(HAPKeychainItem *)v12 setAccount:identifierCopy];
+      v14 = [pairingIdentifierCopy dataUsingEncoding:4];
       [(HAPKeychainItem *)v12 setValueData:v14];
 
       v11 = [(HAPSystemKeychainStore *)self _addKeychainItem:v12 logDuplicateItemError:1];
@@ -5253,15 +5253,15 @@ void __87__HAPSystemKeychainStore_getCurrentiCloudIdentifier_controllerPairingId
   return v11;
 }
 
-- (BOOL)updateCurrentiCloudIdentifier:(id)a3 controllerPairingIdentifier:(id)a4 error:(id *)a5
+- (BOOL)updateCurrentiCloudIdentifier:(id)identifier controllerPairingIdentifier:(id)pairingIdentifier error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  pairingIdentifierCopy = pairingIdentifier;
   if ([(HAPSystemKeychainStore *)self isHH2Enabled])
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -5294,21 +5294,21 @@ void __87__HAPSystemKeychainStore_getCurrentiCloudIdentifier_controllerPairingId
     v32 = __Block_byref_object_copy__5207;
     v33 = __Block_byref_object_dispose__5208;
     v34 = 0;
-    v19 = [(HAPSystemKeychainStore *)self queue];
+    queue = [(HAPSystemKeychainStore *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __90__HAPSystemKeychainStore_updateCurrentiCloudIdentifier_controllerPairingIdentifier_error___block_invoke;
     block[3] = &unk_2786D50A0;
     block[4] = self;
-    v23 = v9;
-    v24 = v10;
+    v23 = identifierCopy;
+    v24 = pairingIdentifierCopy;
     v25 = &v27;
     v26 = buf;
-    dispatch_sync(v19, block);
+    dispatch_sync(queue, block);
 
-    if (a5)
+    if (error)
     {
-      *a5 = *(*&buf[8] + 40);
+      *error = *(*&buf[8] + 40);
     }
 
     v18 = *(v28 + 24);
@@ -5350,14 +5350,14 @@ uint64_t __90__HAPSystemKeychainStore_updateCurrentiCloudIdentifier_controllerPa
   v10 = __Block_byref_object_copy__5207;
   v11 = __Block_byref_object_dispose__5208;
   v12 = 0;
-  v3 = [(HAPSystemKeychainStore *)self queue];
+  queue = [(HAPSystemKeychainStore *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__HAPSystemKeychainStore_activeControllerPairingIdentifier__block_invoke;
   v6[3] = &unk_2786D6E60;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -5375,27 +5375,27 @@ uint64_t __59__HAPSystemKeychainStore_activeControllerPairingIdentifier__block_i
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)updateActiveControllerPairingIdentifier:(id)a3
+- (BOOL)updateActiveControllerPairingIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(HAPSystemKeychainStore *)self queue];
+  queue = [(HAPSystemKeychainStore *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__HAPSystemKeychainStore_updateActiveControllerPairingIdentifier___block_invoke;
   block[3] = &unk_2786D4F60;
   block[4] = self;
-  v9 = v4;
+  v9 = identifierCopy;
   v10 = &v11;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = identifierCopy;
+  dispatch_sync(queue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(identifierCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return identifierCopy;
 }
 
 void __66__HAPSystemKeychainStore_updateActiveControllerPairingIdentifier___block_invoke(uint64_t a1)
@@ -5459,10 +5459,10 @@ void __66__HAPSystemKeychainStore_updateActiveControllerPairingIdentifier___bloc
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (int)_getAllAvailableControllerPublicKeys:(id *)a3 secretKeys:(id *)a4 userNames:(id *)a5
+- (int)_getAllAvailableControllerPublicKeys:(id *)keys secretKeys:(id *)secretKeys userNames:(id *)names
 {
   v56 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v52 = 0;
   v8 = deviceSupportsKeychainSync();
   if (v8)
@@ -5476,18 +5476,18 @@ void __66__HAPSystemKeychainStore_updateActiveControllerPairingIdentifier___bloc
   }
 
   v10 = [(HAPSystemKeychainStore *)self _getKeychainItemsForAccessGroup:@"com.apple.hap.pairing" type:v9 account:0 shouldReturnData:1 error:&v52];
-  [v7 addObjectsFromArray:v10];
+  [array addObjectsFromArray:v10];
   v51 = 0;
   v43 = [(HAPSystemKeychainStore *)self _getKeychainItemsForAccessGroup:@"com.apple.hap.pairing" type:&unk_283EA9650 account:0 shouldReturnData:1 error:&v51];
-  [v7 addObjectsFromArray:?];
+  [array addObjectsFromArray:?];
   v50 = 0;
   v42 = [(HAPSystemKeychainStore *)self _getKeychainItemsForAccessGroup:@"com.apple.hap.pairing" type:&unk_283EA9668 account:0 shouldReturnData:1 error:&v50];
-  [v7 addObjectsFromArray:?];
+  [array addObjectsFromArray:?];
   if (v8)
   {
     v55[0] = 0;
     v11 = [(HAPSystemKeychainStore *)self _getKeychainItemsForAccessGroup:@"com.apple.hap.pairing" type:&unk_283EA9680 account:0 shouldReturnData:1 error:v55];
-    [v7 addObjectsFromArray:v11];
+    [array addObjectsFromArray:v11];
     v13 = v51;
     v12 = v52;
     v14 = v50;
@@ -5499,7 +5499,7 @@ void __66__HAPSystemKeychainStore_updateActiveControllerPairingIdentifier___bloc
     }
 
 LABEL_13:
-    v16 = 0;
+    array4 = 0;
     v17 = 0;
     v18 = 0;
     v19 = 0;
@@ -5515,27 +5515,27 @@ LABEL_13:
   }
 
 LABEL_14:
-  if ([v7 count])
+  if ([array count])
   {
-    v45 = [MEMORY[0x277CBEB18] array];
-    v44 = [MEMORY[0x277CBEB18] array];
-    v16 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
+    array4 = [MEMORY[0x277CBEB18] array];
   }
 
   else
   {
-    v16 = 0;
-    v44 = 0;
-    v45 = 0;
+    array4 = 0;
+    array3 = 0;
+    array2 = 0;
   }
 
-  v38 = a5;
+  namesCopy = names;
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v39 = v7;
-  v22 = v7;
+  v39 = array;
+  v22 = array;
   v23 = [v22 countByEnumeratingWithState:&v46 objects:v53 count:16];
   if (v23)
   {
@@ -5552,33 +5552,33 @@ LABEL_14:
         }
 
         v27 = *(*(&v46 + 1) + 8 * i);
-        v28 = [v27 account];
-        v29 = [v16 containsObject:v28];
+        account = [v27 account];
+        v29 = [array4 containsObject:account];
 
         if ((v29 & 1) == 0)
         {
-          v30 = [v27 valueData];
-          v12 = _deserializeDataToKeyPair(v30, v55, __s);
+          valueData = [v27 valueData];
+          v12 = _deserializeDataToKeyPair(valueData, v55, __s);
 
           if (v12)
           {
 
-            v7 = v39;
+            array = v39;
             v21 = v42;
             v20 = v43;
-            v17 = v44;
-            v18 = v45;
+            v17 = array3;
+            v18 = array2;
             goto LABEL_37;
           }
 
           v31 = [MEMORY[0x277CBEA90] dataWithBytes:v55 length:32];
 
-          [v45 addObject:v31];
+          [array2 addObject:v31];
           v19 = [MEMORY[0x277CBEA90] dataWithBytes:__s length:32];
 
-          [v44 addObject:v19];
-          v32 = [v27 account];
-          [v16 addObject:v32];
+          [array3 addObject:v19];
+          account2 = [v27 account];
+          [array4 addObject:account2];
         }
       }
 
@@ -5598,28 +5598,28 @@ LABEL_14:
   }
 
   memset_s(__s, 0x20uLL, 0, 0x20uLL);
-  v18 = v45;
-  if (a3)
+  v18 = array2;
+  if (keys)
   {
-    v33 = v45;
-    *a3 = v45;
+    v33 = array2;
+    *keys = array2;
   }
 
-  v7 = v39;
+  array = v39;
   v21 = v42;
   v20 = v43;
-  v17 = v44;
-  if (a4)
+  v17 = array3;
+  if (secretKeys)
   {
-    v34 = v44;
-    *a4 = v44;
+    v34 = array3;
+    *secretKeys = array3;
   }
 
-  if (v38)
+  if (namesCopy)
   {
-    v35 = v16;
+    v35 = array4;
     v12 = 0;
-    *v38 = v16;
+    *namesCopy = array4;
   }
 
   else
@@ -5633,7 +5633,7 @@ LABEL_37:
   return v12;
 }
 
-- (BOOL)getAllAvailableControllerPublicKeys:(id *)a3 secretKeys:(id *)a4 userNames:(id *)a5 error:(id *)a6
+- (BOOL)getAllAvailableControllerPublicKeys:(id *)keys secretKeys:(id *)secretKeys userNames:(id *)names error:(id *)error
 {
   v39 = 0;
   v40 = &v39;
@@ -5663,7 +5663,7 @@ LABEL_37:
   v18 = __Block_byref_object_copy__5207;
   v19 = __Block_byref_object_dispose__5208;
   v20 = 0;
-  v11 = [(HAPSystemKeychainStore *)self queue];
+  queue = [(HAPSystemKeychainStore *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __89__HAPSystemKeychainStore_getAllAvailableControllerPublicKeys_secretKeys_userNames_error___block_invoke;
@@ -5674,26 +5674,26 @@ LABEL_37:
   block[7] = &v21;
   block[8] = &v15;
   block[9] = &v39;
-  dispatch_sync(v11, block);
+  dispatch_sync(queue, block);
 
-  if (a3)
+  if (keys)
   {
-    *a3 = v34[5];
+    *keys = v34[5];
   }
 
-  if (a4)
+  if (secretKeys)
   {
-    *a4 = v28[5];
+    *secretKeys = v28[5];
   }
 
-  if (a5)
+  if (names)
   {
-    *a5 = v22[5];
+    *names = v22[5];
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = v16[5];
+    *error = v16[5];
   }
 
   v12 = *(v40 + 24);
@@ -5734,19 +5734,19 @@ void __89__HAPSystemKeychainStore_getAllAvailableControllerPublicKeys_secretKeys
   }
 }
 
-- (BOOL)deserializeKeyPair:(id)a3 publicKey:(id *)a4 secretKey:(id *)a5 error:(id *)a6
+- (BOOL)deserializeKeyPair:(id)pair publicKey:(id *)key secretKey:(id *)secretKey error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v9 = _deserializeDataToKeyPair(a3, v16, __s);
+  v9 = _deserializeDataToKeyPair(pair, v16, __s);
   v10 = v9;
-  if (a4)
+  if (key)
   {
     if (!v9)
     {
       v11 = [MEMORY[0x277CBEA90] dataWithBytes:v16 length:32];
-      *a4 = v11;
+      *key = v11;
 
-      if (!a5)
+      if (!secretKey)
       {
         goto LABEL_9;
       }
@@ -5754,29 +5754,29 @@ void __89__HAPSystemKeychainStore_getAllAvailableControllerPublicKeys_secretKeys
       goto LABEL_8;
     }
 
-    *a4 = 0;
+    *key = 0;
   }
 
-  if (!a5)
+  if (!secretKey)
   {
     goto LABEL_9;
   }
 
   if (v9)
   {
-    *a5 = 0;
+    *secretKey = 0;
     goto LABEL_9;
   }
 
 LABEL_8:
   v12 = [MEMORY[0x277CBEA90] dataWithBytes:__s length:32];
-  *a5 = v12;
+  *secretKey = v12;
 
 LABEL_9:
   memset_s(__s, 0x20uLL, 0, 0x20uLL);
-  if (a6)
+  if (error)
   {
-    *a6 = HMErrorFromOSStatus(v10);
+    *error = HMErrorFromOSStatus(v10);
   }
 
   result = v10 == 0;
@@ -5784,10 +5784,10 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)saveKeyPair:(id)a3 username:(id)a4 syncable:(BOOL)a5 error:(id *)a6
+- (BOOL)saveKeyPair:(id)pair username:(id)username syncable:(BOOL)syncable error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  pairCopy = pair;
+  usernameCopy = username;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -5798,24 +5798,24 @@ LABEL_9:
   v26 = __Block_byref_object_copy__5207;
   v27 = __Block_byref_object_dispose__5208;
   v28 = 0;
-  v12 = [(HAPSystemKeychainStore *)self queue];
+  queue = [(HAPSystemKeychainStore *)self queue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __62__HAPSystemKeychainStore_saveKeyPair_username_syncable_error___block_invoke;
   v17[3] = &unk_2786D4638;
-  v22 = a5;
+  syncableCopy = syncable;
   v17[4] = self;
-  v13 = v10;
+  v13 = pairCopy;
   v18 = v13;
-  v14 = v11;
+  v14 = usernameCopy;
   v19 = v14;
   v20 = &v23;
   v21 = &v29;
-  dispatch_sync(v12, v17);
+  dispatch_sync(queue, v17);
 
-  if (a6)
+  if (error)
   {
-    *a6 = v24[5];
+    *error = v24[5];
   }
 
   v15 = *(v30 + 24);
@@ -5879,28 +5879,28 @@ LABEL_9:
   }
 }
 
-- (int)_createControllerPublicKey:(id *)a3 secretKey:(id *)a4 keyPair:(id *)a5 username:(id *)a6
+- (int)_createControllerPublicKey:(id *)key secretKey:(id *)secretKey keyPair:(id *)pair username:(id *)username
 {
   v68 = *MEMORY[0x277D85DE8];
   cced25519_make_key_pair_compat();
   v59 = 0;
   _serializeKeyPairToData(v67, __s, &v59);
   v11 = v59;
-  v12 = [MEMORY[0x277CCAD78] UUID];
-  v13 = [v12 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
   v14 = objc_alloc_init(HAPKeychainItem);
   [(HAPKeychainItem *)v14 setAccessGroup:@"com.apple.hap.pairing"];
   [(HAPKeychainItem *)v14 setLabel:@"HomeKit Pairing Identity"];
   [(HAPKeychainItem *)v14 setItemDescription:@"Identity used to pair with HomeKit accessories."];
-  [(HAPKeychainItem *)v14 setAccount:v13];
+  [(HAPKeychainItem *)v14 setAccount:uUIDString];
   [(HAPKeychainItem *)v14 setValueData:v11];
   if (deviceSupportsKeychainSync())
   {
     [(HAPKeychainItem *)v14 setSyncable:1];
     [(HAPKeychainItem *)v14 setType:&unk_283EA9638];
-    v15 = [(HAPKeychainItem *)v14 type];
-    v16 = __viewHintForKeyType(v15);
+    type = [(HAPKeychainItem *)v14 type];
+    v16 = __viewHintForKeyType(type);
     [(HAPKeychainItem *)v14 setViewHint:v16];
 
     v17 = [(HAPSystemKeychainStore *)self _addKeychainItem:v14 logDuplicateItemError:1];
@@ -5908,7 +5908,7 @@ LABEL_9:
     {
       v18 = v17;
       v19 = objc_autoreleasePoolPush();
-      v20 = self;
+      selfCopy = self;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
@@ -5917,7 +5917,7 @@ LABEL_9:
         *buf = 138543874;
         v61 = v22;
         v62 = 2112;
-        v63 = v13;
+        v63 = uUIDString;
         v64 = 2112;
         v65 = v23;
         v24 = "%{public}@Failed to create v3 controller key for username %@ with error: %@";
@@ -5932,42 +5932,42 @@ LABEL_8:
 
     [(HAPKeychainItem *)v14 setSyncable:1];
     [(HAPKeychainItem *)v14 setType:&unk_283EA9650];
-    v29 = [(HAPKeychainItem *)v14 type];
-    v30 = __viewHintForKeyType(v29);
+    type2 = [(HAPKeychainItem *)v14 type];
+    v30 = __viewHintForKeyType(type2);
     [(HAPKeychainItem *)v14 setViewHint:v30];
 
     v31 = [(HAPSystemKeychainStore *)self _addKeychainItem:v14 logDuplicateItemError:1];
-    v58 = a5;
+    pairCopy = pair;
     if (v31)
     {
       v32 = v31;
       context = objc_autoreleasePoolPush();
-      v33 = self;
+      selfCopy2 = self;
       v34 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
       {
         HMFGetLogIdentifier();
-        v35 = v55 = a6;
+        v35 = v55 = username;
         v36 = HMErrorFromOSStatus(v32);
         *buf = 138543874;
         v61 = v35;
         v62 = 2112;
-        v63 = v13;
+        v63 = uUIDString;
         v64 = 2112;
         v65 = v36;
         _os_log_impl(&dword_22AADC000, v34, OS_LOG_TYPE_ERROR, "%{public}@Failed to create v2 controller key for username %@ with error: %@", buf, 0x20u);
 
-        a6 = v55;
+        username = v55;
       }
 
       objc_autoreleasePoolPop(context);
-      a5 = v58;
+      pair = pairCopy;
     }
 
     [(HAPKeychainItem *)v14 setSyncable:1, v55];
     [(HAPKeychainItem *)v14 setType:&unk_283EA9668];
-    v37 = [(HAPKeychainItem *)v14 type];
-    v38 = __viewHintForKeyType(v37);
+    type3 = [(HAPKeychainItem *)v14 type];
+    v38 = __viewHintForKeyType(type3);
     [(HAPKeychainItem *)v14 setViewHint:v38];
 
     v39 = [(HAPSystemKeychainStore *)self _addKeychainItem:v14 logDuplicateItemError:1];
@@ -5975,62 +5975,62 @@ LABEL_8:
     {
       v40 = v39;
       contexta = objc_autoreleasePoolPush();
-      v41 = self;
+      selfCopy3 = self;
       v42 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
       {
         HMFGetLogIdentifier();
-        v43 = v55 = a4;
+        v43 = v55 = secretKey;
         v44 = HMErrorFromOSStatus(v40);
         *buf = 138543874;
         v61 = v43;
         v62 = 2112;
-        v63 = v13;
+        v63 = uUIDString;
         v64 = 2112;
         v65 = v44;
         _os_log_impl(&dword_22AADC000, v42, OS_LOG_TYPE_ERROR, "%{public}@Failed to create v0 controller key for username %@ with error: %@", buf, 0x20u);
 
-        a4 = v55;
+        secretKey = v55;
       }
 
       objc_autoreleasePoolPop(contexta);
-      a5 = v58;
+      pair = pairCopy;
     }
 
 LABEL_17:
-    if (a3)
+    if (key)
     {
       v45 = [MEMORY[0x277CBEA90] dataWithBytes:v67 length:32];
-      *a3 = v45;
+      *key = v45;
     }
 
-    if (a4)
+    if (secretKey)
     {
       v46 = [MEMORY[0x277CBEA90] dataWithBytes:__s length:32];
-      *a4 = v46;
+      *secretKey = v46;
     }
 
-    if (a6)
+    if (username)
     {
-      v47 = v13;
-      *a6 = v13;
+      v47 = uUIDString;
+      *username = uUIDString;
     }
 
-    if (a5)
+    if (pair)
     {
-      *a5 = [(HAPKeychainItem *)v14 valueData];
+      *pair = [(HAPKeychainItem *)v14 valueData];
     }
 
-    [(HAPSystemKeychainStore *)self setActiveControllerIdentifier:v13, v55];
+    [(HAPSystemKeychainStore *)self setActiveControllerIdentifier:uUIDString, v55];
     v48 = objc_opt_new();
     v49 = [v48 backupWithInfo:0];
 
     memset_s(__s, 0x20uLL, 0, 0x20uLL);
-    v50 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v50 postNotificationName:@"kControllerKeyPairGeneratedNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"kControllerKeyPairGeneratedNotification" object:self];
 
     v19 = objc_autoreleasePoolPush();
-    v51 = self;
+    selfCopy4 = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
@@ -6046,8 +6046,8 @@ LABEL_17:
 
   [(HAPKeychainItem *)v14 setSyncable:0];
   [(HAPKeychainItem *)v14 setType:&unk_283EA9680];
-  v25 = [(HAPKeychainItem *)v14 type];
-  v26 = __viewHintForKeyType(v25);
+  type4 = [(HAPKeychainItem *)v14 type];
+  v26 = __viewHintForKeyType(type4);
   [(HAPKeychainItem *)v14 setViewHint:v26];
 
   v27 = [(HAPSystemKeychainStore *)self _addKeychainItem:v14 logDuplicateItemError:1];
@@ -6058,7 +6058,7 @@ LABEL_17:
 
   v18 = v27;
   v19 = objc_autoreleasePoolPush();
-  v28 = self;
+  selfCopy5 = self;
   v21 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
   {
@@ -6067,7 +6067,7 @@ LABEL_17:
     *buf = 138543874;
     v61 = v22;
     v62 = 2112;
-    v63 = v13;
+    v63 = uUIDString;
     v64 = 2112;
     v65 = v23;
     v24 = "%{public}@Failed to create syncable controller key for username %@ with error: %@";
@@ -6081,16 +6081,16 @@ LABEL_28:
   return v18;
 }
 
-- (id)_getControllerKeychainItemForKeyType:(id)a3 error:(int *)a4
+- (id)_getControllerKeychainItemForKeyType:(id)type error:(int *)error
 {
   v29 = *MEMORY[0x277D85DE8];
   v27 = 0;
-  v6 = [(HAPSystemKeychainStore *)self _getKeychainItemsForAccessGroup:@"com.apple.hap.pairing" type:a3 account:0 shouldReturnData:1 error:&v27];
+  v6 = [(HAPSystemKeychainStore *)self _getKeychainItemsForAccessGroup:@"com.apple.hap.pairing" type:type account:0 shouldReturnData:1 error:&v27];
   v7 = v6;
   if (v27)
   {
     v18 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_22;
     }
@@ -6108,17 +6108,17 @@ LABEL_28:
     }
 
     v18 = [v7 objectAtIndexedSubscript:0];
-    if (!a4)
+    if (!error)
     {
       goto LABEL_22;
     }
 
 LABEL_21:
-    *a4 = v27;
+    *error = v27;
     goto LABEL_22;
   }
 
-  v22 = a4;
+  errorCopy = error;
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
@@ -6129,13 +6129,13 @@ LABEL_21:
   {
 LABEL_12:
 
-    a4 = v22;
+    error = errorCopy;
 LABEL_13:
     v18 = 0;
     v19 = -6727;
 LABEL_14:
     v27 = v19;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_22;
     }
@@ -6155,9 +6155,9 @@ LABEL_6:
     }
 
     v14 = *(*(&v23 + 1) + 8 * v13);
-    v15 = [v14 account];
-    v16 = [(HAPSystemKeychainStore *)self activeControllerIdentifier];
-    v17 = [v15 isEqualToString:v16];
+    account = [v14 account];
+    activeControllerIdentifier = [(HAPSystemKeychainStore *)self activeControllerIdentifier];
+    v17 = [account isEqualToString:activeControllerIdentifier];
 
     if (v17)
     {
@@ -6178,13 +6178,13 @@ LABEL_6:
 
   v18 = v14;
 
-  a4 = v22;
+  error = errorCopy;
   if (!v18)
   {
     goto LABEL_13;
   }
 
-  if (v22)
+  if (errorCopy)
   {
     goto LABEL_21;
   }
@@ -6196,7 +6196,7 @@ LABEL_22:
   return v18;
 }
 
-- (id)_getControllerKeychainItemError:(int *)a3
+- (id)_getControllerKeychainItemError:(int *)error
 {
   v22 = *MEMORY[0x277D85DE8];
   v19 = 0;
@@ -6238,7 +6238,7 @@ LABEL_22:
           }
 
           v13 = objc_autoreleasePoolPush();
-          v14 = self;
+          selfCopy = self;
           v15 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
           {
@@ -6252,7 +6252,7 @@ LABEL_22:
         else
         {
           v13 = objc_autoreleasePoolPush();
-          v17 = self;
+          selfCopy2 = self;
           v15 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
           {
@@ -6273,9 +6273,9 @@ LABEL_27:
   }
 
 LABEL_11:
-  if (a3)
+  if (error)
   {
-    *a3 = v19;
+    *error = v19;
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -6283,7 +6283,7 @@ LABEL_11:
   return v7;
 }
 
-- (int)_getControllerPublicKey:(id *)a3 secretKey:(id *)a4 keyPair:(id *)a5 username:(id *)a6
+- (int)_getControllerPublicKey:(id *)key secretKey:(id *)secretKey keyPair:(id *)pair username:(id *)username
 {
   v22 = *MEMORY[0x277D85DE8];
   v19 = 0;
@@ -6291,18 +6291,18 @@ LABEL_11:
   v11 = v10;
   if (!v19)
   {
-    v12 = [v10 valueData];
-    v19 = _deserializeDataToKeyPair(v12, v21, __s);
+    valueData = [v10 valueData];
+    v19 = _deserializeDataToKeyPair(valueData, v21, __s);
   }
 
-  if (a3)
+  if (key)
   {
     if (!v19)
     {
       v13 = [MEMORY[0x277CBEA90] dataWithBytes:v21 length:32];
-      *a3 = v13;
+      *key = v13;
 
-      if (!a4)
+      if (!secretKey)
       {
         goto LABEL_12;
       }
@@ -6310,10 +6310,10 @@ LABEL_11:
       goto LABEL_7;
     }
 
-    *a3 = 0;
+    *key = 0;
   }
 
-  if (!a4)
+  if (!secretKey)
   {
     goto LABEL_12;
   }
@@ -6321,32 +6321,32 @@ LABEL_11:
 LABEL_7:
   if (v19)
   {
-    *a4 = 0;
+    *secretKey = 0;
   }
 
   else
   {
     v14 = [MEMORY[0x277CBEA90] dataWithBytes:__s length:32];
-    *a4 = v14;
+    *secretKey = v14;
   }
 
 LABEL_12:
-  if (a5)
+  if (pair)
   {
-    *a5 = [v11 valueData];
+    *pair = [v11 valueData];
   }
 
-  if (a6)
+  if (username)
   {
     if (v19)
     {
-      *a6 = 0;
+      *username = 0;
     }
 
     else
     {
-      v15 = [v11 account];
-      *a6 = v15;
+      account = [v11 account];
+      *username = account;
     }
   }
 
@@ -6357,7 +6357,7 @@ LABEL_12:
   return v16;
 }
 
-- (BOOL)getControllerPublicKey:(id *)a3 secretKey:(id *)a4 keyPair:(id *)a5 username:(id *)a6 allowCreation:(BOOL)a7 error:(id *)a8
+- (BOOL)getControllerPublicKey:(id *)key secretKey:(id *)secretKey keyPair:(id *)pair username:(id *)username allowCreation:(BOOL)creation error:(id *)error
 {
   v50 = 0;
   v51 = &v50;
@@ -6393,7 +6393,7 @@ LABEL_12:
   v23 = __Block_byref_object_copy__5207;
   v24 = __Block_byref_object_dispose__5208;
   v25 = 0;
-  v12 = [(HAPSystemKeychainStore *)self queue];
+  queue = [(HAPSystemKeychainStore *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __96__HAPSystemKeychainStore_getControllerPublicKey_secretKey_keyPair_username_allowCreation_error___block_invoke;
@@ -6402,35 +6402,35 @@ LABEL_12:
   block[5] = &v44;
   block[6] = &v38;
   block[7] = &v32;
-  v19 = a7;
+  creationCopy = creation;
   block[8] = &v26;
   block[9] = &v20;
   block[10] = &v50;
-  dispatch_sync(v12, block);
+  dispatch_sync(queue, block);
 
-  if (a3)
+  if (key)
   {
-    *a3 = v45[5];
+    *key = v45[5];
   }
 
-  if (a4)
+  if (secretKey)
   {
-    *a4 = v39[5];
+    *secretKey = v39[5];
   }
 
-  if (a5)
+  if (pair)
   {
-    *a5 = v33[5];
+    *pair = v33[5];
   }
 
-  if (a6)
+  if (username)
   {
-    *a6 = v27[5];
+    *username = v27[5];
   }
 
-  if (a8)
+  if (error)
   {
-    *a8 = v21[5];
+    *error = v21[5];
   }
 
   v13 = *(v51 + 24);
@@ -6503,7 +6503,7 @@ void __96__HAPSystemKeychainStore_getControllerPublicKey_secretKey_keyPair_usern
   if ([(HAPSystemKeychainStore *)self isHH2Enabled])
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -6525,13 +6525,13 @@ void __96__HAPSystemKeychainStore_getControllerPublicKey_secretKey_keyPair_usern
 
   else
   {
-    v11 = [(HAPSystemKeychainStore *)self queue];
+    queue = [(HAPSystemKeychainStore *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __62__HAPSystemKeychainStore_ensureControllerKeyExistsForAllViews__block_invoke;
     block[3] = &unk_2786D6CA0;
     block[4] = self;
-    dispatch_async(v11, block);
+    dispatch_async(queue, block);
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -6760,7 +6760,7 @@ LABEL_41:
 {
   v23 = *MEMORY[0x277D85DE8];
   v21 = 0;
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   for (i = 0; i != 18; ++i)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:dumpState_keyTypes[i]];
@@ -6768,18 +6768,18 @@ LABEL_41:
 
     if ([v6 count])
     {
-      [v3 addObjectsFromArray:v6];
+      [array addObjectsFromArray:v6];
     }
   }
 
-  if ([v3 count])
+  if ([array count])
   {
-    v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+    v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(array, "count")}];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = v3;
+    v8 = array;
     v9 = [v8 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v9)
     {
@@ -6835,18 +6835,18 @@ LABEL_41:
   v18 = *MEMORY[0x277D85DE8];
   out_token = -1;
   objc_initWeak(&location, self);
-  v3 = [(HAPSystemKeychainStore *)self queue];
+  queue = [(HAPSystemKeychainStore *)self queue];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __35__HAPSystemKeychainStore_configure__block_invoke;
   handler[3] = &unk_2786D39E0;
   objc_copyWeak(&v11, &location);
-  v4 = notify_register_dispatch("com.apple.security.view-change.Home", &out_token, v3, handler);
+  v4 = notify_register_dispatch("com.apple.security.view-change.Home", &out_token, queue, handler);
 
   if (v4)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -6927,14 +6927,14 @@ uint64_t __37__HAPSystemKeychainStore_logCategory__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)serializeDictionary:(id)a3 options:(unint64_t)a4
++ (id)serializeDictionary:(id)dictionary options:(unint64_t)options
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v17 = 0;
-    v7 = [MEMORY[0x277CCAC58] dataWithPropertyList:v6 format:200 options:a4 error:&v17];
+    v7 = [MEMORY[0x277CCAC58] dataWithPropertyList:dictionaryCopy format:200 options:options error:&v17];
     v8 = v17;
     if (v8)
     {
@@ -6949,7 +6949,7 @@ uint64_t __37__HAPSystemKeychainStore_logCategory__block_invoke()
     if (v9)
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = a1;
+      selfCopy = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
@@ -6981,11 +6981,11 @@ uint64_t __37__HAPSystemKeychainStore_logCategory__block_invoke()
   return v14;
 }
 
-+ (id)updateAccessoryPairingGenericData:(id)a3 updatedControllerKeyIdentifier:(id)a4
++ (id)updateAccessoryPairingGenericData:(id)data updatedControllerKeyIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() getDictionaryFromGenericData:v6];
+  identifierCopy = identifier;
+  dataCopy = data;
+  v7 = [objc_opt_class() getDictionaryFromGenericData:dataCopy];
 
   if (v7)
   {
@@ -6998,7 +6998,7 @@ uint64_t __37__HAPSystemKeychainStore_logCategory__block_invoke()
   }
 
   v9 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v8];
-  [v9 setObject:v5 forKeyedSubscript:@"ctrlKeyId"];
+  [v9 setObject:identifierCopy forKeyedSubscript:@"ctrlKeyId"];
 
   if (!v7)
   {
@@ -7010,11 +7010,11 @@ uint64_t __37__HAPSystemKeychainStore_logCategory__block_invoke()
   return v10;
 }
 
-+ (id)getDictionaryFromGenericData:(id)a3
++ (id)getDictionaryFromGenericData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v3 = [MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:0];
+    v3 = [MEMORY[0x277CCAC58] propertyListWithData:data options:0 format:0 error:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

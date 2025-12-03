@@ -2,14 +2,14 @@
 + (id)sharedReplyCache;
 - (BLTLightsAndSirensReplyInfoCache)init;
 - (BOOL)_isTimeToCheck;
-- (id)_firstReplyInfoWithNoDidPlayStateWithReplyToken:(id)a3;
-- (id)_firstReplyInfoWithNoReplyWithReplyToken:(id)a3;
-- (id)cacheDidPlayLightsAndSirens:(unint64_t)a3 withReplyToken:(id)a4;
-- (void)_addReplyInfo:(id)a3 forReplyToken:(id)a4;
+- (id)_firstReplyInfoWithNoDidPlayStateWithReplyToken:(id)token;
+- (id)_firstReplyInfoWithNoReplyWithReplyToken:(id)token;
+- (id)cacheDidPlayLightsAndSirens:(unint64_t)sirens withReplyToken:(id)token;
+- (void)_addReplyInfo:(id)info forReplyToken:(id)token;
 - (void)_checkCache;
 - (void)_setNextTimeToCheck;
-- (void)cacheReply:(id)a3 withSectionID:(id)a4 bulletinID:(id)a5 publicationDate:(id)a6 replyToken:(id)a7;
-- (void)purgeReplyInfo:(id)a3 withReplyToken:(id)a4;
+- (void)cacheReply:(id)reply withSectionID:(id)d bulletinID:(id)iD publicationDate:(id)date replyToken:(id)token;
+- (void)purgeReplyInfo:(id)info withReplyToken:(id)token;
 @end
 
 @implementation BLTLightsAndSirensReplyInfoCache
@@ -56,29 +56,29 @@ uint64_t __52__BLTLightsAndSirensReplyInfoCache_sharedReplyCache__block_invoke()
   return v2;
 }
 
-- (void)cacheReply:(id)a3 withSectionID:(id)a4 bulletinID:(id)a5 publicationDate:(id)a6 replyToken:(id)a7
+- (void)cacheReply:(id)reply withSectionID:(id)d bulletinID:(id)iD publicationDate:(id)date replyToken:(id)token
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  replyCopy = reply;
+  dCopy = d;
+  iDCopy = iD;
+  dateCopy = date;
+  tokenCopy = token;
   queue = self->_queue;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __99__BLTLightsAndSirensReplyInfoCache_cacheReply_withSectionID_bulletinID_publicationDate_replyToken___block_invoke;
   v23[3] = &unk_278D32958;
   v23[4] = self;
-  v24 = v16;
-  v25 = v15;
-  v26 = v13;
-  v27 = v14;
-  v28 = v12;
-  v18 = v14;
-  v19 = v13;
-  v20 = v15;
-  v21 = v12;
-  v22 = v16;
+  v24 = tokenCopy;
+  v25 = dateCopy;
+  v26 = dCopy;
+  v27 = iDCopy;
+  v28 = replyCopy;
+  v18 = iDCopy;
+  v19 = dCopy;
+  v20 = dateCopy;
+  v21 = replyCopy;
+  v22 = tokenCopy;
   dispatch_async(queue, v23);
 }
 
@@ -99,9 +99,9 @@ void __99__BLTLightsAndSirensReplyInfoCache_cacheReply_withSectionID_bulletinID_
   [v4 setPublisherMatchID:*(a1 + 64)];
 }
 
-- (id)cacheDidPlayLightsAndSirens:(unint64_t)a3 withReplyToken:(id)a4
+- (id)cacheDidPlayLightsAndSirens:(unint64_t)sirens withReplyToken:(id)token
 {
-  v6 = a4;
+  tokenCopy = token;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -114,10 +114,10 @@ void __99__BLTLightsAndSirensReplyInfoCache_cacheReply_withSectionID_bulletinID_
   v11[2] = __79__BLTLightsAndSirensReplyInfoCache_cacheDidPlayLightsAndSirens_withReplyToken___block_invoke;
   v11[3] = &unk_278D32980;
   v11[4] = self;
-  v12 = v6;
+  v12 = tokenCopy;
   v13 = &v15;
-  v14 = a3;
-  v8 = v6;
+  sirensCopy = sirens;
+  v8 = tokenCopy;
   dispatch_sync(queue, v11);
   v9 = v16[5];
 
@@ -139,20 +139,20 @@ uint64_t __79__BLTLightsAndSirensReplyInfoCache_cacheDidPlayLightsAndSirens_with
   return [v5 _checkCache];
 }
 
-- (void)purgeReplyInfo:(id)a3 withReplyToken:(id)a4
+- (void)purgeReplyInfo:(id)info withReplyToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  tokenCopy = token;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__BLTLightsAndSirensReplyInfoCache_purgeReplyInfo_withReplyToken___block_invoke;
   block[3] = &unk_278D316C8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = tokenCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = tokenCopy;
   dispatch_async(queue, block);
 }
 
@@ -165,12 +165,12 @@ void __66__BLTLightsAndSirensReplyInfoCache_purgeReplyInfo_withReplyToken___bloc
   [*(a1 + 32) _checkCache];
 }
 
-- (id)_firstReplyInfoWithNoDidPlayStateWithReplyToken:(id)a3
+- (id)_firstReplyInfoWithNoDidPlayStateWithReplyToken:(id)token
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(BLTLightsAndSirensReplyInfoCache *)self localReplyInfo];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  tokenCopy = token;
+  localReplyInfo = [(BLTLightsAndSirensReplyInfoCache *)self localReplyInfo];
+  v6 = [localReplyInfo objectForKeyedSubscript:tokenCopy];
 
   v16 = 0u;
   v17 = 0u;
@@ -215,12 +215,12 @@ LABEL_11:
   return v8;
 }
 
-- (id)_firstReplyInfoWithNoReplyWithReplyToken:(id)a3
+- (id)_firstReplyInfoWithNoReplyWithReplyToken:(id)token
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(BLTLightsAndSirensReplyInfoCache *)self localReplyInfo];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  tokenCopy = token;
+  localReplyInfo = [(BLTLightsAndSirensReplyInfoCache *)self localReplyInfo];
+  v6 = [localReplyInfo objectForKeyedSubscript:tokenCopy];
 
   v17 = 0u;
   v18 = 0u;
@@ -241,9 +241,9 @@ LABEL_11:
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 reply];
+        reply = [v11 reply];
 
-        if (!v12)
+        if (!reply)
         {
           v8 = v11;
           goto LABEL_11;
@@ -267,22 +267,22 @@ LABEL_11:
   return v8;
 }
 
-- (void)_addReplyInfo:(id)a3 forReplyToken:(id)a4
+- (void)_addReplyInfo:(id)info forReplyToken:(id)token
 {
-  v10 = a3;
-  v6 = a4;
+  infoCopy = info;
+  tokenCopy = token;
   [(BLTLightsAndSirensReplyInfoCache *)self _checkCache];
-  v7 = [(BLTLightsAndSirensReplyInfoCache *)self localReplyInfo];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  localReplyInfo = [(BLTLightsAndSirensReplyInfoCache *)self localReplyInfo];
+  v8 = [localReplyInfo objectForKeyedSubscript:tokenCopy];
 
   if (!v8)
   {
     v8 = objc_opt_new();
-    v9 = [(BLTLightsAndSirensReplyInfoCache *)self localReplyInfo];
-    [v9 setObject:v8 forKeyedSubscript:v6];
+    localReplyInfo2 = [(BLTLightsAndSirensReplyInfoCache *)self localReplyInfo];
+    [localReplyInfo2 setObject:v8 forKeyedSubscript:tokenCopy];
   }
 
-  [v8 addObject:v10];
+  [v8 addObject:infoCopy];
 }
 
 - (void)_setNextTimeToCheck
@@ -293,9 +293,9 @@ LABEL_11:
 
 - (BOOL)_isTimeToCheck
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [(BLTLightsAndSirensReplyInfoCache *)self timeToCheck];
-  [v3 timeIntervalSinceDate:v4];
+  date = [MEMORY[0x277CBEAA8] date];
+  timeToCheck = [(BLTLightsAndSirensReplyInfoCache *)self timeToCheck];
+  [date timeIntervalSinceDate:timeToCheck];
   v6 = v5 >= 0.0;
 
   return v6;
@@ -303,7 +303,7 @@ LABEL_11:
 
 - (void)_checkCache
 {
-  v2 = self;
+  selfCopy = self;
   v32 = *MEMORY[0x277D85DE8];
   if ([(BLTLightsAndSirensReplyInfoCache *)self _isTimeToCheck])
   {
@@ -312,7 +312,7 @@ LABEL_11:
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    obj = [(BLTLightsAndSirensReplyInfoCache *)v2 localReplyInfo];
+    obj = [(BLTLightsAndSirensReplyInfoCache *)selfCopy localReplyInfo];
     v3 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v3)
     {
@@ -329,9 +329,9 @@ LABEL_11:
 
           v6 = *(*(&v26 + 1) + 8 * i);
           v7 = objc_opt_new();
-          v8 = v2;
-          v9 = [(BLTLightsAndSirensReplyInfoCache *)v2 localReplyInfo];
-          v10 = [v9 objectForKeyedSubscript:v6];
+          v8 = selfCopy;
+          localReplyInfo = [(BLTLightsAndSirensReplyInfoCache *)selfCopy localReplyInfo];
+          v10 = [localReplyInfo objectForKeyedSubscript:v6];
 
           v24 = 0u;
           v25 = 0u;
@@ -372,7 +372,7 @@ LABEL_11:
             [v19 addObject:v6];
           }
 
-          v2 = v8;
+          selfCopy = v8;
         }
 
         v4 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
@@ -381,10 +381,10 @@ LABEL_11:
       while (v4);
     }
 
-    v17 = [(BLTLightsAndSirensReplyInfoCache *)v2 localReplyInfo];
-    [v17 removeObjectsForKeys:v19];
+    localReplyInfo2 = [(BLTLightsAndSirensReplyInfoCache *)selfCopy localReplyInfo];
+    [localReplyInfo2 removeObjectsForKeys:v19];
 
-    [(BLTLightsAndSirensReplyInfoCache *)v2 _setNextTimeToCheck];
+    [(BLTLightsAndSirensReplyInfoCache *)selfCopy _setNextTimeToCheck];
   }
 
   v18 = *MEMORY[0x277D85DE8];

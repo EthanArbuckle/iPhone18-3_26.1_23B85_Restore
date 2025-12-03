@@ -1,67 +1,67 @@
 @interface UIKBShapeOperator
-+ (id)operatorWithScale:(double)a3;
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_scaleRange:(id)a3 factor:(double)a4;
-- (CGPoint)offsetForCenteringShapes:(id)a3 insideRect:(CGRect)a4;
-- (CGRect)_scaleRect:(CGRect)a3 factor:(CGSize)a4;
-- (id)geometryByScalingShapeGeometry:(id)a3 factor:(CGSize)a4;
-- (id)shapeByScalingShape:(id)a3 factor:(CGSize)a4;
-- (id)shapesByCenteringShapes:(id)a3 insideRect:(CGRect)a4;
-- (id)shapesByCenteringShapesPreservingLayout:(id)a3 insideRect:(CGRect)a4 horizontal:(BOOL)a5 vertical:(BOOL)a6;
-- (id)shapesByElaboratingShapes:(id)a3 insideShape:(id)a4 count:(int64_t)a5;
-- (id)shapesByInsettingShapes:(id)a3 withInsets:(UIEdgeInsets)a4;
-- (id)shapesByRepositioningShapes:(id)a3 withOffset:(CGPoint)a4;
-- (id)shapesByResizingShapes:(id)a3 withOffset:(CGPoint)a4;
-- (id)shapesByScalingShapes:(id)a3 factor:(CGSize)a4;
++ (id)operatorWithScale:(double)scale;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_scaleRange:(id)range factor:(double)factor;
+- (CGPoint)offsetForCenteringShapes:(id)shapes insideRect:(CGRect)rect;
+- (CGRect)_scaleRect:(CGRect)rect factor:(CGSize)factor;
+- (id)geometryByScalingShapeGeometry:(id)geometry factor:(CGSize)factor;
+- (id)shapeByScalingShape:(id)shape factor:(CGSize)factor;
+- (id)shapesByCenteringShapes:(id)shapes insideRect:(CGRect)rect;
+- (id)shapesByCenteringShapesPreservingLayout:(id)layout insideRect:(CGRect)rect horizontal:(BOOL)horizontal vertical:(BOOL)vertical;
+- (id)shapesByElaboratingShapes:(id)shapes insideShape:(id)shape count:(int64_t)count;
+- (id)shapesByInsettingShapes:(id)shapes withInsets:(UIEdgeInsets)insets;
+- (id)shapesByRepositioningShapes:(id)shapes withOffset:(CGPoint)offset;
+- (id)shapesByResizingShapes:(id)shapes withOffset:(CGPoint)offset;
+- (id)shapesByScalingShapes:(id)shapes factor:(CGSize)factor;
 @end
 
 @implementation UIKBShapeOperator
 
-+ (id)operatorWithScale:(double)a3
++ (id)operatorWithScale:(double)scale
 {
   v4 = objc_alloc_init(UIKBShapeOperator);
-  [(UIKBShapeOperator *)v4 setScale:a3];
+  [(UIKBShapeOperator *)v4 setScale:scale];
 
   return v4;
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_scaleRange:(id)a3 factor:(double)a4
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_scaleRange:(id)range factor:(double)factor
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   [(UIKBShapeOperator *)self scale];
-  v9 = a4;
+  factorCopy = factor;
   if (var0 != 1.0)
   {
-    v10 = var0 * a4;
+    v10 = var0 * factor;
     if (v8 == 1.0)
     {
-      v9 = round(v10);
+      factorCopy = round(v10);
     }
 
     else
     {
-      v9 = round(v10 * v8) / v8;
+      factorCopy = round(v10 * v8) / v8;
     }
   }
 
   [(UIKBShapeOperator *)self scale];
-  v12 = a4;
-  v13 = a4;
+  factorCopy2 = factor;
+  factorCopy3 = factor;
   if (var1 != 1.0)
   {
-    v12 = var1 * a4;
+    factorCopy2 = var1 * factor;
     if (v11 == 1.0)
     {
-      v13 = round(v12);
+      factorCopy3 = round(factorCopy2);
     }
 
     else
     {
-      v13 = round(v12 * v11) / v11;
+      factorCopy3 = round(factorCopy2 * v11) / v11;
     }
   }
 
-  v14 = var0 * a4 - v9 + v12 - v13;
+  v14 = var0 * factor - factorCopy + factorCopy2 - factorCopy3;
   [(UIKBShapeOperator *)self scale];
   v16 = 1.0;
   if (v14 != 1.0)
@@ -77,22 +77,22 @@
     }
   }
 
-  v17 = v13 + v16;
-  v18 = v9;
+  v17 = factorCopy3 + v16;
+  v18 = factorCopy;
   result.var1 = v17;
   result.var0 = v18;
   return result;
 }
 
-- (CGRect)_scaleRect:(CGRect)a3 factor:(CGSize)a4
+- (CGRect)_scaleRect:(CGRect)rect factor:(CGSize)factor
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3.size.height;
-  v7 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectIsNull(a3))
+  height = factor.height;
+  width = factor.width;
+  v6 = rect.size.height;
+  v7 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (!CGRectIsNull(rect))
   {
     v19.origin.x = x;
     v19.origin.y = y;
@@ -120,27 +120,27 @@
   return result;
 }
 
-- (id)shapeByScalingShape:(id)a3 factor:(CGSize)a4
+- (id)shapeByScalingShape:(id)shape factor:(CGSize)factor
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = v7;
-  if (!v7 || (width == *MEMORY[0x1E695F060] ? (v9 = height == *(MEMORY[0x1E695F060] + 8)) : (v9 = 0), v9))
+  height = factor.height;
+  width = factor.width;
+  shapeCopy = shape;
+  v8 = shapeCopy;
+  if (!shapeCopy || (width == *MEMORY[0x1E695F060] ? (v9 = height == *(MEMORY[0x1E695F060] + 8)) : (v9 = 0), v9))
   {
 LABEL_9:
-    v12 = v8;
+    height = v8;
     goto LABEL_10;
   }
 
-  if ([v7 scaled])
+  if ([shapeCopy scaled])
   {
-    v10 = [v8 originalShape];
+    originalShape = [v8 originalShape];
 
-    if (v10)
+    if (originalShape)
     {
-      v11 = [v8 originalShape];
-      v12 = [(UIKBShapeOperator *)self shapeByScalingShape:v11 factor:width, height];
+      originalShape2 = [v8 originalShape];
+      height = [(UIKBShapeOperator *)self shapeByScalingShape:originalShape2 factor:width, height];
 
       goto LABEL_10;
     }
@@ -161,24 +161,24 @@ LABEL_9:
   v27 = v26;
   v29 = v28;
   v30 = [UIKBShape alloc];
-  v31 = [v8 geometry];
-  v12 = [(UIKBShape *)v30 initWithGeometry:v31 frame:v15 paddedFrame:v17, v19, v21, v23, v25, v27, v29];
+  geometry = [v8 geometry];
+  height = [(UIKBShape *)v30 initWithGeometry:geometry frame:v15 paddedFrame:v17, v19, v21, v23, v25, v27, v29];
 
-  [(UIKBShape *)v12 setScaled:1];
-  [(UIKBShape *)v12 setOriginalShape:v8];
+  [(UIKBShape *)height setScaled:1];
+  [(UIKBShape *)height setOriginalShape:v8];
 LABEL_10:
 
-  return v12;
+  return height;
 }
 
-- (id)geometryByScalingShapeGeometry:(id)a3 factor:(CGSize)a4
+- (id)geometryByScalingShapeGeometry:(id)geometry factor:(CGSize)factor
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = [v7 geometry];
-  v9 = v8;
-  if (v7 && v8 && ![v7 scaled])
+  height = factor.height;
+  width = factor.width;
+  geometryCopy = geometry;
+  geometry = [geometryCopy geometry];
+  v9 = geometry;
+  if (geometryCopy && geometry && ![geometryCopy scaled])
   {
     v11 = [v9 copy];
     [v11 x];
@@ -274,32 +274,32 @@ LABEL_10:
     v30 = [UIKBShape alloc];
     v10 = [(UIKBShape *)v30 initWithGeometry:v11 frame:*MEMORY[0x1E695F058] paddedFrame:*(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [(UIKBShape *)v10 setScaled:1];
-    [(UIKBShape *)v10 setOriginalShape:v7];
+    [(UIKBShape *)v10 setOriginalShape:geometryCopy];
   }
 
   else
   {
-    v10 = v7;
+    v10 = geometryCopy;
   }
 
   return v10;
 }
 
-- (id)shapesByScalingShapes:(id)a3 factor:(CGSize)a4
+- (id)shapesByScalingShapes:(id)shapes factor:(CGSize)factor
 {
-  height = a4.height;
-  width = a4.width;
+  height = factor.height;
+  width = factor.width;
   v87 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (!v7 || (width == *MEMORY[0x1E695F060] ? (v9 = height == *(MEMORY[0x1E695F060] + 8)) : (v9 = 0), v9))
+  shapesCopy = shapes;
+  v8 = shapesCopy;
+  if (!shapesCopy || (width == *MEMORY[0x1E695F060] ? (v9 = height == *(MEMORY[0x1E695F060] + 8)) : (v9 = 0), v9))
   {
-    v10 = v7;
+    v10 = shapesCopy;
   }
 
   else
   {
-    v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+    v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(shapesCopy, "count")}];
     v82 = 0u;
     v83 = 0u;
     v84 = 0u;
@@ -333,7 +333,7 @@ LABEL_10:
           v20 = *(*(&v82 + 1) + 8 * i);
           if ([v20 shouldUseGeometry])
           {
-            v21 = [(UIKBShapeOperator *)self geometryByScalingShapeGeometry:v20 factor:width, height];
+            height = [(UIKBShapeOperator *)self geometryByScalingShapeGeometry:v20 factor:width, height];
           }
 
           else
@@ -464,12 +464,12 @@ LABEL_10:
 
             v76 = v14;
             v81 = v16;
-            v52 = [v20 geometry];
+            geometry = [v20 geometry];
 
-            if (v52)
+            if (geometry)
             {
-              v53 = [v20 geometry];
-              [v53 paddedFrameWithResolvedFrame:{v23, v25, v27, v29}];
+              geometry2 = [v20 geometry];
+              [geometry2 paddedFrameWithResolvedFrame:{v23, v25, v27, v29}];
               v55 = v54;
               v57 = v56;
               v59 = v58;
@@ -487,10 +487,10 @@ LABEL_10:
             }
 
             v66 = [UIKBShape alloc];
-            v67 = [v20 geometry];
-            v21 = [(UIKBShape *)v66 initWithGeometry:v67 frame:v23 paddedFrame:v25, v27, v29, v55, v57, v59, v61];
+            geometry3 = [v20 geometry];
+            height = [(UIKBShape *)v66 initWithGeometry:geometry3 frame:v23 paddedFrame:v25, v27, v29, v55, v57, v59, v61];
 
-            [(UIKBShape *)v21 setOriginalShape:v20];
+            [(UIKBShape *)height setOriginalShape:v20];
             width = v74;
             height = v75;
             v14 = v76;
@@ -499,7 +499,7 @@ LABEL_10:
             v16 = v81;
           }
 
-          [v10 addObject:v21];
+          [v10 addObject:height];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v82 objects:v86 count:16];
@@ -514,28 +514,28 @@ LABEL_10:
   return v10;
 }
 
-- (id)shapesByElaboratingShapes:(id)a3 insideShape:(id)a4 count:(int64_t)a5
+- (id)shapesByElaboratingShapes:(id)shapes insideShape:(id)shape count:(int64_t)count
 {
   v106 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v80 = a4;
-  if (v7)
+  shapesCopy = shapes;
+  shapeCopy = shape;
+  if (shapesCopy)
   {
-    v8 = [v7 count];
+    v8 = [shapesCopy count];
     v78 = 0;
-    if (a5 >= 1 && v80 && v8)
+    if (count >= 1 && shapeCopy && v8)
     {
-      v77 = a5;
-      v9 = [v7 count];
+      countCopy = count;
+      v9 = [shapesCopy count];
       v95 = 0u;
       v96 = 0u;
       v97 = 0u;
       v98 = 0u;
-      v76 = v7;
-      v10 = v7;
+      v76 = shapesCopy;
+      v10 = shapesCopy;
       v11 = [v10 countByEnumeratingWithState:&v95 objects:v105 count:16];
       v12 = *MEMORY[0x1E695F060];
-      v13 = a5 - v9;
+      v13 = count - v9;
       v14 = 0;
       v15 = 0;
       if (v11)
@@ -553,8 +553,8 @@ LABEL_10:
             v18 = *(*(&v95 + 1) + 8 * i);
             if (v15 || ([*(*(&v95 + 1) + 8 * i) geometry], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isTemplate"), v19, !v20))
             {
-              v24 = [v18 geometry];
-              [v24 w];
+              geometry = [v18 geometry];
+              [geometry w];
               v26 = v25 == 100;
 
               if (v26)
@@ -564,9 +564,9 @@ LABEL_10:
 
               else
               {
-                v27 = [v18 geometry];
-                [v80 frame];
-                [v27 frameWithContainingFrame:?];
+                geometry2 = [v18 geometry];
+                [shapeCopy frame];
+                [geometry2 frameWithContainingFrame:?];
                 v29 = v28;
 
                 v12 = v12 + v29;
@@ -576,9 +576,9 @@ LABEL_10:
             else
             {
               v15 = v18;
-              v21 = [v15 geometry];
-              [v80 frame];
-              [v21 frameWithContainingFrame:?];
+              geometry3 = [v15 geometry];
+              [shapeCopy frame];
+              [geometry3 frameWithContainingFrame:?];
               v23 = v22;
 
               v12 = v12 + v23 * ++v13;
@@ -612,7 +612,7 @@ LABEL_10:
         v31 = 0;
       }
 
-      [v80 frame];
+      [shapeCopy frame];
       v33 = v32;
       [(UIKBShapeOperator *)self scale];
       v35 = (v33 - v12) / v30;
@@ -630,8 +630,8 @@ LABEL_10:
         }
       }
 
-      v78 = [MEMORY[0x1E695DF70] arrayWithCapacity:v77];
-      [v80 frame];
+      v78 = [MEMORY[0x1E695DF70] arrayWithCapacity:countCopy];
+      [shapeCopy frame];
       v38 = 0;
       v39 = 0;
       if (v31)
@@ -645,7 +645,7 @@ LABEL_10:
       }
 
       v41 = 0.0;
-      v42 = v77;
+      v42 = countCopy;
       while (v38 < [v10 count])
       {
         v43 = [v10 objectAtIndex:v38];
@@ -660,9 +660,9 @@ LABEL_10:
         *(&v103 + 1) = v45;
         *&v104 = v46;
         *(&v104 + 1) = v47;
-        v48 = [v43 geometry];
+        geometry4 = [v43 geometry];
 
-        if (v48)
+        if (geometry4)
         {
           v91[0] = MEMORY[0x1E69E9820];
           v91[1] = 3221225472;
@@ -670,13 +670,13 @@ LABEL_10:
           v91[3] = &unk_1E70FB728;
           v94 = buf;
           v92 = v43;
-          v93 = v80;
+          v93 = shapeCopy;
           [(UIKBShapeOperator *)self scale];
           [UIKBGeometry performOperations:v91 withScale:?];
         }
 
-        v49 = [v43 geometry];
-        [v49 w];
+        geometry5 = [v43 geometry];
+        [geometry5 w];
         v51 = v50 == 100;
 
         if (v51)
@@ -684,8 +684,8 @@ LABEL_10:
           v100[6] = v36;
         }
 
-        v52 = [v43 geometry];
-        [v52 x];
+        geometry6 = [v43 geometry];
+        [geometry6 x];
         v54 = v53 == 100;
 
         v55 = v100;
@@ -715,9 +715,9 @@ LABEL_10:
         *(&v89 + 1) = v62;
         *&v90 = v63;
         *(&v90 + 1) = v64;
-        v65 = [v43 geometry];
+        geometry7 = [v43 geometry];
 
-        if (v65)
+        if (geometry7)
         {
           v81[0] = MEMORY[0x1E69E9820];
           v81[1] = 3221225472;
@@ -731,8 +731,8 @@ LABEL_10:
         }
 
         v66 = [UIKBShape alloc];
-        v67 = [v43 geometry];
-        v68 = [(UIKBShape *)v66 initWithGeometry:v67 frame:v100[4] paddedFrame:v100[5], v100[6], v100[7], v86[4], v86[5], v86[6], v86[7]];
+        geometry8 = [v43 geometry];
+        v68 = [(UIKBShape *)v66 initWithGeometry:geometry8 frame:v100[4] paddedFrame:v100[5], v100[6], v100[7], v86[4], v86[5], v86[6], v86[7]];
         [v78 addObject:v68];
 
         v69 = v39 + 1;
@@ -763,7 +763,7 @@ LABEL_10:
           if (os_log_type_enabled(v74, OS_LOG_TYPE_FAULT))
           {
             *buf = 67109634;
-            *&buf[4] = v77;
+            *&buf[4] = countCopy;
             LOWORD(v100) = 1024;
             *(&v100 + 2) = v13;
             HIWORD(v100) = 2112;
@@ -779,7 +779,7 @@ LABEL_10:
         if (os_log_type_enabled(v75, OS_LOG_TYPE_ERROR))
         {
           *buf = 67109634;
-          *&buf[4] = v77;
+          *&buf[4] = countCopy;
           LOWORD(v100) = 1024;
           *(&v100 + 2) = v13;
           HIWORD(v100) = 2112;
@@ -790,7 +790,7 @@ LABEL_10:
 
 LABEL_52:
 
-      v7 = v76;
+      shapesCopy = v76;
     }
   }
 
@@ -825,21 +825,21 @@ void __65__UIKBShapeOperator_shapesByElaboratingShapes_insideShape_count___block
   v2[7] = v6;
 }
 
-- (id)shapesByCenteringShapes:(id)a3 insideRect:(CGRect)a4
+- (id)shapesByCenteringShapes:(id)shapes insideRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v55 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  shapesCopy = shapes;
   v57.origin.x = x;
   v57.origin.y = y;
   v57.size.width = width;
   v57.size.height = height;
-  if (CGRectIsNull(v57) || ![v8 count])
+  if (CGRectIsNull(v57) || ![shapesCopy count])
   {
-    v16 = v8;
+    array = shapesCopy;
   }
 
   else
@@ -848,7 +848,7 @@ void __65__UIKBShapeOperator_shapesByElaboratingShapes_insideShape_count___block
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v9 = v8;
+    v9 = shapesCopy;
     v10 = [v9 countByEnumeratingWithState:&v49 objects:v54 count:16];
     if (v10)
     {
@@ -879,7 +879,7 @@ void __65__UIKBShapeOperator_shapesByElaboratingShapes_insideShape_count___block
       v13 = 0.0;
     }
 
-    v16 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
@@ -915,9 +915,9 @@ void __65__UIKBShapeOperator_shapesByElaboratingShapes_insideShape_count___block
           v36 = v35;
           v38 = v37;
           v39 = [UIKBShape alloc];
-          v40 = [v23 geometry];
-          v41 = [(UIKBShape *)v39 initWithGeometry:v40 frame:v43 + v21 paddedFrame:v29, v31, v44, v43 + v21 + v27, v34, v36, v38];
-          [v16 addObject:v41];
+          geometry = [v23 geometry];
+          v41 = [(UIKBShape *)v39 initWithGeometry:geometry frame:v43 + v21 paddedFrame:v29, v31, v44, v43 + v21 + v27, v34, v36, v38];
+          [array addObject:v41];
 
           v21 = v21 + v31;
         }
@@ -929,22 +929,22 @@ void __65__UIKBShapeOperator_shapesByElaboratingShapes_insideShape_count___block
     }
   }
 
-  return v16;
+  return array;
 }
 
-- (CGPoint)offsetForCenteringShapes:(id)a3 insideRect:(CGRect)a4
+- (CGPoint)offsetForCenteringShapes:(id)shapes insideRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  shapesCopy = shapes;
   v30.origin.x = x;
   v30.origin.y = y;
   v30.size.width = width;
   v30.size.height = height;
-  if (CGRectIsNull(v30) || ![v8 count])
+  if (CGRectIsNull(v30) || ![shapesCopy count])
   {
     v19 = *MEMORY[0x1E695EFF8];
     v20 = *(MEMORY[0x1E695EFF8] + 8);
@@ -956,7 +956,7 @@ void __65__UIKBShapeOperator_shapesByElaboratingShapes_insideShape_count___block
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v9 = v8;
+    v9 = shapesCopy;
     v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v10)
     {
@@ -1012,23 +1012,23 @@ void __65__UIKBShapeOperator_shapesByElaboratingShapes_insideShape_count___block
   return result;
 }
 
-- (id)shapesByCenteringShapesPreservingLayout:(id)a3 insideRect:(CGRect)a4 horizontal:(BOOL)a5 vertical:(BOOL)a6
+- (id)shapesByCenteringShapesPreservingLayout:(id)layout insideRect:(CGRect)rect horizontal:(BOOL)horizontal vertical:(BOOL)vertical
 {
-  v6 = a6;
-  v7 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  verticalCopy = vertical;
+  horizontalCopy = horizontal;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v49 = *MEMORY[0x1E69E9840];
-  v13 = a3;
+  layoutCopy = layout;
   v51.origin.x = x;
   v51.origin.y = y;
   v51.size.width = width;
   v51.size.height = height;
-  if (CGRectIsNull(v51) || ![v13 count])
+  if (CGRectIsNull(v51) || ![layoutCopy count])
   {
-    v38 = v13;
+    v38 = layoutCopy;
   }
 
   else
@@ -1036,7 +1036,7 @@ void __65__UIKBShapeOperator_shapesByElaboratingShapes_insideShape_count___block
     v41 = y;
     v42 = width;
     v43 = height;
-    v14 = [v13 objectAtIndexedSubscript:0];
+    v14 = [layoutCopy objectAtIndexedSubscript:0];
     [v14 frame];
     v16 = v15;
     v18 = v17;
@@ -1067,7 +1067,7 @@ void __65__UIKBShapeOperator_shapesByElaboratingShapes_insideShape_count___block
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v27 = v13;
+    v27 = layoutCopy;
     v28 = [v27 countByEnumeratingWithState:&v44 objects:v48 count:16];
     if (v28)
     {
@@ -1129,13 +1129,13 @@ void __65__UIKBShapeOperator_shapesByElaboratingShapes_insideShape_count___block
     v65.size.height = v43;
     MidY = CGRectGetMidY(v65);
     v35 = MidX - (MinX + (MaxX - MinX) * 0.5);
-    if (!v7)
+    if (!horizontalCopy)
     {
       v35 = *MEMORY[0x1E695EFF8];
     }
 
     v36 = MidY - (MinY + (MaxY - MinY) * 0.5);
-    if (v6)
+    if (verticalCopy)
     {
       v37 = v36;
     }
@@ -1153,17 +1153,17 @@ void __65__UIKBShapeOperator_shapesByElaboratingShapes_insideShape_count___block
   return v39;
 }
 
-- (id)shapesByRepositioningShapes:(id)a3 withOffset:(CGPoint)a4
+- (id)shapesByRepositioningShapes:(id)shapes withOffset:(CGPoint)offset
 {
-  v34 = a4;
+  offsetCopy = offset;
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  shapesCopy = shapes;
+  array = [MEMORY[0x1E695DF70] array];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v6 = v4;
+  v6 = shapesCopy;
   v7 = [v6 countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v7)
   {
@@ -1182,22 +1182,22 @@ void __65__UIKBShapeOperator_shapesByElaboratingShapes_insideShape_count___block
         [v11 frame];
         v13 = v12;
         v15 = v14;
-        v17 = v34.x + v16;
-        v19 = v34.y + v18;
+        v17 = offsetCopy.x + v16;
+        v19 = offsetCopy.y + v18;
         [v11 paddedFrame];
         v21 = v20;
         v23 = v22;
-        v25 = v34.x + v24;
-        v27 = v34.y + v26;
+        v25 = offsetCopy.x + v24;
+        v27 = offsetCopy.y + v26;
         v28 = [UIKBShape alloc];
-        v29 = [v11 geometry];
-        v30 = [(UIKBShape *)v28 initWithGeometry:v29 frame:v17 paddedFrame:v19, v13, v15, v25, v27, v21, v23];
+        geometry = [v11 geometry];
+        v30 = [(UIKBShape *)v28 initWithGeometry:geometry frame:v17 paddedFrame:v19, v13, v15, v25, v27, v21, v23];
 
-        v31 = [v11 originalShape];
-        if (v31)
+        originalShape = [v11 originalShape];
+        if (originalShape)
         {
-          v32 = [v11 originalShape];
-          [(UIKBShape *)v30 setOriginalShape:v32];
+          originalShape2 = [v11 originalShape];
+          [(UIKBShape *)v30 setOriginalShape:originalShape2];
         }
 
         else
@@ -1205,7 +1205,7 @@ void __65__UIKBShapeOperator_shapesByElaboratingShapes_insideShape_count___block
           [(UIKBShape *)v30 setOriginalShape:v11];
         }
 
-        [v5 addObject:v30];
+        [array addObject:v30];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v35 objects:v39 count:16];
@@ -1214,19 +1214,19 @@ void __65__UIKBShapeOperator_shapesByElaboratingShapes_insideShape_count___block
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
-- (id)shapesByResizingShapes:(id)a3 withOffset:(CGPoint)a4
+- (id)shapesByResizingShapes:(id)shapes withOffset:(CGPoint)offset
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  shapesCopy = shapes;
+  array = [MEMORY[0x1E695DF70] array];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v6 = v4;
+  v6 = shapesCopy;
   v7 = [v6 countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v7)
   {
@@ -1245,22 +1245,22 @@ void __65__UIKBShapeOperator_shapesByElaboratingShapes_insideShape_count___block
         [v11 frame];
         v34 = v12;
         v14 = v13;
-        v16 = a4.x + v15;
-        v18 = fmax(a4.y + v17, 0.0);
+        v16 = offset.x + v15;
+        v18 = fmax(offset.y + v17, 0.0);
         [v11 paddedFrame];
         v20 = v19;
         v22 = v21;
-        v24 = a4.x + v23;
-        v26 = fmax(a4.y + v25, 0.0);
+        v24 = offset.x + v23;
+        v26 = fmax(offset.y + v25, 0.0);
         v27 = [UIKBShape alloc];
-        v28 = [v11 geometry];
-        v29 = [(UIKBShape *)v27 initWithGeometry:v28 frame:v34 paddedFrame:v14, v16, v18, v20, v22, v24, v26];
+        geometry = [v11 geometry];
+        v29 = [(UIKBShape *)v27 initWithGeometry:geometry frame:v34 paddedFrame:v14, v16, v18, v20, v22, v24, v26];
 
-        v30 = [v11 originalShape];
-        if (v30)
+        originalShape = [v11 originalShape];
+        if (originalShape)
         {
-          v31 = [v11 originalShape];
-          [(UIKBShape *)v29 setOriginalShape:v31];
+          originalShape2 = [v11 originalShape];
+          [(UIKBShape *)v29 setOriginalShape:originalShape2];
         }
 
         else
@@ -1268,7 +1268,7 @@ void __65__UIKBShapeOperator_shapesByElaboratingShapes_insideShape_count___block
           [(UIKBShape *)v29 setOriginalShape:v11];
         }
 
-        [v5 addObject:v29];
+        [array addObject:v29];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v35 objects:v39 count:16];
@@ -1277,19 +1277,19 @@ void __65__UIKBShapeOperator_shapesByElaboratingShapes_insideShape_count___block
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
-- (id)shapesByInsettingShapes:(id)a3 withInsets:(UIEdgeInsets)a4
+- (id)shapesByInsettingShapes:(id)shapes withInsets:(UIEdgeInsets)insets
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  shapesCopy = shapes;
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = shapesCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -1307,15 +1307,15 @@ void __65__UIKBShapeOperator_shapesByElaboratingShapes_insideShape_count___block
         v11 = *(*(&v18 + 1) + 8 * i);
         [v11 paddedFrame];
         v12 = [UIKBShape alloc];
-        v13 = [v11 geometry];
+        geometry = [v11 geometry];
         [v11 frame];
-        v14 = [UIKBShape initWithGeometry:v12 frame:"initWithGeometry:frame:paddedFrame:" paddedFrame:v13];
+        v14 = [UIKBShape initWithGeometry:v12 frame:"initWithGeometry:frame:paddedFrame:" paddedFrame:geometry];
 
-        v15 = [v11 originalShape];
-        if (v15)
+        originalShape = [v11 originalShape];
+        if (originalShape)
         {
-          v16 = [v11 originalShape];
-          [(UIKBShape *)v14 setOriginalShape:v16];
+          originalShape2 = [v11 originalShape];
+          [(UIKBShape *)v14 setOriginalShape:originalShape2];
         }
 
         else
@@ -1323,7 +1323,7 @@ void __65__UIKBShapeOperator_shapesByElaboratingShapes_insideShape_count___block
           [(UIKBShape *)v14 setOriginalShape:v11];
         }
 
-        [v5 addObject:v14];
+        [array addObject:v14];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -1332,7 +1332,7 @@ void __65__UIKBShapeOperator_shapesByElaboratingShapes_insideShape_count___block
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
 @end

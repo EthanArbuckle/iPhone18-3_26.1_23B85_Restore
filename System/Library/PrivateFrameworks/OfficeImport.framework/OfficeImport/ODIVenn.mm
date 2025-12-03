@@ -1,24 +1,24 @@
 @interface ODIVenn
-+ (BOOL)mapIdentifier:(id)a3 state:(id)a4;
-+ (CGRect)mapGSpaceWithState:(id)a3;
-+ (unint64_t)nodeCountWithState:(id)a3;
-+ (void)mapWithState:(id)a3;
++ (BOOL)mapIdentifier:(id)identifier state:(id)state;
++ (CGRect)mapGSpaceWithState:(id)state;
++ (unint64_t)nodeCountWithState:(id)state;
++ (void)mapWithState:(id)state;
 @end
 
 @implementation ODIVenn
 
-+ (BOOL)mapIdentifier:(id)a3 state:(id)a4
++ (BOOL)mapIdentifier:(id)identifier state:(id)state
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:@"venn1"])
+  identifierCopy = identifier;
+  stateCopy = state;
+  if ([identifierCopy isEqualToString:@"venn1"])
   {
     v7 = off_2799C57E8;
   }
 
   else
   {
-    if (![v5 isEqualToString:@"venn3"])
+    if (![identifierCopy isEqualToString:@"venn3"])
     {
       v8 = 0;
       goto LABEL_7;
@@ -27,43 +27,43 @@
     v7 = off_2799C57F0;
   }
 
-  [(__objc2_class *)*v7 mapWithState:v6];
+  [(__objc2_class *)*v7 mapWithState:stateCopy];
   v8 = 1;
 LABEL_7:
 
   return v8;
 }
 
-+ (void)mapWithState:(id)a3
++ (void)mapWithState:(id)state
 {
-  v14 = a3;
-  v4 = [a1 nodeCountWithState:?];
-  v5 = [v14 diagram];
-  v6 = [v5 documentPoint];
-  v7 = [v6 children];
+  stateCopy = state;
+  v4 = [self nodeCountWithState:?];
+  diagram = [stateCopy diagram];
+  documentPoint = [diagram documentPoint];
+  children = [documentPoint children];
 
   if (v4 == 1)
   {
-    [v14 setLogicalBounds:{0.0, 0.0, 1.0, 1.0}];
+    [stateCopy setLogicalBounds:{0.0, 0.0, 1.0, 1.0}];
     v8 = +[ODIDrawable shapeGeometryForEllipse];
-    v9 = [ODIDrawable addShapeWithBounds:v8 rotation:v14 geometry:0.0 state:0.0, 1.0, 1.0, 0.0];
+    v9 = [ODIDrawable addShapeWithBounds:v8 rotation:stateCopy geometry:0.0 state:0.0, 1.0, 1.0, 0.0];
 
-    v10 = [v7 objectAtIndex:0];
-    [ODIDrawable mapStyleAndTextFromPoint:v10 shape:v9 state:v14];
+    v10 = [children objectAtIndex:0];
+    [ODIDrawable mapStyleAndTextFromPoint:v10 shape:v9 state:stateCopy];
   }
 
   else
   {
-    [a1 mapGSpaceWithState:v14];
-    [v14 setLogicalBounds:?];
+    [self mapGSpaceWithState:stateCopy];
+    [stateCopy setLogicalBounds:?];
     if (v4)
     {
       v11 = 0;
       v12 = 0;
       do
       {
-        v13 = [v7 objectAtIndex:v11];
-        [a1 mapNode:v13 index:v12 state:v14];
+        v13 = [children objectAtIndex:v11];
+        [self mapNode:v13 index:v12 state:stateCopy];
 
         v11 = (v12 + 1);
         v12 = v11;
@@ -74,17 +74,17 @@ LABEL_7:
   }
 }
 
-+ (unint64_t)nodeCountWithState:(id)a3
++ (unint64_t)nodeCountWithState:(id)state
 {
-  v3 = [a3 diagram];
-  v4 = [v3 documentPoint];
-  v5 = [v4 children];
-  v6 = [v5 count];
+  diagram = [state diagram];
+  documentPoint = [diagram documentPoint];
+  children = [documentPoint children];
+  v6 = [children count];
 
   return v6;
 }
 
-+ (CGRect)mapGSpaceWithState:(id)a3
++ (CGRect)mapGSpaceWithState:(id)state
 {
   v3 = *MEMORY[0x277CBF3A0];
   v4 = *(MEMORY[0x277CBF3A0] + 8);

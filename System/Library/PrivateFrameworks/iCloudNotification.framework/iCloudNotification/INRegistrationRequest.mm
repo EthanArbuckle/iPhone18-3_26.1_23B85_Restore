@@ -1,7 +1,7 @@
 @interface INRegistrationRequest
-+ (id)bodyParameterValueForRegistrationReason:(unint64_t)a3;
++ (id)bodyParameterValueForRegistrationReason:(unint64_t)reason;
 - (id)_audioAccessoryInfo;
-- (id)addBodyParameters:(id)a3;
+- (id)addBodyParameters:(id)parameters;
 - (id)urlString;
 @end
 
@@ -10,35 +10,35 @@
 - (id)urlString
 {
   v2 = +[AAURLConfiguration urlConfiguration];
-  v3 = [v2 registerDeviceURL];
+  registerDeviceURL = [v2 registerDeviceURL];
 
-  return v3;
+  return registerDeviceURL;
 }
 
-+ (id)bodyParameterValueForRegistrationReason:(unint64_t)a3
++ (id)bodyParameterValueForRegistrationReason:(unint64_t)reason
 {
-  if (a3 > 9)
+  if (reason > 9)
   {
     return @"unknown";
   }
 
   else
   {
-    return *(&off_100055208 + a3);
+    return *(&off_100055208 + reason);
   }
 }
 
-- (id)addBodyParameters:(id)a3
+- (id)addBodyParameters:(id)parameters
 {
-  v49 = a3;
-  v63 = [v49 mutableCopy];
-  v65 = self;
+  parametersCopy = parameters;
+  v63 = [parametersCopy mutableCopy];
+  selfCopy = self;
   v61 = [INRegistrationRequest bodyParameterValueForRegistrationReason:self->_registrationReason];
   [v63 setObject:v61 forKeyedSubscript:@"cause"];
-  v4 = [(INRequest *)self account];
-  v5 = [v4 enabledDataclasses];
-  v6 = [v5 allObjects];
-  v7 = [v6 mutableCopy];
+  account = [(INRequest *)self account];
+  enabledDataclasses = [account enabledDataclasses];
+  allObjects = [enabledDataclasses allObjects];
+  v7 = [allObjects mutableCopy];
 
   [v7 sortUsingComparator:&stru_100055160];
   if (v7)
@@ -52,110 +52,110 @@
     v64 = objc_alloc_init(NSMutableDictionary);
   }
 
-  v8 = [(INRequest *)self deviceInfoProvider];
-  v60 = [v8 productVersion];
+  deviceInfoProvider = [(INRequest *)self deviceInfoProvider];
+  productVersion = [deviceInfoProvider productVersion];
 
-  if (v60)
+  if (productVersion)
   {
-    [v64 setObject:v60 forKeyedSubscript:@"productVersion"];
+    [v64 setObject:productVersion forKeyedSubscript:@"productVersion"];
   }
 
-  v9 = [(INRequest *)self deviceInfoProvider];
-  v59 = [v9 productType];
+  deviceInfoProvider2 = [(INRequest *)self deviceInfoProvider];
+  productType = [deviceInfoProvider2 productType];
 
-  if (v59)
+  if (productType)
   {
-    [v64 setObject:v59 forKeyedSubscript:@"productType"];
+    [v64 setObject:productType forKeyedSubscript:@"productType"];
   }
 
-  v10 = [(INRequest *)self deviceInfoProvider];
-  v58 = [v10 deviceClass];
+  deviceInfoProvider3 = [(INRequest *)self deviceInfoProvider];
+  deviceClass = [deviceInfoProvider3 deviceClass];
 
-  if (v58)
+  if (deviceClass)
   {
-    [v64 setObject:v58 forKeyedSubscript:@"deviceClass"];
+    [v64 setObject:deviceClass forKeyedSubscript:@"deviceClass"];
   }
 
-  v11 = [(INRequest *)self deviceInfoProvider];
-  v57 = [v11 deviceName];
+  deviceInfoProvider4 = [(INRequest *)self deviceInfoProvider];
+  deviceName = [deviceInfoProvider4 deviceName];
 
-  if (v57)
+  if (deviceName)
   {
-    [v64 setObject:v57 forKeyedSubscript:@"deviceName"];
+    [v64 setObject:deviceName forKeyedSubscript:@"deviceName"];
   }
 
-  v12 = [(INRequest *)self deviceInfoProvider];
-  v13 = [v12 storageCapacity];
-  v56 = [v13 stringValue];
+  deviceInfoProvider5 = [(INRequest *)self deviceInfoProvider];
+  storageCapacity = [deviceInfoProvider5 storageCapacity];
+  stringValue = [storageCapacity stringValue];
 
-  if (v56)
+  if (stringValue)
   {
-    [v64 setObject:v56 forKeyedSubscript:@"storageCapacity"];
+    [v64 setObject:stringValue forKeyedSubscript:@"storageCapacity"];
   }
 
-  v14 = [(INRequest *)self deviceInfoProvider];
-  v15 = [v14 hasCellularCapability];
+  deviceInfoProvider6 = [(INRequest *)self deviceInfoProvider];
+  hasCellularCapability = [deviceInfoProvider6 hasCellularCapability];
 
-  if (v15)
+  if (hasCellularCapability)
   {
     v16 = [NSNumber numberWithBool:1];
     [v64 setObject:v16 forKeyedSubscript:@"hasCellularCapability"];
   }
 
   v17 = +[INCachedDeviceInfo currentDeviceInfo];
-  v18 = [v17 mobileEquipmentIdentifier];
+  mobileEquipmentIdentifier = [v17 mobileEquipmentIdentifier];
 
-  if (v18)
+  if (mobileEquipmentIdentifier)
   {
-    [v64 setObject:v18 forKeyedSubscript:@"meid"];
+    [v64 setObject:mobileEquipmentIdentifier forKeyedSubscript:@"meid"];
   }
 
-  v19 = [(INRequest *)self deviceInfoProvider];
-  v55 = [v19 internationalMobileEquipmentIdentity];
+  deviceInfoProvider7 = [(INRequest *)self deviceInfoProvider];
+  internationalMobileEquipmentIdentity = [deviceInfoProvider7 internationalMobileEquipmentIdentity];
 
-  if (v55)
+  if (internationalMobileEquipmentIdentity)
   {
-    [v64 setObject:v55 forKeyedSubscript:@"imei"];
+    [v64 setObject:internationalMobileEquipmentIdentity forKeyedSubscript:@"imei"];
   }
 
-  v20 = [(INRequest *)self deviceInfoProvider];
-  v54 = [v20 deviceColor];
+  deviceInfoProvider8 = [(INRequest *)self deviceInfoProvider];
+  deviceColor = [deviceInfoProvider8 deviceColor];
 
-  if (v54)
+  if (deviceColor)
   {
-    [v64 setObject:v54 forKeyedSubscript:@"deviceColor"];
+    [v64 setObject:deviceColor forKeyedSubscript:@"deviceColor"];
   }
 
   v21 = +[INCachedDeviceInfo currentDeviceInfo];
-  v53 = [v21 deviceEnclosureColor];
+  deviceEnclosureColor = [v21 deviceEnclosureColor];
 
-  if (v53)
+  if (deviceEnclosureColor)
   {
-    [v64 setObject:v53 forKeyedSubscript:@"enclosureColor"];
+    [v64 setObject:deviceEnclosureColor forKeyedSubscript:@"enclosureColor"];
   }
 
-  v22 = [(INRequest *)self deviceInfoProvider];
-  v52 = [v22 deviceCoverGlassColor];
+  deviceInfoProvider9 = [(INRequest *)self deviceInfoProvider];
+  deviceCoverGlassColor = [deviceInfoProvider9 deviceCoverGlassColor];
 
-  if (v52)
+  if (deviceCoverGlassColor)
   {
-    [v64 setObject:v52 forKeyedSubscript:@"deviceCoverGlassColor"];
+    [v64 setObject:deviceCoverGlassColor forKeyedSubscript:@"deviceCoverGlassColor"];
   }
 
-  v23 = [(INRequest *)self deviceInfoProvider];
-  v51 = [v23 deviceHousingColor];
+  deviceInfoProvider10 = [(INRequest *)self deviceInfoProvider];
+  deviceHousingColor = [deviceInfoProvider10 deviceHousingColor];
 
-  if (v51)
+  if (deviceHousingColor)
   {
-    [v64 setObject:v51 forKeyedSubscript:@"deviceHousingColor"];
+    [v64 setObject:deviceHousingColor forKeyedSubscript:@"deviceHousingColor"];
   }
 
-  v24 = [(INRequest *)self deviceInfoProvider];
-  v50 = [v24 deviceBackingColor];
+  deviceInfoProvider11 = [(INRequest *)self deviceInfoProvider];
+  deviceBackingColor = [deviceInfoProvider11 deviceBackingColor];
 
-  if (v50)
+  if (deviceBackingColor)
   {
-    [v64 setObject:v50 forKeyedSubscript:@"deviceBackingColor"];
+    [v64 setObject:deviceBackingColor forKeyedSubscript:@"deviceBackingColor"];
   }
 
   [v63 setObject:v64 forKeyedSubscript:@"deviceInfo"];
@@ -177,17 +177,17 @@
 
   v26 = v25;
   _Block_object_dispose(&v76, 8);
-  v27 = [v25 sharedInstance];
-  v62 = [v27 getDevices];
+  sharedInstance = [v25 sharedInstance];
+  getDevices = [sharedInstance getDevices];
 
-  if ([v62 count])
+  if ([getDevices count])
   {
     v66 = objc_alloc_init(NSMutableArray);
     v69 = 0u;
     v70 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v28 = v62;
+    v28 = getDevices;
     v29 = [v28 countByEnumeratingWithState:&v67 objects:v81 count:16];
     if (v29)
     {
@@ -201,7 +201,7 @@
             objc_enumerationMutation(v28);
           }
 
-          v32 = v18;
+          v32 = mobileEquipmentIdentifier;
           v33 = v7;
           v34 = *(*(&v67 + 1) + 8 * i);
           v76 = 0;
@@ -232,7 +232,7 @@
 
           v38 = [v34 valueForProperty:*v35];
           v7 = v33;
-          v18 = v32;
+          mobileEquipmentIdentifier = v32;
           if (v38)
           {
             [v66 addObject:v38];
@@ -248,19 +248,19 @@
     [v63 setObject:v66 forKeyedSubscript:@"pairedUDIDs"];
   }
 
-  v39 = [(INRegistrationRequest *)v65 _audioAccessoryInfo];
-  if ([v39 count])
+  _audioAccessoryInfo = [(INRegistrationRequest *)selfCopy _audioAccessoryInfo];
+  if ([_audioAccessoryInfo count])
   {
-    [v63 setObject:v39 forKeyedSubscript:@"audioAccessoryInfo"];
+    [v63 setObject:_audioAccessoryInfo forKeyedSubscript:@"audioAccessoryInfo"];
   }
 
-  v40 = [(INRequest *)v65 account];
-  v41 = [v40 aa_isSuspended];
+  account2 = [(INRequest *)selfCopy account];
+  aa_isSuspended = [account2 aa_isSuspended];
 
-  v42 = [NSNumber numberWithBool:v41];
+  v42 = [NSNumber numberWithBool:aa_isSuspended];
   [v63 setObject:v42 forKeyedSubscript:@"isAccountInGrayMode"];
 
-  if (v41)
+  if (aa_isSuspended)
   {
     v43 = objc_alloc_init(AAFollowUpController);
     v80 = AAFollowUpIdentifierVerifyTerms;

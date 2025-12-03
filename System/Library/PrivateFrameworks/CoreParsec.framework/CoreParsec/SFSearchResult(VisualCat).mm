@@ -10,17 +10,17 @@
   v78 = *MEMORY[0x1E69E9840];
   if (a3)
   {
-    v4 = [a1 card];
-    v5 = [v4 cardSections];
-    if ([v5 count])
+    card = [self card];
+    cardSections = [card cardSections];
+    if ([cardSections count])
     {
     }
 
     else
     {
-      v7 = [a1 inlineCard];
-      v8 = [v7 cardSections];
-      v9 = [v8 count];
+      inlineCard = [self inlineCard];
+      cardSections2 = [inlineCard cardSections];
+      v9 = [cardSections2 count];
 
       if (!v9)
       {
@@ -28,28 +28,28 @@
       }
     }
 
-    v10 = [a1 card];
-    v11 = [v10 cardSections];
-    v12 = v11;
-    if (!v11)
+    card2 = [self card];
+    cardSections3 = [card2 cardSections];
+    array = cardSections3;
+    if (!cardSections3)
     {
-      v12 = [MEMORY[0x1E695DEC8] array];
+      array = [MEMORY[0x1E695DEC8] array];
     }
 
-    v13 = [a1 inlineCard];
-    v14 = [v13 cardSections];
-    if (v14)
+    inlineCard2 = [self inlineCard];
+    cardSections4 = [inlineCard2 cardSections];
+    if (cardSections4)
     {
-      v15 = [v12 arrayByAddingObjectsFromArray:v14];
+      v15 = [array arrayByAddingObjectsFromArray:cardSections4];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DEC8] array];
-      v15 = [v12 arrayByAddingObjectsFromArray:v16];
+      array2 = [MEMORY[0x1E695DEC8] array];
+      v15 = [array arrayByAddingObjectsFromArray:array2];
     }
 
-    if (!v11)
+    if (!cardSections3)
     {
     }
 
@@ -78,8 +78,8 @@
           {
             v56 = v18;
             ptr = [v56 pattern_model];
-            v19 = [ptr pattern_template_directory];
-            if (v19)
+            pattern_template_directory = [ptr pattern_template_directory];
+            if (pattern_template_directory)
             {
               goto LABEL_31;
             }
@@ -116,12 +116,12 @@
               _os_log_debug_impl(&dword_1B1064000, v23, OS_LOG_TYPE_DEBUG, "Falling back to default template path from bundle %@.", &buf, 0xCu);
             }
 
-            v19 = [v20 bundleTemplateDir:v22];
-            if (v19)
+            pattern_template_directory = [v20 bundleTemplateDir:v22];
+            if (pattern_template_directory)
             {
 
 LABEL_31:
-              v24 = [MEMORY[0x1E695DFF8] fileURLWithPath:v19 isDirectory:1];
+              v24 = [MEMORY[0x1E695DFF8] fileURLWithPath:pattern_template_directory isDirectory:1];
               v25 = v24;
               if (v24)
               {
@@ -135,15 +135,15 @@ LABEL_31:
                 if (os_log_type_enabled(PARLogHandleForCategory_logHandles_4_25, OS_LOG_TYPE_DEBUG))
                 {
                   LODWORD(buf) = 138412290;
-                  *(&buf + 4) = v19;
+                  *(&buf + 4) = pattern_template_directory;
                   _os_log_debug_impl(&dword_1B1064000, v26, OS_LOG_TYPE_DEBUG, "Processing response wrapper section with template path %@.", &buf, 0xCu);
                 }
 
-                v53 = [ptr pattern_parameters];
-                if (v53)
+                pattern_parameters = [ptr pattern_parameters];
+                if (pattern_parameters)
                 {
                   v62 = 0;
-                  v27 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v53 options:0 error:&v62];
+                  v27 = [MEMORY[0x1E696ACB0] JSONObjectWithData:pattern_parameters options:0 error:&v62];
                   v28 = v62;
                   if (!v28 && v27)
                   {
@@ -160,9 +160,9 @@ LABEL_31:
                   if (os_log_type_enabled(PARLogHandleForCategory_logHandles_4_25, OS_LOG_TYPE_ERROR))
                   {
                     v45 = v43;
-                    v46 = [v28 localizedDescription];
+                    localizedDescription = [v28 localizedDescription];
                     LODWORD(buf) = 138412290;
-                    *(&buf + 4) = v46;
+                    *(&buf + 4) = localizedDescription;
                     _os_log_error_impl(&dword_1B1064000, v45, OS_LOG_TYPE_ERROR, "Error decoding JSON params: %@", &buf, 0xCu);
                   }
 
@@ -203,11 +203,11 @@ LABEL_45:
                   v59 = v28;
                   v60 = v56;
                   v34 = _Block_copy(aBlock);
-                  v35 = [ptr pattern_id];
-                  v36 = v35;
-                  if (v35)
+                  pattern_id = [ptr pattern_id];
+                  v36 = pattern_id;
+                  if (pattern_id)
                   {
-                    v37 = v35;
+                    v37 = pattern_id;
                   }
 
                   else
@@ -216,9 +216,9 @@ LABEL_45:
                   }
 
                   v71 = @"locale";
-                  v38 = [MEMORY[0x1E695DF58] currentLocale];
-                  v39 = [v38 languageCode];
-                  v72 = v39;
+                  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+                  languageCode = [currentLocale languageCode];
+                  v72 = languageCode;
                   v40 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v72 forKeys:&v71 count:1];
                   [a3 execute:0 templateDir:v52 patternId:v37 parameters:v51 globals:v40 options:0 completion:v34];
 
@@ -257,7 +257,7 @@ LABEL_45:
                 }
               }
 
-              v22 = v19;
+              v22 = pattern_template_directory;
             }
 
             else
@@ -330,7 +330,7 @@ LABEL_77:
 
     v4 = v3;
     _Block_object_dispose(&v6, 8);
-    return [a1 processVisualCATResultSynchronouslyUsingPatternClass:v3];
+    return [self processVisualCATResultSynchronouslyUsingPatternClass:v3];
   }
 
   return result;

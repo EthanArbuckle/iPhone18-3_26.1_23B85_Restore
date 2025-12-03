@@ -1,18 +1,18 @@
 @interface HUMediaServiceTitleValueCell
-- (HUMediaServiceTitleValueCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HUMediaServiceTitleValueCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_loadServiceIconImage;
 - (void)_updateContentMetrics;
 - (void)updateConstraints;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUMediaServiceTitleValueCell
 
-- (HUMediaServiceTitleValueCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUMediaServiceTitleValueCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v12.receiver = self;
   v12.super_class = HUMediaServiceTitleValueCell;
-  v4 = [(HUTitleValueCell *)&v12 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HUTitleValueCell *)&v12 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_opt_new();
@@ -24,12 +24,12 @@
     [(UIImageView *)v4->_serviceIconView setContentHuggingPriority:1 forAxis:v7];
     LODWORD(v8) = 1148846080;
     [(UIImageView *)v4->_serviceIconView setContentHuggingPriority:0 forAxis:v8];
-    v9 = [(UIImageView *)v4->_serviceIconView layer];
-    [v9 setCornerRadius:5.0];
+    layer = [(UIImageView *)v4->_serviceIconView layer];
+    [layer setCornerRadius:5.0];
 
     [(UIImageView *)v4->_serviceIconView setClipsToBounds:1];
-    v10 = [(HUIconCell *)v4 iconView];
-    [v10 addSubview:v4->_serviceIconView];
+    iconView = [(HUIconCell *)v4 iconView];
+    [iconView addSubview:v4->_serviceIconView];
   }
 
   return v4;
@@ -38,8 +38,8 @@
 - (void)updateConstraints
 {
   v32[3] = *MEMORY[0x277D85DE8];
-  v3 = [(HUIconCell *)self contentMetrics];
-  [v3 iconSize];
+  contentMetrics = [(HUIconCell *)self contentMetrics];
+  [contentMetrics iconSize];
   v5 = v4;
 
   if (v5 != 32.0)
@@ -47,57 +47,57 @@
     [(HUMediaServiceTitleValueCell *)self _updateContentMetrics];
   }
 
-  v6 = [(HUMediaServiceTitleValueCell *)self constraints];
+  constraints = [(HUMediaServiceTitleValueCell *)self constraints];
 
-  if (v6)
+  if (constraints)
   {
     v7 = MEMORY[0x277CCAAD0];
-    v8 = [(HUMediaServiceTitleValueCell *)self constraints];
-    [v7 deactivateConstraints:v8];
+    constraints2 = [(HUMediaServiceTitleValueCell *)self constraints];
+    [v7 deactivateConstraints:constraints2];
   }
 
-  v9 = [MEMORY[0x277D756E0] cellConfiguration];
-  v10 = [(HUMediaServiceTitleValueCell *)self traitCollection];
-  [v9 _minimumHeightForTraitCollection:v10];
+  cellConfiguration = [MEMORY[0x277D756E0] cellConfiguration];
+  traitCollection = [(HUMediaServiceTitleValueCell *)self traitCollection];
+  [cellConfiguration _minimumHeightForTraitCollection:traitCollection];
   v12 = v11;
 
-  v13 = [(HUMediaServiceTitleValueCell *)self contentView];
-  v14 = [v13 heightAnchor];
-  v15 = [v14 constraintGreaterThanOrEqualToConstant:v12];
+  contentView = [(HUMediaServiceTitleValueCell *)self contentView];
+  heightAnchor = [contentView heightAnchor];
+  v15 = [heightAnchor constraintGreaterThanOrEqualToConstant:v12];
 
   LODWORD(v16) = 1148829696;
   v30 = v15;
   [v15 setPriority:v16];
   v32[0] = v15;
-  v29 = [(HUMediaServiceTitleValueCell *)self serviceIconView];
-  v28 = [v29 heightAnchor];
-  v17 = [(HUIconCell *)self iconView];
-  v18 = [v17 heightAnchor];
-  v19 = [v28 constraintEqualToAnchor:v18];
+  serviceIconView = [(HUMediaServiceTitleValueCell *)self serviceIconView];
+  heightAnchor2 = [serviceIconView heightAnchor];
+  iconView = [(HUIconCell *)self iconView];
+  heightAnchor3 = [iconView heightAnchor];
+  v19 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
   v32[1] = v19;
-  v20 = [(HUMediaServiceTitleValueCell *)self serviceIconView];
-  v21 = [v20 widthAnchor];
-  v22 = [(HUIconCell *)self iconView];
-  v23 = [v22 widthAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23];
+  serviceIconView2 = [(HUMediaServiceTitleValueCell *)self serviceIconView];
+  widthAnchor = [serviceIconView2 widthAnchor];
+  iconView2 = [(HUIconCell *)self iconView];
+  widthAnchor2 = [iconView2 widthAnchor];
+  v24 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v32[2] = v24;
   v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:3];
   [(HUMediaServiceTitleValueCell *)self setConstraints:v25];
 
   v26 = MEMORY[0x277CCAAD0];
-  v27 = [(HUMediaServiceTitleValueCell *)self constraints];
-  [v26 activateConstraints:v27];
+  constraints3 = [(HUMediaServiceTitleValueCell *)self constraints];
+  [v26 activateConstraints:constraints3];
 
   v31.receiver = self;
   v31.super_class = HUMediaServiceTitleValueCell;
   [(HUTitleValueCell *)&v31 updateConstraints];
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
   v4.receiver = self;
   v4.super_class = HUMediaServiceTitleValueCell;
-  [(HUTitleValueCell *)&v4 updateUIWithAnimation:a3];
+  [(HUTitleValueCell *)&v4 updateUIWithAnimation:animation];
   [(HUMediaServiceTitleValueCell *)self _loadServiceIconImage];
 }
 
@@ -107,12 +107,12 @@
   {
     [(HUMediaServiceTitleValueCell *)self setIconImageLoadingInProgress:1];
     v3 = objc_opt_class();
-    v4 = [(HUIconCell *)self item];
-    if (v4)
+    item = [(HUIconCell *)self item];
+    if (item)
     {
       if (objc_opt_isKindOfClass())
       {
-        v5 = v4;
+        v5 = item;
       }
 
       else
@@ -120,24 +120,24 @@
         v5 = 0;
       }
 
-      v6 = v4;
+      v6 = item;
       if (v5)
       {
         goto LABEL_9;
       }
 
-      v7 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-      [v7 handleFailureInFunction:v8 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v3, objc_opt_class()}];
+      [currentHandler handleFailureInFunction:v8 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v3, objc_opt_class()}];
     }
 
     v6 = 0;
 LABEL_9:
 
-    v9 = [v6 mediaService];
-    v10 = [v9 iconImageURL];
+    mediaService = [v6 mediaService];
+    iconImageURL = [mediaService iconImageURL];
 
-    v11 = [MEMORY[0x277D755B8] hf_fetchImageFromURL:v10];
+    v11 = [MEMORY[0x277D755B8] hf_fetchImageFromURL:iconImageURL];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __53__HUMediaServiceTitleValueCell__loadServiceIconImage__block_invoke;

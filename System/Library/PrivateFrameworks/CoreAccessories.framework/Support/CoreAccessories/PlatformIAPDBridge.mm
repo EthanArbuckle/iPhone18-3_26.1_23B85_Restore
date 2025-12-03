@@ -1,30 +1,30 @@
 @interface PlatformIAPDBridge
 + (id)sharedPlatformIAPDBridge;
-- (BOOL)_getPortLockout:(unint64_t)a3;
-- (BOOL)_handleTransmitData:(char *)a3 withLength:(unint64_t)a4 forPortID:(unint64_t)a5 withSynchronousTransmit:(BOOL)a6;
-- (BOOL)_shouldProcessAuthenticationFailState:(ACCEndpoint_s *)a3;
-- (BOOL)iapdAccessory:(ACCEndpoint_s *)a3 dataArrivedFromAccessory:(id)a4;
+- (BOOL)_getPortLockout:(unint64_t)lockout;
+- (BOOL)_handleTransmitData:(char *)data withLength:(unint64_t)length forPortID:(unint64_t)d withSynchronousTransmit:(BOOL)transmit;
+- (BOOL)_shouldProcessAuthenticationFailState:(ACCEndpoint_s *)state;
+- (BOOL)iapdAccessory:(ACCEndpoint_s *)accessory dataArrivedFromAccessory:(id)fromAccessory;
 - (PlatformIAPDBridge)init;
 - (unint64_t)_generatePortID;
 - (void)_E75To30PinAdapterConnected;
-- (void)_generateIAPDPortInfoForDictionary:(id)a3 fromEndpoint:(ACCEndpoint_s *)a4;
-- (void)_generateIAPDPortTypeForDictionary:(id)a3 fromEndpoint:(ACCEndpoint_s *)a4;
-- (void)_handleAccessoryInfo:(id *)a3 forPortID:(unint64_t)a4;
-- (void)_handleAuthenticationState:(BOOL)a3 forPortID:(unint64_t)a4 certData:(id)a5;
-- (void)_handleAvailableCurrentNegotiated:(unsigned __int16)a3 forPortID:(unint64_t)a4;
-- (void)_handleB139B164ConnectedStatus:(id)a3;
-- (void)_handleIncomingXPCEvent:(id)a3 forXPCConnection:(id)a4;
-- (void)_handleLingoesSupported:(unsigned int)a3 forPortID:(unint64_t)a4;
-- (void)_handlePrimaryPortReturn:(id)a3;
-- (void)_handleResistorID:(id)a3 forPortDictionary:(id)a4;
-- (void)_handleResistorIDChanged:(id)a3;
-- (void)_handleSetPortLockout:(unint64_t)a3;
+- (void)_generateIAPDPortInfoForDictionary:(id)dictionary fromEndpoint:(ACCEndpoint_s *)endpoint;
+- (void)_generateIAPDPortTypeForDictionary:(id)dictionary fromEndpoint:(ACCEndpoint_s *)endpoint;
+- (void)_handleAccessoryInfo:(id *)info forPortID:(unint64_t)d;
+- (void)_handleAuthenticationState:(BOOL)state forPortID:(unint64_t)d certData:(id)data;
+- (void)_handleAvailableCurrentNegotiated:(unsigned __int16)negotiated forPortID:(unint64_t)d;
+- (void)_handleB139B164ConnectedStatus:(id)status;
+- (void)_handleIncomingXPCEvent:(id)event forXPCConnection:(id)connection;
+- (void)_handleLingoesSupported:(unsigned int)supported forPortID:(unint64_t)d;
+- (void)_handlePrimaryPortReturn:(id)return;
+- (void)_handleResistorID:(id)d forPortDictionary:(id)dictionary;
+- (void)_handleResistorIDChanged:(id)changed;
+- (void)_handleSetPortLockout:(unint64_t)lockout;
 - (void)_sendHasAdaptor;
 - (void)handleIAPDDisconnect;
-- (void)handleIncomingXPCConnection:(id)a3;
-- (void)iapdAccessoryArrived:(ACCEndpoint_s *)a3;
-- (void)iapdAccessoryLeft:(id)a3;
-- (void)sendData:(char *)a3 length:(unint64_t)a4 forConnection:(id)a5 portUID:(id)a6;
+- (void)handleIncomingXPCConnection:(id)connection;
+- (void)iapdAccessoryArrived:(ACCEndpoint_s *)arrived;
+- (void)iapdAccessoryLeft:(id)left;
+- (void)sendData:(char *)data length:(unint64_t)length forConnection:(id)connection portUID:(id)d;
 @end
 
 @implementation PlatformIAPDBridge
@@ -181,13 +181,13 @@ void __46__PlatformIAPDBridge_sharedPlatformIAPDBridge__block_invoke(id a1)
   _objc_release_x1();
 }
 
-- (void)iapdAccessoryArrived:(ACCEndpoint_s *)a3
+- (void)iapdAccessoryArrived:(ACCEndpoint_s *)arrived
 {
   if ([(PlatformIAPDBridge *)self supportsIAPD])
   {
     if (!self->iapdConnection)
     {
-      var4 = a3->var4;
+      var4 = arrived->var4;
       if (var4 == 3 || var4 == 0)
       {
         v7 = [[ACCXPCConnection alloc] initWithServiceName:@"com.apple.iapd.xpc" queueName:@"com.apple.accessoryd.ACCXPCConnection"];
@@ -199,11 +199,11 @@ void __46__PlatformIAPDBridge_sharedPlatformIAPDBridge__block_invoke(id a1)
       }
     }
 
-    v9 = [(PlatformIAPDBridge *)self _generatePortID];
-    v10 = a3->var2;
-    v11 = *a3->var0;
+    _generatePortID = [(PlatformIAPDBridge *)self _generatePortID];
+    v10 = arrived->var2;
+    v11 = *arrived->var0;
     v12 = objc_alloc_init(NSMutableDictionary);
-    v13 = [NSNumber numberWithUnsignedLongLong:v9];
+    v13 = [NSNumber numberWithUnsignedLongLong:_generatePortID];
     [v12 setObject:v13 forKey:@"ACCPlatformIAPDBridge_PortID"];
 
     v14 = [(__CFString *)v10 copy];
@@ -212,7 +212,7 @@ void __46__PlatformIAPDBridge_sharedPlatformIAPDBridge__block_invoke(id a1)
     v15 = [v11 copy];
     [v12 setObject:v15 forKey:ACCPlatformIAPDPort_ConnectionUUID];
 
-    v16 = [NSNumber numberWithInt:a3->var4];
+    v16 = [NSNumber numberWithInt:arrived->var4];
     [v12 setObject:v16 forKey:ACCPlatformIAPDPort_Protocol];
 
     if (gLogObjects && gNumLogObjects >= 7)
@@ -236,7 +236,7 @@ void __46__PlatformIAPDBridge_sharedPlatformIAPDBridge__block_invoke(id a1)
       v40 = 138412802;
       v41 = v11;
       v42 = 2048;
-      v43 = v9;
+      v43 = _generatePortID;
       v44 = 2112;
       v45 = v12;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "[#iapd Bridge] iapd accessory arrived, connectionUID %@, generated portID %llu, acc. info %@", &v40, 0x20u);
@@ -244,11 +244,11 @@ void __46__PlatformIAPDBridge_sharedPlatformIAPDBridge__block_invoke(id a1)
 
     [gCoreAccessoriesEndpointMap setObject:v12 forKey:v10];
     v19 = gIAPDEndpointMap;
-    v20 = [NSNumber numberWithUnsignedLongLong:v9];
+    v20 = [NSNumber numberWithUnsignedLongLong:_generatePortID];
     [v19 setObject:v12 forKey:v20];
 
-    [(PlatformIAPDBridge *)self _generateIAPDPortTypeForDictionary:v12 fromEndpoint:a3];
-    var3 = a3->var3;
+    [(PlatformIAPDBridge *)self _generateIAPDPortTypeForDictionary:v12 fromEndpoint:arrived];
+    var3 = arrived->var3;
     if (var3 <= 7 && ((1 << var3) & 0xC3) != 0)
     {
       if (gLogObjects && gNumLogObjects >= 7)
@@ -269,19 +269,19 @@ void __46__PlatformIAPDBridge_sharedPlatformIAPDBridge__block_invoke(id a1)
 
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = a3->var3;
+        v24 = arrived->var3;
         v40 = 67109120;
         LODWORD(v41) = v24;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "[#iapd Bridge] an iAP1 dock accessory connected with transport type %{coreacc:ACCEndpoint_TransportType_t}d", &v40, 8u);
       }
 
-      if (!a3->var0)
+      if (!arrived->var0)
       {
         goto LABEL_46;
       }
 
-      v25 = acc_connection_copyProperties(a3->var0);
-      v26 = acc_endpoint_copyProperties(a3);
+      v25 = acc_connection_copyProperties(arrived->var0);
+      v26 = acc_endpoint_copyProperties(arrived);
       v27 = [gCoreAccessoriesEndpointMap objectForKey:v10];
       v28 = kACCProperties_Connection_PrimaryPortNumber;
       v29 = [v25 objectForKey:kACCProperties_Connection_PrimaryPortNumber];
@@ -329,7 +329,7 @@ void __46__PlatformIAPDBridge_sharedPlatformIAPDBridge__block_invoke(id a1)
         v40 = 138412802;
         v41 = v11;
         v42 = 2048;
-        v43 = v9;
+        v43 = _generatePortID;
         v44 = 2112;
         v45 = v27;
         _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "[#iapd Bridge] iapd accessory arrived, connectionUID %@, generated portID %llu, coreAccToIAPDAccDict %@", &v40, 0x20u);
@@ -338,8 +338,8 @@ void __46__PlatformIAPDBridge_sharedPlatformIAPDBridge__block_invoke(id a1)
 
     else
     {
-      Type = acc_connection_getType(a3->var0);
-      [(PlatformIAPDBridge *)self _generateIAPDPortInfoForDictionary:v12 fromEndpoint:a3];
+      Type = acc_connection_getType(arrived->var0);
+      [(PlatformIAPDBridge *)self _generateIAPDPortInfoForDictionary:v12 fromEndpoint:arrived];
       if (Type != 2)
       {
         goto LABEL_46;
@@ -354,7 +354,7 @@ LABEL_46:
         return;
       }
 
-      v38 = acc_connection_copyIdentifier(a3->var0);
+      v38 = acc_connection_copyIdentifier(arrived->var0);
       v26 = v38;
       if (!v38 || (convertNSStringToNSData(v38), (v39 = objc_claimAutoreleasedReturnValue()) == 0))
       {
@@ -377,12 +377,12 @@ void __43__PlatformIAPDBridge_iapdAccessoryArrived___block_invoke(id a1)
   [v1 handleIAPDDisconnect];
 }
 
-- (void)iapdAccessoryLeft:(id)a3
+- (void)iapdAccessoryLeft:(id)left
 {
-  v12 = a3;
+  leftCopy = left;
   if ([(PlatformIAPDBridge *)self supportsIAPD])
   {
-    v4 = [gCoreAccessoriesEndpointMap objectForKey:v12];
+    v4 = [gCoreAccessoriesEndpointMap objectForKey:leftCopy];
     v5 = v4;
     if (!v4)
     {
@@ -402,9 +402,9 @@ void __43__PlatformIAPDBridge_iapdAccessoryArrived___block_invoke(id a1)
 
     else
     {
-      v8 = [v7 intValue];
+      intValue = [v7 intValue];
 
-      if (v8)
+      if (intValue)
       {
 LABEL_8:
 
@@ -413,12 +413,12 @@ LABEL_8:
     }
 
     v9 = [v5 objectForKey:@"ACCPlatformIAPDBridge_PortID"];
-    v10 = [v9 unsignedLongLongValue];
+    unsignedLongLongValue = [v9 unsignedLongLongValue];
     v11 = xpc_dictionary_create(0, 0, 0);
-    xpc_dictionary_set_uint64(v11, "portID", v10);
+    xpc_dictionary_set_uint64(v11, "portID", unsignedLongLongValue);
     xpc_dictionary_set_string(v11, "requestType", "transportLeft");
     [(ACCXPCConnection *)self->iapdConnection sendMessage:v11];
-    [gCoreAccessoriesEndpointMap removeObjectForKey:v12];
+    [gCoreAccessoriesEndpointMap removeObjectForKey:leftCopy];
     [gIAPDEndpointMap removeObjectForKey:v9];
 
     goto LABEL_8;
@@ -429,12 +429,12 @@ LABEL_9:
   _objc_release_x2();
 }
 
-- (BOOL)iapdAccessory:(ACCEndpoint_s *)a3 dataArrivedFromAccessory:(id)a4
+- (BOOL)iapdAccessory:(ACCEndpoint_s *)accessory dataArrivedFromAccessory:(id)fromAccessory
 {
-  v6 = a4;
-  if ([(PlatformIAPDBridge *)self supportsIAPD]&& ((var4 = a3->var4, var4 != 3) ? (v8 = var4 == 0) : (v8 = 1), v8))
+  fromAccessoryCopy = fromAccessory;
+  if ([(PlatformIAPDBridge *)self supportsIAPD]&& ((var4 = accessory->var4, var4 != 3) ? (v8 = var4 == 0) : (v8 = 1), v8))
   {
-    v9 = a3->var2;
+    v9 = accessory->var2;
     v10 = [gCoreAccessoriesEndpointMap objectForKey:v9];
     v11 = v10;
     v12 = v10 != 0;
@@ -442,20 +442,20 @@ LABEL_9:
     {
       v24 = v9;
       v23 = [v10 objectForKey:@"ACCPlatformIAPDBridge_PortID"];
-      v13 = [v23 unsignedLongLongValue];
+      unsignedLongLongValue = [v23 unsignedLongLongValue];
       v22 = [v11 objectForKey:@"ACCPlatformIAPDBridge_PortNumber"];
-      v14 = [v22 unsignedLongLongValue];
+      unsignedLongLongValue2 = [v22 unsignedLongLongValue];
       v21 = [v11 objectForKey:ACCPlatformIAPDBridge_PrimaryPortNumber];
-      v15 = [v21 unsignedLongLongValue];
+      unsignedLongLongValue3 = [v21 unsignedLongLongValue];
       v20 = [v11 objectForKey:@"ACCPlatformIAPDBridge_PrimaryPortType"];
-      v16 = [v20 unsignedLongLongValue];
+      unsignedLongLongValue4 = [v20 unsignedLongLongValue];
       v17 = [v11 objectForKey:@"ACCPlatformIAPDPort_BluetoothMACAddress"];
       v18 = xpc_dictionary_create(0, 0, 0);
-      xpc_dictionary_set_uint64(v18, "portID", v13);
-      xpc_dictionary_set_uint64(v18, "portType", v16);
-      xpc_dictionary_set_uint64(v18, "portNumber", v14);
-      xpc_dictionary_set_uint64(v18, "portManagerNumber", v15);
-      xpc_dictionary_set_data(v18, "data", [v6 bytes], objc_msgSend(v6, "length"));
+      xpc_dictionary_set_uint64(v18, "portID", unsignedLongLongValue);
+      xpc_dictionary_set_uint64(v18, "portType", unsignedLongLongValue4);
+      xpc_dictionary_set_uint64(v18, "portNumber", unsignedLongLongValue2);
+      xpc_dictionary_set_uint64(v18, "portManagerNumber", unsignedLongLongValue3);
+      xpc_dictionary_set_data(v18, "data", [fromAccessoryCopy bytes], objc_msgSend(fromAccessoryCopy, "length"));
       xpc_dictionary_set_string(v18, "requestType", "dataArrived");
       if (v17)
       {
@@ -532,9 +532,9 @@ LABEL_9:
   }
 }
 
-- (void)handleIncomingXPCConnection:(id)a3
+- (void)handleIncomingXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 7;
@@ -566,7 +566,7 @@ LABEL_9:
     [PlatformIAPDBridge handleIncomingXPCConnection:];
   }
 
-  if (xpc_get_type(v4) == &_xpc_type_connection)
+  if (xpc_get_type(connectionCopy) == &_xpc_type_connection)
   {
     if (gLogObjects && gNumLogObjects >= 7)
     {
@@ -589,18 +589,18 @@ LABEL_9:
       [PlatformIAPDBridge handleIncomingXPCConnection:];
     }
 
-    xpc_connection_set_target_queue(v4, self->_accessoryIAPDBridgeListenerQueue);
+    xpc_connection_set_target_queue(connectionCopy, self->_accessoryIAPDBridgeListenerQueue);
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = __50__PlatformIAPDBridge_handleIncomingXPCConnection___block_invoke;
     handler[3] = &unk_1002268A0;
-    v14 = v4;
+    v14 = connectionCopy;
     v18 = v14;
     xpc_connection_set_event_handler(v14, handler);
     xpc_connection_resume(v14);
   }
 
-  else if (xpc_get_type(v4) == &_xpc_type_error)
+  else if (xpc_get_type(connectionCopy) == &_xpc_type_error)
   {
     if (gLogObjects && gNumLogObjects >= 7)
     {
@@ -620,13 +620,13 @@ LABEL_9:
 
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [(PlatformIAPDBridge *)v4 handleIncomingXPCConnection:v12];
+      [(PlatformIAPDBridge *)connectionCopy handleIncomingXPCConnection:v12];
     }
   }
 
   else
   {
-    v8 = xpc_copy_description(v4);
+    v8 = xpc_copy_description(connectionCopy);
     if (v8)
     {
       v9 = v8;
@@ -663,13 +663,13 @@ void __50__PlatformIAPDBridge_handleIncomingXPCConnection___block_invoke(uint64_
   [v4 _handleIncomingXPCEvent:v3 forXPCConnection:*(a1 + 32)];
 }
 
-- (void)_handleIncomingXPCEvent:(id)a3 forXPCConnection:(id)a4
+- (void)_handleIncomingXPCEvent:(id)event forXPCConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  if (xpc_get_type(v6) == &_xpc_type_dictionary)
+  eventCopy = event;
+  connectionCopy = connection;
+  if (xpc_get_type(eventCopy) == &_xpc_type_dictionary)
   {
-    string = xpc_dictionary_get_string(v6, "requestType");
+    string = xpc_dictionary_get_string(eventCopy, "requestType");
     if (!string)
     {
       if (gLogObjects && gNumLogObjects >= 7)
@@ -720,19 +720,19 @@ void __50__PlatformIAPDBridge_handleIncomingXPCConnection___block_invoke(uint64_
 
     if (!strcmp(string, "transmitData"))
     {
-      reply = xpc_dictionary_create_reply(v6);
+      reply = xpc_dictionary_create_reply(eventCopy);
       if (reply)
       {
         *buf = 0;
-        uint64 = xpc_dictionary_get_uint64(v6, "portID");
-        data = xpc_dictionary_get_data(v6, "data", buf);
-        v30 = xpc_dictionary_get_BOOL(v6, "waitSendDone");
+        uint64 = xpc_dictionary_get_uint64(eventCopy, "portID");
+        data = xpc_dictionary_get_data(eventCopy, "data", buf);
+        v30 = xpc_dictionary_get_BOOL(eventCopy, "waitSendDone");
         v31 = +[PlatformIAPDBridge sharedPlatformIAPDBridge];
         LODWORD(uint64) = [v31 _handleTransmitData:data withLength:*buf forPortID:uint64 withSynchronousTransmit:v30];
 
         xpc_dictionary_set_int64(reply, "result", uint64 ^ 1);
 LABEL_71:
-        xpc_connection_send_message(v7, reply);
+        xpc_connection_send_message(connectionCopy, reply);
       }
     }
 
@@ -742,7 +742,7 @@ LABEL_71:
       {
         if (!strcmp(string, "IAPClientPortRegisterStr"))
         {
-          v36 = xpc_dictionary_get_string(v6, "IAPClientPortUUIDStr");
+          v36 = xpc_dictionary_get_string(eventCopy, "IAPClientPortUUIDStr");
           if (!v36)
           {
             goto LABEL_116;
@@ -776,7 +776,7 @@ LABEL_71:
           v51 = [(ACCClientPortShimManager *)self->_clienPortShimManager findClientPortForUUID:v50];
           if (!v51)
           {
-            v51 = [[ACCClientPortShim alloc] initWithUID:v50 xpcConnection:v7 delegate:self];
+            v51 = [[ACCClientPortShim alloc] initWithUID:v50 xpcConnection:connectionCopy delegate:self];
             [(ACCClientPortShimManager *)self->_clienPortShimManager addClienPort:v51 forUUID:v50];
           }
         }
@@ -788,8 +788,8 @@ LABEL_71:
             if (!strcmp(string, "dataArrived"))
             {
               length = 0;
-              v42 = xpc_dictionary_get_string(v6, "IAPClientPortUUIDStr");
-              v43 = xpc_dictionary_get_data(v6, "data", &length);
+              v42 = xpc_dictionary_get_string(eventCopy, "IAPClientPortUUIDStr");
+              v43 = xpc_dictionary_get_data(eventCopy, "data", &length);
               if (!v42)
               {
                 goto LABEL_116;
@@ -824,7 +824,7 @@ LABEL_71:
 
             if (!strcmp(string, "setPortLockout"))
             {
-              v52 = xpc_dictionary_get_uint64(v6, "portID");
+              v52 = xpc_dictionary_get_uint64(eventCopy, "portID");
               v50 = +[PlatformIAPDBridge sharedPlatformIAPDBridge];
               [v50 _handleSetPortLockout:v52];
 LABEL_115:
@@ -836,9 +836,9 @@ LABEL_115:
             {
               if (!strcmp(string, "handleAuthenticationPassed"))
               {
-                v56 = xpc_dictionary_get_uint64(v6, "portID");
+                v56 = xpc_dictionary_get_uint64(eventCopy, "portID");
                 *buf = 0;
-                v57 = xpc_dictionary_get_data(v6, "certData", buf);
+                v57 = xpc_dictionary_get_data(eventCopy, "certData", buf);
                 v50 = 0;
                 if (v57 && *buf)
                 {
@@ -856,8 +856,8 @@ LABEL_115:
                 {
                   if (!strcmp(string, "iAP1LingoesSupported"))
                   {
-                    v61 = xpc_dictionary_get_uint64(v6, "portID");
-                    v62 = xpc_dictionary_get_uint64(v6, "lingoesSupported");
+                    v61 = xpc_dictionary_get_uint64(eventCopy, "portID");
+                    v62 = xpc_dictionary_get_uint64(eventCopy, "lingoesSupported");
                     if (!v62)
                     {
                       goto LABEL_116;
@@ -874,13 +874,13 @@ LABEL_115:
                     {
                       if (!strcmp(string, "accInfo"))
                       {
-                        v18 = xpc_dictionary_get_uint64(v6, "portID");
-                        v19 = xpc_dictionary_get_string(v6, "accName");
-                        v20 = xpc_dictionary_get_string(v6, "accManufacturer");
-                        v21 = xpc_dictionary_get_string(v6, "accModel");
-                        v22 = xpc_dictionary_get_string(v6, "accSerialNumber");
-                        v23 = xpc_dictionary_get_string(v6, "accHardwareVersion");
-                        v24 = xpc_dictionary_get_string(v6, "accFirmwareVersionActive");
+                        v18 = xpc_dictionary_get_uint64(eventCopy, "portID");
+                        v19 = xpc_dictionary_get_string(eventCopy, "accName");
+                        v20 = xpc_dictionary_get_string(eventCopy, "accManufacturer");
+                        v21 = xpc_dictionary_get_string(eventCopy, "accModel");
+                        v22 = xpc_dictionary_get_string(eventCopy, "accSerialNumber");
+                        v23 = xpc_dictionary_get_string(eventCopy, "accHardwareVersion");
+                        v24 = xpc_dictionary_get_string(eventCopy, "accFirmwareVersionActive");
                         if (v19)
                         {
                           if (v20)
@@ -957,8 +957,8 @@ LABEL_115:
                       goto LABEL_116;
                     }
 
-                    v64 = xpc_dictionary_get_uint64(v6, "portID");
-                    v65 = xpc_dictionary_get_uint64(v6, "availableCurrent");
+                    v64 = xpc_dictionary_get_uint64(eventCopy, "portID");
+                    v65 = xpc_dictionary_get_uint64(eventCopy, "availableCurrent");
                     v46 = +[PlatformIAPDBridge sharedPlatformIAPDBridge];
                     [v46 _handleAvailableCurrentNegotiated:v65 forPortID:v64];
                   }
@@ -968,9 +968,9 @@ LABEL_88:
                   goto LABEL_116;
                 }
 
-                v56 = xpc_dictionary_get_uint64(v6, "portID");
+                v56 = xpc_dictionary_get_uint64(eventCopy, "portID");
                 *buf = 0;
-                v60 = xpc_dictionary_get_data(v6, "certData", buf);
+                v60 = xpc_dictionary_get_data(eventCopy, "certData", buf);
                 v50 = 0;
                 if (v60 && *buf)
                 {
@@ -986,8 +986,8 @@ LABEL_88:
               goto LABEL_114;
             }
 
-            reply = xpc_dictionary_create_reply(v6);
-            v54 = xpc_dictionary_get_uint64(v6, "portID");
+            reply = xpc_dictionary_create_reply(eventCopy);
+            v54 = xpc_dictionary_get_uint64(eventCopy, "portID");
             v55 = +[PlatformIAPDBridge sharedPlatformIAPDBridge];
             LOBYTE(v54) = [v55 _getPortLockout:v54];
 
@@ -998,7 +998,7 @@ LABEL_88:
             goto LABEL_70;
           }
 
-          v39 = xpc_dictionary_get_string(v6, "IAPClientPortUUIDStr");
+          v39 = xpc_dictionary_get_string(eventCopy, "IAPClientPortUUIDStr");
           if (!v39)
           {
             goto LABEL_116;
@@ -1042,7 +1042,7 @@ LABEL_114:
         goto LABEL_115;
       }
 
-      reply = xpc_dictionary_create_reply(v6);
+      reply = xpc_dictionary_create_reply(eventCopy);
       if (reply)
       {
         v32 = +[PlatformIAPDBridge sharedPlatformIAPDBridge];
@@ -1061,8 +1061,8 @@ LABEL_70:
     goto LABEL_116;
   }
 
-  v8 = xpc_copy_description(v6);
-  v9 = xpc_copy_description(v7);
+  v8 = xpc_copy_description(eventCopy);
+  v9 = xpc_copy_description(connectionCopy);
   v10 = v9;
   if (v8 && v9)
   {
@@ -1112,16 +1112,16 @@ LABEL_21:
 LABEL_116:
 }
 
-- (BOOL)_handleTransmitData:(char *)a3 withLength:(unint64_t)a4 forPortID:(unint64_t)a5 withSynchronousTransmit:(BOOL)a6
+- (BOOL)_handleTransmitData:(char *)data withLength:(unint64_t)length forPortID:(unint64_t)d withSynchronousTransmit:(BOOL)transmit
 {
-  v9 = [NSNumber numberWithUnsignedLongLong:a5];
+  v9 = [NSNumber numberWithUnsignedLongLong:d];
   v10 = [gIAPDEndpointMap objectForKey:v9];
   v11 = v10;
   if (v10)
   {
     v12 = [v10 objectForKey:ACCPlatformIAPDPort_EndpointUUID];
     EndpointWithUUID = acc_manager_getEndpointWithUUID(v12);
-    v14 = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, a3, a4, kCFAllocatorNull);
+    v14 = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, data, length, kCFAllocatorNull);
     v15 = acc_endpoint_sendOutgoingData(EndpointWithUUID, v14);
     if (gLogObjects && gNumLogObjects >= 7)
     {
@@ -1142,9 +1142,9 @@ LABEL_116:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       v21 = 138412802;
-      v22 = v12;
+      dCopy2 = v12;
       v23 = 2048;
-      v24 = a5;
+      dCopy = d;
       v25 = 1024;
       v26 = v15;
       _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "[#iapd Bridge] found endpointUUID %@ for portID %llu, transmitData success = %d", &v21, 0x1Cu);
@@ -1184,7 +1184,7 @@ LABEL_116:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 134217984;
-      v22 = a5;
+      dCopy2 = d;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[#iapd Bridge] no dictionary found for portID %llu", &v21, 0xCu);
     }
 
@@ -1200,7 +1200,7 @@ LABEL_116:
   [v2 postNotificationName:ACCPlatformIAPDPort_RequestB139B164ConnectedNotification object:0 userInfo:0];
 }
 
-- (void)_handleSetPortLockout:(unint64_t)a3
+- (void)_handleSetPortLockout:(unint64_t)lockout
 {
   v3 = [NSNumber numberWithUnsignedLongLong:?];
   v4 = [gIAPDEndpointMap objectForKey:v3];
@@ -1233,7 +1233,7 @@ LABEL_116:
   }
 }
 
-- (BOOL)_getPortLockout:(unint64_t)a3
+- (BOOL)_getPortLockout:(unint64_t)lockout
 {
   v4 = [NSNumber numberWithUnsignedLongLong:?];
   v5 = [gIAPDEndpointMap objectForKey:v4];
@@ -1264,7 +1264,7 @@ LABEL_116:
       v13 = 138412802;
       v14 = v7;
       v15 = 2048;
-      v16 = a3;
+      lockoutCopy = lockout;
       v17 = 1024;
       v18 = isLockoutActiveForTransportType;
       _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "[#iapd Bridge] found endpointUUID %@ for portID %llu, lockoutEnabled = %d", &v13, 0x1Cu);
@@ -1279,11 +1279,11 @@ LABEL_116:
   return isLockoutActiveForTransportType;
 }
 
-- (void)_handleAuthenticationState:(BOOL)a3 forPortID:(unint64_t)a4 certData:(id)a5
+- (void)_handleAuthenticationState:(BOOL)state forPortID:(unint64_t)d certData:(id)data
 {
-  v6 = a3;
-  v8 = a5;
-  v9 = [NSNumber numberWithUnsignedLongLong:a4];
+  stateCopy = state;
+  dataCopy = data;
+  v9 = [NSNumber numberWithUnsignedLongLong:d];
   v10 = [gIAPDEndpointMap objectForKey:v9];
   v11 = v10;
   if (v10)
@@ -1294,8 +1294,8 @@ LABEL_116:
     v17[2] = __68__PlatformIAPDBridge__handleAuthenticationState_forPortID_certData___block_invoke;
     v17[3] = &unk_1002268E8;
     v17[4] = self;
-    v19 = v6;
-    v18 = v8;
+    v19 = stateCopy;
+    v18 = dataCopy;
     if ((acc_manager_protectedEndpointCall(v12, 0, 0, v17) & 1) == 0)
     {
       if (gLogObjects && gNumLogObjects >= 7)
@@ -1356,7 +1356,7 @@ LABEL_116:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v21) = v6;
+      LODWORD(v21) = stateCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[#iapd Bridge] Can't find dictionary for auth passed %d", buf, 8u);
     }
   }
@@ -1482,9 +1482,9 @@ void __68__PlatformIAPDBridge__handleAuthenticationState_forPortID_certData___bl
   }
 }
 
-- (void)_handleLingoesSupported:(unsigned int)a3 forPortID:(unint64_t)a4
+- (void)_handleLingoesSupported:(unsigned int)supported forPortID:(unint64_t)d
 {
-  v5 = [NSNumber numberWithUnsignedLongLong:a4];
+  v5 = [NSNumber numberWithUnsignedLongLong:d];
   v6 = [gIAPDEndpointMap objectForKey:v5];
   v7 = v6;
   if (v5)
@@ -1528,7 +1528,7 @@ void __68__PlatformIAPDBridge__handleAuthenticationState_forPortID_certData___bl
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 67109120;
-      v17 = a3;
+      supportedCopy2 = supported;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[#iapd Bridge] Can't find dictionary for supported lingoes: %08x", &v16, 8u);
     }
   }
@@ -1567,16 +1567,16 @@ void __68__PlatformIAPDBridge__handleAuthenticationState_forPortID_certData___bl
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 67109120;
-        v17 = a3;
+        supportedCopy2 = supported;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[#iapd Bridge] Can't find endpoint for supported lingoes: %08x", &v16, 8u);
       }
     }
   }
 }
 
-- (void)_handleAvailableCurrentNegotiated:(unsigned __int16)a3 forPortID:(unint64_t)a4
+- (void)_handleAvailableCurrentNegotiated:(unsigned __int16)negotiated forPortID:(unint64_t)d
 {
-  v4 = [NSNumber numberWithUnsignedLongLong:a4];
+  v4 = [NSNumber numberWithUnsignedLongLong:d];
   v5 = [gIAPDEndpointMap objectForKey:v4];
   v6 = v5;
   if (v4)
@@ -1663,9 +1663,9 @@ void __68__PlatformIAPDBridge__handleAuthenticationState_forPortID_certData___bl
   }
 }
 
-- (void)_handleAccessoryInfo:(id *)a3 forPortID:(unint64_t)a4
+- (void)_handleAccessoryInfo:(id *)info forPortID:(unint64_t)d
 {
-  v5 = [NSNumber numberWithUnsignedLongLong:a4];
+  v5 = [NSNumber numberWithUnsignedLongLong:d];
   v6 = [gIAPDEndpointMap objectForKey:v5];
   v7 = v6;
   if (v5)
@@ -1720,7 +1720,7 @@ void __68__PlatformIAPDBridge__handleAuthenticationState_forPortID_certData___bl
     if (v11)
     {
       EndpointWithUUID = acc_manager_getEndpointWithUUID(v11);
-      if (a3 && EndpointWithUUID)
+      if (info && EndpointWithUUID)
       {
         acc_endpoint_setAccessoryInfo(EndpointWithUUID);
       }
@@ -1753,10 +1753,10 @@ void __68__PlatformIAPDBridge__handleAuthenticationState_forPortID_certData___bl
   }
 }
 
-- (void)_handleResistorID:(id)a3 forPortDictionary:(id)a4
+- (void)_handleResistorID:(id)d forPortDictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  dictionaryCopy = dictionary;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 7;
@@ -1786,48 +1786,48 @@ void __68__PlatformIAPDBridge__handleAuthenticationState_forPortID_certData___bl
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v25 = v6;
+    v25 = dCopy;
     v26 = 2112;
-    v27 = v7;
+    v27 = dictionaryCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[#iapd Bridge] Sending kXPCResistorArrivedStr with resistorID %@ for portDict %@", buf, 0x16u);
   }
 
-  if (v7)
+  if (dictionaryCopy)
   {
-    v23 = [v7 objectForKey:@"ACCPlatformIAPDBridge_PortID"];
+    v23 = [dictionaryCopy objectForKey:@"ACCPlatformIAPDBridge_PortID"];
     value = [v23 unsignedLongLongValue];
-    v22 = [v7 objectForKey:@"ACCPlatformIAPDBridge_PortNumber"];
-    v11 = [v22 unsignedLongLongValue];
-    v12 = [v7 objectForKey:ACCPlatformIAPDBridge_PrimaryPortNumber];
-    v13 = [v12 unsignedLongLongValue];
-    v14 = [v7 objectForKey:@"ACCPlatformIAPDBridge_PrimaryPortType"];
-    v15 = self;
-    v16 = [v14 unsignedLongLongValue];
-    v17 = v6;
-    v18 = [v6 unsignedLongLongValue];
+    v22 = [dictionaryCopy objectForKey:@"ACCPlatformIAPDBridge_PortNumber"];
+    unsignedLongLongValue = [v22 unsignedLongLongValue];
+    v12 = [dictionaryCopy objectForKey:ACCPlatformIAPDBridge_PrimaryPortNumber];
+    unsignedLongLongValue2 = [v12 unsignedLongLongValue];
+    v14 = [dictionaryCopy objectForKey:@"ACCPlatformIAPDBridge_PrimaryPortType"];
+    selfCopy = self;
+    unsignedLongLongValue3 = [v14 unsignedLongLongValue];
+    v17 = dCopy;
+    unsignedLongLongValue4 = [dCopy unsignedLongLongValue];
     v19 = xpc_dictionary_create(0, 0, 0);
-    xpc_dictionary_set_uint64(v19, "portNumber", v11);
-    xpc_dictionary_set_uint64(v19, "portManagerNumber", v13);
-    xpc_dictionary_set_uint64(v19, "portType", v16);
+    xpc_dictionary_set_uint64(v19, "portNumber", unsignedLongLongValue);
+    xpc_dictionary_set_uint64(v19, "portManagerNumber", unsignedLongLongValue2);
+    xpc_dictionary_set_uint64(v19, "portType", unsignedLongLongValue3);
     xpc_dictionary_set_uint64(v19, "portID", value);
-    v20 = v18;
-    v6 = v17;
+    v20 = unsignedLongLongValue4;
+    dCopy = v17;
     xpc_dictionary_set_uint64(v19, "resistorID", v20);
     xpc_dictionary_set_string(v19, "requestType", "resistorArrived");
-    [(ACCXPCConnection *)v15->iapdConnection sendMessage:v19];
+    [(ACCXPCConnection *)selfCopy->iapdConnection sendMessage:v19];
   }
 }
 
-- (void)_generateIAPDPortInfoForDictionary:(id)a3 fromEndpoint:(ACCEndpoint_s *)a4
+- (void)_generateIAPDPortInfoForDictionary:(id)dictionary fromEndpoint:(ACCEndpoint_s *)endpoint
 {
-  v5 = a3;
-  v6 = [gCoreAccessoriesEndpointMap objectForKey:a4->var2];
-  var3 = a4->var3;
-  p_var3 = &a4->var3;
+  dictionaryCopy = dictionary;
+  v6 = [gCoreAccessoriesEndpointMap objectForKey:endpoint->var2];
+  var3 = endpoint->var3;
+  p_var3 = &endpoint->var3;
   if (var3 == 8)
   {
     v9 = ACCPlatformIAPDPort_ConnectionUUID;
-    v10 = [v5 objectForKey:ACCPlatformIAPDPort_ConnectionUUID];
+    v10 = [dictionaryCopy objectForKey:ACCPlatformIAPDPort_ConnectionUUID];
     if (gLogObjects)
     {
       v11 = gNumLogObjects < 7;
@@ -1937,18 +1937,18 @@ void __68__PlatformIAPDBridge__handleAuthenticationState_forPortID_certData___bl
   [v6 setObject:v23 forKey:ACCPlatformIAPDBridge_PrimaryPortNumber];
 }
 
-- (void)_generateIAPDPortTypeForDictionary:(id)a3 fromEndpoint:(ACCEndpoint_s *)a4
+- (void)_generateIAPDPortTypeForDictionary:(id)dictionary fromEndpoint:(ACCEndpoint_s *)endpoint
 {
-  v5 = [gCoreAccessoriesEndpointMap objectForKey:a4->var2];
-  if (a4->var0)
+  v5 = [gCoreAccessoriesEndpointMap objectForKey:endpoint->var2];
+  if (endpoint->var0)
   {
-    if (acc_connection_getType(a4->var0) == 2)
+    if (acc_connection_getType(endpoint->var0) == 2)
     {
       v6 = 2;
       goto LABEL_17;
     }
 
-    TransportType = acc_endpoint_getTransportType(a4);
+    TransportType = acc_endpoint_getTransportType(endpoint);
     v6 = 1;
     if (!TransportType || TransportType == 8)
     {
@@ -1975,7 +1975,7 @@ void __68__PlatformIAPDBridge__handleAuthenticationState_forPortID_certData___bl
 
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        var3 = a4->var3;
+        var3 = endpoint->var3;
         v16 = 67109120;
         v17 = var3;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[#iapd Bridge] Unknown transport type %{coreacc:ACCEndpoint_TransportType_t}d", &v16, 8u);
@@ -2013,7 +2013,7 @@ LABEL_17:
 
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = a4->var3;
+    v14 = endpoint->var3;
     v16 = 67109376;
     v17 = v6;
     v18 = 1024;
@@ -2048,11 +2048,11 @@ LABEL_17:
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)_handleResistorIDChanged:(id)a3
+- (void)_handleResistorIDChanged:(id)changed
 {
-  v4 = [a3 userInfo];
+  userInfo = [changed userInfo];
   v5 = ACCPlatformIAPDPort_ConnectionUUID;
-  v6 = [v4 objectForKey:ACCPlatformIAPDPort_ConnectionUUID];
+  v6 = [userInfo objectForKey:ACCPlatformIAPDPort_ConnectionUUID];
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 7;
@@ -2084,7 +2084,7 @@ LABEL_17:
     *buf = 138412546;
     v53 = v6;
     v54 = 2112;
-    v55 = v4;
+    v55 = userInfo;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[#iapd Bridge] Received notification for handling resistor ID change, connectionUUID %@, accInfo contained in notification %@", buf, 0x16u);
   }
 
@@ -2092,13 +2092,13 @@ LABEL_17:
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v10 = [gCoreAccessoriesEndpointMap allValues];
-  v11 = [v10 countByEnumeratingWithState:&v47 objects:v51 count:16];
+  allValues = [gCoreAccessoriesEndpointMap allValues];
+  v11 = [allValues countByEnumeratingWithState:&v47 objects:v51 count:16];
   if (v11)
   {
     v13 = v11;
-    v43 = self;
-    v44 = v4;
+    selfCopy = self;
+    v44 = userInfo;
     v14 = 0;
     v15 = *v48;
     v16 = &_os_log_default;
@@ -2113,7 +2113,7 @@ LABEL_13:
     {
       if (*v48 != v15)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(allValues);
       }
 
       v14 = *(*(&v47 + 1) + 8 * v17);
@@ -2130,14 +2130,14 @@ LABEL_13:
           if (gLogObjects && gNumLogObjects > 6)
           {
             v29 = *(gLogObjects + 48);
-            v30 = v43;
-            v4 = v44;
+            v30 = selfCopy;
+            userInfo = v44;
           }
 
           else
           {
-            v30 = v43;
-            v4 = v44;
+            v30 = selfCopy;
+            userInfo = v44;
             if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
             {
               platform_connectionInfo_configStreamGetCategories_cold_2();
@@ -2155,7 +2155,7 @@ LABEL_13:
           }
 
           v32 = ACCPlatformIAPDPort_ResistorID;
-          v33 = [v4 objectForKey:ACCPlatformIAPDPort_ResistorID];
+          v33 = [userInfo objectForKey:ACCPlatformIAPDPort_ResistorID];
           if (!v33)
           {
             goto LABEL_50;
@@ -2198,7 +2198,7 @@ LABEL_50:
           goto LABEL_49;
         }
 
-        v22 = v10;
+        v22 = allValues;
         v23 = v5;
         v24 = v16;
         v25 = v6;
@@ -2233,7 +2233,7 @@ LABEL_50:
 
         v16 = v24;
         v5 = v23;
-        v10 = v22;
+        allValues = v22;
         v15 = v45;
         v13 = v46;
       }
@@ -2242,13 +2242,13 @@ LABEL_50:
       v18 = v14;
       if (v13 == v17)
       {
-        v13 = [v10 countByEnumeratingWithState:&v47 objects:v51 count:16];
+        v13 = [allValues countByEnumeratingWithState:&v47 objects:v51 count:16];
         if (v13)
         {
           goto LABEL_13;
         }
 
-        v4 = v44;
+        userInfo = v44;
         break;
       }
     }
@@ -2280,31 +2280,31 @@ LABEL_50:
 LABEL_56:
 }
 
-- (void)_handleB139B164ConnectedStatus:(id)a3
+- (void)_handleB139B164ConnectedStatus:(id)status
 {
-  v4 = [a3 userInfo];
-  v3 = [v4 objectForKey:ACCPlatformIAPDPort_B139B164Connected];
+  userInfo = [status userInfo];
+  v3 = [userInfo objectForKey:ACCPlatformIAPDPort_B139B164Connected];
   gb139b164ConnectedState = [v3 BOOLValue];
 }
 
-- (void)_handlePrimaryPortReturn:(id)a3
+- (void)_handlePrimaryPortReturn:(id)return
 {
-  v4 = [a3 userInfo];
-  v3 = [v4 objectForKey:ACCPlatformIAPDBridge_PrimaryPortNumber];
+  userInfo = [return userInfo];
+  v3 = [userInfo objectForKey:ACCPlatformIAPDBridge_PrimaryPortNumber];
   gPrimaryPortNumber = [v3 unsignedIntValue];
 }
 
-- (void)sendData:(char *)a3 length:(unint64_t)a4 forConnection:(id)a5 portUID:(id)a6
+- (void)sendData:(char *)data length:(unint64_t)length forConnection:(id)connection portUID:(id)d
 {
-  v9 = a5;
-  v10 = a6;
-  if (a3 && a4)
+  connectionCopy = connection;
+  dCopy = d;
+  if (data && length)
   {
     v11 = xpc_dictionary_create(0, 0, 0);
-    xpc_dictionary_set_data(v11, "data", a3, a4);
-    xpc_dictionary_set_string(v11, "IAPClientPortUUIDStr", [v10 UTF8String]);
+    xpc_dictionary_set_data(v11, "data", data, length);
+    xpc_dictionary_set_string(v11, "IAPClientPortUUIDStr", [dCopy UTF8String]);
     xpc_dictionary_set_string(v11, "requestType", "transmitData");
-    xpc_connection_send_message(v9, v11);
+    xpc_connection_send_message(connectionCopy, v11);
   }
 
   else
@@ -2343,14 +2343,14 @@ LABEL_56:
   }
 }
 
-- (BOOL)_shouldProcessAuthenticationFailState:(ACCEndpoint_s *)a3
+- (BOOL)_shouldProcessAuthenticationFailState:(ACCEndpoint_s *)state
 {
-  if (!a3)
+  if (!state)
   {
     return 1;
   }
 
-  TransportType = acc_endpoint_getTransportType(a3);
+  TransportType = acc_endpoint_getTransportType(state);
   result = 1;
   if (TransportType <= 7 && ((1 << TransportType) & 0xC3) != 0)
   {

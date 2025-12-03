@@ -1,23 +1,23 @@
 @interface _UIArchiveListingController
-- (BOOL)_shouldVisitItem:(id)a3;
+- (BOOL)_shouldVisitItem:(id)item;
 - (BOOL)determineIsReadableArchive;
-- (BOOL)enumerateLogicalItemsWithBlock:(id)a3 error:(id *)a4;
-- (_UIArchiveListingController)initWithArchivePath:(id)a3;
+- (BOOL)enumerateLogicalItemsWithBlock:(id)block error:(id *)error;
+- (_UIArchiveListingController)initWithArchivePath:(id)path;
 - (void)dealloc;
 @end
 
 @implementation _UIArchiveListingController
 
-- (_UIArchiveListingController)initWithArchivePath:(id)a3
+- (_UIArchiveListingController)initWithArchivePath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = _UIArchiveListingController;
   v6 = [(_UIArchiveListingController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_archivePath, a3);
+    objc_storeStrong(&v6->_archivePath, path);
     v7->_appleDoubleIdentificationType = 1;
     v7->_excludeDotFilesFromResults = 0;
   }
@@ -46,17 +46,17 @@
     archiveReader = self->_archiveReader;
     self->_archiveReader = v4;
 
-    v3 = [(_UILibArchiveStreamingReader *)self->_archiveReader open];
-    self->_isValidArchive = v3;
+    open = [(_UILibArchiveStreamingReader *)self->_archiveReader open];
+    self->_isValidArchive = open;
   }
 
-  return v3;
+  return open;
 }
 
-- (BOOL)enumerateLogicalItemsWithBlock:(id)a3 error:(id *)a4
+- (BOOL)enumerateLogicalItemsWithBlock:(id)block error:(id *)error
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  blockCopy = block;
   if ([(_UIArchiveListingController *)self determineIsReadableArchive])
   {
     [(_UILibArchiveStreamingReader *)self->_archiveReader setAppleDoubleIdentificationType:[(_UIArchiveListingController *)self appleDoubleIdentificationType]];
@@ -66,13 +66,13 @@
     v16[2] = __68___UIArchiveListingController_enumerateLogicalItemsWithBlock_error___block_invoke;
     v16[3] = &unk_1E7105970;
     v16[4] = self;
-    v17 = v6;
+    v17 = blockCopy;
     v15 = 0;
     [(_UILibArchiveStreamingReader *)archiveReader readLogicalItemsWithBlock:v16 error:&v15];
     v8 = v15;
     [(_UILibArchiveStreamingReader *)self->_archiveReader close];
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -87,11 +87,11 @@
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
   v8 = [v9 errorWithDomain:@"_UIArchiveReaderErrorDomain" code:-1 userInfo:v11];
 
-  if (a4)
+  if (error)
   {
 LABEL_5:
     v12 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
 LABEL_6:
@@ -101,23 +101,23 @@ LABEL_6:
   return v8 == 0;
 }
 
-- (BOOL)_shouldVisitItem:(id)a3
+- (BOOL)_shouldVisitItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if ([(_UIArchiveListingController *)self excludeDotFilesFromResults])
   {
-    v5 = [v4 pathInArchive];
-    v6 = [v5 lastPathComponent];
-    v7 = [v6 hasPrefix:@"."];
+    pathInArchive = [itemCopy pathInArchive];
+    lastPathComponent = [pathInArchive lastPathComponent];
+    v7 = [lastPathComponent hasPrefix:@"."];
 
-    if (v7 & 1) != 0 || ([v5 hasPrefix:@"."])
+    if (v7 & 1) != 0 || ([pathInArchive hasPrefix:@"."])
     {
       LOBYTE(v8) = 0;
     }
 
     else
     {
-      v8 = [v5 containsString:@"/."] ^ 1;
+      v8 = [pathInArchive containsString:@"/."] ^ 1;
     }
   }
 

@@ -1,32 +1,32 @@
 @interface TPDocumentRoot
-+ (CGSize)pageSizeFromPaperSize:(CGSize)a3 pageScale:(double)a4 orientation:(int64_t)a5;
-+ (CGSize)previewImageSizeForType:(unint64_t)a3;
-+ (void)localizeModelObject:(id)a3 withTemplateBundle:(id)a4 andLocale:(id)a5;
-+ (void)localizeTextStorage:(id)a3 withTemplateBundle:(id)a4 andLocale:(id)a5;
-- (BOOL)cellCommentsAllowedOnInfo:(id)a3;
++ (CGSize)pageSizeFromPaperSize:(CGSize)size pageScale:(double)scale orientation:(int64_t)orientation;
++ (CGSize)previewImageSizeForType:(unint64_t)type;
++ (void)localizeModelObject:(id)object withTemplateBundle:(id)bundle andLocale:(id)locale;
++ (void)localizeTextStorage:(id)storage withTemplateBundle:(id)bundle andLocale:(id)locale;
+- (BOOL)cellCommentsAllowedOnInfo:(id)info;
 - (BOOL)containsVerticalText;
-- (BOOL)documentAllowsPencilAnnotationsOnModel:(id)a3;
-- (BOOL)documentDisallowsHighlightsOnStorage:(id)a3;
-- (BOOL)exportToPath:(id)a3 exporter:(id)a4 delegate:(id)a5 error:(id *)a6;
+- (BOOL)documentAllowsPencilAnnotationsOnModel:(id)model;
+- (BOOL)documentDisallowsHighlightsOnStorage:(id)storage;
+- (BOOL)exportToPath:(id)path exporter:(id)exporter delegate:(id)delegate error:(id *)error;
 - (BOOL)freehandDrawingsRequireSpacerShape;
 - (BOOL)hasPageBackgroundsForSections;
 - (BOOL)hasPencilAnnotations;
 - (BOOL)hasTrackedChanges;
 - (BOOL)hasViewState;
-- (BOOL)isDrawableOnSectionTemplatePage:(id)a3;
+- (BOOL)isDrawableOnSectionTemplatePage:(id)page;
 - (BOOL)isMultiPageForQuickLook;
-- (BOOL)isSectionInfo:(id)a3;
-- (BOOL)isSectionModel:(id)a3;
-- (BOOL)isSectionTemplateInfo:(id)a3;
+- (BOOL)isSectionInfo:(id)info;
+- (BOOL)isSectionModel:(id)model;
+- (BOOL)isSectionTemplateInfo:(id)info;
 - (BOOL)isTrackingChanges;
-- (BOOL)p_drawableInfoIsOwnedByATPPageTemplate:(id)a3;
-- (BOOL)p_isUniquePageTemplateName:(id)a3;
-- (BOOL)prepareAndValidateSidecarViewStateRootWithVersionUUIDMismatch:(id)a3 sidecarDocumentRevision:(id)a4 originalDocumentViewStateRoot:(id)a5;
-- (BOOL)resolverNameIsUsed:(id)a3;
-- (BOOL)sectionTemplatePagesAllowDrawable:(id)a3;
+- (BOOL)p_drawableInfoIsOwnedByATPPageTemplate:(id)template;
+- (BOOL)p_isUniquePageTemplateName:(id)name;
+- (BOOL)prepareAndValidateSidecarViewStateRootWithVersionUUIDMismatch:(id)mismatch sidecarDocumentRevision:(id)revision originalDocumentViewStateRoot:(id)root;
+- (BOOL)resolverNameIsUsed:(id)used;
+- (BOOL)sectionTemplatePagesAllowDrawable:(id)drawable;
 - (BOOL)shouldHyphenate;
-- (BOOL)shouldShowChangeKind:(int)a3 date:(id)a4;
-- (BOOL)textIsVerticalInStorage:(id)a3 atCharIndex:(unint64_t)a4;
+- (BOOL)shouldShowChangeKind:(int)kind date:(id)date;
+- (BOOL)textIsVerticalInStorage:(id)storage atCharIndex:(unint64_t)index;
 - (BOOL)useLigatures;
 - (CGRect)pageBoundsWithinMargins;
 - (CGSize)pageSize;
@@ -35,113 +35,113 @@
 - (NSArray)nonHiddenSections;
 - (NSArray)sections;
 - (NSString)blankPageTemplateName;
-- (TPDocumentRoot)initWithContext:(id)a3;
+- (TPDocumentRoot)initWithContext:(id)context;
 - (TPSection)firstSection;
 - (__CFLocale)hyphenationLocale;
 - (double)currentDesiredPencilAnnotationDrawingScale;
 - (double)footnoteGap;
-- (double)valueForMargin:(int64_t)a3;
-- (id)UIStateForChart:(id)a3;
-- (id)changeSessionManagerForModel:(id)a3;
+- (double)valueForMargin:(int64_t)margin;
+- (id)UIStateForChart:(id)chart;
+- (id)changeSessionManagerForModel:(id)model;
 - (id)childEnumerator;
 - (id)citationRecords;
 - (id)equationEnvironment;
 - (id)freehandDrawingToolkitUIState;
-- (id)initUsingDefaultThemeWithContext:(id)a3;
-- (id)modelEnumeratorWithFlags:(unint64_t)a3 forObjectsPassingTest:(id)a4;
-- (id)modelPathComponentForChild:(id)a3;
+- (id)initUsingDefaultThemeWithContext:(id)context;
+- (id)modelEnumeratorWithFlags:(unint64_t)flags forObjectsPassingTest:(id)test;
+- (id)modelPathComponentForChild:(id)child;
 - (id)pBlankPageTemplate;
 - (id)pCreateBlankPageTemplate;
-- (id)p_previewImageWithImageSize:(CGSize)a3;
-- (id)p_realTOCEntryStyleFromFakeTOCEntryStyle:(id)a3 context:(id)a4;
-- (id)pageTemplateWithName:(id)a3;
+- (id)p_previewImageWithImageSize:(CGSize)size;
+- (id)p_realTOCEntryStyleFromFakeTOCEntryStyle:(id)style context:(id)context;
+- (id)pageTemplateWithName:(id)name;
 - (id)pencilAnnotationUIState;
-- (id)previewImageForSize:(CGSize)a3;
-- (id)resolverContainerForName:(id)a3 caseSensitive:(BOOL)a4;
-- (id)resolverContainerNamesMatchingPrefix:(id)a3;
-- (id)resolverMatchingName:(id)a3;
-- (id)resolverMatchingName:(id)a3 contextContainerName:(id)a4;
-- (id)resolverMatchingName:(id)a3 contextResolver:(id)a4;
-- (id)resolversMatchingPrefix:(id)a3;
-- (id)sectionTemplatePageOwningInfo:(id)a3;
-- (id)sectionTemplatePageOwningModel:(id)a3;
+- (id)previewImageForSize:(CGSize)size;
+- (id)resolverContainerForName:(id)name caseSensitive:(BOOL)sensitive;
+- (id)resolverContainerNamesMatchingPrefix:(id)prefix;
+- (id)resolverMatchingName:(id)name;
+- (id)resolverMatchingName:(id)name contextContainerName:(id)containerName;
+- (id)resolverMatchingName:(id)name contextResolver:(id)resolver;
+- (id)resolversMatchingPrefix:(id)prefix;
+- (id)sectionTemplatePageOwningInfo:(id)info;
+- (id)sectionTemplatePageOwningModel:(id)model;
 - (id)storagesWithChanges;
-- (id)thumbnailIdentifierForPageIndex:(unint64_t)a3;
-- (id)uniquePageTemplateNameWithProposedPageTemplateName:(id)a3;
-- (id)uuidPathPrefixComponentsForInfo:(id)a3;
-- (int)indexForObject:(id)a3;
-- (int)naturalAlignmentAtCharIndex:(unint64_t)a3 inTextStorage:(id)a4;
-- (int)verticalAlignmentForTextStorage:(id)a3;
+- (id)thumbnailIdentifierForPageIndex:(unint64_t)index;
+- (id)uniquePageTemplateNameWithProposedPageTemplateName:(id)name;
+- (id)uuidPathPrefixComponentsForInfo:(id)info;
+- (int)indexForObject:(id)object;
+- (int)naturalAlignmentAtCharIndex:(unint64_t)index inTextStorage:(id)storage;
+- (int)verticalAlignmentForTextStorage:(id)storage;
 - (int64_t)contentWritingDirection;
 - (int64_t)footnoteKind;
 - (int64_t)pageViewState;
-- (unint64_t)inheritedSectionIndexForSectionIndex:(unint64_t)a3;
-- (unint64_t)pageIndexForThumbnailIdentifier:(id)a3;
-- (unint64_t)pageTemplateIndexForModelObject:(id)a3;
-- (unint64_t)rootIndexForObject:(id)a3;
+- (unint64_t)inheritedSectionIndexForSectionIndex:(unint64_t)index;
+- (unint64_t)pageIndexForThumbnailIdentifier:(id)identifier;
+- (unint64_t)pageTemplateIndexForModelObject:(id)object;
+- (unint64_t)rootIndexForObject:(id)object;
 - (unsigned)nextUntitledResolverIndex;
-- (void)addRemappedTableName:(id)a3;
-- (void)appSpecificPrepareNewDocumentWithTemplateIdentifier:(id)a3 bundle:(id)a4 documentLocale:(id)a5;
+- (void)addRemappedTableName:(id)name;
+- (void)appSpecificPrepareNewDocumentWithTemplateIdentifier:(id)identifier bundle:(id)bundle documentLocale:(id)locale;
 - (void)clearRemappedTableNames;
 - (void)dealloc;
-- (void)didAddDrawable:(id)a3;
+- (void)didAddDrawable:(id)drawable;
 - (void)documentDidLoad;
 - (void)i_assignBlankPageTemplateToAllSections;
 - (void)i_removeAllPageTemplates;
 - (void)i_upgradeSectionsForPageTemplates;
 - (void)invalidateViewState;
-- (void)loadFromUnarchiver:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
 - (void)pCommonInitialization;
 - (void)pCreateBodyStorage;
-- (void)pCreateDrawablesZOrderBodyStorage:(id)a3 addAnchoredDrawables:(BOOL)a4;
+- (void)pCreateDrawablesZOrderBodyStorage:(id)storage addAnchoredDrawables:(BOOL)drawables;
 - (void)pCreateFloatingDrawables;
 - (void)pCreateFlowInfoContainer;
 - (void)pFinishInitialization;
-- (void)pUpgradeSection:(id)a3 documentVersion:(unint64_t)a4;
+- (void)pUpgradeSection:(id)section documentVersion:(unint64_t)version;
 - (void)p_initializeShowInBookmarksListParagraphStylesProperty;
 - (void)p_upgradeTOCModelForUnity20;
 - (void)p_upgradeTOCStyles;
-- (void)saveToArchiver:(id)a3;
-- (void)setBodyStorage:(id)a3 dolcContext:(id)a4;
+- (void)saveToArchiver:(id)archiver;
+- (void)setBodyStorage:(id)storage dolcContext:(id)context;
 - (void)setBottomMargin:(double)bottomMargin;
-- (void)setChangeTrackingEnabled:(BOOL)a3;
-- (void)setExportViewModeForCTMarkup:(BOOL)a3 deletions:(BOOL)a4 paginatedPageController:(id)a5;
-- (void)setFloatingDrawables:(id)a3;
-- (void)setFlowInfoContainer:(id)a3;
+- (void)setChangeTrackingEnabled:(BOOL)enabled;
+- (void)setExportViewModeForCTMarkup:(BOOL)markup deletions:(BOOL)deletions paginatedPageController:(id)controller;
+- (void)setFloatingDrawables:(id)drawables;
+- (void)setFlowInfoContainer:(id)container;
 - (void)setFooterMargin:(double)footerMargin;
 - (void)setHeaderMargin:(double)headerMargin;
-- (void)setIndex:(int)a3 forObject:(id)a4;
-- (void)setLaysOutBodyVertically:(BOOL)a3;
+- (void)setIndex:(int)index forObject:(id)object;
+- (void)setLaysOutBodyVertically:(BOOL)vertically;
 - (void)setLeftMargin:(double)leftMargin;
-- (void)setOrientation:(int64_t)a3;
+- (void)setOrientation:(int64_t)orientation;
 - (void)setPageScale:(double)pageScale;
 - (void)setPageSize:(CGSize)pageSize;
-- (void)setPaperID:(id)a3;
-- (void)setPrinterID:(id)a3;
+- (void)setPaperID:(id)d;
+- (void)setPrinterID:(id)d;
 - (void)setRightMargin:(double)rightMargin;
-- (void)setStylesheet:(id)a3 andThemeForImport:(id)a4;
-- (void)setStylesheetForUpgradeToSingleStylesheet:(id)a3;
-- (void)setTheme:(id)a3;
-- (void)setThemeForTemplateImport:(id)a3;
+- (void)setStylesheet:(id)stylesheet andThemeForImport:(id)import;
+- (void)setStylesheetForUpgradeToSingleStylesheet:(id)stylesheet;
+- (void)setTheme:(id)theme;
+- (void)setThemeForTemplateImport:(id)import;
 - (void)setTopMargin:(double)topMargin;
-- (void)setUIState:(id)a3 forChart:(id)a4;
-- (void)setUsesSingleHeaderFooter:(BOOL)a3;
-- (void)setValue:(double)a3 forMargin:(int64_t)a4;
-- (void)updateWritingDirection:(unint64_t)a3;
-- (void)upgradeFromOldSectionWithPageSize:(CGSize)a3 leftMargin:(double)a4 rightMargin:(double)a5 topMargin:(double)a6 bottomMargin:(double)a7 headerMargin:(double)a8 footerMargin:(double)a9;
+- (void)setUIState:(id)state forChart:(id)chart;
+- (void)setUsesSingleHeaderFooter:(BOOL)footer;
+- (void)setValue:(double)value forMargin:(int64_t)margin;
+- (void)updateWritingDirection:(unint64_t)direction;
+- (void)upgradeFromOldSectionWithPageSize:(CGSize)size leftMargin:(double)margin rightMargin:(double)rightMargin topMargin:(double)topMargin bottomMargin:(double)bottomMargin headerMargin:(double)headerMargin footerMargin:(double)footerMargin;
 - (void)viewDidAppear;
 - (void)willClose;
-- (void)willRemoveDrawable:(id)a3;
+- (void)willRemoveDrawable:(id)drawable;
 @end
 
 @implementation TPDocumentRoot
 
-- (void)setUsesSingleHeaderFooter:(BOOL)a3
+- (void)setUsesSingleHeaderFooter:(BOOL)footer
 {
-  if (self->_usesSingleHeaderFooter != a3)
+  if (self->_usesSingleHeaderFooter != footer)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_usesSingleHeaderFooter = a3;
+    self->_usesSingleHeaderFooter = footer;
   }
 }
 
@@ -179,40 +179,40 @@
   }
 }
 
-- (void)setPrinterID:(id)a3
+- (void)setPrinterID:(id)d
 {
-  v4 = a3;
-  if (self->_printerID != v4)
+  dCopy = d;
+  if (self->_printerID != dCopy)
   {
-    v15 = v4;
-    objc_msgSend_willModify(self, v4, v5, v6, v7, v8);
+    v15 = dCopy;
+    objc_msgSend_willModify(self, dCopy, v5, v6, v7, v8);
     v14 = objc_msgSend_copy(v15, v9, v10, v11, v12, v13);
 
     objc_storeStrong(&self->_printerID, v14);
-    v4 = v14;
+    dCopy = v14;
   }
 }
 
-- (void)setPaperID:(id)a3
+- (void)setPaperID:(id)d
 {
-  v4 = a3;
-  if (self->_paperID != v4)
+  dCopy = d;
+  if (self->_paperID != dCopy)
   {
-    v15 = v4;
-    objc_msgSend_willModify(self, v4, v5, v6, v7, v8);
+    v15 = dCopy;
+    objc_msgSend_willModify(self, dCopy, v5, v6, v7, v8);
     v14 = objc_msgSend_copy(v15, v9, v10, v11, v12, v13);
 
     objc_storeStrong(&self->_paperID, v14);
-    v4 = v14;
+    dCopy = v14;
   }
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_orientation = a3;
+    self->_orientation = orientation;
   }
 }
 
@@ -282,21 +282,21 @@
   }
 }
 
-- (void)setLaysOutBodyVertically:(BOOL)a3
+- (void)setLaysOutBodyVertically:(BOOL)vertically
 {
-  if (self->_laysOutBodyVertically != a3)
+  if (self->_laysOutBodyVertically != vertically)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_laysOutBodyVertically = a3;
+    self->_laysOutBodyVertically = vertically;
   }
 }
 
-- (void)setChangeTrackingEnabled:(BOOL)a3
+- (void)setChangeTrackingEnabled:(BOOL)enabled
 {
-  if (self->_changeTrackingEnabled != a3)
+  if (self->_changeTrackingEnabled != enabled)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_changeTrackingEnabled = a3;
+    self->_changeTrackingEnabled = enabled;
   }
 }
 
@@ -316,15 +316,15 @@
   return v12;
 }
 
-- (id)pageTemplateWithName:(id)a3
+- (id)pageTemplateWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   pageTemplates = self->_pageTemplates;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = sub_276005D38;
   v20[3] = &unk_27A6A8D18;
-  v6 = v4;
+  v6 = nameCopy;
   v21 = v6;
   v13 = objc_msgSend_indexOfObjectPassingTest_(pageTemplates, v7, v8, v9, v10, v11, v20);
   if (v13 == 0x7FFFFFFFFFFFFFFFLL)
@@ -348,17 +348,17 @@
   return v8;
 }
 
-- (id)uniquePageTemplateNameWithProposedPageTemplateName:(id)a3
+- (id)uniquePageTemplateNameWithProposedPageTemplateName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = 1;
-  v6 = v4;
-  for (i = objc_msgSend_p_isUniquePageTemplateName_(self, v7, v8, v9, v10, v11, v4); (i & 1) == 0; i = objc_msgSend_p_isUniquePageTemplateName_(self, v26, v27, v28, v29, v30, v25))
+  v6 = nameCopy;
+  for (i = objc_msgSend_p_isUniquePageTemplateName_(self, v7, v8, v9, v10, v11, nameCopy); (i & 1) == 0; i = objc_msgSend_p_isUniquePageTemplateName_(self, v26, v27, v28, v29, v30, v25))
   {
     v13 = sub_275FFFC3C();
     v19 = objc_msgSend_localizedStringForKey_value_table_(v13, v14, v15, v16, v17, v18, @"%1$@ %2$lu", &stru_288501738, @"Pages");
 
-    v25 = objc_msgSend_localizedStringWithFormat_(MEMORY[0x277CCACA8], v20, v21, v22, v23, v24, v19, v4, v5);
+    v25 = objc_msgSend_localizedStringWithFormat_(MEMORY[0x277CCACA8], v20, v21, v22, v23, v24, v19, nameCopy, v5);
 
     ++v5;
     v6 = v25;
@@ -610,11 +610,11 @@
 
 - (id)equationEnvironment
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_equationEnvironment)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_equationEnvironment)
   {
-    equationEnvironmentData = v2->_equationEnvironmentData;
+    equationEnvironmentData = selfCopy->_equationEnvironmentData;
     if (equationEnvironmentData)
     {
       goto LABEL_8;
@@ -623,18 +623,18 @@
     v10 = objc_msgSend_dataForDefaultEnvironment(MEMORY[0x277D7FF68], v3, v4, v5, v6, v7);
     if (v10)
     {
-      objc_msgSend_willModify(v2, v9, v11, v12, v13, v14);
-      v15 = v2->_equationEnvironmentData;
-      v2->_equationEnvironmentData = 0;
+      objc_msgSend_willModify(selfCopy, v9, v11, v12, v13, v14);
+      v15 = selfCopy->_equationEnvironmentData;
+      selfCopy->_equationEnvironmentData = 0;
 
       v16 = MEMORY[0x277D80828];
-      v22 = objc_msgSend_context(v2, v17, v18, v19, v20, v21);
+      v22 = objc_msgSend_context(selfCopy, v17, v18, v19, v20, v21);
       v28 = objc_msgSend_dataFromNSData_filename_context_(v16, v23, v24, v25, v26, v27, v10, @"EQKitEnvironment.plist", v22);
-      v29 = v2->_equationEnvironmentData;
-      v2->_equationEnvironmentData = v28;
+      v29 = selfCopy->_equationEnvironmentData;
+      selfCopy->_equationEnvironmentData = v28;
     }
 
-    if (!v2->_equationEnvironmentData)
+    if (!selfCopy->_equationEnvironmentData)
     {
       v30 = MEMORY[0x277D81150];
       v31 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, v11, v12, v13, v14, "[TPDocumentRoot equationEnvironment]");
@@ -644,7 +644,7 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v43, v44, v45, v46, v47);
     }
 
-    equationEnvironmentData = v2->_equationEnvironmentData;
+    equationEnvironmentData = selfCopy->_equationEnvironmentData;
     if (equationEnvironmentData)
     {
 LABEL_8:
@@ -654,13 +654,13 @@ LABEL_8:
         v55 = objc_msgSend_environmentFromData_(MEMORY[0x277D7FF68], v48, v50, v51, v52, v53, v49);
         if (v55)
         {
-          objc_msgSend_willModify(v2, v54, v56, v57, v58, v59);
-          objc_storeStrong(&v2->_equationEnvironment, v55);
+          objc_msgSend_willModify(selfCopy, v54, v56, v57, v58, v59);
+          objc_storeStrong(&selfCopy->_equationEnvironment, v55);
         }
       }
     }
 
-    if (!v2->_equationEnvironment)
+    if (!selfCopy->_equationEnvironment)
     {
       if (*MEMORY[0x277D81430] != -1)
       {
@@ -668,14 +668,14 @@ LABEL_8:
       }
 
       v60 = objc_msgSend_defaultEnvironment(MEMORY[0x277D7FF68], v3, v4, v5, v6, v7);
-      equationEnvironment = v2->_equationEnvironment;
-      v2->_equationEnvironment = v60;
+      equationEnvironment = selfCopy->_equationEnvironment;
+      selfCopy->_equationEnvironment = v60;
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v62 = v2->_equationEnvironment;
+  v62 = selfCopy->_equationEnvironment;
 
   return v62;
 }
@@ -722,28 +722,28 @@ LABEL_8:
   objc_msgSend_setBodyStorage_dolcContext_(self, v33, v34, v35, v36, v37, v32, 0);
 }
 
-- (void)pCreateDrawablesZOrderBodyStorage:(id)a3 addAnchoredDrawables:(BOOL)a4
+- (void)pCreateDrawablesZOrderBodyStorage:(id)storage addAnchoredDrawables:(BOOL)drawables
 {
-  v4 = a4;
-  v66 = a3;
+  drawablesCopy = drawables;
+  storageCopy = storage;
   v6 = [TPDrawablesZOrder alloc];
   v12 = objc_msgSend_context(self, v7, v8, v9, v10, v11);
   v18 = objc_msgSend_initWithContext_(v6, v13, v14, v15, v16, v17, v12);
   drawablesZOrder = self->_drawablesZOrder;
   self->_drawablesZOrder = v18;
 
-  if (v66)
+  if (storageCopy)
   {
-    objc_msgSend_addDrawable_(self->_drawablesZOrder, v20, v21, v22, v23, v24, v66);
-    if (v4)
+    objc_msgSend_addDrawable_(self->_drawablesZOrder, v20, v21, v22, v23, v24, storageCopy);
+    if (drawablesCopy)
     {
-      v30 = objc_msgSend_attachmentCount(v66, v25, v26, v27, v28, v29);
+      v30 = objc_msgSend_attachmentCount(storageCopy, v25, v26, v27, v28, v29);
       if (v30)
       {
         for (i = 0; i != v30; ++i)
         {
           objc_opt_class();
-          v37 = objc_msgSend_attachmentAtAttachmentIndex_outCharIndex_(v66, v32, v33, v34, v35, v36, i, 0);
+          v37 = objc_msgSend_attachmentAtAttachmentIndex_outCharIndex_(storageCopy, v32, v33, v34, v35, v36, i, 0);
           v38 = TSUDynamicCast();
 
           if (v38 && objc_msgSend_isDrawable(v38, v39, v40, v41, v42, v43) && objc_msgSend_isAnchored(v38, v44, v45, v46, v47, v48) && (objc_msgSend_isPartitioned(v38, v49, v50, v51, v52, v53) & 1) == 0)
@@ -835,12 +835,12 @@ LABEL_8:
   objc_msgSend_pCommonInitialization(self, v42, v43, v44, v45, v46);
 }
 
-- (TPDocumentRoot)initWithContext:(id)a3
+- (TPDocumentRoot)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v23.receiver = self;
   v23.super_class = TPDocumentRoot;
-  v5 = [(TSADocumentRoot *)&v23 initWithContext:v4];
+  v5 = [(TSADocumentRoot *)&v23 initWithContext:contextCopy];
   v6 = v5;
   if (v5)
   {
@@ -871,24 +871,24 @@ LABEL_8:
   return v6;
 }
 
-- (id)initUsingDefaultThemeWithContext:(id)a3
+- (id)initUsingDefaultThemeWithContext:(id)context
 {
-  v4 = a3;
-  inited = objc_msgSend_initDocumentObjectWithContext_(self, v5, v6, v7, v8, v9, v4);
+  contextCopy = context;
+  inited = objc_msgSend_initDocumentObjectWithContext_(self, v5, v6, v7, v8, v9, contextCopy);
   if (inited)
   {
-    v16 = objc_msgSend_themeWithContext_alternate_withStylesheet_(TPTheme, v10, v12, v13, v14, v15, v4, 5, inited[61]);
+    v16 = objc_msgSend_themeWithContext_alternate_withStylesheet_(TPTheme, v10, v12, v13, v14, v15, contextCopy, 5, inited[61]);
     objc_msgSend_setTheme_(inited, v17, v18, v19, v20, v21, v16);
   }
 
   return inited;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   v10 = objc_msgSend_context(self, v5, v6, v7, v8, v9);
-  v11 = v4;
+  v11 = unarchiverCopy;
   google::protobuf::internal::AssignDescriptors();
   v17 = objc_msgSend_messageWithDescriptor_(v11, v12, v13, v14, v15, v16, *off_2812F85B8);
 
@@ -1450,21 +1450,21 @@ LABEL_26:
   self->_obsoleteTOCStyles = v322;
 }
 
-- (id)p_realTOCEntryStyleFromFakeTOCEntryStyle:(id)a3 context:(id)a4
+- (id)p_realTOCEntryStyleFromFakeTOCEntryStyle:(id)style context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v14 = objc_msgSend_objectForKeyedSubscript_(v7, v8, v9, v10, v11, v12, v6);
+  styleCopy = style;
+  contextCopy = context;
+  v14 = objc_msgSend_objectForKeyedSubscript_(contextCopy, v8, v9, v10, v11, v12, styleCopy);
   if (!v14)
   {
-    v19 = objc_msgSend_parent(v6, v13, v15, v16, v17, v18);
+    v19 = objc_msgSend_parent(styleCopy, v13, v15, v16, v17, v18);
 
     if (v19)
     {
-      v25 = objc_msgSend_parent(v6, v20, v21, v22, v23, v24);
-      v31 = objc_msgSend_p_realTOCEntryStyleFromFakeTOCEntryStyle_context_(self, v26, v27, v28, v29, v30, v25, v7);
+      v25 = objc_msgSend_parent(styleCopy, v20, v21, v22, v23, v24);
+      v31 = objc_msgSend_p_realTOCEntryStyleFromFakeTOCEntryStyle_context_(self, v26, v27, v28, v29, v30, v25, contextCopy);
 
-      v37 = objc_msgSend_propertyMap(v6, v32, v33, v34, v35, v36);
+      v37 = objc_msgSend_propertyMap(styleCopy, v32, v33, v34, v35, v36);
       v43 = objc_msgSend_properties(MEMORY[0x277D80F40], v38, v39, v40, v41, v42);
       objc_msgSend_filterWithProperties_(v37, v44, v45, v46, v47, v48, v43);
 
@@ -1474,7 +1474,7 @@ LABEL_26:
 
     else
     {
-      v60 = objc_msgSend_name(v6, v20, v21, v22, v23, v24);
+      v60 = objc_msgSend_name(styleCopy, v20, v21, v22, v23, v24);
 
       if (!v60)
       {
@@ -1486,7 +1486,7 @@ LABEL_26:
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v79, v80, v81, v82, v83);
       }
 
-      v84 = objc_msgSend_name(v6, v61, v62, v63, v64, v65);
+      v84 = objc_msgSend_name(styleCopy, v61, v62, v63, v64, v65);
       v31 = v84;
       if (!v84 || !objc_msgSend_length(v84, v85, v86, v87, v88, v89))
       {
@@ -1496,13 +1496,13 @@ LABEL_26:
 
       v90 = objc_alloc(MEMORY[0x277D80F40]);
       v96 = objc_msgSend_context(self, v91, v92, v93, v94, v95);
-      v14 = objc_msgSend_initWithContext_name_basedOnParagraphStyle_(v90, v97, v98, v99, v100, v101, v96, v31, v6);
+      v14 = objc_msgSend_initWithContext_name_basedOnParagraphStyle_(v90, v97, v98, v99, v100, v101, v96, v31, styleCopy);
 
       v37 = objc_msgSend_stylesheet(self, v102, v103, v104, v105, v106);
       objc_msgSend_addStyle_(v37, v107, v108, v109, v110, v111, v14);
     }
 
-    objc_msgSend_setObject_forKeyedSubscript_(v7, v112, v113, v114, v115, v116, v14, v6);
+    objc_msgSend_setObject_forKeyedSubscript_(contextCopy, v112, v113, v114, v115, v116, v14, styleCopy);
   }
 
   return v14;
@@ -1662,7 +1662,7 @@ LABEL_26:
         v177[3] = &unk_27A6A8F20;
         v160 = v153;
         v178 = v160;
-        v179 = self;
+        selfCopy = self;
         objc_msgSend_enumerateObjectsUsingBlock_(v159, v161, v162, v163, v164, v165, v177);
 
         objc_msgSend_setTOCSettings_(v141, v166, v167, v168, v169, v170, v160);
@@ -1750,11 +1750,11 @@ LABEL_26:
   }
 }
 
-- (void)setStylesheet:(id)a3 andThemeForImport:(id)a4
+- (void)setStylesheet:(id)stylesheet andThemeForImport:(id)import
 {
-  v80 = a3;
-  v8 = a4;
-  if (!v80)
+  stylesheetCopy = stylesheet;
+  importCopy = import;
+  if (!stylesheetCopy)
   {
     v13 = MEMORY[0x277D81150];
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v9, v10, v11, v12, "[TPDocumentRoot setStylesheet:andThemeForImport:]");
@@ -1764,7 +1764,7 @@ LABEL_26:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v26, v27, v28, v29, v30);
   }
 
-  if (!v8)
+  if (!importCopy)
   {
     v31 = MEMORY[0x277D81150];
     v32 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v9, v10, v11, v12, "[TPDocumentRoot setStylesheet:andThemeForImport:]");
@@ -1774,9 +1774,9 @@ LABEL_26:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v44, v45, v46, v47, v48);
   }
 
-  v49 = objc_msgSend_documentStylesheet(v8, v7, v9, v10, v11, v12);
+  v49 = objc_msgSend_documentStylesheet(importCopy, v7, v9, v10, v11, v12);
 
-  if (v49 != v80)
+  if (v49 != stylesheetCopy)
   {
     v55 = MEMORY[0x277D81150];
     v56 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v50, v51, v52, v53, v54, "[TPDocumentRoot setStylesheet:andThemeForImport:]");
@@ -1789,7 +1789,7 @@ LABEL_26:
   objc_msgSend_willModify(self, v50, v51, v52, v53, v54);
   objc_opt_class();
   v73 = TSUDynamicCast();
-  objc_storeStrong(&self->_stylesheet, a3);
+  objc_storeStrong(&self->_stylesheet, stylesheet);
   theme = self->_theme;
   self->_theme = v73;
 
@@ -1799,9 +1799,9 @@ LABEL_26:
   }
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
-  v16 = a3;
+  themeCopy = theme;
   objc_msgSend_willModify(self, v4, v5, v6, v7, v8);
   objc_opt_class();
   v9 = TSUDynamicCast();
@@ -1814,70 +1814,70 @@ LABEL_26:
   }
 }
 
-- (void)setThemeForTemplateImport:(id)a3
+- (void)setThemeForTemplateImport:(id)import
 {
-  v10 = a3;
+  importCopy = import;
   objc_opt_class();
   v4 = TSUDynamicCast();
   objc_msgSend_setTheme_(self, v5, v6, v7, v8, v9, v4);
 }
 
-- (void)setFloatingDrawables:(id)a3
+- (void)setFloatingDrawables:(id)drawables
 {
-  v37 = a3;
-  if (self->_floatingDrawables != v37)
+  drawablesCopy = drawables;
+  if (self->_floatingDrawables != drawablesCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8, v9);
     v15 = objc_msgSend_defaultContext(MEMORY[0x277D805F0], v10, v11, v12, v13, v14);
     v16 = self->_floatingDrawables;
     objc_msgSend_willBeRemovedFromDocumentRoot_(v16, v17, v18, v19, v20, v21, self);
-    objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v37, v22, v23, v24, v25, v26, self, v15);
-    objc_storeStrong(&self->_floatingDrawables, a3);
+    objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(drawablesCopy, v22, v23, v24, v25, v26, self, v15);
+    objc_storeStrong(&self->_floatingDrawables, drawables);
     objc_msgSend_wasRemovedFromDocumentRoot_(v16, v27, v28, v29, v30, v31, self);
-    objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v37, v32, v33, v34, v35, v36, self, v15);
+    objc_msgSend_wasAddedToDocumentRoot_dolcContext_(drawablesCopy, v32, v33, v34, v35, v36, self, v15);
   }
 }
 
-- (void)setFlowInfoContainer:(id)a3
+- (void)setFlowInfoContainer:(id)container
 {
-  v37 = a3;
-  if (self->_flowInfoContainer != v37)
+  containerCopy = container;
+  if (self->_flowInfoContainer != containerCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8, v9);
     v15 = objc_msgSend_defaultContext(MEMORY[0x277D805F0], v10, v11, v12, v13, v14);
     v16 = self->_flowInfoContainer;
     objc_msgSend_willBeRemovedFromDocumentRoot_(v16, v17, v18, v19, v20, v21, self);
-    objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v37, v22, v23, v24, v25, v26, self, v15);
-    objc_storeStrong(&self->_flowInfoContainer, a3);
+    objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(containerCopy, v22, v23, v24, v25, v26, self, v15);
+    objc_storeStrong(&self->_flowInfoContainer, container);
     objc_msgSend_wasRemovedFromDocumentRoot_(v16, v27, v28, v29, v30, v31, self);
-    objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v37, v32, v33, v34, v35, v36, self, v15);
+    objc_msgSend_wasAddedToDocumentRoot_dolcContext_(containerCopy, v32, v33, v34, v35, v36, self, v15);
   }
 }
 
-- (void)setStylesheetForUpgradeToSingleStylesheet:(id)a3
+- (void)setStylesheetForUpgradeToSingleStylesheet:(id)stylesheet
 {
-  v10 = a3;
-  if (self->_stylesheet != v10)
+  stylesheetCopy = stylesheet;
+  if (self->_stylesheet != stylesheetCopy)
   {
     objc_msgSend_willModifyForUpgrade(self, v5, v6, v7, v8, v9);
-    objc_storeStrong(&self->_stylesheet, a3);
+    objc_storeStrong(&self->_stylesheet, stylesheet);
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
   v637 = *MEMORY[0x277D85DE8];
-  v610 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v8 = objc_msgSend_messageWithNewFunction_descriptor_(v610, v3, v4, v5, v6, v7, sub_276013A04, *off_2812F85B8);
+  v8 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v3, v4, v5, v6, v7, sub_276013A04, *off_2812F85B8);
 
   v630[0] = MEMORY[0x277D85DD0];
   v630[1] = 3221225472;
   v630[2] = sub_27600CE88;
   v630[3] = &unk_27A6A84B8;
   v633 = v8;
-  v631 = v610;
-  v632 = self;
+  v631 = archiverCopy;
+  selfCopy = self;
   v614 = v631;
   v615 = v8;
   objc_msgSend_pushScopeForField_message_usingBlock_(v631, v9, v10, v11, v12, v13, 15, v8, v630);
@@ -2640,21 +2640,21 @@ LABEL_133:
   *(v615 + 300) = shouldUseAnchoredDrawableWrapSlop;
 }
 
-- (void)setBodyStorage:(id)a3 dolcContext:(id)a4
+- (void)setBodyStorage:(id)storage dolcContext:(id)context
 {
-  v79 = a3;
-  v7 = a4;
+  storageCopy = storage;
+  contextCopy = context;
   bodyStorage = self->_bodyStorage;
-  if (bodyStorage == v79)
+  if (bodyStorage == storageCopy)
   {
     goto LABEL_19;
   }
 
   v9 = bodyStorage;
   objc_msgSend_willBeRemovedFromDocumentRoot_(v9, v10, v11, v12, v13, v14, self);
-  objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v79, v15, v16, v17, v18, v19, self, v7);
+  objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(storageCopy, v15, v16, v17, v18, v19, self, contextCopy);
   v26 = objc_msgSend_drawablesZOrder(self, v20, v21, v22, v23, v24);
-  if (v79 && v9)
+  if (storageCopy && v9)
   {
     objc_msgSend_zOrderOfDrawable_(v26, v25, v27, v28, v29, v30, v9);
   }
@@ -2668,7 +2668,7 @@ LABEL_133:
   v31 = objc_msgSend_zOrderOfDrawable_(v26, v25, v27, v28, v29, v30, v9);
   objc_msgSend_removeDrawable_(v26, v32, v33, v34, v35, v36, v9);
 LABEL_7:
-  objc_storeStrong(&self->_bodyStorage, a3);
+  objc_storeStrong(&self->_bodyStorage, storage);
   if (self->_bodyStorage)
   {
     if (v31 == 0x7FFFFFFFFFFFFFFFLL)
@@ -2680,7 +2680,7 @@ LABEL_7:
   }
 
   objc_msgSend_wasRemovedFromDocumentRoot_(v9, v37, v38, v39, v40, v41, self);
-  objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v79, v42, v43, v44, v45, v46, self, v7);
+  objc_msgSend_wasAddedToDocumentRoot_dolcContext_(storageCopy, v42, v43, v44, v45, v46, self, contextCopy);
   v52 = self->_bodyStorage;
   if (v52)
   {
@@ -2756,19 +2756,19 @@ LABEL_19:
   return hasBody;
 }
 
-- (void)appSpecificPrepareNewDocumentWithTemplateIdentifier:(id)a3 bundle:(id)a4 documentLocale:(id)a5
+- (void)appSpecificPrepareNewDocumentWithTemplateIdentifier:(id)identifier bundle:(id)bundle documentLocale:(id)locale
 {
-  v8 = a4;
-  v9 = a5;
+  bundleCopy = bundle;
+  localeCopy = locale;
   v79.receiver = self;
   v79.super_class = TPDocumentRoot;
-  [(TSADocumentRoot *)&v79 appSpecificPrepareNewDocumentWithTemplateIdentifier:a3 bundle:v8 documentLocale:v9];
+  [(TSADocumentRoot *)&v79 appSpecificPrepareNewDocumentWithTemplateIdentifier:identifier bundle:bundleCopy documentLocale:localeCopy];
   self->_newDocument = 1;
   self->_shouldUseAnchoredDrawableWrapSlop = 0;
-  v16 = objc_msgSend_bundleIdentifier(v8, v10, v11, v12, v13, v14);
+  v16 = objc_msgSend_bundleIdentifier(bundleCopy, v10, v11, v12, v13, v14);
   if (!v16)
   {
-    v21 = objc_msgSend_bundlePath(v8, v15, v17, v18, v19, v20);
+    v21 = objc_msgSend_bundlePath(bundleCopy, v15, v17, v18, v19, v20);
     v16 = objc_msgSend_lastPathComponent(v21, v22, v23, v24, v25, v26);
   }
 
@@ -2840,20 +2840,20 @@ LABEL_28:
   objc_msgSend_setNextUserInterfaceIdentifier_(v56, v57, v58, v59, v60, v61, 0);
 
   objc_msgSend_upgradeParagraphStylesForTOCNavigator(self, v62, v63, v64, v65, v66);
-  objc_msgSend_resetForNewDocumentFromTemplate_locale_(self->_settings, v67, v68, v69, v70, v71, v16, v9);
+  objc_msgSend_resetForNewDocumentFromTemplate_locale_(self->_settings, v67, v68, v69, v70, v71, v16, localeCopy);
 }
 
-- (void)updateWritingDirection:(unint64_t)a3
+- (void)updateWritingDirection:(unint64_t)direction
 {
   v10.receiver = self;
   v10.super_class = TPDocumentRoot;
   [(TSADocumentRoot *)&v10 updateWritingDirection:?];
-  objc_msgSend_setDocumentIsRTL_(self->_settings, v5, v6, v7, v8, v9, a3 == 2);
+  objc_msgSend_setDocumentIsRTL_(self->_settings, v5, v6, v7, v8, v9, direction == 2);
 }
 
-- (id)thumbnailIdentifierForPageIndex:(unint64_t)a3
+- (id)thumbnailIdentifierForPageIndex:(unint64_t)index
 {
-  if (a3 >= 0x7FFFFFFFFFFFFFFFLL && (objc_msgSend_isAlternativePageIndex_documentRoot_(TPPageInfo, a2, v3, v4, v5, v6, a3, self) & 1) == 0)
+  if (index >= 0x7FFFFFFFFFFFFFFFLL && (objc_msgSend_isAlternativePageIndex_documentRoot_(TPPageInfo, a2, v3, v4, v5, v6, index, self) & 1) == 0)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, v6, "[TPDocumentRoot thumbnailIdentifierForPageIndex:]");
@@ -2865,12 +2865,12 @@ LABEL_28:
 
   v26 = MEMORY[0x277CCABB0];
 
-  return objc_msgSend_numberWithUnsignedInteger_(v26, a2, v3, v4, v5, v6, a3);
+  return objc_msgSend_numberWithUnsignedInteger_(v26, a2, v3, v4, v5, v6, index);
 }
 
-- (unint64_t)pageIndexForThumbnailIdentifier:(id)a3
+- (unint64_t)pageIndexForThumbnailIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   objc_opt_class();
   v5 = TSUDynamicCast();
   if (!v5)
@@ -2888,10 +2888,10 @@ LABEL_28:
   return v28;
 }
 
-+ (CGSize)pageSizeFromPaperSize:(CGSize)a3 pageScale:(double)a4 orientation:(int64_t)a5
++ (CGSize)pageSizeFromPaperSize:(CGSize)size pageScale:(double)scale orientation:(int64_t)orientation
 {
   TSUMultiplySizeScalar();
-  v8 = (v6 < v7) ^ (a5 == 1);
+  v8 = (v6 < v7) ^ (orientation == 1);
   if (v8)
   {
     v9 = v6;
@@ -2955,23 +2955,23 @@ LABEL_28:
   return result;
 }
 
-- (BOOL)exportToPath:(id)a3 exporter:(id)a4 delegate:(id)a5 error:(id *)a6
+- (BOOL)exportToPath:(id)path exporter:(id)exporter delegate:(id)delegate error:(id *)error
 {
   v11.receiver = self;
   v11.super_class = TPDocumentRoot;
-  v9 = a4;
-  LOBYTE(a6) = [(TSADocumentRoot *)&v11 exportToPath:a3 exporter:v9 delegate:a5 error:a6];
+  exporterCopy = exporter;
+  LOBYTE(error) = [(TSADocumentRoot *)&v11 exportToPath:path exporter:exporterCopy delegate:delegate error:error];
 
-  return a6;
+  return error;
 }
 
-+ (CGSize)previewImageSizeForType:(unint64_t)a3
++ (CGSize)previewImageSizeForType:(unint64_t)type
 {
   v3 = 225.0;
   v4 = 174.0;
-  if (a3 > 2)
+  if (type > 2)
   {
-    switch(a3)
+    switch(type)
     {
       case 3uLL:
         v3 = 116.0;
@@ -2991,19 +2991,19 @@ LABEL_12:
     goto LABEL_15;
   }
 
-  if (!a3)
+  if (!type)
   {
     goto LABEL_15;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = 90.0;
     v4 = 70.0;
     goto LABEL_15;
   }
 
-  if (a3 != 2)
+  if (type != 2)
   {
     goto LABEL_12;
   }
@@ -3018,18 +3018,18 @@ LABEL_15:
   return result;
 }
 
-- (id)previewImageForSize:(CGSize)a3
+- (id)previewImageForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v17 = 0;
   v18 = &v17;
-  *&a3.width = 0x3032000000;
+  *&size.width = 0x3032000000;
   v19 = 0x3032000000;
   v20 = sub_2760086E8;
   v21 = sub_2760086F8;
   v22 = 0;
-  v8 = objc_msgSend_accessController(self, a2, a3, *&a3.height, v3, v4);
+  v8 = objc_msgSend_accessController(self, a2, size, *&size.height, v3, v4);
   v16[0] = MEMORY[0x277D85DD0];
   v9.n128_u64[0] = 3221225472;
   v16[1] = 3221225472;
@@ -3047,19 +3047,19 @@ LABEL_15:
   return v14;
 }
 
-- (id)p_previewImageWithImageSize:(CGSize)a3
+- (id)p_previewImageWithImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v144[1] = *MEMORY[0x277D85DE8];
-  if (self->_isTornDown && (v8 = MEMORY[0x277D81150], objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, a3, *&a3.height, v3, v4, "[TPDocumentRoot p_previewImageWithImageSize:]"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, v14, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPDocumentRoot.mm"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v16, v17, v18, v19, v20, v9, v15, 2283, 0, "Trying to generate a preview image after document root has been torn down"), v15, v9, objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22, v23, v24, v25), self->_isTornDown))
+  if (self->_isTornDown && (v8 = MEMORY[0x277D81150], objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, size, *&size.height, v3, v4, "[TPDocumentRoot p_previewImageWithImageSize:]"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, v14, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPDocumentRoot.mm"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v16, v17, v18, v19, v20, v9, v15, 2283, 0, "Trying to generate a preview image after document root has been torn down"), v15, v9, objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22, v23, v24, v25), self->_isTornDown))
   {
     v26 = 0;
   }
 
   else
   {
-    v27 = objc_msgSend_paginatedPageControllerForDelegate_(TPPaginatedPageController, a2, a3, *&a3.height, v3, v4, self);
+    v27 = objc_msgSend_paginatedPageControllerForDelegate_(TPPaginatedPageController, a2, size, *&size.height, v3, v4, self);
     objc_msgSend_paginateThroughPageIndex_(v27, v28, v29, v30, v31, v32, 2);
     v33 = [TPThumbnailImager alloc];
     v39 = objc_msgSend_initWithDocumentRoot_(v33, v34, v35, v36, v37, v38, self);
@@ -3153,9 +3153,9 @@ LABEL_15:
   return v26;
 }
 
-- (id)changeSessionManagerForModel:(id)a3
+- (id)changeSessionManagerForModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   objc_opt_class();
   v6 = TSUDynamicCast();
   if (!v6)
@@ -3197,20 +3197,20 @@ LABEL_15:
 
     if (v49 && (objc_msgSend_preventsChangeTracking(v49, v50, v51, v52, v53, v54, &unk_288525798) & 1) != 0)
     {
-      v55 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      v55 = self;
+      selfCopy = self;
       objc_opt_class();
       v57 = TSUDynamicCast();
       if (v57)
       {
-        if ((objc_msgSend_isSectionInfo_(v55, v56, v58, v59, v60, v61, v57) & 1) != 0 || (objc_opt_class(), TSDNearestParentInfoOfClassFromInfo(), v62 = objc_claimAutoreleasedReturnValue(), v62, v62))
+        if ((objc_msgSend_isSectionInfo_(selfCopy, v56, v58, v59, v60, v61, v57) & 1) != 0 || (objc_opt_class(), TSDNearestParentInfoOfClassFromInfo(), v62 = objc_claimAutoreleasedReturnValue(), v62, v62))
         {
 
-          v55 = 0;
+          selfCopy = 0;
         }
       }
     }
@@ -3218,16 +3218,16 @@ LABEL_15:
 
   else
   {
-    v55 = 0;
+    selfCopy = 0;
   }
 
-  return v55;
+  return selfCopy;
 }
 
-- (id)modelEnumeratorWithFlags:(unint64_t)a3 forObjectsPassingTest:(id)a4
+- (id)modelEnumeratorWithFlags:(unint64_t)flags forObjectsPassingTest:(id)test
 {
-  v7 = a4;
-  if (a3)
+  testCopy = test;
+  if (flags)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v8, v9, v10, v11, "[TPDocumentRoot modelEnumeratorWithFlags:forObjectsPassingTest:]");
@@ -3238,13 +3238,13 @@ LABEL_15:
   }
 
   v30 = objc_msgSend_settings(self, v6, v8, v9, v10, v11);
-  v36 = (a3 >> 1) & 1 | objc_msgSend_hasBody(v30, v31, v32, v33, v34, v35);
+  v36 = (flags >> 1) & 1 | objc_msgSend_hasBody(v30, v31, v32, v33, v34, v35);
 
   if (v36)
   {
     v86.receiver = self;
     v86.super_class = TPDocumentRoot;
-    v38 = [(TPDocumentRoot *)&v86 modelEnumeratorWithFlags:a3 forObjectsPassingTest:v7];
+    v38 = [(TPDocumentRoot *)&v86 modelEnumeratorWithFlags:flags forObjectsPassingTest:testCopy];
     if (!v38)
     {
       v43 = MEMORY[0x277D81150];
@@ -3264,11 +3264,11 @@ LABEL_15:
     aBlock[2] = sub_27600E66C;
     aBlock[3] = &unk_27A6A8F70;
     aBlock[4] = self;
-    aBlock[5] = v7;
+    aBlock[5] = testCopy;
     v61 = _Block_copy(aBlock);
     v87.receiver = self;
     v87.super_class = TPDocumentRoot;
-    v38 = [(TPDocumentRoot *)&v87 modelEnumeratorWithFlags:a3 forObjectsPassingTest:v61];
+    v38 = [(TPDocumentRoot *)&v87 modelEnumeratorWithFlags:flags forObjectsPassingTest:v61];
     if (!v38)
     {
       v67 = MEMORY[0x277D81150];
@@ -3320,12 +3320,12 @@ LABEL_15:
   return v14;
 }
 
-- (id)modelPathComponentForChild:(id)a3
+- (id)modelPathComponentForChild:(id)child
 {
-  v4 = a3;
+  childCopy = child;
   v10 = objc_msgSend_bodyStorage(self, v5, v6, v7, v8, v9);
 
-  if (v10 == v4)
+  if (v10 == childCopy)
   {
     v22 = @"body-storage";
   }
@@ -3334,14 +3334,14 @@ LABEL_15:
   {
     v16 = objc_msgSend_theme(self, v11, v12, v13, v14, v15);
 
-    if (v16 == v4)
+    if (v16 == childCopy)
     {
       v22 = @"theme";
     }
 
     else
     {
-      v22 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v17, v18, v19, v20, v21, @"drawable-%p", v4);
+      v22 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v17, v18, v19, v20, v21, @"drawable-%p", childCopy);
     }
   }
 
@@ -3451,59 +3451,59 @@ LABEL_15:
   return v20;
 }
 
-- (double)valueForMargin:(int64_t)a3
+- (double)valueForMargin:(int64_t)margin
 {
   result = 0.0;
-  if (a3 <= 5)
+  if (margin <= 5)
   {
-    return *(&self->super.super.super.super.super.super.isa + *off_27A6A90D0[a3]);
+    return *(&self->super.super.super.super.super.super.isa + *off_27A6A90D0[margin]);
   }
 
   return result;
 }
 
-- (void)setValue:(double)a3 forMargin:(int64_t)a4
+- (void)setValue:(double)value forMargin:(int64_t)margin
 {
-  if (a4 > 2)
+  if (margin > 2)
   {
-    switch(a4)
+    switch(margin)
     {
       case 3:
-        (MEMORY[0x2821F9670])(self, sel_setBottomMargin_, *&a3);
+        (MEMORY[0x2821F9670])(self, sel_setBottomMargin_, *&value);
         break;
       case 4:
-        (MEMORY[0x2821F9670])(self, sel_setHeaderMargin_, *&a3);
+        (MEMORY[0x2821F9670])(self, sel_setHeaderMargin_, *&value);
         break;
       case 5:
-        (MEMORY[0x2821F9670])(self, sel_setFooterMargin_, *&a3);
+        (MEMORY[0x2821F9670])(self, sel_setFooterMargin_, *&value);
         break;
     }
   }
 
-  else if (a4)
+  else if (margin)
   {
-    if (a4 == 1)
+    if (margin == 1)
     {
-      (MEMORY[0x2821F9670])(self, sel_setRightMargin_, *&a3);
+      (MEMORY[0x2821F9670])(self, sel_setRightMargin_, *&value);
     }
 
-    else if (a4 == 2)
+    else if (margin == 2)
     {
-      (MEMORY[0x2821F9670])(self, sel_setTopMargin_, *&a3);
+      (MEMORY[0x2821F9670])(self, sel_setTopMargin_, *&value);
     }
   }
 
   else
   {
-    (MEMORY[0x2821F9670])(self, sel_setLeftMargin_, *&a3);
+    (MEMORY[0x2821F9670])(self, sel_setLeftMargin_, *&value);
   }
 }
 
-- (unint64_t)pageTemplateIndexForModelObject:(id)a3
+- (unint64_t)pageTemplateIndexForModelObject:(id)object
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  objectCopy = object;
+  if (objectCopy)
   {
     v34 = 0u;
     v35 = 0u;
@@ -3524,7 +3524,7 @@ LABEL_15:
           }
 
           v23 = *(*(&v32 + 1) + 8 * i);
-          if (objc_msgSend_containsModelObject_(v23, v15, v17, v18, v19, v20, v5))
+          if (objc_msgSend_containsModelObject_(v23, v15, v17, v18, v19, v20, objectCopy))
           {
             v25 = objc_msgSend_pageTemplates(self, v15, v17, v18, v19, v20);
             v24 = objc_msgSend_indexOfObject_(v25, v26, v27, v28, v29, v30, v23);
@@ -3555,17 +3555,17 @@ LABEL_12:
   return v24;
 }
 
-- (BOOL)isSectionModel:(id)a3
+- (BOOL)isSectionModel:(id)model
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  modelCopy = model;
+  if (modelCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     v6 = TSUDynamicCast();
     v12 = v6;
     if (!v6 || (v13 = objc_msgSend_wpKind(v6, v7, v8, v9, v10, v11), v5 = v13, v13 >= 3))
     {
-      v14 = objc_msgSend_sectionTemplatePageOwningModel_(self, v7, v8, v9, v10, v11, v4);
+      v14 = objc_msgSend_sectionTemplatePageOwningModel_(self, v7, v8, v9, v10, v11, modelCopy);
       v5 = v14 != 0;
     }
   }
@@ -3578,17 +3578,17 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)isSectionInfo:(id)a3
+- (BOOL)isSectionInfo:(id)info
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  infoCopy = info;
+  if (infoCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     v6 = TSUDynamicCast();
     v12 = v6;
     if (!v6 || (v13 = objc_msgSend_wpKind(v6, v7, v8, v9, v10, v11), v5 = v13, v13 >= 3))
     {
-      v14 = objc_msgSend_sectionTemplatePageOwningInfo_(self, v7, v8, v9, v10, v11, v4);
+      v14 = objc_msgSend_sectionTemplatePageOwningInfo_(self, v7, v8, v9, v10, v11, infoCopy);
       v5 = v14 != 0;
     }
   }
@@ -3601,11 +3601,11 @@ LABEL_12:
   return v5;
 }
 
-- (id)sectionTemplatePageOwningModel:(id)a3
+- (id)sectionTemplatePageOwningModel:(id)model
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  modelCopy = model;
+  if (modelCopy)
   {
     v27 = 0u;
     v28 = 0u;
@@ -3625,7 +3625,7 @@ LABEL_4:
           objc_enumerationMutation(v9);
         }
 
-        v23 = objc_msgSend_sectionTemplatePageOwningModel_(*(*(&v25 + 1) + 8 * v22), v15, v17, v18, v19, v20, v5);
+        v23 = objc_msgSend_sectionTemplatePageOwningModel_(*(*(&v25 + 1) + 8 * v22), v15, v17, v18, v19, v20, modelCopy);
         if (v23)
         {
           break;
@@ -3659,11 +3659,11 @@ LABEL_10:
   return v23;
 }
 
-- (id)sectionTemplatePageOwningInfo:(id)a3
+- (id)sectionTemplatePageOwningInfo:(id)info
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  infoCopy = info;
+  if (infoCopy)
   {
     v27 = 0u;
     v28 = 0u;
@@ -3683,7 +3683,7 @@ LABEL_4:
           objc_enumerationMutation(v9);
         }
 
-        v23 = objc_msgSend_sectionTemplatePageOwningInfo_(*(*(&v25 + 1) + 8 * v22), v15, v17, v18, v19, v20, v5);
+        v23 = objc_msgSend_sectionTemplatePageOwningInfo_(*(*(&v25 + 1) + 8 * v22), v15, v17, v18, v19, v20, infoCopy);
         if (v23)
         {
           break;
@@ -3717,55 +3717,55 @@ LABEL_10:
   return v23;
 }
 
-- (BOOL)isSectionTemplateInfo:(id)a3
+- (BOOL)isSectionTemplateInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v13.receiver = self;
   v13.super_class = TPDocumentRoot;
-  if ([(TSWPDocumentRoot *)&v13 isSectionTemplateInfo:v4])
+  if ([(TSWPDocumentRoot *)&v13 isSectionTemplateInfo:infoCopy])
   {
     v10 = 1;
   }
 
   else
   {
-    v11 = objc_msgSend_sectionTemplatePageOwningInfo_(self, v5, v6, v7, v8, v9, v4);
+    v11 = objc_msgSend_sectionTemplatePageOwningInfo_(self, v5, v6, v7, v8, v9, infoCopy);
     v10 = v11 != 0;
   }
 
   return v10;
 }
 
-- (BOOL)isDrawableOnSectionTemplatePage:(id)a3
+- (BOOL)isDrawableOnSectionTemplatePage:(id)page
 {
-  v7 = objc_msgSend_sectionTemplatePageOwningInfo_(self, a2, v3, v4, v5, v6, a3);
+  v7 = objc_msgSend_sectionTemplatePageOwningInfo_(self, a2, v3, v4, v5, v6, page);
   v8 = v7 != 0;
 
   return v8;
 }
 
-- (BOOL)cellCommentsAllowedOnInfo:(id)a3
+- (BOOL)cellCommentsAllowedOnInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   objc_opt_class();
   v5 = TSUDynamicCast();
-  if ((objc_msgSend_p_drawableInfoIsOwnedByATPPageTemplate_(self, v6, v7, v8, v9, v10, v5) & 1) != 0 || (v19.receiver = self, v19.super_class = TPDocumentRoot, ![(TSWPDocumentRoot *)&v19 cellCommentsAllowedOnInfo:v4]))
+  if ((objc_msgSend_p_drawableInfoIsOwnedByATPPageTemplate_(self, v6, v7, v8, v9, v10, v5) & 1) != 0 || (v19.receiver = self, v19.super_class = TPDocumentRoot, ![(TSWPDocumentRoot *)&v19 cellCommentsAllowedOnInfo:infoCopy]))
   {
     v17 = 0;
   }
 
   else
   {
-    v16 = objc_msgSend_sectionTemplatePageOwningInfo_(self, v11, v12, v13, v14, v15, v4);
+    v16 = objc_msgSend_sectionTemplatePageOwningInfo_(self, v11, v12, v13, v14, v15, infoCopy);
     v17 = v16 == 0;
   }
 
   return v17;
 }
 
-- (BOOL)p_drawableInfoIsOwnedByATPPageTemplate:(id)a3
+- (BOOL)p_drawableInfoIsOwnedByATPPageTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   v4 = TSDNearestParentInfoOfClassFromInfo();
   v5 = v4 != 0;
@@ -3773,9 +3773,9 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)sectionTemplatePagesAllowDrawable:(id)a3
+- (BOOL)sectionTemplatePagesAllowDrawable:(id)drawable
 {
-  v3 = a3;
+  drawableCopy = drawable;
   objc_opt_class();
   v4 = TSUDynamicCast();
   v10 = v4;
@@ -3791,9 +3791,9 @@ LABEL_10:
 
   objc_opt_class();
   v12 = TSUDynamicCast();
-  if (objc_msgSend_isAnchoredToText(v3, v13, v14, v15, v16, v17))
+  if (objc_msgSend_isAnchoredToText(drawableCopy, v13, v14, v15, v16, v17))
   {
-    v23 = objc_msgSend_exteriorTextWrap(v3, v18, v19, v20, v21, v22);
+    v23 = objc_msgSend_exteriorTextWrap(drawableCopy, v18, v19, v20, v21, v22);
     isHTMLWrap = objc_msgSend_isHTMLWrap(v23, v24, v25, v26, v27, v28);
   }
 
@@ -3811,12 +3811,12 @@ LABEL_10:
   v65 = 0x2020000000;
   v66 = 0;
   v32 = objc_alloc(MEMORY[0x277D80660]);
-  v38 = objc_msgSend_initWithRootModelObject_filter_(v32, v33, v34, v35, v36, v37, v3, 0);
+  v38 = objc_msgSend_initWithRootModelObject_filter_(v32, v33, v34, v35, v36, v37, drawableCopy, 0);
   v57 = MEMORY[0x277D85DD0];
   v58 = 3221225472;
   v59 = sub_27600F87C;
   v60 = &unk_27A6A8F98;
-  v39 = v3;
+  v39 = drawableCopy;
   v61 = v39;
   v62 = &v63;
   objc_msgSend_enumerateUsingBlock_(v38, v40, v41, v42, v43, v44, &v57);
@@ -3838,12 +3838,12 @@ LABEL_10:
   return v50 & 1;
 }
 
-- (unint64_t)inheritedSectionIndexForSectionIndex:(unint64_t)a3
+- (unint64_t)inheritedSectionIndexForSectionIndex:(unint64_t)index
 {
   for (i = objc_msgSend_bodyStorage(self, a2, v3, v4, v5, v6);
   {
     objc_opt_class();
-    v14 = objc_msgSend_sectionAtSectionIndex_effectiveRange_(i, v9, v10, v11, v12, v13, a3, 0);
+    v14 = objc_msgSend_sectionAtSectionIndex_effectiveRange_(i, v9, v10, v11, v12, v13, index, 0);
     v15 = TSUCheckedDynamicCast();
     v21 = objc_msgSend_inheritPreviousHeaderFooter(v15, v16, v17, v18, v19, v20);
 
@@ -3853,7 +3853,7 @@ LABEL_10:
     }
   }
 
-  return a3;
+  return index;
 }
 
 - (id)freehandDrawingToolkitUIState
@@ -3872,12 +3872,12 @@ LABEL_10:
   return v12;
 }
 
-- (BOOL)documentDisallowsHighlightsOnStorage:(id)a3
+- (BOOL)documentDisallowsHighlightsOnStorage:(id)storage
 {
-  v4 = a3;
-  if (objc_msgSend_pageTemplateIndexForModelObject_(self, v5, v6, v7, v8, v9, v4) == 0x7FFFFFFFFFFFFFFFLL)
+  storageCopy = storage;
+  if (objc_msgSend_pageTemplateIndexForModelObject_(self, v5, v6, v7, v8, v9, storageCopy) == 0x7FFFFFFFFFFFFFFFLL)
   {
-    isSectionModel = objc_msgSend_isSectionModel_(self, v10, v11, v12, v13, v14, v4);
+    isSectionModel = objc_msgSend_isSectionModel_(self, v10, v11, v12, v13, v14, storageCopy);
   }
 
   else
@@ -3935,14 +3935,14 @@ LABEL_10:
   return v12;
 }
 
-- (int)naturalAlignmentAtCharIndex:(unint64_t)a3 inTextStorage:(id)a4
+- (int)naturalAlignmentAtCharIndex:(unint64_t)index inTextStorage:(id)storage
 {
-  v6 = a4;
-  if (objc_msgSend_wpKind(v6, v7, v8, v9, v10, v11) == 1 && (objc_msgSend_sectionTemplatePageOwningInfo_(self, v12, v13, v14, v15, v16, v6), v17 = objc_claimAutoreleasedReturnValue(), (v23 = v17) != 0))
+  storageCopy = storage;
+  if (objc_msgSend_wpKind(storageCopy, v7, v8, v9, v10, v11) == 1 && (objc_msgSend_sectionTemplatePageOwningInfo_(self, v12, v13, v14, v15, v16, storageCopy), v17 = objc_claimAutoreleasedReturnValue(), (v23 = v17) != 0))
   {
     if ((objc_msgSend_usesSingleHeaderFooter(v17, v18, v19, v20, v21, v22) & 1) == 0)
     {
-      v54 = objc_msgSend_headerFragmentIndexForStorage_(v23, v24, v25, v26, v27, v28, v6);
+      v54 = objc_msgSend_headerFragmentIndexForStorage_(v23, v24, v25, v26, v27, v28, storageCopy);
       v60 = v54;
       if (v54)
       {
@@ -3988,7 +3988,7 @@ LABEL_10:
 
   v80.receiver = self;
   v80.super_class = TPDocumentRoot;
-  v31 = [(TSWPDocumentRoot *)&v80 naturalAlignmentAtCharIndex:a3 inTextStorage:v6];
+  v31 = [(TSWPDocumentRoot *)&v80 naturalAlignmentAtCharIndex:index inTextStorage:storageCopy];
   if (v31 == 4)
   {
 LABEL_7:
@@ -4006,16 +4006,16 @@ LABEL_15:
   return v31;
 }
 
-- (int)verticalAlignmentForTextStorage:(id)a3
+- (int)verticalAlignmentForTextStorage:(id)storage
 {
-  v4 = a3;
-  if (objc_msgSend_wpKind(v4, v5, v6, v7, v8, v9) != 1 || (objc_msgSend_sectionTemplatePageOwningInfo_(self, v10, v11, v12, v13, v14, v4), v15 = objc_claimAutoreleasedReturnValue(), (v16 = v15) == 0))
+  storageCopy = storage;
+  if (objc_msgSend_wpKind(storageCopy, v5, v6, v7, v8, v9) != 1 || (objc_msgSend_sectionTemplatePageOwningInfo_(self, v10, v11, v12, v13, v14, storageCopy), v15 = objc_claimAutoreleasedReturnValue(), (v16 = v15) == 0))
   {
-    if (objc_msgSend_wpKind(v4, v10, v11, v12, v13, v14) != 2)
+    if (objc_msgSend_wpKind(storageCopy, v10, v11, v12, v13, v14) != 2)
     {
       v44.receiver = self;
       v44.super_class = TPDocumentRoot;
-      v42 = [(TSWPDocumentRoot *)&v44 verticalAlignmentForTextStorage:v4];
+      v42 = [(TSWPDocumentRoot *)&v44 verticalAlignmentForTextStorage:storageCopy];
       v16 = 0;
       goto LABEL_11;
     }
@@ -4024,7 +4024,7 @@ LABEL_15:
     goto LABEL_9;
   }
 
-  v17 = objc_msgSend_headerFooterTypeForStorage_(v15, v10, v11, v12, v13, v14, v4);
+  v17 = objc_msgSend_headerFooterTypeForStorage_(v15, v10, v11, v12, v13, v14, storageCopy);
   v23 = v17;
   if (v17)
   {
@@ -4059,12 +4059,12 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)textIsVerticalInStorage:(id)a3 atCharIndex:(unint64_t)a4
+- (BOOL)textIsVerticalInStorage:(id)storage atCharIndex:(unint64_t)index
 {
-  v6 = a3;
+  storageCopy = storage;
   v12 = objc_msgSend_bodyStorage(self, v7, v8, v9, v10, v11);
 
-  if (v12 == v6)
+  if (v12 == storageCopy)
   {
     v18 = objc_msgSend_laysOutBodyVertically(self, v13, v14, v15, v16, v17);
   }
@@ -4073,7 +4073,7 @@ LABEL_11:
   {
     v21.receiver = self;
     v21.super_class = TPDocumentRoot;
-    v18 = [(TSWPDocumentRoot *)&v21 textIsVerticalInStorage:v6 atCharIndex:a4];
+    v18 = [(TSWPDocumentRoot *)&v21 textIsVerticalInStorage:storageCopy atCharIndex:index];
   }
 
   v19 = v18;
@@ -4081,14 +4081,14 @@ LABEL_11:
   return v19;
 }
 
-- (id)uuidPathPrefixComponentsForInfo:(id)a3
+- (id)uuidPathPrefixComponentsForInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || objc_msgSend_wpKind(v4, v5, v6, v7, v8, v9))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || objc_msgSend_wpKind(infoCopy, v5, v6, v7, v8, v9))
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && objc_msgSend_wpKind(v4, v10, v11, v12, v13, v14) == 2)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && objc_msgSend_wpKind(infoCopy, v10, v11, v12, v13, v14) == 2)
     {
       v15 = MEMORY[0x277CBEA60];
       v16 = objc_msgSend_bodyStorage(self, v10, v11, v12, v13, v14);
@@ -4099,11 +4099,11 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v16 = objc_msgSend_sectionTemplatePageOwningInfo_(self, v10, v11, v12, v13, v14, v4);
+    v16 = objc_msgSend_sectionTemplatePageOwningInfo_(self, v10, v11, v12, v13, v14, infoCopy);
     if (v16)
     {
       objc_opt_class();
-      v34 = (objc_opt_isKindOfClass() & 1) != 0 && objc_msgSend_headerFooterTypeForStorage_(v16, v29, v30, v31, v32, v33, v4) != -1;
+      v34 = (objc_opt_isKindOfClass() & 1) != 0 && objc_msgSend_headerFooterTypeForStorage_(v16, v29, v30, v31, v32, v33, infoCopy) != -1;
       v22 = TSDTopmostInfoFromInfo();
       v57 = objc_msgSend_parentInfo(v22, v52, v53, v54, v55, v56);
 
@@ -4114,7 +4114,7 @@ LABEL_23:
         v22 = v63;
       }
 
-      v64 = v22 == v4 || v34;
+      v64 = v22 == infoCopy || v34;
       if (v64 == 1)
       {
         v65 = objc_msgSend_section(v16, v58, v59, v60, v61, v62);
@@ -4129,9 +4129,9 @@ LABEL_21:
     else
     {
       v22 = TSDTopmostInfoFromInfo();
-      if (v22 == v4 && objc_msgSend_isFloatingAboveText(v4, v35, v36, v37, v38, v39))
+      if (v22 == infoCopy && objc_msgSend_isFloatingAboveText(infoCopy, v35, v36, v37, v38, v39))
       {
-        v45 = objc_msgSend_parentInfo(v4, v40, v41, v42, v43, v44);
+        v45 = objc_msgSend_parentInfo(infoCopy, v40, v41, v42, v43, v44);
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -4161,18 +4161,18 @@ LABEL_25:
   return v28;
 }
 
-+ (void)localizeTextStorage:(id)a3 withTemplateBundle:(id)a4 andLocale:(id)a5
++ (void)localizeTextStorage:(id)storage withTemplateBundle:(id)bundle andLocale:(id)locale
 {
   v305 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v280 = a4;
-  v279 = a1;
-  v282 = a5;
-  v288 = v8;
-  objc_msgSend_localizeDropCapsInStorage_withLocale_(a1, v9, v10, v11, v12, v13, v8);
+  storageCopy = storage;
+  bundleCopy = bundle;
+  selfCopy = self;
+  localeCopy = locale;
+  v288 = storageCopy;
+  objc_msgSend_localizeDropCapsInStorage_withLocale_(self, v9, v10, v11, v12, v13, storageCopy);
   v274 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v19 = objc_msgSend_range(v8, v14, v15, v16, v17, v18);
-  objc_msgSend_smartFieldsWithAttributeKind_intersectingRange_passingTest_(v8, v20, v21, v22, v23, v24, 6, v19, v20, &unk_2885012B8);
+  v19 = objc_msgSend_range(storageCopy, v14, v15, v16, v17, v18);
+  objc_msgSend_smartFieldsWithAttributeKind_intersectingRange_passingTest_(storageCopy, v20, v21, v22, v23, v24, 6, v19, v20, &unk_2885012B8);
   v299 = 0u;
   v300 = 0u;
   v297 = 0u;
@@ -4195,7 +4195,7 @@ LABEL_25:
         {
           v44 = objc_msgSend_range(v38, v39, v40, v41, v42, v43);
           v50 = objc_msgSend_characterStyleAtCharIndex_effectiveRange_(v288, v45, v46, v47, v48, v49, v44, 0);
-          v56 = objc_msgSend_locale(v282, v51, v52, v53, v54, v55);
+          v56 = objc_msgSend_locale(localeCopy, v51, v52, v53, v54, v55);
           objc_msgSend_resetLocaleTo_(v38, v57, v58, v59, v60, v61, v56);
 
           if (v50)
@@ -4263,7 +4263,7 @@ LABEL_25:
         v152 = TSWPColumnBreakingCharacterSet();
         v286 = objc_msgSend_tsu_stringByReplacingInstancesOfCharactersInSet_withString_(v287, v153, v154, v155, v156, v157, v152, @" ");
 
-        v283 = objc_msgSend_localizedTemplateStringForKey_value_table_templateBundle_locale_(v279, v158, v159, v160, v161, v162, v286, v286, v277, v280, v282);
+        v283 = objc_msgSend_localizedTemplateStringForKey_value_table_templateBundle_locale_(selfCopy, v158, v159, v160, v161, v162, v286, v286, v277, bundleCopy, localeCopy);
         if ((objc_msgSend_isEqualToString_(v283, v163, v164, v165, v166, v167, v287) & 1) == 0)
         {
           objc_msgSend_removeSmartField_fromRange_undoTransaction_(v288, v168, v169, v170, v171, v172, v284, v139, v141, 0);
@@ -4326,31 +4326,31 @@ LABEL_25:
   v289[1] = 3221225472;
   v289[2] = sub_276010E64;
   v289[3] = &unk_27A6A8FE8;
-  v256 = v282;
+  v256 = localeCopy;
   v290 = v256;
   objc_msgSend_enumerateAttachmentsInTextRange_usingBlock_(v288, v257, v258, v259, v260, v261, v253, v255, v289);
   v267 = objc_msgSend_range(v288, v262, v263, v264, v265, v266);
   objc_msgSend_setLanguage_forCharRange_undoTransaction_(v288, v268, v269, v270, v271, v272, 0, v267, v268, 0);
 }
 
-+ (void)localizeModelObject:(id)a3 withTemplateBundle:(id)a4 andLocale:(id)a5
++ (void)localizeModelObject:(id)object withTemplateBundle:(id)bundle andLocale:(id)locale
 {
   v263 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v234 = a1;
-  v236 = a4;
-  v258.receiver = a1;
+  objectCopy = object;
+  selfCopy = self;
+  bundleCopy = bundle;
+  v258.receiver = self;
   v258.super_class = &OBJC_METACLASS___TPDocumentRoot;
-  v226 = v8;
-  v237 = a5;
-  objc_msgSendSuper2(&v258, sel_localizeModelObject_withTemplateBundle_andLocale_, v8, v236);
+  v226 = objectCopy;
+  localeCopy = locale;
+  objc_msgSendSuper2(&v258, sel_localizeModelObject_withTemplateBundle_andLocale_, objectCopy, bundleCopy);
   objc_opt_class();
   v230 = TSUDynamicCast();
   if (v230)
   {
     v228 = objc_msgSend_name(v230, v9, v10, v11, v12, v13);
     v238 = *MEMORY[0x277D80008];
-    v20 = objc_msgSend_localizedTemplateStringForKey_value_table_templateBundle_locale_(a1, v14, v15, v16, v17, v18, v228, v228);
+    v20 = objc_msgSend_localizedTemplateStringForKey_value_table_templateBundle_locale_(self, v14, v15, v16, v17, v18, v228, v228);
     obj = v20;
     if (v20)
     {
@@ -4382,7 +4382,7 @@ LABEL_25:
           if (objc_msgSend_isUserDefinedTag_(TPPageTemplate, v38, v40, v41, v42, v43, v46))
           {
             v47 = objc_msgSend_objectForKeyedSubscript_(v32, v38, v40, v41, v42, v43, v46);
-            v54 = objc_msgSend_localizedTemplateStringForKey_value_table_templateBundle_locale_(v234, v48, v49, v50, v51, v52, v46, v46, v238, v236, v237);
+            v54 = objc_msgSend_localizedTemplateStringForKey_value_table_templateBundle_locale_(selfCopy, v48, v49, v50, v51, v52, v46, v46, v238, bundleCopy, localeCopy);
             if (v54)
             {
               objc_msgSend_applyTag_toPlaceholder_(v230, v53, v55, v56, v57, v58, v54, v47);
@@ -4447,7 +4447,7 @@ LABEL_25:
             }
 
             v124 = v118;
-            v126 = objc_msgSend_localizedTemplateStringForKey_value_table_templateBundle_locale_(v234, v119, v120, v121, v122, v123, v118, v102, v99, v236, v237);
+            v126 = objc_msgSend_localizedTemplateStringForKey_value_table_templateBundle_locale_(selfCopy, v119, v120, v121, v122, v123, v118, v102, v99, bundleCopy, localeCopy);
             if (v126)
             {
               objc_msgSend_applyTag_toDrawable_(v239, v125, v127, v128, v129, v130, v126, v101);
@@ -4475,7 +4475,7 @@ LABEL_25:
     objc_msgSend_rangeOfString_(v154, v155, v156, v157, v158, v159, @"_RTL");
     v161 = v160;
 
-    isLanguageCharacterDirectionRightToLeft = objc_msgSend_isLanguageCharacterDirectionRightToLeft(v237, v162, v163, v164, v165, v166);
+    isLanguageCharacterDirectionRightToLeft = objc_msgSend_isLanguageCharacterDirectionRightToLeft(localeCopy, v162, v163, v164, v165, v166);
     if (v161)
     {
       v172 = 0;
@@ -4590,36 +4590,36 @@ LABEL_55:
   }
 }
 
-- (void)upgradeFromOldSectionWithPageSize:(CGSize)a3 leftMargin:(double)a4 rightMargin:(double)a5 topMargin:(double)a6 bottomMargin:(double)a7 headerMargin:(double)a8 footerMargin:(double)a9
+- (void)upgradeFromOldSectionWithPageSize:(CGSize)size leftMargin:(double)margin rightMargin:(double)rightMargin topMargin:(double)topMargin bottomMargin:(double)bottomMargin headerMargin:(double)headerMargin footerMargin:(double)footerMargin
 {
-  height = a3.height;
-  width = a3.width;
-  objc_msgSend_willModifyForUpgrade(self, a2, a3, *&a3.height, *&a4, *&a5);
+  height = size.height;
+  width = size.width;
+  objc_msgSend_willModifyForUpgrade(self, a2, size, *&size.height, *&margin, *&rightMargin);
   self->_pageSize.width = width;
   self->_pageSize.height = height;
   self->_pageScale = 1.0;
-  self->_leftMargin = a4;
-  self->_rightMargin = a5;
-  self->_topMargin = a6;
-  self->_bottomMargin = a7;
-  self->_headerMargin = a8;
-  self->_footerMargin = a9;
+  self->_leftMargin = margin;
+  self->_rightMargin = rightMargin;
+  self->_topMargin = topMargin;
+  self->_bottomMargin = bottomMargin;
+  self->_headerMargin = headerMargin;
+  self->_footerMargin = footerMargin;
 }
 
-- (void)setExportViewModeForCTMarkup:(BOOL)a3 deletions:(BOOL)a4 paginatedPageController:(id)a5
+- (void)setExportViewModeForCTMarkup:(BOOL)markup deletions:(BOOL)deletions paginatedPageController:(id)controller
 {
-  v5 = a4;
-  v6 = a3;
-  v76 = a5;
+  deletionsCopy = deletions;
+  markupCopy = markup;
+  controllerCopy = controller;
   v13 = objc_msgSend_documentRoot(self, v8, v9, v10, v11, v12);
   v19 = objc_msgSend_uiState(v13, v14, v15, v16, v17, v18);
-  if (objc_msgSend_showsCTMarkup(v19, v20, v21, v22, v23, v24) == v6)
+  if (objc_msgSend_showsCTMarkup(v19, v20, v21, v22, v23, v24) == markupCopy)
   {
     v35 = objc_msgSend_documentRoot(self, v25, v26, v27, v28, v29);
     v41 = objc_msgSend_uiState(v35, v36, v37, v38, v39, v40);
     v47 = objc_msgSend_showsCTDeletions(v41, v42, v43, v44, v45, v46);
 
-    if (v47 == v5)
+    if (v47 == deletionsCopy)
     {
       goto LABEL_5;
     }
@@ -4631,19 +4631,19 @@ LABEL_55:
 
   v48 = objc_msgSend_documentRoot(self, v30, v31, v32, v33, v34);
   v54 = objc_msgSend_uiState(v48, v49, v50, v51, v52, v53);
-  objc_msgSend_setShowsCTMarkup_(v54, v55, v56, v57, v58, v59, v6);
+  objc_msgSend_setShowsCTMarkup_(v54, v55, v56, v57, v58, v59, markupCopy);
 
   v65 = objc_msgSend_uiState(v48, v60, v61, v62, v63, v64);
-  objc_msgSend_setShowsCTDeletions_(v65, v66, v67, v68, v69, v70, v5);
+  objc_msgSend_setShowsCTDeletions_(v65, v66, v67, v68, v69, v70, deletionsCopy);
 
-  objc_msgSend_changeTrackingVisibilityDidChange(v76, v71, v72, v73, v74, v75);
+  objc_msgSend_changeTrackingVisibilityDidChange(controllerCopy, v71, v72, v73, v74, v75);
 LABEL_5:
 }
 
-- (BOOL)shouldShowChangeKind:(int)a3 date:(id)a4
+- (BOOL)shouldShowChangeKind:(int)kind date:(id)date
 {
-  result = objc_msgSend_shouldShowChangeTrackingMarkup(self, a2, v4, v5, v6, v7, *&a3, a4);
-  if (a3 != 2)
+  result = objc_msgSend_shouldShowChangeTrackingMarkup(self, a2, v4, v5, v6, v7, *&kind, date);
+  if (kind != 2)
   {
     return 1;
   }
@@ -4651,43 +4651,43 @@ LABEL_5:
   return result;
 }
 
-- (void)didAddDrawable:(id)a3
+- (void)didAddDrawable:(id)drawable
 {
-  v32 = a3;
-  v9 = objc_msgSend_owningAttachment(v32, v4, v5, v6, v7, v8);
+  drawableCopy = drawable;
+  v9 = objc_msgSend_owningAttachment(drawableCopy, v4, v5, v6, v7, v8);
   v15 = v9;
   if (!v9 || objc_msgSend_isDrawable(v9, v10, v11, v12, v13, v14) && objc_msgSend_isAnchored(v15, v16, v17, v18, v19, v20) && (objc_msgSend_isPartitioned(v15, v21, v22, v23, v24, v25) & 1) == 0)
   {
     v26 = objc_msgSend_drawablesZOrder(self, v10, v11, v12, v13, v14);
-    objc_msgSend_addDrawable_(v26, v27, v28, v29, v30, v31, v32);
+    objc_msgSend_addDrawable_(v26, v27, v28, v29, v30, v31, drawableCopy);
   }
 }
 
-- (void)willRemoveDrawable:(id)a3
+- (void)willRemoveDrawable:(id)drawable
 {
-  v32 = a3;
-  v9 = objc_msgSend_owningAttachment(v32, v4, v5, v6, v7, v8);
+  drawableCopy = drawable;
+  v9 = objc_msgSend_owningAttachment(drawableCopy, v4, v5, v6, v7, v8);
   v15 = v9;
   if (!v9 || objc_msgSend_isDrawable(v9, v10, v11, v12, v13, v14) && objc_msgSend_isAnchored(v15, v16, v17, v18, v19, v20) && (objc_msgSend_isPartitioned(v15, v21, v22, v23, v24, v25) & 1) == 0)
   {
     v26 = objc_msgSend_drawablesZOrder(self, v10, v11, v12, v13, v14);
-    objc_msgSend_removeDrawable_(v26, v27, v28, v29, v30, v31, v32);
+    objc_msgSend_removeDrawable_(v26, v27, v28, v29, v30, v31, drawableCopy);
   }
 }
 
-- (void)setIndex:(int)a3 forObject:(id)a4
+- (void)setIndex:(int)index forObject:(id)object
 {
-  LODWORD(v4) = a3;
-  v6 = a4;
+  LODWORD(v4) = index;
+  objectCopy = object;
   if (v4 != -1)
   {
-    v103 = v6;
+    v103 = objectCopy;
     v8 = TSUProtocolCast();
     if (!v8)
     {
 LABEL_15:
 
-      v6 = v103;
+      objectCopy = v103;
       goto LABEL_16;
     }
 
@@ -4766,9 +4766,9 @@ LABEL_13:
 LABEL_16:
 }
 
-- (int)indexForObject:(id)a3
+- (int)indexForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   v5 = TSUDynamicCast();
   v11 = v5;
@@ -4776,7 +4776,7 @@ LABEL_16:
   {
     v12 = objc_msgSend_drawable(v5, v6, v7, v8, v9, v10);
 
-    v4 = v12;
+    objectCopy = v12;
   }
 
   v14 = TSUProtocolCast();
@@ -4794,9 +4794,9 @@ LABEL_16:
   return v25;
 }
 
-- (unint64_t)rootIndexForObject:(id)a3
+- (unint64_t)rootIndexForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   v6 = TSUDynamicCast();
   if (!v6 || (objc_msgSend_floatingDrawables(self, v5, v7, v8, v9, v10), v11 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend_pageIndexForDrawable_(v11, v12, v13, v14, v15, v16, v6), v11, v17 == 0x7FFFFFFFFFFFFFFFLL))
@@ -4813,24 +4813,24 @@ LABEL_16:
   return v17;
 }
 
-- (id)resolverContainerForName:(id)a3 caseSensitive:(BOOL)a4
+- (id)resolverContainerForName:(id)name caseSensitive:(BOOL)sensitive
 {
-  if (objc_msgSend_length(a3, a2, v4, v5, v6, v7))
+  if (objc_msgSend_length(name, a2, v4, v5, v6, v7))
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (id)resolverContainerNamesMatchingPrefix:(id)a3
+- (id)resolverContainerNamesMatchingPrefix:(id)prefix
 {
-  if (objc_msgSend_length(a3, a2, v3, v4, v5, v6))
+  if (objc_msgSend_length(prefix, a2, v3, v4, v5, v6))
   {
     return 0;
   }
@@ -4841,47 +4841,47 @@ LABEL_16:
   }
 }
 
-- (id)resolverMatchingName:(id)a3 contextResolver:(id)a4
+- (id)resolverMatchingName:(id)name contextResolver:(id)resolver
 {
-  v6 = a3;
-  v8 = a4;
+  nameCopy = name;
+  resolverCopy = resolver;
   tablesWithUniqueNames = self->_tablesWithUniqueNames;
   if (tablesWithUniqueNames)
   {
-    v14 = objc_msgSend_objectForKey_(tablesWithUniqueNames, v7, v9, v10, v11, v12, v6);
+    v14 = objc_msgSend_objectForKey_(tablesWithUniqueNames, v7, v9, v10, v11, v12, nameCopy);
   }
 
   else
   {
     v15 = objc_msgSend_calculationEngine(self, v7, v9, v10, v11, v12);
     v21 = objc_msgSend_tablesByName(v15, v16, v17, v18, v19, v20);
-    v14 = objc_msgSend_resolverMatchingName_(v21, v22, v23, v24, v25, v26, v6);
+    v14 = objc_msgSend_resolverMatchingName_(v21, v22, v23, v24, v25, v26, nameCopy);
   }
 
   return v14;
 }
 
-- (id)resolverMatchingName:(id)a3 contextContainerName:(id)a4
+- (id)resolverMatchingName:(id)name contextContainerName:(id)containerName
 {
-  v8 = objc_msgSend_resolverMatchingName_contextResolver_(self, a2, v4, v5, v6, v7, a3, 0);
+  v8 = objc_msgSend_resolverMatchingName_contextResolver_(self, a2, v4, v5, v6, v7, name, 0);
 
   return v8;
 }
 
-- (id)resolversMatchingPrefix:(id)a3
+- (id)resolversMatchingPrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v11 = objc_msgSend_array(MEMORY[0x277CBEB18], v5, v6, v7, v8, v9);
   if (!self->_tablesWithUniqueNames)
   {
     v27 = objc_msgSend_calculationEngine(self, v10, v12, v13, v14, v15);
     v40 = objc_msgSend_tablesByName(v27, v35, v36, v37, v38, v39);
-    v29 = objc_msgSend_resolversMatchingPrefix_(v40, v41, v42, v43, v44, v45, v4);
+    v29 = objc_msgSend_resolversMatchingPrefix_(v40, v41, v42, v43, v44, v45, prefixCopy);
 
     goto LABEL_5;
   }
 
-  if (objc_msgSend_length(v4, v10, v12, v13, v14, v15))
+  if (objc_msgSend_length(prefixCopy, v10, v12, v13, v14, v15))
   {
     v21 = objc_msgSend_documentLocale(self, v16, v17, v18, v19, v20);
     v27 = objc_msgSend_locale(v21, v22, v23, v24, v25, v26);
@@ -4891,7 +4891,7 @@ LABEL_16:
     v49[1] = 3221225472;
     v49[2] = sub_27601269C;
     v49[3] = &unk_27A6A9060;
-    v50 = v4;
+    v50 = prefixCopy;
     v51 = v27;
     v29 = v11;
     v52 = v29;
@@ -4910,20 +4910,20 @@ LABEL_7:
   return v47;
 }
 
-- (id)resolverMatchingName:(id)a3
+- (id)resolverMatchingName:(id)name
 {
-  v7 = objc_msgSend_resolverMatchingName_contextResolver_(self, a2, v3, v4, v5, v6, a3, 0);
+  v7 = objc_msgSend_resolverMatchingName_contextResolver_(self, a2, v3, v4, v5, v6, name, 0);
 
   return v7;
 }
 
-- (BOOL)resolverNameIsUsed:(id)a3
+- (BOOL)resolverNameIsUsed:(id)used
 {
-  v5 = a3;
+  usedCopy = used;
   tablesWithUniqueNames = self->_tablesWithUniqueNames;
   if (tablesWithUniqueNames)
   {
-    v11 = objc_msgSend_objectForKey_(tablesWithUniqueNames, v4, v6, v7, v8, v9, v5);
+    v11 = objc_msgSend_objectForKey_(tablesWithUniqueNames, v4, v6, v7, v8, v9, usedCopy);
     IsUsed = v11 != 0;
   }
 
@@ -4931,7 +4931,7 @@ LABEL_7:
   {
     v11 = objc_msgSend_calculationEngine(self, v4, v6, v7, v8, v9);
     v18 = objc_msgSend_tablesByName(v11, v13, v14, v15, v16, v17);
-    IsUsed = objc_msgSend_resolverNameIsUsed_(v18, v19, v20, v21, v22, v23, v5);
+    IsUsed = objc_msgSend_resolverNameIsUsed_(v18, v19, v20, v21, v22, v23, usedCopy);
   }
 
   return IsUsed;
@@ -4944,11 +4944,11 @@ LABEL_7:
   return tableNameCounter;
 }
 
-- (void)addRemappedTableName:(id)a3
+- (void)addRemappedTableName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   remappedTableNames = self->_remappedTableNames;
-  v12 = v4;
+  v12 = nameCopy;
   if (!remappedTableNames)
   {
     v10 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -4956,10 +4956,10 @@ LABEL_7:
     self->_remappedTableNames = v10;
 
     remappedTableNames = self->_remappedTableNames;
-    v4 = v12;
+    nameCopy = v12;
   }
 
-  objc_msgSend_addObject_(remappedTableNames, v4, v5, v6, v7, v8, v4);
+  objc_msgSend_addObject_(remappedTableNames, nameCopy, v5, v6, v7, v8, nameCopy);
 }
 
 - (void)clearRemappedTableNames
@@ -4968,19 +4968,19 @@ LABEL_7:
   self->_remappedTableNames = 0;
 }
 
-- (id)UIStateForChart:(id)a3
+- (id)UIStateForChart:(id)chart
 {
-  v4 = a3;
+  chartCopy = chart;
   v10 = objc_msgSend_uiState(self, v5, v6, v7, v8, v9);
-  v16 = objc_msgSend_UIStateForChart_(v10, v11, v12, v13, v14, v15, v4);
+  v16 = objc_msgSend_UIStateForChart_(v10, v11, v12, v13, v14, v15, chartCopy);
 
   return v16;
 }
 
-- (void)setUIState:(id)a3 forChart:(id)a4
+- (void)setUIState:(id)state forChart:(id)chart
 {
-  v46 = a3;
-  v6 = a4;
+  stateCopy = state;
+  chartCopy = chart;
   if (objc_msgSend_suppressViewStateCapture(self, v7, v8, v9, v10, v11))
   {
     v17 = MEMORY[0x277D81150];
@@ -4992,14 +4992,14 @@ LABEL_7:
   }
 
   v35 = objc_msgSend_uiState(self, v12, v13, v14, v15, v16);
-  objc_msgSend_setUIState_forChart_(v35, v36, v37, v38, v39, v40, v46, v6);
+  objc_msgSend_setUIState_forChart_(v35, v36, v37, v38, v39, v40, stateCopy, chartCopy);
 
   objc_msgSend_invalidateViewState(self, v41, v42, v43, v44, v45);
 }
 
-- (BOOL)prepareAndValidateSidecarViewStateRootWithVersionUUIDMismatch:(id)a3 sidecarDocumentRevision:(id)a4 originalDocumentViewStateRoot:(id)a5
+- (BOOL)prepareAndValidateSidecarViewStateRootWithVersionUUIDMismatch:(id)mismatch sidecarDocumentRevision:(id)revision originalDocumentViewStateRoot:(id)root
 {
-  v5 = a3;
+  mismatchCopy = mismatch;
   objc_opt_class();
   TSUDynamicCast();
 
@@ -5097,10 +5097,10 @@ LABEL_11:
   return v30;
 }
 
-- (void)pUpgradeSection:(id)a3 documentVersion:(unint64_t)a4
+- (void)pUpgradeSection:(id)section documentVersion:(unint64_t)version
 {
-  v7 = a3;
-  if (*MEMORY[0x277D810D8] <= a4)
+  sectionCopy = section;
+  if (*MEMORY[0x277D810D8] <= version)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v8, v9, v10, v11, "[TPDocumentRoot pUpgradeSection:documentVersion:]");
@@ -5123,7 +5123,7 @@ LABEL_11:
   objc_msgSend_willModifyForUpgrade(self, v30, v31, v32, v33, v34);
   v58 = objc_msgSend_stylesheet(self, v53, v54, v55, v56, v57);
   v59 = objc_alloc(MEMORY[0x277D80660]);
-  v65 = objc_msgSend_initWithRootModelObject_filter_(v59, v60, v61, v62, v63, v64, v7, 0);
+  v65 = objc_msgSend_initWithRootModelObject_filter_(v59, v60, v61, v62, v63, v64, sectionCopy, 0);
   v77[0] = MEMORY[0x277D85DD0];
   v77[1] = 3221225472;
   v77[2] = sub_2760130E0;
@@ -5131,13 +5131,13 @@ LABEL_11:
   v66 = v58;
   v78 = v66;
   objc_msgSend_enumerateUsingBlock_(v65, v67, v68, v69, v70, v71, v77);
-  objc_msgSend_nonUndoableAppendSection_charIndex_(self->_bodyStorage, v72, v73, v74, v75, v76, v7, 0);
+  objc_msgSend_nonUndoableAppendSection_charIndex_(self->_bodyStorage, v72, v73, v74, v75, v76, sectionCopy, 0);
 }
 
-- (BOOL)p_isUniquePageTemplateName:(id)a3
+- (BOOL)p_isUniquePageTemplateName:(id)name
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -5157,7 +5157,7 @@ LABEL_11:
         }
 
         v23 = objc_msgSend_name(*(*(&v32 + 1) + 8 * i), v15, v17, v18, v19, v20);
-        isEqualToString = objc_msgSend_isEqualToString_(v23, v24, v25, v26, v27, v28, v4);
+        isEqualToString = objc_msgSend_isEqualToString_(v23, v24, v25, v26, v27, v28, nameCopy);
 
         if (isEqualToString)
         {
@@ -5182,12 +5182,12 @@ LABEL_11:
   return v30;
 }
 
-- (BOOL)documentAllowsPencilAnnotationsOnModel:(id)a3
+- (BOOL)documentAllowsPencilAnnotationsOnModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v19.receiver = self;
   v19.super_class = TPDocumentRoot;
-  if ([(TPDocumentRoot *)&v19 documentAllowsPencilAnnotationsOnModel:v4]&& (objc_msgSend_sectionTemplatePageOwningModel_(self, v5, v6, v7, v8, v9, v4), v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
+  if ([(TPDocumentRoot *)&v19 documentAllowsPencilAnnotationsOnModel:modelCopy]&& (objc_msgSend_sectionTemplatePageOwningModel_(self, v5, v6, v7, v8, v9, modelCopy), v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
   {
     objc_opt_class();
     v13 = TSUDynamicCast();

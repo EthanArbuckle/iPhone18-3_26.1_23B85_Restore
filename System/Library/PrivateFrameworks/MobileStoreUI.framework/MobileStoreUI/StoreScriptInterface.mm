@@ -1,21 +1,21 @@
 @interface StoreScriptInterface
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (SUProductPageViewController)parentProductPageViewController;
 - (id)makeStoreSheetRequest;
-- (void)showStoreSheetWithRequest:(id)a3 animated:(BOOL)a4;
+- (void)showStoreSheetWithRequest:(id)request animated:(BOOL)animated;
 @end
 
 @implementation StoreScriptInterface
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
   v5 = SUWebScriptNameForSelector2();
   if (!v5)
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___StoreScriptInterface;
-    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForSelector_, a3);
+    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForSelector_, selector);
   }
 
   return v5;
@@ -23,7 +23,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping = sel_makeStoreSheetRequest;
     *algn_27F9F18D8 = @"createStoreSheetRequest";
@@ -47,21 +47,21 @@
   return v3;
 }
 
-- (void)showStoreSheetWithRequest:(id)a3 animated:(BOOL)a4
+- (void)showStoreSheetWithRequest:(id)request animated:(BOOL)animated
 {
-  v6 = a3;
+  requestCopy = request;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 newNativeStorePageRequest];
+    newNativeStorePageRequest = [requestCopy newNativeStorePageRequest];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __86__StoreScriptInterface_SUScriptStoreSheetRequest__showStoreSheetWithRequest_animated___block_invoke;
     v12[3] = &unk_2798FADE0;
     v12[4] = self;
-    v13 = v7;
-    v14 = a4;
-    v8 = v7;
+    v13 = newNativeStorePageRequest;
+    animatedCopy = animated;
+    v8 = newNativeStorePageRequest;
     v9 = SUUIWebCoreFramework();
     v10 = SUUIWeakLinkedSymbolForString("WebThreadRunOnMainThread", v9);
     if (v10)

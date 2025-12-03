@@ -1,9 +1,9 @@
 @interface CMSedentaryTimer_Internal
 - (BOOL)_isActive;
 - (CMSedentaryTimer_Internal)init;
-- (void)_handleAlarmDataResponse:(shared_ptr<CLConnectionMessage>)a3 withHandler:(id)a4;
-- (void)_handleStartStopTimerResponse:(shared_ptr<CLConnectionMessage>)a3 withHandler:(id)a4;
-- (void)_registerForAlarmsWithHandler:(id)a3;
+- (void)_handleAlarmDataResponse:(shared_ptr<CLConnectionMessage>)response withHandler:(id)handler;
+- (void)_handleStartStopTimerResponse:(shared_ptr<CLConnectionMessage>)response withHandler:(id)handler;
+- (void)_registerForAlarmsWithHandler:(id)handler;
 - (void)_teardown;
 - (void)dealloc;
 @end
@@ -90,10 +90,10 @@
   return result;
 }
 
-- (void)_handleStartStopTimerResponse:(shared_ptr<CLConnectionMessage>)a3 withHandler:(id)a4
+- (void)_handleStartStopTimerResponse:(shared_ptr<CLConnectionMessage>)response withHandler:(id)handler
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = response.var1;
+  var0 = response.var0;
   v44 = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E695DFD8];
   v8 = objc_opt_class();
@@ -307,10 +307,10 @@ LABEL_70:
   v38 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleAlarmDataResponse:(shared_ptr<CLConnectionMessage>)a3 withHandler:(id)a4
+- (void)_handleAlarmDataResponse:(shared_ptr<CLConnectionMessage>)response withHandler:(id)handler
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = response.var1;
+  var0 = response.var0;
   v42 = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E695DFD8];
   v8 = objc_opt_class();
@@ -498,7 +498,7 @@ LABEL_70:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_registerForAlarmsWithHandler:(id)a3
+- (void)_registerForAlarmsWithHandler:(id)handler
 {
   v11 = *MEMORY[0x1E69E9840];
   if (qword_1ED71C830 != -1)

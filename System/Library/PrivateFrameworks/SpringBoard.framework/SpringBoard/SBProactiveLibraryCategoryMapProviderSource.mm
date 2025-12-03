@@ -1,10 +1,10 @@
 @interface SBProactiveLibraryCategoryMapProviderSource
-- (BOOL)_shouldRemoveRecentsPodWithLastKnownRecentApps:(id)a3;
+- (BOOL)_shouldRemoveRecentsPodWithLastKnownRecentApps:(id)apps;
 - (SBHLibraryCategoryMapProviderSourceDelegate)delegate;
 - (SBProactiveLibraryCategoryMapProviderSource)init;
-- (id)_nonHiddenBundleIdentifiersForBundleIdentifiers:(id)a3;
-- (void)handleUpdateCategoriesNotification:(id)a3;
-- (void)requestLibraryCategoryMapWithOptions:(unint64_t)a3 existingLibraryCategoryMap:(id)a4 forbiddenApplicationIdentifiers:(id)a5 sessionId:(unint64_t)a6 queue:(id)a7 completion:(id)a8;
+- (id)_nonHiddenBundleIdentifiersForBundleIdentifiers:(id)identifiers;
+- (void)handleUpdateCategoriesNotification:(id)notification;
+- (void)requestLibraryCategoryMapWithOptions:(unint64_t)options existingLibraryCategoryMap:(id)map forbiddenApplicationIdentifiers:(id)identifiers sessionId:(unint64_t)id queue:(id)queue completion:(id)completion;
 @end
 
 @implementation SBProactiveLibraryCategoryMapProviderSource
@@ -16,24 +16,24 @@
   v2 = [(SBProactiveLibraryCategoryMapProviderSource *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CEB358] sharedInstance];
+    mEMORY[0x277CEB358] = [MEMORY[0x277CEB358] sharedInstance];
     appDirectoryClient = v2->_appDirectoryClient;
-    v2->_appDirectoryClient = v3;
+    v2->_appDirectoryClient = mEMORY[0x277CEB358];
 
-    v5 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v5 addObserver:v2 selector:sel_handleUpdateCategoriesNotification_ name:*MEMORY[0x277CEB9E0] object:0 suspensionBehavior:4];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_handleUpdateCategoriesNotification_ name:*MEMORY[0x277CEB9E0] object:0 suspensionBehavior:4];
   }
 
   return v2;
 }
 
-- (void)requestLibraryCategoryMapWithOptions:(unint64_t)a3 existingLibraryCategoryMap:(id)a4 forbiddenApplicationIdentifiers:(id)a5 sessionId:(unint64_t)a6 queue:(id)a7 completion:(id)a8
+- (void)requestLibraryCategoryMapWithOptions:(unint64_t)options existingLibraryCategoryMap:(id)map forbiddenApplicationIdentifiers:(id)identifiers sessionId:(unint64_t)id queue:(id)queue completion:(id)completion
 {
   v89 = *MEMORY[0x277D85DE8];
-  v46 = a4;
-  v13 = a5;
-  v14 = a7;
-  v44 = a8;
+  mapCopy = map;
+  identifiersCopy = identifiers;
+  queueCopy = queue;
+  completionCopy = completion;
   BSDispatchQueueAssert();
   v81[0] = 0;
   v81[1] = v81;
@@ -44,28 +44,28 @@
   v80[2] = 0x2020000000;
   v80[3] = 0;
   v15 = [MEMORY[0x277CCAC30] predicateWithValue:1];
-  if ([v13 count])
+  if ([identifiersCopy count])
   {
     v16 = MEMORY[0x277CCAC30];
     v78[0] = MEMORY[0x277D85DD0];
     v78[1] = 3221225472;
     v78[2] = __170__SBProactiveLibraryCategoryMapProviderSource_requestLibraryCategoryMapWithOptions_existingLibraryCategoryMap_forbiddenApplicationIdentifiers_sessionId_queue_completion___block_invoke;
     v78[3] = &unk_2783BF2E8;
-    v79 = v13;
+    v79 = identifiersCopy;
     v17 = [v16 predicateWithBlock:v78];
 
     v15 = v17;
   }
 
   Current = CFAbsoluteTimeGetCurrent();
-  if (!v46 || (a3 & 1) != 0)
+  if (!mapCopy || (options & 1) != 0)
   {
     v19 = objc_opt_new();
   }
 
   else
   {
-    v19 = [v46 mutableCopy];
+    v19 = [mapCopy mutableCopy];
   }
 
   v20 = v19;
@@ -73,7 +73,7 @@
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = a6;
+    *(&buf + 4) = id;
     _os_log_impl(&dword_21ED4E000, v21, OS_LOG_TYPE_DEFAULT, "(%ld) Refreshing proactive library category source", &buf, 0xCu);
   }
 
@@ -91,37 +91,37 @@
   v76[4] = __Block_byref_object_dispose__104;
   v77 = 0;
   v23 = MEMORY[0x277CBEB38];
-  v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
+  v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:id];
   v25 = [v23 dictionaryWithObject:v24 forKey:*MEMORY[0x277D665B8]];
 
-  v26 = [v20 sb_hasAppsPopulatedForCategoriesOtherThanProactive];
-  if ((a3 & 0x10) != 0)
+  sb_hasAppsPopulatedForCategoriesOtherThanProactive = [v20 sb_hasAppsPopulatedForCategoriesOtherThanProactive];
+  if ((options & 0x10) != 0)
   {
     v27 = SBLogProactiveAppLibrary();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       *v82 = 134217984;
-      v83 = a6;
+      idCopy4 = id;
       _os_log_impl(&dword_21ED4E000, v27, OS_LOG_TYPE_DEFAULT, "(%ld) We are requesting the defaults because the passed options indicated there is no cache, so we need data fast. ", v82, 0xCu);
     }
   }
 
-  if (!((a3 >> 2) & 1 | v26 & 1))
+  if (!((options >> 2) & 1 | sb_hasAppsPopulatedForCategoriesOtherThanProactive & 1))
   {
     v28 = SBLogProactiveAppLibrary();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      [(SBProactiveLibraryCategoryMapProviderSource *)a6 requestLibraryCategoryMapWithOptions:v28 existingLibraryCategoryMap:v29 forbiddenApplicationIdentifiers:v30 sessionId:v31 queue:v32 completion:v33, v34];
+      [(SBProactiveLibraryCategoryMapProviderSource *)id requestLibraryCategoryMapWithOptions:v28 existingLibraryCategoryMap:v29 forbiddenApplicationIdentifiers:v30 sessionId:v31 queue:v32 completion:v33, v34];
     }
   }
 
-  if ((a3 >> 2) & 1 | (v26 ^ 1) & 1)
+  if ((options >> 2) & 1 | (sb_hasAppsPopulatedForCategoriesOtherThanProactive ^ 1) & 1)
   {
     v35 = SBLogProactiveAppLibrary();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
       *v82 = 134217984;
-      v83 = a6;
+      idCopy4 = id;
       _os_log_impl(&dword_21ED4E000, v35, OS_LOG_TYPE_DEFAULT, "(%ld) Refreshing proactive library category source 'Categories'", v82, 0xCu);
     }
 
@@ -134,22 +134,22 @@
     v67[3] = &unk_2783BF360;
     v72 = v80;
     v74 = v36;
-    v68 = v14;
+    v68 = queueCopy;
     p_buf = &buf;
-    v75 = a6;
+    idCopy3 = id;
     v69 = v20;
     v70 = v15;
     v71 = v22;
-    [(ATXAppDirectoryClient *)appDirectoryClient categoriesWithShouldUseDefault:(a3 >> 4) & 1 reply:v67];
+    [(ATXAppDirectoryClient *)appDirectoryClient categoriesWithShouldUseDefault:(options >> 4) & 1 reply:v67];
   }
 
-  if ((a3 & 2) != 0)
+  if ((options & 2) != 0)
   {
     v38 = SBLogProactiveAppLibrary();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
     {
       *v82 = 134217984;
-      v83 = a6;
+      idCopy4 = id;
       _os_log_impl(&dword_21ED4E000, v38, OS_LOG_TYPE_DEFAULT, "(%ld) Refreshing proactive library category source 'Suggestions/Recents/Hidden'", v82, 0xCu);
     }
 
@@ -162,14 +162,14 @@
     v57[3] = &unk_2783BF388;
     v63 = v81;
     v65 = v39;
-    v58 = v14;
+    v58 = queueCopy;
     v64 = v76;
-    v66 = a6;
+    idCopy5 = id;
     v59 = v15;
     v60 = v20;
     v61 = v25;
     v62 = v22;
-    [(ATXAppDirectoryClient *)v40 predictedAppsAndRecentAppsWithShouldUseDefaultCategories:(a3 >> 4) & 1 reply:v57];
+    [(ATXAppDirectoryClient *)v40 predictedAppsAndRecentAppsWithShouldUseDefaultCategories:(options >> 4) & 1 reply:v57];
   }
 
   block[0] = MEMORY[0x277D85DD0];
@@ -179,16 +179,16 @@
   v48 = v20;
   v49 = v25;
   v55 = Current;
-  v50 = v44;
+  v50 = completionCopy;
   v51 = &buf;
-  v56 = a3;
+  optionsCopy = options;
   v52 = v80;
   v53 = v81;
-  v54 = a6;
-  v41 = v44;
+  idCopy6 = id;
+  v41 = completionCopy;
   v42 = v25;
   v43 = v20;
-  dispatch_group_notify(v22, v14, block);
+  dispatch_group_notify(v22, queueCopy, block);
 
   _Block_object_dispose(v76, 8);
   _Block_object_dispose(&buf, 8);
@@ -764,16 +764,16 @@ LABEL_35:
   }
 }
 
-- (id)_nonHiddenBundleIdentifiersForBundleIdentifiers:(id)a3
+- (id)_nonHiddenBundleIdentifiersForBundleIdentifiers:(id)identifiers
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifiersCopy = identifiers;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = identifiersCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -805,28 +805,28 @@ LABEL_35:
   return v4;
 }
 
-- (BOOL)_shouldRemoveRecentsPodWithLastKnownRecentApps:(id)a3
+- (BOOL)_shouldRemoveRecentsPodWithLastKnownRecentApps:(id)apps
 {
-  v3 = [(SBProactiveLibraryCategoryMapProviderSource *)self _nonHiddenBundleIdentifiersForBundleIdentifiers:a3];
+  v3 = [(SBProactiveLibraryCategoryMapProviderSource *)self _nonHiddenBundleIdentifiersForBundleIdentifiers:apps];
   v4 = [v3 count] == 0;
 
   return v4;
 }
 
-- (void)handleUpdateCategoriesNotification:(id)a3
+- (void)handleUpdateCategoriesNotification:(id)notification
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = SBLogProactiveAppLibrary();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = notificationCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Proactive is requesting a refresh all because of notification: %@", &v7, 0xCu);
   }
 
-  v6 = [(SBProactiveLibraryCategoryMapProviderSource *)self delegate];
-  [v6 requestLibraryCategoryMapUpdateWithRefreshOptions:6 source:self];
+  delegate = [(SBProactiveLibraryCategoryMapProviderSource *)self delegate];
+  [delegate requestLibraryCategoryMapUpdateWithRefreshOptions:6 source:self];
 }
 
 - (SBHLibraryCategoryMapProviderSourceDelegate)delegate

@@ -1,14 +1,14 @@
 @interface OrgApacheLuceneUtilPackedPackedInts_Format_$1Enum
-- (OrgApacheLuceneUtilPackedPackedInts_Format_$1Enum)initWithInt:(int)a3 withNSString:(id)a4 withInt:(int)a5;
-- (int64_t)byteCountWithInt:(int)a3 withInt:(int)a4 withInt:(int)a5;
+- (OrgApacheLuceneUtilPackedPackedInts_Format_$1Enum)initWithInt:(int)int withNSString:(id)string withInt:(int)withInt;
+- (int64_t)byteCountWithInt:(int)int withInt:(int)withInt withInt:(int)a5;
 @end
 
 @implementation OrgApacheLuceneUtilPackedPackedInts_Format_$1Enum
 
-- (int64_t)byteCountWithInt:(int)a3 withInt:(int)a4 withInt:(int)a5
+- (int64_t)byteCountWithInt:(int)int withInt:(int)withInt withInt:(int)a5
 {
-  v5 = a4 * a5;
-  if (a3 <= 0)
+  v5 = withInt * a5;
+  if (int <= 0)
   {
     v9 = JavaLangMath_ceilWithDouble_(v5 * 0.015625);
     v10 = v9;
@@ -47,10 +47,10 @@
   }
 }
 
-- (OrgApacheLuceneUtilPackedPackedInts_Format_$1Enum)initWithInt:(int)a3 withNSString:(id)a4 withInt:(int)a5
+- (OrgApacheLuceneUtilPackedPackedInts_Format_$1Enum)initWithInt:(int)int withNSString:(id)string withInt:(int)withInt
 {
-  JavaLangEnum_initWithNSString_withInt_(self, a4, a5);
-  *(&self->super.super.ordinal_ + 1) = a3;
+  JavaLangEnum_initWithNSString_withInt_(self, string, withInt);
+  *(&self->super.super.ordinal_ + 1) = int;
   return self;
 }
 

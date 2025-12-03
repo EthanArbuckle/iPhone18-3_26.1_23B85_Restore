@@ -1,16 +1,16 @@
 @interface TrendsOnBoardingActivityTile
-- (_TtC10FitnessApp28TrendsOnBoardingActivityTile)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC10FitnessApp28TrendsOnBoardingActivityTile)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)didTapGetStartedButton;
 - (void)prepareForReuse;
 @end
 
 @implementation TrendsOnBoardingActivityTile
 
-- (_TtC10FitnessApp28TrendsOnBoardingActivityTile)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC10FitnessApp28TrendsOnBoardingActivityTile)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -19,7 +19,7 @@
     v6 = 0;
   }
 
-  return sub_1002C58BC(a3, a4, v6);
+  return sub_1002C58BC(style, identifier, v6);
 }
 
 - (void)didTapGetStartedButton
@@ -29,7 +29,7 @@
   {
     if (v2)
     {
-      v3 = self;
+      selfCopy = self;
       v4 = sub_1002C79D8(v2);
       v2(v4);
 
@@ -46,7 +46,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002C7578();
 }
 

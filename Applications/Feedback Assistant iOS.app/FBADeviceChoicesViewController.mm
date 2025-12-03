@@ -1,18 +1,18 @@
 @interface FBADeviceChoicesViewController
 - (FBADeviceChoiceDelegate)choiceDelegate;
-- (FBADeviceChoicesViewController)initWithCoder:(id)a3;
-- (FBADeviceChoicesViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (FBADeviceChoicesViewController)initWithCoder:(id)coder;
+- (FBADeviceChoicesViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (_UIContentUnavailableView)contentUnavailableView;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)commonInit;
 - (void)didCancel;
 - (void)didTapDone;
 - (void)hideContentUnavailableView;
 - (void)showContentUnavailableView;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -28,11 +28,11 @@
   _objc_release_x1();
 }
 
-- (FBADeviceChoicesViewController)initWithCoder:(id)a3
+- (FBADeviceChoicesViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = FBADeviceChoicesViewController;
-  v3 = [(FBADeviceChoicesViewController *)&v6 initWithCoder:a3];
+  v3 = [(FBADeviceChoicesViewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -42,11 +42,11 @@
   return v4;
 }
 
-- (FBADeviceChoicesViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (FBADeviceChoicesViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = FBADeviceChoicesViewController;
-  v4 = [(FBADeviceChoicesViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(FBADeviceChoicesViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -64,27 +64,27 @@
   [(FBADeviceChoicesViewController *)self setClearsSelectionOnViewWillAppear:1];
   +[FBADevicePairingCell estimatedRowHeight];
   v4 = v3;
-  v5 = [(FBADeviceChoicesViewController *)self tableView];
-  [v5 setEstimatedRowHeight:v4];
+  tableView = [(FBADeviceChoicesViewController *)self tableView];
+  [tableView setEstimatedRowHeight:v4];
 
-  v6 = [(FBADeviceChoicesViewController *)self tableView];
-  [v6 setRowHeight:UITableViewAutomaticDimension];
+  tableView2 = [(FBADeviceChoicesViewController *)self tableView];
+  [tableView2 setRowHeight:UITableViewAutomaticDimension];
 
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   v9 = +[NSBundle mainBundle];
   v10 = [UINib nibWithNibName:v8 bundle:v9];
 
-  v11 = [(FBADeviceChoicesViewController *)self tableView];
-  [v11 registerNib:v10 forCellReuseIdentifier:v8];
+  tableView3 = [(FBADeviceChoicesViewController *)self tableView];
+  [tableView3 registerNib:v10 forCellReuseIdentifier:v8];
 
-  v12 = [(FBADeviceChoicesViewController *)self deviceChoices];
+  deviceChoices = [(FBADeviceChoicesViewController *)self deviceChoices];
 
-  if (v12)
+  if (deviceChoices)
   {
-    v13 = [(FBADeviceChoicesViewController *)self deviceChoices];
-    v14 = [v13 allObjects];
-    v15 = [FBKGroupedDevice sortedDevices:v14];
+    deviceChoices2 = [(FBADeviceChoicesViewController *)self deviceChoices];
+    allObjects = [deviceChoices2 allObjects];
+    v15 = [FBKGroupedDevice sortedDevices:allObjects];
     [(FBADeviceChoicesViewController *)self setSortedChoices:v15];
   }
 
@@ -95,22 +95,22 @@
 
   v16 = +[NSBundle mainBundle];
   v17 = [v16 localizedStringForKey:@"ADD_DEVICE" value:@"Add Device" table:0];
-  v18 = [(FBADeviceChoicesViewController *)self navigationItem];
-  [v18 setTitle:v17];
+  navigationItem = [(FBADeviceChoicesViewController *)self navigationItem];
+  [navigationItem setTitle:v17];
 
   v19 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"didCancel"];
-  v20 = [(FBADeviceChoicesViewController *)self navigationItem];
-  [v20 setLeftBarButtonItem:v19];
+  navigationItem2 = [(FBADeviceChoicesViewController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:v19];
 
   if ([(FBADeviceChoicesViewController *)self isMultiSelect])
   {
     v21 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"didTapDone"];
-    v22 = [(FBADeviceChoicesViewController *)self navigationItem];
-    [v22 setRightBarButtonItem:v21];
+    navigationItem3 = [(FBADeviceChoicesViewController *)self navigationItem];
+    [navigationItem3 setRightBarButtonItem:v21];
 
-    v23 = [(FBADeviceChoicesViewController *)self navigationItem];
-    v24 = [v23 rightBarButtonItem];
-    [v24 setEnabled:0];
+    navigationItem4 = [(FBADeviceChoicesViewController *)self navigationItem];
+    rightBarButtonItem = [navigationItem4 rightBarButtonItem];
+    [rightBarButtonItem setEnabled:0];
   }
 }
 
@@ -118,10 +118,10 @@
 {
   if ([(FBADeviceChoicesViewController *)self isMultiSelect])
   {
-    v6 = [(FBADeviceChoicesViewController *)self choiceDelegate];
-    v3 = [(FBADeviceChoicesViewController *)self selectedDevices];
-    v4 = [NSSet setWithSet:v3];
-    [v6 deviceChoicesController:self didChooseDevices:v4];
+    choiceDelegate = [(FBADeviceChoicesViewController *)self choiceDelegate];
+    selectedDevices = [(FBADeviceChoicesViewController *)self selectedDevices];
+    v4 = [NSSet setWithSet:selectedDevices];
+    [choiceDelegate deviceChoicesController:self didChooseDevices:v4];
   }
 
   else
@@ -136,13 +136,13 @@
 
 - (void)didCancel
 {
-  v3 = [(FBADeviceChoicesViewController *)self choiceDelegate];
-  [v3 deviceChoicesControllerDidCancelWithController:self];
+  choiceDelegate = [(FBADeviceChoicesViewController *)self choiceDelegate];
+  [choiceDelegate deviceChoicesControllerDidCancelWithController:self];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(FBADeviceChoicesViewController *)self sortedChoices:a3];
+  v5 = [(FBADeviceChoicesViewController *)self sortedChoices:view];
   v6 = [v5 count];
 
   if (v6)
@@ -158,19 +158,19 @@
   return v6;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  if (a4 || ![(FBADeviceChoicesViewController *)self tableView:a3 numberOfRowsInSection:?])
+  if (section || ![(FBADeviceChoicesViewController *)self tableView:view numberOfRowsInSection:?])
   {
     v4 = 0;
   }
 
   else
   {
-    v6 = [(FBADeviceChoicesViewController *)self isMultiSelect];
+    isMultiSelect = [(FBADeviceChoicesViewController *)self isMultiSelect];
     v7 = +[NSBundle mainBundle];
     v8 = v7;
-    if (v6)
+    if (isMultiSelect)
     {
       v9 = @"DEVICE_PICKER_FOOTER_MULTI_SELECT";
       v10 = @"To share diagnostic logs with Apple, select all of the devices experiencing this issue. If your device is not listed, make sure it is nearby, online, and signed in to your iCloud account.";
@@ -188,19 +188,19 @@
   return v4;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4 || ![(FBADeviceChoicesViewController *)self tableView:a3 numberOfRowsInSection:?])
+  if (section || ![(FBADeviceChoicesViewController *)self tableView:view numberOfRowsInSection:?])
   {
     v4 = 0;
   }
 
   else
   {
-    v6 = [(FBADeviceChoicesViewController *)self isMultiSelect];
+    isMultiSelect = [(FBADeviceChoicesViewController *)self isMultiSelect];
     v7 = +[NSBundle mainBundle];
     v8 = v7;
-    if (v6)
+    if (isMultiSelect)
     {
       v9 = @"DEVICE_PICKER_HEADER_MULTI_SELECT";
       v10 = @"Select Devices";
@@ -218,96 +218,96 @@
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = qword_10010AF70;
-  v7 = a4;
-  v8 = a3;
+  pathCopy = path;
+  viewCopy = view;
   if (v6 != -1)
   {
     sub_100092768();
   }
 
-  v9 = [v8 dequeueReusableCellWithIdentifier:qword_10010AF78 forIndexPath:v7];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:qword_10010AF78 forIndexPath:pathCopy];
 
-  v10 = [(FBADeviceChoicesViewController *)self sortedChoices];
-  v11 = [v7 row];
+  sortedChoices = [(FBADeviceChoicesViewController *)self sortedChoices];
+  v11 = [pathCopy row];
 
-  v12 = [v10 objectAtIndexedSubscript:v11];
+  v12 = [sortedChoices objectAtIndexedSubscript:v11];
 
-  v13 = [(FBADeviceChoicesViewController *)self selectedDevices];
-  v14 = [v13 containsObject:v12];
+  selectedDevices = [(FBADeviceChoicesViewController *)self selectedDevices];
+  v14 = [selectedDevices containsObject:v12];
 
   [v9 updateWithDevice:v12 showsDetail:0 showsTransport:0 isSelected:v14];
 
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FBADeviceChoicesViewController *)self sortedChoices];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+  viewCopy = view;
+  pathCopy = path;
+  sortedChoices = [(FBADeviceChoicesViewController *)self sortedChoices];
+  v9 = [sortedChoices objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   v10 = +[FBALog ded];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 publicLogDescription];
+    publicLogDescription = [v9 publicLogDescription];
     *buf = 138543362;
-    v25 = v11;
+    v25 = publicLogDescription;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "did tap device [%{public}@] on device picker", buf, 0xCu);
   }
 
   if ([(FBADeviceChoicesViewController *)self isMultiSelect])
   {
-    v12 = [(FBADeviceChoicesViewController *)self selectedDevices];
-    v13 = [v12 containsObject:v9];
+    selectedDevices = [(FBADeviceChoicesViewController *)self selectedDevices];
+    v13 = [selectedDevices containsObject:v9];
 
-    v14 = [(FBADeviceChoicesViewController *)self selectedDevices];
-    v15 = v14;
+    selectedDevices2 = [(FBADeviceChoicesViewController *)self selectedDevices];
+    v15 = selectedDevices2;
     if (v13)
     {
-      [v14 removeObject:v9];
+      [selectedDevices2 removeObject:v9];
     }
 
     else
     {
-      v18 = [(FBADeviceChoicesViewController *)self sortedChoices];
-      v19 = [v18 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+      sortedChoices2 = [(FBADeviceChoicesViewController *)self sortedChoices];
+      v19 = [sortedChoices2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
       [v15 addObject:v19];
     }
 
-    v23 = v7;
+    v23 = pathCopy;
     v20 = [NSArray arrayWithObjects:&v23 count:1];
-    [v6 reloadRowsAtIndexPaths:v20 withRowAnimation:100];
+    [viewCopy reloadRowsAtIndexPaths:v20 withRowAnimation:100];
 
-    v16 = [(FBADeviceChoicesViewController *)self selectedDevices];
-    v21 = [v16 count] != 0;
-    v17 = [(FBADeviceChoicesViewController *)self navigationItem];
-    v22 = [v17 rightBarButtonItem];
-    [v22 setEnabled:v21];
+    selectedDevices3 = [(FBADeviceChoicesViewController *)self selectedDevices];
+    v21 = [selectedDevices3 count] != 0;
+    navigationItem = [(FBADeviceChoicesViewController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    [rightBarButtonItem setEnabled:v21];
   }
 
   else
   {
-    v16 = [(FBADeviceChoicesViewController *)self choiceDelegate];
-    v17 = [NSSet setWithObject:v9];
-    [v16 deviceChoicesController:self didChooseDevices:v17];
+    selectedDevices3 = [(FBADeviceChoicesViewController *)self choiceDelegate];
+    navigationItem = [NSSet setWithObject:v9];
+    [selectedDevices3 deviceChoicesController:self didChooseDevices:navigationItem];
   }
 }
 
 - (void)showContentUnavailableView
 {
-  v4 = [(FBADeviceChoicesViewController *)self contentUnavailableView];
-  v3 = [(FBADeviceChoicesViewController *)self tableView];
-  [v3 setBackgroundView:v4];
+  contentUnavailableView = [(FBADeviceChoicesViewController *)self contentUnavailableView];
+  tableView = [(FBADeviceChoicesViewController *)self tableView];
+  [tableView setBackgroundView:contentUnavailableView];
 }
 
 - (void)hideContentUnavailableView
 {
-  v2 = [(FBADeviceChoicesViewController *)self tableView];
-  [v2 setBackgroundView:0];
+  tableView = [(FBADeviceChoicesViewController *)self tableView];
+  [tableView setBackgroundView:0];
 }
 
 - (_UIContentUnavailableView)contentUnavailableView
@@ -316,8 +316,8 @@
   if (!contentUnavailableView)
   {
     v4 = [_UIContentUnavailableView alloc];
-    v5 = [(FBADeviceChoicesViewController *)self view];
-    [v5 frame];
+    view = [(FBADeviceChoicesViewController *)self view];
+    [view frame];
     v7 = v6;
     v9 = v8;
     v11 = v10;

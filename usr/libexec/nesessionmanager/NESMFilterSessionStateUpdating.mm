@@ -1,6 +1,6 @@
 @interface NESMFilterSessionStateUpdating
 - (NESMFilterSessionStateUpdating)init;
-- (void)enterWithSession:(id)a3;
+- (void)enterWithSession:(id)session;
 - (void)handleStop;
 @end
 
@@ -31,11 +31,11 @@
   }
 }
 
-- (void)enterWithSession:(id)a3
+- (void)enterWithSession:(id)session
 {
   v8.receiver = self;
   v8.super_class = NESMFilterSessionStateUpdating;
-  [(NESMFilterSessionState *)&v8 enterWithSession:a3];
+  [(NESMFilterSessionState *)&v8 enterWithSession:session];
   if (self)
   {
     Property = objc_getProperty(self, v4, 16, 1);
@@ -43,8 +43,8 @@
     {
       v6 = Property;
       sub_1000806FC(Property, 0);
-      v7 = [v6 server];
-      [v7 requestUninstallForSession:v6];
+      server = [v6 server];
+      [server requestUninstallForSession:v6];
     }
   }
 }

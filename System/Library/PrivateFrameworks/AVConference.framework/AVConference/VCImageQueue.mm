@@ -2,38 +2,38 @@
 + (id)drawingContext;
 + (void)drawingContext;
 - (BOOL)createAllocators;
-- (BOOL)setUpImageQueueForFigVideoTargetWithTagCollection:(OpaqueCMTagCollection *)a3 withDataChannelConfig:(OpaqueFigDataChannelConfiguration *)a4;
-- (BOOL)setupDataQueueForFigVideoTargetWithTagCollection:(OpaqueCMTagCollection *)a3 withDataChannelConfig:(OpaqueFigDataChannelConfiguration *)a4;
-- (BOOL)setupDefaultImageQueueForFigVideoTargetWithDataChannelConfig:(OpaqueFigDataChannelConfiguration *)a3;
+- (BOOL)setUpImageQueueForFigVideoTargetWithTagCollection:(OpaqueCMTagCollection *)collection withDataChannelConfig:(OpaqueFigDataChannelConfiguration *)config;
+- (BOOL)setupDataQueueForFigVideoTargetWithTagCollection:(OpaqueCMTagCollection *)collection withDataChannelConfig:(OpaqueFigDataChannelConfiguration *)config;
+- (BOOL)setupDefaultImageQueueForFigVideoTargetWithDataChannelConfig:(OpaqueFigDataChannelConfiguration *)config;
 - (BOOL)setupQueuesAndDataChannelConfigForFigVideoTarget;
-- (BOOL)setupQueuesForFigVideoTargetUsingBufferDescriptionWithDataChannelConfig:(OpaqueFigDataChannelConfiguration *)a3;
+- (BOOL)setupQueuesForFigVideoTargetUsingBufferDescriptionWithDataChannelConfig:(OpaqueFigDataChannelConfiguration *)config;
 - (NSString)description;
-- (VCImageQueue)initWithFrameRate:(unsigned __int8)a3 imageQueueProtected:(BOOL)a4 vcImageQueueConfig:(const tagVCImageQueueConfig *)a5;
+- (VCImageQueue)initWithFrameRate:(unsigned __int8)rate imageQueueProtected:(BOOL)protected vcImageQueueConfig:(const tagVCImageQueueConfig *)config;
 - (VCStreamOutput)streamOutput;
 - (int64_t)streamToken;
-- (unsigned)createCAContextWithSize:(CGRect)a3;
-- (unsigned)setVideoDestination:(id)a3;
+- (unsigned)createCAContextWithSize:(CGRect)size;
+- (unsigned)setVideoDestination:(id)destination;
 - (void)cleanupCAContextAndCALayer;
 - (void)cleanupFigEndpointVideoTargetAndQueues;
 - (void)cleanupVideoTargetQueues;
-- (void)configureCALayerWithRect:(CGRect)a3 name:(id)a4;
+- (void)configureCALayerWithRect:(CGRect)rect name:(id)name;
 - (void)createAllocators;
-- (void)createAndCopyLatencyStatsDictionary:(const __CFDictionary *)a3;
-- (void)createAndCopyPerformanceDictionary:(const __CFDictionary *)a3;
+- (void)createAndCopyLatencyStatsDictionary:(const __CFDictionary *)dictionary;
+- (void)createAndCopyPerformanceDictionary:(const __CFDictionary *)dictionary;
 - (void)createSlotAndConnectCAQueue;
 - (void)dealloc;
-- (void)getQueueRepresentation:(void *)a3;
+- (void)getQueueRepresentation:(void *)representation;
 - (void)pause;
 - (void)releaseAllocators;
 - (void)releaseSlot;
-- (void)setEndpointID:(id)a3;
-- (void)setHostTimeTimebaseOnFigDataQueue:(OpaqueFigDataQueue *)a3;
-- (void)setHostTimeTimebaseOnFigImageQueue:(OpaqueFigImageQueue *)a3;
-- (void)setImageQueueProtected:(BOOL)a3;
-- (void)setStreamOutput:(id)a3;
-- (void)setStreamToken:(int64_t)a3;
-- (void)setTransformForRemoteVideoOrientationEnabled:(BOOL)a3;
-- (void)setVideoBufferDescription:(id)a3;
+- (void)setEndpointID:(id)d;
+- (void)setHostTimeTimebaseOnFigDataQueue:(OpaqueFigDataQueue *)queue;
+- (void)setHostTimeTimebaseOnFigImageQueue:(OpaqueFigImageQueue *)queue;
+- (void)setImageQueueProtected:(BOOL)protected;
+- (void)setStreamOutput:(id)output;
+- (void)setStreamToken:(int64_t)token;
+- (void)setTransformForRemoteVideoOrientationEnabled:(BOOL)enabled;
+- (void)setVideoBufferDescription:(id)description;
 - (void)setupQueuesAndDataChannelConfigForFigVideoTarget;
 - (void)start;
 - (void)stop;
@@ -229,7 +229,7 @@ LABEL_28:
   return v3;
 }
 
-- (void)setStreamToken:(int64_t)a3
+- (void)setStreamToken:(int64_t)token
 {
   block[6] = *MEMORY[0x1E69E9840];
   stateQueue = self->_stateQueue;
@@ -238,7 +238,7 @@ LABEL_28:
   block[2] = __31__VCImageQueue_setStreamToken___block_invoke;
   block[3] = &unk_1E85F40E0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = token;
   dispatch_async(stateQueue, block);
 }
 
@@ -272,10 +272,10 @@ id __31__VCImageQueue_setStreamToken___block_invoke(uint64_t a1)
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"VCImageQueue=%p FigEndpointID=%p FigVideoTarget=%p FigImageQueueCh0=%p FigImageQueueCh1=%p frameRate=%u imageQueueProtected=%d isLowLatencyEnabled=%d enqueuedFrameCount=%u, transformForRemoteVideoOrientationEnabled=%u", self, self->_endpointID, self->_videoTarget, ImageQueueAtIndex, _VCImageQueue_GetImageQueueAtIndex(self, 1), self->_frameRate, self->_imageQueueProtected, self->_isLowLatencyEnabled, self->_enqueuedFrameCount, self->_transformForRemoteVideoOrientationEnabled];
 }
 
-- (VCImageQueue)initWithFrameRate:(unsigned __int8)a3 imageQueueProtected:(BOOL)a4 vcImageQueueConfig:(const tagVCImageQueueConfig *)a5
+- (VCImageQueue)initWithFrameRate:(unsigned __int8)rate imageQueueProtected:(BOOL)protected vcImageQueueConfig:(const tagVCImageQueueConfig *)config
 {
-  v6 = a4;
-  v7 = a3;
+  protectedCopy = protected;
+  rateCopy = rate;
   v67 = *MEMORY[0x1E69E9840];
   v47.receiver = self;
   v47.super_class = VCImageQueue;
@@ -298,17 +298,17 @@ id __31__VCImageQueue_setStreamToken___block_invoke(uint64_t a1)
       v54 = 2048;
       v55 = v8;
       v56 = 1024;
-      *v57 = v7;
+      *v57 = rateCopy;
       *&v57[4] = 1024;
-      *&v57[6] = v6;
+      *&v57[6] = protectedCopy;
       _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCImageQueue-init (%p) frameRate=%d imageQueueProtected=%d", buf, 0x32u);
     }
   }
 
   [VCDefaults integerValueForKey:@"caImageQueueCapacity" defaultValue:16];
   v8->_caQueue = CAImageQueueCreate();
-  v8->_imageQueueProtected = v6;
-  if (v6)
+  v8->_imageQueueProtected = protectedCopy;
+  if (protectedCopy)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -360,14 +360,14 @@ id __31__VCImageQueue_setStreamToken___block_invoke(uint64_t a1)
 
   [(VCImageQueue *)v8 createAllocators];
   v8->_slot = 0;
-  v8->_frameRate = v7;
+  v8->_frameRate = rateCopy;
   v8->_frameCount = 0;
   v23 = MEMORY[0x1E695E9C0];
   v8->_frameCountHistory = CFArrayCreateMutable(v15, 10, MEMORY[0x1E695E9C0]);
   v8->_videoTargetImageQueue = CFArrayCreateMutable(v15, 0, v23);
-  if (a5 && (v8->_isLocalVideo = a5->var2, v8->_isExternalCamera = a5->var3, var0 = a5->var0, v8->_layerHostMode = var0, v8->_cameraFacing = a5->var4, var0))
+  if (config && (v8->_isLocalVideo = config->var2, v8->_isExternalCamera = config->var3, var0 = config->var0, v8->_layerHostMode = var0, v8->_cameraFacing = config->var4, var0))
   {
-    [(VCImageQueue *)v8 createCAContextWithSize:a5->var1.origin.x, a5->var1.origin.y, a5->var1.size.width, a5->var1.size.height];
+    [(VCImageQueue *)v8 createCAContextWithSize:config->var1.origin.x, config->var1.origin.y, config->var1.size.width, config->var1.size.height];
   }
 
   else
@@ -457,7 +457,7 @@ id __31__VCImageQueue_setStreamToken___block_invoke(uint64_t a1)
       v17 = 1024;
       v18 = 334;
       v19 = 2048;
-      v20 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCImageQueue-dealloc (%p)", buf, 0x26u);
     }
   }
@@ -528,7 +528,7 @@ id __31__VCImageQueue_setStreamToken___block_invoke(uint64_t a1)
   [(VCImageQueue *)&v12 dealloc];
 }
 
-- (unsigned)createCAContextWithSize:(CGRect)a3
+- (unsigned)createCAContextWithSize:(CGRect)size
 {
   v12[1] = *MEMORY[0x1E69E9840];
   [MEMORY[0x1E6979518] begin];
@@ -547,15 +547,15 @@ LABEL_16:
   {
     v11 = *MEMORY[0x1E69796D0];
     v12[0] = MEMORY[0x1E695E118];
-    v4 = [MEMORY[0x1E6979320] remoteContextWithOptions:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v12, &v11, 1)}];
+    remoteContext = [MEMORY[0x1E6979320] remoteContextWithOptions:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v12, &v11, 1)}];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E6979320] remoteContext];
+    remoteContext = [MEMORY[0x1E6979320] remoteContext];
   }
 
-  v5 = v4;
+  v5 = remoteContext;
   self->_caContext = v5;
   if (!v5)
   {
@@ -563,24 +563,24 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v6 = [MEMORY[0x1E6979398] layer];
-  self->_caLayer = v6;
-  if (!v6)
+  layer = [MEMORY[0x1E6979398] layer];
+  self->_caLayer = layer;
+  if (!layer)
   {
     [VCImageQueue createCAContextWithSize:?];
     goto LABEL_16;
   }
 
-  [(CAContext *)self->_caContext setLayer:v6];
-  v7 = [(CAContext *)self->_caContext createSlot];
-  self->_layerHostSlot = v7;
-  if (!v7)
+  [(CAContext *)self->_caContext setLayer:layer];
+  createSlot = [(CAContext *)self->_caContext createSlot];
+  self->_layerHostSlot = createSlot;
+  if (!createSlot)
   {
     [VCImageQueue createCAContextWithSize:?];
     goto LABEL_16;
   }
 
-  [(CAContext *)self->_caContext setObject:self->_caQueue forSlot:v7];
+  [(CAContext *)self->_caContext setObject:self->_caQueue forSlot:createSlot];
   v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"VCImageQueueRemoteLayer%p(%d)", self, 0];
   if (!v8)
   {
@@ -651,7 +651,7 @@ LABEL_10:
   }
 }
 
-- (void)setHostTimeTimebaseOnFigImageQueue:(OpaqueFigImageQueue *)a3
+- (void)setHostTimeTimebaseOnFigImageQueue:(OpaqueFigImageQueue *)queue
 {
   timebaseOut[1] = *MEMORY[0x1E69E9840];
   timebaseOut[0] = 0;
@@ -694,7 +694,7 @@ LABEL_10:
   }
 }
 
-- (void)setHostTimeTimebaseOnFigDataQueue:(OpaqueFigDataQueue *)a3
+- (void)setHostTimeTimebaseOnFigDataQueue:(OpaqueFigDataQueue *)queue
 {
   timebaseOut[1] = *MEMORY[0x1E69E9840];
   timebaseOut[0] = 0;
@@ -793,7 +793,7 @@ LABEL_10:
       v30 = 2112;
       v31 = v10;
       v32 = 2048;
-      v33 = self;
+      selfCopy4 = self;
       v34 = 1024;
       v35 = v9;
       v19 = " [%s] %s:%d %@(%p) Failed to create stream input allocator Err=%d";
@@ -853,7 +853,7 @@ LABEL_10:
         v30 = 2112;
         v31 = v12;
         v32 = 2048;
-        v33 = self;
+        selfCopy4 = self;
         v34 = 1024;
         v35 = v11;
         v19 = " [%s] %s:%d %@(%p) Failed to FigDataQueue block buffer structure allocator Err=%d";
@@ -913,7 +913,7 @@ LABEL_10:
           v30 = 2112;
           v31 = v14;
           v32 = 2048;
-          v33 = self;
+          selfCopy4 = self;
           v34 = 1024;
           v35 = v13;
           v19 = " [%s] %s:%d %@(%p) Failed to FigDataQueue format description allocator Err=%d";
@@ -977,7 +977,7 @@ LABEL_10:
           v30 = 2112;
           v31 = v16;
           v32 = 2048;
-          v33 = self;
+          selfCopy4 = self;
           v34 = 1024;
           v35 = v15;
           v19 = " [%s] %s:%d %@(%p) Failed to FigDataQueue sample buffer allocator Err=%d";
@@ -1029,14 +1029,14 @@ LABEL_48:
   return v3;
 }
 
-- (void)setStreamOutput:(id)a3
+- (void)setStreamOutput:(id)output
 {
   v17 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->_enqueueLock);
   streamOutput = self->_streamOutput;
   if (streamOutput)
   {
-    v6 = streamOutput == a3;
+    v6 = streamOutput == output;
   }
 
   else
@@ -1051,9 +1051,9 @@ LABEL_48:
     self->_streamOutput = 0;
   }
 
-  if (a3)
+  if (output)
   {
-    streamOutput = a3;
+    streamOutput = output;
     self->_streamOutput = streamOutput;
     storedAttributes = self->_storedAttributes;
     if (storedAttributes)
@@ -1089,7 +1089,7 @@ LABEL_48:
   pthread_mutex_unlock(&self->_enqueueLock);
 }
 
-- (unsigned)setVideoDestination:(id)a3
+- (unsigned)setVideoDestination:(id)destination
 {
   v33 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -1119,7 +1119,7 @@ LABEL_48:
       else if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
         [VCImageQueue setVideoDestination:];
-        if (!a3)
+        if (!destination)
         {
           goto LABEL_14;
         }
@@ -1144,7 +1144,7 @@ LABEL_48:
   if (VRTraceGetErrorLogLevelForModule() < 8)
   {
 LABEL_23:
-    if (!a3)
+    if (!destination)
     {
       goto LABEL_14;
     }
@@ -1154,7 +1154,7 @@ LABEL_24:
     v23[1] = 3221225472;
     v23[2] = __36__VCImageQueue_setVideoDestination___block_invoke;
     v23[3] = &unk_1E85F37F0;
-    v23[4] = a3;
+    v23[4] = destination;
     v23[5] = self;
     dispatch_async(MEMORY[0x1E69E96A0], v23);
     return 0;
@@ -1176,9 +1176,9 @@ LABEL_24:
       v30 = 2112;
       *v31 = v5;
       *&v31[8] = 2048;
-      v32 = self;
+      selfCopy2 = self;
       _os_log_debug_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_DEBUG, " [%s] %s:%d %@(%p) ", buf, 0x30u);
-      if (!a3)
+      if (!destination)
       {
         goto LABEL_14;
       }
@@ -1203,13 +1203,13 @@ LABEL_24:
   v30 = 2112;
   *v31 = v5;
   *&v31[8] = 2048;
-  v32 = self;
+  selfCopy2 = self;
   v9 = " [%s] %s:%d %@(%p) ";
   v10 = v13;
   v11 = 48;
 LABEL_13:
   _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, v9, buf, v11);
-  if (a3)
+  if (destination)
   {
     goto LABEL_24;
   }
@@ -1241,8 +1241,8 @@ LABEL_14:
       *v31 = layerHostMode;
       *&v31[4] = 1024;
       *&v31[6] = slot;
-      LOWORD(v32) = 1024;
-      *(&v32 + 2) = contextId;
+      LOWORD(selfCopy2) = 1024;
+      *(&selfCopy2 + 2) = contextId;
       _os_log_impl(&dword_1DB56E000, v18, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d layer host mode=%d slot=%u context=%u", buf, 0x2Eu);
     }
   }
@@ -1259,11 +1259,11 @@ uint64_t __36__VCImageQueue_setVideoDestination___block_invoke(uint64_t a1)
   return [v2 commit];
 }
 
-- (void)getQueueRepresentation:(void *)a3
+- (void)getQueueRepresentation:(void *)representation
 {
-  if (a3)
+  if (representation)
   {
-    *a3 = self->_slot;
+    *representation = self->_slot;
   }
 }
 
@@ -1288,7 +1288,7 @@ uint64_t __36__VCImageQueue_setVideoDestination___block_invoke(uint64_t a1)
   OUTLINED_FUNCTION_2_11(&dword_1DB56E000, v0, v1, " [%s] %s:%d ", v2, v3, v4, v5, v6);
 }
 
-- (void)createAndCopyPerformanceDictionary:(const __CFDictionary *)a3
+- (void)createAndCopyPerformanceDictionary:(const __CFDictionary *)dictionary
 {
   v21 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->_enqueueLock);
@@ -1299,7 +1299,7 @@ LABEL_5:
     v7 = *(*(CMBaseObjectGetVTable() + 16) + 72);
     if (v7)
     {
-      v7(figQueue, a3);
+      v7(figQueue, dictionary);
     }
 
     goto LABEL_7;
@@ -1351,7 +1351,7 @@ LABEL_5:
         v17 = 2112;
         v18 = v8;
         v19 = 2048;
-        v20 = self;
+        selfCopy = self;
         _os_log_error_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) image queue should not be nil if end point is set", &v11, 0x30u);
       }
     }
@@ -1361,7 +1361,7 @@ LABEL_7:
   pthread_mutex_unlock(&self->_enqueueLock);
 }
 
-- (void)createAndCopyLatencyStatsDictionary:(const __CFDictionary *)a3
+- (void)createAndCopyLatencyStatsDictionary:(const __CFDictionary *)dictionary
 {
   v20 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->_enqueueLock);
@@ -1371,7 +1371,7 @@ LABEL_7:
     v7 = *(*(CMBaseObjectGetVTable() + 8) + 48);
     if (v7)
     {
-      v7(FigBaseObject, @"OriginToPresentationLatencyStatistics", *MEMORY[0x1E695E480], a3);
+      v7(FigBaseObject, @"OriginToPresentationLatencyStatistics", *MEMORY[0x1E695E480], dictionary);
     }
   }
 
@@ -1414,7 +1414,7 @@ LABEL_7:
         v16 = 2112;
         v17 = v5;
         v18 = 2048;
-        v19 = self;
+        selfCopy = self;
         _os_log_error_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) image queue should not be nil if end point is set", &v10, 0x30u);
       }
     }
@@ -1423,11 +1423,11 @@ LABEL_7:
   pthread_mutex_unlock(&self->_enqueueLock);
 }
 
-- (void)setImageQueueProtected:(BOOL)a3
+- (void)setImageQueueProtected:(BOOL)protected
 {
-  v3 = a3;
+  protectedCopy = protected;
   v18 = *MEMORY[0x1E69E9840];
-  self->_imageQueueProtected = a3;
+  self->_imageQueueProtected = protected;
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v5 = VRTraceErrorLogLevelToCSTR();
@@ -1444,7 +1444,7 @@ LABEL_7:
       v14 = 1024;
       v15 = caQueue;
       v16 = 1024;
-      v17 = v3;
+      v17 = protectedCopy;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d _caQueue=%x, imageQueueProtected=%d", &v8, 0x28u);
     }
   }
@@ -1491,7 +1491,7 @@ LABEL_7:
     v18 = 2112;
     v19 = v3;
     v20 = 2048;
-    v21 = self;
+    selfCopy = self;
     v6 = " [%s] %s:%d %@(%p) ";
     v7 = v10;
     v8 = 48;
@@ -1529,13 +1529,13 @@ LABEL_12:
   CFArrayRemoveAllValues(self->_videoTargetImageQueue);
 }
 
-- (BOOL)setUpImageQueueForFigVideoTargetWithTagCollection:(OpaqueCMTagCollection *)a3 withDataChannelConfig:(OpaqueFigDataChannelConfiguration *)a4
+- (BOOL)setUpImageQueueForFigVideoTargetWithTagCollection:(OpaqueCMTagCollection *)collection withDataChannelConfig:(OpaqueFigDataChannelConfiguration *)config
 {
   v45 = *MEMORY[0x1E69E9840];
   numberOfTagsCopied = 0;
   tagBuffer = *MEMORY[0x1E6960630];
   value = 0;
-  TagsWithCategory = CMTagCollectionGetTagsWithCategory(a3, kCMTagCategory_ChannelID, &tagBuffer, 1, &numberOfTagsCopied);
+  TagsWithCategory = CMTagCollectionGetTagsWithCategory(collection, kCMTagCategory_ChannelID, &tagBuffer, 1, &numberOfTagsCopied);
   if (TagsWithCategory)
   {
     v13 = TagsWithCategory;
@@ -1578,7 +1578,7 @@ LABEL_12:
         v37 = 2112;
         v38 = v14;
         v39 = 2048;
-        v40 = self;
+        selfCopy3 = self;
         v41 = 1024;
         LODWORD(v42) = v13;
         v19 = " [%s] %s:%d %@(%p) Failed to get channel ID tag. result=%d";
@@ -1642,7 +1642,7 @@ LABEL_45:
         v37 = 2048;
         v38 = value;
         v39 = 1024;
-        LODWORD(v40) = v10;
+        LODWORD(selfCopy3) = v10;
         v19 = " [%s] %s:%d Failed to add image queue=-%p to config error=%d";
         v20 = v18;
         v21 = 44;
@@ -1681,7 +1681,7 @@ LABEL_45:
         v37 = 2112;
         v38 = v16;
         v39 = 2048;
-        v40 = self;
+        selfCopy3 = self;
         v41 = 2048;
         v42 = value;
         v43 = 1024;
@@ -1733,7 +1733,7 @@ LABEL_45:
         v37 = 2112;
         v38 = v15;
         v39 = 2048;
-        v40 = self;
+        selfCopy3 = self;
         v41 = 2048;
         v42 = tagBuffer.value;
         v19 = " [%s] %s:%d %@(%p) Unsupported channel ID in the video channel description, value=%llu";
@@ -1755,7 +1755,7 @@ LABEL_10:
   return v11;
 }
 
-- (BOOL)setupDataQueueForFigVideoTargetWithTagCollection:(OpaqueCMTagCollection *)a3 withDataChannelConfig:(OpaqueFigDataChannelConfiguration *)a4
+- (BOOL)setupDataQueueForFigVideoTargetWithTagCollection:(OpaqueCMTagCollection *)collection withDataChannelConfig:(OpaqueFigDataChannelConfiguration *)config
 {
   v14 = *MEMORY[0x1E69E9840];
   memset(&v11, 170, sizeof(v11));
@@ -1790,14 +1790,14 @@ LABEL_10:
   return v13.value;
 }
 
-- (BOOL)setupDefaultImageQueueForFigVideoTargetWithDataChannelConfig:(OpaqueFigDataChannelConfiguration *)a3
+- (BOOL)setupDefaultImageQueueForFigVideoTargetWithDataChannelConfig:(OpaqueFigDataChannelConfiguration *)config
 {
   FigTagMakeWithSInt64Value();
   FigTagCollectionCreate();
-  return [(VCImageQueue *)self setUpImageQueueForFigVideoTargetWithTagCollection:0 withDataChannelConfig:a3];
+  return [(VCImageQueue *)self setUpImageQueueForFigVideoTargetWithTagCollection:0 withDataChannelConfig:config];
 }
 
-- (BOOL)setupQueuesForFigVideoTargetUsingBufferDescriptionWithDataChannelConfig:(OpaqueFigDataChannelConfiguration *)a3
+- (BOOL)setupQueuesForFigVideoTargetUsingBufferDescriptionWithDataChannelConfig:(OpaqueFigDataChannelConfiguration *)config
 {
   v31 = *MEMORY[0x1E69E9840];
   videoBufferDescription = self->_videoBufferDescription;
@@ -1817,7 +1817,7 @@ LABEL_10:
         v32.value = v8;
         if (CMTagCollectionContainsTag(ValueAtIndex, v32))
         {
-          [(VCImageQueue *)self setUpImageQueueForFigVideoTargetWithTagCollection:ValueAtIndex withDataChannelConfig:a3];
+          [(VCImageQueue *)self setUpImageQueueForFigVideoTargetWithTagCollection:ValueAtIndex withDataChannelConfig:config];
         }
 
         else
@@ -1826,7 +1826,7 @@ LABEL_10:
           v33.value = v10;
           if (CMTagCollectionContainsTag(ValueAtIndex, v33))
           {
-            [(VCImageQueue *)self setupDataQueueForFigVideoTargetWithTagCollection:ValueAtIndex withDataChannelConfig:a3];
+            [(VCImageQueue *)self setupDataQueueForFigVideoTargetWithTagCollection:ValueAtIndex withDataChannelConfig:config];
           }
 
           else
@@ -1885,7 +1885,7 @@ LABEL_10:
               v27 = 2112;
               v28 = v12;
               v29 = 2048;
-              v30 = self;
+              selfCopy = self;
               v14 = v13;
               v15 = " [%s] %s:%d %@(%p) Unsupported media type in video buffer description";
               v16 = 48;
@@ -1926,7 +1926,7 @@ LABEL_8:
   return v3;
 }
 
-- (void)setEndpointID:(id)a3
+- (void)setEndpointID:(id)d
 {
   v38 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->_enqueueLock);
@@ -1945,7 +1945,7 @@ LABEL_8:
     {
       if ([(VCImageQueue *)self setupQueuesAndDataChannelConfigForFigVideoTarget])
       {
-        self->_endpointID = a3;
+        self->_endpointID = d;
         v7 = 1;
 LABEL_6:
         CFRelease(v6);
@@ -2095,15 +2095,15 @@ void ___VCImageQueue_setFenceWithCompletionHandler_block_invoke(uint64_t a1)
   }
 }
 
-- (void)setTransformForRemoteVideoOrientationEnabled:(BOOL)a3
+- (void)setTransformForRemoteVideoOrientationEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v9 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->_enqueueLock);
-  if (self->_transformForRemoteVideoOrientationEnabled != v3)
+  if (self->_transformForRemoteVideoOrientationEnabled != enabledCopy)
   {
-    self->_transformForRemoteVideoOrientationEnabled = v3;
-    if (v3)
+    self->_transformForRemoteVideoOrientationEnabled = enabledCopy;
+    if (enabledCopy)
     {
       v6 = OUTLINED_FUNCTION_40_6();
       _VCImageQueue_applyLayerTransforms(v6, v7);
@@ -2123,7 +2123,7 @@ void ___VCImageQueue_setFenceWithCompletionHandler_block_invoke(uint64_t a1)
   pthread_mutex_unlock(&self->_enqueueLock);
 }
 
-- (void)configureCALayerWithRect:(CGRect)a3 name:(id)a4
+- (void)configureCALayerWithRect:(CGRect)rect name:(id)name
 {
   OUTLINED_FUNCTION_50_0();
   v6 = v5;
@@ -2141,7 +2141,7 @@ void ___VCImageQueue_setFenceWithCompletionHandler_block_invoke(uint64_t a1)
   }
 
   [*(v6 + 184) setContentsGravity:*v8];
-  [*(v6 + 184) setName:a4];
+  [*(v6 + 184) setName:name];
   [*(v6 + 184) setAllowsHitTesting:0];
   [*(v6 + 184) setInheritsTiming:0];
   v9 = *(v6 + 184);
@@ -2149,7 +2149,7 @@ void ___VCImageQueue_setFenceWithCompletionHandler_block_invoke(uint64_t a1)
   [v9 setAllowsDisplayCompositing:1];
 }
 
-- (void)setVideoBufferDescription:(id)a3
+- (void)setVideoBufferDescription:(id)description
 {
   v51 = *MEMORY[0x1E69E9840];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
@@ -2164,7 +2164,7 @@ void ___VCImageQueue_setFenceWithCompletionHandler_block_invoke(uint64_t a1)
       v39 = 1024;
       v40 = 1607;
       v41 = 2112;
-      *v42 = a3;
+      *v42 = description;
       OUTLINED_FUNCTION_7_2(&dword_1DB56E000, v7, v8, " [%s] %s:%d videoBufferDescription=%@", v9, v10, v11, v12, v36);
     }
   }
@@ -2176,12 +2176,12 @@ void ___VCImageQueue_setFenceWithCompletionHandler_block_invoke(uint64_t a1)
     CFRelease(videoBufferDescription);
   }
 
-  self->_videoBufferDescription = a3;
+  self->_videoBufferDescription = description;
   if (self->_endpointID)
   {
     [(VCImageQueue *)self cleanupVideoTargetQueues];
-    v14 = [(VCImageQueue *)self setupQueuesAndDataChannelConfigForFigVideoTarget];
-    if (!v14)
+    setupQueuesAndDataChannelConfigForFigVideoTarget = [(VCImageQueue *)self setupQueuesAndDataChannelConfigForFigVideoTarget];
+    if (!setupQueuesAndDataChannelConfigForFigVideoTarget)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
       {
@@ -2193,7 +2193,7 @@ void ___VCImageQueue_setFenceWithCompletionHandler_block_invoke(uint64_t a1)
           v39 = 1024;
           OUTLINED_FUNCTION_3_8();
           *&v42[4] = 2112;
-          *&v42[6] = a3;
+          *&v42[6] = description;
           OUTLINED_FUNCTION_17_0();
           _os_log_error_impl(v31, v32, v33, v34, v35, 0x2Cu);
         }
@@ -2216,7 +2216,7 @@ void ___VCImageQueue_setFenceWithCompletionHandler_block_invoke(uint64_t a1)
           v37 = v18;
           OUTLINED_FUNCTION_35_4();
           v41 = v20;
-          *v42 = v14;
+          *v42 = setupQueuesAndDataChannelConfigForFigVideoTarget;
           *&v42[4] = 2048;
           *&v42[6] = v21;
           *&v42[14] = 2048;
@@ -2260,7 +2260,7 @@ LABEL_22:
           *&v42[8] = 2048;
           *&v42[10] = self;
           *&v42[18] = v28;
-          *&v42[20] = v14;
+          *&v42[20] = setupQueuesAndDataChannelConfigForFigVideoTarget;
           v43 = 2048;
           v44 = v29;
           v45 = 2048;
@@ -2332,7 +2332,7 @@ LABEL_11:
         v24 = 2112;
         v25 = v5;
         v26 = 2048;
-        v27 = self;
+        selfCopy = self;
         v8 = " [%s] %s:%d %@(%p) ";
         v9 = v12;
         v10 = 48;

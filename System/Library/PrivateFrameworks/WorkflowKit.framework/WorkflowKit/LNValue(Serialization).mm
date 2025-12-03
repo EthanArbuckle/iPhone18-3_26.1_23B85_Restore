@@ -7,47 +7,47 @@
 
 - (id)wfSerializedRepresentation
 {
-  v2 = WFSerializedIdentifierFromLinkValue(a1);
-  v3 = [a1 value];
-  v4 = WFSerializedRepresentationFromLinkValue(v3);
+  v2 = WFSerializedIdentifierFromLinkValue(self);
+  value = [self value];
+  v4 = WFSerializedRepresentationFromLinkValue(value);
 
   v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:4];
   [v5 if_setObjectIfNonNil:v2 forKey:@"identifier"];
   [v5 if_setObjectIfNonNil:v4 forKey:@"value"];
-  v6 = [a1 displayRepresentation];
-  v7 = [v6 title];
-  v8 = [v7 serializedRepresentation];
+  displayRepresentation = [self displayRepresentation];
+  title = [displayRepresentation title];
+  serializedRepresentation = [title serializedRepresentation];
 
-  [v5 if_setObjectIfNonNil:v8 forKey:@"title"];
-  v9 = [a1 displayRepresentation];
-  v10 = [v9 title];
-  v11 = [v10 serializedRepresentation];
+  [v5 if_setObjectIfNonNil:serializedRepresentation forKey:@"title"];
+  displayRepresentation2 = [self displayRepresentation];
+  title2 = [displayRepresentation2 title];
+  serializedRepresentation2 = [title2 serializedRepresentation];
 
-  [v5 if_setObjectIfNonNil:v11 forKey:@"subtitle"];
-  v12 = [a1 displayRepresentation];
-  v13 = [v12 image];
+  [v5 if_setObjectIfNonNil:serializedRepresentation2 forKey:@"subtitle"];
+  displayRepresentation3 = [self displayRepresentation];
+  image = [displayRepresentation3 image];
 
-  if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (image && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v14 = [v13 serializedRepresentation];
-    if (v14)
+    serializedRepresentation3 = [image serializedRepresentation];
+    if (serializedRepresentation3)
     {
-      [v5 if_setObjectIfNonNil:v14 forKey:@"symbol"];
+      [v5 if_setObjectIfNonNil:serializedRepresentation3 forKey:@"symbol"];
     }
   }
 
   else
   {
 
-    v15 = [a1 displayRepresentation];
-    v16 = [v15 image];
+    displayRepresentation4 = [self displayRepresentation];
+    image2 = [displayRepresentation4 image];
 
-    if (v16)
+    if (image2)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v17 = v16;
+        v17 = image2;
       }
 
       else
@@ -63,11 +63,11 @@
 
     v18 = v17;
 
-    v13 = [v18 serializedRepresentation];
+    image = [v18 serializedRepresentation];
 
-    if (v13)
+    if (image)
     {
-      [v5 if_setObjectIfNonNil:v13 forKey:@"image"];
+      [v5 if_setObjectIfNonNil:image forKey:@"image"];
     }
   }
 
@@ -192,11 +192,11 @@ LABEL_28:
     goto LABEL_42;
   }
 
-  v27 = [v12 memberValueType];
+  memberValueType = [v12 memberValueType];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v31 = v27;
+    v31 = memberValueType;
 
     v12 = v31;
 LABEL_41:
@@ -210,12 +210,12 @@ LABEL_42:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v42 = [v12 typeIdentifier];
+      typeIdentifier = [v12 typeIdentifier];
       v37 = v23;
-      if (v42 <= 8)
+      if (typeIdentifier <= 8)
       {
         v38 = v21;
-        if (v42 >= 9)
+        if (typeIdentifier >= 9)
         {
           goto LABEL_143;
         }
@@ -224,10 +224,10 @@ LABEL_42:
         goto LABEL_46;
       }
 
-      if (v42 <= 10)
+      if (typeIdentifier <= 10)
       {
         v38 = v21;
-        if (v42 != 9)
+        if (typeIdentifier != 9)
         {
           v64 = v41;
           v65 = v37;
@@ -243,7 +243,7 @@ LABEL_42:
           {
             WFCLPlacemarkFromSerializedIntentPlacemark(v40);
           }
-          v199 = ;
+          iNPersonRepresentation = ;
 
           v37 = v65;
 LABEL_126:
@@ -312,13 +312,13 @@ LABEL_126:
             [v97 if_setValueIfNonNil:v113 forKey:@"calendar"];
           }
 
-          v199 = v97;
+          iNPersonRepresentation = v97;
           v114 = [v96 objectForKeyedSubscript:{@"timeZone", v174, v176}];
           if (v114)
           {
             [MEMORY[0x1E695DFE8] timeZoneWithName:v114];
             v116 = v115 = v40;
-            [v199 if_setValueIfNonNil:v116 forKey:@"timeZone"];
+            [iNPersonRepresentation if_setValueIfNonNil:v116 forKey:@"timeZone"];
 
             v40 = v115;
           }
@@ -330,7 +330,7 @@ LABEL_126:
 
         else
         {
-          v199 = 0;
+          iNPersonRepresentation = 0;
           v37 = v92;
         }
 
@@ -391,19 +391,19 @@ LABEL_143:
 
           v147 = v146;
 
-          v148 = [v147 parameterMetadata];
-          v149 = [v148 typeSpecificMetadata];
-          v150 = [v149 objectForKey:@"LNValueTypeSpecificMetadataKeyLinkEntityMetadata"];
+          parameterMetadata = [v147 parameterMetadata];
+          typeSpecificMetadata = [parameterMetadata typeSpecificMetadata];
+          v150 = [typeSpecificMetadata objectForKey:@"LNValueTypeSpecificMetadataKeyLinkEntityMetadata"];
 
-          v151 = [v150 identifier];
-          v152 = [v134 identifier];
-          v153 = [v151 isEqualToString:v152];
+          identifier = [v150 identifier];
+          identifier2 = [v134 identifier];
+          v153 = [identifier isEqualToString:identifier2];
 
           if ((v153 & 1) == 0)
           {
-            v154 = [v147 parameterMetadata];
-            v155 = [v154 typeSpecificMetadata];
-            v156 = [v155 objectForKey:@"LNValueTypeSpecificMetadataKeyLinkReferencedEntityMetadata"];
+            parameterMetadata2 = [v147 parameterMetadata];
+            typeSpecificMetadata2 = [parameterMetadata2 typeSpecificMetadata];
+            v156 = [typeSpecificMetadata2 objectForKey:@"LNValueTypeSpecificMetadataKeyLinkReferencedEntityMetadata"];
 
             if (v156)
             {
@@ -438,8 +438,8 @@ LABEL_143:
 
           if (!v150)
           {
-            v162 = [v134 identifier];
-            v150 = [v144 entityMetadataForIdentifier:v162];
+            identifier3 = [v134 identifier];
+            v150 = [v144 entityMetadataForIdentifier:identifier3];
           }
 
           v12 = v134;
@@ -448,10 +448,10 @@ LABEL_143:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v163 = [v12 bundleIdentifier];
+              bundleIdentifier = [v12 bundleIdentifier];
               v164 = v204;
               v165 = v12;
-              v204 = v163;
+              v204 = bundleIdentifier;
             }
 
             else
@@ -469,9 +469,9 @@ LABEL_143:
 
           if (!v150 && v204)
           {
-            v166 = [MEMORY[0x1E69E0970] sharedProvider];
-            v167 = [v12 identifier];
-            v150 = [v166 entityWithIdentifier:v167 fromBundleIdentifier:v204];
+            mEMORY[0x1E69E0970] = [MEMORY[0x1E69E0970] sharedProvider];
+            identifier4 = [v12 identifier];
+            v150 = [mEMORY[0x1E69E0970] entityWithIdentifier:identifier4 fromBundleIdentifier:v204];
           }
 
           if (v150)
@@ -575,8 +575,8 @@ LABEL_199:
 
         else
         {
-          v159 = v199;
-          if (!v199)
+          v159 = iNPersonRepresentation;
+          if (!iNPersonRepresentation)
           {
             v32 = 0;
             v29 = v192;
@@ -584,9 +584,9 @@ LABEL_199:
           }
 
           v29 = v192;
-          if ([v12 objectIsMemberOfType:v199])
+          if ([v12 objectIsMemberOfType:iNPersonRepresentation])
           {
-            v32 = [objc_alloc(MEMORY[0x1E69ACA90]) initWithValue:v199 valueType:v12 displayRepresentation:v201];
+            v32 = [objc_alloc(MEMORY[0x1E69ACA90]) initWithValue:iNPersonRepresentation valueType:v12 displayRepresentation:v201];
             goto LABEL_201;
           }
 
@@ -613,7 +613,7 @@ LABEL_199:
       }
 
       v38 = v21;
-      if (v42 == 11)
+      if (typeIdentifier == 11)
       {
         v78 = v41;
         v79 = v37;
@@ -631,7 +631,7 @@ LABEL_199:
 
       else
       {
-        if (v42 != 12)
+        if (typeIdentifier != 12)
         {
           goto LABEL_143;
         }
@@ -648,13 +648,13 @@ LABEL_199:
 LABEL_101:
             v117 = [[v81 alloc] initWithString:v80];
 LABEL_113:
-            v199 = v117;
+            iNPersonRepresentation = v117;
             goto LABEL_114;
           }
         }
       }
 
-      v199 = 0;
+      iNPersonRepresentation = 0;
 LABEL_114:
 
       v37 = v79;
@@ -666,13 +666,13 @@ LABEL_114:
     v37 = v23;
     if (objc_opt_isKindOfClass())
     {
-      v44 = [v12 typeIdentifier];
+      typeIdentifier2 = [v12 typeIdentifier];
       v38 = v21;
-      if (v44 > 11)
+      if (typeIdentifier2 > 11)
       {
-        if (v44 != 14)
+        if (typeIdentifier2 != 14)
         {
-          if (v44 == 13)
+          if (typeIdentifier2 == 13)
           {
             v185 = v14;
             v82 = v40;
@@ -709,7 +709,7 @@ LABEL_114:
 
               v127 = v90;
 
-              v200 = [v127 integerValue];
+              integerValue = [v127 integerValue];
               v128 = [v88 objectForKeyedSubscript:@"name"];
               if (v128)
               {
@@ -754,14 +754,14 @@ LABEL_114:
 
               v133 = v132;
 
-              v199 = [objc_alloc(MEMORY[0x1E696E938]) initWithType:v200 name:v130 identificationHint:v133 icon:0];
+              iNPersonRepresentation = [objc_alloc(MEMORY[0x1E696E938]) initWithType:integerValue name:v130 identificationHint:v133 icon:0];
               v13 = v183;
               v37 = v190;
             }
 
             else
             {
-              v199 = 0;
+              iNPersonRepresentation = 0;
             }
 
             v41 = v86;
@@ -772,8 +772,8 @@ LABEL_114:
 
           else
           {
-            v199 = 0;
-            if (v44 == 12)
+            iNPersonRepresentation = 0;
+            if (typeIdentifier2 == 12)
             {
               v188 = v23;
               v45 = v198;
@@ -810,21 +810,21 @@ LABEL_114:
 
               v119 = v56;
 
-              v120 = [v119 workflow];
+              workflow = [v119 workflow];
 
-              v121 = [v120 workflowID];
-              v122 = [(WFFileValue *)v53 resolveURLWithWorkflowID:v121 error:0];
+              workflowID = [workflow workflowID];
+              v122 = [(WFFileValue *)v53 resolveURLWithWorkflowID:workflowID error:0];
 
               if (v122)
               {
                 v123 = MEMORY[0x1E696E840];
-                v124 = [(WFFileValue *)v53 filename];
-                v199 = [v123 fileWithFileURL:v122 filename:v124 typeIdentifier:0];
+                filename = [(WFFileValue *)v53 filename];
+                iNPersonRepresentation = [v123 fileWithFileURL:v122 filename:filename typeIdentifier:0];
               }
 
               else
               {
-                v199 = 0;
+                iNPersonRepresentation = 0;
               }
 
               v14 = v55;
@@ -840,11 +840,11 @@ LABEL_114:
 
         v43 = WFINCurrencyAmountFromSerialization(v40, v198, v41);
 LABEL_46:
-        v199 = v43;
+        iNPersonRepresentation = v43;
         goto LABEL_143;
       }
 
-      if (!v44)
+      if (!typeIdentifier2)
       {
         v78 = v41;
         v79 = v37;
@@ -872,8 +872,8 @@ LABEL_46:
         goto LABEL_113;
       }
 
-      v199 = 0;
-      if (v44 != 3)
+      iNPersonRepresentation = 0;
+      if (typeIdentifier2 != 3)
       {
         goto LABEL_143;
       }
@@ -890,8 +890,8 @@ LABEL_46:
       v40 = v73;
       v23 = v189;
       v38 = v21;
-      v77 = [v76 contact];
-      v199 = [v77 INPersonRepresentation];
+      contact = [v76 contact];
+      iNPersonRepresentation = [contact INPersonRepresentation];
 
       v41 = v179;
 LABEL_71:
@@ -914,7 +914,7 @@ LABEL_71:
         v61 = v198;
         v62 = v14;
         v63 = v60;
-        v199 = [[v58 alloc] initWithSerializedRepresentation:v63 variableProvider:v61 parameter:v59];
+        iNPersonRepresentation = [[v58 alloc] initWithSerializedRepresentation:v63 variableProvider:v61 parameter:v59];
 
         v41 = v178;
         v40 = v60;
@@ -954,7 +954,7 @@ LABEL_71:
 
         v118 = v70;
 
-        v199 = WFDeserializeNSMeasurement();
+        iNPersonRepresentation = WFDeserializeNSMeasurement();
 
         v37 = v23;
         goto LABEL_126;
@@ -978,7 +978,7 @@ LABEL_71:
         v76 = [MEMORY[0x1E69AC748] valueFromSerializedRepresentation:v40 variableProvider:v198 parameter:v41];
         if (v76)
         {
-          v199 = [objc_alloc(MEMORY[0x1E69ACA90]) initWithValue:v76 valueType:v12];
+          iNPersonRepresentation = [objc_alloc(MEMORY[0x1E69ACA90]) initWithValue:v76 valueType:v12];
         }
 
         else
@@ -992,7 +992,7 @@ LABEL_71:
             _os_log_impl(&dword_1CA256000, v126, OS_LOG_TYPE_ERROR, "%s Serialized codable value is nil", buf, 0xCu);
           }
 
-          v199 = 0;
+          iNPersonRepresentation = 0;
           v41 = v125;
         }
 
@@ -1012,7 +1012,7 @@ LABEL_71:
       }
     }
 
-    v199 = 0;
+    iNPersonRepresentation = 0;
     goto LABEL_143;
   }
 
@@ -1043,8 +1043,8 @@ LABEL_71:
   v207[1] = 3221225472;
   v207[2] = __114__LNValue_Serialization__valueFromSerializedRepresentation_valueType_variableProvider_parameter_bundleIdentifier___block_invoke;
   v207[3] = &unk_1E837DFF0;
-  v199 = v27;
-  v208 = v199;
+  iNPersonRepresentation = memberValueType;
+  v208 = iNPersonRepresentation;
   v33 = v13;
   v209 = v13;
   v34 = v14;
@@ -1073,7 +1073,7 @@ LABEL_71:
   v38 = v21;
   v39 = v197;
 LABEL_200:
-  v159 = v199;
+  v159 = iNPersonRepresentation;
 LABEL_201:
 
   v172 = *MEMORY[0x1E69E9840];

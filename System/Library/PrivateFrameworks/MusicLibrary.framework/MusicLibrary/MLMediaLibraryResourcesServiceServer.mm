@@ -1,17 +1,17 @@
 @interface MLMediaLibraryResourcesServiceServer
 + (MLMediaLibraryResourcesServiceServer)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (MLMediaLibraryResourcesServiceServer)initWithAccountChangeObserver:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (MLMediaLibraryResourcesServiceServer)initWithAccountChangeObserver:(id)observer;
 - (NSMutableSet)observers;
 - (OS_dispatch_semaphore)accountChangeSemaphore;
 - (id)_MLMediaLibraryResourcesServiceServerExportedInterface;
 - (id)_MLMediaLibraryResourcesServiceServerRemoteObjectInterface;
-- (void)_addObserver:(id)a3;
-- (void)_removeObserver:(id)a3;
+- (void)_addObserver:(id)observer;
+- (void)_removeObserver:(id)observer;
 - (void)_unblockExecutionForFutureAccountChange;
-- (void)libraryContainerPathWithCompletion:(id)a3;
-- (void)musicContainerPathWithCompletion:(id)a3;
-- (void)performDatabasePathChange:(id)a3 completion:(id)a4;
+- (void)libraryContainerPathWithCompletion:(id)completion;
+- (void)musicContainerPathWithCompletion:(id)completion;
+- (void)performDatabasePathChange:(id)change completion:(id)completion;
 @end
 
 @implementation MLMediaLibraryResourcesServiceServer
@@ -58,18 +58,18 @@ uint64_t __94__MLMediaLibraryResourcesServiceServer__MLMediaLibraryResourcesServ
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (void)_removeObserver:(id)a3
+- (void)_removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(MLMediaLibraryResourcesServiceServer *)self accessQueue];
+  observerCopy = observer;
+  accessQueue = [(MLMediaLibraryResourcesServiceServer *)self accessQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__MLMediaLibraryResourcesServiceServer__removeObserver___block_invoke;
   v7[3] = &unk_2787660F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_sync(accessQueue, v7);
 }
 
 void __56__MLMediaLibraryResourcesServiceServer__removeObserver___block_invoke(uint64_t a1)
@@ -78,18 +78,18 @@ void __56__MLMediaLibraryResourcesServiceServer__removeObserver___block_invoke(u
   [v2 removeObject:*(a1 + 40)];
 }
 
-- (void)_addObserver:(id)a3
+- (void)_addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(MLMediaLibraryResourcesServiceServer *)self accessQueue];
+  observerCopy = observer;
+  accessQueue = [(MLMediaLibraryResourcesServiceServer *)self accessQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__MLMediaLibraryResourcesServiceServer__addObserver___block_invoke;
   v7[3] = &unk_2787660F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_sync(accessQueue, v7);
 }
 
 void __53__MLMediaLibraryResourcesServiceServer__addObserver___block_invoke(uint64_t a1)
@@ -106,14 +106,14 @@ void __53__MLMediaLibraryResourcesServiceServer__addObserver___block_invoke(uint
   v10 = __Block_byref_object_copy__19995;
   v11 = __Block_byref_object_dispose__19996;
   v12 = 0;
-  v3 = [(MLMediaLibraryResourcesServiceServer *)self accessQueue];
+  accessQueue = [(MLMediaLibraryResourcesServiceServer *)self accessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__MLMediaLibraryResourcesServiceServer_accountChangeSemaphore__block_invoke;
   v6[3] = &unk_278766080;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(accessQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -141,16 +141,16 @@ void __62__MLMediaLibraryResourcesServiceServer_accountChangeSemaphore__block_in
 
 - (void)_unblockExecutionForFutureAccountChange
 {
-  v3 = [(MLMediaLibraryResourcesServiceServer *)self accountChangeSemaphore];
-  dispatch_semaphore_signal(v3);
+  accountChangeSemaphore = [(MLMediaLibraryResourcesServiceServer *)self accountChangeSemaphore];
+  dispatch_semaphore_signal(accountChangeSemaphore);
 
-  v4 = [(MLMediaLibraryResourcesServiceServer *)self accessQueue];
+  accessQueue = [(MLMediaLibraryResourcesServiceServer *)self accessQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__MLMediaLibraryResourcesServiceServer__unblockExecutionForFutureAccountChange__block_invoke;
   block[3] = &unk_278765FB8;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(accessQueue, block);
 }
 
 void __79__MLMediaLibraryResourcesServiceServer__unblockExecutionForFutureAccountChange__block_invoke(uint64_t a1)
@@ -162,8 +162,8 @@ void __79__MLMediaLibraryResourcesServiceServer__unblockExecutionForFutureAccoun
 
 - (NSMutableSet)observers
 {
-  v3 = [(MLMediaLibraryResourcesServiceServer *)self accessQueue];
-  dispatch_assert_queue_V2(v3);
+  accessQueue = [(MLMediaLibraryResourcesServiceServer *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
   observers = self->_observers;
   if (!observers)
@@ -178,9 +178,9 @@ void __79__MLMediaLibraryResourcesServiceServer__unblockExecutionForFutureAccoun
   return observers;
 }
 
-- (MLMediaLibraryResourcesServiceServer)initWithAccountChangeObserver:(id)a3
+- (MLMediaLibraryResourcesServiceServer)initWithAccountChangeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v16.receiver = self;
   v16.super_class = MLMediaLibraryResourcesServiceServer;
   v5 = [(MLMediaLibraryResourcesServiceServer *)&v16 init];
@@ -198,9 +198,9 @@ void __79__MLMediaLibraryResourcesServiceServer__unblockExecutionForFutureAccoun
     calloutQueue = v5->_calloutQueue;
     v5->_calloutQueue = v10;
 
-    if (v4)
+    if (observerCopy)
     {
-      v12 = v4;
+      v12 = observerCopy;
     }
 
     else
@@ -216,22 +216,22 @@ void __79__MLMediaLibraryResourcesServiceServer__unblockExecutionForFutureAccoun
   return v5;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MLMediaLibraryResourcesServiceServer *)self _MLMediaLibraryResourcesServiceServerExportedInterface];
-  [v7 setExportedInterface:v8];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  _MLMediaLibraryResourcesServiceServerExportedInterface = [(MLMediaLibraryResourcesServiceServer *)self _MLMediaLibraryResourcesServiceServerExportedInterface];
+  [connectionCopy setExportedInterface:_MLMediaLibraryResourcesServiceServerExportedInterface];
 
-  [v7 setExportedObject:self];
-  v9 = [(MLMediaLibraryResourcesServiceServer *)self _MLMediaLibraryResourcesServiceServerRemoteObjectInterface];
-  [v7 setRemoteObjectInterface:v9];
+  [connectionCopy setExportedObject:self];
+  _MLMediaLibraryResourcesServiceServerRemoteObjectInterface = [(MLMediaLibraryResourcesServiceServer *)self _MLMediaLibraryResourcesServiceServerRemoteObjectInterface];
+  [connectionCopy setRemoteObjectInterface:_MLMediaLibraryResourcesServiceServerRemoteObjectInterface];
 
-  v10 = [v7 processIdentifier];
-  if (v7)
+  processIdentifier = [connectionCopy processIdentifier];
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -240,7 +240,7 @@ void __79__MLMediaLibraryResourcesServiceServer__unblockExecutionForFutureAccoun
   }
 
   v11 = MSVBundleIDForAuditToken();
-  v12 = [_MLChangeObserver observerWithConnection:v7];
+  v12 = [_MLChangeObserver observerWithConnection:connectionCopy];
   objc_initWeak(&location, self);
   objc_initWeak(&from, v12);
   v26[0] = MEMORY[0x277D85DD0];
@@ -250,9 +250,9 @@ void __79__MLMediaLibraryResourcesServiceServer__unblockExecutionForFutureAccoun
   objc_copyWeak(&v28, &location);
   v13 = v11;
   v27 = v13;
-  v30 = v10;
+  v30 = processIdentifier;
   objc_copyWeak(&v29, &from);
-  [v7 setInterruptionHandler:v26];
+  [connectionCopy setInterruptionHandler:v26];
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __75__MLMediaLibraryResourcesServiceServer_listener_shouldAcceptNewConnection___block_invoke_120;
@@ -260,9 +260,9 @@ void __79__MLMediaLibraryResourcesServiceServer__unblockExecutionForFutureAccoun
   objc_copyWeak(&v23, &location);
   v14 = v13;
   v22 = v14;
-  v25 = v10;
+  v25 = processIdentifier;
   objc_copyWeak(&v24, &from);
-  [v7 setInvalidationHandler:&v18];
+  [connectionCopy setInvalidationHandler:&v18];
   v15 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -271,13 +271,13 @@ void __79__MLMediaLibraryResourcesServiceServer__unblockExecutionForFutureAccoun
     *&buf[12] = 2114;
     *&buf[14] = v14;
     *&buf[22] = 1024;
-    *&buf[24] = v10;
+    *&buf[24] = processIdentifier;
     _os_log_impl(&dword_22D2FA000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ - Connecting to %{public}@[%d]", buf, 0x1Cu);
   }
 
   [(MLMediaLibraryResourcesServiceServer *)self _addObserver:v12, v18, v19, v20, v21];
-  v16 = [v12 connection];
-  [v16 resume];
+  connection = [v12 connection];
+  [connection resume];
 
   objc_destroyWeak(&v24);
   objc_destroyWeak(&v23);
@@ -374,18 +374,18 @@ void __75__MLMediaLibraryResourcesServiceServer_listener_shouldAcceptNewConnecti
   }
 }
 
-- (void)performDatabasePathChange:(id)a3 completion:(id)a4
+- (void)performDatabasePathChange:(id)change completion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  completionCopy = completion;
   v8 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     *&buf[4] = self;
     *&buf[12] = 2114;
-    *&buf[14] = v6;
+    *&buf[14] = changeCopy;
     _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ - performDatabasePathChange: - queued - newPath=%{public}@", buf, 0x16u);
   }
 
@@ -404,27 +404,27 @@ void __75__MLMediaLibraryResourcesServiceServer_listener_shouldAcceptNewConnecti
   v21 = __Block_byref_object_copy__19995;
   v22 = __Block_byref_object_dispose__19996;
   v23 = 0;
-  v10 = [(MLMediaLibraryResourcesServiceServer *)self accessQueue];
+  accessQueue = [(MLMediaLibraryResourcesServiceServer *)self accessQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__MLMediaLibraryResourcesServiceServer_performDatabasePathChange_completion___block_invoke;
   block[3] = &unk_278766080;
   block[4] = self;
   block[5] = buf;
-  dispatch_sync(v10, block);
+  dispatch_sync(accessQueue, block);
 
-  v11 = [(MLMediaLibraryResourcesServiceServer *)self workQueue];
+  workQueue = [(MLMediaLibraryResourcesServiceServer *)self workQueue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __77__MLMediaLibraryResourcesServiceServer_performDatabasePathChange_completion___block_invoke_2;
   v14[3] = &unk_2787641B8;
-  v15 = v6;
-  v16 = self;
-  v17 = v7;
+  v15 = changeCopy;
+  selfCopy = self;
+  v17 = completionCopy;
   v18 = buf;
-  v12 = v7;
-  v13 = v6;
-  dispatch_async(v11, v14);
+  v12 = completionCopy;
+  v13 = changeCopy;
+  dispatch_async(workQueue, v14);
 
   _Block_object_dispose(buf, 8);
 }
@@ -461,20 +461,20 @@ void __77__MLMediaLibraryResourcesServiceServer_performDatabasePathChange_comple
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)musicContainerPathWithCompletion:(id)a3
+- (void)musicContainerPathWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6 = +[ML3MusicLibraryResourcesManager sharedManager];
-  v5 = [v6 musicAssetsContainerPath];
-  (*(a3 + 2))(v4, v5);
+  musicAssetsContainerPath = [v6 musicAssetsContainerPath];
+  (*(completion + 2))(completionCopy, musicAssetsContainerPath);
 }
 
-- (void)libraryContainerPathWithCompletion:(id)a3
+- (void)libraryContainerPathWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6 = +[ML3MusicLibraryResourcesManager sharedManager];
-  v5 = [v6 libraryContainerPath];
-  (*(a3 + 2))(v4, v5);
+  libraryContainerPath = [v6 libraryContainerPath];
+  (*(completion + 2))(completionCopy, libraryContainerPath);
 }
 
 + (MLMediaLibraryResourcesServiceServer)sharedInstance

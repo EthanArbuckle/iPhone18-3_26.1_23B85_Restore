@@ -8,9 +8,9 @@
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 subviews];
+  subviews = [v2 subviews];
 
-  return v3;
+  return subviews;
 }
 
 @end

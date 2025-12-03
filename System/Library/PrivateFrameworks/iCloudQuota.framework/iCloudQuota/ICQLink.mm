@@ -1,60 +1,60 @@
 @interface ICQLink
-+ (BOOL)performAction:(int64_t)a3 parameters:(id)a4 options:(int64_t)a5;
-+ (ICQLink)linkWithText:(id)a3 options:(int64_t)a4 action:(int64_t)a5 parameters:(id)a6;
-+ (id)_icqDismissLinkForServerMessageParameters:(id)a3;
-+ (id)urlRequestWithParams:(id)a3 options:(int64_t)a4;
++ (BOOL)performAction:(int64_t)action parameters:(id)parameters options:(int64_t)options;
++ (ICQLink)linkWithText:(id)text options:(int64_t)options action:(int64_t)action parameters:(id)parameters;
++ (id)_icqDismissLinkForServerMessageParameters:(id)parameters;
++ (id)urlRequestWithParams:(id)params options:(int64_t)options;
 + (id)urlSession;
-+ (void)addHeadersToRequest:(id)a3;
-+ (void)addPOSTParams:(id)a3 toRequest:(id)a4;
-+ (void)performAsyncHTTPPostCallWithURL:(id)a3 parameters:(id)a4;
-+ (void)performHTTPGETCallWithParams:(id)a3 options:(int64_t)a4;
-+ (void)performHTTPPOSTCallWithParams:(id)a3 options:(int64_t)a4;
-+ (void)startDataTaskWithRequest:(id)a3;
-- (BOOL)performActionWithOptions:(int64_t)a3;
-- (ICQLink)initWithAction:(int64_t)a3 url:(id)a4;
-- (ICQLink)initWithActionString:(id)a3;
-- (ICQLink)initWithActionString:(id)a3 url:(id)a4;
-- (ICQLink)initWithCoder:(id)a3;
-- (ICQLink)initWithText:(id)a3 options:(int64_t)a4 action:(int64_t)a5 parameters:(id)a6;
++ (void)addHeadersToRequest:(id)request;
++ (void)addPOSTParams:(id)params toRequest:(id)request;
++ (void)performAsyncHTTPPostCallWithURL:(id)l parameters:(id)parameters;
++ (void)performHTTPGETCallWithParams:(id)params options:(int64_t)options;
++ (void)performHTTPPOSTCallWithParams:(id)params options:(int64_t)options;
++ (void)startDataTaskWithRequest:(id)request;
+- (BOOL)performActionWithOptions:(int64_t)options;
+- (ICQLink)initWithAction:(int64_t)action url:(id)url;
+- (ICQLink)initWithActionString:(id)string;
+- (ICQLink)initWithActionString:(id)string url:(id)url;
+- (ICQLink)initWithCoder:(id)coder;
+- (ICQLink)initWithText:(id)text options:(int64_t)options action:(int64_t)action parameters:(id)parameters;
 - (NSString)purchaseAttribution;
 - (NSURL)actionURL;
 - (NSURL)dynamicUIRouteURL;
 - (NSURL)serverUIURL;
 - (id)description;
 - (void)dynamicUIRouteURL;
-- (void)encodeWithCoder:(id)a3;
-- (void)getCachedContentWithCompletion:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)getCachedContentWithCompletion:(id)completion;
 - (void)purchaseAttribution;
-- (void)setServerUIURL:(id)a3;
+- (void)setServerUIURL:(id)l;
 @end
 
 @implementation ICQLink
 
-+ (ICQLink)linkWithText:(id)a3 options:(int64_t)a4 action:(int64_t)a5 parameters:(id)a6
++ (ICQLink)linkWithText:(id)text options:(int64_t)options action:(int64_t)action parameters:(id)parameters
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [[a1 alloc] initWithText:v11 options:a4 action:a5 parameters:v10];
+  parametersCopy = parameters;
+  textCopy = text;
+  v12 = [[self alloc] initWithText:textCopy options:options action:action parameters:parametersCopy];
 
   return v12;
 }
 
-- (ICQLink)initWithText:(id)a3 options:(int64_t)a4 action:(int64_t)a5 parameters:(id)a6
+- (ICQLink)initWithText:(id)text options:(int64_t)options action:(int64_t)action parameters:(id)parameters
 {
-  v10 = a3;
-  v11 = a6;
+  textCopy = text;
+  parametersCopy = parameters;
   v18.receiver = self;
   v18.super_class = ICQLink;
   v12 = [(ICQLink *)&v18 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [textCopy copy];
     text = v12->_text;
     v12->_text = v13;
 
-    v12->_options = a4;
-    v12->_action = a5;
-    v15 = [v11 copy];
+    v12->_options = options;
+    v12->_action = action;
+    v15 = [parametersCopy copy];
     parameters = v12->_parameters;
     v12->_parameters = v15;
   }
@@ -90,14 +90,14 @@
   return v3;
 }
 
-- (void)setServerUIURL:(id)a3
+- (void)setServerUIURL:(id)l
 {
   parameters = self->_parameters;
-  v5 = a3;
+  lCopy = l;
   v9 = [(NSDictionary *)parameters mutableCopy];
-  v6 = [v5 absoluteString];
+  absoluteString = [lCopy absoluteString];
 
-  [v9 setObject:v6 forKeyedSubscript:@"openURL"];
+  [v9 setObject:absoluteString forKeyedSubscript:@"openURL"];
   v7 = [v9 copy];
   v8 = self->_parameters;
   self->_parameters = v7;
@@ -108,15 +108,15 @@
   actionURL = self->_actionURL;
   if (actionURL)
   {
-    v3 = actionURL;
+    serverUIURL = actionURL;
   }
 
   else
   {
-    v3 = [(ICQLink *)self serverUIURL];
+    serverUIURL = [(ICQLink *)self serverUIURL];
   }
 
-  return v3;
+  return serverUIURL;
 }
 
 - (NSURL)dynamicUIRouteURL
@@ -164,33 +164,33 @@
   return v4;
 }
 
-- (BOOL)performActionWithOptions:(int64_t)a3
+- (BOOL)performActionWithOptions:(int64_t)options
 {
   v5 = objc_opt_class();
-  v6 = [(ICQLink *)self action];
-  v7 = [(ICQLink *)self parameters];
-  LOBYTE(a3) = [v5 performAction:v6 parameters:v7 options:a3];
+  action = [(ICQLink *)self action];
+  parameters = [(ICQLink *)self parameters];
+  LOBYTE(options) = [v5 performAction:action parameters:parameters options:options];
 
-  return a3;
+  return options;
 }
 
-+ (BOOL)performAction:(int64_t)a3 parameters:(id)a4 options:(int64_t)a5
++ (BOOL)performAction:(int64_t)action parameters:(id)parameters options:(int64_t)options
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = v8;
+  parametersCopy = parameters;
+  v9 = parametersCopy;
   isKindOfClass = 0;
-  if (a3 <= 105)
+  if (action <= 105)
   {
-    if (a3 <= 99)
+    if (action <= 99)
     {
-      if (a3 > 3)
+      if (action > 3)
       {
-        if ((a3 - 4) >= 2)
+        if ((action - 4) >= 2)
         {
-          if (a3 == 6)
+          if (action == 6)
           {
-            v16 = [v8 objectForKeyedSubscript:@"URL"];
+            v16 = [parametersCopy objectForKeyedSubscript:@"URL"];
             v17 = _ICQGetLogSystem();
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
             {
@@ -221,9 +221,9 @@
         goto LABEL_25;
       }
 
-      if (a3 == 1)
+      if (action == 1)
       {
-        v20 = [v8 objectForKeyedSubscript:@"openURL"];
+        v20 = [parametersCopy objectForKeyedSubscript:@"openURL"];
 
         if (!v20)
         {
@@ -238,11 +238,11 @@
         }
 
 LABEL_49:
-        [a1 performHTTPPOSTCallWithParams:v9 options:a5];
+        [self performHTTPPOSTCallWithParams:v9 options:options];
         goto LABEL_29;
       }
 
-      if (a3 == 2)
+      if (action == 2)
       {
         v19 = _ICQGetLogSystem();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -254,13 +254,13 @@ LABEL_49:
         goto LABEL_54;
       }
 
-      if (a3 != 3)
+      if (action != 3)
       {
         goto LABEL_55;
       }
 
 LABEL_32:
-      if (a5)
+      if (options)
       {
         v15 = _ICQGetLogSystem();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -276,9 +276,9 @@ LABEL_32:
       goto LABEL_29;
     }
 
-    if (a3 <= 102)
+    if (action <= 102)
     {
-      if (a3 == 100)
+      if (action == 100)
       {
         v21 = _ICQGetLogSystem();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -291,13 +291,13 @@ LABEL_32:
         goto LABEL_54;
       }
 
-      if (a3 != 101)
+      if (action != 101)
       {
 LABEL_18:
         v12 = _ICQGetLogSystem();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          v13 = _ICQStringForAction(a3);
+          v13 = _ICQStringForAction(action);
           v24 = 138412290;
           v25 = v13;
           v14 = "ICQLink: performAction: %@ not handled since it requires context";
@@ -313,14 +313,14 @@ LABEL_27:
       goto LABEL_25;
     }
 
-    if (a3 == 103)
+    if (action == 103)
     {
       _ICQOpenPrimaryPaymentInSettings();
     }
 
     else
     {
-      if (a3 != 104)
+      if (action != 104)
       {
         goto LABEL_32;
       }
@@ -333,18 +333,18 @@ LABEL_54:
     goto LABEL_55;
   }
 
-  if (a3 > 115)
+  if (action > 115)
   {
-    if ((a3 - 116) >= 3)
+    if ((action - 116) >= 3)
     {
-      if (a3 != 123)
+      if (action != 123)
       {
-        if (a3 != 124)
+        if (action != 124)
         {
           goto LABEL_55;
         }
 
-        [a1 performHTTPGETCallWithParams:v8 options:a5];
+        [self performHTTPGETCallWithParams:parametersCopy options:options];
 LABEL_29:
         isKindOfClass = 0;
         goto LABEL_55;
@@ -357,7 +357,7 @@ LABEL_25:
     v12 = _ICQGetLogSystem();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = _ICQStringForAction(a3);
+      v13 = _ICQStringForAction(action);
       v24 = 138412290;
       v25 = v13;
       v14 = "ICQLink: performAction: %@ not handled";
@@ -369,12 +369,12 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if ((a3 - 112) < 4 || (a3 - 106) < 3)
+  if ((action - 112) < 4 || (action - 106) < 3)
   {
     goto LABEL_18;
   }
 
-  if (a3 == 109)
+  if (action == 109)
   {
     v11 = _ICQGetLogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -395,21 +395,21 @@ LABEL_55:
 
 + (id)urlSession
 {
-  v2 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+  defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
   v3 = [objc_alloc(MEMORY[0x277CF0188]) initWithIdentifier:@"ICQFetchOfferURLSession"];
-  [v2 set_appleIDContext:v3];
+  [defaultSessionConfiguration set_appleIDContext:v3];
 
-  v4 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v2];
+  v4 = [MEMORY[0x277CCAD30] sessionWithConfiguration:defaultSessionConfiguration];
 
   return v4;
 }
 
-+ (id)urlRequestWithParams:(id)a3 options:(int64_t)a4
++ (id)urlRequestWithParams:(id)params options:(int64_t)options
 {
-  v4 = a4;
+  optionsCopy = options;
   v15 = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CBEBC0];
-  v7 = [a3 objectForKeyedSubscript:@"openURL"];
+  v7 = [params objectForKeyedSubscript:@"openURL"];
   v8 = [v6 URLWithString:v7];
 
   v9 = _ICQGetLogSystem();
@@ -421,8 +421,8 @@ LABEL_55:
   }
 
   v10 = [MEMORY[0x277CCAB70] requestWithURL:v8 cachePolicy:1 timeoutInterval:30.0];
-  [a1 addHeadersToRequest:v10];
-  if ((v4 & 2) != 0)
+  [self addHeadersToRequest:v10];
+  if ((optionsCopy & 2) != 0)
   {
     [v10 setValue:@"application/x-plist" forHTTPHeaderField:@"Content-Type"];
     [v10 setValue:@"application/x-buddyml" forHTTPHeaderField:@"Accept"];
@@ -433,37 +433,37 @@ LABEL_55:
   return v10;
 }
 
-+ (void)performAsyncHTTPPostCallWithURL:(id)a3 parameters:(id)a4
++ (void)performAsyncHTTPPostCallWithURL:(id)l parameters:(id)parameters
 {
   v6 = MEMORY[0x277CCAB70];
-  v7 = a4;
-  v8 = [v6 requestWithURL:a3 cachePolicy:1 timeoutInterval:30.0];
-  [a1 addHeadersToRequest:v8];
-  [a1 addPOSTParams:v7 toRequest:v8];
+  parametersCopy = parameters;
+  v8 = [v6 requestWithURL:l cachePolicy:1 timeoutInterval:30.0];
+  [self addHeadersToRequest:v8];
+  [self addPOSTParams:parametersCopy toRequest:v8];
 
-  [a1 startDataTaskWithRequest:v8];
+  [self startDataTaskWithRequest:v8];
 }
 
-+ (void)performHTTPPOSTCallWithParams:(id)a3 options:(int64_t)a4
++ (void)performHTTPPOSTCallWithParams:(id)params options:(int64_t)options
 {
-  v6 = a3;
-  v7 = [a1 urlRequestWithParams:v6 options:a4];
-  [a1 addPOSTParams:v6 toRequest:v7];
+  paramsCopy = params;
+  v7 = [self urlRequestWithParams:paramsCopy options:options];
+  [self addPOSTParams:paramsCopy toRequest:v7];
 
-  [a1 startDataTaskWithRequest:v7];
+  [self startDataTaskWithRequest:v7];
 }
 
-+ (void)performHTTPGETCallWithParams:(id)a3 options:(int64_t)a4
++ (void)performHTTPGETCallWithParams:(id)params options:(int64_t)options
 {
-  v5 = [a1 urlRequestWithParams:a3 options:a4];
-  [a1 startDataTaskWithRequest:v5];
+  v5 = [self urlRequestWithParams:params options:options];
+  [self startDataTaskWithRequest:v5];
 }
 
-+ (void)startDataTaskWithRequest:(id)a3
++ (void)startDataTaskWithRequest:(id)request
 {
-  v4 = a3;
-  v6 = [a1 urlSession];
-  v5 = [v6 dataTaskWithRequest:v4 completionHandler:&__block_literal_global_4];
+  requestCopy = request;
+  urlSession = [self urlSession];
+  v5 = [urlSession dataTaskWithRequest:requestCopy completionHandler:&__block_literal_global_4];
 
   [v5 resume];
 }
@@ -487,26 +487,26 @@ void __36__ICQLink_startDataTaskWithRequest___block_invoke(uint64_t a1, uint64_t
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)addHeadersToRequest:(id)a3
++ (void)addHeadersToRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = [ICQRequestProvider alloc];
   v5 = objc_opt_new();
-  v6 = [v5 aa_primaryAppleAccount];
-  v7 = [(ICQRequestProvider *)v4 initWithAccount:v6];
+  aa_primaryAppleAccount = [v5 aa_primaryAppleAccount];
+  v7 = [(ICQRequestProvider *)v4 initWithAccount:aa_primaryAppleAccount];
 
-  [(ICQRequestProvider *)v7 addBasicHeadersToRequest:v3];
+  [(ICQRequestProvider *)v7 addBasicHeadersToRequest:requestCopy];
 }
 
-+ (void)addPOSTParams:(id)a3 toRequest:(id)a4
++ (void)addPOSTParams:(id)params toRequest:(id)request
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  [v6 setHTTPMethod:@"POST"];
-  [v6 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+  paramsCopy = params;
+  requestCopy = request;
+  [requestCopy setHTTPMethod:@"POST"];
+  [requestCopy setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
   v12 = 0;
-  v7 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v5 options:0 error:&v12];
+  v7 = [MEMORY[0x277CCAAA0] dataWithJSONObject:paramsCopy options:0 error:&v12];
   v8 = v12;
   if (v8)
   {
@@ -521,58 +521,58 @@ void __36__ICQLink_startDataTaskWithRequest___block_invoke(uint64_t a1, uint64_t
     v10 = _ICQGetLogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [ICQLink addPOSTParams:v5 toRequest:v10];
+      [ICQLink addPOSTParams:paramsCopy toRequest:v10];
     }
   }
 
   else
   {
-    [v6 setHTTPBody:v7];
+    [requestCopy setHTTPBody:v7];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   text = self->_text;
-  v5 = a3;
-  [v5 encodeObject:text forKey:@"text"];
-  [v5 encodeInteger:self->_action forKey:@"action"];
-  [v5 encodeInteger:self->_options forKey:@"options"];
-  [v5 encodeObject:self->_parameters forKey:@"parameters"];
-  [v5 encodeObject:self->_actionURL forKey:@"actionURL"];
-  [v5 encodeObject:self->_serverUIContent forKey:@"serverUIContent"];
+  coderCopy = coder;
+  [coderCopy encodeObject:text forKey:@"text"];
+  [coderCopy encodeInteger:self->_action forKey:@"action"];
+  [coderCopy encodeInteger:self->_options forKey:@"options"];
+  [coderCopy encodeObject:self->_parameters forKey:@"parameters"];
+  [coderCopy encodeObject:self->_actionURL forKey:@"actionURL"];
+  [coderCopy encodeObject:self->_serverUIContent forKey:@"serverUIContent"];
 }
 
-- (ICQLink)initWithCoder:(id)a3
+- (ICQLink)initWithCoder:(id)coder
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ICQLink *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
     text = v5->_text;
     v5->_text = v6;
 
-    v5->_action = [v4 decodeIntegerForKey:@"action"];
-    v5->_options = [v4 decodeIntegerForKey:@"options"];
+    v5->_action = [coderCopy decodeIntegerForKey:@"action"];
+    v5->_options = [coderCopy decodeIntegerForKey:@"options"];
     v8 = MEMORY[0x277CBEB98];
     v19 = objc_opt_class();
     v20 = objc_opt_class();
     v21 = objc_opt_class();
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:3];
     v10 = [v8 setWithArray:{v9, v19, v20}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"parameters"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"parameters"];
     parameters = v5->_parameters;
     v5->_parameters = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionURL"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionURL"];
     actionURL = v5->_actionURL;
     v5->_actionURL = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serverUIContent"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serverUIContent"];
     serverUIContent = v5->_serverUIContent;
     v5->_serverUIContent = v15;
   }
@@ -581,52 +581,52 @@ void __36__ICQLink_startDataTaskWithRequest___block_invoke(uint64_t a1, uint64_t
   return v5;
 }
 
-- (ICQLink)initWithActionString:(id)a3
+- (ICQLink)initWithActionString:(id)string
 {
-  v4 = _ICQActionForString(a3);
+  v4 = _ICQActionForString(string);
   v5 = MEMORY[0x277CBEC10];
 
   return [(ICQLink *)self initWithText:&stru_288431E38 options:0 action:v4 parameters:v5];
 }
 
-- (ICQLink)initWithActionString:(id)a3 url:(id)a4
+- (ICQLink)initWithActionString:(id)string url:(id)url
 {
-  v7 = a4;
-  v8 = [(ICQLink *)self initWithText:&stru_288431E38 options:0 action:_ICQActionForString(a3) parameters:MEMORY[0x277CBEC10]];
+  urlCopy = url;
+  v8 = [(ICQLink *)self initWithText:&stru_288431E38 options:0 action:_ICQActionForString(string) parameters:MEMORY[0x277CBEC10]];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_actionURL, a4);
+    objc_storeStrong(&v8->_actionURL, url);
   }
 
   return v9;
 }
 
-- (ICQLink)initWithAction:(int64_t)a3 url:(id)a4
+- (ICQLink)initWithAction:(int64_t)action url:(id)url
 {
-  v7 = a4;
-  v8 = [(ICQLink *)self initWithText:&stru_288431E38 options:0 action:a3 parameters:MEMORY[0x277CBEC10]];
+  urlCopy = url;
+  v8 = [(ICQLink *)self initWithText:&stru_288431E38 options:0 action:action parameters:MEMORY[0x277CBEC10]];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_actionURL, a4);
+    objc_storeStrong(&v8->_actionURL, url);
   }
 
   return v9;
 }
 
-- (void)getCachedContentWithCompletion:(id)a3
+- (void)getCachedContentWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6 = +[ICQLiftUICache sharedCache];
-  v5 = [(ICQLink *)self serverUIURL];
-  [v6 fetchResponseForURL:v5 completion:v4];
+  serverUIURL = [(ICQLink *)self serverUIURL];
+  [v6 fetchResponseForURL:serverUIURL completion:completionCopy];
 }
 
-+ (id)_icqDismissLinkForServerMessageParameters:(id)a3
++ (id)_icqDismissLinkForServerMessageParameters:(id)parameters
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  parametersCopy = parameters;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -634,7 +634,7 @@ void __36__ICQLink_startDataTaskWithRequest___block_invoke(uint64_t a1, uint64_t
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = v3;
+    v4 = parametersCopy;
     v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v5)
     {
@@ -676,7 +676,7 @@ void __36__ICQLink_startDataTaskWithRequest___block_invoke(uint64_t a1, uint64_t
 
   else
   {
-    if (!v3)
+    if (!parametersCopy)
     {
       v12 = 0;
       goto LABEL_18;
@@ -686,7 +686,7 @@ void __36__ICQLink_startDataTaskWithRequest___block_invoke(uint64_t a1, uint64_t
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v21 = v3;
+      v21 = parametersCopy;
       _os_log_impl(&dword_275572000, v4, OS_LOG_TYPE_DEFAULT, "links: expected array: invalid server message parameters:%@", buf, 0xCu);
     }
   }
@@ -703,7 +703,7 @@ LABEL_18:
 - (void)dynamicUIRouteURL
 {
   v6 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
+  v2 = *self;
   v4 = 138412290;
   v5 = v2;
   _os_log_error_impl(&dword_275572000, a2, OS_LOG_TYPE_ERROR, "Unable to find dynamicUI route in params %@", &v4, 0xCu);
@@ -713,7 +713,7 @@ LABEL_18:
 - (void)purchaseAttribution
 {
   v6 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
+  v2 = *self;
   v4 = 138412290;
   v5 = v2;
   _os_log_error_impl(&dword_275572000, a2, OS_LOG_TYPE_ERROR, "Unable to find dynamicUI purchase attribution in params %@", &v4, 0xCu);

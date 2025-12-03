@@ -1,12 +1,12 @@
 @interface CRLSceneCaptureSnapshotLayer
 - (_TtC8Freeform28CRLSceneCaptureSnapshotLayer)init;
-- (_TtC8Freeform28CRLSceneCaptureSnapshotLayer)initWithCoder:(id)a3;
-- (_TtC8Freeform28CRLSceneCaptureSnapshotLayer)initWithLayer:(id)a3;
+- (_TtC8Freeform28CRLSceneCaptureSnapshotLayer)initWithCoder:(id)coder;
+- (_TtC8Freeform28CRLSceneCaptureSnapshotLayer)initWithLayer:(id)layer;
 @end
 
 @implementation CRLSceneCaptureSnapshotLayer
 
-- (_TtC8Freeform28CRLSceneCaptureSnapshotLayer)initWithCoder:(id)a3
+- (_TtC8Freeform28CRLSceneCaptureSnapshotLayer)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8Freeform28CRLSceneCaptureSnapshotLayer_chromeClippingLayer;
   *(&self->super.super.isa + v4) = [objc_allocWithZone(CALayer) init];
@@ -24,7 +24,7 @@
   return result;
 }
 
-- (_TtC8Freeform28CRLSceneCaptureSnapshotLayer)initWithLayer:(id)a3
+- (_TtC8Freeform28CRLSceneCaptureSnapshotLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();

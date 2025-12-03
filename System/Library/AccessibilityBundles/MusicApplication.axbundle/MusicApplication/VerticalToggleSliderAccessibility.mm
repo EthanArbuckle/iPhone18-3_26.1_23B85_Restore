@@ -1,26 +1,26 @@
 @interface VerticalToggleSliderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 - (void)_accessibilityAnnounceNewValue;
-- (void)_accessibilityIncreaseSlider:(BOOL)a3;
+- (void)_accessibilityIncreaseSlider:(BOOL)slider;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
-- (void)dragged:(id)a3;
+- (void)dragged:(id)dragged;
 @end
 
 @implementation VerticalToggleSliderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicCoreUI.VerticalToggleSlider" hasInstanceMethod:@"accessibilitySliderValue" withFullSignature:{"f", 0}];
-  [v3 validateClass:@"MusicCoreUI.VerticalToggleSlider" hasInstanceMethod:@"accessibilityMinValue" withFullSignature:{"f", 0}];
-  [v3 validateClass:@"MusicCoreUI.VerticalToggleSlider" hasInstanceMethod:@"accessibilityMaxValue" withFullSignature:{"f", 0}];
-  [v3 validateClass:@"MusicCoreUI.VerticalToggleSlider" hasInstanceMethod:@"accessibilityToggleIsOn" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MusicCoreUI.VerticalToggleSlider" hasInstanceMethod:@"accessibilityAutomaticallyDisablesOnMaxValue" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MusicCoreUI.VerticalToggleSlider" hasInstanceMethod:@"accessibilitySetSliderValue:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"MusicCoreUI.VerticalToggleSlider" hasInstanceMethod:@"dragged:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicCoreUI.VerticalToggleSlider" hasInstanceMethod:@"accessibilitySliderValue" withFullSignature:{"f", 0}];
+  [validationsCopy validateClass:@"MusicCoreUI.VerticalToggleSlider" hasInstanceMethod:@"accessibilityMinValue" withFullSignature:{"f", 0}];
+  [validationsCopy validateClass:@"MusicCoreUI.VerticalToggleSlider" hasInstanceMethod:@"accessibilityMaxValue" withFullSignature:{"f", 0}];
+  [validationsCopy validateClass:@"MusicCoreUI.VerticalToggleSlider" hasInstanceMethod:@"accessibilityToggleIsOn" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MusicCoreUI.VerticalToggleSlider" hasInstanceMethod:@"accessibilityAutomaticallyDisablesOnMaxValue" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MusicCoreUI.VerticalToggleSlider" hasInstanceMethod:@"accessibilitySetSliderValue:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"MusicCoreUI.VerticalToggleSlider" hasInstanceMethod:@"dragged:" withFullSignature:{"v", "@", 0}];
 }
 
 - (unint64_t)accessibilityTraits
@@ -73,7 +73,7 @@
   }
 }
 
-- (void)_accessibilityIncreaseSlider:(BOOL)a3
+- (void)_accessibilityIncreaseSlider:(BOOL)slider
 {
   [(VerticalToggleSliderAccessibility *)self safeFloatForKey:@"accessibilityMinValue"];
   [(VerticalToggleSliderAccessibility *)self safeFloatForKey:@"accessibilityMaxValue"];
@@ -101,18 +101,18 @@ void __66__VerticalToggleSliderAccessibility__accessibilityIncreaseSlider___bloc
   if (CFAbsoluteTimeGetCurrent() - *&_accessibilityAnnounceNewValue_LastOutput > 1.0)
   {
     v3 = *MEMORY[0x29EDC7EA8];
-    v4 = [(VerticalToggleSliderAccessibility *)self _accessibilityAXAttributedValue];
-    UIAccessibilityPostNotification(v3, v4);
+    _accessibilityAXAttributedValue = [(VerticalToggleSliderAccessibility *)self _accessibilityAXAttributedValue];
+    UIAccessibilityPostNotification(v3, _accessibilityAXAttributedValue);
 
     _accessibilityAnnounceNewValue_LastOutput = CFAbsoluteTimeGetCurrent();
   }
 }
 
-- (void)dragged:(id)a3
+- (void)dragged:(id)dragged
 {
   v4.receiver = self;
   v4.super_class = VerticalToggleSliderAccessibility;
-  [(VerticalToggleSliderAccessibility *)&v4 dragged:a3];
+  [(VerticalToggleSliderAccessibility *)&v4 dragged:dragged];
   [(VerticalToggleSliderAccessibility *)self _accessibilityAnnounceNewValue];
 }
 

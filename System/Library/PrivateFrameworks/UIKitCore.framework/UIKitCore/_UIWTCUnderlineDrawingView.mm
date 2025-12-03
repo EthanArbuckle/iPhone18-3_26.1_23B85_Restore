@@ -1,28 +1,28 @@
 @interface _UIWTCUnderlineDrawingView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIBezierPath)path;
-- (void)setColor:(id)a3;
-- (void)setPath:(id)a3;
+- (void)setColor:(id)color;
+- (void)setPath:(id)path;
 @end
 
 @implementation _UIWTCUnderlineDrawingView
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
-  v5 = a3;
-  v6 = [a3 CGPath];
-  v7 = [(_UIWTCUnderlineDrawingView *)self pathLayer];
-  [v7 setPath:v6];
+  pathCopy = path;
+  cGPath = [path CGPath];
+  pathLayer = [(_UIWTCUnderlineDrawingView *)self pathLayer];
+  [pathLayer setPath:cGPath];
 }
 
 - (UIBezierPath)path
 {
-  v2 = [(_UIWTCUnderlineDrawingView *)self pathLayer];
-  v3 = [v2 path];
+  pathLayer = [(_UIWTCUnderlineDrawingView *)self pathLayer];
+  path = [pathLayer path];
 
-  if (v3)
+  if (path)
   {
-    v4 = [UIBezierPath bezierPathWithCGPath:v3];
+    v4 = [UIBezierPath bezierPathWithCGPath:path];
   }
 
   else
@@ -33,25 +33,25 @@
   return v4;
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  objc_storeStrong(&self->_color, a3);
-  v5 = a3;
-  v6 = [v5 CGColor];
+  objc_storeStrong(&self->_color, color);
+  colorCopy = color;
+  cGColor = [colorCopy CGColor];
 
-  v7 = [(_UIWTCUnderlineDrawingView *)self pathLayer];
-  [v7 setFillColor:v6];
+  pathLayer = [(_UIWTCUnderlineDrawingView *)self pathLayer];
+  [pathLayer setFillColor:cGColor];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(_UIWTCUnderlineDrawingView *)self path];
-  v7 = v6;
-  if (v6)
+  height = fits.height;
+  width = fits.width;
+  path = [(_UIWTCUnderlineDrawingView *)self path];
+  v7 = path;
+  if (path)
   {
-    [v6 bounds];
+    [path bounds];
     v9 = v8;
     v11 = v10;
   }

@@ -1,8 +1,8 @@
 @interface WLKSettingsStore
 + (BOOL)isHostedInRemoteViewService;
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3;
++ (id)keyPathsForValuesAffectingValueForKey:(id)key;
 + (id)sharedSettings;
-+ (void)synchronizeSettingsDefaultsForKeys:(id)a3;
++ (void)synchronizeSettingsDefaultsForKeys:(id)keys;
 - (BOOL)hasPostPlayAutoPlayNextVideoPreferences;
 - (BOOL)migratediOS;
 - (BOOL)migratedtvOS;
@@ -10,51 +10,51 @@
 - (BOOL)postPlayAutoPlayNextVideo;
 - (BOOL)privateModeEnabled;
 - (BOOL)sportsScoreSpoilersAllowed;
-- (BOOL)synchronize:(unint64_t)a3;
+- (BOOL)synchronize:(unint64_t)synchronize;
 - (BOOL)upNextLockupsUseCoverArt;
 - (NSNumber)optedInVal;
 - (NSSet)suppressedSportsEventIDs;
 - (NSString)pushToken;
 - (WLKSettingsStore)init;
-- (id)_appsForChannelID:(id)a3;
+- (id)_appsForChannelID:(id)d;
 - (id)_connection;
-- (id)_copyAppsForChannelID:(id)a3 apps:(id)a4;
-- (id)_dictionaryRepresentationCopyingItems:(BOOL)a3;
+- (id)_copyAppsForChannelID:(id)d apps:(id)apps;
+- (id)_dictionaryRepresentationCopyingItems:(BOOL)items;
 - (id)_dictionaryRepresentationDataOnly;
 - (id)_supportPath;
 - (id)_watchListAppsFiltered;
 - (id)consentedBrands;
 - (id)deniedBrands;
 - (id)description;
-- (id)settingsForChannelID:(id)a3 externalID:(id)a4;
+- (id)settingsForChannelID:(id)d externalID:(id)iD;
 - (id)watchListApps;
-- (void)_activeAccountChangedNotification:(id)a3;
-- (void)_attemptCullingOfObsoleteApp:(id)a3;
-- (void)_dictionaryOnDisk:(id)a3;
-- (void)_loadFromDiskWithCompletion:(id)a3;
-- (void)_removeWatchListApp:(id)a3;
+- (void)_activeAccountChangedNotification:(id)notification;
+- (void)_attemptCullingOfObsoleteApp:(id)app;
+- (void)_dictionaryOnDisk:(id)disk;
+- (void)_loadFromDiskWithCompletion:(id)completion;
+- (void)_removeWatchListApp:(id)app;
 - (void)_tickleKVO;
-- (void)_updateDisplayNamesForUI:(id)a3;
+- (void)_updateDisplayNamesForUI:(id)i;
 - (void)_writeToDisk;
-- (void)_writeToDisk:(id)a3 completion:(id)a4;
+- (void)_writeToDisk:(id)disk completion:(id)completion;
 - (void)beginIgnoringChanges;
 - (void)clearAllSportsNotificationSuppression;
 - (void)dealloc;
 - (void)endIgnoringChanges;
-- (void)forceUpdateWithCompletion:(id)a3;
+- (void)forceUpdateWithCompletion:(id)completion;
 - (void)publishCrossProcessSettingsChangedNotification;
-- (void)refreshWithCompletion:(id)a3;
+- (void)refreshWithCompletion:(id)completion;
 - (void)removePostPlayAutoPlayNextVideoPreferences;
-- (void)setLastSyncDate:(id)a3;
-- (void)setLastSyncToCloudDate:(id)a3;
-- (void)setMigratediOS:(BOOL)a3;
-- (void)setMigratedtvOS:(BOOL)a3;
-- (void)setName:(id)a3 forChannelID:(id)a4 externalID:(id)a5;
-- (void)setOptedIn:(BOOL)a3;
-- (void)setPushToken:(id)a3;
-- (void)setSportsNotificationSuppression:(BOOL)a3 forEventID:(id)a4;
-- (void)setStatus:(unint64_t)a3 forChannelID:(id)a4 externalID:(id)a5;
-- (void)synchronize:(unint64_t)a3 completion:(id)a4;
+- (void)setLastSyncDate:(id)date;
+- (void)setLastSyncToCloudDate:(id)date;
+- (void)setMigratediOS:(BOOL)s;
+- (void)setMigratedtvOS:(BOOL)s;
+- (void)setName:(id)name forChannelID:(id)d externalID:(id)iD;
+- (void)setOptedIn:(BOOL)in;
+- (void)setPushToken:(id)token;
+- (void)setSportsNotificationSuppression:(BOOL)suppression forEventID:(id)d;
+- (void)setStatus:(unint64_t)status forChannelID:(id)d externalID:(id)iD;
+- (void)synchronize:(unint64_t)synchronize completion:(id)completion;
 @end
 
 @implementation WLKSettingsStore
@@ -97,15 +97,15 @@ void __34__WLKSettingsStore_sharedSettings__block_invoke()
     readWriteQueue = v2->_readWriteQueue;
     v2->_readWriteQueue = v5;
 
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     apps = v2->_apps;
-    v2->_apps = v7;
+    v2->_apps = array;
 
     if (WLKIsTVApp())
     {
-      v9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
       defaultsAccessor = v2->_defaultsAccessor;
-      v2->_defaultsAccessor = v9;
+      v2->_defaultsAccessor = standardUserDefaults;
     }
 
     else
@@ -125,9 +125,9 @@ void __34__WLKSettingsStore_sharedSettings__block_invoke()
     v14 = v2;
     v19 = v14;
     notify_register_dispatch("com.apple.WatchListKit.WLKSettingsDidChangeNotification", &v2->_didChangeNotificationToken, MEMORY[0x277D85CD0], handler);
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v16 = +[WLKAccountMonitor sharedInstance];
-    [v15 addObserver:v14 selector:sel__activeAccountChangedNotification_ name:@"WLKAccountMonitorAccountDidChange" object:v16];
+    [defaultCenter addObserver:v14 selector:sel__activeAccountChangedNotification_ name:@"WLKAccountMonitorAccountDidChange" object:v16];
   }
 
   return v2;
@@ -135,11 +135,11 @@ void __34__WLKSettingsStore_sharedSettings__block_invoke()
 
 + (BOOL)isHostedInRemoteViewService
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  LOBYTE(v2) = [v3 isEqualToString:@"com.apple.TVAccessViewService"];
-  return v2;
+  LOBYTE(mainBundle) = [bundleIdentifier isEqualToString:@"com.apple.TVAccessViewService"];
+  return mainBundle;
 }
 
 - (id)_connection
@@ -185,17 +185,17 @@ void __34__WLKSettingsStore_sharedSettings__block_invoke()
   {
     v3 = [v2 stringByAppendingPathComponent:@"settings.plist"];
 
-    v4 = [v3 stringByExpandingTildeInPath];
+    stringByExpandingTildeInPath = [v3 stringByExpandingTildeInPath];
   }
 
   else
   {
     NSLog(&cfstr_Wlksettingssto.isa);
-    v4 = v2;
-    v3 = v4;
+    stringByExpandingTildeInPath = v2;
+    v3 = stringByExpandingTildeInPath;
   }
 
-  return v4;
+  return stringByExpandingTildeInPath;
 }
 
 - (void)_tickleKVO
@@ -225,8 +225,8 @@ void __34__WLKSettingsStore_sharedSettings__block_invoke()
 - (id)deniedBrands
 {
   v20 = *MEMORY[0x277D85DE8];
-  v2 = [(WLKSettingsStore *)self watchListApps];
-  v3 = [v2 mutableCopy];
+  watchListApps = [(WLKSettingsStore *)self watchListApps];
+  v3 = [watchListApps mutableCopy];
 
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v15 = 0u;
@@ -251,8 +251,8 @@ void __34__WLKSettingsStore_sharedSettings__block_invoke()
         v10 = *(*(&v15 + 1) + 8 * i);
         if ([v10 accessStatus] == 2)
         {
-          v11 = [v10 channelID];
-          [v4 addObject:v11];
+          channelID = [v10 channelID];
+          [v4 addObject:channelID];
         }
       }
 
@@ -276,7 +276,7 @@ void __34__WLKSettingsStore_sharedSettings__block_invoke()
   v9 = 0x3032000000;
   v10 = __Block_byref_object_copy__8;
   v11 = __Block_byref_object_dispose__8;
-  v12 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   accessQueue = self->_accessQueue;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -332,8 +332,8 @@ uint64_t __33__WLKSettingsStore_watchListApps__block_invoke(uint64_t a1)
 - (id)consentedBrands
 {
   v20 = *MEMORY[0x277D85DE8];
-  v2 = [(WLKSettingsStore *)self watchListApps];
-  v3 = [v2 mutableCopy];
+  watchListApps = [(WLKSettingsStore *)self watchListApps];
+  v3 = [watchListApps mutableCopy];
 
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v15 = 0u;
@@ -358,8 +358,8 @@ uint64_t __33__WLKSettingsStore_watchListApps__block_invoke(uint64_t a1)
         v10 = *(*(&v15 + 1) + 8 * i);
         if ([v10 accessStatus] == 1)
         {
-          v11 = [v10 channelID];
-          [v4 addObject:v11];
+          channelID = [v10 channelID];
+          [v4 addObject:channelID];
         }
       }
 
@@ -450,21 +450,21 @@ void __24__WLKSettingsStore_init__block_invoke_2(uint64_t a1)
     notify_cancel(didChangeNotificationToken);
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = WLKSettingsStore;
   [(WLKSettingsStore *)&v5 dealloc];
 }
 
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3
++ (id)keyPathsForValuesAffectingValueForKey:(id)key
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___WLKSettingsStore;
-  v3 = a3;
-  v4 = objc_msgSendSuper2(&v8, sel_keyPathsForValuesAffectingValueForKey_, v3);
-  v5 = [v3 isEqualToString:{@"_watchListAppsFiltered", v8.receiver, v8.super_class}];
+  keyCopy = key;
+  v4 = objc_msgSendSuper2(&v8, sel_keyPathsForValuesAffectingValueForKey_, keyCopy);
+  v5 = [keyCopy isEqualToString:{@"_watchListAppsFiltered", v8.receiver, v8.super_class}];
 
   if (v5)
   {
@@ -498,10 +498,10 @@ uint64_t __33__WLKSettingsStore_watchListApps__block_invoke_2(uint64_t a1, void 
   return v7;
 }
 
-- (id)settingsForChannelID:(id)a3 externalID:(id)a4
+- (id)settingsForChannelID:(id)d externalID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -514,11 +514,11 @@ uint64_t __33__WLKSettingsStore_watchListApps__block_invoke_2(uint64_t a1, void 
   v13[2] = __52__WLKSettingsStore_settingsForChannelID_externalID___block_invoke;
   v13[3] = &unk_279E602A0;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = dCopy;
+  v15 = iDCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = iDCopy;
+  v10 = dCopy;
   dispatch_sync(accessQueue, v13);
   v11 = v18[5];
 
@@ -581,17 +581,17 @@ LABEL_12:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_copyAppsForChannelID:(id)a3 apps:(id)a4
+- (id)_copyAppsForChannelID:(id)d apps:(id)apps
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
+  dCopy = d;
+  appsCopy = apps;
+  array = [MEMORY[0x277CBEB18] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v6;
+  v8 = appsCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -607,12 +607,12 @@ LABEL_12:
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        v14 = [v13 channelID];
-        v15 = [v14 isEqualToString:v5];
+        channelID = [v13 channelID];
+        v15 = [channelID isEqualToString:dCopy];
 
         if (v15)
         {
-          [v7 addObject:v13];
+          [array addObject:v13];
         }
       }
 
@@ -622,9 +622,9 @@ LABEL_12:
     while (v10);
   }
 
-  if ([v7 count])
+  if ([array count])
   {
-    v16 = [v7 copy];
+    v16 = [array copy];
   }
 
   else
@@ -636,12 +636,12 @@ LABEL_12:
   return v16;
 }
 
-- (void)setStatus:(unint64_t)a3 forChannelID:(id)a4 externalID:(id)a5
+- (void)setStatus:(unint64_t)status forChannelID:(id)d externalID:(id)iD
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  dCopy = d;
+  iDCopy = iD;
+  if (dCopy)
   {
     v10 = objc_autoreleasePoolPush();
     v34 = 0;
@@ -663,10 +663,10 @@ LABEL_12:
     block[3] = &unk_279E602C8;
     v25 = &v28;
     block[4] = self;
-    v23 = v8;
-    v24 = v9;
+    v23 = dCopy;
+    v24 = iDCopy;
     v26 = &v34;
-    v27 = a3;
+    statusCopy = status;
     dispatch_sync(accessQueue, block);
     if (!v35[5] && [v29[5] count])
     {
@@ -788,15 +788,15 @@ LABEL_11:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setName:(id)a3 forChannelID:(id)a4 externalID:(id)a5
+- (void)setName:(id)name forChannelID:(id)d externalID:(id)iD
 {
-  v8 = a3;
-  v9 = [(WLKSettingsStore *)self settingsForChannelID:a4 externalID:a5];
+  nameCopy = name;
+  v9 = [(WLKSettingsStore *)self settingsForChannelID:d externalID:iD];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 displayName];
-    v12 = [v8 isEqualToString:v11];
+    displayName = [v9 displayName];
+    v12 = [nameCopy isEqualToString:displayName];
 
     if ((v12 & 1) == 0)
     {
@@ -806,7 +806,7 @@ LABEL_11:
       v16 = __52__WLKSettingsStore_setName_forChannelID_externalID___block_invoke;
       v17 = &unk_279E5E5F8;
       v18 = v10;
-      v19 = v8;
+      v19 = nameCopy;
       dispatch_sync(accessQueue, &v14);
       [(WLKSettingsStore *)self _tickleKVO:v14];
     }
@@ -876,19 +876,19 @@ void __66__WLKSettingsStore_publishCrossProcessSettingsChangedNotification__bloc
   return v8;
 }
 
-- (void)setSportsNotificationSuppression:(BOOL)a3 forEventID:(id)a4
+- (void)setSportsNotificationSuppression:(BOOL)suppression forEventID:(id)d
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(WLKSettingsStore *)self suppressedSportsEventIDs];
-  v8 = [v7 mutableCopy];
+  suppressionCopy = suppression;
+  dCopy = d;
+  suppressedSportsEventIDs = [(WLKSettingsStore *)self suppressedSportsEventIDs];
+  v8 = [suppressedSportsEventIDs mutableCopy];
 
-  v9 = [v8 containsObject:v6];
-  if (v4)
+  v9 = [v8 containsObject:dCopy];
+  if (suppressionCopy)
   {
     if ((v9 & 1) == 0)
     {
-      [v8 addObject:v6];
+      [v8 addObject:dCopy];
 LABEL_6:
       accessQueue = self->_accessQueue;
       v11[0] = MEMORY[0x277D85DD0];
@@ -896,14 +896,14 @@ LABEL_6:
       v11[2] = __64__WLKSettingsStore_setSportsNotificationSuppression_forEventID___block_invoke;
       v11[3] = &unk_279E5E5F8;
       v12 = v8;
-      v13 = self;
+      selfCopy = self;
       dispatch_sync(accessQueue, v11);
     }
   }
 
   else if (v9)
   {
-    [v8 removeObject:v6];
+    [v8 removeObject:dCopy];
     goto LABEL_6;
   }
 }
@@ -962,7 +962,7 @@ void __57__WLKSettingsStore_clearAllSportsNotificationSuppression__block_invoke(
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setOptedIn:(BOOL)a3
+- (void)setOptedIn:(BOOL)in
 {
   accessQueue = self->_accessQueue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -970,7 +970,7 @@ void __57__WLKSettingsStore_clearAllSportsNotificationSuppression__block_invoke(
   v5[2] = __31__WLKSettingsStore_setOptedIn___block_invoke;
   v5[3] = &unk_279E602F0;
   v5[4] = self;
-  v6 = a3;
+  inCopy = in;
   dispatch_sync(accessQueue, v5);
   [(WLKSettingsStore *)self _writeToDisk];
 }
@@ -1007,7 +1007,7 @@ uint64_t __30__WLKSettingsStore_optedInVal__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setMigratediOS:(BOOL)a3
+- (void)setMigratediOS:(BOOL)s
 {
   accessQueue = self->_accessQueue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -1015,7 +1015,7 @@ uint64_t __30__WLKSettingsStore_optedInVal__block_invoke(uint64_t a1)
   v5[2] = __35__WLKSettingsStore_setMigratediOS___block_invoke;
   v5[3] = &unk_279E602F0;
   v5[4] = self;
-  v6 = a3;
+  sCopy = s;
   dispatch_sync(accessQueue, v5);
   [(WLKSettingsStore *)self _writeToDisk];
 }
@@ -1039,7 +1039,7 @@ uint64_t __30__WLKSettingsStore_optedInVal__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setMigratedtvOS:(BOOL)a3
+- (void)setMigratedtvOS:(BOOL)s
 {
   accessQueue = self->_accessQueue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -1047,7 +1047,7 @@ uint64_t __30__WLKSettingsStore_optedInVal__block_invoke(uint64_t a1)
   v5[2] = __36__WLKSettingsStore_setMigratedtvOS___block_invoke;
   v5[3] = &unk_279E602F0;
   v5[4] = self;
-  v6 = a3;
+  sCopy = s;
   dispatch_sync(accessQueue, v5);
   [(WLKSettingsStore *)self _writeToDisk];
 }
@@ -1071,17 +1071,17 @@ uint64_t __30__WLKSettingsStore_optedInVal__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setLastSyncDate:(id)a3
+- (void)setLastSyncDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   accessQueue = self->_accessQueue;
   v7 = MEMORY[0x277D85DD0];
   v8 = 3221225472;
   v9 = __36__WLKSettingsStore_setLastSyncDate___block_invoke;
   v10 = &unk_279E5E5F8;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v12 = dateCopy;
+  v6 = dateCopy;
   dispatch_sync(accessQueue, &v7);
   [(WLKSettingsStore *)self _writeToDisk:v7];
 }
@@ -1102,24 +1102,24 @@ void __36__WLKSettingsStore_setLastSyncDate___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLastSyncToCloudDate:(id)a3
+- (void)setLastSyncToCloudDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   accessQueue = self->_accessQueue;
   v7 = MEMORY[0x277D85DD0];
   v8 = 3221225472;
   v9 = __43__WLKSettingsStore_setLastSyncToCloudDate___block_invoke;
   v10 = &unk_279E5E5F8;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v12 = dateCopy;
+  v6 = dateCopy;
   dispatch_sync(accessQueue, &v7);
   [(WLKSettingsStore *)self _writeToDisk:v7];
 }
 
-- (void)setPushToken:(id)a3
+- (void)setPushToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1129,9 +1129,9 @@ void __36__WLKSettingsStore_setLastSyncDate___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __33__WLKSettingsStore_setPushToken___block_invoke;
   block[3] = &unk_279E5FE18;
-  v6 = v4;
+  v6 = tokenCopy;
   v8 = v6;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   dispatch_sync(accessQueue, block);
   if (*(v12 + 24) == 1)
@@ -1175,36 +1175,36 @@ void __33__WLKSettingsStore_setPushToken___block_invoke(uint64_t a1)
 
 - (id)description
 {
-  v2 = [(WLKSettingsStore *)self _dictionaryRepresentation];
-  v3 = [v2 description];
+  _dictionaryRepresentation = [(WLKSettingsStore *)self _dictionaryRepresentation];
+  v3 = [_dictionaryRepresentation description];
 
   return v3;
 }
 
 - (id)_watchListAppsFiltered
 {
-  v2 = self;
+  selfCopy = self;
   v53 = *MEMORY[0x277D85DE8];
-  v3 = [(WLKSettingsStore *)self watchListApps];
-  v4 = [v3 mutableCopy];
+  watchListApps = [(WLKSettingsStore *)self watchListApps];
+  v4 = [watchListApps mutableCopy];
 
   v35 = v4;
   v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
   v6 = +[WLKChannelUtilities sharedInstance];
-  v7 = [v6 orderedChannels];
+  orderedChannels = [v6 orderedChannels];
 
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v8 = v7;
+  v8 = orderedChannels;
   v9 = [v8 countByEnumeratingWithState:&v47 objects:v52 count:16];
   if (v9)
   {
     v10 = v9;
     v11 = *v48;
     v38 = v5;
-    v39 = v2;
+    v39 = selfCopy;
     v36 = *v48;
     v37 = v8;
     do
@@ -1221,16 +1221,16 @@ void __33__WLKSettingsStore_setPushToken___block_invoke(uint64_t a1)
         v13 = *(*(&v47 + 1) + 8 * v12);
         if ([v13 isWatchListEnabled] && (objc_msgSend(v13, "isFirstParty") & 1) == 0)
         {
-          v14 = [v13 channelID];
-          v15 = [(WLKSettingsStore *)v2 _appsForChannelID:v14];
+          channelID = [v13 channelID];
+          v15 = [(WLKSettingsStore *)selfCopy _appsForChannelID:channelID];
 
           if ([v15 count])
           {
             v42 = v12;
-            v16 = [MEMORY[0x277CBEB18] array];
-            v17 = [v13 appBundleIDs];
-            v18 = [v17 firstObject];
-            v19 = WLKSubscriptionIdentifierForBundleID(v18);
+            array = [MEMORY[0x277CBEB18] array];
+            appBundleIDs = [v13 appBundleIDs];
+            firstObject = [appBundleIDs firstObject];
+            v19 = WLKSubscriptionIdentifierForBundleID(firstObject);
 
             v45 = 0u;
             v46 = 0u;
@@ -1254,15 +1254,15 @@ void __33__WLKSettingsStore_setPushToken___block_invoke(uint64_t a1)
                   }
 
                   v26 = *(*(&v43 + 1) + 8 * i);
-                  v27 = [v26 displayName];
-                  if ([v27 length])
+                  displayName = [v26 displayName];
+                  if ([displayName length])
                   {
-                    v28 = [v26 accessStatus];
+                    accessStatus = [v26 accessStatus];
 
-                    if (v28)
+                    if (accessStatus)
                     {
-                      v29 = [v26 externalID];
-                      v30 = [WLKAppSettings isExternalID:v29 equalToExternalID:v19];
+                      externalID = [v26 externalID];
+                      v30 = [WLKAppSettings isExternalID:externalID equalToExternalID:v19];
 
                       if (v30)
                       {
@@ -1273,7 +1273,7 @@ void __33__WLKSettingsStore_setPushToken___block_invoke(uint64_t a1)
 
                       else
                       {
-                        [v16 addObject:v26];
+                        [array addObject:v26];
                       }
                     }
                   }
@@ -1289,7 +1289,7 @@ void __33__WLKSettingsStore_setPushToken___block_invoke(uint64_t a1)
               while (v22);
 
               v5 = v38;
-              v2 = v39;
+              selfCopy = v39;
               v11 = v36;
               v8 = v37;
               if (v23)
@@ -1303,10 +1303,10 @@ void __33__WLKSettingsStore_setPushToken___block_invoke(uint64_t a1)
             {
             }
 
-            if ([v16 count])
+            if ([array count])
             {
-              v32 = [v16 firstObject];
-              [v5 addObject:v32];
+              firstObject2 = [array firstObject];
+              [v5 addObject:firstObject2];
             }
 
             v23 = 0;
@@ -1344,17 +1344,17 @@ uint64_t __42__WLKSettingsStore__watchListAppsFiltered__block_invoke(uint64_t a1
   return v7;
 }
 
-- (void)_updateDisplayNamesForUI:(id)a3
+- (void)_updateDisplayNamesForUI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   v5 = dispatch_get_global_queue(0, 0);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__WLKSettingsStore__updateDisplayNamesForUI___block_invoke;
   v7[3] = &unk_279E5EFC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = iCopy;
+  v6 = iCopy;
   dispatch_async(v5, v7);
 }
 
@@ -1463,32 +1463,32 @@ LABEL_21:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)refreshWithCompletion:(id)a3
+- (void)refreshWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(WLKSettingsStore *)self ignoreChangesCount]< 1)
   {
-    [(WLKSettingsStore *)self _loadFromDiskWithCompletion:v4];
+    [(WLKSettingsStore *)self _loadFromDiskWithCompletion:completionCopy];
   }
 
   else
   {
     NSLog(&cfstr_Wlksettingssto_10.isa);
-    if (v4)
+    if (completionCopy)
     {
-      v4[2]();
+      completionCopy[2]();
     }
   }
 }
 
-- (id)_dictionaryRepresentationCopyingItems:(BOOL)a3
+- (id)_dictionaryRepresentationCopyingItems:(BOOL)items
 {
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__8;
   v14 = __Block_byref_object_dispose__8;
-  v15 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -1496,7 +1496,7 @@ LABEL_21:
   block[3] = &unk_279E60318;
   block[4] = self;
   block[5] = &v10;
-  v9 = a3;
+  itemsCopy = items;
   dispatch_sync(accessQueue, block);
   v6 = [v11[5] copy];
   _Block_object_dispose(&v10, 8);
@@ -1566,16 +1566,16 @@ void __58__WLKSettingsStore__dictionaryRepresentationCopyingItems___block_invoke
   return v4;
 }
 
-- (void)_loadFromDiskWithCompletion:(id)a3
+- (void)_loadFromDiskWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__WLKSettingsStore__loadFromDiskWithCompletion___block_invoke;
   v6[3] = &unk_279E60368;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v6[4] = self;
   v7 = v5;
   [(WLKSettingsStore *)self _dictionaryOnDisk:v6];
@@ -1903,14 +1903,14 @@ LABEL_36:
   {
     v3 = objc_autoreleasePoolPush();
     v4 = dispatch_semaphore_create(0);
-    v5 = [(WLKSettingsStore *)self _dictionaryRepresentation];
+    _dictionaryRepresentation = [(WLKSettingsStore *)self _dictionaryRepresentation];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __32__WLKSettingsStore__writeToDisk__block_invoke;
     v8[3] = &unk_279E60390;
     v9 = v4;
     v6 = v4;
-    [(WLKSettingsStore *)self _writeToDisk:v5 completion:v8];
+    [(WLKSettingsStore *)self _writeToDisk:_dictionaryRepresentation completion:v8];
 
     v7 = dispatch_time(0, 5000000000);
     dispatch_semaphore_wait(v6, v7);
@@ -1925,10 +1925,10 @@ LABEL_36:
   }
 }
 
-- (void)_writeToDisk:(id)a3 completion:(id)a4
+- (void)_writeToDisk:(id)disk completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  diskCopy = disk;
+  completionCopy = completion;
   if (WLKShouldRunInProcess())
   {
     objc_initWeak(&location, self);
@@ -1938,8 +1938,8 @@ LABEL_36:
     v12[3] = &unk_279E60430;
     objc_copyWeak(&v15, &location);
     v12[4] = self;
-    v13 = v6;
-    v14 = v7;
+    v13 = diskCopy;
+    v14 = completionCopy;
     [(WLKSettingsStore *)self _dictionaryOnDisk:v12];
 
     objc_destroyWeak(&v15);
@@ -1954,8 +1954,8 @@ LABEL_36:
     v9[2] = __44__WLKSettingsStore__writeToDisk_completion___block_invoke_5;
     v9[3] = &unk_279E60480;
     v9[4] = self;
-    v11 = v7;
-    v10 = v6;
+    v11 = completionCopy;
+    v10 = diskCopy;
     dispatch_async(readWriteQueue, v9);
   }
 }
@@ -2122,9 +2122,9 @@ uint64_t __44__WLKSettingsStore__writeToDisk_completion___block_invoke_7(uint64_
   return result;
 }
 
-- (void)_dictionaryOnDisk:(id)a3
+- (void)_dictionaryOnDisk:(id)disk
 {
-  v4 = a3;
+  diskCopy = disk;
   if (+[WLKSettingsStore isHostedInRemoteViewService])
   {
     v5 = 10000000;
@@ -2142,8 +2142,8 @@ uint64_t __44__WLKSettingsStore__writeToDisk_completion___block_invoke_7(uint64_
   v9[2] = __38__WLKSettingsStore__dictionaryOnDisk___block_invoke;
   v9[3] = &unk_279E5EFC0;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = diskCopy;
+  v8 = diskCopy;
   dispatch_after(v6, readWriteQueue, v9);
 }
 
@@ -2265,48 +2265,48 @@ void __38__WLKSettingsStore__dictionaryOnDisk___block_invoke_4(uint64_t a1, void
   }
 }
 
-- (void)forceUpdateWithCompletion:(id)a3
+- (void)forceUpdateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v3 = +[WLKChannelUtilities sharedInstanceFiltered];
   [v3 invalidateCache];
 
-  [WLKSettingsCloudUtilities forceUpdateWithCompletion:v4];
+  [WLKSettingsCloudUtilities forceUpdateWithCompletion:completionCopy];
 }
 
-- (void)synchronize:(unint64_t)a3 completion:(id)a4
+- (void)synchronize:(unint64_t)synchronize completion:(id)completion
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 == 1)
+  completionCopy = completion;
+  v6 = completionCopy;
+  if (synchronize == 1)
   {
-    v7 = v5;
-    v5 = [WLKSettingsCloudUtilities updateLocalStoreWithCompletion:v5];
+    v7 = completionCopy;
+    completionCopy = [WLKSettingsCloudUtilities updateLocalStoreWithCompletion:completionCopy];
   }
 
   else
   {
-    if (a3)
+    if (synchronize)
     {
       goto LABEL_6;
     }
 
-    v7 = v5;
-    v5 = [WLKSettingsCloudUtilities updateCloudStoreWithCompletion:v5];
+    v7 = completionCopy;
+    completionCopy = [WLKSettingsCloudUtilities updateCloudStoreWithCompletion:completionCopy];
   }
 
   v6 = v7;
 LABEL_6:
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](completionCopy, v6);
 }
 
-- (BOOL)synchronize:(unint64_t)a3
+- (BOOL)synchronize:(unint64_t)synchronize
 {
-  v5 = [MEMORY[0x277CCACC8] currentThread];
-  v6 = [v5 isMainThread];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  isMainThread = [currentThread isMainThread];
 
-  if (v6)
+  if (isMainThread)
   {
     v7 = [MEMORY[0x277CBEAD8] exceptionWithName:@"WLKSettingsStoreException" reason:@"don't call synchronize: on main thread!" userInfo:0];
     [v7 raise];
@@ -2324,7 +2324,7 @@ LABEL_6:
   v14 = &v15;
   v9 = v8;
   v13 = v9;
-  [(WLKSettingsStore *)self synchronize:a3 completion:v12];
+  [(WLKSettingsStore *)self synchronize:synchronize completion:v12];
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
   v10 = *(v16 + 24);
 
@@ -2332,13 +2332,13 @@ LABEL_6:
   return v10;
 }
 
-- (void)_attemptCullingOfObsoleteApp:(id)a3
+- (void)_attemptCullingOfObsoleteApp:(id)app
 {
-  v4 = a3;
+  appCopy = app;
   v5 = +[WLKReachabilityMonitor sharedInstance];
-  v6 = [v5 isNetworkReachable];
+  isNetworkReachable = [v5 isNetworkReachable];
 
-  if (v6)
+  if (isNetworkReachable)
   {
     objc_initWeak(&location, self);
     v7[0] = MEMORY[0x277D85DD0];
@@ -2346,7 +2346,7 @@ LABEL_6:
     v7[2] = __49__WLKSettingsStore__attemptCullingOfObsoleteApp___block_invoke;
     v7[3] = &unk_279E604F8;
     objc_copyWeak(&v9, &location);
-    v8 = v4;
+    v8 = appCopy;
     [WLKSettingsCloudUtilities updateCloudStoreAppSettings:v8 deleteHistory:0 removeEntry:1 completion:v7];
 
     objc_destroyWeak(&v9);
@@ -2363,16 +2363,16 @@ void __49__WLKSettingsStore__attemptCullingOfObsoleteApp___block_invoke(uint64_t
   }
 }
 
-+ (void)synchronizeSettingsDefaultsForKeys:(id)a3
++ (void)synchronizeSettingsDefaultsForKeys:(id)keys
 {
-  v3 = a3;
+  keysCopy = keys;
   v4 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__WLKSettingsStore_synchronizeSettingsDefaultsForKeys___block_invoke;
   block[3] = &unk_279E5EE08;
-  v7 = v3;
-  v5 = v3;
+  v7 = keysCopy;
+  v5 = keysCopy;
   dispatch_async(v4, block);
 }
 
@@ -2386,20 +2386,20 @@ void __55__WLKSettingsStore_synchronizeSettingsDefaultsForKeys___block_invoke(ui
   NSLog(&cfstr_Wlksettingssto_24.isa);
 }
 
-- (void)_activeAccountChangedNotification:(id)a3
+- (void)_activeAccountChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v5 = [MEMORY[0x277D6C478] activeAccount];
-  v6 = [v5 ams_DSID];
+  activeAccount = [MEMORY[0x277D6C478] activeAccount];
+  ams_DSID = [activeAccount ams_DSID];
 
-  if (v6)
+  if (ams_DSID)
   {
-    v7 = [v5 ams_DSID];
-    v6 = [v7 stringValue];
+    ams_DSID2 = [activeAccount ams_DSID];
+    ams_DSID = [ams_DSID2 stringValue];
   }
 
   accessQueue = self->_accessQueue;
@@ -2407,9 +2407,9 @@ void __55__WLKSettingsStore_synchronizeSettingsDefaultsForKeys___block_invoke(ui
   block[1] = 3221225472;
   block[2] = __54__WLKSettingsStore__activeAccountChangedNotification___block_invoke;
   block[3] = &unk_279E5FE18;
-  v9 = v6;
+  v9 = ams_DSID;
   v11 = v9;
-  v12 = self;
+  selfCopy = self;
   v13 = &v14;
   dispatch_sync(accessQueue, block);
   if (*(v15 + 24) == 1)
@@ -2436,51 +2436,51 @@ void __54__WLKSettingsStore__activeAccountChangedNotification___block_invoke(voi
 - (BOOL)sportsScoreSpoilersAllowed
 {
   v2 = +[WLKSystemPreferencesStore sharedPreferences];
-  v3 = [v2 sportsScoreSpoilersAllowed];
+  sportsScoreSpoilersAllowed = [v2 sportsScoreSpoilersAllowed];
 
-  return v3;
+  return sportsScoreSpoilersAllowed;
 }
 
 - (BOOL)upNextLockupsUseCoverArt
 {
   v2 = +[WLKSystemPreferencesStore sharedPreferences];
-  v3 = [v2 upNextLockupsUseCoverArt];
+  upNextLockupsUseCoverArt = [v2 upNextLockupsUseCoverArt];
 
-  return v3;
+  return upNextLockupsUseCoverArt;
 }
 
 - (BOOL)privateModeEnabled
 {
   v2 = +[WLKSystemPreferencesStore sharedPreferences];
-  v3 = [v2 privateModeEnabled];
+  privateModeEnabled = [v2 privateModeEnabled];
 
-  return v3;
+  return privateModeEnabled;
 }
 
 - (BOOL)postPlayAutoPlayNextVideo
 {
   v2 = +[WLKSystemPreferencesStore sharedPreferences];
-  v3 = [v2 postPlayAutoPlayNextVideo];
+  postPlayAutoPlayNextVideo = [v2 postPlayAutoPlayNextVideo];
 
-  return v3;
+  return postPlayAutoPlayNextVideo;
 }
 
-- (id)_appsForChannelID:(id)a3
+- (id)_appsForChannelID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__8;
   v16 = __Block_byref_object_dispose__8;
-  v17 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__WLKSettingsStore__appsForChannelID___block_invoke;
   block[3] = &unk_279E5FE18;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   v10 = v6;
   v11 = &v12;
   dispatch_sync(accessQueue, block);
@@ -2540,17 +2540,17 @@ void __38__WLKSettingsStore__appsForChannelID___block_invoke(void *a1)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeWatchListApp:(id)a3
+- (void)_removeWatchListApp:(id)app
 {
-  v4 = a3;
+  appCopy = app;
   accessQueue = self->_accessQueue;
   v7 = MEMORY[0x277D85DD0];
   v8 = 3221225472;
   v9 = __40__WLKSettingsStore__removeWatchListApp___block_invoke;
   v10 = &unk_279E5E5F8;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v12 = appCopy;
+  v6 = appCopy;
   dispatch_sync(accessQueue, &v7);
   [(WLKSettingsStore *)self _tickleKVO:v7];
   [(WLKSettingsStore *)self _writeToDisk];
@@ -2558,13 +2558,13 @@ void __38__WLKSettingsStore__appsForChannelID___block_invoke(void *a1)
 
 - (void)beginIgnoringChanges
 {
-  v3 = [(WLKSettingsStore *)self ignoreChangesCount];
-  if (!v3)
+  ignoreChangesCount = [(WLKSettingsStore *)self ignoreChangesCount];
+  if (!ignoreChangesCount)
   {
     NSLog(&cfstr_Wlksettingssto_26.isa);
   }
 
-  [(WLKSettingsStore *)self setIgnoreChangesCount:(v3 + 1)];
+  [(WLKSettingsStore *)self setIgnoreChangesCount:(ignoreChangesCount + 1)];
 }
 
 - (void)endIgnoringChanges

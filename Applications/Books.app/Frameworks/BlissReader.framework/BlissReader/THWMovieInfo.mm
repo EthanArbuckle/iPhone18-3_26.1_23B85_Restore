@@ -1,19 +1,19 @@
 @interface THWMovieInfo
-- (THWMovieInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5;
-- (THWMovieInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 movieRemoteURL:(id)a6 loadedAsset:(id)a7;
+- (THWMovieInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style;
+- (THWMovieInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style movieRemoteURL:(id)l loadedAsset:(id)asset;
 - (id)childInfos;
 - (void)dealloc;
-- (void)setPosterImageInfo:(id)a3;
-- (void)setStoppedImage:(CGImage *)a3;
+- (void)setPosterImageInfo:(id)info;
+- (void)setStoppedImage:(CGImage *)image;
 @end
 
 @implementation THWMovieInfo
 
-- (THWMovieInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5
+- (THWMovieInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style
 {
   v9.receiver = self;
   v9.super_class = THWMovieInfo;
-  v5 = [(THWMovieInfo *)&v9 initWithContext:a3 geometry:a4 style:a5];
+  v5 = [(THWMovieInfo *)&v9 initWithContext:context geometry:geometry style:style];
   v6 = v5;
   if (v5)
   {
@@ -26,11 +26,11 @@
   return v6;
 }
 
-- (THWMovieInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 movieRemoteURL:(id)a6 loadedAsset:(id)a7
+- (THWMovieInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style movieRemoteURL:(id)l loadedAsset:(id)asset
 {
-  if (a7)
+  if (asset)
   {
-    [a7 duration];
+    [asset duration];
   }
 
   else
@@ -40,10 +40,10 @@
     v20 = 0;
   }
 
-  [a7 tracks];
+  [asset tracks];
   v17.receiver = self;
   v17.super_class = THWMovieInfo;
-  v13 = [(THWMovieInfo *)&v17 initWithContext:a3 geometry:a4 style:a5 movieRemoteURL:a6 loadedAsset:a7];
+  v13 = [(THWMovieInfo *)&v17 initWithContext:context geometry:geometry style:style movieRemoteURL:l loadedAsset:asset];
   v14 = v13;
   if (v13)
   {
@@ -64,25 +64,25 @@
   [(THWMovieInfo *)&v3 dealloc];
 }
 
-- (void)setStoppedImage:(CGImage *)a3
+- (void)setStoppedImage:(CGImage *)image
 {
   CGImageRelease(self->_stoppedImage);
-  self->_stoppedImage = a3;
+  self->_stoppedImage = image;
 
-  CGImageRetain(a3);
+  CGImageRetain(image);
 }
 
-- (void)setPosterImageInfo:(id)a3
+- (void)setPosterImageInfo:(id)info
 {
   posterImageInfo = self->_posterImageInfo;
-  if (posterImageInfo != a3)
+  if (posterImageInfo != info)
   {
     [(TSDImageInfo *)posterImageInfo setParentInfo:0];
 
-    v6 = a3;
-    self->_posterImageInfo = v6;
+    infoCopy = info;
+    self->_posterImageInfo = infoCopy;
 
-    [(TSDImageInfo *)v6 setParentInfo:self];
+    [(TSDImageInfo *)infoCopy setParentInfo:self];
   }
 }
 
@@ -91,9 +91,9 @@
   result = [(THWMovieInfo *)self posterImageInfo];
   if (result)
   {
-    v4 = [(THWMovieInfo *)self posterImageInfo];
+    posterImageInfo = [(THWMovieInfo *)self posterImageInfo];
 
-    return [NSArray arrayWithObject:v4];
+    return [NSArray arrayWithObject:posterImageInfo];
   }
 
   return result;

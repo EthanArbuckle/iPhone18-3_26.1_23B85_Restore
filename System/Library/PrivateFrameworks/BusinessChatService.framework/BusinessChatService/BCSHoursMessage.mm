@@ -1,15 +1,15 @@
 @interface BCSHoursMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsDays:(id)a3;
-- (int)dayAtIndex:(unint64_t)a3;
-- (void)addTimeRange:(id)a3;
-- (void)copyTo:(id)a3;
+- (int)StringAsDays:(id)days;
+- (int)dayAtIndex:(unint64_t)index;
+- (void)addTimeRange:(id)range;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BCSHoursMessage
@@ -22,61 +22,61 @@
   [(BCSHoursMessage *)&v3 dealloc];
 }
 
-- (int)dayAtIndex:(unint64_t)a3
+- (int)dayAtIndex:(unint64_t)index
 {
   p_days = &self->_days;
   count = self->_days.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_days->list[a3];
+  return p_days->list[index];
 }
 
-- (int)StringAsDays:(id)a3
+- (int)StringAsDays:(id)days
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SUNDAY"])
+  daysCopy = days;
+  if ([daysCopy isEqualToString:@"SUNDAY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"MONDAY"])
+  else if ([daysCopy isEqualToString:@"MONDAY"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"TUESDAY"])
+  else if ([daysCopy isEqualToString:@"TUESDAY"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"WEDNESDAY"])
+  else if ([daysCopy isEqualToString:@"WEDNESDAY"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"THURSDAY"])
+  else if ([daysCopy isEqualToString:@"THURSDAY"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"FRIDAY"])
+  else if ([daysCopy isEqualToString:@"FRIDAY"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SATURDAY"])
+  else if ([daysCopy isEqualToString:@"SATURDAY"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"EVERYDAY"])
+  else if ([daysCopy isEqualToString:@"EVERYDAY"])
   {
     v4 = 8;
   }
@@ -89,22 +89,22 @@
   return v4;
 }
 
-- (void)addTimeRange:(id)a3
+- (void)addTimeRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   timeRanges = self->_timeRanges;
-  v8 = v4;
+  v8 = rangeCopy;
   if (!timeRanges)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_timeRanges;
     self->_timeRanges = v6;
 
-    v4 = v8;
+    rangeCopy = v8;
     timeRanges = self->_timeRanges;
   }
 
-  [(NSMutableArray *)timeRanges addObject:v4];
+  [(NSMutableArray *)timeRanges addObject:rangeCopy];
 }
 
 - (id)description
@@ -113,8 +113,8 @@
   v8.receiver = self;
   v8.super_class = BCSHoursMessage;
   v4 = [(BCSHoursMessage *)&v8 description];
-  v5 = [(BCSHoursMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BCSHoursMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -122,7 +122,7 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   p_days = &self->_days;
   if (self->_days.count)
   {
@@ -151,7 +151,7 @@
       while (v6 < self->_days.count);
     }
 
-    [v3 setObject:v5 forKey:@"day"];
+    [dictionary setObject:v5 forKey:@"day"];
   }
 
   if ([(NSMutableArray *)self->_timeRanges count])
@@ -176,8 +176,8 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          [v9 addObject:dictionaryRepresentation];
         }
 
         v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -186,18 +186,18 @@
       while (v12);
     }
 
-    [v3 setObject:v9 forKey:@"time_range"];
+    [dictionary setObject:v9 forKey:@"time_range"];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_days.count)
   {
     v5 = 0;
@@ -243,43 +243,43 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   if ([(BCSHoursMessage *)self daysCount])
   {
-    [v11 clearDays];
-    v4 = [(BCSHoursMessage *)self daysCount];
-    if (v4)
+    [toCopy clearDays];
+    daysCount = [(BCSHoursMessage *)self daysCount];
+    if (daysCount)
     {
-      v5 = v4;
+      v5 = daysCount;
       for (i = 0; i != v5; ++i)
       {
-        [v11 addDay:{-[BCSHoursMessage dayAtIndex:](self, "dayAtIndex:", i)}];
+        [toCopy addDay:{-[BCSHoursMessage dayAtIndex:](self, "dayAtIndex:", i)}];
       }
     }
   }
 
   if ([(BCSHoursMessage *)self timeRangesCount])
   {
-    [v11 clearTimeRanges];
-    v7 = [(BCSHoursMessage *)self timeRangesCount];
-    if (v7)
+    [toCopy clearTimeRanges];
+    timeRangesCount = [(BCSHoursMessage *)self timeRangesCount];
+    if (timeRangesCount)
     {
-      v8 = v7;
+      v8 = timeRangesCount;
       for (j = 0; j != v8; ++j)
       {
         v10 = [(BCSHoursMessage *)self timeRangeAtIndex:j];
-        [v11 addTimeRange:v10];
+        [toCopy addTimeRange:v10];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   PBRepeatedInt32Copy();
   v16 = 0u;
   v17 = 0u;
@@ -301,7 +301,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{a3, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{zone, v14}];
         [v5 addTimeRange:v11];
 
         ++v10;
@@ -318,13 +318,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && PBRepeatedInt32IsEqual())
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && PBRepeatedInt32IsEqual())
   {
     timeRanges = self->_timeRanges;
-    if (timeRanges | v4[4])
+    if (timeRanges | equalCopy[4])
     {
       v6 = [(NSMutableArray *)timeRanges isEqual:?];
     }
@@ -343,17 +343,17 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 daysCount];
-  if (v5)
+  fromCopy = from;
+  daysCount = [fromCopy daysCount];
+  if (daysCount)
   {
-    v6 = v5;
+    v6 = daysCount;
     for (i = 0; i != v6; ++i)
     {
-      -[BCSHoursMessage addDay:](self, "addDay:", [v4 dayAtIndex:i]);
+      -[BCSHoursMessage addDay:](self, "addDay:", [fromCopy dayAtIndex:i]);
     }
   }
 
@@ -361,7 +361,7 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = v4[4];
+  v8 = fromCopy[4];
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {

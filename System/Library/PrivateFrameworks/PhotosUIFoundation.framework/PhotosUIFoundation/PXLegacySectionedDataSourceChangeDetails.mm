@@ -5,43 +5,43 @@
 - (NSIndexSet)changedSections;
 - (NSIndexSet)deletedSections;
 - (NSIndexSet)insertedSections;
-- (PXLegacySectionedDataSourceChangeDetails)initWithSectionedDataSourceChangeDetails:(id)a3 shiftedSection:(int64_t)a4;
+- (PXLegacySectionedDataSourceChangeDetails)initWithSectionedDataSourceChangeDetails:(id)details shiftedSection:(int64_t)section;
 - (id)contentChangedItemsIndexPaths;
 - (id)description;
 - (void)_prepareIncrementalDetails;
-- (void)enumerateMovedIndexPathsUsingBlock:(id)a3;
+- (void)enumerateMovedIndexPathsUsingBlock:(id)block;
 - (void)prepareIfNeeded;
 @end
 
 @implementation PXLegacySectionedDataSourceChangeDetails
 
-- (void)enumerateMovedIndexPathsUsingBlock:(id)a3
+- (void)enumerateMovedIndexPathsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __79__PXLegacySectionedDataSourceChangeDetails_enumerateMovedIndexPathsUsingBlock___block_invoke;
   aBlock[3] = &unk_1E7BB8658;
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
-  v6 = [(PXLegacySectionedDataSourceChangeDetails *)self sectionedDataSourceChangeDetails];
+  sectionedDataSourceChangeDetails = [(PXLegacySectionedDataSourceChangeDetails *)self sectionedDataSourceChangeDetails];
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x2020000000;
   v17 = 0;
-  v7 = [v6 sectionsWithItemChanges];
+  sectionsWithItemChanges = [sectionedDataSourceChangeDetails sectionsWithItemChanges];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __79__PXLegacySectionedDataSourceChangeDetails_enumerateMovedIndexPathsUsingBlock___block_invoke_2;
   v11[3] = &unk_1E7BB86F8;
-  v8 = v6;
+  v8 = sectionedDataSourceChangeDetails;
   v12 = v8;
   v9 = v5;
   v13 = v9;
-  v10 = v4;
+  v10 = blockCopy;
   v14 = v10;
   v15 = v16;
-  [v7 enumerateIndexesUsingBlock:v11];
+  [sectionsWithItemChanges enumerateIndexesUsingBlock:v11];
 
   _Block_object_dispose(v16, 8);
 }
@@ -88,36 +88,36 @@ void __79__PXLegacySectionedDataSourceChangeDetails_enumerateMovedIndexPathsUsin
   aBlock[3] = &unk_1E7BB8658;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(PXLegacySectionedDataSourceChangeDetails *)self sectionedDataSourceChangeDetails];
-  v5 = [v4 sectionChanges];
-  v6 = [v5 removedIndexes];
-  v7 = [v5 insertedIndexes];
-  v8 = [v5 changedIndexes];
+  sectionedDataSourceChangeDetails = [(PXLegacySectionedDataSourceChangeDetails *)self sectionedDataSourceChangeDetails];
+  sectionChanges = [sectionedDataSourceChangeDetails sectionChanges];
+  removedIndexes = [sectionChanges removedIndexes];
+  insertedIndexes = [sectionChanges insertedIndexes];
+  changedIndexes = [sectionChanges changedIndexes];
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
   v44 = __Block_byref_object_copy__16665;
   v45 = __Block_byref_object_dispose__16666;
-  v46 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
   v38 = __Block_byref_object_copy__16665;
   v39 = __Block_byref_object_dispose__16666;
-  v40 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
   v32 = __Block_byref_object_copy__16665;
   v33 = __Block_byref_object_dispose__16666;
-  v34 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   v9 = [MEMORY[0x1E695DFA8] set];
-  v10 = [v4 sectionsWithItemChanges];
+  sectionsWithItemChanges = [sectionedDataSourceChangeDetails sectionsWithItemChanges];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __70__PXLegacySectionedDataSourceChangeDetails__prepareIncrementalDetails__block_invoke_2;
   v22[3] = &unk_1E7BB86A8;
-  v11 = v4;
+  v11 = sectionedDataSourceChangeDetails;
   v23 = v11;
   v26 = &v41;
   v12 = v3;
@@ -126,11 +126,11 @@ void __79__PXLegacySectionedDataSourceChangeDetails_enumerateMovedIndexPathsUsin
   v28 = &v29;
   v13 = v9;
   v24 = v13;
-  [v10 enumerateIndexesUsingBlock:v22];
+  [sectionsWithItemChanges enumerateIndexesUsingBlock:v22];
 
-  if ([v6 count])
+  if ([removedIndexes count])
   {
-    v14 = v6;
+    v14 = removedIndexes;
   }
 
   else
@@ -139,9 +139,9 @@ void __79__PXLegacySectionedDataSourceChangeDetails_enumerateMovedIndexPathsUsin
   }
 
   objc_storeStrong(&self->_deletedSections, v14);
-  if ([v7 count])
+  if ([insertedIndexes count])
   {
-    v15 = v7;
+    v15 = insertedIndexes;
   }
 
   else
@@ -150,9 +150,9 @@ void __79__PXLegacySectionedDataSourceChangeDetails_enumerateMovedIndexPathsUsin
   }
 
   objc_storeStrong(&self->_insertedSections, v15);
-  if ([v8 count])
+  if ([changedIndexes count])
   {
-    v16 = v8;
+    v16 = changedIndexes;
   }
 
   else
@@ -194,14 +194,14 @@ void __79__PXLegacySectionedDataSourceChangeDetails_enumerateMovedIndexPathsUsin
   }
 
   objc_storeStrong(&self->_changedIndexPaths, v19);
-  v20 = [v13 count];
-  if (v20)
+  allObjects = [v13 count];
+  if (allObjects)
   {
-    v20 = [v13 allObjects];
+    allObjects = [v13 allObjects];
   }
 
   contentItemsChangedIndexPaths = self->_contentItemsChangedIndexPaths;
-  self->_contentItemsChangedIndexPaths = v20;
+  self->_contentItemsChangedIndexPaths = allObjects;
 
   _Block_object_dispose(&v29, 8);
   _Block_object_dispose(&v35, 8);
@@ -297,11 +297,11 @@ LABEL_6:
 {
   if (!self->_prepared)
   {
-    v3 = self;
-    objc_sync_enter(v3);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (!self->_prepared)
     {
-      v4 = [(PXLegacySectionedDataSourceChangeDetails *)v3 sectionedDataSourceChangeDetails];
+      sectionedDataSourceChangeDetails = [(PXLegacySectionedDataSourceChangeDetails *)selfCopy sectionedDataSourceChangeDetails];
       v19 = 0;
       v20 = &v19;
       v21 = 0x2020000000;
@@ -310,40 +310,40 @@ LABEL_6:
       v16 = &v15;
       v17 = 0x2020000000;
       v18 = 0;
-      v5 = [v4 sectionChanges];
-      v6 = v5;
+      sectionChanges = [sectionedDataSourceChangeDetails sectionChanges];
+      v6 = sectionChanges;
       v7 = v20;
       if (*(v20 + 24) == 1)
       {
-        v8 = [v5 hasIncrementalChanges];
+        hasIncrementalChanges = [sectionChanges hasIncrementalChanges];
         v7 = v20;
       }
 
       else
       {
-        v8 = 0;
+        hasIncrementalChanges = 0;
       }
 
-      *(v7 + 24) = v8;
-      v9 = [v4 sectionsWithItemChanges];
+      *(v7 + 24) = hasIncrementalChanges;
+      sectionsWithItemChanges = [sectionedDataSourceChangeDetails sectionsWithItemChanges];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __59__PXLegacySectionedDataSourceChangeDetails_prepareIfNeeded__block_invoke;
       v11[3] = &unk_1E7BB8630;
-      v10 = v4;
+      v10 = sectionedDataSourceChangeDetails;
       v12 = v10;
       v13 = &v19;
       v14 = &v15;
-      [v9 enumerateIndexesUsingBlock:v11];
+      [sectionsWithItemChanges enumerateIndexesUsingBlock:v11];
 
       if (*(v20 + 24) == 1)
       {
-        v3->_hasIncrementalChanges = 1;
-        v3->_hasMoves = *(v16 + 24);
-        [(PXLegacySectionedDataSourceChangeDetails *)v3 _prepareIncrementalDetails];
+        selfCopy->_hasIncrementalChanges = 1;
+        selfCopy->_hasMoves = *(v16 + 24);
+        [(PXLegacySectionedDataSourceChangeDetails *)selfCopy _prepareIncrementalDetails];
       }
 
-      if (!v3->_hasIncrementalChanges)
+      if (!selfCopy->_hasIncrementalChanges)
       {
         *(v16 + 24) = 0;
       }
@@ -354,7 +354,7 @@ LABEL_6:
       _Block_object_dispose(&v19, 8);
     }
 
-    objc_sync_exit(v3);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -400,28 +400,28 @@ void __59__PXLegacySectionedDataSourceChangeDetails_prepareIfNeeded__block_invok
   v24.super_class = PXLegacySectionedDataSourceChangeDetails;
   v23 = [(PXLegacySectionedDataSourceChangeDetails *)&v24 description];
   v21 = MEMORY[0x1E696AEC0];
-  v3 = [(PXLegacySectionedDataSourceChangeDetails *)self hasIncrementalChanges];
+  hasIncrementalChanges = [(PXLegacySectionedDataSourceChangeDetails *)self hasIncrementalChanges];
   v4 = @"NO";
-  if (v3)
+  if (hasIncrementalChanges)
   {
     v4 = @"YES";
   }
 
   v20 = v4;
-  v22 = [(PXLegacySectionedDataSourceChangeDetails *)self deletedSections];
-  v19 = [v22 count];
-  v5 = [(PXLegacySectionedDataSourceChangeDetails *)self insertedSections];
-  v18 = [v5 count];
-  v6 = [(PXLegacySectionedDataSourceChangeDetails *)self changedSections];
-  v7 = [v6 count];
-  v8 = [(PXLegacySectionedDataSourceChangeDetails *)self deletedItemsIndexPaths];
-  v9 = [v8 count];
-  v10 = [(PXLegacySectionedDataSourceChangeDetails *)self insertedItemsIndexPaths];
-  v11 = [v10 count];
-  v12 = [(PXLegacySectionedDataSourceChangeDetails *)self changedItemsIndexPaths];
-  v13 = [v12 count];
-  v14 = [(PXLegacySectionedDataSourceChangeDetails *)self contentItemsChangedIndexPaths];
-  v15 = [v21 stringWithFormat:@" hasIncremental:%@ sections:(%lu, %lu, %lu) indexPaths:(%lu, %lu, %lu, %lu) (del, ins, change, contentChange)", v20, v19, v18, v7, v9, v11, v13, objc_msgSend(v14, "count")];
+  deletedSections = [(PXLegacySectionedDataSourceChangeDetails *)self deletedSections];
+  v19 = [deletedSections count];
+  insertedSections = [(PXLegacySectionedDataSourceChangeDetails *)self insertedSections];
+  v18 = [insertedSections count];
+  changedSections = [(PXLegacySectionedDataSourceChangeDetails *)self changedSections];
+  v7 = [changedSections count];
+  deletedItemsIndexPaths = [(PXLegacySectionedDataSourceChangeDetails *)self deletedItemsIndexPaths];
+  v9 = [deletedItemsIndexPaths count];
+  insertedItemsIndexPaths = [(PXLegacySectionedDataSourceChangeDetails *)self insertedItemsIndexPaths];
+  v11 = [insertedItemsIndexPaths count];
+  changedItemsIndexPaths = [(PXLegacySectionedDataSourceChangeDetails *)self changedItemsIndexPaths];
+  v13 = [changedItemsIndexPaths count];
+  contentItemsChangedIndexPaths = [(PXLegacySectionedDataSourceChangeDetails *)self contentItemsChangedIndexPaths];
+  v15 = [v21 stringWithFormat:@" hasIncremental:%@ sections:(%lu, %lu, %lu) indexPaths:(%lu, %lu, %lu, %lu) (del, ins, change, contentChange)", v20, v19, v18, v7, v9, v11, v13, objc_msgSend(contentItemsChangedIndexPaths, "count")];
 
   v16 = [v23 stringByAppendingString:v15];
 
@@ -484,17 +484,17 @@ void __59__PXLegacySectionedDataSourceChangeDetails_prepareIfNeeded__block_invok
   return deletedSections;
 }
 
-- (PXLegacySectionedDataSourceChangeDetails)initWithSectionedDataSourceChangeDetails:(id)a3 shiftedSection:(int64_t)a4
+- (PXLegacySectionedDataSourceChangeDetails)initWithSectionedDataSourceChangeDetails:(id)details shiftedSection:(int64_t)section
 {
-  v7 = a3;
+  detailsCopy = details;
   v11.receiver = self;
   v11.super_class = PXLegacySectionedDataSourceChangeDetails;
   v8 = [(PXLegacySectionedDataSourceChangeDetails *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_sectionedDataSourceChangeDetails, a3);
-    v9->_shiftingSectionLocation = a4;
+    objc_storeStrong(&v8->_sectionedDataSourceChangeDetails, details);
+    v9->_shiftingSectionLocation = section;
   }
 
   return v9;

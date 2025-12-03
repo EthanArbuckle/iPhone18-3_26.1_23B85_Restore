@@ -1,14 +1,14 @@
 @interface PersonalizedVideoView
-- (_TtC10ProductKit21PersonalizedVideoView)initWithCoder:(id)a3;
-- (_TtC10ProductKit21PersonalizedVideoView)initWithFrame:(CGRect)a3;
+- (_TtC10ProductKit21PersonalizedVideoView)initWithCoder:(id)coder;
+- (_TtC10ProductKit21PersonalizedVideoView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)willMoveToSuperview:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation PersonalizedVideoView
 
-- (_TtC10ProductKit21PersonalizedVideoView)initWithFrame:(CGRect)a3
+- (_TtC10ProductKit21PersonalizedVideoView)initWithFrame:(CGRect)frame
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC10ProductKit21PersonalizedVideoView_startedHandler);
   *v3 = 0;
@@ -26,7 +26,7 @@
   return result;
 }
 
-- (_TtC10ProductKit21PersonalizedVideoView)initWithCoder:(id)a3
+- (_TtC10ProductKit21PersonalizedVideoView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC10ProductKit21PersonalizedVideoView_startedHandler);
   *v3 = 0;
@@ -48,25 +48,25 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC10ProductKit21PersonalizedVideoView_sceneView);
-  v5 = self;
+  selfCopy = self;
   [v4 setDelegate_];
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = ObjectType;
   [(PersonalizedVideoView *)&v6 dealloc];
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  v5 = a3;
-  v6 = self;
-  sub_260E0E734(a3);
+  superviewCopy = superview;
+  selfCopy = self;
+  sub_260E0E734(superview);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_260E0ECF8(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_260E0ECF8(change);
 }
 
 @end

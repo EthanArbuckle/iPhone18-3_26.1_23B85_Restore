@@ -1,9 +1,9 @@
 @interface DBDefaultUISyncSessionDelegate
 - (DBUISyncSessionEventDelegate)eventDelegate;
 - (_TtC9DashBoard30DBDefaultUISyncSessionDelegate)init;
-- (_TtC9DashBoard30DBDefaultUISyncSessionDelegate)initWithUISyncSession:(id)a3;
+- (_TtC9DashBoard30DBDefaultUISyncSessionDelegate)initWithUISyncSession:(id)session;
 - (void)didConnect;
-- (void)didReceiveData:(id)a3;
+- (void)didReceiveData:(id)data;
 - (void)didReset;
 @end
 
@@ -17,15 +17,15 @@
   return Strong;
 }
 
-- (_TtC9DashBoard30DBDefaultUISyncSessionDelegate)initWithUISyncSession:(id)a3
+- (_TtC9DashBoard30DBDefaultUISyncSessionDelegate)initWithUISyncSession:(id)session
 {
   swift_unknownObjectWeakInit();
-  *(self + OBJC_IVAR____TtC9DashBoard30DBDefaultUISyncSessionDelegate_uisyncSession) = a3;
+  *(self + OBJC_IVAR____TtC9DashBoard30DBDefaultUISyncSessionDelegate_uisyncSession) = session;
   v10.receiver = self;
   v10.super_class = type metadata accessor for DBDefaultUISyncSessionDelegate();
-  v5 = a3;
+  sessionCopy = session;
   v6 = [(DBDefaultUISyncSessionDelegate *)&v10 init];
-  v7 = *((*MEMORY[0x277D85000] & *v5) + 0x138);
+  v7 = *((*MEMORY[0x277D85000] & *sessionCopy) + 0x138);
   v8 = v6;
   v7(v6);
 
@@ -34,20 +34,20 @@
 
 - (void)didConnect
 {
-  v2 = self;
+  selfCopy = self;
   DBDefaultUISyncSessionDelegate.didConnect()();
 }
 
 - (void)didReset
 {
-  v2 = self;
+  selfCopy = self;
   DBDefaultUISyncSessionDelegate.didReset()();
 }
 
-- (void)didReceiveData:(id)a3
+- (void)didReceiveData:(id)data
 {
-  v4 = a3;
-  v8 = self;
+  dataCopy = data;
+  selfCopy = self;
   v5 = sub_2483811B0();
   v7 = v6;
 

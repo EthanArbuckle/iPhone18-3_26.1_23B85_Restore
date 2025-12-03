@@ -1,43 +1,43 @@
 @interface KramerVCReader
-+ (id)decodeDirectory:(id)a3;
-+ (id)decodeIPEHeader:(id)a3;
-+ (id)decodeIPETyp16:(id)a3 withIfr:(id)a4 withBitmap:(id)a5;
-+ (id)decodeIPETyp22:(id)a3 withIfr:(id)a4 withBitmap:(id)a5;
-+ (id)decodeIPETyp22Ifr2:(id)a3 withIfr:(id)a4 withBitmap:(id)a5;
-+ (id)decodeIPETyp23:(id)a3 withIfr:(id)a4 withBitmap:(id)a5;
-+ (id)decodeIPETyp23Ifr2:(id)a3 withIfr:(id)a4 withBitmap:(id)a5;
-+ (id)decodeIPETyp2:(id)a3 withIfr:(id)a4 withBitmap:(id)a5;
-+ (id)decodeTransientTicketIfr1:(id)a3 withIfr:(id)a4 withBitmap:(id)a5 withRecordOffset:(id)a6;
-+ (id)decodeVGHeader:(id)a3;
-+ (id)decodeVGTyp22:(id)a3 withIfr:(id)a4 withBitmap:(id)a5 withNumRecords:(id)a6;
-+ (id)decodeVGTyp23:(id)a3 withIfr:(id)a4 withBitmap:(id)a5 withNumRecords:(id)a6;
-+ (id)decodeVGTyp2:(id)a3 withIfr:(id)a4 withBitmap:(id)a5 withNumRecords:(id)a6;
-+ (id)deriveWalletData:(id)a3 withSector:(unsigned __int8)a4 withValueGroup:(id)a5;
-+ (id)getBestExpiry:(id)a3 withLatestValueGroup:(id)a4;
-+ (id)getCommutePlanIdentifier:(id)a3;
-+ (id)getCommutePlanIdentifier:(id)a3 withTyp:(id)a4 withPtyp:(id)a5 withCpicc:(id)a6 withPassDuration:(id)a7 withPromotionCode:(id)a8 withConcessionaryClass:(id)a9 withEntitlementCode:(id)a10 withRouteCode:(id)a11 withValidAtOrFrom:(id)a12 withValidTo:(id)a13;
-+ (id)getCommutePlanUniqueId:(id)a3 withSector:(id)a4;
-+ (id)getIPELabelDetails:(id)a3 withError:(id *)a4;
-+ (id)getLatestValueGroup:(id)a3;
-+ (id)getLogDirectoryEntry:(id)a3;
-+ (id)getTopupCredits:(id)a3 withIpeId:(unsigned __int16)a4;
-+ (id)processSectorChain:(id)a3 forIPE:(unsigned __int8)a4;
-+ (id)readCardFromVC:(id)a3 forCity:(id)a4 withError:(id *)a5;
-+ (id)readCyclicLogFromVC:(id)a3 forCity:(id)a4 withError:(id *)a5;
-+ (id)readIPEFromVC:(id)a3 withStorageFile:(unsigned __int8)a4 withTyp:(unsigned __int8)a5 withSectorChain:(id)a6 withDirectoryDetails:(id)a7 withError:(id *)a8;
-+ (id)readVGFromVC:(id)a3 withStorageFile:(unsigned __int8)a4 withTyp:(unsigned __int8)a5 withSectorChain:(id)a6 withError:(id *)a7;
++ (id)decodeDirectory:(id)directory;
++ (id)decodeIPEHeader:(id)header;
++ (id)decodeIPETyp16:(id)typ16 withIfr:(id)ifr withBitmap:(id)bitmap;
++ (id)decodeIPETyp22:(id)typ22 withIfr:(id)ifr withBitmap:(id)bitmap;
++ (id)decodeIPETyp22Ifr2:(id)ifr2 withIfr:(id)ifr withBitmap:(id)bitmap;
++ (id)decodeIPETyp23:(id)typ23 withIfr:(id)ifr withBitmap:(id)bitmap;
++ (id)decodeIPETyp23Ifr2:(id)ifr2 withIfr:(id)ifr withBitmap:(id)bitmap;
++ (id)decodeIPETyp2:(id)typ2 withIfr:(id)ifr withBitmap:(id)bitmap;
++ (id)decodeTransientTicketIfr1:(id)ifr1 withIfr:(id)ifr withBitmap:(id)bitmap withRecordOffset:(id)offset;
++ (id)decodeVGHeader:(id)header;
++ (id)decodeVGTyp22:(id)typ22 withIfr:(id)ifr withBitmap:(id)bitmap withNumRecords:(id)records;
++ (id)decodeVGTyp23:(id)typ23 withIfr:(id)ifr withBitmap:(id)bitmap withNumRecords:(id)records;
++ (id)decodeVGTyp2:(id)typ2 withIfr:(id)ifr withBitmap:(id)bitmap withNumRecords:(id)records;
++ (id)deriveWalletData:(id)data withSector:(unsigned __int8)sector withValueGroup:(id)group;
++ (id)getBestExpiry:(id)expiry withLatestValueGroup:(id)group;
++ (id)getCommutePlanIdentifier:(id)identifier;
++ (id)getCommutePlanIdentifier:(id)identifier withTyp:(id)typ withPtyp:(id)ptyp withCpicc:(id)cpicc withPassDuration:(id)duration withPromotionCode:(id)code withConcessionaryClass:(id)class withEntitlementCode:(id)self0 withRouteCode:(id)self1 withValidAtOrFrom:(id)self2 withValidTo:(id)self3;
++ (id)getCommutePlanUniqueId:(id)id withSector:(id)sector;
++ (id)getIPELabelDetails:(id)details withError:(id *)error;
++ (id)getLatestValueGroup:(id)group;
++ (id)getLogDirectoryEntry:(id)entry;
++ (id)getTopupCredits:(id)credits withIpeId:(unsigned __int16)id;
++ (id)processSectorChain:(id)chain forIPE:(unsigned __int8)e;
++ (id)readCardFromVC:(id)c forCity:(id)city withError:(id *)error;
++ (id)readCyclicLogFromVC:(id)c forCity:(id)city withError:(id *)error;
++ (id)readIPEFromVC:(id)c withStorageFile:(unsigned __int8)file withTyp:(unsigned __int8)typ withSectorChain:(id)chain withDirectoryDetails:(id)details withError:(id *)error;
++ (id)readVGFromVC:(id)c withStorageFile:(unsigned __int8)file withTyp:(unsigned __int8)typ withSectorChain:(id)chain withError:(id *)error;
 @end
 
 @implementation KramerVCReader
 
-+ (id)readCardFromVC:(id)a3 forCity:(id)a4 withError:(id *)a5
++ (id)readCardFromVC:(id)c forCity:(id)city withError:(id *)error
 {
   v72[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  cCopy = c;
+  cityCopy = city;
   v70 = 0;
-  v61 = v7;
-  v9 = [MifareUtils getMcmDataDal:19215 withTransceiver:v7 withError:&v70];
+  v61 = cCopy;
+  v9 = [MifareUtils getMcmDataDal:19215 withTransceiver:cCopy withError:&v70];
   v10 = v70;
   if ([v9 length])
   {
@@ -68,11 +68,11 @@
 
   if (v10)
   {
-    if (a5)
+    if (error)
     {
       v16 = v10;
       v17 = 0;
-      *a5 = v10;
+      *error = v10;
       goto LABEL_35;
     }
 
@@ -84,17 +84,17 @@ LABEL_34:
   if (*[v9 bytes] != 8448)
   {
     v10 = 0;
-    if (a5)
+    if (error)
     {
       v17 = 0;
-      *a5 = 0;
+      *error = 0;
       goto LABEL_35;
     }
 
     goto LABEL_34;
   }
 
-  v58 = v8;
+  v58 = cityCopy;
   v18 = 0x277CBE000uLL;
   v57 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
   v60 = [MEMORY[0x277CBEB18] arrayWithCapacity:7];
@@ -124,8 +124,8 @@ LABEL_34:
       v27 = [KramerVCReader processSectorChain:v9 forIPE:v19];
       if ([v27 count])
       {
-        v28 = [v27 lastObject];
-        v29 = [v28 unsignedIntValue] == 13;
+        lastObject = [v27 lastObject];
+        v29 = [lastObject unsignedIntValue] == 13;
 
         v30 = [MEMORY[0x277CCABB0] numberWithBool:v29];
         [v24 setObject:v30 forKeyedSubscript:@"IPEBlocked"];
@@ -135,22 +135,22 @@ LABEL_34:
 
       ++v20;
       v64 = v26;
-      v31 = [v26 unsignedCharValue];
+      unsignedCharValue = [v26 unsignedCharValue];
       v67 = v25;
-      v32 = [KramerVCReader readIPEFromVC:v61 withStorageFile:v20 withTyp:v31 withSectorChain:v27 withDirectoryDetails:v24 withError:&v67];
+      v32 = [KramerVCReader readIPEFromVC:v61 withStorageFile:v20 withTyp:unsignedCharValue withSectorChain:v27 withDirectoryDetails:v24 withError:&v67];
       v33 = v67;
 
       [v24 addEntriesFromDictionary:v32];
       v34 = [v24 objectForKeyedSubscript:@"IPEValueGroupFlag"];
-      v35 = [v34 unsignedIntValue];
+      unsignedIntValue = [v34 unsignedIntValue];
 
-      if (v35)
+      if (unsignedIntValue)
       {
         v36 = v27;
         v37 = [v24 objectForKeyedSubscript:@"OverflowFlag"];
-        v38 = [v37 unsignedIntValue];
+        unsignedIntValue2 = [v37 unsignedIntValue];
 
-        if (v38 == 1)
+        if (unsignedIntValue2 == 1)
         {
           v39 = [v36 subarrayWithRange:{1, objc_msgSend(v36, "count")}];
 
@@ -166,13 +166,13 @@ LABEL_34:
         if ([v36 count])
         {
           v41 = [v36 objectAtIndex:v40];
-          v42 = [v41 unsignedCharValue];
+          unsignedCharValue2 = [v41 unsignedCharValue];
 
-          if (v42 <= 0xC)
+          if (unsignedCharValue2 <= 0xC)
           {
-            v43 = [v64 unsignedCharValue];
+            unsignedCharValue3 = [v64 unsignedCharValue];
             v66 = v33;
-            v44 = [KramerVCReader readVGFromVC:v61 withStorageFile:v42 withTyp:v43 withSectorChain:v36 withError:&v66];
+            v44 = [KramerVCReader readVGFromVC:v61 withStorageFile:unsignedCharValue2 withTyp:unsignedCharValue3 withSectorChain:v36 withError:&v66];
             v45 = v66;
 
             [v24 addEntriesFromDictionary:v44];
@@ -229,7 +229,7 @@ LABEL_34:
   [v57 setObject:v60 forKeyedSubscript:@"CommutePlans"];
   [v57 setObject:v63 forKeyedSubscript:@"ATLInternal"];
 
-  v8 = v58;
+  cityCopy = v58;
 LABEL_35:
 
   v55 = *MEMORY[0x277D85DE8];
@@ -237,16 +237,16 @@ LABEL_35:
   return v17;
 }
 
-+ (id)readIPEFromVC:(id)a3 withStorageFile:(unsigned __int8)a4 withTyp:(unsigned __int8)a5 withSectorChain:(id)a6 withDirectoryDetails:(id)a7 withError:(id *)a8
++ (id)readIPEFromVC:(id)c withStorageFile:(unsigned __int8)file withTyp:(unsigned __int8)typ withSectorChain:(id)chain withDirectoryDetails:(id)details withError:(id *)error
 {
-  v83 = a5;
-  v11 = a4;
+  typCopy = typ;
+  fileCopy = file;
   v100[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  cCopy = c;
+  chainCopy = chain;
+  detailsCopy = details;
   v86 = 0;
-  v15 = [MifareUtils getMcmDataDal:v11 | 0x4B00u withTransceiver:v12 withError:&v86];
+  v15 = [MifareUtils getMcmDataDal:fileCopy | 0x4B00u withTransceiver:cCopy withError:&v86];
   v16 = v86;
   v84 = v15;
   if ([v15 length])
@@ -261,9 +261,9 @@ LABEL_35:
 
   if (v17)
   {
-    v18 = v14;
-    v19 = v13;
-    v20 = v12;
+    v18 = detailsCopy;
+    v19 = chainCopy;
+    v20 = cCopy;
     v21 = ATLLogObject();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -278,9 +278,9 @@ LABEL_35:
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v100 forKeys:&v99 count:1];
     v16 = [v23 errorWithDomain:@"ATL" code:3 userInfo:v24];
 
-    v12 = v20;
-    v13 = v19;
-    v14 = v18;
+    cCopy = v20;
+    chainCopy = v19;
+    detailsCopy = v18;
   }
 
   if (!v16)
@@ -291,21 +291,21 @@ LABEL_35:
     [v27 addEntriesFromDictionary:v28];
     v82 = v28;
     v29 = [v28 objectForKeyedSubscript:@"IPELength"];
-    v30 = [v29 unsignedShortValue];
+    unsignedShortValue = [v29 unsignedShortValue];
 
     v31 = ATLLogObject();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
       v32 = [v82 objectForKeyedSubscript:@"IPELength"];
-      v33 = [v32 unsignedShortValue];
+      unsignedShortValue2 = [v32 unsignedShortValue];
       *buf = 67109376;
-      *v98 = v33;
+      *v98 = unsignedShortValue2;
       *&v98[4] = 1024;
-      *&v98[6] = 4 * v30;
+      *&v98[6] = 4 * unsignedShortValue;
       _os_log_impl(&dword_22EEF5000, v31, OS_LOG_TYPE_DEFAULT, "IPE Length %d blocks %d bytes", buf, 0xEu);
     }
 
-    if (v30 < 0x1D)
+    if (unsignedShortValue < 0x1D)
     {
       v37 = v81;
       v38 = v82;
@@ -313,7 +313,7 @@ LABEL_35:
     }
 
     [v81 setObject:&unk_2843C6338 forKeyedSubscript:@"OverflowFlag"];
-    if (![v13 count])
+    if (![chainCopy count])
     {
       v39 = ATLLogObject();
       v38 = v82;
@@ -329,10 +329,10 @@ LABEL_35:
       goto LABEL_27;
     }
 
-    v34 = [v13 firstObject];
-    v35 = [v34 unsignedShortValue];
+    firstObject = [chainCopy firstObject];
+    unsignedShortValue3 = [firstObject unsignedShortValue];
 
-    if (!v35 || v35 == 13 || v35 == v11)
+    if (!unsignedShortValue3 || unsignedShortValue3 == 13 || unsignedShortValue3 == fileCopy)
     {
       v36 = ATLLogObject();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -349,7 +349,7 @@ LABEL_35:
     }
 
     v85 = 0;
-    v74 = [MifareUtils getMcmDataDal:(v35 + 19200) withTransceiver:v12 withError:&v85];
+    v74 = [MifareUtils getMcmDataDal:(unsignedShortValue3 + 19200) withTransceiver:cCopy withError:&v85];
     v16 = v85;
     if (![v84 length])
     {
@@ -359,10 +359,10 @@ LABEL_35:
 LABEL_74:
         if (v16)
         {
-          if (a8)
+          if (error)
           {
             v79 = v16;
-            *a8 = v16;
+            *error = v16;
           }
 
           v26 = 0;
@@ -377,13 +377,13 @@ LABEL_74:
         v37 = v81;
 LABEL_27:
         v40 = [v38 objectForKeyedSubscript:@"IPEFormatRev"];
-        v41 = [v40 unsignedShortValue];
+        unsignedShortValue4 = [v40 unsignedShortValue];
 
-        if (v83 > 21)
+        if (typCopy > 21)
         {
-          if (v83 == 22)
+          if (typCopy == 22)
           {
-            if ((v41 - 3) > 0xFFFFFFFD)
+            if ((unsignedShortValue4 - 3) > 0xFFFFFFFD)
             {
               v16 = 0;
             }
@@ -394,11 +394,11 @@ LABEL_27:
               if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
               {
                 *buf = 67109120;
-                *v98 = v41;
+                *v98 = unsignedShortValue4;
                 _os_log_impl(&dword_22EEF5000, v48, OS_LOG_TYPE_ERROR, "Unsupported IFR (%d) for IPE TYP 22", buf, 8u);
               }
 
-              v49 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unsupported IFR (%d) for IPE TYP 22", v41];
+              v49 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unsupported IFR (%d) for IPE TYP 22", unsignedShortValue4];
               v50 = MEMORY[0x277CCA9B8];
               v89 = *MEMORY[0x277CCA450];
               v90 = v49;
@@ -411,7 +411,7 @@ LABEL_27:
             v69 = [KramerVCReader decodeIPETyp22:v84 withIfr:v67 withBitmap:v68];
             [v37 addEntriesFromDictionary:v69];
 
-            v70 = [v14 objectForKeyedSubscript:@"IPEValueGroupFlag"];
+            v70 = [detailsCopy objectForKeyedSubscript:@"IPEValueGroupFlag"];
             LODWORD(v67) = [v70 unsignedIntValue];
 
             if (!v67)
@@ -430,12 +430,12 @@ LABEL_64:
             goto LABEL_65;
           }
 
-          if (v83 != 23)
+          if (typCopy != 23)
           {
             goto LABEL_38;
           }
 
-          if ((v41 - 3) > 0xFFFFFFFD)
+          if ((unsignedShortValue4 - 3) > 0xFFFFFFFD)
           {
             v16 = 0;
           }
@@ -446,11 +446,11 @@ LABEL_64:
             if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
             {
               *buf = 67109120;
-              *v98 = v41;
+              *v98 = unsignedShortValue4;
               _os_log_impl(&dword_22EEF5000, v42, OS_LOG_TYPE_ERROR, "Unsupported IFR (%d) for IPE TYP 23", buf, 8u);
             }
 
-            v43 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unsupported IFR (%d) for IPE TYP 23", v41];
+            v43 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unsupported IFR (%d) for IPE TYP 23", unsignedShortValue4];
             v44 = MEMORY[0x277CCA9B8];
             v87 = *MEMORY[0x277CCA450];
             v88 = v43;
@@ -465,11 +465,11 @@ LABEL_64:
 
         else
         {
-          if (v83 != 2)
+          if (typCopy != 2)
           {
-            if (v83 == 16)
+            if (typCopy == 16)
             {
-              if (v41 == 1)
+              if (unsignedShortValue4 == 1)
               {
                 v16 = 0;
               }
@@ -480,11 +480,11 @@ LABEL_64:
                 if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 67109120;
-                  *v98 = v41;
+                  *v98 = unsignedShortValue4;
                   _os_log_impl(&dword_22EEF5000, v52, OS_LOG_TYPE_ERROR, "Unsupported IFR (%d) for IPE TYP 2", buf, 8u);
                 }
 
-                v53 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unsupported IFR (%d) for IPE TYP 2", v41];
+                v53 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unsupported IFR (%d) for IPE TYP 2", unsignedShortValue4];
                 v54 = MEMORY[0x277CCA9B8];
                 v91 = *MEMORY[0x277CCA450];
                 v92 = v53;
@@ -506,7 +506,7 @@ LABEL_38:
             v46 = ATLLogObject();
             if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
             {
-              v47 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v83];
+              v47 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:typCopy];
               *buf = 138412290;
               *v98 = v47;
               _os_log_impl(&dword_22EEF5000, v46, OS_LOG_TYPE_DEFAULT, "Specific decoding not yet implemented for TYP %@", buf, 0xCu);
@@ -516,7 +516,7 @@ LABEL_38:
             goto LABEL_63;
           }
 
-          if (v41 == 1)
+          if (unsignedShortValue4 == 1)
           {
             v16 = 0;
           }
@@ -527,11 +527,11 @@ LABEL_38:
             if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
             {
               *buf = 67109120;
-              *v98 = v41;
+              *v98 = unsignedShortValue4;
               _os_log_impl(&dword_22EEF5000, v62, OS_LOG_TYPE_ERROR, "Unsupported IFR (%d) for IPE TYP 2", buf, 8u);
             }
 
-            v63 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unsupported IFR (%d) for IPE TYP 2", v41];
+            v63 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unsupported IFR (%d) for IPE TYP 2", unsignedShortValue4];
             v64 = MEMORY[0x277CCA9B8];
             v93 = *MEMORY[0x277CCA450];
             v94 = v63;
@@ -569,11 +569,11 @@ LABEL_38:
     goto LABEL_74;
   }
 
-  if (a8)
+  if (error)
   {
     v25 = v16;
     v26 = 0;
-    *a8 = v16;
+    *error = v16;
   }
 
   else
@@ -588,17 +588,17 @@ LABEL_65:
   return v26;
 }
 
-+ (id)readVGFromVC:(id)a3 withStorageFile:(unsigned __int8)a4 withTyp:(unsigned __int8)a5 withSectorChain:(id)a6 withError:(id *)a7
++ (id)readVGFromVC:(id)c withStorageFile:(unsigned __int8)file withTyp:(unsigned __int8)typ withSectorChain:(id)chain withError:(id *)error
 {
-  v68 = a5;
+  typCopy = typ;
   v82[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a6;
-  v11 = [v10 firstObject];
-  v12 = [v11 unsignedShortValue];
+  cCopy = c;
+  chainCopy = chain;
+  firstObject = [chainCopy firstObject];
+  unsignedShortValue = [firstObject unsignedShortValue];
 
   v70 = 0;
-  v13 = [MifareUtils getMcmDataDal:(v12 + 19200) withTransceiver:v9 withError:&v70];
+  v13 = [MifareUtils getMcmDataDal:(unsignedShortValue + 19200) withTransceiver:cCopy withError:&v70];
   v14 = v70;
   if ([v13 length])
   {
@@ -613,7 +613,7 @@ LABEL_65:
   if (v15)
   {
     v16 = v13;
-    v17 = v9;
+    v17 = cCopy;
     v18 = ATLLogObject();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -628,7 +628,7 @@ LABEL_65:
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v82 forKeys:&v81 count:1];
     v14 = [v20 errorWithDomain:@"ATL" code:3 userInfo:v21];
 
-    v9 = v17;
+    cCopy = v17;
     v13 = v16;
   }
 
@@ -639,34 +639,34 @@ LABEL_65:
     v26 = [KramerVCReader decodeVGHeader:v13];
     [v25 addEntriesFromDictionary:v26];
     v27 = [v26 objectForKeyedSubscript:@"VGLength"];
-    v28 = [v27 unsignedShortValue];
+    unsignedShortValue2 = [v27 unsignedShortValue];
 
     v29 = ATLLogObject();
     v67 = v26;
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
       v30 = [v26 objectForKeyedSubscript:@"IPELength"];
-      v31 = [v30 unsignedShortValue];
+      unsignedShortValue3 = [v30 unsignedShortValue];
       *buf = 67109376;
-      *v80 = v31;
+      *v80 = unsignedShortValue3;
       *&v80[4] = 1024;
-      *&v80[6] = 4 * v28;
+      *&v80[6] = 4 * unsignedShortValue2;
       _os_log_impl(&dword_22EEF5000, v29, OS_LOG_TYPE_DEFAULT, "VG Length %d blocks %d bytes", buf, 0xEu);
 
       v26 = v67;
     }
 
     v32 = [v26 objectForKeyedSubscript:@"VGFormatRev"];
-    v33 = [v32 unsignedIntValue];
+    unsignedIntValue = [v32 unsignedIntValue];
 
-    v22 = v10;
-    if (v28 >= 0x1D)
+    v22 = chainCopy;
+    if (unsignedShortValue2 >= 0x1D)
     {
       [v25 setObject:&unk_2843C6338 forKeyedSubscript:@"OverflowFlag"];
-      if ([v10 count] == 1)
+      if ([chainCopy count] == 1)
       {
         v34 = ATLLogObject();
-        v35 = v68;
+        v35 = typCopy;
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
@@ -680,7 +680,7 @@ LABEL_27:
         {
           if (v35 == 22)
           {
-            if ((v33 - 11) > 0xFFFFFFFD)
+            if ((unsignedIntValue - 11) > 0xFFFFFFFD)
             {
               v14 = 0;
             }
@@ -691,11 +691,11 @@ LABEL_27:
               if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
               {
                 *buf = 67109120;
-                *v80 = v33;
+                *v80 = unsignedIntValue;
                 _os_log_impl(&dword_22EEF5000, v45, OS_LOG_TYPE_ERROR, "Unsupported VG (%d) IFR for IPE TYP 22", buf, 8u);
               }
 
-              v46 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unsupported VG (%d) IFR for IPE TYP 22", v33];
+              v46 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unsupported VG (%d) IFR for IPE TYP 22", unsignedIntValue];
               v47 = MEMORY[0x277CCA9B8];
               v73 = *MEMORY[0x277CCA450];
               v74 = v46;
@@ -727,7 +727,7 @@ LABEL_37:
               goto LABEL_55;
             }
 
-            if ((v33 - 11) > 0xFFFFFFFD)
+            if ((unsignedIntValue - 11) > 0xFFFFFFFD)
             {
               v14 = 0;
             }
@@ -738,11 +738,11 @@ LABEL_37:
               if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
               {
                 *buf = 67109120;
-                *v80 = v33;
+                *v80 = unsignedIntValue;
                 _os_log_impl(&dword_22EEF5000, v39, OS_LOG_TYPE_ERROR, "Unsupported VG (%d) IFR for IPE TYP 23", buf, 8u);
               }
 
-              v40 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unsupported VG (%d) IFR for IPE TYP 23", v33];
+              v40 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unsupported VG (%d) IFR for IPE TYP 23", unsignedIntValue];
               v41 = MEMORY[0x277CCA9B8];
               v71 = *MEMORY[0x277CCA450];
               v72 = v40;
@@ -775,7 +775,7 @@ LABEL_57:
             goto LABEL_37;
           }
 
-          if (v33 == 9)
+          if (unsignedIntValue == 9)
           {
             v14 = 0;
           }
@@ -786,11 +786,11 @@ LABEL_57:
             if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
             {
               *buf = 67109120;
-              *v80 = v33;
+              *v80 = unsignedIntValue;
               _os_log_impl(&dword_22EEF5000, v52, OS_LOG_TYPE_ERROR, "Unsupported VG (%d) IFR for IPE TYP 2", buf, 8u);
             }
 
-            v53 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unsupported VG (%d) IFR for IPE TYP 2", v33];
+            v53 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unsupported VG (%d) IFR for IPE TYP 2", unsignedIntValue];
             v54 = MEMORY[0x277CCA9B8];
             v75 = *MEMORY[0x277CCA450];
             v76 = v53;
@@ -811,10 +811,10 @@ LABEL_55:
         goto LABEL_56;
       }
 
-      v36 = [v10 firstObject];
-      v37 = [v36 unsignedCharValue];
+      firstObject2 = [chainCopy firstObject];
+      unsignedCharValue = [firstObject2 unsignedCharValue];
 
-      if (!v37 || v37 == 13 || v12 == v37)
+      if (!unsignedCharValue || unsignedCharValue == 13 || unsignedShortValue == unsignedCharValue)
       {
         v38 = ATLLogObject();
         if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
@@ -830,7 +830,7 @@ LABEL_55:
       else
       {
         v69 = 0;
-        v59 = [MifareUtils getMcmDataDal:(v12 + 19200) withTransceiver:v9 withError:&v69];
+        v59 = [MifareUtils getMcmDataDal:(unsignedShortValue + 19200) withTransceiver:cCopy withError:&v69];
         v14 = v69;
         if (![v66 length] && !v14)
         {
@@ -851,10 +851,10 @@ LABEL_55:
 
         if (v14)
         {
-          if (a7)
+          if (error)
           {
             v64 = v14;
-            *a7 = v14;
+            *error = v14;
           }
 
           v24 = 0;
@@ -868,16 +868,16 @@ LABEL_55:
       }
     }
 
-    v35 = v68;
+    v35 = typCopy;
     goto LABEL_27;
   }
 
-  v22 = v10;
-  if (a7)
+  v22 = chainCopy;
+  if (error)
   {
     v23 = v14;
     v24 = 0;
-    *a7 = v14;
+    *error = v14;
   }
 
   else
@@ -892,11 +892,11 @@ LABEL_58:
   return v24;
 }
 
-+ (id)readCyclicLogFromVC:(id)a3 forCity:(id)a4 withError:(id *)a5
++ (id)readCyclicLogFromVC:(id)c forCity:(id)city withError:(id *)error
 {
   v23[1] = *MEMORY[0x277D85DE8];
   v21 = 0;
-  v6 = [MifareUtils getMcmDataDal:19214 withTransceiver:a3 withError:&v21];
+  v6 = [MifareUtils getMcmDataDal:19214 withTransceiver:c withError:&v21];
   v7 = v21;
   if ([v6 length])
   {
@@ -927,11 +927,11 @@ LABEL_58:
 
   if (v7)
   {
-    if (a5)
+    if (error)
     {
       v13 = v7;
       v14 = 0;
-      *a5 = v7;
+      *error = v7;
     }
 
     else
@@ -961,18 +961,18 @@ LABEL_58:
   return v14;
 }
 
-+ (id)getIPELabelDetails:(id)a3 withError:(id *)a4
++ (id)getIPELabelDetails:(id)details withError:(id *)error
 {
-  v4 = a3;
-  v5 = *[v4 bytes];
-  v6 = *([v4 bytes] + 3);
-  [v4 bytes];
-  v7 = bswap32(*[v4 bytes]) >> 18;
-  v8 = bswap32(*([v4 bytes] + 1));
-  v9 = *([v4 bytes] + 2);
-  v10 = [v4 bytes];
+  detailsCopy = details;
+  v5 = *[detailsCopy bytes];
+  v6 = *([detailsCopy bytes] + 3);
+  [detailsCopy bytes];
+  v7 = bswap32(*[detailsCopy bytes]) >> 18;
+  v8 = bswap32(*([detailsCopy bytes] + 1));
+  v9 = *([detailsCopy bytes] + 2);
+  bytes = [detailsCopy bytes];
 
-  v11 = bswap32(*(v10 + 3) & 0xFF3F) >> 16;
+  v11 = bswap32(*(bytes + 3) & 0xFF3F) >> 16;
   v12 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:10];
   v13 = [MEMORY[0x277CCABB0] numberWithBool:v5 >> 7];
   [v12 setObject:v13 forKeyedSubscript:@"OIDExtensionFlag"];
@@ -980,8 +980,8 @@ LABEL_58:
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v7];
   [v12 setObject:v14 forKeyedSubscript:@"OID"];
 
-  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:(v8 >> 21) & 0x1F];
-  [v12 setObject:v15 forKeyedSubscript:@"IPEType"];
+  0x1F = [MEMORY[0x277CCABB0] numberWithUnsignedChar:(v8 >> 21) & 0x1F];
+  [v12 setObject:0x1F forKeyedSubscript:@"IPEType"];
 
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v9 & 0xF];
   [v12 setObject:v16 forKeyedSubscript:@"IPESubType"];
@@ -998,46 +998,46 @@ LABEL_58:
   return v12;
 }
 
-+ (id)getCommutePlanIdentifier:(id)a3
++ (id)getCommutePlanIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"OID"];
-  v5 = [v3 objectForKeyedSubscript:@"IPEType"];
-  v6 = [v3 objectForKeyedSubscript:@"IPESubType"];
-  v15 = [v3 objectForKeyedSubscript:@"IPEConcessionaryPassIssuerCostCentre"];
-  v14 = [v3 objectForKeyedSubscript:@"IPEPassDuration"];
-  v7 = [v3 objectForKeyedSubscript:@"IPEPromoCode"];
-  v13 = [v3 objectForKeyedSubscript:@"IPEConcessionaryClass"];
-  v8 = [v3 objectForKeyedSubscript:@"IPEEntitlementCode"];
-  v9 = [v3 objectForKeyedSubscript:@"IPERouteCode"];
-  v10 = [v3 objectForKeyedSubscript:@"IPEValidAtOrFrom"];
-  v11 = [v3 objectForKeyedSubscript:@"IPEValidTo"];
+  identifierCopy = identifier;
+  v4 = [identifierCopy objectForKeyedSubscript:@"OID"];
+  v5 = [identifierCopy objectForKeyedSubscript:@"IPEType"];
+  v6 = [identifierCopy objectForKeyedSubscript:@"IPESubType"];
+  v15 = [identifierCopy objectForKeyedSubscript:@"IPEConcessionaryPassIssuerCostCentre"];
+  v14 = [identifierCopy objectForKeyedSubscript:@"IPEPassDuration"];
+  v7 = [identifierCopy objectForKeyedSubscript:@"IPEPromoCode"];
+  v13 = [identifierCopy objectForKeyedSubscript:@"IPEConcessionaryClass"];
+  v8 = [identifierCopy objectForKeyedSubscript:@"IPEEntitlementCode"];
+  v9 = [identifierCopy objectForKeyedSubscript:@"IPERouteCode"];
+  v10 = [identifierCopy objectForKeyedSubscript:@"IPEValidAtOrFrom"];
+  v11 = [identifierCopy objectForKeyedSubscript:@"IPEValidTo"];
 
   v16 = [KramerVCReader getCommutePlanIdentifier:v4 withTyp:v5 withPtyp:v6 withCpicc:v15 withPassDuration:v14 withPromotionCode:v7 withConcessionaryClass:v13 withEntitlementCode:v8 withRouteCode:v9 withValidAtOrFrom:v10 withValidTo:v11];
 
   return v16;
 }
 
-+ (id)getCommutePlanIdentifier:(id)a3 withTyp:(id)a4 withPtyp:(id)a5 withCpicc:(id)a6 withPassDuration:(id)a7 withPromotionCode:(id)a8 withConcessionaryClass:(id)a9 withEntitlementCode:(id)a10 withRouteCode:(id)a11 withValidAtOrFrom:(id)a12 withValidTo:(id)a13
++ (id)getCommutePlanIdentifier:(id)identifier withTyp:(id)typ withPtyp:(id)ptyp withCpicc:(id)cpicc withPassDuration:(id)duration withPromotionCode:(id)code withConcessionaryClass:(id)class withEntitlementCode:(id)self0 withRouteCode:(id)self1 withValidAtOrFrom:(id)self2 withValidTo:(id)self3
 {
-  v41 = a6;
-  v40 = a7;
-  v39 = a8;
-  v18 = a9;
-  v19 = a10;
-  v20 = a11;
-  v21 = a12;
-  v38 = a13;
+  cpiccCopy = cpicc;
+  durationCopy = duration;
+  codeCopy = code;
+  classCopy = class;
+  entitlementCodeCopy = entitlementCode;
+  routeCodeCopy = routeCode;
+  fromCopy = from;
+  toCopy = to;
   v34 = MEMORY[0x277CCACA8];
-  v22 = a5;
-  v23 = a4;
-  v33 = [a3 intValue];
-  v32 = [v23 intValue];
+  ptypCopy = ptyp;
+  typCopy = typ;
+  intValue = [identifier intValue];
+  intValue2 = [typCopy intValue];
 
-  v31 = [v22 intValue];
-  if (v41)
+  intValue3 = [ptypCopy intValue];
+  if (cpiccCopy)
   {
-    v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"%02X", objc_msgSend(v41, "intValue")];
+    v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"%02X", objc_msgSend(cpiccCopy, "intValue")];
   }
 
   else
@@ -1045,10 +1045,10 @@ LABEL_58:
     v37 = &stru_2843B92D8;
   }
 
-  if (v40)
+  if (durationCopy)
   {
-    v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"%02X", objc_msgSend(v40, "intValue")];
-    if (v39)
+    v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"%02X", objc_msgSend(durationCopy, "intValue")];
+    if (codeCopy)
     {
       goto LABEL_6;
     }
@@ -1057,11 +1057,11 @@ LABEL_58:
   else
   {
     v36 = &stru_2843B92D8;
-    if (v39)
+    if (codeCopy)
     {
 LABEL_6:
-      v35 = [MEMORY[0x277CCACA8] stringWithFormat:@"%02X", objc_msgSend(v39, "intValue")];
-      if (v18)
+      v35 = [MEMORY[0x277CCACA8] stringWithFormat:@"%02X", objc_msgSend(codeCopy, "intValue")];
+      if (classCopy)
       {
         goto LABEL_7;
       }
@@ -1071,18 +1071,18 @@ LABEL_6:
   }
 
   v35 = &stru_2843B92D8;
-  if (v18)
+  if (classCopy)
   {
 LABEL_7:
-    v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%02X", objc_msgSend(v18, "intValue")];
-    if (v19)
+    v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%02X", objc_msgSend(classCopy, "intValue")];
+    if (entitlementCodeCopy)
     {
       goto LABEL_8;
     }
 
 LABEL_13:
     v25 = &stru_2843B92D8;
-    if (v20)
+    if (routeCodeCopy)
     {
       goto LABEL_9;
     }
@@ -1092,39 +1092,39 @@ LABEL_13:
 
 LABEL_12:
   v24 = &stru_2843B92D8;
-  if (!v19)
+  if (!entitlementCodeCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_8:
-  v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"%02X", objc_msgSend(v19, "intValue")];
-  if (v20)
+  v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"%02X", objc_msgSend(entitlementCodeCopy, "intValue")];
+  if (routeCodeCopy)
   {
 LABEL_9:
-    v26 = [v20 asHexString];
+    asHexString = [routeCodeCopy asHexString];
     goto LABEL_15;
   }
 
 LABEL_14:
-  v26 = &stru_2843B92D8;
+  asHexString = &stru_2843B92D8;
 LABEL_15:
-  if (v21)
+  if (fromCopy)
   {
-    v27 = [v21 asHexString];
+    asHexString2 = [fromCopy asHexString];
   }
 
   else
   {
-    v27 = &stru_2843B92D8;
+    asHexString2 = &stru_2843B92D8;
   }
 
-  if (v38)
+  if (toCopy)
   {
-    v28 = [v38 asHexString];
-    v29 = [v34 stringWithFormat:@"%04X_%02X_%02X_%@_%@_%@_%@_%@_%@_%@_%@", v33, v32, v31, v37, v36, v35, v24, v25, v26, v27, v28];
+    asHexString3 = [toCopy asHexString];
+    v29 = [v34 stringWithFormat:@"%04X_%02X_%02X_%@_%@_%@_%@_%@_%@_%@_%@", intValue, intValue2, intValue3, v37, v36, v35, v24, v25, asHexString, asHexString2, asHexString3];
 
-    if (!v21)
+    if (!fromCopy)
     {
       goto LABEL_21;
     }
@@ -1132,67 +1132,67 @@ LABEL_15:
     goto LABEL_20;
   }
 
-  v29 = [v34 stringWithFormat:@"%04X_%02X_%02X_%@_%@_%@_%@_%@_%@_%@_%@", v33, v32, v31, v37, v36, v35, v24, v25, v26, v27, &stru_2843B92D8];
-  if (v21)
+  v29 = [v34 stringWithFormat:@"%04X_%02X_%02X_%@_%@_%@_%@_%@_%@_%@_%@", intValue, intValue2, intValue3, v37, v36, v35, v24, v25, asHexString, asHexString2, &stru_2843B92D8];
+  if (fromCopy)
   {
 LABEL_20:
   }
 
 LABEL_21:
-  if (v20)
+  if (routeCodeCopy)
   {
   }
 
-  if (v19)
+  if (entitlementCodeCopy)
   {
   }
 
-  if (v18)
+  if (classCopy)
   {
   }
 
-  if (v39)
+  if (codeCopy)
   {
   }
 
-  if (v40)
+  if (durationCopy)
   {
   }
 
-  if (v41)
+  if (cpiccCopy)
   {
   }
 
   return v29;
 }
 
-+ (id)getCommutePlanUniqueId:(id)a3 withSector:(id)a4
++ (id)getCommutePlanUniqueId:(id)id withSector:(id)sector
 {
-  v5 = a4;
-  v6 = a3;
+  sectorCopy = sector;
+  idCopy = id;
   v7 = +[HashHelper hashHelper];
-  v8 = [(HashHelper *)v7 addString:v6];
+  v8 = [(HashHelper *)v7 addString:idCopy];
 
-  v9 = [(HashHelper *)v8 addNumber:v5];
+  v9 = [(HashHelper *)v8 addNumber:sectorCopy];
 
-  v10 = [(HashHelper *)v9 getHash];
+  getHash = [(HashHelper *)v9 getHash];
 
-  v11 = [v10 asHexString];
+  asHexString = [getHash asHexString];
 
-  return v11;
+  return asHexString;
 }
 
-+ (id)processSectorChain:(id)a3 forIPE:(unsigned __int8)a4
++ (id)processSectorChain:(id)chain forIPE:(unsigned __int8)e
 {
-  v4 = a4;
-  v5 = a3;
+  eCopy = e;
+  chainCopy = chain;
   v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:7];
-  if (v4 <= 0xC)
+  if (eCopy <= 0xC)
   {
-    LOBYTE(v7) = v4;
+    LOBYTE(v7) = eCopy;
     do
     {
-      v8 = *([v5 bytes] + (v4 >> 1) + 42);
+      v8 = *([chainCopy bytes] + (eCopy >> 1) + 42);
       v9 = v8 >> 4;
       v10 = v8 & 0xF;
       v11 = (v7 & 1) != 0 ? v10 : v9;
@@ -1212,7 +1212,7 @@ LABEL_21:
       v13 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v11];
       [v6 addObject:v13];
 
-      if (v4 + 1 == v11)
+      if (eCopy + 1 == v11)
       {
         v7 = 13;
       }
@@ -1222,7 +1222,7 @@ LABEL_21:
         v7 = v11 - 1;
       }
 
-      v4 = v7;
+      eCopy = v7;
     }
 
     while (v7 < 0xDu);
@@ -1231,34 +1231,34 @@ LABEL_21:
   return v6;
 }
 
-+ (id)decodeIPETyp2:(id)a3 withIfr:(id)a4 withBitmap:(id)a5
++ (id)decodeIPETyp2:(id)typ2 withIfr:(id)ifr withBitmap:(id)bitmap
 {
-  v6 = a3;
+  typ2Copy = typ2;
   v7 = MEMORY[0x277CBEB38];
-  v8 = a5;
+  bitmapCopy = bitmap;
   v9 = [v7 dictionaryWithCapacity:2];
-  v10 = [v6 bytes];
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(v10 + 5)];
+  bytes = [typ2Copy bytes];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(bytes + 5)];
   [v9 setObject:v11 forKeyedSubscript:@"IPEFlags"];
 
-  LOBYTE(v11) = [v8 unsignedCharValue];
+  LOBYTE(v11) = [bitmapCopy unsignedCharValue];
   if (v11)
   {
-    v12 = [v6 bytes];
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(v12 + 22)) >> 8];
+    bytes2 = [typ2Copy bytes];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(bytes2 + 22)) >> 8];
     [v9 setObject:v13 forKeyedSubscript:@"IPELevelIIN"];
   }
 
   return v9;
 }
 
-+ (id)decodeIPETyp16:(id)a3 withIfr:(id)a4 withBitmap:(id)a5
++ (id)decodeIPETyp16:(id)typ16 withIfr:(id)ifr withBitmap:(id)bitmap
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a5;
+  typ16Copy = typ16;
+  bitmapCopy = bitmap;
   v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:11];
-  v9 = *([v6 bytes] + 2);
+  v9 = *([typ16Copy bytes] + 2);
   if (v9 != 255)
   {
     v10 = ATLLogObject();
@@ -1270,10 +1270,10 @@ LABEL_21:
     }
   }
 
-  v11 = bswap32(*([v6 bytes] + 3)) >> 16;
-  v12 = bswap32(*([v6 bytes] + 16) & 0xFF3F) >> 16;
-  v13 = *([v6 bytes] + 27);
-  v14 = *([v6 bytes] + 28);
+  v11 = bswap32(*([typ16Copy bytes] + 3)) >> 16;
+  v12 = bswap32(*([typ16Copy bytes] + 16) & 0xFF3F) >> 16;
+  v13 = *([typ16Copy bytes] + 27);
+  v14 = *([typ16Copy bytes] + 28);
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v11];
   [v8 setObject:v15 forKeyedSubscript:@"IPEConcessionaryPassIssuerCostCentre"];
 
@@ -1289,11 +1289,11 @@ LABEL_21:
   v19 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v9];
   [v8 setObject:v19 forKeyedSubscript:@"IPERemoveDate"];
 
-  if (([v7 unsignedCharValue] & 2) != 0)
+  if (([bitmapCopy unsignedCharValue] & 2) != 0)
   {
-    v21 = [v6 subdataWithOffset:29 length:4];
-    v22 = [v21 asHexString];
-    [v8 setObject:v22 forKeyedSubscript:@"TmpSecondaryID"];
+    v21 = [typ16Copy subdataWithOffset:29 length:4];
+    asHexString = [v21 asHexString];
+    [v8 setObject:asHexString forKeyedSubscript:@"TmpSecondaryID"];
 
     v20 = 33;
   }
@@ -1303,53 +1303,53 @@ LABEL_21:
     v20 = 29;
   }
 
-  if (([v7 unsignedCharValue] & 4) != 0)
+  if (([bitmapCopy unsignedCharValue] & 4) != 0)
   {
-    v23 = [v6 u8:v20];
+    v23 = [typ16Copy u8:v20];
     v24 = v23;
     v25 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v23];
     [v8 setObject:v25 forKeyedSubscript:@"TmpForenameLength"];
 
     LODWORD(v25) = v20 + 1;
-    v26 = [v6 subdataWithOffset:v20 + 1 length:v24];
+    v26 = [typ16Copy subdataWithOffset:v20 + 1 length:v24];
     [v8 setObject:v26 forKeyedSubscript:@"TmpForename"];
 
     v27 = v25 + v24;
-    v28 = [v6 u8:v27];
+    v28 = [typ16Copy u8:v27];
     v29 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v28];
     [v8 setObject:v29 forKeyedSubscript:@"TmpSurnameLength"];
 
     v30 = (v27 + 1);
-    v31 = [v6 subdataWithOffset:v30 length:v28];
+    v31 = [typ16Copy subdataWithOffset:v30 length:v28];
     [v8 setObject:v31 forKeyedSubscript:@"TmpSurname"];
 
     v20 = v30 + v28;
   }
 
-  if (([v7 unsignedCharValue] & 8) != 0)
+  if (([bitmapCopy unsignedCharValue] & 8) != 0)
   {
-    v32 = [v6 bytes];
-    v33 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:bswap32(*(v32 + v20)) >> 16];
+    bytes = [typ16Copy bytes];
+    v33 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:bswap32(*(bytes + v20)) >> 16];
     [v8 setObject:v33 forKeyedSubscript:@"IPEHalfDayOfWeek"];
 
     v34 = v20 + 2;
-    v35 = [v6 u8:v20 + 3] + 2;
-    v36 = [v6 subdataWithOffset:v34 length:v35];
+    v35 = [typ16Copy u8:v20 + 3] + 2;
+    v36 = [typ16Copy subdataWithOffset:v34 length:v35];
     [v8 setObject:v36 forKeyedSubscript:@"IPEValidAtOrFrom"];
     v20 = v34 + v35;
   }
 
-  if (([v7 unsignedCharValue] & 0x10) != 0)
+  if (([bitmapCopy unsignedCharValue] & 0x10) != 0)
   {
-    v37 = [v6 u8:v20 + 1] + 2;
-    v38 = [v6 subdataWithOffset:v20 length:v37];
+    v37 = [typ16Copy u8:v20 + 1] + 2;
+    v38 = [typ16Copy subdataWithOffset:v20 length:v37];
     [v8 setObject:v38 forKeyedSubscript:@"IPEValidTo"];
     v20 += v37;
   }
 
-  if ([v7 unsignedCharValue])
+  if ([bitmapCopy unsignedCharValue])
   {
-    v39 = [v6 subdataWithOffset:v20 length:3];
+    v39 = [typ16Copy subdataWithOffset:v20 length:3];
     [v8 setObject:v39 forKeyedSubscript:@"IPELevelIIN"];
   }
 
@@ -1358,43 +1358,43 @@ LABEL_21:
   return v8;
 }
 
-+ (id)decodeIPETyp22:(id)a3 withIfr:(id)a4 withBitmap:(id)a5
++ (id)decodeIPETyp22:(id)typ22 withIfr:(id)ifr withBitmap:(id)bitmap
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 unsignedIntValue] == 2)
+  typ22Copy = typ22;
+  ifrCopy = ifr;
+  bitmapCopy = bitmap;
+  if ([ifrCopy unsignedIntValue] == 2)
   {
-    v10 = [KramerVCReader decodeIPETyp22Ifr2:v7 withIfr:v8 withBitmap:v9];
+    v10 = [KramerVCReader decodeIPETyp22Ifr2:typ22Copy withIfr:ifrCopy withBitmap:bitmapCopy];
   }
 
   else
   {
     v10 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:13];
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{bswap32(*(objc_msgSend(v7, "bytes") + 5)) >> 16}];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{bswap32(*(objc_msgSend(typ22Copy, "bytes") + 5)) >> 16}];
     [v10 setObject:v11 forKeyedSubscript:@"IPEFlags"];
 
-    v12 = [MEMORY[0x277CCABB0] numberWithInt:{bswap32(*(objc_msgSend(v7, "bytes") + 8)) >> 18}];
+    v12 = [MEMORY[0x277CCABB0] numberWithInt:{bswap32(*(objc_msgSend(typ22Copy, "bytes") + 8)) >> 18}];
     [v10 setObject:v12 forKeyedSubscript:@"IPEIssuedDate"];
 
-    v13 = [v7 bytes];
-    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:(bswap32(*(v13 + 9)) >> 15) & 0x7FF];
-    [v10 setObject:v14 forKeyedSubscript:@"IPEExpiryTime"];
+    bytes = [typ22Copy bytes];
+    0x7FF = [MEMORY[0x277CCABB0] numberWithUnsignedInt:(bswap32(*(bytes + 9)) >> 15) & 0x7FF];
+    [v10 setObject:0x7FF forKeyedSubscript:@"IPEExpiryTime"];
 
-    v15 = [MEMORY[0x277CCABB0] numberWithInt:{*(objc_msgSend(v7, "bytes") + 12) >> 5}];
+    v15 = [MEMORY[0x277CCABB0] numberWithInt:{*(objc_msgSend(typ22Copy, "bytes") + 12) >> 5}];
     [v10 setObject:v15 forKeyedSubscript:@"IPEClassCode"];
 
-    v16 = [MEMORY[0x277CCABB0] numberWithInt:{*(objc_msgSend(v7, "bytes") + 12) & 0x1F}];
+    v16 = [MEMORY[0x277CCABB0] numberWithInt:{*(objc_msgSend(typ22Copy, "bytes") + 12) & 0x1F}];
     [v10 setObject:v16 forKeyedSubscript:@"IPEValidityCode"];
 
-    v17 = bswap32(*([v7 bytes] + 13));
+    v17 = bswap32(*([typ22Copy bytes] + 13));
     v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v17 >> 8];
     [v10 setObject:v18 forKeyedSubscript:@"IPEValidityStartRaw"];
 
-    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*(objc_msgSend(v7, "bytes") + 16)}];
+    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*(objc_msgSend(typ22Copy, "bytes") + 16)}];
     [v10 setObject:v19 forKeyedSubscript:@"IPEPromoCode"];
 
-    v20 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*(objc_msgSend(v7, "bytes") + 17)}];
+    v20 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*(objc_msgSend(typ22Copy, "bytes") + 17)}];
     [v10 setObject:v20 forKeyedSubscript:@"IPEValidOnDayCode"];
 
     if (v17 >= 0x100)
@@ -1403,9 +1403,9 @@ LABEL_21:
       [v10 setObject:v21 forKeyedSubscript:@"IPEValidityStart"];
     }
 
-    if (([v9 unsignedCharValue] & 0x10) != 0)
+    if (([bitmapCopy unsignedCharValue] & 0x10) != 0)
     {
-      v23 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{bswap32(*(objc_msgSend(v7, "bytes") + 26)) >> 16}];
+      v23 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{bswap32(*(objc_msgSend(typ22Copy, "bytes") + 26)) >> 16}];
       [v10 setObject:v23 forKeyedSubscript:@"IPEConcessionaryPassIssuerCostCentre"];
 
       v22 = 28;
@@ -1416,35 +1416,35 @@ LABEL_21:
       v22 = 26;
     }
 
-    if (([v9 unsignedCharValue] & 2) != 0)
+    if (([bitmapCopy unsignedCharValue] & 2) != 0)
     {
-      v24 = [v7 u8:v22 | 1] + 2;
-      v25 = [v7 subdataWithOffset:v22 length:v24];
+      v24 = [typ22Copy u8:v22 | 1] + 2;
+      v25 = [typ22Copy subdataWithOffset:v22 length:v24];
       [v10 setObject:v25 forKeyedSubscript:@"IPEValidAtOrFrom"];
 
       v22 += v24;
     }
 
-    if (([v9 unsignedCharValue] & 4) != 0)
+    if (([bitmapCopy unsignedCharValue] & 4) != 0)
     {
-      v26 = [v7 u8:v22 + 1] + 2;
-      v27 = [v7 subdataWithOffset:v22 length:v26];
+      v26 = [typ22Copy u8:v22 + 1] + 2;
+      v27 = [typ22Copy subdataWithOffset:v22 length:v26];
       [v10 setObject:v27 forKeyedSubscript:@"IPEValidTo"];
 
       v22 += v26;
     }
 
-    if (([v9 unsignedCharValue] & 8) != 0)
+    if (([bitmapCopy unsignedCharValue] & 8) != 0)
     {
-      v28 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*(objc_msgSend(v7, "bytes") + v22)}];
+      v28 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*(objc_msgSend(typ22Copy, "bytes") + v22)}];
       [v10 setObject:v28 forKeyedSubscript:@"IPEPassDuration"];
 
       ++v22;
     }
 
-    if ([v9 unsignedCharValue])
+    if ([bitmapCopy unsignedCharValue])
     {
-      v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{bswap32(*(objc_msgSend(v7, "bytes") + v22)) >> 8}];
+      v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{bswap32(*(objc_msgSend(typ22Copy, "bytes") + v22)) >> 8}];
       [v10 setObject:v29 forKeyedSubscript:@"IPELevelIIN"];
     }
   }
@@ -1452,35 +1452,35 @@ LABEL_21:
   return v10;
 }
 
-+ (id)decodeIPETyp22Ifr2:(id)a3 withIfr:(id)a4 withBitmap:(id)a5
++ (id)decodeIPETyp22Ifr2:(id)ifr2 withIfr:(id)ifr withBitmap:(id)bitmap
 {
-  v6 = a3;
-  v7 = a5;
+  ifr2Copy = ifr2;
+  bitmapCopy = bitmap;
   v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:14];
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{bswap32(*(objc_msgSend(v6, "bytes") + 5)) >> 16}];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{bswap32(*(objc_msgSend(ifr2Copy, "bytes") + 5)) >> 16}];
   [v8 setObject:v9 forKeyedSubscript:@"IPEFlags"];
 
-  v10 = [MEMORY[0x277CCABB0] numberWithInt:{bswap32(*(objc_msgSend(v6, "bytes") + 8)) >> 18}];
+  v10 = [MEMORY[0x277CCABB0] numberWithInt:{bswap32(*(objc_msgSend(ifr2Copy, "bytes") + 8)) >> 18}];
   [v8 setObject:v10 forKeyedSubscript:@"IPEIssuedDate"];
 
-  v11 = [v6 bytes];
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:(bswap32(*(v11 + 9)) >> 15) & 0x7FF];
-  [v8 setObject:v12 forKeyedSubscript:@"IPEExpiryTime"];
+  bytes = [ifr2Copy bytes];
+  0x7FF = [MEMORY[0x277CCABB0] numberWithUnsignedInt:(bswap32(*(bytes + 9)) >> 15) & 0x7FF];
+  [v8 setObject:0x7FF forKeyedSubscript:@"IPEExpiryTime"];
 
-  v13 = [MEMORY[0x277CCABB0] numberWithInt:{*(objc_msgSend(v6, "bytes") + 12) >> 5}];
+  v13 = [MEMORY[0x277CCABB0] numberWithInt:{*(objc_msgSend(ifr2Copy, "bytes") + 12) >> 5}];
   [v8 setObject:v13 forKeyedSubscript:@"IPEClassCode"];
 
-  v14 = [MEMORY[0x277CCABB0] numberWithInt:{*(objc_msgSend(v6, "bytes") + 12) & 0x1F}];
+  v14 = [MEMORY[0x277CCABB0] numberWithInt:{*(objc_msgSend(ifr2Copy, "bytes") + 12) & 0x1F}];
   [v8 setObject:v14 forKeyedSubscript:@"IPEValidityCode"];
 
-  v15 = bswap32(*([v6 bytes] + 13));
+  v15 = bswap32(*([ifr2Copy bytes] + 13));
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v15 >> 8];
   [v8 setObject:v16 forKeyedSubscript:@"IPEValidityStartRaw"];
 
-  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*(objc_msgSend(v6, "bytes") + 16)}];
+  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*(objc_msgSend(ifr2Copy, "bytes") + 16)}];
   [v8 setObject:v17 forKeyedSubscript:@"IPEPromoCode"];
 
-  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*(objc_msgSend(v6, "bytes") + 17)}];
+  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*(objc_msgSend(ifr2Copy, "bytes") + 17)}];
   [v8 setObject:v18 forKeyedSubscript:@"IPEValidOnDayCode"];
 
   if (v15 >= 0x100)
@@ -1489,9 +1489,9 @@ LABEL_21:
     [v8 setObject:v19 forKeyedSubscript:@"IPEValidityStart"];
   }
 
-  if (([v7 unsignedCharValue] & 0x10) != 0)
+  if (([bitmapCopy unsignedCharValue] & 0x10) != 0)
   {
-    v21 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{bswap32(*(objc_msgSend(v6, "bytes") + 28)) >> 16}];
+    v21 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{bswap32(*(objc_msgSend(ifr2Copy, "bytes") + 28)) >> 16}];
     [v8 setObject:v21 forKeyedSubscript:@"IPEConcessionaryPassIssuerCostCentre"];
 
     v20 = 30;
@@ -1502,90 +1502,90 @@ LABEL_21:
     v20 = 28;
   }
 
-  if (([v7 unsignedCharValue] & 8) != 0)
+  if (([bitmapCopy unsignedCharValue] & 8) != 0)
   {
-    v22 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*(objc_msgSend(v6, "bytes") + v20)}];
+    v22 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*(objc_msgSend(ifr2Copy, "bytes") + v20)}];
     [v8 setObject:v22 forKeyedSubscript:@"IPEPassDuration"];
 
     v20 |= 1u;
   }
 
-  if (([v7 unsignedCharValue] & 2) != 0)
+  if (([bitmapCopy unsignedCharValue] & 2) != 0)
   {
-    v23 = [v6 subdataWithOffset:v20 length:5];
+    v23 = [ifr2Copy subdataWithOffset:v20 length:5];
     [v8 setObject:v23 forKeyedSubscript:@"IPERouteCode"];
 
     LODWORD(v23) = v20 + 5;
-    v24 = [v6 u8:v20 + 6] + 2;
-    v25 = [v6 subdataWithOffset:v20 + 5 length:v24];
+    v24 = [ifr2Copy u8:v20 + 6] + 2;
+    v25 = [ifr2Copy subdataWithOffset:v20 + 5 length:v24];
     [v8 setObject:v25 forKeyedSubscript:@"IPEValidAtOrFrom"];
 
     v26 = v23 + v24;
-    v27 = [v6 u8:v26 + 1] + 2;
-    v28 = [v6 subdataWithOffset:v26 length:v27];
+    v27 = [ifr2Copy u8:v26 + 1] + 2;
+    v28 = [ifr2Copy subdataWithOffset:v26 length:v27];
     [v8 setObject:v28 forKeyedSubscript:@"IPEValidTo"];
 
     v20 = v26 + v27;
   }
 
-  if ([v7 unsignedCharValue])
+  if ([bitmapCopy unsignedCharValue])
   {
-    v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{bswap32(*(objc_msgSend(v6, "bytes") + v20)) >> 8}];
+    v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{bswap32(*(objc_msgSend(ifr2Copy, "bytes") + v20)) >> 8}];
     [v8 setObject:v29 forKeyedSubscript:@"IPELevelIIN"];
   }
 
   return v8;
 }
 
-+ (id)decodeIPETyp23:(id)a3 withIfr:(id)a4 withBitmap:(id)a5
++ (id)decodeIPETyp23:(id)typ23 withIfr:(id)ifr withBitmap:(id)bitmap
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 unsignedIntValue] == 2)
+  typ23Copy = typ23;
+  ifrCopy = ifr;
+  bitmapCopy = bitmap;
+  if ([ifrCopy unsignedIntValue] == 2)
   {
-    v10 = [KramerVCReader decodeIPETyp23Ifr2:v7 withIfr:v8 withBitmap:v9];
+    v10 = [KramerVCReader decodeIPETyp23Ifr2:typ23Copy withIfr:ifrCopy withBitmap:bitmapCopy];
   }
 
   else
   {
     v10 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:15];
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*(objc_msgSend(v7, "bytes") + 5)}];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*(objc_msgSend(typ23Copy, "bytes") + 5)}];
     [v10 setObject:v11 forKeyedSubscript:@"IPEFlags"];
 
-    v12 = [MEMORY[0x277CCABB0] numberWithInt:{bswap32(*(objc_msgSend(v7, "bytes") + 7)) >> 19}];
+    v12 = [MEMORY[0x277CCABB0] numberWithInt:{bswap32(*(objc_msgSend(typ23Copy, "bytes") + 7)) >> 19}];
     [v10 setObject:v12 forKeyedSubscript:@"IPEIssuedDate"];
 
-    v13 = [MEMORY[0x277CCABB0] numberWithInt:{*(objc_msgSend(v7, "bytes") + 9) >> 3}];
+    v13 = [MEMORY[0x277CCABB0] numberWithInt:{*(objc_msgSend(typ23Copy, "bytes") + 9) >> 3}];
     [v10 setObject:v13 forKeyedSubscript:@"IPEValidityCode"];
 
-    v14 = [MEMORY[0x277CCABB0] numberWithInt:{bswap32(*(objc_msgSend(v7, "bytes") + 9) & 0xFF07) >> 16}];
+    v14 = [MEMORY[0x277CCABB0] numberWithInt:{bswap32(*(objc_msgSend(typ23Copy, "bytes") + 9) & 0xFF07) >> 16}];
     [v10 setObject:v14 forKeyedSubscript:@"IPEExpiryTime"];
 
-    v15 = [MEMORY[0x277CCABB0] numberWithInt:{*(objc_msgSend(v7, "bytes") + 11) & 7}];
+    v15 = [MEMORY[0x277CCABB0] numberWithInt:{*(objc_msgSend(typ23Copy, "bytes") + 11) & 7}];
     [v10 setObject:v15 forKeyedSubscript:@"IPEClassCode"];
 
-    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*(objc_msgSend(v7, "bytes") + 24)}];
+    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*(objc_msgSend(typ23Copy, "bytes") + 24)}];
     [v10 setObject:v16 forKeyedSubscript:@"IPEPromoCode"];
 
-    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{bswap32(*(objc_msgSend(v7, "bytes") + 25)) >> 16}];
+    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{bswap32(*(objc_msgSend(typ23Copy, "bytes") + 25)) >> 16}];
     [v10 setObject:v17 forKeyedSubscript:@"IPEConcessionaryPassIssuerCostCentre"];
 
-    if (([v9 unsignedCharValue] & 8) != 0)
+    if (([bitmapCopy unsignedCharValue] & 8) != 0)
     {
-      v19 = [MEMORY[0x277CCABB0] numberWithInt:{*(objc_msgSend(v7, "bytes") + 27) >> 4}];
+      v19 = [MEMORY[0x277CCABB0] numberWithInt:{*(objc_msgSend(typ23Copy, "bytes") + 27) >> 4}];
       [v10 setObject:v19 forKeyedSubscript:@"IPEOperatingMode"];
 
-      v20 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*(objc_msgSend(v7, "bytes") + 28)}];
+      v20 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*(objc_msgSend(typ23Copy, "bytes") + 28)}];
       [v10 setObject:v20 forKeyedSubscript:@"IPEMaxTransfers"];
 
-      v21 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*(objc_msgSend(v7, "bytes") + 29)}];
+      v21 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*(objc_msgSend(typ23Copy, "bytes") + 29)}];
       [v10 setObject:v21 forKeyedSubscript:@"IPETimeLimit"];
 
-      v22 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{bswap32(*(objc_msgSend(v7, "bytes") + 30)) >> 16}];
+      v22 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{bswap32(*(objc_msgSend(typ23Copy, "bytes") + 30)) >> 16}];
       [v10 setObject:v22 forKeyedSubscript:@"IPEValueRideJourney"];
 
-      v23 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{bswap32(*(objc_msgSend(v7, "bytes") + 32)) >> 16}];
+      v23 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{bswap32(*(objc_msgSend(typ23Copy, "bytes") + 32)) >> 16}];
       [v10 setObject:v23 forKeyedSubscript:@"IPEValueRideJourneyCurrCode"];
 
       v18 = 33;
@@ -1596,27 +1596,27 @@ LABEL_21:
       v18 = 27;
     }
 
-    if (([v9 unsignedCharValue] & 4) != 0)
+    if (([bitmapCopy unsignedCharValue] & 4) != 0)
     {
-      v24 = [v7 u8:v18 + 1] + 2;
-      v25 = [v7 subdataWithOffset:v18 length:v24];
+      v24 = [typ23Copy u8:v18 + 1] + 2;
+      v25 = [typ23Copy subdataWithOffset:v18 length:v24];
       [v10 setObject:v25 forKeyedSubscript:@"IPEOrigin1"];
 
       v18 += v24;
     }
 
-    if (([v9 unsignedCharValue] & 2) != 0)
+    if (([bitmapCopy unsignedCharValue] & 2) != 0)
     {
-      v26 = [v7 u8:v18 + 1] + 2;
-      v27 = [v7 subdataWithOffset:v18 length:v26];
+      v26 = [typ23Copy u8:v18 + 1] + 2;
+      v27 = [typ23Copy subdataWithOffset:v18 length:v26];
       [v10 setObject:v27 forKeyedSubscript:@"IPEDest1"];
 
       v18 += v26;
     }
 
-    if ([v9 unsignedCharValue])
+    if ([bitmapCopy unsignedCharValue])
     {
-      v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{bswap32(*(objc_msgSend(v7, "bytes") + v18)) >> 8}];
+      v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{bswap32(*(objc_msgSend(typ23Copy, "bytes") + v18)) >> 8}];
       [v10 setObject:v28 forKeyedSubscript:@"IPELevelIIN"];
     }
   }
@@ -1624,50 +1624,50 @@ LABEL_21:
   return v10;
 }
 
-+ (id)decodeIPETyp23Ifr2:(id)a3 withIfr:(id)a4 withBitmap:(id)a5
++ (id)decodeIPETyp23Ifr2:(id)ifr2 withIfr:(id)ifr withBitmap:(id)bitmap
 {
-  v6 = a3;
-  v7 = a5;
+  ifr2Copy = ifr2;
+  bitmapCopy = bitmap;
   v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:15];
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*(objc_msgSend(v6, "bytes") + 5)}];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*(objc_msgSend(ifr2Copy, "bytes") + 5)}];
   [v8 setObject:v9 forKeyedSubscript:@"IPEFlags"];
 
-  v10 = [MEMORY[0x277CCABB0] numberWithInt:{bswap32(*(objc_msgSend(v6, "bytes") + 7)) >> 19}];
+  v10 = [MEMORY[0x277CCABB0] numberWithInt:{bswap32(*(objc_msgSend(ifr2Copy, "bytes") + 7)) >> 19}];
   [v8 setObject:v10 forKeyedSubscript:@"IPEIssuedDate"];
 
-  v11 = [MEMORY[0x277CCABB0] numberWithInt:{*(objc_msgSend(v6, "bytes") + 9) >> 3}];
+  v11 = [MEMORY[0x277CCABB0] numberWithInt:{*(objc_msgSend(ifr2Copy, "bytes") + 9) >> 3}];
   [v8 setObject:v11 forKeyedSubscript:@"IPEValidityCode"];
 
-  v12 = [MEMORY[0x277CCABB0] numberWithInt:{bswap32(*(objc_msgSend(v6, "bytes") + 9) & 0xFF07) >> 16}];
+  v12 = [MEMORY[0x277CCABB0] numberWithInt:{bswap32(*(objc_msgSend(ifr2Copy, "bytes") + 9) & 0xFF07) >> 16}];
   [v8 setObject:v12 forKeyedSubscript:@"IPEExpiryTime"];
 
-  v13 = [MEMORY[0x277CCABB0] numberWithInt:{*(objc_msgSend(v6, "bytes") + 11) & 7}];
+  v13 = [MEMORY[0x277CCABB0] numberWithInt:{*(objc_msgSend(ifr2Copy, "bytes") + 11) & 7}];
   [v8 setObject:v13 forKeyedSubscript:@"IPEClassCode"];
 
-  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*(objc_msgSend(v6, "bytes") + 26)}];
+  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*(objc_msgSend(ifr2Copy, "bytes") + 26)}];
   [v8 setObject:v14 forKeyedSubscript:@"IPEPromoCode"];
 
-  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{bswap32(*(objc_msgSend(v6, "bytes") + 27)) >> 16}];
+  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{bswap32(*(objc_msgSend(ifr2Copy, "bytes") + 27)) >> 16}];
   [v8 setObject:v15 forKeyedSubscript:@"IPEConcessionaryPassIssuerCostCentre"];
 
-  if (([v7 unsignedCharValue] & 8) != 0)
+  if (([bitmapCopy unsignedCharValue] & 8) != 0)
   {
-    v17 = [MEMORY[0x277CCABB0] numberWithInt:{*(objc_msgSend(v6, "bytes") + 29) >> 4}];
+    v17 = [MEMORY[0x277CCABB0] numberWithInt:{*(objc_msgSend(ifr2Copy, "bytes") + 29) >> 4}];
     [v8 setObject:v17 forKeyedSubscript:@"IPEOperatingMode"];
 
-    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*(objc_msgSend(v6, "bytes") + 30)}];
+    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*(objc_msgSend(ifr2Copy, "bytes") + 30)}];
     [v8 setObject:v18 forKeyedSubscript:@"IPEMaxTransfers"];
 
-    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*(objc_msgSend(v6, "bytes") + 31)}];
+    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*(objc_msgSend(ifr2Copy, "bytes") + 31)}];
     [v8 setObject:v19 forKeyedSubscript:@"IPETimeLimit"];
 
-    v20 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{bswap32(*(objc_msgSend(v6, "bytes") + 32)) >> 16}];
+    v20 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{bswap32(*(objc_msgSend(ifr2Copy, "bytes") + 32)) >> 16}];
     [v8 setObject:v20 forKeyedSubscript:@"IPEValueRideJourney"];
 
-    v21 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{bswap32(*(objc_msgSend(v6, "bytes") + 34)) >> 16}];
+    v21 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{bswap32(*(objc_msgSend(ifr2Copy, "bytes") + 34)) >> 16}];
     [v8 setObject:v21 forKeyedSubscript:@"IPEValueRideJourneyCurrCode"];
 
-    v22 = [v6 subdataWithOffset:35 length:5];
+    v22 = [ifr2Copy subdataWithOffset:35 length:5];
     [v8 setObject:v22 forKeyedSubscript:@"IPERouteCode"];
 
     v16 = 40;
@@ -1678,40 +1678,40 @@ LABEL_21:
     v16 = 29;
   }
 
-  if (([v7 unsignedCharValue] & 2) != 0)
+  if (([bitmapCopy unsignedCharValue] & 2) != 0)
   {
-    v23 = [v6 u8:v16 + 1] + 2;
-    v24 = [v6 subdataWithOffset:v16 length:v23];
+    v23 = [ifr2Copy u8:v16 + 1] + 2;
+    v24 = [ifr2Copy subdataWithOffset:v16 length:v23];
     [v8 setObject:v24 forKeyedSubscript:@"IPEOrigin1"];
 
     v25 = v16 + v23;
-    v26 = [v6 u8:(v25 + 1)] + 2;
-    v27 = [v6 subdataWithOffset:v25 length:v26];
+    v26 = [ifr2Copy u8:(v25 + 1)] + 2;
+    v27 = [ifr2Copy subdataWithOffset:v25 length:v26];
     [v8 setObject:v27 forKeyedSubscript:@"IPEDest1"];
 
     v16 = v25 + v26;
   }
 
-  if ([v7 unsignedCharValue])
+  if ([bitmapCopy unsignedCharValue])
   {
-    v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{bswap32(*(objc_msgSend(v6, "bytes") + v16)) >> 8}];
+    v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{bswap32(*(objc_msgSend(ifr2Copy, "bytes") + v16)) >> 8}];
     [v8 setObject:v28 forKeyedSubscript:@"IPELevelIIN"];
   }
 
   return v8;
 }
 
-+ (id)decodeIPEHeader:(id)a3
++ (id)decodeIPEHeader:(id)header
 {
   v17 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
+  headerCopy = header;
   v5 = [v3 dictionaryWithCapacity:3];
-  v6 = *[v4 bytes] >> 2;
-  v7 = (bswap32(*[v4 bytes]) >> 20) & 0x3F;
-  v8 = [v4 bytes];
+  v6 = *[headerCopy bytes] >> 2;
+  v7 = (bswap32(*[headerCopy bytes]) >> 20) & 0x3F;
+  bytes = [headerCopy bytes];
 
-  v9 = *(v8 + 1) & 0xF;
+  v9 = *(bytes + 1) & 0xF;
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v6];
   [v5 setObject:v10 forKeyedSubscript:@"IPELength"];
 
@@ -1737,17 +1737,17 @@ LABEL_21:
   return v5;
 }
 
-+ (id)decodeVGHeader:(id)a3
++ (id)decodeVGHeader:(id)header
 {
   v24 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
+  headerCopy = header;
   v5 = [v3 dictionaryWithCapacity:3];
-  v6 = *[v4 bytes] >> 2;
-  v7 = (bswap32(*[v4 bytes]) >> 20) & 0x3F;
-  v8 = [v4 bytes];
+  v6 = *[headerCopy bytes] >> 2;
+  v7 = (bswap32(*[headerCopy bytes]) >> 20) & 0x3F;
+  bytes = [headerCopy bytes];
 
-  v9 = *(v8 + 1) & 0xF;
+  v9 = *(bytes + 1) & 0xF;
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v6];
   [v5 setObject:v10 forKeyedSubscript:@"VGLength"];
 
@@ -1803,9 +1803,9 @@ LABEL_21:
   v16 = ATLLogObject();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [MEMORY[0x277CCABB0] numberWithInt:v7 & 0x3E];
+    0x3E = [MEMORY[0x277CCABB0] numberWithInt:v7 & 0x3E];
     v22 = 138412290;
-    v23 = v17;
+    v23 = 0x3E;
     _os_log_impl(&dword_22EEF5000, v16, OS_LOG_TYPE_DEFAULT, "Unexpected number of records for the Value Group (%@)", &v22, 0xCu);
   }
 
@@ -1822,23 +1822,23 @@ LABEL_19:
   return v5;
 }
 
-+ (id)getLogDirectoryEntry:(id)a3
++ (id)getLogDirectoryEntry:(id)entry
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
+  entryCopy = entry;
   v5 = [v3 dictionaryWithCapacity:7];
-  v6 = [v4 isAll00];
-  v7 = [MEMORY[0x277CCABB0] numberWithBool:v6];
+  isAll00 = [entryCopy isAll00];
+  v7 = [MEMORY[0x277CCABB0] numberWithBool:isAll00];
   [v5 setObject:v7 forKeyedSubscript:@"LogUninitialized"];
 
-  v8 = *[v4 bytes];
-  v9 = (*[v4 bytes] >> 2) & 0x1F;
-  v10 = *[v4 bytes];
-  v11 = bswap32(*([v4 bytes] + 1)) >> 8;
-  v12 = *([v4 bytes] + 4) >> 6;
-  v13 = [v4 bytes];
+  v8 = *[entryCopy bytes];
+  v9 = (*[entryCopy bytes] >> 2) & 0x1F;
+  v10 = *[entryCopy bytes];
+  v11 = bswap32(*([entryCopy bytes] + 1)) >> 8;
+  v12 = *([entryCopy bytes] + 4) >> 6;
+  bytes = [entryCopy bytes];
 
-  LOBYTE(v13) = *(v13 + 4);
+  LOBYTE(bytes) = *(bytes + 4);
   v14 = [MEMORY[0x277CCABB0] numberWithBool:v8 >> 7];
   [v5 setObject:v14 forKeyedSubscript:@"LogNormalModeFlag"];
 
@@ -1854,8 +1854,8 @@ LABEL_19:
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v12];
   [v5 setObject:v18 forKeyedSubscript:@"LogRecordOffset"];
 
-  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v13 & 0x3F];
-  [v5 setObject:v19 forKeyedSubscript:@"LogPassbackTime"];
+  0x3F = [MEMORY[0x277CCABB0] numberWithUnsignedChar:bytes & 0x3F];
+  [v5 setObject:0x3F forKeyedSubscript:@"LogPassbackTime"];
 
   v20 = [KramerMappings getAbsoluteDateComponents:v11];
   [v5 setObject:v20 forKeyedSubscript:@"LogDateTimeStamp"];
@@ -1863,20 +1863,20 @@ LABEL_19:
   return v5;
 }
 
-+ (id)decodeVGTyp2:(id)a3 withIfr:(id)a4 withBitmap:(id)a5 withNumRecords:(id)a6
++ (id)decodeVGTyp2:(id)typ2 withIfr:(id)ifr withBitmap:(id)bitmap withNumRecords:(id)records
 {
-  v30 = a3;
-  v7 = [a6 unsignedCharValue];
-  v8 = v7;
-  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:v7];
+  typ2Copy = typ2;
+  unsignedCharValue = [records unsignedCharValue];
+  v8 = unsignedCharValue;
+  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:unsignedCharValue];
   v29 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:1];
-  if (v7)
+  if (unsignedCharValue)
   {
     v10 = 0;
     v11 = 2;
     do
     {
-      v12 = [v30 subdataWithOffset:v11 length:{15, v29}];
+      v12 = [typ2Copy subdataWithOffset:v11 length:{15, v29}];
       v13 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:10];
       v14 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v10];
       [v13 setObject:v14 forKeyedSubscript:@"VGRecordOffset"];
@@ -1936,20 +1936,20 @@ LABEL_19:
   return v27;
 }
 
-+ (id)decodeVGTyp22:(id)a3 withIfr:(id)a4 withBitmap:(id)a5 withNumRecords:(id)a6
++ (id)decodeVGTyp22:(id)typ22 withIfr:(id)ifr withBitmap:(id)bitmap withNumRecords:(id)records
 {
-  v35 = a3;
-  v7 = [a6 unsignedCharValue];
-  v33 = v7;
+  typ22Copy = typ22;
+  unsignedCharValue = [records unsignedCharValue];
+  v33 = unsignedCharValue;
   v34 = [MEMORY[0x277CBEB18] arrayWithCapacity:?];
   v32 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:1];
-  if (v7)
+  if (unsignedCharValue)
   {
     v8 = 0;
     v9 = 2;
     do
     {
-      v10 = [v35 subdataWithOffset:v9 length:{15, v32}];
+      v10 = [typ22Copy subdataWithOffset:v9 length:{15, v32}];
       v11 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:10];
       v12 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v8];
       [v11 setObject:v12 forKeyedSubscript:@"VGRecordOffset"];
@@ -1973,9 +1973,9 @@ LABEL_19:
       v19 = [MEMORY[0x277CCABB0] numberWithInt:{*(objc_msgSend(v10, "bytes") + 10) >> 2}];
       [v11 setObject:v19 forKeyedSubscript:@"VGRemainingPasses"];
 
-      v20 = [v10 bytes];
-      v21 = [MEMORY[0x277CCABB0] numberWithShort:(bswap32(*(v20 + 10)) >> 20) & 0x3F];
-      [v11 setObject:v21 forKeyedSubscript:@"VGTYPFlags"];
+      bytes = [v10 bytes];
+      0x3F = [MEMORY[0x277CCABB0] numberWithShort:(bswap32(*(bytes + 10)) >> 20) & 0x3F];
+      [v11 setObject:0x3F forKeyedSubscript:@"VGTYPFlags"];
 
       v22 = (bswap32(*([v10 bytes] + 11)) >> 14) & 0x3FFF;
       v23 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v22];
@@ -2028,20 +2028,20 @@ LABEL_19:
   return v30;
 }
 
-+ (id)decodeVGTyp23:(id)a3 withIfr:(id)a4 withBitmap:(id)a5 withNumRecords:(id)a6
++ (id)decodeVGTyp23:(id)typ23 withIfr:(id)ifr withBitmap:(id)bitmap withNumRecords:(id)records
 {
-  v28 = a3;
-  v7 = [a6 unsignedCharValue];
-  v8 = v7;
-  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:v7];
+  typ23Copy = typ23;
+  unsignedCharValue = [records unsignedCharValue];
+  v8 = unsignedCharValue;
+  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:unsignedCharValue];
   v27 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:1];
-  if (v7)
+  if (unsignedCharValue)
   {
     v10 = 0;
     v11 = 2;
     do
     {
-      v12 = [v28 subdataWithOffset:v11 length:{15, v27}];
+      v12 = [typ23Copy subdataWithOffset:v11 length:{15, v27}];
       v13 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:10];
       v14 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v10];
       [v13 setObject:v14 forKeyedSubscript:@"VGRecordOffset"];
@@ -2095,102 +2095,102 @@ LABEL_19:
   return v25;
 }
 
-+ (id)decodeTransientTicketIfr1:(id)a3 withIfr:(id)a4 withBitmap:(id)a5 withRecordOffset:(id)a6
++ (id)decodeTransientTicketIfr1:(id)ifr1 withIfr:(id)ifr withBitmap:(id)bitmap withRecordOffset:(id)offset
 {
-  v8 = a3;
-  v9 = a5;
+  ifr1Copy = ifr1;
+  bitmapCopy = bitmap;
   v10 = MEMORY[0x277CBEB38];
-  v11 = a6;
+  offsetCopy = offset;
   v12 = [v10 dictionaryWithCapacity:7];
-  v13 = [v11 unsignedShortValue];
+  unsignedShortValue = [offsetCopy unsignedShortValue];
 
-  v14 = v13 + 7;
-  if ([v9 unsignedShortValue])
+  v14 = unsignedShortValue + 7;
+  if ([bitmapCopy unsignedShortValue])
   {
-    v15 = [MEMORY[0x277CCABB0] numberWithInt:{*(objc_msgSend(v8, "bytes") + (v13 + 7)) >> 4}];
+    v15 = [MEMORY[0x277CCABB0] numberWithInt:{*(objc_msgSend(ifr1Copy, "bytes") + (unsignedShortValue + 7)) >> 4}];
     [v12 setObject:v15 forKeyedSubscript:@"AmountCurrency"];
 
-    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{bswap32(*(objc_msgSend(v8, "bytes") + v14 + 1)) >> 16}];
+    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{bswap32(*(objc_msgSend(ifr1Copy, "bytes") + v14 + 1)) >> 16}];
     [v12 setObject:v16 forKeyedSubscript:@"Amount"];
 
-    v14 = v13 + 12;
+    v14 = unsignedShortValue + 12;
   }
 
-  if (([v9 unsignedShortValue] & 2) != 0)
+  if (([bitmapCopy unsignedShortValue] & 2) != 0)
   {
-    v17 = [v8 subdataWithOffset:v14 length:7];
+    v17 = [ifr1Copy subdataWithOffset:v14 length:7];
     [v12 setObject:v17 forKeyedSubscript:@"EndStation"];
 
     v14 += 7;
   }
 
-  if (([v9 unsignedShortValue] & 4) != 0)
+  if (([bitmapCopy unsignedShortValue] & 4) != 0)
   {
-    v18 = [MEMORY[0x277CCABB0] numberWithInt:{*(objc_msgSend(v8, "bytes") + v14) & 0x1F}];
+    v18 = [MEMORY[0x277CCABB0] numberWithInt:{*(objc_msgSend(ifr1Copy, "bytes") + v14) & 0x1F}];
     [v12 setObject:v18 forKeyedSubscript:@"TTIpeId"];
 
     ++v14;
   }
 
-  if (([v9 unsignedShortValue] & 8) != 0)
+  if (([bitmapCopy unsignedShortValue] & 8) != 0)
   {
-    v19 = [v8 subdataWithOffset:v14 length:7];
+    v19 = [ifr1Copy subdataWithOffset:v14 length:7];
     [v12 setObject:v19 forKeyedSubscript:@"StartStation"];
 
     v14 += 7;
   }
 
-  if (([v9 unsignedShortValue] & 0x20) != 0)
+  if (([bitmapCopy unsignedShortValue] & 0x20) != 0)
   {
-    v20 = [v8 subdataWithOffset:v14 length:7];
-    v21 = [v20 asHexString];
-    [v12 setObject:v21 forKeyedSubscript:@"TTRouteCode"];
+    v20 = [ifr1Copy subdataWithOffset:v14 length:7];
+    asHexString = [v20 asHexString];
+    [v12 setObject:asHexString forKeyedSubscript:@"TTRouteCode"];
 
     v14 += 7;
   }
 
-  if (([v9 unsignedShortValue] & 0x80) != 0)
+  if (([bitmapCopy unsignedShortValue] & 0x80) != 0)
   {
-    v22 = [v8 subdataWithOffset:v14 length:3];
-    v23 = [v22 asHexString];
-    [v12 setObject:v23 forKeyedSubscript:@"TTIin"];
+    v22 = [ifr1Copy subdataWithOffset:v14 length:3];
+    asHexString2 = [v22 asHexString];
+    [v12 setObject:asHexString2 forKeyedSubscript:@"TTIin"];
   }
 
   return v12;
 }
 
-+ (id)deriveWalletData:(id)a3 withSector:(unsigned __int8)a4 withValueGroup:(id)a5
++ (id)deriveWalletData:(id)data withSector:(unsigned __int8)sector withValueGroup:(id)group
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
+  sectorCopy = sector;
+  dataCopy = data;
+  groupCopy = group;
   v9 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:5];
-  v10 = [KramerVCReader getCommutePlanIdentifier:v7];
+  v10 = [KramerVCReader getCommutePlanIdentifier:dataCopy];
   [v9 setObject:v10 forKeyedSubscript:@"CommutePlanIdentifier"];
-  v11 = [MEMORY[0x277CCABB0] numberWithInt:(v6 + 1)];
+  v11 = [MEMORY[0x277CCABB0] numberWithInt:(sectorCopy + 1)];
   v12 = [KramerVCReader getCommutePlanUniqueId:v10 withSector:v11];
 
   [v9 setObject:v12 forKeyedSubscript:@"CommutePlanUniqueIdentifier"];
-  v13 = [v7 objectForKeyedSubscript:@"IPEValidityStart"];
+  v13 = [dataCopy objectForKeyedSubscript:@"IPEValidityStart"];
 
   if (v13)
   {
-    v14 = [v7 objectForKeyedSubscript:@"IPEValidityStart"];
+    v14 = [dataCopy objectForKeyedSubscript:@"IPEValidityStart"];
     [v9 setObject:v14 forKeyedSubscript:@"CommutePlanValidityStartDate"];
   }
 
-  v15 = [KramerVCReader getBestExpiry:v7 withLatestValueGroup:v8];
+  v15 = [KramerVCReader getBestExpiry:dataCopy withLatestValueGroup:groupCopy];
   [v9 setObject:v15 forKeyedSubscript:@"CommutePlanValidityEndDate"];
 
   return v9;
 }
 
-+ (id)getLatestValueGroup:(id)a3
++ (id)getLatestValueGroup:(id)group
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"ValueGroupRecords"];
-  v5 = [v3 objectForKeyedSubscript:@"IPEValueGroupFlag"];
+  groupCopy = group;
+  v4 = [groupCopy objectForKeyedSubscript:@"ValueGroupRecords"];
+  v5 = [groupCopy objectForKeyedSubscript:@"IPEValueGroupFlag"];
   if (v5 && (v6 = v5, v7 = [v4 count], v6, v7))
   {
     v8 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"VGTrxSerialNum" ascending:0];
@@ -2198,21 +2198,21 @@ LABEL_19:
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
     v10 = [v4 sortedArrayUsingDescriptors:v9];
 
-    v11 = [v10 firstObject];
-    v12 = [v3 objectForKeyedSubscript:@"IPEType"];
-    v13 = [v12 unsignedShortValue];
+    firstObject = [v10 firstObject];
+    v12 = [groupCopy objectForKeyedSubscript:@"IPEType"];
+    unsignedShortValue = [v12 unsignedShortValue];
 
-    if (v13 == 22)
+    if (unsignedShortValue == 22)
     {
-      v14 = [v11 objectForKeyedSubscript:@"VGRemainingPasses"];
-      v15 = [v14 unsignedShortValue];
+      v14 = [firstObject objectForKeyedSubscript:@"VGRemainingPasses"];
+      unsignedShortValue2 = [v14 unsignedShortValue];
 
-      if (v15)
+      if (unsignedShortValue2)
       {
-        v16 = [v11 objectForKeyedSubscript:@"VGTYPFlags"];
-        v17 = [v16 unsignedShortValue];
+        v16 = [firstObject objectForKeyedSubscript:@"VGTYPFlags"];
+        unsignedShortValue3 = [v16 unsignedShortValue];
 
-        if ((v17 & 2) == 0)
+        if ((unsignedShortValue3 & 2) == 0)
         {
           v18 = ATLLogObject();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -2224,7 +2224,7 @@ LABEL_19:
       }
     }
 
-    v19 = v11;
+    v19 = firstObject;
   }
 
   else
@@ -2237,23 +2237,23 @@ LABEL_19:
   return v19;
 }
 
-+ (id)getTopupCredits:(id)a3 withIpeId:(unsigned __int16)a4
++ (id)getTopupCredits:(id)credits withIpeId:(unsigned __int16)id
 {
-  v49 = a4;
+  idCopy = id;
   v51[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"ValueGroupRecords"];
+  creditsCopy = credits;
+  v5 = [creditsCopy objectForKeyedSubscript:@"ValueGroupRecords"];
   if ([v5 count] < 2)
   {
     v50 = 0;
     goto LABEL_23;
   }
 
-  v47 = v4;
-  v6 = [v4 objectForKeyedSubscript:@"VGNumValueRecords"];
-  v7 = [v6 unsignedShortValue];
+  v47 = creditsCopy;
+  v6 = [creditsCopy objectForKeyedSubscript:@"VGNumValueRecords"];
+  unsignedShortValue = [v6 unsignedShortValue];
 
-  v50 = [MEMORY[0x277CBEB18] arrayWithCapacity:v7];
+  v50 = [MEMORY[0x277CBEB18] arrayWithCapacity:unsignedShortValue];
   v45 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"VGTrxSerialNum" ascending:0];
   v51[0] = v45;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:1];
@@ -2283,29 +2283,29 @@ LABEL_19:
       LODWORD(v18) = [v20 unsignedShortValue];
 
       v21 = [v11 objectForKeyedSubscript:@"VGDateTimeStampRaw"];
-      v22 = [v21 unsignedIntValue];
-      v23 = v22;
+      unsignedIntValue = [v21 unsignedIntValue];
+      unsignedIntValue2 = unsignedIntValue;
       if (v18 >= 2)
       {
-        if (!v22)
+        if (!unsignedIntValue)
         {
 
           goto LABEL_20;
         }
 
         v24 = [v10 objectForKeyedSubscript:@"VGDateTimeStampRaw"];
-        v23 = [v24 unsignedIntValue];
+        unsignedIntValue2 = [v24 unsignedIntValue];
       }
 
-      if (v23)
+      if (unsignedIntValue2)
       {
         v25 = [v11 objectForKeyedSubscript:@"VGTrxType"];
-        v26 = [v25 unsignedShortValue];
+        unsignedShortValue2 = [v25 unsignedShortValue];
 
-        if (v26 <= 5)
+        if (unsignedShortValue2 <= 5)
         {
           v16 = v17;
-          if (((1 << v26) & 0x32) != 0)
+          if (((1 << unsignedShortValue2) & 0x32) != 0)
           {
             v27 = [v11 mutableCopy];
 
@@ -2314,9 +2314,9 @@ LABEL_19:
             if (v28)
             {
               v29 = [v11 objectForKeyedSubscript:@"VGValue"];
-              v30 = [v29 shortValue];
+              shortValue = [v29 shortValue];
               v31 = [v10 objectForKeyedSubscript:@"VGValue"];
-              v15 = v30 - [v31 shortValue];
+              v15 = shortValue - [v31 shortValue];
               v16 = v17;
             }
 
@@ -2325,9 +2325,9 @@ LABEL_19:
             if (v32)
             {
               v33 = [v11 objectForKeyedSubscript:v16];
-              v34 = [v33 shortValue];
+              shortValue2 = [v33 shortValue];
               v35 = [v10 objectForKeyedSubscript:v16];
-              v15 = v34 - [v35 shortValue];
+              v15 = shortValue2 - [v35 shortValue];
 
               v16 = v17;
             }
@@ -2338,9 +2338,9 @@ LABEL_19:
             if (v37)
             {
               v38 = [v11 objectForKeyedSubscript:@"VGRemainingPasses"];
-              v39 = [v38 shortValue];
+              shortValue3 = [v38 shortValue];
               v40 = [v10 objectForKeyedSubscript:@"VGRemainingPasses"];
-              v36 = v39 - [v40 shortValue];
+              v36 = shortValue3 - [v40 shortValue];
 
               v16 = v17;
             }
@@ -2349,7 +2349,7 @@ LABEL_19:
             v41 = [MEMORY[0x277CCABB0] numberWithShort:v36];
             [v27 setObject:v41 forKeyedSubscript:@"VGTopupCredit"];
 
-            v42 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v49];
+            v42 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:idCopy];
             [v27 setObject:v42 forKeyedSubscript:@"VGIpePointer"];
 
             [v50 addObject:v27];
@@ -2378,7 +2378,7 @@ LABEL_21:
 LABEL_22:
 
   v5 = v46;
-  v4 = v47;
+  creditsCopy = v47;
 LABEL_23:
 
   v43 = *MEMORY[0x277D85DE8];
@@ -2386,47 +2386,47 @@ LABEL_23:
   return v50;
 }
 
-+ (id)getBestExpiry:(id)a3 withLatestValueGroup:(id)a4
++ (id)getBestExpiry:(id)expiry withLatestValueGroup:(id)group
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:@"IPEType"];
-  v8 = [v7 unsignedShortValue];
+  expiryCopy = expiry;
+  groupCopy = group;
+  v7 = [expiryCopy objectForKeyedSubscript:@"IPEType"];
+  unsignedShortValue = [v7 unsignedShortValue];
 
-  v9 = [v5 objectForKeyedSubscript:@"IPEExpiryDate"];
-  v10 = [v9 unsignedShortValue];
+  v9 = [expiryCopy objectForKeyedSubscript:@"IPEExpiryDate"];
+  unsignedShortValue2 = [v9 unsignedShortValue];
 
-  if (v8 > 21)
+  if (unsignedShortValue > 21)
   {
-    if (v8 == 22)
+    if (unsignedShortValue == 22)
     {
-      v16 = [v5 objectForKeyedSubscript:@"IPEExpiryTime"];
-      v14 = [v16 unsignedShortValue];
+      v16 = [expiryCopy objectForKeyedSubscript:@"IPEExpiryTime"];
+      unsignedShortValue3 = [v16 unsignedShortValue];
 
-      if (v6)
+      if (groupCopy)
       {
-        v17 = [v6 objectForKeyedSubscript:@"VGExpiryCurrentRaw"];
-        v18 = [v17 unsignedShortValue];
+        v17 = [groupCopy objectForKeyedSubscript:@"VGExpiryCurrentRaw"];
+        unsignedShortValue4 = [v17 unsignedShortValue];
 
-        if (v18)
+        if (unsignedShortValue4)
         {
-          v10 = v18;
+          unsignedShortValue2 = unsignedShortValue4;
         }
 
         else
         {
-          v19 = [v6 objectForKeyedSubscript:@"VGExpiryStoredPassRaw"];
-          v20 = [v19 unsignedShortValue];
+          v19 = [groupCopy objectForKeyedSubscript:@"VGExpiryStoredPassRaw"];
+          unsignedShortValue5 = [v19 unsignedShortValue];
 
-          if (v20)
+          if (unsignedShortValue5)
           {
-            v10 = v20;
+            unsignedShortValue2 = unsignedShortValue5;
           }
 
           else
           {
-            v10 = v10;
+            unsignedShortValue2 = unsignedShortValue2;
           }
         }
       }
@@ -2434,16 +2434,16 @@ LABEL_23:
 
     else
     {
-      if (v8 != 23)
+      if (unsignedShortValue != 23)
       {
         goto LABEL_10;
       }
 
-      v13 = [v5 objectForKeyedSubscript:@"IPEExpiryTime"];
-      v14 = [v13 unsignedShortValue];
+      v13 = [expiryCopy objectForKeyedSubscript:@"IPEExpiryTime"];
+      unsignedShortValue3 = [v13 unsignedShortValue];
     }
 
-    if (v14)
+    if (unsignedShortValue3)
     {
       goto LABEL_21;
     }
@@ -2451,21 +2451,21 @@ LABEL_23:
     goto LABEL_20;
   }
 
-  if (v8 != 2)
+  if (unsignedShortValue != 2)
   {
-    if (v8 == 16)
+    if (unsignedShortValue == 16)
     {
-      v11 = [v5 objectForKeyedSubscript:@"IPEEntitlementExpiryRaw"];
-      v12 = [v11 unsignedShortValue];
+      v11 = [expiryCopy objectForKeyedSubscript:@"IPEEntitlementExpiryRaw"];
+      unsignedShortValue6 = [v11 unsignedShortValue];
 
-      if (v12)
+      if (unsignedShortValue6)
       {
-        v10 = v12;
+        unsignedShortValue2 = unsignedShortValue6;
       }
 
       else
       {
-        v10 = v10;
+        unsignedShortValue2 = unsignedShortValue2;
       }
 
       goto LABEL_20;
@@ -2476,30 +2476,30 @@ LABEL_10:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v24[0] = 67109120;
-      v24[1] = v8;
+      v24[1] = unsignedShortValue;
       _os_log_impl(&dword_22EEF5000, v15, OS_LOG_TYPE_DEFAULT, "Warning: IPE Typ %d is not supported! Default expiry date from Directory Entry is used.", v24, 8u);
     }
   }
 
 LABEL_20:
-  v14 = 1439;
+  unsignedShortValue3 = 1439;
 LABEL_21:
-  v21 = [KramerMappings getAbsoluteDateComponents:v10 withTime:v14];
+  v21 = [KramerMappings getAbsoluteDateComponents:unsignedShortValue2 withTime:unsignedShortValue3];
 
   v22 = *MEMORY[0x277D85DE8];
 
   return v21;
 }
 
-+ (id)decodeDirectory:(id)a3
++ (id)decodeDirectory:(id)directory
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
+  directoryCopy = directory;
   v5 = [v3 dictionaryWithCapacity:20];
   v6 = MEMORY[0x277CBEA90];
-  v7 = [v4 bytes];
+  bytes = [directoryCopy bytes];
 
-  v8 = [v6 dataWithBytes:v7 + 37 length:5];
+  v8 = [v6 dataWithBytes:bytes + 37 length:5];
   v9 = [KramerVCReader getLogDirectoryEntry:v8];
   [v5 setObject:v9 forKeyedSubscript:@"LogDirectory"];
 

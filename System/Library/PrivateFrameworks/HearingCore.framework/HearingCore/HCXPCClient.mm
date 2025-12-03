@@ -1,11 +1,11 @@
 @interface HCXPCClient
-+ (HCXPCClient)clientWithConnection:(id)a3;
-- (BOOL)sendMessage:(id)a3 errorBlock:(id)a4;
-- (HCXPCClient)initWithConnection:(id)a3;
++ (HCXPCClient)clientWithConnection:(id)connection;
+- (BOOL)sendMessage:(id)message errorBlock:(id)block;
+- (HCXPCClient)initWithConnection:(id)connection;
 - (id)description;
 - (int)pid;
 - (void)dealloc;
-- (void)setWantsUpdates:(BOOL)a3 forIdentifier:(unint64_t)a4;
+- (void)setWantsUpdates:(BOOL)updates forIdentifier:(unint64_t)identifier;
 - (void)teardownConnection;
 @end
 
@@ -13,11 +13,11 @@
 
 - (id)description
 {
-  v3 = [(HCXPCClient *)self xpcConnection];
-  if (v3)
+  xpcConnection = [(HCXPCClient *)self xpcConnection];
+  if (xpcConnection)
   {
-    v4 = [(HCXPCClient *)self xpcConnection];
-    pid = xpc_connection_get_pid(v4);
+    xpcConnection2 = [(HCXPCClient *)self xpcConnection];
+    pid = xpc_connection_get_pid(xpcConnection2);
   }
 
   else
@@ -34,18 +34,18 @@
   return v8;
 }
 
-+ (HCXPCClient)clientWithConnection:(id)a3
++ (HCXPCClient)clientWithConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [[HCXPCClient alloc] initWithConnection:v3];
+  connectionCopy = connection;
+  v4 = [[HCXPCClient alloc] initWithConnection:connectionCopy];
 
   return v4;
 }
 
-- (HCXPCClient)initWithConnection:(id)a3
+- (HCXPCClient)initWithConnection:(id)connection
 {
-  v4 = a3;
-  if (v4)
+  connectionCopy = connection;
+  if (connectionCopy)
   {
     v13.receiver = self;
     v13.super_class = HCXPCClient;
@@ -55,14 +55,14 @@
       v5 = objc_alloc(MEMORY[0x1E696AEC0]);
       v6 = objc_opt_class();
       v7 = NSStringFromClass(v6);
-      v8 = [MEMORY[0x1E696AFB0] UUID];
-      v9 = [v8 UUIDString];
-      v10 = [v5 initWithFormat:@"%@.%@.%@-%p", @"com.apple.accessibility.heard", v7, v9, v4];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
+      connectionCopy = [v5 initWithFormat:@"%@.%@.%@-%p", @"com.apple.accessibility.heard", v7, uUIDString, connectionCopy];
 
-      v11 = dispatch_queue_create([v10 UTF8String], 0);
-      xpc_connection_set_target_queue(v4, v11);
+      v11 = dispatch_queue_create([connectionCopy UTF8String], 0);
+      xpc_connection_set_target_queue(connectionCopy, v11);
       [(HCXPCClient *)self setXpcQueue:v11];
-      [(HCXPCClient *)self setXpcConnection:v4];
+      [(HCXPCClient *)self setXpcConnection:connectionCopy];
     }
   }
 
@@ -80,11 +80,11 @@
 
 - (int)pid
 {
-  v3 = [(HCXPCClient *)self xpcConnection];
-  if (v3)
+  xpcConnection = [(HCXPCClient *)self xpcConnection];
+  if (xpcConnection)
   {
-    v4 = [(HCXPCClient *)self xpcConnection];
-    pid = xpc_connection_get_pid(v4);
+    xpcConnection2 = [(HCXPCClient *)self xpcConnection];
+    pid = xpc_connection_get_pid(xpcConnection2);
   }
 
   else
@@ -102,70 +102,70 @@
   [(HCXPCClient *)self setXpcQueue:0];
 }
 
-- (void)setWantsUpdates:(BOOL)a3 forIdentifier:(unint64_t)a4
+- (void)setWantsUpdates:(BOOL)updates forIdentifier:(unint64_t)identifier
 {
-  v5 = a3;
+  updatesCopy = updates;
   v18 = *MEMORY[0x1E69E9840];
-  v7 = [(HCXPCClient *)self requestedUpdates];
-  if (v5)
+  requestedUpdates = [(HCXPCClient *)self requestedUpdates];
+  if (updatesCopy)
   {
-    if ((v7 & a4) != a4)
+    if ((requestedUpdates & identifier) != identifier)
     {
       v8 = HCLogHearingXPC();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = messageIdentifierDescription(a4);
+        v9 = messageIdentifierDescription(identifier);
         v14 = 138412546;
-        v15 = self;
+        selfCopy2 = self;
         v16 = 2112;
         v17 = v9;
         _os_log_impl(&dword_1D952C000, v8, OS_LOG_TYPE_DEFAULT, "Client %@ wants update for: %@", &v14, 0x16u);
       }
     }
 
-    v10 = [(HCXPCClient *)self requestedUpdates]| a4;
+    v10 = [(HCXPCClient *)self requestedUpdates]| identifier;
   }
 
   else
   {
-    if ((v7 & a4) == a4)
+    if ((requestedUpdates & identifier) == identifier)
     {
       v11 = HCLogHearingXPC();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = messageIdentifierDescription(a4);
+        v12 = messageIdentifierDescription(identifier);
         v14 = 138412546;
-        v15 = self;
+        selfCopy2 = self;
         v16 = 2112;
         v17 = v12;
         _os_log_impl(&dword_1D952C000, v11, OS_LOG_TYPE_DEFAULT, "Client %@ doesn't want update for: %@", &v14, 0x16u);
       }
     }
 
-    v10 = [(HCXPCClient *)self requestedUpdates]& ~a4;
+    v10 = [(HCXPCClient *)self requestedUpdates]& ~identifier;
   }
 
   [(HCXPCClient *)self setRequestedUpdates:v10];
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)sendMessage:(id)a3 errorBlock:(id)a4
+- (BOOL)sendMessage:(id)message errorBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HCXPCClient *)self xpcQueue];
+  messageCopy = message;
+  blockCopy = block;
+  xpcQueue = [(HCXPCClient *)self xpcQueue];
 
-  if (v8)
+  if (xpcQueue)
   {
-    v9 = [(HCXPCClient *)self xpcQueue];
+    xpcQueue2 = [(HCXPCClient *)self xpcQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __38__HCXPCClient_sendMessage_errorBlock___block_invoke;
     block[3] = &unk_1E857EC60;
     block[4] = self;
-    v12 = v6;
-    v13 = v7;
-    dispatch_async(v9, block);
+    v12 = messageCopy;
+    v13 = blockCopy;
+    dispatch_async(xpcQueue2, block);
   }
 
   return 1;

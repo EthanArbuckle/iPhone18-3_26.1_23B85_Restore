@@ -1,39 +1,39 @@
 @interface IDSSocketPairAppAckMessage
-- (IDSSocketPairAppAckMessage)initWithCommand:(unsigned __int8)a3 underlyingData:(id)a4;
-- (IDSSocketPairAppAckMessage)initWithSequenceNumber:(unsigned int)a3 streamID:(unsigned __int16)a4 peerResponseIdentifier:(id)a5;
+- (IDSSocketPairAppAckMessage)initWithCommand:(unsigned __int8)command underlyingData:(id)data;
+- (IDSSocketPairAppAckMessage)initWithSequenceNumber:(unsigned int)number streamID:(unsigned __int16)d peerResponseIdentifier:(id)identifier;
 - (id)_nonHeaderData;
 @end
 
 @implementation IDSSocketPairAppAckMessage
 
-- (IDSSocketPairAppAckMessage)initWithCommand:(unsigned __int8)a3 underlyingData:(id)a4
+- (IDSSocketPairAppAckMessage)initWithCommand:(unsigned __int8)command underlyingData:(id)data
 {
-  v4 = a3;
-  v6 = a4;
+  commandCopy = command;
+  dataCopy = data;
   v24.receiver = self;
   v24.super_class = IDSSocketPairAppAckMessage;
-  v7 = [(IDSSocketPairMessage *)&v24 initWithCommand:v4 underlyingData:v6];
+  v7 = [(IDSSocketPairMessage *)&v24 initWithCommand:commandCopy underlyingData:dataCopy];
   if (v7)
   {
     v8 = objc_autoreleasePoolPush();
     v7->_offset = 0;
     v23 = -1431655766;
-    [v6 getBytes:&v23 range:{0, 4}];
+    [dataCopy getBytes:&v23 range:{0, 4}];
     offset = v7->_offset;
     v23 = bswap32(v23);
     v7->_offset = offset + 4;
     v22 = -21846;
-    [v6 getBytes:&v22 range:?];
+    [dataCopy getBytes:&v22 range:?];
     v22 = bswap32(v22) >> 16;
     v7->_offset += 2;
     HIDWORD(v21) = -1431655766;
-    [v6 getBytes:&v21 + 4 range:?];
+    [dataCopy getBytes:&v21 + 4 range:?];
     v10 = HIDWORD(v21);
     HIDWORD(v21) = bswap32(HIDWORD(v21));
     v7->_offset += 4;
     if (v10)
     {
-      v11 = [v6 subdataWithRange:?];
+      v11 = [dataCopy subdataWithRange:?];
       v7->_offset += HIDWORD(v21);
       v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v11 encoding:4];
       peerResponseIdentifier = v7->_peerResponseIdentifier;
@@ -41,10 +41,10 @@
     }
 
     LODWORD(v21) = -1431655766;
-    v14 = [v6 length] - v7->_offset;
+    v14 = [dataCopy length] - v7->_offset;
     if (v14 >= 4)
     {
-      [v6 getBytes:&v21 range:?];
+      [dataCopy getBytes:&v21 range:?];
       v15 = v21;
       v16 = bswap32(v21);
       LODWORD(v21) = v16;
@@ -54,7 +54,7 @@
       {
         if (v14 - v17 >= v16)
         {
-          v18 = [v6 subdataWithRange:?];
+          v18 = [dataCopy subdataWithRange:?];
           v7->_offset += v21;
           v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v18 encoding:4];
           [(IDSSocketPairMessage *)v7 setTopic:v19];
@@ -70,18 +70,18 @@
   return v7;
 }
 
-- (IDSSocketPairAppAckMessage)initWithSequenceNumber:(unsigned int)a3 streamID:(unsigned __int16)a4 peerResponseIdentifier:(id)a5
+- (IDSSocketPairAppAckMessage)initWithSequenceNumber:(unsigned int)number streamID:(unsigned __int16)d peerResponseIdentifier:(id)identifier
 {
-  v9 = a5;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = IDSSocketPairAppAckMessage;
   v10 = [(IDSSocketPairAppAckMessage *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_sequenceNumber = a3;
-    v10->_streamID = a4;
-    objc_storeStrong(&v10->_peerResponseIdentifier, a5);
+    v10->_sequenceNumber = number;
+    v10->_streamID = d;
+    objc_storeStrong(&v10->_peerResponseIdentifier, identifier);
   }
 
   return v11;
@@ -102,16 +102,16 @@
     [v3 appendData:v4];
   }
 
-  v5 = [(IDSSocketPairMessage *)self topic];
-  if (v5)
+  topic = [(IDSSocketPairMessage *)self topic];
+  if (topic)
   {
-    v6 = v5;
-    v7 = [(IDSSocketPairMessage *)self useDynamicServiceName];
+    v6 = topic;
+    useDynamicServiceName = [(IDSSocketPairMessage *)self useDynamicServiceName];
 
-    if (v7)
+    if (useDynamicServiceName)
     {
-      v8 = [(IDSSocketPairMessage *)self topic];
-      v9 = [v8 dataUsingEncoding:4];
+      topic2 = [(IDSSocketPairMessage *)self topic];
+      v9 = [topic2 dataUsingEncoding:4];
 
       v11 = bswap32([v9 length]);
       [v3 appendBytes:&v11 length:4];

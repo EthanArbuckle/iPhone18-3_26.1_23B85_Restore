@@ -1,7 +1,7 @@
 @interface CKMaterialCloseButton
 + (id)closeButton;
 - (BOOL)isEnabled;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIButtonConfiguration)configuration;
 - (UIColor)materialColor;
 - (UIColor)symbolColor;
@@ -10,14 +10,14 @@
 - (double)cornerRadius;
 - (double)padding;
 - (void)layoutSubviews;
-- (void)setConfiguration:(id)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setMaterialBackgroundView:(id)a3;
-- (void)setMaterialColor:(id)a3;
-- (void)setPadding:(double)a3;
-- (void)setSymbolColor:(id)a3;
-- (void)setSymbolImage:(id)a3;
+- (void)setConfiguration:(id)configuration;
+- (void)setCornerRadius:(double)radius;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setMaterialBackgroundView:(id)view;
+- (void)setMaterialColor:(id)color;
+- (void)setPadding:(double)padding;
+- (void)setSymbolColor:(id)color;
+- (void)setSymbolImage:(id)image;
 @end
 
 @implementation CKMaterialCloseButton
@@ -31,17 +31,17 @@
 
 - (_TtC7ChatKit32CKUnborderedBackdropMaterialView)materialBackgroundView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1908EE27C();
 
   return v3;
 }
 
-- (void)setMaterialBackgroundView:(id)a3
+- (void)setMaterialBackgroundView:(id)view
 {
   v4 = *(&self->super.super.super.super.super.isa + OBJC_IVAR___CKMaterialCloseButton____lazy_storage___materialBackgroundView);
-  *(&self->super.super.super.super.super.isa + OBJC_IVAR___CKMaterialCloseButton____lazy_storage___materialBackgroundView) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.super.isa + OBJC_IVAR___CKMaterialCloseButton____lazy_storage___materialBackgroundView) = view;
+  viewCopy = view;
 }
 
 - (UIImage)symbolImage
@@ -51,14 +51,14 @@
   return *(&self->super.super.super.super.super.isa + v3);
 }
 
-- (void)setSymbolImage:(id)a3
+- (void)setSymbolImage:(id)image
 {
   v5 = OBJC_IVAR___CKMaterialCloseButton_symbolImage;
   swift_beginAccess();
   v6 = *(&self->super.super.super.super.super.isa + v5);
-  *(&self->super.super.super.super.super.isa + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(&self->super.super.super.super.super.isa + v5) = image;
+  imageCopy = image;
+  selfCopy = self;
   sub_1908EE56C(v6);
 }
 
@@ -69,11 +69,11 @@
   return *(&self->super.super.super.super.super.isa + v3);
 }
 
-- (void)setSymbolColor:(id)a3
+- (void)setSymbolColor:(id)color
 {
-  v5 = a3;
-  v4 = self;
-  sub_1908EFE7C(v5);
+  colorCopy = color;
+  selfCopy = self;
+  sub_1908EFE7C(colorCopy);
 }
 
 - (double)cornerRadius
@@ -83,10 +83,10 @@
   return *(&self->super.super.super.super.super.isa + v3);
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  v4 = self;
-  CKMaterialCloseButton.cornerRadius.setter(a3);
+  selfCopy = self;
+  CKMaterialCloseButton.cornerRadius.setter(radius);
 }
 
 - (UIColor)materialColor
@@ -96,11 +96,11 @@
   return *(&self->super.super.super.super.super.isa + v3);
 }
 
-- (void)setMaterialColor:(id)a3
+- (void)setMaterialColor:(id)color
 {
-  v4 = a3;
-  v5 = self;
-  CKMaterialCloseButton.materialColor.setter(v4);
+  colorCopy = color;
+  selfCopy = self;
+  CKMaterialCloseButton.materialColor.setter(colorCopy);
 }
 
 - (double)padding
@@ -110,13 +110,13 @@
   return *(&self->super.super.super.super.super.isa + v3);
 }
 
-- (void)setPadding:(double)a3
+- (void)setPadding:(double)padding
 {
   v5 = OBJC_IVAR___CKMaterialCloseButton_padding;
   swift_beginAccess();
   v6 = *(&self->super.super.super.super.super.isa + v5);
-  *(&self->super.super.super.super.super.isa + v5) = a3;
-  if (v6 != a3)
+  *(&self->super.super.super.super.super.isa + v5) = padding;
+  if (v6 != padding)
   {
     [(CKMaterialCloseButton *)self setNeedsLayout];
   }
@@ -126,32 +126,32 @@
 {
   v4.receiver = self;
   v4.super_class = CKMaterialCloseButton;
-  v2 = [(CKMaterialCloseButton *)&v4 configuration];
+  configuration = [(CKMaterialCloseButton *)&v4 configuration];
 
-  return v2;
+  return configuration;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
   v6.receiver = self;
   v6.super_class = CKMaterialCloseButton;
-  v4 = a3;
-  v5 = self;
-  [(CKMaterialCloseButton *)&v6 setConfiguration:v4];
+  configurationCopy = configuration;
+  selfCopy = self;
+  [(CKMaterialCloseButton *)&v6 setConfiguration:configurationCopy];
   sub_1908EEF64();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   CKMaterialCloseButton.layoutSubviews()();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = CKMaterialCloseButton.sizeThatFits(_:)(__PAIR128__(*&height, *&width));
 
   v7 = v6.width;
@@ -168,10 +168,10 @@
   return [(CKMaterialCloseButton *)&v3 isEnabled];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v4 = self;
-  CKMaterialCloseButton.isEnabled.setter(a3);
+  selfCopy = self;
+  CKMaterialCloseButton.isEnabled.setter(enabled);
 }
 
 @end

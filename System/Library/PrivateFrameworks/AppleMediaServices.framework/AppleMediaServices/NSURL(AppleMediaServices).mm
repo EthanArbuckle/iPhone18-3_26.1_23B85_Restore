@@ -14,17 +14,17 @@
 + (id)ams_cachesDirectory
 {
   v31 = *MEMORY[0x1E69E9840];
-  v2 = [a1 ams_realHomeDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"/Library/Caches/com.apple.AppleMediaServices"];
+  ams_realHomeDirectory = [self ams_realHomeDirectory];
+  v3 = [ams_realHomeDirectory stringByAppendingPathComponent:@"/Library/Caches/com.apple.AppleMediaServices"];
 
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   if (v3)
   {
     v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:v3 isDirectory:1];
     if (v5)
     {
       v26 = 0;
-      v6 = [v4 createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:0 error:&v26];
+      v6 = [defaultManager createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:0 error:&v26];
       v7 = v26;
       if (!v6)
       {
@@ -35,15 +35,15 @@ LABEL_7:
           v8 = +[AMSLogConfig sharedConfig];
         }
 
-        v9 = [v8 OSLogObject];
-        if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+        oSLogObject = [v8 OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           v10 = objc_opt_class();
           *buf = 138543618;
           v28 = v10;
           v29 = 2114;
           v30 = v7;
-          _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_ERROR, "%{public}@: Failed to create caches directory. %{public}@", buf, 0x16u);
+          _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to create caches directory. %{public}@", buf, 0x16u);
         }
 
         goto LABEL_12;
@@ -55,7 +55,7 @@ LABEL_7:
       v7 = 0;
     }
 
-    if ([v4 isWritableFileAtPath:v3])
+    if ([defaultManager isWritableFileAtPath:v3])
     {
       goto LABEL_28;
     }
@@ -68,7 +68,7 @@ LABEL_12:
   block[1] = 3221225472;
   block[2] = __48__NSURL_AppleMediaServices__ams_cachesDirectory__block_invoke;
   block[3] = &unk_1E73B40A8;
-  v25 = a1;
+  selfCopy = self;
   v11 = v3;
   v24 = v11;
   if (ams_cachesDirectory_onceToken[0] != -1)
@@ -76,13 +76,13 @@ LABEL_12:
     dispatch_once(ams_cachesDirectory_onceToken, block);
   }
 
-  v12 = [v4 URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:0];
+  v12 = [defaultManager URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:0];
   v5 = [v12 URLByAppendingPathComponent:@"com.apple.AppleMediaServices"];
 
   if (v5)
   {
     v22 = 0;
-    v13 = [v4 createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:0 error:&v22];
+    v13 = [defaultManager createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:0 error:&v22];
     v14 = v22;
     if ((v13 & 1) == 0)
     {
@@ -92,15 +92,15 @@ LABEL_12:
         v15 = +[AMSLogConfig sharedConfig];
       }
 
-      v16 = [v15 OSLogObject];
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v15 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v17 = objc_opt_class();
         *buf = 138543618;
         v28 = v17;
         v29 = 2114;
         v30 = v14;
-        _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_ERROR, "%{public}@: Failed to create caches directory. %{public}@", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: Failed to create caches directory. %{public}@", buf, 0x16u);
       }
     }
 
@@ -115,15 +115,15 @@ LABEL_12:
       v14 = +[AMSLogConfig sharedConfig];
     }
 
-    v19 = [v14 OSLogObject];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    oSLogObject3 = [v14 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
     {
       v20 = objc_opt_class();
       *buf = 138543618;
       v28 = v20;
       v29 = 2114;
       v30 = v11;
-      _os_log_impl(&dword_192869000, v19, OS_LOG_TYPE_ERROR, "%{public}@: Could not create caches URL from caches path: %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: Could not create caches URL from caches path: %{public}@", buf, 0x16u);
     }
   }
 
@@ -135,8 +135,8 @@ LABEL_28:
 
 + (id)ams_engagementDirectory
 {
-  v1 = [a1 ams_cachesDirectory];
-  v2 = [v1 URLByAppendingPathComponent:@"Engagement"];
+  ams_cachesDirectory = [self ams_cachesDirectory];
+  v2 = [ams_cachesDirectory URLByAppendingPathComponent:@"Engagement"];
 
   return v2;
 }
@@ -146,20 +146,20 @@ LABEL_28:
   v34 = *MEMORY[0x1E69E9840];
   if ([AMSProcessInfo BOOLForEntitlement:@"com.apple.private.security.storage.AppleMediaServices"])
   {
-    v2 = [a1 ams_realHomeDirectory];
-    v3 = [v2 stringByAppendingPathComponent:@"/Library/AppleMediaServices"];
+    ams_realHomeDirectory = [self ams_realHomeDirectory];
+    oSLogObject5 = [ams_realHomeDirectory stringByAppendingPathComponent:@"/Library/AppleMediaServices"];
     v4 = +[AMSLogConfig sharedConfig];
     if (!v4)
     {
       v4 = +[AMSLogConfig sharedConfig];
     }
 
-    v5 = [v4 OSLogObject];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+    oSLogObject = [v4 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v6 = objc_opt_class();
-      v7 = AMSHashIfNeeded(v3);
-      v8 = AMSHashIfNeeded(v2);
+      v7 = AMSHashIfNeeded(oSLogObject5);
+      v8 = AMSHashIfNeeded(ams_realHomeDirectory);
       v9 = AMSHashIfNeeded(@"/Library/AppleMediaServices");
       *buf = 138544130;
       v27 = v6;
@@ -169,17 +169,17 @@ LABEL_28:
       v31 = v8;
       v32 = 2114;
       v33 = v9;
-      _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_INFO, "%{public}@: Computed data vault path is %{public}@. homeDirectory = %{public}@ | relativeDirectory = %{public}@", buf, 0x2Au);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: Computed data vault path is %{public}@. homeDirectory = %{public}@ | relativeDirectory = %{public}@", buf, 0x2Au);
     }
 
-    if (v3)
+    if (oSLogObject5)
     {
-      v10 = [MEMORY[0x1E695DFF8] fileURLWithPath:v3];
-      v11 = [MEMORY[0x1E696AC08] defaultManager];
-      v12 = [v10 path];
+      v10 = [MEMORY[0x1E695DFF8] fileURLWithPath:oSLogObject5];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      path = [v10 path];
       v25 = 0;
-      v13 = [v11 createDirectoryAtPath:v12 withIntermediateDirectories:1 attributes:0 error:&v25];
-      v14 = v25;
+      v13 = [defaultManager createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&v25];
+      oSLogObject4 = v25;
 
       v15 = +[AMSLogConfig sharedConfig];
       v16 = v15;
@@ -190,8 +190,8 @@ LABEL_28:
           v16 = +[AMSLogConfig sharedConfig];
         }
 
-        v17 = [v16 OSLogObject];
-        if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+        oSLogObject2 = [v16 OSLogObject];
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
         {
           v18 = objc_opt_class();
           v19 = AMSHashIfNeeded(v10);
@@ -199,7 +199,7 @@ LABEL_28:
           v27 = v18;
           v28 = 2114;
           v29 = v19;
-          _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_INFO, "%{public}@: Successfully created data vault directory (or it already exists). dataVaultURL = %{public}@", buf, 0x16u);
+          _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_INFO, "%{public}@: Successfully created data vault directory (or it already exists). dataVaultURL = %{public}@", buf, 0x16u);
         }
 
         v10 = v10;
@@ -212,15 +212,15 @@ LABEL_28:
         v16 = +[AMSLogConfig sharedConfig];
       }
 
-      v22 = [v16 OSLogObject];
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+      oSLogObject3 = [v16 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
       {
         v23 = objc_opt_class();
         *buf = 138543618;
         v27 = v23;
         v28 = 2114;
-        v29 = v14;
-        _os_log_impl(&dword_192869000, v22, OS_LOG_TYPE_ERROR, "%{public}@: Failed to create data vault directory. %{public}@", buf, 0x16u);
+        v29 = oSLogObject4;
+        _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: Failed to create data vault directory. %{public}@", buf, 0x16u);
       }
     }
 
@@ -232,13 +232,13 @@ LABEL_28:
         v10 = +[AMSLogConfig sharedConfig];
       }
 
-      v14 = [v10 OSLogObject];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      oSLogObject4 = [v10 OSLogObject];
+      if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
       {
         v21 = objc_opt_class();
         *buf = 138543362;
         v27 = v21;
-        _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_ERROR, "%{public}@: Could not compute data vault path.", buf, 0xCu);
+        _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_ERROR, "%{public}@: Could not compute data vault path.", buf, 0xCu);
       }
     }
 
@@ -248,18 +248,18 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v2 = +[AMSLogConfig sharedConfig];
-  if (!v2)
+  ams_realHomeDirectory = +[AMSLogConfig sharedConfig];
+  if (!ams_realHomeDirectory)
   {
-    v2 = +[AMSLogConfig sharedConfig];
+    ams_realHomeDirectory = +[AMSLogConfig sharedConfig];
   }
 
-  v3 = [v2 OSLogObject];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+  oSLogObject5 = [ams_realHomeDirectory OSLogObject];
+  if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
     v27 = objc_opt_class();
-    _os_log_impl(&dword_192869000, v3, OS_LOG_TYPE_ERROR, "%{public}@: Cannot access data vault. Current process does not have the correct entitlement.", buf, 0xCu);
+    _os_log_impl(&dword_192869000, oSLogObject5, OS_LOG_TYPE_ERROR, "%{public}@: Cannot access data vault. Current process does not have the correct entitlement.", buf, 0xCu);
   }
 
   v20 = 0;
@@ -272,17 +272,17 @@ LABEL_29:
 {
   v23 = *MEMORY[0x1E69E9840];
   v2 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v3 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:a1 resolvingAgainstBaseURL:0];
+  v3 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:self resolvingAgainstBaseURL:0];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [v3 percentEncodedQueryItems];
-  v5 = v4;
+  percentEncodedQueryItems = [v3 percentEncodedQueryItems];
+  v5 = percentEncodedQueryItems;
   v6 = MEMORY[0x1E695E0F0];
-  if (v4)
+  if (percentEncodedQueryItems)
   {
-    v6 = v4;
+    v6 = percentEncodedQueryItems;
   }
 
   v7 = v6;
@@ -302,20 +302,20 @@ LABEL_29:
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 name];
-        if ([v13 length])
+        name = [v12 name];
+        if ([name length])
         {
-          v14 = [v12 value];
-          v15 = [v14 length];
+          value = [v12 value];
+          v15 = [value length];
 
           if (!v15)
           {
             continue;
           }
 
-          v13 = [v12 value];
-          v16 = [v12 name];
-          [v2 setObject:v13 forKeyedSubscript:v16];
+          name = [v12 value];
+          name2 = [v12 name];
+          [v2 setObject:name forKeyedSubscript:name2];
         }
       }
 
@@ -332,17 +332,17 @@ LABEL_29:
 {
   v23 = *MEMORY[0x1E69E9840];
   v2 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v3 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:a1 resolvingAgainstBaseURL:0];
+  v3 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:self resolvingAgainstBaseURL:0];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [v3 queryItems];
-  v5 = v4;
+  queryItems = [v3 queryItems];
+  v5 = queryItems;
   v6 = MEMORY[0x1E695E0F0];
-  if (v4)
+  if (queryItems)
   {
-    v6 = v4;
+    v6 = queryItems;
   }
 
   v7 = v6;
@@ -362,20 +362,20 @@ LABEL_29:
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 name];
-        if ([v13 length])
+        name = [v12 name];
+        if ([name length])
         {
-          v14 = [v12 value];
-          v15 = [v14 length];
+          value = [v12 value];
+          v15 = [value length];
 
           if (!v15)
           {
             continue;
           }
 
-          v13 = [v12 value];
-          v16 = [v12 name];
-          [v2 setObject:v13 forKeyedSubscript:v16];
+          name = [v12 value];
+          name2 = [v12 name];
+          [v2 setObject:name forKeyedSubscript:name2];
         }
       }
 
@@ -390,16 +390,16 @@ LABEL_29:
 
 + (id)ams_dynamicUIDirectory
 {
-  v1 = [a1 ams_cachesDirectory];
-  v2 = [v1 URLByAppendingPathComponent:@"DynamicUI"];
+  ams_cachesDirectory = [self ams_cachesDirectory];
+  v2 = [ams_cachesDirectory URLByAppendingPathComponent:@"DynamicUI"];
 
   return v2;
 }
 
 + (id)ams_paymentSheetsUIDirectory
 {
-  v1 = [a1 ams_cachesDirectory];
-  v2 = [v1 URLByAppendingPathComponent:@"PaymentSheetsUI"];
+  ams_cachesDirectory = [self ams_cachesDirectory];
+  v2 = [ams_cachesDirectory URLByAppendingPathComponent:@"PaymentSheetsUI"];
 
   return v2;
 }
@@ -407,13 +407,13 @@ LABEL_29:
 + (id)ams_unescapedStringForString:()AppleMediaServices
 {
   v3 = a3;
-  v4 = v3;
+  stringByRemovingPercentEncoding = v3;
   if ([v3 length])
   {
-    v4 = [v3 stringByRemovingPercentEncoding];
+    stringByRemovingPercentEncoding = [v3 stringByRemovingPercentEncoding];
   }
 
-  return v4;
+  return stringByRemovingPercentEncoding;
 }
 
 @end

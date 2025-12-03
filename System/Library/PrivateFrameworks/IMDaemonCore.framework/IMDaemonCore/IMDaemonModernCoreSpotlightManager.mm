@@ -8,13 +8,13 @@
 
 - (void)registerForCoreSpotlightIndexing
 {
-  v2 = self;
+  selfCopy = self;
   IMDaemonModernCoreSpotlightManager.registerForCoreSpotlightIndexing()();
 }
 
 - (void)registerForCoreSpotlightMigration
 {
-  v2 = self;
+  selfCopy = self;
   IMDaemonModernCoreSpotlightManager.registerForCoreSpotlightMigration()();
 }
 

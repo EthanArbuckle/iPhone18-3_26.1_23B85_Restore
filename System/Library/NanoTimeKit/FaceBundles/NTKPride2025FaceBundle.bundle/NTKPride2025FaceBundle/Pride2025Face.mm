@@ -1,13 +1,13 @@
 @interface Pride2025Face
-+ (BOOL)isRestrictedForDevice:(id)a3;
++ (BOOL)isRestrictedForDevice:(id)device;
 + (id)_complicationSlotDescriptors;
 + (id)_orderedComplicationSlots;
-+ (id)_richComplicationSlotsForDevice:(id)a3;
++ (id)_richComplicationSlotsForDevice:(id)device;
 - (Class)faceViewClass;
-- (_TtC22NTKPride2025FaceBundle13Pride2025Face)initWithCoder:(id)a3;
+- (_TtC22NTKPride2025FaceBundle13Pride2025Face)initWithCoder:(id)coder;
 - (id)_faceDescription;
 - (id)_faceDescriptionKey;
-- (id)_localizedNameForDynamicSectionCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (id)_localizedNameForDynamicSectionCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)faceSharingName;
 @end
 
@@ -36,7 +36,7 @@
 
 - (id)_faceDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_3734();
   v4 = v3;
 
@@ -53,14 +53,14 @@
   return v5;
 }
 
-+ (BOOL)isRestrictedForDevice:(id)a3
++ (BOOL)isRestrictedForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   result = NTKGizmoOrCompanionAreRussian();
-  if (v3)
+  if (deviceCopy)
   {
     v5 = result;
-    v6 = pride2025SupportsDeviceCapability(v3);
+    v6 = pride2025SupportsDeviceCapability(deviceCopy);
     v7 = pride2025FeatureFlagEnabled();
 
     return v5 || (v6 & v7 & 1) == 0;
@@ -74,12 +74,12 @@
   return result;
 }
 
-- (_TtC22NTKPride2025FaceBundle13Pride2025Face)initWithCoder:(id)a3
+- (_TtC22NTKPride2025FaceBundle13Pride2025Face)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for Pride2025Face();
-  v4 = a3;
-  v5 = [(Pride2025Face *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(Pride2025Face *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {
@@ -112,7 +112,7 @@
   return v3.super.isa;
 }
 
-+ (id)_richComplicationSlotsForDevice:(id)a3
++ (id)_richComplicationSlotsForDevice:(id)device
 {
   sub_3EA8(&qword_1E4A8, &qword_14580);
   v3 = swift_allocObject();
@@ -138,14 +138,14 @@
   return v5.super.isa;
 }
 
-- (id)_localizedNameForDynamicSectionCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_localizedNameForDynamicSectionCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a4)
+  if (slot)
   {
     sub_12784();
   }
 
-  v5 = self;
+  selfCopy = self;
   v6 = sub_12774();
   v7 = sub_12774();
   v8 = NTKClockFaceLocalizedString();

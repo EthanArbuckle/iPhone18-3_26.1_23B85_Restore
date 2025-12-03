@@ -1,24 +1,24 @@
 @interface PKPaymentRewardsRedemptionTransactionDetails
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentRewardsRedemptionTransactionDetails)initWithCoder:(id)a3;
-- (PKPaymentRewardsRedemptionTransactionDetails)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentRewardsRedemptionTransactionDetails)initWithCoder:(id)coder;
+- (PKPaymentRewardsRedemptionTransactionDetails)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)redactedDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentRewardsRedemptionTransactionDetails
 
-- (PKPaymentRewardsRedemptionTransactionDetails)initWithDictionary:(id)a3
+- (PKPaymentRewardsRedemptionTransactionDetails)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = PKPaymentRewardsRedemptionTransactionDetails;
   v5 = [(PKPaymentRewardsRedemptionTransactionDetails *)&v20 init];
-  if (!v5 || ([v4 PKStringForKey:@"identifier"], v6 = objc_claimAutoreleasedReturnValue(), identifier = v5->_identifier, v5->_identifier = v6, identifier, objc_msgSend(v4, "PKDateForKey:", @"timestamp"), v8 = objc_claimAutoreleasedReturnValue(), timestamp = v5->_timestamp, v5->_timestamp = v8, timestamp, objc_msgSend(v4, "PKStringForKey:", @"description"), v10 = objc_claimAutoreleasedReturnValue(), descriptionText = v5->_descriptionText, v5->_descriptionText = v10, descriptionText, objc_msgSend(v4, "PKCurrencyAmountForKey:", @"monetaryValue"), v12 = objc_claimAutoreleasedReturnValue(), monetaryValue = v5->_monetaryValue, v5->_monetaryValue = v12, monetaryValue, objc_msgSend(v4, "PKDecimalNumberFromStringForKey:", @"merchantCategoryCode"), v14 = objc_claimAutoreleasedReturnValue(), merchantCategoryCode = v5->_merchantCategoryCode, v5->_merchantCategoryCode = v14, merchantCategoryCode, objc_msgSend(v4, "PKStringForKey:", @"merchantRawName"), v16 = objc_claimAutoreleasedReturnValue(), merchantRawName = v5->_merchantRawName, v5->_merchantRawName = v16, merchantRawName, v5->_identifier) && v5->_merchantRawName && v5->_monetaryValue)
+  if (!v5 || ([dictionaryCopy PKStringForKey:@"identifier"], v6 = objc_claimAutoreleasedReturnValue(), identifier = v5->_identifier, v5->_identifier = v6, identifier, objc_msgSend(dictionaryCopy, "PKDateForKey:", @"timestamp"), v8 = objc_claimAutoreleasedReturnValue(), timestamp = v5->_timestamp, v5->_timestamp = v8, timestamp, objc_msgSend(dictionaryCopy, "PKStringForKey:", @"description"), v10 = objc_claimAutoreleasedReturnValue(), descriptionText = v5->_descriptionText, v5->_descriptionText = v10, descriptionText, objc_msgSend(dictionaryCopy, "PKCurrencyAmountForKey:", @"monetaryValue"), v12 = objc_claimAutoreleasedReturnValue(), monetaryValue = v5->_monetaryValue, v5->_monetaryValue = v12, monetaryValue, objc_msgSend(dictionaryCopy, "PKDecimalNumberFromStringForKey:", @"merchantCategoryCode"), v14 = objc_claimAutoreleasedReturnValue(), merchantCategoryCode = v5->_merchantCategoryCode, v5->_merchantCategoryCode = v14, merchantCategoryCode, objc_msgSend(dictionaryCopy, "PKStringForKey:", @"merchantRawName"), v16 = objc_claimAutoreleasedReturnValue(), merchantRawName = v5->_merchantRawName, v5->_merchantRawName = v16, merchantRawName, v5->_identifier) && v5->_merchantRawName && v5->_monetaryValue)
   {
     v18 = v5;
   }
@@ -39,11 +39,11 @@
   [v3 setObject:v4 forKeyedSubscript:@"timestamp"];
 
   [v3 setObject:self->_descriptionText forKeyedSubscript:@"description"];
-  v5 = [(PKCurrencyAmount *)self->_monetaryValue dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"monetaryValue"];
+  dictionaryRepresentation = [(PKCurrencyAmount *)self->_monetaryValue dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"monetaryValue"];
 
-  v6 = [(NSNumber *)self->_merchantCategoryCode stringValue];
-  [v3 setObject:v6 forKeyedSubscript:@"merchantCategoryCode"];
+  stringValue = [(NSNumber *)self->_merchantCategoryCode stringValue];
+  [v3 setObject:stringValue forKeyedSubscript:@"merchantCategoryCode"];
 
   [v3 setObject:self->_merchantRawName forKeyedSubscript:@"merchantRawName"];
   v7 = [v3 copy];
@@ -51,18 +51,18 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -229,35 +229,35 @@ LABEL_35:
   return v7;
 }
 
-- (PKPaymentRewardsRedemptionTransactionDetails)initWithCoder:(id)a3
+- (PKPaymentRewardsRedemptionTransactionDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = PKPaymentRewardsRedemptionTransactionDetails;
   v5 = [(PKPaymentRewardsRedemptionTransactionDetails *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
     timestamp = v5->_timestamp;
     v5->_timestamp = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"description"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"description"];
     descriptionText = v5->_descriptionText;
     v5->_descriptionText = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"monetaryValue"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"monetaryValue"];
     monetaryValue = v5->_monetaryValue;
     v5->_monetaryValue = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantCategoryCode"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantCategoryCode"];
     merchantCategoryCode = v5->_merchantCategoryCode;
     v5->_merchantCategoryCode = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantRawName"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantRawName"];
     merchantRawName = v5->_merchantRawName;
     v5->_merchantRawName = v16;
   }
@@ -265,42 +265,42 @@ LABEL_35:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_timestamp forKey:@"timestamp"];
-  [v5 encodeObject:self->_descriptionText forKey:@"description"];
-  [v5 encodeObject:self->_monetaryValue forKey:@"monetaryValue"];
-  [v5 encodeObject:self->_merchantCategoryCode forKey:@"merchantCategoryCode"];
-  [v5 encodeObject:self->_merchantRawName forKey:@"merchantRawName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_timestamp forKey:@"timestamp"];
+  [coderCopy encodeObject:self->_descriptionText forKey:@"description"];
+  [coderCopy encodeObject:self->_monetaryValue forKey:@"monetaryValue"];
+  [coderCopy encodeObject:self->_merchantCategoryCode forKey:@"merchantCategoryCode"];
+  [coderCopy encodeObject:self->_merchantRawName forKey:@"merchantRawName"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSDate *)self->_timestamp copyWithZone:a3];
+  v8 = [(NSDate *)self->_timestamp copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSString *)self->_descriptionText copyWithZone:a3];
+  v10 = [(NSString *)self->_descriptionText copyWithZone:zone];
   v11 = v5[4];
   v5[4] = v10;
 
-  v12 = [(PKCurrencyAmount *)self->_monetaryValue copyWithZone:a3];
+  v12 = [(PKCurrencyAmount *)self->_monetaryValue copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
-  v14 = [(NSNumber *)self->_merchantCategoryCode copyWithZone:a3];
+  v14 = [(NSNumber *)self->_merchantCategoryCode copyWithZone:zone];
   v15 = v5[5];
   v5[5] = v14;
 
-  v16 = [(NSString *)self->_merchantRawName copyWithZone:a3];
+  v16 = [(NSString *)self->_merchantRawName copyWithZone:zone];
   v17 = v5[6];
   v5[6] = v16;
 

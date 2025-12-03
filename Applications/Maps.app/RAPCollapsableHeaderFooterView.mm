@@ -1,17 +1,17 @@
 @interface RAPCollapsableHeaderFooterView
-+ (void)toggleCollapseForTableView:(id)a3 AtSection:(int64_t)a4 withSelectedValue:(id)a5 withSelectedIndex:(int64_t)a6 withAllValues:(id)a7;
++ (void)toggleCollapseForTableView:(id)view AtSection:(int64_t)section withSelectedValue:(id)value withSelectedIndex:(int64_t)index withAllValues:(id)values;
 - (id)_initialConstraints;
 - (void)_createSubviews;
 - (void)layoutSubviews;
-- (void)setShowAllButtonVisible:(BOOL)a3;
-- (void)setTarget:(id)a3 action:(SEL)a4;
+- (void)setShowAllButtonVisible:(BOOL)visible;
+- (void)setTarget:(id)target action:(SEL)action;
 @end
 
 @implementation RAPCollapsableHeaderFooterView
 
-- (void)setShowAllButtonVisible:(BOOL)a3
+- (void)setShowAllButtonVisible:(BOOL)visible
 {
-  if (a3)
+  if (visible)
   {
     v4 = 1.0;
   }
@@ -34,15 +34,15 @@
   }
 }
 
-- (void)setTarget:(id)a3 action:(SEL)a4
+- (void)setTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(UIButton *)self->_showAllButton allTargets];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allTargets = [(UIButton *)self->_showAllButton allTargets];
+  v8 = [allTargets countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -54,7 +54,7 @@
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allTargets);
         }
 
         [(UIButton *)self->_showAllButton removeTarget:*(*(&v12 + 1) + 8 * v11) action:0 forControlEvents:64];
@@ -62,13 +62,13 @@
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [allTargets countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 
-  [(UIButton *)self->_showAllButton addTarget:v6 action:a4 forControlEvents:64];
+  [(UIButton *)self->_showAllButton addTarget:targetCopy action:action forControlEvents:64];
 }
 
 - (void)layoutSubviews
@@ -86,39 +86,39 @@
     +[RAPFontManager regularTitleFont];
   }
   v3 = ;
-  v4 = [(UIButton *)self->_showAllButton titleLabel];
-  [v4 setFont:v3];
+  titleLabel = [(UIButton *)self->_showAllButton titleLabel];
+  [titleLabel setFont:v3];
 }
 
 - (id)_initialConstraints
 {
   v18.receiver = self;
   v18.super_class = RAPCollapsableHeaderFooterView;
-  v3 = [(RAPHeaderFooterView *)&v18 _initialConstraints];
-  v4 = [(RAPHeaderFooterView *)self titleLabel];
-  v5 = [v4 trailingAnchor];
-  v6 = [(UIButton *)self->_showAllButton leadingAnchor];
-  v7 = [v5 constraintLessThanOrEqualToAnchor:v6];
-  [v3 addObject:v7];
+  _initialConstraints = [(RAPHeaderFooterView *)&v18 _initialConstraints];
+  titleLabel = [(RAPHeaderFooterView *)self titleLabel];
+  trailingAnchor = [titleLabel trailingAnchor];
+  leadingAnchor = [(UIButton *)self->_showAllButton leadingAnchor];
+  v7 = [trailingAnchor constraintLessThanOrEqualToAnchor:leadingAnchor];
+  [_initialConstraints addObject:v7];
 
   v8 = _NSDictionaryOfVariableBindings(@"_showAllButton", self->_showAllButton, 0);
   v9 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[_showAllButton]-|" options:0 metrics:0 views:v8];
-  [v3 addObjectsFromArray:v9];
+  [_initialConstraints addObjectsFromArray:v9];
 
-  v10 = [v4 lastBaselineAnchor];
-  v11 = [(UIButton *)self->_showAllButton lastBaselineAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
-  [v3 addObject:v12];
+  lastBaselineAnchor = [titleLabel lastBaselineAnchor];
+  lastBaselineAnchor2 = [(UIButton *)self->_showAllButton lastBaselineAnchor];
+  v12 = [lastBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor2];
+  [_initialConstraints addObject:v12];
 
-  v13 = [(UIButton *)self->_showAllButton heightAnchor];
-  v14 = [v13 constraintGreaterThanOrEqualToConstant:44.0];
-  [v3 addObject:v14];
+  heightAnchor = [(UIButton *)self->_showAllButton heightAnchor];
+  v14 = [heightAnchor constraintGreaterThanOrEqualToConstant:44.0];
+  [_initialConstraints addObject:v14];
 
-  v15 = [(UIButton *)self->_showAllButton widthAnchor];
-  v16 = [v15 constraintGreaterThanOrEqualToConstant:44.0];
-  [v3 addObject:v16];
+  widthAnchor = [(UIButton *)self->_showAllButton widthAnchor];
+  v16 = [widthAnchor constraintGreaterThanOrEqualToConstant:44.0];
+  [_initialConstraints addObject:v16];
 
-  return v3;
+  return _initialConstraints;
 }
 
 - (void)_createSubviews
@@ -131,9 +131,9 @@
   self->_showAllButton = v3;
 
   v5 = self->_showAllButton;
-  v6 = [(RAPCollapsableHeaderFooterView *)self contentView];
-  v7 = [v6 tintColor];
-  [(UIButton *)v5 setTitleColor:v7 forState:0];
+  contentView = [(RAPCollapsableHeaderFooterView *)self contentView];
+  tintColor = [contentView tintColor];
+  [(UIButton *)v5 setTitleColor:tintColor forState:0];
 
   [(UIButton *)self->_showAllButton setTranslatesAutoresizingMaskIntoConstraints:0];
   v8 = self->_showAllButton;
@@ -142,33 +142,33 @@
   [(UIButton *)v8 setTitle:v10 forState:0];
 
   [(UIButton *)self->_showAllButton setAlpha:0.0];
-  v11 = [(RAPCollapsableHeaderFooterView *)self contentView];
-  [v11 addSubview:self->_showAllButton];
+  contentView2 = [(RAPCollapsableHeaderFooterView *)self contentView];
+  [contentView2 addSubview:self->_showAllButton];
 }
 
-+ (void)toggleCollapseForTableView:(id)a3 AtSection:(int64_t)a4 withSelectedValue:(id)a5 withSelectedIndex:(int64_t)a6 withAllValues:(id)a7
++ (void)toggleCollapseForTableView:(id)view AtSection:(int64_t)section withSelectedValue:(id)value withSelectedIndex:(int64_t)index withAllValues:(id)values
 {
-  v27 = a3;
-  v11 = a5;
-  v12 = a7;
-  if (v27)
+  viewCopy = view;
+  valueCopy = value;
+  valuesCopy = values;
+  if (viewCopy)
   {
-    if (v11)
+    if (valueCopy)
     {
       v13 = objc_alloc_init(NSMutableArray);
     }
 
     else
     {
-      v14 = [v12 count];
+      v14 = [valuesCopy count];
       v13 = objc_alloc_init(NSMutableArray);
       if (v14 >= 1)
       {
         for (i = 0; i != v14; ++i)
         {
-          if (a6 != i)
+          if (index != i)
           {
-            v16 = [NSIndexPath indexPathForRow:i inSection:a4];
+            v16 = [NSIndexPath indexPathForRow:i inSection:section];
             [v13 addObject:v16];
           }
         }
@@ -176,24 +176,24 @@
     }
 
     v17 = objc_alloc_init(NSMutableArray);
-    if (v11 && a6 >= 1)
+    if (valueCopy && index >= 1)
     {
       v18 = 0;
       do
       {
-        v19 = [NSIndexPath indexPathForRow:v18 inSection:a4];
+        v19 = [NSIndexPath indexPathForRow:v18 inSection:section];
         [v17 addObject:v19];
 
         ++v18;
       }
 
-      while (a6 != v18);
+      while (index != v18);
     }
 
-    v25 = v12;
-    if (v11)
+    v25 = valuesCopy;
+    if (valueCopy)
     {
-      v20 = [v12 count];
+      v20 = [valuesCopy count];
     }
 
     else
@@ -202,34 +202,34 @@
     }
 
     v21 = objc_alloc_init(NSMutableArray);
-    v22 = v27;
-    if (v20 > a6)
+    v22 = viewCopy;
+    if (v20 > index)
     {
       v23 = 0;
       do
       {
         if (v23)
         {
-          v24 = [NSIndexPath indexPathForRow:a6 inSection:a4];
+          v24 = [NSIndexPath indexPathForRow:index inSection:section];
           [v21 addObject:v24];
 
-          v22 = v27;
+          v22 = viewCopy;
         }
 
-        ++a6;
+        ++index;
         --v23;
       }
 
-      while (v20 != a6);
+      while (v20 != index);
     }
 
     [v22 beginUpdates];
-    [v27 deleteRowsAtIndexPaths:v17 withRowAnimation:0];
-    [v27 deleteRowsAtIndexPaths:v21 withRowAnimation:3];
-    [v27 insertRowsAtIndexPaths:v13 withRowAnimation:100];
-    [v27 endUpdates];
+    [viewCopy deleteRowsAtIndexPaths:v17 withRowAnimation:0];
+    [viewCopy deleteRowsAtIndexPaths:v21 withRowAnimation:3];
+    [viewCopy insertRowsAtIndexPaths:v13 withRowAnimation:100];
+    [viewCopy endUpdates];
 
-    v12 = v26;
+    valuesCopy = v26;
   }
 }
 

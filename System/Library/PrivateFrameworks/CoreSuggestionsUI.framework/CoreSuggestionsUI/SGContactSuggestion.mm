@@ -1,18 +1,18 @@
 @interface SGContactSuggestion
 - (SGSuggestionDelegate)suggestionDelegate;
-- (id)mailingAddressFromPostalAddress:(id)a3;
+- (id)mailingAddressFromPostalAddress:(id)address;
 - (id)realtimeSuggestion;
 - (id)suggestionCategory;
 - (id)suggestionCategoryImage;
-- (id)suggestionCategorySubtitleForItems:(id)a3;
+- (id)suggestionCategorySubtitleForItems:(id)items;
 - (id)suggestionDismissAction;
 - (id)suggestionImage;
 - (id)suggestionPrimaryAction;
 - (id)suggestionSubtitle;
 - (id)suggestionTitle;
-- (void)confirm:(BOOL)a3 suggestion:(id)a4 completion:(id)a5;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
-- (void)setSuggestionDelegate:(id)a3;
+- (void)confirm:(BOOL)confirm suggestion:(id)suggestion completion:(id)completion;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
+- (void)setSuggestionDelegate:(id)delegate;
 @end
 
 @implementation SGContactSuggestion
@@ -24,16 +24,16 @@
   return v2;
 }
 
-- (void)setSuggestionDelegate:(id)a3
+- (void)setSuggestionDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1B81A495C();
 }
 
 - (id)suggestionTitle
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B81A4D38();
 
   v3 = sub_1B81F8F58();
@@ -43,7 +43,7 @@
 
 - (id)suggestionPrimaryAction
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B81A5168();
 
   return v3;
@@ -51,7 +51,7 @@
 
 - (id)suggestionSubtitle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B81A5C78();
   v5 = v4;
 
@@ -71,7 +71,7 @@
 
 - (id)suggestionDismissAction
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B81A5E7C();
 
   return v3;
@@ -79,7 +79,7 @@
 
 - (id)suggestionImage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B81A5FC4();
 
   return v3;
@@ -94,17 +94,17 @@
 
 - (id)suggestionCategoryImage
 {
-  v2 = self;
+  selfCopy = self;
   v3.super.isa = j___s17CoreSuggestionsUI19SGContactSuggestionC12contactImageSo7UIImageCyF().super.isa;
 
   return v3.super.isa;
 }
 
-- (id)suggestionCategorySubtitleForItems:(id)a3
+- (id)suggestionCategorySubtitleForItems:(id)items
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBA7CBD0);
   v4 = sub_1B81F90C8();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_1B81A6350(v4);
   v8 = v7;
 
@@ -124,26 +124,26 @@
 
 - (id)realtimeSuggestion
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B81A65D4();
 
   return v3;
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v11.is_nil = v8;
-  v9 = v8;
-  v11.value.super.isa = a4;
-  SGContactSuggestion.contactViewController(_:didCompleteWith:)(v6, v11);
+  controllerCopy = controller;
+  contactCopy = contact;
+  selfCopy = self;
+  v11.is_nil = selfCopy;
+  v9 = selfCopy;
+  v11.value.super.isa = contact;
+  SGContactSuggestion.contactViewController(_:didCompleteWith:)(controllerCopy, v11);
 }
 
-- (void)confirm:(BOOL)a3 suggestion:(id)a4 completion:(id)a5
+- (void)confirm:(BOOL)confirm suggestion:(id)suggestion completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -156,17 +156,17 @@
     v9 = 0;
   }
 
-  v10 = a4;
-  v11 = self;
-  SGContactSuggestion.confirm(_:suggestion:completion:)(a3, v10, v8, v9);
+  suggestionCopy = suggestion;
+  selfCopy = self;
+  SGContactSuggestion.confirm(_:suggestion:completion:)(confirm, suggestionCopy, v8, v9);
   sub_1B8188E34(v8);
 }
 
-- (id)mailingAddressFromPostalAddress:(id)a3
+- (id)mailingAddressFromPostalAddress:(id)address
 {
-  v4 = a3;
-  v5 = self;
-  SGContactSuggestion.mailingAddressFromPostalAddress(_:)(v4);
+  addressCopy = address;
+  selfCopy = self;
+  SGContactSuggestion.mailingAddressFromPostalAddress(_:)(addressCopy);
   OUTLINED_FUNCTION_5_5();
 
   v6 = sub_1B81F8F58();

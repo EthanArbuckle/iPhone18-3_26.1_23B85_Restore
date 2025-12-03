@@ -1,41 +1,41 @@
 @interface CUIPSDGradientColorStop
-+ (id)colorStopWithLocation:(double)a3 gradientColor:(_psdGradientColor)a4;
++ (id)colorStopWithLocation:(double)location gradientColor:(_psdGradientColor)color;
 + (void)initialize;
-- (CUIPSDGradientColorStop)initWithCoder:(id)a3;
-- (CUIPSDGradientColorStop)initWithLocation:(double)a3 gradientColor:(_psdGradientColor)a4;
+- (CUIPSDGradientColorStop)initWithCoder:(id)coder;
+- (CUIPSDGradientColorStop)initWithLocation:(double)location gradientColor:(_psdGradientColor)color;
 - (_psdGradientColor)gradientColor;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CUIPSDGradientColorStop
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    [a1 setVersion:1];
+    [self setVersion:1];
   }
 }
 
-+ (id)colorStopWithLocation:(double)a3 gradientColor:(_psdGradientColor)a4
++ (id)colorStopWithLocation:(double)location gradientColor:(_psdGradientColor)color
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithLocation:a3 gradientColor:{a4.red, a4.green, a4.blue, a4.alpha}];
+  v4 = [objc_alloc(objc_opt_class()) initWithLocation:location gradientColor:{color.red, color.green, color.blue, color.alpha}];
 
   return v4;
 }
 
-- (CUIPSDGradientColorStop)initWithLocation:(double)a3 gradientColor:(_psdGradientColor)a4
+- (CUIPSDGradientColorStop)initWithLocation:(double)location gradientColor:(_psdGradientColor)color
 {
-  alpha = a4.alpha;
-  blue = a4.blue;
-  green = a4.green;
-  red = a4.red;
+  alpha = color.alpha;
+  blue = color.blue;
+  green = color.green;
+  red = color.red;
   v9.receiver = self;
   v9.super_class = CUIPSDGradientColorStop;
-  result = [(CUIPSDGradientStop *)&v9 initWithLocation:a3];
+  result = [(CUIPSDGradientStop *)&v9 initWithLocation:location];
   if (result)
   {
     result->gradientColor.red = red;
@@ -47,11 +47,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CUIPSDGradientColorStop;
-  result = [(CUIPSDGradientStop *)&v6 copyWithZone:a3];
+  result = [(CUIPSDGradientStop *)&v6 copyWithZone:zone];
   if (result)
   {
     v5 = *&self->gradientColor.blue;
@@ -62,52 +62,52 @@
   return result;
 }
 
-- (CUIPSDGradientColorStop)initWithCoder:(id)a3
+- (CUIPSDGradientColorStop)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = CUIPSDGradientColorStop;
   v4 = [(CUIPSDGradientStop *)&v10 initWithCoder:?];
   if (v4)
   {
-    if ([a3 allowsKeyedCoding])
+    if ([coder allowsKeyedCoding])
     {
-      [a3 decodeDoubleForKey:@"CUIPSDGradientColorStopRed"];
+      [coder decodeDoubleForKey:@"CUIPSDGradientColorStopRed"];
       v4->gradientColor.red = v5;
-      [a3 decodeDoubleForKey:@"CUIPSDGradientColorStopGreen"];
+      [coder decodeDoubleForKey:@"CUIPSDGradientColorStopGreen"];
       v4->gradientColor.green = v6;
-      [a3 decodeDoubleForKey:@"CUIPSDGradientColorStopBlue"];
+      [coder decodeDoubleForKey:@"CUIPSDGradientColorStopBlue"];
       v4->gradientColor.blue = v7;
-      [a3 decodeDoubleForKey:@"CUIPSDGradientColorStopAlpha"];
+      [coder decodeDoubleForKey:@"CUIPSDGradientColorStopAlpha"];
       v4->gradientColor.alpha = v8;
     }
 
     else
     {
-      [a3 decodeValuesOfObjCTypes:{"dddd", &v4->gradientColor, &v4->gradientColor.green, &v4->gradientColor.blue, &v4->gradientColor.alpha}];
+      [coder decodeValuesOfObjCTypes:{"dddd", &v4->gradientColor, &v4->gradientColor.green, &v4->gradientColor.blue, &v4->gradientColor.alpha}];
     }
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CUIPSDGradientColorStop;
   [(CUIPSDGradientStop *)&v6 encodeWithCoder:?];
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    [a3 encodeInteger:+[CUIPSDGradientColorStop version](CUIPSDGradientColorStop forKey:{"version"), @"CUIPSDGradientColorStopVersion"}];
+    [coder encodeInteger:+[CUIPSDGradientColorStop version](CUIPSDGradientColorStop forKey:{"version"), @"CUIPSDGradientColorStopVersion"}];
     p_gradientColor = &self->gradientColor;
-    [a3 encodeDouble:@"CUIPSDGradientColorStopRed" forKey:p_gradientColor->red];
-    [a3 encodeDouble:@"CUIPSDGradientColorStopGreen" forKey:p_gradientColor->green];
-    [a3 encodeDouble:@"CUIPSDGradientColorStopBlue" forKey:p_gradientColor->blue];
-    [a3 encodeDouble:@"CUIPSDGradientColorStopAlpha" forKey:p_gradientColor->alpha];
+    [coder encodeDouble:@"CUIPSDGradientColorStopRed" forKey:p_gradientColor->red];
+    [coder encodeDouble:@"CUIPSDGradientColorStopGreen" forKey:p_gradientColor->green];
+    [coder encodeDouble:@"CUIPSDGradientColorStopBlue" forKey:p_gradientColor->blue];
+    [coder encodeDouble:@"CUIPSDGradientColorStopAlpha" forKey:p_gradientColor->alpha];
   }
 
   else
   {
-    [a3 encodeValuesOfObjCTypes:{"dddd", &self->gradientColor, &self->gradientColor.green, &self->gradientColor.blue, &self->gradientColor.alpha}];
+    [coder encodeValuesOfObjCTypes:{"dddd", &self->gradientColor, &self->gradientColor.green, &self->gradientColor.blue, &self->gradientColor.alpha}];
   }
 }
 

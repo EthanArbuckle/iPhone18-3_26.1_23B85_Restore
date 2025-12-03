@@ -3,21 +3,21 @@
 - (BOOL)includeAccessoryViews;
 - (CGPoint)bezelContentCenter;
 - (CHSWatchComplicationsCurvedLabelMetrics)curvedLabelMetrics;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 - (unint64_t)cornerPosition;
-- (void)setBezelContentCenter:(CGPoint)a3;
-- (void)setCornerPosition:(unint64_t)a3;
-- (void)setCurvedLabelMetrics:(id)a3;
+- (void)setBezelContentCenter:(CGPoint)center;
+- (void)setCornerPosition:(unint64_t)position;
+- (void)setCurvedLabelMetrics:(id)metrics;
 @end
 
 @implementation CHUISMutableWatchComplicationsWidgetSceneSettings
 
 - (unint64_t)cornerPosition
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:89888];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:89888];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -40,14 +40,14 @@
 
   v7 = v6;
 
-  v8 = [v7 unsignedIntegerValue];
-  return v8;
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (CHSWatchComplicationsCurvedLabelMetrics)curvedLabelMetrics
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:89889];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:89889];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -75,8 +75,8 @@
 
 - (CGPoint)bezelContentCenter
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:89890];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:89890];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -112,8 +112,8 @@
 
 - (BOOL)includeAccessoryViews
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:89891];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:89891];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -136,14 +136,14 @@
 
   v7 = v6;
 
-  v8 = [v7 BOOLValue];
-  return v8;
+  bOOLValue = [v7 BOOLValue];
+  return bOOLValue;
 }
 
 - (BOOL)generateSnapshotMetadata
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:89892];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:89892];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -166,46 +166,46 @@
 
   v7 = v6;
 
-  v8 = [v7 BOOLValue];
-  return v8;
+  bOOLValue = [v7 BOOLValue];
+  return bOOLValue;
 }
 
-- (void)setCornerPosition:(unint64_t)a3
+- (void)setCornerPosition:(unint64_t)position
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forSetting:89888];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:position];
+  [otherSettings setObject:v4 forSetting:89888];
 }
 
-- (void)setCurvedLabelMetrics:(id)a3
+- (void)setCurvedLabelMetrics:(id)metrics
 {
-  v5 = a3;
-  v4 = [(FBSSettings *)self otherSettings];
-  [v4 setObject:v5 forSetting:89889];
+  metricsCopy = metrics;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:metricsCopy forSetting:89889];
 }
 
-- (void)setBezelContentCenter:(CGPoint)a3
+- (void)setBezelContentCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(FBSSettings *)self otherSettings];
+  y = center.y;
+  x = center.x;
+  otherSettings = [(FBSSettings *)self otherSettings];
   *v7 = x;
   *&v7[1] = y;
   v6 = [MEMORY[0x1E696B098] valueWithBytes:v7 objCType:"{CGPoint=dd}"];
-  [v5 setObject:v6 forSetting:89890];
+  [otherSettings setObject:v6 forSetting:89890];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CHUISWatchComplicationsWidgetSceneSettings alloc];
 
   return [(FBSSettings *)v4 initWithSettings:self];
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  v5 = a3 - 89889;
-  if (a3 - 89888 > 4)
+  v5 = setting - 89889;
+  if (setting - 89888 > 4)
   {
     v9 = v3;
     v10 = v4;
@@ -227,21 +227,21 @@
   return v6;
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v8 = a4;
-  if (a5 - 89888 > 4)
+  objectCopy = object;
+  if (setting - 89888 > 4)
   {
     v11.receiver = self;
     v11.super_class = CHUISMutableWatchComplicationsWidgetSceneSettings;
-    v9 = [(CHUISMutableWidgetSceneSettings *)&v11 valueDescriptionForFlag:a3 object:v8 ofSetting:a5];
+    v9 = [(CHUISMutableWidgetSceneSettings *)&v11 valueDescriptionForFlag:flag object:objectCopy ofSetting:setting];
   }
 
   else
   {
-    CHUISWatchComplicationsWidgetSceneSettingsValueDescription(a5, v8);
+    CHUISWatchComplicationsWidgetSceneSettingsValueDescription(setting, objectCopy);
     objc_claimAutoreleasedReturnValue();
-    v9 = v8;
+    v9 = objectCopy;
   }
 
   return v9;

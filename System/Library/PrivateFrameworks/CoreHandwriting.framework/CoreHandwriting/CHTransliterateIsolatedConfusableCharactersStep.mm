@@ -1,7 +1,7 @@
 @interface CHTransliterateIsolatedConfusableCharactersStep
 - (CHTransliterateIsolatedConfusableCharactersStep)init;
 - (id).cxx_construct;
-- (id)process:(id)a3 options:(id)a4;
+- (id)process:(id)process options:(id)options;
 @end
 
 @implementation CHTransliterateIsolatedConfusableCharactersStep
@@ -18,10 +18,10 @@
   return 0;
 }
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
-  v163 = a3;
-  v156 = a4;
+  processCopy = process;
+  optionsCopy = options;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -37,7 +37,7 @@
   v161 = objc_msgSend_array(MEMORY[0x1E695DF70], v6, v7, v8, v9, v10);
   v160 = objc_msgSend_array(MEMORY[0x1E695DF70], v11, v12, v13, v14, v15);
   v16 = 0;
-  objc_msgSend_result(v163, v17, v18, v19, v20, v21, v156, v165);
+  objc_msgSend_result(processCopy, v17, v18, v19, v20, v21, optionsCopy, v165);
   while (1)
     v27 = {;
     v33 = objc_msgSend_transcriptionPaths(v27, v28, v29, v30, v31, v32);
@@ -48,14 +48,14 @@
       break;
     }
 
-    v45 = objc_msgSend_result(v163, v40, v41, v42, v43, v44);
+    v45 = objc_msgSend_result(processCopy, v40, v41, v42, v43, v44);
     v51 = objc_msgSend_transcriptionPaths(v45, v46, v47, v48, v49, v50);
     v56 = objc_msgSend_objectAtIndexedSubscript_(v51, v52, v16, v53, v54, v55);
 
     v162 = objc_msgSend_array(MEMORY[0x1E695DF70], v57, v58, v59, v60, v61);
     v67 = objc_msgSend_array(MEMORY[0x1E695DF70], v62, v63, v64, v65, v66);
-    v73 = objc_msgSend_result(v163, v68, v69, v70, v71, v72);
-    v79 = objc_msgSend_result(v163, v74, v75, v76, v77, v78);
+    v73 = objc_msgSend_result(processCopy, v68, v69, v70, v71, v72);
+    v79 = objc_msgSend_result(processCopy, v74, v75, v76, v77, v78);
     v85 = objc_msgSend_tokenColumnCount(v79, v80, v81, v82, v83, v84);
     v164[0] = MEMORY[0x1E69E9820];
     v164[1] = 3221225472;
@@ -64,9 +64,9 @@
     v170 = v16;
     v86 = v67;
     v166 = v86;
-    v87 = v163;
+    v87 = processCopy;
     v167 = v87;
-    v168 = self;
+    selfCopy = self;
     v88 = v162;
     v169 = v88;
     objc_msgSend_enumerateTokensInTranscriptionPath_columnRange_tokenProcessingBlock_(v73, v89, v56, 0, v85, v164);
@@ -93,17 +93,17 @@
     }
 
     ++v16;
-    objc_msgSend_result(v163, v22, v23, v24, v25, v26, v157, v158);
+    objc_msgSend_result(processCopy, v22, v23, v24, v25, v26, v157, v158);
   }
 
-  v150 = objc_msgSend_result(v163, v40, v41, v42, v43, v44);
+  v150 = objc_msgSend_result(processCopy, v40, v41, v42, v43, v44);
   v154 = objc_msgSend_modifiedResultWithBestPathTokens_pathProbabilities_(v150, v151, v161, v160, v152, v153);
-  if (v163)
+  if (processCopy)
   {
-    objc_storeStrong(v163 + 3, v154);
+    objc_storeStrong(processCopy + 3, v154);
   }
 
-  return v163;
+  return processCopy;
 }
 
 - (id).cxx_construct

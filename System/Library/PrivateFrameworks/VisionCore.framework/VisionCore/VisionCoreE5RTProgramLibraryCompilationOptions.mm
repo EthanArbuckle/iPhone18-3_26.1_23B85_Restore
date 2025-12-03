@@ -1,29 +1,29 @@
 @interface VisionCoreE5RTProgramLibraryCompilationOptions
-- (BOOL)createE5RTCompilerOptions:(e5rt_e5_compiler_options *)a3 error:(id *)a4;
+- (BOOL)createE5RTCompilerOptions:(e5rt_e5_compiler_options *)options error:(id *)error;
 - (VisionCoreE5RTProgramLibraryCompilationOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VisionCoreE5RTProgramLibraryCompilationOptions
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = objc_opt_class();
 
   return objc_alloc_init(v3);
 }
 
-- (BOOL)createE5RTCompilerOptions:(e5rt_e5_compiler_options *)a3 error:(id *)a4
+- (BOOL)createE5RTCompilerOptions:(e5rt_e5_compiler_options *)options error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
   v21 = 0;
   v5 = e5rt_e5_compiler_options_create();
   if (v5)
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:v5];
-      *a4 = v6 = 0;
+      *error = v6 = 0;
     }
 
     else
@@ -34,13 +34,13 @@
 
   else
   {
-    v7 = [(VisionCoreE5RTProgramLibraryCompilationOptions *)self computeDeviceTypes];
-    if (!v7)
+    computeDeviceTypes = [(VisionCoreE5RTProgramLibraryCompilationOptions *)self computeDeviceTypes];
+    if (!computeDeviceTypes)
     {
       goto LABEL_11;
     }
 
-    if ((v7 & 7) == 4)
+    if ((computeDeviceTypes & 7) == 4)
     {
       [(VisionCoreE5RTProgramLibraryCompilationOptions *)self fullyANEResident];
     }
@@ -48,10 +48,10 @@
     v8 = e5rt_e5_compiler_options_set_compute_device_types_mask();
     if (v8)
     {
-      if (a4)
+      if (error)
       {
         [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:v8];
-        *a4 = v6 = 0;
+        *error = v6 = 0;
       }
 
       else
@@ -63,14 +63,14 @@
     else
     {
 LABEL_11:
-      v9 = [(VisionCoreE5RTProgramLibraryCompilationOptions *)self customCompilationOptions];
-      v11 = v9;
-      if (v9 && (v12 = v9, [v11 UTF8String], v10 = e5rt_e5_compiler_options_set_custom_ane_compiler_options(), v10))
+      customCompilationOptions = [(VisionCoreE5RTProgramLibraryCompilationOptions *)self customCompilationOptions];
+      v11 = customCompilationOptions;
+      if (customCompilationOptions && (v12 = customCompilationOptions, [v11 UTF8String], v10 = e5rt_e5_compiler_options_set_custom_ane_compiler_options(), v10))
       {
-        if (a4)
+        if (error)
         {
           [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:v10];
-          *a4 = v6 = 0;
+          *error = v6 = 0;
         }
 
         else
@@ -81,9 +81,9 @@ LABEL_11:
 
       else
       {
-        v13 = [(VisionCoreE5RTProgramLibraryCompilationOptions *)self milEntryPoints];
-        v14 = v13;
-        if (!v13 || ![v13 count])
+        milEntryPoints = [(VisionCoreE5RTProgramLibraryCompilationOptions *)self milEntryPoints];
+        v14 = milEntryPoints;
+        if (!milEntryPoints || ![milEntryPoints count])
         {
           goto LABEL_25;
         }
@@ -99,9 +99,9 @@ LABEL_11:
         v15 = e5rt_e5_compiler_options_set_mil_entry_points();
         if (v15)
         {
-          if (a4)
+          if (error)
           {
-            *a4 = [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:v15];
+            *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:v15];
           }
 
           v6 = 0;
@@ -110,7 +110,7 @@ LABEL_11:
         else
         {
 LABEL_25:
-          *a3 = v21;
+          *options = v21;
           v21 = 0;
           v6 = 1;
         }

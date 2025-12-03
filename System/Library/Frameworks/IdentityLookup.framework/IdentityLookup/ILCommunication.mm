@@ -1,27 +1,27 @@
 @interface ILCommunication
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isEqualToCommunication:(ILCommunication *)communication;
-- (ILCommunication)initWithCoder:(id)a3;
-- (ILCommunication)initWithSender:(id)a3 dateReceived:(id)a4;
+- (ILCommunication)initWithCoder:(id)coder;
+- (ILCommunication)initWithSender:(id)sender dateReceived:(id)received;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ILCommunication
 
-- (ILCommunication)initWithSender:(id)a3 dateReceived:(id)a4
+- (ILCommunication)initWithSender:(id)sender dateReceived:(id)received
 {
-  v7 = a3;
-  v8 = a4;
+  senderCopy = sender;
+  receivedCopy = received;
   v12.receiver = self;
   v12.super_class = ILCommunication;
   v9 = [(ILCommunication *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sender, a3);
-    objc_storeStrong(&v10->_dateReceived, a4);
+    objc_storeStrong(&v9->_sender, sender);
+    objc_storeStrong(&v10->_dateReceived, received);
   }
 
   return v10;
@@ -31,18 +31,18 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(ILCommunication *)self sender];
-  v6 = [(ILCommunication *)self dateReceived];
-  v7 = [v3 stringWithFormat:@"<%@ %p sender=%@ dateReceived=%@>", v4, self, v5, v6];
+  sender = [(ILCommunication *)self sender];
+  dateReceived = [(ILCommunication *)self dateReceived];
+  v7 = [v3 stringWithFormat:@"<%@ %p sender=%@ dateReceived=%@>", v4, self, sender, dateReceived];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ILCommunication *)self isEqualToCommunication:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ILCommunication *)self isEqualToCommunication:equalCopy];
 
   return v5;
 }
@@ -50,16 +50,16 @@
 - (BOOL)isEqualToCommunication:(ILCommunication *)communication
 {
   v4 = communication;
-  v5 = [(ILCommunication *)self dateReceived];
-  v6 = [(ILCommunication *)v4 dateReceived];
-  if ([v5 isEqualToDate:v6])
+  dateReceived = [(ILCommunication *)self dateReceived];
+  dateReceived2 = [(ILCommunication *)v4 dateReceived];
+  if ([dateReceived isEqualToDate:dateReceived2])
   {
-    v7 = [(ILCommunication *)self sender];
-    v8 = [(ILCommunication *)v4 sender];
-    v9 = (v7 | v8) == 0;
-    if (v8)
+    sender = [(ILCommunication *)self sender];
+    sender2 = [(ILCommunication *)v4 sender];
+    v9 = (sender | sender2) == 0;
+    if (sender2)
     {
-      v9 = [v7 isEqualToString:v8];
+      v9 = [sender isEqualToString:sender2];
     }
   }
 
@@ -73,17 +73,17 @@
 
 - (unint64_t)hash
 {
-  v3 = [(ILCommunication *)self dateReceived];
-  v4 = [v3 hash];
-  v5 = [(ILCommunication *)self sender];
-  v6 = [v5 hash];
+  dateReceived = [(ILCommunication *)self dateReceived];
+  v4 = [dateReceived hash];
+  sender = [(ILCommunication *)self sender];
+  v6 = [sender hash];
 
   return v6 ^ v4;
 }
 
-- (ILCommunication)initWithCoder:(id)a3
+- (ILCommunication)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = ILCommunication;
   v5 = [(ILCommunication *)&v15 init];
@@ -91,13 +91,13 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_sender);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     sender = v5->_sender;
     v5->_sender = v8;
 
     v10 = objc_opt_class();
     v11 = NSStringFromSelector(sel_dateReceived);
-    v12 = [v4 decodeObjectOfClass:v10 forKey:v11];
+    v12 = [coderCopy decodeObjectOfClass:v10 forKey:v11];
     dateReceived = v5->_dateReceived;
     v5->_dateReceived = v12;
   }
@@ -105,16 +105,16 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ILCommunication *)self sender];
+  coderCopy = coder;
+  sender = [(ILCommunication *)self sender];
   v6 = NSStringFromSelector(sel_sender);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:sender forKey:v6];
 
-  v8 = [(ILCommunication *)self dateReceived];
+  dateReceived = [(ILCommunication *)self dateReceived];
   v7 = NSStringFromSelector(sel_dateReceived);
-  [v4 encodeObject:v8 forKey:v7];
+  [coderCopy encodeObject:dateReceived forKey:v7];
 }
 
 @end

@@ -1,42 +1,42 @@
 @interface VideosTransitionFadeAnimator
-- (VideosTransitionFadeAnimator)initWithTransitionType:(int64_t)a3 andDuration:(double)a4;
-- (void)animateTransition:(id)a3;
+- (VideosTransitionFadeAnimator)initWithTransitionType:(int64_t)type andDuration:(double)duration;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation VideosTransitionFadeAnimator
 
-- (VideosTransitionFadeAnimator)initWithTransitionType:(int64_t)a3 andDuration:(double)a4
+- (VideosTransitionFadeAnimator)initWithTransitionType:(int64_t)type andDuration:(double)duration
 {
   v7.receiver = self;
   v7.super_class = VideosTransitionFadeAnimator;
   result = [(VideosTransitionFadeAnimator *)&v7 init];
   if (result)
   {
-    result->_transitionType = a3;
-    result->_animationDuration = a4;
+    result->_transitionType = type;
+    result->_animationDuration = duration;
   }
 
   return result;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 containerView];
-  v6 = [v4 viewForKey:*MEMORY[0x1E69DE770]];
-  v7 = [v4 viewControllerForKey:*MEMORY[0x1E69DE778]];
-  v8 = [v4 viewForKey:*MEMORY[0x1E69DE780]];
-  [v4 finalFrameForViewController:v7];
+  transitionCopy = transition;
+  containerView = [transitionCopy containerView];
+  v6 = [transitionCopy viewForKey:*MEMORY[0x1E69DE770]];
+  v7 = [transitionCopy viewControllerForKey:*MEMORY[0x1E69DE778]];
+  v8 = [transitionCopy viewForKey:*MEMORY[0x1E69DE780]];
+  [transitionCopy finalFrameForViewController:v7];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  [v5 addSubview:v8];
+  [containerView addSubview:v8];
   [v8 setFrame:{v10, v12, v14, v16}];
   [v8 setAlpha:0.0];
   [v6 setAlpha:1.0];
-  v17 = [(VideosTransitionFadeAnimator *)self transitionType];
-  if (v17)
+  transitionType = [(VideosTransitionFadeAnimator *)self transitionType];
+  if (transitionType)
   {
     v18 = v6;
   }
@@ -47,7 +47,7 @@
   }
 
   v19 = v18;
-  if (v17)
+  if (transitionType)
   {
     v20 = *(MEMORY[0x1E695EFD0] + 16);
     *&v38.a = *MEMORY[0x1E695EFD0];
@@ -61,7 +61,7 @@
   }
 
   [v19 setTransform:&v38];
-  [(VideosTransitionFadeAnimator *)self transitionDuration:v4];
+  [(VideosTransitionFadeAnimator *)self transitionDuration:transitionCopy];
   v22 = v21;
   v23 = MEMORY[0x1E69DD250];
   v33[0] = MEMORY[0x1E69E9820];
@@ -69,20 +69,20 @@
   v33[2] = __50__VideosTransitionFadeAnimator_animateTransition___block_invoke;
   v33[3] = &unk_1E872E980;
   v34 = v19;
-  v37 = v17 == 0;
+  v37 = transitionType == 0;
   v35 = v8;
   v36 = v6;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __50__VideosTransitionFadeAnimator_animateTransition___block_invoke_2;
   v28[3] = &unk_1E8732E50;
-  v32 = v17 == 0;
-  v29 = v4;
+  v32 = transitionType == 0;
+  v29 = transitionCopy;
   v30 = v35;
   v31 = v36;
   v24 = v36;
   v25 = v35;
-  v26 = v4;
+  v26 = transitionCopy;
   v27 = v19;
   [v23 animateWithDuration:v33 animations:v28 completion:v22];
 }

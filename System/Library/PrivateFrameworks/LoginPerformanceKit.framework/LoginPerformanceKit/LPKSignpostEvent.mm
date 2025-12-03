@@ -1,21 +1,21 @@
 @interface LPKSignpostEvent
 - (void)_calculateDurationIfNeeded;
-- (void)setEndDate:(id)a3;
-- (void)setStartDate:(id)a3;
+- (void)setEndDate:(id)date;
+- (void)setStartDate:(id)date;
 @end
 
 @implementation LPKSignpostEvent
 
-- (void)setStartDate:(id)a3
+- (void)setStartDate:(id)date
 {
-  objc_storeStrong(&self->_startDate, a3);
+  objc_storeStrong(&self->_startDate, date);
 
   [(LPKSignpostEvent *)self _calculateDurationIfNeeded];
 }
 
-- (void)setEndDate:(id)a3
+- (void)setEndDate:(id)date
 {
-  objc_storeStrong(&self->_endDate, a3);
+  objc_storeStrong(&self->_endDate, date);
 
   [(LPKSignpostEvent *)self _calculateDurationIfNeeded];
 }

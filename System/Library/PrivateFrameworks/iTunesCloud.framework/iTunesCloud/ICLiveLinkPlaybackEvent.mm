@@ -1,5 +1,5 @@
 @interface ICLiveLinkPlaybackEvent
-- (ICLiveLinkPlaybackEvent)initWithKind:(int64_t)a3;
+- (ICLiveLinkPlaybackEvent)initWithKind:(int64_t)kind;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v6;
 }
 
-- (ICLiveLinkPlaybackEvent)initWithKind:(int64_t)a3
+- (ICLiveLinkPlaybackEvent)initWithKind:(int64_t)kind
 {
   v5.receiver = self;
   v5.super_class = ICLiveLinkPlaybackEvent;
   result = [(ICLiveLinkPlaybackEvent *)&v5 init];
   if (result)
   {
-    result->_kind = a3;
+    result->_kind = kind;
   }
 
   return result;

@@ -1,13 +1,13 @@
 @interface _ViewSizeReader.Reader
-- (_TtCV8Settings15_ViewSizeReader6Reader)initWithCoder:(id)a3;
-- (_TtCV8Settings15_ViewSizeReader6Reader)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtCV8Settings15_ViewSizeReader6Reader)initWithCoder:(id)coder;
+- (_TtCV8Settings15_ViewSizeReader6Reader)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation _ViewSizeReader.Reader
 
-- (_TtCV8Settings15_ViewSizeReader6Reader)initWithCoder:(id)a3
+- (_TtCV8Settings15_ViewSizeReader6Reader)initWithCoder:(id)coder
 {
   result = sub_21CE6D350();
   __break(1u);
@@ -16,19 +16,19 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_21CE38448();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v11.receiver = self;
   v11.super_class = swift_getObjectType();
   swift_unknownObjectRetain();
   v7 = v11.receiver;
-  [(_ViewSizeReader.Reader *)&v11 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+  [(_ViewSizeReader.Reader *)&v11 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
   v8 = *&v7[OBJC_IVAR____TtCV8Settings15_ViewSizeReader6Reader__size];
   v9 = *&v7[OBJC_IVAR____TtCV8Settings15_ViewSizeReader6Reader__size + 8];
   v10 = *&v7[OBJC_IVAR____TtCV8Settings15_ViewSizeReader6Reader__size + 16];
@@ -39,7 +39,7 @@
   swift_unknownObjectRelease();
 }
 
-- (_TtCV8Settings15_ViewSizeReader6Reader)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtCV8Settings15_ViewSizeReader6Reader)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -2,7 +2,7 @@
 + (id)allItems;
 + (id)expensiveItems;
 + (id)itemsThatMustAlwaysBeReturned;
-- (id)responseForRequest:(id)a3;
+- (id)responseForRequest:(id)request;
 - (void)_processArguments;
 - (void)_processIdentifiersArgument;
 - (void)_processItemsArgument;
@@ -14,21 +14,21 @@
 
 @implementation MDMInstalledApplicationListCommand
 
-- (id)responseForRequest:(id)a3
+- (id)responseForRequest:(id)request
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   [(MDMInstalledApplicationListCommand *)self _reset];
-  [(MDMInstalledApplicationListCommand *)self setRequest:v4];
+  [(MDMInstalledApplicationListCommand *)self setRequest:requestCopy];
   [(MDMInstalledApplicationListCommand *)self _processArguments];
   [(MDMInstalledApplicationListCommand *)self fetchAppProperties];
   v5 = objc_opt_new();
-  v6 = [(MDMInstalledApplicationListCommand *)self appItems];
+  appItems = [(MDMInstalledApplicationListCommand *)self appItems];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v22 count:16];
+  v7 = [appItems countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v7)
   {
     v8 = *v17;
@@ -38,17 +38,17 @@
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(appItems);
         }
 
-        v10 = [v6 objectForKeyedSubscript:*(*(&v16 + 1) + 8 * i)];
+        v10 = [appItems objectForKeyedSubscript:*(*(&v16 + 1) + 8 * i)];
         if (v10)
         {
           [v5 addObject:v10];
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v16 objects:v22 count:16];
+      v7 = [appItems countByEnumeratingWithState:&v16 objects:v22 count:16];
     }
 
     while (v7);
@@ -87,12 +87,12 @@
 {
   v21 = *MEMORY[0x277D85DE8];
   [(MDMInstalledApplicationListCommand *)self _validateRequestDictionaryIsPresentAndADictionary];
-  v3 = [(MDMInstalledApplicationListCommand *)self request];
-  v4 = [v3 objectForKeyedSubscript:@"Identifiers"];
+  request = [(MDMInstalledApplicationListCommand *)self request];
+  v4 = [request objectForKeyedSubscript:@"Identifiers"];
 
   if (v4)
   {
-    v14 = self;
+    selfCopy = self;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -128,7 +128,7 @@
             [MEMORY[0x277CBEAD8] raise:@"InvalidArgument" format:@"identifier is not a string"];
           }
 
-          [v5 addObject:{v11, v14}];
+          [v5 addObject:{v11, selfCopy}];
           ++v10;
         }
 
@@ -140,7 +140,7 @@
     }
 
     v12 = [v5 copy];
-    [(MDMInstalledApplicationListCommand *)v14 setAppsRequested:v12];
+    [(MDMInstalledApplicationListCommand *)selfCopy setAppsRequested:v12];
 
     v4 = v15;
   }
@@ -156,8 +156,8 @@
 - (void)_processManagedAppsOnlyArgument
 {
   [(MDMInstalledApplicationListCommand *)self _validateRequestDictionaryIsPresentAndADictionary];
-  v3 = [(MDMInstalledApplicationListCommand *)self request];
-  v6 = [v3 objectForKeyedSubscript:@"ManagedAppsOnly"];
+  request = [(MDMInstalledApplicationListCommand *)self request];
+  v6 = [request objectForKeyedSubscript:@"ManagedAppsOnly"];
 
   v4 = v6;
   if (v6)
@@ -177,18 +177,18 @@
 
 - (void)_processItemsArgument
 {
-  v2 = self;
+  selfCopy = self;
   v28 = *MEMORY[0x277D85DE8];
   [(MDMInstalledApplicationListCommand *)self _validateRequestDictionaryIsPresentAndADictionary];
-  v3 = [(MDMInstalledApplicationListCommand *)v2 request];
-  v4 = [v3 objectForKeyedSubscript:@"Items"];
+  request = [(MDMInstalledApplicationListCommand *)selfCopy request];
+  v4 = [request objectForKeyedSubscript:@"Items"];
 
   v5 = objc_opt_new();
-  v6 = [objc_opt_class() allItems];
-  v7 = v6;
+  allItems = [objc_opt_class() allItems];
+  v7 = allItems;
   if (v4)
   {
-    v20 = v2;
+    v20 = selfCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -246,22 +246,22 @@
     }
 
     v4 = v19;
-    v2 = v20;
+    selfCopy = v20;
   }
 
   else
   {
-    v15 = [v6 allObjects];
-    [v5 addObjectsFromArray:v15];
+    allObjects = [allItems allObjects];
+    [v5 addObjectsFromArray:allObjects];
 
-    v16 = [objc_opt_class() expensiveItems];
-    [v5 minusSet:v16];
+    expensiveItems = [objc_opt_class() expensiveItems];
+    [v5 minusSet:expensiveItems];
   }
 
-  v17 = [objc_opt_class() itemsThatMustAlwaysBeReturned];
-  [v5 unionSet:v17];
+  itemsThatMustAlwaysBeReturned = [objc_opt_class() itemsThatMustAlwaysBeReturned];
+  [v5 unionSet:itemsThatMustAlwaysBeReturned];
 
-  [(MDMInstalledApplicationListCommand *)v2 setItemsRequested:v5];
+  [(MDMInstalledApplicationListCommand *)selfCopy setItemsRequested:v5];
   v18 = *MEMORY[0x277D85DE8];
 }
 
@@ -280,14 +280,14 @@
 
 - (void)_validateRequestDictionaryIsPresentAndADictionary
 {
-  v3 = [(MDMInstalledApplicationListCommand *)self request];
+  request = [(MDMInstalledApplicationListCommand *)self request];
 
-  if (!v3)
+  if (!request)
   {
     [MEMORY[0x277CBEAD8] raise:@"InvalidArgument" format:@"request does not exist"];
   }
 
-  v4 = [(MDMInstalledApplicationListCommand *)self request];
+  request2 = [(MDMInstalledApplicationListCommand *)self request];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -301,17 +301,17 @@
 
 - (void)fetchAppProperties
 {
-  v6 = [(MDMInstalledApplicationListCommand *)self dataSource];
-  v3 = [(MDMInstalledApplicationListCommand *)self appsRequested];
-  [v6 setAppsRequested:v3];
+  dataSource = [(MDMInstalledApplicationListCommand *)self dataSource];
+  appsRequested = [(MDMInstalledApplicationListCommand *)self appsRequested];
+  [dataSource setAppsRequested:appsRequested];
 
-  [v6 setShouldReturnManagedAppsOnly:{-[MDMInstalledApplicationListCommand shouldReturnManagedAppsOnly](self, "shouldReturnManagedAppsOnly")}];
-  v4 = [(MDMInstalledApplicationListCommand *)self itemsRequested];
-  [v6 setItemsRequested:v4];
+  [dataSource setShouldReturnManagedAppsOnly:{-[MDMInstalledApplicationListCommand shouldReturnManagedAppsOnly](self, "shouldReturnManagedAppsOnly")}];
+  itemsRequested = [(MDMInstalledApplicationListCommand *)self itemsRequested];
+  [dataSource setItemsRequested:itemsRequested];
 
-  [v6 fetchAppItems];
-  v5 = [v6 appItems];
-  [(MDMInstalledApplicationListCommand *)self setAppItems:v5];
+  [dataSource fetchAppItems];
+  appItems = [dataSource appItems];
+  [(MDMInstalledApplicationListCommand *)self setAppItems:appItems];
 }
 
 + (id)allItems

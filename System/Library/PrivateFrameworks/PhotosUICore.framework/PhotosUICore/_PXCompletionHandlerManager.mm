@@ -1,8 +1,8 @@
 @interface _PXCompletionHandlerManager
 - (_PXCompletionHandlerManager)init;
 - (_PXCompletionHandlerManagerDelegate)delegate;
-- (void)_handleTimeoutOfCompletionHandler:(id)a3;
-- (void)addCompletionHandler:(id)a3;
+- (void)_handleTimeoutOfCompletionHandler:(id)handler;
+- (void)addCompletionHandler:(id)handler;
 - (void)callCompletionHandlers;
 @end
 
@@ -25,13 +25,13 @@
   v5[4] = self;
   [(NSMutableArray *)completionHandlers enumerateObjectsUsingBlock:v5];
   [(NSMutableArray *)self->_completionHandlers removeAllObjects];
-  v4 = [(_PXCompletionHandlerManager *)self delegate];
-  [v4 didCallLastCompletionHandlerForCompletionHandlerManager:self];
+  delegate = [(_PXCompletionHandlerManager *)self delegate];
+  [delegate didCallLastCompletionHandlerForCompletionHandlerManager:self];
 }
 
-- (void)addCompletionHandler:(id)a3
+- (void)addCompletionHandler:(id)handler
 {
-  aBlock = [a3 copy];
+  aBlock = [handler copy];
   v4 = _Block_copy(aBlock);
   [(_PXCompletionHandlerManager *)self performSelector:sel__handleTimeoutOfCompletionHandler_ withObject:v4 afterDelay:10.0];
 
@@ -40,19 +40,19 @@
   [(NSMutableArray *)completionHandlers addObject:v6];
 }
 
-- (void)_handleTimeoutOfCompletionHandler:(id)a3
+- (void)_handleTimeoutOfCompletionHandler:(id)handler
 {
-  v4 = *(a3 + 2);
-  v5 = a3;
+  v4 = *(handler + 2);
+  handlerCopy = handler;
   v4();
   completionHandlers = self->_completionHandlers;
-  v7 = _Block_copy(v5);
+  v7 = _Block_copy(handlerCopy);
 
   [(NSMutableArray *)completionHandlers removeObject:v7];
   if (![(NSMutableArray *)self->_completionHandlers count])
   {
-    v8 = [(_PXCompletionHandlerManager *)self delegate];
-    [v8 didCallLastCompletionHandlerForCompletionHandlerManager:self];
+    delegate = [(_PXCompletionHandlerManager *)self delegate];
+    [delegate didCallLastCompletionHandlerForCompletionHandlerManager:self];
   }
 }
 

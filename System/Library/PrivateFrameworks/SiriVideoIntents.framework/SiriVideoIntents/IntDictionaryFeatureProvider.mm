@@ -1,6 +1,6 @@
 @interface IntDictionaryFeatureProvider
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation IntDictionaryFeatureProvider
@@ -14,7 +14,7 @@
   return v3;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   v3 = sub_269854A94();
   v5 = v4;

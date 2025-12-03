@@ -1,8 +1,8 @@
 @interface FedStatsDataCohort
-+ (BOOL)checkCohortField:(id)a3 forNamespaceID:(id)a4;
-+ (id)keysForCohorts:(id)a3 namespaceID:(id)a4 parameters:(id)a5 possibleError:(id *)a6;
++ (BOOL)checkCohortField:(id)field forNamespaceID:(id)d;
++ (id)keysForCohorts:(id)cohorts namespaceID:(id)d parameters:(id)parameters possibleError:(id *)error;
 + (id)sharedInstance;
-- (BOOL)checkCohortValue:(id)a3 forCohortName:(id)a4 namespaceIdentifier:(id)a5;
+- (BOOL)checkCohortValue:(id)value forCohortName:(id)name namespaceIdentifier:(id)identifier;
 - (FedStatsDataCohort)init;
 @end
 
@@ -40,16 +40,16 @@
   return v2;
 }
 
-- (BOOL)checkCohortValue:(id)a3 forCohortName:(id)a4 namespaceIdentifier:(id)a5
+- (BOOL)checkCohortValue:(id)value forCohortName:(id)name namespaceIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(FedStatsDataCohort *)self valueBlockList];
-  v12 = [v11 objectForKey:v10];
+  valueCopy = value;
+  nameCopy = name;
+  identifierCopy = identifier;
+  valueBlockList = [(FedStatsDataCohort *)self valueBlockList];
+  v12 = [valueBlockList objectForKey:identifierCopy];
 
-  v13 = [v12 objectForKey:v9];
-  v14 = [v13 containsObject:v8];
+  v13 = [v12 objectForKey:nameCopy];
+  v14 = [v13 containsObject:valueCopy];
 
   if (v14)
   {
@@ -58,16 +58,16 @@
 
   else
   {
-    v16 = [(FedStatsDataCohort *)self valueAllowList];
-    v17 = [v16 objectForKey:v10];
+    valueAllowList = [(FedStatsDataCohort *)self valueAllowList];
+    v17 = [valueAllowList objectForKey:identifierCopy];
 
     if (v17)
     {
-      v18 = [v17 objectForKey:v9];
+      v18 = [v17 objectForKey:nameCopy];
       v19 = v18;
       if (v18)
       {
-        v15 = [v18 containsObject:v8];
+        v15 = [v18 containsObject:valueCopy];
       }
 
       else
@@ -91,7 +91,7 @@
   block[1] = 3221225472;
   block[2] = __36__FedStatsDataCohort_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_380 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_380, block);
@@ -109,17 +109,17 @@ uint64_t __36__FedStatsDataCohort_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-+ (BOOL)checkCohortField:(id)a3 forNamespaceID:(id)a4
++ (BOOL)checkCohortField:(id)field forNamespaceID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  fieldCopy = field;
+  dCopy = d;
   v7 = +[FedStatsDataCohort sharedInstance];
-  v8 = [v7 namespaceMap];
-  v9 = [v8 objectForKey:v6];
+  namespaceMap = [v7 namespaceMap];
+  v9 = [namespaceMap objectForKey:dCopy];
 
   if (v9)
   {
-    v10 = [v9 containsObject:v5];
+    v10 = [v9 containsObject:fieldCopy];
   }
 
   else
@@ -130,32 +130,32 @@ uint64_t __36__FedStatsDataCohort_sharedInstance__block_invoke(uint64_t a1)
   return v10;
 }
 
-+ (id)keysForCohorts:(id)a3 namespaceID:(id)a4 parameters:(id)a5 possibleError:(id *)a6
++ (id)keysForCohorts:(id)cohorts namespaceID:(id)d parameters:(id)parameters possibleError:(id *)error
 {
   v50 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v36 = a5;
+  cohortsCopy = cohorts;
+  dCopy = d;
+  parametersCopy = parameters;
   v35 = +[FedStatsDataCohort sharedInstance];
-  v11 = [v35 namespaceMap];
-  v37 = v10;
-  v12 = [v11 objectForKey:v10];
+  namespaceMap = [v35 namespaceMap];
+  v37 = dCopy;
+  v12 = [namespaceMap objectForKey:dCopy];
 
   if (v12)
   {
-    v33 = a6;
-    v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v9, "count")}];
+    errorCopy = error;
+    v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(cohortsCopy, "count")}];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    obj = v9;
+    obj = cohortsCopy;
     v14 = [obj countByEnumeratingWithState:&v39 objects:v49 count:16];
     if (v14)
     {
       v15 = v14;
       v16 = *v40;
-      v32 = v9;
+      v32 = cohortsCopy;
 LABEL_4:
       v17 = 0;
       while (1)
@@ -174,9 +174,9 @@ LABEL_4:
         v19 = [FedStatsCohortFactory cohortQueryFieldByName:v18];
         if (!v19)
         {
-          v9 = v32;
-          v27 = v33;
-          if (!v33)
+          cohortsCopy = v32;
+          v27 = errorCopy;
+          if (!errorCopy)
           {
             goto LABEL_31;
           }
@@ -187,17 +187,17 @@ LABEL_4:
 
         v20 = v19;
         v38 = 0;
-        v21 = [v19 cohortKeyForParameters:v36 possibleError:&v38];
+        v21 = [v19 cohortKeyForParameters:parametersCopy possibleError:&v38];
         v22 = v38;
         if (([v35 checkCohortValue:v21 forCohortName:v18 namespaceIdentifier:v37] & 1) == 0)
         {
-          if (v33)
+          if (errorCopy)
           {
             v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cohort value '%@' for cohort '%@' is not allowed for the namespace '%@'", v21, v18, v37];
-            *v33 = [FedStatsPluginError errorWithCode:300 description:v28];
+            *errorCopy = [FedStatsPluginError errorWithCode:300 description:v28];
           }
 
-          v9 = v32;
+          cohortsCopy = v32;
 LABEL_30:
 
 LABEL_31:
@@ -235,7 +235,7 @@ LABEL_31:
         if (v15 == ++v17)
         {
           v15 = [obj countByEnumeratingWithState:&v39 objects:v49 count:16];
-          v9 = v32;
+          cohortsCopy = v32;
           if (v15)
           {
             goto LABEL_4;
@@ -245,9 +245,9 @@ LABEL_31:
         }
       }
 
-      v9 = v32;
-      v27 = v33;
-      if (!v33)
+      cohortsCopy = v32;
+      v27 = errorCopy;
+      if (!errorCopy)
       {
         goto LABEL_31;
       }
@@ -266,10 +266,10 @@ LABEL_32:
 
   else
   {
-    if (a6)
+    if (error)
     {
-      v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ namespace is invalid.", v10];
-      *a6 = [FedStatsPluginError errorWithCode:300 description:v26];
+      dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ namespace is invalid.", dCopy];
+      *error = [FedStatsPluginError errorWithCode:300 description:dCopy];
     }
 
     v25 = 0;

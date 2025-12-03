@@ -1,7 +1,7 @@
 @interface SHSheetSceneSettingsDiffAction
 - (SHSheetSceneSettingsDiffAction)init;
 - (SHSheetSceneSettingsDiffActionDelegate)delegate;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
 @end
 
 @implementation SHSheetSceneSettingsDiffAction
@@ -24,17 +24,17 @@
   return v2;
 }
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
   v12 = 0;
-  v9 = a5;
-  v10 = [(SHSheetSceneSettingsDiffAction *)self sceneSettingsDisplayDiffInspector];
-  [v10 inspectDiff:v9 withContext:&v12];
+  diffCopy = diff;
+  sceneSettingsDisplayDiffInspector = [(SHSheetSceneSettingsDiffAction *)self sceneSettingsDisplayDiffInspector];
+  [sceneSettingsDisplayDiffInspector inspectDiff:diffCopy withContext:&v12];
 
   if (v12 & 2) != 0 || (v12)
   {
-    v11 = [(SHSheetSceneSettingsDiffAction *)self delegate];
-    [v11 sceneSettingsDidChange:self];
+    delegate = [(SHSheetSceneSettingsDiffAction *)self delegate];
+    [delegate sceneSettingsDidChange:self];
   }
 }
 

@@ -1,31 +1,31 @@
 @interface SISchemaUUFRSelected
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (SISchemaUUFRCasinoCardSelected)casinoCardSelected;
-- (SISchemaUUFRSelected)initWithDictionary:(id)a3;
-- (SISchemaUUFRSelected)initWithJSON:(id)a3;
+- (SISchemaUUFRSelected)initWithDictionary:(id)dictionary;
+- (SISchemaUUFRSelected)initWithJSON:(id)n;
 - (SISchemaUUFRSnippetViewSelected)snippetViewSelected;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (void)deleteCasinoCardSelected;
 - (void)deleteSnippetViewSelected;
-- (void)setCasinoCardSelected:(id)a3;
-- (void)setSnippetViewSelected:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setCasinoCardSelected:(id)selected;
+- (void)setSnippetViewSelected:(id)selected;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaUUFRSelected
 
-- (SISchemaUUFRSelected)initWithDictionary:(id)a3
+- (SISchemaUUFRSelected)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = SISchemaUUFRSelected;
   v5 = [(SISchemaUUFRSelected *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"casinoCardSelected"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"casinoCardSelected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,7 +33,7 @@
       [(SISchemaUUFRSelected *)v5 setCasinoCardSelected:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"snippetViewSelected"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"snippetViewSelected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,30 +47,30 @@
   return v5;
 }
 
-- (SISchemaUUFRSelected)initWithJSON:(id)a3
+- (SISchemaUUFRSelected)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaUUFRSelected *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaUUFRSelected *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaUUFRSelected *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -83,72 +83,72 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_casinoCardSelected)
   {
-    v4 = [(SISchemaUUFRSelected *)self casinoCardSelected];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    casinoCardSelected = [(SISchemaUUFRSelected *)self casinoCardSelected];
+    dictionaryRepresentation = [casinoCardSelected dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"casinoCardSelected"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"casinoCardSelected"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"casinoCardSelected"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"casinoCardSelected"];
     }
   }
 
   if (self->_snippetViewSelected)
   {
-    v7 = [(SISchemaUUFRSelected *)self snippetViewSelected];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    snippetViewSelected = [(SISchemaUUFRSelected *)self snippetViewSelected];
+    dictionaryRepresentation2 = [snippetViewSelected dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"snippetViewSelected"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"snippetViewSelected"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"snippetViewSelected"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"snippetViewSelected"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   whichSelectionevent = self->_whichSelectionevent;
-  if (whichSelectionevent != [v4 whichSelectionevent])
+  if (whichSelectionevent != [equalCopy whichSelectionevent])
   {
     goto LABEL_13;
   }
 
-  v6 = [(SISchemaUUFRSelected *)self casinoCardSelected];
-  v7 = [v4 casinoCardSelected];
-  if ((v6 != 0) == (v7 == 0))
+  casinoCardSelected = [(SISchemaUUFRSelected *)self casinoCardSelected];
+  casinoCardSelected2 = [equalCopy casinoCardSelected];
+  if ((casinoCardSelected != 0) == (casinoCardSelected2 == 0))
   {
     goto LABEL_12;
   }
 
-  v8 = [(SISchemaUUFRSelected *)self casinoCardSelected];
-  if (v8)
+  casinoCardSelected3 = [(SISchemaUUFRSelected *)self casinoCardSelected];
+  if (casinoCardSelected3)
   {
-    v9 = v8;
-    v10 = [(SISchemaUUFRSelected *)self casinoCardSelected];
-    v11 = [v4 casinoCardSelected];
-    v12 = [v10 isEqual:v11];
+    v9 = casinoCardSelected3;
+    casinoCardSelected4 = [(SISchemaUUFRSelected *)self casinoCardSelected];
+    casinoCardSelected5 = [equalCopy casinoCardSelected];
+    v12 = [casinoCardSelected4 isEqual:casinoCardSelected5];
 
     if (!v12)
     {
@@ -160,12 +160,12 @@
   {
   }
 
-  v6 = [(SISchemaUUFRSelected *)self snippetViewSelected];
-  v7 = [v4 snippetViewSelected];
-  if ((v6 != 0) != (v7 == 0))
+  casinoCardSelected = [(SISchemaUUFRSelected *)self snippetViewSelected];
+  casinoCardSelected2 = [equalCopy snippetViewSelected];
+  if ((casinoCardSelected != 0) != (casinoCardSelected2 == 0))
   {
-    v13 = [(SISchemaUUFRSelected *)self snippetViewSelected];
-    if (!v13)
+    snippetViewSelected = [(SISchemaUUFRSelected *)self snippetViewSelected];
+    if (!snippetViewSelected)
     {
 
 LABEL_16:
@@ -173,10 +173,10 @@ LABEL_16:
       goto LABEL_14;
     }
 
-    v14 = v13;
-    v15 = [(SISchemaUUFRSelected *)self snippetViewSelected];
-    v16 = [v4 snippetViewSelected];
-    v17 = [v15 isEqual:v16];
+    v14 = snippetViewSelected;
+    snippetViewSelected2 = [(SISchemaUUFRSelected *)self snippetViewSelected];
+    snippetViewSelected3 = [equalCopy snippetViewSelected];
+    v17 = [snippetViewSelected2 isEqual:snippetViewSelected3];
 
     if (v17)
     {
@@ -196,22 +196,22 @@ LABEL_14:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(SISchemaUUFRSelected *)self casinoCardSelected];
+  toCopy = to;
+  casinoCardSelected = [(SISchemaUUFRSelected *)self casinoCardSelected];
 
-  if (v4)
+  if (casinoCardSelected)
   {
-    v5 = [(SISchemaUUFRSelected *)self casinoCardSelected];
+    casinoCardSelected2 = [(SISchemaUUFRSelected *)self casinoCardSelected];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(SISchemaUUFRSelected *)self snippetViewSelected];
+  snippetViewSelected = [(SISchemaUUFRSelected *)self snippetViewSelected];
 
-  if (v6)
+  if (snippetViewSelected)
   {
-    v7 = [(SISchemaUUFRSelected *)self snippetViewSelected];
+    snippetViewSelected2 = [(SISchemaUUFRSelected *)self snippetViewSelected];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -241,15 +241,15 @@ LABEL_14:
   return v3;
 }
 
-- (void)setSnippetViewSelected:(id)a3
+- (void)setSnippetViewSelected:(id)selected
 {
-  v4 = a3;
+  selectedCopy = selected;
   casinoCardSelected = self->_casinoCardSelected;
   self->_casinoCardSelected = 0;
 
-  self->_whichSelectionevent = 2 * (v4 != 0);
+  self->_whichSelectionevent = 2 * (selectedCopy != 0);
   snippetViewSelected = self->_snippetViewSelected;
-  self->_snippetViewSelected = v4;
+  self->_snippetViewSelected = selectedCopy;
 }
 
 - (void)deleteCasinoCardSelected
@@ -277,37 +277,37 @@ LABEL_14:
   return v3;
 }
 
-- (void)setCasinoCardSelected:(id)a3
+- (void)setCasinoCardSelected:(id)selected
 {
-  v4 = a3;
+  selectedCopy = selected;
   snippetViewSelected = self->_snippetViewSelected;
   self->_snippetViewSelected = 0;
 
-  self->_whichSelectionevent = v4 != 0;
+  self->_whichSelectionevent = selectedCopy != 0;
   casinoCardSelected = self->_casinoCardSelected;
-  self->_casinoCardSelected = v4;
+  self->_casinoCardSelected = selectedCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = SISchemaUUFRSelected;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(SISchemaUUFRSelected *)self casinoCardSelected];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  casinoCardSelected = [(SISchemaUUFRSelected *)self casinoCardSelected];
+  v7 = [casinoCardSelected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SISchemaUUFRSelected *)self deleteCasinoCardSelected];
   }
 
-  v9 = [(SISchemaUUFRSelected *)self snippetViewSelected];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  snippetViewSelected = [(SISchemaUUFRSelected *)self snippetViewSelected];
+  v10 = [snippetViewSelected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(SISchemaUUFRSelected *)self deleteSnippetViewSelected];
   }

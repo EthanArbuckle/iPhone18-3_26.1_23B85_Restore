@@ -1,6 +1,6 @@
 @interface GCObservation
-- (BOOL)isEqual:(id)a3;
-- (GCObservation)initWithObserver:(id)a3 options:(unint64_t)a4 context:(void *)a5;
+- (BOOL)isEqual:(id)equal;
+- (GCObservation)initWithObserver:(id)observer options:(unint64_t)options context:(void *)context;
 - (id)description;
 - (id)observer;
 - (unint64_t)hash;
@@ -8,36 +8,36 @@
 
 @implementation GCObservation
 
-- (GCObservation)initWithObserver:(id)a3 options:(unint64_t)a4 context:(void *)a5
+- (GCObservation)initWithObserver:(id)observer options:(unint64_t)options context:(void *)context
 {
-  v8 = a3;
+  observerCopy = observer;
   v12.receiver = self;
   v12.super_class = GCObservation;
   v9 = [(GCObservation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_observer, v8);
-    v10->_options = a4;
-    v10->_context = a5;
+    objc_storeWeak(&v9->_observer, observerCopy);
+    v10->_options = options;
+    v10->_context = context;
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 observer];
-    v7 = [(GCObservation *)self observer];
-    if (v6 == v7)
+    v5 = equalCopy;
+    observer = [v5 observer];
+    observer2 = [(GCObservation *)self observer];
+    if (observer == observer2)
     {
-      v9 = [v5 context];
-      v8 = v9 == [(GCObservation *)self context];
+      context = [v5 context];
+      v8 = context == [(GCObservation *)self context];
     }
 
     else
@@ -56,9 +56,9 @@
 
 - (unint64_t)hash
 {
-  v2 = [(GCObservation *)self observer];
+  observer = [(GCObservation *)self observer];
 
-  return v2;
+  return observer;
 }
 
 - (id)description

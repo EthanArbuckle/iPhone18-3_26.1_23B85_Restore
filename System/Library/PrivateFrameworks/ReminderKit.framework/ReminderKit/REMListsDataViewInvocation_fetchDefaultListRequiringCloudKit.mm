@@ -1,67 +1,67 @@
 @interface REMListsDataViewInvocation_fetchDefaultListRequiringCloudKit
-- (BOOL)isEqual:(id)a3;
-- (REMListsDataViewInvocation_fetchDefaultListRequiringCloudKit)initWithAccountObjectID:(id)a3 debugUseInMemoryPreferredDefaultListStorage:(BOOL)a4;
-- (REMListsDataViewInvocation_fetchDefaultListRequiringCloudKit)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMListsDataViewInvocation_fetchDefaultListRequiringCloudKit)initWithAccountObjectID:(id)d debugUseInMemoryPreferredDefaultListStorage:(BOOL)storage;
+- (REMListsDataViewInvocation_fetchDefaultListRequiringCloudKit)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMListsDataViewInvocation_fetchDefaultListRequiringCloudKit
 
-- (REMListsDataViewInvocation_fetchDefaultListRequiringCloudKit)initWithAccountObjectID:(id)a3 debugUseInMemoryPreferredDefaultListStorage:(BOOL)a4
+- (REMListsDataViewInvocation_fetchDefaultListRequiringCloudKit)initWithAccountObjectID:(id)d debugUseInMemoryPreferredDefaultListStorage:(BOOL)storage
 {
-  v7 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = REMListsDataViewInvocation_fetchDefaultListRequiringCloudKit;
   v8 = [(REMStoreInvocationValueStorage *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_accountObjectID, a3);
-    v9->_debug_useInMemoryPreferredDefaultListStorage = a4;
+    objc_storeStrong(&v8->_accountObjectID, d);
+    v9->_debug_useInMemoryPreferredDefaultListStorage = storage;
   }
 
   return v9;
 }
 
-- (REMListsDataViewInvocation_fetchDefaultListRequiringCloudKit)initWithCoder:(id)a3
+- (REMListsDataViewInvocation_fetchDefaultListRequiringCloudKit)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountObjectID"];
-  v6 = [v4 decodeBoolForKey:@"debug_useInMemoryPreferredDefaultListStorage"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountObjectID"];
+  v6 = [coderCopy decodeBoolForKey:@"debug_useInMemoryPreferredDefaultListStorage"];
 
   v7 = [(REMListsDataViewInvocation_fetchDefaultListRequiringCloudKit *)self initWithAccountObjectID:v5 debugUseInMemoryPreferredDefaultListStorage:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(REMListsDataViewInvocation_fetchDefaultListRequiringCloudKit *)self accountObjectID];
-  [v5 encodeObject:v4 forKey:@"accountObjectID"];
+  coderCopy = coder;
+  accountObjectID = [(REMListsDataViewInvocation_fetchDefaultListRequiringCloudKit *)self accountObjectID];
+  [coderCopy encodeObject:accountObjectID forKey:@"accountObjectID"];
 
-  [v5 encodeBool:-[REMListsDataViewInvocation_fetchDefaultListRequiringCloudKit debug_useInMemoryPreferredDefaultListStorage](self forKey:{"debug_useInMemoryPreferredDefaultListStorage"), @"debug_useInMemoryPreferredDefaultListStorage"}];
+  [coderCopy encodeBool:-[REMListsDataViewInvocation_fetchDefaultListRequiringCloudKit debug_useInMemoryPreferredDefaultListStorage](self forKey:{"debug_useInMemoryPreferredDefaultListStorage"), @"debug_useInMemoryPreferredDefaultListStorage"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(REMListsDataViewInvocation_fetchDefaultListRequiringCloudKit *)self accountObjectID];
-    v7 = [v5 accountObjectID];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    accountObjectID = [(REMListsDataViewInvocation_fetchDefaultListRequiringCloudKit *)self accountObjectID];
+    accountObjectID2 = [v5 accountObjectID];
+    v8 = accountObjectID2;
+    if (accountObjectID == accountObjectID2)
     {
     }
 
     else
     {
-      v9 = [(REMListsDataViewInvocation_fetchDefaultListRequiringCloudKit *)self accountObjectID];
-      v10 = [v5 accountObjectID];
-      v11 = [v9 isEqual:v10];
+      accountObjectID3 = [(REMListsDataViewInvocation_fetchDefaultListRequiringCloudKit *)self accountObjectID];
+      accountObjectID4 = [v5 accountObjectID];
+      v11 = [accountObjectID3 isEqual:accountObjectID4];
 
       if (!v11)
       {
@@ -72,8 +72,8 @@ LABEL_8:
       }
     }
 
-    v13 = [(REMListsDataViewInvocation_fetchDefaultListRequiringCloudKit *)self debug_useInMemoryPreferredDefaultListStorage];
-    v12 = v13 ^ [v5 debug_useInMemoryPreferredDefaultListStorage] ^ 1;
+    debug_useInMemoryPreferredDefaultListStorage = [(REMListsDataViewInvocation_fetchDefaultListRequiringCloudKit *)self debug_useInMemoryPreferredDefaultListStorage];
+    v12 = debug_useInMemoryPreferredDefaultListStorage ^ [v5 debug_useInMemoryPreferredDefaultListStorage] ^ 1;
     goto LABEL_8;
   }
 
@@ -85,8 +85,8 @@ LABEL_9:
 
 - (unint64_t)hash
 {
-  v3 = [(REMListsDataViewInvocation_fetchDefaultListRequiringCloudKit *)self accountObjectID];
-  v4 = [v3 hash];
+  accountObjectID = [(REMListsDataViewInvocation_fetchDefaultListRequiringCloudKit *)self accountObjectID];
+  v4 = [accountObjectID hash];
   v5 = v4 + [(REMListsDataViewInvocation_fetchDefaultListRequiringCloudKit *)self debug_useInMemoryPreferredDefaultListStorage];
 
   return v5;

@@ -1,37 +1,37 @@
 @interface MTUISelectionTableViewController
-- (MTUISelectionTableViewController)initWithStyle:(int64_t)a3 title:(id)a4 selectionData:(id)a5 parentIndexPath:(id)a6 allowsMultiple:(BOOL)a7 allowsNone:(BOOL)a8 delegate:(id)a9;
+- (MTUISelectionTableViewController)initWithStyle:(int64_t)style title:(id)title selectionData:(id)data parentIndexPath:(id)path allowsMultiple:(BOOL)multiple allowsNone:(BOOL)none delegate:(id)delegate;
 - (MTUISelectionTableViewControllerDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)deselectRowsExcluding:(unint64_t)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)deselectRowsExcluding:(unint64_t)excluding;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation MTUISelectionTableViewController
 
-- (MTUISelectionTableViewController)initWithStyle:(int64_t)a3 title:(id)a4 selectionData:(id)a5 parentIndexPath:(id)a6 allowsMultiple:(BOOL)a7 allowsNone:(BOOL)a8 delegate:(id)a9
+- (MTUISelectionTableViewController)initWithStyle:(int64_t)style title:(id)title selectionData:(id)data parentIndexPath:(id)path allowsMultiple:(BOOL)multiple allowsNone:(BOOL)none delegate:(id)delegate
 {
-  v9 = a8;
-  v10 = a7;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a9;
+  noneCopy = none;
+  multipleCopy = multiple;
+  titleCopy = title;
+  dataCopy = data;
+  pathCopy = path;
+  delegateCopy = delegate;
   v23.receiver = self;
   v23.super_class = MTUISelectionTableViewController;
-  v19 = [(MTUISelectionTableViewController *)&v23 initWithStyle:a3];
+  v19 = [(MTUISelectionTableViewController *)&v23 initWithStyle:style];
   v20 = v19;
   if (v19)
   {
-    [(MTUISelectionTableViewController *)v19 setTitle:v15];
-    [(MTUISelectionTableViewController *)v20 setSelectionData:v16];
-    [(MTUISelectionTableViewController *)v20 setParentIndexPath:v17];
-    v21 = [(MTUISelectionTableViewController *)v20 tableView];
-    [v21 setAllowsMultipleSelection:v10];
+    [(MTUISelectionTableViewController *)v19 setTitle:titleCopy];
+    [(MTUISelectionTableViewController *)v20 setSelectionData:dataCopy];
+    [(MTUISelectionTableViewController *)v20 setParentIndexPath:pathCopy];
+    tableView = [(MTUISelectionTableViewController *)v20 tableView];
+    [tableView setAllowsMultipleSelection:multipleCopy];
 
-    [(MTUISelectionTableViewController *)v20 setAllowsNone:v9];
-    [(MTUISelectionTableViewController *)v20 setDelegate:v18];
+    [(MTUISelectionTableViewController *)v20 setAllowsNone:noneCopy];
+    [(MTUISelectionTableViewController *)v20 setDelegate:delegateCopy];
   }
 
   return v20;
@@ -42,55 +42,55 @@
   v8.receiver = self;
   v8.super_class = MTUISelectionTableViewController;
   [(MTUISelectionTableViewController *)&v8 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] mtui_backgroundColor];
-  v4 = [(MTUISelectionTableViewController *)self tableView];
-  [v4 setBackgroundColor:v3];
+  mtui_backgroundColor = [MEMORY[0x277D75348] mtui_backgroundColor];
+  tableView = [(MTUISelectionTableViewController *)self tableView];
+  [tableView setBackgroundColor:mtui_backgroundColor];
 
-  v5 = [(MTUISelectionTableViewController *)self tableView];
-  [v5 setEstimatedRowHeight:*MEMORY[0x277D76F38]];
+  tableView2 = [(MTUISelectionTableViewController *)self tableView];
+  [tableView2 setEstimatedRowHeight:*MEMORY[0x277D76F38]];
 
-  v6 = [(MTUISelectionTableViewController *)self tableView];
-  [v6 setRowHeight:*MEMORY[0x277D76F30]];
+  tableView3 = [(MTUISelectionTableViewController *)self tableView];
+  [tableView3 setRowHeight:*MEMORY[0x277D76F30]];
 
-  v7 = [(MTUISelectionTableViewController *)self tableView];
-  [v7 registerClass:objc_opt_class() forCellReuseIdentifier:@"MTUISelectionTableViewCellIdentifier"];
+  tableView4 = [(MTUISelectionTableViewController *)self tableView];
+  [tableView4 registerClass:objc_opt_class() forCellReuseIdentifier:@"MTUISelectionTableViewCellIdentifier"];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(MTUISelectionTableViewController *)self selectionData:a3];
+  v4 = [(MTUISelectionTableViewController *)self selectionData:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"MTUISelectionTableViewCellIdentifier" forIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"MTUISelectionTableViewCellIdentifier" forIndexPath:pathCopy];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"MTUISelectionTableViewCellIdentifier"];
   }
 
   v8 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-  v9 = [v7 textLabel];
-  [v9 setFont:v8];
+  textLabel = [v7 textLabel];
+  [textLabel setFont:v8];
 
-  v10 = [v7 textLabel];
-  [v10 setAdjustsFontForContentSizeCategory:1];
+  textLabel2 = [v7 textLabel];
+  [textLabel2 setAdjustsFontForContentSizeCategory:1];
 
-  v11 = [MEMORY[0x277D75348] mtui_primaryTextColor];
-  v12 = [v7 textLabel];
-  [v12 setTextColor:v11];
+  mtui_primaryTextColor = [MEMORY[0x277D75348] mtui_primaryTextColor];
+  textLabel3 = [v7 textLabel];
+  [textLabel3 setTextColor:mtui_primaryTextColor];
 
-  v13 = [MEMORY[0x277D75348] mtui_cellHighlightColor];
-  [v7 setSelectedBackgroundColor:v13];
+  mtui_cellHighlightColor = [MEMORY[0x277D75348] mtui_cellHighlightColor];
+  [v7 setSelectedBackgroundColor:mtui_cellHighlightColor];
 
-  v14 = [(MTUISelectionTableViewController *)self selectionData];
-  v15 = [v6 row];
+  selectionData = [(MTUISelectionTableViewController *)self selectionData];
+  v15 = [pathCopy row];
 
-  v16 = [v14 objectAtIndexedSubscript:v15];
+  v16 = [selectionData objectAtIndexedSubscript:v15];
 
   if ([v16 isSelected])
   {
@@ -103,40 +103,40 @@
   }
 
   [v7 setAccessoryType:v17];
-  v18 = [v16 title];
-  v19 = [v7 textLabel];
-  [v19 setText:v18];
+  title = [v16 title];
+  textLabel4 = [v7 textLabel];
+  [textLabel4 setText:title];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (![(MTUISelectionTableViewController *)self allowsNone])
   {
-    v8 = [(MTUISelectionTableViewController *)self selectionData];
-    v9 = [v8 indexesOfObjectsPassingTest:&__block_literal_global_1];
+    selectionData = [(MTUISelectionTableViewController *)self selectionData];
+    v9 = [selectionData indexesOfObjectsPassingTest:&__block_literal_global_1];
 
-    if ([v9 count] == 1 && objc_msgSend(v9, "containsIndex:", objc_msgSend(v7, "row")))
+    if ([v9 count] == 1 && objc_msgSend(v9, "containsIndex:", objc_msgSend(pathCopy, "row")))
     {
-      [v6 deselectRowAtIndexPath:v7 animated:1];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
       goto LABEL_12;
     }
   }
 
-  if (([v6 allowsMultipleSelection] & 1) == 0)
+  if (([viewCopy allowsMultipleSelection] & 1) == 0)
   {
-    -[MTUISelectionTableViewController deselectRowsExcluding:](self, "deselectRowsExcluding:", [v7 row]);
+    -[MTUISelectionTableViewController deselectRowsExcluding:](self, "deselectRowsExcluding:", [pathCopy row]);
   }
 
-  v10 = [(MTUISelectionTableViewController *)self selectionData];
-  v9 = [v10 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+  selectionData2 = [(MTUISelectionTableViewController *)self selectionData];
+  v9 = [selectionData2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   [v9 setIsSelected:{objc_msgSend(v9, "isSelected") ^ 1}];
-  v11 = [v6 cellForRowAtIndexPath:v7];
+  v11 = [viewCopy cellForRowAtIndexPath:pathCopy];
   if ([v9 isSelected])
   {
     v12 = 3;
@@ -148,25 +148,25 @@
   }
 
   [v11 setAccessoryType:v12];
-  [v6 deselectRowAtIndexPath:v7 animated:1];
-  v13 = [(MTUISelectionTableViewController *)self delegate];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  delegate = [(MTUISelectionTableViewController *)self delegate];
   v16[0] = v9;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-  v15 = [(MTUISelectionTableViewController *)self parentIndexPath];
-  [v13 didSelectOptions:v14 parentIndexPath:v15];
+  parentIndexPath = [(MTUISelectionTableViewController *)self parentIndexPath];
+  [delegate didSelectOptions:v14 parentIndexPath:parentIndexPath];
 
 LABEL_12:
 }
 
-- (void)deselectRowsExcluding:(unint64_t)a3
+- (void)deselectRowsExcluding:(unint64_t)excluding
 {
-  v5 = [(MTUISelectionTableViewController *)self selectionData];
+  selectionData = [(MTUISelectionTableViewController *)self selectionData];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__MTUISelectionTableViewController_deselectRowsExcluding___block_invoke;
   v8[3] = &__block_descriptor_40_e38_B32__0__MTUISelectionViewData_8Q16_B24l;
-  v8[4] = a3;
-  v6 = [v5 indexesOfObjectsPassingTest:v8];
+  v8[4] = excluding;
+  v6 = [selectionData indexesOfObjectsPassingTest:v8];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;

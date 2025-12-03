@@ -1,52 +1,52 @@
 @interface BrowserWindowController
 + (id)_printWindowToSceneMapping;
-- (BrowserWindowController)initWithBrowserSavedState:(id)a3 perSitePreferencesVendor:(id)a4 browserControllerUIDelegateProvider:(id)a5;
-- (BrowserWindowController)initWithTabGroupManager:(id)a3 browserState:(id)a4 pinnedTabsManager:(id)a5 perSitePreferencesVendor:(id)a6 shouldMergeAllWindowsIfNeeded:(BOOL)a7 browserControllerUIDelegateProvider:(id)a8;
-- (BrowserWindowController)initWithTabGroupManager:(id)a3 pinnedTabsManager:(id)a4;
+- (BrowserWindowController)initWithBrowserSavedState:(id)state perSitePreferencesVendor:(id)vendor browserControllerUIDelegateProvider:(id)provider;
+- (BrowserWindowController)initWithTabGroupManager:(id)manager browserState:(id)state pinnedTabsManager:(id)tabsManager perSitePreferencesVendor:(id)vendor shouldMergeAllWindowsIfNeeded:(BOOL)needed browserControllerUIDelegateProvider:(id)provider;
+- (BrowserWindowController)initWithTabGroupManager:(id)manager pinnedTabsManager:(id)tabsManager;
 - (NSArray)tabsWithSound;
 - (_SFPageZoomPreferenceManager)privateBrowsingPageZoomManager;
 - (id)_allNormalLocalTabs;
 - (id)_browserWindowsToPersist;
-- (id)_mergeAndSaveWindowStates:(id)a3 intoWindowState:(id)a4;
-- (id)_mergeWindowStates:(id)a3 intoWindowState:(id)a4;
-- (id)_newAutomationWindowWithSceneID:(id)a3;
+- (id)_mergeAndSaveWindowStates:(id)states intoWindowState:(id)state;
+- (id)_mergeWindowStates:(id)states intoWindowState:(id)state;
+- (id)_newAutomationWindowWithSceneID:(id)d;
 - (id)_printWindowToSceneMapping;
 - (id)_sceneIDToLocalGroupTabs;
-- (id)browserControllerWithUUID:(id)a3;
-- (id)oldestTabsWithLimit:(unint64_t)a3 inPrivateBrowsing:(BOOL)a4;
-- (id)tabDocumentWithUUID:(id)a3;
-- (id)tabWithUUID:(id)a3;
-- (id)tabsInPrivateBrowsing:(BOOL)a3;
-- (id)tabsOlderThan:(id)a3 inPrivateBrowsing:(BOOL)a4;
-- (id)uiDelegateForBrowserController:(id)a3;
-- (id)windowForSceneID:(id)a3 options:(id)a4;
-- (int64_t)modeForNewWindowUserActivity:(id)a3;
-- (unint64_t)numberOfTabsInPrivateBrowsing:(BOOL)a3;
+- (id)browserControllerWithUUID:(id)d;
+- (id)oldestTabsWithLimit:(unint64_t)limit inPrivateBrowsing:(BOOL)browsing;
+- (id)tabDocumentWithUUID:(id)d;
+- (id)tabWithUUID:(id)d;
+- (id)tabsInPrivateBrowsing:(BOOL)browsing;
+- (id)tabsOlderThan:(id)than inPrivateBrowsing:(BOOL)browsing;
+- (id)uiDelegateForBrowserController:(id)controller;
+- (id)windowForSceneID:(id)d options:(id)options;
+- (int64_t)modeForNewWindowUserActivity:(id)activity;
+- (unint64_t)numberOfTabsInPrivateBrowsing:(BOOL)browsing;
 - (void)_createCloudTabsStore;
 - (void)_destroyCloudTabsStore;
-- (void)_mergeTabsFromCloudTabsForDeviceRestoration:(id)a3;
-- (void)_mergeTabsFromCloudTabsForDeviceRestorationIfNeededAfterCloudTabsFinishedSyncing:(BOOL)a3;
-- (void)_restoreWindowsFromBrowserSavedState:(id)a3;
-- (void)_restoreWindowsWithState:(id)a3 shouldMergeAllWindowsIfNeeded:(BOOL)a4;
-- (void)_windowDidClose:(id)a3;
-- (void)closeAllWindowsFromWindow:(id)a3;
-- (void)cloudTabStore:(id)a3 didReceiveTabCloseRequest:(id)a4;
-- (void)cloudTabStore:(id)a3 didUpdateDevicesFromCloudKitWithError:(id)a4;
-- (void)cloudTabStoreDidGetCachedDevicesFromCloudKit:(id)a3;
+- (void)_mergeTabsFromCloudTabsForDeviceRestoration:(id)restoration;
+- (void)_mergeTabsFromCloudTabsForDeviceRestorationIfNeededAfterCloudTabsFinishedSyncing:(BOOL)syncing;
+- (void)_restoreWindowsFromBrowserSavedState:(id)state;
+- (void)_restoreWindowsWithState:(id)state shouldMergeAllWindowsIfNeeded:(BOOL)needed;
+- (void)_windowDidClose:(id)close;
+- (void)closeAllWindowsFromWindow:(id)window;
+- (void)cloudTabStore:(id)store didReceiveTabCloseRequest:(id)request;
+- (void)cloudTabStore:(id)store didUpdateDevicesFromCloudKitWithError:(id)error;
+- (void)cloudTabStoreDidGetCachedDevicesFromCloudKit:(id)kit;
 - (void)dealloc;
-- (void)dispatchNavigationIntent:(id)a3;
-- (void)handleNavigationIntent:(id)a3 completion:(id)a4;
-- (void)mergeAllWindowsIntoWindow:(id)a3;
-- (void)openNewWindowInProfile:(id)a3 withPrivateBrowsingEnabled:(BOOL)a4 fromWindow:(id)a5;
-- (void)openNewWindowWithPrivateBrowsingEnabled:(BOOL)a3 fromWindow:(id)a4;
-- (void)removeWindowsNotMatchingSceneIDs:(id)a3 supportsMultipleScenes:(BOOL)a4;
-- (void)restoreEducationDeviceCloudTabs:(id)a3 animated:(BOOL)a4;
+- (void)dispatchNavigationIntent:(id)intent;
+- (void)handleNavigationIntent:(id)intent completion:(id)completion;
+- (void)mergeAllWindowsIntoWindow:(id)window;
+- (void)openNewWindowInProfile:(id)profile withPrivateBrowsingEnabled:(BOOL)enabled fromWindow:(id)window;
+- (void)openNewWindowWithPrivateBrowsingEnabled:(BOOL)enabled fromWindow:(id)window;
+- (void)removeWindowsNotMatchingSceneIDs:(id)ds supportsMultipleScenes:(BOOL)scenes;
+- (void)restoreEducationDeviceCloudTabs:(id)tabs animated:(BOOL)animated;
 - (void)restoreEducationDeviceTabs;
 - (void)saveBrowserState;
 - (void)saveCloudTabs;
-- (void)saveCloudTabsUsingCloudTabStore:(id)a3;
-- (void)setCloudTabsEnabled:(BOOL)a3;
-- (void)setUpAutomationWindowWithCompletionHandler:(id)a3;
+- (void)saveCloudTabsUsingCloudTabStore:(id)store;
+- (void)setCloudTabsEnabled:(BOOL)enabled;
+- (void)setUpAutomationWindowWithCompletionHandler:(id)handler;
 - (void)tearDownAutomationWindow;
 - (void)updateCloudTabUpdatesEnabled;
 - (void)updateCloudTabsForEnteringBackground;
@@ -58,9 +58,9 @@
 - (void)updateCloudTabUpdatesEnabled
 {
   v3 = +[FeatureManager sharedFeatureManager];
-  v4 = [v3 isCloudTabsAvailable];
+  isCloudTabsAvailable = [v3 isCloudTabsAvailable];
 
-  if (v4)
+  if (isCloudTabsAvailable)
   {
     cloudTabStore = self->_cloudTabStore;
     if (!cloudTabStore)
@@ -69,16 +69,16 @@
       cloudTabStore = self->_cloudTabStore;
     }
 
-    v6 = [(CloudTabStore *)cloudTabStore cloudTabsAreEnabled];
+    cloudTabsAreEnabled = [(CloudTabStore *)cloudTabStore cloudTabsAreEnabled];
   }
 
   else
   {
     [(BrowserWindowController *)self _destroyCloudTabsStore];
-    v6 = 0;
+    cloudTabsAreEnabled = 0;
   }
 
-  [(BrowserWindowController *)self setCloudTabsEnabled:v6];
+  [(BrowserWindowController *)self setCloudTabsEnabled:cloudTabsAreEnabled];
 }
 
 - (void)_createCloudTabsStore
@@ -102,20 +102,20 @@
   }
 
   [(CloudTabStore *)self->_cloudTabStore fetchSyncedCloudTabDevicesAndCloseRequestsFromCloudKit];
-  v4 = [MEMORY[0x277D499B8] sharedLogger];
-  [v4 reportTabUpdatedWithUpdateType:5];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] reportTabUpdatedWithUpdateType:5];
 }
 
 - (NSArray)tabsWithSound
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   browserControllers = self->_browserControllers;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __40__BrowserWindowController_tabsWithSound__block_invoke;
   v8[3] = &unk_2781D88F0;
-  v9 = v3;
-  v5 = v3;
+  v9 = array;
+  v5 = array;
   [(NSArray *)browserControllers enumerateObjectsUsingBlock:v8];
   v6 = [v5 copy];
 
@@ -152,19 +152,19 @@ uint64_t __40__BrowserWindowController_tabsWithSound__block_invoke_2(uint64_t a1
   return v4;
 }
 
-- (BrowserWindowController)initWithBrowserSavedState:(id)a3 perSitePreferencesVendor:(id)a4 browserControllerUIDelegateProvider:(id)a5
+- (BrowserWindowController)initWithBrowserSavedState:(id)state perSitePreferencesVendor:(id)vendor browserControllerUIDelegateProvider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stateCopy = state;
+  vendorCopy = vendor;
+  providerCopy = provider;
   v25.receiver = self;
   v25.super_class = BrowserWindowController;
   v11 = [(BrowserWindowController *)&v25 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_perSitePreferencesVendor, a4);
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_perSitePreferencesVendor, vendor);
+    v13 = [providerCopy copy];
     browserControllerUIDelegateProvider = v12->_browserControllerUIDelegateProvider;
     v12->_browserControllerUIDelegateProvider = v13;
 
@@ -175,16 +175,16 @@ uint64_t __40__BrowserWindowController_tabsWithSound__block_invoke_2(uint64_t a1
     browserControllers = v12->_browserControllers;
     v12->_browserControllers = MEMORY[0x277CBEBF8];
 
-    [(BrowserWindowController *)v12 _restoreWindowsFromBrowserSavedState:v8];
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
+    [(BrowserWindowController *)v12 _restoreWindowsFromBrowserSavedState:stateCopy];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v19 = *MEMORY[0x277D7B858];
     v20 = +[FeatureManager sharedFeatureManager];
-    [v18 addObserver:v12 selector:sel__cloudTabFeatureAvailabilityDidChange_ name:v19 object:v20];
+    [defaultCenter addObserver:v12 selector:sel__cloudTabFeatureAvailabilityDidChange_ name:v19 object:v20];
 
     [(BrowserWindowController *)v12 updateCloudTabUpdatesEnabled];
-    v21 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     cloudTabRestorationLogs = v12->_cloudTabRestorationLogs;
-    v12->_cloudTabRestorationLogs = v21;
+    v12->_cloudTabRestorationLogs = array;
 
     v23 = v12;
   }
@@ -192,33 +192,33 @@ uint64_t __40__BrowserWindowController_tabsWithSound__block_invoke_2(uint64_t a1
   return v12;
 }
 
-- (BrowserWindowController)initWithTabGroupManager:(id)a3 pinnedTabsManager:(id)a4
+- (BrowserWindowController)initWithTabGroupManager:(id)manager pinnedTabsManager:(id)tabsManager
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 browserState];
-  v9 = [(BrowserWindowController *)self initWithTabGroupManager:v7 browserState:v8 pinnedTabsManager:v6 perSitePreferencesVendor:0 shouldMergeAllWindowsIfNeeded:0 browserControllerUIDelegateProvider:0];
+  tabsManagerCopy = tabsManager;
+  managerCopy = manager;
+  browserState = [managerCopy browserState];
+  v9 = [(BrowserWindowController *)self initWithTabGroupManager:managerCopy browserState:browserState pinnedTabsManager:tabsManagerCopy perSitePreferencesVendor:0 shouldMergeAllWindowsIfNeeded:0 browserControllerUIDelegateProvider:0];
 
   return v9;
 }
 
-- (BrowserWindowController)initWithTabGroupManager:(id)a3 browserState:(id)a4 pinnedTabsManager:(id)a5 perSitePreferencesVendor:(id)a6 shouldMergeAllWindowsIfNeeded:(BOOL)a7 browserControllerUIDelegateProvider:(id)a8
+- (BrowserWindowController)initWithTabGroupManager:(id)manager browserState:(id)state pinnedTabsManager:(id)tabsManager perSitePreferencesVendor:(id)vendor shouldMergeAllWindowsIfNeeded:(BOOL)needed browserControllerUIDelegateProvider:(id)provider
 {
-  v9 = a7;
-  v35 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  neededCopy = needed;
+  managerCopy = manager;
+  stateCopy = state;
+  tabsManagerCopy = tabsManager;
+  vendorCopy = vendor;
+  providerCopy = provider;
   v36.receiver = self;
   v36.super_class = BrowserWindowController;
   v19 = [(BrowserWindowController *)&v36 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_tabGroupManager, a3);
-    objc_storeStrong(&v20->_perSitePreferencesVendor, a6);
-    v21 = [v18 copy];
+    objc_storeStrong(&v19->_tabGroupManager, manager);
+    objc_storeStrong(&v20->_perSitePreferencesVendor, vendor);
+    v21 = [providerCopy copy];
     browserControllerUIDelegateProvider = v20->_browserControllerUIDelegateProvider;
     v20->_browserControllerUIDelegateProvider = v21;
 
@@ -226,23 +226,23 @@ uint64_t __40__BrowserWindowController_tabsWithSound__block_invoke_2(uint64_t a1
     UIDelegatesByBrowserController = v20->_UIDelegatesByBrowserController;
     v20->_UIDelegatesByBrowserController = v23;
 
-    objc_storeStrong(&v20->_pinnedTabsManager, a5);
-    v25 = [v15 windowStates];
-    v26 = [v25 safari_mapObjectsUsingBlock:&__block_literal_global_31];
+    objc_storeStrong(&v20->_pinnedTabsManager, tabsManager);
+    windowStates = [stateCopy windowStates];
+    v26 = [windowStates safari_mapObjectsUsingBlock:&__block_literal_global_31];
 
-    v27 = [MEMORY[0x277D28F08] settings];
-    [v27 validateWindowSettingsWithUUIDs:v26];
+    settings = [MEMORY[0x277D28F08] settings];
+    [settings validateWindowSettingsWithUUIDs:v26];
 
-    [(BrowserWindowController *)v20 _restoreWindowsWithState:v15 shouldMergeAllWindowsIfNeeded:v9];
-    v28 = [MEMORY[0x277CCAB98] defaultCenter];
+    [(BrowserWindowController *)v20 _restoreWindowsWithState:stateCopy shouldMergeAllWindowsIfNeeded:neededCopy];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v29 = *MEMORY[0x277D7B858];
     v30 = +[FeatureManager sharedFeatureManager];
-    [v28 addObserver:v20 selector:sel__cloudTabFeatureAvailabilityDidChange_ name:v29 object:v30];
+    [defaultCenter addObserver:v20 selector:sel__cloudTabFeatureAvailabilityDidChange_ name:v29 object:v30];
 
     [(BrowserWindowController *)v20 updateCloudTabUpdatesEnabled];
-    v31 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     cloudTabRestorationLogs = v20->_cloudTabRestorationLogs;
-    v20->_cloudTabRestorationLogs = v31;
+    v20->_cloudTabRestorationLogs = array;
 
     v33 = v20;
   }
@@ -270,19 +270,19 @@ id __173__BrowserWindowController_initWithTabGroupManager_browserState_pinnedTab
   [(BrowserWindowController *)&v3 dealloc];
 }
 
-- (id)uiDelegateForBrowserController:(id)a3
+- (id)uiDelegateForBrowserController:(id)controller
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_UIDelegatesByBrowserController objectForKey:v4];
+  controllerCopy = controller;
+  v5 = [(NSMapTable *)self->_UIDelegatesByBrowserController objectForKey:controllerCopy];
   if (!v5)
   {
     browserControllerUIDelegateProvider = self->_browserControllerUIDelegateProvider;
     if (browserControllerUIDelegateProvider)
     {
-      v5 = browserControllerUIDelegateProvider[2](browserControllerUIDelegateProvider, v4);
+      v5 = browserControllerUIDelegateProvider[2](browserControllerUIDelegateProvider, controllerCopy);
       if (v5)
       {
-        [(NSMapTable *)self->_UIDelegatesByBrowserController setObject:v5 forKey:v4];
+        [(NSMapTable *)self->_UIDelegatesByBrowserController setObject:v5 forKey:controllerCopy];
       }
     }
 
@@ -295,10 +295,10 @@ id __173__BrowserWindowController_initWithTabGroupManager_browserState_pinnedTab
   return v5;
 }
 
-- (id)tabsInPrivateBrowsing:(BOOL)a3
+- (id)tabsInPrivateBrowsing:(BOOL)browsing
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -318,19 +318,19 @@ id __173__BrowserWindowController_initWithTabGroupManager_browserState_pinnedTab
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * i) tabController];
-        v12 = v11;
-        if (a3)
+        tabController = [*(*(&v16 + 1) + 8 * i) tabController];
+        v12 = tabController;
+        if (browsing)
         {
-          [v11 privateUnpinnedTabs];
+          [tabController privateUnpinnedTabs];
         }
 
         else
         {
-          [v11 normalUnpinnedTabs];
+          [tabController normalUnpinnedTabs];
         }
         v13 = ;
-        [v5 addObjectsFromArray:v13];
+        [array addObjectsFromArray:v13];
       }
 
       v8 = [(NSArray *)v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -339,12 +339,12 @@ id __173__BrowserWindowController_initWithTabGroupManager_browserState_pinnedTab
     while (v8);
   }
 
-  v14 = [v5 copy];
+  v14 = [array copy];
 
   return v14;
 }
 
-- (unint64_t)numberOfTabsInPrivateBrowsing:(BOOL)a3
+- (unint64_t)numberOfTabsInPrivateBrowsing:(BOOL)browsing
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
@@ -367,16 +367,16 @@ id __173__BrowserWindowController_initWithTabGroupManager_browserState_pinnedTab
           objc_enumerationMutation(v4);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) tabController];
-        v11 = v10;
-        if (a3)
+        tabController = [*(*(&v14 + 1) + 8 * i) tabController];
+        v11 = tabController;
+        if (browsing)
         {
-          [v10 privateUnpinnedTabs];
+          [tabController privateUnpinnedTabs];
         }
 
         else
         {
-          [v10 normalUnpinnedTabs];
+          [tabController normalUnpinnedTabs];
         }
         v12 = ;
         v7 += [v12 count];
@@ -396,18 +396,18 @@ id __173__BrowserWindowController_initWithTabGroupManager_browserState_pinnedTab
   return v7;
 }
 
-- (id)tabsOlderThan:(id)a3 inPrivateBrowsing:(BOOL)a4
+- (id)tabsOlderThan:(id)than inPrivateBrowsing:(BOOL)browsing
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEA80] currentCalendar];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v28 = v5;
-  v8 = [v6 dateByAddingComponents:v5 toDate:v7 options:0];
+  thanCopy = than;
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v28 = thanCopy;
+  v8 = [currentCalendar dateByAddingComponents:thanCopy toDate:date options:0];
   [v8 timeIntervalSinceReferenceDate];
   v10 = v9;
 
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
@@ -427,16 +427,16 @@ id __173__BrowserWindowController_initWithTabGroupManager_browserState_pinnedTab
           objc_enumerationMutation(obj);
         }
 
-        v16 = [*(*(&v35 + 1) + 8 * i) tabController];
-        v17 = v16;
-        if (a4)
+        tabController = [*(*(&v35 + 1) + 8 * i) tabController];
+        v17 = tabController;
+        if (browsing)
         {
-          [v16 privateUnpinnedTabs];
+          [tabController privateUnpinnedTabs];
         }
 
         else
         {
-          [v16 normalUnpinnedTabs];
+          [tabController normalUnpinnedTabs];
         }
         v18 = ;
         v33 = 0u;
@@ -462,7 +462,7 @@ id __173__BrowserWindowController_initWithTabGroupManager_browserState_pinnedTab
               [v24 lastActivationTime];
               if (v25 <= v10)
               {
-                [v11 addObject:v24];
+                [array addObject:v24];
               }
             }
 
@@ -479,23 +479,23 @@ id __173__BrowserWindowController_initWithTabGroupManager_browserState_pinnedTab
     while (v13);
   }
 
-  v26 = [v11 copy];
+  v26 = [array copy];
 
   return v26;
 }
 
-- (id)oldestTabsWithLimit:(unint64_t)a3 inPrivateBrowsing:(BOOL)a4
+- (id)oldestTabsWithLimit:(unint64_t)limit inPrivateBrowsing:(BOOL)browsing
 {
-  v5 = [(BrowserWindowController *)self tabsInPrivateBrowsing:a4];
+  v5 = [(BrowserWindowController *)self tabsInPrivateBrowsing:browsing];
   v6 = [v5 mutableCopy];
 
   [v6 sortUsingComparator:&__block_literal_global_14];
-  if ([v6 count] <= a3)
+  if ([v6 count] <= limit)
   {
-    a3 = [v6 count];
+    limit = [v6 count];
   }
 
-  v7 = [v6 subarrayWithRange:{0, a3}];
+  v7 = [v6 subarrayWithRange:{0, limit}];
 
   return v7;
 }
@@ -516,10 +516,10 @@ uint64_t __65__BrowserWindowController_oldestTabsWithLimit_inPrivateBrowsing___b
   return v11;
 }
 
-- (id)browserControllerWithUUID:(id)a3
+- (id)browserControllerWithUUID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -539,8 +539,8 @@ uint64_t __65__BrowserWindowController_oldestTabsWithLimit_inPrivateBrowsing___b
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 UUID];
-        v11 = [v10 isEqual:v4];
+        uUID = [v9 UUID];
+        v11 = [uUID isEqual:dCopy];
 
         if (v11)
         {
@@ -564,10 +564,10 @@ LABEL_11:
   return v6;
 }
 
-- (id)tabDocumentWithUUID:(id)a3
+- (id)tabDocumentWithUUID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -587,8 +587,8 @@ LABEL_3:
         objc_enumerationMutation(v5);
       }
 
-      v10 = [*(*(&v13 + 1) + 8 * v9) tabController];
-      v11 = [v10 tabDocumentWithUUID:v4];
+      tabController = [*(*(&v13 + 1) + 8 * v9) tabController];
+      v11 = [tabController tabDocumentWithUUID:dCopy];
 
       if (v11)
       {
@@ -617,10 +617,10 @@ LABEL_9:
   return v11;
 }
 
-- (id)tabWithUUID:(id)a3
+- (id)tabWithUUID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -640,8 +640,8 @@ LABEL_3:
         objc_enumerationMutation(v5);
       }
 
-      v10 = [*(*(&v13 + 1) + 8 * v9) tabController];
-      v11 = [v10 tabWithUUID:v4];
+      tabController = [*(*(&v13 + 1) + 8 * v9) tabController];
+      v11 = [tabController tabWithUUID:dCopy];
 
       if (v11)
       {
@@ -676,16 +676,16 @@ LABEL_9:
   if (!privateBrowsingPageZoomManager)
   {
     v4 = [objc_alloc(MEMORY[0x277D49FF0]) initWithDatabaseURL:0];
-    v5 = [MEMORY[0x277D49B18] sharedProxy];
-    [v4 setSyncProxy:v5];
+    mEMORY[0x277D49B18] = [MEMORY[0x277D49B18] sharedProxy];
+    [v4 setSyncProxy:mEMORY[0x277D49B18]];
 
     v6 = [objc_alloc(MEMORY[0x277CDB840]) initWithPerSitePreferencesStore:v4];
     v7 = self->_privateBrowsingPageZoomManager;
     self->_privateBrowsingPageZoomManager = v6;
 
-    v8 = [(BrowserWindowController *)self perSitePreferencesVendor];
-    v9 = [v8 pageZoomPreferenceManager];
-    [(_SFPageZoomPreferenceManager *)self->_privateBrowsingPageZoomManager setFallbackPreferenceManager:v9];
+    perSitePreferencesVendor = [(BrowserWindowController *)self perSitePreferencesVendor];
+    pageZoomPreferenceManager = [perSitePreferencesVendor pageZoomPreferenceManager];
+    [(_SFPageZoomPreferenceManager *)self->_privateBrowsingPageZoomManager setFallbackPreferenceManager:pageZoomPreferenceManager];
 
     privateBrowsingPageZoomManager = self->_privateBrowsingPageZoomManager;
   }
@@ -696,7 +696,7 @@ LABEL_9:
 - (id)_allNormalLocalTabs
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -716,14 +716,14 @@ LABEL_9:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v15 + 1) + 8 * i) tabController];
-        v10 = [v9 activeTabGroup];
-        v11 = [v10 isSyncable];
+        tabController = [*(*(&v15 + 1) + 8 * i) tabController];
+        activeTabGroup = [tabController activeTabGroup];
+        isSyncable = [activeTabGroup isSyncable];
 
-        if ((v11 & 1) == 0)
+        if ((isSyncable & 1) == 0)
         {
-          v12 = [v9 normalTabs];
-          [v3 addObjectsFromArray:v12];
+          normalTabs = [tabController normalTabs];
+          [array addObjectsFromArray:normalTabs];
         }
       }
 
@@ -733,7 +733,7 @@ LABEL_9:
     while (v6);
   }
 
-  v13 = [v3 copy];
+  v13 = [array copy];
 
   return v13;
 }
@@ -741,7 +741,7 @@ LABEL_9:
 - (id)_sceneIDToLocalGroupTabs
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -762,24 +762,24 @@ LABEL_9:
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
-        v10 = [v9 tabController];
-        v11 = [v10 activeTabGroup];
-        v12 = [v11 isLocal];
+        tabController = [v9 tabController];
+        activeTabGroup = [tabController activeTabGroup];
+        isLocal = [activeTabGroup isLocal];
 
-        if ((v12 & 1) == 0)
+        if ((isLocal & 1) == 0)
         {
-          v13 = [v9 windowStateData];
-          v14 = [v13 sceneID];
+          windowStateData = [v9 windowStateData];
+          sceneID = [windowStateData sceneID];
 
-          if (v14)
+          if (sceneID)
           {
-            v15 = [v9 windowState];
-            v16 = [v15 localTabGroup];
-            v17 = [v16 tabs];
+            windowState = [v9 windowState];
+            localTabGroup = [windowState localTabGroup];
+            tabs = [localTabGroup tabs];
 
-            if ([v17 count])
+            if ([tabs count])
             {
-              [v3 setObject:v17 forKeyedSubscript:v14];
+              [dictionary setObject:tabs forKeyedSubscript:sceneID];
             }
           }
         }
@@ -791,16 +791,16 @@ LABEL_9:
     while (v6);
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)setCloudTabsEnabled:(BOOL)a3
+- (void)setCloudTabsEnabled:(BOOL)enabled
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (self->_cloudTabsEnabled != a3)
+  if (self->_cloudTabsEnabled != enabled)
   {
-    self->_cloudTabsEnabled = a3;
-    if (!a3)
+    self->_cloudTabsEnabled = enabled;
+    if (!enabled)
     {
       [(CloudTabStore *)self->_cloudTabStore clearTabsForCurrentDevice];
     }
@@ -848,17 +848,17 @@ LABEL_9:
 - (void)saveCloudTabs
 {
   cloudTabStore = self->_cloudTabStore;
-  v5 = [(BrowserWindowController *)self _allNormalLocalTabs];
-  v4 = [(BrowserWindowController *)self _sceneIDToLocalGroupTabs];
-  [(CloudTabStore *)cloudTabStore saveCurrentDeviceTabs:v5 sceneIDToLocalGroupTabs:v4];
+  _allNormalLocalTabs = [(BrowserWindowController *)self _allNormalLocalTabs];
+  _sceneIDToLocalGroupTabs = [(BrowserWindowController *)self _sceneIDToLocalGroupTabs];
+  [(CloudTabStore *)cloudTabStore saveCurrentDeviceTabs:_allNormalLocalTabs sceneIDToLocalGroupTabs:_sceneIDToLocalGroupTabs];
 }
 
 - (void)updateCloudTabsForEnteringBackground
 {
   v27 = *MEMORY[0x277D85DE8];
   [(WBSCloudTabStore *)self->_cloudTabStore pruneExpiredDevicesFromCloudKit];
-  v3 = [MEMORY[0x277D499B8] sharedLogger];
-  [v3 reportTabUpdatedWithUpdateType:6];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] reportTabUpdatedWithUpdateType:6];
 
   v22 = 0;
   v23 = &v22;
@@ -878,13 +878,13 @@ LABEL_9:
   aBlock[3] = &unk_2781D4BD8;
   aBlock[4] = &v22;
   v6 = _Block_copy(aBlock);
-  v7 = [(CloudTabStore *)self->_cloudTabStore canSaveCloudTabsForCurrentDevice];
+  canSaveCloudTabsForCurrentDevice = [(CloudTabStore *)self->_cloudTabStore canSaveCloudTabsForCurrentDevice];
   cloudTabStore = self->_cloudTabStore;
-  if (v7)
+  if (canSaveCloudTabsForCurrentDevice)
   {
-    v9 = [(BrowserWindowController *)self _allNormalLocalTabs];
-    v10 = [(BrowserWindowController *)self _sceneIDToLocalGroupTabs];
-    [(CloudTabStore *)cloudTabStore saveCurrentDeviceTabsForEnteringBackground:v9 sceneIDToLocalGroupTabs:v10 completion:v6];
+    _allNormalLocalTabs = [(BrowserWindowController *)self _allNormalLocalTabs];
+    _sceneIDToLocalGroupTabs = [(BrowserWindowController *)self _sceneIDToLocalGroupTabs];
+    [(CloudTabStore *)cloudTabStore saveCurrentDeviceTabsForEnteringBackground:_allNormalLocalTabs sceneIDToLocalGroupTabs:_sceneIDToLocalGroupTabs completion:v6];
   }
 
   else
@@ -913,8 +913,8 @@ LABEL_9:
             objc_enumerationMutation(v11);
           }
 
-          v15 = [*(*(&v16 + 1) + 8 * v14) tabController];
-          [v15 updateEducationTabsLastSyncDate];
+          tabController = [*(*(&v16 + 1) + 8 * v14) tabController];
+          [tabController updateEducationTabsLastSyncDate];
 
           ++v14;
         }
@@ -943,23 +943,23 @@ uint64_t __63__BrowserWindowController_updateCloudTabsForEnteringBackground__blo
 
 - (void)restoreEducationDeviceTabs
 {
-  v3 = [(NSArray *)self->_browserControllers firstObject];
-  v2 = [v3 tabController];
-  [v2 restoreEducationDeviceTabs];
+  firstObject = [(NSArray *)self->_browserControllers firstObject];
+  tabController = [firstObject tabController];
+  [tabController restoreEducationDeviceTabs];
 }
 
-- (void)restoreEducationDeviceCloudTabs:(id)a3 animated:(BOOL)a4
+- (void)restoreEducationDeviceCloudTabs:(id)tabs animated:(BOOL)animated
 {
-  v18 = a4;
+  animatedCopy = animated;
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v22 = self;
-  v19 = [(NSArray *)self->_browserControllers firstObject];
+  tabsCopy = tabs;
+  selfCopy = self;
+  firstObject = [(NSArray *)self->_browserControllers firstObject];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v5;
+  obj = tabsCopy;
   v23 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v23)
   {
@@ -974,18 +974,18 @@ uint64_t __63__BrowserWindowController_updateCloudTabsForEnteringBackground__blo
         }
 
         v7 = *(*(&v28 + 1) + 8 * i);
-        v8 = [v7 uuid];
-        if (!v8)
+        uuid = [v7 uuid];
+        if (!uuid)
         {
-          v8 = [MEMORY[0x277CCAD78] UUID];
+          uuid = [MEMORY[0x277CCAD78] UUID];
         }
 
         v26 = 0u;
         v27 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v9 = v22->_browserControllers;
-        v10 = [(NSArray *)v9 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        title = selfCopy->_browserControllers;
+        v10 = [(NSArray *)title countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v10)
         {
           v11 = v10;
@@ -996,12 +996,12 @@ LABEL_10:
           {
             if (*v25 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(title);
             }
 
-            v14 = [*(*(&v24 + 1) + 8 * v13) tabController];
+            tabController = [*(*(&v24 + 1) + 8 * v13) tabController];
             v15 = [v7 url];
-            v16 = [v14 tabForURL:v15];
+            v16 = [tabController tabForURL:v15];
 
             if (v16)
             {
@@ -1010,7 +1010,7 @@ LABEL_10:
 
             if (v11 == ++v13)
             {
-              v11 = [(NSArray *)v9 countByEnumeratingWithState:&v24 objects:v32 count:16];
+              v11 = [(NSArray *)title countByEnumeratingWithState:&v24 objects:v32 count:16];
               if (v11)
               {
                 goto LABEL_10;
@@ -1026,8 +1026,8 @@ LABEL_10:
 LABEL_16:
 
           v16 = [v7 url];
-          v9 = [v7 title];
-          v17 = [v19 loadURLInNewTab:v16 title:v9 UUID:v8 inBackground:1 animated:v18 restoringCloudTab:1];
+          title = [v7 title];
+          v17 = [firstObject loadURLInNewTab:v16 title:title UUID:uuid inBackground:1 animated:animatedCopy restoringCloudTab:1];
         }
       }
 
@@ -1038,7 +1038,7 @@ LABEL_16:
   }
 }
 
-- (void)_mergeTabsFromCloudTabsForDeviceRestorationIfNeededAfterCloudTabsFinishedSyncing:(BOOL)a3
+- (void)_mergeTabsFromCloudTabsForDeviceRestorationIfNeededAfterCloudTabsFinishedSyncing:(BOOL)syncing
 {
   v80 = *MEMORY[0x277D85DE8];
   if (self->_consideredMergingCloudTabsForDeviceRestoration)
@@ -1053,16 +1053,16 @@ LABEL_16:
 
   else
   {
-    v64 = a3;
-    v67 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+    syncingCopy = syncing;
+    safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
     v63 = *MEMORY[0x277D291D0];
-    v5 = [v67 objectForKey:?];
+    v5 = [safari_browserDefaults objectForKey:?];
     if (v5)
     {
-      v6 = [(CloudTabStore *)self->_cloudTabStore currentDeviceUUID];
-      v66 = [v6 UUIDString];
+      currentDeviceUUID = [(CloudTabStore *)self->_cloudTabStore currentDeviceUUID];
+      uUIDString = [currentDeviceUUID UUIDString];
 
-      if ([v5 isEqualToString:v66])
+      if ([v5 isEqualToString:uUIDString])
       {
         self->_consideredMergingCloudTabsForDeviceRestoration = 1;
         v7 = WBS_LOG_CHANNEL_PREFIXCloudTabs();
@@ -1071,15 +1071,15 @@ LABEL_16:
           *buf = 138543618;
           *&buf[4] = v5;
           *&buf[12] = 2114;
-          *&buf[14] = v66;
+          *&buf[14] = uUIDString;
           _os_log_impl(&dword_215819000, v7, OS_LOG_TYPE_DEFAULT, "Not attempting to merge CloudTabs because restoration is not necessary (saved UUID: %{public}@, current UUID: %{public}@)", buf, 0x16u);
         }
       }
 
       else
       {
-        self->_consideredMergingCloudTabsForDeviceRestoration = v64;
-        if (v64)
+        self->_consideredMergingCloudTabsForDeviceRestoration = syncingCopy;
+        if (syncingCopy)
         {
           v9 = WBS_LOG_CHANNEL_PREFIXCloudTabs();
           if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1087,21 +1087,21 @@ LABEL_16:
             *buf = 138543618;
             *&buf[4] = v5;
             *&buf[12] = 2114;
-            *&buf[14] = v66;
+            *&buf[14] = uUIDString;
             _os_log_impl(&dword_215819000, v9, OS_LOG_TYPE_DEFAULT, "Finished syncing for CloudTabs restoration (saved UUID: %{public}@, current UUID: %{public}@)", buf, 0x16u);
           }
 
           cloudTabRestorationLogs = self->_cloudTabRestorationLogs;
-          v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Finished syncing for CloudTabs restoration (saved UUID: %@, current UUID: %@)", v5, v66];
+          v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Finished syncing for CloudTabs restoration (saved UUID: %@, current UUID: %@)", v5, uUIDString];
           [(NSMutableArray *)cloudTabRestorationLogs addObject:v11];
 
-          [v67 setObject:v66 forKey:v63];
-          [v67 setObject:v5 forKey:@"uuidOfCloudTabDeviceUsedForRestoration"];
-          [v67 setObject:self->_cloudTabRestorationLogs forKey:*MEMORY[0x277D291C8]];
+          [safari_browserDefaults setObject:uUIDString forKey:v63];
+          [safari_browserDefaults setObject:v5 forKey:@"uuidOfCloudTabDeviceUsedForRestoration"];
+          [safari_browserDefaults setObject:self->_cloudTabRestorationLogs forKey:*MEMORY[0x277D291C8]];
         }
 
-        v62 = [(CloudTabStore *)self->_cloudTabStore allSyncedCloudTabDevices];
-        v12 = [v62 count] == 0;
+        allSyncedCloudTabDevices = [(CloudTabStore *)self->_cloudTabStore allSyncedCloudTabDevices];
+        v12 = [allSyncedCloudTabDevices count] == 0;
         v13 = WBS_LOG_CHANNEL_PREFIXCloudTabs();
         v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
         if (v12)
@@ -1117,7 +1117,7 @@ LABEL_16:
           v59 = [MEMORY[0x277CCACA8] stringWithFormat:@"No tab was found for merging from a CloudTabs device with UUID %@", v5];
           [(NSMutableArray *)v58 addObject:v59];
 
-          [v67 setObject:self->_cloudTabRestorationLogs forKey:*MEMORY[0x277D291C8]];
+          [safari_browserDefaults setObject:self->_cloudTabRestorationLogs forKey:*MEMORY[0x277D291C8]];
         }
 
         else
@@ -1127,19 +1127,19 @@ LABEL_16:
             *buf = 138543618;
             *&buf[4] = v5;
             *&buf[12] = 2114;
-            *&buf[14] = v66;
+            *&buf[14] = uUIDString;
             _os_log_impl(&dword_215819000, v13, OS_LOG_TYPE_DEFAULT, "Attempting to find device with UUID: %{public}@ to restore from. Current CloudTab device UUID is: %{public}@", buf, 0x16u);
           }
 
           v15 = self->_cloudTabRestorationLogs;
-          v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Attempting to find device with UUID: %@ to restore from. Current CloudTab device UUID is: %@", v5, v66];
+          v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Attempting to find device with UUID: %@ to restore from. Current CloudTab device UUID is: %@", v5, uUIDString];
           [(NSMutableArray *)v15 addObject:v16];
 
           v75 = 0u;
           v76 = 0u;
           v73 = 0u;
           v74 = 0u;
-          obj = v62;
+          obj = allSyncedCloudTabDevices;
           v17 = [obj countByEnumeratingWithState:&v73 objects:v79 count:16];
           if (v17)
           {
@@ -1158,22 +1158,22 @@ LABEL_19:
               if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
               {
                 v22 = v21;
-                v23 = [v20 uuid];
+                uuid = [v20 uuid];
                 *buf = 138543362;
-                *&buf[4] = v23;
+                *&buf[4] = uuid;
                 _os_log_impl(&dword_215819000, v22, OS_LOG_TYPE_DEFAULT, "Found CloudTabs device with UUID %{public}@", buf, 0xCu);
               }
 
               v24 = self->_cloudTabRestorationLogs;
               v25 = MEMORY[0x277CCACA8];
-              v26 = [v20 uuid];
-              v27 = [v25 stringWithFormat:@"Found CloudTabs device with UUID %@", v26];
+              uuid2 = [v20 uuid];
+              v27 = [v25 stringWithFormat:@"Found CloudTabs device with UUID %@", uuid2];
               [(NSMutableArray *)v24 addObject:v27];
 
-              v28 = [v20 uuid];
-              LOBYTE(v26) = [v28 isEqualToString:v5];
+              uuid3 = [v20 uuid];
+              LOBYTE(uuid2) = [uuid3 isEqualToString:v5];
 
-              if (v26)
+              if (uuid2)
               {
                 break;
               }
@@ -1190,15 +1190,15 @@ LABEL_19:
               }
             }
 
-            v29 = v20;
+            safari_browserDefaults3 = v20;
 
-            if (!v29)
+            if (!safari_browserDefaults3)
             {
               goto LABEL_37;
             }
 
-            v30 = [v29 tabs];
-            v31 = [v30 count] == 0;
+            tabs = [safari_browserDefaults3 tabs];
+            v31 = [tabs count] == 0;
             v32 = WBS_LOG_CHANNEL_PREFIXCloudTabs();
             v33 = os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT);
             if (v31)
@@ -1213,7 +1213,7 @@ LABEL_19:
               v61 = [MEMORY[0x277CCACA8] stringWithFormat:@"No tabs found from CloudTabs for device restoration"];
               [(NSMutableArray *)v60 addObject:v61];
 
-              [v67 setObject:self->_cloudTabRestorationLogs forKey:*MEMORY[0x277D291C8]];
+              [safari_browserDefaults setObject:self->_cloudTabRestorationLogs forKey:*MEMORY[0x277D291C8]];
             }
 
             else
@@ -1221,22 +1221,22 @@ LABEL_19:
               if (v33)
               {
                 v34 = v32;
-                v35 = [v30 count];
+                v35 = [tabs count];
                 *buf = 134217984;
                 *&buf[4] = v35;
                 _os_log_impl(&dword_215819000, v34, OS_LOG_TYPE_DEFAULT, "Found %zu tabs in CloudTabs device for restoration", buf, 0xCu);
               }
 
               v36 = self->_cloudTabRestorationLogs;
-              v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"Found %zu tabs in CloudTabs device for restoration", objc_msgSend(v30, "count")];
+              v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"Found %zu tabs in CloudTabs device for restoration", objc_msgSend(tabs, "count")];
               [(NSMutableArray *)v36 addObject:v37];
 
-              v38 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-              v39 = [v29 lastModified];
-              [v39 timeIntervalSinceReferenceDate];
-              [v38 setDouble:@"lastModifiedTimeOfCloudTabDeviceUsedForRestoration" forKey:?];
+              safari_browserDefaults2 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+              lastModified = [safari_browserDefaults3 lastModified];
+              [lastModified timeIntervalSinceReferenceDate];
+              [safari_browserDefaults2 setDouble:@"lastModifiedTimeOfCloudTabDeviceUsedForRestoration" forKey:?];
 
-              if (!v64)
+              if (!syncingCopy)
               {
                 v40 = WBS_LOG_CHANNEL_PREFIXCloudTabs();
                 if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
@@ -1250,9 +1250,9 @@ LABEL_19:
                 [(NSMutableArray *)v41 addObject:v42];
 
                 self->_consideredMergingCloudTabsForDeviceRestoration = 1;
-                [v67 setObject:v66 forKey:v63];
-                v43 = [v29 uuid];
-                [v67 setObject:v43 forKey:@"uuidOfCloudTabDeviceUsedForRestoration"];
+                [safari_browserDefaults setObject:uUIDString forKey:v63];
+                uuid4 = [safari_browserDefaults3 uuid];
+                [safari_browserDefaults setObject:uuid4 forKey:@"uuidOfCloudTabDeviceUsedForRestoration"];
               }
 
               *buf = 0;
@@ -1268,17 +1268,17 @@ LABEL_19:
               v72[5] = buf;
               v45 = [v44 beginBackgroundTaskWithName:@"com.apple.mobilesafari.CloudTabRestorationBackgroundTask" expirationHandler:v72];
               *(*&buf[8] + 24) = v45;
-              v46 = [MEMORY[0x277D49B18] sharedProxy];
+              mEMORY[0x277D49B18] = [MEMORY[0x277D49B18] sharedProxy];
               v68[0] = MEMORY[0x277D85DD0];
               v68[1] = 3221225472;
               v68[2] = __108__BrowserWindowController__mergeTabsFromCloudTabsForDeviceRestorationIfNeededAfterCloudTabsFinishedSyncing___block_invoke_59;
               v68[3] = &unk_2781D8878;
               v68[4] = self;
-              v69 = v67;
+              v69 = safari_browserDefaults;
               v71 = buf;
-              v30 = v30;
-              v70 = v30;
-              [v46 getCloudTabContainerManateeStateWithCompletionHandler:v68];
+              tabs = tabs;
+              v70 = tabs;
+              [mEMORY[0x277D49B18] getCloudTabContainerManateeStateWithCompletionHandler:v68];
 
               _Block_object_dispose(buf, 8);
             }
@@ -1289,10 +1289,10 @@ LABEL_19:
 LABEL_27:
 
 LABEL_37:
-            v29 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-            v47 = [v29 integerForKey:*MEMORY[0x277D291E0]];
-            v48 = [v29 safari_dateForKey:*MEMORY[0x277D291D8]];
-            v30 = [v48 description];
+            safari_browserDefaults3 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+            v47 = [safari_browserDefaults3 integerForKey:*MEMORY[0x277D291E0]];
+            v48 = [safari_browserDefaults3 safari_dateForKey:*MEMORY[0x277D291D8]];
+            tabs = [v48 description];
 
             v49 = WBS_LOG_CHANNEL_PREFIXCloudTabs();
             if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
@@ -1302,26 +1302,26 @@ LABEL_37:
               *&buf[12] = 2048;
               *&buf[14] = v47;
               *&buf[22] = 2114;
-              v78 = v30;
+              v78 = tabs;
               _os_log_impl(&dword_215819000, v49, OS_LOG_TYPE_DEFAULT, "No cloud tab device found for tab restoration. Expected device %{public}@ to have %zu tabs as of %{public}@.", buf, 0x20u);
             }
 
             v50 = self->_cloudTabRestorationLogs;
-            v51 = [MEMORY[0x277CCACA8] stringWithFormat:@"No cloud tab device found for tab restoration. Expected device %@ to have %zu tabs as of %@.", v5, v47, v30];
+            v51 = [MEMORY[0x277CCACA8] stringWithFormat:@"No cloud tab device found for tab restoration. Expected device %@ to have %zu tabs as of %@.", v5, v47, tabs];
             [(NSMutableArray *)v50 addObject:v51];
 
-            if (v64)
+            if (syncingCopy)
             {
               v52 = WBS_LOG_CHANNEL_PREFIXCloudTabs();
               if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
               {
                 v53 = v52;
                 v54 = [obj count];
-                v55 = [(WBSCloudTabStore *)self->_cloudTabStore totalSyncedCloudTabDeviceCount];
+                totalSyncedCloudTabDeviceCount = [(WBSCloudTabStore *)self->_cloudTabStore totalSyncedCloudTabDeviceCount];
                 *buf = 134218240;
                 *&buf[4] = v54;
                 *&buf[12] = 2048;
-                *&buf[14] = v55;
+                *&buf[14] = totalSyncedCloudTabDeviceCount;
                 _os_log_impl(&dword_215819000, v53, OS_LOG_TYPE_DEFAULT, "Did not find device after syncing finished; device count: %zu; unfiltered device count: %zu", buf, 0x16u);
               }
 
@@ -1330,7 +1330,7 @@ LABEL_37:
               [(NSMutableArray *)v56 addObject:v57];
             }
 
-            [v67 setObject:self->_cloudTabRestorationLogs forKey:*MEMORY[0x277D291C8]];
+            [safari_browserDefaults setObject:self->_cloudTabRestorationLogs forKey:*MEMORY[0x277D291C8]];
           }
         }
       }
@@ -1418,29 +1418,29 @@ uint64_t __108__BrowserWindowController__mergeTabsFromCloudTabsForDeviceRestorat
   return result;
 }
 
-- (void)_mergeTabsFromCloudTabsForDeviceRestoration:(id)a3
+- (void)_mergeTabsFromCloudTabsForDeviceRestoration:(id)restoration
 {
   v81 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  restorationCopy = restoration;
   v4 = WBS_LOG_CHANNEL_PREFIXCloudTabs();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = v4;
     *buf = 134217984;
-    v80 = [v3 count];
+    v80 = [restorationCopy count];
     _os_log_impl(&dword_215819000, v5, OS_LOG_TYPE_DEFAULT, "Merging %ld tabs from CloudTabs for device restoration", buf, 0xCu);
   }
 
   cloudTabRestorationLogs = self->_cloudTabRestorationLogs;
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Merging %ld tabs from CloudTabs for device restoration", objc_msgSend(v3, "count")];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Merging %ld tabs from CloudTabs for device restoration", objc_msgSend(restorationCopy, "count")];
   [(NSMutableArray *)cloudTabRestorationLogs addObject:v7];
 
-  v53 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
-  obj = v3;
+  obj = restorationCopy;
   v8 = [obj countByEnumeratingWithState:&v71 objects:v78 count:16];
   if (v8)
   {
@@ -1456,8 +1456,8 @@ uint64_t __108__BrowserWindowController__mergeTabsFromCloudTabsForDeviceRestorat
         }
 
         v12 = *(*(&v71 + 1) + 8 * i);
-        v13 = [v12 sceneID];
-        if (!v13)
+        sceneID = [v12 sceneID];
+        if (!sceneID)
         {
           v14 = WBS_LOG_CHANNEL_PREFIXCloudTabs();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -1470,17 +1470,17 @@ uint64_t __108__BrowserWindowController__mergeTabsFromCloudTabsForDeviceRestorat
           v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"CloudTab does not have a sceneID. Categorize it under tabs without a scene id"];
           [(NSMutableArray *)v15 addObject:v16];
 
-          v13 = @"SAFARI_NO_SCENE_ID";
+          sceneID = @"SAFARI_NO_SCENE_ID";
         }
 
-        v17 = [v53 objectForKeyedSubscript:v13];
-        if (!v17)
+        array = [dictionary objectForKeyedSubscript:sceneID];
+        if (!array)
         {
-          v17 = [MEMORY[0x277CBEB18] array];
-          [v53 setObject:v17 forKeyedSubscript:v13];
+          array = [MEMORY[0x277CBEB18] array];
+          [dictionary setObject:array forKeyedSubscript:sceneID];
         }
 
-        [v17 addObject:v12];
+        [array addObject:v12];
       }
 
       v9 = [obj countByEnumeratingWithState:&v71 objects:v78 count:16];
@@ -1489,7 +1489,7 @@ uint64_t __108__BrowserWindowController__mergeTabsFromCloudTabsForDeviceRestorat
     while (v9);
   }
 
-  v18 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
@@ -1510,12 +1510,12 @@ uint64_t __108__BrowserWindowController__mergeTabsFromCloudTabsForDeviceRestorat
         }
 
         v24 = *(*(&v67 + 1) + 8 * j);
-        v25 = [v24 windowStateData];
-        v26 = [v25 sceneID];
+        windowStateData = [v24 windowStateData];
+        sceneID2 = [windowStateData sceneID];
 
-        if (v26)
+        if (sceneID2)
         {
-          [v18 setObject:v24 forKeyedSubscript:v26];
+          [dictionary2 setObject:v24 forKeyedSubscript:sceneID2];
         }
       }
 
@@ -1525,9 +1525,9 @@ uint64_t __108__BrowserWindowController__mergeTabsFromCloudTabsForDeviceRestorat
     while (v21);
   }
 
-  v48 = v18;
+  v48 = dictionary2;
 
-  v52 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
@@ -1548,21 +1548,21 @@ uint64_t __108__BrowserWindowController__mergeTabsFromCloudTabsForDeviceRestorat
         }
 
         v31 = *(*(&v63 + 1) + 8 * k);
-        v32 = [v31 UUID];
-        v33 = [v32 UUIDString];
+        uUID = [v31 UUID];
+        uUIDString = [uUID UUIDString];
 
-        if (v33)
+        if (uUIDString)
         {
-          v34 = [v31 windowState];
-          v35 = [v34 localTabGroup];
-          v36 = [v35 tabs];
+          windowState = [v31 windowState];
+          localTabGroup = [windowState localTabGroup];
+          tabs = [localTabGroup tabs];
 
           v37 = [MEMORY[0x277CBEB58] set];
           v59 = 0u;
           v60 = 0u;
           v61 = 0u;
           v62 = 0u;
-          v38 = v36;
+          v38 = tabs;
           v39 = [v38 countByEnumeratingWithState:&v59 objects:v75 count:16];
           if (v39)
           {
@@ -1590,7 +1590,7 @@ uint64_t __108__BrowserWindowController__mergeTabsFromCloudTabsForDeviceRestorat
             while (v40);
           }
 
-          [v52 setObject:v37 forKeyedSubscript:v33];
+          [dictionary3 setObject:v37 forKeyedSubscript:uUIDString];
         }
       }
 
@@ -1600,19 +1600,19 @@ uint64_t __108__BrowserWindowController__mergeTabsFromCloudTabsForDeviceRestorat
     while (v28);
   }
 
-  v44 = [(NSArray *)self->_browserControllers firstObject];
+  firstObject = [(NSArray *)self->_browserControllers firstObject];
   v54[0] = MEMORY[0x277D85DD0];
   v54[1] = 3221225472;
   v54[2] = __71__BrowserWindowController__mergeTabsFromCloudTabsForDeviceRestoration___block_invoke;
   v54[3] = &unk_2781D88C8;
   v55 = v48;
-  v56 = self;
-  v57 = v44;
-  v58 = v52;
-  v45 = v52;
-  v46 = v44;
+  selfCopy = self;
+  v57 = firstObject;
+  v58 = dictionary3;
+  v45 = dictionary3;
+  v46 = firstObject;
   v47 = v48;
-  [v53 enumerateKeysAndObjectsUsingBlock:v54];
+  [dictionary enumerateKeysAndObjectsUsingBlock:v54];
 }
 
 void __71__BrowserWindowController__mergeTabsFromCloudTabsForDeviceRestoration___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1703,12 +1703,12 @@ uint64_t __71__BrowserWindowController__mergeTabsFromCloudTabsForDeviceRestorati
   return v5;
 }
 
-- (void)cloudTabStore:(id)a3 didReceiveTabCloseRequest:(id)a4
+- (void)cloudTabStore:(id)store didReceiveTabCloseRequest:(id)request
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 url];
-  v7 = [v5 tabUUID];
+  requestCopy = request;
+  v6 = [requestCopy url];
+  tabUUID = [requestCopy tabUUID];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -1729,8 +1729,8 @@ uint64_t __71__BrowserWindowController__mergeTabsFromCloudTabsForDeviceRestorati
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v14 + 1) + 8 * v12) tabController];
-        [v13 closeTabWithURL:v6 UUID:v7];
+        tabController = [*(*(&v14 + 1) + 8 * v12) tabController];
+        [tabController closeTabWithURL:v6 UUID:tabUUID];
 
         ++v12;
       }
@@ -1743,20 +1743,20 @@ uint64_t __71__BrowserWindowController__mergeTabsFromCloudTabsForDeviceRestorati
   }
 }
 
-- (void)cloudTabStore:(id)a3 didUpdateDevicesFromCloudKitWithError:(id)a4
+- (void)cloudTabStore:(id)store didUpdateDevicesFromCloudKitWithError:(id)error
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   v6 = WBS_LOG_CHANNEL_PREFIXCloudTabs();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-  if (v5)
+  if (errorCopy)
   {
     if (v7)
     {
       v8 = v6;
-      v9 = [v5 safari_privacyPreservingDescription];
+      safari_privacyPreservingDescription = [errorCopy safari_privacyPreservingDescription];
       v10 = 138543362;
-      v11 = v9;
+      v11 = safari_privacyPreservingDescription;
       _os_log_impl(&dword_215819000, v8, OS_LOG_TYPE_INFO, "Did update devices from CloudKit syncing with error: %{public}@", &v10, 0xCu);
     }
   }
@@ -1773,7 +1773,7 @@ uint64_t __71__BrowserWindowController__mergeTabsFromCloudTabsForDeviceRestorati
   }
 }
 
-- (void)cloudTabStoreDidGetCachedDevicesFromCloudKit:(id)a3
+- (void)cloudTabStoreDidGetCachedDevicesFromCloudKit:(id)kit
 {
   v4 = WBS_LOG_CHANNEL_PREFIXCloudTabs();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -1785,7 +1785,7 @@ uint64_t __71__BrowserWindowController__mergeTabsFromCloudTabsForDeviceRestorati
   [(BrowserWindowController *)self _mergeTabsFromCloudTabsForDeviceRestorationIfNeededAfterCloudTabsFinishedSyncing:0];
 }
 
-- (void)saveCloudTabsUsingCloudTabStore:(id)a3
+- (void)saveCloudTabsUsingCloudTabStore:(id)store
 {
   if ([(CloudTabStore *)self->_cloudTabStore canSaveCloudTabsForCurrentDevice])
   {
@@ -1794,83 +1794,83 @@ uint64_t __71__BrowserWindowController__mergeTabsFromCloudTabsForDeviceRestorati
   }
 }
 
-- (void)openNewWindowWithPrivateBrowsingEnabled:(BOOL)a3 fromWindow:(id)a4
+- (void)openNewWindowWithPrivateBrowsingEnabled:(BOOL)enabled fromWindow:(id)window
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v5 = MEMORY[0x277CC1EF0];
-  v6 = a4;
-  v10 = [v5 _sf_windowCreationActivityWithMode:v4];
+  windowCopy = window;
+  v10 = [v5 _sf_windowCreationActivityWithMode:enabledCopy];
   v7 = objc_alloc_init(MEMORY[0x277D75950]);
-  v8 = [v6 scene];
+  scene = [windowCopy scene];
 
-  [v7 setRequestingScene:v8];
-  v9 = [MEMORY[0x277D75128] sharedApplication];
-  [v9 requestSceneSessionActivation:0 userActivity:v10 options:v7 errorHandler:0];
+  [v7 setRequestingScene:scene];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] requestSceneSessionActivation:0 userActivity:v10 options:v7 errorHandler:0];
 }
 
-- (void)openNewWindowInProfile:(id)a3 withPrivateBrowsingEnabled:(BOOL)a4 fromWindow:(id)a5
+- (void)openNewWindowInProfile:(id)profile withPrivateBrowsingEnabled:(BOOL)enabled fromWindow:(id)window
 {
   v7 = MEMORY[0x277CC1EF0];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v16 = [v7 _sf_windowCreationActivityWithMode:v8];
+  enabledCopy = enabled;
+  windowCopy = window;
+  profileCopy = profile;
+  v16 = [v7 _sf_windowCreationActivityWithMode:enabledCopy];
   v11 = objc_alloc_init(MEMORY[0x277D75950]);
-  v12 = [v9 scene];
+  scene = [windowCopy scene];
 
-  [v11 setRequestingScene:v12];
-  v13 = [v10 identifier];
+  [v11 setRequestingScene:scene];
+  identifier = [profileCopy identifier];
 
   frontmostProfileIdentifier = self->_frontmostProfileIdentifier;
-  self->_frontmostProfileIdentifier = v13;
+  self->_frontmostProfileIdentifier = identifier;
 
-  v15 = [MEMORY[0x277D75128] sharedApplication];
-  [v15 requestSceneSessionActivation:0 userActivity:v16 options:v11 errorHandler:0];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] requestSceneSessionActivation:0 userActivity:v16 options:v11 errorHandler:0];
 }
 
-- (int64_t)modeForNewWindowUserActivity:(id)a3
+- (int64_t)modeForNewWindowUserActivity:(id)activity
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  activityCopy = activity;
+  v5 = activityCopy;
+  if (activityCopy)
   {
-    v6 = [v4 _sf_windowCreationMode];
-    v7 = v6;
-    if (v6)
+    _sf_windowCreationMode = [activityCopy _sf_windowCreationMode];
+    v7 = _sf_windowCreationMode;
+    if (_sf_windowCreationMode)
     {
-      v8 = [v6 integerValue];
+      integerValue = [_sf_windowCreationMode integerValue];
     }
 
     else
     {
-      v9 = [v5 _sf_windowCreationNavigationIntent];
-      v10 = [v9 sourceWindowUUID];
-      v11 = [(BrowserWindowController *)self browserControllerWithUUID:v10];
+      _sf_windowCreationNavigationIntent = [v5 _sf_windowCreationNavigationIntent];
+      sourceWindowUUID = [_sf_windowCreationNavigationIntent sourceWindowUUID];
+      v11 = [(BrowserWindowController *)self browserControllerWithUUID:sourceWindowUUID];
 
-      v8 = [v11 isPrivateBrowsingEnabled];
+      integerValue = [v11 isPrivateBrowsingEnabled];
     }
   }
 
   else
   {
-    v8 = 0;
+    integerValue = 0;
   }
 
-  return v8;
+  return integerValue;
 }
 
-- (id)_newAutomationWindowWithSceneID:(id)a3
+- (id)_newAutomationWindowWithSceneID:(id)d
 {
   v4 = MEMORY[0x277D7B598];
-  v5 = a3;
+  dCopy = d;
   v6 = [v4 alloc];
-  v7 = [MEMORY[0x277CCAD78] UUID];
-  v8 = [v7 UUIDString];
-  v9 = [v6 initWithUUID:v8 sceneID:v5];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v9 = [v6 initWithUUID:uUIDString sceneID:dCopy];
 
-  v10 = [MEMORY[0x277D7B580] ephemeralTabGroupManager];
-  [v10 saveWindowState:v9 completionHandler:0];
-  v11 = [[BrowserController alloc] initWithWindowState:v9 browserWindowController:self tabGroupManager:v10 controlledByAutomation:1];
+  ephemeralTabGroupManager = [MEMORY[0x277D7B580] ephemeralTabGroupManager];
+  [ephemeralTabGroupManager saveWindowState:v9 completionHandler:0];
+  v11 = [[BrowserController alloc] initWithWindowState:v9 browserWindowController:self tabGroupManager:ephemeralTabGroupManager controlledByAutomation:1];
   v12 = [(NSArray *)self->_browserControllers arrayByAddingObject:v11];
   browserControllers = self->_browserControllers;
   self->_browserControllers = v12;
@@ -1890,14 +1890,14 @@ uint64_t __71__BrowserWindowController__mergeTabsFromCloudTabsForDeviceRestorati
   return v11;
 }
 
-- (id)windowForSceneID:(id)a3 options:(id)a4
+- (id)windowForSceneID:(id)d options:(id)options
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CC1EF0] _sf_windowCreationActivityFromSceneConnectionOptions:a4];
+  dCopy = d;
+  v7 = [MEMORY[0x277CC1EF0] _sf_windowCreationActivityFromSceneConnectionOptions:options];
   if ([(BrowserWindowController *)self modeForNewWindowUserActivity:v7]== 2)
   {
-    v8 = [(BrowserWindowController *)self _newAutomationWindowWithSceneID:v6];
+    v8 = [(BrowserWindowController *)self _newAutomationWindowWithSceneID:dCopy];
     goto LABEL_14;
   }
 
@@ -1906,23 +1906,23 @@ uint64_t __71__BrowserWindowController__mergeTabsFromCloudTabsForDeviceRestorati
   v28[1] = 3221225472;
   v28[2] = __52__BrowserWindowController_windowForSceneID_options___block_invoke;
   v28[3] = &unk_2781D4E70;
-  v10 = v6;
+  v10 = dCopy;
   v29 = v10;
   v11 = [(NSArray *)browserControllers safari_firstObjectPassingTest:v28];
   if (!v11)
   {
     v8 = [(NSArray *)self->_browserControllers safari_firstObjectPassingTest:&__block_literal_global_98_0];
-    v15 = [(BrowserController *)v8 windowState];
-    v16 = [v15 uuid];
-    v17 = [v15 sceneID];
+    windowState = [(BrowserController *)v8 windowState];
+    uuid = [windowState uuid];
+    sceneID = [windowState sceneID];
     [(BrowserController *)v8 adoptSceneID:v10];
     v18 = WBS_LOG_CHANNEL_PREFIXTabs();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v31 = v16;
+      v31 = uuid;
       v32 = 2114;
-      v33 = v17;
+      v33 = sceneID;
       v34 = 2114;
       v35 = v10;
       _os_log_impl(&dword_215819000, v18, OS_LOG_TYPE_DEFAULT, "Adopting window during matching: uuid = %{public}@, sceneID = %{public}@ -> %{public}@", buf, 0x20u);
@@ -1934,20 +1934,20 @@ uint64_t __71__BrowserWindowController__mergeTabsFromCloudTabsForDeviceRestorati
     }
 
     v19 = objc_alloc(MEMORY[0x277D7B598]);
-    v20 = [MEMORY[0x277CCAD78] UUID];
-    v21 = [v20 UUIDString];
-    v14 = [v19 initWithUUID:v21 sceneID:v10];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    uUID2 = [v19 initWithUUID:uUIDString sceneID:v10];
 
-    [v14 setNewlyCreated:1];
-    [(WBTabGroupManager *)self->_tabGroupManager saveWindowState:v14 completionHandler:0];
-    v8 = [[BrowserController alloc] initWithWindowState:v14 browserWindowController:self tabGroupManager:self->_tabGroupManager];
+    [uUID2 setNewlyCreated:1];
+    [(WBTabGroupManager *)self->_tabGroupManager saveWindowState:uUID2 completionHandler:0];
+    v8 = [[BrowserController alloc] initWithWindowState:uUID2 browserWindowController:self tabGroupManager:self->_tabGroupManager];
     v22 = WBS_LOG_CHANNEL_PREFIXTabs();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       v23 = v22;
-      v24 = [v14 uuid];
+      uuid2 = [uUID2 uuid];
       *buf = 138543618;
-      v31 = v24;
+      v31 = uuid2;
       v32 = 2114;
       v33 = v10;
       _os_log_impl(&dword_215819000, v23, OS_LOG_TYPE_DEFAULT, "Creating new window: uuid = %{public}@, sceneID = %{public}@", buf, 0x16u);
@@ -1965,9 +1965,9 @@ uint64_t __71__BrowserWindowController__mergeTabsFromCloudTabsForDeviceRestorati
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = v12;
-    v14 = [(BrowserController *)v8 UUID];
+    uUID2 = [(BrowserController *)v8 UUID];
     *buf = 138543618;
-    v31 = v14;
+    v31 = uUID2;
     v32 = 2114;
     v33 = v10;
     _os_log_impl(&dword_215819000, v13, OS_LOG_TYPE_DEFAULT, "Found existing window by sceneID: uuid = %{public}@, sceneID = %{public}@", buf, 0x16u);
@@ -2000,83 +2000,83 @@ BOOL __52__BrowserWindowController_windowForSceneID_options___block_invoke_96(ui
   return v4;
 }
 
-- (void)_windowDidClose:(id)a3
+- (void)_windowDidClose:(id)close
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 windowState];
-  v6 = [v4 tabController];
-  [v6 setActiveTabGroupUUID:0];
+  closeCopy = close;
+  windowState = [closeCopy windowState];
+  tabController = [closeCopy tabController];
+  [tabController setActiveTabGroupUUID:0];
 
-  v7 = [v4 tabController];
-  [v7 closeAllOpenTabsAnimated:0];
+  tabController2 = [closeCopy tabController];
+  [tabController2 closeAllOpenTabsAnimated:0];
 
-  v8 = [v4 tabGroupManager];
-  v25[0] = v5;
+  tabGroupManager = [closeCopy tabGroupManager];
+  v25[0] = windowState;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
-  [v8 deleteWindowStates:v9 completionHandler:0];
+  [tabGroupManager deleteWindowStates:v9 completionHandler:0];
 
-  v10 = [MEMORY[0x277D28F08] settings];
+  settings = [MEMORY[0x277D28F08] settings];
   v11 = objc_alloc(MEMORY[0x277CCAD78]);
-  v12 = [v5 uuid];
-  v13 = [v11 initWithUUIDString:v12];
-  [v10 removeWindowWithUUID:v13];
+  uuid = [windowState uuid];
+  v13 = [v11 initWithUUIDString:uuid];
+  [settings removeWindowWithUUID:v13];
 
   v14 = [(NSArray *)self->_browserControllers mutableCopy];
-  [v14 removeObject:v4];
+  [v14 removeObject:closeCopy];
   v15 = [v14 copy];
 
   browserControllers = self->_browserControllers;
   self->_browserControllers = v15;
 
-  [v4 didCloseBrowserWindow];
-  [(NSMapTable *)self->_UIDelegatesByBrowserController removeObjectForKey:v4];
+  [closeCopy didCloseBrowserWindow];
+  [(NSMapTable *)self->_UIDelegatesByBrowserController removeObjectForKey:closeCopy];
 
   v17 = WBS_LOG_CHANNEL_PREFIXTabs();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v18 = v17;
-    v19 = [v5 uuid];
-    v20 = [v5 sceneID];
+    uuid2 = [windowState uuid];
+    sceneID = [windowState sceneID];
     v21 = 138543618;
-    v22 = v19;
+    v22 = uuid2;
     v23 = 2114;
-    v24 = v20;
+    v24 = sceneID;
     _os_log_impl(&dword_215819000, v18, OS_LOG_TYPE_DEFAULT, "Closed window: uuid = %{public}@, sceneID = %{public}@", &v21, 0x16u);
   }
 }
 
-- (void)removeWindowsNotMatchingSceneIDs:(id)a3 supportsMultipleScenes:(BOOL)a4
+- (void)removeWindowsNotMatchingSceneIDs:(id)ds supportsMultipleScenes:(BOOL)scenes
 {
-  v4 = a4;
+  scenesCopy = scenes;
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dsCopy = ds;
   browserControllers = self->_browserControllers;
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __83__BrowserWindowController_removeWindowsNotMatchingSceneIDs_supportsMultipleScenes___block_invoke;
   v25[3] = &unk_2781D4E70;
-  v8 = v6;
+  v8 = dsCopy;
   v26 = v8;
   v9 = [(NSArray *)browserControllers safari_filterObjectsUsingBlock:v25];
-  if (-[NSArray count](self->_browserControllers, "count") == 1 && [v9 count] == 1 && (!v4 || objc_msgSend(v8, "count") <= 1))
+  if (-[NSArray count](self->_browserControllers, "count") == 1 && [v9 count] == 1 && (!scenesCopy || objc_msgSend(v8, "count") <= 1))
   {
     v10 = [v9 objectAtIndexedSubscript:0];
-    v11 = [v8 anyObject];
-    [v10 adoptSceneID:v11];
-    v12 = [v10 windowState];
+    anyObject = [v8 anyObject];
+    [v10 adoptSceneID:anyObject];
+    windowState = [v10 windowState];
     v13 = WBS_LOG_CHANNEL_PREFIXTabs();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = v13;
-      v15 = [v12 uuid];
-      v16 = [v12 sceneID];
+      uuid = [windowState uuid];
+      sceneID = [windowState sceneID];
       *buf = 138543874;
-      v29 = v15;
+      v29 = uuid;
       v30 = 2114;
-      v31 = v16;
+      v31 = sceneID;
       v32 = 2114;
-      v33 = v11;
+      v33 = anyObject;
       _os_log_impl(&dword_215819000, v14, OS_LOG_TYPE_DEFAULT, "Adopting window during pruning: uuid = %{public}@, sceneID = %{public}@ -> %{public}@", buf, 0x20u);
     }
   }
@@ -2133,17 +2133,17 @@ uint64_t __83__BrowserWindowController_removeWindowsNotMatchingSceneIDs_supports
   return v5;
 }
 
-- (void)mergeAllWindowsIntoWindow:(id)a3
+- (void)mergeAllWindowsIntoWindow:(id)window
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  windowCopy = window;
   v5 = [(NSArray *)self->_browserControllers mutableCopy];
-  [v5 removeObject:v4];
+  [v5 removeObject:windowCopy];
   v6 = [v5 copy];
 
   v7 = [(NSArray *)self->_browserControllers valueForKey:@"windowState"];
-  v8 = [v4 windowState];
-  v9 = [(BrowserWindowController *)self _mergeAndSaveWindowStates:v7 intoWindowState:v8];
+  windowState = [windowCopy windowState];
+  v9 = [(BrowserWindowController *)self _mergeAndSaveWindowStates:v7 intoWindowState:windowState];
 
   v18 = 0u;
   v19 = 0u;
@@ -2180,16 +2180,16 @@ uint64_t __83__BrowserWindowController_removeWindowsNotMatchingSceneIDs_supports
 + (id)_printWindowToSceneMapping
 {
   v2 = +[Application sharedApplication];
-  v3 = [v2 browserWindowController];
-  v4 = [v3 _printWindowToSceneMapping];
+  browserWindowController = [v2 browserWindowController];
+  _printWindowToSceneMapping = [browserWindowController _printWindowToSceneMapping];
 
-  return v4;
+  return _printWindowToSceneMapping;
 }
 
 - (id)_printWindowToSceneMapping
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -2209,10 +2209,10 @@ uint64_t __83__BrowserWindowController_removeWindowsNotMatchingSceneIDs_supports
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * i) windowState];
-        v10 = [v9 uuid];
-        v11 = [v9 sceneID];
-        [v3 appendFormat:@"<BrowserController; uuid = %@; sceneID = %@>\n", v10, v11, v14];
+        windowState = [*(*(&v14 + 1) + 8 * i) windowState];
+        uuid = [windowState uuid];
+        sceneID = [windowState sceneID];
+        [string appendFormat:@"<BrowserController; uuid = %@; sceneID = %@>\n", uuid, sceneID, v14];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -2221,14 +2221,14 @@ uint64_t __83__BrowserWindowController_removeWindowsNotMatchingSceneIDs_supports
     while (v6);
   }
 
-  v12 = [v3 copy];
+  v12 = [string copy];
 
   return v12;
 }
 
-- (void)setUpAutomationWindowWithCompletionHandler:(id)a3
+- (void)setUpAutomationWindowWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   automationWindowInitializedCompletionHandler = self->_automationWindowInitializedCompletionHandler;
   if (automationWindowInitializedCompletionHandler)
   {
@@ -2240,7 +2240,7 @@ uint64_t __83__BrowserWindowController_removeWindowsNotMatchingSceneIDs_supports
     v6[2](v6, v8);
   }
 
-  v9 = [v4 copy];
+  v9 = [handlerCopy copy];
   v10 = self->_automationWindowInitializedCompletionHandler;
   self->_automationWindowInitializedCompletionHandler = v9;
 
@@ -2249,21 +2249,21 @@ uint64_t __83__BrowserWindowController_removeWindowsNotMatchingSceneIDs_supports
     v11 = [MEMORY[0x277CC1EF0] _sf_windowCreationActivityWithMode:2];
     v12 = objc_alloc_init(MEMORY[0x277D75950]);
     [v12 _setRequestFullscreen:1];
-    v13 = [MEMORY[0x277D75128] sharedApplication];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __70__BrowserWindowController_setUpAutomationWindowWithCompletionHandler___block_invoke_2;
     v19[3] = &unk_2781D4F78;
     v19[4] = self;
-    [v13 requestSceneSessionActivation:0 userActivity:v11 options:v12 errorHandler:v19];
+    [mEMORY[0x277D75128] requestSceneSessionActivation:0 userActivity:v11 options:v12 errorHandler:v19];
   }
 
   else
   {
     v14 = [(NSArray *)self->_browserControllers objectAtIndexedSubscript:0];
-    v15 = [v14 windowState];
-    v16 = [v15 sceneID];
-    v17 = [(BrowserWindowController *)self _newAutomationWindowWithSceneID:v16];
+    windowState = [v14 windowState];
+    sceneID = [windowState sceneID];
+    v17 = [(BrowserWindowController *)self _newAutomationWindowWithSceneID:sceneID];
 
     v18 = MEMORY[0x277D75D18];
     v20[0] = MEMORY[0x277D85DD0];
@@ -2312,9 +2312,9 @@ void __70__BrowserWindowController_setUpAutomationWindowWithCompletionHandler___
 
 - (void)tearDownAutomationWindow
 {
-  v3 = [*MEMORY[0x277D76620] supportsMultipleScenes];
+  supportsMultipleScenes = [*MEMORY[0x277D76620] supportsMultipleScenes];
   browserControllers = self->_browserControllers;
-  if (v3)
+  if (supportsMultipleScenes)
   {
     v12 = [(NSArray *)browserControllers safari_firstObjectPassingTest:&__block_literal_global_115];
     [v12 closeWindow];
@@ -2324,10 +2324,10 @@ void __70__BrowserWindowController_setUpAutomationWindowWithCompletionHandler___
   else
   {
     v5 = [(NSArray *)browserControllers objectAtIndexedSubscript:0];
-    v6 = [v5 isControlledByAutomation];
+    isControlledByAutomation = [v5 isControlledByAutomation];
 
-    v7 = [(NSArray *)self->_browserControllers objectAtIndexedSubscript:v6];
-    v8 = [(NSArray *)self->_browserControllers objectAtIndexedSubscript:v6 ^ 1];
+    v7 = [(NSArray *)self->_browserControllers objectAtIndexedSubscript:isControlledByAutomation];
+    v8 = [(NSArray *)self->_browserControllers objectAtIndexedSubscript:isControlledByAutomation ^ 1];
     [(BrowserWindowController *)self _windowDidClose:v8];
     v9 = MEMORY[0x277D75D18];
     v13[0] = MEMORY[0x277D85DD0];
@@ -2348,25 +2348,25 @@ void __51__BrowserWindowController_tearDownAutomationWindow__block_invoke(uint64
   [*(a1 + 40) attachToScene:v2];
 }
 
-- (void)closeAllWindowsFromWindow:(id)a3
+- (void)closeAllWindowsFromWindow:(id)window
 {
-  v4 = a3;
-  v5 = [v4 tabController];
-  v6 = [v5 activeProfileIdentifier];
+  windowCopy = window;
+  tabController = [windowCopy tabController];
+  activeProfileIdentifier = [tabController activeProfileIdentifier];
   frontmostProfileIdentifier = self->_frontmostProfileIdentifier;
-  self->_frontmostProfileIdentifier = v6;
+  self->_frontmostProfileIdentifier = activeProfileIdentifier;
 
   v8 = [MEMORY[0x277D75990] requestWithRole:*MEMORY[0x277D772C8]];
   v9 = [MEMORY[0x277CC1EF0] _sf_windowCreationActivityWithMode:0];
   [v8 setUserActivity:v9];
 
   v10 = objc_alloc_init(MEMORY[0x277D75950]);
-  v11 = [v4 scene];
+  scene = [windowCopy scene];
 
-  [v10 setRequestingScene:v11];
+  [v10 setRequestingScene:scene];
   [v8 setOptions:v10];
-  v12 = [MEMORY[0x277D75128] sharedApplication];
-  [v12 activateSceneSessionForRequest:v8 errorHandler:&__block_literal_global_118];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] activateSceneSessionForRequest:v8 errorHandler:&__block_literal_global_118];
 
   v13 = [(NSArray *)self->_browserControllers copy];
   block[0] = MEMORY[0x277D85DD0];
@@ -2425,8 +2425,8 @@ void __53__BrowserWindowController_closeAllWindowsFromWindow___block_invoke_119(
 - (void)saveBrowserState
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(BrowserWindowController *)self _browserWindowsToPersist];
-  [(_SFBrowserSavedState *)self->_savedState setBrowserWindows:v3];
+  _browserWindowsToPersist = [(BrowserWindowController *)self _browserWindowsToPersist];
+  [(_SFBrowserSavedState *)self->_savedState setBrowserWindows:_browserWindowsToPersist];
 
   v16 = 0u;
   v17 = 0u;
@@ -2450,15 +2450,15 @@ void __53__BrowserWindowController_closeAllWindowsFromWindow___block_invoke_119(
         v9 = *(*(&v14 + 1) + 8 * i);
         if ([v9 isControlledByAutomation])
         {
-          v10 = [v9 windowStateData];
-          v18 = v10;
+          windowStateData = [v9 windowStateData];
+          v18 = windowStateData;
           v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v18 count:1];
-          v12 = [v9 savedState];
-          [v12 setBrowserWindows:v11];
+          savedState = [v9 savedState];
+          [savedState setBrowserWindows:v11];
         }
 
-        v13 = [v9 tabController];
-        [v13 saveStateInBackground:0];
+        tabController = [v9 tabController];
+        [tabController saveStateInBackground:0];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v14 objects:v19 count:16];
@@ -2468,23 +2468,23 @@ void __53__BrowserWindowController_closeAllWindowsFromWindow___block_invoke_119(
   }
 }
 
-- (void)_restoreWindowsWithState:(id)a3 shouldMergeAllWindowsIfNeeded:(BOOL)a4
+- (void)_restoreWindowsWithState:(id)state shouldMergeAllWindowsIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = [a3 windowStates];
-  v7 = v6;
-  if (v4)
+  neededCopy = needed;
+  windowStates = [state windowStates];
+  v7 = windowStates;
+  if (neededCopy)
   {
-    if ([v6 count] >= 2)
+    if ([windowStates count] >= 2)
     {
-      v8 = [v7 firstObject];
-      v9 = [(BrowserWindowController *)self _mergeAndSaveWindowStates:v7 intoWindowState:v8];
+      firstObject = [v7 firstObject];
+      v9 = [(BrowserWindowController *)self _mergeAndSaveWindowStates:v7 intoWindowState:firstObject];
 
       v7 = v9;
     }
 
-    v10 = [v7 firstObject];
-    [v10 setSceneID:0];
+    firstObject2 = [v7 firstObject];
+    [firstObject2 setSceneID:0];
   }
 
   v13[0] = MEMORY[0x277D85DD0];
@@ -2519,15 +2519,15 @@ BrowserController *__82__BrowserWindowController__restoreWindowsWithState_should
   return v8;
 }
 
-- (id)_mergeAndSaveWindowStates:(id)a3 intoWindowState:(id)a4
+- (id)_mergeAndSaveWindowStates:(id)states intoWindowState:(id)state
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v20 = [(BrowserWindowController *)self _mergeWindowStates:v6 intoWindowState:v7];
-  v21 = v6;
-  v8 = [v6 mutableCopy];
-  [v8 removeObject:v7];
+  statesCopy = states;
+  stateCopy = state;
+  v20 = [(BrowserWindowController *)self _mergeWindowStates:statesCopy intoWindowState:stateCopy];
+  v21 = statesCopy;
+  v8 = [statesCopy mutableCopy];
+  [v8 removeObject:stateCopy];
   [(WBTabGroupManager *)self->_tabGroupManager deleteWindowStates:v8 completionHandler:0];
   v24 = 0u;
   v25 = 0u;
@@ -2549,11 +2549,11 @@ BrowserController *__82__BrowserWindowController__restoreWindowsWithState_should
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
-        v15 = [MEMORY[0x277D28F08] settings];
+        settings = [MEMORY[0x277D28F08] settings];
         v16 = objc_alloc(MEMORY[0x277CCAD78]);
-        v17 = [v14 uuid];
-        v18 = [v16 initWithUUIDString:v17];
-        [v15 removeWindowWithUUID:v18];
+        uuid = [v14 uuid];
+        v18 = [v16 initWithUUIDString:uuid];
+        [settings removeWindowWithUUID:v18];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -2565,11 +2565,11 @@ BrowserController *__82__BrowserWindowController__restoreWindowsWithState_should
   return v20;
 }
 
-- (id)_mergeWindowStates:(id)a3 intoWindowState:(id)a4
+- (id)_mergeWindowStates:(id)states intoWindowState:(id)state
 {
   v86 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  statesCopy = states;
+  stateCopy = state;
   v7 = WBS_LOG_CHANNEL_PREFIXTabGroup();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -2578,27 +2578,27 @@ BrowserController *__82__BrowserWindowController__restoreWindowsWithState_should
   }
 
   v8 = [MEMORY[0x277CBEB58] set];
-  v9 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v79[0] = MEMORY[0x277D85DD0];
   v79[1] = 3221225472;
   v79[2] = __62__BrowserWindowController__mergeWindowStates_intoWindowState___block_invoke;
   v79[3] = &unk_2781D8940;
-  v10 = v6;
+  v10 = stateCopy;
   v80 = v10;
   v11 = v8;
   v81 = v11;
-  v60 = v5;
-  v12 = [v5 safari_reduceObjectsWithInitialValue:v9 usingBlock:v79];
+  v60 = statesCopy;
+  v12 = [statesCopy safari_reduceObjectsWithInitialValue:array usingBlock:v79];
 
   tabGroupManager = self->_tabGroupManager;
-  v14 = [v10 localTabGroup];
+  localTabGroup = [v10 localTabGroup];
   v67 = v10;
-  v15 = [v10 localTabGroup];
-  v16 = [v15 tabs];
-  v17 = [v16 lastObject];
+  localTabGroup2 = [v10 localTabGroup];
+  tabs = [localTabGroup2 tabs];
+  lastObject = [tabs lastObject];
   v58 = v11;
   v59 = v12;
-  [(WBTabGroupManager *)tabGroupManager moveTabs:v12 toTabGroup:v14 afterTab:v17 withoutPersistingTabGroupsWithUUIDStrings:v11];
+  [(WBTabGroupManager *)tabGroupManager moveTabs:v12 toTabGroup:localTabGroup afterTab:lastObject withoutPersistingTabGroupsWithUUIDStrings:v11];
 
   v77 = 0u;
   v78 = 0u;
@@ -2623,10 +2623,10 @@ BrowserController *__82__BrowserWindowController__restoreWindowsWithState_should
         v19 = *(*(&v75 + 1) + 8 * v18);
         v20 = self->_tabGroupManager;
         v64 = v19;
-        v21 = [v19 identifier];
-        v22 = [(WBTabGroupManager *)v20 unnamedTabGroupsForProfileWithIdentifier:v21];
+        identifier = [v19 identifier];
+        v22 = [(WBTabGroupManager *)v20 unnamedTabGroupsForProfileWithIdentifier:identifier];
 
-        v23 = [MEMORY[0x277CBEB18] array];
+        array2 = [MEMORY[0x277CBEB18] array];
         v71 = 0u;
         v72 = 0u;
         v73 = 0u;
@@ -2650,7 +2650,7 @@ BrowserController *__82__BrowserWindowController__restoreWindowsWithState_should
               v30 = *(*(&v71 + 1) + 8 * i);
               if (v27 || ([v67 unnamedTabGroupUUIDs], v31 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v30, "uuid"), v32 = objc_claimAutoreleasedReturnValue(), v33 = objc_msgSend(v31, "containsObject:", v32), v32, v31, !v33))
               {
-                [v23 addObject:v30];
+                [array2 addObject:v30];
               }
 
               else
@@ -2670,7 +2670,7 @@ BrowserController *__82__BrowserWindowController__restoreWindowsWithState_should
           v27 = 0;
         }
 
-        if ([v23 count])
+        if ([array2 count])
         {
           if (v27)
           {
@@ -2678,28 +2678,28 @@ BrowserController *__82__BrowserWindowController__restoreWindowsWithState_should
           }
 
           v34 = MEMORY[0x277D7B540];
-          v35 = [(WBTabGroupManager *)self->_tabGroupManager deviceIdentifier];
-          v36 = [v34 unnamedTabGroupWithDeviceIdentifier:v35];
+          deviceIdentifier = [(WBTabGroupManager *)self->_tabGroupManager deviceIdentifier];
+          v36 = [v34 unnamedTabGroupWithDeviceIdentifier:deviceIdentifier];
 
-          v37 = [v64 identifier];
-          [v36 setProfileIdentifier:v37];
+          identifier2 = [v64 identifier];
+          [v36 setProfileIdentifier:identifier2];
 
           v27 = [(WBTabGroupManager *)self->_tabGroupManager insertUnnamedTabGroup:v36];
-          v38 = [v36 uuid];
-          [v67 addUnnamedTabGroupUUID:v38];
+          uuid = [v36 uuid];
+          [v67 addUnnamedTabGroupUUID:uuid];
 
-          v39 = [(WBTabGroupManager *)self->_tabGroupManager tabCollection];
-          v40 = [v39 saveWindowState:v67];
+          tabCollection = [(WBTabGroupManager *)self->_tabGroupManager tabCollection];
+          v40 = [tabCollection saveWindowState:v67];
 
           if (v40)
           {
 
 LABEL_25:
-            v36 = [v23 safari_reduceObjectsUsingBlock:&__block_literal_global_126];
+            v36 = [array2 safari_reduceObjectsUsingBlock:&__block_literal_global_126];
             v41 = self->_tabGroupManager;
-            v42 = [v27 tabs];
-            v43 = [v42 lastObject];
-            [(WBTabGroupManager *)v41 moveTabs:v36 toTabGroup:v27 afterTab:v43 withoutPersistingTabGroupsWithUUIDStrings:0];
+            tabs2 = [v27 tabs];
+            lastObject2 = [tabs2 lastObject];
+            [(WBTabGroupManager *)v41 moveTabs:v36 toTabGroup:v27 afterTab:lastObject2 withoutPersistingTabGroupsWithUUIDStrings:0];
           }
 
           else
@@ -2725,7 +2725,7 @@ LABEL_25:
 
   v46 = [MEMORY[0x277CBEB58] set];
 
-  v47 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   v68[0] = MEMORY[0x277D85DD0];
   v68[1] = 3221225472;
   v68[2] = __62__BrowserWindowController__mergeWindowStates_intoWindowState___block_invoke_2;
@@ -2734,14 +2734,14 @@ LABEL_25:
   v70 = v46;
   v48 = v46;
   v49 = v67;
-  v50 = [v60 safari_reduceObjectsWithInitialValue:v47 usingBlock:v68];
+  v50 = [v60 safari_reduceObjectsWithInitialValue:array3 usingBlock:v68];
 
   v51 = self->_tabGroupManager;
-  v52 = [v49 privateTabGroup];
-  v53 = [v49 privateTabGroup];
-  v54 = [v53 tabs];
-  v55 = [v54 lastObject];
-  [(WBTabGroupManager *)v51 moveTabs:v50 toTabGroup:v52 afterTab:v55 withoutPersistingTabGroupsWithUUIDStrings:v48];
+  privateTabGroup = [v49 privateTabGroup];
+  privateTabGroup2 = [v49 privateTabGroup];
+  tabs3 = [privateTabGroup2 tabs];
+  lastObject3 = [tabs3 lastObject];
+  [(WBTabGroupManager *)v51 moveTabs:v50 toTabGroup:privateTabGroup afterTab:lastObject3 withoutPersistingTabGroupsWithUUIDStrings:v48];
 
   v83 = v49;
   v56 = [MEMORY[0x277CBEA60] arrayWithObjects:&v83 count:1];
@@ -2809,18 +2809,18 @@ id __62__BrowserWindowController__mergeWindowStates_intoWindowState___block_invo
   return v6;
 }
 
-- (void)_restoreWindowsFromBrowserSavedState:(id)a3
+- (void)_restoreWindowsFromBrowserSavedState:(id)state
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_savedState, a3);
-  v6 = [v5 browserWindows];
+  stateCopy = state;
+  objc_storeStrong(&self->_savedState, state);
+  browserWindows = [stateCopy browserWindows];
   v7 = [(NSArray *)self->_browserControllers mutableCopy];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v6;
+  obj = browserWindows;
   v8 = [obj countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v8)
   {
@@ -2846,25 +2846,25 @@ id __62__BrowserWindowController__mergeWindowStates_intoWindowState___block_invo
           [v13 UUID];
           v16 = v10;
           v17 = v7;
-          v18 = self;
-          v19 = v5;
+          selfCopy = self;
+          v19 = stateCopy;
           v21 = v20 = v11;
-          v22 = [v13 sceneID];
+          sceneID = [v13 sceneID];
           *buf = 138543618;
           v33 = v21;
           v34 = 2114;
-          v35 = v22;
+          v35 = sceneID;
           _os_log_impl(&dword_215819000, v15, OS_LOG_TYPE_INFO, "Loading window from saved state: uuid = %{public}@, sceneID = %{public}@", buf, 0x16u);
 
           v11 = v20;
-          v5 = v19;
-          self = v18;
+          stateCopy = v19;
+          self = selfCopy;
           v7 = v17;
           v10 = v16;
           v9 = v26;
         }
 
-        v23 = [objc_alloc(*(v11 + 3848)) initWithStateData:v13 browserWindowController:self savedState:v5 controlledByAutomation:0];
+        v23 = [objc_alloc(*(v11 + 3848)) initWithStateData:v13 browserWindowController:self savedState:stateCopy controlledByAutomation:0];
         [v7 addObject:v23];
 
         ++v12;
@@ -2914,54 +2914,54 @@ id __51__BrowserWindowController__browserWindowsToPersist__block_invoke(uint64_t
   return v6;
 }
 
-- (void)dispatchNavigationIntent:(id)a3
+- (void)dispatchNavigationIntent:(id)intent
 {
-  v3 = a3;
+  intentCopy = intent;
   v4 = +[Application sharedApplication];
-  [v4 handleNavigationIntent:v3 completion:0];
+  [v4 handleNavigationIntent:intentCopy completion:0];
 }
 
-- (void)handleNavigationIntent:(id)a3 completion:(id)a4
+- (void)handleNavigationIntent:(id)intent completion:(id)completion
 {
-  v17 = a3;
-  v6 = a4;
-  v7 = [v17 sourceWindowUUID];
-  v8 = [(BrowserWindowController *)self browserControllerWithUUID:v7];
+  intentCopy = intent;
+  completionCopy = completion;
+  sourceWindowUUID = [intentCopy sourceWindowUUID];
+  v8 = [(BrowserWindowController *)self browserControllerWithUUID:sourceWindowUUID];
   v9 = v8;
   if (v8)
   {
-    v10 = v8;
+    firstObject = v8;
   }
 
   else
   {
-    v10 = [(NSArray *)self->_browserControllers firstObject];
+    firstObject = [(NSArray *)self->_browserControllers firstObject];
   }
 
-  v11 = v10;
+  v11 = firstObject;
 
-  v12 = [v17 policy];
-  if (v12 <= 6)
+  policy = [intentCopy policy];
+  if (policy <= 6)
   {
-    if (v12 == 4)
+    if (policy == 4)
     {
-      v13 = [MEMORY[0x277CC1EF0] _sf_windowCreationActivityWithNavigationIntent:v17];
+      v13 = [MEMORY[0x277CC1EF0] _sf_windowCreationActivityWithNavigationIntent:intentCopy];
       v14 = objc_alloc_init(MEMORY[0x277D75950]);
-      v15 = [v11 scene];
-      [v14 setRequestingScene:v15];
+      scene = [v11 scene];
+      [v14 setRequestingScene:scene];
 
-      v16 = [MEMORY[0x277D75128] sharedApplication];
-      [v16 requestSceneSessionActivation:0 userActivity:v13 options:v14 errorHandler:0];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      [mEMORY[0x277D75128] requestSceneSessionActivation:0 userActivity:v13 options:v14 errorHandler:0];
 
-      if (v6)
+      if (completionCopy)
       {
-        v6[2](v6, 1);
+        completionCopy[2](completionCopy, 1);
       }
     }
 
     else
     {
-      [v11 handleNavigationIntent:v17 completion:v6];
+      [v11 handleNavigationIntent:intentCopy completion:completionCopy];
     }
   }
 }

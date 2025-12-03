@@ -1,28 +1,28 @@
 @interface CPSGridViewCell
-+ (unint64_t)viewModelImageShapeFor:(id)a3;
-+ (unint64_t)viewModelStyleFor:(unint64_t)a3;
-- (void)configureWithListImageRowItem:(id)a3 action:(id)a4 titleAction:(id)a5 bundleIdentifier:(id)a6;
++ (unint64_t)viewModelImageShapeFor:(id)for;
++ (unint64_t)viewModelStyleFor:(unint64_t)for;
+- (void)configureWithListImageRowItem:(id)item action:(id)action titleAction:(id)titleAction bundleIdentifier:(id)identifier;
 @end
 
 @implementation CPSGridViewCell
 
-- (void)configureWithListImageRowItem:(id)a3 action:(id)a4 titleAction:(id)a5 bundleIdentifier:(id)a6
+- (void)configureWithListImageRowItem:(id)item action:(id)action titleAction:(id)titleAction bundleIdentifier:(id)identifier
 {
   v114 = *MEMORY[0x277D85DE8];
-  v112 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, item);
   v110 = 0;
-  objc_storeStrong(&v110, a4);
+  objc_storeStrong(&v110, action);
   v109 = 0;
-  objc_storeStrong(&v109, a5);
+  objc_storeStrong(&v109, titleAction);
   v108 = 0;
-  objc_storeStrong(&v108, a6);
+  objc_storeStrong(&v108, identifier);
   v107 = objc_opt_new();
   memset(__b, 0, sizeof(__b));
-  v68 = [location[0] elements];
-  v69 = [v68 countByEnumeratingWithState:__b objects:v113 count:16];
+  elements = [location[0] elements];
+  v69 = [elements countByEnumeratingWithState:__b objects:v113 count:16];
   if (v69)
   {
     v62 = *__b[2];
@@ -33,7 +33,7 @@
       v61 = v63;
       if (*__b[2] != v62)
       {
-        objc_enumerationMutation(v68);
+        objc_enumerationMutation(elements);
       }
 
       v106 = *(__b[1] + 8 * v63);
@@ -44,17 +44,17 @@
         v6 = objc_opt_class();
         v102 = CPSSafeCast_24(v6, v106);
         v52 = objc_alloc(MEMORY[0x277CF9120]);
-        v53 = [v102 identifier];
-        v54 = [v102 title];
-        v55 = [v102 subtitle];
-        v56 = [v102 image];
+        identifier = [v102 identifier];
+        title = [v102 title];
+        subtitle = [v102 subtitle];
+        image = [v102 image];
         v57 = v103;
-        v58 = [v102 tintColor];
-        v59 = [v102 showsImageFullHeight];
-        v60 = 0;
+        tintColor = [v102 tintColor];
+        showsImageFullHeight = [v102 showsImageFullHeight];
+        isEnabled = 0;
         if ([v102 isEnabled])
         {
-          v60 = [location[0] isEnabled];
+          isEnabled = [location[0] isEnabled];
         }
 
         LOBYTE(v51) = 1;
@@ -70,18 +70,18 @@
         v99 = &unk_278D91D20;
         v101 = MEMORY[0x277D82BE0](v110);
         v100 = MEMORY[0x277D82BE0](v106);
-        LOBYTE(v21) = v59;
-        LOBYTE(v22) = v60 & 1;
+        LOBYTE(v21) = showsImageFullHeight;
+        LOBYTE(v22) = isEnabled & 1;
         BYTE1(v22) = v51 & 1;
-        v7 = [v52 initWithId:v53 title:v54 subtitle:v55 image:v56 imageShape:v57 backgroundColor:v58 isTallArtwork:v21 accessorySystemImage:0 allowsTouches:v22 disabledAppearance:&v95 action:?];
+        v7 = [v52 initWithId:identifier title:title subtitle:subtitle image:image imageShape:v57 backgroundColor:tintColor isTallArtwork:v21 accessorySystemImage:0 allowsTouches:v22 disabledAppearance:&v95 action:?];
         v8 = v104;
         v104 = v7;
         MEMORY[0x277D82BD8](v8);
-        MEMORY[0x277D82BD8](v58);
-        MEMORY[0x277D82BD8](v56);
-        MEMORY[0x277D82BD8](v55);
-        MEMORY[0x277D82BD8](v54);
-        MEMORY[0x277D82BD8](v53);
+        MEMORY[0x277D82BD8](tintColor);
+        MEMORY[0x277D82BD8](image);
+        MEMORY[0x277D82BD8](subtitle);
+        MEMORY[0x277D82BD8](title);
+        MEMORY[0x277D82BD8](identifier);
         objc_storeStrong(&v100, 0);
         objc_storeStrong(&v101, 0);
         objc_storeStrong(&v102, 0);
@@ -92,16 +92,16 @@
         v9 = objc_opt_class();
         v94 = CPSSafeCast_24(v9, v106);
         v43 = objc_alloc(MEMORY[0x277CF9120]);
-        v44 = [v94 identifier];
-        v45 = [v94 title];
-        v46 = [v94 subtitle];
-        v47 = [v94 image];
+        identifier2 = [v94 identifier];
+        title2 = [v94 title];
+        subtitle2 = [v94 subtitle];
+        image2 = [v94 image];
         v48 = v103;
-        v49 = [v94 accessorySymbolName];
-        v50 = 0;
+        accessorySymbolName = [v94 accessorySymbolName];
+        isEnabled2 = 0;
         if ([v94 isEnabled])
         {
-          v50 = [location[0] isEnabled];
+          isEnabled2 = [location[0] isEnabled];
         }
 
         LOBYTE(v42) = 1;
@@ -118,17 +118,17 @@
         v93 = MEMORY[0x277D82BE0](v110);
         v92 = MEMORY[0x277D82BE0](v106);
         LOBYTE(v21) = 0;
-        LOBYTE(v22) = v50 & 1;
+        LOBYTE(v22) = isEnabled2 & 1;
         BYTE1(v22) = v42 & 1;
-        v10 = [v43 initWithId:v44 title:v45 subtitle:v46 image:v47 imageShape:v48 backgroundColor:v21 isTallArtwork:v49 accessorySystemImage:v22 allowsTouches:&v87 disabledAppearance:? action:?];
+        v10 = [v43 initWithId:identifier2 title:title2 subtitle:subtitle2 image:image2 imageShape:v48 backgroundColor:v21 isTallArtwork:accessorySymbolName accessorySystemImage:v22 allowsTouches:&v87 disabledAppearance:? action:?];
         v11 = v104;
         v104 = v10;
         MEMORY[0x277D82BD8](v11);
-        MEMORY[0x277D82BD8](v49);
-        MEMORY[0x277D82BD8](v47);
-        MEMORY[0x277D82BD8](v46);
-        MEMORY[0x277D82BD8](v45);
-        MEMORY[0x277D82BD8](v44);
+        MEMORY[0x277D82BD8](accessorySymbolName);
+        MEMORY[0x277D82BD8](image2);
+        MEMORY[0x277D82BD8](subtitle2);
+        MEMORY[0x277D82BD8](title2);
+        MEMORY[0x277D82BD8](identifier2);
         objc_storeStrong(&v92, 0);
         objc_storeStrong(&v93, 0);
         objc_storeStrong(&v94, 0);
@@ -139,13 +139,13 @@
         v12 = objc_opt_class();
         v86 = CPSSafeCast_24(v12, v106);
         v37 = objc_alloc(MEMORY[0x277CF9120]);
-        v38 = [v86 identifier];
-        v39 = [v86 image];
+        identifier3 = [v86 identifier];
+        image3 = [v86 image];
         v40 = v103;
-        v41 = 0;
+        isEnabled3 = 0;
         if ([v86 isEnabled])
         {
-          v41 = [location[0] isEnabled];
+          isEnabled3 = [location[0] isEnabled];
         }
 
         LOBYTE(v36) = 1;
@@ -163,14 +163,14 @@
         v85 = MEMORY[0x277D82BE0](v110);
         v84 = MEMORY[0x277D82BE0](v106);
         LOBYTE(v21) = 0;
-        LOBYTE(v22) = v41 & 1;
+        LOBYTE(v22) = isEnabled3 & 1;
         *(&v22 + 1) = v36 & 1;
-        v13 = [v37 initWithId:v38 title:0 subtitle:0 image:v39 imageShape:v40 backgroundColor:v21 isTallArtwork:0 accessorySystemImage:v22 allowsTouches:&v78 disabledAppearance:? canStayPressed:? action:?];
+        v13 = [v37 initWithId:identifier3 title:0 subtitle:0 image:image3 imageShape:v40 backgroundColor:v21 isTallArtwork:0 accessorySystemImage:v22 allowsTouches:&v78 disabledAppearance:? canStayPressed:? action:?];
         v14 = v104;
         v104 = v13;
         MEMORY[0x277D82BD8](v14);
-        MEMORY[0x277D82BD8](v39);
-        MEMORY[0x277D82BD8](v38);
+        MEMORY[0x277D82BD8](image3);
+        MEMORY[0x277D82BD8](identifier3);
         objc_storeStrong(&v84, 0);
         objc_storeStrong(&v85, 0);
         objc_storeStrong(&v83, 0);
@@ -182,15 +182,15 @@
         v15 = objc_opt_class();
         v77 = CPSSafeCast_24(v15, v106);
         v29 = objc_alloc(MEMORY[0x277CF9120]);
-        v30 = [v77 identifier];
-        v31 = [v77 title];
-        v32 = [v77 image];
+        identifier4 = [v77 identifier];
+        title3 = [v77 title];
+        image4 = [v77 image];
         v33 = v103;
-        v34 = [v77 accessorySymbolName];
-        v35 = 0;
+        accessorySymbolName2 = [v77 accessorySymbolName];
+        isEnabled4 = 0;
         if ([v77 isEnabled])
         {
-          v35 = [location[0] isEnabled];
+          isEnabled4 = [location[0] isEnabled];
         }
 
         LOBYTE(v28) = 1;
@@ -207,16 +207,16 @@
         v76 = MEMORY[0x277D82BE0](v110);
         v75 = MEMORY[0x277D82BE0](v106);
         LOBYTE(v21) = 0;
-        LOBYTE(v22) = v35 & 1;
+        LOBYTE(v22) = isEnabled4 & 1;
         BYTE1(v22) = v28 & 1;
-        v16 = [v29 initWithId:v30 title:v31 subtitle:0 image:v32 imageShape:v33 backgroundColor:v21 isTallArtwork:v34 accessorySystemImage:v22 allowsTouches:&v70 disabledAppearance:? action:?];
+        v16 = [v29 initWithId:identifier4 title:title3 subtitle:0 image:image4 imageShape:v33 backgroundColor:v21 isTallArtwork:accessorySymbolName2 accessorySystemImage:v22 allowsTouches:&v70 disabledAppearance:? action:?];
         v17 = v104;
         v104 = v16;
         MEMORY[0x277D82BD8](v17);
-        MEMORY[0x277D82BD8](v34);
-        MEMORY[0x277D82BD8](v32);
-        MEMORY[0x277D82BD8](v31);
-        MEMORY[0x277D82BD8](v30);
+        MEMORY[0x277D82BD8](accessorySymbolName2);
+        MEMORY[0x277D82BD8](image4);
+        MEMORY[0x277D82BD8](title3);
+        MEMORY[0x277D82BD8](identifier4);
         objc_storeStrong(&v75, 0);
         objc_storeStrong(&v76, 0);
         objc_storeStrong(&v77, 0);
@@ -228,7 +228,7 @@
       if (v61 + 1 >= v64)
       {
         v63 = 0;
-        v64 = [v68 countByEnumeratingWithState:__b objects:v113 count:16];
+        v64 = [elements countByEnumeratingWithState:__b objects:v113 count:16];
         if (!v64)
         {
           break;
@@ -237,20 +237,20 @@
     }
   }
 
-  *&v18 = MEMORY[0x277D82BD8](v68).n128_u64[0];
-  v23 = v112;
-  v24 = [location[0] text];
+  *&v18 = MEMORY[0x277D82BD8](elements).n128_u64[0];
+  v23 = selfCopy;
+  text = [location[0] text];
   [(CPUIGridCell *)v23 setTitle:?];
-  *&v19 = MEMORY[0x277D82BD8](v24).n128_u64[0];
-  [(CPUIGridCell *)v112 setTitleAction:v109, v19];
-  -[CPUIGridViewBaseTableViewCell setGridViewStyle:](v112, "setGridViewStyle:", +[CPSGridViewCell viewModelStyleFor:](CPSGridViewCell, "viewModelStyleFor:", [location[0] style]));
-  v26 = v112;
+  *&v19 = MEMORY[0x277D82BD8](text).n128_u64[0];
+  [(CPUIGridCell *)selfCopy setTitleAction:v109, v19];
+  -[CPUIGridViewBaseTableViewCell setGridViewStyle:](selfCopy, "setGridViewStyle:", +[CPSGridViewCell viewModelStyleFor:](CPSGridViewCell, "viewModelStyleFor:", [location[0] style]));
+  v26 = selfCopy;
   v25 = objc_alloc(MEMORY[0x277CF9118]);
   v27 = [v25 initWithMaximumNumberOfLines:(objc_msgSend(location[0] condensedOptions:"allowsMultipleLines") & 1) == 0 imageGridOptions:0];
   [(CPUIGridViewBaseTableViewCell *)v26 setGridViewStyleOptions:?];
   *&v20 = MEMORY[0x277D82BD8](v27).n128_u64[0];
-  -[CPUIGridCell setItemEnabled:](v112, "setItemEnabled:", [location[0] isEnabled]);
-  [(CPUIGridCell *)v112 setViewModels:v107];
+  -[CPUIGridCell setItemEnabled:](selfCopy, "setItemEnabled:", [location[0] isEnabled]);
+  [(CPUIGridCell *)selfCopy setViewModels:v107];
   objc_storeStrong(&v107, 0);
   objc_storeStrong(&v108, 0);
   objc_storeStrong(&v109, 0);
@@ -295,12 +295,12 @@ double __85__CPSGridViewCell_configureWithListImageRowItem_action_titleAction_bu
   return result;
 }
 
-+ (unint64_t)viewModelImageShapeFor:(id)a3
++ (unint64_t)viewModelImageShapeFor:(id)for
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, for);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -332,9 +332,9 @@ double __85__CPSGridViewCell_configureWithListImageRowItem_action_titleAction_bu
   return v8;
 }
 
-+ (unint64_t)viewModelStyleFor:(unint64_t)a3
++ (unint64_t)viewModelStyleFor:(unint64_t)for
 {
-  switch(a3)
+  switch(for)
   {
     case 0uLL:
       return 2;

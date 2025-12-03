@@ -1,11 +1,11 @@
 @interface ESDRoot
-- (ESDRoot)initWithEshObject:(EshObject *)a3;
-- (ESDRoot)initWithPbState:(id)a3;
-- (id)initFromReader:(OcReader *)a3;
-- (id)pbReferenceWithID:(unsigned int)a3;
-- (void)addChild:(id)a3;
+- (ESDRoot)initWithEshObject:(EshObject *)object;
+- (ESDRoot)initWithPbState:(id)state;
+- (id)initFromReader:(OcReader *)reader;
+- (id)pbReferenceWithID:(unsigned int)d;
+- (void)addChild:(id)child;
 - (void)eshRoot;
-- (void)writeToWriter:(OcWriter *)a3;
+- (void)writeToWriter:(OcWriter *)writer;
 @end
 
 @implementation ESDRoot
@@ -20,11 +20,11 @@
   return result;
 }
 
-- (ESDRoot)initWithEshObject:(EshObject *)a3
+- (ESDRoot)initWithEshObject:(EshObject *)object
 {
   v7.receiver = self;
   v7.super_class = ESDRoot;
-  v3 = [(ESDObject *)&v7 initWithEshObject:a3];
+  v3 = [(ESDObject *)&v7 initWithEshObject:object];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -35,78 +35,78 @@
   return v3;
 }
 
-- (id)initFromReader:(OcReader *)a3
+- (id)initFromReader:(OcReader *)reader
 {
   v4 = [(ESDRoot *)self init];
   v5 = v4;
   if (v4)
   {
-    (*(a3->var0 + 15))(a3, [(ESDRoot *)v4 eshRoot]);
-    [ESDContainer readChildrenOfObject:v5->super.mEshObject reader:a3 toArray:v5->mChildren];
+    (*(reader->var0 + 15))(reader, [(ESDRoot *)v4 eshRoot]);
+    [ESDContainer readChildrenOfObject:v5->super.mEshObject reader:reader toArray:v5->mChildren];
   }
 
   return v5;
 }
 
-- (void)addChild:(id)a3
+- (void)addChild:(id)child
 {
-  v4 = a3;
+  childCopy = child;
   [(NSMutableArray *)self->mChildren addObject:?];
-  EshRoot::appendChild(-[ESDRoot eshRoot](self, "eshRoot"), [v4 eshObject]);
+  EshRoot::appendChild(-[ESDRoot eshRoot](self, "eshRoot"), [childCopy eshObject]);
 }
 
-- (void)writeToWriter:(OcWriter *)a3
+- (void)writeToWriter:(OcWriter *)writer
 {
   v8.receiver = self;
   v8.super_class = ESDRoot;
   [(ESDObject *)&v8 writeToWriter:?];
-  v5 = [(NSMutableArray *)self->mChildren objectEnumerator];
+  objectEnumerator = [(NSMutableArray *)self->mChildren objectEnumerator];
   while (1)
   {
-    v6 = [v5 nextObject];
-    v7 = v6;
-    if (!v6)
+    nextObject = [objectEnumerator nextObject];
+    v7 = nextObject;
+    if (!nextObject)
     {
       break;
     }
 
-    [v6 writeToWriter:a3];
+    [nextObject writeToWriter:writer];
   }
 }
 
-- (ESDRoot)initWithPbState:(id)a3
+- (ESDRoot)initWithPbState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = [(ESDRoot *)self init];
   if (v5)
   {
-    v6 = [v4 reader];
-    (*(*v6 + 72))(v6, [(ESDRoot *)v5 eshRoot]);
-    [ESDContainer pbReadChildrenOfObject:v5->super.mEshObject toArray:v5->mChildren state:v4];
+    reader = [stateCopy reader];
+    (*(*reader + 72))(reader, [(ESDRoot *)v5 eshRoot]);
+    [ESDContainer pbReadChildrenOfObject:v5->super.mEshObject toArray:v5->mChildren state:stateCopy];
   }
 
   return v5;
 }
 
-- (id)pbReferenceWithID:(unsigned int)a3
+- (id)pbReferenceWithID:(unsigned int)d
 {
-  v5 = [(ESDRoot *)self childCount];
-  if (v5)
+  childCount = [(ESDRoot *)self childCount];
+  if (childCount)
   {
-    v6 = v5;
+    v6 = childCount;
     v7 = 0;
     while (1)
     {
       v8 = [(ESDRoot *)self childAt:v7];
-      v9 = [v8 eshObject];
-      if (v9)
+      eshObject = [v8 eshObject];
+      if (eshObject)
       {
         if (v10)
         {
           v11 = v10;
           if ((*(*v10 + 16))(v10))
           {
-            if ((*(*v11 + 32))(v11) == a3)
+            if ((*(*v11 + 32))(v11) == d)
             {
               break;
             }

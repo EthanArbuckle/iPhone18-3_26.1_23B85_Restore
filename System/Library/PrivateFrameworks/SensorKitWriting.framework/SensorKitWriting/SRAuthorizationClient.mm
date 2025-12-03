@@ -1,27 +1,27 @@
 @interface SRAuthorizationClient
 + (SRAuthorizationClient)sharedInstance;
 + (void)initialize;
-+ (void)setAuthClient:(id)a3;
++ (void)setAuthClient:(id)client;
 - (BOOL)dataCollectionEnabled;
 - (BOOL)firstRunOnboardingCompleted;
 - (NSArray)legacyResearchStudyBundleIDs;
 - (NSDictionary)authorizedServices;
 - (NSString)legacyResearchStudyEntitlement;
 - (SRAuthorizationClient)init;
-- (SRAuthorizationClient)initWithConnection:(id)a3;
-- (uint64_t)authorizedServicesForBundleId:(void *)a1;
-- (uint64_t)deniedServicesForBundleId:(void *)a1;
+- (SRAuthorizationClient)initWithConnection:(id)connection;
+- (uint64_t)authorizedServicesForBundleId:(void *)id;
+- (uint64_t)deniedServicesForBundleId:(void *)id;
 - (uint64_t)syncProxy;
-- (void)addListener:(id)a3 forBundleId:(id)a4;
-- (void)authorizedServicesDidChange:(id)a3 deniedServices:(id)a4 prerequisites:(int64_t)a5 lastModifiedTimes:(id)a6 bundleIdentifier:(id)a7;
-- (void)completeEnrollmentForBundleId:(id)a3 sensors:(id)a4;
+- (void)addListener:(id)listener forBundleId:(id)id;
+- (void)authorizedServicesDidChange:(id)change deniedServices:(id)services prerequisites:(int64_t)prerequisites lastModifiedTimes:(id)times bundleIdentifier:(id)identifier;
+- (void)completeEnrollmentForBundleId:(id)id sensors:(id)sensors;
 - (void)dealloc;
-- (void)initialAuthorizationStateForBundleId:(id)a3 authorizationState:(id)a4;
+- (void)initialAuthorizationStateForBundleId:(id)id authorizationState:(id)state;
 - (void)invalidate;
 - (void)lastModifiedTimesForBundleId:(void *)result;
-- (void)notifyListener:(uint64_t)a3 withAuthorizationChangeForBundleIdentifier:;
-- (void)removeListener:(id)a3;
-- (void)reregisterAfterInterruption:(id)a3 effectiveBundleId:(id)a4;
+- (void)notifyListener:(uint64_t)listener withAuthorizationChangeForBundleIdentifier:;
+- (void)removeListener:(id)listener;
+- (void)reregisterAfterInterruption:(id)interruption effectiveBundleId:(id)id;
 - (void)updateInitialAuthorizationStateIfNeeded;
 @end
 
@@ -29,18 +29,18 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     SRLogAuthorizationClient = os_log_create("com.apple.SensorKit", "AuthorizationClient");
   }
 }
 
-+ (void)setAuthClient:(id)a3
++ (void)setAuthClient:(id)client
 {
-  if (_MergedGlobals_0 != a3)
+  if (_MergedGlobals_0 != client)
   {
 
-    _MergedGlobals_0 = a3;
+    _MergedGlobals_0 = client;
   }
 }
 
@@ -74,7 +74,7 @@ SRAuthorizationClient *__39__SRAuthorizationClient_sharedInstance__block_invoke(
   return [(SRAuthorizationClient *)self initWithConnection:v3];
 }
 
-- (SRAuthorizationClient)initWithConnection:(id)a3
+- (SRAuthorizationClient)initWithConnection:(id)connection
 {
   v34 = *MEMORY[0x277D85DE8];
   v26.receiver = self;
@@ -84,15 +84,15 @@ SRAuthorizationClient *__39__SRAuthorizationClient_sharedInstance__block_invoke(
   if (v4)
   {
     [(SRAuthorizationClient *)v4 setInitialAuthNeeded:1];
-    v6 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
-    objc_setProperty_nonatomic(v5, v7, v6, 24);
-    v8 = [MEMORY[0x277CBEB38] dictionary];
-    objc_setProperty_atomic(v5, v9, v8, 32);
-    v10 = [MEMORY[0x277CBEB38] dictionary];
-    objc_setProperty_atomic(v5, v11, v10, 40);
-    v12 = [MEMORY[0x277CBEB38] dictionary];
-    objc_setProperty_atomic(v5, v13, v12, 48);
-    objc_setProperty_nonatomic(v5, v14, a3, 16);
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    objc_setProperty_nonatomic(v5, v7, weakToStrongObjectsMapTable, 24);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    objc_setProperty_atomic(v5, v9, dictionary, 32);
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    objc_setProperty_atomic(v5, v11, dictionary2, 40);
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+    objc_setProperty_atomic(v5, v13, dictionary3, 48);
+    objc_setProperty_nonatomic(v5, v14, connection, 16);
     -[NSXPCConnection setRemoteObjectInterface:](v5->_connection, "setRemoteObjectInterface:", [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_287707418]);
     -[NSXPCConnection setExportedInterface:](v5->_connection, "setExportedInterface:", [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_287705218]);
     [(NSXPCConnection *)v5->_connection setExportedObject:v5];
@@ -102,7 +102,7 @@ SRAuthorizationClient *__39__SRAuthorizationClient_sharedInstance__block_invoke(
     v23[2] = __44__SRAuthorizationClient_initWithConnection___block_invoke;
     v23[3] = &unk_279B99D38;
     objc_copyWeak(&v24, &location);
-    v23[4] = a3;
+    v23[4] = connection;
     [(NSXPCConnection *)v5->_connection setInterruptionHandler:v23];
     [(NSXPCConnection *)v5->_connection resume];
     v15 = SRLogAuthorizationClient;
@@ -115,13 +115,13 @@ SRAuthorizationClient *__39__SRAuthorizationClient_sharedInstance__block_invoke(
     objc_initWeak(&from, v5);
     v5->_registrationToken = -1;
     p_registrationToken = &v5->_registrationToken;
-    v17 = [@"com.apple.SensorKit.prerequisitesUpdated" UTF8String];
+    uTF8String = [@"com.apple.SensorKit.prerequisitesUpdated" UTF8String];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __56__SRAuthorizationClient_registerForPrerequisitesUpdated__block_invoke;
     handler[3] = &unk_279B99CD8;
     objc_copyWeak(&v28, &from);
-    v18 = notify_register_dispatch(v17, &v5->_registrationToken, MEMORY[0x277D85CD0], handler);
+    v18 = notify_register_dispatch(uTF8String, &v5->_registrationToken, MEMORY[0x277D85CD0], handler);
     if (v18 || *p_registrationToken == -1)
     {
       v19 = SRLogAuthorizationClient;
@@ -284,11 +284,11 @@ id *__44__SRAuthorizationClient_initWithConnection___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reregisterAfterInterruption:(id)a3 effectiveBundleId:(id)a4
+- (void)reregisterAfterInterruption:(id)interruption effectiveBundleId:(id)id
 {
-  v5 = [a3 remoteObjectProxy];
+  remoteObjectProxy = [interruption remoteObjectProxy];
 
-  [v5 registerForAuthorizationChangeNotificationsWithEffectiveBundleId:a4];
+  [remoteObjectProxy registerForAuthorizationChangeNotificationsWithEffectiveBundleId:id];
 }
 
 - (void)updateInitialAuthorizationStateIfNeeded
@@ -306,13 +306,13 @@ id *__44__SRAuthorizationClient_initWithConnection___block_invoke(uint64_t a1)
         _os_log_impl(&dword_26561F000, v2, OS_LOG_TYPE_INFO, "Retrieving initial authorization state", buf, 2u);
       }
 
-      v3 = [(SRAuthorizationClient *)v1 syncProxy];
+      syncProxy = [(SRAuthorizationClient *)v1 syncProxy];
       v4[0] = MEMORY[0x277D85DD0];
       v4[1] = 3221225472;
       v4[2] = __64__SRAuthorizationClient_updateInitialAuthorizationStateIfNeeded__block_invoke;
       v4[3] = &unk_279B99D60;
       v4[4] = v1;
-      return [v3 retrieveCurrentAuthorizedServicesWithReply:v4];
+      return [syncProxy retrieveCurrentAuthorizedServicesWithReply:v4];
     }
   }
 
@@ -321,7 +321,7 @@ id *__44__SRAuthorizationClient_initWithConnection___block_invoke(uint64_t a1)
 
 - (uint64_t)syncProxy
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -332,7 +332,7 @@ id *__44__SRAuthorizationClient_initWithConnection___block_invoke(uint64_t a1)
   v12 = __Block_byref_object_copy_;
   v13 = __Block_byref_object_dispose_;
   v14 = 0;
-  v2 = *(a1 + 16);
+  v2 = *(self + 16);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __34__SRAuthorizationClient_syncProxy__block_invoke;
@@ -341,8 +341,8 @@ id *__44__SRAuthorizationClient_initWithConnection___block_invoke(uint64_t a1)
   v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:v8];
   if (!v3)
   {
-    v4 = [v10[5] domain];
-    if ([v4 isEqualToString:*MEMORY[0x277CCA050]] && objc_msgSend(v10[5], "code") == 4097)
+    domain = [v10[5] domain];
+    if ([domain isEqualToString:*MEMORY[0x277CCA050]] && objc_msgSend(v10[5], "code") == 4097)
     {
 
       v5 = SRLogAuthorizationClient;
@@ -352,7 +352,7 @@ id *__44__SRAuthorizationClient_initWithConnection___block_invoke(uint64_t a1)
         _os_log_impl(&dword_26561F000, v5, OS_LOG_TYPE_DEFAULT, "Connection was interrupted, retrying...", v7, 2u);
       }
 
-      v3 = [*(a1 + 16) synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_38];
+      v3 = [*(self + 16) synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_38];
     }
 
     else
@@ -622,11 +622,11 @@ void __56__SRAuthorizationClient_registerForPrerequisitesUpdated__block_invoke(u
   return ([Property integerValue] >> 1) & 1;
 }
 
-- (void)completeEnrollmentForBundleId:(id)a3 sensors:(id)a4
+- (void)completeEnrollmentForBundleId:(id)id sensors:(id)sensors
 {
-  v6 = [(SRAuthorizationClient *)self syncProxy];
+  syncProxy = [(SRAuthorizationClient *)self syncProxy];
 
-  [v6 completeEnrollmentForBundleId:a3 sensors:a4];
+  [syncProxy completeEnrollmentForBundleId:id sensors:sensors];
 }
 
 id __34__SRAuthorizationClient_syncProxy__block_invoke(uint64_t a1, void *a2)
@@ -668,13 +668,13 @@ void __34__SRAuthorizationClient_syncProxy__block_invoke_36(uint64_t a1, uint64_
   v9 = __Block_byref_object_copy_;
   v10 = __Block_byref_object_dispose_;
   v11 = 0;
-  v2 = [(SRAuthorizationClient *)self syncProxy];
+  syncProxy = [(SRAuthorizationClient *)self syncProxy];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __53__SRAuthorizationClient_legacyResearchStudyBundleIDs__block_invoke;
   v5[3] = &unk_279B99DB0;
   v5[4] = &v6;
-  [v2 legacyResearchStudyBundleIDs:v5];
+  [syncProxy legacyResearchStudyBundleIDs:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -695,13 +695,13 @@ uint64_t __53__SRAuthorizationClient_legacyResearchStudyBundleIDs__block_invoke(
   v9 = __Block_byref_object_copy_;
   v10 = __Block_byref_object_dispose_;
   v11 = 0;
-  v2 = [(SRAuthorizationClient *)self syncProxy];
+  syncProxy = [(SRAuthorizationClient *)self syncProxy];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __55__SRAuthorizationClient_legacyResearchStudyEntitlement__block_invoke;
   v5[3] = &unk_279B99DD8;
   v5[4] = &v6;
-  [v2 legacyResearchStudyEntitlement:v5];
+  [syncProxy legacyResearchStudyEntitlement:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -714,7 +714,7 @@ uint64_t __55__SRAuthorizationClient_legacyResearchStudyEntitlement__block_invok
   return result;
 }
 
-- (void)addListener:(id)a3 forBundleId:(id)a4
+- (void)addListener:(id)listener forBundleId:(id)id
 {
   if (self)
   {
@@ -727,21 +727,21 @@ uint64_t __55__SRAuthorizationClient_legacyResearchStudyEntitlement__block_invok
   }
 
   objc_sync_enter(listeners);
-  v8 = [(NSMapTable *)self->_listeners objectForKey:a3];
+  v8 = [(NSMapTable *)self->_listeners objectForKey:listener];
   v9 = [objc_msgSend(MEMORY[0x277CCA8D8] "mainBundle")];
   v10 = v9;
-  if (a4)
+  if (id)
   {
-    v11 = a4;
+    idCopy = id;
   }
 
   else
   {
-    v11 = v9;
+    idCopy = v9;
   }
 
-  [(NSMapTable *)self->_listeners setObject:v11 forKey:a3];
-  if ((!v8 || [v8 isEqualToString:v11]) && ((v12 = objc_msgSend(a4, "isEqualToString:", v10), v13 = -[NSXPCConnection remoteObjectProxy](self->_connection, "remoteObjectProxy"), !v12) ? (v14 = a4) : (v14 = 0), objc_msgSend(v13, "registerForAuthorizationChangeNotificationsWithEffectiveBundleId:", v14), -[SRAuthorizationClient initialAuthNeeded](self, "initialAuthNeeded")))
+  [(NSMapTable *)self->_listeners setObject:idCopy forKey:listener];
+  if ((!v8 || [v8 isEqualToString:idCopy]) && ((v12 = objc_msgSend(id, "isEqualToString:", v10), v13 = -[NSXPCConnection remoteObjectProxy](self->_connection, "remoteObjectProxy"), !v12) ? (v14 = id) : (v14 = 0), objc_msgSend(v13, "registerForAuthorizationChangeNotificationsWithEffectiveBundleId:", v14), -[SRAuthorizationClient initialAuthNeeded](self, "initialAuthNeeded")))
   {
     v15 = SRLogAuthorizationClient;
     if (os_log_type_enabled(SRLogAuthorizationClient, OS_LOG_TYPE_DEFAULT))
@@ -756,26 +756,26 @@ uint64_t __55__SRAuthorizationClient_legacyResearchStudyEntitlement__block_invok
   else
   {
     objc_sync_exit(listeners);
-    v16 = [(SRAuthorizationClient *)self authorizedServicesForBundleId:v11];
-    v17 = [(SRAuthorizationClient *)self deniedServicesForBundleId:v11];
+    v16 = [(SRAuthorizationClient *)self authorizedServicesForBundleId:idCopy];
+    v17 = [(SRAuthorizationClient *)self deniedServicesForBundleId:idCopy];
     if ([v16 count] || objc_msgSend(v17, "count"))
     {
 
-      [(SRAuthorizationClient *)self notifyListener:a3 withAuthorizationChangeForBundleIdentifier:v11];
+      [(SRAuthorizationClient *)self notifyListener:listener withAuthorizationChangeForBundleIdentifier:idCopy];
     }
   }
 }
 
-- (uint64_t)authorizedServicesForBundleId:(void *)a1
+- (uint64_t)authorizedServicesForBundleId:(void *)id
 {
-  if (!a1)
+  if (!id)
   {
     return 0;
   }
 
-  v4 = a1[3];
+  v4 = id[3];
   objc_sync_enter(v4);
-  v6 = [objc_msgSend(objc_getProperty(a1 v5];
+  v6 = [objc_msgSend(objc_getProperty(id v5];
   objc_sync_exit(v4);
   if (v6)
   {
@@ -787,16 +787,16 @@ uint64_t __55__SRAuthorizationClient_legacyResearchStudyEntitlement__block_invok
   return [v8 set];
 }
 
-- (uint64_t)deniedServicesForBundleId:(void *)a1
+- (uint64_t)deniedServicesForBundleId:(void *)id
 {
-  if (!a1)
+  if (!id)
   {
     return 0;
   }
 
-  v4 = a1[3];
+  v4 = id[3];
   objc_sync_enter(v4);
-  v6 = [objc_msgSend(objc_getProperty(a1 v5];
+  v6 = [objc_msgSend(objc_getProperty(id v5];
   objc_sync_exit(v4);
   if (v6)
   {
@@ -808,24 +808,24 @@ uint64_t __55__SRAuthorizationClient_legacyResearchStudyEntitlement__block_invok
   return [v8 set];
 }
 
-- (void)notifyListener:(uint64_t)a3 withAuthorizationChangeForBundleIdentifier:
+- (void)notifyListener:(uint64_t)listener withAuthorizationChangeForBundleIdentifier:
 {
   if (result)
   {
     v5 = result;
-    v6 = [(SRAuthorizationClient *)result authorizedServicesForBundleId:a3];
-    v7 = [(SRAuthorizationClient *)v5 deniedServicesForBundleId:a3];
-    v8 = [v5 dataCollectionEnabled];
-    v9 = [v5 firstRunOnboardingCompleted];
-    v10 = [(SRAuthorizationClient *)v5 lastModifiedTimesForBundleId:a3];
+    v6 = [(SRAuthorizationClient *)result authorizedServicesForBundleId:listener];
+    v7 = [(SRAuthorizationClient *)v5 deniedServicesForBundleId:listener];
+    dataCollectionEnabled = [v5 dataCollectionEnabled];
+    firstRunOnboardingCompleted = [v5 firstRunOnboardingCompleted];
+    v10 = [(SRAuthorizationClient *)v5 lastModifiedTimesForBundleId:listener];
 
-    return [a2 authorizedServicesDidChange:v6 deniedServices:v7 dataCollectionEnabled:v8 onboardingCompleted:v9 lastModifiedTimes:v10 forBundleIdentifier:a3];
+    return [a2 authorizedServicesDidChange:v6 deniedServices:v7 dataCollectionEnabled:dataCollectionEnabled onboardingCompleted:firstRunOnboardingCompleted lastModifiedTimes:v10 forBundleIdentifier:listener];
   }
 
   return result;
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
   if (self)
   {
@@ -841,7 +841,7 @@ uint64_t __55__SRAuthorizationClient_legacyResearchStudyEntitlement__block_invok
     v6 = 0;
   }
 
-  [(NSMapTable *)v6 removeObjectForKey:a3];
+  [(NSMapTable *)v6 removeObjectForKey:listener];
 
   objc_sync_exit(listeners);
 }
@@ -869,35 +869,35 @@ uint64_t __55__SRAuthorizationClient_legacyResearchStudyEntitlement__block_invok
   return result;
 }
 
-- (void)initialAuthorizationStateForBundleId:(id)a3 authorizationState:(id)a4
+- (void)initialAuthorizationStateForBundleId:(id)id authorizationState:(id)state
 {
   [(SRAuthorizationClient *)self updateInitialAuthorizationStateIfNeeded];
-  v7 = [(SRAuthorizationClient *)self authorizedServicesForBundleId:a3];
-  v8 = [(SRAuthorizationClient *)self deniedServicesForBundleId:a3];
-  v9 = [(SRAuthorizationClient *)self dataCollectionEnabled];
-  v10 = [(SRAuthorizationClient *)self firstRunOnboardingCompleted];
-  v11 = [(SRAuthorizationClient *)self lastModifiedTimesForBundleId:a3];
-  v12 = *(a4 + 2);
+  v7 = [(SRAuthorizationClient *)self authorizedServicesForBundleId:id];
+  v8 = [(SRAuthorizationClient *)self deniedServicesForBundleId:id];
+  dataCollectionEnabled = [(SRAuthorizationClient *)self dataCollectionEnabled];
+  firstRunOnboardingCompleted = [(SRAuthorizationClient *)self firstRunOnboardingCompleted];
+  v11 = [(SRAuthorizationClient *)self lastModifiedTimesForBundleId:id];
+  v12 = *(state + 2);
 
-  v12(a4, v7, v8, v9, v10, v11);
+  v12(state, v7, v8, dataCollectionEnabled, firstRunOnboardingCompleted, v11);
 }
 
-- (void)authorizedServicesDidChange:(id)a3 deniedServices:(id)a4 prerequisites:(int64_t)a5 lastModifiedTimes:(id)a6 bundleIdentifier:(id)a7
+- (void)authorizedServicesDidChange:(id)change deniedServices:(id)services prerequisites:(int64_t)prerequisites lastModifiedTimes:(id)times bundleIdentifier:(id)identifier
 {
   v48 = *MEMORY[0x277D85DE8];
   v13 = SRLogAuthorizationClient;
   if (os_log_type_enabled(SRLogAuthorizationClient, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138544387;
-    v39 = a7;
+    identifierCopy = identifier;
     v40 = 2050;
-    v41 = a5;
+    prerequisitesCopy = prerequisites;
     v42 = 2114;
-    v43 = a3;
+    changeCopy = change;
     v44 = 2114;
-    v45 = a4;
+    servicesCopy = services;
     v46 = 2113;
-    v47 = a6;
+    timesCopy = times;
     _os_log_impl(&dword_26561F000, v13, OS_LOG_TYPE_DEFAULT, "Daemon authorization update for bundle: %{public}@, prerequisites: %{public}ld, authorized: %{public}@, denied: %{public}@, last modified times: %{private}@", buf, 0x34u);
   }
 
@@ -915,11 +915,11 @@ uint64_t __55__SRAuthorizationClient_legacyResearchStudyEntitlement__block_invok
     Property = 0;
   }
 
-  if ([objc_msgSend(Property objectForKeyedSubscript:{a7), "isEqual:", a3}] && (!self ? (v18 = 0) : (v18 = objc_getProperty(self, v17, 40, 1)), objc_msgSend(objc_msgSend(v18, "objectForKeyedSubscript:", a7), "isEqualToSet:", a4)))
+  if ([objc_msgSend(Property objectForKeyedSubscript:{identifier), "isEqual:", change}] && (!self ? (v18 = 0) : (v18 = objc_getProperty(self, v17, 40, 1)), objc_msgSend(objc_msgSend(v18, "objectForKeyedSubscript:", identifier), "isEqualToSet:", services)))
   {
     if (self)
     {
-      if (objc_getProperty(self, v17, 56, 1) && [objc_getProperty(self v17] == a5)
+      if (objc_getProperty(self, v17, 56, 1) && [objc_getProperty(self v17] == prerequisites)
       {
         v19 = SRLogAuthorizationClient;
         if (os_log_type_enabled(SRLogAuthorizationClient, OS_LOG_TYPE_DEFAULT))
@@ -945,7 +945,7 @@ LABEL_16:
 
   v20 = 0;
 LABEL_17:
-  [v20 setObject:a3 forKeyedSubscript:a7];
+  [v20 setObject:change forKeyedSubscript:identifier];
   if (self)
   {
     v22 = objc_getProperty(self, v21, 40, 1);
@@ -956,8 +956,8 @@ LABEL_17:
     v22 = 0;
   }
 
-  [v22 setObject:a4 forKeyedSubscript:a7];
-  v23 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+  [v22 setObject:services forKeyedSubscript:identifier];
+  v23 = [MEMORY[0x277CCABB0] numberWithInteger:prerequisites];
   if (self)
   {
     objc_setProperty_atomic(self, v24, v23, 56);
@@ -969,7 +969,7 @@ LABEL_17:
     v26 = 0;
   }
 
-  [v26 setObject:a6 forKeyedSubscript:a7];
+  [v26 setObject:times forKeyedSubscript:identifier];
   objc_sync_exit(listeners);
   [(SRAuthorizationClient *)self setInitialAuthNeeded:0];
   if (self)
@@ -996,9 +996,9 @@ LABEL_17:
           }
 
           v32 = *(*(&v34 + 1) + 8 * i);
-          if ([objc_msgSend(v28 objectForKey:{v32), "isEqual:", a7}])
+          if ([objc_msgSend(v28 objectForKey:{v32), "isEqual:", identifier}])
           {
-            [(SRAuthorizationClient *)self notifyListener:v32 withAuthorizationChangeForBundleIdentifier:a7];
+            [(SRAuthorizationClient *)self notifyListener:v32 withAuthorizationChangeForBundleIdentifier:identifier];
           }
         }
 

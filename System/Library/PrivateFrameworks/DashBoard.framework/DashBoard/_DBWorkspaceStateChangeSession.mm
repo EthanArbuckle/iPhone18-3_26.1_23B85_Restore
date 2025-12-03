@@ -1,5 +1,5 @@
 @interface _DBWorkspaceStateChangeSession
-- (_DBWorkspaceStateChangeSession)initWithStateChangeBlock:(id)a3 invalidationBlock:(id)a4;
+- (_DBWorkspaceStateChangeSession)initWithStateChangeBlock:(id)block invalidationBlock:(id)invalidationBlock;
 - (id)owner;
 - (void)_startWatchdogTimer;
 - (void)_watchdogTimerFired;
@@ -42,20 +42,20 @@
   [(_DBWorkspaceStateChangeSession *)&v2 dealloc];
 }
 
-- (_DBWorkspaceStateChangeSession)initWithStateChangeBlock:(id)a3 invalidationBlock:(id)a4
+- (_DBWorkspaceStateChangeSession)initWithStateChangeBlock:(id)block invalidationBlock:(id)invalidationBlock
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  invalidationBlockCopy = invalidationBlock;
   v14.receiver = self;
   v14.super_class = _DBWorkspaceStateChangeSession;
   v8 = [(_DBWorkspaceStateChangeSession *)&v14 init];
   if (v8)
   {
-    v9 = _Block_copy(v6);
+    v9 = _Block_copy(blockCopy);
     stateChangeBlock = v8->_stateChangeBlock;
     v8->_stateChangeBlock = v9;
 
-    v11 = _Block_copy(v7);
+    v11 = _Block_copy(invalidationBlockCopy);
     invalidationBlock = v8->_invalidationBlock;
     v8->_invalidationBlock = v11;
   }

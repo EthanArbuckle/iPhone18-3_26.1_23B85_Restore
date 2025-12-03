@@ -1,7 +1,7 @@
 @interface SCLSchoolModeConfiguration
 - (SCLSchoolModeConfiguration)init;
 - (SCLSchoolModeDelegate)delegate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SCLSchoolModeConfiguration
@@ -21,24 +21,24 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SCLSchoolModeConfiguration);
-  v5 = [(SCLSchoolModeConfiguration *)self identifier];
-  [(SCLSchoolModeConfiguration *)v4 setIdentifier:v5];
+  identifier = [(SCLSchoolModeConfiguration *)self identifier];
+  [(SCLSchoolModeConfiguration *)v4 setIdentifier:identifier];
 
-  v6 = [(SCLSchoolModeConfiguration *)self targetQueue];
-  [(SCLSchoolModeConfiguration *)v4 setTargetQueue:v6];
+  targetQueue = [(SCLSchoolModeConfiguration *)self targetQueue];
+  [(SCLSchoolModeConfiguration *)v4 setTargetQueue:targetQueue];
 
-  v7 = [(SCLSchoolModeConfiguration *)self delegate];
-  [(SCLSchoolModeConfiguration *)v4 setDelegate:v7];
+  delegate = [(SCLSchoolModeConfiguration *)self delegate];
+  [(SCLSchoolModeConfiguration *)v4 setDelegate:delegate];
 
-  v8 = [(SCLSchoolModeConfiguration *)self pairingID];
-  [(SCLSchoolModeConfiguration *)v4 setPairingID:v8];
+  pairingID = [(SCLSchoolModeConfiguration *)self pairingID];
+  [(SCLSchoolModeConfiguration *)v4 setPairingID:pairingID];
 
   [(SCLSchoolModeConfiguration *)v4 setLoadsSynchronously:[(SCLSchoolModeConfiguration *)self loadsSynchronously]];
-  v9 = [(SCLSchoolModeConfiguration *)self testingEndpoint];
-  [(SCLSchoolModeConfiguration *)v4 setTestingEndpoint:v9];
+  testingEndpoint = [(SCLSchoolModeConfiguration *)self testingEndpoint];
+  [(SCLSchoolModeConfiguration *)v4 setTestingEndpoint:testingEndpoint];
 
   return v4;
 }

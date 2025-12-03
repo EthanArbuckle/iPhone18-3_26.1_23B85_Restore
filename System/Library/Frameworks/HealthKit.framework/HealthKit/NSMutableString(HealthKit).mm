@@ -35,11 +35,11 @@
         v17 = objc_autoreleasePoolPush();
         if (v13)
         {
-          [a1 appendString:v20];
+          [self appendString:v20];
         }
 
         v18 = v9[2](v9, v16);
-        [a1 appendString:v18];
+        [self appendString:v18];
 
         objc_autoreleasePoolPop(v17);
         ++v15;

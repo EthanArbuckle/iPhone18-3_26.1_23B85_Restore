@@ -1,5 +1,5 @@
 @interface TSCHChartTypeMixed
-- (id)defaultSeriesType:(unint64_t)a3;
+- (id)defaultSeriesType:(unint64_t)type;
 - (id)name;
 - (id)userInterfaceName;
 @end
@@ -14,9 +14,9 @@
   return v10;
 }
 
-- (id)defaultSeriesType:(unint64_t)a3
+- (id)defaultSeriesType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     objc_msgSend_mixedColumnSeries(TSCHChartSeriesType, a2, v3, v4, v5);
   }

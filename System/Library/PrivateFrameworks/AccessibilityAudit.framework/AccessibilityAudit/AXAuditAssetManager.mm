@@ -1,8 +1,8 @@
 @interface AXAuditAssetManager
 + (AXAuditAssetManager)shared;
 - (AXAuditAssetManager)init;
-- (void)assetController:(id)a3 didFinishDownloadingAsset:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6 hasRemainingDownloads:(BOOL)a7;
-- (void)assetController:(id)a3 didFinishRefreshingAssets:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6;
+- (void)assetController:(id)controller didFinishDownloadingAsset:(id)asset wasSuccessful:(BOOL)successful error:(id)error hasRemainingDownloads:(BOOL)downloads;
+- (void)assetController:(id)controller didFinishRefreshingAssets:(id)assets wasSuccessful:(BOOL)successful error:(id)error;
 - (void)downloadAssetsIfNecessary;
 @end
 
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __29__AXAuditAssetManager_shared__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (shared_onceToken != -1)
   {
     dispatch_once(&shared_onceToken, block);
@@ -40,13 +40,13 @@ uint64_t __29__AXAuditAssetManager_shared__block_invoke(uint64_t a1)
   v2 = [(AXAuditAssetManager *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CE6690] policy];
+    policy = [MEMORY[0x277CE6690] policy];
     iconVisionModelAssetPolicy = v2->__iconVisionModelAssetPolicy;
-    v2->__iconVisionModelAssetPolicy = v3;
+    v2->__iconVisionModelAssetPolicy = policy;
 
-    v5 = [MEMORY[0x277CE6688] policy];
+    policy2 = [MEMORY[0x277CE6688] policy];
     elementVisionModelAssetPolicy = v2->__elementVisionModelAssetPolicy;
-    v2->__elementVisionModelAssetPolicy = v5;
+    v2->__elementVisionModelAssetPolicy = policy2;
   }
 
   return v2;
@@ -61,43 +61,43 @@ uint64_t __29__AXAuditAssetManager_shared__block_invoke(uint64_t a1)
   v0 = *MEMORY[0x277D85DE8];
 }
 
-- (void)assetController:(id)a3 didFinishRefreshingAssets:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6
+- (void)assetController:(id)controller didFinishRefreshingAssets:(id)assets wasSuccessful:(BOOL)successful error:(id)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  controllerCopy = controller;
+  assetsCopy = assets;
+  errorCopy = error;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
-    v12 = [v9 assetPolicy];
+    assetPolicy = [controllerCopy assetPolicy];
     *buf = 136315394;
     v31 = "[AXAuditAssetManager assetController:didFinishRefreshingAssets:wasSuccessful:error:]";
     v32 = 2112;
-    v33 = v12;
+    v33 = assetPolicy;
     _os_log_impl(&dword_23D6FE000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%s: for policy: %@", buf, 0x16u);
   }
 
-  if (a5)
+  if (successful)
   {
-    if ([v10 count])
+    if ([assetsCopy count])
     {
-      v23 = v9;
+      v23 = controllerCopy;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         *buf = 136315394;
         v31 = "[AXAuditAssetManager assetController:didFinishRefreshingAssets:wasSuccessful:error:]";
         v32 = 2112;
-        v33 = v10;
+        v33 = assetsCopy;
         _os_log_impl(&dword_23D6FE000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%s: Found assets: %@", buf, 0x16u);
       }
 
-      v24 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v22 = v10;
-      v13 = v10;
+      v22 = assetsCopy;
+      v13 = assetsCopy;
       v14 = [v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v14)
       {
@@ -128,7 +128,7 @@ uint64_t __29__AXAuditAssetManager_shared__block_invoke(uint64_t a1)
 
             else if (([v19 isInstalled] & 1) == 0 && (objc_msgSend(v19, "isDownloading") & 1) == 0)
             {
-              [v24 addObject:v19];
+              [array addObject:v19];
             }
           }
 
@@ -138,23 +138,23 @@ uint64_t __29__AXAuditAssetManager_shared__block_invoke(uint64_t a1)
         while (v15);
       }
 
-      v9 = v23;
-      v11 = v21;
-      if ([v24 count])
+      controllerCopy = v23;
+      errorCopy = v21;
+      if ([array count])
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
           *buf = 136315394;
           v31 = "[AXAuditAssetManager assetController:didFinishRefreshingAssets:wasSuccessful:error:]";
           v32 = 2112;
-          v33 = v24;
+          v33 = array;
           _os_log_impl(&dword_23D6FE000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%s: Need to download assets: %@", buf, 0x16u);
         }
 
-        [v23 downloadAssets:v24 successStartBlock:&__block_literal_global_21];
+        [v23 downloadAssets:array successStartBlock:&__block_literal_global_21];
       }
 
-      v10 = v22;
+      assetsCopy = v22;
     }
 
     else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -192,20 +192,20 @@ void __85__AXAuditAssetManager_assetController_didFinishRefreshingAssets_wasSucc
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)assetController:(id)a3 didFinishDownloadingAsset:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6 hasRemainingDownloads:(BOOL)a7
+- (void)assetController:(id)controller didFinishDownloadingAsset:(id)asset wasSuccessful:(BOOL)successful error:(id)error hasRemainingDownloads:(BOOL)downloads
 {
   v18 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (a5)
+  controllerCopy = controller;
+  assetCopy = asset;
+  errorCopy = error;
+  if (successful)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v14 = 136315394;
       v15 = "[AXAuditAssetManager assetController:didFinishDownloadingAsset:wasSuccessful:error:hasRemainingDownloads:]";
       v16 = 2112;
-      v17 = v11;
+      v17 = assetCopy;
       _os_log_impl(&dword_23D6FE000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%s: asset successfully installed! %@", &v14, 0x16u);
     }
   }

@@ -1,13 +1,13 @@
 @interface ErrorPresenter
 - (_TtC8ShelfKit14ErrorPresenter)init;
-- (void)airplaneModeInquiryDidObserveChange:(id)a3;
+- (void)airplaneModeInquiryDidObserveChange:(id)change;
 @end
 
 @implementation ErrorPresenter
 
-- (void)airplaneModeInquiryDidObserveChange:(id)a3
+- (void)airplaneModeInquiryDidObserveChange:(id)change
 {
-  v3 = self;
+  selfCopy = self;
   ErrorPresenter.update()();
 }
 

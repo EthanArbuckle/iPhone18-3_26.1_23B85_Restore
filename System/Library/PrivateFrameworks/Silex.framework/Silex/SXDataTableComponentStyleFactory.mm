@@ -1,68 +1,68 @@
 @interface SXDataTableComponentStyleFactory
-- (SXDataTableComponentStyleFactory)initWithRecordStore:(id)a3 tableStyle:(id)a4 dataOrientation:(unint64_t)a5 rowStyleMerger:(id)a6 columnStyleMerger:(id)a7 cellStyleMerger:(id)a8;
-- (id)cellStyleForIndexPath:(id)a3;
-- (id)cellStyleForIndexPath:(id)a3 usingBaseStyle:(id)a4;
-- (id)columnStyleForColumnIndex:(unint64_t)a3;
-- (id)columnStyleForColumnIndex:(unint64_t)a3 usingBaseStyle:(id)a4;
-- (id)descriptorForIdentifier:(id)a3;
-- (id)filterDuplicateSequentialStyles:(id)a3;
-- (id)headerCellStyleForIndexPath:(id)a3;
-- (id)headerColumnStyleForColumnIndex:(unint64_t)a3;
-- (id)headerRowStyleForRowIndex:(unint64_t)a3;
-- (id)rowStyleForRowIndex:(unint64_t)a3;
-- (id)rowStyleForRowIndex:(unint64_t)a3 usingBaseStyle:(id)a4;
-- (id)sortStylesMatchesBySelectorWeight:(id)a3;
-- (id)styleByMergingStyleMatches:(id)a3 forBaseStyle:(id)a4 merger:(id)a5;
-- (int64_t)compareSelector:(id)a3 withOtherSelector:(id)a4;
-- (unint64_t)isEvenNumber:(int64_t)a3;
-- (unint64_t)isOddNumber:(int64_t)a3;
+- (SXDataTableComponentStyleFactory)initWithRecordStore:(id)store tableStyle:(id)style dataOrientation:(unint64_t)orientation rowStyleMerger:(id)merger columnStyleMerger:(id)styleMerger cellStyleMerger:(id)cellStyleMerger;
+- (id)cellStyleForIndexPath:(id)path;
+- (id)cellStyleForIndexPath:(id)path usingBaseStyle:(id)style;
+- (id)columnStyleForColumnIndex:(unint64_t)index;
+- (id)columnStyleForColumnIndex:(unint64_t)index usingBaseStyle:(id)style;
+- (id)descriptorForIdentifier:(id)identifier;
+- (id)filterDuplicateSequentialStyles:(id)styles;
+- (id)headerCellStyleForIndexPath:(id)path;
+- (id)headerColumnStyleForColumnIndex:(unint64_t)index;
+- (id)headerRowStyleForRowIndex:(unint64_t)index;
+- (id)rowStyleForRowIndex:(unint64_t)index;
+- (id)rowStyleForRowIndex:(unint64_t)index usingBaseStyle:(id)style;
+- (id)sortStylesMatchesBySelectorWeight:(id)weight;
+- (id)styleByMergingStyleMatches:(id)matches forBaseStyle:(id)style merger:(id)merger;
+- (int64_t)compareSelector:(id)selector withOtherSelector:(id)otherSelector;
+- (unint64_t)isEvenNumber:(int64_t)number;
+- (unint64_t)isOddNumber:(int64_t)number;
 @end
 
 @implementation SXDataTableComponentStyleFactory
 
-- (SXDataTableComponentStyleFactory)initWithRecordStore:(id)a3 tableStyle:(id)a4 dataOrientation:(unint64_t)a5 rowStyleMerger:(id)a6 columnStyleMerger:(id)a7 cellStyleMerger:(id)a8
+- (SXDataTableComponentStyleFactory)initWithRecordStore:(id)store tableStyle:(id)style dataOrientation:(unint64_t)orientation rowStyleMerger:(id)merger columnStyleMerger:(id)styleMerger cellStyleMerger:(id)cellStyleMerger
 {
-  v15 = a3;
-  v24 = a4;
-  v23 = a6;
-  v16 = a7;
-  v17 = a8;
+  storeCopy = store;
+  styleCopy = style;
+  mergerCopy = merger;
+  styleMergerCopy = styleMerger;
+  cellStyleMergerCopy = cellStyleMerger;
   v25.receiver = self;
   v25.super_class = SXDataTableComponentStyleFactory;
   v18 = [(SXDataTableComponentStyleFactory *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_tableStyle, a4);
-    objc_storeStrong(&v19->_recordStore, a3);
-    v19->_dataOrientation = a5;
-    v20 = [[SXDataTableSelectorValidator alloc] initWithRecordStore:v15 dataOrientation:a5, v23, v24];
+    objc_storeStrong(&v18->_tableStyle, style);
+    objc_storeStrong(&v19->_recordStore, store);
+    v19->_dataOrientation = orientation;
+    styleCopy = [[SXDataTableSelectorValidator alloc] initWithRecordStore:storeCopy dataOrientation:orientation, mergerCopy, styleCopy];
     selectorValidator = v19->_selectorValidator;
-    v19->_selectorValidator = v20;
+    v19->_selectorValidator = styleCopy;
 
-    objc_storeStrong(&v19->_rowStyleMerger, a6);
-    objc_storeStrong(&v19->_columnStyleMerger, a7);
-    objc_storeStrong(&v19->_cellStyleMerger, a8);
+    objc_storeStrong(&v19->_rowStyleMerger, merger);
+    objc_storeStrong(&v19->_columnStyleMerger, styleMerger);
+    objc_storeStrong(&v19->_cellStyleMerger, cellStyleMerger);
   }
 
   return v19;
 }
 
-- (id)headerRowStyleForRowIndex:(unint64_t)a3
+- (id)headerRowStyleForRowIndex:(unint64_t)index
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v5 = [(SXDataTableComponentStyleFactory *)self tableStyle];
-  v6 = [v5 headerRows];
+  tableStyle = [(SXDataTableComponentStyleFactory *)self tableStyle];
+  headerRows = [tableStyle headerRows];
 
-  v7 = [(SXDataTableComponentStyleFactory *)self rowStyleForRowIndex:a3];
+  v7 = [(SXDataTableComponentStyleFactory *)self rowStyleForRowIndex:index];
   v8 = v7;
-  if (v6)
+  if (headerRows)
   {
-    v9 = [(SXDataTableComponentStyleFactory *)self rowStyleMerger];
+    rowStyleMerger = [(SXDataTableComponentStyleFactory *)self rowStyleMerger];
     v14[0] = v8;
-    v14[1] = v6;
+    v14[1] = headerRows;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
-    v11 = [v9 mergeObjects:v10];
+    v11 = [rowStyleMerger mergeObjects:v10];
   }
 
   else
@@ -70,26 +70,26 @@
     v11 = v7;
   }
 
-  v12 = [(SXDataTableComponentStyleFactory *)self rowStyleForRowIndex:a3 usingBaseStyle:v11];
+  v12 = [(SXDataTableComponentStyleFactory *)self rowStyleForRowIndex:index usingBaseStyle:v11];
 
   return v12;
 }
 
-- (id)headerColumnStyleForColumnIndex:(unint64_t)a3
+- (id)headerColumnStyleForColumnIndex:(unint64_t)index
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v5 = [(SXDataTableComponentStyleFactory *)self tableStyle];
-  v6 = [v5 headerColumns];
+  tableStyle = [(SXDataTableComponentStyleFactory *)self tableStyle];
+  headerColumns = [tableStyle headerColumns];
 
-  v7 = [(SXDataTableComponentStyleFactory *)self columnStyleForColumnIndex:a3];
+  v7 = [(SXDataTableComponentStyleFactory *)self columnStyleForColumnIndex:index];
   v8 = v7;
-  if (v6)
+  if (headerColumns)
   {
-    v9 = [(SXDataTableComponentStyleFactory *)self columnStyleMerger];
+    columnStyleMerger = [(SXDataTableComponentStyleFactory *)self columnStyleMerger];
     v14[0] = v8;
-    v14[1] = v6;
+    v14[1] = headerColumns;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
-    v11 = [v9 mergeObjects:v10];
+    v11 = [columnStyleMerger mergeObjects:v10];
   }
 
   else
@@ -97,33 +97,33 @@
     v11 = v7;
   }
 
-  v12 = [(SXDataTableComponentStyleFactory *)self columnStyleForColumnIndex:a3 usingBaseStyle:v11];
+  v12 = [(SXDataTableComponentStyleFactory *)self columnStyleForColumnIndex:index usingBaseStyle:v11];
 
   return v12;
 }
 
-- (id)headerCellStyleForIndexPath:(id)a3
+- (id)headerCellStyleForIndexPath:(id)path
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = path.var1;
+  var0 = path.var0;
   v15[2] = *MEMORY[0x1E69E9840];
-  v6 = [(SXDataTableComponentStyleFactory *)self tableStyle];
-  v7 = [v6 headerCells];
+  tableStyle = [(SXDataTableComponentStyleFactory *)self tableStyle];
+  headerCells = [tableStyle headerCells];
 
-  v8 = [(SXDataTableComponentStyleFactory *)self cellStyleForIndexPath:var0, var1];
-  v9 = v8;
-  if (v7)
+  var1 = [(SXDataTableComponentStyleFactory *)self cellStyleForIndexPath:var0, var1];
+  v9 = var1;
+  if (headerCells)
   {
-    v10 = [(SXDataTableComponentStyleFactory *)self cellStyleMerger];
+    cellStyleMerger = [(SXDataTableComponentStyleFactory *)self cellStyleMerger];
     v15[0] = v9;
-    v15[1] = v7;
+    v15[1] = headerCells;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
-    v12 = [v10 mergeObjects:v11];
+    v12 = [cellStyleMerger mergeObjects:v11];
   }
 
   else
   {
-    v12 = v8;
+    v12 = var1;
   }
 
   v13 = [(SXDataTableComponentStyleFactory *)self cellStyleForIndexPath:var0 usingBaseStyle:var1, v12];
@@ -131,46 +131,46 @@
   return v13;
 }
 
-- (id)rowStyleForRowIndex:(unint64_t)a3
+- (id)rowStyleForRowIndex:(unint64_t)index
 {
-  v5 = [(SXDataTableComponentStyleFactory *)self tableStyle];
-  v6 = [v5 rows];
-  v7 = [(SXDataTableComponentStyleFactory *)self rowStyleForRowIndex:a3 usingBaseStyle:v6];
+  tableStyle = [(SXDataTableComponentStyleFactory *)self tableStyle];
+  rows = [tableStyle rows];
+  v7 = [(SXDataTableComponentStyleFactory *)self rowStyleForRowIndex:index usingBaseStyle:rows];
 
   return v7;
 }
 
-- (id)columnStyleForColumnIndex:(unint64_t)a3
+- (id)columnStyleForColumnIndex:(unint64_t)index
 {
-  v5 = [(SXDataTableComponentStyleFactory *)self tableStyle];
-  v6 = [v5 columns];
-  v7 = [(SXDataTableComponentStyleFactory *)self columnStyleForColumnIndex:a3 usingBaseStyle:v6];
+  tableStyle = [(SXDataTableComponentStyleFactory *)self tableStyle];
+  columns = [tableStyle columns];
+  v7 = [(SXDataTableComponentStyleFactory *)self columnStyleForColumnIndex:index usingBaseStyle:columns];
 
   return v7;
 }
 
-- (id)cellStyleForIndexPath:(id)a3
+- (id)cellStyleForIndexPath:(id)path
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v6 = [(SXDataTableComponentStyleFactory *)self tableStyle];
-  v7 = [v6 cells];
-  v8 = [(SXDataTableComponentStyleFactory *)self cellStyleForIndexPath:var0 usingBaseStyle:var1, v7];
+  var1 = path.var1;
+  var0 = path.var0;
+  tableStyle = [(SXDataTableComponentStyleFactory *)self tableStyle];
+  cells = [tableStyle cells];
+  v8 = [(SXDataTableComponentStyleFactory *)self cellStyleForIndexPath:var0 usingBaseStyle:var1, cells];
 
   return v8;
 }
 
-- (id)rowStyleForRowIndex:(unint64_t)a3 usingBaseStyle:(id)a4
+- (id)rowStyleForRowIndex:(unint64_t)index usingBaseStyle:(id)style
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v26 = [MEMORY[0x1E695DF70] array];
+  styleCopy = style;
+  array = [MEMORY[0x1E695DF70] array];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v21 = v6;
-  obj = [v6 conditional];
+  v21 = styleCopy;
+  obj = [styleCopy conditional];
   v24 = [obj countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v24)
   {
@@ -191,8 +191,8 @@
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v9 = [v8 selectors];
-        v10 = [v9 countByEnumeratingWithState:&v27 objects:v35 count:16];
+        selectors = [v8 selectors];
+        v10 = [selectors countByEnumeratingWithState:&v27 objects:v35 count:16];
         if (v10)
         {
           v11 = v10;
@@ -203,21 +203,21 @@
             {
               if (*v28 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(selectors);
               }
 
               v14 = *(*(&v27 + 1) + 8 * i);
-              v15 = [(SXDataTableComponentStyleFactory *)self selectorValidator];
-              v16 = [v15 validateRowSelector:v14 forRowIndex:a3];
+              selectorValidator = [(SXDataTableComponentStyleFactory *)self selectorValidator];
+              v16 = [selectorValidator validateRowSelector:v14 forRowIndex:index];
 
               if (v16)
               {
                 v17 = [SXDataTableStyleMatch matchWithStyle:v8 andSelector:v14];
-                [v26 addObject:v17];
+                [array addObject:v17];
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v27 objects:v35 count:16];
+            v11 = [selectors countByEnumeratingWithState:&v27 objects:v35 count:16];
           }
 
           while (v11);
@@ -233,23 +233,23 @@
     while (v24);
   }
 
-  v18 = [(SXDataTableComponentStyleFactory *)self rowStyleMerger];
-  v19 = [(SXDataTableComponentStyleFactory *)self styleByMergingStyleMatches:v26 forBaseStyle:v21 merger:v18];
+  rowStyleMerger = [(SXDataTableComponentStyleFactory *)self rowStyleMerger];
+  v19 = [(SXDataTableComponentStyleFactory *)self styleByMergingStyleMatches:array forBaseStyle:v21 merger:rowStyleMerger];
 
   return v19;
 }
 
-- (id)columnStyleForColumnIndex:(unint64_t)a3 usingBaseStyle:(id)a4
+- (id)columnStyleForColumnIndex:(unint64_t)index usingBaseStyle:(id)style
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v26 = [MEMORY[0x1E695DF70] array];
+  styleCopy = style;
+  array = [MEMORY[0x1E695DF70] array];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v21 = v6;
-  obj = [v6 conditional];
+  v21 = styleCopy;
+  obj = [styleCopy conditional];
   v24 = [obj countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v24)
   {
@@ -270,8 +270,8 @@
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v9 = [v8 selectors];
-        v10 = [v9 countByEnumeratingWithState:&v27 objects:v35 count:16];
+        selectors = [v8 selectors];
+        v10 = [selectors countByEnumeratingWithState:&v27 objects:v35 count:16];
         if (v10)
         {
           v11 = v10;
@@ -282,21 +282,21 @@
             {
               if (*v28 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(selectors);
               }
 
               v14 = *(*(&v27 + 1) + 8 * i);
-              v15 = [(SXDataTableComponentStyleFactory *)self selectorValidator];
-              v16 = [v15 validateColumnSelector:v14 forColumnIndex:a3];
+              selectorValidator = [(SXDataTableComponentStyleFactory *)self selectorValidator];
+              v16 = [selectorValidator validateColumnSelector:v14 forColumnIndex:index];
 
               if (v16)
               {
                 v17 = [SXDataTableStyleMatch matchWithStyle:v8 andSelector:v14];
-                [v26 addObject:v17];
+                [array addObject:v17];
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v27 objects:v35 count:16];
+            v11 = [selectors countByEnumeratingWithState:&v27 objects:v35 count:16];
           }
 
           while (v11);
@@ -312,25 +312,25 @@
     while (v24);
   }
 
-  v18 = [(SXDataTableComponentStyleFactory *)self columnStyleMerger];
-  v19 = [(SXDataTableComponentStyleFactory *)self styleByMergingStyleMatches:v26 forBaseStyle:v21 merger:v18];
+  columnStyleMerger = [(SXDataTableComponentStyleFactory *)self columnStyleMerger];
+  v19 = [(SXDataTableComponentStyleFactory *)self styleByMergingStyleMatches:array forBaseStyle:v21 merger:columnStyleMerger];
 
   return v19;
 }
 
-- (id)cellStyleForIndexPath:(id)a3 usingBaseStyle:(id)a4
+- (id)cellStyleForIndexPath:(id)path usingBaseStyle:(id)style
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = path.var1;
+  var0 = path.var0;
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v27 = [MEMORY[0x1E695DF70] array];
+  styleCopy = style;
+  array = [MEMORY[0x1E695DF70] array];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v22 = v7;
-  obj = [v7 conditional];
+  v22 = styleCopy;
+  obj = [styleCopy conditional];
   v25 = [obj countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v25)
   {
@@ -352,8 +352,8 @@
         v31 = 0u;
         v32 = 0u;
         v28 = v9;
-        v10 = [v9 selectors];
-        v11 = [v10 countByEnumeratingWithState:&v29 objects:v37 count:16];
+        selectors = [v9 selectors];
+        v11 = [selectors countByEnumeratingWithState:&v29 objects:v37 count:16];
         if (v11)
         {
           v12 = v11;
@@ -364,21 +364,21 @@
             {
               if (*v30 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(selectors);
               }
 
               v15 = *(*(&v29 + 1) + 8 * i);
-              v16 = [(SXDataTableComponentStyleFactory *)self selectorValidator];
-              v17 = [v16 validateCellSelector:v15 forIndexPath:{var0, var1}];
+              selectorValidator = [(SXDataTableComponentStyleFactory *)self selectorValidator];
+              v17 = [selectorValidator validateCellSelector:v15 forIndexPath:{var0, var1}];
 
               if (v17)
               {
                 v18 = [SXDataTableStyleMatch matchWithStyle:v28 andSelector:v15];
-                [v27 addObject:v18];
+                [array addObject:v18];
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v29 objects:v37 count:16];
+            v12 = [selectors countByEnumeratingWithState:&v29 objects:v37 count:16];
           }
 
           while (v12);
@@ -394,15 +394,15 @@
     while (v25);
   }
 
-  v19 = [(SXDataTableComponentStyleFactory *)self cellStyleMerger];
-  v20 = [(SXDataTableComponentStyleFactory *)self styleByMergingStyleMatches:v27 forBaseStyle:v22 merger:v19];
+  cellStyleMerger = [(SXDataTableComponentStyleFactory *)self cellStyleMerger];
+  v20 = [(SXDataTableComponentStyleFactory *)self styleByMergingStyleMatches:array forBaseStyle:v22 merger:cellStyleMerger];
 
   return v20;
 }
 
-- (unint64_t)isOddNumber:(int64_t)a3
+- (unint64_t)isOddNumber:(int64_t)number
 {
-  if (a3)
+  if (number)
   {
     return 2;
   }
@@ -413,9 +413,9 @@
   }
 }
 
-- (unint64_t)isEvenNumber:(int64_t)a3
+- (unint64_t)isEvenNumber:(int64_t)number
 {
-  if ((a3 == 0) | a3 & 1)
+  if ((number == 0) | number & 1)
   {
     return 1;
   }
@@ -426,18 +426,18 @@
   }
 }
 
-- (id)styleByMergingStyleMatches:(id)a3 forBaseStyle:(id)a4 merger:(id)a5
+- (id)styleByMergingStyleMatches:(id)matches forBaseStyle:(id)style merger:(id)merger
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(SXDataTableComponentStyleFactory *)self filterDuplicateSequentialStyles:a3];
+  styleCopy = style;
+  mergerCopy = merger;
+  v10 = [(SXDataTableComponentStyleFactory *)self filterDuplicateSequentialStyles:matches];
   v11 = [(SXDataTableComponentStyleFactory *)self sortStylesMatchesBySelectorWeight:v10];
-  v12 = [MEMORY[0x1E695DF70] array];
-  v13 = v12;
-  if (v8)
+  array = [MEMORY[0x1E695DF70] array];
+  v13 = array;
+  if (styleCopy)
   {
-    [v12 addObject:v8];
+    [array addObject:styleCopy];
   }
 
   v24 = 0u;
@@ -459,8 +459,8 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v22 + 1) + 8 * i) style];
-        [v13 addObject:v19];
+        style = [*(*(&v22 + 1) + 8 * i) style];
+        [v13 addObject:style];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -469,41 +469,41 @@
     while (v16);
   }
 
-  v20 = [v9 mergeObjects:v13];
+  v20 = [mergerCopy mergeObjects:v13];
 
   return v20;
 }
 
-- (id)filterDuplicateSequentialStyles:(id)a3
+- (id)filterDuplicateSequentialStyles:(id)styles
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  if ([v4 count])
+  stylesCopy = styles;
+  array = [MEMORY[0x1E695DF70] array];
+  if ([stylesCopy count])
   {
     v6 = 0;
     do
     {
-      v7 = [v4 objectAtIndex:v6];
+      v7 = [stylesCopy objectAtIndex:v6];
       v8 = v6 + 1;
-      while (v8 < [v4 count])
+      while (v8 < [stylesCopy count])
       {
-        v9 = [v4 objectAtIndex:v8];
-        v10 = [v7 style];
-        v11 = [v9 style];
+        v9 = [stylesCopy objectAtIndex:v8];
+        style = [v7 style];
+        style2 = [v9 style];
 
-        if (v10 != v11)
+        if (style != style2)
         {
           goto LABEL_11;
         }
 
-        v12 = [v7 selector];
-        v13 = [v9 selector];
-        v14 = [(SXDataTableComponentStyleFactory *)self compareSelector:v12 withOtherSelector:v13];
+        selector = [v7 selector];
+        selector2 = [v9 selector];
+        v14 = [(SXDataTableComponentStyleFactory *)self compareSelector:selector withOtherSelector:selector2];
 
         if ((v14 + 1) <= 1)
         {
-          [v5 addObject:v7];
+          [array addObject:v7];
 LABEL_11:
 
           break;
@@ -511,7 +511,7 @@ LABEL_11:
 
         if (v14 == 1)
         {
-          [v5 addObject:v9];
+          [array addObject:v9];
           v6 = ++v8;
         }
       }
@@ -519,15 +519,15 @@ LABEL_11:
       ++v6;
     }
 
-    while (v6 < [v4 count]);
+    while (v6 < [stylesCopy count]);
   }
 
-  v15 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v16 = v4;
+  v16 = stylesCopy;
   v17 = [v16 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v17)
   {
@@ -543,9 +543,9 @@ LABEL_11:
         }
 
         v21 = *(*(&v24 + 1) + 8 * i);
-        if (([v5 containsObject:{v21, v24}] & 1) == 0)
+        if (([array containsObject:{v21, v24}] & 1) == 0)
         {
-          [v15 addObject:v21];
+          [array2 addObject:v21];
         }
       }
 
@@ -555,19 +555,19 @@ LABEL_11:
     while (v18);
   }
 
-  v22 = [v15 copy];
+  v22 = [array2 copy];
 
   return v22;
 }
 
-- (id)sortStylesMatchesBySelectorWeight:(id)a3
+- (id)sortStylesMatchesBySelectorWeight:(id)weight
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __70__SXDataTableComponentStyleFactory_sortStylesMatchesBySelectorWeight___block_invoke;
   v5[3] = &unk_1E85002F0;
   v5[4] = self;
-  v3 = [a3 sortedArrayUsingComparator:v5];
+  v3 = [weight sortedArrayUsingComparator:v5];
 
   return v3;
 }
@@ -583,28 +583,28 @@ uint64_t __70__SXDataTableComponentStyleFactory_sortStylesMatchesBySelectorWeigh
   return v8;
 }
 
-- (int64_t)compareSelector:(id)a3 withOtherSelector:(id)a4
+- (int64_t)compareSelector:(id)selector withOtherSelector:(id)otherSelector
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 selectorWeight];
-  v8 = [v5 selectorWeight];
-  v9 = [v6 numberOfConditions];
+  otherSelectorCopy = otherSelector;
+  selectorCopy = selector;
+  selectorWeight = [selectorCopy selectorWeight];
+  selectorWeight2 = [otherSelectorCopy selectorWeight];
+  numberOfConditions = [selectorCopy numberOfConditions];
 
-  v10 = [v5 numberOfConditions];
+  numberOfConditions2 = [otherSelectorCopy numberOfConditions];
   v11 = 1;
   v12 = -1;
-  if (v9 >= v10)
+  if (numberOfConditions >= numberOfConditions2)
   {
-    v12 = v9 > v10;
+    v12 = numberOfConditions > numberOfConditions2;
   }
 
-  if (v7 <= v8)
+  if (selectorWeight <= selectorWeight2)
   {
     v11 = v12;
   }
 
-  if (v7 >= v8)
+  if (selectorWeight >= selectorWeight2)
   {
     return v11;
   }
@@ -615,18 +615,18 @@ uint64_t __70__SXDataTableComponentStyleFactory_sortStylesMatchesBySelectorWeigh
   }
 }
 
-- (id)descriptorForIdentifier:(id)a3
+- (id)descriptorForIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(SXDataTableComponentStyleFactory *)self recordStore];
-  v6 = [v5 descriptors];
+  recordStore = [(SXDataTableComponentStyleFactory *)self recordStore];
+  descriptors = [recordStore descriptors];
 
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [descriptors countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -636,12 +636,12 @@ uint64_t __70__SXDataTableComponentStyleFactory_sortStylesMatchesBySelectorWeigh
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(descriptors);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [v11 isEqualToString:v4];
+        identifier = [v10 identifier];
+        v12 = [identifier isEqualToString:identifierCopy];
 
         if (v12)
         {
@@ -650,7 +650,7 @@ uint64_t __70__SXDataTableComponentStyleFactory_sortStylesMatchesBySelectorWeigh
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [descriptors countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;

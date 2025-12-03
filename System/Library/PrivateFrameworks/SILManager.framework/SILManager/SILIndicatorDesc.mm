@@ -1,5 +1,5 @@
 @interface SILIndicatorDesc
-+ (BOOL)isFaceIDIndicator:(int64_t)a3;
++ (BOOL)isFaceIDIndicator:(int64_t)indicator;
 - (BOOL)isCameraIndicator;
 - (BOOL)isMicrophoneAccessibilityIndicator;
 - (BOOL)isMicrophoneIndicator;
@@ -7,7 +7,7 @@
 - (NSArray)dynamicBoundingBoxes;
 - (NSString)constraintsFile;
 - (_TtC10SILManager14SILConstraints)constraints;
-- (void)setConstraints:(id)a3;
+- (void)setConstraints:(id)constraints;
 @end
 
 @implementation SILIndicatorDesc
@@ -16,7 +16,7 @@
 {
   v2 = MEMORY[0x277D85000];
   v3 = *((*MEMORY[0x277D85000] & *self->_TtC10SILManager12SILAssetDesc_opaque) + 0x138);
-  v4 = self;
+  selfCopy = self;
   result = v3();
   if (result)
   {
@@ -41,7 +41,7 @@
 - (NSArray)boundingBoxes
 {
   v2 = *((*MEMORY[0x277D85000] & *self->_TtC10SILManager12SILAssetDesc_opaque) + 0x138);
-  v3 = self;
+  selfCopy = self;
   result = v2();
   if (result)
   {
@@ -66,7 +66,7 @@
 - (NSArray)dynamicBoundingBoxes
 {
   v2 = *((*MEMORY[0x277D85000] & *self->_TtC10SILManager12SILAssetDesc_opaque) + 0x138);
-  v3 = self;
+  selfCopy = self;
   result = v2();
   if (result)
   {
@@ -95,22 +95,22 @@
   return *&self->_TtC10SILManager12SILAssetDesc_opaque[v3];
 }
 
-- (void)setConstraints:(id)a3
+- (void)setConstraints:(id)constraints
 {
   v5 = OBJC_IVAR____TtC10SILManager16SILIndicatorDesc_constraints;
   swift_beginAccess();
   v6 = *&self->_TtC10SILManager12SILAssetDesc_opaque[v5];
-  *&self->_TtC10SILManager12SILAssetDesc_opaque[v5] = a3;
-  v7 = a3;
+  *&self->_TtC10SILManager12SILAssetDesc_opaque[v5] = constraints;
+  constraintsCopy = constraints;
 }
 
-+ (BOOL)isFaceIDIndicator:(int64_t)a3
++ (BOOL)isFaceIDIndicator:(int64_t)indicator
 {
   if (one-time initialization token for manifest != -1)
   {
-    v8 = a3;
+    indicatorCopy = indicator;
     swift_once();
-    a3 = v8;
+    indicator = indicatorCopy;
   }
 
   if (!static SILManifest.manifest)
@@ -118,7 +118,7 @@
     return 0;
   }
 
-  v3 = (*((*MEMORY[0x277D85000] & *static SILManifest.manifest) + 0xA8))(a3);
+  v3 = (*((*MEMORY[0x277D85000] & *static SILManifest.manifest) + 0xA8))(indicator);
   v5 = *(v3 + OBJC_IVAR____TtC10SILManager12SILAssetDesc_flipbook);
   v6 = v3;
   v7 = v5;
@@ -134,7 +134,7 @@
 - (BOOL)isCameraIndicator
 {
   v2 = *((*MEMORY[0x277D85000] & *self->_TtC10SILManager12SILAssetDesc_opaque) + 0xA8);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
 
   return v4 == 0;
@@ -143,7 +143,7 @@
 - (BOOL)isMicrophoneIndicator
 {
   v2 = *((*MEMORY[0x277D85000] & *self->_TtC10SILManager12SILAssetDesc_opaque) + 0xA8);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
 
   return (v4 - 1) < 2;
@@ -152,7 +152,7 @@
 - (BOOL)isMicrophoneAccessibilityIndicator
 {
   v2 = *((*MEMORY[0x277D85000] & *self->_TtC10SILManager12SILAssetDesc_opaque) + 0xA8);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
 
   return v4 == 2;

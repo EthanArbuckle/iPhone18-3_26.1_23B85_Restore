@@ -1,16 +1,16 @@
 @interface SKPaymentAppleIDAuthorizationRequest
-- (SKPaymentAppleIDAuthorizationRequest)initWithClientIdentifier:(id)a3 teamIdentifier:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SKPaymentAppleIDAuthorizationRequest)initWithClientIdentifier:(id)identifier teamIdentifier:(id)teamIdentifier;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SKPaymentAppleIDAuthorizationRequest
 
-- (SKPaymentAppleIDAuthorizationRequest)initWithClientIdentifier:(id)a3 teamIdentifier:(id)a4
+- (SKPaymentAppleIDAuthorizationRequest)initWithClientIdentifier:(id)identifier teamIdentifier:(id)teamIdentifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  identifierCopy = identifier;
+  teamIdentifierCopy = teamIdentifier;
+  v9 = teamIdentifierCopy;
+  if (!identifierCopy)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -20,7 +20,7 @@
     goto LABEL_10;
   }
 
-  if (!v8)
+  if (!teamIdentifierCopy)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -28,7 +28,7 @@
     }
 
 LABEL_10:
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
@@ -38,18 +38,18 @@ LABEL_10:
   p_isa = &v10->super.isa;
   if (v10)
   {
-    objc_storeStrong(&v10->_clientIdentifier, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v10->_clientIdentifier, identifier);
+    objc_storeStrong(p_isa + 2, teamIdentifier);
   }
 
   self = p_isa;
-  v12 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v12;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SKPaymentAppleIDAuthorizationRequest);
   v5 = [(NSString *)self->_clientIdentifier copy];

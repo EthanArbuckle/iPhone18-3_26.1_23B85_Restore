@@ -1,7 +1,7 @@
 @interface NavdOffRouteInfo
-- (NavdOffRouteInfo)initWithCurrentDate:(id)a3 location:(id)a4 destination:(id)a5;
+- (NavdOffRouteInfo)initWithCurrentDate:(id)date location:(id)location destination:(id)destination;
 - (id)description;
-- (void)updateWithCurrentDate:(id)a3 location:(id)a4 isMostRecentReroute:(BOOL)a5 throttledReroutesCount:(unint64_t)a6;
+- (void)updateWithCurrentDate:(id)date location:(id)location isMostRecentReroute:(BOOL)reroute throttledReroutesCount:(unint64_t)count;
 @end
 
 @implementation NavdOffRouteInfo
@@ -15,18 +15,18 @@
   return v5;
 }
 
-- (NavdOffRouteInfo)initWithCurrentDate:(id)a3 location:(id)a4 destination:(id)a5
+- (NavdOffRouteInfo)initWithCurrentDate:(id)date location:(id)location destination:(id)destination
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v9 = a3;
+  var1 = destination.var1;
+  var0 = destination.var0;
+  dateCopy = date;
   v14.receiver = self;
   v14.super_class = NavdOffRouteInfo;
   v10 = [(NavdOffRouteInfo *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_date, a3);
+    objc_storeStrong(&v10->_date, date);
     v11->_destinationCoordinate.latitude = var0;
     v11->_destinationCoordinate.longitude = var1;
     GEOCalculateDistance();
@@ -36,12 +36,12 @@
   return v11;
 }
 
-- (void)updateWithCurrentDate:(id)a3 location:(id)a4 isMostRecentReroute:(BOOL)a5 throttledReroutesCount:(unint64_t)a6
+- (void)updateWithCurrentDate:(id)date location:(id)location isMostRecentReroute:(BOOL)reroute throttledReroutesCount:(unint64_t)count
 {
-  v7 = a5;
-  v32 = a3;
-  objc_storeStrong(&self->_lastUpdate, a3);
-  if (v7)
+  rerouteCopy = reroute;
+  dateCopy = date;
+  objc_storeStrong(&self->_lastUpdate, date);
+  if (rerouteCopy)
   {
     latitude = self->_destinationCoordinate.latitude;
     longitude = self->_destinationCoordinate.longitude;
@@ -60,10 +60,10 @@
     }
 
     GEOConfigGetDouble();
-    self->_throttledReroutesPenalty = v20 - pow((a6 + 1), -0.7) * v20;
+    self->_throttledReroutesPenalty = v20 - pow((count + 1), -0.7) * v20;
   }
 
-  [v32 timeIntervalSinceDate:self->_date];
+  [dateCopy timeIntervalSinceDate:self->_date];
   v22 = v21;
   GEOConfigGetDouble();
   v24 = v23;

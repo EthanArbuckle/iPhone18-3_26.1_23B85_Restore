@@ -1,6 +1,6 @@
 @interface CNRegulatoryLogger
 + (id)sharedInstanceForAddressBook;
-- (CNRegulatoryLogger)initWithAuditToken:(id)a3 assumedIdentity:(id)a4 logCategory:(const char *)a5;
+- (CNRegulatoryLogger)initWithAuditToken:(id)token assumedIdentity:(id)identity logCategory:(const char *)category;
 - (NSString)processDescription;
 - (PAAccessLogger)privacyAccountingLogger;
 - (PAApplication)privacyAccountingAccessor;
@@ -11,12 +11,12 @@
 - (void)dealloc;
 - (void)logContactPickerAccessEvent;
 - (void)logContactsDataAccessEvent;
-- (void)logContactsDataAccessEventWithAssetIdentifiers:(id)a3;
-- (void)logGreenTeaEvent:(id)a3;
-- (void)logPrivacyAccountingAccessEvent:(id)a3;
+- (void)logContactsDataAccessEventWithAssetIdentifiers:(id)identifiers;
+- (void)logGreenTeaEvent:(id)event;
+- (void)logPrivacyAccountingAccessEvent:(id)event;
 - (void)willLogContactPickerAccessEvent;
 - (void)willLogContactsDataAccessEvent;
-- (void)willLogContactsDataAccessEventWithAssetIdentifiers:(id)a3;
+- (void)willLogContactsDataAccessEventWithAssetIdentifiers:(id)identifiers;
 - (void)willNotLogContactPickerAccessEventAsLoggingDisabled;
 - (void)willNotLogContactPickerAccessEventAsLoggingInProcess;
 - (void)willNotLogContactsDataAccessEventAsLoggingDisabled;
@@ -26,15 +26,15 @@
 
 - (void)logContactsDataAccessEvent
 {
-  v3 = [(CNRegulatoryLogger *)self privacyAccountingLogger];
-  v4 = [v3 loggingEnabled];
+  privacyAccountingLogger = [(CNRegulatoryLogger *)self privacyAccountingLogger];
+  loggingEnabled = [privacyAccountingLogger loggingEnabled];
 
-  if (v4)
+  if (loggingEnabled)
   {
     [(CNRegulatoryLogger *)self willLogContactsDataAccessEvent];
     v5 = objc_alloc(getPATCCAccessClass());
-    v6 = [(CNRegulatoryLogger *)self privacyAccountingAccessor];
-    v7 = [v5 initWithAccessor:v6 forService:*MEMORY[0x1E69D5500]];
+    privacyAccountingAccessor = [(CNRegulatoryLogger *)self privacyAccountingAccessor];
+    v7 = [v5 initWithAccessor:privacyAccountingAccessor forService:*MEMORY[0x1E69D5500]];
 
     [(CNRegulatoryLogger *)self logPrivacyAccountingAccessEvent:v7];
   }
@@ -96,28 +96,28 @@ id __47__CNRegulatoryLogger_privacyAccountingAccessor__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x1E69E9840];
   if ([(CNRegulatoryLogger *)self isPrivacyAccountingDiagnosticsEnabled])
   {
-    v3 = [(CNRegulatoryLogger *)self cnAuditToken];
+    cnAuditToken = [(CNRegulatoryLogger *)self cnAuditToken];
 
-    v4 = [(CNRegulatoryLogger *)self os_log];
-    v5 = os_log_type_enabled(v4, OS_LOG_TYPE_INFO);
-    if (v3)
+    os_log = [(CNRegulatoryLogger *)self os_log];
+    v5 = os_log_type_enabled(os_log, OS_LOG_TYPE_INFO);
+    if (cnAuditToken)
     {
       if (v5)
       {
-        v6 = [(CNRegulatoryLogger *)self processDescription];
+        processDescription = [(CNRegulatoryLogger *)self processDescription];
         v9 = 138412290;
-        v10 = v6;
+        v10 = processDescription;
         v7 = "Logging out-of-process contacts data access event for %@";
 LABEL_7:
-        _os_log_impl(&dword_1859F0000, v4, OS_LOG_TYPE_INFO, v7, &v9, 0xCu);
+        _os_log_impl(&dword_1859F0000, os_log, OS_LOG_TYPE_INFO, v7, &v9, 0xCu);
       }
     }
 
     else if (v5)
     {
-      v6 = [(CNRegulatoryLogger *)self processDescription];
+      processDescription = [(CNRegulatoryLogger *)self processDescription];
       v9 = 138412290;
-      v10 = v6;
+      v10 = processDescription;
       v7 = "Logging in-process contacts data access event for %@";
       goto LABEL_7;
     }
@@ -128,31 +128,31 @@ LABEL_7:
 
 - (id)privacyAccountingAccessorImpl
 {
-  v3 = [(CNRegulatoryLogger *)self cnAuditToken];
-  if (v3)
+  cnAuditToken = [(CNRegulatoryLogger *)self cnAuditToken];
+  if (cnAuditToken)
   {
-    v4 = v3;
-    v5 = [(CNRegulatoryLogger *)self assumedIdentity];
+    v4 = cnAuditToken;
+    assumedIdentity = [(CNRegulatoryLogger *)self assumedIdentity];
 
-    if (v5)
+    if (assumedIdentity)
     {
-      v6 = [(CNRegulatoryLogger *)self accessorForAuditTokenValidatingAssumedIdentity];
+      accessorForAuditTokenValidatingAssumedIdentity = [(CNRegulatoryLogger *)self accessorForAuditTokenValidatingAssumedIdentity];
 LABEL_4:
-      v7 = v6;
+      v7 = accessorForAuditTokenValidatingAssumedIdentity;
       goto LABEL_13;
     }
   }
 
-  v8 = [(CNRegulatoryLogger *)self cnAuditToken];
+  cnAuditToken2 = [(CNRegulatoryLogger *)self cnAuditToken];
 
-  if (v8)
+  if (cnAuditToken2)
   {
     v9 = objc_alloc(getPAApplicationClass());
-    v10 = [(CNRegulatoryLogger *)self cnAuditToken];
-    v11 = v10;
-    if (v10)
+    cnAuditToken3 = [(CNRegulatoryLogger *)self cnAuditToken];
+    assumedIdentity3 = cnAuditToken3;
+    if (cnAuditToken3)
     {
-      [v10 audit_token];
+      [cnAuditToken3 audit_token];
     }
 
     else
@@ -165,18 +165,18 @@ LABEL_4:
 
   else
   {
-    v12 = [(CNRegulatoryLogger *)self assumedIdentity];
+    assumedIdentity2 = [(CNRegulatoryLogger *)self assumedIdentity];
 
     PAApplicationClass = getPAApplicationClass();
-    if (!v12)
+    if (!assumedIdentity2)
     {
-      v6 = [(objc_class *)PAApplicationClass applicationForCurrentProcess];
+      accessorForAuditTokenValidatingAssumedIdentity = [(objc_class *)PAApplicationClass applicationForCurrentProcess];
       goto LABEL_4;
     }
 
     v14 = [PAApplicationClass alloc];
-    v11 = [(CNRegulatoryLogger *)self assumedIdentity];
-    v15 = [v14 initWithInProcessAssumedIdentity:v11];
+    assumedIdentity3 = [(CNRegulatoryLogger *)self assumedIdentity];
+    v15 = [v14 initWithInProcessAssumedIdentity:assumedIdentity3];
   }
 
   v7 = v15;
@@ -191,28 +191,28 @@ LABEL_13:
   v11 = *MEMORY[0x1E69E9840];
   if ([(CNRegulatoryLogger *)self isPrivacyAccountingDiagnosticsEnabled])
   {
-    v3 = [(CNRegulatoryLogger *)self cnAuditToken];
+    cnAuditToken = [(CNRegulatoryLogger *)self cnAuditToken];
 
-    v4 = [(CNRegulatoryLogger *)self os_log];
-    v5 = os_log_type_enabled(v4, OS_LOG_TYPE_INFO);
-    if (v3)
+    os_log = [(CNRegulatoryLogger *)self os_log];
+    v5 = os_log_type_enabled(os_log, OS_LOG_TYPE_INFO);
+    if (cnAuditToken)
     {
       if (v5)
       {
-        v6 = [(CNRegulatoryLogger *)self processDescription];
+        processDescription = [(CNRegulatoryLogger *)self processDescription];
         v9 = 138412290;
-        v10 = v6;
+        v10 = processDescription;
         v7 = "Logging disabled with out-of-process contacts data access event for %@";
 LABEL_7:
-        _os_log_impl(&dword_1859F0000, v4, OS_LOG_TYPE_INFO, v7, &v9, 0xCu);
+        _os_log_impl(&dword_1859F0000, os_log, OS_LOG_TYPE_INFO, v7, &v9, 0xCu);
       }
     }
 
     else if (v5)
     {
-      v6 = [(CNRegulatoryLogger *)self processDescription];
+      processDescription = [(CNRegulatoryLogger *)self processDescription];
       v9 = 138412290;
-      v10 = v6;
+      v10 = processDescription;
       v7 = "Logging disabled with in-process contacts data access event for %@";
       goto LABEL_7;
     }
@@ -252,30 +252,30 @@ LABEL_7:
   return v2;
 }
 
-- (CNRegulatoryLogger)initWithAuditToken:(id)a3 assumedIdentity:(id)a4 logCategory:(const char *)a5
+- (CNRegulatoryLogger)initWithAuditToken:(id)token assumedIdentity:(id)identity logCategory:(const char *)category
 {
-  v9 = a3;
-  v10 = a4;
+  tokenCopy = token;
+  identityCopy = identity;
   v23.receiver = self;
   v23.super_class = CNRegulatoryLogger;
   v11 = [(CNRegulatoryLogger *)&v23 init];
   if (v11)
   {
-    if (a5)
+    if (category)
     {
-      v12 = a5;
+      categoryCopy = category;
     }
 
     else
     {
-      v12 = "CNRegulatoryLogger";
+      categoryCopy = "CNRegulatoryLogger";
     }
 
-    v13 = os_log_create("com.apple.contacts", v12);
+    v13 = os_log_create("com.apple.contacts", categoryCopy);
     os_log = v11->_os_log;
     v11->_os_log = v13;
 
-    if (!v9)
+    if (!tokenCopy)
     {
       if (ct_green_tea_logging_enabled())
       {
@@ -285,9 +285,9 @@ LABEL_7:
       v15 = +[CNUserDefaults standardPreferences];
       v16 = [v15 stringForKey:@"CNGreenTeaDiagnosticsForProcessName"];
 
-      v17 = [MEMORY[0x1E696AE30] processInfo];
-      v18 = [v17 processName];
-      v11->_isGreenTeaDiagnosticsEnabled = [v16 isEqualToString:v18];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      processName = [processInfo processName];
+      v11->_isGreenTeaDiagnosticsEnabled = [v16 isEqualToString:processName];
 
       v19 = +[CNUserDefaults standardPreferences];
       v11->_greenTeaDiagnosticLogFaultForEventCount = [v19 integerForKey:@"CNGreenTeaDiagnosticsLogFaultForEventCount"];
@@ -295,8 +295,8 @@ LABEL_7:
       v11->_greenTeaDiagnosticEventCounter = 0;
     }
 
-    objc_storeStrong(&v11->_cnAuditToken, a3);
-    objc_storeStrong(&v11->_assumedIdentity, a4);
+    objc_storeStrong(&v11->_cnAuditToken, token);
+    objc_storeStrong(&v11->_assumedIdentity, identity);
     v20 = +[CNUserDefaults standardPreferences];
     v11->_isPrivacyAccountingDiagnosticsEnabled = [v20 userHasOptedInToPreference:@"CNPrivacyAccountingDiagnosticsEnabled"];
 
@@ -306,10 +306,10 @@ LABEL_7:
   return v11;
 }
 
-- (void)logGreenTeaEvent:(id)a3
+- (void)logGreenTeaEvent:(id)event
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   if ([(CNRegulatoryLogger *)self greenTeaLogger])
   {
     [(CNRegulatoryLogger *)self greenTeaLogger];
@@ -318,31 +318,31 @@ LABEL_7:
     if (v5 && os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v14 = v4;
+      v14 = eventCopy;
       _os_log_impl(&dword_1859F0000, v6, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
     }
   }
 
   if ([(CNRegulatoryLogger *)self isGreenTeaDiagnosticsEnabled])
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Triggered GreenTea logging event: %@", v4];
+    eventCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Triggered GreenTea logging event: %@", eventCopy];
     v8 = [(CNRegulatoryLogger *)self greenTeaDiagnosticEventCounter]+ 1;
     [(CNRegulatoryLogger *)self setGreenTeaDiagnosticEventCounter:v8];
-    v9 = [(CNRegulatoryLogger *)self greenTeaDiagnosticLogFaultForEventCount];
-    v10 = [(CNRegulatoryLogger *)self os_log];
-    v11 = v10;
-    if (v8 == v9)
+    greenTeaDiagnosticLogFaultForEventCount = [(CNRegulatoryLogger *)self greenTeaDiagnosticLogFaultForEventCount];
+    os_log = [(CNRegulatoryLogger *)self os_log];
+    v11 = os_log;
+    if (v8 == greenTeaDiagnosticLogFaultForEventCount)
     {
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+      if (os_log_type_enabled(os_log, OS_LOG_TYPE_FAULT))
       {
-        [(CNRegulatoryLogger *)v7 logGreenTeaEvent:v11];
+        [(CNRegulatoryLogger *)eventCopy logGreenTeaEvent:v11];
       }
     }
 
-    else if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+    else if (os_log_type_enabled(os_log, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v14 = v7;
+      v14 = eventCopy;
       _os_log_impl(&dword_1859F0000, v11, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
     }
   }
@@ -350,20 +350,20 @@ LABEL_7:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logContactsDataAccessEventWithAssetIdentifiers:(id)a3
+- (void)logContactsDataAccessEventWithAssetIdentifiers:(id)identifiers
 {
-  v9 = a3;
-  if ([v9 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
-    v4 = [(CNRegulatoryLogger *)self privacyAccountingLogger];
-    v5 = [v4 loggingEnabled];
+    privacyAccountingLogger = [(CNRegulatoryLogger *)self privacyAccountingLogger];
+    loggingEnabled = [privacyAccountingLogger loggingEnabled];
 
-    if (v5)
+    if (loggingEnabled)
     {
-      [(CNRegulatoryLogger *)self willLogContactsDataAccessEventWithAssetIdentifiers:v9];
+      [(CNRegulatoryLogger *)self willLogContactsDataAccessEventWithAssetIdentifiers:identifiersCopy];
       v6 = objc_alloc(getPATCCAccessClass());
-      v7 = [(CNRegulatoryLogger *)self privacyAccountingAccessor];
-      v8 = [v6 initWithAccessor:v7 forService:*MEMORY[0x1E69D5500] assetIdentifiers:v9];
+      privacyAccountingAccessor = [(CNRegulatoryLogger *)self privacyAccountingAccessor];
+      v8 = [v6 initWithAccessor:privacyAccountingAccessor forService:*MEMORY[0x1E69D5500] assetIdentifiers:identifiersCopy];
 
       [(CNRegulatoryLogger *)self logPrivacyAccountingAccessEvent:v8];
     }
@@ -377,19 +377,19 @@ LABEL_7:
 
 - (void)logContactPickerAccessEvent
 {
-  v3 = [(CNRegulatoryLogger *)self privacyAccountingLogger];
-  v4 = [v3 loggingEnabled];
+  privacyAccountingLogger = [(CNRegulatoryLogger *)self privacyAccountingLogger];
+  loggingEnabled = [privacyAccountingLogger loggingEnabled];
 
-  if (v4)
+  if (loggingEnabled)
   {
-    v5 = [(CNRegulatoryLogger *)self cnAuditToken];
+    cnAuditToken = [(CNRegulatoryLogger *)self cnAuditToken];
 
-    if (v5)
+    if (cnAuditToken)
     {
       [(CNRegulatoryLogger *)self willLogContactPickerAccessEvent];
       v6 = objc_alloc(getPAOutOfProcessPickerAccessClass());
-      v7 = [(CNRegulatoryLogger *)self privacyAccountingAccessor];
-      v8 = [v6 initWithAccessor:v7 forType:2];
+      privacyAccountingAccessor = [(CNRegulatoryLogger *)self privacyAccountingAccessor];
+      v8 = [v6 initWithAccessor:privacyAccountingAccessor forType:2];
 
       [(CNRegulatoryLogger *)self logPrivacyAccountingAccessEvent:v8];
     }
@@ -411,11 +411,11 @@ LABEL_7:
 - (id)accessorForAuditTokenValidatingAssumedIdentity
 {
   v3 = softLinkPAAuthenticatedClientIdentity;
-  v4 = [(CNRegulatoryLogger *)self cnAuditToken];
-  v5 = v4;
-  if (v4)
+  cnAuditToken = [(CNRegulatoryLogger *)self cnAuditToken];
+  v5 = cnAuditToken;
+  if (cnAuditToken)
   {
-    [v4 audit_token];
+    [cnAuditToken audit_token];
   }
 
   else
@@ -429,65 +429,65 @@ LABEL_7:
 
   if (v7)
   {
-    v8 = [objc_alloc(getPAApplicationClass()) initWithTCCIdentity:v7];
+    applicationForCurrentProcess = [objc_alloc(getPAApplicationClass()) initWithTCCIdentity:v7];
   }
 
   else
   {
-    v9 = [(CNRegulatoryLogger *)self os_log];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    os_log = [(CNRegulatoryLogger *)self os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       [(CNRegulatoryLogger *)self accessorForAuditTokenValidatingAssumedIdentity];
     }
 
-    v8 = [(objc_class *)getPAApplicationClass() applicationForCurrentProcess];
+    applicationForCurrentProcess = [(objc_class *)getPAApplicationClass() applicationForCurrentProcess];
   }
 
-  v10 = v8;
+  v10 = applicationForCurrentProcess;
 
   return v10;
 }
 
-- (void)logPrivacyAccountingAccessEvent:(id)a3
+- (void)logPrivacyAccountingAccessEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(CNRegulatoryLogger *)self privacyAccountingLogger];
-  [v5 log:v4];
+  eventCopy = event;
+  privacyAccountingLogger = [(CNRegulatoryLogger *)self privacyAccountingLogger];
+  [privacyAccountingLogger log:eventCopy];
 }
 
-- (void)willLogContactsDataAccessEventWithAssetIdentifiers:(id)a3
+- (void)willLogContactsDataAccessEventWithAssetIdentifiers:(id)identifiers
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   if ([(CNRegulatoryLogger *)self isPrivacyAccountingDiagnosticsEnabled])
   {
-    v5 = [v4 allObjects];
-    v6 = [v5 _cn_map:&__block_literal_global_6];
+    allObjects = [identifiersCopy allObjects];
+    v6 = [allObjects _cn_map:&__block_literal_global_6];
 
-    v7 = [(CNRegulatoryLogger *)self cnAuditToken];
+    cnAuditToken = [(CNRegulatoryLogger *)self cnAuditToken];
 
-    v8 = [(CNRegulatoryLogger *)self os_log];
-    v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
-    if (v7)
+    os_log = [(CNRegulatoryLogger *)self os_log];
+    v9 = os_log_type_enabled(os_log, OS_LOG_TYPE_INFO);
+    if (cnAuditToken)
     {
       if (v9)
       {
-        v10 = [(CNRegulatoryLogger *)self processDescription];
+        processDescription = [(CNRegulatoryLogger *)self processDescription];
         v13 = 138412546;
-        v14 = v10;
+        v14 = processDescription;
         v15 = 2112;
         v16 = v6;
         v11 = "Logging out-of-process contacts data access event for %@, %@";
 LABEL_7:
-        _os_log_impl(&dword_1859F0000, v8, OS_LOG_TYPE_INFO, v11, &v13, 0x16u);
+        _os_log_impl(&dword_1859F0000, os_log, OS_LOG_TYPE_INFO, v11, &v13, 0x16u);
       }
     }
 
     else if (v9)
     {
-      v10 = [(CNRegulatoryLogger *)self processDescription];
+      processDescription = [(CNRegulatoryLogger *)self processDescription];
       v13 = 138412546;
-      v14 = v10;
+      v14 = processDescription;
       v15 = 2112;
       v16 = v6;
       v11 = "Logging in-process contacts data access event for %@, %@";
@@ -512,28 +512,28 @@ id __73__CNRegulatoryLogger_willLogContactsDataAccessEventWithAssetIdentifiers__
   v11 = *MEMORY[0x1E69E9840];
   if ([(CNRegulatoryLogger *)self isPrivacyAccountingDiagnosticsEnabled])
   {
-    v3 = [(CNRegulatoryLogger *)self cnAuditToken];
+    cnAuditToken = [(CNRegulatoryLogger *)self cnAuditToken];
 
-    v4 = [(CNRegulatoryLogger *)self os_log];
-    v5 = os_log_type_enabled(v4, OS_LOG_TYPE_INFO);
-    if (v3)
+    os_log = [(CNRegulatoryLogger *)self os_log];
+    v5 = os_log_type_enabled(os_log, OS_LOG_TYPE_INFO);
+    if (cnAuditToken)
     {
       if (v5)
       {
-        v6 = [(CNRegulatoryLogger *)self processDescription];
+        processDescription = [(CNRegulatoryLogger *)self processDescription];
         v9 = 138412290;
-        v10 = v6;
+        v10 = processDescription;
         v7 = "Logging disabled with out-of-process contact picker access event for %@.";
 LABEL_7:
-        _os_log_impl(&dword_1859F0000, v4, OS_LOG_TYPE_INFO, v7, &v9, 0xCu);
+        _os_log_impl(&dword_1859F0000, os_log, OS_LOG_TYPE_INFO, v7, &v9, 0xCu);
       }
     }
 
     else if (v5)
     {
-      v6 = [(CNRegulatoryLogger *)self processDescription];
+      processDescription = [(CNRegulatoryLogger *)self processDescription];
       v9 = 138412290;
-      v10 = v6;
+      v10 = processDescription;
       v7 = "Logging disabled when asked to log an in-process contact picker access event for %@";
       goto LABEL_7;
     }
@@ -545,7 +545,7 @@ LABEL_7:
 - (void)willNotLogContactPickerAccessEventAsLoggingInProcess
 {
   v9 = *MEMORY[0x1E69E9840];
-  v1 = [a1 processDescription];
+  processDescription = [self processDescription];
   OUTLINED_FUNCTION_0(&dword_1859F0000, v2, v3, "Unexpected request to log an in-process contact picker access event for %@", v4, v5, v6, v7, 2u);
 
   v8 = *MEMORY[0x1E69E9840];
@@ -556,13 +556,13 @@ LABEL_7:
   v8 = *MEMORY[0x1E69E9840];
   if ([(CNRegulatoryLogger *)self isPrivacyAccountingDiagnosticsEnabled])
   {
-    v3 = [(CNRegulatoryLogger *)self os_log];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+    os_log = [(CNRegulatoryLogger *)self os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_INFO))
     {
-      v4 = [(CNRegulatoryLogger *)self processDescription];
+      processDescription = [(CNRegulatoryLogger *)self processDescription];
       v6 = 138412290;
-      v7 = v4;
-      _os_log_impl(&dword_1859F0000, v3, OS_LOG_TYPE_INFO, "Logging out-of-process contact picker access event for %@", &v6, 0xCu);
+      v7 = processDescription;
+      _os_log_impl(&dword_1859F0000, os_log, OS_LOG_TYPE_INFO, "Logging out-of-process contact picker access event for %@", &v6, 0xCu);
     }
   }
 
@@ -600,61 +600,61 @@ id __40__CNRegulatoryLogger_processDescription__block_invoke(uint64_t a1)
 
 - (id)processDescriptionImpl
 {
-  v3 = [(CNRegulatoryLogger *)self cnAuditToken];
+  cnAuditToken = [(CNRegulatoryLogger *)self cnAuditToken];
 
-  if (v3)
+  if (cnAuditToken)
   {
-    v4 = [(CNRegulatoryLogger *)self cnAuditToken];
-    v5 = [CNAuditTokenUtilities processNameForAuditToken:v4];
+    cnAuditToken2 = [(CNRegulatoryLogger *)self cnAuditToken];
+    processName = [CNAuditTokenUtilities processNameForAuditToken:cnAuditToken2];
 
-    if (v5)
+    if (processName)
     {
       goto LABEL_8;
     }
 
-    v6 = [(CNRegulatoryLogger *)self cnAuditToken];
-    v5 = [CNAuditTokenUtilities bundleIdentifierForAuditToken:v6];
+    cnAuditToken3 = [(CNRegulatoryLogger *)self cnAuditToken];
+    processName = [CNAuditTokenUtilities bundleIdentifierForAuditToken:cnAuditToken3];
 
-    if (v5)
+    if (processName)
     {
       goto LABEL_8;
     }
 
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [(CNRegulatoryLogger *)self cnAuditToken];
-    v9 = [CNAuditTokenUtilities processIdentifierForAuditToken:v8];
+    cnAuditToken4 = [(CNRegulatoryLogger *)self cnAuditToken];
+    processIdentifier = [CNAuditTokenUtilities processIdentifierForAuditToken:cnAuditToken4];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E696AE30] processInfo];
-    v5 = [v10 processName];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
 
-    if (v5)
+    if (processName)
     {
       goto LABEL_8;
     }
 
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [MEMORY[0x1E696AE30] processInfo];
-    v9 = [v8 processIdentifier];
+    cnAuditToken4 = [MEMORY[0x1E696AE30] processInfo];
+    processIdentifier = [cnAuditToken4 processIdentifier];
   }
 
-  v5 = [v7 stringWithFormat:@"PID = %d", v9];
+  processName = [v7 stringWithFormat:@"PID = %d", processIdentifier];
 
 LABEL_8:
-  v11 = [(CNRegulatoryLogger *)self assumedIdentity];
+  assumedIdentity = [(CNRegulatoryLogger *)self assumedIdentity];
 
-  if (v11)
+  if (assumedIdentity)
   {
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [(CNRegulatoryLogger *)self assumedIdentity];
-    v14 = [v12 stringWithFormat:@"%@ [%s]", v5, tcc_identity_get_identifier()];
+    assumedIdentity2 = [(CNRegulatoryLogger *)self assumedIdentity];
+    v14 = [v12 stringWithFormat:@"%@ [%s]", processName, tcc_identity_get_identifier()];
   }
 
   else
   {
-    v14 = v5;
+    v14 = processName;
   }
 
   return v14;
@@ -672,7 +672,7 @@ LABEL_8:
 - (void)accessorForAuditTokenValidatingAssumedIdentity
 {
   v9 = *MEMORY[0x1E69E9840];
-  v1 = [a1 processDescription];
+  processDescription = [self processDescription];
   OUTLINED_FUNCTION_0(&dword_1859F0000, v2, v3, "Failed to validate assumed identity for %@, will log as contactsd.", v4, v5, v6, v7, 2u);
 
   v8 = *MEMORY[0x1E69E9840];

@@ -1,13 +1,13 @@
 @interface SKUIDeveloperInfoViewController
-- (SKUIDeveloperInfoViewController)initWithDeveloperInfo:(id)a3;
+- (SKUIDeveloperInfoViewController)initWithDeveloperInfo:(id)info;
 - (void)loadView;
 @end
 
 @implementation SKUIDeveloperInfoViewController
 
-- (SKUIDeveloperInfoViewController)initWithDeveloperInfo:(id)a3
+- (SKUIDeveloperInfoViewController)initWithDeveloperInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIDeveloperInfoViewController initWithDeveloperInfo:];
@@ -18,7 +18,7 @@
   v5 = [(SKUIDeveloperInfoViewController *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [infoCopy copy];
     developerInfo = v5->_developerInfo;
     v5->_developerInfo = v6;
   }
@@ -28,8 +28,8 @@
 
 - (void)loadView
 {
-  v24 = [(SKUIViewController *)self clientContext];
-  v3 = SKUIUserInterfaceIdiom(v24);
+  clientContext = [(SKUIViewController *)self clientContext];
+  v3 = SKUIUserInterfaceIdiom(clientContext);
   v4 = v3;
   if (self->_infoView)
   {
@@ -43,8 +43,8 @@
     if (v3 != 1)
     {
 LABEL_9:
-      v11 = [MEMORY[0x277D759A0] mainScreen];
-      [v11 bounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen bounds];
       v10 = v12;
 
       goto LABEL_10;
@@ -53,7 +53,7 @@ LABEL_9:
 
   else
   {
-    v7 = [[SKUIDeveloperInfoView alloc] initWithDeveloperInfo:self->_developerInfo clientContext:v24];
+    v7 = [[SKUIDeveloperInfoView alloc] initWithDeveloperInfo:self->_developerInfo clientContext:clientContext];
     infoView = self->_infoView;
     self->_infoView = v7;
 
@@ -101,8 +101,8 @@ LABEL_10:
   }
 
   v21 = self->_infoView;
-  v22 = [*p_scrollView backgroundColor];
-  [(SKUIDeveloperInfoView *)v21 setBackgroundColor:v22];
+  backgroundColor = [*p_scrollView backgroundColor];
+  [(SKUIDeveloperInfoView *)v21 setBackgroundColor:backgroundColor];
 
   v23 = self->_infoView;
   [*p_scrollView bounds];

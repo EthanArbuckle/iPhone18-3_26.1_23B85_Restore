@@ -1,21 +1,21 @@
 @interface MRDUIServer
 + (MRDUIServer)sharedServer;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (MRDUIServer)init;
 - (NSArray)clients;
 - (NSXPCListener)listener;
-- (id)clientForConnection:(id)a3;
-- (void)_addClient:(id)a3;
-- (void)_handleGetUIServerEndpointMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetUIServiceRelayEndpointMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetUIServiceRelayEndpointMessage:(id)a3 fromClient:(id)a4;
-- (void)_removeClient:(id)a3;
-- (void)addClientObserver:(id)a3;
-- (void)collectDiagnostic:(id)a3;
-- (void)handleClientInvalidated:(id)a3;
-- (void)handleXPCMessage:(id)a3 fromClient:(id)a4;
+- (id)clientForConnection:(id)connection;
+- (void)_addClient:(id)client;
+- (void)_handleGetUIServerEndpointMessage:(id)message fromClient:(id)client;
+- (void)_handleGetUIServiceRelayEndpointMessage:(id)message fromClient:(id)client;
+- (void)_handleSetUIServiceRelayEndpointMessage:(id)message fromClient:(id)client;
+- (void)_removeClient:(id)client;
+- (void)addClientObserver:(id)observer;
+- (void)collectDiagnostic:(id)diagnostic;
+- (void)handleClientInvalidated:(id)invalidated;
+- (void)handleXPCMessage:(id)message fromClient:(id)client;
 - (void)releaseTimeBasedNowPlayingActivityAssertions;
-- (void)removeClientObserver:(id)a3;
+- (void)removeClientObserver:(id)observer;
 - (void)start;
 @end
 
@@ -68,47 +68,47 @@
   v3 = objc_alloc_init(MRDUIActivityServer);
   [(MRDUIServer *)self setActivityServer:v3];
 
-  v4 = [(MRDUIServer *)self activityServer];
-  v7 = v4;
+  activityServer = [(MRDUIServer *)self activityServer];
+  v7 = activityServer;
   v5 = [NSArray arrayWithObjects:&v7 count:1];
   v6 = [MRDServerMessageProxy proxyForObjects:v5 protocol:&OBJC_PROTOCOL___MRUIServerXPCProtocol];
   [(MRDUIServer *)self setMessageProxy:v6];
 }
 
-- (void)handleXPCMessage:(id)a3 fromClient:(id)a4
+- (void)handleXPCMessage:(id)message fromClient:(id)client
 {
-  xdict = a3;
-  v6 = a4;
+  xdict = message;
+  clientCopy = client;
   uint64 = xpc_dictionary_get_uint64(xdict, "MRXPC_MESSAGE_ID_KEY");
   if (uint64 > 0xB00000000000002)
   {
     if (uint64 == 0xB00000000000003)
     {
-      [(MRDUIServer *)self _handleSetUIServiceRelayEndpointMessage:xdict fromClient:v6];
+      [(MRDUIServer *)self _handleSetUIServiceRelayEndpointMessage:xdict fromClient:clientCopy];
     }
 
     else if (uint64 == 0xB00000000000004)
     {
-      [(MRDUIServer *)self _handleGetDeviceSupportsUIActivitiesMessage:xdict fromClient:v6];
+      [(MRDUIServer *)self _handleGetDeviceSupportsUIActivitiesMessage:xdict fromClient:clientCopy];
     }
   }
 
   else if (uint64 == 0xB00000000000001)
   {
-    [(MRDUIServer *)self _handleGetUIServerEndpointMessage:xdict fromClient:v6];
+    [(MRDUIServer *)self _handleGetUIServerEndpointMessage:xdict fromClient:clientCopy];
   }
 
   else if (uint64 == 0xB00000000000002)
   {
-    [(MRDUIServer *)self _handleGetUIServiceRelayEndpointMessage:xdict fromClient:v6];
+    [(MRDUIServer *)self _handleGetUIServiceRelayEndpointMessage:xdict fromClient:clientCopy];
   }
 }
 
-- (void)handleClientInvalidated:(id)a3
+- (void)handleClientInvalidated:(id)invalidated
 {
-  v6 = [a3 object];
-  v4 = [v6 bundleIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.MediaRemoteUIService"];
+  object = [invalidated object];
+  bundleIdentifier = [object bundleIdentifier];
+  v5 = [bundleIdentifier isEqualToString:@"com.apple.MediaRemoteUIService"];
 
   if (v5)
   {
@@ -118,70 +118,70 @@
   }
 }
 
-- (void)_handleGetUIServerEndpointMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetUIServerEndpointMessage:(id)message fromClient:(id)client
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1001475DC;
   v4[3] = &unk_1004B6E08;
   v4[4] = self;
-  sub_100008278(a3, v4);
+  sub_100008278(message, v4);
 }
 
-- (void)_handleGetUIServiceRelayEndpointMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetUIServiceRelayEndpointMessage:(id)message fromClient:(id)client
 {
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100147808;
   v14[3] = &unk_1004BEC50;
-  v5 = a3;
-  v15 = v5;
+  messageCopy = message;
+  v15 = messageCopy;
   v6 = objc_retainBlock(v14);
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(MRDUIServer *)self serviceEndpoint];
-  if (!v7)
+  serviceEndpoint = [(MRDUIServer *)self serviceEndpoint];
+  if (!serviceEndpoint)
   {
-    v8 = [(MRDUIServer *)self pendingRelayEndpointReplies];
+    pendingRelayEndpointReplies = [(MRDUIServer *)self pendingRelayEndpointReplies];
 
-    if (!v8)
+    if (!pendingRelayEndpointReplies)
     {
       v11 = +[NSMutableArray array];
       [(MRDUIServer *)self setPendingRelayEndpointReplies:v11];
 
-      v12 = [(MRDUIServer *)self pendingRelayEndpointReplies];
+      pendingRelayEndpointReplies2 = [(MRDUIServer *)self pendingRelayEndpointReplies];
       v13 = objc_retainBlock(v6);
-      [v12 addObject:v13];
+      [pendingRelayEndpointReplies2 addObject:v13];
 
       os_unfair_lock_unlock(&self->_lock);
       sub_10019DCC4(@"com.apple.MediaRemoteUIService", @"UI service endpoint requested", 0, &stru_1004BEC70);
       goto LABEL_5;
     }
 
-    v9 = [(MRDUIServer *)self pendingRelayEndpointReplies];
+    pendingRelayEndpointReplies3 = [(MRDUIServer *)self pendingRelayEndpointReplies];
     v10 = objc_retainBlock(v6);
-    [v9 addObject:v10];
+    [pendingRelayEndpointReplies3 addObject:v10];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 LABEL_5:
 }
 
-- (void)_handleSetUIServiceRelayEndpointMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetUIServiceRelayEndpointMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   os_unfair_lock_lock(&self->_lock);
-  v6 = xpc_dictionary_get_value(v5, "MRXPC_MEDIA_CONTROLS_XPC_ENDPOINT_KEY");
+  v6 = xpc_dictionary_get_value(messageCopy, "MRXPC_MEDIA_CONTROLS_XPC_ENDPOINT_KEY");
   v7 = objc_alloc_init(NSXPCListenerEndpoint);
   [v7 _setEndpoint:v6];
   [(MRDUIServer *)self setServiceEndpoint:v7];
-  v8 = [(MRDUIServer *)self pendingRelayEndpointReplies];
+  pendingRelayEndpointReplies = [(MRDUIServer *)self pendingRelayEndpointReplies];
   [(MRDUIServer *)self setPendingRelayEndpointReplies:0];
   os_unfair_lock_unlock(&self->_lock);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v9 = v8;
+  v9 = pendingRelayEndpointReplies;
   v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
@@ -209,14 +209,14 @@ LABEL_5:
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = connectionCopy;
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -242,9 +242,9 @@ LABEL_5:
   if (!v10)
   {
     v11 = +[MRDSettings currentSettings];
-    v12 = [v11 allowAllClientUIConnections];
+    allowAllClientUIConnections = [v11 allowAllClientUIConnections];
 
-    if ((v12 & 1) == 0)
+    if ((allowAllClientUIConnections & 1) == 0)
     {
       v14 = _MRLogForCategory();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -267,8 +267,8 @@ LABEL_14:
   v14 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___MRUIServerXPCProtocol];
   v15 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___MRUIClientXPCProtocol];
   [v8 setExportedInterface:v14];
-  v16 = [(MRDUIServer *)self messageProxy];
-  [v8 setExportedObject:v16];
+  messageProxy = [(MRDUIServer *)self messageProxy];
+  [v8 setExportedObject:messageProxy];
 
   [v8 setRemoteObjectInterface:v15];
   v17 = objc_opt_class();
@@ -281,7 +281,7 @@ LABEL_14:
   [v14 setClasses:v20 forSelector:"acquireGroupSessionNearbyAssertionForSession:withReply:" argumentIndex:0 ofReply:0];
   [v15 setClasses:v20 forSelector:"nearbyGroupSessionDismissed:" argumentIndex:0 ofReply:0];
   v22 = [[MRDUIClient alloc] initWithConnection:v8 bundleID:v9];
-  v23 = [(MRDUIServer *)self messageQueue];
+  messageQueue = [(MRDUIServer *)self messageQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100147EB0;
@@ -289,7 +289,7 @@ LABEL_14:
   block[4] = self;
   v24 = v22;
   v32 = v24;
-  dispatch_sync(v23, block);
+  dispatch_sync(messageQueue, block);
 
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
@@ -299,8 +299,8 @@ LABEL_14:
   v30 = v24;
   v25 = v24;
   [v8 setInvalidationHandler:v29];
-  v26 = [(MRDUIServer *)self messageQueue];
-  [v8 _setQueue:v26];
+  messageQueue2 = [(MRDUIServer *)self messageQueue];
+  [v8 _setQueue:messageQueue2];
 
   [v8 resume];
   v27 = 1;
@@ -309,9 +309,9 @@ LABEL_15:
   return v27;
 }
 
-- (void)_addClient:(id)a3
+- (void)_addClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -319,16 +319,16 @@ LABEL_15:
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v6 = [(MRDUIServer *)self internalClients];
-  [v6 addObject:v4];
+  internalClients = [(MRDUIServer *)self internalClients];
+  [internalClients addObject:clientCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [(MRDUIServer *)self clientObservers];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  clientObservers = [(MRDUIServer *)self clientObservers];
+  v8 = [clientObservers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -340,29 +340,29 @@ LABEL_15:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(clientObservers);
         }
 
         v12 = *(*(&v13 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 clientConnected:v4];
+          [v12 clientConnected:clientCopy];
         }
 
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [clientObservers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)_removeClient:(id)a3
+- (void)_removeClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -370,16 +370,16 @@ LABEL_15:
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v6 = [(MRDUIServer *)self internalClients];
-  [v6 removeObject:v4];
+  internalClients = [(MRDUIServer *)self internalClients];
+  [internalClients removeObject:clientCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [(MRDUIServer *)self clientObservers];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  clientObservers = [(MRDUIServer *)self clientObservers];
+  v8 = [clientObservers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -391,20 +391,20 @@ LABEL_15:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(clientObservers);
         }
 
         v12 = *(*(&v13 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 clientDisconnected:v4];
+          [v12 clientDisconnected:clientCopy];
         }
 
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [clientObservers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -414,12 +414,12 @@ LABEL_15:
 - (NSArray)clients
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(MRDUIServer *)self internalClients];
-  v4 = [v3 allObjects];
+  internalClients = [(MRDUIServer *)self internalClients];
+  allObjects = [internalClients allObjects];
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v4;
+  return allObjects;
 }
 
 - (NSXPCListener)listener
@@ -443,29 +443,29 @@ LABEL_15:
   return v6;
 }
 
-- (void)addClientObserver:(id)a3
+- (void)addClientObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(MRDUIServer *)self clientObservers];
-  [v5 addObject:v4];
+  clientObservers = [(MRDUIServer *)self clientObservers];
+  [clientObservers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeClientObserver:(id)a3
+- (void)removeClientObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(MRDUIServer *)self clientObservers];
-  [v5 removeObject:v4];
+  clientObservers = [(MRDUIServer *)self clientObservers];
+  [clientObservers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)clientForConnection:(id)a3
+- (id)clientForConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   [(MRDUIServer *)self clients];
   v13 = 0u;
   v14 = 0u;
@@ -485,8 +485,8 @@ LABEL_15:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 connection];
-        v11 = [v10 isEqual:v4];
+        connection = [v9 connection];
+        v11 = [connection isEqual:connectionCopy];
 
         if (v11)
         {
@@ -512,15 +512,15 @@ LABEL_11:
 
 - (void)releaseTimeBasedNowPlayingActivityAssertions
 {
-  v2 = [(MRDUIServer *)self activityServer];
-  [v2 releaseTimeBasedNowPlayingActivityAssertions];
+  activityServer = [(MRDUIServer *)self activityServer];
+  [activityServer releaseTimeBasedNowPlayingActivityAssertions];
 }
 
-- (void)collectDiagnostic:(id)a3
+- (void)collectDiagnostic:(id)diagnostic
 {
-  v4 = a3;
-  v5 = [(MRDUIServer *)self activityServer];
-  [v5 collectDiagnostic:v4];
+  diagnosticCopy = diagnostic;
+  activityServer = [(MRDUIServer *)self activityServer];
+  [activityServer collectDiagnostic:diagnosticCopy];
 }
 
 @end

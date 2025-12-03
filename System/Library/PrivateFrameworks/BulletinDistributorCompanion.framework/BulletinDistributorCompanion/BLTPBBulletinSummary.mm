@@ -1,33 +1,33 @@
 @interface BLTPBBulletinSummary
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addKey:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addKey:(id)key;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BLTPBBulletinSummary
 
-- (void)addKey:(id)a3
+- (void)addKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   keys = self->_keys;
-  v8 = v4;
+  v8 = keyCopy;
   if (!keys)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_keys;
     self->_keys = v6;
 
-    v4 = v8;
+    keyCopy = v8;
     keys = self->_keys;
   }
 
-  [(NSMutableArray *)keys addObject:v4];
+  [(NSMutableArray *)keys addObject:keyCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = BLTPBBulletinSummary;
   v4 = [(BLTPBBulletinSummary *)&v8 description];
-  v5 = [(BLTPBBulletinSummary *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BLTPBBulletinSummary *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,12 +45,12 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   publisherBulletinID = self->_publisherBulletinID;
   if (publisherBulletinID)
   {
-    [v3 setObject:publisherBulletinID forKey:@"publisherBulletinID"];
+    [dictionary setObject:publisherBulletinID forKey:@"publisherBulletinID"];
   }
 
   recordID = self->_recordID;
@@ -90,8 +90,8 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          [v9 addObject:dictionaryRepresentation];
         }
 
         v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -108,10 +108,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_publisherBulletinID)
   {
     PBDataWriterWriteStringField();
@@ -165,31 +165,31 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_publisherBulletinID)
   {
-    [v4 setPublisherBulletinID:?];
-    v4 = v9;
+    [toCopy setPublisherBulletinID:?];
+    toCopy = v9;
   }
 
   if (self->_recordID)
   {
     [v9 setRecordID:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
-  [v4 setSectionID:self->_sectionID];
+  [toCopy setSectionID:self->_sectionID];
   v9[2] = self->_destinations;
   if ([(BLTPBBulletinSummary *)self keysCount])
   {
     [v9 clearKeys];
-    v5 = [(BLTPBBulletinSummary *)self keysCount];
-    if (v5)
+    keysCount = [(BLTPBBulletinSummary *)self keysCount];
+    if (keysCount)
     {
-      v6 = v5;
+      v6 = keysCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(BLTPBBulletinSummary *)self keyAtIndex:i];
@@ -199,19 +199,19 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_publisherBulletinID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_publisherBulletinID copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_recordID copyWithZone:a3];
+  v8 = [(NSString *)self->_recordID copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(NSString *)self->_sectionID copyWithZone:a3];
+  v10 = [(NSString *)self->_sectionID copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
@@ -236,7 +236,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{a3, v20}];
+        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{zone, v20}];
         [v5 addKey:v17];
 
         ++v16;
@@ -253,13 +253,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((publisherBulletinID = self->_publisherBulletinID, !(publisherBulletinID | v4[3])) || -[NSString isEqual:](publisherBulletinID, "isEqual:")) && ((recordID = self->_recordID, !(recordID | v4[4])) || -[NSString isEqual:](recordID, "isEqual:")) && ((sectionID = self->_sectionID, !(sectionID | v4[5])) || -[NSString isEqual:](sectionID, "isEqual:")) && self->_destinations == *(v4 + 2))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((publisherBulletinID = self->_publisherBulletinID, !(publisherBulletinID | equalCopy[3])) || -[NSString isEqual:](publisherBulletinID, "isEqual:")) && ((recordID = self->_recordID, !(recordID | equalCopy[4])) || -[NSString isEqual:](recordID, "isEqual:")) && ((sectionID = self->_sectionID, !(sectionID | equalCopy[5])) || -[NSString isEqual:](sectionID, "isEqual:")) && self->_destinations == *(equalCopy + 2))
   {
     keys = self->_keys;
-    if (keys | v4[2])
+    if (keys | equalCopy[2])
     {
       v9 = [(NSMutableArray *)keys isEqual:?];
     }
@@ -287,31 +287,31 @@
   return v5 ^ [(NSMutableArray *)self->_keys hash]^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
     [(BLTPBBulletinSummary *)self setPublisherBulletinID:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(BLTPBBulletinSummary *)self setRecordID:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(BLTPBBulletinSummary *)self setSectionID:?];
   }
 
-  self->_destinations = *(v4 + 2);
+  self->_destinations = *(fromCopy + 2);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

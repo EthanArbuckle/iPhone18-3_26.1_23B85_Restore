@@ -1,7 +1,7 @@
 @interface __NSFontExtraData
-- (BOOL)_hasVerticalMetricsWithPlatformFont:(__CTFont *)a3;
-- (BOOL)isEqualToExtraData:(id)a3;
-- (double)initWithFont:(void *)a1;
+- (BOOL)_hasVerticalMetricsWithPlatformFont:(__CTFont *)font;
+- (BOOL)isEqualToExtraData:(id)data;
+- (double)initWithFont:(void *)font;
 - (void)dealloc;
 @end
 
@@ -14,31 +14,31 @@
   [(__NSFontExtraData *)&v3 dealloc];
 }
 
-- (BOOL)isEqualToExtraData:(id)a3
+- (BOOL)isEqualToExtraData:(id)data
 {
-  if (!a3)
+  if (!data)
   {
     LOBYTE(v6) = 0;
     return v6;
   }
 
-  if (self == a3)
+  if (self == data)
   {
     LOBYTE(v6) = 1;
     return v6;
   }
 
-  if (((*(a3 + 24) ^ *&self->_fFlags) & 2) != 0)
+  if (((*(data + 24) ^ *&self->_fFlags) & 2) != 0)
   {
     goto LABEL_9;
   }
 
   textStyleForScaling = self->_textStyleForScaling;
-  if (textStyleForScaling == *(a3 + 4) || (v6 = [(NSString *)textStyleForScaling isEqual:?]) != 0)
+  if (textStyleForScaling == *(data + 4) || (v6 = [(NSString *)textStyleForScaling isEqual:?]) != 0)
   {
-    if (self->_pointSizeForScaling == *(a3 + 5))
+    if (self->_pointSizeForScaling == *(data + 5))
     {
-      LOBYTE(v6) = self->_maximumPointSizeAfterScaling == *(a3 + 6);
+      LOBYTE(v6) = self->_maximumPointSizeAfterScaling == *(data + 6);
       return v6;
     }
 
@@ -49,7 +49,7 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)_hasVerticalMetricsWithPlatformFont:(__CTFont *)a3
+- (BOOL)_hasVerticalMetricsWithPlatformFont:(__CTFont *)font
 {
   v3 = *&self->_fFlags & 0xC;
   if ((*&self->_fFlags & 0xC) == 0)
@@ -74,14 +74,14 @@ LABEL_9:
   return v3 == 8;
 }
 
-- (double)initWithFont:(void *)a1
+- (double)initWithFont:(void *)font
 {
-  if (!a1)
+  if (!font)
   {
     return 0;
   }
 
-  v10.receiver = a1;
+  v10.receiver = font;
   v10.super_class = __NSFontExtraData;
   v3 = objc_msgSendSuper2(&v10, sel_init);
   if (v3)

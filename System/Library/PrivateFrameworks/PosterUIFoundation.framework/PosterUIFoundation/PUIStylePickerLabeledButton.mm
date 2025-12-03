@@ -1,29 +1,29 @@
 @interface PUIStylePickerLabeledButton
 - (CGSize)intrinsicContentSize;
-- (PUIStylePickerLabeledButton)initWithFrame:(CGRect)a3;
-- (void)setSelected:(BOOL)a3;
+- (PUIStylePickerLabeledButton)initWithFrame:(CGRect)frame;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation PUIStylePickerLabeledButton
 
-- (PUIStylePickerLabeledButton)initWithFrame:(CGRect)a3
+- (PUIStylePickerLabeledButton)initWithFrame:(CGRect)frame
 {
   v52[10] = *MEMORY[0x1E69E9840];
   v51.receiver = self;
   v51.super_class = PUIStylePickerLabeledButton;
-  v3 = [(PUIStylePickerLabeledButton *)&v51 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUIStylePickerLabeledButton *)&v51 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PUIStylePickerLabeledButton *)v3 layer];
-    [v5 setCornerCurve:*MEMORY[0x1E69796E8]];
+    layer = [(PUIStylePickerLabeledButton *)v3 layer];
+    [layer setCornerCurve:*MEMORY[0x1E69796E8]];
 
-    v6 = [(PUIStylePickerLabeledButton *)v4 layer];
-    [v6 setCornerRadius:14.0];
+    layer2 = [(PUIStylePickerLabeledButton *)v4 layer];
+    [layer2 setCornerRadius:14.0];
 
-    v7 = [(PUIStylePickerLabeledButton *)v4 layer];
-    v8 = [MEMORY[0x1E69DC888] whiteColor];
-    [v7 setBorderColor:{objc_msgSend(v8, "CGColor")}];
+    layer3 = [(PUIStylePickerLabeledButton *)v4 layer];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [layer3 setBorderColor:{objc_msgSend(whiteColor, "CGColor")}];
 
     v9 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     contentLabel = v4->_contentLabel;
@@ -42,8 +42,8 @@
 
     [(UILabel *)v4->_nameLabel setTextAlignment:1];
     v15 = v4->_nameLabel;
-    v16 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v15 setTextColor:v16];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v15 setTextColor:labelColor];
 
     [(UILabel *)v4->_nameLabel setUserInteractionEnabled:0];
     [(UILabel *)v4->_nameLabel setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -51,45 +51,45 @@
     v17 = objc_alloc_init(MEMORY[0x1E69DCC20]);
     [(PUIStylePickerLabeledButton *)v4 addLayoutGuide:v17];
     v38 = MEMORY[0x1E696ACD8];
-    v50 = [v17 leadingAnchor];
-    v49 = [(PUIStylePickerLabeledButton *)v4 leadingAnchor];
-    v48 = [v50 constraintEqualToAnchor:v49];
+    leadingAnchor = [v17 leadingAnchor];
+    leadingAnchor2 = [(PUIStylePickerLabeledButton *)v4 leadingAnchor];
+    v48 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v52[0] = v48;
-    v47 = [v17 trailingAnchor];
-    v46 = [(PUIStylePickerLabeledButton *)v4 trailingAnchor];
-    v45 = [v47 constraintEqualToAnchor:v46];
+    trailingAnchor = [v17 trailingAnchor];
+    trailingAnchor2 = [(PUIStylePickerLabeledButton *)v4 trailingAnchor];
+    v45 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v52[1] = v45;
-    v44 = [v17 centerYAnchor];
-    v43 = [(PUIStylePickerLabeledButton *)v4 centerYAnchor];
-    v42 = [v44 constraintEqualToAnchor:v43];
+    centerYAnchor = [v17 centerYAnchor];
+    centerYAnchor2 = [(PUIStylePickerLabeledButton *)v4 centerYAnchor];
+    v42 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v52[2] = v42;
-    v41 = [(UILabel *)v4->_contentLabel topAnchor];
-    v40 = [v17 topAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40];
+    topAnchor = [(UILabel *)v4->_contentLabel topAnchor];
+    topAnchor2 = [v17 topAnchor];
+    v39 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v52[3] = v39;
-    v37 = [(UILabel *)v4->_contentLabel centerXAnchor];
-    v36 = [v17 centerXAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36];
+    centerXAnchor = [(UILabel *)v4->_contentLabel centerXAnchor];
+    centerXAnchor2 = [v17 centerXAnchor];
+    v35 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v52[4] = v35;
-    v34 = [(UILabel *)v4->_nameLabel topAnchor];
-    v33 = [(UILabel *)v4->_contentLabel lastBaselineAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33 constant:4.0];
+    topAnchor3 = [(UILabel *)v4->_nameLabel topAnchor];
+    lastBaselineAnchor = [(UILabel *)v4->_contentLabel lastBaselineAnchor];
+    v32 = [topAnchor3 constraintEqualToAnchor:lastBaselineAnchor constant:4.0];
     v52[5] = v32;
-    v31 = [(UILabel *)v4->_nameLabel centerXAnchor];
-    v30 = [v17 centerXAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30];
+    centerXAnchor3 = [(UILabel *)v4->_nameLabel centerXAnchor];
+    centerXAnchor4 = [v17 centerXAnchor];
+    v29 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v52[6] = v29;
-    v28 = [(UILabel *)v4->_nameLabel leadingAnchor];
-    v27 = [v17 leadingAnchor];
-    v18 = [v28 constraintEqualToAnchor:v27 constant:2.0];
+    leadingAnchor3 = [(UILabel *)v4->_nameLabel leadingAnchor];
+    leadingAnchor4 = [v17 leadingAnchor];
+    v18 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:2.0];
     v52[7] = v18;
-    v19 = [(UILabel *)v4->_nameLabel trailingAnchor];
-    v20 = [v17 trailingAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20 constant:-2.0];
+    trailingAnchor3 = [(UILabel *)v4->_nameLabel trailingAnchor];
+    trailingAnchor4 = [v17 trailingAnchor];
+    v21 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-2.0];
     v52[8] = v21;
-    v22 = [(UILabel *)v4->_nameLabel bottomAnchor];
-    v23 = [v17 bottomAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    bottomAnchor = [(UILabel *)v4->_nameLabel bottomAnchor];
+    bottomAnchor2 = [v17 bottomAnchor];
+    v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v52[9] = v24;
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:10];
     [v38 activateConstraints:v25];
@@ -116,21 +116,21 @@
   return result;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v8.receiver = self;
   v8.super_class = PUIStylePickerLabeledButton;
   [(PUIStylePickerLabeledButton *)&v8 setSelected:?];
-  v5 = [(PUIStylePickerLabeledButton *)self layer];
-  v6 = v5;
+  layer = [(PUIStylePickerLabeledButton *)self layer];
+  v6 = layer;
   v7 = 0.0;
-  if (v3)
+  if (selectedCopy)
   {
     v7 = 2.0;
   }
 
-  [v5 setBorderWidth:v7];
+  [layer setBorderWidth:v7];
 }
 
 @end

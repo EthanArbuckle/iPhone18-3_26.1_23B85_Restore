@@ -1,10 +1,10 @@
 @interface APCPlayerEmbedInfo
-- (APCPlayerEmbedInfo)initWithPasscodeDurationNSec:(unint64_t)a3;
+- (APCPlayerEmbedInfo)initWithPasscodeDurationNSec:(unint64_t)sec;
 @end
 
 @implementation APCPlayerEmbedInfo
 
-- (APCPlayerEmbedInfo)initWithPasscodeDurationNSec:(unint64_t)a3
+- (APCPlayerEmbedInfo)initWithPasscodeDurationNSec:(unint64_t)sec
 {
   v5.receiver = self;
   v5.super_class = APCPlayerEmbedInfo;

@@ -1,45 +1,45 @@
 @interface EKCalendarShareesEditItem
-- (BOOL)configureWithCalendar:(id)a3;
-- (BOOL)saveStateToCalendar:(id)a3;
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4;
-- (id)_colorForShareeStatus:(unint64_t)a3;
-- (id)_filteredSharees:(id)a3 byRemovingDuplicatesFoundIn:(id)a4;
-- (id)_iconForSharee:(id)a3;
-- (id)_shareeCellForName:(id)a3 detailText:(id)a4 icon:(id)a5 iconColor:(id)a6;
-- (id)_stringForShareeAccessLevel:(unint64_t)a3;
+- (BOOL)configureWithCalendar:(id)calendar;
+- (BOOL)saveStateToCalendar:(id)calendar;
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width;
+- (id)_colorForShareeStatus:(unint64_t)status;
+- (id)_filteredSharees:(id)sharees byRemovingDuplicatesFoundIn:(id)in;
+- (id)_iconForSharee:(id)sharee;
+- (id)_shareeCellForName:(id)name detailText:(id)text icon:(id)icon iconColor:(id)color;
+- (id)_stringForShareeAccessLevel:(unint64_t)level;
 - (id)addPersonCell;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
 - (id)headerTitle;
 - (unint64_t)numberOfSubitems;
 - (void)_dismissShareePicker;
-- (void)_popBackToCalendarEditorChangesMade:(BOOL)a3 changesSaved:(BOOL)a4;
-- (void)addSharee:(id)a3;
-- (void)calendarEditor:(id)a3 didSelectSubitem:(unint64_t)a4;
+- (void)_popBackToCalendarEditorChangesMade:(BOOL)made changesSaved:(BOOL)saved;
+- (void)addSharee:(id)sharee;
+- (void)calendarEditor:(id)editor didSelectSubitem:(unint64_t)subitem;
 - (void)reloadData;
-- (void)removeSharee:(id)a3;
+- (void)removeSharee:(id)sharee;
 - (void)reset;
-- (void)setCalendar:(id)a3 store:(id)a4;
-- (void)shareePickerViewController:(id)a3 didCompleteWithAction:(int)a4;
-- (void)shareeViewController:(id)a3 didCompleteWithAction:(int)a4;
-- (void)shareeViewControllerDidChangeAccessLevel:(id)a3;
+- (void)setCalendar:(id)calendar store:(id)store;
+- (void)shareePickerViewController:(id)controller didCompleteWithAction:(int)action;
+- (void)shareeViewController:(id)controller didCompleteWithAction:(int)action;
+- (void)shareeViewControllerDidChangeAccessLevel:(id)level;
 @end
 
 @implementation EKCalendarShareesEditItem
 
-- (void)setCalendar:(id)a3 store:(id)a4
+- (void)setCalendar:(id)calendar store:(id)store
 {
   v5.receiver = self;
   v5.super_class = EKCalendarShareesEditItem;
-  [(EKCalendarEditItem *)&v5 setCalendar:a3 store:a4];
+  [(EKCalendarEditItem *)&v5 setCalendar:calendar store:store];
   [(EKCalendarShareesEditItem *)self reloadData];
 }
 
 - (void)reloadData
 {
   v3 = MEMORY[0x1E695DF70];
-  v7 = [(EKCalendar *)self->super._calendar sharees];
-  v4 = [v7 allObjects];
-  v5 = [v3 arrayWithArray:v4];
+  sharees = [(EKCalendar *)self->super._calendar sharees];
+  allObjects = [sharees allObjects];
+  v5 = [v3 arrayWithArray:allObjects];
   orderedSharees = self->_orderedSharees;
   self->_orderedSharees = v5;
 }
@@ -51,32 +51,32 @@
   self->_orderedSharees = v3;
 }
 
-- (void)addSharee:(id)a3
+- (void)addSharee:(id)sharee
 {
   orderedSharees = self->_orderedSharees;
-  v5 = a3;
-  [(NSMutableArray *)orderedSharees addObject:v5];
-  [(EKCalendar *)self->super._calendar addSharee:v5];
+  shareeCopy = sharee;
+  [(NSMutableArray *)orderedSharees addObject:shareeCopy];
+  [(EKCalendar *)self->super._calendar addSharee:shareeCopy];
 }
 
-- (void)removeSharee:(id)a3
+- (void)removeSharee:(id)sharee
 {
   orderedSharees = self->_orderedSharees;
-  v5 = a3;
-  [(NSMutableArray *)orderedSharees removeObject:v5];
-  [(EKCalendar *)self->super._calendar removeSharee:v5];
+  shareeCopy = sharee;
+  [(NSMutableArray *)orderedSharees removeObject:shareeCopy];
+  [(EKCalendar *)self->super._calendar removeSharee:shareeCopy];
 }
 
-- (id)_iconForSharee:(id)a3
+- (id)_iconForSharee:(id)sharee
 {
-  v3 = a3;
-  if ([v3 isNew])
+  shareeCopy = sharee;
+  if ([shareeCopy isNew])
   {
     goto LABEL_2;
   }
 
-  v5 = [v3 shareeStatus];
-  switch(v5)
+  shareeStatus = [shareeCopy shareeStatus];
+  switch(shareeStatus)
   {
     case 1:
       v6 = @"checkmark.circle.fill";
@@ -99,36 +99,36 @@ LABEL_10:
   return v4;
 }
 
-- (id)_colorForShareeStatus:(unint64_t)a3
+- (id)_colorForShareeStatus:(unint64_t)status
 {
-  switch(a3)
+  switch(status)
   {
     case 5uLL:
-      v3 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
       break;
     case 2uLL:
-      v3 = [MEMORY[0x1E69DC888] systemRedColor];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] systemRedColor];
       break;
     case 1uLL:
-      v3 = [MEMORY[0x1E69DC888] systemGreenColor];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] systemGreenColor];
       break;
     default:
-      v3 = 0;
+      secondaryLabelColor = 0;
       break;
   }
 
-  return v3;
+  return secondaryLabelColor;
 }
 
-- (id)_stringForShareeAccessLevel:(unint64_t)a3
+- (id)_stringForShareeAccessLevel:(unint64_t)level
 {
-  if (a3 == 1)
+  if (level == 1)
   {
     v3 = @"View Only";
     goto LABEL_5;
   }
 
-  if (a3 == 2)
+  if (level == 2)
   {
     v3 = @"View & Edit";
 LABEL_5:
@@ -147,55 +147,55 @@ LABEL_7:
 - (id)addPersonCell
 {
   v2 = [[EKUITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"addPerson"];
-  v3 = [(EKUITableViewCell *)v2 defaultContentConfiguration];
+  defaultContentConfiguration = [(EKUITableViewCell *)v2 defaultContentConfiguration];
   v4 = EventKitUIBundle();
   v5 = [v4 localizedStringForKey:@"Add Person cell text" value:@"Add Person" table:0];
-  [v3 setText:v5];
+  [defaultContentConfiguration setText:v5];
 
   v6 = EKUIMainWindowForMultiwindowError();
-  v7 = [v6 ekui_tintColor];
-  v8 = [v3 textProperties];
-  [v8 setColor:v7];
+  ekui_tintColor = [v6 ekui_tintColor];
+  textProperties = [defaultContentConfiguration textProperties];
+  [textProperties setColor:ekui_tintColor];
 
-  v9 = [v3 textProperties];
-  v10 = [v9 color];
-  v11 = [v3 imageProperties];
-  [v11 setTintColor:v10];
+  textProperties2 = [defaultContentConfiguration textProperties];
+  color = [textProperties2 color];
+  imageProperties = [defaultContentConfiguration imageProperties];
+  [imageProperties setTintColor:color];
 
   v12 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"person"];
-  [v3 setImage:v12];
+  [defaultContentConfiguration setImage:v12];
 
-  [v3 setImageToTextPadding:12.0];
-  [(EKUITableViewCell *)v2 setContentConfiguration:v3];
+  [defaultContentConfiguration setImageToTextPadding:12.0];
+  [(EKUITableViewCell *)v2 setContentConfiguration:defaultContentConfiguration];
 
   return v2;
 }
 
-- (id)_shareeCellForName:(id)a3 detailText:(id)a4 icon:(id)a5 iconColor:(id)a6
+- (id)_shareeCellForName:(id)name detailText:(id)text icon:(id)icon iconColor:(id)color
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
+  iconCopy = icon;
+  colorCopy = color;
+  textCopy = text;
+  nameCopy = name;
   v13 = [(EKUITableViewCell *)[SubtitleCellWithAdditionalIcon alloc] initWithStyle:3 reuseIdentifier:@"shareeCell"];
   [(SubtitleCellWithAdditionalIcon *)v13 setAccessoryType:1];
-  v14 = [(SubtitleCellWithAdditionalIcon *)v13 textLabel];
-  [v14 setText:v12];
+  textLabel = [(SubtitleCellWithAdditionalIcon *)v13 textLabel];
+  [textLabel setText:nameCopy];
 
-  v15 = [(SubtitleCellWithAdditionalIcon *)v13 detailTextLabel];
-  [v15 setText:v11];
+  detailTextLabel = [(SubtitleCellWithAdditionalIcon *)v13 detailTextLabel];
+  [detailTextLabel setText:textCopy];
 
   v16 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD08]];
-  v17 = [(SubtitleCellWithAdditionalIcon *)v13 detailTextLabel];
-  [v17 setFont:v16];
+  detailTextLabel2 = [(SubtitleCellWithAdditionalIcon *)v13 detailTextLabel];
+  [detailTextLabel2 setFont:v16];
 
-  if (v9)
+  if (iconCopy)
   {
-    v18 = [(SubtitleCellWithAdditionalIcon *)v13 icon];
-    [v18 setImage:v9];
+    icon = [(SubtitleCellWithAdditionalIcon *)v13 icon];
+    [icon setImage:iconCopy];
 
-    v19 = [(SubtitleCellWithAdditionalIcon *)v13 icon];
-    [v19 setTintColor:v10];
+    icon2 = [(SubtitleCellWithAdditionalIcon *)v13 icon];
+    [icon2 setTintColor:colorCopy];
   }
 
   [(SubtitleCellWithAdditionalIcon *)v13 setSelectionStyle:3];
@@ -203,25 +203,25 @@ LABEL_7:
   return v13;
 }
 
-- (BOOL)configureWithCalendar:(id)a3
+- (BOOL)configureWithCalendar:(id)calendar
 {
-  v4 = a3;
+  calendarCopy = calendar;
   v10.receiver = self;
   v10.super_class = EKCalendarShareesEditItem;
-  [(EKCalendarEditItem *)&v10 configureWithCalendar:v4];
-  v5 = [v4 source];
-  v6 = [v5 constraints];
-  if (![v6 supportsSharedCalendars])
+  [(EKCalendarEditItem *)&v10 configureWithCalendar:calendarCopy];
+  source = [calendarCopy source];
+  constraints = [source constraints];
+  if (![constraints supportsSharedCalendars])
   {
     goto LABEL_6;
   }
 
-  if (([v4 canBeShared] & 1) == 0)
+  if (([calendarCopy canBeShared] & 1) == 0)
   {
-    if ([v4 sharingStatus])
+    if ([calendarCopy sharingStatus])
     {
-      v8 = [v4 sharees];
-      v7 = [v8 count] != 0;
+      sharees = [calendarCopy sharees];
+      v7 = [sharees count] != 0;
 
       goto LABEL_7;
     }
@@ -237,41 +237,41 @@ LABEL_7:
   return v7;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   if ([(EKCalendar *)self->super._calendar sharingStatus]== 2)
   {
-    v5 = [(EKCalendar *)self->super._calendar sharedOwnerName];
+    sharedOwnerName = [(EKCalendar *)self->super._calendar sharedOwnerName];
     v6 = EventKitUIBundle();
     v7 = [v6 localizedStringForKey:@"Owner" value:&stru_1F4EF6790 table:0];
-    v8 = [(EKCalendarShareesEditItem *)self _shareeCellForName:v5 detailText:v7 icon:0 iconColor:0];
+    addPersonCell = [(EKCalendarShareesEditItem *)self _shareeCellForName:sharedOwnerName detailText:v7 icon:0 iconColor:0];
 
 LABEL_5:
     goto LABEL_7;
   }
 
-  v9 = [(EKCalendarShareesEditItem *)self orderedSharees];
-  v10 = [v9 count];
+  orderedSharees = [(EKCalendarShareesEditItem *)self orderedSharees];
+  v10 = [orderedSharees count];
 
-  if (v10 > a3)
+  if (v10 > index)
   {
-    v11 = [(EKCalendarShareesEditItem *)self orderedSharees];
-    v5 = [v11 objectAtIndexedSubscript:a3];
+    orderedSharees2 = [(EKCalendarShareesEditItem *)self orderedSharees];
+    sharedOwnerName = [orderedSharees2 objectAtIndexedSubscript:index];
 
-    v6 = DisplayStringForIdentity(v5, 1, 0);
-    v12 = -[EKCalendarShareesEditItem _stringForShareeAccessLevel:](self, "_stringForShareeAccessLevel:", [v5 shareeAccessLevel]);
-    v13 = [(EKCalendarShareesEditItem *)self _iconForSharee:v5];
-    v14 = -[EKCalendarShareesEditItem _colorForShareeStatus:](self, "_colorForShareeStatus:", [v5 shareeStatus]);
-    v8 = [(EKCalendarShareesEditItem *)self _shareeCellForName:v6 detailText:v12 icon:v13 iconColor:v14];
+    v6 = DisplayStringForIdentity(sharedOwnerName, 1, 0);
+    v12 = -[EKCalendarShareesEditItem _stringForShareeAccessLevel:](self, "_stringForShareeAccessLevel:", [sharedOwnerName shareeAccessLevel]);
+    v13 = [(EKCalendarShareesEditItem *)self _iconForSharee:sharedOwnerName];
+    v14 = -[EKCalendarShareesEditItem _colorForShareeStatus:](self, "_colorForShareeStatus:", [sharedOwnerName shareeStatus]);
+    addPersonCell = [(EKCalendarShareesEditItem *)self _shareeCellForName:v6 detailText:v12 icon:v13 iconColor:v14];
 
-    [v8 setSource:v5];
+    [addPersonCell setSource:sharedOwnerName];
     goto LABEL_5;
   }
 
-  v8 = [(EKCalendarShareesEditItem *)self addPersonCell];
+  addPersonCell = [(EKCalendarShareesEditItem *)self addPersonCell];
 LABEL_7:
 
-  return v8;
+  return addPersonCell;
 }
 
 - (unint64_t)numberOfSubitems
@@ -281,20 +281,20 @@ LABEL_7:
     return 1;
   }
 
-  v4 = [(EKCalendarShareesEditItem *)self orderedSharees];
-  v3 = [v4 count] + 1;
+  orderedSharees = [(EKCalendarShareesEditItem *)self orderedSharees];
+  v3 = [orderedSharees count] + 1;
 
   return v3;
 }
 
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width
 {
   if ([(EKCalendar *)self->super._calendar sharingStatus]!= 2)
   {
-    v6 = [(EKCalendarShareesEditItem *)self orderedSharees];
-    v7 = [v6 count];
+    orderedSharees = [(EKCalendarShareesEditItem *)self orderedSharees];
+    v7 = [orderedSharees count];
 
-    if (v7 > a3)
+    if (v7 > index)
     {
       return 55.0;
     }
@@ -321,11 +321,11 @@ LABEL_7:
   return v3;
 }
 
-- (BOOL)saveStateToCalendar:(id)a3
+- (BOOL)saveStateToCalendar:(id)calendar
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [(EKCalendar *)self->super._calendar sharees];
-  v5 = [v4 count];
+  sharees = [(EKCalendar *)self->super._calendar sharees];
+  v5 = [sharees count];
 
   if (v5)
   {
@@ -336,8 +336,8 @@ LABEL_7:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(EKCalendar *)self->super._calendar sharees];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  sharees2 = [(EKCalendar *)self->super._calendar sharees];
+  v7 = [sharees2 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -348,7 +348,7 @@ LABEL_7:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(sharees2);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -359,7 +359,7 @@ LABEL_7:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [sharees2 countByEnumeratingWithState:&v14 objects:v18 count:16];
       v12 = 0;
       if (v8)
       {
@@ -380,35 +380,35 @@ LABEL_15:
   return v12;
 }
 
-- (void)calendarEditor:(id)a3 didSelectSubitem:(unint64_t)a4
+- (void)calendarEditor:(id)editor didSelectSubitem:(unint64_t)subitem
 {
   if ([(EKCalendar *)self->super._calendar sharingStatus]== 2)
   {
     v6 = MEMORY[0x1E6966AE8];
-    v7 = [(EKCalendar *)self->super._calendar sharedOwnerName];
-    v8 = [(EKCalendar *)self->super._calendar sharedOwnerEmail];
-    v9 = [(EKCalendar *)self->super._calendar sharedOwnerPhoneNumber];
-    v28 = [v6 shareeWithName:v7 emailAddress:v8 phoneNumber:v9];
+    sharedOwnerName = [(EKCalendar *)self->super._calendar sharedOwnerName];
+    sharedOwnerEmail = [(EKCalendar *)self->super._calendar sharedOwnerEmail];
+    sharedOwnerPhoneNumber = [(EKCalendar *)self->super._calendar sharedOwnerPhoneNumber];
+    view = [v6 shareeWithName:sharedOwnerName emailAddress:sharedOwnerEmail phoneNumber:sharedOwnerPhoneNumber];
 
-    v10 = [[EKIdentityViewController alloc] initWithIdentity:v28];
+    v10 = [[EKIdentityViewController alloc] initWithIdentity:view];
 LABEL_3:
-    v11 = [(EKCalendarEditItem *)self delegate];
-    v12 = [v11 owningNavigationController];
-    [v12 pushViewController:v10 animated:1];
+    delegate = [(EKCalendarEditItem *)self delegate];
+    owningNavigationController = [delegate owningNavigationController];
+    [owningNavigationController pushViewController:v10 animated:1];
     goto LABEL_12;
   }
 
-  v13 = [(EKCalendarShareesEditItem *)self orderedSharees];
-  v14 = [v13 count];
+  orderedSharees = [(EKCalendarShareesEditItem *)self orderedSharees];
+  v14 = [orderedSharees count];
 
-  if (v14 > a4)
+  if (v14 > subitem)
   {
-    v15 = [(EKCalendarShareesEditItem *)self orderedSharees];
-    v28 = [v15 objectAtIndex:a4];
+    orderedSharees2 = [(EKCalendarShareesEditItem *)self orderedSharees];
+    view = [orderedSharees2 objectAtIndex:subitem];
 
-    v10 = [[EKShareeViewController alloc] initWithSharee:v28];
+    v10 = [[EKShareeViewController alloc] initWithSharee:view];
     [(EKIdentityViewController *)v10 setDelegate:self];
-    if ([v28 isNew])
+    if ([view isNew])
     {
       [(EKIdentityViewController *)v10 setAllowStopSharing:0];
       [(EKIdentityViewController *)v10 setAllowResendInvitations:0];
@@ -424,66 +424,66 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v16 = [(EKCalendarEditItem *)self delegate];
-  v17 = [v16 owningNavigationController];
-  v28 = [v17 view];
+  delegate2 = [(EKCalendarEditItem *)self delegate];
+  owningNavigationController2 = [delegate2 owningNavigationController];
+  view = [owningNavigationController2 view];
 
-  [v28 frame];
+  [view frame];
   v10 = [[EKShareePickerViewController alloc] initWithFrame:self->super._calendar calendar:v18, v19, v20, v21];
   [(EKIdentityViewController *)v10 setDelegate:self];
   [(EKIdentityViewController *)v10 setShouldSuggestFamilySharees:[(EKCalendarShareesEditItem *)self shouldSuggestFamilySharees]];
-  v22 = [(EKCalendarShareesEditItem *)self orderedSharees];
-  [(EKIdentityViewController *)v10 setFilterOutFamilySharees:v22];
+  orderedSharees3 = [(EKCalendarShareesEditItem *)self orderedSharees];
+  [(EKIdentityViewController *)v10 setFilterOutFamilySharees:orderedSharees3];
 
-  if (EKUICurrentWidthSizeClassIsRegularInViewHierarchy(v28) && EKUICurrentHeightSizeClassIsRegular(v28))
+  if (EKUICurrentWidthSizeClassIsRegularInViewHierarchy(view) && EKUICurrentHeightSizeClassIsRegular(view))
   {
-    v23 = [(EKCalendarEditItem *)self delegate];
-    v24 = [(EKUIManagedNavigationController *)v23 owningNavigationController];
-    [v24 pushViewController:v10 animated:1];
+    delegate3 = [(EKCalendarEditItem *)self delegate];
+    owningNavigationController3 = [(EKUIManagedNavigationController *)delegate3 owningNavigationController];
+    [owningNavigationController3 pushViewController:v10 animated:1];
   }
 
   else
   {
-    v23 = [[EKUIManagedNavigationController alloc] initWithRootViewController:v10];
-    v24 = [(EKCalendarEditItem *)self delegate];
-    v25 = [v24 owningNavigationController];
-    [v25 presentViewController:v23 animated:1 completion:0];
+    delegate3 = [[EKUIManagedNavigationController alloc] initWithRootViewController:v10];
+    owningNavigationController3 = [(EKCalendarEditItem *)self delegate];
+    v24OwningNavigationController = [owningNavigationController3 owningNavigationController];
+    [v24OwningNavigationController presentViewController:delegate3 animated:1 completion:0];
   }
 
-  v26 = [(EKCalendarEditItem *)self delegate];
-  [v26 calendarItemStartedEditing:self];
+  delegate4 = [(EKCalendarEditItem *)self delegate];
+  [delegate4 calendarItemStartedEditing:self];
 
-  v11 = [(EKCalendarEditItem *)self calendar];
-  v12 = [v11 source];
-  v27 = [v12 externalID];
-  [(EKIdentityViewController *)v10 setSearchAccountID:v27];
+  delegate = [(EKCalendarEditItem *)self calendar];
+  owningNavigationController = [delegate source];
+  externalID = [owningNavigationController externalID];
+  [(EKIdentityViewController *)v10 setSearchAccountID:externalID];
 
 LABEL_12:
 }
 
-- (void)_popBackToCalendarEditorChangesMade:(BOOL)a3 changesSaved:(BOOL)a4
+- (void)_popBackToCalendarEditorChangesMade:(BOOL)made changesSaved:(BOOL)saved
 {
-  if (a3)
+  if (made)
   {
-    v5 = a4;
-    v6 = [(EKCalendarEditItem *)self delegate];
+    savedCopy = saved;
+    delegate = [(EKCalendarEditItem *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(EKCalendarEditItem *)self delegate];
-      [v8 calendarItemStartedEditing:self];
+      delegate2 = [(EKCalendarEditItem *)self delegate];
+      [delegate2 calendarItemStartedEditing:self];
     }
 
-    v9 = [(EKCalendarEditItem *)self delegate];
+    delegate3 = [(EKCalendarEditItem *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(EKCalendarEditItem *)self delegate];
-      v12 = [(EKCalendar *)self->super._calendar sharees];
-      v13 = [v12 allObjects];
-      [v11 calendarEditItem:self shareesChanged:v13 changesSaved:v5];
+      delegate4 = [(EKCalendarEditItem *)self delegate];
+      sharees = [(EKCalendar *)self->super._calendar sharees];
+      allObjects = [sharees allObjects];
+      [delegate4 calendarEditItem:self shareesChanged:allObjects changesSaved:savedCopy];
     }
   }
 
@@ -492,68 +492,68 @@ LABEL_12:
 
 - (void)_dismissShareePicker
 {
-  v2 = [(EKCalendarEditItem *)self delegate];
-  v5 = [v2 owningNavigationController];
+  delegate = [(EKCalendarEditItem *)self delegate];
+  owningNavigationController = [delegate owningNavigationController];
 
-  v3 = [v5 presentedViewController];
+  presentedViewController = [owningNavigationController presentedViewController];
 
-  if (v3)
+  if (presentedViewController)
   {
-    [v5 dismissViewControllerAnimated:1 completion:0];
+    [owningNavigationController dismissViewControllerAnimated:1 completion:0];
   }
 
   else
   {
-    v4 = [v5 popViewControllerAnimated:1];
+    v4 = [owningNavigationController popViewControllerAnimated:1];
   }
 }
 
-- (void)shareeViewControllerDidChangeAccessLevel:(id)a3
+- (void)shareeViewControllerDidChangeAccessLevel:(id)level
 {
-  v4 = [(EKCalendarEditItem *)self delegate];
+  delegate = [(EKCalendarEditItem *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(EKCalendarEditItem *)self delegate];
-    [v6 calendarItemStartedEditing:self];
+    delegate2 = [(EKCalendarEditItem *)self delegate];
+    [delegate2 calendarItemStartedEditing:self];
   }
 
-  v7 = [(EKCalendarEditItem *)self delegate];
+  delegate3 = [(EKCalendarEditItem *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v10 = [(EKCalendarEditItem *)self delegate];
-    v9 = [v10 tableView];
-    [v9 reloadData];
+    delegate4 = [(EKCalendarEditItem *)self delegate];
+    tableView = [delegate4 tableView];
+    [tableView reloadData];
   }
 }
 
-- (void)shareeViewController:(id)a3 didCompleteWithAction:(int)a4
+- (void)shareeViewController:(id)controller didCompleteWithAction:(int)action
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(EKCalendarEditItem *)self delegate];
+  controllerCopy = controller;
+  delegate = [(EKCalendarEditItem *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(EKCalendarEditItem *)self delegate];
-    [v9 calendarEditItemWillChangeSharees:self];
+    delegate2 = [(EKCalendarEditItem *)self delegate];
+    [delegate2 calendarEditItemWillChangeSharees:self];
   }
 
-  switch(a4)
+  switch(action)
   {
     case 2:
-      v10 = [v6 sharee];
-      [(EKCalendarShareesEditItem *)self removeSharee:v10];
+      sharee = [controllerCopy sharee];
+      [(EKCalendarShareesEditItem *)self removeSharee:sharee];
       [(EKCalendarShareesEditItem *)self _popBackToCalendarEditorChangesMade:1 changesSaved:0];
       goto LABEL_21;
     case 1:
-      v10 = [v6 sharee];
-      v14 = [v10 duplicate];
-      [(EKCalendarShareesEditItem *)self removeSharee:v10];
+      sharee = [controllerCopy sharee];
+      duplicate = [sharee duplicate];
+      [(EKCalendarShareesEditItem *)self removeSharee:sharee];
       store = self->super._store;
       calendar = self->super._calendar;
       v30 = 0;
@@ -566,7 +566,7 @@ LABEL_12:
         {
           v22 = self->super._calendar;
           *buf = 138412802;
-          v32 = v10;
+          v32 = sharee;
           v33 = 2112;
           v34 = v22;
           v35 = 2112;
@@ -575,7 +575,7 @@ LABEL_12:
         }
       }
 
-      [(EKCalendarShareesEditItem *)self addSharee:v14];
+      [(EKCalendarShareesEditItem *)self addSharee:duplicate];
       v23 = self->super._store;
       v24 = self->super._calendar;
       v29 = v20;
@@ -589,7 +589,7 @@ LABEL_12:
         {
           v28 = self->super._calendar;
           *buf = 138412802;
-          v32 = v10;
+          v32 = sharee;
           v33 = 2112;
           v34 = v28;
           v35 = 2112;
@@ -602,27 +602,27 @@ LABEL_12:
 
       goto LABEL_19;
     case 0:
-      v10 = [v6 sharee];
-      [(EKCalendarShareesEditItem *)self removeSharee:v10];
-      v11 = [(EKCalendar *)self->super._calendar sharees];
-      v12 = [v11 count];
+      sharee = [controllerCopy sharee];
+      [(EKCalendarShareesEditItem *)self removeSharee:sharee];
+      sharees = [(EKCalendar *)self->super._calendar sharees];
+      v12 = [sharees count];
 
       if (!v12)
       {
         [(EKCalendar *)self->super._calendar setSharingStatus:0];
       }
 
-      v13 = [(EKCalendarEditItem *)self delegate];
-      v14 = [v13 editorForCalendarEditItem:self];
+      delegate3 = [(EKCalendarEditItem *)self delegate];
+      duplicate = [delegate3 editorForCalendarEditItem:self];
 
-      if (([v14 saveCalendar:self->super._calendar error:0] & 1) == 0)
+      if (([duplicate saveCalendar:self->super._calendar error:0] & 1) == 0)
       {
         v15 = kEKUILogHandle;
         if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_ERROR))
         {
           v16 = self->super._calendar;
           *buf = 138412546;
-          v32 = v10;
+          v32 = sharee;
           v33 = 2112;
           v34 = v16;
           _os_log_impl(&dword_1D3400000, v15, OS_LOG_TYPE_ERROR, "Calendar: unable to remove sharee(%@) from calendar(%@)", buf, 0x16u);
@@ -637,25 +637,25 @@ LABEL_21:
   }
 }
 
-- (void)shareePickerViewController:(id)a3 didCompleteWithAction:(int)a4
+- (void)shareePickerViewController:(id)controller didCompleteWithAction:(int)action
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (a4 == 1)
+  controllerCopy = controller;
+  if (action == 1)
   {
-    v7 = [(EKCalendarShareesEditItem *)self orderedSharees];
-    v8 = [(EKCalendarShareesEditItem *)self meSharee];
+    orderedSharees = [(EKCalendarShareesEditItem *)self orderedSharees];
+    meSharee = [(EKCalendarShareesEditItem *)self meSharee];
 
-    if (v8)
+    if (meSharee)
     {
-      v9 = [(EKCalendarShareesEditItem *)self meSharee];
-      v10 = [v7 arrayByAddingObject:v9];
+      meSharee2 = [(EKCalendarShareesEditItem *)self meSharee];
+      v10 = [orderedSharees arrayByAddingObject:meSharee2];
 
-      v7 = v10;
+      orderedSharees = v10;
     }
 
-    v11 = [v6 sharees];
-    v12 = [(EKCalendarShareesEditItem *)self _filteredSharees:v11 byRemovingDuplicatesFoundIn:v7];
+    sharees = [controllerCopy sharees];
+    v12 = [(EKCalendarShareesEditItem *)self _filteredSharees:sharees byRemovingDuplicatesFoundIn:orderedSharees];
 
     v20 = 0u;
     v21 = 0u;
@@ -690,23 +690,23 @@ LABEL_21:
     [(EKCalendarShareesEditItem *)self _popBackToCalendarEditorChangesMade:1 changesSaved:0];
   }
 
-  else if (!a4)
+  else if (!action)
   {
     [(EKCalendarShareesEditItem *)self _dismissShareePicker];
   }
 }
 
-- (id)_filteredSharees:(id)a3 byRemovingDuplicatesFoundIn:(id)a4
+- (id)_filteredSharees:(id)sharees byRemovingDuplicatesFoundIn:(id)in
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  shareesCopy = sharees;
+  inCopy = in;
   v7 = [MEMORY[0x1E695DFA8] set];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v8 = v6;
+  v8 = inCopy;
   v9 = [v8 countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v9)
   {
@@ -722,12 +722,12 @@ LABEL_21:
         }
 
         v13 = *(*(&v30 + 1) + 8 * i);
-        v14 = [v13 emailAddress];
+        emailAddress = [v13 emailAddress];
 
-        if (v14)
+        if (emailAddress)
         {
-          v15 = [v13 emailAddress];
-          [v7 addObject:v15];
+          emailAddress2 = [v13 emailAddress];
+          [v7 addObject:emailAddress2];
         }
       }
 
@@ -737,12 +737,12 @@ LABEL_21:
     while (v10);
   }
 
-  v16 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v17 = v5;
+  v17 = shareesCopy;
   v18 = [v17 countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v18)
   {
@@ -758,12 +758,12 @@ LABEL_21:
         }
 
         v22 = *(*(&v26 + 1) + 8 * j);
-        v23 = [v22 emailAddress];
-        v24 = [v7 containsObject:v23];
+        emailAddress3 = [v22 emailAddress];
+        v24 = [v7 containsObject:emailAddress3];
 
         if ((v24 & 1) == 0)
         {
-          [v16 addObject:v22];
+          [array addObject:v22];
         }
       }
 
@@ -773,7 +773,7 @@ LABEL_21:
     while (v19);
   }
 
-  return v16;
+  return array;
 }
 
 @end

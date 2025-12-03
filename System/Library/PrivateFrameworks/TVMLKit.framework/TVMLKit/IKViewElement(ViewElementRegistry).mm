@@ -8,11 +8,11 @@
 
 - (id)tv_proxyView
 {
-  v2 = objc_getAssociatedObject(a1, sel_tv_proxyView);
+  v2 = objc_getAssociatedObject(self, sel_tv_proxyView);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = objc_getAssociatedObject(a1, sel_tv_proxyView);
+    v3 = objc_getAssociatedObject(self, sel_tv_proxyView);
   }
 
   else
@@ -20,15 +20,15 @@
     v3 = 0;
   }
 
-  v4 = [v3 object];
+  object = [v3 object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v4 isViewLoaded])
+    if ([object isViewLoaded])
     {
-      v5 = [v4 view];
+      view = [object view];
 LABEL_9:
-      v6 = v5;
+      v6 = view;
       goto LABEL_11;
     }
   }
@@ -38,7 +38,7 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      view = object;
       goto LABEL_9;
     }
   }
@@ -55,11 +55,11 @@ LABEL_11:
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v4 = objc_getAssociatedObject(a1, sel_tv_proxyView);
+    v4 = objc_getAssociatedObject(self, sel_tv_proxyView);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = objc_getAssociatedObject(a1, sel_tv_proxyView);
+      v5 = objc_getAssociatedObject(self, sel_tv_proxyView);
 
       if (v5)
       {
@@ -75,7 +75,7 @@ LABEL_8:
     }
 
     v5 = objc_alloc_init(_TVProxyWeakContainer);
-    objc_setAssociatedObject(a1, sel_tv_proxyView, v5, 1);
+    objc_setAssociatedObject(self, sel_tv_proxyView, v5, 1);
     goto LABEL_8;
   }
 
@@ -85,30 +85,30 @@ LABEL_9:
 + (id)tv_approximateViewElementForView:()ViewElementRegistry
 {
   v3 = a3;
-  v4 = [v3 tv_associatedIKViewElement];
-  if (v4)
+  tv_associatedIKViewElement = [v3 tv_associatedIKViewElement];
+  if (tv_associatedIKViewElement)
   {
-    v5 = v4;
-    v6 = v3;
+    v5 = tv_associatedIKViewElement;
+    superview = v3;
   }
 
   else
   {
-    v6 = v3;
+    superview = v3;
     while (1)
     {
-      v7 = v6;
-      v6 = [v6 superview];
+      v7 = superview;
+      superview = [superview superview];
 
-      if (!v6)
+      if (!superview)
       {
         break;
       }
 
-      v8 = [v6 tv_associatedIKViewElement];
-      if (v8)
+      tv_associatedIKViewElement2 = [superview tv_associatedIKViewElement];
+      if (tv_associatedIKViewElement2)
       {
-        v5 = v8;
+        v5 = tv_associatedIKViewElement2;
         goto LABEL_8;
       }
     }

@@ -1,8 +1,8 @@
 @interface PFPosterExtensionProvider
 + (id)extensionKitQuery;
-+ (id)extensionWithBundleIdentifier:(id)a3;
++ (id)extensionWithBundleIdentifier:(id)identifier;
 - (BOOL)_lock_updateExtensions;
-- (BOOL)_lock_updateExtensions:(id)a3;
+- (BOOL)_lock_updateExtensions:(id)extensions;
 - (BOOL)hasPosterExtensions;
 - (BOOL)reloadExtensions;
 - (NSArray)knownPosterExtensions;
@@ -10,41 +10,41 @@
 - (NSPredicate)predicate;
 - (NSSet)supportedRoles;
 - (PFPosterExtensionInstancePool)instancePool;
-- (PFPosterExtensionProvider)initWithDefaultInstanceIdentifier:(id)a3;
+- (PFPosterExtensionProvider)initWithDefaultInstanceIdentifier:(id)identifier;
 - (id)_lock_buildQuery;
-- (id)acquireInstanceForExtensionWithIdentifier:(id)a3 reason:(id)a4 error:(id *)a5;
-- (void)_lock_executeCancellationAndRestartIfAlreadyStarted:(BOOL)a3;
+- (id)acquireInstanceForExtensionWithIdentifier:(id)identifier reason:(id)reason error:(id *)error;
+- (void)_lock_executeCancellationAndRestartIfAlreadyStarted:(BOOL)started;
 - (void)_lock_executeQuery;
-- (void)_lock_notifyDataStoreOfUpdatedExtensions:(id)a3 fromExtensions:(id)a4;
-- (void)_lock_startWithImmediateQueryExecution:(BOOL)a3;
+- (void)_lock_notifyDataStoreOfUpdatedExtensions:(id)extensions fromExtensions:(id)fromExtensions;
+- (void)_lock_startWithImmediateQueryExecution:(BOOL)execution;
 - (void)_lock_teardownQueryController;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)cancel;
-- (void)queryControllerDidUpdate:(id)a3 resultDifference:(id)a4;
-- (void)relinquishExtensionInstanceWithIdentifier:(id)a3 reason:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)setPredicate:(id)a3;
-- (void)setSupportedRoles:(id)a3;
+- (void)queryControllerDidUpdate:(id)update resultDifference:(id)difference;
+- (void)relinquishExtensionInstanceWithIdentifier:(id)identifier reason:(id)reason;
+- (void)removeObserver:(id)observer;
+- (void)setPredicate:(id)predicate;
+- (void)setSupportedRoles:(id)roles;
 @end
 
 @implementation PFPosterExtensionProvider
 
-+ (id)extensionWithBundleIdentifier:(id)a3
++ (id)extensionWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__2;
   v17 = __Block_byref_object_dispose__2;
   v18 = 0;
-  v5 = [a1 extensionKitQuery];
-  v6 = [MEMORY[0x1E6966CF8] executeQuery:v5];
+  extensionKitQuery = [self extensionKitQuery];
+  v6 = [MEMORY[0x1E6966CF8] executeQuery:extensionKitQuery];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __59__PFPosterExtensionProvider_extensionWithBundleIdentifier___block_invoke;
   v10[3] = &unk_1E8189898;
-  v7 = v4;
+  v7 = identifierCopy;
   v11 = v7;
   v12 = &v13;
   [v6 enumerateObjectsUsingBlock:v10];
@@ -79,10 +79,10 @@ void __59__PFPosterExtensionProvider_extensionWithBundleIdentifier___block_invok
   return v2;
 }
 
-- (PFPosterExtensionProvider)initWithDefaultInstanceIdentifier:(id)a3
+- (PFPosterExtensionProvider)initWithDefaultInstanceIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = PFPosterExtensionProvider;
   v5 = [(PFPosterExtensionProvider *)&v18 init];
@@ -91,7 +91,7 @@ void __59__PFPosterExtensionProvider_extensionWithBundleIdentifier___block_invok
     v6 = [PFWorkloop serialQueueTargetingSharedWorkloop:@"com.apple.PosterFoundation.extensionProvider.observerQueue"];
     [(PFPosterExtensionProvider *)v5 setObserverQueue:v6];
 
-    v7 = [[PFPosterExtensionInstanceProvider alloc] initWithDefaultInstanceIdentifier:v4];
+    v7 = [[PFPosterExtensionInstanceProvider alloc] initWithDefaultInstanceIdentifier:identifierCopy];
     instanceProvider = v5->_instanceProvider;
     v5->_instanceProvider = v7;
 
@@ -104,9 +104,9 @@ void __59__PFPosterExtensionProvider_extensionWithBundleIdentifier___block_invok
     lock_supportedRoles = v5->_lock_supportedRoles;
     v5->_lock_supportedRoles = v11;
 
-    v13 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     lock_observers = v5->_lock_observers;
-    v5->_lock_observers = v13;
+    v5->_lock_observers = weakObjectsHashTable;
 
     v15 = PFLogExtensions();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -121,20 +121,20 @@ void __59__PFPosterExtensionProvider_extensionWithBundleIdentifier___block_invok
   return v5;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers addObject:v4];
+  [(NSHashTable *)self->_lock_observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers removeObject:v4];
+  [(NSHashTable *)self->_lock_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -147,7 +147,7 @@ void __59__PFPosterExtensionProvider_extensionWithBundleIdentifier___block_invok
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C269D000, v3, OS_LOG_TYPE_DEFAULT, "(%p) cancel", &v5, 0xCu);
   }
 
@@ -164,21 +164,21 @@ void __59__PFPosterExtensionProvider_extensionWithBundleIdentifier___block_invok
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C269D000, v3, OS_LOG_TYPE_DEFAULT, "(%p) reloadExtensions", &v7, 0xCu);
   }
 
-  v4 = [(PFPosterExtensionProvider *)self _lock_updateExtensions];
+  _lock_updateExtensions = [(PFPosterExtensionProvider *)self _lock_updateExtensions];
   os_unfair_lock_unlock(&self->_lock);
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return _lock_updateExtensions;
 }
 
 - (NSArray)knownPosterExtensions
 {
-  v2 = [(PFPosterExtensionProvider *)self extensionForIdentifier];
-  v3 = [v2 allValues];
-  v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_8];
+  extensionForIdentifier = [(PFPosterExtensionProvider *)self extensionForIdentifier];
+  allValues = [extensionForIdentifier allValues];
+  v4 = [allValues sortedArrayUsingComparator:&__block_literal_global_8];
 
   return v4;
 }
@@ -203,7 +203,7 @@ uint64_t __50__PFPosterExtensionProvider_knownPosterExtensions__block_invoke(uin
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134218240;
-    v8 = self;
+    selfCopy = self;
     v9 = 1024;
     v10 = v3 != 0;
     _os_log_impl(&dword_1C269D000, v4, OS_LOG_TYPE_DEFAULT, "(%p) hasPosterExtensions:%{BOOL}u", &v7, 0x12u);
@@ -231,19 +231,19 @@ uint64_t __50__PFPosterExtensionProvider_knownPosterExtensions__block_invoke(uin
   return v3;
 }
 
-- (void)setSupportedRoles:(id)a3
+- (void)setSupportedRoles:(id)roles
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  rolesCopy = roles;
+  if (!rolesCopy)
   {
-    v4 = PFPosterRolesSupportedForCurrentDeviceClass();
+    rolesCopy = PFPosterRolesSupportedForCurrentDeviceClass();
   }
 
   os_unfair_lock_lock(&self->_lock);
-  if (([(NSSet *)self->_lock_supportedRoles isEqual:v4]& 1) == 0)
+  if (([(NSSet *)self->_lock_supportedRoles isEqual:rolesCopy]& 1) == 0)
   {
-    v5 = [v4 copy];
+    v5 = [rolesCopy copy];
     lock_supportedRoles = self->_lock_supportedRoles;
     self->_lock_supportedRoles = v5;
 
@@ -254,9 +254,9 @@ uint64_t __50__PFPosterExtensionProvider_knownPosterExtensions__block_invoke(uin
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 134218242;
-      v11 = self;
+      selfCopy = self;
       v12 = 2114;
-      v13 = v4;
+      v13 = rolesCopy;
       _os_log_impl(&dword_1C269D000, v8, OS_LOG_TYPE_DEFAULT, "(%p) updating supported roles:%{public}@", &v10, 0x16u);
     }
 
@@ -273,13 +273,13 @@ uint64_t __50__PFPosterExtensionProvider_knownPosterExtensions__block_invoke(uin
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPredicate:(id)a3
+- (void)setPredicate:(id)predicate
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  predicateCopy = predicate;
+  if (!predicateCopy)
   {
-    v4 = [MEMORY[0x1E696AE18] predicateWithValue:1];
+    predicateCopy = [MEMORY[0x1E696AE18] predicateWithValue:1];
   }
 
   os_unfair_lock_lock(&self->_lock);
@@ -287,9 +287,9 @@ uint64_t __50__PFPosterExtensionProvider_knownPosterExtensions__block_invoke(uin
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134218242;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
-    v12 = v4;
+    v12 = predicateCopy;
     _os_log_impl(&dword_1C269D000, v5, OS_LOG_TYPE_DEFAULT, "(%p) updating predicate:%{public}@", &v9, 0x16u);
   }
 
@@ -298,7 +298,7 @@ uint64_t __50__PFPosterExtensionProvider_knownPosterExtensions__block_invoke(uin
     [(PFPosterExtensionProvider *)self _lock_executeCancellationAndRestartIfAlreadyStarted:0];
     self->_lock_started = 0;
     lock_predicate = self->_lock_predicate;
-    self->_lock_predicate = v4;
+    self->_lock_predicate = predicateCopy;
 
     [(PFPosterExtensionProvider *)self _lock_startWithImmediateQueryExecution:1];
   }
@@ -306,7 +306,7 @@ uint64_t __50__PFPosterExtensionProvider_knownPosterExtensions__block_invoke(uin
   else
   {
     v7 = self->_lock_predicate;
-    self->_lock_predicate = v4;
+    self->_lock_predicate = predicateCopy;
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -337,33 +337,33 @@ uint64_t __50__PFPosterExtensionProvider_knownPosterExtensions__block_invoke(uin
   return instancePool;
 }
 
-- (id)acquireInstanceForExtensionWithIdentifier:(id)a3 reason:(id)a4 error:(id *)a5
+- (id)acquireInstanceForExtensionWithIdentifier:(id)identifier reason:(id)reason error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(PFPosterExtensionProvider *)self extensionForIdentifier];
-  v11 = [v10 objectForKey:v9];
+  reasonCopy = reason;
+  identifierCopy = identifier;
+  extensionForIdentifier = [(PFPosterExtensionProvider *)self extensionForIdentifier];
+  v11 = [extensionForIdentifier objectForKey:identifierCopy];
 
-  v12 = [(PFPosterExtensionProvider *)self instanceProvider];
-  v13 = [v12 acquireInstanceForExtension:v11 reason:v8 error:a5];
+  instanceProvider = [(PFPosterExtensionProvider *)self instanceProvider];
+  v13 = [instanceProvider acquireInstanceForExtension:v11 reason:reasonCopy error:error];
 
   return v13;
 }
 
-- (void)relinquishExtensionInstanceWithIdentifier:(id)a3 reason:(id)a4
+- (void)relinquishExtensionInstanceWithIdentifier:(id)identifier reason:(id)reason
 {
-  v12 = a4;
-  v6 = a3;
-  v7 = [(PFPosterExtensionProvider *)self extensionForIdentifier];
-  v8 = [v7 objectForKey:v6];
+  reasonCopy = reason;
+  identifierCopy = identifier;
+  extensionForIdentifier = [(PFPosterExtensionProvider *)self extensionForIdentifier];
+  v8 = [extensionForIdentifier objectForKey:identifierCopy];
 
-  v9 = [(PFPosterExtensionProvider *)self instanceProvider];
-  v10 = [v9 instanceForExtension:v8 reason:v12];
+  instanceProvider = [(PFPosterExtensionProvider *)self instanceProvider];
+  v10 = [instanceProvider instanceForExtension:v8 reason:reasonCopy];
 
   if (v10)
   {
-    v11 = [(PFPosterExtensionProvider *)self instanceProvider];
-    [v11 relinquishExtensionInstance:v10 reason:v12];
+    instanceProvider2 = [(PFPosterExtensionProvider *)self instanceProvider];
+    [instanceProvider2 relinquishExtensionInstance:v10 reason:reasonCopy];
   }
 }
 
@@ -377,9 +377,9 @@ uint64_t __50__PFPosterExtensionProvider_knownPosterExtensions__block_invoke(uin
   }
 }
 
-- (void)_lock_startWithImmediateQueryExecution:(BOOL)a3
+- (void)_lock_startWithImmediateQueryExecution:(BOOL)execution
 {
-  v3 = a3;
+  executionCopy = execution;
   v15 = *MEMORY[0x1E69E9840];
   if (!self->_lock_started)
   {
@@ -387,14 +387,14 @@ uint64_t __50__PFPosterExtensionProvider_knownPosterExtensions__block_invoke(uin
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1C269D000, v5, OS_LOG_TYPE_DEFAULT, "(%p) _lock_startWithImmediateQueryExecution", buf, 0xCu);
     }
 
     if (!self->_lock_queries)
     {
-      v6 = [(PFPosterExtensionProvider *)self _lock_buildQuery];
-      v12 = v6;
+      _lock_buildQuery = [(PFPosterExtensionProvider *)self _lock_buildQuery];
+      v12 = _lock_buildQuery;
       v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v12 count:1];
       lock_queries = self->_lock_queries;
       self->_lock_queries = v7;
@@ -413,7 +413,7 @@ uint64_t __50__PFPosterExtensionProvider_knownPosterExtensions__block_invoke(uin
     self->_lock_started = 1;
   }
 
-  if (v3)
+  if (executionCopy)
   {
     [(PFPosterExtensionProvider *)self _lock_executeQuery];
   }
@@ -423,7 +423,7 @@ uint64_t __50__PFPosterExtensionProvider_knownPosterExtensions__block_invoke(uin
 
 - (id)_lock_buildQuery
 {
-  v3 = [objc_opt_class() extensionKitQuery];
+  extensionKitQuery = [objc_opt_class() extensionKitQuery];
   v4 = objc_opt_new();
   [v4 bs_safeAddObject:self->_lock_predicate];
   if (!self->_lock_rolePredicate)
@@ -453,9 +453,9 @@ uint64_t __50__PFPosterExtensionProvider_knownPosterExtensions__block_invoke(uin
     v10 = 0;
   }
 
-  [v3 setPredicate:v10];
+  [extensionKitQuery setPredicate:v10];
 
-  return v3;
+  return extensionKitQuery;
 }
 
 uint64_t __45__PFPosterExtensionProvider__lock_buildQuery__block_invoke(uint64_t a1, void *a2)
@@ -492,7 +492,7 @@ uint64_t __45__PFPosterExtensionProvider__lock_buildQuery__block_invoke(uint64_t
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C269D000, v3, OS_LOG_TYPE_DEFAULT, "(%p) teardownQueryController", &v7, 0xCu);
   }
 
@@ -507,24 +507,24 @@ uint64_t __45__PFPosterExtensionProvider__lock_buildQuery__block_invoke(uint64_t
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_lock_executeCancellationAndRestartIfAlreadyStarted:(BOOL)a3
+- (void)_lock_executeCancellationAndRestartIfAlreadyStarted:(BOOL)started
 {
-  v3 = a3;
+  startedCopy = started;
   v12 = *MEMORY[0x1E69E9840];
   v5 = PFLogExtensions();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134218240;
-    v9 = self;
+    selfCopy = self;
     v10 = 1024;
-    v11 = v3;
+    v11 = startedCopy;
     _os_log_impl(&dword_1C269D000, v5, OS_LOG_TYPE_DEFAULT, "(%p) _lock_executeCancellationAndRestartIfAlreadyStarted:%{BOOL}u", &v8, 0x12u);
   }
 
   [(PFPosterExtensionProvider *)self _lock_teardownQueryController];
   lock_started = self->_lock_started;
   self->_lock_started = 0;
-  if (v3 && lock_started)
+  if (startedCopy && lock_started)
   {
     [(PFPosterExtensionProvider *)self _lock_startWithImmediateQueryExecution:1];
   }
@@ -533,34 +533,34 @@ uint64_t __45__PFPosterExtensionProvider__lock_buildQuery__block_invoke(uint64_t
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)queryControllerDidUpdate:(id)a3 resultDifference:(id)a4
+- (void)queryControllerDidUpdate:(id)update resultDifference:(id)difference
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  differenceCopy = difference;
   os_unfair_lock_lock(&self->_lock);
   lock_queryController = self->_lock_queryController;
   v9 = PFLogExtensions();
   v10 = v9;
-  if (lock_queryController == v6)
+  if (lock_queryController == updateCopy)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 134218498;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2112;
-      v20 = v6;
+      v20 = updateCopy;
       v21 = 2112;
-      v22 = v7;
+      v22 = differenceCopy;
       _os_log_impl(&dword_1C269D000, v10, OS_LOG_TYPE_DEFAULT, "(%p) queryControllerDidUpdate:%@ resultDifference:%@", &v17, 0x20u);
     }
 
     v12 = MEMORY[0x1E695DFD8];
-    v13 = [(_EXQueryController *)v6 extensionIdentities];
-    v10 = v13;
-    if (v13)
+    extensionIdentities = [(_EXQueryController *)updateCopy extensionIdentities];
+    v10 = extensionIdentities;
+    if (extensionIdentities)
     {
-      v14 = v13;
+      v14 = extensionIdentities;
     }
 
     else
@@ -576,11 +576,11 @@ uint64_t __45__PFPosterExtensionProvider__lock_buildQuery__block_invoke(uint64_t
   {
     v11 = self->_lock_queryController;
     v17 = 134218754;
-    v18 = self;
+    selfCopy2 = self;
     v19 = 2112;
-    v20 = v6;
+    v20 = updateCopy;
     v21 = 2112;
-    v22 = v7;
+    v22 = differenceCopy;
     v23 = 2112;
     v24 = v11;
     _os_log_error_impl(&dword_1C269D000, v10, OS_LOG_TYPE_ERROR, "(%p) ignoring imposter queryControllerDidUpdate:%@ resultDifference:%@ - My controller is %@", &v17, 0x2Au);
@@ -594,8 +594,8 @@ uint64_t __45__PFPosterExtensionProvider__lock_buildQuery__block_invoke(uint64_t
 {
   v16 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E6966CF8];
-  v4 = [(PFPosterExtensionProvider *)self _lock_buildQuery];
-  v5 = [v3 executeQuery:v4];
+  _lock_buildQuery = [(PFPosterExtensionProvider *)self _lock_buildQuery];
+  v5 = [v3 executeQuery:_lock_buildQuery];
 
   if (v5)
   {
@@ -614,7 +614,7 @@ uint64_t __45__PFPosterExtensionProvider__lock_buildQuery__block_invoke(uint64_t
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 134218240;
-    v13 = self;
+    selfCopy = self;
     v14 = 1024;
     v15 = v8;
     _os_log_impl(&dword_1C269D000, v9, OS_LOG_TYPE_DEFAULT, "(%p) didUpdateExtensions:%{BOOL}u", &v12, 0x12u);
@@ -624,21 +624,21 @@ uint64_t __45__PFPosterExtensionProvider__lock_buildQuery__block_invoke(uint64_t
   return v8;
 }
 
-- (BOOL)_lock_updateExtensions:(id)a3
+- (BOOL)_lock_updateExtensions:(id)extensions
 {
   v64 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  extensionsCopy = extensions;
+  if ([extensionsCopy count])
   {
-    v5 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
     v6 = [(NSDictionary *)self->_lock_extensionByProvider copy];
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
     v46 = v6;
-    v7 = [v6 allValues];
-    v8 = [v7 countByEnumeratingWithState:&v54 objects:v63 count:16];
+    allValues = [v6 allValues];
+    v8 = [allValues countByEnumeratingWithState:&v54 objects:v63 count:16];
     if (v8)
     {
       v9 = v8;
@@ -649,31 +649,31 @@ uint64_t __45__PFPosterExtensionProvider__lock_buildQuery__block_invoke(uint64_t
         {
           if (*v55 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
           v12 = *(*(&v54 + 1) + 8 * i);
-          v13 = [v12 identity];
-          [v5 setObject:v12 forKey:v13];
+          identity = [v12 identity];
+          [weakToWeakObjectsMapTable setObject:v12 forKey:identity];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v54 objects:v63 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v54 objects:v63 count:16];
       }
 
       while (v9);
     }
 
     v14 = MEMORY[0x1E695DFD8];
-    v15 = [v46 allValues];
-    v45 = [v14 setWithArray:v15];
+    allValues2 = [v46 allValues];
+    v45 = [v14 setWithArray:allValues2];
 
-    v47 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    v47 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(extensionsCopy, "count")}];
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v44 = v4;
-    v16 = v4;
+    v44 = extensionsCopy;
+    v16 = extensionsCopy;
     v17 = [v16 countByEnumeratingWithState:&v50 objects:v62 count:16];
     if (v17)
     {
@@ -699,7 +699,7 @@ uint64_t __45__PFPosterExtensionProvider__lock_buildQuery__block_invoke(uint64_t
             }
 
             *buf = 134218242;
-            v59 = self;
+            selfCopy10 = self;
             v60 = 2112;
             v61 = v21;
             v27 = v23;
@@ -720,7 +720,7 @@ LABEL_26:
             }
 
             *buf = 134218242;
-            v59 = self;
+            selfCopy10 = self;
             v60 = 2112;
             v61 = v21;
             v27 = v23;
@@ -731,13 +731,13 @@ LABEL_26:
           if (v24)
           {
             *buf = 134218242;
-            v59 = self;
+            selfCopy10 = self;
             v60 = 2112;
             v61 = v21;
             _os_log_impl(&dword_1C269D000, v23, OS_LOG_TYPE_DEFAULT, "(%p) Examining extension identity %@", buf, 0x16u);
           }
 
-          v25 = [v5 objectForKey:v21];
+          v25 = [weakToWeakObjectsMapTable objectForKey:v21];
           if (v25)
           {
             v23 = v25;
@@ -745,7 +745,7 @@ LABEL_26:
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 134218242;
-              v59 = self;
+              selfCopy10 = self;
               v60 = 2112;
               v61 = v21;
               _os_log_impl(&dword_1C269D000, v26, OS_LOG_TYPE_DEFAULT, "(%p) Extension identity %@ already tracked", buf, 0x16u);
@@ -766,7 +766,7 @@ LABEL_28:
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134218242;
-            v59 = self;
+            selfCopy10 = self;
             v60 = 2112;
             v61 = v21;
             _os_log_impl(&dword_1C269D000, v29, OS_LOG_TYPE_DEFAULT, "(%p) Failed to add new extension wrapper: %@; PFPosterExtension unable to create extension", buf, 0x16u);
@@ -776,7 +776,7 @@ LABEL_28:
           if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
           {
             *buf = 134218242;
-            v59 = self;
+            selfCopy10 = self;
             v60 = 2112;
             v61 = v21;
             _os_log_error_impl(&dword_1C269D000, v23, OS_LOG_TYPE_ERROR, "(%p) Extension identity %@ could not be used to create a PFPosterExtension. Bailing.", buf, 0x16u);
@@ -806,11 +806,11 @@ LABEL_29:
       if (v36)
       {
         *buf = 134217984;
-        v59 = self;
+        selfCopy10 = self;
         _os_log_impl(&dword_1C269D000, v35, OS_LOG_TYPE_DEFAULT, "(%p) Extension update received; no updates found.", buf, 0xCu);
       }
 
-      v4 = v44;
+      extensionsCopy = v44;
     }
 
     else
@@ -818,7 +818,7 @@ LABEL_29:
       if (v36)
       {
         *buf = 134217984;
-        v59 = self;
+        selfCopy10 = self;
         _os_log_impl(&dword_1C269D000, v35, OS_LOG_TYPE_DEFAULT, "(%p) Extension update received; pushing out updates", buf, 0xCu);
       }
 
@@ -839,11 +839,11 @@ LABEL_29:
       if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v59 = self;
+        selfCopy10 = self;
         _os_log_impl(&dword_1C269D000, v41, OS_LOG_TYPE_DEFAULT, "(%p) Extension update complete", buf, 0xCu);
       }
 
-      v4 = v44;
+      extensionsCopy = v44;
       v33 = v45;
     }
 
@@ -856,7 +856,7 @@ LABEL_29:
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v59 = self;
+      selfCopy10 = self;
       _os_log_impl(&dword_1C269D000, v33, OS_LOG_TYPE_DEFAULT, "(%p) Rejecting updateExtensions; no extensions received.", buf, 0xCu);
     }
 
@@ -875,20 +875,20 @@ void __52__PFPosterExtensionProvider__lock_updateExtensions___block_invoke(uint6
   [v2 setObject:v3 forKey:v4];
 }
 
-- (void)_lock_notifyDataStoreOfUpdatedExtensions:(id)a3 fromExtensions:(id)a4
+- (void)_lock_notifyDataStoreOfUpdatedExtensions:(id)extensions fromExtensions:(id)fromExtensions
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v21 = a4;
+  extensionsCopy = extensions;
+  fromExtensionsCopy = fromExtensions;
   v7 = PFLogExtensions();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v31 = self;
+    selfCopy3 = self;
     v32 = 2048;
-    v33 = [v6 count];
+    v33 = [extensionsCopy count];
     v34 = 2112;
-    v35 = v6;
+    v35 = extensionsCopy;
     _os_log_impl(&dword_1C269D000, v7, OS_LOG_TYPE_DEFAULT, "(%p) Extensions updated; Received %lu extensions: %@", buf, 0x20u);
   }
 
@@ -901,9 +901,9 @@ void __52__PFPosterExtensionProvider__lock_updateExtensions___block_invoke(uint6
     if (v10)
     {
       *buf = 134218242;
-      v31 = self;
+      selfCopy3 = self;
       v32 = 2112;
-      v33 = v6;
+      v33 = extensionsCopy;
       _os_log_impl(&dword_1C269D000, log, OS_LOG_TYPE_DEFAULT, "(%p) Notifying delegate of updated Poster Extensions %@", buf, 0x16u);
     }
 
@@ -928,16 +928,16 @@ void __52__PFPosterExtensionProvider__lock_updateExtensions___block_invoke(uint6
           }
 
           v15 = *(*(&v25 + 1) + 8 * i);
-          v16 = [(PFPosterExtensionProvider *)self observerQueue];
+          observerQueue = [(PFPosterExtensionProvider *)self observerQueue];
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
           block[2] = __85__PFPosterExtensionProvider__lock_notifyDataStoreOfUpdatedExtensions_fromExtensions___block_invoke;
           block[3] = &unk_1E8189930;
           block[4] = v15;
           block[5] = self;
-          v23 = v6;
-          v24 = v21;
-          dispatch_async(v16, block);
+          v23 = extensionsCopy;
+          v24 = fromExtensionsCopy;
+          dispatch_async(observerQueue, block);
         }
 
         v12 = [log countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -951,14 +951,14 @@ void __52__PFPosterExtensionProvider__lock_updateExtensions___block_invoke(uint6
   else if (v10)
   {
     *buf = 134218242;
-    v31 = self;
+    selfCopy3 = self;
     v32 = 2112;
-    v33 = v6;
+    v33 = extensionsCopy;
     _os_log_impl(&dword_1C269D000, log, OS_LOG_TYPE_DEFAULT, "(%p) Observers were not set; Poster Extensions were updated: %@", buf, 0x16u);
   }
 
-  v17 = [(PFPosterExtensionProvider *)self instanceProvider];
-  [v17 noteExtensionsWereUpdated:v6];
+  instanceProvider = [(PFPosterExtensionProvider *)self instanceProvider];
+  [instanceProvider noteExtensionsWereUpdated:extensionsCopy];
 
   v18 = *MEMORY[0x1E69E9840];
 }

@@ -6,7 +6,7 @@
 + (id)defaultLightKeyboardStyle;
 + (id)lightKeyboardStyleForDisambiguation;
 + (id)lightTVStyle;
-+ (id)onePixelImageWithColor:(id)a3;
++ (id)onePixelImageWithColor:(id)color;
 - (CGPoint)gridLineOffset;
 - (UIEdgeInsets)arrowButtonPadding;
 - (UIEdgeInsets)extraCellPadding;
@@ -40,45 +40,45 @@
   sortControlFont = v2->_sortControlFont;
   v2->_sortControlFont = v11;
 
-  v13 = [MEMORY[0x277D75348] blackColor];
+  blackColor = [MEMORY[0x277D75348] blackColor];
   textColor = v2->_textColor;
-  v2->_textColor = v13;
+  v2->_textColor = blackColor;
 
-  v15 = [(CACCorrectionsCandidateViewStyle *)v2 textColor];
+  textColor = [(CACCorrectionsCandidateViewStyle *)v2 textColor];
   highlightedTextColor = v2->_highlightedTextColor;
-  v2->_highlightedTextColor = v15;
+  v2->_highlightedTextColor = textColor;
 
   v17 = [MEMORY[0x277D75348] colorWithCGColor:UIKBGetNamedColor()];
   alternativeTextColor = v2->_alternativeTextColor;
   v2->_alternativeTextColor = v17;
 
-  v19 = [(CACCorrectionsCandidateViewStyle *)v2 alternativeTextColor];
+  alternativeTextColor = [(CACCorrectionsCandidateViewStyle *)v2 alternativeTextColor];
   highlightedAlternativeTextColor = v2->_highlightedAlternativeTextColor;
-  v2->_highlightedAlternativeTextColor = v19;
+  v2->_highlightedAlternativeTextColor = alternativeTextColor;
 
   v21 = [MEMORY[0x277D75348] colorWithCGColor:UIKBGetNamedColor()];
   candidateNumberColor = v2->_candidateNumberColor;
   v2->_candidateNumberColor = v21;
 
-  v23 = [(CACCorrectionsCandidateViewStyle *)v2 candidateNumberColor];
+  candidateNumberColor = [(CACCorrectionsCandidateViewStyle *)v2 candidateNumberColor];
   highlightedCandidateNumberColor = v2->_highlightedCandidateNumberColor;
-  v2->_highlightedCandidateNumberColor = v23;
+  v2->_highlightedCandidateNumberColor = candidateNumberColor;
 
-  v25 = [MEMORY[0x277D75348] clearColor];
+  clearColor = [MEMORY[0x277D75348] clearColor];
   backgroundColor = v2->_backgroundColor;
-  v2->_backgroundColor = v25;
+  v2->_backgroundColor = clearColor;
 
-  v27 = [MEMORY[0x277D75348] clearColor];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
   cellBackgroundColor = v2->_cellBackgroundColor;
-  v2->_cellBackgroundColor = v27;
+  v2->_cellBackgroundColor = clearColor2;
 
-  v29 = [MEMORY[0x277D75348] clearColor];
+  clearColor3 = [MEMORY[0x277D75348] clearColor];
   arrowButtonBackgroundColor = v2->_arrowButtonBackgroundColor;
-  v2->_arrowButtonBackgroundColor = v29;
+  v2->_arrowButtonBackgroundColor = clearColor3;
 
-  v31 = [MEMORY[0x277D75348] clearColor];
+  clearColor4 = [MEMORY[0x277D75348] clearColor];
   gridBackgroundColor = v2->_gridBackgroundColor;
-  v2->_gridBackgroundColor = v31;
+  v2->_gridBackgroundColor = clearColor4;
 
   v33 = [MEMORY[0x277D75348] colorWithCGColor:UIKBGetNamedColor()];
   highlightedBackgroundColor = v2->_highlightedBackgroundColor;
@@ -88,17 +88,17 @@
   groupHeaderBackgroundColor = v2->_groupHeaderBackgroundColor;
   v2->_groupHeaderBackgroundColor = v35;
 
-  v37 = [MEMORY[0x277D75348] clearColor];
+  clearColor5 = [MEMORY[0x277D75348] clearColor];
   lineColor = v2->_lineColor;
-  v2->_lineColor = v37;
+  v2->_lineColor = clearColor5;
 
   v39 = [MEMORY[0x277D75348] colorWithCGColor:UIKBGetNamedColor()];
   sortControlColor = v2->_sortControlColor;
   v2->_sortControlColor = v39;
 
-  v41 = [MEMORY[0x277D75348] clearColor];
+  clearColor6 = [MEMORY[0x277D75348] clearColor];
   sortControlBackgroundColor = v2->_sortControlBackgroundColor;
-  v2->_sortControlBackgroundColor = v41;
+  v2->_sortControlBackgroundColor = clearColor6;
 
   v2->_gridLineOffset = *MEMORY[0x277CBF348];
   v2->_maskedCorners = 15;
@@ -106,8 +106,8 @@
   v2->_singleSlottedCellMargin = 10.0;
   v2->_foregroundOpacity = 1.0;
   v2->_backgroundOpacity = 1.0;
-  v43 = [MEMORY[0x277D75520] defaultMetrics];
-  [v43 scaledValueForValue:32.0];
+  defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
+  [defaultMetrics scaledValueForValue:32.0];
   v2->_rowHeight = v44;
 
   v2->_cellTextAlignment = 0;
@@ -140,44 +140,44 @@
   sortControlFont = v2->_sortControlFont;
   v2->_sortControlFont = v11;
 
-  v13 = [MEMORY[0x277D75348] whiteColor];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
   textColor = v2->_textColor;
-  v2->_textColor = v13;
+  v2->_textColor = whiteColor;
 
-  v15 = [(CACCorrectionsCandidateViewStyle *)v2 textColor];
+  textColor = [(CACCorrectionsCandidateViewStyle *)v2 textColor];
   highlightedTextColor = v2->_highlightedTextColor;
-  v2->_highlightedTextColor = v15;
+  v2->_highlightedTextColor = textColor;
 
   v17 = [MEMORY[0x277D75348] colorWithCGColor:UIKBGetNamedColor()];
   alternativeTextColor = v2->_alternativeTextColor;
   v2->_alternativeTextColor = v17;
 
-  v19 = [(CACCorrectionsCandidateViewStyle *)v2 alternativeTextColor];
+  alternativeTextColor = [(CACCorrectionsCandidateViewStyle *)v2 alternativeTextColor];
   highlightedAlternativeTextColor = v2->_highlightedAlternativeTextColor;
-  v2->_highlightedAlternativeTextColor = v19;
+  v2->_highlightedAlternativeTextColor = alternativeTextColor;
 
   v21 = [MEMORY[0x277D75348] colorWithCGColor:UIKBGetNamedColor()];
   candidateNumberColor = v2->_candidateNumberColor;
   v2->_candidateNumberColor = v21;
 
-  v23 = [(CACCorrectionsCandidateViewStyle *)v2 candidateNumberColor];
+  candidateNumberColor = [(CACCorrectionsCandidateViewStyle *)v2 candidateNumberColor];
   highlightedCandidateNumberColor = v2->_highlightedCandidateNumberColor;
-  v2->_highlightedCandidateNumberColor = v23;
+  v2->_highlightedCandidateNumberColor = candidateNumberColor;
 
   backgroundColor = v2->_backgroundColor;
   v2->_backgroundColor = 0;
 
-  v26 = [MEMORY[0x277D75348] clearColor];
+  clearColor = [MEMORY[0x277D75348] clearColor];
   cellBackgroundColor = v2->_cellBackgroundColor;
-  v2->_cellBackgroundColor = v26;
+  v2->_cellBackgroundColor = clearColor;
 
   v28 = [MEMORY[0x277D75348] colorWithCGColor:UIKBGetNamedColor()];
   arrowButtonBackgroundColor = v2->_arrowButtonBackgroundColor;
   v2->_arrowButtonBackgroundColor = v28;
 
-  v30 = [MEMORY[0x277D75348] clearColor];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
   gridBackgroundColor = v2->_gridBackgroundColor;
-  v2->_gridBackgroundColor = v30;
+  v2->_gridBackgroundColor = clearColor2;
 
   v32 = [MEMORY[0x277D75348] colorWithCGColor:UIKBGetNamedColor()];
   highlightedBackgroundColor = v2->_highlightedBackgroundColor;
@@ -187,17 +187,17 @@
   groupHeaderBackgroundColor = v2->_groupHeaderBackgroundColor;
   v2->_groupHeaderBackgroundColor = v34;
 
-  v36 = [MEMORY[0x277D75348] clearColor];
+  clearColor3 = [MEMORY[0x277D75348] clearColor];
   lineColor = v2->_lineColor;
-  v2->_lineColor = v36;
+  v2->_lineColor = clearColor3;
 
   v38 = [MEMORY[0x277D75348] colorWithCGColor:UIKBGetNamedColor()];
   sortControlColor = v2->_sortControlColor;
   v2->_sortControlColor = v38;
 
-  v40 = [MEMORY[0x277D75348] clearColor];
+  clearColor4 = [MEMORY[0x277D75348] clearColor];
   sortControlBackgroundColor = v2->_sortControlBackgroundColor;
-  v2->_sortControlBackgroundColor = v40;
+  v2->_sortControlBackgroundColor = clearColor4;
 
   v2->_gridLineOffset = *MEMORY[0x277CBF348];
   v2->_maskedCorners = 15;
@@ -205,8 +205,8 @@
   v2->_singleSlottedCellMargin = 50.0;
   v2->_foregroundOpacity = 1.0;
   v2->_backgroundOpacity = 1.0;
-  v42 = [MEMORY[0x277D75520] defaultMetrics];
-  [v42 scaledValueForValue:32.0];
+  defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
+  [defaultMetrics scaledValueForValue:32.0];
   v2->_rowHeight = v43;
 
   v2->_cellTextAlignment = 0;
@@ -239,45 +239,45 @@
   sortControlFont = v2->_sortControlFont;
   v2->_sortControlFont = v11;
 
-  v13 = [MEMORY[0x277D75348] blackColor];
+  blackColor = [MEMORY[0x277D75348] blackColor];
   textColor = v2->_textColor;
-  v2->_textColor = v13;
+  v2->_textColor = blackColor;
 
-  v15 = [(CACCorrectionsCandidateViewStyle *)v2 textColor];
+  textColor = [(CACCorrectionsCandidateViewStyle *)v2 textColor];
   highlightedTextColor = v2->_highlightedTextColor;
-  v2->_highlightedTextColor = v15;
+  v2->_highlightedTextColor = textColor;
 
   v17 = [MEMORY[0x277D75348] colorWithCGColor:UIKBGetNamedColor()];
   alternativeTextColor = v2->_alternativeTextColor;
   v2->_alternativeTextColor = v17;
 
-  v19 = [(CACCorrectionsCandidateViewStyle *)v2 alternativeTextColor];
+  alternativeTextColor = [(CACCorrectionsCandidateViewStyle *)v2 alternativeTextColor];
   highlightedAlternativeTextColor = v2->_highlightedAlternativeTextColor;
-  v2->_highlightedAlternativeTextColor = v19;
+  v2->_highlightedAlternativeTextColor = alternativeTextColor;
 
   v21 = [MEMORY[0x277D75348] colorWithCGColor:UIKBGetNamedColor()];
   candidateNumberColor = v2->_candidateNumberColor;
   v2->_candidateNumberColor = v21;
 
-  v23 = [(CACCorrectionsCandidateViewStyle *)v2 candidateNumberColor];
+  candidateNumberColor = [(CACCorrectionsCandidateViewStyle *)v2 candidateNumberColor];
   highlightedCandidateNumberColor = v2->_highlightedCandidateNumberColor;
-  v2->_highlightedCandidateNumberColor = v23;
+  v2->_highlightedCandidateNumberColor = candidateNumberColor;
 
-  v25 = [MEMORY[0x277D75348] clearColor];
+  clearColor = [MEMORY[0x277D75348] clearColor];
   backgroundColor = v2->_backgroundColor;
-  v2->_backgroundColor = v25;
+  v2->_backgroundColor = clearColor;
 
-  v27 = [MEMORY[0x277D75348] clearColor];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
   cellBackgroundColor = v2->_cellBackgroundColor;
-  v2->_cellBackgroundColor = v27;
+  v2->_cellBackgroundColor = clearColor2;
 
-  v29 = [MEMORY[0x277D75348] clearColor];
+  clearColor3 = [MEMORY[0x277D75348] clearColor];
   arrowButtonBackgroundColor = v2->_arrowButtonBackgroundColor;
-  v2->_arrowButtonBackgroundColor = v29;
+  v2->_arrowButtonBackgroundColor = clearColor3;
 
-  v31 = [MEMORY[0x277D75348] clearColor];
+  clearColor4 = [MEMORY[0x277D75348] clearColor];
   gridBackgroundColor = v2->_gridBackgroundColor;
-  v2->_gridBackgroundColor = v31;
+  v2->_gridBackgroundColor = clearColor4;
 
   v33 = [MEMORY[0x277D75348] colorWithCGColor:UIKBGetNamedColor()];
   highlightedBackgroundColor = v2->_highlightedBackgroundColor;
@@ -287,17 +287,17 @@
   groupHeaderBackgroundColor = v2->_groupHeaderBackgroundColor;
   v2->_groupHeaderBackgroundColor = v35;
 
-  v37 = [MEMORY[0x277D75348] clearColor];
+  clearColor5 = [MEMORY[0x277D75348] clearColor];
   lineColor = v2->_lineColor;
-  v2->_lineColor = v37;
+  v2->_lineColor = clearColor5;
 
   v39 = [MEMORY[0x277D75348] colorWithCGColor:UIKBGetNamedColor()];
   sortControlColor = v2->_sortControlColor;
   v2->_sortControlColor = v39;
 
-  v41 = [MEMORY[0x277D75348] clearColor];
+  clearColor6 = [MEMORY[0x277D75348] clearColor];
   sortControlBackgroundColor = v2->_sortControlBackgroundColor;
-  v2->_sortControlBackgroundColor = v41;
+  v2->_sortControlBackgroundColor = clearColor6;
 
   v2->_rowHeight = 44.0;
   v2->_maskedCorners = 15;
@@ -335,29 +335,29 @@
   sortControlFont = v3->_sortControlFont;
   v3->_sortControlFont = v12;
 
-  v14 = [MEMORY[0x277D75348] whiteColor];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
   textColor = v3->_textColor;
-  v3->_textColor = v14;
+  v3->_textColor = whiteColor;
 
-  v16 = [(CACCorrectionsCandidateViewStyle *)v3 textColor];
+  textColor = [(CACCorrectionsCandidateViewStyle *)v3 textColor];
   highlightedTextColor = v3->_highlightedTextColor;
-  v3->_highlightedTextColor = v16;
+  v3->_highlightedTextColor = textColor;
 
   v18 = [MEMORY[0x277D75348] colorWithCGColor:UIKBGetNamedColor()];
   alternativeTextColor = v3->_alternativeTextColor;
   v3->_alternativeTextColor = v18;
 
-  v20 = [(CACCorrectionsCandidateViewStyle *)v3 alternativeTextColor];
+  alternativeTextColor = [(CACCorrectionsCandidateViewStyle *)v3 alternativeTextColor];
   highlightedAlternativeTextColor = v3->_highlightedAlternativeTextColor;
-  v3->_highlightedAlternativeTextColor = v20;
+  v3->_highlightedAlternativeTextColor = alternativeTextColor;
 
   v22 = [MEMORY[0x277D75348] colorWithCGColor:UIKBGetNamedColor()];
   candidateNumberColor = v3->_candidateNumberColor;
   v3->_candidateNumberColor = v22;
 
-  v24 = [(CACCorrectionsCandidateViewStyle *)v3 candidateNumberColor];
+  candidateNumberColor = [(CACCorrectionsCandidateViewStyle *)v3 candidateNumberColor];
   highlightedCandidateNumberColor = v3->_highlightedCandidateNumberColor;
-  v3->_highlightedCandidateNumberColor = v24;
+  v3->_highlightedCandidateNumberColor = candidateNumberColor;
 
   backgroundColor = v3->_backgroundColor;
   v3->_backgroundColor = 0;
@@ -390,7 +390,7 @@
   sortControlBackgroundColor = v3->_sortControlBackgroundColor;
   v3->_sortControlBackgroundColor = v39;
 
-  v41 = [a1 onePixelImageWithColor:v3->_lineColor];
+  v41 = [self onePixelImageWithColor:v3->_lineColor];
   slottedCellSeparatorImage = v3->_slottedCellSeparatorImage;
   v3->_slottedCellSeparatorImage = v41;
 
@@ -412,38 +412,38 @@
   candidateFont = v2->_candidateFont;
   v2->_candidateFont = v3;
 
-  v5 = [MEMORY[0x277D75348] blackColor];
+  blackColor = [MEMORY[0x277D75348] blackColor];
   textColor = v2->_textColor;
-  v2->_textColor = v5;
+  v2->_textColor = blackColor;
 
   objc_storeStrong(&v2->_highlightedTextColor, v2->_textColor);
   v7 = [MEMORY[0x277D75348] colorWithCGColor:UIKBGetNamedColor()];
   alternativeTextColor = v2->_alternativeTextColor;
   v2->_alternativeTextColor = v7;
 
-  v9 = [(CACCorrectionsCandidateViewStyle *)v2 alternativeTextColor];
+  alternativeTextColor = [(CACCorrectionsCandidateViewStyle *)v2 alternativeTextColor];
   highlightedAlternativeTextColor = v2->_highlightedAlternativeTextColor;
-  v2->_highlightedAlternativeTextColor = v9;
+  v2->_highlightedAlternativeTextColor = alternativeTextColor;
 
   v11 = [MEMORY[0x277D75348] colorWithCGColor:UIKBGetNamedColor()];
   candidateNumberColor = v2->_candidateNumberColor;
   v2->_candidateNumberColor = v11;
 
-  v13 = [(CACCorrectionsCandidateViewStyle *)v2 candidateNumberColor];
+  candidateNumberColor = [(CACCorrectionsCandidateViewStyle *)v2 candidateNumberColor];
   highlightedCandidateNumberColor = v2->_highlightedCandidateNumberColor;
-  v2->_highlightedCandidateNumberColor = v13;
+  v2->_highlightedCandidateNumberColor = candidateNumberColor;
 
-  v15 = [MEMORY[0x277D75348] clearColor];
+  clearColor = [MEMORY[0x277D75348] clearColor];
   backgroundColor = v2->_backgroundColor;
-  v2->_backgroundColor = v15;
+  v2->_backgroundColor = clearColor;
 
-  v17 = [MEMORY[0x277D75348] clearColor];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
   gridBackgroundColor = v2->_gridBackgroundColor;
-  v2->_gridBackgroundColor = v17;
+  v2->_gridBackgroundColor = clearColor2;
 
-  v19 = [MEMORY[0x277D75348] clearColor];
+  clearColor3 = [MEMORY[0x277D75348] clearColor];
   highlightedBackgroundColor = v2->_highlightedBackgroundColor;
-  v2->_highlightedBackgroundColor = v19;
+  v2->_highlightedBackgroundColor = clearColor3;
 
   lineColor = v2->_lineColor;
   v2->_lineColor = 0;
@@ -477,17 +477,17 @@
   alternativeTextColor = v2->_alternativeTextColor;
   v2->_alternativeTextColor = v9;
 
-  v11 = [(CACCorrectionsCandidateViewStyle *)v2 alternativeTextColor];
+  alternativeTextColor = [(CACCorrectionsCandidateViewStyle *)v2 alternativeTextColor];
   highlightedAlternativeTextColor = v2->_highlightedAlternativeTextColor;
-  v2->_highlightedAlternativeTextColor = v11;
+  v2->_highlightedAlternativeTextColor = alternativeTextColor;
 
   v13 = [MEMORY[0x277D75348] colorWithCGColor:UIKBGetNamedColor()];
   candidateNumberColor = v2->_candidateNumberColor;
   v2->_candidateNumberColor = v13;
 
-  v15 = [(CACCorrectionsCandidateViewStyle *)v2 candidateNumberColor];
+  candidateNumberColor = [(CACCorrectionsCandidateViewStyle *)v2 candidateNumberColor];
   highlightedCandidateNumberColor = v2->_highlightedCandidateNumberColor;
-  v2->_highlightedCandidateNumberColor = v15;
+  v2->_highlightedCandidateNumberColor = candidateNumberColor;
 
   backgroundColor = v2->_backgroundColor;
   v2->_backgroundColor = 0;
@@ -537,50 +537,50 @@
   textColor = v2->_textColor;
   v2->_textColor = v13;
 
-  v15 = [(CACCorrectionsCandidateViewStyle *)v2 textColor];
+  textColor = [(CACCorrectionsCandidateViewStyle *)v2 textColor];
   highlightedTextColor = v2->_highlightedTextColor;
-  v2->_highlightedTextColor = v15;
+  v2->_highlightedTextColor = textColor;
 
-  v17 = [(CACCorrectionsCandidateViewStyle *)v2 textColor];
-  v18 = [v17 colorWithAlphaComponent:0.4];
+  textColor2 = [(CACCorrectionsCandidateViewStyle *)v2 textColor];
+  v18 = [textColor2 colorWithAlphaComponent:0.4];
   alternativeTextColor = v2->_alternativeTextColor;
   v2->_alternativeTextColor = v18;
 
-  v20 = [(CACCorrectionsCandidateViewStyle *)v2 alternativeTextColor];
+  alternativeTextColor = [(CACCorrectionsCandidateViewStyle *)v2 alternativeTextColor];
   highlightedAlternativeTextColor = v2->_highlightedAlternativeTextColor;
-  v2->_highlightedAlternativeTextColor = v20;
+  v2->_highlightedAlternativeTextColor = alternativeTextColor;
 
-  v22 = [MEMORY[0x277D75348] clearColor];
+  clearColor = [MEMORY[0x277D75348] clearColor];
   candidateNumberColor = v2->_candidateNumberColor;
-  v2->_candidateNumberColor = v22;
+  v2->_candidateNumberColor = clearColor;
 
-  v24 = [(CACCorrectionsCandidateViewStyle *)v2 candidateNumberColor];
+  candidateNumberColor = [(CACCorrectionsCandidateViewStyle *)v2 candidateNumberColor];
   highlightedCandidateNumberColor = v2->_highlightedCandidateNumberColor;
-  v2->_highlightedCandidateNumberColor = v24;
+  v2->_highlightedCandidateNumberColor = candidateNumberColor;
 
-  v26 = [MEMORY[0x277D75348] clearColor];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
   backgroundColor = v2->_backgroundColor;
-  v2->_backgroundColor = v26;
+  v2->_backgroundColor = clearColor2;
 
-  v28 = [MEMORY[0x277D75348] clearColor];
+  clearColor3 = [MEMORY[0x277D75348] clearColor];
   gridBackgroundColor = v2->_gridBackgroundColor;
-  v2->_gridBackgroundColor = v28;
+  v2->_gridBackgroundColor = clearColor3;
 
-  v30 = [MEMORY[0x277D75348] clearColor];
+  clearColor4 = [MEMORY[0x277D75348] clearColor];
   highlightedBackgroundColor = v2->_highlightedBackgroundColor;
-  v2->_highlightedBackgroundColor = v30;
+  v2->_highlightedBackgroundColor = clearColor4;
 
-  v32 = [MEMORY[0x277D75348] clearColor];
+  clearColor5 = [MEMORY[0x277D75348] clearColor];
   groupHeaderBackgroundColor = v2->_groupHeaderBackgroundColor;
-  v2->_groupHeaderBackgroundColor = v32;
+  v2->_groupHeaderBackgroundColor = clearColor5;
 
-  v34 = [MEMORY[0x277D75348] clearColor];
+  clearColor6 = [MEMORY[0x277D75348] clearColor];
   lineColor = v2->_lineColor;
-  v2->_lineColor = v34;
+  v2->_lineColor = clearColor6;
 
-  v36 = [MEMORY[0x277D75348] clearColor];
+  clearColor7 = [MEMORY[0x277D75348] clearColor];
   sortControlColor = v2->_sortControlColor;
-  v2->_sortControlColor = v36;
+  v2->_sortControlColor = clearColor7;
 
   v2->_columnsCount = 6;
   *&v2->_minimumCellPadding = xmmword_26B404EB0;
@@ -592,7 +592,7 @@
   return v2;
 }
 
-+ (id)onePixelImageWithColor:(id)a3
++ (id)onePixelImageWithColor:(id)color
 {
   v7.width = 1.0;
   v7.height = 1.0;

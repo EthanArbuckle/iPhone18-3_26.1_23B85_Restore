@@ -6,8 +6,8 @@
 
 - (double)searchUIGridSectionModel_groupInsetFor:()SearchUIGridSectionModel
 {
-  v3 = [a3 container];
-  [v3 effectiveContentSize];
+  container = [a3 container];
+  [container effectiveContentSize];
   v5 = v4;
   +[SearchUIUtilities standardTableCellContentInset];
   v7 = v5 + v6 * -2.0;

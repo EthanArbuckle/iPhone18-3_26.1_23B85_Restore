@@ -1,6 +1,6 @@
 @interface AUParametricEQViewController
 - (_TtC12CoreAudioKit28AUParametricEQViewController)init;
-- (_TtC12CoreAudioKit28AUParametricEQViewController)initWithCoder:(id)a3;
+- (_TtC12CoreAudioKit28AUParametricEQViewController)initWithCoder:(id)coder;
 @end
 
 @implementation AUParametricEQViewController
@@ -12,12 +12,12 @@
   return [(AUEQViewControllerBase *)&v3 init];
 }
 
-- (_TtC12CoreAudioKit28AUParametricEQViewController)initWithCoder:(id)a3
+- (_TtC12CoreAudioKit28AUParametricEQViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for AUParametricEQViewController();
-  v4 = a3;
-  v5 = [(AUEQViewControllerBase *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(AUEQViewControllerBase *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

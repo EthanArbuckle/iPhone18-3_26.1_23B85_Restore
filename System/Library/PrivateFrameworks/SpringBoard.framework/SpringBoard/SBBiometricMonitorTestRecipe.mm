@@ -2,7 +2,7 @@
 - (SBWindowScene)windowScene;
 - (void)handleVolumeDecrease;
 - (void)handleVolumeIncrease;
-- (void)windowSceneDidUpdate:(id)a3;
+- (void)windowSceneDidUpdate:(id)update;
 @end
 
 @implementation SBBiometricMonitorTestRecipe
@@ -27,8 +27,8 @@
     self->_monitorUI = v6;
 
     v8 = self->_monitorUI;
-    v9 = [(SBBiometricMonitorTestRecipe *)self windowScene];
-    [(SBBiometricMonitorUI *)v8 setWindowScene:v9];
+    windowScene = [(SBBiometricMonitorTestRecipe *)self windowScene];
+    [(SBBiometricMonitorUI *)v8 setWindowScene:windowScene];
 
     [(SBBiometricMonitorUI *)self->_monitorUI setDataSource:self->_dataSource];
     v10 = self->_monitorUI;
@@ -47,16 +47,16 @@
   self->_dataSource = 0;
 }
 
-- (void)windowSceneDidUpdate:(id)a3
+- (void)windowSceneDidUpdate:(id)update
 {
-  v6 = a3;
-  v4 = [(SBBiometricMonitorTestRecipe *)self windowScene];
+  updateCopy = update;
+  windowScene = [(SBBiometricMonitorTestRecipe *)self windowScene];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = updateCopy;
+  if (windowScene != updateCopy)
   {
-    [(SBBiometricMonitorTestRecipe *)self setWindowScene:v6];
-    v5 = v6;
+    [(SBBiometricMonitorTestRecipe *)self setWindowScene:updateCopy];
+    v5 = updateCopy;
   }
 }
 

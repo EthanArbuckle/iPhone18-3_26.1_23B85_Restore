@@ -1,15 +1,15 @@
 @interface GKAgent2D
 - (GKAgent2D)init;
-- (GKAgent2D)initWithCoder:(id)a3;
+- (GKAgent2D)initWithCoder:(id)coder;
 - (float)rotation;
 - (float2)position_;
 - (float2)velocity_;
 - (vector_float2)position;
 - (vector_float2)velocity;
-- (void)applyBrakingForce:(float)a3 deltaTime:(double)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)applyBrakingForce:(float)force deltaTime:(double)time;
+- (void)encodeWithCoder:(id)coder;
 - (void)setPosition:(vector_float2)position;
-- (void)setPosition_:(float2)a3;
+- (void)setPosition_:(float2)position_;
 - (void)setRotation:(float)rotation;
 - (void)updateWithDeltaTime:(NSTimeInterval)seconds;
 @end
@@ -23,71 +23,71 @@
   return [(GKAgent *)&v3 init];
 }
 
-- (GKAgent2D)initWithCoder:(id)a3
+- (GKAgent2D)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = GKAgent2D;
-  v5 = [(GKAgent *)&v7 initWithCoder:v4];
+  v5 = [(GKAgent *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeFloatForKey:@"rotation"];
+    [coderCopy decodeFloatForKey:@"rotation"];
     [(GKAgent2D *)v5 setRotation:?];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(GKAgent2D *)self rotation];
-  [v4 encodeFloat:@"rotation" forKey:?];
+  [coderCopy encodeFloat:@"rotation" forKey:?];
 }
 
 - (vector_float2)position
 {
-  v3 = [(GKAgent *)self vehicle];
-  v4 = (*(*v3 + 48))(v3);
+  vehicle = [(GKAgent *)self vehicle];
+  v4 = (*(*vehicle + 48))(vehicle);
   v8 = LODWORD(v4);
-  v5 = [(GKAgent *)self vehicle];
-  (*(*v5 + 48))(v5);
+  vehicle2 = [(GKAgent *)self vehicle];
+  (*(*vehicle2 + 48))(vehicle2);
   return __PAIR64__(v6, v8);
 }
 
 - (vector_float2)velocity
 {
-  v3 = [(GKAgent *)self vehicle];
-  v4 = (*(*v3 + 192))(v3);
+  vehicle = [(GKAgent *)self vehicle];
+  v4 = (*(*vehicle + 192))(vehicle);
   v8 = LODWORD(v4);
-  v5 = [(GKAgent *)self vehicle];
-  (*(*v5 + 192))(v5);
+  vehicle2 = [(GKAgent *)self vehicle];
+  (*(*vehicle2 + 192))(vehicle2);
   return __PAIR64__(v6, v8);
 }
 
 - (void)setPosition:(vector_float2)position
 {
-  v3 = [(GKAgent *)self vehicle];
-  *(v3 + 44) = position.u32[0];
-  *(v3 + 13) = position.i32[1];
+  vehicle = [(GKAgent *)self vehicle];
+  *(vehicle + 44) = position.u32[0];
+  *(vehicle + 13) = position.i32[1];
 }
 
-- (void)setPosition_:(float2)a3
+- (void)setPosition_:(float2)position_
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v5 = [(GKAgent *)self vehicle];
-  *(v5 + 11) = var0;
-  v5[12] = 0;
-  *(v5 + 13) = var1;
+  var1 = position_.var1;
+  var0 = position_.var0;
+  vehicle = [(GKAgent *)self vehicle];
+  *(vehicle + 11) = var0;
+  vehicle[12] = 0;
+  *(vehicle + 13) = var1;
 }
 
 - (float2)position_
 {
-  v3 = [(GKAgent *)self vehicle];
-  v4 = (*(*v3 + 48))(v3);
-  v5 = [(GKAgent *)self vehicle];
-  (*(*v5 + 48))(v5);
+  vehicle = [(GKAgent *)self vehicle];
+  v4 = (*(*vehicle + 48))(vehicle);
+  vehicle2 = [(GKAgent *)self vehicle];
+  (*(*vehicle2 + 48))(vehicle2);
   v7 = v6;
   v8 = v4;
   result.var1 = v7;
@@ -97,10 +97,10 @@
 
 - (float2)velocity_
 {
-  v3 = [(GKAgent *)self vehicle];
-  v4 = (*(*v3 + 192))(v3);
-  v5 = [(GKAgent *)self vehicle];
-  (*(*v5 + 192))(v5);
+  vehicle = [(GKAgent *)self vehicle];
+  v4 = (*(*vehicle + 192))(vehicle);
+  vehicle2 = [(GKAgent *)self vehicle];
+  (*(*vehicle2 + 192))(vehicle2);
   v7 = v6;
   v8 = v4;
   result.var1 = v7;
@@ -110,11 +110,11 @@
 
 - (float)rotation
 {
-  v3 = [(GKAgent *)self vehicle];
-  v4 = (*(*v3 + 32))(v3);
+  vehicle = [(GKAgent *)self vehicle];
+  v4 = (*(*vehicle + 32))(vehicle);
   v12 = LODWORD(v4);
-  v5 = [(GKAgent *)self vehicle];
-  (*(*v5 + 32))(v5);
+  vehicle2 = [(GKAgent *)self vehicle];
+  (*(*vehicle2 + 32))(vehicle2);
   v7 = vmul_f32(__PAIR64__(v6, v12), __PAIR64__(v6, v12));
   v7.i32[0] = vadd_f32(v7, vdup_lane_s32(v7, 1)).u32[0];
   v8 = vrsqrte_f32(v7.u32[0]);
@@ -131,53 +131,53 @@
 - (void)setRotation:(float)rotation
 {
   v4 = __sincosf_stret(rotation);
-  v5 = [(GKAgent *)self vehicle];
-  v5[8] = LODWORD(v4.__cosval);
-  v5[9] = 0;
-  v5[10] = LODWORD(v4.__sinval);
-  v6 = [(GKAgent *)self vehicle];
-  v7 = [(GKAgent *)self vehicle];
-  v10[0] = (*(*v7 + 32))(v7);
+  vehicle = [(GKAgent *)self vehicle];
+  vehicle[8] = LODWORD(v4.__cosval);
+  vehicle[9] = 0;
+  vehicle[10] = LODWORD(v4.__sinval);
+  vehicle2 = [(GKAgent *)self vehicle];
+  vehicle3 = [(GKAgent *)self vehicle];
+  v10[0] = (*(*vehicle3 + 32))(vehicle3);
   v10[1] = v8;
   v10[2] = v9;
-  (*(*v6 + 120))(v6, v10);
+  (*(*vehicle2 + 120))(vehicle2, v10);
 }
 
 - (void)updateWithDeltaTime:(NSTimeInterval)seconds
 {
-  v33 = [(GKAgent *)self delegate];
-  if (v33)
+  delegate = [(GKAgent *)self delegate];
+  if (delegate)
   {
-    v5 = [(GKAgent *)self delegate];
+    delegate2 = [(GKAgent *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v34 = [(GKAgent *)self delegate];
-      [v34 agentWillUpdate:self];
+      delegate3 = [(GKAgent *)self delegate];
+      [delegate3 agentWillUpdate:self];
     }
   }
 
-  v35 = [(GKAgent *)self behavior];
-  [v35 getTotalForce:self agent:seconds];
+  behavior = [(GKAgent *)self behavior];
+  [behavior getTotalForce:self agent:seconds];
   v31 = v7;
 
   [(GKAgent2D *)self applySteeringForce:*&v31 deltaTime:seconds];
   for (i = 0; ; ++i)
   {
-    v36 = [(GKAgent *)self behavior];
-    v9 = [v36 goalCount];
+    behavior2 = [(GKAgent *)self behavior];
+    goalCount = [behavior2 goalCount];
 
-    if (v9 <= i)
+    if (goalCount <= i)
     {
       break;
     }
 
-    v10 = [(GKAgent *)self behavior];
-    v37 = [v10 objectAtIndexedSubscript:i];
+    behavior3 = [(GKAgent *)self behavior];
+    v37 = [behavior3 objectAtIndexedSubscript:i];
 
-    v11 = [(GKAgent *)self behavior];
-    [v11 weightForGoal:v37];
+    behavior4 = [(GKAgent *)self behavior];
+    [behavior4 weightForGoal:v37];
     v13 = v12;
 
     if ([v37 isTargetSpeedGoal])
@@ -201,7 +201,7 @@
 
         [(GKAgent *)self speed];
         v24 = v23;
-        v25 = [(GKAgent *)self vehicle];
+        vehicle = [(GKAgent *)self vehicle];
         v26.n128_f32[0] = v24 + v20;
         v27.i32[0] = v31;
         v27.f32[1] = v16 - (v24 + v20);
@@ -211,31 +211,31 @@
           v26.n128_f32[0] = v16;
         }
 
-        (*(*v25 + 208))(v25, v26);
+        (*(*vehicle + 208))(vehicle, v26);
       }
     }
   }
 
-  v38 = [(GKAgent *)self delegate];
-  if (v38)
+  delegate4 = [(GKAgent *)self delegate];
+  if (delegate4)
   {
-    v29 = [(GKAgent *)self delegate];
+    delegate5 = [(GKAgent *)self delegate];
     v30 = objc_opt_respondsToSelector();
 
     if (v30)
     {
-      v39 = [(GKAgent *)self delegate];
-      [v39 agentDidUpdate:self];
+      delegate6 = [(GKAgent *)self delegate];
+      [delegate6 agentDidUpdate:self];
     }
   }
 }
 
-- (void)applyBrakingForce:(float)a3 deltaTime:(double)a4
+- (void)applyBrakingForce:(float)force deltaTime:(double)time
 {
-  v6 = [(GKAgent *)self vehicle];
+  vehicle = [(GKAgent *)self vehicle];
 
-  v7 = a4;
-  OpenSteer::SimpleVehicle::applyBrakingForce(v6, a3, v7);
+  timeCopy = time;
+  OpenSteer::SimpleVehicle::applyBrakingForce(vehicle, force, timeCopy);
 }
 
 @end

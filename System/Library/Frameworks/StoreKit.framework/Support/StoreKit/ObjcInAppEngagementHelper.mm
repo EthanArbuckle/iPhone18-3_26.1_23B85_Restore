@@ -1,18 +1,18 @@
 @interface ObjcInAppEngagementHelper
-+ (id)remoteEngagementRequestDataWithEngagementRequestData:(id)a3 client:(id)a4 logKey:(id)a5 error:(id *)a6;
++ (id)remoteEngagementRequestDataWithEngagementRequestData:(id)data client:(id)client logKey:(id)key error:(id *)error;
 @end
 
 @implementation ObjcInAppEngagementHelper
 
-+ (id)remoteEngagementRequestDataWithEngagementRequestData:(id)a3 client:(id)a4 logKey:(id)a5 error:(id *)a6
++ (id)remoteEngagementRequestDataWithEngagementRequestData:(id)data client:(id)client logKey:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  clientCopy = client;
+  keyCopy = key;
   v11 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
 
-  if (v10)
+  if (keyCopy)
   {
     v14 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v16 = v15;
@@ -24,7 +24,7 @@
     v16 = 0;
   }
 
-  v17 = sub_10021DB90(v11, v13, v9, v14, v16);
+  v17 = sub_10021DB90(v11, v13, clientCopy, v14, v16);
   v19 = v18;
 
   sub_10008E168(v11, v13);

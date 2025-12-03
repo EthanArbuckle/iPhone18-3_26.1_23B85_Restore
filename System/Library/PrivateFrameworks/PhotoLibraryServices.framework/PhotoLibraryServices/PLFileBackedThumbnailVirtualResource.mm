@@ -6,13 +6,13 @@
 
 - (int64_t)dataLength
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(PLVirtualResource *)self fileURL];
-  v5 = [v4 path];
-  v6 = [v3 attributesOfItemAtPath:v5 error:0];
-  v7 = [v6 fileSize];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  fileURL = [(PLVirtualResource *)self fileURL];
+  path = [fileURL path];
+  v6 = [defaultManager attributesOfItemAtPath:path error:0];
+  fileSize = [v6 fileSize];
 
-  return v7;
+  return fileSize;
 }
 
 @end

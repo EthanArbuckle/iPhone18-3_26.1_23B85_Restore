@@ -14,13 +14,13 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(VUIDebugViewDataSource *)v2 _createMetricsDataSource];
+    _createMetricsDataSource = [(VUIDebugViewDataSource *)v2 _createMetricsDataSource];
     metricsDataSource = v3->_metricsDataSource;
-    v3->_metricsDataSource = v4;
+    v3->_metricsDataSource = _createMetricsDataSource;
 
-    v6 = [(VUIDebugViewDataSource *)v3 _createDefaultsDataSource];
+    _createDefaultsDataSource = [(VUIDebugViewDataSource *)v3 _createDefaultsDataSource];
     defaultsDataSource = v3->_defaultsDataSource;
-    v3->_defaultsDataSource = v6;
+    v3->_defaultsDataSource = _createDefaultsDataSource;
   }
 
   return v3;
@@ -30,15 +30,15 @@
 {
   v2 = objc_opt_new();
   v3 = [VUIDebugViewDefaults alloc];
-  v4 = [MEMORY[0x1E696AAE8] mainBundle];
-  v5 = [v4 bundleIdentifier];
-  v6 = [(VUIDebugViewDefaults *)v3 initWithTitle:@"Enable Debug UI" subtitle:0 domain:v5 defaultName:*MEMORY[0x1E69DF820] BOOLType:1];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v6 = [(VUIDebugViewDefaults *)v3 initWithTitle:@"Enable Debug UI" subtitle:0 domain:bundleIdentifier defaultName:*MEMORY[0x1E69DF820] BOOLType:1];
   [v2 addObject:v6];
 
   v7 = [VUIDebugViewDefaults alloc];
-  v8 = [MEMORY[0x1E696AAE8] mainBundle];
-  v9 = [v8 bundleIdentifier];
-  v10 = [(VUIDebugViewDefaults *)v7 initWithTitle:@"Stage Demo" subtitle:0 domain:v9 defaultName:*MEMORY[0x1E69DF828] BOOLType:1];
+  mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier2 = [mainBundle2 bundleIdentifier];
+  v10 = [(VUIDebugViewDefaults *)v7 initWithTitle:@"Stage Demo" subtitle:0 domain:bundleIdentifier2 defaultName:*MEMORY[0x1E69DF828] BOOLType:1];
   [v2 addObject:v10];
 
   v11 = [[VUIDebugViewDefaults alloc] initWithTitle:@"Ignore HTTP Cache" subtitle:0 domain:@"com.apple.ITMLKit" defaultName:@"IgnoreHTTPCache" BOOLType:1];
@@ -67,27 +67,27 @@
 {
   v2 = objc_opt_new();
   v3 = [VUIDebugViewDefaults alloc];
-  v4 = [MEMORY[0x1E696AAE8] mainBundle];
-  v5 = [v4 bundleIdentifier];
-  v6 = [(VUIDebugViewDefaults *)v3 initWithTitle:@"Show logging in Console" subtitle:0 domain:v5 defaultName:*MEMORY[0x1E69DF840] BOOLType:1];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v6 = [(VUIDebugViewDefaults *)v3 initWithTitle:@"Show logging in Console" subtitle:0 domain:bundleIdentifier defaultName:*MEMORY[0x1E69DF840] BOOLType:1];
   [v2 addObject:v6];
 
   v7 = [VUIDebugViewDefaults alloc];
-  v8 = [MEMORY[0x1E696AAE8] mainBundle];
-  v9 = [v8 bundleIdentifier];
-  v10 = [(VUIDebugViewDefaults *)v7 initWithTitle:@"Show expanded logging in Console" subtitle:0 domain:v9 defaultName:*MEMORY[0x1E69DF838] BOOLType:1];
+  mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier2 = [mainBundle2 bundleIdentifier];
+  v10 = [(VUIDebugViewDefaults *)v7 initWithTitle:@"Show expanded logging in Console" subtitle:0 domain:bundleIdentifier2 defaultName:*MEMORY[0x1E69DF838] BOOLType:1];
   [v2 addObject:v10];
 
   v11 = [VUIDebugViewDefaults alloc];
-  v12 = [MEMORY[0x1E696AAE8] mainBundle];
-  v13 = [v12 bundleIdentifier];
-  v14 = [(VUIDebugViewDefaults *)v11 initWithTitle:@"Metrics Expanded Click Logging" subtitle:0 domain:v13 defaultName:*MEMORY[0x1E69DF830] BOOLType:1];
+  mainBundle3 = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier3 = [mainBundle3 bundleIdentifier];
+  v14 = [(VUIDebugViewDefaults *)v11 initWithTitle:@"Metrics Expanded Click Logging" subtitle:0 domain:bundleIdentifier3 defaultName:*MEMORY[0x1E69DF830] BOOLType:1];
   [v2 addObject:v14];
 
   v15 = [VUIDebugViewDefaults alloc];
-  v16 = [MEMORY[0x1E696AAE8] mainBundle];
-  v17 = [v16 bundleIdentifier];
-  v18 = [(VUIDebugViewDefaults *)v15 initWithTitle:@"Log pageRender events" subtitle:0 domain:v17 defaultName:*MEMORY[0x1E69DF848] BOOLType:1];
+  mainBundle4 = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier4 = [mainBundle4 bundleIdentifier];
+  v18 = [(VUIDebugViewDefaults *)v15 initWithTitle:@"Log pageRender events" subtitle:0 domain:bundleIdentifier4 defaultName:*MEMORY[0x1E69DF848] BOOLType:1];
   [v2 addObject:v18];
 
   v19 = [v2 copy];

@@ -1,104 +1,104 @@
 @interface CSCommandControlBehaviorMonitor
 + (id)sharedInstance;
 - (CSCommandControlBehaviorMonitor)init;
-- (void)notifyDidStartStreamWithContext:(id)a3 successfully:(BOOL)a4 option:(id)a5;
-- (void)notifyDidStopStream:(id)a3;
-- (void)notifyWillStartStreamWithContext:(id)a3 option:(id)a4;
-- (void)notifyWillStopStream:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)notifyDidStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option;
+- (void)notifyDidStopStream:(id)stream;
+- (void)notifyWillStartStreamWithContext:(id)context option:(id)option;
+- (void)notifyWillStopStream:(id)stream;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CSCommandControlBehaviorMonitor
 
-- (void)notifyDidStopStream:(id)a3
+- (void)notifyDidStopStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000CCC74;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = streamCopy;
+  v6 = streamCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)notifyWillStopStream:(id)a3
+- (void)notifyWillStopStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000CCE88;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = streamCopy;
+  v6 = streamCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)notifyDidStartStreamWithContext:(id)a3 successfully:(BOOL)a4 option:(id)a5
+- (void)notifyDidStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option
 {
-  v8 = a3;
-  v9 = a5;
+  contextCopy = context;
+  optionCopy = option;
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000CD0D0;
   v13[3] = &unk_100252420;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = contextCopy;
+  successfullyCopy = successfully;
+  v15 = optionCopy;
+  v11 = optionCopy;
+  v12 = contextCopy;
   dispatch_async(queue, v13);
 }
 
-- (void)notifyWillStartStreamWithContext:(id)a3 option:(id)a4
+- (void)notifyWillStartStreamWithContext:(id)context option:(id)option
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  optionCopy = option;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000CD318;
   block[3] = &unk_100253680;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = contextCopy;
+  v13 = optionCopy;
+  v9 = optionCopy;
+  v10 = contextCopy;
   dispatch_async(queue, block);
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000CD530;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000CD61C;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 

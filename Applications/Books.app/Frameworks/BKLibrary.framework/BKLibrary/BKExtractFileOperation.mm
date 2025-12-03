@@ -1,17 +1,17 @@
 @interface BKExtractFileOperation
 - (BKExtractFileOperationDelegate)delegate;
-- (BOOL)_ensureBackupAttributeOnItemAtPath:(id)a3 error:(id *)a4;
-- (BOOL)_forceFileProtectionOnItemAtPath:(id)a3 usingFileManager:(id)a4 error:(id *)a5;
+- (BOOL)_ensureBackupAttributeOnItemAtPath:(id)path error:(id *)error;
+- (BOOL)_forceFileProtectionOnItemAtPath:(id)path usingFileManager:(id)manager error:(id *)error;
 - (double)progress;
-- (id)_zipExtractionPathFromSourcePath:(id)a3;
-- (void)_fixFilePermissions:(id)a3;
+- (id)_zipExtractionPathFromSourcePath:(id)path;
+- (void)_fixFilePermissions:(id)permissions;
 - (void)_initializeProgress;
-- (void)_performCopyFromPath:(id)a3 toPath:(id)a4;
-- (void)_performMoveFromPath:(id)a3 toPath:(id)a4;
-- (void)_performZipExtractionFromPath:(id)a3 toPath:(id)a4;
-- (void)_updateProgressWithByteCount:(int64_t)a3;
+- (void)_performCopyFromPath:(id)path toPath:(id)toPath;
+- (void)_performMoveFromPath:(id)path toPath:(id)toPath;
+- (void)_performZipExtractionFromPath:(id)path toPath:(id)toPath;
+- (void)_updateProgressWithByteCount:(int64_t)count;
 - (void)main;
-- (void)setSourceFilePath:(id)a3;
+- (void)setSourceFilePath:(id)path;
 @end
 
 @implementation BKExtractFileOperation
@@ -21,12 +21,12 @@
   v3 = BCIMLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(BKExtractFileOperation *)self sourceFileType];
-    v5 = [(BKExtractFileOperation *)self sourceFilePath];
+    sourceFileType = [(BKExtractFileOperation *)self sourceFileType];
+    sourceFilePath = [(BKExtractFileOperation *)self sourceFilePath];
     *buf = 67109378;
-    v29 = v4;
+    v29 = sourceFileType;
     v30 = 2112;
-    v31 = v5;
+    v31 = sourceFilePath;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_INFO, "BKExtractFileOperation main: Starting operation: (type: %d, path: %@)", buf, 0x12u);
   }
 
@@ -38,8 +38,8 @@
   v6 = objc_retainBlock(v27);
   if ([(BKExtractFileOperation *)self useFileCoordination])
   {
-    v7 = [(BKExtractFileOperation *)self sourceFilePath];
-    v8 = [NSURL fileURLWithPath:v7];
+    sourceFilePath2 = [(BKExtractFileOperation *)self sourceFilePath];
+    destinationFilePath = [NSURL fileURLWithPath:sourceFilePath2];
 
     if ([(BKExtractFileOperation *)self sourceFileType]== 2)
     {
@@ -52,7 +52,7 @@
       v24[4] = self;
       v25 = v6;
       v10 = &v26;
-      [NSURL coordinateWritingItemAtURL:v8 options:2 error:&v26 byAccessor:v24];
+      [NSURL coordinateWritingItemAtURL:destinationFilePath options:2 error:&v26 byAccessor:v24];
     }
 
     else
@@ -66,12 +66,12 @@
       v21[4] = self;
       v22 = v6;
       v10 = &v23;
-      [NSURL coordinateReadingItemAtURL:v8 options:0 error:&v23 byAccessor:v21];
+      [NSURL coordinateReadingItemAtURL:destinationFilePath options:0 error:&v23 byAccessor:v21];
     }
 
-    v11 = *v10;
+    sourceFilePath3 = *v10;
 
-    if (v11)
+    if (sourceFilePath3)
     {
       v12 = BCIMLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -83,9 +83,9 @@
 
   else
   {
-    v11 = [(BKExtractFileOperation *)self sourceFilePath];
-    v8 = [(BKExtractFileOperation *)self destinationFilePath];
-    (v6[2])(v6, v11, v8);
+    sourceFilePath3 = [(BKExtractFileOperation *)self sourceFilePath];
+    destinationFilePath = [(BKExtractFileOperation *)self destinationFilePath];
+    (v6[2])(v6, sourceFilePath3, destinationFilePath);
   }
 
   success = self->_success;
@@ -95,12 +95,12 @@
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(BKExtractFileOperation *)self sourceFileType];
-      v17 = [(BKExtractFileOperation *)self sourceFilePath];
+      sourceFileType2 = [(BKExtractFileOperation *)self sourceFileType];
+      sourceFilePath4 = [(BKExtractFileOperation *)self sourceFilePath];
       *buf = 67109378;
-      v29 = v16;
+      v29 = sourceFileType2;
       v30 = 2112;
-      v31 = v17;
+      v31 = sourceFilePath4;
       _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "BKExtractFileOperation main: Success: (type: %d, path: %@)", buf, 0x12u);
     }
 
@@ -128,15 +128,15 @@
   [v20 performSelectorOnMainThread:*v19 withObject:self waitUntilDone:1];
 }
 
-- (void)setSourceFilePath:(id)a3
+- (void)setSourceFilePath:(id)path
 {
-  v5 = a3;
-  if (self->_sourceFilePath != v5)
+  pathCopy = path;
+  if (self->_sourceFilePath != pathCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_sourceFilePath, a3);
+    v6 = pathCopy;
+    objc_storeStrong(&self->_sourceFilePath, path);
     [(BKExtractFileOperation *)self _initializeProgress];
-    v5 = v6;
+    pathCopy = v6;
   }
 }
 
@@ -151,8 +151,8 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v4 = [(BKExtractFileOperation *)self sourceFilePath];
-  v5 = [NSURL fileURLWithPath:v4];
+  sourceFilePath = [(BKExtractFileOperation *)self sourceFilePath];
+  v5 = [NSURL fileURLWithPath:sourceFilePath];
 
   v9 = 0;
   v6 = [[BUUnarchivingFileCopier alloc] initWithURL:v5 options:5 error:&v9];
@@ -203,11 +203,11 @@ LABEL_10:
   return result;
 }
 
-- (void)_updateProgressWithByteCount:(int64_t)a3
+- (void)_updateProgressWithByteCount:(int64_t)count
 {
   progressBytes = self->_progressBytes;
-  totalBytes = progressBytes + a3;
-  if (progressBytes + a3 >= self->_totalBytes)
+  totalBytes = progressBytes + count;
+  if (progressBytes + count >= self->_totalBytes)
   {
     totalBytes = self->_totalBytes;
   }
@@ -227,18 +227,18 @@ LABEL_10:
   }
 }
 
-- (BOOL)_forceFileProtectionOnItemAtPath:(id)a3 usingFileManager:(id)a4 error:(id *)a5
+- (BOOL)_forceFileProtectionOnItemAtPath:(id)path usingFileManager:(id)manager error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(BKExtractFileOperation *)self forcedFileProtection];
+  pathCopy = path;
+  managerCopy = manager;
+  forcedFileProtection = [(BKExtractFileOperation *)self forcedFileProtection];
 
-  if (v10)
+  if (forcedFileProtection)
   {
     v14 = NSFileProtectionKey;
     v15 = NSFileProtectionCompleteUntilFirstUserAuthentication;
     v11 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
-    v12 = [v9 setAttributes:v11 ofItemAtPath:v8 error:a5];
+    v12 = [managerCopy setAttributes:v11 ofItemAtPath:pathCopy error:error];
   }
 
   else
@@ -249,13 +249,13 @@ LABEL_10:
   return v12;
 }
 
-- (void)_performCopyFromPath:(id)a3 toPath:(id)a4
+- (void)_performCopyFromPath:(id)path toPath:(id)toPath
 {
-  v6 = a4;
-  v7 = a3;
+  toPathCopy = toPath;
+  pathCopy = path;
   v8 = objc_alloc_init(NSFileManager);
   v17 = 0;
-  v9 = [v8 copyItemAtPath:v7 toPath:v6 error:&v17];
+  v9 = [v8 copyItemAtPath:pathCopy toPath:toPathCopy error:&v17];
 
   v10 = v17;
   v11 = v10;
@@ -272,7 +272,7 @@ LABEL_10:
   }
 
   v16 = v10;
-  v12 = [(BKExtractFileOperation *)self _forceFileProtectionOnItemAtPath:v6 usingFileManager:v8 error:&v16];
+  v12 = [(BKExtractFileOperation *)self _forceFileProtectionOnItemAtPath:toPathCopy usingFileManager:v8 error:&v16];
   v13 = v16;
 
   if ((v12 & 1) == 0)
@@ -294,13 +294,13 @@ LABEL_10:
   self->_success = v14;
 }
 
-- (void)_performMoveFromPath:(id)a3 toPath:(id)a4
+- (void)_performMoveFromPath:(id)path toPath:(id)toPath
 {
-  v6 = a4;
-  v7 = a3;
+  toPathCopy = toPath;
+  pathCopy = path;
   v8 = objc_alloc_init(NSFileManager);
   v19 = 0;
-  v9 = [v8 moveItemAtPath:v7 toPath:v6 error:&v19];
+  v9 = [v8 moveItemAtPath:pathCopy toPath:toPathCopy error:&v19];
 
   v10 = v19;
   v11 = v10;
@@ -316,7 +316,7 @@ LABEL_10:
   }
 
   v18 = v10;
-  v12 = [(BKExtractFileOperation *)self _forceFileProtectionOnItemAtPath:v6 usingFileManager:v8 error:&v18];
+  v12 = [(BKExtractFileOperation *)self _forceFileProtectionOnItemAtPath:toPathCopy usingFileManager:v8 error:&v18];
   v13 = v18;
 
   if (!v12)
@@ -332,7 +332,7 @@ LABEL_10:
   }
 
   v17 = v13;
-  v14 = [(BKExtractFileOperation *)self _ensureBackupAttributeOnItemAtPath:v6 error:&v17];
+  v14 = [(BKExtractFileOperation *)self _ensureBackupAttributeOnItemAtPath:toPathCopy error:&v17];
   v11 = v17;
 
   if ((v14 & 1) == 0)
@@ -354,11 +354,11 @@ LABEL_13:
   self->_success = v15;
 }
 
-- (BOOL)_ensureBackupAttributeOnItemAtPath:(id)a3 error:(id *)a4
+- (BOOL)_ensureBackupAttributeOnItemAtPath:(id)path error:(id *)error
 {
-  v5 = [NSURL fileURLWithPath:a3];
+  v5 = [NSURL fileURLWithPath:path];
   v11 = 0;
-  v6 = [v5 getResourceValue:&v11 forKey:NSURLIsExcludedFromBackupKey error:a4];
+  v6 = [v5 getResourceValue:&v11 forKey:NSURLIsExcludedFromBackupKey error:error];
   v7 = v11;
   v8 = v7;
   if (v6)
@@ -370,7 +370,7 @@ LABEL_13:
 
     else
     {
-      v9 = [v5 setResourceValue:&__kCFBooleanFalse forKey:NSURLIsExcludedFromBackupKey error:a4];
+      v9 = [v5 setResourceValue:&__kCFBooleanFalse forKey:NSURLIsExcludedFromBackupKey error:error];
     }
   }
 
@@ -382,17 +382,17 @@ LABEL_13:
   return v9;
 }
 
-- (void)_fixFilePermissions:(id)a3
+- (void)_fixFilePermissions:(id)permissions
 {
-  v3 = a3;
+  permissionsCopy = permissions;
   v4 = +[NSFileManager defaultManager];
-  sub_31E0(v4, v3);
+  sub_31E0(v4, permissionsCopy);
   v32[0] = NSURLIsDirectoryKey;
   v32[1] = NSURLIsSymbolicLinkKey;
   [NSArray arrayWithObjects:v32 count:2];
   v17 = v4;
-  v16 = v18 = v3;
-  v5 = [v4 enumeratorAtURL:v3 includingPropertiesForKeys:? options:? errorHandler:?];
+  v16 = v18 = permissionsCopy;
+  v5 = [v4 enumeratorAtURL:permissionsCopy includingPropertiesForKeys:? options:? errorHandler:?];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -422,10 +422,10 @@ LABEL_13:
         {
           if (v12)
           {
-            v14 = [v12 BOOLValue];
-            if ((v14 & 1) == 0)
+            bOOLValue = [v12 BOOLValue];
+            if ((bOOLValue & 1) == 0)
             {
-              sub_31E0(v14, v10);
+              sub_31E0(bOOLValue, v10);
             }
           }
         }
@@ -456,14 +456,14 @@ LABEL_13:
   }
 }
 
-- (void)_performZipExtractionFromPath:(id)a3 toPath:(id)a4
+- (void)_performZipExtractionFromPath:(id)path toPath:(id)toPath
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length] && objc_msgSend(v7, "length"))
+  pathCopy = path;
+  toPathCopy = toPath;
+  if ([pathCopy length] && objc_msgSend(toPathCopy, "length"))
   {
-    v8 = [(BKExtractFileOperation *)self _zipExtractionPathFromSourcePath:v6];
-    v9 = [NSURL fileURLWithPath:v6];
+    v8 = [(BKExtractFileOperation *)self _zipExtractionPathFromSourcePath:pathCopy];
+    v9 = [NSURL fileURLWithPath:pathCopy];
     v10 = [NSURL fileURLWithPath:v8];
     v11 = BKLibraryLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -471,7 +471,7 @@ LABEL_13:
       *buf = 141558786;
       v28 = 1752392040;
       v29 = 2112;
-      v30 = v6;
+      v30 = pathCopy;
       v31 = 2160;
       v32 = 1752392040;
       v33 = 2112;
@@ -516,12 +516,12 @@ LABEL_13:
         v31 = 2160;
         v32 = 1752392040;
         v33 = 2112;
-        v34 = v7;
+        v34 = toPathCopy;
         _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "Moving from immediate path %{mask.hash}@ to destination %{mask.hash}@", buf, 0x2Au);
       }
 
       v24 = 0;
-      v19 = [v17 moveItemAtPath:v8 toPath:v7 error:&v24];
+      v19 = [v17 moveItemAtPath:v8 toPath:toPathCopy error:&v24];
       v20 = v24;
       self->_success = v19;
       if (v19)
@@ -568,14 +568,14 @@ LABEL_23:
 LABEL_24:
 }
 
-- (id)_zipExtractionPathFromSourcePath:(id)a3
+- (id)_zipExtractionPathFromSourcePath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[UIApplication applicationCacheDirectory];
   v5 = [v4 stringByAppendingPathComponent:@"tmp"];
-  v6 = [v3 lastPathComponent];
+  lastPathComponent = [pathCopy lastPathComponent];
 
-  v7 = [v5 stringByAppendingPathComponent:v6];
+  v7 = [v5 stringByAppendingPathComponent:lastPathComponent];
 
   return v7;
 }

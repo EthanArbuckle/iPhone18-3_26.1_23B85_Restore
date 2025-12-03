@@ -1,27 +1,27 @@
 @interface NTKGreenfieldB640ViewController
-- (NTKGreenfieldB640ViewController)initWithUrl:(id)a3 sourceApplicationBundleIdentifier:(id)a4;
+- (NTKGreenfieldB640ViewController)initWithUrl:(id)url sourceApplicationBundleIdentifier:(id)identifier;
 - (NTKGreenfieldB640ViewControllerDelegate)delegate;
-- (void)greenfieldB640ContentViewController:(id)a3 handleButtonActionEvent:(int64_t)a4;
-- (void)greenfieldB640WatchFacesManager:(id)a3 updateStateToError:(id)a4;
-- (void)greenfieldB640WatchFacesManager:(id)a3 updateStateToSelectWatchFacesState:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)greenfieldB640ContentViewController:(id)controller handleButtonActionEvent:(int64_t)event;
+- (void)greenfieldB640WatchFacesManager:(id)manager updateStateToError:(id)error;
+- (void)greenfieldB640WatchFacesManager:(id)manager updateStateToSelectWatchFacesState:(id)state;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation NTKGreenfieldB640ViewController
 
-- (NTKGreenfieldB640ViewController)initWithUrl:(id)a3 sourceApplicationBundleIdentifier:(id)a4
+- (NTKGreenfieldB640ViewController)initWithUrl:(id)url sourceApplicationBundleIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  urlCopy = url;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = NTKGreenfieldB640ViewController;
   v9 = [(NTKGreenfieldB640ViewController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_url, a3);
-    objc_storeStrong(&v10->_sourceApplicationBundleIdentifier, a4);
+    objc_storeStrong(&v9->_url, url);
+    objc_storeStrong(&v10->_sourceApplicationBundleIdentifier, identifier);
   }
 
   return v10;
@@ -32,21 +32,21 @@
   v20.receiver = self;
   v20.super_class = NTKGreenfieldB640ViewController;
   [(NTKGreenfieldB640ViewController *)&v20 viewDidLoad];
-  v3 = [(NTKGreenfieldB640ViewController *)self navigationController];
-  [v3 setModalInPresentation:1];
+  navigationController = [(NTKGreenfieldB640ViewController *)self navigationController];
+  [navigationController setModalInPresentation:1];
 
   v4 = objc_opt_new();
   [v4 configureWithTransparentBackground];
   v5 = [MEMORY[0x277D75210] effectWithStyle:2];
   [v4 setBackgroundEffect:v5];
 
-  v6 = [(NTKGreenfieldB640ViewController *)self navigationController];
-  v7 = [v6 navigationBar];
-  [v7 setStandardAppearance:v4];
+  navigationController2 = [(NTKGreenfieldB640ViewController *)self navigationController];
+  navigationBar = [navigationController2 navigationBar];
+  [navigationBar setStandardAppearance:v4];
 
   v8 = BPSBackgroundColor();
-  v9 = [(NTKGreenfieldB640ViewController *)self view];
-  [v9 setBackgroundColor:v8];
+  view = [(NTKGreenfieldB640ViewController *)self view];
+  [view setBackgroundColor:v8];
 
   v10 = objc_alloc_init(NTKGreenfieldCompanionLoadingViewController);
   loadingViewController = self->_loadingViewController;
@@ -58,14 +58,14 @@
 
   [(UINavigationController *)self->_hiddenNavigationController setNavigationBarHidden:1 animated:0];
   [(NTKGreenfieldB640ViewController *)self addChildViewController:self->_hiddenNavigationController];
-  v14 = [(NTKGreenfieldB640ViewController *)self view];
-  v15 = [(UINavigationController *)self->_hiddenNavigationController view];
-  [v14 addSubview:v15];
+  view2 = [(NTKGreenfieldB640ViewController *)self view];
+  view3 = [(UINavigationController *)self->_hiddenNavigationController view];
+  [view2 addSubview:view3];
 
   [(UINavigationController *)self->_hiddenNavigationController didMoveToParentViewController:self];
   v16 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__didTapCancelButton];
-  v17 = [(NTKGreenfieldB640ViewController *)self navigationItem];
-  [v17 setLeftBarButtonItem:v16 animated:0];
+  navigationItem = [(NTKGreenfieldB640ViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v16 animated:0];
 
   v18 = objc_alloc_init(NTKGreenfieldB640Manager);
   b640Manager = self->_b640Manager;
@@ -75,33 +75,33 @@
   [(NTKGreenfieldB640Manager *)self->_b640Manager decodeUrl:self->_url sourceApplicationBundleIdentifier:self->_sourceApplicationBundleIdentifier];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = NTKGreenfieldB640ViewController;
-  [(NTKGreenfieldB640ViewController *)&v6 viewDidDisappear:a3];
-  v4 = [(NTKGreenfieldB640Manager *)self->_b640Manager addedFaceID];
-  if (v4)
+  [(NTKGreenfieldB640ViewController *)&v6 viewDidDisappear:disappear];
+  addedFaceID = [(NTKGreenfieldB640Manager *)self->_b640Manager addedFaceID];
+  if (addedFaceID)
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 postNotificationName:@"NTKGreenfieldAddWatchFaceManagerDidAddFaceNotification" object:v4];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"NTKGreenfieldAddWatchFaceManagerDidAddFaceNotification" object:addedFaceID];
   }
 
   [(NTKGreenfieldB640Manager *)self->_b640Manager handleDidExitGreenfieldB640Flow];
 }
 
-- (void)greenfieldB640ContentViewController:(id)a3 handleButtonActionEvent:(int64_t)a4
+- (void)greenfieldB640ContentViewController:(id)controller handleButtonActionEvent:(int64_t)event
 {
-  v6 = a3;
-  if (a4 == 2)
+  controllerCopy = controller;
+  if (event == 2)
   {
-    v8 = v6;
+    v8 = controllerCopy;
     goto LABEL_7;
   }
 
-  if (a4 == 1)
+  if (event == 1)
   {
-    v8 = v6;
+    v8 = controllerCopy;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained didTapOnLoadingFaceLibraryButton:self];
 
@@ -110,25 +110,25 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (a4)
+  if (event)
   {
     goto LABEL_9;
   }
 
-  v8 = v6;
+  v8 = controllerCopy;
   [(NTKGreenfieldB640Manager *)self->_b640Manager handleAddToMyFacesAction];
 LABEL_8:
-  v6 = v8;
+  controllerCopy = v8;
 LABEL_9:
 }
 
-- (void)greenfieldB640WatchFacesManager:(id)a3 updateStateToSelectWatchFacesState:(id)a4
+- (void)greenfieldB640WatchFacesManager:(id)manager updateStateToSelectWatchFacesState:(id)state
 {
   contentViewController = self->_contentViewController;
   if (!contentViewController)
   {
-    v6 = a4;
-    v7 = [[NTKGreenfieldB640ContentViewController alloc] initForAddWatchFacesStateWithGreenfieldB640Model:v6];
+    stateCopy = state;
+    v7 = [[NTKGreenfieldB640ContentViewController alloc] initForAddWatchFacesStateWithGreenfieldB640Model:stateCopy];
 
     v8 = self->_contentViewController;
     self->_contentViewController = v7;
@@ -142,15 +142,15 @@ LABEL_9:
   [(UINavigationController *)hiddenNavigationController pushViewController:contentViewController animated:0];
 }
 
-- (void)greenfieldB640WatchFacesManager:(id)a3 updateStateToError:(id)a4
+- (void)greenfieldB640WatchFacesManager:(id)manager updateStateToError:(id)error
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 error];
+  errorCopy = error;
+  error = [errorCopy error];
 
-  if (v6)
+  if (error)
   {
-    v7 = [[NTKGreenfieldB640ContentViewController alloc] initForErrorStateWithGreenfieldB640Model:v5];
+    v7 = [[NTKGreenfieldB640ContentViewController alloc] initForErrorStateWithGreenfieldB640Model:errorCopy];
     [v7 setGreenfieldB640delegate:self];
     hiddenNavigationController = self->_hiddenNavigationController;
     v10[0] = v7;

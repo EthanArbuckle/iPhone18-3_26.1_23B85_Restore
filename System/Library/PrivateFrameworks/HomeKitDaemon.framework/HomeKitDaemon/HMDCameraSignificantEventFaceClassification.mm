@@ -1,9 +1,9 @@
 @interface HMDCameraSignificantEventFaceClassification
-+ (id)faceClassificationWithHMIFaceClassification:(id)a3 person:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (HMDCameraSignificantEventFaceClassification)initWithUUID:(id)a3 personManagerUUID:(id)a4;
++ (id)faceClassificationWithHMIFaceClassification:(id)classification person:(id)person;
+- (BOOL)isEqual:(id)equal;
+- (HMDCameraSignificantEventFaceClassification)initWithUUID:(id)d personManagerUUID:(id)iD;
 - (id)attributeDescriptions;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -11,94 +11,94 @@
 
 - (id)attributeDescriptions
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v5 = [(HMDCameraSignificantEventFaceClassification *)self UUID];
-  v6 = [v4 initWithName:@"UUID" value:v5];
-  [v3 addObject:v6];
+  uUID = [(HMDCameraSignificantEventFaceClassification *)self UUID];
+  v6 = [v4 initWithName:@"UUID" value:uUID];
+  [array addObject:v6];
 
   v7 = objc_alloc(MEMORY[0x277D0F778]);
-  v8 = [(HMDCameraSignificantEventFaceClassification *)self personManagerUUID];
-  v9 = [v7 initWithName:@"Person Manager UUID" value:v8];
-  [v3 addObject:v9];
+  personManagerUUID = [(HMDCameraSignificantEventFaceClassification *)self personManagerUUID];
+  v9 = [v7 initWithName:@"Person Manager UUID" value:personManagerUUID];
+  [array addObject:v9];
 
-  v10 = [(HMDCameraSignificantEventFaceClassification *)self personUUID];
+  personUUID = [(HMDCameraSignificantEventFaceClassification *)self personUUID];
 
-  if (v10)
+  if (personUUID)
   {
     v11 = objc_alloc(MEMORY[0x277D0F778]);
-    v12 = [(HMDCameraSignificantEventFaceClassification *)self personUUID];
-    v13 = [v11 initWithName:@"Person UUID" value:v12];
-    [v3 addObject:v13];
+    personUUID2 = [(HMDCameraSignificantEventFaceClassification *)self personUUID];
+    v13 = [v11 initWithName:@"Person UUID" value:personUUID2];
+    [array addObject:v13];
   }
 
-  v14 = [(HMDCameraSignificantEventFaceClassification *)self personName];
+  personName = [(HMDCameraSignificantEventFaceClassification *)self personName];
 
-  if (v14)
+  if (personName)
   {
     v15 = objc_alloc(MEMORY[0x277D0F778]);
-    v16 = [(HMDCameraSignificantEventFaceClassification *)self personName];
-    v17 = [MEMORY[0x277D0F8D8] defaultFormatter];
-    v18 = [v15 initWithName:@"Person Name" value:v16 options:2 formatter:v17];
-    [v3 addObject:v18];
+    personName2 = [(HMDCameraSignificantEventFaceClassification *)self personName];
+    defaultFormatter = [MEMORY[0x277D0F8D8] defaultFormatter];
+    v18 = [v15 initWithName:@"Person Name" value:personName2 options:2 formatter:defaultFormatter];
+    [array addObject:v18];
   }
 
-  v19 = [(HMDCameraSignificantEventFaceClassification *)self unassociatedFaceCropUUID];
+  unassociatedFaceCropUUID = [(HMDCameraSignificantEventFaceClassification *)self unassociatedFaceCropUUID];
 
-  if (v19)
+  if (unassociatedFaceCropUUID)
   {
     v20 = objc_alloc(MEMORY[0x277D0F778]);
-    v21 = [(HMDCameraSignificantEventFaceClassification *)self unassociatedFaceCropUUID];
-    v22 = [v20 initWithName:@"Unassociated Face Crop UUID" value:v21];
-    [v3 addObject:v22];
+    unassociatedFaceCropUUID2 = [(HMDCameraSignificantEventFaceClassification *)self unassociatedFaceCropUUID];
+    v22 = [v20 initWithName:@"Unassociated Face Crop UUID" value:unassociatedFaceCropUUID2];
+    [array addObject:v22];
   }
 
-  v23 = [v3 copy];
+  v23 = [array copy];
 
   return v23;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDMutableCameraSignificantEventFaceClassification allocWithZone:a3];
-  v5 = [(HMDCameraSignificantEventFaceClassification *)self UUID];
-  v6 = [(HMDCameraSignificantEventFaceClassification *)self personManagerUUID];
-  v7 = [(HMDCameraSignificantEventFaceClassification *)v4 initWithUUID:v5 personManagerUUID:v6];
+  v4 = [HMDMutableCameraSignificantEventFaceClassification allocWithZone:zone];
+  uUID = [(HMDCameraSignificantEventFaceClassification *)self UUID];
+  personManagerUUID = [(HMDCameraSignificantEventFaceClassification *)self personManagerUUID];
+  v7 = [(HMDCameraSignificantEventFaceClassification *)v4 initWithUUID:uUID personManagerUUID:personManagerUUID];
 
-  v8 = [(HMDCameraSignificantEventFaceClassification *)self personUUID];
-  [(HMDCameraSignificantEventFaceClassification *)v7 setPersonUUID:v8];
+  personUUID = [(HMDCameraSignificantEventFaceClassification *)self personUUID];
+  [(HMDCameraSignificantEventFaceClassification *)v7 setPersonUUID:personUUID];
 
-  v9 = [(HMDCameraSignificantEventFaceClassification *)self personName];
-  [(HMDCameraSignificantEventFaceClassification *)v7 setPersonName:v9];
+  personName = [(HMDCameraSignificantEventFaceClassification *)self personName];
+  [(HMDCameraSignificantEventFaceClassification *)v7 setPersonName:personName];
 
-  v10 = [(HMDCameraSignificantEventFaceClassification *)self unassociatedFaceCropUUID];
-  [(HMDCameraSignificantEventFaceClassification *)v7 setUnassociatedFaceCropUUID:v10];
+  unassociatedFaceCropUUID = [(HMDCameraSignificantEventFaceClassification *)self unassociatedFaceCropUUID];
+  [(HMDCameraSignificantEventFaceClassification *)v7 setUnassociatedFaceCropUUID:unassociatedFaceCropUUID];
 
   return v7;
 }
 
-+ (id)faceClassificationWithHMIFaceClassification:(id)a3 person:(id)a4
++ (id)faceClassificationWithHMIFaceClassification:(id)classification person:(id)person
 {
-  v5 = a3;
-  v6 = a4;
+  classificationCopy = classification;
+  personCopy = person;
   v7 = [HMDMutableCameraSignificantEventFaceClassification alloc];
-  v8 = [MEMORY[0x277CCAD78] UUID];
-  v9 = [v5 sourceUUID];
-  v10 = [(HMDCameraSignificantEventFaceClassification *)v7 initWithUUID:v8 personManagerUUID:v9];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  sourceUUID = [classificationCopy sourceUUID];
+  v10 = [(HMDCameraSignificantEventFaceClassification *)v7 initWithUUID:uUID personManagerUUID:sourceUUID];
 
-  v11 = [v5 personUUID];
-  [(HMDCameraSignificantEventFaceClassification *)v10 setPersonUUID:v11];
+  personUUID = [classificationCopy personUUID];
+  [(HMDCameraSignificantEventFaceClassification *)v10 setPersonUUID:personUUID];
 
-  v12 = [v6 name];
+  name = [personCopy name];
 
-  [(HMDCameraSignificantEventFaceClassification *)v10 setPersonName:v12];
-  v13 = [v5 UUID];
+  [(HMDCameraSignificantEventFaceClassification *)v10 setPersonName:name];
+  uUID2 = [classificationCopy UUID];
 
-  if (!v13)
+  if (!uUID2)
   {
-    v14 = [v5 faceCrop];
-    v15 = [v14 UUID];
-    [(HMDCameraSignificantEventFaceClassification *)v10 setUnassociatedFaceCropUUID:v15];
+    faceCrop = [classificationCopy faceCrop];
+    uUID3 = [faceCrop UUID];
+    [(HMDCameraSignificantEventFaceClassification *)v10 setUnassociatedFaceCropUUID:uUID3];
   }
 
   v16 = [(HMDMutableCameraSignificantEventFaceClassification *)v10 copy];
@@ -108,19 +108,19 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMDCameraSignificantEventFaceClassification *)self UUID];
-  v3 = [v2 hash];
+  uUID = [(HMDCameraSignificantEventFaceClassification *)self UUID];
+  v3 = [uUID hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -131,19 +131,19 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMDCameraSignificantEventFaceClassification *)self UUID];
-    v8 = [v6 UUID];
-    if ([v7 isEqual:v8])
+    uUID = [(HMDCameraSignificantEventFaceClassification *)self UUID];
+    uUID2 = [v6 UUID];
+    if ([uUID isEqual:uUID2])
     {
-      v9 = [(HMDCameraSignificantEventFaceClassification *)self personManagerUUID];
-      v10 = [v6 personManagerUUID];
-      if (![v9 isEqual:v10])
+      personManagerUUID = [(HMDCameraSignificantEventFaceClassification *)self personManagerUUID];
+      personManagerUUID2 = [v6 personManagerUUID];
+      if (![personManagerUUID isEqual:personManagerUUID2])
       {
         goto LABEL_12;
       }
 
-      v11 = [(HMDCameraSignificantEventFaceClassification *)self personUUID];
-      v12 = [v6 personUUID];
+      personUUID = [(HMDCameraSignificantEventFaceClassification *)self personUUID];
+      personUUID2 = [v6 personUUID];
       v13 = HMFEqualObjects();
 
       if (!v13)
@@ -151,14 +151,14 @@
         goto LABEL_12;
       }
 
-      v14 = [(HMDCameraSignificantEventFaceClassification *)self personName];
-      v15 = [v6 personName];
+      personName = [(HMDCameraSignificantEventFaceClassification *)self personName];
+      personName2 = [v6 personName];
       v16 = HMFEqualObjects();
 
       if (v16)
       {
-        v17 = [(HMDCameraSignificantEventFaceClassification *)self unassociatedFaceCropUUID];
-        v18 = [v6 unassociatedFaceCropUUID];
+        unassociatedFaceCropUUID = [(HMDCameraSignificantEventFaceClassification *)self unassociatedFaceCropUUID];
+        unassociatedFaceCropUUID2 = [v6 unassociatedFaceCropUUID];
         v19 = HMFEqualObjects();
       }
 
@@ -183,21 +183,21 @@ LABEL_12:
   return v19;
 }
 
-- (HMDCameraSignificantEventFaceClassification)initWithUUID:(id)a3 personManagerUUID:(id)a4
+- (HMDCameraSignificantEventFaceClassification)initWithUUID:(id)d personManagerUUID:(id)iD
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  dCopy = d;
+  iDCopy = iD;
+  if (iDCopy)
   {
-    v9 = v8;
+    v9 = iDCopy;
     v17.receiver = self;
     v17.super_class = HMDCameraSignificantEventFaceClassification;
     v10 = [(HMDCameraSignificantEventFaceClassification *)&v17 init];
     v11 = v10;
     if (v10)
     {
-      objc_storeStrong(&v10->_UUID, a3);
-      objc_storeStrong(&v11->_personManagerUUID, a4);
+      objc_storeStrong(&v10->_UUID, d);
+      objc_storeStrong(&v11->_personManagerUUID, iD);
     }
 
     return v11;

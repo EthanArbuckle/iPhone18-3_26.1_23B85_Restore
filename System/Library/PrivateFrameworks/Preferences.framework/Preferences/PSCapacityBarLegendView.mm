@@ -1,14 +1,14 @@
 @interface PSCapacityBarLegendView
-- (PSCapacityBarLegendView)initWithCapacityBarCategory:(id)a3;
+- (PSCapacityBarLegendView)initWithCapacityBarCategory:(id)category;
 - (void)createConstraints;
-- (void)setText:(id)a3;
+- (void)setText:(id)text;
 @end
 
 @implementation PSCapacityBarLegendView
 
-- (PSCapacityBarLegendView)initWithCapacityBarCategory:(id)a3
+- (PSCapacityBarLegendView)initWithCapacityBarCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   v26.receiver = self;
   v26.super_class = PSCapacityBarLegendView;
   v5 = *MEMORY[0x1E695F058];
@@ -21,9 +21,9 @@
   {
     [(PSCapacityBarLegendView *)v9 setTranslatesAutoresizingMaskIntoConstraints:0];
     v11 = [PSLegendColorView alloc];
-    if (v4)
+    if (categoryCopy)
     {
-      [v4 color];
+      [categoryCopy color];
     }
 
     else
@@ -48,10 +48,10 @@
     [(UILabel *)v10->_legendLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v10->_legendLabel setLineBreakMode:4];
     [(UILabel *)v10->_legendLabel setNumberOfLines:1];
-    if (v4)
+    if (categoryCopy)
     {
-      v19 = [v4 title];
-      [(UILabel *)v10->_legendLabel setText:v19];
+      title = [categoryCopy title];
+      [(UILabel *)v10->_legendLabel setText:title];
     }
 
     else
@@ -110,12 +110,12 @@
   [MEMORY[0x1E696ACD8] activateConstraints:v11];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   legendLabel = self->_legendLabel;
-  v5 = a3;
-  [(UILabel *)legendLabel setText:v5];
-  [(PSCapacityBarLegendView *)self setAccessibilityIdentifier:v5];
+  textCopy = text;
+  [(UILabel *)legendLabel setText:textCopy];
+  [(PSCapacityBarLegendView *)self setAccessibilityIdentifier:textCopy];
 
   [(PSCapacityBarLegendView *)self setNeedsLayout];
 }

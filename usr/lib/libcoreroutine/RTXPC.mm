@@ -1,15 +1,15 @@
 @interface RTXPC
-+ (id)executablePathOfConnection:(id)a3;
-+ (id)signingIdentifierOfConnection:(id)a3;
++ (id)executablePathOfConnection:(id)connection;
++ (id)signingIdentifierOfConnection:(id)connection;
 @end
 
 @implementation RTXPC
 
-+ (id)executablePathOfConnection:(id)a3
++ (id)executablePathOfConnection:(id)connection
 {
   v7 = *MEMORY[0x277D85DE8];
   bzero(buffer, 0x1000uLL);
-  if (proc_pidpath([a3 processIdentifier], buffer, 0x1000u) < 1)
+  if (proc_pidpath([connection processIdentifier], buffer, 0x1000u) < 1)
   {
     v4 = 0;
   }
@@ -22,13 +22,13 @@
   return v4;
 }
 
-+ (id)signingIdentifierOfConnection:(id)a3
++ (id)signingIdentifierOfConnection:(id)connection
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  connectionCopy = connection;
+  v4 = connectionCopy;
+  if (connectionCopy)
   {
-    [v3 auditToken];
+    [connectionCopy auditToken];
   }
 
   else

@@ -2,42 +2,42 @@
 + (id)sharedInstance;
 - (BOOL)isScanningOrAdvertising;
 - (IDSWPLinkManager)init;
-- (unint64_t)sendData:(id)a3 peerID:(id)a4;
+- (unint64_t)sendData:(id)data peerID:(id)d;
 - (void)_checkWPContinuitySetup;
 - (void)_cleanup;
-- (void)_continuityDidUpdateStateWithStateValue:(int64_t)a3;
-- (void)addConnectivityDelegate:(id)a3;
-- (void)clientInstanceCreatedWithMessageContext:(id)a3;
+- (void)_continuityDidUpdateStateWithStateValue:(int64_t)value;
+- (void)addConnectivityDelegate:(id)delegate;
+- (void)clientInstanceCreatedWithMessageContext:(id)context;
 - (void)clientInstancesRemoved;
-- (void)connectOnMainQueueToPeer:(id)a3;
-- (void)connectToPeer:(id)a3;
-- (void)continuity:(id)a3 didConnectToPeer:(id)a4 error:(id)a5;
-- (void)continuity:(id)a3 didDisconnectFromPeer:(id)a4 error:(id)a5;
-- (void)continuity:(id)a3 didDiscoverType:(int64_t)a4 withData:(id)a5 fromPeer:(id)a6;
-- (void)continuity:(id)a3 didFailToStartAdvertisingOfType:(int64_t)a4 withError:(id)a5;
-- (void)continuity:(id)a3 didFailToStartScanningForType:(int64_t)a4 WithError:(id)a5;
-- (void)continuity:(id)a3 didReceiveData:(id)a4 fromPeer:(id)a5;
-- (void)continuity:(id)a3 didSendData:(id)a4 toPeer:(id)a5 error:(id)a6;
-- (void)continuityDidStartAdvertisingOfType:(id)a3 advertisingType:(int64_t)a4;
-- (void)continuityDidStartScanningForType:(id)a3 scanningType:(int64_t)a4;
-- (void)continuityDidStopAdvertisingOfType:(id)a3 advertisingType:(int64_t)a4;
-- (void)continuityDidStopAdvertisingOfType:(id)a3 advertisingType:(int64_t)a4 withError:(id)a5;
-- (void)continuityDidStopScanningForType:(id)a3 scanningType:(int64_t)a4;
-- (void)continuityDidUpdateState:(id)a3;
-- (void)disconnectFromPeer:(id)a3;
-- (void)disconnectOnMainQueueFromPeer:(id)a3;
-- (void)removeLink:(id)a3;
+- (void)connectOnMainQueueToPeer:(id)peer;
+- (void)connectToPeer:(id)peer;
+- (void)continuity:(id)continuity didConnectToPeer:(id)peer error:(id)error;
+- (void)continuity:(id)continuity didDisconnectFromPeer:(id)peer error:(id)error;
+- (void)continuity:(id)continuity didDiscoverType:(int64_t)type withData:(id)data fromPeer:(id)peer;
+- (void)continuity:(id)continuity didFailToStartAdvertisingOfType:(int64_t)type withError:(id)error;
+- (void)continuity:(id)continuity didFailToStartScanningForType:(int64_t)type WithError:(id)error;
+- (void)continuity:(id)continuity didReceiveData:(id)data fromPeer:(id)peer;
+- (void)continuity:(id)continuity didSendData:(id)data toPeer:(id)peer error:(id)error;
+- (void)continuityDidStartAdvertisingOfType:(id)type advertisingType:(int64_t)advertisingType;
+- (void)continuityDidStartScanningForType:(id)type scanningType:(int64_t)scanningType;
+- (void)continuityDidStopAdvertisingOfType:(id)type advertisingType:(int64_t)advertisingType;
+- (void)continuityDidStopAdvertisingOfType:(id)type advertisingType:(int64_t)advertisingType withError:(id)error;
+- (void)continuityDidStopScanningForType:(id)type scanningType:(int64_t)scanningType;
+- (void)continuityDidUpdateState:(id)state;
+- (void)disconnectFromPeer:(id)peer;
+- (void)disconnectOnMainQueueFromPeer:(id)peer;
+- (void)removeLink:(id)link;
 - (void)sendReset;
-- (void)setAlwaysConnectedForCBUUID:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDelegateOnMainQueue:(id)a3;
-- (void)startAdvertisingOfType:(int64_t)a3 withData:(id)a4 withOptions:(id)a5;
-- (void)startScanningForType:(int64_t)a3 withData:(id)a4 mask:(id)a5;
-- (void)startScanningForType:(int64_t)a3 withData:(id)a4 mask:(id)a5 boostedScan:(BOOL)a6 duplicates:(BOOL)a7;
-- (void)startScanningForType:(int64_t)a3 withData:(id)a4 mask:(id)a5 peers:(id)a6;
-- (void)startScanningForType:(int64_t)a3 withData:(id)a4 mask:(id)a5 peers:(id)a6 boostedScan:(BOOL)a7 duplicates:(BOOL)a8;
-- (void)stopAdvertisingOfType:(int64_t)a3;
-- (void)stopScanningForType:(int64_t)a3;
+- (void)setAlwaysConnectedForCBUUID:(id)d;
+- (void)setDelegate:(id)delegate;
+- (void)setDelegateOnMainQueue:(id)queue;
+- (void)startAdvertisingOfType:(int64_t)type withData:(id)data withOptions:(id)options;
+- (void)startScanningForType:(int64_t)type withData:(id)data mask:(id)mask;
+- (void)startScanningForType:(int64_t)type withData:(id)data mask:(id)mask boostedScan:(BOOL)scan duplicates:(BOOL)duplicates;
+- (void)startScanningForType:(int64_t)type withData:(id)data mask:(id)mask peers:(id)peers;
+- (void)startScanningForType:(int64_t)type withData:(id)data mask:(id)mask peers:(id)peers boostedScan:(BOOL)scan duplicates:(BOOL)duplicates;
+- (void)stopAdvertisingOfType:(int64_t)type;
+- (void)stopScanningForType:(int64_t)type;
 - (void)systemDidFastUserSwitchOut;
 @end
 
@@ -168,23 +168,23 @@
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = im_primary_queue();
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10047B0D4;
   v7[3] = &unk_100BD6E40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)setDelegateOnMainQueue:(id)a3
+- (void)setDelegateOnMainQueue:(id)queue
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, queue);
 
   [(IDSWPLinkManager *)self _checkWPContinuitySetup];
 }
@@ -196,10 +196,10 @@
   return [(NSMutableSet *)self->_advertisingTypes count]+ v4 != 0;
 }
 
-- (void)addConnectivityDelegate:(id)a3
+- (void)addConnectivityDelegate:(id)delegate
 {
-  v4 = a3;
-  [(NSHashTable *)self->_connectivityDelegates addObject:v4];
+  delegateCopy = delegate;
+  [(NSHashTable *)self->_connectivityDelegates addObject:delegateCopy];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
@@ -226,8 +226,8 @@
         block[1] = 3221225472;
         block[2] = sub_10047B2FC;
         block[3] = &unk_100BD6E18;
-        v13 = v4;
-        v14 = self;
+        v13 = delegateCopy;
+        selfCopy = self;
         v15 = v9;
         dispatch_async(v10, block);
 
@@ -242,23 +242,23 @@
   }
 }
 
-- (void)setAlwaysConnectedForCBUUID:(id)a3
+- (void)setAlwaysConnectedForCBUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = im_primary_queue();
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10047B3C8;
   v7[3] = &unk_100BD6E40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)clientInstanceCreatedWithMessageContext:(id)a3
+- (void)clientInstanceCreatedWithMessageContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -279,7 +279,7 @@
   }
 
   v6 = +[IDSDaemon sharedInstance];
-  v7 = [v6 broadcasterForEntitlement:kIDSContinuityEntitlement messageContext:v4];
+  v7 = [v6 broadcasterForEntitlement:kIDSContinuityEntitlement messageContext:contextCopy];
 
   v8 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -375,14 +375,14 @@
           objc_enumerationMutation(v6);
         }
 
-        v10 = [*(*(&v31 + 1) + 8 * i) integerValue];
+        integerValue = [*(*(&v31 + 1) + 8 * i) integerValue];
         v11 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           v12 = "UnexpectedType";
-          if (v10 <= 2)
+          if (integerValue <= 2)
           {
-            v12 = (&off_100BDD120)[v10];
+            v12 = (&off_100BDD120)[integerValue];
           }
 
           *buf = 136315138;
@@ -393,9 +393,9 @@
         if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
         {
           v13 = "UnexpectedType";
-          if (v10 <= 2)
+          if (integerValue <= 2)
           {
-            v13 = (&off_100BDD120)[v10];
+            v13 = (&off_100BDD120)[integerValue];
           }
 
           v25 = v13;
@@ -403,9 +403,9 @@
           if (_IDSShouldLog())
           {
             v14 = "UnexpectedType";
-            if (v10 <= 2)
+            if (integerValue <= 2)
             {
-              v14 = (&off_100BDD120)[v10];
+              v14 = (&off_100BDD120)[integerValue];
             }
 
             v25 = v14;
@@ -413,7 +413,7 @@
           }
         }
 
-        [(IDSWPLinkManager *)self stopAdvertisingOfType:v10, v25];
+        [(IDSWPLinkManager *)self stopAdvertisingOfType:integerValue, v25];
       }
 
       v7 = [v6 countByEnumeratingWithState:&v31 objects:v36 count:16];
@@ -440,14 +440,14 @@
           objc_enumerationMutation(v15);
         }
 
-        v19 = [*(*(&v27 + 1) + 8 * j) integerValue];
+        integerValue2 = [*(*(&v27 + 1) + 8 * j) integerValue];
         v20 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
           v21 = "UnexpectedType";
-          if (v19 <= 2)
+          if (integerValue2 <= 2)
           {
-            v21 = (&off_100BDD120)[v19];
+            v21 = (&off_100BDD120)[integerValue2];
           }
 
           *buf = 136315138;
@@ -458,9 +458,9 @@
         if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
         {
           v22 = "UnexpectedType";
-          if (v19 <= 2)
+          if (integerValue2 <= 2)
           {
-            v22 = (&off_100BDD120)[v19];
+            v22 = (&off_100BDD120)[integerValue2];
           }
 
           v25 = v22;
@@ -468,9 +468,9 @@
           if (_IDSShouldLog())
           {
             v23 = "UnexpectedType";
-            if (v19 <= 2)
+            if (integerValue2 <= 2)
             {
-              v23 = (&off_100BDD120)[v19];
+              v23 = (&off_100BDD120)[integerValue2];
             }
 
             v25 = v23;
@@ -478,7 +478,7 @@
           }
         }
 
-        [(IDSWPLinkManager *)self stopScanningForType:v19, v25];
+        [(IDSWPLinkManager *)self stopScanningForType:integerValue2, v25];
       }
 
       v16 = [v15 countByEnumeratingWithState:&v27 objects:v35 count:16];
@@ -488,53 +488,53 @@
   }
 }
 
-- (void)startAdvertisingOfType:(int64_t)a3 withData:(id)a4 withOptions:(id)a5
+- (void)startAdvertisingOfType:(int64_t)type withData:(id)data withOptions:(id)options
 {
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  optionsCopy = options;
   v10 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3 > 2)
+    if (type > 2)
     {
       v11 = "UnexpectedType";
     }
 
     else
     {
-      v11 = (&off_100BDD120)[a3];
+      v11 = (&off_100BDD120)[type];
     }
 
     *buf = 136315650;
     v27 = v11;
     v28 = 2112;
-    v29 = v8;
+    v29 = dataCopy;
     v30 = 2112;
-    v31 = v9;
+    v31 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "startAdvertisingOfType:%s withData:%@ withOptions:%@", buf, 0x20u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
-    v12 = a3 > 2 ? "UnexpectedType" : (&off_100BDD120)[a3];
-    v24 = v8;
-    v25 = v9;
+    v12 = type > 2 ? "UnexpectedType" : (&off_100BDD120)[type];
+    v24 = dataCopy;
+    v25 = optionsCopy;
     v23 = v12;
     _IDSLogTransport();
     if (_IDSShouldLog())
     {
-      if (a3 > 2)
+      if (type > 2)
       {
         v13 = "UnexpectedType";
       }
 
       else
       {
-        v13 = (&off_100BDD120)[a3];
+        v13 = (&off_100BDD120)[type];
       }
 
-      v24 = v8;
-      v25 = v9;
+      v24 = dataCopy;
+      v25 = optionsCopy;
       v23 = v13;
       _IDSLogV();
     }
@@ -562,19 +562,19 @@
     }
   }
 
-  if (a3 >= 3)
+  if (type >= 3)
   {
-    v15 = 3;
+    typeCopy = 3;
   }
 
   else
   {
-    v15 = a3;
+    typeCopy = type;
   }
 
-  [(WPContinuity *)self->_continuity startAdvertisingOfType:v15 withData:v8, v23, v24, v25];
+  [(WPContinuity *)self->_continuity startAdvertisingOfType:typeCopy withData:dataCopy, v23, v24, v25];
   advertisingTypes = self->_advertisingTypes;
-  v17 = [NSNumber numberWithInteger:a3];
+  v17 = [NSNumber numberWithInteger:type];
   LOBYTE(advertisingTypes) = [(NSMutableSet *)advertisingTypes containsObject:v17];
 
   if ((advertisingTypes & 1) == 0)
@@ -590,24 +590,24 @@
       v18 = *p_advertisingTypes;
     }
 
-    v22 = [NSNumber numberWithInteger:a3];
+    v22 = [NSNumber numberWithInteger:type];
     [(NSMutableSet *)v18 addObject:v22];
   }
 }
 
-- (void)stopAdvertisingOfType:(int64_t)a3
+- (void)stopAdvertisingOfType:(int64_t)type
 {
   v5 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3 > 2)
+    if (type > 2)
     {
       v6 = "UnexpectedType";
     }
 
     else
     {
-      v6 = (&off_100BDD120)[a3];
+      v6 = (&off_100BDD120)[type];
     }
 
     *buf = 136315138;
@@ -617,19 +617,19 @@
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
-    v7 = a3 > 2 ? "UnexpectedType" : (&off_100BDD120)[a3];
+    v7 = type > 2 ? "UnexpectedType" : (&off_100BDD120)[type];
     v15 = v7;
     _IDSLogTransport();
     if (_IDSShouldLog())
     {
-      if (a3 > 2)
+      if (type > 2)
       {
         v8 = "UnexpectedType";
       }
 
       else
       {
-        v8 = (&off_100BDD120)[a3];
+        v8 = (&off_100BDD120)[type];
       }
 
       v15 = v8;
@@ -637,25 +637,25 @@
     }
   }
 
-  if (a3 >= 3)
+  if (type >= 3)
   {
-    v9 = 3;
+    typeCopy = 3;
   }
 
   else
   {
-    v9 = a3;
+    typeCopy = type;
   }
 
-  [(WPContinuity *)self->_continuity stopAdvertisingOfType:v9, v15];
+  [(WPContinuity *)self->_continuity stopAdvertisingOfType:typeCopy, v15];
   advertisingTypes = self->_advertisingTypes;
-  v11 = [NSNumber numberWithInteger:a3];
+  v11 = [NSNumber numberWithInteger:type];
   LODWORD(advertisingTypes) = [(NSMutableSet *)advertisingTypes containsObject:v11];
 
   if (advertisingTypes)
   {
     v12 = self->_advertisingTypes;
-    v13 = [NSNumber numberWithInteger:a3];
+    v13 = [NSNumber numberWithInteger:type];
     [(NSMutableSet *)v12 removeObject:v13];
 
     if (![(NSMutableSet *)self->_advertisingTypes count])
@@ -666,31 +666,31 @@
   }
 }
 
-- (void)startScanningForType:(int64_t)a3 withData:(id)a4 mask:(id)a5 peers:(id)a6
+- (void)startScanningForType:(int64_t)type withData:(id)data mask:(id)mask peers:(id)peers
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dataCopy = data;
+  maskCopy = mask;
+  peersCopy = peers;
   v13 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3 > 2)
+    if (type > 2)
     {
       v14 = "UnexpectedType";
     }
 
     else
     {
-      v14 = (&off_100BDD120)[a3];
+      v14 = (&off_100BDD120)[type];
     }
 
     v15 = IMLoggingStringForArray();
     *buf = 136315906;
     v34 = v14;
     v35 = 2112;
-    v36 = v10;
+    v36 = dataCopy;
     v37 = 2112;
-    v38 = v11;
+    v38 = maskCopy;
     v39 = 2112;
     v40 = v15;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "startScanningForType:%s withData:%@ mask:%@ peers: %@", buf, 0x2Au);
@@ -698,29 +698,29 @@
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
-    v16 = a3 > 2 ? "UnexpectedType" : (&off_100BDD120)[a3];
+    v16 = type > 2 ? "UnexpectedType" : (&off_100BDD120)[type];
     IMLoggingStringForArray();
-    v32 = v31 = v11;
+    v32 = v31 = maskCopy;
     v29 = v16;
-    v30 = v10;
+    v30 = dataCopy;
     _IDSLogTransport();
 
     if (_IDSShouldLog())
     {
-      if (a3 > 2)
+      if (type > 2)
       {
         v17 = "UnexpectedType";
       }
 
       else
       {
-        v17 = (&off_100BDD120)[a3];
+        v17 = (&off_100BDD120)[type];
       }
 
       IMLoggingStringForArray();
-      v32 = v31 = v11;
+      v32 = v31 = maskCopy;
       v29 = v17;
-      v30 = v10;
+      v30 = dataCopy;
       _IDSLogV();
     }
   }
@@ -747,31 +747,31 @@
     }
   }
 
-  v19 = [v12 __imArrayByApplyingBlock:{&stru_100BDD138, v29, v30, v31, v32}];
+  v19 = [peersCopy __imArrayByApplyingBlock:{&stru_100BDD138, v29, v30, v31, v32}];
 
   continuity = self->_continuity;
-  if (a3 >= 3)
+  if (type >= 3)
   {
-    v21 = 3;
+    typeCopy = 3;
   }
 
   else
   {
-    v21 = a3;
+    typeCopy = type;
   }
 
-  if (v11)
+  if (maskCopy)
   {
-    [(WPContinuity *)continuity startScanningForType:v21 withData:v10 mask:v11 peers:v19];
+    [(WPContinuity *)continuity startScanningForType:typeCopy withData:dataCopy mask:maskCopy peers:v19];
   }
 
   else
   {
-    [(WPContinuity *)continuity startScanningForType:v21 withData:v10 peers:v19];
+    [(WPContinuity *)continuity startScanningForType:typeCopy withData:dataCopy peers:v19];
   }
 
   scanningTypes = self->_scanningTypes;
-  v23 = [NSNumber numberWithInteger:a3];
+  v23 = [NSNumber numberWithInteger:type];
   LOBYTE(scanningTypes) = [(NSMutableSet *)scanningTypes containsObject:v23];
 
   if ((scanningTypes & 1) == 0)
@@ -787,58 +787,58 @@
       v24 = *p_scanningTypes;
     }
 
-    v28 = [NSNumber numberWithInteger:a3];
+    v28 = [NSNumber numberWithInteger:type];
     [(NSMutableSet *)v24 addObject:v28];
   }
 }
 
-- (void)startScanningForType:(int64_t)a3 withData:(id)a4 mask:(id)a5
+- (void)startScanningForType:(int64_t)type withData:(id)data mask:(id)mask
 {
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  maskCopy = mask;
   v10 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3 > 2)
+    if (type > 2)
     {
       v11 = "UnexpectedType";
     }
 
     else
     {
-      v11 = (&off_100BDD120)[a3];
+      v11 = (&off_100BDD120)[type];
     }
 
     *buf = 136315650;
     v28 = v11;
     v29 = 2112;
-    v30 = v8;
+    v30 = dataCopy;
     v31 = 2112;
-    v32 = v9;
+    v32 = maskCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "startScanningForType:%s withData:%@ mask:%@", buf, 0x20u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
-    v12 = a3 > 2 ? "UnexpectedType" : (&off_100BDD120)[a3];
-    v25 = v8;
-    v26 = v9;
+    v12 = type > 2 ? "UnexpectedType" : (&off_100BDD120)[type];
+    v25 = dataCopy;
+    v26 = maskCopy;
     v24 = v12;
     _IDSLogTransport();
     if (_IDSShouldLog())
     {
-      if (a3 > 2)
+      if (type > 2)
       {
         v13 = "UnexpectedType";
       }
 
       else
       {
-        v13 = (&off_100BDD120)[a3];
+        v13 = (&off_100BDD120)[type];
       }
 
-      v25 = v8;
-      v26 = v9;
+      v25 = dataCopy;
+      v26 = maskCopy;
       v24 = v13;
       _IDSLogV();
     }
@@ -867,28 +867,28 @@
   }
 
   continuity = self->_continuity;
-  if (a3 >= 3)
+  if (type >= 3)
   {
-    v16 = 3;
+    typeCopy = 3;
   }
 
   else
   {
-    v16 = a3;
+    typeCopy = type;
   }
 
-  if (v9)
+  if (maskCopy)
   {
-    [(WPContinuity *)continuity startScanningForType:v16 withData:v8 mask:v9 peers:0];
+    [(WPContinuity *)continuity startScanningForType:typeCopy withData:dataCopy mask:maskCopy peers:0];
   }
 
   else
   {
-    [(WPContinuity *)continuity startScanningForType:v16 withData:v8 peers:0];
+    [(WPContinuity *)continuity startScanningForType:typeCopy withData:dataCopy peers:0];
   }
 
   scanningTypes = self->_scanningTypes;
-  v18 = [NSNumber numberWithInteger:a3, v24, v25, v26];
+  v18 = [NSNumber numberWithInteger:type, v24, v25, v26];
   LOBYTE(scanningTypes) = [(NSMutableSet *)scanningTypes containsObject:v18];
 
   if ((scanningTypes & 1) == 0)
@@ -904,29 +904,29 @@
       v19 = *p_scanningTypes;
     }
 
-    v23 = [NSNumber numberWithInteger:a3];
+    v23 = [NSNumber numberWithInteger:type];
     [(NSMutableSet *)v19 addObject:v23];
   }
 }
 
-- (void)startScanningForType:(int64_t)a3 withData:(id)a4 mask:(id)a5 peers:(id)a6 boostedScan:(BOOL)a7 duplicates:(BOOL)a8
+- (void)startScanningForType:(int64_t)type withData:(id)data mask:(id)mask peers:(id)peers boostedScan:(BOOL)scan duplicates:(BOOL)duplicates
 {
-  v44 = a8;
-  v8 = a7;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  duplicatesCopy = duplicates;
+  scanCopy = scan;
+  dataCopy = data;
+  maskCopy = mask;
+  peersCopy = peers;
   v16 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3 > 2)
+    if (type > 2)
     {
       v17 = "UnexpectedType";
     }
 
     else
     {
-      v17 = (&off_100BDD120)[a3];
+      v17 = (&off_100BDD120)[type];
     }
 
     v18 = IMLoggingStringForArray();
@@ -935,7 +935,7 @@
     *buf = 136316418;
     v46 = v17;
     v47 = 2112;
-    if (v8)
+    if (scanCopy)
     {
       v21 = @"YES";
     }
@@ -945,14 +945,14 @@
       v21 = @"NO";
     }
 
-    v48 = v13;
-    if (v44)
+    v48 = dataCopy;
+    if (duplicatesCopy)
     {
       v20 = @"YES";
     }
 
     v49 = 2112;
-    v50 = v14;
+    v50 = maskCopy;
     v51 = 2112;
     v52 = v18;
     v53 = 2112;
@@ -964,37 +964,37 @@
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
-    v22 = a3 > 2 ? "UnexpectedType" : (&off_100BDD120)[a3];
+    v22 = type > 2 ? "UnexpectedType" : (&off_100BDD120)[type];
     v23 = IMLoggingStringForArray();
     v24 = v23;
-    v25 = v8 ? @"YES" : @"NO";
-    v26 = v44 ? @"YES" : @"NO";
+    v25 = scanCopy ? @"YES" : @"NO";
+    v26 = duplicatesCopy ? @"YES" : @"NO";
     v42 = v25;
     v43 = v26;
-    v40 = v14;
+    v40 = maskCopy;
     v41 = v23;
     v38 = v22;
-    v39 = v13;
+    v39 = dataCopy;
     _IDSLogTransport();
 
     if (_IDSShouldLog())
     {
-      if (a3 > 2)
+      if (type > 2)
       {
         v27 = "UnexpectedType";
       }
 
       else
       {
-        v27 = (&off_100BDD120)[a3];
+        v27 = (&off_100BDD120)[type];
       }
 
       IMLoggingStringForArray();
       v42 = v25;
       v43 = v26;
-      v41 = v40 = v14;
+      v41 = v40 = maskCopy;
       v38 = v27;
-      v39 = v13;
+      v39 = dataCopy;
       _IDSLogV();
     }
   }
@@ -1021,21 +1021,21 @@
     }
   }
 
-  v29 = [v15 __imArrayByApplyingBlock:{&stru_100BDD138, v38, v39, v40, v41, v42, v43}];
+  v29 = [peersCopy __imArrayByApplyingBlock:{&stru_100BDD138, v38, v39, v40, v41, v42, v43}];
 
-  if (a3 >= 3)
+  if (type >= 3)
   {
-    v30 = 3;
+    typeCopy = 3;
   }
 
   else
   {
-    v30 = a3;
+    typeCopy = type;
   }
 
-  [(WPContinuity *)self->_continuity startScanningForType:v30 withData:v13 mask:v14 peers:v29 boostedScan:v8 duplicates:v44];
+  [(WPContinuity *)self->_continuity startScanningForType:typeCopy withData:dataCopy mask:maskCopy peers:v29 boostedScan:scanCopy duplicates:duplicatesCopy];
   scanningTypes = self->_scanningTypes;
-  v32 = [NSNumber numberWithInteger:a3];
+  v32 = [NSNumber numberWithInteger:type];
   LOBYTE(scanningTypes) = [(NSMutableSet *)scanningTypes containsObject:v32];
 
   if ((scanningTypes & 1) == 0)
@@ -1051,35 +1051,35 @@
       v33 = *p_scanningTypes;
     }
 
-    v37 = [NSNumber numberWithInteger:a3];
+    v37 = [NSNumber numberWithInteger:type];
     [(NSMutableSet *)v33 addObject:v37];
   }
 }
 
-- (void)startScanningForType:(int64_t)a3 withData:(id)a4 mask:(id)a5 boostedScan:(BOOL)a6 duplicates:(BOOL)a7
+- (void)startScanningForType:(int64_t)type withData:(id)data mask:(id)mask boostedScan:(BOOL)scan duplicates:(BOOL)duplicates
 {
-  v7 = a7;
-  v8 = a6;
-  v12 = a4;
-  v13 = a5;
+  duplicatesCopy = duplicates;
+  scanCopy = scan;
+  dataCopy = data;
+  maskCopy = mask;
   v14 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3 > 2)
+    if (type > 2)
     {
       v15 = "UnexpectedType";
     }
 
     else
     {
-      v15 = (&off_100BDD120)[a3];
+      v15 = (&off_100BDD120)[type];
     }
 
     v16 = @"NO";
     *buf = 136316162;
     v37 = v15;
     v38 = 2112;
-    if (v8)
+    if (scanCopy)
     {
       v17 = @"YES";
     }
@@ -1089,14 +1089,14 @@
       v17 = @"NO";
     }
 
-    v39 = v12;
-    if (v7)
+    v39 = dataCopy;
+    if (duplicatesCopy)
     {
       v16 = @"YES";
     }
 
     v40 = 2112;
-    v41 = v13;
+    v41 = maskCopy;
     v42 = 2112;
     v43 = v17;
     v44 = 2112;
@@ -1106,31 +1106,31 @@
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
-    v18 = a3 > 2 ? "UnexpectedType" : (&off_100BDD120)[a3];
-    v19 = v8 ? @"YES" : @"NO";
-    v20 = v7 ? @"YES" : @"NO";
+    v18 = type > 2 ? "UnexpectedType" : (&off_100BDD120)[type];
+    v19 = scanCopy ? @"YES" : @"NO";
+    v20 = duplicatesCopy ? @"YES" : @"NO";
     v34 = v19;
     v35 = v20;
-    v32 = v12;
-    v33 = v13;
+    v32 = dataCopy;
+    v33 = maskCopy;
     v31 = v18;
     _IDSLogTransport();
     if (_IDSShouldLog())
     {
-      if (a3 > 2)
+      if (type > 2)
       {
         v21 = "UnexpectedType";
       }
 
       else
       {
-        v21 = (&off_100BDD120)[a3];
+        v21 = (&off_100BDD120)[type];
       }
 
       v34 = v19;
       v35 = v20;
-      v32 = v12;
-      v33 = v13;
+      v32 = dataCopy;
+      v33 = maskCopy;
       v31 = v21;
       _IDSLogV();
     }
@@ -1158,19 +1158,19 @@
     }
   }
 
-  if (a3 >= 3)
+  if (type >= 3)
   {
-    v23 = 3;
+    typeCopy = 3;
   }
 
   else
   {
-    v23 = a3;
+    typeCopy = type;
   }
 
-  [(WPContinuity *)self->_continuity startScanningForType:v23 withData:v12 mask:v13 peers:0 boostedScan:v8 duplicates:v7, v31, v32, v33, v34, v35];
+  [(WPContinuity *)self->_continuity startScanningForType:typeCopy withData:dataCopy mask:maskCopy peers:0 boostedScan:scanCopy duplicates:duplicatesCopy, v31, v32, v33, v34, v35];
   scanningTypes = self->_scanningTypes;
-  v25 = [NSNumber numberWithInteger:a3];
+  v25 = [NSNumber numberWithInteger:type];
   LOBYTE(scanningTypes) = [(NSMutableSet *)scanningTypes containsObject:v25];
 
   if ((scanningTypes & 1) == 0)
@@ -1186,24 +1186,24 @@
       v26 = *p_scanningTypes;
     }
 
-    v30 = [NSNumber numberWithInteger:a3];
+    v30 = [NSNumber numberWithInteger:type];
     [(NSMutableSet *)v26 addObject:v30];
   }
 }
 
-- (void)stopScanningForType:(int64_t)a3
+- (void)stopScanningForType:(int64_t)type
 {
   v5 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3 > 2)
+    if (type > 2)
     {
       v6 = "UnexpectedType";
     }
 
     else
     {
-      v6 = (&off_100BDD120)[a3];
+      v6 = (&off_100BDD120)[type];
     }
 
     *buf = 136315138;
@@ -1213,19 +1213,19 @@
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
-    v7 = a3 > 2 ? "UnexpectedType" : (&off_100BDD120)[a3];
+    v7 = type > 2 ? "UnexpectedType" : (&off_100BDD120)[type];
     v15 = v7;
     _IDSLogTransport();
     if (_IDSShouldLog())
     {
-      if (a3 > 2)
+      if (type > 2)
       {
         v8 = "UnexpectedType";
       }
 
       else
       {
-        v8 = (&off_100BDD120)[a3];
+        v8 = (&off_100BDD120)[type];
       }
 
       v15 = v8;
@@ -1233,25 +1233,25 @@
     }
   }
 
-  if (a3 >= 3)
+  if (type >= 3)
   {
-    v9 = 3;
+    typeCopy = 3;
   }
 
   else
   {
-    v9 = a3;
+    typeCopy = type;
   }
 
-  [(WPContinuity *)self->_continuity stopScanningForType:v9, v15];
+  [(WPContinuity *)self->_continuity stopScanningForType:typeCopy, v15];
   scanningTypes = self->_scanningTypes;
-  v11 = [NSNumber numberWithInteger:a3];
+  v11 = [NSNumber numberWithInteger:type];
   LODWORD(scanningTypes) = [(NSMutableSet *)scanningTypes containsObject:v11];
 
   if (scanningTypes)
   {
     v12 = self->_scanningTypes;
-    v13 = [NSNumber numberWithInteger:a3];
+    v13 = [NSNumber numberWithInteger:type];
     [(NSMutableSet *)v12 removeObject:v13];
 
     if (![(NSMutableSet *)self->_scanningTypes count])
@@ -1262,15 +1262,15 @@
   }
 }
 
-- (void)connectOnMainQueueToPeer:(id)a3
+- (void)connectOnMainQueueToPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   v5 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     continuity = self->_continuity;
     *buf = 138543618;
-    v41 = v4;
+    v41 = peerCopy;
     v42 = 2112;
     v43 = continuity;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "connectToPeer %{public}@, continuity %@", buf, 0x16u);
@@ -1280,30 +1280,30 @@
   {
     if (_IDSShouldLogTransport())
     {
-      v31 = v4;
+      v31 = peerCopy;
       v33 = self->_continuity;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v31 = v4;
+        v31 = peerCopy;
         v33 = self->_continuity;
         _IDSLogV();
       }
     }
   }
 
-  if (v4)
+  if (peerCopy)
   {
     if (self->_continuity)
     {
       v7 = +[IDSDevicePolicyController sharedInstance];
-      v8 = [v7 shouldBlackOutDeviceWithCbuuid:v4];
+      v8 = [v7 shouldBlackOutDeviceWithCbuuid:peerCopy];
 
       if ((v8 & 1) == 0)
       {
         if (self->_state == 3)
         {
-          v9 = [(NSMutableDictionary *)self->_linkIDToLink objectForKey:v4];
+          v9 = [(NSMutableDictionary *)self->_linkIDToLink objectForKey:peerCopy];
 
           if (v9)
           {
@@ -1311,7 +1311,7 @@
             if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v41 = v4;
+              v41 = peerCopy;
               _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "already connected to %{public}@.", buf, 0xCu);
             }
 
@@ -1340,17 +1340,17 @@
             linkIDsConnecting = self->_linkIDsConnecting;
           }
 
-          v19 = [(NSMutableDictionary *)linkIDsConnecting objectForKey:v4, v31, v33];
+          v19 = [(NSMutableDictionary *)linkIDsConnecting objectForKey:peerCopy, v31, v33];
           v20 = v19;
           if (v19 && ([v19 timeIntervalSinceNow], fabs(v21) < 10.0))
           {
             v22 = OSLogHandleForTransportCategory();
             if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
             {
-              v23 = [(NSMutableDictionary *)self->_linkIDsConnecting objectForKey:v4];
+              v23 = [(NSMutableDictionary *)self->_linkIDsConnecting objectForKey:peerCopy];
               [v23 timeIntervalSinceNow];
               *buf = 138543618;
-              v41 = v4;
+              v41 = peerCopy;
               v42 = 2048;
               v43 = v24;
               _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "already connecting to %{public}@  (Time: %f)", buf, 0x16u);
@@ -1366,7 +1366,7 @@
               goto LABEL_50;
             }
 
-            v25 = [(NSMutableDictionary *)self->_linkIDsConnecting objectForKey:v4];
+            v25 = [(NSMutableDictionary *)self->_linkIDsConnecting objectForKey:peerCopy];
             [v25 timeIntervalSinceNow];
             v34 = v26;
             _IDSLogTransport();
@@ -1376,7 +1376,7 @@
               goto LABEL_50;
             }
 
-            v27 = [(NSMutableDictionary *)self->_linkIDsConnecting objectForKey:v4, v4, v34];
+            v27 = [(NSMutableDictionary *)self->_linkIDsConnecting objectForKey:peerCopy, peerCopy, v34];
             [v27 timeIntervalSinceNow];
             _IDSLogV();
           }
@@ -1387,7 +1387,7 @@
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v41 = v4;
+              v41 = peerCopy;
               _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "*** starting connection to %{public}@", buf, 0xCu);
             }
 
@@ -1395,11 +1395,11 @@
             {
               if (_IDSShouldLogTransport())
               {
-                v32 = v4;
+                v32 = peerCopy;
                 _IDSLogTransport();
                 if (_IDSShouldLog())
                 {
-                  v32 = v4;
+                  v32 = peerCopy;
                   _IDSLogV();
                 }
               }
@@ -1407,9 +1407,9 @@
 
             v29 = self->_linkIDsConnecting;
             v30 = +[NSDate date];
-            [(NSMutableDictionary *)v29 setObject:v30 forKey:v4];
+            [(NSMutableDictionary *)v29 setObject:v30 forKey:peerCopy];
 
-            v27 = [[NSUUID alloc] initWithUUIDString:v4];
+            v27 = [[NSUUID alloc] initWithUUIDString:peerCopy];
             kdebug_trace();
             [(WPContinuity *)self->_continuity connectToPeer:v27];
           }
@@ -1455,7 +1455,7 @@ LABEL_50:
                 objc_enumerationMutation(v12);
               }
 
-              [*(*(&v35 + 1) + 8 * i) manager:self cbuuidDidFailToConnect:v4 withReason:{0, v31, v33, v35}];
+              [*(*(&v35 + 1) + 8 * i) manager:self cbuuidDidFailToConnect:peerCopy withReason:{0, v31, v33, v35}];
             }
 
             v13 = [(NSHashTable *)v12 countByEnumeratingWithState:&v35 objects:v39 count:16];
@@ -1470,29 +1470,29 @@ LABEL_50:
 LABEL_51:
 }
 
-- (void)connectToPeer:(id)a3
+- (void)connectToPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   v5 = im_primary_queue();
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10047DAFC;
   v7[3] = &unk_100BD6E40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = peerCopy;
+  v6 = peerCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)disconnectOnMainQueueFromPeer:(id)a3
+- (void)disconnectOnMainQueueFromPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   v5 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     continuity = self->_continuity;
     *buf = 138543618;
-    v27 = v4;
+    v27 = peerCopy;
     v28 = 2114;
     v29 = continuity;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "disconnectFromPeer %{public}@, continuity %{public}@", buf, 0x16u);
@@ -1502,19 +1502,19 @@ LABEL_51:
   {
     if (_IDSShouldLogTransport())
     {
-      v22 = v4;
+      v22 = peerCopy;
       v24 = self->_continuity;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v22 = v4;
+        v22 = peerCopy;
         v24 = self->_continuity;
         _IDSLogV();
       }
     }
   }
 
-  if (v4 && self->_continuity)
+  if (peerCopy && self->_continuity)
   {
     linkIDsDisconnecting = self->_linkIDsDisconnecting;
     if (!linkIDsDisconnecting)
@@ -1526,17 +1526,17 @@ LABEL_51:
       linkIDsDisconnecting = self->_linkIDsDisconnecting;
     }
 
-    v10 = [(NSMutableDictionary *)linkIDsDisconnecting objectForKey:v4, v22, v24];
+    v10 = [(NSMutableDictionary *)linkIDsDisconnecting objectForKey:peerCopy, v22, v24];
     v11 = v10;
     if (v10 && ([v10 timeIntervalSinceNow], fabs(v12) < 10.0))
     {
       v13 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(NSMutableDictionary *)self->_linkIDsDisconnecting objectForKey:v4];
+        v14 = [(NSMutableDictionary *)self->_linkIDsDisconnecting objectForKey:peerCopy];
         [v14 timeIntervalSinceNow];
         *buf = 138543618;
-        v27 = v4;
+        v27 = peerCopy;
         v28 = 2048;
         v29 = v15;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "already disconnecting from %{public}@  (Time: %f)", buf, 0x16u);
@@ -1552,7 +1552,7 @@ LABEL_51:
         goto LABEL_27;
       }
 
-      v16 = [(NSMutableDictionary *)self->_linkIDsDisconnecting objectForKey:v4];
+      v16 = [(NSMutableDictionary *)self->_linkIDsDisconnecting objectForKey:peerCopy];
       [v16 timeIntervalSinceNow];
       v25 = v17;
       _IDSLogTransport();
@@ -1562,7 +1562,7 @@ LABEL_51:
         goto LABEL_27;
       }
 
-      v18 = [(NSMutableDictionary *)self->_linkIDsDisconnecting objectForKey:v4, v4, v25];
+      v18 = [(NSMutableDictionary *)self->_linkIDsDisconnecting objectForKey:peerCopy, peerCopy, v25];
       [v18 timeIntervalSinceNow];
       _IDSLogV();
     }
@@ -1573,7 +1573,7 @@ LABEL_51:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v27 = v4;
+        v27 = peerCopy;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "*** starting disconnected from %{public}@", buf, 0xCu);
       }
 
@@ -1581,11 +1581,11 @@ LABEL_51:
       {
         if (_IDSShouldLogTransport())
         {
-          v23 = v4;
+          v23 = peerCopy;
           _IDSLogTransport();
           if (_IDSShouldLog())
           {
-            v23 = v4;
+            v23 = peerCopy;
             _IDSLogV();
           }
         }
@@ -1593,9 +1593,9 @@ LABEL_51:
 
       v20 = self->_linkIDsDisconnecting;
       v21 = +[NSDate date];
-      [(NSMutableDictionary *)v20 setObject:v21 forKey:v4];
+      [(NSMutableDictionary *)v20 setObject:v21 forKey:peerCopy];
 
-      v18 = [[NSUUID alloc] initWithUUIDString:v4];
+      v18 = [[NSUUID alloc] initWithUUIDString:peerCopy];
       [(WPContinuity *)self->_continuity disconnectFromPeer:v18];
     }
 
@@ -1603,60 +1603,60 @@ LABEL_27:
   }
 }
 
-- (void)disconnectFromPeer:(id)a3
+- (void)disconnectFromPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   v5 = im_primary_queue();
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10047DFF0;
   v7[3] = &unk_100BD6E40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = peerCopy;
+  v6 = peerCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)removeLink:(id)a3
+- (void)removeLink:(id)link
 {
-  v4 = a3;
-  v5 = [v4 linkID];
+  linkCopy = link;
+  linkID = [linkCopy linkID];
   v6 = im_primary_queue();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10047E0D0;
   block[3] = &unk_100BD6E18;
-  v10 = v4;
-  v11 = v5;
-  v12 = self;
-  v7 = v5;
-  v8 = v4;
+  v10 = linkCopy;
+  v11 = linkID;
+  selfCopy = self;
+  v7 = linkID;
+  v8 = linkCopy;
   dispatch_async(v6, block);
 }
 
-- (unint64_t)sendData:(id)a3 peerID:(id)a4
+- (unint64_t)sendData:(id)data peerID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  dCopy = d;
   v8 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v13 = [v6 length];
+    v13 = [dataCopy length];
     v14 = 2112;
-    v15 = v7;
+    v15 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "sendData %luB peerID %@", buf, 0x16u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    [v6 length];
+    [dataCopy length];
     _IDSLogV();
   }
 
   if (self->_state == 3)
   {
-    [(WPContinuity *)self->_continuity sendData:v6 toPeer:v7];
+    [(WPContinuity *)self->_continuity sendData:dataCopy toPeer:dCopy];
     v9 = 0;
   }
 
@@ -1712,18 +1712,18 @@ LABEL_27:
   [(IDSWPLinkManager *)self _checkWPContinuitySetup];
 }
 
-- (void)continuityDidUpdateState:(id)a3
+- (void)continuityDidUpdateState:(id)state
 {
-  v4 = [a3 state];
+  state = [state state];
 
-  [(IDSWPLinkManager *)self _continuityDidUpdateStateWithStateValue:v4];
+  [(IDSWPLinkManager *)self _continuityDidUpdateStateWithStateValue:state];
 }
 
-- (void)_continuityDidUpdateStateWithStateValue:(int64_t)a3
+- (void)_continuityDidUpdateStateWithStateValue:(int64_t)value
 {
-  self->_state = a3;
-  state = a3;
-  if (a3 < 2)
+  self->_state = value;
+  state = value;
+  if (value < 2)
   {
     [(NSMutableDictionary *)self->_linkIDsConnecting removeAllObjects];
     linkIDsConnecting = self->_linkIDsConnecting;
@@ -1746,32 +1746,32 @@ LABEL_27:
   block[1] = 3221225472;
   block[2] = sub_10047E78C;
   block[3] = &unk_100BD75B8;
-  block[4] = a3;
+  block[4] = value;
   dispatch_async(v8, block);
 }
 
-- (void)continuityDidStartAdvertisingOfType:(id)a3 advertisingType:(int64_t)a4
+- (void)continuityDidStartAdvertisingOfType:(id)type advertisingType:(int64_t)advertisingType
 {
-  v5 = a3;
+  typeCopy = type;
   v6 = +[IDSDaemon sharedInstance];
   v7 = [v6 broadcasterForEntitlement:kIDSContinuityEntitlement messageContext:0];
 
-  if (a4 <= 2)
+  if (advertisingType <= 2)
   {
-    v8 = a4;
+    advertisingTypeCopy = advertisingType;
   }
 
   else
   {
-    v8 = 3;
+    advertisingTypeCopy = 3;
   }
 
   v9 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    if (a4 <= 2)
+    if (advertisingType <= 2)
     {
-      v10 = (&off_100BDD120)[v8];
+      v10 = (&off_100BDD120)[advertisingTypeCopy];
     }
 
     else
@@ -1786,14 +1786,14 @@ LABEL_27:
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
-    v11 = a4 <= 2 ? (&off_100BDD120)[v8] : "UnexpectedType";
+    v11 = advertisingType <= 2 ? (&off_100BDD120)[advertisingTypeCopy] : "UnexpectedType";
     v13 = v11;
     _IDSLogTransport();
     if (_IDSShouldLog())
     {
-      if (a4 <= 2)
+      if (advertisingType <= 2)
       {
-        v12 = (&off_100BDD120)[v8];
+        v12 = (&off_100BDD120)[advertisingTypeCopy];
       }
 
       else
@@ -1806,31 +1806,31 @@ LABEL_27:
     }
   }
 
-  [v7 continuityDidStartAdvertisingOfType:{v8, v13}];
+  [v7 continuityDidStartAdvertisingOfType:{advertisingTypeCopy, v13}];
 }
 
-- (void)continuityDidStopAdvertisingOfType:(id)a3 advertisingType:(int64_t)a4
+- (void)continuityDidStopAdvertisingOfType:(id)type advertisingType:(int64_t)advertisingType
 {
-  v5 = a3;
+  typeCopy = type;
   v6 = +[IDSDaemon sharedInstance];
   v7 = [v6 broadcasterForEntitlement:kIDSContinuityEntitlement messageContext:0];
 
-  if (a4 <= 2)
+  if (advertisingType <= 2)
   {
-    v8 = a4;
+    advertisingTypeCopy = advertisingType;
   }
 
   else
   {
-    v8 = 3;
+    advertisingTypeCopy = 3;
   }
 
   v9 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    if (a4 <= 2)
+    if (advertisingType <= 2)
     {
-      v10 = (&off_100BDD120)[v8];
+      v10 = (&off_100BDD120)[advertisingTypeCopy];
     }
 
     else
@@ -1845,14 +1845,14 @@ LABEL_27:
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
-    v11 = a4 <= 2 ? (&off_100BDD120)[v8] : "UnexpectedType";
+    v11 = advertisingType <= 2 ? (&off_100BDD120)[advertisingTypeCopy] : "UnexpectedType";
     v13 = v11;
     _IDSLogTransport();
     if (_IDSShouldLog())
     {
-      if (a4 <= 2)
+      if (advertisingType <= 2)
       {
-        v12 = (&off_100BDD120)[v8];
+        v12 = (&off_100BDD120)[advertisingTypeCopy];
       }
 
       else
@@ -1865,32 +1865,32 @@ LABEL_27:
     }
   }
 
-  [v7 continuityDidStopAdvertisingOfType:{v8, v13}];
+  [v7 continuityDidStopAdvertisingOfType:{advertisingTypeCopy, v13}];
 }
 
-- (void)continuityDidStopAdvertisingOfType:(id)a3 advertisingType:(int64_t)a4 withError:(id)a5
+- (void)continuityDidStopAdvertisingOfType:(id)type advertisingType:(int64_t)advertisingType withError:(id)error
 {
-  v7 = a3;
-  v8 = a5;
+  typeCopy = type;
+  errorCopy = error;
   v9 = +[IDSDaemon sharedInstance];
   v10 = [v9 broadcasterForEntitlement:kIDSContinuityEntitlement messageContext:0];
 
-  if (a4 <= 2)
+  if (advertisingType <= 2)
   {
-    v11 = a4;
+    advertisingTypeCopy = advertisingType;
   }
 
   else
   {
-    v11 = 3;
+    advertisingTypeCopy = 3;
   }
 
   v12 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    if (a4 <= 2)
+    if (advertisingType <= 2)
     {
-      v13 = (&off_100BDD120)[v11];
+      v13 = (&off_100BDD120)[advertisingTypeCopy];
     }
 
     else
@@ -1901,21 +1901,21 @@ LABEL_27:
     *buf = 136315394;
     v19 = v13;
     v20 = 2112;
-    v21 = v8;
+    v21 = errorCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "calling continuityDidStopAdvertisingOfType:%s withError:%@", buf, 0x16u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
-    v14 = a4 <= 2 ? (&off_100BDD120)[v11] : "UnexpectedType";
+    v14 = advertisingType <= 2 ? (&off_100BDD120)[advertisingTypeCopy] : "UnexpectedType";
     v16 = v14;
-    v17 = v8;
+    v17 = errorCopy;
     _IDSLogTransport();
     if (_IDSShouldLog())
     {
-      if (a4 <= 2)
+      if (advertisingType <= 2)
       {
-        v15 = (&off_100BDD120)[v11];
+        v15 = (&off_100BDD120)[advertisingTypeCopy];
       }
 
       else
@@ -1924,37 +1924,37 @@ LABEL_27:
       }
 
       v16 = v15;
-      v17 = v8;
+      v17 = errorCopy;
       _IDSLogV();
     }
   }
 
-  [v10 continuityDidStopAdvertisingOfType:v11 withError:{v8, v16, v17}];
+  [v10 continuityDidStopAdvertisingOfType:advertisingTypeCopy withError:{errorCopy, v16, v17}];
 }
 
-- (void)continuity:(id)a3 didFailToStartAdvertisingOfType:(int64_t)a4 withError:(id)a5
+- (void)continuity:(id)continuity didFailToStartAdvertisingOfType:(int64_t)type withError:(id)error
 {
-  v7 = a3;
-  v8 = a5;
+  continuityCopy = continuity;
+  errorCopy = error;
   v9 = +[IDSDaemon sharedInstance];
   v10 = [v9 broadcasterForEntitlement:kIDSContinuityEntitlement messageContext:0];
 
-  if (a4 <= 2)
+  if (type <= 2)
   {
-    v11 = a4;
+    typeCopy = type;
   }
 
   else
   {
-    v11 = 3;
+    typeCopy = 3;
   }
 
   v12 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    if (a4 <= 2)
+    if (type <= 2)
     {
-      v13 = (&off_100BDD120)[v11];
+      v13 = (&off_100BDD120)[typeCopy];
     }
 
     else
@@ -1965,21 +1965,21 @@ LABEL_27:
     *buf = 136315394;
     v19 = v13;
     v20 = 2112;
-    v21 = v8;
+    v21 = errorCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "calling continuityDidFailToStartAdvertisingOfType:%s withError:%@", buf, 0x16u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
-    v14 = a4 <= 2 ? (&off_100BDD120)[v11] : "UnexpectedType";
+    v14 = type <= 2 ? (&off_100BDD120)[typeCopy] : "UnexpectedType";
     v16 = v14;
-    v17 = v8;
+    v17 = errorCopy;
     _IDSLogTransport();
     if (_IDSShouldLog())
     {
-      if (a4 <= 2)
+      if (type <= 2)
       {
-        v15 = (&off_100BDD120)[v11];
+        v15 = (&off_100BDD120)[typeCopy];
       }
 
       else
@@ -1988,36 +1988,36 @@ LABEL_27:
       }
 
       v16 = v15;
-      v17 = v8;
+      v17 = errorCopy;
       _IDSLogV();
     }
   }
 
-  [v10 continuityDidFailToStartAdvertisingOfType:v11 withError:{v8, v16, v17}];
+  [v10 continuityDidFailToStartAdvertisingOfType:typeCopy withError:{errorCopy, v16, v17}];
 }
 
-- (void)continuityDidStartScanningForType:(id)a3 scanningType:(int64_t)a4
+- (void)continuityDidStartScanningForType:(id)type scanningType:(int64_t)scanningType
 {
-  v5 = a3;
+  typeCopy = type;
   v6 = +[IDSDaemon sharedInstance];
   v7 = [v6 broadcasterForEntitlement:kIDSContinuityEntitlement messageContext:0];
 
-  if (a4 <= 2)
+  if (scanningType <= 2)
   {
-    v8 = a4;
+    scanningTypeCopy = scanningType;
   }
 
   else
   {
-    v8 = 3;
+    scanningTypeCopy = 3;
   }
 
   v9 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    if (a4 <= 2)
+    if (scanningType <= 2)
     {
-      v10 = (&off_100BDD120)[v8];
+      v10 = (&off_100BDD120)[scanningTypeCopy];
     }
 
     else
@@ -2032,14 +2032,14 @@ LABEL_27:
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
-    v11 = a4 <= 2 ? (&off_100BDD120)[v8] : "UnexpectedType";
+    v11 = scanningType <= 2 ? (&off_100BDD120)[scanningTypeCopy] : "UnexpectedType";
     v13 = v11;
     _IDSLogTransport();
     if (_IDSShouldLog())
     {
-      if (a4 <= 2)
+      if (scanningType <= 2)
       {
-        v12 = (&off_100BDD120)[v8];
+        v12 = (&off_100BDD120)[scanningTypeCopy];
       }
 
       else
@@ -2052,31 +2052,31 @@ LABEL_27:
     }
   }
 
-  [v7 continuityDidStartScanningForType:{v8, v13}];
+  [v7 continuityDidStartScanningForType:{scanningTypeCopy, v13}];
 }
 
-- (void)continuityDidStopScanningForType:(id)a3 scanningType:(int64_t)a4
+- (void)continuityDidStopScanningForType:(id)type scanningType:(int64_t)scanningType
 {
-  v5 = a3;
+  typeCopy = type;
   v6 = +[IDSDaemon sharedInstance];
   v7 = [v6 broadcasterForEntitlement:kIDSContinuityEntitlement messageContext:0];
 
-  if (a4 <= 2)
+  if (scanningType <= 2)
   {
-    v8 = a4;
+    scanningTypeCopy = scanningType;
   }
 
   else
   {
-    v8 = 3;
+    scanningTypeCopy = 3;
   }
 
   v9 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    if (a4 <= 2)
+    if (scanningType <= 2)
     {
-      v10 = (&off_100BDD120)[v8];
+      v10 = (&off_100BDD120)[scanningTypeCopy];
     }
 
     else
@@ -2091,14 +2091,14 @@ LABEL_27:
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
-    v11 = a4 <= 2 ? (&off_100BDD120)[v8] : "UnexpectedType";
+    v11 = scanningType <= 2 ? (&off_100BDD120)[scanningTypeCopy] : "UnexpectedType";
     v13 = v11;
     _IDSLogTransport();
     if (_IDSShouldLog())
     {
-      if (a4 <= 2)
+      if (scanningType <= 2)
       {
-        v12 = (&off_100BDD120)[v8];
+        v12 = (&off_100BDD120)[scanningTypeCopy];
       }
 
       else
@@ -2111,32 +2111,32 @@ LABEL_27:
     }
   }
 
-  [v7 continuityDidStopScanningForType:{v8, v13}];
+  [v7 continuityDidStopScanningForType:{scanningTypeCopy, v13}];
 }
 
-- (void)continuity:(id)a3 didFailToStartScanningForType:(int64_t)a4 WithError:(id)a5
+- (void)continuity:(id)continuity didFailToStartScanningForType:(int64_t)type WithError:(id)error
 {
-  v7 = a3;
-  v8 = a5;
+  continuityCopy = continuity;
+  errorCopy = error;
   v9 = +[IDSDaemon sharedInstance];
   v10 = [v9 broadcasterForEntitlement:kIDSContinuityEntitlement messageContext:0];
 
-  if (a4 <= 2)
+  if (type <= 2)
   {
-    v11 = a4;
+    typeCopy = type;
   }
 
   else
   {
-    v11 = 3;
+    typeCopy = 3;
   }
 
   v12 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    if (a4 <= 2)
+    if (type <= 2)
     {
-      v13 = (&off_100BDD120)[v11];
+      v13 = (&off_100BDD120)[typeCopy];
     }
 
     else
@@ -2147,21 +2147,21 @@ LABEL_27:
     *buf = 136315394;
     v19 = v13;
     v20 = 2112;
-    v21 = v8;
+    v21 = errorCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "calling continuityDidFailToStartScanningForType:%s withError:%@", buf, 0x16u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
-    v14 = a4 <= 2 ? (&off_100BDD120)[v11] : "UnexpectedType";
+    v14 = type <= 2 ? (&off_100BDD120)[typeCopy] : "UnexpectedType";
     v16 = v14;
-    v17 = v8;
+    v17 = errorCopy;
     _IDSLogTransport();
     if (_IDSShouldLog())
     {
-      if (a4 <= 2)
+      if (type <= 2)
       {
-        v15 = (&off_100BDD120)[v11];
+        v15 = (&off_100BDD120)[typeCopy];
       }
 
       else
@@ -2170,20 +2170,20 @@ LABEL_27:
       }
 
       v16 = v15;
-      v17 = v8;
+      v17 = errorCopy;
       _IDSLogV();
     }
   }
 
-  [v10 continuityDidFailToStartScanningForType:v11 withError:{v8, v16, v17}];
+  [v10 continuityDidFailToStartScanningForType:typeCopy withError:{errorCopy, v16, v17}];
 }
 
-- (void)continuity:(id)a3 didDiscoverType:(int64_t)a4 withData:(id)a5 fromPeer:(id)a6
+- (void)continuity:(id)continuity didDiscoverType:(int64_t)type withData:(id)data fromPeer:(id)peer
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v12 UUIDString];
+  continuityCopy = continuity;
+  dataCopy = data;
+  peerCopy = peer;
+  uUIDString = [peerCopy UUIDString];
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
@@ -2202,7 +2202,7 @@ LABEL_3:
         objc_enumerationMutation(v14);
       }
 
-      if ([*(*(&v29 + 1) + 8 * v17) manager:self cbuuidDidDiscover:v13])
+      if ([*(*(&v29 + 1) + 8 * v17) manager:self cbuuidDidDiscover:uUIDString])
       {
         break;
       }
@@ -2223,22 +2223,22 @@ LABEL_3:
   v18 = +[IDSDaemon sharedInstance];
   v19 = [v18 broadcasterForEntitlement:kIDSContinuityEntitlement messageContext:0];
 
-  if (a4 <= 2)
+  if (type <= 2)
   {
-    v20 = a4;
+    typeCopy = type;
   }
 
   else
   {
-    v20 = 3;
+    typeCopy = 3;
   }
 
   v21 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    if (a4 <= 2)
+    if (type <= 2)
     {
-      v22 = (&off_100BDD120)[v20];
+      v22 = (&off_100BDD120)[typeCopy];
     }
 
     else
@@ -2249,24 +2249,24 @@ LABEL_3:
     *buf = 136315650;
     v34 = v22;
     v35 = 2112;
-    v36 = v11;
+    v36 = dataCopy;
     v37 = 2112;
-    v38 = v12;
+    v38 = peerCopy;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "calling continuityDidDiscoverType:%s withData:%@ fromPeer:%@", buf, 0x20u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
-    v23 = a4 <= 2 ? (&off_100BDD120)[v20] : "UnexpectedType";
-    v27 = v11;
-    v28 = v12;
+    v23 = type <= 2 ? (&off_100BDD120)[typeCopy] : "UnexpectedType";
+    v27 = dataCopy;
+    v28 = peerCopy;
     v26 = v23;
     _IDSLogTransport();
     if (_IDSShouldLog())
     {
-      if (a4 <= 2)
+      if (type <= 2)
       {
-        v24 = (&off_100BDD120)[v20];
+        v24 = (&off_100BDD120)[typeCopy];
       }
 
       else
@@ -2274,34 +2274,34 @@ LABEL_3:
         v24 = "UnexpectedType";
       }
 
-      v27 = v11;
-      v28 = v12;
+      v27 = dataCopy;
+      v28 = peerCopy;
       v26 = v24;
       _IDSLogV();
     }
   }
 
-  v25 = [v12 UUIDString];
-  [v19 continuityDidDiscoverType:v20 withData:v11 fromPeer:v25];
+  uUIDString2 = [peerCopy UUIDString];
+  [v19 continuityDidDiscoverType:typeCopy withData:dataCopy fromPeer:uUIDString2];
 }
 
-- (void)continuity:(id)a3 didConnectToPeer:(id)a4 error:(id)a5
+- (void)continuity:(id)continuity didConnectToPeer:(id)peer error:(id)error
 {
-  v49 = a3;
-  v8 = a4;
-  v9 = a5;
-  v50 = v8;
-  v10 = [(NSHashTable *)v8 UUIDString];
-  if (v10)
+  continuityCopy = continuity;
+  peerCopy = peer;
+  errorCopy = error;
+  v50 = peerCopy;
+  uUIDString = [(NSHashTable *)peerCopy UUIDString];
+  if (uUIDString)
   {
     kdebug_trace();
     v11 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v62 = v10;
+      v62 = uUIDString;
       v63 = 2114;
-      v64 = *&v9;
+      v64 = *&errorCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "didConnectToPeer:%{public}@ error:%{public}@", buf, 0x16u);
     }
 
@@ -2309,25 +2309,25 @@ LABEL_3:
     {
       if (_IDSShouldLogTransport())
       {
-        v47 = v10;
-        v48 = *&v9;
+        v47 = uUIDString;
+        v48 = *&errorCopy;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v47 = v10;
-          v48 = *&v9;
+          v47 = uUIDString;
+          v48 = *&errorCopy;
           _IDSLogV();
         }
       }
     }
 
-    if (v9)
+    if (errorCopy)
     {
       v12 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v62 = v10;
+        v62 = uUIDString;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "linkDidFailToConnect for peer %{public}@", buf, 0xCu);
       }
 
@@ -2335,18 +2335,18 @@ LABEL_3:
       {
         if (_IDSShouldLogTransport())
         {
-          v47 = v10;
+          v47 = uUIDString;
           _IDSLogTransport();
           if (_IDSShouldLog())
           {
-            v47 = v10;
+            v47 = uUIDString;
             _IDSLogV();
           }
         }
       }
 
       v13 = [IDSUTunDeliveryController sharedInstance:v47];
-      v14 = [v13 isPeerForPhoneContinuityLocalMessage:v10];
+      v14 = [v13 isPeerForPhoneContinuityLocalMessage:uUIDString];
 
       if (v14)
       {
@@ -2354,7 +2354,7 @@ LABEL_3:
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v62 = v10;
+          v62 = uUIDString;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Skip unlockContinuityPeer for peer %@", buf, 0xCu);
         }
 
@@ -2362,11 +2362,11 @@ LABEL_3:
         {
           if (_IDSShouldLogTransport())
           {
-            v47 = v10;
+            v47 = uUIDString;
             _IDSLogTransport();
             if (_IDSShouldLog())
             {
-              v47 = v10;
+              v47 = uUIDString;
               _IDSLogV();
             }
           }
@@ -2376,7 +2376,7 @@ LABEL_3:
       else
       {
         v25 = +[IDSUTunDeliveryController sharedInstance];
-        [v25 unlockContinuityPeer:v10];
+        [v25 unlockContinuityPeer:uUIDString];
       }
 
       v53 = 0u;
@@ -2397,7 +2397,7 @@ LABEL_3:
               objc_enumerationMutation(v17);
             }
 
-            [*(*(&v51 + 1) + 8 * i) manager:self cbuuidDidFailToConnect:v10 withReason:{v9, v47}];
+            [*(*(&v51 + 1) + 8 * i) manager:self cbuuidDidFailToConnect:uUIDString withReason:{errorCopy, v47}];
           }
 
           v26 = [(NSHashTable *)v17 countByEnumeratingWithState:&v51 objects:v59 count:16];
@@ -2409,17 +2409,17 @@ LABEL_3:
 
     else
     {
-      v17 = [(NSMutableDictionary *)self->_linkIDToLink objectForKey:v10];
+      v17 = [(NSMutableDictionary *)self->_linkIDToLink objectForKey:uUIDString];
       if (!v17)
       {
-        v17 = [[IDSBTLELink alloc] initWithWPLinkManager:self withIdentifier:v10];
+        v17 = [[IDSBTLELink alloc] initWithWPLinkManager:self withIdentifier:uUIDString];
         v18 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
           v62 = v17;
           v63 = 2114;
-          v64 = *&v10;
+          v64 = *&uUIDString;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "BTLELink %{public}@ created with BTID: %{public}@", buf, 0x16u);
         }
 
@@ -2428,18 +2428,18 @@ LABEL_3:
           if (_IDSShouldLogTransport())
           {
             v47 = v17;
-            v48 = *&v10;
+            v48 = *&uUIDString;
             _IDSLogTransport();
             if (_IDSShouldLog())
             {
               v47 = v17;
-              v48 = *&v10;
+              v48 = *&uUIDString;
               _IDSLogV();
             }
           }
         }
 
-        [(NSMutableDictionary *)self->_linkIDToLink setObject:v17 forKey:v10, v47, *&v48, v49];
+        [(NSMutableDictionary *)self->_linkIDToLink setObject:v17 forKey:uUIDString, v47, *&v48, continuityCopy];
         kdebug_trace();
         v19 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -2484,7 +2484,7 @@ LABEL_3:
                 objc_enumerationMutation(v21);
               }
 
-              [*(*(&v55 + 1) + 8 * j) manager:self cbuuidDidConnect:v10 isAlwaysConnected:{0, v47}];
+              [*(*(&v55 + 1) + 8 * j) manager:self cbuuidDidConnect:uUIDString isAlwaysConnected:{0, v47}];
             }
 
             v22 = [(NSHashTable *)v21 countByEnumeratingWithState:&v55 objects:v60 count:16];
@@ -2495,7 +2495,7 @@ LABEL_3:
       }
     }
 
-    v29 = [(NSMutableDictionary *)self->_linkIDsConnecting objectForKey:v10];
+    v29 = [(NSMutableDictionary *)self->_linkIDsConnecting objectForKey:uUIDString];
     v30 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
@@ -2525,7 +2525,7 @@ LABEL_3:
       }
     }
 
-    [(NSMutableDictionary *)self->_linkIDsConnecting removeObjectForKey:v10, v47, *&v48];
+    [(NSMutableDictionary *)self->_linkIDsConnecting removeObjectForKey:uUIDString, v47, *&v48];
     if (![(NSMutableDictionary *)self->_linkIDsConnecting count])
     {
       linkIDsConnecting = self->_linkIDsConnecting;
@@ -2534,21 +2534,21 @@ LABEL_3:
 
     [v29 timeIntervalSinceNow];
     v36 = ceil(fabs(v35) * 1000.0);
-    if (v9)
+    if (errorCopy)
     {
       v37 = [[IDSWiProxConnectionFailedMetric alloc] initWithDuration:v36];
       v38 = +[IDSCoreAnalyticsLogger defaultLogger];
       [v38 logMetric:v37];
 
       IMSubmitSimpleAWDMetric();
-      v39 = [NSString stringWithFormat:@"%@.%@", kIDSCoreAnalyticsIDSDomain, kIDSWiProxConnectionFailureMetricName];
+      kIDSWiProxConnectionFailureMetricName = [NSString stringWithFormat:@"%@.%@", kIDSCoreAnalyticsIDSDomain, kIDSWiProxConnectionFailureMetricName];
       IMSubmitSimpleCoreAnalyticsMetric();
-      v40 = [[IDSWiProxDidConnectToPeerMetric alloc] initWithDuration:v36 resultCode:{objc_msgSend(v9, "code")}];
+      v40 = [[IDSWiProxDidConnectToPeerMetric alloc] initWithDuration:v36 resultCode:{objc_msgSend(errorCopy, "code")}];
       v41 = +[IDSCoreAnalyticsLogger defaultLogger];
       [v41 logMetric:v40];
 
       v42 = +[IDSAWDLogging sharedInstance];
-      [v42 IDSWiProxDidConnectToPeer:v36 resultCode:{objc_msgSend(v9, "code")}];
+      [v42 IDSWiProxDidConnectToPeer:v36 resultCode:{objc_msgSend(errorCopy, "code")}];
     }
 
     else
@@ -2585,7 +2585,7 @@ LABEL_70:
       [v43 logMetric:v37];
 
       IMSubmitSimpleAWDMetric();
-      v39 = [NSString stringWithFormat:@"%@.%@", kIDSCoreAnalyticsIDSDomain, kIDSWiProxConnectionSuccessMetricName];
+      kIDSWiProxConnectionFailureMetricName = [NSString stringWithFormat:@"%@.%@", kIDSCoreAnalyticsIDSDomain, kIDSWiProxConnectionSuccessMetricName];
       IMSubmitSimpleCoreAnalyticsMetric();
       v40 = [[IDSWiProxDidConnectToPeerMetric alloc] initWithDuration:v36 resultCode:0];
       v44 = +[IDSCoreAnalyticsLogger defaultLogger];
@@ -2621,16 +2621,16 @@ LABEL_70:
 LABEL_77:
 }
 
-- (void)continuity:(id)a3 didDisconnectFromPeer:(id)a4 error:(id)a5
+- (void)continuity:(id)continuity didDisconnectFromPeer:(id)peer error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NSMutableDictionary *)v9 UUIDString];
-  v12 = [(NSMutableDictionary *)self->_linkIDToLink objectForKey:v11];
+  continuityCopy = continuity;
+  peerCopy = peer;
+  errorCopy = error;
+  uUIDString = [(NSMutableDictionary *)peerCopy UUIDString];
+  v12 = [(NSMutableDictionary *)self->_linkIDToLink objectForKey:uUIDString];
   if (v12)
   {
-    [(NSMutableDictionary *)self->_linkIDToLink removeObjectForKey:v11];
+    [(NSMutableDictionary *)self->_linkIDToLink removeObjectForKey:uUIDString];
     v13 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -2674,7 +2674,7 @@ LABEL_77:
             objc_enumerationMutation(v15);
           }
 
-          [*(*(&v38 + 1) + 8 * i) manager:self cbuuidDidDisconnect:{v11, v35}];
+          [*(*(&v38 + 1) + 8 * i) manager:self cbuuidDidDisconnect:{uUIDString, v35}];
         }
 
         v16 = [(NSHashTable *)v15 countByEnumeratingWithState:&v38 objects:v46 count:16];
@@ -2684,16 +2684,16 @@ LABEL_77:
     }
 
     v19 = +[IDSUTunDeliveryController sharedInstance];
-    [v19 unlockContinuityPeer:v11];
+    [v19 unlockContinuityPeer:uUIDString];
   }
 
-  v20 = [(NSMutableDictionary *)self->_linkIDsDisconnecting objectForKey:v11, v35];
+  v20 = [(NSMutableDictionary *)self->_linkIDsDisconnecting objectForKey:uUIDString, v35];
   v21 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     [v20 timeIntervalSinceNow];
     *buf = 138412546;
-    v43 = v9;
+    v43 = peerCopy;
     v44 = 2048;
     v45 = fabs(v22);
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "   * Disconnect for %@ time was: %f", buf, 0x16u);
@@ -2705,20 +2705,20 @@ LABEL_77:
     {
       [v20 timeIntervalSinceNow];
       v37 = fabs(v23);
-      v36 = v9;
+      v36 = peerCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
         [v20 timeIntervalSinceNow];
         v37 = fabs(v24);
-        v36 = v9;
+        v36 = peerCopy;
         _IDSLogV();
       }
     }
   }
 
-  [(NSMutableDictionary *)self->_linkIDsConnecting removeObjectForKey:v11, v36, *&v37, v38];
-  [(NSMutableDictionary *)self->_linkIDsDisconnecting removeObjectForKey:v11];
+  [(NSMutableDictionary *)self->_linkIDsConnecting removeObjectForKey:uUIDString, v36, *&v37, v38];
+  [(NSMutableDictionary *)self->_linkIDsDisconnecting removeObjectForKey:uUIDString];
   if (![(NSMutableDictionary *)self->_linkIDsDisconnecting count])
   {
     linkIDsDisconnecting = self->_linkIDsDisconnecting;
@@ -2733,14 +2733,14 @@ LABEL_77:
 
   [v20 timeIntervalSinceNow];
   v28 = ceil(fabs(v27) * 1000.0);
-  if (v10)
+  if (errorCopy)
   {
-    v29 = [[IDSWiProxDidDisconnectFromPeerMetric alloc] initWithDuration:v28 resultCode:{objc_msgSend(v10, "code")}];
+    v29 = [[IDSWiProxDidDisconnectFromPeerMetric alloc] initWithDuration:v28 resultCode:{objc_msgSend(errorCopy, "code")}];
     v30 = +[IDSCoreAnalyticsLogger defaultLogger];
     [v30 logMetric:v29];
 
     v31 = +[IDSAWDLogging sharedInstance];
-    [v31 IDSWiProxDidDisconnectFromPeer:v28 resultCode:{objc_msgSend(v10, "code")}];
+    [v31 IDSWiProxDidDisconnectFromPeer:v28 resultCode:{objc_msgSend(errorCopy, "code")}];
   }
 
   else
@@ -2781,21 +2781,21 @@ LABEL_31:
   }
 }
 
-- (void)continuity:(id)a3 didSendData:(id)a4 toPeer:(id)a5 error:(id)a6
+- (void)continuity:(id)continuity didSendData:(id)data toPeer:(id)peer error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  continuityCopy = continuity;
+  dataCopy = data;
+  peerCopy = peer;
+  errorCopy = error;
   v14 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v21 = v12;
+    v21 = peerCopy;
     v22 = 2114;
-    v23 = v13;
+    v23 = errorCopy;
     v24 = 2114;
-    v25 = v11;
+    v25 = dataCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "didSendData to:%{public}@ error:%{public}@ data:%{public}@", buf, 0x20u);
   }
 
@@ -2804,46 +2804,46 @@ LABEL_31:
     _IDSLogV();
   }
 
-  v15 = [[IDSWiProxDidSendDataMetric alloc] initWithResultCode:{objc_msgSend(v13, "code")}];
+  v15 = [[IDSWiProxDidSendDataMetric alloc] initWithResultCode:{objc_msgSend(errorCopy, "code")}];
   v16 = +[IDSCoreAnalyticsLogger defaultLogger];
   [v16 logMetric:v15];
 
   v17 = +[IDSAWDLogging sharedInstance];
-  [v17 IDSWiProxDidSendData:{objc_msgSend(v13, "code")}];
+  [v17 IDSWiProxDidSendData:{objc_msgSend(errorCopy, "code")}];
 
-  v18 = [v12 UUIDString];
-  v19 = [(NSMutableDictionary *)self->_linkIDToLink objectForKey:v18];
+  uUIDString = [peerCopy UUIDString];
+  v19 = [(NSMutableDictionary *)self->_linkIDToLink objectForKey:uUIDString];
   [v19 setHasSpaceAvailable:1];
 }
 
-- (void)continuity:(id)a3 didReceiveData:(id)a4 fromPeer:(id)a5
+- (void)continuity:(id)continuity didReceiveData:(id)data fromPeer:(id)peer
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 UUIDString];
+  continuityCopy = continuity;
+  dataCopy = data;
+  peerCopy = peer;
+  uUIDString = [peerCopy UUIDString];
   v12 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v20 = v11;
+    v20 = uUIDString;
     v21 = 2114;
-    v22 = v9;
+    v22 = dataCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "didReceiveData from:%{public}@ data:%{public}@", buf, 0x16u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v17 = v11;
-    v18 = v9;
+    v17 = uUIDString;
+    v18 = dataCopy;
     _IDSLogV();
   }
 
-  v13 = [(NSMutableDictionary *)self->_linkIDToLink objectForKey:v11, v17, v18];
+  v13 = [(NSMutableDictionary *)self->_linkIDToLink objectForKey:uUIDString, v17, v18];
   v14 = v13;
   if (v13)
   {
-    [v13 didReceiveData:v9];
+    [v13 didReceiveData:dataCopy];
   }
 
   else
@@ -2853,7 +2853,7 @@ LABEL_31:
     {
       linkIDToLink = self->_linkIDToLink;
       *buf = 138412546;
-      v20 = v11;
+      v20 = uUIDString;
       v21 = 2112;
       v22 = linkIDToLink;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "missing peer:%@ links:%@", buf, 0x16u);

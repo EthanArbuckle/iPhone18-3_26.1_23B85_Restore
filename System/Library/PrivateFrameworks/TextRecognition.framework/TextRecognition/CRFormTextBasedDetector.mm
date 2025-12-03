@@ -1,49 +1,49 @@
 @interface CRFormTextBasedDetector
-+ (BOOL)_isTextRegion:(id)a3 aboveField:(id)a4 withTolerance:(double)a5;
-+ (BOOL)_isTextRegion:(id)a3 onLeftOfField:(id)a4 withTolerance:(double)a5;
-+ (id)bestFieldCandidate:(id)a3 secondCandidate:(id)a4;
-- (CRFormTextBasedDetector)initWithConfiguration:(id)a3 error:(id *)a4;
-- (id)detectFormFieldsInImage:(id)a3 document:(id)a4 candidateFields:(id)a5;
++ (BOOL)_isTextRegion:(id)region aboveField:(id)field withTolerance:(double)tolerance;
++ (BOOL)_isTextRegion:(id)region onLeftOfField:(id)field withTolerance:(double)tolerance;
++ (id)bestFieldCandidate:(id)candidate secondCandidate:(id)secondCandidate;
+- (CRFormTextBasedDetector)initWithConfiguration:(id)configuration error:(id *)error;
+- (id)detectFormFieldsInImage:(id)image document:(id)document candidateFields:(id)fields;
 @end
 
 @implementation CRFormTextBasedDetector
 
-- (CRFormTextBasedDetector)initWithConfiguration:(id)a3 error:(id *)a4
+- (CRFormTextBasedDetector)initWithConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
+  configurationCopy = configuration;
   v10.receiver = self;
   v10.super_class = CRFormTextBasedDetector;
   v7 = [(CRFormTextBasedDetector *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_configuration, a3);
+    objc_storeStrong(&v7->_configuration, configuration);
   }
 
   return v8;
 }
 
-+ (BOOL)_isTextRegion:(id)a3 aboveField:(id)a4 withTolerance:(double)a5
++ (BOOL)_isTextRegion:(id)region aboveField:(id)field withTolerance:(double)tolerance
 {
-  v7 = a4;
-  v8 = [a3 boundingQuad];
-  v9 = [v7 boundingQuad];
-  [v8 size];
+  fieldCopy = field;
+  boundingQuad = [region boundingQuad];
+  boundingQuad2 = [fieldCopy boundingQuad];
+  [boundingQuad size];
   v11 = v10;
-  [v9 topRight];
+  [boundingQuad2 topRight];
   v13 = v12;
-  [v8 bottomRight];
+  [boundingQuad bottomRight];
   v15 = v14;
-  [v8 size];
+  [boundingQuad size];
   v17 = v16;
-  [v8 topLeft];
+  [boundingQuad topLeft];
   v19 = v18;
-  [v9 topLeft];
+  [boundingQuad2 topLeft];
   v21 = v20;
-  [v8 topRight];
+  [boundingQuad topRight];
   v23 = v22;
-  [v9 topRight];
-  v25 = v13 - v15 < v11 * a5;
+  [boundingQuad2 topRight];
+  v25 = v13 - v15 < v11 * tolerance;
   if (fmin(vabdd_f64(v19, v21), vabdd_f64(v23, v24)) >= v17 / 5.0)
   {
     v25 = 0;
@@ -54,30 +54,30 @@
   return v26;
 }
 
-+ (BOOL)_isTextRegion:(id)a3 onLeftOfField:(id)a4 withTolerance:(double)a5
++ (BOOL)_isTextRegion:(id)region onLeftOfField:(id)field withTolerance:(double)tolerance
 {
-  v7 = a4;
-  v8 = [a3 boundingQuad];
-  v9 = [v7 boundingQuad];
-  [v8 size];
+  fieldCopy = field;
+  boundingQuad = [region boundingQuad];
+  boundingQuad2 = [fieldCopy boundingQuad];
+  [boundingQuad size];
   v11 = v10;
-  [v9 topLeft];
+  [boundingQuad2 topLeft];
   v13 = v12;
-  [v8 topRight];
+  [boundingQuad topRight];
   v15 = v14;
-  [v8 topRight];
+  [boundingQuad topRight];
   v17 = v16;
-  [v9 topRight];
+  [boundingQuad2 topRight];
   v19 = v18;
-  [v8 bottomRight];
+  [boundingQuad bottomRight];
   v21 = v20;
-  [v9 bottomRight];
+  [boundingQuad2 bottomRight];
   v23 = fmin(vabdd_f64(v17, v19), vabdd_f64(v21, v22)) < v11 * 0.5;
-  [v9 topRight];
+  [boundingQuad2 topRight];
   v25 = v24;
-  [v8 topRight];
+  [boundingQuad topRight];
   v27 = 0;
-  if (v13 - v15 > -(a5 * v11) && v13 - v15 < v11 * a5)
+  if (v13 - v15 > -(tolerance * v11) && v13 - v15 < v11 * tolerance)
   {
     v27 = v25 > v26 && v23;
   }
@@ -85,20 +85,20 @@
   return v27;
 }
 
-+ (id)bestFieldCandidate:(id)a3 secondCandidate:(id)a4
++ (id)bestFieldCandidate:(id)candidate secondCandidate:(id)secondCandidate
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  candidateCopy = candidate;
+  secondCandidateCopy = secondCandidate;
+  v7 = secondCandidateCopy;
+  if (secondCandidateCopy)
   {
-    if (v5)
+    if (candidateCopy)
     {
-      v8 = [v5 boundingQuad];
-      [v8 boundingBox];
+      boundingQuad = [candidateCopy boundingQuad];
+      [boundingQuad boundingBox];
       v10 = v9;
-      v11 = [v7 boundingQuad];
-      [v11 boundingBox];
+      boundingQuad2 = [v7 boundingQuad];
+      [boundingQuad2 boundingBox];
       if (v10 <= v12)
       {
         v13 = v7;
@@ -106,7 +106,7 @@
 
       else
       {
-        v13 = v5;
+        v13 = candidateCopy;
       }
 
       v14 = v13;
@@ -114,12 +114,12 @@
       goto LABEL_10;
     }
 
-    v15 = v6;
+    v15 = secondCandidateCopy;
   }
 
   else
   {
-    v15 = v5;
+    v15 = candidateCopy;
   }
 
   v14 = v15;
@@ -128,15 +128,15 @@ LABEL_10:
   return v14;
 }
 
-- (id)detectFormFieldsInImage:(id)a3 document:(id)a4 candidateFields:(id)a5
+- (id)detectFormFieldsInImage:(id)image document:(id)document candidateFields:(id)fields
 {
   v40 = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v33 = a4;
-  v7 = a5;
-  v34 = [MEMORY[0x1E695DF70] array];
-  v8 = [MEMORY[0x1E695DF70] array];
-  [v33 contentsWithTypes:8];
+  imageCopy = image;
+  documentCopy = document;
+  fieldsCopy = fields;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  [documentCopy contentsWithTypes:8];
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
@@ -155,12 +155,12 @@ LABEL_10:
         }
 
         v13 = *(*(&v35 + 1) + 8 * i);
-        v14 = [v13 text];
-        v15 = [v14 _crStringEndsWithColon];
+        text = [v13 text];
+        _crStringEndsWithColon = [text _crStringEndsWithColon];
 
-        if (v15)
+        if (_crStringEndsWithColon)
         {
-          [v8 addObject:v13];
+          [array2 addObject:v13];
         }
       }
 
@@ -170,26 +170,26 @@ LABEL_10:
     while (v10);
   }
 
-  for (j = 0; j < [v8 count]; ++j)
+  for (j = 0; j < [array2 count]; ++j)
   {
-    v17 = [v8 objectAtIndexedSubscript:j];
-    for (k = 0; k < [v7 count]; ++k)
+    v17 = [array2 objectAtIndexedSubscript:j];
+    for (k = 0; k < [fieldsCopy count]; ++k)
     {
-      v19 = [v7 objectAtIndexedSubscript:k];
+      v19 = [fieldsCopy objectAtIndexedSubscript:k];
       if ([v19 fieldType] == 1)
       {
-        v20 = [v17 boundingQuad];
-        v21 = [v19 boundingQuad];
-        [v20 boundingBoxIOUWithQuad:v21];
+        boundingQuad = [v17 boundingQuad];
+        boundingQuad2 = [v19 boundingQuad];
+        [boundingQuad boundingBoxIOUWithQuad:boundingQuad2];
         v23 = v22;
 
         if (v23 <= 0.2)
         {
-          v24 = [v19 boundingQuad];
-          [v24 size];
+          boundingQuad3 = [v19 boundingQuad];
+          [boundingQuad3 size];
           v26 = v25;
-          v27 = [v17 boundingQuad];
-          [v27 size];
+          boundingQuad4 = [v17 boundingQuad];
+          [boundingQuad4 size];
           v29 = v26 < v28 * 3.0;
 
           if (!v29)
@@ -199,7 +199,7 @@ LABEL_10:
             {
               [v19 setFieldType:1];
               [v19 setFieldSource:3];
-              [v34 addObject:v19];
+              [array addObject:v19];
             }
           }
         }
@@ -207,7 +207,7 @@ LABEL_10:
     }
   }
 
-  return v34;
+  return array;
 }
 
 @end

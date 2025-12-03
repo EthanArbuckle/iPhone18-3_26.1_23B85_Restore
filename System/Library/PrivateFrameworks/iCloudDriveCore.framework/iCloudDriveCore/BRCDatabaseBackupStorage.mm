@@ -1,37 +1,37 @@
 @interface BRCDatabaseBackupStorage
-- (BOOL)addRecord:(id)a3;
-- (BOOL)addRecordIfNotExist:(id)a3;
-- (BOOL)attachDatabase:(id)a3 error:(id *)a4;
-- (BOOL)clearStagedIDs:(id)a3;
-- (BOOL)fixUpBackupDetector:(id)a3;
-- (BOOL)negateIDs:(id)a3;
-- (BOOL)setForeignKeys:(id)a3 enabled:(BOOL)a4;
-- (BOOL)setUpDatabaseWithError:(id *)a3;
+- (BOOL)addRecord:(id)record;
+- (BOOL)addRecordIfNotExist:(id)exist;
+- (BOOL)attachDatabase:(id)database error:(id *)error;
+- (BOOL)clearStagedIDs:(id)ds;
+- (BOOL)fixUpBackupDetector:(id)detector;
+- (BOOL)negateIDs:(id)ds;
+- (BOOL)setForeignKeys:(id)keys enabled:(BOOL)enabled;
+- (BOOL)setUpDatabaseWithError:(id *)error;
 - (BOOL)updateAttachedDatabase;
-- (BOOL)updateIDs:(id)a3;
-- (BRCDatabaseBackupStorage)initWithDatabaseURL:(id)a3;
-- (id)backupManifestEnumerator:(id)a3;
-- (id)docIDForURL:(id)a3;
+- (BOOL)updateIDs:(id)ds;
+- (BRCDatabaseBackupStorage)initWithDatabaseURL:(id)l;
+- (id)backupManifestEnumerator:(id)enumerator;
+- (id)docIDForURL:(id)l;
 - (void)dealloc;
 - (void)flushAndClose;
-- (void)populateNewColumnsInDatabase:(id)a3 forRecord:(id)a4 basePath:(id)a5;
-- (void)populateNewColumnsWithBasePath:(id)a3;
+- (void)populateNewColumnsInDatabase:(id)database forRecord:(id)record basePath:(id)path;
+- (void)populateNewColumnsWithBasePath:(id)path;
 - (void)updateAttachedDatabase;
 @end
 
 @implementation BRCDatabaseBackupStorage
 
-- (BRCDatabaseBackupStorage)initWithDatabaseURL:(id)a3
+- (BRCDatabaseBackupStorage)initWithDatabaseURL:(id)l
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  lCopy = l;
   v22.receiver = self;
   v22.super_class = BRCDatabaseBackupStorage;
   v6 = [(BRCDatabaseBackupStorage *)&v22 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_databaseURL, a3);
+    objc_storeStrong(&v6->_databaseURL, l);
     v8 = [[BRCPQLConnection alloc] initWithLabel:@"backup-db" dbCorruptionHandler:0];
     database = v7->_database;
     v7->_database = v8;
@@ -59,9 +59,9 @@
       v17 = brc_default_log();
       if (os_log_type_enabled(v17, 0x90u))
       {
-        v20 = [v5 path];
+        path = [lCopy path];
         *buf = 138412802;
-        v25 = v20;
+        v25 = path;
         v26 = 2112;
         v27 = v11;
         v28 = 2112;
@@ -82,18 +82,18 @@
 {
   v3 = self->_databaseURL;
   v4 = self->_database;
-  v5 = [(BRCPQLConnection *)v4 serialQueue];
+  serialQueue = [(BRCPQLConnection *)v4 serialQueue];
 
-  if (v5)
+  if (serialQueue)
   {
-    v6 = [(BRCPQLConnection *)v4 serialQueue];
+    serialQueue2 = [(BRCPQLConnection *)v4 serialQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __35__BRCDatabaseBackupStorage_dealloc__block_invoke;
     block[3] = &unk_2784FF478;
     v9 = v4;
     v10 = v3;
-    dispatch_sync(v6, block);
+    dispatch_sync(serialQueue2, block);
   }
 
   v7.receiver = self;
@@ -128,26 +128,26 @@ void __35__BRCDatabaseBackupStorage_dealloc__block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setUpDatabaseWithError:(id *)a3
+- (BOOL)setUpDatabaseWithError:(id *)error
 {
-  LODWORD(v5) = [(BRCPQLConnection *)self->_database openAtURL:self->_databaseURL withFlags:3145734 error:a3];
+  LODWORD(v5) = [(BRCPQLConnection *)self->_database openAtURL:self->_databaseURL withFlags:3145734 error:error];
   if (v5)
   {
-    v6 = [(BRCPQLConnection *)self->_database userVersion];
-    v7 = [v6 integerValue];
+    userVersion = [(BRCPQLConnection *)self->_database userVersion];
+    integerValue = [userVersion integerValue];
 
-    if (v7 > 0 || (v8 = [(BRCPQLConnection *)self->_database execute:@"create table backup_manifest (relative_path blob not null, file_id integer, doc_id integer, gen_count integer, is_directory integer, new_file_id integer, new_doc_id integer, new_gen_count integer)"], [(BRCPQLConnection *)self->_database setUserVersion:1], v8))
+    if (integerValue > 0 || (v8 = [(BRCPQLConnection *)self->_database execute:@"create table backup_manifest (relative_path blob not null, file_id integer, doc_id integer, gen_count integer, is_directory integer, new_file_id integer, new_doc_id integer, new_gen_count integer)"], [(BRCPQLConnection *)self->_database setUserVersion:1], v8))
     {
       [(BRCPQLConnection *)self->_database useBatchingWithDelay:1000 changeCount:0.5];
       LOBYTE(v5) = 1;
     }
 
-    else if (a3)
+    else if (error)
     {
-      v9 = [(BRCPQLConnection *)self->_database lastError];
-      v5 = v9;
+      lastError = [(BRCPQLConnection *)self->_database lastError];
+      v5 = lastError;
       LOBYTE(v5) = 0;
-      *a3 = v9;
+      *error = lastError;
     }
 
     else
@@ -159,17 +159,17 @@ void __35__BRCDatabaseBackupStorage_dealloc__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (BOOL)addRecord:(id)a3
+- (BOOL)addRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   database = self->_database;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __38__BRCDatabaseBackupStorage_addRecord___block_invoke;
   v8[3] = &unk_278500FA8;
-  v9 = v4;
-  v10 = self;
-  v6 = v4;
+  v9 = recordCopy;
+  selfCopy = self;
+  v6 = recordCopy;
   LOBYTE(database) = [(BRCPQLConnection *)database performWithFlags:1 action:v8];
 
   return database;
@@ -209,17 +209,17 @@ uint64_t __38__BRCDatabaseBackupStorage_addRecord___block_invoke(uint64_t a1, vo
   return v9;
 }
 
-- (BOOL)addRecordIfNotExist:(id)a3
+- (BOOL)addRecordIfNotExist:(id)exist
 {
-  v4 = a3;
+  existCopy = exist;
   database = self->_database;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __48__BRCDatabaseBackupStorage_addRecordIfNotExist___block_invoke;
   v8[3] = &unk_278500FA8;
-  v9 = v4;
-  v10 = self;
-  v6 = v4;
+  v9 = existCopy;
+  selfCopy = self;
+  v6 = existCopy;
   LOBYTE(database) = [(BRCPQLConnection *)database performWithFlags:1 action:v8];
 
   return database;
@@ -294,17 +294,17 @@ LABEL_10:
 
 - (void)flushAndClose
 {
-  v3 = [(BRCPQLConnection *)self->_database serialQueue];
+  serialQueue = [(BRCPQLConnection *)self->_database serialQueue];
 
-  if (v3)
+  if (serialQueue)
   {
-    v4 = [(BRCPQLConnection *)self->_database serialQueue];
+    serialQueue2 = [(BRCPQLConnection *)self->_database serialQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __41__BRCDatabaseBackupStorage_flushAndClose__block_invoke;
     block[3] = &unk_2784FF450;
     block[4] = self;
-    dispatch_sync(v4, block);
+    dispatch_sync(serialQueue2, block);
   }
 }
 
@@ -359,9 +359,9 @@ void __41__BRCDatabaseBackupStorage_flushAndClose__block_invoke(uint64_t a1)
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)backupManifestEnumerator:(id)a3
+- (id)backupManifestEnumerator:(id)enumerator
 {
-  v3 = [a3 fetch:@"SELECT * FROM backup_manifest WHERE new_file_id IS NULL"];
+  v3 = [enumerator fetch:@"SELECT * FROM backup_manifest WHERE new_file_id IS NULL"];
   v4 = [v3 enumerateObjects:&__block_literal_global_28];
 
   return v4;
@@ -375,16 +375,16 @@ BRCDatabaseBackupRecord *__53__BRCDatabaseBackupStorage_backupManifestEnumerator
   return v3;
 }
 
-- (void)populateNewColumnsWithBasePath:(id)a3
+- (void)populateNewColumnsWithBasePath:(id)path
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   v5 = brc_bread_crumbs();
   v6 = brc_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v13 = v4;
+    v13 = pathCopy;
     v14 = 2112;
     v15 = v5;
     _os_log_impl(&dword_223E7A000, v6, OS_LOG_TYPE_INFO, "[INFO] Populating new columns with base path: %@%@", buf, 0x16u);
@@ -396,8 +396,8 @@ BRCDatabaseBackupRecord *__53__BRCDatabaseBackupStorage_backupManifestEnumerator
   v10[2] = __59__BRCDatabaseBackupStorage_populateNewColumnsWithBasePath___block_invoke;
   v10[3] = &unk_278500FA8;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = pathCopy;
+  v8 = pathCopy;
   [(BRCPQLConnection *)database performWithFlags:5 action:v10];
 
   v9 = *MEMORY[0x277D85DE8];
@@ -445,14 +445,14 @@ uint64_t __59__BRCDatabaseBackupStorage_populateNewColumnsWithBasePath___block_i
   return 1;
 }
 
-- (void)populateNewColumnsInDatabase:(id)a3 forRecord:(id)a4 basePath:(id)a5
+- (void)populateNewColumnsInDatabase:(id)database forRecord:(id)record basePath:(id)path
 {
   v47 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 relativePath];
-  v12 = [v10 stringByAppendingPathComponent:v11];
+  databaseCopy = database;
+  recordCopy = record;
+  pathCopy = path;
+  relativePath = [recordCopy relativePath];
+  v12 = [pathCopy stringByAppendingPathComponent:relativePath];
 
   v13 = [MEMORY[0x277CBEBC0] fileURLWithPath:v12];
   urlPropertiesToFetch = self->_urlPropertiesToFetch;
@@ -463,10 +463,10 @@ uint64_t __59__BRCDatabaseBackupStorage_populateNewColumnsWithBasePath___block_i
   {
     v35 = v12;
     v17 = [v15 objectForKeyedSubscript:*MEMORY[0x277CBECA8]];
-    v18 = [v9 docID];
+    docID = [recordCopy docID];
     v34 = v16;
-    v19 = v8;
-    if ([v18 unsignedLongLongValue])
+    v19 = databaseCopy;
+    if ([docID unsignedLongLongValue])
     {
       v20 = [(BRCDatabaseBackupStorage *)self docIDForURL:v13];
     }
@@ -482,7 +482,7 @@ uint64_t __59__BRCDatabaseBackupStorage_populateNewColumnsWithBasePath___block_i
     v25 = brc_default_log();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
     {
-      v32 = [v9 relativePath];
+      relativePath2 = [recordCopy relativePath];
       *buf = 138413314;
       v38 = v17;
       v39 = 2112;
@@ -490,24 +490,24 @@ uint64_t __59__BRCDatabaseBackupStorage_populateNewColumnsWithBasePath___block_i
       v41 = 1024;
       *v42 = v23;
       *&v42[4] = 2112;
-      *&v42[6] = v32;
+      *&v42[6] = relativePath2;
       v43 = 2112;
       v44 = v24;
       _os_log_debug_impl(&dword_223E7A000, v25, OS_LOG_TYPE_DEBUG, "[DEBUG] Updating %@ %@ %d into database for %@%@", buf, 0x30u);
     }
 
-    v26 = [v17 unsignedLongLongValue];
-    v27 = [v9 relativePath];
-    LOBYTE(v26) = [v19 execute:{@"UPDATE backup_manifest SET new_file_id = %llu, new_doc_id = %@, new_gen_count = %d WHERE relative_path = %@", v26, v20, v23, v27}];
+    unsignedLongLongValue = [v17 unsignedLongLongValue];
+    relativePath3 = [recordCopy relativePath];
+    LOBYTE(unsignedLongLongValue) = [v19 execute:{@"UPDATE backup_manifest SET new_file_id = %llu, new_doc_id = %@, new_gen_count = %d WHERE relative_path = %@", unsignedLongLongValue, v20, v23, relativePath3}];
 
-    if ((v26 & 1) == 0)
+    if ((unsignedLongLongValue & 1) == 0)
     {
       v28 = brc_bread_crumbs();
       v29 = brc_default_log();
       if (os_log_type_enabled(v29, 0x90u))
       {
-        v31 = [v9 relativePath];
-        v33 = [v19 lastError];
+        relativePath4 = [recordCopy relativePath];
+        lastError = [v19 lastError];
         *buf = 138413570;
         v38 = v17;
         v39 = 2112;
@@ -515,16 +515,16 @@ uint64_t __59__BRCDatabaseBackupStorage_populateNewColumnsWithBasePath___block_i
         v41 = 1024;
         *v42 = v23;
         *&v42[4] = 2112;
-        *&v42[6] = v31;
+        *&v42[6] = relativePath4;
         v43 = 2112;
-        v44 = v33;
+        v44 = lastError;
         v45 = 2112;
         v46 = v28;
         _os_log_error_impl(&dword_223E7A000, v29, 0x90u, "[ERROR] Failed to update %@ %@ %d into database for %@: %@%@", buf, 0x3Au);
       }
     }
 
-    v8 = v19;
+    databaseCopy = v19;
     v16 = v34;
     v12 = v35;
   }
@@ -535,9 +535,9 @@ uint64_t __59__BRCDatabaseBackupStorage_populateNewColumnsWithBasePath___block_i
     v20 = brc_default_log();
     if (os_log_type_enabled(v20, 0x90u))
     {
-      v21 = [v13 path];
+      path = [v13 path];
       *buf = 138412802;
-      v38 = v21;
+      v38 = path;
       v39 = 2112;
       v40 = v16;
       v41 = 2112;
@@ -549,17 +549,17 @@ uint64_t __59__BRCDatabaseBackupStorage_populateNewColumnsWithBasePath___block_i
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)attachDatabase:(id)a3 error:(id *)a4
+- (BOOL)attachDatabase:(id)database error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  databaseCopy = database;
   v8 = brc_bread_crumbs();
   v9 = brc_default_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [v7 path];
+    path = [databaseCopy path];
     *buf = 138412546;
-    *&buf[4] = v10;
+    *&buf[4] = path;
     *&buf[12] = 2112;
     *&buf[14] = v8;
     _os_log_impl(&dword_223E7A000, v9, OS_LOG_TYPE_INFO, "[INFO] Attaching database %@%@", buf, 0x16u);
@@ -572,12 +572,12 @@ uint64_t __59__BRCDatabaseBackupStorage_populateNewColumnsWithBasePath___block_i
     v13 = brc_default_log();
     if (os_log_type_enabled(v13, 0x90u))
     {
-      v21 = [(NSURL *)*p_attachedDatabaseURL path];
-      v22 = [v7 path];
+      path2 = [(NSURL *)*p_attachedDatabaseURL path];
+      path3 = [databaseCopy path];
       *buf = 138412802;
-      *&buf[4] = v21;
+      *&buf[4] = path2;
       *&buf[12] = 2112;
-      *&buf[14] = v22;
+      *&buf[14] = path3;
       *&buf[22] = 2112;
       v38 = v12;
       _os_log_error_impl(&dword_223E7A000, v13, 0x90u, "[ERROR] Already have attached database %@ while trying to attach database %@.%@", buf, 0x20u);
@@ -599,13 +599,13 @@ uint64_t __59__BRCDatabaseBackupStorage_populateNewColumnsWithBasePath___block_i
     v26 = 3221225472;
     v27 = __49__BRCDatabaseBackupStorage_attachDatabase_error___block_invoke;
     v28 = &unk_278502C70;
-    v16 = v7;
+    v16 = databaseCopy;
     v29 = v16;
     v30 = buf;
     v14 = [(BRCPQLConnection *)database performWithFlags:1 action:&v25];
     if (v14)
     {
-      objc_storeStrong(p_attachedDatabaseURL, a3);
+      objc_storeStrong(p_attachedDatabaseURL, database);
     }
 
     else
@@ -614,10 +614,10 @@ uint64_t __59__BRCDatabaseBackupStorage_populateNewColumnsWithBasePath___block_i
       v18 = brc_default_log();
       if (os_log_type_enabled(v18, 0x90u))
       {
-        v23 = [v16 path];
+        path4 = [v16 path];
         v24 = *(*&buf[8] + 40);
         *v31 = 138412802;
-        v32 = v23;
+        v32 = path4;
         v33 = 2112;
         v34 = v24;
         v35 = 2112;
@@ -625,9 +625,9 @@ uint64_t __59__BRCDatabaseBackupStorage_populateNewColumnsWithBasePath___block_i
         _os_log_error_impl(&dword_223E7A000, v18, 0x90u, "[ERROR] Unable to attach db %@: %@%@", v31, 0x20u);
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = *(*&buf[8] + 40);
+        *error = *(*&buf[8] + 40);
       }
     }
 
@@ -655,10 +655,10 @@ uint64_t __49__BRCDatabaseBackupStorage_attachDatabase_error___block_invoke(uint
   return v5;
 }
 
-- (id)docIDForURL:(id)a3
+- (id)docIDForURL:(id)l
 {
-  v3 = a3;
-  v4 = open([v3 fileSystemRepresentation], 0);
+  lCopy = l;
+  v4 = open([lCopy fileSystemRepresentation], 0);
   if (v4 < 0)
   {
     v7 = brc_bread_crumbs();
@@ -702,10 +702,10 @@ LABEL_9:
     v4 = brc_default_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [(NSURL *)self->_attachedDatabaseURL path];
+      path = [(NSURL *)self->_attachedDatabaseURL path];
       database = self->_database;
       *buf = 138412802;
-      v14 = v5;
+      v14 = path;
       v15 = 2112;
       v16 = database;
       v17 = 2112;
@@ -768,14 +768,14 @@ uint64_t __50__BRCDatabaseBackupStorage_updateAttachedDatabase__block_invoke(uin
   return v8;
 }
 
-- (BOOL)setForeignKeys:(id)a3 enabled:(BOOL)a4
+- (BOOL)setForeignKeys:(id)keys enabled:(BOOL)enabled
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (v4)
+  enabledCopy = enabled;
+  keysCopy = keys;
+  v6 = keysCopy;
+  if (enabledCopy)
   {
-    if (([v5 execute:@"PRAGMA foreign_keys = ON"] & 1) == 0)
+    if (([keysCopy execute:@"PRAGMA foreign_keys = ON"] & 1) == 0)
     {
       v7 = brc_bread_crumbs();
       v8 = brc_default_log();
@@ -791,7 +791,7 @@ LABEL_9:
     }
   }
 
-  else if (([v5 execute:@"PRAGMA foreign_keys = OFF"] & 1) == 0)
+  else if (([keysCopy execute:@"PRAGMA foreign_keys = OFF"] & 1) == 0)
   {
     v7 = brc_bread_crumbs();
     v8 = brc_default_log();
@@ -809,10 +809,10 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)negateIDs:(id)a3
+- (BOOL)negateIDs:(id)ds
 {
-  v3 = a3;
-  if (([v3 execute:@"UPDATE clientdb.client_items SET item_file_id = -item_file_id"] & 1) == 0)
+  dsCopy = ds;
+  if (([dsCopy execute:@"UPDATE clientdb.client_items SET item_file_id = -item_file_id"] & 1) == 0)
   {
     v6 = brc_bread_crumbs();
     v8 = brc_default_log();
@@ -831,7 +831,7 @@ LABEL_10:
     [BRCDatabaseBackupStorage negateIDs:];
   }
 
-  if (([v3 execute:@"UPDATE clientdb.client_items SET item_doc_id = -item_doc_id"] & 1) == 0)
+  if (([dsCopy execute:@"UPDATE clientdb.client_items SET item_doc_id = -item_doc_id"] & 1) == 0)
   {
     v6 = brc_bread_crumbs();
     v8 = brc_default_log();
@@ -858,10 +858,10 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)updateIDs:(id)a3
+- (BOOL)updateIDs:(id)ds
 {
-  v3 = a3;
-  if (([v3 execute:{@"CREATE INDEX file_id_gen_count_index ON backup_manifest(file_id, gen_count)"}] & 1) == 0)
+  dsCopy = ds;
+  if (([dsCopy execute:{@"CREATE INDEX file_id_gen_count_index ON backup_manifest(file_id, gen_count)"}] & 1) == 0)
   {
     v12 = brc_bread_crumbs();
     v14 = brc_default_log();
@@ -880,7 +880,7 @@ LABEL_12:
     [BRCDatabaseBackupStorage updateIDs:];
   }
 
-  if (([v3 execute:@"CREATE INDEX doc_id_index ON backup_manifest(doc_id)"] & 1) == 0)
+  if (([dsCopy execute:@"CREATE INDEX doc_id_index ON backup_manifest(doc_id)"] & 1) == 0)
   {
     v12 = brc_bread_crumbs();
     v14 = brc_default_log();
@@ -899,7 +899,7 @@ LABEL_12:
     [BRCDatabaseBackupStorage updateIDs:];
   }
 
-  if (([v3 execute:@"UPDATE clientdb.client_items  SET item_generation = (SELECT new_gen_count FROM backup_manifest WHERE file_id = -clientdb.client_items.item_file_id AND gen_count = clientdb.client_items.item_generation)"] & 1) == 0)
+  if (([dsCopy execute:@"UPDATE clientdb.client_items  SET item_generation = (SELECT new_gen_count FROM backup_manifest WHERE file_id = -clientdb.client_items.item_file_id AND gen_count = clientdb.client_items.item_generation)"] & 1) == 0)
   {
     v12 = brc_bread_crumbs();
     v14 = brc_default_log();
@@ -918,7 +918,7 @@ LABEL_12:
     [BRCDatabaseBackupStorage updateIDs:];
   }
 
-  if (([v3 execute:@"UPDATE OR IGNORE clientdb.client_items  SET item_file_id = (SELECT new_file_id FROM backup_manifest WHERE file_id = -clientdb.client_items.item_file_id)"] & 1) == 0)
+  if (([dsCopy execute:@"UPDATE OR IGNORE clientdb.client_items  SET item_file_id = (SELECT new_file_id FROM backup_manifest WHERE file_id = -clientdb.client_items.item_file_id)"] & 1) == 0)
   {
     v12 = brc_bread_crumbs();
     v14 = brc_default_log();
@@ -937,7 +937,7 @@ LABEL_12:
     [BRCDatabaseBackupStorage updateIDs:];
   }
 
-  if (([v3 execute:@"UPDATE OR IGNORE clientdb.client_items  SET item_doc_id = (SELECT new_doc_id FROM backup_manifest WHERE doc_id = -clientdb.client_items.item_doc_id)"] & 1) == 0)
+  if (([dsCopy execute:@"UPDATE OR IGNORE clientdb.client_items  SET item_doc_id = (SELECT new_doc_id FROM backup_manifest WHERE doc_id = -clientdb.client_items.item_doc_id)"] & 1) == 0)
   {
     v12 = brc_bread_crumbs();
     v14 = brc_default_log();
@@ -964,10 +964,10 @@ LABEL_27:
   return v13;
 }
 
-- (BOOL)clearStagedIDs:(id)a3
+- (BOOL)clearStagedIDs:(id)ds
 {
-  v3 = a3;
-  if (([v3 execute:@"UPDATE OR IGNORE clientdb.client_items SET item_staged_generation = NULL WHERE item_staged_generation IS NOT NULL"] & 1) == 0)
+  dsCopy = ds;
+  if (([dsCopy execute:@"UPDATE OR IGNORE clientdb.client_items SET item_staged_generation = NULL WHERE item_staged_generation IS NOT NULL"] & 1) == 0)
   {
     v6 = brc_bread_crumbs();
     v8 = brc_default_log();
@@ -986,7 +986,7 @@ LABEL_27:
     [BRCDatabaseBackupStorage clearStagedIDs:];
   }
 
-  if (([v3 execute:@"UPDATE OR IGNORE clientdb.client_items SET item_staged_file_id = NULL WHERE item_staged_file_id IS NOT NULL"] & 1) == 0)
+  if (([dsCopy execute:@"UPDATE OR IGNORE clientdb.client_items SET item_staged_file_id = NULL WHERE item_staged_file_id IS NOT NULL"] & 1) == 0)
   {
     v6 = brc_bread_crumbs();
     v8 = brc_default_log();
@@ -1014,16 +1014,16 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)fixUpBackupDetector:(id)a3
+- (BOOL)fixUpBackupDetector:(id)detector
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(BRCDatabaseBackupStorage *)self attachedDatabaseURL];
-  v6 = [v5 URLByDeletingLastPathComponent];
+  detectorCopy = detector;
+  attachedDatabaseURL = [(BRCDatabaseBackupStorage *)self attachedDatabaseURL];
+  uRLByDeletingLastPathComponent = [attachedDatabaseURL URLByDeletingLastPathComponent];
 
-  v7 = [v6 URLByAppendingPathComponent:@"control-odd" isDirectory:0];
-  v8 = [v6 URLByAppendingPathComponent:@"control-even" isDirectory:0];
-  v9 = [v4 fetchObjectOfClass:objc_opt_class() sql:@"SELECT counter FROM clientdb.backup_detector"];
+  v7 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:@"control-odd" isDirectory:0];
+  v8 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:@"control-even" isDirectory:0];
+  v9 = [detectorCopy fetchObjectOfClass:objc_opt_class() sql:@"SELECT counter FROM clientdb.backup_detector"];
   v31 = 0;
   v10 = *MEMORY[0x277CBECA8];
   v30 = 0;
@@ -1051,7 +1051,7 @@ LABEL_12:
         v17 = v12;
       }
 
-      v18 = [v17 unsignedLongLongValue];
+      unsignedLongLongValue = [v17 unsignedLongLongValue];
       if ([v9 unsignedLongLongValue])
       {
         v19 = v12;
@@ -1062,7 +1062,7 @@ LABEL_12:
         v19 = v15;
       }
 
-      if ([v4 execute:{@"UPDATE clientdb.backup_detector SET old = %llu, new = %llu", v18, -[NSObject unsignedLongLongValue](v19, "unsignedLongLongValue")}])
+      if ([detectorCopy execute:{@"UPDATE clientdb.backup_detector SET old = %llu, new = %llu", unsignedLongLongValue, -[NSObject unsignedLongLongValue](v19, "unsignedLongLongValue")}])
       {
         v20 = brc_bread_crumbs();
         v21 = 1;
@@ -1089,9 +1089,9 @@ LABEL_12:
       v22 = brc_default_log();
       if (os_log_type_enabled(v22, 0x90u))
       {
-        v23 = [v27 path];
+        path = [v27 path];
         *buf = 138412802;
-        v33 = v23;
+        v33 = path;
         v34 = 2112;
         v35 = v16;
         v36 = 2112;
@@ -1110,9 +1110,9 @@ LABEL_20:
   v20 = brc_default_log();
   if (os_log_type_enabled(v20, 0x90u))
   {
-    v26 = [v7 path];
+    path2 = [v7 path];
     *buf = 138412802;
-    v33 = v26;
+    v33 = path2;
     v34 = 2112;
     v35 = v13;
     v36 = 2112;

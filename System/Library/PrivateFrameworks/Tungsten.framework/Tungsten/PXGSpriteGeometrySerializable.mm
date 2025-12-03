@@ -1,13 +1,13 @@
 @interface PXGSpriteGeometrySerializable
 - ($C4327F77E24267CF92932F349E1559A2)spriteGeometry;
-- (PXGSpriteGeometrySerializable)initWithSerializableObject:(id)a3;
+- (PXGSpriteGeometrySerializable)initWithSerializableObject:(id)object;
 - (id)createSerializableObject;
-- (void)setSpriteGeometry:(id)a3;
+- (void)setSpriteGeometry:(id)geometry;
 @end
 
 @implementation PXGSpriteGeometrySerializable
 
-- (void)setSpriteGeometry:(id)a3
+- (void)setSpriteGeometry:(id)geometry
 {
   v4 = *v3;
   *&self->_spriteGeometry.center.z = v3[1];
@@ -33,15 +33,15 @@
   return v2;
 }
 
-- (PXGSpriteGeometrySerializable)initWithSerializableObject:(id)a3
+- (PXGSpriteGeometrySerializable)initWithSerializableObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = PXGSpriteGeometrySerializable;
   v5 = [(PXGSpriteGeometrySerializable *)&v8 init];
   if (v5)
   {
-    PXGDeserializeSpriteGeometry(v4, v7);
+    PXGDeserializeSpriteGeometry(objectCopy, v7);
     [(PXGSpriteGeometrySerializable *)v5 setSpriteGeometry:v7];
   }
 

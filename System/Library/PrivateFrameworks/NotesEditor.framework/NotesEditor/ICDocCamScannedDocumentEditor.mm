@@ -1,42 +1,42 @@
 @interface ICDocCamScannedDocumentEditor
-- (BOOL)moveObjectWithIdentifier:(id)a3 toIndex:(unint64_t)a4;
-- (BOOL)setOrientation:(int64_t)a3 forAttachment:(id)a4;
-- (BOOL)updateTitle:(id)a3 forSubAttachment:(id)a4;
+- (BOOL)moveObjectWithIdentifier:(id)identifier toIndex:(unint64_t)index;
+- (BOOL)setOrientation:(int64_t)orientation forAttachment:(id)attachment;
+- (BOOL)updateTitle:(id)title forSubAttachment:(id)attachment;
 - (ICAttachmentGalleryModel)galleryModel;
-- (ICDocCamScannedDocumentEditor)initWithGalleryAttachment:(id)a3;
-- (id)subAttachmentWithIdentifier:(id)a3;
-- (unint64_t)indexForAttachmentWithIdentifier:(id)a3;
-- (void)applyFilter:(signed __int16)a3 forAttachmentAtIndex:(unint64_t)a4;
-- (void)applyFilter:(signed __int16)a3 forAttachmentWithIdentifier:(id)a4;
-- (void)deletePagesAtIndexes:(id)a3;
-- (void)movePageFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4;
-- (void)saveAndUpdatePreview:(BOOL)a3;
-- (void)setMarkupData:(id)a3 forAttachmentWithIdentifier:(id)a4;
-- (void)setOrientation:(int64_t)a3 forAttachmentAtIndex:(unint64_t)a4;
-- (void)setQuad:(id)a3 forAttachment:(id)a4;
-- (void)setQuad:(id)a3 forAttachmentWithIdentifier:(id)a4;
-- (void)undeleteSubAttachment:(id)a3;
-- (void)undoablyDeleteSubAttachments:(id)a3 actionName:(id)a4;
-- (void)undoablyMoveAttachmentWithIdentifier:(id)a3 toIndex:(unint64_t)a4;
-- (void)undoablySetOrientation:(int64_t)a3 forAttachmentIdentifier:(id)a4;
-- (void)undoablySetQuad:(id)a3 forAttachment:(id)a4;
-- (void)undoablyUndeleteSubAttachments:(id)a3 actionName:(id)a4;
-- (void)undoablyUpdateTitle:(id)a3 forAttachmentWithIdentifier:(id)a4 isUserDefined:(BOOL)a5;
-- (void)updateDocumentTitle:(id)a3 isUserDefined:(BOOL)a4;
+- (ICDocCamScannedDocumentEditor)initWithGalleryAttachment:(id)attachment;
+- (id)subAttachmentWithIdentifier:(id)identifier;
+- (unint64_t)indexForAttachmentWithIdentifier:(id)identifier;
+- (void)applyFilter:(signed __int16)filter forAttachmentAtIndex:(unint64_t)index;
+- (void)applyFilter:(signed __int16)filter forAttachmentWithIdentifier:(id)identifier;
+- (void)deletePagesAtIndexes:(id)indexes;
+- (void)movePageFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
+- (void)saveAndUpdatePreview:(BOOL)preview;
+- (void)setMarkupData:(id)data forAttachmentWithIdentifier:(id)identifier;
+- (void)setOrientation:(int64_t)orientation forAttachmentAtIndex:(unint64_t)index;
+- (void)setQuad:(id)quad forAttachment:(id)attachment;
+- (void)setQuad:(id)quad forAttachmentWithIdentifier:(id)identifier;
+- (void)undeleteSubAttachment:(id)attachment;
+- (void)undoablyDeleteSubAttachments:(id)attachments actionName:(id)name;
+- (void)undoablyMoveAttachmentWithIdentifier:(id)identifier toIndex:(unint64_t)index;
+- (void)undoablySetOrientation:(int64_t)orientation forAttachmentIdentifier:(id)identifier;
+- (void)undoablySetQuad:(id)quad forAttachment:(id)attachment;
+- (void)undoablyUndeleteSubAttachments:(id)attachments actionName:(id)name;
+- (void)undoablyUpdateTitle:(id)title forAttachmentWithIdentifier:(id)identifier isUserDefined:(BOOL)defined;
+- (void)updateDocumentTitle:(id)title isUserDefined:(BOOL)defined;
 @end
 
 @implementation ICDocCamScannedDocumentEditor
 
-- (ICDocCamScannedDocumentEditor)initWithGalleryAttachment:(id)a3
+- (ICDocCamScannedDocumentEditor)initWithGalleryAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   v9.receiver = self;
   v9.super_class = ICDocCamScannedDocumentEditor;
   v5 = [(ICDocCamScannedDocumentEditor *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(ICDocCamScannedDocumentEditor *)v5 setGalleryAttachment:v4];
+    [(ICDocCamScannedDocumentEditor *)v5 setGalleryAttachment:attachmentCopy];
     v7 = objc_alloc_init(MEMORY[0x277CCAD90]);
     [(ICDocCamScannedDocumentEditor *)v6 setUndoManager:v7];
   }
@@ -47,116 +47,116 @@
 - (ICAttachmentGalleryModel)galleryModel
 {
   objc_opt_class();
-  v3 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-  v4 = [v3 attachmentModel];
+  galleryAttachment = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+  attachmentModel = [galleryAttachment attachmentModel];
   v5 = ICCheckedDynamicCast();
 
   return v5;
 }
 
-- (void)undeleteSubAttachment:(id)a3
+- (void)undeleteSubAttachment:(id)attachment
 {
-  v3 = a3;
-  if ([v3 markedForDeletion])
+  attachmentCopy = attachment;
+  if ([attachmentCopy markedForDeletion])
   {
-    [MEMORY[0x277D35E00] undeleteAttachment:v3];
-    [v3 ic_postNotificationOnMainThreadWithName:*MEMORY[0x277D35BB8]];
+    [MEMORY[0x277D35E00] undeleteAttachment:attachmentCopy];
+    [attachmentCopy ic_postNotificationOnMainThreadWithName:*MEMORY[0x277D35BB8]];
   }
 }
 
-- (void)saveAndUpdatePreview:(BOOL)a3
+- (void)saveAndUpdatePreview:(BOOL)preview
 {
-  v3 = a3;
-  v5 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-  v11 = v5;
-  if (v3)
+  previewCopy = preview;
+  galleryAttachment = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+  mEMORY[0x277D366B0] = galleryAttachment;
+  if (previewCopy)
   {
-    [v5 setPreviewUpdateDate:0];
+    [galleryAttachment setPreviewUpdateDate:0];
 
-    v6 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-    [v6 setCachedImage:0];
+    galleryAttachment2 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+    [galleryAttachment2 setCachedImage:0];
 
-    v7 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-    [v7 invalidateAttachmentPreviewImages];
+    galleryAttachment3 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+    [galleryAttachment3 invalidateAttachmentPreviewImages];
 
-    v8 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-    v9 = [v8 managedObjectContext];
-    [v9 ic_save];
+    galleryAttachment4 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+    managedObjectContext = [galleryAttachment4 managedObjectContext];
+    [managedObjectContext ic_save];
 
-    v11 = [MEMORY[0x277D366B0] sharedGenerator];
-    v10 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-    [v11 generatePreviewIfNeededForAttachment:v10];
+    mEMORY[0x277D366B0] = [MEMORY[0x277D366B0] sharedGenerator];
+    galleryAttachment5 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+    [mEMORY[0x277D366B0] generatePreviewIfNeededForAttachment:galleryAttachment5];
   }
 
   else
   {
-    v10 = [v5 managedObjectContext];
-    [v10 ic_save];
+    galleryAttachment5 = [galleryAttachment managedObjectContext];
+    [galleryAttachment5 ic_save];
   }
 }
 
-- (void)updateDocumentTitle:(id)a3 isUserDefined:(BOOL)a4
+- (void)updateDocumentTitle:(id)title isUserDefined:(BOOL)defined
 {
-  v4 = a4;
-  v6 = a3;
-  v8 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-  v7 = [v8 identifier];
-  [(ICDocCamScannedDocumentEditor *)self undoablyUpdateTitle:v6 forAttachmentWithIdentifier:v7 isUserDefined:v4];
+  definedCopy = defined;
+  titleCopy = title;
+  galleryAttachment = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+  identifier = [galleryAttachment identifier];
+  [(ICDocCamScannedDocumentEditor *)self undoablyUpdateTitle:titleCopy forAttachmentWithIdentifier:identifier isUserDefined:definedCopy];
 }
 
-- (BOOL)updateTitle:(id)a3 forSubAttachment:(id)a4
+- (BOOL)updateTitle:(id)title forSubAttachment:(id)attachment
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 identifier];
-  v9 = [(ICDocCamScannedDocumentEditor *)self indexForAttachmentWithIdentifier:v8];
+  titleCopy = title;
+  attachmentCopy = attachment;
+  identifier = [attachmentCopy identifier];
+  v9 = [(ICDocCamScannedDocumentEditor *)self indexForAttachmentWithIdentifier:identifier];
 
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = [v7 identifier];
-    [(ICDocCamScannedDocumentEditor *)self undoablyUpdateTitle:v6 forAttachmentWithIdentifier:v10 isUserDefined:0];
+    identifier2 = [attachmentCopy identifier];
+    [(ICDocCamScannedDocumentEditor *)self undoablyUpdateTitle:titleCopy forAttachmentWithIdentifier:identifier2 isUserDefined:0];
   }
 
   return v9 != 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)undoablyUpdateTitle:(id)a3 forAttachmentWithIdentifier:(id)a4 isUserDefined:(BOOL)a5
+- (void)undoablyUpdateTitle:(id)title forAttachmentWithIdentifier:(id)identifier isUserDefined:(BOOL)defined
 {
-  v5 = a5;
-  v33 = a3;
+  definedCopy = defined;
+  titleCopy = title;
   v8 = MEMORY[0x277D35E00];
-  v9 = a4;
-  v10 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-  v11 = [v10 managedObjectContext];
-  v12 = [v8 attachmentWithIdentifier:v9 includeDeleted:0 context:v11];
+  identifierCopy = identifier;
+  galleryAttachment = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+  managedObjectContext = [galleryAttachment managedObjectContext];
+  v12 = [v8 attachmentWithIdentifier:identifierCopy includeDeleted:0 context:managedObjectContext];
 
-  v13 = [v12 identifier];
-  v14 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-  v15 = [v14 identifier];
-  v16 = [v13 isEqualToString:v15];
+  identifier = [v12 identifier];
+  galleryAttachment2 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+  identifier2 = [galleryAttachment2 identifier];
+  v16 = [identifier isEqualToString:identifier2];
 
-  v17 = [v12 title];
-  [v12 setTitle:v33];
-  if (v5)
+  title = [v12 title];
+  [v12 setTitle:titleCopy];
+  if (definedCopy)
   {
-    [v12 setUserTitle:v33];
+    [v12 setUserTitle:titleCopy];
   }
 
-  v18 = [v12 note];
-  v19 = [v18 regenerateTitle:1 snippet:0];
+  note = [v12 note];
+  v19 = [note regenerateTitle:1 snippet:0];
 
   if (v19)
   {
-    v20 = [v12 note];
-    [v20 markShareDirtyIfNeededWithReason:@"Updated doc scan user title"];
+    note2 = [v12 note];
+    [note2 markShareDirtyIfNeededWithReason:@"Updated doc scan user title"];
 
-    v21 = [v12 note];
-    [v21 updateChangeCountWithReason:@"Updated doc scan user title"];
+    note3 = [v12 note];
+    [note3 updateChangeCountWithReason:@"Updated doc scan user title"];
   }
 
   [v12 updateChangeCountWithReason:@"Updated doc scan user title"];
-  v22 = [v12 note];
-  [v22 updateModificationDateAndChangeCount];
+  note4 = [v12 note];
+  [note4 updateModificationDateAndChangeCount];
 
   if (v16)
   {
@@ -165,100 +165,100 @@
 
   else
   {
-    v24 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-    [v24 updateChangeCountWithReason:@"Updated doc scan user title"];
+    galleryAttachment3 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+    [galleryAttachment3 updateChangeCountWithReason:@"Updated doc scan user title"];
 
-    v25 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-    [v25 attachmentDidChange];
+    galleryAttachment4 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+    [galleryAttachment4 attachmentDidChange];
 
     v23 = @"Change Image Name";
   }
 
-  v26 = [v12 managedObjectContext];
-  [v26 ic_save];
+  managedObjectContext2 = [v12 managedObjectContext];
+  [managedObjectContext2 ic_save];
 
-  v27 = [(ICDocCamScannedDocumentEditor *)self undoManager];
-  v28 = [v27 prepareWithInvocationTarget:self];
-  v29 = [v12 identifier];
-  [v28 undoablyUpdateTitle:v17 forAttachmentWithIdentifier:v29 isUserDefined:v5];
+  undoManager = [(ICDocCamScannedDocumentEditor *)self undoManager];
+  v28 = [undoManager prepareWithInvocationTarget:self];
+  identifier3 = [v12 identifier];
+  [v28 undoablyUpdateTitle:title forAttachmentWithIdentifier:identifier3 isUserDefined:definedCopy];
 
-  v30 = [(ICDocCamScannedDocumentEditor *)self undoManager];
-  v31 = [MEMORY[0x277CCA8D8] mainBundle];
-  v32 = [v31 localizedStringForKey:v23 value:&stru_282757698 table:0];
-  [v30 setActionName:v32];
+  undoManager2 = [(ICDocCamScannedDocumentEditor *)self undoManager];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v32 = [mainBundle localizedStringForKey:v23 value:&stru_282757698 table:0];
+  [undoManager2 setActionName:v32];
 }
 
-- (BOOL)moveObjectWithIdentifier:(id)a3 toIndex:(unint64_t)a4
+- (BOOL)moveObjectWithIdentifier:(id)identifier toIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(ICDocCamScannedDocumentEditor *)self galleryModel];
-  v8 = [v7 attachmentIdentifiersOrderedSet];
-  v9 = [v8 indexOfObject:v6];
+  identifierCopy = identifier;
+  galleryModel = [(ICDocCamScannedDocumentEditor *)self galleryModel];
+  attachmentIdentifiersOrderedSet = [galleryModel attachmentIdentifiersOrderedSet];
+  v9 = [attachmentIdentifiersOrderedSet indexOfObject:identifierCopy];
 
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(ICDocCamScannedDocumentEditor *)self movePageFromIndex:v9 toIndex:a4];
+    [(ICDocCamScannedDocumentEditor *)self movePageFromIndex:v9 toIndex:index];
   }
 
   return v9 != 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)movePageFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4
+- (void)movePageFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
-  v7 = [(ICDocCamScannedDocumentEditor *)self galleryModel];
-  v8 = [v7 attachmentIdentifiersOrderedSet];
-  v10 = [v8 objectAtIndex:a3];
+  galleryModel = [(ICDocCamScannedDocumentEditor *)self galleryModel];
+  attachmentIdentifiersOrderedSet = [galleryModel attachmentIdentifiersOrderedSet];
+  v10 = [attachmentIdentifiersOrderedSet objectAtIndex:index];
 
-  [(ICDocCamScannedDocumentEditor *)self undoablyMoveAttachmentWithIdentifier:v10 toIndex:a4];
-  v9 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-  [v9 regenerateTitle];
+  [(ICDocCamScannedDocumentEditor *)self undoablyMoveAttachmentWithIdentifier:v10 toIndex:toIndex];
+  galleryAttachment = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+  [galleryAttachment regenerateTitle];
 }
 
-- (void)undoablyMoveAttachmentWithIdentifier:(id)a3 toIndex:(unint64_t)a4
+- (void)undoablyMoveAttachmentWithIdentifier:(id)identifier toIndex:(unint64_t)index
 {
-  v33 = a3;
-  v6 = [(ICDocCamScannedDocumentEditor *)self galleryModel];
-  v7 = [v6 subAttachmentCount] - 1;
+  identifierCopy = identifier;
+  galleryModel = [(ICDocCamScannedDocumentEditor *)self galleryModel];
+  v7 = [galleryModel subAttachmentCount] - 1;
 
-  if (v7 >= a4)
+  if (v7 >= index)
   {
-    v8 = a4;
+    indexCopy = index;
   }
 
   else
   {
-    v8 = v7;
+    indexCopy = v7;
   }
 
-  v9 = [(ICDocCamScannedDocumentEditor *)self galleryModel];
-  v10 = [v9 attachmentIdentifiersOrderedSet];
-  v11 = [v10 indexOfObject:v33];
+  galleryModel2 = [(ICDocCamScannedDocumentEditor *)self galleryModel];
+  attachmentIdentifiersOrderedSet = [galleryModel2 attachmentIdentifiersOrderedSet];
+  v11 = [attachmentIdentifiersOrderedSet indexOfObject:identifierCopy];
 
-  if (v11 != 0x7FFFFFFFFFFFFFFFLL && v11 != v8)
+  if (v11 != 0x7FFFFFFFFFFFFFFFLL && v11 != indexCopy)
   {
-    v12 = [(ICDocCamScannedDocumentEditor *)self galleryModel];
-    v13 = [v12 attachmentIdentifiersOrderedSet];
-    [v13 moveObject:v33 toIndex:v8];
+    galleryModel3 = [(ICDocCamScannedDocumentEditor *)self galleryModel];
+    attachmentIdentifiersOrderedSet2 = [galleryModel3 attachmentIdentifiersOrderedSet];
+    [attachmentIdentifiersOrderedSet2 moveObject:identifierCopy toIndex:indexCopy];
 
-    v14 = [(ICDocCamScannedDocumentEditor *)self galleryModel];
-    [v14 setMergeableDataDirty:1];
+    galleryModel4 = [(ICDocCamScannedDocumentEditor *)self galleryModel];
+    [galleryModel4 setMergeableDataDirty:1];
 
-    v15 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-    [v15 saveMergeableDataIfNeeded];
+    galleryAttachment = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+    [galleryAttachment saveMergeableDataIfNeeded];
 
-    v16 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-    [v16 updateChangeCountWithReason:@"Moved gallery page"];
+    galleryAttachment2 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+    [galleryAttachment2 updateChangeCountWithReason:@"Moved gallery page"];
 
-    v17 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-    [v17 attachmentDidChange];
+    galleryAttachment3 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+    [galleryAttachment3 attachmentDidChange];
 
-    v18 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-    v19 = [v18 managedObjectContext];
-    [v19 ic_saveWithLogDescription:@"Moved gallery page"];
+    galleryAttachment4 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+    managedObjectContext = [galleryAttachment4 managedObjectContext];
+    [managedObjectContext ic_saveWithLogDescription:@"Moved gallery page"];
 
-    v20 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-    v21 = [v20 attachmentModel];
-    v22 = [v21 shouldGeneratePreviewAfterChangeInSubAttachmentWithIdentifier:v33];
+    galleryAttachment5 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+    attachmentModel = [galleryAttachment5 attachmentModel];
+    v22 = [attachmentModel shouldGeneratePreviewAfterChangeInSubAttachmentWithIdentifier:identifierCopy];
     if (v11)
     {
       v23 = v22;
@@ -269,7 +269,7 @@
       v23 = 1;
     }
 
-    if (v8)
+    if (indexCopy)
     {
       v24 = v23;
     }
@@ -280,40 +280,40 @@
     }
 
     [(ICDocCamScannedDocumentEditor *)self saveAndUpdatePreview:v24];
-    v25 = [(ICDocCamScannedDocumentEditor *)self undoManager];
-    v26 = [v25 prepareWithInvocationTarget:self];
-    [v26 undoablyMoveAttachmentWithIdentifier:v33 toIndex:v11];
+    undoManager = [(ICDocCamScannedDocumentEditor *)self undoManager];
+    v26 = [undoManager prepareWithInvocationTarget:self];
+    [v26 undoablyMoveAttachmentWithIdentifier:identifierCopy toIndex:v11];
 
-    v27 = [(ICDocCamScannedDocumentEditor *)self undoManager];
-    v28 = [MEMORY[0x277CCA8D8] mainBundle];
-    v29 = [v28 localizedStringForKey:@"Move Scan" value:&stru_282757698 table:0];
-    [v27 setActionName:v29];
+    undoManager2 = [(ICDocCamScannedDocumentEditor *)self undoManager];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v29 = [mainBundle localizedStringForKey:@"Move Scan" value:&stru_282757698 table:0];
+    [undoManager2 setActionName:v29];
 
-    v30 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-    v31 = [v30 objectID];
+    galleryAttachment6 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+    objectID = [galleryAttachment6 objectID];
 
-    if (v31)
+    if (objectID)
     {
-      v32 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v32 postNotificationName:*MEMORY[0x277D35BB8] object:v31];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:*MEMORY[0x277D35BB8] object:objectID];
     }
   }
 }
 
-- (void)undoablyUndeleteSubAttachments:(id)a3 actionName:(id)a4
+- (void)undoablyUndeleteSubAttachments:(id)attachments actionName:(id)name
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v35 = a4;
-  v38 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
-  v7 = [v6 allKeys];
+  attachmentsCopy = attachments;
+  nameCopy = name;
+  v38 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(attachmentsCopy, "count")}];
+  allKeys = [attachmentsCopy allKeys];
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
   v43[2] = __75__ICDocCamScannedDocumentEditor_undoablyUndeleteSubAttachments_actionName___block_invoke;
   v43[3] = &unk_2781ABBB8;
-  v37 = v6;
+  v37 = attachmentsCopy;
   v44 = v37;
-  v8 = [v7 sortedArrayUsingComparator:v43];
+  v8 = [allKeys sortedArrayUsingComparator:v43];
 
   v41 = 0u;
   v42 = 0u;
@@ -337,31 +337,31 @@
 
         v14 = *(*(&v39 + 1) + 8 * i);
         v15 = MEMORY[0x277D35E00];
-        v16 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-        v17 = [v16 managedObjectContext];
-        v18 = [v15 attachmentWithIdentifier:v14 includeDeleted:1 context:v17];
+        galleryAttachment = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+        managedObjectContext = [galleryAttachment managedObjectContext];
+        v18 = [v15 attachmentWithIdentifier:v14 includeDeleted:1 context:managedObjectContext];
 
         if (v18)
         {
           [(ICDocCamScannedDocumentEditor *)self undeleteSubAttachment:v18];
           v19 = [v37 objectForKeyedSubscript:v14];
-          v20 = [v19 unsignedIntegerValue];
+          unsignedIntegerValue = [v19 unsignedIntegerValue];
 
-          v21 = [(ICDocCamScannedDocumentEditor *)self galleryModel];
-          v22 = [v21 subAttachmentCount];
+          galleryModel = [(ICDocCamScannedDocumentEditor *)self galleryModel];
+          subAttachmentCount = [galleryModel subAttachmentCount];
 
-          if (v20 >= v22)
+          if (unsignedIntegerValue >= subAttachmentCount)
           {
-            v23 = v22;
+            v23 = subAttachmentCount;
           }
 
           else
           {
-            v23 = v20;
+            v23 = unsignedIntegerValue;
           }
 
-          v24 = [(ICDocCamScannedDocumentEditor *)self galleryModel];
-          [v24 insertSubAttachment:v18 atIndex:v23];
+          galleryModel2 = [(ICDocCamScannedDocumentEditor *)self galleryModel];
+          [galleryModel2 insertSubAttachment:v18 atIndex:v23];
 
           if (v11)
           {
@@ -370,8 +370,8 @@
 
           else
           {
-            v25 = [(ICDocCamScannedDocumentEditor *)self galleryModel];
-            v26 = [v25 shouldGeneratePreviewAfterChangeInSubAttachmentWithIdentifier:v14];
+            galleryModel3 = [(ICDocCamScannedDocumentEditor *)self galleryModel];
+            v26 = [galleryModel3 shouldGeneratePreviewAfterChangeInSubAttachmentWithIdentifier:v14];
             if (v23)
             {
               v11 = v26;
@@ -398,32 +398,32 @@
     v11 = 0;
   }
 
-  v27 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-  [v27 saveMergeableDataIfNeeded];
+  galleryAttachment2 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+  [galleryAttachment2 saveMergeableDataIfNeeded];
 
-  v28 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-  [v28 updateChangeCountWithReason:@"Undeleted gallery page"];
+  galleryAttachment3 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+  [galleryAttachment3 updateChangeCountWithReason:@"Undeleted gallery page"];
 
-  v29 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-  v30 = [v29 managedObjectContext];
-  [v30 ic_saveWithLogDescription:@"Undeleted gallery page"];
+  galleryAttachment4 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+  managedObjectContext2 = [galleryAttachment4 managedObjectContext];
+  [managedObjectContext2 ic_saveWithLogDescription:@"Undeleted gallery page"];
 
   [(ICDocCamScannedDocumentEditor *)self saveAndUpdatePreview:v11 & 1];
   if ([v38 count])
   {
-    v31 = [(ICDocCamScannedDocumentEditor *)self undoManager];
-    v32 = [v31 prepareWithInvocationTarget:self];
-    [v32 undoablyDeleteSubAttachments:v38 actionName:v35];
+    undoManager = [(ICDocCamScannedDocumentEditor *)self undoManager];
+    v32 = [undoManager prepareWithInvocationTarget:self];
+    [v32 undoablyDeleteSubAttachments:v38 actionName:nameCopy];
 
-    if (v35)
+    if (nameCopy)
     {
-      v33 = [(ICDocCamScannedDocumentEditor *)self undoManager];
-      [v33 setActionName:v35];
+      undoManager2 = [(ICDocCamScannedDocumentEditor *)self undoManager];
+      [undoManager2 setActionName:nameCopy];
     }
   }
 
-  v34 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-  [v34 regenerateTitle];
+  galleryAttachment5 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+  [galleryAttachment5 regenerateTitle];
 }
 
 uint64_t __75__ICDocCamScannedDocumentEditor_undoablyUndeleteSubAttachments_actionName___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -437,21 +437,21 @@ uint64_t __75__ICDocCamScannedDocumentEditor_undoablyUndeleteSubAttachments_acti
   return v9;
 }
 
-- (void)undoablyDeleteSubAttachments:(id)a3 actionName:(id)a4
+- (void)undoablyDeleteSubAttachments:(id)attachments actionName:(id)name
 {
   v64 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v47 = a4;
-  v51 = self;
-  v7 = [(ICDocCamScannedDocumentEditor *)self galleryModel];
-  v8 = [v7 attachmentIdentifiersOrderedSet];
+  attachmentsCopy = attachments;
+  nameCopy = name;
+  selfCopy = self;
+  galleryModel = [(ICDocCamScannedDocumentEditor *)self galleryModel];
+  attachmentIdentifiersOrderedSet = [galleryModel attachmentIdentifiersOrderedSet];
 
-  v9 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  v9 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(attachmentsCopy, "count")}];
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  obj = v6;
+  obj = attachmentsCopy;
   v10 = [obj countByEnumeratingWithState:&v58 objects:v63 count:16];
   if (v10)
   {
@@ -467,7 +467,7 @@ uint64_t __75__ICDocCamScannedDocumentEditor_undoablyUndeleteSubAttachments_acti
         }
 
         v14 = *(*(&v58 + 1) + 8 * i);
-        v15 = [v8 indexOfObject:v14];
+        v15 = [attachmentIdentifiersOrderedSet indexOfObject:v14];
         if (v15 != 0x7FFFFFFFFFFFFFFFLL)
         {
           v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v15];
@@ -481,51 +481,51 @@ uint64_t __75__ICDocCamScannedDocumentEditor_undoablyUndeleteSubAttachments_acti
     while (v11);
   }
 
-  v46 = v8;
+  v46 = attachmentIdentifiersOrderedSet;
 
-  v17 = [v9 allKeys];
+  allKeys = [v9 allKeys];
   v56[0] = MEMORY[0x277D85DD0];
   v56[1] = 3221225472;
   v56[2] = __73__ICDocCamScannedDocumentEditor_undoablyDeleteSubAttachments_actionName___block_invoke;
   v56[3] = &unk_2781ABBB8;
   v50 = v9;
   v57 = v50;
-  v18 = [v17 sortedArrayUsingComparator:v56];
+  v18 = [allKeys sortedArrayUsingComparator:v56];
 
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
   v45 = v18;
-  v48 = [v18 reverseObjectEnumerator];
-  v19 = [v48 countByEnumeratingWithState:&v52 objects:v62 count:16];
+  reverseObjectEnumerator = [v18 reverseObjectEnumerator];
+  v19 = [reverseObjectEnumerator countByEnumeratingWithState:&v52 objects:v62 count:16];
   if (v19)
   {
     v20 = v19;
     v21 = 0;
     v22 = *v53;
-    v23 = v51;
+    v23 = selfCopy;
     do
     {
       for (j = 0; j != v20; ++j)
       {
         if (*v53 != v22)
         {
-          objc_enumerationMutation(v48);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v25 = *(*(&v52 + 1) + 8 * j);
         v26 = MEMORY[0x277D35E00];
-        v27 = [(ICDocCamScannedDocumentEditor *)v23 galleryAttachment];
-        v28 = [v27 managedObjectContext];
-        v29 = [v26 attachmentWithIdentifier:v25 context:v28];
+        galleryAttachment = [(ICDocCamScannedDocumentEditor *)v23 galleryAttachment];
+        managedObjectContext = [galleryAttachment managedObjectContext];
+        v29 = [v26 attachmentWithIdentifier:v25 context:managedObjectContext];
 
         v30 = [v50 objectForKeyedSubscript:v25];
-        v31 = [v30 unsignedIntegerValue];
+        unsignedIntegerValue = [v30 unsignedIntegerValue];
 
         if (v29)
         {
-          v32 = v31 == 0x7FFFFFFFFFFFFFFFLL;
+          v32 = unsignedIntegerValue == 0x7FFFFFFFFFFFFFFFLL;
         }
 
         else
@@ -535,7 +535,7 @@ uint64_t __75__ICDocCamScannedDocumentEditor_undoablyUndeleteSubAttachments_acti
 
         if (v32)
         {
-          v23 = v51;
+          v23 = selfCopy;
         }
 
         else
@@ -543,15 +543,15 @@ uint64_t __75__ICDocCamScannedDocumentEditor_undoablyUndeleteSubAttachments_acti
           if (v21)
           {
             v21 = 1;
-            v23 = v51;
+            v23 = selfCopy;
           }
 
           else
           {
-            v23 = v51;
-            v33 = [(ICDocCamScannedDocumentEditor *)v51 galleryModel];
-            v34 = [v33 shouldGeneratePreviewAfterChangeInSubAttachmentWithIdentifier:v25];
-            if (v31)
+            v23 = selfCopy;
+            galleryModel2 = [(ICDocCamScannedDocumentEditor *)selfCopy galleryModel];
+            v34 = [galleryModel2 shouldGeneratePreviewAfterChangeInSubAttachmentWithIdentifier:v25];
+            if (unsignedIntegerValue)
             {
               v21 = v34;
             }
@@ -562,8 +562,8 @@ uint64_t __75__ICDocCamScannedDocumentEditor_undoablyUndeleteSubAttachments_acti
             }
           }
 
-          v35 = [(ICDocCamScannedDocumentEditor *)v23 galleryModel];
-          [v35 removeSubAttachment:v29];
+          galleryModel3 = [(ICDocCamScannedDocumentEditor *)v23 galleryModel];
+          [galleryModel3 removeSubAttachment:v29];
 
           if (([v29 markedForDeletion] & 1) == 0)
           {
@@ -572,7 +572,7 @@ uint64_t __75__ICDocCamScannedDocumentEditor_undoablyUndeleteSubAttachments_acti
         }
       }
 
-      v20 = [v48 countByEnumeratingWithState:&v52 objects:v62 count:16];
+      v20 = [reverseObjectEnumerator countByEnumeratingWithState:&v52 objects:v62 count:16];
     }
 
     while (v20);
@@ -581,38 +581,38 @@ uint64_t __75__ICDocCamScannedDocumentEditor_undoablyUndeleteSubAttachments_acti
   else
   {
     v21 = 0;
-    v23 = v51;
+    v23 = selfCopy;
   }
 
-  v36 = [(ICDocCamScannedDocumentEditor *)v23 galleryAttachment];
-  [v36 saveMergeableDataIfNeeded];
+  galleryAttachment2 = [(ICDocCamScannedDocumentEditor *)v23 galleryAttachment];
+  [galleryAttachment2 saveMergeableDataIfNeeded];
 
-  v37 = [(ICDocCamScannedDocumentEditor *)v23 galleryAttachment];
-  [v37 updateChangeCountWithReason:@"Deleted gallery page"];
+  galleryAttachment3 = [(ICDocCamScannedDocumentEditor *)v23 galleryAttachment];
+  [galleryAttachment3 updateChangeCountWithReason:@"Deleted gallery page"];
 
-  v38 = [(ICDocCamScannedDocumentEditor *)v23 galleryAttachment];
-  [v38 attachmentDidChange];
+  galleryAttachment4 = [(ICDocCamScannedDocumentEditor *)v23 galleryAttachment];
+  [galleryAttachment4 attachmentDidChange];
 
-  v39 = [(ICDocCamScannedDocumentEditor *)v23 galleryAttachment];
-  v40 = [v39 managedObjectContext];
-  [v40 ic_saveWithLogDescription:@"Deleted gallery page"];
+  galleryAttachment5 = [(ICDocCamScannedDocumentEditor *)v23 galleryAttachment];
+  managedObjectContext2 = [galleryAttachment5 managedObjectContext];
+  [managedObjectContext2 ic_saveWithLogDescription:@"Deleted gallery page"];
 
-  [(ICDocCamScannedDocumentEditor *)v51 saveAndUpdatePreview:v21 & 1];
+  [(ICDocCamScannedDocumentEditor *)selfCopy saveAndUpdatePreview:v21 & 1];
   if ([v50 count])
   {
-    v41 = [(ICDocCamScannedDocumentEditor *)v51 undoManager];
-    v42 = [v41 prepareWithInvocationTarget:v51];
-    [v42 undoablyUndeleteSubAttachments:v50 actionName:v47];
+    undoManager = [(ICDocCamScannedDocumentEditor *)selfCopy undoManager];
+    v42 = [undoManager prepareWithInvocationTarget:selfCopy];
+    [v42 undoablyUndeleteSubAttachments:v50 actionName:nameCopy];
 
-    if (v47)
+    if (nameCopy)
     {
-      v43 = [(ICDocCamScannedDocumentEditor *)v51 undoManager];
-      [v43 setActionName:v47];
+      undoManager2 = [(ICDocCamScannedDocumentEditor *)selfCopy undoManager];
+      [undoManager2 setActionName:nameCopy];
     }
   }
 
-  v44 = [(ICDocCamScannedDocumentEditor *)v51 galleryAttachment];
-  [v44 regenerateTitle];
+  galleryAttachment6 = [(ICDocCamScannedDocumentEditor *)selfCopy galleryAttachment];
+  [galleryAttachment6 regenerateTitle];
 }
 
 uint64_t __73__ICDocCamScannedDocumentEditor_undoablyDeleteSubAttachments_actionName___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -626,17 +626,17 @@ uint64_t __73__ICDocCamScannedDocumentEditor_undoablyDeleteSubAttachments_action
   return v9;
 }
 
-- (void)deletePagesAtIndexes:(id)a3
+- (void)deletePagesAtIndexes:(id)indexes
 {
-  v4 = a3;
+  indexesCopy = indexes;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v5 = MEMORY[0x277CBEB18];
-  v6 = [(ICDocCamScannedDocumentEditor *)self galleryModel];
-  v17 = [v5 arrayWithCapacity:{objc_msgSend(v6, "subAttachmentCount")}];
+  galleryModel = [(ICDocCamScannedDocumentEditor *)self galleryModel];
+  v17 = [v5 arrayWithCapacity:{objc_msgSend(galleryModel, "subAttachmentCount")}];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -644,12 +644,12 @@ uint64_t __73__ICDocCamScannedDocumentEditor_undoablyDeleteSubAttachments_action
   v11[3] = &unk_2781ABBE0;
   v11[4] = self;
   v11[5] = &v12;
-  [v4 enumerateIndexesUsingBlock:v11];
+  [indexesCopy enumerateIndexesUsingBlock:v11];
   if ([v13[5] count])
   {
     v7 = MEMORY[0x277CCACA8];
-    v8 = [MEMORY[0x277CCA8D8] mainBundle];
-    v9 = [v8 localizedStringForKey:@"DELETE_%lu_SCANNED_IMAGES" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v9 = [mainBundle localizedStringForKey:@"DELETE_%lu_SCANNED_IMAGES" value:&stru_282757698 table:0];
     v10 = [v7 localizedStringWithFormat:v9, objc_msgSend(v13[5], "count")];
 
     [(ICDocCamScannedDocumentEditor *)self undoablyDeleteSubAttachments:v13[5] actionName:v10];
@@ -671,47 +671,47 @@ void __54__ICDocCamScannedDocumentEditor_deletePagesAtIndexes___block_invoke(uin
   }
 }
 
-- (BOOL)setOrientation:(int64_t)a3 forAttachment:(id)a4
+- (BOOL)setOrientation:(int64_t)orientation forAttachment:(id)attachment
 {
-  v6 = [a4 identifier];
-  v7 = [(ICDocCamScannedDocumentEditor *)self indexForAttachmentWithIdentifier:v6];
+  identifier = [attachment identifier];
+  v7 = [(ICDocCamScannedDocumentEditor *)self indexForAttachmentWithIdentifier:identifier];
 
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(ICDocCamScannedDocumentEditor *)self setOrientation:a3 forAttachmentAtIndex:v7];
+    [(ICDocCamScannedDocumentEditor *)self setOrientation:orientation forAttachmentAtIndex:v7];
   }
 
   return v7 != 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)setOrientation:(int64_t)a3 forAttachmentAtIndex:(unint64_t)a4
+- (void)setOrientation:(int64_t)orientation forAttachmentAtIndex:(unint64_t)index
 {
-  v7 = [(ICDocCamScannedDocumentEditor *)self galleryModel];
-  v10 = [v7 singleSubAttachmentAtIndex:a4];
+  galleryModel = [(ICDocCamScannedDocumentEditor *)self galleryModel];
+  v10 = [galleryModel singleSubAttachmentAtIndex:index];
 
   v8 = v10;
   if (v10)
   {
-    v9 = [v10 identifier];
-    [(ICDocCamScannedDocumentEditor *)self undoablySetOrientation:a3 forAttachmentIdentifier:v9];
+    identifier = [v10 identifier];
+    [(ICDocCamScannedDocumentEditor *)self undoablySetOrientation:orientation forAttachmentIdentifier:identifier];
 
     v8 = v10;
   }
 }
 
-- (void)undoablySetOrientation:(int64_t)a3 forAttachmentIdentifier:(id)a4
+- (void)undoablySetOrientation:(int64_t)orientation forAttachmentIdentifier:(id)identifier
 {
-  v33 = a4;
+  identifierCopy = identifier;
   v6 = MEMORY[0x277D35E00];
-  v7 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-  v8 = [v7 managedObjectContext];
-  v9 = [v6 attachmentWithIdentifier:v33 context:v8];
+  galleryAttachment = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+  managedObjectContext = [galleryAttachment managedObjectContext];
+  v9 = [v6 attachmentWithIdentifier:identifierCopy context:managedObjectContext];
 
-  v10 = [v9 orientation];
-  v11 = v10;
+  orientation = [v9 orientation];
+  v11 = orientation;
   if (v9)
   {
-    v12 = v10 == a3;
+    v12 = orientation == orientation;
   }
 
   else
@@ -721,74 +721,74 @@ void __54__ICDocCamScannedDocumentEditor_deletePagesAtIndexes___block_invoke(uin
 
   if (!v12)
   {
-    [v9 setOrientation:a3];
-    v13 = [v9 attachmentModel];
-    [v13 updateAttachmentSize];
+    [v9 setOrientation:orientation];
+    attachmentModel = [v9 attachmentModel];
+    [attachmentModel updateAttachmentSize];
 
     [v9 setOcrSummary:0];
     [v9 updateChangeCountWithReason:@"Changed doc scan page orientation"];
     [v9 setPreviewUpdateDate:0];
-    v14 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-    v15 = [v14 attachmentModel];
-    v16 = [v15 shouldGeneratePreviewAfterChangeInSubAttachmentWithIdentifier:v33];
+    galleryAttachment2 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+    attachmentModel2 = [galleryAttachment2 attachmentModel];
+    v16 = [attachmentModel2 shouldGeneratePreviewAfterChangeInSubAttachmentWithIdentifier:identifierCopy];
 
     if (v16)
     {
-      v17 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-      [v17 setPreviewUpdateDate:0];
+      galleryAttachment3 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+      [galleryAttachment3 setPreviewUpdateDate:0];
 
-      v18 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-      [v18 setCachedImage:0];
+      galleryAttachment4 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+      [galleryAttachment4 setCachedImage:0];
 
-      v19 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-      [v19 invalidateAttachmentPreviewImages];
+      galleryAttachment5 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+      [galleryAttachment5 invalidateAttachmentPreviewImages];
     }
 
-    v20 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-    [v20 attachmentDidChange];
+    galleryAttachment6 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+    [galleryAttachment6 attachmentDidChange];
 
-    v21 = [v9 managedObjectContext];
-    [v21 ic_save];
+    managedObjectContext2 = [v9 managedObjectContext];
+    [managedObjectContext2 ic_save];
 
-    v22 = [MEMORY[0x277D366B0] sharedGenerator];
-    [v22 postProcessIfNeededForAttachment:v9];
+    mEMORY[0x277D366B0] = [MEMORY[0x277D366B0] sharedGenerator];
+    [mEMORY[0x277D366B0] postProcessIfNeededForAttachment:v9];
 
-    v23 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v24 = *MEMORY[0x277D35BB8];
-    v25 = [v9 objectID];
-    [v23 postNotificationName:v24 object:v25];
+    objectID = [v9 objectID];
+    [defaultCenter postNotificationName:v24 object:objectID];
 
     if (v16)
     {
-      v26 = [MEMORY[0x277D366B0] sharedGenerator];
-      v27 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-      [v26 generatePreviewIfNeededForAttachment:v27];
+      mEMORY[0x277D366B0]2 = [MEMORY[0x277D366B0] sharedGenerator];
+      galleryAttachment7 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+      [mEMORY[0x277D366B0]2 generatePreviewIfNeededForAttachment:galleryAttachment7];
     }
 
-    v28 = [(ICDocCamScannedDocumentEditor *)self undoManager];
-    v29 = [v28 prepareWithInvocationTarget:self];
-    [v29 undoablySetOrientation:v11 forAttachmentIdentifier:v33];
+    undoManager = [(ICDocCamScannedDocumentEditor *)self undoManager];
+    v29 = [undoManager prepareWithInvocationTarget:self];
+    [v29 undoablySetOrientation:v11 forAttachmentIdentifier:identifierCopy];
 
-    v30 = [(ICDocCamScannedDocumentEditor *)self undoManager];
-    v31 = [MEMORY[0x277CCA8D8] mainBundle];
-    v32 = [v31 localizedStringForKey:@"Rotate Scan" value:&stru_282757698 table:0];
-    [v30 setActionName:v32];
+    undoManager2 = [(ICDocCamScannedDocumentEditor *)self undoManager];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v32 = [mainBundle localizedStringForKey:@"Rotate Scan" value:&stru_282757698 table:0];
+    [undoManager2 setActionName:v32];
   }
 }
 
-- (void)applyFilter:(signed __int16)a3 forAttachmentWithIdentifier:(id)a4
+- (void)applyFilter:(signed __int16)filter forAttachmentWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v29 = a4;
+  filterCopy = filter;
+  identifierCopy = identifier;
   v6 = MEMORY[0x277D35E00];
-  v7 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-  v8 = [v7 managedObjectContext];
-  v9 = [v6 attachmentWithIdentifier:v29 context:v8];
+  galleryAttachment = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+  managedObjectContext = [galleryAttachment managedObjectContext];
+  v9 = [v6 attachmentWithIdentifier:identifierCopy context:managedObjectContext];
 
-  v10 = [v9 imageFilterType];
+  imageFilterType = [v9 imageFilterType];
   if (v9)
   {
-    v11 = v10 == v4;
+    v11 = imageFilterType == filterCopy;
   }
 
   else
@@ -798,187 +798,187 @@ void __54__ICDocCamScannedDocumentEditor_deletePagesAtIndexes___block_invoke(uin
 
   if (!v11)
   {
-    v12 = v10;
-    v13 = [MEMORY[0x277D366B0] sharedGenerator];
-    [v13 cancelIfNeededForAttachment:v9];
+    v12 = imageFilterType;
+    mEMORY[0x277D366B0] = [MEMORY[0x277D366B0] sharedGenerator];
+    [mEMORY[0x277D366B0] cancelIfNeededForAttachment:v9];
 
-    [v9 setImageFilterType:v4];
+    [v9 setImageFilterType:filterCopy];
     [v9 setOcrSummary:0];
     [v9 updateChangeCountWithReason:@"Applied doc scan page filter"];
     [v9 setPreviewUpdateDate:0];
-    v14 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-    v15 = [v14 attachmentModel];
-    v16 = [v15 shouldGeneratePreviewAfterChangeInSubAttachmentWithIdentifier:v29];
+    galleryAttachment2 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+    attachmentModel = [galleryAttachment2 attachmentModel];
+    v16 = [attachmentModel shouldGeneratePreviewAfterChangeInSubAttachmentWithIdentifier:identifierCopy];
 
     if (v16)
     {
-      v17 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-      [v17 setPreviewUpdateDate:0];
+      galleryAttachment3 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+      [galleryAttachment3 setPreviewUpdateDate:0];
 
-      v18 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-      [v18 setCachedImage:0];
+      galleryAttachment4 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+      [galleryAttachment4 setCachedImage:0];
 
-      v19 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-      [v19 invalidateAttachmentPreviewImages];
+      galleryAttachment5 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+      [galleryAttachment5 invalidateAttachmentPreviewImages];
     }
 
-    v20 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-    [v20 attachmentDidChange];
+    galleryAttachment6 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+    [galleryAttachment6 attachmentDidChange];
 
-    v21 = [v9 managedObjectContext];
-    [v21 ic_save];
+    managedObjectContext2 = [v9 managedObjectContext];
+    [managedObjectContext2 ic_save];
 
-    v22 = [MEMORY[0x277D366B0] sharedGenerator];
-    [v22 generatePreviewIfNeededForAttachment:v9];
+    mEMORY[0x277D366B0]2 = [MEMORY[0x277D366B0] sharedGenerator];
+    [mEMORY[0x277D366B0]2 generatePreviewIfNeededForAttachment:v9];
 
-    v23 = [MEMORY[0x277D366B0] sharedGenerator];
-    [v23 postProcessIfNeededForAttachment:v9];
+    mEMORY[0x277D366B0]3 = [MEMORY[0x277D366B0] sharedGenerator];
+    [mEMORY[0x277D366B0]3 postProcessIfNeededForAttachment:v9];
 
-    v24 = [(ICDocCamScannedDocumentEditor *)self undoManager];
-    v25 = [v24 prepareWithInvocationTarget:self];
-    [v25 applyFilter:v12 forAttachmentWithIdentifier:v29];
+    undoManager = [(ICDocCamScannedDocumentEditor *)self undoManager];
+    v25 = [undoManager prepareWithInvocationTarget:self];
+    [v25 applyFilter:v12 forAttachmentWithIdentifier:identifierCopy];
 
-    v26 = [(ICDocCamScannedDocumentEditor *)self undoManager];
-    v27 = [MEMORY[0x277CCA8D8] mainBundle];
-    v28 = [v27 localizedStringForKey:@"Set Scan Filter" value:&stru_282757698 table:0];
-    [v26 setActionName:v28];
+    undoManager2 = [(ICDocCamScannedDocumentEditor *)self undoManager];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v28 = [mainBundle localizedStringForKey:@"Set Scan Filter" value:&stru_282757698 table:0];
+    [undoManager2 setActionName:v28];
   }
 }
 
-- (void)applyFilter:(signed __int16)a3 forAttachmentAtIndex:(unint64_t)a4
+- (void)applyFilter:(signed __int16)filter forAttachmentAtIndex:(unint64_t)index
 {
-  v5 = a3;
-  v7 = [(ICDocCamScannedDocumentEditor *)self galleryModel];
-  v10 = [v7 singleSubAttachmentAtIndex:a4];
+  filterCopy = filter;
+  galleryModel = [(ICDocCamScannedDocumentEditor *)self galleryModel];
+  v10 = [galleryModel singleSubAttachmentAtIndex:index];
 
-  v8 = [v10 identifier];
+  identifier = [v10 identifier];
 
-  if (v8)
+  if (identifier)
   {
-    v9 = [v10 identifier];
-    [(ICDocCamScannedDocumentEditor *)self applyFilter:v5 forAttachmentWithIdentifier:v9];
+    identifier2 = [v10 identifier];
+    [(ICDocCamScannedDocumentEditor *)self applyFilter:filterCopy forAttachmentWithIdentifier:identifier2];
   }
 }
 
-- (void)setQuad:(id)a3 forAttachmentWithIdentifier:(id)a4
+- (void)setQuad:(id)quad forAttachmentWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = [(ICDocCamScannedDocumentEditor *)self subAttachmentWithIdentifier:a4];
-  [(ICDocCamScannedDocumentEditor *)self setQuad:v6 forAttachment:v7];
+  quadCopy = quad;
+  v7 = [(ICDocCamScannedDocumentEditor *)self subAttachmentWithIdentifier:identifier];
+  [(ICDocCamScannedDocumentEditor *)self setQuad:quadCopy forAttachment:v7];
 }
 
-- (void)setQuad:(id)a3 forAttachment:(id)a4
+- (void)setQuad:(id)quad forAttachment:(id)attachment
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [v6 croppingQuad];
-  v8 = [v9 isEqual:v7];
+  quadCopy = quad;
+  attachmentCopy = attachment;
+  croppingQuad = [attachmentCopy croppingQuad];
+  v8 = [quadCopy isEqual:croppingQuad];
 
   if ((v8 & 1) == 0)
   {
-    [(ICDocCamScannedDocumentEditor *)self undoablySetQuad:v9 forAttachment:v6];
+    [(ICDocCamScannedDocumentEditor *)self undoablySetQuad:quadCopy forAttachment:attachmentCopy];
   }
 }
 
-- (void)undoablySetQuad:(id)a3 forAttachment:(id)a4
+- (void)undoablySetQuad:(id)quad forAttachment:(id)attachment
 {
-  v25 = a4;
-  v6 = a3;
-  v7 = [v25 croppingQuad];
-  [v25 setCroppingQuad:v6];
+  attachmentCopy = attachment;
+  quadCopy = quad;
+  croppingQuad = [attachmentCopy croppingQuad];
+  [attachmentCopy setCroppingQuad:quadCopy];
 
-  [v25 setOcrSummary:0];
-  v8 = [v25 attachmentModel];
-  [v8 updateAttachmentSize];
+  [attachmentCopy setOcrSummary:0];
+  attachmentModel = [attachmentCopy attachmentModel];
+  [attachmentModel updateAttachmentSize];
 
-  [v25 updateChangeCountWithReason:@"Set doc scan page cropping"];
-  [v25 setPreviewUpdateDate:0];
-  v9 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-  v10 = [v9 attachmentModel];
-  v11 = [v25 identifier];
-  v12 = [v10 shouldGeneratePreviewAfterChangeInSubAttachmentWithIdentifier:v11];
+  [attachmentCopy updateChangeCountWithReason:@"Set doc scan page cropping"];
+  [attachmentCopy setPreviewUpdateDate:0];
+  galleryAttachment = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+  attachmentModel2 = [galleryAttachment attachmentModel];
+  identifier = [attachmentCopy identifier];
+  v12 = [attachmentModel2 shouldGeneratePreviewAfterChangeInSubAttachmentWithIdentifier:identifier];
 
   if (v12)
   {
-    v13 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-    [v13 setPreviewUpdateDate:0];
+    galleryAttachment2 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+    [galleryAttachment2 setPreviewUpdateDate:0];
 
-    v14 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-    [v14 setCachedImage:0];
+    galleryAttachment3 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+    [galleryAttachment3 setCachedImage:0];
 
-    v15 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-    [v15 invalidateAttachmentPreviewImages];
+    galleryAttachment4 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+    [galleryAttachment4 invalidateAttachmentPreviewImages];
   }
 
-  v16 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-  [v16 attachmentDidChange];
+  galleryAttachment5 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+  [galleryAttachment5 attachmentDidChange];
 
-  v17 = [v25 managedObjectContext];
-  [v17 ic_save];
+  managedObjectContext = [attachmentCopy managedObjectContext];
+  [managedObjectContext ic_save];
 
-  v18 = [MEMORY[0x277D366B0] sharedGenerator];
-  [v18 generatePreviewIfNeededForAttachment:v25];
+  mEMORY[0x277D366B0] = [MEMORY[0x277D366B0] sharedGenerator];
+  [mEMORY[0x277D366B0] generatePreviewIfNeededForAttachment:attachmentCopy];
 
-  v19 = [MEMORY[0x277D366B0] sharedGenerator];
-  [v19 postProcessIfNeededForAttachment:v25];
+  mEMORY[0x277D366B0]2 = [MEMORY[0x277D366B0] sharedGenerator];
+  [mEMORY[0x277D366B0]2 postProcessIfNeededForAttachment:attachmentCopy];
 
-  v20 = [(ICDocCamScannedDocumentEditor *)self undoManager];
-  v21 = [v20 prepareWithInvocationTarget:self];
-  [v21 undoablySetQuad:v7 forAttachment:v25];
+  undoManager = [(ICDocCamScannedDocumentEditor *)self undoManager];
+  v21 = [undoManager prepareWithInvocationTarget:self];
+  [v21 undoablySetQuad:croppingQuad forAttachment:attachmentCopy];
 
-  v22 = [(ICDocCamScannedDocumentEditor *)self undoManager];
-  v23 = [MEMORY[0x277CCA8D8] mainBundle];
-  v24 = [v23 localizedStringForKey:@"Set Crop" value:&stru_282757698 table:0];
-  [v22 setActionName:v24];
+  undoManager2 = [(ICDocCamScannedDocumentEditor *)self undoManager];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v24 = [mainBundle localizedStringForKey:@"Set Crop" value:&stru_282757698 table:0];
+  [undoManager2 setActionName:v24];
 }
 
-- (void)setMarkupData:(id)a3 forAttachmentWithIdentifier:(id)a4
+- (void)setMarkupData:(id)data forAttachmentWithIdentifier:(id)identifier
 {
-  v28 = a4;
+  identifierCopy = identifier;
   v6 = MEMORY[0x277D35E00];
-  v7 = a3;
-  v8 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-  v9 = [v8 managedObjectContext];
-  v10 = [v6 attachmentWithIdentifier:v28 context:v9];
+  dataCopy = data;
+  galleryAttachment = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+  managedObjectContext = [galleryAttachment managedObjectContext];
+  v10 = [v6 attachmentWithIdentifier:identifierCopy context:managedObjectContext];
 
-  v11 = [v10 markupModelData];
-  [v10 setMarkupModelData:v7];
+  markupModelData = [v10 markupModelData];
+  [v10 setMarkupModelData:dataCopy];
 
   [v10 updateChangeCountWithReason:@"Applied doc scan page mark-up"];
   [v10 setPreviewUpdateDate:0];
-  v12 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-  v13 = [v12 attachmentModel];
-  v14 = [v13 shouldGeneratePreviewAfterChangeInSubAttachmentWithIdentifier:v28];
+  galleryAttachment2 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+  attachmentModel = [galleryAttachment2 attachmentModel];
+  v14 = [attachmentModel shouldGeneratePreviewAfterChangeInSubAttachmentWithIdentifier:identifierCopy];
 
   if (v14)
   {
-    v15 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-    [v15 setPreviewUpdateDate:0];
+    galleryAttachment3 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+    [galleryAttachment3 setPreviewUpdateDate:0];
 
-    v16 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-    [v16 setCachedImage:0];
+    galleryAttachment4 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+    [galleryAttachment4 setCachedImage:0];
 
-    v17 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-    [v17 invalidateAttachmentPreviewImages];
+    galleryAttachment5 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+    [galleryAttachment5 invalidateAttachmentPreviewImages];
   }
 
-  v18 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-  [v18 attachmentDidChange];
+  galleryAttachment6 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+  [galleryAttachment6 attachmentDidChange];
 
-  v19 = [v10 managedObjectContext];
-  [v19 ic_save];
+  managedObjectContext2 = [v10 managedObjectContext];
+  [managedObjectContext2 ic_save];
 
-  v20 = [MEMORY[0x277D366B0] sharedGenerator];
-  [v20 generatePreviewIfNeededForAttachment:v10];
+  mEMORY[0x277D366B0] = [MEMORY[0x277D366B0] sharedGenerator];
+  [mEMORY[0x277D366B0] generatePreviewIfNeededForAttachment:v10];
 
-  v21 = [(ICDocCamScannedDocumentEditor *)self undoManager];
-  v22 = [v21 prepareWithInvocationTarget:self];
-  [v22 setMarkupData:v11 forAttachmentWithIdentifier:v28];
+  undoManager = [(ICDocCamScannedDocumentEditor *)self undoManager];
+  v22 = [undoManager prepareWithInvocationTarget:self];
+  [v22 setMarkupData:markupModelData forAttachmentWithIdentifier:identifierCopy];
 
-  v23 = [(ICDocCamScannedDocumentEditor *)self undoManager];
-  v24 = [MEMORY[0x277CCA8D8] mainBundle];
-  v25 = v24;
-  if (v7)
+  undoManager2 = [(ICDocCamScannedDocumentEditor *)self undoManager];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v25 = mainBundle;
+  if (dataCopy)
   {
     v26 = @"Apply Markup";
   }
@@ -988,22 +988,22 @@ void __54__ICDocCamScannedDocumentEditor_deletePagesAtIndexes___block_invoke(uin
     v26 = @"Discard Markup";
   }
 
-  v27 = [v24 localizedStringForKey:v26 value:&stru_282757698 table:0];
-  [v23 setActionName:v27];
+  v27 = [mainBundle localizedStringForKey:v26 value:&stru_282757698 table:0];
+  [undoManager2 setActionName:v27];
 }
 
-- (id)subAttachmentWithIdentifier:(id)a3
+- (id)subAttachmentWithIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277D35E00];
-  v5 = a3;
-  v6 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
-  v7 = [v6 managedObjectContext];
-  v8 = [v4 attachmentWithIdentifier:v5 context:v7];
+  identifierCopy = identifier;
+  galleryAttachment = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+  managedObjectContext = [galleryAttachment managedObjectContext];
+  v8 = [v4 attachmentWithIdentifier:identifierCopy context:managedObjectContext];
 
-  v9 = [v8 parentAttachment];
-  v10 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
+  parentAttachment = [v8 parentAttachment];
+  galleryAttachment2 = [(ICDocCamScannedDocumentEditor *)self galleryAttachment];
 
-  if (v9 == v10)
+  if (parentAttachment == galleryAttachment2)
   {
     v13 = v8;
   }
@@ -1011,8 +1011,8 @@ void __54__ICDocCamScannedDocumentEditor_deletePagesAtIndexes___block_invoke(uin
   else
   {
     v11 = MEMORY[0x277D36198];
-    v12 = [v8 identifier];
-    [v11 handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICDocCamScannedDocumentEditor subAttachmentWithIdentifier:]" simulateCrash:1 showAlert:0 format:{@"Trying to get sub attachment with identifier, but the parent is not the gallery attachment. %@", v12}];
+    identifier = [v8 identifier];
+    [v11 handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICDocCamScannedDocumentEditor subAttachmentWithIdentifier:]" simulateCrash:1 showAlert:0 format:{@"Trying to get sub attachment with identifier, but the parent is not the gallery attachment. %@", identifier}];
 
     v13 = 0;
   }
@@ -1020,22 +1020,22 @@ void __54__ICDocCamScannedDocumentEditor_deletePagesAtIndexes___block_invoke(uin
   return v13;
 }
 
-- (unint64_t)indexForAttachmentWithIdentifier:(id)a3
+- (unint64_t)indexForAttachmentWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0x7FFFFFFFFFFFFFFFLL;
-  v5 = [(ICDocCamScannedDocumentEditor *)self galleryModel];
+  galleryModel = [(ICDocCamScannedDocumentEditor *)self galleryModel];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __66__ICDocCamScannedDocumentEditor_indexForAttachmentWithIdentifier___block_invoke;
   v9[3] = &unk_2781ABC08;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateSubAttachmentsWithBlock:v9];
+  [galleryModel enumerateSubAttachmentsWithBlock:v9];
 
   v7 = v13[3];
   _Block_object_dispose(&v12, 8);

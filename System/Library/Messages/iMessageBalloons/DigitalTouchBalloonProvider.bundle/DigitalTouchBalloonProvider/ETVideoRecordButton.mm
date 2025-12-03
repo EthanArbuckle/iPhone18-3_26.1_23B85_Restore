@@ -1,15 +1,15 @@
 @interface ETVideoRecordButton
-+ (id)_dimColor:(id)a3;
++ (id)_dimColor:(id)color;
 + (id)_redColor;
-+ (id)recordingRedColorDimmed:(BOOL)a3;
++ (id)recordingRedColorDimmed:(BOOL)dimmed;
 - (ETVideoRecordButton)init;
 - (id)_innerColor;
 - (void)_updateStartStopShape;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setInnerColor:(id)a3;
-- (void)setRecording:(BOOL)a3;
-- (void)setVideoState:(unint64_t)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setInnerColor:(id)color;
+- (void)setRecording:(BOOL)recording;
+- (void)setVideoState:(unint64_t)state;
 @end
 
 @implementation ETVideoRecordButton
@@ -22,7 +22,7 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(ETVideoRecordButton *)v2 layer];
+    layer = [(ETVideoRecordButton *)v2 layer];
     v5 = objc_alloc_init(CAShapeLayer);
     outerRingShape = v3->_outerRingShape;
     v3->_outerRingShape = v5;
@@ -32,7 +32,7 @@
     -[CAShapeLayer setStrokeColor:](v7, "setStrokeColor:", [v8 CGColor]);
 
     [(CAShapeLayer *)v3->_outerRingShape setLineWidth:5.0];
-    [v4 addSublayer:v3->_outerRingShape];
+    [layer addSublayer:v3->_outerRingShape];
     v9 = objc_alloc_init(CAShapeLayer);
     startStopShape = v3->_startStopShape;
     v3->_startStopShape = v9;
@@ -50,20 +50,20 @@
     }
     v13 = ;
     -[CAShapeLayer setFillColor:](v3->_startStopShape, "setFillColor:", [v13 CGColor]);
-    [v4 addSublayer:v3->_startStopShape];
+    [layer addSublayer:v3->_startStopShape];
     v14 = v3;
   }
 
   return v3;
 }
 
-+ (id)_dimColor:(id)a3
++ (id)_dimColor:(id)color
 {
   v8 = 0.0;
   v6 = 0.0;
   v7 = 0.0;
   v5 = 0;
-  [a3 getRed:&v8 green:&v7 blue:&v6 alpha:&v5];
+  [color getRed:&v8 green:&v7 blue:&v6 alpha:&v5];
   v3 = [UIColor colorWithRed:v8 * 0.3 green:v7 * 0.3 blue:v6 * 0.3 alpha:1.0];
 
   return v3;
@@ -81,29 +81,29 @@
   return v3;
 }
 
-+ (id)recordingRedColorDimmed:(BOOL)a3
++ (id)recordingRedColorDimmed:(BOOL)dimmed
 {
-  if (a3)
+  if (dimmed)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_DBAC;
     block[3] = &unk_24AD8;
-    block[4] = a1;
+    block[4] = self;
     if (qword_2E7C8 != -1)
     {
       dispatch_once(&qword_2E7C8, block);
     }
 
-    v3 = qword_2E7C0;
+    _redColor = qword_2E7C0;
   }
 
   else
   {
-    v3 = [a1 _redColor];
+    _redColor = [self _redColor];
   }
 
-  return v3;
+  return _redColor;
 }
 
 - (id)_innerColor
@@ -122,42 +122,42 @@
   return v3;
 }
 
-- (void)setInnerColor:(id)a3
+- (void)setInnerColor:(id)color
 {
-  objc_storeStrong(&self->_innerColor, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_innerColor, color);
+  colorCopy = color;
   [(CAShapeLayer *)self->_startStopShape setFillColor:[(UIColor *)self->_innerColor CGColor]];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  if ([(ETVideoRecordButton *)self isHighlighted]!= a3)
+  highlightedCopy = highlighted;
+  if ([(ETVideoRecordButton *)self isHighlighted]!= highlighted)
   {
     v9.receiver = self;
     v9.super_class = ETVideoRecordButton;
-    [(ETVideoRecordButton *)&v9 setHighlighted:v3];
-    v5 = [(ETVideoRecordButton *)self _innerColor];
-    v6 = v5;
+    [(ETVideoRecordButton *)&v9 setHighlighted:highlightedCopy];
+    _innerColor = [(ETVideoRecordButton *)self _innerColor];
+    v6 = _innerColor;
     startStopShape = self->_startStopShape;
-    if (v3)
+    if (highlightedCopy)
     {
-      v8 = [objc_opt_class() _dimColor:v5];
+      v8 = [objc_opt_class() _dimColor:_innerColor];
       -[CAShapeLayer setFillColor:](startStopShape, "setFillColor:", [v8 CGColor]);
     }
 
     else
     {
-      -[CAShapeLayer setFillColor:](startStopShape, "setFillColor:", [v5 CGColor]);
+      -[CAShapeLayer setFillColor:](startStopShape, "setFillColor:", [_innerColor CGColor]);
     }
   }
 }
 
-- (void)setRecording:(BOOL)a3
+- (void)setRecording:(BOOL)recording
 {
-  if (self->_recording != a3)
+  if (self->_recording != recording)
   {
-    self->_recording = a3;
+    self->_recording = recording;
     [(ETVideoRecordButton *)self _updateStartStopShape];
   }
 }
@@ -192,7 +192,7 @@
     }
 
     self->_startStopRadius = v9;
-    v13 = [(CAShapeLayer *)self->_startStopShape path];
+    path = [(CAShapeLayer *)self->_startStopShape path];
     v18.origin.x = v6;
     v18.origin.y = v8;
     v18.size.width = v10;
@@ -200,12 +200,12 @@
     v19 = CGRectInset(v18, v12, v12);
     v14 = CGPathCreateWithRoundedRect(v19, v9, v9, 0);
     [(CAShapeLayer *)self->_startStopShape setPath:v14];
-    if (v13)
+    if (path)
     {
       v15 = [CABasicAnimation animationWithKeyPath:@"path"];
       +[CATransaction animationDuration];
       [v15 setDuration:?];
-      [v15 setFromValue:v13];
+      [v15 setFromValue:path];
       [v15 setToValue:v14];
       v16 = +[CATransaction animationTimingFunction];
       [v15 setTimingFunction:v16];
@@ -229,14 +229,14 @@
   [(ETVideoRecordButton *)self _updateStartStopShape];
 }
 
-- (void)setVideoState:(unint64_t)a3
+- (void)setVideoState:(unint64_t)state
 {
-  if (self->_videoState != a3)
+  if (self->_videoState != state)
   {
-    self->_videoState = a3;
-    if (a3 <= 6 && ((0x4Fu >> a3) & 1) != 0)
+    self->_videoState = state;
+    if (state <= 6 && ((0x4Fu >> state) & 1) != 0)
     {
-      [(ETVideoRecordButton *)self setRecording:(4u >> a3) & 1];
+      [(ETVideoRecordButton *)self setRecording:(4u >> state) & 1];
     }
   }
 }

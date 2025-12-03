@@ -1,18 +1,18 @@
 @interface BTXPCConnection
-- (BTXPCConnection)initWithConnection:(id)a3;
+- (BTXPCConnection)initWithConnection:(id)connection;
 - (id)description;
 - (void)dealloc;
 - (void)handleDisconnection;
-- (void)handleEvent:(id)a3;
-- (void)handleMsg:(id)a3;
-- (void)sendMsg:(id)a3 args:(id)a4;
+- (void)handleEvent:(id)event;
+- (void)handleMsg:(id)msg;
+- (void)sendMsg:(id)msg args:(id)args;
 @end
 
 @implementation BTXPCConnection
 
-- (BTXPCConnection)initWithConnection:(id)a3
+- (BTXPCConnection)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   if (os_log_type_enabled(qword_100300AE8, OS_LOG_TYPE_DEBUG))
   {
     sub_1001FB6E0();
@@ -24,14 +24,14 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     [(BTXPCConnection *)v7 setRemoteUID:xpc_connection_get_euid(v7->_connection)];
     [(BTXPCConnection *)v7 setRemotePID:xpc_connection_get_pid(v7->_connection)];
     objc_initWeak(&location, v7);
     connection = v7->_connection;
     v9 = +[CloudXPCService sharedInstance];
-    v10 = [v9 xpcQueue];
-    xpc_connection_set_target_queue(connection, v10);
+    xpcQueue = [v9 xpcQueue];
+    xpc_connection_set_target_queue(connection, xpcQueue);
 
     v11 = v7->_connection;
     v13[0] = _NSConcreteStackBlock;
@@ -51,18 +51,18 @@
 - (id)description
 {
   memset(buffer, 0, sizeof(buffer));
-  v3 = [(BTXPCConnection *)self connection];
+  connection = [(BTXPCConnection *)self connection];
 
-  if (v3)
+  if (connection)
   {
-    v4 = [(BTXPCConnection *)self connection];
-    pid = xpc_connection_get_pid(v4);
+    connection2 = [(BTXPCConnection *)self connection];
+    pid = xpc_connection_get_pid(connection2);
     proc_name(pid, buffer, 0x40u);
   }
 
-  v6 = [NSString stringWithFormat:@"BTXPCConnection(%d-%d): Process Name: %s", [(BTXPCConnection *)self remotePID], [(BTXPCConnection *)self remoteUID], buffer];
+  buffer = [NSString stringWithFormat:@"BTXPCConnection(%d-%d): Process Name: %s", [(BTXPCConnection *)self remotePID], [(BTXPCConnection *)self remoteUID], buffer];
 
-  return v6;
+  return buffer;
 }
 
 - (void)dealloc
@@ -81,20 +81,20 @@
   [(BTXPCConnection *)&v5 dealloc];
 }
 
-- (void)handleEvent:(id)a3
+- (void)handleEvent:(id)event
 {
-  v4 = a3;
-  type = xpc_get_type(v4);
+  eventCopy = event;
+  type = xpc_get_type(eventCopy);
   if (type == &_xpc_type_dictionary)
   {
-    [(BTXPCConnection *)self handleMsg:v4];
+    [(BTXPCConnection *)self handleMsg:eventCopy];
   }
 
   else
   {
     if (type == &_xpc_type_error)
     {
-      if (v4 == &_xpc_error_connection_invalid)
+      if (eventCopy == &_xpc_error_connection_invalid)
       {
         [(BTXPCConnection *)self handleDisconnection];
         goto LABEL_10;
@@ -135,47 +135,47 @@ LABEL_10:
   [v5 removeConnection:self];
 }
 
-- (void)handleMsg:(id)a3
+- (void)handleMsg:(id)msg
 {
-  v4 = a3;
+  msgCopy = msg;
   v5 = sub_100005C14("XPC");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(BTXPCConnection *)self remoteUID];
-    v7 = [(BTXPCConnection *)self remotePID];
-    v8 = [v4 description];
+    remoteUID = [(BTXPCConnection *)self remoteUID];
+    remotePID = [(BTXPCConnection *)self remotePID];
+    v8 = [msgCopy description];
     v11[0] = 67109634;
-    v11[1] = v6;
+    v11[1] = remoteUID;
     v12 = 1024;
-    v13 = v7;
+    v13 = remotePID;
     v14 = 2112;
     v15 = v8;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received XPC(%d-%d) message: %@", v11, 0x18u);
   }
 
   v9 = +[CloudXPCService sharedInstance];
-  v10 = [(BTXPCConnection *)self connection];
-  [v9 handleConnection:v10 XPCMessage:v4 userID:-[BTXPCConnection remoteUID](self processID:{"remoteUID"), -[BTXPCConnection remotePID](self, "remotePID")}];
+  connection = [(BTXPCConnection *)self connection];
+  [v9 handleConnection:connection XPCMessage:msgCopy userID:-[BTXPCConnection remoteUID](self processID:{"remoteUID"), -[BTXPCConnection remotePID](self, "remotePID")}];
 }
 
-- (void)sendMsg:(id)a3 args:(id)a4
+- (void)sendMsg:(id)msg args:(id)args
 {
-  v6 = a3;
-  v7 = a4;
+  msgCopy = msg;
+  argsCopy = args;
   v8 = objc_autoreleasePoolPush();
   v9 = sub_100005C14("XPC");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412547;
-    v15 = v6;
+    v15 = msgCopy;
     v16 = 2113;
-    v17 = v7;
+    v17 = argsCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Send message: %@, args: %{private}@", &v14, 0x16u);
   }
 
   v10 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_string(v10, "kMsgId", [v6 UTF8String]);
-  if (v7)
+  xpc_dictionary_set_string(v10, "kMsgId", [msgCopy UTF8String]);
+  if (argsCopy)
   {
     v11 = _CFXPCCreateXPCObjectFromCFObject();
     xpc_dictionary_set_value(v10, "kMsgArgs", v11);
@@ -187,8 +187,8 @@ LABEL_10:
     sub_1001FB83C();
   }
 
-  v13 = [(BTXPCConnection *)self connection];
-  xpc_connection_send_message(v13, v10);
+  connection = [(BTXPCConnection *)self connection];
+  xpc_connection_send_message(connection, v10);
 
   objc_autoreleasePoolPop(v8);
 }

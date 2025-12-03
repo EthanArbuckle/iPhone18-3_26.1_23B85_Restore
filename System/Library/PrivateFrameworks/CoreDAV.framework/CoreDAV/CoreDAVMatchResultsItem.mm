@@ -13,21 +13,21 @@
   v4 = [(CoreDAVItem *)&v14 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CoreDAVMatchResultsItem *)self rank];
-  v6 = [v5 payloadAsString];
-  [v3 appendFormat:@"\n  Rank: [%@]", v6];
+  rank = [(CoreDAVMatchResultsItem *)self rank];
+  payloadAsString = [rank payloadAsString];
+  [v3 appendFormat:@"\n  Rank: [%@]", payloadAsString];
 
-  v7 = [(CoreDAVMatchResultsItem *)self language];
-  v8 = [v7 payloadAsString];
-  [v3 appendFormat:@"\n  Language: [%@]", v8];
+  language = [(CoreDAVMatchResultsItem *)self language];
+  payloadAsString2 = [language payloadAsString];
+  [v3 appendFormat:@"\n  Language: [%@]", payloadAsString2];
 
-  v9 = [(CoreDAVMatchResultsItem *)self region];
-  v10 = [v9 payloadAsString];
-  [v3 appendFormat:@"\n  Region: [%@]", v10];
+  region = [(CoreDAVMatchResultsItem *)self region];
+  payloadAsString3 = [region payloadAsString];
+  [v3 appendFormat:@"\n  Region: [%@]", payloadAsString3];
 
-  v11 = [(CoreDAVMatchResultsItem *)self calendarDescription];
-  v12 = [v11 payloadAsString];
-  [v3 appendFormat:@"\n  Description: [%@]", v12];
+  calendarDescription = [(CoreDAVMatchResultsItem *)self calendarDescription];
+  payloadAsString4 = [calendarDescription payloadAsString];
+  [v3 appendFormat:@"\n  Description: [%@]", payloadAsString4];
 
   return v3;
 }
@@ -35,7 +35,7 @@
 + (id)copyParseRules
 {
   v3 = +[CoreDAVItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -52,7 +52,7 @@
     v5 = [v17 initWithObjectsAndKeys:{v16, v15, v6, v7, v8, v9, v10, v11, 0}];
 
     v12 = +[CoreDAVItem parseRuleCache];
-    v13 = NSStringFromClass(a1);
+    v13 = NSStringFromClass(self);
     [v12 setObject:v5 forKey:v13];
   }
 

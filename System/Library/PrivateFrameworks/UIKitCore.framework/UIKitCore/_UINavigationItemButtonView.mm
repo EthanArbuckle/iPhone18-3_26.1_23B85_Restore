@@ -3,52 +3,52 @@
 - (BOOL)_suppressesBackIndicatorView;
 - (BOOL)_wantsAccessibilityButtonShapes;
 - (BOOL)hasCustomBackgroundImage;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGSize)_currentTextShadowOffsetForBarStyle:(int64_t)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGSize)_currentTextShadowOffsetForBarStyle:(int64_t)style;
 - (CGSize)imageSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)alignmentRectInsets;
-- (UIOffset)_backButtonTitlePositionAdjustmentForBarMetrics:(int64_t)a3;
-- (_UINavigationItemButtonView)initWithFrame:(CGRect)a3;
-- (_UINavigationItemButtonView)initWithNavigationItem:(id)a3;
-- (id)_backButtonBackgroundImageForState:(unint64_t)a3 barMetrics:(int64_t)a4;
-- (id)_currentCustomBackgroundNeedsDarkening:(BOOL *)a3;
-- (id)_currentTextColorForBarStyle:(int64_t)a3;
-- (id)_currentTextShadowColorForBarStyle:(int64_t)a3;
+- (UIOffset)_backButtonTitlePositionAdjustmentForBarMetrics:(int64_t)metrics;
+- (_UINavigationItemButtonView)initWithFrame:(CGRect)frame;
+- (_UINavigationItemButtonView)initWithNavigationItem:(id)item;
+- (id)_backButtonBackgroundImageForState:(unint64_t)state barMetrics:(int64_t)metrics;
+- (id)_currentCustomBackgroundNeedsDarkening:(BOOL *)darkening;
+- (id)_currentTextColorForBarStyle:(int64_t)style;
+- (id)_currentTextShadowColorForBarStyle:(int64_t)style;
 - (id)_defaultFont;
 - (id)image;
 - (id)title;
-- (void)_UIAppearance_setBackButtonBackgroundImage:(id)a3 forState:(unint64_t)a4 barMetrics:(int64_t)a5;
-- (void)_UIAppearance_setBackButtonBackgroundVerticalPositionAdjustment:(double)a3 forBarMetrics:(int64_t)a4;
-- (void)_UIAppearance_setBackButtonTitlePositionAdjustment:(UIOffset)a3 forBarMetrics:(int64_t)a4;
-- (void)_UIAppearance_setTintColor:(id)a3;
-- (void)_UIAppearance_setTitleTextAttributes:(id)a3 forState:(unint64_t)a4;
+- (void)_UIAppearance_setBackButtonBackgroundImage:(id)image forState:(unint64_t)state barMetrics:(int64_t)metrics;
+- (void)_UIAppearance_setBackButtonBackgroundVerticalPositionAdjustment:(double)adjustment forBarMetrics:(int64_t)metrics;
+- (void)_UIAppearance_setBackButtonTitlePositionAdjustment:(UIOffset)adjustment forBarMetrics:(int64_t)metrics;
+- (void)_UIAppearance_setTintColor:(id)color;
+- (void)_UIAppearance_setTitleTextAttributes:(id)attributes forState:(unint64_t)state;
 - (void)_accessibilityButtonShapesParametersDidChange;
-- (void)_applyBarButtonAppearanceStorage:(id)a3 withTaggedSelectors:(id)a4;
-- (void)_backSelectGestureChanged:(id)a3;
-- (void)_didChangeFromIdiom:(int64_t)a3 onScreen:(id)a4 traverseHierarchy:(BOOL)a5;
+- (void)_applyBarButtonAppearanceStorage:(id)storage withTaggedSelectors:(id)selectors;
+- (void)_backSelectGestureChanged:(id)changed;
+- (void)_didChangeFromIdiom:(int64_t)idiom onScreen:(id)screen traverseHierarchy:(BOOL)hierarchy;
 - (void)_installBackSelectGestureRecognizer;
 - (void)_resetRenderingModesForAccessibilityBackgrounds;
-- (void)_setAccessibilityBackgroundTintColor:(id)a3;
-- (void)_setWantsBlendModeForAccessibilityBackgrounds:(BOOL)a3;
+- (void)_setAccessibilityBackgroundTintColor:(id)color;
+- (void)_setWantsBlendModeForAccessibilityBackgrounds:(BOOL)backgrounds;
 - (void)_uninstallBackSelectGestureRecognizer;
 - (void)_updateBackSelectGestureRecognizer;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
-- (void)setPressed:(BOOL)a3 initialPress:(BOOL)a4;
-- (void)setStyle:(int64_t)a3 animated:(BOOL)a4;
+- (void)setPressed:(BOOL)pressed initialPress:(BOOL)press;
+- (void)setStyle:(int64_t)style animated:(BOOL)animated;
 - (void)tintColorDidChange;
 @end
 
 @implementation _UINavigationItemButtonView
 
-- (_UINavigationItemButtonView)initWithNavigationItem:(id)a3
+- (_UINavigationItemButtonView)initWithNavigationItem:(id)item
 {
   v5.receiver = self;
   v5.super_class = _UINavigationItemButtonView;
-  v3 = [(_UINavigationItemView *)&v5 initWithNavigationItem:a3];
+  v3 = [(_UINavigationItemView *)&v5 initWithNavigationItem:item];
   if (v3)
   {
     [(UILabel *)v3->super._label _setWantsUnderlineForAccessibilityButtonShapesEnabled:dyld_program_sdk_at_least()];
@@ -63,36 +63,36 @@
   if (backgroundImageView)
   {
     WeakRetained = objc_loadWeakRetained(&self->super._item);
-    v4 = [WeakRetained _navigationBar];
-    v5 = [v4 _barStyle];
-    v6 = [(_UINavigationItemButtonView *)self _wantsAccessibilityButtonShapes];
-    v7 = [(_UINavigationItemButtonView *)self _wantsBlendModeForAccessibilityBackgrounds];
-    v8 = [(_UINavigationItemButtonView *)self _accessibilityBackgroundTintColor];
-    [UINavigationButton _resetRenderingModesForBackgroundImageView:backgroundImageView inBarStyle:v5 isEnabled:1 withAccessibilityBackground:v6 wantsBlendModeForAccessibilityBackgrounds:v7 accessibilityBackgroundTintColor:v8];
+    _navigationBar = [WeakRetained _navigationBar];
+    _barStyle = [_navigationBar _barStyle];
+    _wantsAccessibilityButtonShapes = [(_UINavigationItemButtonView *)self _wantsAccessibilityButtonShapes];
+    _wantsBlendModeForAccessibilityBackgrounds = [(_UINavigationItemButtonView *)self _wantsBlendModeForAccessibilityBackgrounds];
+    _accessibilityBackgroundTintColor = [(_UINavigationItemButtonView *)self _accessibilityBackgroundTintColor];
+    [UINavigationButton _resetRenderingModesForBackgroundImageView:backgroundImageView inBarStyle:_barStyle isEnabled:1 withAccessibilityBackground:_wantsAccessibilityButtonShapes wantsBlendModeForAccessibilityBackgrounds:_wantsBlendModeForAccessibilityBackgrounds accessibilityBackgroundTintColor:_accessibilityBackgroundTintColor];
   }
 }
 
-- (void)_setWantsBlendModeForAccessibilityBackgrounds:(BOOL)a3
+- (void)_setWantsBlendModeForAccessibilityBackgrounds:(BOOL)backgrounds
 {
-  v3 = a3;
-  if ((dyld_program_sdk_at_least() & 1) == 0 && self->_wantsBlendModeForAccessibilityBackgrounds != v3)
+  backgroundsCopy = backgrounds;
+  if ((dyld_program_sdk_at_least() & 1) == 0 && self->_wantsBlendModeForAccessibilityBackgrounds != backgroundsCopy)
   {
-    self->_wantsBlendModeForAccessibilityBackgrounds = v3;
+    self->_wantsBlendModeForAccessibilityBackgrounds = backgroundsCopy;
 
     [(_UINavigationItemButtonView *)self _resetRenderingModesForAccessibilityBackgrounds];
   }
 }
 
-- (void)_setAccessibilityBackgroundTintColor:(id)a3
+- (void)_setAccessibilityBackgroundTintColor:(id)color
 {
-  v7 = a3;
+  colorCopy = color;
   v5 = dyld_program_sdk_at_least();
-  v6 = v7;
-  if ((v5 & 1) == 0 && self->_accessibilityBackgroundTintColor != v7)
+  v6 = colorCopy;
+  if ((v5 & 1) == 0 && self->_accessibilityBackgroundTintColor != colorCopy)
   {
-    objc_storeStrong(&self->_accessibilityBackgroundTintColor, a3);
+    objc_storeStrong(&self->_accessibilityBackgroundTintColor, color);
     [(_UINavigationItemButtonView *)self _resetRenderingModesForAccessibilityBackgrounds];
-    v6 = v7;
+    v6 = colorCopy;
   }
 }
 
@@ -103,8 +103,8 @@
     return 0;
   }
 
-  v4 = [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage anyBackButtonBackgroundImage];
-  if (v4)
+  anyBackButtonBackgroundImage = [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage anyBackButtonBackgroundImage];
+  if (anyBackButtonBackgroundImage)
   {
     v3 = 0;
   }
@@ -116,8 +116,8 @@
 
   else
   {
-    v5 = [(_UINavigationItemButtonView *)self title];
-    v3 = [v5 length] != 0;
+    title = [(_UINavigationItemButtonView *)self title];
+    v3 = [title length] != 0;
   }
 
   return v3;
@@ -125,49 +125,49 @@
 
 - (BOOL)_wantsAccessibilityButtonShapes
 {
-  v3 = [(UIView *)self _areAccessibilityButtonShapesEnabled];
-  if (v3)
+  _areAccessibilityButtonShapesEnabled = [(UIView *)self _areAccessibilityButtonShapesEnabled];
+  if (_areAccessibilityButtonShapesEnabled)
   {
 
-    LOBYTE(v3) = [(_UINavigationItemButtonView *)self _showsAccessibilityBackgroundWhenEnabled];
+    LOBYTE(_areAccessibilityButtonShapesEnabled) = [(_UINavigationItemButtonView *)self _showsAccessibilityBackgroundWhenEnabled];
   }
 
-  return v3;
+  return _areAccessibilityButtonShapesEnabled;
 }
 
 - (BOOL)_suppressesBackIndicatorView
 {
-  v3 = [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage anyBackButtonBackgroundImage];
-  if (v3)
+  anyBackButtonBackgroundImage = [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage anyBackButtonBackgroundImage];
+  if (anyBackButtonBackgroundImage)
   {
-    v4 = 1;
+    _wantsAccessibilityButtonShapes = 1;
   }
 
   else
   {
-    v4 = [(_UINavigationItemButtonView *)self _wantsAccessibilityButtonShapes];
+    _wantsAccessibilityButtonShapes = [(_UINavigationItemButtonView *)self _wantsAccessibilityButtonShapes];
   }
 
-  return v4;
+  return _wantsAccessibilityButtonShapes;
 }
 
-- (_UINavigationItemButtonView)initWithFrame:(CGRect)a3
+- (_UINavigationItemButtonView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = _UINavigationItemButtonView;
-  v3 = [(UIView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v3->_abbreviatedTitleIndex = 0x7FFFFFFFFFFFFFFFLL;
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v4 selector:sel__accessibilityButtonShapesDidChangeNotification_ name:@"UIAccessibilityButtonShapesEnabledStatusDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__accessibilityButtonShapesDidChangeNotification_ name:@"UIAccessibilityButtonShapesEnabledStatusDidChangeNotification" object:0];
 
-    v6 = [(UIView *)v4 layer];
-    [v6 setAllowsGroupBlending:0];
+    layer = [(UIView *)v4 layer];
+    [layer setAllowsGroupBlending:0];
 
-    v7 = [(UIView *)v4 layer];
-    [v7 setAllowsGroupOpacity:0];
+    layer2 = [(UIView *)v4 layer];
+    [layer2 setAllowsGroupOpacity:0];
   }
 
   return v4;
@@ -182,15 +182,15 @@
   }
 }
 
-- (void)_didChangeFromIdiom:(int64_t)a3 onScreen:(id)a4 traverseHierarchy:(BOOL)a5
+- (void)_didChangeFromIdiom:(int64_t)idiom onScreen:(id)screen traverseHierarchy:(BOOL)hierarchy
 {
   v9.receiver = self;
   v9.super_class = _UINavigationItemButtonView;
-  [(UIView *)&v9 _didChangeFromIdiom:a3 onScreen:a4 traverseHierarchy:a5];
-  v7 = [(UIView *)self _screen];
-  v8 = [v7 _userInterfaceIdiom];
+  [(UIView *)&v9 _didChangeFromIdiom:idiom onScreen:screen traverseHierarchy:hierarchy];
+  _screen = [(UIView *)self _screen];
+  _userInterfaceIdiom = [_screen _userInterfaceIdiom];
 
-  if (v8 != a3 && (a3 == 3 || v8 == 3))
+  if (_userInterfaceIdiom != idiom && (idiom == 3 || _userInterfaceIdiom == 3))
   {
     [(_UINavigationItemButtonView *)self _accessibilityButtonShapesParametersDidChange];
   }
@@ -205,11 +205,11 @@
   [(_UINavigationItemView *)self _updateLabelColor];
 }
 
-- (id)_currentTextColorForBarStyle:(int64_t)a3
+- (id)_currentTextColorForBarStyle:(int64_t)style
 {
-  if ((a3 - 1) <= 1 && [(_UINavigationItemButtonView *)self _wantsAccessibilityButtonShapes])
+  if ((style - 1) <= 1 && [(_UINavigationItemButtonView *)self _wantsAccessibilityButtonShapes])
   {
-    v4 = +[UIColor whiteColor];
+    buttonItemTextColor = +[UIColor whiteColor];
     goto LABEL_15;
   }
 
@@ -242,8 +242,8 @@
     if (![(UIView *)self isFocused])
     {
       WeakRetained = objc_loadWeakRetained(&self->super._item);
-      v12 = [WeakRetained navigationBar];
-      v4 = [v12 buttonItemTextColor];
+      navigationBar = [WeakRetained navigationBar];
+      buttonItemTextColor = [navigationBar buttonItemTextColor];
 
       goto LABEL_14;
     }
@@ -251,35 +251,35 @@
     v9 = +[UIColor _externalBarBackgroundColor];
   }
 
-  v4 = v9;
+  buttonItemTextColor = v9;
 LABEL_14:
 
 LABEL_15:
 
-  return v4;
+  return buttonItemTextColor;
 }
 
-- (id)_currentTextShadowColorForBarStyle:(int64_t)a3
+- (id)_currentTextShadowColorForBarStyle:(int64_t)style
 {
   v4 = [(_UIBarItemAppearanceStorage *)self->_appearanceStorage textAttributeForKey:*off_1E70EC9B0 state:self->_pressed];
-  v5 = [v4 shadowColor];
+  shadowColor = [v4 shadowColor];
 
-  if (v5)
+  if (shadowColor)
   {
-    v6 = v5;
+    buttonItemShadowColor = shadowColor;
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->super._item);
-    v8 = [WeakRetained navigationBar];
-    v6 = [v8 buttonItemShadowColor];
+    navigationBar = [WeakRetained navigationBar];
+    buttonItemShadowColor = [navigationBar buttonItemShadowColor];
   }
 
-  return v6;
+  return buttonItemShadowColor;
 }
 
-- (CGSize)_currentTextShadowOffsetForBarStyle:(int64_t)a3
+- (CGSize)_currentTextShadowOffsetForBarStyle:(int64_t)style
 {
   v3 = [(_UIBarItemAppearanceStorage *)self->_appearanceStorage textAttributeForKey:*off_1E70EC9B0 state:self->_pressed];
   v4 = v3;
@@ -303,21 +303,21 @@ LABEL_15:
   return result;
 }
 
-- (id)_currentCustomBackgroundNeedsDarkening:(BOOL *)a3
+- (id)_currentCustomBackgroundNeedsDarkening:(BOOL *)darkening
 {
   WeakRetained = objc_loadWeakRetained(&self->super._item);
-  v6 = [WeakRetained _navigationBar];
+  _navigationBar = [WeakRetained _navigationBar];
 
-  v7 = [v6 isMinibar];
-  if (a3)
+  isMinibar = [_navigationBar isMinibar];
+  if (darkening)
   {
-    *a3 = 0;
+    *darkening = 0;
   }
 
   v8 = [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage backButtonBackgroundImageForState:0 isMini:0];
   if (v8)
   {
-    if (v7)
+    if (isMinibar)
     {
       v9 = [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage backButtonBackgroundImageForState:0 isMini:1];
       v10 = v9;
@@ -361,9 +361,9 @@ LABEL_15:
 
         v15 = v16;
 
-        if (a3)
+        if (darkening)
         {
-          *a3 = 1;
+          *darkening = 1;
         }
       }
 
@@ -388,9 +388,9 @@ LABEL_15:
       else
       {
         v10 = 0;
-        if (a3)
+        if (darkening)
         {
-          *a3 = 1;
+          *darkening = 1;
         }
       }
     }
@@ -433,30 +433,30 @@ LABEL_23:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   WeakRetained = objc_loadWeakRetained(&self->super._item);
-  v7 = [WeakRetained _navigationBar];
-  v8 = [v7 _currentVisualStyle];
-  v9 = [(_UINavigationItemButtonView *)self image];
-  v10 = [v7 isMinibar];
-  v11 = [(UIImageView *)self->_backgroundImageView image];
-  if (v11)
+  _navigationBar = [WeakRetained _navigationBar];
+  _currentVisualStyle = [_navigationBar _currentVisualStyle];
+  image = [(_UINavigationItemButtonView *)self image];
+  isMinibar = [_navigationBar isMinibar];
+  image2 = [(UIImageView *)self->_backgroundImageView image];
+  if (image2)
   {
     goto LABEL_8;
   }
 
   if ([(_UINavigationItemButtonView *)self _wantsAccessibilityButtonShapes])
   {
-    v12 = _UINavigationButtonAccessibilityBackground(1, v10);
+    v12 = _UINavigationButtonAccessibilityBackground(1, isMinibar);
   }
 
   else
   {
-    v11 = [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage backButtonBackgroundImageForState:0 isMini:v10];
-    if (((v11 == 0) & v10) != 1)
+    image2 = [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage backButtonBackgroundImageForState:0 isMini:isMinibar];
+    if (((image2 == 0) & isMinibar) != 1)
     {
       goto LABEL_7;
     }
@@ -464,12 +464,12 @@ LABEL_23:
     v12 = [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage backButtonBackgroundImageForState:0 isMini:0];
   }
 
-  v11 = v12;
+  image2 = v12;
 LABEL_7:
-  if (v11)
+  if (image2)
   {
 LABEL_8:
-    [v11 capInsets];
+    [image2 capInsets];
     v14 = v13;
     v16 = v15;
     goto LABEL_9;
@@ -478,26 +478,26 @@ LABEL_8:
   v16 = 0.0;
   v14 = 0.0;
 LABEL_9:
-  if (v9)
+  if (image)
   {
-    [v8 leftBackImageMargin];
+    [_currentVisualStyle leftBackImageMargin];
     v18 = fmax(v14, v17);
-    [v8 rightImageMargin];
+    [_currentVisualStyle rightImageMargin];
   }
 
   else
   {
-    [v8 leftBackTitleMarginForCustomBackButtonBackground:v11];
+    [_currentVisualStyle leftBackTitleMarginForCustomBackButtonBackground:image2];
     v18 = v20;
-    [v8 rightTitleMargin];
+    [_currentVisualStyle rightTitleMargin];
   }
 
   v21 = fmax(v16, v19);
   [WeakRetained _fontScaleAdjustment];
-  if (!v9 && v22 != 0.0)
+  if (!image && v22 != 0.0)
   {
-    [v8 backButtonIndicatorSpacing];
-    [v8 backButtonIndicatorSpacing];
+    [_currentVisualStyle backButtonIndicatorSpacing];
+    [_currentVisualStyle backButtonIndicatorSpacing];
     UIFloorToViewScale(self);
     v18 = v23;
     UIRoundToViewScale(self);
@@ -509,7 +509,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (!v9)
+  if (!image)
   {
     goto LABEL_17;
   }
@@ -535,24 +535,24 @@ LABEL_18:
   [(UIView *)self bounds];
   v5 = v4;
   v7 = v6;
-  v8 = [WeakRetained _navigationBar];
-  v9 = [v8 _currentVisualStyle];
-  v10 = [(_UINavigationItemButtonView *)self image];
-  v85 = v8;
-  v11 = [v8 isMinibar];
-  v12 = [(_UINavigationItemButtonView *)self _wantsAccessibilityButtonShapes];
+  _navigationBar = [WeakRetained _navigationBar];
+  _currentVisualStyle = [_navigationBar _currentVisualStyle];
+  image = [(_UINavigationItemButtonView *)self image];
+  v85 = _navigationBar;
+  isMinibar = [_navigationBar isMinibar];
+  _wantsAccessibilityButtonShapes = [(_UINavigationItemButtonView *)self _wantsAccessibilityButtonShapes];
   v13 = &OBJC_IVAR____UITextLayoutFragmentViewBase__containerOrigin;
-  if (v12)
+  if (_wantsAccessibilityButtonShapes)
   {
-    _UINavigationButtonAccessibilityBackground(1, v11);
+    _UINavigationButtonAccessibilityBackground(1, isMinibar);
   }
 
   else
   {
-    [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage backButtonBackgroundImageForState:0 isMini:v11];
+    [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage backButtonBackgroundImageForState:0 isMini:isMinibar];
   }
   v14 = ;
-  if (((v14 == 0) & v11) == 1)
+  if (((v14 == 0) & isMinibar) == 1)
   {
     v14 = [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage backButtonBackgroundImageForState:0 isMini:0];
   }
@@ -560,8 +560,8 @@ LABEL_18:
   backgroundImageView = self->_backgroundImageView;
   if (v14)
   {
-    v83 = v11;
-    v84 = v10;
+    v83 = isMinibar;
+    v84 = image;
     v16 = WeakRetained;
     if (!backgroundImageView)
     {
@@ -576,10 +576,10 @@ LABEL_18:
     [(UIView *)self bounds];
     [(UIImageView *)backgroundImageView setFrame:?];
     v19 = self->_backgroundImageView;
-    v20 = [v8 _barStyle];
-    v11 = [(_UINavigationItemButtonView *)self _wantsBlendModeForAccessibilityBackgrounds];
-    v21 = [(_UINavigationItemButtonView *)self _accessibilityBackgroundTintColor];
-    [UINavigationButton _resetRenderingModesForBackgroundImageView:v19 inBarStyle:v20 isEnabled:1 withAccessibilityBackground:v12 wantsBlendModeForAccessibilityBackgrounds:v11 accessibilityBackgroundTintColor:v21];
+    _barStyle = [_navigationBar _barStyle];
+    isMinibar = [(_UINavigationItemButtonView *)self _wantsBlendModeForAccessibilityBackgrounds];
+    _accessibilityBackgroundTintColor = [(_UINavigationItemButtonView *)self _accessibilityBackgroundTintColor];
+    [UINavigationButton _resetRenderingModesForBackgroundImageView:v19 inBarStyle:_barStyle isEnabled:1 withAccessibilityBackground:_wantsAccessibilityButtonShapes wantsBlendModeForAccessibilityBackgrounds:isMinibar accessibilityBackgroundTintColor:_accessibilityBackgroundTintColor];
 
     [v14 alignmentRectInsets];
     v23 = v22;
@@ -590,8 +590,8 @@ LABEL_18:
     v31 = v30;
     v33 = v32;
     WeakRetained = v16;
-    v10 = v84;
-    LOBYTE(v11) = v83;
+    image = v84;
+    LOBYTE(isMinibar) = v83;
     v13 = &OBJC_IVAR____UITextLayoutFragmentViewBase__containerOrigin;
   }
 
@@ -612,35 +612,35 @@ LABEL_18:
     v33 = 0.0;
   }
 
-  if (v10)
+  if (image)
   {
-    [v9 leftBackImageMargin];
+    [_currentVisualStyle leftBackImageMargin];
     v36 = fmax(v25, fmax(v31, v35));
     v37 = fmax(v29, v33);
-    [v9 rightImageMargin];
+    [_currentVisualStyle rightImageMargin];
   }
 
   else
   {
-    [v9 leftBackTitleMarginForCustomBackButtonBackground:v14];
+    [_currentVisualStyle leftBackTitleMarginForCustomBackButtonBackground:v14];
     v36 = fmax(v25, v39);
     v37 = fmax(v29, v33);
-    [v9 rightTitleMargin];
+    [_currentVisualStyle rightTitleMargin];
   }
 
   v40 = fmax(v37, v38);
   [WeakRetained _fontScaleAdjustment];
-  if (!v10 && v41 != 0.0)
+  if (!image && v41 != 0.0)
   {
-    [v9 backButtonIndicatorSpacing];
-    [v9 backButtonIndicatorSpacing];
+    [_currentVisualStyle backButtonIndicatorSpacing];
+    [_currentVisualStyle backButtonIndicatorSpacing];
     UIFloorToViewScale(self);
     v36 = v42;
     UIRoundToViewScale(self);
     v40 = v43;
 LABEL_23:
-    v55 = [(_UINavigationItemButtonView *)self title];
-    if (([v55 isEqualToString:&stru_1EFB14550] & 1) == 0)
+    title = [(_UINavigationItemButtonView *)self title];
+    if (([title isEqualToString:&stru_1EFB14550] & 1) == 0)
     {
       [(_UINavigationItemView *)self _titleSize];
       v57 = v56;
@@ -683,7 +683,7 @@ LABEL_23:
       }
 
       v72 = *(&self->super.super.super.super.isa + v13[448]);
-      if (v11)
+      if (isMinibar)
       {
         [v72 miniBackButtonTitlePositionOffset];
       }
@@ -706,15 +706,15 @@ LABEL_23:
         v61 = v61 + v76;
       }
 
-      v77 = [(UIView *)self window];
-      v78 = [v77 screen];
-      [v78 scale];
+      window = [(UIView *)self window];
+      screen = [window screen];
+      [screen scale];
       v80 = v79;
 
       if (v80 == 0.0)
       {
-        v81 = [objc_opt_self() mainScreen];
-        [v81 scale];
+        mainScreen = [objc_opt_self() mainScreen];
+        [mainScreen scale];
         v80 = v82;
       }
 
@@ -726,7 +726,7 @@ LABEL_23:
     goto LABEL_44;
   }
 
-  if (!v10)
+  if (!image)
   {
     goto LABEL_23;
   }
@@ -738,16 +738,16 @@ LABEL_23:
     self->_imageView = v44;
   }
 
-  [v9 topImageMargin];
+  [_currentVisualStyle topImageMargin];
   v47 = v23 + v46;
   v48 = v5 - (v36 + v40);
-  [v9 topImageMargin];
+  [_currentVisualStyle topImageMargin];
   v50 = v49;
-  [v9 bottomImageMargin];
+  [_currentVisualStyle bottomImageMargin];
   v52 = v7 - (v27 + v23 + v50 + v51);
   [(_UINavigationItemButtonView *)self imageSize];
   [(UIImageView *)self->_imageView setFrame:round(v36 + (v48 - v53) * 0.5), round(v47 + (v52 - v54) * 0.5), v53];
-  [(UIImageView *)self->_imageView setImage:v10];
+  [(UIImageView *)self->_imageView setImage:image];
   [(UIView *)self->super._label removeFromSuperview];
   [(UIView *)self addSubview:self->_imageView];
 LABEL_44:
@@ -759,57 +759,57 @@ LABEL_44:
   v4 = WeakRetained;
   if (self->_abbreviatedTitleIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [WeakRetained backBarButtonItem];
-    v6 = [v5 title];
+    backBarButtonItem = [WeakRetained backBarButtonItem];
+    title = [backBarButtonItem title];
 
-    if (!v6)
+    if (!title)
     {
-      v7 = [v4 backButtonTitle];
-      if (!v7)
+      backButtonTitle = [v4 backButtonTitle];
+      if (!backButtonTitle)
       {
-        v7 = [v4 title];
-        if (!v7)
+        backButtonTitle = [v4 title];
+        if (!backButtonTitle)
         {
-          v7 = _UINSLocalizedStringWithDefaultValue(@"Back", @"Back");
+          backButtonTitle = _UINSLocalizedStringWithDefaultValue(@"Back", @"Back");
         }
       }
 
-      v6 = v7;
+      title = backButtonTitle;
     }
   }
 
   else
   {
-    v8 = [WeakRetained _abbreviatedBackButtonTitles];
-    v6 = [v8 objectAtIndex:self->_abbreviatedTitleIndex];
+    _abbreviatedBackButtonTitles = [WeakRetained _abbreviatedBackButtonTitles];
+    title = [_abbreviatedBackButtonTitles objectAtIndex:self->_abbreviatedTitleIndex];
   }
 
-  return v6;
+  return title;
 }
 
 - (id)image
 {
   WeakRetained = objc_loadWeakRetained(&self->super._item);
-  v3 = [WeakRetained backBarButtonItem];
-  v4 = [v3 image];
+  backBarButtonItem = [WeakRetained backBarButtonItem];
+  image = [backBarButtonItem image];
 
-  return v4;
+  return image;
 }
 
 - (CGSize)imageSize
 {
   WeakRetained = objc_loadWeakRetained(&self->super._item);
-  v4 = [WeakRetained _navigationBar];
+  _navigationBar = [WeakRetained _navigationBar];
 
-  v5 = [v4 _currentVisualStyle];
-  [v4 defaultBackButtonAlignmentHeight];
+  _currentVisualStyle = [_navigationBar _currentVisualStyle];
+  [_navigationBar defaultBackButtonAlignmentHeight];
   v7 = v6;
-  [v5 topImageMargin];
+  [_currentVisualStyle topImageMargin];
   v9 = v7 - v8;
-  [v5 bottomImageMargin];
+  [_currentVisualStyle bottomImageMargin];
   v11 = v9 - v10;
-  v12 = [(_UINavigationItemButtonView *)self image];
-  [v12 size];
+  image = [(_UINavigationItemButtonView *)self image];
+  [image size];
   v14 = v13;
   v16 = v15;
 
@@ -830,11 +830,11 @@ LABEL_44:
   return result;
 }
 
-- (void)setStyle:(int64_t)a3 animated:(BOOL)a4
+- (void)setStyle:(int64_t)style animated:(BOOL)animated
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    if (a4)
+    if (animated)
     {
       [(UIView *)self bounds];
       if (!CGRectIsEmpty(v21))
@@ -850,9 +850,9 @@ LABEL_44:
         [(UIView *)self drawRect:?];
         v10 = _UIGraphicsGetImageFromCurrentImageContext(0);
         UIGraphicsEndImageContext();
-        v11 = [v10 CGImage];
-        v12 = [(UIView *)v7 layer];
-        [v12 setContents:v11];
+        cGImage = [v10 CGImage];
+        layer = [(UIView *)v7 layer];
+        [layer setContents:cGImage];
 
         [(UIView *)self addSubview:v7];
         [UIView setAnimationsEnabled:1];
@@ -871,23 +871,23 @@ LABEL_44:
       }
     }
 
-    self->_style = a3;
+    self->_style = style;
     [(UIView *)self setNeedsDisplay:v14];
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)setPressed:(BOOL)a3 initialPress:(BOOL)a4
+- (void)setPressed:(BOOL)pressed initialPress:(BOOL)press
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  if (self->_pressed != a3)
+  if (self->_pressed != pressed)
   {
-    v4 = a4;
-    v5 = a3;
-    self->_pressed = a3;
+    pressCopy = press;
+    pressedCopy = pressed;
+    self->_pressed = pressed;
     v8[0] = self;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
-    [UIButton _setVisuallyHighlighted:v5 forViews:v7 initialPress:v4];
+    [UIButton _setVisuallyHighlighted:pressedCopy forViews:v7 initialPress:pressCopy];
 
     [(UIView *)self setNeedsLayout];
   }
@@ -895,12 +895,12 @@ LABEL_44:
 
 - (id)_defaultFont
 {
-  v3 = [(_UINavigationItemView *)self navigationItem];
-  v4 = [v3 _navigationBar];
-  v5 = [v4 _currentVisualStyle];
+  navigationItem = [(_UINavigationItemView *)self navigationItem];
+  _navigationBar = [navigationItem _navigationBar];
+  _currentVisualStyle = [_navigationBar _currentVisualStyle];
 
-  v6 = [(_UINavigationItemView *)self navigationItem];
-  [v6 _fontScaleAdjustment];
+  navigationItem2 = [(_UINavigationItemView *)self navigationItem];
+  [navigationItem2 _fontScaleAdjustment];
   v8 = v7;
 
   if (v8 == 0.0)
@@ -921,7 +921,7 @@ LABEL_44:
   [v11 pointSize];
   if (v13 == 0.0)
   {
-    [v5 buttonFontSize];
+    [_currentVisualStyle buttonFontSize];
     v15 = [v11 fontWithSize:v8 * v14];
   }
 
@@ -949,21 +949,21 @@ LABEL_44:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIAccessibilityButtonShapesEnabledStatusDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIAccessibilityButtonShapesEnabledStatusDidChangeNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = _UINavigationItemButtonView;
   [(UIView *)&v4 dealloc];
 }
 
-- (void)_UIAppearance_setTintColor:(id)a3
+- (void)_UIAppearance_setTintColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   appearanceStorage = self->_appearanceStorage;
-  if (v4 | appearanceStorage)
+  if (colorCopy | appearanceStorage)
   {
-    v8 = v4;
+    v8 = colorCopy;
     if (!appearanceStorage)
     {
       v6 = objc_alloc_init(_UIBarButtonItemAppearanceStorage);
@@ -974,17 +974,17 @@ LABEL_44:
     }
 
     [(_UIBarButtonItemAppearanceStorage *)appearanceStorage setTintColor:v8];
-    v4 = v8;
+    colorCopy = v8;
   }
 }
 
-- (void)_UIAppearance_setTitleTextAttributes:(id)a3 forState:(unint64_t)a4
+- (void)_UIAppearance_setTitleTextAttributes:(id)attributes forState:(unint64_t)state
 {
-  v6 = a3;
+  attributesCopy = attributes;
   appearanceStorage = self->_appearanceStorage;
-  if (v6 | appearanceStorage)
+  if (attributesCopy | appearanceStorage)
   {
-    v8 = v6;
+    v8 = attributesCopy;
     if (!appearanceStorage)
     {
       v9 = objc_alloc_init(_UIBarButtonItemAppearanceStorage);
@@ -992,32 +992,32 @@ LABEL_44:
       self->_appearanceStorage = v9;
     }
 
-    v11 = [v8 _ui_attributesForDictionaryContainingUIStringDrawingKeys];
+    _ui_attributesForDictionaryContainingUIStringDrawingKeys = [v8 _ui_attributesForDictionaryContainingUIStringDrawingKeys];
 
-    [(_UIBarItemAppearanceStorage *)self->_appearanceStorage setTextAttributes:v11 forState:a4];
+    [(_UIBarItemAppearanceStorage *)self->_appearanceStorage setTextAttributes:_ui_attributesForDictionaryContainingUIStringDrawingKeys forState:state];
   }
 }
 
 - (BOOL)hasCustomBackgroundImage
 {
-  v2 = [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage anyBackButtonBackgroundImage];
-  v3 = v2 != 0;
+  anyBackButtonBackgroundImage = [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage anyBackButtonBackgroundImage];
+  v3 = anyBackButtonBackgroundImage != 0;
 
   return v3;
 }
 
-- (void)_UIAppearance_setBackButtonBackgroundImage:(id)a3 forState:(unint64_t)a4 barMetrics:(int64_t)a5
+- (void)_UIAppearance_setBackButtonBackgroundImage:(id)image forState:(unint64_t)state barMetrics:(int64_t)metrics
 {
-  v8 = a3;
-  if ((a5 - 101) > 1)
+  imageCopy = image;
+  if ((metrics - 101) > 1)
   {
     appearanceStorage = self->_appearanceStorage;
-    if (!(v8 | appearanceStorage))
+    if (!(imageCopy | appearanceStorage))
     {
       goto LABEL_23;
     }
 
-    v21 = v8;
+    v21 = imageCopy;
     if (!appearanceStorage)
     {
       v10 = objc_alloc_init(_UIBarButtonItemAppearanceStorage);
@@ -1043,31 +1043,31 @@ LABEL_44:
     }
 
     WeakRetained = objc_loadWeakRetained(&self->super._item);
-    v17 = [WeakRetained _navigationBar];
+    _navigationBar = [WeakRetained _navigationBar];
 
-    if (!a4)
+    if (!state)
     {
-      if (v17)
+      if (_navigationBar)
       {
-        if ((a5 != 1) != [v17 isMinibar])
+        if ((metrics != 1) != [_navigationBar isMinibar])
         {
-          v18 = [(_UINavigationItemButtonView *)self _backButtonBackgroundImageForState:0 barMetrics:a5];
+          v18 = [(_UINavigationItemButtonView *)self _backButtonBackgroundImageForState:0 barMetrics:metrics];
 
           if (v13 != v18)
           {
-            [v17 setNeedsLayout];
+            [_navigationBar setNeedsLayout];
           }
         }
       }
     }
 
-    v19 = a5 == 1;
-    v20 = [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage backButtonBackgroundImageForState:a4 isMini:v19];
-    [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage setBackButtonBackgroundImage:v13 forState:a4 isMini:v19];
+    v19 = metrics == 1;
+    v20 = [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage backButtonBackgroundImageForState:state isMini:v19];
+    [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage setBackButtonBackgroundImage:v13 forState:state isMini:v19];
     if (!v21 && v20 || v12 && !v20)
     {
       self->_customBackgroundImageChangedToOrFromNil = 1;
-      [v17 _updateBackIndicatorImage];
+      [_navigationBar _updateBackIndicatorImage];
     }
   }
 
@@ -1079,19 +1079,19 @@ LABEL_44:
     }
 
     _UIAppearance_setBackButtonBackgroundImage_forState_barMetrics__didWarn = 1;
-    v21 = v8;
+    v21 = imageCopy;
     NSLog(&cfstr_SCustomization.isa, "UIBarButtonItem", @"back button background image", "UIBarMetricsDefaultPrompt", "UIBarMetricsCompactPrompt");
   }
 
-  v8 = v21;
+  imageCopy = v21;
 LABEL_23:
 }
 
-- (id)_backButtonBackgroundImageForState:(unint64_t)a3 barMetrics:(int64_t)a4
+- (id)_backButtonBackgroundImageForState:(unint64_t)state barMetrics:(int64_t)metrics
 {
-  if ((a4 - 101) > 1)
+  if ((metrics - 101) > 1)
   {
-    v4 = [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage backButtonBackgroundImageForState:a3 isMini:a4 == 1];
+    v4 = [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage backButtonBackgroundImageForState:state isMini:metrics == 1];
   }
 
   else
@@ -1099,7 +1099,7 @@ LABEL_23:
     if ((_backButtonBackgroundImageForState_barMetrics__didWarn & 1) == 0)
     {
       _backButtonBackgroundImageForState_barMetrics__didWarn = 1;
-      NSLog(&cfstr_SCustomization.isa, a2, a3, "UIBarButtonItem", @"back button background image", "UIBarMetricsDefaultPrompt", "UIBarMetricsCompactPrompt");
+      NSLog(&cfstr_SCustomization.isa, a2, state, "UIBarButtonItem", @"back button background image", "UIBarMetricsDefaultPrompt", "UIBarMetricsCompactPrompt");
     }
 
     v4 = 0;
@@ -1108,10 +1108,10 @@ LABEL_23:
   return v4;
 }
 
-- (void)_UIAppearance_setBackButtonBackgroundVerticalPositionAdjustment:(double)a3 forBarMetrics:(int64_t)a4
+- (void)_UIAppearance_setBackButtonBackgroundVerticalPositionAdjustment:(double)adjustment forBarMetrics:(int64_t)metrics
 {
   appearanceStorage = self->_appearanceStorage;
-  if (a3 != 0.0 || appearanceStorage != 0)
+  if (adjustment != 0.0 || appearanceStorage != 0)
   {
     if (!appearanceStorage)
     {
@@ -1122,36 +1122,36 @@ LABEL_23:
       appearanceStorage = self->_appearanceStorage;
     }
 
-    [(_UIBarButtonItemAppearanceStorage *)appearanceStorage backButtonBackgroundVerticalAdjustmentForBarMetrics:a4];
-    if (v11 != a3)
+    [(_UIBarButtonItemAppearanceStorage *)appearanceStorage backButtonBackgroundVerticalAdjustmentForBarMetrics:metrics];
+    if (v11 != adjustment)
     {
-      [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage setBackButtonBackgroundVerticalAdjustment:a4 forBarMetrics:a3];
+      [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage setBackButtonBackgroundVerticalAdjustment:metrics forBarMetrics:adjustment];
       WeakRetained = objc_loadWeakRetained(&self->super._item);
-      v12 = [WeakRetained _navigationBar];
-      [v12 setNeedsLayout];
+      _navigationBar = [WeakRetained _navigationBar];
+      [_navigationBar setNeedsLayout];
     }
   }
 }
 
-- (void)_UIAppearance_setBackButtonTitlePositionAdjustment:(UIOffset)a3 forBarMetrics:(int64_t)a4
+- (void)_UIAppearance_setBackButtonTitlePositionAdjustment:(UIOffset)adjustment forBarMetrics:(int64_t)metrics
 {
-  if ((a4 - 101) <= 1)
+  if ((metrics - 101) <= 1)
   {
     if ((_UIAppearance_setBackButtonTitlePositionAdjustment_forBarMetrics__didWarn & 1) == 0)
     {
       _UIAppearance_setBackButtonTitlePositionAdjustment_forBarMetrics__didWarn = 1;
-      NSLog(&cfstr_SCustomization.isa, a2, a3.horizontal, a3.vertical, "UIBarButtonItem", @"back button title adjustment", "UIBarMetricsDefaultPrompt", "UIBarMetricsCompactPrompt");
+      NSLog(&cfstr_SCustomization.isa, a2, adjustment.horizontal, adjustment.vertical, "UIBarButtonItem", @"back button title adjustment", "UIBarMetricsDefaultPrompt", "UIBarMetricsCompactPrompt");
     }
 
     return;
   }
 
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  vertical = adjustment.vertical;
+  horizontal = adjustment.horizontal;
   appearanceStorage = self->_appearanceStorage;
   if (!appearanceStorage)
   {
-    if (a3.horizontal == 0.0 && a3.vertical == 0.0)
+    if (adjustment.horizontal == 0.0 && adjustment.vertical == 0.0)
     {
       return;
     }
@@ -1163,7 +1163,7 @@ LABEL_23:
     appearanceStorage = self->_appearanceStorage;
   }
 
-  if (a4 == 1)
+  if (metrics == 1)
   {
     [(_UIBarButtonItemAppearanceStorage *)appearanceStorage miniTitlePositionOffset];
   }
@@ -1188,7 +1188,7 @@ LABEL_23:
   if (horizontal != v13 || vertical != v14)
   {
     v15 = self->_appearanceStorage;
-    if (a4 == 1)
+    if (metrics == 1)
     {
       *v18 = horizontal;
       *&v18[1] = vertical;
@@ -1208,12 +1208,12 @@ LABEL_23:
   }
 }
 
-- (UIOffset)_backButtonTitlePositionAdjustmentForBarMetrics:(int64_t)a3
+- (UIOffset)_backButtonTitlePositionAdjustmentForBarMetrics:(int64_t)metrics
 {
-  if ((a3 - 101) > 1)
+  if ((metrics - 101) > 1)
   {
     appearanceStorage = self->_appearanceStorage;
-    if (a3 == 1)
+    if (metrics == 1)
     {
       [(_UIBarButtonItemAppearanceStorage *)appearanceStorage miniBackButtonTitlePositionOffset];
     }
@@ -1257,24 +1257,24 @@ LABEL_23:
   return result;
 }
 
-- (void)_applyBarButtonAppearanceStorage:(id)a3 withTaggedSelectors:(id)a4
+- (void)_applyBarButtonAppearanceStorage:(id)storage withTaggedSelectors:(id)selectors
 {
-  v18 = a3;
-  v6 = a4;
-  if (v6)
+  storageCopy = storage;
+  selectorsCopy = selectors;
+  if (selectorsCopy)
   {
-    objc_setAssociatedObject(self, &_UIAppearanceCustomizedSelectorsAssociationKey, v6, 1);
+    objc_setAssociatedObject(self, &_UIAppearanceCustomizedSelectorsAssociationKey, selectorsCopy, 1);
   }
 
-  if (v18)
+  if (storageCopy)
   {
-    v7 = [v18 backButtonBackgroundImageForState:0 isMini:0];
-    v8 = [v18 backButtonBackgroundImageForState:1 isMini:0];
-    v9 = [v18 backButtonBackgroundImageForState:0 isMini:1];
-    v10 = [v18 backButtonBackgroundImageForState:1 isMini:1];
-    v11 = [v18 textAttributesForState:0];
-    v12 = [v18 textAttributesForState:1];
-    if (!v6)
+    v7 = [storageCopy backButtonBackgroundImageForState:0 isMini:0];
+    v8 = [storageCopy backButtonBackgroundImageForState:1 isMini:0];
+    v9 = [storageCopy backButtonBackgroundImageForState:0 isMini:1];
+    v10 = [storageCopy backButtonBackgroundImageForState:1 isMini:1];
+    v11 = [storageCopy textAttributesForState:0];
+    v12 = [storageCopy textAttributesForState:1];
+    if (!selectorsCopy)
     {
       TagAttributeForAxes(self, v7, sel_setBackButtonBackgroundImage_forState_barMetrics_, 0, 0);
       TagAttributeForAxes(self, v8, sel_setBackButtonBackgroundImage_forState_barMetrics_, 1, 0);
@@ -1290,65 +1290,65 @@ LABEL_23:
     [(_UINavigationItemButtonView *)self _setBackButtonBackgroundImage:v10 forState:1 barMetrics:1];
     [(_UINavigationItemButtonView *)self _setTitleTextAttributes:v11 forState:0];
     [(_UINavigationItemButtonView *)self _setTitleTextAttributes:v12 forState:1];
-    v13 = [v18 textAttributesForState:2];
+    v13 = [storageCopy textAttributesForState:2];
     [(_UINavigationItemButtonView *)self _setTitleTextAttributes:v13 forState:2];
 
-    v14 = [v18 tintColor];
-    [(_UINavigationItemButtonView *)self _setTintColor:v14];
+    tintColor = [storageCopy tintColor];
+    [(_UINavigationItemButtonView *)self _setTintColor:tintColor];
 
-    v15 = [v18 backButtonTitlePositionOffset];
-    v16 = v15;
-    if (v15)
+    backButtonTitlePositionOffset = [storageCopy backButtonTitlePositionOffset];
+    v16 = backButtonTitlePositionOffset;
+    if (backButtonTitlePositionOffset)
     {
-      [v15 UIOffsetValue];
+      [backButtonTitlePositionOffset UIOffsetValue];
       [(_UINavigationItemButtonView *)self _setBackButtonTitlePositionAdjustment:0 forBarMetrics:?];
     }
 
-    v17 = [v18 miniBackButtonTitlePositionOffset];
+    miniBackButtonTitlePositionOffset = [storageCopy miniBackButtonTitlePositionOffset];
 
-    if (v17)
+    if (miniBackButtonTitlePositionOffset)
     {
-      [v17 UIOffsetValue];
+      [miniBackButtonTitlePositionOffset UIOffsetValue];
       [(_UINavigationItemButtonView *)self _setBackButtonTitlePositionAdjustment:1 forBarMetrics:?];
     }
 
-    [v18 backButtonBackgroundVerticalAdjustmentForBarMetrics:0];
+    [storageCopy backButtonBackgroundVerticalAdjustmentForBarMetrics:0];
     [(_UINavigationItemButtonView *)self _setBackButtonBackgroundVerticalPositionAdjustment:0 forBarMetrics:?];
-    [v18 backButtonBackgroundVerticalAdjustmentForBarMetrics:1];
+    [storageCopy backButtonBackgroundVerticalAdjustmentForBarMetrics:1];
     [(_UINavigationItemButtonView *)self _setBackButtonBackgroundVerticalPositionAdjustment:1 forBarMetrics:?];
-    [v18 backButtonBackgroundVerticalAdjustmentForBarMetrics:101];
+    [storageCopy backButtonBackgroundVerticalAdjustmentForBarMetrics:101];
     [(_UINavigationItemButtonView *)self _setBackButtonBackgroundVerticalPositionAdjustment:101 forBarMetrics:?];
-    [v18 backButtonBackgroundVerticalAdjustmentForBarMetrics:102];
+    [storageCopy backButtonBackgroundVerticalAdjustmentForBarMetrics:102];
     [(_UINavigationItemButtonView *)self _setBackButtonBackgroundVerticalPositionAdjustment:102 forBarMetrics:?];
     [(UIView *)self _updateNeedsDisplayOnBoundsChange];
   }
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = _UINavigationItemButtonView;
-  [(UIView *)&v12 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
-  v7 = [v6 nextFocusedItem];
+  [(UIView *)&v12 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  nextFocusedItem = [contextCopy nextFocusedItem];
 
-  if (v7 == self)
+  if (nextFocusedItem == self)
   {
-    v9 = [(UIView *)self tintColor];
-    [(UIView *)self setBackgroundColor:v9];
+    tintColor = [(UIView *)self tintColor];
+    [(UIView *)self setBackgroundColor:tintColor];
 
     goto LABEL_5;
   }
 
-  v8 = [v6 previouslyFocusedItem];
+  previouslyFocusedItem = [contextCopy previouslyFocusedItem];
 
-  if (v8 == self)
+  if (previouslyFocusedItem == self)
   {
     [(UIView *)self setBackgroundColor:0];
 LABEL_5:
-    v10 = [(_UINavigationItemView *)self navigationItem];
-    v11 = [v10 _navigationBar];
-    [v11 _updateBackIndicatorImage];
+    navigationItem = [(_UINavigationItemView *)self navigationItem];
+    _navigationBar = [navigationItem _navigationBar];
+    [_navigationBar _updateBackIndicatorImage];
   }
 }
 
@@ -1362,10 +1362,10 @@ LABEL_5:
 
 - (void)_updateBackSelectGestureRecognizer
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == 3)
+  if (userInterfaceIdiom == 3)
   {
     [(UIView *)self setUserInteractionEnabled:1];
     [(_UINavigationItemButtonView *)self _installBackSelectGestureRecognizer];
@@ -1379,8 +1379,8 @@ LABEL_5:
     v5 = 0.0;
   }
 
-  v6 = [(UIView *)self layer];
-  [v6 setCornerRadius:v5];
+  layer = [(UIView *)self layer];
+  [layer setCornerRadius:v5];
 }
 
 - (void)_installBackSelectGestureRecognizer
@@ -1410,9 +1410,9 @@ LABEL_5:
   }
 }
 
-- (void)_backSelectGestureChanged:(id)a3
+- (void)_backSelectGestureChanged:(id)changed
 {
-  if ([a3 state] == 3)
+  if ([changed state] == 3)
   {
     [(UIView *)self bounds];
     x = v13.origin.x;
@@ -1425,21 +1425,21 @@ LABEL_5:
     v14.size.width = width;
     v14.size.height = height;
     MidY = CGRectGetMidY(v14);
-    v10 = [(_UINavigationItemView *)self navigationItem];
-    v11 = [v10 _navigationBar];
+    navigationItem = [(_UINavigationItemView *)self navigationItem];
+    _navigationBar = [navigationItem _navigationBar];
 
-    [v11 convertPoint:self fromView:{MidX, MidY}];
-    [v11 popForCarplayPressAtFakePoint:?];
+    [_navigationBar convertPoint:self fromView:{MidX, MidY}];
+    [_navigationBar popForCarplayPressAtFakePoint:?];
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(UIView *)self traitCollection];
-  if ([v8 userInterfaceIdiom] != 3)
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  traitCollection = [(UIView *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] != 3)
   {
 
     goto LABEL_5;
@@ -1453,7 +1453,7 @@ LABEL_5:
 LABEL_5:
     v12.receiver = self;
     v12.super_class = _UINavigationItemButtonView;
-    v10 = [(UIView *)&v12 pointInside:v7 withEvent:x, y];
+    v10 = [(UIView *)&v12 pointInside:eventCopy withEvent:x, y];
     goto LABEL_6;
   }
 

@@ -1,5 +1,5 @@
 @interface GKLeaderboardChallengeBundleAndCountInternal
-+ (id)initWithServerFragment:(id)a3;
++ (id)initWithServerFragment:(id)fragment;
 + (id)secureCodedPropertyKeys;
 @end
 
@@ -31,14 +31,14 @@ void __71__GKLeaderboardChallengeBundleAndCountInternal_secureCodedPropertyKeys_
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)initWithServerFragment:(id)a3
++ (id)initWithServerFragment:(id)fragment
 {
-  v3 = a3;
+  fragmentCopy = fragment;
   v4 = objc_alloc_init(GKLeaderboardChallengeBundleAndCountInternal);
-  v5 = [v3 objectForKeyedSubscript:@"bundle-id"];
+  v5 = [fragmentCopy objectForKeyedSubscript:@"bundle-id"];
   [(GKLeaderboardChallengeBundleAndCountInternal *)v4 setBundleID:v5];
 
-  v6 = [v3 objectForKeyedSubscript:@"count"];
+  v6 = [fragmentCopy objectForKeyedSubscript:@"count"];
 
   [(GKLeaderboardChallengeBundleAndCountInternal *)v4 setCount:v6];
 

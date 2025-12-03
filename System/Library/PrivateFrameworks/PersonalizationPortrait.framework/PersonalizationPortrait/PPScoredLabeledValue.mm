@@ -1,28 +1,28 @@
 @interface PPScoredLabeledValue
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToScoredLabeledValue:(id)a3;
-- (PPScoredLabeledValue)initWithCoder:(id)a3;
-- (PPScoredLabeledValue)initWithLabeledValue:(id)a3 score:(double)a4 flags:(unsigned __int8)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToScoredLabeledValue:(id)value;
+- (PPScoredLabeledValue)initWithCoder:(id)coder;
+- (PPScoredLabeledValue)initWithLabeledValue:(id)value score:(double)score flags:(unsigned __int8)flags;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPScoredLabeledValue
 
-- (BOOL)isEqualToScoredLabeledValue:(id)a3
+- (BOOL)isEqualToScoredLabeledValue:(id)value
 {
-  v4 = a3;
-  if (!v4)
+  valueCopy = value;
+  if (!valueCopy)
   {
     goto LABEL_8;
   }
 
   v5 = self->_labeledValue;
   v6 = v5;
-  if (v5 == v4[2])
+  if (v5 == valueCopy[2])
   {
   }
 
@@ -36,40 +36,40 @@
     }
   }
 
-  if (self->_score != *(v4 + 3))
+  if (self->_score != *(valueCopy + 3))
   {
 LABEL_8:
     v8 = 0;
     goto LABEL_9;
   }
 
-  v8 = self->_flags == *(v4 + 8);
+  v8 = self->_flags == *(valueCopy + 8);
 LABEL_9:
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPScoredLabeledValue *)self isEqualToScoredLabeledValue:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPScoredLabeledValue *)self isEqualToScoredLabeledValue:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v6 = [(PPLabeledValue *)self->_labeledValue copyWithZone:a3];
+  v6 = [(PPLabeledValue *)self->_labeledValue copyWithZone:zone];
   v7 = [v5 scoredLabeledValueWithLabeledValue:v6 score:self->_flags flags:self->_score];
 
   return v7;
@@ -84,39 +84,39 @@ LABEL_9:
   return self->_flags - v5 + 32 * v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   labeledValue = self->_labeledValue;
-  v5 = a3;
-  [v5 encodeObject:labeledValue forKey:@"lvl"];
-  [v5 encodeDouble:@"sco" forKey:self->_score];
-  [v5 encodeInt32:self->_flags forKey:@"fla"];
+  coderCopy = coder;
+  [coderCopy encodeObject:labeledValue forKey:@"lvl"];
+  [coderCopy encodeDouble:@"sco" forKey:self->_score];
+  [coderCopy encodeInt32:self->_flags forKey:@"fla"];
 }
 
-- (PPScoredLabeledValue)initWithCoder:(id)a3
+- (PPScoredLabeledValue)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lvl"];
-  [v4 decodeDoubleForKey:@"sco"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lvl"];
+  [coderCopy decodeDoubleForKey:@"sco"];
   v7 = v6;
-  v8 = [v4 decodeInt32ForKey:@"fla"];
+  v8 = [coderCopy decodeInt32ForKey:@"fla"];
 
   v9 = [(PPScoredLabeledValue *)self initWithLabeledValue:v5 score:v8 flags:v7];
   return v9;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   score = self->_score;
-  [v4 score];
+  [compareCopy score];
   v7 = [PPUtils compareDouble:score withDouble:v6];
   if (!v7)
   {
-    v8 = [(PPLabeledValue *)self->_labeledValue label];
-    v9 = [v4 labeledValue];
-    v10 = [v9 label];
-    v7 = [v8 compare:v10];
+    label = [(PPLabeledValue *)self->_labeledValue label];
+    labeledValue = [compareCopy labeledValue];
+    label2 = [labeledValue label];
+    v7 = [label compare:label2];
   }
 
   return v7;
@@ -129,13 +129,13 @@ LABEL_9:
   return v2;
 }
 
-- (PPScoredLabeledValue)initWithLabeledValue:(id)a3 score:(double)a4 flags:(unsigned __int8)a5
+- (PPScoredLabeledValue)initWithLabeledValue:(id)value score:(double)score flags:(unsigned __int8)flags
 {
-  v10 = a3;
-  if (!v10)
+  valueCopy = value;
+  if (!valueCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PPScoredLabeledValue.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"labeledValue"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPScoredLabeledValue.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"labeledValue"}];
   }
 
   v15.receiver = self;
@@ -144,9 +144,9 @@ LABEL_9:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_labeledValue, a3);
-    v12->_score = a4;
-    v12->_flags = a5;
+    objc_storeStrong(&v11->_labeledValue, value);
+    v12->_score = score;
+    v12->_flags = flags;
   }
 
   return v12;

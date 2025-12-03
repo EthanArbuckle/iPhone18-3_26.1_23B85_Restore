@@ -1,68 +1,68 @@
 @interface NFTrustSignResponse
-+ (id)signResponseWithRawData:(id)a3 counterValueData:(id)a4;
-- (NFTrustSignResponse)initWithCoder:(id)a3;
++ (id)signResponseWithRawData:(id)data counterValueData:(id)valueData;
+- (NFTrustSignResponse)initWithCoder:(id)coder;
 - (NSString)rawData;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NFTrustSignResponse
 
 - (NSString)rawData
 {
-  v2 = [(NFTrustSignResponse *)self trustObjectInternalRawNSData];
-  v3 = [v2 NF_asHexString];
+  trustObjectInternalRawNSData = [(NFTrustSignResponse *)self trustObjectInternalRawNSData];
+  nF_asHexString = [trustObjectInternalRawNSData NF_asHexString];
 
-  return v3;
+  return nF_asHexString;
 }
 
-- (NFTrustSignResponse)initWithCoder:(id)a3
+- (NFTrustSignResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = NFTrustSignResponse;
-  v5 = [(NFTrustObject *)&v10 initWithCoder:v4];
+  v5 = [(NFTrustObject *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trustObjectInternalRawNSData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trustObjectInternalRawNSData"];
     [(NFTrustSignResponse *)v5 setValue:v6 forKey:@"trustObjectInternalRawNSData"];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"key"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"key"];
     [(NFTrustSignResponse *)v5 setValue:v7 forKey:@"key"];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"counterValue"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"counterValue"];
     [(NFTrustSignResponse *)v5 setValue:v8 forKey:@"counterValue"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NFTrustSignResponse *)self trustObjectInternalRawNSData];
-  [v4 encodeObject:v5 forKey:@"trustObjectInternalRawNSData"];
+  coderCopy = coder;
+  trustObjectInternalRawNSData = [(NFTrustSignResponse *)self trustObjectInternalRawNSData];
+  [coderCopy encodeObject:trustObjectInternalRawNSData forKey:@"trustObjectInternalRawNSData"];
 
   v6 = [(NFTrustSignResponse *)self key];
-  [v4 encodeObject:v6 forKey:@"key"];
+  [coderCopy encodeObject:v6 forKey:@"key"];
 
-  v7 = [(NFTrustSignResponse *)self counterValue];
-  [v4 encodeObject:v7 forKey:@"counterValue"];
+  counterValue = [(NFTrustSignResponse *)self counterValue];
+  [coderCopy encodeObject:counterValue forKey:@"counterValue"];
 }
 
-+ (id)signResponseWithRawData:(id)a3 counterValueData:(id)a4
++ (id)signResponseWithRawData:(id)data counterValueData:(id)valueData
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  dataCopy = data;
+  valueDataCopy = valueData;
+  if (dataCopy)
   {
-    v9 = [a1 alloc];
+    v9 = [self alloc];
     v10 = v9;
     if (v9)
     {
-      [v9 setTrustObjectInternalRawNSData:v7];
-      if (v8)
+      [v9 setTrustObjectInternalRawNSData:dataCopy];
+      if (valueDataCopy)
       {
-        v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", bswap32(*[v8 bytes]));
+        v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", bswap32(*[valueDataCopy bytes]));
         [v10 setCounterValue:v11];
       }
     }
@@ -75,9 +75,9 @@
     if (Logger)
     {
       v13 = Logger;
-      Class = object_getClass(a1);
+      Class = object_getClass(self);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(a1);
+      ClassName = object_getClassName(self);
       Name = sel_getName(a2);
       v17 = 45;
       if (isMetaClass)
@@ -92,7 +92,7 @@
     v18 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v19 = object_getClass(a1);
+      v19 = object_getClass(self);
       if (class_isMetaClass(v19))
       {
         v20 = 43;
@@ -106,7 +106,7 @@
       *buf = 67109890;
       v24 = v20;
       v25 = 2082;
-      v26 = object_getClassName(a1);
+      v26 = object_getClassName(self);
       v27 = 2082;
       v28 = sel_getName(a2);
       v29 = 1024;

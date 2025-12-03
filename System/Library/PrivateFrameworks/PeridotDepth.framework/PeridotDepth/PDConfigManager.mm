@@ -1,7 +1,7 @@
 @interface PDConfigManager
 - (PDConfigManager)init;
 - (id)currentOnlineRequest;
-- (id)updateAnchors:(PDAnchors *)a3;
+- (id)updateAnchors:(PDAnchors *)anchors;
 - (void)commit;
 @end
 
@@ -54,9 +54,9 @@ void __25__PDConfigManager_commit__block_invoke(uint64_t a1)
   }
 }
 
-- (id)updateAnchors:(PDAnchors *)a3
+- (id)updateAnchors:(PDAnchors *)anchors
 {
-  p_useNorthHS2 = &a3->banks[0].anchors[6].useNorthHS2;
+  p_useNorthHS2 = &anchors->banks[0].anchors[6].useNorthHS2;
   v4 = 767;
   v5 = 544;
   do

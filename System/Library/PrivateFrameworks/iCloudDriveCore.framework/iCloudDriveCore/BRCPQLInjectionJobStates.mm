@@ -1,14 +1,14 @@
 @interface BRCPQLInjectionJobStates
-+ (id)_getPQLInjectionFromJobStates:(id)a3;
-- (BRCPQLInjectionJobStates)initWithJobStates:(id)a3;
++ (id)_getPQLInjectionFromJobStates:(id)states;
+- (BRCPQLInjectionJobStates)initWithJobStates:(id)states;
 @end
 
 @implementation BRCPQLInjectionJobStates
 
-- (BRCPQLInjectionJobStates)initWithJobStates:(id)a3
+- (BRCPQLInjectionJobStates)initWithJobStates:(id)states
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _getPQLInjectionFromJobStates:v4];
+  statesCopy = states;
+  v5 = [objc_opt_class() _getPQLInjectionFromJobStates:statesCopy];
 
   v8.receiver = self;
   v8.super_class = BRCPQLInjectionJobStates;
@@ -17,36 +17,36 @@
   return v6;
 }
 
-+ (id)_getPQLInjectionFromJobStates:(id)a3
++ (id)_getPQLInjectionFromJobStates:(id)states
 {
-  v3 = a3;
-  if ([v3 count])
+  statesCopy = states;
+  if ([statesCopy count])
   {
-    if ([v3 count] == 1)
+    if ([statesCopy count] == 1)
     {
       v4 = MEMORY[0x277D82C08];
-      v5 = [v3 objectAtIndexedSubscript:0];
+      v5 = [statesCopy objectAtIndexedSubscript:0];
       v6 = [v4 formatInjection:{@"AND throttle_state = %@", v5}];
     }
 
     else
     {
       v10 = MEMORY[0x277CCAB68];
-      v11 = [v3 objectAtIndexedSubscript:0];
+      v11 = [statesCopy objectAtIndexedSubscript:0];
       v5 = objc_msgSend(v10, "stringWithFormat:", @"AND throttle_state IN (%@"), v11;
 
-      if ([v3 count] >= 2)
+      if ([statesCopy count] >= 2)
       {
         v12 = 1;
         do
         {
-          v13 = [v3 objectAtIndexedSubscript:v12];
+          v13 = [statesCopy objectAtIndexedSubscript:v12];
           [v5 appendFormat:@", %@", v13];
 
           ++v12;
         }
 
-        while (v12 < [v3 count]);
+        while (v12 < [statesCopy count]);
       }
 
       [v5 appendString:@""]);

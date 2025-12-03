@@ -1,114 +1,114 @@
 @interface SerializedDiskImageGraph
-+ (id)getRelativeIfContainedWithChildURL:(id)a3 parentURL:(id)a4;
-- (BOOL)savePstackWithError:(id *)a3;
-- (SerializedDiskImageGraph)initWithBaseImageURL:(id)a3 pstackURL:(id)a4 tag:(id)a5 error:(id *)a6;
-- (SerializedDiskImageGraph)initWithGraphDB:(id)a3 pstackURL:(id)a4 error:(id *)a5;
-- (SerializedDiskImageGraph)initWithPluginName:(id)a3 pluginParams:(id)a4 pstackURL:(id)a5 tag:(id)a6 error:(id *)a7;
-- (SerializedDiskImageGraph)initWithPstackURL:(id)a3 error:(id *)a4;
-- (id)URLRelativeToPstackParentWithURL:(id)a3;
-- (id)cloneToURL:(id)a3 error:(id *)a4;
++ (id)getRelativeIfContainedWithChildURL:(id)l parentURL:(id)rL;
+- (BOOL)savePstackWithError:(id *)error;
+- (SerializedDiskImageGraph)initWithBaseImageURL:(id)l pstackURL:(id)rL tag:(id)tag error:(id *)error;
+- (SerializedDiskImageGraph)initWithGraphDB:(id)b pstackURL:(id)l error:(id *)error;
+- (SerializedDiskImageGraph)initWithPluginName:(id)name pluginParams:(id)params pstackURL:(id)l tag:(id)tag error:(id *)error;
+- (SerializedDiskImageGraph)initWithPstackURL:(id)l error:(id *)error;
+- (id)URLRelativeToPstackParentWithURL:(id)l;
+- (id)cloneToURL:(id)l error:(id *)error;
 @end
 
 @implementation SerializedDiskImageGraph
 
-+ (id)getRelativeIfContainedWithChildURL:(id)a3 parentURL:(id)a4
++ (id)getRelativeIfContainedWithChildURL:(id)l parentURL:(id)rL
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isFileURL])
+  lCopy = l;
+  rLCopy = rL;
+  if ([lCopy isFileURL])
   {
-    v7 = [v5 URLByStandardizingPath];
-    v8 = [v7 path];
+    uRLByStandardizingPath = [lCopy URLByStandardizingPath];
+    path = [uRLByStandardizingPath path];
 
-    v9 = [v6 URLByStandardizingPath];
-    v10 = [v9 path];
+    uRLByStandardizingPath2 = [rLCopy URLByStandardizingPath];
+    path2 = [uRLByStandardizingPath2 path];
 
-    if (v10 && (v11 = [v8 length], v11 > objc_msgSend(v10, "length")) && objc_msgSend(v8, "hasPrefix:", v10))
+    if (path2 && (v11 = [path length], v11 > objc_msgSend(path2, "length")) && objc_msgSend(path, "hasPrefix:", path2))
     {
-      v12 = [v8 substringFromIndex:{objc_msgSend(v10, "length") + 1}];
-      v13 = [NSURL fileURLWithPath:v12 relativeToURL:v6];
+      v12 = [path substringFromIndex:{objc_msgSend(path2, "length") + 1}];
+      absoluteURL = [NSURL fileURLWithPath:v12 relativeToURL:rLCopy];
     }
 
     else
     {
-      v13 = [v5 absoluteURL];
+      absoluteURL = [lCopy absoluteURL];
     }
   }
 
   else
   {
-    v13 = v5;
+    absoluteURL = lCopy;
   }
 
-  return v13;
+  return absoluteURL;
 }
 
-- (SerializedDiskImageGraph)initWithBaseImageURL:(id)a3 pstackURL:(id)a4 tag:(id)a5 error:(id *)a6
+- (SerializedDiskImageGraph)initWithBaseImageURL:(id)l pstackURL:(id)rL tag:(id)tag error:(id *)error
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a3;
+  rLCopy = rL;
+  tagCopy = tag;
+  lCopy = l;
   v14 = objc_opt_class();
-  v15 = [v11 URLByDeletingLastPathComponent];
-  v16 = [v14 getRelativeIfContainedWithChildURL:v13 parentURL:v15];
+  uRLByDeletingLastPathComponent = [rLCopy URLByDeletingLastPathComponent];
+  v16 = [v14 getRelativeIfContainedWithChildURL:lCopy parentURL:uRLByDeletingLastPathComponent];
 
   v19.receiver = self;
   v19.super_class = SerializedDiskImageGraph;
-  v17 = [(DiskImageGraph *)&v19 initWithBaseImageURL:v16 tag:v12 error:a6];
+  v17 = [(DiskImageGraph *)&v19 initWithBaseImageURL:v16 tag:tagCopy error:error];
 
   if (v17)
   {
-    objc_storeStrong(&v17->_pstackURL, a4);
+    objc_storeStrong(&v17->_pstackURL, rL);
   }
 
   return v17;
 }
 
-- (SerializedDiskImageGraph)initWithPluginName:(id)a3 pluginParams:(id)a4 pstackURL:(id)a5 tag:(id)a6 error:(id *)a7
+- (SerializedDiskImageGraph)initWithPluginName:(id)name pluginParams:(id)params pstackURL:(id)l tag:(id)tag error:(id *)error
 {
-  v13 = a5;
+  lCopy = l;
   v17.receiver = self;
   v17.super_class = SerializedDiskImageGraph;
-  v14 = [(DiskImageGraph *)&v17 initWithPluginName:a3 pluginParams:a4 tag:a6 error:a7];
+  v14 = [(DiskImageGraph *)&v17 initWithPluginName:name pluginParams:params tag:tag error:error];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_pstackURL, a5);
+    objc_storeStrong(&v14->_pstackURL, l);
   }
 
   return v15;
 }
 
-- (SerializedDiskImageGraph)initWithGraphDB:(id)a3 pstackURL:(id)a4 error:(id *)a5
+- (SerializedDiskImageGraph)initWithGraphDB:(id)b pstackURL:(id)l error:(id *)error
 {
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 URLByDeletingLastPathComponent];
+  lCopy = l;
+  bCopy = b;
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
   v14.receiver = self;
   v14.super_class = SerializedDiskImageGraph;
-  v12 = [(DiskImageGraph *)&v14 initWithGraphDB:v10 workDir:v11 error:a5];
+  v12 = [(DiskImageGraph *)&v14 initWithGraphDB:bCopy workDir:uRLByDeletingLastPathComponent error:error];
 
   if (v12)
   {
-    objc_storeStrong(&v12->_pstackURL, a4);
+    objc_storeStrong(&v12->_pstackURL, l);
   }
 
   return v12;
 }
 
-- (id)cloneToURL:(id)a3 error:(id *)a4
+- (id)cloneToURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = SerializedDiskImageGraph;
-  v7 = [(DiskImageGraph *)&v13 cloneToURL:v6 error:a4];
+  v7 = [(DiskImageGraph *)&v13 cloneToURL:lCopy error:error];
   if (v7)
   {
-    v8 = [(SerializedDiskImageGraph *)self pstackURL];
-    v9 = [v8 lastPathComponent];
-    v10 = [v6 URLByAppendingPathComponent:v9];
+    pstackURL = [(SerializedDiskImageGraph *)self pstackURL];
+    lastPathComponent = [pstackURL lastPathComponent];
+    v10 = [lCopy URLByAppendingPathComponent:lastPathComponent];
 
-    if ([DiskImageGraph saveToPlistWithDictionary:v7 URL:v10 error:a4])
+    if ([DiskImageGraph saveToPlistWithDictionary:v7 URL:v10 error:error])
     {
       v11 = v7;
     }
@@ -127,53 +127,53 @@
   return v11;
 }
 
-- (BOOL)savePstackWithError:(id *)a3
+- (BOOL)savePstackWithError:(id *)error
 {
-  v5 = [(SerializedDiskImageGraph *)self pstackURL];
-  LOBYTE(a3) = [(DiskImageGraph *)self savePstackWithURL:v5 error:a3];
+  pstackURL = [(SerializedDiskImageGraph *)self pstackURL];
+  LOBYTE(error) = [(DiskImageGraph *)self savePstackWithURL:pstackURL error:error];
 
-  return a3;
+  return error;
 }
 
-- (id)URLRelativeToPstackParentWithURL:(id)a3
+- (id)URLRelativeToPstackParentWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = objc_opt_class();
-  v6 = [(SerializedDiskImageGraph *)self pstackURL];
-  v7 = [v6 URLByDeletingLastPathComponent];
-  v8 = [v5 getRelativeIfContainedWithChildURL:v4 parentURL:v7];
+  pstackURL = [(SerializedDiskImageGraph *)self pstackURL];
+  uRLByDeletingLastPathComponent = [pstackURL URLByDeletingLastPathComponent];
+  v8 = [v5 getRelativeIfContainedWithChildURL:lCopy parentURL:uRLByDeletingLastPathComponent];
 
   return v8;
 }
 
-- (SerializedDiskImageGraph)initWithPstackURL:(id)a3 error:(id *)a4
+- (SerializedDiskImageGraph)initWithPstackURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [NSFileHandle fileHandleForReadingFromURL:v6 error:0];
+  lCopy = l;
+  v7 = [NSFileHandle fileHandleForReadingFromURL:lCopy error:0];
   if (v7)
   {
     v12 = 0;
-    v8 = [DiskImageGraph loadPlistDictFromFileHandle:v7 dict:&v12 error:a4];
+    v8 = [DiskImageGraph loadPlistDictFromFileHandle:v7 dict:&v12 error:error];
     v9 = v12;
     if (v8)
     {
-      self = [(SerializedDiskImageGraph *)self initWithGraphDB:v9 pstackURL:v6 error:a4];
-      v10 = self;
+      self = [(SerializedDiskImageGraph *)self initWithGraphDB:v9 pstackURL:lCopy error:error];
+      selfCopy = self;
     }
 
     else
     {
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    [DiskImageGraph failWithNoPstackError:a4];
-    v10 = 0;
+    [DiskImageGraph failWithNoPstackError:error];
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

@@ -1,35 +1,35 @@
 @interface ASVSchemaASVUserIntentDetected
-- (ASVSchemaASVUserIntentDetected)initWithDictionary:(id)a3;
-- (ASVSchemaASVUserIntentDetected)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASVSchemaASVUserIntentDetected)initWithDictionary:(id)dictionary;
+- (ASVSchemaASVUserIntentDetected)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsPermanentOffsetEnabled:(BOOL)a3;
-- (void)setHasPermanentOffsetFactor:(BOOL)a3;
-- (void)setHasUserIntentVolume:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsPermanentOffsetEnabled:(BOOL)enabled;
+- (void)setHasPermanentOffsetFactor:(BOOL)factor;
+- (void)setHasUserIntentVolume:(BOOL)volume;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASVSchemaASVUserIntentDetected
 
-- (ASVSchemaASVUserIntentDetected)initWithDictionary:(id)a3
+- (ASVSchemaASVUserIntentDetected)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = ASVSchemaASVUserIntentDetected;
   v5 = [(ASVSchemaASVUserIntentDetected *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"userIntentType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"userIntentType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASVSchemaASVUserIntentDetected setUserIntentType:](v5, "setUserIntentType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"userIntentVolume"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"userIntentVolume"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,14 +37,14 @@
       [(ASVSchemaASVUserIntentDetected *)v5 setUserIntentVolume:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isPermanentOffsetEnabled"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isPermanentOffsetEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASVSchemaASVUserIntentDetected setIsPermanentOffsetEnabled:](v5, "setIsPermanentOffsetEnabled:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"permanentOffsetFactor"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"permanentOffsetFactor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,30 +58,30 @@
   return v5;
 }
 
-- (ASVSchemaASVUserIntentDetected)initWithJSON:(id)a3
+- (ASVSchemaASVUserIntentDetected)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASVSchemaASVUserIntentDetected *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASVSchemaASVUserIntentDetected *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASVSchemaASVUserIntentDetected *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -94,12 +94,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASVSchemaASVUserIntentDetected isPermanentOffsetEnabled](self, "isPermanentOffsetEnabled")}];
-    [v3 setObject:v8 forKeyedSubscript:@"isPermanentOffsetEnabled"];
+    [dictionary setObject:v8 forKeyedSubscript:@"isPermanentOffsetEnabled"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -122,7 +122,7 @@ LABEL_3:
   v9 = MEMORY[0x1E696AD98];
   [(ASVSchemaASVUserIntentDetected *)self permanentOffsetFactor];
   v10 = [v9 numberWithFloat:?];
-  [v3 setObject:v10 forKeyedSubscript:@"permanentOffsetFactor"];
+  [dictionary setObject:v10 forKeyedSubscript:@"permanentOffsetFactor"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -148,7 +148,7 @@ LABEL_11:
     v12 = off_1E78D2268[v11];
   }
 
-  [v3 setObject:v12 forKeyedSubscript:@"userIntentType"];
+  [dictionary setObject:v12 forKeyedSubscript:@"userIntentType"];
   if ((*&self->_has & 2) == 0)
   {
     goto LABEL_6;
@@ -158,12 +158,12 @@ LABEL_5:
   v5 = MEMORY[0x1E696AD98];
   [(ASVSchemaASVUserIntentDetected *)self userIntentVolume];
   v6 = [v5 numberWithFloat:?];
-  [v3 setObject:v6 forKeyedSubscript:@"userIntentVolume"];
+  [dictionary setObject:v6 forKeyedSubscript:@"userIntentVolume"];
 
 LABEL_6:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -273,16 +273,16 @@ LABEL_12:
   return v9 ^ v4 ^ v10 ^ v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_17;
@@ -291,13 +291,13 @@ LABEL_12:
   if (*&has)
   {
     userIntentType = self->_userIntentType;
-    if (userIntentType != [v4 userIntentType])
+    if (userIntentType != [equalCopy userIntentType])
     {
       goto LABEL_17;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -306,14 +306,14 @@ LABEL_12:
     if (v8)
     {
       userIntentVolume = self->_userIntentVolume;
-      [v4 userIntentVolume];
+      [equalCopy userIntentVolume];
       if (userIntentVolume != v10)
       {
         goto LABEL_17;
       }
 
       has = self->_has;
-      v6 = v4[24];
+      v6 = equalCopy[24];
     }
 
     v11 = (*&has >> 2) & 1;
@@ -322,19 +322,19 @@ LABEL_12:
       if (v11)
       {
         isPermanentOffsetEnabled = self->_isPermanentOffsetEnabled;
-        if (isPermanentOffsetEnabled != [v4 isPermanentOffsetEnabled])
+        if (isPermanentOffsetEnabled != [equalCopy isPermanentOffsetEnabled])
         {
           goto LABEL_17;
         }
 
         has = self->_has;
-        v6 = v4[24];
+        v6 = equalCopy[24];
       }
 
       v13 = (*&has >> 3) & 1;
       if (v13 == ((v6 >> 3) & 1))
       {
-        if (!v13 || (permanentOffsetFactor = self->_permanentOffsetFactor, [v4 permanentOffsetFactor], permanentOffsetFactor == v15))
+        if (!v13 || (permanentOffsetFactor = self->_permanentOffsetFactor, [equalCopy permanentOffsetFactor], permanentOffsetFactor == v15))
         {
           v16 = 1;
           goto LABEL_18;
@@ -350,9 +350,9 @@ LABEL_18:
   return v16;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -399,9 +399,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setHasPermanentOffsetFactor:(BOOL)a3
+- (void)setHasPermanentOffsetFactor:(BOOL)factor
 {
-  if (a3)
+  if (factor)
   {
     v3 = 8;
   }
@@ -414,9 +414,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsPermanentOffsetEnabled:(BOOL)a3
+- (void)setHasIsPermanentOffsetEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 4;
   }
@@ -429,9 +429,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasUserIntentVolume:(BOOL)a3
+- (void)setHasUserIntentVolume:(BOOL)volume
 {
-  if (a3)
+  if (volume)
   {
     v3 = 2;
   }

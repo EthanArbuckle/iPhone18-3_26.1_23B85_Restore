@@ -1,17 +1,17 @@
 @interface JFXPixelBufferPool
 - (CGSize)size;
-- (JFXPixelBufferPool)initWithSize:(CGSize)a3 type:(unsigned int)a4;
+- (JFXPixelBufferPool)initWithSize:(CGSize)size type:(unsigned int)type;
 - (__CVBuffer)createPixelBuffer;
 - (void)dealloc;
 @end
 
 @implementation JFXPixelBufferPool
 
-- (JFXPixelBufferPool)initWithSize:(CGSize)a3 type:(unsigned int)a4
+- (JFXPixelBufferPool)initWithSize:(CGSize)size type:(unsigned int)type
 {
-  v4 = *&a4;
-  width = a3.width;
-  height = a3.height;
+  v4 = *&type;
+  width = size.width;
+  height = size.height;
   v20[4] = *MEMORY[0x277D85DE8];
   v18.receiver = self;
   v18.super_class = JFXPixelBufferPool;

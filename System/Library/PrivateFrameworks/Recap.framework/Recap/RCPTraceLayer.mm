@@ -1,16 +1,16 @@
 @interface RCPTraceLayer
-- (void)drawInContext:(CGContext *)a3;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation RCPTraceLayer
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   v103 = *MEMORY[0x277D85DE8];
   [(RCPTraceLayer *)self bounds];
-  CGContextClearRect(a3, v104);
-  v82 = [MEMORY[0x277CBEB18] array];
-  v87 = [MEMORY[0x277CBEB38] dictionary];
+  CGContextClearRect(context, v104);
+  array = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   a = *MEMORY[0x277CBF2C0];
   b = *(MEMORY[0x277CBF2C0] + 8);
   c = *(MEMORY[0x277CBF2C0] + 16);
@@ -22,14 +22,14 @@
   ty = v12;
   v14 = v13;
   v16 = v15;
-  v17 = [(RCPTraceLayer *)self interfaceOrientation];
-  if (v17 <= 1)
+  interfaceOrientation = [(RCPTraceLayer *)self interfaceOrientation];
+  if (interfaceOrientation <= 1)
   {
-    if (v17)
+    if (interfaceOrientation)
     {
       v18 = tx;
       v19 = ty;
-      if (v17 == 1)
+      if (interfaceOrientation == 1)
       {
         a = -v14;
         d = -v16;
@@ -55,7 +55,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (v17 == 2)
+  if (interfaceOrientation == 2)
   {
     b = -v16;
     v10 = 0.0;
@@ -68,7 +68,7 @@ LABEL_10:
 
   v18 = tx;
   v19 = ty;
-  if (v17 == 3)
+  if (interfaceOrientation == 3)
   {
     c = -v14;
     v9 = 0.0;
@@ -93,17 +93,17 @@ LABEL_11:
   v22 = v98.d;
   v24 = v98.tx;
   v23 = v98.ty;
-  v25 = [(RCPTraceLayer *)self eventStream];
-  v77 = [v25 environment];
+  eventStream = [(RCPTraceLayer *)self eventStream];
+  environment = [eventStream environment];
 
   v94 = 0u;
   v95 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v26 = [(RCPTraceLayer *)self eventStream];
-  v27 = [v26 events];
+  eventStream2 = [(RCPTraceLayer *)self eventStream];
+  events = [eventStream2 events];
 
-  v79 = [v27 countByEnumeratingWithState:&v92 objects:v102 count:16];
+  v79 = [events countByEnumeratingWithState:&v92 objects:v102 count:16];
   if (v79)
   {
     v78 = *v93;
@@ -113,7 +113,7 @@ LABEL_13:
     {
       if (*v93 != v78)
       {
-        objc_enumerationMutation(v27);
+        objc_enumerationMutation(events);
       }
 
       v29 = *(*(&v92 + 1) + 8 * v28);
@@ -145,14 +145,14 @@ LABEL_13:
           v41 = IOHIDEventGetIntegerValue();
 
           v42 = [MEMORY[0x277CCABB0] numberWithInteger:IntegerValue];
-          v43 = [v87 objectForKeyedSubscript:v42];
+          v43 = [dictionary objectForKeyedSubscript:v42];
 
           if (v41)
           {
             if (v43)
             {
               v44 = [MEMORY[0x277CCABB0] numberWithInteger:IntegerValue];
-              [v87 removeObjectForKey:v44];
+              [dictionary removeObjectForKey:v44];
             }
 
             [(RCPFilePath *)v43 setFinished:1];
@@ -172,23 +172,23 @@ LABEL_13:
               -[RCPFilePath setTimestamp:](v43, "setTimestamp:", [v29 timestamp]);
               -[RCPFilePath setEndTimestamp:](v43, "setEndTimestamp:", [v29 timestamp] + 100);
               v45 = [MEMORY[0x277CCABB0] numberWithInteger:IntegerValue];
-              [v87 setObject:v43 forKeyedSubscript:v45];
+              [dictionary setObject:v43 forKeyedSubscript:v45];
 
-              [v82 addObject:v43];
+              [array addObject:v43];
             }
 
             IsEmpty = CGPathIsEmpty([(RCPFilePath *)v43 path]);
-            v47 = [(RCPFilePath *)v43 path];
+            path = [(RCPFilePath *)v43 path];
             v48 = v24 + v21 * v39 + txa * v36;
             v49 = v23 + v22 * v39 + v20 * v36;
             if (IsEmpty)
             {
-              CGPathMoveToPoint(v47, 0, v48, v49);
+              CGPathMoveToPoint(path, 0, v48, v49);
             }
 
             else
             {
-              CGPathAddLineToPoint(v47, 0, v48, v49);
+              CGPathAddLineToPoint(path, 0, v48, v49);
             }
           }
 
@@ -201,7 +201,7 @@ LABEL_13:
       v28 = tya + 1;
       if (tya + 1 == v79)
       {
-        v79 = [v27 countByEnumeratingWithState:&v92 objects:v102 count:16];
+        v79 = [events countByEnumeratingWithState:&v92 objects:v102 count:16];
         if (v79)
         {
           goto LABEL_13;
@@ -212,13 +212,13 @@ LABEL_13:
     }
   }
 
-  [v77 timeScale];
+  [environment timeScale];
   v51 = v50;
-  [v77 timeScale];
+  [environment timeScale];
   v53 = v52;
-  CGContextSetLineWidth(a3, 4.0);
-  CGContextSetLineJoin(a3, kCGLineJoinRound);
-  CGContextSetLineCap(a3, kCGLineCapRound);
+  CGContextSetLineWidth(context, 4.0);
+  CGContextSetLineJoin(context, kCGLineJoinRound);
+  CGContextSetLineCap(context, kCGLineCapRound);
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   *components = xmmword_261A040D0;
   v101 = unk_261A040E0;
@@ -227,7 +227,7 @@ LABEL_13:
   v89 = 0u;
   v90 = 0u;
   v91 = 0u;
-  v56 = v82;
+  v56 = array;
   v57 = [v56 countByEnumeratingWithState:&v88 objects:v99 count:16];
   if (v57)
   {
@@ -262,19 +262,19 @@ LABEL_13:
               }
             }
 
-            CGContextSetRGBStrokeColor(a3, 1.0, 1.0, 1.0, v65);
-            CGContextAddPath(a3, [v62 path]);
-            CGContextSetLineWidth(a3, 6.0);
-            CGContextStrokePath(a3);
+            CGContextSetRGBStrokeColor(context, 1.0, 1.0, 1.0, v65);
+            CGContextAddPath(context, [v62 path]);
+            CGContextSetLineWidth(context, 6.0);
+            CGContextStrokePath(context);
             CopyWithAlpha = CGColorCreateCopyWithAlpha(v55, v65);
-            CGContextSetStrokeColorWithColor(a3, CopyWithAlpha);
-            CGContextAddPath(a3, [v62 path]);
-            CGContextSetLineWidth(a3, 4.0);
-            CGContextStrokePath(a3);
+            CGContextSetStrokeColorWithColor(context, CopyWithAlpha);
+            CGContextAddPath(context, [v62 path]);
+            CGContextSetLineWidth(context, 4.0);
+            CGContextStrokePath(context);
             v69 = self->_time;
             if (v69 < [v62 endTimestamp] + txb)
             {
-              CGContextSetFillColorWithColor(a3, v55);
+              CGContextSetFillColorWithColor(context, v55);
               CurrentPoint = CGPathGetCurrentPoint([v62 path]);
               v71 = 16.0;
               if ([v62 finished])
@@ -294,13 +294,13 @@ LABEL_13:
               v105.origin.y = v75;
               v105.size.width = v76;
               v105.size.height = v76;
-              CGContextFillEllipseInRect(a3, v105);
-              CGContextSetRGBStrokeColor(a3, 1.0, 1.0, 1.0, 1.0);
+              CGContextFillEllipseInRect(context, v105);
+              CGContextSetRGBStrokeColor(context, 1.0, 1.0, 1.0, 1.0);
               v106.origin.x = v74;
               v106.origin.y = v75;
               v106.size.width = v76;
               v106.size.height = v76;
-              CGContextStrokeEllipseInRect(a3, v106);
+              CGContextStrokeEllipseInRect(context, v106);
             }
           }
         }

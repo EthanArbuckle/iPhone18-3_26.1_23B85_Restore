@@ -1,10 +1,10 @@
 @interface UIAccessibilityHUDPositionManager
 + (id)sharedInstance;
 - (UIAccessibilityHUDPositionManager)init;
-- (void)adjustViewPropertiesForHUD:(id)a3 withReferenceView:(id)a4 keyboardFrame:(CGRect)a5;
+- (void)adjustViewPropertiesForHUD:(id)d withReferenceView:(id)view keyboardFrame:(CGRect)frame;
 - (void)dealloc;
-- (void)keyboardFrameDidChange:(id)a3;
-- (void)updateFramesForManagedHUDsUsingKeyboardFrame:(CGRect)a3;
+- (void)keyboardFrameDidChange:(id)change;
+- (void)updateFramesForManagedHUDsUsingKeyboardFrame:(CGRect)frame;
 @end
 
 @implementation UIAccessibilityHUDPositionManager
@@ -35,9 +35,9 @@ void __51__UIAccessibilityHUDPositionManager_sharedInstance__block_invoke()
   v2 = [(UIAccessibilityHUDPositionManager *)&v11 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     managedHUDs = v2->_managedHUDs;
-    v2->_managedHUDs = v3;
+    v2->_managedHUDs = strongToWeakObjectsMapTable;
 
     v5 = +[UIPeripheralHost allVisiblePeripheralFrames];
     v2->_keyboardAvoidanceArea.origin.x = unionRectValues(v5);
@@ -47,8 +47,8 @@ void __51__UIAccessibilityHUDPositionManager_sharedInstance__block_invoke()
 
     if (dyld_program_sdk_at_least())
     {
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v9 addObserver:v2 selector:sel_keyboardFrameDidChange_ name:@"UIKeyboardDidChangeFrameNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v2 selector:sel_keyboardFrameDidChange_ name:@"UIKeyboardDidChangeFrameNotification" object:0];
     }
   }
 
@@ -57,20 +57,20 @@ void __51__UIAccessibilityHUDPositionManager_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIKeyboardDidChangeFrameNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIKeyboardDidChangeFrameNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = UIAccessibilityHUDPositionManager;
   [(UIAccessibilityHUDPositionManager *)&v4 dealloc];
 }
 
-- (void)updateFramesForManagedHUDsUsingKeyboardFrame:(CGRect)a3
+- (void)updateFramesForManagedHUDsUsingKeyboardFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
@@ -103,7 +103,7 @@ void __51__UIAccessibilityHUDPositionManager_sharedInstance__block_invoke()
   }
 }
 
-- (void)keyboardFrameDidChange:(id)a3
+- (void)keyboardFrameDidChange:(id)change
 {
   v4 = +[UIPeripheralHost allVisiblePeripheralFrames];
   self->_keyboardAvoidanceArea.origin.x = unionRectValues(v4);
@@ -122,16 +122,16 @@ void __51__UIAccessibilityHUDPositionManager_sharedInstance__block_invoke()
   }
 }
 
-- (void)adjustViewPropertiesForHUD:(id)a3 withReferenceView:(id)a4 keyboardFrame:(CGRect)a5
+- (void)adjustViewPropertiesForHUD:(id)d withReferenceView:(id)view keyboardFrame:(CGRect)frame
 {
-  width = a5.size.width;
-  height = a5.size.height;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 window];
-  [v10 bounds];
+  width = frame.size.width;
+  height = frame.size.height;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  dCopy = d;
+  viewCopy = view;
+  window = [dCopy window];
+  [window bounds];
   v11 = v80.origin.x;
   v12 = v80.origin.y;
   v13 = v80.size.width;
@@ -146,16 +146,16 @@ void __51__UIAccessibilityHUDPositionManager_sharedInstance__block_invoke()
     v15 = 48.0;
   }
 
-  v16 = [v9 window];
-  [v9 bounds];
-  [v9 convertRect:0 toView:?];
-  [v16 convertRect:v10 toWindow:?];
+  window2 = [viewCopy window];
+  [viewCopy bounds];
+  [viewCopy convertRect:0 toView:?];
+  [window2 convertRect:window toWindow:?];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
 
-  [v10 bounds];
+  [window bounds];
   v94.origin.x = v25;
   v94.origin.y = v26;
   v94.size.width = v27;
@@ -173,7 +173,7 @@ void __51__UIAccessibilityHUDPositionManager_sharedInstance__block_invoke()
   v30 = MEMORY[0x1E695F058];
   v32 = *MEMORY[0x1E695F058];
   v31 = *(MEMORY[0x1E695F058] + 8);
-  v33 = [v9 window];
+  window3 = [viewCopy window];
 
   objc_opt_class();
   v73 = v31;
@@ -183,13 +183,13 @@ void __51__UIAccessibilityHUDPositionManager_sharedInstance__block_invoke()
     goto LABEL_8;
   }
 
-  v34 = [v8 traitCollection];
-  if ([v34 userInterfaceIdiom] == 1)
+  traitCollection = [dCopy traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 1)
   {
 
 LABEL_8:
 LABEL_9:
-    [v10 convertRect:0 fromWindow:{x, y, width, height}];
+    [window convertRect:0 fromWindow:{x, y, width, height}];
     v32 = v35;
     v37 = v36;
     v67 = v39;
@@ -197,10 +197,10 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v63 = [v8 window];
-  v64 = [v63 _isHostedInAnotherProcess];
+  window4 = [dCopy window];
+  _isHostedInAnotherProcess = [window4 _isHostedInAnotherProcess];
 
-  if (v64)
+  if (_isHostedInAnotherProcess)
   {
     goto LABEL_9;
   }
@@ -270,7 +270,7 @@ LABEL_10:
   v51 = p_remainder->origin.y;
   v50 = p_remainder->size.width;
   v52 = p_remainder->origin.x;
-  [v8 sizeThatFits:{v50, v48, *&rect}];
+  [dCopy sizeThatFits:{v50, v48, *&rect}];
   v54 = v53;
   v56 = v55;
   v90.origin.x = v52;
@@ -299,19 +299,19 @@ LABEL_10:
   v92.size.width = v50;
   v92.size.height = v48;
   CGRectGetMidX(v92);
-  UIRoundToViewScale(v8);
+  UIRoundToViewScale(dCopy);
   v61 = v54 * 0.5 + v60;
   v93.origin.x = v52;
   v93.origin.y = v51;
   v93.size.width = v50;
   v93.size.height = v48;
   CGRectGetMidY(v93);
-  UIRoundToViewScale(v8);
-  [v8 setCenter:{v61, v56 * 0.5 + v62}];
-  [v8 setBounds:{v74, v73, v54, v56}];
+  UIRoundToViewScale(dCopy);
+  [dCopy setCenter:{v61, v56 * 0.5 + v62}];
+  [dCopy setBounds:{v74, v73, v54, v56}];
   CGAffineTransformMakeScale(&v76, v59, v59);
   v75 = v76;
-  [v8 setTransform:&v75];
+  [dCopy setTransform:&v75];
 }
 
 @end

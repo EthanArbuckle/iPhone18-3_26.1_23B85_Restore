@@ -1,39 +1,39 @@
 @interface CADStatsOccurrences
 - (id)eventDictionaries;
-- (void)prepareWithContext:(id)a3;
-- (void)processOccurrences:(id)a3;
+- (void)prepareWithContext:(id)context;
+- (void)processOccurrences:(id)occurrences;
 @end
 
 @implementation CADStatsOccurrences
 
-- (void)prepareWithContext:(id)a3
+- (void)prepareWithContext:(id)context
 {
   v4 = objc_opt_new();
   occurrenceInfos = self->_occurrenceInfos;
   self->_occurrenceInfos = v4;
 
-  v13 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v6 = objc_opt_new();
   now = self->_now;
   self->_now = v6;
 
   v8 = objc_alloc(MEMORY[0x277CF77A0]);
-  v9 = [v13 dateByAddingUnit:16 value:-1 toDate:self->_now options:1024];
-  v10 = [v13 dateByAddingUnit:16 value:365 toDate:self->_now options:1024];
+  v9 = [currentCalendar dateByAddingUnit:16 value:-1 toDate:self->_now options:1024];
+  v10 = [currentCalendar dateByAddingUnit:16 value:365 toDate:self->_now options:1024];
   v11 = [v8 initWithStartDate:v9 endDate:v10];
   desiredOccurrenceRange = self->_desiredOccurrenceRange;
   self->_desiredOccurrenceRange = v11;
 }
 
-- (void)processOccurrences:(id)a3
+- (void)processOccurrences:(id)occurrences
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  occurrencesCopy = occurrences;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v36 objects:v40 count:16];
+  v5 = [occurrencesCopy countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v5)
   {
     v6 = v5;
@@ -45,7 +45,7 @@
       {
         if (*v37 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(occurrencesCopy);
         }
 
         v9 = *(*(&v36 + 1) + 8 * v8);
@@ -178,7 +178,7 @@ LABEL_23:
       }
 
       while (v8 != v6);
-      v6 = [v4 countByEnumeratingWithState:&v36 objects:v40 count:16];
+      v6 = [occurrencesCopy countByEnumeratingWithState:&v36 objects:v40 count:16];
     }
 
     while (v6);

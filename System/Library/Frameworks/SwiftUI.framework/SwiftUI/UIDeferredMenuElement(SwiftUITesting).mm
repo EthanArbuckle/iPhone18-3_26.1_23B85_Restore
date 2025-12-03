@@ -11,15 +11,15 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 delegate];
+    delegate = [self delegate];
   }
 
   else
   {
-    v2 = 0;
+    delegate = 0;
   }
 
-  return v2;
+  return delegate;
 }
 
 - (void)setSwiftUI_delegate:()SwiftUITesting
@@ -27,7 +27,7 @@
   v4 = a3;
   if (objc_opt_respondsToSelector())
   {
-    [a1 setDelegate:v4];
+    [self setDelegate:v4];
   }
 }
 
@@ -35,15 +35,15 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 fulfilledElements];
+    fulfilledElements = [self fulfilledElements];
   }
 
   else
   {
-    v2 = 0;
+    fulfilledElements = 0;
   }
 
-  return v2;
+  return fulfilledElements;
 }
 
 - (uint64_t)swiftUI_fulfillIfNecessary
@@ -52,7 +52,7 @@
   if (result)
   {
 
-    return [a1 _fulfillIfNecessaryWithInitialResponder:0];
+    return [self _fulfillIfNecessaryWithInitialResponder:0];
   }
 
   return result;

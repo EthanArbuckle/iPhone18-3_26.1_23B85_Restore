@@ -5,23 +5,23 @@
 - (BOOL)p_autoplayEnabled;
 - (BOOL)p_isExpanded;
 - (BOOL)p_shouldShowPlayButton;
-- (THWKeynoteLayout)initWithInfo:(id)a3;
+- (THWKeynoteLayout)initWithInfo:(id)info;
 - (THWKeynoteShowLayout)showLayout;
 - (id)additionalLayouts;
 - (id)childInfosForLayout;
 - (id)dependentLayouts;
-- (id)layoutGeometryForLayout:(id)a3;
+- (id)layoutGeometryForLayout:(id)layout;
 - (id)layoutGeometryFromProvider;
 - (void)dealloc;
 @end
 
 @implementation THWKeynoteLayout
 
-- (THWKeynoteLayout)initWithInfo:(id)a3
+- (THWKeynoteLayout)initWithInfo:(id)info
 {
   v6.receiver = self;
   v6.super_class = THWKeynoteLayout;
-  v3 = [(THWKeynoteLayout *)&v6 initWithInfo:a3];
+  v3 = [(THWKeynoteLayout *)&v6 initWithInfo:info];
   v4 = v3;
   if (v3)
   {
@@ -91,10 +91,10 @@
   result = [-[THWKeynoteLayout info](self "info")];
   if (result)
   {
-    v4 = [(THWKeynoteLayout *)self layoutController];
+    layoutController = [(THWKeynoteLayout *)self layoutController];
     v5 = [-[THWKeynoteLayout info](self "info")];
 
-    return [v4 layoutForInfo:v5];
+    return [layoutController layoutForInfo:v5];
   }
 
   return result;
@@ -121,10 +121,10 @@
 - (id)dependentLayouts
 {
   v3 = +[NSMutableArray array];
-  v4 = [(THWKeynoteLayout *)self showLayout];
-  if (v4)
+  showLayout = [(THWKeynoteLayout *)self showLayout];
+  if (showLayout)
   {
-    [v3 addObject:v4];
+    [v3 addObject:showLayout];
   }
 
   if ([(THWKeynoteLayout *)self p_shouldShowPlayButton]&& self->_playButtonLayout)
@@ -184,19 +184,19 @@
 
 - (BOOL)isCompactFlowPresentation
 {
-  v3 = [(THWKeynoteLayout *)self delegate];
+  delegate = [(THWKeynoteLayout *)self delegate];
 
-  return [(THWWidgetLayoutDelegate *)v3 widgetLayoutIsCompactFlow:self];
+  return [(THWWidgetLayoutDelegate *)delegate widgetLayoutIsCompactFlow:self];
 }
 
 - (BOOL)isReflowablePresentation
 {
-  v3 = [(THWKeynoteLayout *)self delegate];
+  delegate = [(THWKeynoteLayout *)self delegate];
 
-  return [(THWWidgetLayoutDelegate *)v3 widgetLayoutIsReflowablePresentation:self];
+  return [(THWWidgetLayoutDelegate *)delegate widgetLayoutIsReflowablePresentation:self];
 }
 
-- (id)layoutGeometryForLayout:(id)a3
+- (id)layoutGeometryForLayout:(id)layout
 {
   if (![-[THWKeynoteLayout info](self "info")])
   {
@@ -215,12 +215,12 @@
     v5 = [[TSDLayoutGeometry alloc] initWithFrame:{v6, v7, v8, v9}];
   }
 
-  if ([(THWKeynoteLayout *)self showLayout]== a3 || self->_playButtonLayout == a3)
+  if ([(THWKeynoteLayout *)self showLayout]== layout || self->_playButtonLayout == layout)
   {
     return v5;
   }
 
-  if (self->_transportControlLayout != a3)
+  if (self->_transportControlLayout != layout)
   {
     return 0;
   }

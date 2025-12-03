@@ -1,19 +1,19 @@
 @interface PKPaymentTransactionTag
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentTransactionTag)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentTransactionTag)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentTransactionTag
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -82,34 +82,34 @@ LABEL_19:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_rank];
-  [v3 safelyAddObject:self->_localeIdentifier];
-  [v3 safelyAddObject:self->_localizedTitle];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_rank];
+  [array safelyAddObject:self->_localeIdentifier];
+  [array safelyAddObject:self->_localizedTitle];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_type - v4 + 32 * v4;
 
   return v5;
 }
 
-- (PKPaymentTransactionTag)initWithCoder:(id)a3
+- (PKPaymentTransactionTag)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKPaymentTransactionTag;
   v5 = [(PKPaymentTransactionTag *)&v13 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedTitle"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedTitle"];
     localizedTitle = v5->_localizedTitle;
     v5->_localizedTitle = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localeIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localeIdentifier"];
     localeIdentifier = v5->_localeIdentifier;
     v5->_localeIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rank"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rank"];
     rank = v5->_rank;
     v5->_rank = v10;
   }
@@ -117,14 +117,14 @@ LABEL_19:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"type"];
-  [v5 encodeObject:self->_localizedTitle forKey:@"localizedTitle"];
-  [v5 encodeObject:self->_localeIdentifier forKey:@"localeIdentifier"];
-  [v5 encodeObject:self->_rank forKey:@"rank"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"type"];
+  [coderCopy encodeObject:self->_localizedTitle forKey:@"localizedTitle"];
+  [coderCopy encodeObject:self->_localeIdentifier forKey:@"localeIdentifier"];
+  [coderCopy encodeObject:self->_rank forKey:@"rank"];
 }
 
 @end

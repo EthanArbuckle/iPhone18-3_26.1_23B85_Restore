@@ -50,7 +50,7 @@
 + (id)__ck_shortPreferredFontForTextStyle:()CKUtilities size:
 {
   v5 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:a4 addingSymbolicTraits:0x8000 options:0];
-  v6 = [MEMORY[0x1E69DB878] fontWithDescriptor:v5 size:a1];
+  v6 = [MEMORY[0x1E69DB878] fontWithDescriptor:v5 size:self];
 
   return v6;
 }
@@ -97,12 +97,12 @@
 + (id)__ck_emphasizedFontFromFont:()CKUtilities
 {
   v3 = a3;
-  v4 = [v3 fontDescriptor];
-  v5 = [v4 symbolicTraits];
+  fontDescriptor = [v3 fontDescriptor];
+  symbolicTraits = [fontDescriptor symbolicTraits];
 
-  v6 = [v3 fontDescriptor];
+  fontDescriptor2 = [v3 fontDescriptor];
 
-  v7 = [v6 fontDescriptorWithSymbolicTraits:v5 | 2u];
+  v7 = [fontDescriptor2 fontDescriptorWithSymbolicTraits:symbolicTraits | 2u];
 
   v8 = [MEMORY[0x1E69DB878] fontWithDescriptor:v7 size:0.0];
 
@@ -122,14 +122,14 @@
 - (uint64_t)__ck_fontScaledByUserPreference
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 defaultBalloonTextFont];
-  [v3 pointSize];
+  defaultBalloonTextFont = [v2 defaultBalloonTextFont];
+  [defaultBalloonTextFont pointSize];
   v5 = v4;
 
-  [a1 pointSize];
+  [self pointSize];
   v7 = v6 + 13.0 - v5;
 
-  return [a1 fontWithSize:v7];
+  return [self fontWithSize:v7];
 }
 
 - (id)__ck_fontWithWeight:()CKUtilities
@@ -143,11 +143,11 @@
   v13[0] = v3;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
-  v5 = [a1 fontDescriptor];
-  v6 = [v5 fontDescriptorByAddingAttributes:v4];
+  fontDescriptor = [self fontDescriptor];
+  v6 = [fontDescriptor fontDescriptorByAddingAttributes:v4];
 
   v7 = MEMORY[0x1E69DB878];
-  [a1 pointSize];
+  [self pointSize];
   v8 = [v7 fontWithDescriptor:v6 size:?];
 
   return v8;

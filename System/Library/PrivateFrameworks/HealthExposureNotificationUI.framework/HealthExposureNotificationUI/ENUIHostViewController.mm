@@ -1,8 +1,8 @@
 @interface ENUIHostViewController
-+ (id)requestRemoteViewControllerWithConnectionHandler:(id)a3;
++ (id)requestRemoteViewControllerWithConnectionHandler:(id)handler;
 - (ENUIHostViewControllerDelegate)delegate;
-- (void)didFinishWithError:(id)a3;
-- (void)setPresentationRequest:(id)a3;
+- (void)didFinishWithError:(id)error;
+- (void)setPresentationRequest:(id)request;
 - (void)show;
 - (void)viewDidLoad;
 @end
@@ -16,30 +16,30 @@
   [(ENUIHostViewController *)&v2 viewDidLoad];
 }
 
-- (void)setPresentationRequest:(id)a3
+- (void)setPresentationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(ENUIHostViewController *)self _remoteViewControllerProxy];
-  [v5 setPresentationRequest:v4];
+  requestCopy = request;
+  _remoteViewControllerProxy = [(ENUIHostViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setPresentationRequest:requestCopy];
 }
 
 - (void)show
 {
-  v2 = [(ENUIHostViewController *)self _remoteViewControllerProxy];
-  [v2 show];
+  _remoteViewControllerProxy = [(ENUIHostViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy show];
 }
 
-- (void)didFinishWithError:(id)a3
+- (void)didFinishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(ENUIHostViewController *)self delegate];
-  [v5 hostViewControllerDidFinishWithError:v4];
+  errorCopy = error;
+  delegate = [(ENUIHostViewController *)self delegate];
+  [delegate hostViewControllerDidFinishWithError:errorCopy];
 }
 
-+ (id)requestRemoteViewControllerWithConnectionHandler:(id)a3
++ (id)requestRemoteViewControllerWithConnectionHandler:(id)handler
 {
-  v3 = a3;
-  v4 = [objc_opt_class() requestViewController:@"ENUIRemotePresentationViewController" fromServiceWithBundleIdentifier:@"com.apple.PublicHealthRemoteUI" connectionHandler:v3];
+  handlerCopy = handler;
+  v4 = [objc_opt_class() requestViewController:@"ENUIRemotePresentationViewController" fromServiceWithBundleIdentifier:@"com.apple.PublicHealthRemoteUI" connectionHandler:handlerCopy];
 
   return v4;
 }

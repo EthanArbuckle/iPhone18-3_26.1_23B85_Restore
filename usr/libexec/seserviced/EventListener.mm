@@ -1,14 +1,14 @@
 @interface EventListener
-- (void)onNotificationWithNotification:(id)a3;
+- (void)onNotificationWithNotification:(id)notification;
 @end
 
 @implementation EventListener
 
-- (void)onNotificationWithNotification:(id)a3
+- (void)onNotificationWithNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
 
-  sub_1000B9CA0(v3);
+  sub_1000B9CA0(notificationCopy);
 }
 
 @end

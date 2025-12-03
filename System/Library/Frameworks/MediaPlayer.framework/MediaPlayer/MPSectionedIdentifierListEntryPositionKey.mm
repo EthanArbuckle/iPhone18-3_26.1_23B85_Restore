@@ -1,33 +1,33 @@
 @interface MPSectionedIdentifierListEntryPositionKey
-+ (id)positionKeyWithDeviceIdentifier:(id)a3 generation:(id)a4;
-- (MPSectionedIdentifierListEntryPositionKey)initWithCoder:(id)a3;
-- (int64_t)compare:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)positionKeyWithDeviceIdentifier:(id)identifier generation:(id)generation;
+- (MPSectionedIdentifierListEntryPositionKey)initWithCoder:(id)coder;
+- (int64_t)compare:(id)compare;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSectionedIdentifierListEntryPositionKey
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   deviceIdentifier = self->_deviceIdentifier;
-  v5 = a3;
-  [v5 encodeObject:deviceIdentifier forKey:@"did"];
-  [v5 encodeObject:self->_generation forKey:@"gen"];
+  coderCopy = coder;
+  [coderCopy encodeObject:deviceIdentifier forKey:@"did"];
+  [coderCopy encodeObject:self->_generation forKey:@"gen"];
 }
 
-- (MPSectionedIdentifierListEntryPositionKey)initWithCoder:(id)a3
+- (MPSectionedIdentifierListEntryPositionKey)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MPSectionedIdentifierListEntryPositionKey;
   v5 = [(MPSectionedIdentifierListEntryPositionKey *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"did"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"did"];
     deviceIdentifier = v5->_deviceIdentifier;
     v5->_deviceIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gen"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gen"];
     generation = v5->_generation;
     v5->_generation = v8;
   }
@@ -35,34 +35,34 @@
   return v5;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(MPSectionedIdentifierListEntryPositionKey *)self generation];
-  v6 = [v4 generation];
-  v7 = [v5 compare:v6];
+  compareCopy = compare;
+  generation = [(MPSectionedIdentifierListEntryPositionKey *)self generation];
+  generation2 = [compareCopy generation];
+  v7 = [generation compare:generation2];
 
   if (!v7)
   {
-    v8 = [(MPSectionedIdentifierListEntryPositionKey *)self deviceIdentifier];
-    v9 = [v4 deviceIdentifier];
-    v7 = [v8 compare:v9];
+    deviceIdentifier = [(MPSectionedIdentifierListEntryPositionKey *)self deviceIdentifier];
+    deviceIdentifier2 = [compareCopy deviceIdentifier];
+    v7 = [deviceIdentifier compare:deviceIdentifier2];
   }
 
   return v7;
 }
 
-+ (id)positionKeyWithDeviceIdentifier:(id)a3 generation:(id)a4
++ (id)positionKeyWithDeviceIdentifier:(id)identifier generation:(id)generation
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = objc_alloc_init(a1);
-  v9 = [v7 copy];
+  generationCopy = generation;
+  identifierCopy = identifier;
+  v8 = objc_alloc_init(self);
+  v9 = [identifierCopy copy];
 
   v10 = v8[1];
   v8[1] = v9;
 
-  v11 = [v6 copy];
+  v11 = [generationCopy copy];
   v12 = v8[2];
   v8[2] = v11;
 

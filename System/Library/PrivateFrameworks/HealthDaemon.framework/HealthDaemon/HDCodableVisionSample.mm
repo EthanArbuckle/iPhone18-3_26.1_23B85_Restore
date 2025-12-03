@@ -1,42 +1,42 @@
 @interface HDCodableVisionSample
-- (BOOL)applyToObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)applyToObject:(id)object;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasLeftAxis:(BOOL)a3;
-- (void)setHasLeftBaseCurve:(BOOL)a3;
-- (void)setHasLeftContactDiameter:(BOOL)a3;
-- (void)setHasLeftCylinder:(BOOL)a3;
-- (void)setHasLeftFarPupillaryDistance:(BOOL)a3;
-- (void)setHasLeftNearPupillaryDistance:(BOOL)a3;
-- (void)setHasLeftPrismAmount:(BOOL)a3;
-- (void)setHasLeftPrismAngle:(BOOL)a3;
-- (void)setHasLeftSphere:(BOOL)a3;
-- (void)setHasLeftVertexDistance:(BOOL)a3;
-- (void)setHasPrescriptionType:(BOOL)a3;
-- (void)setHasRightAddPower:(BOOL)a3;
-- (void)setHasRightAxis:(BOOL)a3;
-- (void)setHasRightBaseCurve:(BOOL)a3;
-- (void)setHasRightContactDiameter:(BOOL)a3;
-- (void)setHasRightCylinder:(BOOL)a3;
-- (void)setHasRightFarPupillaryDistance:(BOOL)a3;
-- (void)setHasRightNearPupillaryDistance:(BOOL)a3;
-- (void)setHasRightPrismAmount:(BOOL)a3;
-- (void)setHasRightPrismAngle:(BOOL)a3;
-- (void)setHasRightSphere:(BOOL)a3;
-- (void)setHasRightVertexDistance:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasLeftAxis:(BOOL)axis;
+- (void)setHasLeftBaseCurve:(BOOL)curve;
+- (void)setHasLeftContactDiameter:(BOOL)diameter;
+- (void)setHasLeftCylinder:(BOOL)cylinder;
+- (void)setHasLeftFarPupillaryDistance:(BOOL)distance;
+- (void)setHasLeftNearPupillaryDistance:(BOOL)distance;
+- (void)setHasLeftPrismAmount:(BOOL)amount;
+- (void)setHasLeftPrismAngle:(BOOL)angle;
+- (void)setHasLeftSphere:(BOOL)sphere;
+- (void)setHasLeftVertexDistance:(BOOL)distance;
+- (void)setHasPrescriptionType:(BOOL)type;
+- (void)setHasRightAddPower:(BOOL)power;
+- (void)setHasRightAxis:(BOOL)axis;
+- (void)setHasRightBaseCurve:(BOOL)curve;
+- (void)setHasRightContactDiameter:(BOOL)diameter;
+- (void)setHasRightCylinder:(BOOL)cylinder;
+- (void)setHasRightFarPupillaryDistance:(BOOL)distance;
+- (void)setHasRightNearPupillaryDistance:(BOOL)distance;
+- (void)setHasRightPrismAmount:(BOOL)amount;
+- (void)setHasRightPrismAngle:(BOOL)angle;
+- (void)setHasRightSphere:(BOOL)sphere;
+- (void)setHasRightVertexDistance:(BOOL)distance;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableVisionSample
 
-- (void)setHasPrescriptionType:(BOOL)a3
+- (void)setHasPrescriptionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2048;
   }
@@ -49,9 +49,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasLeftSphere:(BOOL)a3
+- (void)setHasLeftSphere:(BOOL)sphere
 {
-  if (a3)
+  if (sphere)
   {
     v3 = 512;
   }
@@ -64,9 +64,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasRightSphere:(BOOL)a3
+- (void)setHasRightSphere:(BOOL)sphere
 {
-  if (a3)
+  if (sphere)
   {
     v3 = 0x200000;
   }
@@ -79,9 +79,9 @@
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasLeftCylinder:(BOOL)a3
+- (void)setHasLeftCylinder:(BOOL)cylinder
 {
-  if (a3)
+  if (cylinder)
   {
     v3 = 16;
   }
@@ -94,9 +94,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasRightCylinder:(BOOL)a3
+- (void)setHasRightCylinder:(BOOL)cylinder
 {
-  if (a3)
+  if (cylinder)
   {
     v3 = 0x10000;
   }
@@ -109,9 +109,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasLeftAxis:(BOOL)a3
+- (void)setHasLeftAxis:(BOOL)axis
 {
-  if (a3)
+  if (axis)
   {
     v3 = 2;
   }
@@ -124,9 +124,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasRightAxis:(BOOL)a3
+- (void)setHasRightAxis:(BOOL)axis
 {
-  if (a3)
+  if (axis)
   {
     v3 = 0x2000;
   }
@@ -139,9 +139,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasRightAddPower:(BOOL)a3
+- (void)setHasRightAddPower:(BOOL)power
 {
-  if (a3)
+  if (power)
   {
     v3 = 4096;
   }
@@ -154,9 +154,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasLeftVertexDistance:(BOOL)a3
+- (void)setHasLeftVertexDistance:(BOOL)distance
 {
-  if (a3)
+  if (distance)
   {
     v3 = 1024;
   }
@@ -169,9 +169,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasRightVertexDistance:(BOOL)a3
+- (void)setHasRightVertexDistance:(BOOL)distance
 {
-  if (a3)
+  if (distance)
   {
     v3 = 0x400000;
   }
@@ -184,9 +184,9 @@
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasLeftPrismAmount:(BOOL)a3
+- (void)setHasLeftPrismAmount:(BOOL)amount
 {
-  if (a3)
+  if (amount)
   {
     v3 = 128;
   }
@@ -199,9 +199,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasRightPrismAmount:(BOOL)a3
+- (void)setHasRightPrismAmount:(BOOL)amount
 {
-  if (a3)
+  if (amount)
   {
     v3 = 0x80000;
   }
@@ -214,9 +214,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasLeftPrismAngle:(BOOL)a3
+- (void)setHasLeftPrismAngle:(BOOL)angle
 {
-  if (a3)
+  if (angle)
   {
     v3 = 256;
   }
@@ -229,9 +229,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasRightPrismAngle:(BOOL)a3
+- (void)setHasRightPrismAngle:(BOOL)angle
 {
-  if (a3)
+  if (angle)
   {
     v3 = 0x100000;
   }
@@ -244,9 +244,9 @@
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasLeftFarPupillaryDistance:(BOOL)a3
+- (void)setHasLeftFarPupillaryDistance:(BOOL)distance
 {
-  if (a3)
+  if (distance)
   {
     v3 = 32;
   }
@@ -259,9 +259,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasRightFarPupillaryDistance:(BOOL)a3
+- (void)setHasRightFarPupillaryDistance:(BOOL)distance
 {
-  if (a3)
+  if (distance)
   {
     v3 = 0x20000;
   }
@@ -274,9 +274,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasLeftNearPupillaryDistance:(BOOL)a3
+- (void)setHasLeftNearPupillaryDistance:(BOOL)distance
 {
-  if (a3)
+  if (distance)
   {
     v3 = 64;
   }
@@ -289,9 +289,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasRightNearPupillaryDistance:(BOOL)a3
+- (void)setHasRightNearPupillaryDistance:(BOOL)distance
 {
-  if (a3)
+  if (distance)
   {
     v3 = 0x40000;
   }
@@ -304,9 +304,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasLeftBaseCurve:(BOOL)a3
+- (void)setHasLeftBaseCurve:(BOOL)curve
 {
-  if (a3)
+  if (curve)
   {
     v3 = 4;
   }
@@ -319,9 +319,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasRightBaseCurve:(BOOL)a3
+- (void)setHasRightBaseCurve:(BOOL)curve
 {
-  if (a3)
+  if (curve)
   {
     v3 = 0x4000;
   }
@@ -334,9 +334,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasLeftContactDiameter:(BOOL)a3
+- (void)setHasLeftContactDiameter:(BOOL)diameter
 {
-  if (a3)
+  if (diameter)
   {
     v3 = 8;
   }
@@ -349,9 +349,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasRightContactDiameter:(BOOL)a3
+- (void)setHasRightContactDiameter:(BOOL)diameter
 {
-  if (a3)
+  if (diameter)
   {
     v3 = 0x8000;
   }
@@ -370,27 +370,27 @@
   v8.receiver = self;
   v8.super_class = HDCodableVisionSample;
   v4 = [(HDCodableVisionSample *)&v8 description];
-  v5 = [(HDCodableVisionSample *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableVisionSample *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   sample = self->_sample;
   if (sample)
   {
-    v5 = [(HDCodableSample *)sample dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"sample"];
+    dictionaryRepresentation = [(HDCodableSample *)sample dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"sample"];
   }
 
   has = self->_has;
   if ((*&has & 0x800) != 0)
   {
     v15 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_prescriptionType];
-    [v3 setObject:v15 forKey:@"prescriptionType"];
+    [dictionary setObject:v15 forKey:@"prescriptionType"];
 
     has = self->_has;
     if ((*&has & 0x200) == 0)
@@ -411,7 +411,7 @@ LABEL_5:
   }
 
   v16 = [MEMORY[0x277CCABB0] numberWithDouble:self->_leftSphere];
-  [v3 setObject:v16 forKey:@"leftSphere"];
+  [dictionary setObject:v16 forKey:@"leftSphere"];
 
   has = self->_has;
   if ((*&has & 0x200000) == 0)
@@ -427,7 +427,7 @@ LABEL_6:
 
 LABEL_39:
   v17 = [MEMORY[0x277CCABB0] numberWithDouble:self->_rightSphere];
-  [v3 setObject:v17 forKey:@"rightSphere"];
+  [dictionary setObject:v17 forKey:@"rightSphere"];
 
   has = self->_has;
   if ((*&has & 0x10) == 0)
@@ -443,7 +443,7 @@ LABEL_7:
 
 LABEL_40:
   v18 = [MEMORY[0x277CCABB0] numberWithDouble:self->_leftCylinder];
-  [v3 setObject:v18 forKey:@"leftCylinder"];
+  [dictionary setObject:v18 forKey:@"leftCylinder"];
 
   has = self->_has;
   if ((*&has & 0x10000) == 0)
@@ -459,7 +459,7 @@ LABEL_8:
 
 LABEL_41:
   v19 = [MEMORY[0x277CCABB0] numberWithDouble:self->_rightCylinder];
-  [v3 setObject:v19 forKey:@"rightCylinder"];
+  [dictionary setObject:v19 forKey:@"rightCylinder"];
 
   has = self->_has;
   if ((*&has & 2) == 0)
@@ -475,7 +475,7 @@ LABEL_9:
 
 LABEL_42:
   v20 = [MEMORY[0x277CCABB0] numberWithDouble:self->_leftAxis];
-  [v3 setObject:v20 forKey:@"leftAxis"];
+  [dictionary setObject:v20 forKey:@"leftAxis"];
 
   has = self->_has;
   if ((*&has & 0x2000) == 0)
@@ -491,7 +491,7 @@ LABEL_10:
 
 LABEL_43:
   v21 = [MEMORY[0x277CCABB0] numberWithDouble:self->_rightAxis];
-  [v3 setObject:v21 forKey:@"rightAxis"];
+  [dictionary setObject:v21 forKey:@"rightAxis"];
 
   has = self->_has;
   if ((*&has & 1) == 0)
@@ -507,7 +507,7 @@ LABEL_11:
 
 LABEL_44:
   v22 = [MEMORY[0x277CCABB0] numberWithDouble:self->_leftAddPower];
-  [v3 setObject:v22 forKey:@"leftAddPower"];
+  [dictionary setObject:v22 forKey:@"leftAddPower"];
 
   has = self->_has;
   if ((*&has & 0x1000) == 0)
@@ -523,7 +523,7 @@ LABEL_12:
 
 LABEL_45:
   v23 = [MEMORY[0x277CCABB0] numberWithDouble:self->_rightAddPower];
-  [v3 setObject:v23 forKey:@"rightAddPower"];
+  [dictionary setObject:v23 forKey:@"rightAddPower"];
 
   has = self->_has;
   if ((*&has & 0x400) == 0)
@@ -539,7 +539,7 @@ LABEL_13:
 
 LABEL_46:
   v24 = [MEMORY[0x277CCABB0] numberWithDouble:self->_leftVertexDistance];
-  [v3 setObject:v24 forKey:@"leftVertexDistance"];
+  [dictionary setObject:v24 forKey:@"leftVertexDistance"];
 
   has = self->_has;
   if ((*&has & 0x400000) == 0)
@@ -555,7 +555,7 @@ LABEL_14:
 
 LABEL_47:
   v25 = [MEMORY[0x277CCABB0] numberWithDouble:self->_rightVertexDistance];
-  [v3 setObject:v25 forKey:@"rightVertexDistance"];
+  [dictionary setObject:v25 forKey:@"rightVertexDistance"];
 
   has = self->_has;
   if ((*&has & 0x80) == 0)
@@ -571,7 +571,7 @@ LABEL_15:
 
 LABEL_48:
   v26 = [MEMORY[0x277CCABB0] numberWithDouble:self->_leftPrismAmount];
-  [v3 setObject:v26 forKey:@"leftPrismAmount"];
+  [dictionary setObject:v26 forKey:@"leftPrismAmount"];
 
   has = self->_has;
   if ((*&has & 0x80000) == 0)
@@ -587,7 +587,7 @@ LABEL_16:
 
 LABEL_49:
   v27 = [MEMORY[0x277CCABB0] numberWithDouble:self->_rightPrismAmount];
-  [v3 setObject:v27 forKey:@"rightPrismAmount"];
+  [dictionary setObject:v27 forKey:@"rightPrismAmount"];
 
   has = self->_has;
   if ((*&has & 0x100) == 0)
@@ -603,7 +603,7 @@ LABEL_17:
 
 LABEL_50:
   v28 = [MEMORY[0x277CCABB0] numberWithDouble:self->_leftPrismAngle];
-  [v3 setObject:v28 forKey:@"leftPrismAngle"];
+  [dictionary setObject:v28 forKey:@"leftPrismAngle"];
 
   has = self->_has;
   if ((*&has & 0x100000) == 0)
@@ -619,7 +619,7 @@ LABEL_18:
 
 LABEL_51:
   v29 = [MEMORY[0x277CCABB0] numberWithDouble:self->_rightPrismAngle];
-  [v3 setObject:v29 forKey:@"rightPrismAngle"];
+  [dictionary setObject:v29 forKey:@"rightPrismAngle"];
 
   has = self->_has;
   if ((*&has & 0x20) == 0)
@@ -635,7 +635,7 @@ LABEL_19:
 
 LABEL_52:
   v30 = [MEMORY[0x277CCABB0] numberWithDouble:self->_leftFarPupillaryDistance];
-  [v3 setObject:v30 forKey:@"leftFarPupillaryDistance"];
+  [dictionary setObject:v30 forKey:@"leftFarPupillaryDistance"];
 
   has = self->_has;
   if ((*&has & 0x20000) == 0)
@@ -651,7 +651,7 @@ LABEL_20:
 
 LABEL_53:
   v31 = [MEMORY[0x277CCABB0] numberWithDouble:self->_rightFarPupillaryDistance];
-  [v3 setObject:v31 forKey:@"rightFarPupillaryDistance"];
+  [dictionary setObject:v31 forKey:@"rightFarPupillaryDistance"];
 
   has = self->_has;
   if ((*&has & 0x40) == 0)
@@ -667,27 +667,27 @@ LABEL_21:
 
 LABEL_54:
   v32 = [MEMORY[0x277CCABB0] numberWithDouble:self->_leftNearPupillaryDistance];
-  [v3 setObject:v32 forKey:@"leftNearPupillaryDistance"];
+  [dictionary setObject:v32 forKey:@"leftNearPupillaryDistance"];
 
   if ((*&self->_has & 0x40000) != 0)
   {
 LABEL_22:
     v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_rightNearPupillaryDistance];
-    [v3 setObject:v7 forKey:@"rightNearPupillaryDistance"];
+    [dictionary setObject:v7 forKey:@"rightNearPupillaryDistance"];
   }
 
 LABEL_23:
   glassesDescription = self->_glassesDescription;
   if (glassesDescription)
   {
-    [v3 setObject:glassesDescription forKey:@"glassesDescription"];
+    [dictionary setObject:glassesDescription forKey:@"glassesDescription"];
   }
 
   v9 = self->_has;
   if ((*&v9 & 4) != 0)
   {
     v33 = [MEMORY[0x277CCABB0] numberWithDouble:self->_leftBaseCurve];
-    [v3 setObject:v33 forKey:@"leftBaseCurve"];
+    [dictionary setObject:v33 forKey:@"leftBaseCurve"];
 
     v9 = self->_has;
     if ((*&v9 & 0x4000) == 0)
@@ -708,7 +708,7 @@ LABEL_27:
   }
 
   v34 = [MEMORY[0x277CCABB0] numberWithDouble:self->_rightBaseCurve];
-  [v3 setObject:v34 forKey:@"rightBaseCurve"];
+  [dictionary setObject:v34 forKey:@"rightBaseCurve"];
 
   v9 = self->_has;
   if ((*&v9 & 8) == 0)
@@ -724,40 +724,40 @@ LABEL_28:
 
 LABEL_58:
   v35 = [MEMORY[0x277CCABB0] numberWithDouble:self->_leftContactDiameter];
-  [v3 setObject:v35 forKey:@"leftContactDiameter"];
+  [dictionary setObject:v35 forKey:@"leftContactDiameter"];
 
   if ((*&self->_has & 0x8000) != 0)
   {
 LABEL_29:
     v10 = [MEMORY[0x277CCABB0] numberWithDouble:self->_rightContactDiameter];
-    [v3 setObject:v10 forKey:@"rightContactDiameter"];
+    [dictionary setObject:v10 forKey:@"rightContactDiameter"];
   }
 
 LABEL_30:
   brand = self->_brand;
   if (brand)
   {
-    [v3 setObject:brand forKey:@"brand"];
+    [dictionary setObject:brand forKey:@"brand"];
   }
 
   verifiableData = self->_verifiableData;
   if (verifiableData)
   {
-    v13 = [(HDCodableVerifiableData *)verifiableData dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"verifiableData"];
+    dictionaryRepresentation2 = [(HDCodableVerifiableData *)verifiableData dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"verifiableData"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v30 = v4;
+  toCopy = to;
+  v30 = toCopy;
   if (self->_sample)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v30;
+    toCopy = v30;
   }
 
   has = self->_has;
@@ -765,7 +765,7 @@ LABEL_30:
   {
     prescriptionType = self->_prescriptionType;
     PBDataWriterWriteInt64Field();
-    v4 = v30;
+    toCopy = v30;
     has = self->_has;
     if ((*&has & 0x200) == 0)
     {
@@ -786,7 +786,7 @@ LABEL_5:
 
   leftSphere = self->_leftSphere;
   PBDataWriterWriteDoubleField();
-  v4 = v30;
+  toCopy = v30;
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -802,7 +802,7 @@ LABEL_6:
 LABEL_39:
   rightSphere = self->_rightSphere;
   PBDataWriterWriteDoubleField();
-  v4 = v30;
+  toCopy = v30;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -818,7 +818,7 @@ LABEL_7:
 LABEL_40:
   leftCylinder = self->_leftCylinder;
   PBDataWriterWriteDoubleField();
-  v4 = v30;
+  toCopy = v30;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -834,7 +834,7 @@ LABEL_8:
 LABEL_41:
   rightCylinder = self->_rightCylinder;
   PBDataWriterWriteDoubleField();
-  v4 = v30;
+  toCopy = v30;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -850,7 +850,7 @@ LABEL_9:
 LABEL_42:
   leftAxis = self->_leftAxis;
   PBDataWriterWriteDoubleField();
-  v4 = v30;
+  toCopy = v30;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -866,7 +866,7 @@ LABEL_10:
 LABEL_43:
   rightAxis = self->_rightAxis;
   PBDataWriterWriteDoubleField();
-  v4 = v30;
+  toCopy = v30;
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -882,7 +882,7 @@ LABEL_11:
 LABEL_44:
   leftAddPower = self->_leftAddPower;
   PBDataWriterWriteDoubleField();
-  v4 = v30;
+  toCopy = v30;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -898,7 +898,7 @@ LABEL_12:
 LABEL_45:
   rightAddPower = self->_rightAddPower;
   PBDataWriterWriteDoubleField();
-  v4 = v30;
+  toCopy = v30;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -914,7 +914,7 @@ LABEL_13:
 LABEL_46:
   leftVertexDistance = self->_leftVertexDistance;
   PBDataWriterWriteDoubleField();
-  v4 = v30;
+  toCopy = v30;
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -930,7 +930,7 @@ LABEL_14:
 LABEL_47:
   rightVertexDistance = self->_rightVertexDistance;
   PBDataWriterWriteDoubleField();
-  v4 = v30;
+  toCopy = v30;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -946,7 +946,7 @@ LABEL_15:
 LABEL_48:
   leftPrismAmount = self->_leftPrismAmount;
   PBDataWriterWriteDoubleField();
-  v4 = v30;
+  toCopy = v30;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -962,7 +962,7 @@ LABEL_16:
 LABEL_49:
   rightPrismAmount = self->_rightPrismAmount;
   PBDataWriterWriteDoubleField();
-  v4 = v30;
+  toCopy = v30;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -978,7 +978,7 @@ LABEL_17:
 LABEL_50:
   leftPrismAngle = self->_leftPrismAngle;
   PBDataWriterWriteDoubleField();
-  v4 = v30;
+  toCopy = v30;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -994,7 +994,7 @@ LABEL_18:
 LABEL_51:
   rightPrismAngle = self->_rightPrismAngle;
   PBDataWriterWriteDoubleField();
-  v4 = v30;
+  toCopy = v30;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1010,7 +1010,7 @@ LABEL_19:
 LABEL_52:
   leftFarPupillaryDistance = self->_leftFarPupillaryDistance;
   PBDataWriterWriteDoubleField();
-  v4 = v30;
+  toCopy = v30;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -1026,7 +1026,7 @@ LABEL_20:
 LABEL_53:
   rightFarPupillaryDistance = self->_rightFarPupillaryDistance;
   PBDataWriterWriteDoubleField();
-  v4 = v30;
+  toCopy = v30;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1042,20 +1042,20 @@ LABEL_21:
 LABEL_54:
   leftNearPupillaryDistance = self->_leftNearPupillaryDistance;
   PBDataWriterWriteDoubleField();
-  v4 = v30;
+  toCopy = v30;
   if ((*&self->_has & 0x40000) != 0)
   {
 LABEL_22:
     rightNearPupillaryDistance = self->_rightNearPupillaryDistance;
     PBDataWriterWriteDoubleField();
-    v4 = v30;
+    toCopy = v30;
   }
 
 LABEL_23:
   if (self->_glassesDescription)
   {
     PBDataWriterWriteStringField();
-    v4 = v30;
+    toCopy = v30;
   }
 
   v7 = self->_has;
@@ -1063,7 +1063,7 @@ LABEL_23:
   {
     leftBaseCurve = self->_leftBaseCurve;
     PBDataWriterWriteDoubleField();
-    v4 = v30;
+    toCopy = v30;
     v7 = self->_has;
     if ((*&v7 & 0x4000) == 0)
     {
@@ -1084,7 +1084,7 @@ LABEL_27:
 
   rightBaseCurve = self->_rightBaseCurve;
   PBDataWriterWriteDoubleField();
-  v4 = v30;
+  toCopy = v30;
   v7 = self->_has;
   if ((*&v7 & 8) == 0)
   {
@@ -1100,44 +1100,44 @@ LABEL_28:
 LABEL_58:
   leftContactDiameter = self->_leftContactDiameter;
   PBDataWriterWriteDoubleField();
-  v4 = v30;
+  toCopy = v30;
   if ((*&self->_has & 0x8000) != 0)
   {
 LABEL_29:
     rightContactDiameter = self->_rightContactDiameter;
     PBDataWriterWriteDoubleField();
-    v4 = v30;
+    toCopy = v30;
   }
 
 LABEL_30:
   if (self->_brand)
   {
     PBDataWriterWriteStringField();
-    v4 = v30;
+    toCopy = v30;
   }
 
   if (self->_verifiableData)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v30;
+    toCopy = v30;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_sample)
   {
-    [v4 setSample:?];
-    v4 = v7;
+    [toCopy setSample:?];
+    toCopy = v7;
   }
 
   has = self->_has;
   if ((*&has & 0x800) != 0)
   {
-    *(v4 + 12) = self->_prescriptionType;
-    *(v4 + 56) |= 0x800u;
+    *(toCopy + 12) = self->_prescriptionType;
+    *(toCopy + 56) |= 0x800u;
     has = self->_has;
     if ((*&has & 0x200) == 0)
     {
@@ -1156,8 +1156,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 10) = *&self->_leftSphere;
-  *(v4 + 56) |= 0x200u;
+  *(toCopy + 10) = *&self->_leftSphere;
+  *(toCopy + 56) |= 0x200u;
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -1171,8 +1171,8 @@ LABEL_6:
   }
 
 LABEL_39:
-  *(v4 + 22) = *&self->_rightSphere;
-  *(v4 + 56) |= 0x200000u;
+  *(toCopy + 22) = *&self->_rightSphere;
+  *(toCopy + 56) |= 0x200000u;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -1186,8 +1186,8 @@ LABEL_7:
   }
 
 LABEL_40:
-  *(v4 + 5) = *&self->_leftCylinder;
-  *(v4 + 56) |= 0x10u;
+  *(toCopy + 5) = *&self->_leftCylinder;
+  *(toCopy + 56) |= 0x10u;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -1201,8 +1201,8 @@ LABEL_8:
   }
 
 LABEL_41:
-  *(v4 + 17) = *&self->_rightCylinder;
-  *(v4 + 56) |= 0x10000u;
+  *(toCopy + 17) = *&self->_rightCylinder;
+  *(toCopy + 56) |= 0x10000u;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -1216,8 +1216,8 @@ LABEL_9:
   }
 
 LABEL_42:
-  *(v4 + 2) = *&self->_leftAxis;
-  *(v4 + 56) |= 2u;
+  *(toCopy + 2) = *&self->_leftAxis;
+  *(toCopy + 56) |= 2u;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -1231,8 +1231,8 @@ LABEL_10:
   }
 
 LABEL_43:
-  *(v4 + 14) = *&self->_rightAxis;
-  *(v4 + 56) |= 0x2000u;
+  *(toCopy + 14) = *&self->_rightAxis;
+  *(toCopy + 56) |= 0x2000u;
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -1246,8 +1246,8 @@ LABEL_11:
   }
 
 LABEL_44:
-  *(v4 + 1) = *&self->_leftAddPower;
-  *(v4 + 56) |= 1u;
+  *(toCopy + 1) = *&self->_leftAddPower;
+  *(toCopy + 56) |= 1u;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1261,8 +1261,8 @@ LABEL_12:
   }
 
 LABEL_45:
-  *(v4 + 13) = *&self->_rightAddPower;
-  *(v4 + 56) |= 0x1000u;
+  *(toCopy + 13) = *&self->_rightAddPower;
+  *(toCopy + 56) |= 0x1000u;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -1276,8 +1276,8 @@ LABEL_13:
   }
 
 LABEL_46:
-  *(v4 + 11) = *&self->_leftVertexDistance;
-  *(v4 + 56) |= 0x400u;
+  *(toCopy + 11) = *&self->_leftVertexDistance;
+  *(toCopy + 56) |= 0x400u;
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -1291,8 +1291,8 @@ LABEL_14:
   }
 
 LABEL_47:
-  *(v4 + 23) = *&self->_rightVertexDistance;
-  *(v4 + 56) |= 0x400000u;
+  *(toCopy + 23) = *&self->_rightVertexDistance;
+  *(toCopy + 56) |= 0x400000u;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -1306,8 +1306,8 @@ LABEL_15:
   }
 
 LABEL_48:
-  *(v4 + 8) = *&self->_leftPrismAmount;
-  *(v4 + 56) |= 0x80u;
+  *(toCopy + 8) = *&self->_leftPrismAmount;
+  *(toCopy + 56) |= 0x80u;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -1321,8 +1321,8 @@ LABEL_16:
   }
 
 LABEL_49:
-  *(v4 + 20) = *&self->_rightPrismAmount;
-  *(v4 + 56) |= 0x80000u;
+  *(toCopy + 20) = *&self->_rightPrismAmount;
+  *(toCopy + 56) |= 0x80000u;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -1336,8 +1336,8 @@ LABEL_17:
   }
 
 LABEL_50:
-  *(v4 + 9) = *&self->_leftPrismAngle;
-  *(v4 + 56) |= 0x100u;
+  *(toCopy + 9) = *&self->_leftPrismAngle;
+  *(toCopy + 56) |= 0x100u;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -1351,8 +1351,8 @@ LABEL_18:
   }
 
 LABEL_51:
-  *(v4 + 21) = *&self->_rightPrismAngle;
-  *(v4 + 56) |= 0x100000u;
+  *(toCopy + 21) = *&self->_rightPrismAngle;
+  *(toCopy + 56) |= 0x100000u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1366,8 +1366,8 @@ LABEL_19:
   }
 
 LABEL_52:
-  *(v4 + 6) = *&self->_leftFarPupillaryDistance;
-  *(v4 + 56) |= 0x20u;
+  *(toCopy + 6) = *&self->_leftFarPupillaryDistance;
+  *(toCopy + 56) |= 0x20u;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -1381,8 +1381,8 @@ LABEL_20:
   }
 
 LABEL_53:
-  *(v4 + 18) = *&self->_rightFarPupillaryDistance;
-  *(v4 + 56) |= 0x20000u;
+  *(toCopy + 18) = *&self->_rightFarPupillaryDistance;
+  *(toCopy + 56) |= 0x20000u;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1396,27 +1396,27 @@ LABEL_21:
   }
 
 LABEL_54:
-  *(v4 + 7) = *&self->_leftNearPupillaryDistance;
-  *(v4 + 56) |= 0x40u;
+  *(toCopy + 7) = *&self->_leftNearPupillaryDistance;
+  *(toCopy + 56) |= 0x40u;
   if ((*&self->_has & 0x40000) != 0)
   {
 LABEL_22:
-    *(v4 + 19) = *&self->_rightNearPupillaryDistance;
-    *(v4 + 56) |= 0x40000u;
+    *(toCopy + 19) = *&self->_rightNearPupillaryDistance;
+    *(toCopy + 56) |= 0x40000u;
   }
 
 LABEL_23:
   if (self->_glassesDescription)
   {
     [v7 setGlassesDescription:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((*&v6 & 4) != 0)
   {
-    *(v4 + 3) = *&self->_leftBaseCurve;
-    *(v4 + 56) |= 4u;
+    *(toCopy + 3) = *&self->_leftBaseCurve;
+    *(toCopy + 56) |= 4u;
     v6 = self->_has;
     if ((*&v6 & 0x4000) == 0)
     {
@@ -1435,8 +1435,8 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  *(v4 + 15) = *&self->_rightBaseCurve;
-  *(v4 + 56) |= 0x4000u;
+  *(toCopy + 15) = *&self->_rightBaseCurve;
+  *(toCopy + 56) |= 0x4000u;
   v6 = self->_has;
   if ((*&v6 & 8) == 0)
   {
@@ -1450,33 +1450,33 @@ LABEL_28:
   }
 
 LABEL_58:
-  *(v4 + 4) = *&self->_leftContactDiameter;
-  *(v4 + 56) |= 8u;
+  *(toCopy + 4) = *&self->_leftContactDiameter;
+  *(toCopy + 56) |= 8u;
   if ((*&self->_has & 0x8000) != 0)
   {
 LABEL_29:
-    *(v4 + 16) = *&self->_rightContactDiameter;
-    *(v4 + 56) |= 0x8000u;
+    *(toCopy + 16) = *&self->_rightContactDiameter;
+    *(toCopy + 56) |= 0x8000u;
   }
 
 LABEL_30:
   if (self->_brand)
   {
     [v7 setBrand:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_verifiableData)
   {
     [v7 setVerifiableData:?];
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HDCodableSample *)self->_sample copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HDCodableSample *)self->_sample copyWithZone:zone];
   v7 = *(v5 + 208);
   *(v5 + 208) = v6;
 
@@ -1753,7 +1753,7 @@ LABEL_20:
   }
 
 LABEL_21:
-  v9 = [(NSString *)self->_glassesDescription copyWithZone:a3];
+  v9 = [(NSString *)self->_glassesDescription copyWithZone:zone];
   v10 = *(v5 + 200);
   *(v5 + 200) = v9;
 
@@ -1805,27 +1805,27 @@ LABEL_25:
   }
 
 LABEL_26:
-  v12 = [(NSString *)self->_brand copyWithZone:a3];
+  v12 = [(NSString *)self->_brand copyWithZone:zone];
   v13 = *(v5 + 192);
   *(v5 + 192) = v12;
 
-  v14 = [(HDCodableVerifiableData *)self->_verifiableData copyWithZone:a3];
+  v14 = [(HDCodableVerifiableData *)self->_verifiableData copyWithZone:zone];
   v15 = *(v5 + 216);
   *(v5 + 216) = v14;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_126;
   }
 
   sample = self->_sample;
-  if (sample | *(v4 + 26))
+  if (sample | *(equalCopy + 26))
   {
     if (![(HDCodableSample *)sample isEqual:?])
     {
@@ -1834,10 +1834,10 @@ LABEL_26:
   }
 
   has = self->_has;
-  v7 = *(v4 + 56);
+  v7 = *(equalCopy + 56);
   if ((*&has & 0x800) != 0)
   {
-    if ((v7 & 0x800) == 0 || self->_prescriptionType != *(v4 + 12))
+    if ((v7 & 0x800) == 0 || self->_prescriptionType != *(equalCopy + 12))
     {
       goto LABEL_126;
     }
@@ -1850,7 +1850,7 @@ LABEL_26:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v7 & 0x200) == 0 || self->_leftSphere != *(v4 + 10))
+    if ((v7 & 0x200) == 0 || self->_leftSphere != *(equalCopy + 10))
     {
       goto LABEL_126;
     }
@@ -1863,7 +1863,7 @@ LABEL_26:
 
   if ((*&has & 0x200000) != 0)
   {
-    if ((v7 & 0x200000) == 0 || self->_rightSphere != *(v4 + 22))
+    if ((v7 & 0x200000) == 0 || self->_rightSphere != *(equalCopy + 22))
     {
       goto LABEL_126;
     }
@@ -1876,7 +1876,7 @@ LABEL_26:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_leftCylinder != *(v4 + 5))
+    if ((v7 & 0x10) == 0 || self->_leftCylinder != *(equalCopy + 5))
     {
       goto LABEL_126;
     }
@@ -1889,7 +1889,7 @@ LABEL_26:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v7 & 0x10000) == 0 || self->_rightCylinder != *(v4 + 17))
+    if ((v7 & 0x10000) == 0 || self->_rightCylinder != *(equalCopy + 17))
     {
       goto LABEL_126;
     }
@@ -1902,7 +1902,7 @@ LABEL_26:
 
   if ((*&has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_leftAxis != *(v4 + 2))
+    if ((v7 & 2) == 0 || self->_leftAxis != *(equalCopy + 2))
     {
       goto LABEL_126;
     }
@@ -1915,7 +1915,7 @@ LABEL_26:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v7 & 0x2000) == 0 || self->_rightAxis != *(v4 + 14))
+    if ((v7 & 0x2000) == 0 || self->_rightAxis != *(equalCopy + 14))
     {
       goto LABEL_126;
     }
@@ -1928,7 +1928,7 @@ LABEL_26:
 
   if (*&has)
   {
-    if ((v7 & 1) == 0 || self->_leftAddPower != *(v4 + 1))
+    if ((v7 & 1) == 0 || self->_leftAddPower != *(equalCopy + 1))
     {
       goto LABEL_126;
     }
@@ -1941,7 +1941,7 @@ LABEL_26:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v7 & 0x1000) == 0 || self->_rightAddPower != *(v4 + 13))
+    if ((v7 & 0x1000) == 0 || self->_rightAddPower != *(equalCopy + 13))
     {
       goto LABEL_126;
     }
@@ -1954,7 +1954,7 @@ LABEL_26:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v7 & 0x400) == 0 || self->_leftVertexDistance != *(v4 + 11))
+    if ((v7 & 0x400) == 0 || self->_leftVertexDistance != *(equalCopy + 11))
     {
       goto LABEL_126;
     }
@@ -1967,7 +1967,7 @@ LABEL_26:
 
   if ((*&has & 0x400000) != 0)
   {
-    if ((v7 & 0x400000) == 0 || self->_rightVertexDistance != *(v4 + 23))
+    if ((v7 & 0x400000) == 0 || self->_rightVertexDistance != *(equalCopy + 23))
     {
       goto LABEL_126;
     }
@@ -1980,7 +1980,7 @@ LABEL_26:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v7 & 0x80) == 0 || self->_leftPrismAmount != *(v4 + 8))
+    if ((v7 & 0x80) == 0 || self->_leftPrismAmount != *(equalCopy + 8))
     {
       goto LABEL_126;
     }
@@ -1993,7 +1993,7 @@ LABEL_26:
 
   if ((*&has & 0x80000) != 0)
   {
-    if ((v7 & 0x80000) == 0 || self->_rightPrismAmount != *(v4 + 20))
+    if ((v7 & 0x80000) == 0 || self->_rightPrismAmount != *(equalCopy + 20))
     {
       goto LABEL_126;
     }
@@ -2006,7 +2006,7 @@ LABEL_26:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v7 & 0x100) == 0 || self->_leftPrismAngle != *(v4 + 9))
+    if ((v7 & 0x100) == 0 || self->_leftPrismAngle != *(equalCopy + 9))
     {
       goto LABEL_126;
     }
@@ -2019,7 +2019,7 @@ LABEL_26:
 
   if ((*&has & 0x100000) != 0)
   {
-    if ((v7 & 0x100000) == 0 || self->_rightPrismAngle != *(v4 + 21))
+    if ((v7 & 0x100000) == 0 || self->_rightPrismAngle != *(equalCopy + 21))
     {
       goto LABEL_126;
     }
@@ -2032,7 +2032,7 @@ LABEL_26:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v7 & 0x20) == 0 || self->_leftFarPupillaryDistance != *(v4 + 6))
+    if ((v7 & 0x20) == 0 || self->_leftFarPupillaryDistance != *(equalCopy + 6))
     {
       goto LABEL_126;
     }
@@ -2045,7 +2045,7 @@ LABEL_26:
 
   if ((*&has & 0x20000) != 0)
   {
-    if ((v7 & 0x20000) == 0 || self->_rightFarPupillaryDistance != *(v4 + 18))
+    if ((v7 & 0x20000) == 0 || self->_rightFarPupillaryDistance != *(equalCopy + 18))
     {
       goto LABEL_126;
     }
@@ -2058,7 +2058,7 @@ LABEL_26:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_leftNearPupillaryDistance != *(v4 + 7))
+    if ((v7 & 0x40) == 0 || self->_leftNearPupillaryDistance != *(equalCopy + 7))
     {
       goto LABEL_126;
     }
@@ -2071,7 +2071,7 @@ LABEL_26:
 
   if ((*&has & 0x40000) != 0)
   {
-    if ((v7 & 0x40000) == 0 || self->_rightNearPupillaryDistance != *(v4 + 19))
+    if ((v7 & 0x40000) == 0 || self->_rightNearPupillaryDistance != *(equalCopy + 19))
     {
       goto LABEL_126;
     }
@@ -2083,7 +2083,7 @@ LABEL_26:
   }
 
   glassesDescription = self->_glassesDescription;
-  if (glassesDescription | *(v4 + 25))
+  if (glassesDescription | *(equalCopy + 25))
   {
     if (![(NSString *)glassesDescription isEqual:?])
     {
@@ -2093,12 +2093,12 @@ LABEL_126:
     }
 
     has = self->_has;
-    v7 = *(v4 + 56);
+    v7 = *(equalCopy + 56);
   }
 
   if ((*&has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_leftBaseCurve != *(v4 + 3))
+    if ((v7 & 4) == 0 || self->_leftBaseCurve != *(equalCopy + 3))
     {
       goto LABEL_126;
     }
@@ -2111,7 +2111,7 @@ LABEL_126:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v7 & 0x4000) == 0 || self->_rightBaseCurve != *(v4 + 15))
+    if ((v7 & 0x4000) == 0 || self->_rightBaseCurve != *(equalCopy + 15))
     {
       goto LABEL_126;
     }
@@ -2124,7 +2124,7 @@ LABEL_126:
 
   if ((*&has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_leftContactDiameter != *(v4 + 4))
+    if ((v7 & 8) == 0 || self->_leftContactDiameter != *(equalCopy + 4))
     {
       goto LABEL_126;
     }
@@ -2137,7 +2137,7 @@ LABEL_126:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v7 & 0x8000) == 0 || self->_rightContactDiameter != *(v4 + 16))
+    if ((v7 & 0x8000) == 0 || self->_rightContactDiameter != *(equalCopy + 16))
     {
       goto LABEL_126;
     }
@@ -2149,13 +2149,13 @@ LABEL_126:
   }
 
   brand = self->_brand;
-  if (brand | *(v4 + 24) && ![(NSString *)brand isEqual:?])
+  if (brand | *(equalCopy + 24) && ![(NSString *)brand isEqual:?])
   {
     goto LABEL_126;
   }
 
   verifiableData = self->_verifiableData;
-  if (verifiableData | *(v4 + 27))
+  if (verifiableData | *(equalCopy + 27))
   {
     v11 = [(HDCodableVerifiableData *)verifiableData isEqual:?];
   }
@@ -2950,12 +2950,12 @@ LABEL_155:
   return v103 ^ v104 ^ [(HDCodableVerifiableData *)self->_verifiableData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   sample = self->_sample;
-  v6 = *(v4 + 26);
-  v11 = v4;
+  v6 = *(fromCopy + 26);
+  v11 = fromCopy;
   if (sample)
   {
     if (!v6)
@@ -2976,14 +2976,14 @@ LABEL_155:
     [(HDCodableVisionSample *)self setSample:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_7:
-  v7 = *(v4 + 56);
+  v7 = *(fromCopy + 56);
   if ((v7 & 0x800) != 0)
   {
-    self->_prescriptionType = *(v4 + 12);
+    self->_prescriptionType = *(fromCopy + 12);
     *&self->_has |= 0x800u;
-    v7 = *(v4 + 56);
+    v7 = *(fromCopy + 56);
     if ((v7 & 0x200) == 0)
     {
 LABEL_9:
@@ -3001,9 +3001,9 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  self->_leftSphere = *(v4 + 10);
+  self->_leftSphere = *(fromCopy + 10);
   *&self->_has |= 0x200u;
-  v7 = *(v4 + 56);
+  v7 = *(fromCopy + 56);
   if ((v7 & 0x200000) == 0)
   {
 LABEL_10:
@@ -3016,9 +3016,9 @@ LABEL_10:
   }
 
 LABEL_41:
-  self->_rightSphere = *(v4 + 22);
+  self->_rightSphere = *(fromCopy + 22);
   *&self->_has |= 0x200000u;
-  v7 = *(v4 + 56);
+  v7 = *(fromCopy + 56);
   if ((v7 & 0x10) == 0)
   {
 LABEL_11:
@@ -3031,9 +3031,9 @@ LABEL_11:
   }
 
 LABEL_42:
-  self->_leftCylinder = *(v4 + 5);
+  self->_leftCylinder = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v7 = *(v4 + 56);
+  v7 = *(fromCopy + 56);
   if ((v7 & 0x10000) == 0)
   {
 LABEL_12:
@@ -3046,9 +3046,9 @@ LABEL_12:
   }
 
 LABEL_43:
-  self->_rightCylinder = *(v4 + 17);
+  self->_rightCylinder = *(fromCopy + 17);
   *&self->_has |= 0x10000u;
-  v7 = *(v4 + 56);
+  v7 = *(fromCopy + 56);
   if ((v7 & 2) == 0)
   {
 LABEL_13:
@@ -3061,9 +3061,9 @@ LABEL_13:
   }
 
 LABEL_44:
-  self->_leftAxis = *(v4 + 2);
+  self->_leftAxis = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v7 = *(v4 + 56);
+  v7 = *(fromCopy + 56);
   if ((v7 & 0x2000) == 0)
   {
 LABEL_14:
@@ -3076,9 +3076,9 @@ LABEL_14:
   }
 
 LABEL_45:
-  self->_rightAxis = *(v4 + 14);
+  self->_rightAxis = *(fromCopy + 14);
   *&self->_has |= 0x2000u;
-  v7 = *(v4 + 56);
+  v7 = *(fromCopy + 56);
   if ((v7 & 1) == 0)
   {
 LABEL_15:
@@ -3091,9 +3091,9 @@ LABEL_15:
   }
 
 LABEL_46:
-  self->_leftAddPower = *(v4 + 1);
+  self->_leftAddPower = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v7 = *(v4 + 56);
+  v7 = *(fromCopy + 56);
   if ((v7 & 0x1000) == 0)
   {
 LABEL_16:
@@ -3106,9 +3106,9 @@ LABEL_16:
   }
 
 LABEL_47:
-  self->_rightAddPower = *(v4 + 13);
+  self->_rightAddPower = *(fromCopy + 13);
   *&self->_has |= 0x1000u;
-  v7 = *(v4 + 56);
+  v7 = *(fromCopy + 56);
   if ((v7 & 0x400) == 0)
   {
 LABEL_17:
@@ -3121,9 +3121,9 @@ LABEL_17:
   }
 
 LABEL_48:
-  self->_leftVertexDistance = *(v4 + 11);
+  self->_leftVertexDistance = *(fromCopy + 11);
   *&self->_has |= 0x400u;
-  v7 = *(v4 + 56);
+  v7 = *(fromCopy + 56);
   if ((v7 & 0x400000) == 0)
   {
 LABEL_18:
@@ -3136,9 +3136,9 @@ LABEL_18:
   }
 
 LABEL_49:
-  self->_rightVertexDistance = *(v4 + 23);
+  self->_rightVertexDistance = *(fromCopy + 23);
   *&self->_has |= 0x400000u;
-  v7 = *(v4 + 56);
+  v7 = *(fromCopy + 56);
   if ((v7 & 0x80) == 0)
   {
 LABEL_19:
@@ -3151,9 +3151,9 @@ LABEL_19:
   }
 
 LABEL_50:
-  self->_leftPrismAmount = *(v4 + 8);
+  self->_leftPrismAmount = *(fromCopy + 8);
   *&self->_has |= 0x80u;
-  v7 = *(v4 + 56);
+  v7 = *(fromCopy + 56);
   if ((v7 & 0x80000) == 0)
   {
 LABEL_20:
@@ -3166,9 +3166,9 @@ LABEL_20:
   }
 
 LABEL_51:
-  self->_rightPrismAmount = *(v4 + 20);
+  self->_rightPrismAmount = *(fromCopy + 20);
   *&self->_has |= 0x80000u;
-  v7 = *(v4 + 56);
+  v7 = *(fromCopy + 56);
   if ((v7 & 0x100) == 0)
   {
 LABEL_21:
@@ -3181,9 +3181,9 @@ LABEL_21:
   }
 
 LABEL_52:
-  self->_leftPrismAngle = *(v4 + 9);
+  self->_leftPrismAngle = *(fromCopy + 9);
   *&self->_has |= 0x100u;
-  v7 = *(v4 + 56);
+  v7 = *(fromCopy + 56);
   if ((v7 & 0x100000) == 0)
   {
 LABEL_22:
@@ -3196,9 +3196,9 @@ LABEL_22:
   }
 
 LABEL_53:
-  self->_rightPrismAngle = *(v4 + 21);
+  self->_rightPrismAngle = *(fromCopy + 21);
   *&self->_has |= 0x100000u;
-  v7 = *(v4 + 56);
+  v7 = *(fromCopy + 56);
   if ((v7 & 0x20) == 0)
   {
 LABEL_23:
@@ -3211,9 +3211,9 @@ LABEL_23:
   }
 
 LABEL_54:
-  self->_leftFarPupillaryDistance = *(v4 + 6);
+  self->_leftFarPupillaryDistance = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  v7 = *(v4 + 56);
+  v7 = *(fromCopy + 56);
   if ((v7 & 0x20000) == 0)
   {
 LABEL_24:
@@ -3226,9 +3226,9 @@ LABEL_24:
   }
 
 LABEL_55:
-  self->_rightFarPupillaryDistance = *(v4 + 18);
+  self->_rightFarPupillaryDistance = *(fromCopy + 18);
   *&self->_has |= 0x20000u;
-  v7 = *(v4 + 56);
+  v7 = *(fromCopy + 56);
   if ((v7 & 0x40) == 0)
   {
 LABEL_25:
@@ -3241,28 +3241,28 @@ LABEL_25:
   }
 
 LABEL_56:
-  self->_leftNearPupillaryDistance = *(v4 + 7);
+  self->_leftNearPupillaryDistance = *(fromCopy + 7);
   *&self->_has |= 0x40u;
-  if ((*(v4 + 56) & 0x40000) != 0)
+  if ((*(fromCopy + 56) & 0x40000) != 0)
   {
 LABEL_26:
-    self->_rightNearPupillaryDistance = *(v4 + 19);
+    self->_rightNearPupillaryDistance = *(fromCopy + 19);
     *&self->_has |= 0x40000u;
   }
 
 LABEL_27:
-  if (*(v4 + 25))
+  if (*(fromCopy + 25))
   {
     [(HDCodableVisionSample *)self setGlassesDescription:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  v8 = *(v4 + 56);
+  v8 = *(fromCopy + 56);
   if ((v8 & 4) != 0)
   {
-    self->_leftBaseCurve = *(v4 + 3);
+    self->_leftBaseCurve = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v8 = *(v4 + 56);
+    v8 = *(fromCopy + 56);
     if ((v8 & 0x4000) == 0)
     {
 LABEL_31:
@@ -3280,9 +3280,9 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  self->_rightBaseCurve = *(v4 + 15);
+  self->_rightBaseCurve = *(fromCopy + 15);
   *&self->_has |= 0x4000u;
-  v8 = *(v4 + 56);
+  v8 = *(fromCopy + 56);
   if ((v8 & 8) == 0)
   {
 LABEL_32:
@@ -3295,24 +3295,24 @@ LABEL_32:
   }
 
 LABEL_60:
-  self->_leftContactDiameter = *(v4 + 4);
+  self->_leftContactDiameter = *(fromCopy + 4);
   *&self->_has |= 8u;
-  if ((*(v4 + 56) & 0x8000) != 0)
+  if ((*(fromCopy + 56) & 0x8000) != 0)
   {
 LABEL_33:
-    self->_rightContactDiameter = *(v4 + 16);
+    self->_rightContactDiameter = *(fromCopy + 16);
     *&self->_has |= 0x8000u;
   }
 
 LABEL_34:
-  if (*(v4 + 24))
+  if (*(fromCopy + 24))
   {
     [(HDCodableVisionSample *)self setBrand:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
   verifiableData = self->_verifiableData;
-  v10 = *(v4 + 27);
+  v10 = *(fromCopy + 27);
   if (verifiableData)
   {
     if (v10)
@@ -3329,25 +3329,25 @@ LABEL_34:
   MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)applyToObject:(id)a3
+- (BOOL)applyToObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(HDCodableVisionSample *)self sample];
-    v6 = [v5 applyToObject:v4];
+    sample = [(HDCodableVisionSample *)self sample];
+    v6 = [sample applyToObject:objectCopy];
 
     if (v6)
     {
-      v7 = [(HDCodableVisionSample *)self prescriptionType];
-      [v4 _setPrescriptionType:v7];
+      prescriptionType = [(HDCodableVisionSample *)self prescriptionType];
+      [objectCopy _setPrescriptionType:prescriptionType];
       if ([(HDCodableVisionSample *)self hasLeftSphere])
       {
         v8 = MEMORY[0x277CCD7E8];
-        v9 = [MEMORY[0x277CCDAB0] diopterUnit];
+        diopterUnit = [MEMORY[0x277CCDAB0] diopterUnit];
         [(HDCodableVisionSample *)self leftSphere];
-        v10 = [v8 quantityWithUnit:v9 doubleValue:?];
+        v10 = [v8 quantityWithUnit:diopterUnit doubleValue:?];
       }
 
       else
@@ -3358,9 +3358,9 @@ LABEL_34:
       if ([(HDCodableVisionSample *)self hasRightSphere])
       {
         v12 = MEMORY[0x277CCD7E8];
-        v13 = [MEMORY[0x277CCDAB0] diopterUnit];
+        diopterUnit2 = [MEMORY[0x277CCDAB0] diopterUnit];
         [(HDCodableVisionSample *)self rightSphere];
-        v14 = [v12 quantityWithUnit:v13 doubleValue:?];
+        v14 = [v12 quantityWithUnit:diopterUnit2 doubleValue:?];
       }
 
       else
@@ -3371,9 +3371,9 @@ LABEL_34:
       if ([(HDCodableVisionSample *)self hasLeftCylinder])
       {
         v15 = MEMORY[0x277CCD7E8];
-        v16 = [MEMORY[0x277CCDAB0] diopterUnit];
+        diopterUnit3 = [MEMORY[0x277CCDAB0] diopterUnit];
         [(HDCodableVisionSample *)self leftCylinder];
-        v90 = [v15 quantityWithUnit:v16 doubleValue:?];
+        v90 = [v15 quantityWithUnit:diopterUnit3 doubleValue:?];
       }
 
       else
@@ -3384,9 +3384,9 @@ LABEL_34:
       if ([(HDCodableVisionSample *)self hasRightCylinder])
       {
         v17 = MEMORY[0x277CCD7E8];
-        v18 = [MEMORY[0x277CCDAB0] diopterUnit];
+        diopterUnit4 = [MEMORY[0x277CCDAB0] diopterUnit];
         [(HDCodableVisionSample *)self rightCylinder];
-        v89 = [v17 quantityWithUnit:v18 doubleValue:?];
+        v89 = [v17 quantityWithUnit:diopterUnit4 doubleValue:?];
       }
 
       else
@@ -3397,9 +3397,9 @@ LABEL_34:
       if ([(HDCodableVisionSample *)self hasLeftAxis])
       {
         v19 = MEMORY[0x277CCD7E8];
-        v20 = [MEMORY[0x277CCDAB0] radianAngleUnit];
+        radianAngleUnit = [MEMORY[0x277CCDAB0] radianAngleUnit];
         [(HDCodableVisionSample *)self leftAxis];
-        v88 = [v19 quantityWithUnit:v20 doubleValue:?];
+        v88 = [v19 quantityWithUnit:radianAngleUnit doubleValue:?];
       }
 
       else
@@ -3410,9 +3410,9 @@ LABEL_34:
       if ([(HDCodableVisionSample *)self hasRightAxis])
       {
         v21 = MEMORY[0x277CCD7E8];
-        v22 = [MEMORY[0x277CCDAB0] radianAngleUnit];
+        radianAngleUnit2 = [MEMORY[0x277CCDAB0] radianAngleUnit];
         [(HDCodableVisionSample *)self rightAxis];
-        v23 = [v21 quantityWithUnit:v22 doubleValue:?];
+        v23 = [v21 quantityWithUnit:radianAngleUnit2 doubleValue:?];
       }
 
       else
@@ -3423,9 +3423,9 @@ LABEL_34:
       if ([(HDCodableVisionSample *)self hasLeftAddPower])
       {
         v24 = MEMORY[0x277CCD7E8];
-        v25 = [MEMORY[0x277CCDAB0] diopterUnit];
+        diopterUnit5 = [MEMORY[0x277CCDAB0] diopterUnit];
         [(HDCodableVisionSample *)self leftAddPower];
-        v26 = [v24 quantityWithUnit:v25 doubleValue:?];
+        v26 = [v24 quantityWithUnit:diopterUnit5 doubleValue:?];
       }
 
       else
@@ -3436,9 +3436,9 @@ LABEL_34:
       if ([(HDCodableVisionSample *)self hasRightAddPower])
       {
         v27 = MEMORY[0x277CCD7E8];
-        v28 = [MEMORY[0x277CCDAB0] diopterUnit];
+        diopterUnit6 = [MEMORY[0x277CCDAB0] diopterUnit];
         [(HDCodableVisionSample *)self rightAddPower];
-        v29 = [v27 quantityWithUnit:v28 doubleValue:?];
+        v29 = [v27 quantityWithUnit:diopterUnit6 doubleValue:?];
       }
 
       else
@@ -3451,18 +3451,18 @@ LABEL_34:
         goto LABEL_88;
       }
 
-      if (v7 == 2)
+      if (prescriptionType == 2)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v33 = v4;
+          v33 = objectCopy;
           if ([(HDCodableVisionSample *)self hasLeftBaseCurve])
           {
             v34 = MEMORY[0x277CCD7E8];
-            v35 = [MEMORY[0x277CCDAB0] meterUnit];
+            meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
             [(HDCodableVisionSample *)self leftBaseCurve];
-            v83 = [v34 quantityWithUnit:v35 doubleValue:?];
+            v83 = [v34 quantityWithUnit:meterUnit doubleValue:?];
           }
 
           else
@@ -3473,9 +3473,9 @@ LABEL_34:
           if ([(HDCodableVisionSample *)self hasRightBaseCurve])
           {
             v62 = MEMORY[0x277CCD7E8];
-            v63 = [MEMORY[0x277CCDAB0] meterUnit];
+            meterUnit2 = [MEMORY[0x277CCDAB0] meterUnit];
             [(HDCodableVisionSample *)self rightBaseCurve];
-            v87 = [v62 quantityWithUnit:v63 doubleValue:?];
+            v87 = [v62 quantityWithUnit:meterUnit2 doubleValue:?];
           }
 
           else
@@ -3486,9 +3486,9 @@ LABEL_34:
           if ([(HDCodableVisionSample *)self hasLeftContactDiameter])
           {
             v64 = MEMORY[0x277CCD7E8];
-            v65 = [MEMORY[0x277CCDAB0] meterUnit];
+            meterUnit3 = [MEMORY[0x277CCDAB0] meterUnit];
             [(HDCodableVisionSample *)self leftContactDiameter];
-            v86 = [v64 quantityWithUnit:v65 doubleValue:?];
+            v86 = [v64 quantityWithUnit:meterUnit3 doubleValue:?];
           }
 
           else
@@ -3499,9 +3499,9 @@ LABEL_34:
           if ([(HDCodableVisionSample *)self hasRightContactDiameter])
           {
             v66 = MEMORY[0x277CCD7E8];
-            v67 = [MEMORY[0x277CCDAB0] meterUnit];
+            meterUnit4 = [MEMORY[0x277CCDAB0] meterUnit];
             [(HDCodableVisionSample *)self rightContactDiameter];
-            v85 = [v66 quantityWithUnit:v67 doubleValue:?];
+            v85 = [v66 quantityWithUnit:meterUnit4 doubleValue:?];
           }
 
           else
@@ -3521,8 +3521,8 @@ LABEL_34:
             [v33 _setRightEyeSpecification:v69];
           }
 
-          v70 = [(HDCodableVisionSample *)self brand];
-          [v33 _setBrand:v70];
+          brand = [(HDCodableVisionSample *)self brand];
+          [v33 _setBrand:brand];
           v32 = v83;
           goto LABEL_87;
         }
@@ -3530,7 +3530,7 @@ LABEL_34:
 
       else
       {
-        if (v7 != 1)
+        if (prescriptionType != 1)
         {
 LABEL_88:
           v11 = 1;
@@ -3540,13 +3540,13 @@ LABEL_88:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v82 = v4;
+          v82 = objectCopy;
           if ([(HDCodableVisionSample *)self hasLeftVertexDistance])
           {
             v30 = MEMORY[0x277CCD7E8];
-            v31 = [MEMORY[0x277CCDAB0] meterUnit];
+            meterUnit5 = [MEMORY[0x277CCDAB0] meterUnit];
             [(HDCodableVisionSample *)self leftVertexDistance];
-            v32 = [v30 quantityWithUnit:v31 doubleValue:?];
+            v32 = [v30 quantityWithUnit:meterUnit5 doubleValue:?];
           }
 
           else
@@ -3557,9 +3557,9 @@ LABEL_88:
           if ([(HDCodableVisionSample *)self hasRightVertexDistance])
           {
             v36 = MEMORY[0x277CCD7E8];
-            v37 = [MEMORY[0x277CCDAB0] meterUnit];
+            meterUnit6 = [MEMORY[0x277CCDAB0] meterUnit];
             [(HDCodableVisionSample *)self rightVertexDistance];
-            v87 = [v36 quantityWithUnit:v37 doubleValue:?];
+            v87 = [v36 quantityWithUnit:meterUnit6 doubleValue:?];
           }
 
           else
@@ -3570,9 +3570,9 @@ LABEL_88:
           if ([(HDCodableVisionSample *)self hasLeftFarPupillaryDistance])
           {
             v38 = MEMORY[0x277CCD7E8];
-            v39 = [MEMORY[0x277CCDAB0] meterUnit];
+            meterUnit7 = [MEMORY[0x277CCDAB0] meterUnit];
             [(HDCodableVisionSample *)self leftFarPupillaryDistance];
-            v86 = [v38 quantityWithUnit:v39 doubleValue:?];
+            v86 = [v38 quantityWithUnit:meterUnit7 doubleValue:?];
           }
 
           else
@@ -3583,9 +3583,9 @@ LABEL_88:
           if ([(HDCodableVisionSample *)self hasRightFarPupillaryDistance])
           {
             v40 = MEMORY[0x277CCD7E8];
-            v41 = [MEMORY[0x277CCDAB0] meterUnit];
+            meterUnit8 = [MEMORY[0x277CCDAB0] meterUnit];
             [(HDCodableVisionSample *)self rightFarPupillaryDistance];
-            v85 = [v40 quantityWithUnit:v41 doubleValue:?];
+            v85 = [v40 quantityWithUnit:meterUnit8 doubleValue:?];
           }
 
           else
@@ -3596,9 +3596,9 @@ LABEL_88:
           if ([(HDCodableVisionSample *)self hasLeftNearPupillaryDistance])
           {
             v42 = MEMORY[0x277CCD7E8];
-            v43 = [MEMORY[0x277CCDAB0] meterUnit];
+            meterUnit9 = [MEMORY[0x277CCDAB0] meterUnit];
             [(HDCodableVisionSample *)self leftNearPupillaryDistance];
-            v81 = [v42 quantityWithUnit:v43 doubleValue:?];
+            v81 = [v42 quantityWithUnit:meterUnit9 doubleValue:?];
           }
 
           else
@@ -3609,9 +3609,9 @@ LABEL_88:
           if ([(HDCodableVisionSample *)self hasRightNearPupillaryDistance])
           {
             v44 = MEMORY[0x277CCD7E8];
-            v45 = [MEMORY[0x277CCDAB0] meterUnit];
+            meterUnit10 = [MEMORY[0x277CCDAB0] meterUnit];
             [(HDCodableVisionSample *)self rightNearPupillaryDistance];
-            v80 = [v44 quantityWithUnit:v45 doubleValue:?];
+            v80 = [v44 quantityWithUnit:meterUnit10 doubleValue:?];
           }
 
           else
@@ -3624,13 +3624,13 @@ LABEL_88:
           {
             v78 = objc_alloc(MEMORY[0x277CCDBD0]);
             v46 = MEMORY[0x277CCD7E8];
-            v75 = [MEMORY[0x277CCDAB0] prismDiopterUnit];
+            prismDiopterUnit = [MEMORY[0x277CCDAB0] prismDiopterUnit];
             [(HDCodableVisionSample *)self leftPrismAmount];
-            v47 = [v46 quantityWithUnit:v75 doubleValue:?];
+            v47 = [v46 quantityWithUnit:prismDiopterUnit doubleValue:?];
             v48 = MEMORY[0x277CCD7E8];
-            v49 = [MEMORY[0x277CCDAB0] radianAngleUnit];
+            radianAngleUnit3 = [MEMORY[0x277CCDAB0] radianAngleUnit];
             [(HDCodableVisionSample *)self leftPrismAngle];
-            v50 = [v48 quantityWithUnit:v49 doubleValue:?];
+            v50 = [v48 quantityWithUnit:radianAngleUnit3 doubleValue:?];
             v79 = [v78 initWithAmount:v47 angle:v50 eye:1];
 
             v32 = v84;
@@ -3645,13 +3645,13 @@ LABEL_88:
           {
             v76 = objc_alloc(MEMORY[0x277CCDBD0]);
             v51 = MEMORY[0x277CCD7E8];
-            v74 = [MEMORY[0x277CCDAB0] prismDiopterUnit];
+            prismDiopterUnit2 = [MEMORY[0x277CCDAB0] prismDiopterUnit];
             [(HDCodableVisionSample *)self rightPrismAmount];
-            v52 = [v51 quantityWithUnit:v74 doubleValue:?];
+            v52 = [v51 quantityWithUnit:prismDiopterUnit2 doubleValue:?];
             v53 = MEMORY[0x277CCD7E8];
-            v54 = [MEMORY[0x277CCDAB0] radianAngleUnit];
+            radianAngleUnit4 = [MEMORY[0x277CCDAB0] radianAngleUnit];
             [(HDCodableVisionSample *)self rightPrismAngle];
-            v55 = [v53 quantityWithUnit:v54 doubleValue:?];
+            v55 = [v53 quantityWithUnit:radianAngleUnit4 doubleValue:?];
             v77 = [v76 initWithAmount:v52 angle:v55 eye:2];
 
             v32 = v84;
@@ -3676,8 +3676,8 @@ LABEL_88:
 
           if ([(HDCodableVisionSample *)self hasGlassesDescription])
           {
-            v58 = [v82 metadata];
-            v59 = [v58 mutableCopy];
+            metadata = [v82 metadata];
+            v59 = [metadata mutableCopy];
             v60 = v59;
             if (v59)
             {
@@ -3691,14 +3691,14 @@ LABEL_88:
 
             v71 = v61;
 
-            v72 = [(HDCodableVisionSample *)self glassesDescription];
-            [v71 setObject:v72 forKeyedSubscript:*MEMORY[0x277CCC4A8]];
+            glassesDescription = [(HDCodableVisionSample *)self glassesDescription];
+            [v71 setObject:glassesDescription forKeyedSubscript:*MEMORY[0x277CCC4A8]];
 
             [v82 _setMetadata:v71];
             v32 = v84;
           }
 
-          v70 = v81;
+          brand = v81;
 LABEL_87:
 
           goto LABEL_88;

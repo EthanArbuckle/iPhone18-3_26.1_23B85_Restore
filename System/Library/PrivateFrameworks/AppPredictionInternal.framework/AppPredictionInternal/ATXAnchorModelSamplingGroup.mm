@@ -1,27 +1,27 @@
 @interface ATXAnchorModelSamplingGroup
 + (id)getSamplingGroupForDataCollection;
-+ (id)samplingGroupFromSamplingGroupId:(int64_t)a3;
-+ (int64_t)assignSamplingGroupToUserAndPersistToDefaults:(id)a3;
++ (id)samplingGroupFromSamplingGroupId:(int64_t)id;
++ (int64_t)assignSamplingGroupToUserAndPersistToDefaults:(id)defaults;
 + (void)resetSamplingGroupAssignmentForUser;
-- (ATXAnchorModelSamplingGroup)initWithAnchorWhitelist:(id)a3 samplingGroupId:(int64_t)a4;
+- (ATXAnchorModelSamplingGroup)initWithAnchorWhitelist:(id)whitelist samplingGroupId:(int64_t)id;
 - (id)description;
 @end
 
 @implementation ATXAnchorModelSamplingGroup
 
-- (ATXAnchorModelSamplingGroup)initWithAnchorWhitelist:(id)a3 samplingGroupId:(int64_t)a4
+- (ATXAnchorModelSamplingGroup)initWithAnchorWhitelist:(id)whitelist samplingGroupId:(int64_t)id
 {
-  v6 = a3;
+  whitelistCopy = whitelist;
   v11.receiver = self;
   v11.super_class = ATXAnchorModelSamplingGroup;
   v7 = [(ATXAnchorModelSamplingGroup *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [whitelistCopy copy];
     anchorWhitelist = v7->_anchorWhitelist;
     v7->_anchorWhitelist = v8;
 
-    v7->_samplingGroupId = a4;
+    v7->_samplingGroupId = id;
   }
 
   return v7;
@@ -89,7 +89,7 @@
       _os_log_impl(&dword_2263AA000, v7, OS_LOG_TYPE_DEFAULT, "AnchorModel: User was not assigned to a sampling group. Selecting a sampling group for the user...", &v12, 2u);
     }
 
-    v5 = [a1 assignSamplingGroupToUserAndPersistToDefaults:v4];
+    v5 = [self assignSamplingGroupToUserAndPersistToDefaults:v4];
   }
 
   v8 = __atxlog_handle_default();
@@ -107,13 +107,13 @@
   return v9;
 }
 
-+ (int64_t)assignSamplingGroupToUserAndPersistToDefaults:(id)a3
++ (int64_t)assignSamplingGroupToUserAndPersistToDefaults:(id)defaults
 {
-  v4 = a3;
-  v5 = [a1 selectSamplingGroupForUser];
-  [v4 setInteger:v5 forKey:@"com.apple.duetexpertd.anchormodel.dataharvester.samplinggroup.samplinggroupid"];
+  defaultsCopy = defaults;
+  selectSamplingGroupForUser = [self selectSamplingGroupForUser];
+  [defaultsCopy setInteger:selectSamplingGroupForUser forKey:@"com.apple.duetexpertd.anchormodel.dataharvester.samplinggroup.samplinggroupid"];
 
-  return v5;
+  return selectSamplingGroupForUser;
 }
 
 + (void)resetSamplingGroupAssignmentForUser
@@ -129,12 +129,12 @@
   }
 }
 
-+ (id)samplingGroupFromSamplingGroupId:(int64_t)a3
++ (id)samplingGroupFromSamplingGroupId:(int64_t)id
 {
   v30[5] = *MEMORY[0x277D85DE8];
-  if (a3 <= 2)
+  if (id <= 2)
   {
-    switch(a3)
+    switch(id)
     {
       case 0:
         v17 = __atxlog_handle_default();
@@ -145,7 +145,7 @@
 
         v4 = [ATXAnchorModelSamplingGroup alloc];
         v5 = MEMORY[0x277CBEBF8];
-        v6 = 0;
+        idCopy = 0;
         goto LABEL_20;
       case 1:
         v21 = [ATXAnchorModelSamplingGroup alloc];
@@ -187,43 +187,43 @@ LABEL_15:
     v18 = __atxlog_handle_default();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
     {
-      [(ATXAnchorModelSamplingGroup *)a3 samplingGroupFromSamplingGroupId:v18];
+      [(ATXAnchorModelSamplingGroup *)id samplingGroupFromSamplingGroupId:v18];
     }
 
     v4 = [ATXAnchorModelSamplingGroup alloc];
     v5 = MEMORY[0x277CBEBF8];
-    v6 = a3;
+    idCopy = id;
     goto LABEL_20;
   }
 
-  if (a3 > 4)
+  if (id > 4)
   {
-    if (a3 == 5)
+    if (id == 5)
     {
       v4 = [ATXAnchorModelSamplingGroup alloc];
       v5 = MEMORY[0x277CBEBF8];
-      v6 = 5;
+      idCopy = 5;
       goto LABEL_20;
     }
 
-    if (a3 == 6)
+    if (id == 6)
     {
       v4 = [ATXAnchorModelSamplingGroup alloc];
       v5 = MEMORY[0x277CBEBF8];
-      v6 = 6;
+      idCopy = 6;
       goto LABEL_20;
     }
 
     goto LABEL_15;
   }
 
-  if (a3 != 3)
+  if (id != 3)
   {
     v4 = [ATXAnchorModelSamplingGroup alloc];
     v5 = MEMORY[0x277CBEBF8];
-    v6 = 4;
+    idCopy = 4;
 LABEL_20:
-    v20 = [(ATXAnchorModelSamplingGroup *)v4 initWithAnchorWhitelist:v5 samplingGroupId:v6];
+    v20 = [(ATXAnchorModelSamplingGroup *)v4 initWithAnchorWhitelist:v5 samplingGroupId:idCopy];
     goto LABEL_23;
   }
 

@@ -1,48 +1,48 @@
 @interface InfoCardViewController
 - (KeyboardProxyingView)keyboardProxyView;
 - (MUInfoCardAnalyticsDelegate)analyticsDelegate;
-- (double)heightForLayout:(unint64_t)a3;
-- (double)placeViewControllerPlaceCardHeaderTitleTrailingConstant:(id)a3;
+- (double)heightForLayout:(unint64_t)layout;
+- (double)placeViewControllerPlaceCardHeaderTitleTrailingConstant:(id)constant;
 - (id)_createActionMenu;
 - (id)headerMenuSortOrderByActionType;
-- (id)menuElementForActionItem:(id)a3;
+- (id)menuElementForActionItem:(id)item;
 - (id)preferredFocusEnvironments;
-- (void)_headerView:(id)a3 handleCardButtonType:(unint64_t)a4 withPresentationOptions:(id)a5;
+- (void)_headerView:(id)view handleCardButtonType:(unint64_t)type withPresentationOptions:(id)options;
 - (void)_updateFixedHeaderViewPosition;
 - (void)_updatePocketInteraction;
-- (void)applyAlphaToContent:(double)a3;
-- (void)applyLayoutToContent:(unint64_t)a3;
+- (void)applyAlphaToContent:(double)content;
+- (void)applyLayoutToContent:(unint64_t)content;
 - (void)dealloc;
-- (void)fixedHeaderViewTapped:(id)a3;
-- (void)fixedHeaderViewWithHeaderView:(id)a3 didSelect:(unint64_t)a4;
-- (void)handleDismissAction:(id)a3;
+- (void)fixedHeaderViewTapped:(id)tapped;
+- (void)fixedHeaderViewWithHeaderView:(id)view didSelect:(unint64_t)select;
+- (void)handleDismissAction:(id)action;
 - (void)instrumentDismissAction;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setContaineeDelegate:(id)a3;
-- (void)setContentViewController:(id)a3;
-- (void)setHeaderTitle:(id)a3;
-- (void)setShowFixedHeader:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setContaineeDelegate:(id)delegate;
+- (void)setContentViewController:(id)controller;
+- (void)setHeaderTitle:(id)title;
+- (void)setShowFixedHeader:(BOOL)header;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)willBecomeCurrent:(BOOL)a3;
-- (void)willChangeLayout:(unint64_t)a3;
+- (void)willBecomeCurrent:(BOOL)current;
+- (void)willChangeLayout:(unint64_t)layout;
 @end
 
 @implementation InfoCardViewController
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v9.receiver = self;
   v9.super_class = InfoCardViewController;
-  [(ContaineeViewController *)&v9 scrollViewDidScroll:a3];
-  v4 = [(MUInfoCardContentProtocol *)self->_contentViewController scrollView];
-  [v4 contentOffset];
+  [(ContaineeViewController *)&v9 scrollViewDidScroll:scroll];
+  scrollView = [(MUInfoCardContentProtocol *)self->_contentViewController scrollView];
+  [scrollView contentOffset];
   v6 = v5;
-  v7 = [(InfoCardViewController *)self contentViewController];
-  [v7 heightForContentAboveTitle];
+  contentViewController = [(InfoCardViewController *)self contentViewController];
+  [contentViewController heightForContentAboveTitle];
   [(InfoCardViewController *)self setShowFixedHeader:v6 > v8];
 
   if ([(InfoCardViewController *)self showFixedHeader]|| sub_10000FA08(self) == 5)
@@ -51,134 +51,134 @@
   }
 }
 
-- (void)_headerView:(id)a3 handleCardButtonType:(unint64_t)a4 withPresentationOptions:(id)a5
+- (void)_headerView:(id)view handleCardButtonType:(unint64_t)type withPresentationOptions:(id)options
 {
-  if (a4 == 4)
+  if (type == 4)
   {
-    [(InfoCardViewController *)self handleShareWithPresentationOptions:a5];
+    [(InfoCardViewController *)self handleShareWithPresentationOptions:options];
   }
 
   else
   {
-    [(InfoCardViewController *)self _handleDismissActionWithHeaderView:a3];
+    [(InfoCardViewController *)self _handleDismissActionWithHeaderView:view];
   }
 }
 
-- (void)applyLayoutToContent:(unint64_t)a3
+- (void)applyLayoutToContent:(unint64_t)content
 {
-  if (a3 - 1 > 4)
+  if (content - 1 > 4)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = qword_101212E50[a3 - 1];
+    v3 = qword_101212E50[content - 1];
   }
 
-  v4 = [(InfoCardViewController *)self contentViewController];
-  [v4 set_mapkit_contentVisibility:v3];
+  contentViewController = [(InfoCardViewController *)self contentViewController];
+  [contentViewController set_mapkit_contentVisibility:v3];
 }
 
-- (void)setShowFixedHeader:(BOOL)a3
+- (void)setShowFixedHeader:(BOOL)header
 {
-  if (self->_showFixedHeader != a3)
+  if (self->_showFixedHeader != header)
   {
-    self->_showFixedHeader = a3;
+    self->_showFixedHeader = header;
     [(InfoCardFixedHeaderView *)self->_fixedHeaderView setShowTitle:?];
 
     [(InfoCardViewController *)self _updatePocketInteraction];
   }
 }
 
-- (void)applyAlphaToContent:(double)a3
+- (void)applyAlphaToContent:(double)content
 {
-  v5 = [(InfoCardViewController *)self contentViewController];
-  [v5 setContentAlpha:a3];
+  contentViewController = [(InfoCardViewController *)self contentViewController];
+  [contentViewController setContentAlpha:content];
 
-  v6 = [(ContaineeViewController *)self cardPresentationController];
-  -[InfoCardViewController applyLayoutToContent:](self, "applyLayoutToContent:", [v6 containeeLayout]);
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  -[InfoCardViewController applyLayoutToContent:](self, "applyLayoutToContent:", [cardPresentationController containeeLayout]);
 }
 
-- (void)willBecomeCurrent:(BOOL)a3
+- (void)willBecomeCurrent:(BOOL)current
 {
   v4.receiver = self;
   v4.super_class = InfoCardViewController;
-  [(ContaineeViewController *)&v4 willBecomeCurrent:a3];
+  [(ContaineeViewController *)&v4 willBecomeCurrent:current];
   v3 = +[DeviceRecentLocations sharedInstance];
   [v3 updateLocationsWithCompletionHandler:0];
 }
 
-- (void)willChangeLayout:(unint64_t)a3
+- (void)willChangeLayout:(unint64_t)layout
 {
   v6.receiver = self;
   v6.super_class = InfoCardViewController;
   [(ContaineeViewController *)&v6 willChangeLayout:?];
-  if (a3 - 1 <= 1)
+  if (layout - 1 <= 1)
   {
-    v5 = [(InfoCardViewController *)self contentViewController];
-    [v5 scrollToTopAnimated:1];
+    contentViewController = [(InfoCardViewController *)self contentViewController];
+    [contentViewController scrollToTopAnimated:1];
   }
 }
 
 - (MUInfoCardAnalyticsDelegate)analyticsDelegate
 {
-  v3 = [(InfoCardViewController *)self contentViewController];
-  v4 = [v3 conformsToProtocol:&OBJC_PROTOCOL___MUInfoCardAnalyticsDelegate];
+  contentViewController = [(InfoCardViewController *)self contentViewController];
+  v4 = [contentViewController conformsToProtocol:&OBJC_PROTOCOL___MUInfoCardAnalyticsDelegate];
 
   if (v4)
   {
-    v5 = [(InfoCardViewController *)self contentViewController];
+    contentViewController2 = [(InfoCardViewController *)self contentViewController];
   }
 
   else
   {
-    v5 = 0;
+    contentViewController2 = 0;
   }
 
-  return v5;
+  return contentViewController2;
 }
 
-- (void)fixedHeaderViewWithHeaderView:(id)a3 didSelect:(unint64_t)a4
+- (void)fixedHeaderViewWithHeaderView:(id)view didSelect:(unint64_t)select
 {
-  v6 = a3;
+  viewCopy = view;
   v7 = objc_alloc_init(MUPresentationOptions);
-  [v7 setSourceView:v6];
-  [v6 frame];
+  [v7 setSourceView:viewCopy];
+  [viewCopy frame];
   [v7 setSourceRect:?];
-  [(InfoCardViewController *)self _headerView:v6 handleCardButtonType:a4 withPresentationOptions:v7];
+  [(InfoCardViewController *)self _headerView:viewCopy handleCardButtonType:select withPresentationOptions:v7];
 }
 
-- (void)fixedHeaderViewTapped:(id)a3
+- (void)fixedHeaderViewTapped:(id)tapped
 {
-  v4 = [(InfoCardViewController *)self analyticsDelegate];
-  [v4 infoCardAnalyticsDidSelectAction:6042 eventValue:0 feedbackDelegateSelector:0 classification:0];
+  analyticsDelegate = [(InfoCardViewController *)self analyticsDelegate];
+  [analyticsDelegate infoCardAnalyticsDidSelectAction:6042 eventValue:0 feedbackDelegateSelector:0 classification:0];
 
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  [v5 wantsExpandLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController wantsExpandLayout];
 }
 
-- (double)placeViewControllerPlaceCardHeaderTitleTrailingConstant:(id)a3
+- (double)placeViewControllerPlaceCardHeaderTitleTrailingConstant:(id)constant
 {
-  v3 = [(InfoCardViewController *)self fixedHeaderView];
-  [v3 trailingButtonsWidth];
+  fixedHeaderView = [(InfoCardViewController *)self fixedHeaderView];
+  [fixedHeaderView trailingButtonsWidth];
   v5 = v4 + 8.0;
 
   return v5;
 }
 
-- (id)menuElementForActionItem:(id)a3
+- (id)menuElementForActionItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 resolvedActionItem];
-  v6 = [v5 titleForDisplayStyle:0];
+  itemCopy = item;
+  resolvedActionItem = [itemCopy resolvedActionItem];
+  v6 = [resolvedActionItem titleForDisplayStyle:0];
 
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10057BDA0;
   v10[3] = &unk_101660418;
-  v7 = v4;
+  v7 = itemCopy;
   v11 = v7;
   objc_copyWeak(&v12, &location);
   v8 = [UIAction actionWithTitle:v6 image:0 identifier:0 handler:v10];
@@ -193,18 +193,18 @@
 - (id)_createActionMenu
 {
   v3 = [MKPlaceCardMenuBuildingOptions alloc];
-  v4 = [(InfoCardViewController *)self headerMenuSortOrderByActionType];
-  v5 = [v3 initWithRequestedActionTypes:v4];
+  headerMenuSortOrderByActionType = [(InfoCardViewController *)self headerMenuSortOrderByActionType];
+  v5 = [v3 initWithRequestedActionTypes:headerMenuSortOrderByActionType];
 
   [v5 setAddMismatchedItems:0];
   objc_initWeak(&location, self);
-  v6 = [(InfoCardViewController *)self headerActionItems];
+  headerActionItems = [(InfoCardViewController *)self headerActionItems];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10057BFAC;
   v9[3] = &unk_101622228;
   objc_copyWeak(&v10, &location);
-  v7 = [MKPlaceCardActionItem buildActionMenuForItems:v6 buildingOptions:v5 menuElementCreationBlock:v9];
+  v7 = [MKPlaceCardActionItem buildActionMenuForItems:headerActionItems buildingOptions:v5 menuElementCreationBlock:v9];
   objc_destroyWeak(&v10);
 
   objc_destroyWeak(&location);
@@ -307,8 +307,8 @@
     keyboardProxyView = self->_keyboardProxyView;
     self->_keyboardProxyView = v3;
 
-    v5 = [(InfoCardViewController *)self view];
-    [v5 addSubview:self->_keyboardProxyView];
+    view = [(InfoCardViewController *)self view];
+    [view addSubview:self->_keyboardProxyView];
   }
 
   v6 = self->_keyboardProxyView;
@@ -316,50 +316,50 @@
   return v6;
 }
 
-- (void)setContaineeDelegate:(id)a3
+- (void)setContaineeDelegate:(id)delegate
 {
   v8.receiver = self;
   v8.super_class = InfoCardViewController;
-  [(ContaineeViewController *)&v8 setContaineeDelegate:a3];
-  v4 = [(ContaineeViewController *)self containeeDelegate];
+  [(ContaineeViewController *)&v8 setContaineeDelegate:delegate];
+  containeeDelegate = [(ContaineeViewController *)self containeeDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ContaineeViewController *)self containeeDelegate];
-    v7 = [(InfoCardViewController *)self keyboardProxyView];
-    [v6 containeeViewController:self didCreateKeyboardProxy:v7];
+    containeeDelegate2 = [(ContaineeViewController *)self containeeDelegate];
+    keyboardProxyView = [(InfoCardViewController *)self keyboardProxyView];
+    [containeeDelegate2 containeeViewController:self didCreateKeyboardProxy:keyboardProxyView];
   }
 }
 
 - (void)instrumentDismissAction
 {
-  v2 = [(InfoCardViewController *)self analyticsDelegate];
-  [v2 infoCardAnalyticsDidSelectAction:4 target:201 eventValue:0 feedbackDelegateSelector:0 actionRichProviderId:0 classification:0];
+  analyticsDelegate = [(InfoCardViewController *)self analyticsDelegate];
+  [analyticsDelegate infoCardAnalyticsDidSelectAction:4 target:201 eventValue:0 feedbackDelegateSelector:0 actionRichProviderId:0 classification:0];
 }
 
-- (void)handleDismissAction:(id)a3
+- (void)handleDismissAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   [(InfoCardViewController *)self instrumentDismissAction];
   v5.receiver = self;
   v5.super_class = InfoCardViewController;
-  [(ContaineeViewController *)&v5 handleDismissAction:v4];
+  [(ContaineeViewController *)&v5 handleDismissAction:actionCopy];
 }
 
 - (void)_updatePocketInteraction
 {
-  v3 = [(MUInfoCardContentProtocol *)self->_contentViewController scrollView];
-  if (v3)
+  scrollView = [(MUInfoCardContentProtocol *)self->_contentViewController scrollView];
+  if (scrollView)
   {
-    v4 = v3;
+    v4 = scrollView;
     pocketInteraction = self->_pocketInteraction;
     if (pocketInteraction)
     {
-      v6 = [(UIScrollEdgeElementContainerInteraction *)pocketInteraction view];
+      view = [(UIScrollEdgeElementContainerInteraction *)pocketInteraction view];
       fixedHeaderView = self->_fixedHeaderView;
 
-      if (v6 == fixedHeaderView)
+      if (view == fixedHeaderView)
       {
         return;
       }
@@ -372,16 +372,16 @@
     v8 = self->_pocketInteraction;
     if (v8)
     {
-      v9 = [(UIScrollEdgeElementContainerInteraction *)v8 view];
-      [v9 removeInteraction:self->_pocketInteraction];
+      view2 = [(UIScrollEdgeElementContainerInteraction *)v8 view];
+      [view2 removeInteraction:self->_pocketInteraction];
 
       v10 = self->_pocketInteraction;
       self->_pocketInteraction = 0;
     }
 
     v11 = objc_alloc_init(UIScrollEdgeElementContainerInteraction);
-    v12 = [(MUInfoCardContentProtocol *)self->_contentViewController scrollView];
-    [v11 setScrollView:v12];
+    scrollView2 = [(MUInfoCardContentProtocol *)self->_contentViewController scrollView];
+    [v11 setScrollView:scrollView2];
 
     [v11 setEdge:1];
     v13 = self->_pocketInteraction;
@@ -400,53 +400,53 @@
   [(InfoCardViewController *)self _updatePocketInteraction];
 }
 
-- (void)setContentViewController:(id)a3
+- (void)setContentViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   contentViewController = self->_contentViewController;
-  if (contentViewController != v5)
+  if (contentViewController != controllerCopy)
   {
-    v7 = [(MUInfoCardContentProtocol *)contentViewController view];
-    [v7 removeFromSuperview];
+    view = [(MUInfoCardContentProtocol *)contentViewController view];
+    [view removeFromSuperview];
 
     [(MUInfoCardContentProtocol *)self->_contentViewController removeFromParentViewController];
-    objc_storeStrong(&self->_contentViewController, a3);
+    objc_storeStrong(&self->_contentViewController, controller);
     v8 = [DrivePreferences alloc];
     v9 = +[NSUserDefaults standardUserDefaults];
     v10 = [(DrivePreferences *)v8 initWithDefaults:v9];
-    v11 = [(DrivePreferences *)v10 automobileOptions];
-    [(MUInfoCardContentProtocol *)self->_contentViewController setAutomobileOptions:v11];
+    automobileOptions = [(DrivePreferences *)v10 automobileOptions];
+    [(MUInfoCardContentProtocol *)self->_contentViewController setAutomobileOptions:automobileOptions];
 
     v12 = [TransitPreferences alloc];
     v13 = +[NSUserDefaults standardUserDefaults];
     v14 = [(WatchSyncedPreferences *)v12 initWithDefaults:v13];
-    v15 = [(TransitPreferences *)v14 transitOptions];
-    [(MUInfoCardContentProtocol *)self->_contentViewController setTransitOptions:v15];
+    transitOptions = [(TransitPreferences *)v14 transitOptions];
+    [(MUInfoCardContentProtocol *)self->_contentViewController setTransitOptions:transitOptions];
 
     v16 = [CyclePreferences alloc];
     v17 = +[NSUserDefaults standardUserDefaults];
     v18 = [(CyclePreferences *)v16 initWithDefaults:v17];
-    v19 = [(CyclePreferences *)v18 cyclingOptions];
-    [(MUInfoCardContentProtocol *)self->_contentViewController setCyclingOptions:v19];
+    cyclingOptions = [(CyclePreferences *)v18 cyclingOptions];
+    [(MUInfoCardContentProtocol *)self->_contentViewController setCyclingOptions:cyclingOptions];
 
     v20 = [WalkPreferences alloc];
     v21 = +[NSUserDefaults standardUserDefaults];
     v22 = [(WalkPreferences *)v20 initWithDefaults:v21];
-    v23 = [(WalkPreferences *)v22 walkingOptions];
-    [(MUInfoCardContentProtocol *)self->_contentViewController setWalkingOptions:v23];
+    walkingOptions = [(WalkPreferences *)v22 walkingOptions];
+    [(MUInfoCardContentProtocol *)self->_contentViewController setWalkingOptions:walkingOptions];
 
-    if (v5)
+    if (controllerCopy)
     {
-      [(MUInfoCardContentProtocol *)v5 setScrollViewDelegate:self];
-      v24 = [(ContaineeViewController *)self cardPresentationController];
-      -[InfoCardViewController willChangeLayout:](self, "willChangeLayout:", [v24 containeeLayout]);
+      [(MUInfoCardContentProtocol *)controllerCopy setScrollViewDelegate:self];
+      cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+      -[InfoCardViewController willChangeLayout:](self, "willChangeLayout:", [cardPresentationController containeeLayout]);
 
       v28 = _NSConcreteStackBlock;
       v29 = 3221225472;
       v30 = sub_10057C970;
       v31 = &unk_101661A90;
-      v32 = v5;
-      v33 = self;
+      v32 = controllerCopy;
+      selfCopy = self;
       [UIView performWithoutAnimation:&v28];
       pocketInteraction = self->_pocketInteraction;
       if (pocketInteraction)
@@ -463,36 +463,36 @@
   }
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
-  if (a3 == 3)
+  if (layout == 3)
   {
     sub_10000FA08(self);
     goto LABEL_10;
   }
 
-  if (a3 != 2)
+  if (layout != 2)
   {
-    if (a3 == 1)
+    if (layout == 1)
     {
-      v4 = [(ContaineeViewController *)self cardPresentationController];
-      [v4 bottomSafeOffset];
+      cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController bottomSafeOffset];
       v6 = v5;
-      v7 = [(InfoCardViewController *)self contentViewController];
+      contentViewController = [(InfoCardViewController *)self contentViewController];
       [objc_opt_class() headerHeightInMinimalMode];
       v9 = v8;
-      v10 = [(InfoCardViewController *)self headerView];
-      [v10 frame];
+      headerView = [(InfoCardViewController *)self headerView];
+      [headerView frame];
       if (v9 > CGRectGetHeight(v18))
       {
-        v11 = [(InfoCardViewController *)self contentViewController];
+        contentViewController2 = [(InfoCardViewController *)self contentViewController];
         [objc_opt_class() headerHeightInMinimalMode];
       }
 
       else
       {
-        v11 = [(InfoCardViewController *)self headerView];
-        [v11 frame];
+        contentViewController2 = [(InfoCardViewController *)self headerView];
+        [contentViewController2 frame];
         Height = CGRectGetHeight(v19);
       }
 
@@ -503,8 +503,8 @@
     }
 
 LABEL_10:
-    v4 = [(ContaineeViewController *)self cardPresentationController];
-    [v4 availableHeight];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController availableHeight];
     v15 = v14;
 LABEL_13:
 
@@ -515,25 +515,25 @@ LABEL_13:
   return result;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  if (off_101927E60 == a6)
+  pathCopy = path;
+  if (off_101927E60 == context)
   {
-    if ([&off_1016ED970 containsObject:v10])
+    if ([&off_1016ED970 containsObject:pathCopy])
     {
       v11 = [DrivePreferences alloc];
       v12 = +[NSUserDefaults standardUserDefaults];
       v13 = [(DrivePreferences *)v11 initWithDefaults:v12];
-      v14 = [(DrivePreferences *)v13 automobileOptions];
+      automobileOptions = [(DrivePreferences *)v13 automobileOptions];
 
-      v15 = [(InfoCardViewController *)self contentViewController];
-      [v15 setAutomobileOptions:v14];
+      contentViewController = [(InfoCardViewController *)self contentViewController];
+      [contentViewController setAutomobileOptions:automobileOptions];
     }
 
     else
     {
-      if (![v10 isEqualToString:@"DefaultDisabledTransitModesKey"])
+      if (![pathCopy isEqualToString:@"DefaultDisabledTransitModesKey"])
       {
         goto LABEL_8;
       }
@@ -541,10 +541,10 @@ LABEL_13:
       v16 = [TransitPreferences alloc];
       v17 = +[NSUserDefaults standardUserDefaults];
       v18 = [(WatchSyncedPreferences *)v16 initWithDefaults:v17];
-      v14 = [(TransitPreferences *)v18 transitOptions];
+      automobileOptions = [(TransitPreferences *)v18 transitOptions];
 
-      v15 = [(InfoCardViewController *)self contentViewController];
-      [v15 setTransitOptions:v14];
+      contentViewController = [(InfoCardViewController *)self contentViewController];
+      [contentViewController setTransitOptions:automobileOptions];
     }
 
     goto LABEL_8;
@@ -552,7 +552,7 @@ LABEL_13:
 
   v19.receiver = self;
   v19.super_class = InfoCardViewController;
-  [(InfoCardViewController *)&v19 observeValueForKeyPath:v10 ofObject:a4 change:a5 context:a6];
+  [(InfoCardViewController *)&v19 observeValueForKeyPath:pathCopy ofObject:object change:change context:context];
 LABEL_8:
 }
 
@@ -607,69 +607,69 @@ LABEL_8:
 {
   if (sub_10000FA08(self) == 5)
   {
-    v3 = [(InfoCardViewController *)self keyboardProxyView];
-    v8[0] = v3;
-    v4 = [(InfoCardViewController *)self contentViewController];
-    v8[1] = v4;
-    v5 = [NSArray arrayWithObjects:v8 count:2];
+    keyboardProxyView = [(InfoCardViewController *)self keyboardProxyView];
+    v8[0] = keyboardProxyView;
+    contentViewController = [(InfoCardViewController *)self contentViewController];
+    v8[1] = contentViewController;
+    preferredFocusEnvironments = [NSArray arrayWithObjects:v8 count:2];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = InfoCardViewController;
-    v5 = [(InfoCardViewController *)&v7 preferredFocusEnvironments];
+    preferredFocusEnvironments = [(InfoCardViewController *)&v7 preferredFocusEnvironments];
   }
 
-  return v5;
+  return preferredFocusEnvironments;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = InfoCardViewController;
-  [(InfoCardViewController *)&v5 viewDidDisappear:a3];
+  [(InfoCardViewController *)&v5 viewDidDisappear:disappear];
   keyboardProxyView = self->_keyboardProxyView;
   self->_keyboardProxyView = 0;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = InfoCardViewController;
-  [(InfoCardViewController *)&v5 viewDidAppear:a3];
-  v4 = [(InfoCardViewController *)self keyboardProxyView];
-  [v4 becomeFirstResponder];
+  [(InfoCardViewController *)&v5 viewDidAppear:appear];
+  keyboardProxyView = [(InfoCardViewController *)self keyboardProxyView];
+  [keyboardProxyView becomeFirstResponder];
 }
 
 - (void)_updateFixedHeaderViewPosition
 {
-  v14 = [(InfoCardFixedHeaderView *)self->_fixedHeaderView leadingAnchor];
-  v15 = [(InfoCardViewController *)self view];
-  v13 = [v15 leadingAnchor];
-  v3 = [v14 constraintEqualToAnchor:v13];
+  leadingAnchor = [(InfoCardFixedHeaderView *)self->_fixedHeaderView leadingAnchor];
+  view = [(InfoCardViewController *)self view];
+  leadingAnchor2 = [view leadingAnchor];
+  v3 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v16[0] = v3;
-  v4 = [(InfoCardFixedHeaderView *)self->_fixedHeaderView trailingAnchor];
-  v5 = [(InfoCardViewController *)self view];
-  v6 = [v5 trailingAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  trailingAnchor = [(InfoCardFixedHeaderView *)self->_fixedHeaderView trailingAnchor];
+  view2 = [(InfoCardViewController *)self view];
+  trailingAnchor2 = [view2 trailingAnchor];
+  v7 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v16[1] = v7;
-  v8 = [(InfoCardFixedHeaderView *)self->_fixedHeaderView topAnchor];
-  v9 = [(InfoCardViewController *)self view];
-  v10 = [v9 topAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  topAnchor = [(InfoCardFixedHeaderView *)self->_fixedHeaderView topAnchor];
+  view3 = [(InfoCardViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v16[2] = v11;
   v12 = [NSArray arrayWithObjects:v16 count:3];
   [NSLayoutConstraint activateConstraints:v12];
 }
 
-- (void)setHeaderTitle:(id)a3
+- (void)setHeaderTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   if (([(NSString *)self->_headerTitle isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_headerTitle, a3);
-    [(InfoCardFixedHeaderView *)self->_fixedHeaderView setTitle:v5];
+    objc_storeStrong(&self->_headerTitle, title);
+    [(InfoCardFixedHeaderView *)self->_fixedHeaderView setTitle:titleCopy];
   }
 }
 
@@ -678,8 +678,8 @@ LABEL_8:
   v21.receiver = self;
   v21.super_class = InfoCardViewController;
   [(ContaineeViewController *)&v21 viewDidLoad];
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  [v3 setAlwaysUseDefaultContaineeLayout:1];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController setAlwaysUseDefaultContaineeLayout:1];
 
   if (sub_10000FA08(self) == 5)
   {
@@ -692,8 +692,8 @@ LABEL_8:
     v4 = &qword_1012163A8;
   }
 
-  v5 = [(InfoCardViewController *)self view];
-  [v5 setLayoutMargins:{0.0, *v4, 0.0, *v4}];
+  view = [(InfoCardViewController *)self view];
+  [view setLayoutMargins:{0.0, *v4, 0.0, *v4}];
 
   v6 = [[_TtC4Maps23InfoCardFixedHeaderView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   fixedHeaderView = self->_fixedHeaderView;
@@ -707,12 +707,12 @@ LABEL_8:
 
   [(InfoCardFixedHeaderView *)self->_fixedHeaderView setButtonConfiguration:v8];
   [(InfoCardFixedHeaderView *)self->_fixedHeaderView setDelegate:self];
-  v9 = [(InfoCardViewController *)self headerTitle];
-  [(InfoCardFixedHeaderView *)self->_fixedHeaderView setTitle:v9];
+  headerTitle = [(InfoCardViewController *)self headerTitle];
+  [(InfoCardFixedHeaderView *)self->_fixedHeaderView setTitle:headerTitle];
 
   [(InfoCardFixedHeaderView *)self->_fixedHeaderView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v10 = [(InfoCardViewController *)self view];
-  [v10 addSubview:self->_fixedHeaderView];
+  view2 = [(InfoCardViewController *)self view];
+  [view2 addSubview:self->_fixedHeaderView];
 
   [(InfoCardViewController *)self _updateFixedHeaderViewPosition];
   v11 = +[NSUserDefaults standardUserDefaults];

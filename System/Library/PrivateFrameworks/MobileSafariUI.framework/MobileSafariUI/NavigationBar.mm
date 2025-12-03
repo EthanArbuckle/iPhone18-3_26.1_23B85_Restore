@@ -1,51 +1,51 @@
 @interface NavigationBar
 - (UnifiedField)textField;
 - (double)placeholderHorizontalInset;
-- (void)setExpanded:(BOOL)a3 textFieldSelectionRange:(_NSRange)a4;
-- (void)setTextFieldPlaceHolderColor:(id)a3;
+- (void)setExpanded:(BOOL)expanded textFieldSelectionRange:(_NSRange)range;
+- (void)setTextFieldPlaceHolderColor:(id)color;
 @end
 
 @implementation NavigationBar
 
-- (void)setExpanded:(BOOL)a3 textFieldSelectionRange:(_NSRange)a4
+- (void)setExpanded:(BOOL)expanded textFieldSelectionRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3;
-  if (a3 && ![(_SFNavigationBar *)self isExpanded])
+  length = range.length;
+  location = range.location;
+  expandedCopy = expanded;
+  if (expanded && ![(_SFNavigationBar *)self isExpanded])
   {
-    v8 = [(NavigationBar *)self textField];
-    [v8 setReflectedItem:0];
+    textField = [(NavigationBar *)self textField];
+    [textField setReflectedItem:0];
   }
 
   v9.receiver = self;
   v9.super_class = NavigationBar;
-  [(_SFNavigationBar *)&v9 setExpanded:v6 textFieldSelectionRange:location completionHandler:length, 0];
+  [(_SFNavigationBar *)&v9 setExpanded:expandedCopy textFieldSelectionRange:location completionHandler:length, 0];
 }
 
 - (double)placeholderHorizontalInset
 {
-  v2 = [(NavigationBar *)self textField];
-  [v2 placeholderHorizontalInset];
+  textField = [(NavigationBar *)self textField];
+  [textField placeholderHorizontalInset];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setTextFieldPlaceHolderColor:(id)a3
+- (void)setTextFieldPlaceHolderColor:(id)color
 {
-  v4 = a3;
-  v5 = [(NavigationBar *)self textField];
-  [v5 setPlaceholderColor:v4];
+  colorCopy = color;
+  textField = [(NavigationBar *)self textField];
+  [textField setPlaceholderColor:colorCopy];
 }
 
 - (UnifiedField)textField
 {
   v4.receiver = self;
   v4.super_class = NavigationBar;
-  v2 = [(_SFNavigationBar *)&v4 textField];
+  textField = [(_SFNavigationBar *)&v4 textField];
 
-  return v2;
+  return textField;
 }
 
 @end

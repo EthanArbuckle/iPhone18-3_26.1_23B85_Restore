@@ -8,9 +8,9 @@
 + (id)semanticIdentifierFromSemanticIdentifierString:()HealthDaemon profile:
 {
   v6 = a3;
-  v7 = [a4 daemon];
-  v8 = [v7 userDomainConceptEntityRegistry];
-  v9 = [a1 _semanticIdentifierFromSemanticIdentifierString:v6 userDomainConceptEntityRegistry:v8];
+  daemon = [a4 daemon];
+  userDomainConceptEntityRegistry = [daemon userDomainConceptEntityRegistry];
+  v9 = [self _semanticIdentifierFromSemanticIdentifierString:v6 userDomainConceptEntityRegistry:userDomainConceptEntityRegistry];
 
   return v9;
 }
@@ -21,15 +21,15 @@
   v6 = [a3 componentsSeparatedByString:*MEMORY[0x277CCCE50]];
   if ([v6 count] >= 2)
   {
-    v8 = [v6 firstObject];
-    if ([v8 isEqualToString:*MEMORY[0x277CCCE48]])
+    firstObject = [v6 firstObject];
+    if ([firstObject isEqualToString:*MEMORY[0x277CCCE48]])
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = v8;
+      v9 = firstObject;
     }
 
     v10 = v9;

@@ -1,20 +1,20 @@
 @interface SBLockOverlayContext
-- (SBLockOverlayContext)initWithOverlayViewController:(id)a3 priority:(unint64_t)a4;
+- (SBLockOverlayContext)initWithOverlayViewController:(id)controller priority:(unint64_t)priority;
 @end
 
 @implementation SBLockOverlayContext
 
-- (SBLockOverlayContext)initWithOverlayViewController:(id)a3 priority:(unint64_t)a4
+- (SBLockOverlayContext)initWithOverlayViewController:(id)controller priority:(unint64_t)priority
 {
-  v7 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = SBLockOverlayContext;
   v8 = [(SBLockOverlayContext *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_viewController, a3);
-    v9->_priority = a4;
+    objc_storeStrong(&v8->_viewController, controller);
+    v9->_priority = priority;
   }
 
   return v9;

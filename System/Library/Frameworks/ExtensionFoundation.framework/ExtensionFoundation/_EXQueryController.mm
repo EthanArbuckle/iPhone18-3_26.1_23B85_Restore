@@ -1,15 +1,15 @@
 @interface _EXQueryController
-+ (id)executeQueries:(id)a3;
-+ (id)executeQuery:(id)a3;
-+ (void)executeQueries:(id)a3 completionHandler:(id)a4;
-+ (void)executeQuery:(id)a3 completionHandler:(id)a4;
++ (id)executeQueries:(id)queries;
++ (id)executeQuery:(id)query;
++ (void)executeQueries:(id)queries completionHandler:(id)handler;
++ (void)executeQuery:(id)query completionHandler:(id)handler;
 - (NSArray)extensionIdentities;
 - (NSArray)extensions;
 - (NSArray)queries;
 - (NSString)description;
 - (_EXQueryController)init;
-- (_EXQueryController)initWithQueries:(id)a3;
-- (_EXQueryController)initWithQueries:(id)a3 delegate:(id)a4;
+- (_EXQueryController)initWithQueries:(id)queries;
+- (_EXQueryController)initWithQueries:(id)queries delegate:(id)delegate;
 - (_EXQueryControllerDelegate)delegate;
 - (void)resume;
 - (void)suspend;
@@ -20,11 +20,11 @@
 - (void)resume
 {
   v2 = *(self + OBJC_IVAR____EXQueryController_innerController);
-  v3 = self;
+  selfCopy = self;
   QueryController.resume()();
 }
 
-- (_EXQueryController)initWithQueries:(id)a3 delegate:(id)a4
+- (_EXQueryController)initWithQueries:(id)queries delegate:(id)delegate
 {
   type metadata accessor for _EXQuery();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -32,13 +32,13 @@
   return _EXQueryController.init(queries:delegate:)(v4);
 }
 
-+ (id)executeQuery:(id)a3
++ (id)executeQuery:(id)query
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&_ss23_ContiguousArrayStorageCyyXlGMd, _ss23_ContiguousArrayStorageCyyXlGMR);
   inited = swift_initStackObject();
   *(inited + 16) = xmmword_1848BBBA0;
-  *(inited + 32) = a3;
-  v5 = a3;
+  *(inited + 32) = query;
+  queryCopy = query;
   specialized static QueryController.execute(queries:)(inited);
   swift_setDeallocating();
   v6 = *(inited + 16);
@@ -49,7 +49,7 @@
   return v7.super.isa;
 }
 
-- (_EXQueryController)initWithQueries:(id)a3
+- (_EXQueryController)initWithQueries:(id)queries
 {
   type metadata accessor for _EXQuery();
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -58,7 +58,7 @@
 
 - (NSArray)extensionIdentities
 {
-  v2 = self;
+  selfCopy = self;
   _EXQueryController.extensionIdentities.getter();
 
   type metadata accessor for _EXExtensionIdentity();
@@ -67,20 +67,20 @@
   return v3.super.isa;
 }
 
-+ (void)executeQuery:(id)a3 completionHandler:(id)a4
++ (void)executeQuery:(id)query completionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
   __swift_instantiateConcreteTypeFromMangledNameV2(&_ss23_ContiguousArrayStorageCyyXlGMd, _ss23_ContiguousArrayStorageCyyXlGMR);
   v7 = swift_allocObject();
   *(v7 + 16) = xmmword_1848BBBA0;
-  *(v7 + 32) = a3;
-  v8 = a3;
+  *(v7 + 32) = query;
+  queryCopy = query;
   specialized static QueryController.execute(queries:completion:)(v7, thunk for @escaping @callee_unowned @convention(block) (@unowned NSArray) -> ()partial apply, v6);
 }
 
-+ (id)executeQueries:(id)a3
++ (id)executeQueries:(id)queries
 {
   type metadata accessor for _EXQuery();
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -92,9 +92,9 @@
   return v4.super.isa;
 }
 
-+ (void)executeQueries:(id)a3 completionHandler:(id)a4
++ (void)executeQueries:(id)queries completionHandler:(id)handler
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(handler);
   type metadata accessor for _EXQuery();
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = swift_allocObject();
@@ -122,7 +122,7 @@
 - (void)suspend
 {
   v2 = *(self + OBJC_IVAR____EXQueryController_innerController);
-  v3 = self;
+  selfCopy = self;
   QueryController.suspend()();
 }
 
@@ -135,7 +135,7 @@
 
 - (NSArray)extensions
 {
-  v2 = self;
+  selfCopy = self;
   _EXQueryController.extensions.getter();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&_sSo24_EXExtensionRepresenting_pMd, &_sSo24_EXExtensionRepresenting_pMR);

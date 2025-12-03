@@ -1,18 +1,18 @@
 @interface BuddyRestoreHelpers
-+ (id)alertForBackupError:(id)a3 forBackup:(BOOL)a4 okButtonAction:(id)a5;
-+ (id)alertForBackupError:(id)a3 okButtonAction:(id)a4;
++ (id)alertForBackupError:(id)error forBackup:(BOOL)backup okButtonAction:(id)action;
++ (id)alertForBackupError:(id)error okButtonAction:(id)action;
 @end
 
 @implementation BuddyRestoreHelpers
 
-+ (id)alertForBackupError:(id)a3 okButtonAction:(id)a4
++ (id)alertForBackupError:(id)error okButtonAction:(id)action
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, action);
   v5 = [objc_opt_class() alertForBackupError:location[0] forBackup:0 okButtonAction:v7];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
@@ -20,58 +20,58 @@
   return v5;
 }
 
-+ (id)alertForBackupError:(id)a3 forBackup:(BOOL)a4 okButtonAction:(id)a5
++ (id)alertForBackupError:(id)error forBackup:(BOOL)backup okButtonAction:(id)action
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v51 = a4;
+  objc_storeStrong(location, error);
+  backupCopy = backup;
   v50 = 0;
-  objc_storeStrong(&v50, a5);
+  objc_storeStrong(&v50, action);
   v49 = 0;
   v48 = 0;
   v47 = 0;
-  if (v51)
+  if (backupCopy)
   {
     v19 = +[NSBundle mainBundle];
     v20 = [(NSBundle *)v19 localizedStringForKey:@"ERROR_TITLE_CANNOT_BACK_UP" value:&stru_10032F900 table:@"RestoreFromBackup"];
     v21 = v47;
     v47 = v20;
 
-    v22 = [location[0] domain];
-    v23 = [v22 isEqualToString:@"MBErrorDomain"];
+    domain = [location[0] domain];
+    v23 = [domain isEqualToString:@"MBErrorDomain"];
 
     if ((v23 & 1) == 0)
     {
       goto LABEL_27;
     }
 
-    v24 = [location[0] code];
-    if (v24 == 13)
+    code = [location[0] code];
+    if (code == 13)
     {
       objc_storeStrong(&v49, @"ERROR_BACKING_UP_BACKUPS_BUSY");
       goto LABEL_27;
     }
 
-    if (v24 == 300)
+    if (code == 300)
     {
       goto LABEL_22;
     }
 
-    if (v24 == 302)
+    if (code == 302)
     {
       objc_storeStrong(&v49, @"ERROR_BACKING_UP_SERVER_ERROR");
       goto LABEL_27;
     }
 
-    if (v24 == 304)
+    if (code == 304)
     {
       objc_storeStrong(&v49, @"ERROR_BACKING_UP_SERVER_UNAVAILABLE");
       goto LABEL_27;
     }
 
-    if (v24 == 308)
+    if (code == 308)
     {
 LABEL_22:
       objc_storeStrong(&v49, @"ERROR_BACKING_UP_LOST_NETWORK");
@@ -93,25 +93,25 @@ LABEL_22:
     v9 = v47;
     v47 = v8;
 
-    v10 = [location[0] domain];
-    v11 = [v10 isEqualToString:@"MBErrorDomain"];
+    domain2 = [location[0] domain];
+    v11 = [domain2 isEqualToString:@"MBErrorDomain"];
 
     if (v11)
     {
-      v12 = [location[0] code];
-      if (v12 == 13)
+      code2 = [location[0] code];
+      if (code2 == 13)
       {
         objc_storeStrong(&v49, @"ERROR_RESTORING_BACKUPS_BUSY");
       }
 
-      else if (v12 == 205)
+      else if (code2 == 205)
       {
         objc_storeStrong(&v49, @"ERROR_RESTORING_BAD_BACKUP_DATA");
       }
 
       else
       {
-        if (v12 == 300)
+        if (code2 == 300)
         {
 LABEL_9:
           v13 = SFLocalizableWAPIStringKeyForKey();
@@ -127,19 +127,19 @@ LABEL_9:
           goto LABEL_27;
         }
 
-        if (v12 == 302)
+        if (code2 == 302)
         {
           objc_storeStrong(&v49, @"ERROR_RESTORING_SERVER_ERROR");
         }
 
-        else if (v12 == 304)
+        else if (code2 == 304)
         {
           objc_storeStrong(&v49, @"ERROR_RESTORING_SERVER_UNAVAILABLE");
         }
 
         else
         {
-          if (v12 == 308)
+          if (code2 == 308)
           {
             goto LABEL_9;
           }

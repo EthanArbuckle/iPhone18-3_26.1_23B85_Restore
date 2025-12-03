@@ -1,17 +1,17 @@
 @interface NTKImageSource
-+ (id)imageSourceWithData:(id)a3;
-- (CGImage)CreateCGImageWithSubsampleFactor:(int64_t)a3;
-- (id)initImageSourceWithData:(id)a3;
++ (id)imageSourceWithData:(id)data;
+- (CGImage)CreateCGImageWithSubsampleFactor:(int64_t)factor;
+- (id)initImageSourceWithData:(id)data;
 - (void)dealloc;
 @end
 
 @implementation NTKImageSource
 
-+ (id)imageSourceWithData:(id)a3
++ (id)imageSourceWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = [NTKImageSource alloc];
-  inited = objc_msgSend_initImageSourceWithData_(v4, v5, v3, v6);
+  inited = objc_msgSend_initImageSourceWithData_(v4, v5, dataCopy, v6);
 
   if (objc_msgSend_CGImageSource(inited, v8, v9, v10))
   {
@@ -39,16 +39,16 @@
   [(NTKImageSource *)&v4 dealloc];
 }
 
-- (id)initImageSourceWithData:(id)a3
+- (id)initImageSourceWithData:(id)data
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = NTKImageSource;
   v5 = [(NTKImageSource *)&v9 init];
   if (v5)
   {
-    v6 = CGImageSourceCreateWithData(v4, 0);
+    v6 = CGImageSourceCreateWithData(dataCopy, 0);
     v5->_imageSourceRef = v6;
     if (!v6)
     {
@@ -65,7 +65,7 @@
   return v5;
 }
 
-- (CGImage)CreateCGImageWithSubsampleFactor:(int64_t)a3
+- (CGImage)CreateCGImageWithSubsampleFactor:(int64_t)factor
 {
   v11[2] = *MEMORY[0x277D85DE8];
   if (!self->_imageSourceRef)
@@ -74,7 +74,7 @@
   }
 
   v10[0] = *MEMORY[0x277CD3650];
-  v5 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], a2, a3, v3);
+  v5 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], a2, factor, v3);
   v10[1] = *MEMORY[0x277CD3618];
   v11[0] = v5;
   v11[1] = MEMORY[0x277CBEC28];

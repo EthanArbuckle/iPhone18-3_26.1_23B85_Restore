@@ -1,29 +1,29 @@
 @interface CDRichComplicationShapeView
 - (BOOL)_shouldReverseGradient;
 - (CGPath)_generatePath;
-- (CGPoint)_pointAtProgress:(float)a3;
+- (CGPoint)_pointAtProgress:(float)progress;
 - (CLKMonochromeFilterProvider)filterProvider;
 - (double)_shapeLineWidth;
-- (id)_normalizeGradientLocations:(id)a3;
+- (id)_normalizeGradientLocations:(id)locations;
 - (id)_shapeStrokeColor;
-- (id)initForDevice:(id)a3 withFilterStyle:(int64_t)a4;
-- (void)_setupGradientLayer:(id)a3;
+- (id)initForDevice:(id)device withFilterStyle:(int64_t)style;
+- (void)_setupGradientLayer:(id)layer;
 - (void)_updateGradient;
 - (void)_updatePath;
 - (void)layoutSubviews;
-- (void)setGradientColors:(id)a3;
-- (void)setGradientColors:(id)a3 locations:(id)a4;
-- (void)setProgress:(double)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)setGradientColors:(id)colors;
+- (void)setGradientColors:(id)colors locations:(id)locations;
+- (void)setProgress:(double)progress;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)unfreezeForTransaction;
 - (void)updateMonochromeColor;
 @end
 
 @implementation CDRichComplicationShapeView
 
-- (id)initForDevice:(id)a3 withFilterStyle:(int64_t)a4
+- (id)initForDevice:(id)device withFilterStyle:(int64_t)style
 {
-  v7 = a3;
+  deviceCopy = device;
   v23.receiver = self;
   v23.super_class = CDRichComplicationShapeView;
   v8 = *MEMORY[0x277CBF3A0];
@@ -34,7 +34,7 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_device, a3);
+    objc_storeStrong(&v12->_device, device);
     v13->_progress = 1.0;
     v14 = objc_alloc_init(MEMORY[0x277CD9EB0]);
     gradientLayer = v13->_gradientLayer;
@@ -56,19 +56,19 @@
     filterView = v13->_filterView;
     v13->_filterView = v19;
 
-    v21 = [(UIView *)v13->_filterView layer];
-    [v21 addSublayer:v13->_freezeLayer];
+    layer = [(UIView *)v13->_filterView layer];
+    [layer addSublayer:v13->_freezeLayer];
 
     [(CDRichComplicationShapeView *)v13 addSubview:v13->_filterView];
-    v13->_filterStyle = a4;
+    v13->_filterStyle = style;
   }
 
   return v13;
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  v3 = fmin(a3, 1.0);
+  v3 = fmin(progress, 1.0);
   if (v3 < 0.0)
   {
     v3 = 0.0;
@@ -117,8 +117,8 @@
     [(CAShapeLayer *)self->_shapeLayer setPath:[(CDRichComplicationShapeView *)self _generatePath]];
     [(CDRichComplicationShapeView *)self _shapeLineWidth];
     [(CAShapeLayer *)self->_shapeLayer setLineWidth:?];
-    v13 = [MEMORY[0x277D75348] clearColor];
-    -[CAShapeLayer setFillColor:](self->_shapeLayer, "setFillColor:", [v13 CGColor]);
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    -[CAShapeLayer setFillColor:](self->_shapeLayer, "setFillColor:", [clearColor CGColor]);
 
     [(CAShapeLayer *)self->_shapeLayer setStrokeStart:0.0];
     [(CAShapeLayer *)self->_shapeLayer setStrokeEnd:self->_progress];
@@ -150,46 +150,46 @@
   }
 }
 
-- (void)setGradientColors:(id)a3
+- (void)setGradientColors:(id)colors
 {
-  v7 = a3;
-  if ([v7 count])
+  colorsCopy = colors;
+  if ([colorsCopy count])
   {
-    v4 = [MEMORY[0x277CBEB18] array];
-    if ([v7 count])
+    array = [MEMORY[0x277CBEB18] array];
+    if ([colorsCopy count])
     {
       v5 = 0;
       do
       {
-        v6 = [MEMORY[0x277CCABB0] numberWithDouble:{v5 / objc_msgSend(v7, "count")}];
-        [v4 addObject:v6];
+        v6 = [MEMORY[0x277CCABB0] numberWithDouble:{v5 / objc_msgSend(colorsCopy, "count")}];
+        [array addObject:v6];
 
         ++v5;
       }
 
-      while ([v7 count] > v5);
+      while ([colorsCopy count] > v5);
     }
 
-    [(CDRichComplicationShapeView *)self setGradientColors:v7 locations:v4];
+    [(CDRichComplicationShapeView *)self setGradientColors:colorsCopy locations:array];
   }
 }
 
-- (void)setGradientColors:(id)a3 locations:(id)a4
+- (void)setGradientColors:(id)colors locations:(id)locations
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_gradientColors, a3);
+  colorsCopy = colors;
+  locationsCopy = locations;
+  objc_storeStrong(&self->_gradientColors, colors);
   if (self->_monochromeFraction == 1.0)
   {
-    v9 = [MEMORY[0x277D75348] whiteColor];
-    v26[0] = v9;
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    v26[0] = whiteColor;
     v10 = v26;
   }
 
   else
   {
-    if ([v7 count] < 2)
+    if ([colorsCopy count] < 2)
     {
       goto LABEL_5;
     }
@@ -198,8 +198,8 @@
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = v7;
-    v14 = [v9 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    whiteColor = colorsCopy;
+    v14 = [whiteColor countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v14)
     {
       v15 = v14;
@@ -210,21 +210,21 @@
         {
           if (*v21 != v16)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(whiteColor);
           }
 
           v18 = *(*(&v20 + 1) + 8 * i);
-          v19 = [v9 firstObject];
-          LODWORD(v18) = [v18 isEqual:v19];
+          firstObject = [whiteColor firstObject];
+          LODWORD(v18) = [v18 isEqual:firstObject];
 
           if (!v18)
           {
-            v11 = v9;
+            v11 = whiteColor;
             goto LABEL_4;
           }
         }
 
-        v15 = [v9 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v15 = [whiteColor countByEnumeratingWithState:&v20 objects:v25 count:16];
         if (v15)
         {
           continue;
@@ -234,20 +234,20 @@
       }
     }
 
-    v9 = [v9 firstObject];
-    v24 = v9;
+    whiteColor = [whiteColor firstObject];
+    v24 = whiteColor;
     v10 = &v24;
   }
 
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:{1, v20}];
 
 LABEL_4:
-  v7 = v11;
+  colorsCopy = v11;
 LABEL_5:
-  if (v7 | self->_filteredGradientColors && ![v7 isEqualToArray:?] || (gradientLocations = self->_gradientLocations, v8 | gradientLocations) && !-[NSArray isEqualToArray:](gradientLocations, "isEqualToArray:", v8))
+  if (colorsCopy | self->_filteredGradientColors && ![colorsCopy isEqualToArray:?] || (gradientLocations = self->_gradientLocations, locationsCopy | gradientLocations) && !-[NSArray isEqualToArray:](gradientLocations, "isEqualToArray:", locationsCopy))
   {
-    objc_storeStrong(&self->_filteredGradientColors, v7);
-    objc_storeStrong(&self->_gradientLocations, a4);
+    objc_storeStrong(&self->_filteredGradientColors, colorsCopy);
+    objc_storeStrong(&self->_gradientLocations, locations);
     [(CDRichComplicationShapeView *)self _updateGradient];
   }
 
@@ -256,48 +256,48 @@ LABEL_5:
 
 - (void)_updatePath
 {
-  v3 = [(CDRichComplicationShapeView *)self _generatePath];
-  if ([(CAShapeLayer *)self->_shapeLayer path]| v3 && !CGPathEqualToPath([(CAShapeLayer *)self->_shapeLayer path], v3))
+  _generatePath = [(CDRichComplicationShapeView *)self _generatePath];
+  if ([(CAShapeLayer *)self->_shapeLayer path]| _generatePath && !CGPathEqualToPath([(CAShapeLayer *)self->_shapeLayer path], _generatePath))
   {
     [(CDRichComplicationShapeView *)self unfreezeForTransaction];
-    v4 = [(CDRichComplicationShapeView *)self _generatePath];
+    _generatePath2 = [(CDRichComplicationShapeView *)self _generatePath];
     shapeLayer = self->_shapeLayer;
 
-    [(CAShapeLayer *)shapeLayer setPath:v4];
+    [(CAShapeLayer *)shapeLayer setPath:_generatePath2];
   }
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
-  v5 = [(CDRichComplicationShapeView *)self filterProvider];
-  v7 = [v5 filtersForView:self style:-[CDRichComplicationShapeView filterStyle](self fraction:{"filterStyle"), a3}];
+  filterProvider = [(CDRichComplicationShapeView *)self filterProvider];
+  v7 = [filterProvider filtersForView:self style:-[CDRichComplicationShapeView filterStyle](self fraction:{"filterStyle"), fraction}];
 
   if (v7)
   {
-    v6 = [(UIView *)self->_filterView layer];
-    [v6 setFilters:v7];
+    layer = [(UIView *)self->_filterView layer];
+    [layer setFilters:v7];
   }
 
-  self->_monochromeFraction = a3;
+  self->_monochromeFraction = fraction;
   [(CDRichComplicationShapeView *)self setGradientColors:self->_gradientColors locations:self->_gradientLocations];
 }
 
 - (void)updateMonochromeColor
 {
-  v3 = [(CDRichComplicationShapeView *)self filterProvider];
-  v7 = [v3 filtersForView:self style:{-[CDRichComplicationShapeView filterStyle](self, "filterStyle")}];
+  filterProvider = [(CDRichComplicationShapeView *)self filterProvider];
+  v7 = [filterProvider filtersForView:self style:{-[CDRichComplicationShapeView filterStyle](self, "filterStyle")}];
 
-  v4 = [(UIView *)self->_filterView layer];
-  v5 = v4;
+  layer = [(UIView *)self->_filterView layer];
+  v5 = layer;
   if (v7)
   {
-    [v4 setFilters:v7];
+    [layer setFilters:v7];
     v6 = 1.0;
   }
 
   else
   {
-    [v4 setFilters:0];
+    [layer setFilters:0];
     v6 = 0.0;
   }
 
@@ -313,8 +313,8 @@ LABEL_5:
   [(CDRichComplicationShapeView *)self unfreezeForTransaction];
   if ([(NSArray *)self->_filteredGradientColors count]== 1)
   {
-    v3 = [(CDRichComplicationShapeView *)self _shapeStrokeColor];
-    -[CAShapeLayer setStrokeColor:](self->_shapeLayer, "setStrokeColor:", [v3 CGColor]);
+    _shapeStrokeColor = [(CDRichComplicationShapeView *)self _shapeStrokeColor];
+    -[CAShapeLayer setStrokeColor:](self->_shapeLayer, "setStrokeColor:", [_shapeStrokeColor CGColor]);
 
     [(CAGradientLayer *)self->_gradientLayer setHidden:1];
     [(CAGradientLayer *)self->_gradientLayer setCompositingFilter:0];
@@ -322,7 +322,7 @@ LABEL_5:
 
   else
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v5 = [(CDRichComplicationShapeView *)self _normalizeGradientLocations:self->_gradientLocations];
     v22 = 0u;
     v23 = 0u;
@@ -344,7 +344,7 @@ LABEL_5:
           }
 
           v11 = *(*(&v22 + 1) + 8 * i);
-          [v4 addObject:{objc_msgSend(v11, "CGColor", v22)}];
+          [array addObject:{objc_msgSend(v11, "CGColor", v22)}];
         }
 
         v8 = [(NSArray *)v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -353,30 +353,30 @@ LABEL_5:
       while (v8);
     }
 
-    v12 = [(CDRichComplicationShapeView *)self _shapeStrokeColor];
-    -[CAShapeLayer setStrokeColor:](self->_shapeLayer, "setStrokeColor:", [v12 CGColor]);
+    _shapeStrokeColor2 = [(CDRichComplicationShapeView *)self _shapeStrokeColor];
+    -[CAShapeLayer setStrokeColor:](self->_shapeLayer, "setStrokeColor:", [_shapeStrokeColor2 CGColor]);
 
     [(CAGradientLayer *)self->_gradientLayer setHidden:0];
     v13 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA610]];
     [(CAGradientLayer *)self->_gradientLayer setCompositingFilter:v13];
 
-    v14 = [(CDRichComplicationShapeView *)self _shouldReverseGradient];
+    _shouldReverseGradient = [(CDRichComplicationShapeView *)self _shouldReverseGradient];
     gradientLayer = self->_gradientLayer;
-    if (v14)
+    if (_shouldReverseGradient)
     {
-      v16 = [v4 reverseObjectEnumerator];
-      v17 = [v16 allObjects];
-      [(CAGradientLayer *)gradientLayer setColors:v17];
+      reverseObjectEnumerator = [array reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
+      [(CAGradientLayer *)gradientLayer setColors:allObjects];
 
       v18 = self->_gradientLayer;
-      v19 = [v5 reverseObjectEnumerator];
-      v20 = [v19 allObjects];
-      [(CAGradientLayer *)v18 setLocations:v20];
+      reverseObjectEnumerator2 = [v5 reverseObjectEnumerator];
+      allObjects2 = [reverseObjectEnumerator2 allObjects];
+      [(CAGradientLayer *)v18 setLocations:allObjects2];
     }
 
     else
     {
-      [(CAGradientLayer *)self->_gradientLayer setColors:v4];
+      [(CAGradientLayer *)self->_gradientLayer setColors:array];
       [(CAGradientLayer *)self->_gradientLayer setLocations:v5];
     }
   }
@@ -408,7 +408,7 @@ LABEL_5:
   return WeakRetained;
 }
 
-- (void)_setupGradientLayer:(id)a3
+- (void)_setupGradientLayer:(id)layer
 {
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0();
@@ -424,7 +424,7 @@ LABEL_5:
   return 0.0;
 }
 
-- (CGPoint)_pointAtProgress:(float)a3
+- (CGPoint)_pointAtProgress:(float)progress
 {
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0();
@@ -436,7 +436,7 @@ LABEL_5:
   return result;
 }
 
-- (id)_normalizeGradientLocations:(id)a3
+- (id)_normalizeGradientLocations:(id)locations
 {
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0();

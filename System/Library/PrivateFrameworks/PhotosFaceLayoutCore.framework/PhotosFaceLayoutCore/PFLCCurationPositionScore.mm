@@ -1,30 +1,30 @@
 @interface PFLCCurationPositionScore
 - (CGRect)cropRect;
 - (CGRect)timeLabelRect;
-- (PFLCCurationPositionScore)initWithCropScore:(double)a3 cropRect:(CGRect)a4 timeLabelRect:(CGRect)a5 classification:(unint64_t)a6;
+- (PFLCCurationPositionScore)initWithCropScore:(double)score cropRect:(CGRect)rect timeLabelRect:(CGRect)labelRect classification:(unint64_t)classification;
 - (id)description;
 @end
 
 @implementation PFLCCurationPositionScore
 
-- (PFLCCurationPositionScore)initWithCropScore:(double)a3 cropRect:(CGRect)a4 timeLabelRect:(CGRect)a5 classification:(unint64_t)a6
+- (PFLCCurationPositionScore)initWithCropScore:(double)score cropRect:(CGRect)rect timeLabelRect:(CGRect)labelRect classification:(unint64_t)classification
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v13.receiver = self;
   v13.super_class = PFLCCurationPositionScore;
   result = [(PFLCCurationPositionScore *)&v13 init];
   if (result)
   {
-    result->_cropScore = a3;
+    result->_cropScore = score;
     result->_cropRect.origin.x = x;
     result->_cropRect.origin.y = y;
     result->_cropRect.size.width = width;
     result->_cropRect.size.height = height;
-    result->_timeLabelRect = a5;
-    result->_classification = a6;
+    result->_timeLabelRect = labelRect;
+    result->_classification = classification;
   }
 
   return result;

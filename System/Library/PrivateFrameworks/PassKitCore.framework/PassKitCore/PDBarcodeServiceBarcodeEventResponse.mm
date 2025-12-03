@@ -1,20 +1,20 @@
 @interface PDBarcodeServiceBarcodeEventResponse
-- (PDBarcodeServiceBarcodeEventResponse)initWithData:(id)a3;
+- (PDBarcodeServiceBarcodeEventResponse)initWithData:(id)data;
 - (id)description;
 @end
 
 @implementation PDBarcodeServiceBarcodeEventResponse
 
-- (PDBarcodeServiceBarcodeEventResponse)initWithData:(id)a3
+- (PDBarcodeServiceBarcodeEventResponse)initWithData:(id)data
 {
-  v4 = a3;
-  if (!v4)
+  dataCopy = data;
+  if (!dataCopy)
   {
     goto LABEL_13;
   }
 
   v13 = 0;
-  v5 = [NSJSONSerialization JSONObjectWithData:v4 options:0 error:&v13];
+  v5 = [NSJSONSerialization JSONObjectWithData:dataCopy options:0 error:&v13];
   v6 = v13;
   if (v6)
   {

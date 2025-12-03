@@ -1,28 +1,28 @@
 @interface FHDatabaseInsertFieldValuePair
-- (FHDatabaseInsertFieldValuePair)initWithQuoteWrapOption:(id)a3 fieldValue:(id)a4 quoteWrap:(BOOL)a5;
+- (FHDatabaseInsertFieldValuePair)initWithQuoteWrapOption:(id)option fieldValue:(id)value quoteWrap:(BOOL)wrap;
 - (id)description;
 @end
 
 @implementation FHDatabaseInsertFieldValuePair
 
-- (FHDatabaseInsertFieldValuePair)initWithQuoteWrapOption:(id)a3 fieldValue:(id)a4 quoteWrap:(BOOL)a5
+- (FHDatabaseInsertFieldValuePair)initWithQuoteWrapOption:(id)option fieldValue:(id)value quoteWrap:(BOOL)wrap
 {
-  v8 = a3;
-  v9 = a4;
+  optionCopy = option;
+  valueCopy = value;
   v20.receiver = self;
   v20.super_class = FHDatabaseInsertFieldValuePair;
   v10 = [(FHDatabaseInsertFieldValuePair *)&v20 init];
   if (v10)
   {
-    v11 = [v8 copy];
-    v12 = [v11 lowercaseString];
+    v11 = [optionCopy copy];
+    lowercaseString = [v11 lowercaseString];
     fieldName = v10->_fieldName;
-    v10->_fieldName = v12;
+    v10->_fieldName = lowercaseString;
 
-    if (a5)
+    if (wrap)
     {
       v14 = MEMORY[0x277CCACA8];
-      v15 = [v9 copy];
+      v15 = [valueCopy copy];
       v16 = [v14 stringWithFormat:@"'%@'", v15];
       fieldValue = v10->_fieldValue;
       v10->_fieldValue = v16;
@@ -30,7 +30,7 @@
 
     else
     {
-      v18 = [v9 copy];
+      v18 = [valueCopy copy];
       v15 = v10->_fieldValue;
       v10->_fieldValue = v18;
     }

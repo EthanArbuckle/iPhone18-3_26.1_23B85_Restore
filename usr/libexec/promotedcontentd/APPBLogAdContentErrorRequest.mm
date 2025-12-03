@@ -1,19 +1,19 @@
 @interface APPBLogAdContentErrorRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)errorTypeAsString:(int)a3;
-- (int)StringAsErrorType:(id)a3;
+- (id)errorTypeAsString:(int)string;
+- (int)StringAsErrorType:(id)type;
 - (int)errorType;
 - (unint64_t)hash;
-- (void)addFunctionNames:(id)a3;
-- (void)addLines:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasLineNumber:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addFunctionNames:(id)names;
+- (void)addLines:(id)lines;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasLineNumber:(BOOL)number;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBLogAdContentErrorRequest
@@ -43,33 +43,33 @@
   }
 }
 
-- (id)errorTypeAsString:(int)a3
+- (id)errorTypeAsString:(int)string
 {
-  if (a3 == 1)
+  if (string == 1)
   {
     v4 = @"ParseError";
   }
 
-  else if (a3 == 2)
+  else if (string == 2)
   {
     v4 = @"Exception";
   }
 
   else
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   return v4;
 }
 
-- (int)StringAsErrorType:(id)a3
+- (int)StringAsErrorType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = 1;
-  if (([v3 isEqualToString:@"ParseError"] & 1) == 0)
+  if (([typeCopy isEqualToString:@"ParseError"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"Exception"])
+    if ([typeCopy isEqualToString:@"Exception"])
     {
       v4 = 2;
     }
@@ -83,9 +83,9 @@
   return v4;
 }
 
-- (void)setHasLineNumber:(BOOL)a3
+- (void)setHasLineNumber:(BOOL)number
 {
-  if (a3)
+  if (number)
   {
     v3 = 2;
   }
@@ -98,40 +98,40 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addLines:(id)a3
+- (void)addLines:(id)lines
 {
-  v4 = a3;
+  linesCopy = lines;
   lines = self->_lines;
-  v8 = v4;
+  v8 = linesCopy;
   if (!lines)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_lines;
     self->_lines = v6;
 
-    v4 = v8;
+    linesCopy = v8;
     lines = self->_lines;
   }
 
-  [(NSMutableArray *)lines addObject:v4];
+  [(NSMutableArray *)lines addObject:linesCopy];
 }
 
-- (void)addFunctionNames:(id)a3
+- (void)addFunctionNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   functionNames = self->_functionNames;
-  v8 = v4;
+  v8 = namesCopy;
   if (!functionNames)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_functionNames;
     self->_functionNames = v6;
 
-    v4 = v8;
+    namesCopy = v8;
     functionNames = self->_functionNames;
   }
 
-  [(NSMutableArray *)functionNames addObject:v4];
+  [(NSMutableArray *)functionNames addObject:namesCopy];
 }
 
 - (id)description
@@ -139,8 +139,8 @@
   v7.receiver = self;
   v7.super_class = APPBLogAdContentErrorRequest;
   v3 = [(APPBLogAdContentErrorRequest *)&v7 description];
-  v4 = [(APPBLogAdContentErrorRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBLogAdContentErrorRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -151,8 +151,8 @@
   metaData = self->_metaData;
   if (metaData)
   {
-    v5 = [(APPBLogMetaData *)metaData dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"metaData"];
+    dictionaryRepresentation = [(APPBLogMetaData *)metaData dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"metaData"];
   }
 
   if (*&self->_has)
@@ -209,9 +209,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_metaData)
   {
     PBDataWriterWriteSubmessage();
@@ -300,32 +300,32 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v13 = v4;
+  toCopy = to;
+  v13 = toCopy;
   if (self->_metaData)
   {
-    [v4 setMetaData:?];
-    v4 = v13;
+    [toCopy setMetaData:?];
+    toCopy = v13;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 4) = self->_errorType;
-    *(v4 + 64) |= 1u;
+    *(toCopy + 4) = self->_errorType;
+    *(toCopy + 64) |= 1u;
   }
 
   if (self->_errorMessage)
   {
     [v13 setErrorMessage:?];
-    v4 = v13;
+    toCopy = v13;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 8) = self->_lineNumber;
-    *(v4 + 64) |= 2u;
+    *(toCopy + 8) = self->_lineNumber;
+    *(toCopy + 64) |= 2u;
   }
 
   if (self->_uRL)
@@ -336,10 +336,10 @@
   if ([(APPBLogAdContentErrorRequest *)self linesCount])
   {
     [v13 clearLines];
-    v5 = [(APPBLogAdContentErrorRequest *)self linesCount];
-    if (v5)
+    linesCount = [(APPBLogAdContentErrorRequest *)self linesCount];
+    if (linesCount)
     {
-      v6 = v5;
+      v6 = linesCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(APPBLogAdContentErrorRequest *)self linesAtIndex:i];
@@ -351,10 +351,10 @@
   if ([(APPBLogAdContentErrorRequest *)self functionNamesCount])
   {
     [v13 clearFunctionNames];
-    v9 = [(APPBLogAdContentErrorRequest *)self functionNamesCount];
-    if (v9)
+    functionNamesCount = [(APPBLogAdContentErrorRequest *)self functionNamesCount];
+    if (functionNamesCount)
     {
-      v10 = v9;
+      v10 = functionNamesCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(APPBLogAdContentErrorRequest *)self functionNamesAtIndex:j];
@@ -364,10 +364,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(APPBLogMetaData *)self->_metaData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(APPBLogMetaData *)self->_metaData copyWithZone:zone];
   v7 = v5[6];
   v5[6] = v6;
 
@@ -377,7 +377,7 @@
     *(v5 + 64) |= 1u;
   }
 
-  v8 = [(NSString *)self->_errorMessage copyWithZone:a3];
+  v8 = [(NSString *)self->_errorMessage copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
@@ -387,7 +387,7 @@
     *(v5 + 64) |= 2u;
   }
 
-  v10 = [(NSString *)self->_uRL copyWithZone:a3];
+  v10 = [(NSString *)self->_uRL copyWithZone:zone];
   v11 = v5[7];
   v5[7] = v10;
 
@@ -411,7 +411,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v29 + 1) + 8 * v16) copyWithZone:a3];
+        v17 = [*(*(&v29 + 1) + 8 * v16) copyWithZone:zone];
         [v5 addLines:v17];
 
         v16 = v16 + 1;
@@ -444,7 +444,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v25 + 1) + 8 * v22) copyWithZone:{a3, v25}];
+        v23 = [*(*(&v25 + 1) + 8 * v22) copyWithZone:{zone, v25}];
         [v5 addFunctionNames:v23];
 
         v22 = v22 + 1;
@@ -460,16 +460,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   metaData = self->_metaData;
-  if (metaData | *(v4 + 6))
+  if (metaData | *(equalCopy + 6))
   {
     if (![(APPBLogMetaData *)metaData isEqual:?])
     {
@@ -480,19 +480,19 @@
   has = self->_has;
   if (has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_errorType != *(v4 + 4))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_errorType != *(equalCopy + 4))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
     goto LABEL_23;
   }
 
   errorMessage = self->_errorMessage;
-  if (errorMessage | *(v4 + 1))
+  if (errorMessage | *(equalCopy + 1))
   {
     if (![(NSString *)errorMessage isEqual:?])
     {
@@ -506,25 +506,25 @@ LABEL_23:
 
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_lineNumber != *(v4 + 8))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_lineNumber != *(equalCopy + 8))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 64) & 2) != 0)
+  else if ((*(equalCopy + 64) & 2) != 0)
   {
     goto LABEL_23;
   }
 
   uRL = self->_uRL;
-  if (uRL | *(v4 + 7) && ![(NSString *)uRL isEqual:?])
+  if (uRL | *(equalCopy + 7) && ![(NSString *)uRL isEqual:?])
   {
     goto LABEL_23;
   }
 
   lines = self->_lines;
-  if (lines | *(v4 + 5))
+  if (lines | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)lines isEqual:?])
     {
@@ -533,7 +533,7 @@ LABEL_23:
   }
 
   functionNames = self->_functionNames;
-  if (functionNames | *(v4 + 3))
+  if (functionNames | *(equalCopy + 3))
   {
     v11 = [(NSMutableArray *)functionNames isEqual:?];
   }
@@ -578,11 +578,11 @@ LABEL_24:
   return v7 ^ v9 ^ [(NSMutableArray *)self->_functionNames hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   metaData = self->_metaData;
-  v6 = *(v4 + 6);
+  v6 = *(fromCopy + 6);
   if (metaData)
   {
     if (v6)
@@ -596,24 +596,24 @@ LABEL_24:
     [(APPBLogAdContentErrorRequest *)self setMetaData:?];
   }
 
-  if (*(v4 + 64))
+  if (*(fromCopy + 64))
   {
-    self->_errorType = *(v4 + 4);
+    self->_errorType = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(APPBLogAdContentErrorRequest *)self setErrorMessage:?];
   }
 
-  if ((*(v4 + 64) & 2) != 0)
+  if ((*(fromCopy + 64) & 2) != 0)
   {
-    self->_lineNumber = *(v4 + 8);
+    self->_lineNumber = *(fromCopy + 8);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(APPBLogAdContentErrorRequest *)self setURL:?];
   }
@@ -622,7 +622,7 @@ LABEL_24:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = *(v4 + 5);
+  v7 = *(fromCopy + 5);
   v8 = [v7 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v8)
   {
@@ -650,7 +650,7 @@ LABEL_24:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v12 = *(v4 + 3);
+  v12 = *(fromCopy + 3);
   v13 = [v12 countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v13)
   {

@@ -1,5 +1,5 @@
 @interface HMDMediaSystemHints
-- (HMDMediaSystemHints)initWithMediaSystemHomeUUIDString:(id)a3 mediaSystemUUIDString:(id)a4 peerAccessoryUUIDString:(id)a5 peerAccessoryRoleString:(id)a6;
+- (HMDMediaSystemHints)initWithMediaSystemHomeUUIDString:(id)string mediaSystemUUIDString:(id)dString peerAccessoryUUIDString:(id)iDString peerAccessoryRoleString:(id)roleString;
 - (id)description;
 @end
 
@@ -9,31 +9,31 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HMDMediaSystemHints *)self mediaSystemHomeUUIDString];
-  v6 = [(HMDMediaSystemHints *)self mediaSystemUUIDString];
-  v7 = [(HMDMediaSystemHints *)self peerAccessoryUUIDString];
-  v8 = [(HMDMediaSystemHints *)self peerAccessoryRoleString];
-  v9 = [v3 stringWithFormat:@"%@ (HomeUUID: %@, MediaSystemUUID: %@, PeerAccessoryUUID: %@, PeerRole: %@)", v4, v5, v6, v7, v8];
+  mediaSystemHomeUUIDString = [(HMDMediaSystemHints *)self mediaSystemHomeUUIDString];
+  mediaSystemUUIDString = [(HMDMediaSystemHints *)self mediaSystemUUIDString];
+  peerAccessoryUUIDString = [(HMDMediaSystemHints *)self peerAccessoryUUIDString];
+  peerAccessoryRoleString = [(HMDMediaSystemHints *)self peerAccessoryRoleString];
+  v9 = [v3 stringWithFormat:@"%@ (HomeUUID: %@, MediaSystemUUID: %@, PeerAccessoryUUID: %@, PeerRole: %@)", v4, mediaSystemHomeUUIDString, mediaSystemUUIDString, peerAccessoryUUIDString, peerAccessoryRoleString];
 
   return v9;
 }
 
-- (HMDMediaSystemHints)initWithMediaSystemHomeUUIDString:(id)a3 mediaSystemUUIDString:(id)a4 peerAccessoryUUIDString:(id)a5 peerAccessoryRoleString:(id)a6
+- (HMDMediaSystemHints)initWithMediaSystemHomeUUIDString:(id)string mediaSystemUUIDString:(id)dString peerAccessoryUUIDString:(id)iDString peerAccessoryRoleString:(id)roleString
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  stringCopy = string;
+  dStringCopy = dString;
+  iDStringCopy = iDString;
+  roleStringCopy = roleString;
   v18.receiver = self;
   v18.super_class = HMDMediaSystemHints;
   v15 = [(HMDMediaSystemHints *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_mediaSystemHomeUUIDString, a3);
-    objc_storeStrong(&v16->_mediaSystemUUIDString, a4);
-    objc_storeStrong(&v16->_peerAccessoryUUIDString, a5);
-    objc_storeStrong(&v16->_peerAccessoryRoleString, a6);
+    objc_storeStrong(&v15->_mediaSystemHomeUUIDString, string);
+    objc_storeStrong(&v16->_mediaSystemUUIDString, dString);
+    objc_storeStrong(&v16->_peerAccessoryUUIDString, iDString);
+    objc_storeStrong(&v16->_peerAccessoryRoleString, roleString);
   }
 
   return v16;

@@ -1,8 +1,8 @@
 @interface AVTStickerShaderModifierProperty
 + (id)shaderModifierPropertyCache;
-+ (id)shaderModifierPropertyFromDictionary:(id)a3 assetsPath:(id)a4;
-- (AVTStickerShaderModifierProperty)initWithName:(id)a3 type:(id)a4 value:(id)a5 originalValue:(id)a6;
-- (id)dictionaryWithTargetPath:(id)a3;
++ (id)shaderModifierPropertyFromDictionary:(id)dictionary assetsPath:(id)path;
+- (AVTStickerShaderModifierProperty)initWithName:(id)name type:(id)type value:(id)value originalValue:(id)originalValue;
+- (id)dictionaryWithTargetPath:(id)path;
 @end
 
 @implementation AVTStickerShaderModifierProperty
@@ -28,28 +28,28 @@ uint64_t __63__AVTStickerShaderModifierProperty_shaderModifierPropertyCache__blo
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)shaderModifierPropertyFromDictionary:(id)a3 assetsPath:(id)a4
++ (id)shaderModifierPropertyFromDictionary:(id)dictionary assetsPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectForKeyedSubscript:@"value"];
-  v9 = [v7 objectForKeyedSubscript:@"name"];
-  v10 = [v7 objectForKeyedSubscript:@"type"];
+  pathCopy = path;
+  dictionaryCopy = dictionary;
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"value"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"name"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"type"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v6 stringByAppendingPathComponent:v8];
+    v11 = [pathCopy stringByAppendingPathComponent:v8];
     v12 = [MEMORY[0x1E695DFF8] fileURLWithPath:v11 isDirectory:0];
-    v13 = [v12 standardizedURL];
-    v14 = [v13 absoluteString];
+    standardizedURL = [v12 standardizedURL];
+    absoluteString = [standardizedURL absoluteString];
 
-    v15 = [a1 shaderModifierPropertyCache];
-    v16 = [v15 objectForKey:v14];
+    shaderModifierPropertyCache = [self shaderModifierPropertyCache];
+    v16 = [shaderModifierPropertyCache objectForKey:absoluteString];
     if (!v16)
     {
       v16 = [[AVTStickerShaderModifierProperty alloc] initWithName:v9 type:v10 value:v11 originalValue:v8];
-      [v15 setObject:v16 forKey:v14];
+      [shaderModifierPropertyCache setObject:v16 forKey:absoluteString];
     }
   }
 
@@ -61,37 +61,37 @@ uint64_t __63__AVTStickerShaderModifierProperty_shaderModifierPropertyCache__blo
   return v16;
 }
 
-- (AVTStickerShaderModifierProperty)initWithName:(id)a3 type:(id)a4 value:(id)a5 originalValue:(id)a6
+- (AVTStickerShaderModifierProperty)initWithName:(id)name type:(id)type value:(id)value originalValue:(id)originalValue
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nameCopy = name;
+  typeCopy = type;
+  valueCopy = value;
+  originalValueCopy = originalValue;
   v21.receiver = self;
   v21.super_class = AVTStickerShaderModifierProperty;
   v15 = [(AVTStickerShaderModifierProperty *)&v21 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_name, a3);
-    objc_storeStrong(&v16->_type, a4);
-    objc_storeStrong(&v16->_value, a5);
-    objc_storeStrong(&v16->_originalValue, a6);
-    if ([v12 isEqualToString:@"texture"])
+    objc_storeStrong(&v15->_name, name);
+    objc_storeStrong(&v16->_type, type);
+    objc_storeStrong(&v16->_value, value);
+    objc_storeStrong(&v16->_originalValue, originalValue);
+    if ([typeCopy isEqualToString:@"texture"])
     {
-      v17 = [MEMORY[0x1E69DF300] materialPropertyWithContents:v13];
+      v17 = [MEMORY[0x1E69DF300] materialPropertyWithContents:valueCopy];
     }
 
-    else if ([v12 isEqualToString:@"float"])
+    else if ([typeCopy isEqualToString:@"float"])
     {
       v18 = MEMORY[0x1E696AD98];
-      [v13 floatValue];
+      [valueCopy floatValue];
       v17 = [v18 numberWithFloat:?];
     }
 
     else
     {
-      v17 = v13;
+      v17 = valueCopy;
     }
 
     effectiveValue = v16->_effectiveValue;
@@ -101,7 +101,7 @@ uint64_t __63__AVTStickerShaderModifierProperty_shaderModifierPropertyCache__blo
   return v16;
 }
 
-- (id)dictionaryWithTargetPath:(id)a3
+- (id)dictionaryWithTargetPath:(id)path
 {
   v10 = *MEMORY[0x1E69E9840];
   v3 = *&self->_name;

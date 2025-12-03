@@ -1,23 +1,23 @@
 @interface PSWatchOnlyAppCellularUsageSpecifier
 + (id)getGenericRoundIcon;
-+ (void)setIconForSpecifier:(id)a3 bundleID:(id)a4;
++ (void)setIconForSpecifier:(id)specifier bundleID:(id)d;
 @end
 
 @implementation PSWatchOnlyAppCellularUsageSpecifier
 
-+ (void)setIconForSpecifier:(id)a3 bundleID:(id)a4
++ (void)setIconForSpecifier:(id)specifier bundleID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  specifierCopy = specifier;
+  dCopy = d;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x3032000000;
   v18[3] = __Block_byref_object_copy_;
   v18[4] = __Block_byref_object_dispose_;
   v19 = 0;
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  v8 = [v7 traitCollection];
-  [v8 displayScale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  [traitCollection displayScale];
   if (v9 <= 2.0)
   {
     v10 = 47;
@@ -46,15 +46,15 @@
 
   v12 = v11;
   _Block_object_dispose(&v21, 8);
-  v13 = [v11 sharedInstance];
+  sharedInstance = [v11 sharedInstance];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __69__PSWatchOnlyAppCellularUsageSpecifier_setIconForSpecifier_bundleID___block_invoke;
   v15[3] = &unk_279BA8558;
   v17 = v18;
-  v14 = v5;
+  v14 = specifierCopy;
   v16 = v14;
-  [v13 getIconForBundleID:v6 iconVariant:v10 block:v15 timeout:-1.0];
+  [sharedInstance getIconForBundleID:dCopy iconVariant:v10 block:v15 timeout:-1.0];
 
   _Block_object_dispose(v18, 8);
 }

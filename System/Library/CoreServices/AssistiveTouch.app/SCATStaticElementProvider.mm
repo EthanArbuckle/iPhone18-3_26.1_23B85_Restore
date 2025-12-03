@@ -1,27 +1,27 @@
 @interface SCATStaticElementProvider
-- (BOOL)containsElement:(id)a3;
+- (BOOL)containsElement:(id)element;
 - (NSString)description;
-- (SCATStaticElementProvider)initWithElements:(id)a3;
-- (id)elementAfter:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5;
-- (id)elementBefore:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5;
-- (id)firstElementWithOptions:(int *)a3;
-- (id)lastElementWithOptions:(int *)a3;
-- (id)objectAtIndex:(unint64_t)a3;
+- (SCATStaticElementProvider)initWithElements:(id)elements;
+- (id)elementAfter:(id)after didWrap:(BOOL *)wrap options:(int *)options;
+- (id)elementBefore:(id)before didWrap:(BOOL *)wrap options:(int *)options;
+- (id)firstElementWithOptions:(int *)options;
+- (id)lastElementWithOptions:(int *)options;
+- (id)objectAtIndex:(unint64_t)index;
 - (unint64_t)count;
 @end
 
 @implementation SCATStaticElementProvider
 
-- (SCATStaticElementProvider)initWithElements:(id)a3
+- (SCATStaticElementProvider)initWithElements:(id)elements
 {
-  v4 = a3;
+  elementsCopy = elements;
   v9.receiver = self;
   v9.super_class = SCATStaticElementProvider;
   v5 = [(SCATStaticElementProvider *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(SCATStaticElementProvider *)v5 setElements:v4];
+    [(SCATStaticElementProvider *)v5 setElements:elementsCopy];
     v7 = v6;
   }
 
@@ -38,21 +38,21 @@
 
 - (unint64_t)count
 {
-  v2 = [(SCATStaticElementProvider *)self elements];
-  v3 = [v2 count];
+  elements = [(SCATStaticElementProvider *)self elements];
+  v3 = [elements count];
 
   return v3;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  v4 = [(SCATStaticElementProvider *)self elements];
-  v5 = [v4 objectAtIndex:a3];
+  elements = [(SCATStaticElementProvider *)self elements];
+  v5 = [elements objectAtIndex:index];
 
   return v5;
 }
 
-- (id)firstElementWithOptions:(int *)a3
+- (id)firstElementWithOptions:(int *)options
 {
   v4 = [(SCATStaticElementProvider *)self count];
   if (v4)
@@ -63,36 +63,36 @@
   return v4;
 }
 
-- (id)lastElementWithOptions:(int *)a3
+- (id)lastElementWithOptions:(int *)options
 {
-  v4 = [(SCATStaticElementProvider *)self count];
-  if (v4)
+  lastObject = [(SCATStaticElementProvider *)self count];
+  if (lastObject)
   {
-    v4 = [(SCATStaticElementProvider *)self lastObject];
+    lastObject = [(SCATStaticElementProvider *)self lastObject];
   }
 
-  return v4;
+  return lastObject;
 }
 
-- (id)elementAfter:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5
+- (id)elementAfter:(id)after didWrap:(BOOL *)wrap options:(int *)options
 {
-  v7 = [(SCATStaticElementProvider *)self indexOfObject:a3, a4, a5];
+  options = [(SCATStaticElementProvider *)self indexOfObject:after, wrap, options];
   v8 = [(SCATStaticElementProvider *)self count];
-  if (v7 != 0x7FFFFFFFFFFFFFFFLL)
+  if (options != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = v7 + 1 == v8;
-    if (v7 + 1 == v8)
+    v10 = options + 1 == v8;
+    if (options + 1 == v8)
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = v7 + 1;
+      v11 = options + 1;
     }
 
     v9 = [(SCATStaticElementProvider *)self objectAtIndex:v11];
-    if (!a4)
+    if (!wrap)
     {
       goto LABEL_9;
     }
@@ -102,10 +102,10 @@
 
   v9 = 0;
   v10 = 0;
-  if (a4)
+  if (wrap)
   {
 LABEL_8:
-    *a4 = v10;
+    *wrap = v10;
   }
 
 LABEL_9:
@@ -113,16 +113,16 @@ LABEL_9:
   return v9;
 }
 
-- (id)elementBefore:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5
+- (id)elementBefore:(id)before didWrap:(BOOL *)wrap options:(int *)options
 {
-  v7 = [(SCATStaticElementProvider *)self indexOfObject:a3, a4, a5];
+  options = [(SCATStaticElementProvider *)self indexOfObject:before, wrap, options];
   v8 = [(SCATStaticElementProvider *)self count];
-  if (v7 != 0x7FFFFFFFFFFFFFFFLL)
+  if (options != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = v7 == 0;
-    if (v7)
+    v9 = options == 0;
+    if (options)
     {
-      v10 = v7;
+      v10 = options;
     }
 
     else
@@ -131,7 +131,7 @@ LABEL_9:
     }
 
     v11 = [(SCATStaticElementProvider *)self objectAtIndex:v10 - 1];
-    if (!a4)
+    if (!wrap)
     {
       goto LABEL_7;
     }
@@ -141,10 +141,10 @@ LABEL_9:
 
   v11 = 0;
   v9 = 0;
-  if (a4)
+  if (wrap)
   {
 LABEL_6:
-    *a4 = v9;
+    *wrap = v9;
   }
 
 LABEL_7:
@@ -152,11 +152,11 @@ LABEL_7:
   return v11;
 }
 
-- (BOOL)containsElement:(id)a3
+- (BOOL)containsElement:(id)element
 {
-  v4 = a3;
-  v5 = [(SCATStaticElementProvider *)self elements];
-  v6 = [v5 containsObject:v4];
+  elementCopy = element;
+  elements = [(SCATStaticElementProvider *)self elements];
+  v6 = [elements containsObject:elementCopy];
 
   return v6;
 }

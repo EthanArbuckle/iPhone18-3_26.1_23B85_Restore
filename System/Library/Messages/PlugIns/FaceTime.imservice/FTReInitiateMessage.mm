@@ -1,10 +1,10 @@
 @interface FTReInitiateMessage
 - (FTReInitiateMessage)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
 - (void)dealloc;
-- (void)handleResponseDictionary:(id)a3;
+- (void)handleResponseDictionary:(id)dictionary;
 @end
 
 @implementation FTReInitiateMessage
@@ -23,11 +23,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = FTReInitiateMessage;
-  return [(FTFaceTimeMessage *)&v4 copyWithZone:a3];
+  return [(FTFaceTimeMessage *)&v4 copyWithZone:zone];
 }
 
 - (void)dealloc
@@ -41,8 +41,8 @@
 {
   v24.receiver = self;
   v24.super_class = FTReInitiateMessage;
-  v2 = [(FTFaceTimeMessage *)&v24 requiredKeys];
-  v7 = objc_msgSend_mutableCopy(v2, v3, v4, v5, v6);
+  requiredKeys = [(FTFaceTimeMessage *)&v24 requiredKeys];
+  v7 = objc_msgSend_mutableCopy(requiredKeys, v3, v4, v5, v6);
   objc_msgSend_addObject_(v7, v8, @"self-push-token", v9, v10);
   objc_msgSend_addObject_(v7, v11, @"self-blob", v12, v13);
   objc_msgSend_addObject_(v7, v14, @"self-nat-ip", v15, v16);
@@ -55,8 +55,8 @@
 {
   v55.receiver = self;
   v55.super_class = FTReInitiateMessage;
-  v3 = [(FTFaceTimeMessage *)&v55 messageBody];
-  v8 = objc_msgSend_mutableCopy(v3, v4, v5, v6, v7);
+  messageBody = [(FTFaceTimeMessage *)&v55 messageBody];
+  v8 = objc_msgSend_mutableCopy(messageBody, v4, v5, v6, v7);
   v13 = objc_msgSend_regionInformation(self, v9, v10, v11, v12);
   if (v13)
   {
@@ -130,21 +130,21 @@
   return v8;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
-  v7 = objc_msgSend_objectForKey_(a3, a2, @"session-token", v3, v4);
+  v7 = objc_msgSend_objectForKey_(dictionary, a2, @"session-token", v3, v4);
   if (v7)
   {
     objc_msgSend_setSessionToken_(self, v8, v7, v9, v10);
   }
 
-  v11 = objc_msgSend_objectForKey_(a3, v8, @"peers", v9, v10);
+  v11 = objc_msgSend_objectForKey_(dictionary, v8, @"peers", v9, v10);
   if (v11)
   {
     objc_msgSend_setCanonicalizedPeers_(self, v12, v11, v13, v14);
   }
 
-  v15 = objc_msgSend_objectForKey_(a3, v12, @"alert", v13, v14);
+  v15 = objc_msgSend_objectForKey_(dictionary, v12, @"alert", v13, v14);
 
   MEMORY[0x2821F9670](self, sel_setResponseAlertInfo_, v15, v16, v17);
 }

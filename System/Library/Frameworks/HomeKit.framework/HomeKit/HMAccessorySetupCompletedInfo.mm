@@ -1,38 +1,38 @@
 @interface HMAccessorySetupCompletedInfo
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMAccessorySetupCompletedInfo)initWithCoder:(id)a3;
-- (HMAccessorySetupCompletedInfo)initWithHomeUUID:(id)a3 addedAccessoryUUIDs:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMAccessorySetupCompletedInfo)initWithCoder:(id)coder;
+- (HMAccessorySetupCompletedInfo)initWithHomeUUID:(id)d addedAccessoryUUIDs:(id)ds;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMAccessorySetupCompletedInfo
 
-- (HMAccessorySetupCompletedInfo)initWithCoder:(id)a3
+- (HMAccessorySetupCompletedInfo)initWithCoder:(id)coder
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"homeuuid"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"homeuuid"];
   v6 = MEMORY[0x1E695DFD8];
   v23[0] = objc_opt_class();
   v23[1] = objc_opt_class();
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
   v8 = [v6 setWithArray:v7];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"uuids"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"uuids"];
 
   if (v5 && v9)
   {
-    v10 = [(HMAccessorySetupCompletedInfo *)self initWithHomeUUID:v5 addedAccessoryUUIDs:v9];
-    v11 = v10;
+    selfCopy = [(HMAccessorySetupCompletedInfo *)self initWithHomeUUID:v5 addedAccessoryUUIDs:v9];
+    v11 = selfCopy;
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -54,26 +54,26 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMAccessorySetupCompletedInfo *)self homeUUID];
-  [v4 encodeObject:v5 forKey:@"homeuuid"];
+  coderCopy = coder;
+  homeUUID = [(HMAccessorySetupCompletedInfo *)self homeUUID];
+  [coderCopy encodeObject:homeUUID forKey:@"homeuuid"];
 
-  v6 = [(HMAccessorySetupCompletedInfo *)self addedAccessoryUUIDs];
-  [v4 encodeObject:v6 forKey:@"uuids"];
+  addedAccessoryUUIDs = [(HMAccessorySetupCompletedInfo *)self addedAccessoryUUIDs];
+  [coderCopy encodeObject:addedAccessoryUUIDs forKey:@"uuids"];
 }
 
 - (NSArray)attributeDescriptions
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v4 = [(HMAccessorySetupCompletedInfo *)self homeUUID];
-  v5 = [v3 initWithName:@"Home UUID" value:v4];
+  homeUUID = [(HMAccessorySetupCompletedInfo *)self homeUUID];
+  v5 = [v3 initWithName:@"Home UUID" value:homeUUID];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v7 = [(HMAccessorySetupCompletedInfo *)self addedAccessoryUUIDs];
-  v8 = [v6 initWithName:@"Added Accessory UUIDs" value:v7];
+  addedAccessoryUUIDs = [(HMAccessorySetupCompletedInfo *)self addedAccessoryUUIDs];
+  v8 = [v6 initWithName:@"Added Accessory UUIDs" value:addedAccessoryUUIDs];
   v12[1] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
 
@@ -91,21 +91,21 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HMAccessorySetupCompletedInfo *)self homeUUID];
-  v4 = [v3 hash];
-  v5 = [(HMAccessorySetupCompletedInfo *)self addedAccessoryUUIDs];
-  v6 = [v5 hash];
+  homeUUID = [(HMAccessorySetupCompletedInfo *)self homeUUID];
+  v4 = [homeUUID hash];
+  addedAccessoryUUIDs = [(HMAccessorySetupCompletedInfo *)self addedAccessoryUUIDs];
+  v6 = [addedAccessoryUUIDs hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -116,13 +116,13 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMAccessorySetupCompletedInfo *)self homeUUID];
-    v8 = [v6 homeUUID];
-    if ([v7 isEqualToString:v8])
+    homeUUID = [(HMAccessorySetupCompletedInfo *)self homeUUID];
+    homeUUID2 = [v6 homeUUID];
+    if ([homeUUID isEqualToString:homeUUID2])
     {
-      v9 = [(HMAccessorySetupCompletedInfo *)self addedAccessoryUUIDs];
-      v10 = [v6 addedAccessoryUUIDs];
-      v11 = [v9 isEqualToArray:v10];
+      addedAccessoryUUIDs = [(HMAccessorySetupCompletedInfo *)self addedAccessoryUUIDs];
+      addedAccessoryUUIDs2 = [v6 addedAccessoryUUIDs];
+      v11 = [addedAccessoryUUIDs isEqualToArray:addedAccessoryUUIDs2];
     }
 
     else
@@ -139,20 +139,20 @@
   return v11;
 }
 
-- (HMAccessorySetupCompletedInfo)initWithHomeUUID:(id)a3 addedAccessoryUUIDs:(id)a4
+- (HMAccessorySetupCompletedInfo)initWithHomeUUID:(id)d addedAccessoryUUIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  dsCopy = ds;
   v14.receiver = self;
   v14.super_class = HMAccessorySetupCompletedInfo;
   v8 = [(HMAccessorySetupCompletedInfo *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     homeUUID = v8->_homeUUID;
     v8->_homeUUID = v9;
 
-    v11 = [v7 copy];
+    v11 = [dsCopy copy];
     addedAccessoryUUIDs = v8->_addedAccessoryUUIDs;
     v8->_addedAccessoryUUIDs = v11;
   }

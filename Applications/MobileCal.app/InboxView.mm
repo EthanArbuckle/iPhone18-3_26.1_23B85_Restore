@@ -1,14 +1,14 @@
 @interface InboxView
-- (InboxView)initWithFrame:(CGRect)a3;
+- (InboxView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation InboxView
 
-- (InboxView)initWithFrame:(CGRect)a3
+- (InboxView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = InboxView;
-  v3 = [(InboxView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(InboxView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     if (CalSplitViewEnabled())

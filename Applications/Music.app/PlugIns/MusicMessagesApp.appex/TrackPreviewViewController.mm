@@ -1,13 +1,13 @@
 @interface TrackPreviewViewController
-- (_TtC16MusicMessagesAppP33_578446D9A918AE2275B472A9158C63A626TrackPreviewViewController)initWithCoder:(id)a3;
-- (_TtC16MusicMessagesAppP33_578446D9A918AE2275B472A9158C63A626TrackPreviewViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC16MusicMessagesAppP33_578446D9A918AE2275B472A9158C63A626TrackPreviewViewController)initWithCoder:(id)coder;
+- (_TtC16MusicMessagesAppP33_578446D9A918AE2275B472A9158C63A626TrackPreviewViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation TrackPreviewViewController
 
-- (_TtC16MusicMessagesAppP33_578446D9A918AE2275B472A9158C63A626TrackPreviewViewController)initWithCoder:(id)a3
+- (_TtC16MusicMessagesAppP33_578446D9A918AE2275B472A9158C63A626TrackPreviewViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicMessagesAppP33_578446D9A918AE2275B472A9158C63A626TrackPreviewViewController__cellView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicMessagesAppP33_578446D9A918AE2275B472A9158C63A626TrackPreviewViewController__sharableTrack) = 0;
@@ -18,7 +18,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000D6E0();
 }
 
@@ -32,11 +32,11 @@
   if (v3)
   {
     v4 = v3;
-    v5 = [v2 view];
-    if (v5)
+    view = [v2 view];
+    if (view)
     {
-      v6 = v5;
-      [v5 bounds];
+      v6 = view;
+      [view bounds];
       v8 = v7;
       v10 = v9;
       v12 = v11;
@@ -55,7 +55,7 @@
   __break(1u);
 }
 
-- (_TtC16MusicMessagesAppP33_578446D9A918AE2275B472A9158C63A626TrackPreviewViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MusicMessagesAppP33_578446D9A918AE2275B472A9158C63A626TrackPreviewViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

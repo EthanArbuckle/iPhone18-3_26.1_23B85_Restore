@@ -1,54 +1,54 @@
 @interface _TVContentRatingSystemUtilities
-+ (id)_cleanedRatingSystem:(id)a3;
++ (id)_cleanedRatingSystem:(id)system;
 + (id)_ratingSystemLookUpDictionary;
 + (id)_ratingSystemStringLookUpDictionary;
-+ (id)stringForRatingSystem:(int64_t)a3;
-+ (int64_t)ratingSystemForString:(id)a3;
-+ (int64_t)ratingSystemKindForRatingSystem:(int64_t)a3;
++ (id)stringForRatingSystem:(int64_t)system;
++ (int64_t)ratingSystemForString:(id)string;
++ (int64_t)ratingSystemKindForRatingSystem:(int64_t)system;
 @end
 
 @implementation _TVContentRatingSystemUtilities
 
-+ (int64_t)ratingSystemForString:(id)a3
++ (int64_t)ratingSystemForString:(id)string
 {
-  v4 = a3;
-  v5 = [a1 _ratingSystemLookUpDictionary];
-  v6 = [a1 _cleanedRatingSystem:v4];
-  v7 = [v5 objectForKey:v6];
+  stringCopy = string;
+  _ratingSystemLookUpDictionary = [self _ratingSystemLookUpDictionary];
+  v6 = [self _cleanedRatingSystem:stringCopy];
+  v7 = [_ratingSystemLookUpDictionary objectForKey:v6];
 
   if (!v7)
   {
-    v8 = [v4 stringByAppendingString:@"s"];
-    v7 = [v5 objectForKey:v8];
+    v8 = [stringCopy stringByAppendingString:@"s"];
+    v7 = [_ratingSystemLookUpDictionary objectForKey:v8];
   }
 
-  v9 = [v7 unsignedIntegerValue];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  return v9;
+  return unsignedIntegerValue;
 }
 
-+ (id)stringForRatingSystem:(int64_t)a3
++ (id)stringForRatingSystem:(int64_t)system
 {
-  v4 = [a1 _ratingSystemStringLookUpDictionary];
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v6 = [v4 objectForKey:v5];
+  _ratingSystemStringLookUpDictionary = [self _ratingSystemStringLookUpDictionary];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:system];
+  v6 = [_ratingSystemStringLookUpDictionary objectForKey:v5];
 
   return v6;
 }
 
-+ (int64_t)ratingSystemKindForRatingSystem:(int64_t)a3
++ (int64_t)ratingSystemKindForRatingSystem:(int64_t)system
 {
-  if ([a1 _isRatingSystemForMovies:?])
+  if ([self _isRatingSystemForMovies:?])
   {
     return 1;
   }
 
-  if ([a1 _isRatingSystemForTV:a3])
+  if ([self _isRatingSystemForTV:system])
   {
     return 2;
   }
 
-  if ([a1 _isRatingSystemForMusic:a3])
+  if ([self _isRatingSystemForMusic:system])
   {
     return 3;
   }
@@ -80,14 +80,14 @@
   return v3;
 }
 
-+ (id)_cleanedRatingSystem:(id)a3
++ (id)_cleanedRatingSystem:(id)system
 {
-  v3 = [a3 stringByReplacingOccurrencesOfString:@" " withString:&stru_287E85D68];
+  v3 = [system stringByReplacingOccurrencesOfString:@" " withString:&stru_287E85D68];
   v4 = [v3 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
 
-  v5 = [v4 lowercaseString];
+  lowercaseString = [v4 lowercaseString];
 
-  return v5;
+  return lowercaseString;
 }
 
 @end

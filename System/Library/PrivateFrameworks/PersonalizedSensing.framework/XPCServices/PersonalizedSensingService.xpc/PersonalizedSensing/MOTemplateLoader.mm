@@ -1,23 +1,23 @@
 @interface MOTemplateLoader
-- (id)_createSingleTemplateFromDictionary:(id)a3;
-- (id)_createTemplatesFromDictionary:(id)a3;
-- (id)_loadTemplatesDictFromFilePath:(id)a3;
-- (id)_traitsFromArray:(id)a3;
+- (id)_createSingleTemplateFromDictionary:(id)dictionary;
+- (id)_createTemplatesFromDictionary:(id)dictionary;
+- (id)_loadTemplatesDictFromFilePath:(id)path;
+- (id)_traitsFromArray:(id)array;
 - (id)getTemplateDirectoryURL;
-- (id)loadTemplatesFromFile:(id)a3;
-- (unint64_t)_activityTypeFromString:(id)a3;
-- (unint64_t)_bundleTypeFromString:(id)a3;
-- (unint64_t)_peopleClassificationFromString:(id)a3;
-- (unint64_t)_photoTraitFromString:(id)a3;
-- (unint64_t)_placeTypeFromString:(id)a3;
-- (unint64_t)_timeFromString:(id)a3;
+- (id)loadTemplatesFromFile:(id)file;
+- (unint64_t)_activityTypeFromString:(id)string;
+- (unint64_t)_bundleTypeFromString:(id)string;
+- (unint64_t)_peopleClassificationFromString:(id)string;
+- (unint64_t)_photoTraitFromString:(id)string;
+- (unint64_t)_placeTypeFromString:(id)string;
+- (unint64_t)_timeFromString:(id)string;
 @end
 
 @implementation MOTemplateLoader
 
-- (id)loadTemplatesFromFile:(id)a3
+- (id)loadTemplatesFromFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   if (os_signpost_enabled(v5))
   {
@@ -27,7 +27,7 @@
 
   v6 = [[MOPerformanceMeasurement alloc] initWithName:@"XPCLoadTemplate" measureRecentPeak:0];
   [(MOPerformanceMeasurement *)v6 startSession];
-  v7 = [(MOTemplateLoader *)self _loadTemplatesDictFromFilePath:v4];
+  v7 = [(MOTemplateLoader *)self _loadTemplatesDictFromFilePath:fileCopy];
 
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   if (os_signpost_enabled(v8))
@@ -62,10 +62,10 @@
 - (id)getTemplateDirectoryURL
 {
   v2 = [NSBundle bundleForClass:objc_opt_class()];
-  v3 = [v2 bundlePath];
-  if (v3)
+  bundlePath = [v2 bundlePath];
+  if (bundlePath)
   {
-    v4 = [NSURL fileURLWithPath:v3 isDirectory:1];
+    v4 = [NSURL fileURLWithPath:bundlePath isDirectory:1];
   }
 
   else
@@ -82,11 +82,11 @@
   return v4;
 }
 
-- (id)_loadTemplatesDictFromFilePath:(id)a3
+- (id)_loadTemplatesDictFromFilePath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v13 = 0;
-  v4 = [NSData dataWithContentsOfFile:v3 options:0 error:&v13];
+  v4 = [NSData dataWithContentsOfFile:pathCopy options:0 error:&v13];
   v5 = v13;
   if (v5)
   {
@@ -119,7 +119,7 @@
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(MOTemplateLoader *)v3 _loadTemplatesDictFromFilePath:v9, v7];
+      [(MOTemplateLoader *)pathCopy _loadTemplatesDictFromFilePath:v9, v7];
     }
 
 LABEL_13:
@@ -130,7 +130,7 @@ LABEL_13:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v15 = v3;
+    v15 = pathCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "The template json file was successfully read from path, %@", buf, 0xCu);
   }
 
@@ -139,16 +139,16 @@ LABEL_14:
   return v8;
 }
 
-- (id)_createTemplatesFromDictionary:(id)a3
+- (id)_createTemplatesFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = +[NSMutableArray array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [v4 allValues];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  allValues = [dictionaryCopy allValues];
+  v7 = [allValues countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v7)
   {
     v8 = v7;
@@ -159,7 +159,7 @@ LABEL_14:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = [(MOTemplateLoader *)self _createSingleTemplateFromDictionary:*(*(&v17 + 1) + 8 * i)];
@@ -169,7 +169,7 @@ LABEL_14:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v8);
@@ -178,8 +178,8 @@ LABEL_14:
   v12 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [v4 allValues];
-    v14 = [v13 count];
+    allValues2 = [dictionaryCopy allValues];
+    v14 = [allValues2 count];
     v15 = [v5 count];
     *buf = 134218240;
     v22 = v14;
@@ -191,55 +191,55 @@ LABEL_14:
   return v5;
 }
 
-- (id)_createSingleTemplateFromDictionary:(id)a3
+- (id)_createSingleTemplateFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_opt_new();
-  v6 = [v4 objectForKeyedSubscript:@"accuracy"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"accuracy"];
 
   v7 = 0.0;
   v8 = 0.0;
   if (v6)
   {
-    v9 = [v4 objectForKeyedSubscript:@"accuracy"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"accuracy"];
     [v9 doubleValue];
     v8 = v10;
   }
 
-  v11 = [v4 objectForKeyedSubscript:@"utility"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"utility"];
 
   if (v11)
   {
-    v12 = [v4 objectForKeyedSubscript:@"utility"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"utility"];
     [v12 doubleValue];
     v7 = v13;
   }
 
-  v14 = [v4 objectForKeyedSubscript:@"satisfaction"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"satisfaction"];
 
   v15 = 0.0;
   v16 = 0.0;
   if (v14)
   {
-    v17 = [v4 objectForKeyedSubscript:@"satisfaction"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"satisfaction"];
     [v17 doubleValue];
     v16 = v18;
   }
 
-  v19 = [v4 objectForKeyedSubscript:@"generalizability"];
+  v19 = [dictionaryCopy objectForKeyedSubscript:@"generalizability"];
 
   if (v19)
   {
-    v20 = [v4 objectForKeyedSubscript:@"generalizability"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"generalizability"];
     [v20 doubleValue];
     v15 = v21;
   }
 
-  v22 = [v4 objectForKeyedSubscript:@"templateString"];
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"templateString"];
 
   if (v22)
   {
-    v68 = [v4 objectForKeyedSubscript:@"templateString"];
+    v68 = [dictionaryCopy objectForKeyedSubscript:@"templateString"];
   }
 
   else
@@ -247,24 +247,24 @@ LABEL_14:
     v68 = 0;
   }
 
-  v23 = [v4 objectForKeyedSubscript:@"promptIndex"];
+  v23 = [dictionaryCopy objectForKeyedSubscript:@"promptIndex"];
 
   if (v23)
   {
-    v24 = [v4 objectForKeyedSubscript:@"promptIndex"];
-    v67 = [v24 integerValue];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"promptIndex"];
+    integerValue = [v24 integerValue];
   }
 
   else
   {
-    v67 = 0;
+    integerValue = 0;
   }
 
-  v25 = [v4 objectForKeyedSubscript:@"activityType"];
+  v25 = [dictionaryCopy objectForKeyedSubscript:@"activityType"];
 
   if (v25)
   {
-    v26 = [v4 objectForKeyedSubscript:@"activityType"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"activityType"];
     v66 = [(MOTemplateLoader *)self _activityTypeFromString:v26];
   }
 
@@ -273,11 +273,11 @@ LABEL_14:
     v66 = 0;
   }
 
-  v27 = [v4 objectForKeyedSubscript:@"placeType"];
+  v27 = [dictionaryCopy objectForKeyedSubscript:@"placeType"];
 
   if (v27)
   {
-    v28 = [v4 objectForKeyedSubscript:@"placeType"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"placeType"];
     v65 = [(MOTemplateLoader *)self _placeTypeFromString:v28];
   }
 
@@ -286,11 +286,11 @@ LABEL_14:
     v65 = 0;
   }
 
-  v29 = [v4 objectForKeyedSubscript:@"time"];
+  v29 = [dictionaryCopy objectForKeyedSubscript:@"time"];
 
   if (v29)
   {
-    v30 = [v4 objectForKeyedSubscript:@"time"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"time"];
     v64 = [(MOTemplateLoader *)self _timeFromString:v30];
   }
 
@@ -299,11 +299,11 @@ LABEL_14:
     v64 = 0;
   }
 
-  v31 = [v4 objectForKeyedSubscript:@"peopleClassification"];
+  v31 = [dictionaryCopy objectForKeyedSubscript:@"peopleClassification"];
 
   if (v31)
   {
-    v32 = [v4 objectForKeyedSubscript:@"peopleClassification"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"peopleClassification"];
     v63 = [(MOTemplateLoader *)self _peopleClassificationFromString:v32];
   }
 
@@ -312,11 +312,11 @@ LABEL_14:
     v63 = 0;
   }
 
-  v33 = [v4 objectForKeyedSubscript:@"bundleType"];
+  v33 = [dictionaryCopy objectForKeyedSubscript:@"bundleType"];
 
   if (v33)
   {
-    v34 = [v4 objectForKeyedSubscript:@"bundleType"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"bundleType"];
     v62 = [(MOTemplateLoader *)self _bundleTypeFromString:v34];
   }
 
@@ -326,14 +326,14 @@ LABEL_14:
   }
 
   v35 = v5;
-  v36 = [v4 objectForKeyedSubscript:@"personName"];
+  v36 = [dictionaryCopy objectForKeyedSubscript:@"personName"];
 
   if (v36)
   {
-    v37 = [v4 objectForKeyedSubscript:@"personName"];
-    v38 = [v37 intValue];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"personName"];
+    intValue = [v37 intValue];
 
-    v61 = [(MOTemplateLoader *)self _hasItemFromInt:v38];
+    v61 = [(MOTemplateLoader *)self _hasItemFromInt:intValue];
   }
 
   else
@@ -341,49 +341,49 @@ LABEL_14:
     v61 = 0;
   }
 
-  v39 = [v4 objectForKeyedSubscript:@"placeName"];
+  v39 = [dictionaryCopy objectForKeyedSubscript:@"placeName"];
 
   if (v39)
   {
-    v39 = [v4 objectForKeyedSubscript:@"placeName"];
-    v40 = [v39 intValue];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"placeName"];
+    intValue2 = [v39 intValue];
 
-    LOBYTE(v39) = [(MOTemplateLoader *)self _hasItemFromInt:v40];
+    LOBYTE(v39) = [(MOTemplateLoader *)self _hasItemFromInt:intValue2];
   }
 
-  v41 = [v4 objectForKeyedSubscript:@"cityName"];
+  v41 = [dictionaryCopy objectForKeyedSubscript:@"cityName"];
 
   if (v41)
   {
-    v41 = [v4 objectForKeyedSubscript:@"cityName"];
-    v42 = [v41 intValue];
+    v41 = [dictionaryCopy objectForKeyedSubscript:@"cityName"];
+    intValue3 = [v41 intValue];
 
-    LOBYTE(v41) = [(MOTemplateLoader *)self _hasItemFromInt:v42];
+    LOBYTE(v41) = [(MOTemplateLoader *)self _hasItemFromInt:intValue3];
   }
 
-  v43 = [v4 objectForKeyedSubscript:@"timeReference"];
+  v43 = [dictionaryCopy objectForKeyedSubscript:@"timeReference"];
 
   if (v43)
   {
-    v43 = [v4 objectForKeyedSubscript:@"timeReference"];
-    v44 = [v43 intValue];
+    v43 = [dictionaryCopy objectForKeyedSubscript:@"timeReference"];
+    intValue4 = [v43 intValue];
 
-    LOBYTE(v43) = [(MOTemplateLoader *)self _hasItemFromInt:v44];
+    LOBYTE(v43) = [(MOTemplateLoader *)self _hasItemFromInt:intValue4];
   }
 
-  v45 = [v4 objectForKeyedSubscript:@"patternType"];
+  v45 = [dictionaryCopy objectForKeyedSubscript:@"patternType"];
 
   if (v45)
   {
-    v46 = [v4 objectForKeyedSubscript:@"patternType"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"patternType"];
     v45 = [(MOTemplateLoader *)self _patternTypeFromString:v46];
   }
 
-  v47 = [v4 objectForKeyedSubscript:@"globalTraits"];
+  v47 = [dictionaryCopy objectForKeyedSubscript:@"globalTraits"];
 
   if (v47)
   {
-    v48 = [v4 objectForKeyedSubscript:@"globalTraits"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"globalTraits"];
     if ([v48 count])
     {
       v49 = [(MOTemplateLoader *)self _traitsFromArray:v48];
@@ -393,11 +393,11 @@ LABEL_14:
     }
   }
 
-  v51 = [v4 objectForKeyedSubscript:@"personalTraits"];
+  v51 = [dictionaryCopy objectForKeyedSubscript:@"personalTraits"];
 
   if (v51)
   {
-    v52 = [v4 objectForKeyedSubscript:@"personalTraits"];
+    v52 = [dictionaryCopy objectForKeyedSubscript:@"personalTraits"];
     v53 = [(MOTemplateLoader *)self _photoTraitFromString:v52];
   }
 
@@ -415,7 +415,7 @@ LABEL_14:
     BYTE2(v60) = v41;
     BYTE1(v60) = v39;
     LOBYTE(v60) = v61;
-    v54 = [MOTemplate initWithTemplateIdentifier:v55 patternType:"initWithTemplateIdentifier:patternType:placeType:activityType:time:bundleType:peopleClassification:hasPersonName:hasPlaceName:hasCityName:hasTimeReference:templateString:utility:accuracy:satisfaction:generalizability:promptIndex:" placeType:v56 activityType:v45 time:v65 bundleType:v66 peopleClassification:v64 hasPersonName:v62 hasPlaceName:v7 hasCityName:v8 hasTimeReference:v16 templateString:v15 utility:v63 accuracy:v60 satisfaction:v68 generalizability:v67 promptIndex:?];
+    v54 = [MOTemplate initWithTemplateIdentifier:v55 patternType:"initWithTemplateIdentifier:patternType:placeType:activityType:time:bundleType:peopleClassification:hasPersonName:hasPlaceName:hasCityName:hasTimeReference:templateString:utility:accuracy:satisfaction:generalizability:promptIndex:" placeType:v56 activityType:v45 time:v65 bundleType:v66 peopleClassification:v64 hasPersonName:v62 hasPlaceName:v7 hasCityName:v8 hasTimeReference:v16 templateString:v15 utility:v63 accuracy:v60 satisfaction:v68 generalizability:integerValue promptIndex:?];
 
     [(MOTemplate *)v54 setPhotoTrait:v53];
     if ([v35 count])
@@ -423,11 +423,11 @@ LABEL_14:
       [(MOTemplate *)v54 setGlobalTraits:v35];
     }
 
-    v57 = [v4 objectForKeyedSubscript:@"templateVersion"];
+    v57 = [dictionaryCopy objectForKeyedSubscript:@"templateVersion"];
 
     if (v57)
     {
-      v58 = [v4 objectForKeyedSubscript:@"templateVersion"];
+      v58 = [dictionaryCopy objectForKeyedSubscript:@"templateVersion"];
       -[MOTemplate setPromptVersion:](v54, "setPromptVersion:", [v58 integerValue]);
     }
   }
@@ -435,15 +435,15 @@ LABEL_14:
   return v54;
 }
 
-- (id)_traitsFromArray:(id)a3
+- (id)_traitsFromArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v17 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = v3;
+  v4 = arrayCopy;
   v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
@@ -496,46 +496,46 @@ LABEL_14:
   return v17;
 }
 
-- (unint64_t)_activityTypeFromString:(id)a3
+- (unint64_t)_activityTypeFromString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 isEqualToString:@"walking"];
-  if ([v3 isEqualToString:@"strength training"])
+  stringCopy = string;
+  v4 = [stringCopy isEqualToString:@"walking"];
+  if ([stringCopy isEqualToString:@"strength training"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"cycling"])
+  if ([stringCopy isEqualToString:@"cycling"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"running"])
+  if ([stringCopy isEqualToString:@"running"])
   {
     v4 = 4;
   }
 
-  if ([v3 isEqualToString:@"HIIT"])
+  if ([stringCopy isEqualToString:@"HIIT"])
   {
     v4 = 5;
   }
 
-  if ([v3 isEqualToString:@"elliptical"])
+  if ([stringCopy isEqualToString:@"elliptical"])
   {
     v4 = 6;
   }
 
-  if ([v3 isEqualToString:@"yoga"])
+  if ([stringCopy isEqualToString:@"yoga"])
   {
     v4 = 7;
   }
 
-  if ([v3 isEqualToString:@"swimming"])
+  if ([stringCopy isEqualToString:@"swimming"])
   {
     v4 = 8;
   }
 
-  if ([v3 isEqualToString:@"hiking"])
+  if ([stringCopy isEqualToString:@"hiking"])
   {
     v5 = 9;
   }
@@ -545,7 +545,7 @@ LABEL_14:
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"workout"];
+  v6 = [stringCopy isEqualToString:@"workout"];
 
   if (v6)
   {
@@ -558,181 +558,181 @@ LABEL_14:
   }
 }
 
-- (unint64_t)_placeTypeFromString:(id)a3
+- (unint64_t)_placeTypeFromString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 isEqualToString:@"restaurant"];
-  if ([v3 isEqualToString:@"store"])
+  stringCopy = string;
+  v4 = [stringCopy isEqualToString:@"restaurant"];
+  if ([stringCopy isEqualToString:@"store"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"hotel"])
+  if ([stringCopy isEqualToString:@"hotel"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"airport"])
+  if ([stringCopy isEqualToString:@"airport"])
   {
     v4 = 4;
   }
 
-  if ([v3 isEqualToString:@"park"])
+  if ([stringCopy isEqualToString:@"park"])
   {
     v4 = 5;
   }
 
-  if ([v3 isEqualToString:@"cafe"])
+  if ([stringCopy isEqualToString:@"cafe"])
   {
     v4 = 6;
   }
 
-  if ([v3 isEqualToString:@"food market"])
+  if ([stringCopy isEqualToString:@"food market"])
   {
     v4 = 7;
   }
 
-  if ([v3 isEqualToString:@"fitness center"])
+  if ([stringCopy isEqualToString:@"fitness center"])
   {
     v4 = 8;
   }
 
-  if ([v3 isEqualToString:@"university"])
+  if ([stringCopy isEqualToString:@"university"])
   {
     v4 = 9;
   }
 
-  if ([v3 isEqualToString:@"school"])
+  if ([stringCopy isEqualToString:@"school"])
   {
     v4 = 10;
   }
 
-  if ([v3 isEqualToString:@"amusement park"])
+  if ([stringCopy isEqualToString:@"amusement park"])
   {
     v4 = 11;
   }
 
-  if ([v3 isEqualToString:@"movie theater"])
+  if ([stringCopy isEqualToString:@"movie theater"])
   {
     v4 = 12;
   }
 
-  if ([v3 isEqualToString:@"theater"])
+  if ([stringCopy isEqualToString:@"theater"])
   {
     v4 = 13;
   }
 
-  if ([v3 isEqualToString:@"museum"])
+  if ([stringCopy isEqualToString:@"museum"])
   {
     v4 = 14;
   }
 
-  if ([v3 isEqualToString:@"beach"])
+  if ([stringCopy isEqualToString:@"beach"])
   {
     v4 = 15;
   }
 
-  if ([v3 isEqualToString:@"home"])
+  if ([stringCopy isEqualToString:@"home"])
   {
     v4 = 16;
   }
 
-  if ([v3 isEqualToString:@"work"])
+  if ([stringCopy isEqualToString:@"work"])
   {
     v4 = 17;
   }
 
-  if ([v3 isEqualToString:@"aquarium"])
+  if ([stringCopy isEqualToString:@"aquarium"])
   {
     v4 = 18;
   }
 
-  if ([v3 isEqualToString:@"bakery"])
+  if ([stringCopy isEqualToString:@"bakery"])
   {
     v4 = 19;
   }
 
-  if ([v3 isEqualToString:@"brewery"])
+  if ([stringCopy isEqualToString:@"brewery"])
   {
     v4 = 20;
   }
 
-  if ([v3 isEqualToString:@"campground"])
+  if ([stringCopy isEqualToString:@"campground"])
   {
     v4 = 21;
   }
 
-  if ([v3 isEqualToString:@"fire station"])
+  if ([stringCopy isEqualToString:@"fire station"])
   {
     v4 = 22;
   }
 
-  if ([v3 isEqualToString:@"library"])
+  if ([stringCopy isEqualToString:@"library"])
   {
     v4 = 23;
   }
 
-  if ([v3 isEqualToString:@"marina"])
+  if ([stringCopy isEqualToString:@"marina"])
   {
     v4 = 24;
   }
 
-  if ([v3 isEqualToString:@"national park"])
+  if ([stringCopy isEqualToString:@"national park"])
   {
     v4 = 25;
   }
 
-  if ([v3 isEqualToString:@"nightlife"])
+  if ([stringCopy isEqualToString:@"nightlife"])
   {
     v4 = 26;
   }
 
-  if ([v3 isEqualToString:@"playground"])
+  if ([stringCopy isEqualToString:@"playground"])
   {
     v4 = 27;
   }
 
-  if ([v3 isEqualToString:@"stadium"])
+  if ([stringCopy isEqualToString:@"stadium"])
   {
     v4 = 28;
   }
 
-  if ([v3 isEqualToString:@"winery"])
+  if ([stringCopy isEqualToString:@"winery"])
   {
     v4 = 29;
   }
 
-  if ([v3 isEqualToString:@"zoo"])
+  if ([stringCopy isEqualToString:@"zoo"])
   {
     v4 = 30;
   }
 
-  if ([v3 isEqualToString:@"golf"])
+  if ([stringCopy isEqualToString:@"golf"])
   {
     v4 = 31;
   }
 
-  if ([v3 isEqualToString:@"mini golf"])
+  if ([stringCopy isEqualToString:@"mini golf"])
   {
     v4 = 32;
   }
 
-  if ([v3 isEqualToString:@"bowling"])
+  if ([stringCopy isEqualToString:@"bowling"])
   {
     v4 = 33;
   }
 
-  if ([v3 isEqualToString:@"planetarium"])
+  if ([stringCopy isEqualToString:@"planetarium"])
   {
     v4 = 34;
   }
 
-  if ([v3 isEqualToString:@"baseball"])
+  if ([stringCopy isEqualToString:@"baseball"])
   {
     v4 = 35;
   }
 
-  if ([v3 isEqualToString:@"basketball"])
+  if ([stringCopy isEqualToString:@"basketball"])
   {
     v5 = 36;
   }
@@ -742,7 +742,7 @@ LABEL_14:
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"national monument"];
+  v6 = [stringCopy isEqualToString:@"national monument"];
 
   if (v6)
   {
@@ -755,16 +755,16 @@ LABEL_14:
   }
 }
 
-- (unint64_t)_timeFromString:(id)a3
+- (unint64_t)_timeFromString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 isEqualToString:@"morning"];
-  if ([v3 isEqualToString:@"afternoon"])
+  stringCopy = string;
+  v4 = [stringCopy isEqualToString:@"morning"];
+  if ([stringCopy isEqualToString:@"afternoon"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"evening"])
+  if ([stringCopy isEqualToString:@"evening"])
   {
     v5 = 3;
   }
@@ -774,7 +774,7 @@ LABEL_14:
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"night"];
+  v6 = [stringCopy isEqualToString:@"night"];
 
   if (v6)
   {
@@ -787,21 +787,21 @@ LABEL_14:
   }
 }
 
-- (unint64_t)_peopleClassificationFromString:(id)a3
+- (unint64_t)_peopleClassificationFromString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 isEqualToString:@"family"];
-  if ([v3 isEqualToString:@"friends"])
+  stringCopy = string;
+  v4 = [stringCopy isEqualToString:@"family"];
+  if ([stringCopy isEqualToString:@"friends"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"kids"])
+  if ([stringCopy isEqualToString:@"kids"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"colleagues"])
+  if ([stringCopy isEqualToString:@"colleagues"])
   {
     v5 = 4;
   }
@@ -811,7 +811,7 @@ LABEL_14:
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"pet"];
+  v6 = [stringCopy isEqualToString:@"pet"];
 
   if (v6)
   {
@@ -824,26 +824,26 @@ LABEL_14:
   }
 }
 
-- (unint64_t)_bundleTypeFromString:(id)a3
+- (unint64_t)_bundleTypeFromString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 isEqualToString:@"outing"];
-  if ([v3 isEqualToString:@"trip"])
+  stringCopy = string;
+  v4 = [stringCopy isEqualToString:@"outing"];
+  if ([stringCopy isEqualToString:@"trip"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"shopping"])
+  if ([stringCopy isEqualToString:@"shopping"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"dining"])
+  if ([stringCopy isEqualToString:@"dining"])
   {
     v4 = 4;
   }
 
-  if ([v3 isEqualToString:@"time at home"])
+  if ([stringCopy isEqualToString:@"time at home"])
   {
     v5 = 5;
   }
@@ -853,7 +853,7 @@ LABEL_14:
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"contact"];
+  v6 = [stringCopy isEqualToString:@"contact"];
 
   if (v6)
   {
@@ -866,486 +866,486 @@ LABEL_14:
   }
 }
 
-- (unint64_t)_photoTraitFromString:(id)a3
+- (unint64_t)_photoTraitFromString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 isEqualToString:@"Wedding"];
-  if ([v3 isEqualToString:@"Birthday"])
+  stringCopy = string;
+  v4 = [stringCopy isEqualToString:@"Wedding"];
+  if ([stringCopy isEqualToString:@"Birthday"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"Celebration"])
+  if ([stringCopy isEqualToString:@"Celebration"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"Ceremony"])
+  if ([stringCopy isEqualToString:@"Ceremony"])
   {
     v4 = 4;
   }
 
-  if ([v3 isEqualToString:@"Holiday"])
+  if ([stringCopy isEqualToString:@"Holiday"])
   {
     v4 = 5;
   }
 
-  if ([v3 isEqualToString:@"Thanksgiving"])
+  if ([stringCopy isEqualToString:@"Thanksgiving"])
   {
     v4 = 6;
   }
 
-  if ([v3 isEqualToString:@"Halloween"])
+  if ([stringCopy isEqualToString:@"Halloween"])
   {
     v4 = 7;
   }
 
-  if ([v3 isEqualToString:@"Christmas"])
+  if ([stringCopy isEqualToString:@"Christmas"])
   {
     v4 = 8;
   }
 
-  if ([v3 isEqualToString:@"Festival"])
+  if ([stringCopy isEqualToString:@"Festival"])
   {
     v4 = 9;
   }
 
-  if ([v3 isEqualToString:@"Concert"])
+  if ([stringCopy isEqualToString:@"Concert"])
   {
     v4 = 10;
   }
 
-  if ([v3 isEqualToString:@"Parade"])
+  if ([stringCopy isEqualToString:@"Parade"])
   {
     v4 = 11;
   }
 
-  if ([v3 isEqualToString:@"Cooking"])
+  if ([stringCopy isEqualToString:@"Cooking"])
   {
     v4 = 12;
   }
 
-  if ([v3 isEqualToString:@"Eating"])
+  if ([stringCopy isEqualToString:@"Eating"])
   {
     v4 = 13;
   }
 
-  if ([v3 isEqualToString:@"Camping"])
+  if ([stringCopy isEqualToString:@"Camping"])
   {
     v4 = 14;
   }
 
-  if ([v3 isEqualToString:@"Graduation"])
+  if ([stringCopy isEqualToString:@"Graduation"])
   {
     v4 = 15;
   }
 
-  if ([v3 isEqualToString:@"Thanksgiving Dinner"])
+  if ([stringCopy isEqualToString:@"Thanksgiving Dinner"])
   {
     v4 = 16;
   }
 
-  if ([v3 isEqualToString:@"Carnival"])
+  if ([stringCopy isEqualToString:@"Carnival"])
   {
     v4 = 17;
   }
 
-  if ([v3 isEqualToString:@"Easter Egg"])
+  if ([stringCopy isEqualToString:@"Easter Egg"])
   {
     v4 = 18;
   }
 
-  if ([v3 isEqualToString:@"Jack O Lantern"])
+  if ([stringCopy isEqualToString:@"Jack O Lantern"])
   {
     v4 = 19;
   }
 
-  if ([v3 isEqualToString:@"BabyReading"])
+  if ([stringCopy isEqualToString:@"BabyReading"])
   {
     v4 = 20;
   }
 
-  if ([v3 isEqualToString:@"ChildReading"])
+  if ([stringCopy isEqualToString:@"ChildReading"])
   {
     v4 = 21;
   }
 
-  if ([v3 isEqualToString:@"BabyBedtimeCuddles"])
+  if ([stringCopy isEqualToString:@"BabyBedtimeCuddles"])
   {
     v4 = 22;
   }
 
-  if ([v3 isEqualToString:@"ChildBedtimeCuddles"])
+  if ([stringCopy isEqualToString:@"ChildBedtimeCuddles"])
   {
     v4 = 23;
   }
 
-  if ([v3 isEqualToString:@"Board Game"])
+  if ([stringCopy isEqualToString:@"Board Game"])
   {
     v4 = 24;
   }
 
-  if ([v3 isEqualToString:@"Swimming"])
+  if ([stringCopy isEqualToString:@"Swimming"])
   {
     v4 = 25;
   }
 
-  if ([v3 isEqualToString:@"SwimmingBeach"])
+  if ([stringCopy isEqualToString:@"SwimmingBeach"])
   {
     v4 = 26;
   }
 
-  if ([v3 isEqualToString:@"SwimmingPool"])
+  if ([stringCopy isEqualToString:@"SwimmingPool"])
   {
     v4 = 27;
   }
 
-  if ([v3 isEqualToString:@"Surfing"])
+  if ([stringCopy isEqualToString:@"Surfing"])
   {
     v4 = 28;
   }
 
-  if ([v3 isEqualToString:@"Underwater Diving"])
+  if ([stringCopy isEqualToString:@"Underwater Diving"])
   {
     v4 = 29;
   }
 
-  if ([v3 isEqualToString:@"Snorkeling"])
+  if ([stringCopy isEqualToString:@"Snorkeling"])
   {
     v4 = 30;
   }
 
-  if ([v3 isEqualToString:@"Scuba"])
+  if ([stringCopy isEqualToString:@"Scuba"])
   {
     v4 = 31;
   }
 
-  if ([v3 isEqualToString:@"Skiing"])
+  if ([stringCopy isEqualToString:@"Skiing"])
   {
     v4 = 32;
   }
 
-  if ([v3 isEqualToString:@"Snowboarding"])
+  if ([stringCopy isEqualToString:@"Snowboarding"])
   {
     v4 = 33;
   }
 
-  if ([v3 isEqualToString:@"Sledding"])
+  if ([stringCopy isEqualToString:@"Sledding"])
   {
     v4 = 34;
   }
 
-  if ([v3 isEqualToString:@"Snow Person"])
+  if ([stringCopy isEqualToString:@"Snow Person"])
   {
     v4 = 35;
   }
 
-  if ([v3 isEqualToString:@"Snowball"])
+  if ([stringCopy isEqualToString:@"Snowball"])
   {
     v4 = 36;
   }
 
-  if ([v3 isEqualToString:@"SnowPlay"])
+  if ([stringCopy isEqualToString:@"SnowPlay"])
   {
     v4 = 37;
   }
 
-  if ([v3 isEqualToString:@"Hiking"])
+  if ([stringCopy isEqualToString:@"Hiking"])
   {
     v4 = 38;
   }
 
-  if ([v3 isEqualToString:@"Dancing"])
+  if ([stringCopy isEqualToString:@"Dancing"])
   {
     v4 = 39;
   }
 
-  if ([v3 isEqualToString:@"ChildPlay"])
+  if ([stringCopy isEqualToString:@"ChildPlay"])
   {
     v4 = 40;
   }
 
-  if ([v3 isEqualToString:@"BabyPlay"])
+  if ([stringCopy isEqualToString:@"BabyPlay"])
   {
     v4 = 41;
   }
 
-  if ([v3 isEqualToString:@"Fireworks"])
+  if ([stringCopy isEqualToString:@"Fireworks"])
   {
     v4 = 42;
   }
 
-  if ([v3 isEqualToString:@"Sunrise"])
+  if ([stringCopy isEqualToString:@"Sunrise"])
   {
     v4 = 43;
   }
 
-  if ([v3 isEqualToString:@"Sunset Sunrise"])
+  if ([stringCopy isEqualToString:@"Sunset Sunrise"])
   {
     v4 = 44;
   }
 
-  if ([v3 isEqualToString:@"Rainbow"])
+  if ([stringCopy isEqualToString:@"Rainbow"])
   {
     v4 = 45;
   }
 
-  if ([v3 isEqualToString:@"Waterfall"])
+  if ([stringCopy isEqualToString:@"Waterfall"])
   {
     v4 = 46;
   }
 
-  if ([v3 isEqualToString:@"Lunar Eclipse"])
+  if ([stringCopy isEqualToString:@"Lunar Eclipse"])
   {
     v4 = 47;
   }
 
-  if ([v3 isEqualToString:@"Eclipse"])
+  if ([stringCopy isEqualToString:@"Eclipse"])
   {
     v4 = 48;
   }
 
-  if ([v3 isEqualToString:@"Celestial Body"])
+  if ([stringCopy isEqualToString:@"Celestial Body"])
   {
     v4 = 49;
   }
 
-  if ([v3 isEqualToString:@"Star"])
+  if ([stringCopy isEqualToString:@"Star"])
   {
     v4 = 50;
   }
 
-  if ([v3 isEqualToString:@"Wildlife"])
+  if ([stringCopy isEqualToString:@"Wildlife"])
   {
     v4 = 51;
   }
 
-  if ([v3 isEqualToString:@"Flower"])
+  if ([stringCopy isEqualToString:@"Flower"])
   {
     v4 = 52;
   }
 
-  if ([v3 isEqualToString:@"Blizzard"])
+  if ([stringCopy isEqualToString:@"Blizzard"])
   {
     v4 = 53;
   }
 
-  if ([v3 isEqualToString:@"Snow"])
+  if ([stringCopy isEqualToString:@"Snow"])
   {
     v4 = 54;
   }
 
-  if ([v3 isEqualToString:@"Underwater"])
+  if ([stringCopy isEqualToString:@"Underwater"])
   {
     v4 = 55;
   }
 
-  if ([v3 isEqualToString:@"Basketball"])
+  if ([stringCopy isEqualToString:@"Basketball"])
   {
     v4 = 56;
   }
 
-  if ([v3 isEqualToString:@"Soccer"])
+  if ([stringCopy isEqualToString:@"Soccer"])
   {
     v4 = 57;
   }
 
-  if ([v3 isEqualToString:@"Football"])
+  if ([stringCopy isEqualToString:@"Football"])
   {
     v4 = 58;
   }
 
-  if ([v3 isEqualToString:@"Baseball"])
+  if ([stringCopy isEqualToString:@"Baseball"])
   {
     v4 = 59;
   }
 
-  if ([v3 isEqualToString:@"Hockey"])
+  if ([stringCopy isEqualToString:@"Hockey"])
   {
     v4 = 60;
   }
 
-  if ([v3 isEqualToString:@"Ice Hockey"])
+  if ([stringCopy isEqualToString:@"Ice Hockey"])
   {
     v4 = 61;
   }
 
-  if ([v3 isEqualToString:@"Cycling"])
+  if ([stringCopy isEqualToString:@"Cycling"])
   {
     v4 = 62;
   }
 
-  if ([v3 isEqualToString:@"Cake Decorating"])
+  if ([stringCopy isEqualToString:@"Cake Decorating"])
   {
     v4 = 63;
   }
 
-  if ([v3 isEqualToString:@"Bowling"])
+  if ([stringCopy isEqualToString:@"Bowling"])
   {
     v4 = 64;
   }
 
-  if ([v3 isEqualToString:@"Karaoke"])
+  if ([stringCopy isEqualToString:@"Karaoke"])
   {
     v4 = 65;
   }
 
-  if ([v3 isEqualToString:@"Golf"])
+  if ([stringCopy isEqualToString:@"Golf"])
   {
     v4 = 66;
   }
 
-  if ([v3 isEqualToString:@"Baby"])
+  if ([stringCopy isEqualToString:@"Baby"])
   {
     v4 = 67;
   }
 
-  if ([v3 isEqualToString:@"Vineyard"])
+  if ([stringCopy isEqualToString:@"Vineyard"])
   {
     v4 = 68;
   }
 
-  if ([v3 isEqualToString:@"Log Cabin"])
+  if ([stringCopy isEqualToString:@"Log Cabin"])
   {
     v4 = 69;
   }
 
-  if ([v3 isEqualToString:@"Nightclub"])
+  if ([stringCopy isEqualToString:@"Nightclub"])
   {
     v4 = 70;
   }
 
-  if ([v3 isEqualToString:@"Farm"])
+  if ([stringCopy isEqualToString:@"Farm"])
   {
     v4 = 71;
   }
 
-  if ([v3 isEqualToString:@"Mountain Biking"])
+  if ([stringCopy isEqualToString:@"Mountain Biking"])
   {
     v4 = 72;
   }
 
-  if ([v3 isEqualToString:@"Mountain Bike"])
+  if ([stringCopy isEqualToString:@"Mountain Bike"])
   {
     v4 = 73;
   }
 
-  if ([v3 isEqualToString:@"Ski Mountaineering"])
+  if ([stringCopy isEqualToString:@"Ski Mountaineering"])
   {
     v4 = 74;
   }
 
-  if ([v3 isEqualToString:@"Mountain"])
+  if ([stringCopy isEqualToString:@"Mountain"])
   {
     v4 = 75;
   }
 
-  if ([v3 isEqualToString:@"Forest"])
+  if ([stringCopy isEqualToString:@"Forest"])
   {
     v4 = 76;
   }
 
-  if ([v3 isEqualToString:@"Parasailing"])
+  if ([stringCopy isEqualToString:@"Parasailing"])
   {
     v4 = 77;
   }
 
-  if ([v3 isEqualToString:@"Sailing"])
+  if ([stringCopy isEqualToString:@"Sailing"])
   {
     v4 = 78;
   }
 
-  if ([v3 isEqualToString:@"Kayaking"])
+  if ([stringCopy isEqualToString:@"Kayaking"])
   {
     v4 = 79;
   }
 
-  if ([v3 isEqualToString:@"Cruise Ship"])
+  if ([stringCopy isEqualToString:@"Cruise Ship"])
   {
     v4 = 80;
   }
 
-  if ([v3 isEqualToString:@"Shore"])
+  if ([stringCopy isEqualToString:@"Shore"])
   {
     v4 = 81;
   }
 
-  if ([v3 isEqualToString:@"Carousel"])
+  if ([stringCopy isEqualToString:@"Carousel"])
   {
     v4 = 82;
   }
 
-  if ([v3 isEqualToString:@"Ferris Wheel"])
+  if ([stringCopy isEqualToString:@"Ferris Wheel"])
   {
     v4 = 83;
   }
 
-  if ([v3 isEqualToString:@"Lunar New Year’s Eve"])
+  if ([stringCopy isEqualToString:@"Lunar New Year’s Eve"])
   {
     v4 = 84;
   }
 
-  if ([v3 isEqualToString:@"Lunar New Year’s Day"])
+  if ([stringCopy isEqualToString:@"Lunar New Year’s Day"])
   {
     v4 = 85;
   }
 
-  if ([v3 isEqualToString:@"Valentine’s Day"])
+  if ([stringCopy isEqualToString:@"Valentine’s Day"])
   {
     v4 = 86;
   }
 
-  if ([v3 isEqualToString:@"Christmas Eve"])
+  if ([stringCopy isEqualToString:@"Christmas Eve"])
   {
     v4 = 87;
   }
 
-  if ([v3 isEqualToString:@"New Year’s Eve"])
+  if ([stringCopy isEqualToString:@"New Year’s Eve"])
   {
     v4 = 88;
   }
 
-  if ([v3 isEqualToString:@"New Year’s Day"])
+  if ([stringCopy isEqualToString:@"New Year’s Day"])
   {
     v4 = 89;
   }
 
-  if ([v3 isEqualToString:@"Independence Day_US"])
+  if ([stringCopy isEqualToString:@"Independence Day_US"])
   {
     v4 = 90;
   }
 
-  if ([v3 isEqualToString:@"Diwali"])
+  if ([stringCopy isEqualToString:@"Diwali"])
   {
     v4 = 91;
   }
 
-  if ([v3 isEqualToString:@"Cinco De Mayo"])
+  if ([stringCopy isEqualToString:@"Cinco De Mayo"])
   {
     v4 = 92;
   }
 
-  if ([v3 isEqualToString:@"Earth Day"])
+  if ([stringCopy isEqualToString:@"Earth Day"])
   {
     v4 = 93;
   }
 
-  if ([v3 isEqualToString:@"St. Patrick’s Day"])
+  if ([stringCopy isEqualToString:@"St. Patrick’s Day"])
   {
     v4 = 94;
   }
 
-  if ([v3 isEqualToString:@"Memorial Day"])
+  if ([stringCopy isEqualToString:@"Memorial Day"])
   {
     v4 = 95;
   }
 
-  if ([v3 isEqualToString:@"Labor Day"])
+  if ([stringCopy isEqualToString:@"Labor Day"])
   {
     v4 = 96;
   }
 
-  if ([v3 isEqualToString:@"Mother’s Day"])
+  if ([stringCopy isEqualToString:@"Mother’s Day"])
   {
     v5 = 97;
   }
@@ -1355,7 +1355,7 @@ LABEL_14:
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"Father’s Day"];
+  v6 = [stringCopy isEqualToString:@"Father’s Day"];
 
   if (v6)
   {

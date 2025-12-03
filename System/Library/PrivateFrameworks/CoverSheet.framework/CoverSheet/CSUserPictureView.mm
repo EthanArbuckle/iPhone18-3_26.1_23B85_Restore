@@ -1,20 +1,20 @@
 @interface CSUserPictureView
-+ (id)_monogrammerForLegibilitySettings:(id)a3 diameter:(double)a4;
-- (CSUserPictureView)initWithFrame:(CGRect)a3;
++ (id)_monogrammerForLegibilitySettings:(id)settings diameter:(double)diameter;
+- (CSUserPictureView)initWithFrame:(CGRect)frame;
 - (id)presentationRegions;
 - (void)_regenerateImage;
 - (void)layoutSubviews;
-- (void)setContact:(id)a3;
-- (void)setLegibilitySettings:(id)a3;
+- (void)setContact:(id)contact;
+- (void)setLegibilitySettings:(id)settings;
 @end
 
 @implementation CSUserPictureView
 
-- (CSUserPictureView)initWithFrame:(CGRect)a3
+- (CSUserPictureView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CSUserPictureView;
-  v3 = [(CSUserPictureView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CSUserPictureView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -26,9 +26,9 @@
   return v4;
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
-  v4 = [a3 copy];
+  v4 = [contact copy];
   contact = self->_contact;
   self->_contact = v4;
 
@@ -59,23 +59,23 @@
   return v4;
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v7 = a3;
+  settingsCopy = settings;
   if (([(_UILegibilitySettings *)self->_legibilitySettings sb_isEqualToLegibilitySettings:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
-    v5 = [MEMORY[0x277D65E90] rootSettings];
-    [v5 userPictureStrengthForStyle:{-[_UILegibilitySettings style](self->_legibilitySettings, "style")}];
+    objc_storeStrong(&self->_legibilitySettings, settings);
+    rootSettings = [MEMORY[0x277D65E90] rootSettings];
+    [rootSettings userPictureStrengthForStyle:{-[_UILegibilitySettings style](self->_legibilitySettings, "style")}];
     self->_legibilityStrength = v6;
 
     [(CSUserPictureView *)self _regenerateImage];
   }
 }
 
-+ (id)_monogrammerForLegibilitySettings:(id)a3 diameter:(double)a4
++ (id)_monogrammerForLegibilitySettings:(id)settings diameter:(double)diameter
 {
-  if ([a3 style] >= 2)
+  if ([settings style] >= 2)
   {
     v5 = 2;
   }
@@ -85,7 +85,7 @@
     v5 = 3;
   }
 
-  v6 = [objc_alloc(MEMORY[0x277CBDC70]) initWithStyle:v5 diameter:a4];
+  v6 = [objc_alloc(MEMORY[0x277CBDC70]) initWithStyle:v5 diameter:diameter];
 
   return v6;
 }
@@ -95,8 +95,8 @@
   if (self->_contact)
   {
     v3 = objc_opt_class();
-    v4 = [(CSUserPictureView *)self legibilitySettings];
-    v9 = [v3 _monogrammerForLegibilitySettings:v4 diameter:self->_diameter];
+    legibilitySettings = [(CSUserPictureView *)self legibilitySettings];
+    v9 = [v3 _monogrammerForLegibilitySettings:legibilitySettings diameter:self->_diameter];
 
     monogramLegibilityView = self->_monogramLegibilityView;
     if (!monogramLegibilityView)

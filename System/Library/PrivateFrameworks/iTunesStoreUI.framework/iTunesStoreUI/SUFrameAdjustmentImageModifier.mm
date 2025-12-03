@@ -1,11 +1,11 @@
 @interface SUFrameAdjustmentImageModifier
-- (BOOL)isEqual:(id)a3;
-- (CGRect)imageFrameForImage:(id)a3 currentFrame:(CGRect)result finalSize:(CGSize)a5;
+- (BOOL)isEqual:(id)equal;
+- (CGRect)imageFrameForImage:(id)image currentFrame:(CGRect)result finalSize:(CGSize)size;
 @end
 
 @implementation SUFrameAdjustmentImageModifier
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -13,16 +13,16 @@
     return 0;
   }
 
-  v5 = [(SUFrameAdjustmentImageModifier *)self sizingMask];
-  return v5 == [a3 sizingMask];
+  sizingMask = [(SUFrameAdjustmentImageModifier *)self sizingMask];
+  return sizingMask == [equal sizingMask];
 }
 
-- (CGRect)imageFrameForImage:(id)a3 currentFrame:(CGRect)result finalSize:(CGSize)a5
+- (CGRect)imageFrameForImage:(id)image currentFrame:(CGRect)result finalSize:(CGSize)size
 {
-  v5 = a5.height / result.size.height;
-  if (a5.height / result.size.height >= a5.width / result.size.width)
+  v5 = size.height / result.size.height;
+  if (size.height / result.size.height >= size.width / result.size.width)
   {
-    v5 = a5.width / result.size.width;
+    v5 = size.width / result.size.width;
   }
 
   if (self->_shouldSizeDownToFit && v5 < 1.0)
@@ -34,13 +34,13 @@
   }
 
   sizingMask = self->_sizingMask;
-  v9 = floor((a5.width - result.size.width) * 0.5);
+  v9 = floor((size.width - result.size.width) * 0.5);
   if ((sizingMask & 5) != 0)
   {
     result.origin.x = v9;
   }
 
-  v10 = floor((a5.height - result.size.height) * 0.5);
+  v10 = floor((size.height - result.size.height) * 0.5);
   if ((sizingMask & 0x28) != 0)
   {
     result.origin.y = v10;

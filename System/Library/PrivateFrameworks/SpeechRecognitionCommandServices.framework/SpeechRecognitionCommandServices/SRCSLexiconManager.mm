@@ -1,10 +1,10 @@
 @interface SRCSLexiconManager
-- (SRCSLexiconManager)initWithLocaleIdentifier:(id)a3;
+- (SRCSLexiconManager)initWithLocaleIdentifier:(id)identifier;
 @end
 
 @implementation SRCSLexiconManager
 
-- (SRCSLexiconManager)initWithLocaleIdentifier:(id)a3
+- (SRCSLexiconManager)initWithLocaleIdentifier:(id)identifier
 {
   v4.receiver = self;
   v4.super_class = SRCSLexiconManager;

@@ -1,8 +1,8 @@
 @interface OspreyKeychain
-- (BOOL)deleteDataWithIdentifier:(id)a3;
-- (BOOL)saveData:(id)a3 withIdentifier:(id)a4;
+- (BOOL)deleteDataWithIdentifier:(id)identifier;
+- (BOOL)saveData:(id)data withIdentifier:(id)identifier;
 - (id)createKeychainQuery;
-- (id)fetchDataWithIdentifier:(id)a3;
+- (id)fetchDataWithIdentifier:(id)identifier;
 @end
 
 @implementation OspreyKeychain
@@ -32,23 +32,23 @@
   return v7;
 }
 
-- (BOOL)saveData:(id)a3 withIdentifier:(id)a4
+- (BOOL)saveData:(id)data withIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  dataCopy = data;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (dataCopy && identifierCopy)
   {
-    v9 = [(OspreyKeychain *)self createKeychainQuery];
-    [v9 setObject:v8 forKey:*MEMORY[0x277CDBF20]];
+    createKeychainQuery = [(OspreyKeychain *)self createKeychainQuery];
+    [createKeychainQuery setObject:v8 forKey:*MEMORY[0x277CDBF20]];
     v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v11 = *MEMORY[0x277CDC5E8];
-    [v10 setObject:v6 forKey:*MEMORY[0x277CDC5E8]];
-    v12 = SecItemUpdate(v9, v10);
+    [v10 setObject:dataCopy forKey:*MEMORY[0x277CDC5E8]];
+    v12 = SecItemUpdate(createKeychainQuery, v10);
     if (v12 == -25300)
     {
-      [v9 setObject:v6 forKey:v11];
-      v12 = SecItemAdd(v9, 0);
+      [createKeychainQuery setObject:dataCopy forKey:v11];
+      v12 = SecItemAdd(createKeychainQuery, 0);
     }
 
     if (v12)
@@ -80,7 +80,7 @@ LABEL_19:
 
   OspreyLoggingInit();
   v14 = os_log_type_enabled(OspreyLogContextAbsinthe, OS_LOG_TYPE_ERROR);
-  if (v6)
+  if (dataCopy)
   {
     if (v14)
     {
@@ -99,15 +99,15 @@ LABEL_20:
   return v13;
 }
 
-- (id)fetchDataWithIdentifier:(id)a3
+- (id)fetchDataWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(OspreyKeychain *)self createKeychainQuery];
-  [v5 setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CDC558]];
-  [v5 setObject:v4 forKey:*MEMORY[0x277CDBF20]];
+  identifierCopy = identifier;
+  createKeychainQuery = [(OspreyKeychain *)self createKeychainQuery];
+  [createKeychainQuery setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CDC558]];
+  [createKeychainQuery setObject:identifierCopy forKey:*MEMORY[0x277CDBF20]];
 
   result = 0;
-  v6 = SecItemCopyMatching(v5, &result);
+  v6 = SecItemCopyMatching(createKeychainQuery, &result);
   if (v6)
   {
     if (v6 == -34018)
@@ -135,14 +135,14 @@ LABEL_20:
   return v7;
 }
 
-- (BOOL)deleteDataWithIdentifier:(id)a3
+- (BOOL)deleteDataWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(OspreyKeychain *)self createKeychainQuery];
-    [v5 setObject:v4 forKey:*MEMORY[0x277CDBF20]];
-    v6 = SecItemDelete(v5);
+    createKeychainQuery = [(OspreyKeychain *)self createKeychainQuery];
+    [createKeychainQuery setObject:identifierCopy forKey:*MEMORY[0x277CDBF20]];
+    v6 = SecItemDelete(createKeychainQuery);
     v7 = v6 == 0;
     if (v6 == -34018)
     {

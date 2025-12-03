@@ -1,9 +1,9 @@
 @interface CPSAlertViewController
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_configureRemoteAlertWithURL:(id)a3;
+- (void)_configureRemoteAlertWithURL:(id)l;
 - (void)_displayLaunchContentViewController;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
 - (void)proxCardFlowDidDismiss;
 - (void)viewDidLoad;
 @end
@@ -16,14 +16,14 @@
   v15.super_class = CPSAlertViewController;
   [(CPSAlertViewController *)&v15 viewDidLoad];
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 delegate];
+  delegate = [v3 delegate];
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 viewControllers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  viewControllers = [delegate viewControllers];
+  v6 = [viewControllers countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -35,7 +35,7 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(viewControllers);
         }
 
         [*(*(&v11 + 1) + 8 * v9) _dismiss];
@@ -43,14 +43,14 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      v7 = [viewControllers countByEnumeratingWithState:&v11 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  v10 = [v4 viewControllers];
-  [v10 addObject:self];
+  viewControllers2 = [delegate viewControllers];
+  [viewControllers2 addObject:self];
 }
 
 - (void)_displayLaunchContentViewController
@@ -73,36 +73,36 @@
 
   v4 = v3;
   _Block_object_dispose(&v8, 8);
-  v5 = [v3 defaultConfiguration];
-  [v5 setSupportsDarkMode:1];
-  v6 = [(CPSAlertViewController *)self presentProxCardFlowWithDelegate:self initialViewController:self->_launchContentViewController configuration:v5];
+  defaultConfiguration = [v3 defaultConfiguration];
+  [defaultConfiguration setSupportsDarkMode:1];
+  v6 = [(CPSAlertViewController *)self presentProxCardFlowWithDelegate:self initialViewController:self->_launchContentViewController configuration:defaultConfiguration];
 }
 
-- (void)_configureRemoteAlertWithURL:(id)a3
+- (void)_configureRemoteAlertWithURL:(id)l
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10000206C;
   v4[3] = &unk_100008360;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  lCopy = l;
+  v3 = lCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v13 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  contextCopy = context;
   v7 = [(CPSAlertViewController *)self _remoteViewControllerProxyWithErrorHandler:&stru_1000083A8];
-  v8 = [v6 actions];
+  actions = [contextCopy actions];
 
-  v9 = [v8 anyObject];
+  anyObject = [actions anyObject];
   action = self->_action;
-  self->_action = v9;
+  self->_action = anyObject;
 
-  v11 = [(BSAction *)self->_action info];
-  v12 = [v11 objectForSetting:0];
+  info = [(BSAction *)self->_action info];
+  v12 = [info objectForSetting:0];
   [(CPSAlertViewController *)self _configureRemoteAlertWithURL:v12];
   [v7 setReachabilityDisabled:1];
   [v7 setAllowsAlertStacking:1];
@@ -111,26 +111,26 @@
     [v7 setDesiredHardwareButtonEvents:16];
   }
 
-  if (v13)
+  if (completionCopy)
   {
-    v13[2]();
+    completionCopy[2]();
   }
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v5 = [(CPSAlertViewController *)self _remoteViewControllerProxyWithErrorHandler:&stru_1000083C8];
   [v5 setStatusBarHidden:1 withDuration:0.4];
-  if (v6)
+  if (completionCopy)
   {
-    v6[2]();
+    completionCopy[2]();
   }
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
+  selfCopy = self;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -150,7 +150,7 @@
     sub_100002958();
   }
 
-  v5 = v3(v2, 1);
+  v5 = v3(selfCopy, 1);
 
   return v5;
 }

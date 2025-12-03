@@ -1,32 +1,32 @@
 @interface NSPropertyStoreMapping
-- (BOOL)isEqual:(id)a3;
-- (NSPropertyStoreMapping)initWithProperty:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NSPropertyStoreMapping)initWithProperty:(id)property;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation NSPropertyStoreMapping
 
-- (NSPropertyStoreMapping)initWithProperty:(id)a3
+- (NSPropertyStoreMapping)initWithProperty:(id)property
 {
   v5 = +[NSStoreMappingGenerator defaultMappingGenerator];
-  v6 = [a3 name];
+  name = [property name];
   if (v5)
   {
-    v7 = [v6 lowercaseString];
+    lowercaseString = [name lowercaseString];
   }
 
   else
   {
-    v7 = 0;
+    lowercaseString = 0;
   }
 
   v9.receiver = self;
   v9.super_class = NSPropertyStoreMapping;
-  result = [(NSStoreMapping *)&v9 initWithExternalName:v7];
+  result = [(NSStoreMapping *)&v9 initWithExternalName:lowercaseString];
   if (result)
   {
-    result->_property = a3;
+    result->_property = property;
   }
 
   return result;
@@ -54,7 +54,7 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = objc_opt_class();
   if (v5 != objc_opt_class())
@@ -64,20 +64,20 @@
 
   if (!self->_property)
   {
-    v9 = [a3 property];
-    return v9 == 0;
+    property = [equal property];
+    return property == 0;
   }
 
   if ([-[NSPropertyStoreMapping property](self "property")] && !-[NSStoreMapping externalName](self, "externalName"))
   {
-    v9 = [a3 externalName];
-    return v9 == 0;
+    property = [equal externalName];
+    return property == 0;
   }
 
-  v7 = [(NSStoreMapping *)self externalName];
-  v8 = [a3 externalName];
+  externalName = [(NSStoreMapping *)self externalName];
+  externalName2 = [equal externalName];
 
-  return [v7 isEqual:v8];
+  return [externalName isEqual:externalName2];
 }
 
 @end

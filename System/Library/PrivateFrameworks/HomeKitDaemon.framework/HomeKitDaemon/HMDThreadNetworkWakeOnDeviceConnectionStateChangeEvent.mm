@@ -1,20 +1,20 @@
 @interface HMDThreadNetworkWakeOnDeviceConnectionStateChangeEvent
-- (HMDThreadNetworkWakeOnDeviceConnectionStateChangeEvent)initWitheMACAddress:(id)a3 connectionState:(int64_t)a4;
+- (HMDThreadNetworkWakeOnDeviceConnectionStateChangeEvent)initWitheMACAddress:(id)address connectionState:(int64_t)state;
 @end
 
 @implementation HMDThreadNetworkWakeOnDeviceConnectionStateChangeEvent
 
-- (HMDThreadNetworkWakeOnDeviceConnectionStateChangeEvent)initWitheMACAddress:(id)a3 connectionState:(int64_t)a4
+- (HMDThreadNetworkWakeOnDeviceConnectionStateChangeEvent)initWitheMACAddress:(id)address connectionState:(int64_t)state
 {
-  v7 = a3;
+  addressCopy = address;
   v11.receiver = self;
   v11.super_class = HMDThreadNetworkWakeOnDeviceConnectionStateChangeEvent;
   v8 = [(HMDThreadNetworkWakeOnDeviceConnectionStateChangeEvent *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_eMACAddressAsString, a3);
-    v9->_connectionState = a4;
+    objc_storeStrong(&v8->_eMACAddressAsString, address);
+    v9->_connectionState = state;
   }
 
   return v9;

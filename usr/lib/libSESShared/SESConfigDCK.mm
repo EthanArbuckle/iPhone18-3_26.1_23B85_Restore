@@ -1,18 +1,18 @@
 @interface SESConfigDCK
-+ (BOOL)evaluateCondition:(id)a3 operator:(id)a4 value:(id)a5 brand:(id)a6 uuid:(id)a7 deviceClass:(id)a8 productVersion:(id)a9 error:(id *)a10;
-+ (BOOL)evaluateOperator:(id)a3 valueFromDevice:(id)a4 valueFromConfig:(id)a5 error:(id *)a6;
-+ (BOOL)isConfigurationApplicable:(id)a3 brand:(id)a4 uuid:(id)a5 deviceClass:(id)a6 productVersion:(id)a7 error:(id *)a8;
-+ (id)getResolvedSettingsFrom:(id)a3 brand:(id)a4 uuid:(id)a5 deviceClass:(id)a6 productVersion:(id)a7 error:(id *)a8;
-- (BOOL)isDCKConfigurationAvailableFor:(id)a3 error:(id *)a4;
++ (BOOL)evaluateCondition:(id)condition operator:(id)operator value:(id)value brand:(id)brand uuid:(id)uuid deviceClass:(id)class productVersion:(id)version error:(id *)self0;
++ (BOOL)evaluateOperator:(id)operator valueFromDevice:(id)device valueFromConfig:(id)config error:(id *)error;
++ (BOOL)isConfigurationApplicable:(id)applicable brand:(id)brand uuid:(id)uuid deviceClass:(id)class productVersion:(id)version error:(id *)error;
++ (id)getResolvedSettingsFrom:(id)from brand:(id)brand uuid:(id)uuid deviceClass:(id)class productVersion:(id)version error:(id *)error;
+- (BOOL)isDCKConfigurationAvailableFor:(id)for error:(id *)error;
 - (SESConfigDCK)init;
-- (id)BOOLValueForSetting:(unint64_t)a3 manufacturer:(id)a4 brand:(id)a5 uuid:(id)a6 error:(id *)a7;
-- (id)arrayValueForSetting:(unint64_t)a3 manufacturer:(id)a4 brand:(id)a5 uuid:(id)a6 error:(id *)a7;
-- (id)dictValueForSetting:(unint64_t)a3 manufacturer:(id)a4 brand:(id)a5 uuid:(id)a6 error:(id *)a7;
-- (id)getCertificate:(id)a3 manufacturer:(id)a4 environment:(id)a5 region:(id)a6 prodSE:(id)a7 keyID:(id)a8 error:(id *)a9;
-- (id)getSettingForKey:(id)a3 error:(id *)a4;
-- (id)getSettingsFor:(id)a3 brand:(id)a4 uuid:(id)a5 error:(id *)a6;
-- (id)initAtPath:(id)a3 deviceClass:(id)a4 productVersion:(id)a5;
-- (id)intValueForSetting:(unint64_t)a3 manufacturer:(id)a4 brand:(id)a5 uuid:(id)a6 error:(id *)a7;
+- (id)BOOLValueForSetting:(unint64_t)setting manufacturer:(id)manufacturer brand:(id)brand uuid:(id)uuid error:(id *)error;
+- (id)arrayValueForSetting:(unint64_t)setting manufacturer:(id)manufacturer brand:(id)brand uuid:(id)uuid error:(id *)error;
+- (id)dictValueForSetting:(unint64_t)setting manufacturer:(id)manufacturer brand:(id)brand uuid:(id)uuid error:(id *)error;
+- (id)getCertificate:(id)certificate manufacturer:(id)manufacturer environment:(id)environment region:(id)region prodSE:(id)e keyID:(id)d error:(id *)error;
+- (id)getSettingForKey:(id)key error:(id *)error;
+- (id)getSettingsFor:(id)for brand:(id)brand uuid:(id)uuid error:(id *)error;
+- (id)initAtPath:(id)path deviceClass:(id)class productVersion:(id)version;
+- (id)intValueForSetting:(unint64_t)setting manufacturer:(id)manufacturer brand:(id)brand uuid:(id)uuid error:(id *)error;
 @end
 
 @implementation SESConfigDCK
@@ -129,12 +129,12 @@ LABEL_18:
   return v17;
 }
 
-- (id)initAtPath:(id)a3 deviceClass:(id)a4 productVersion:(id)a5
+- (id)initAtPath:(id)path deviceClass:(id)class productVersion:(id)version
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  classCopy = class;
+  versionCopy = version;
   v11 = [(SESConfigDCK *)self init];
   v12 = v11;
   if (!v11)
@@ -142,17 +142,17 @@ LABEL_18:
     goto LABEL_8;
   }
 
-  objc_storeStrong(&v11->_mgDeviceClass, a4);
-  objc_storeStrong(&v12->_mgProductVersion, a5);
+  objc_storeStrong(&v11->_mgDeviceClass, class);
+  objc_storeStrong(&v12->_mgProductVersion, version);
   v27 = 0;
-  [SESConfigUtilities getVersion:v10 error:&v27];
+  [SESConfigUtilities getVersion:versionCopy error:&v27];
   v14 = v13;
   v15 = v27;
   if (!v15)
   {
     v21 = [SESConfig alloc];
     LODWORD(v22) = v14;
-    v23 = [(SESConfig *)v21 initWithDeviceClass:v9 productVersion:v8 path:v22];
+    v23 = [(SESConfig *)v21 initWithDeviceClass:classCopy productVersion:pathCopy path:v22];
     config = v12->_config;
     v12->_config = v23;
 
@@ -180,7 +180,7 @@ LABEL_8:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v29 = v10;
+    v29 = versionCopy;
     v17 = "Invalid ProductVersion value %@";
     v18 = v16;
     v19 = 12;
@@ -197,60 +197,60 @@ LABEL_9:
   return v20;
 }
 
-- (id)getSettingForKey:(id)a3 error:(id *)a4
+- (id)getSettingForKey:(id)key error:(id *)error
 {
   config = self->_config;
   v13 = 0;
-  v6 = a3;
+  keyCopy = key;
   v7 = [(SESConfig *)config getContentsOfAssetFile:@"_settings" component:1 error:&v13];
   v8 = v13;
   v9 = v8;
-  if (a4)
+  if (error)
   {
     v10 = v8;
-    *a4 = v9;
+    *error = v9;
   }
 
-  v11 = [v7 objectForKeyedSubscript:v6];
+  v11 = [v7 objectForKeyedSubscript:keyCopy];
 
   return v11;
 }
 
-- (BOOL)isDCKConfigurationAvailableFor:(id)a3 error:(id *)a4
+- (BOOL)isDCKConfigurationAvailableFor:(id)for error:(id *)error
 {
   config = self->_config;
   v15 = 0;
-  v6 = [(SESConfig *)config getConfigForManufacturer:a3 component:1 error:&v15];
+  v6 = [(SESConfig *)config getConfigForManufacturer:for component:1 error:&v15];
   v7 = v15;
   v8 = v7;
-  if (a4 && v7)
+  if (error && v7)
   {
     v9 = SESDefaultLogObject();
-    *a4 = SESCreateAndLogError(v8, v9, SESErrorDomain, 0, @"Failed to retrieve configuration", v10, v11, v12, v14);
+    *error = SESCreateAndLogError(v8, v9, SESErrorDomain, 0, @"Failed to retrieve configuration", v10, v11, v12, v14);
   }
 
   return v6 != 0;
 }
 
-- (id)getCertificate:(id)a3 manufacturer:(id)a4 environment:(id)a5 region:(id)a6 prodSE:(id)a7 keyID:(id)a8 error:(id *)a9
+- (id)getCertificate:(id)certificate manufacturer:(id)manufacturer environment:(id)environment region:(id)region prodSE:(id)e keyID:(id)d error:(id *)error
 {
   v81 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  certificateCopy = certificate;
+  environmentCopy = environment;
+  regionCopy = region;
+  eCopy = e;
+  dCopy = d;
   config = self->_config;
   v79 = 0;
-  v21 = [(SESConfig *)config getConfigForManufacturer:a4 component:1 error:&v79];
+  v21 = [(SESConfig *)config getConfigForManufacturer:manufacturer component:1 error:&v79];
   v22 = v79;
   if (v22)
   {
     v23 = v22;
-    if (a9)
+    if (error)
     {
       v24 = SESDefaultLogObject();
-      *a9 = SESCreateAndLogError(v23, v24, SESErrorDomain, 0, @"Failed to retrieve configuration", v25, v26, v27, v64);
+      *error = SESCreateAndLogError(v23, v24, SESErrorDomain, 0, @"Failed to retrieve configuration", v25, v26, v27, v64);
     }
 
     goto LABEL_4;
@@ -260,11 +260,11 @@ LABEL_9:
   if (v31)
   {
     v23 = v31;
-    if (a9)
+    if (error)
     {
       v32 = v31;
       v28 = 0;
-      *a9 = v23;
+      *error = v23;
       goto LABEL_5;
     }
 
@@ -274,15 +274,15 @@ LABEL_4:
   }
 
   v33 = [v21 objectForKeyedSubscript:@"Certificates"];
-  v34 = [SESConfigUtilities validateKey:v15 expectedClass:objc_opt_class() dictionary:v33];
+  v34 = [SESConfigUtilities validateKey:certificateCopy expectedClass:objc_opt_class() dictionary:v33];
   if (v34)
   {
     v23 = v34;
-    if (a9)
+    if (error)
     {
       v35 = v34;
       v28 = 0;
-      *a9 = v23;
+      *error = v23;
     }
 
     else
@@ -294,7 +294,7 @@ LABEL_4:
   }
 
   v68 = v33;
-  v36 = [v33 objectForKeyedSubscript:v15];
+  v36 = [v33 objectForKeyedSubscript:certificateCopy];
   v37 = objc_opt_new();
   v75 = 0u;
   v76 = 0u;
@@ -309,8 +309,8 @@ LABEL_4:
   }
 
   v73 = *v76;
-  v67 = v15;
-  v70 = v19;
+  v67 = certificateCopy;
+  v70 = dCopy;
   while (2)
   {
     for (i = 0; i != v72; ++i)
@@ -324,17 +324,17 @@ LABEL_4:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a9)
+        if (error)
         {
           v54 = SESDefaultLogObject();
-          *a9 = SESCreateAndLogError(0, v54, SESErrorDomain, 0, @"Wrong class for certificate", v55, v56, v57, v64);
+          *error = SESCreateAndLogError(0, v54, SESErrorDomain, 0, @"Wrong class for certificate", v55, v56, v57, v64);
         }
 
         v23 = 0;
         goto LABEL_45;
       }
 
-      if (!v16)
+      if (!environmentCopy)
       {
         goto LABEL_57;
       }
@@ -346,12 +346,12 @@ LABEL_4:
       }
 
       v41 = [v39 objectForKeyedSubscript:@"Environment"];
-      v42 = [v16 isEqualToString:v41];
+      v42 = [environmentCopy isEqualToString:v41];
 
       if (v42)
       {
 LABEL_57:
-        if (!v17)
+        if (!regionCopy)
         {
           goto LABEL_26;
         }
@@ -363,12 +363,12 @@ LABEL_57:
         }
 
         v43 = [v39 objectForKeyedSubscript:@"Region"];
-        v44 = [v17 isEqualToString:v43];
+        v44 = [regionCopy isEqualToString:v43];
 
         if (v44)
         {
 LABEL_26:
-          if (!v18)
+          if (!eCopy)
           {
             goto LABEL_29;
           }
@@ -379,11 +379,11 @@ LABEL_26:
             goto LABEL_40;
           }
 
-          v45 = [v18 BOOLValue];
+          bOOLValue = [eCopy BOOLValue];
           v46 = [v39 objectForKeyedSubscript:@"ProdSE"];
-          v47 = [v46 BOOLValue];
+          bOOLValue2 = [v46 BOOLValue];
 
-          if (v45 == v47)
+          if (bOOLValue == bOOLValue2)
           {
 LABEL_29:
             if (!v70)
@@ -409,15 +409,15 @@ LABEL_32:
 
 LABEL_40:
             v23 = v40;
-            if (a9)
+            if (error)
             {
               v53 = v40;
               v28 = 0;
-              *a9 = v23;
+              *error = v23;
 LABEL_46:
-              v19 = v70;
-              v50 = obj;
-              v15 = v67;
+              dCopy = v70;
+              firstObject = obj;
+              certificateCopy = v67;
               goto LABEL_51;
             }
 
@@ -429,9 +429,9 @@ LABEL_45:
       }
     }
 
-    v15 = v67;
+    certificateCopy = v67;
     v37 = v69;
-    v19 = v70;
+    dCopy = v70;
     v72 = [obj countByEnumeratingWithState:&v75 objects:v80 count:16];
     if (v72)
     {
@@ -445,16 +445,16 @@ LABEL_35:
 
   if ([v37 count] == 1)
   {
-    v50 = [v37 firstObject];
-    v51 = [SESConfigUtilities validateKey:@"Certificate" expectedClass:objc_opt_class() dictionary:v50];
+    firstObject = [v37 firstObject];
+    v51 = [SESConfigUtilities validateKey:@"Certificate" expectedClass:objc_opt_class() dictionary:firstObject];
     v23 = v51;
     if (v51)
     {
-      if (a9)
+      if (error)
       {
         v52 = v51;
         v28 = 0;
-        *a9 = v23;
+        *error = v23;
         goto LABEL_51;
       }
 
@@ -464,7 +464,7 @@ LABEL_49:
 
     else
     {
-      v28 = [v50 objectForKeyedSubscript:@"Certificate"];
+      v28 = [firstObject objectForKeyedSubscript:@"Certificate"];
     }
 
 LABEL_51:
@@ -472,18 +472,18 @@ LABEL_51:
 
   else
   {
-    if (a9)
+    if (error)
     {
-      v50 = SESDefaultLogObject();
+      firstObject = SESDefaultLogObject();
       v74 = SESErrorDomain;
-      v58 = v19;
-      v59 = v15;
+      v58 = dCopy;
+      v59 = certificateCopy;
       v60 = [v37 count];
-      v66 = [v58 base64];
+      base64 = [v58 base64];
       v65 = v60;
-      v15 = v59;
-      v19 = v58;
-      *a9 = SESCreateAndLogError(0, v50, v74, 0, @"%lu matches for type %@ environment %@ region %@ prodSE %@ keyID %@", v61, v62, v63, v65);
+      certificateCopy = v59;
+      dCopy = v58;
+      *error = SESCreateAndLogError(0, firstObject, v74, 0, @"%lu matches for type %@ environment %@ region %@ prodSE %@ keyID %@", v61, v62, v63, v65);
 
       v23 = 0;
       goto LABEL_49;
@@ -503,32 +503,32 @@ LABEL_5:
   return v28;
 }
 
-- (id)BOOLValueForSetting:(unint64_t)a3 manufacturer:(id)a4 brand:(id)a5 uuid:(id)a6 error:(id *)a7
+- (id)BOOLValueForSetting:(unint64_t)setting manufacturer:(id)manufacturer brand:(id)brand uuid:(id)uuid error:(id *)error
 {
   v20 = 0;
-  v9 = [(SESConfigDCK *)self getSettingsFor:a4 brand:a5 uuid:a6 error:&v20];
+  v9 = [(SESConfigDCK *)self getSettingsFor:manufacturer brand:brand uuid:uuid error:&v20];
   v10 = v20;
   if (v10)
   {
     v11 = v10;
-    if (a7)
+    if (error)
     {
 LABEL_3:
       v12 = v11;
       v13 = 0;
-      *a7 = v11;
+      *error = v11;
       goto LABEL_12;
     }
 
     goto LABEL_11;
   }
 
-  if (a3 >= 0xB)
+  if (setting >= 0xB)
   {
-    if (a7)
+    if (error)
     {
       v15 = SESDefaultLogObject();
-      *a7 = SESCreateAndLogError(0, v15, SESErrorDomain, 1, @"Invalid BOOL setting input %lu", v16, v17, v18, a3);
+      *error = SESCreateAndLogError(0, v15, SESErrorDomain, 1, @"Invalid BOOL setting input %lu", v16, v17, v18, setting);
     }
 
     v11 = 0;
@@ -537,11 +537,11 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v14 = off_1E86FFBA0[a3];
+  v14 = off_1E86FFBA0[setting];
   v11 = [SESConfigUtilities validateKey:v14 expectedClass:objc_opt_class() dictionary:v9];
   if (v11)
   {
-    if (a7)
+    if (error)
     {
       goto LABEL_3;
     }
@@ -555,27 +555,27 @@ LABEL_12:
   return v13;
 }
 
-- (id)intValueForSetting:(unint64_t)a3 manufacturer:(id)a4 brand:(id)a5 uuid:(id)a6 error:(id *)a7
+- (id)intValueForSetting:(unint64_t)setting manufacturer:(id)manufacturer brand:(id)brand uuid:(id)uuid error:(id *)error
 {
   v25 = 0;
-  v10 = [(SESConfigDCK *)self getSettingsFor:a4 brand:a5 uuid:a6 error:&v25];
+  v10 = [(SESConfigDCK *)self getSettingsFor:manufacturer brand:brand uuid:uuid error:&v25];
   v11 = v25;
   if (v11)
   {
     v12 = v11;
-    if (a7)
+    if (error)
     {
 LABEL_3:
       v13 = v12;
       v14 = 0;
-      *a7 = v12;
+      *error = v12;
       goto LABEL_24;
     }
 
     goto LABEL_23;
   }
 
-  if (a3 == 1)
+  if (setting == 1)
   {
     if ([@"iPhone" isEqualToString:self->_mgDeviceClass])
     {
@@ -592,12 +592,12 @@ LABEL_3:
     goto LABEL_20;
   }
 
-  if (a3)
+  if (setting)
   {
-    if (a7)
+    if (error)
     {
       v16 = SESDefaultLogObject();
-      *a7 = SESCreateAndLogError(0, v16, SESErrorDomain, 1, @"Invalid int setting input %lu", v17, v18, v19, a3);
+      *error = SESCreateAndLogError(0, v16, SESErrorDomain, 1, @"Invalid int setting input %lu", v17, v18, v19, setting);
     }
 
     goto LABEL_22;
@@ -612,10 +612,10 @@ LABEL_3:
     }
 
 LABEL_20:
-    if (a7)
+    if (error)
     {
       v20 = SESDefaultLogObject();
-      *a7 = SESCreateAndLogError(0, v20, SESErrorDomain, 1, @"Invalid DeviceClass %@", v21, v22, v23, self->_mgDeviceClass);
+      *error = SESCreateAndLogError(0, v20, SESErrorDomain, 1, @"Invalid DeviceClass %@", v21, v22, v23, self->_mgDeviceClass);
     }
 
 LABEL_22:
@@ -632,7 +632,7 @@ LABEL_16:
     goto LABEL_24;
   }
 
-  if (a7)
+  if (error)
   {
     goto LABEL_3;
   }
@@ -644,32 +644,32 @@ LABEL_24:
   return v14;
 }
 
-- (id)arrayValueForSetting:(unint64_t)a3 manufacturer:(id)a4 brand:(id)a5 uuid:(id)a6 error:(id *)a7
+- (id)arrayValueForSetting:(unint64_t)setting manufacturer:(id)manufacturer brand:(id)brand uuid:(id)uuid error:(id *)error
 {
   v19 = 0;
-  v9 = [(SESConfigDCK *)self getSettingsFor:a4 brand:a5 uuid:a6 error:&v19];
+  v9 = [(SESConfigDCK *)self getSettingsFor:manufacturer brand:brand uuid:uuid error:&v19];
   v10 = v19;
   if (v10)
   {
     v11 = v10;
-    if (a7)
+    if (error)
     {
 LABEL_3:
       v12 = v11;
       v13 = 0;
-      *a7 = v11;
+      *error = v11;
       goto LABEL_9;
     }
 
     goto LABEL_8;
   }
 
-  if (a3)
+  if (setting)
   {
-    if (a7)
+    if (error)
     {
       v14 = SESDefaultLogObject();
-      *a7 = SESCreateAndLogError(0, v14, SESErrorDomain, 1, @"Invalid array setting input %lu", v15, v16, v17, a3);
+      *error = SESCreateAndLogError(0, v14, SESErrorDomain, 1, @"Invalid array setting input %lu", v15, v16, v17, setting);
     }
 
     v11 = 0;
@@ -681,7 +681,7 @@ LABEL_8:
   v11 = [SESConfigUtilities validateKey:@"RKEDisabledFunctions" expectedClass:objc_opt_class() dictionary:v9];
   if (v11)
   {
-    if (a7)
+    if (error)
     {
       goto LABEL_3;
     }
@@ -695,32 +695,32 @@ LABEL_9:
   return v13;
 }
 
-- (id)dictValueForSetting:(unint64_t)a3 manufacturer:(id)a4 brand:(id)a5 uuid:(id)a6 error:(id *)a7
+- (id)dictValueForSetting:(unint64_t)setting manufacturer:(id)manufacturer brand:(id)brand uuid:(id)uuid error:(id *)error
 {
   v19 = 0;
-  v9 = [(SESConfigDCK *)self getSettingsFor:a4 brand:a5 uuid:a6 error:&v19];
+  v9 = [(SESConfigDCK *)self getSettingsFor:manufacturer brand:brand uuid:uuid error:&v19];
   v10 = v19;
   if (v10)
   {
     v11 = v10;
-    if (a7)
+    if (error)
     {
 LABEL_3:
       v12 = v11;
       v13 = 0;
-      *a7 = v11;
+      *error = v11;
       goto LABEL_9;
     }
 
     goto LABEL_8;
   }
 
-  if (a3)
+  if (setting)
   {
-    if (a7)
+    if (error)
     {
       v14 = SESDefaultLogObject();
-      *a7 = SESCreateAndLogError(0, v14, SESErrorDomain, 1, @"Invalid dict setting input %lu", v15, v16, v17, a3);
+      *error = SESCreateAndLogError(0, v14, SESErrorDomain, 1, @"Invalid dict setting input %lu", v15, v16, v17, setting);
     }
 
     v11 = 0;
@@ -732,7 +732,7 @@ LABEL_8:
   v11 = [SESConfigUtilities validateKey:@"RKETimeout" expectedClass:objc_opt_class() dictionary:v9];
   if (v11)
   {
-    if (a7)
+    if (error)
     {
       goto LABEL_3;
     }
@@ -746,28 +746,28 @@ LABEL_9:
   return v13;
 }
 
-- (id)getSettingsFor:(id)a3 brand:(id)a4 uuid:(id)a5 error:(id *)a6
+- (id)getSettingsFor:(id)for brand:(id)brand uuid:(id)uuid error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  obj = a5;
-  v11 = a5;
+  forCopy = for;
+  brandCopy = brand;
+  obj = uuid;
+  uuidCopy = uuid;
   vehicleBrand = self->_vehicleBrand;
-  v13 = (v10 | vehicleBrand) == 0;
-  if (v10 && vehicleBrand)
+  v13 = (brandCopy | vehicleBrand) == 0;
+  if (brandCopy && vehicleBrand)
   {
-    v13 = [v10 isEqualToString:?];
+    v13 = [brandCopy isEqualToString:?];
   }
 
   vehicleUUID = self->_vehicleUUID;
-  v15 = (v11 | vehicleUUID) == 0;
-  if (v11 && vehicleUUID)
+  v15 = (uuidCopy | vehicleUUID) == 0;
+  if (uuidCopy && vehicleUUID)
   {
-    v15 = [v11 isEqualToData:?];
+    v15 = [uuidCopy isEqualToData:?];
   }
 
-  v16 = [(SESConfig *)self->_config cachedFileName];
-  v17 = [v16 isEqualToString:v9] & v13;
+  cachedFileName = [(SESConfig *)self->_config cachedFileName];
+  v17 = [cachedFileName isEqualToString:forCopy] & v13;
 
   if (v17 == 1 && v15 != 0)
   {
@@ -777,7 +777,7 @@ LABEL_9:
 
   config = self->_config;
   v38 = 0;
-  v20 = [(SESConfig *)config getConfigForManufacturer:v9 component:1 error:&v38];
+  v20 = [(SESConfig *)config getConfigForManufacturer:forCopy component:1 error:&v38];
   v21 = v38;
   if (!v21)
   {
@@ -785,16 +785,16 @@ LABEL_9:
     mgProductVersion = self->_mgProductVersion;
     v37 = 0;
     v34 = v20;
-    v23 = [SESConfigDCK getResolvedSettingsFrom:v20 brand:v10 uuid:v11 deviceClass:mgDeviceClass productVersion:mgProductVersion error:&v37];
+    v23 = [SESConfigDCK getResolvedSettingsFrom:v20 brand:brandCopy uuid:uuidCopy deviceClass:mgDeviceClass productVersion:mgProductVersion error:&v37];
     v30 = v37;
     v22 = v30;
     if (v30)
     {
-      if (a6)
+      if (error)
       {
         v31 = v30;
         v27 = 0;
-        *a6 = v22;
+        *error = v22;
       }
 
       else
@@ -805,7 +805,7 @@ LABEL_9:
 
     else
     {
-      objc_storeStrong(&self->_vehicleBrand, a4);
+      objc_storeStrong(&self->_vehicleBrand, brand);
       objc_storeStrong(&self->_vehicleUUID, obj);
       objc_storeStrong(&self->_settings, v23);
       v27 = self->_settings;
@@ -815,12 +815,12 @@ LABEL_9:
   }
 
   v22 = v21;
-  if (a6)
+  if (error)
   {
     v34 = v20;
     v23 = SESDefaultLogObject();
     SESCreateAndLogError(v22, v23, SESErrorDomain, 0, @"Failed to retrieve configuration", v24, v25, v26, v33);
-    *a6 = v27 = 0;
+    *error = v27 = 0;
 LABEL_21:
 
     v20 = v34;
@@ -835,42 +835,42 @@ LABEL_23:
   return v27;
 }
 
-+ (id)getResolvedSettingsFrom:(id)a3 brand:(id)a4 uuid:(id)a5 deviceClass:(id)a6 productVersion:(id)a7 error:(id *)a8
++ (id)getResolvedSettingsFrom:(id)from brand:(id)brand uuid:(id)uuid deviceClass:(id)class productVersion:(id)version error:(id *)error
 {
   v82 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  fromCopy = from;
+  brandCopy = brand;
+  uuidCopy = uuid;
+  classCopy = class;
+  versionCopy = version;
   v17 = SESDefaultLogObject();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v18 = [v12 objectForKeyedSubscript:@"Manufacturer"];
-    v19 = [v14 base64];
+    v18 = [fromCopy objectForKeyedSubscript:@"Manufacturer"];
+    base64 = [uuidCopy base64];
     *buf = 138413314;
     v73 = v18;
     v74 = 2112;
-    v75 = v13;
+    v75 = brandCopy;
     v76 = 2112;
-    v77 = v19;
+    v77 = base64;
     v78 = 2112;
-    v79 = v15;
+    v79 = classCopy;
     v80 = 2112;
-    v81 = v16;
+    v81 = versionCopy;
     _os_log_impl(&dword_1E0FCB000, v17, OS_LOG_TYPE_INFO, "Resolving settings for manufacturer %@ brand %@ uuid %@ device class %@ product version %@", buf, 0x34u);
   }
 
   v20 = 0x1E695D000uLL;
-  v21 = [SESConfigUtilities validateKey:@"DefaultSettings" expectedClass:objc_opt_class() dictionary:v12];
+  v21 = [SESConfigUtilities validateKey:@"DefaultSettings" expectedClass:objc_opt_class() dictionary:fromCopy];
   if (v21)
   {
     v22 = v21;
-    if (a8)
+    if (error)
     {
       v23 = v21;
       v24 = 0;
-      *a8 = v22;
+      *error = v22;
     }
 
     else
@@ -881,7 +881,7 @@ LABEL_23:
     goto LABEL_45;
   }
 
-  v25 = [v12 objectForKeyedSubscript:@"DefaultSettings"];
+  v25 = [fromCopy objectForKeyedSubscript:@"DefaultSettings"];
   v26 = [v25 mutableCopy];
 
   v27 = SESDefaultLogObject();
@@ -894,15 +894,15 @@ LABEL_23:
 
   v58 = v26;
 
-  v28 = [SESConfigUtilities validateKey:@"Configurations" expectedClass:objc_opt_class() dictionary:v12];
+  v28 = [SESConfigUtilities validateKey:@"Configurations" expectedClass:objc_opt_class() dictionary:fromCopy];
   v22 = v28;
   if (v28)
   {
-    if (a8)
+    if (error)
     {
       v29 = v28;
       v24 = 0;
-      *a8 = v22;
+      *error = v22;
     }
 
     else
@@ -913,9 +913,9 @@ LABEL_23:
     goto LABEL_44;
   }
 
-  v60 = v15;
-  v61 = v14;
-  [v12 objectForKeyedSubscript:@"Configurations"];
+  v60 = classCopy;
+  v61 = uuidCopy;
+  [fromCopy objectForKeyedSubscript:@"Configurations"];
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
@@ -927,7 +927,7 @@ LABEL_40:
     v40 = obj;
 
     v51 = SESDefaultLogObject();
-    v15 = v60;
+    classCopy = v60;
     if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
@@ -936,13 +936,13 @@ LABEL_40:
     }
 
     v24 = v26;
-    v14 = v61;
+    uuidCopy = v61;
     goto LABEL_43;
   }
 
   v57 = *v68;
-  v62 = v16;
-  v59 = v13;
+  v62 = versionCopy;
+  v59 = brandCopy;
 LABEL_14:
   v30 = 0;
   while (1)
@@ -957,11 +957,11 @@ LABEL_14:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v13 = v59;
-      v15 = v60;
-      v39 = a8;
+      brandCopy = v59;
+      classCopy = v60;
+      errorCopy2 = error;
       v40 = obj;
-      if (!a8)
+      if (!error)
       {
 LABEL_36:
 
@@ -978,32 +978,32 @@ LABEL_36:
     if (v33)
     {
       v41 = v33;
-      v39 = a8;
-      if (!a8)
+      errorCopy2 = error;
+      if (!error)
       {
-        v13 = v59;
-        v15 = v60;
+        brandCopy = v59;
+        classCopy = v60;
         v40 = obj;
         goto LABEL_35;
       }
 
       v45 = v33;
-      v13 = v59;
-      v15 = v60;
+      brandCopy = v59;
+      classCopy = v60;
       v40 = obj;
 LABEL_29:
-      *v39 = v45;
+      *errorCopy2 = v45;
 LABEL_35:
 
-      v16 = v62;
+      versionCopy = v62;
       goto LABEL_36;
     }
 
-    v34 = v12;
+    v34 = fromCopy;
     v35 = v20;
     v36 = [v31 objectForKeyedSubscript:@"Conditions"];
     v66 = 0;
-    v37 = [SESConfigDCK isConfigurationApplicable:v36 brand:v59 uuid:v14 deviceClass:v60 productVersion:v62 error:&v66];
+    v37 = [SESConfigDCK isConfigurationApplicable:v36 brand:v59 uuid:uuidCopy deviceClass:v60 productVersion:v62 error:&v66];
     v38 = v66;
     if (v38)
     {
@@ -1016,12 +1016,12 @@ LABEL_35:
     }
 
     ++v30;
-    v16 = v62;
+    versionCopy = v62;
     v20 = v35;
-    v12 = v34;
+    fromCopy = v34;
     if (v56 == v30)
     {
-      v13 = v59;
+      brandCopy = v59;
       v56 = [obj countByEnumeratingWithState:&v67 objects:v71 count:16];
       if (v56)
       {
@@ -1038,8 +1038,8 @@ LABEL_35:
   {
     v49 = [v31 objectForKeyedSubscript:@"Settings"];
     v50 = SESDefaultLogObject();
-    v13 = v59;
-    v12 = v34;
+    brandCopy = v59;
+    fromCopy = v34;
     if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
@@ -1054,24 +1054,24 @@ LABEL_35:
     v65 = v26;
     [v49 enumerateKeysAndObjectsUsingBlock:v64];
 
-    v16 = v62;
+    versionCopy = v62;
     goto LABEL_40;
   }
 
 LABEL_31:
   v47 = v38;
-  v13 = v59;
+  brandCopy = v59;
   v40 = obj;
-  v12 = v34;
-  if (a8)
+  fromCopy = v34;
+  if (error)
   {
     v48 = v38;
-    *a8 = v47;
+    *error = v47;
   }
 
   v24 = 0;
-  v15 = v60;
-  v16 = v62;
+  classCopy = v60;
+  versionCopy = v62;
 LABEL_43:
 
 LABEL_44:
@@ -1112,23 +1112,23 @@ void __84__SESConfigDCK_getResolvedSettingsFrom_brand_uuid_deviceClass_productVe
   }
 }
 
-+ (BOOL)isConfigurationApplicable:(id)a3 brand:(id)a4 uuid:(id)a5 deviceClass:(id)a6 productVersion:(id)a7 error:(id *)a8
++ (BOOL)isConfigurationApplicable:(id)applicable brand:(id)brand uuid:(id)uuid deviceClass:(id)class productVersion:(id)version error:(id *)error
 {
   v48 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v42 = a4;
-  v41 = a5;
-  v40 = a6;
-  v39 = a7;
+  applicableCopy = applicable;
+  brandCopy = brand;
+  uuidCopy = uuid;
+  classCopy = class;
+  versionCopy = version;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v13;
+  obj = applicableCopy;
   v37 = [obj countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (!v37)
   {
-    v26 = 1;
+    errorCopy = 1;
     goto LABEL_24;
   }
 
@@ -1148,14 +1148,14 @@ void __84__SESConfigDCK_getResolvedSettingsFrom_brand_uuid_deviceClass_productVe
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v26 = a8;
-        if (!a8)
+        errorCopy = error;
+        if (!error)
         {
           goto LABEL_24;
         }
 
         v27 = SESDefaultLogObject();
-        *a8 = SESCreateAndLogError(0, v27, SESErrorDomain, 0, @"Wrong class for condition", v29, v30, v31, v35);
+        *error = SESCreateAndLogError(0, v27, SESErrorDomain, 0, @"Wrong class for condition", v29, v30, v31, v35);
         goto LABEL_22;
       }
 
@@ -1163,10 +1163,10 @@ void __84__SESConfigDCK_getResolvedSettingsFrom_brand_uuid_deviceClass_productVe
       if (v18 || ([*(v14 + 2360) validateKey:@"Operator" expectedClass:objc_opt_class() dictionary:v17], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v27 = v18;
-        if (a8)
+        if (error)
         {
           v28 = v18;
-          *a8 = v27;
+          *error = v27;
         }
 
         goto LABEL_22;
@@ -1177,21 +1177,21 @@ void __84__SESConfigDCK_getResolvedSettingsFrom_brand_uuid_deviceClass_productVe
       v21 = [v17 objectForKeyedSubscript:v15];
       v22 = [v17 objectForKeyedSubscript:@"Operator"];
       v23 = [v17 objectForKeyedSubscript:@"Value"];
-      v35 = v39;
-      v24 = [SESConfigDCK evaluateCondition:"evaluateCondition:operator:value:brand:uuid:deviceClass:productVersion:error:" operator:v21 value:v22 brand:v23 uuid:v42 deviceClass:v41 productVersion:v40 error:?];
+      v35 = versionCopy;
+      v24 = [SESConfigDCK evaluateCondition:"evaluateCondition:operator:value:brand:uuid:deviceClass:productVersion:error:" operator:v21 value:v22 brand:v23 uuid:brandCopy deviceClass:uuidCopy productVersion:classCopy error:?];
       v25 = 0;
       if (v25)
       {
         v27 = v25;
-        if (a8)
+        if (error)
         {
           v32 = v25;
-          *a8 = v27;
+          *error = v27;
         }
 
 LABEL_22:
 LABEL_23:
-        v26 = 0;
+        errorCopy = 0;
         goto LABEL_24;
       }
 
@@ -1204,7 +1204,7 @@ LABEL_23:
       v15 = v20;
     }
 
-    v26 = 1;
+    errorCopy = 1;
     v37 = [obj countByEnumeratingWithState:&v43 objects:v47 count:16];
     if (v37)
     {
@@ -1217,107 +1217,107 @@ LABEL_23:
 LABEL_24:
 
   v33 = *MEMORY[0x1E69E9840];
-  return v26;
+  return errorCopy;
 }
 
-+ (BOOL)evaluateCondition:(id)a3 operator:(id)a4 value:(id)a5 brand:(id)a6 uuid:(id)a7 deviceClass:(id)a8 productVersion:(id)a9 error:(id *)a10
++ (BOOL)evaluateCondition:(id)condition operator:(id)operator value:(id)value brand:(id)brand uuid:(id)uuid deviceClass:(id)class productVersion:(id)version error:(id *)self0
 {
-  v15 = a10;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  if (![v16 isEqualToString:@"DeviceClass"])
+  errorCopy = error;
+  conditionCopy = condition;
+  operatorCopy = operator;
+  valueCopy = value;
+  brandCopy = brand;
+  uuidCopy = uuid;
+  classCopy = class;
+  versionCopy = version;
+  if (![conditionCopy isEqualToString:@"DeviceClass"])
   {
-    if ([v16 isEqualToString:@"DeviceProductVersion"])
+    if ([conditionCopy isEqualToString:@"DeviceProductVersion"])
     {
-      if ([&unk_1F5BEB900 containsObject:v17])
+      if ([&unk_1F5BEB900 containsObject:operatorCopy])
       {
-        v23 = v17;
-        v24 = v22;
+        v23 = operatorCopy;
+        v24 = versionCopy;
         goto LABEL_13;
       }
     }
 
-    else if ([v16 isEqualToString:@"VehicleBrand"])
+    else if ([conditionCopy isEqualToString:@"VehicleBrand"])
     {
-      if ([&unk_1F5BEB918 containsObject:v17])
+      if ([&unk_1F5BEB918 containsObject:operatorCopy])
       {
-        v23 = v17;
-        v24 = v19;
+        v23 = operatorCopy;
+        v24 = brandCopy;
         goto LABEL_13;
       }
     }
 
     else
     {
-      if (![v16 isEqualToString:@"VehicleUUID"])
+      if (![conditionCopy isEqualToString:@"VehicleUUID"])
       {
-        if (!a10)
+        if (!error)
         {
           goto LABEL_17;
         }
 
         v25 = SESDefaultLogObject();
-        SESCreateAndLogError(0, v25, SESErrorDomain, 1, @"Invalid key for condition %@", v30, v31, v32, v16);
+        SESCreateAndLogError(0, v25, SESErrorDomain, 1, @"Invalid key for condition %@", v30, v31, v32, conditionCopy);
         goto LABEL_16;
       }
 
-      if ([&unk_1F5BEB930 containsObject:v17])
+      if ([&unk_1F5BEB930 containsObject:operatorCopy])
       {
-        v23 = v17;
-        v24 = v20;
+        v23 = operatorCopy;
+        v24 = uuidCopy;
         goto LABEL_13;
       }
     }
 
 LABEL_14:
-    if (!a10)
+    if (!error)
     {
       goto LABEL_17;
     }
 
     v25 = SESDefaultLogObject();
-    SESCreateAndLogError(0, v25, SESErrorDomain, 1, @"Invalid operator %@ for key %@", v26, v27, v28, v17);
-    *a10 = LABEL_16:;
+    SESCreateAndLogError(0, v25, SESErrorDomain, 1, @"Invalid operator %@ for key %@", v26, v27, v28, operatorCopy);
+    *error = LABEL_16:;
 
-    v15 = 0;
+    errorCopy = 0;
     goto LABEL_17;
   }
 
-  if (([&unk_1F5BEB8E8 containsObject:v17] & 1) == 0)
+  if (([&unk_1F5BEB8E8 containsObject:operatorCopy] & 1) == 0)
   {
     goto LABEL_14;
   }
 
-  v23 = v17;
-  v24 = v21;
+  v23 = operatorCopy;
+  v24 = classCopy;
 LABEL_13:
-  v15 = [SESConfigDCK evaluateOperator:v23 valueFromDevice:v24 valueFromConfig:v18 error:a10];
+  errorCopy = [SESConfigDCK evaluateOperator:v23 valueFromDevice:v24 valueFromConfig:valueCopy error:error];
 LABEL_17:
 
-  return v15;
+  return errorCopy;
 }
 
-+ (BOOL)evaluateOperator:(id)a3 valueFromDevice:(id)a4 valueFromConfig:(id)a5 error:(id *)a6
++ (BOOL)evaluateOperator:(id)operator valueFromDevice:(id)device valueFromConfig:(id)config error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v9 isEqualToString:@"Eq"])
+  operatorCopy = operator;
+  deviceCopy = device;
+  configCopy = config;
+  if ([operatorCopy isEqualToString:@"Eq"])
   {
-    v12 = [v11 isEqual:v10];
+    v12 = [configCopy isEqual:deviceCopy];
 LABEL_3:
     v13 = v12;
     goto LABEL_23;
   }
 
-  if ([v9 isEqualToString:@"In"])
+  if ([operatorCopy isEqualToString:@"In"])
   {
-    if (!v10)
+    if (!deviceCopy)
     {
 LABEL_22:
       v13 = 0;
@@ -1327,28 +1327,28 @@ LABEL_22:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v11 containsObject:v10];
+      v12 = [configCopy containsObject:deviceCopy];
       goto LABEL_3;
     }
 
 LABEL_20:
-    if (a6)
+    if (error)
     {
       v20 = SESDefaultLogObject();
-      *a6 = SESCreateAndLogError(0, v20, SESErrorDomain, 0, @"Invalid value %@", v21, v22, v23, v11);
+      *error = SESCreateAndLogError(0, v20, SESErrorDomain, 0, @"Invalid value %@", v21, v22, v23, configCopy);
     }
 
     goto LABEL_22;
   }
 
-  if ([v9 isEqualToString:@"Present"])
+  if ([operatorCopy isEqualToString:@"Present"])
   {
-    v13 = v10 != 0;
+    v13 = deviceCopy != 0;
     goto LABEL_23;
   }
 
-  v14 = [v9 isEqualToString:@"Absent"];
-  if (v10)
+  v14 = [operatorCopy isEqualToString:@"Absent"];
+  if (deviceCopy)
   {
     v13 = 0;
   }
@@ -1358,7 +1358,7 @@ LABEL_20:
     v13 = v14;
   }
 
-  if ((v14 & 1) == 0 && v10)
+  if ((v14 & 1) == 0 && deviceCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1367,16 +1367,16 @@ LABEL_20:
     }
 
     v31 = 0;
-    [SESConfigUtilities getVersion:v10 error:&v31];
+    [SESConfigUtilities getVersion:deviceCopy error:&v31];
     v16 = v15;
     v17 = v31;
-    if (v17 || (v30 = 0, [SESConfigUtilities getVersion:v11 error:&v30], v19 = v18, (v17 = v30) != 0))
+    if (v17 || (v30 = 0, [SESConfigUtilities getVersion:configCopy error:&v30], v19 = v18, (v17 = v30) != 0))
     {
-      if (a6)
+      if (error)
       {
         v17 = v17;
         v13 = 0;
-        *a6 = v17;
+        *error = v17;
 LABEL_36:
 
         goto LABEL_23;
@@ -1385,38 +1385,38 @@ LABEL_36:
 
     else
     {
-      if ([v9 isEqualToString:@"GT"])
+      if ([operatorCopy isEqualToString:@"GT"])
       {
         v17 = 0;
         v13 = v16 > v19;
         goto LABEL_36;
       }
 
-      if ([v9 isEqualToString:@"GE"])
+      if ([operatorCopy isEqualToString:@"GE"])
       {
         v17 = 0;
         v13 = v16 >= v19;
         goto LABEL_36;
       }
 
-      if ([v9 isEqualToString:@"LT"])
+      if ([operatorCopy isEqualToString:@"LT"])
       {
         v17 = 0;
         v13 = v16 < v19;
         goto LABEL_36;
       }
 
-      if ([v9 isEqualToString:@"LE"])
+      if ([operatorCopy isEqualToString:@"LE"])
       {
         v17 = 0;
         v13 = v16 <= v19;
         goto LABEL_36;
       }
 
-      if (a6)
+      if (error)
       {
         v25 = SESDefaultLogObject();
-        *a6 = SESCreateAndLogError(0, v25, SESErrorDomain, 0, @"Invalid condition", v26, v27, v28, v29);
+        *error = SESCreateAndLogError(0, v25, SESErrorDomain, 0, @"Invalid condition", v26, v27, v28, v29);
       }
 
       v17 = 0;

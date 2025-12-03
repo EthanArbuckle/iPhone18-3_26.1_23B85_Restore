@@ -6,14 +6,14 @@
 
 - (BOOL)siriui_isVisible
 {
-  if (![a1 isViewLoaded])
+  if (![self isViewLoaded])
   {
     return 0;
   }
 
-  v2 = [a1 view];
-  v3 = [v2 window];
-  v4 = v3 != 0;
+  view = [self view];
+  window = [view window];
+  v4 = window != 0;
 
   return v4;
 }

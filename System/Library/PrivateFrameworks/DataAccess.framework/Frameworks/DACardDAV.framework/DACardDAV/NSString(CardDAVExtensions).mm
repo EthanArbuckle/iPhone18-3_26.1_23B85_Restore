@@ -6,18 +6,18 @@
 
 - (id)prettyStringForDisplayName
 {
-  v1 = a1;
-  v2 = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
-  v3 = [v1 rangeOfCharacterFromSet:v2];
+  selfCopy = self;
+  uppercaseLetterCharacterSet = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
+  v3 = [selfCopy rangeOfCharacterFromSet:uppercaseLetterCharacterSet];
 
   if (v3 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [v1 capitalizedString];
+    capitalizedString = [selfCopy capitalizedString];
 
-    v1 = v4;
+    selfCopy = capitalizedString;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 @end

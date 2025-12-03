@@ -1,59 +1,59 @@
 @interface _SFPBColorBarCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBColorBarCardSection)initWithDictionary:(id)a3;
-- (_SFPBColorBarCardSection)initWithFacade:(id)a3;
-- (_SFPBColorBarCardSection)initWithJSON:(id)a3;
+- (_SFPBColorBarCardSection)initWithDictionary:(id)dictionary;
+- (_SFPBColorBarCardSection)initWithFacade:(id)facade;
+- (_SFPBColorBarCardSection)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBColorBarCardSection
 
-- (_SFPBColorBarCardSection)initWithFacade:(id)a3
+- (_SFPBColorBarCardSection)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBColorBarCardSection *)self init];
   if (v5)
   {
-    v6 = [v4 barColor];
+    barColor = [facadeCopy barColor];
 
-    if (v6)
+    if (barColor)
     {
       v7 = [_SFPBColor alloc];
-      v8 = [v4 barColor];
-      v9 = [(_SFPBColor *)v7 initWithFacade:v8];
+      barColor2 = [facadeCopy barColor];
+      v9 = [(_SFPBColor *)v7 initWithFacade:barColor2];
       [(_SFPBColorBarCardSection *)v5 setBarColor:v9];
     }
 
-    v10 = [v4 topText];
+    topText = [facadeCopy topText];
 
-    if (v10)
+    if (topText)
     {
       v11 = [_SFPBRichText alloc];
-      v12 = [v4 topText];
-      v13 = [(_SFPBRichText *)v11 initWithFacade:v12];
+      topText2 = [facadeCopy topText];
+      v13 = [(_SFPBRichText *)v11 initWithFacade:topText2];
       [(_SFPBColorBarCardSection *)v5 setTopText:v13];
     }
 
-    v14 = [v4 title];
+    title = [facadeCopy title];
 
-    if (v14)
+    if (title)
     {
       v15 = [_SFPBRichText alloc];
-      v16 = [v4 title];
-      v17 = [(_SFPBRichText *)v15 initWithFacade:v16];
+      title2 = [facadeCopy title];
+      v17 = [(_SFPBRichText *)v15 initWithFacade:title2];
       [(_SFPBColorBarCardSection *)v5 setTitle:v17];
     }
 
-    v18 = [v4 subtitle];
+    subtitle = [facadeCopy subtitle];
 
-    if (v18)
+    if (subtitle)
     {
       v19 = [_SFPBRichText alloc];
-      v20 = [v4 subtitle];
-      v21 = [(_SFPBRichText *)v19 initWithFacade:v20];
+      subtitle2 = [facadeCopy subtitle];
+      v21 = [(_SFPBRichText *)v19 initWithFacade:subtitle2];
       [(_SFPBColorBarCardSection *)v5 setSubtitle:v21];
     }
 
@@ -63,15 +63,15 @@
   return v5;
 }
 
-- (_SFPBColorBarCardSection)initWithDictionary:(id)a3
+- (_SFPBColorBarCardSection)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = _SFPBColorBarCardSection;
   v5 = [(_SFPBColorBarCardSection *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"barColor"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"barColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -79,7 +79,7 @@
       [(_SFPBColorBarCardSection *)v5 setBarColor:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"topText"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"topText"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -87,7 +87,7 @@
       [(_SFPBColorBarCardSection *)v5 setTopText:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"title"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -95,7 +95,7 @@
       [(_SFPBColorBarCardSection *)v5 setTitle:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"subtitle"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"subtitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -109,30 +109,30 @@
   return v5;
 }
 
-- (_SFPBColorBarCardSection)initWithJSON:(id)a3
+- (_SFPBColorBarCardSection)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBColorBarCardSection *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBColorBarCardSection *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBColorBarCardSection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -145,72 +145,72 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_barColor)
   {
-    v4 = [(_SFPBColorBarCardSection *)self barColor];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    barColor = [(_SFPBColorBarCardSection *)self barColor];
+    dictionaryRepresentation = [barColor dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"barColor"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"barColor"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"barColor"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"barColor"];
     }
   }
 
   if (self->_subtitle)
   {
-    v7 = [(_SFPBColorBarCardSection *)self subtitle];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    subtitle = [(_SFPBColorBarCardSection *)self subtitle];
+    dictionaryRepresentation2 = [subtitle dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"subtitle"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"subtitle"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"subtitle"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"subtitle"];
     }
   }
 
   if (self->_title)
   {
-    v10 = [(_SFPBColorBarCardSection *)self title];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    title = [(_SFPBColorBarCardSection *)self title];
+    dictionaryRepresentation3 = [title dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"title"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"title"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"title"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"title"];
     }
   }
 
   if (self->_topText)
   {
-    v13 = [(_SFPBColorBarCardSection *)self topText];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    topText = [(_SFPBColorBarCardSection *)self topText];
+    dictionaryRepresentation4 = [topText dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"topText"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"topText"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"topText"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"topText"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -221,28 +221,28 @@
   return v4 ^ v5 ^ [(_SFPBRichText *)self->_subtitle hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(_SFPBColorBarCardSection *)self barColor];
-  v6 = [v4 barColor];
-  if ((v5 != 0) == (v6 == 0))
+  barColor = [(_SFPBColorBarCardSection *)self barColor];
+  barColor2 = [equalCopy barColor];
+  if ((barColor != 0) == (barColor2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(_SFPBColorBarCardSection *)self barColor];
-  if (v7)
+  barColor3 = [(_SFPBColorBarCardSection *)self barColor];
+  if (barColor3)
   {
-    v8 = v7;
-    v9 = [(_SFPBColorBarCardSection *)self barColor];
-    v10 = [v4 barColor];
-    v11 = [v9 isEqual:v10];
+    v8 = barColor3;
+    barColor4 = [(_SFPBColorBarCardSection *)self barColor];
+    barColor5 = [equalCopy barColor];
+    v11 = [barColor4 isEqual:barColor5];
 
     if (!v11)
     {
@@ -254,20 +254,20 @@
   {
   }
 
-  v5 = [(_SFPBColorBarCardSection *)self topText];
-  v6 = [v4 topText];
-  if ((v5 != 0) == (v6 == 0))
+  barColor = [(_SFPBColorBarCardSection *)self topText];
+  barColor2 = [equalCopy topText];
+  if ((barColor != 0) == (barColor2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(_SFPBColorBarCardSection *)self topText];
-  if (v12)
+  topText = [(_SFPBColorBarCardSection *)self topText];
+  if (topText)
   {
-    v13 = v12;
-    v14 = [(_SFPBColorBarCardSection *)self topText];
-    v15 = [v4 topText];
-    v16 = [v14 isEqual:v15];
+    v13 = topText;
+    topText2 = [(_SFPBColorBarCardSection *)self topText];
+    topText3 = [equalCopy topText];
+    v16 = [topText2 isEqual:topText3];
 
     if (!v16)
     {
@@ -279,20 +279,20 @@
   {
   }
 
-  v5 = [(_SFPBColorBarCardSection *)self title];
-  v6 = [v4 title];
-  if ((v5 != 0) == (v6 == 0))
+  barColor = [(_SFPBColorBarCardSection *)self title];
+  barColor2 = [equalCopy title];
+  if ((barColor != 0) == (barColor2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(_SFPBColorBarCardSection *)self title];
-  if (v17)
+  title = [(_SFPBColorBarCardSection *)self title];
+  if (title)
   {
-    v18 = v17;
-    v19 = [(_SFPBColorBarCardSection *)self title];
-    v20 = [v4 title];
-    v21 = [v19 isEqual:v20];
+    v18 = title;
+    title2 = [(_SFPBColorBarCardSection *)self title];
+    title3 = [equalCopy title];
+    v21 = [title2 isEqual:title3];
 
     if (!v21)
     {
@@ -304,12 +304,12 @@
   {
   }
 
-  v5 = [(_SFPBColorBarCardSection *)self subtitle];
-  v6 = [v4 subtitle];
-  if ((v5 != 0) != (v6 == 0))
+  barColor = [(_SFPBColorBarCardSection *)self subtitle];
+  barColor2 = [equalCopy subtitle];
+  if ((barColor != 0) != (barColor2 == 0))
   {
-    v22 = [(_SFPBColorBarCardSection *)self subtitle];
-    if (!v22)
+    subtitle = [(_SFPBColorBarCardSection *)self subtitle];
+    if (!subtitle)
     {
 
 LABEL_25:
@@ -317,10 +317,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(_SFPBColorBarCardSection *)self subtitle];
-    v25 = [v4 subtitle];
-    v26 = [v24 isEqual:v25];
+    v23 = subtitle;
+    subtitle2 = [(_SFPBColorBarCardSection *)self subtitle];
+    subtitle3 = [equalCopy subtitle];
+    v26 = [subtitle2 isEqual:subtitle3];
 
     if (v26)
     {
@@ -340,29 +340,29 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(_SFPBColorBarCardSection *)self barColor];
-  if (v4)
+  toCopy = to;
+  barColor = [(_SFPBColorBarCardSection *)self barColor];
+  if (barColor)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBColorBarCardSection *)self topText];
-  if (v5)
+  topText = [(_SFPBColorBarCardSection *)self topText];
+  if (topText)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_SFPBColorBarCardSection *)self title];
-  if (v6)
+  title = [(_SFPBColorBarCardSection *)self title];
+  if (title)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_SFPBColorBarCardSection *)self subtitle];
-  if (v7)
+  subtitle = [(_SFPBColorBarCardSection *)self subtitle];
+  if (subtitle)
   {
     PBDataWriterWriteSubmessage();
   }

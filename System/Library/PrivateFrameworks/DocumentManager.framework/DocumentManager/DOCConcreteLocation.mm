@@ -10,27 +10,27 @@
 + (id)sharedItemsLocation;
 + (id)trashedItemsLocation;
 - (BOOL)isContainer;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isRoot;
 - (BOOL)isTaggedItemsSource;
 - (BOOL)isTrash;
 - (DOCConcreteLocation)init;
-- (DOCConcreteLocation)initWithCoder:(id)a3;
-- (DOCConcreteLocation)initWithSourceIdentifier:(id)a3 node:(id)a4;
-- (DOCConcreteLocation)initWithSourceIdentifier:(id)a3 title:(id)a4;
-- (DOCConcreteLocation)initWithTaggedItemsSourceRepresentedTag:(id)a3;
+- (DOCConcreteLocation)initWithCoder:(id)coder;
+- (DOCConcreteLocation)initWithSourceIdentifier:(id)identifier node:(id)node;
+- (DOCConcreteLocation)initWithSourceIdentifier:(id)identifier title:(id)title;
+- (DOCConcreteLocation)initWithTaggedItemsSourceRepresentedTag:(id)tag;
 - (FPItem)fileProviderItem;
 - (NSSet)attachedTags;
 - (NSString)displayName;
 - (NSString)shortDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)displayNameComposedWithLocalizedAppName:(id)a3;
+- (id)displayNameComposedWithLocalizedAppName:(id)name;
 - (id)fileProviderSourceDisplayName;
 - (id)placeholderLocation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateUnderlyingNodeToNode:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateUnderlyingNodeToNode:(id)node;
 @end
 
 @implementation DOCConcreteLocation
@@ -116,7 +116,7 @@ uint64_t __37__DOCConcreteLocation_searchLocation__block_invoke()
   block[1] = 3221225472;
   block[2] = __42__DOCConcreteLocation_sharedItemsLocation__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedItemsLocation_onceToken != -1)
   {
     dispatch_once(&sharedItemsLocation_onceToken, block);
@@ -152,32 +152,32 @@ uint64_t __42__DOCConcreteLocation_sharedItemsLocation__block_invoke(uint64_t a1
 
 + (BOOL)disableWorkaroundFor88096763
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"DisableWorkaroundFor88096763"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"DisableWorkaroundFor88096763"];
 
   return v3;
 }
 
 - (BOOL)isRoot
 {
-  v3 = [(DOCConcreteLocation *)self node];
-  if ([v3 isRootItem])
+  node = [(DOCConcreteLocation *)self node];
+  if ([node isRootItem])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(DOCConcreteLocation *)self node];
-    if (v5)
+    node2 = [(DOCConcreteLocation *)self node];
+    if (node2)
     {
       v4 = 0;
     }
 
     else
     {
-      v6 = [(DOCConcreteLocation *)self sourceIdentifier];
-      v4 = v6 != 0;
+      sourceIdentifier = [(DOCConcreteLocation *)self sourceIdentifier];
+      v4 = sourceIdentifier != 0;
     }
   }
 
@@ -186,40 +186,40 @@ uint64_t __42__DOCConcreteLocation_sharedItemsLocation__block_invoke(uint64_t a1
 
 - (FPItem)fileProviderItem
 {
-  v2 = [(DOCConcreteLocation *)self node];
-  v3 = [v2 fpfs_fpItem];
+  node = [(DOCConcreteLocation *)self node];
+  fpfs_fpItem = [node fpfs_fpItem];
 
-  return v3;
+  return fpfs_fpItem;
 }
 
 - (NSString)displayName
 {
-  v3 = [(DOCConcreteLocation *)self fileProviderSourceDisplayName];
-  v4 = [(DOCConcreteLocation *)self title];
+  fileProviderSourceDisplayName = [(DOCConcreteLocation *)self fileProviderSourceDisplayName];
+  title = [(DOCConcreteLocation *)self title];
 
-  if ([(DOCConcreteLocation *)self isRoot]&& v3 || !v4)
+  if ([(DOCConcreteLocation *)self isRoot]&& fileProviderSourceDisplayName || !title)
   {
-    v5 = v3;
+    title2 = fileProviderSourceDisplayName;
   }
 
   else
   {
-    v5 = [(DOCConcreteLocation *)self title];
+    title2 = [(DOCConcreteLocation *)self title];
   }
 
-  v6 = v5;
+  v6 = title2;
 
   return v6;
 }
 
 - (id)fileProviderSourceDisplayName
 {
-  v2 = [(DOCConcreteLocation *)self fileProviderItem];
-  v3 = [v2 providerDomainID];
+  fileProviderItem = [(DOCConcreteLocation *)self fileProviderItem];
+  providerDomainID = [fileProviderItem providerDomainID];
 
-  if (v3)
+  if (providerDomainID)
   {
-    v4 = [MEMORY[0x1E69673E8] providerDomainWithID:v3 cachePolicy:3 error:0];
+    v4 = [MEMORY[0x1E69673E8] providerDomainWithID:providerDomainID cachePolicy:3 error:0];
     v5 = DOCLocalizedDisplayName();
   }
 
@@ -246,8 +246,8 @@ uint64_t __42__DOCConcreteLocation_sharedItemsLocation__block_invoke(uint64_t a1
   v3 = [(DOCConcreteLocation *)self copy];
   [v3 setSourceIdentifier:@"com.apple.DocumentManager.placeholderLocation"];
   [v3 setCanBeRestored:0];
-  v4 = [(DOCConcreteLocation *)self sourceIdentifier];
-  v5 = [v4 copy];
+  sourceIdentifier = [(DOCConcreteLocation *)self sourceIdentifier];
+  v5 = [sourceIdentifier copy];
   [v3 setOriginalSourceIdentifier:v5];
 
   return v3;
@@ -296,109 +296,109 @@ uint64_t __43__DOCConcreteLocation_trashedItemsLocation__block_invoke()
 
 - (BOOL)isContainer
 {
-  v3 = [(DOCConcreteLocation *)self node];
+  node = [(DOCConcreteLocation *)self node];
 
-  if (!v3)
+  if (!node)
   {
     return 1;
   }
 
-  v4 = [(DOCConcreteLocation *)self node];
-  v5 = [v4 isFolder];
+  node2 = [(DOCConcreteLocation *)self node];
+  isFolder = [node2 isFolder];
 
-  return v5;
+  return isFolder;
 }
 
-- (DOCConcreteLocation)initWithSourceIdentifier:(id)a3 node:(id)a4
+- (DOCConcreteLocation)initWithSourceIdentifier:(id)identifier node:(id)node
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  nodeCopy = node;
   v8 = [(DOCConcreteLocation *)self init];
   v9 = v8;
   if (v8)
   {
-    [(DOCConcreteLocation *)v8 setSourceIdentifier:v6];
+    [(DOCConcreteLocation *)v8 setSourceIdentifier:identifierCopy];
     [(DOCConcreteLocation *)v9 setIsFPV2:1];
-    [(DOCConcreteLocation *)v9 updateUnderlyingNodeToNode:v7];
+    [(DOCConcreteLocation *)v9 updateUnderlyingNodeToNode:nodeCopy];
   }
 
   return v9;
 }
 
-- (DOCConcreteLocation)initWithSourceIdentifier:(id)a3 title:(id)a4
+- (DOCConcreteLocation)initWithSourceIdentifier:(id)identifier title:(id)title
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  titleCopy = title;
   v8 = [(DOCConcreteLocation *)self init];
   v9 = v8;
   if (v8)
   {
-    [(DOCConcreteLocation *)v8 setSourceIdentifier:v6];
-    [(DOCConcreteLocation *)v9 setTitle:v7];
+    [(DOCConcreteLocation *)v8 setSourceIdentifier:identifierCopy];
+    [(DOCConcreteLocation *)v9 setTitle:titleCopy];
   }
 
   return v9;
 }
 
-- (DOCConcreteLocation)initWithTaggedItemsSourceRepresentedTag:(id)a3
+- (DOCConcreteLocation)initWithTaggedItemsSourceRepresentedTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   v5 = [(DOCConcreteLocation *)self init];
   v6 = v5;
   if (v5)
   {
-    [(DOCConcreteLocation *)v5 setRepresentedTag:v4];
+    [(DOCConcreteLocation *)v5 setRepresentedTag:tagCopy];
     [(DOCConcreteLocation *)v6 setSourceIdentifier:@"com.apple.DocumentManager.TaggedItems"];
     [(DOCConcreteLocation *)v6 setIsFPV2:1];
-    v7 = [v4 displayName];
-    [(DOCConcreteLocation *)v6 setTitle:v7];
+    displayName = [tagCopy displayName];
+    [(DOCConcreteLocation *)v6 setTitle:displayName];
   }
 
   return v6;
 }
 
-- (void)updateUnderlyingNodeToNode:(id)a3
+- (void)updateUnderlyingNodeToNode:(id)node
 {
-  v6 = a3;
-  [(DOCConcreteLocation *)self setNode:v6];
-  v4 = [v6 domainDisplayName];
-  if (v4 && [v6 isRootItem])
+  nodeCopy = node;
+  [(DOCConcreteLocation *)self setNode:nodeCopy];
+  domainDisplayName = [nodeCopy domainDisplayName];
+  if (domainDisplayName && [nodeCopy isRootItem])
   {
-    [(DOCConcreteLocation *)self setTitle:v4];
+    [(DOCConcreteLocation *)self setTitle:domainDisplayName];
   }
 
   else
   {
-    v5 = [v6 displayName];
-    [(DOCConcreteLocation *)self setTitle:v5];
+    displayName = [nodeCopy displayName];
+    [(DOCConcreteLocation *)self setTitle:displayName];
   }
 }
 
 - (BOOL)isTaggedItemsSource
 {
-  v2 = [(DOCConcreteLocation *)self representedTag];
-  v3 = v2 != 0;
+  representedTag = [(DOCConcreteLocation *)self representedTag];
+  v3 = representedTag != 0;
 
   return v3;
 }
 
 - (NSSet)attachedTags
 {
-  v3 = [(DOCConcreteLocation *)self representedTag];
-  if (v3)
+  representedTag = [(DOCConcreteLocation *)self representedTag];
+  if (representedTag)
   {
-    v4 = [MEMORY[0x1E695DFD8] setWithObject:v3];
+    v4 = [MEMORY[0x1E695DFD8] setWithObject:representedTag];
   }
 
   else
   {
-    v5 = [(DOCConcreteLocation *)self node];
-    v6 = [v5 tags];
-    v7 = v6;
+    node = [(DOCConcreteLocation *)self node];
+    tags = [node tags];
+    v7 = tags;
     v8 = MEMORY[0x1E695E0F0];
-    if (v6)
+    if (tags)
     {
-      v8 = v6;
+      v8 = tags;
     }
 
     v9 = v8;
@@ -424,19 +424,19 @@ void __35__DOCConcreteLocation_attachedTags__block_invoke(uint64_t a1)
 
 - (BOOL)isTrash
 {
-  v3 = [(DOCConcreteLocation *)self sourceIdentifier];
-  v4 = v3;
-  if (v3)
+  sourceIdentifier = [(DOCConcreteLocation *)self sourceIdentifier];
+  v4 = sourceIdentifier;
+  if (sourceIdentifier)
   {
-    v5 = v3;
+    originalSourceIdentifier = sourceIdentifier;
   }
 
   else
   {
-    v5 = [(DOCConcreteLocation *)self originalSourceIdentifier];
+    originalSourceIdentifier = [(DOCConcreteLocation *)self originalSourceIdentifier];
   }
 
-  v6 = v5;
+  v6 = originalSourceIdentifier;
 
   return v6 == @"com.apple.DocumentManager.TrashedItems";
 }
@@ -483,31 +483,31 @@ void __35__DOCConcreteLocation_attachedTags__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[DOCConcreteLocation allocWithZone:?]];
-  v5 = [(DOCConcreteLocation *)self node];
-  v6 = [v5 copy];
+  node = [(DOCConcreteLocation *)self node];
+  v6 = [node copy];
   [(DOCConcreteLocation *)v4 setNode:v6];
 
-  v7 = [(DOCConcreteLocation *)self sourceIdentifier];
-  v8 = [v7 copy];
+  sourceIdentifier = [(DOCConcreteLocation *)self sourceIdentifier];
+  v8 = [sourceIdentifier copy];
   [(DOCConcreteLocation *)v4 setSourceIdentifier:v8];
 
-  v9 = [(DOCConcreteLocation *)self title];
-  v10 = [v9 copy];
+  title = [(DOCConcreteLocation *)self title];
+  v10 = [title copy];
   [(DOCConcreteLocation *)v4 setTitle:v10];
 
-  v11 = [(DOCConcreteLocation *)self composedTitleFormat];
-  v12 = [v11 copy];
+  composedTitleFormat = [(DOCConcreteLocation *)self composedTitleFormat];
+  v12 = [composedTitleFormat copy];
   [(DOCConcreteLocation *)v4 setComposedTitleFormat:v12];
 
-  v13 = [(DOCConcreteLocation *)self representedTag];
-  v14 = [v13 copy];
+  representedTag = [(DOCConcreteLocation *)self representedTag];
+  v14 = [representedTag copy];
   [(DOCConcreteLocation *)v4 setRepresentedTag:v14];
 
-  v15 = [(DOCConcreteLocation *)self promptText];
-  v16 = [v15 copy];
+  promptText = [(DOCConcreteLocation *)self promptText];
+  v16 = [promptText copy];
   [(DOCConcreteLocation *)v4 setPromptText:v16];
 
   [(DOCConcreteLocation *)v4 setIsFPV2:[(DOCConcreteLocation *)self isFPV2]];
@@ -517,40 +517,40 @@ void __35__DOCConcreteLocation_attachedTags__block_invoke(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v3 = [(DOCConcreteLocation *)self node];
-  v4 = [v3 hash];
-  v5 = [(DOCConcreteLocation *)self sourceIdentifier];
-  v6 = [v5 hash] + v4;
-  v7 = [(DOCConcreteLocation *)self representedTag];
-  v8 = [v7 hash];
+  node = [(DOCConcreteLocation *)self node];
+  v4 = [node hash];
+  sourceIdentifier = [(DOCConcreteLocation *)self sourceIdentifier];
+  v6 = [sourceIdentifier hash] + v4;
+  representedTag = [(DOCConcreteLocation *)self representedTag];
+  v8 = [representedTag hash];
 
   return v6 + v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self != v5)
+  equalCopy = equal;
+  if (self != equalCopy)
   {
     if ([(DOCConcreteLocation *)self isRoot])
     {
-      v6 = [(DOCConcreteLocation *)v5 isRoot];
+      isRoot = [(DOCConcreteLocation *)equalCopy isRoot];
     }
 
     else
     {
-      v6 = 0;
+      isRoot = 0;
     }
 
-    v8 = [(DOCConcreteLocation *)self sourceIdentifier];
-    v9 = [(DOCConcreteLocation *)v5 sourceIdentifier];
-    v10 = [v8 isEqual:v9];
+    sourceIdentifier = [(DOCConcreteLocation *)self sourceIdentifier];
+    sourceIdentifier2 = [(DOCConcreteLocation *)equalCopy sourceIdentifier];
+    v10 = [sourceIdentifier isEqual:sourceIdentifier2];
 
-    v11 = [(DOCConcreteLocation *)self promptText];
-    v12 = v11;
-    if (v11)
+    promptText = [(DOCConcreteLocation *)self promptText];
+    v12 = promptText;
+    if (promptText)
     {
-      v13 = v11;
+      v13 = promptText;
     }
 
     else
@@ -560,11 +560,11 @@ void __35__DOCConcreteLocation_attachedTags__block_invoke(uint64_t a1)
 
     v14 = v13;
 
-    v15 = [(DOCConcreteLocation *)v5 promptText];
-    v16 = v15;
-    if (v15)
+    promptText2 = [(DOCConcreteLocation *)equalCopy promptText];
+    v16 = promptText2;
+    if (promptText2)
     {
-      v17 = v15;
+      v17 = promptText2;
     }
 
     else
@@ -583,38 +583,38 @@ LABEL_45:
       goto LABEL_46;
     }
 
-    v19 = [(DOCConcreteLocation *)self fileProviderItem];
-    v20 = [(DOCConcreteLocation *)v5 fileProviderItem];
-    if (v19 != v20)
+    fileProviderItem = [(DOCConcreteLocation *)self fileProviderItem];
+    fileProviderItem2 = [(DOCConcreteLocation *)equalCopy fileProviderItem];
+    if (fileProviderItem != fileProviderItem2)
     {
-      v21 = v6 & v10;
-      v22 = [(DOCConcreteLocation *)self fileProviderItem];
-      v3 = [(DOCConcreteLocation *)v5 fileProviderItem];
-      if ((([v22 isEqual:v3] | v21) & 1) == 0)
+      v21 = isRoot & v10;
+      fileProviderItem3 = [(DOCConcreteLocation *)self fileProviderItem];
+      fileProviderItem4 = [(DOCConcreteLocation *)equalCopy fileProviderItem];
+      if ((([fileProviderItem3 isEqual:fileProviderItem4] | v21) & 1) == 0)
       {
         LOBYTE(v7) = 0;
         goto LABEL_43;
       }
 
-      v54 = v3;
-      v55 = v22;
+      v54 = fileProviderItem4;
+      v55 = fileProviderItem3;
     }
 
-    v23 = [(DOCConcreteLocation *)self sourceIdentifier];
-    v24 = [(DOCConcreteLocation *)v5 sourceIdentifier];
-    if (v23 != v24)
+    sourceIdentifier3 = [(DOCConcreteLocation *)self sourceIdentifier];
+    sourceIdentifier4 = [(DOCConcreteLocation *)equalCopy sourceIdentifier];
+    if (sourceIdentifier3 != sourceIdentifier4)
     {
-      v25 = [(DOCConcreteLocation *)self sourceIdentifier];
-      v3 = [(DOCConcreteLocation *)v5 sourceIdentifier];
-      if (![v25 isEqual:v3])
+      sourceIdentifier5 = [(DOCConcreteLocation *)self sourceIdentifier];
+      fileProviderItem4 = [(DOCConcreteLocation *)equalCopy sourceIdentifier];
+      if (![sourceIdentifier5 isEqual:fileProviderItem4])
       {
         LOBYTE(v7) = 0;
 LABEL_41:
 
 LABEL_42:
-        v22 = v55;
-        v3 = v54;
-        if (v19 == v20)
+        fileProviderItem3 = v55;
+        fileProviderItem4 = v54;
+        if (fileProviderItem == fileProviderItem2)
         {
 LABEL_44:
 
@@ -626,44 +626,44 @@ LABEL_43:
         goto LABEL_44;
       }
 
-      v51 = v25;
+      v51 = sourceIdentifier5;
     }
 
-    v26 = [(DOCConcreteLocation *)self title];
-    v27 = [(DOCConcreteLocation *)v5 title];
-    v52 = v24;
-    v53 = v26;
-    v28 = v26 == v27;
-    v29 = v27;
+    title = [(DOCConcreteLocation *)self title];
+    title2 = [(DOCConcreteLocation *)equalCopy title];
+    v52 = sourceIdentifier4;
+    v53 = title;
+    v28 = title == title2;
+    v29 = title2;
     if (v28)
     {
-      v49 = v3;
-      v50 = v23;
+      v49 = fileProviderItem4;
+      v50 = sourceIdentifier3;
     }
 
     else
     {
-      v45 = v20;
+      v45 = fileProviderItem2;
       v30 = v14;
-      v31 = v19;
-      v32 = v27;
-      v33 = [(DOCConcreteLocation *)self title];
-      v46 = [(DOCConcreteLocation *)v5 title];
-      v47 = v33;
-      if (![v33 isEqual:?])
+      v31 = fileProviderItem;
+      v32 = title2;
+      title3 = [(DOCConcreteLocation *)self title];
+      title4 = [(DOCConcreteLocation *)equalCopy title];
+      v47 = title3;
+      if (![title3 isEqual:?])
       {
         LOBYTE(v7) = 0;
         v37 = v32;
         v38 = v53;
-        v19 = v31;
+        fileProviderItem = v31;
         v14 = v30;
-        v20 = v45;
+        fileProviderItem2 = v45;
 LABEL_39:
 
 LABEL_40:
-        v25 = v51;
-        v24 = v52;
-        if (v23 == v52)
+        sourceIdentifier5 = v51;
+        sourceIdentifier4 = v52;
+        if (sourceIdentifier3 == v52)
         {
           goto LABEL_42;
         }
@@ -671,37 +671,37 @@ LABEL_40:
         goto LABEL_41;
       }
 
-      v49 = v3;
-      v50 = v23;
+      v49 = fileProviderItem4;
+      v50 = sourceIdentifier3;
       v29 = v32;
-      v19 = v31;
+      fileProviderItem = v31;
       v14 = v30;
-      v20 = v45;
+      fileProviderItem2 = v45;
     }
 
-    v34 = [(DOCConcreteLocation *)self representedTag];
-    v35 = [(DOCConcreteLocation *)v5 representedTag];
+    representedTag = [(DOCConcreteLocation *)self representedTag];
+    representedTag2 = [(DOCConcreteLocation *)equalCopy representedTag];
     v48 = v29;
-    if (v34 != v35)
+    if (representedTag != representedTag2)
     {
-      v42 = v34;
-      v36 = [(DOCConcreteLocation *)self representedTag];
-      v44 = [(DOCConcreteLocation *)v5 representedTag];
-      v45 = v36;
-      if (![v36 isEqual:?])
+      v42 = representedTag;
+      representedTag3 = [(DOCConcreteLocation *)self representedTag];
+      representedTag4 = [(DOCConcreteLocation *)equalCopy representedTag];
+      v45 = representedTag3;
+      if (![representedTag3 isEqual:?])
       {
         LOBYTE(v7) = 0;
-        v34 = v42;
+        representedTag = v42;
         goto LABEL_36;
       }
 
-      v34 = v42;
+      representedTag = v42;
     }
 
-    if ([(__CFString *)v14 isEqualToString:v18]&& (v43 = [(DOCConcreteLocation *)self isFPV2], v43 == [(DOCConcreteLocation *)v5 isFPV2]))
+    if ([(__CFString *)v14 isEqualToString:v18]&& (v43 = [(DOCConcreteLocation *)self isFPV2], v43 == [(DOCConcreteLocation *)equalCopy isFPV2]))
     {
-      v40 = [(DOCConcreteLocation *)self canBeRestored];
-      v7 = v40 ^ [(DOCConcreteLocation *)v5 canBeRestored]^ 1;
+      canBeRestored = [(DOCConcreteLocation *)self canBeRestored];
+      v7 = canBeRestored ^ [(DOCConcreteLocation *)equalCopy canBeRestored]^ 1;
       v39 = v7;
     }
 
@@ -711,15 +711,15 @@ LABEL_40:
       v39 = 0;
     }
 
-    if (v34 == v35)
+    if (representedTag == representedTag2)
     {
 
       LOBYTE(v7) = v39;
 LABEL_38:
       v38 = v53;
       v37 = v48;
-      v3 = v49;
-      v23 = v50;
+      fileProviderItem4 = v49;
+      sourceIdentifier3 = v50;
       if (v53 == v48)
       {
         goto LABEL_40;
@@ -739,9 +739,9 @@ LABEL_46:
   return v7;
 }
 
-- (DOCConcreteLocation)initWithCoder:(id)a3
+- (DOCConcreteLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = DOCConcreteLocation;
   v5 = [(DOCConcreteLocation *)&v20 init];
@@ -751,25 +751,25 @@ LABEL_46:
     node = v5->_node;
     v5->_node = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_sourceIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_sourceIdentifier"];
     sourceIdentifier = v5->_sourceIdentifier;
     v5->_sourceIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_title"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_title"];
     title = v5->_title;
     v5->_title = v10;
 
-    v5->_isFPV2 = [v4 decodeBoolForKey:@"isFPV2"];
-    v5->_canBeRestored = [v4 decodeBoolForKey:@"canBeRestored"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_representedTag"];
+    v5->_isFPV2 = [coderCopy decodeBoolForKey:@"isFPV2"];
+    v5->_canBeRestored = [coderCopy decodeBoolForKey:@"canBeRestored"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_representedTag"];
     representedTag = v5->_representedTag;
     v5->_representedTag = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_promptText"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_promptText"];
     promptText = v5->_promptText;
     v5->_promptText = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_composedTitleFormat"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_composedTitleFormat"];
     composedTitleFormat = v5->_composedTitleFormat;
     v5->_composedTitleFormat = v16;
 
@@ -779,9 +779,9 @@ LABEL_46:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   p_node = &self->_node;
   if (self->_node)
   {
@@ -804,42 +804,42 @@ LABEL_46:
 
     else
     {
-      [(DOCNode *)*p_node encodeNodeWithCoder:v4];
+      [(DOCNode *)*p_node encodeNodeWithCoder:coderCopy];
     }
   }
 
   sourceIdentifier = self->_sourceIdentifier;
   if (sourceIdentifier)
   {
-    [v4 encodeObject:sourceIdentifier forKey:@"_sourceIdentifier"];
+    [coderCopy encodeObject:sourceIdentifier forKey:@"_sourceIdentifier"];
   }
 
   title = self->_title;
   if (title)
   {
-    [v4 encodeObject:title forKey:@"_title"];
+    [coderCopy encodeObject:title forKey:@"_title"];
   }
 
   representedTag = self->_representedTag;
   if (representedTag)
   {
-    [v4 encodeObject:representedTag forKey:@"_representedTag"];
+    [coderCopy encodeObject:representedTag forKey:@"_representedTag"];
   }
 
   promptText = self->_promptText;
   if (promptText)
   {
-    [v4 encodeObject:promptText forKey:@"_promptText"];
+    [coderCopy encodeObject:promptText forKey:@"_promptText"];
   }
 
   composedTitleFormat = self->_composedTitleFormat;
   if (composedTitleFormat)
   {
-    [v4 encodeObject:composedTitleFormat forKey:@"_composedTitleFormat"];
+    [coderCopy encodeObject:composedTitleFormat forKey:@"_composedTitleFormat"];
   }
 
-  [v4 encodeBool:self->_isFPV2 forKey:@"isFPV2"];
-  [v4 encodeBool:self->_canBeRestored forKey:@"canBeRestored"];
+  [coderCopy encodeBool:self->_isFPV2 forKey:@"isFPV2"];
+  [coderCopy encodeBool:self->_canBeRestored forKey:@"canBeRestored"];
 }
 
 - (id)description
@@ -847,38 +847,38 @@ LABEL_46:
   representedTag = self->_representedTag;
   if (representedTag)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"representedTag=%@", representedTag];
+    representedTag = [MEMORY[0x1E696AEC0] stringWithFormat:@"representedTag=%@", representedTag];
   }
 
   else
   {
-    v4 = &stru_1F5F4AEF8;
+    representedTag = &stru_1F5F4AEF8;
   }
 
   v5 = MEMORY[0x1E696AEC0];
   v9.receiver = self;
   v9.super_class = DOCConcreteLocation;
   v6 = [(DOCConcreteLocation *)&v9 description];
-  v7 = [v5 stringWithFormat:@"%@ title=%@ [%@] DOCNode=%@%@", v6, self->_title, self->_sourceIdentifier, self->_node, v4];
+  v7 = [v5 stringWithFormat:@"%@ title=%@ [%@] DOCNode=%@%@", v6, self->_title, self->_sourceIdentifier, self->_node, representedTag];
 
   return v7;
 }
 
-- (id)displayNameComposedWithLocalizedAppName:(id)a3
+- (id)displayNameComposedWithLocalizedAppName:(id)name
 {
-  v4 = a3;
-  v5 = [(DOCConcreteLocation *)self composedTitleFormat];
-  if (v5 && [v4 length])
+  nameCopy = name;
+  composedTitleFormat = [(DOCConcreteLocation *)self composedTitleFormat];
+  if (composedTitleFormat && [nameCopy length])
   {
-    v6 = [MEMORY[0x1E696AEC0] localizedStringWithValidatedFormat:v5 validFormatSpecifiers:@"%@" error:0, v4];
+    nameCopy = [MEMORY[0x1E696AEC0] localizedStringWithValidatedFormat:composedTitleFormat validFormatSpecifiers:@"%@" error:0, nameCopy];
   }
 
   else
   {
-    v6 = 0;
+    nameCopy = 0;
   }
 
-  return v6;
+  return nameCopy;
 }
 
 - (void)encodeWithCoder:(uint64_t *)a1 .cold.1(uint64_t *a1, NSObject *a2)

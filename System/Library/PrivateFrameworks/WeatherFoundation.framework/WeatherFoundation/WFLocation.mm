@@ -1,75 +1,75 @@
 @interface WFLocation
-+ (id)locationsByConsolidatingDuplicates:(id)a3 originalOrder:(id)a4;
-+ (id)locationsByConsolidatingDuplicatesInBucket:(id)a3;
-+ (id)locationsByFilteringDuplicates:(id)a3;
++ (id)locationsByConsolidatingDuplicates:(id)duplicates originalOrder:(id)order;
++ (id)locationsByConsolidatingDuplicatesInBucket:(id)bucket;
++ (id)locationsByFilteringDuplicates:(id)duplicates;
 - (BOOL)isDay;
-- (BOOL)isDayForDate:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isDayForDate:(id)date;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)needsGeocoding;
 - (BOOL)shouldQueryForAirQualityData;
 - (NSString)displayName;
 - (NSString)locationID;
 - (NSString)wf_weatherChannelGeocodeValue;
-- (WFLocation)initWithCloudDictionaryRepresentation:(id)a3;
-- (WFLocation)initWithCoder:(id)a3;
-- (WFLocation)initWithLocalDataRepresentation:(id)a3;
-- (WFLocation)initWithMapItem:(id)a3 isCurrentLocation:(BOOL)a4;
-- (WFLocation)initWithPlacemark:(id)a3;
-- (WFLocation)initWithSearchResponse:(id)a3;
-- (id)_sunAlmanacForDate:(id)a3;
+- (WFLocation)initWithCloudDictionaryRepresentation:(id)representation;
+- (WFLocation)initWithCoder:(id)coder;
+- (WFLocation)initWithLocalDataRepresentation:(id)representation;
+- (WFLocation)initWithMapItem:(id)item isCurrentLocation:(BOOL)location;
+- (WFLocation)initWithPlacemark:(id)placemark;
+- (WFLocation)initWithSearchResponse:(id)response;
+- (id)_sunAlmanacForDate:(id)date;
 - (id)cloudDictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)summaryThatIsCompact:(BOOL)a3;
-- (id)sunriseForDate:(id)a3;
-- (id)sunsetForDate:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)summaryThatIsCompact:(BOOL)compact;
+- (id)sunriseForDate:(id)date;
+- (id)sunsetForDate:(id)date;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setGeoLocation:(id)a3;
-- (void)sunrise:(id *)a3 andSunset:(id *)a4 forDate:(id)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)setGeoLocation:(id)location;
+- (void)sunrise:(id *)sunrise andSunset:(id *)sunset forDate:(id)date;
 @end
 
 @implementation WFLocation
 
-- (WFLocation)initWithSearchResponse:(id)a3
+- (WFLocation)initWithSearchResponse:(id)response
 {
-  v4 = [a3 mapItems];
-  v5 = [v4 firstObject];
+  mapItems = [response mapItems];
+  firstObject = [mapItems firstObject];
 
-  v6 = [(WFLocation *)self initWithMapItem:v5];
+  v6 = [(WFLocation *)self initWithMapItem:firstObject];
   return v6;
 }
 
-- (WFLocation)initWithMapItem:(id)a3 isCurrentLocation:(BOOL)a4
+- (WFLocation)initWithMapItem:(id)item isCurrentLocation:(BOOL)location
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  locationCopy = location;
+  itemCopy = item;
+  v7 = itemCopy;
+  if (!itemCopy)
   {
     goto LABEL_10;
   }
 
-  v8 = [v6 placemark];
-  self = [(WFLocation *)self initWithPlacemark:v8];
+  placemark = [itemCopy placemark];
+  self = [(WFLocation *)self initWithPlacemark:placemark];
 
   if (self)
   {
-    v9 = [v7 timeZone];
-    if (!v9 && v4)
+    timeZone = [v7 timeZone];
+    if (!timeZone && locationCopy)
     {
-      v9 = [MEMORY[0x277CBEBB0] localTimeZone];
+      timeZone = [MEMORY[0x277CBEBB0] localTimeZone];
     }
 
-    objc_storeStrong(&self->_timeZone, v9);
+    objc_storeStrong(&self->_timeZone, timeZone);
     if (self->_timeZone)
     {
-      v10 = [v7 _weatherDisplayName];
-      v11 = [v10 copy];
+      _weatherDisplayName = [v7 _weatherDisplayName];
+      v11 = [_weatherDisplayName copy];
       weatherDisplayName = self->_weatherDisplayName;
       self->_weatherDisplayName = v11;
 
-      v13 = [v7 _weatherLocationName];
-      v14 = [v13 copy];
+      _weatherLocationName = [v7 _weatherLocationName];
+      v14 = [_weatherLocationName copy];
       weatherLocationName = self->_weatherLocationName;
       self->_weatherLocationName = v14;
 
@@ -77,67 +77,67 @@
     }
 
 LABEL_10:
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
 LABEL_8:
   self = self;
-  v16 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v16;
+  return selfCopy;
 }
 
-- (WFLocation)initWithPlacemark:(id)a3
+- (WFLocation)initWithPlacemark:(id)placemark
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  placemarkCopy = placemark;
+  if (placemarkCopy)
   {
     v32.receiver = self;
     v32.super_class = WFLocation;
     v5 = [(WFLocation *)&v32 init];
     if (v5)
     {
-      v6 = [v4 location];
-      v7 = [v6 copy];
+      location = [placemarkCopy location];
+      v7 = [location copy];
       geoLocation = v5->_geoLocation;
       v5->_geoLocation = v7;
 
-      v9 = WFLocationNameForPlacemark(v4);
+      v9 = WFLocationNameForPlacemark(placemarkCopy);
       displayName = v5->_displayName;
       v5->_displayName = v9;
 
-      v11 = [v4 locality];
-      v12 = [v11 copy];
+      locality = [placemarkCopy locality];
+      v12 = [locality copy];
       city = v5->_city;
       v5->_city = v12;
 
-      v14 = [v4 subAdministrativeArea];
-      v15 = [v14 copy];
+      subAdministrativeArea = [placemarkCopy subAdministrativeArea];
+      v15 = [subAdministrativeArea copy];
       county = v5->_county;
       v5->_county = v15;
 
-      v17 = [v4 administrativeArea];
-      v18 = [v17 copy];
+      administrativeArea = [placemarkCopy administrativeArea];
+      v18 = [administrativeArea copy];
       state = v5->_state;
       v5->_state = v18;
 
-      v20 = [v4 country];
-      v21 = [v20 copy];
+      country = [placemarkCopy country];
+      v21 = [country copy];
       country = v5->_country;
       v5->_country = v21;
 
-      v23 = [v4 ISOcountryCode];
-      v24 = [v23 copy];
+      iSOcountryCode = [placemarkCopy ISOcountryCode];
+      v24 = [iSOcountryCode copy];
       countryAbbreviation = v5->_countryAbbreviation;
       v5->_countryAbbreviation = v24;
 
       v5->_archiveVersion = [objc_opt_class() currentArchiveVersion];
-      v26 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       creationDate = v5->_creationDate;
-      v5->_creationDate = v26;
+      v5->_creationDate = date;
 
       v28 = WFLogForCategory(3uLL);
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -150,49 +150,49 @@ LABEL_11:
     }
 
     self = v5;
-    v30 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v30 = 0;
+    selfCopy = 0;
   }
 
-  return v30;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(WFLocation *)self city];
-    v7 = [v5 city];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    city = [(WFLocation *)self city];
+    city2 = [v5 city];
+    if ([city isEqualToString:city2])
     {
       v8 = 30000.0;
     }
 
     else
     {
-      v10 = [(WFLocation *)self city];
-      if (v10)
+      city3 = [(WFLocation *)self city];
+      if (city3)
       {
         v8 = 5000.0;
       }
 
       else
       {
-        v11 = [v5 city];
-        v8 = dbl_272BE4D20[v11 == 0];
+        city4 = [v5 city];
+        v8 = dbl_272BE4D20[city4 == 0];
       }
     }
 
-    v12 = [(WFLocation *)self geoLocation];
-    v13 = [v5 geoLocation];
-    v9 = [v12 wf_isEquivalentToLocation:v13 tolerance:v8];
+    geoLocation = [(WFLocation *)self geoLocation];
+    geoLocation2 = [v5 geoLocation];
+    v9 = [geoLocation wf_isEquivalentToLocation:geoLocation2 tolerance:v8];
   }
 
   else
@@ -205,31 +205,31 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v2 = [(WFLocation *)self geoLocation];
-  v3 = [v2 hash];
+  geoLocation = [(WFLocation *)self geoLocation];
+  v3 = [geoLocation hash];
 
   return v3;
 }
 
-- (id)summaryThatIsCompact:(BOOL)a3
+- (id)summaryThatIsCompact:(BOOL)compact
 {
-  v3 = a3;
+  compactCopy = compact;
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ <0x%x>", objc_opt_class(), self];
-  [v5 appendString:v6];
+  [string appendString:v6];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [objc_opt_class() knownKeys];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  knownKeys = [objc_opt_class() knownKeys];
+  v8 = [knownKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
     v10 = *v18;
-    if (v3)
+    if (compactCopy)
     {
       v11 = @" %@:%@";
     }
@@ -245,7 +245,7 @@ LABEL_11:
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(knownKeys);
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
@@ -253,32 +253,32 @@ LABEL_11:
         v15 = v14;
         if (v14)
         {
-          [v5 appendFormat:v11, v13, v14, v17];
+          [string appendFormat:v11, v13, v14, v17];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [knownKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
   }
 
-  return v5;
+  return string;
 }
 
 - (BOOL)needsGeocoding
 {
-  v3 = [(WFLocation *)self countryAbbreviation];
-  if (v3)
+  countryAbbreviation = [(WFLocation *)self countryAbbreviation];
+  if (countryAbbreviation)
   {
-    v4 = [(WFLocation *)self timeZone];
-    if (v4)
+    timeZone = [(WFLocation *)self timeZone];
+    if (timeZone)
     {
-      v5 = [(WFLocation *)self weatherDisplayName];
-      if (v5)
+      weatherDisplayName = [(WFLocation *)self weatherDisplayName];
+      if (weatherDisplayName)
       {
-        v6 = [(WFLocation *)self weatherLocationName];
-        v7 = v6 == 0;
+        weatherLocationName = [(WFLocation *)self weatherLocationName];
+        v7 = weatherLocationName == 0;
       }
 
       else
@@ -301,166 +301,166 @@ LABEL_11:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v17 = a3;
-  v4 = [(WFLocation *)self city];
-  [v17 encodeObject:v4 forKey:@"WFLocationCodingCity"];
+  coderCopy = coder;
+  city = [(WFLocation *)self city];
+  [coderCopy encodeObject:city forKey:@"WFLocationCodingCity"];
 
-  v5 = [(WFLocation *)self county];
-  [v17 encodeObject:v5 forKey:@"WFLocationCodingCounty"];
+  county = [(WFLocation *)self county];
+  [coderCopy encodeObject:county forKey:@"WFLocationCodingCounty"];
 
-  v6 = [(WFLocation *)self state];
-  [v17 encodeObject:v6 forKey:@"WFLocationCodingState"];
+  state = [(WFLocation *)self state];
+  [coderCopy encodeObject:state forKey:@"WFLocationCodingState"];
 
-  v7 = [(WFLocation *)self stateAbbreviation];
-  [v17 encodeObject:v7 forKey:@"WFLocationCodingStateAbbreviation"];
+  stateAbbreviation = [(WFLocation *)self stateAbbreviation];
+  [coderCopy encodeObject:stateAbbreviation forKey:@"WFLocationCodingStateAbbreviation"];
 
-  v8 = [(WFLocation *)self country];
-  [v17 encodeObject:v8 forKey:@"WFLocationCodingCountry"];
+  country = [(WFLocation *)self country];
+  [coderCopy encodeObject:country forKey:@"WFLocationCodingCountry"];
 
-  v9 = [(WFLocation *)self countryAbbreviation];
-  [v17 encodeObject:v9 forKey:@"WFLocationCodingCountryAbbreviation"];
+  countryAbbreviation = [(WFLocation *)self countryAbbreviation];
+  [coderCopy encodeObject:countryAbbreviation forKey:@"WFLocationCodingCountryAbbreviation"];
 
-  v10 = [(WFLocation *)self geoLocation];
-  [v17 encodeObject:v10 forKey:@"WFLocationCodingGeoLocation"];
+  geoLocation = [(WFLocation *)self geoLocation];
+  [coderCopy encodeObject:geoLocation forKey:@"WFLocationCodingGeoLocation"];
 
-  v11 = [(WFLocation *)self locationID];
-  [v17 encodeObject:v11 forKey:@"WFLocationCodingLocationID"];
+  locationID = [(WFLocation *)self locationID];
+  [coderCopy encodeObject:locationID forKey:@"WFLocationCodingLocationID"];
 
-  v12 = [(WFLocation *)self timeZone];
-  [v17 encodeObject:v12 forKey:@"WFLocationCodingTimeZone"];
+  timeZone = [(WFLocation *)self timeZone];
+  [coderCopy encodeObject:timeZone forKey:@"WFLocationCodingTimeZone"];
 
-  v13 = [(WFLocation *)self creationDate];
-  [v17 encodeObject:v13 forKey:@"WFLocationCodingCreationDate"];
+  creationDate = [(WFLocation *)self creationDate];
+  [coderCopy encodeObject:creationDate forKey:@"WFLocationCodingCreationDate"];
 
-  v14 = [(WFLocation *)self displayName];
-  [v17 encodeObject:v14 forKey:@"WFLocationDisplayName"];
+  displayName = [(WFLocation *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"WFLocationDisplayName"];
 
-  v15 = [(WFLocation *)self weatherDisplayName];
-  [v17 encodeObject:v15 forKey:@"WFLocationWeatherDisplayNameKey"];
+  weatherDisplayName = [(WFLocation *)self weatherDisplayName];
+  [coderCopy encodeObject:weatherDisplayName forKey:@"WFLocationWeatherDisplayNameKey"];
 
-  v16 = [(WFLocation *)self weatherLocationName];
-  [v17 encodeObject:v16 forKey:@"WFLocationWeatherLacationName"];
+  weatherLocationName = [(WFLocation *)self weatherLocationName];
+  [coderCopy encodeObject:weatherLocationName forKey:@"WFLocationWeatherLacationName"];
 
-  [v17 encodeInteger:-[WFLocation archiveVersion](self forKey:{"archiveVersion"), @"WFLocationArchiveVersion"}];
+  [coderCopy encodeInteger:-[WFLocation archiveVersion](self forKey:{"archiveVersion"), @"WFLocationArchiveVersion"}];
 }
 
-- (WFLocation)initWithCoder:(id)a3
+- (WFLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v34.receiver = self;
   v34.super_class = WFLocation;
   v5 = [(WFLocation *)&v34 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WFLocationCodingCity"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WFLocationCodingCity"];
     city = v5->_city;
     v5->_city = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WFLocationCodingCounty"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WFLocationCodingCounty"];
     county = v5->_county;
     v5->_county = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WFLocationCodingState"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WFLocationCodingState"];
     state = v5->_state;
     v5->_state = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WFLocationCodingStateAbbreviation"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WFLocationCodingStateAbbreviation"];
     stateAbbreviation = v5->_stateAbbreviation;
     v5->_stateAbbreviation = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WFLocationCodingCountry"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WFLocationCodingCountry"];
     country = v5->_country;
     v5->_country = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WFLocationCodingCountryAbbreviation"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WFLocationCodingCountryAbbreviation"];
     countryAbbreviation = v5->_countryAbbreviation;
     v5->_countryAbbreviation = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WFLocationCodingGeoLocation"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WFLocationCodingGeoLocation"];
     geoLocation = v5->_geoLocation;
     v5->_geoLocation = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WFLocationCodingLocationID"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WFLocationCodingLocationID"];
     locationID = v5->_locationID;
     v5->_locationID = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WFLocationCodingTimeZone"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WFLocationCodingTimeZone"];
     timeZone = v5->_timeZone;
     v5->_timeZone = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WFLocationCodingCreationDate"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WFLocationCodingCreationDate"];
     creationDate = v5->_creationDate;
     v5->_creationDate = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WFLocationDisplayName"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WFLocationDisplayName"];
     displayName = v5->_displayName;
     v5->_displayName = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WFLocationWeatherDisplayNameKey"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WFLocationWeatherDisplayNameKey"];
     weatherDisplayName = v5->_weatherDisplayName;
     v5->_weatherDisplayName = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WFLocationWeatherLacationName"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WFLocationWeatherLacationName"];
     weatherLocationName = v5->_weatherLocationName;
     v5->_weatherLocationName = v30;
 
-    v32 = [v4 decodeIntegerForKey:@"WFLocationArchiveVersion"];
-    v5->_archiveVersion = v32;
-    if (!v32)
+    currentArchiveVersion = [coderCopy decodeIntegerForKey:@"WFLocationArchiveVersion"];
+    v5->_archiveVersion = currentArchiveVersion;
+    if (!currentArchiveVersion)
     {
-      v32 = [objc_opt_class() currentArchiveVersion];
+      currentArchiveVersion = [objc_opt_class() currentArchiveVersion];
     }
 
-    v5->_archiveVersion = v32;
+    v5->_archiveVersion = currentArchiveVersion;
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
-  v5 = [(WFLocation *)self city];
-  [v4 setCity:v5];
+  city = [(WFLocation *)self city];
+  [v4 setCity:city];
 
-  v6 = [(WFLocation *)self state];
-  [v4 setState:v6];
+  state = [(WFLocation *)self state];
+  [v4 setState:state];
 
-  v7 = [(WFLocation *)self county];
-  [v4 setCounty:v7];
+  county = [(WFLocation *)self county];
+  [v4 setCounty:county];
 
-  v8 = [(WFLocation *)self country];
-  [v4 setCountry:v8];
+  country = [(WFLocation *)self country];
+  [v4 setCountry:country];
 
-  v9 = [(WFLocation *)self stateAbbreviation];
-  [v4 setStateAbbreviation:v9];
+  stateAbbreviation = [(WFLocation *)self stateAbbreviation];
+  [v4 setStateAbbreviation:stateAbbreviation];
 
-  v10 = [(WFLocation *)self countryAbbreviation];
-  [v4 setCountryAbbreviation:v10];
+  countryAbbreviation = [(WFLocation *)self countryAbbreviation];
+  [v4 setCountryAbbreviation:countryAbbreviation];
 
-  v11 = [(WFLocation *)self displayName];
-  [v4 setDisplayName:v11];
+  displayName = [(WFLocation *)self displayName];
+  [v4 setDisplayName:displayName];
 
-  v12 = [(WFLocation *)self weatherDisplayName];
-  [v4 setWeatherDisplayName:v12];
+  weatherDisplayName = [(WFLocation *)self weatherDisplayName];
+  [v4 setWeatherDisplayName:weatherDisplayName];
 
-  v13 = [(WFLocation *)self weatherLocationName];
-  [v4 setWeatherLocationName:v13];
+  weatherLocationName = [(WFLocation *)self weatherLocationName];
+  [v4 setWeatherLocationName:weatherLocationName];
 
-  v14 = [(WFLocation *)self creationDate];
-  [v4 setCreationDate:v14];
+  creationDate = [(WFLocation *)self creationDate];
+  [v4 setCreationDate:creationDate];
 
-  v15 = [(WFLocation *)self geoLocation];
-  [v4 setGeoLocation:v15];
+  geoLocation = [(WFLocation *)self geoLocation];
+  [v4 setGeoLocation:geoLocation];
 
-  v16 = [(WFLocation *)self locationID];
-  [v4 setLocationID:v16];
+  locationID = [(WFLocation *)self locationID];
+  [v4 setLocationID:locationID];
 
-  v17 = [(WFLocation *)self timeZone];
-  [v4 setTimeZone:v17];
+  timeZone = [(WFLocation *)self timeZone];
+  [v4 setTimeZone:timeZone];
 
   [v4 setArchiveVersion:{-[WFLocation archiveVersion](self, "archiveVersion")}];
   return v4;
@@ -471,16 +471,16 @@ LABEL_11:
   locationID = self->_locationID;
   if (!locationID)
   {
-    v4 = [(WFLocation *)self geoLocation];
-    v5 = v4;
-    if (!v4 || ([v4 coordinate], NSStringFromCLLocationCoordinate2D(v6, v7), (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+    geoLocation = [(WFLocation *)self geoLocation];
+    v5 = geoLocation;
+    if (!geoLocation || ([geoLocation coordinate], NSStringFromCLLocationCoordinate2D(v6, v7), (uUIDString = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v9 = [MEMORY[0x277CCAD78] UUID];
-      v8 = [v9 UUIDString];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
     }
 
     v10 = self->_locationID;
-    self->_locationID = v8;
+    self->_locationID = uUIDString;
 
     locationID = self->_locationID;
   }
@@ -488,9 +488,9 @@ LABEL_11:
   return locationID;
 }
 
-- (void)setGeoLocation:(id)a3
+- (void)setGeoLocation:(id)location
 {
-  v4 = [a3 copy];
+  v4 = [location copy];
   geoLocation = self->_geoLocation;
   self->_geoLocation = v4;
 
@@ -498,16 +498,16 @@ LABEL_11:
   self->_locationID = 0;
 }
 
-+ (id)locationsByFilteringDuplicates:(id)a3
++ (id)locationsByFilteringDuplicates:(id)duplicates
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  duplicatesCopy = duplicates;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = duplicatesCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -523,17 +523,17 @@ LABEL_11:
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 city];
-        v13 = [v5 objectForKey:v12];
+        city = [v11 city];
+        array = [dictionary objectForKey:city];
 
-        if (!v13)
+        if (!array)
         {
-          v13 = [MEMORY[0x277CBEB18] array];
+          array = [MEMORY[0x277CBEB18] array];
         }
 
-        [v13 addObject:v11];
-        v14 = [v11 city];
-        [v5 setObject:v13 forKey:v14];
+        [array addObject:v11];
+        city2 = [v11 city];
+        [dictionary setObject:array forKey:city2];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -542,17 +542,17 @@ LABEL_11:
     while (v8);
   }
 
-  v15 = [a1 locationsByConsolidatingDuplicates:v5 originalOrder:v6];
+  v15 = [self locationsByConsolidatingDuplicates:dictionary originalOrder:v6];
 
   return v15;
 }
 
-+ (id)locationsByConsolidatingDuplicates:(id)a3 originalOrder:(id)a4
++ (id)locationsByConsolidatingDuplicates:(id)duplicates originalOrder:(id)order
 {
   v33 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v16 = a4;
-  v6 = [MEMORY[0x277CBEB18] array];
+  duplicatesCopy = duplicates;
+  orderCopy = order;
+  array = [MEMORY[0x277CBEB18] array];
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -561,19 +561,19 @@ LABEL_11:
   v24[1] = 3221225472;
   v24[2] = __63__WFLocation_locationsByConsolidatingDuplicates_originalOrder___block_invoke;
   v24[3] = &unk_279E6F808;
-  v7 = v6;
+  v7 = array;
   v26 = &v28;
-  v27 = a1;
+  selfCopy = self;
   v25 = v7;
-  [v17 enumerateKeysAndObjectsUsingBlock:v24];
+  [duplicatesCopy enumerateKeysAndObjectsUsingBlock:v24];
   if (v29[3])
   {
-    v18 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = v16;
+    v8 = orderCopy;
     v9 = [v8 countByEnumeratingWithState:&v20 objects:v32 count:16];
     if (v9)
     {
@@ -597,7 +597,7 @@ LABEL_11:
           if (v13 != 0x7FFFFFFFFFFFFFFFLL)
           {
             v14 = [v7 objectAtIndex:v13];
-            [v18 addObject:v14];
+            [array2 addObject:v14];
             [v7 removeObject:v14];
           }
         }
@@ -611,12 +611,12 @@ LABEL_11:
 
   else
   {
-    v18 = [MEMORY[0x277CBEB18] arrayWithArray:v16];
+    array2 = [MEMORY[0x277CBEB18] arrayWithArray:orderCopy];
   }
 
   _Block_object_dispose(&v28, 8);
 
-  return v18;
+  return array2;
 }
 
 void __63__WFLocation_locationsByConsolidatingDuplicates_originalOrder___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -641,19 +641,19 @@ void __63__WFLocation_locationsByConsolidatingDuplicates_originalOrder___block_i
   }
 }
 
-+ (id)locationsByConsolidatingDuplicatesInBucket:(id)a3
++ (id)locationsByConsolidatingDuplicatesInBucket:(id)bucket
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [v3 firstObject];
-  [v4 addObject:v5];
+  bucketCopy = bucket;
+  array = [MEMORY[0x277CBEB18] array];
+  firstObject = [bucketCopy firstObject];
+  [array addObject:firstObject];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  obj = v3;
+  obj = bucketCopy;
   v6 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -678,10 +678,10 @@ void __63__WFLocation_locationsByConsolidatingDuplicates_originalOrder___block_i
         v12[3] = &unk_279E6F858;
         v12[4] = v9;
         v12[5] = &v13;
-        [v4 enumerateObjectsUsingBlock:v12];
+        [array enumerateObjectsUsingBlock:v12];
         if ((v14[3] & 1) == 0)
         {
-          [v4 addObject:v9];
+          [array addObject:v9];
         }
 
         _Block_object_dispose(&v13, 8);
@@ -693,7 +693,7 @@ void __63__WFLocation_locationsByConsolidatingDuplicates_originalOrder___block_i
     while (v6);
   }
 
-  return v4;
+  return array;
 }
 
 uint64_t __57__WFLocation_locationsByConsolidatingDuplicatesInBucket___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -710,46 +710,46 @@ uint64_t __57__WFLocation_locationsByConsolidatingDuplicatesInBucket___block_inv
 
 - (BOOL)isDay
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  LOBYTE(self) = [(WFLocation *)self isDayForDate:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  LOBYTE(self) = [(WFLocation *)self isDayForDate:date];
 
   return self;
 }
 
-- (BOOL)isDayForDate:(id)a3
+- (BOOL)isDayForDate:(id)date
 {
-  if (!a3)
+  if (!date)
   {
     return 0;
   }
 
   v4 = MEMORY[0x277D0EAB0];
-  v5 = a3;
+  dateCopy = date;
   v6 = objc_alloc_init(v4);
-  v7 = [(WFLocation *)self geoLocation];
-  [v7 coordinate];
+  geoLocation = [(WFLocation *)self geoLocation];
+  [geoLocation coordinate];
   v9 = v8;
   v11 = v10;
 
   [v6 calculateAstronomicalTimeForLocation:{v9, v11}];
-  [v5 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v13 = v12;
 
-  LOBYTE(v7) = [v6 isDayLightForTime:v13];
-  return v7;
+  LOBYTE(geoLocation) = [v6 isDayLightForTime:v13];
+  return geoLocation;
 }
 
-- (id)_sunAlmanacForDate:(id)a3
+- (id)_sunAlmanacForDate:(id)date
 {
   v4 = MEMORY[0x277D0EAB0];
-  v5 = a3;
+  dateCopy = date;
   v6 = objc_alloc_init(v4);
-  v7 = [(WFLocation *)self geoLocation];
-  [v7 coordinate];
+  geoLocation = [(WFLocation *)self geoLocation];
+  [geoLocation coordinate];
   v9 = v8;
   v11 = v10;
 
-  [v5 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v13 = v12;
 
   [v6 calculateAstronomicalTimeForLocation:2 time:v9 altitudeInDegrees:v11 options:{v13, *MEMORY[0x277D0E7C0]}];
@@ -757,63 +757,63 @@ uint64_t __57__WFLocation_locationsByConsolidatingDuplicatesInBucket___block_inv
   return v6;
 }
 
-- (void)sunrise:(id *)a3 andSunset:(id *)a4 forDate:(id)a5
+- (void)sunrise:(id *)sunrise andSunset:(id *)sunset forDate:(id)date
 {
-  if (a3 | a4)
+  if (sunrise | sunset)
   {
-    v7 = [(WFLocation *)self _sunAlmanacForDate:a5];
+    v7 = [(WFLocation *)self _sunAlmanacForDate:date];
     v8 = v7;
-    if (a3)
+    if (sunrise)
     {
-      *a3 = [v7 sunrise];
+      *sunrise = [v7 sunrise];
       v7 = v8;
     }
 
-    if (a4)
+    if (sunset)
     {
-      *a4 = [v8 sunset];
+      *sunset = [v8 sunset];
       v7 = v8;
     }
   }
 }
 
-- (id)sunriseForDate:(id)a3
+- (id)sunriseForDate:(id)date
 {
-  v3 = [(WFLocation *)self _sunAlmanacForDate:a3];
-  v4 = [v3 sunrise];
+  v3 = [(WFLocation *)self _sunAlmanacForDate:date];
+  sunrise = [v3 sunrise];
 
-  return v4;
+  return sunrise;
 }
 
-- (id)sunsetForDate:(id)a3
+- (id)sunsetForDate:(id)date
 {
-  v3 = [(WFLocation *)self _sunAlmanacForDate:a3];
-  v4 = [v3 sunset];
+  v3 = [(WFLocation *)self _sunAlmanacForDate:date];
+  sunset = [v3 sunset];
 
-  return v4;
+  return sunset;
 }
 
 - (BOOL)shouldQueryForAirQualityData
 {
   v13 = *MEMORY[0x277D85DE8];
-  v2 = [(WFLocation *)self countryAbbreviation];
-  if (v2)
+  countryAbbreviation = [(WFLocation *)self countryAbbreviation];
+  if (countryAbbreviation)
   {
     v3 = +[WFSettingsManager sharedInstance];
-    v4 = [v3 settings];
+    settings = [v3 settings];
 
-    v5 = [v4 aqiEnabledCountryCodes];
+    aqiEnabledCountryCodes = [settings aqiEnabledCountryCodes];
     v6 = WFLogForCategory(3uLL);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412546;
-      v10 = v2;
+      v10 = countryAbbreviation;
       v11 = 2112;
-      v12 = v5;
+      v12 = aqiEnabledCountryCodes;
       _os_log_impl(&dword_272B94000, v6, OS_LOG_TYPE_DEFAULT, "Current country code=%@; AQI enabled country codes=%@", &v9, 0x16u);
     }
 
-    v7 = [v5 containsObject:v2];
+    v7 = [aqiEnabledCountryCodes containsObject:countryAbbreviation];
   }
 
   else
@@ -834,20 +834,20 @@ uint64_t __57__WFLocation_locationsByConsolidatingDuplicatesInBucket___block_inv
 
   else
   {
-    v5 = [(WFLocation *)self city];
-    v6 = [(WFLocation *)self country];
-    v7 = [(WFLocation *)self countryAbbreviation];
-    v8 = [(WFLocation *)self state];
-    v9 = [(WFLocation *)self stateAbbreviation];
+    city = [(WFLocation *)self city];
+    country = [(WFLocation *)self country];
+    countryAbbreviation = [(WFLocation *)self countryAbbreviation];
+    state = [(WFLocation *)self state];
+    stateAbbreviation = [(WFLocation *)self stateAbbreviation];
     v10 = objc_opt_new();
-    if ([v5 length])
+    if ([city length])
     {
-      [v10 addObject:v5];
+      [v10 addObject:city];
     }
 
-    v11 = [v8 length];
-    v12 = v8;
-    if (v11 || (v13 = [v9 length], v12 = v9, v13) || (v14 = objc_msgSend(v6, "length", v9), v12 = v6, v14) || (v15 = objc_msgSend(v7, "length", v6), v12 = v7, v15))
+    v11 = [state length];
+    v12 = state;
+    if (v11 || (v13 = [stateAbbreviation length], v12 = stateAbbreviation, v13) || (v14 = objc_msgSend(country, "length", stateAbbreviation), v12 = country, v14) || (v15 = objc_msgSend(countryAbbreviation, "length", country), v12 = countryAbbreviation, v15))
     {
       [v10 addObject:v12];
     }
@@ -862,12 +862,12 @@ uint64_t __57__WFLocation_locationsByConsolidatingDuplicatesInBucket___block_inv
   return v3;
 }
 
-- (WFLocation)initWithLocalDataRepresentation:(id)a3
+- (WFLocation)initWithLocalDataRepresentation:(id)representation
 {
   v4 = MEMORY[0x277CCAAC8];
-  v5 = a3;
+  representationCopy = representation;
   v11 = 0;
-  v6 = [v4 unarchivedObjectOfClass:objc_opt_class() fromData:v5 error:&v11];
+  v6 = [v4 unarchivedObjectOfClass:objc_opt_class() fromData:representationCopy error:&v11];
 
   v7 = v11;
   if (v7)
@@ -891,41 +891,41 @@ uint64_t __57__WFLocation_locationsByConsolidatingDuplicatesInBucket___block_inv
 
 - (id)cloudDictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(WFLocation *)self city];
-  [v3 setObject:v4 forKey:@"CityName"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  city = [(WFLocation *)self city];
+  [dictionary setObject:city forKey:@"CityName"];
 
   v5 = MEMORY[0x277CCABB0];
-  v6 = [(WFLocation *)self geoLocation];
-  [v6 coordinate];
+  geoLocation = [(WFLocation *)self geoLocation];
+  [geoLocation coordinate];
   v7 = [v5 numberWithDouble:?];
-  [v3 setObject:v7 forKey:@"Latitude"];
+  [dictionary setObject:v7 forKey:@"Latitude"];
 
   v8 = MEMORY[0x277CCABB0];
-  v9 = [(WFLocation *)self geoLocation];
-  [v9 coordinate];
+  geoLocation2 = [(WFLocation *)self geoLocation];
+  [geoLocation2 coordinate];
   v11 = [v8 numberWithDouble:v10];
-  [v3 setObject:v11 forKey:@"Longitude"];
+  [dictionary setObject:v11 forKey:@"Longitude"];
 
-  return v3;
+  return dictionary;
 }
 
-- (WFLocation)initWithCloudDictionaryRepresentation:(id)a3
+- (WFLocation)initWithCloudDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = [MEMORY[0x277CBEB98] setWithObjects:{@"Longitude", @"Latitude", @"CityName", 0}];
-  if ([v4 count] && (v6 = MEMORY[0x277CBEB98], objc_msgSend(v4, "allKeys"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "setWithArray:", v7), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "intersectsSet:", v5), v8, v7, v9))
+  if ([representationCopy count] && (v6 = MEMORY[0x277CBEB98], objc_msgSend(representationCopy, "allKeys"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "setWithArray:", v7), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "intersectsSet:", v5), v8, v7, v9))
   {
     v27.receiver = self;
     v27.super_class = WFLocation;
     v10 = [(WFLocation *)&v27 init];
     if (v10)
     {
-      v11 = [v4 objectForKeyedSubscript:@"Latitude"];
+      v11 = [representationCopy objectForKeyedSubscript:@"Latitude"];
       [v11 doubleValue];
       v13 = v12;
 
-      v14 = [v4 objectForKeyedSubscript:@"Longitude"];
+      v14 = [representationCopy objectForKeyedSubscript:@"Longitude"];
       [v14 doubleValue];
       v16 = v15;
 
@@ -934,36 +934,36 @@ uint64_t __57__WFLocation_locationsByConsolidatingDuplicatesInBucket___block_inv
       v10->_geoLocation = v17;
       v19 = v17;
 
-      v20 = [v4 objectForKeyedSubscript:@"CityName"];
+      v20 = [representationCopy objectForKeyedSubscript:@"CityName"];
       v21 = [v20 copy];
       city = v10->_city;
       v10->_city = v21;
 
-      v23 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       creationDate = v10->_creationDate;
-      v10->_creationDate = v23;
+      v10->_creationDate = date;
     }
 
     self = v10;
-    v25 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v25 = 0;
+    selfCopy = 0;
   }
 
-  return v25;
+  return selfCopy;
 }
 
 - (NSString)wf_weatherChannelGeocodeValue
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(WFLocation *)self geoLocation];
-  [v4 coordinate];
+  geoLocation = [(WFLocation *)self geoLocation];
+  [geoLocation coordinate];
   v6 = v5;
-  v7 = [(WFLocation *)self geoLocation];
-  [v7 coordinate];
+  geoLocation2 = [(WFLocation *)self geoLocation];
+  [geoLocation2 coordinate];
   v9 = [v3 stringWithFormat:@"%f, %f", v6, v8];
 
   return v9;

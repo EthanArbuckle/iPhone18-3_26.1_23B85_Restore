@@ -1,21 +1,21 @@
 @interface SUSUIInstallTonightPasscodeEntryView
-- (SUSUIInstallTonightPasscodeEntryView)initWithFrame:(CGRect)a3;
-- (id)_bodyTextToModelSpecificLocalizedKey:(id)a3;
-- (void)setDescriptor:(id)a3;
-- (void)setInstallTonightForecast:(id)a3;
+- (SUSUIInstallTonightPasscodeEntryView)initWithFrame:(CGRect)frame;
+- (id)_bodyTextToModelSpecificLocalizedKey:(id)key;
+- (void)setDescriptor:(id)descriptor;
+- (void)setInstallTonightForecast:(id)forecast;
 - (void)updateStatusText;
 @end
 
 @implementation SUSUIInstallTonightPasscodeEntryView
 
-- (SUSUIInstallTonightPasscodeEntryView)initWithFrame:(CGRect)a3
+- (SUSUIInstallTonightPasscodeEntryView)initWithFrame:(CGRect)frame
 {
-  v9 = a3;
+  frameCopy = frame;
   v7 = a2;
   v8 = 0;
   v6.receiver = self;
   v6.super_class = SUSUIInstallTonightPasscodeEntryView;
-  v5 = [(SUSUIPasscodeEntryView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(SUSUIPasscodeEntryView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v8 = v5;
   objc_storeStrong(&v8, v5);
   if (v5)
@@ -28,31 +28,31 @@
   return v4;
 }
 
-- (void)setInstallTonightForecast:(id)a3
+- (void)setInstallTonightForecast:(id)forecast
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (*(&v4->super._dismissing + 1) != location[0])
+  objc_storeStrong(location, forecast);
+  if (*(&selfCopy->super._dismissing + 1) != location[0])
   {
-    objc_storeStrong((&v4->super._dismissing + 1), location[0]);
-    [(SUSUIInstallTonightPasscodeEntryView *)v4 updateStatusText];
+    objc_storeStrong((&selfCopy->super._dismissing + 1), location[0]);
+    [(SUSUIInstallTonightPasscodeEntryView *)selfCopy updateStatusText];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setDescriptor:(id)a3
+- (void)setDescriptor:(id)descriptor
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (*(&v4->_forecast + 1) != location[0])
+  objc_storeStrong(location, descriptor);
+  if (*(&selfCopy->_forecast + 1) != location[0])
   {
-    objc_storeStrong((&v4->_forecast + 1), location[0]);
-    [(SUSUIInstallTonightPasscodeEntryView *)v4 updateStatusText];
+    objc_storeStrong((&selfCopy->_forecast + 1), location[0]);
+    [(SUSUIInstallTonightPasscodeEntryView *)selfCopy updateStatusText];
   }
 
   objc_storeStrong(location, 0);
@@ -60,34 +60,34 @@
 
 - (void)updateStatusText
 {
-  v33 = self;
+  selfCopy = self;
   v32 = a2;
-  v31 = [*(&self->_forecast + 1) isSplatOnly];
-  v30 = *(&v33->super._dismissing + 1);
+  isSplatOnly = [*(&self->_forecast + 1) isSplatOnly];
+  v30 = *(&selfCopy->super._dismissing + 1);
   v27 = 0;
   v25 = 0;
   v23 = 0;
   v21 = 0;
   v19 = 0;
   v17 = 0;
-  if (v31)
+  if (isSplatOnly)
   {
-    v28 = [v30 _susui_cardinalityForRoundedStartTime];
+    _susui_cardinalityForRoundedStartTime = [v30 _susui_cardinalityForRoundedStartTime];
     v27 = 1;
-    v26 = [v30 _susui_cardinalityForRoundedEndTime];
+    _susui_cardinalityForRoundedEndTime = [v30 _susui_cardinalityForRoundedEndTime];
     v25 = 1;
-    v24 = [NSString stringWithFormat:@"RSR_PASSCODE_SUBTITLE_%@_TO_%@", v28, v26];
+    v24 = [NSString stringWithFormat:@"RSR_PASSCODE_SUBTITLE_%@_TO_%@", _susui_cardinalityForRoundedStartTime, _susui_cardinalityForRoundedEndTime];
     v23 = 1;
     v2 = v24;
   }
 
   else
   {
-    v22 = [v30 _susui_cardinalityForRoundedStartTime];
+    _susui_cardinalityForRoundedStartTime2 = [v30 _susui_cardinalityForRoundedStartTime];
     v21 = 1;
-    v20 = [v30 _susui_cardinalityForRoundedEndTime];
+    _susui_cardinalityForRoundedEndTime2 = [v30 _susui_cardinalityForRoundedEndTime];
     v19 = 1;
-    v18 = [NSString stringWithFormat:@"SOFTWARE_UPDATE_PASSCODE_SUBTITLE_%@_TO_%@", v22, v20];
+    v18 = [NSString stringWithFormat:@"SOFTWARE_UPDATE_PASSCODE_SUBTITLE_%@_TO_%@", _susui_cardinalityForRoundedStartTime2, _susui_cardinalityForRoundedEndTime2];
     v17 = 1;
     v2 = v18;
   }
@@ -117,17 +117,17 @@
   {
   }
 
-  v6 = [(SUSUIInstallTonightPasscodeEntryView *)v33 _bodyTextToModelSpecificLocalizedKey:v29];
-  v5 = [v30 _susui_formattedRoundedStartTimeString];
-  v4 = [v30 _susui_formattedRoundedEndTimeString];
-  location = [NSString stringWithValidatedFormat:v6 validFormatSpecifiers:@"%@ %@" error:0, v5, v4];
+  v6 = [(SUSUIInstallTonightPasscodeEntryView *)selfCopy _bodyTextToModelSpecificLocalizedKey:v29];
+  _susui_formattedRoundedStartTimeString = [v30 _susui_formattedRoundedStartTimeString];
+  _susui_formattedRoundedEndTimeString = [v30 _susui_formattedRoundedEndTimeString];
+  location = [NSString stringWithValidatedFormat:v6 validFormatSpecifiers:@"%@ %@" error:0, _susui_formattedRoundedStartTimeString, _susui_formattedRoundedEndTimeString];
 
-  v7 = [(SUSUIPasscodeEntryView *)v33 passcodeLockView];
+  passcodeLockView = [(SUSUIPasscodeEntryView *)selfCopy passcodeLockView];
   v14 = 0;
   v12 = 0;
   v10 = 0;
   v8 = 0;
-  if (v31)
+  if (isSplatOnly)
   {
     v15 = +[NSBundle mainBundle];
     v14 = 1;
@@ -145,7 +145,7 @@
     v3 = v9;
   }
 
-  [(SBUIPasscodeLockView *)v7 updateStatusText:v3 subtitle:location animated:0];
+  [(SBUIPasscodeLockView *)passcodeLockView updateStatusText:v3 subtitle:location animated:0];
   if (v8)
   {
   }
@@ -167,12 +167,12 @@
   objc_storeStrong(&v30, 0);
 }
 
-- (id)_bodyTextToModelSpecificLocalizedKey:(id)a3
+- (id)_bodyTextToModelSpecificLocalizedKey:(id)key
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v7 = +[NSBundle mainBundle];
   v6 = [UIDevice modelSpecificLocalizedStringKeyForKey:location[0]];
   v8 = [NSBundle localizedStringForKey:v7 value:"localizedStringForKey:value:table:" table:?];

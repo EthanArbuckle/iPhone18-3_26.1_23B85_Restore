@@ -1,52 +1,52 @@
 @interface BSDispatchTimer
-+ (void)timerWithIdentifier:(uint64_t)a1;
++ (void)timerWithIdentifier:(uint64_t)identifier;
 - (BOOL)isScheduled;
 - (BSDispatchTimer)init;
 - (double)timeRemaining;
 - (uint64_t)hasBeenInvalidated;
 - (void)_lock_cancel;
-- (void)appendDescriptionToBuilder:(int)a3 forDebugging:;
+- (void)appendDescriptionToBuilder:(int)builder forDebugging:;
 - (void)cancel;
 - (void)dealloc;
 - (void)invalidate;
-- (void)scheduleWithFireTime:(uint64_t)a3 repeatNanoseconds:(uint64_t)a4 leewayNanoseconds:(void *)a5 queue:(void *)a6 weakContext:(void *)a7 handler:;
+- (void)scheduleWithFireTime:(uint64_t)time repeatNanoseconds:(uint64_t)nanoseconds leewayNanoseconds:(void *)leewayNanoseconds queue:(void *)queue weakContext:(void *)context handler:;
 @end
 
 @implementation BSDispatchTimer
 
 - (void)invalidate
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 16));
-    if ((*(a1 + 92) & 1) == 0)
+    os_unfair_lock_lock((self + 16));
+    if ((*(self + 92) & 1) == 0)
     {
-      *(a1 + 92) = 1;
-      [(BSDispatchTimer *)a1 _lock_cancel];
+      *(self + 92) = 1;
+      [(BSDispatchTimer *)self _lock_cancel];
     }
 
-    os_unfair_lock_unlock((a1 + 16));
+    os_unfair_lock_unlock((self + 16));
   }
 }
 
 - (void)cancel
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock(a1 + 4);
-    [(BSDispatchTimer *)a1 _lock_cancel];
+    os_unfair_lock_lock(self + 4);
+    [(BSDispatchTimer *)self _lock_cancel];
 
-    os_unfair_lock_unlock(a1 + 4);
+    os_unfair_lock_unlock(self + 4);
   }
 }
 
 - (uint64_t)hasBeenInvalidated
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 16));
-    v2 = *(a1 + 92);
-    os_unfair_lock_unlock((a1 + 16));
+    os_unfair_lock_lock((self + 16));
+    v2 = *(self + 92);
+    os_unfair_lock_unlock((self + 16));
   }
 
   else
@@ -59,25 +59,25 @@
 
 - (void)_lock_cancel
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_assert_owner((a1 + 16));
-    v2 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    os_unfair_lock_assert_owner((self + 16));
+    v2 = *(self + 24);
+    *(self + 24) = 0;
 
-    v3 = *(a1 + 32);
+    v3 = *(self + 32);
     if (v3)
     {
       dispatch_source_cancel(v3);
-      v4 = *(a1 + 32);
-      *(a1 + 32) = 0;
+      v4 = *(self + 32);
+      *(self + 32) = 0;
     }
 
-    objc_storeWeak((a1 + 40), 0);
-    v5 = *(a1 + 48);
-    *(a1 + 48) = 0;
+    objc_storeWeak((self + 40), 0);
+    v5 = *(self + 48);
+    *(self + 48) = 0;
 
-    ++*(a1 + 88);
+    ++*(self + 88);
   }
 }
 
@@ -97,7 +97,7 @@
       v12 = 2114;
       v13 = v7;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
       v17 = @"BSDispatchTimer.m";
       v18 = 1024;
@@ -132,7 +132,7 @@
     v12 = 2114;
     v13 = v7;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"BSDispatchTimer.m";
     v18 = 1024;
@@ -149,7 +149,7 @@
   return result;
 }
 
-+ (void)timerWithIdentifier:(uint64_t)a1
++ (void)timerWithIdentifier:(uint64_t)identifier
 {
   v24 = *MEMORY[0x1E69E9840];
   v2 = a2;
@@ -211,30 +211,30 @@
 
 - (BOOL)isScheduled
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  os_unfair_lock_lock((a1 + 16));
-  v2 = *(a1 + 32) != 0;
-  os_unfair_lock_unlock((a1 + 16));
+  os_unfair_lock_lock((self + 16));
+  v2 = *(self + 32) != 0;
+  os_unfair_lock_unlock((self + 16));
   return v2;
 }
 
 - (double)timeRemaining
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  os_unfair_lock_lock((a1 + 16));
-  v2 = *(a1 + 32);
-  v4 = *(a1 + 56);
-  v3 = *(a1 + 64);
-  v5 = *(a1 + 80);
-  os_unfair_lock_unlock((a1 + 16));
+  os_unfair_lock_lock((self + 16));
+  v2 = *(self + 32);
+  v4 = *(self + 56);
+  v3 = *(self + 64);
+  v5 = *(self + 80);
+  os_unfair_lock_unlock((self + 16));
   if (!v2)
   {
     return NAN;
@@ -243,16 +243,16 @@
   return BSDispatchTimerTimeRemainingForFireTimeWithRepeat(v4, v5, v3);
 }
 
-- (void)scheduleWithFireTime:(uint64_t)a3 repeatNanoseconds:(uint64_t)a4 leewayNanoseconds:(void *)a5 queue:(void *)a6 weakContext:(void *)a7 handler:
+- (void)scheduleWithFireTime:(uint64_t)time repeatNanoseconds:(uint64_t)nanoseconds leewayNanoseconds:(void *)leewayNanoseconds queue:(void *)queue weakContext:(void *)context handler:
 {
   v62 = *MEMORY[0x1E69E9840];
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = v16;
-  if (a1)
+  leewayNanosecondsCopy = leewayNanoseconds;
+  queueCopy = queue;
+  contextCopy = context;
+  v17 = contextCopy;
+  if (self)
   {
-    if (!v15)
+    if (!queueCopy)
     {
       v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"context"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -265,7 +265,7 @@
         v52 = 2114;
         v53 = v31;
         v54 = 2048;
-        v55 = a1;
+        selfCopy4 = self;
         v56 = 2114;
         v57 = @"BSDispatchTimer.m";
         v58 = 1024;
@@ -281,7 +281,7 @@
       JUMPOUT(0x18FF68600);
     }
 
-    if (!v14)
+    if (!leewayNanosecondsCopy)
     {
       v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"queue"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -294,7 +294,7 @@
         v52 = 2114;
         v53 = v36;
         v54 = 2048;
-        v55 = a1;
+        selfCopy4 = self;
         v56 = 2114;
         v57 = @"BSDispatchTimer.m";
         v58 = 1024;
@@ -310,7 +310,7 @@
       JUMPOUT(0x18FF68708);
     }
 
-    if (!v16)
+    if (!contextCopy)
     {
       v38 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"handler"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -323,7 +323,7 @@
         v52 = 2114;
         v53 = v41;
         v54 = 2048;
-        v55 = a1;
+        selfCopy4 = self;
         v56 = 2114;
         v57 = @"BSDispatchTimer.m";
         v58 = 1024;
@@ -340,8 +340,8 @@
     }
 
     v18 = dispatch_time(a2, 0);
-    os_unfair_lock_lock((a1 + 16));
-    if (*(a1 + 92) == 1)
+    os_unfair_lock_lock((self + 16));
+    if (*(self + 92) == 1)
     {
       v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cannot schedule after invalidating"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -354,7 +354,7 @@
         v52 = 2114;
         v53 = v46;
         v54 = 2048;
-        v55 = a1;
+        selfCopy4 = self;
         v56 = 2114;
         v57 = @"BSDispatchTimer.m";
         v58 = 1024;
@@ -370,24 +370,24 @@
       JUMPOUT(0x18FF6890CLL);
     }
 
-    if (*(a1 + 32) && *(a1 + 24) != v14)
+    if (*(self + 32) && *(self + 24) != leewayNanosecondsCopy)
     {
-      [(BSDispatchTimer *)a1 _lock_cancel];
+      [(BSDispatchTimer *)self _lock_cancel];
     }
 
-    v19 = *(a1 + 88) + 1;
-    *(a1 + 88) = v19;
-    *(a1 + 56) = v18;
-    *(a1 + 64) = a3;
-    *(a1 + 72) = a4 & ~(a4 >> 63);
-    objc_storeWeak((a1 + 40), v15);
-    objc_storeStrong((a1 + 24), a5);
+    v19 = *(self + 88) + 1;
+    *(self + 88) = v19;
+    *(self + 56) = v18;
+    *(self + 64) = time;
+    *(self + 72) = nanoseconds & ~(nanoseconds >> 63);
+    objc_storeWeak((self + 40), queueCopy);
+    objc_storeStrong((self + 24), leewayNanoseconds);
     v20 = MEMORY[0x193AE5AC0](v17);
-    v21 = *(a1 + 48);
-    *(a1 + 48) = v20;
+    v21 = *(self + 48);
+    *(self + 48) = v20;
 
-    *(a1 + 80) = 0;
-    v22 = *(a1 + 32);
+    *(self + 80) = 0;
+    v22 = *(self + 32);
     if (v22)
     {
       dispatch_suspend(v22);
@@ -395,33 +395,33 @@
 
     else
     {
-      v23 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v14);
-      v24 = *(a1 + 32);
-      *(a1 + 32) = v23;
+      v23 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, leewayNanosecondsCopy);
+      v24 = *(self + 32);
+      *(self + 32) = v23;
     }
 
-    v25 = *(a1 + 32);
+    v25 = *(self + 32);
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = __102__BSDispatchTimer_scheduleWithFireTime_repeatNanoseconds_leewayNanoseconds_queue_weakContext_handler___block_invoke;
     handler[3] = &unk_1E72CB978;
-    handler[4] = a1;
+    handler[4] = self;
     v49 = v19;
-    v26 = a1;
+    selfCopy5 = self;
     dispatch_source_set_event_handler(v25, handler);
-    if (*(a1 + 64) <= 0)
+    if (*(self + 64) <= 0)
     {
       v27 = -1;
     }
 
     else
     {
-      v27 = *(a1 + 64);
+      v27 = *(self + 64);
     }
 
-    dispatch_source_set_timer(*(a1 + 32), *(a1 + 56), v27, *(a1 + 72));
-    dispatch_resume(*(a1 + 32));
-    os_unfair_lock_unlock((a1 + 16));
+    dispatch_source_set_timer(*(self + 32), *(self + 56), v27, *(self + 72));
+    dispatch_resume(*(self + 32));
+    os_unfair_lock_unlock((self + 16));
   }
 }
 
@@ -457,26 +457,26 @@ void __102__BSDispatchTimer_scheduleWithFireTime_repeatNanoseconds_leewayNanosec
   }
 }
 
-- (void)appendDescriptionToBuilder:(int)a3 forDebugging:
+- (void)appendDescriptionToBuilder:(int)builder forDebugging:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
-    [v5 appendString:*(a1 + 8) withName:@"identifier"];
-    os_unfair_lock_lock((a1 + 16));
-    v7 = *(a1 + 32);
-    v8 = *(a1 + 56);
-    v9 = *(a1 + 64);
-    v11 = *(a1 + 72);
-    v10 = *(a1 + 80);
-    v12 = *(a1 + 92);
-    os_unfair_lock_unlock((a1 + 16));
+    [v5 appendString:*(self + 8) withName:@"identifier"];
+    os_unfair_lock_lock((self + 16));
+    v7 = *(self + 32);
+    v8 = *(self + 56);
+    v9 = *(self + 64);
+    v11 = *(self + 72);
+    v10 = *(self + 80);
+    v12 = *(self + 92);
+    os_unfair_lock_unlock((self + 16));
     v13 = [v6 appendBool:v7 != 0 withName:@"isScheduled"];
     if (v7)
     {
       v14 = [v6 appendTimeInterval:@"timeRemaining" withName:1 decomposeUnits:{BSDispatchTimerTimeRemainingForFireTimeWithRepeat(v8, v10, v9)}];
-      if (a3)
+      if (builder)
       {
         if (v9 != -1)
         {

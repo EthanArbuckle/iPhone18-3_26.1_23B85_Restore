@@ -1,5 +1,5 @@
 @interface TSDContentAnimationGroup
-- (id)i_animationWithTransformBlock:(id)a3;
+- (id)i_animationWithTransformBlock:(id)block;
 - (id)i_endLocation;
 - (void)dealloc;
 @end
@@ -13,15 +13,15 @@
   [(TSDContentAnimationGroup *)&v3 dealloc];
 }
 
-- (id)i_animationWithTransformBlock:(id)a3
+- (id)i_animationWithTransformBlock:(id)block
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v17 = self;
+  selfCopy = self;
   animations = self->_animations;
   v7 = [(NSArray *)animations countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
@@ -40,15 +40,15 @@
         v11 = *(*(&v18 + 1) + 8 * i);
         if (([v11 i_canProduceAnimation] & 1) == 0)
         {
-          v12 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler = [MEMORY[0x277D6C290] currentHandler];
           v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDContentAnimationGroup i_animationWithTransformBlock:]"];
-          [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDContentAnimation.m"), 168, @"group shouldn't contain animations that can't produce CAAnimations"}];
+          [currentHandler handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDContentAnimation.m"), 168, @"group shouldn't contain animations that can't produce CAAnimations"}];
         }
 
-        v14 = [v11 i_animationWithTransformBlock:a3];
+        v14 = [v11 i_animationWithTransformBlock:block];
         if (v14)
         {
-          [v5 addObject:v14];
+          [array addObject:v14];
         }
       }
 
@@ -58,12 +58,12 @@
     while (v8);
   }
 
-  v15 = [MEMORY[0x277CD9E00] animation];
-  [v15 setAnimations:v5];
-  [(TSDContentAnimationGroup *)v17 duration];
-  [v15 setDuration:?];
-  [v15 setTimingFunction:{-[TSDContentAnimationGroup timingFunction](v17, "timingFunction")}];
-  return v15;
+  animation = [MEMORY[0x277CD9E00] animation];
+  [animation setAnimations:array];
+  [(TSDContentAnimationGroup *)selfCopy duration];
+  [animation setDuration:?];
+  [animation setTimingFunction:{-[TSDContentAnimationGroup timingFunction](selfCopy, "timingFunction")}];
+  return animation;
 }
 
 - (id)i_endLocation

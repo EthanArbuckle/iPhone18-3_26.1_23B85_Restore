@@ -6,8 +6,8 @@
 
 - (const)_webkit_invokeAndHandleException:()WebMainThreadInvoker
 {
-  [a1 invoke];
-  result = [objc_msgSend(a1 "methodSignature")];
+  [self invoke];
+  result = [objc_msgSend(self "methodSignature")];
   v3 = result;
   if (result)
   {
@@ -50,7 +50,7 @@ LABEL_12:
         if (v6 - v3 != -1)
         {
           v7 = 0;
-          [a1 getReturnValue:&v7];
+          [self getReturnValue:&v7];
           return v7;
         }
       }

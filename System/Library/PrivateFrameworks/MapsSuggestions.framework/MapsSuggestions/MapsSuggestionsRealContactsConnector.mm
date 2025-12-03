@@ -1,12 +1,12 @@
 @interface MapsSuggestionsRealContactsConnector
 - (NSString)uniqueName;
-- (id)_contactForIdentifier:(void *)a3 usingRequest:;
-- (id)_crossPlatformUnifiedMeContactWithKeysToFetch:(id)a3 error:(id *)a4;
+- (id)_contactForIdentifier:(void *)identifier usingRequest:;
+- (id)_crossPlatformUnifiedMeContactWithKeysToFetch:(id)fetch error:(id *)error;
 - (id)_requiredKeysForRecentlySharedContactActivity;
-- (id)dataForContactWithIdentifier:(id)a3;
-- (id)imageDataForIdentifier:(id)a3;
+- (id)dataForContactWithIdentifier:(id)identifier;
+- (id)imageDataForIdentifier:(id)identifier;
 - (id)store;
-- (void)receivedNotification:(id)a3;
+- (void)receivedNotification:(id)notification;
 - (void)startListeningForChanges;
 - (void)stopListeningForChanges;
 @end
@@ -26,11 +26,11 @@ void __45__MapsSuggestionsRealContactsConnector_store__block_invoke()
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:self selector:sel_receivedNotification_ name:*MEMORY[0x1E695C3E0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_receivedNotification_ name:*MEMORY[0x1E695C3E0] object:0];
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:self selector:sel_receivedNotification_ name:MapsContactsAuthorizationGrantedNotification object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_receivedNotification_ name:MapsContactsAuthorizationGrantedNotification object:0];
   }
 
   else
@@ -51,15 +51,15 @@ void __45__MapsSuggestionsRealContactsConnector_store__block_invoke()
 
 - (void)stopListeningForChanges
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
-- (void)receivedNotification:(id)a3
+- (void)receivedNotification:(id)notification
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  notificationCopy = notification;
+  if (notificationCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v6 = GEOFindOrCreateLog();
@@ -68,14 +68,14 @@ void __45__MapsSuggestionsRealContactsConnector_store__block_invoke()
     {
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
-        v8 = [v4 name];
+        name = [notificationCopy name];
         v13 = 138412290;
-        v14 = v8;
+        v14 = name;
         _os_log_impl(&dword_1C5126000, v7, OS_LOG_TYPE_DEBUG, "Received notification: %@", &v13, 0xCu);
       }
 
-      v9 = [v4 name];
-      v10 = [v9 isEqualToString:*MEMORY[0x1E695C3E0]];
+      name2 = [notificationCopy name];
+      v10 = [name2 isEqualToString:*MEMORY[0x1E695C3E0]];
 
       if (v10)
       {
@@ -86,9 +86,9 @@ void __45__MapsSuggestionsRealContactsConnector_store__block_invoke()
       v11 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v12 = [v4 name];
+        name3 = [notificationCopy name];
         v13 = 138412290;
-        v14 = v12;
+        v14 = name3;
         _os_log_impl(&dword_1C5126000, v11, OS_LOG_TYPE_ERROR, "Got unknown notification: %@", &v13, 0xCu);
       }
     }
@@ -128,13 +128,13 @@ void __45__MapsSuggestionsRealContactsConnector_store__block_invoke()
 LABEL_15:
 }
 
-- (id)_contactForIdentifier:(void *)a3 usingRequest:
+- (id)_contactForIdentifier:(void *)identifier usingRequest:
 {
   v32[9] = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  if (self)
   {
     if (v5)
     {
@@ -144,7 +144,7 @@ LABEL_15:
       v29 = __Block_byref_object_copy__0;
       v30 = __Block_byref_object_dispose__0;
       v31 = 0;
-      v8 = v6;
+      v8 = identifierCopy;
       if (!v8)
       {
         v9 = objc_alloc(MEMORY[0x1E695CD78]);
@@ -178,26 +178,26 @@ LABEL_15:
       }
 
       [v8 setSortOrder:1];
-      v20 = [(MapsSuggestionsRealContactsConnector *)a1 store];
+      store = [(MapsSuggestionsRealContactsConnector *)self store];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __75__MapsSuggestionsRealContactsConnector__contactForIdentifier_usingRequest___block_invoke;
       v24[3] = &unk_1E81F5148;
       v24[4] = &v26;
       v25 = 0;
-      [v20 enumerateContactsWithFetchRequest:v8 error:&v25 usingBlock:v24];
+      [store enumerateContactsWithFetchRequest:v8 error:&v25 usingBlock:v24];
       v21 = v25;
 
       if (v21)
       {
         v22 = GEOFindOrCreateLog();
         [MapsSuggestionsRealContactsConnector _contactForIdentifier:v22 usingRequest:v21];
-        a1 = 0;
+        self = 0;
       }
 
       else
       {
-        a1 = v27[5];
+        self = v27[5];
       }
 
       _Block_object_dispose(&v26, 8);
@@ -206,11 +206,11 @@ LABEL_15:
     else
     {
       [MapsSuggestionsRealContactsConnector _contactForIdentifier:usingRequest:];
-      a1 = 0;
+      self = 0;
     }
   }
 
-  return a1;
+  return self;
 }
 
 void __75__MapsSuggestionsRealContactsConnector__contactForIdentifier_usingRequest___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -226,11 +226,11 @@ void __75__MapsSuggestionsRealContactsConnector__contactForIdentifier_usingReque
   *a3 = 1;
 }
 
-- (id)imageDataForIdentifier:(id)a3
+- (id)imageDataForIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v5 = objc_alloc(MEMORY[0x1E695CD78]);
     v6 = [MEMORY[0x1E695CD80] descriptorForRequiredKeysForStyle:{0, *MEMORY[0x1E695C240], *MEMORY[0x1E695C230], *MEMORY[0x1E695C278], *MEMORY[0x1E695C400], *MEMORY[0x1E695C270]}];
@@ -238,23 +238,23 @@ void __75__MapsSuggestionsRealContactsConnector__contactForIdentifier_usingReque
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:6];
     v8 = [v5 initWithKeysToFetch:v7];
 
-    v9 = [(MapsSuggestionsRealContactsConnector *)self _contactForIdentifier:v4 usingRequest:v8];
+    v9 = [(MapsSuggestionsRealContactsConnector *)self _contactForIdentifier:identifierCopy usingRequest:v8];
     v10 = 0;
     if ([v9 imageDataAvailable])
     {
-      v11 = [v9 thumbnailImageData];
-      v12 = v11;
-      if (v11)
+      thumbnailImageData = [v9 thumbnailImageData];
+      v12 = thumbnailImageData;
+      if (thumbnailImageData)
       {
-        v13 = v11;
+        imageData = thumbnailImageData;
       }
 
       else
       {
-        v13 = [v9 imageData];
+        imageData = [v9 imageData];
       }
 
-      v10 = v13;
+      v10 = imageData;
     }
   }
 
@@ -280,15 +280,15 @@ void __75__MapsSuggestionsRealContactsConnector__contactForIdentifier_usingReque
   return v10;
 }
 
-- (id)dataForContactWithIdentifier:(id)a3
+- (id)dataForContactWithIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc(MEMORY[0x1E695CD78]);
-  v6 = [(MapsSuggestionsRealContactsConnector *)self _requiredKeysForRecentlySharedContactActivity];
-  v7 = [v5 initWithKeysToFetch:v6];
+  _requiredKeysForRecentlySharedContactActivity = [(MapsSuggestionsRealContactsConnector *)self _requiredKeysForRecentlySharedContactActivity];
+  v7 = [v5 initWithKeysToFetch:_requiredKeysForRecentlySharedContactActivity];
 
-  v8 = [(MapsSuggestionsRealContactsConnector *)self _contactForIdentifier:v4 usingRequest:v7];
+  v8 = [(MapsSuggestionsRealContactsConnector *)self _contactForIdentifier:identifierCopy usingRequest:v7];
   v14 = 0;
   v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v14];
   v10 = v14;
@@ -303,7 +303,7 @@ void __75__MapsSuggestionsRealContactsConnector__contactForIdentifier_usingReque
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v16 = v4;
+      v16 = identifierCopy;
       v17 = 2112;
       v18 = v10;
       _os_log_impl(&dword_1C5126000, v12, OS_LOG_TYPE_ERROR, "Error serializing CNContact with identifier: %@. Error: %@", buf, 0x16u);
@@ -322,25 +322,25 @@ void __75__MapsSuggestionsRealContactsConnector__contactForIdentifier_usingReque
 
 - (id)store
 {
-  if (a1)
+  if (self)
   {
     if (qword_1EDC51EA0 != -1)
     {
       dispatch_once(&qword_1EDC51EA0, &__block_literal_global);
     }
 
-    a1 = _MergedGlobals;
+    self = _MergedGlobals;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)_crossPlatformUnifiedMeContactWithKeysToFetch:(id)a3 error:(id *)a4
+- (id)_crossPlatformUnifiedMeContactWithKeysToFetch:(id)fetch error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MapsSuggestionsRealContactsConnector *)self store];
-  v8 = [v7 _crossPlatformUnifiedMeContactWithKeysToFetch:v6 error:a4];
+  fetchCopy = fetch;
+  store = [(MapsSuggestionsRealContactsConnector *)self store];
+  v8 = [store _crossPlatformUnifiedMeContactWithKeysToFetch:fetchCopy error:error];
 
   return v8;
 }
@@ -348,13 +348,13 @@ void __75__MapsSuggestionsRealContactsConnector__contactForIdentifier_usingReque
 - (id)_requiredKeysForRecentlySharedContactActivity
 {
   v14[20] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v1 = [MEMORY[0x1E695CD80] descriptorForRequiredKeysForStyle:0];
     v14[0] = v1;
-    v2 = [MEMORY[0x1E695CE30] descriptorForRequiredKeys];
+    descriptorForRequiredKeys = [MEMORY[0x1E695CE30] descriptorForRequiredKeys];
     v3 = *MEMORY[0x1E695C300];
-    v14[1] = v2;
+    v14[1] = descriptorForRequiredKeys;
     v14[2] = v3;
     v4 = *MEMORY[0x1E695C2F0];
     v14[3] = *MEMORY[0x1E695C240];

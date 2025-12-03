@@ -1,5 +1,5 @@
 @interface PPSSQLitePropertyPredicate
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
@@ -10,31 +10,31 @@
   v7.receiver = self;
   v7.super_class = PPSSQLitePropertyPredicate;
   v3 = [(PPSSQLitePredicate *)&v7 hash];
-  v4 = [(PPSSQLitePropertyPredicate *)self property];
-  v5 = [v4 hash];
+  property = [(PPSSQLitePropertyPredicate *)self property];
+  v5 = [property hash];
 
   return v3 + v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v11.receiver = self;
   v11.super_class = PPSSQLitePropertyPredicate;
-  if ([(PPSSQLitePredicate *)&v11 isEqual:v4])
+  if ([(PPSSQLitePredicate *)&v11 isEqual:equalCopy])
   {
-    v5 = [(PPSSQLitePropertyPredicate *)self property];
-    v6 = [v4 property];
-    if (v5 == v6)
+    property = [(PPSSQLitePropertyPredicate *)self property];
+    property2 = [equalCopy property];
+    if (property == property2)
     {
       v9 = 1;
     }
 
     else
     {
-      v7 = [(PPSSQLitePropertyPredicate *)self property];
-      v8 = [v4 property];
-      v9 = [v7 isEqual:v8];
+      property3 = [(PPSSQLitePropertyPredicate *)self property];
+      property4 = [equalCopy property];
+      v9 = [property3 isEqual:property4];
     }
   }
 

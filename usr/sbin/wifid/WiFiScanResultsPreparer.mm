@@ -1,20 +1,20 @@
 @interface WiFiScanResultsPreparer
-+ (BOOL)wifiNetworkShouldBeProminentlyDisplayed:(__WiFiNetwork *)a3;
-- (WiFiScanResultsPreparer)initWithManager:(__WiFiDeviceManager *)a3 availabilityEngine:(id)a4 scanResults:(id)a5 disableProminentFiltering:(BOOL)a6 blacklistedSSIDs:(id)a7;
++ (BOOL)wifiNetworkShouldBeProminentlyDisplayed:(__WiFiNetwork *)displayed;
+- (WiFiScanResultsPreparer)initWithManager:(__WiFiDeviceManager *)manager availabilityEngine:(id)engine scanResults:(id)results disableProminentFiltering:(BOOL)filtering blacklistedSSIDs:(id)ds;
 - (id)topRecommendableNetwork;
-- (void)_prepareScanResults:(id)a3;
+- (void)_prepareScanResults:(id)results;
 - (void)dealloc;
 @end
 
 @implementation WiFiScanResultsPreparer
 
-- (WiFiScanResultsPreparer)initWithManager:(__WiFiDeviceManager *)a3 availabilityEngine:(id)a4 scanResults:(id)a5 disableProminentFiltering:(BOOL)a6 blacklistedSSIDs:(id)a7
+- (WiFiScanResultsPreparer)initWithManager:(__WiFiDeviceManager *)manager availabilityEngine:(id)engine scanResults:(id)results disableProminentFiltering:(BOOL)filtering blacklistedSSIDs:(id)ds
 {
   v15.receiver = self;
   v15.super_class = WiFiScanResultsPreparer;
   v12 = [(WiFiScanResultsPreparer *)&v15 init];
   v13 = v12;
-  if (!a3 || !v12)
+  if (!manager || !v12)
   {
     if (!v12)
     {
@@ -26,17 +26,17 @@ LABEL_7:
     return 0;
   }
 
-  v12->_manager = a3;
-  CFRetain(a3);
-  if (!a4)
+  v12->_manager = manager;
+  CFRetain(manager);
+  if (!engine)
   {
     goto LABEL_7;
   }
 
-  v13->_engine = a4;
-  v13->_disableProminentFiltering = a6;
-  v13->_blacklistedSSIDs = a7;
-  [(WiFiScanResultsPreparer *)v13 _prepareScanResults:a5];
+  v13->_engine = engine;
+  v13->_disableProminentFiltering = filtering;
+  v13->_blacklistedSSIDs = ds;
+  [(WiFiScanResultsPreparer *)v13 _prepareScanResults:results];
   return v13;
 }
 
@@ -54,20 +54,20 @@ LABEL_7:
   [(WiFiScanResultsPreparer *)&v4 dealloc];
 }
 
-- (void)_prepareScanResults:(id)a3
+- (void)_prepareScanResults:(id)results
 {
   v5 = objc_autoreleasePoolPush();
   v6 = os_transaction_create();
-  if (a3 && [a3 count])
+  if (results && [results count])
   {
     v64 = v5;
-    v7 = [a3 mutableCopy];
+    v7 = [results mutableCopy];
     v8 = objc_autoreleasePoolPush();
     v9 = off_100298C40;
     if (off_100298C40)
     {
       v57 = [v7 count];
-      v59 = [(WiFiScanResultsPreparer *)self disableProminentFiltering];
+      disableProminentFiltering = [(WiFiScanResultsPreparer *)self disableProminentFiltering];
       v55 = "[WiFiScanResultsPreparer _prepareScanResults:]";
       [v9 WFLog:3 message:"%s: Find recommendations for %lu networks (disableProminentFiltering: %d)"];
     }
@@ -77,7 +77,7 @@ LABEL_7:
     v109 = 0u;
     v106 = 0u;
     v107 = 0u;
-    v18 = sub_10000DBA0(v10, v11, v12, v13, v14, v15, v16, v17, v55, v57, v59, v61, v6, v64, v66, v68, v70, v72, v74, v76, v78, v80, v82, v84, key, v88, v90, v92, v94, v96, v98, v100, v102, *(&v102 + 1), v103, *(&v103 + 1), v104, *(&v104 + 1), v105, *(&v105 + 1), 0);
+    v18 = sub_10000DBA0(v10, v11, v12, v13, v14, v15, v16, v17, v55, v57, disableProminentFiltering, v61, v6, v64, v66, v68, v70, v72, v74, v76, v78, v80, v82, v84, key, v88, v90, v92, v94, v96, v98, v100, v102, *(&v102 + 1), v103, *(&v103 + 1), v104, *(&v104 + 1), v105, *(&v105 + 1), 0);
     if (v18)
     {
       v26 = v18;
@@ -97,7 +97,7 @@ LABEL_7:
       v81 = @"WiFiNetworkAttributeProminentDisplay";
       v83 = @"WiFiNetworkAttributeSource";
       v77 = v7;
-      v79 = self;
+      selfCopy = self;
       v75 = *v107;
       do
       {
@@ -146,7 +146,7 @@ LABEL_7:
                     if (off_100298C40)
                     {
                       v56 = "[WiFiScanResultsPreparer _prepareScanResults:]";
-                      v58 = [v91 SSID];
+                      sSID = [v91 SSID];
                       [v37 WFLog:3 message:"%s: %@ contains unwantedNetworkName"];
                     }
 
@@ -205,7 +205,7 @@ LABEL_25:
                               if (off_100298C40)
                               {
                                 v56 = "[WiFiScanResultsPreparer _prepareScanResults:]";
-                                v58 = [v91 SSID];
+                                sSID = [v91 SSID];
                                 [v50 WFLog:3 message:{"%s: %@ contains unwantedNetworkName, discarding public flag"}];
                               }
 
@@ -250,7 +250,7 @@ LABEL_40:
                   }
 
 LABEL_42:
-                  self = v79;
+                  self = selfCopy;
                   if ([objc_msgSend(v34 "network")] == 1 || objc_msgSend(objc_msgSend(v34, "network"), "type") == 2 || objc_msgSend(objc_msgSend(v34, "network"), "type") == 3)
                   {
                     v51 = objc_autoreleasePoolPush();
@@ -308,7 +308,7 @@ LABEL_54:
         }
 
         while ((v89 + 1) != v26);
-        v18 = sub_10000DBA0(v18, v19, v20, v21, v22, v23, v24, v25, v56, v58, v60, v62, v63, v65, v67, v69, v71, v73, v75, v77, v79, v81, v83, v85, keya, v89, v91, v93, v95, v97, v99, v101, v102, *(&v102 + 1), v103, *(&v103 + 1), v104, *(&v104 + 1), v105, *(&v105 + 1), v106);
+        v18 = sub_10000DBA0(v18, v19, v20, v21, v22, v23, v24, v25, v56, sSID, v60, v62, v63, v65, v67, v69, v71, v73, v75, v77, selfCopy, v81, v83, v85, keya, v89, v91, v93, v95, v97, v99, v101, v102, *(&v102 + 1), v103, *(&v103 + 1), v104, *(&v104 + 1), v105, *(&v105 + 1), v106);
         v26 = v18;
       }
 
@@ -332,33 +332,33 @@ LABEL_54:
   objc_autoreleasePoolPop(v5);
 }
 
-+ (BOOL)wifiNetworkShouldBeProminentlyDisplayed:(__WiFiNetwork *)a3
++ (BOOL)wifiNetworkShouldBeProminentlyDisplayed:(__WiFiNetwork *)displayed
 {
-  if (sub_10000A540(a3, @"WiFiNetworkAttributeIsKnown") || sub_10000A540(a3, @"WiFiNetworkAttributeIsPublic"))
+  if (sub_10000A540(displayed, @"WiFiNetworkAttributeIsKnown") || sub_10000A540(displayed, @"WiFiNetworkAttributeIsPublic"))
   {
     goto LABEL_9;
   }
 
-  if (sub_10000A540(a3, @"WiFiNetworkAttributeLowPopularity") || sub_10000A540(a3, @"WiFiNetworkAttributeIsSuspicious"))
+  if (sub_10000A540(displayed, @"WiFiNetworkAttributeLowPopularity") || sub_10000A540(displayed, @"WiFiNetworkAttributeIsSuspicious"))
   {
     goto LABEL_12;
   }
 
-  if (sub_10000A540(a3, @"WiFiNetworkAttributeHighQuality"))
+  if (sub_10000A540(displayed, @"WiFiNetworkAttributeHighQuality"))
   {
 LABEL_9:
     LOBYTE(v4) = 1;
     return v4;
   }
 
-  if (sub_1001776A8(a3) == 1)
+  if (sub_1001776A8(displayed) == 1)
   {
 LABEL_12:
     LOBYTE(v4) = 0;
     return v4;
   }
 
-  LODWORD(v4) = sub_10009F418(a3);
+  LODWORD(v4) = sub_10009F418(displayed);
   if (v4)
   {
     if ((v4 & 1) == 0)
@@ -366,7 +366,7 @@ LABEL_12:
       goto LABEL_9;
     }
 
-    v4 = sub_10000A540(a3, @"WiFiNetworkAttributeLowPopularity");
+    v4 = sub_10000A540(displayed, @"WiFiNetworkAttributeLowPopularity");
     if (v4)
     {
       goto LABEL_9;
@@ -387,8 +387,8 @@ LABEL_12:
   v94 = 0u;
   v91 = 0u;
   v92 = 0u;
-  v3 = [(WiFiScanResultsPreparer *)self preparedScanResults];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v91 objects:v96 count:16];
+  preparedScanResults = [(WiFiScanResultsPreparer *)self preparedScanResults];
+  v4 = [(NSArray *)preparedScanResults countByEnumeratingWithState:&v91 objects:v96 count:16];
   if (!v4)
   {
     goto LABEL_68;
@@ -396,7 +396,7 @@ LABEL_12:
 
   v5 = v4;
   v73 = 0;
-  v75 = self;
+  selfCopy = self;
   v78 = 0;
   v80 = 0;
   v6 = *v92;
@@ -407,7 +407,7 @@ LABEL_12:
     {
       if (*v92 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(preparedScanResults);
       }
 
       v8 = *(*(&v91 + 1) + 8 * v7);
@@ -425,7 +425,7 @@ LABEL_12:
               {
                 v12 = v11;
                 v13 = sub_10000A878(v8);
-                if (v13 && (v14 = v13, [(NSArray *)[(WiFiScanResultsPreparer *)v75 blacklistedSSIDs] containsObject:v13]))
+                if (v13 && (v14 = v13, [(NSArray *)[(WiFiScanResultsPreparer *)selfCopy blacklistedSSIDs] containsObject:v13]))
                 {
                   v15 = objc_autoreleasePoolPush();
                   if (off_100298C40)
@@ -505,7 +505,7 @@ LABEL_47:
     }
 
     while (v5 != v7);
-    v29 = [(NSArray *)v3 countByEnumeratingWithState:&v91 objects:v96 count:16];
+    v29 = [(NSArray *)preparedScanResults countByEnumeratingWithState:&v91 objects:v96 count:16];
     v5 = v29;
   }
 
@@ -584,12 +584,12 @@ LABEL_55:
   }
 
   v33 = v32;
-  v34 = [(WiFiAvailabilityEngine *)[(WiFiScanResultsPreparer *)v75 engine] findRecommendationsForScannedNetwork:v32];
+  v34 = [(WiFiAvailabilityEngine *)[(WiFiScanResultsPreparer *)selfCopy engine] findRecommendationsForScannedNetwork:v32];
   v35 = [v34 count];
   if (v35 < 2)
   {
-    v47 = [v34 anyObject];
-    if (v47)
+    anyObject = [v34 anyObject];
+    if (anyObject)
     {
       goto LABEL_76;
     }
@@ -597,7 +597,7 @@ LABEL_55:
 
   else
   {
-    v43 = sub_1000F8F14(v35, v36, v37, v38, v39, v40, v41, v42, v62, v64, v66, v68, v70, @"WiFiNetworkAttributePopularityScore", v73, v75, @"WiFiNetworkAttributeSource", v78, v80, @"WiFiNetworkAttributeIsNotRecommendable", 0, 0, 0, 0, 0, 0, 0, 0, v91, *(&v91 + 1), v92, *(&v92 + 1), v93, *(&v93 + 1), v94, *(&v94 + 1), v95);
+    v43 = sub_1000F8F14(v35, v36, v37, v38, v39, v40, v41, v42, v62, v64, v66, v68, v70, @"WiFiNetworkAttributePopularityScore", v73, selfCopy, @"WiFiNetworkAttributeSource", v78, v80, @"WiFiNetworkAttributeIsNotRecommendable", 0, 0, 0, 0, 0, 0, 0, 0, v91, *(&v91 + 1), v92, *(&v92 + 1), v93, *(&v93 + 1), v94, *(&v94 + 1), v95);
     if (!v43)
     {
 LABEL_80:
@@ -621,8 +621,8 @@ LABEL_61:
         objc_enumerationMutation(v34);
       }
 
-      v47 = *(v84 + 8 * v46);
-      v48 = [objc_msgSend(v47 "SSID")];
+      anyObject = *(v84 + 8 * v46);
+      v48 = [objc_msgSend(anyObject "SSID")];
       if (v48)
       {
         break;
@@ -640,27 +640,27 @@ LABEL_61:
       }
     }
 
-    if (!v47)
+    if (!anyObject)
     {
       goto LABEL_80;
     }
 
 LABEL_76:
-    if ([objc_msgSend(v47 "network")] == 2 && objc_msgSend(v47, "unwantedNetworkName"))
+    if ([objc_msgSend(anyObject "network")] == 2 && objc_msgSend(anyObject, "unwantedNetworkName"))
     {
       v59 = objc_autoreleasePoolPush();
       if (off_100298C40)
       {
-        [off_100298C40 WFLog:3 message:{"%s: recommendation (%@) found but network name (%@) is considered unwanted", "-[WiFiScanResultsPreparer topRecommendableNetwork]", v47, objc_msgSend(v47, "SSID")}];
+        [off_100298C40 WFLog:3 message:{"%s: recommendation (%@) found but network name (%@) is considered unwanted", "-[WiFiScanResultsPreparer topRecommendableNetwork]", anyObject, objc_msgSend(anyObject, "SSID")}];
       }
 
 LABEL_82:
       objc_autoreleasePoolPop(v59);
-      v47 = 0;
+      anyObject = 0;
     }
   }
 
-  return v47;
+  return anyObject;
 }
 
 @end

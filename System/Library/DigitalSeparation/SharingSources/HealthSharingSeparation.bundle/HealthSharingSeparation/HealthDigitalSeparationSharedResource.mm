@@ -1,18 +1,18 @@
 @interface HealthDigitalSeparationSharedResource
-- (HealthDigitalSeparationSharedResource)initWithDigitalSeparationEntries:(id)a3;
+- (HealthDigitalSeparationSharedResource)initWithDigitalSeparationEntries:(id)entries;
 @end
 
 @implementation HealthDigitalSeparationSharedResource
 
-- (HealthDigitalSeparationSharedResource)initWithDigitalSeparationEntries:(id)a3
+- (HealthDigitalSeparationSharedResource)initWithDigitalSeparationEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   v9.receiver = self;
   v9.super_class = HealthDigitalSeparationSharedResource;
   v5 = [(HealthDigitalSeparationSharedResource *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [entriesCopy copy];
     digitalEntries = v5->_digitalEntries;
     v5->_digitalEntries = v6;
   }

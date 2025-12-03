@@ -1,72 +1,72 @@
 @interface CUIKUserOperation
-+ (id)operationForContext:(id)a3;
-+ (id)operationWithObjects:(id)a3 span:(int64_t)a4;
-- (BOOL)_executeWithUndoDelegate:(id)a3 error:(id *)a4;
-- (BOOL)executeWithUndoDelegate:(id)a3;
-- (CUIKUserOperation)initWithObjects:(id)a3 span:(int64_t)a4 createdAsInverseOfAnotherOperation:(BOOL)a5;
++ (id)operationForContext:(id)context;
++ (id)operationWithObjects:(id)objects span:(int64_t)span;
+- (BOOL)_executeWithUndoDelegate:(id)delegate error:(id *)error;
+- (BOOL)executeWithUndoDelegate:(id)delegate;
+- (CUIKUserOperation)initWithObjects:(id)objects span:(int64_t)span createdAsInverseOfAnotherOperation:(BOOL)operation;
 - (Class)_inverseOperationClass;
 - (EKEventStore)eventStore;
 - (NSString)actionName;
 - (id)_actionName;
 - (id)_inverseOperation;
 - (id)inverseOperation;
-- (int64_t)_spanFromSpan:(int64_t)a3 objects:(id)a4;
+- (int64_t)_spanFromSpan:(int64_t)span objects:(id)objects;
 - (void)_precomputeActionName;
 - (void)_precomputeInverseOperation;
 @end
 
 @implementation CUIKUserOperation
 
-+ (id)operationForContext:(id)a3
++ (id)operationForContext:(id)context
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v4 objectsBeingEdited];
-  v7 = [v4 _currentSpan];
+  contextCopy = context;
+  v5 = [self alloc];
+  objectsBeingEdited = [contextCopy objectsBeingEdited];
+  _currentSpan = [contextCopy _currentSpan];
 
-  v8 = [v5 initWithObjects:v6 span:v7 createdAsInverseOfAnotherOperation:0];
+  v8 = [v5 initWithObjects:objectsBeingEdited span:_currentSpan createdAsInverseOfAnotherOperation:0];
 
   return v8;
 }
 
-+ (id)operationWithObjects:(id)a3 span:(int64_t)a4
++ (id)operationWithObjects:(id)objects span:(int64_t)span
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithObjects:v6 span:a4 createdAsInverseOfAnotherOperation:1];
+  objectsCopy = objects;
+  v7 = [[self alloc] initWithObjects:objectsCopy span:span createdAsInverseOfAnotherOperation:1];
 
   return v7;
 }
 
-- (CUIKUserOperation)initWithObjects:(id)a3 span:(int64_t)a4 createdAsInverseOfAnotherOperation:(BOOL)a5
+- (CUIKUserOperation)initWithObjects:(id)objects span:(int64_t)span createdAsInverseOfAnotherOperation:(BOOL)operation
 {
-  v9 = a3;
+  objectsCopy = objects;
   v17.receiver = self;
   v17.super_class = CUIKUserOperation;
   v10 = [(CUIKUserOperation *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_objects, a3);
-    v11->_span = [(CUIKUserOperation *)v11 _spanFromSpan:a4 objects:v9];
-    v12 = [v9 copy];
+    objc_storeStrong(&v10->_objects, objects);
+    v11->_span = [(CUIKUserOperation *)v11 _spanFromSpan:span objects:objectsCopy];
+    v12 = [objectsCopy copy];
     originalObjects = v11->_originalObjects;
     v11->_originalObjects = v12;
 
-    v14 = [v9 firstObject];
-    v15 = [v14 eventStore];
-    objc_storeWeak(&v11->_eventStore, v15);
+    firstObject = [objectsCopy firstObject];
+    eventStore = [firstObject eventStore];
+    objc_storeWeak(&v11->_eventStore, eventStore);
 
-    v11->_createdAsInverseOfAnotherOperation = a5;
+    v11->_createdAsInverseOfAnotherOperation = operation;
   }
 
   return v11;
 }
 
-- (int64_t)_spanFromSpan:(int64_t)a3 objects:(id)a4
+- (int64_t)_spanFromSpan:(int64_t)span objects:(id)objects
 {
-  v4 = a3;
+  spanCopy = span;
   v17 = *MEMORY[0x1E69E9840];
-  if (a3 == 1)
+  if (span == 1)
   {
     v14 = 0u;
     v15 = 0u;
@@ -78,7 +78,7 @@
     {
       v7 = v6;
       v8 = *v13;
-      v4 = 1;
+      spanCopy = 1;
 LABEL_4:
       v9 = 0;
       while (1)
@@ -111,18 +111,18 @@ LABEL_4:
     else
     {
 LABEL_11:
-      v4 = 4;
+      spanCopy = 4;
     }
   }
 
-  return v4;
+  return spanCopy;
 }
 
 - (NSString)actionName
 {
-  v3 = [(CUIKUserOperation *)self precomputedActionName];
+  precomputedActionName = [(CUIKUserOperation *)self precomputedActionName];
 
-  if (v3)
+  if (precomputedActionName)
   {
     [(CUIKUserOperation *)self precomputedActionName];
   }
@@ -138,14 +138,14 @@ LABEL_11:
 
 - (void)_precomputeActionName
 {
-  v3 = [(CUIKUserOperation *)self _actionName];
-  [(CUIKUserOperation *)self setPrecomputedActionName:v3];
+  _actionName = [(CUIKUserOperation *)self _actionName];
+  [(CUIKUserOperation *)self setPrecomputedActionName:_actionName];
 }
 
-- (BOOL)executeWithUndoDelegate:(id)a3
+- (BOOL)executeWithUndoDelegate:(id)delegate
 {
   v7 = 0;
-  v4 = [(CUIKUserOperation *)self _executeWithUndoDelegate:a3 error:&v7];
+  v4 = [(CUIKUserOperation *)self _executeWithUndoDelegate:delegate error:&v7];
   v5 = v7;
   [(CUIKUserOperation *)self setError:v5];
 
@@ -154,8 +154,8 @@ LABEL_11:
 
 - (void)_precomputeInverseOperation
 {
-  v3 = [(CUIKUserOperation *)self _inverseOperation];
-  [(CUIKUserOperation *)self setPrecomputedInverseOperation:v3];
+  _inverseOperation = [(CUIKUserOperation *)self _inverseOperation];
+  [(CUIKUserOperation *)self setPrecomputedInverseOperation:_inverseOperation];
 
   [(CUIKUserOperation *)self setInverseOperationPrecomputed:1];
 }
@@ -178,24 +178,24 @@ LABEL_11:
 
 - (id)_inverseOperation
 {
-  v3 = [(CUIKUserOperation *)self _inverseOperationClass];
-  if (v3)
+  _inverseOperationClass = [(CUIKUserOperation *)self _inverseOperationClass];
+  if (_inverseOperationClass)
   {
-    v4 = [(CUIKUserOperation *)self _objectsForInverse];
-    if ([v4 count])
+    _objectsForInverse = [(CUIKUserOperation *)self _objectsForInverse];
+    if ([_objectsForInverse count])
     {
-      v3 = [(objc_class *)v3 operationWithObjects:v4 span:[(CUIKUserOperation *)self _inverseOperationSpan]];
-      v5 = [(CUIKUserOperation *)self originalObjects];
-      [(objc_class *)v3 setOriginalObjects:v5];
+      _inverseOperationClass = [(objc_class *)_inverseOperationClass operationWithObjects:_objectsForInverse span:[(CUIKUserOperation *)self _inverseOperationSpan]];
+      originalObjects = [(CUIKUserOperation *)self originalObjects];
+      [(objc_class *)_inverseOperationClass setOriginalObjects:originalObjects];
     }
 
     else
     {
-      v3 = 0;
+      _inverseOperationClass = 0;
     }
   }
 
-  return v3;
+  return _inverseOperationClass;
 }
 
 - (EKEventStore)eventStore
@@ -212,7 +212,7 @@ LABEL_11:
   return 0;
 }
 
-- (BOOL)_executeWithUndoDelegate:(id)a3 error:(id *)a4
+- (BOOL)_executeWithUndoDelegate:(id)delegate error:(id *)error
 {
   objc_opt_class();
   OUTLINED_FUNCTION_0_4();

@@ -3,41 +3,41 @@
 - (BOOL)_queue_evaluateDisk;
 - (BOOL)_queue_evaluateKeybag;
 - (BOOL)_queue_evaluatePasscodeLocked;
-- (id)initOnQueue:(id)a3 withDownload:(id)a4 andInstallOptions:(id)a5;
-- (id)initOnQueue:(id)a3 withDownload:(id)a4 installOptions:(id)a5 pollDuration:(double)a6 keybag:(id)a7;
+- (id)initOnQueue:(id)queue withDownload:(id)download andInstallOptions:(id)options;
+- (id)initOnQueue:(id)queue withDownload:(id)download installOptions:(id)options pollDuration:(double)duration keybag:(id)keybag;
 - (unint64_t)deltaSpaceNeeded;
 - (unint64_t)unsatisfiedConstraints;
 - (void)_queue_pollSatisfied;
 - (void)dealloc;
-- (void)keybagInterface:(id)a3 hasPasscodeSetDidChange:(BOOL)a4;
-- (void)keybagInterface:(id)a3 passcodeLockedStateDidChange:(BOOL)a4;
-- (void)keybagInterfacePasscodeDidChange:(id)a3;
+- (void)keybagInterface:(id)interface hasPasscodeSetDidChange:(BOOL)change;
+- (void)keybagInterface:(id)interface passcodeLockedStateDidChange:(BOOL)change;
+- (void)keybagInterfacePasscodeDidChange:(id)change;
 - (void)refreshConstraints;
 @end
 
 @implementation SUInstallationConstraintMonitorForBatteryDiskAndKeybag
 
-- (id)initOnQueue:(id)a3 withDownload:(id)a4 andInstallOptions:(id)a5
+- (id)initOnQueue:(id)queue withDownload:(id)download andInstallOptions:(id)options
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  optionsCopy = options;
+  downloadCopy = download;
+  queueCopy = queue;
   v11 = +[SUKeybagInterface sharedInstance];
-  v12 = [(SUInstallationConstraintMonitorForBatteryDiskAndKeybag *)self initOnQueue:v10 withDownload:v9 installOptions:v8 pollDuration:v11 keybag:300.0];
+  v12 = [(SUInstallationConstraintMonitorForBatteryDiskAndKeybag *)self initOnQueue:queueCopy withDownload:downloadCopy installOptions:optionsCopy pollDuration:v11 keybag:300.0];
 
   return v12;
 }
 
-- (id)initOnQueue:(id)a3 withDownload:(id)a4 installOptions:(id)a5 pollDuration:(double)a6 keybag:(id)a7
+- (id)initOnQueue:(id)queue withDownload:(id)download installOptions:(id)options pollDuration:(double)duration keybag:(id)keybag
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  queueCopy = queue;
+  downloadCopy = download;
+  optionsCopy = options;
+  keybagCopy = keybag;
   BSDispatchQueueAssert();
   v43.receiver = self;
   v43.super_class = SUInstallationConstraintMonitorForBatteryDiskAndKeybag;
-  v16 = [(SUInstallationConstraintMonitorBase *)&v43 initOnQueue:v12 withRepresentedInstallationConstraints:53 andDownload:v13 andInstallOptions:v14];
+  v16 = [(SUInstallationConstraintMonitorBase *)&v43 initOnQueue:queueCopy withRepresentedInstallationConstraints:53 andDownload:downloadCopy andInstallOptions:optionsCopy];
   v17 = v16;
   if (v16)
   {
@@ -49,9 +49,9 @@
     *(v17 + 73) = 0;
     *(v17 + 74) = 0;
     *(v17 + 75) = 0;
-    if (v15)
+    if (keybagCopy)
     {
-      v19 = v15;
+      v19 = keybagCopy;
     }
 
     else
@@ -76,8 +76,8 @@
     v40[2] = __118__SUInstallationConstraintMonitorForBatteryDiskAndKeybag_initOnQueue_withDownload_installOptions_pollDuration_keybag___block_invoke;
     v40[3] = &unk_279CABC30;
     objc_copyWeak(v41, &location);
-    v41[1] = *&a6;
-    v36 = [v35 initWithFireInterval:v12 repeatInterval:v40 leewayInterval:a6 queue:a6 handler:0.0];
+    v41[1] = *&duration;
+    v36 = [v35 initWithFireInterval:queueCopy repeatInterval:v40 leewayInterval:duration queue:duration handler:0.0];
     v37 = *(v17 + 56);
     *(v17 + 56) = v36;
 
@@ -184,7 +184,7 @@ void __118__SUInstallationConstraintMonitorForBatteryDiskAndKeybag_initOnQueue_w
   dispatch_sync(queue, block);
 }
 
-- (void)keybagInterface:(id)a3 hasPasscodeSetDidChange:(BOOL)a4
+- (void)keybagInterface:(id)interface hasPasscodeSetDidChange:(BOOL)change
 {
   queue = self->super._queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -195,7 +195,7 @@ void __118__SUInstallationConstraintMonitorForBatteryDiskAndKeybag_initOnQueue_w
   dispatch_async(queue, block);
 }
 
-- (void)keybagInterface:(id)a3 passcodeLockedStateDidChange:(BOOL)a4
+- (void)keybagInterface:(id)interface passcodeLockedStateDidChange:(BOOL)change
 {
   queue = self->super._queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -206,7 +206,7 @@ void __118__SUInstallationConstraintMonitorForBatteryDiskAndKeybag_initOnQueue_w
   dispatch_async(queue, block);
 }
 
-- (void)keybagInterfacePasscodeDidChange:(id)a3
+- (void)keybagInterfacePasscodeDidChange:(id)change
 {
   queue = self->super._queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -233,22 +233,22 @@ void __118__SUInstallationConstraintMonitorForBatteryDiskAndKeybag_initOnQueue_w
     [(SUKeybagInterface *)self->_queue_keybag addObserver:self];
   }
 
-  v13 = [(SUInstallationConstraintMonitorForBatteryDiskAndKeybag *)self _queue_evaluateBattery];
-  v14 = [(SUInstallationConstraintMonitorForBatteryDiskAndKeybag *)self _queue_evaluateDisk];
-  v15 = [(SUInstallationConstraintMonitorForBatteryDiskAndKeybag *)self _queue_evaluateKeybag];
-  v16 = [(SUInstallationConstraintMonitorForBatteryDiskAndKeybag *)self _queue_evaluatePasscodeLocked];
-  v17 = v13;
-  if (v14)
+  _queue_evaluateBattery = [(SUInstallationConstraintMonitorForBatteryDiskAndKeybag *)self _queue_evaluateBattery];
+  _queue_evaluateDisk = [(SUInstallationConstraintMonitorForBatteryDiskAndKeybag *)self _queue_evaluateDisk];
+  _queue_evaluateKeybag = [(SUInstallationConstraintMonitorForBatteryDiskAndKeybag *)self _queue_evaluateKeybag];
+  _queue_evaluatePasscodeLocked = [(SUInstallationConstraintMonitorForBatteryDiskAndKeybag *)self _queue_evaluatePasscodeLocked];
+  v17 = _queue_evaluateBattery;
+  if (_queue_evaluateDisk)
   {
-    v17 = v13 | 4;
+    v17 = _queue_evaluateBattery | 4;
   }
 
-  if (v15)
+  if (_queue_evaluateKeybag)
   {
     v17 |= 0x10uLL;
   }
 
-  if (v16)
+  if (_queue_evaluatePasscodeLocked)
   {
     v18 = v17 | 0x20;
   }
@@ -260,8 +260,8 @@ void __118__SUInstallationConstraintMonitorForBatteryDiskAndKeybag_initOnQueue_w
 
   if (v18)
   {
-    v19 = [(SUInstallationConstraintMonitorBase *)self delegate];
-    [v19 installationConstraintMonitor:self constraintsDidChange:v18];
+    delegate = [(SUInstallationConstraintMonitorBase *)self delegate];
+    [delegate installationConstraintMonitor:self constraintsDidChange:v18];
   }
 }
 
@@ -269,10 +269,10 @@ void __118__SUInstallationConstraintMonitorForBatteryDiskAndKeybag_initOnQueue_w
 {
   queue = self->super._queue;
   BSDispatchQueueAssert();
-  v4 = [(SUInstallationConstraintMonitorBase *)self download];
-  v5 = [v4 descriptor];
-  v6 = [(SUInstallationConstraintMonitorBase *)self installOptions];
-  v7 = SUHasEnoughBatteryForInstallation(v5, v6);
+  download = [(SUInstallationConstraintMonitorBase *)self download];
+  descriptor = [download descriptor];
+  installOptions = [(SUInstallationConstraintMonitorBase *)self installOptions];
+  v7 = SUHasEnoughBatteryForInstallation(descriptor, installOptions);
 
   queue_batterySatisfied = self->_queue_batterySatisfied;
   if (queue_batterySatisfied != v7)
@@ -291,11 +291,11 @@ void __118__SUInstallationConstraintMonitorForBatteryDiskAndKeybag_initOnQueue_w
   queue = self->super._queue;
   BSDispatchQueueAssert();
   v4 = SULogInstallConstraints();
-  v5 = [(SUInstallationConstraintMonitorBase *)self download];
-  SULogInfoForSubsystem(v4, @"evaluateDisk: download: (%p)", v6, v7, v8, v9, v10, v11, v5);
+  download = [(SUInstallationConstraintMonitorBase *)self download];
+  SULogInfoForSubsystem(v4, @"evaluateDisk: download: (%p)", v6, v7, v8, v9, v10, v11, download);
 
-  v19 = [(SUInstallationConstraintMonitorBase *)self download];
-  if (!v19)
+  download2 = [(SUInstallationConstraintMonitorBase *)self download];
+  if (!download2)
   {
     v23 = @"Download instance is nil";
 LABEL_9:
@@ -311,51 +311,51 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v20 = [v19 descriptor];
+  descriptor = [download2 descriptor];
 
-  if (!v20)
+  if (!descriptor)
   {
     v23 = @"descriptor instance is nil";
     goto LABEL_9;
   }
 
-  v21 = [v19 downloadOptions];
+  downloadOptions = [download2 downloadOptions];
 
-  if (v21)
+  if (downloadOptions)
   {
-    v22 = [v19 downloadOptions];
+    downloadOptions2 = [download2 downloadOptions];
 LABEL_13:
-    v27 = v22;
-    [v22 isAutoDownload];
+    v27 = downloadOptions2;
+    [downloadOptions2 isAutoDownload];
 
     goto LABEL_14;
   }
 
-  v26 = [v19 metadata];
+  metadata = [download2 metadata];
 
-  if (v26)
+  if (metadata)
   {
-    v22 = [v19 metadata];
+    downloadOptions2 = [download2 metadata];
     goto LABEL_13;
   }
 
 LABEL_14:
   v28 = objc_alloc_init(SUSpacePurgeOptions);
-  v29 = [v19 descriptor];
-  -[SUSpacePurgeOptions setNeededBytes:](v28, "setNeededBytes:", [v29 installationSize]);
+  descriptor2 = [download2 descriptor];
+  -[SUSpacePurgeOptions setNeededBytes:](v28, "setNeededBytes:", [descriptor2 installationSize]);
 
   [(SUSpacePurgeOptions *)v28 setEnableCacheDelete:1];
   [(SUSpacePurgeOptions *)v28 setEnableAppOffload:0];
   [(SUSpacePurgeOptions *)v28 setEnableMobileAssetSuspend:0];
   [(SUSpacePurgeOptions *)v28 setCacheDeleteUrgency:4];
   v30 = [SUSpace hasSufficientSpaceWithOptions:v28 error:0];
-  v31 = [v30 hasSufficientFreeSpace];
+  hasSufficientFreeSpace = [v30 hasSufficientFreeSpace];
   self->_queue_deltaSpaceNeeded = [v30 additionalBytesRequired];
   queue_diskSatisfied = self->_queue_diskSatisfied;
-  v24 = queue_diskSatisfied != v31;
-  if (queue_diskSatisfied != v31)
+  v24 = queue_diskSatisfied != hasSufficientFreeSpace;
+  if (queue_diskSatisfied != hasSufficientFreeSpace)
   {
-    self->_queue_diskSatisfied = v31;
+    self->_queue_diskSatisfied = hasSufficientFreeSpace;
     v33 = SULogInstallConstraints();
     self->_queue_diskSatisfied;
     SULogInfoForSubsystem(v33, @"%@ - disk constraint changed (satisfied? %@)", v34, v35, v36, v37, v38, v39, self);
@@ -397,9 +397,9 @@ LABEL_10:
   queue = self->super._queue;
   BSDispatchQueueAssert();
   queue_keybag = self->_queue_keybag;
-  v5 = [(SUInstallationConstraintMonitorBase *)self download];
-  v6 = [v5 descriptor];
-  v7 = [(SUKeybagInterface *)queue_keybag installationKeybagStateForDescriptor:v6]!= 1;
+  download = [(SUInstallationConstraintMonitorBase *)self download];
+  descriptor = [download descriptor];
+  v7 = [(SUKeybagInterface *)queue_keybag installationKeybagStateForDescriptor:descriptor]!= 1;
 
   queue_keybagSatisfied = self->_queue_keybagSatisfied;
   if (queue_keybagSatisfied != v7)

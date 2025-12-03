@@ -1,14 +1,14 @@
 @interface UIStatusBarComposedData
-- (BOOL)isEqual:(id)a3;
-- (UIStatusBarComposedData)initWithRawData:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (UIStatusBarComposedData)initWithRawData:(id *)data;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)setItem:(int)a3 enabled:(BOOL)a4;
+- (void)setItem:(int)item enabled:(BOOL)enabled;
 @end
 
 @implementation UIStatusBarComposedData
 
-- (UIStatusBarComposedData)initWithRawData:(id *)a3
+- (UIStatusBarComposedData)initWithRawData:(id *)data
 {
   v7.receiver = self;
   v7.super_class = UIStatusBarComposedData;
@@ -16,9 +16,9 @@
   v5 = v4;
   if (v4)
   {
-    if (a3)
+    if (data)
     {
-      memcpy(&v4->_rawData, a3, sizeof(v4->_rawData));
+      memcpy(&v4->_rawData, data, sizeof(v4->_rawData));
     }
 
     else
@@ -31,11 +31,11 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithRawData:", -[UIStatusBarComposedData rawData](self, "rawData")}];
-  v5 = [(UIStatusBarComposedData *)self doubleHeightStatus];
-  [v4 setDoubleHeightStatus:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithRawData:", -[UIStatusBarComposedData rawData](self, "rawData")}];
+  doubleHeightStatus = [(UIStatusBarComposedData *)self doubleHeightStatus];
+  [v4 setDoubleHeightStatus:doubleHeightStatus];
 
   for (i = 0; i != 52; ++i)
   {
@@ -45,21 +45,21 @@
   return v4;
 }
 
-- (void)setItem:(int)a3 enabled:(BOOL)a4
+- (void)setItem:(int)item enabled:(BOOL)enabled
 {
-  if (a3 <= 0x33)
+  if (item <= 0x33)
   {
-    self->_itemEnabled[a3] = a4;
+    self->_itemEnabled[item] = enabled;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (memcmp(&self->_rawData, [v5 rawData], 0xF28uLL))
     {
 LABEL_3:
@@ -69,10 +69,10 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v7 = [(UIStatusBarComposedData *)self doubleHeightStatus];
-    v8 = [v5 doubleHeightStatus];
-    v9 = v7;
-    v10 = v8;
+    doubleHeightStatus = [(UIStatusBarComposedData *)self doubleHeightStatus];
+    doubleHeightStatus2 = [v5 doubleHeightStatus];
+    v9 = doubleHeightStatus;
+    v10 = doubleHeightStatus2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -96,10 +96,10 @@ LABEL_16:
       }
     }
 
-    v13 = [(UIStatusBarComposedData *)self systemNavigationItem];
-    v14 = [v5 systemNavigationItem];
-    v9 = v13;
-    v15 = v14;
+    systemNavigationItem = [(UIStatusBarComposedData *)self systemNavigationItem];
+    systemNavigationItem2 = [v5 systemNavigationItem];
+    v9 = systemNavigationItem;
+    v15 = systemNavigationItem2;
     v11 = v15;
     if (v9 == v15)
     {

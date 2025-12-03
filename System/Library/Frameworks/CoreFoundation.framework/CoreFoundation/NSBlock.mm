@@ -1,13 +1,13 @@
 @interface NSBlock
 - (id)debugDescription;
-- (void)performAfterDelay:(double)a3;
+- (void)performAfterDelay:(double)delay;
 @end
 
 @implementation NSBlock
 
-- (void)performAfterDelay:(double)a3
+- (void)performAfterDelay:(double)delay
 {
-  v4 = a3 * 1000.0 * 1000.0 * 1000.0;
+  v4 = delay * 1000.0 * 1000.0 * 1000.0;
   if (v4 <= 2)
   {
     v5 = 2;

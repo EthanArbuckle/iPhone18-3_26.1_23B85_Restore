@@ -1,35 +1,35 @@
 @interface TIHandwritingCandidate
 - (BOOL)isInlineCompletionCandidate;
-- (TIHandwritingCandidate)initWithCandidate:(id)a3 forInput:(id)a4 uniqueID:(unint64_t)a5 completionUniqueID:(unint64_t)a6;
-- (TIHandwritingCandidate)initWithCandidateResultSetCoder:(id)a3;
-- (TIHandwritingCandidate)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCandidateResultSetCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (TIHandwritingCandidate)initWithCandidate:(id)candidate forInput:(id)input uniqueID:(unint64_t)d completionUniqueID:(unint64_t)iD;
+- (TIHandwritingCandidate)initWithCandidateResultSetCoder:(id)coder;
+- (TIHandwritingCandidate)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCandidateResultSetCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TIHandwritingCandidate
 
-- (void)encodeWithCandidateResultSetCoder:(id)a3
+- (void)encodeWithCandidateResultSetCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = TIHandwritingCandidate;
-  v4 = a3;
-  [(TIKeyboardCandidateSingle *)&v5 encodeWithCandidateResultSetCoder:v4];
-  [v4 encodeUInt64:{self->_uniqueID, v5.receiver, v5.super_class}];
-  [v4 encodeUInt64:self->_completionUniqueID];
+  coderCopy = coder;
+  [(TIKeyboardCandidateSingle *)&v5 encodeWithCandidateResultSetCoder:coderCopy];
+  [coderCopy encodeUInt64:{self->_uniqueID, v5.receiver, v5.super_class}];
+  [coderCopy encodeUInt64:self->_completionUniqueID];
 }
 
-- (TIHandwritingCandidate)initWithCandidateResultSetCoder:(id)a3
+- (TIHandwritingCandidate)initWithCandidateResultSetCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = TIHandwritingCandidate;
-  v5 = [(TIKeyboardCandidateSingle *)&v7 initWithCandidateResultSetCoder:v4];
+  v5 = [(TIKeyboardCandidateSingle *)&v7 initWithCandidateResultSetCoder:coderCopy];
   if (v5)
   {
-    v5->_uniqueID = [v4 decodeUInt64];
-    v5->_completionUniqueID = [v4 decodeUInt64];
+    v5->_uniqueID = [coderCopy decodeUInt64];
+    v5->_completionUniqueID = [coderCopy decodeUInt64];
   }
 
   return v5;
@@ -37,70 +37,70 @@
 
 - (BOOL)isInlineCompletionCandidate
 {
-  v3 = [(TIHandwritingCandidate *)self uniqueID];
-  if (v3)
+  uniqueID = [(TIHandwritingCandidate *)self uniqueID];
+  if (uniqueID)
   {
-    LOBYTE(v3) = [(TIHandwritingCandidate *)self completionUniqueID]!= 0;
+    LOBYTE(uniqueID) = [(TIHandwritingCandidate *)self completionUniqueID]!= 0;
   }
 
-  return v3;
+  return uniqueID;
 }
 
-- (TIHandwritingCandidate)initWithCandidate:(id)a3 forInput:(id)a4 uniqueID:(unint64_t)a5 completionUniqueID:(unint64_t)a6
+- (TIHandwritingCandidate)initWithCandidate:(id)candidate forInput:(id)input uniqueID:(unint64_t)d completionUniqueID:(unint64_t)iD
 {
   v11.receiver = self;
   v11.super_class = TIHandwritingCandidate;
-  v8 = [(TIKeyboardCandidateSingle *)&v11 initWithCandidate:a3 forInput:a4];
+  v8 = [(TIKeyboardCandidateSingle *)&v11 initWithCandidate:candidate forInput:input];
   v9 = v8;
   if (v8)
   {
-    v8->_uniqueID = a5;
-    v8->_completionUniqueID = a6;
+    v8->_uniqueID = d;
+    v8->_completionUniqueID = iD;
     [(TIKeyboardCandidate *)v8 setTypingEngine:6];
   }
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = TIHandwritingCandidate;
-  [(TIKeyboardCandidateSingle *)&v7 encodeWithCoder:v4];
+  [(TIKeyboardCandidateSingle *)&v7 encodeWithCoder:coderCopy];
   uniqueID = self->_uniqueID;
   if (uniqueID)
   {
-    [v4 encodeInt64:uniqueID forKey:@"uniqueID"];
+    [coderCopy encodeInt64:uniqueID forKey:@"uniqueID"];
   }
 
   completionUniqueID = self->_completionUniqueID;
   if (completionUniqueID)
   {
-    [v4 encodeInt64:completionUniqueID forKey:@"completionUniqueID"];
+    [coderCopy encodeInt64:completionUniqueID forKey:@"completionUniqueID"];
   }
 }
 
-- (TIHandwritingCandidate)initWithCoder:(id)a3
+- (TIHandwritingCandidate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = TIHandwritingCandidate;
-  v5 = [(TIKeyboardCandidateSingle *)&v7 initWithCoder:v4];
+  v5 = [(TIKeyboardCandidateSingle *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_uniqueID = [v4 decodeInt64ForKey:@"uniqueID"];
-    v5->_completionUniqueID = [v4 decodeInt64ForKey:@"completionUniqueID"];
+    v5->_uniqueID = [coderCopy decodeInt64ForKey:@"uniqueID"];
+    v5->_completionUniqueID = [coderCopy decodeInt64ForKey:@"completionUniqueID"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = TIHandwritingCandidate;
-  result = [(TIKeyboardCandidateSingle *)&v5 copyWithZone:a3];
+  result = [(TIKeyboardCandidateSingle *)&v5 copyWithZone:zone];
   if (result)
   {
     *(result + 29) = self->_uniqueID;

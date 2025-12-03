@@ -3,9 +3,9 @@
 - (SUIAShockwavePrototypeSettings)shockwaveSettings;
 - (SUIAStingPrototypeSettings)stingSettings;
 - (void)setDefaultValues;
-- (void)setScanwaveSettings:(id)a3;
-- (void)setShockwaveSettings:(id)a3;
-- (void)setStingSettings:(id)a3;
+- (void)setScanwaveSettings:(id)settings;
+- (void)setShockwaveSettings:(id)settings;
+- (void)setStingSettings:(id)settings;
 @end
 
 @implementation SUIAnimationKitPrototypeSettings
@@ -17,13 +17,13 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setShockwaveSettings:(id)a3
+- (void)setShockwaveSettings:(id)settings
 {
   v5 = OBJC_IVAR___SUIAnimationKitPrototypeSettings_shockwaveSettings;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = settings;
+  settingsCopy = settings;
 }
 
 - (SUIAStingPrototypeSettings)stingSettings
@@ -33,35 +33,35 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setStingSettings:(id)a3
+- (void)setStingSettings:(id)settings
 {
   v5 = OBJC_IVAR___SUIAnimationKitPrototypeSettings_stingSettings;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = settings;
+  settingsCopy = settings;
 }
 
-- (void)setScanwaveSettings:(id)a3
+- (void)setScanwaveSettings:(id)settings
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR___SUIAnimationKitPrototypeSettings_scanwaveSettings);
-  *(&self->super.super.isa + OBJC_IVAR___SUIAnimationKitPrototypeSettings_scanwaveSettings) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR___SUIAnimationKitPrototypeSettings_scanwaveSettings) = settings;
+  settingsCopy = settings;
 }
 
 - (void)setDefaultValues
 {
   v5.receiver = self;
   v5.super_class = SUIAnimationKitPrototypeSettings;
-  v2 = self;
+  selfCopy = self;
   [(PTSettings *)&v5 setDefaultValues];
-  v3 = [(SUIAnimationKitPrototypeSettings *)v2 shockwaveSettings:v5.receiver];
+  v3 = [(SUIAnimationKitPrototypeSettings *)selfCopy shockwaveSettings:v5.receiver];
   [(SUIAShockwavePrototypeSettings *)v3 setDefaultValues];
 
-  v4 = [(SUIAnimationKitPrototypeSettings *)v2 stingSettings];
-  [(SUIAStingPrototypeSettings *)v4 setDefaultValues];
+  stingSettings = [(SUIAnimationKitPrototypeSettings *)selfCopy stingSettings];
+  [(SUIAStingPrototypeSettings *)stingSettings setDefaultValues];
 
-  [*(&v2->super.super.isa + OBJC_IVAR___SUIAnimationKitPrototypeSettings_scanwaveSettings) setDefaultValues];
+  [*(&selfCopy->super.super.isa + OBJC_IVAR___SUIAnimationKitPrototypeSettings_scanwaveSettings) setDefaultValues];
 }
 
 + (id)settingsControllerModule

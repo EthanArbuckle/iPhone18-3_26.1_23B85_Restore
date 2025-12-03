@@ -1,65 +1,65 @@
 @interface EKTravelEngineHypothesis
-+ (id)syntheticHypothesisWithStartDate:(id)a3 conservativeTravelTime:(double)a4 estimatedTravelTime:(double)a5 aggressiveTravelTime:(double)a6;
-- (BOOL)compareTravelSections:(id)a3 comparedSection:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToHypothesis:(id)a3;
++ (id)syntheticHypothesisWithStartDate:(id)date conservativeTravelTime:(double)time estimatedTravelTime:(double)travelTime aggressiveTravelTime:(double)aggressiveTravelTime;
+- (BOOL)compareTravelSections:(id)sections comparedSection:(id)section;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToHypothesis:(id)hypothesis;
 - (BOOL)isMultiModal;
-- (EKTravelEngineHypothesis)initWithCoder:(id)a3;
-- (EKTravelEngineHypothesis)initWithTransportType:(int)a3 conservativeDepartureDate:(id)a4 conservativeTravelTime:(double)a5 suggestedDepartureDate:(id)a6 estimatedTravelTime:(double)a7 aggressiveDepartureDate:(id)a8 aggressiveTravelTime:(double)a9 routeName:(id)a10 supportsLiveTraffic:(BOOL)a11 currentTrafficDensity:(unint64_t)a12 trafficDensityDescription:(id)a13 travelState:(int64_t)a14 travelSections:(id)a15;
+- (EKTravelEngineHypothesis)initWithCoder:(id)coder;
+- (EKTravelEngineHypothesis)initWithTransportType:(int)type conservativeDepartureDate:(id)date conservativeTravelTime:(double)time suggestedDepartureDate:(id)departureDate estimatedTravelTime:(double)travelTime aggressiveDepartureDate:(id)aggressiveDepartureDate aggressiveTravelTime:(double)aggressiveTravelTime routeName:(id)self0 supportsLiveTraffic:(BOOL)self1 currentTrafficDensity:(unint64_t)self2 trafficDensityDescription:(id)self3 travelState:(int64_t)self4 travelSections:(id)self5;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EKTravelEngineHypothesis
 
-- (EKTravelEngineHypothesis)initWithTransportType:(int)a3 conservativeDepartureDate:(id)a4 conservativeTravelTime:(double)a5 suggestedDepartureDate:(id)a6 estimatedTravelTime:(double)a7 aggressiveDepartureDate:(id)a8 aggressiveTravelTime:(double)a9 routeName:(id)a10 supportsLiveTraffic:(BOOL)a11 currentTrafficDensity:(unint64_t)a12 trafficDensityDescription:(id)a13 travelState:(int64_t)a14 travelSections:(id)a15
+- (EKTravelEngineHypothesis)initWithTransportType:(int)type conservativeDepartureDate:(id)date conservativeTravelTime:(double)time suggestedDepartureDate:(id)departureDate estimatedTravelTime:(double)travelTime aggressiveDepartureDate:(id)aggressiveDepartureDate aggressiveTravelTime:(double)aggressiveTravelTime routeName:(id)self0 supportsLiveTraffic:(BOOL)self1 currentTrafficDensity:(unint64_t)self2 trafficDensityDescription:(id)self3 travelState:(int64_t)self4 travelSections:(id)self5
 {
-  v23 = a4;
-  v24 = a6;
-  v25 = a8;
-  v26 = a10;
-  v27 = a13;
-  v28 = a15;
+  dateCopy = date;
+  departureDateCopy = departureDate;
+  aggressiveDepartureDateCopy = aggressiveDepartureDate;
+  nameCopy = name;
+  descriptionCopy = description;
+  sectionsCopy = sections;
   v45.receiver = self;
   v45.super_class = EKTravelEngineHypothesis;
   v29 = [(EKTravelEngineHypothesis *)&v45 init];
   v30 = v29;
   if (v29)
   {
-    v29->_transportType = a3;
-    v31 = [v23 copy];
+    v29->_transportType = type;
+    v31 = [dateCopy copy];
     conservativeDepartureDate = v30->_conservativeDepartureDate;
     v30->_conservativeDepartureDate = v31;
 
-    v30->_conservativeTravelTime = a5;
-    v33 = [v24 copy];
+    v30->_conservativeTravelTime = time;
+    v33 = [departureDateCopy copy];
     suggestedDepartureDate = v30->_suggestedDepartureDate;
     v30->_suggestedDepartureDate = v33;
 
-    v30->_estimatedTravelTime = a7;
-    v35 = [v25 copy];
+    v30->_estimatedTravelTime = travelTime;
+    v35 = [aggressiveDepartureDateCopy copy];
     aggressiveDepartureDate = v30->_aggressiveDepartureDate;
     v30->_aggressiveDepartureDate = v35;
 
-    v30->_aggressiveTravelTime = a9;
-    v37 = [v26 copy];
+    v30->_aggressiveTravelTime = aggressiveTravelTime;
+    v37 = [nameCopy copy];
     routeName = v30->_routeName;
     v30->_routeName = v37;
 
-    v30->_supportsLiveTraffic = a11;
-    v30->_currentTrafficDensity = a12;
-    v39 = [v27 copy];
+    v30->_supportsLiveTraffic = traffic;
+    v30->_currentTrafficDensity = density;
+    v39 = [descriptionCopy copy];
     trafficDensityDescription = v30->_trafficDensityDescription;
     v30->_trafficDensityDescription = v39;
 
-    v30->_travelState = a14;
-    v41 = [MEMORY[0x1E695DF00] date];
+    v30->_travelState = state;
+    date = [MEMORY[0x1E695DF00] date];
     creationDate = v30->_creationDate;
-    v30->_creationDate = v41;
+    v30->_creationDate = date;
 
-    objc_storeStrong(&v30->_travelSections, a15);
+    objc_storeStrong(&v30->_travelSections, sections);
   }
 
   return v30;
@@ -69,46 +69,46 @@
 {
   v19 = MEMORY[0x1E696AEC0];
   v18 = objc_opt_class();
-  v3 = [(EKTravelEngineHypothesis *)self transportType];
-  if (v3 >= 7)
+  transportType = [(EKTravelEngineHypothesis *)self transportType];
+  if (transportType >= 7)
   {
-    v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v3];
+    v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", transportType];
   }
 
   else
   {
-    v20 = off_1E77FEC90[v3];
+    v20 = off_1E77FEC90[transportType];
   }
 
-  v24 = [(EKTravelEngineHypothesis *)self conservativeDepartureDate];
+  conservativeDepartureDate = [(EKTravelEngineHypothesis *)self conservativeDepartureDate];
   v4 = MEMORY[0x1E696AD98];
   [(EKTravelEngineHypothesis *)self conservativeTravelTime];
   v23 = [v4 numberWithDouble:?];
-  v22 = [(EKTravelEngineHypothesis *)self suggestedDepartureDate];
+  suggestedDepartureDate = [(EKTravelEngineHypothesis *)self suggestedDepartureDate];
   v5 = MEMORY[0x1E696AD98];
   [(EKTravelEngineHypothesis *)self estimatedTravelTime];
   v21 = [v5 numberWithDouble:?];
-  v6 = [(EKTravelEngineHypothesis *)self aggressiveDepartureDate];
+  aggressiveDepartureDate = [(EKTravelEngineHypothesis *)self aggressiveDepartureDate];
   v7 = MEMORY[0x1E696AD98];
   [(EKTravelEngineHypothesis *)self aggressiveTravelTime];
   v17 = [v7 numberWithDouble:?];
-  v8 = [(EKTravelEngineHypothesis *)self routeName];
+  routeName = [(EKTravelEngineHypothesis *)self routeName];
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[EKTravelEngineHypothesis supportsLiveTraffic](self, "supportsLiveTraffic")}];
   v10 = [EKTravelEngineUtilities geoTrafficDensityAsString:[(EKTravelEngineHypothesis *)self currentTrafficDensity]];
-  v11 = [(EKTravelEngineHypothesis *)self trafficDensityDescription];
-  v12 = [(EKTravelEngineHypothesis *)self travelState];
-  if (v12 >= 6)
+  trafficDensityDescription = [(EKTravelEngineHypothesis *)self trafficDensityDescription];
+  travelState = [(EKTravelEngineHypothesis *)self travelState];
+  if (travelState >= 6)
   {
-    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %lu)", v12];
+    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %lu)", travelState];
   }
 
   else
   {
-    v13 = off_1E77FECC8[v12];
+    v13 = off_1E77FECC8[travelState];
   }
 
-  v14 = [(EKTravelEngineHypothesis *)self creationDate];
-  v15 = [v19 stringWithFormat:@"<%@: %p>(transportType = %@, conservativeDepartureDate = %@, conservativeTravelTime = %@, suggestedDepartureDate = %@, estimatedTravelTime = %@, aggressiveDepartureDate = %@, aggressiveTravelTime = %@, routeName = %@, supportsLiveTraffic = %@, currentTrafficDensity = %@, trafficDensityDescription = %@, travelState = %@, creationDate = %@)", v18, self, v20, v24, v23, v22, v21, v6, v17, v8, v9, v10, v11, v13, v14];
+  creationDate = [(EKTravelEngineHypothesis *)self creationDate];
+  v15 = [v19 stringWithFormat:@"<%@: %p>(transportType = %@, conservativeDepartureDate = %@, conservativeTravelTime = %@, suggestedDepartureDate = %@, estimatedTravelTime = %@, aggressiveDepartureDate = %@, aggressiveTravelTime = %@, routeName = %@, supportsLiveTraffic = %@, currentTrafficDensity = %@, trafficDensityDescription = %@, travelState = %@, creationDate = %@)", v18, self, v20, conservativeDepartureDate, v23, suggestedDepartureDate, v21, aggressiveDepartureDate, v17, routeName, v9, v10, trafficDensityDescription, v13, creationDate];
 
   return v15;
 }
@@ -124,32 +124,32 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(EKTravelEngineHypothesis *)self isEqualToHypothesis:v4];
+  equalCopy = equal;
+  v5 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(EKTravelEngineHypothesis *)self isEqualToHypothesis:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToHypothesis:(id)a3
+- (BOOL)isEqualToHypothesis:(id)hypothesis
 {
-  v4 = a3;
-  if (self == v4)
+  hypothesisCopy = hypothesis;
+  if (self == hypothesisCopy)
   {
     v35 = 1;
   }
 
   else
   {
-    v5 = [(EKTravelEngineHypothesis *)self transportType];
-    if (v5 != [(EKTravelEngineHypothesis *)v4 transportType])
+    transportType = [(EKTravelEngineHypothesis *)self transportType];
+    if (transportType != [(EKTravelEngineHypothesis *)hypothesisCopy transportType])
     {
       goto LABEL_15;
     }
 
-    v6 = [(EKTravelEngineHypothesis *)self conservativeDepartureDate];
-    v7 = [(EKTravelEngineHypothesis *)v4 conservativeDepartureDate];
+    conservativeDepartureDate = [(EKTravelEngineHypothesis *)self conservativeDepartureDate];
+    conservativeDepartureDate2 = [(EKTravelEngineHypothesis *)hypothesisCopy conservativeDepartureDate];
     v8 = CalEqualObjects();
 
     if (!v8)
@@ -159,14 +159,14 @@
 
     [(EKTravelEngineHypothesis *)self conservativeTravelTime];
     v10 = v9;
-    [(EKTravelEngineHypothesis *)v4 conservativeTravelTime];
+    [(EKTravelEngineHypothesis *)hypothesisCopy conservativeTravelTime];
     if (v10 != v11)
     {
       goto LABEL_15;
     }
 
-    v12 = [(EKTravelEngineHypothesis *)self suggestedDepartureDate];
-    v13 = [(EKTravelEngineHypothesis *)v4 suggestedDepartureDate];
+    suggestedDepartureDate = [(EKTravelEngineHypothesis *)self suggestedDepartureDate];
+    suggestedDepartureDate2 = [(EKTravelEngineHypothesis *)hypothesisCopy suggestedDepartureDate];
     v14 = CalEqualObjects();
 
     if (!v14)
@@ -176,14 +176,14 @@
 
     [(EKTravelEngineHypothesis *)self estimatedTravelTime];
     v16 = v15;
-    [(EKTravelEngineHypothesis *)v4 estimatedTravelTime];
+    [(EKTravelEngineHypothesis *)hypothesisCopy estimatedTravelTime];
     if (v16 != v17)
     {
       goto LABEL_15;
     }
 
-    v18 = [(EKTravelEngineHypothesis *)self aggressiveDepartureDate];
-    v19 = [(EKTravelEngineHypothesis *)v4 aggressiveDepartureDate];
+    aggressiveDepartureDate = [(EKTravelEngineHypothesis *)self aggressiveDepartureDate];
+    aggressiveDepartureDate2 = [(EKTravelEngineHypothesis *)hypothesisCopy aggressiveDepartureDate];
     v20 = CalEqualObjects();
 
     if (!v20)
@@ -193,14 +193,14 @@
 
     [(EKTravelEngineHypothesis *)self aggressiveTravelTime];
     v22 = v21;
-    [(EKTravelEngineHypothesis *)v4 aggressiveTravelTime];
+    [(EKTravelEngineHypothesis *)hypothesisCopy aggressiveTravelTime];
     if (v22 != v23)
     {
       goto LABEL_15;
     }
 
-    v24 = [(EKTravelEngineHypothesis *)self routeName];
-    v25 = [(EKTravelEngineHypothesis *)v4 routeName];
+    routeName = [(EKTravelEngineHypothesis *)self routeName];
+    routeName2 = [(EKTravelEngineHypothesis *)hypothesisCopy routeName];
     v26 = CalEqualStrings();
 
     if (!v26)
@@ -208,20 +208,20 @@
       goto LABEL_15;
     }
 
-    v27 = [(EKTravelEngineHypothesis *)self supportsLiveTraffic];
-    if (v27 != [(EKTravelEngineHypothesis *)v4 supportsLiveTraffic])
+    supportsLiveTraffic = [(EKTravelEngineHypothesis *)self supportsLiveTraffic];
+    if (supportsLiveTraffic != [(EKTravelEngineHypothesis *)hypothesisCopy supportsLiveTraffic])
     {
       goto LABEL_15;
     }
 
-    v28 = [(EKTravelEngineHypothesis *)self currentTrafficDensity];
-    if (v28 != [(EKTravelEngineHypothesis *)v4 currentTrafficDensity])
+    currentTrafficDensity = [(EKTravelEngineHypothesis *)self currentTrafficDensity];
+    if (currentTrafficDensity != [(EKTravelEngineHypothesis *)hypothesisCopy currentTrafficDensity])
     {
       goto LABEL_15;
     }
 
-    v29 = [(EKTravelEngineHypothesis *)self trafficDensityDescription];
-    v30 = [(EKTravelEngineHypothesis *)v4 trafficDensityDescription];
+    trafficDensityDescription = [(EKTravelEngineHypothesis *)self trafficDensityDescription];
+    trafficDensityDescription2 = [(EKTravelEngineHypothesis *)hypothesisCopy trafficDensityDescription];
     v31 = CalEqualStrings();
 
     if (!v31)
@@ -229,12 +229,12 @@
       goto LABEL_15;
     }
 
-    v32 = [(EKTravelEngineHypothesis *)self travelState];
-    if (v32 == [(EKTravelEngineHypothesis *)v4 travelState])
+    travelState = [(EKTravelEngineHypothesis *)self travelState];
+    if (travelState == [(EKTravelEngineHypothesis *)hypothesisCopy travelState])
     {
-      v33 = [(EKTravelEngineHypothesis *)self travelSections];
-      v34 = [(EKTravelEngineHypothesis *)v4 travelSections];
-      v35 = [(EKTravelEngineHypothesis *)self compareTravelSections:v33 comparedSection:v34];
+      travelSections = [(EKTravelEngineHypothesis *)self travelSections];
+      travelSections2 = [(EKTravelEngineHypothesis *)hypothesisCopy travelSections];
+      v35 = [(EKTravelEngineHypothesis *)self compareTravelSections:travelSections comparedSection:travelSections2];
     }
 
     else
@@ -247,20 +247,20 @@ LABEL_15:
   return v35;
 }
 
-- (BOOL)compareTravelSections:(id)a3 comparedSection:(id)a4
+- (BOOL)compareTravelSections:(id)sections comparedSection:(id)section
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
-  if (v7 == [v6 count])
+  sectionsCopy = sections;
+  sectionCopy = section;
+  v7 = [sectionsCopy count];
+  if (v7 == [sectionCopy count])
   {
-    v8 = [v6 objectEnumerator];
+    objectEnumerator = [sectionCopy objectEnumerator];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v9 = v5;
+    v9 = sectionsCopy;
     v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v10)
     {
@@ -276,11 +276,11 @@ LABEL_15:
           }
 
           v14 = *(*(&v23 + 1) + 8 * i);
-          v15 = [v8 nextObject];
+          nextObject = [objectEnumerator nextObject];
           [v14 estimatedTravelTime];
           v17 = v16;
-          [v15 estimatedTravelTime];
-          if (v17 != v18 || (v19 = [v14 transportType], v19 != objc_msgSend(v15, "transportType")))
+          [nextObject estimatedTravelTime];
+          if (v17 != v18 || (v19 = [v14 transportType], v19 != objc_msgSend(nextObject, "transportType")))
           {
 
             v20 = 0;
@@ -318,163 +318,163 @@ LABEL_15:
 
 - (unint64_t)hash
 {
-  v3 = [(EKTravelEngineHypothesis *)self transportType];
-  v4 = [(EKTravelEngineHypothesis *)self conservativeDepartureDate];
-  v5 = [v4 hash] ^ v3;
+  transportType = [(EKTravelEngineHypothesis *)self transportType];
+  conservativeDepartureDate = [(EKTravelEngineHypothesis *)self conservativeDepartureDate];
+  v5 = [conservativeDepartureDate hash] ^ transportType;
 
   v6 = MEMORY[0x1E696AD98];
   [(EKTravelEngineHypothesis *)self conservativeTravelTime];
   v7 = [v6 numberWithDouble:?];
   v8 = [v7 hash];
 
-  v9 = [(EKTravelEngineHypothesis *)self suggestedDepartureDate];
-  v10 = v5 ^ [v9 hash] ^ v8;
+  suggestedDepartureDate = [(EKTravelEngineHypothesis *)self suggestedDepartureDate];
+  v10 = v5 ^ [suggestedDepartureDate hash] ^ v8;
 
   v11 = MEMORY[0x1E696AD98];
   [(EKTravelEngineHypothesis *)self estimatedTravelTime];
   v12 = [v11 numberWithDouble:?];
   v13 = [v12 hash];
 
-  v14 = [(EKTravelEngineHypothesis *)self aggressiveDepartureDate];
-  v15 = v10 ^ v13 ^ [v14 hash];
+  aggressiveDepartureDate = [(EKTravelEngineHypothesis *)self aggressiveDepartureDate];
+  v15 = v10 ^ v13 ^ [aggressiveDepartureDate hash];
 
   v16 = MEMORY[0x1E696AD98];
   [(EKTravelEngineHypothesis *)self aggressiveTravelTime];
   v17 = [v16 numberWithDouble:?];
   v18 = [v17 hash];
 
-  v19 = [(EKTravelEngineHypothesis *)self routeName];
-  v20 = v18 ^ [v19 hash];
+  routeName = [(EKTravelEngineHypothesis *)self routeName];
+  v20 = v18 ^ [routeName hash];
 
   v21 = v15 ^ v20 ^ [(EKTravelEngineHypothesis *)self supportsLiveTraffic];
-  v22 = [(EKTravelEngineHypothesis *)self currentTrafficDensity];
-  v23 = [(EKTravelEngineHypothesis *)self trafficDensityDescription];
-  v24 = v22 ^ [v23 hash];
+  currentTrafficDensity = [(EKTravelEngineHypothesis *)self currentTrafficDensity];
+  trafficDensityDescription = [(EKTravelEngineHypothesis *)self trafficDensityDescription];
+  v24 = currentTrafficDensity ^ [trafficDensityDescription hash];
 
   return v21 ^ v24 ^ [(EKTravelEngineHypothesis *)self travelState];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v22 = [EKMutableTravelEngineHypothesis allocWithZone:a3];
-  v4 = [(EKTravelEngineHypothesis *)self transportType];
-  v5 = [(EKTravelEngineHypothesis *)self conservativeDepartureDate];
+  v22 = [EKMutableTravelEngineHypothesis allocWithZone:zone];
+  transportType = [(EKTravelEngineHypothesis *)self transportType];
+  conservativeDepartureDate = [(EKTravelEngineHypothesis *)self conservativeDepartureDate];
   [(EKTravelEngineHypothesis *)self conservativeTravelTime];
   v7 = v6;
-  v8 = [(EKTravelEngineHypothesis *)self suggestedDepartureDate];
+  suggestedDepartureDate = [(EKTravelEngineHypothesis *)self suggestedDepartureDate];
   [(EKTravelEngineHypothesis *)self estimatedTravelTime];
   v10 = v9;
-  v11 = [(EKTravelEngineHypothesis *)self aggressiveDepartureDate];
+  aggressiveDepartureDate = [(EKTravelEngineHypothesis *)self aggressiveDepartureDate];
   [(EKTravelEngineHypothesis *)self aggressiveTravelTime];
   v13 = v12;
-  v14 = [(EKTravelEngineHypothesis *)self routeName];
-  v15 = [(EKTravelEngineHypothesis *)self supportsLiveTraffic];
-  v16 = [(EKTravelEngineHypothesis *)self currentTrafficDensity];
-  v17 = [(EKTravelEngineHypothesis *)self trafficDensityDescription];
-  v18 = [(EKTravelEngineHypothesis *)self travelState];
-  v19 = [(EKTravelEngineHypothesis *)self travelSections];
-  v20 = [(EKTravelEngineHypothesis *)v22 initWithTransportType:v4 conservativeDepartureDate:v5 conservativeTravelTime:v8 suggestedDepartureDate:v11 estimatedTravelTime:v14 aggressiveDepartureDate:v15 aggressiveTravelTime:v7 routeName:v10 supportsLiveTraffic:v13 currentTrafficDensity:v16 trafficDensityDescription:v17 travelState:v18 travelSections:v19];
+  routeName = [(EKTravelEngineHypothesis *)self routeName];
+  supportsLiveTraffic = [(EKTravelEngineHypothesis *)self supportsLiveTraffic];
+  currentTrafficDensity = [(EKTravelEngineHypothesis *)self currentTrafficDensity];
+  trafficDensityDescription = [(EKTravelEngineHypothesis *)self trafficDensityDescription];
+  travelState = [(EKTravelEngineHypothesis *)self travelState];
+  travelSections = [(EKTravelEngineHypothesis *)self travelSections];
+  v20 = [(EKTravelEngineHypothesis *)v22 initWithTransportType:transportType conservativeDepartureDate:conservativeDepartureDate conservativeTravelTime:suggestedDepartureDate suggestedDepartureDate:aggressiveDepartureDate estimatedTravelTime:routeName aggressiveDepartureDate:supportsLiveTraffic aggressiveTravelTime:v7 routeName:v10 supportsLiveTraffic:v13 currentTrafficDensity:currentTrafficDensity trafficDensityDescription:trafficDensityDescription travelState:travelState travelSections:travelSections];
 
   return v20;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithInt:{-[EKTravelEngineHypothesis transportType](self, "transportType")}];
-  [v5 encodeObject:v6 forKey:@"transportType"];
+  [coderCopy encodeObject:v6 forKey:@"transportType"];
 
-  v7 = [(EKTravelEngineHypothesis *)self conservativeDepartureDate];
-  [v5 encodeObject:v7 forKey:@"conservativeDepartureDate"];
+  conservativeDepartureDate = [(EKTravelEngineHypothesis *)self conservativeDepartureDate];
+  [coderCopy encodeObject:conservativeDepartureDate forKey:@"conservativeDepartureDate"];
 
   v8 = MEMORY[0x1E696AD98];
   [(EKTravelEngineHypothesis *)self conservativeTravelTime];
   v9 = [v8 numberWithDouble:?];
-  [v5 encodeObject:v9 forKey:@"conservativeTravelTime"];
+  [coderCopy encodeObject:v9 forKey:@"conservativeTravelTime"];
 
-  v10 = [(EKTravelEngineHypothesis *)self suggestedDepartureDate];
-  [v5 encodeObject:v10 forKey:@"suggestedDepartureDate"];
+  suggestedDepartureDate = [(EKTravelEngineHypothesis *)self suggestedDepartureDate];
+  [coderCopy encodeObject:suggestedDepartureDate forKey:@"suggestedDepartureDate"];
 
   v11 = MEMORY[0x1E696AD98];
   [(EKTravelEngineHypothesis *)self estimatedTravelTime];
   v12 = [v11 numberWithDouble:?];
-  [v5 encodeObject:v12 forKey:@"estimatedTravelTime"];
+  [coderCopy encodeObject:v12 forKey:@"estimatedTravelTime"];
 
-  v13 = [(EKTravelEngineHypothesis *)self aggressiveDepartureDate];
-  [v5 encodeObject:v13 forKey:@"aggressiveDepartureDate"];
+  aggressiveDepartureDate = [(EKTravelEngineHypothesis *)self aggressiveDepartureDate];
+  [coderCopy encodeObject:aggressiveDepartureDate forKey:@"aggressiveDepartureDate"];
 
   v14 = MEMORY[0x1E696AD98];
   [(EKTravelEngineHypothesis *)self aggressiveTravelTime];
   v15 = [v14 numberWithDouble:?];
-  [v5 encodeObject:v15 forKey:@"aggressiveTravelTime"];
+  [coderCopy encodeObject:v15 forKey:@"aggressiveTravelTime"];
 
-  v16 = [(EKTravelEngineHypothesis *)self routeName];
-  [v5 encodeObject:v16 forKey:@"routeName"];
+  routeName = [(EKTravelEngineHypothesis *)self routeName];
+  [coderCopy encodeObject:routeName forKey:@"routeName"];
 
   v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[EKTravelEngineHypothesis supportsLiveTraffic](self, "supportsLiveTraffic")}];
-  [v5 encodeObject:v17 forKey:@"supportsLiveTraffic"];
+  [coderCopy encodeObject:v17 forKey:@"supportsLiveTraffic"];
 
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[EKTravelEngineHypothesis currentTrafficDensity](self, "currentTrafficDensity")}];
-  [v5 encodeObject:v18 forKey:@"currentTrafficDensity"];
+  [coderCopy encodeObject:v18 forKey:@"currentTrafficDensity"];
 
-  v19 = [(EKTravelEngineHypothesis *)self trafficDensityDescription];
-  [v5 encodeObject:v19 forKey:@"trafficDensityDescription"];
+  trafficDensityDescription = [(EKTravelEngineHypothesis *)self trafficDensityDescription];
+  [coderCopy encodeObject:trafficDensityDescription forKey:@"trafficDensityDescription"];
 
   v20 = [MEMORY[0x1E696AD98] numberWithInteger:{-[EKTravelEngineHypothesis travelState](self, "travelState")}];
-  [v5 encodeObject:v20 forKey:@"travelState"];
+  [coderCopy encodeObject:v20 forKey:@"travelState"];
 
-  v21 = [(EKTravelEngineHypothesis *)self travelSections];
-  [v5 encodeObject:v21 forKey:@"travelSections"];
+  travelSections = [(EKTravelEngineHypothesis *)self travelSections];
+  [coderCopy encodeObject:travelSections forKey:@"travelSections"];
 }
 
-- (EKTravelEngineHypothesis)initWithCoder:(id)a3
+- (EKTravelEngineHypothesis)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"transportType"];
-  v28 = [v4 intValue];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transportType"];
+  intValue = [v4 intValue];
 
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"conservativeDepartureDate"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"conservativeTravelTime"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"conservativeDepartureDate"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"conservativeTravelTime"];
   [v6 doubleValue];
   v8 = v7;
 
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"suggestedDepartureDate"];
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"estimatedTravelTime"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suggestedDepartureDate"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"estimatedTravelTime"];
   [v10 doubleValue];
   v12 = v11;
 
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"aggressiveDepartureDate"];
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"aggressiveTravelTime"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"aggressiveDepartureDate"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"aggressiveTravelTime"];
   [v14 doubleValue];
   v16 = v15;
 
-  v17 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"routeName"];
-  v18 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"supportsLiveTraffic"];
-  v19 = [v18 BOOLValue];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"routeName"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"supportsLiveTraffic"];
+  bOOLValue = [v18 BOOLValue];
 
-  v20 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"currentTrafficDensity"];
-  v21 = [v20 unsignedIntegerValue];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentTrafficDensity"];
+  unsignedIntegerValue = [v20 unsignedIntegerValue];
 
-  v22 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"trafficDensityDescription"];
-  v23 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"travelState"];
-  v24 = [v23 integerValue];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trafficDensityDescription"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"travelState"];
+  integerValue = [v23 integerValue];
 
-  v25 = [v3 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"travelSections"];
+  v25 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"travelSections"];
 
-  v26 = [(EKTravelEngineHypothesis *)self initWithTransportType:v28 conservativeDepartureDate:v5 conservativeTravelTime:v9 suggestedDepartureDate:v13 estimatedTravelTime:v17 aggressiveDepartureDate:v19 aggressiveTravelTime:v8 routeName:v12 supportsLiveTraffic:v16 currentTrafficDensity:v21 trafficDensityDescription:v22 travelState:v24 travelSections:v25];
+  v26 = [(EKTravelEngineHypothesis *)self initWithTransportType:intValue conservativeDepartureDate:v5 conservativeTravelTime:v9 suggestedDepartureDate:v13 estimatedTravelTime:v17 aggressiveDepartureDate:bOOLValue aggressiveTravelTime:v8 routeName:v12 supportsLiveTraffic:v16 currentTrafficDensity:unsignedIntegerValue trafficDensityDescription:v22 travelState:integerValue travelSections:v25];
   return v26;
 }
 
-+ (id)syntheticHypothesisWithStartDate:(id)a3 conservativeTravelTime:(double)a4 estimatedTravelTime:(double)a5 aggressiveTravelTime:(double)a6
++ (id)syntheticHypothesisWithStartDate:(id)date conservativeTravelTime:(double)time estimatedTravelTime:(double)travelTime aggressiveTravelTime:(double)aggressiveTravelTime
 {
-  v9 = a3;
+  dateCopy = date;
   v10 = [EKTravelEngineHypothesis alloc];
-  v11 = [v9 dateByAddingTimeInterval:-a4];
-  v12 = [v9 dateByAddingTimeInterval:-a5];
-  v13 = [v9 dateByAddingTimeInterval:-a6];
+  v11 = [dateCopy dateByAddingTimeInterval:-time];
+  v12 = [dateCopy dateByAddingTimeInterval:-travelTime];
+  v13 = [dateCopy dateByAddingTimeInterval:-aggressiveTravelTime];
 
-  v14 = [(EKTravelEngineHypothesis *)v10 initWithTransportType:4 conservativeDepartureDate:v11 conservativeTravelTime:v12 suggestedDepartureDate:v13 estimatedTravelTime:0 aggressiveDepartureDate:0 aggressiveTravelTime:a4 routeName:a5 supportsLiveTraffic:a6 currentTrafficDensity:0 trafficDensityDescription:0 travelState:0];
+  v14 = [(EKTravelEngineHypothesis *)v10 initWithTransportType:4 conservativeDepartureDate:v11 conservativeTravelTime:v12 suggestedDepartureDate:v13 estimatedTravelTime:0 aggressiveDepartureDate:0 aggressiveTravelTime:time routeName:travelTime supportsLiveTraffic:aggressiveTravelTime currentTrafficDensity:0 trafficDensityDescription:0 travelState:0];
 
   return v14;
 }

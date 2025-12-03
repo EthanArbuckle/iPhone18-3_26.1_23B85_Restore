@@ -1,7 +1,7 @@
 @interface UITabAccessory
-- (UITabAccessory)initWithContentView:(id)a3;
-- (void)_setEnvironment:(void *)a1;
-- (void)_setTabBarController:(id *)a1;
+- (UITabAccessory)initWithContentView:(id)view;
+- (void)_setEnvironment:(void *)environment;
+- (void)_setTabBarController:(id *)controller;
 - (void)_updateContentViewTraits;
 @end
 
@@ -22,21 +22,21 @@
     v5 = 1;
   }
 
-  v7 = [(UITabAccessory *)self contentView];
-  v6 = [(UIView *)v7 _internalTraitOverrides];
-  [v6 setTabAccessoryEnvironment:v5];
+  contentView = [(UITabAccessory *)self contentView];
+  _internalTraitOverrides = [(UIView *)contentView _internalTraitOverrides];
+  [_internalTraitOverrides setTabAccessoryEnvironment:v5];
 }
 
-- (UITabAccessory)initWithContentView:(id)a3
+- (UITabAccessory)initWithContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = UITabAccessory;
   v6 = [(UITabAccessory *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contentView, a3);
+    objc_storeStrong(&v6->_contentView, view);
     v7->_environment = 1;
     [(UITabAccessory *)v7 _updateContentViewTraits];
   }
@@ -44,33 +44,33 @@
   return v7;
 }
 
-- (void)_setEnvironment:(void *)a1
+- (void)_setEnvironment:(void *)environment
 {
-  if (a1)
+  if (environment)
   {
-    if (*(a1 + 1) != a2)
+    if (*(environment + 1) != a2)
     {
-      *(a1 + 1) = a2;
-      return [a1 _updateContentViewTraits];
+      *(environment + 1) = a2;
+      return [environment _updateContentViewTraits];
     }
   }
 
-  return a1;
+  return environment;
 }
 
-- (void)_setTabBarController:(id *)a1
+- (void)_setTabBarController:(id *)controller
 {
   v3 = a2;
-  if (a1)
+  if (controller)
   {
     obj = v3;
-    WeakRetained = objc_loadWeakRetained(a1 + 2);
+    WeakRetained = objc_loadWeakRetained(controller + 2);
 
     v3 = obj;
     if (WeakRetained != obj)
     {
-      objc_storeWeak(a1 + 2, obj);
-      [a1 _updateContentViewTraits];
+      objc_storeWeak(controller + 2, obj);
+      [controller _updateContentViewTraits];
       v3 = obj;
     }
   }

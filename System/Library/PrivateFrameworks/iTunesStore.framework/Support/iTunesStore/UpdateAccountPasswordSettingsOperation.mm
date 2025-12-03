@@ -1,9 +1,9 @@
 @interface UpdateAccountPasswordSettingsOperation
-+ (int64_t)_accountPasswordSettingValueForServerValue:(id)a3;
-- (UpdateAccountPasswordSettingsOperation)initWithFreeDownloadsPasswordSetting:(int64_t)a3 paidPurchasesPasswordSetting:(int64_t)a4 requestProperties:(id)a5;
++ (int64_t)_accountPasswordSettingValueForServerValue:(id)value;
+- (UpdateAccountPasswordSettingsOperation)initWithFreeDownloadsPasswordSetting:(int64_t)setting paidPurchasesPasswordSetting:(int64_t)passwordSetting requestProperties:(id)properties;
 - (id)_newAccountPasswordSettingsDictionary;
 - (id)_requestDictionary;
-- (id)_serverValueForAccountPasswordSettingValue:(int64_t)a3 defaultValue:(id)a4;
+- (id)_serverValueForAccountPasswordSettingValue:(int64_t)value defaultValue:(id)defaultValue;
 - (int64_t)freeDownloadsPasswordSetting;
 - (int64_t)paidPurchasesPasswordSetting;
 - (void)run;
@@ -11,18 +11,18 @@
 
 @implementation UpdateAccountPasswordSettingsOperation
 
-- (UpdateAccountPasswordSettingsOperation)initWithFreeDownloadsPasswordSetting:(int64_t)a3 paidPurchasesPasswordSetting:(int64_t)a4 requestProperties:(id)a5
+- (UpdateAccountPasswordSettingsOperation)initWithFreeDownloadsPasswordSetting:(int64_t)setting paidPurchasesPasswordSetting:(int64_t)passwordSetting requestProperties:(id)properties
 {
-  v8 = a5;
+  propertiesCopy = properties;
   v14.receiver = self;
   v14.super_class = UpdateAccountPasswordSettingsOperation;
   v9 = [(UpdateAccountPasswordSettingsOperation *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_freeDownloadsPasswordSetting = a3;
-    v9->_paidPurchasesPasswordSetting = a4;
-    v11 = [v8 mutableCopy];
+    v9->_freeDownloadsPasswordSetting = setting;
+    v9->_paidPurchasesPasswordSetting = passwordSetting;
+    v11 = [propertiesCopy mutableCopy];
     requestProperties = v10->_requestProperties;
     v10->_requestProperties = v11;
   }
@@ -65,27 +65,27 @@
 
   [(SSMutableURLRequestProperties *)requestProperties setURLBagKey:@"update-password-settings"];
   [(SSMutableURLRequestProperties *)self->_requestProperties setShouldSendSecureToken:1];
-  v7 = [(UpdateAccountPasswordSettingsOperation *)self _requestDictionary];
-  v8 = [(SSMutableURLRequestProperties *)self->_requestProperties requestParameters];
-  if ([v8 count])
+  _requestDictionary = [(UpdateAccountPasswordSettingsOperation *)self _requestDictionary];
+  requestParameters = [(SSMutableURLRequestProperties *)self->_requestProperties requestParameters];
+  if ([requestParameters count])
   {
-    v9 = [v7 mutableCopy];
-    [v9 addEntriesFromDictionary:v8];
+    v9 = [_requestDictionary mutableCopy];
+    [v9 addEntriesFromDictionary:requestParameters];
     v10 = [v9 copy];
 
-    v7 = v10;
+    _requestDictionary = v10;
   }
 
   [(SSMutableURLRequestProperties *)self->_requestProperties setHTTPMethod:@"POST"];
-  [(SSMutableURLRequestProperties *)self->_requestProperties setRequestParameters:v7];
+  [(SSMutableURLRequestProperties *)self->_requestProperties setRequestParameters:_requestDictionary];
   [(SSMutableURLRequestProperties *)self->_requestProperties setValue:@"application/x-apple-plist" forHTTPHeaderField:@"Content-Type"];
   [v16 setRequestProperties:self->_requestProperties];
   if ([(UpdateAccountPasswordSettingsOperation *)self runSubOperation:v16 returningError:0])
   {
-    v11 = [v16 dataProvider];
-    v12 = [v11 output];
+    dataProvider = [v16 dataProvider];
+    output = [dataProvider output];
 
-    v13 = [v12 objectForKey:@"jingleDocType"];
+    v13 = [output objectForKey:@"jingleDocType"];
     v14 = [v13 isEqualToString:@"success"];
   }
 
@@ -94,8 +94,8 @@
     v14 = 0;
   }
 
-  v15 = [v16 error];
-  [(UpdateAccountPasswordSettingsOperation *)self setError:v15];
+  error = [v16 error];
+  [(UpdateAccountPasswordSettingsOperation *)self setError:error];
 
   [(UpdateAccountPasswordSettingsOperation *)self setSuccess:v14];
 }
@@ -103,13 +103,13 @@
 - (id)_requestDictionary
 {
   v3 = +[ISDevice sharedInstance];
-  v4 = [v3 guid];
+  guid = [v3 guid];
 
-  v5 = [(UpdateAccountPasswordSettingsOperation *)self _newAccountPasswordSettingsDictionary];
+  _newAccountPasswordSettingsDictionary = [(UpdateAccountPasswordSettingsOperation *)self _newAccountPasswordSettingsDictionary];
   v8[0] = @"guid";
   v8[1] = @"settings";
-  v9[0] = v4;
-  v9[1] = v5;
+  v9[0] = guid;
+  v9[1] = _newAccountPasswordSettingsDictionary;
   v6 = [NSDictionary dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   return v6;
@@ -128,37 +128,37 @@
   return v5;
 }
 
-- (id)_serverValueForAccountPasswordSettingValue:(int64_t)a3 defaultValue:(id)a4
+- (id)_serverValueForAccountPasswordSettingValue:(int64_t)value defaultValue:(id)defaultValue
 {
-  v5 = a4;
-  v6 = v5;
-  if ((a3 - 1) >= 3)
+  defaultValueCopy = defaultValue;
+  v6 = defaultValueCopy;
+  if ((value - 1) >= 3)
   {
-    v7 = v5;
+    v7 = defaultValueCopy;
   }
 
   else
   {
-    v7 = off_10032C5A0[a3 - 1];
+    v7 = off_10032C5A0[value - 1];
   }
 
   return v7;
 }
 
-+ (int64_t)_accountPasswordSettingValueForServerValue:(id)a3
++ (int64_t)_accountPasswordSettingValueForServerValue:(id)value
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"always"])
+  valueCopy = value;
+  if ([valueCopy isEqualToString:@"always"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"sometimes"])
+  else if ([valueCopy isEqualToString:@"sometimes"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"never"])
+  else if ([valueCopy isEqualToString:@"never"])
   {
     v4 = 3;
   }

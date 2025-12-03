@@ -1,9 +1,9 @@
 @interface SBFileStackOpenIndicatorView
 - (SBFileStackOpenIndicatorView)init;
-- (SBFileStackOpenIndicatorView)initWithFrame:(CGRect)a3;
-- (SBFileStackOpenIndicatorView)initWithIconImageInfo:(SBIconImageInfo *)a3 frame:(CGRect)a4;
+- (SBFileStackOpenIndicatorView)initWithFrame:(CGRect)frame;
+- (SBFileStackOpenIndicatorView)initWithIconImageInfo:(SBIconImageInfo *)info frame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setIconImageInfo:(SBIconImageInfo *)a3;
+- (void)setIconImageInfo:(SBIconImageInfo *)info;
 @end
 
 @implementation SBFileStackOpenIndicatorView
@@ -15,22 +15,22 @@
   return [SBFileStackOpenIndicatorView initWithIconImageInfo:"initWithIconImageInfo:frame:" frame:?];
 }
 
-- (SBFileStackOpenIndicatorView)initWithFrame:(CGRect)a3
+- (SBFileStackOpenIndicatorView)initWithFrame:(CGRect)frame
 {
   SBIconImageInfoMake();
 
   return [SBFileStackOpenIndicatorView initWithIconImageInfo:"initWithIconImageInfo:frame:" frame:?];
 }
 
-- (SBFileStackOpenIndicatorView)initWithIconImageInfo:(SBIconImageInfo *)a3 frame:(CGRect)a4
+- (SBFileStackOpenIndicatorView)initWithIconImageInfo:(SBIconImageInfo *)info frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v15.receiver = self;
   v15.super_class = SBFileStackOpenIndicatorView;
-  v8 = [(SBFileStackOpenIndicatorView *)&v15 initWithFrame:a3];
+  v8 = [(SBFileStackOpenIndicatorView *)&v15 initWithFrame:info];
   v9 = v8;
   if (v8)
   {
@@ -64,7 +64,7 @@
   [(SBFileStackOpenIndicatorView *)self _setContinuousCornerRadius:v4 * self->_iconImageInfo.continuousCornerRadius / self->_iconImageInfo.size.width];
 }
 
-- (void)setIconImageInfo:(SBIconImageInfo *)a3
+- (void)setIconImageInfo:(SBIconImageInfo *)info
 {
   self->_iconImageInfo.size.width = v3;
   self->_iconImageInfo.size.height = v4;

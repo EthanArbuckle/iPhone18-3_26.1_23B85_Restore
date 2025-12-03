@@ -1,23 +1,23 @@
 @interface CUIKSuggestionCoalescedInfo
-- (CUIKSuggestionCoalescedInfo)initWithTitle:(id)a3 descriptionText:(id)a4 earliestSuggestionNotification:(id)a5;
+- (CUIKSuggestionCoalescedInfo)initWithTitle:(id)title descriptionText:(id)text earliestSuggestionNotification:(id)notification;
 @end
 
 @implementation CUIKSuggestionCoalescedInfo
 
-- (CUIKSuggestionCoalescedInfo)initWithTitle:(id)a3 descriptionText:(id)a4 earliestSuggestionNotification:(id)a5
+- (CUIKSuggestionCoalescedInfo)initWithTitle:(id)title descriptionText:(id)text earliestSuggestionNotification:(id)notification
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  titleCopy = title;
+  textCopy = text;
+  notificationCopy = notification;
   v16.receiver = self;
   v16.super_class = CUIKSuggestionCoalescedInfo;
   v12 = [(CUIKSuggestionCoalescedInfo *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_title, a3);
-    objc_storeStrong(&v13->_descriptionText, a4);
-    objc_storeStrong(&v13->_earliestSuggestionNotification, a5);
+    objc_storeStrong(&v12->_title, title);
+    objc_storeStrong(&v13->_descriptionText, text);
+    objc_storeStrong(&v13->_earliestSuggestionNotification, notification);
     v14 = v13;
   }
 

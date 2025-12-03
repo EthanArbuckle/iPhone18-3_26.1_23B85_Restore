@@ -1,21 +1,21 @@
 @interface BBSectionInfoStore
-- (BBSectionInfoStore)initWithEffectiveSettingsProvider:(id)a3 persistence:(id)a4;
-- (id)effectiveSectionInfoForSectionInfo:(id)a3;
-- (id)sectionInfoForSectionID:(id)a3 effective:(BOOL)a4;
-- (void)_sortSectionIDs:(id)a3 usingGuideArray:(id)a4;
-- (void)addActiveSectionID:(id)a3;
-- (void)removeSectionWithID:(id)a3;
-- (void)setClearedInfo:(id)a3 forSectionID:(id)a4;
-- (void)setClearedSectionsByID:(id)a3;
-- (void)setSectionInfoByID:(id)a3;
+- (BBSectionInfoStore)initWithEffectiveSettingsProvider:(id)provider persistence:(id)persistence;
+- (id)effectiveSectionInfoForSectionInfo:(id)info;
+- (id)sectionInfoForSectionID:(id)d effective:(BOOL)effective;
+- (void)_sortSectionIDs:(id)ds usingGuideArray:(id)array;
+- (void)addActiveSectionID:(id)d;
+- (void)removeSectionWithID:(id)d;
+- (void)setClearedInfo:(id)info forSectionID:(id)d;
+- (void)setClearedSectionsByID:(id)d;
+- (void)setSectionInfoByID:(id)d;
 @end
 
 @implementation BBSectionInfoStore
 
-- (BBSectionInfoStore)initWithEffectiveSettingsProvider:(id)a3 persistence:(id)a4
+- (BBSectionInfoStore)initWithEffectiveSettingsProvider:(id)provider persistence:(id)persistence
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  persistenceCopy = persistence;
   v19.receiver = self;
   v19.super_class = BBSectionInfoStore;
   v9 = [(BBSectionInfoStore *)&v19 init];
@@ -37,21 +37,21 @@
     clearedSectionsByID = v9->_clearedSectionsByID;
     v9->_clearedSectionsByID = v16;
 
-    objc_storeStrong(&v9->_effectiveSettings, a3);
-    objc_storeStrong(&v9->_persistence, a4);
+    objc_storeStrong(&v9->_effectiveSettings, provider);
+    objc_storeStrong(&v9->_persistence, persistence);
   }
 
   return v9;
 }
 
-- (void)removeSectionWithID:(id)a3
+- (void)removeSectionWithID:(id)d
 {
   sectionInfoByID = self->_sectionInfoByID;
-  v5 = a3;
-  [(NSMutableDictionary *)sectionInfoByID removeObjectForKey:v5];
-  [(NSMutableSet *)self->_activeSectionIDs removeObject:v5];
-  [(NSMutableArray *)self->_sortedSectionIDs removeObject:v5];
-  [(NSMutableDictionary *)self->_clearedSectionsByID removeObjectForKey:v5];
+  dCopy = d;
+  [(NSMutableDictionary *)sectionInfoByID removeObjectForKey:dCopy];
+  [(NSMutableSet *)self->_activeSectionIDs removeObject:dCopy];
+  [(NSMutableArray *)self->_sortedSectionIDs removeObject:dCopy];
+  [(NSMutableDictionary *)self->_clearedSectionsByID removeObjectForKey:dCopy];
 
   [(BBPersistentStoreInterface *)self->_persistence writeSectionInfo:self->_sectionInfoByID];
   persistence = self->_persistence;
@@ -60,11 +60,11 @@
   [(BBPersistentStoreInterface *)persistence writeClearedSections:clearedSectionsByID];
 }
 
-- (id)sectionInfoForSectionID:(id)a3 effective:(BOOL)a4
+- (id)sectionInfoForSectionID:(id)d effective:(BOOL)effective
 {
-  v4 = a4;
-  v6 = [(NSMutableDictionary *)self->_sectionInfoByID objectForKey:a3];
-  if (v4)
+  effectiveCopy = effective;
+  v6 = [(NSMutableDictionary *)self->_sectionInfoByID objectForKey:d];
+  if (effectiveCopy)
   {
     v7 = [(BBSectionInfoStore *)self effectiveSectionInfoForSectionInfo:v6];
 
@@ -74,48 +74,48 @@
   return v6;
 }
 
-- (void)setSectionInfoByID:(id)a3
+- (void)setSectionInfoByID:(id)d
 {
-  v4 = [a3 mutableCopy];
+  v4 = [d mutableCopy];
   sectionInfoByID = self->_sectionInfoByID;
   self->_sectionInfoByID = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)addActiveSectionID:(id)a3
+- (void)addActiveSectionID:(id)d
 {
-  v4 = a3;
-  [(NSMutableSet *)self->_activeSectionIDs addObject:v4];
-  if (([(NSMutableArray *)self->_sortedSectionIDs containsObject:v4]& 1) == 0)
+  dCopy = d;
+  [(NSMutableSet *)self->_activeSectionIDs addObject:dCopy];
+  if (([(NSMutableArray *)self->_sortedSectionIDs containsObject:dCopy]& 1) == 0)
   {
-    [(NSMutableArray *)self->_sortedSectionIDs addObject:v4];
+    [(NSMutableArray *)self->_sortedSectionIDs addObject:dCopy];
   }
 }
 
-- (void)_sortSectionIDs:(id)a3 usingGuideArray:(id)a4
+- (void)_sortSectionIDs:(id)ds usingGuideArray:(id)array
 {
   v65 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  dsCopy = ds;
+  arrayCopy = array;
+  if ([dsCopy count])
   {
-    v7 = [v6 count];
-    if (v5 != v6)
+    v7 = [arrayCopy count];
+    if (dsCopy != arrayCopy)
     {
       if (v7)
       {
-        v33 = v6;
-        v8 = [MEMORY[0x277CBEB98] setWithArray:v6];
-        v9 = [MEMORY[0x277CBEB98] setWithArray:v5];
-        v37 = [MEMORY[0x277CBEB38] dictionary];
-        v42 = [v5 mutableCopy];
+        v33 = arrayCopy;
+        v8 = [MEMORY[0x277CBEB98] setWithArray:arrayCopy];
+        v9 = [MEMORY[0x277CBEB98] setWithArray:dsCopy];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
+        v42 = [dsCopy mutableCopy];
         v54 = 0u;
         v55 = 0u;
         v56 = 0u;
         v57 = 0u;
-        v32 = v5;
-        obj = v5;
+        v32 = dsCopy;
+        obj = dsCopy;
         v38 = [obj countByEnumeratingWithState:&v54 objects:v64 count:16];
         if (v38)
         {
@@ -131,18 +131,18 @@
 
               v43 = *(*(&v54 + 1) + 8 * i);
               v11 = [BBSectionInfoStore sectionInfoForSectionID:"sectionInfoForSectionID:effective:" effective:?];
-              v12 = [v11 dataProviderIDs];
-              if ([v12 count])
+              dataProviderIDs = [v11 dataProviderIDs];
+              if ([dataProviderIDs count])
               {
                 v40 = v11;
                 v41 = i;
-                v13 = [MEMORY[0x277CBEB18] array];
+                array = [MEMORY[0x277CBEB18] array];
                 v50 = 0u;
                 v51 = 0u;
                 v52 = 0u;
                 v53 = 0u;
-                v39 = v12;
-                v14 = v12;
+                v39 = dataProviderIDs;
+                v14 = dataProviderIDs;
                 v15 = [v14 countByEnumeratingWithState:&v50 objects:v63 count:16];
                 if (v15)
                 {
@@ -162,7 +162,7 @@
                       {
                         if (([v8 containsObject:v19] & 1) == 0)
                         {
-                          [v13 addObject:v19];
+                          [array addObject:v19];
                         }
                       }
 
@@ -186,15 +186,15 @@
                   while (v16);
                 }
 
-                if ([v13 count])
+                if ([array count])
                 {
-                  [v37 setObject:v13 forKey:v43];
-                  [v42 removeObjectsInArray:v13];
+                  [dictionary setObject:array forKey:v43];
+                  [v42 removeObjectsInArray:array];
                 }
 
                 v11 = v40;
                 i = v41;
-                v12 = v39;
+                dataProviderIDs = v39;
               }
             }
 
@@ -210,15 +210,15 @@
         v48[3] = &unk_278D2A488;
         v49 = v33;
         [v42 sortUsingComparator:v48];
-        v21 = v37;
-        if ([v37 count])
+        v21 = dictionary;
+        if ([dictionary count])
         {
           v46 = 0u;
           v47 = 0u;
           v44 = 0u;
           v45 = 0u;
-          v22 = [v37 allKeys];
-          v23 = [v22 countByEnumeratingWithState:&v44 objects:v58 count:16];
+          allKeys = [dictionary allKeys];
+          v23 = [allKeys countByEnumeratingWithState:&v44 objects:v58 count:16];
           if (v23)
           {
             v24 = v23;
@@ -229,11 +229,11 @@
               {
                 if (*v45 != v25)
                 {
-                  objc_enumerationMutation(v22);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v27 = *(*(&v44 + 1) + 8 * k);
-                v28 = [v37 objectForKey:v27];
+                v28 = [dictionary objectForKey:v27];
                 v29 = [v42 indexOfObject:v27];
                 if (v29 != 0x7FFFFFFFFFFFFFFFLL)
                 {
@@ -242,20 +242,20 @@
                 }
               }
 
-              v24 = [v22 countByEnumeratingWithState:&v44 objects:v58 count:16];
+              v24 = [allKeys countByEnumeratingWithState:&v44 objects:v58 count:16];
             }
 
             while (v24);
           }
 
-          v21 = v37;
+          v21 = dictionary;
         }
 
         [obj removeAllObjects];
         [obj addObjectsFromArray:v42];
 
-        v5 = v32;
-        v6 = v33;
+        dsCopy = v32;
+        arrayCopy = v33;
       }
     }
   }
@@ -331,48 +331,48 @@ LABEL_16:
   return v7;
 }
 
-- (id)effectiveSectionInfoForSectionInfo:(id)a3
+- (id)effectiveSectionInfoForSectionInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  infoCopy = info;
+  v5 = infoCopy;
+  if (infoCopy)
   {
-    v6 = [v4 factorySectionID];
+    factorySectionID = [infoCopy factorySectionID];
 
-    if (!v6)
+    if (!factorySectionID)
     {
       goto LABEL_5;
     }
 
-    v7 = [v5 factorySectionID];
-    v8 = [(BBSectionInfoStore *)self sectionInfoForSectionID:v7 effective:0];
+    factorySectionID2 = [v5 factorySectionID];
+    v8 = [(BBSectionInfoStore *)self sectionInfoForSectionID:factorySectionID2 effective:0];
 
     if (!v8)
     {
       goto LABEL_5;
     }
 
-    v9 = [(BBEffectiveSettingsProvider *)self->_effectiveSettings effectiveGlobalContentPreviewSetting];
-    v10 = [(BBEffectiveSettingsProvider *)self->_effectiveSettings effectiveGlobalAnnounceSetting];
-    v11 = [(BBEffectiveSettingsProvider *)self->_effectiveSettings effectiveGlobalScheduledDeliverySetting];
-    v12 = [(BBEffectiveSettingsProvider *)self->_effectiveSettings effectiveGlobalSummarizationSetting];
-    v13 = [(BBEffectiveSettingsProvider *)self->_effectiveSettings effectiveGlobalPrioritizationSetting];
-    v14 = [(BBEffectiveSettingsProvider *)self->_effectiveSettings hasPairedVehiclesForCarPlay];
+    effectiveGlobalContentPreviewSetting = [(BBEffectiveSettingsProvider *)self->_effectiveSettings effectiveGlobalContentPreviewSetting];
+    effectiveGlobalAnnounceSetting = [(BBEffectiveSettingsProvider *)self->_effectiveSettings effectiveGlobalAnnounceSetting];
+    effectiveGlobalScheduledDeliverySetting = [(BBEffectiveSettingsProvider *)self->_effectiveSettings effectiveGlobalScheduledDeliverySetting];
+    effectiveGlobalSummarizationSetting = [(BBEffectiveSettingsProvider *)self->_effectiveSettings effectiveGlobalSummarizationSetting];
+    effectiveGlobalPrioritizationSetting = [(BBEffectiveSettingsProvider *)self->_effectiveSettings effectiveGlobalPrioritizationSetting];
+    hasPairedVehiclesForCarPlay = [(BBEffectiveSettingsProvider *)self->_effectiveSettings hasPairedVehiclesForCarPlay];
     BYTE1(v23) = [(BBEffectiveSettingsProvider *)self->_effectiveSettings hasDestinationForRemoteNotifications];
-    LOBYTE(v23) = v14;
-    v15 = [v5 effectiveSectionInfoWithFactoryInfo:v8 defaultContentPreviewSetting:v9 globalAnnounceSetting:v10 globalScheduledDeliverySetting:v11 globalSummarizationSetting:v12 globalPrioritizationSetting:v13 hasPairedVehiclesForCarPlay:v23 hasDestinationForRemoteNotifications:?];
+    LOBYTE(v23) = hasPairedVehiclesForCarPlay;
+    v15 = [v5 effectiveSectionInfoWithFactoryInfo:v8 defaultContentPreviewSetting:effectiveGlobalContentPreviewSetting globalAnnounceSetting:effectiveGlobalAnnounceSetting globalScheduledDeliverySetting:effectiveGlobalScheduledDeliverySetting globalSummarizationSetting:effectiveGlobalSummarizationSetting globalPrioritizationSetting:effectiveGlobalPrioritizationSetting hasPairedVehiclesForCarPlay:v23 hasDestinationForRemoteNotifications:?];
 
     if (!v15)
     {
 LABEL_5:
-      v16 = [(BBEffectiveSettingsProvider *)self->_effectiveSettings effectiveGlobalContentPreviewSetting];
-      v17 = [(BBEffectiveSettingsProvider *)self->_effectiveSettings effectiveGlobalAnnounceSetting];
-      v18 = [(BBEffectiveSettingsProvider *)self->_effectiveSettings effectiveGlobalScheduledDeliverySetting];
-      v19 = [(BBEffectiveSettingsProvider *)self->_effectiveSettings effectiveGlobalSummarizationSetting];
-      v20 = [(BBEffectiveSettingsProvider *)self->_effectiveSettings effectiveGlobalPrioritizationSetting];
-      v21 = [(BBEffectiveSettingsProvider *)self->_effectiveSettings hasPairedVehiclesForCarPlay];
+      effectiveGlobalContentPreviewSetting2 = [(BBEffectiveSettingsProvider *)self->_effectiveSettings effectiveGlobalContentPreviewSetting];
+      effectiveGlobalAnnounceSetting2 = [(BBEffectiveSettingsProvider *)self->_effectiveSettings effectiveGlobalAnnounceSetting];
+      effectiveGlobalScheduledDeliverySetting2 = [(BBEffectiveSettingsProvider *)self->_effectiveSettings effectiveGlobalScheduledDeliverySetting];
+      effectiveGlobalSummarizationSetting2 = [(BBEffectiveSettingsProvider *)self->_effectiveSettings effectiveGlobalSummarizationSetting];
+      effectiveGlobalPrioritizationSetting2 = [(BBEffectiveSettingsProvider *)self->_effectiveSettings effectiveGlobalPrioritizationSetting];
+      hasPairedVehiclesForCarPlay2 = [(BBEffectiveSettingsProvider *)self->_effectiveSettings hasPairedVehiclesForCarPlay];
       LOBYTE(v23) = [(BBEffectiveSettingsProvider *)self->_effectiveSettings hasDestinationForRemoteNotifications];
-      v15 = [v5 effectiveSectionInfoWithDefaultContentPreviewSetting:v16 globalAnnounceSetting:v17 globalScheduledDeliverySetting:v18 globalSummarizationSetting:v19 globalPrioritizationSetting:v20 hasPairedVehiclesForCarPlay:v21 hasDestinationForRemoteNotifications:v23];
+      v15 = [v5 effectiveSectionInfoWithDefaultContentPreviewSetting:effectiveGlobalContentPreviewSetting2 globalAnnounceSetting:effectiveGlobalAnnounceSetting2 globalScheduledDeliverySetting:effectiveGlobalScheduledDeliverySetting2 globalSummarizationSetting:effectiveGlobalSummarizationSetting2 globalPrioritizationSetting:effectiveGlobalPrioritizationSetting2 hasPairedVehiclesForCarPlay:hasPairedVehiclesForCarPlay2 hasDestinationForRemoteNotifications:v23];
     }
   }
 
@@ -384,24 +384,24 @@ LABEL_5:
   return v15;
 }
 
-- (void)setClearedInfo:(id)a3 forSectionID:(id)a4
+- (void)setClearedInfo:(id)info forSectionID:(id)d
 {
-  v9 = a3;
-  v6 = a4;
-  if (v9 && ([MEMORY[0x277CBEB68] null], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqual:", v9), v7, (v8 & 1) == 0))
+  infoCopy = info;
+  dCopy = d;
+  if (infoCopy && ([MEMORY[0x277CBEB68] null], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqual:", infoCopy), v7, (v8 & 1) == 0))
   {
-    [(NSMutableDictionary *)self->_clearedSectionsByID setObject:v9 forKey:v6];
+    [(NSMutableDictionary *)self->_clearedSectionsByID setObject:infoCopy forKey:dCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)self->_clearedSectionsByID removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_clearedSectionsByID removeObjectForKey:dCopy];
   }
 }
 
-- (void)setClearedSectionsByID:(id)a3
+- (void)setClearedSectionsByID:(id)d
 {
-  v4 = [a3 mutableCopy];
+  v4 = [d mutableCopy];
   clearedSectionsByID = self->_clearedSectionsByID;
   self->_clearedSectionsByID = v4;
 

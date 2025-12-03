@@ -1,21 +1,21 @@
 @interface PXStoryVisionDetailedSaliencyProducer
-+ (id)effectiveSaliencyAreasFromTiledVisionSaliencyAreas:(id)a3;
++ (id)effectiveSaliencyAreasFromTiledVisionSaliencyAreas:(id)areas;
 - (PXStoryVisionDetailedSaliencyProducer)init;
-- (PXStoryVisionDetailedSaliencyProducer)initWithMediaProvider:(id)a3;
-- (id)requestDetailedSaliencyForDisplayAssets:(id)a3 options:(unint64_t)a4 resultHandler:(id)a5;
-- (void)_requestDetailedSaliencyForDisplayAssets:(id)a3 options:(unint64_t)a4 progress:(id)a5 resultHandler:(id)a6;
-- (void)requestWorkingImageForDisplayAsset:(id)a3 resultHandler:(id)a4;
+- (PXStoryVisionDetailedSaliencyProducer)initWithMediaProvider:(id)provider;
+- (id)requestDetailedSaliencyForDisplayAssets:(id)assets options:(unint64_t)options resultHandler:(id)handler;
+- (void)_requestDetailedSaliencyForDisplayAssets:(id)assets options:(unint64_t)options progress:(id)progress resultHandler:(id)handler;
+- (void)requestWorkingImageForDisplayAsset:(id)asset resultHandler:(id)handler;
 @end
 
 @implementation PXStoryVisionDetailedSaliencyProducer
 
-- (id)requestDetailedSaliencyForDisplayAssets:(id)a3 options:(unint64_t)a4 resultHandler:(id)a5
+- (id)requestDetailedSaliencyForDisplayAssets:(id)assets options:(unint64_t)options resultHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  assetsCopy = assets;
+  handlerCopy = handler;
   v10 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:0];
   objc_initWeak(&location, self);
-  v11 = [(PXStoryVisionDetailedSaliencyProducer *)self workQueue];
+  workQueue = [(PXStoryVisionDetailedSaliencyProducer *)self workQueue];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __103__PXStoryVisionDetailedSaliencyProducer_requestDetailedSaliencyForDisplayAssets_options_resultHandler___block_invoke;
@@ -23,12 +23,12 @@
   v12 = v10;
   v19 = v12;
   objc_copyWeak(v22, &location);
-  v22[1] = a4;
-  v20 = v8;
-  v21 = v9;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v18);
+  v22[1] = options;
+  v20 = assetsCopy;
+  v21 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = assetsCopy;
+  dispatch_async(workQueue, v18);
 
   v15 = v21;
   v16 = v12;
@@ -48,10 +48,10 @@ void __103__PXStoryVisionDetailedSaliencyProducer_requestDetailedSaliencyForDisp
   }
 }
 
-- (void)requestWorkingImageForDisplayAsset:(id)a3 resultHandler:(id)a4
+- (void)requestWorkingImageForDisplayAsset:(id)asset resultHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  assetCopy = asset;
   v8 = +[PXStoryMultipartPanoramaSettings sharedInstance];
   [v8 maximumTileSide];
   v10 = v9;
@@ -61,16 +61,16 @@ void __103__PXStoryVisionDetailedSaliencyProducer_requestDetailedSaliencyForDisp
   [v13 setSynchronous:1];
   [v13 setDeliveryMode:1];
   [v13 setNetworkAccessAllowed:1];
-  v12 = [(PXStoryVisionDetailedSaliencyProducer *)self mediaProvider];
-  [v12 requestCGImageForAsset:v7 targetSize:0 contentMode:v13 options:v6 resultHandler:{v11, v11}];
+  mediaProvider = [(PXStoryVisionDetailedSaliencyProducer *)self mediaProvider];
+  [mediaProvider requestCGImageForAsset:assetCopy targetSize:0 contentMode:v13 options:handlerCopy resultHandler:{v11, v11}];
 }
 
-- (void)_requestDetailedSaliencyForDisplayAssets:(id)a3 options:(unint64_t)a4 progress:(id)a5 resultHandler:(id)a6
+- (void)_requestDetailedSaliencyForDisplayAssets:(id)assets options:(unint64_t)options progress:(id)progress resultHandler:(id)handler
 {
   v74 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v39 = a5;
-  v11 = a6;
+  assetsCopy = assets;
+  progressCopy = progress;
+  handlerCopy = handler;
   v12 = [(PXStoryVisionDetailedSaliencyProducer *)self log];
   v13 = os_signpost_id_generate(v12);
   v14 = v12;
@@ -99,27 +99,27 @@ void __103__PXStoryVisionDetailedSaliencyProducer_requestDetailedSaliencyForDisp
   v58[1] = 3221225472;
   v58[2] = __113__PXStoryVisionDetailedSaliencyProducer__requestDetailedSaliencyForDisplayAssets_options_progress_resultHandler___block_invoke_158;
   v58[3] = &unk_1E7737670;
-  v63 = a4;
+  optionsCopy = options;
   v17 = v15;
   v59 = v17;
   v64 = v13;
-  v65 = self;
+  selfCopy = self;
   v18 = v16;
   v60 = v18;
   p_buf = &buf;
-  v36 = v11;
+  v36 = handlerCopy;
   v61 = v36;
   v38 = _Block_copy(v58);
-  if (([v39 isCancelled] & 1) == 0)
+  if (([progressCopy isCancelled] & 1) == 0)
   {
-    v19 = [v10 count];
+    v19 = [assetsCopy count];
     v20 = objc_alloc_init(MEMORY[0x1E696AD50]);
     if (v19 >= 1)
     {
       for (i = 0; i != v19; ++i)
       {
         v22 = objc_autoreleasePoolPush();
-        v23 = [v10 objectAtIndexedSubscript:i];
+        v23 = [assetsCopy objectAtIndexedSubscript:i];
         if ([v23 mediaType] == 1 && (objc_msgSend(v23, "mediaSubtypes") & 1) != 0)
         {
           [v20 addIndex:i];
@@ -148,19 +148,19 @@ void __103__PXStoryVisionDetailedSaliencyProducer_requestDetailedSaliencyForDisp
     v40[1] = 3221225472;
     v40[2] = __113__PXStoryVisionDetailedSaliencyProducer__requestDetailedSaliencyForDisplayAssets_options_progress_resultHandler___block_invoke_165;
     v40[3] = &unk_1E7737710;
-    v41 = v39;
+    v41 = progressCopy;
     v48 = v57;
     v49 = v56;
     v50 = v30;
     v31 = v38;
     v46 = v31;
     v51 = v24;
-    v42 = v10;
+    v42 = assetsCopy;
     v32 = v17;
     v52 = v13;
-    v53 = self;
+    selfCopy2 = self;
     v43 = v32;
-    v44 = self;
+    selfCopy3 = self;
     v54 = a2;
     v47 = v37;
     v45 = v18;
@@ -172,7 +172,7 @@ void __103__PXStoryVisionDetailedSaliencyProducer_requestDetailedSaliencyForDisp
     if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v33))
     {
       *v67 = 134217984;
-      v68 = self;
+      selfCopy4 = self;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v34, OS_SIGNPOST_INTERVAL_END, v13, "PXStoryDetailedSaliency", "Context=%{signpost.telemetry:string2}lu ", v67, 0xCu);
     }
 
@@ -464,16 +464,16 @@ void __113__PXStoryVisionDetailedSaliencyProducer__requestDetailedSaliencyForDis
   }
 }
 
-- (PXStoryVisionDetailedSaliencyProducer)initWithMediaProvider:(id)a3
+- (PXStoryVisionDetailedSaliencyProducer)initWithMediaProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v22.receiver = self;
   v22.super_class = PXStoryVisionDetailedSaliencyProducer;
   v6 = [(PXStoryVisionDetailedSaliencyProducer *)&v22 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mediaProvider, a3);
+    objc_storeStrong(&v6->_mediaProvider, provider);
     v8 = *MEMORY[0x1E69BFF60];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
@@ -483,10 +483,10 @@ void __113__PXStoryVisionDetailedSaliencyProducer__requestDetailedSaliencyForDis
 
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    v15 = [v14 UTF8String];
+    uTF8String = [v14 UTF8String];
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v17 = dispatch_queue_attr_make_with_qos_class(v16, QOS_CLASS_USER_INITIATED, 0);
-    v18 = dispatch_queue_create(v15, v17);
+    v18 = dispatch_queue_create(uTF8String, v17);
     workQueue = v7->_workQueue;
     v7->_workQueue = v18;
 
@@ -499,15 +499,15 @@ void __113__PXStoryVisionDetailedSaliencyProducer__requestDetailedSaliencyForDis
 
 - (PXStoryVisionDetailedSaliencyProducer)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryVisionDetailedSaliencyProducer.m" lineNumber:39 description:{@"%s is not available as initializer", "-[PXStoryVisionDetailedSaliencyProducer init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryVisionDetailedSaliencyProducer.m" lineNumber:39 description:{@"%s is not available as initializer", "-[PXStoryVisionDetailedSaliencyProducer init]"}];
 
   abort();
 }
 
-+ (id)effectiveSaliencyAreasFromTiledVisionSaliencyAreas:(id)a3
++ (id)effectiveSaliencyAreasFromTiledVisionSaliencyAreas:(id)areas
 {
-  v3 = a3;
+  areasCopy = areas;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -526,7 +526,7 @@ void __113__PXStoryVisionDetailedSaliencyProducer__requestDetailedSaliencyForDis
   v58 = v5;
   v61 = v58;
   v7 = _Block_copy(v60);
-  v8 = [v3 count];
+  v8 = [areasCopy count];
   v9 = +[PXStoryMultipartPanoramaSettings sharedInstance];
   [v9 tileOverlapThreshold];
 
@@ -535,15 +535,15 @@ void __113__PXStoryVisionDetailedSaliencyProducer__requestDetailedSaliencyForDis
     v10 = 0;
     do
     {
-      v11 = [v3 objectAtIndexedSubscript:v10];
+      v11 = [areasCopy objectAtIndexedSubscript:v10];
       v12 = ++v10;
       if (v10 < v8)
       {
         do
         {
-          v13 = [v3 objectAtIndexedSubscript:v12];
-          v14 = [v11 type];
-          if (v14 == [v13 type] && (objc_msgSend(v11, "sourceRegionOfInterest"), v16 = v15, v18 = v17, v20 = v19, v22 = v21, objc_msgSend(v13, "sourceRegionOfInterest"), v71.origin.x = v23, v71.origin.y = v24, v71.size.width = v25, v71.size.height = v26, v67.origin.x = v16, v67.origin.y = v18, v67.size.width = v20, v67.size.height = v22, CGRectIntersectsRect(v67, v71)) || (v27 = objc_msgSend(v11, "type"), v27 != objc_msgSend(v13, "type")) && (objc_msgSend(v11, "sourceRegionOfInterest"), v29 = v28, v31 = v30, v33 = v32, v35 = v34, objc_msgSend(v13, "sourceRegionOfInterest"), v72.origin.x = v36, v72.origin.y = v37, v72.size.width = v38, v72.size.height = v39, v68.origin.x = v29, v68.origin.y = v31, v68.size.width = v33, v68.size.height = v35, CGRectEqualToRect(v68, v72)))
+          v13 = [areasCopy objectAtIndexedSubscript:v12];
+          type = [v11 type];
+          if (type == [v13 type] && (objc_msgSend(v11, "sourceRegionOfInterest"), v16 = v15, v18 = v17, v20 = v19, v22 = v21, objc_msgSend(v13, "sourceRegionOfInterest"), v71.origin.x = v23, v71.origin.y = v24, v71.size.width = v25, v71.size.height = v26, v67.origin.x = v16, v67.origin.y = v18, v67.size.width = v20, v67.size.height = v22, CGRectIntersectsRect(v67, v71)) || (v27 = objc_msgSend(v11, "type"), v27 != objc_msgSend(v13, "type")) && (objc_msgSend(v11, "sourceRegionOfInterest"), v29 = v28, v31 = v30, v33 = v32, v35 = v34, objc_msgSend(v13, "sourceRegionOfInterest"), v72.origin.x = v36, v72.origin.y = v37, v72.size.width = v38, v72.size.height = v39, v68.origin.x = v29, v68.origin.y = v31, v68.size.width = v33, v68.size.height = v35, CGRectEqualToRect(v68, v72)))
           {
             [v11 contentsRect];
             v41 = v40;

@@ -1,14 +1,14 @@
 @interface SUUIOnboardingAffiliationItem
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation SUUIOnboardingAffiliationItem
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setFillColor:self->_fillColor];
   [v4 setIdentifier:self->_identifier];
   [v4 setImageName:self->_imageName];
@@ -30,15 +30,15 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = [(SUUIOnboardingAffiliationItem *)self identifier];
-    v8 = [v4 identifier];
-    v6 = [v7 isEqualToString:v8];
+    identifier = [(SUUIOnboardingAffiliationItem *)self identifier];
+    identifier2 = [equalCopy identifier];
+    v6 = [identifier isEqualToString:identifier2];
   }
 
   else

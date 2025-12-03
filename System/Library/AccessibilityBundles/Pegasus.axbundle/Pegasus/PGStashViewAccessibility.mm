@@ -1,27 +1,27 @@
 @interface PGStashViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
-- (PGStashViewAccessibility)initWithFrame:(CGRect)a3;
+- (PGStashViewAccessibility)initWithFrame:(CGRect)frame;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axMarkupBackdropView;
 @end
 
 @implementation PGStashViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PGBackdropView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"PGStashView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"PGStashView" hasInstanceVariable:@"_backdropView" withType:"PGBackdropView"];
-  [v3 validateClass:@"PGStashView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PGBackdropView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"PGStashView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"PGStashView" hasInstanceVariable:@"_backdropView" withType:"PGBackdropView"];
+  [validationsCopy validateClass:@"PGStashView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
 }
 
-- (PGStashViewAccessibility)initWithFrame:(CGRect)a3
+- (PGStashViewAccessibility)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PGStashViewAccessibility;
-  v3 = [(PGStashViewAccessibility *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PGStashViewAccessibility *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

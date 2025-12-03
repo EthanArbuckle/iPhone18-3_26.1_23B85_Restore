@@ -1,32 +1,32 @@
 @interface KTLoggableData
-+ (BOOL)isAccountKTCapable:(id)a3;
-+ (KTLoggableData)ktLoggableDataWithKTIDSData:(id)a3;
-+ (void)combineLoggableDatasForUI:(id)a3 byAdding:(id)a4;
-+ (void)loggableDataForDeviceID:(id)a3 application:(id)a4 completionBlock:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isInputsEqual:(id)a3;
-- (KTLoggableData)initWithClientData:(id)a3;
-- (KTLoggableData)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (BOOL)isAccountKTCapable:(id)capable;
++ (KTLoggableData)ktLoggableDataWithKTIDSData:(id)data;
++ (void)combineLoggableDatasForUI:(id)i byAdding:(id)adding;
++ (void)loggableDataForDeviceID:(id)d application:(id)application completionBlock:(id)block;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isInputsEqual:(id)equal;
+- (KTLoggableData)initWithClientData:(id)data;
+- (KTLoggableData)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)diagnosticsJsonDictionary;
-- (id)privacyDescriptionError:(id)a3;
+- (id)privacyDescriptionError:(id)error;
 - (id)shortDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation KTLoggableData
 
-- (KTLoggableData)initWithClientData:(id)a3
+- (KTLoggableData)initWithClientData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = KTLoggableData;
   v6 = [(KTLoggableData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientData, a3);
+    objc_storeStrong(&v6->_clientData, data);
     v7->_notInSyncedData = 0;
     v7->_result = 2;
     *&v7->_supportConditionalEnforcement = 0;
@@ -35,95 +35,95 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v24 = a3;
-  v4 = [(KTLoggableData *)self deviceID];
-  [v24 encodeObject:v4 forKey:@"deviceID"];
+  coderCopy = coder;
+  deviceID = [(KTLoggableData *)self deviceID];
+  [coderCopy encodeObject:deviceID forKey:@"deviceID"];
 
-  v5 = [(KTLoggableData *)self clientData];
-  [v24 encodeObject:v5 forKey:@"clientData"];
+  clientData = [(KTLoggableData *)self clientData];
+  [coderCopy encodeObject:clientData forKey:@"clientData"];
 
-  v6 = [(KTLoggableData *)self signature];
-  [v24 encodeObject:v6 forKey:@"signature"];
+  signature = [(KTLoggableData *)self signature];
+  [coderCopy encodeObject:signature forKey:@"signature"];
 
-  [v24 encodeBool:-[KTLoggableData supportConditionalEnforcement](self forKey:{"supportConditionalEnforcement"), @"conditionalEnforcement"}];
+  [coderCopy encodeBool:-[KTLoggableData supportConditionalEnforcement](self forKey:{"supportConditionalEnforcement"), @"conditionalEnforcement"}];
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[KTLoggableData successfulSync](self, "successfulSync")}];
-  [v24 encodeObject:v7 forKey:@"successfulSync"];
+  [coderCopy encodeObject:v7 forKey:@"successfulSync"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[KTLoggableData marked](self, "marked")}];
-  [v24 encodeObject:v8 forKey:@"marked"];
+  [coderCopy encodeObject:v8 forKey:@"marked"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[KTLoggableData notInSyncedData](self, "notInSyncedData")}];
-  [v24 encodeObject:v9 forKey:@"notInSync"];
+  [coderCopy encodeObject:v9 forKey:@"notInSync"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[KTLoggableData result](self, "result")}];
-  [v24 encodeObject:v10 forKey:@"result"];
+  [coderCopy encodeObject:v10 forKey:@"result"];
 
-  v11 = [(KTLoggableData *)self failure];
+  failure = [(KTLoggableData *)self failure];
 
-  if (v11)
+  if (failure)
   {
     v12 = MEMORY[0x1E697AAC0];
-    v13 = [(KTLoggableData *)self failure];
-    v14 = [v12 cleanseErrorForXPC:v13];
-    [v24 encodeObject:v14 forKey:@"failure"];
+    failure2 = [(KTLoggableData *)self failure];
+    v14 = [v12 cleanseErrorForXPC:failure2];
+    [coderCopy encodeObject:v14 forKey:@"failure"];
   }
 
-  v15 = [(KTLoggableData *)self build];
+  build = [(KTLoggableData *)self build];
 
-  if (v15)
+  if (build)
   {
-    v16 = [(KTLoggableData *)self build];
-    [v24 encodeObject:v16 forKey:@"build"];
+    build2 = [(KTLoggableData *)self build];
+    [coderCopy encodeObject:build2 forKey:@"build"];
   }
 
-  v17 = [(KTLoggableData *)self product];
+  product = [(KTLoggableData *)self product];
 
-  if (v17)
+  if (product)
   {
-    v18 = [(KTLoggableData *)self product];
-    [v24 encodeObject:v18 forKey:@"product"];
+    product2 = [(KTLoggableData *)self product];
+    [coderCopy encodeObject:product2 forKey:@"product"];
   }
 
-  v19 = [(KTLoggableData *)self version];
+  version = [(KTLoggableData *)self version];
 
-  if (v19)
+  if (version)
   {
-    v20 = [(KTLoggableData *)self version];
-    [v24 encodeObject:v20 forKey:@"version"];
+    version2 = [(KTLoggableData *)self version];
+    [coderCopy encodeObject:version2 forKey:@"version"];
   }
 
-  v21 = [(KTLoggableData *)self markExpiryDate];
+  markExpiryDate = [(KTLoggableData *)self markExpiryDate];
 
-  if (v21)
+  if (markExpiryDate)
   {
-    v22 = [(KTLoggableData *)self markExpiryDate];
-    [v24 encodeObject:v22 forKey:@"markExpiry"];
+    markExpiryDate2 = [(KTLoggableData *)self markExpiryDate];
+    [coderCopy encodeObject:markExpiryDate2 forKey:@"markExpiry"];
   }
 
   v23 = [MEMORY[0x1E696AD98] numberWithBool:{-[KTLoggableData ktCapable](self, "ktCapable")}];
-  [v24 encodeObject:v23 forKey:@"ktCapable"];
+  [coderCopy encodeObject:v23 forKey:@"ktCapable"];
 }
 
-- (KTLoggableData)initWithCoder:(id)a3
+- (KTLoggableData)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v21 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"deviceID"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"clientData"];
-  v16 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
-  v15 = [v3 decodeBoolForKey:@"conditionalEnforcement"];
-  v22 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"successfulSync"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"marked"];
-  v20 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"notInSync"];
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"result"];
-  v6 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  v18 = [v3 decodeObjectOfClasses:v6 forKey:@"failure"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"ktCapable"];
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"build"];
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"product"];
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"markExpiry"];
+  coderCopy = coder;
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceID"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientData"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
+  v15 = [coderCopy decodeBoolForKey:@"conditionalEnforcement"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"successfulSync"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"marked"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"notInSync"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"result"];
+  safeErrorClasses = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  v18 = [coderCopy decodeObjectOfClasses:safeErrorClasses forKey:@"failure"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ktCapable"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"build"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"product"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"markExpiry"];
 
   v12 = [[KTLoggableData alloc] initWithClientData:v4];
   v13 = v12;
@@ -147,10 +147,10 @@
   return v13;
 }
 
-- (BOOL)isInputsEqual:(id)a3
+- (BOOL)isInputsEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -160,19 +160,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(KTLoggableData *)self deviceID];
-      v7 = [(KTLoggableData *)v5 deviceID];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      deviceID = [(KTLoggableData *)self deviceID];
+      deviceID2 = [(KTLoggableData *)v5 deviceID];
+      v8 = deviceID2;
+      if (deviceID == deviceID2)
       {
       }
 
       else
       {
-        v9 = [(KTLoggableData *)self deviceID];
-        v10 = [(KTLoggableData *)v5 deviceID];
-        v11 = [v9 isEqualToData:v10];
+        deviceID3 = [(KTLoggableData *)self deviceID];
+        deviceID4 = [(KTLoggableData *)v5 deviceID];
+        v11 = [deviceID3 isEqualToData:deviceID4];
 
         if (!v11)
         {
@@ -180,18 +180,18 @@
         }
       }
 
-      v13 = [(KTLoggableData *)self clientData];
-      v14 = [(KTLoggableData *)v5 clientData];
-      v15 = v14;
-      if (v13 == v14)
+      clientData = [(KTLoggableData *)self clientData];
+      clientData2 = [(KTLoggableData *)v5 clientData];
+      v15 = clientData2;
+      if (clientData == clientData2)
       {
       }
 
       else
       {
-        v16 = [(KTLoggableData *)self clientData];
-        v17 = [(KTLoggableData *)v5 clientData];
-        v18 = [v16 isEqualToData:v17];
+        clientData3 = [(KTLoggableData *)self clientData];
+        clientData4 = [(KTLoggableData *)v5 clientData];
+        v18 = [clientData3 isEqualToData:clientData4];
 
         if (!v18)
         {
@@ -199,18 +199,18 @@
         }
       }
 
-      v19 = [(KTLoggableData *)self signature];
-      v20 = [(KTLoggableData *)v5 signature];
-      v21 = v20;
-      if (v19 == v20)
+      signature = [(KTLoggableData *)self signature];
+      signature2 = [(KTLoggableData *)v5 signature];
+      v21 = signature2;
+      if (signature == signature2)
       {
       }
 
       else
       {
-        v22 = [(KTLoggableData *)self signature];
-        v23 = [(KTLoggableData *)v5 signature];
-        v24 = [v22 isEqualToData:v23];
+        signature3 = [(KTLoggableData *)self signature];
+        signature4 = [(KTLoggableData *)v5 signature];
+        v24 = [signature3 isEqualToData:signature4];
 
         if (!v24)
         {
@@ -218,14 +218,14 @@
         }
       }
 
-      v25 = [(KTLoggableData *)self supportConditionalEnforcement];
-      if (v25 == [(KTLoggableData *)v5 supportConditionalEnforcement])
+      supportConditionalEnforcement = [(KTLoggableData *)self supportConditionalEnforcement];
+      if (supportConditionalEnforcement == [(KTLoggableData *)v5 supportConditionalEnforcement])
       {
-        v26 = [(KTLoggableData *)self successfulSync];
-        if (v26 == [(KTLoggableData *)v5 successfulSync])
+        successfulSync = [(KTLoggableData *)self successfulSync];
+        if (successfulSync == [(KTLoggableData *)v5 successfulSync])
         {
-          v27 = [(KTLoggableData *)self ktCapable];
-          if (v27 == [(KTLoggableData *)v5 ktCapable])
+          ktCapable = [(KTLoggableData *)self ktCapable];
+          if (ktCapable == [(KTLoggableData *)v5 ktCapable])
           {
             v12 = 1;
             goto LABEL_21;
@@ -248,10 +248,10 @@ LABEL_22:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -261,21 +261,21 @@ LABEL_22:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(KTLoggableData *)v5 clientData];
-      v7 = [(KTLoggableData *)self clientData];
-      v8 = [v6 isEqual:v7];
+      v5 = equalCopy;
+      clientData = [(KTLoggableData *)v5 clientData];
+      clientData2 = [(KTLoggableData *)self clientData];
+      v8 = [clientData isEqual:clientData2];
 
       if (v8)
       {
-        v9 = [(KTLoggableData *)v5 deviceID];
-        if (v9 || ([(KTLoggableData *)self deviceID], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+        deviceID = [(KTLoggableData *)v5 deviceID];
+        if (deviceID || ([(KTLoggableData *)self deviceID], (clientData2 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v10 = [(KTLoggableData *)v5 deviceID];
-          v11 = [(KTLoggableData *)self deviceID];
-          v12 = [v10 isEqual:v11];
+          deviceID2 = [(KTLoggableData *)v5 deviceID];
+          deviceID3 = [(KTLoggableData *)self deviceID];
+          v12 = [deviceID2 isEqual:deviceID3];
 
-          if (v9)
+          if (deviceID)
           {
 
             if (!v12)
@@ -294,17 +294,17 @@ LABEL_22:
           }
         }
 
-        v14 = [(KTLoggableData *)v5 supportConditionalEnforcement];
-        if (v14 == [(KTLoggableData *)self supportConditionalEnforcement])
+        supportConditionalEnforcement = [(KTLoggableData *)v5 supportConditionalEnforcement];
+        if (supportConditionalEnforcement == [(KTLoggableData *)self supportConditionalEnforcement])
         {
-          v15 = [(KTLoggableData *)v5 signature];
-          if (v15 || ([(KTLoggableData *)self signature], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+          signature = [(KTLoggableData *)v5 signature];
+          if (signature || ([(KTLoggableData *)self signature], (clientData2 = objc_claimAutoreleasedReturnValue()) != 0))
           {
-            v16 = [(KTLoggableData *)v5 signature];
-            v17 = [(KTLoggableData *)self signature];
-            v18 = [v16 isEqual:v17];
+            signature2 = [(KTLoggableData *)v5 signature];
+            signature3 = [(KTLoggableData *)self signature];
+            v18 = [signature2 isEqual:signature3];
 
-            if (v15)
+            if (signature)
             {
 
               if (!v18)
@@ -323,45 +323,45 @@ LABEL_22:
             }
           }
 
-          v19 = [(KTLoggableData *)v5 successfulSync];
-          if (v19 != [(KTLoggableData *)self successfulSync])
+          successfulSync = [(KTLoggableData *)v5 successfulSync];
+          if (successfulSync != [(KTLoggableData *)self successfulSync])
           {
             goto LABEL_32;
           }
 
-          v20 = [(KTLoggableData *)v5 ktCapable];
-          if (v20 != [(KTLoggableData *)self ktCapable])
+          ktCapable = [(KTLoggableData *)v5 ktCapable];
+          if (ktCapable != [(KTLoggableData *)self ktCapable])
           {
             goto LABEL_32;
           }
 
-          v21 = [(KTLoggableData *)v5 result];
-          if (v21 != [(KTLoggableData *)self result])
+          result = [(KTLoggableData *)v5 result];
+          if (result != [(KTLoggableData *)self result])
           {
             goto LABEL_32;
           }
 
-          v22 = [(KTLoggableData *)v5 marked];
-          if (v22 != [(KTLoggableData *)self marked])
+          marked = [(KTLoggableData *)v5 marked];
+          if (marked != [(KTLoggableData *)self marked])
           {
             goto LABEL_32;
           }
 
-          v23 = [(KTLoggableData *)v5 failure];
-          if (!v23)
+          failure = [(KTLoggableData *)v5 failure];
+          if (!failure)
           {
-            v7 = [(KTLoggableData *)self failure];
-            if (!v7)
+            clientData2 = [(KTLoggableData *)self failure];
+            if (!clientData2)
             {
 LABEL_27:
-              v27 = [(KTLoggableData *)v5 markExpiryDate];
-              if (v27 || ([(KTLoggableData *)self markExpiryDate], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+              markExpiryDate = [(KTLoggableData *)v5 markExpiryDate];
+              if (markExpiryDate || ([(KTLoggableData *)self markExpiryDate], (clientData2 = objc_claimAutoreleasedReturnValue()) != 0))
               {
-                v28 = [(KTLoggableData *)v5 markExpiryDate];
-                v29 = [(KTLoggableData *)self markExpiryDate];
-                v13 = [v28 isEqual:v29];
+                markExpiryDate2 = [(KTLoggableData *)v5 markExpiryDate];
+                markExpiryDate3 = [(KTLoggableData *)self markExpiryDate];
+                v13 = [markExpiryDate2 isEqual:markExpiryDate3];
 
-                if (v27)
+                if (markExpiryDate)
                 {
 LABEL_37:
 
@@ -378,11 +378,11 @@ LABEL_37:
             }
           }
 
-          v24 = [(KTLoggableData *)v5 failure];
-          v25 = [(KTLoggableData *)self failure];
-          v26 = [v24 isEqual:v25];
+          failure2 = [(KTLoggableData *)v5 failure];
+          failure3 = [(KTLoggableData *)self failure];
+          v26 = [failure2 isEqual:failure3];
 
-          if (v23)
+          if (failure)
           {
 
             if (v26)
@@ -420,47 +420,47 @@ LABEL_34:
 - (id)debugDescription
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"{\n"];
-  v4 = [(KTLoggableData *)self deviceID];
+  deviceID = [(KTLoggableData *)self deviceID];
 
-  if (v4)
+  if (deviceID)
   {
-    v5 = [(KTLoggableData *)self deviceID];
-    v6 = [v5 kt_hexString];
-    [v3 appendFormat:@"    deviceId:%@\n", v6];
+    deviceID2 = [(KTLoggableData *)self deviceID];
+    kt_hexString = [deviceID2 kt_hexString];
+    [v3 appendFormat:@"    deviceId:%@\n", kt_hexString];
   }
 
-  v7 = [(KTLoggableData *)self product];
-  if (v7)
+  product = [(KTLoggableData *)self product];
+  if (product)
   {
   }
 
   else
   {
-    v8 = [(KTLoggableData *)self version];
+    version = [(KTLoggableData *)self version];
 
-    if (!v8)
+    if (!version)
     {
       goto LABEL_7;
     }
   }
 
-  v9 = [(KTLoggableData *)self product];
-  v10 = [(KTLoggableData *)self build];
-  v11 = [(KTLoggableData *)self version];
-  [v3 appendFormat:@"    product: %@ build: %@ version:%@\n", v9, v10, v11];
+  product2 = [(KTLoggableData *)self product];
+  build = [(KTLoggableData *)self build];
+  version2 = [(KTLoggableData *)self version];
+  [v3 appendFormat:@"    product: %@ build: %@ version:%@\n", product2, build, version2];
 
 LABEL_7:
-  v12 = [(KTLoggableData *)self clientData];
-  v13 = [v12 kt_hexString];
-  [v3 appendFormat:@"    clientData:%@\n", v13];
+  clientData = [(KTLoggableData *)self clientData];
+  kt_hexString2 = [clientData kt_hexString];
+  [v3 appendFormat:@"    clientData:%@\n", kt_hexString2];
 
-  v14 = [(KTLoggableData *)self signature];
+  signature = [(KTLoggableData *)self signature];
 
-  if (v14)
+  if (signature)
   {
-    v15 = [(KTLoggableData *)self signature];
-    v16 = [v15 kt_hexString];
-    [v3 appendFormat:@"    signature:%@\n", v16];
+    signature2 = [(KTLoggableData *)self signature];
+    kt_hexString3 = [signature2 kt_hexString];
+    [v3 appendFormat:@"    signature:%@\n", kt_hexString3];
   }
 
   if ([(KTLoggableData *)self ktCapable])
@@ -474,22 +474,22 @@ LABEL_7:
   }
 
   [v3 appendFormat:@"    ktCapable:%@\n", v17];
-  v18 = [(KTLoggableData *)self deviceIdHash];
+  deviceIdHash = [(KTLoggableData *)self deviceIdHash];
 
-  if (v18)
+  if (deviceIdHash)
   {
-    v19 = [(KTLoggableData *)self deviceIdHash];
-    v20 = [v19 kt_hexString];
-    [v3 appendFormat:@"    deviceIdHash:%@\n", v20];
+    deviceIdHash2 = [(KTLoggableData *)self deviceIdHash];
+    kt_hexString4 = [deviceIdHash2 kt_hexString];
+    [v3 appendFormat:@"    deviceIdHash:%@\n", kt_hexString4];
   }
 
-  v21 = [(KTLoggableData *)self clientDataHash];
+  clientDataHash = [(KTLoggableData *)self clientDataHash];
 
-  if (v21)
+  if (clientDataHash)
   {
-    v22 = [(KTLoggableData *)self clientDataHash];
-    v23 = [v22 kt_hexString];
-    [v3 appendFormat:@"    clientDataHash:%@\n", v23];
+    clientDataHash2 = [(KTLoggableData *)self clientDataHash];
+    kt_hexString5 = [clientDataHash2 kt_hexString];
+    [v3 appendFormat:@"    clientDataHash:%@\n", kt_hexString5];
   }
 
   if ([(KTLoggableData *)self notInSyncedData])
@@ -505,9 +505,9 @@ LABEL_7:
   [v3 appendFormat:@"    notInSyncedData:%@\n", v24];
   if ([(KTLoggableData *)self result])
   {
-    v25 = [(KTLoggableData *)self result];
+    result = [(KTLoggableData *)self result];
     v26 = @"OK";
-    if (v25 == 2)
+    if (result == 2)
     {
       v26 = @"Pending";
     }
@@ -519,18 +519,18 @@ LABEL_7:
   }
 
   [v3 appendFormat:@"    result:%@\n", v26];
-  v27 = [(KTLoggableData *)self failure];
+  failure = [(KTLoggableData *)self failure];
 
-  if (v27)
+  if (failure)
   {
-    v28 = [(KTLoggableData *)self failure];
-    [v3 appendFormat:@"    failure:%@\n", v28];
+    failure2 = [(KTLoggableData *)self failure];
+    [v3 appendFormat:@"    failure:%@\n", failure2];
   }
 
   if ([(KTLoggableData *)self marked])
   {
-    v29 = [(KTLoggableData *)self markExpiryDate];
-    [v3 appendFormat:@"    markedExpiryDate:%@\n", v29];
+    markExpiryDate = [(KTLoggableData *)self markExpiryDate];
+    [v3 appendFormat:@"    markedExpiryDate:%@\n", markExpiryDate];
   }
 
   [v3 appendFormat:@"}\n"];
@@ -540,110 +540,110 @@ LABEL_7:
 
 - (id)diagnosticsJsonDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(KTLoggableData *)self deviceID];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  deviceID = [(KTLoggableData *)self deviceID];
 
-  if (v4)
+  if (deviceID)
   {
-    v5 = [(KTLoggableData *)self deviceID];
-    v6 = [v5 kt_hexString];
-    [v3 setObject:v6 forKeyedSubscript:@"deviceID"];
+    deviceID2 = [(KTLoggableData *)self deviceID];
+    kt_hexString = [deviceID2 kt_hexString];
+    [dictionary setObject:kt_hexString forKeyedSubscript:@"deviceID"];
   }
 
-  v7 = [(KTLoggableData *)self clientData];
-  v8 = [v7 kt_hexString];
-  [v3 setObject:v8 forKeyedSubscript:@"clientData"];
+  clientData = [(KTLoggableData *)self clientData];
+  kt_hexString2 = [clientData kt_hexString];
+  [dictionary setObject:kt_hexString2 forKeyedSubscript:@"clientData"];
 
-  v9 = [(KTLoggableData *)self signature];
-  v10 = [v9 kt_hexString];
-  [v3 setObject:v10 forKeyedSubscript:@"signature"];
+  signature = [(KTLoggableData *)self signature];
+  kt_hexString3 = [signature kt_hexString];
+  [dictionary setObject:kt_hexString3 forKeyedSubscript:@"signature"];
 
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[KTLoggableData ktCapable](self, "ktCapable")}];
-  [v3 setObject:v11 forKeyedSubscript:@"ktCapable"];
+  [dictionary setObject:v11 forKeyedSubscript:@"ktCapable"];
 
-  v12 = [(KTLoggableData *)self version];
+  version = [(KTLoggableData *)self version];
 
-  if (v12)
+  if (version)
   {
-    v13 = [(KTLoggableData *)self version];
-    [v3 setObject:v13 forKeyedSubscript:@"version"];
+    version2 = [(KTLoggableData *)self version];
+    [dictionary setObject:version2 forKeyedSubscript:@"version"];
   }
 
-  v14 = [(KTLoggableData *)self product];
+  product = [(KTLoggableData *)self product];
 
-  if (v14)
+  if (product)
   {
-    v15 = [(KTLoggableData *)self product];
-    [v3 setObject:v15 forKeyedSubscript:@"product"];
+    product2 = [(KTLoggableData *)self product];
+    [dictionary setObject:product2 forKeyedSubscript:@"product"];
   }
 
-  v16 = [(KTLoggableData *)self build];
+  build = [(KTLoggableData *)self build];
 
-  if (v16)
+  if (build)
   {
-    v17 = [(KTLoggableData *)self build];
-    [v3 setObject:v17 forKeyedSubscript:@"build"];
+    build2 = [(KTLoggableData *)self build];
+    [dictionary setObject:build2 forKeyedSubscript:@"build"];
   }
 
-  v18 = [(KTLoggableData *)self deviceIdHash];
+  deviceIdHash = [(KTLoggableData *)self deviceIdHash];
 
-  if (v18)
+  if (deviceIdHash)
   {
-    v19 = [(KTLoggableData *)self deviceIdHash];
-    v20 = [v19 kt_hexString];
-    [v3 setObject:v20 forKeyedSubscript:@"deviceIDHash"];
+    deviceIdHash2 = [(KTLoggableData *)self deviceIdHash];
+    kt_hexString4 = [deviceIdHash2 kt_hexString];
+    [dictionary setObject:kt_hexString4 forKeyedSubscript:@"deviceIDHash"];
   }
 
-  v21 = [(KTLoggableData *)self clientDataHash];
+  clientDataHash = [(KTLoggableData *)self clientDataHash];
 
-  if (v21)
+  if (clientDataHash)
   {
-    v22 = [(KTLoggableData *)self clientDataHash];
-    v23 = [v22 kt_hexString];
-    [v3 setObject:v23 forKeyedSubscript:@"clientDataHash"];
+    clientDataHash2 = [(KTLoggableData *)self clientDataHash];
+    kt_hexString5 = [clientDataHash2 kt_hexString];
+    [dictionary setObject:kt_hexString5 forKeyedSubscript:@"clientDataHash"];
   }
 
   if ([(KTLoggableData *)self result]!= 2)
   {
     v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[KTLoggableData result](self, "result")}];
-    [v3 setObject:v24 forKeyedSubscript:@"result"];
+    [dictionary setObject:v24 forKeyedSubscript:@"result"];
 
     v25 = [MEMORY[0x1E696AD98] numberWithBool:{-[KTLoggableData notInSyncedData](self, "notInSyncedData")}];
-    [v3 setObject:v25 forKeyedSubscript:@"notInSyncedData"];
+    [dictionary setObject:v25 forKeyedSubscript:@"notInSyncedData"];
 
-    v26 = [(KTLoggableData *)self failure];
+    failure = [(KTLoggableData *)self failure];
 
-    if (v26)
+    if (failure)
     {
-      v27 = [(KTLoggableData *)self failure];
-      v28 = [v27 description];
-      [v3 setObject:v28 forKeyedSubscript:@"failure"];
+      failure2 = [(KTLoggableData *)self failure];
+      v28 = [failure2 description];
+      [dictionary setObject:v28 forKeyedSubscript:@"failure"];
     }
   }
 
   if ([(KTLoggableData *)self marked])
   {
     v29 = [MEMORY[0x1E696AD98] numberWithBool:{-[KTLoggableData marked](self, "marked")}];
-    [v3 setObject:v29 forKeyedSubscript:@"marked"];
+    [dictionary setObject:v29 forKeyedSubscript:@"marked"];
 
-    v30 = [(KTLoggableData *)self markExpiryDate];
-    v31 = [v30 kt_toISO_8601_UTCString];
-    [v3 setObject:v31 forKeyedSubscript:@"markedExpiryDate"];
+    markExpiryDate = [(KTLoggableData *)self markExpiryDate];
+    kt_toISO_8601_UTCString = [markExpiryDate kt_toISO_8601_UTCString];
+    [dictionary setObject:kt_toISO_8601_UTCString forKeyedSubscript:@"markedExpiryDate"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (id)privacyDescriptionError:(id)a3
+- (id)privacyDescriptionError:(id)error
 {
-  if (a3)
+  if (error)
   {
     v3 = MEMORY[0x1E696AEC0];
-    v4 = a3;
-    v5 = [v4 domain];
-    v6 = [v4 code];
+    errorCopy = error;
+    domain = [errorCopy domain];
+    code = [errorCopy code];
 
-    v7 = [v3 stringWithFormat:@"%@-%d", v5, v6];
+    v7 = [v3 stringWithFormat:@"%@-%d", domain, code];
   }
 
   else
@@ -656,106 +656,106 @@ LABEL_7:
 
 - (id)shortDescription
 {
-  v3 = [(KTLoggableData *)self product];
-  if (v3 || ([(KTLoggableData *)self version], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  product = [(KTLoggableData *)self product];
+  if (product || ([(KTLoggableData *)self version], (product = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_4:
     v21 = MEMORY[0x1E696AEC0];
-    v4 = [(KTLoggableData *)self deviceID];
-    v20 = [v4 kt_hexString];
-    v5 = [(KTLoggableData *)self product];
-    v6 = [(KTLoggableData *)self build];
-    v7 = [(KTLoggableData *)self version];
-    v8 = [(KTLoggableData *)self clientData];
-    v9 = [v8 kt_hexString];
-    v10 = [(KTLoggableData *)self result];
-    v11 = [(KTLoggableData *)self failure];
-    v12 = [(KTLoggableData *)self privacyDescriptionError:v11];
-    v19 = v10;
-    v13 = v20;
-    v14 = [v21 stringWithFormat:@"KTLoggableData: deviceId=%@, version=%@, %@, %@ clientData=%@ [%d/%@]", v20, v5, v6, v7, v9, v19, v12];
+    deviceID = [(KTLoggableData *)self deviceID];
+    kt_hexString = [deviceID kt_hexString];
+    product2 = [(KTLoggableData *)self product];
+    build = [(KTLoggableData *)self build];
+    version = [(KTLoggableData *)self version];
+    clientData = [(KTLoggableData *)self clientData];
+    kt_hexString2 = [clientData kt_hexString];
+    result = [(KTLoggableData *)self result];
+    failure = [(KTLoggableData *)self failure];
+    v12 = [(KTLoggableData *)self privacyDescriptionError:failure];
+    v19 = result;
+    kt_hexString3 = kt_hexString;
+    v14 = [v21 stringWithFormat:@"KTLoggableData: deviceId=%@, version=%@, %@, %@ clientData=%@ [%d/%@]", kt_hexString, product2, build, version, kt_hexString2, v19, v12];
 
     goto LABEL_5;
   }
 
-  v16 = [(KTLoggableData *)self build];
+  build2 = [(KTLoggableData *)self build];
 
-  if (v16)
+  if (build2)
   {
     goto LABEL_4;
   }
 
   v17 = MEMORY[0x1E696AEC0];
-  v4 = [(KTLoggableData *)self deviceID];
-  v13 = [v4 kt_hexString];
-  v5 = [(KTLoggableData *)self clientData];
-  v6 = [v5 kt_hexString];
-  v18 = [(KTLoggableData *)self result];
-  v7 = [(KTLoggableData *)self failure];
-  v8 = [(KTLoggableData *)self privacyDescriptionError:v7];
-  v14 = [v17 stringWithFormat:@"KTLoggableData: deviceId=%@, clientData=%@ [%d/%@]", v13, v6, v18, v8];
+  deviceID = [(KTLoggableData *)self deviceID];
+  kt_hexString3 = [deviceID kt_hexString];
+  product2 = [(KTLoggableData *)self clientData];
+  build = [product2 kt_hexString];
+  result2 = [(KTLoggableData *)self result];
+  version = [(KTLoggableData *)self failure];
+  clientData = [(KTLoggableData *)self privacyDescriptionError:version];
+  v14 = [v17 stringWithFormat:@"KTLoggableData: deviceId=%@, clientData=%@ [%d/%@]", kt_hexString3, build, result2, clientData];
 LABEL_5:
 
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [KTLoggableData alloc];
-  v5 = [(KTLoggableData *)self clientData];
-  v6 = [(KTLoggableData *)v4 initWithClientData:v5];
+  clientData = [(KTLoggableData *)self clientData];
+  v6 = [(KTLoggableData *)v4 initWithClientData:clientData];
 
-  v7 = [(KTLoggableData *)self deviceID];
-  [(KTLoggableData *)v6 setDeviceID:v7];
+  deviceID = [(KTLoggableData *)self deviceID];
+  [(KTLoggableData *)v6 setDeviceID:deviceID];
 
-  v8 = [(KTLoggableData *)self signature];
-  [(KTLoggableData *)v6 setSignature:v8];
+  signature = [(KTLoggableData *)self signature];
+  [(KTLoggableData *)v6 setSignature:signature];
 
   [(KTLoggableData *)v6 setSuccessfulSync:[(KTLoggableData *)self successfulSync]];
   [(KTLoggableData *)v6 setMarked:[(KTLoggableData *)self marked]];
   [(KTLoggableData *)v6 setNotInSyncedData:[(KTLoggableData *)self notInSyncedData]];
   [(KTLoggableData *)v6 setResult:[(KTLoggableData *)self result]];
-  v9 = [(KTLoggableData *)self failure];
-  v10 = [v9 copy];
+  failure = [(KTLoggableData *)self failure];
+  v10 = [failure copy];
   [(KTLoggableData *)v6 setFailure:v10];
 
-  v11 = [(KTLoggableData *)self build];
-  [(KTLoggableData *)v6 setBuild:v11];
+  build = [(KTLoggableData *)self build];
+  [(KTLoggableData *)v6 setBuild:build];
 
-  v12 = [(KTLoggableData *)self product];
-  [(KTLoggableData *)v6 setProduct:v12];
+  product = [(KTLoggableData *)self product];
+  [(KTLoggableData *)v6 setProduct:product];
 
-  v13 = [(KTLoggableData *)self version];
-  [(KTLoggableData *)v6 setVersion:v13];
+  version = [(KTLoggableData *)self version];
+  [(KTLoggableData *)v6 setVersion:version];
 
-  v14 = [(KTLoggableData *)self markExpiryDate];
-  [(KTLoggableData *)v6 setMarkExpiryDate:v14];
+  markExpiryDate = [(KTLoggableData *)self markExpiryDate];
+  [(KTLoggableData *)v6 setMarkExpiryDate:markExpiryDate];
 
   [(KTLoggableData *)v6 setKtCapable:[(KTLoggableData *)self ktCapable]];
   return v6;
 }
 
-+ (void)loggableDataForDeviceID:(id)a3 application:(id)a4 completionBlock:(id)a5
++ (void)loggableDataForDeviceID:(id)d application:(id)application completionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  applicationCopy = application;
+  blockCopy = block;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __70__KTLoggableData_loggableDataForDeviceID_application_completionBlock___block_invoke;
   v15[3] = &unk_1E87014E0;
-  v17 = v7;
-  v18 = v9;
-  v16 = v8;
+  v17 = dCopy;
+  v18 = blockCopy;
+  v16 = applicationCopy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __70__KTLoggableData_loggableDataForDeviceID_application_completionBlock___block_invoke_133;
   v13[3] = &unk_1E87013C8;
   v14 = v18;
   v10 = v18;
-  v11 = v7;
-  v12 = v8;
+  v11 = dCopy;
+  v12 = applicationCopy;
   [TransparencyXPCConnection invokeXPCAsynchronousCallWithBlock:v15 errorHandler:v13];
 }
 
@@ -822,18 +822,18 @@ uint64_t __70__KTLoggableData_loggableDataForDeviceID_application_completionBloc
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (BOOL)isAccountKTCapable:(id)a3
++ (BOOL)isAccountKTCapable:(id)capable
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  capableCopy = capable;
+  v4 = capableCopy;
+  if (capableCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = v3;
+    v5 = capableCopy;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -878,16 +878,16 @@ LABEL_12:
   return v10;
 }
 
-+ (void)combineLoggableDatasForUI:(id)a3 byAdding:(id)a4
++ (void)combineLoggableDatasForUI:(id)i byAdding:(id)adding
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  iCopy = i;
+  addingCopy = adding;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v7 = [addingCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -898,12 +898,12 @@ LABEL_12:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(addingCopy);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 deviceID];
-        v13 = [v5 objectForKeyedSubscript:v12];
+        deviceID = [v11 deviceID];
+        v13 = [iCopy objectForKeyedSubscript:deviceID];
 
         if ([v11 result])
         {
@@ -917,12 +917,12 @@ LABEL_12:
 
         if (v14)
         {
-          v15 = [v11 deviceID];
-          [v5 setObject:v11 forKeyedSubscript:v15];
+          deviceID2 = [v11 deviceID];
+          [iCopy setObject:v11 forKeyedSubscript:deviceID2];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [addingCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -931,17 +931,17 @@ LABEL_12:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-+ (KTLoggableData)ktLoggableDataWithKTIDSData:(id)a3
++ (KTLoggableData)ktLoggableDataWithKTIDSData:(id)data
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  dataCopy = data;
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [v3 identities];
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  identities = [dataCopy identities];
+  v6 = [identities countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -952,24 +952,24 @@ LABEL_12:
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(identities);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
         v11 = [KTLoggableData alloc];
-        v12 = [v10 ktLoggableData];
-        v13 = [(KTLoggableData *)v11 initWithClientData:v12];
+        ktLoggableData = [v10 ktLoggableData];
+        v13 = [(KTLoggableData *)v11 initWithClientData:ktLoggableData];
 
-        v14 = [v10 signature];
-        [(KTLoggableData *)v13 setSignature:v14];
+        signature = [v10 signature];
+        [(KTLoggableData *)v13 setSignature:signature];
 
-        v15 = [v10 pushToken];
-        [(KTLoggableData *)v13 setDeviceID:v15];
+        pushToken = [v10 pushToken];
+        [(KTLoggableData *)v13 setDeviceID:pushToken];
 
-        [v4 addObject:v13];
+        [array addObject:v13];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [identities countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v7);
@@ -977,7 +977,7 @@ LABEL_12:
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return array;
 }
 
 @end

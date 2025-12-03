@@ -1,31 +1,31 @@
 @interface SFUnifiedBarItemArrangement
 - (BOOL)allowsCenteringInlineContentView;
-- (BOOL)isEqual:(id)a3;
-- (SFUnifiedBarItemArrangement)initWithLeadingItems:(id)a3 trailingItems:(id)a4;
-- (void)enumerateAllItemsUsingBlock:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SFUnifiedBarItemArrangement)initWithLeadingItems:(id)items trailingItems:(id)trailingItems;
+- (void)enumerateAllItemsUsingBlock:(id)block;
 @end
 
 @implementation SFUnifiedBarItemArrangement
 
-- (SFUnifiedBarItemArrangement)initWithLeadingItems:(id)a3 trailingItems:(id)a4
+- (SFUnifiedBarItemArrangement)initWithLeadingItems:(id)items trailingItems:(id)trailingItems
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  trailingItemsCopy = trailingItems;
   v19.receiver = self;
   v19.super_class = SFUnifiedBarItemArrangement;
   v8 = [(SFUnifiedBarItemArrangement *)&v19 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [itemsCopy copy];
     leadingItems = v8->_leadingItems;
     v8->_leadingItems = v9;
 
-    v11 = [v7 copy];
+    v11 = [trailingItemsCopy copy];
     trailingItems = v8->_trailingItems;
     v8->_trailingItems = v11;
 
-    v13 = groupIdentifiersForItems(v6);
-    v14 = groupIdentifiersForItems(v7);
+    v13 = groupIdentifiersForItems(itemsCopy);
+    v14 = groupIdentifiersForItems(trailingItemsCopy);
     v15 = [v13 setByAddingObjectsFromSet:v14];
     groupIdentifiers = v8->_groupIdentifiers;
     v8->_groupIdentifiers = v15;
@@ -36,10 +36,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -49,7 +49,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(NSArray *)self->_leadingItems isEqualToArray:v5->_leadingItems])
       {
         v6 = [(NSArray *)self->_trailingItems isEqualToArray:v5->_trailingItems];
@@ -70,10 +70,10 @@
   return v6;
 }
 
-- (void)enumerateAllItemsUsingBlock:(id)a3
+- (void)enumerateAllItemsUsingBlock:(id)block
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -94,7 +94,7 @@
           objc_enumerationMutation(v5);
         }
 
-        v4[2](v4, *(*(&v19 + 1) + 8 * v9++));
+        blockCopy[2](blockCopy, *(*(&v19 + 1) + 8 * v9++));
       }
 
       while (v7 != v9);
@@ -124,7 +124,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v4[2](v4, *(*(&v15 + 1) + 8 * v14++));
+        blockCopy[2](blockCopy, *(*(&v15 + 1) + 8 * v14++));
       }
 
       while (v12 != v14);

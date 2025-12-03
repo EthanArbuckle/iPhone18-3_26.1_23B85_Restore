@@ -1,14 +1,14 @@
 @interface CNAutocompleteCalendarServerResult
-+ (id)contactResultWithDisplayName:(id)a3 value:(id)a4 nameComponents:(id)a5 identifier:(id)a6 userInfo:(id)a7;
++ (id)contactResultWithDisplayName:(id)name value:(id)value nameComponents:(id)components identifier:(id)identifier userInfo:(id)info;
 @end
 
 @implementation CNAutocompleteCalendarServerResult
 
-+ (id)contactResultWithDisplayName:(id)a3 value:(id)a4 nameComponents:(id)a5 identifier:(id)a6 userInfo:(id)a7
++ (id)contactResultWithDisplayName:(id)name value:(id)value nameComponents:(id)components identifier:(id)identifier userInfo:(id)info
 {
-  v12 = a7;
-  v13 = [a1 contactResultWithDisplayName:a3 value:a4 nameComponents:a5 identifier:a6];
-  [v13 setUserInfo:v12];
+  infoCopy = info;
+  v13 = [self contactResultWithDisplayName:name value:value nameComponents:components identifier:identifier];
+  [v13 setUserInfo:infoCopy];
 
   [v13 setSourceType:64];
 

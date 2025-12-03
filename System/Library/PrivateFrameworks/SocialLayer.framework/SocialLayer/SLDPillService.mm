@@ -2,13 +2,13 @@
 + (id)sharedService;
 - (UISSlotMachine)highlightDisambiguationPillSlotMachine;
 - (UISSlotMachine)highlightPillSlotMachine;
-- (id)_applicationIdentifierForConnection:(id)a3;
-- (id)_attributionsFromIDs:(id)a3 appID:(id)a4;
-- (id)slotMachineForViewIdentifier:(id)a3;
-- (void)accessibilityLabelForAttributionIdentifier:(id)a3 reply:(id)a4;
-- (void)accessibilityLabelForAttributionIdentifiers:(id)a3 reply:(id)a4;
-- (void)highlightDisambiguationPillForAttributionIdentifier:(id)a3 style:(id)a4 maxWidth:(double)a5 variant:(unint64_t)a6 layerContextID:(unint64_t)a7 reply:(id)a8;
-- (void)highlightPillForAttributionIdentifiers:(id)a3 style:(id)a4 maxWidth:(double)a5 variant:(unint64_t)a6 layerContextID:(unint64_t)a7 reply:(id)a8;
+- (id)_applicationIdentifierForConnection:(id)connection;
+- (id)_attributionsFromIDs:(id)ds appID:(id)d;
+- (id)slotMachineForViewIdentifier:(id)identifier;
+- (void)accessibilityLabelForAttributionIdentifier:(id)identifier reply:(id)reply;
+- (void)accessibilityLabelForAttributionIdentifiers:(id)identifiers reply:(id)reply;
+- (void)highlightDisambiguationPillForAttributionIdentifier:(id)identifier style:(id)style maxWidth:(double)width variant:(unint64_t)variant layerContextID:(unint64_t)d reply:(id)reply;
+- (void)highlightPillForAttributionIdentifiers:(id)identifiers style:(id)style maxWidth:(double)width variant:(unint64_t)variant layerContextID:(unint64_t)d reply:(id)reply;
 @end
 
 @implementation SLDPillService
@@ -68,12 +68,12 @@ uint64_t __31__SLDPillService_sharedService__block_invoke()
   return highlightDisambiguationPillSlotMachine;
 }
 
-- (void)highlightPillForAttributionIdentifiers:(id)a3 style:(id)a4 maxWidth:(double)a5 variant:(unint64_t)a6 layerContextID:(unint64_t)a7 reply:(id)a8
+- (void)highlightPillForAttributionIdentifiers:(id)identifiers style:(id)style maxWidth:(double)width variant:(unint64_t)variant layerContextID:(unint64_t)d reply:(id)reply
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
-  if (a5 <= 0.0)
+  identifiersCopy = identifiers;
+  styleCopy = style;
+  replyCopy = reply;
+  if (width <= 0.0)
   {
     v25 = SLDaemonLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -81,29 +81,29 @@ uint64_t __31__SLDPillService_sharedService__block_invoke()
       [SLDPillService highlightPillForAttributionIdentifiers:style:maxWidth:variant:layerContextID:reply:];
     }
 
-    v16[2](v16, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
   {
-    v17 = [MEMORY[0x277CCAE80] currentConnection];
-    v18 = [(SLDPillService *)self _applicationIdentifierForConnection:v17];
+    currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+    v18 = [(SLDPillService *)self _applicationIdentifierForConnection:currentConnection];
     if (v18)
     {
-      v19 = [(SLDPillService *)self _attributionsFromIDs:v14 appID:v18];
+      v19 = [(SLDPillService *)self _attributionsFromIDs:identifiersCopy appID:v18];
       v20 = [v19 count];
-      if (v17 && v20)
+      if (currentConnection && v20)
       {
         v29 = v19;
-        v21 = [SLDHighlightPillSlotTag tagForHighlightAttributions:v19 maxWidth:[SLHighlightPillMetrics maxSendersToDisplayWithStyle:v15 variant:a6] maxSendersToDisplay:a6 variant:a5];
-        v22 = [v21 resolvedStyleForStyle:v15];
-        v30 = [[SLHighlightPillMetrics alloc] initWithSlotStyle:v15 tag:v21 variant:a6];
+        v21 = [SLDHighlightPillSlotTag tagForHighlightAttributions:v19 maxWidth:[SLHighlightPillMetrics maxSendersToDisplayWithStyle:styleCopy variant:variant] maxSendersToDisplay:variant variant:width];
+        v22 = [v21 resolvedStyleForStyle:styleCopy];
+        v30 = [[SLHighlightPillMetrics alloc] initWithSlotStyle:styleCopy tag:v21 variant:variant];
         if ([(SLHighlightPillMetrics *)v30 hasValidMetricsForDrawing])
         {
           v23 = [(SLDRemoteRenderingService *)self _viewIDForStyle:v22 tag:v21];
-          [(SLDRemoteRenderingService *)self _connection:v17 onlyNeedsViewWithIdentifier:v23];
-          v24 = [(SLDRemoteRenderingService *)self _remoteContentForViewIdentifier:v23 layerContextID:a7 connection:v17];
-          (v16)[2](v16, v24);
+          [(SLDRemoteRenderingService *)self _connection:currentConnection onlyNeedsViewWithIdentifier:v23];
+          v24 = [(SLDRemoteRenderingService *)self _remoteContentForViewIdentifier:v23 layerContextID:d connection:currentConnection];
+          (replyCopy)[2](replyCopy, v24);
           [(SLDRemoteRenderingService *)self _connectionTouchedView:v23];
           CTFontRemoveFromCaches();
           CGFontCacheGetLocalCache();
@@ -115,10 +115,10 @@ uint64_t __31__SLDPillService_sharedService__block_invoke()
           v28 = SLDaemonLogHandle();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
           {
-            [SLDPillService highlightPillForAttributionIdentifiers:v28 style:a5 maxWidth:? variant:? layerContextID:? reply:?];
+            [SLDPillService highlightPillForAttributionIdentifiers:v28 style:width maxWidth:? variant:? layerContextID:? reply:?];
           }
 
-          v16[2](v16, 0);
+          replyCopy[2](replyCopy, 0);
         }
 
         v19 = v29;
@@ -132,7 +132,7 @@ uint64_t __31__SLDPillService_sharedService__block_invoke()
           [SLDPillService highlightPillForAttributionIdentifiers:style:maxWidth:variant:layerContextID:reply:];
         }
 
-        v16[2](v16, 0);
+        replyCopy[2](replyCopy, 0);
       }
     }
 
@@ -144,17 +144,17 @@ uint64_t __31__SLDPillService_sharedService__block_invoke()
         [SLDPillService highlightPillForAttributionIdentifiers:style:maxWidth:variant:layerContextID:reply:];
       }
 
-      v16[2](v16, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 }
 
-- (void)highlightDisambiguationPillForAttributionIdentifier:(id)a3 style:(id)a4 maxWidth:(double)a5 variant:(unint64_t)a6 layerContextID:(unint64_t)a7 reply:(id)a8
+- (void)highlightDisambiguationPillForAttributionIdentifier:(id)identifier style:(id)style maxWidth:(double)width variant:(unint64_t)variant layerContextID:(unint64_t)d reply:(id)reply
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
-  if (a5 <= 0.0)
+  identifierCopy = identifier;
+  styleCopy = style;
+  replyCopy = reply;
+  if (width <= 0.0)
   {
     v25 = SLDaemonLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -162,27 +162,27 @@ uint64_t __31__SLDPillService_sharedService__block_invoke()
       [SLDPillService highlightPillForAttributionIdentifiers:style:maxWidth:variant:layerContextID:reply:];
     }
 
-    v16[2](v16, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
   {
-    v17 = [MEMORY[0x277CCAE80] currentConnection];
-    v18 = [(SLDPillService *)self _applicationIdentifierForConnection:v17];
+    currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+    v18 = [(SLDPillService *)self _applicationIdentifierForConnection:currentConnection];
     if (v18)
     {
       v19 = [[SLHighlightCenter alloc] initWithAppIdentifier:v18];
-      v20 = [(SLHighlightCenter *)v19 fetchAttributionForAttributionIdentifier:v14];
+      v20 = [(SLHighlightCenter *)v19 fetchAttributionForAttributionIdentifier:identifierCopy];
       v21 = v20;
-      if (v17 && v20)
+      if (currentConnection && v20)
       {
-        v22 = [SLDHighlightDisambiguationPillSlotTag tagForHighlightAttribution:v20 maxWidth:a6 variant:a5];
-        v28 = [v22 resolvedStyleForStyle:v15];
+        v22 = [SLDHighlightDisambiguationPillSlotTag tagForHighlightAttribution:v20 maxWidth:variant variant:width];
+        v28 = [v22 resolvedStyleForStyle:styleCopy];
         [(SLDRemoteRenderingService *)self _viewIDForStyle:v28 tag:v22];
         v23 = v29 = v19;
-        [(SLDRemoteRenderingService *)self _connection:v17 onlyNeedsViewWithIdentifier:v23];
-        v24 = [(SLDRemoteRenderingService *)self _remoteContentForViewIdentifier:v23 layerContextID:a7 connection:v17];
-        (v16)[2](v16, v24);
+        [(SLDRemoteRenderingService *)self _connection:currentConnection onlyNeedsViewWithIdentifier:v23];
+        v24 = [(SLDRemoteRenderingService *)self _remoteContentForViewIdentifier:v23 layerContextID:d connection:currentConnection];
+        (replyCopy)[2](replyCopy, v24);
         [(SLDRemoteRenderingService *)self _connectionTouchedView:v23];
         CTFontRemoveFromCaches();
         CGFontCacheGetLocalCache();
@@ -199,7 +199,7 @@ uint64_t __31__SLDPillService_sharedService__block_invoke()
           [SLDPillService highlightPillForAttributionIdentifiers:style:maxWidth:variant:layerContextID:reply:];
         }
 
-        v16[2](v16, 0);
+        replyCopy[2](replyCopy, 0);
       }
     }
 
@@ -211,21 +211,21 @@ uint64_t __31__SLDPillService_sharedService__block_invoke()
         [SLDPillService highlightPillForAttributionIdentifiers:style:maxWidth:variant:layerContextID:reply:];
       }
 
-      v16[2](v16, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 }
 
-- (void)accessibilityLabelForAttributionIdentifiers:(id)a3 reply:(id)a4
+- (void)accessibilityLabelForAttributionIdentifiers:(id)identifiers reply:(id)reply
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCAE80] currentConnection];
-  if (SLDConnectionIsEntitledForAccessibility(v7))
+  identifiersCopy = identifiers;
+  replyCopy = reply;
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  if (SLDConnectionIsEntitledForAccessibility(currentConnection))
   {
-    v8 = [(SLDPillService *)self _attributionsFromIDs:v13 appID:@"accessibility"];
+    v8 = [(SLDPillService *)self _attributionsFromIDs:identifiersCopy appID:@"accessibility"];
     v9 = [v8 count];
-    if (v7)
+    if (currentConnection)
     {
       v10 = v9 == 0;
     }
@@ -237,62 +237,62 @@ uint64_t __31__SLDPillService_sharedService__block_invoke()
 
     if (v10)
     {
-      v6[2](v6, 0);
+      replyCopy[2](replyCopy, 0);
     }
 
     else
     {
       v11 = [SLDHighlightPillSlotTag tagForHighlightAttributions:v8 maxWidth:3 maxSendersToDisplay:0 variant:1000.0];
       v12 = [SLHighlightPillMetrics accessibilityLabelFor:v11];
-      (v6)[2](v6, v12);
+      (replyCopy)[2](replyCopy, v12);
     }
   }
 
   else
   {
-    v6[2](v6, 0);
-    [v7 invalidate];
+    replyCopy[2](replyCopy, 0);
+    [currentConnection invalidate];
   }
 }
 
-- (void)accessibilityLabelForAttributionIdentifier:(id)a3 reply:(id)a4
+- (void)accessibilityLabelForAttributionIdentifier:(id)identifier reply:(id)reply
 {
-  v12 = a3;
-  v5 = a4;
-  v6 = [MEMORY[0x277CCAE80] currentConnection];
-  if (SLDConnectionIsEntitledForAccessibility(v6))
+  identifierCopy = identifier;
+  replyCopy = reply;
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  if (SLDConnectionIsEntitledForAccessibility(currentConnection))
   {
     v7 = [[SLHighlightCenter alloc] initWithAppIdentifier:@"accessibility"];
-    v8 = [(SLHighlightCenter *)v7 fetchAttributionForAttributionIdentifier:v12];
+    v8 = [(SLHighlightCenter *)v7 fetchAttributionForAttributionIdentifier:identifierCopy];
     v9 = v8;
-    if (v6 && v8)
+    if (currentConnection && v8)
     {
       v10 = [SLDHighlightDisambiguationPillSlotTag tagForHighlightAttribution:v8 maxWidth:0 variant:1000.0];
       v11 = [SLHighlightDisambiguationPillMetrics accessibilityLabelFor:v10];
-      v5[2](v5, v11);
+      replyCopy[2](replyCopy, v11);
     }
 
     else
     {
-      v5[2](v5, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
   else
   {
-    v5[2](v5, 0);
-    [v6 invalidate];
+    replyCopy[2](replyCopy, 0);
+    [currentConnection invalidate];
   }
 }
 
-- (id)_applicationIdentifierForConnection:(id)a3
+- (id)_applicationIdentifierForConnection:(id)connection
 {
-  v4 = a3;
-  v5 = v4;
+  connectionCopy = connection;
+  v5 = connectionCopy;
   v6 = MEMORY[0x277CC1E90];
-  if (v4)
+  if (connectionCopy)
   {
-    [v4 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -303,9 +303,9 @@ uint64_t __31__SLDPillService_sharedService__block_invoke()
   v13 = 0;
   v7 = [v6 bundleRecordForAuditToken:v14 error:&v13];
   v8 = v13;
-  v9 = [v7 applicationIdentifier];
+  applicationIdentifier = [v7 applicationIdentifier];
 
-  if (!v9)
+  if (!applicationIdentifier)
   {
     v10 = SLDaemonLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -314,23 +314,23 @@ uint64_t __31__SLDPillService_sharedService__block_invoke()
     }
   }
 
-  v11 = [v7 applicationIdentifier];
+  applicationIdentifier2 = [v7 applicationIdentifier];
 
-  return v11;
+  return applicationIdentifier2;
 }
 
-- (id)_attributionsFromIDs:(id)a3 appID:(id)a4
+- (id)_attributionsFromIDs:(id)ds appID:(id)d
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [[SLHighlightCenter alloc] initWithAppIdentifier:v6];
+  dsCopy = ds;
+  dCopy = d;
+  array = [MEMORY[0x277CBEB18] array];
+  v8 = [[SLHighlightCenter alloc] initWithAppIdentifier:dCopy];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v5;
+  v9 = dsCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -348,7 +348,7 @@ uint64_t __31__SLDPillService_sharedService__block_invoke()
         v14 = [(SLHighlightCenter *)v8 fetchAttributionForAttributionIdentifier:*(*(&v18 + 1) + 8 * i), v18];
         if (v14)
         {
-          [v7 addObject:v14];
+          [array addObject:v14];
         }
       }
 
@@ -358,34 +358,34 @@ uint64_t __31__SLDPillService_sharedService__block_invoke()
     while (v11);
   }
 
-  v15 = [v7 copy];
+  v15 = [array copy];
   v16 = *MEMORY[0x277D85DE8];
 
   return v15;
 }
 
-- (id)slotMachineForViewIdentifier:(id)a3
+- (id)slotMachineForViewIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [v4 tag];
+  identifierCopy = identifier;
+  v5 = [identifierCopy tag];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(SLDPillService *)self highlightPillSlotMachine];
+    highlightPillSlotMachine = [(SLDPillService *)self highlightPillSlotMachine];
 LABEL_5:
-    v10 = v7;
+    v10 = highlightPillSlotMachine;
     goto LABEL_7;
   }
 
-  v8 = [v4 tag];
+  v8 = [identifierCopy tag];
   objc_opt_class();
   v9 = objc_opt_isKindOfClass();
 
   if (v9)
   {
-    v7 = [(SLDPillService *)self highlightDisambiguationPillSlotMachine];
+    highlightPillSlotMachine = [(SLDPillService *)self highlightDisambiguationPillSlotMachine];
     goto LABEL_5;
   }
 

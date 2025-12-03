@@ -1,37 +1,37 @@
 @interface PFSQLiteArchiver
-- (BOOL)access:(id)a3 error:(id *)a4;
-- (BOOL)archiveObject:(id)a3 error:(id *)a4;
-- (BOOL)archiveObjects:(id)a3 error:(id *)a4;
-- (BOOL)deleteObject:(id)a3 error:(id *)a4;
-- (BOOL)deleteObjectsOfClass:(Class)a3 predicate:(id)a4 error:(id *)a5;
-- (BOOL)mutate:(id)a3 error:(id *)a4;
-- (BOOL)replaceObject:(id)a3 withObject:(id)a4 error:(id *)a5;
-- (BOOL)setupForDescriptor:(id)a3 forClass:(Class)a4 error:(id *)a5;
-- (BOOL)updateObject:(id)a3 error:(id *)a4;
+- (BOOL)access:(id)access error:(id *)error;
+- (BOOL)archiveObject:(id)object error:(id *)error;
+- (BOOL)archiveObjects:(id)objects error:(id *)error;
+- (BOOL)deleteObject:(id)object error:(id *)error;
+- (BOOL)deleteObjectsOfClass:(Class)class predicate:(id)predicate error:(id *)error;
+- (BOOL)mutate:(id)mutate error:(id *)error;
+- (BOOL)replaceObject:(id)object withObject:(id)withObject error:(id *)error;
+- (BOOL)setupForDescriptor:(id)descriptor forClass:(Class)class error:(id *)error;
+- (BOOL)updateObject:(id)object error:(id *)error;
 - (PFSQLiteArchiver)init;
-- (id)initWithDatabaseConnection:(char)a3 shouldInvalidateOnDealloc:(void *)a4 error:;
-- (id)objectsOfClass:(Class)a3 column:(id)a4 predicate:(id)a5 limitOffset:(id)a6 orderedBy:(id)a7 error:(id *)a8;
-- (id)unarchiveObjectsOfClass:(Class)a3 error:(id *)a4;
-- (id)unarchiveObjectsOfClass:(Class)a3 predicate:(id)a4 error:(id *)a5;
-- (id)unarchiveObjectsOfClass:(Class)a3 predicate:(id)a4 limitOffset:(id)a5 orderedBy:(id)a6 error:(id *)a7;
+- (id)initWithDatabaseConnection:(char)connection shouldInvalidateOnDealloc:(void *)dealloc error:;
+- (id)objectsOfClass:(Class)class column:(id)column predicate:(id)predicate limitOffset:(id)offset orderedBy:(id)by error:(id *)error;
+- (id)unarchiveObjectsOfClass:(Class)class error:(id *)error;
+- (id)unarchiveObjectsOfClass:(Class)class predicate:(id)predicate error:(id *)error;
+- (id)unarchiveObjectsOfClass:(Class)class predicate:(id)predicate limitOffset:(id)offset orderedBy:(id)by error:(id *)error;
 - (uint64_t)_connectionQueue_cleanupQueryCache;
 - (void)dealloc;
 @end
 
 @implementation PFSQLiteArchiver
 
-- (id)initWithDatabaseConnection:(char)a3 shouldInvalidateOnDealloc:(void *)a4 error:
+- (id)initWithDatabaseConnection:(char)connection shouldInvalidateOnDealloc:(void *)dealloc error:
 {
   v8 = a2;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_8;
   }
 
-  v25.receiver = a1;
+  v25.receiver = self;
   v25.super_class = PFSQLiteArchiver;
   v9 = objc_msgSendSuper2(&v25, sel_init);
-  a1 = v9;
+  self = v9;
   if (!v9)
   {
     goto LABEL_9;
@@ -53,25 +53,25 @@
   v10 = v20[5];
   if (v10)
   {
-    if (a4)
+    if (dealloc)
     {
       v11 = v10;
-      *a4 = v10;
+      *dealloc = v10;
     }
   }
 
   else
   {
-    [v8 addObserver:a1];
-    v12 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-    v13 = a1[2];
-    a1[2] = v12;
+    [v8 addObserver:self];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    v13 = self[2];
+    self[2] = strongToStrongObjectsMapTable;
 
     v14 = objc_opt_new();
-    v15 = a1[3];
-    a1[3] = v14;
+    v15 = self[3];
+    self[3] = v14;
 
-    *(a1 + 8) = a3;
+    *(self + 8) = connection;
   }
 
   _Block_object_dispose(&v19, 8);
@@ -79,17 +79,17 @@
   if (v10)
   {
 LABEL_8:
-    v16 = 0;
+    selfCopy = 0;
   }
 
   else
   {
 LABEL_9:
-    a1 = a1;
-    v16 = a1;
+    self = self;
+    selfCopy = self;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 void __79__PFSQLiteArchiver_initWithDatabaseConnection_shouldInvalidateOnDealloc_error___block_invoke(uint64_t a1, sqlite3 *a2)
@@ -106,12 +106,12 @@ void __79__PFSQLiteArchiver_initWithDatabaseConnection_shouldInvalidateOnDealloc
 
 - (PFSQLiteArchiver)init
 {
-  v3 = [[PFSQLiteDatabaseConnection alloc] initWithInMemoryDatabase];
-  [(PFSQLiteDatabaseConnection *)v3 executeQuery:@"PRAGMA journal_mode=WAL;" error:0];
-  v4 = [(PFSQLiteArchiver *)&self->super.isa initWithDatabaseConnection:v3 shouldInvalidateOnDealloc:1 error:0];
+  initWithInMemoryDatabase = [[PFSQLiteDatabaseConnection alloc] initWithInMemoryDatabase];
+  [(PFSQLiteDatabaseConnection *)initWithInMemoryDatabase executeQuery:@"PRAGMA journal_mode=WAL;" error:0];
+  v4 = [(PFSQLiteArchiver *)&self->super.isa initWithDatabaseConnection:initWithInMemoryDatabase shouldInvalidateOnDealloc:1 error:0];
   if (!v4)
   {
-    [(PFSQLiteDatabaseConnection *)v3 invalidate];
+    [(PFSQLiteDatabaseConnection *)initWithInMemoryDatabase invalidate];
   }
 
   return v4;
@@ -136,22 +136,22 @@ void __79__PFSQLiteArchiver_initWithDatabaseConnection_shouldInvalidateOnDealloc
   [(PFSQLiteArchiver *)&v4 dealloc];
 }
 
-- (BOOL)setupForDescriptor:(id)a3 forClass:(Class)a4 error:(id *)a5
+- (BOOL)setupForDescriptor:(id)descriptor forClass:(Class)class error:(id *)error
 {
-  v8 = a3;
+  descriptorCopy = descriptor;
   v9 = [(_PFSQLiteArchiveReadonlyTransaction *)[_PFSQLiteArchiveReadwriteTransaction alloc] initWithDatabaseConnection:self->_connection classToObjectMap:self->_classToObjectMap queryCache:self->_queryCache];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __54__PFSQLiteArchiver_setupForDescriptor_forClass_error___block_invoke;
   v13[3] = &unk_1E8189298;
-  v15 = v8;
-  v16 = a4;
+  v15 = descriptorCopy;
+  classCopy = class;
   v14 = v9;
-  v10 = v8;
+  v10 = descriptorCopy;
   v11 = v9;
-  LOBYTE(a5) = [(_PFSQLiteArchiveReadwriteTransaction *)v11 inWriteTransaction:v13 error:a5];
+  LOBYTE(error) = [(_PFSQLiteArchiveReadwriteTransaction *)v11 inWriteTransaction:v13 error:error];
 
-  return a5;
+  return error;
 }
 
 BOOL __54__PFSQLiteArchiver_setupForDescriptor_forClass_error___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -162,117 +162,117 @@ BOOL __54__PFSQLiteArchiver_setupForDescriptor_forClass_error___block_invoke(uin
   return v4;
 }
 
-- (id)unarchiveObjectsOfClass:(Class)a3 error:(id *)a4
+- (id)unarchiveObjectsOfClass:(Class)class error:(id *)error
 {
   v6 = [[_PFSQLiteArchiveReadonlyTransaction alloc] initWithDatabaseConnection:self->_connection classToObjectMap:self->_classToObjectMap queryCache:self->_queryCache];
-  v7 = [(_PFSQLiteArchiveReadonlyTransaction *)v6 unarchiveObjectsOfClass:a3 error:a4];
+  v7 = [(_PFSQLiteArchiveReadonlyTransaction *)v6 unarchiveObjectsOfClass:class error:error];
 
   return v7;
 }
 
-- (id)unarchiveObjectsOfClass:(Class)a3 predicate:(id)a4 error:(id *)a5
+- (id)unarchiveObjectsOfClass:(Class)class predicate:(id)predicate error:(id *)error
 {
-  v8 = a4;
+  predicateCopy = predicate;
   v9 = [[_PFSQLiteArchiveReadonlyTransaction alloc] initWithDatabaseConnection:self->_connection classToObjectMap:self->_classToObjectMap queryCache:self->_queryCache];
-  v10 = [(_PFSQLiteArchiveReadonlyTransaction *)v9 unarchiveObjectsOfClass:a3 predicate:v8 error:a5];
+  v10 = [(_PFSQLiteArchiveReadonlyTransaction *)v9 unarchiveObjectsOfClass:class predicate:predicateCopy error:error];
 
   return v10;
 }
 
-- (id)unarchiveObjectsOfClass:(Class)a3 predicate:(id)a4 limitOffset:(id)a5 orderedBy:(id)a6 error:(id *)a7
+- (id)unarchiveObjectsOfClass:(Class)class predicate:(id)predicate limitOffset:(id)offset orderedBy:(id)by error:(id *)error
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
+  byCopy = by;
+  offsetCopy = offset;
+  predicateCopy = predicate;
   v15 = [[_PFSQLiteArchiveReadonlyTransaction alloc] initWithDatabaseConnection:self->_connection classToObjectMap:self->_classToObjectMap queryCache:self->_queryCache];
-  v16 = [(_PFSQLiteArchiveReadonlyTransaction *)v15 unarchiveObjectsOfClass:a3 predicate:v14 limitOffset:v13 orderedBy:v12 error:a7];
+  v16 = [(_PFSQLiteArchiveReadonlyTransaction *)v15 unarchiveObjectsOfClass:class predicate:predicateCopy limitOffset:offsetCopy orderedBy:byCopy error:error];
 
   return v16;
 }
 
-- (id)objectsOfClass:(Class)a3 column:(id)a4 predicate:(id)a5 limitOffset:(id)a6 orderedBy:(id)a7 error:(id *)a8
+- (id)objectsOfClass:(Class)class column:(id)column predicate:(id)predicate limitOffset:(id)offset orderedBy:(id)by error:(id *)error
 {
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
+  byCopy = by;
+  offsetCopy = offset;
+  predicateCopy = predicate;
+  columnCopy = column;
   v18 = [[_PFSQLiteArchiveReadonlyTransaction alloc] initWithDatabaseConnection:self->_connection classToObjectMap:self->_classToObjectMap queryCache:self->_queryCache];
-  v19 = [(_PFSQLiteArchiveReadonlyTransaction *)v18 objectsOfClass:a3 column:v17 predicate:v16 limitOffset:v15 orderedBy:v14 error:a8];
+  v19 = [(_PFSQLiteArchiveReadonlyTransaction *)v18 objectsOfClass:class column:columnCopy predicate:predicateCopy limitOffset:offsetCopy orderedBy:byCopy error:error];
 
   return v19;
 }
 
-- (BOOL)archiveObject:(id)a3 error:(id *)a4
+- (BOOL)archiveObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = [(_PFSQLiteArchiveReadonlyTransaction *)[_PFSQLiteArchiveReadwriteTransaction alloc] initWithDatabaseConnection:self->_connection classToObjectMap:self->_classToObjectMap queryCache:self->_queryCache];
-  LOBYTE(a4) = [(_PFSQLiteArchiveReadwriteTransaction *)v7 archiveObject:v6 error:a4];
+  LOBYTE(error) = [(_PFSQLiteArchiveReadwriteTransaction *)v7 archiveObject:objectCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)archiveObjects:(id)a3 error:(id *)a4
+- (BOOL)archiveObjects:(id)objects error:(id *)error
 {
-  v6 = a3;
+  objectsCopy = objects;
   v7 = [(_PFSQLiteArchiveReadonlyTransaction *)[_PFSQLiteArchiveReadwriteTransaction alloc] initWithDatabaseConnection:self->_connection classToObjectMap:self->_classToObjectMap queryCache:self->_queryCache];
-  LOBYTE(a4) = [(_PFSQLiteArchiveReadwriteTransaction *)v7 archiveObjects:v6 error:a4];
+  LOBYTE(error) = [(_PFSQLiteArchiveReadwriteTransaction *)v7 archiveObjects:objectsCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)deleteObject:(id)a3 error:(id *)a4
+- (BOOL)deleteObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = [(_PFSQLiteArchiveReadonlyTransaction *)[_PFSQLiteArchiveReadwriteTransaction alloc] initWithDatabaseConnection:self->_connection classToObjectMap:self->_classToObjectMap queryCache:self->_queryCache];
-  LOBYTE(a4) = [(_PFSQLiteArchiveReadwriteTransaction *)v7 deleteObject:v6 error:a4];
+  LOBYTE(error) = [(_PFSQLiteArchiveReadwriteTransaction *)v7 deleteObject:objectCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)deleteObjectsOfClass:(Class)a3 predicate:(id)a4 error:(id *)a5
+- (BOOL)deleteObjectsOfClass:(Class)class predicate:(id)predicate error:(id *)error
 {
-  v8 = a4;
+  predicateCopy = predicate;
   v9 = [(_PFSQLiteArchiveReadonlyTransaction *)[_PFSQLiteArchiveReadwriteTransaction alloc] initWithDatabaseConnection:self->_connection classToObjectMap:self->_classToObjectMap queryCache:self->_queryCache];
-  LOBYTE(a5) = [(_PFSQLiteArchiveReadwriteTransaction *)v9 deleteObjectsOfClass:a3 predicate:v8 error:a5];
+  LOBYTE(error) = [(_PFSQLiteArchiveReadwriteTransaction *)v9 deleteObjectsOfClass:class predicate:predicateCopy error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)replaceObject:(id)a3 withObject:(id)a4 error:(id *)a5
+- (BOOL)replaceObject:(id)object withObject:(id)withObject error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  withObjectCopy = withObject;
+  objectCopy = object;
   v10 = [(_PFSQLiteArchiveReadonlyTransaction *)[_PFSQLiteArchiveReadwriteTransaction alloc] initWithDatabaseConnection:self->_connection classToObjectMap:self->_classToObjectMap queryCache:self->_queryCache];
-  LOBYTE(a5) = [(_PFSQLiteArchiveReadwriteTransaction *)v10 replaceObject:v9 withObject:v8 error:a5];
+  LOBYTE(error) = [(_PFSQLiteArchiveReadwriteTransaction *)v10 replaceObject:objectCopy withObject:withObjectCopy error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)updateObject:(id)a3 error:(id *)a4
+- (BOOL)updateObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = [(_PFSQLiteArchiveReadonlyTransaction *)[_PFSQLiteArchiveReadwriteTransaction alloc] initWithDatabaseConnection:self->_connection classToObjectMap:self->_classToObjectMap queryCache:self->_queryCache];
-  LOBYTE(a4) = [(_PFSQLiteArchiveReadwriteTransaction *)v7 updateObject:v6 error:a4];
+  LOBYTE(error) = [(_PFSQLiteArchiveReadwriteTransaction *)v7 updateObject:objectCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)mutate:(id)a3 error:(id *)a4
+- (BOOL)mutate:(id)mutate error:(id *)error
 {
-  v6 = a3;
+  mutateCopy = mutate;
   v7 = [(_PFSQLiteArchiveReadonlyTransaction *)[_PFSQLiteArchiveReadwriteTransaction alloc] initWithDatabaseConnection:self->_connection classToObjectMap:self->_classToObjectMap queryCache:self->_queryCache];
-  LOBYTE(a4) = [(_PFSQLiteArchiveReadwriteTransaction *)v7 inWriteTransaction:v6 error:a4];
+  LOBYTE(error) = [(_PFSQLiteArchiveReadwriteTransaction *)v7 inWriteTransaction:mutateCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)access:(id)a3 error:(id *)a4
+- (BOOL)access:(id)access error:(id *)error
 {
-  v6 = a3;
+  accessCopy = access;
   v7 = [[_PFSQLiteArchiveReadonlyTransaction alloc] initWithDatabaseConnection:self->_connection classToObjectMap:self->_classToObjectMap queryCache:self->_queryCache];
-  LOBYTE(a4) = [(_PFSQLiteArchiveReadonlyTransaction *)v7 inReadTransaction:v6 error:a4];
+  LOBYTE(error) = [(_PFSQLiteArchiveReadonlyTransaction *)v7 inReadTransaction:accessCopy error:error];
 
-  return a4;
+  return error;
 }
 
 - (uint64_t)_connectionQueue_cleanupQueryCache
@@ -281,15 +281,15 @@ BOOL __54__PFSQLiteArchiver_setupForDescriptor_forClass_error___block_invoke(uin
   if (result)
   {
     v1 = result;
-    v2 = [*(result + 32) queue];
+    queue = [*(result + 32) queue];
     BSDispatchQueueAssert();
 
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v3 = [*(v1 + 24) objectEnumerator];
-    v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    objectEnumerator = [*(v1 + 24) objectEnumerator];
+    v4 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v4)
     {
       v5 = v4;
@@ -301,14 +301,14 @@ BOOL __54__PFSQLiteArchiver_setupForDescriptor_forClass_error___block_invoke(uin
         {
           if (*v10 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           sqlite3_finalize([*(*(&v9 + 1) + 8 * v7++) pointerValue]);
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v5 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v5);

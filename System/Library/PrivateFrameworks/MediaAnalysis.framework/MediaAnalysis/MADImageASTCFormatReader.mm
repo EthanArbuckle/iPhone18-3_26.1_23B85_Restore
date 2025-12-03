@@ -1,17 +1,17 @@
 @interface MADImageASTCFormatReader
 - (CGImageSource)readNextImageSource;
 - (CGImageSource)readOneImageSource;
-- (MADImageASTCFormatReader)initWithData:(id)a3;
-- (int)readDataToBuffer:(void *)a3 Position:(unint64_t)a4 Length:(unint64_t)a5;
+- (MADImageASTCFormatReader)initWithData:(id)data;
+- (int)readDataToBuffer:(void *)buffer Position:(unint64_t)position Length:(unint64_t)length;
 - (int)readPList;
 @end
 
 @implementation MADImageASTCFormatReader
 
-- (MADImageASTCFormatReader)initWithData:(id)a3
+- (MADImageASTCFormatReader)initWithData:(id)data
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dataCopy = data;
   v13.receiver = self;
   v13.super_class = MADImageASTCFormatReader;
   v6 = [(MADImageASTCFormatReader *)&v13 init];
@@ -21,7 +21,7 @@
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v6->_dataStream, a3);
+  objc_storeStrong(&v6->_dataStream, data);
   dataStream = v7->_dataStream;
   if (dataStream)
   {
@@ -48,12 +48,12 @@ LABEL_9:
   return v9;
 }
 
-- (int)readDataToBuffer:(void *)a3 Position:(unint64_t)a4 Length:(unint64_t)a5
+- (int)readDataToBuffer:(void *)buffer Position:(unint64_t)position Length:(unint64_t)length
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (buffer)
   {
-    if (self->_start > a4 || ((end = self->_end, end > a4) ? (v6 = a5 + a4 > end) : (v6 = 1), v6))
+    if (self->_start > position || ((end = self->_end, end > position) ? (v6 = length + position > end) : (v6 = 1), v6))
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {

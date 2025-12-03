@@ -1,13 +1,13 @@
 @interface DBLeafIconDataSource
 + (NSString)kDBSBApplicationBadgeKey;
-- (BOOL)icon:(id)a3 launchFromLocation:(id)a4 context:(id)a5;
+- (BOOL)icon:(id)icon launchFromLocation:(id)location context:(id)context;
 - (_TtC9DashBoard20DBLeafIconDataSource)init;
-- (_TtC9DashBoard20DBLeafIconDataSource)initWithIdentifier:(id)a3 application:(id)a4 sessionConfiguration:(id)a5;
-- (id)badgeNumberOrStringForIcon:(id)a3;
-- (id)formattedAccessoryStringForIcon:(id)a3;
-- (id)icon:(id)a3 displayNameForLocation:(id)a4;
-- (id)icon:(id)a3 imageWithInfo:(SBIconImageInfo *)a4;
-- (id)icon:(id)a3 unmaskedImageWithInfo:(SBIconImageInfo *)a4;
+- (_TtC9DashBoard20DBLeafIconDataSource)initWithIdentifier:(id)identifier application:(id)application sessionConfiguration:(id)configuration;
+- (id)badgeNumberOrStringForIcon:(id)icon;
+- (id)formattedAccessoryStringForIcon:(id)icon;
+- (id)icon:(id)icon displayNameForLocation:(id)location;
+- (id)icon:(id)icon imageWithInfo:(SBIconImageInfo *)info;
+- (id)icon:(id)icon unmaskedImageWithInfo:(SBIconImageInfo *)info;
 - (void)invalidateBadgeValue;
 @end
 
@@ -20,18 +20,18 @@
   return v2;
 }
 
-- (_TtC9DashBoard20DBLeafIconDataSource)initWithIdentifier:(id)a3 application:(id)a4 sessionConfiguration:(id)a5
+- (_TtC9DashBoard20DBLeafIconDataSource)initWithIdentifier:(id)identifier application:(id)application sessionConfiguration:(id)configuration
 {
   v7 = sub_248383960();
   v9 = v8;
-  v10 = a4;
-  v11 = a5;
-  return DBLeafIconDataSource.init(identifier:application:sessionConfiguration:)(v7, v9, a4, a5);
+  applicationCopy = application;
+  configurationCopy = configuration;
+  return DBLeafIconDataSource.init(identifier:application:sessionConfiguration:)(v7, v9, application, configuration);
 }
 
 - (void)invalidateBadgeValue
 {
-  v2 = self;
+  selfCopy = self;
   DBLeafIconDataSource.invalidateBadgeValue()();
 }
 
@@ -42,41 +42,41 @@
   return result;
 }
 
-- (id)icon:(id)a3 unmaskedImageWithInfo:(SBIconImageInfo *)a4
+- (id)icon:(id)icon unmaskedImageWithInfo:(SBIconImageInfo *)info
 {
   v8 = v7;
   v9 = v6;
   v10 = v5;
   v11 = v4;
-  v13 = a3;
-  v14 = self;
+  iconCopy = icon;
+  selfCopy = self;
   v18.size.width = v11;
   v18.size.height = v10;
   v18.scale = v9;
   v18.continuousCornerRadius = v8;
-  v15 = DBLeafIconDataSource.icon(_:unmaskedImageWith:)(v13, v18);
+  v15 = DBLeafIconDataSource.icon(_:unmaskedImageWith:)(iconCopy, v18);
 
   return v15;
 }
 
-- (id)icon:(id)a3 imageWithInfo:(SBIconImageInfo *)a4
+- (id)icon:(id)icon imageWithInfo:(SBIconImageInfo *)info
 {
   v8 = v7;
   v9 = v6;
   v10 = v5;
   v11 = v4;
-  v13 = a3;
-  v14 = self;
+  iconCopy = icon;
+  selfCopy = self;
   v15 = _s9DashBoard20DBLeafIconDataSourceC4icon_9imageWithSo7UIImageCSgSo06SBLeafD0C_So15SBIconImageInfoVtF_0(v11, v10, v9, v8);
 
   return v15;
 }
 
-- (id)icon:(id)a3 displayNameForLocation:(id)a4
+- (id)icon:(id)icon displayNameForLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  iconCopy = icon;
+  locationCopy = location;
+  selfCopy = self;
   _s9DashBoard20DBLeafIconDataSourceC4icon_22displayNameForLocationSSSgSo06SBLeafD0C_So06SBIconK0atF_0();
   v10 = v9;
 
@@ -93,11 +93,11 @@
   return v11;
 }
 
-- (id)formattedAccessoryStringForIcon:(id)a3
+- (id)formattedAccessoryStringForIcon:(id)icon
 {
-  v4 = a3;
-  v5 = self;
-  object = DBLeafIconDataSource.formattedAccessoryString(for:)(v4).value._object;
+  iconCopy = icon;
+  selfCopy = self;
+  object = DBLeafIconDataSource.formattedAccessoryString(for:)(iconCopy).value._object;
 
   if (object)
   {
@@ -112,10 +112,10 @@
   return v7;
 }
 
-- (id)badgeNumberOrStringForIcon:(id)a3
+- (id)badgeNumberOrStringForIcon:(id)icon
 {
-  v4 = a3;
-  v5 = self;
+  iconCopy = icon;
+  selfCopy = self;
   DBLeafIconDataSource.badgeNumberOrString(for:)(v14);
 
   v6 = v15;
@@ -139,9 +139,9 @@
   return v12;
 }
 
-- (BOOL)icon:(id)a3 launchFromLocation:(id)a4 context:(id)a5
+- (BOOL)icon:(id)icon launchFromLocation:(id)location context:(id)context
 {
-  if (a5)
+  if (context)
   {
     swift_unknownObjectRetain();
     sub_248384230();

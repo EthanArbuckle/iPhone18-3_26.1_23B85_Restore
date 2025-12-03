@@ -1,15 +1,15 @@
 @interface CKDAggregateZonePCSOperation
-+ (id)nameForState:(unint64_t)a3;
++ (id)nameForState:(unint64_t)state;
 - (BOOL)_saveTargetZone;
 - (BOOL)makeStateTransition;
-- (CKDAggregateZonePCSOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDAggregateZonePCSOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)activityCreate;
 - (id)relevantZoneIDs;
 - (void)_checkCurrentPCSIdentity;
-- (void)_fetchPCSDataForZoneID:(id)a3;
+- (void)_fetchPCSDataForZoneID:(id)d;
 - (void)_fetchZonePCS;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
-- (void)_handleZoneSavedWithID:(id)a3 responseCode:(id)a4;
+- (void)_finishOnCallbackQueueWithError:(id)error;
+- (void)_handleZoneSavedWithID:(id)d responseCode:(id)code;
 - (void)_prepareTargetZonePCS;
 - (void)_sendCoreAnalyticsEventForKeySync;
 - (void)_setPermanentFailure;
@@ -19,19 +19,19 @@
 
 @implementation CKDAggregateZonePCSOperation
 
-- (CKDAggregateZonePCSOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDAggregateZonePCSOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v24.receiver = self;
   v24.super_class = CKDAggregateZonePCSOperation;
-  v9 = [(CKDDatabaseOperation *)&v24 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDDatabaseOperation *)&v24 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_sourceZoneIDs(v6, v7, v8);
+    v10 = objc_msgSend_sourceZoneIDs(infoCopy, v7, v8);
     sourceZoneIDs = v9->_sourceZoneIDs;
     v9->_sourceZoneIDs = v10;
 
-    v14 = objc_msgSend_targetZone(v6, v12, v13);
+    v14 = objc_msgSend_targetZone(infoCopy, v12, v13);
     targetZone = v9->_targetZone;
     v9->_targetZone = v14;
 
@@ -175,20 +175,20 @@ LABEL_17:
   return MEMORY[0x2821F9670](self, sel__saveTargetZone, v31);
 }
 
-+ (id)nameForState:(unint64_t)a3
++ (id)nameForState:(unint64_t)state
 {
-  if (a3 - 2 >= 6)
+  if (state - 2 >= 6)
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKDAggregateZonePCSOperation;
     v5 = objc_msgSendSuper2(&v7, sel_nameForState_);
   }
 
   else
   {
-    v5 = off_27854AC60[a3 - 2];
+    v5 = off_27854AC60[state - 2];
   }
 
   return v5;
@@ -253,9 +253,9 @@ LABEL_17:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchPCSDataForZoneID:(id)a3
+- (void)_fetchPCSDataForZoneID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v7 = objc_msgSend_stateTransitionGroup(self, v5, v6);
   dispatch_group_enter(v7);
 
@@ -268,7 +268,7 @@ LABEL_17:
   v16[3] = &unk_27854ABA0;
   objc_copyWeak(&v18, &location);
   v16[4] = self;
-  v14 = v4;
+  v14 = dCopy;
   v17 = v14;
   objc_msgSend_fetchPCSForZoneWithID_forOperation_options_withCompletionHandler_(v13, v15, v14, self, 0, v16);
 
@@ -278,11 +278,11 @@ LABEL_17:
 
 - (void)_prepareTargetZonePCS
 {
-  v3 = self;
+  selfCopy = self;
   v96 = *MEMORY[0x277D85DE8];
   cf = 0;
   v4 = objc_msgSend_zonePCSDataByZoneID(self, a2, v2);
-  v7 = objc_msgSend_targetZone(v3, v5, v6);
+  v7 = objc_msgSend_targetZone(selfCopy, v5, v6);
   v10 = objc_msgSend_zoneID(v7, v8, v9);
   v12 = objc_msgSend_objectForKeyedSubscript_(v4, v11, v10);
 
@@ -291,7 +291,7 @@ LABEL_17:
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
-  v17 = objc_msgSend_sourceZoneIDs(v3, v15, v16);
+  v17 = objc_msgSend_sourceZoneIDs(selfCopy, v15, v16);
   v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(v17, v18, &v87, v95, 16);
   if (!v19)
   {
@@ -302,7 +302,7 @@ LABEL_17:
 
   v22 = v19;
   v23 = *v88;
-  v80 = v3;
+  v80 = selfCopy;
 LABEL_3:
   v24 = 0;
 LABEL_4:
@@ -312,7 +312,7 @@ LABEL_4:
   }
 
   v25 = *(*(&v87 + 1) + 8 * v24);
-  v26 = objc_msgSend_zonePCSDataByZoneID(v3, v20, v21);
+  v26 = objc_msgSend_zonePCSDataByZoneID(selfCopy, v20, v21);
   v28 = objc_msgSend_objectForKeyedSubscript_(v26, v27, v25);
 
   v82 = objc_msgSend_pcs(v28, v29, v30);
@@ -361,13 +361,13 @@ LABEL_9:
         goto LABEL_28;
       }
 
-      v44 = objc_msgSend_container(v3, v42, v43);
+      v44 = objc_msgSend_container(selfCopy, v42, v43);
       v47 = objc_msgSend_deviceContext(v44, v45, v46);
       v50 = objc_msgSend_testDeviceReference(v47, v48, v49);
       if (v50)
       {
         v53 = v50;
-        v54 = objc_msgSend_targetZone(v3, v51, v52);
+        v54 = objc_msgSend_targetZone(selfCopy, v51, v52);
         v57 = objc_msgSend_zoneID(v54, v55, v56);
         v60 = objc_msgSend_zoneName(v57, v58, v59);
         isEqualToString = objc_msgSend_isEqualToString_(v60, v61, @"PCS_PREPARE_FAILURE");
@@ -375,7 +375,7 @@ LABEL_9:
         if (isEqualToString)
         {
           v65 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v63, *MEMORY[0x277CBC120], 5005, @"Failed to add identity to the target zone PCS from zone %@", v78);
-          v3 = v80;
+          selfCopy = v80;
           goto LABEL_29;
         }
       }
@@ -392,7 +392,7 @@ LABEL_9:
       }
 
       ++v38;
-      v3 = v80;
+      selfCopy = v80;
       if (v37 == v38)
       {
         v37 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v64, &v83, v94, 16);
@@ -463,11 +463,11 @@ LABEL_31:
       _os_log_impl(&dword_22506F000, v66, OS_LOG_TYPE_INFO, "Warn: Error preparing target zone PCS: %@", buf, 0xCu);
     }
 
-    v69 = objc_msgSend_error(v3, v67, v68);
+    v69 = objc_msgSend_error(selfCopy, v67, v68);
 
     if (!v69)
     {
-      objc_msgSend_setError_(v3, v70, v65);
+      objc_msgSend_setError_(selfCopy, v70, v65);
     }
   }
 
@@ -652,14 +652,14 @@ LABEL_7:
   objc_msgSend_sendCoreAnalyticsEventForKeySync_(CKDPCSKeySyncManager, v26, v27);
 }
 
-- (void)_handleZoneSavedWithID:(id)a3 responseCode:(id)a4
+- (void)_handleZoneSavedWithID:(id)d responseCode:(id)code
 {
   v138 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  codeCopy = code;
   v11 = objc_msgSend_targetZone(self, v9, v10);
   v14 = objc_msgSend_zoneID(v11, v12, v13);
-  isEqual = objc_msgSend_isEqual_(v7, v15, v14);
+  isEqual = objc_msgSend_isEqual_(dCopy, v15, v14);
 
   if ((isEqual & 1) == 0)
   {
@@ -668,24 +668,24 @@ LABEL_7:
   }
 
   objc_msgSend_setIsHandlingRetryableError_(self, v17, 0);
-  v21 = sub_2253962A4(v8);
+  v21 = sub_2253962A4(codeCopy);
   if (*MEMORY[0x277CBC810] == 1)
   {
     if (objc_msgSend_checkAndClearUnitTestOverrides_(self, v19, @"SwizzleZoneSaveResponseToErrorZonePCSIdentityUnknown"))
     {
-      objc_msgSend_setCode_(v8, v22, 3);
+      objc_msgSend_setCode_(codeCopy, v22, 3);
       v21 = 2053;
     }
 
     if (objc_msgSend_checkAndClearUnitTestOverrides_(self, v22, @"CKUnderlyingErrorPCSOplockFailed"))
     {
-      objc_msgSend_setCode_(v8, v19, 3);
+      objc_msgSend_setCode_(codeCopy, v19, 3);
       v21 = 2037;
     }
   }
 
-  v23 = objc_msgSend_code(v8, v19, v20);
-  if (v7 && v23 == 1)
+  v23 = objc_msgSend_code(codeCopy, v19, v20);
+  if (dCopy && v23 == 1)
   {
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -720,7 +720,7 @@ LABEL_7:
       v133[2] = sub_22523E188;
       v133[3] = &unk_27854AC40;
       objc_copyWeak(&v135, buf);
-      v134 = v7;
+      v134 = dCopy;
       objc_msgSend_createSharePCSFromData_ofType_withService_completionHandler_(v45, v52, v51, 3, 0, v133);
 
       objc_destroyWeak(&v135);
@@ -735,11 +735,11 @@ LABEL_7:
     case 2036:
       v93 = objc_msgSend_container(self, v24, v25);
       v96 = objc_msgSend_recordCache(v93, v94, v95);
-      objc_msgSend_clearAllRecordsForContainer_zoneWithID_(v96, v97, v93, v7);
+      objc_msgSend_clearAllRecordsForContainer_zoneWithID_(v96, v97, v93, dCopy);
 
-      objc_msgSend_setPCSData_forFetchedZoneID_(self, v98, 0, v7);
+      objc_msgSend_setPCSData_forFetchedZoneID_(self, v98, 0, dCopy);
       v101 = objc_msgSend_pcsCache(v93, v99, v100);
-      objc_msgSend_removePCSDataForItemsInZoneWithID_(v101, v102, v7);
+      objc_msgSend_removePCSDataForItemsInZoneWithID_(v101, v102, dCopy);
 
       break;
     case 2053:
@@ -754,13 +754,13 @@ LABEL_7:
         v57 = v55;
         v60 = objc_msgSend_operationID(self, v58, v59);
         *buf = 138412546;
-        *v137 = v7;
+        *v137 = dCopy;
         *&v137[8] = 2114;
         *&v137[10] = v60;
         _os_log_impl(&dword_22506F000, v57, OS_LOG_TYPE_INFO, "Zone PCS for %@ failed server validation. Will attempt user key sync for operation %{public}@ before trying again.", buf, 0x16u);
       }
 
-      objc_msgSend_setZoneWaitingOnKeyRegistrySync_(self, v56, v7);
+      objc_msgSend_setZoneWaitingOnKeyRegistrySync_(self, v56, dCopy);
       goto LABEL_28;
     case 2037:
       if (*MEMORY[0x277CBC880] != -1)
@@ -772,7 +772,7 @@ LABEL_7:
       if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        *v137 = v7;
+        *v137 = dCopy;
         _os_log_impl(&dword_22506F000, v53, OS_LOG_TYPE_INFO, "Received a PCS oplock failure for save of zone %@. Re-fetching the zone PCS and trying again", buf, 0xCu);
       }
 
@@ -780,9 +780,9 @@ LABEL_28:
       objc_msgSend_setIsHandlingRetryableError_(self, v54, 1);
       v61 = MEMORY[0x277CBC560];
       v64 = objc_msgSend_request(self, v62, v63);
-      v65 = sub_225395734(v64, v8);
+      v65 = sub_225395734(v64, codeCopy);
       v68 = objc_msgSend_targetZone(self, v66, v67);
-      v71 = objc_msgSend_error(v8, v69, v70);
+      v71 = objc_msgSend_error(codeCopy, v69, v70);
       v74 = objc_msgSend_errorDescription(v71, v72, v73);
       v76 = objc_msgSend_errorWithDomain_code_userInfo_format_(v61, v75, *MEMORY[0x277CBC120], v21, v65, @"Error saving record zone %@ to server: %@", v68, v74);
       objc_msgSend_setCurrentError_(self, v77, v76);
@@ -796,7 +796,7 @@ LABEL_28:
       v88 = objc_msgSend_targetZone(self, v86, v87);
       objc_msgSend_setPreviousProtectionEtag_(v88, v89, 0);
 
-      objc_msgSend_setPCSData_forFetchedZoneID_(self, v90, 0, v7);
+      objc_msgSend_setPCSData_forFetchedZoneID_(self, v90, 0, dCopy);
 LABEL_29:
       v91 = 0;
       goto LABEL_30;
@@ -811,7 +811,7 @@ LABEL_29:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
   {
     v106 = v103;
-    v109 = objc_msgSend_code(v8, v107, v108);
+    v109 = objc_msgSend_code(codeCopy, v107, v108);
     v112 = objc_msgSend_targetZone(self, v110, v111);
     *buf = 67109378;
     *v137 = v109;
@@ -822,9 +822,9 @@ LABEL_29:
 
   v113 = MEMORY[0x277CBC560];
   v114 = objc_msgSend_request(self, v104, v105);
-  v115 = sub_225395734(v114, v8);
+  v115 = sub_225395734(v114, codeCopy);
   v118 = objc_msgSend_targetZone(self, v116, v117);
-  v121 = objc_msgSend_error(v8, v119, v120);
+  v121 = objc_msgSend_error(codeCopy, v119, v120);
   v124 = objc_msgSend_errorDescription(v121, v122, v123);
   v91 = objc_msgSend_errorWithDomain_code_userInfo_format_(v113, v125, *MEMORY[0x277CBC120], v21, v115, @"Error saving record zone %@ to server: %@", v118, v124);
 
@@ -899,9 +899,9 @@ LABEL_11:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = MEMORY[0x277CBEB98];
   v8 = objc_msgSend_sourceZoneIDs(self, v6, v7);
   v10 = objc_msgSend_setWithArray_(v5, v9, v8);
@@ -918,7 +918,7 @@ LABEL_11:
 
   v14.receiver = self;
   v14.super_class = CKDAggregateZonePCSOperation;
-  [(CKDOperation *)&v14 _finishOnCallbackQueueWithError:v4];
+  [(CKDOperation *)&v14 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 @end

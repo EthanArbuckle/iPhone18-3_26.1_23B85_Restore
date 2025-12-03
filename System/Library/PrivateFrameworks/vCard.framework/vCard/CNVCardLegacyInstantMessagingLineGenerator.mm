@@ -1,15 +1,15 @@
 @interface CNVCardLegacyInstantMessagingLineGenerator
-- (id)makeLineWithName:(id)a3 value:(id)a4;
+- (id)makeLineWithName:(id)name value:(id)value;
 @end
 
 @implementation CNVCardLegacyInstantMessagingLineGenerator
 
-- (id)makeLineWithName:(id)a3 value:(id)a4
+- (id)makeLineWithName:(id)name value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
+  valueCopy = value;
+  nameCopy = name;
   objc_opt_class();
-  v8 = v6;
+  v8 = valueCopy;
   if (v8)
   {
     if (objc_opt_isKindOfClass())
@@ -33,7 +33,7 @@
   v11 = [v10 objectForKey:@"username"];
   v14.receiver = self;
   v14.super_class = CNVCardLegacyInstantMessagingLineGenerator;
-  v12 = [(CNVCardLineGenerator *)&v14 makeLineWithName:v7 value:v11];
+  v12 = [(CNVCardLineGenerator *)&v14 makeLineWithName:nameCopy value:v11];
 
   return v12;
 }

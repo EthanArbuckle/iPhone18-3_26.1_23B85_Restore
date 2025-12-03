@@ -1,20 +1,20 @@
 @interface JSAAssetRequest
-+ (void)get:(id)a3 :(id)a4;
-+ (void)get:(id)a3 completion:(id)a4;
-+ (void)requestWithURL:(id)a3 completionHandler:(id)a4;
++ (void)get:(id)get :(id)a4;
++ (void)get:(id)get completion:(id)completion;
++ (void)requestWithURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation JSAAssetRequest
 
-+ (void)get:(id)a3 :(id)a4
++ (void)get:(id)get :(id)a4
 {
-  v6 = a3;
+  getCopy = get;
   v7 = a4;
-  v8 = v6;
+  v8 = getCopy;
   v9 = +[NSBundle mainBundle];
-  v10 = [v9 bundlePath];
+  bundlePath = [v9 bundlePath];
 
-  if ([v8 containsString:v10])
+  if ([v8 containsString:bundlePath])
   {
     v11 = +[NSFileManager defaultManager];
     v12 = [v11 fileExistsAtPath:v8];
@@ -23,9 +23,9 @@
     if ((v12 & 1) == 0)
     {
       v14 = [NSURL URLWithString:v8];
-      v15 = [v14 lastPathComponent];
+      lastPathComponent = [v14 lastPathComponent];
 
-      v13 = [v10 stringByAppendingPathComponent:v15];
+      v13 = [bundlePath stringByAppendingPathComponent:lastPathComponent];
     }
 
     v24 = 0;
@@ -65,27 +65,27 @@
     v22[2] = sub_4C84;
     v22[3] = &unk_B2270;
     v23 = v7;
-    [a1 get:v8 completion:v22];
+    [self get:v8 completion:v22];
     v17 = v23;
     v13 = v8;
   }
 }
 
-+ (void)get:(id)a3 completion:(id)a4
++ (void)get:(id)get completion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_4E60;
   v7[3] = &unk_B2298;
-  v8 = a4;
-  v6 = v8;
-  [a1 requestWithURL:a3 completionHandler:v7];
+  completionCopy = completion;
+  v6 = completionCopy;
+  [self requestWithURL:get completionHandler:v7];
 }
 
-+ (void)requestWithURL:(id)a3 completionHandler:(id)a4
++ (void)requestWithURL:(id)l completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [NSURL URLWithString:a3];
+  handlerCopy = handler;
+  v6 = [NSURL URLWithString:l];
   v7 = [[NSURLRequest alloc] initWithURL:v6 cachePolicy:0 timeoutInterval:30.0];
   v8 = +[NSURLSessionConfiguration defaultSessionConfiguration];
   [v8 setHTTPShouldUsePipelining:1];
@@ -99,8 +99,8 @@
   v13[1] = 3221225472;
   v13[2] = sub_50D8;
   v13[3] = &unk_B22C0;
-  v14 = v5;
-  v11 = v5;
+  v14 = handlerCopy;
+  v11 = handlerCopy;
   v12 = [v10 dataTaskWithRequest:v7 completionHandler:v13];
   [v12 resume];
 }

@@ -1,15 +1,15 @@
 @interface FigLKTIIRFilter
-- (FigLKTIIRFilter)initWithMetalContext:(id)a3;
+- (FigLKTIIRFilter)initWithMetalContext:(id)context;
 - (int)_compileShaders;
-- (int)_computeIIRFilter:(id)a3 previousAlphaTexture:(id)a4 newAlphaTexture:(id)a5 displacementMapTexture:(id)a6 outputAlphaTexture:(id)a7 maxBlendingCoef:(float)a8;
-- (int)_convert:(id)a3 toHalf:(id)a4 commandBuffer:(id)a5;
-- (int)_extractTextureChannel:(id)a3 inputTexture:(id)a4 channelIndex:(int)a5 outputTexture:(id)a6;
+- (int)_computeIIRFilter:(id)filter previousAlphaTexture:(id)texture newAlphaTexture:(id)alphaTexture displacementMapTexture:(id)mapTexture outputAlphaTexture:(id)outputAlphaTexture maxBlendingCoef:(float)coef;
+- (int)_convert:(id)_convert toHalf:(id)half commandBuffer:(id)buffer;
+- (int)_extractTextureChannel:(id)channel inputTexture:(id)texture channelIndex:(int)index outputTexture:(id)outputTexture;
 - (int)allocateResourcesForMaskSize:(FigLKTIIRFilter *)self;
-- (int)cacheInputMask:(id)a3 inputImage:(id)a4 frameIndex:(int)a5 commandBuffer:(id *)a6;
-- (int)computeLKTIIRFilter:(id *)a3 inputSegmentationMask:(id)a4 filteredSegmentationMask:(id)a5;
-- (int)computeOpticalFlow:(id *)a3 inputImage:(id)a4;
-- (int)makeKeyFrameAndMaskFromInputImage:(id)a3 inputSegmentationMask:(id)a4 outTexture:(id)a5 commandBuffer:(id)a6;
-- (int)updateWarpedKeyFrameToCurrentFrame:(id *)a3 frameIndex:(int)a4;
+- (int)cacheInputMask:(id)mask inputImage:(id)image frameIndex:(int)index commandBuffer:(id *)buffer;
+- (int)computeLKTIIRFilter:(id *)filter inputSegmentationMask:(id)mask filteredSegmentationMask:(id)segmentationMask;
+- (int)computeOpticalFlow:(id *)flow inputImage:(id)image;
+- (int)makeKeyFrameAndMaskFromInputImage:(id)image inputSegmentationMask:(id)mask outTexture:(id)texture commandBuffer:(id)buffer;
+- (int)updateWarpedKeyFrameToCurrentFrame:(id *)frame frameIndex:(int)index;
 - (void)nextFrame;
 - (void)reset;
 @end
@@ -80,25 +80,25 @@
   v4 = v2;
   v5 = SHIDWORD(v2);
   v6 = [PTOpticalFlow alloc];
-  v7 = [(FigMetalContext *)self->_metalContext device];
-  v8 = [(FigMetalContext *)self->_metalContext commandQueue];
+  device = [(FigMetalContext *)self->_metalContext device];
+  commandQueue = [(FigMetalContext *)self->_metalContext commandQueue];
   v59[0] = v4;
   v59[1] = v5;
   v59[2] = 0;
   v58[0] = v4;
   v58[1] = v5;
   v58[2] = 0;
-  v9 = [(PTOpticalFlow *)v6 initWithDevice:v7 commandQueue:v8 colorSize:v59 disparitySize:v58];
+  v9 = [(PTOpticalFlow *)v6 initWithDevice:device commandQueue:commandQueue colorSize:v59 disparitySize:v58];
   opticalFlow = self->_opticalFlow;
   self->_opticalFlow = v9;
 
   v11 = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:70 width:v4 height:v5 mipmapped:0];
   [v11 setUsage:7];
-  v12 = [(FigMetalContext *)self->_metalContext device];
-  v13 = [v12 newTextureWithDescriptor:v11];
+  device2 = [(FigMetalContext *)self->_metalContext device];
+  v13 = [device2 newTextureWithDescriptor:v11];
   v57[0] = v13;
-  v14 = [(FigMetalContext *)self->_metalContext device];
-  v15 = [v14 newTextureWithDescriptor:v11];
+  device3 = [(FigMetalContext *)self->_metalContext device];
+  v15 = [device3 newTextureWithDescriptor:v11];
   v57[1] = v15;
   v16 = [NSArray arrayWithObjects:v57 count:2];
   imageArray = self->_imageArray;
@@ -112,8 +112,8 @@
 
   if (self->_maskInterpolationEnabled)
   {
-    v18 = [(FigMetalContext *)self->_metalContext device];
-    v19 = [v18 newTextureWithDescriptor:v11];
+    device4 = [(FigMetalContext *)self->_metalContext device];
+    v19 = [device4 newTextureWithDescriptor:v11];
     warpedKeyFrameToCurrentFrameImage = self->_warpedKeyFrameToCurrentFrameImage;
     self->_warpedKeyFrameToCurrentFrameImage = v19;
 
@@ -123,8 +123,8 @@
       goto LABEL_29;
     }
 
-    v21 = [(FigMetalContext *)self->_metalContext device];
-    v22 = [v21 newTextureWithDescriptor:v11];
+    device5 = [(FigMetalContext *)self->_metalContext device];
+    v22 = [device5 newTextureWithDescriptor:v11];
     keyFrameAndMask = self->_keyFrameAndMask;
     self->_keyFrameAndMask = v22;
 
@@ -136,8 +136,8 @@
   }
 
   [v11 setPixelFormat:25];
-  v24 = [(FigMetalContext *)self->_metalContext device];
-  v25 = [v24 newTextureWithDescriptor:v11];
+  device6 = [(FigMetalContext *)self->_metalContext device];
+  v25 = [device6 newTextureWithDescriptor:v11];
   previousMaskWarped = self->_previousMaskWarped;
   self->_previousMaskWarped = v25;
 
@@ -147,10 +147,10 @@
     goto LABEL_29;
   }
 
-  v27 = [(FigMetalContext *)self->_metalContext device];
-  v28 = [v27 newTextureWithDescriptor:v11];
-  v29 = [(FigMetalContext *)self->_metalContext device];
-  v30 = [v29 newTextureWithDescriptor:v11];
+  device7 = [(FigMetalContext *)self->_metalContext device];
+  v28 = [device7 newTextureWithDescriptor:v11];
+  device8 = [(FigMetalContext *)self->_metalContext device];
+  v30 = [device8 newTextureWithDescriptor:v11];
   v56[1] = v30;
   v31 = [NSArray arrayWithObjects:v56 count:2];
   maskArray = self->_maskArray;
@@ -162,8 +162,8 @@
     goto LABEL_29;
   }
 
-  v33 = [(FigMetalContext *)self->_metalContext device];
-  v34 = [v33 newTextureWithDescriptor:v11];
+  device9 = [(FigMetalContext *)self->_metalContext device];
+  v34 = [device9 newTextureWithDescriptor:v11];
   inputSegmentationMaskF16 = self->_inputSegmentationMaskF16;
   self->_inputSegmentationMaskF16 = v34;
 
@@ -175,44 +175,44 @@
 
   if (self->_maskInterpolationEnabled)
   {
-    v36 = [(FigMetalContext *)self->_metalContext device];
-    v37 = [v36 newTextureWithDescriptor:v11];
+    device10 = [(FigMetalContext *)self->_metalContext device];
+    v37 = [device10 newTextureWithDescriptor:v11];
     warpedKeyFrameToCurrentFrameMask = self->_warpedKeyFrameToCurrentFrameMask;
     self->_warpedKeyFrameToCurrentFrameMask = v37;
 
     if (self->_warpedKeyFrameToCurrentFrameMask)
     {
-      v39 = [(FigMetalContext *)self->_metalContext device];
-      v40 = [v39 newTextureWithDescriptor:v11];
+      device11 = [(FigMetalContext *)self->_metalContext device];
+      v40 = [device11 newTextureWithDescriptor:v11];
       tempMaskTexture = self->_tempMaskTexture;
       self->_tempMaskTexture = v40;
 
       if (self->_tempMaskTexture)
       {
         [v11 setPixelFormat:65];
-        v42 = [(FigMetalContext *)self->_metalContext device];
-        v43 = [v42 newTextureWithDescriptor:v11];
+        device12 = [(FigMetalContext *)self->_metalContext device];
+        v43 = [device12 newTextureWithDescriptor:v11];
         warpedKeyFrameToCurrentFrameDisplacementMap = self->_warpedKeyFrameToCurrentFrameDisplacementMap;
         self->_warpedKeyFrameToCurrentFrameDisplacementMap = v43;
 
         if (self->_warpedKeyFrameToCurrentFrameDisplacementMap)
         {
-          v45 = [(FigMetalContext *)self->_metalContext device];
-          v46 = [v45 newTextureWithDescriptor:v11];
+          device13 = [(FigMetalContext *)self->_metalContext device];
+          v46 = [device13 newTextureWithDescriptor:v11];
           warpedKeyFrameToCurrentFrameCoord = self->_warpedKeyFrameToCurrentFrameCoord;
           self->_warpedKeyFrameToCurrentFrameCoord = v46;
 
           if (self->_warpedKeyFrameToCurrentFrameCoord)
           {
-            v48 = [(FigMetalContext *)self->_metalContext device];
-            v49 = [v48 newTextureWithDescriptor:v11];
+            device14 = [(FigMetalContext *)self->_metalContext device];
+            v49 = [device14 newTextureWithDescriptor:v11];
             tmpDisplacementMap = self->_tmpDisplacementMap;
             self->_tmpDisplacementMap = v49;
 
             if (self->_tmpDisplacementMap)
             {
-              v51 = [(FigMetalContext *)self->_metalContext device];
-              v52 = [v51 newTextureWithDescriptor:v11];
+              device15 = [(FigMetalContext *)self->_metalContext device];
+              v52 = [device15 newTextureWithDescriptor:v11];
               tmpCoord = self->_tmpCoord;
               self->_tmpCoord = v52;
 
@@ -266,10 +266,10 @@ LABEL_16:
   return v54;
 }
 
-- (int)computeOpticalFlow:(id *)a3 inputImage:(id)a4
+- (int)computeOpticalFlow:(id *)flow inputImage:(id)image
 {
-  v6 = a4;
-  v7 = v6;
+  imageCopy = image;
+  v7 = imageCopy;
   if (self->_opticalFlowComputed)
   {
     sub_CBE8(&v15);
@@ -278,13 +278,13 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (!a3)
+  if (!flow)
   {
     sub_CDBC(&v15);
     goto LABEL_12;
   }
 
-  if (!v6)
+  if (!imageCopy)
   {
     sub_CD10(&v15);
     goto LABEL_12;
@@ -303,11 +303,11 @@ LABEL_12:
     }
   }
 
-  v11 = [*a3 blitCommandEncoder];
+  blitCommandEncoder = [*flow blitCommandEncoder];
   v12 = [(NSArray *)self->_imageArray objectAtIndexedSubscript:self->_currentIIRFrameIndex];
-  [v11 copyFromTexture:v7 toTexture:v12];
+  [blitCommandEncoder copyFromTexture:v7 toTexture:v12];
 
-  [v11 endEncoding];
+  [blitCommandEncoder endEncoding];
   self->_opticalFlowComputed = 1;
 
   v13 = 0;
@@ -316,104 +316,104 @@ LABEL_7:
   return v13;
 }
 
-- (int)makeKeyFrameAndMaskFromInputImage:(id)a3 inputSegmentationMask:(id)a4 outTexture:(id)a5 commandBuffer:(id)a6
+- (int)makeKeyFrameAndMaskFromInputImage:(id)image inputSegmentationMask:(id)mask outTexture:(id)texture commandBuffer:(id)buffer
 {
   v10 = self->_pipelineStates[2];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [a6 computeCommandEncoder];
-  [v14 setComputePipelineState:v10];
-  [v14 setTexture:v12 atIndex:0];
+  textureCopy = texture;
+  maskCopy = mask;
+  imageCopy = image;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:v10];
+  [computeCommandEncoder setTexture:maskCopy atIndex:0];
 
-  [v14 setTexture:v13 atIndex:1];
-  [v14 setTexture:v11 atIndex:2];
-  v15 = [(MTLComputePipelineState *)v10 threadExecutionWidth];
-  v16 = [(MTLComputePipelineState *)v10 maxTotalThreadsPerThreadgroup];
+  [computeCommandEncoder setTexture:imageCopy atIndex:1];
+  [computeCommandEncoder setTexture:textureCopy atIndex:2];
+  threadExecutionWidth = [(MTLComputePipelineState *)v10 threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)v10 maxTotalThreadsPerThreadgroup];
 
-  v17 = [v11 width];
-  LODWORD(v10) = [v11 height];
+  width = [textureCopy width];
+  LODWORD(v10) = [textureCopy height];
 
-  v20[0] = v17;
+  v20[0] = width;
   v20[1] = v10;
   v20[2] = 1;
-  v19[0] = v15;
-  v19[1] = v16 / v15;
+  v19[0] = threadExecutionWidth;
+  v19[1] = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
   v19[2] = 1;
-  [v14 dispatchThreads:v20 threadsPerThreadgroup:v19];
-  [v14 endEncoding];
+  [computeCommandEncoder dispatchThreads:v20 threadsPerThreadgroup:v19];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (int)_extractTextureChannel:(id)a3 inputTexture:(id)a4 channelIndex:(int)a5 outputTexture:(id)a6
+- (int)_extractTextureChannel:(id)channel inputTexture:(id)texture channelIndex:(int)index outputTexture:(id)outputTexture
 {
-  v19 = a5;
+  indexCopy = index;
   v9 = self->_pipelineStates[3];
-  v10 = a6;
-  v11 = a4;
-  v12 = [a3 computeCommandEncoder];
-  [v12 setComputePipelineState:v9];
-  [v12 setTexture:v11 atIndex:0];
+  outputTextureCopy = outputTexture;
+  textureCopy = texture;
+  computeCommandEncoder = [channel computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:v9];
+  [computeCommandEncoder setTexture:textureCopy atIndex:0];
 
-  [v12 setTexture:v10 atIndex:1];
-  [v12 setBytes:&v19 length:4 atIndex:0];
-  v13 = [(MTLComputePipelineState *)v9 threadExecutionWidth];
-  v14 = [(MTLComputePipelineState *)v9 maxTotalThreadsPerThreadgroup];
+  [computeCommandEncoder setTexture:outputTextureCopy atIndex:1];
+  [computeCommandEncoder setBytes:&indexCopy length:4 atIndex:0];
+  threadExecutionWidth = [(MTLComputePipelineState *)v9 threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)v9 maxTotalThreadsPerThreadgroup];
 
-  v15 = [v10 width];
-  LODWORD(v9) = [v10 height];
+  width = [outputTextureCopy width];
+  LODWORD(v9) = [outputTextureCopy height];
 
-  v18[0] = v15;
+  v18[0] = width;
   v18[1] = v9;
   v18[2] = 1;
-  v17[0] = v13;
-  v17[1] = v14 / v13;
+  v17[0] = threadExecutionWidth;
+  v17[1] = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
   v17[2] = 1;
-  [v12 dispatchThreads:v18 threadsPerThreadgroup:v17];
-  [v12 endEncoding];
+  [computeCommandEncoder dispatchThreads:v18 threadsPerThreadgroup:v17];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (int)cacheInputMask:(id)a3 inputImage:(id)a4 frameIndex:(int)a5 commandBuffer:(id *)a6
+- (int)cacheInputMask:(id)mask inputImage:(id)image frameIndex:(int)index commandBuffer:(id *)buffer
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [(FigLKTIIRFilter *)self makeKeyFrameAndMaskFromInputImage:v11 inputSegmentationMask:v10 outTexture:self->_keyFrameAndMask commandBuffer:*a6];
+  maskCopy = mask;
+  imageCopy = image;
+  v12 = [(FigLKTIIRFilter *)self makeKeyFrameAndMaskFromInputImage:imageCopy inputSegmentationMask:maskCopy outTexture:self->_keyFrameAndMask commandBuffer:*buffer];
   if (v12)
   {
     v20 = v12;
     sub_CE68();
-    v13 = 0;
+    blitCommandEncoder = 0;
     goto LABEL_8;
   }
 
   self->_hasKeyFrame = 1;
-  self->_keyFrameIndex = a5;
-  v13 = [*a6 blitCommandEncoder];
-  [v13 copyFromTexture:v10 toTexture:self->_warpedKeyFrameToCurrentFrameMask];
-  [v13 copyFromTexture:v11 toTexture:self->_warpedKeyFrameToCurrentFrameImage];
+  self->_keyFrameIndex = index;
+  blitCommandEncoder = [*buffer blitCommandEncoder];
+  [blitCommandEncoder copyFromTexture:maskCopy toTexture:self->_warpedKeyFrameToCurrentFrameMask];
+  [blitCommandEncoder copyFromTexture:imageCopy toTexture:self->_warpedKeyFrameToCurrentFrameImage];
   displacementFWD = self->_displacementFWD;
   if (displacementFWD)
   {
-    [v13 copyFromTexture:displacementFWD toTexture:self->_warpedKeyFrameToCurrentFrameDisplacementMap];
+    [blitCommandEncoder copyFromTexture:displacementFWD toTexture:self->_warpedKeyFrameToCurrentFrameDisplacementMap];
   }
 
   else
   {
-    v15 = [(PTOpticalFlow *)self->_opticalFlow displacementFWD];
-    [v13 copyFromTexture:v15 toTexture:self->_warpedKeyFrameToCurrentFrameDisplacementMap];
+    displacementFWD = [(PTOpticalFlow *)self->_opticalFlow displacementFWD];
+    [blitCommandEncoder copyFromTexture:displacementFWD toTexture:self->_warpedKeyFrameToCurrentFrameDisplacementMap];
   }
 
-  [v13 endEncoding];
+  [blitCommandEncoder endEncoding];
   opticalFlow = self->_opticalFlow;
-  v17 = *a6;
+  v17 = *buffer;
   v18 = self->_displacementFWD;
   if (!v18)
   {
-    v22 = [(PTOpticalFlow *)self->_opticalFlow displacementFWD];
-    v19 = [(PTOpticalFlow *)opticalFlow convertDisplacementToCoordFWD:v17 displacementFWD:v22 coordFWD:self->_warpedKeyFrameToCurrentFrameCoord];
+    displacementFWD2 = [(PTOpticalFlow *)self->_opticalFlow displacementFWD];
+    v19 = [(PTOpticalFlow *)opticalFlow convertDisplacementToCoordFWD:v17 displacementFWD:displacementFWD2 coordFWD:self->_warpedKeyFrameToCurrentFrameCoord];
 
     if (!v19)
     {
@@ -439,17 +439,17 @@ LABEL_8:
   return v20;
 }
 
-- (int)updateWarpedKeyFrameToCurrentFrame:(id *)a3 frameIndex:(int)a4
+- (int)updateWarpedKeyFrameToCurrentFrame:(id *)frame frameIndex:(int)index
 {
-  if (self->_keyFrameIndex != a4)
+  if (self->_keyFrameIndex != index)
   {
     opticalFlow = self->_opticalFlow;
-    v7 = *a3;
+    v7 = *frame;
     warpedKeyFrameToCurrentFrameDisplacementMap = self->_warpedKeyFrameToCurrentFrameDisplacementMap;
     displacementFWD = self->_displacementFWD;
     if (displacementFWD)
     {
-      v10 = [(PTOpticalFlow *)self->_opticalFlow warp_displacementFWD:*a3 inTexture:self->_warpedKeyFrameToCurrentFrameDisplacementMap displacementFWD:displacementFWD outTextureWarped:self->_tmpDisplacementMap];
+      v10 = [(PTOpticalFlow *)self->_opticalFlow warp_displacementFWD:*frame inTexture:self->_warpedKeyFrameToCurrentFrameDisplacementMap displacementFWD:displacementFWD outTextureWarped:self->_tmpDisplacementMap];
       if (!v10)
       {
         goto LABEL_4;
@@ -458,30 +458,30 @@ LABEL_8:
 
     else
     {
-      v23 = [(PTOpticalFlow *)self->_opticalFlow displacementFWD];
-      v10 = [(PTOpticalFlow *)opticalFlow warp_displacementFWD:v7 inTexture:warpedKeyFrameToCurrentFrameDisplacementMap displacementFWD:v23 outTextureWarped:self->_tmpDisplacementMap];
+      displacementFWD = [(PTOpticalFlow *)self->_opticalFlow displacementFWD];
+      v10 = [(PTOpticalFlow *)opticalFlow warp_displacementFWD:v7 inTexture:warpedKeyFrameToCurrentFrameDisplacementMap displacementFWD:displacementFWD outTextureWarped:self->_tmpDisplacementMap];
 
       if (!v10)
       {
 LABEL_4:
-        v11 = [*a3 blitCommandEncoder];
-        [v11 copyFromTexture:self->_tmpDisplacementMap toTexture:self->_warpedKeyFrameToCurrentFrameDisplacementMap];
-        [v11 endEncoding];
+        blitCommandEncoder = [*frame blitCommandEncoder];
+        [blitCommandEncoder copyFromTexture:self->_tmpDisplacementMap toTexture:self->_warpedKeyFrameToCurrentFrameDisplacementMap];
+        [blitCommandEncoder endEncoding];
         v12 = self->_opticalFlow;
-        v13 = *a3;
+        v13 = *frame;
         v14 = self->_displacementFWD;
         if (v14)
         {
-          v15 = [(PTOpticalFlow *)self->_opticalFlow convertDisplacementToCoordFWD:*a3 displacementFWD:v14 coordFWD:self->_tmpCoord];
+          v15 = [(PTOpticalFlow *)self->_opticalFlow convertDisplacementToCoordFWD:*frame displacementFWD:v14 coordFWD:self->_tmpCoord];
           if (!v15)
           {
 LABEL_6:
-            v16 = [(PTOpticalFlow *)self->_opticalFlow warpCoordFWD:*a3 inTexture:self->_warpedKeyFrameToCurrentFrameCoord coordFWD:self->_tmpCoord outTextureWarped:self->_tmpDisplacementMap];
+            v16 = [(PTOpticalFlow *)self->_opticalFlow warpCoordFWD:*frame inTexture:self->_warpedKeyFrameToCurrentFrameCoord coordFWD:self->_tmpCoord outTextureWarped:self->_tmpDisplacementMap];
             if (!v16)
             {
-              v17 = [*a3 blitCommandEncoder];
-              [v17 copyFromTexture:self->_tmpDisplacementMap toTexture:self->_warpedKeyFrameToCurrentFrameCoord];
-              [v17 endEncoding];
+              blitCommandEncoder2 = [*frame blitCommandEncoder];
+              [blitCommandEncoder2 copyFromTexture:self->_tmpDisplacementMap toTexture:self->_warpedKeyFrameToCurrentFrameCoord];
+              [blitCommandEncoder2 endEncoding];
 
               goto LABEL_8;
             }
@@ -496,8 +496,8 @@ LABEL_22:
 
         else
         {
-          v24 = [(PTOpticalFlow *)self->_opticalFlow displacementFWD];
-          v15 = [(PTOpticalFlow *)v12 convertDisplacementToCoordFWD:v13 displacementFWD:v24 coordFWD:self->_tmpCoord];
+          displacementFWD2 = [(PTOpticalFlow *)self->_opticalFlow displacementFWD];
+          v15 = [(PTOpticalFlow *)v12 convertDisplacementToCoordFWD:v13 displacementFWD:displacementFWD2 coordFWD:self->_tmpCoord];
 
           if (!v15)
           {
@@ -515,7 +515,7 @@ LABEL_22:
   }
 
 LABEL_8:
-  v18 = [(FigLKTIIRFilter *)self _extractTextureChannel:*a3 inputTexture:self->_keyFrameAndMask channelIndex:3 outputTexture:self->_tempMaskTexture];
+  v18 = [(FigLKTIIRFilter *)self _extractTextureChannel:*frame inputTexture:self->_keyFrameAndMask channelIndex:3 outputTexture:self->_tempMaskTexture];
   if (v18)
   {
     v21 = v18;
@@ -523,14 +523,14 @@ LABEL_8:
     return v21;
   }
 
-  v19 = [(PTOpticalFlow *)self->_opticalFlow warpCoordFWD:*a3 inTexture:self->_tempMaskTexture coordFWD:self->_warpedKeyFrameToCurrentFrameCoord outTextureWarped:self->_warpedKeyFrameToCurrentFrameMask];
+  v19 = [(PTOpticalFlow *)self->_opticalFlow warpCoordFWD:*frame inTexture:self->_tempMaskTexture coordFWD:self->_warpedKeyFrameToCurrentFrameCoord outTextureWarped:self->_warpedKeyFrameToCurrentFrameMask];
   if (v19)
   {
     sub_D150(v19, &v25);
     return v25;
   }
 
-  v20 = [(PTOpticalFlow *)self->_opticalFlow warpCoordFWD:*a3 inTexture:self->_keyFrameAndMask coordFWD:self->_warpedKeyFrameToCurrentFrameCoord outTextureWarped:self->_warpedKeyFrameToCurrentFrameImage];
+  v20 = [(PTOpticalFlow *)self->_opticalFlow warpCoordFWD:*frame inTexture:self->_keyFrameAndMask coordFWD:self->_warpedKeyFrameToCurrentFrameCoord outTextureWarped:self->_warpedKeyFrameToCurrentFrameImage];
   if (v20)
   {
     sub_D1CC(v20, &v25);
@@ -540,13 +540,13 @@ LABEL_8:
   return 0;
 }
 
-- (int)computeLKTIIRFilter:(id *)a3 inputSegmentationMask:(id)a4 filteredSegmentationMask:(id)a5
+- (int)computeLKTIIRFilter:(id *)filter inputSegmentationMask:(id)mask filteredSegmentationMask:(id)segmentationMask
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v8;
+  maskCopy = mask;
+  segmentationMaskCopy = segmentationMask;
+  v10 = maskCopy;
   v11 = v10;
-  if (!a3)
+  if (!filter)
   {
     sub_D63C(v10, &v31);
     goto LABEL_25;
@@ -558,7 +558,7 @@ LABEL_8:
     goto LABEL_25;
   }
 
-  if (!v9)
+  if (!segmentationMaskCopy)
   {
     sub_D4CC(v10, &v31);
     goto LABEL_25;
@@ -573,7 +573,7 @@ LABEL_8:
   v12 = v10;
   if ([v10 pixelFormat] == &stru_20.segname[15])
   {
-    v13 = [(FigLKTIIRFilter *)self _convert:v11 toHalf:self->_inputSegmentationMaskF16 commandBuffer:*a3];
+    v13 = [(FigLKTIIRFilter *)self _convert:v11 toHalf:self->_inputSegmentationMaskF16 commandBuffer:*filter];
     if (v13)
     {
       LODWORD(v25) = v13;
@@ -587,7 +587,7 @@ LABEL_8:
   if (self->_frameIndex)
   {
     opticalFlow = self->_opticalFlow;
-    v15 = *a3;
+    v15 = *filter;
     v16 = [(NSArray *)self->_maskArray objectAtIndexedSubscript:self->_currentIIRFrameIndex ^ 1];
     displacementFWD = self->_displacementFWD;
     if (displacementFWD)
@@ -597,19 +597,19 @@ LABEL_8:
 
     else
     {
-      v20 = [(PTOpticalFlow *)self->_opticalFlow displacementFWD];
-      v18 = [(PTOpticalFlow *)opticalFlow warp_displacementFWD:v15 inTexture:v16 displacementFWD:v20 outTextureWarped:self->_previousMaskWarped];
+      displacementFWD = [(PTOpticalFlow *)self->_opticalFlow displacementFWD];
+      v18 = [(PTOpticalFlow *)opticalFlow warp_displacementFWD:v15 inTexture:v16 displacementFWD:displacementFWD outTextureWarped:self->_previousMaskWarped];
     }
 
     if (!v18)
     {
-      v22 = *a3;
+      v22 = *filter;
       previousMaskWarped = self->_previousMaskWarped;
       v24 = self->_displacementFWD;
       if (v24)
       {
         *&v21 = self->_maxBlendingCoeff;
-        v25 = [(FigLKTIIRFilter *)self _computeIIRFilter:*a3 previousAlphaTexture:self->_previousMaskWarped newAlphaTexture:v12 displacementMapTexture:v24 outputAlphaTexture:v9 maxBlendingCoef:v21];
+        v25 = [(FigLKTIIRFilter *)self _computeIIRFilter:*filter previousAlphaTexture:self->_previousMaskWarped newAlphaTexture:v12 displacementMapTexture:v24 outputAlphaTexture:segmentationMaskCopy maxBlendingCoef:v21];
         if (!v25)
         {
           goto LABEL_16;
@@ -618,9 +618,9 @@ LABEL_8:
 
       else
       {
-        v29 = [(PTOpticalFlow *)self->_opticalFlow displacementFWD];
+        displacementFWD2 = [(PTOpticalFlow *)self->_opticalFlow displacementFWD];
         *&v30 = self->_maxBlendingCoeff;
-        v25 = [(FigLKTIIRFilter *)self _computeIIRFilter:v22 previousAlphaTexture:previousMaskWarped newAlphaTexture:v12 displacementMapTexture:v29 outputAlphaTexture:v9 maxBlendingCoef:v30];
+        v25 = [(FigLKTIIRFilter *)self _computeIIRFilter:v22 previousAlphaTexture:previousMaskWarped newAlphaTexture:v12 displacementMapTexture:displacementFWD2 outputAlphaTexture:segmentationMaskCopy maxBlendingCoef:v30];
 
         if (!v25)
         {
@@ -638,16 +638,16 @@ LABEL_25:
     goto LABEL_17;
   }
 
-  v19 = [*a3 blitCommandEncoder];
-  [v19 copyFromTexture:v12 toTexture:v9];
-  [v19 endEncoding];
+  blitCommandEncoder = [*filter blitCommandEncoder];
+  [blitCommandEncoder copyFromTexture:v12 toTexture:segmentationMaskCopy];
+  [blitCommandEncoder endEncoding];
 
 LABEL_16:
-  v26 = [*a3 blitCommandEncoder];
+  blitCommandEncoder2 = [*filter blitCommandEncoder];
   v27 = [(NSArray *)self->_maskArray objectAtIndexedSubscript:self->_currentIIRFrameIndex];
-  [v26 copyFromTexture:v9 toTexture:v27];
+  [blitCommandEncoder2 copyFromTexture:segmentationMaskCopy toTexture:v27];
 
-  [v26 endEncoding];
+  [blitCommandEncoder2 endEncoding];
   LODWORD(v25) = 0;
 LABEL_17:
 
@@ -661,80 +661,80 @@ LABEL_17:
   ++self->_frameIndex;
 }
 
-- (int)_computeIIRFilter:(id)a3 previousAlphaTexture:(id)a4 newAlphaTexture:(id)a5 displacementMapTexture:(id)a6 outputAlphaTexture:(id)a7 maxBlendingCoef:(float)a8
+- (int)_computeIIRFilter:(id)filter previousAlphaTexture:(id)texture newAlphaTexture:(id)alphaTexture displacementMapTexture:(id)mapTexture outputAlphaTexture:(id)outputAlphaTexture maxBlendingCoef:(float)coef
 {
-  v25 = a8;
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = [a3 computeCommandEncoder];
+  coefCopy = coef;
+  outputAlphaTextureCopy = outputAlphaTexture;
+  mapTextureCopy = mapTexture;
+  alphaTextureCopy = alphaTexture;
+  textureCopy = texture;
+  computeCommandEncoder = [filter computeCommandEncoder];
   v18 = self->_pipelineStates[0];
-  [v17 setComputePipelineState:v18];
-  [v17 setTexture:v16 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:v18];
+  [computeCommandEncoder setTexture:textureCopy atIndex:0];
 
-  [v17 setTexture:v15 atIndex:1];
-  [v17 setTexture:v14 atIndex:2];
+  [computeCommandEncoder setTexture:alphaTextureCopy atIndex:1];
+  [computeCommandEncoder setTexture:mapTextureCopy atIndex:2];
 
-  [v17 setTexture:v13 atIndex:3];
-  [v17 setBytes:&v25 length:4 atIndex:0];
-  v19 = [(MTLComputePipelineState *)v18 threadExecutionWidth];
-  v20 = [(MTLComputePipelineState *)v18 maxTotalThreadsPerThreadgroup];
+  [computeCommandEncoder setTexture:outputAlphaTextureCopy atIndex:3];
+  [computeCommandEncoder setBytes:&coefCopy length:4 atIndex:0];
+  threadExecutionWidth = [(MTLComputePipelineState *)v18 threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)v18 maxTotalThreadsPerThreadgroup];
 
-  v21 = [v13 width];
-  LODWORD(v18) = [v13 height];
+  width = [outputAlphaTextureCopy width];
+  LODWORD(v18) = [outputAlphaTextureCopy height];
 
-  v24[0] = v21;
+  v24[0] = width;
   v24[1] = v18;
   v24[2] = 1;
-  v23[0] = v19;
-  v23[1] = v20 / v19;
+  v23[0] = threadExecutionWidth;
+  v23[1] = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
   v23[2] = 1;
-  [v17 dispatchThreads:v24 threadsPerThreadgroup:v23];
-  [v17 endEncoding];
+  [computeCommandEncoder dispatchThreads:v24 threadsPerThreadgroup:v23];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (int)_convert:(id)a3 toHalf:(id)a4 commandBuffer:(id)a5
+- (int)_convert:(id)_convert toHalf:(id)half commandBuffer:(id)buffer
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [a5 computeCommandEncoder];
+  halfCopy = half;
+  _convertCopy = _convert;
+  computeCommandEncoder = [buffer computeCommandEncoder];
   v11 = self->_pipelineStates[1];
-  [v10 setComputePipelineState:v11];
-  [v10 setTexture:v9 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:v11];
+  [computeCommandEncoder setTexture:_convertCopy atIndex:0];
 
-  [v10 setTexture:v8 atIndex:1];
-  v12 = [(MTLComputePipelineState *)v11 threadExecutionWidth];
-  v13 = [(MTLComputePipelineState *)v11 maxTotalThreadsPerThreadgroup];
+  [computeCommandEncoder setTexture:halfCopy atIndex:1];
+  threadExecutionWidth = [(MTLComputePipelineState *)v11 threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)v11 maxTotalThreadsPerThreadgroup];
 
-  v14 = [v8 width];
-  LODWORD(v11) = [v8 height];
+  width = [halfCopy width];
+  LODWORD(v11) = [halfCopy height];
 
-  v17[0] = v14;
+  v17[0] = width;
   v17[1] = v11;
   v17[2] = 1;
-  v16[0] = v12;
-  v16[1] = v13 / v12;
+  v16[0] = threadExecutionWidth;
+  v16[1] = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
   v16[2] = 1;
-  [v10 dispatchThreads:v17 threadsPerThreadgroup:v16];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreads:v17 threadsPerThreadgroup:v16];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (FigLKTIIRFilter)initWithMetalContext:(id)a3
+- (FigLKTIIRFilter)initWithMetalContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = FigLKTIIRFilter;
   v5 = [(FigLKTIIRFilter *)&v10 init];
   if (v5)
   {
-    if (v4)
+    if (contextCopy)
     {
-      v6 = v4;
+      v6 = contextCopy;
     }
 
     else

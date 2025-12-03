@@ -1,5 +1,5 @@
 @interface VCPVideoTrackSubsamplingDecoder
-- (VCPVideoTrackSubsamplingDecoder)initWithTrack:(id)a3 timerange:(id *)a4 atInterval:(id *)a5;
+- (VCPVideoTrackSubsamplingDecoder)initWithTrack:(id)track timerange:(id *)timerange atInterval:(id *)interval;
 - (int64_t)status;
 - (opaqueCMSampleBuffer)copyNextSampleBuffer;
 - (void)dealloc;
@@ -7,19 +7,19 @@
 
 @implementation VCPVideoTrackSubsamplingDecoder
 
-- (VCPVideoTrackSubsamplingDecoder)initWithTrack:(id)a3 timerange:(id *)a4 atInterval:(id *)a5
+- (VCPVideoTrackSubsamplingDecoder)initWithTrack:(id)track timerange:(id *)timerange atInterval:(id *)interval
 {
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  trackCopy = track;
   v41.receiver = self;
   v41.super_class = VCPVideoTrackSubsamplingDecoder;
-  v9 = [(VCPVideoTrackDecoder *)&v41 initWithTrack:v8];
+  v9 = [(VCPVideoTrackDecoder *)&v41 initWithTrack:trackCopy];
   v10 = v9;
   if (v9)
   {
     v11 = MEMORY[0x1E6987E78];
-    v12 = [(AVAssetTrack *)v9->super._track asset];
-    v13 = [v11 assetReaderWithAsset:v12 error:0];
+    asset = [(AVAssetTrack *)v9->super._track asset];
+    v13 = [v11 assetReaderWithAsset:asset error:0];
     assetReader = v10->_assetReader;
     v10->_assetReader = v13;
 
@@ -28,16 +28,16 @@
     {
       v16 = MEMORY[0x1E6987EA8];
       track = v10->super._track;
-      v18 = [(VCPVideoTrackDecoder *)v10 settings];
-      v19 = [v16 assetReaderTrackOutputWithTrack:track outputSettings:v18];
+      settings = [(VCPVideoTrackDecoder *)v10 settings];
+      v19 = [v16 assetReaderTrackOutputWithTrack:track outputSettings:settings];
       trackOutput = v10->_trackOutput;
       v10->_trackOutput = v19;
 
       v21 = v10->_trackOutput;
-      if (v21 && ([(AVAssetReaderTrackOutput *)v21 setAppliesPreferredTrackTransform:1], [(AVAssetReader *)v10->_assetReader addOutput:v10->_trackOutput], v22 = v10->_assetReader, v23 = *&a4->var0.var3, *&time1.start.value = *&a4->var0.var0, *&time1.start.epoch = v23, *&time1.duration.timescale = *&a4->var1.var1, [(AVAssetReader *)v22 setTimeRange:&time1], [(AVAssetReader *)v10->_assetReader startReading]))
+      if (v21 && ([(AVAssetReaderTrackOutput *)v21 setAppliesPreferredTrackTransform:1], [(AVAssetReader *)v10->_assetReader addOutput:v10->_trackOutput], v22 = v10->_assetReader, v23 = *&timerange->var0.var3, *&time1.start.value = *&timerange->var0.var0, *&time1.start.epoch = v23, *&time1.duration.timescale = *&timerange->var1.var1, [(AVAssetReader *)v22 setTimeRange:&time1], [(AVAssetReader *)v10->_assetReader startReading]))
       {
-        var3 = a5->var3;
-        *&v10->_sampleDuration.value = *&a5->var0;
+        var3 = interval->var3;
+        *&v10->_sampleDuration.value = *&interval->var0;
         v10->_sampleDuration.epoch = var3;
         v10->_nextSample = [(AVAssetReaderTrackOutput *)v10->_trackOutput copyNextSampleBuffer];
         v25 = v10->_assetReader;
@@ -169,13 +169,13 @@
 - (opaqueCMSampleBuffer)copyNextSampleBuffer
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(AVAssetReader *)self->_assetReader status];
+  status = [(AVAssetReader *)self->_assetReader status];
   p_nextSampleTime = &self->_nextSampleTime;
   time1.duration = self->_nextSampleTime;
   time2 = self->_decodeEnd;
   v5 = CMTimeCompare(&time1.duration, &time2);
   result = 0;
-  if (v5 < 0 && (v3 - 3) >= 0xFFFFFFFFFFFFFFFELL)
+  if (v5 < 0 && (status - 3) >= 0xFFFFFFFFFFFFFFFELL)
   {
     nextSample = self->_nextSample;
     if (nextSample)

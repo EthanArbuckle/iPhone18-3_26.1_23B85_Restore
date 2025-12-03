@@ -1,26 +1,26 @@
 @interface SBUISystemApertureElementSourceAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_handleSceneResizeAction:(id)a3;
-- (id)traverseTreeForElementsFromView:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_handleSceneResizeAction:(id)action;
+- (id)traverseTreeForElementsFromView:(id)view;
 @end
 
 @implementation SBUISystemApertureElementSourceAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBUISystemApertureElementSource" hasInstanceMethod:@"layoutMode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SBUISystemApertureElementSource" hasInstanceMethod:@"_handleSceneResizeAction:" withFullSignature:{"B", "@", 0}];
-  [v3 validateClass:@"SBUISystemApertureElementSource" hasInstanceMethod:@"systemApertureElementViewController" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBUISystemApertureElementSource" hasInstanceMethod:@"layoutMode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SBUISystemApertureElementSource" hasInstanceMethod:@"_handleSceneResizeAction:" withFullSignature:{"B", "@", 0}];
+  [validationsCopy validateClass:@"SBUISystemApertureElementSource" hasInstanceMethod:@"systemApertureElementViewController" withFullSignature:{"@", 0}];
 }
 
-- (BOOL)_handleSceneResizeAction:(id)a3
+- (BOOL)_handleSceneResizeAction:(id)action
 {
   v25 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  actionCopy = action;
   v23.receiver = self;
   v23.super_class = SBUISystemApertureElementSourceAccessibility;
-  v5 = [(SBUISystemApertureElementSourceAccessibility *)&v23 _handleSceneResizeAction:v4];
+  v5 = [(SBUISystemApertureElementSourceAccessibility *)&v23 _handleSceneResizeAction:actionCopy];
   if (UIAccessibilityIsVoiceOverRunning() && [(SBUISystemApertureElementSourceAccessibility *)self safeIntForKey:@"layoutMode"]== 4)
   {
     v22 = 0;
@@ -28,10 +28,10 @@
     v6 = [(SBUISystemApertureElementSourceAccessibility *)self safeValueForKey:@"systemApertureElementViewController"];
     v7 = __UIAccessibilityCastAsClass();
 
-    v8 = [v7 view];
-    v9 = [v8 window];
+    view = [v7 view];
+    window = [view window];
 
-    [(SBUISystemApertureElementSourceAccessibility *)self traverseTreeForElementsFromView:v9];
+    [(SBUISystemApertureElementSourceAccessibility *)self traverseTreeForElementsFromView:window];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -76,12 +76,12 @@ LABEL_14:
   return v5;
 }
 
-- (id)traverseTreeForElementsFromView:(id)a3
+- (id)traverseTreeForElementsFromView:(id)view
 {
   v22 = *MEMORY[0x29EDCA608];
-  v4 = a3;
-  v5 = [MEMORY[0x29EDB8DE8] array];
-  [v4 _accessibilitySubviews];
+  viewCopy = view;
+  array = [MEMORY[0x29EDB8DE8] array];
+  [viewCopy _accessibilitySubviews];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -103,22 +103,22 @@ LABEL_14:
         v11 = *(*(&v17 + 1) + 8 * i);
         if ([v11 isAccessibilityElement])
         {
-          [v5 axSafelyAddObject:v11];
+          [array axSafelyAddObject:v11];
           goto LABEL_13;
         }
 
-        v12 = [v11 accessibilityElements];
+        accessibilityElements = [v11 accessibilityElements];
 
-        if (v12)
+        if (accessibilityElements)
         {
-          v14 = [v11 accessibilityElements];
-          [v5 axSafelyAddObjectsFromArray:v14];
+          accessibilityElements2 = [v11 accessibilityElements];
+          [array axSafelyAddObjectsFromArray:accessibilityElements2];
 
           goto LABEL_13;
         }
 
         v13 = [(SBUISystemApertureElementSourceAccessibility *)self traverseTreeForElementsFromView:v11];
-        [v5 axSafelyAddObjectsFromArray:v13];
+        [array axSafelyAddObjectsFromArray:v13];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -135,7 +135,7 @@ LABEL_13:
 
   v15 = *MEMORY[0x29EDCA608];
 
-  return v5;
+  return array;
 }
 
 @end

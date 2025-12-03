@@ -1,11 +1,11 @@
 @interface RPBHost_Delegate
-- (BOOL)getRemoteProcessingBlockParameter:(float *)a3 forID:(unsigned int)a4 scope:(unsigned int)a5 element:(unsigned int)a6 object:(id)a7 withError:(id *)a8;
-- (BOOL)getRemoteProcessingBlockParameterInfo:(id)a3 forScope:(unsigned int)a4 object:(id)a5 withError:(id *)a6;
-- (BOOL)getRemoteProcessingBlockProperty:(id *)a3 forID:(unsigned int)a4 scope:(unsigned int)a5 element:(unsigned int)a6 object:(id)a7 withError:(id *)a8;
-- (BOOL)getRemoteProcessingBlockPropertyInfo:(id)a3 forScope:(unsigned int)a4 object:(id)a5 withError:(id *)a6;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (BOOL)setRemoteProcessingBlockParameter:(float)a3 forID:(unsigned int)a4 scope:(unsigned int)a5 element:(unsigned int)a6 object:(id)a7 withError:(id *)a8;
-- (BOOL)setRemoteProcessingBlockProperty:(id)a3 forID:(unsigned int)a4 scope:(unsigned int)a5 element:(unsigned int)a6 object:(id)a7 withError:(id *)a8;
+- (BOOL)getRemoteProcessingBlockParameter:(float *)parameter forID:(unsigned int)d scope:(unsigned int)scope element:(unsigned int)element object:(id)object withError:(id *)error;
+- (BOOL)getRemoteProcessingBlockParameterInfo:(id)info forScope:(unsigned int)scope object:(id)object withError:(id *)error;
+- (BOOL)getRemoteProcessingBlockProperty:(id *)property forID:(unsigned int)d scope:(unsigned int)scope element:(unsigned int)element object:(id)object withError:(id *)error;
+- (BOOL)getRemoteProcessingBlockPropertyInfo:(id)info forScope:(unsigned int)scope object:(id)object withError:(id *)error;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (BOOL)setRemoteProcessingBlockParameter:(float)parameter forID:(unsigned int)d scope:(unsigned int)scope element:(unsigned int)element object:(id)object withError:(id *)error;
+- (BOOL)setRemoteProcessingBlockProperty:(id)property forID:(unsigned int)d scope:(unsigned int)scope element:(unsigned int)element object:(id)object withError:(id *)error;
 - (id).cxx_construct;
 @end
 
@@ -22,17 +22,17 @@
   return self;
 }
 
-- (BOOL)setRemoteProcessingBlockProperty:(id)a3 forID:(unsigned int)a4 scope:(unsigned int)a5 element:(unsigned int)a6 object:(id)a7 withError:(id *)a8
+- (BOOL)setRemoteProcessingBlockProperty:(id)property forID:(unsigned int)d scope:(unsigned int)scope element:(unsigned int)element object:(id)object withError:(id *)error
 {
-  v14 = a3;
-  v15 = a7;
-  if (v14)
+  propertyCopy = property;
+  objectCopy = object;
+  if (propertyCopy)
   {
-    CFRetain(v14);
-    v26 = v14;
-    if (a5 < 8)
+    CFRetain(propertyCopy);
+    v26 = propertyCopy;
+    if (scope < 8)
     {
-      CFRetain(v14);
+      CFRetain(propertyCopy);
       goto LABEL_5;
     }
 
@@ -42,16 +42,16 @@ LABEL_14:
   }
 
   v26 = 0;
-  if (a5 >= 8)
+  if (scope >= 8)
   {
     goto LABEL_14;
   }
 
 LABEL_5:
-  cf = v14;
-  std::function<vp::Expected<void,vp::rpb::Error> ()(unsigned int,vp::rpb::Scope,unsigned int,applesauce::CF::TypeRef)>::operator()(&v22, self->set_property_callback.__f_.__f_, a4, a5, a6, &cf);
-  v20 = a8;
-  vp::Expected<void,vp::rpb::Error>::on_error<vp::rpb::handle_error(NSError * {__autoreleasing}*)::{lambda(vp::rpb::Error const&)#1}>(&v24, &v22, &v20);
+  cf = propertyCopy;
+  std::function<vp::Expected<void,vp::rpb::Error> ()(unsigned int,vp::rpb::Scope,unsigned int,applesauce::CF::TypeRef)>::operator()(&v22, self->set_property_callback.__f_.__f_, d, scope, element, &cf);
+  errorCopy = error;
+  vp::Expected<void,vp::rpb::Error>::on_error<vp::rpb::handle_error(NSError * {__autoreleasing}*)::{lambda(vp::rpb::Error const&)#1}>(&v24, &v22, &errorCopy);
   v16 = v25;
   if (!v25)
   {
@@ -68,32 +68,32 @@ LABEL_5:
     CFRelease(cf);
   }
 
-  if (v14)
+  if (propertyCopy)
   {
-    CFRelease(v14);
+    CFRelease(propertyCopy);
   }
 
   return v16;
 }
 
-- (BOOL)getRemoteProcessingBlockProperty:(id *)a3 forID:(unsigned int)a4 scope:(unsigned int)a5 element:(unsigned int)a6 object:(id)a7 withError:(id *)a8
+- (BOOL)getRemoteProcessingBlockProperty:(id *)property forID:(unsigned int)d scope:(unsigned int)scope element:(unsigned int)element object:(id)object withError:(id *)error
 {
-  v14 = a7;
-  if (a5 >= 8)
+  objectCopy = object;
+  if (scope >= 8)
   {
     exception = __cxa_allocate_exception(8uLL);
     v21 = std::bad_cast::bad_cast(exception);
   }
 
-  std::function<vp::Expected<applesauce::CF::TypeRef,vp::rpb::Error> ()(unsigned int,vp::rpb::Scope,unsigned int)>::operator()(&v22, self->get_property_callback.__f_.__f_, a4, a5, a6);
+  std::function<vp::Expected<applesauce::CF::TypeRef,vp::rpb::Error> ()(unsigned int,vp::rpb::Scope,unsigned int)>::operator()(&v22, self->get_property_callback.__f_.__f_, d, scope, element);
   if (v23 == 1)
   {
     caulk::expected<applesauce::CF::TypeRef,vp::rpb::Error>::value(&v22);
     v15 = v22;
     v22 = 0;
-    if (a3)
+    if (property)
     {
-      *a3 = v15;
+      *property = v15;
     }
 
     else if (v15)
@@ -125,9 +125,9 @@ LABEL_5:
     }
   }
 
-  if (a8 && v24)
+  if (error && v24)
   {
-    *a8 = v24;
+    *error = v24;
     v16 = v25;
   }
 
@@ -178,17 +178,17 @@ LABEL_20:
   return v18;
 }
 
-- (BOOL)getRemoteProcessingBlockPropertyInfo:(id)a3 forScope:(unsigned int)a4 object:(id)a5 withError:(id *)a6
+- (BOOL)getRemoteProcessingBlockPropertyInfo:(id)info forScope:(unsigned int)scope object:(id)object withError:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  if (a4 >= 8)
+  infoCopy = info;
+  objectCopy = object;
+  if (scope >= 8)
   {
     exception = __cxa_allocate_exception(8uLL);
     v21 = std::bad_cast::bad_cast(exception);
   }
 
-  std::function<vp::Expected<std::vector<vp::rpb::Property_Info,vp::Allocator<vp::rpb::Property_Info>>,vp::rpb::Error> ()(vp::rpb::Scope)>::operator()(&v22, self->get_property_info_callback.__f_.__f_, a4);
+  std::function<vp::Expected<std::vector<vp::rpb::Property_Info,vp::Allocator<vp::rpb::Property_Info>>,vp::rpb::Error> ()(vp::rpb::Scope)>::operator()(&v22, self->get_property_info_callback.__f_.__f_, scope);
   if (v24 == 1)
   {
     caulk::expected<std::vector<vp::rpb::Property_Info,vp::Allocator<vp::rpb::Property_Info>>,vp::rpb::Error>::value(&v22);
@@ -205,14 +205,14 @@ LABEL_20:
       [v14 setReadable:*(v12 + 24)];
       [v14 setWritable:*(v12 + 25)];
       v17 = [v14 copy];
-      [v10 addObject:v17];
+      [infoCopy addObject:v17];
     }
   }
 
   caulk::__expected_detail::base<std::vector<vp::rpb::Parameter_Info,vp::Allocator<vp::rpb::Parameter_Info>>,vp::rpb::Error>::base(v25, &v22);
-  if ((v26 & 1) == 0 && a6 && v25[0])
+  if ((v26 & 1) == 0 && error && v25[0])
   {
-    *a6 = v25[0];
+    *error = v25[0];
   }
 
   caulk::__expected_detail::base<std::vector<vp::rpb::Parameter_Info,vp::Allocator<vp::rpb::Parameter_Info>>,vp::rpb::Error>::base(v27, v25);
@@ -224,19 +224,19 @@ LABEL_20:
   return v18;
 }
 
-- (BOOL)setRemoteProcessingBlockParameter:(float)a3 forID:(unsigned int)a4 scope:(unsigned int)a5 element:(unsigned int)a6 object:(id)a7 withError:(id *)a8
+- (BOOL)setRemoteProcessingBlockParameter:(float)parameter forID:(unsigned int)d scope:(unsigned int)scope element:(unsigned int)element object:(id)object withError:(id *)error
 {
-  v14 = a7;
-  if (a5 >= 8)
+  objectCopy = object;
+  if (scope >= 8)
   {
     exception = __cxa_allocate_exception(8uLL);
     v19 = std::bad_cast::bad_cast(exception);
   }
 
-  LODWORD(v20) = a4;
-  v26 = a6;
-  v27 = a5;
-  v25 = a3;
+  LODWORD(errorCopy) = d;
+  elementCopy = element;
+  scopeCopy = scope;
+  parameterCopy = parameter;
   f = self->set_parameter_callback.__f_.__f_;
   if (!f)
   {
@@ -244,8 +244,8 @@ LABEL_20:
   }
 
   (*(*f + 48))(&v21);
-  v20 = a8;
-  vp::Expected<void,vp::rpb::Error>::on_error<vp::rpb::handle_error(NSError * {__autoreleasing}*)::{lambda(vp::rpb::Error const&)#1}>(&v23, &v21, &v20);
+  errorCopy = error;
+  vp::Expected<void,vp::rpb::Error>::on_error<vp::rpb::handle_error(NSError * {__autoreleasing}*)::{lambda(vp::rpb::Error const&)#1}>(&v23, &v21, &errorCopy);
   v16 = v24;
   if (!v24)
   {
@@ -260,22 +260,22 @@ LABEL_20:
   return v16;
 }
 
-- (BOOL)getRemoteProcessingBlockParameter:(float *)a3 forID:(unsigned int)a4 scope:(unsigned int)a5 element:(unsigned int)a6 object:(id)a7 withError:(id *)a8
+- (BOOL)getRemoteProcessingBlockParameter:(float *)parameter forID:(unsigned int)d scope:(unsigned int)scope element:(unsigned int)element object:(id)object withError:(id *)error
 {
-  v14 = a7;
-  if (a5 >= 8)
+  objectCopy = object;
+  if (scope >= 8)
   {
     exception = __cxa_allocate_exception(8uLL);
     v19 = std::bad_cast::bad_cast(exception);
   }
 
-  std::function<vp::Expected<float,vp::rpb::Error> ()(unsigned int,vp::rpb::Scope,unsigned int)>::operator()(&v20, self->get_parameter_callback.__f_.__f_, a4, a5, a6);
+  std::function<vp::Expected<float,vp::rpb::Error> ()(unsigned int,vp::rpb::Scope,unsigned int)>::operator()(&v20, self->get_parameter_callback.__f_.__f_, d, scope, element);
   if (v21 == 1)
   {
     caulk::expected<float,vp::rpb::Error>::value(&v20);
-    if (a3)
+    if (parameter)
     {
-      *a3 = v20;
+      *parameter = v20;
     }
   }
 
@@ -301,9 +301,9 @@ LABEL_20:
     }
   }
 
-  if (a8 && v22)
+  if (error && v22)
   {
-    *a8 = v22;
+    *error = v22;
     v15 = v23;
   }
 
@@ -340,17 +340,17 @@ LABEL_17:
   return v16;
 }
 
-- (BOOL)getRemoteProcessingBlockParameterInfo:(id)a3 forScope:(unsigned int)a4 object:(id)a5 withError:(id *)a6
+- (BOOL)getRemoteProcessingBlockParameterInfo:(id)info forScope:(unsigned int)scope object:(id)object withError:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  if (a4 >= 8)
+  infoCopy = info;
+  objectCopy = object;
+  if (scope >= 8)
   {
     exception = __cxa_allocate_exception(8uLL);
     v21 = std::bad_cast::bad_cast(exception);
   }
 
-  std::function<vp::Expected<std::vector<vp::rpb::Parameter_Info,vp::Allocator<vp::rpb::Parameter_Info>>,vp::rpb::Error> ()(vp::rpb::Scope)>::operator()(&v22, self->get_parameter_info_callback.__f_.__f_, a4);
+  std::function<vp::Expected<std::vector<vp::rpb::Parameter_Info,vp::Allocator<vp::rpb::Parameter_Info>>,vp::rpb::Error> ()(vp::rpb::Scope)>::operator()(&v22, self->get_parameter_info_callback.__f_.__f_, scope);
   if (v24 == 1)
   {
     caulk::expected<std::vector<vp::rpb::Parameter_Info,vp::Allocator<vp::rpb::Parameter_Info>>,vp::rpb::Error>::value(&v22);
@@ -367,14 +367,14 @@ LABEL_17:
       [v14 setReadable:*(v12 + 24)];
       [v14 setWritable:*(v12 + 25)];
       v17 = [v14 copy];
-      [v10 addObject:v17];
+      [infoCopy addObject:v17];
     }
   }
 
   caulk::__expected_detail::base<std::vector<vp::rpb::Parameter_Info,vp::Allocator<vp::rpb::Parameter_Info>>,vp::rpb::Error>::base(v25, &v22);
-  if ((v26 & 1) == 0 && a6 && v25[0])
+  if ((v26 & 1) == 0 && error && v25[0])
   {
-    *a6 = v25[0];
+    *error = v25[0];
   }
 
   caulk::__expected_detail::base<std::vector<vp::rpb::Parameter_Info,vp::Allocator<vp::rpb::Parameter_Info>>,vp::rpb::Error>::base(v27, v25);
@@ -386,36 +386,36 @@ LABEL_17:
   return v18;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  if (sel_getRemoteProcessingBlockParameterInfo_forScope_object_withError_ == a3)
+  if (sel_getRemoteProcessingBlockParameterInfo_forScope_object_withError_ == selector)
   {
     f = self->get_parameter_info_callback.__f_.__f_;
   }
 
-  else if (sel_getRemoteProcessingBlockParameter_forID_scope_element_object_withError_ == a3)
+  else if (sel_getRemoteProcessingBlockParameter_forID_scope_element_object_withError_ == selector)
   {
     f = self->get_parameter_callback.__f_.__f_;
   }
 
-  else if (sel_setRemoteProcessingBlockParameter_forID_scope_element_object_withError_ == a3)
+  else if (sel_setRemoteProcessingBlockParameter_forID_scope_element_object_withError_ == selector)
   {
     f = self->set_parameter_callback.__f_.__f_;
   }
 
-  else if (sel_getRemoteProcessingBlockPropertyInfo_forScope_object_withError_ == a3)
+  else if (sel_getRemoteProcessingBlockPropertyInfo_forScope_object_withError_ == selector)
   {
     f = self->get_property_info_callback.__f_.__f_;
   }
 
-  else if (sel_getRemoteProcessingBlockProperty_forID_scope_element_object_withError_ == a3)
+  else if (sel_getRemoteProcessingBlockProperty_forID_scope_element_object_withError_ == selector)
   {
     f = self->get_property_callback.__f_.__f_;
   }
 
   else
   {
-    if (sel_setRemoteProcessingBlockProperty_forID_scope_element_object_withError_ != a3)
+    if (sel_setRemoteProcessingBlockProperty_forID_scope_element_object_withError_ != selector)
     {
       v8 = v3;
       v9 = v4;

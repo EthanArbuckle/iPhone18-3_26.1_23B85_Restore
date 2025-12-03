@@ -1,23 +1,23 @@
 @interface KeychainItemUpgradeRequestController
-- (KeychainItemUpgradeRequestController)initWithLockStateTracker:(id)a3;
-- (id)_onqueueNextStateMachineTransition:(id)a3 flags:(id)a4 pendingFlags:(id)a5;
-- (void)triggerKeychainItemUpdateRPC:(id)a3;
+- (KeychainItemUpgradeRequestController)initWithLockStateTracker:(id)tracker;
+- (id)_onqueueNextStateMachineTransition:(id)transition flags:(id)flags pendingFlags:(id)pendingFlags;
+- (void)triggerKeychainItemUpdateRPC:(id)c;
 @end
 
 @implementation KeychainItemUpgradeRequestController
 
-- (void)triggerKeychainItemUpdateRPC:(id)a3
+- (void)triggerKeychainItemUpdateRPC:(id)c
 {
-  v4 = a3;
-  v5 = [(KeychainItemUpgradeRequestController *)self stateMachine];
-  [v5 startOperation];
+  cCopy = c;
+  stateMachine = [(KeychainItemUpgradeRequestController *)self stateMachine];
+  [stateMachine startOperation];
 
-  v6 = [(KeychainItemUpgradeRequestController *)self lockStateTracker];
+  lockStateTracker = [(KeychainItemUpgradeRequestController *)self lockStateTracker];
 
-  if (v6)
+  if (lockStateTracker)
   {
-    v7 = [(KeychainItemUpgradeRequestController *)self lockStateTracker];
-    [v7 recheck];
+    lockStateTracker2 = [(KeychainItemUpgradeRequestController *)self lockStateTracker];
+    [lockStateTracker2 recheck];
   }
 
   v8 = [OctagonStateTransitionOperation named:@"upgrade-persistent-ref" entering:@"upgrade_persistent_ref"];
@@ -26,24 +26,24 @@
   v10 = [NSSet setWithArray:v9];
 
   v11 = [OctagonStateTransitionRequest alloc];
-  v12 = [(KeychainItemUpgradeRequestController *)self queue];
-  v13 = [(OctagonStateTransitionRequest *)v11 init:@"request-item-upgrade" sourceStates:v10 serialQueue:v12 transitionOp:v8];
+  queue = [(KeychainItemUpgradeRequestController *)self queue];
+  v13 = [(OctagonStateTransitionRequest *)v11 init:@"request-item-upgrade" sourceStates:v10 serialQueue:queue transitionOp:v8];
 
-  v14 = [(KeychainItemUpgradeRequestController *)self stateMachine];
-  [v14 handleExternalRequest:v13 startTimeout:10000000000];
+  stateMachine2 = [(KeychainItemUpgradeRequestController *)self stateMachine];
+  [stateMachine2 handleExternalRequest:v13 startTimeout:10000000000];
 
-  v4[2](v4, 0);
+  cCopy[2](cCopy, 0);
 }
 
-- (id)_onqueueNextStateMachineTransition:(id)a3 flags:(id)a4 pendingFlags:(id)a5
+- (id)_onqueueNextStateMachineTransition:(id)transition flags:(id)flags pendingFlags:(id)pendingFlags
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(KeychainItemUpgradeRequestController *)self queue];
-  dispatch_assert_queue_V2(v11);
+  transitionCopy = transition;
+  flagsCopy = flags;
+  pendingFlagsCopy = pendingFlags;
+  queue = [(KeychainItemUpgradeRequestController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([v8 isEqualToString:@"wait_for_unlock"])
+  if ([transitionCopy isEqualToString:@"wait_for_unlock"])
   {
     v12 = sub_100006274("keychainitemupgrade");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -53,15 +53,15 @@
     }
 
     v13 = [OctagonStateTransitionOperation named:@"wait-for-unlock" entering:@"nothing_to_do"];
-    v14 = [(KeychainItemUpgradeRequestController *)self lockStateTracker];
-    v15 = [(OctagonPendingFlag *)v14 unlockDependency];
-    [v13 addNullableDependency:v15];
+    lockStateTracker = [(KeychainItemUpgradeRequestController *)self lockStateTracker];
+    unlockDependency = [(OctagonPendingFlag *)lockStateTracker unlockDependency];
+    [v13 addNullableDependency:unlockDependency];
 
 LABEL_5:
     goto LABEL_29;
   }
 
-  if ([v8 isEqualToString:@"upgrade_persistent_ref"])
+  if ([transitionCopy isEqualToString:@"upgrade_persistent_ref"])
   {
     v16 = sub_100006274("keychainitemupgrade");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -92,13 +92,13 @@ LABEL_5:
     _Block_object_dispose(v36, 8);
     v17 = *(v39 + 24);
     _Block_object_dispose(&v38, 8);
-    v18 = [(KeychainItemUpgradeRequestController *)self lockStateTracker];
-    v19 = [v18 isLockedError:cf];
+    lockStateTracker2 = [(KeychainItemUpgradeRequestController *)self lockStateTracker];
+    v19 = [lockStateTracker2 isLockedError:cf];
 
     if (v19)
     {
-      v14 = [[OctagonPendingFlag alloc] initWithFlag:@"schedule_pref_upgrade" conditions:1];
-      [v10 _onqueueHandlePendingFlagLater:v14];
+      lockStateTracker = [[OctagonPendingFlag alloc] initWithFlag:@"schedule_pref_upgrade" conditions:1];
+      [pendingFlagsCopy _onqueueHandlePendingFlagLater:lockStateTracker];
       v13 = [OctagonStateTransitionOperation named:@"after-upgrade--attempt-wait-for-unlock" entering:@"wait_for_unlock"];
       v20 = cf;
       if (cf)
@@ -140,8 +140,8 @@ LABEL_5:
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "hit an error, triggering CKKSNFS: %@", &buf, 0xCu);
       }
 
-      v30 = [(KeychainItemUpgradeRequestController *)self persistentReferenceUpgrader];
-      [v30 trigger];
+      persistentReferenceUpgrader = [(KeychainItemUpgradeRequestController *)self persistentReferenceUpgrader];
+      [persistentReferenceUpgrader trigger];
 
       v31 = @"wait-for-trigger";
       v32 = @"wait_for_trigger";
@@ -158,7 +158,7 @@ LABEL_5:
 
   else
   {
-    if ([v8 isEqualToString:@"wait_for_trigger"])
+    if ([transitionCopy isEqualToString:@"wait_for_trigger"])
     {
       v21 = sub_100006274("keychainitemupgrade");
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -167,9 +167,9 @@ LABEL_5:
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "waiting for trigger to occur", &buf, 2u);
       }
 
-      if ([v9 _onqueueContains:@"schedule_pref_upgrade"])
+      if ([flagsCopy _onqueueContains:@"schedule_pref_upgrade"])
       {
-        [v9 _onqueueRemoveFlag:@"schedule_pref_upgrade"];
+        [flagsCopy _onqueueRemoveFlag:@"schedule_pref_upgrade"];
         v22 = sub_100006274("keychainitemupgrade");
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
@@ -183,14 +183,14 @@ LABEL_21:
       }
     }
 
-    else if ([v8 isEqualToString:@"nothing_to_do"])
+    else if ([transitionCopy isEqualToString:@"nothing_to_do"])
     {
-      v24 = [(KeychainItemUpgradeRequestController *)self persistentReferenceUpgrader];
-      [v24 cancel];
+      persistentReferenceUpgrader2 = [(KeychainItemUpgradeRequestController *)self persistentReferenceUpgrader];
+      [persistentReferenceUpgrader2 cancel];
 
-      if ([v9 _onqueueContains:@"schedule_pref_upgrade"])
+      if ([flagsCopy _onqueueContains:@"schedule_pref_upgrade"])
       {
-        [v9 _onqueueRemoveFlag:@"schedule_pref_upgrade"];
+        [flagsCopy _onqueueRemoveFlag:@"schedule_pref_upgrade"];
       }
 
       v25 = sub_100006274("keychainitemupgrade");
@@ -209,9 +209,9 @@ LABEL_29:
   return v13;
 }
 
-- (KeychainItemUpgradeRequestController)initWithLockStateTracker:(id)a3
+- (KeychainItemUpgradeRequestController)initWithLockStateTracker:(id)tracker
 {
-  v5 = a3;
+  trackerCopy = tracker;
   v23.receiver = self;
   v23.super_class = KeychainItemUpgradeRequestController;
   v6 = [(KeychainItemUpgradeRequestController *)&v23 init];
@@ -223,7 +223,7 @@ LABEL_29:
     queue = v6->_queue;
     v6->_queue = v8;
 
-    objc_storeStrong(&v6->_lockStateTracker, a3);
+    objc_storeStrong(&v6->_lockStateTracker, tracker);
     v10 = [OctagonStateMachine alloc];
     v25[0] = @"nothing_to_do";
     v25[1] = @"wait_for_unlock";
@@ -237,7 +237,7 @@ LABEL_29:
     v24 = @"schedule_pref_upgrade";
     v12 = [NSArray arrayWithObjects:&v24 count:1];
     v13 = [NSSet setWithArray:v12];
-    v14 = [(OctagonStateMachine *)v10 initWithName:@"keychainitemupgrade" states:v11 flags:v13 initialState:@"upgrade_persistent_ref" queue:v6->_queue stateEngine:v6 unexpectedStateErrorDomain:@"com.apple.security.keychainitemupgrade.state" lockStateTracker:v5 reachabilityTracker:0];
+    v14 = [(OctagonStateMachine *)v10 initWithName:@"keychainitemupgrade" states:v11 flags:v13 initialState:@"upgrade_persistent_ref" queue:v6->_queue stateEngine:v6 unexpectedStateErrorDomain:@"com.apple.security.keychainitemupgrade.state" lockStateTracker:trackerCopy reachabilityTracker:0];
     stateMachine = v6->_stateMachine;
     v6->_stateMachine = v14;
 

@@ -1,24 +1,24 @@
 @interface PKMerchantTokenIconView
-- (PKMerchantTokenIconView)initWithFrame:(CGRect)a3;
+- (PKMerchantTokenIconView)initWithFrame:(CGRect)frame;
 - (void)_cancelImageDownload;
-- (void)_downloadImageFromURL:(id)a3;
+- (void)_downloadImageFromURL:(id)l;
 - (void)_setUpConstraints;
 - (void)_setUpMonogramLabel;
 - (void)_setUpSelf;
 - (void)_setUpViews;
 - (void)_updateIconImage;
-- (void)_updateMonogramLabelWithText:(id)a3;
-- (void)updateWithImage:(id)a3 cornerRadius:(double)a4;
-- (void)updateWithImageURL:(id)a3 monogramText:(id)a4 cornerRadius:(double)a5;
+- (void)_updateMonogramLabelWithText:(id)text;
+- (void)updateWithImage:(id)image cornerRadius:(double)radius;
+- (void)updateWithImageURL:(id)l monogramText:(id)text cornerRadius:(double)radius;
 @end
 
 @implementation PKMerchantTokenIconView
 
-- (PKMerchantTokenIconView)initWithFrame:(CGRect)a3
+- (PKMerchantTokenIconView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PKMerchantTokenIconView;
-  v3 = [(PKMerchantTokenIconView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKMerchantTokenIconView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -29,31 +29,31 @@
   return v4;
 }
 
-- (void)updateWithImage:(id)a3 cornerRadius:(double)a4
+- (void)updateWithImage:(id)image cornerRadius:(double)radius
 {
-  v6 = a3;
+  imageCopy = image;
   [(PKMerchantTokenIconView *)self _cancelImageDownload];
   image = self->_image;
-  self->_image = v6;
+  self->_image = imageCopy;
 
-  self->_cornerRadius = a4;
+  self->_cornerRadius = radius;
 
   [(PKMerchantTokenIconView *)self _updateIconImage];
 }
 
-- (void)updateWithImageURL:(id)a3 monogramText:(id)a4 cornerRadius:(double)a5
+- (void)updateWithImageURL:(id)l monogramText:(id)text cornerRadius:(double)radius
 {
-  v8 = a4;
-  v10 = a3;
+  textCopy = text;
+  lCopy = l;
   [(PKMerchantTokenIconView *)self _cancelImageDownload];
   image = self->_image;
   self->_image = 0;
 
-  self->_cornerRadius = a5;
-  [(PKMerchantTokenIconView *)self _updateMonogramLabelWithText:v8];
+  self->_cornerRadius = radius;
+  [(PKMerchantTokenIconView *)self _updateMonogramLabelWithText:textCopy];
 
   [(PKMerchantTokenIconView *)self _updateIconImage];
-  [(PKMerchantTokenIconView *)self _downloadImageFromURL:v10];
+  [(PKMerchantTokenIconView *)self _downloadImageFromURL:lCopy];
 }
 
 - (void)_setUpViews
@@ -67,9 +67,9 @@
 {
   [(PKMerchantTokenIconView *)self setClipsToBounds:1];
   [(PKMerchantTokenIconView *)self setContentMode:2];
-  v4 = [(PKMerchantTokenIconView *)self layer];
-  v3 = [MEMORY[0x1E69DC888] systemGrayColor];
-  [v4 setBorderColor:{objc_msgSend(v3, "CGColor")}];
+  layer = [(PKMerchantTokenIconView *)self layer];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  [layer setBorderColor:{objc_msgSend(systemGrayColor, "CGColor")}];
 }
 
 - (void)_setUpMonogramLabel
@@ -81,8 +81,8 @@
 
   [(UILabel *)self->_monogramLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   v6 = self->_monogramLabel;
-  v7 = [MEMORY[0x1E69DC888] whiteColor];
-  [(UILabel *)v6 setTextColor:v7];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [(UILabel *)v6 setTextColor:whiteColor];
 
   [(UILabel *)self->_monogramLabel setTextAlignment:1];
   v8 = self->_monogramLabel;
@@ -100,34 +100,34 @@
 {
   v17[4] = *MEMORY[0x1E69E9840];
   v13 = MEMORY[0x1E696ACD8];
-  v16 = [(UILabel *)self->_monogramLabel centerYAnchor];
-  v15 = [(PKMerchantTokenIconView *)self centerYAnchor];
-  v14 = [v16 constraintEqualToAnchor:v15];
+  centerYAnchor = [(UILabel *)self->_monogramLabel centerYAnchor];
+  centerYAnchor2 = [(PKMerchantTokenIconView *)self centerYAnchor];
+  v14 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v17[0] = v14;
-  v3 = [(UILabel *)self->_monogramLabel heightAnchor];
-  v4 = [(PKMerchantTokenIconView *)self heightAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4 multiplier:0.715];
+  heightAnchor = [(UILabel *)self->_monogramLabel heightAnchor];
+  heightAnchor2 = [(PKMerchantTokenIconView *)self heightAnchor];
+  v5 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:0.715];
   v17[1] = v5;
-  v6 = [(UILabel *)self->_monogramLabel leadingAnchor];
-  v7 = [(PKMerchantTokenIconView *)self leadingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  leadingAnchor = [(UILabel *)self->_monogramLabel leadingAnchor];
+  leadingAnchor2 = [(PKMerchantTokenIconView *)self leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v17[2] = v8;
-  v9 = [(UILabel *)self->_monogramLabel trailingAnchor];
-  v10 = [(PKMerchantTokenIconView *)self trailingAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  trailingAnchor = [(UILabel *)self->_monogramLabel trailingAnchor];
+  trailingAnchor2 = [(PKMerchantTokenIconView *)self trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v17[3] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:4];
   [v13 activateConstraints:v12];
 }
 
-- (void)_updateMonogramLabelWithText:(id)a3
+- (void)_updateMonogramLabelWithText:(id)text
 {
-  v7 = a3;
-  v4 = [v7 length];
+  textCopy = text;
+  v4 = [textCopy length];
   monogramLabel = self->_monogramLabel;
   if (v4)
   {
-    v6 = [v7 substringWithRange:{0, 1}];
+    v6 = [textCopy substringWithRange:{0, 1}];
     [(UILabel *)monogramLabel setText:v6];
   }
 
@@ -142,24 +142,24 @@
   image = self->_image;
   if (image)
   {
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [(PKMerchantTokenIconView *)self setBackgroundColor:v4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(PKMerchantTokenIconView *)self setBackgroundColor:clearColor];
 
     [(PKMerchantTokenIconView *)self _setContinuousCornerRadius:self->_cornerRadius];
-    v5 = [(PKMerchantTokenIconView *)self layer];
-    [v5 setBorderWidth:PKUIPixelLength()];
+    layer = [(PKMerchantTokenIconView *)self layer];
+    [layer setBorderWidth:PKUIPixelLength()];
 
     v6 = self->_image;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E69DC888] systemGray2Color];
-    [(PKMerchantTokenIconView *)self setBackgroundColor:v7];
+    systemGray2Color = [MEMORY[0x1E69DC888] systemGray2Color];
+    [(PKMerchantTokenIconView *)self setBackgroundColor:systemGray2Color];
 
     [(PKMerchantTokenIconView *)self _setContinuousCornerRadius:self->_cornerRadius];
-    v8 = [(PKMerchantTokenIconView *)self layer];
-    [v8 setBorderWidth:PKUIPixelLength()];
+    layer2 = [(PKMerchantTokenIconView *)self layer];
+    [layer2 setBorderWidth:PKUIPixelLength()];
 
     v6 = 0;
   }
@@ -170,9 +170,9 @@
   [(UILabel *)monogramLabel setHidden:image != 0];
 }
 
-- (void)_downloadImageFromURL:(id)a3
+- (void)_downloadImageFromURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   objc_initWeak(&location, self);
   v10 = 0;
   v11 = &v10;
@@ -180,14 +180,14 @@
   v13 = __Block_byref_object_copy__70;
   v14 = __Block_byref_object_dispose__70;
   v15 = 0;
-  v5 = [MEMORY[0x1E696AF78] sharedSession];
+  mEMORY[0x1E696AF78] = [MEMORY[0x1E696AF78] sharedSession];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __49__PKMerchantTokenIconView__downloadImageFromURL___block_invoke;
   v8[3] = &unk_1E8025B30;
   objc_copyWeak(&v9, &location);
   v8[4] = &v10;
-  v6 = [v5 dataTaskWithURL:v4 completionHandler:v8];
+  v6 = [mEMORY[0x1E696AF78] dataTaskWithURL:lCopy completionHandler:v8];
   v7 = v11[5];
   v11[5] = v6;
 

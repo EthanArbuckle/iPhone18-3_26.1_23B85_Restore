@@ -1,44 +1,44 @@
 @interface PXStoryPersistedStyleProducer
-- (PXStoryPersistedStyleProducer)initWithPersistedRecipe:(id)a3 songResource:(id)a4 autoEditDecisionList:(id)a5;
-- (id)requestStylesWithOptions:(unint64_t)a3 resultHandler:(id)a4;
+- (PXStoryPersistedStyleProducer)initWithPersistedRecipe:(id)recipe songResource:(id)resource autoEditDecisionList:(id)list;
+- (id)requestStylesWithOptions:(unint64_t)options resultHandler:(id)handler;
 @end
 
 @implementation PXStoryPersistedStyleProducer
 
-- (id)requestStylesWithOptions:(unint64_t)a3 resultHandler:(id)a4
+- (id)requestStylesWithOptions:(unint64_t)options resultHandler:(id)handler
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(PXStoryPersistedStyleProducer *)self persistedRecipe];
-  v7 = [v6 currentStyle];
+  handlerCopy = handler;
+  persistedRecipe = [(PXStoryPersistedStyleProducer *)self persistedRecipe];
+  currentStyle = [persistedRecipe currentStyle];
 
-  v8 = [(PXStoryPersistedStyleProducer *)self autoEditDecisionList];
-  v9 = [(PXStoryPersistedStyleProducer *)self songResource];
-  v10 = [v7 originalColorGradeCategory];
-  v11 = [v7 customColorGradeKind];
-  v12 = [v7 isCustomized];
-  if (!v11)
+  autoEditDecisionList = [(PXStoryPersistedStyleProducer *)self autoEditDecisionList];
+  songResource = [(PXStoryPersistedStyleProducer *)self songResource];
+  originalColorGradeCategory = [currentStyle originalColorGradeCategory];
+  customColorGradeKind = [currentStyle customColorGradeKind];
+  isCustomized = [currentStyle isCustomized];
+  if (!customColorGradeKind)
   {
     v13 = +[PXStoryColorGradingRepositoryFactory sharedRepository];
-    v11 = [v13 colorGradeKindForColorGradeCategory:v10];
+    customColorGradeKind = [v13 colorGradeKindForColorGradeCategory:originalColorGradeCategory];
   }
 
-  v14 = [[PXStoryStyleConfiguration alloc] initWithOriginalColorGradeCategory:v10 customColorGradeKind:v11 songResource:v9 autoEditDecisionList:v8 isCustomized:v12];
+  v14 = [[PXStoryStyleConfiguration alloc] initWithOriginalColorGradeCategory:originalColorGradeCategory customColorGradeKind:customColorGradeKind songResource:songResource autoEditDecisionList:autoEditDecisionList isCustomized:isCustomized];
   v15 = [PXStoryProducerResult alloc];
   v20[0] = v14;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
   v17 = [(PXStoryProducerResult *)v15 initWithObject:v16];
-  v18 = [(PXStoryProducerResult *)v17 flags:v8 == 0];
-  v5[2](v5, v18);
+  v18 = [(PXStoryProducerResult *)v17 flags:autoEditDecisionList == 0];
+  handlerCopy[2](handlerCopy, v18);
 
   return 0;
 }
 
-- (PXStoryPersistedStyleProducer)initWithPersistedRecipe:(id)a3 songResource:(id)a4 autoEditDecisionList:(id)a5
+- (PXStoryPersistedStyleProducer)initWithPersistedRecipe:(id)recipe songResource:(id)resource autoEditDecisionList:(id)list
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  recipeCopy = recipe;
+  resourceCopy = resource;
+  listCopy = list;
   v19.receiver = self;
   v19.super_class = PXStoryPersistedStyleProducer;
   v12 = [(PXStoryPersistedStyleProducer *)&v19 init];
@@ -46,15 +46,15 @@
   {
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    v15 = [v14 UTF8String];
+    uTF8String = [v14 UTF8String];
 
-    v16 = os_log_create(*MEMORY[0x1E69BFF60], v15);
+    v16 = os_log_create(*MEMORY[0x1E69BFF60], uTF8String);
     log = v12->_log;
     v12->_log = v16;
 
-    objc_storeStrong(&v12->_songResource, a4);
-    objc_storeStrong(&v12->_persistedRecipe, a3);
-    objc_storeStrong(&v12->_autoEditDecisionList, a5);
+    objc_storeStrong(&v12->_songResource, resource);
+    objc_storeStrong(&v12->_persistedRecipe, recipe);
+    objc_storeStrong(&v12->_autoEditDecisionList, list);
   }
 
   return v12;

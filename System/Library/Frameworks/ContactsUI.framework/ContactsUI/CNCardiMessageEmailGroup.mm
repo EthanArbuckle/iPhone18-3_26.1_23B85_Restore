@@ -1,18 +1,18 @@
 @interface CNCardiMessageEmailGroup
-- (CNCardiMessageEmailGroup)initWithContact:(id)a3 propertyItem:(id)a4;
+- (CNCardiMessageEmailGroup)initWithContact:(id)contact propertyItem:(id)item;
 @end
 
 @implementation CNCardiMessageEmailGroup
 
-- (CNCardiMessageEmailGroup)initWithContact:(id)a3 propertyItem:(id)a4
+- (CNCardiMessageEmailGroup)initWithContact:(id)contact propertyItem:(id)item
 {
-  v6 = a4;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = CNCardiMessageEmailGroup;
-  v7 = [(CNCardGroup *)&v11 initWithContact:a3];
+  v7 = [(CNCardGroup *)&v11 initWithContact:contact];
   if (v7)
   {
-    v8 = [MEMORY[0x1E695DEC8] arrayWithObject:v6];
+    v8 = [MEMORY[0x1E695DEC8] arrayWithObject:itemCopy];
     displayItems = v7->_displayItems;
     v7->_displayItems = v8;
   }

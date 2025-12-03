@@ -1,40 +1,40 @@
 @interface RTSensitiveDateClassifier
 - (BOOL)_accessPointsConditionsMet;
-- (BOOL)_isNearSensitiveLocation:(id)a3;
-- (BOOL)_sensitiveMotionSignalDetectedForMotion:(id)a3 startDate:(id)a4 endDate:(id)a5;
-- (RTSensitiveDateClassifier)initWithDefaultsManager:(id)a3 healthKitManager:(id)a4 learnedLocationStore:(id)a5 locationManager:(id)a6 motionActivityManager:(id)a7 timerManager:(id)a8 vehicleLocationProvider:(id)a9 wifiManager:(id)a10;
-- (id)_compareWorkoutStartDateToLookbackWindowStartDate:(id)a3 motionLookbackWindowStartDate:(id)a4;
+- (BOOL)_isNearSensitiveLocation:(id)location;
+- (BOOL)_sensitiveMotionSignalDetectedForMotion:(id)motion startDate:(id)date endDate:(id)endDate;
+- (RTSensitiveDateClassifier)initWithDefaultsManager:(id)manager healthKitManager:(id)kitManager learnedLocationStore:(id)store locationManager:(id)locationManager motionActivityManager:(id)activityManager timerManager:(id)timerManager vehicleLocationProvider:(id)provider wifiManager:(id)self0;
+- (id)_compareWorkoutStartDateToLookbackWindowStartDate:(id)date motionLookbackWindowStartDate:(id)startDate;
 - (id)_getLastParkedCarDate;
-- (id)_getLocationLookbackWindowStartDateWithDateInterval:(id)a3 currentLocation:(id)a4;
-- (id)_getLookbackWindowStartDateWithLocation:(id)a3 error:(id *)a4;
-- (id)_getMotionLookbackWindowStartDateWithDateInterval:(id)a3;
-- (id)_locationsForOptions:(id)a3;
-- (id)_motionsForDateInterval:(id)a3;
-- (id)_sensitiveLocationsOfInterestWithError:(id *)a3;
-- (void)_fetchCurrentLocationWithHandler:(id)a3;
-- (void)_fetchInWifiDenseAreaWithHandler:(id)a3;
+- (id)_getLocationLookbackWindowStartDateWithDateInterval:(id)interval currentLocation:(id)location;
+- (id)_getLookbackWindowStartDateWithLocation:(id)location error:(id *)error;
+- (id)_getMotionLookbackWindowStartDateWithDateInterval:(id)interval;
+- (id)_locationsForOptions:(id)options;
+- (id)_motionsForDateInterval:(id)interval;
+- (id)_sensitiveLocationsOfInterestWithError:(id *)error;
+- (void)_fetchCurrentLocationWithHandler:(id)handler;
+- (void)_fetchInWifiDenseAreaWithHandler:(id)handler;
 - (void)_processRecentWorkoutSignal;
 - (void)_processWifiScanResults;
 - (void)_stopMonitoringWifiScans;
-- (void)fetchLookbackWindowStartDateWithLocation:(id)a3 handler:(id)a4;
-- (void)onWifiScanResultsNotification:(id)a3;
+- (void)fetchLookbackWindowStartDateWithLocation:(id)location handler:(id)handler;
+- (void)onWifiScanResultsNotification:(id)notification;
 @end
 
 @implementation RTSensitiveDateClassifier
 
-- (RTSensitiveDateClassifier)initWithDefaultsManager:(id)a3 healthKitManager:(id)a4 learnedLocationStore:(id)a5 locationManager:(id)a6 motionActivityManager:(id)a7 timerManager:(id)a8 vehicleLocationProvider:(id)a9 wifiManager:(id)a10
+- (RTSensitiveDateClassifier)initWithDefaultsManager:(id)manager healthKitManager:(id)kitManager learnedLocationStore:(id)store locationManager:(id)locationManager motionActivityManager:(id)activityManager timerManager:(id)timerManager vehicleLocationProvider:(id)provider wifiManager:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v45 = a5;
-  v48 = a6;
-  v47 = a7;
-  v43 = a8;
-  v46 = a9;
-  v18 = a10;
-  v44 = v16;
-  v42 = v18;
-  if (!v16)
+  managerCopy = manager;
+  kitManagerCopy = kitManager;
+  storeCopy = store;
+  locationManagerCopy = locationManager;
+  activityManagerCopy = activityManager;
+  timerManagerCopy = timerManager;
+  providerCopy = provider;
+  wifiManagerCopy = wifiManager;
+  v44 = managerCopy;
+  v42 = wifiManagerCopy;
+  if (!managerCopy)
   {
     v32 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -44,14 +44,14 @@
     }
 
     v33 = 0;
-    v19 = v45;
+    v19 = storeCopy;
     goto LABEL_28;
   }
 
-  if (!v17)
+  if (!kitManagerCopy)
   {
     v34 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    v19 = v45;
+    v19 = storeCopy;
     if (!os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_27;
@@ -64,8 +64,8 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v19 = v45;
-  if (!v45)
+  v19 = storeCopy;
+  if (!storeCopy)
   {
     v34 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -78,7 +78,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (!v48)
+  if (!locationManagerCopy)
   {
     v34 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -91,7 +91,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (!v47)
+  if (!activityManagerCopy)
   {
     v34 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -104,7 +104,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (!v46)
+  if (!providerCopy)
   {
     v34 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -117,7 +117,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (!v18)
+  if (!wifiManagerCopy)
   {
     v34 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -131,7 +131,7 @@ LABEL_27:
 
     v33 = 0;
 LABEL_28:
-    v36 = self;
+    selfCopy = self;
     goto LABEL_29;
   }
 
@@ -148,19 +148,19 @@ LABEL_28:
     distanceCalculator = v20->_distanceCalculator;
     v20->_distanceCalculator = v23;
 
-    objc_storeStrong(&v20->_defaultsManager, a3);
-    objc_storeStrong(&v20->_healthKitManager, a4);
+    objc_storeStrong(&v20->_defaultsManager, manager);
+    objc_storeStrong(&v20->_healthKitManager, kitManager);
     v20->_inWifiDenseArea = 0;
     latestWorkoutDateInterval = v20->_latestWorkoutDateInterval;
     v20->_latestWorkoutDateInterval = 0;
 
-    objc_storeStrong(&v20->_learnedLocationStore, a5);
-    objc_storeStrong(&v20->_locationManager, a6);
+    objc_storeStrong(&v20->_learnedLocationStore, store);
+    objc_storeStrong(&v20->_locationManager, locationManager);
     v26 = objc_opt_new();
     metrics = v20->_metrics;
     v20->_metrics = v26;
 
-    objc_storeStrong(&v20->_motionActivityManager, a7);
+    objc_storeStrong(&v20->_motionActivityManager, activityManager);
     nearSensitiveLocationDetectionDate = v20->_nearSensitiveLocationDetectionDate;
     v20->_nearSensitiveLocationDetectionDate = 0;
 
@@ -169,48 +169,48 @@ LABEL_28:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v31 = [(RTSensitiveDateClassifier *)v29 UTF8String];
+      uTF8String = [(RTSensitiveDateClassifier *)v29 UTF8String];
     }
 
     else
     {
       v38 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), v29];
-      v31 = [v38 UTF8String];
+      uTF8String = [v38 UTF8String];
     }
 
-    v39 = dispatch_queue_create(v31, v30);
+    v39 = dispatch_queue_create(uTF8String, v30);
 
     queue = v29->_queue;
     v29->_queue = v39;
 
-    objc_storeStrong(&v29->_timerManager, a8);
-    objc_storeStrong(&v29->_vehicleLocationProvider, a9);
-    objc_storeStrong(&v29->_wifiManager, a10);
+    objc_storeStrong(&v29->_timerManager, timerManager);
+    objc_storeStrong(&v29->_vehicleLocationProvider, provider);
+    objc_storeStrong(&v29->_wifiManager, wifiManager);
   }
 
-  v36 = v20;
-  v33 = v36;
-  v19 = v45;
+  selfCopy = v20;
+  v33 = selfCopy;
+  v19 = storeCopy;
 LABEL_29:
 
   return v33;
 }
 
-- (void)fetchLookbackWindowStartDateWithLocation:(id)a3 handler:(id)a4
+- (void)fetchLookbackWindowStartDateWithLocation:(id)location handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  locationCopy = location;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v8 = [(RTSensitiveDateClassifier *)self queue];
+    queue = [(RTSensitiveDateClassifier *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __78__RTSensitiveDateClassifier_fetchLookbackWindowStartDateWithLocation_handler___block_invoke;
     block[3] = &unk_2788C67D8;
     block[4] = self;
-    v12 = v7;
-    v11 = v6;
-    dispatch_async(v8, block);
+    v12 = handlerCopy;
+    v11 = locationCopy;
+    dispatch_async(queue, block);
   }
 
   else
@@ -410,11 +410,11 @@ void __78__RTSensitiveDateClassifier_fetchLookbackWindowStartDateWithLocation_ha
   (*(*(a1 + 56) + 16))();
 }
 
-- (id)_getLookbackWindowStartDateWithLocation:(id)a3 error:(id *)a4
+- (id)_getLookbackWindowStartDateWithLocation:(id)location error:(id *)error
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  locationCopy = location;
+  if (locationCopy)
   {
     v48 = 0;
     v7 = [(RTSensitiveDateClassifier *)self _sensitiveLocationsOfInterestWithError:&v48];
@@ -424,17 +424,17 @@ void __78__RTSensitiveDateClassifier_fetchLookbackWindowStartDateWithLocation_ha
 
     if (v8)
     {
-      if (a4)
+      if (error)
       {
         v10 = v8;
-        *a4 = v8;
+        *error = v8;
       }
 
       goto LABEL_5;
     }
 
-    v14 = [(RTSensitiveDateClassifier *)self defaultsManager];
-    v15 = [v14 objectForKey:@"RTDefaultsSensitiveDateClassifierBypassSensitiveLocationCheck"];
+    defaultsManager = [(RTSensitiveDateClassifier *)self defaultsManager];
+    v15 = [defaultsManager objectForKey:@"RTDefaultsSensitiveDateClassifierBypassSensitiveLocationCheck"];
     if (v15)
     {
     }
@@ -445,71 +445,71 @@ void __78__RTSensitiveDateClassifier_fetchLookbackWindowStartDateWithLocation_ha
 
       if ((v16 & 1) == 0)
       {
-        if ([(RTSensitiveDateClassifier *)self _isNearSensitiveLocation:v6])
+        if ([(RTSensitiveDateClassifier *)self _isNearSensitiveLocation:locationCopy])
         {
 LABEL_5:
-          v11 = [v6 timestamp];
+          timestamp = [locationCopy timestamp];
 LABEL_30:
 
           goto LABEL_31;
         }
 
 LABEL_18:
-        v18 = [(RTSensitiveDateClassifier *)self _getLastParkedCarDate];
+        _getLastParkedCarDate = [(RTSensitiveDateClassifier *)self _getLastParkedCarDate];
         v19 = objc_alloc(MEMORY[0x277CCA970]);
-        v20 = [v6 timestamp];
-        v21 = [v20 dateByAddingTimeInterval:-259200.0];
-        v22 = [v6 timestamp];
-        v23 = [v19 initWithStartDate:v21 endDate:v22];
+        timestamp2 = [locationCopy timestamp];
+        v21 = [timestamp2 dateByAddingTimeInterval:-259200.0];
+        timestamp3 = [locationCopy timestamp];
+        v23 = [v19 initWithStartDate:v21 endDate:timestamp3];
 
         v24 = [(RTSensitiveDateClassifier *)self _getMotionLookbackWindowStartDateWithDateInterval:v23];
         v25 = objc_alloc(MEMORY[0x277CCA970]);
-        v26 = [v6 timestamp];
-        v27 = [v25 initWithStartDate:v24 endDate:v26];
+        timestamp4 = [locationCopy timestamp];
+        v27 = [v25 initWithStartDate:v24 endDate:timestamp4];
 
         v47 = v27;
-        v28 = [(RTSensitiveDateClassifier *)self _getLocationLookbackWindowStartDateWithDateInterval:v27 currentLocation:v6];
+        v28 = [(RTSensitiveDateClassifier *)self _getLocationLookbackWindowStartDateWithDateInterval:v27 currentLocation:locationCopy];
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
           v29 = _rt_log_facility_get_os_log(RTLogFacilitySensitiveDate);
           if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
           {
-            v44 = [v24 stringFromDate];
-            v30 = [v28 stringFromDate];
-            [v18 stringFromDate];
+            stringFromDate = [v24 stringFromDate];
+            stringFromDate2 = [v28 stringFromDate];
+            [_getLastParkedCarDate stringFromDate];
             v31 = v45 = v23;
-            v43 = [(NSDateInterval *)self->_latestWorkoutDateInterval startDate];
-            v32 = [v43 stringFromDate];
+            startDate = [(NSDateInterval *)self->_latestWorkoutDateInterval startDate];
+            stringFromDate3 = [startDate stringFromDate];
             *buf = 136316162;
             v50 = "[RTSensitiveDateClassifier _getLookbackWindowStartDateWithLocation:error:]";
             v51 = 2112;
-            v52 = v44;
+            v52 = stringFromDate;
             v53 = 2112;
-            v54 = v30;
+            v54 = stringFromDate2;
             v55 = 2112;
             v56 = v31;
             v57 = 2112;
-            v58 = v32;
-            v33 = v32;
+            v58 = stringFromDate3;
+            v33 = stringFromDate3;
             _os_log_impl(&dword_2304B3000, v29, OS_LOG_TYPE_INFO, "%s, motionLookbackWindowStart, %@, locationLookbackWindowStart, %@, parkedCarDate, %@, latestWorkoutStartDate, %@", buf, 0x34u);
 
             v23 = v45;
           }
         }
 
-        v34 = [v28 earlierDate:v18];
-        if ([v34 isEqualToDate:v18])
+        v34 = [v28 earlierDate:_getLastParkedCarDate];
+        if ([v34 isEqualToDate:_getLastParkedCarDate])
         {
           v46 = v23;
-          v35 = [(RTSensitiveDateClassifier *)self nearSensitiveLocationDetectionDate];
-          v36 = [v18 earlierDate:v35];
-          v37 = [(RTSensitiveDateClassifier *)self nearSensitiveLocationDetectionDate];
-          if ([v36 isEqualToDate:v37])
+          nearSensitiveLocationDetectionDate = [(RTSensitiveDateClassifier *)self nearSensitiveLocationDetectionDate];
+          v36 = [_getLastParkedCarDate earlierDate:nearSensitiveLocationDetectionDate];
+          nearSensitiveLocationDetectionDate2 = [(RTSensitiveDateClassifier *)self nearSensitiveLocationDetectionDate];
+          if ([v36 isEqualToDate:nearSensitiveLocationDetectionDate2])
           {
-            [v28 timeIntervalSinceDate:v18];
+            [v28 timeIntervalSinceDate:_getLastParkedCarDate];
             v39 = v38;
 
-            v40 = v18;
+            v40 = _getLastParkedCarDate;
             v23 = v46;
             if (v39 <= 600.0)
             {
@@ -526,7 +526,7 @@ LABEL_28:
         v40 = v28;
 LABEL_29:
         v41 = v40;
-        v11 = [(RTSensitiveDateClassifier *)self _compareWorkoutStartDateToLookbackWindowStartDate:v41 motionLookbackWindowStartDate:v24];
+        timestamp = [(RTSensitiveDateClassifier *)self _compareWorkoutStartDateToLookbackWindowStartDate:v41 motionLookbackWindowStartDate:v24];
 
         goto LABEL_30;
       }
@@ -551,7 +551,7 @@ LABEL_29:
     v12 = _rt_log_facility_get_os_log(RTLogFacilitySensitiveDate);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = *a4;
+      v13 = *error;
       *buf = 136315394;
       v50 = "[RTSensitiveDateClassifier _getLookbackWindowStartDateWithLocation:error:]";
       v51 = 2112;
@@ -560,18 +560,18 @@ LABEL_29:
     }
   }
 
-  v11 = [MEMORY[0x277CBEAA8] date];
+  timestamp = [MEMORY[0x277CBEAA8] date];
 LABEL_31:
 
-  return v11;
+  return timestamp;
 }
 
-- (void)_fetchInWifiDenseAreaWithHandler:(id)a3
+- (void)_fetchInWifiDenseAreaWithHandler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RTSensitiveDateClassifier *)self defaultsManager];
-  v6 = [v5 objectForKey:@"RTDefaultsSensitiveDateClassifierBypassWifiAccessPointsCheck"];
+  handlerCopy = handler;
+  defaultsManager = [(RTSensitiveDateClassifier *)self defaultsManager];
+  v6 = [defaultsManager objectForKey:@"RTDefaultsSensitiveDateClassifierBypassWifiAccessPointsCheck"];
   if (v6)
   {
 
@@ -587,7 +587,7 @@ LABEL_4:
       }
     }
 
-    v4[2](v4, 1);
+    handlerCopy[2](handlerCopy, 1);
     goto LABEL_9;
   }
 
@@ -599,27 +599,27 @@ LABEL_4:
   }
 
   objc_initWeak(&location, self);
-  v9 = [(RTSensitiveDateClassifier *)self timerManager];
-  v10 = [(RTSensitiveDateClassifier *)self queue];
+  timerManager = [(RTSensitiveDateClassifier *)self timerManager];
+  queue = [(RTSensitiveDateClassifier *)self queue];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __62__RTSensitiveDateClassifier__fetchInWifiDenseAreaWithHandler___block_invoke;
   v19[3] = &unk_2788C7638;
   v19[4] = self;
   objc_copyWeak(&v20, &location);
-  v11 = [v9 timerWithIdentifier:@"RTSensitiveDateClassifierWifiScanTimer" queue:v10 handler:v19];
+  v11 = [timerManager timerWithIdentifier:@"RTSensitiveDateClassifierWifiScanTimer" queue:queue handler:v19];
   [(RTSensitiveDateClassifier *)self setWifiScanTimer:v11];
 
-  [(RTSensitiveDateClassifier *)self setWifiDenseHandler:v4];
-  v12 = [(RTSensitiveDateClassifier *)self accessPoints];
-  [v12 removeAllObjects];
+  [(RTSensitiveDateClassifier *)self setWifiDenseHandler:handlerCopy];
+  accessPoints = [(RTSensitiveDateClassifier *)self accessPoints];
+  [accessPoints removeAllObjects];
 
-  v13 = [(RTSensitiveDateClassifier *)self wifiManager];
+  wifiManager = [(RTSensitiveDateClassifier *)self wifiManager];
   v14 = +[(RTNotification *)RTWiFiManagerNotificationScanResults];
-  [v13 addObserver:self selector:sel_onWifiScanResultsNotification_ name:v14];
+  [wifiManager addObserver:self selector:sel_onWifiScanResultsNotification_ name:v14];
 
-  v15 = [(RTSensitiveDateClassifier *)self wifiManager];
-  [v15 scheduleScanWithChannels:&unk_2845A0B00];
+  wifiManager2 = [(RTSensitiveDateClassifier *)self wifiManager];
+  [wifiManager2 scheduleScanWithChannels:&unk_2845A0B00];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -632,11 +632,11 @@ LABEL_4:
     }
   }
 
-  v17 = [(RTSensitiveDateClassifier *)self wifiScanTimer];
-  [v17 fireAfterDelay:1.0];
+  wifiScanTimer = [(RTSensitiveDateClassifier *)self wifiScanTimer];
+  [wifiScanTimer fireAfterDelay:1.0];
 
-  v18 = [(RTSensitiveDateClassifier *)self wifiScanTimer];
-  [v18 resume];
+  wifiScanTimer2 = [(RTSensitiveDateClassifier *)self wifiScanTimer];
+  [wifiScanTimer2 resume];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&location);
@@ -683,10 +683,10 @@ LABEL_7:
   }
 }
 
-- (void)_fetchCurrentLocationWithHandler:(id)a3
+- (void)_fetchCurrentLocationWithHandler:(id)handler
 {
   v54 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  handlerCopy = handler;
   v46 = 0;
   v47 = &v46;
   v48 = 0x3032000000;
@@ -700,9 +700,9 @@ LABEL_7:
   v44 = __Block_byref_object_dispose__37;
   v45 = 0;
   v4 = dispatch_semaphore_create(0);
-  v33 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v5 = [[RTLocationRequestOptions alloc] initWithDesiredAccuracy:1 horizontalAccuracy:1 maxAge:100.0 yieldLastLocation:100.0 timeout:10.0 fallback:1.0 fallbackHorizontalAccuracy:200.0 fallbackMaxAge:240.0];
-  v6 = [(RTSensitiveDateClassifier *)self locationManager];
+  locationManager = [(RTSensitiveDateClassifier *)self locationManager];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __62__RTSensitiveDateClassifier__fetchCurrentLocationWithHandler___block_invoke;
@@ -711,7 +711,7 @@ LABEL_7:
   v39 = &v40;
   v7 = v4;
   v37 = v7;
-  [v6 fetchCurrentLocationWithOptions:v5 handler:v36];
+  [locationManager fetchCurrentLocationWithOptions:v5 handler:v36];
 
   v8 = v7;
   v9 = [MEMORY[0x277CBEAA8] now];
@@ -723,11 +723,11 @@ LABEL_7:
     v13 = v12;
     v14 = objc_opt_new();
     v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_31];
-    v16 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v17 = [v16 filteredArrayUsingPredicate:v15];
-    v18 = [v17 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v17 = [callStackSymbols filteredArrayUsingPredicate:v15];
+    firstObject = [v17 firstObject];
 
-    [v14 submitToCoreAnalytics:v18 type:1 duration:v13];
+    [v14 submitToCoreAnalytics:firstObject type:1 duration:v13];
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
@@ -764,13 +764,13 @@ LABEL_8:
     objc_storeStrong(v41 + 5, v22);
   }
 
-  v26 = [v47[5] timestamp];
-  v27 = [v26 earlierDate:v34];
-  v28 = [v47[5] timestamp];
-  v29 = [v27 isEqualToDate:v28];
+  timestamp = [v47[5] timestamp];
+  v27 = [timestamp earlierDate:v34];
+  timestamp2 = [v47[5] timestamp];
+  v29 = [v27 isEqualToDate:timestamp2];
 
-  v30 = [(RTSensitiveDateClassifier *)self metrics];
-  v31 = v30;
+  metrics = [(RTSensitiveDateClassifier *)self metrics];
+  v31 = metrics;
   if (v29)
   {
     v32 = 3;
@@ -781,9 +781,9 @@ LABEL_8:
     v32 = 4;
   }
 
-  [v30 addCurrentLocation:v47[5] fromSource:v32];
+  [metrics addCurrentLocation:v47[5] fromSource:v32];
 
-  v3[2](v3, v47[5], v41[5]);
+  handlerCopy[2](handlerCopy, v47[5], v41[5]);
   _Block_object_dispose(&v40, 8);
 
   _Block_object_dispose(&v46, 8);
@@ -809,8 +809,8 @@ void __62__RTSensitiveDateClassifier__fetchCurrentLocationWithHandler___block_in
 - (id)_getLastParkedCarDate
 {
   v53[1] = *MEMORY[0x277D85DE8];
-  v3 = [(RTSensitiveDateClassifier *)self defaultsManager];
-  v4 = [v3 objectForKey:@"RTDefaultsSensitiveDateClassifierBypassParkedCarEventCheck"];
+  defaultsManager = [(RTSensitiveDateClassifier *)self defaultsManager];
+  v4 = [defaultsManager objectForKey:@"RTDefaultsSensitiveDateClassifierBypassParkedCarEventCheck"];
   if (v4)
   {
 
@@ -826,7 +826,7 @@ LABEL_4:
       }
     }
 
-    v7 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     goto LABEL_9;
   }
 
@@ -844,7 +844,7 @@ LABEL_4:
   v50 = __Block_byref_object_copy__37;
   v51 = __Block_byref_object_dispose__37;
   v52 = 0;
-  v10 = [(RTSensitiveDateClassifier *)self vehicleLocationProvider];
+  vehicleLocationProvider = [(RTSensitiveDateClassifier *)self vehicleLocationProvider];
   v39 = MEMORY[0x277D85DD0];
   v40 = 3221225472;
   v41 = __50__RTSensitiveDateClassifier__getLastParkedCarDate__block_invoke;
@@ -852,7 +852,7 @@ LABEL_4:
   p_buf = &buf;
   v11 = v9;
   v43 = v11;
-  [v10 fetchLastVehicleEventsWithHandler:&v39];
+  [vehicleLocationProvider fetchLastVehicleEventsWithHandler:&v39];
 
   v12 = v11;
   v13 = [MEMORY[0x277CBEAA8] now];
@@ -864,11 +864,11 @@ LABEL_4:
     v17 = v16;
     v18 = objc_opt_new();
     v19 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_31];
-    v20 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v21 = [v20 filteredArrayUsingPredicate:v19];
-    v22 = [v21 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v21 = [callStackSymbols filteredArrayUsingPredicate:v19];
+    firstObject = [v21 firstObject];
 
-    [v18 submitToCoreAnalytics:v22 type:1 duration:v17];
+    [v18 submitToCoreAnalytics:firstObject type:1 duration:v17];
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
     {
@@ -929,11 +929,11 @@ LABEL_19:
       }
     }
 
-    v35 = [(RTSensitiveDateClassifier *)self metrics];
-    v36 = [*(*(&buf + 1) + 40) date];
-    [v35 processSignal:4 date:v36];
+    metrics = [(RTSensitiveDateClassifier *)self metrics];
+    date = [*(*(&buf + 1) + 40) date];
+    [metrics processSignal:4 date:date];
 
-    v37 = [*(*(&buf + 1) + 40) date];
+    date2 = [*(*(&buf + 1) + 40) date];
   }
 
   else
@@ -949,15 +949,15 @@ LABEL_19:
       }
     }
 
-    v37 = [MEMORY[0x277CBEAA8] distantPast];
+    date2 = [MEMORY[0x277CBEAA8] distantPast];
   }
 
-  v7 = v37;
+  distantPast = date2;
 
   _Block_object_dispose(&buf, 8);
 LABEL_9:
 
-  return v7;
+  return distantPast;
 }
 
 intptr_t __50__RTSensitiveDateClassifier__getLastParkedCarDate__block_invoke(uint64_t a1, void *a2)
@@ -972,38 +972,38 @@ intptr_t __50__RTSensitiveDateClassifier__getLastParkedCarDate__block_invoke(uin
   return dispatch_semaphore_signal(v6);
 }
 
-- (id)_getLocationLookbackWindowStartDateWithDateInterval:(id)a3 currentLocation:(id)a4
+- (id)_getLocationLookbackWindowStartDateWithDateInterval:(id)interval currentLocation:(id)location
 {
   v57 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v43 = a4;
-  v42 = v6;
-  v7 = [v6 endDate];
-  v8 = [v6 startDate];
+  intervalCopy = interval;
+  locationCopy = location;
+  v42 = intervalCopy;
+  endDate = [intervalCopy endDate];
+  startDate = [intervalCopy startDate];
   v49 = 0;
   v50 = &v49;
   v51 = 0x3032000000;
   v52 = __Block_byref_object_copy__37;
   v53 = __Block_byref_object_dispose__37;
-  v41 = v7;
+  v41 = endDate;
   v54 = v41;
   v45 = 0;
   v46 = &v45;
   v47 = 0x2020000000;
   v48 = 0;
   v9 = objc_alloc(MEMORY[0x277CE41F8]);
-  [v43 coordinate];
+  [locationCopy coordinate];
   v11 = v10;
   v13 = v12;
-  [v43 altitude];
+  [locationCopy altitude];
   v15 = v14;
-  [v43 verticalAccuracy];
+  [locationCopy verticalAccuracy];
   v17 = v16;
-  v18 = [v43 timestamp];
-  v19 = [v9 initWithCoordinate:v18 altitude:v11 horizontalAccuracy:v13 verticalAccuracy:v15 timestamp:{250000.0, v17}];
+  timestamp = [locationCopy timestamp];
+  v19 = [v9 initWithCoordinate:timestamp altitude:v11 horizontalAccuracy:v13 verticalAccuracy:v15 timestamp:{250000.0, v17}];
 
-  v20 = [(RTSensitiveDateClassifier *)self defaultsManager];
-  v21 = [v20 objectForKey:@"RTDefaultsSensitiveDateClassifierBypassCurrentLocationCheck"];
+  defaultsManager = [(RTSensitiveDateClassifier *)self defaultsManager];
+  v21 = [defaultsManager objectForKey:@"RTDefaultsSensitiveDateClassifierBypassCurrentLocationCheck"];
   if (v21)
   {
   }
@@ -1031,8 +1031,8 @@ intptr_t __50__RTSensitiveDateClassifier__getLastParkedCarDate__block_invoke(uin
 
   v19 = 0;
 LABEL_9:
-  v24 = [(RTSensitiveDateClassifier *)self defaultsManager];
-  v25 = [v24 objectForKey:@"RTDefaultsSensitiveDateClassifierBypassSensitiveLocationCheck"];
+  defaultsManager2 = [(RTSensitiveDateClassifier *)self defaultsManager];
+  v25 = [defaultsManager2 objectForKey:@"RTDefaultsSensitiveDateClassifierBypassSensitiveLocationCheck"];
   if (v25)
   {
 
@@ -1063,7 +1063,7 @@ LABEL_12:
   v28 = 0;
   for (i = v41; ; i = v28)
   {
-    [i timeIntervalSinceDate:v8];
+    [i timeIntervalSinceDate:startDate];
     if (v32 <= 0.0 || (v46[3] & 1) != 0)
     {
       break;
@@ -1071,11 +1071,11 @@ LABEL_12:
 
     v33 = objc_autoreleasePoolPush();
     v34 = [i dateByAddingTimeInterval:-3600.0];
-    v35 = [v34 laterDate:v8];
+    v35 = [v34 laterDate:startDate];
 
     v36 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v35 endDate:i];
-    v37 = [(RTSensitiveDateClassifier *)self defaultsManager];
-    v38 = [v37 objectForKey:@"RTDefaultsSensitiveDateClassifierBypassCurrentLocationCheck"];
+    defaultsManager3 = [(RTSensitiveDateClassifier *)self defaultsManager];
+    v38 = [defaultsManager3 objectForKey:@"RTDefaultsSensitiveDateClassifierBypassCurrentLocationCheck"];
 
     if (v38)
     {
@@ -1125,15 +1125,15 @@ void __97__RTSensitiveDateClassifier__getLocationLookbackWindowStartDateWithDate
   }
 }
 
-- (id)_getMotionLookbackWindowStartDateWithDateInterval:(id)a3
+- (id)_getMotionLookbackWindowStartDateWithDateInterval:(id)interval
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 endDate];
-  v6 = [v4 startDate];
-  v21 = v5;
-  v7 = [(RTSensitiveDateClassifier *)self defaultsManager];
-  v8 = [v7 objectForKey:@"RTDefaultsSensitiveDateClassifierBypassMotionCheck"];
+  intervalCopy = interval;
+  endDate = [intervalCopy endDate];
+  startDate = [intervalCopy startDate];
+  v21 = endDate;
+  defaultsManager = [(RTSensitiveDateClassifier *)self defaultsManager];
+  v8 = [defaultsManager objectForKey:@"RTDefaultsSensitiveDateClassifierBypassMotionCheck"];
   if (v8)
   {
   }
@@ -1164,7 +1164,7 @@ void __97__RTSensitiveDateClassifier__getLocationLookbackWindowStartDateWithDate
       v30 = 0;
       while (1)
       {
-        [v12 timeIntervalSinceDate:v6];
+        [v12 timeIntervalSinceDate:startDate];
         if (v15 <= 0.0 || (v28[3] & 1) != 0)
         {
           break;
@@ -1172,7 +1172,7 @@ void __97__RTSensitiveDateClassifier__getLocationLookbackWindowStartDateWithDate
 
         v16 = objc_autoreleasePoolPush();
         v17 = [v12 dateByAddingTimeInterval:-3600.0];
-        v18 = [v17 laterDate:v6];
+        v18 = [v17 laterDate:startDate];
 
         v19 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v18 endDate:v12];
         v20 = [(RTSensitiveDateClassifier *)self _motionsForDateInterval:v19];
@@ -1184,7 +1184,7 @@ void __97__RTSensitiveDateClassifier__getLocationLookbackWindowStartDateWithDate
         p_buf = &buf;
         v25 = &v27;
         v26 = v31;
-        v23 = v6;
+        v23 = startDate;
         [v20 enumerateObjectsWithOptions:2 usingBlock:v22];
         v14 = v18;
 
@@ -1212,7 +1212,7 @@ void __97__RTSensitiveDateClassifier__getLocationLookbackWindowStartDateWithDate
     }
   }
 
-  v11 = v6;
+  v11 = startDate;
   v12 = v21;
 LABEL_9:
 
@@ -1269,21 +1269,21 @@ void __79__RTSensitiveDateClassifier__getMotionLookbackWindowStartDateWithDateIn
 
 - (void)_processRecentWorkoutSignal
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [v3 dateByAddingTimeInterval:-3600.0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = [date dateByAddingTimeInterval:-3600.0];
 
-  v5 = [(RTSensitiveDateClassifier *)self healthKitManager];
+  healthKitManager = [(RTSensitiveDateClassifier *)self healthKitManager];
   v7 = 0;
-  v6 = [v5 getLatestWorkoutDateIntervalWithStartDate:v4 error:&v7];
+  v6 = [healthKitManager getLatestWorkoutDateIntervalWithStartDate:v4 error:&v7];
   [(RTSensitiveDateClassifier *)self setLatestWorkoutDateInterval:v6];
 }
 
-- (BOOL)_isNearSensitiveLocation:(id)a3
+- (BOOL)_isNearSensitiveLocation:(id)location
 {
   v56 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RTSensitiveDateClassifier *)self defaultsManager];
-  v6 = [v5 objectForKey:@"RTDefaultsSensitiveDateClassifierBypassSensitiveLocationCheck"];
+  locationCopy = location;
+  defaultsManager = [(RTSensitiveDateClassifier *)self defaultsManager];
+  v6 = [defaultsManager objectForKey:@"RTDefaultsSensitiveDateClassifierBypassSensitiveLocationCheck"];
   if (v6)
   {
 
@@ -1294,8 +1294,8 @@ void __79__RTSensitiveDateClassifier__getMotionLookbackWindowStartDateWithDateIn
 
   if ((v7 & 1) == 0)
   {
-    v11 = [(RTSensitiveDateClassifier *)self defaultsManager];
-    v12 = [v11 objectForKey:@"RTDefaultsSensitiveDateClassifierBypassSignalEnvironmentCheck"];
+    defaultsManager2 = [(RTSensitiveDateClassifier *)self defaultsManager];
+    v12 = [defaultsManager2 objectForKey:@"RTDefaultsSensitiveDateClassifierBypassSignalEnvironmentCheck"];
     if (v12)
     {
     }
@@ -1306,7 +1306,7 @@ void __79__RTSensitiveDateClassifier__getMotionLookbackWindowStartDateWithDateIn
 
       if ((v13 & 1) == 0)
       {
-        if ([v4 signalEnvironmentType] == 3 || objc_msgSend(v4, "signalEnvironmentType") == 4)
+        if ([locationCopy signalEnvironmentType] == 3 || objc_msgSend(locationCopy, "signalEnvironmentType") == 4)
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
@@ -1316,22 +1316,22 @@ void __79__RTSensitiveDateClassifier__getMotionLookbackWindowStartDateWithDateIn
               *buf = 136315395;
               *&buf[4] = "[RTSensitiveDateClassifier _isNearSensitiveLocation:]";
               *&buf[12] = 2117;
-              *&buf[14] = v4;
+              *&buf[14] = locationCopy;
               _os_log_impl(&dword_2304B3000, v19, OS_LOG_TYPE_INFO, "%s, sensitive signal environment detected for location, %{sensitive}@", buf, 0x16u);
             }
           }
 
-          v8 = [(RTSensitiveDateClassifier *)self metrics];
-          v20 = [v4 timestamp];
-          [v8 processSignal:3 date:v20];
+          metrics = [(RTSensitiveDateClassifier *)self metrics];
+          timestamp = [locationCopy timestamp];
+          [metrics processSignal:3 date:timestamp];
 
           v10 = 1;
           goto LABEL_9;
         }
 
 LABEL_17:
-        v15 = [(RTSensitiveDateClassifier *)self defaultsManager];
-        v16 = [v15 objectForKey:@"RTDefaultsSensitiveDateClassifierBypassSensitiveLOICheck"];
+        defaultsManager3 = [(RTSensitiveDateClassifier *)self defaultsManager];
+        v16 = [defaultsManager3 objectForKey:@"RTDefaultsSensitiveDateClassifierBypassSensitiveLOICheck"];
         if (v16)
         {
         }
@@ -1342,7 +1342,7 @@ LABEL_17:
 
           if ((v17 & 1) == 0)
           {
-            v21 = [objc_alloc(MEMORY[0x277D01160]) initWithCLLocation:v4];
+            v21 = [objc_alloc(MEMORY[0x277D01160]) initWithCLLocation:locationCopy];
             v42 = 0;
             v43 = &v42;
             v44 = 0x2020000000;
@@ -1364,18 +1364,18 @@ LABEL_17:
             v27 = 3221225472;
             v28 = __54__RTSensitiveDateClassifier__isNearSensitiveLocation___block_invoke;
             v29 = &unk_2788C8408;
-            v30 = self;
-            v8 = v21;
-            v31 = v8;
+            selfCopy = self;
+            metrics = v21;
+            v31 = metrics;
             v33 = &v36;
             v34 = &v42;
             v35 = buf;
-            v23 = v4;
+            v23 = locationCopy;
             v32 = v23;
             [(NSArray *)sensitiveLocations enumerateObjectsUsingBlock:&v26];
             if (*(*&buf[8] + 40))
             {
-              [(RTSensitiveDateClassifier *)self setNearSensitiveLocationDetectionDate:v26, v27, v28, v29, v30, v31];
+              [(RTSensitiveDateClassifier *)self setNearSensitiveLocationDetectionDate:v26, v27, v28, v29, selfCopy, v31];
             }
 
             if (v37[5])
@@ -1414,8 +1414,8 @@ LABEL_17:
 
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
-          v8 = _rt_log_facility_get_os_log(RTLogFacilitySensitiveDate);
-          if (!os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+          metrics = _rt_log_facility_get_os_log(RTLogFacilitySensitiveDate);
+          if (!os_log_type_enabled(metrics, OS_LOG_TYPE_INFO))
           {
             goto LABEL_8;
           }
@@ -1452,14 +1452,14 @@ LABEL_4:
     goto LABEL_23;
   }
 
-  v8 = _rt_log_facility_get_os_log(RTLogFacilitySensitiveDate);
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  metrics = _rt_log_facility_get_os_log(RTLogFacilitySensitiveDate);
+  if (os_log_type_enabled(metrics, OS_LOG_TYPE_INFO))
   {
     *buf = 136315138;
     *&buf[4] = "[RTSensitiveDateClassifier _isNearSensitiveLocation:]";
     v9 = "%s, bypassing sensitive location check for LOI and signal environment, via user defaults or feature flag";
 LABEL_7:
-    _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, v9, buf, 0xCu);
+    _os_log_impl(&dword_2304B3000, metrics, OS_LOG_TYPE_INFO, v9, buf, 0xCu);
   }
 
 LABEL_8:
@@ -1520,10 +1520,10 @@ void __54__RTSensitiveDateClassifier__isNearSensitiveLocation___block_invoke(uin
   }
 }
 
-- (id)_locationsForOptions:(id)a3
+- (id)_locationsForOptions:(id)options
 {
   v62[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v47 = 0;
   v48 = &v47;
   v49 = 0x3032000000;
@@ -1546,7 +1546,7 @@ void __54__RTSensitiveDateClassifier__isNearSensitiveLocation___block_invoke(uin
   v40 = &v41;
   v7 = v5;
   v38 = v7;
-  [(RTLocationManager *)locationManager fetchStoredLocationsWithOptions:v4 handler:v37];
+  [(RTLocationManager *)locationManager fetchStoredLocationsWithOptions:optionsCopy handler:v37];
   v8 = v7;
   v9 = [MEMORY[0x277CBEAA8] now];
   v10 = dispatch_time(0, 3600000000000);
@@ -1557,11 +1557,11 @@ void __54__RTSensitiveDateClassifier__isNearSensitiveLocation___block_invoke(uin
     v13 = v12;
     v14 = objc_opt_new();
     v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_31];
-    v16 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v17 = [v16 filteredArrayUsingPredicate:v15];
-    v18 = [v17 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v17 = [callStackSymbols filteredArrayUsingPredicate:v15];
+    firstObject = [v17 firstObject];
 
-    [v14 submitToCoreAnalytics:v18 type:1 duration:v13];
+    [v14 submitToCoreAnalytics:firstObject type:1 duration:v13];
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
@@ -1604,21 +1604,21 @@ LABEL_8:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
       v36 = [v42[5] count];
-      v29 = [v4 dateInterval];
-      v30 = [v29 startDate];
-      v31 = [v30 stringFromDate];
-      v32 = [v4 dateInterval];
-      v33 = [v32 endDate];
-      v34 = [v33 stringFromDate];
+      dateInterval = [optionsCopy dateInterval];
+      startDate = [dateInterval startDate];
+      stringFromDate = [startDate stringFromDate];
+      dateInterval2 = [optionsCopy dateInterval];
+      endDate = [dateInterval2 endDate];
+      stringFromDate2 = [endDate stringFromDate];
       v35 = v48[5];
       *buf = 136316162;
       *&buf[4] = "[RTSensitiveDateClassifier _locationsForOptions:]";
       v54 = 2048;
       v55 = v36;
       v56 = 2112;
-      v57 = v31;
+      v57 = stringFromDate;
       v58 = 2112;
-      v59 = v34;
+      v59 = stringFromDate2;
       v60 = 2112;
       v61 = v35;
       _os_log_debug_impl(&dword_2304B3000, v26, OS_LOG_TYPE_DEBUG, "%s, Fetched %lu locations, batch from, %@, to, %@, error, %@", buf, 0x34u);
@@ -1654,10 +1654,10 @@ void __50__RTSensitiveDateClassifier__locationsForOptions___block_invoke(uint64_
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_motionsForDateInterval:(id)a3
+- (id)_motionsForDateInterval:(id)interval
 {
   v62[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  intervalCopy = interval;
   v47 = 0;
   v48 = &v47;
   v49 = 0x3032000000;
@@ -1672,8 +1672,8 @@ void __50__RTSensitiveDateClassifier__locationsForOptions___block_invoke(uint64_
   v46 = objc_opt_new();
   v5 = dispatch_semaphore_create(0);
   motionActivityManager = self->_motionActivityManager;
-  v7 = [v4 startDate];
-  v8 = [v4 endDate];
+  startDate = [intervalCopy startDate];
+  endDate = [intervalCopy endDate];
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __53__RTSensitiveDateClassifier__motionsForDateInterval___block_invoke;
@@ -1682,7 +1682,7 @@ void __50__RTSensitiveDateClassifier__locationsForOptions___block_invoke(uint64_
   v40 = &v47;
   v9 = v5;
   v38 = v9;
-  [(RTMotionActivityManager *)motionActivityManager fetchMotionActivitiesFromStartDate:v7 endDate:v8 handler:v37];
+  [(RTMotionActivityManager *)motionActivityManager fetchMotionActivitiesFromStartDate:startDate endDate:endDate handler:v37];
 
   v10 = v9;
   v11 = [MEMORY[0x277CBEAA8] now];
@@ -1694,11 +1694,11 @@ void __50__RTSensitiveDateClassifier__locationsForOptions___block_invoke(uint64_
     v15 = v14;
     v16 = objc_opt_new();
     v17 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_31];
-    v18 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v19 = [v18 filteredArrayUsingPredicate:v17];
-    v20 = [v19 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v19 = [callStackSymbols filteredArrayUsingPredicate:v17];
+    firstObject = [v19 firstObject];
 
-    [v16 submitToCoreAnalytics:v20 type:1 duration:v15];
+    [v16 submitToCoreAnalytics:firstObject type:1 duration:v15];
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
     {
@@ -1741,19 +1741,19 @@ LABEL_8:
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
     {
       v31 = [v42[5] count];
-      v32 = [v4 startDate];
-      v33 = [v32 stringFromDate];
-      v34 = [v4 endDate];
-      v35 = [v34 stringFromDate];
+      startDate2 = [intervalCopy startDate];
+      stringFromDate = [startDate2 stringFromDate];
+      endDate2 = [intervalCopy endDate];
+      stringFromDate2 = [endDate2 stringFromDate];
       v36 = v48[5];
       *buf = 136316162;
       *&buf[4] = "[RTSensitiveDateClassifier _motionsForDateInterval:]";
       v54 = 2048;
       v55 = v31;
       v56 = 2112;
-      v57 = v33;
+      v57 = stringFromDate;
       v58 = 2112;
-      v59 = v35;
+      v59 = stringFromDate2;
       v60 = 2112;
       v61 = v36;
       _os_log_debug_impl(&dword_2304B3000, v28, OS_LOG_TYPE_DEBUG, "%s, Fetched %lu motion activities, batch from, %@, to, %@, error, %@", buf, 0x34u);
@@ -1793,10 +1793,10 @@ void __53__RTSensitiveDateClassifier__motionsForDateInterval___block_invoke(uint
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_sensitiveLocationsOfInterestWithError:(id *)a3
+- (id)_sensitiveLocationsOfInterestWithError:(id *)error
 {
   v62 = *MEMORY[0x277D85DE8];
-  v33 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
@@ -1831,7 +1831,7 @@ LABEL_3:
       v48 = 0;
       v6 = dispatch_semaphore_create(0);
       learnedLocationStore = self->_learnedLocationStore;
-      v8 = [v5 unsignedIntegerValue];
+      unsignedIntegerValue = [v5 unsignedIntegerValue];
       v39[0] = MEMORY[0x277D85DD0];
       v39[1] = 3221225472;
       v39[2] = __68__RTSensitiveDateClassifier__sensitiveLocationsOfInterestWithError___block_invoke;
@@ -1841,7 +1841,7 @@ LABEL_3:
       v42 = &v43;
       v9 = v6;
       v40 = v9;
-      [(RTLearnedLocationStore *)learnedLocationStore fetchLocationsOfInterestWithPlaceType:v8 handler:v39];
+      [(RTLearnedLocationStore *)learnedLocationStore fetchLocationsOfInterestWithPlaceType:unsignedIntegerValue handler:v39];
       v10 = v9;
       v11 = [MEMORY[0x277CBEAA8] now];
       v12 = dispatch_time(0, 3600000000000);
@@ -1855,11 +1855,11 @@ LABEL_3:
       v15 = v14;
       v16 = objc_opt_new();
       v17 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_31];
-      v18 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v19 = [v18 filteredArrayUsingPredicate:v17];
-      v20 = [v19 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v19 = [callStackSymbols filteredArrayUsingPredicate:v17];
+      firstObject = [v19 firstObject];
 
-      [v16 submitToCoreAnalytics:v20 type:1 duration:v15];
+      [v16 submitToCoreAnalytics:firstObject type:1 duration:v15];
       v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
       {
@@ -1892,16 +1892,16 @@ LABEL_13:
       v28 = v50[5];
       if (v28)
       {
-        if (a3)
+        if (error)
         {
           v29 = v28;
-          *a3 = v28;
+          *error = v28;
         }
       }
 
       else if (v44[5])
       {
-        [v33 addObjectsFromArray:?];
+        [array addObjectsFromArray:?];
       }
 
       _Block_object_dispose(&v43, 8);
@@ -1910,7 +1910,7 @@ LABEL_13:
       if (v28)
       {
         v31 = 0;
-        v30 = v33;
+        v30 = array;
         goto LABEL_25;
       }
 
@@ -1933,8 +1933,8 @@ LABEL_12:
   }
 
 LABEL_23:
-  v30 = v33;
-  v31 = v33;
+  v30 = array;
+  v31 = array;
 LABEL_25:
 
   return v31;
@@ -1975,19 +1975,19 @@ void __68__RTSensitiveDateClassifier__sensitiveLocationsOfInterestWithError___bl
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (BOOL)_sensitiveMotionSignalDetectedForMotion:(id)a3 startDate:(id)a4 endDate:(id)a5
+- (BOOL)_sensitiveMotionSignalDetectedForMotion:(id)motion startDate:(id)date endDate:(id)endDate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 type] != 4)
+  motionCopy = motion;
+  dateCopy = date;
+  endDateCopy = endDate;
+  if ([motionCopy type] != 4)
   {
     goto LABEL_6;
   }
 
-  [v9 timeIntervalSinceDate:v8];
+  [endDateCopy timeIntervalSinceDate:dateCopy];
   v11 = v10;
-  if (v10 >= 180.0 && [v7 confidence] == 3)
+  if (v10 >= 180.0 && [motionCopy confidence] == 3)
   {
 LABEL_12:
     v12 = 1;
@@ -1996,8 +1996,8 @@ LABEL_12:
 
   if (v11 >= 240.0)
   {
-    v13 = [v7 confidence];
-    if (v11 < 300.0 && v13 != 2)
+    confidence = [motionCopy confidence];
+    if (v11 < 300.0 && confidence != 2)
     {
       goto LABEL_6;
     }
@@ -2017,27 +2017,27 @@ LABEL_13:
   return v12;
 }
 
-- (id)_compareWorkoutStartDateToLookbackWindowStartDate:(id)a3 motionLookbackWindowStartDate:(id)a4
+- (id)_compareWorkoutStartDateToLookbackWindowStartDate:(id)date motionLookbackWindowStartDate:(id)startDate
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTSensitiveDateClassifier *)self latestWorkoutDateInterval];
-  v9 = [v8 startDate];
+  dateCopy = date;
+  startDateCopy = startDate;
+  latestWorkoutDateInterval = [(RTSensitiveDateClassifier *)self latestWorkoutDateInterval];
+  startDate = [latestWorkoutDateInterval startDate];
 
-  v10 = [(RTSensitiveDateClassifier *)self latestWorkoutDateInterval];
-  v11 = [v10 endDate];
+  latestWorkoutDateInterval2 = [(RTSensitiveDateClassifier *)self latestWorkoutDateInterval];
+  endDate = [latestWorkoutDateInterval2 endDate];
 
-  v12 = [(RTSensitiveDateClassifier *)self nearSensitiveLocationDetectionDate];
-  if (v12)
+  nearSensitiveLocationDetectionDate = [(RTSensitiveDateClassifier *)self nearSensitiveLocationDetectionDate];
+  if (nearSensitiveLocationDetectionDate)
   {
-    v13 = [(RTSensitiveDateClassifier *)self nearSensitiveLocationDetectionDate];
-    v14 = [v13 laterDate:v7];
+    nearSensitiveLocationDetectionDate2 = [(RTSensitiveDateClassifier *)self nearSensitiveLocationDetectionDate];
+    v14 = [nearSensitiveLocationDetectionDate2 laterDate:startDateCopy];
   }
 
   else
   {
-    v14 = v7;
+    v14 = startDateCopy;
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -2045,15 +2045,15 @@ LABEL_13:
     v15 = _rt_log_facility_get_os_log(RTLogFacilitySensitiveDate);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      [v9 stringFromDate];
-      v16 = v34 = v7;
-      [v11 stringFromDate];
-      v17 = v33 = v6;
-      v18 = [(RTSensitiveDateClassifier *)self nearSensitiveLocationDetectionDate];
-      v19 = [v18 stringFromDate];
+      [startDate stringFromDate];
+      v16 = v34 = startDateCopy;
+      [endDate stringFromDate];
+      v17 = v33 = dateCopy;
+      nearSensitiveLocationDetectionDate3 = [(RTSensitiveDateClassifier *)self nearSensitiveLocationDetectionDate];
+      stringFromDate = [nearSensitiveLocationDetectionDate3 stringFromDate];
       [v34 stringFromDate];
-      v20 = v32 = v11;
-      v21 = [v14 stringFromDate];
+      v20 = v32 = endDate;
+      stringFromDate2 = [v14 stringFromDate];
       *buf = 136316418;
       v36 = "[RTSensitiveDateClassifier _compareWorkoutStartDateToLookbackWindowStartDate:motionLookbackWindowStartDate:]";
       v37 = 2112;
@@ -2061,43 +2061,43 @@ LABEL_13:
       v39 = 2112;
       v40 = v17;
       v41 = 2112;
-      v42 = v19;
+      v42 = stringFromDate;
       v43 = 2112;
       v44 = v20;
       v45 = 2112;
-      v46 = v21;
+      v46 = stringFromDate2;
       _os_log_impl(&dword_2304B3000, v15, OS_LOG_TYPE_INFO, "%s, workoutStartDate, %@, workoutEndDate, %@, nearSensitiveLocationDetectionDate, %@, motionLookbackWindowStartDate, %@, gatingSignalStartDate, %@", buf, 0x3Eu);
 
-      v11 = v32;
-      v6 = v33;
+      endDate = v32;
+      dateCopy = v33;
 
-      v7 = v34;
+      startDateCopy = v34;
     }
   }
 
-  v22 = [(RTSensitiveDateClassifier *)self latestWorkoutDateInterval];
-  if (!v22)
+  latestWorkoutDateInterval3 = [(RTSensitiveDateClassifier *)self latestWorkoutDateInterval];
+  if (!latestWorkoutDateInterval3)
   {
     goto LABEL_23;
   }
 
-  v23 = v22;
-  v24 = [v6 compare:v9];
+  v23 = latestWorkoutDateInterval3;
+  v24 = [dateCopy compare:startDate];
 
   if (v24 == -1)
   {
     goto LABEL_23;
   }
 
-  if (!v11 || [v11 compare:v14] != -1)
+  if (!endDate || [endDate compare:v14] != -1)
   {
-    v25 = [v9 laterDate:v14];
+    date = [startDate laterDate:v14];
     goto LABEL_24;
   }
 
-  v26 = [(RTSensitiveDateClassifier *)self inWifiDenseArea];
+  inWifiDenseArea = [(RTSensitiveDateClassifier *)self inWifiDenseArea];
   v27 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
-  if (!v26)
+  if (!inWifiDenseArea)
   {
     if (v27)
     {
@@ -2111,7 +2111,7 @@ LABEL_13:
     }
 
 LABEL_23:
-    v25 = v6;
+    date = dateCopy;
     goto LABEL_24;
   }
 
@@ -2126,9 +2126,9 @@ LABEL_23:
     }
   }
 
-  v25 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
 LABEL_24:
-  v30 = v25;
+  v30 = date;
 
   return v30;
 }
@@ -2136,23 +2136,23 @@ LABEL_24:
 - (BOOL)_accessPointsConditionsMet
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [(RTSensitiveDateClassifier *)self accessPoints];
-  if (v3 && (v4 = v3, -[RTSensitiveDateClassifier accessPoints](self, "accessPoints"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, v6))
+  accessPoints = [(RTSensitiveDateClassifier *)self accessPoints];
+  if (accessPoints && (v4 = accessPoints, -[RTSensitiveDateClassifier accessPoints](self, "accessPoints"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, v6))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v7 = _rt_log_facility_get_os_log(RTLogFacilitySensitiveDate);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        v8 = [(RTSensitiveDateClassifier *)self accessPoints];
-        v9 = [v8 count];
-        v10 = [(RTSensitiveDateClassifier *)self accessPoints];
+        accessPoints2 = [(RTSensitiveDateClassifier *)self accessPoints];
+        v9 = [accessPoints2 count];
+        accessPoints3 = [(RTSensitiveDateClassifier *)self accessPoints];
         *buf = 136315650;
         v27 = "[RTSensitiveDateClassifier _accessPointsConditionsMet]";
         v28 = 2048;
         v29 = v9;
         v30 = 2112;
-        v31 = v10;
+        v31 = accessPoints3;
         _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "%s, wifi access points count, %lu, accessPoints, %@", buf, 0x20u);
       }
     }
@@ -2161,8 +2161,8 @@ LABEL_24:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v11 = [(RTSensitiveDateClassifier *)self accessPoints];
-    v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    accessPoints4 = [(RTSensitiveDateClassifier *)self accessPoints];
+    v12 = [accessPoints4 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v12)
     {
       v13 = v12;
@@ -2174,7 +2174,7 @@ LABEL_24:
         {
           if (*v22 != v15)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(accessPoints4);
           }
 
           if ([*(*(&v21 + 1) + 8 * i) rssi] > -96)
@@ -2183,7 +2183,7 @@ LABEL_24:
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v13 = [accessPoints4 countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v13);
@@ -2194,8 +2194,8 @@ LABEL_24:
       v14 = 0;
     }
 
-    v19 = [(RTSensitiveDateClassifier *)self metrics];
-    [v19 updateWifiAccessPointCount:v14];
+    metrics = [(RTSensitiveDateClassifier *)self metrics];
+    [metrics updateWifiAccessPointCount:v14];
 
     LOBYTE(v17) = v14 > 7;
   }
@@ -2222,13 +2222,13 @@ LABEL_24:
 
 - (void)_processWifiScanResults
 {
-  v3 = [(RTSensitiveDateClassifier *)self wifiDenseHandler];
+  wifiDenseHandler = [(RTSensitiveDateClassifier *)self wifiDenseHandler];
 
-  if (v3)
+  if (wifiDenseHandler)
   {
     [(RTSensitiveDateClassifier *)self _stopMonitoringWifiScans];
-    v4 = [(RTSensitiveDateClassifier *)self wifiDenseHandler];
-    (v4)[2](v4, [(RTSensitiveDateClassifier *)self _accessPointsConditionsMet]);
+    wifiDenseHandler2 = [(RTSensitiveDateClassifier *)self wifiDenseHandler];
+    (wifiDenseHandler2)[2](wifiDenseHandler2, [(RTSensitiveDateClassifier *)self _accessPointsConditionsMet]);
 
     [(RTSensitiveDateClassifier *)self setWifiDenseHandler:0];
   }
@@ -2237,12 +2237,12 @@ LABEL_24:
 - (void)_stopMonitoringWifiScans
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(RTSensitiveDateClassifier *)self wifiManager];
-  [v3 cancelScan];
+  wifiManager = [(RTSensitiveDateClassifier *)self wifiManager];
+  [wifiManager cancelScan];
 
-  v4 = [(RTSensitiveDateClassifier *)self wifiManager];
+  wifiManager2 = [(RTSensitiveDateClassifier *)self wifiManager];
   v5 = +[(RTNotification *)RTWiFiManagerNotificationScanResults];
-  [v4 removeObserver:self fromNotification:v5];
+  [wifiManager2 removeObserver:self fromNotification:v5];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -2255,24 +2255,24 @@ LABEL_24:
     }
   }
 
-  v7 = [(RTSensitiveDateClassifier *)self wifiScanTimer];
-  [v7 invalidate];
+  wifiScanTimer = [(RTSensitiveDateClassifier *)self wifiScanTimer];
+  [wifiScanTimer invalidate];
 
   [(RTSensitiveDateClassifier *)self setWifiScanTimer:0];
 }
 
-- (void)onWifiScanResultsNotification:(id)a3
+- (void)onWifiScanResultsNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTSensitiveDateClassifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTSensitiveDateClassifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__RTSensitiveDateClassifier_onWifiScanResultsNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
 void __59__RTSensitiveDateClassifier_onWifiScanResultsNotification___block_invoke(uint64_t a1)

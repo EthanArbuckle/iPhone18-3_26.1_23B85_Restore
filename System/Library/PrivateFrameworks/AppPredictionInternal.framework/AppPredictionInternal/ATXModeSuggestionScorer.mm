@@ -1,14 +1,14 @@
 @interface ATXModeSuggestionScorer
-+ (BOOL)_areConfiguredTriggers:(id)a3 conflictingWithSuggestedTriggers:(id)a4;
-- (ATXModeSuggestionScorer)initWithModeUUID:(id)a3 modeType:(int)a4 origin:(int)a5 originBundleId:(id)a6 originAnchorType:(id)a7 confidenceScore:(double)a8 secondsSinceSuggested:(double)a9 serializedTriggers:(id)a10;
-- (ATXModeSuggestionScorer)initWithModeUUID:(id)a3 modeType:(int)a4 origin:(int)a5 originBundleId:(id)a6 originAnchorType:(id)a7 confidenceScore:(double)a8 secondsSinceSuggested:(double)a9 serializedTriggers:(id)a10 configuredModeService:(id)a11 feedbackStream:(id)a12 feedbackHistogramHelper:(id)a13 appLaunchStream:(id)a14 groundTruthModeStream:(id)a15;
-- (BOOL)_hasHadEarlyExitTodayForModeWithUUID:(id)a3;
++ (BOOL)_areConfiguredTriggers:(id)triggers conflictingWithSuggestedTriggers:(id)suggestedTriggers;
+- (ATXModeSuggestionScorer)initWithModeUUID:(id)d modeType:(int)type origin:(int)origin originBundleId:(id)id originAnchorType:(id)anchorType confidenceScore:(double)score secondsSinceSuggested:(double)suggested serializedTriggers:(id)self0;
+- (ATXModeSuggestionScorer)initWithModeUUID:(id)d modeType:(int)type origin:(int)origin originBundleId:(id)id originAnchorType:(id)anchorType confidenceScore:(double)score secondsSinceSuggested:(double)suggested serializedTriggers:(id)self0 configuredModeService:(id)self1 feedbackStream:(id)self2 feedbackHistogramHelper:(id)self3 appLaunchStream:(id)self4 groundTruthModeStream:(id)self5;
+- (BOOL)_hasHadEarlyExitTodayForModeWithUUID:(id)d;
 - (BOOL)_hasUserSetUpModeBefore;
 - (BOOL)_hasUserSetUpSmartActivationForThisModeBefore;
 - (BOOL)_inValidLocaleForDrivingSuggestions;
-- (BOOL)_isSameActivityAndSource:(id)a3;
-- (BOOL)_isUserCurrentlyInSuggestedMode:(id)a3;
-- (BOOL)_shouldSuggestOnLockScreenWithDefaults:(id)a3;
+- (BOOL)_isSameActivityAndSource:(id)source;
+- (BOOL)_isUserCurrentlyInSuggestedMode:(id)mode;
+- (BOOL)_shouldSuggestOnLockScreenWithDefaults:(id)defaults;
 - (BOOL)isModeConfigured;
 - (BOOL)isUserCurrentlyInADifferentMode;
 - (BOOL)isUserCurrentlyInMode;
@@ -25,59 +25,59 @@
 
 @implementation ATXModeSuggestionScorer
 
-- (ATXModeSuggestionScorer)initWithModeUUID:(id)a3 modeType:(int)a4 origin:(int)a5 originBundleId:(id)a6 originAnchorType:(id)a7 confidenceScore:(double)a8 secondsSinceSuggested:(double)a9 serializedTriggers:(id)a10
+- (ATXModeSuggestionScorer)initWithModeUUID:(id)d modeType:(int)type origin:(int)origin originBundleId:(id)id originAnchorType:(id)anchorType confidenceScore:(double)score secondsSinceSuggested:(double)suggested serializedTriggers:(id)self0
 {
-  v28 = a10;
-  v15 = a7;
-  v16 = a6;
-  v17 = a3;
+  triggersCopy = triggers;
+  anchorTypeCopy = anchorType;
+  idCopy = id;
+  dCopy = d;
   v26 = objc_opt_new();
   v25 = [objc_alloc(MEMORY[0x277CEB328]) initWithStoreConfig:0];
   v18 = objc_opt_new();
   v19 = objc_opt_new();
   v20 = BiomeLibrary();
-  v21 = [v20 UserFocus];
-  v22 = [v21 ComputedMode];
-  v23 = [(ATXModeSuggestionScorer *)self initWithModeUUID:v17 modeType:a4 origin:a5 originBundleId:v16 originAnchorType:v15 confidenceScore:v28 secondsSinceSuggested:a8 serializedTriggers:a9 configuredModeService:v26 feedbackStream:v25 feedbackHistogramHelper:v18 appLaunchStream:v19 groundTruthModeStream:v22];
+  userFocus = [v20 UserFocus];
+  computedMode = [userFocus ComputedMode];
+  v23 = [(ATXModeSuggestionScorer *)self initWithModeUUID:dCopy modeType:type origin:origin originBundleId:idCopy originAnchorType:anchorTypeCopy confidenceScore:triggersCopy secondsSinceSuggested:score serializedTriggers:suggested configuredModeService:v26 feedbackStream:v25 feedbackHistogramHelper:v18 appLaunchStream:v19 groundTruthModeStream:computedMode];
 
   return v23;
 }
 
-- (ATXModeSuggestionScorer)initWithModeUUID:(id)a3 modeType:(int)a4 origin:(int)a5 originBundleId:(id)a6 originAnchorType:(id)a7 confidenceScore:(double)a8 secondsSinceSuggested:(double)a9 serializedTriggers:(id)a10 configuredModeService:(id)a11 feedbackStream:(id)a12 feedbackHistogramHelper:(id)a13 appLaunchStream:(id)a14 groundTruthModeStream:(id)a15
+- (ATXModeSuggestionScorer)initWithModeUUID:(id)d modeType:(int)type origin:(int)origin originBundleId:(id)id originAnchorType:(id)anchorType confidenceScore:(double)score secondsSinceSuggested:(double)suggested serializedTriggers:(id)self0 configuredModeService:(id)self1 feedbackStream:(id)self2 feedbackHistogramHelper:(id)self3 appLaunchStream:(id)self4 groundTruthModeStream:(id)self5
 {
-  v37 = a3;
-  v36 = a6;
-  v35 = a7;
-  v21 = a10;
-  v34 = a11;
-  v33 = a12;
-  v32 = a13;
-  v22 = a14;
-  v23 = a15;
+  dCopy = d;
+  idCopy = id;
+  anchorTypeCopy = anchorType;
+  triggersCopy = triggers;
+  serviceCopy = service;
+  streamCopy = stream;
+  helperCopy = helper;
+  launchStreamCopy = launchStream;
+  modeStreamCopy = modeStream;
   v38.receiver = self;
   v38.super_class = ATXModeSuggestionScorer;
   v24 = [(ATXModeSuggestionScorer *)&v38 init];
   if (v24)
   {
-    v25 = [v37 copy];
+    v25 = [dCopy copy];
     modeUUID = v24->_modeUUID;
     v24->_modeUUID = v25;
 
-    v24->_modeType = a4;
-    v24->_origin = a5;
-    objc_storeStrong(&v24->_originBundleId, a6);
-    objc_storeStrong(&v24->_originAnchorType, a7);
-    v24->_confidenceScore = a8;
-    v24->_secondsSinceSuggested = a9;
+    v24->_modeType = type;
+    v24->_origin = origin;
+    objc_storeStrong(&v24->_originBundleId, id);
+    objc_storeStrong(&v24->_originAnchorType, anchorType);
+    v24->_confidenceScore = score;
+    v24->_secondsSinceSuggested = suggested;
     v27 = ATXDeserializeTriggers();
     triggers = v24->_triggers;
     v24->_triggers = v27;
 
-    objc_storeStrong(&v24->_configuredModeService, a11);
-    objc_storeStrong(&v24->_feedbackStream, a12);
-    objc_storeStrong(&v24->_feedbackHistogramHelper, a13);
-    objc_storeStrong(&v24->_appLaunchStream, a14);
-    objc_storeStrong(&v24->_groundTruthModeStream, a15);
+    objc_storeStrong(&v24->_configuredModeService, service);
+    objc_storeStrong(&v24->_feedbackStream, stream);
+    objc_storeStrong(&v24->_feedbackHistogramHelper, helper);
+    objc_storeStrong(&v24->_appLaunchStream, launchStream);
+    objc_storeStrong(&v24->_groundTruthModeStream, modeStream);
   }
 
   return v24;
@@ -142,26 +142,26 @@
 - (void)_populateCachedDataAboutUsersCurrentMode
 {
   v3 = [objc_alloc(MEMORY[0x277D41C60]) initWithStream:self->_groundTruthModeStream];
-  v8 = [v3 currentMode];
+  currentMode = [v3 currentMode];
 
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:{-[ATXModeSuggestionScorer _isUserCurrentlyInSuggestedMode:](self, "_isUserCurrentlyInSuggestedMode:", v8)}];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:{-[ATXModeSuggestionScorer _isUserCurrentlyInSuggestedMode:](self, "_isUserCurrentlyInSuggestedMode:", currentMode)}];
   cachedIsUserCurrentlyInMode = self->_cachedIsUserCurrentlyInMode;
   self->_cachedIsUserCurrentlyInMode = v4;
 
-  v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[ATXModeSuggestionScorer _isUserCurrentlyInDifferentModeFromSuggestedMode:](self, "_isUserCurrentlyInDifferentModeFromSuggestedMode:", v8)}];
+  v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[ATXModeSuggestionScorer _isUserCurrentlyInDifferentModeFromSuggestedMode:](self, "_isUserCurrentlyInDifferentModeFromSuggestedMode:", currentMode)}];
   cachedIsUserCurrentlyInADifferentMode = self->_cachedIsUserCurrentlyInADifferentMode;
   self->_cachedIsUserCurrentlyInADifferentMode = v6;
 }
 
-- (BOOL)_isUserCurrentlyInSuggestedMode:(id)a3
+- (BOOL)_isUserCurrentlyInSuggestedMode:(id)mode
 {
-  if (!a3 || !self->_modeUUID)
+  if (!mode || !self->_modeUUID)
   {
     return 0;
   }
 
-  v4 = [a3 mode];
-  v5 = [v4 isEqualToString:self->_modeUUID];
+  mode = [mode mode];
+  v5 = [mode isEqualToString:self->_modeUUID];
 
   return v5;
 }
@@ -169,24 +169,24 @@
 - (double)score
 {
   v52 = *MEMORY[0x277D85DE8];
-  v3 = [(ATXModeSuggestionScorer *)self _scoringWeights];
-  v4 = [v3 objectForKeyedSubscript:@"confidenceScoreWeight"];
+  _scoringWeights = [(ATXModeSuggestionScorer *)self _scoringWeights];
+  v4 = [_scoringWeights objectForKeyedSubscript:@"confidenceScoreWeight"];
   [v4 doubleValue];
   v6 = v5;
 
-  v7 = [v3 objectForKeyedSubscript:@"feedbackScoreWeight"];
+  v7 = [_scoringWeights objectForKeyedSubscript:@"feedbackScoreWeight"];
   [v7 doubleValue];
   v9 = v8;
 
-  v10 = [v3 objectForKeyedSubscript:@"secondsSinceSuggestedWeight"];
+  v10 = [_scoringWeights objectForKeyedSubscript:@"secondsSinceSuggestedWeight"];
   [v10 doubleValue];
   v12 = v11;
 
-  v13 = [v3 objectForKeyedSubscript:@"isModeConfiguredWeight"];
+  v13 = [_scoringWeights objectForKeyedSubscript:@"isModeConfiguredWeight"];
   [v13 doubleValue];
   v15 = v14;
 
-  v16 = [v3 objectForKeyedSubscript:@"isUserCurrentlyInModeWeight"];
+  v16 = [_scoringWeights objectForKeyedSubscript:@"isUserCurrentlyInModeWeight"];
   [v16 doubleValue];
   v18 = v17;
 
@@ -222,9 +222,9 @@
     v46 = 2048;
     v47 = secondsSinceSuggested;
     v48 = 1024;
-    v49 = [(ATXModeSuggestionScorer *)self isModeConfigured];
+    isModeConfigured = [(ATXModeSuggestionScorer *)self isModeConfigured];
     v50 = 1024;
-    v51 = [(ATXModeSuggestionScorer *)self isUserCurrentlyInMode];
+    isUserCurrentlyInMode = [(ATXModeSuggestionScorer *)self isUserCurrentlyInMode];
     _os_log_impl(&dword_2263AA000, v28, OS_LOG_TYPE_DEFAULT, "ATXModeSuggestionScorer: Calculating combined score for modeUUID: %{public}@, modeType: %lu combinedScore: %f, confidenceScore: %f, feedbackScore: %@, secondsSinceSuggested: %f, isActivityConfigured: %d, isUserCurrentlyInActivity: %d", &v36, 0x4Au);
   }
 
@@ -249,16 +249,16 @@
   return self;
 }
 
-- (BOOL)_shouldSuggestOnLockScreenWithDefaults:(id)a3
+- (BOOL)_shouldSuggestOnLockScreenWithDefaults:(id)defaults
 {
   v132 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![MEMORY[0x277D42590] isInternalBuild] || (objc_msgSend(v4, "BOOLForKey:", *MEMORY[0x277D41CE8]) & 1) == 0)
+  defaultsCopy = defaults;
+  if (![MEMORY[0x277D42590] isInternalBuild] || (objc_msgSend(defaultsCopy, "BOOLForKey:", *MEMORY[0x277D41CE8]) & 1) == 0)
   {
     if (![(ATXModeSuggestionScorer *)self isModeConfigured]&& self->_modeType != 6)
     {
-      v6 = __atxlog_handle_modes();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+      _lockScreenSuggestionThresholds = __atxlog_handle_modes();
+      if (os_log_type_enabled(_lockScreenSuggestionThresholds, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
         v7 = "ATXModeSuggestionScorer: Mode is not configured and type is not driving, should suppress mode set-up suggestion from lockscreen";
@@ -274,13 +274,13 @@ LABEL_66:
 
     if (![(ATXModeSuggestionScorer *)self isModeConfigured]&& [(ATXModeSuggestionScorer *)self _hasUserSetUpModeBefore])
     {
-      v6 = __atxlog_handle_modes();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+      _lockScreenSuggestionThresholds = __atxlog_handle_modes();
+      if (os_log_type_enabled(_lockScreenSuggestionThresholds, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
         v7 = "ATXModeSuggestionScorer: User has configured mode before, should suppress mode set-up suggestion from lockscreen";
 LABEL_37:
-        _os_log_impl(&dword_2263AA000, v6, OS_LOG_TYPE_DEFAULT, v7, buf, 2u);
+        _os_log_impl(&dword_2263AA000, _lockScreenSuggestionThresholds, OS_LOG_TYPE_DEFAULT, v7, buf, 2u);
         goto LABEL_65;
       }
 
@@ -289,8 +289,8 @@ LABEL_37:
 
     if (![(ATXModeSuggestionScorer *)self isModeConfigured]&& self->_modeType == 6 && ![(ATXModeSuggestionScorer *)self _inValidLocaleForDrivingSuggestions])
     {
-      v6 = __atxlog_handle_modes();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+      _lockScreenSuggestionThresholds = __atxlog_handle_modes();
+      if (os_log_type_enabled(_lockScreenSuggestionThresholds, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
         v7 = "ATXModeSuggestionScorer: Mode is not configured and type is driving, should suppress mode set-up suggestion from lockscreen because user is not in valid locale";
@@ -300,46 +300,46 @@ LABEL_37:
       goto LABEL_65;
     }
 
-    v6 = [(ATXModeSuggestionScorer *)self _lockScreenSuggestionThresholds];
+    _lockScreenSuggestionThresholds = [(ATXModeSuggestionScorer *)self _lockScreenSuggestionThresholds];
     [(ATXModeSuggestionScorer *)self _populateFeedbackScoresIfNeeded];
-    v8 = [v6 objectForKeyedSubscript:@"confidenceScoreThreshold"];
+    v8 = [_lockScreenSuggestionThresholds objectForKeyedSubscript:@"confidenceScoreThreshold"];
     [v8 doubleValue];
     v10 = v9;
 
-    v11 = [v6 objectForKeyedSubscript:@"rejectionsInPastWeekThreshold"];
+    v11 = [_lockScreenSuggestionThresholds objectForKeyedSubscript:@"rejectionsInPastWeekThreshold"];
     [v11 doubleValue];
     v13 = v12;
 
-    v14 = [v6 objectForKeyedSubscript:@"totalRejectionsThreshold"];
+    v14 = [_lockScreenSuggestionThresholds objectForKeyedSubscript:@"totalRejectionsThreshold"];
     [v14 doubleValue];
     v16 = v15;
 
-    v17 = [v6 objectForKeyedSubscript:@"totalIgnoresAndRejectionsThreshold"];
+    v17 = [_lockScreenSuggestionThresholds objectForKeyedSubscript:@"totalIgnoresAndRejectionsThreshold"];
     [v17 doubleValue];
     v19 = v18;
 
-    v20 = [v6 objectForKeyedSubscript:@"timesShownInLastDayThreshold"];
+    v20 = [_lockScreenSuggestionThresholds objectForKeyedSubscript:@"timesShownInLastDayThreshold"];
     [v20 doubleValue];
     v103 = v21;
 
-    v22 = [v6 objectForKeyedSubscript:@"rejectionsAcrossAllModesInPastDayThreshold"];
+    v22 = [_lockScreenSuggestionThresholds objectForKeyedSubscript:@"rejectionsAcrossAllModesInPastDayThreshold"];
     [v22 doubleValue];
     v24 = v23;
 
-    v25 = [v6 objectForKeyedSubscript:@"timesShownAcrossAllModesInPastDayThreshold"];
+    v25 = [_lockScreenSuggestionThresholds objectForKeyedSubscript:@"timesShownAcrossAllModesInPastDayThreshold"];
     [v25 doubleValue];
     v27 = v26;
 
-    v28 = [v6 objectForKeyedSubscript:@"timesShownAcrossAllModesInPastWeekThreshold"];
+    v28 = [_lockScreenSuggestionThresholds objectForKeyedSubscript:@"timesShownAcrossAllModesInPastWeekThreshold"];
     [v28 doubleValue];
     v30 = v29;
 
-    v31 = [v6 objectForKeyedSubscript:@"rejectionsAcrossAllModesInPastWeekThreshold"];
+    v31 = [_lockScreenSuggestionThresholds objectForKeyedSubscript:@"rejectionsAcrossAllModesInPastWeekThreshold"];
     [v31 doubleValue];
     v33 = v32;
 
-    v34 = [v6 objectForKeyedSubscript:@"shouldSuppressIfUserIsInADifferentMode"];
-    v35 = [v34 BOOLValue];
+    v34 = [_lockScreenSuggestionThresholds objectForKeyedSubscript:@"shouldSuppressIfUserIsInADifferentMode"];
+    bOOLValue = [v34 BOOLValue];
 
     v36 = __atxlog_handle_modes();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -423,7 +423,7 @@ LABEL_24:
                       [(NSNumber *)self->_rejectionsAcrossAllModesInPastWeek doubleValue];
                       if (v86 <= v33)
                       {
-                        if (v35 && [(ATXModeSuggestionScorer *)self isUserCurrentlyInADifferentMode])
+                        if (bOOLValue && [(ATXModeSuggestionScorer *)self isUserCurrentlyInADifferentMode])
                         {
                           v59 = __atxlog_handle_modes();
                           if (!os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
@@ -660,7 +660,7 @@ LABEL_64:
       goto LABEL_65;
     }
 
-    v51 = [v4 objectForKey:@"dateDrivingSetupSuggestionLastShown"];
+    v51 = [defaultsCopy objectForKey:@"dateDrivingSetupSuggestionLastShown"];
     if (v51)
     {
       objc_opt_class();
@@ -668,7 +668,7 @@ LABEL_64:
       {
         v101 = v27;
         v102 = v24;
-        [v4 doubleForKey:*MEMORY[0x277CEBD40]];
+        [defaultsCopy doubleForKey:*MEMORY[0x277CEBD40]];
         v53 = v52;
         *&v54 = COERCE_DOUBLE([objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:v52]);
         [v51 timeIntervalSinceReferenceDate];
@@ -773,8 +773,8 @@ LABEL_67:
 - (BOOL)shouldSuggestTriggers
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(ATXModeSuggestionScorer *)self shouldSuggestOnLockScreen];
-  if (v3)
+  shouldSuggestOnLockScreen = [(ATXModeSuggestionScorer *)self shouldSuggestOnLockScreen];
+  if (shouldSuggestOnLockScreen)
   {
     if ([(ATXModeSuggestionScorer *)self _hasUserSetUpSmartActivationForThisModeBefore])
     {
@@ -795,13 +795,13 @@ LABEL_67:
         goto LABEL_11;
       }
 
-      v6 = [(DNDModeConfiguration *)self->_cachedDNDMode triggers];
-      v7 = [v6 count];
+      triggers = [(DNDModeConfiguration *)self->_cachedDNDMode triggers];
+      v7 = [triggers count];
 
       if (!v7 || (v8 = objc_opt_class(), -[DNDModeConfiguration triggers](self->_cachedDNDMode, "triggers"), v9 = objc_claimAutoreleasedReturnValue(), LODWORD(v8) = [v8 _areConfiguredTriggers:v9 conflictingWithSuggestedTriggers:self->_triggers], v9, !v8))
       {
 LABEL_11:
-        LOBYTE(v3) = 1;
+        LOBYTE(shouldSuggestOnLockScreen) = 1;
         goto LABEL_12;
       }
 
@@ -809,24 +809,24 @@ LABEL_11:
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
         v10 = self->_modeUUID;
-        v11 = [(DNDModeConfiguration *)self->_cachedDNDMode triggers];
+        triggers2 = [(DNDModeConfiguration *)self->_cachedDNDMode triggers];
         triggers = self->_triggers;
         v15 = 138543874;
         v16 = v10;
         v17 = 2114;
-        v18 = v11;
+        v18 = triggers2;
         v19 = 2114;
         v20 = triggers;
         _os_log_impl(&dword_2263AA000, v4, OS_LOG_TYPE_DEFAULT, "ATXModeSuggestionScorer: mode: %{public}@ trigger should not be suggested because existing triggers %{public}@ conflict with predicted triggers: %{public}@", &v15, 0x20u);
       }
     }
 
-    LOBYTE(v3) = 0;
+    LOBYTE(shouldSuggestOnLockScreen) = 0;
   }
 
 LABEL_12:
   v13 = *MEMORY[0x277D85DE8];
-  return v3;
+  return shouldSuggestOnLockScreen;
 }
 
 - (BOOL)shouldAllowSmartEntry
@@ -835,18 +835,18 @@ LABEL_12:
   if (!self->_modeUUID)
   {
 LABEL_8:
-    LOBYTE(v3) = 0;
+    LOBYTE(isModeConfigured) = 0;
     goto LABEL_9;
   }
 
-  v3 = [(ATXModeSuggestionScorer *)self isModeConfigured];
-  if (v3)
+  isModeConfigured = [(ATXModeSuggestionScorer *)self isModeConfigured];
+  if (isModeConfigured)
   {
     if ([(DNDModeConfiguration *)self->_cachedDNDMode allowSmartEntry]== 2)
     {
       if (![(ATXModeSuggestionScorer *)self _hasHadEarlyExitTodayForModeWithUUID:self->_modeUUID])
       {
-        LOBYTE(v3) = 1;
+        LOBYTE(isModeConfigured) = 1;
         goto LABEL_9;
       }
 
@@ -865,19 +865,19 @@ LABEL_8:
 
 LABEL_9:
   v6 = *MEMORY[0x277D85DE8];
-  return v3;
+  return isModeConfigured;
 }
 
-- (BOOL)_hasHadEarlyExitTodayForModeWithUUID:(id)a3
+- (BOOL)_hasHadEarlyExitTodayForModeWithUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v4 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v5 = [MEMORY[0x277CBEAA8] now];
-  v6 = [v4 startOfDayForDate:v5];
+  v6 = [currentCalendar startOfDayForDate:v5];
 
   v7 = objc_opt_new();
   [v6 timeIntervalSinceReferenceDate];
@@ -887,7 +887,7 @@ LABEL_9:
   v13[1] = 3221225472;
   v13[2] = __64__ATXModeSuggestionScorer__hasHadEarlyExitTodayForModeWithUUID___block_invoke_3;
   v13[3] = &unk_278596F10;
-  v10 = v3;
+  v10 = dCopy;
   v14 = v10;
   v15 = &v16;
   v11 = [v9 sinkWithCompletion:&__block_literal_global_90 receiveInput:v13];
@@ -944,8 +944,8 @@ void __64__ATXModeSuggestionScorer__hasHadEarlyExitTodayForModeWithUUID___block_
   v2 = objc_autoreleasePoolPush();
   v3 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{@"US", @"CA", @"GB", 0}];
   objc_autoreleasePoolPop(v2);
-  v4 = [MEMORY[0x277CBEAF8] currentLocale];
-  v5 = [v4 objectForKey:*MEMORY[0x277CBE690]];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v5 = [currentLocale objectForKey:*MEMORY[0x277CBE690]];
 
   if (v5 && ([v3 containsObject:v5] & 1) != 0)
   {
@@ -969,11 +969,11 @@ void __64__ATXModeSuggestionScorer__hasHadEarlyExitTodayForModeWithUUID___block_
   return v6;
 }
 
-+ (BOOL)_areConfiguredTriggers:(id)a3 conflictingWithSuggestedTriggers:(id)a4
++ (BOOL)_areConfiguredTriggers:(id)triggers conflictingWithSuggestedTriggers:(id)suggestedTriggers
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 _pas_filteredArrayWithTest:&__block_literal_global_95_0];
+  triggersCopy = triggers;
+  suggestedTriggersCopy = suggestedTriggers;
+  v7 = [triggersCopy _pas_filteredArrayWithTest:&__block_literal_global_95_0];
   if ([v7 count])
   {
     v8 = 1;
@@ -982,11 +982,11 @@ void __64__ATXModeSuggestionScorer__hasHadEarlyExitTodayForModeWithUUID___block_
   else
   {
     v9 = MEMORY[0x277CBEB58];
-    v10 = [v6 _pas_mappedArrayWithTransform:&__block_literal_global_100];
+    v10 = [suggestedTriggersCopy _pas_mappedArrayWithTransform:&__block_literal_global_100];
     v11 = [v9 setWithArray:v10];
 
     v12 = MEMORY[0x277CBEB58];
-    v13 = [v5 _pas_mappedArrayWithTransform:&__block_literal_global_104];
+    v13 = [triggersCopy _pas_mappedArrayWithTransform:&__block_literal_global_104];
     v14 = [v12 setWithArray:v13];
 
     [v14 intersectSet:v11];
@@ -1005,14 +1005,14 @@ BOOL __83__ATXModeSuggestionScorer__areConfiguredTriggers_conflictingWithSuggest
   return v3;
 }
 
-- (BOOL)_isSameActivityAndSource:(id)a3
+- (BOOL)_isSameActivityAndSource:(id)source
 {
-  v4 = a3;
-  v5 = [v4 modeUUID];
-  if (v5 && (modeUUID = self->_modeUUID, v5, modeUUID))
+  sourceCopy = source;
+  modeUUID = [sourceCopy modeUUID];
+  if (modeUUID && (modeUUID = self->_modeUUID, modeUUID, modeUUID))
   {
-    v7 = [v4 modeUUID];
-    v8 = [v7 isEqualToString:self->_modeUUID];
+    modeUUID2 = [sourceCopy modeUUID];
+    v8 = [modeUUID2 isEqualToString:self->_modeUUID];
 
     if ((v8 & 1) == 0)
     {
@@ -1022,8 +1022,8 @@ BOOL __83__ATXModeSuggestionScorer__areConfiguredTriggers_conflictingWithSuggest
 
   else
   {
-    v9 = [v4 modeUUID];
-    if (v9)
+    modeUUID3 = [sourceCopy modeUUID];
+    if (modeUUID3)
     {
       goto LABEL_6;
     }
@@ -1034,18 +1034,18 @@ BOOL __83__ATXModeSuggestionScorer__areConfiguredTriggers_conflictingWithSuggest
     }
   }
 
-  v10 = [v4 origin];
+  origin = [sourceCopy origin];
   origin = self->_origin;
-  if (v10 != BMUserFocusInferredModeOriginToLegacy())
+  if (origin != BMUserFocusInferredModeOriginToLegacy())
   {
     goto LABEL_15;
   }
 
-  v12 = [v4 originAnchorType];
-  if (!v12 || (originAnchorType = self->_originAnchorType, v12, !originAnchorType))
+  originAnchorType = [sourceCopy originAnchorType];
+  if (!originAnchorType || (originAnchorType = self->_originAnchorType, originAnchorType, !originAnchorType))
   {
-    v9 = [v4 originAnchorType];
-    if (!v9)
+    modeUUID3 = [sourceCopy originAnchorType];
+    if (!modeUUID3)
     {
       if (!self->_originAnchorType)
       {
@@ -1062,8 +1062,8 @@ LABEL_6:
     goto LABEL_15;
   }
 
-  v14 = [v4 originAnchorType];
-  v15 = [v14 isEqualToString:self->_originAnchorType];
+  originAnchorType2 = [sourceCopy originAnchorType];
+  v15 = [originAnchorType2 isEqualToString:self->_originAnchorType];
 
   if ((v15 & 1) == 0)
   {
@@ -1111,13 +1111,13 @@ LABEL_16:
   v54 = &v53;
   v55 = 0x2020000000;
   v56 = 0;
-  v3 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v4 = [MEMORY[0x277CBEAA8] now];
-  v5 = [v3 dateByAddingUnit:16 value:-7 toDate:v4 options:0];
+  v5 = [currentCalendar dateByAddingUnit:16 value:-7 toDate:v4 options:0];
 
-  v6 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
   v7 = [MEMORY[0x277CBEAA8] now];
-  v8 = [v6 dateByAddingUnit:16 value:-1 toDate:v7 options:0];
+  v8 = [currentCalendar2 dateByAddingUnit:16 value:-1 toDate:v7 options:0];
 
   feedbackStream = self->_feedbackStream;
   [v5 timeIntervalSinceReferenceDate];
@@ -1127,7 +1127,7 @@ LABEL_16:
   v42 = 3221225472;
   v43 = __50__ATXModeSuggestionScorer__populateFeedbackScores__block_invoke_3;
   v44 = &unk_278599098;
-  v45 = self;
+  selfCopy = self;
   v47 = &v73;
   v12 = v8;
   v46 = v12;
@@ -1138,7 +1138,7 @@ LABEL_16:
   v52 = &v57;
   v13 = [v11 sinkWithCompletion:&__block_literal_global_108 receiveInput:&v41];
 
-  v14 = [MEMORY[0x277CCABB0] numberWithDouble:{v74[3], v41, v42, v43, v44, v45}];
+  v14 = [MEMORY[0x277CCABB0] numberWithDouble:{v74[3], v41, v42, v43, v44, selfCopy}];
   rejectionsInPastWeek = self->_rejectionsInPastWeek;
   self->_rejectionsInPastWeek = v14;
 

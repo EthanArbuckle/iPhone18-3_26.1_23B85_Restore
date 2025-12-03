@@ -1,13 +1,13 @@
 @interface CarWaypointsOverviewCardViewController
 - (NSArray)waypoints;
-- (_TtC4Maps38CarWaypointsOverviewCardViewController)initWithDelegate:(id)a3;
-- (_TtC4Maps38CarWaypointsOverviewCardViewController)initWithDelegate:(id)a3 waypoints:(id)a4;
-- (_TtC4Maps38CarWaypointsOverviewCardViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC4Maps38CarWaypointsOverviewCardViewController)initWithDelegate:(id)delegate;
+- (_TtC4Maps38CarWaypointsOverviewCardViewController)initWithDelegate:(id)delegate waypoints:(id)waypoints;
+- (_TtC4Maps38CarWaypointsOverviewCardViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (_TtP4Maps46CarWaypointsOverviewCardViewControllerDelegate_)delegate;
-- (void)navigationService:(id)a3 didUpdateDisplayETA:(id)a4 remainingDistance:(id)a5 batteryChargeInfo:(id)a6;
-- (void)setWaypoints:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)navigationService:(id)service didUpdateDisplayETA:(id)a remainingDistance:(id)distance batteryChargeInfo:(id)info;
+- (void)setWaypoints:(id)waypoints;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CarWaypointsOverviewCardViewController
@@ -28,27 +28,27 @@
   return v2.super.isa;
 }
 
-- (void)setWaypoints:(id)a3
+- (void)setWaypoints:(id)waypoints
 {
   sub_100014C84(0, &qword_101914500);
   *(self + OBJC_IVAR____TtC4Maps38CarWaypointsOverviewCardViewController_waypoints) = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v4 = self;
+  selfCopy = self;
 
   sub_10024B728();
 }
 
-- (_TtC4Maps38CarWaypointsOverviewCardViewController)initWithDelegate:(id)a3
+- (_TtC4Maps38CarWaypointsOverviewCardViewController)initWithDelegate:(id)delegate
 {
   sub_100014C84(0, &qword_101914500);
   swift_unknownObjectRetain();
   isa = Array._bridgeToObjectiveC()().super.isa;
-  v6 = [(CarWaypointsOverviewCardViewController *)self initWithDelegate:a3 waypoints:isa];
+  v6 = [(CarWaypointsOverviewCardViewController *)self initWithDelegate:delegate waypoints:isa];
 
   swift_unknownObjectRelease();
   return v6;
 }
 
-- (_TtC4Maps38CarWaypointsOverviewCardViewController)initWithDelegate:(id)a3 waypoints:(id)a4
+- (_TtC4Maps38CarWaypointsOverviewCardViewController)initWithDelegate:(id)delegate waypoints:(id)waypoints
 {
   sub_100014C84(0, &qword_101914500);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -58,18 +58,18 @@
   return v6;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for CarWaypointsOverviewCardViewController(0);
   v4 = v7.receiver;
-  [(CarWaypointsOverviewCardViewController *)&v7 viewDidAppear:v3];
-  v5 = [objc_opt_self() sharedService];
-  if (v5)
+  [(CarWaypointsOverviewCardViewController *)&v7 viewDidAppear:appearCopy];
+  sharedService = [objc_opt_self() sharedService];
+  if (sharedService)
   {
-    v6 = v5;
-    [v5 registerObserver:v4];
+    v6 = sharedService;
+    [sharedService registerObserver:v4];
   }
 
   else
@@ -78,20 +78,20 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = objc_opt_self();
-  v6 = self;
-  v7 = [v5 sharedService];
-  if (v7)
+  selfCopy = self;
+  sharedService = [v5 sharedService];
+  if (sharedService)
   {
-    v8 = v7;
-    [v7 unregisterObserver:v6];
+    v8 = sharedService;
+    [sharedService unregisterObserver:selfCopy];
 
-    v9.receiver = v6;
+    v9.receiver = selfCopy;
     v9.super_class = type metadata accessor for CarWaypointsOverviewCardViewController(0);
-    [(CarWaypointsOverviewCardViewController *)&v9 viewDidAppear:v3];
+    [(CarWaypointsOverviewCardViewController *)&v9 viewDidAppear:disappearCopy];
   }
 
   else
@@ -100,21 +100,21 @@
   }
 }
 
-- (_TtC4Maps38CarWaypointsOverviewCardViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Maps38CarWaypointsOverviewCardViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)navigationService:(id)a3 didUpdateDisplayETA:(id)a4 remainingDistance:(id)a5 batteryChargeInfo:(id)a6
+- (void)navigationService:(id)service didUpdateDisplayETA:(id)a remainingDistance:(id)distance batteryChargeInfo:(id)info
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
-  sub_10024F640(a4);
+  serviceCopy = service;
+  aCopy = a;
+  distanceCopy = distance;
+  infoCopy = info;
+  selfCopy = self;
+  sub_10024F640(a);
 }
 
 @end

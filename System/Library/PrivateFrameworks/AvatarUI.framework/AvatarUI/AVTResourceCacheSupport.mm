@@ -1,53 +1,53 @@
 @interface AVTResourceCacheSupport
-+ (id)resourceFromCache:(id)a3 forItem:(id)a4 scope:(id)a5 preflightCacheMissHandler:(id)a6 cacheMissHandler:(id)a7 cacheMissQueue:(id)a8 taskScheduler:(id)a9 callbackQueue:(id)a10 resourceHandler:(id)a11;
-+ (id)resourceFromCache:(id)a3 forItem:(id)a4 scope:(id)a5 preflightCacheMissHandler:(id)a6 cacheMissWithCompletionHandler:(id)a7 cacheMissQueue:(id)a8 taskScheduler:(id)a9 callbackQueue:(id)a10 resourceHandler:(id)a11;
++ (id)resourceFromCache:(id)cache forItem:(id)item scope:(id)scope preflightCacheMissHandler:(id)handler cacheMissHandler:(id)missHandler cacheMissQueue:(id)queue taskScheduler:(id)scheduler callbackQueue:(id)self0 resourceHandler:(id)self1;
++ (id)resourceFromCache:(id)cache forItem:(id)item scope:(id)scope preflightCacheMissHandler:(id)handler cacheMissWithCompletionHandler:(id)completionHandler cacheMissQueue:(id)queue taskScheduler:(id)scheduler callbackQueue:(id)self0 resourceHandler:(id)self1;
 @end
 
 @implementation AVTResourceCacheSupport
 
-+ (id)resourceFromCache:(id)a3 forItem:(id)a4 scope:(id)a5 preflightCacheMissHandler:(id)a6 cacheMissHandler:(id)a7 cacheMissQueue:(id)a8 taskScheduler:(id)a9 callbackQueue:(id)a10 resourceHandler:(id)a11
++ (id)resourceFromCache:(id)cache forItem:(id)item scope:(id)scope preflightCacheMissHandler:(id)handler cacheMissHandler:(id)missHandler cacheMissQueue:(id)queue taskScheduler:(id)scheduler callbackQueue:(id)self0 resourceHandler:(id)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v37 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = [v16 resourceForItem:v17 scope:v18];
+  cacheCopy = cache;
+  itemCopy = item;
+  scopeCopy = scope;
+  handlerCopy = handler;
+  missHandlerCopy = missHandler;
+  queueCopy = queue;
+  schedulerCopy = scheduler;
+  callbackQueueCopy = callbackQueue;
+  resourceHandlerCopy = resourceHandler;
+  v24 = [cacheCopy resourceForItem:itemCopy scope:scopeCopy];
   if (v24)
   {
-    v23[2](v23, v24);
+    resourceHandlerCopy[2](resourceHandlerCopy, v24);
     v25 = 0;
   }
 
   else
   {
-    v36 = v21;
+    v36 = schedulerCopy;
     v41[0] = MEMORY[0x1E69E9820];
     v41[1] = 3221225472;
     v41[2] = __161__AVTResourceCacheSupport_resourceFromCache_forItem_scope_preflightCacheMissHandler_cacheMissHandler_cacheMissQueue_taskScheduler_callbackQueue_resourceHandler___block_invoke;
     v41[3] = &unk_1E7F3D628;
-    v42 = v16;
-    v26 = v17;
+    v42 = cacheCopy;
+    v26 = itemCopy;
     v43 = v26;
-    v27 = v18;
+    v27 = scopeCopy;
     v44 = v27;
-    v35 = v19;
-    v46 = v19;
-    v34 = v22;
-    v45 = v22;
-    v28 = v23;
+    v35 = missHandlerCopy;
+    v46 = missHandlerCopy;
+    v34 = callbackQueueCopy;
+    v45 = callbackQueueCopy;
+    v28 = resourceHandlerCopy;
     v47 = v28;
     v29 = MEMORY[0x1BFB0DE80](v41);
     v30 = v29;
-    if (v20)
+    if (queueCopy)
     {
-      if (v37)
+      if (handlerCopy)
       {
-        v31 = v37[2](v37, v26, v27);
+        v31 = handlerCopy[2](handlerCopy, v26, v27);
         if (v31)
         {
           v28[2](v28, v31);
@@ -58,7 +58,7 @@
       v38[1] = 3221225472;
       v38[2] = __161__AVTResourceCacheSupport_resourceFromCache_forItem_scope_preflightCacheMissHandler_cacheMissHandler_cacheMissQueue_taskScheduler_callbackQueue_resourceHandler___block_invoke_3;
       v38[3] = &unk_1E7F3D678;
-      v39 = v20;
+      v39 = queueCopy;
       v40 = v30;
       v32 = [v38 copy];
       [v36 scheduleTask:v32];
@@ -71,9 +71,9 @@
       v25 = 0;
     }
 
-    v19 = v35;
-    v21 = v36;
-    v22 = v34;
+    missHandlerCopy = v35;
+    schedulerCopy = v36;
+    callbackQueueCopy = v34;
   }
 
   return v25;
@@ -122,45 +122,45 @@ uint64_t __161__AVTResourceCacheSupport_resourceFromCache_forItem_scope_prefligh
   return v2();
 }
 
-+ (id)resourceFromCache:(id)a3 forItem:(id)a4 scope:(id)a5 preflightCacheMissHandler:(id)a6 cacheMissWithCompletionHandler:(id)a7 cacheMissQueue:(id)a8 taskScheduler:(id)a9 callbackQueue:(id)a10 resourceHandler:(id)a11
++ (id)resourceFromCache:(id)cache forItem:(id)item scope:(id)scope preflightCacheMissHandler:(id)handler cacheMissWithCompletionHandler:(id)completionHandler cacheMissQueue:(id)queue taskScheduler:(id)scheduler callbackQueue:(id)self0 resourceHandler:(id)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v42 = a9;
-  v22 = v16;
-  v23 = a10;
-  v24 = a11;
-  v25 = [v16 resourceForItem:v17 scope:v18];
-  v41 = v23;
+  cacheCopy = cache;
+  itemCopy = item;
+  scopeCopy = scope;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  queueCopy = queue;
+  schedulerCopy = scheduler;
+  v22 = cacheCopy;
+  callbackQueueCopy = callbackQueue;
+  resourceHandlerCopy = resourceHandler;
+  v25 = [cacheCopy resourceForItem:itemCopy scope:scopeCopy];
+  v41 = callbackQueueCopy;
   if (v25)
   {
-    v24[2](v24, v25);
+    resourceHandlerCopy[2](resourceHandlerCopy, v25);
     v26 = 0;
-    v27 = v42;
+    v27 = schedulerCopy;
   }
 
   else
   {
-    v40 = v19;
+    v40 = handlerCopy;
     v46[0] = MEMORY[0x1E69E9820];
     v46[1] = 3221225472;
     v46[2] = __175__AVTResourceCacheSupport_resourceFromCache_forItem_scope_preflightCacheMissHandler_cacheMissWithCompletionHandler_cacheMissQueue_taskScheduler_callbackQueue_resourceHandler___block_invoke;
     v46[3] = &unk_1E7F3D6F0;
-    v39 = v20;
-    v52 = v20;
-    v28 = v21;
-    v29 = v17;
+    v39 = completionHandlerCopy;
+    v52 = completionHandlerCopy;
+    v28 = queueCopy;
+    v29 = itemCopy;
     v47 = v29;
-    v30 = v18;
+    v30 = scopeCopy;
     v48 = v30;
     v37 = v22;
     v49 = v22;
-    v50 = v23;
-    v31 = v24;
+    v50 = callbackQueueCopy;
+    v31 = resourceHandlerCopy;
     v53 = v31;
     v38 = v28;
     v26 = v28;
@@ -185,21 +185,21 @@ uint64_t __161__AVTResourceCacheSupport_resourceFromCache_forItem_scope_prefligh
       v44 = v26;
       v45 = v33;
       v35 = [v43 copy];
-      v27 = v42;
-      [v42 scheduleTask:v35];
+      v27 = schedulerCopy;
+      [schedulerCopy scheduleTask:v35];
       v26 = MEMORY[0x1BFB0DE80](v35);
     }
 
     else
     {
       (*(v32 + 16))(v32);
-      v27 = v42;
+      v27 = schedulerCopy;
     }
 
-    v20 = v39;
-    v19 = v40;
+    completionHandlerCopy = v39;
+    handlerCopy = v40;
     v22 = v37;
-    v21 = v38;
+    queueCopy = v38;
   }
 
   return v26;

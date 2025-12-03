@@ -1,15 +1,15 @@
 @interface PXPhotosDetailsInlinePlaybackController
-- (BOOL)canPlayAsset:(id)a3;
+- (BOOL)canPlayAsset:(id)asset;
 - (BOOL)shouldEnablePlayback;
 - (CGRect)currentVisibleRect;
-- (CGRect)frameForPlaybackRecord:(id)a3 minPlayableSize:(CGSize *)a4;
+- (CGRect)frameForPlaybackRecord:(id)record minPlayableSize:(CGSize *)size;
 - (PXPhotosDetailsInlinePlaybackController)init;
-- (PXPhotosDetailsInlinePlaybackController)initWithTilingController:(id)a3;
+- (PXPhotosDetailsInlinePlaybackController)initWithTilingController:(id)controller;
 - (PXPhotosDetailsInlinePlaybackControllerDelegate)delegate;
-- (PXTileIdentifier)_currentTileIdentifierForRecord:(SEL)a3;
-- (id)createPlaybackRecordForDisplayAsset:(id)a3 mediaProvider:(id)a4 geometryReference:(id)a5 spriteSize:(CGSize)a6 displayScale:(double)a7;
-- (void)checkInTile:(void *)a3 withIdentifier:(PXTileIdentifier *)a4;
-- (void)checkOutTile:(void *)a3 withIdentifier:(PXTileIdentifier *)a4;
+- (PXTileIdentifier)_currentTileIdentifierForRecord:(SEL)record;
+- (id)createPlaybackRecordForDisplayAsset:(id)asset mediaProvider:(id)provider geometryReference:(id)reference spriteSize:(CGSize)size displayScale:(double)scale;
+- (void)checkInTile:(void *)tile withIdentifier:(PXTileIdentifier *)identifier;
+- (void)checkOutTile:(void *)tile withIdentifier:(PXTileIdentifier *)identifier;
 @end
 
 @implementation PXPhotosDetailsInlinePlaybackController
@@ -21,53 +21,53 @@
   return WeakRetained;
 }
 
-- (BOOL)canPlayAsset:(id)a3
+- (BOOL)canPlayAsset:(id)asset
 {
-  v3 = [a3 playbackStyle];
+  playbackStyle = [asset playbackStyle];
   v4 = 0;
-  if (v3 > 3)
+  if (playbackStyle > 3)
   {
-    if (v3 == 5)
+    if (playbackStyle == 5)
     {
       v5 = +[PXAssetsSceneSettings sharedInstance];
-      v6 = [v5 allowLoopingVideoPlayback];
+      allowLoopingVideoPlayback = [v5 allowLoopingVideoPlayback];
       goto LABEL_10;
     }
 
-    if (v3 == 4)
+    if (playbackStyle == 4)
     {
       v5 = +[PXAssetsSceneSettings sharedInstance];
-      v6 = [v5 allowVideoPlayback];
+      allowLoopingVideoPlayback = [v5 allowVideoPlayback];
       goto LABEL_10;
     }
   }
 
   else
   {
-    if (v3 == 2)
+    if (playbackStyle == 2)
     {
       v5 = +[PXAssetsSceneSettings sharedInstance];
-      v6 = [v5 allowAnimatedImagePlayback];
+      allowLoopingVideoPlayback = [v5 allowAnimatedImagePlayback];
       goto LABEL_10;
     }
 
-    if (v3 == 3)
+    if (playbackStyle == 3)
     {
       v5 = +[PXAssetsSceneSettings sharedInstance];
-      v6 = [v5 allowLivePhotoPlayback];
+      allowLoopingVideoPlayback = [v5 allowLivePhotoPlayback];
 LABEL_10:
-      v4 = v6;
+      v4 = allowLoopingVideoPlayback;
     }
   }
 
   return v4;
 }
 
-- (CGRect)frameForPlaybackRecord:(id)a3 minPlayableSize:(CGSize *)a4
+- (CGRect)frameForPlaybackRecord:(id)record minPlayableSize:(CGSize *)size
 {
-  v5 = a3;
-  v6 = [(PXPhotosDetailsInlinePlaybackController *)self tilingController];
-  v7 = [v6 currentLayout];
+  recordCopy = record;
+  tilingController = [(PXPhotosDetailsInlinePlaybackController *)self tilingController];
+  currentLayout = [tilingController currentLayout];
 
   v20 = 0;
   v18 = 0u;
@@ -75,7 +75,7 @@ LABEL_10:
   v16 = 0u;
   v17 = 0u;
   v15 = 0u;
-  [(PXPhotosDetailsInlinePlaybackController *)self _currentTileIdentifierForRecord:v5];
+  [(PXPhotosDetailsInlinePlaybackController *)self _currentTileIdentifierForRecord:recordCopy];
 
   v8 = *MEMORY[0x1E695F050];
   v14 = *(MEMORY[0x1E695F050] + 8);
@@ -94,9 +94,9 @@ LABEL_10:
 
 - (CGRect)currentVisibleRect
 {
-  v2 = [(PXPhotosDetailsInlinePlaybackController *)self tilingController];
-  v3 = [v2 currentLayout];
-  [v3 visibleRect];
+  tilingController = [(PXPhotosDetailsInlinePlaybackController *)self tilingController];
+  currentLayout = [tilingController currentLayout];
+  [currentLayout visibleRect];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -113,23 +113,23 @@ LABEL_10:
   return result;
 }
 
-- (id)createPlaybackRecordForDisplayAsset:(id)a3 mediaProvider:(id)a4 geometryReference:(id)a5 spriteSize:(CGSize)a6 displayScale:(double)a7
+- (id)createPlaybackRecordForDisplayAsset:(id)asset mediaProvider:(id)provider geometryReference:(id)reference spriteSize:(CGSize)size displayScale:(double)scale
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[_PXDetailsPlaybackRecord alloc] initWithDisplayAsset:v11 mediaProvider:v10 geometryReference:v9];
+  referenceCopy = reference;
+  providerCopy = provider;
+  assetCopy = asset;
+  v12 = [[_PXDetailsPlaybackRecord alloc] initWithDisplayAsset:assetCopy mediaProvider:providerCopy geometryReference:referenceCopy];
 
   return v12;
 }
 
 - (BOOL)shouldEnablePlayback
 {
-  v3 = [(PXPhotosDetailsInlinePlaybackController *)self delegate];
-  if (v3)
+  delegate = [(PXPhotosDetailsInlinePlaybackController *)self delegate];
+  if (delegate)
   {
-    v4 = [(PXPhotosDetailsInlinePlaybackController *)self delegate];
-    v5 = [v4 shouldEnablePlaybackForController:self];
+    delegate2 = [(PXPhotosDetailsInlinePlaybackController *)self delegate];
+    v5 = [delegate2 shouldEnablePlaybackForController:self];
   }
 
   else
@@ -140,22 +140,22 @@ LABEL_10:
   return v5;
 }
 
-- (void)checkInTile:(void *)a3 withIdentifier:(PXTileIdentifier *)a4
+- (void)checkInTile:(void *)tile withIdentifier:(PXTileIdentifier *)identifier
 {
-  v6 = *&a4->index[5];
-  v17 = *&a4->index[3];
+  v6 = *&identifier->index[5];
+  v17 = *&identifier->index[3];
   v18 = v6;
-  v19 = *&a4->index[7];
-  v20 = a4->index[9];
-  v7 = *&a4->index[1];
-  *location = *&a4->length;
+  v19 = *&identifier->index[7];
+  v20 = identifier->index[9];
+  v7 = *&identifier->index[1];
+  *location = *&identifier->length;
   v16 = v7;
   if ([(PXPhotosDetailsInlinePlaybackController *)self _isRecognizedTileIdentifier:location])
   {
-    v8 = [a3 imageRequester];
-    v9 = [v8 asset];
+    imageRequester = [tile imageRequester];
+    asset = [imageRequester asset];
 
-    [(PXGridInlinePlaybackController *)self willCheckInPlaybackRecordForDisplayAsset:v9];
+    [(PXGridInlinePlaybackController *)self willCheckInPlaybackRecordForDisplayAsset:asset];
     objc_initWeak(location, self);
     recordCreationQueue = self->_recordCreationQueue;
     v12[0] = MEMORY[0x1E69E9820];
@@ -163,8 +163,8 @@ LABEL_10:
     v12[2] = __70__PXPhotosDetailsInlinePlaybackController_checkInTile_withIdentifier___block_invoke;
     v12[3] = &unk_1E774B248;
     objc_copyWeak(&v14, location);
-    v13 = v9;
-    v11 = v9;
+    v13 = asset;
+    v11 = asset;
     dispatch_async(recordCreationQueue, v12);
 
     objc_destroyWeak(&v14);
@@ -178,24 +178,24 @@ void __70__PXPhotosDetailsInlinePlaybackController_checkInTile_withIdentifier___
   [WeakRetained checkInPlaybackRecordForDisplayAsset:*(a1 + 32)];
 }
 
-- (void)checkOutTile:(void *)a3 withIdentifier:(PXTileIdentifier *)a4
+- (void)checkOutTile:(void *)tile withIdentifier:(PXTileIdentifier *)identifier
 {
-  v7 = *&a4->index[5];
-  location[2] = *&a4->index[3];
+  v7 = *&identifier->index[5];
+  location[2] = *&identifier->index[3];
   location[3] = v7;
-  location[4] = *&a4->index[7];
-  v32 = a4->index[9];
-  v8 = *&a4->index[1];
-  location[0] = *&a4->length;
+  location[4] = *&identifier->index[7];
+  v32 = identifier->index[9];
+  v8 = *&identifier->index[1];
+  location[0] = *&identifier->length;
   location[1] = v8;
   if ([(PXPhotosDetailsInlinePlaybackController *)self _isRecognizedTileIdentifier:location])
   {
-    v9 = a3;
-    v10 = [v9 imageRequester];
-    v11 = [v10 asset];
+    tileCopy = tile;
+    imageRequester = [tileCopy imageRequester];
+    asset = [imageRequester asset];
 
-    v12 = [v9 imageRequester];
-    v13 = [v12 mediaProvider];
+    imageRequester2 = [tileCopy imageRequester];
+    mediaProvider = [imageRequester2 mediaProvider];
 
     objc_initWeak(location, self);
     recordCreationQueue = self->_recordCreationQueue;
@@ -204,20 +204,20 @@ void __70__PXPhotosDetailsInlinePlaybackController_checkInTile_withIdentifier___
     block[2] = __71__PXPhotosDetailsInlinePlaybackController_checkOutTile_withIdentifier___block_invoke;
     block[3] = &unk_1E7747CD8;
     objc_copyWeak(&v24, location);
-    v21 = v11;
-    v22 = v13;
-    v23 = v9;
-    v15 = *&a4->index[5];
-    v27 = *&a4->index[3];
+    v21 = asset;
+    v22 = mediaProvider;
+    v23 = tileCopy;
+    v15 = *&identifier->index[5];
+    v27 = *&identifier->index[3];
     v28 = v15;
-    v29 = *&a4->index[7];
-    v30 = a4->index[9];
-    v16 = *&a4->index[1];
-    v25 = *&a4->length;
+    v29 = *&identifier->index[7];
+    v30 = identifier->index[9];
+    v16 = *&identifier->index[1];
+    v25 = *&identifier->length;
     v26 = v16;
-    v17 = v9;
-    v18 = v13;
-    v19 = v11;
+    v17 = tileCopy;
+    v18 = mediaProvider;
+    v19 = asset;
     dispatch_async(recordCreationQueue, block);
 
     objc_destroyWeak(&v24);
@@ -259,7 +259,7 @@ uint64_t __71__PXPhotosDetailsInlinePlaybackController_checkOutTile_withIdentifi
   return [a2 setTileIdentifier:v5];
 }
 
-- (PXTileIdentifier)_currentTileIdentifierForRecord:(SEL)a3
+- (PXTileIdentifier)_currentTileIdentifierForRecord:(SEL)record
 {
   v6 = a4;
   v7 = v6;
@@ -285,16 +285,16 @@ uint64_t __71__PXPhotosDetailsInlinePlaybackController_checkOutTile_withIdentifi
   }
 
   v9 = *v8;
-  v10 = [(PXPhotosDetailsInlinePlaybackController *)self tilingController];
-  v11 = [v10 currentLayout];
+  tilingController = [(PXPhotosDetailsInlinePlaybackController *)self tilingController];
+  currentLayout = [tilingController currentLayout];
 
-  if (v9 == *off_1E7721F68 || ([v11 dataSource], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "identifier"), v12, v13 != v9))
+  if (v9 == *off_1E7721F68 || ([currentLayout dataSource], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "identifier"), v12, v13 != v9))
   {
-    v14 = [(PXPhotosDetailsInlinePlaybackController *)self tilingController];
-    v15 = [v7 geometryReference];
-    if (v14)
+    tilingController2 = [(PXPhotosDetailsInlinePlaybackController *)self tilingController];
+    geometryReference = [v7 geometryReference];
+    if (tilingController2)
     {
-      [v14 tileIdentifierForTile:v15];
+      [tilingController2 tileIdentifierForTile:geometryReference];
     }
 
     else
@@ -332,22 +332,22 @@ uint64_t __71__PXPhotosDetailsInlinePlaybackController_checkOutTile_withIdentifi
 
 - (PXPhotosDetailsInlinePlaybackController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPhotosDetailsInlinePlaybackController.m" lineNumber:52 description:{@"%s is not available as initializer", "-[PXPhotosDetailsInlinePlaybackController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosDetailsInlinePlaybackController.m" lineNumber:52 description:{@"%s is not available as initializer", "-[PXPhotosDetailsInlinePlaybackController init]"}];
 
   abort();
 }
 
-- (PXPhotosDetailsInlinePlaybackController)initWithTilingController:(id)a3
+- (PXPhotosDetailsInlinePlaybackController)initWithTilingController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = PXPhotosDetailsInlinePlaybackController;
   v6 = [(PXGridInlinePlaybackController *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tilingController, a3);
+    objc_storeStrong(&v6->_tilingController, controller);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_attr_make_with_qos_class(v8, QOS_CLASS_USER_INITIATED, 0);
 

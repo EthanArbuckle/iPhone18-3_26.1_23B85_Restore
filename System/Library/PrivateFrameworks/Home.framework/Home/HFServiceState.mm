@@ -1,10 +1,10 @@
 @interface HFServiceState
-+ (Class)stateClassForServiceDescriptor:(id)a3;
++ (Class)stateClassForServiceDescriptor:(id)descriptor;
 + (NAIdentity)na_identity;
 + (NSString)stateClassIdentifier;
-+ (id)stateForServiceDescriptor:(id)a3 withBatchReadResponse:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (HFServiceState)initWithBatchReadResponse:(id)a3;
++ (id)stateForServiceDescriptor:(id)descriptor withBatchReadResponse:(id)response;
+- (BOOL)isEqual:(id)equal;
+- (HFServiceState)initWithBatchReadResponse:(id)response;
 - (unint64_t)hash;
 @end
 
@@ -12,36 +12,36 @@
 
 + (NSString)stateClassIdentifier
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"HFServiceState.m" lineNumber:21 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFServiceState stateClassIdentifier]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFServiceState.m" lineNumber:21 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFServiceState stateClassIdentifier]", objc_opt_class()}];
 
   return 0;
 }
 
-- (HFServiceState)initWithBatchReadResponse:(id)a3
+- (HFServiceState)initWithBatchReadResponse:(id)response
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"HFServiceState.m" lineNumber:37 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFServiceState initWithBatchReadResponse:]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFServiceState.m" lineNumber:37 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFServiceState initWithBatchReadResponse:]", objc_opt_class()}];
 
   return 0;
 }
 
-+ (Class)stateClassForServiceDescriptor:(id)a3
++ (Class)stateClassForServiceDescriptor:(id)descriptor
 {
-  v3 = a3;
-  v4 = [v3 serviceSubtype];
-  v5 = v4;
-  if (!v4 || [v4 isEqualToString:*MEMORY[0x277CD0DB8]])
+  descriptorCopy = descriptor;
+  serviceSubtype = [descriptorCopy serviceSubtype];
+  v5 = serviceSubtype;
+  if (!serviceSubtype || [serviceSubtype isEqualToString:*MEMORY[0x277CD0DB8]])
   {
     v6 = MEMORY[0x277CD1D90];
-    v7 = [v3 serviceType];
-    v8 = [v6 hf_defaultServiceSubtypeForServiceType:v7];
+    serviceType = [descriptorCopy serviceType];
+    v8 = [v6 hf_defaultServiceSubtypeForServiceType:serviceType];
 
     v5 = v8;
   }
 
-  v9 = [v3 serviceType];
-  v10 = [v9 isEqualToString:*MEMORY[0x277CD0F38]];
+  serviceType2 = [descriptorCopy serviceType];
+  v10 = [serviceType2 isEqualToString:*MEMORY[0x277CD0F38]];
 
   if (v10)
   {
@@ -62,8 +62,8 @@
     }
 
     v11 = qword_280E02658;
-    v13 = [v3 serviceType];
-    v12 = [v11 objectForKeyedSubscript:v13];
+    serviceType3 = [descriptorCopy serviceType];
+    v12 = [v11 objectForKeyedSubscript:serviceType3];
   }
 
   return v12;
@@ -103,10 +103,10 @@ void __49__HFServiceState_stateClassForServiceDescriptor___block_invoke_5()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)stateForServiceDescriptor:(id)a3 withBatchReadResponse:(id)a4
++ (id)stateForServiceDescriptor:(id)descriptor withBatchReadResponse:(id)response
 {
-  v6 = a4;
-  v7 = [objc_alloc(objc_msgSend(a1 stateClassForServiceDescriptor:{a3)), "initWithBatchReadResponse:", v6}];
+  responseCopy = response;
+  v7 = [objc_alloc(objc_msgSend(self stateClassForServiceDescriptor:{descriptor)), "initWithBatchReadResponse:", responseCopy}];
 
   return v7;
 }
@@ -143,17 +143,17 @@ uint64_t __29__HFServiceState_na_identity__block_invoke_4()
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }

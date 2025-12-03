@@ -1,7 +1,7 @@
 @interface ControlsServer
 - (_TtC10ChronoCore14ControlsServer)init;
 - (void)dealloc;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 @end
 
 @implementation ControlsServer
@@ -9,7 +9,7 @@
 - (void)dealloc
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC10ChronoCore14ControlsServer__listener);
-  v4 = self;
+  selfCopy = self;
   if (v3)
   {
     [v3 invalidate];
@@ -27,13 +27,13 @@
   return result;
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   swift_unknownObjectRetain();
-  v9 = self;
-  sub_224D0AE80(v8);
+  selfCopy = self;
+  sub_224D0AE80(connectionCopy);
 
   swift_unknownObjectRelease();
 }

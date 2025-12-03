@@ -1,16 +1,16 @@
 @interface SUScriptNumberFormatter
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (NSString)localeIdentifier;
 - (NSString)style;
 - (SUScriptNumberFormatter)init;
-- (id)numberFromString:(id)a3;
+- (id)numberFromString:(id)string;
 - (id)scriptAttributeKeys;
-- (id)stringFromNumber:(id)a3;
+- (id)stringFromNumber:(id)number;
 - (void)dealloc;
-- (void)setLocaleIdentifier:(id)a3;
-- (void)setStyle:(id)a3;
+- (void)setLocaleIdentifier:(id)identifier;
+- (void)setStyle:(id)style;
 @end
 
 @implementation SUScriptNumberFormatter
@@ -37,13 +37,13 @@
   [(SUScriptObject *)&v3 dealloc];
 }
 
-- (id)numberFromString:(id)a3
+- (id)numberFromString:(id)string
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(SUScriptObject *)self lock];
-    v5 = [(NSNumberFormatter *)self->_numberFormatter numberFromString:a3];
+    v5 = [(NSNumberFormatter *)self->_numberFormatter numberFromString:string];
     [(SUScriptObject *)self unlock];
     if (v5)
     {
@@ -61,13 +61,13 @@
   return [v7 null];
 }
 
-- (id)stringFromNumber:(id)a3
+- (id)stringFromNumber:(id)number
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(SUScriptObject *)self lock];
-    v5 = [(NSNumberFormatter *)self->_numberFormatter stringFromNumber:a3];
+    v5 = [(NSNumberFormatter *)self->_numberFormatter stringFromNumber:number];
     [(SUScriptObject *)self unlock];
     if (v5)
     {
@@ -88,17 +88,17 @@
 - (NSString)localeIdentifier
 {
   [(SUScriptObject *)self lock];
-  v3 = [(NSLocale *)[(NSNumberFormatter *)self->_numberFormatter locale] localeIdentifier];
+  localeIdentifier = [(NSLocale *)[(NSNumberFormatter *)self->_numberFormatter locale] localeIdentifier];
   [(SUScriptObject *)self unlock];
-  return v3;
+  return localeIdentifier;
 }
 
-- (void)setLocaleIdentifier:(id)a3
+- (void)setLocaleIdentifier:(id)identifier
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DF58]) initWithLocaleIdentifier:a3];
+    v5 = [objc_alloc(MEMORY[0x1E695DF58]) initWithLocaleIdentifier:identifier];
     if (v5)
     {
       v8 = v5;
@@ -122,7 +122,7 @@
   [v6 throwException:v7];
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -133,37 +133,37 @@
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v5 = 1;
-  if (a3 && (isKindOfClass & 1) == 0)
+  if (style && (isKindOfClass & 1) == 0)
   {
     objc_opt_class();
-    if (objc_opt_isKindOfClass() & 1) == 0 || ([a3 isEqualToString:@"decimal"])
+    if (objc_opt_isKindOfClass() & 1) == 0 || ([style isEqualToString:@"decimal"])
     {
 LABEL_2:
       v5 = 1;
       goto LABEL_3;
     }
 
-    if ([a3 isEqualToString:@"none"])
+    if ([style isEqualToString:@"none"])
     {
       v5 = 0;
     }
 
-    else if ([a3 isEqualToString:@"currency"])
+    else if ([style isEqualToString:@"currency"])
     {
       v5 = 2;
     }
 
-    else if ([a3 isEqualToString:@"percent"])
+    else if ([style isEqualToString:@"percent"])
     {
       v5 = 3;
     }
 
-    else if ([a3 isEqualToString:@"scientific"])
+    else if ([style isEqualToString:@"scientific"])
     {
       v5 = 4;
     }
 
-    else if ([a3 isEqualToString:@"spell-out"])
+    else if ([style isEqualToString:@"spell-out"])
     {
       v5 = 5;
     }
@@ -184,40 +184,40 @@ LABEL_3:
 - (NSString)style
 {
   [(SUScriptObject *)self lock];
-  v3 = [(NSNumberFormatter *)self->_numberFormatter numberStyle];
+  numberStyle = [(NSNumberFormatter *)self->_numberFormatter numberStyle];
   [(SUScriptObject *)self unlock];
-  if (v3 > NSNumberFormatterSpellOutStyle)
+  if (numberStyle > NSNumberFormatterSpellOutStyle)
   {
     return @"decimal";
   }
 
   else
   {
-    return &off_1E81659D8[v3]->isa;
+    return &off_1E81659D8[numberStyle]->isa;
   }
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_27 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptNumberFormatter;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_22, 2);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_22, 2);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptNumberFormatter;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -227,14 +227,14 @@ LABEL_3:
 {
   v4.receiver = self;
   v4.super_class = SUScriptNumberFormatter;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_27 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_27 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_22 = sel_numberFromString_;
     unk_1EBF3AD00 = @"numberFromString";

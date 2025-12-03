@@ -1,32 +1,32 @@
 @interface _CPLObjectInjection
-- (_CPLObjectInjection)initWithVariables:(id)a3 object:(id)a4 sql:(id)a5;
-- (int)bindWithStatement:(sqlite3_stmt *)a3 startingAtIndex:(int)a4;
+- (_CPLObjectInjection)initWithVariables:(id)variables object:(id)object sql:(id)sql;
+- (int)bindWithStatement:(sqlite3_stmt *)statement startingAtIndex:(int)index;
 @end
 
 @implementation _CPLObjectInjection
 
-- (_CPLObjectInjection)initWithVariables:(id)a3 object:(id)a4 sql:(id)a5
+- (_CPLObjectInjection)initWithVariables:(id)variables object:(id)object sql:(id)sql
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  variablesCopy = variables;
+  objectCopy = object;
+  sqlCopy = sql;
   v15.receiver = self;
   v15.super_class = _CPLObjectInjection;
   v12 = [(_CPLObjectInjection *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_variables, a3);
-    objc_storeStrong(&v13->_object, a4);
-    objc_storeStrong(&v13->_sql, a5);
+    objc_storeStrong(&v12->_variables, variables);
+    objc_storeStrong(&v13->_object, object);
+    objc_storeStrong(&v13->_sql, sql);
   }
 
   return v13;
 }
 
-- (int)bindWithStatement:(sqlite3_stmt *)a3 startingAtIndex:(int)a4
+- (int)bindWithStatement:(sqlite3_stmt *)statement startingAtIndex:(int)index
 {
-  LODWORD(v4) = a4;
+  LODWORD(v4) = index;
   v7 = [[NSMutableArray alloc] initWithCapacity:{-[NSArray count](self->_variables, "count")}];
   bindValuesToKeepAlive = self->_bindValuesToKeepAlive;
   self->_bindValuesToKeepAlive = v7;
@@ -54,19 +54,19 @@
 
         v14 = *(*(&v21 + 1) + 8 * i);
         object = self->_object;
-        v16 = [v14 variableName];
-        v17 = [object valueForKey:v16];
+        variableName = [v14 variableName];
+        v17 = [object valueForKey:variableName];
         v18 = [v14 bindableValueForValue:v17];
 
         if (v18)
         {
-          [v18 sqliteBind:a3 index:v4];
+          [v18 sqliteBind:statement index:v4];
           [(NSMutableArray *)self->_bindValuesToKeepAlive addObject:v18];
         }
 
         else
         {
-          sqlite3_bind_null(a3, v4);
+          sqlite3_bind_null(statement, v4);
         }
 
         v4 = (v4 + 1);

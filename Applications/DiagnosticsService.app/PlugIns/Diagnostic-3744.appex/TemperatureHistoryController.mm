@@ -1,6 +1,6 @@
 @interface TemperatureHistoryController
-- (void)addTemperatureWarningWithReason:(id)a3 toDictionary:(id)a4;
-- (void)parseLogsWithCollector:(id)a3;
+- (void)addTemperatureWarningWithReason:(id)reason toDictionary:(id)dictionary;
+- (void)parseLogsWithCollector:(id)collector;
 - (void)start;
 @end
 
@@ -24,11 +24,11 @@
   [(TemperatureHistoryController *)self setFinished:1];
 }
 
-- (void)parseLogsWithCollector:(id)a3
+- (void)parseLogsWithCollector:(id)collector
 {
-  v4 = a3;
-  v5 = [(TemperatureHistoryController *)self result];
-  [v5 setStatusCode:&off_100004350];
+  collectorCopy = collector;
+  result = [(TemperatureHistoryController *)self result];
+  [result setStatusCode:&off_100004350];
 
   v43 = 0;
   v44 = &v43;
@@ -68,21 +68,21 @@
   v24 = &v43;
   v25 = &v27;
   v26 = &v31;
-  [v4 enumerateLogLinesWithBlock:v19];
+  [collectorCopy enumerateLogLinesWithBlock:v19];
   if (([(TemperatureHistoryController *)self isCancelled]& 1) == 0)
   {
     if (v32[6] >= 1 && !*(v28 + 6))
     {
       *(v28 + 6) = 1;
-      v11 = [(TemperatureHistoryController *)self result];
-      [v11 setStatusCode:&off_100004380];
+      result2 = [(TemperatureHistoryController *)self result];
+      [result2 setStatusCode:&off_100004380];
     }
 
     if (v44[5])
     {
       *(v28 + 6) = 2;
-      v12 = [(TemperatureHistoryController *)self result];
-      [v12 setStatusCode:&off_100004368];
+      result3 = [(TemperatureHistoryController *)self result];
+      [result3 setStatusCode:&off_100004368];
     }
 
     v49[0] = @"maxTemperature";
@@ -103,8 +103,8 @@
     v50[4] = v16;
     v50[5] = v8;
     v17 = [NSDictionary dictionaryWithObjects:v50 forKeys:v49 count:6];
-    v18 = [(TemperatureHistoryController *)self result];
-    [v18 setData:v17];
+    result4 = [(TemperatureHistoryController *)self result];
+    [result4 setData:v17];
   }
 
   _Block_object_dispose(&v27, 8);
@@ -114,28 +114,28 @@
   _Block_object_dispose(&v43, 8);
 }
 
-- (void)addTemperatureWarningWithReason:(id)a3 toDictionary:(id)a4
+- (void)addTemperatureWarningWithReason:(id)reason toDictionary:(id)dictionary
 {
-  v11 = a3;
-  v5 = a4;
+  reasonCopy = reason;
+  dictionaryCopy = dictionary;
   v6 = @"Unspecified";
-  if (v11)
+  if (reasonCopy)
   {
-    v6 = v11;
+    v6 = reasonCopy;
   }
 
   v7 = v6;
-  v8 = [v5 objectForKeyedSubscript:v7];
+  v8 = [dictionaryCopy objectForKeyedSubscript:v7];
   v9 = v8;
   if (v8)
   {
     v10 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v8 intValue] + 1);
-    [v5 setObject:v10 forKeyedSubscript:v7];
+    [dictionaryCopy setObject:v10 forKeyedSubscript:v7];
   }
 
   else
   {
-    [v5 setObject:&off_100004398 forKeyedSubscript:v7];
+    [dictionaryCopy setObject:&off_100004398 forKeyedSubscript:v7];
   }
 }
 

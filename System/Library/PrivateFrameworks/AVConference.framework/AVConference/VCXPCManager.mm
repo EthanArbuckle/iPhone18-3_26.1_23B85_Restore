@@ -1,7 +1,7 @@
 @interface VCXPCManager
-+ (void)addNSError:(id)a3 toXPCArgumentDictionary:(id)a4;
-+ (void)registerBlock:(id)a3 forService:(const char *)a4;
-+ (void)registerTerminateBlock:(id)a3 forService:(const char *)a4 expectedClasses:(id)a5;
++ (void)addNSError:(id)error toXPCArgumentDictionary:(id)dictionary;
++ (void)registerBlock:(id)block forService:(const char *)service;
++ (void)registerTerminateBlock:(id)block forService:(const char *)service expectedClasses:(id)classes;
 - (VCXPCManager)init;
 - (void)dealloc;
 - (void)deregisterBlocksFromService;
@@ -88,17 +88,17 @@ LABEL_6:
   [(NSMutableArray *)self->_registeredServices removeAllObjects];
 }
 
-+ (void)registerBlock:(id)a3 forService:(const char *)a4
++ (void)registerBlock:(id)block forService:(const char *)service
 {
   v8[6] = *MEMORY[0x1E69E9840];
-  v7 = [a1 sharedInstance];
+  sharedInstance = [self sharedInstance];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __41__VCXPCManager_registerBlock_forService___block_invoke;
   v8[3] = &unk_1E85F5088;
-  v8[4] = a1;
-  v8[5] = a3;
-  [*(v7 + 176) addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", a4)}];
+  v8[4] = self;
+  v8[5] = block;
+  [*(sharedInstance + 176) addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", service)}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
@@ -114,18 +114,18 @@ uint64_t __41__VCXPCManager_registerBlock_forService___block_invoke(uint64_t a1,
   return (*(*(a1 + 40) + 16))();
 }
 
-+ (void)registerTerminateBlock:(id)a3 forService:(const char *)a4 expectedClasses:(id)a5
++ (void)registerTerminateBlock:(id)block forService:(const char *)service expectedClasses:(id)classes
 {
   v10[7] = *MEMORY[0x1E69E9840];
-  v9 = [a1 sharedInstance];
+  sharedInstance = [self sharedInstance];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __66__VCXPCManager_registerTerminateBlock_forService_expectedClasses___block_invoke;
   v10[3] = &unk_1E85F50B0;
-  v10[4] = a5;
-  v10[5] = a1;
-  v10[6] = a3;
-  [*(v9 + 176) addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", a4, MEMORY[0x1E69E9820], 3221225472, __66__VCXPCManager_registerTerminateBlock_forService_expectedClasses___block_invoke, &unk_1E85F50B0, a5, a1, a3)}];
+  v10[4] = classes;
+  v10[5] = self;
+  v10[6] = block;
+  [*(sharedInstance + 176) addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", service, MEMORY[0x1E69E9820], 3221225472, __66__VCXPCManager_registerTerminateBlock_forService_expectedClasses___block_invoke, &unk_1E85F50B0, classes, self, block)}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
@@ -193,25 +193,25 @@ LABEL_12:
   return v4;
 }
 
-+ (void)addNSError:(id)a3 toXPCArgumentDictionary:(id)a4
++ (void)addNSError:(id)error toXPCArgumentDictionary:(id)dictionary
 {
-  if (a3)
+  if (error)
   {
     v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:3];
-    v6 = [a3 domain];
-    if (v6)
+    domain = [error domain];
+    if (domain)
     {
-      [v8 setObject:v6 forKeyedSubscript:@"ERROR_DOMAIN"];
+      [v8 setObject:domain forKeyedSubscript:@"ERROR_DOMAIN"];
     }
 
-    [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", objc_msgSend(a3, "code")), @"ERROR_CODE"}];
-    v7 = [a3 userInfo];
-    if (v7)
+    [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", objc_msgSend(error, "code")), @"ERROR_CODE"}];
+    userInfo = [error userInfo];
+    if (userInfo)
     {
-      [v8 setObject:v7 forKeyedSubscript:@"ERROR_USERINFO"];
+      [v8 setObject:userInfo forKeyedSubscript:@"ERROR_USERINFO"];
     }
 
-    [a4 setObject:v8 forKeyedSubscript:@"ERROR"];
+    [dictionary setObject:v8 forKeyedSubscript:@"ERROR"];
   }
 }
 

@@ -1,36 +1,36 @@
 @interface PXGSpriteDataStore
 + (id)newSpriteDataStore;
 - ($32FA0F4B141605662A7EE1284C9FC7E2)sprites;
-- ($32FA0F4B141605662A7EE1284C9FC7E2)spritesInRange:(SEL)a3;
-- ($95568E2CB0F008E7B4D2895BE51B87CB)_mutableSpritesInRange:(SEL)a3;
-- ($95568E2CB0F008E7B4D2895BE51B87CB)spriteAtIndex:(SEL)a3;
+- ($32FA0F4B141605662A7EE1284C9FC7E2)spritesInRange:(SEL)range;
+- ($95568E2CB0F008E7B4D2895BE51B87CB)_mutableSpritesInRange:(SEL)range;
+- ($95568E2CB0F008E7B4D2895BE51B87CB)spriteAtIndex:(SEL)index;
 - (NSString)description;
 - (NSString)diagnosticDescription;
 - (PXGSpriteDataStore)init;
 - (id)_init;
-- (id)spriteAtIndexes:(id)a3 inRect:(CGRect)a4;
-- (id)spriteIndexesInRect:(CGRect)a3;
-- (id)spriteIndexesWithSpriteInfoFlags:(unsigned __int8)a3;
-- (void)_collectSpriteIndexes:(id)a3 inRange:(_PXGSpriteIndexRange)a4 inRect:(CGRect)a5;
-- (void)applyChangeDetails:(id)a3;
+- (id)spriteAtIndexes:(id)indexes inRect:(CGRect)rect;
+- (id)spriteIndexesInRect:(CGRect)rect;
+- (id)spriteIndexesWithSpriteInfoFlags:(unsigned __int8)flags;
+- (void)_collectSpriteIndexes:(id)indexes inRange:(_PXGSpriteIndexRange)range inRect:(CGRect)rect;
+- (void)applyChangeDetails:(id)details;
 - (void)clearEntities;
-- (void)copySpritesInRange:(_PXGSpriteIndexRange)a3 fromSpriteDataStore:(id)a4;
+- (void)copySpritesInRange:(_PXGSpriteIndexRange)range fromSpriteDataStore:(id)store;
 - (void)dealloc;
-- (void)enumerateSpritesInRange:(_PXGSpriteIndexRange)a3 usingBlock:(id)a4;
-- (void)enumerateSpritesInRect:(CGRect)a3 usingBlock:(id)a4;
-- (void)insertSpritesInRange:(_PXGSpriteIndexRange)a3;
-- (void)moveSpritesFromIndexes:(__CFArray *)a3 toIndexes:(id)a4;
-- (void)moveSpritesInRange:(_PXGSpriteIndexRange)a3 toRange:(_PXGSpriteIndexRange)a4;
-- (void)removeSpritesInRange:(_PXGSpriteIndexRange)a3;
-- (void)setCount:(unsigned int)a3;
-- (void)setSprites:(id *)a3;
+- (void)enumerateSpritesInRange:(_PXGSpriteIndexRange)range usingBlock:(id)block;
+- (void)enumerateSpritesInRect:(CGRect)rect usingBlock:(id)block;
+- (void)insertSpritesInRange:(_PXGSpriteIndexRange)range;
+- (void)moveSpritesFromIndexes:(__CFArray *)indexes toIndexes:(id)toIndexes;
+- (void)moveSpritesInRange:(_PXGSpriteIndexRange)range toRange:(_PXGSpriteIndexRange)toRange;
+- (void)removeSpritesInRange:(_PXGSpriteIndexRange)range;
+- (void)setCount:(unsigned int)count;
+- (void)setSprites:(id *)sprites;
 @end
 
 @implementation PXGSpriteDataStore
 
 + (id)newSpriteDataStore
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
 
   return [v2 _init];
 }
@@ -58,39 +58,39 @@
   v28 = [v3 stringWithFormat:@"<%@: %p\n", v5, self];
 
   v6 = [(PXGSpriteDataStore *)self count];
-  v7 = [(PXGSpriteDataStore *)self entities];
-  v8 = [(PXGSpriteDataStore *)self geometries];
-  v9 = [(PXGSpriteDataStore *)self styles];
-  v10 = [(PXGSpriteDataStore *)self infos];
+  entities = [(PXGSpriteDataStore *)self entities];
+  geometries = [(PXGSpriteDataStore *)self geometries];
+  styles = [(PXGSpriteDataStore *)self styles];
+  infos = [(PXGSpriteDataStore *)self infos];
   if (v6)
   {
-    v11 = v10;
+    v11 = infos;
     v12 = 0;
     v13 = v6;
     do
     {
-      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"{id=%ld}", v7[v12].var0];
-      v15 = *&v8->var0.var0;
-      v16 = *&v8->var0.var2;
-      v8 = (v8 + 32);
+      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"{id=%ld}", entities[v12].var0];
+      v15 = *&geometries->var0.var0;
+      v16 = *&geometries->var0.var2;
+      geometries = (geometries + 32);
       v29 = v15;
       v30 = v16;
       v17 = PXGSpriteGeometryDescription(&v29);
-      v18 = *&v9[2].var3;
-      v35 = *(&v9[2].var1 + 4);
+      v18 = *&styles[2].var3;
+      v35 = *(&styles[2].var1 + 4);
       v36 = v18;
-      v19 = *(&v9[3].var1 + 8);
-      v37 = *&v9[2].var8;
+      v19 = *(&styles[3].var1 + 8);
+      v37 = *&styles[2].var8;
       v38 = v19;
-      var1 = v9[1].var1;
-      v31 = *&v9->var5;
+      var1 = styles[1].var1;
+      v31 = *&styles->var5;
       v32 = var1;
-      v21 = *&v9[1].var6;
-      v33 = *&v9[1].var2;
+      v21 = *&styles[1].var6;
+      v33 = *&styles[1].var2;
       v34 = v21;
-      v22 = *&v9->var0;
-      v23 = *(&v9->var1 + 12);
-      v9 = (v9 + 160);
+      v22 = *&styles->var0;
+      v23 = *(&styles->var1 + 12);
+      styles = (styles + 160);
       v29 = v22;
       v30 = v23;
       v24 = PXGSpriteStyleDescription(&v29);
@@ -123,43 +123,43 @@
   return v6;
 }
 
-- (id)spriteAtIndexes:(id)a3 inRect:(CGRect)a4
+- (id)spriteAtIndexes:(id)indexes inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v9 = MEMORY[0x277CCAB58];
-  v10 = a3;
+  indexesCopy = indexes;
   v11 = objc_alloc_init(v9);
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __45__PXGSpriteDataStore_spriteAtIndexes_inRect___block_invoke;
   v18 = &unk_2782AA2A8;
-  v19 = self;
+  selfCopy = self;
   v20 = v11;
   v21 = x;
   v22 = y;
   v23 = width;
   v24 = height;
   v12 = v11;
-  [v10 enumerateRangesUsingBlock:&v15];
+  [indexesCopy enumerateRangesUsingBlock:&v15];
 
   v13 = [v12 copy];
 
   return v13;
 }
 
-- (void)_collectSpriteIndexes:(id)a3 inRange:(_PXGSpriteIndexRange)a4 inRect:(CGRect)a5
+- (void)_collectSpriteIndexes:(id)indexes inRange:(_PXGSpriteIndexRange)range inRect:(CGRect)rect
 {
-  width = a5.size.width;
-  height = a5.size.height;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v31 = a3;
-  v9 = [(PXGSpriteDataStore *)self geometries];
-  v10 = HIDWORD(*&a4);
-  if (a4.length + a4.location > a4.location)
+  width = rect.size.width;
+  height = rect.size.height;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  indexesCopy = indexes;
+  geometries = [(PXGSpriteDataStore *)self geometries];
+  v10 = HIDWORD(*&range);
+  if (range.length + range.location > range.location)
   {
     *&v11 = x;
     *&v12 = y;
@@ -170,8 +170,8 @@
     v16 = v15.f32[1];
     v17 = *&v12;
     v18 = v15.f32[0];
-    a4 = a4.location;
-    v19 = v9 + 32 * a4.location;
+    range = range.location;
+    v19 = geometries + 32 * range.location;
     do
     {
       v20 = vmul_f32(*(v19 + 24), 0x3F0000003F000000);
@@ -185,11 +185,11 @@
         v27 = *v19 + v25;
         if (v26 <= v18 && v27 >= v13)
         {
-          [v31 addIndex:{a4, v27}];
+          [indexesCopy addIndex:{range, v27}];
         }
       }
 
-      ++*&a4;
+      ++*&range;
       v19 += 32;
       LODWORD(v10) = v10 - 1;
     }
@@ -198,10 +198,10 @@
   }
 }
 
-- (id)spriteIndexesWithSpriteInfoFlags:(unsigned __int8)a3
+- (id)spriteIndexesWithSpriteInfoFlags:(unsigned __int8)flags
 {
-  v3 = a3;
-  v5 = [(PXGSpriteDataStore *)self infos];
+  flagsCopy = flags;
+  infos = [(PXGSpriteDataStore *)self infos];
   v6 = [(PXGSpriteDataStore *)self count];
   v7 = objc_alloc_init(MEMORY[0x277CCAB58]);
   if (!v6)
@@ -211,7 +211,7 @@
 
   v8 = 0;
   v9 = 0;
-  v10 = &v5[1].var3 + 2;
+  v10 = &infos[1].var3 + 2;
   v11 = 0x7FFFFFFFFFFFFFFFLL;
   do
   {
@@ -219,7 +219,7 @@
     v13 = v9;
     v14 = *v10;
     v10 += 40;
-    if ((v3 & ~v14) == 0)
+    if ((flagsCopy & ~v14) == 0)
     {
       if (v9)
       {
@@ -259,12 +259,12 @@ LABEL_14:
   return v7;
 }
 
-- (id)spriteIndexesInRect:(CGRect)a3
+- (id)spriteIndexesInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = objc_alloc_init(MEMORY[0x277CCAB58]);
   [(PXGSpriteDataStore *)self _collectSpriteIndexes:v8 inRange:[(PXGSpriteDataStore *)self count]<< 32 inRect:x, y, width, height];
   v9 = [v8 copy];
@@ -272,45 +272,45 @@ LABEL_14:
   return v9;
 }
 
-- (void)enumerateSpritesInRange:(_PXGSpriteIndexRange)a3 usingBlock:(id)a4
+- (void)enumerateSpritesInRange:(_PXGSpriteIndexRange)range usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = [(PXGSpriteDataStore *)self count];
-  v8 = [(PXGSpriteDataStore *)self entities];
-  v9 = [(PXGSpriteDataStore *)self geometries];
-  v10 = [(PXGSpriteDataStore *)self styles];
-  v11 = [(PXGSpriteDataStore *)self infos];
-  v12 = a3.length + a3.location;
+  entities = [(PXGSpriteDataStore *)self entities];
+  geometries = [(PXGSpriteDataStore *)self geometries];
+  styles = [(PXGSpriteDataStore *)self styles];
+  infos = [(PXGSpriteDataStore *)self infos];
+  v12 = range.length + range.location;
   if (v12 > v7)
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [MEMORY[0x277CCACA8] stringWithFormat:@"{%li, %li}", a3.location, HIDWORD(*&a3)];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"{%li, %li}", range.location, HIDWORD(*&range)];
     v18 = v19 = v7;
-    [v20 handleFailureInMethod:a2 object:self file:@"PXGSpriteDataStore.m" lineNumber:226 description:{@"invalid range %@ not within 0..<%li", v18, v19}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGSpriteDataStore.m" lineNumber:226 description:{@"invalid range %@ not within 0..<%li", v18, v19}];
   }
 
   v23 = 0;
-  if (v12 > a3.location)
+  if (v12 > range.location)
   {
-    v13 = a3.location + 1;
-    v14 = v11 + 40 * a3.location;
-    v15 = v10 + 160 * a3.location;
-    v16 = v9 + 32 * a3.location;
-    v17 = &v8[a3.location];
+    v13 = range.location + 1;
+    v14 = infos + 40 * range.location;
+    v15 = styles + 160 * range.location;
+    v16 = geometries + 32 * range.location;
+    v17 = &entities[range.location];
     do
     {
       v22[0] = v17;
       v22[1] = v16;
       v22[2] = v15;
       v22[3] = v14;
-      v6[2](v6, a3, v22, &v23);
+      blockCopy[2](blockCopy, range, v22, &v23);
       if (v13 >= v12)
       {
         break;
       }
 
       ++v13;
-      a3 = (a3.location + 1);
+      range = (range.location + 1);
       v14 += 40;
       v15 += 160;
       v16 += 32;
@@ -321,22 +321,22 @@ LABEL_14:
   }
 }
 
-- (void)enumerateSpritesInRect:(CGRect)a3 usingBlock:(id)a4
+- (void)enumerateSpritesInRect:(CGRect)rect usingBlock:(id)block
 {
-  width = a3.size.width;
-  height = a3.size.height;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = a4;
+  width = rect.size.width;
+  height = rect.size.height;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  blockCopy = block;
   v8 = [(PXGSpriteDataStore *)self count];
-  v9 = [(PXGSpriteDataStore *)self entities];
-  v10 = [(PXGSpriteDataStore *)self geometries];
-  v11 = [(PXGSpriteDataStore *)self styles];
-  v12 = [(PXGSpriteDataStore *)self infos];
+  entities = [(PXGSpriteDataStore *)self entities];
+  geometries = [(PXGSpriteDataStore *)self geometries];
+  styles = [(PXGSpriteDataStore *)self styles];
+  infos = [(PXGSpriteDataStore *)self infos];
   v36 = 0;
   if (v8)
   {
-    v14 = v12;
+    v14 = infos;
     v15.f32[0] = x;
     v16 = y;
     v17 = v15.f32[0];
@@ -350,23 +350,23 @@ LABEL_14:
     v23 = 1;
     do
     {
-      v24 = vmul_f32(*&v10[1].var0.var0, 0x3F0000003F000000);
-      var1 = v10->var0.var1;
+      v24 = vmul_f32(*&geometries[1].var0.var0, 0x3F0000003F000000);
+      var1 = geometries->var0.var1;
       v26 = var1 - v24.f32[1];
       v27 = var1 + v24.f32[1];
       v28 = v26 > v20 || v27 < v21;
-      if (v28 || ((v29 = v24.f32[0], v30 = v10->var0.var0 - v29, v13.n128_f64[0] = v10->var0.var0 + v29, v30 <= v22) ? (v31 = v13.n128_f64[0] < v17) : (v31 = 1), v31))
+      if (v28 || ((v29 = v24.f32[0], v30 = geometries->var0.var0 - v29, v13.n128_f64[0] = geometries->var0.var0 + v29, v30 <= v22) ? (v31 = v13.n128_f64[0] < v17) : (v31 = 1), v31))
       {
         v32 = 0;
       }
 
       else
       {
-        v35[0] = v9;
-        v35[1] = v10;
-        v35[2] = v11;
+        v35[0] = entities;
+        v35[1] = geometries;
+        v35[2] = styles;
         v35[3] = v14;
-        (*(v7 + 2))(v7, (v23 - 1), v35, &v36, v13);
+        (*(blockCopy + 2))(blockCopy, (v23 - 1), v35, &v36, v13);
         v32 = v36;
       }
 
@@ -377,9 +377,9 @@ LABEL_14:
 
       ++v23;
       v14 = (v14 + 40);
-      v11 = (v11 + 160);
-      ++v9;
-      v10 = (v10 + 32);
+      styles = (styles + 160);
+      ++entities;
+      geometries = (geometries + 32);
     }
 
     while ((v32 & 1) == 0);
@@ -394,20 +394,20 @@ LABEL_14:
   bzero(entities, v3);
 }
 
-- (void)copySpritesInRange:(_PXGSpriteIndexRange)a3 fromSpriteDataStore:(id)a4
+- (void)copySpritesInRange:(_PXGSpriteIndexRange)range fromSpriteDataStore:(id)store
 {
-  v7 = a4;
-  v8 = HIDWORD(*&a3);
-  if (a3.length + a3.location > [v7 count])
+  storeCopy = store;
+  v8 = HIDWORD(*&range);
+  if (range.length + range.location > [storeCopy count])
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXGSpriteDataStore.m" lineNumber:181 description:{@"Invalid parameter not satisfying: %@", @"PXGSpriteIndexRangeMax(spriteIndexRange) <= fromSpriteDataStore.count"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGSpriteDataStore.m" lineNumber:181 description:{@"Invalid parameter not satisfying: %@", @"PXGSpriteIndexRangeMax(spriteIndexRange) <= fromSpriteDataStore.count"}];
   }
 
-  [(PXGSpriteDataStore *)self _mutableSpritesInRange:a3];
-  if (v7)
+  [(PXGSpriteDataStore *)self _mutableSpritesInRange:range];
+  if (storeCopy)
   {
-    [v7 _mutableSpritesInRange:a3];
+    [storeCopy _mutableSpritesInRange:range];
   }
 
   memcpy(0, 0, 4 * v8);
@@ -416,21 +416,21 @@ LABEL_14:
   memcpy(0, 0, 40 * v8);
 }
 
-- (void)setSprites:(id *)a3
+- (void)setSprites:(id *)sprites
 {
-  var0 = a3->var0;
+  var0 = sprites->var0;
   [(PXGSpriteDataStore *)self setCount:var0];
-  memcpy([(PXGSpriteDataStore *)self entities], a3->var1, 4 * var0);
-  memcpy([(PXGSpriteDataStore *)self geometries], a3->var2, 32 * var0);
+  memcpy([(PXGSpriteDataStore *)self entities], sprites->var1, 4 * var0);
+  memcpy([(PXGSpriteDataStore *)self geometries], sprites->var2, 32 * var0);
   v6 = 5 * var0;
-  memcpy([(PXGSpriteDataStore *)self styles], a3->var3, 32 * v6);
-  v7 = [(PXGSpriteDataStore *)self infos];
-  var4 = a3->var4;
+  memcpy([(PXGSpriteDataStore *)self styles], sprites->var3, 32 * v6);
+  infos = [(PXGSpriteDataStore *)self infos];
+  var4 = sprites->var4;
 
-  memcpy(v7, var4, 8 * v6);
+  memcpy(infos, var4, 8 * v6);
 }
 
-- ($95568E2CB0F008E7B4D2895BE51B87CB)spriteAtIndex:(SEL)a3
+- ($95568E2CB0F008E7B4D2895BE51B87CB)spriteAtIndex:(SEL)index
 {
   v7 = ([(PXGSpriteDataStore *)self entities]+ 4 * a4);
   v8 = ([(PXGSpriteDataStore *)self geometries]+ 32 * a4);
@@ -443,13 +443,13 @@ LABEL_14:
   return result;
 }
 
-- ($95568E2CB0F008E7B4D2895BE51B87CB)_mutableSpritesInRange:(SEL)a3
+- ($95568E2CB0F008E7B4D2895BE51B87CB)_mutableSpritesInRange:(SEL)range
 {
   location = a4.location;
   if (a4.length + a4.location > [(PXGSpriteDataStore *)self count])
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a3 object:self file:@"PXGSpriteDataStore.m" lineNumber:156 description:{@"Invalid parameter not satisfying: %@", @"PXGSpriteIndexRangeMax(range) <= self.count"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:range object:self file:@"PXGSpriteDataStore.m" lineNumber:156 description:{@"Invalid parameter not satisfying: %@", @"PXGSpriteIndexRangeMax(range) <= self.count"}];
   }
 
   v8 = location;
@@ -464,14 +464,14 @@ LABEL_14:
   return result;
 }
 
-- ($32FA0F4B141605662A7EE1284C9FC7E2)spritesInRange:(SEL)a3
+- ($32FA0F4B141605662A7EE1284C9FC7E2)spritesInRange:(SEL)range
 {
   location = a4.location;
   length = a4.length;
   if (a4.length + a4.location > [(PXGSpriteDataStore *)self count])
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a3 object:self file:@"PXGSpriteDataStore.m" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"PXGSpriteIndexRangeMax(range) <= self.count"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:range object:self file:@"PXGSpriteDataStore.m" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"PXGSpriteIndexRangeMax(range) <= self.count"}];
   }
 
   v9 = location;
@@ -487,46 +487,46 @@ LABEL_14:
   return result;
 }
 
-- (void)applyChangeDetails:(id)a3
+- (void)applyChangeDetails:(id)details
 {
-  v4 = a3;
-  -[PXGSpriteDataStore setCount:](self, "setCount:", [v4 numberOfSpritesAfterChange] - objc_msgSend(v4, "numberOfSpritesBeforeChange") + -[PXGSpriteDataStore count](self, "count"));
-  [v4 applyToArray:self->_entities elementSize:4 countAfterChanges:-[PXGSpriteDataStore count](self insertionHandler:"count") modifiedHandler:{0, 0}];
-  [v4 applyToArray:self->_geometries elementSize:32 countAfterChanges:-[PXGSpriteDataStore count](self insertionHandler:"count") modifiedHandler:{0, 0}];
-  [v4 applyToArray:self->_styles elementSize:160 countAfterChanges:-[PXGSpriteDataStore count](self insertionHandler:"count") modifiedHandler:{0, 0}];
-  [v4 applyToArray:self->_infos elementSize:40 countAfterChanges:-[PXGSpriteDataStore count](self insertionHandler:"count") modifiedHandler:{0, 0}];
+  detailsCopy = details;
+  -[PXGSpriteDataStore setCount:](self, "setCount:", [detailsCopy numberOfSpritesAfterChange] - objc_msgSend(detailsCopy, "numberOfSpritesBeforeChange") + -[PXGSpriteDataStore count](self, "count"));
+  [detailsCopy applyToArray:self->_entities elementSize:4 countAfterChanges:-[PXGSpriteDataStore count](self insertionHandler:"count") modifiedHandler:{0, 0}];
+  [detailsCopy applyToArray:self->_geometries elementSize:32 countAfterChanges:-[PXGSpriteDataStore count](self insertionHandler:"count") modifiedHandler:{0, 0}];
+  [detailsCopy applyToArray:self->_styles elementSize:160 countAfterChanges:-[PXGSpriteDataStore count](self insertionHandler:"count") modifiedHandler:{0, 0}];
+  [detailsCopy applyToArray:self->_infos elementSize:40 countAfterChanges:-[PXGSpriteDataStore count](self insertionHandler:"count") modifiedHandler:{0, 0}];
 }
 
-- (void)moveSpritesInRange:(_PXGSpriteIndexRange)a3 toRange:(_PXGSpriteIndexRange)a4
+- (void)moveSpritesInRange:(_PXGSpriteIndexRange)range toRange:(_PXGSpriteIndexRange)toRange
 {
-  v7 = [MEMORY[0x277D3CCC8] changeDetailsWithMovedFromIndexRange:a3.location toIndexRange:{a3.length, a4.location, a4.length}];
-  v5 = [v7 movesFromIndexes];
-  v6 = [v7 movesToIndexes];
-  [(PXGSpriteDataStore *)self moveSpritesFromIndexes:v5 toIndexes:v6];
+  v7 = [MEMORY[0x277D3CCC8] changeDetailsWithMovedFromIndexRange:range.location toIndexRange:{range.length, toRange.location, toRange.length}];
+  movesFromIndexes = [v7 movesFromIndexes];
+  movesToIndexes = [v7 movesToIndexes];
+  [(PXGSpriteDataStore *)self moveSpritesFromIndexes:movesFromIndexes toIndexes:movesToIndexes];
 }
 
-- (void)moveSpritesFromIndexes:(__CFArray *)a3 toIndexes:(id)a4
+- (void)moveSpritesFromIndexes:(__CFArray *)indexes toIndexes:(id)toIndexes
 {
-  v7 = a4;
-  Count = CFArrayGetCount(a3);
-  v9 = [v7 count];
+  toIndexesCopy = toIndexes;
+  Count = CFArrayGetCount(indexes);
+  v9 = [toIndexesCopy count];
   v10 = v9;
   if (Count < 1 || v9 <= 0)
   {
-    v37 = [MEMORY[0x277CCA890] currentHandler];
-    [v37 handleFailureInMethod:a2 object:self file:@"PXGSpriteDataStore.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"fromIndexesCount > 0 && toIndexesCount > 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGSpriteDataStore.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"fromIndexesCount > 0 && toIndexesCount > 0"}];
   }
 
   if (Count != v10)
   {
-    v35 = [MEMORY[0x277CCA890] currentHandler];
-    [v35 handleFailureInMethod:a2 object:self file:@"PXGSpriteDataStore.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"fromIndexesCount == toIndexesCount"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGSpriteDataStore.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"fromIndexesCount == toIndexesCount"}];
   }
 
   if (![(PXGSpriteDataStore *)self count])
   {
-    v36 = [MEMORY[0x277CCA890] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"PXGSpriteDataStore.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"self.count != 0"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXGSpriteDataStore.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"self.count != 0"}];
   }
 
   v11 = [(PXGSpriteDataStore *)self count];
@@ -544,7 +544,7 @@ LABEL_14:
   {
     for (i = 0; i < Count; v42[3] = i)
     {
-      ValueAtIndex = CFArrayGetValueAtIndex(a3, i);
+      ValueAtIndex = CFArrayGetValueAtIndex(indexes, i);
       v14 = v42[3] + v11;
       geometries = self->_geometries;
       self->_entities[v14].var0 = self->_entities[ValueAtIndex].var0;
@@ -595,7 +595,7 @@ LABEL_14:
   v40 = v10;
   v38[4] = self;
   v38[5] = &v41;
-  [v7 enumerateRangesUsingBlock:v38];
+  [toIndexesCopy enumerateRangesUsingBlock:v38];
   [(PXGSpriteDataStore *)self setCount:[(PXGSpriteDataStore *)self count]- v10];
   _Block_object_dispose(&v41, 8);
 }
@@ -660,11 +660,11 @@ __n128 __55__PXGSpriteDataStore_moveSpritesFromIndexes_toIndexes___block_invoke(
   return result;
 }
 
-- (void)removeSpritesInRange:(_PXGSpriteIndexRange)a3
+- (void)removeSpritesInRange:(_PXGSpriteIndexRange)range
 {
-  location = a3.location;
-  length = a3.length;
-  _PXGArrayRemoveRange(self->_entities, 4, [(PXGSpriteDataStore *)self count], a3.location, a3.length);
+  location = range.location;
+  length = range.length;
+  _PXGArrayRemoveRange(self->_entities, 4, [(PXGSpriteDataStore *)self count], range.location, range.length);
   _PXGArrayRemoveRange(self->_geometries, 32, [(PXGSpriteDataStore *)self count], location, length);
   _PXGArrayRemoveRange(self->_styles, 160, [(PXGSpriteDataStore *)self count], location, length);
   _PXGArrayRemoveRange(self->_infos, 40, [(PXGSpriteDataStore *)self count], location, length);
@@ -673,29 +673,29 @@ __n128 __55__PXGSpriteDataStore_moveSpritesFromIndexes_toIndexes___block_invoke(
   [(PXGSpriteDataStore *)self setCount:v6];
 }
 
-- (void)insertSpritesInRange:(_PXGSpriteIndexRange)a3
+- (void)insertSpritesInRange:(_PXGSpriteIndexRange)range
 {
-  length = a3.length;
-  [(PXGSpriteDataStore *)self setCount:[(PXGSpriteDataStore *)self count]+ a3.length];
-  location = a3.location;
-  _PXGArrayInsertRange(self->_entities, 4, [(PXGSpriteDataStore *)self count], a3.location, length);
-  _PXGArrayInsertRange(self->_geometries, 32, [(PXGSpriteDataStore *)self count], a3.location, length);
-  _PXGArrayInsertRange(self->_styles, 160, [(PXGSpriteDataStore *)self count], a3.location, length);
-  _PXGArrayInsertRange(self->_infos, 40, [(PXGSpriteDataStore *)self count], a3.location, length);
-  bzero(&self->_entities[a3.location], 4 * length);
-  bzero(self->_geometries + 32 * a3.location, 32 * length);
-  v7 = 4 * length + HIDWORD(*&a3);
+  length = range.length;
+  [(PXGSpriteDataStore *)self setCount:[(PXGSpriteDataStore *)self count]+ range.length];
+  location = range.location;
+  _PXGArrayInsertRange(self->_entities, 4, [(PXGSpriteDataStore *)self count], range.location, length);
+  _PXGArrayInsertRange(self->_geometries, 32, [(PXGSpriteDataStore *)self count], range.location, length);
+  _PXGArrayInsertRange(self->_styles, 160, [(PXGSpriteDataStore *)self count], range.location, length);
+  _PXGArrayInsertRange(self->_infos, 40, [(PXGSpriteDataStore *)self count], range.location, length);
+  bzero(&self->_entities[range.location], 4 * length);
+  bzero(self->_geometries + 32 * range.location, 32 * length);
+  v7 = 4 * length + HIDWORD(*&range);
   bzero(self->_styles + 160 * location, 32 * v7);
   v8 = self->_infos + 40 * location;
 
   bzero(v8, 8 * v7);
 }
 
-- (void)setCount:(unsigned int)a3
+- (void)setCount:(unsigned int)count
 {
-  self->_count = a3;
+  self->_count = count;
   capacity = self->_capacity;
-  if (capacity < a3)
+  if (capacity < count)
   {
     if (capacity)
     {
@@ -704,12 +704,12 @@ __n128 __55__PXGSpriteDataStore_moveSpritesFromIndexes_toIndexes___block_invoke(
         capacity *= 2;
       }
 
-      while (capacity < a3);
+      while (capacity < count);
     }
 
     else
     {
-      capacity = a3;
+      capacity = count;
     }
 
     self->_capacity = capacity;
@@ -733,8 +733,8 @@ __n128 __55__PXGSpriteDataStore_moveSpritesFromIndexes_toIndexes___block_invoke(
 
 - (PXGSpriteDataStore)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGSpriteDataStore.m" lineNumber:38 description:{@"%s is not available as initializer", "-[PXGSpriteDataStore init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGSpriteDataStore.m" lineNumber:38 description:{@"%s is not available as initializer", "-[PXGSpriteDataStore init]"}];
 
   abort();
 }

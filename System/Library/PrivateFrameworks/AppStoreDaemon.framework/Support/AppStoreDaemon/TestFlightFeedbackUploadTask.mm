@@ -1,12 +1,12 @@
 @interface TestFlightFeedbackUploadTask
-- (void)mainWithCompletionHandler:(id)a3;
+- (void)mainWithCompletionHandler:(id)handler;
 @end
 
 @implementation TestFlightFeedbackUploadTask
 
-- (void)mainWithCompletionHandler:(id)a3
+- (void)mainWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -34,11 +34,11 @@
 
     v10 = v9;
     v11 = sub_10020272C(v10);
-    v12 = [v11 appVersion];
+    appVersion = [v11 appVersion];
     *buf = 138412546;
     v18 = v8;
     v19 = 2114;
-    v20 = v12;
+    v20 = appVersion;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%@]: Starting feedback upload for %{public}@", buf, 0x16u);
   }
 
@@ -48,8 +48,8 @@
   v15[2] = sub_1002976B8;
   v15[3] = &unk_10051C6E8;
   v15[4] = self;
-  v16 = v4;
-  v14 = v4;
+  v16 = handlerCopy;
+  v14 = handlerCopy;
   [v13 recentBagWithCompletionHandler:v15];
 }
 

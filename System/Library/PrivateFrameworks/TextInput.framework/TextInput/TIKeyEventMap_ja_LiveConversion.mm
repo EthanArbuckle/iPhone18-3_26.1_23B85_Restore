@@ -1,23 +1,23 @@
 @interface TIKeyEventMap_ja_LiveConversion
-- (id)inputEventForInputString:(id)a3 stringWithoutModifiers:(id)a4 modifierFlags:(unint64_t)a5 keyboardState:(id)a6;
+- (id)inputEventForInputString:(id)string stringWithoutModifiers:(id)modifiers modifierFlags:(unint64_t)flags keyboardState:(id)state;
 @end
 
 @implementation TIKeyEventMap_ja_LiveConversion
 
-- (id)inputEventForInputString:(id)a3 stringWithoutModifiers:(id)a4 modifierFlags:(unint64_t)a5 keyboardState:(id)a6
+- (id)inputEventForInputString:(id)string stringWithoutModifiers:(id)modifiers modifierFlags:(unint64_t)flags keyboardState:(id)state
 {
-  v6 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
+  flagsCopy = flags;
+  stringCopy = string;
+  modifiersCopy = modifiers;
+  v10 = stringCopy;
   v11 = v10;
   if (([v10 _isBasicLatin] & 1) == 0)
   {
-    v11 = v9;
+    v11 = modifiersCopy;
   }
 
   v12 = 0;
-  v13 = v6 & 0x1D90000 | [v11 _firstChar];
+  v13 = flagsCopy & 0x1D90000 | [v11 _firstChar];
   if (v13 > 4194400)
   {
     if (v13 <= 8388618)

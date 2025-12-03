@@ -1,16 +1,16 @@
 @interface _LTDTranslationOperationScheduler
-- (BOOL)shouldStartOperation:(id)a3;
-- (_LTDTranslationOperationScheduler)initWithQueue:(id)a3;
-- (id)scheduleOperationWithGroupID:(id)a3 route:(int64_t)a4 block:(id)a5;
-- (void)cancelOperationsWithGroupID:(id)a3;
-- (void)scheduleOperation:(id)a3 route:(int64_t)a4;
+- (BOOL)shouldStartOperation:(id)operation;
+- (_LTDTranslationOperationScheduler)initWithQueue:(id)queue;
+- (id)scheduleOperationWithGroupID:(id)d route:(int64_t)route block:(id)block;
+- (void)cancelOperationsWithGroupID:(id)d;
+- (void)scheduleOperation:(id)operation route:(int64_t)route;
 @end
 
 @implementation _LTDTranslationOperationScheduler
 
-- (_LTDTranslationOperationScheduler)initWithQueue:(id)a3
+- (_LTDTranslationOperationScheduler)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = _LTDTranslationOperationScheduler;
   v5 = [(_LTDTranslationOperationScheduler *)&v20 init];
@@ -22,14 +22,14 @@
 
     [(NSOperationQueue *)v5->_offlineEngineQueue setMaxConcurrentOperationCount:1];
     [(NSOperationQueue *)v5->_offlineEngineQueue setQualityOfService:25];
-    [(NSOperationQueue *)v5->_offlineEngineQueue setUnderlyingQueue:v4];
+    [(NSOperationQueue *)v5->_offlineEngineQueue setUnderlyingQueue:queueCopy];
     v5->_offlineOperationTimeout = 90.0;
     v8 = objc_opt_new();
     onlineEngineQueue = v5->_onlineEngineQueue;
     v5->_onlineEngineQueue = v8;
 
     [(NSOperationQueue *)v5->_onlineEngineQueue setQualityOfService:25];
-    [(NSOperationQueue *)v5->_onlineEngineQueue setUnderlyingQueue:v4];
+    [(NSOperationQueue *)v5->_onlineEngineQueue setUnderlyingQueue:queueCopy];
     v10 = objc_alloc_init(MEMORY[0x277CBEA78]);
     cancellationCache = v5->_cancellationCache;
     v5->_cancellationCache = v10;
@@ -53,16 +53,16 @@
   return v5;
 }
 
-- (void)scheduleOperation:(id)a3 route:(int64_t)a4
+- (void)scheduleOperation:(id)operation route:(int64_t)route
 {
-  v6 = a3;
+  operationCopy = operation;
   v7 = _LTOSLogTranslationEngine();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
-  if (a4 == 2)
+  if (route == 2)
   {
     if (v8)
     {
-      [_LTDTranslationOperationScheduler scheduleOperation:v6 route:v7];
+      [_LTDTranslationOperationScheduler scheduleOperation:operationCopy route:v7];
     }
 
     v9 = 16;
@@ -72,50 +72,50 @@
   {
     if (v8)
     {
-      [_LTDTranslationOperationScheduler scheduleOperation:v6 route:v7];
+      [_LTDTranslationOperationScheduler scheduleOperation:operationCopy route:v7];
     }
 
-    [v6 setOperationTimeout:self->_offlineOperationTimeout];
+    [operationCopy setOperationTimeout:self->_offlineOperationTimeout];
     v9 = 8;
   }
 
-  [*(&self->super.isa + v9) addOperation:v6];
+  [*(&self->super.isa + v9) addOperation:operationCopy];
 }
 
-- (id)scheduleOperationWithGroupID:(id)a3 route:(int64_t)a4 block:(id)a5
+- (id)scheduleOperationWithGroupID:(id)d route:(int64_t)route block:(id)block
 {
-  v7 = [_LTDContinuationOperation continuationOperationWithGroupID:a3 delegate:self block:a5];
-  [(_LTDTranslationOperationScheduler *)self scheduleOperation:v7 route:a4];
+  v7 = [_LTDContinuationOperation continuationOperationWithGroupID:d delegate:self block:block];
+  [(_LTDTranslationOperationScheduler *)self scheduleOperation:v7 route:route];
 
   return v7;
 }
 
-- (void)cancelOperationsWithGroupID:(id)a3
+- (void)cancelOperationsWithGroupID:(id)d
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v5 = _LTOSLogTranslationEngine();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v7 = 138543362;
-      v8 = v4;
+      v8 = dCopy;
       _os_log_impl(&dword_232E53000, v5, OS_LOG_TYPE_INFO, "Client requested cancelling operations with groupID %{public}@", &v7, 0xCu);
     }
 
-    [(NSCache *)self->_cancellationCache setObject:MEMORY[0x277CBEC38] forKey:v4];
+    [(NSCache *)self->_cancellationCache setObject:MEMORY[0x277CBEC38] forKey:dCopy];
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldStartOperation:(id)a3
+- (BOOL)shouldStartOperation:(id)operation
 {
-  v4 = [a3 groupID];
-  if (v4)
+  groupID = [operation groupID];
+  if (groupID)
   {
-    v5 = [(NSCache *)self->_cancellationCache objectForKey:v4];
+    v5 = [(NSCache *)self->_cancellationCache objectForKey:groupID];
     v6 = v5 == 0;
   }
 

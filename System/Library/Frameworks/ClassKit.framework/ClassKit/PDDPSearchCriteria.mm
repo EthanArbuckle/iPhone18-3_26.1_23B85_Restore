@@ -1,17 +1,17 @@
 @interface PDDPSearchCriteria
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCompareOptions:(id)a3;
-- (int)StringAsSearchOperator:(id)a3;
+- (int)StringAsCompareOptions:(id)options;
+- (int)StringAsSearchOperator:(id)operator;
 - (int)compareOptions;
 - (int)searchOperator;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSearchOperator:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSearchOperator:(BOOL)operator;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPSearchCriteria
@@ -29,9 +29,9 @@
   }
 }
 
-- (void)setHasSearchOperator:(BOOL)a3
+- (void)setHasSearchOperator:(BOOL)operator
 {
-  if (a3)
+  if (operator)
   {
     v3 = 2;
   }
@@ -44,45 +44,45 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsSearchOperator:(id)a3
+- (int)StringAsSearchOperator:(id)operator
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_SEARCH_OPERATOR"])
+  operatorCopy = operator;
+  if ([operatorCopy isEqualToString:@"UNKNOWN_SEARCH_OPERATOR"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"LIKE"])
+  else if ([operatorCopy isEqualToString:@"LIKE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"EQ"])
+  else if ([operatorCopy isEqualToString:@"EQ"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"LT"])
+  else if ([operatorCopy isEqualToString:@"LT"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"LT_EQ"])
+  else if ([operatorCopy isEqualToString:@"LT_EQ"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"GT"])
+  else if ([operatorCopy isEqualToString:@"GT"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"GT_EQ"])
+  else if ([operatorCopy isEqualToString:@"GT_EQ"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"IN"])
+  else if ([operatorCopy isEqualToString:@"IN"])
   {
     v4 = 7;
   }
@@ -108,45 +108,45 @@
   }
 }
 
-- (int)StringAsCompareOptions:(id)a3
+- (int)StringAsCompareOptions:(id)options
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SC_OPTIONS_NONE"])
+  optionsCopy = options;
+  if ([optionsCopy isEqualToString:@"SC_OPTIONS_NONE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SC_OPTIONS_CASE_INSENSITIVE"])
+  else if ([optionsCopy isEqualToString:@"SC_OPTIONS_CASE_INSENSITIVE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SC_OPTIONS_LITERAL"])
+  else if ([optionsCopy isEqualToString:@"SC_OPTIONS_LITERAL"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SC_OPTIONS_BACKWARDS"])
+  else if ([optionsCopy isEqualToString:@"SC_OPTIONS_BACKWARDS"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SC_OPTIONS_ANCHORED"])
+  else if ([optionsCopy isEqualToString:@"SC_OPTIONS_ANCHORED"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SC_OPTIONS_NUMERIC"])
+  else if ([optionsCopy isEqualToString:@"SC_OPTIONS_NUMERIC"])
   {
     v4 = 64;
   }
 
-  else if ([v3 isEqualToString:@"SC_OPTIONS_DIACRITIC_INSENSITIVE"])
+  else if ([optionsCopy isEqualToString:@"SC_OPTIONS_DIACRITIC_INSENSITIVE"])
   {
     v4 = 128;
   }
 
-  else if ([v3 isEqualToString:@"SC_OPTIONS_WIDTH_INSENSITIVE"])
+  else if ([optionsCopy isEqualToString:@"SC_OPTIONS_WIDTH_INSENSITIVE"])
   {
     v4 = 256;
   }
@@ -164,8 +164,8 @@
   v7.receiver = self;
   v7.super_class = PDDPSearchCriteria;
   v3 = [(PDDPSearchCriteria *)&v7 description];
-  v4 = [(PDDPSearchCriteria *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPSearchCriteria *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -199,8 +199,8 @@
   value = self->_value;
   if (value)
   {
-    v9 = [(PDDPTypedValue *)value dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"value"];
+    dictionaryRepresentation = [(PDDPTypedValue *)value dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"value"];
   }
 
   if (*&self->_has)
@@ -281,70 +281,70 @@ LABEL_32:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_fieldName)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     searchOperator = self->_searchOperator;
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_value)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     compareOptions = self->_compareOptions;
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_fieldName)
   {
-    [v4 setFieldName:?];
-    v4 = v5;
+    [toCopy setFieldName:?];
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 6) = self->_searchOperator;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 6) = self->_searchOperator;
+    *(toCopy + 40) |= 2u;
   }
 
   if (self->_value)
   {
     [v5 setValue:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 2) = self->_compareOptions;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 2) = self->_compareOptions;
+    *(toCopy + 40) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_fieldName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_fieldName copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -354,7 +354,7 @@ LABEL_32:
     *(v5 + 40) |= 2u;
   }
 
-  v8 = [(PDDPTypedValue *)self->_value copyWithZone:a3];
+  v8 = [(PDDPTypedValue *)self->_value copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
@@ -367,16 +367,16 @@ LABEL_32:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   fieldName = self->_fieldName;
-  if (fieldName | *(v4 + 2))
+  if (fieldName | *(equalCopy + 2))
   {
     if (![(NSString *)fieldName isEqual:?])
     {
@@ -385,22 +385,22 @@ LABEL_32:
   }
 
   has = self->_has;
-  v7 = *(v4 + 40);
+  v7 = *(equalCopy + 40);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_searchOperator != *(v4 + 6))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_searchOperator != *(equalCopy + 6))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_16;
   }
 
   value = self->_value;
-  if (value | *(v4 + 4))
+  if (value | *(equalCopy + 4))
   {
     if (![(PDDPTypedValue *)value isEqual:?])
     {
@@ -410,13 +410,13 @@ LABEL_16:
     }
 
     has = self->_has;
-    v7 = *(v4 + 40);
+    v7 = *(equalCopy + 40);
   }
 
   v9 = (v7 & 1) == 0;
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_compareOptions != *(v4 + 2))
+    if ((v7 & 1) == 0 || self->_compareOptions != *(equalCopy + 2))
     {
       goto LABEL_16;
     }
@@ -456,24 +456,24 @@ LABEL_17:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v7 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(PDDPSearchCriteria *)self setFieldName:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if ((v4[10] & 2) != 0)
+  if ((fromCopy[10] & 2) != 0)
   {
-    self->_searchOperator = v4[6];
+    self->_searchOperator = fromCopy[6];
     *&self->_has |= 2u;
   }
 
   value = self->_value;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (value)
   {
     if (!v6)
@@ -494,15 +494,15 @@ LABEL_17:
     value = [(PDDPSearchCriteria *)self setValue:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_11:
-  if (v4[10])
+  if (fromCopy[10])
   {
-    self->_compareOptions = v4[2];
+    self->_compareOptions = fromCopy[2];
     *&self->_has |= 1u;
   }
 
-  _objc_release_x1(value, v4);
+  _objc_release_x1(value, fromCopy);
 }
 
 @end

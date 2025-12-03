@@ -1,9 +1,9 @@
 @interface VKMarker
-+ (id)markerWithFeatureMarker:(const void *)a3;
++ (id)markerWithFeatureMarker:(const void *)marker;
 - (GEOFeatureStyleAttributes)styleAttributes;
 - (NSString)name;
 - (NSString)shortName;
-- (VKMarker)initWithFeatureMarkerPtr:(const void *)a3 markerType:(int)a4;
+- (VKMarker)initWithFeatureMarkerPtr:(const void *)ptr markerType:(int)type;
 - (id).cxx_construct;
 - (void)dealloc;
 @end
@@ -103,7 +103,7 @@
   return v5;
 }
 
-- (VKMarker)initWithFeatureMarkerPtr:(const void *)a3 markerType:(int)a4
+- (VKMarker)initWithFeatureMarkerPtr:(const void *)ptr markerType:(int)type
 {
   v17.receiver = self;
   v17.super_class = VKMarker;
@@ -111,9 +111,9 @@
   v7 = v6;
   if (v6)
   {
-    v6->_markerType = a4;
-    ptr = *a3;
-    v9 = *(a3 + 1);
+    v6->_markerType = type;
+    ptr = *ptr;
+    v9 = *(ptr + 1);
     if (v9)
     {
       atomic_fetch_add_explicit((v9 + 8), 1uLL, memory_order_relaxed);
@@ -149,14 +149,14 @@
   return v7;
 }
 
-+ (id)markerWithFeatureMarker:(const void *)a3
++ (id)markerWithFeatureMarker:(const void *)marker
 {
-  if (*a3)
+  if (*marker)
   {
-    v5 = *(*a3 + 24);
+    v5 = *(*marker + 24);
     if (!v5)
     {
-      v5 = [[VKMarker alloc] initWithFeatureMarkerPtr:a3 markerType:0];
+      v5 = [[VKMarker alloc] initWithFeatureMarkerPtr:marker markerType:0];
     }
   }
 

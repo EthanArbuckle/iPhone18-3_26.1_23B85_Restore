@@ -1,19 +1,19 @@
 @interface TSCH3DMetalVersion
 + (id)_singletonAlloc;
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)version;
-- (BOOL)isShaderGenerationFromContext:(id)a3 equalToContext:(id)a4;
-- (id)additionalConclusionsForShaderType:(TSCH3DShaderType)a3;
+- (BOOL)isShaderGenerationFromContext:(id)context equalToContext:(id)toContext;
+- (id)additionalConclusionsForShaderType:(TSCH3DShaderType)type;
 - (id)preprocessorDefinitions;
-- (id)textureFunctionPrefixForVariable:(id)a3 context:(id)a4;
-- (id)textureUsagesForContext:(id)a3;
+- (id)textureFunctionPrefixForVariable:(id)variable context:(id)context;
+- (id)textureUsagesForContext:(id)context;
 @end
 
 @implementation TSCH3DMetalVersion
 
 + (id)_singletonAlloc
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___TSCH3DMetalVersion;
   return objc_msgSendSuper2(&v3, sel_allocWithZone_, 0);
 }
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = sub_276239A2C;
   block[3] = &unk_27A6B6250;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A46B98 != -1)
   {
     dispatch_once(&qword_280A46B98, block);
@@ -35,7 +35,7 @@
   return v2;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v6 = MEMORY[0x277D81150];
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "+[TSCH3DMetalVersion allocWithZone:]");
@@ -46,16 +46,16 @@
   return 0;
 }
 
-- (id)textureUsagesForContext:(id)a3
+- (id)textureUsagesForContext:(id)context
 {
   v45 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contextCopy = context;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v8 = objc_msgSend_textureVariables(v3, v5, 0.0, v6, v7);
+  v8 = objc_msgSend_textureVariables(contextCopy, v5, 0.0, v6, v7);
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, v10, v11, v12, &v40, v44, 16);
   if (v14)
   {
@@ -70,9 +70,9 @@
         }
 
         v20 = *(*(&v40 + 1) + 8 * i);
-        if (v3)
+        if (contextCopy)
         {
-          objc_msgSend_textureAttributesForVariable_(v3, v13, v15, v16, v17, *(*(&v40 + 1) + 8 * i));
+          objc_msgSend_textureAttributesForVariable_(contextCopy, v13, v15, v16, v17, *(*(&v40 + 1) + 8 * i));
           objc_msgSend_numberWithUnsignedInt_(MEMORY[0x277CCABB0], v21, v22, v23, v24, v36, v36, v37, v38, v39);
         }
 
@@ -96,16 +96,16 @@
   return v34;
 }
 
-- (BOOL)isShaderGenerationFromContext:(id)a3 equalToContext:(id)a4
+- (BOOL)isShaderGenerationFromContext:(id)context equalToContext:(id)toContext
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  toContextCopy = toContext;
   v24.receiver = self;
   v24.super_class = TSCH3DMetalVersion;
-  if ([(TSCH3DVersion *)&v24 isShaderGenerationFromContext:v6 equalToContext:v7])
+  if ([(TSCH3DVersion *)&v24 isShaderGenerationFromContext:contextCopy equalToContext:toContextCopy])
   {
-    v12 = objc_msgSend_textureUsagesForContext_(self, v8, v9, v10, v11, v6);
-    v17 = objc_msgSend_textureUsagesForContext_(self, v13, v14, v15, v16, v7);
+    v12 = objc_msgSend_textureUsagesForContext_(self, v8, v9, v10, v11, contextCopy);
+    v17 = objc_msgSend_textureUsagesForContext_(self, v13, v14, v15, v16, toContextCopy);
     isEqual = objc_msgSend_isEqual_(v12, v18, v19, v20, v21, v17);
   }
 
@@ -117,14 +117,14 @@
   return isEqual;
 }
 
-- (id)textureFunctionPrefixForVariable:(id)a3 context:(id)a4
+- (id)textureFunctionPrefixForVariable:(id)variable context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v11 = v6;
-  if (v6)
+  variableCopy = variable;
+  contextCopy = context;
+  v11 = contextCopy;
+  if (contextCopy)
   {
-    objc_msgSend_textureAttributesForVariable_(v6, v7, v8, v9, v10, v5);
+    objc_msgSend_textureAttributesForVariable_(contextCopy, v7, v8, v9, v10, variableCopy);
     if (v30)
     {
       v12 = @"fboTexture2D";
@@ -161,9 +161,9 @@
   return v11;
 }
 
-- (id)additionalConclusionsForShaderType:(TSCH3DShaderType)a3
+- (id)additionalConclusionsForShaderType:(TSCH3DShaderType)type
 {
-  if (LODWORD(a3._value) == 2)
+  if (LODWORD(type._value) == 2)
   {
     return @"return FragColor;";
   }

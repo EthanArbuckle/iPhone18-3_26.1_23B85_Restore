@@ -1,8 +1,8 @@
 @interface CNACAccountTypeAnalyzer
-+ (BOOL)isAccountAppleAccount:(id)a3;
-+ (BOOL)isAccountGenericContactsSyncingAccount:(id)a3;
-+ (BOOL)isAccountGenericContactsSyncingOrDirectoryAccount:(id)a3;
-+ (BOOL)isAccountPopularContactsSyncingAccount:(id)a3;
++ (BOOL)isAccountAppleAccount:(id)account;
++ (BOOL)isAccountGenericContactsSyncingAccount:(id)account;
++ (BOOL)isAccountGenericContactsSyncingOrDirectoryAccount:(id)account;
++ (BOOL)isAccountPopularContactsSyncingAccount:(id)account;
 + (BOOL)isiCloudSignoutRestrictionEnabled;
 + (id)os_log;
 @end
@@ -34,16 +34,16 @@
 
   else
   {
-    v6 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
-      sub_8168(v4, v6);
+      sub_8168(v4, os_log);
     }
 
-    v7 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    os_log2 = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log2, OS_LOG_TYPE_ERROR))
     {
-      sub_81E0(v7);
+      sub_81E0(os_log2);
     }
 
     v5 = 0;
@@ -52,48 +52,48 @@
   return v5;
 }
 
-+ (BOOL)isAccountAppleAccount:(id)a3
++ (BOOL)isAccountAppleAccount:(id)account
 {
-  v3 = [a3 accountType];
-  v4 = [v3 identifier];
-  v5 = [v4 isEqualToString:ACAccountTypeIdentifierAppleAccount];
+  accountType = [account accountType];
+  identifier = [accountType identifier];
+  v5 = [identifier isEqualToString:ACAccountTypeIdentifierAppleAccount];
 
   return v5;
 }
 
-+ (BOOL)isAccountPopularContactsSyncingAccount:(id)a3
++ (BOOL)isAccountPopularContactsSyncingAccount:(id)account
 {
-  v3 = a3;
-  v4 = [v3 accountType];
-  v5 = [v4 identifier];
-  if ([v5 isEqualToString:ACAccountTypeIdentifierGmail])
+  accountCopy = account;
+  accountType = [accountCopy accountType];
+  identifier = [accountType identifier];
+  if ([identifier isEqualToString:ACAccountTypeIdentifierGmail])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [v3 accountType];
-    v8 = [v7 identifier];
-    if ([v8 isEqualToString:ACAccountTypeIdentifierYahoo])
+    accountType2 = [accountCopy accountType];
+    identifier2 = [accountType2 identifier];
+    if ([identifier2 isEqualToString:ACAccountTypeIdentifierYahoo])
     {
       v6 = 1;
     }
 
     else
     {
-      v9 = [v3 accountType];
-      v10 = [v9 identifier];
-      if ([v10 isEqualToString:ACAccountTypeIdentifierExchange])
+      accountType3 = [accountCopy accountType];
+      identifier3 = [accountType3 identifier];
+      if ([identifier3 isEqualToString:ACAccountTypeIdentifierExchange])
       {
         v6 = 1;
       }
 
       else
       {
-        v11 = [v3 accountType];
-        v12 = [v11 identifier];
-        v6 = [v12 isEqualToString:ACAccountTypeIdentifierHotmail];
+        accountType4 = [accountCopy accountType];
+        identifier4 = [accountType4 identifier];
+        v6 = [identifier4 isEqualToString:ACAccountTypeIdentifierHotmail];
       }
     }
   }
@@ -101,37 +101,37 @@
   return v6;
 }
 
-+ (BOOL)isAccountGenericContactsSyncingAccount:(id)a3
++ (BOOL)isAccountGenericContactsSyncingAccount:(id)account
 {
-  v4 = a3;
-  if ([a1 isAccountPopularContactsSyncingAccount:v4])
+  accountCopy = account;
+  if ([self isAccountPopularContactsSyncingAccount:accountCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v4 accountType];
-    v7 = [v6 identifier];
-    v5 = [v7 isEqualToString:ACAccountTypeIdentifierCardDAV];
+    accountType = [accountCopy accountType];
+    identifier = [accountType identifier];
+    v5 = [identifier isEqualToString:ACAccountTypeIdentifierCardDAV];
   }
 
   return v5;
 }
 
-+ (BOOL)isAccountGenericContactsSyncingOrDirectoryAccount:(id)a3
++ (BOOL)isAccountGenericContactsSyncingOrDirectoryAccount:(id)account
 {
-  v4 = a3;
-  if ([a1 isAccountGenericContactsSyncingAccount:v4])
+  accountCopy = account;
+  if ([self isAccountGenericContactsSyncingAccount:accountCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v4 accountType];
-    v7 = [v6 identifier];
-    v5 = [v7 isEqualToString:ACAccountTypeIdentifierLDAP];
+    accountType = [accountCopy accountType];
+    identifier = [accountType identifier];
+    v5 = [identifier isEqualToString:ACAccountTypeIdentifierLDAP];
   }
 
   return v5;

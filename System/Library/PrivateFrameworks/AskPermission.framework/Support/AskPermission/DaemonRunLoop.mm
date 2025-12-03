@@ -1,12 +1,12 @@
 @interface DaemonRunLoop
-- (BOOL)performStartupWithError:(id *)a3;
+- (BOOL)performStartupWithError:(id *)error;
 - (void)_handleDeviceLanguageChangeNotification;
 - (void)_setupLanguageChangeObserver;
 @end
 
 @implementation DaemonRunLoop
 
-- (BOOL)performStartupWithError:(id *)a3
+- (BOOL)performStartupWithError:(id *)error
 {
   v5 = +[APLogConfig sharedDaemonConfig];
   if (!v5)
@@ -14,8 +14,8 @@
     v5 = +[APLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
     v16 = objc_opt_class();
@@ -24,20 +24,20 @@
     v19 = 2080;
     v20 = "02:11:40";
     v7 = v16;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Starting askpermissiond (%s - %s)", buf, 0x20u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Starting askpermissiond (%s - %s)", buf, 0x20u);
   }
 
   [(DaemonRunLoop *)self _setupLanguageChangeObserver];
   v8 = objc_alloc_init(DaemonStartupTask);
-  v9 = [(DaemonStartupTask *)v8 perform];
+  perform = [(DaemonStartupTask *)v8 perform];
   v14 = 0;
-  v10 = [v9 resultWithError:&v14];
+  v10 = [perform resultWithError:&v14];
   v11 = v14;
 
-  if (a3)
+  if (error)
   {
     v12 = v11;
-    *a3 = v11;
+    *error = v11;
   }
 
   return v10;
@@ -62,8 +62,8 @@
     v2 = +[APLogConfig sharedConfig];
   }
 
-  v3 = [v2 OSLogObject];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v2 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v4 = objc_opt_class();
     v5 = AMSLogKey();
@@ -71,7 +71,7 @@
     v14 = v4;
     v15 = 2114;
     v16 = v5;
-    _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] <<< Language preferences changed - Clearing request cache >>>", &v13, 0x16u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] <<< Language preferences changed - Clearing request cache >>>", &v13, 0x16u);
   }
 
   v6 = +[ApproverStore sharedStore];
@@ -86,8 +86,8 @@
     v8 = +[APLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v10 = objc_opt_class();
     v11 = AMSLogKey();
@@ -95,7 +95,7 @@
     v14 = v10;
     v15 = 2114;
     v16 = v11;
-    _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] <<< Language preferences changed - Exiting Daemon >>>", &v13, 0x16u);
+    _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] <<< Language preferences changed - Exiting Daemon >>>", &v13, 0x16u);
   }
 
   Main = CFRunLoopGetMain();

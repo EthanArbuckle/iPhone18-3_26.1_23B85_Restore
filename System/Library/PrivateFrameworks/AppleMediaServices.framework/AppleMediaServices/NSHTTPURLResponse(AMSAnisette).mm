@@ -12,8 +12,8 @@
 
 - (id)ams_actionNameV1
 {
-  v1 = [a1 allHeaderFields];
-  v2 = [v1 ams_objectForCaseInsensitiveKey:@"X-Apple-MD-Action"];
+  allHeaderFields = [self allHeaderFields];
+  v2 = [allHeaderFields ams_objectForCaseInsensitiveKey:@"X-Apple-MD-Action"];
 
   if (![v2 length])
   {
@@ -26,8 +26,8 @@
 
 - (id)ams_actionNameV1_5
 {
-  v1 = [a1 allHeaderFields];
-  v2 = [v1 ams_objectForCaseInsensitiveKey:@"X-Apple-AMD-Action"];
+  allHeaderFields = [self allHeaderFields];
+  v2 = [allHeaderFields ams_objectForCaseInsensitiveKey:@"X-Apple-AMD-Action"];
 
   if (![v2 length])
   {
@@ -40,24 +40,24 @@
 
 - (id)ams_actionData
 {
-  v2 = [a1 _anisetteType];
-  if (v2 == 2 || v2 == 1)
+  _anisetteType = [self _anisetteType];
+  if (_anisetteType == 2 || _anisetteType == 1)
   {
-    v3 = [a1 ams_actionDataV1];
+    ams_actionDataV1 = [self ams_actionDataV1];
   }
 
   else
   {
-    v3 = 0;
+    ams_actionDataV1 = 0;
   }
 
-  return v3;
+  return ams_actionDataV1;
 }
 
 - (id)ams_actionDataV1
 {
-  v1 = [a1 allHeaderFields];
-  v2 = [v1 ams_objectForCaseInsensitiveKey:@"X-Apple-MD-Data"];
+  allHeaderFields = [self allHeaderFields];
+  v2 = [allHeaderFields ams_objectForCaseInsensitiveKey:@"X-Apple-MD-Data"];
 
   if ([v2 length])
   {
@@ -74,8 +74,8 @@
 
 - (id)ams_actionDataV1_5
 {
-  v1 = [a1 allHeaderFields];
-  v2 = [v1 ams_objectForCaseInsensitiveKey:@"X-Apple-AMD-Data"];
+  allHeaderFields = [self allHeaderFields];
+  v2 = [allHeaderFields ams_objectForCaseInsensitiveKey:@"X-Apple-AMD-Data"];
 
   if ([v2 length])
   {
@@ -92,34 +92,34 @@
 
 - (id)ams_actionName
 {
-  v2 = [a1 ams_actionNameV1];
-  v3 = v2;
-  if (v2)
+  ams_actionNameV1 = [self ams_actionNameV1];
+  v3 = ams_actionNameV1;
+  if (ams_actionNameV1)
   {
-    v4 = v2;
+    ams_actionNameV12 = ams_actionNameV1;
   }
 
   else
   {
-    v4 = [a1 ams_actionNameV1];
+    ams_actionNameV12 = [self ams_actionNameV1];
   }
 
-  v5 = v4;
+  v5 = ams_actionNameV12;
 
   return v5;
 }
 
 - (uint64_t)_anisetteType
 {
-  v2 = [a1 ams_actionNameV1];
+  ams_actionNameV1 = [self ams_actionNameV1];
 
-  if (v2)
+  if (ams_actionNameV1)
   {
     return 1;
   }
 
-  v4 = [a1 ams_actionNameV1];
-  v5 = v4 != 0;
+  ams_actionNameV12 = [self ams_actionNameV1];
+  v5 = ams_actionNameV12 != 0;
 
   return 2 * v5;
 }

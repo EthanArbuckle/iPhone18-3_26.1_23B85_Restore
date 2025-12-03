@@ -1,14 +1,14 @@
 @interface MCMContainerClassPathCache
-- (MCMContainerClassPathCache)initWithUserIdentityCache:(id)a3;
+- (MCMContainerClassPathCache)initWithUserIdentityCache:(id)cache;
 - (MCMUserIdentityCache)userIdentityCache;
-- (id)_lock_containerClassPathForUserIdentity:(id)a3 containerConfig:(id)a4 typeClass:(Class)a5;
-- (id)containerClassPathForContainerIdentity:(id)a3 typeClass:(Class)a4;
-- (id)containerClassPathForUserIdentity:(id)a3 containerConfig:(id)a4 typeClass:(Class)a5;
-- (id)containerClassPathWithURL:(id)a3 reference:(id)a4;
-- (id)referenceForPOSIXUser:(id)a3;
+- (id)_lock_containerClassPathForUserIdentity:(id)identity containerConfig:(id)config typeClass:(Class)class;
+- (id)containerClassPathForContainerIdentity:(id)identity typeClass:(Class)class;
+- (id)containerClassPathForUserIdentity:(id)identity containerConfig:(id)config typeClass:(Class)class;
+- (id)containerClassPathWithURL:(id)l reference:(id)reference;
+- (id)referenceForPOSIXUser:(id)user;
 - (void)_lock_flush;
 - (void)flush;
-- (void)userIdentityCache:(id)a3 didInvalidateUserIdentity:(id)a4;
+- (void)userIdentityCache:(id)cache didInvalidateUserIdentity:(id)identity;
 @end
 
 @implementation MCMContainerClassPathCache
@@ -33,16 +33,16 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_lock_containerClassPathForUserIdentity:(id)a3 containerConfig:(id)a4 typeClass:(Class)a5
+- (id)_lock_containerClassPathForUserIdentity:(id)identity containerConfig:(id)config typeClass:(Class)class
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  identityCopy = identity;
+  configCopy = config;
   os_unfair_lock_assert_owner(&self->_lookupLock);
-  v10 = [v9 containerClass];
+  containerClass = [configCopy containerClass];
 
-  v11 = NSStringFromClass(a5);
-  if (v8)
+  v11 = NSStringFromClass(class);
+  if (identityCopy)
   {
     v12 = [(NSMutableDictionary *)self->_lookup objectForKeyedSubscript:v11];
     if (!v12)
@@ -54,28 +54,28 @@
       [(NSMutableDictionary *)self->_lookup setObject:v12 forKeyedSubscript:v11];
     }
 
-    v15 = [v12 objectForKeyedSubscript:v8];
+    v15 = [v12 objectForKeyedSubscript:identityCopy];
     if (!v15)
     {
       v15 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:15];
-      [v12 setObject:v15 forKeyedSubscript:v8];
+      [v12 setObject:v15 forKeyedSubscript:identityCopy];
     }
 
-    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v10];
+    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:containerClass];
     v17 = [v15 objectForKeyedSubscript:v16];
 
     if (!v17)
     {
-      v17 = [(objc_class *)a5 containerPathForUserIdentity:v8 containerClass:v10];
+      v17 = [(objc_class *)class containerPathForUserIdentity:identityCopy containerClass:containerClass];
       v18 = container_log_handle_for_category();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
         v24 = 138413058;
         v25 = v11;
         v26 = 2112;
-        v27 = v8;
+        v27 = identityCopy;
         v28 = 2048;
-        v29 = v10;
+        v29 = containerClass;
         v30 = 2112;
         v31 = v17;
         _os_log_debug_impl(&dword_1DF2C3000, v18, OS_LOG_TYPE_DEBUG, "Container class path cache miss, creating type = [%@], userIdentity = [%@], class = %llu: %@", &v24, 0x2Au);
@@ -83,7 +83,7 @@
 
       if (v17)
       {
-        v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v10];
+        v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:containerClass];
         [v15 setObject:v17 forKeyedSubscript:v19];
       }
     }
@@ -111,24 +111,24 @@
   return v21;
 }
 
-- (void)userIdentityCache:(id)a3 didInvalidateUserIdentity:(id)a4
+- (void)userIdentityCache:(id)cache didInvalidateUserIdentity:(id)identity
 {
   v5 = *MEMORY[0x1E69E9840];
   v4 = *MEMORY[0x1E69E9840];
 
-  [(MCMContainerClassPathCache *)self flush:a3];
+  [(MCMContainerClassPathCache *)self flush:cache];
 }
 
-- (id)containerClassPathWithURL:(id)a3 reference:(id)a4
+- (id)containerClassPathWithURL:(id)l reference:(id)reference
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [a3 path];
+  referenceCopy = reference;
+  path = [l path];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = referenceCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v14 count:16];
   if (v8)
   {
@@ -143,7 +143,7 @@
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        if ([v6 hasPrefix:v11])
+        if ([path hasPrefix:v11])
         {
           v8 = [v7 objectForKeyedSubscript:v11];
           goto LABEL_11;
@@ -167,35 +167,35 @@ LABEL_11:
   return v8;
 }
 
-- (id)referenceForPOSIXUser:(id)a3
+- (id)referenceForPOSIXUser:(id)user
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  userCopy = user;
   v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:30];
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [(MCMContainerClassPathCache *)self userIdentityCache];
+  array = [MEMORY[0x1E695DF70] array];
+  userIdentityCache = [(MCMContainerClassPathCache *)self userIdentityCache];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __52__MCMContainerClassPathCache_referenceForPOSIXUser___block_invoke;
   v24[3] = &unk_1E86AFF48;
-  v25 = v4;
-  v8 = v6;
+  v25 = userCopy;
+  v8 = array;
   v26 = v8;
-  v9 = v4;
-  [v7 forEachAccessibleUserIdentitySynchronouslyExecuteBlock:v24];
+  v9 = userCopy;
+  [userIdentityCache forEachAccessibleUserIdentitySynchronouslyExecuteBlock:v24];
 
   v10 = containermanager_copy_global_configuration();
-  v11 = [v10 classIterator];
+  classIterator = [v10 classIterator];
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __52__MCMContainerClassPathCache_referenceForPOSIXUser___block_invoke_2;
   v20 = &unk_1E86AFF70;
   v21 = v8;
-  v22 = self;
+  selfCopy = self;
   v23 = v5;
   v12 = v5;
   v13 = v8;
-  [v11 selectWithIterator:&v17];
+  [classIterator selectWithIterator:&v17];
 
   v14 = [v12 copy];
   v15 = *MEMORY[0x1E69E9840];
@@ -373,16 +373,16 @@ LABEL_12:
   os_unfair_lock_unlock(&self->_lookupLock);
 }
 
-- (id)containerClassPathForUserIdentity:(id)a3 containerConfig:(id)a4 typeClass:(Class)a5
+- (id)containerClassPathForUserIdentity:(id)identity containerConfig:(id)config typeClass:(Class)class
 {
   v15 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a3;
-  v10 = [(MCMContainerClassPathCache *)self userIdentityCache];
-  v11 = [v10 userIdentityForContainerConfig:v8 originatorUserIdentity:v9];
+  configCopy = config;
+  identityCopy = identity;
+  userIdentityCache = [(MCMContainerClassPathCache *)self userIdentityCache];
+  v11 = [userIdentityCache userIdentityForContainerConfig:configCopy originatorUserIdentity:identityCopy];
 
   os_unfair_lock_lock(&self->_lookupLock);
-  v12 = [(MCMContainerClassPathCache *)self _lock_containerClassPathForUserIdentity:v11 containerConfig:v8 typeClass:a5];
+  v12 = [(MCMContainerClassPathCache *)self _lock_containerClassPathForUserIdentity:v11 containerConfig:configCopy typeClass:class];
 
   os_unfair_lock_unlock(&self->_lookupLock);
   v13 = *MEMORY[0x1E69E9840];
@@ -390,24 +390,24 @@ LABEL_12:
   return v12;
 }
 
-- (id)containerClassPathForContainerIdentity:(id)a3 typeClass:(Class)a4
+- (id)containerClassPathForContainerIdentity:(id)identity typeClass:(Class)class
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 userIdentity];
-  v8 = [v6 containerConfig];
+  identityCopy = identity;
+  userIdentity = [identityCopy userIdentity];
+  containerConfig = [identityCopy containerConfig];
 
-  v9 = [(MCMContainerClassPathCache *)self containerClassPathForUserIdentity:v7 containerConfig:v8 typeClass:a4];
+  v9 = [(MCMContainerClassPathCache *)self containerClassPathForUserIdentity:userIdentity containerConfig:containerConfig typeClass:class];
 
   v10 = *MEMORY[0x1E69E9840];
 
   return v9;
 }
 
-- (MCMContainerClassPathCache)initWithUserIdentityCache:(id)a3
+- (MCMContainerClassPathCache)initWithUserIdentityCache:(id)cache
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  cacheCopy = cache;
   v11.receiver = self;
   v11.super_class = MCMContainerClassPathCache;
   v6 = [(MCMContainerClassPathCache *)&v11 init];
@@ -418,7 +418,7 @@ LABEL_12:
     v6->_lookup = v7;
 
     v6->_lookupLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_userIdentityCache, a3);
+    objc_storeStrong(&v6->_userIdentityCache, cache);
   }
 
   v9 = *MEMORY[0x1E69E9840];

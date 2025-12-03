@@ -27,8 +27,8 @@
 
 - (unint64_t)fc_millisecondTimeIntervalUntilNow
 {
-  v2 = [MEMORY[0x1E695DF00] date];
-  [v2 timeIntervalSinceDate:a1];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceDate:self];
   v4 = (fmax(v3, 0.0) * 1000.0);
 
   return v4;
@@ -139,7 +139,7 @@ LABEL_14:
   v4 = MEMORY[0x1E695DEC8];
   v5 = a3;
   v6 = [v4 arrayWithObjects:&v10 count:1];
-  v7 = [a1 fc_dateFromString:v5 possibleFormats:{v6, v10, v11}];
+  v7 = [self fc_dateFromString:v5 possibleFormats:{v6, v10, v11}];
 
   v8 = *MEMORY[0x1E69E9840];
 
@@ -156,7 +156,7 @@ LABEL_14:
   v4 = MEMORY[0x1E695DEC8];
   v5 = a3;
   v6 = [v4 arrayWithObjects:v10 count:4];
-  v7 = [a1 fc_dateFromString:v5 possibleFormats:v6];
+  v7 = [self fc_dateFromString:v5 possibleFormats:v6];
 
   v8 = *MEMORY[0x1E69E9840];
 
@@ -166,7 +166,7 @@ LABEL_14:
 - (BOOL)fc_isEarlierThan:()FCAdditions withPrecision:
 {
   v6 = a3;
-  [a1 timeIntervalSinceReferenceDate];
+  [self timeIntervalSinceReferenceDate];
   v8 = v7;
   [v6 timeIntervalSinceReferenceDate];
   v10 = v9;
@@ -193,7 +193,7 @@ LABEL_14:
 - (BOOL)fc_isLaterThan:()FCAdditions withPrecision:
 {
   v6 = a3;
-  [a1 timeIntervalSinceReferenceDate];
+  [self timeIntervalSinceReferenceDate];
   v8 = v7;
   [v6 timeIntervalSinceReferenceDate];
   v10 = v9;
@@ -235,7 +235,7 @@ LABEL_14:
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  [a1 timeIntervalSinceDate:v4];
+  [self timeIntervalSinceDate:v4];
   v6 = v5;
 
   v7 = *MEMORY[0x1E69E9840];
@@ -250,7 +250,7 @@ LABEL_14:
   [v3 setTimeZone:v4];
 
   v8 = 0;
-  [v3 rangeOfUnit:16 startDate:&v8 interval:0 forDate:a1];
+  [v3 rangeOfUnit:16 startDate:&v8 interval:0 forDate:self];
   v5 = v8;
   v6 = v8;
 
@@ -280,9 +280,9 @@ LABEL_14:
   v7 = [MEMORY[0x1E695DFE8] timeZoneForSecondsFromGMT:0];
   [v6 setTimeZone:v7];
 
-  v8 = [v4 fc_dateOfEarliestGregorianCalendarDay];
-  v9 = [a1 fc_dateOfEarliestGregorianCalendarDay];
-  v10 = [v6 components:16 fromDate:v8 toDate:v9 options:0];
+  fc_dateOfEarliestGregorianCalendarDay = [v4 fc_dateOfEarliestGregorianCalendarDay];
+  fc_dateOfEarliestGregorianCalendarDay2 = [self fc_dateOfEarliestGregorianCalendarDay];
+  v10 = [v6 components:16 fromDate:fc_dateOfEarliestGregorianCalendarDay toDate:fc_dateOfEarliestGregorianCalendarDay2 options:0];
   v11 = [v10 day];
 
   v12 = *MEMORY[0x1E69E9840];
@@ -291,25 +291,25 @@ LABEL_14:
 
 - (uint64_t)isToday
 {
-  v2 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v3 = [v2 isDateInToday:a1];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v3 = [currentCalendar isDateInToday:self];
 
   return v3;
 }
 
 - (uint64_t)isInFuture
 {
-  v2 = [MEMORY[0x1E695DF00] date];
-  v3 = [a1 fc_isLaterThan:v2];
+  date = [MEMORY[0x1E695DF00] date];
+  v3 = [self fc_isLaterThan:date];
 
   return v3;
 }
 
 - (BOOL)fc_isWeekend
 {
-  v2 = [MEMORY[0x1E695DF58] currentLocale];
-  v3 = [v2 objectForKey:*MEMORY[0x1E695D958]];
-  v4 = [v3 components:524 fromDate:a1];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v3 = [currentLocale objectForKey:*MEMORY[0x1E695D958]];
+  v4 = [v3 components:524 fromDate:self];
 
   v5 = [v4 weekday] == 1 || objc_msgSend(v4, "weekday") == 7;
   return v5;
@@ -319,11 +319,11 @@ LABEL_14:
 {
   v4 = MEMORY[0x1E695DEE8];
   v5 = a3;
-  v6 = [v4 currentCalendar];
-  v7 = [v6 components:28 fromDate:a1];
+  currentCalendar = [v4 currentCalendar];
+  v7 = [currentCalendar components:28 fromDate:self];
 
-  v8 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v9 = [v8 components:28 fromDate:v5];
+  currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+  v9 = [currentCalendar2 components:28 fromDate:v5];
 
   v10 = [v7 isEqual:v9];
   return v10;
@@ -383,11 +383,11 @@ LABEL_7:
 {
   v3 = MEMORY[0x1E695DEE8];
   v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 components:124 fromDate:v4];
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar components:124 fromDate:v4];
 
-  v7 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v8 = [v7 dateFromComponents:v6];
+  currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+  v8 = [currentCalendar2 dateFromComponents:v6];
 
   return v8;
 }
@@ -396,23 +396,23 @@ LABEL_7:
 {
   v3 = MEMORY[0x1E695DEE8];
   v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 components:28 fromDate:v4];
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar components:28 fromDate:v4];
 
-  v7 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v8 = [v7 dateFromComponents:v6];
+  currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+  v8 = [currentCalendar2 dateFromComponents:v6];
 
   return v8;
 }
 
 - (id)fc_dateByRoundingDownToNearestQuarterHour
 {
-  v2 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v3 = [v2 components:124 fromDate:a1];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v3 = [currentCalendar components:124 fromDate:self];
 
   [v3 setMinute:{(floor(objc_msgSend(v3, "minute") / 15.0) * 15.0)}];
-  v4 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v5 = [v4 dateFromComponents:v3];
+  currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+  v5 = [currentCalendar2 dateFromComponents:v3];
 
   return v5;
 }
@@ -420,31 +420,31 @@ LABEL_7:
 - (id)fc_stringWithISO8601Format
 {
   v2 = [MEMORY[0x1E696AB78] dateFormatterWithFormat:@"yyyy-MM-dd'T'HH:mm:ssZZ" forReuse:0];
-  v3 = [v2 stringFromDate:a1];
+  v3 = [v2 stringFromDate:self];
 
   return v3;
 }
 
 - (id)fc_stringWithYearAndMonthFormat
 {
-  v2 = [objc_opt_class() _fr_sharedYearAndMonthDateFormatter];
-  v3 = [v2 stringFromDate:a1];
+  _fr_sharedYearAndMonthDateFormatter = [objc_opt_class() _fr_sharedYearAndMonthDateFormatter];
+  v3 = [_fr_sharedYearAndMonthDateFormatter stringFromDate:self];
 
   return v3;
 }
 
 - (id)fc_adjustToRecentDate
 {
-  v1 = a1;
-  [v1 fc_timeIntervalUntilNow];
+  selfCopy = self;
+  [selfCopy fc_timeIntervalUntilNow];
   if (v2 > 86400.0)
   {
     v3 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-(v2 % 86400)];
 
-    v1 = v3;
+    selfCopy = v3;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 + (id)_fr_sharedYearAndMonthDateFormatter

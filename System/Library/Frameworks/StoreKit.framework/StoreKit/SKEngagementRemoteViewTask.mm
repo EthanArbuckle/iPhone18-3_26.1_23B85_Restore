@@ -1,28 +1,28 @@
 @interface SKEngagementRemoteViewTask
-- (SKEngagementRemoteViewTask)initWithRequestData:(id)a3 presentingViewController:(id)a4 windowScene:(id)a5;
-- (void)_presentViewController:(id)a3;
+- (SKEngagementRemoteViewTask)initWithRequestData:(id)data presentingViewController:(id)controller windowScene:(id)scene;
+- (void)_presentViewController:(id)controller;
 - (void)_unblock;
-- (void)engagementTaskDidFinishWithResult:(id)a3 resultData:(id)a4 error:(id)a5 completion:(id)a6;
-- (void)preferredContentSizeDidChange:(CGSize)a3;
+- (void)engagementTaskDidFinishWithResult:(id)result resultData:(id)data error:(id)error completion:(id)completion;
+- (void)preferredContentSizeDidChange:(CGSize)change;
 - (void)presentEngagement;
 @end
 
 @implementation SKEngagementRemoteViewTask
 
-- (SKEngagementRemoteViewTask)initWithRequestData:(id)a3 presentingViewController:(id)a4 windowScene:(id)a5
+- (SKEngagementRemoteViewTask)initWithRequestData:(id)data presentingViewController:(id)controller windowScene:(id)scene
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dataCopy = data;
+  controllerCopy = controller;
+  sceneCopy = scene;
   v20.receiver = self;
   v20.super_class = SKEngagementRemoteViewTask;
   v12 = [(SKEngagementRemoteViewTask *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_requestData, a3);
-    objc_storeStrong(&v13->_viewController, a4);
-    objc_storeStrong(&v13->_scene, a5);
+    objc_storeStrong(&v12->_requestData, data);
+    objc_storeStrong(&v13->_viewController, controller);
+    objc_storeStrong(&v13->_scene, scene);
     presentationWindow = v13->_presentationWindow;
     v13->_presentationWindow = 0;
 
@@ -40,13 +40,13 @@
 
 - (void)presentEngagement
 {
-  v3 = [(SKEngagementRemoteViewTask *)self workQueue];
+  workQueue = [(SKEngagementRemoteViewTask *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__SKEngagementRemoteViewTask_presentEngagement__block_invoke;
   block[3] = &unk_1E7B27980;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __47__SKEngagementRemoteViewTask_presentEngagement__block_invoke(uint64_t a1)
@@ -139,42 +139,42 @@ uint64_t __47__SKEngagementRemoteViewTask_presentEngagement__block_invoke_2(uint
   return result;
 }
 
-- (void)engagementTaskDidFinishWithResult:(id)a3 resultData:(id)a4 error:(id)a5 completion:(id)a6
+- (void)engagementTaskDidFinishWithResult:(id)result resultData:(id)data error:(id)error completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  resultCopy = result;
+  dataCopy = data;
+  errorCopy = error;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     v16 = 138543874;
     v17 = objc_opt_class();
     v18 = 2114;
-    v19 = v10;
+    v19 = resultCopy;
     v20 = 2114;
-    v21 = v12;
+    v21 = errorCopy;
     _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "%{public}@: remote engagement task finished. Result: %{public}@, error: %{public}@", &v16, 0x20u);
   }
 
-  [(SKEngagementRemoteViewTask *)self setResult:v10];
-  [(SKEngagementRemoteViewTask *)self setResultData:v11];
-  [(SKEngagementRemoteViewTask *)self setError:v12];
-  v14 = [(SKEngagementRemoteViewTask *)self remoteViewController];
-  [v14 dismissViewControllerAnimated:1 completion:0];
+  [(SKEngagementRemoteViewTask *)self setResult:resultCopy];
+  [(SKEngagementRemoteViewTask *)self setResultData:dataCopy];
+  [(SKEngagementRemoteViewTask *)self setError:errorCopy];
+  remoteViewController = [(SKEngagementRemoteViewTask *)self remoteViewController];
+  [remoteViewController dismissViewControllerAnimated:1 completion:0];
 
-  v15 = [(SKEngagementRemoteViewTask *)self viewController];
-  [v15 dismissViewControllerAnimated:1 completion:0];
+  viewController = [(SKEngagementRemoteViewTask *)self viewController];
+  [viewController dismissViewControllerAnimated:1 completion:0];
 
   [(SKEngagementRemoteViewTask *)self setPresentationWindow:0];
-  v13[2](v13);
+  completionCopy[2](completionCopy);
   [(SKEngagementRemoteViewTask *)self _unblock];
 }
 
-- (void)preferredContentSizeDidChange:(CGSize)a3
+- (void)preferredContentSizeDidChange:(CGSize)change
 {
-  height = a3.height;
-  width = a3.width;
+  height = change.height;
+  width = change.width;
   v9 = *MEMORY[0x1E69E9840];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
@@ -183,31 +183,31 @@ uint64_t __47__SKEngagementRemoteViewTask_presentEngagement__block_invoke_2(uint
     _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "%{public}@: Preferred content size did change", &v7, 0xCu);
   }
 
-  v6 = [(SKEngagementRemoteViewTask *)self remoteViewController];
-  [v6 setPreferredContentSize:{width, height}];
+  remoteViewController = [(SKEngagementRemoteViewTask *)self remoteViewController];
+  [remoteViewController setPreferredContentSize:{width, height}];
 }
 
 - (void)_unblock
 {
-  v3 = [(SKEngagementRemoteViewTask *)self dispatchGroup];
+  dispatchGroup = [(SKEngagementRemoteViewTask *)self dispatchGroup];
 
-  if (v3)
+  if (dispatchGroup)
   {
-    v4 = [(SKEngagementRemoteViewTask *)self dispatchGroup];
-    dispatch_group_leave(v4);
+    dispatchGroup2 = [(SKEngagementRemoteViewTask *)self dispatchGroup];
+    dispatch_group_leave(dispatchGroup2);
   }
 }
 
-- (void)_presentViewController:(id)a3
+- (void)_presentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__SKEngagementRemoteViewTask__presentViewController___block_invoke;
   v6[3] = &unk_1E7B28640;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = controllerCopy;
+  v5 = controllerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 

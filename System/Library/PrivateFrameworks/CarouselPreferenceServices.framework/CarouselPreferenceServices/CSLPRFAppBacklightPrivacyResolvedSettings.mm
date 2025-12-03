@@ -2,7 +2,7 @@
 - (BOOL)privacyDuringAlwaysOnForApp;
 - (BOOL)privacyDuringAlwaysOnForLiveActivities;
 - (BOOL)privacyDuringAlwaysOnForNotification;
-- (CSLPRFAppBacklightPrivacyResolvedSettings)initWithSettings:(id)a3 globalSettings:(id)a4;
+- (CSLPRFAppBacklightPrivacyResolvedSettings)initWithSettings:(id)settings globalSettings:(id)globalSettings;
 @end
 
 @implementation CSLPRFAppBacklightPrivacyResolvedSettings
@@ -43,18 +43,18 @@
   return [(CSLPRFAppBacklightPrivacyProperties *)settings privacyDuringAlwaysOnForApp];
 }
 
-- (CSLPRFAppBacklightPrivacyResolvedSettings)initWithSettings:(id)a3 globalSettings:(id)a4
+- (CSLPRFAppBacklightPrivacyResolvedSettings)initWithSettings:(id)settings globalSettings:(id)globalSettings
 {
-  v7 = a3;
-  v8 = a4;
+  settingsCopy = settings;
+  globalSettingsCopy = globalSettings;
   v12.receiver = self;
   v12.super_class = CSLPRFAppBacklightPrivacyResolvedSettings;
   v9 = [(CSLPRFAppBacklightPrivacyResolvedSettings *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_settings, a3);
-    objc_storeStrong(&v10->_globalSettings, a4);
+    objc_storeStrong(&v9->_settings, settings);
+    objc_storeStrong(&v10->_globalSettings, globalSettings);
   }
 
   return v10;

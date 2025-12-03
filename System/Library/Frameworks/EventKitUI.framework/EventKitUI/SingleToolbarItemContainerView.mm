@@ -1,28 +1,28 @@
 @interface SingleToolbarItemContainerView
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)setBoundsWithToolbar:(id)a3;
-- (void)willMoveToSuperview:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)setBoundsWithToolbar:(id)toolbar;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation SingleToolbarItemContainerView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  eventCopy = event;
   v20.receiver = self;
   v20.super_class = SingleToolbarItemContainerView;
-  v8 = [(SingleToolbarItemContainerView *)&v20 hitTest:v7 withEvent:x, y];
+  v8 = [(SingleToolbarItemContainerView *)&v20 hitTest:eventCopy withEvent:x, y];
   if (!v8)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = [(SingleToolbarItemContainerView *)self subviews];
-    v10 = [v9 countByEnumeratingWithState:&v16 objects:v21 count:16];
+    subviews = [(SingleToolbarItemContainerView *)self subviews];
+    v10 = [subviews countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v10)
     {
       v11 = v10;
@@ -33,10 +33,10 @@
         {
           if (*v17 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(subviews);
           }
 
-          v14 = [*(*(&v16 + 1) + 8 * i) hitTest:v7 withEvent:{x, y}];
+          v14 = [*(*(&v16 + 1) + 8 * i) hitTest:eventCopy withEvent:{x, y}];
           if (v14)
           {
             v8 = v14;
@@ -44,7 +44,7 @@
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v16 objects:v21 count:16];
+        v11 = [subviews countByEnumeratingWithState:&v16 objects:v21 count:16];
         if (v11)
         {
           continue;
@@ -61,23 +61,23 @@ LABEL_12:
   return v8;
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  v4 = a3;
+  superviewCopy = superview;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SingleToolbarItemContainerView *)self setBoundsWithToolbar:v4];
+    [(SingleToolbarItemContainerView *)self setBoundsWithToolbar:superviewCopy];
   }
 }
 
-- (void)setBoundsWithToolbar:(id)a3
+- (void)setBoundsWithToolbar:(id)toolbar
 {
-  v4 = a3;
-  [v4 bounds];
+  toolbarCopy = toolbar;
+  [toolbarCopy bounds];
   v6 = v5;
   v8 = v7;
-  [v4 _contentMargin];
+  [toolbarCopy _contentMargin];
   v10 = v9;
 
   v16 = EKUIMainWindowForMultiwindowError();
@@ -98,8 +98,8 @@ LABEL_12:
   if (!CGRectEqualToRect(v18, v19))
   {
     [(SingleToolbarItemContainerView *)self setBounds:v11, v12, v13, v14];
-    v15 = [(SingleToolbarItemContainerView *)self superview];
-    [v15 setNeedsLayout];
+    superview = [(SingleToolbarItemContainerView *)self superview];
+    [superview setNeedsLayout];
   }
 }
 

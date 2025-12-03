@@ -4,22 +4,22 @@
 - (id)getListDict;
 - (id)getString;
 - (id)getStringList;
-- (id)init:(id)a3 withConfigurationList:(id)a4;
+- (id)init:(id)init withConfigurationList:(id)list;
 - (int)getInt;
 @end
 
 @implementation CPMLEvalutionResult
 
-- (id)init:(id)a3 withConfigurationList:(id)a4
+- (id)init:(id)init withConfigurationList:(id)list
 {
-  v6 = a3;
+  initCopy = init;
   v10.receiver = self;
   v10.super_class = CPMLEvalutionResult;
   v7 = [(CPMLEvalutionResult *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->object, a3);
+    objc_storeStrong(&v7->object, init);
     v8->count = [v8->object count];
   }
 
@@ -31,8 +31,8 @@
   if (self->count)
   {
     v2 = [self->object objectAtIndexedSubscript:0];
-    v3 = [v2 allKeys];
-    v4 = [v3 objectAtIndexedSubscript:0];
+    allKeys = [v2 allKeys];
+    v4 = [allKeys objectAtIndexedSubscript:0];
   }
 
   else
@@ -53,8 +53,8 @@
     do
     {
       v6 = [v4 objectAtIndexedSubscript:v5];
-      v7 = [v6 allKeys];
-      v8 = [v7 objectAtIndexedSubscript:0];
+      allKeys = [v6 allKeys];
+      v8 = [allKeys objectAtIndexedSubscript:0];
 
       [v3 appendString:v8];
       [v3 appendString:@"\n"];
@@ -76,8 +76,8 @@
   }
 
   v2 = [self->object objectAtIndexedSubscript:0];
-  v3 = [v2 allValues];
-  v4 = [v3 objectAtIndexedSubscript:0];
+  allValues = [v2 allValues];
+  v4 = [allValues objectAtIndexedSubscript:0];
 
   [v4 doubleValue];
   v6 = v5;
@@ -93,11 +93,11 @@
   }
 
   v2 = [self->object objectAtIndexedSubscript:0];
-  v3 = [v2 allValues];
-  v4 = [v3 objectAtIndexedSubscript:0];
+  allValues = [v2 allValues];
+  v4 = [allValues objectAtIndexedSubscript:0];
 
-  LODWORD(v3) = [v4 intValue];
-  return v3;
+  LODWORD(allValues) = [v4 intValue];
+  return allValues;
 }
 
 - (id)getList
@@ -109,8 +109,8 @@
     do
     {
       v5 = [self->object objectAtIndexedSubscript:v4];
-      v6 = [v5 allKeys];
-      v7 = [v6 objectAtIndexedSubscript:0];
+      allKeys = [v5 allKeys];
+      v7 = [allKeys objectAtIndexedSubscript:0];
 
       [v3 addObject:v7];
       ++v4;

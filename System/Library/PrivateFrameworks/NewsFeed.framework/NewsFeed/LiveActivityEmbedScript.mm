@@ -17,7 +17,7 @@
 
 - (WKUserScript)userScript
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D6BE0B30();
 
   return v3;
@@ -25,7 +25,7 @@
 
 - (NSString)executableScript
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D6BE0CD8();
   v4 = v3;
 

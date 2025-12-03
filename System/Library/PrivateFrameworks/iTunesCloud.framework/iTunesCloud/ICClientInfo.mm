@@ -1,17 +1,17 @@
 @interface ICClientInfo
 + (ICClientInfo)defaultInfo;
-+ (id)clientInfoForMusicKitRequestWithClientIdentifier:(id)a3 clientVersion:(id)a4;
-+ (id)clientInfoForMusicKitRequestWithClientIdentifier:(id)a3 clientVersion:(id)a4 bundleIdentifier:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (ICClientInfo)initWithBundleIdentifier:(id)a3;
-- (ICClientInfo)initWithCoder:(id)a3;
-- (ICClientInfo)initWithSystemApplicationType:(int64_t)a3;
++ (id)clientInfoForMusicKitRequestWithClientIdentifier:(id)identifier clientVersion:(id)version;
++ (id)clientInfoForMusicKitRequestWithClientIdentifier:(id)identifier clientVersion:(id)version bundleIdentifier:(id)bundleIdentifier;
+- (BOOL)isEqual:(id)equal;
+- (ICClientInfo)initWithBundleIdentifier:(id)identifier;
+- (ICClientInfo)initWithCoder:(id)coder;
+- (ICClientInfo)initWithSystemApplicationType:(int64_t)type;
 - (NSString)clientBundleIdentifier;
-- (id)_clientInfoCopyWithClass:(Class)a3;
+- (id)_clientInfoCopyWithClass:(Class)class;
 - (id)description;
 - (unint64_t)hash;
-- (void)_setDefaultBagProfileForClientIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setDefaultBagProfileForClientIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICClientInfo
@@ -75,25 +75,25 @@ LABEL_5:
   defaultInfo_sDefaultInstance = v11;
 }
 
-+ (id)clientInfoForMusicKitRequestWithClientIdentifier:(id)a3 clientVersion:(id)a4 bundleIdentifier:(id)a5
++ (id)clientInfoForMusicKitRequestWithClientIdentifier:(id)identifier clientVersion:(id)version bundleIdentifier:(id)bundleIdentifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ICClientInfo *)[ICMutableClientInfo alloc] initWithBundleIdentifier:v8];
+  bundleIdentifierCopy = bundleIdentifier;
+  versionCopy = version;
+  identifierCopy = identifier;
+  v11 = [(ICClientInfo *)[ICMutableClientInfo alloc] initWithBundleIdentifier:bundleIdentifierCopy];
 
-  v12 = [(ICClientInfo *)v11 bundleIdentifier];
-  [(ICMutableClientInfo *)v11 setRequestingBundleIdentifier:v12];
+  bundleIdentifier = [(ICClientInfo *)v11 bundleIdentifier];
+  [(ICMutableClientInfo *)v11 setRequestingBundleIdentifier:bundleIdentifier];
 
-  v13 = [(ICClientInfo *)v11 clientVersion];
-  [(ICMutableClientInfo *)v11 setRequestingBundleVersion:v13];
+  clientVersion = [(ICClientInfo *)v11 clientVersion];
+  [(ICMutableClientInfo *)v11 setRequestingBundleVersion:clientVersion];
 
-  [(ICMutableClientInfo *)v11 setClientIdentifier:v10];
-  [(ICMutableClientInfo *)v11 setClientVersion:v9];
+  [(ICMutableClientInfo *)v11 setClientIdentifier:identifierCopy];
+  [(ICMutableClientInfo *)v11 setClientVersion:versionCopy];
 
   [(ICMutableClientInfo *)v11 setBagProfile:@"itunescloudd"];
   [(ICMutableClientInfo *)v11 setBagProfileVersion:@"1"];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v14 = [(ICMutableClientInfo *)v11 copy];
   }
@@ -108,76 +108,76 @@ LABEL_5:
   return v15;
 }
 
-+ (id)clientInfoForMusicKitRequestWithClientIdentifier:(id)a3 clientVersion:(id)a4
++ (id)clientInfoForMusicKitRequestWithClientIdentifier:(id)identifier clientVersion:(id)version
 {
-  v6 = a4;
-  v7 = a3;
+  versionCopy = version;
+  identifierCopy = identifier;
   v8 = +[ICClientInfo defaultInfo];
-  v9 = [v8 bundleIdentifier];
+  bundleIdentifier = [v8 bundleIdentifier];
 
-  v10 = [a1 clientInfoForMusicKitRequestWithClientIdentifier:v7 clientVersion:v6 bundleIdentifier:v9];
+  v10 = [self clientInfoForMusicKitRequestWithClientIdentifier:identifierCopy clientVersion:versionCopy bundleIdentifier:bundleIdentifier];
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundleIdentifier = self->_bundleIdentifier;
-  v5 = a3;
-  [v5 encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
-  [v5 encodeObject:self->_processName forKey:@"processName"];
-  [v5 encodeObject:self->_clientIdentifier forKey:@"clientIdentifier"];
-  [v5 encodeObject:self->_clientVersion forKey:@"clientVersion"];
-  [v5 encodeObject:self->_requestingBundleIdentifier forKey:@"requestingBundleIdentifier"];
-  [v5 encodeObject:self->_requestingBundleVersion forKey:@"requestingBundleVersion"];
-  [v5 encodeObject:self->_bagProfile forKey:@"bagProfile"];
-  [v5 encodeObject:self->_bagProfileVersion forKey:@"bagProfileVersion"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
+  [coderCopy encodeObject:self->_processName forKey:@"processName"];
+  [coderCopy encodeObject:self->_clientIdentifier forKey:@"clientIdentifier"];
+  [coderCopy encodeObject:self->_clientVersion forKey:@"clientVersion"];
+  [coderCopy encodeObject:self->_requestingBundleIdentifier forKey:@"requestingBundleIdentifier"];
+  [coderCopy encodeObject:self->_requestingBundleVersion forKey:@"requestingBundleVersion"];
+  [coderCopy encodeObject:self->_bagProfile forKey:@"bagProfile"];
+  [coderCopy encodeObject:self->_bagProfileVersion forKey:@"bagProfileVersion"];
 }
 
-- (ICClientInfo)initWithCoder:(id)a3
+- (ICClientInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = ICClientInfo;
   v5 = [(ICClientInfo *)&v31 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
     v7 = [v6 copy];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"processName"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"processName"];
     v10 = [v9 copy];
     processName = v5->_processName;
     v5->_processName = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientIdentifier"];
     v13 = [v12 copy];
     clientIdentifier = v5->_clientIdentifier;
     v5->_clientIdentifier = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientVersion"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientVersion"];
     v16 = [v15 copy];
     clientVersion = v5->_clientVersion;
     v5->_clientVersion = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestingBundleIdentifier"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestingBundleIdentifier"];
     v19 = [v18 copy];
     requestingBundleIdentifier = v5->_requestingBundleIdentifier;
     v5->_requestingBundleIdentifier = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestingBundleVersion"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestingBundleVersion"];
     v22 = [v21 copy];
     requestingBundleVersion = v5->_requestingBundleVersion;
     v5->_requestingBundleVersion = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bagProfile"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bagProfile"];
     v25 = [v24 copy];
     bagProfile = v5->_bagProfile;
     v5->_bagProfile = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bagProfileVersion"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bagProfileVersion"];
     v28 = [v27 copy];
     bagProfileVersion = v5->_bagProfileVersion;
     v5->_bagProfileVersion = v28;
@@ -186,10 +186,10 @@ LABEL_5:
   return v5;
 }
 
-- (void)_setDefaultBagProfileForClientIdentifier:(id)a3
+- (void)_setDefaultBagProfileForClientIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   if (_setDefaultBagProfileForClientIdentifier__sDefaultBagProfilesOnceToken != -1)
   {
     dispatch_once(&_setDefaultBagProfileForClientIdentifier__sDefaultBagProfilesOnceToken, &__block_literal_global_44);
@@ -239,9 +239,9 @@ void __57__ICClientInfo__setDefaultBagProfileForClientIdentifier___block_invoke(
   _setDefaultBagProfileForClientIdentifier__sDefaultBagProfileVersions = &unk_1F2C92600;
 }
 
-- (id)_clientInfoCopyWithClass:(Class)a3
+- (id)_clientInfoCopyWithClass:(Class)class
 {
-  v4 = objc_alloc_init(a3);
+  v4 = objc_alloc_init(class);
   if (v4)
   {
     v5 = [(NSString *)self->_bundleIdentifier copy];
@@ -285,31 +285,31 @@ void __57__ICClientInfo__setDefaultBagProfileForClientIdentifier___block_invoke(
   requestingBundleIdentifier = self->_requestingBundleIdentifier;
   if (requestingBundleIdentifier || (requestingBundleIdentifier = self->_bundleIdentifier) != 0)
   {
-    v3 = requestingBundleIdentifier;
+    bundleIdentifier = requestingBundleIdentifier;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E696AAE8] mainBundle];
-    v3 = [v5 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
   }
 
-  return v3;
+  return bundleIdentifier;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    if ([(ICClientInfo *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(ICClientInfo *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
+      v5 = equalCopy;
       bundleIdentifier = v5->_bundleIdentifier;
       v7 = self->_bundleIdentifier;
       v8 = v7;
@@ -666,34 +666,34 @@ LABEL_33:
   return v7;
 }
 
-- (ICClientInfo)initWithSystemApplicationType:(int64_t)a3
+- (ICClientInfo)initWithSystemApplicationType:(int64_t)type
 {
-  v4 = ICBundleIdentifierForSystemApplicationType(a3);
+  v4 = ICBundleIdentifierForSystemApplicationType(type);
   v5 = [(ICClientInfo *)self initWithBundleIdentifier:v4];
 
   return v5;
 }
 
-- (ICClientInfo)initWithBundleIdentifier:(id)a3
+- (ICClientInfo)initWithBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v24.receiver = self;
   v24.super_class = ICClientInfo;
   v6 = [(ICClientInfo *)&v24 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [identifierCopy copy];
     bundleIdentifier = v6->_bundleIdentifier;
     v6->_bundleIdentifier = v7;
 
     v23 = 0;
-    v9 = [MEMORY[0x1E6963620] bundleRecordWithBundleIdentifier:v5 allowPlaceholder:0 error:&v23];
+    v9 = [MEMORY[0x1E6963620] bundleRecordWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:&v23];
     v10 = v23;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0 || v10)
     {
-      v11 = ICKnownProcessNameForSystemApplication(v5);
-      v19 = ICKnownClientVersionForSystemApplication(v5);
+      v11 = ICKnownProcessNameForSystemApplication(identifierCopy);
+      v19 = ICKnownClientVersionForSystemApplication(identifierCopy);
       v18 = v19;
       if (v11 && v19)
       {
@@ -706,8 +706,8 @@ LABEL_33:
 
       else
       {
-        objc_storeStrong(&v6->_clientIdentifier, a3);
-        objc_storeStrong(&v6->_processName, a3);
+        objc_storeStrong(&v6->_clientIdentifier, identifier);
+        objc_storeStrong(&v6->_processName, identifier);
         clientVersion = v6->_clientVersion;
         v6->_clientVersion = @"1.0";
       }
@@ -716,15 +716,15 @@ LABEL_33:
     else
     {
       v11 = v9;
-      v12 = [v11 executableURL];
-      v13 = [v12 lastPathComponent];
+      executableURL = [v11 executableURL];
+      lastPathComponent = [executableURL lastPathComponent];
       processName = v6->_processName;
-      v6->_processName = v13;
+      v6->_processName = lastPathComponent;
 
       objc_storeStrong(&v6->_clientIdentifier, v6->_processName);
-      v15 = [v11 shortVersionString];
+      shortVersionString = [v11 shortVersionString];
       v16 = v6->_clientVersion;
-      v6->_clientVersion = v15;
+      v6->_clientVersion = shortVersionString;
 
       if ([(NSString *)v6->_clientVersion length])
       {
@@ -734,9 +734,9 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v17 = [v11 bundleVersion];
+      bundleVersion = [v11 bundleVersion];
       v18 = v6->_clientVersion;
-      v6->_clientVersion = v17;
+      v6->_clientVersion = bundleVersion;
     }
 
     goto LABEL_12;

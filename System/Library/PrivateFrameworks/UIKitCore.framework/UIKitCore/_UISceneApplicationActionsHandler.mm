@@ -1,18 +1,18 @@
 @interface _UISceneApplicationActionsHandler
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
 @end
 
 @implementation _UISceneApplicationActionsHandler
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v12 isUISubclass])
+  actionsCopy = actions;
+  sceneCopy = scene;
+  iSceneCopy = iScene;
+  contextCopy = context;
+  if ([contextCopy isUISubclass])
   {
-    v13 = v12;
+    v13 = contextCopy;
   }
 
   else
@@ -24,8 +24,8 @@
   if ([v14 lifecycleWantsUnnecessaryDelayForSceneDelivery] && (objc_msgSend(v14, "activatedOnce") & 1) == 0)
   {
     v15 = UIApp;
-    v16 = [UIApp _workspace];
-    [v15 workspace:v16 didReceiveActions:v9];
+    _workspace = [UIApp _workspace];
+    [v15 workspace:_workspace didReceiveActions:actionsCopy];
   }
 
   else
@@ -34,10 +34,10 @@
     v19[1] = 3221225472;
     v19[2] = __99___UISceneApplicationActionsHandler__respondToActions_forFBSScene_inUIScene_fromTransitionContext___block_invoke;
     v19[3] = &unk_1E70F6228;
-    v20 = v9;
-    v21 = v10;
+    v20 = actionsCopy;
+    v21 = sceneCopy;
     v22 = v13;
-    [v11 _enqueuePostSettingsUpdateResponseBlock:v19 inPhase:0x1EFB17450];
+    [iSceneCopy _enqueuePostSettingsUpdateResponseBlock:v19 inPhase:0x1EFB17450];
   }
 
   v17 = [MEMORY[0x1E695DFD8] set];

@@ -1,26 +1,26 @@
 @interface SiriUICachedUserNotificationsSettings
-- (BOOL)_announceNotificationsEnabledForAppBundleId:(id)a3;
-- (BOOL)_announceNotificationsEnabledForAppBundleId:(id)a3 fromSettingsCenter:(id)a4;
-- (BOOL)_currentlyObservingForAppBundleId:(id)a3;
-- (BOOL)_notificationBannersVisibleInCarPlayForAppBundleId:(id)a3;
-- (BOOL)_notificationBannersVisibleInCarPlayForAppBundleId:(id)a3 fromSettingsCenter:(id)a4;
-- (BOOL)syncAnnounceNotificationsEnabledForAppBundleId:(id)a3;
-- (BOOL)syncNotificationBannersVisibleInCarPlayForAppBundleId:(id)a3;
+- (BOOL)_announceNotificationsEnabledForAppBundleId:(id)id;
+- (BOOL)_announceNotificationsEnabledForAppBundleId:(id)id fromSettingsCenter:(id)center;
+- (BOOL)_currentlyObservingForAppBundleId:(id)id;
+- (BOOL)_notificationBannersVisibleInCarPlayForAppBundleId:(id)id;
+- (BOOL)_notificationBannersVisibleInCarPlayForAppBundleId:(id)id fromSettingsCenter:(id)center;
+- (BOOL)syncAnnounceNotificationsEnabledForAppBundleId:(id)id;
+- (BOOL)syncNotificationBannersVisibleInCarPlayForAppBundleId:(id)id;
 - (SiriUICachedUserNotificationsSettings)init;
-- (id)_appNotificationSettingsForAppBundleId:(id)a3;
-- (id)_appNotificationSettingsForAppBundleId:(id)a3 fromSettingsCenter:(id)a4;
-- (id)cachedNotificationSettingsForAppBundleId:(id)a3 asyncFetchNewValuesAndUpdateObservers:(BOOL)a4;
-- (void)_addObserver:(id)a3 forAppBundleId:(id)a4;
+- (id)_appNotificationSettingsForAppBundleId:(id)id;
+- (id)_appNotificationSettingsForAppBundleId:(id)id fromSettingsCenter:(id)center;
+- (id)cachedNotificationSettingsForAppBundleId:(id)id asyncFetchNewValuesAndUpdateObservers:(BOOL)observers;
+- (void)_addObserver:(id)observer forAppBundleId:(id)id;
 - (void)_notifyAllObserversThatPreferencesDidChange;
-- (void)_notifyAllObserversWithAppBundleIdThatPreferencesDidChange:(id)a3;
-- (void)_removeObserver:(id)a3 forAppBundleId:(id)a4;
-- (void)_updateNotificationSettingsChangeAndNotifyObserversForAppBundleId:(id)a3 ifDifferentFromSettings:(id)a4;
-- (void)_updateNotificationSettingsChangeForAppBundleId:(id)a3 fromSettingsCenter:(id)a4 notifyObservers:(BOOL)a5;
-- (void)_updateNotificationSystemSettingsChangeFromSettingsCenter:(id)a3 notifyObservers:(BOOL)a4;
-- (void)addObserver:(id)a3 forAppBundleId:(id)a4;
-- (void)removeObserver:(id)a3 forAppBundleId:(id)a4;
-- (void)userNotificationSettingsCenter:(id)a3 didUpdateNotificationSourceIdentifiers:(id)a4;
-- (void)userNotificationSettingsCenter:(id)a3 didUpdateNotificationSystemSettings:(id)a4;
+- (void)_notifyAllObserversWithAppBundleIdThatPreferencesDidChange:(id)change;
+- (void)_removeObserver:(id)observer forAppBundleId:(id)id;
+- (void)_updateNotificationSettingsChangeAndNotifyObserversForAppBundleId:(id)id ifDifferentFromSettings:(id)settings;
+- (void)_updateNotificationSettingsChangeForAppBundleId:(id)id fromSettingsCenter:(id)center notifyObservers:(BOOL)observers;
+- (void)_updateNotificationSystemSettingsChangeFromSettingsCenter:(id)center notifyObservers:(BOOL)observers;
+- (void)addObserver:(id)observer forAppBundleId:(id)id;
+- (void)removeObserver:(id)observer forAppBundleId:(id)id;
+- (void)userNotificationSettingsCenter:(id)center didUpdateNotificationSourceIdentifiers:(id)identifiers;
+- (void)userNotificationSettingsCenter:(id)center didUpdateNotificationSystemSettings:(id)settings;
 @end
 
 @implementation SiriUICachedUserNotificationsSettings
@@ -32,17 +32,17 @@
   v2 = [(SiriUICachedUserNotificationsSettings *)&v14 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     appObservers = v2->_appObservers;
-    v2->_appObservers = v3;
+    v2->_appObservers = strongToStrongObjectsMapTable;
 
     v5 = dispatch_queue_create("SiriUICachedUserNotificationsSettings", 0);
     queue = v2->_queue;
     v2->_queue = v5;
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     appNotificationSettings = v2->_appNotificationSettings;
-    v2->_appNotificationSettings = v7;
+    v2->_appNotificationSettings = dictionary;
 
     objc_initWeak(&location, v2);
     v9 = v2->_queue;
@@ -75,11 +75,11 @@ void __45__SiriUICachedUserNotificationsSettings_init__block_invoke(uint64_t a1)
   }
 }
 
-- (void)addObserver:(id)a3 forAppBundleId:(id)a4
+- (void)addObserver:(id)observer forAppBundleId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length])
+  observerCopy = observer;
+  idCopy = id;
+  if ([idCopy length])
   {
     objc_initWeak(&location, self);
     queue = self->_queue;
@@ -88,8 +88,8 @@ void __45__SiriUICachedUserNotificationsSettings_init__block_invoke(uint64_t a1)
     v9[2] = __68__SiriUICachedUserNotificationsSettings_addObserver_forAppBundleId___block_invoke;
     v9[3] = &unk_279C59FC8;
     objc_copyWeak(&v12, &location);
-    v10 = v6;
-    v11 = v7;
+    v10 = observerCopy;
+    v11 = idCopy;
     dispatch_async(queue, v9);
 
     objc_destroyWeak(&v12);
@@ -103,11 +103,11 @@ void __68__SiriUICachedUserNotificationsSettings_addObserver_forAppBundleId___bl
   [WeakRetained _addObserver:*(a1 + 32) forAppBundleId:*(a1 + 40)];
 }
 
-- (void)removeObserver:(id)a3 forAppBundleId:(id)a4
+- (void)removeObserver:(id)observer forAppBundleId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length])
+  observerCopy = observer;
+  idCopy = id;
+  if ([idCopy length])
   {
     objc_initWeak(&location, self);
     queue = self->_queue;
@@ -116,8 +116,8 @@ void __68__SiriUICachedUserNotificationsSettings_addObserver_forAppBundleId___bl
     v9[2] = __71__SiriUICachedUserNotificationsSettings_removeObserver_forAppBundleId___block_invoke;
     v9[3] = &unk_279C59FC8;
     objc_copyWeak(&v12, &location);
-    v10 = v6;
-    v11 = v7;
+    v10 = observerCopy;
+    v11 = idCopy;
     dispatch_async(queue, v9);
 
     objc_destroyWeak(&v12);
@@ -131,9 +131,9 @@ void __71__SiriUICachedUserNotificationsSettings_removeObserver_forAppBundleId__
   [WeakRetained _removeObserver:*(a1 + 32) forAppBundleId:*(a1 + 40)];
 }
 
-- (BOOL)syncAnnounceNotificationsEnabledForAppBundleId:(id)a3
+- (BOOL)syncAnnounceNotificationsEnabledForAppBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -146,8 +146,8 @@ void __71__SiriUICachedUserNotificationsSettings_removeObserver_forAppBundleId__
   v8[3] = &unk_279C59FF0;
   v10 = &v13;
   objc_copyWeak(&v11, &location);
-  v9 = v4;
-  v6 = v4;
+  v9 = idCopy;
+  v6 = idCopy;
   dispatch_sync(queue, v8);
   LOBYTE(queue) = *(v14 + 24);
 
@@ -163,9 +163,9 @@ void __88__SiriUICachedUserNotificationsSettings_syncAnnounceNotificationsEnable
   *(*(*(a1 + 40) + 8) + 24) = [WeakRetained _announceNotificationsEnabledForAppBundleId:*(a1 + 32)];
 }
 
-- (BOOL)syncNotificationBannersVisibleInCarPlayForAppBundleId:(id)a3
+- (BOOL)syncNotificationBannersVisibleInCarPlayForAppBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -178,8 +178,8 @@ void __88__SiriUICachedUserNotificationsSettings_syncAnnounceNotificationsEnable
   v8[3] = &unk_279C59FF0;
   v10 = &v13;
   objc_copyWeak(&v11, &location);
-  v9 = v4;
-  v6 = v4;
+  v9 = idCopy;
+  v6 = idCopy;
   dispatch_sync(queue, v8);
   LOBYTE(queue) = *(v14 + 24);
 
@@ -195,12 +195,12 @@ void __95__SiriUICachedUserNotificationsSettings_syncNotificationBannersVisibleI
   *(*(*(a1 + 40) + 8) + 24) = [WeakRetained _notificationBannersVisibleInCarPlayForAppBundleId:*(a1 + 32)];
 }
 
-- (id)cachedNotificationSettingsForAppBundleId:(id)a3 asyncFetchNewValuesAndUpdateObservers:(BOOL)a4
+- (id)cachedNotificationSettingsForAppBundleId:(id)id asyncFetchNewValuesAndUpdateObservers:(BOOL)observers
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_appNotificationSettings objectForKeyedSubscript:v6];
-  if (v4 && [v6 length])
+  observersCopy = observers;
+  idCopy = id;
+  v7 = [(NSMutableDictionary *)self->_appNotificationSettings objectForKeyedSubscript:idCopy];
+  if (observersCopy && [idCopy length])
   {
     objc_initWeak(&location, self);
     queue = self->_queue;
@@ -209,7 +209,7 @@ void __95__SiriUICachedUserNotificationsSettings_syncNotificationBannersVisibleI
     v12[2] = __120__SiriUICachedUserNotificationsSettings_cachedNotificationSettingsForAppBundleId_asyncFetchNewValuesAndUpdateObservers___block_invoke;
     v12[3] = &unk_279C59FC8;
     objc_copyWeak(&v15, &location);
-    v13 = v6;
+    v13 = idCopy;
     v14 = v7;
     dispatch_async(queue, v12);
 
@@ -238,34 +238,34 @@ void __120__SiriUICachedUserNotificationsSettings_cachedNotificationSettingsForA
   [WeakRetained _updateNotificationSettingsChangeAndNotifyObserversForAppBundleId:*(a1 + 32) ifDifferentFromSettings:*(a1 + 40)];
 }
 
-- (void)userNotificationSettingsCenter:(id)a3 didUpdateNotificationSystemSettings:(id)a4
+- (void)userNotificationSettingsCenter:(id)center didUpdateNotificationSystemSettings:(id)settings
 {
-  v5 = a3;
+  centerCopy = center;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __108__SiriUICachedUserNotificationsSettings_userNotificationSettingsCenter_didUpdateNotificationSystemSettings___block_invoke;
   v8[3] = &unk_279C5A018;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = centerCopy;
+  v7 = centerCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)userNotificationSettingsCenter:(id)a3 didUpdateNotificationSourceIdentifiers:(id)a4
+- (void)userNotificationSettingsCenter:(id)center didUpdateNotificationSourceIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  centerCopy = center;
+  identifiersCopy = identifiers;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __111__SiriUICachedUserNotificationsSettings_userNotificationSettingsCenter_didUpdateNotificationSourceIdentifiers___block_invoke;
   block[3] = &unk_279C5A040;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = identifiersCopy;
+  selfCopy = self;
+  v14 = centerCopy;
+  v9 = centerCopy;
+  v10 = identifiersCopy;
   dispatch_async(queue, block);
 }
 
@@ -303,65 +303,65 @@ void __111__SiriUICachedUserNotificationsSettings_userNotificationSettingsCenter
   }
 }
 
-- (void)_addObserver:(id)a3 forAppBundleId:(id)a4
+- (void)_addObserver:(id)observer forAppBundleId:(id)id
 {
-  v9 = a3;
+  observerCopy = observer;
   appObservers = self->_appObservers;
-  v7 = a4;
-  v8 = [(NSMapTable *)appObservers objectForKey:v7];
-  if (!v8)
+  idCopy = id;
+  weakObjectsHashTable = [(NSMapTable *)appObservers objectForKey:idCopy];
+  if (!weakObjectsHashTable)
   {
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
   }
 
-  if (([v8 containsObject:v9] & 1) == 0)
+  if (([weakObjectsHashTable containsObject:observerCopy] & 1) == 0)
   {
-    [v8 addObject:v9];
+    [weakObjectsHashTable addObject:observerCopy];
   }
 
-  [(NSMapTable *)self->_appObservers setObject:v8 forKey:v7];
-  [(SiriUICachedUserNotificationsSettings *)self _updateNotificationSettingsChangeForAppBundleId:v7 fromSettingsCenter:self->_notificationsSettingsCenter notifyObservers:0];
+  [(NSMapTable *)self->_appObservers setObject:weakObjectsHashTable forKey:idCopy];
+  [(SiriUICachedUserNotificationsSettings *)self _updateNotificationSettingsChangeForAppBundleId:idCopy fromSettingsCenter:self->_notificationsSettingsCenter notifyObservers:0];
 }
 
-- (void)_removeObserver:(id)a3 forAppBundleId:(id)a4
+- (void)_removeObserver:(id)observer forAppBundleId:(id)id
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(NSMapTable *)self->_appObservers objectForKey:v6];
+  observerCopy = observer;
+  idCopy = id;
+  v7 = [(NSMapTable *)self->_appObservers objectForKey:idCopy];
   v8 = v7;
   if (v7)
   {
-    [v7 removeObject:v9];
+    [v7 removeObject:observerCopy];
   }
 
   if (![v8 count])
   {
-    [(NSMapTable *)self->_appObservers removeObjectForKey:v6];
+    [(NSMapTable *)self->_appObservers removeObjectForKey:idCopy];
   }
 
-  [(NSMutableDictionary *)self->_appNotificationSettings removeObjectForKey:v6];
+  [(NSMutableDictionary *)self->_appNotificationSettings removeObjectForKey:idCopy];
 }
 
-- (BOOL)_announceNotificationsEnabledForAppBundleId:(id)a3
+- (BOOL)_announceNotificationsEnabledForAppBundleId:(id)id
 {
-  v3 = [(SiriUICachedUserNotificationsSettings *)self _appNotificationSettingsForAppBundleId:a3];
-  v4 = [v3 isAnnounceEnabled];
+  v3 = [(SiriUICachedUserNotificationsSettings *)self _appNotificationSettingsForAppBundleId:id];
+  isAnnounceEnabled = [v3 isAnnounceEnabled];
 
-  return v4;
+  return isAnnounceEnabled;
 }
 
-- (BOOL)_notificationBannersVisibleInCarPlayForAppBundleId:(id)a3
+- (BOOL)_notificationBannersVisibleInCarPlayForAppBundleId:(id)id
 {
-  v3 = [(SiriUICachedUserNotificationsSettings *)self _appNotificationSettingsForAppBundleId:a3];
-  v4 = [v3 areCarPlayBannersEnabled];
+  v3 = [(SiriUICachedUserNotificationsSettings *)self _appNotificationSettingsForAppBundleId:id];
+  areCarPlayBannersEnabled = [v3 areCarPlayBannersEnabled];
 
-  return v4;
+  return areCarPlayBannersEnabled;
 }
 
-- (id)_appNotificationSettingsForAppBundleId:(id)a3
+- (id)_appNotificationSettingsForAppBundleId:(id)id
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_appNotificationSettings objectForKeyedSubscript:v4];
+  idCopy = id;
+  v5 = [(NSMutableDictionary *)self->_appNotificationSettings objectForKeyedSubscript:idCopy];
   v6 = v5;
   if (v5)
   {
@@ -370,7 +370,7 @@ void __111__SiriUICachedUserNotificationsSettings_userNotificationSettingsCenter
 
   else
   {
-    v7 = [(SiriUICachedUserNotificationsSettings *)self _appNotificationSettingsForAppBundleId:v4 fromSettingsCenter:self->_notificationsSettingsCenter];
+    v7 = [(SiriUICachedUserNotificationsSettings *)self _appNotificationSettingsForAppBundleId:idCopy fromSettingsCenter:self->_notificationsSettingsCenter];
   }
 
   v8 = v7;
@@ -378,28 +378,28 @@ void __111__SiriUICachedUserNotificationsSettings_userNotificationSettingsCenter
   return v8;
 }
 
-- (id)_appNotificationSettingsForAppBundleId:(id)a3 fromSettingsCenter:(id)a4
+- (id)_appNotificationSettingsForAppBundleId:(id)id fromSettingsCenter:(id)center
 {
   notificationsSettingsCenter = self->_notificationsSettingsCenter;
-  v6 = a3;
-  v7 = [(SiriUICachedUserNotificationsSettings *)self _announceNotificationsEnabledForAppBundleId:v6 fromSettingsCenter:notificationsSettingsCenter];
-  v8 = [(SiriUICachedUserNotificationsSettings *)self _notificationBannersVisibleInCarPlayForAppBundleId:v6 fromSettingsCenter:self->_notificationsSettingsCenter];
+  idCopy = id;
+  v7 = [(SiriUICachedUserNotificationsSettings *)self _announceNotificationsEnabledForAppBundleId:idCopy fromSettingsCenter:notificationsSettingsCenter];
+  v8 = [(SiriUICachedUserNotificationsSettings *)self _notificationBannersVisibleInCarPlayForAppBundleId:idCopy fromSettingsCenter:self->_notificationsSettingsCenter];
 
   v9 = [[AppNotificationSettings alloc] initWithAnnounceEnabled:v7 carPlayBannersEnabled:v8];
 
   return v9;
 }
 
-- (void)_updateNotificationSystemSettingsChangeFromSettingsCenter:(id)a3 notifyObservers:(BOOL)a4
+- (void)_updateNotificationSystemSettingsChangeFromSettingsCenter:(id)center notifyObservers:(BOOL)observers
 {
-  v4 = a4;
-  v6 = [a3 notificationSystemSettings];
-  v7 = [v6 announcementCarPlaySetting];
+  observersCopy = observers;
+  notificationSystemSettings = [center notificationSystemSettings];
+  announcementCarPlaySetting = [notificationSystemSettings announcementCarPlaySetting];
 
-  if (v7 != self->_cachedAnnounceCarPlaySetting)
+  if (announcementCarPlaySetting != self->_cachedAnnounceCarPlaySetting)
   {
-    self->_cachedAnnounceCarPlaySetting = v7;
-    if (v4)
+    self->_cachedAnnounceCarPlaySetting = announcementCarPlaySetting;
+    if (observersCopy)
     {
 
       [(SiriUICachedUserNotificationsSettings *)self _notifyAllObserversThatPreferencesDidChange];
@@ -407,71 +407,71 @@ void __111__SiriUICachedUserNotificationsSettings_userNotificationSettingsCenter
   }
 }
 
-- (void)_updateNotificationSettingsChangeForAppBundleId:(id)a3 fromSettingsCenter:(id)a4 notifyObservers:(BOOL)a5
+- (void)_updateNotificationSettingsChangeForAppBundleId:(id)id fromSettingsCenter:(id)center notifyObservers:(BOOL)observers
 {
-  v5 = a5;
-  v11 = a3;
-  v8 = a4;
-  if ([(SiriUICachedUserNotificationsSettings *)self _currentlyObservingForAppBundleId:v11])
+  observersCopy = observers;
+  idCopy = id;
+  centerCopy = center;
+  if ([(SiriUICachedUserNotificationsSettings *)self _currentlyObservingForAppBundleId:idCopy])
   {
-    v9 = [(NSMutableDictionary *)self->_appNotificationSettings objectForKeyedSubscript:v11];
-    v10 = [(SiriUICachedUserNotificationsSettings *)self _appNotificationSettingsForAppBundleId:v11 fromSettingsCenter:v8];
+    v9 = [(NSMutableDictionary *)self->_appNotificationSettings objectForKeyedSubscript:idCopy];
+    v10 = [(SiriUICachedUserNotificationsSettings *)self _appNotificationSettingsForAppBundleId:idCopy fromSettingsCenter:centerCopy];
     if (!v9 || ([v9 isEqual:v10] & 1) == 0)
     {
-      [(NSMutableDictionary *)self->_appNotificationSettings setObject:v10 forKeyedSubscript:v11];
-      if (v5)
+      [(NSMutableDictionary *)self->_appNotificationSettings setObject:v10 forKeyedSubscript:idCopy];
+      if (observersCopy)
       {
-        [(SiriUICachedUserNotificationsSettings *)self _notifyAllObserversWithAppBundleIdThatPreferencesDidChange:v11];
+        [(SiriUICachedUserNotificationsSettings *)self _notifyAllObserversWithAppBundleIdThatPreferencesDidChange:idCopy];
       }
     }
   }
 }
 
-- (void)_updateNotificationSettingsChangeAndNotifyObserversForAppBundleId:(id)a3 ifDifferentFromSettings:(id)a4
+- (void)_updateNotificationSettingsChangeAndNotifyObserversForAppBundleId:(id)id ifDifferentFromSettings:(id)settings
 {
-  v8 = a3;
-  v6 = a4;
-  if ([(SiriUICachedUserNotificationsSettings *)self _currentlyObservingForAppBundleId:v8])
+  idCopy = id;
+  settingsCopy = settings;
+  if ([(SiriUICachedUserNotificationsSettings *)self _currentlyObservingForAppBundleId:idCopy])
   {
-    v7 = [(SiriUICachedUserNotificationsSettings *)self _appNotificationSettingsForAppBundleId:v8 fromSettingsCenter:self->_notificationsSettingsCenter];
-    if (([v7 isEqual:v6] & 1) == 0)
+    v7 = [(SiriUICachedUserNotificationsSettings *)self _appNotificationSettingsForAppBundleId:idCopy fromSettingsCenter:self->_notificationsSettingsCenter];
+    if (([v7 isEqual:settingsCopy] & 1) == 0)
     {
-      [(NSMutableDictionary *)self->_appNotificationSettings setObject:v7 forKeyedSubscript:v8];
-      [(SiriUICachedUserNotificationsSettings *)self _notifyAllObserversWithAppBundleIdThatPreferencesDidChange:v8];
+      [(NSMutableDictionary *)self->_appNotificationSettings setObject:v7 forKeyedSubscript:idCopy];
+      [(SiriUICachedUserNotificationsSettings *)self _notifyAllObserversWithAppBundleIdThatPreferencesDidChange:idCopy];
     }
   }
 }
 
-- (BOOL)_announceNotificationsEnabledForAppBundleId:(id)a3 fromSettingsCenter:(id)a4
+- (BOOL)_announceNotificationsEnabledForAppBundleId:(id)id fromSettingsCenter:(id)center
 {
-  v4 = [a4 notificationSourceWithIdentifier:a3];
-  v5 = [v4 sourceSettings];
-  v6 = [v5 notificationSettings];
-  v7 = [v6 announcementSetting] == 2;
+  v4 = [center notificationSourceWithIdentifier:id];
+  sourceSettings = [v4 sourceSettings];
+  notificationSettings = [sourceSettings notificationSettings];
+  v7 = [notificationSettings announcementSetting] == 2;
 
   return v7;
 }
 
-- (BOOL)_notificationBannersVisibleInCarPlayForAppBundleId:(id)a3 fromSettingsCenter:(id)a4
+- (BOOL)_notificationBannersVisibleInCarPlayForAppBundleId:(id)id fromSettingsCenter:(id)center
 {
-  v4 = [a4 notificationSourceWithIdentifier:a3];
-  v5 = [v4 sourceSettings];
-  v6 = [v5 notificationSettings];
-  v7 = [v6 carPlaySetting] == 2;
+  v4 = [center notificationSourceWithIdentifier:id];
+  sourceSettings = [v4 sourceSettings];
+  notificationSettings = [sourceSettings notificationSettings];
+  v7 = [notificationSettings carPlaySetting] == 2;
 
   return v7;
 }
 
-- (BOOL)_currentlyObservingForAppBundleId:(id)a3
+- (BOOL)_currentlyObservingForAppBundleId:(id)id
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idCopy = id;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSMapTable *)self->_appObservers keyEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  keyEnumerator = [(NSMapTable *)self->_appObservers keyEnumerator];
+  v6 = [keyEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -481,17 +481,17 @@ void __111__SiriUICachedUserNotificationsSettings_userNotificationSettingsCenter
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(keyEnumerator);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) isEqualToString:v4])
+        if ([*(*(&v10 + 1) + 8 * i) isEqualToString:idCopy])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [keyEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;
@@ -513,8 +513,8 @@ LABEL_11:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMapTable *)self->_appObservers keyEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  keyEnumerator = [(NSMapTable *)self->_appObservers keyEnumerator];
+  v4 = [keyEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -526,25 +526,25 @@ LABEL_11:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         [(SiriUICachedUserNotificationsSettings *)self _notifyAllObserversWithAppBundleIdThatPreferencesDidChange:*(*(&v8 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [keyEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_notifyAllObserversWithAppBundleIdThatPreferencesDidChange:(id)a3
+- (void)_notifyAllObserversWithAppBundleIdThatPreferencesDidChange:(id)change
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_appObservers objectForKey:v4];
+  changeCopy = change;
+  v5 = [(NSMapTable *)self->_appObservers objectForKey:changeCopy];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -564,7 +564,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) cachedSettings:self didChangeForAppBundleId:v4];
+        [*(*(&v10 + 1) + 8 * v9++) cachedSettings:self didChangeForAppBundleId:changeCopy];
       }
 
       while (v7 != v9);

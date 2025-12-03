@@ -1,9 +1,9 @@
 @interface SBSystemApertureStateDumpService
 - (SBSystemApertureStateDumpService)init;
-- (id)_convertSystemApertureStateDumpToJSONString:(id)a3 error:(id *)a4;
+- (id)_convertSystemApertureStateDumpToJSONString:(id)string error:(id *)error;
 - (id)_systemApertureStateDumpFilePath;
-- (void)systemServiceServer:(id)a3 client:(id)a4 requestSystemApertureStateDumpWithCompletion:(id)a5;
-- (void)systemServiceServer:(id)a3 client:(id)a4 requestToWriteSystemApertureStateDumpToFile:(id)a5;
+- (void)systemServiceServer:(id)server client:(id)client requestSystemApertureStateDumpWithCompletion:(id)completion;
+- (void)systemServiceServer:(id)server client:(id)client requestToWriteSystemApertureStateDumpToFile:(id)file;
 @end
 
 @implementation SBSystemApertureStateDumpService
@@ -26,31 +26,31 @@
   return v2;
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 requestToWriteSystemApertureStateDumpToFile:(id)a5
+- (void)systemServiceServer:(id)server client:(id)client requestToWriteSystemApertureStateDumpToFile:(id)file
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a5;
-  v7 = [SBApp systemApertureControllerForMainDisplay];
-  v8 = [v7 systemApertureModelStateDump];
+  fileCopy = file;
+  systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+  systemApertureModelStateDump = [systemApertureControllerForMainDisplay systemApertureModelStateDump];
 
-  if ([v8 count])
+  if ([systemApertureModelStateDump count])
   {
     v17 = 0;
-    v9 = [(SBSystemApertureStateDumpService *)self _convertSystemApertureStateDumpToJSONString:v8 error:&v17];
+    v9 = [(SBSystemApertureStateDumpService *)self _convertSystemApertureStateDumpToJSONString:systemApertureModelStateDump error:&v17];
     v10 = v17;
-    if (v6)
+    if (fileCopy)
     {
-      v11 = v6;
+      _systemApertureStateDumpFilePath = fileCopy;
     }
 
     else
     {
-      v11 = [(SBSystemApertureStateDumpService *)self _systemApertureStateDumpFilePath];
+      _systemApertureStateDumpFilePath = [(SBSystemApertureStateDumpService *)self _systemApertureStateDumpFilePath];
     }
 
-    v13 = v11;
+    v13 = _systemApertureStateDumpFilePath;
     v16 = v10;
-    [v9 writeToFile:v11 atomically:1 encoding:4 error:&v16];
+    [v9 writeToFile:_systemApertureStateDumpFilePath atomically:1 encoding:4 error:&v16];
     v12 = v16;
 
     if (v12)
@@ -58,9 +58,9 @@
       v14 = SBLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v12 localizedDescription];
+        localizedDescription = [v12 localizedDescription];
         *buf = 138543362;
-        v19 = v15;
+        v19 = localizedDescription;
         _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "SystemApertureStateDump failed to write to file with error: %{public}@", buf, 0xCu);
       }
     }
@@ -77,19 +77,19 @@
   }
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 requestSystemApertureStateDumpWithCompletion:(id)a5
+- (void)systemServiceServer:(id)server client:(id)client requestSystemApertureStateDumpWithCompletion:(id)completion
 {
-  v6 = a5;
-  v7 = [SBApp systemApertureControllerForMainDisplay];
-  v8 = [v7 systemApertureModelStateDump];
+  completionCopy = completion;
+  systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+  systemApertureModelStateDump = [systemApertureControllerForMainDisplay systemApertureModelStateDump];
 
-  if ([v8 count])
+  if ([systemApertureModelStateDump count])
   {
     v12 = 0;
-    v9 = [(SBSystemApertureStateDumpService *)self _convertSystemApertureStateDumpToJSONString:v8 error:&v12];
+    v9 = [(SBSystemApertureStateDumpService *)self _convertSystemApertureStateDumpToJSONString:systemApertureModelStateDump error:&v12];
     v10 = v12;
-    v11 = [v10 localizedDescription];
-    v6[2](v6, v9, v11);
+    localizedDescription = [v10 localizedDescription];
+    completionCopy[2](completionCopy, v9, localizedDescription);
   }
 
   else
@@ -103,12 +103,12 @@
   }
 }
 
-- (id)_convertSystemApertureStateDumpToJSONString:(id)a3 error:(id *)a4
+- (id)_convertSystemApertureStateDumpToJSONString:(id)string error:(id *)error
 {
-  v5 = a3;
-  if ([v5 count])
+  stringCopy = string;
+  if ([stringCopy count])
   {
-    v6 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v5 options:1 error:a4];
+    v6 = [MEMORY[0x277CCAAA0] dataWithJSONObject:stringCopy options:1 error:error];
     v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v6 encoding:4];
   }
 
@@ -134,8 +134,8 @@
 
   v4 = [v3 stringByAppendingPathComponent:@"Logs"];
   v5 = [v4 stringByAppendingPathComponent:@"SpringBoard"];
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  [v6 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:0];
 
   v7 = [v5 stringByAppendingPathComponent:@"SystemApertureStateDump.json"];
 

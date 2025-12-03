@@ -1,7 +1,7 @@
 @interface RTFingerprintMO
-+ (id)fetchLastByStartDateInManagedObjectContext:(id)a3 error:(id *)a4;
++ (id)fetchLastByStartDateInManagedObjectContext:(id)context error:(id *)error;
 + (id)fetchRequest;
-+ (id)managedObjectWithFingerprint:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithFingerprint:(id)fingerprint inManagedObjectContext:(id)context;
 @end
 
 @implementation RTFingerprintMO
@@ -13,13 +13,13 @@
   return v2;
 }
 
-+ (id)managedObjectWithFingerprint:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithFingerprint:(id)fingerprint inManagedObjectContext:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  fingerprintCopy = fingerprint;
+  contextCopy = context;
+  v7 = contextCopy;
+  if (!fingerprintCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -40,39 +40,39 @@
     goto LABEL_15;
   }
 
-  if (!v6)
+  if (!contextCopy)
   {
 LABEL_15:
-    v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    accessPoints = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(accessPoints, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315394;
       v26 = "+[RTFingerprintMO managedObjectWithFingerprint:inManagedObjectContext:]";
       v27 = 1024;
       v28 = 24;
-      _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: managedObjectContext (in %s:%d)", buf, 0x12u);
+      _os_log_error_impl(&dword_2304B3000, accessPoints, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: managedObjectContext (in %s:%d)", buf, 0x12u);
     }
 
     v8 = 0;
     goto LABEL_18;
   }
 
-  v8 = [[RTFingerprintMO alloc] initWithContext:v6];
-  v9 = [v5 identifier];
-  [(RTFingerprintMO *)v8 setIdentifier:v9];
+  v8 = [[RTFingerprintMO alloc] initWithContext:contextCopy];
+  identifier = [fingerprintCopy identifier];
+  [(RTFingerprintMO *)v8 setIdentifier:identifier];
 
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v5, "settledState")}];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(fingerprintCopy, "settledState")}];
   [(RTFingerprintMO *)v8 setSettledState:v10];
 
-  v11 = [v5 start];
-  [(RTFingerprintMO *)v8 setStart:v11];
+  start = [fingerprintCopy start];
+  [(RTFingerprintMO *)v8 setStart:start];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v12 = [v5 accessPoints];
-  v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  accessPoints = [fingerprintCopy accessPoints];
+  v13 = [accessPoints countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v13)
   {
     v14 = v13;
@@ -83,14 +83,14 @@ LABEL_15:
       {
         if (*v21 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(accessPoints);
         }
 
         v17 = [RTWiFiAccessPointMO managedObjectWithAccessPoint:*(*(&v20 + 1) + 8 * i) inManagedObjectContext:v7];
         [(RTFingerprintMO *)v8 addWifiAccessPointsObject:v17];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v14 = [accessPoints countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v14);
@@ -103,11 +103,11 @@ LABEL_19:
   return v8;
 }
 
-+ (id)fetchLastByStartDateInManagedObjectContext:(id)a3 error:(id *)a4
++ (id)fetchLastByStartDateInManagedObjectContext:(id)context error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  contextCopy = context;
+  if (contextCopy)
   {
     v6 = +[RTFingerprintMO fetchRequest];
     [v6 setReturnsObjectsAsFaults:0];
@@ -121,8 +121,8 @@ LABEL_19:
     [v6 setSortDescriptors:v9];
 
     [v6 setFetchLimit:1];
-    v10 = [v5 executeFetchRequest:v6 error:a4];
-    v11 = [v10 firstObject];
+    v10 = [contextCopy executeFetchRequest:v6 error:error];
+    firstObject = [v10 firstObject];
   }
 
   else
@@ -137,10 +137,10 @@ LABEL_19:
       _os_log_error_impl(&dword_2304B3000, v6, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: managedObjectContext (in %s:%d)", buf, 0x12u);
     }
 
-    v11 = 0;
+    firstObject = 0;
   }
 
-  return v11;
+  return firstObject;
 }
 
 @end

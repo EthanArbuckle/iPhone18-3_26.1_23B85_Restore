@@ -1,18 +1,18 @@
 @interface TPSAppIntent
-- (TPSAppIntent)initWithDictionary:(id)a3;
+- (TPSAppIntent)initWithDictionary:(id)dictionary;
 @end
 
 @implementation TPSAppIntent
 
-- (TPSAppIntent)initWithDictionary:(id)a3
+- (TPSAppIntent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = TPSAppIntent;
   v5 = [(TPSAppIntent *)&v15 init];
   if (v5)
   {
-    v6 = [v4 TPSSafeStringForKey:@"name"];
+    v6 = [dictionaryCopy TPSSafeStringForKey:@"name"];
     v7 = v6;
     if (v6)
     {
@@ -26,7 +26,7 @@
 
     objc_storeStrong(&v5->_name, v8);
 
-    v9 = [v4 TPSSafeStringForKey:@"bundleId"];
+    v9 = [dictionaryCopy TPSSafeStringForKey:@"bundleId"];
     v10 = v9;
     if (v9)
     {
@@ -40,7 +40,7 @@
 
     objc_storeStrong(&v5->_bundleId, v11);
 
-    v12 = [v4 TPSSafeObjectForKey:@"value"];
+    v12 = [dictionaryCopy TPSSafeObjectForKey:@"value"];
     value = v5->_value;
     v5->_value = v12;
   }

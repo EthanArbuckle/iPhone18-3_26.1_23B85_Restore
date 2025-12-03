@@ -1,26 +1,26 @@
 @interface WFDiagnosticsResultItemNoInternet
-- (WFDiagnosticsResultItemNoInternet)initWithResults:(id)a3;
+- (WFDiagnosticsResultItemNoInternet)initWithResults:(id)results;
 @end
 
 @implementation WFDiagnosticsResultItemNoInternet
 
-- (WFDiagnosticsResultItemNoInternet)initWithResults:(id)a3
+- (WFDiagnosticsResultItemNoInternet)initWithResults:(id)results
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultsCopy = results;
   v26.receiver = self;
   v26.super_class = WFDiagnosticsResultItemNoInternet;
   v5 = [(WFDiagnosticsResultItemNoInternet *)&v26 init];
-  v6 = [v4 noInternetDiagnosticsResults];
-  [(WFDiagnosticsResultItemNoInternet *)v5 setResults:v6];
+  noInternetDiagnosticsResults = [resultsCopy noInternetDiagnosticsResults];
+  [(WFDiagnosticsResultItemNoInternet *)v5 setResults:noInternetDiagnosticsResults];
 
   v7 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = [(WFDiagnosticsResultItemNoInternet *)v5 results];
-  v9 = [v8 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  results = [(WFDiagnosticsResultItemNoInternet *)v5 results];
+  v9 = [results countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v9)
   {
     v10 = v9;
@@ -32,7 +32,7 @@ LABEL_3:
     {
       if (*v23 != v12)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(results);
       }
 
       v14 = *(*(&v22 + 1) + 8 * v13);
@@ -56,7 +56,7 @@ LABEL_3:
 
       if (v10 == ++v13)
       {
-        v10 = [v8 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v10 = [results countByEnumeratingWithState:&v22 objects:v27 count:16];
         if (v10)
         {
           goto LABEL_3;

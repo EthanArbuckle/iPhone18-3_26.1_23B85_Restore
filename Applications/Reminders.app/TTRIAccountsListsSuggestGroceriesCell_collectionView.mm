@@ -1,11 +1,11 @@
 @interface TTRIAccountsListsSuggestGroceriesCell_collectionView
-- (_TtC9Reminders52TTRIAccountsListsSuggestGroceriesCell_collectionView)initWithCoder:(id)a3;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (_TtC9Reminders52TTRIAccountsListsSuggestGroceriesCell_collectionView)initWithCoder:(id)coder;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 @end
 
 @implementation TTRIAccountsListsSuggestGroceriesCell_collectionView
 
-- (_TtC9Reminders52TTRIAccountsListsSuggestGroceriesCell_collectionView)initWithCoder:(id)a3
+- (_TtC9Reminders52TTRIAccountsListsSuggestGroceriesCell_collectionView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9Reminders52TTRIAccountsListsSuggestGroceriesCell_collectionView_addAccessory;
   type metadata accessor for AddAccessory(0);
@@ -20,7 +20,7 @@
   return result;
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   ObjectType = swift_getObjectType();
   v5 = type metadata accessor for UICellConfigurationState();
@@ -28,9 +28,9 @@
   __chkstk_darwin(v5);
   v8 = &v11[-((v7 + 15) & 0xFFFFFFFFFFFFFFF0)];
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   isa = UICellConfigurationState._bridgeToObjectiveC()().super.super.isa;
-  v12.receiver = v9;
+  v12.receiver = selfCopy;
   v12.super_class = ObjectType;
   [(TTRIAccountsListsBaseCell_collectionView *)&v12 _bridgedUpdateConfigurationUsingState:isa];
 

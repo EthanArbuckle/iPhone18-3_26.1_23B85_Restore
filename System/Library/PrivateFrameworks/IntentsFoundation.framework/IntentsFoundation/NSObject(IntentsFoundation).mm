@@ -12,7 +12,7 @@
     v5 = MEMORY[0x277CCABB0];
     v6 = a4;
     v7 = [v5 numberWithBool:1];
-    [a1 setValue:v7 forKey:v6];
+    [self setValue:v7 forKey:v6];
   }
 }
 
@@ -20,10 +20,10 @@
 {
   if (a3)
   {
-    return [a1 setValue:? forKey:?];
+    return [self setValue:? forKey:?];
   }
 
-  return a1;
+  return self;
 }
 
 @end

@@ -3,45 +3,45 @@
 - (ADAnalyticsService)init;
 - (id)_store;
 - (id)_unstageEvents;
-- (void)_beginEventsFuzzingWithStartTime:(unint64_t)a3;
+- (void)_beginEventsFuzzingWithStartTime:(unint64_t)time;
 - (void)_beginEventsGrouping;
-- (void)_endEventsFuzzingWithEndTime:(unint64_t)a3;
+- (void)_endEventsFuzzingWithEndTime:(unint64_t)time;
 - (void)_endEventsGrouping;
-- (void)_enumerateConnectionsAsServiceDelegates:(id)a3 completion:(id)a4;
-- (void)_executeDelegateBlockOnAllConnections:(id)a3 completion:(id)a4;
+- (void)_enumerateConnectionsAsServiceDelegates:(id)delegates completion:(id)completion;
+- (void)_executeDelegateBlockOnAllConnections:(id)connections completion:(id)completion;
 - (void)_houseKeeperArrived;
 - (void)_linkStoreForSysdiagnose;
-- (void)_observeConnectionDisrupted:(int)a3 observer:(id)a4 referenceId:(id)a5;
+- (void)_observeConnectionDisrupted:(int)disrupted observer:(id)observer referenceId:(id)id;
 - (void)_processStagedEvents;
-- (void)_publishEventsToObserver:(id)a3 completion:(id)a4;
+- (void)_publishEventsToObserver:(id)observer completion:(id)completion;
 - (void)_resumeEventsStaging;
-- (void)_signalConnectionDisruption:(id)a3;
-- (void)_stageEvent:(id)a3;
-- (void)_stageEvents:(id)a3;
+- (void)_signalConnectionDisruption:(id)disruption;
+- (void)_stageEvent:(id)event;
+- (void)_stageEvents:(id)events;
 - (void)_startHouseKeepingTimer;
 - (void)_stopHouseKeepingTimer;
-- (void)_stopObservingConnectionDisrupted:(int)a3 referenceId:(id)a4;
+- (void)_stopObservingConnectionDisrupted:(int)disrupted referenceId:(id)id;
 - (void)_suspendEventsStaging;
 - (void)_unlinkStoreForSysdiagnose;
-- (void)accessStoreUsingBlock:(id)a3;
-- (void)beginEventsFuzzingWithStartTime:(unint64_t)a3;
+- (void)accessStoreUsingBlock:(id)block;
+- (void)beginEventsFuzzingWithStartTime:(unint64_t)time;
 - (void)beginEventsGrouping;
-- (void)boostAllConnections:(id)a3;
+- (void)boostAllConnections:(id)connections;
 - (void)checkForMetricsUploadProblem;
-- (void)connectionConnected:(id)a3;
-- (void)connectionDisconnected:(id)a3;
-- (void)connectionInterrupted:(id)a3;
+- (void)connectionConnected:(id)connected;
+- (void)connectionDisconnected:(id)disconnected;
+- (void)connectionInterrupted:(id)interrupted;
 - (void)dealloc;
-- (void)endEventsFuzzingWithEndTime:(unint64_t)a3;
+- (void)endEventsFuzzingWithEndTime:(unint64_t)time;
 - (void)endEventsGrouping;
-- (void)logInstrumentationOfType:(id)a3 machAbsoluteTime:(unint64_t)a4 turnIdentifier:(id)a5;
+- (void)logInstrumentationOfType:(id)type machAbsoluteTime:(unint64_t)time turnIdentifier:(id)identifier;
 - (void)managedConfigurationEffectiveSettingsChanged;
-- (void)observeWithCompletion:(id)a3;
+- (void)observeWithCompletion:(id)completion;
 - (void)resumeEventsStaging;
-- (void)setObserverConnection:(id)a3;
-- (void)stageEvents:(id)a3 completion:(id)a4;
-- (void)stageUEIEventData:(id)a3 timestamp:(unint64_t)a4 completion:(id)a5;
-- (void)storeGenericInstrumentation:(id)a3 completion:(id)a4;
+- (void)setObserverConnection:(id)connection;
+- (void)stageEvents:(id)events completion:(id)completion;
+- (void)stageUEIEventData:(id)data timestamp:(unint64_t)timestamp completion:(id)completion;
+- (void)storeGenericInstrumentation:(id)instrumentation completion:(id)completion;
 - (void)suspendEventsStaging;
 @end
 
@@ -117,14 +117,14 @@
 
 - (void)_processStagedEvents
 {
-  v2 = self;
-  v3 = [(ADAnalyticsService *)self _unstageEvents];
-  if ([v3 count])
+  selfCopy = self;
+  _unstageEvents = [(ADAnalyticsService *)self _unstageEvents];
+  if ([_unstageEvents count])
   {
     v4 = +[AFPreferences sharedPreferences];
-    v5 = [v4 isDictationHIPAACompliant];
+    isDictationHIPAACompliant = [v4 isDictationHIPAACompliant];
 
-    if (v5)
+    if (isDictationHIPAACompliant)
     {
       v6 = AFSiriLogContextAnalytics;
       if (os_log_type_enabled(AFSiriLogContextAnalytics, OS_LOG_TYPE_INFO))
@@ -140,9 +140,9 @@ LABEL_8:
     else
     {
       v8 = +[AFSiriDataSharingSensitivityManager shared];
-      v9 = [v8 isOptedOutOfMTE];
+      isOptedOutOfMTE = [v8 isOptedOutOfMTE];
 
-      if (v9)
+      if (isOptedOutOfMTE)
       {
         v6 = AFSiriLogContextAnalytics;
         if (os_log_type_enabled(AFSiriLogContextAnalytics, OS_LOG_TYPE_INFO))
@@ -161,8 +161,8 @@ LABEL_8:
         v75 = 0u;
         v76 = 0u;
         v77 = 0u;
-        v43 = v3;
-        obj = v3;
+        v43 = _unstageEvents;
+        obj = _unstageEvents;
         v11 = [obj countByEnumeratingWithState:&v74 objects:v81 count:16];
         if (v11)
         {
@@ -178,10 +178,10 @@ LABEL_8:
               }
 
               v15 = *(*(&v74 + 1) + 8 * i);
-              v16 = [v15 speechId];
-              if (v16)
+              speechId = [v15 speechId];
+              if (speechId)
               {
-                v17 = v16;
+                v17 = speechId;
               }
 
               else
@@ -216,7 +216,7 @@ LABEL_8:
         {
           v45 = *v71;
           v50 = v19;
-          v51 = v2;
+          v51 = selfCopy;
           do
           {
             v20 = 0;
@@ -249,15 +249,15 @@ LABEL_8:
                     }
 
                     v23 = *(*(&v66 + 1) + 8 * j);
-                    v24 = v2->_streamUID;
-                    if ([(AFQueue *)v2->_fuzzingIntervals count])
+                    v24 = selfCopy->_streamUID;
+                    if ([(AFQueue *)selfCopy->_fuzzingIntervals count])
                     {
                       v55 = j;
                       v64 = 0u;
                       v65 = 0u;
                       v62 = 0u;
                       v63 = 0u;
-                      v57 = v2->_fuzzingIntervals;
+                      v57 = selfCopy->_fuzzingIntervals;
                       v25 = [(AFQueue *)v57 countByEnumeratingWithState:&v62 objects:v78 count:16];
                       if (v25)
                       {
@@ -274,25 +274,25 @@ LABEL_8:
                             }
 
                             v29 = *(*(&v62 + 1) + 8 * k);
-                            v30 = [v23 timestamp];
-                            if (v30 >= [v29 startTime])
+                            timestamp = [v23 timestamp];
+                            if (timestamp >= [v29 startTime])
                             {
                               if (![v29 endTime] || (v31 = objc_msgSend(v23, "timestamp"), v31 <= objc_msgSend(v29, "endTime")))
                               {
-                                v59 = [v29 streamUID];
+                                streamUID = [v29 streamUID];
 
-                                v32 = [v56 timestamp];
-                                v33 = [v29 offset];
+                                timestamp2 = [v56 timestamp];
+                                offset = [v29 offset];
                                 v58 = v23;
                                 v34 = [AFAnalyticsEvent alloc];
-                                v35 = [v56 deliveryStream];
+                                deliveryStream = [v56 deliveryStream];
                                 v36 = v27;
-                                v37 = [v56 type];
-                                v38 = [v56 contextDataType];
-                                v39 = [v56 contextData];
-                                v23 = [v34 initWithDeliveryStream:v35 type:v37 timestamp:&v32[v33] contextDataType:v38 contextData:v39];
+                                type = [v56 type];
+                                contextDataType = [v56 contextDataType];
+                                contextData = [v56 contextData];
+                                v23 = [v34 initWithDeliveryStream:deliveryStream type:type timestamp:&timestamp2[offset] contextDataType:contextDataType contextData:contextData];
 
-                                v24 = v59;
+                                v24 = streamUID;
                                 v27 = v36;
                               }
                             }
@@ -305,7 +305,7 @@ LABEL_8:
                       }
 
                       v19 = v50;
-                      v2 = v51;
+                      selfCopy = v51;
                       j = v55;
                     }
 
@@ -335,16 +335,16 @@ LABEL_8:
 
         if ([v19 count])
         {
-          v42 = [(ADAnalyticsService *)v2 _store];
+          _store = [(ADAnalyticsService *)selfCopy _store];
           v60[0] = _NSConcreteStackBlock;
           v60[1] = 3221225472;
           v60[2] = sub_1002FC880;
           v60[3] = &unk_10051B580;
           v61 = obj;
-          [v42 insertEventRecords:v19 completion:v60];
+          [_store insertEventRecords:v19 completion:v60];
         }
 
-        v3 = v43;
+        _unstageEvents = v43;
       }
     }
   }
@@ -398,22 +398,22 @@ LABEL_8:
     if (AFHasUnlockedSinceBoot())
     {
       v4 = +[ADPreferences sharedPreferences];
-      v5 = [v4 lastMetricsUploadDate];
+      lastMetricsUploadDate = [v4 lastMetricsUploadDate];
 
-      [v5 timeIntervalSinceNow];
+      [lastMetricsUploadDate timeIntervalSinceNow];
       if (v6 <= -21600.0)
       {
         v7 = +[ADPreferences sharedPreferences];
-        v8 = [v7 lastMetricsUploadFailureReportedOnDate];
+        lastMetricsUploadFailureReportedOnDate = [v7 lastMetricsUploadFailureReportedOnDate];
 
-        [v8 timeIntervalSinceNow];
+        [lastMetricsUploadFailureReportedOnDate timeIntervalSinceNow];
         if (v9 >= -86400.0)
         {
           v11[0] = _NSConcreteStackBlock;
           v11[1] = 3221225472;
           v11[2] = sub_1002FEC38;
           v11[3] = &unk_10051B420;
-          v12 = v5;
+          v12 = lastMetricsUploadDate;
           [(ADAnalyticsService *)self accessStoreUsingBlock:v11];
         }
       }
@@ -443,9 +443,9 @@ LABEL_8:
   }
 
   v4 = AFAnalyticsLogsDirectory();
-  v5 = [(ADAnalyticsStore *)self->_store path];
-  v6 = [v5 lastPathComponent];
-  v7 = [v4 stringByAppendingPathComponent:v6];
+  path = [(ADAnalyticsStore *)self->_store path];
+  lastPathComponent = [path lastPathComponent];
+  v7 = [v4 stringByAppendingPathComponent:lastPathComponent];
 
   v8 = +[NSFileManager defaultManager];
   if ([v8 fileExistsAtPath:v7 isDirectory:0])
@@ -491,9 +491,9 @@ LABEL_8:
 
   v4 = AFAnalyticsLogsDirectory();
   v5 = AFAnalyticsLogsDirectory();
-  v6 = [(ADAnalyticsStore *)self->_store path];
-  v7 = [v6 lastPathComponent];
-  v8 = [v5 stringByAppendingPathComponent:v7];
+  path = [(ADAnalyticsStore *)self->_store path];
+  lastPathComponent = [path lastPathComponent];
+  v8 = [v5 stringByAppendingPathComponent:lastPathComponent];
 
   v9 = +[NSFileManager defaultManager];
   if (([v9 fileExistsAtPath:v8 isDirectory:0] & 1) == 0)
@@ -505,7 +505,7 @@ LABEL_8:
     v10 = v9;
     v17 = v10;
     v18 = v8;
-    v19 = self;
+    selfCopy = self;
     v11 = objc_retainBlock(v16);
     if ([v10 fileExistsAtPath:v4])
     {
@@ -540,25 +540,25 @@ LABEL_8:
   }
 }
 
-- (void)_endEventsFuzzingWithEndTime:(unint64_t)a3
+- (void)_endEventsFuzzingWithEndTime:(unint64_t)time
 {
   if (self->_isFuzzing)
   {
     v5 = self->_currentFuzzingInterval;
     self->_isFuzzing = 0;
-    [(ADAnalyticsFuzzingInterval *)v5 setEndTime:a3];
+    [(ADAnalyticsFuzzingInterval *)v5 setEndTime:time];
     v6 = AFSiriLogContextAnalytics;
     if (os_log_type_enabled(AFSiriLogContextAnalytics, OS_LOG_TYPE_INFO))
     {
       v7 = v6;
-      v8 = [(ADAnalyticsFuzzingInterval *)v5 endTime];
-      v9 = [(ADAnalyticsFuzzingInterval *)v5 streamUID];
+      endTime = [(ADAnalyticsFuzzingInterval *)v5 endTime];
+      streamUID = [(ADAnalyticsFuzzingInterval *)v5 streamUID];
       *buf = 136315650;
       v13 = "[ADAnalyticsService _endEventsFuzzingWithEndTime:]";
       v14 = 2048;
-      v15 = v8;
+      v15 = endTime;
       v16 = 2112;
-      v17 = v9;
+      v17 = streamUID;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s Fuzzing time interval ended with end time: %lld streamUID: %@", buf, 0x20u);
     }
 
@@ -582,7 +582,7 @@ LABEL_8:
   }
 }
 
-- (void)_beginEventsFuzzingWithStartTime:(unint64_t)a3
+- (void)_beginEventsFuzzingWithStartTime:(unint64_t)time
 {
   if (self->_isFuzzing)
   {
@@ -598,21 +598,21 @@ LABEL_8:
   else
   {
     self->_isFuzzing = 1;
-    v5 = [[ADAnalyticsFuzzingInterval alloc] initWithStartTime:a3];
+    v5 = [[ADAnalyticsFuzzingInterval alloc] initWithStartTime:time];
     objc_storeStrong(&self->_currentFuzzingInterval, v5);
     [(AFQueue *)self->_fuzzingIntervals enqueueObject:self->_currentFuzzingInterval];
     v6 = AFSiriLogContextAnalytics;
     if (os_log_type_enabled(AFSiriLogContextAnalytics, OS_LOG_TYPE_INFO))
     {
       v7 = v6;
-      v8 = [(ADAnalyticsFuzzingInterval *)v5 startTime];
-      v9 = [(ADAnalyticsFuzzingInterval *)v5 streamUID];
+      startTime = [(ADAnalyticsFuzzingInterval *)v5 startTime];
+      streamUID = [(ADAnalyticsFuzzingInterval *)v5 streamUID];
       v10 = 136315650;
       v11 = "[ADAnalyticsService _beginEventsFuzzingWithStartTime:]";
       v12 = 2048;
-      v13 = v8;
+      v13 = startTime;
       v14 = 2112;
-      v15 = v9;
+      v15 = streamUID;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s Fuzzing time interval created with start time: %lld streamUID: %@", &v10, 0x20u);
     }
   }
@@ -668,24 +668,24 @@ LABEL_8:
   }
 }
 
-- (void)_stageEvents:(id)a3
+- (void)_stageEvents:(id)events
 {
-  [(NSMutableSet *)self->_stagedEvents unionSet:a3];
+  [(NSMutableSet *)self->_stagedEvents unionSet:events];
 
   [(ADAnalyticsService *)self _startHouseKeepingTimer];
 }
 
-- (void)_stageEvent:(id)a3
+- (void)_stageEvent:(id)event
 {
-  [(NSMutableSet *)self->_stagedEvents addObject:a3];
+  [(NSMutableSet *)self->_stagedEvents addObject:event];
 
   [(ADAnalyticsService *)self _startHouseKeepingTimer];
 }
 
-- (void)_executeDelegateBlockOnAllConnections:(id)a3 completion:(id)a4
+- (void)_executeDelegateBlockOnAllConnections:(id)connections completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  connectionsCopy = connections;
+  completionCopy = completion;
   v8 = dispatch_group_create();
   v9 = objc_alloc_init(NSMutableDictionary);
   dispatch_group_enter(v8);
@@ -695,15 +695,15 @@ LABEL_8:
   v19[3] = &unk_10051B558;
   v20 = v8;
   v21 = v9;
-  v22 = self;
-  v23 = v6;
+  selfCopy = self;
+  v23 = connectionsCopy;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1002FCEDC;
   v17[3] = &unk_10051DFE8;
   v18 = v20;
   v10 = v20;
-  v11 = v6;
+  v11 = connectionsCopy;
   v12 = v9;
   [(ADAnalyticsService *)self _enumerateConnectionsAsServiceDelegates:v19 completion:v17];
   queue = self->_queue;
@@ -711,39 +711,39 @@ LABEL_8:
   v15[1] = 3221225472;
   v15[2] = sub_1002FCEE4;
   v15[3] = &unk_10051CF58;
-  v16 = v7;
-  v14 = v7;
+  v16 = completionCopy;
+  v14 = completionCopy;
   dispatch_group_notify(v10, queue, v15);
 }
 
-- (void)_enumerateConnectionsAsServiceDelegates:(id)a3 completion:(id)a4
+- (void)_enumerateConnectionsAsServiceDelegates:(id)delegates completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  delegatesCopy = delegates;
+  completionCopy = completion;
   v8 = +[AFAnalytics sharedAnalytics];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1002FD2EC;
   v11[3] = &unk_10051C510;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = delegatesCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = delegatesCopy;
   [v8 barrier:v11];
 }
 
-- (void)_stopObservingConnectionDisrupted:(int)a3 referenceId:(id)a4
+- (void)_stopObservingConnectionDisrupted:(int)disrupted referenceId:(id)id
 {
-  if (a4)
+  if (id)
   {
-    v4 = *&a3;
+    v4 = *&disrupted;
     connectionDisruptedObservers = self->_connectionDisruptedObservers;
-    v7 = a4;
+    idCopy = id;
     v8 = [NSNumber numberWithInt:v4];
     v11 = [(NSMutableDictionary *)connectionDisruptedObservers objectForKey:v8];
 
-    [v11 removeObjectForKey:v7];
+    [v11 removeObjectForKey:idCopy];
     if (![v11 count])
     {
       v9 = self->_connectionDisruptedObservers;
@@ -753,13 +753,13 @@ LABEL_8:
   }
 }
 
-- (void)_observeConnectionDisrupted:(int)a3 observer:(id)a4 referenceId:(id)a5
+- (void)_observeConnectionDisrupted:(int)disrupted observer:(id)observer referenceId:(id)id
 {
-  if (a4 && a5)
+  if (observer && id)
   {
-    v6 = *&a3;
-    v8 = a5;
-    v15 = [a4 copy];
+    v6 = *&disrupted;
+    idCopy = id;
+    v15 = [observer copy];
     connectionDisruptedObservers = self->_connectionDisruptedObservers;
     v10 = [NSNumber numberWithInt:v6];
     v11 = [(NSMutableDictionary *)connectionDisruptedObservers objectForKey:v10];
@@ -773,23 +773,23 @@ LABEL_8:
     }
 
     v14 = objc_retainBlock(v15);
-    [v11 setObject:v14 forKey:v8];
+    [v11 setObject:v14 forKey:idCopy];
   }
 }
 
-- (void)_signalConnectionDisruption:(id)a3
+- (void)_signalConnectionDisruption:(id)disruption
 {
-  v4 = [a3 processIdentifier];
+  processIdentifier = [disruption processIdentifier];
   connectionDisruptedObservers = self->_connectionDisruptedObservers;
-  v6 = [NSNumber numberWithInt:v4];
+  v6 = [NSNumber numberWithInt:processIdentifier];
   v7 = [(NSMutableDictionary *)connectionDisruptedObservers objectForKey:v6];
-  v8 = [v7 allValues];
+  allValues = [v7 allValues];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v9 = v8;
+  v9 = allValues;
   v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
@@ -824,8 +824,8 @@ LABEL_8:
     v3 = [ADAnalyticsStore alloc];
     v4 = +[ADAudioFileWriter _savedAudioFilesDirectory]_0();
     v5 = [v4 URLByAppendingPathComponent:@"SiriAnalytics.db"];
-    v6 = [v5 path];
-    v7 = [(ADAnalyticsStore *)v3 initWithPath:v6];
+    path = [v5 path];
+    v7 = [(ADAnalyticsStore *)v3 initWithPath:path];
     store = self->_store;
     self->_store = v7;
 
@@ -845,29 +845,29 @@ LABEL_8:
   return v11;
 }
 
-- (void)observeWithCompletion:(id)a3
+- (void)observeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1002FDA70;
   v7[3] = &unk_10051E038;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_publishEventsToObserver:(id)a3 completion:(id)a4
+- (void)_publishEventsToObserver:(id)observer completion:(id)completion
 {
-  v6 = a3;
+  observerCopy = observer;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1002FDC74;
   v17[3] = &unk_10051CF58;
-  v7 = a4;
-  v18 = v7;
+  completionCopy = completion;
+  v18 = completionCopy;
   v8 = objc_retainBlock(v17);
   v9 = v8;
   observerConnection = self->_observerConnection;
@@ -885,7 +885,7 @@ LABEL_8:
     v13[2] = sub_1002FDD6C;
     v13[3] = &unk_10051CF58;
     v14 = v11;
-    [v12 didObserveEvents:v6 completion:v13];
+    [v12 didObserveEvents:observerCopy completion:v13];
   }
 
   else
@@ -894,10 +894,10 @@ LABEL_8:
   }
 }
 
-- (void)storeGenericInstrumentation:(id)a3 completion:(id)a4
+- (void)storeGenericInstrumentation:(id)instrumentation completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  instrumentationCopy = instrumentation;
+  completionCopy = completion;
   v8 = AFSiriLogContextAnalytics;
   if (os_log_type_enabled(AFSiriLogContextAnalytics, OS_LOG_TYPE_INFO))
   {
@@ -910,24 +910,24 @@ LABEL_8:
   v17[1] = 3221225472;
   v17[2] = sub_1002FDF28;
   v17[3] = &unk_10051CF58;
-  v18 = v7;
-  v9 = v7;
+  v18 = completionCopy;
+  v9 = completionCopy;
   v10 = objc_retainBlock(v17);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1002FDF40;
   block[3] = &unk_10051E038;
-  v15 = v6;
+  v15 = instrumentationCopy;
   v16 = v10;
   v12 = v10;
-  v13 = v6;
+  v13 = instrumentationCopy;
   dispatch_async(queue, block);
 }
 
-- (void)boostAllConnections:(id)a3
+- (void)boostAllConnections:(id)connections
 {
-  v4 = a3;
+  connectionsCopy = connections;
   v5 = AFSiriLogContextAnalytics;
   if (os_log_type_enabled(AFSiriLogContextAnalytics, OS_LOG_TYPE_INFO))
   {
@@ -940,8 +940,8 @@ LABEL_8:
   v12[1] = 3221225472;
   v12[2] = sub_1002FE130;
   v12[3] = &unk_10051CF58;
-  v13 = v4;
-  v6 = v4;
+  v13 = connectionsCopy;
+  v6 = connectionsCopy;
   v7 = objc_retainBlock(v12);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -954,24 +954,24 @@ LABEL_8:
   dispatch_async(queue, block);
 }
 
-- (void)stageUEIEventData:(id)a3 timestamp:(unint64_t)a4 completion:(id)a5
+- (void)stageUEIEventData:(id)data timestamp:(unint64_t)timestamp completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1002FE58C;
   block[3] = &unk_10051BFA8;
-  v15 = v9;
-  v16 = a4;
-  v14 = v8;
-  v11 = v9;
-  v12 = v8;
+  v15 = completionCopy;
+  timestampCopy = timestamp;
+  v14 = dataCopy;
+  v11 = completionCopy;
+  v12 = dataCopy;
   dispatch_async(queue, block);
 }
 
-- (void)endEventsFuzzingWithEndTime:(unint64_t)a3
+- (void)endEventsFuzzingWithEndTime:(unint64_t)time
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -979,11 +979,11 @@ LABEL_8:
   v4[2] = sub_1002FE6A8;
   v4[3] = &unk_10051D770;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = time;
   dispatch_async(queue, v4);
 }
 
-- (void)beginEventsFuzzingWithStartTime:(unint64_t)a3
+- (void)beginEventsFuzzingWithStartTime:(unint64_t)time
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -991,25 +991,25 @@ LABEL_8:
   v4[2] = sub_1002FE728;
   v4[3] = &unk_10051D770;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = time;
   dispatch_async(queue, v4);
 }
 
-- (void)logInstrumentationOfType:(id)a3 machAbsoluteTime:(unint64_t)a4 turnIdentifier:(id)a5
+- (void)logInstrumentationOfType:(id)type machAbsoluteTime:(unint64_t)time turnIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a5;
+  typeCopy = type;
+  identifierCopy = identifier;
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1002FE7FC;
   v13[3] = &unk_10051DBB8;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = typeCopy;
+  v15 = identifierCopy;
+  timeCopy = time;
+  v11 = identifierCopy;
+  v12 = typeCopy;
   dispatch_async(queue, v13);
 }
 
@@ -1024,17 +1024,17 @@ LABEL_8:
   dispatch_async(queue, block);
 }
 
-- (void)stageEvents:(id)a3 completion:(id)a4
+- (void)stageEvents:(id)events completion:(id)completion
 {
-  v6 = a3;
+  eventsCopy = events;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1002FE9DC;
   v13[3] = &unk_10051CF58;
-  v7 = a4;
-  v14 = v7;
+  completionCopy = completion;
+  v14 = completionCopy;
   v8 = objc_retainBlock(v13);
-  if ([v6 count])
+  if ([eventsCopy count])
   {
     queue = self->_queue;
     v10[0] = _NSConcreteStackBlock;
@@ -1042,7 +1042,7 @@ LABEL_8:
     v10[2] = sub_1002FE9F4;
     v10[3] = &unk_10051E088;
     v10[4] = self;
-    v11 = v6;
+    v11 = eventsCopy;
     v12 = v8;
     dispatch_async(queue, v10);
   }
@@ -1094,25 +1094,25 @@ LABEL_8:
   dispatch_async(queue, block);
 }
 
-- (void)setObserverConnection:(id)a3
+- (void)setObserverConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1002FF214;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = connectionCopy;
+  v6 = connectionCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)accessStoreUsingBlock:(id)a3
+- (void)accessStoreUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -1120,16 +1120,16 @@ LABEL_8:
     v7[2] = sub_1002FF340;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)connectionDisconnected:(id)a3
+- (void)connectionDisconnected:(id)disconnected
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  disconnectedCopy = disconnected;
+  v5 = disconnectedCopy;
+  if (disconnectedCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -1137,16 +1137,16 @@ LABEL_8:
     v7[2] = sub_1002FF444;
     v7[3] = &unk_10051E010;
     v7[4] = self;
-    v8 = v4;
+    v8 = disconnectedCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)connectionInterrupted:(id)a3
+- (void)connectionInterrupted:(id)interrupted
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  interruptedCopy = interrupted;
+  v5 = interruptedCopy;
+  if (interruptedCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -1154,16 +1154,16 @@ LABEL_8:
     v7[2] = sub_1002FF52C;
     v7[3] = &unk_10051E010;
     v7[4] = self;
-    v8 = v4;
+    v8 = interruptedCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)connectionConnected:(id)a3
+- (void)connectionConnected:(id)connected
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  connectedCopy = connected;
+  v5 = connectedCopy;
+  if (connectedCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -1171,7 +1171,7 @@ LABEL_8:
     v7[2] = sub_1002FF5E0;
     v7[3] = &unk_10051E010;
     v7[4] = self;
-    v8 = v4;
+    v8 = connectedCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -1227,9 +1227,9 @@ LABEL_8:
       }
 
       v14 = objc_alloc_init(NSUUID);
-      v15 = [v14 UUIDString];
+      uUIDString = [v14 UUIDString];
       streamUID = v2->_streamUID;
-      v2->_streamUID = v15;
+      v2->_streamUID = uUIDString;
     }
 
     v17 = AFSiriLogContextAnalytics;
@@ -1252,9 +1252,9 @@ LABEL_8:
     v2->_connectionDisruptedObservers = v21;
 
     v23 = +[ADAccount activeAccount];
-    v24 = [v23 speechIdentifier];
+    speechIdentifier = [v23 speechIdentifier];
     speechId = v2->_speechId;
-    v2->_speechId = v24;
+    v2->_speechId = speechIdentifier;
 
     v26 = v2->_queue;
     block[0] = _NSConcreteStackBlock;

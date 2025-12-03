@@ -1,54 +1,54 @@
 @interface AACustodianRecoveryConfiguration
-- (AACustodianRecoveryConfiguration)initWithCoder:(id)a3;
-- (AACustodianRecoveryConfiguration)initWithConfigurationDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AACustodianRecoveryConfiguration)initWithCoder:(id)coder;
+- (AACustodianRecoveryConfiguration)initWithConfigurationDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AACustodianRecoveryConfiguration
 
-- (AACustodianRecoveryConfiguration)initWithConfigurationDictionary:(id)a3
+- (AACustodianRecoveryConfiguration)initWithConfigurationDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = AACustodianRecoveryConfiguration;
   v5 = [(AACustodianRecoveryConfiguration *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"codeLength"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"codeLength"];
     v5->_codeLength = [v6 integerValue];
-    v7 = [v4 objectForKeyedSubscript:@"maxSessionTTL"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"maxSessionTTL"];
     v5->_maxSessionTime = [v7 integerValue];
   }
 
   return v5;
 }
 
-- (AACustodianRecoveryConfiguration)initWithCoder:(id)a3
+- (AACustodianRecoveryConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = AACustodianRecoveryConfiguration;
   v5 = [(AACustodianRecoveryConfiguration *)&v7 init];
   if (v5)
   {
-    v5->_codeLength = [v4 decodeIntegerForKey:@"codeLength"];
-    v5->_maxSessionTime = [v4 decodeIntegerForKey:@"maxSessionTTL"];
+    v5->_codeLength = [coderCopy decodeIntegerForKey:@"codeLength"];
+    v5->_maxSessionTime = [coderCopy decodeIntegerForKey:@"maxSessionTTL"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   codeLength = self->_codeLength;
-  v5 = a3;
-  [v5 encodeInteger:codeLength forKey:@"codeLength"];
-  [v5 encodeInteger:self->_maxSessionTime forKey:@"maxSessionTTL"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:codeLength forKey:@"codeLength"];
+  [coderCopy encodeInteger:self->_maxSessionTime forKey:@"maxSessionTTL"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [[AACustodianRecoveryConfiguration allocWithZone:?]];
   *(result + 1) = self->_codeLength;

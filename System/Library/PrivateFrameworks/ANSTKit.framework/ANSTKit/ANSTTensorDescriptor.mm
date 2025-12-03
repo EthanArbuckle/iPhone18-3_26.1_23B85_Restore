@@ -1,69 +1,69 @@
 @interface ANSTTensorDescriptor
-+ (id)descriptorWithName:(id)a3 dataType:(unint64_t)a4 n:(unint64_t)a5 c:(unint64_t)a6 h:(unint64_t)a7 w:(unint64_t)a8;
-- (ANSTTensorDescriptor)initWithCoder:(id)a3;
-- (ANSTTensorDescriptor)initWithE5TensorDescriptor:(e5rt_tensor_desc *)a3 name:(id)a4 error:(id *)a5;
-- (ANSTTensorDescriptor)initWithName:(id)a3 dataType:(unint64_t)a4 lengths:(id)a5 strides:(id)a6 error:(id *)a7;
-- (ANSTTensorDescriptor)initWithName:(id)a3 dataType:(unint64_t)a4 numberOfDimensions:(unint64_t)a5 lengths:(const unint64_t *)a6 alignment:(unint64_t)a7 error:(id *)a8;
-- (ANSTTensorDescriptor)initWithName:(id)a3 dataType:(unint64_t)a4 numberOfDimensions:(unint64_t)a5 lengths:(const unint64_t *)a6 strides:(const unint64_t *)a7 error:(id *)a8;
-- (ANSTTensorDescriptor)initWithName:(id)a3 error:(id *)a4;
-- (BOOL)hasSameMemoryLayoutAs:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesE5TensorDescriptor:(e5rt_tensor_desc *)a3 error:(id *)a4;
++ (id)descriptorWithName:(id)name dataType:(unint64_t)type n:(unint64_t)n c:(unint64_t)c h:(unint64_t)h w:(unint64_t)w;
+- (ANSTTensorDescriptor)initWithCoder:(id)coder;
+- (ANSTTensorDescriptor)initWithE5TensorDescriptor:(e5rt_tensor_desc *)descriptor name:(id)name error:(id *)error;
+- (ANSTTensorDescriptor)initWithName:(id)name dataType:(unint64_t)type lengths:(id)lengths strides:(id)strides error:(id *)error;
+- (ANSTTensorDescriptor)initWithName:(id)name dataType:(unint64_t)type numberOfDimensions:(unint64_t)dimensions lengths:(const unint64_t *)lengths alignment:(unint64_t)alignment error:(id *)error;
+- (ANSTTensorDescriptor)initWithName:(id)name dataType:(unint64_t)type numberOfDimensions:(unint64_t)dimensions lengths:(const unint64_t *)lengths strides:(const unint64_t *)strides error:(id *)error;
+- (ANSTTensorDescriptor)initWithName:(id)name error:(id *)error;
+- (BOOL)hasSameMemoryLayoutAs:(id)as;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesE5TensorDescriptor:(e5rt_tensor_desc *)descriptor error:(id *)error;
 - (NSArray)lengths;
 - (NSArray)strides;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
 - (unint64_t)_minimumContiguousLength;
 - (unint64_t)hash;
-- (unint64_t)lengthOfDimensionAt:(unint64_t)a3;
-- (unint64_t)strideOfDimensionAt:(unint64_t)a3;
+- (unint64_t)lengthOfDimensionAt:(unint64_t)at;
+- (unint64_t)strideOfDimensionAt:(unint64_t)at;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ANSTTensorDescriptor
 
-- (unint64_t)lengthOfDimensionAt:(unint64_t)a3
+- (unint64_t)lengthOfDimensionAt:(unint64_t)at
 {
-  if (self->_numberOfDimensions <= a3)
+  if (self->_numberOfDimensions <= at)
   {
     return 0;
   }
 
   else
   {
-    return self->_lengths[a3];
+    return self->_lengths[at];
   }
 }
 
-- (unint64_t)strideOfDimensionAt:(unint64_t)a3
+- (unint64_t)strideOfDimensionAt:(unint64_t)at
 {
-  if (self->_numberOfDimensions <= a3)
+  if (self->_numberOfDimensions <= at)
   {
     return 0;
   }
 
   else
   {
-    return self->_strides[a3];
+    return self->_strides[at];
   }
 }
 
-- (ANSTTensorDescriptor)initWithName:(id)a3 error:(id *)a4
+- (ANSTTensorDescriptor)initWithName:(id)name error:(id *)error
 {
-  v6 = a3;
+  nameCopy = name;
   result = objc_msgSend_doesNotRecognizeSelector_(self, v7, a2);
   __break(1u);
   return result;
 }
 
-- (ANSTTensorDescriptor)initWithName:(id)a3 dataType:(unint64_t)a4 numberOfDimensions:(unint64_t)a5 lengths:(const unint64_t *)a6 strides:(const unint64_t *)a7 error:(id *)a8
+- (ANSTTensorDescriptor)initWithName:(id)name dataType:(unint64_t)type numberOfDimensions:(unint64_t)dimensions lengths:(const unint64_t *)lengths strides:(const unint64_t *)strides error:(id *)error
 {
   v30[1] = *MEMORY[0x277D85DE8];
   v28.receiver = self;
   v28.super_class = ANSTTensorDescriptor;
-  v13 = [(ANSTDescriptor *)&v28 initWithName:a3 error:a8];
+  v13 = [(ANSTDescriptor *)&v28 initWithName:name error:error];
   v14 = v13;
   if (!v13)
   {
@@ -72,9 +72,9 @@ LABEL_11:
     goto LABEL_17;
   }
 
-  v13->_dataType = a4;
-  v13->_numberOfDimensions = a5;
-  v15 = malloc_type_calloc(a5, 8uLL, 0x100004000313F17uLL);
+  v13->_dataType = type;
+  v13->_numberOfDimensions = dimensions;
+  v15 = malloc_type_calloc(dimensions, 8uLL, 0x100004000313F17uLL);
   v14->_lengths = v15;
   if (v15)
   {
@@ -88,8 +88,8 @@ LABEL_11:
         lengths = v14->_lengths;
         while (1)
         {
-          lengths[v18] = a6[v18];
-          v20 = a7[v18];
+          lengths[v18] = lengths[v18];
+          v20 = strides[v18];
           v17[v18] = v20;
           if (!lengths[v18] || v20 == 0)
           {
@@ -102,13 +102,13 @@ LABEL_11:
           }
         }
 
-        if (a8)
+        if (error)
         {
           v23 = MEMORY[0x277CCA9B8];
           v29 = *MEMORY[0x277CCA068];
           v30[0] = @"Tensor descriptor's length(s) and/or stride(s) should not be zero.";
           v24 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v16, v30, &v29, 1);
-          *a8 = objc_msgSend_errorWithDomain_code_userInfo_(v23, v25, @"ANSTErrorDomain", 8, v24);
+          *error = objc_msgSend_errorWithDomain_code_userInfo_(v23, v25, @"ANSTErrorDomain", 8, v24);
         }
 
         goto LABEL_16;
@@ -118,7 +118,7 @@ LABEL_11:
     }
   }
 
-  if (!a8)
+  if (!error)
   {
 LABEL_16:
     v22 = 0;
@@ -126,82 +126,82 @@ LABEL_16:
   }
 
   objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v16, @"ANSTErrorDomain", 6, 0);
-  *a8 = v22 = 0;
+  *error = v22 = 0;
 LABEL_17:
 
   v26 = *MEMORY[0x277D85DE8];
   return v22;
 }
 
-- (ANSTTensorDescriptor)initWithName:(id)a3 dataType:(unint64_t)a4 numberOfDimensions:(unint64_t)a5 lengths:(const unint64_t *)a6 alignment:(unint64_t)a7 error:(id *)a8
+- (ANSTTensorDescriptor)initWithName:(id)name dataType:(unint64_t)type numberOfDimensions:(unint64_t)dimensions lengths:(const unint64_t *)lengths alignment:(unint64_t)alignment error:(id *)error
 {
-  v14 = a3;
-  v15 = malloc_type_calloc(a5, 8uLL, 0x100004000313F17uLL);
+  nameCopy = name;
+  v15 = malloc_type_calloc(dimensions, 8uLL, 0x100004000313F17uLL);
   if (v15)
   {
     v17 = v15;
-    if (a5)
+    if (dimensions)
     {
-      Size = ANSTTensorDataTypeGetSize(a4);
+      Size = ANSTTensorDataTypeGetSize(type);
       v19 = 1;
-      v20 = a5;
+      dimensionsCopy = dimensions;
       v21 = 1;
       do
       {
         Size *= v21;
-        if (a7 >= 2 && !v19)
+        if (alignment >= 2 && !v19)
         {
-          Size = (a7 - 1 + Size) / a7 * a7;
+          Size = (alignment - 1 + Size) / alignment * alignment;
         }
 
-        v21 = a6[v20 - 1];
-        v17[v20 - 1] = Size;
+        v21 = lengths[dimensionsCopy - 1];
+        v17[dimensionsCopy - 1] = Size;
         --v19;
-        --v20;
+        --dimensionsCopy;
       }
 
-      while (v20);
+      while (dimensionsCopy);
     }
 
-    v22 = objc_msgSend_initWithName_dataType_numberOfDimensions_lengths_strides_error_(self, v16, v14, a4, a5, a6, v17, a8);
+    v22 = objc_msgSend_initWithName_dataType_numberOfDimensions_lengths_strides_error_(self, v16, nameCopy, type, dimensions, lengths, v17, error);
     free(v17);
     self = v22;
-    v23 = self;
+    selfCopy = self;
   }
 
-  else if (a8)
+  else if (error)
   {
     objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v16, @"ANSTErrorDomain", 6, 0);
-    *a8 = v23 = 0;
+    *error = selfCopy = 0;
   }
 
   else
   {
-    v23 = 0;
+    selfCopy = 0;
   }
 
-  return v23;
+  return selfCopy;
 }
 
-- (ANSTTensorDescriptor)initWithName:(id)a3 dataType:(unint64_t)a4 lengths:(id)a5 strides:(id)a6 error:(id *)a7
+- (ANSTTensorDescriptor)initWithName:(id)name dataType:(unint64_t)type lengths:(id)lengths strides:(id)strides error:(id *)error
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v17 = objc_msgSend_count(v13, v15, v16);
+  nameCopy = name;
+  lengthsCopy = lengths;
+  stridesCopy = strides;
+  v17 = objc_msgSend_count(lengthsCopy, v15, v16);
   v18 = malloc_type_calloc(v17, 8uLL, 0x100004000313F17uLL);
   if (!v18)
   {
-    if (!a7)
+    if (!error)
     {
 LABEL_10:
-      v33 = 0;
+      selfCopy = 0;
       goto LABEL_11;
     }
 
 LABEL_8:
     objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v19, @"ANSTErrorDomain", 6, 0);
-    *a7 = v33 = 0;
+    *error = selfCopy = 0;
     goto LABEL_11;
   }
 
@@ -210,7 +210,7 @@ LABEL_8:
   if (!v21)
   {
     free(v20);
-    if (!a7)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -219,35 +219,35 @@ LABEL_8:
   }
 
   v23 = v21;
-  v35 = v12;
+  v35 = nameCopy;
   if (v17)
   {
     for (i = 0; i != v17; ++i)
     {
-      v25 = objc_msgSend_objectAtIndex_(v13, v22, i);
+      v25 = objc_msgSend_objectAtIndex_(lengthsCopy, v22, i);
       *(v20 + i) = objc_msgSend_unsignedIntegerValue(v25, v26, v27);
 
-      v29 = objc_msgSend_objectAtIndex_(v14, v28, i);
+      v29 = objc_msgSend_objectAtIndex_(stridesCopy, v28, i);
       v23[i] = objc_msgSend_unsignedIntegerValue(v29, v30, v31);
     }
   }
 
-  v12 = v35;
-  v32 = objc_msgSend_initWithName_dataType_numberOfDimensions_lengths_strides_error_(self, v22, v35, a4, v17, v20, v23, a7);
+  nameCopy = v35;
+  v32 = objc_msgSend_initWithName_dataType_numberOfDimensions_lengths_strides_error_(self, v22, v35, type, v17, v20, v23, error);
   free(v20);
   free(v23);
   self = v32;
-  v33 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v33;
+  return selfCopy;
 }
 
-- (BOOL)hasSameMemoryLayoutAs:(id)a3
+- (BOOL)hasSameMemoryLayoutAs:(id)as
 {
-  v4 = a3;
+  asCopy = as;
   dataType = self->_dataType;
-  if (dataType != objc_msgSend_dataType(v4, v6, v7) || (numberOfDimensions = self->_numberOfDimensions, numberOfDimensions != objc_msgSend_numberOfDimensions(v4, v8, v9)))
+  if (dataType != objc_msgSend_dataType(asCopy, v6, v7) || (numberOfDimensions = self->_numberOfDimensions, numberOfDimensions != objc_msgSend_numberOfDimensions(asCopy, v8, v9)))
   {
 LABEL_9:
     v16 = 0;
@@ -260,13 +260,13 @@ LABEL_9:
     do
     {
       v13 = self->_lengths[v12];
-      if (v13 != objc_msgSend_lengthOfDimensionAt_(v4, v11, v12))
+      if (v13 != objc_msgSend_lengthOfDimensionAt_(asCopy, v11, v12))
       {
         goto LABEL_9;
       }
 
       v15 = self->_strides[v12];
-      if (v15 != objc_msgSend_strideOfDimensionAt_(v4, v14, v12))
+      if (v15 != objc_msgSend_strideOfDimensionAt_(asCopy, v14, v12))
       {
         goto LABEL_9;
       }
@@ -281,16 +281,16 @@ LABEL_10:
   return v16;
 }
 
-+ (id)descriptorWithName:(id)a3 dataType:(unint64_t)a4 n:(unint64_t)a5 c:(unint64_t)a6 h:(unint64_t)a7 w:(unint64_t)a8
++ (id)descriptorWithName:(id)name dataType:(unint64_t)type n:(unint64_t)n c:(unint64_t)c h:(unint64_t)h w:(unint64_t)w
 {
   v16[4] = *MEMORY[0x277D85DE8];
-  v16[0] = a5;
-  v16[1] = a6;
-  v16[2] = a7;
-  v16[3] = a8;
-  v10 = a3;
-  v11 = [a1 alloc];
-  v13 = objc_msgSend_initWithName_dataType_numberOfDimensions_lengths_alignment_error_(v11, v12, v10, a4, 4, v16, 1, 0);
+  v16[0] = n;
+  v16[1] = c;
+  v16[2] = h;
+  v16[3] = w;
+  nameCopy = name;
+  v11 = [self alloc];
+  v13 = objc_msgSend_initWithName_dataType_numberOfDimensions_lengths_alignment_error_(v11, v12, nameCopy, type, 4, v16, 1, 0);
 
   v14 = *MEMORY[0x277D85DE8];
 
@@ -328,28 +328,28 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v28.receiver = self;
   v28.super_class = ANSTTensorDescriptor;
-  if ([(ANSTDescriptor *)&v28 isEqual:v4])
+  if ([(ANSTDescriptor *)&v28 isEqual:equalCopy])
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       goto LABEL_15;
     }
 
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v7 = objc_msgSend_dataType(self, v5, v6);
-        if (v7 == objc_msgSend_dataType(v4, v8, v9))
+        if (v7 == objc_msgSend_dataType(equalCopy, v8, v9))
         {
           v12 = objc_msgSend_numberOfDimensions(self, v10, v11);
-          if (v12 == objc_msgSend_numberOfDimensions(v4, v13, v14))
+          if (v12 == objc_msgSend_numberOfDimensions(equalCopy, v13, v14))
           {
             v17 = objc_msgSend_numberOfDimensions(self, v15, v16);
             if (v17)
@@ -359,13 +359,13 @@ LABEL_10:
               while (1)
               {
                 v21 = objc_msgSend_lengthOfDimensionAt_(self, v18, v20);
-                if (v21 != objc_msgSend_lengthOfDimensionAt_(v4, v22, v20))
+                if (v21 != objc_msgSend_lengthOfDimensionAt_(equalCopy, v22, v20))
                 {
                   goto LABEL_13;
                 }
 
                 v24 = objc_msgSend_strideOfDimensionAt_(self, v23, v20);
-                if (v24 != objc_msgSend_strideOfDimensionAt_(v4, v25, v20))
+                if (v24 != objc_msgSend_strideOfDimensionAt_(equalCopy, v25, v20))
                 {
                   goto LABEL_13;
                 }
@@ -446,33 +446,33 @@ LABEL_14:
   return v24;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_name(self, v8, v9);
   v12 = objc_msgSend_initWithName_dataType_numberOfDimensions_lengths_strides_error_(v7, v11, v10, self->_dataType, self->_numberOfDimensions, self->_lengths, self->_strides, 0);
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v42.receiver = self;
   v42.super_class = ANSTTensorDescriptor;
-  [(ANSTDescriptor *)&v42 encodeWithCoder:v4];
+  [(ANSTDescriptor *)&v42 encodeWithCoder:coderCopy];
   v5 = MEMORY[0x277CCABB0];
   v8 = objc_msgSend_dataType(self, v6, v7);
   v10 = objc_msgSend_numberWithUnsignedInteger_(v5, v9, v8);
   v11 = NSStringFromSelector(sel_dataType);
-  objc_msgSend_encodeObject_forKey_(v4, v12, v10, v11);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, v10, v11);
 
   v13 = MEMORY[0x277CCABB0];
   v16 = objc_msgSend_numberOfDimensions(self, v14, v15);
   v18 = objc_msgSend_numberWithUnsignedInteger_(v13, v17, v16);
   v19 = NSStringFromSelector(sel_numberOfDimensions);
-  objc_msgSend_encodeObject_forKey_(v4, v20, v18, v19);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v20, v18, v19);
 
   v23 = objc_msgSend_numberOfDimensions(self, v21, v22);
   if (v23)
@@ -484,24 +484,24 @@ LABEL_14:
       v28 = objc_msgSend_lengthOfDimensionAt_(self, v24, i);
       v30 = objc_msgSend_numberWithUnsignedInteger_(v27, v29, v28);
       v32 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v31, @"length@%zu", i);
-      objc_msgSend_encodeObject_forKey_(v4, v33, v30, v32);
+      objc_msgSend_encodeObject_forKey_(coderCopy, v33, v30, v32);
 
       v34 = MEMORY[0x277CCABB0];
       v36 = objc_msgSend_strideOfDimensionAt_(self, v35, i);
       v38 = objc_msgSend_numberWithUnsignedInteger_(v34, v37, v36);
       v40 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v39, @"stride@%zu", i);
-      objc_msgSend_encodeObject_forKey_(v4, v41, v38, v40);
+      objc_msgSend_encodeObject_forKey_(coderCopy, v41, v38, v40);
     }
   }
 }
 
-- (ANSTTensorDescriptor)initWithCoder:(id)a3
+- (ANSTTensorDescriptor)initWithCoder:(id)coder
 {
   v95[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v85.receiver = self;
   v85.super_class = ANSTTensorDescriptor;
-  v5 = [(ANSTDescriptor *)&v85 initWithCoder:v4];
+  v5 = [(ANSTDescriptor *)&v85 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_13;
@@ -509,7 +509,7 @@ LABEL_14:
 
   v6 = objc_opt_class();
   v7 = NSStringFromSelector(sel_dataType);
-  v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v8, v6, v7);
+  v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v8, v6, v7);
 
   if (!v9)
   {
@@ -522,7 +522,7 @@ LABEL_14:
     v95[1] = v43;
     v45 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v44, v95, v94, 2);
     v47 = objc_msgSend_errorWithDomain_code_userInfo_(v41, v46, v42, 4865, v45);
-    objc_msgSend_failWithError_(v4, v48, v47);
+    objc_msgSend_failWithError_(coderCopy, v48, v47);
 
 LABEL_19:
     v40 = 0;
@@ -532,7 +532,7 @@ LABEL_19:
   v5->_dataType = objc_msgSend_unsignedIntegerValue(v9, v10, v11);
   v12 = objc_opt_class();
   v13 = NSStringFromSelector(sel_numberOfDimensions);
-  v15 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v14, v12, v13);
+  v15 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v14, v12, v13);
 
   if (!v15)
   {
@@ -547,7 +547,7 @@ LABEL_19:
     v54 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v53, v93, v92, 2);
     objc_msgSend_errorWithDomain_code_userInfo_(v49, v55, v50, 4865, v54);
     v60 = LABEL_17:;
-    objc_msgSend_failWithError_(v4, v61, v60);
+    objc_msgSend_failWithError_(coderCopy, v61, v60);
 
 LABEL_18:
     goto LABEL_19;
@@ -593,7 +593,7 @@ LABEL_18:
     {
       v25 = objc_opt_class();
       v27 = objc_msgSend_stringWithFormat_(*(v24 + 3240), v26, @"length@%zu", v23);
-      v29 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v28, v25, v27);
+      v29 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v28, v25, v27);
 
       if (!v29)
       {
@@ -608,7 +608,7 @@ LABEL_18:
         v89[1] = v69;
         v71 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v70, v89, v88, 2);
         v73 = objc_msgSend_errorWithDomain_code_userInfo_(v64, v72, v66, 4865, v71);
-        objc_msgSend_failWithError_(v4, v74, v73);
+        objc_msgSend_failWithError_(coderCopy, v74, v73);
         goto LABEL_23;
       }
 
@@ -616,7 +616,7 @@ LABEL_18:
       v32 = objc_opt_class();
       v33 = v24;
       v35 = objc_msgSend_stringWithFormat_(*(v24 + 3240), v34, @"stride@%zu", v23, v83, v84);
-      v37 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v36, v32, v35);
+      v37 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v36, v32, v35);
 
       if (!v37)
       {
@@ -643,7 +643,7 @@ LABEL_18:
     v87[1] = v71;
     v73 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v79, v87, v86, 2);
     v81 = objc_msgSend_errorWithDomain_code_userInfo_(v75, v80, v76, 4865, v73);
-    objc_msgSend_failWithError_(v4, v82, v81);
+    objc_msgSend_failWithError_(coderCopy, v82, v81);
 
 LABEL_23:
     goto LABEL_19;
@@ -705,10 +705,10 @@ LABEL_20:
   return v21;
 }
 
-- (ANSTTensorDescriptor)initWithE5TensorDescriptor:(e5rt_tensor_desc *)a3 name:(id)a4 error:(id *)a5
+- (ANSTTensorDescriptor)initWithE5TensorDescriptor:(e5rt_tensor_desc *)descriptor name:(id)name error:(id *)error
 {
   v66[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  nameCopy = name;
   v58 = 0;
   rank = e5rt_tensor_desc_get_rank();
   if (rank)
@@ -722,13 +722,13 @@ LABEL_20:
       sub_22E657820();
     }
 
-    if (a5)
+    if (error)
     {
       v15 = MEMORY[0x277CCA9B8];
       v65 = *MEMORY[0x277CCA068];
       v66[0] = v12;
       v16 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v14, v66, &v65, 1);
-      *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v15, v17, @"ANSTErrorDomain", 5, v16);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v15, v17, @"ANSTErrorDomain", 5, v16);
     }
 
     goto LABEL_7;
@@ -747,9 +747,9 @@ LABEL_20:
       sub_22E657820();
     }
 
-    if (!a5)
+    if (!error)
     {
-      v18 = 0;
+      selfCopy = 0;
 LABEL_32:
 
       goto LABEL_33;
@@ -760,13 +760,13 @@ LABEL_32:
     v64 = v23;
     v27 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v25, &v64, &v63, 1);
     objc_msgSend_errorWithDomain_code_userInfo_(v26, v28, @"ANSTErrorDomain", 5, v27);
-    *a5 = v18 = 0;
+    *error = selfCopy = 0;
 LABEL_31:
 
     goto LABEL_32;
   }
 
-  if (sub_22E5E1C70(0, &v57, a5))
+  if (sub_22E5E1C70(0, &v57, error))
   {
     v23 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v29, v58);
     v27 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v30, v58);
@@ -793,7 +793,7 @@ LABEL_31:
             sub_22E657820();
           }
 
-          if (a5)
+          if (error)
           {
             v47 = MEMORY[0x277CCA9B8];
             v59 = *MEMORY[0x277CCA068];
@@ -826,40 +826,40 @@ LABEL_31:
         sub_22E657820();
       }
 
-      if (a5)
+      if (error)
       {
         v47 = MEMORY[0x277CCA9B8];
         v61 = *MEMORY[0x277CCA068];
         v62 = v44;
         objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v46, &v62, &v61, 1);
         v53 = LABEL_29:;
-        *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v47, v54, @"ANSTErrorDomain", 5, v53);
+        *error = objc_msgSend_errorWithDomain_code_userInfo_(v47, v54, @"ANSTErrorDomain", 5, v53);
       }
 
 LABEL_30:
 
-      v18 = 0;
+      selfCopy = 0;
     }
 
     else
     {
 LABEL_19:
-      self = objc_msgSend_initWithName_dataType_lengths_strides_error_(self, v31, v7, v57, v23, v27, a5);
-      v18 = self;
+      self = objc_msgSend_initWithName_dataType_lengths_strides_error_(self, v31, nameCopy, v57, v23, v27, error);
+      selfCopy = self;
     }
 
     goto LABEL_31;
   }
 
 LABEL_7:
-  v18 = 0;
+  selfCopy = 0;
 LABEL_33:
 
   v55 = *MEMORY[0x277D85DE8];
-  return v18;
+  return selfCopy;
 }
 
-- (BOOL)matchesE5TensorDescriptor:(e5rt_tensor_desc *)a3 error:(id *)a4
+- (BOOL)matchesE5TensorDescriptor:(e5rt_tensor_desc *)descriptor error:(id *)error
 {
   v119[1] = *MEMORY[0x277D85DE8];
   rank = e5rt_tensor_desc_get_rank();
@@ -874,7 +874,7 @@ LABEL_33:
       sub_22E657908();
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -885,7 +885,7 @@ LABEL_33:
     objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v14, v119, &v118, 1);
     v16 = LABEL_6:;
     objc_msgSend_errorWithDomain_code_userInfo_(v15, v17, @"ANSTErrorDomain", 5, v16);
-    *a4 = LABEL_18:;
+    *error = LABEL_18:;
 
     goto LABEL_19;
   }
@@ -901,7 +901,7 @@ LABEL_33:
       sub_22E657908();
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -925,7 +925,7 @@ LABEL_33:
       sub_22E657908();
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -982,7 +982,7 @@ LABEL_33:
       sub_22E657908();
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -1018,7 +1018,7 @@ LABEL_33:
           sub_22E657908();
         }
 
-        if (!a4)
+        if (!error)
         {
           goto LABEL_19;
         }
@@ -1041,7 +1041,7 @@ LABEL_33:
           sub_22E657908();
         }
 
-        if (a4)
+        if (error)
         {
           v91 = MEMORY[0x277CCA9B8];
           v108 = *MEMORY[0x277CCA068];
@@ -1070,7 +1070,7 @@ LABEL_33:
           sub_22E657908();
         }
 
-        if (!a4)
+        if (!error)
         {
           goto LABEL_19;
         }
@@ -1103,7 +1103,7 @@ LABEL_33:
       sub_22E657908();
     }
 
-    if (a4)
+    if (error)
     {
       v91 = MEMORY[0x277CCA9B8];
       v104 = *MEMORY[0x277CCA068];
@@ -1111,7 +1111,7 @@ LABEL_33:
       objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v100, &v105, &v104, 1);
       v97 = LABEL_61:;
       objc_msgSend_errorWithDomain_code_userInfo_(v91, v101, @"ANSTErrorDomain", 8, v97);
-      *a4 = LABEL_62:;
+      *error = LABEL_62:;
     }
 
 LABEL_19:

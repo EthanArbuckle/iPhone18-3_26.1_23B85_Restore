@@ -1,23 +1,23 @@
 @interface S1ji7lMPfNbOh31Q
-- (void)getAt:(int64_t)a3 completion:(id)a4;
-- (void)set:(id)a3 at:(int64_t)a4;
+- (void)getAt:(int64_t)at completion:(id)completion;
+- (void)set:(id)set at:(int64_t)at;
 @end
 
 @implementation S1ji7lMPfNbOh31Q
 
-- (void)set:(id)a3 at:(int64_t)a4
+- (void)set:(id)set at:(int64_t)at
 {
-  v6 = a3;
-  v7 = self;
-  S1ji7lMPfNbOh31Q.set(_:at:)(v6, a4);
+  setCopy = set;
+  selfCopy = self;
+  S1ji7lMPfNbOh31Q.set(_:at:)(setCopy, at);
 }
 
-- (void)getAt:(int64_t)a3 completion:(id)a4
+- (void)getAt:(int64_t)at completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = self;
-  sub_10006A01C(a3, v7, v6);
+  selfCopy = self;
+  sub_10006A01C(at, selfCopy, v6);
   _Block_release(v6);
 }
 

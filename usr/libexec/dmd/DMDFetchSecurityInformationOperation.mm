@@ -1,6 +1,6 @@
 @interface DMDFetchSecurityInformationOperation
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -20,21 +20,21 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
   v17 = +[MCDeviceCapabilities currentDevice];
   v3 = +[MCProfileConnection sharedConnection];
   v4 = [DMFSecurityInformation alloc];
-  v5 = [v17 supportsBlockLevelEncryption];
-  v6 = [v17 supportsFileLevelEncryption];
-  v7 = [v3 isPasscodeSet];
+  supportsBlockLevelEncryption = [v17 supportsBlockLevelEncryption];
+  supportsFileLevelEncryption = [v17 supportsFileLevelEncryption];
+  isPasscodeSet = [v3 isPasscodeSet];
   v8 = [v3 currentPasscodeIsCompliantWithGlobalRestrictionsOutError:0];
   v9 = [v3 currentPasscodeIsCompliantWithProfileRestrictionsOutError:0];
   v10 = MCFeaturePasscodeLockGraceTime;
   v11 = [v3 effectiveValueForSetting:MCFeaturePasscodeLockGraceTime];
-  v12 = [v11 unsignedIntegerValue];
+  unsignedIntegerValue = [v11 unsignedIntegerValue];
   v13 = [v3 userValueForSetting:v10];
-  v14 = [v4 initWithSupportsBlockLevelEncryption:v5 supportsFileLevelEncryption:v6 passcodeIsSet:v7 passcodeIsCompliantWithGlobalRestrictions:v8 passcodeIsCompliantWithProfileRestrictions:v9 passcodeLockGracePeriodEnforced:v12 passcodeLockGracePeriod:{objc_msgSend(v13, "unsignedIntegerValue")}];
+  v14 = [v4 initWithSupportsBlockLevelEncryption:supportsBlockLevelEncryption supportsFileLevelEncryption:supportsFileLevelEncryption passcodeIsSet:isPasscodeSet passcodeIsCompliantWithGlobalRestrictions:v8 passcodeIsCompliantWithProfileRestrictions:v9 passcodeLockGracePeriodEnforced:unsignedIntegerValue passcodeLockGracePeriod:{objc_msgSend(v13, "unsignedIntegerValue")}];
 
   v15 = [[DMFFetchSecurityInformationResultObject alloc] initWithSecurityInformation:v14];
   [(DMDFetchSecurityInformationOperation *)self endOperationWithResultObject:v15];

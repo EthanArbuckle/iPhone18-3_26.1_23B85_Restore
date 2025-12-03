@@ -1,8 +1,8 @@
 @interface AFUITestInput
 + (id)_baseRequestOptions;
-- (AFUITestInput)initWithRecordedSpeechURL:(id)a3;
-- (AFUITestInput)initWithText:(id)a3;
-- (id)_initWithRequestOptions:(id)a3;
+- (AFUITestInput)initWithRecordedSpeechURL:(id)l;
+- (AFUITestInput)initWithText:(id)text;
+- (id)_initWithRequestOptions:(id)options;
 @end
 
 @implementation AFUITestInput
@@ -14,38 +14,38 @@
   return v2;
 }
 
-- (id)_initWithRequestOptions:(id)a3
+- (id)_initWithRequestOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   v9.receiver = self;
   v9.super_class = AFUITestInput;
   v6 = [(AFUITestInput *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_requestOptions, a3);
+    objc_storeStrong(&v6->_requestOptions, options);
   }
 
   return v7;
 }
 
-- (AFUITestInput)initWithText:(id)a3
+- (AFUITestInput)initWithText:(id)text
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _baseRequestOptions];
-  [v5 setText:v4];
+  textCopy = text;
+  _baseRequestOptions = [objc_opt_class() _baseRequestOptions];
+  [_baseRequestOptions setText:textCopy];
 
-  v6 = [(AFUITestInput *)self _initWithRequestOptions:v5];
+  v6 = [(AFUITestInput *)self _initWithRequestOptions:_baseRequestOptions];
   return v6;
 }
 
-- (AFUITestInput)initWithRecordedSpeechURL:(id)a3
+- (AFUITestInput)initWithRecordedSpeechURL:(id)l
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _baseRequestOptions];
-  [v5 setSpeechFileURL:v4];
+  lCopy = l;
+  _baseRequestOptions = [objc_opt_class() _baseRequestOptions];
+  [_baseRequestOptions setSpeechFileURL:lCopy];
 
-  v6 = [(AFUITestInput *)self _initWithRequestOptions:v5];
+  v6 = [(AFUITestInput *)self _initWithRequestOptions:_baseRequestOptions];
   return v6;
 }
 

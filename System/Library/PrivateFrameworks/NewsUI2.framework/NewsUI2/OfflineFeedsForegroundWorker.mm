@@ -1,9 +1,9 @@
 @interface OfflineFeedsForegroundWorker
 - (_TtC7NewsUI228OfflineFeedsForegroundWorker)init;
-- (void)audioPlaylistDidChange:(id)a3;
-- (void)networkReachabilityConnectivityDidChange:(id)a3;
-- (void)readingHistory:(id)a3 didAddArticlesWithIDs:(id)a4;
-- (void)readingList:(id)a3 didAddArticles:(id)a4 removeArticles:(id)a5 eventInitiationLevel:(int64_t)a6;
+- (void)audioPlaylistDidChange:(id)change;
+- (void)networkReachabilityConnectivityDidChange:(id)change;
+- (void)readingHistory:(id)history didAddArticlesWithIDs:(id)ds;
+- (void)readingList:(id)list didAddArticles:(id)articles removeArticles:(id)removeArticles eventInitiationLevel:(int64_t)level;
 @end
 
 @implementation OfflineFeedsForegroundWorker
@@ -15,7 +15,7 @@
   return result;
 }
 
-- (void)readingList:(id)a3 didAddArticles:(id)a4 removeArticles:(id)a5 eventInitiationLevel:(int64_t)a6
+- (void)readingList:(id)list didAddArticles:(id)articles removeArticles:(id)removeArticles eventInitiationLevel:(int64_t)level
 {
   updated = type metadata accessor for OfflineFeedUpdateCondition(0);
   MEMORY[0x28223BE20](updated);
@@ -23,43 +23,43 @@
   v11[0] = 0;
   v11[1] = 0;
   swift_storeEnumTagMultiPayload();
-  v10 = self;
+  selfCopy = self;
   sub_2187B6648(v11, v9);
 
   sub_2187B6BC4(v9, type metadata accessor for OfflineFeedUpdateCondition);
 }
 
-- (void)readingHistory:(id)a3 didAddArticlesWithIDs:(id)a4
+- (void)readingHistory:(id)history didAddArticlesWithIDs:(id)ds
 {
   updated = type metadata accessor for OfflineFeedUpdateCondition(0);
   MEMORY[0x28223BE20](updated);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   v9 = xmmword_219C43530;
   swift_storeEnumTagMultiPayload();
-  v8 = self;
+  selfCopy = self;
   sub_2187B6648(&v9, v7);
 
   sub_2187B6BC4(v7, type metadata accessor for OfflineFeedUpdateCondition);
 }
 
-- (void)audioPlaylistDidChange:(id)a3
+- (void)audioPlaylistDidChange:(id)change
 {
   updated = type metadata accessor for OfflineFeedUpdateCondition(0);
   MEMORY[0x28223BE20](updated);
   v6 = &v8 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   v8 = xmmword_219C43570;
   swift_storeEnumTagMultiPayload();
-  v7 = self;
+  selfCopy = self;
   sub_2187B6648(&v8, v6);
 
   sub_2187B6BC4(v6, type metadata accessor for OfflineFeedUpdateCondition);
 }
 
-- (void)networkReachabilityConnectivityDidChange:(id)a3
+- (void)networkReachabilityConnectivityDidChange:(id)change
 {
-  if (a3)
+  if (change)
   {
-    v3 = self;
+    selfCopy = self;
     if ([swift_unknownObjectRetain() isNetworkReachable])
     {
       sub_2187B6134();

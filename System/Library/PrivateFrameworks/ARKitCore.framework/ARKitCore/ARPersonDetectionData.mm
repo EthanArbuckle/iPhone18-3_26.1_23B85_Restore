@@ -1,45 +1,45 @@
 @interface ARPersonDetectionData
 - (NSString)description;
-- (id)mergeOverlappingDetectionsWithThreshold:(float)a3;
-- (id)transformToCVPixelBuffer:(__CVBuffer *)a3 depthBuffer:(__CVBuffer *)a4;
+- (id)mergeOverlappingDetectionsWithThreshold:(float)threshold;
+- (id)transformToCVPixelBuffer:(__CVBuffer *)buffer depthBuffer:(__CVBuffer *)depthBuffer;
 @end
 
 @implementation ARPersonDetectionData
 
-- (id)transformToCVPixelBuffer:(__CVBuffer *)a3 depthBuffer:(__CVBuffer *)a4
+- (id)transformToCVPixelBuffer:(__CVBuffer *)buffer depthBuffer:(__CVBuffer *)depthBuffer
 {
   v84 = *MEMORY[0x1E69E9840];
-  v7 = [(ARPersonDetectionData *)self detectedObjects];
-  v8 = [v7 count];
+  detectedObjects = [(ARPersonDetectionData *)self detectedObjects];
+  v8 = [detectedObjects count];
 
   if (!v8)
   {
     goto LABEL_48;
   }
 
-  CVPixelBufferLockBaseAddress(a3, 0);
-  CVPixelBufferLockBaseAddress(a4, 0);
+  CVPixelBufferLockBaseAddress(buffer, 0);
+  CVPixelBufferLockBaseAddress(depthBuffer, 0);
   memset(v82, 0, sizeof(v82));
-  ARWrapCVPixelBufferVImage(a4, v82);
+  ARWrapCVPixelBufferVImage(depthBuffer, v82);
   memset(v81, 0, sizeof(v81));
-  ARWrapCVPixelBufferVImage(a3, v81);
-  if (*(v82 + 8) != *(v81 + 8) || CVPixelBufferGetPixelFormatType(a3) != 1278226488 || CVPixelBufferGetPixelFormatType(a4) != 1717855600)
+  ARWrapCVPixelBufferVImage(buffer, v81);
+  if (*(v82 + 8) != *(v81 + 8) || CVPixelBufferGetPixelFormatType(buffer) != 1278226488 || CVPixelBufferGetPixelFormatType(depthBuffer) != 1717855600)
   {
-    CVPixelBufferUnlockBaseAddress(a4, 0);
-    CVPixelBufferUnlockBaseAddress(a3, 0);
+    CVPixelBufferUnlockBaseAddress(depthBuffer, 0);
+    CVPixelBufferUnlockBaseAddress(buffer, 0);
 LABEL_48:
     v70 = MEMORY[0x1E695E0F0];
     goto LABEL_49;
   }
 
-  pixelBuffer = a4;
+  pixelBuffer = depthBuffer;
   v9 = objc_opt_new();
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v10 = [(ARPersonDetectionData *)self detectedObjects];
-  v11 = [v10 countByEnumeratingWithState:&v77 objects:v83 count:16];
+  detectedObjects2 = [(ARPersonDetectionData *)self detectedObjects];
+  v11 = [detectedObjects2 countByEnumeratingWithState:&v77 objects:v83 count:16];
   if (v11)
   {
     v12 = v11;
@@ -50,7 +50,7 @@ LABEL_48:
       {
         if (*v78 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(detectedObjects2);
         }
 
         v15 = *(*(&v77 + 1) + 8 * i);
@@ -60,7 +60,7 @@ LABEL_48:
         [v9 addObject:v17];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v77 objects:v83 count:16];
+      v12 = [detectedObjects2 countByEnumeratingWithState:&v77 objects:v83 count:16];
     }
 
     while (v12);
@@ -99,7 +99,7 @@ LABEL_48:
               while (1)
               {
                 v31 = [v9 objectAtIndexedSubscript:{v27, pixelBuffer}];
-                [v31 rectScaledToSizeOfPixelBuffer:a3];
+                [v31 rectScaledToSizeOfPixelBuffer:buffer];
                 x = v87.origin.x;
                 y = v87.origin.y;
                 width = v87.size.width;
@@ -172,7 +172,7 @@ LABEL_48:
               v48 = 3.40282347e38;
 LABEL_35:
               v49 = [v9 objectAtIndexedSubscript:{v47, pixelBuffer}];
-              [v49 rectScaledToSizeOfPixelBuffer:a3];
+              [v49 rectScaledToSizeOfPixelBuffer:buffer];
               if (v50 >= v51)
               {
                 v52 = v51;
@@ -238,7 +238,7 @@ LABEL_35:
   }
 
   CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
-  CVPixelBufferUnlockBaseAddress(a3, 0);
+  CVPixelBufferUnlockBaseAddress(buffer, 0);
   v70 = [v9 sortedArrayUsingComparator:&__block_literal_global_66];
 
 LABEL_49:
@@ -268,7 +268,7 @@ BOOL __62__ARPersonDetectionData_transformToCVPixelBuffer_depthBuffer___block_in
   return v7;
 }
 
-- (id)mergeOverlappingDetectionsWithThreshold:(float)a3
+- (id)mergeOverlappingDetectionsWithThreshold:(float)threshold
 {
   v115 = *MEMORY[0x1E69E9840];
   v110[0] = MEMORY[0x1E69E9820];
@@ -278,19 +278,19 @@ BOOL __62__ARPersonDetectionData_transformToCVPixelBuffer_depthBuffer___block_in
   v111 = &__block_literal_global_72;
   v94 = MEMORY[0x1C691B4C0](v110, a2);
   v5 = objc_opt_new();
-  v6 = [(ARPersonDetectionData *)self detectedObjects];
-  v7 = [v6 count];
+  detectedObjects = [(ARPersonDetectionData *)self detectedObjects];
+  v7 = [detectedObjects count];
 
   if (v7)
   {
     v8 = 0;
-    obj = a3;
+    obj = threshold;
     v9 = 1;
     do
     {
       v10 = objc_opt_new();
-      v11 = [(ARPersonDetectionData *)self detectedObjects];
-      v12 = [v11 objectAtIndexedSubscript:v8];
+      detectedObjects2 = [(ARPersonDetectionData *)self detectedObjects];
+      v12 = [detectedObjects2 objectAtIndexedSubscript:v8];
       [v12 boundingBox];
       v14 = v13;
       v16 = v15;
@@ -298,16 +298,16 @@ BOOL __62__ARPersonDetectionData_transformToCVPixelBuffer_depthBuffer___block_in
       v20 = v19;
 
       v21 = v8 + 1;
-      v22 = [(ARPersonDetectionData *)self detectedObjects];
-      v23 = [v22 count];
+      detectedObjects3 = [(ARPersonDetectionData *)self detectedObjects];
+      v23 = [detectedObjects3 count];
 
       if (v23 > v8 + 1)
       {
         v24 = v9;
         do
         {
-          v25 = [(ARPersonDetectionData *)self detectedObjects];
-          v26 = [v25 objectAtIndexedSubscript:v24];
+          detectedObjects4 = [(ARPersonDetectionData *)self detectedObjects];
+          v26 = [detectedObjects4 objectAtIndexedSubscript:v24];
           [v26 boundingBox];
           v28 = v27;
           v30 = v29;
@@ -321,8 +321,8 @@ BOOL __62__ARPersonDetectionData_transformToCVPixelBuffer_depthBuffer___block_in
           }
 
           ++v24;
-          v36 = [(ARPersonDetectionData *)self detectedObjects];
-          v37 = [v36 count];
+          detectedObjects5 = [(ARPersonDetectionData *)self detectedObjects];
+          v37 = [detectedObjects5 count];
         }
 
         while (v37 > v24);
@@ -331,8 +331,8 @@ BOOL __62__ARPersonDetectionData_transformToCVPixelBuffer_depthBuffer___block_in
       v38 = [MEMORY[0x1E696AD98] numberWithInt:v8];
       [v5 setObject:v10 forKey:v38];
 
-      v39 = [(ARPersonDetectionData *)self detectedObjects];
-      v40 = [v39 count];
+      detectedObjects6 = [(ARPersonDetectionData *)self detectedObjects];
+      v40 = [detectedObjects6 count];
 
       ++v9;
       v8 = v21;
@@ -341,8 +341,8 @@ BOOL __62__ARPersonDetectionData_transformToCVPixelBuffer_depthBuffer___block_in
     while (v40 > v21);
   }
 
-  v41 = [v5 allKeys];
-  v42 = [v41 copy];
+  allKeys = [v5 allKeys];
+  v42 = [allKeys copy];
 
   v108 = 0u;
   v109 = 0u;
@@ -364,8 +364,8 @@ BOOL __62__ARPersonDetectionData_transformToCVPixelBuffer_depthBuffer___block_in
         }
 
         v47 = *(*(&v106 + 1) + 8 * i);
-        v48 = [v5 allKeys];
-        v49 = [v48 containsObject:v47];
+        allKeys2 = [v5 allKeys];
+        v49 = [allKeys2 containsObject:v47];
 
         if (v49)
         {
@@ -387,8 +387,8 @@ BOOL __62__ARPersonDetectionData_transformToCVPixelBuffer_depthBuffer___block_in
   v103 = 0u;
   v104 = 0u;
   v105 = 0u;
-  v95 = [v5 allKeys];
-  v52 = [v95 countByEnumeratingWithState:&v102 objects:v113 count:16];
+  allKeys3 = [v5 allKeys];
+  v52 = [allKeys3 countByEnumeratingWithState:&v102 objects:v113 count:16];
   if (v52)
   {
     v53 = v52;
@@ -402,22 +402,22 @@ BOOL __62__ARPersonDetectionData_transformToCVPixelBuffer_depthBuffer___block_in
       {
         if (*v103 != v54)
         {
-          objc_enumerationMutation(v95);
+          objc_enumerationMutation(allKeys3);
         }
 
         v56 = *(*(&v102 + 1) + 8 * v55);
         v57 = [v5 objectForKeyedSubscript:{v56, v91}];
-        v58 = [v56 intValue];
-        if ((v58 & 0x80000000) == 0)
+        intValue = [v56 intValue];
+        if ((intValue & 0x80000000) == 0)
         {
-          v59 = v58;
-          v60 = [(ARPersonDetectionData *)self detectedObjects];
-          v61 = [v60 count] - 1;
+          v59 = intValue;
+          detectedObjects7 = [(ARPersonDetectionData *)self detectedObjects];
+          v61 = [detectedObjects7 count] - 1;
 
           if (v61 >= v59)
           {
-            v62 = [(ARPersonDetectionData *)self detectedObjects];
-            v63 = [v62 objectAtIndexedSubscript:v59];
+            detectedObjects8 = [(ARPersonDetectionData *)self detectedObjects];
+            v63 = [detectedObjects8 objectAtIndexedSubscript:v59];
             [v63 boundingBox];
             x = v64;
             y = v66;
@@ -444,8 +444,8 @@ BOOL __62__ARPersonDetectionData_transformToCVPixelBuffer_depthBuffer___block_in
                   }
 
                   v77 = *(*(&v98 + 1) + 8 * j);
-                  v78 = [(ARPersonDetectionData *)self detectedObjects];
-                  v79 = [v78 objectAtIndexedSubscript:{objc_msgSend(v77, "intValue")}];
+                  detectedObjects9 = [(ARPersonDetectionData *)self detectedObjects];
+                  v79 = [detectedObjects9 objectAtIndexedSubscript:{objc_msgSend(v77, "intValue")}];
                   [v79 boundingBox];
                   v81 = v80;
                   v83 = v82;
@@ -473,8 +473,8 @@ BOOL __62__ARPersonDetectionData_transformToCVPixelBuffer_depthBuffer___block_in
               while (v74);
             }
 
-            v88 = [[ARPersonDetectionResult alloc] initWithBoundingBox:x, y, width, height];
-            [v92 addObject:v88];
+            height = [[ARPersonDetectionResult alloc] initWithBoundingBox:x, y, width, height];
+            [v92 addObject:height];
 
             v54 = v91;
             v53 = v93;
@@ -485,7 +485,7 @@ BOOL __62__ARPersonDetectionData_transformToCVPixelBuffer_depthBuffer___block_in
       }
 
       while (v55 != v53);
-      v53 = [v95 countByEnumeratingWithState:&v102 objects:v113 count:16];
+      v53 = [allKeys3 countByEnumeratingWithState:&v102 objects:v113 count:16];
     }
 
     while (v53);

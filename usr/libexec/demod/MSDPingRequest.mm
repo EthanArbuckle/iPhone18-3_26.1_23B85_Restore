@@ -1,7 +1,7 @@
 @interface MSDPingRequest
 - (BOOL)isValid;
 - (id)getPostData;
-- (id)parseResponseForError:(id)a3 andPayload:(id)a4;
+- (id)parseResponseForError:(id)error andPayload:(id)payload;
 @end
 
 @implementation MSDPingRequest
@@ -15,12 +15,12 @@
     return 0;
   }
 
-  v3 = [(MSDPingRequest *)self requestInfo];
+  requestInfo = [(MSDPingRequest *)self requestInfo];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(MSDPingRequest *)self requestInfo];
-    v5 = [v4 objectForKey:@"UniqueDeviceID"];
+    requestInfo2 = [(MSDPingRequest *)self requestInfo];
+    v5 = [requestInfo2 objectForKey:@"UniqueDeviceID"];
     v6 = v5 != 0;
   }
 
@@ -34,10 +34,10 @@
 
 - (id)getPostData
 {
-  v2 = [(MSDPingRequest *)self requestInfo];
-  v3 = [v2 convertToNSData];
+  requestInfo = [(MSDPingRequest *)self requestInfo];
+  convertToNSData = [requestInfo convertToNSData];
 
-  if (!v3)
+  if (!convertToNSData)
   {
     v4 = [[NSMutableDictionary alloc] initWithCapacity:2];
     v5 = sub_100063A54();
@@ -48,58 +48,58 @@
     }
 
     v6 = +[MSDTargetDevice sharedInstance];
-    v7 = [v6 udid];
-    [v4 setObject:v7 forKey:@"UniqueDeviceID"];
+    udid = [v6 udid];
+    [v4 setObject:udid forKey:@"UniqueDeviceID"];
 
     [v4 setObject:&off_10017B290 forKey:@"InternalStatus"];
-    v3 = [v4 convertToNSData];
+    convertToNSData = [v4 convertToNSData];
   }
 
-  return v3;
+  return convertToNSData;
 }
 
-- (id)parseResponseForError:(id)a3 andPayload:(id)a4
+- (id)parseResponseForError:(id)error andPayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  payloadCopy = payload;
   v18.receiver = self;
   v18.super_class = MSDPingRequest;
-  v8 = [(MSDServerRequest *)&v18 parseResponseForError:v6 andPayload:v7];
-  v9 = [v8 error];
+  v8 = [(MSDServerRequest *)&v18 parseResponseForError:errorCopy andPayload:payloadCopy];
+  error = [v8 error];
 
-  if (!v9)
+  if (!error)
   {
-    v10 = [v7 objectForKey:@"statusCode"];
+    v10 = [payloadCopy objectForKey:@"statusCode"];
     [v8 setStatusCode:v10];
 
-    v11 = [v8 statusCode];
+    statusCode = [v8 statusCode];
 
-    if (!v11)
+    if (!statusCode)
     {
       v14 = sub_100063A54();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v16 = [(MSDServerRequest *)self getName];
+        getName = [(MSDServerRequest *)self getName];
         *buf = 138543618;
-        v20 = v16;
+        v20 = getName;
         v21 = 2114;
         v22 = @"statusCode";
         _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%{public}@ response payload does not contain: %{public}@", buf, 0x16u);
       }
 
-      v17 = v6;
+      v17 = errorCopy;
       sub_1000C1424(&v17, 3727744512, @"Unexpected server response.");
       v15 = v17;
 
-      v6 = v15;
+      errorCopy = v15;
     }
   }
 
-  v12 = [v8 error];
+  error2 = [v8 error];
 
-  if (!v12)
+  if (!error2)
   {
-    [v8 setError:v6];
+    [v8 setError:errorCopy];
   }
 
   return v8;

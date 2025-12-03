@@ -1,37 +1,37 @@
 @interface BKHIDClientConnectionManager
-- (BKHIDClientConnectionManager)initWithHIDEventSystem:(__IOHIDEventSystem *)a3;
-- (__IOHIDEventSystemConnection)copyClientForDestination:(id)a3;
-- (id)_lock_clientForDestination:(uint64_t)a1;
-- (id)bundleIDForPID:(int)a3;
-- (id)clientForDestination:(id)a3;
-- (id)clientForTaskPort:(unsigned int)a3;
+- (BKHIDClientConnectionManager)initWithHIDEventSystem:(__IOHIDEventSystem *)system;
+- (__IOHIDEventSystemConnection)copyClientForDestination:(id)destination;
+- (id)_lock_clientForDestination:(uint64_t)destination;
+- (id)bundleIDForPID:(int)d;
+- (id)clientForDestination:(id)destination;
+- (id)clientForTaskPort:(unsigned int)port;
 - (id)description;
-- (int)pidForBundleID:(id)a3;
-- (int64_t)versionedPIDForPID:(int)a3;
+- (int)pidForBundleID:(id)d;
+- (int64_t)versionedPIDForPID:(int)d;
 - (void)dealloc;
-- (void)sendEvent:(__IOHIDEvent *)a3 toClientTaskPort:(unsigned int)a4;
-- (void)sendEvent:(__IOHIDEvent *)a3 toDestination:(id)a4;
+- (void)sendEvent:(__IOHIDEvent *)event toClientTaskPort:(unsigned int)port;
+- (void)sendEvent:(__IOHIDEvent *)event toDestination:(id)destination;
 @end
 
 @implementation BKHIDClientConnectionManager
 
-- (int64_t)versionedPIDForPID:(int)a3
+- (int64_t)versionedPIDForPID:(int)d
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(BSMutableIntegerMap *)self->_pidToClientConnectionMapping objectForKey:a3];
-  v6 = [v5 versionedPID];
+  v5 = [(BSMutableIntegerMap *)self->_pidToClientConnectionMapping objectForKey:d];
+  versionedPID = [v5 versionedPID];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v6;
+  return versionedPID;
 }
 
-- (void)sendEvent:(__IOHIDEvent *)a3 toDestination:(id)a4
+- (void)sendEvent:(__IOHIDEvent *)event toDestination:(id)destination
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  destinationCopy = destination;
   os_unfair_lock_lock(&self->_lock);
-  v6 = [(BKHIDClientConnectionManager *)self _lock_clientForDestination:v5];
+  v6 = [(BKHIDClientConnectionManager *)self _lock_clientForDestination:destinationCopy];
   os_unfair_lock_unlock(&self->_lock);
   if (v6)
   {
@@ -44,7 +44,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = v5;
+      v10 = destinationCopy;
       _os_log_impl(&dword_223CBE000, v7, OS_LOG_TYPE_DEFAULT, "no client connection for destination %{public}@", &v9, 0xCu);
     }
   }
@@ -52,34 +52,34 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_lock_clientForDestination:(uint64_t)a1
+- (id)_lock_clientForDestination:(uint64_t)destination
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (destination)
   {
-    v5 = [v3 versionedPID];
-    if (v5 == -1)
+    versionedPID = [v3 versionedPID];
+    if (versionedPID == -1)
     {
-      a1 = [*(a1 + 24) objectForKey:{objc_msgSend(v4, "pid")}];
+      destination = [*(destination + 24) objectForKey:{objc_msgSend(v4, "pid")}];
     }
 
     else
     {
-      v6 = *(a1 + 32);
-      v7 = [MEMORY[0x277CCABB0] numberWithLongLong:v5];
-      a1 = [v6 objectForKey:v7];
+      v6 = *(destination + 32);
+      v7 = [MEMORY[0x277CCABB0] numberWithLongLong:versionedPID];
+      destination = [v6 objectForKey:v7];
     }
   }
 
-  return a1;
+  return destination;
 }
 
-- (void)sendEvent:(__IOHIDEvent *)a3 toClientTaskPort:(unsigned int)a4
+- (void)sendEvent:(__IOHIDEvent *)event toClientTaskPort:(unsigned int)port
 {
   v10 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
-  v6 = [(BSMutableIntegerMap *)self->_taskPortToClientConnectionMapping objectForKey:a4];
+  v6 = [(BSMutableIntegerMap *)self->_taskPortToClientConnectionMapping objectForKey:port];
   os_unfair_lock_unlock(&self->_lock);
   if (v6)
   {
@@ -92,7 +92,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9[0] = 67109120;
-      v9[1] = a4;
+      v9[1] = port;
       _os_log_impl(&dword_223CBE000, v7, OS_LOG_TYPE_DEFAULT, "no client connection for port 0x%X", v9, 8u);
     }
   }
@@ -100,66 +100,66 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)clientForDestination:(id)a3
+- (id)clientForDestination:(id)destination
 {
-  v4 = a3;
+  destinationCopy = destination;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(BKHIDClientConnectionManager *)self _lock_clientForDestination:v4];
+  v5 = [(BKHIDClientConnectionManager *)self _lock_clientForDestination:destinationCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (id)clientForTaskPort:(unsigned int)a3
+- (id)clientForTaskPort:(unsigned int)port
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(BSMutableIntegerMap *)self->_taskPortToClientConnectionMapping objectForKey:a3];
+  v5 = [(BSMutableIntegerMap *)self->_taskPortToClientConnectionMapping objectForKey:port];
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (__IOHIDEventSystemConnection)copyClientForDestination:(id)a3
+- (__IOHIDEventSystemConnection)copyClientForDestination:(id)destination
 {
-  v3 = [(BKHIDClientConnectionManager *)self clientForDestination:a3];
-  v4 = [v3 connection];
+  v3 = [(BKHIDClientConnectionManager *)self clientForDestination:destination];
+  connection = [v3 connection];
 
-  if (v4)
+  if (connection)
   {
-    CFRetain(v4);
+    CFRetain(connection);
   }
 
-  return v4;
+  return connection;
 }
 
-- (id)bundleIDForPID:(int)a3
+- (id)bundleIDForPID:(int)d
 {
-  if (a3 < 1)
+  if (d < 1)
   {
-    v6 = 0;
+    bundleID = 0;
   }
 
   else
   {
     os_unfair_lock_assert_not_owner(&self->_lock);
     os_unfair_lock_lock(&self->_lock);
-    v5 = [(BSMutableIntegerMap *)self->_pidToClientConnectionMapping objectForKey:a3];
-    v6 = [v5 bundleID];
+    v5 = [(BSMutableIntegerMap *)self->_pidToClientConnectionMapping objectForKey:d];
+    bundleID = [v5 bundleID];
     os_unfair_lock_unlock(&self->_lock);
   }
 
-  return v6;
+  return bundleID;
 }
 
-- (int)pidForBundleID:(id)a3
+- (int)pidForBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = -1;
-  if ([v4 length])
+  if ([dCopy length])
   {
     os_unfair_lock_assert_not_owner(&self->_lock);
     os_unfair_lock_lock(&self->_lock);
@@ -168,7 +168,7 @@
     v8[1] = 3221225472;
     v8[2] = __47__BKHIDClientConnectionManager_pidForBundleID___block_invoke;
     v8[3] = &unk_2784F6870;
-    v9 = v4;
+    v9 = dCopy;
     v10 = &v11;
     [(BSMutableIntegerMap *)pidToClientConnectionMapping enumerateWithBlock:v8];
     os_unfair_lock_unlock(&self->_lock);
@@ -200,9 +200,9 @@ void __47__BKHIDClientConnectionManager_pidForBundleID___block_invoke(uint64_t a
   v5 = [v3 appendObject:self->_pidToClientConnectionMapping withName:@"pid->ClientConnection"];
   v6 = [v3 appendObject:self->_versionedPIDToClientConnectionMapping withName:@"vpid->ClientConnection"];
   v7 = [v3 appendPointer:self->_hidConnectionToBKConnection withName:@"HIDConnection->BKConnection"];
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 - (void)dealloc
@@ -229,7 +229,7 @@ void __47__BKHIDClientConnectionManager_pidForBundleID___block_invoke(uint64_t a
   [(BKHIDClientConnectionManager *)&v7 dealloc];
 }
 
-- (BKHIDClientConnectionManager)initWithHIDEventSystem:(__IOHIDEventSystem *)a3
+- (BKHIDClientConnectionManager)initWithHIDEventSystem:(__IOHIDEventSystem *)system
 {
   v22.receiver = self;
   v22.super_class = BKHIDClientConnectionManager;
@@ -238,10 +238,10 @@ void __47__BKHIDClientConnectionManager_pidForBundleID___block_invoke(uint64_t a
   if (v4)
   {
     v4->_lock._os_unfair_lock_opaque = 0;
-    if (a3)
+    if (system)
     {
-      v4->_hidEventSystem = a3;
-      CFRetain(a3);
+      v4->_hidEventSystem = system;
+      CFRetain(system);
     }
 
     v6 = objc_alloc_init(MEMORY[0x277CF0C68]);

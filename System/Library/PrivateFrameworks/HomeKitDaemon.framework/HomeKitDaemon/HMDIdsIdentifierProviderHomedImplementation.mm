@@ -7,10 +7,10 @@
 - (id)getCurrentDeviceId
 {
   v2 = +[HMDAppleAccountManager sharedManager];
-  v3 = [v2 device];
-  v4 = [v3 idsIdentifier];
+  device = [v2 device];
+  idsIdentifier = [device idsIdentifier];
 
-  return v4;
+  return idsIdentifier;
 }
 
 @end

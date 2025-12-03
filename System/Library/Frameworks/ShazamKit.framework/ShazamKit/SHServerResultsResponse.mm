@@ -1,6 +1,6 @@
 @interface SHServerResultsResponse
 - (NSArray)shazamIDs;
-- (SHServerResultsResponse)initWithResultsDictionary:(id)a3;
+- (SHServerResultsResponse)initWithResultsDictionary:(id)dictionary;
 - (double)recordingIntermissionSeconds;
 - (double)recordingSignatureOffsetSeconds;
 - (double)retrySeconds;
@@ -8,16 +8,16 @@
 
 @implementation SHServerResultsResponse
 
-- (SHServerResultsResponse)initWithResultsDictionary:(id)a3
+- (SHServerResultsResponse)initWithResultsDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = SHServerResultsResponse;
   v6 = [(SHServerResultsResponse *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_resultsDictionary, a3);
+    objc_storeStrong(&v6->_resultsDictionary, dictionary);
   }
 
   return v7;
@@ -25,8 +25,8 @@
 
 - (NSArray)shazamIDs
 {
-  v2 = [(SHServerResultsResponse *)self resultsDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"matches"];
+  resultsDictionary = [(SHServerResultsResponse *)self resultsDictionary];
+  v3 = [resultsDictionary objectForKeyedSubscript:@"matches"];
 
   v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
   v13 = 0u;
@@ -68,8 +68,8 @@
 
 - (double)retrySeconds
 {
-  v2 = [(SHServerResultsResponse *)self resultsDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"retry"];
+  resultsDictionary = [(SHServerResultsResponse *)self resultsDictionary];
+  v3 = [resultsDictionary objectForKeyedSubscript:@"retry"];
 
   v4 = [v3 objectForKeyedSubscript:@"recordingIntermissionInMilliseconds"];
 
@@ -90,8 +90,8 @@
 
 - (double)recordingIntermissionSeconds
 {
-  v2 = [(SHServerResultsResponse *)self resultsDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"retry"];
+  resultsDictionary = [(SHServerResultsResponse *)self resultsDictionary];
+  v3 = [resultsDictionary objectForKeyedSubscript:@"retry"];
 
   v4 = [v3 objectForKeyedSubscript:@"recordingIntermissionInMilliseconds"];
 
@@ -112,8 +112,8 @@
 
 - (double)recordingSignatureOffsetSeconds
 {
-  v2 = [(SHServerResultsResponse *)self resultsDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"retry"];
+  resultsDictionary = [(SHServerResultsResponse *)self resultsDictionary];
+  v3 = [resultsDictionary objectForKeyedSubscript:@"retry"];
 
   v4 = [v3 objectForKeyedSubscript:@"recordingOffsetInMilliseconds"];
 

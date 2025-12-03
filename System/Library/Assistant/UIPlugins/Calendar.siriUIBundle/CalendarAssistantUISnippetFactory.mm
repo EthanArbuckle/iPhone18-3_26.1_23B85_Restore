@@ -1,62 +1,62 @@
 @interface CalendarAssistantUISnippetFactory
-- (id)disambiguationItemForListItem:(id)a3 disambiguationKey:(id)a4;
-- (id)viewControllerForSnippet:(id)a3;
+- (id)disambiguationItemForListItem:(id)item disambiguationKey:(id)key;
+- (id)viewControllerForSnippet:(id)snippet;
 @end
 
 @implementation CalendarAssistantUISnippetFactory
 
-- (id)viewControllerForSnippet:(id)a3
+- (id)viewControllerForSnippet:(id)snippet
 {
-  v3 = a3;
+  snippetCopy = snippet;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [[CalendarAssistantUIController alloc] initWithAceObject:v3];
+    v4 = [[CalendarAssistantUIController alloc] initWithAceObject:snippetCopy];
   }
 
   else
   {
-    NSLog(@"Expected SACalendarEventSnippet, got %@", v3);
+    NSLog(@"Expected SACalendarEventSnippet, got %@", snippetCopy);
     v4 = 0;
   }
 
   return v4;
 }
 
-- (id)disambiguationItemForListItem:(id)a3 disambiguationKey:(id)a4
+- (id)disambiguationItemForListItem:(id)item disambiguationKey:(id)key
 {
-  v4 = [a3 object];
+  object = [item object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 identifier];
-    v6 = v5;
-    if (v5 && ([v5 scheme], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "compare:options:", _EKEventURLScheme, 1), v7, !v8))
+    identifier = [object identifier];
+    v6 = identifier;
+    if (identifier && ([identifier scheme], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "compare:options:", _EKEventURLScheme, 1), v7, !v8))
     {
       v10 = +[CalendarAssistantUIController openEventStore];
       v11 = [v10 _eventWithURI:v6 checkValid:1];
       if (v11)
       {
         v9 = +[SiriUIDisambiguationItem disambiguationItem];
-        v12 = [v11 title];
-        v13 = [v12 length];
+        title = [v11 title];
+        v13 = [title length];
 
         if (v13)
         {
-          v14 = [v11 title];
-          [v9 setTitle:v14];
+          title2 = [v11 title];
+          [v9 setTitle:title2];
         }
 
-        v15 = [v11 location];
-        v16 = [v15 length];
+        location = [v11 location];
+        v16 = [location length];
 
         if (v16)
         {
-          v17 = [v11 location];
-          [v9 setSubtitle:v17];
+          location2 = [v11 location];
+          [v9 setSubtitle:location2];
         }
 
-        v18 = [v11 startDate];
+        startDate = [v11 startDate];
         v19 = CUIKStringForSystemTime();
 
         if ([v19 length])
@@ -65,8 +65,8 @@
         }
 
         v20 = +[CUIKDateDescriptionGenerator sharedGenerator];
-        v21 = [v11 startDate];
-        v22 = [v20 dateStringForDate:v21 allDay:1 shortFormat:1];
+        startDate2 = [v11 startDate];
+        v22 = [v20 dateStringForDate:startDate2 allDay:1 shortFormat:1];
 
         if ([v22 length])
         {
@@ -91,7 +91,7 @@
 
   else
   {
-    NSLog(@"Expected SACalendarEvent, got: %@", v4);
+    NSLog(@"Expected SACalendarEvent, got: %@", object);
     v9 = 0;
   }
 

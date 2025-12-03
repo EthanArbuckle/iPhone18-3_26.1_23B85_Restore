@@ -1,26 +1,26 @@
 @interface MLDClientImportServiceSession
-- (MLDClientImportServiceSession)initWithConnection:(id)a3;
-- (void)_addContainers:(id)a3;
-- (void)_addItems:(id)a3;
-- (void)_adjustProgressForIncomingOperationCount:(unint64_t)a3;
-- (void)_beginSessionWithConfiguration:(id)a3;
-- (void)_endSessionCommittingChanges:(id)a3;
-- (void)_removeContainers:(id)a3;
-- (void)_removeItems:(id)a3;
+- (MLDClientImportServiceSession)initWithConnection:(id)connection;
+- (void)_addContainers:(id)containers;
+- (void)_addItems:(id)items;
+- (void)_adjustProgressForIncomingOperationCount:(unint64_t)count;
+- (void)_beginSessionWithConfiguration:(id)configuration;
+- (void)_endSessionCommittingChanges:(id)changes;
+- (void)_removeContainers:(id)containers;
+- (void)_removeItems:(id)items;
 - (void)_reportProgress;
 - (void)_startImportThread;
-- (void)_updateContainers:(id)a3;
-- (void)_updateItems:(id)a3;
-- (void)addContainers:(id)a3 completion:(id)a4;
-- (void)addItems:(id)a3 completion:(id)a4;
-- (void)beginSessionWithConfiguration:(id)a3 completion:(id)a4;
-- (void)cancelSessionWithCompletion:(id)a3;
-- (void)endSessionWithCompletion:(id)a3;
-- (void)removeContainers:(id)a3 completion:(id)a4;
-- (void)removeItems:(id)a3 completion:(id)a4;
+- (void)_updateContainers:(id)containers;
+- (void)_updateItems:(id)items;
+- (void)addContainers:(id)containers completion:(id)completion;
+- (void)addItems:(id)items completion:(id)completion;
+- (void)beginSessionWithConfiguration:(id)configuration completion:(id)completion;
+- (void)cancelSessionWithCompletion:(id)completion;
+- (void)endSessionWithCompletion:(id)completion;
+- (void)removeContainers:(id)containers completion:(id)completion;
+- (void)removeItems:(id)items completion:(id)completion;
 - (void)stop;
-- (void)updateContainers:(id)a3 completion:(id)a4;
-- (void)updateItems:(id)a3 completion:(id)a4;
+- (void)updateContainers:(id)containers completion:(id)completion;
+- (void)updateItems:(id)items completion:(id)completion;
 @end
 
 @implementation MLDClientImportServiceSession
@@ -43,22 +43,22 @@
   }
 }
 
-- (void)_adjustProgressForIncomingOperationCount:(unint64_t)a3
+- (void)_adjustProgressForIncomingOperationCount:(unint64_t)count
 {
-  v3 = self->_completedOperationCount + a3;
+  v3 = self->_completedOperationCount + count;
   if (v3 > self->_totalOperationCount)
   {
     self->_totalOperationCount = v3;
   }
 }
 
-- (void)_removeContainers:(id)a3
+- (void)_removeContainers:(id)containers
 {
-  v4 = a3;
-  v19 = v4;
+  containersCopy = containers;
+  v19 = containersCopy;
   if (self->_importSession)
   {
-    -[MLDClientImportServiceSession _adjustProgressForIncomingOperationCount:](self, "_adjustProgressForIncomingOperationCount:", [v4 count]);
+    -[MLDClientImportServiceSession _adjustProgressForIncomingOperationCount:](self, "_adjustProgressForIncomingOperationCount:", [containersCopy count]);
     v5 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v19 count]);
     v26 = 0u;
     v24 = 0u;
@@ -95,7 +95,7 @@
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v29 = self;
+              selfCopy2 = self;
               _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ Failed to remove track", buf, 0xCu);
             }
 
@@ -147,19 +147,19 @@ LABEL_17:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v29 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "%{public}@ removeItems called without an active import session", buf, 0xCu);
     }
   }
 }
 
-- (void)_updateContainers:(id)a3
+- (void)_updateContainers:(id)containers
 {
-  v4 = a3;
-  v20 = v4;
+  containersCopy = containers;
+  v20 = containersCopy;
   if (self->_importSession)
   {
-    -[MLDClientImportServiceSession _adjustProgressForIncomingOperationCount:](self, "_adjustProgressForIncomingOperationCount:", [v4 count]);
+    -[MLDClientImportServiceSession _adjustProgressForIncomingOperationCount:](self, "_adjustProgressForIncomingOperationCount:", [containersCopy count]);
     v5 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v20 count]);
     v27 = 0u;
     v25 = 0u;
@@ -196,7 +196,7 @@ LABEL_17:
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v30 = self;
+              selfCopy2 = self;
               _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ Failed to update track", buf, 0xCu);
             }
 
@@ -248,7 +248,7 @@ LABEL_17:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v30 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%{public}@ updateItems called without an active import session", buf, 0xCu);
     }
 
@@ -256,13 +256,13 @@ LABEL_17:
   }
 }
 
-- (void)_addContainers:(id)a3
+- (void)_addContainers:(id)containers
 {
-  v4 = a3;
-  v20 = v4;
+  containersCopy = containers;
+  v20 = containersCopy;
   if (self->_importSession)
   {
-    -[MLDClientImportServiceSession _adjustProgressForIncomingOperationCount:](self, "_adjustProgressForIncomingOperationCount:", [v4 count]);
+    -[MLDClientImportServiceSession _adjustProgressForIncomingOperationCount:](self, "_adjustProgressForIncomingOperationCount:", [containersCopy count]);
     v5 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v20 count]);
     v27 = 0u;
     v25 = 0u;
@@ -299,7 +299,7 @@ LABEL_17:
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v30 = self;
+              selfCopy2 = self;
               _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ Failed to add track", buf, 0xCu);
             }
 
@@ -351,7 +351,7 @@ LABEL_17:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v30 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%{public}@ addItems called without an active import session", buf, 0xCu);
     }
 
@@ -359,13 +359,13 @@ LABEL_17:
   }
 }
 
-- (void)_removeItems:(id)a3
+- (void)_removeItems:(id)items
 {
-  v4 = a3;
-  v19 = v4;
+  itemsCopy = items;
+  v19 = itemsCopy;
   if (self->_importSession)
   {
-    -[MLDClientImportServiceSession _adjustProgressForIncomingOperationCount:](self, "_adjustProgressForIncomingOperationCount:", [v4 count]);
+    -[MLDClientImportServiceSession _adjustProgressForIncomingOperationCount:](self, "_adjustProgressForIncomingOperationCount:", [itemsCopy count]);
     v5 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v19 count]);
     v26 = 0u;
     v24 = 0u;
@@ -402,7 +402,7 @@ LABEL_17:
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v29 = self;
+              selfCopy2 = self;
               _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ Failed to remove track", buf, 0xCu);
             }
 
@@ -454,19 +454,19 @@ LABEL_17:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v29 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "%{public}@ removeItems called without an active import session", buf, 0xCu);
     }
   }
 }
 
-- (void)_updateItems:(id)a3
+- (void)_updateItems:(id)items
 {
-  v4 = a3;
-  v20 = v4;
+  itemsCopy = items;
+  v20 = itemsCopy;
   if (self->_importSession)
   {
-    -[MLDClientImportServiceSession _adjustProgressForIncomingOperationCount:](self, "_adjustProgressForIncomingOperationCount:", [v4 count]);
+    -[MLDClientImportServiceSession _adjustProgressForIncomingOperationCount:](self, "_adjustProgressForIncomingOperationCount:", [itemsCopy count]);
     v5 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v20 count]);
     v27 = 0u;
     v25 = 0u;
@@ -503,7 +503,7 @@ LABEL_17:
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v30 = self;
+              selfCopy2 = self;
               _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ Failed to update track", buf, 0xCu);
             }
 
@@ -555,7 +555,7 @@ LABEL_17:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v30 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%{public}@ updateItems called without an active import session", buf, 0xCu);
     }
 
@@ -563,13 +563,13 @@ LABEL_17:
   }
 }
 
-- (void)_addItems:(id)a3
+- (void)_addItems:(id)items
 {
-  v4 = a3;
-  v20 = v4;
+  itemsCopy = items;
+  v20 = itemsCopy;
   if (self->_importSession)
   {
-    -[MLDClientImportServiceSession _adjustProgressForIncomingOperationCount:](self, "_adjustProgressForIncomingOperationCount:", [v4 count]);
+    -[MLDClientImportServiceSession _adjustProgressForIncomingOperationCount:](self, "_adjustProgressForIncomingOperationCount:", [itemsCopy count]);
     v5 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v20 count]);
     v27 = 0u;
     v25 = 0u;
@@ -610,7 +610,7 @@ LABEL_17:
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v30 = self;
+              selfCopy2 = self;
               _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ Failed to add track", buf, 0xCu);
             }
 
@@ -662,7 +662,7 @@ LABEL_18:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v30 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%{public}@ addItems called without an active import session", buf, 0xCu);
     }
 
@@ -670,10 +670,10 @@ LABEL_18:
   }
 }
 
-- (void)_endSessionCommittingChanges:(id)a3
+- (void)_endSessionCommittingChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [v4 BOOLValue];
+  changesCopy = changes;
+  bOOLValue = [changesCopy BOOLValue];
   if (self->_importSession)
   {
     v6 = os_log_create("com.apple.amp.medialibraryd", "Default");
@@ -682,17 +682,17 @@ LABEL_18:
       *buf = 138543618;
       *&buf[4] = self;
       *&buf[12] = 1024;
-      *&buf[14] = v5;
+      *&buf[14] = bOOLValue;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ Finishing import session. shouldCommit=%{BOOL}u", buf, 0x12u);
     }
 
-    if (v5)
+    if (bOOLValue)
     {
-      v7 = [(ML3ClientImportServiceSession *)self->_importSession finish];
-      self->_success = v7;
-      if (v7)
+      finish = [(ML3ClientImportServiceSession *)self->_importSession finish];
+      self->_success = finish;
+      if (finish)
       {
-        v5 = 1;
+        bOOLValue = 1;
       }
 
       else
@@ -705,7 +705,7 @@ LABEL_18:
           _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Failed to finish import session", buf, 0xCu);
         }
 
-        v5 = 0;
+        bOOLValue = 0;
       }
     }
 
@@ -735,10 +735,10 @@ LABEL_18:
     v18[6] = buf;
     [(NSMutableSet *)trackPidsToAddToLibrary enumerateObjectsUsingBlock:v18];
     v11 = +[MLDMediaLibraryService sharedInstance];
-    v12 = [(ML3ActiveTransaction *)self->_transaction identifier];
+    identifier = [(ML3ActiveTransaction *)self->_transaction identifier];
     v13 = (*&buf[8] + 40);
     obj = *(*&buf[8] + 40);
-    v14 = [v11 endTransaction:v12 shouldCommit:v5 error:&obj];
+    v14 = [v11 endTransaction:identifier shouldCommit:bOOLValue error:&obj];
     objc_storeStrong(v13, obj);
     self->_success = v14;
 
@@ -749,7 +749,7 @@ LABEL_18:
       {
         v16 = *(*&buf[8] + 40);
         *v21 = 138543618;
-        v22 = self;
+        selfCopy = self;
         v23 = 2114;
         v24 = v16;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ Failed to end transaction. err=%{public}@", v21, 0x16u);
@@ -761,18 +761,18 @@ LABEL_18:
   }
 }
 
-- (void)_beginSessionWithConfiguration:(id)a3
+- (void)_beginSessionWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = os_log_create("com.apple.amp.medialibraryd", "Default");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v27 = self;
+    selfCopy3 = self;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ Starting import session", buf, 0xCu);
   }
 
-  objc_storeStrong(&self->_configuration, a3);
+  objc_storeStrong(&self->_configuration, configuration);
   self->_totalOperationCount = [(ML3ClientImportSessionConfiguration *)self->_configuration operationCount];
   if ([(ML3ClientImportSessionConfiguration *)self->_configuration shouldLibraryAdd])
   {
@@ -782,9 +782,9 @@ LABEL_18:
   }
 
   v9 = [MLTransactionContext alloc];
-  v10 = [v5 privacyContext];
-  v11 = [v5 libraryPath];
-  v12 = [v9 initWithPrivacyContext:v10 path:v11 priorityLevel:1 options:0];
+  privacyContext = [configurationCopy privacyContext];
+  libraryPath = [configurationCopy libraryPath];
+  v12 = [v9 initWithPrivacyContext:privacyContext path:libraryPath priorityLevel:1 options:0];
 
   v13 = +[MLDMediaLibraryService sharedInstance];
   v25 = 0;
@@ -796,21 +796,21 @@ LABEL_18:
   if (self->_transaction)
   {
     v17 = [ML3ClientImportServiceSession alloc];
-    v18 = [(ML3ActiveTransaction *)self->_transaction library];
-    v19 = [(ML3ActiveTransaction *)self->_transaction connection];
-    v20 = [v17 initWithLibrary:v18 connection:v19 configuration:self->_configuration];
+    library = [(ML3ActiveTransaction *)self->_transaction library];
+    connection = [(ML3ActiveTransaction *)self->_transaction connection];
+    v20 = [v17 initWithLibrary:library connection:connection configuration:self->_configuration];
     importSession = self->_importSession;
     self->_importSession = v20;
 
-    v22 = [(ML3ClientImportServiceSession *)self->_importSession begin];
-    self->_success = v22;
-    if ((v22 & 1) == 0)
+    begin = [(ML3ClientImportServiceSession *)self->_importSession begin];
+    self->_success = begin;
+    if ((begin & 1) == 0)
     {
       v23 = os_log_create("com.apple.amp.medialibraryd", "Default");
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v27 = self;
+        selfCopy3 = self;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%{public}@ Failed to begin import session", buf, 0xCu);
       }
 
@@ -824,7 +824,7 @@ LABEL_18:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v27 = self;
+      selfCopy3 = self;
       v28 = 2114;
       v29 = v15;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%{public}@ Failed to start transaction. err=%{public}@", buf, 0x16u);
@@ -848,11 +848,11 @@ LABEL_18:
   }
 }
 
-- (void)removeContainers:(id)a3 completion:(id)a4
+- (void)removeContainers:(id)containers completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
-  [(MLDClientImportServiceSession *)self performSelector:"_removeContainers:" onThread:self->_importSessionThread withObject:v10 waitUntilDone:1];
+  containersCopy = containers;
+  completionCopy = completion;
+  [(MLDClientImportServiceSession *)self performSelector:"_removeContainers:" onThread:self->_importSessionThread withObject:containersCopy waitUntilDone:1];
   currentResult = self->_currentResult;
   success = self->_success;
   if (success)
@@ -865,17 +865,17 @@ LABEL_18:
     v9 = [NSError ml_errorWithCode:0 description:@"failed to remove import items"];
   }
 
-  v6[2](v6, currentResult, v9);
+  completionCopy[2](completionCopy, currentResult, v9);
   if (!success)
   {
   }
 }
 
-- (void)updateContainers:(id)a3 completion:(id)a4
+- (void)updateContainers:(id)containers completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
-  [(MLDClientImportServiceSession *)self performSelector:"_updateContainers:" onThread:self->_importSessionThread withObject:v10 waitUntilDone:1];
+  containersCopy = containers;
+  completionCopy = completion;
+  [(MLDClientImportServiceSession *)self performSelector:"_updateContainers:" onThread:self->_importSessionThread withObject:containersCopy waitUntilDone:1];
   currentResult = self->_currentResult;
   success = self->_success;
   if (success)
@@ -888,17 +888,17 @@ LABEL_18:
     v9 = [NSError ml_errorWithCode:0 description:@"failed to update import items"];
   }
 
-  v6[2](v6, currentResult, v9);
+  completionCopy[2](completionCopy, currentResult, v9);
   if (!success)
   {
   }
 }
 
-- (void)addContainers:(id)a3 completion:(id)a4
+- (void)addContainers:(id)containers completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
-  [(MLDClientImportServiceSession *)self performSelector:"_addContainers:" onThread:self->_importSessionThread withObject:v10 waitUntilDone:1];
+  containersCopy = containers;
+  completionCopy = completion;
+  [(MLDClientImportServiceSession *)self performSelector:"_addContainers:" onThread:self->_importSessionThread withObject:containersCopy waitUntilDone:1];
   currentResult = self->_currentResult;
   success = self->_success;
   if (success)
@@ -911,17 +911,17 @@ LABEL_18:
     v9 = [NSError ml_errorWithCode:0 description:@"failed to add import items"];
   }
 
-  v6[2](v6, currentResult, v9);
+  completionCopy[2](completionCopy, currentResult, v9);
   if (!success)
   {
   }
 }
 
-- (void)removeItems:(id)a3 completion:(id)a4
+- (void)removeItems:(id)items completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
-  [(MLDClientImportServiceSession *)self performSelector:"_removeItems:" onThread:self->_importSessionThread withObject:v10 waitUntilDone:1];
+  itemsCopy = items;
+  completionCopy = completion;
+  [(MLDClientImportServiceSession *)self performSelector:"_removeItems:" onThread:self->_importSessionThread withObject:itemsCopy waitUntilDone:1];
   currentResult = self->_currentResult;
   success = self->_success;
   if (success)
@@ -934,17 +934,17 @@ LABEL_18:
     v9 = [NSError ml_errorWithCode:0 description:@"failed to remove import items"];
   }
 
-  v6[2](v6, currentResult, v9);
+  completionCopy[2](completionCopy, currentResult, v9);
   if (!success)
   {
   }
 }
 
-- (void)updateItems:(id)a3 completion:(id)a4
+- (void)updateItems:(id)items completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
-  [(MLDClientImportServiceSession *)self performSelector:"_updateItems:" onThread:self->_importSessionThread withObject:v10 waitUntilDone:1];
+  itemsCopy = items;
+  completionCopy = completion;
+  [(MLDClientImportServiceSession *)self performSelector:"_updateItems:" onThread:self->_importSessionThread withObject:itemsCopy waitUntilDone:1];
   currentResult = self->_currentResult;
   success = self->_success;
   if (success)
@@ -957,17 +957,17 @@ LABEL_18:
     v9 = [NSError ml_errorWithCode:0 description:@"failed to update import items"];
   }
 
-  v6[2](v6, currentResult, v9);
+  completionCopy[2](completionCopy, currentResult, v9);
   if (!success)
   {
   }
 }
 
-- (void)addItems:(id)a3 completion:(id)a4
+- (void)addItems:(id)items completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
-  [(MLDClientImportServiceSession *)self performSelector:"_addItems:" onThread:self->_importSessionThread withObject:v10 waitUntilDone:1];
+  itemsCopy = items;
+  completionCopy = completion;
+  [(MLDClientImportServiceSession *)self performSelector:"_addItems:" onThread:self->_importSessionThread withObject:itemsCopy waitUntilDone:1];
   currentResult = self->_currentResult;
   success = self->_success;
   if (success)
@@ -980,22 +980,22 @@ LABEL_18:
     v9 = [NSError ml_errorWithCode:0 description:@"failed to add import items"];
   }
 
-  v6[2](v6, currentResult, v9);
+  completionCopy[2](completionCopy, currentResult, v9);
   if (!success)
   {
   }
 }
 
-- (void)cancelSessionWithCompletion:(id)a3
+- (void)cancelSessionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(MLDClientImportServiceSession *)self performSelector:"_endSessionCommittingChanges:" onThread:self->_importSessionThread withObject:&__kCFBooleanFalse waitUntilDone:1];
-  v4[2](v4, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)endSessionWithCompletion:(id)a3
+- (void)endSessionWithCompletion:(id)completion
 {
-  v6 = a3;
+  completionCopy = completion;
   [(MLDClientImportServiceSession *)self performSelector:"_endSessionCommittingChanges:" onThread:self->_importSessionThread withObject:&__kCFBooleanTrue waitUntilDone:1];
   success = self->_success;
   if (success)
@@ -1008,17 +1008,17 @@ LABEL_18:
     v5 = [NSError ml_errorWithCode:0 description:@"failed to commit import session"];
   }
 
-  v6[2](v6, v5);
+  completionCopy[2](completionCopy, v5);
   if (!success)
   {
   }
 }
 
-- (void)beginSessionWithConfiguration:(id)a3 completion:(id)a4
+- (void)beginSessionWithConfiguration:(id)configuration completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  [(MLDClientImportServiceSession *)self performSelector:"_beginSessionWithConfiguration:" onThread:self->_importSessionThread withObject:v9 waitUntilDone:1];
+  configurationCopy = configuration;
+  completionCopy = completion;
+  [(MLDClientImportServiceSession *)self performSelector:"_beginSessionWithConfiguration:" onThread:self->_importSessionThread withObject:configurationCopy waitUntilDone:1];
   success = self->_success;
   if (success)
   {
@@ -1030,7 +1030,7 @@ LABEL_18:
     v8 = [NSError ml_errorWithCode:0 description:@"failed to start import session"];
   }
 
-  v6[2](v6, v8);
+  completionCopy[2](completionCopy, v8);
   if (!success)
   {
   }
@@ -1046,15 +1046,15 @@ LABEL_18:
   [(MLDClientImportServiceSession *)self cancelSessionWithCompletion:v2];
 }
 
-- (MLDClientImportServiceSession)initWithConnection:(id)a3
+- (MLDClientImportServiceSession)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v6 = [(MLDClientImportServiceSession *)self init];
   v7 = v6;
   if (v6)
   {
     v6->_active = 1;
-    objc_storeStrong(&v6->_xpcConnection, a3);
+    objc_storeStrong(&v6->_xpcConnection, connection);
     trackPidsToAddToLibrary = v7->_trackPidsToAddToLibrary;
     v7->_trackPidsToAddToLibrary = 0;
 

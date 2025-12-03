@@ -1,10 +1,10 @@
 @interface CollaborationParticipantDataSource
-- (void)realtimeCollaborationControllerGroupActivityDidChange:(id)a3;
+- (void)realtimeCollaborationControllerGroupActivityDidChange:(id)change;
 @end
 
 @implementation CollaborationParticipantDataSource
 
-- (void)realtimeCollaborationControllerGroupActivityDidChange:(id)a3
+- (void)realtimeCollaborationControllerGroupActivityDidChange:(id)change
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

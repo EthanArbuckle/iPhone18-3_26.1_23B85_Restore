@@ -1,5 +1,5 @@
 @interface FTNonNewsModeProactiveWidgetEventTracker
-+ (id)widgetEventTrackerWithMaxRowCount:(unint64_t)a3;
++ (id)widgetEventTrackerWithMaxRowCount:(unint64_t)count;
 - (FTNonNewsModeProactiveWidgetEventTracker)init;
 @end
 
@@ -28,9 +28,9 @@
   objc_exception_throw(v4);
 }
 
-+ (id)widgetEventTrackerWithMaxRowCount:(unint64_t)a3
++ (id)widgetEventTrackerWithMaxRowCount:(unint64_t)count
 {
-  v3 = [[FTProactiveWidgetEventTracker alloc] initWithMaxRowCount:a3 trackedEvents:7];
+  v3 = [[FTProactiveWidgetEventTracker alloc] initWithMaxRowCount:count trackedEvents:7];
   v4 = [[FTConditionalWidgetEventTracker alloc] initWithWidgetEventTracker:v3 predicate:&stru_10010BCC0];
 
   return v4;

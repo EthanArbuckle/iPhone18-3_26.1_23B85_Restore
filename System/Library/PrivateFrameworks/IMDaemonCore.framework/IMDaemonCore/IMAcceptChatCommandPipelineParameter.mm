@@ -1,30 +1,30 @@
 @interface IMAcceptChatCommandPipelineParameter
-- (IMAcceptChatCommandPipelineParameter)initWithDefusedMessage:(id)a3 idsTrustedData:(id)a4;
+- (IMAcceptChatCommandPipelineParameter)initWithDefusedMessage:(id)message idsTrustedData:(id)data;
 - (id)description;
 @end
 
 @implementation IMAcceptChatCommandPipelineParameter
 
-- (IMAcceptChatCommandPipelineParameter)initWithDefusedMessage:(id)a3 idsTrustedData:(id)a4
+- (IMAcceptChatCommandPipelineParameter)initWithDefusedMessage:(id)message idsTrustedData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  dataCopy = data;
   v28.receiver = self;
   v28.super_class = IMAcceptChatCommandPipelineParameter;
   v8 = [(IMAcceptChatCommandPipelineParameter *)&v28 init];
   if (v8)
   {
-    v9 = [v6 metadata];
-    v10 = [v9 messageGUID];
-    v11 = [v10 UUIDString];
+    metadata = [messageCopy metadata];
+    messageGUID = [metadata messageGUID];
+    uUIDString = [messageGUID UUIDString];
     GUID = v8->_GUID;
-    v8->_GUID = v11;
+    v8->_GUID = uUIDString;
 
-    v13 = [v9 has_timestamp];
+    has_timestamp = [metadata has_timestamp];
     v14 = MEMORY[0x277CCABB0];
-    if (v13)
+    if (has_timestamp)
     {
-      v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v9, "timestamp")}];
+      v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(metadata, "timestamp")}];
       timestamp = v8->_timestamp;
       v8->_timestamp = v15;
     }
@@ -38,24 +38,24 @@
       v8->_timestamp = v17;
     }
 
-    v8->_isFromMe = [v7 isFromMe];
-    v19 = [v9 storageContext];
-    v8->_isFromStorage = [v19 isFromStorage];
+    v8->_isFromMe = [dataCopy isFromMe];
+    storageContext = [metadata storageContext];
+    v8->_isFromStorage = [storageContext isFromStorage];
 
-    v20 = [v9 storageContext];
-    v8->_isLastFromStorage = [v20 isLastFromStorage];
+    storageContext2 = [metadata storageContext];
+    v8->_isLastFromStorage = [storageContext2 isLastFromStorage];
 
-    v21 = [v7 batchContext];
+    batchContext = [dataCopy batchContext];
     batchContext = v8->_batchContext;
-    v8->_batchContext = v21;
+    v8->_batchContext = batchContext;
 
-    v23 = [v7 fromIdentifier];
+    fromIdentifier = [dataCopy fromIdentifier];
     fromIdentifier = v8->_fromIdentifier;
-    v8->_fromIdentifier = v23;
+    v8->_fromIdentifier = fromIdentifier;
 
-    v25 = [v7 toIdentifier];
+    toIdentifier = [dataCopy toIdentifier];
     toIdentifier = v8->_toIdentifier;
-    v8->_toIdentifier = v25;
+    v8->_toIdentifier = toIdentifier;
   }
 
   return v8;
@@ -64,8 +64,8 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(IMAcceptChatCommandPipelineParameter *)self GUID];
-  v5 = [(IMAcceptChatCommandPipelineParameter *)self timestamp];
+  gUID = [(IMAcceptChatCommandPipelineParameter *)self GUID];
+  timestamp = [(IMAcceptChatCommandPipelineParameter *)self timestamp];
   v6 = @"YES";
   if ([(IMAcceptChatCommandPipelineParameter *)self isFromStorage])
   {
@@ -92,8 +92,8 @@
     v6 = @"NO";
   }
 
-  v9 = [(IMAcceptChatCommandPipelineParameter *)self chat];
-  v10 = [v3 stringWithFormat:@"<IMAcceptChatCommandPipelineParameter %p GUID = %@; timestamp = %@; isFromStorage = %@; isLastFromStorage = %@; isFromMe = %@; OUTPUT chat = %@;", self, v4, v5, v7, v8, v6, v9];;
+  chat = [(IMAcceptChatCommandPipelineParameter *)self chat];
+  v10 = [v3 stringWithFormat:@"<IMAcceptChatCommandPipelineParameter %p GUID = %@; timestamp = %@; isFromStorage = %@; isLastFromStorage = %@; isFromMe = %@; OUTPUT chat = %@;", self, gUID, timestamp, v7, v8, v6, chat];;
 
   return v10;
 }

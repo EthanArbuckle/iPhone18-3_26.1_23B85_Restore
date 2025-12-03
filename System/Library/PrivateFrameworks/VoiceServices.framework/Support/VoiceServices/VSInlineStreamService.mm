@@ -1,16 +1,16 @@
 @interface VSInlineStreamService
 + (id)sharedService;
-- (BOOL)hasInlineStreamRequestForSpeakRequest:(id)a3;
+- (BOOL)hasInlineStreamRequestForSpeakRequest:(id)request;
 - (VSInlineStreamService)init;
 - (_opaque_pthread_mutex_t)lock;
 - (_opaque_pthread_mutexattr_t)recursiveLockAttr;
-- (id)popInlineStreamRequestForSpeakRequest:(id)a3;
-- (void)addInlineStreamRequest:(id)a3;
+- (id)popInlineStreamRequestForSpeakRequest:(id)request;
+- (void)addInlineStreamRequest:(id)request;
 - (void)dealloc;
-- (void)enqueueStreamId:(id)a3 withObject:(id)a4;
-- (void)removeStreamId:(id)a3;
-- (void)setLock:(_opaque_pthread_mutex_t *)a3;
-- (void)startStreamingWithId:(id)a3;
+- (void)enqueueStreamId:(id)id withObject:(id)object;
+- (void)removeStreamId:(id)id;
+- (void)setLock:(_opaque_pthread_mutex_t *)lock;
+- (void)startStreamingWithId:(id)id;
 @end
 
 @implementation VSInlineStreamService
@@ -24,12 +24,12 @@
   return result;
 }
 
-- (void)setLock:(_opaque_pthread_mutex_t *)a3
+- (void)setLock:(_opaque_pthread_mutex_t *)lock
 {
-  v3 = *&a3->__sig;
-  v4 = *&a3->__opaque[8];
-  v5 = *&a3->__opaque[24];
-  *&self->_lock.__opaque[40] = *&a3->__opaque[40];
+  v3 = *&lock->__sig;
+  v4 = *&lock->__opaque[8];
+  v5 = *&lock->__opaque[24];
+  *&self->_lock.__opaque[40] = *&lock->__opaque[40];
   *&self->_lock.__opaque[24] = v5;
   *&self->_lock.__opaque[8] = v4;
   *&self->_lock.__sig = v3;
@@ -46,48 +46,48 @@
   return self;
 }
 
-- (void)removeStreamId:(id)a3
+- (void)removeStreamId:(id)id
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idCopy = id;
   pthread_mutex_lock(&self->_lock);
   v5 = VSGetLogDefault();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = idCopy;
     _os_log_impl(&dword_2727E4000, v5, OS_LOG_TYPE_INFO, "Remove notification %@", &v9, 0xCu);
   }
 
-  v6 = [(VSInlineStreamService *)self ongoingNotifications];
-  [v6 removeObject:v4];
+  ongoingNotifications = [(VSInlineStreamService *)self ongoingNotifications];
+  [ongoingNotifications removeObject:idCopy];
 
-  v7 = [(VSInlineStreamService *)self queuedNotification];
-  [v7 removeObjectForKey:v4];
+  queuedNotification = [(VSInlineStreamService *)self queuedNotification];
+  [queuedNotification removeObjectForKey:idCopy];
 
   pthread_mutex_unlock(&self->_lock);
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startStreamingWithId:(id)a3
+- (void)startStreamingWithId:(id)id
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v21 = self;
+  idCopy = id;
+  selfCopy = self;
   pthread_mutex_lock(&self->_lock);
   v5 = VSGetLogDefault();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    *v31 = v4;
+    *v31 = idCopy;
     _os_log_impl(&dword_2727E4000, v5, OS_LOG_TYPE_INFO, "Start notifying for: %@", buf, 0xCu);
   }
 
-  v6 = [(VSInlineStreamService *)self ongoingNotifications];
-  [v6 addObject:v4];
+  ongoingNotifications = [(VSInlineStreamService *)self ongoingNotifications];
+  [ongoingNotifications addObject:idCopy];
 
-  v7 = [(VSInlineStreamService *)self queuedNotification];
-  v8 = [v7 objectForKeyedSubscript:v4];
+  queuedNotification = [(VSInlineStreamService *)self queuedNotification];
+  v8 = [queuedNotification objectForKeyedSubscript:idCopy];
 
   v9 = VSGetLogDefault();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
@@ -99,7 +99,7 @@
       *buf = 67109378;
       *v31 = v11;
       *&v31[4] = 2112;
-      *&v31[6] = v4;
+      *&v31[6] = idCopy;
       _os_log_impl(&dword_2727E4000, v9, OS_LOG_TYPE_INFO, "%d cached objects found for notification: %@", buf, 0x12u);
     }
 
@@ -124,14 +124,14 @@
           }
 
           v17 = *(*(&v25 + 1) + 8 * i);
-          v18 = [(VSInlineStreamService *)v21 notifyQueue];
+          notifyQueue = [(VSInlineStreamService *)selfCopy notifyQueue];
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __46__VSInlineStreamService_startStreamingWithId___block_invoke;
           block[3] = &unk_279E4BC28;
-          v23 = v4;
+          v23 = idCopy;
           v24 = v17;
-          dispatch_async(v18, block);
+          dispatch_async(notifyQueue, block);
         }
 
         v14 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -149,12 +149,12 @@
     if (v10)
     {
       *buf = 138412290;
-      *v31 = v4;
+      *v31 = idCopy;
       _os_log_impl(&dword_2727E4000, v9, OS_LOG_TYPE_INFO, "No cached object found for notification %@.", buf, 0xCu);
     }
   }
 
-  pthread_mutex_unlock(&v21->_lock);
+  pthread_mutex_unlock(&selfCopy->_lock);
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -180,14 +180,14 @@ void __46__VSInlineStreamService_startStreamingWithId___block_invoke(uint64_t a1
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enqueueStreamId:(id)a3 withObject:(id)a4
+- (void)enqueueStreamId:(id)id withObject:(id)object
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  objectCopy = object;
   pthread_mutex_lock(&self->_lock);
-  v8 = [(VSInlineStreamService *)self ongoingNotifications];
-  v9 = [v8 containsObject:v6];
+  ongoingNotifications = [(VSInlineStreamService *)self ongoingNotifications];
+  v9 = [ongoingNotifications containsObject:idCopy];
 
   v10 = VSGetLogDefault();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_INFO);
@@ -196,20 +196,20 @@ void __46__VSInlineStreamService_startStreamingWithId___block_invoke(uint64_t a1
     if (v11)
     {
       *buf = 138412546;
-      v21 = v6;
+      v21 = idCopy;
       v22 = 2112;
-      v23 = v7;
+      v23 = objectCopy;
       _os_log_impl(&dword_2727E4000, v10, OS_LOG_TYPE_INFO, "Notification for %@ is on-going. Posting object immediately %@", buf, 0x16u);
     }
 
-    v12 = [(VSInlineStreamService *)self notifyQueue];
+    notifyQueue = [(VSInlineStreamService *)self notifyQueue];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __52__VSInlineStreamService_enqueueStreamId_withObject___block_invoke;
     v17[3] = &unk_279E4BC28;
-    v18 = v6;
-    v19 = v7;
-    dispatch_async(v12, v17);
+    v18 = idCopy;
+    v19 = objectCopy;
+    dispatch_async(notifyQueue, v17);
 
     pthread_mutex_unlock(&self->_lock);
     v13 = v18;
@@ -220,23 +220,23 @@ void __46__VSInlineStreamService_startStreamingWithId___block_invoke(uint64_t a1
     if (v11)
     {
       *buf = 138412546;
-      v21 = v6;
+      v21 = idCopy;
       v22 = 2112;
-      v23 = v7;
+      v23 = objectCopy;
       _os_log_impl(&dword_2727E4000, v10, OS_LOG_TYPE_INFO, "Notification for %@ has not started. Cache object %@", buf, 0x16u);
     }
 
-    v14 = [(VSInlineStreamService *)self queuedNotification];
-    v13 = [v14 objectForKeyedSubscript:v6];
+    queuedNotification = [(VSInlineStreamService *)self queuedNotification];
+    v13 = [queuedNotification objectForKeyedSubscript:idCopy];
 
     if (!v13)
     {
       v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v15 = [(VSInlineStreamService *)self queuedNotification];
-      [v15 setObject:v13 forKeyedSubscript:v6];
+      queuedNotification2 = [(VSInlineStreamService *)self queuedNotification];
+      [queuedNotification2 setObject:v13 forKeyedSubscript:idCopy];
     }
 
-    [v13 addObject:v7];
+    [v13 addObject:objectCopy];
     pthread_mutex_unlock(&self->_lock);
   }
 
@@ -249,17 +249,17 @@ void __52__VSInlineStreamService_enqueueStreamId_withObject___block_invoke(uint6
   [v2 postNotificationName:*(a1 + 32) object:*(a1 + 40)];
 }
 
-- (BOOL)hasInlineStreamRequestForSpeakRequest:(id)a3
+- (BOOL)hasInlineStreamRequestForSpeakRequest:(id)request
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   pthread_mutex_lock(&self->_lock);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(VSInlineStreamService *)self streamRequestQueue];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  streamRequestQueue = [(VSInlineStreamService *)self streamRequestQueue];
+  v6 = [streamRequestQueue countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -269,12 +269,12 @@ void __52__VSInlineStreamService_enqueueStreamId_withObject___block_invoke(uint6
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(streamRequestQueue);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * i) text];
-        v10 = [v4 text];
-        v11 = [v9 isEqualToString:v10];
+        text = [*(*(&v14 + 1) + 8 * i) text];
+        text2 = [requestCopy text];
+        v11 = [text isEqualToString:text2];
 
         if (v11)
         {
@@ -283,7 +283,7 @@ void __52__VSInlineStreamService_enqueueStreamId_withObject___block_invoke(uint6
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [streamRequestQueue countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -300,63 +300,63 @@ LABEL_11:
   return v6;
 }
 
-- (id)popInlineStreamRequestForSpeakRequest:(id)a3
+- (id)popInlineStreamRequestForSpeakRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   pthread_mutex_lock(&self->_lock);
-  v5 = [(VSInlineStreamService *)self streamRequestQueue];
-  v6 = [v5 firstObject];
+  streamRequestQueue = [(VSInlineStreamService *)self streamRequestQueue];
+  firstObject = [streamRequestQueue firstObject];
 
-  if (v6)
+  if (firstObject)
   {
     do
     {
-      v7 = [(VSInlineStreamService *)self streamRequestQueue];
-      [v7 removeObjectAtIndex:0];
+      streamRequestQueue2 = [(VSInlineStreamService *)self streamRequestQueue];
+      [streamRequestQueue2 removeObjectAtIndex:0];
 
-      v8 = [v6 text];
-      v9 = [v4 text];
-      v10 = [v8 isEqualToString:v9];
+      text = [firstObject text];
+      text2 = [requestCopy text];
+      v10 = [text isEqualToString:text2];
 
       if (v10)
       {
         break;
       }
 
-      v11 = [v6 identifier];
-      [(VSInlineStreamService *)self removeStreamId:v11];
+      identifier = [firstObject identifier];
+      [(VSInlineStreamService *)self removeStreamId:identifier];
 
-      v12 = [(VSInlineStreamService *)self streamRequestQueue];
-      v13 = [v12 firstObject];
+      streamRequestQueue3 = [(VSInlineStreamService *)self streamRequestQueue];
+      firstObject2 = [streamRequestQueue3 firstObject];
 
-      v6 = v13;
+      firstObject = firstObject2;
     }
 
-    while (v13);
+    while (firstObject2);
   }
 
   pthread_mutex_unlock(&self->_lock);
 
-  return v6;
+  return firstObject;
 }
 
-- (void)addInlineStreamRequest:(id)a3
+- (void)addInlineStreamRequest:(id)request
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   pthread_mutex_lock(&self->_lock);
-  v5 = [(VSInlineStreamService *)self streamRequestQueue];
-  [v5 addObject:v4];
+  streamRequestQueue = [(VSInlineStreamService *)self streamRequestQueue];
+  [streamRequestQueue addObject:requestCopy];
 
   v6 = VSGetLogDefault();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 identifier];
-    v8 = [v4 logText];
+    identifier = [requestCopy identifier];
+    logText = [requestCopy logText];
     v10 = 138412546;
-    v11 = v7;
+    v11 = identifier;
     v12 = 2112;
-    v13 = v8;
+    v13 = logText;
     _os_log_impl(&dword_2727E4000, v6, OS_LOG_TYPE_DEFAULT, "Received inline streaming TTS with id %@, text: %@", &v10, 0x16u);
   }
 
@@ -383,9 +383,9 @@ LABEL_11:
     queuedNotification = v2->_queuedNotification;
     v2->_queuedNotification = v3;
 
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     streamRequestQueue = v2->_streamRequestQueue;
-    v2->_streamRequestQueue = v5;
+    v2->_streamRequestQueue = array;
 
     v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
     ongoingNotifications = v2->_ongoingNotifications;

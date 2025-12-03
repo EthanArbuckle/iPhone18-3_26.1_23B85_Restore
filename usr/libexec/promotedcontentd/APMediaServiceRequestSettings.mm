@@ -1,78 +1,78 @@
 @interface APMediaServiceRequestSettings
-+ (id)storageWithDefaultValues:(id)a3;
++ (id)storageWithDefaultValues:(id)values;
 - (BOOL)disablePlacementParamValue;
 - (BOOL)ignoreBagKeyCheckValue;
 - (BOOL)prettyPrintJsonValue;
 - (BOOL)useAMSBagValue;
-- (id)_readResponseJsonForPlacement:(unint64_t)a3;
-- (id)campaignNamespaceForPlacement:(unint64_t)a3;
-- (id)mockResponseResultForPlacement:(unint64_t)a3;
+- (id)_readResponseJsonForPlacement:(unint64_t)placement;
+- (id)campaignNamespaceForPlacement:(unint64_t)placement;
+- (id)mockResponseResultForPlacement:(unint64_t)placement;
 @end
 
 @implementation APMediaServiceRequestSettings
 
-+ (id)storageWithDefaultValues:(id)a3
++ (id)storageWithDefaultValues:(id)values
 {
-  v3 = a3;
-  v4 = [[APSettingsStorageUserDefaults alloc] initWithDefaultValues:v3];
+  valuesCopy = values;
+  v4 = [[APSettingsStorageUserDefaults alloc] initWithDefaultValues:valuesCopy];
 
   return v4;
 }
 
 - (BOOL)prettyPrintJsonValue
 {
-  v2 = [(APMediaServiceRequestSettings *)self prettyPrintJson];
-  v3 = v2;
-  if (v2)
+  prettyPrintJson = [(APMediaServiceRequestSettings *)self prettyPrintJson];
+  v3 = prettyPrintJson;
+  if (prettyPrintJson)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [prettyPrintJson BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)useAMSBagValue
 {
-  v2 = [(APMediaServiceRequestSettings *)self useAMSBag];
-  v3 = v2;
-  if (v2)
+  useAMSBag = [(APMediaServiceRequestSettings *)self useAMSBag];
+  v3 = useAMSBag;
+  if (useAMSBag)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [useAMSBag BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)ignoreBagKeyCheckValue
 {
-  v2 = [(APMediaServiceRequestSettings *)self ignoreBagKeyCheck];
-  v3 = v2;
-  if (v2)
+  ignoreBagKeyCheck = [(APMediaServiceRequestSettings *)self ignoreBagKeyCheck];
+  v3 = ignoreBagKeyCheck;
+  if (ignoreBagKeyCheck)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [ignoreBagKeyCheck BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (id)mockResponseResultForPlacement:(unint64_t)a3
+- (id)mockResponseResultForPlacement:(unint64_t)placement
 {
-  v3 = [(APMediaServiceRequestSettings *)self _readResponseJsonForPlacement:a3];
+  v3 = [(APMediaServiceRequestSettings *)self _readResponseJsonForPlacement:placement];
   if (v3)
   {
     v4 = objc_alloc_init(APMockedAMSURLResult);
@@ -91,41 +91,41 @@
   return v4;
 }
 
-- (id)_readResponseJsonForPlacement:(unint64_t)a3
+- (id)_readResponseJsonForPlacement:(unint64_t)placement
 {
-  v3 = [NSString stringWithFormat:@"APMediaServiceRequestSettings.mockResponseJson_%lu", a3];
+  placement = [NSString stringWithFormat:@"APMediaServiceRequestSettings.mockResponseJson_%lu", placement];
   v4 = [NSUserDefaults alloc];
   v5 = [v4 initWithSuiteName:APDefaultsBundleID];
-  v6 = [v5 objectForKey:v3];
+  v6 = [v5 objectForKey:placement];
 
   return v6;
 }
 
-- (id)campaignNamespaceForPlacement:(unint64_t)a3
+- (id)campaignNamespaceForPlacement:(unint64_t)placement
 {
-  v3 = [NSString stringWithFormat:@"APMediaServiceRequestSettings.campaignNamespace_%lu", a3];
+  placement = [NSString stringWithFormat:@"APMediaServiceRequestSettings.campaignNamespace_%lu", placement];
   v4 = [NSUserDefaults alloc];
   v5 = [v4 initWithSuiteName:APDefaultsBundleID];
-  v6 = [v5 objectForKey:v3];
+  v6 = [v5 objectForKey:placement];
 
   return v6;
 }
 
 - (BOOL)disablePlacementParamValue
 {
-  v2 = [(APMediaServiceRequestSettings *)self disablePlacementParam];
-  v3 = v2;
-  if (v2)
+  disablePlacementParam = [(APMediaServiceRequestSettings *)self disablePlacementParam];
+  v3 = disablePlacementParam;
+  if (disablePlacementParam)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [disablePlacementParam BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

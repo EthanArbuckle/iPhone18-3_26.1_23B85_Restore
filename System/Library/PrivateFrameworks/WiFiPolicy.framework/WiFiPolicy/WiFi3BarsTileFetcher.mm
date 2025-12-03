@@ -1,20 +1,20 @@
 @interface WiFi3BarsTileFetcher
-- (WiFi3BarsTileFetcher)initWithDataSourceMediator:(id)a3;
-- (void)_handleLocationManagerVisitCallbackWithVisit:(id)a3;
+- (WiFi3BarsTileFetcher)initWithDataSourceMediator:(id)mediator;
+- (void)_handleLocationManagerVisitCallbackWithVisit:(id)visit;
 - (void)dealloc;
 @end
 
 @implementation WiFi3BarsTileFetcher
 
-- (WiFi3BarsTileFetcher)initWithDataSourceMediator:(id)a3
+- (WiFi3BarsTileFetcher)initWithDataSourceMediator:(id)mediator
 {
-  v4 = a3;
+  mediatorCopy = mediator;
   v13.receiver = self;
   v13.super_class = WiFi3BarsTileFetcher;
   v5 = [(WiFi3BarsTileFetcher *)&v13 init];
   dataSourceMediator = v5->_dataSourceMediator;
-  v5->_dataSourceMediator = v4;
-  v7 = v4;
+  v5->_dataSourceMediator = mediatorCopy;
+  v7 = mediatorCopy;
 
   v8 = +[WiFiLocationManager sharedWiFiLocationManager];
   [v8 setShouldMonitorVisits:1];
@@ -32,38 +32,38 @@
 - (void)dealloc
 {
   [(NSXPCConnection *)self->_connectionToService invalidate];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = WiFi3BarsTileFetcher;
   [(WiFi3BarsTileFetcher *)&v4 dealloc];
 }
 
-- (void)_handleLocationManagerVisitCallbackWithVisit:(id)a3
+- (void)_handleLocationManagerVisitCallbackWithVisit:(id)visit
 {
-  v21 = a3;
+  visitCopy = visit;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v21 departureDate];
-  v6 = [MEMORY[0x277CBEAA8] distantFuture];
+  departureDate = [visitCopy departureDate];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
 
-  if (v5 == v6)
+  if (departureDate == distantFuture)
   {
-    [v21 horizontalAccuracy];
+    [visitCopy horizontalAccuracy];
     if (v7 <= 2000.0)
     {
       v9 = [TBGloriaTile alloc];
-      [v21 coordinate];
+      [visitCopy coordinate];
       v11 = v10;
-      [v21 coordinate];
+      [visitCopy coordinate];
       v13 = [(TBGloriaTile *)v9 initWithLat:+[TBGloriaTile lng:"defaultZoomLevel"]zoom:v11, v12];
       if ([(TBGloriaTile *)v13 key])
       {
         v14 = [(TBGloriaTile *)v13 key];
         NSLog(&cfstr_SFetchingNetwo.isa, "[WiFi3BarsTileFetcher _handleLocationManagerVisitCallbackWithVisit:]", v14, +[TBGloriaTile defaultZoomLevel]);
         NSLog(&cfstr_SLastFetchedTi.isa, "[WiFi3BarsTileFetcher _handleLocationManagerVisitCallbackWithVisit:]", self->_lastFetchedKey, v14);
-        v15 = [MEMORY[0x277CBEAA8] date];
-        v16 = [v15 dateByAddingDays:-7];
+        date = [MEMORY[0x277CBEAA8] date];
+        v16 = [date dateByAddingDays:-7];
 
         v17 = [objc_alloc(MEMORY[0x277CCAE80]) initWithServiceName:@"com.apple.wifi.ThreeBarsXPCService"];
         connectionToService = self->_connectionToService;
@@ -101,7 +101,7 @@
 
     else
     {
-      [v21 horizontalAccuracy];
+      [visitCopy horizontalAccuracy];
       NSLog(&cfstr_SVisitAccuracy.isa, "[WiFi3BarsTileFetcher _handleLocationManagerVisitCallbackWithVisit:]", v8);
     }
   }

@@ -1,22 +1,22 @@
 @interface PKPaymentTransactionMapCollectionViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKPaymentTransactionMapCollectionViewCell)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKPaymentTransactionMapCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)_updateSpinnerAndDisclosureIndicator;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 - (void)resetFonts;
-- (void)setShowDisclosureIndicator:(BOOL)a3;
-- (void)setShowSpinner:(BOOL)a3;
+- (void)setShowDisclosureIndicator:(BOOL)indicator;
+- (void)setShowSpinner:(BOOL)spinner;
 @end
 
 @implementation PKPaymentTransactionMapCollectionViewCell
 
-- (PKPaymentTransactionMapCollectionViewCell)initWithFrame:(CGRect)a3
+- (PKPaymentTransactionMapCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v22[1] = *MEMORY[0x1E69E9840];
   v21.receiver = self;
   v21.super_class = PKPaymentTransactionMapCollectionViewCell;
-  v3 = [(PKDashboardCollectionViewCell *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardCollectionViewCell *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(PKTransactionMapView);
@@ -24,15 +24,15 @@
     v3->_mapView = v4;
 
     [(PKTransactionMapView *)v3->_mapView setShowsMerchantName:1];
-    v6 = [(PKPaymentTransactionMapCollectionViewCell *)v3 contentView];
-    [v6 addSubview:v3->_mapView];
+    contentView = [(PKPaymentTransactionMapCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_mapView];
 
     v7 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     titleLabel = v3->_titleLabel;
     v3->_titleLabel = v7;
 
-    v9 = [(PKPaymentTransactionMapCollectionViewCell *)v3 contentView];
-    [v9 addSubview:v3->_titleLabel];
+    contentView2 = [(PKPaymentTransactionMapCollectionViewCell *)v3 contentView];
+    [contentView2 addSubview:v3->_titleLabel];
 
     v10 = objc_alloc(MEMORY[0x1E69DCAE0]);
     if (_UISolariumFeatureFlagEnabled())
@@ -47,8 +47,8 @@
     v11 = ;
     v12 = [v10 initWithImage:v11];
 
-    v13 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    [(UIImageView *)v12 setTintColor:v13];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    [(UIImageView *)v12 setTintColor:tertiaryLabelColor];
 
     disclosureView = v3->_disclosureView;
     v3->_disclosureView = v12;
@@ -77,22 +77,22 @@
   [(UILabel *)titleLabel setFont:v3];
 }
 
-- (void)setShowDisclosureIndicator:(BOOL)a3
+- (void)setShowDisclosureIndicator:(BOOL)indicator
 {
-  if (self->_showDisclosureIndicator != a3)
+  if (self->_showDisclosureIndicator != indicator)
   {
-    self->_showDisclosureIndicator = a3;
+    self->_showDisclosureIndicator = indicator;
     [(PKPaymentTransactionMapCollectionViewCell *)self _updateSpinnerAndDisclosureIndicator];
   }
 }
 
-- (void)setShowSpinner:(BOOL)a3
+- (void)setShowSpinner:(BOOL)spinner
 {
-  if (self->_showSpinner != a3)
+  if (self->_showSpinner != spinner)
   {
-    self->_showSpinner = a3;
+    self->_showSpinner = spinner;
     spinner = self->_spinner;
-    if (a3)
+    if (spinner)
     {
       [(UIActivityIndicatorView *)spinner startAnimating];
     }
@@ -111,12 +111,12 @@
   if (self->_showSpinner)
   {
     v3 = &OBJC_IVAR___PKPaymentTransactionMapCollectionViewCell__disclosureView;
-    v4 = [(UIActivityIndicatorView *)self->_spinner superview];
+    superview = [(UIActivityIndicatorView *)self->_spinner superview];
 
-    if (!v4)
+    if (!superview)
     {
-      v5 = [(PKPaymentTransactionMapCollectionViewCell *)self contentView];
-      [v5 addSubview:self->_spinner];
+      contentView = [(PKPaymentTransactionMapCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_spinner];
     }
   }
 
@@ -126,12 +126,12 @@
     if (self->_showDisclosureIndicator)
     {
       v3 = &OBJC_IVAR___PKPaymentTransactionMapCollectionViewCell__spinner;
-      v6 = [(UIImageView *)self->_disclosureView superview];
+      superview2 = [(UIImageView *)self->_disclosureView superview];
 
-      if (!v6)
+      if (!superview2)
       {
-        v7 = [(PKPaymentTransactionMapCollectionViewCell *)self contentView];
-        [v7 addSubview:self->_disclosureView];
+        contentView2 = [(PKPaymentTransactionMapCollectionViewCell *)self contentView];
+        [contentView2 addSubview:self->_disclosureView];
 
         v3 = &OBJC_IVAR___PKPaymentTransactionMapCollectionViewCell__spinner;
       }
@@ -161,15 +161,15 @@
   [(PKPaymentTransactionMapCollectionViewCell *)self setShowDisclosureIndicator:0];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [(UILabel *)self->_titleLabel text:a3.width];
+  width = fits.width;
+  v5 = [(UILabel *)self->_titleLabel text:fits.width];
 
   if (v5)
   {
-    v6 = [(UILabel *)self->_titleLabel font];
-    [v6 lineHeight];
+    font = [(UILabel *)self->_titleLabel font];
+    [font lineHeight];
     PKFloatRoundToPixel();
     v8 = v7 + 200.0;
   }
@@ -191,8 +191,8 @@
   v23.receiver = self;
   v23.super_class = PKPaymentTransactionMapCollectionViewCell;
   [(PKDashboardCollectionViewCell *)&v23 layoutSubviews];
-  v3 = [(PKPaymentTransactionMapCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PKPaymentTransactionMapCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -213,9 +213,9 @@
   CGRectDivide(remainder, &v21, &remainder, 14.0, CGRectMinXEdge);
   CGRectDivide(remainder, &v21, &remainder, 14.0, CGRectMaxXEdge);
   CGRectDivide(remainder, &v21, &remainder, 14.0, CGRectMaxYEdge);
-  v12 = [(UIActivityIndicatorView *)self->_spinner superview];
+  superview = [(UIActivityIndicatorView *)self->_spinner superview];
 
-  if (v12)
+  if (superview)
   {
     [(UIActivityIndicatorView *)self->_spinner frame];
     PKSizeAspectFit();
@@ -230,9 +230,9 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v17 = [(UIImageView *)self->_disclosureView superview];
+  superview2 = [(UIImageView *)self->_disclosureView superview];
 
-  if (v17)
+  if (superview2)
   {
     [(UIImageView *)self->_disclosureView frame];
     CGRectDivide(remainder, &v21, &remainder, v18, CGRectMaxXEdge);

@@ -1,15 +1,15 @@
 @interface CNTimeProfilingSchedulerDecorator
 + (id)os_log;
-- (CNTimeProfilingSchedulerDecorator)initWithScheduler:(id)a3;
+- (CNTimeProfilingSchedulerDecorator)initWithScheduler:(id)scheduler;
 - (NSString)description;
 - (double)timestamp;
-- (id)afterDelay:(double)a3 performBlock:(id)a4;
-- (id)afterDelay:(double)a3 performBlock:(id)a4 qualityOfService:(unint64_t)a5;
-- (id)performCancelableBlock:(id)a3;
-- (id)performCancelableBlock:(id)a3 qualityOfService:(unint64_t)a4;
+- (id)afterDelay:(double)delay performBlock:(id)block;
+- (id)afterDelay:(double)delay performBlock:(id)block qualityOfService:(unint64_t)service;
+- (id)performCancelableBlock:(id)block;
+- (id)performCancelableBlock:(id)block qualityOfService:(unint64_t)service;
 - (unint64_t)nextBlockNumber;
-- (void)performBlock:(id)a3;
-- (void)performBlock:(id)a3 qualityOfService:(unint64_t)a4;
+- (void)performBlock:(id)block;
+- (void)performBlock:(id)block qualityOfService:(unint64_t)service;
 @end
 
 @implementation CNTimeProfilingSchedulerDecorator
@@ -35,16 +35,16 @@ uint64_t __43__CNTimeProfilingSchedulerDecorator_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (CNTimeProfilingSchedulerDecorator)initWithScheduler:(id)a3
+- (CNTimeProfilingSchedulerDecorator)initWithScheduler:(id)scheduler
 {
-  v5 = a3;
+  schedulerCopy = scheduler;
   v10.receiver = self;
   v10.super_class = CNTimeProfilingSchedulerDecorator;
   v6 = [(CNTimeProfilingSchedulerDecorator *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_scheduler, a3);
+    objc_storeStrong(&v6->_scheduler, scheduler);
     v7->_blockCounter = 0;
     v8 = v7;
   }
@@ -55,50 +55,50 @@ uint64_t __43__CNTimeProfilingSchedulerDecorator_os_log__block_invoke()
 - (NSString)description
 {
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
-  v4 = [(CNTimeProfilingSchedulerDecorator *)self scheduler];
-  v5 = [v3 appendName:@"scheduler" object:v4];
+  scheduler = [(CNTimeProfilingSchedulerDecorator *)self scheduler];
+  v5 = [v3 appendName:@"scheduler" object:scheduler];
 
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 - (unint64_t)nextBlockNumber
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  blockCounter = v2->_blockCounter;
-  v2->_blockCounter = blockCounter + 1;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  blockCounter = selfCopy->_blockCounter;
+  selfCopy->_blockCounter = blockCounter + 1;
+  objc_sync_exit(selfCopy);
 
   return blockCounter;
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CNTimeProfilingSchedulerDecorator *)self scheduler];
-  [v5 timestamp];
+  blockCopy = block;
+  scheduler = [(CNTimeProfilingSchedulerDecorator *)self scheduler];
+  [scheduler timestamp];
   v7 = v6;
 
-  v8 = [(CNTimeProfilingSchedulerDecorator *)self nextBlockNumber];
-  v9 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+  nextBlockNumber = [(CNTimeProfilingSchedulerDecorator *)self nextBlockNumber];
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
   {
     [CNTimeProfilingSchedulerDecorator performBlock:];
   }
 
-  v10 = [(CNTimeProfilingSchedulerDecorator *)self scheduler];
+  scheduler2 = [(CNTimeProfilingSchedulerDecorator *)self scheduler];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __50__CNTimeProfilingSchedulerDecorator_performBlock___block_invoke;
   v12[3] = &unk_1E6ED7620;
-  v13 = v4;
-  v14 = v8;
+  v13 = blockCopy;
+  v14 = nextBlockNumber;
   v15 = v7;
   v12[4] = self;
-  v11 = v4;
-  [v10 performBlock:v12];
+  v11 = blockCopy;
+  [scheduler2 performBlock:v12];
 }
 
 void __50__CNTimeProfilingSchedulerDecorator_performBlock___block_invoke(uint64_t a1)
@@ -139,31 +139,31 @@ void __50__CNTimeProfilingSchedulerDecorator_performBlock___block_invoke(uint64_
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performBlock:(id)a3 qualityOfService:(unint64_t)a4
+- (void)performBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v6 = a3;
-  v7 = [(CNTimeProfilingSchedulerDecorator *)self scheduler];
-  [v7 timestamp];
+  blockCopy = block;
+  scheduler = [(CNTimeProfilingSchedulerDecorator *)self scheduler];
+  [scheduler timestamp];
   v9 = v8;
 
-  v10 = [(CNTimeProfilingSchedulerDecorator *)self nextBlockNumber];
-  v11 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+  nextBlockNumber = [(CNTimeProfilingSchedulerDecorator *)self nextBlockNumber];
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
   {
     [CNTimeProfilingSchedulerDecorator performBlock:];
   }
 
-  v12 = [(CNTimeProfilingSchedulerDecorator *)self scheduler];
+  scheduler2 = [(CNTimeProfilingSchedulerDecorator *)self scheduler];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __67__CNTimeProfilingSchedulerDecorator_performBlock_qualityOfService___block_invoke;
   v14[3] = &unk_1E6ED7620;
-  v15 = v6;
-  v16 = v10;
+  v15 = blockCopy;
+  v16 = nextBlockNumber;
   v17 = v9;
   v14[4] = self;
-  v13 = v6;
-  [v12 performBlock:v14 qualityOfService:a4];
+  v13 = blockCopy;
+  [scheduler2 performBlock:v14 qualityOfService:service];
 }
 
 void __67__CNTimeProfilingSchedulerDecorator_performBlock_qualityOfService___block_invoke(uint64_t a1)
@@ -204,31 +204,31 @@ void __67__CNTimeProfilingSchedulerDecorator_performBlock_qualityOfService___blo
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)performCancelableBlock:(id)a3
+- (id)performCancelableBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CNTimeProfilingSchedulerDecorator *)self scheduler];
-  [v5 timestamp];
+  blockCopy = block;
+  scheduler = [(CNTimeProfilingSchedulerDecorator *)self scheduler];
+  [scheduler timestamp];
   v7 = v6;
 
-  v8 = [(CNTimeProfilingSchedulerDecorator *)self nextBlockNumber];
-  v9 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+  nextBlockNumber = [(CNTimeProfilingSchedulerDecorator *)self nextBlockNumber];
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
   {
     [CNTimeProfilingSchedulerDecorator performBlock:];
   }
 
-  v10 = [(CNTimeProfilingSchedulerDecorator *)self scheduler];
+  scheduler2 = [(CNTimeProfilingSchedulerDecorator *)self scheduler];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __60__CNTimeProfilingSchedulerDecorator_performCancelableBlock___block_invoke;
   v14[3] = &unk_1E6ED7648;
-  v15 = v4;
-  v16 = v8;
+  v15 = blockCopy;
+  v16 = nextBlockNumber;
   v17 = v7;
   v14[4] = self;
-  v11 = v4;
-  v12 = [v10 performCancelableBlock:v14];
+  v11 = blockCopy;
+  v12 = [scheduler2 performCancelableBlock:v14];
 
   return v12;
 }
@@ -273,31 +273,31 @@ void __60__CNTimeProfilingSchedulerDecorator_performCancelableBlock___block_invo
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)performCancelableBlock:(id)a3 qualityOfService:(unint64_t)a4
+- (id)performCancelableBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v6 = a3;
-  v7 = [(CNTimeProfilingSchedulerDecorator *)self scheduler];
-  [v7 timestamp];
+  blockCopy = block;
+  scheduler = [(CNTimeProfilingSchedulerDecorator *)self scheduler];
+  [scheduler timestamp];
   v9 = v8;
 
-  v10 = [(CNTimeProfilingSchedulerDecorator *)self nextBlockNumber];
-  v11 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+  nextBlockNumber = [(CNTimeProfilingSchedulerDecorator *)self nextBlockNumber];
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
   {
     [CNTimeProfilingSchedulerDecorator performBlock:];
   }
 
-  v12 = [(CNTimeProfilingSchedulerDecorator *)self scheduler];
+  scheduler2 = [(CNTimeProfilingSchedulerDecorator *)self scheduler];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __77__CNTimeProfilingSchedulerDecorator_performCancelableBlock_qualityOfService___block_invoke;
   v16[3] = &unk_1E6ED7648;
-  v17 = v6;
-  v18 = v10;
+  v17 = blockCopy;
+  v18 = nextBlockNumber;
   v19 = v9;
   v16[4] = self;
-  v13 = v6;
-  v14 = [v12 performCancelableBlock:v16 qualityOfService:a4];
+  v13 = blockCopy;
+  v14 = [scheduler2 performCancelableBlock:v16 qualityOfService:service];
 
   return v14;
 }
@@ -342,31 +342,31 @@ void __77__CNTimeProfilingSchedulerDecorator_performCancelableBlock_qualityOfSer
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)afterDelay:(double)a3 performBlock:(id)a4
+- (id)afterDelay:(double)delay performBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(CNTimeProfilingSchedulerDecorator *)self scheduler];
-  [v7 timestamp];
+  blockCopy = block;
+  scheduler = [(CNTimeProfilingSchedulerDecorator *)self scheduler];
+  [scheduler timestamp];
   v9 = v8;
 
-  v10 = [(CNTimeProfilingSchedulerDecorator *)self nextBlockNumber];
-  v11 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+  nextBlockNumber = [(CNTimeProfilingSchedulerDecorator *)self nextBlockNumber];
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
   {
     [CNTimeProfilingSchedulerDecorator performBlock:];
   }
 
-  v12 = [(CNTimeProfilingSchedulerDecorator *)self scheduler];
+  scheduler2 = [(CNTimeProfilingSchedulerDecorator *)self scheduler];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __61__CNTimeProfilingSchedulerDecorator_afterDelay_performBlock___block_invoke;
   v16[3] = &unk_1E6ED7620;
-  v17 = v6;
-  v18 = v10;
+  v17 = blockCopy;
+  v18 = nextBlockNumber;
   v19 = v9;
   v16[4] = self;
-  v13 = v6;
-  v14 = [v12 afterDelay:v16 performBlock:a3];
+  v13 = blockCopy;
+  v14 = [scheduler2 afterDelay:v16 performBlock:delay];
 
   return v14;
 }
@@ -409,31 +409,31 @@ void __61__CNTimeProfilingSchedulerDecorator_afterDelay_performBlock___block_inv
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)afterDelay:(double)a3 performBlock:(id)a4 qualityOfService:(unint64_t)a5
+- (id)afterDelay:(double)delay performBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v8 = a4;
-  v9 = [(CNTimeProfilingSchedulerDecorator *)self scheduler];
-  [v9 timestamp];
+  blockCopy = block;
+  scheduler = [(CNTimeProfilingSchedulerDecorator *)self scheduler];
+  [scheduler timestamp];
   v11 = v10;
 
-  v12 = [(CNTimeProfilingSchedulerDecorator *)self nextBlockNumber];
-  v13 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+  nextBlockNumber = [(CNTimeProfilingSchedulerDecorator *)self nextBlockNumber];
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
   {
     [CNTimeProfilingSchedulerDecorator performBlock:];
   }
 
-  v14 = [(CNTimeProfilingSchedulerDecorator *)self scheduler];
+  scheduler2 = [(CNTimeProfilingSchedulerDecorator *)self scheduler];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __78__CNTimeProfilingSchedulerDecorator_afterDelay_performBlock_qualityOfService___block_invoke;
   v18[3] = &unk_1E6ED7620;
-  v19 = v8;
-  v20 = v12;
+  v19 = blockCopy;
+  v20 = nextBlockNumber;
   v21 = v11;
   v18[4] = self;
-  v15 = v8;
-  v16 = [v14 afterDelay:v18 performBlock:a5 qualityOfService:a3];
+  v15 = blockCopy;
+  v16 = [scheduler2 afterDelay:v18 performBlock:service qualityOfService:delay];
 
   return v16;
 }
@@ -478,8 +478,8 @@ void __78__CNTimeProfilingSchedulerDecorator_afterDelay_performBlock_qualityOfSe
 
 - (double)timestamp
 {
-  v2 = [(CNTimeProfilingSchedulerDecorator *)self scheduler];
-  [v2 timestamp];
+  scheduler = [(CNTimeProfilingSchedulerDecorator *)self scheduler];
+  [scheduler timestamp];
   v4 = v3;
 
   return v4;

@@ -1,31 +1,31 @@
 @interface ICDocCamViewController
 + (BOOL)isLiquidGlassEnabledForCapture;
-+ (float)cameraIntrinsicMatrixForWidth:(double)a1 height:(double)a2 pixelFocalLength:(float)a3;
-+ (id)deviceWithMediaType:(id)a3 preferringPosition:(int64_t)a4;
++ (float)cameraIntrinsicMatrixForWidth:(double)width height:(double)height pixelFocalLength:(float)length;
++ (id)deviceWithMediaType:(id)type preferringPosition:(int64_t)position;
 + (void)initialize;
 + (void)registerDefaults;
-+ (void)warnAboutMaxScansReachedForViewController:(id)a3 completionHandler:(id)a4;
++ (void)warnAboutMaxScansReachedForViewController:(id)controller completionHandler:(id)handler;
 - (AVCaptureVideoPreviewLayer)videoPreviewLayer;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)isConstantColorAvailable;
 - (BOOL)shouldAutoShoot;
-- (BOOL)sufficientlyLarge:(id)a3 forImageSize:(CGSize)a4;
+- (BOOL)sufficientlyLarge:(id)large forImageSize:(CGSize)size;
 - (BOOL)useDocumentSegmentation;
-- (BOOL)validRect:(id)a3 forImageSize:(CGSize)a4;
+- (BOOL)validRect:(id)rect forImageSize:(CGSize)size;
 - (CGPoint)segmentBottomLeft;
 - (CGPoint)segmentBottomRight;
 - (CGPoint)segmentTopLeft;
 - (CGPoint)segmentTopRight;
 - (CGRect)targetViewRect;
 - (CGRect)zoomTargetCustomImageFrame;
-- (CGRect)zoomTargetForIndexPath:(id)a3;
+- (CGRect)zoomTargetForIndexPath:(id)path;
 - (CGSize)streamingImageSize;
 - (CGSize)viewBoundsSize;
 - (CIContext)sharedCoreImageContext;
 - (ICDocCamOverlayView)overlayView;
 - (ICDocCamPreviewView)previewView;
 - (ICDocCamShutterButton)shutterButton;
-- (ICDocCamViewController)initWithImageCache:(id)a3;
+- (ICDocCamViewController)initWithImageCache:(id)cache;
 - (ICDocCamViewControllerDelegate)delegate;
 - (NSLayoutConstraint)autoShutterOffFeedbackBottomConstraint;
 - (NSLayoutConstraint)autoShutterOffTopLayoutConstraint;
@@ -78,304 +78,304 @@
 - (UIView)scrimView;
 - (UIView)topToolbarForIPhone;
 - (UIView)userPromptView;
-- (double)filterScrollViewContentWidthWithInterItemSpacing:(double)a3 startPadding:(double)a4 endPadding:(double)a5;
+- (double)filterScrollViewContentWidthWithInterItemSpacing:(double)spacing startPadding:(double)padding endPadding:(double)endPadding;
 - (double)flashSettingViewWidthForIPad;
-- (id)createNSDataFrom:(id)a3 metaData:(id)a4;
-- (id)cropAndFilterImage:(id)a3 rects:(id)a4 filterType:(signed __int16)a5 constantColor:(BOOL)a6;
+- (id)createNSDataFrom:(id)from metaData:(id)data;
+- (id)cropAndFilterImage:(id)image rects:(id)rects filterType:(signed __int16)type constantColor:(BOOL)color;
 - (id)detectRectanglesRequest;
-- (id)extractedDocumentControllerMarkupModelDataForDocument:(id)a3;
+- (id)extractedDocumentControllerMarkupModelDataForDocument:(id)document;
 - (id)filterButtonImage;
-- (id)filteredImageForDocument:(id)a3;
+- (id)filteredImageForDocument:(id)document;
 - (id)flashButtonImage;
 - (id)flashMenuButtonSizes;
-- (id)imageMeshTransformWithImage:(id)a3 backgroundImage:(id)a4 imageViewFrame:(CGRect)a5 imageQuad:(id)a6 previewView:(id)a7 previewBounds:(CGRect)a8 scrimView:(id)a9;
+- (id)imageMeshTransformWithImage:(id)image backgroundImage:(id)backgroundImage imageViewFrame:(CGRect)frame imageQuad:(id)quad previewView:(id)view previewBounds:(CGRect)bounds scrimView:(id)scrimView;
 - (id)localizedFlashFlashDescription;
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6;
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController;
 - (unsigned)imageOrientationFromDevice;
-- (void)addNewDocument:(id)a3;
+- (void)addNewDocument:(id)document;
 - (void)addObserversIfNecessary;
-- (void)analyzerCallbackWithDictionaryResults:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)cancelAction:(id)a3;
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5;
-- (void)changeFlashAction:(id)a3;
-- (void)changeRecordButtonTitle:(id)a3;
+- (void)analyzerCallbackWithDictionaryResults:(id)results;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)cancelAction:(id)action;
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection;
+- (void)changeFlashAction:(id)action;
+- (void)changeRecordButtonTitle:(id)title;
 - (void)clearQueue;
 - (void)clearRectangles;
 - (void)createCaptureEventInteractionIfNecessary;
 - (void)dealloc;
-- (void)detectRectanglesAndSaveCapturedImage:(__CVBuffer *)a3 metadata:(id)a4 constantColor:(BOOL)a5 completionHandler:(id)a6;
-- (void)didFinishWithImage:(id)a3;
-- (void)didRecognizeRectangleForAccessibility:(BOOL)a3;
+- (void)detectRectanglesAndSaveCapturedImage:(__CVBuffer *)image metadata:(id)metadata constantColor:(BOOL)color completionHandler:(id)handler;
+- (void)didFinishWithImage:(id)image;
+- (void)didRecognizeRectangleForAccessibility:(BOOL)accessibility;
 - (void)dismissFilterAndFlashUI;
 - (void)dismissFilterUI;
 - (void)dismissFlashUI;
-- (void)enableRecordButton:(BOOL)a3;
-- (void)enableShutter:(BOOL)a3;
+- (void)enableRecordButton:(BOOL)button;
+- (void)enableShutter:(BOOL)shutter;
 - (void)enableShutterButtonIfPossible;
-- (void)enableUIElements:(BOOL)a3;
-- (void)enableUIElementsForMovieRecording:(BOOL)a3;
-- (void)extractedDocumentController:(id)a3 didTapRecrop:(id)a4 index:(int64_t)a5;
-- (void)extractedDocumentController:(id)a3 startMarkupOnDocument:(id)a4 inkStyle:(unint64_t)a5 startPresentBlock:(id)a6 dismissCompletionBlock:(id)a7;
-- (void)extractedDocumentControllerDidDeleteDocument:(id)a3;
-- (void)extractedDocumentControllerDidTapDone:(unint64_t)a3;
-- (void)extractedDocumentControllerDidTapRetake:(unint64_t)a3;
-- (void)extractedDocumentControllerDiscardMarkupModelDataForDocument:(id)a3;
-- (void)filterButtonAction:(id)a3;
-- (void)filterButtonCancelUI:(id)a3;
-- (void)filterButtonChoiceAction:(id)a3;
-- (void)flashButtonAction:(id)a3;
-- (void)flashButtonCancelUI:(id)a3;
+- (void)enableUIElements:(BOOL)elements;
+- (void)enableUIElementsForMovieRecording:(BOOL)recording;
+- (void)extractedDocumentController:(id)controller didTapRecrop:(id)recrop index:(int64_t)index;
+- (void)extractedDocumentController:(id)controller startMarkupOnDocument:(id)document inkStyle:(unint64_t)style startPresentBlock:(id)block dismissCompletionBlock:(id)completionBlock;
+- (void)extractedDocumentControllerDidDeleteDocument:(id)document;
+- (void)extractedDocumentControllerDidTapDone:(unint64_t)done;
+- (void)extractedDocumentControllerDidTapRetake:(unint64_t)retake;
+- (void)extractedDocumentControllerDiscardMarkupModelDataForDocument:(id)document;
+- (void)filterButtonAction:(id)action;
+- (void)filterButtonCancelUI:(id)i;
+- (void)filterButtonChoiceAction:(id)action;
+- (void)flashButtonAction:(id)action;
+- (void)flashButtonCancelUI:(id)i;
 - (void)flashFilterButtonNameFeedback;
 - (void)flashFlashButtonNameFeedback;
 - (void)flashMoveCloserFeedback;
-- (void)focusWithMode:(int64_t)a3 exposeWithMode:(int64_t)a4 atDevicePoint:(CGPoint)a5 monitorSubjectAreaChange:(BOOL)a6;
-- (void)handleCaptureEventInteractionEvent:(id)a3;
+- (void)focusWithMode:(int64_t)mode exposeWithMode:(int64_t)withMode atDevicePoint:(CGPoint)point monitorSubjectAreaChange:(BOOL)change;
+- (void)handleCaptureEventInteractionEvent:(id)event;
 - (void)handlePhysicalButtonPressCancelled;
 - (void)handlePhysicalButtonPressed;
 - (void)handlePhysicalButtonReleased;
 - (void)hideFilterSettingUI;
 - (void)hideFlashSettingUI;
-- (void)hideShutter:(BOOL)a3;
-- (void)hideUIForInterruptedSession:(BOOL)a3;
-- (void)image:(id)a3 didFinishSavingWithError:(id)a4 contextInfo:(void *)a5;
+- (void)hideShutter:(BOOL)shutter;
+- (void)hideUIForInterruptedSession:(BOOL)session;
+- (void)image:(id)image didFinishSavingWithError:(id)error contextInfo:(void *)info;
 - (void)initializeFilters;
 - (void)initializeUserInterface;
-- (void)killFeedbackDisplayIncludingUserPrompts:(BOOL)a3;
-- (void)killFeedbackDisplayInternalIncludingUserPrompts:(BOOL)a3;
+- (void)killFeedbackDisplayIncludingUserPrompts:(BOOL)prompts;
+- (void)killFeedbackDisplayInternalIncludingUserPrompts:(BOOL)prompts;
 - (void)launchCaptureSession;
 - (void)legacyUpdateConstraintsForIPad;
 - (void)legacyUpdateConstraintsForIPhone;
 - (void)logAlgoChoice;
-- (void)markupCancelAction:(id)a3;
-- (void)markupDoneAction:(id)a3;
+- (void)markupCancelAction:(id)action;
+- (void)markupDoneAction:(id)action;
 - (void)modernUpdateConstraintsForIPad;
 - (void)modernUpdateConstraintsForIPhone;
 - (void)modernUpdatePlacardConstraints;
-- (void)myApplicationDidBecomeActive:(id)a3;
-- (void)myApplicationWillResignActive:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)overlayCaptureButtonTapped:(id)a3;
-- (void)overlayCloseButtonTapped:(id)a3;
-- (void)overlayDoneButtonTapped:(id)a3;
+- (void)myApplicationDidBecomeActive:(id)active;
+- (void)myApplicationWillResignActive:(id)active;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)overlayCaptureButtonTapped:(id)tapped;
+- (void)overlayCloseButtonTapped:(id)tapped;
+- (void)overlayDoneButtonTapped:(id)tapped;
 - (void)pauseCaptureSessionForMovieRecording;
-- (void)popViewController:(id)a3 subtype:(id)a4 duration:(double)a5 completion:(id)a6;
+- (void)popViewController:(id)controller subtype:(id)subtype duration:(double)duration completion:(id)completion;
 - (void)preWarmFilters;
 - (void)prepareForDismissal;
-- (void)pushViewController:(id)a3 type:(id)a4 subtype:(id)a5 duration:(double)a6 completion:(id)a7;
+- (void)pushViewController:(id)controller type:(id)type subtype:(id)subtype duration:(double)duration completion:(id)completion;
 - (void)removeAllNotifications;
 - (void)removeNonLiquidGlassViewsIfNecessary;
 - (void)removeObserversIfNecessary;
 - (void)removeSaveActionBlockerForFiles;
 - (void)restartImageCaptureSessionIfNecessary;
 - (void)resumeCaptureSessionForMovieRecording;
-- (void)resumeInterruptedSession:(id)a3;
+- (void)resumeInterruptedSession:(id)session;
 - (void)retakeButtonWasPressed;
-- (void)saveAction:(id)a3;
-- (void)saveCapturedImage:(id)a3 metaData:(id)a4 rects:(id)a5 constantColor:(BOOL)a6 completionHandler:(id)a7;
-- (void)sessionInterruptionEnded:(id)a3;
-- (void)sessionRuntimeError:(id)a3;
-- (void)sessionWasInterrupted:(id)a3;
-- (void)setDoneButtonVisible:(BOOL)a3;
-- (void)setFlashMode:(int64_t)a3;
-- (void)setOverlayFilter:(signed __int16)a3;
-- (void)setOverlayFlashMode:(int64_t)a3;
+- (void)saveAction:(id)action;
+- (void)saveCapturedImage:(id)image metaData:(id)data rects:(id)rects constantColor:(BOOL)color completionHandler:(id)handler;
+- (void)sessionInterruptionEnded:(id)ended;
+- (void)sessionRuntimeError:(id)error;
+- (void)sessionWasInterrupted:(id)interrupted;
+- (void)setDoneButtonVisible:(BOOL)visible;
+- (void)setFlashMode:(int64_t)mode;
+- (void)setOverlayFilter:(signed __int16)filter;
+- (void)setOverlayFlashMode:(int64_t)mode;
 - (void)setUpFilterScrollView;
 - (void)setUpUserDefaults;
-- (void)setViewControllers:(id)a3 type:(id)a4 subtype:(id)a5 duration:(double)a6 completion:(id)a7;
+- (void)setViewControllers:(id)controllers type:(id)type subtype:(id)subtype duration:(double)duration completion:(id)completion;
 - (void)setupAccessibilityInfo;
 - (void)setupCaptureSession;
 - (void)setupThumbnailViewControllerIfNecessary;
-- (void)showErrorForMovieRecording:(id)a3;
-- (void)shutterButtonAction:(id)a3;
+- (void)showErrorForMovieRecording:(id)recording;
+- (void)shutterButtonAction:(id)action;
 - (void)singleTap;
-- (void)snapStillImageWithMode:(int64_t)a3;
-- (void)speakLabelTextForAccessibilityIfNecessary:(id)a3 afterDelay:(double)a4;
+- (void)snapStillImageWithMode:(int64_t)mode;
+- (void)speakLabelTextForAccessibilityIfNecessary:(id)necessary afterDelay:(double)delay;
 - (void)stopImageCaptureSession;
-- (void)subjectAreaDidChange:(id)a3;
-- (void)thumbnailViewDidTap:(id)a3;
-- (void)toggleAutoCapture:(id)a3;
-- (void)toggleRecording:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)subjectAreaDidChange:(id)change;
+- (void)thumbnailViewDidTap:(id)tap;
+- (void)toggleAutoCapture:(id)capture;
+- (void)toggleRecording:(id)recording;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateAccessibilityEnabledStateForUIElements;
 - (void)updateAccessibilityFocusForHidingFilterSettingsUI;
 - (void)updateAccessibilityFocusForHidingFlashSettingsUI;
-- (void)updateAccessibilityForAutoShutterMode:(BOOL)a3;
+- (void)updateAccessibilityForAutoShutterMode:(BOOL)mode;
 - (void)updateAccessibilityForCurrentFilter;
 - (void)updateAccessibilityForCurrentFlashMode;
 - (void)updateAllConstraints;
-- (void)updateAutoButtonTitleForAutoMode:(BOOL)a3;
+- (void)updateAutoButtonTitleForAutoMode:(BOOL)mode;
 - (void)updateConstraintsForIPad;
 - (void)updateConstraintsForIPhone;
 - (void)updateFilterAndFlashButtons;
 - (void)updateFilterButtonTint;
-- (void)updateFilterChoiceButtonScrollPositionAnimated:(BOOL)a3;
-- (void)updateFilterChoiceButtonSelection:(signed __int16)a3;
+- (void)updateFilterChoiceButtonScrollPositionAnimated:(BOOL)animated;
+- (void)updateFilterChoiceButtonSelection:(signed __int16)selection;
 - (void)updateFonts;
 - (void)updateLabelColors;
-- (void)updateRecentlyObservedRectanglesWithRect:(id)a3;
+- (void)updateRecentlyObservedRectanglesWithRect:(id)rect;
 - (void)updateThumbnailConstraintsForIPhone;
 - (void)updateThumbnailContainerConstraintsForIpad;
 - (void)updateThumbnailContainerViewConstraintConstantForIPad;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)warnAboutMaxScansIfNecessary;
 @end
 
 @implementation ICDocCamViewController
 
-- (id)imageMeshTransformWithImage:(id)a3 backgroundImage:(id)a4 imageViewFrame:(CGRect)a5 imageQuad:(id)a6 previewView:(id)a7 previewBounds:(CGRect)a8 scrimView:(id)a9
+- (id)imageMeshTransformWithImage:(id)image backgroundImage:(id)backgroundImage imageViewFrame:(CGRect)frame imageQuad:(id)quad previewView:(id)view previewBounds:(CGRect)bounds scrimView:(id)scrimView
 {
-  height = a8.size.height;
-  width = a8.size.width;
-  y = a8.origin.y;
-  x = a8.origin.x;
-  v16 = a5.size.height;
-  v17 = a5.size.width;
-  v18 = a5.origin.y;
-  v19 = a5.origin.x;
-  v22 = a9;
-  v23 = a7;
-  v24 = a6;
-  v25 = a4;
-  v26 = a3;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v16 = frame.size.height;
+  v17 = frame.size.width;
+  v18 = frame.origin.y;
+  v19 = frame.origin.x;
+  scrimViewCopy = scrimView;
+  viewCopy = view;
+  quadCopy = quad;
+  backgroundImageCopy = backgroundImage;
+  imageCopy = image;
   v27 = [ICDocCamViewControllerMeshTransform alloc];
-  v28 = [(ICDocCamViewController *)self view];
-  v29 = [(ICDocCamViewControllerMeshTransform *)v27 initWithImage:v26 backgroundImage:v25 imageViewFrame:v28 view:v24 imageQuad:v23 previewView:v22 previewBounds:v19 scrimView:v18, v17, v16, x, y, width, height];
+  view = [(ICDocCamViewController *)self view];
+  height = [(ICDocCamViewControllerMeshTransform *)v27 initWithImage:imageCopy backgroundImage:backgroundImageCopy imageViewFrame:view view:quadCopy imageQuad:viewCopy previewView:scrimViewCopy previewBounds:v19 scrimView:v18, v17, v16, x, y, width, height];
 
-  return v29;
+  return height;
 }
 
-- (void)pushViewController:(id)a3 type:(id)a4 subtype:(id)a5 duration:(double)a6 completion:(id)a7
+- (void)pushViewController:(id)controller type:(id)type subtype:(id)subtype duration:(double)duration completion:(id)completion
 {
-  v23 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  v15 = [MEMORY[0x277CDA000] animation];
-  if (v14)
+  controllerCopy = controller;
+  typeCopy = type;
+  subtypeCopy = subtype;
+  completionCopy = completion;
+  animation = [MEMORY[0x277CDA000] animation];
+  if (completionCopy)
   {
-    v16 = _Block_copy(v14);
-    [v15 setValue:v16 forKey:@"animationCompletionBlockKey"];
+    v16 = _Block_copy(completionCopy);
+    [animation setValue:v16 forKey:@"animationCompletionBlockKey"];
 
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  [v15 setDelegate:v17];
-  [v15 setRemovedOnCompletion:1];
-  [v15 setDuration:a6];
+  [animation setDelegate:selfCopy];
+  [animation setRemovedOnCompletion:1];
+  [animation setDuration:duration];
   v18 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
-  [v15 setTimingFunction:v18];
+  [animation setTimingFunction:v18];
 
-  [v15 setType:v12];
-  [v15 setSubtype:v13];
-  v19 = [(ICDocCamViewController *)self navigationController];
-  v20 = [v19 view];
-  v21 = [v20 layer];
-  [v21 addAnimation:v15 forKey:0];
+  [animation setType:typeCopy];
+  [animation setSubtype:subtypeCopy];
+  navigationController = [(ICDocCamViewController *)self navigationController];
+  view = [navigationController view];
+  layer = [view layer];
+  [layer addAnimation:animation forKey:0];
 
-  v22 = [(ICDocCamViewController *)self navigationController];
-  [v22 pushViewController:v23 animated:0];
+  navigationController2 = [(ICDocCamViewController *)self navigationController];
+  [navigationController2 pushViewController:controllerCopy animated:0];
 }
 
-- (void)popViewController:(id)a3 subtype:(id)a4 duration:(double)a5 completion:(id)a6
+- (void)popViewController:(id)controller subtype:(id)subtype duration:(double)duration completion:(id)completion
 {
-  v21 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [MEMORY[0x277CDA000] animation];
-  if (v11)
+  controllerCopy = controller;
+  subtypeCopy = subtype;
+  completionCopy = completion;
+  animation = [MEMORY[0x277CDA000] animation];
+  if (completionCopy)
   {
-    v13 = _Block_copy(v11);
-    [v12 setValue:v13 forKey:@"animationCompletionBlockKey"];
+    v13 = _Block_copy(completionCopy);
+    [animation setValue:v13 forKey:@"animationCompletionBlockKey"];
 
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  [v12 setDelegate:v14];
-  [v12 setRemovedOnCompletion:1];
-  [v12 setDuration:a5];
+  [animation setDelegate:selfCopy];
+  [animation setRemovedOnCompletion:1];
+  [animation setDuration:duration];
   v15 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
-  [v12 setTimingFunction:v15];
+  [animation setTimingFunction:v15];
 
-  [v12 setType:v21];
-  [v12 setSubtype:v10];
-  v16 = [(ICDocCamViewController *)self navigationController];
-  v17 = [v16 view];
-  v18 = [v17 layer];
-  [v18 addAnimation:v12 forKey:0];
+  [animation setType:controllerCopy];
+  [animation setSubtype:subtypeCopy];
+  navigationController = [(ICDocCamViewController *)self navigationController];
+  view = [navigationController view];
+  layer = [view layer];
+  [layer addAnimation:animation forKey:0];
 
-  v19 = [(ICDocCamViewController *)self navigationController];
-  v20 = [v19 popViewControllerAnimated:0];
+  navigationController2 = [(ICDocCamViewController *)self navigationController];
+  v20 = [navigationController2 popViewControllerAnimated:0];
 }
 
-- (void)setViewControllers:(id)a3 type:(id)a4 subtype:(id)a5 duration:(double)a6 completion:(id)a7
+- (void)setViewControllers:(id)controllers type:(id)type subtype:(id)subtype duration:(double)duration completion:(id)completion
 {
-  v22 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  v15 = [MEMORY[0x277CDA000] animation];
-  if (v14)
+  controllersCopy = controllers;
+  typeCopy = type;
+  subtypeCopy = subtype;
+  completionCopy = completion;
+  animation = [MEMORY[0x277CDA000] animation];
+  if (completionCopy)
   {
-    v16 = _Block_copy(v14);
-    [v15 setValue:v16 forKey:@"animationCompletionBlockKey"];
+    v16 = _Block_copy(completionCopy);
+    [animation setValue:v16 forKey:@"animationCompletionBlockKey"];
   }
 
-  [v15 setDelegate:self];
-  [v15 setRemovedOnCompletion:0];
-  [v15 setDuration:a6];
+  [animation setDelegate:self];
+  [animation setRemovedOnCompletion:0];
+  [animation setDuration:duration];
   v17 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
-  [v15 setTimingFunction:v17];
+  [animation setTimingFunction:v17];
 
-  [v15 setType:v12];
-  [v15 setSubtype:v13];
-  v18 = [(ICDocCamViewController *)self navigationController];
-  v19 = [v18 view];
-  v20 = [v19 layer];
-  [v20 addAnimation:v15 forKey:0];
+  [animation setType:typeCopy];
+  [animation setSubtype:subtypeCopy];
+  navigationController = [(ICDocCamViewController *)self navigationController];
+  view = [navigationController view];
+  layer = [view layer];
+  [layer addAnimation:animation forKey:0];
 
-  v21 = [(ICDocCamViewController *)self navigationController];
-  [v21 setViewControllers:v22 animated:0];
+  navigationController2 = [(ICDocCamViewController *)self navigationController];
+  [navigationController2 setViewControllers:controllersCopy animated:0];
 }
 
 - (CIContext)sharedCoreImageContext
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  sharedCoreImageContext = v2->_sharedCoreImageContext;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sharedCoreImageContext = selfCopy->_sharedCoreImageContext;
   if (!sharedCoreImageContext)
   {
     v4 = +[ICDocCamImageFilters sharedCoreImageContext];
-    v5 = v2->_sharedCoreImageContext;
-    v2->_sharedCoreImageContext = v4;
+    v5 = selfCopy->_sharedCoreImageContext;
+    selfCopy->_sharedCoreImageContext = v4;
 
-    sharedCoreImageContext = v2->_sharedCoreImageContext;
+    sharedCoreImageContext = selfCopy->_sharedCoreImageContext;
   }
 
   v6 = sharedCoreImageContext;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-+ (float)cameraIntrinsicMatrixForWidth:(double)a1 height:(double)a2 pixelFocalLength:(float)a3
++ (float)cameraIntrinsicMatrixForWidth:(double)width height:(double)height pixelFocalLength:(float)length
 {
   __asm
   {
@@ -383,15 +383,15 @@
     FMOV            V3.4S, #1.0
   }
 
-  return a3;
+  return length;
 }
 
 + (void)initialize
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___ICDocCamViewController;
   objc_msgSendSuper2(&v3, sel_initialize);
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     +[ICDocCamViewController registerDefaults];
   }
@@ -400,7 +400,7 @@
 + (void)registerDefaults
 {
   v5[23] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   v4[0] = @"internalSettings.docCam.rectangle.segmentFudgeFactor";
   v4[1] = @"internalSettings.docCam.rectangle.segmentVisualConfidence";
   v5[0] = &unk_285C6D258;
@@ -448,12 +448,12 @@
   v4[22] = @"internalSettings.docCam.scanMovieRecording.enabled";
   v5[22] = MEMORY[0x277CBEC28];
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v5 forKeys:v4 count:23];
-  [v2 registerDefaults:v3];
+  [standardUserDefaults registerDefaults:v3];
 }
 
-- (ICDocCamViewController)initWithImageCache:(id)a3
+- (ICDocCamViewController)initWithImageCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v14.receiver = self;
   v14.super_class = ICDocCamViewController;
@@ -465,7 +465,7 @@
     documentInfoCollection = v6->_documentInfoCollection;
     v6->_documentInfoCollection = v7;
 
-    [(ICDocCamViewController *)v6 setImageCache:v4];
+    [(ICDocCamViewController *)v6 setImageCache:cacheCopy];
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_create("session queue", v9);
     sessionQueue = v6->_sessionQueue;
@@ -485,11 +485,11 @@
   [(ICDocCamViewController *)&v31 viewDidLoad];
   v3 = UIAccessibilityLibrary();
   dlsym(v3, "_UIAccessibilityStart");
-  v4 = [(ICDocCamViewController *)self view];
-  v5 = [v4 tintColor];
-  v6 = [v5 dc_lighterColor];
+  view = [(ICDocCamViewController *)self view];
+  tintColor = [view tintColor];
+  dc_lighterColor = [tintColor dc_lighterColor];
   cameraHighlightColor = self->_cameraHighlightColor;
-  self->_cameraHighlightColor = v6;
+  self->_cameraHighlightColor = dc_lighterColor;
 
   [(ICDocCamViewController *)self preWarmFilters];
   [(ICDocCamViewController *)self setUpUserDefaults];
@@ -504,55 +504,55 @@
   if ((v9 & 1) == 0)
   {
     v11 = [ICDocCamSpinner alloc];
-    v12 = [(ICDocCamViewController *)self view];
-    v13 = [(ICDocCamSpinner *)v11 initWithView:v12 minimumDuration:1.0];
+    view2 = [(ICDocCamViewController *)self view];
+    v13 = [(ICDocCamSpinner *)v11 initWithView:view2 minimumDuration:1.0];
     [(ICDocCamViewController *)self setSnapshotSpinner:v13];
   }
 
   v14 = dispatch_semaphore_create(1);
   [(ICDocCamViewController *)self setFlashAndFilterUISemaphore:v14];
 
-  v15 = [(ICDocCamViewController *)self previewView];
-  v16 = [v15 layer];
-  [v16 setOpacity:0.0];
+  previewView = [(ICDocCamViewController *)self previewView];
+  layer = [previewView layer];
+  [layer setOpacity:0.0];
 
   v17 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_singleTap];
   [(ICDocCamViewController *)self setSingleTapGestureRecognizer:v17];
 
-  v18 = [(ICDocCamViewController *)self singleTapGestureRecognizer];
-  [v18 setNumberOfTapsRequired:1];
+  singleTapGestureRecognizer = [(ICDocCamViewController *)self singleTapGestureRecognizer];
+  [singleTapGestureRecognizer setNumberOfTapsRequired:1];
 
-  v19 = [(ICDocCamViewController *)self singleTapGestureRecognizer];
-  [v19 setDelegate:self];
+  singleTapGestureRecognizer2 = [(ICDocCamViewController *)self singleTapGestureRecognizer];
+  [singleTapGestureRecognizer2 setDelegate:self];
 
-  v20 = [(ICDocCamViewController *)self view];
-  v21 = [(ICDocCamViewController *)self singleTapGestureRecognizer];
-  [v20 addGestureRecognizer:v21];
+  view3 = [(ICDocCamViewController *)self view];
+  singleTapGestureRecognizer3 = [(ICDocCamViewController *)self singleTapGestureRecognizer];
+  [view3 addGestureRecognizer:singleTapGestureRecognizer3];
 
   [(ICDocCamViewController *)self setSnapStillImageMode:0];
   [(ICDocCamViewController *)self setDefaultFilter:1];
   v22 = [[ICDocCamProcessingBlocker alloc] initWithDelegate:self];
   [(ICDocCamViewController *)self setProcessRequestsBlocker:v22];
 
-  v23 = [(ICDocCamViewController *)self processRequestsBlocker];
-  [v23 addBlockerOfType:@"ViewLifetimeBlocker" clearRectangles:1 clearQueue:1];
+  processRequestsBlocker = [(ICDocCamViewController *)self processRequestsBlocker];
+  [processRequestsBlocker addBlockerOfType:@"ViewLifetimeBlocker" clearRectangles:1 clearQueue:1];
 
   v24 = [[ICDocCamProcessingBlocker alloc] initWithDelegate:self];
   [(ICDocCamViewController *)self setSnapStillImageBlocker:v24];
 
-  v25 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v25 addObserver:self selector:sel_myApplicationWillResignActive_ name:*MEMORY[0x277D76768] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_myApplicationWillResignActive_ name:*MEMORY[0x277D76768] object:0];
 
-  v26 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v26 addObserver:self selector:sel_myApplicationDidBecomeActive_ name:*MEMORY[0x277D76648] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_myApplicationDidBecomeActive_ name:*MEMORY[0x277D76648] object:0];
 
-  v27 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v27 addObserver:self selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
 
   [(ICDocCamViewController *)self setDidAddAppLifetimeObservers:1];
   [(ICDocCamViewController *)self disableRetakeMode];
-  v28 = [MEMORY[0x277CBEAA8] date];
-  [(ICDocCamViewController *)self setLastSubjectAreaChange:v28];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(ICDocCamViewController *)self setLastSubjectAreaChange:date];
 
   self->_requestTimeSum = 0.0;
   self->_requestTimeIndex = 0;
@@ -564,33 +564,33 @@
   v29 = objc_alloc_init(ICDocCamRectangleResultsQueue);
   [(ICDocCamViewController *)self setRectResultsQueue:v29];
 
-  v30 = [MEMORY[0x277CBEB18] array];
-  [(ICDocCamViewController *)self setRecentRectangleObservations:v30];
+  array = [MEMORY[0x277CBEB18] array];
+  [(ICDocCamViewController *)self setRecentRectangleObservations:array];
 
   [(ICDocCamViewController *)self setOverrideUserInterfaceStyle:2];
   [(ICDocCamViewController *)self initializeUserInterface];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = ICDocCamViewController;
-  [(ICDocCamViewController *)&v9 viewWillAppear:a3];
+  [(ICDocCamViewController *)&v9 viewWillAppear:appear];
   [(ICDocCamViewController *)self setupThumbnailViewControllerIfNecessary];
-  v4 = [(ICDocCamViewController *)self navigationController];
-  [v4 setNavigationBarHidden:1 animated:0];
+  navigationController = [(ICDocCamViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:1 animated:0];
 
-  v5 = [(ICDocCamViewController *)self session];
+  session = [(ICDocCamViewController *)self session];
 
-  if (v5)
+  if (session)
   {
     [(ICDocCamViewController *)self launchCaptureSession];
   }
 
   [(ICDocCamViewController *)self updateFonts];
-  v6 = [(ICDocCamViewController *)self documentInfoCollection];
-  v7 = [v6 docInfos];
-  if ([v7 count])
+  documentInfoCollection = [(ICDocCamViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  if ([docInfos count])
   {
     v8 = [(ICDocCamViewController *)self isInRetakeMode]^ 1;
   }
@@ -604,14 +604,14 @@
   [(ICDocCamViewController *)self removeNonLiquidGlassViewsIfNecessary];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = ICDocCamViewController;
-  [(ICDocCamViewController *)&v8 viewDidAppear:a3];
-  v4 = [(ICDocCamViewController *)self session];
+  [(ICDocCamViewController *)&v8 viewDidAppear:appear];
+  session = [(ICDocCamViewController *)self session];
 
-  if (!v4)
+  if (!session)
   {
     [(ICDocCamViewController *)self setupCaptureSession];
     [(ICDocCamViewController *)self launchCaptureSession];
@@ -619,14 +619,14 @@
 
   [(ICDocCamViewController *)self createCaptureEventInteractionIfNecessary];
   [(ICDocCamViewController *)self updateFilterButtonTint];
-  v5 = [(ICDocCamViewController *)self processRequestsBlocker];
-  [v5 removeBlockerOfType:@"SaveActionBlocker"];
+  processRequestsBlocker = [(ICDocCamViewController *)self processRequestsBlocker];
+  [processRequestsBlocker removeBlockerOfType:@"SaveActionBlocker"];
 
-  v6 = [MEMORY[0x277D75128] sharedApplication];
-  [v6 setIdleTimerDisabled:1];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] setIdleTimerDisabled:1];
 
-  v7 = [(ICDocCamViewController *)self userPromptLabel];
-  [(ICDocCamViewController *)self speakLabelTextForAccessibilityIfNecessary:v7 afterDelay:3.0];
+  userPromptLabel = [(ICDocCamViewController *)self userPromptLabel];
+  [(ICDocCamViewController *)self speakLabelTextForAccessibilityIfNecessary:userPromptLabel afterDelay:3.0];
 
   [(ICDocCamViewController *)self logAlgoChoice];
 }
@@ -635,93 +635,93 @@
 {
   if ([objc_opt_class() isLiquidGlassEnabledForCapture])
   {
-    v3 = [(ICDocCamViewController *)self autoButtonForIPhone];
-    [v3 removeFromSuperview];
+    autoButtonForIPhone = [(ICDocCamViewController *)self autoButtonForIPhone];
+    [autoButtonForIPhone removeFromSuperview];
 
-    v4 = [(ICDocCamViewController *)self autoButton];
-    [v4 removeFromSuperview];
+    autoButton = [(ICDocCamViewController *)self autoButton];
+    [autoButton removeFromSuperview];
 
-    v5 = [(ICDocCamViewController *)self manualButton];
-    [v5 removeFromSuperview];
+    manualButton = [(ICDocCamViewController *)self manualButton];
+    [manualButton removeFromSuperview];
 
-    v6 = [(ICDocCamViewController *)self cancelButton];
-    [v6 removeFromSuperview];
+    cancelButton = [(ICDocCamViewController *)self cancelButton];
+    [cancelButton removeFromSuperview];
 
-    v7 = [(ICDocCamViewController *)self cancelButtonForIPhone];
-    [v7 removeFromSuperview];
+    cancelButtonForIPhone = [(ICDocCamViewController *)self cancelButtonForIPhone];
+    [cancelButtonForIPhone removeFromSuperview];
 
-    v8 = [(ICDocCamViewController *)self flashButton];
-    [v8 removeFromSuperview];
+    flashButton = [(ICDocCamViewController *)self flashButton];
+    [flashButton removeFromSuperview];
 
-    v9 = [(ICDocCamViewController *)self flashButtonForIPhone];
-    [v9 removeFromSuperview];
+    flashButtonForIPhone = [(ICDocCamViewController *)self flashButtonForIPhone];
+    [flashButtonForIPhone removeFromSuperview];
 
-    v10 = [(ICDocCamViewController *)self filterButton];
-    [v10 removeFromSuperview];
+    filterButton = [(ICDocCamViewController *)self filterButton];
+    [filterButton removeFromSuperview];
 
-    v11 = [(ICDocCamViewController *)self filterButtonForIPhone];
-    [v11 removeFromSuperview];
+    filterButtonForIPhone = [(ICDocCamViewController *)self filterButtonForIPhone];
+    [filterButtonForIPhone removeFromSuperview];
 
-    v12 = [(ICDocCamViewController *)self shutterButton];
-    [v12 removeFromSuperview];
+    shutterButton = [(ICDocCamViewController *)self shutterButton];
+    [shutterButton removeFromSuperview];
 
-    v13 = [(ICDocCamViewController *)self topToolbarForIPhone];
-    [v13 removeFromSuperview];
+    topToolbarForIPhone = [(ICDocCamViewController *)self topToolbarForIPhone];
+    [topToolbarForIPhone removeFromSuperview];
 
-    v14 = [(ICDocCamViewController *)self saveButton];
-    [v14 removeFromSuperview];
+    saveButton = [(ICDocCamViewController *)self saveButton];
+    [saveButton removeFromSuperview];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = ICDocCamViewController;
-  [(ICDocCamViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(ICDocCamViewController *)self processRequestsBlocker];
-  [v4 addBlockerOfType:@"ViewLifetimeBlocker" clearRectangles:1 clearQueue:1];
+  [(ICDocCamViewController *)&v5 viewWillDisappear:disappear];
+  processRequestsBlocker = [(ICDocCamViewController *)self processRequestsBlocker];
+  [processRequestsBlocker addBlockerOfType:@"ViewLifetimeBlocker" clearRectangles:1 clearQueue:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(ICDocCamViewController *)self sessionQueue];
+  disappearCopy = disappear;
+  sessionQueue = [(ICDocCamViewController *)self sessionQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__ICDocCamViewController_viewDidDisappear___block_invoke;
   block[3] = &unk_278F93AB0;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(sessionQueue, block);
 
   v15.receiver = self;
   v15.super_class = ICDocCamViewController;
-  [(ICDocCamViewController *)&v15 viewDidDisappear:v3];
-  v6 = [(ICDocCamViewController *)self previewView];
-  v7 = [v6 layer];
-  [v7 setOpacity:0.0];
+  [(ICDocCamViewController *)&v15 viewDidDisappear:disappearCopy];
+  previewView = [(ICDocCamViewController *)self previewView];
+  layer = [previewView layer];
+  [layer setOpacity:0.0];
 
-  v8 = [MEMORY[0x277D75128] sharedApplication];
-  [v8 setIdleTimerDisabled:0];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] setIdleTimerDisabled:0];
 
-  v9 = [(ICDocCamViewController *)self presentedViewController];
+  presentedViewController = [(ICDocCamViewController *)self presentedViewController];
 
-  if (!v9)
+  if (!presentedViewController)
   {
-    v10 = [(ICDocCamViewController *)self thumbnailViewController];
-    [v10 willMoveToParentViewController:0];
+    thumbnailViewController = [(ICDocCamViewController *)self thumbnailViewController];
+    [thumbnailViewController willMoveToParentViewController:0];
 
-    v11 = [(ICDocCamViewController *)self thumbnailViewController];
-    [v11 removeFromParentViewController];
+    thumbnailViewController2 = [(ICDocCamViewController *)self thumbnailViewController];
+    [thumbnailViewController2 removeFromParentViewController];
 
-    v12 = [(ICDocCamViewController *)self thumbnailViewController];
-    v13 = [v12 collectionView];
-    [v13 removeFromSuperview];
+    thumbnailViewController3 = [(ICDocCamViewController *)self thumbnailViewController];
+    collectionView = [thumbnailViewController3 collectionView];
+    [collectionView removeFromSuperview];
 
     [(ICDocCamViewController *)self setThumbnailViewController:0];
   }
 
-  v14 = [(ICDocCamViewController *)self captureEventInteraction];
-  [v14 setEnabled:0];
+  captureEventInteraction = [(ICDocCamViewController *)self captureEventInteraction];
+  [captureEventInteraction setEnabled:0];
 }
 
 void __43__ICDocCamViewController_viewDidDisappear___block_invoke(uint64_t a1)
@@ -745,20 +745,20 @@ void __43__ICDocCamViewController_viewDidDisappear___block_invoke(uint64_t a1)
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(ICDocCamViewController *)self view];
-  [v3 bounds];
+  view = [(ICDocCamViewController *)self view];
+  [view bounds];
   [(ICDocCamViewController *)self setViewBoundsSize:v4, v5];
 
-  v6 = [(ICDocCamViewController *)self view];
-  v7 = [v6 window];
-  v8 = [v7 windowScene];
-  -[ICDocCamViewController setStatusBarOrientation:](self, "setStatusBarOrientation:", [v8 interfaceOrientation]);
+  view2 = [(ICDocCamViewController *)self view];
+  window = [view2 window];
+  windowScene = [window windowScene];
+  -[ICDocCamViewController setStatusBarOrientation:](self, "setStatusBarOrientation:", [windowScene interfaceOrientation]);
 
-  v9 = [(ICDocCamViewController *)self view];
-  v10 = [v9 tintColor];
-  v11 = [v10 dc_lighterColor];
+  view3 = [(ICDocCamViewController *)self view];
+  tintColor = [view3 tintColor];
+  dc_lighterColor = [tintColor dc_lighterColor];
   cameraHighlightColor = self->_cameraHighlightColor;
-  self->_cameraHighlightColor = v11;
+  self->_cameraHighlightColor = dc_lighterColor;
 
   [(ICDocCamViewController *)self setupThumbnailViewControllerIfNecessary];
   [(ICDocCamViewController *)self updateAutoButtonTitleForAutoMode:[(ICDocCamViewController *)self autoMode]];
@@ -779,305 +779,305 @@ void __43__ICDocCamViewController_viewDidDisappear___block_invoke(uint64_t a1)
 - (void)viewSafeAreaInsetsDidChange
 {
   [(ICDocCamViewController *)self setNeedsStatusBarAppearanceUpdate];
-  v3 = [(ICDocCamViewController *)self view];
-  [v3 setNeedsUpdateConstraints];
+  view = [(ICDocCamViewController *)self view];
+  [view setNeedsUpdateConstraints];
 
   v4.receiver = self;
   v4.super_class = ICDocCamViewController;
   [(ICDocCamViewController *)&v4 viewSafeAreaInsetsDidChange];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5.receiver = self;
   v5.super_class = ICDocCamViewController;
-  [(ICDocCamViewController *)&v5 traitCollectionDidChange:v4];
+  [(ICDocCamViewController *)&v5 traitCollectionDidChange:changeCopy];
   [(ICDocCamViewController *)self updateLabelColors];
 }
 
 - (void)initializeUserInterface
 {
-  v3 = [(ICDocCamViewController *)self scanMovieRecordingEnabled];
-  v4 = [(ICDocCamViewController *)self recordButton];
-  v204 = v4;
-  if (v3)
+  scanMovieRecordingEnabled = [(ICDocCamViewController *)self scanMovieRecordingEnabled];
+  recordButton = [(ICDocCamViewController *)self recordButton];
+  v204 = recordButton;
+  if (scanMovieRecordingEnabled)
   {
-    [v4 setEnabled:1];
+    [recordButton setEnabled:1];
 
-    v205 = [(ICDocCamViewController *)self recordButton];
-    [v205 setHidden:0];
+    recordButton2 = [(ICDocCamViewController *)self recordButton];
+    [recordButton2 setHidden:0];
   }
 
   else
   {
-    [v4 setEnabled:0];
+    [recordButton setEnabled:0];
 
-    v205 = [(ICDocCamViewController *)self recordButton];
-    [v205 setHidden:1];
+    recordButton2 = [(ICDocCamViewController *)self recordButton];
+    [recordButton2 setHidden:1];
   }
 
-  v206 = [(ICDocCamViewController *)self view];
-  v5 = [v206 window];
-  v6 = v5;
-  if (!v5)
+  view = [(ICDocCamViewController *)self view];
+  window = [view window];
+  _applicationKeyWindow = window;
+  if (!window)
   {
-    v6 = [MEMORY[0x277D75DA0] _applicationKeyWindow];
+    _applicationKeyWindow = [MEMORY[0x277D75DA0] _applicationKeyWindow];
   }
 
-  v7 = [v6 windowScene];
-  -[ICDocCamViewController setStatusBarOrientation:](self, "setStatusBarOrientation:", [v7 interfaceOrientation]);
+  windowScene = [_applicationKeyWindow windowScene];
+  -[ICDocCamViewController setStatusBarOrientation:](self, "setStatusBarOrientation:", [windowScene interfaceOrientation]);
 
-  if (!v5)
+  if (!window)
   {
   }
 
   [(ICDocCamViewController *)self setEdgesForExtendedLayout:15];
   [(ICDocCamViewController *)self setExtendedLayoutIncludesOpaqueBars:0];
-  v207 = [(ICDocCamViewController *)self navigationController];
-  v8 = [v207 navigationBar];
-  [v8 setBarStyle:0];
+  navigationController = [(ICDocCamViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setBarStyle:0];
 
-  v208 = [MEMORY[0x277D75348] dc_barColor];
-  v9 = [(ICDocCamViewController *)self navigationController];
-  v10 = [v9 navigationBar];
-  [v10 setBarTintColor:v208];
+  dc_barColor = [MEMORY[0x277D75348] dc_barColor];
+  navigationController2 = [(ICDocCamViewController *)self navigationController];
+  navigationBar2 = [navigationController2 navigationBar];
+  [navigationBar2 setBarTintColor:dc_barColor];
 
   [(ICDocCamViewController *)self setNeedsStatusBarAppearanceUpdate];
   v209 = [ICDocCamSaveButton buttonWithType:1];
   [(ICDocCamViewController *)self setSaveButton:?];
 
-  v210 = [(ICDocCamViewController *)self saveButton];
-  [v210 setTranslatesAutoresizingMaskIntoConstraints:0];
+  saveButton = [(ICDocCamViewController *)self saveButton];
+  [saveButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(ICDocCamViewController *)self setDoneButtonVisible:0];
-  v211 = [(ICDocCamViewController *)self view];
-  v11 = [(ICDocCamViewController *)self saveButton];
-  [v211 addSubview:v11];
+  view2 = [(ICDocCamViewController *)self view];
+  saveButton2 = [(ICDocCamViewController *)self saveButton];
+  [view2 addSubview:saveButton2];
 
-  v212 = [(ICDocCamViewController *)self documentInfoCollection];
-  v12 = [v212 docInfos];
-  v13 = [v12 count];
-  v14 = [(ICDocCamViewController *)self saveButton];
-  [v14 setDocumentCount:v13];
+  documentInfoCollection = [(ICDocCamViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  v13 = [docInfos count];
+  saveButton3 = [(ICDocCamViewController *)self saveButton];
+  [saveButton3 setDocumentCount:v13];
 
-  v213 = [(ICDocCamViewController *)self saveButton];
-  [v213 addTarget:self action:sel_saveAction_ forControlEvents:64];
+  saveButton4 = [(ICDocCamViewController *)self saveButton];
+  [saveButton4 addTarget:self action:sel_saveAction_ forControlEvents:64];
 
-  v214 = [(ICDocCamViewController *)self autoShutterOnView];
-  [v214 setHidden:0];
+  autoShutterOnView = [(ICDocCamViewController *)self autoShutterOnView];
+  [autoShutterOnView setHidden:0];
 
-  v215 = [(ICDocCamViewController *)self autoShutterOnView];
-  [v215 setAlpha:1.0];
+  autoShutterOnView2 = [(ICDocCamViewController *)self autoShutterOnView];
+  [autoShutterOnView2 setAlpha:1.0];
 
-  v216 = [(ICDocCamViewController *)self autoShutterOnView];
-  v15 = [v216 layer];
-  [v15 setOpacity:0.0];
+  autoShutterOnView3 = [(ICDocCamViewController *)self autoShutterOnView];
+  layer = [autoShutterOnView3 layer];
+  [layer setOpacity:0.0];
 
-  v217 = [(ICDocCamViewController *)self autoShutterOffView];
-  [v217 setHidden:0];
+  autoShutterOffView = [(ICDocCamViewController *)self autoShutterOffView];
+  [autoShutterOffView setHidden:0];
 
-  v218 = [(ICDocCamViewController *)self autoShutterOffView];
-  [v218 setAlpha:1.0];
+  autoShutterOffView2 = [(ICDocCamViewController *)self autoShutterOffView];
+  [autoShutterOffView2 setAlpha:1.0];
 
-  v219 = [(ICDocCamViewController *)self autoShutterOffView];
-  v16 = [v219 layer];
-  [v16 setOpacity:0.0];
+  autoShutterOffView3 = [(ICDocCamViewController *)self autoShutterOffView];
+  layer2 = [autoShutterOffView3 layer];
+  [layer2 setOpacity:0.0];
 
-  v220 = [(ICDocCamViewController *)self filterNameFeedbackView];
-  [v220 setHidden:0];
+  filterNameFeedbackView = [(ICDocCamViewController *)self filterNameFeedbackView];
+  [filterNameFeedbackView setHidden:0];
 
-  v221 = [(ICDocCamViewController *)self filterNameFeedbackView];
-  [v221 setAlpha:1.0];
+  filterNameFeedbackView2 = [(ICDocCamViewController *)self filterNameFeedbackView];
+  [filterNameFeedbackView2 setAlpha:1.0];
 
-  v222 = [(ICDocCamViewController *)self filterNameFeedbackView];
-  v17 = [v222 layer];
-  [v17 setOpacity:0.0];
+  filterNameFeedbackView3 = [(ICDocCamViewController *)self filterNameFeedbackView];
+  layer3 = [filterNameFeedbackView3 layer];
+  [layer3 setOpacity:0.0];
 
-  v223 = [(ICDocCamViewController *)self moveCameraCloserView];
-  [v223 setHidden:0];
+  moveCameraCloserView = [(ICDocCamViewController *)self moveCameraCloserView];
+  [moveCameraCloserView setHidden:0];
 
-  v224 = [(ICDocCamViewController *)self moveCameraCloserView];
-  [v224 setAlpha:1.0];
+  moveCameraCloserView2 = [(ICDocCamViewController *)self moveCameraCloserView];
+  [moveCameraCloserView2 setAlpha:1.0];
 
-  v225 = [(ICDocCamViewController *)self moveCameraCloserView];
-  v18 = [v225 layer];
-  [v18 setOpacity:0.0];
+  moveCameraCloserView3 = [(ICDocCamViewController *)self moveCameraCloserView];
+  layer4 = [moveCameraCloserView3 layer];
+  [layer4 setOpacity:0.0];
 
-  v226 = [(ICDocCamViewController *)self flashFeedbackView];
-  [v226 setHidden:0];
+  flashFeedbackView = [(ICDocCamViewController *)self flashFeedbackView];
+  [flashFeedbackView setHidden:0];
 
-  v227 = [(ICDocCamViewController *)self flashFeedbackView];
-  [v227 setAlpha:1.0];
+  flashFeedbackView2 = [(ICDocCamViewController *)self flashFeedbackView];
+  [flashFeedbackView2 setAlpha:1.0];
 
-  v228 = [(ICDocCamViewController *)self flashFeedbackView];
-  v19 = [v228 layer];
-  [v19 setOpacity:0.0];
+  flashFeedbackView3 = [(ICDocCamViewController *)self flashFeedbackView];
+  layer5 = [flashFeedbackView3 layer];
+  [layer5 setOpacity:0.0];
 
   [(ICDocCamViewController *)self setFilterSettingUIShowing:0];
-  v229 = [(ICDocCamViewController *)self cameraUnavailableScrim];
-  [v229 setHidden:1];
+  cameraUnavailableScrim = [(ICDocCamViewController *)self cameraUnavailableScrim];
+  [cameraUnavailableScrim setHidden:1];
 
-  v230 = [MEMORY[0x277D75348] blackColor];
-  v20 = [(ICDocCamViewController *)self autoShutterOnLabel];
-  [v20 setTextColor:v230];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  autoShutterOnLabel = [(ICDocCamViewController *)self autoShutterOnLabel];
+  [autoShutterOnLabel setTextColor:blackColor];
 
-  v231 = [MEMORY[0x277D75348] blackColor];
-  v21 = [(ICDocCamViewController *)self autoShutterOffLabel];
-  [v21 setTextColor:v231];
+  blackColor2 = [MEMORY[0x277D75348] blackColor];
+  autoShutterOffLabel = [(ICDocCamViewController *)self autoShutterOffLabel];
+  [autoShutterOffLabel setTextColor:blackColor2];
 
-  v232 = [MEMORY[0x277D75348] blackColor];
-  v22 = [(ICDocCamViewController *)self filterNameFeedbackLabel];
-  [v22 setTextColor:v232];
+  blackColor3 = [MEMORY[0x277D75348] blackColor];
+  filterNameFeedbackLabel = [(ICDocCamViewController *)self filterNameFeedbackLabel];
+  [filterNameFeedbackLabel setTextColor:blackColor3];
 
-  v233 = [MEMORY[0x277D75348] blackColor];
-  v23 = [(ICDocCamViewController *)self flashFeedbackLabel];
-  [v23 setTextColor:v233];
+  blackColor4 = [MEMORY[0x277D75348] blackColor];
+  flashFeedbackLabel = [(ICDocCamViewController *)self flashFeedbackLabel];
+  [flashFeedbackLabel setTextColor:blackColor4];
 
-  v234 = [MEMORY[0x277D75418] currentDevice];
-  v24 = [v234 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v24)
+  if (userInterfaceIdiom)
   {
-    v235 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
-    [v235 setHidden:1];
+    flashSettingViewFlashIcon = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
+    [flashSettingViewFlashIcon setHidden:1];
 
-    v236 = [(ICDocCamViewController *)self filterViewButton];
-    [v236 setHidden:1];
+    filterViewButton = [(ICDocCamViewController *)self filterViewButton];
+    [filterViewButton setHidden:1];
 
-    v237 = [(ICDocCamViewController *)self filterViewContainer];
-    [v237 setHidden:0];
+    filterViewContainer = [(ICDocCamViewController *)self filterViewContainer];
+    [filterViewContainer setHidden:0];
 
-    v238 = [(ICDocCamViewController *)self filterViewButton];
-    [v238 removeFromSuperview];
+    filterViewButton2 = [(ICDocCamViewController *)self filterViewButton];
+    [filterViewButton2 removeFromSuperview];
 
     [(ICDocCamViewController *)self setFilterViewButton:0];
   }
 
   else
   {
-    v239 = [(ICDocCamViewController *)self filterButton];
-    [v239 setHidden:1];
+    filterButton = [(ICDocCamViewController *)self filterButton];
+    [filterButton setHidden:1];
   }
 
-  v240 = [MEMORY[0x277D75418] currentDevice];
-  v25 = [v240 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-  if (v25)
+  if (userInterfaceIdiom2)
   {
-    v241 = [(ICDocCamViewController *)self flashSettingView];
-    v26 = [v241 layer];
-    [v26 setShadowRadius:0.0];
+    flashSettingView = [(ICDocCamViewController *)self flashSettingView];
+    layer6 = [flashSettingView layer];
+    [layer6 setShadowRadius:0.0];
 
-    v242 = [(ICDocCamViewController *)self flashSettingView];
-    v27 = [v242 layer];
+    flashSettingView2 = [(ICDocCamViewController *)self flashSettingView];
+    layer7 = [flashSettingView2 layer];
     LODWORD(v28) = 1050253722;
-    [v27 setShadowOpacity:v28];
+    [layer7 setShadowOpacity:v28];
 
-    v243 = [(ICDocCamViewController *)self flashSettingView];
-    v29 = [v243 layer];
-    [v29 setShadowOffset:{0.0, 0.0}];
+    flashSettingView3 = [(ICDocCamViewController *)self flashSettingView];
+    layer8 = [flashSettingView3 layer];
+    [layer8 setShadowOffset:{0.0, 0.0}];
 
-    v244 = [(ICDocCamViewController *)self flashSettingView];
-    v30 = [v244 layer];
-    [v30 setMasksToBounds:0];
+    flashSettingView4 = [(ICDocCamViewController *)self flashSettingView];
+    layer9 = [flashSettingView4 layer];
+    [layer9 setMasksToBounds:0];
 
-    v245 = [(ICDocCamViewController *)self flashSettingView];
-    v31 = [v245 layer];
-    [v31 setCornerRadius:13.0];
+    flashSettingView5 = [(ICDocCamViewController *)self flashSettingView];
+    layer10 = [flashSettingView5 layer];
+    [layer10 setCornerRadius:13.0];
 
-    v246 = [(ICDocCamViewController *)self flashSettingView];
-    v32 = [v246 layer];
-    [v32 setBorderWidth:0.0];
+    flashSettingView6 = [(ICDocCamViewController *)self flashSettingView];
+    layer11 = [flashSettingView6 layer];
+    [layer11 setBorderWidth:0.0];
   }
 
   else
   {
-    v246 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5];
-    v32 = [(ICDocCamViewController *)self flashSettingView];
-    [v32 setBackgroundColor:v246];
+    flashSettingView6 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5];
+    layer11 = [(ICDocCamViewController *)self flashSettingView];
+    [layer11 setBackgroundColor:flashSettingView6];
   }
 
   [(ICDocCamViewController *)self setFlashMode:2];
-  v247 = [(ICDocCamViewController *)self flashButtonImage];
-  v33 = [(ICDocCamViewController *)self flashButton];
-  [v33 setImage:v247 forState:0];
+  flashButtonImage = [(ICDocCamViewController *)self flashButtonImage];
+  flashButton = [(ICDocCamViewController *)self flashButton];
+  [flashButton setImage:flashButtonImage forState:0];
 
-  v34 = [(ICDocCamViewController *)self flashButtonForIPhone];
-  [v34 setImage:v247 forState:0];
+  flashButtonForIPhone = [(ICDocCamViewController *)self flashButtonForIPhone];
+  [flashButtonForIPhone setImage:flashButtonImage forState:0];
 
-  v35 = [(ICDocCamViewController *)self flashButton];
-  v36 = [MEMORY[0x277D75348] whiteColor];
-  [v35 setTintColor:v36];
+  flashButton2 = [(ICDocCamViewController *)self flashButton];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [flashButton2 setTintColor:whiteColor];
 
-  v37 = [(ICDocCamViewController *)self flashButtonForIPhone];
-  v38 = [MEMORY[0x277D75348] whiteColor];
-  [v37 setTintColor:v38];
+  flashButtonForIPhone2 = [(ICDocCamViewController *)self flashButtonForIPhone];
+  whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+  [flashButtonForIPhone2 setTintColor:whiteColor2];
 
-  v39 = [(ICDocCamViewController *)self flashButtonForIPhone];
-  [v39 setLargeContentImage:v247];
+  flashButtonForIPhone3 = [(ICDocCamViewController *)self flashButtonForIPhone];
+  [flashButtonForIPhone3 setLargeContentImage:flashButtonImage];
 
   [(ICDocCamViewController *)self setAutoMode:1];
   if ([(ICDocCamViewController *)self autoMode])
   {
-    v40 = [(ICDocCamViewController *)self userPromptView];
-    [v40 setHidden:0];
+    userPromptView = [(ICDocCamViewController *)self userPromptView];
+    [userPromptView setHidden:0];
   }
 
   else
   {
     [(ICDocCamViewController *)self hideShutter:0];
-    v40 = [(ICDocCamViewController *)self userPromptView];
-    [v40 setHidden:1];
+    userPromptView = [(ICDocCamViewController *)self userPromptView];
+    [userPromptView setHidden:1];
   }
 
-  v41 = [(ICDocCamViewController *)self flashFeedbackView];
-  [v41 setHidden:1];
+  flashFeedbackView4 = [(ICDocCamViewController *)self flashFeedbackView];
+  [flashFeedbackView4 setHidden:1];
 
-  v42 = [(ICDocCamViewController *)self autoMode];
-  v43 = [(ICDocCamViewController *)self overlayView];
-  [v43 setShowGridAnimation:v42];
+  autoMode = [(ICDocCamViewController *)self autoMode];
+  overlayView = [(ICDocCamViewController *)self overlayView];
+  [overlayView setShowGridAnimation:autoMode];
 
-  v44 = [(ICDocCamViewController *)self cameraHighlightColor];
-  v45 = [(ICDocCamViewController *)self overlayView];
-  [v45 setRectColor:v44];
+  cameraHighlightColor = [(ICDocCamViewController *)self cameraHighlightColor];
+  overlayView2 = [(ICDocCamViewController *)self overlayView];
+  [overlayView2 setRectColor:cameraHighlightColor];
 
   if ((DCDebugInterfaceEnabled() & 1) != 0 || ([MEMORY[0x277D75418] currentDevice], v46 = objc_claimAutoreleasedReturnValue(), v47 = objc_msgSend(v46, "userInterfaceIdiom"), v46, v47 == 1))
   {
-    v48 = [(ICDocCamViewController *)self flashButton];
-    v49 = [v48 layer];
-    [v49 setShadowOpacity:0.0];
+    flashButton3 = [(ICDocCamViewController *)self flashButton];
+    layer12 = [flashButton3 layer];
+    [layer12 setShadowOpacity:0.0];
 
-    v50 = [(ICDocCamViewController *)self flashButton];
-    v51 = [v50 layer];
-    [v51 setShadowRadius:0.0];
+    flashButton4 = [(ICDocCamViewController *)self flashButton];
+    layer13 = [flashButton4 layer];
+    [layer13 setShadowRadius:0.0];
   }
 
   v52 = [MEMORY[0x277CE5AC8] defaultDeviceWithMediaType:*MEMORY[0x277CE5EA8]];
   if ([v52 hasFlash])
   {
-    v53 = [MEMORY[0x277D75418] currentDevice];
-    v54 = [v53 userInterfaceIdiom];
+    currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
-    v55 = [(ICDocCamViewController *)self flashSettingView];
-    if (v54)
+    flashSettingView7 = [(ICDocCamViewController *)self flashSettingView];
+    if (userInterfaceIdiom3)
     {
-      [v55 setHidden:0];
+      [flashSettingView7 setHidden:0];
     }
 
     else
     {
-      [v55 setHidden:1];
+      [flashSettingView7 setHidden:1];
     }
   }
 
   else
   {
-    v56 = [(ICDocCamViewController *)self flashButton];
-    [v56 setHidden:1];
+    flashButton5 = [(ICDocCamViewController *)self flashButton];
+    [flashButton5 setHidden:1];
 
-    v55 = [(ICDocCamViewController *)self flashSettingView];
-    [v55 setHidden:1];
+    flashSettingView7 = [(ICDocCamViewController *)self flashSettingView];
+    [flashSettingView7 setHidden:1];
   }
 
   [(ICDocCamViewController *)self enableUIElements:0];
@@ -1087,56 +1087,56 @@ void __43__ICDocCamViewController_viewDidDisappear___block_invoke(uint64_t a1)
     v57 = [[DCCaptureControlsOverlayViewController alloc] initWithNibName:0 bundle:0];
     [(ICDocCamViewController *)self setLiquidGlassEvolutionControlsOverlayViewController:v57];
 
-    v58 = [(ICDocCamViewController *)self liquidGlassEvolutionControlsOverlayViewController];
-    [v58 setDelegate:self];
+    liquidGlassEvolutionControlsOverlayViewController = [(ICDocCamViewController *)self liquidGlassEvolutionControlsOverlayViewController];
+    [liquidGlassEvolutionControlsOverlayViewController setDelegate:self];
 
-    v59 = [(ICDocCamViewController *)self liquidGlassEvolutionControlsOverlayViewController];
-    [(ICDocCamViewController *)self addChildViewController:v59];
+    liquidGlassEvolutionControlsOverlayViewController2 = [(ICDocCamViewController *)self liquidGlassEvolutionControlsOverlayViewController];
+    [(ICDocCamViewController *)self addChildViewController:liquidGlassEvolutionControlsOverlayViewController2];
 
-    v60 = [(ICDocCamViewController *)self liquidGlassControls];
-    v61 = [(ICDocCamViewController *)self liquidGlassEvolutionControlsOverlayViewController];
-    v62 = [v61 view];
-    [v60 addSubview:v62];
+    liquidGlassControls = [(ICDocCamViewController *)self liquidGlassControls];
+    liquidGlassEvolutionControlsOverlayViewController3 = [(ICDocCamViewController *)self liquidGlassEvolutionControlsOverlayViewController];
+    view3 = [liquidGlassEvolutionControlsOverlayViewController3 view];
+    [liquidGlassControls addSubview:view3];
 
-    v63 = [(ICDocCamViewController *)self liquidGlassEvolutionControlsOverlayViewController];
-    v64 = [v63 view];
-    [v64 dc_addConstraintsToFillSuperview];
+    liquidGlassEvolutionControlsOverlayViewController4 = [(ICDocCamViewController *)self liquidGlassEvolutionControlsOverlayViewController];
+    view4 = [liquidGlassEvolutionControlsOverlayViewController4 view];
+    [view4 dc_addConstraintsToFillSuperview];
 
-    v65 = [(ICDocCamViewController *)self liquidGlassEvolutionControlsOverlayViewController];
-    [v65 didMoveToParentViewController:self];
+    liquidGlassEvolutionControlsOverlayViewController5 = [(ICDocCamViewController *)self liquidGlassEvolutionControlsOverlayViewController];
+    [liquidGlassEvolutionControlsOverlayViewController5 didMoveToParentViewController:self];
 
-    v66 = [(ICDocCamViewController *)self liquidGlassControls];
-    [v66 setUserInteractionEnabled:1];
+    liquidGlassControls2 = [(ICDocCamViewController *)self liquidGlassControls];
+    [liquidGlassControls2 setUserInteractionEnabled:1];
 
-    v67 = [(ICDocCamViewController *)self liquidGlassEvolutionControlsOverlayViewController];
-    v68 = [v67 view];
-    [v68 setUserInteractionEnabled:1];
+    liquidGlassEvolutionControlsOverlayViewController6 = [(ICDocCamViewController *)self liquidGlassEvolutionControlsOverlayViewController];
+    view5 = [liquidGlassEvolutionControlsOverlayViewController6 view];
+    [view5 setUserInteractionEnabled:1];
   }
 
   else
   {
     [(ICDocCamViewController *)self enableShutter:0];
-    v69 = [MEMORY[0x277D75418] currentDevice];
-    v70 = [v69 userInterfaceIdiom];
+    currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom4 = [currentDevice4 userInterfaceIdiom];
 
-    if (v70)
+    if (userInterfaceIdiom4)
     {
       [(ICDocCamViewController *)self topToolbarForIPhone];
     }
 
     else
     {
-      v72 = [(ICDocCamViewController *)self cancelButton];
-      [v72 setHidden:1];
+      cancelButton = [(ICDocCamViewController *)self cancelButton];
+      [cancelButton setHidden:1];
 
-      v73 = [(ICDocCamViewController *)self flashButton];
-      [v73 setHidden:1];
+      flashButton6 = [(ICDocCamViewController *)self flashButton];
+      [flashButton6 setHidden:1];
 
-      v74 = [(ICDocCamViewController *)self filterButton];
-      [v74 setHidden:1];
+      filterButton2 = [(ICDocCamViewController *)self filterButton];
+      [filterButton2 setHidden:1];
 
-      v75 = [(ICDocCamViewController *)self autoButton];
-      [v75 setHidden:1];
+      autoButton = [(ICDocCamViewController *)self autoButton];
+      [autoButton setHidden:1];
 
       [(ICDocCamViewController *)self manualButton];
     }
@@ -1145,50 +1145,50 @@ void __43__ICDocCamViewController_viewDidDisappear___block_invoke(uint64_t a1)
 
     if ((DCDebugInterfaceEnabled() & 1) != 0 || ([MEMORY[0x277D75418] currentDevice], v76 = objc_claimAutoreleasedReturnValue(), v77 = objc_msgSend(v76, "userInterfaceIdiom"), v76, v77 == 1))
     {
-      v78 = [(ICDocCamViewController *)self autoButton];
-      [v78 sizeToFit];
+      autoButton2 = [(ICDocCamViewController *)self autoButton];
+      [autoButton2 sizeToFit];
 
-      v79 = [(ICDocCamViewController *)self manualButton];
-      [v79 sizeToFit];
+      manualButton = [(ICDocCamViewController *)self manualButton];
+      [manualButton sizeToFit];
 
       v80 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.5];
-      v81 = [MEMORY[0x277D75348] clearColor];
-      v82 = [MEMORY[0x277D75348] whiteColor];
-      v83 = [v82 CGColor];
-      v84 = [(ICDocCamViewController *)self flashSettingView];
-      v85 = [v84 layer];
-      [v85 setBorderColor:v83];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      whiteColor3 = [MEMORY[0x277D75348] whiteColor];
+      cGColor = [whiteColor3 CGColor];
+      flashSettingView8 = [(ICDocCamViewController *)self flashSettingView];
+      layer14 = [flashSettingView8 layer];
+      [layer14 setBorderColor:cGColor];
 
-      v86 = [(ICDocCamViewController *)self flashSettingView];
-      v87 = [v86 layer];
-      [v87 setBorderWidth:0.0];
+      flashSettingView9 = [(ICDocCamViewController *)self flashSettingView];
+      layer15 = [flashSettingView9 layer];
+      [layer15 setBorderWidth:0.0];
 
-      v88 = [(ICDocCamViewController *)self flashSettingView];
-      [v88 frame];
+      flashSettingView10 = [(ICDocCamViewController *)self flashSettingView];
+      [flashSettingView10 frame];
       v90 = v89;
-      v91 = [(ICDocCamViewController *)self flashSettingView];
-      v92 = [v91 layer];
-      [v92 setCornerRadius:v90 * 0.5];
+      flashSettingView11 = [(ICDocCamViewController *)self flashSettingView];
+      layer16 = [flashSettingView11 layer];
+      [layer16 setCornerRadius:v90 * 0.5];
 
-      v93 = [(ICDocCamViewController *)self flashSettingView];
-      [v93 setBackgroundColor:v80];
+      flashSettingView12 = [(ICDocCamViewController *)self flashSettingView];
+      [flashSettingView12 setBackgroundColor:v80];
 
-      v94 = [MEMORY[0x277D75348] whiteColor];
-      v95 = [v94 CGColor];
-      v96 = [(ICDocCamViewController *)self autoButton];
-      v97 = [v96 layer];
-      [v97 setBorderColor:v95];
+      whiteColor4 = [MEMORY[0x277D75348] whiteColor];
+      cGColor2 = [whiteColor4 CGColor];
+      autoButton3 = [(ICDocCamViewController *)self autoButton];
+      layer17 = [autoButton3 layer];
+      [layer17 setBorderColor:cGColor2];
 
-      v98 = [(ICDocCamViewController *)self autoButton];
-      v99 = [v98 layer];
-      [v99 setBorderWidth:0.0];
+      autoButton4 = [(ICDocCamViewController *)self autoButton];
+      layer18 = [autoButton4 layer];
+      [layer18 setBorderWidth:0.0];
 
-      v100 = [(ICDocCamViewController *)self autoButton];
-      [v100 frame];
+      autoButton5 = [(ICDocCamViewController *)self autoButton];
+      [autoButton5 frame];
       v102 = v101;
-      v103 = [(ICDocCamViewController *)self autoButton];
-      v104 = [v103 layer];
-      [v104 setCornerRadius:v102 * 0.5];
+      autoButton6 = [(ICDocCamViewController *)self autoButton];
+      layer19 = [autoButton6 layer];
+      [layer19 setCornerRadius:v102 * 0.5];
 
       if ([(ICDocCamViewController *)self autoMode])
       {
@@ -1197,34 +1197,34 @@ void __43__ICDocCamViewController_viewDidDisappear___block_invoke(uint64_t a1)
 
       else
       {
-        v105 = v81;
+        v105 = clearColor;
       }
 
-      v106 = [v105 CGColor];
-      v107 = [(ICDocCamViewController *)self autoButton];
-      v108 = [v107 layer];
-      [v108 setBackgroundColor:v106];
+      cGColor3 = [v105 CGColor];
+      autoButton7 = [(ICDocCamViewController *)self autoButton];
+      layer20 = [autoButton7 layer];
+      [layer20 setBackgroundColor:cGColor3];
 
-      v109 = [MEMORY[0x277D75348] whiteColor];
-      v110 = [v109 CGColor];
-      v111 = [(ICDocCamViewController *)self manualButton];
-      v112 = [v111 layer];
-      [v112 setBorderColor:v110];
+      whiteColor5 = [MEMORY[0x277D75348] whiteColor];
+      cGColor4 = [whiteColor5 CGColor];
+      manualButton2 = [(ICDocCamViewController *)self manualButton];
+      layer21 = [manualButton2 layer];
+      [layer21 setBorderColor:cGColor4];
 
-      v113 = [(ICDocCamViewController *)self manualButton];
-      v114 = [v113 layer];
-      [v114 setBorderWidth:0.0];
+      manualButton3 = [(ICDocCamViewController *)self manualButton];
+      layer22 = [manualButton3 layer];
+      [layer22 setBorderWidth:0.0];
 
-      v115 = [(ICDocCamViewController *)self manualButton];
-      [v115 frame];
+      manualButton4 = [(ICDocCamViewController *)self manualButton];
+      [manualButton4 frame];
       v117 = v116;
-      v118 = [(ICDocCamViewController *)self manualButton];
-      v119 = [v118 layer];
-      [v119 setCornerRadius:v117 * 0.5];
+      manualButton5 = [(ICDocCamViewController *)self manualButton];
+      layer23 = [manualButton5 layer];
+      [layer23 setCornerRadius:v117 * 0.5];
 
       if ([(ICDocCamViewController *)self autoMode])
       {
-        v120 = v81;
+        v120 = clearColor;
       }
 
       else
@@ -1232,182 +1232,182 @@ void __43__ICDocCamViewController_viewDidDisappear___block_invoke(uint64_t a1)
         v120 = v80;
       }
 
-      v121 = [v120 CGColor];
-      v122 = [(ICDocCamViewController *)self manualButton];
-      v123 = [v122 layer];
-      [v123 setBackgroundColor:v121];
+      cGColor5 = [v120 CGColor];
+      manualButton6 = [(ICDocCamViewController *)self manualButton];
+      layer24 = [manualButton6 layer];
+      [layer24 setBackgroundColor:cGColor5];
 
-      v124 = [MEMORY[0x277D75348] whiteColor];
-      v125 = [v124 CGColor];
-      v126 = [(ICDocCamViewController *)self filterViewContainer];
-      v127 = [v126 layer];
-      [v127 setBorderColor:v125];
+      whiteColor6 = [MEMORY[0x277D75348] whiteColor];
+      cGColor6 = [whiteColor6 CGColor];
+      filterViewContainer2 = [(ICDocCamViewController *)self filterViewContainer];
+      layer25 = [filterViewContainer2 layer];
+      [layer25 setBorderColor:cGColor6];
 
-      v128 = [(ICDocCamViewController *)self filterViewContainer];
-      v129 = [v128 layer];
-      [v129 setBorderWidth:0.0];
+      filterViewContainer3 = [(ICDocCamViewController *)self filterViewContainer];
+      layer26 = [filterViewContainer3 layer];
+      [layer26 setBorderWidth:0.0];
 
-      v130 = [(ICDocCamViewController *)self filterViewContainer];
-      [v130 frame];
+      filterViewContainer4 = [(ICDocCamViewController *)self filterViewContainer];
+      [filterViewContainer4 frame];
       v132 = v131;
-      v133 = [(ICDocCamViewController *)self filterViewContainer];
-      v134 = [v133 layer];
-      [v134 setCornerRadius:v132 * 0.5];
+      filterViewContainer5 = [(ICDocCamViewController *)self filterViewContainer];
+      layer27 = [filterViewContainer5 layer];
+      [layer27 setCornerRadius:v132 * 0.5];
 
-      v135 = [(ICDocCamViewController *)self filterViewContainer];
-      [v135 setBackgroundColor:v80];
+      filterViewContainer6 = [(ICDocCamViewController *)self filterViewContainer];
+      [filterViewContainer6 setBackgroundColor:v80];
     }
 
-    v136 = [MEMORY[0x277D75418] currentDevice];
-    v137 = [v136 userInterfaceIdiom];
+    currentDevice5 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom5 = [currentDevice5 userInterfaceIdiom];
 
     v138 = MEMORY[0x277D74418];
-    if (!v137)
+    if (!userInterfaceIdiom5)
     {
       v139 = [MEMORY[0x277D74300] systemFontOfSize:17.0 weight:*MEMORY[0x277D74418]];
-      v140 = [(ICDocCamViewController *)self cancelButton];
-      v141 = [v140 titleLabel];
-      [v141 setFont:v139];
+      cancelButton2 = [(ICDocCamViewController *)self cancelButton];
+      titleLabel = [cancelButton2 titleLabel];
+      [titleLabel setFont:v139];
     }
 
-    v142 = [(ICDocCamViewController *)self saveButton];
-    v143 = [v142 layer];
-    [v143 setMasksToBounds:0];
+    saveButton5 = [(ICDocCamViewController *)self saveButton];
+    layer28 = [saveButton5 layer];
+    [layer28 setMasksToBounds:0];
 
-    v144 = [MEMORY[0x277D75348] blackColor];
-    v145 = [v144 CGColor];
-    v146 = [(ICDocCamViewController *)self saveButton];
-    v147 = [v146 layer];
-    [v147 setShadowColor:v145];
+    blackColor5 = [MEMORY[0x277D75348] blackColor];
+    cGColor7 = [blackColor5 CGColor];
+    saveButton6 = [(ICDocCamViewController *)self saveButton];
+    layer29 = [saveButton6 layer];
+    [layer29 setShadowColor:cGColor7];
 
-    v148 = [(ICDocCamViewController *)self saveButton];
-    v149 = [v148 layer];
+    saveButton7 = [(ICDocCamViewController *)self saveButton];
+    layer30 = [saveButton7 layer];
     LODWORD(v150) = 1047904911;
-    [v149 setShadowOpacity:v150];
+    [layer30 setShadowOpacity:v150];
 
-    v151 = [(ICDocCamViewController *)self saveButton];
-    v152 = [v151 layer];
-    [v152 setShadowRadius:2.0];
+    saveButton8 = [(ICDocCamViewController *)self saveButton];
+    layer31 = [saveButton8 layer];
+    [layer31 setShadowRadius:2.0];
 
-    v153 = [(ICDocCamViewController *)self saveButton];
-    v154 = [v153 layer];
-    [v154 setShadowOffset:{0.0, 0.0}];
+    saveButton9 = [(ICDocCamViewController *)self saveButton];
+    layer32 = [saveButton9 layer];
+    [layer32 setShadowOffset:{0.0, 0.0}];
 
-    v155 = [(ICDocCamViewController *)self saveButton];
-    [v155 sizeToFit];
+    saveButton10 = [(ICDocCamViewController *)self saveButton];
+    [saveButton10 sizeToFit];
 
-    v156 = [(ICDocCamViewController *)self cancelButton];
-    v157 = [v156 layer];
-    [v157 setMasksToBounds:0];
+    cancelButton3 = [(ICDocCamViewController *)self cancelButton];
+    layer33 = [cancelButton3 layer];
+    [layer33 setMasksToBounds:0];
 
-    v158 = [MEMORY[0x277D75348] blackColor];
-    v159 = [v158 CGColor];
-    v160 = [(ICDocCamViewController *)self cancelButton];
-    v161 = [v160 layer];
-    [v161 setShadowColor:v159];
+    blackColor6 = [MEMORY[0x277D75348] blackColor];
+    cGColor8 = [blackColor6 CGColor];
+    cancelButton4 = [(ICDocCamViewController *)self cancelButton];
+    layer34 = [cancelButton4 layer];
+    [layer34 setShadowColor:cGColor8];
 
-    v162 = [(ICDocCamViewController *)self cancelButton];
-    v163 = [v162 layer];
+    cancelButton5 = [(ICDocCamViewController *)self cancelButton];
+    layer35 = [cancelButton5 layer];
     LODWORD(v164) = 1053609165;
-    [v163 setShadowOpacity:v164];
+    [layer35 setShadowOpacity:v164];
 
-    v165 = [(ICDocCamViewController *)self cancelButton];
-    v166 = [v165 layer];
-    [v166 setShadowRadius:2.0];
+    cancelButton6 = [(ICDocCamViewController *)self cancelButton];
+    layer36 = [cancelButton6 layer];
+    [layer36 setShadowRadius:2.0];
 
-    v167 = [(ICDocCamViewController *)self cancelButton];
-    v168 = [v167 layer];
-    [v168 setShadowOffset:{0.0, 1.0}];
+    cancelButton7 = [(ICDocCamViewController *)self cancelButton];
+    layer37 = [cancelButton7 layer];
+    [layer37 setShadowOffset:{0.0, 1.0}];
 
     if ((DCDebugInterfaceEnabled() & 1) != 0 || ([MEMORY[0x277D75418] currentDevice], v169 = objc_claimAutoreleasedReturnValue(), v170 = objc_msgSend(v169, "userInterfaceIdiom"), v169, v170 == 1))
     {
       v171 = *v138;
       v172 = [MEMORY[0x277D74300] systemFontOfSize:14.0 weight:*v138];
-      v173 = [(ICDocCamViewController *)self flashSettingViewOnButton];
-      v174 = [v173 titleLabel];
-      [v174 setFont:v172];
+      flashSettingViewOnButton = [(ICDocCamViewController *)self flashSettingViewOnButton];
+      titleLabel2 = [flashSettingViewOnButton titleLabel];
+      [titleLabel2 setFont:v172];
 
       v175 = [MEMORY[0x277D74300] systemFontOfSize:14.0 weight:v171];
-      v176 = [(ICDocCamViewController *)self flashSettingViewOffButton];
-      v177 = [v176 titleLabel];
-      [v177 setFont:v175];
+      flashSettingViewOffButton = [(ICDocCamViewController *)self flashSettingViewOffButton];
+      titleLabel3 = [flashSettingViewOffButton titleLabel];
+      [titleLabel3 setFont:v175];
 
       v178 = [MEMORY[0x277D74300] systemFontOfSize:14.0 weight:v171];
-      v179 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
-      v180 = [v179 titleLabel];
-      [v180 setFont:v178];
+      flashSettingViewAutoButton = [(ICDocCamViewController *)self flashSettingViewAutoButton];
+      titleLabel4 = [flashSettingViewAutoButton titleLabel];
+      [titleLabel4 setFont:v178];
     }
 
     else
     {
       v181 = *MEMORY[0x277D74410];
       v182 = [MEMORY[0x277D74300] systemFontOfSize:14.0 weight:*MEMORY[0x277D74410]];
-      v183 = [(ICDocCamViewController *)self flashSettingViewOnButton];
-      v184 = [v183 titleLabel];
-      [v184 setFont:v182];
+      flashSettingViewOnButton2 = [(ICDocCamViewController *)self flashSettingViewOnButton];
+      titleLabel5 = [flashSettingViewOnButton2 titleLabel];
+      [titleLabel5 setFont:v182];
 
       v185 = [MEMORY[0x277D74300] systemFontOfSize:14.0 weight:v181];
-      v186 = [(ICDocCamViewController *)self flashSettingViewOffButton];
-      v187 = [v186 titleLabel];
-      [v187 setFont:v185];
+      flashSettingViewOffButton2 = [(ICDocCamViewController *)self flashSettingViewOffButton];
+      titleLabel6 = [flashSettingViewOffButton2 titleLabel];
+      [titleLabel6 setFont:v185];
 
       v178 = [MEMORY[0x277D74300] systemFontOfSize:14.0 weight:v181];
-      v179 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
-      v180 = [v179 titleLabel];
-      [v180 setFont:v178];
+      flashSettingViewAutoButton = [(ICDocCamViewController *)self flashSettingViewAutoButton];
+      titleLabel4 = [flashSettingViewAutoButton titleLabel];
+      [titleLabel4 setFont:v178];
     }
 
-    v188 = [(ICDocCamViewController *)self filterViewContainer];
-    [v188 setAccessibilityLabel:@"Filter View Container"];
+    filterViewContainer7 = [(ICDocCamViewController *)self filterViewContainer];
+    [filterViewContainer7 setAccessibilityLabel:@"Filter View Container"];
 
-    v189 = [(ICDocCamViewController *)self filterView];
-    [v189 setAccessibilityLabel:@"Filter View"];
+    filterView = [(ICDocCamViewController *)self filterView];
+    [filterView setAccessibilityLabel:@"Filter View"];
 
-    v190 = [(ICDocCamViewController *)self filterScrollViewContainer];
-    [v190 setAccessibilityLabel:@"Filter Scroll View Container"];
+    filterScrollViewContainer = [(ICDocCamViewController *)self filterScrollViewContainer];
+    [filterScrollViewContainer setAccessibilityLabel:@"Filter Scroll View Container"];
 
-    v191 = [(ICDocCamViewController *)self filterScrollView];
-    [v191 setAccessibilityLabel:@"Filter Scroll View"];
+    filterScrollView = [(ICDocCamViewController *)self filterScrollView];
+    [filterScrollView setAccessibilityLabel:@"Filter Scroll View"];
 
-    v192 = [(ICDocCamViewController *)self flashSettingView];
-    [v192 setAccessibilityLabel:@"Flash Setting View"];
+    flashSettingView13 = [(ICDocCamViewController *)self flashSettingView];
+    [flashSettingView13 setAccessibilityLabel:@"Flash Setting View"];
 
-    v193 = [(ICDocCamViewController *)self flashSettingButtonView];
-    [v193 setAccessibilityLabel:@"Flash Setting Button View"];
+    flashSettingButtonView = [(ICDocCamViewController *)self flashSettingButtonView];
+    [flashSettingButtonView setAccessibilityLabel:@"Flash Setting Button View"];
 
-    v194 = [(ICDocCamViewController *)self autoButton];
-    [v194 _accessibilitySetInterfaceStyleIntent:2];
+    autoButton8 = [(ICDocCamViewController *)self autoButton];
+    [autoButton8 _accessibilitySetInterfaceStyleIntent:2];
 
-    v195 = [(ICDocCamViewController *)self manualButton];
-    [v195 _accessibilitySetInterfaceStyleIntent:2];
+    manualButton7 = [(ICDocCamViewController *)self manualButton];
+    [manualButton7 _accessibilitySetInterfaceStyleIntent:2];
 
-    v196 = [(ICDocCamViewController *)self flashButton];
-    [v196 _accessibilitySetInterfaceStyleIntent:2];
+    flashButton7 = [(ICDocCamViewController *)self flashButton];
+    [flashButton7 _accessibilitySetInterfaceStyleIntent:2];
 
-    v197 = [(ICDocCamViewController *)self flashButtonForIPhone];
-    [v197 _accessibilitySetInterfaceStyleIntent:2];
+    flashButtonForIPhone4 = [(ICDocCamViewController *)self flashButtonForIPhone];
+    [flashButtonForIPhone4 _accessibilitySetInterfaceStyleIntent:2];
 
-    v198 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
-    [v198 _accessibilitySetInterfaceStyleIntent:2];
+    flashSettingViewFlashIcon2 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
+    [flashSettingViewFlashIcon2 _accessibilitySetInterfaceStyleIntent:2];
 
-    v199 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
-    [v199 _accessibilitySetInterfaceStyleIntent:2];
+    flashSettingViewAutoButton2 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
+    [flashSettingViewAutoButton2 _accessibilitySetInterfaceStyleIntent:2];
 
-    v200 = [(ICDocCamViewController *)self flashSettingViewOnButton];
-    [v200 _accessibilitySetInterfaceStyleIntent:2];
+    flashSettingViewOnButton3 = [(ICDocCamViewController *)self flashSettingViewOnButton];
+    [flashSettingViewOnButton3 _accessibilitySetInterfaceStyleIntent:2];
 
-    v201 = [(ICDocCamViewController *)self flashSettingViewOffButton];
-    [v201 _accessibilitySetInterfaceStyleIntent:2];
+    flashSettingViewOffButton3 = [(ICDocCamViewController *)self flashSettingViewOffButton];
+    [flashSettingViewOffButton3 _accessibilitySetInterfaceStyleIntent:2];
 
     [(ICDocCamViewController *)self updateLabelColors];
     [(ICDocCamViewController *)self setupAccessibilityInfo];
-    v202 = [(ICDocCamViewController *)self cancelButton];
+    cancelButton8 = [(ICDocCamViewController *)self cancelButton];
     v203 = objc_alloc_init(MEMORY[0x277D75870]);
-    [v202 addInteraction:v203];
+    [cancelButton8 addInteraction:v203];
 
-    v67 = [(ICDocCamViewController *)self saveButton];
-    v68 = objc_alloc_init(MEMORY[0x277D75870]);
-    [v67 addInteraction:v68];
+    liquidGlassEvolutionControlsOverlayViewController6 = [(ICDocCamViewController *)self saveButton];
+    view5 = objc_alloc_init(MEMORY[0x277D75870]);
+    [liquidGlassEvolutionControlsOverlayViewController6 addInteraction:view5];
   }
 }
 
@@ -1418,83 +1418,83 @@ void __43__ICDocCamViewController_viewDidDisappear___block_invoke(uint64_t a1)
   [(ICDocCamViewController *)self setSegmentBottomLeft:0.0, 0.0];
   [(ICDocCamViewController *)self setSegmentBottomRight:0.0, 0.0];
   [(ICDocCamViewController *)self setSegmentMeanComputed:0];
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v3 floatForKey:@"internalSettings.docCam.rectangle.segmentFudgeFactor"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults floatForKey:@"internalSettings.docCam.rectangle.segmentFudgeFactor"];
   [(ICDocCamViewController *)self setSegmentationFudgeFactor:?];
 
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v4 floatForKey:@"internalSettings.docCam.rectangle.segmentVisualConfidence"];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults2 floatForKey:@"internalSettings.docCam.rectangle.segmentVisualConfidence"];
   [(ICDocCamViewController *)self setSegmentMinimumVisualConfidence:?];
 
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v5 floatForKey:@"internalSettings.docCam.rectangle.segmentVisualConfidence60Frames"];
+  standardUserDefaults3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults3 floatForKey:@"internalSettings.docCam.rectangle.segmentVisualConfidence60Frames"];
   [(ICDocCamViewController *)self setSegmentMinimumVisualConfidence60Frames:?];
 
-  v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v6 floatForKey:@"internalSettings.docCam.rectangle.segmentVisualConfidenceFinalScan"];
+  standardUserDefaults4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults4 floatForKey:@"internalSettings.docCam.rectangle.segmentVisualConfidenceFinalScan"];
   [(ICDocCamViewController *)self setSegmentMinimumVisualConfidenceFinalScan:?];
 
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v7 floatForKey:@"internalSettings.docCam.rectangle.segmentStabilityStdDev"];
+  standardUserDefaults5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults5 floatForKey:@"internalSettings.docCam.rectangle.segmentStabilityStdDev"];
   [(ICDocCamViewController *)self setSegmentStabilityStdDev:?];
 
-  v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v8 floatForKey:@"internalSettings.docCam.rectangle.minimumAspectRatio"];
+  standardUserDefaults6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults6 floatForKey:@"internalSettings.docCam.rectangle.minimumAspectRatio"];
   [(ICDocCamViewController *)self setRectangleMinimumAspectRatio:?];
 
-  v9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v9 floatForKey:@"internalSettings.docCam.rectangle.maximumAspectRatio"];
+  standardUserDefaults7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults7 floatForKey:@"internalSettings.docCam.rectangle.maximumAspectRatio"];
   [(ICDocCamViewController *)self setRectangleMaximumAspectRatio:?];
 
-  v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v10 floatForKey:@"internalSettings.docCam.rectangle.quadratureTolerance"];
+  standardUserDefaults8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults8 floatForKey:@"internalSettings.docCam.rectangle.quadratureTolerance"];
   [(ICDocCamViewController *)self setRectangleQuadratureTolerance:?];
 
-  v11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v11 floatForKey:@"internalSettings.docCam.rectangle.minimumSize"];
+  standardUserDefaults9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults9 floatForKey:@"internalSettings.docCam.rectangle.minimumSize"];
   [(ICDocCamViewController *)self setRectangleMinimumSize:?];
 
-  v12 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v12 floatForKey:@"internalSettings.docCam.rectangle.minimumConfidence"];
+  standardUserDefaults10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults10 floatForKey:@"internalSettings.docCam.rectangle.minimumConfidence"];
   [(ICDocCamViewController *)self setRectangleMinimumConfidence:?];
 
-  v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v13 floatForKey:@"internalSettings.docCam.rectangle.visualConfidence"];
+  standardUserDefaults11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults11 floatForKey:@"internalSettings.docCam.rectangle.visualConfidence"];
   [(ICDocCamViewController *)self setRectangleMinimumVisualConfidence:?];
 
-  v14 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  -[ICDocCamViewController setRectangleMaximumNumber:](self, "setRectangleMaximumNumber:", [v14 integerForKey:@"internalSettings.docCam.rectangle.maximumNumber"]);
+  standardUserDefaults12 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  -[ICDocCamViewController setRectangleMaximumNumber:](self, "setRectangleMaximumNumber:", [standardUserDefaults12 integerForKey:@"internalSettings.docCam.rectangle.maximumNumber"]);
 
-  v15 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v15 floatForKey:@"internalSettings.docCam.rectangle.stabilityStdDev"];
+  standardUserDefaults13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults13 floatForKey:@"internalSettings.docCam.rectangle.stabilityStdDev"];
   [(ICDocCamViewController *)self setRectangleStabilityStdDev:?];
 
-  v16 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  -[ICDocCamViewController setRectangleDetectionEnabled:](self, "setRectangleDetectionEnabled:", [v16 BOOLForKey:@"internalSettings.docCam.rectangle.detectionEnabled"]);
+  standardUserDefaults14 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  -[ICDocCamViewController setRectangleDetectionEnabled:](self, "setRectangleDetectionEnabled:", [standardUserDefaults14 BOOLForKey:@"internalSettings.docCam.rectangle.detectionEnabled"]);
 
-  v17 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  -[ICDocCamViewController setRegistrationEnabled:](self, "setRegistrationEnabled:", [v17 BOOLForKey:@"internalSettings.docCam.registration.enabled"]);
+  standardUserDefaults15 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  -[ICDocCamViewController setRegistrationEnabled:](self, "setRegistrationEnabled:", [standardUserDefaults15 BOOLForKey:@"internalSettings.docCam.registration.enabled"]);
 
-  v18 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  -[ICDocCamViewController setDebugRectanglesEnabled:](self, "setDebugRectanglesEnabled:", [v18 BOOLForKey:@"internalSettings.docCam.debugRectangles.enabled"]);
+  standardUserDefaults16 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  -[ICDocCamViewController setDebugRectanglesEnabled:](self, "setDebugRectanglesEnabled:", [standardUserDefaults16 BOOLForKey:@"internalSettings.docCam.debugRectangles.enabled"]);
 
-  v19 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  -[ICDocCamViewController setDisplayStringEnabled:](self, "setDisplayStringEnabled:", [v19 BOOLForKey:@"internalSettings.docCam.displayString.enabled"]);
+  standardUserDefaults17 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  -[ICDocCamViewController setDisplayStringEnabled:](self, "setDisplayStringEnabled:", [standardUserDefaults17 BOOLForKey:@"internalSettings.docCam.displayString.enabled"]);
 
-  v20 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  -[ICDocCamViewController setRealTimeRectangleDetection:](self, "setRealTimeRectangleDetection:", [v20 BOOLForKey:@"internalSettings.docCam.rectangle.realTime"]);
+  standardUserDefaults18 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  -[ICDocCamViewController setRealTimeRectangleDetection:](self, "setRealTimeRectangleDetection:", [standardUserDefaults18 BOOLForKey:@"internalSettings.docCam.rectangle.realTime"]);
 
-  v21 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  -[ICDocCamViewController setSynchronousRectangleDetection:](self, "setSynchronousRectangleDetection:", [v21 BOOLForKey:@"internalSettings.docCam.rectangle.synchronous"]);
+  standardUserDefaults19 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  -[ICDocCamViewController setSynchronousRectangleDetection:](self, "setSynchronousRectangleDetection:", [standardUserDefaults19 BOOLForKey:@"internalSettings.docCam.rectangle.synchronous"]);
 
-  v22 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  -[ICDocCamViewController setQueueSizeForRectangleDetection:](self, "setQueueSizeForRectangleDetection:", [v22 integerForKey:@"internalSettings.docCam.rectangle.queueSize"]);
+  standardUserDefaults20 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  -[ICDocCamViewController setQueueSizeForRectangleDetection:](self, "setQueueSizeForRectangleDetection:", [standardUserDefaults20 integerForKey:@"internalSettings.docCam.rectangle.queueSize"]);
 
-  v23 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  -[ICDocCamViewController setScanMovieRecordingEnabled:](self, "setScanMovieRecordingEnabled:", [v23 BOOLForKey:@"internalSettings.docCam.scanMovieRecording.enabled"]);
+  standardUserDefaults21 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  -[ICDocCamViewController setScanMovieRecordingEnabled:](self, "setScanMovieRecordingEnabled:", [standardUserDefaults21 BOOLForKey:@"internalSettings.docCam.scanMovieRecording.enabled"]);
 
-  v24 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  -[ICDocCamViewController setScanMovieRecordingDontShowWarning:](self, "setScanMovieRecordingDontShowWarning:", [v24 BOOLForKey:@"internalSettings.docCam.scanMovieRecording.doNotShowWarning"]);
+  standardUserDefaults22 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  -[ICDocCamViewController setScanMovieRecordingDontShowWarning:](self, "setScanMovieRecordingDontShowWarning:", [standardUserDefaults22 BOOLForKey:@"internalSettings.docCam.scanMovieRecording.doNotShowWarning"]);
 }
 
 - (void)preWarmFilters
@@ -1595,63 +1595,63 @@ void __40__ICDocCamViewController_preWarmFilters__block_invoke_2()
 - (void)setupThumbnailViewControllerIfNecessary
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v3 = [(ICDocCamViewController *)self thumbnailViewController];
+  thumbnailViewController = [(ICDocCamViewController *)self thumbnailViewController];
 
-  if (!v3)
+  if (!thumbnailViewController)
   {
     v4 = [[ICDocCamThumbnailCollectionViewController alloc] initWithDelegate:self];
     [(ICDocCamViewController *)self setThumbnailViewController:v4];
 
-    v5 = [(ICDocCamViewController *)self documentInfoCollection];
-    v6 = [v5 docInfos];
-    v7 = [(ICDocCamViewController *)self thumbnailViewController];
-    [v7 setDocumentInfoArray:v6];
+    documentInfoCollection = [(ICDocCamViewController *)self documentInfoCollection];
+    docInfos = [documentInfoCollection docInfos];
+    thumbnailViewController2 = [(ICDocCamViewController *)self thumbnailViewController];
+    [thumbnailViewController2 setDocumentInfoArray:docInfos];
 
-    v8 = [(ICDocCamViewController *)self imageCache];
-    v9 = [(ICDocCamViewController *)self thumbnailViewController];
-    [v9 setImageCache:v8];
+    imageCache = [(ICDocCamViewController *)self imageCache];
+    thumbnailViewController3 = [(ICDocCamViewController *)self thumbnailViewController];
+    [thumbnailViewController3 setImageCache:imageCache];
 
-    v10 = [(ICDocCamViewController *)self thumbnailViewController];
-    [(ICDocCamViewController *)self addChildViewController:v10];
+    thumbnailViewController4 = [(ICDocCamViewController *)self thumbnailViewController];
+    [(ICDocCamViewController *)self addChildViewController:thumbnailViewController4];
 
-    v11 = [(ICDocCamViewController *)self thumbnailViewController];
-    v12 = [v11 collectionView];
-    [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+    thumbnailViewController5 = [(ICDocCamViewController *)self thumbnailViewController];
+    collectionView = [thumbnailViewController5 collectionView];
+    [collectionView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v13 = [(ICDocCamViewController *)self thumbnailContainerView];
-    v14 = [(ICDocCamViewController *)self thumbnailViewController];
-    v15 = [v14 collectionView];
-    [v13 addSubview:v15];
+    thumbnailContainerView = [(ICDocCamViewController *)self thumbnailContainerView];
+    thumbnailViewController6 = [(ICDocCamViewController *)self thumbnailViewController];
+    collectionView2 = [thumbnailViewController6 collectionView];
+    [thumbnailContainerView addSubview:collectionView2];
 
-    v16 = [(ICDocCamViewController *)self thumbnailViewController];
-    [v16 didMoveToParentViewController:self];
+    thumbnailViewController7 = [(ICDocCamViewController *)self thumbnailViewController];
+    [thumbnailViewController7 didMoveToParentViewController:self];
 
     v17 = MEMORY[0x277CCAAD0];
     v34 = @"childView";
-    v18 = [(ICDocCamViewController *)self thumbnailViewController];
-    v19 = [v18 collectionView];
-    v35[0] = v19;
+    thumbnailViewController8 = [(ICDocCamViewController *)self thumbnailViewController];
+    collectionView3 = [thumbnailViewController8 collectionView];
+    v35[0] = collectionView3;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:&v34 count:1];
     v21 = [v17 constraintsWithVisualFormat:@"H:|[childView]|" options:0 metrics:0 views:v20];
 
     v22 = MEMORY[0x277CCAAD0];
     v32 = @"childView";
-    v23 = [(ICDocCamViewController *)self thumbnailViewController];
-    v24 = [v23 collectionView];
-    v33 = v24;
+    thumbnailViewController9 = [(ICDocCamViewController *)self thumbnailViewController];
+    collectionView4 = [thumbnailViewController9 collectionView];
+    v33 = collectionView4;
     v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
     v26 = [v22 constraintsWithVisualFormat:@"V:|[childView]|" options:0 metrics:0 views:v25];
 
-    v27 = [(ICDocCamViewController *)self thumbnailViewController];
-    v28 = [v27 collectionView];
-    [v28 setTranslatesAutoresizingMaskIntoConstraints:0];
+    thumbnailViewController10 = [(ICDocCamViewController *)self thumbnailViewController];
+    collectionView5 = [thumbnailViewController10 collectionView];
+    [collectionView5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     [MEMORY[0x277CCAAD0] activateConstraints:v21];
     [MEMORY[0x277CCAAD0] activateConstraints:v26];
-    v29 = [(ICDocCamViewController *)self thumbnailViewController];
-    v30 = [v29 collectionView];
-    v31 = [(ICDocCamViewController *)self thumbnailContainerView];
-    [v31 setCollectionView:v30];
+    thumbnailViewController11 = [(ICDocCamViewController *)self thumbnailViewController];
+    collectionView6 = [thumbnailViewController11 collectionView];
+    thumbnailContainerView2 = [(ICDocCamViewController *)self thumbnailContainerView];
+    [thumbnailContainerView2 setCollectionView:collectionView6];
   }
 }
 
@@ -1688,8 +1688,8 @@ void __49__ICDocCamViewController_useDocumentSegmentation__block_invoke()
 
   else
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v3 = [v4 userInterfaceIdiom] == 1;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    v3 = [currentDevice userInterfaceIdiom] == 1;
   }
 
   v5 = [(ICDocCamViewController *)self statusBarOrientation]- 1;
@@ -1708,8 +1708,8 @@ void __49__ICDocCamViewController_useDocumentSegmentation__block_invoke()
 
   else
   {
-    v7 = [(ICDocCamViewController *)self view];
-    [v7 safeAreaInsets];
+    view = [(ICDocCamViewController *)self view];
+    [view safeAreaInsets];
     v9 = -60.0;
     if (v5 < 2)
     {
@@ -1724,11 +1724,11 @@ void __49__ICDocCamViewController_useDocumentSegmentation__block_invoke()
     v6 = v9 - v8;
   }
 
-  v10 = [(ICDocCamViewController *)self userPromptViewVerticalConstraint];
-  [v10 setConstant:v6];
+  userPromptViewVerticalConstraint = [(ICDocCamViewController *)self userPromptViewVerticalConstraint];
+  [userPromptViewVerticalConstraint setConstant:v6];
 
-  v11 = [(ICDocCamViewController *)self moveCameraCloserViewVerticalConstraint];
-  [v11 setConstant:v6];
+  moveCameraCloserViewVerticalConstraint = [(ICDocCamViewController *)self moveCameraCloserViewVerticalConstraint];
+  [moveCameraCloserViewVerticalConstraint setConstant:v6];
 
   if (v3)
   {
@@ -1763,33 +1763,33 @@ void __49__ICDocCamViewController_useDocumentSegmentation__block_invoke()
 - (void)updateThumbnailContainerConstraintsForIpad
 {
   v21[3] = *MEMORY[0x277D85DE8];
-  v3 = [(ICDocCamViewController *)self thumbnailContainerView];
-  if (v3)
+  thumbnailContainerView = [(ICDocCamViewController *)self thumbnailContainerView];
+  if (thumbnailContainerView)
   {
-    v4 = [(ICDocCamViewController *)self view];
+    view = [(ICDocCamViewController *)self view];
 
-    if (v4)
+    if (view)
     {
-      v5 = [(ICDocCamViewController *)self thumbnailContainerView];
-      [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+      thumbnailContainerView2 = [(ICDocCamViewController *)self thumbnailContainerView];
+      [thumbnailContainerView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v20 = [(ICDocCamViewController *)self thumbnailContainerView];
-      v19 = [v20 bottomAnchor];
-      v18 = [(ICDocCamViewController *)self view];
-      v16 = [v18 safeAreaLayoutGuide];
-      v17 = [v16 bottomAnchor];
-      v6 = [v19 constraintEqualToAnchor:?];
+      thumbnailContainerView3 = [(ICDocCamViewController *)self thumbnailContainerView];
+      bottomAnchor = [thumbnailContainerView3 bottomAnchor];
+      view2 = [(ICDocCamViewController *)self view];
+      safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+      bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+      v6 = [bottomAnchor constraintEqualToAnchor:?];
       v21[0] = v6;
-      v7 = [(ICDocCamViewController *)self thumbnailContainerView];
-      v8 = [v7 widthAnchor];
-      v9 = [(ICDocCamViewController *)self view];
-      v10 = [v9 widthAnchor];
-      v11 = [v8 constraintEqualToAnchor:v10];
+      thumbnailContainerView4 = [(ICDocCamViewController *)self thumbnailContainerView];
+      widthAnchor = [thumbnailContainerView4 widthAnchor];
+      view3 = [(ICDocCamViewController *)self view];
+      widthAnchor2 = [view3 widthAnchor];
+      v11 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
       v21[1] = v11;
-      v12 = [(ICDocCamViewController *)self thumbnailContainerView];
-      v13 = [v12 heightAnchor];
+      thumbnailContainerView5 = [(ICDocCamViewController *)self thumbnailContainerView];
+      heightAnchor = [thumbnailContainerView5 heightAnchor];
       +[_TtC14DocumentCamera22DCLiquidGlassConstants thumbnailHeight];
-      v14 = [v13 constraintEqualToConstant:?];
+      v14 = [heightAnchor constraintEqualToConstant:?];
       v21[2] = v14;
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:3];
 
@@ -1808,13 +1808,13 @@ void __49__ICDocCamViewController_useDocumentSegmentation__block_invoke()
 - (void)legacyUpdateConstraintsForIPad
 {
   v195[1] = *MEMORY[0x277D85DE8];
-  v3 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+  iPadLayoutConstraints = [(ICDocCamViewController *)self iPadLayoutConstraints];
 
-  if (v3)
+  if (iPadLayoutConstraints)
   {
     v4 = MEMORY[0x277CCAAD0];
-    v191 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    [v4 activateConstraints:v191];
+    iPadLayoutConstraints2 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    [v4 activateConstraints:iPadLayoutConstraints2];
   }
 
   else
@@ -1822,54 +1822,54 @@ void __49__ICDocCamViewController_useDocumentSegmentation__block_invoke()
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
     [(ICDocCamViewController *)self setIPadLayoutConstraints:v5];
 
-    v6 = [(ICDocCamViewController *)self filterNameFeedbackBottomConstraint];
-    [v6 setConstant:30.0];
+    filterNameFeedbackBottomConstraint = [(ICDocCamViewController *)self filterNameFeedbackBottomConstraint];
+    [filterNameFeedbackBottomConstraint setConstant:30.0];
 
-    v7 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    v8 = [(ICDocCamViewController *)self filterNameFeedbackBottomConstraint];
-    [v7 addObject:v8];
+    iPadLayoutConstraints3 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    filterNameFeedbackBottomConstraint2 = [(ICDocCamViewController *)self filterNameFeedbackBottomConstraint];
+    [iPadLayoutConstraints3 addObject:filterNameFeedbackBottomConstraint2];
 
-    v9 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    v10 = [(ICDocCamViewController *)self shutterButton];
-    v11 = [v10 centerXAnchor];
-    v12 = [(ICDocCamViewController *)self view];
-    v13 = [v12 trailingAnchor];
-    v14 = [v11 constraintEqualToAnchor:v13 constant:-50.0];
-    [v9 addObject:v14];
+    iPadLayoutConstraints4 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    shutterButton = [(ICDocCamViewController *)self shutterButton];
+    centerXAnchor = [shutterButton centerXAnchor];
+    view = [(ICDocCamViewController *)self view];
+    trailingAnchor = [view trailingAnchor];
+    v14 = [centerXAnchor constraintEqualToAnchor:trailingAnchor constant:-50.0];
+    [iPadLayoutConstraints4 addObject:v14];
 
-    v15 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    v16 = [(ICDocCamViewController *)self shutterButton];
-    v17 = [v16 centerYAnchor];
-    v18 = [(ICDocCamViewController *)self view];
-    v19 = [v18 centerYAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19 constant:0.0];
-    [v15 addObject:v20];
+    iPadLayoutConstraints5 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    shutterButton2 = [(ICDocCamViewController *)self shutterButton];
+    centerYAnchor = [shutterButton2 centerYAnchor];
+    view2 = [(ICDocCamViewController *)self view];
+    centerYAnchor2 = [view2 centerYAnchor];
+    v20 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:0.0];
+    [iPadLayoutConstraints5 addObject:v20];
 
-    v21 = [(ICDocCamViewController *)self manualButton];
-    v22 = [v21 titleLabel];
-    v23 = [v22 text];
+    manualButton = [(ICDocCamViewController *)self manualButton];
+    titleLabel = [manualButton titleLabel];
+    text = [titleLabel text];
 
-    v24 = [(ICDocCamViewController *)self autoButton];
-    v25 = [v24 titleLabel];
-    v26 = [v25 text];
+    autoButton = [(ICDocCamViewController *)self autoButton];
+    titleLabel2 = [autoButton titleLabel];
+    text2 = [titleLabel2 text];
 
     v194 = *MEMORY[0x277D740A8];
     v27 = v194;
-    v28 = [(ICDocCamViewController *)self manualButton];
-    v29 = [v28 titleLabel];
-    v30 = [v29 font];
-    v195[0] = v30;
+    manualButton2 = [(ICDocCamViewController *)self manualButton];
+    titleLabel3 = [manualButton2 titleLabel];
+    font = [titleLabel3 font];
+    v195[0] = font;
     v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v195 forKeys:&v194 count:1];
-    [v23 sizeWithAttributes:v31];
+    [text sizeWithAttributes:v31];
     v33 = v32;
 
     v192 = v27;
-    v34 = [(ICDocCamViewController *)self autoButton];
-    v35 = [v34 titleLabel];
-    v36 = [v35 font];
-    v193 = v36;
+    autoButton2 = [(ICDocCamViewController *)self autoButton];
+    titleLabel4 = [autoButton2 titleLabel];
+    font2 = [titleLabel4 font];
+    v193 = font2;
     v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v193 forKeys:&v192 count:1];
-    [v26 sizeWithAttributes:v37];
+    [text2 sizeWithAttributes:v37];
     v39 = v38;
 
     if (v33 >= v39)
@@ -1884,240 +1884,240 @@ void __49__ICDocCamViewController_useDocumentSegmentation__block_invoke()
 
     v41 = v40;
     v42 = ceilf(v41) + 32.0;
-    v43 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    v44 = [(ICDocCamViewController *)self manualButton];
+    iPadLayoutConstraints6 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    manualButton3 = [(ICDocCamViewController *)self manualButton];
     if (v42 * 0.5 >= 43.0)
     {
-      v45 = [v44 trailingAnchor];
-      v46 = [(ICDocCamViewController *)self view];
-      v47 = [v46 trailingAnchor];
-      [v45 constraintGreaterThanOrEqualToAnchor:v47 constant:-11.0];
+      trailingAnchor2 = [manualButton3 trailingAnchor];
+      view3 = [(ICDocCamViewController *)self view];
+      trailingAnchor3 = [view3 trailingAnchor];
+      [trailingAnchor2 constraintGreaterThanOrEqualToAnchor:trailingAnchor3 constant:-11.0];
     }
 
     else
     {
-      v45 = [v44 centerXAnchor];
-      v46 = [(ICDocCamViewController *)self shutterButton];
-      v47 = [v46 centerXAnchor];
-      [v45 constraintEqualToAnchor:v47 constant:0.0];
+      trailingAnchor2 = [manualButton3 centerXAnchor];
+      view3 = [(ICDocCamViewController *)self shutterButton];
+      trailingAnchor3 = [view3 centerXAnchor];
+      [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:0.0];
     }
     v48 = ;
-    [v43 addObject:v48];
+    [iPadLayoutConstraints6 addObject:v48];
 
-    v49 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    v50 = [(ICDocCamViewController *)self manualButton];
-    v51 = [v50 centerYAnchor];
-    v52 = [(ICDocCamViewController *)self view];
-    v53 = [v52 centerYAnchor];
-    v54 = [v51 constraintEqualToAnchor:v53 constant:164.0];
-    [v49 addObject:v54];
+    iPadLayoutConstraints7 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    manualButton4 = [(ICDocCamViewController *)self manualButton];
+    centerYAnchor3 = [manualButton4 centerYAnchor];
+    view4 = [(ICDocCamViewController *)self view];
+    centerYAnchor4 = [view4 centerYAnchor];
+    v54 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4 constant:164.0];
+    [iPadLayoutConstraints7 addObject:v54];
 
-    v55 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    v56 = [(ICDocCamViewController *)self manualButton];
-    v57 = [v56 widthAnchor];
-    v58 = [v57 constraintEqualToConstant:v42];
-    [v55 addObject:v58];
+    iPadLayoutConstraints8 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    manualButton5 = [(ICDocCamViewController *)self manualButton];
+    widthAnchor = [manualButton5 widthAnchor];
+    v58 = [widthAnchor constraintEqualToConstant:v42];
+    [iPadLayoutConstraints8 addObject:v58];
 
-    v59 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    v60 = [(ICDocCamViewController *)self autoButton];
+    iPadLayoutConstraints9 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    autoButton3 = [(ICDocCamViewController *)self autoButton];
     if (v42 * 0.5 >= 43.0)
     {
-      v61 = [v60 trailingAnchor];
-      v62 = [(ICDocCamViewController *)self view];
-      v63 = [v62 trailingAnchor];
-      [v61 constraintGreaterThanOrEqualToAnchor:v63 constant:-11.0];
+      trailingAnchor4 = [autoButton3 trailingAnchor];
+      view5 = [(ICDocCamViewController *)self view];
+      trailingAnchor5 = [view5 trailingAnchor];
+      [trailingAnchor4 constraintGreaterThanOrEqualToAnchor:trailingAnchor5 constant:-11.0];
     }
 
     else
     {
-      v61 = [v60 centerXAnchor];
-      v62 = [(ICDocCamViewController *)self shutterButton];
-      v63 = [v62 centerXAnchor];
-      [v61 constraintEqualToAnchor:v63 constant:0.0];
+      trailingAnchor4 = [autoButton3 centerXAnchor];
+      view5 = [(ICDocCamViewController *)self shutterButton];
+      trailingAnchor5 = [view5 centerXAnchor];
+      [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:0.0];
     }
     v64 = ;
-    [v59 addObject:v64];
+    [iPadLayoutConstraints9 addObject:v64];
 
-    v65 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    v66 = [(ICDocCamViewController *)self autoButton];
-    v67 = [v66 centerYAnchor];
-    v68 = [(ICDocCamViewController *)self view];
-    v69 = [v68 centerYAnchor];
-    v70 = [v67 constraintEqualToAnchor:v69 constant:118.0];
-    [v65 addObject:v70];
+    iPadLayoutConstraints10 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    autoButton4 = [(ICDocCamViewController *)self autoButton];
+    centerYAnchor5 = [autoButton4 centerYAnchor];
+    view6 = [(ICDocCamViewController *)self view];
+    centerYAnchor6 = [view6 centerYAnchor];
+    v70 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6 constant:118.0];
+    [iPadLayoutConstraints10 addObject:v70];
 
-    v71 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    v72 = [(ICDocCamViewController *)self autoButton];
-    v73 = [v72 widthAnchor];
-    v74 = [v73 constraintEqualToConstant:v42];
-    [v71 addObject:v74];
+    iPadLayoutConstraints11 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    autoButton5 = [(ICDocCamViewController *)self autoButton];
+    widthAnchor2 = [autoButton5 widthAnchor];
+    v74 = [widthAnchor2 constraintEqualToConstant:v42];
+    [iPadLayoutConstraints11 addObject:v74];
 
-    v75 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    v76 = [(ICDocCamViewController *)self saveButton];
-    v77 = [v76 trailingAnchor];
-    v78 = [(ICDocCamViewController *)self view];
-    v79 = [v78 trailingAnchor];
-    v80 = [v77 constraintEqualToAnchor:v79 constant:-21.0];
-    [v75 addObject:v80];
+    iPadLayoutConstraints12 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    saveButton = [(ICDocCamViewController *)self saveButton];
+    trailingAnchor6 = [saveButton trailingAnchor];
+    view7 = [(ICDocCamViewController *)self view];
+    trailingAnchor7 = [view7 trailingAnchor];
+    v80 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7 constant:-21.0];
+    [iPadLayoutConstraints12 addObject:v80];
 
-    v81 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    v82 = [(ICDocCamViewController *)self saveButton];
-    v83 = [v82 centerYAnchor];
-    v84 = [(ICDocCamViewController *)self cancelButton];
-    v85 = [v84 centerYAnchor];
-    v86 = [v83 constraintEqualToAnchor:v85 constant:0.0];
-    [v81 addObject:v86];
+    iPadLayoutConstraints13 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    saveButton2 = [(ICDocCamViewController *)self saveButton];
+    centerYAnchor7 = [saveButton2 centerYAnchor];
+    cancelButton = [(ICDocCamViewController *)self cancelButton];
+    centerYAnchor8 = [cancelButton centerYAnchor];
+    v86 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8 constant:0.0];
+    [iPadLayoutConstraints13 addObject:v86];
 
-    v87 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    v88 = [(ICDocCamViewController *)self cancelButton];
-    v89 = [v88 leadingAnchor];
-    v90 = [(ICDocCamViewController *)self view];
-    v91 = [v90 leadingAnchor];
-    v92 = [v89 constraintEqualToAnchor:v91 constant:21.0];
-    [v87 addObject:v92];
+    iPadLayoutConstraints14 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    cancelButton2 = [(ICDocCamViewController *)self cancelButton];
+    leadingAnchor = [cancelButton2 leadingAnchor];
+    view8 = [(ICDocCamViewController *)self view];
+    leadingAnchor2 = [view8 leadingAnchor];
+    v92 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:21.0];
+    [iPadLayoutConstraints14 addObject:v92];
 
-    v93 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    v94 = [(ICDocCamViewController *)self cancelButton];
-    v95 = [v94 firstBaselineAnchor];
-    v96 = [(ICDocCamViewController *)self view];
-    v97 = [v96 bottomAnchor];
-    v98 = [v95 constraintEqualToAnchor:v97 constant:-40.0];
-    [v93 addObject:v98];
+    iPadLayoutConstraints15 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    cancelButton3 = [(ICDocCamViewController *)self cancelButton];
+    firstBaselineAnchor = [cancelButton3 firstBaselineAnchor];
+    view9 = [(ICDocCamViewController *)self view];
+    bottomAnchor = [view9 bottomAnchor];
+    v98 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:-40.0];
+    [iPadLayoutConstraints15 addObject:v98];
 
-    v99 = [(ICDocCamViewController *)self thumbnailContainerView];
-    [v99 setTranslatesAutoresizingMaskIntoConstraints:0];
+    thumbnailContainerView = [(ICDocCamViewController *)self thumbnailContainerView];
+    [thumbnailContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v100 = [(ICDocCamViewController *)self thumbnailContainerView];
-    v101 = [v100 leadingAnchor];
-    v102 = [(ICDocCamViewController *)self cancelButton];
-    v103 = [v102 trailingAnchor];
-    v104 = [v101 constraintEqualToAnchor:v103 constant:48.0];
+    thumbnailContainerView2 = [(ICDocCamViewController *)self thumbnailContainerView];
+    leadingAnchor3 = [thumbnailContainerView2 leadingAnchor];
+    cancelButton4 = [(ICDocCamViewController *)self cancelButton];
+    trailingAnchor8 = [cancelButton4 trailingAnchor];
+    v104 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor8 constant:48.0];
     [(ICDocCamViewController *)self setThumbnailContainerViewLeadingConstraintForIPad:v104];
 
-    v105 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    v106 = [(ICDocCamViewController *)self thumbnailContainerViewLeadingConstraintForIPad];
-    [v105 addObject:v106];
+    iPadLayoutConstraints16 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    thumbnailContainerViewLeadingConstraintForIPad = [(ICDocCamViewController *)self thumbnailContainerViewLeadingConstraintForIPad];
+    [iPadLayoutConstraints16 addObject:thumbnailContainerViewLeadingConstraintForIPad];
 
-    v107 = [(ICDocCamViewController *)self thumbnailContainerView];
-    v108 = [v107 trailingAnchor];
-    v109 = [(ICDocCamViewController *)self saveButton];
-    v110 = [v109 leadingAnchor];
-    v111 = [v108 constraintEqualToAnchor:v110 constant:48.0];
+    thumbnailContainerView3 = [(ICDocCamViewController *)self thumbnailContainerView];
+    trailingAnchor9 = [thumbnailContainerView3 trailingAnchor];
+    saveButton3 = [(ICDocCamViewController *)self saveButton];
+    leadingAnchor4 = [saveButton3 leadingAnchor];
+    v111 = [trailingAnchor9 constraintEqualToAnchor:leadingAnchor4 constant:48.0];
     [(ICDocCamViewController *)self setThumbnailContainerViewTrailingConstraintForIPad:v111];
 
     [(ICDocCamViewController *)self updateThumbnailContainerViewConstraintConstantForIPad];
-    v112 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    v113 = [(ICDocCamViewController *)self thumbnailContainerViewTrailingConstraintForIPad];
-    [v112 addObject:v113];
+    iPadLayoutConstraints17 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    thumbnailContainerViewTrailingConstraintForIPad = [(ICDocCamViewController *)self thumbnailContainerViewTrailingConstraintForIPad];
+    [iPadLayoutConstraints17 addObject:thumbnailContainerViewTrailingConstraintForIPad];
 
-    v114 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    v115 = [(ICDocCamViewController *)self thumbnailContainerView];
-    v116 = [v115 bottomAnchor];
-    v117 = [(ICDocCamViewController *)self view];
-    v118 = [v117 safeAreaLayoutGuide];
-    v119 = [v118 bottomAnchor];
-    v120 = [v116 constraintEqualToAnchor:v119 constant:-16.0];
-    [v114 addObject:v120];
+    iPadLayoutConstraints18 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    thumbnailContainerView4 = [(ICDocCamViewController *)self thumbnailContainerView];
+    bottomAnchor2 = [thumbnailContainerView4 bottomAnchor];
+    view10 = [(ICDocCamViewController *)self view];
+    safeAreaLayoutGuide = [view10 safeAreaLayoutGuide];
+    bottomAnchor3 = [safeAreaLayoutGuide bottomAnchor];
+    v120 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-16.0];
+    [iPadLayoutConstraints18 addObject:v120];
 
-    v121 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    v122 = [(ICDocCamViewController *)self flashSettingView];
-    v123 = [v122 trailingAnchor];
-    v124 = [(ICDocCamViewController *)self flashButton];
-    v125 = [v124 trailingAnchor];
-    v126 = [v123 constraintEqualToAnchor:v125 constant:0.0];
-    [v121 addObject:v126];
+    iPadLayoutConstraints19 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    flashSettingView = [(ICDocCamViewController *)self flashSettingView];
+    trailingAnchor10 = [flashSettingView trailingAnchor];
+    flashButton = [(ICDocCamViewController *)self flashButton];
+    trailingAnchor11 = [flashButton trailingAnchor];
+    v126 = [trailingAnchor10 constraintEqualToAnchor:trailingAnchor11 constant:0.0];
+    [iPadLayoutConstraints19 addObject:v126];
 
-    v127 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    v128 = [(ICDocCamViewController *)self flashSettingView];
-    v129 = [v128 centerYAnchor];
-    v130 = [(ICDocCamViewController *)self flashButton];
-    v131 = [v130 centerYAnchor];
-    v132 = [v129 constraintEqualToAnchor:v131 constant:0.0];
-    [v127 addObject:v132];
+    iPadLayoutConstraints20 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    flashSettingView2 = [(ICDocCamViewController *)self flashSettingView];
+    centerYAnchor9 = [flashSettingView2 centerYAnchor];
+    flashButton2 = [(ICDocCamViewController *)self flashButton];
+    centerYAnchor10 = [flashButton2 centerYAnchor];
+    v132 = [centerYAnchor9 constraintEqualToAnchor:centerYAnchor10 constant:0.0];
+    [iPadLayoutConstraints20 addObject:v132];
 
-    v133 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    v134 = [(ICDocCamViewController *)self flashSettingView];
-    v135 = [v134 heightAnchor];
-    v136 = [v135 constraintEqualToConstant:44.0];
-    [v133 addObject:v136];
+    iPadLayoutConstraints21 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    flashSettingView3 = [(ICDocCamViewController *)self flashSettingView];
+    heightAnchor = [flashSettingView3 heightAnchor];
+    v136 = [heightAnchor constraintEqualToConstant:44.0];
+    [iPadLayoutConstraints21 addObject:v136];
 
-    v137 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    v138 = [(ICDocCamViewController *)self filterViewContainer];
-    v139 = [v138 centerYAnchor];
-    v140 = [(ICDocCamViewController *)self filterButton];
-    v141 = [v140 centerYAnchor];
-    v142 = [v139 constraintEqualToAnchor:v141 constant:0.0];
-    [v137 addObject:v142];
+    iPadLayoutConstraints22 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    filterViewContainer = [(ICDocCamViewController *)self filterViewContainer];
+    centerYAnchor11 = [filterViewContainer centerYAnchor];
+    filterButton = [(ICDocCamViewController *)self filterButton];
+    centerYAnchor12 = [filterButton centerYAnchor];
+    v142 = [centerYAnchor11 constraintEqualToAnchor:centerYAnchor12 constant:0.0];
+    [iPadLayoutConstraints22 addObject:v142];
 
-    v143 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    v144 = [(ICDocCamViewController *)self filterViewContainer];
-    v145 = [v144 heightAnchor];
-    v146 = [v145 constraintEqualToConstant:44.0];
-    [v143 addObject:v146];
+    iPadLayoutConstraints23 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    filterViewContainer2 = [(ICDocCamViewController *)self filterViewContainer];
+    heightAnchor2 = [filterViewContainer2 heightAnchor];
+    v146 = [heightAnchor2 constraintEqualToConstant:44.0];
+    [iPadLayoutConstraints23 addObject:v146];
 
-    v147 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    v148 = [(ICDocCamViewController *)self filterViewContainer];
-    v149 = [v148 trailingAnchor];
-    v150 = [(ICDocCamViewController *)self filterButton];
-    v151 = [v150 trailingAnchor];
-    v152 = [v149 constraintEqualToAnchor:v151 constant:0.0];
-    [v147 addObject:v152];
+    iPadLayoutConstraints24 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    filterViewContainer3 = [(ICDocCamViewController *)self filterViewContainer];
+    trailingAnchor12 = [filterViewContainer3 trailingAnchor];
+    filterButton2 = [(ICDocCamViewController *)self filterButton];
+    trailingAnchor13 = [filterButton2 trailingAnchor];
+    v152 = [trailingAnchor12 constraintEqualToAnchor:trailingAnchor13 constant:0.0];
+    [iPadLayoutConstraints24 addObject:v152];
 
-    v153 = [(ICDocCamViewController *)self filterScrollView];
-    [v153 setContentInset:{0.0, 6.0, 0.0, 0.0}];
+    filterScrollView = [(ICDocCamViewController *)self filterScrollView];
+    [filterScrollView setContentInset:{0.0, 6.0, 0.0, 0.0}];
 
-    v154 = [(ICDocCamViewController *)self filterViewContainer];
-    v155 = [v154 widthAnchor];
-    v156 = [v155 constraintEqualToConstant:44.0];
+    filterViewContainer4 = [(ICDocCamViewController *)self filterViewContainer];
+    widthAnchor3 = [filterViewContainer4 widthAnchor];
+    v156 = [widthAnchor3 constraintEqualToConstant:44.0];
     [(ICDocCamViewController *)self setFilterViewContainerWidthConstraint:v156];
 
-    v157 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    v158 = [(ICDocCamViewController *)self filterViewContainerWidthConstraint];
-    [v157 addObject:v158];
+    iPadLayoutConstraints25 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    filterViewContainerWidthConstraint = [(ICDocCamViewController *)self filterViewContainerWidthConstraint];
+    [iPadLayoutConstraints25 addObject:filterViewContainerWidthConstraint];
 
-    v159 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    v160 = [(ICDocCamViewController *)self filterViewContainer];
-    v161 = [v160 centerYAnchor];
-    v162 = [(ICDocCamViewController *)self filterButton];
-    v163 = [v162 centerYAnchor];
-    v164 = [v161 constraintEqualToAnchor:v163 constant:0.0];
-    [v159 addObject:v164];
+    iPadLayoutConstraints26 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    filterViewContainer5 = [(ICDocCamViewController *)self filterViewContainer];
+    centerYAnchor13 = [filterViewContainer5 centerYAnchor];
+    filterButton3 = [(ICDocCamViewController *)self filterButton];
+    centerYAnchor14 = [filterButton3 centerYAnchor];
+    v164 = [centerYAnchor13 constraintEqualToAnchor:centerYAnchor14 constant:0.0];
+    [iPadLayoutConstraints26 addObject:v164];
 
-    v165 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    v166 = [(ICDocCamViewController *)self filterScrollViewContainer];
-    v167 = [v166 leadingAnchor];
-    v168 = [(ICDocCamViewController *)self filterView];
-    v169 = [v168 leadingAnchor];
-    v170 = [v167 constraintEqualToAnchor:v169 constant:0.0];
-    [v165 addObject:v170];
+    iPadLayoutConstraints27 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    filterScrollViewContainer = [(ICDocCamViewController *)self filterScrollViewContainer];
+    leadingAnchor5 = [filterScrollViewContainer leadingAnchor];
+    filterView = [(ICDocCamViewController *)self filterView];
+    leadingAnchor6 = [filterView leadingAnchor];
+    v170 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:0.0];
+    [iPadLayoutConstraints27 addObject:v170];
 
-    v171 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    v172 = [(ICDocCamViewController *)self filterScrollViewContainer];
-    v173 = [v172 topAnchor];
-    v174 = [(ICDocCamViewController *)self filterView];
-    v175 = [v174 topAnchor];
-    v176 = [v173 constraintEqualToAnchor:v175 constant:0.0];
-    [v171 addObject:v176];
+    iPadLayoutConstraints28 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    filterScrollViewContainer2 = [(ICDocCamViewController *)self filterScrollViewContainer];
+    topAnchor = [filterScrollViewContainer2 topAnchor];
+    filterView2 = [(ICDocCamViewController *)self filterView];
+    topAnchor2 = [filterView2 topAnchor];
+    v176 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
+    [iPadLayoutConstraints28 addObject:v176];
 
-    v177 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    v178 = [(ICDocCamViewController *)self filterScrollViewContainer];
-    v179 = [v178 bottomAnchor];
-    v180 = [(ICDocCamViewController *)self filterView];
-    v181 = [v180 bottomAnchor];
-    v182 = [v179 constraintEqualToAnchor:v181 constant:0.0];
-    [v177 addObject:v182];
+    iPadLayoutConstraints29 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    filterScrollViewContainer3 = [(ICDocCamViewController *)self filterScrollViewContainer];
+    bottomAnchor4 = [filterScrollViewContainer3 bottomAnchor];
+    filterView3 = [(ICDocCamViewController *)self filterView];
+    bottomAnchor5 = [filterView3 bottomAnchor];
+    v182 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:0.0];
+    [iPadLayoutConstraints29 addObject:v182];
 
-    v183 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    v184 = [(ICDocCamViewController *)self filterScrollViewContainer];
-    v185 = [v184 trailingAnchor];
-    v186 = [(ICDocCamViewController *)self filterView];
-    v187 = [v186 trailingAnchor];
-    v188 = [v185 constraintEqualToAnchor:v187 constant:0.0];
-    [v183 addObject:v188];
+    iPadLayoutConstraints30 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    filterScrollViewContainer4 = [(ICDocCamViewController *)self filterScrollViewContainer];
+    trailingAnchor14 = [filterScrollViewContainer4 trailingAnchor];
+    filterView4 = [(ICDocCamViewController *)self filterView];
+    trailingAnchor15 = [filterView4 trailingAnchor];
+    v188 = [trailingAnchor14 constraintEqualToAnchor:trailingAnchor15 constant:0.0];
+    [iPadLayoutConstraints30 addObject:v188];
 
     v189 = MEMORY[0x277CCAAD0];
-    v190 = [(ICDocCamViewController *)self iPadLayoutConstraints];
-    [v189 activateConstraints:v190];
+    iPadLayoutConstraints31 = [(ICDocCamViewController *)self iPadLayoutConstraints];
+    [v189 activateConstraints:iPadLayoutConstraints31];
   }
 }
 
@@ -2145,27 +2145,27 @@ void __49__ICDocCamViewController_useDocumentSegmentation__block_invoke()
 
 - (void)modernUpdatePlacardConstraints
 {
-  v13 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v13 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v4 = [(ICDocCamViewController *)self statusBarOrientation];
-  v14 = [(ICDocCamViewController *)self view];
-  [v14 safeAreaInsets];
+  statusBarOrientation = [(ICDocCamViewController *)self statusBarOrientation];
+  view = [(ICDocCamViewController *)self view];
+  [view safeAreaInsets];
   v6 = v5;
   v8 = v7;
 
-  if (v3)
+  if (userInterfaceIdiom)
   {
     +[_TtC14DocumentCamera22DCLiquidGlassConstants bottomPlacardSpacingToBottomLandscapePad];
   }
 
   else
   {
-    v15 = [(ICDocCamViewController *)self view];
+    view2 = [(ICDocCamViewController *)self view];
     [DCLiquidGlassConstants topPlacardSpacingFor:"topPlacardSpacingFor:isPortrait:" isPortrait:?];
     v6 = v10;
 
-    if ((v4 - 1) > 1)
+    if ((statusBarOrientation - 1) > 1)
     {
       +[_TtC14DocumentCamera22DCLiquidGlassConstants bottomPlacardSpacingToBottomLandscape];
     }
@@ -2177,35 +2177,35 @@ void __49__ICDocCamViewController_useDocumentSegmentation__block_invoke()
   }
 
   v11 = v9;
-  v16 = [(ICDocCamViewController *)self userPromptViewVerticalConstraint];
-  [v16 setConstant:v6];
+  userPromptViewVerticalConstraint = [(ICDocCamViewController *)self userPromptViewVerticalConstraint];
+  [userPromptViewVerticalConstraint setConstant:v6];
 
-  v17 = [(ICDocCamViewController *)self moveCameraCloserViewVerticalConstraint];
-  [v17 setConstant:v6];
+  moveCameraCloserViewVerticalConstraint = [(ICDocCamViewController *)self moveCameraCloserViewVerticalConstraint];
+  [moveCameraCloserViewVerticalConstraint setConstant:v6];
 
   v12 = -(v8 + v11);
-  v18 = [(ICDocCamViewController *)self flashFeedbackBottomConstraint];
-  [v18 setConstant:v12];
+  flashFeedbackBottomConstraint = [(ICDocCamViewController *)self flashFeedbackBottomConstraint];
+  [flashFeedbackBottomConstraint setConstant:v12];
 
-  v19 = [(ICDocCamViewController *)self filterNameFeedbackBottomConstraint];
-  [v19 setConstant:v12];
+  filterNameFeedbackBottomConstraint = [(ICDocCamViewController *)self filterNameFeedbackBottomConstraint];
+  [filterNameFeedbackBottomConstraint setConstant:v12];
 
-  v20 = [(ICDocCamViewController *)self autoShutterOnFeedbackBottomConstraint];
-  [v20 setConstant:v12];
+  autoShutterOnFeedbackBottomConstraint = [(ICDocCamViewController *)self autoShutterOnFeedbackBottomConstraint];
+  [autoShutterOnFeedbackBottomConstraint setConstant:v12];
 
-  v21 = [(ICDocCamViewController *)self autoShutterOffFeedbackBottomConstraint];
-  [v21 setConstant:v12];
+  autoShutterOffFeedbackBottomConstraint = [(ICDocCamViewController *)self autoShutterOffFeedbackBottomConstraint];
+  [autoShutterOffFeedbackBottomConstraint setConstant:v12];
 }
 
 - (void)updateThumbnailConstraintsForIPhone
 {
-  v31 = [MEMORY[0x277CBEB18] array];
-  v3 = [(ICDocCamViewController *)self view];
-  v4 = [(ICDocCamViewController *)self thumbnailContainerView];
-  [v3 dc_removeAllConstraintsForSubview:v4];
+  array = [MEMORY[0x277CBEB18] array];
+  view = [(ICDocCamViewController *)self view];
+  thumbnailContainerView = [(ICDocCamViewController *)self thumbnailContainerView];
+  [view dc_removeAllConstraintsForSubview:thumbnailContainerView];
 
-  v5 = [(ICDocCamViewController *)self thumbnailContainerView];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  thumbnailContainerView2 = [(ICDocCamViewController *)self thumbnailContainerView];
+  [thumbnailContainerView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v6 = 16.0;
   if ([objc_opt_class() isLiquidGlassEnabledForCapture])
@@ -2214,15 +2214,15 @@ void __49__ICDocCamViewController_useDocumentSegmentation__block_invoke()
     v6 = v7;
   }
 
-  v8 = [(ICDocCamViewController *)self thumbnailContainerView];
-  v9 = [v8 leadingAnchor];
-  v10 = [(ICDocCamViewController *)self view];
-  v11 = [v10 leadingAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11 constant:v6];
+  thumbnailContainerView3 = [(ICDocCamViewController *)self thumbnailContainerView];
+  leadingAnchor = [thumbnailContainerView3 leadingAnchor];
+  view2 = [(ICDocCamViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v6];
   [(ICDocCamViewController *)self setThumbnailContainerViewLeadingConstraintForIPhone:v12];
 
-  v13 = [(ICDocCamViewController *)self thumbnailContainerViewLeadingConstraintForIPhone];
-  [v31 addObject:v13];
+  thumbnailContainerViewLeadingConstraintForIPhone = [(ICDocCamViewController *)self thumbnailContainerViewLeadingConstraintForIPhone];
+  [array addObject:thumbnailContainerViewLeadingConstraintForIPhone];
 
   v14 = 0.0;
   if ([objc_opt_class() isLiquidGlassEnabledForCapture])
@@ -2231,43 +2231,43 @@ void __49__ICDocCamViewController_useDocumentSegmentation__block_invoke()
     v14 = -v15;
   }
 
-  v16 = [(ICDocCamViewController *)self thumbnailContainerView];
-  v17 = [v16 bottomAnchor];
-  v18 = [(ICDocCamViewController *)self view];
-  v19 = [v18 bottomAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19 constant:v14];
+  thumbnailContainerView4 = [(ICDocCamViewController *)self thumbnailContainerView];
+  bottomAnchor = [thumbnailContainerView4 bottomAnchor];
+  view3 = [(ICDocCamViewController *)self view];
+  bottomAnchor2 = [view3 bottomAnchor];
+  v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v14];
   [(ICDocCamViewController *)self setThumbnailContainerViewBottomConstraintForIPhone:v20];
 
-  v21 = [(ICDocCamViewController *)self thumbnailContainerViewBottomConstraintForIPhone];
-  [v31 addObject:v21];
+  thumbnailContainerViewBottomConstraintForIPhone = [(ICDocCamViewController *)self thumbnailContainerViewBottomConstraintForIPhone];
+  [array addObject:thumbnailContainerViewBottomConstraintForIPhone];
 
-  v22 = [(ICDocCamViewController *)self thumbnailContainerView];
-  v23 = [v22 heightAnchor];
-  v24 = [v23 constraintEqualToConstant:80.0];
-  [v31 addObject:v24];
+  thumbnailContainerView5 = [(ICDocCamViewController *)self thumbnailContainerView];
+  heightAnchor = [thumbnailContainerView5 heightAnchor];
+  v24 = [heightAnchor constraintEqualToConstant:80.0];
+  [array addObject:v24];
 
-  v25 = [(ICDocCamViewController *)self thumbnailContainerView];
-  v26 = [v25 widthAnchor];
-  v27 = [v26 constraintEqualToConstant:100.0];
-  [v31 addObject:v27];
+  thumbnailContainerView6 = [(ICDocCamViewController *)self thumbnailContainerView];
+  widthAnchor = [thumbnailContainerView6 widthAnchor];
+  v27 = [widthAnchor constraintEqualToConstant:100.0];
+  [array addObject:v27];
 
-  v28 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
-  [v28 addObjectsFromArray:v31];
+  iPhonePortraitLayoutConstraints = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
+  [iPhonePortraitLayoutConstraints addObjectsFromArray:array];
 
-  v29 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
-  [v29 addObjectsFromArray:v31];
+  iPhoneLandscapeLayoutConstraints = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
+  [iPhoneLandscapeLayoutConstraints addObjectsFromArray:array];
 
-  v30 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
-  [v30 addObjectsFromArray:v31];
+  iPhoneCompactLandscapeLayoutConstraints = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
+  [iPhoneCompactLandscapeLayoutConstraints addObjectsFromArray:array];
 
-  [MEMORY[0x277CCAAD0] activateConstraints:v31];
+  [MEMORY[0x277CCAAD0] activateConstraints:array];
 }
 
 - (void)legacyUpdateConstraintsForIPhone
 {
   v645 = *MEMORY[0x277D85DE8];
-  v3 = [(ICDocCamViewController *)self view];
-  [v3 dc_directionalSafeAreaInsets];
+  view = [(ICDocCamViewController *)self view];
+  [view dc_directionalSafeAreaInsets];
   v634 = v4;
   v6 = v5;
   v8 = v7;
@@ -2276,12 +2276,12 @@ void __49__ICDocCamViewController_useDocumentSegmentation__block_invoke()
   v11 = [(ICDocCamViewController *)self statusBarOrientation]- 1;
   if (v11 > 1)
   {
-    v15 = [(ICDocCamViewController *)self view];
-    v16 = [v15 window];
-    v17 = [v16 dc_requiresCompactLandscapeIcons];
+    view2 = [(ICDocCamViewController *)self view];
+    window = [view2 window];
+    dc_requiresCompactLandscapeIcons = [window dc_requiresCompactLandscapeIcons];
 
-    v633 = v17;
-    if (v17)
+    v633 = dc_requiresCompactLandscapeIcons;
+    if (dc_requiresCompactLandscapeIcons)
     {
       v14 = 32.0;
     }
@@ -2291,11 +2291,11 @@ void __49__ICDocCamViewController_useDocumentSegmentation__block_invoke()
       v14 = 44.0;
     }
 
-    v18 = [(ICDocCamViewController *)self view];
-    v19 = [v18 window];
-    v20 = [v19 windowScene];
-    v21 = [v20 statusBarManager];
-    [v21 statusBarFrame];
+    view3 = [(ICDocCamViewController *)self view];
+    window2 = [view3 window];
+    windowScene = [window2 windowScene];
+    statusBarManager = [windowScene statusBarManager];
+    [statusBarManager statusBarFrame];
     v23 = v22;
 
     v12 = 0.0;
@@ -2320,17 +2320,17 @@ void __49__ICDocCamViewController_useDocumentSegmentation__block_invoke()
     v14 = 44.0;
   }
 
-  v24 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
+  iPhonePortraitLayoutConstraints = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
   v25 = -(v13 + 13.0);
-  if (v24 || ([(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints], (v24 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (iPhonePortraitLayoutConstraints || ([(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints], (iPhonePortraitLayoutConstraints = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else
   {
-    v94 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
+    iPhoneCompactLandscapeLayoutConstraints = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
 
-    if (!v94)
+    if (!iPhoneCompactLandscapeLayoutConstraints)
     {
       v95 = objc_alloc_init(MEMORY[0x277CBEB18]);
       [(ICDocCamViewController *)self setIPhonePortraitLayoutConstraints:v95];
@@ -2341,405 +2341,405 @@ void __49__ICDocCamViewController_useDocumentSegmentation__block_invoke()
       v97 = objc_alloc_init(MEMORY[0x277CBEB18]);
       [(ICDocCamViewController *)self setIPhoneCompactLandscapeLayoutConstraints:v97];
 
-      v98 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
-      v99 = [(ICDocCamViewController *)self filterNameFeedbackBottomConstraint];
-      [v98 addObject:v99];
+      iPhonePortraitLayoutConstraints2 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
+      filterNameFeedbackBottomConstraint = [(ICDocCamViewController *)self filterNameFeedbackBottomConstraint];
+      [iPhonePortraitLayoutConstraints2 addObject:filterNameFeedbackBottomConstraint];
 
-      v100 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
-      v101 = [(ICDocCamViewController *)self filterNameFeedbackBottomConstraint];
-      [v100 addObject:v101];
+      iPhoneLandscapeLayoutConstraints = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
+      filterNameFeedbackBottomConstraint2 = [(ICDocCamViewController *)self filterNameFeedbackBottomConstraint];
+      [iPhoneLandscapeLayoutConstraints addObject:filterNameFeedbackBottomConstraint2];
 
-      v102 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
-      v103 = [(ICDocCamViewController *)self filterNameFeedbackBottomConstraint];
-      [v102 addObject:v103];
+      iPhoneCompactLandscapeLayoutConstraints2 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
+      filterNameFeedbackBottomConstraint3 = [(ICDocCamViewController *)self filterNameFeedbackBottomConstraint];
+      [iPhoneCompactLandscapeLayoutConstraints2 addObject:filterNameFeedbackBottomConstraint3];
 
-      v104 = [(ICDocCamViewController *)self topToolbarForIPhone];
-      [v104 setTranslatesAutoresizingMaskIntoConstraints:0];
+      topToolbarForIPhone = [(ICDocCamViewController *)self topToolbarForIPhone];
+      [topToolbarForIPhone setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v105 = [(ICDocCamViewController *)self cancelButtonForIPhone];
-      [v105 setTranslatesAutoresizingMaskIntoConstraints:0];
+      cancelButtonForIPhone = [(ICDocCamViewController *)self cancelButtonForIPhone];
+      [cancelButtonForIPhone setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v106 = [(ICDocCamViewController *)self autoButtonForIPhone];
-      [v106 setTranslatesAutoresizingMaskIntoConstraints:0];
+      autoButtonForIPhone = [(ICDocCamViewController *)self autoButtonForIPhone];
+      [autoButtonForIPhone setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v107 = [(ICDocCamViewController *)self flashButtonForIPhone];
-      [v107 setTranslatesAutoresizingMaskIntoConstraints:0];
+      flashButtonForIPhone = [(ICDocCamViewController *)self flashButtonForIPhone];
+      [flashButtonForIPhone setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v108 = [(ICDocCamViewController *)self filterButtonForIPhone];
-      [v108 setTranslatesAutoresizingMaskIntoConstraints:0];
+      filterButtonForIPhone = [(ICDocCamViewController *)self filterButtonForIPhone];
+      [filterButtonForIPhone setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v109 = [(ICDocCamViewController *)self saveButton];
-      [v109 setTranslatesAutoresizingMaskIntoConstraints:0];
+      saveButton = [(ICDocCamViewController *)self saveButton];
+      [saveButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v110 = [(ICDocCamViewController *)self filterScrollViewContainer];
-      [v110 setTranslatesAutoresizingMaskIntoConstraints:0];
+      filterScrollViewContainer = [(ICDocCamViewController *)self filterScrollViewContainer];
+      [filterScrollViewContainer setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v111 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
-      v112 = [(ICDocCamViewController *)self shutterButton];
-      v113 = [v112 centerXAnchor];
-      v114 = [(ICDocCamViewController *)self view];
-      v115 = [v114 centerXAnchor];
-      v116 = [v113 constraintEqualToAnchor:v115 constant:0.0];
-      [v111 addObject:v116];
+      iPhonePortraitLayoutConstraints3 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
+      shutterButton = [(ICDocCamViewController *)self shutterButton];
+      centerXAnchor = [shutterButton centerXAnchor];
+      view4 = [(ICDocCamViewController *)self view];
+      centerXAnchor2 = [view4 centerXAnchor];
+      v116 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:0.0];
+      [iPhonePortraitLayoutConstraints3 addObject:v116];
 
-      v117 = [(ICDocCamViewController *)self shutterButton];
-      v118 = [v117 bottomAnchor];
-      v119 = [(ICDocCamViewController *)self view];
-      v120 = [v119 bottomAnchor];
-      v121 = [v118 constraintEqualToAnchor:v120 constant:v25];
+      shutterButton2 = [(ICDocCamViewController *)self shutterButton];
+      bottomAnchor = [shutterButton2 bottomAnchor];
+      view5 = [(ICDocCamViewController *)self view];
+      bottomAnchor2 = [view5 bottomAnchor];
+      v121 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v25];
       [(ICDocCamViewController *)self setShutterButtonBottomConstraintForPortraitIPhone:v121];
 
-      v122 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
-      v123 = [(ICDocCamViewController *)self shutterButtonBottomConstraintForPortraitIPhone];
-      [v122 addObject:v123];
+      iPhonePortraitLayoutConstraints4 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
+      shutterButtonBottomConstraintForPortraitIPhone = [(ICDocCamViewController *)self shutterButtonBottomConstraintForPortraitIPhone];
+      [iPhonePortraitLayoutConstraints4 addObject:shutterButtonBottomConstraintForPortraitIPhone];
 
-      v124 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
-      v125 = [(ICDocCamViewController *)self shutterButton];
-      v126 = [v125 centerYAnchor];
-      v127 = [(ICDocCamViewController *)self view];
-      v128 = [v127 centerYAnchor];
-      v129 = [v126 constraintEqualToAnchor:v128 constant:0.0];
-      [v124 addObject:v129];
+      iPhoneLandscapeLayoutConstraints2 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
+      shutterButton3 = [(ICDocCamViewController *)self shutterButton];
+      centerYAnchor = [shutterButton3 centerYAnchor];
+      view6 = [(ICDocCamViewController *)self view];
+      centerYAnchor2 = [view6 centerYAnchor];
+      v129 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:0.0];
+      [iPhoneLandscapeLayoutConstraints2 addObject:v129];
 
-      v130 = [(ICDocCamViewController *)self shutterButton];
-      v131 = [v130 trailingAnchor];
-      v132 = [(ICDocCamViewController *)self view];
-      v133 = [v132 trailingAnchor];
-      v134 = [v131 constraintEqualToAnchor:v133 constant:v25];
+      shutterButton4 = [(ICDocCamViewController *)self shutterButton];
+      trailingAnchor = [shutterButton4 trailingAnchor];
+      view7 = [(ICDocCamViewController *)self view];
+      trailingAnchor2 = [view7 trailingAnchor];
+      v134 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:v25];
       [(ICDocCamViewController *)self setShutterButtonBottomConstraintForLandscapeIPhone:v134];
 
-      v135 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
-      v136 = [(ICDocCamViewController *)self shutterButtonBottomConstraintForLandscapeIPhone];
-      [v135 addObject:v136];
+      iPhoneLandscapeLayoutConstraints3 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
+      shutterButtonBottomConstraintForLandscapeIPhone = [(ICDocCamViewController *)self shutterButtonBottomConstraintForLandscapeIPhone];
+      [iPhoneLandscapeLayoutConstraints3 addObject:shutterButtonBottomConstraintForLandscapeIPhone];
 
-      v137 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
-      v138 = [(ICDocCamViewController *)self shutterButton];
-      v139 = [v138 centerYAnchor];
-      v140 = [(ICDocCamViewController *)self view];
-      v141 = [v140 centerYAnchor];
-      v142 = [v139 constraintEqualToAnchor:v141 constant:0.0];
-      [v137 addObject:v142];
+      iPhoneCompactLandscapeLayoutConstraints3 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
+      shutterButton5 = [(ICDocCamViewController *)self shutterButton];
+      centerYAnchor3 = [shutterButton5 centerYAnchor];
+      view8 = [(ICDocCamViewController *)self view];
+      centerYAnchor4 = [view8 centerYAnchor];
+      v142 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4 constant:0.0];
+      [iPhoneCompactLandscapeLayoutConstraints3 addObject:v142];
 
-      v143 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
-      v144 = [(ICDocCamViewController *)self shutterButtonBottomConstraintForLandscapeIPhone];
-      [v143 addObject:v144];
+      iPhoneCompactLandscapeLayoutConstraints4 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
+      shutterButtonBottomConstraintForLandscapeIPhone2 = [(ICDocCamViewController *)self shutterButtonBottomConstraintForLandscapeIPhone];
+      [iPhoneCompactLandscapeLayoutConstraints4 addObject:shutterButtonBottomConstraintForLandscapeIPhone2];
 
-      v145 = [MEMORY[0x277CBEB18] array];
-      v146 = [(ICDocCamViewController *)self saveButton];
-      v147 = [v146 centerYAnchor];
-      v148 = [(ICDocCamViewController *)self shutterButton];
-      v149 = [v148 centerYAnchor];
-      v150 = [v147 constraintEqualToAnchor:v149 constant:0.0];
-      [v145 addObject:v150];
+      array = [MEMORY[0x277CBEB18] array];
+      saveButton2 = [(ICDocCamViewController *)self saveButton];
+      centerYAnchor5 = [saveButton2 centerYAnchor];
+      shutterButton6 = [(ICDocCamViewController *)self shutterButton];
+      centerYAnchor6 = [shutterButton6 centerYAnchor];
+      v150 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6 constant:0.0];
+      [array addObject:v150];
 
-      v151 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
-      [v151 addObjectsFromArray:v145];
+      iPhonePortraitLayoutConstraints5 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
+      [iPhonePortraitLayoutConstraints5 addObjectsFromArray:array];
 
-      [v145 removeAllObjects];
-      v152 = [(ICDocCamViewController *)self saveButton];
-      v153 = [v152 centerYAnchor];
-      v154 = [(ICDocCamViewController *)self view];
-      v155 = [v154 bottomAnchor];
-      v156 = [v153 constraintEqualToAnchor:v155 constant:-34.0];
+      [array removeAllObjects];
+      saveButton3 = [(ICDocCamViewController *)self saveButton];
+      centerYAnchor7 = [saveButton3 centerYAnchor];
+      view9 = [(ICDocCamViewController *)self view];
+      bottomAnchor3 = [view9 bottomAnchor];
+      v156 = [centerYAnchor7 constraintEqualToAnchor:bottomAnchor3 constant:-34.0];
       [(ICDocCamViewController *)self setSaveButtonLandscapeVerticalConstraintForIPhone:v156];
 
-      v157 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
-      v158 = [(ICDocCamViewController *)self saveButtonLandscapeVerticalConstraintForIPhone];
-      [v157 addObject:v158];
+      iPhoneLandscapeLayoutConstraints4 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
+      saveButtonLandscapeVerticalConstraintForIPhone = [(ICDocCamViewController *)self saveButtonLandscapeVerticalConstraintForIPhone];
+      [iPhoneLandscapeLayoutConstraints4 addObject:saveButtonLandscapeVerticalConstraintForIPhone];
 
-      v159 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
-      v160 = [(ICDocCamViewController *)self saveButtonLandscapeVerticalConstraintForIPhone];
-      [v159 addObject:v160];
+      iPhoneCompactLandscapeLayoutConstraints5 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
+      saveButtonLandscapeVerticalConstraintForIPhone2 = [(ICDocCamViewController *)self saveButtonLandscapeVerticalConstraintForIPhone];
+      [iPhoneCompactLandscapeLayoutConstraints5 addObject:saveButtonLandscapeVerticalConstraintForIPhone2];
 
-      v161 = [(ICDocCamViewController *)self saveButton];
-      v162 = [v161 trailingAnchor];
-      v163 = [(ICDocCamViewController *)self view];
-      v164 = [v163 trailingAnchor];
-      v165 = [v162 constraintEqualToAnchor:v164 constant:-16.0];
-      [v145 addObject:v165];
+      saveButton4 = [(ICDocCamViewController *)self saveButton];
+      trailingAnchor3 = [saveButton4 trailingAnchor];
+      view10 = [(ICDocCamViewController *)self view];
+      trailingAnchor4 = [view10 trailingAnchor];
+      v165 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-16.0];
+      [array addObject:v165];
 
-      v166 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
-      [v166 addObjectsFromArray:v145];
+      iPhonePortraitLayoutConstraints6 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
+      [iPhonePortraitLayoutConstraints6 addObjectsFromArray:array];
 
-      [v145 removeAllObjects];
-      v167 = [(ICDocCamViewController *)self saveButton];
-      v168 = [v167 trailingAnchor];
-      v169 = [(ICDocCamViewController *)self view];
-      v170 = [v169 trailingAnchor];
-      v171 = [v168 constraintEqualToAnchor:v170 constant:0.0];
+      [array removeAllObjects];
+      saveButton5 = [(ICDocCamViewController *)self saveButton];
+      trailingAnchor5 = [saveButton5 trailingAnchor];
+      view11 = [(ICDocCamViewController *)self view];
+      trailingAnchor6 = [view11 trailingAnchor];
+      v171 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:0.0];
       [(ICDocCamViewController *)self setSaveButtonLandscapeTrailingConstraintForIPhone:v171];
 
-      v172 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
-      v173 = [(ICDocCamViewController *)self saveButtonLandscapeTrailingConstraintForIPhone];
-      [v172 addObject:v173];
+      iPhoneLandscapeLayoutConstraints5 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
+      saveButtonLandscapeTrailingConstraintForIPhone = [(ICDocCamViewController *)self saveButtonLandscapeTrailingConstraintForIPhone];
+      [iPhoneLandscapeLayoutConstraints5 addObject:saveButtonLandscapeTrailingConstraintForIPhone];
 
-      v174 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
-      v175 = [(ICDocCamViewController *)self saveButtonLandscapeTrailingConstraintForIPhone];
-      [v174 addObject:v175];
+      iPhoneCompactLandscapeLayoutConstraints6 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
+      saveButtonLandscapeTrailingConstraintForIPhone2 = [(ICDocCamViewController *)self saveButtonLandscapeTrailingConstraintForIPhone];
+      [iPhoneCompactLandscapeLayoutConstraints6 addObject:saveButtonLandscapeTrailingConstraintForIPhone2];
 
-      v176 = [MEMORY[0x277CBEB18] array];
-      v177 = [(ICDocCamViewController *)self filterViewContainer];
-      v178 = [v177 leadingAnchor];
-      v179 = [(ICDocCamViewController *)self view];
-      v180 = [v179 leadingAnchor];
-      v181 = [v178 constraintEqualToAnchor:v180 constant:0.0];
-      [v176 addObject:v181];
+      array2 = [MEMORY[0x277CBEB18] array];
+      filterViewContainer = [(ICDocCamViewController *)self filterViewContainer];
+      leadingAnchor = [filterViewContainer leadingAnchor];
+      view12 = [(ICDocCamViewController *)self view];
+      leadingAnchor2 = [view12 leadingAnchor];
+      v181 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
+      [array2 addObject:v181];
 
-      v182 = [(ICDocCamViewController *)self filterViewContainer];
-      v183 = [v182 trailingAnchor];
-      v184 = [(ICDocCamViewController *)self view];
-      v185 = [v184 trailingAnchor];
-      v186 = [v183 constraintEqualToAnchor:v185 constant:0.0];
-      [v176 addObject:v186];
+      filterViewContainer2 = [(ICDocCamViewController *)self filterViewContainer];
+      trailingAnchor7 = [filterViewContainer2 trailingAnchor];
+      view13 = [(ICDocCamViewController *)self view];
+      trailingAnchor8 = [view13 trailingAnchor];
+      v186 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:0.0];
+      [array2 addObject:v186];
 
-      v187 = [(ICDocCamViewController *)self filterViewContainer];
-      v188 = [v187 topAnchor];
-      v189 = [(ICDocCamViewController *)self view];
-      v190 = [v189 topAnchor];
-      v191 = [v188 constraintEqualToAnchor:v190 constant:0.0];
-      [v176 addObject:v191];
+      filterViewContainer3 = [(ICDocCamViewController *)self filterViewContainer];
+      topAnchor = [filterViewContainer3 topAnchor];
+      view14 = [(ICDocCamViewController *)self view];
+      topAnchor2 = [view14 topAnchor];
+      v191 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
+      [array2 addObject:v191];
 
-      v192 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
-      [v192 addObjectsFromArray:v176];
+      iPhonePortraitLayoutConstraints7 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
+      [iPhonePortraitLayoutConstraints7 addObjectsFromArray:array2];
 
-      v193 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
-      [v193 addObjectsFromArray:v176];
+      iPhoneLandscapeLayoutConstraints6 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
+      [iPhoneLandscapeLayoutConstraints6 addObjectsFromArray:array2];
 
-      v194 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
-      [v194 addObjectsFromArray:v176];
+      iPhoneCompactLandscapeLayoutConstraints7 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
+      [iPhoneCompactLandscapeLayoutConstraints7 addObjectsFromArray:array2];
 
-      v195 = [(ICDocCamViewController *)self filterViewContainer];
-      v196 = [v195 heightAnchor];
-      v197 = [v196 constraintEqualToConstant:v14];
+      filterViewContainer4 = [(ICDocCamViewController *)self filterViewContainer];
+      heightAnchor = [filterViewContainer4 heightAnchor];
+      v197 = [heightAnchor constraintEqualToConstant:v14];
       [(ICDocCamViewController *)self setFilterViewContainerHeightConstraint:v197];
 
-      v198 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
-      v199 = [(ICDocCamViewController *)self filterViewContainerHeightConstraint];
-      [v198 addObject:v199];
+      iPhonePortraitLayoutConstraints8 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
+      filterViewContainerHeightConstraint = [(ICDocCamViewController *)self filterViewContainerHeightConstraint];
+      [iPhonePortraitLayoutConstraints8 addObject:filterViewContainerHeightConstraint];
 
-      v200 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
-      v201 = [(ICDocCamViewController *)self filterViewContainerHeightConstraint];
-      [v200 addObject:v201];
+      iPhoneLandscapeLayoutConstraints7 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
+      filterViewContainerHeightConstraint2 = [(ICDocCamViewController *)self filterViewContainerHeightConstraint];
+      [iPhoneLandscapeLayoutConstraints7 addObject:filterViewContainerHeightConstraint2];
 
-      v202 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
-      v203 = [(ICDocCamViewController *)self filterViewContainerHeightConstraint];
-      [v202 addObject:v203];
+      iPhoneCompactLandscapeLayoutConstraints8 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
+      filterViewContainerHeightConstraint3 = [(ICDocCamViewController *)self filterViewContainerHeightConstraint];
+      [iPhoneCompactLandscapeLayoutConstraints8 addObject:filterViewContainerHeightConstraint3];
 
-      v204 = [MEMORY[0x277CBEB18] array];
-      v205 = [(ICDocCamViewController *)self filterViewButton];
-      v206 = [v205 leadingAnchor];
-      v207 = [(ICDocCamViewController *)self filterView];
-      v208 = [v207 leadingAnchor];
-      v209 = [v206 constraintEqualToAnchor:v208 constant:4.0];
-      [v204 addObject:v209];
+      array3 = [MEMORY[0x277CBEB18] array];
+      filterViewButton = [(ICDocCamViewController *)self filterViewButton];
+      leadingAnchor3 = [filterViewButton leadingAnchor];
+      filterView = [(ICDocCamViewController *)self filterView];
+      leadingAnchor4 = [filterView leadingAnchor];
+      v209 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:4.0];
+      [array3 addObject:v209];
 
-      v210 = [(ICDocCamViewController *)self filterViewButton];
-      v211 = [v210 bottomAnchor];
-      v212 = [(ICDocCamViewController *)self filterView];
-      v213 = [v212 bottomAnchor];
-      v214 = [v211 constraintEqualToAnchor:v213 constant:0.0];
-      [v204 addObject:v214];
+      filterViewButton2 = [(ICDocCamViewController *)self filterViewButton];
+      bottomAnchor4 = [filterViewButton2 bottomAnchor];
+      filterView2 = [(ICDocCamViewController *)self filterView];
+      bottomAnchor5 = [filterView2 bottomAnchor];
+      v214 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:0.0];
+      [array3 addObject:v214];
 
-      v215 = [(ICDocCamViewController *)self filterScrollViewContainer];
-      v216 = [v215 leadingAnchor];
-      v217 = [(ICDocCamViewController *)self filterViewButton];
-      v218 = [v217 trailingAnchor];
-      v219 = [v216 constraintEqualToAnchor:v218 constant:0.0];
-      [v204 addObject:v219];
+      filterScrollViewContainer2 = [(ICDocCamViewController *)self filterScrollViewContainer];
+      leadingAnchor5 = [filterScrollViewContainer2 leadingAnchor];
+      filterViewButton3 = [(ICDocCamViewController *)self filterViewButton];
+      trailingAnchor9 = [filterViewButton3 trailingAnchor];
+      v219 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor9 constant:0.0];
+      [array3 addObject:v219];
 
-      v220 = [(ICDocCamViewController *)self filterScrollViewContainer];
-      v221 = [v220 bottomAnchor];
-      v222 = [(ICDocCamViewController *)self filterView];
-      v223 = [v222 bottomAnchor];
-      v224 = [v221 constraintEqualToAnchor:v223 constant:0.0];
-      [v204 addObject:v224];
+      filterScrollViewContainer3 = [(ICDocCamViewController *)self filterScrollViewContainer];
+      bottomAnchor6 = [filterScrollViewContainer3 bottomAnchor];
+      filterView3 = [(ICDocCamViewController *)self filterView];
+      bottomAnchor7 = [filterView3 bottomAnchor];
+      v224 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7 constant:0.0];
+      [array3 addObject:v224];
 
-      v225 = [(ICDocCamViewController *)self filterScrollViewContainer];
-      v226 = [v225 trailingAnchor];
-      v227 = [(ICDocCamViewController *)self filterView];
-      v228 = [v227 trailingAnchor];
-      v229 = [v226 constraintEqualToAnchor:v228 constant:0.0];
-      [v204 addObject:v229];
+      filterScrollViewContainer4 = [(ICDocCamViewController *)self filterScrollViewContainer];
+      trailingAnchor10 = [filterScrollViewContainer4 trailingAnchor];
+      filterView4 = [(ICDocCamViewController *)self filterView];
+      trailingAnchor11 = [filterView4 trailingAnchor];
+      v229 = [trailingAnchor10 constraintEqualToAnchor:trailingAnchor11 constant:0.0];
+      [array3 addObject:v229];
 
-      v230 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
-      [v230 addObjectsFromArray:v204];
+      iPhonePortraitLayoutConstraints9 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
+      [iPhonePortraitLayoutConstraints9 addObjectsFromArray:array3];
 
-      v231 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
-      [v231 addObjectsFromArray:v204];
+      iPhoneLandscapeLayoutConstraints8 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
+      [iPhoneLandscapeLayoutConstraints8 addObjectsFromArray:array3];
 
-      v232 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
-      [v232 addObjectsFromArray:v204];
+      iPhoneCompactLandscapeLayoutConstraints9 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
+      [iPhoneCompactLandscapeLayoutConstraints9 addObjectsFromArray:array3];
 
-      [v204 removeAllObjects];
-      v233 = [(ICDocCamViewController *)self filterViewButton];
-      v234 = [v233 topAnchor];
-      v235 = [(ICDocCamViewController *)self filterView];
-      v236 = [v235 bottomAnchor];
-      v237 = [v234 constraintEqualToAnchor:v236 constant:-44.0];
-      [v204 addObject:v237];
+      [array3 removeAllObjects];
+      filterViewButton4 = [(ICDocCamViewController *)self filterViewButton];
+      topAnchor3 = [filterViewButton4 topAnchor];
+      filterView5 = [(ICDocCamViewController *)self filterView];
+      bottomAnchor8 = [filterView5 bottomAnchor];
+      v237 = [topAnchor3 constraintEqualToAnchor:bottomAnchor8 constant:-44.0];
+      [array3 addObject:v237];
 
-      v238 = [(ICDocCamViewController *)self filterScrollViewContainer];
-      v239 = [v238 topAnchor];
-      v240 = [(ICDocCamViewController *)self filterView];
-      v241 = [v240 bottomAnchor];
-      v242 = [v239 constraintEqualToAnchor:v241 constant:-44.0];
-      [v204 addObject:v242];
+      filterScrollViewContainer5 = [(ICDocCamViewController *)self filterScrollViewContainer];
+      topAnchor4 = [filterScrollViewContainer5 topAnchor];
+      filterView6 = [(ICDocCamViewController *)self filterView];
+      bottomAnchor9 = [filterView6 bottomAnchor];
+      v242 = [topAnchor4 constraintEqualToAnchor:bottomAnchor9 constant:-44.0];
+      [array3 addObject:v242];
 
-      v243 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
-      [v243 addObjectsFromArray:v204];
+      iPhonePortraitLayoutConstraints10 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
+      [iPhonePortraitLayoutConstraints10 addObjectsFromArray:array3];
 
-      [v204 removeAllObjects];
-      v244 = [(ICDocCamViewController *)self filterViewButton];
-      v245 = [v244 topAnchor];
-      v246 = [(ICDocCamViewController *)self filterView];
-      v247 = [v246 bottomAnchor];
-      v248 = [v245 constraintEqualToAnchor:v247 constant:-44.0];
-      [v204 addObject:v248];
+      [array3 removeAllObjects];
+      filterViewButton5 = [(ICDocCamViewController *)self filterViewButton];
+      topAnchor5 = [filterViewButton5 topAnchor];
+      filterView7 = [(ICDocCamViewController *)self filterView];
+      bottomAnchor10 = [filterView7 bottomAnchor];
+      v248 = [topAnchor5 constraintEqualToAnchor:bottomAnchor10 constant:-44.0];
+      [array3 addObject:v248];
 
-      v249 = [(ICDocCamViewController *)self filterScrollViewContainer];
-      v250 = [v249 topAnchor];
-      v251 = [(ICDocCamViewController *)self filterView];
-      v252 = [v251 bottomAnchor];
-      v253 = [v250 constraintEqualToAnchor:v252 constant:-44.0];
-      [v204 addObject:v253];
+      filterScrollViewContainer6 = [(ICDocCamViewController *)self filterScrollViewContainer];
+      topAnchor6 = [filterScrollViewContainer6 topAnchor];
+      filterView8 = [(ICDocCamViewController *)self filterView];
+      bottomAnchor11 = [filterView8 bottomAnchor];
+      v253 = [topAnchor6 constraintEqualToAnchor:bottomAnchor11 constant:-44.0];
+      [array3 addObject:v253];
 
-      v254 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
-      [v254 addObjectsFromArray:v204];
+      iPhoneLandscapeLayoutConstraints9 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
+      [iPhoneLandscapeLayoutConstraints9 addObjectsFromArray:array3];
 
-      [v204 removeAllObjects];
-      v255 = [(ICDocCamViewController *)self filterViewButton];
-      v256 = [v255 topAnchor];
-      v257 = [(ICDocCamViewController *)self filterView];
-      v258 = [v257 bottomAnchor];
-      v259 = [v256 constraintEqualToAnchor:v258 constant:-32.0];
-      [v204 addObject:v259];
+      [array3 removeAllObjects];
+      filterViewButton6 = [(ICDocCamViewController *)self filterViewButton];
+      topAnchor7 = [filterViewButton6 topAnchor];
+      filterView9 = [(ICDocCamViewController *)self filterView];
+      bottomAnchor12 = [filterView9 bottomAnchor];
+      v259 = [topAnchor7 constraintEqualToAnchor:bottomAnchor12 constant:-32.0];
+      [array3 addObject:v259];
 
-      v260 = [(ICDocCamViewController *)self filterScrollViewContainer];
-      v261 = [v260 topAnchor];
-      v262 = [(ICDocCamViewController *)self filterView];
-      v263 = [v262 bottomAnchor];
-      v264 = [v261 constraintEqualToAnchor:v263 constant:-32.0];
-      [v204 addObject:v264];
+      filterScrollViewContainer7 = [(ICDocCamViewController *)self filterScrollViewContainer];
+      topAnchor8 = [filterScrollViewContainer7 topAnchor];
+      filterView10 = [(ICDocCamViewController *)self filterView];
+      bottomAnchor13 = [filterView10 bottomAnchor];
+      v264 = [topAnchor8 constraintEqualToAnchor:bottomAnchor13 constant:-32.0];
+      [array3 addObject:v264];
 
-      v265 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
-      [v265 addObjectsFromArray:v204];
+      iPhoneCompactLandscapeLayoutConstraints10 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
+      [iPhoneCompactLandscapeLayoutConstraints10 addObjectsFromArray:array3];
 
-      v266 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
-      v267 = [(ICDocCamViewController *)self cancelButtonForIPhone];
-      v268 = [v267 centerYAnchor];
-      v269 = [(ICDocCamViewController *)self topToolbarForIPhone];
-      v270 = [v269 bottomAnchor];
-      v271 = [v268 constraintEqualToAnchor:v270 constant:-22.0];
-      [v266 addObject:v271];
+      iPhonePortraitLayoutConstraints11 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
+      cancelButtonForIPhone2 = [(ICDocCamViewController *)self cancelButtonForIPhone];
+      centerYAnchor8 = [cancelButtonForIPhone2 centerYAnchor];
+      topToolbarForIPhone2 = [(ICDocCamViewController *)self topToolbarForIPhone];
+      bottomAnchor14 = [topToolbarForIPhone2 bottomAnchor];
+      v271 = [centerYAnchor8 constraintEqualToAnchor:bottomAnchor14 constant:-22.0];
+      [iPhonePortraitLayoutConstraints11 addObject:v271];
 
-      v272 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
-      v273 = [(ICDocCamViewController *)self cancelButtonForIPhone];
-      v274 = [v273 centerYAnchor];
-      v275 = [(ICDocCamViewController *)self topToolbarForIPhone];
-      v276 = [v275 bottomAnchor];
-      v277 = [v274 constraintEqualToAnchor:v276 constant:-22.0];
-      [v272 addObject:v277];
+      iPhoneLandscapeLayoutConstraints10 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
+      cancelButtonForIPhone3 = [(ICDocCamViewController *)self cancelButtonForIPhone];
+      centerYAnchor9 = [cancelButtonForIPhone3 centerYAnchor];
+      topToolbarForIPhone3 = [(ICDocCamViewController *)self topToolbarForIPhone];
+      bottomAnchor15 = [topToolbarForIPhone3 bottomAnchor];
+      v277 = [centerYAnchor9 constraintEqualToAnchor:bottomAnchor15 constant:-22.0];
+      [iPhoneLandscapeLayoutConstraints10 addObject:v277];
 
-      v278 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
-      v279 = [(ICDocCamViewController *)self cancelButtonForIPhone];
-      v280 = [v279 centerYAnchor];
-      v281 = [(ICDocCamViewController *)self topToolbarForIPhone];
-      v282 = [v281 bottomAnchor];
-      v283 = [v280 constraintEqualToAnchor:v282 constant:-16.0];
-      [v278 addObject:v283];
+      iPhoneCompactLandscapeLayoutConstraints11 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
+      cancelButtonForIPhone4 = [(ICDocCamViewController *)self cancelButtonForIPhone];
+      centerYAnchor10 = [cancelButtonForIPhone4 centerYAnchor];
+      topToolbarForIPhone4 = [(ICDocCamViewController *)self topToolbarForIPhone];
+      bottomAnchor16 = [topToolbarForIPhone4 bottomAnchor];
+      v283 = [centerYAnchor10 constraintEqualToAnchor:bottomAnchor16 constant:-16.0];
+      [iPhoneCompactLandscapeLayoutConstraints11 addObject:v283];
 
-      v284 = [(ICDocCamViewController *)self cancelButtonForIPhone];
-      v285 = [v284 leadingAnchor];
-      v286 = [(ICDocCamViewController *)self topToolbarForIPhone];
-      v287 = [v286 leadingAnchor];
-      v288 = [v285 constraintEqualToAnchor:v287 constant:0.0];
+      cancelButtonForIPhone5 = [(ICDocCamViewController *)self cancelButtonForIPhone];
+      leadingAnchor6 = [cancelButtonForIPhone5 leadingAnchor];
+      topToolbarForIPhone5 = [(ICDocCamViewController *)self topToolbarForIPhone];
+      leadingAnchor7 = [topToolbarForIPhone5 leadingAnchor];
+      v288 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7 constant:0.0];
       [(ICDocCamViewController *)self setCancelButtonForIPhoneLeadingConstraint:v288];
 
-      v289 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
-      v290 = [(ICDocCamViewController *)self cancelButtonForIPhoneLeadingConstraint];
-      [v289 addObject:v290];
+      iPhonePortraitLayoutConstraints12 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
+      cancelButtonForIPhoneLeadingConstraint = [(ICDocCamViewController *)self cancelButtonForIPhoneLeadingConstraint];
+      [iPhonePortraitLayoutConstraints12 addObject:cancelButtonForIPhoneLeadingConstraint];
 
-      v291 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
-      v292 = [(ICDocCamViewController *)self cancelButtonForIPhoneLeadingConstraint];
-      [v291 addObject:v292];
+      iPhoneLandscapeLayoutConstraints11 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
+      cancelButtonForIPhoneLeadingConstraint2 = [(ICDocCamViewController *)self cancelButtonForIPhoneLeadingConstraint];
+      [iPhoneLandscapeLayoutConstraints11 addObject:cancelButtonForIPhoneLeadingConstraint2];
 
-      v293 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
-      v294 = [(ICDocCamViewController *)self cancelButtonForIPhoneLeadingConstraint];
-      [v293 addObject:v294];
+      iPhoneCompactLandscapeLayoutConstraints12 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
+      cancelButtonForIPhoneLeadingConstraint3 = [(ICDocCamViewController *)self cancelButtonForIPhoneLeadingConstraint];
+      [iPhoneCompactLandscapeLayoutConstraints12 addObject:cancelButtonForIPhoneLeadingConstraint3];
 
-      v295 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
-      v296 = [(ICDocCamViewController *)self autoButtonForIPhone];
-      v297 = [v296 centerYAnchor];
-      v298 = [(ICDocCamViewController *)self topToolbarForIPhone];
-      v299 = [v298 bottomAnchor];
-      v300 = [v297 constraintEqualToAnchor:v299 constant:-22.0];
-      [v295 addObject:v300];
+      iPhonePortraitLayoutConstraints13 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
+      autoButtonForIPhone2 = [(ICDocCamViewController *)self autoButtonForIPhone];
+      centerYAnchor11 = [autoButtonForIPhone2 centerYAnchor];
+      topToolbarForIPhone6 = [(ICDocCamViewController *)self topToolbarForIPhone];
+      bottomAnchor17 = [topToolbarForIPhone6 bottomAnchor];
+      v300 = [centerYAnchor11 constraintEqualToAnchor:bottomAnchor17 constant:-22.0];
+      [iPhonePortraitLayoutConstraints13 addObject:v300];
 
-      v301 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
-      v302 = [(ICDocCamViewController *)self autoButtonForIPhone];
-      v303 = [v302 centerYAnchor];
-      v304 = [(ICDocCamViewController *)self topToolbarForIPhone];
-      v305 = [v304 bottomAnchor];
-      v306 = [v303 constraintEqualToAnchor:v305 constant:-22.0];
-      [v301 addObject:v306];
+      iPhoneLandscapeLayoutConstraints12 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
+      autoButtonForIPhone3 = [(ICDocCamViewController *)self autoButtonForIPhone];
+      centerYAnchor12 = [autoButtonForIPhone3 centerYAnchor];
+      topToolbarForIPhone7 = [(ICDocCamViewController *)self topToolbarForIPhone];
+      bottomAnchor18 = [topToolbarForIPhone7 bottomAnchor];
+      v306 = [centerYAnchor12 constraintEqualToAnchor:bottomAnchor18 constant:-22.0];
+      [iPhoneLandscapeLayoutConstraints12 addObject:v306];
 
-      v307 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
-      v308 = [(ICDocCamViewController *)self autoButtonForIPhone];
-      v309 = [v308 centerYAnchor];
-      v310 = [(ICDocCamViewController *)self topToolbarForIPhone];
-      v311 = [v310 bottomAnchor];
-      v312 = [v309 constraintEqualToAnchor:v311 constant:-16.0];
-      [v307 addObject:v312];
+      iPhoneCompactLandscapeLayoutConstraints13 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
+      autoButtonForIPhone4 = [(ICDocCamViewController *)self autoButtonForIPhone];
+      centerYAnchor13 = [autoButtonForIPhone4 centerYAnchor];
+      topToolbarForIPhone8 = [(ICDocCamViewController *)self topToolbarForIPhone];
+      bottomAnchor19 = [topToolbarForIPhone8 bottomAnchor];
+      v312 = [centerYAnchor13 constraintEqualToAnchor:bottomAnchor19 constant:-16.0];
+      [iPhoneCompactLandscapeLayoutConstraints13 addObject:v312];
 
-      v313 = [(ICDocCamViewController *)self autoButtonForIPhone];
-      v314 = [v313 trailingAnchor];
-      v315 = [(ICDocCamViewController *)self topToolbarForIPhone];
-      v316 = [v315 trailingAnchor];
-      v317 = [v314 constraintEqualToAnchor:v316 constant:0.0];
+      autoButtonForIPhone5 = [(ICDocCamViewController *)self autoButtonForIPhone];
+      trailingAnchor12 = [autoButtonForIPhone5 trailingAnchor];
+      topToolbarForIPhone9 = [(ICDocCamViewController *)self topToolbarForIPhone];
+      trailingAnchor13 = [topToolbarForIPhone9 trailingAnchor];
+      v317 = [trailingAnchor12 constraintEqualToAnchor:trailingAnchor13 constant:0.0];
       [(ICDocCamViewController *)self setAutoButtonForIPhoneTrailingConstraint:v317];
 
-      v318 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
-      v319 = [(ICDocCamViewController *)self autoButtonForIPhoneTrailingConstraint];
-      [v318 addObject:v319];
+      iPhonePortraitLayoutConstraints14 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
+      autoButtonForIPhoneTrailingConstraint = [(ICDocCamViewController *)self autoButtonForIPhoneTrailingConstraint];
+      [iPhonePortraitLayoutConstraints14 addObject:autoButtonForIPhoneTrailingConstraint];
 
-      v320 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
-      v321 = [(ICDocCamViewController *)self autoButtonForIPhoneTrailingConstraint];
-      [v320 addObject:v321];
+      iPhoneLandscapeLayoutConstraints13 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
+      autoButtonForIPhoneTrailingConstraint2 = [(ICDocCamViewController *)self autoButtonForIPhoneTrailingConstraint];
+      [iPhoneLandscapeLayoutConstraints13 addObject:autoButtonForIPhoneTrailingConstraint2];
 
-      v322 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
-      v323 = [(ICDocCamViewController *)self autoButtonForIPhoneTrailingConstraint];
-      [v322 addObject:v323];
+      iPhoneCompactLandscapeLayoutConstraints14 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
+      autoButtonForIPhoneTrailingConstraint3 = [(ICDocCamViewController *)self autoButtonForIPhoneTrailingConstraint];
+      [iPhoneCompactLandscapeLayoutConstraints14 addObject:autoButtonForIPhoneTrailingConstraint3];
 
-      v324 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
-      v325 = [(ICDocCamViewController *)self flashButtonForIPhone];
-      v326 = [v325 centerYAnchor];
-      v327 = [(ICDocCamViewController *)self topToolbarForIPhone];
-      v328 = [v327 bottomAnchor];
-      v329 = [v326 constraintEqualToAnchor:v328 constant:-22.0];
-      [v324 addObject:v329];
+      iPhonePortraitLayoutConstraints15 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
+      flashButtonForIPhone2 = [(ICDocCamViewController *)self flashButtonForIPhone];
+      centerYAnchor14 = [flashButtonForIPhone2 centerYAnchor];
+      topToolbarForIPhone10 = [(ICDocCamViewController *)self topToolbarForIPhone];
+      bottomAnchor20 = [topToolbarForIPhone10 bottomAnchor];
+      v329 = [centerYAnchor14 constraintEqualToAnchor:bottomAnchor20 constant:-22.0];
+      [iPhonePortraitLayoutConstraints15 addObject:v329];
 
-      v330 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
-      v331 = [(ICDocCamViewController *)self flashButtonForIPhone];
-      v332 = [v331 centerYAnchor];
-      v333 = [(ICDocCamViewController *)self topToolbarForIPhone];
-      v334 = [v333 bottomAnchor];
-      v335 = [v332 constraintEqualToAnchor:v334 constant:-22.0];
-      [v330 addObject:v335];
+      iPhoneLandscapeLayoutConstraints14 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
+      flashButtonForIPhone3 = [(ICDocCamViewController *)self flashButtonForIPhone];
+      centerYAnchor15 = [flashButtonForIPhone3 centerYAnchor];
+      topToolbarForIPhone11 = [(ICDocCamViewController *)self topToolbarForIPhone];
+      bottomAnchor21 = [topToolbarForIPhone11 bottomAnchor];
+      v335 = [centerYAnchor15 constraintEqualToAnchor:bottomAnchor21 constant:-22.0];
+      [iPhoneLandscapeLayoutConstraints14 addObject:v335];
 
-      v336 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
-      v337 = [(ICDocCamViewController *)self flashButtonForIPhone];
-      v338 = [v337 centerYAnchor];
-      v339 = [(ICDocCamViewController *)self topToolbarForIPhone];
-      v340 = [v339 bottomAnchor];
-      v341 = [v338 constraintEqualToAnchor:v340 constant:-16.0];
-      [v336 addObject:v341];
+      iPhoneCompactLandscapeLayoutConstraints15 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
+      flashButtonForIPhone4 = [(ICDocCamViewController *)self flashButtonForIPhone];
+      centerYAnchor16 = [flashButtonForIPhone4 centerYAnchor];
+      topToolbarForIPhone12 = [(ICDocCamViewController *)self topToolbarForIPhone];
+      bottomAnchor22 = [topToolbarForIPhone12 bottomAnchor];
+      v341 = [centerYAnchor16 constraintEqualToAnchor:bottomAnchor22 constant:-16.0];
+      [iPhoneCompactLandscapeLayoutConstraints15 addObject:v341];
 
-      v342 = [(ICDocCamViewController *)self view];
-      [v342 bounds];
+      view15 = [(ICDocCamViewController *)self view];
+      [view15 bounds];
       v344 = v343;
 
-      v345 = [(ICDocCamViewController *)self view];
-      [v345 bounds];
+      view16 = [(ICDocCamViewController *)self view];
+      [view16 bounds];
       v347 = v346;
 
       if (v344 < v347)
@@ -2747,13 +2747,13 @@ void __49__ICDocCamViewController_useDocumentSegmentation__block_invoke()
         v347 = v344;
       }
 
-      v348 = [(ICDocCamViewController *)self cancelButtonForIPhone];
-      [v348 bounds];
+      cancelButtonForIPhone6 = [(ICDocCamViewController *)self cancelButtonForIPhone];
+      [cancelButtonForIPhone6 bounds];
       v350 = v349;
 
-      v351 = [(ICDocCamViewController *)self autoButtonForIPhone];
+      autoButtonForIPhone6 = [(ICDocCamViewController *)self autoButtonForIPhone];
       v632 = v14;
-      [v351 bounds];
+      [autoButtonForIPhone6 bounds];
       v352 = v350 + 12.0;
       v354 = v353 + 12.0;
 
@@ -2762,25 +2762,25 @@ void __49__ICDocCamViewController_useDocumentSegmentation__block_invoke()
         v352 = v354;
       }
 
-      v355 = [MEMORY[0x277CBEB18] array];
-      v356 = [(ICDocCamViewController *)self flashButtonForIPhone];
-      v357 = [v356 centerXAnchor];
-      v358 = [(ICDocCamViewController *)self topToolbarForIPhone];
-      v359 = [v358 centerXAnchor];
+      array4 = [MEMORY[0x277CBEB18] array];
+      flashButtonForIPhone5 = [(ICDocCamViewController *)self flashButtonForIPhone];
+      centerXAnchor3 = [flashButtonForIPhone5 centerXAnchor];
+      topToolbarForIPhone13 = [(ICDocCamViewController *)self topToolbarForIPhone];
+      centerXAnchor4 = [topToolbarForIPhone13 centerXAnchor];
       v360 = (v347 - (v352 + v352) + -88.0) / 3.0 * 0.5;
-      v361 = [v357 constraintEqualToAnchor:v359 constant:-22.0 - v360];
-      [v355 addObject:v361];
+      v360 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4 constant:-22.0 - v360];
+      [array4 addObject:v360];
 
-      v362 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
-      [v362 addObjectsFromArray:v355];
+      iPhonePortraitLayoutConstraints16 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
+      [iPhonePortraitLayoutConstraints16 addObjectsFromArray:array4];
 
-      [v355 removeAllObjects];
-      v363 = [(ICDocCamViewController *)self view];
-      [v363 bounds];
+      [array4 removeAllObjects];
+      view17 = [(ICDocCamViewController *)self view];
+      [view17 bounds];
       v365 = v364;
 
-      v366 = [(ICDocCamViewController *)self view];
-      [v366 bounds];
+      view18 = [(ICDocCamViewController *)self view];
+      [view18 bounds];
       v368 = v367;
 
       if (v365 >= v368)
@@ -2788,13 +2788,13 @@ void __49__ICDocCamViewController_useDocumentSegmentation__block_invoke()
         v368 = v365;
       }
 
-      v369 = [(ICDocCamViewController *)self cancelButtonForIPhone];
-      [v369 bounds];
+      cancelButtonForIPhone7 = [(ICDocCamViewController *)self cancelButtonForIPhone];
+      [cancelButtonForIPhone7 bounds];
       v371 = v370;
 
-      v372 = [(ICDocCamViewController *)self autoButtonForIPhone];
+      autoButtonForIPhone7 = [(ICDocCamViewController *)self autoButtonForIPhone];
       v631 = v360;
-      [v372 bounds];
+      [autoButtonForIPhone7 bounds];
       v373 = v371 + 12.0;
       v375 = v374 + 12.0;
 
@@ -2803,24 +2803,24 @@ void __49__ICDocCamViewController_useDocumentSegmentation__block_invoke()
         v375 = v373;
       }
 
-      v376 = [(ICDocCamViewController *)self flashButtonForIPhone];
-      v377 = [v376 centerXAnchor];
-      v378 = [(ICDocCamViewController *)self topToolbarForIPhone];
-      v379 = [v378 centerXAnchor];
+      flashButtonForIPhone6 = [(ICDocCamViewController *)self flashButtonForIPhone];
+      centerXAnchor5 = [flashButtonForIPhone6 centerXAnchor];
+      topToolbarForIPhone14 = [(ICDocCamViewController *)self topToolbarForIPhone];
+      centerXAnchor6 = [topToolbarForIPhone14 centerXAnchor];
       v380 = (v368 - (v375 + v375) + -88.0) / 3.0 * 0.5;
-      v381 = [v377 constraintEqualToAnchor:v379 constant:-22.0 - v380];
-      [v355 addObject:v381];
+      v380 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6 constant:-22.0 - v380];
+      [array4 addObject:v380];
 
-      v382 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
-      [v382 addObjectsFromArray:v355];
+      iPhoneLandscapeLayoutConstraints15 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
+      [iPhoneLandscapeLayoutConstraints15 addObjectsFromArray:array4];
 
-      [v355 removeAllObjects];
-      v383 = [(ICDocCamViewController *)self view];
-      [v383 bounds];
+      [array4 removeAllObjects];
+      view19 = [(ICDocCamViewController *)self view];
+      [view19 bounds];
       v385 = v384;
 
-      v386 = [(ICDocCamViewController *)self view];
-      [v386 bounds];
+      view20 = [(ICDocCamViewController *)self view];
+      [view20 bounds];
       v388 = v387;
 
       if (v385 >= v388)
@@ -2828,13 +2828,13 @@ void __49__ICDocCamViewController_useDocumentSegmentation__block_invoke()
         v388 = v385;
       }
 
-      v389 = [(ICDocCamViewController *)self cancelButtonForIPhone];
-      [v389 bounds];
+      cancelButtonForIPhone8 = [(ICDocCamViewController *)self cancelButtonForIPhone];
+      [cancelButtonForIPhone8 bounds];
       v391 = v390;
 
-      v392 = [(ICDocCamViewController *)self autoButtonForIPhone];
+      autoButtonForIPhone8 = [(ICDocCamViewController *)self autoButtonForIPhone];
       v630 = v380;
-      [v392 bounds];
+      [autoButtonForIPhone8 bounds];
       v393 = v391 + 12.0;
       v395 = v394 + 12.0;
 
@@ -2845,82 +2845,82 @@ void __49__ICDocCamViewController_useDocumentSegmentation__block_invoke()
 
       [(ICDocCamViewController *)self flashButtonForIPhone];
       v396 = v14 = v632;
-      v397 = [v396 centerXAnchor];
-      v398 = [(ICDocCamViewController *)self topToolbarForIPhone];
-      v399 = [v398 centerXAnchor];
+      centerXAnchor7 = [v396 centerXAnchor];
+      topToolbarForIPhone15 = [(ICDocCamViewController *)self topToolbarForIPhone];
+      centerXAnchor8 = [topToolbarForIPhone15 centerXAnchor];
       v400 = (v388 - (v395 + v395) + -64.0) / 3.0 * 0.5;
-      v401 = [v397 constraintEqualToAnchor:v399 constant:-16.0 - v400];
-      [v355 addObject:v401];
+      v400 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8 constant:-16.0 - v400];
+      [array4 addObject:v400];
 
-      v402 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
-      [v402 addObjectsFromArray:v355];
+      iPhoneCompactLandscapeLayoutConstraints16 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
+      [iPhoneCompactLandscapeLayoutConstraints16 addObjectsFromArray:array4];
 
-      [v355 removeAllObjects];
-      v403 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
-      v404 = [(ICDocCamViewController *)self filterButtonForIPhone];
-      v405 = [v404 centerYAnchor];
-      v406 = [(ICDocCamViewController *)self topToolbarForIPhone];
-      v407 = [v406 bottomAnchor];
-      v408 = [v405 constraintEqualToAnchor:v407 constant:-22.0];
-      [v403 addObject:v408];
+      [array4 removeAllObjects];
+      iPhonePortraitLayoutConstraints17 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
+      filterButtonForIPhone2 = [(ICDocCamViewController *)self filterButtonForIPhone];
+      centerYAnchor17 = [filterButtonForIPhone2 centerYAnchor];
+      topToolbarForIPhone16 = [(ICDocCamViewController *)self topToolbarForIPhone];
+      bottomAnchor23 = [topToolbarForIPhone16 bottomAnchor];
+      v408 = [centerYAnchor17 constraintEqualToAnchor:bottomAnchor23 constant:-22.0];
+      [iPhonePortraitLayoutConstraints17 addObject:v408];
 
-      v409 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
-      v410 = [(ICDocCamViewController *)self filterButtonForIPhone];
-      v411 = [v410 centerYAnchor];
-      v412 = [(ICDocCamViewController *)self topToolbarForIPhone];
-      v413 = [v412 bottomAnchor];
-      v414 = [v411 constraintEqualToAnchor:v413 constant:-22.0];
-      [v409 addObject:v414];
+      iPhoneLandscapeLayoutConstraints16 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
+      filterButtonForIPhone3 = [(ICDocCamViewController *)self filterButtonForIPhone];
+      centerYAnchor18 = [filterButtonForIPhone3 centerYAnchor];
+      topToolbarForIPhone17 = [(ICDocCamViewController *)self topToolbarForIPhone];
+      bottomAnchor24 = [topToolbarForIPhone17 bottomAnchor];
+      v414 = [centerYAnchor18 constraintEqualToAnchor:bottomAnchor24 constant:-22.0];
+      [iPhoneLandscapeLayoutConstraints16 addObject:v414];
 
-      v415 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
-      v416 = [(ICDocCamViewController *)self filterButtonForIPhone];
-      v417 = [v416 centerYAnchor];
-      v418 = [(ICDocCamViewController *)self topToolbarForIPhone];
-      v419 = [v418 bottomAnchor];
-      v420 = [v417 constraintEqualToAnchor:v419 constant:-16.0];
-      [v415 addObject:v420];
+      iPhoneCompactLandscapeLayoutConstraints17 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
+      filterButtonForIPhone4 = [(ICDocCamViewController *)self filterButtonForIPhone];
+      centerYAnchor19 = [filterButtonForIPhone4 centerYAnchor];
+      topToolbarForIPhone18 = [(ICDocCamViewController *)self topToolbarForIPhone];
+      bottomAnchor25 = [topToolbarForIPhone18 bottomAnchor];
+      v420 = [centerYAnchor19 constraintEqualToAnchor:bottomAnchor25 constant:-16.0];
+      [iPhoneCompactLandscapeLayoutConstraints17 addObject:v420];
 
-      v421 = [(ICDocCamViewController *)self filterButtonForIPhone];
-      v422 = [v421 centerXAnchor];
-      v423 = [(ICDocCamViewController *)self topToolbarForIPhone];
-      v424 = [v423 centerXAnchor];
-      v425 = [v422 constraintEqualToAnchor:v424 constant:v631 + 22.0];
-      [v355 addObject:v425];
+      filterButtonForIPhone5 = [(ICDocCamViewController *)self filterButtonForIPhone];
+      centerXAnchor9 = [filterButtonForIPhone5 centerXAnchor];
+      topToolbarForIPhone19 = [(ICDocCamViewController *)self topToolbarForIPhone];
+      centerXAnchor10 = [topToolbarForIPhone19 centerXAnchor];
+      v425 = [centerXAnchor9 constraintEqualToAnchor:centerXAnchor10 constant:v631 + 22.0];
+      [array4 addObject:v425];
 
-      v426 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
-      [v426 addObjectsFromArray:v355];
+      iPhonePortraitLayoutConstraints18 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
+      [iPhonePortraitLayoutConstraints18 addObjectsFromArray:array4];
 
-      [v355 removeAllObjects];
-      v427 = [(ICDocCamViewController *)self filterButtonForIPhone];
-      v428 = [v427 centerXAnchor];
-      v429 = [(ICDocCamViewController *)self topToolbarForIPhone];
-      v430 = [v429 centerXAnchor];
-      v431 = [v428 constraintEqualToAnchor:v430 constant:v630 + 22.0];
-      [v355 addObject:v431];
+      [array4 removeAllObjects];
+      filterButtonForIPhone6 = [(ICDocCamViewController *)self filterButtonForIPhone];
+      centerXAnchor11 = [filterButtonForIPhone6 centerXAnchor];
+      topToolbarForIPhone20 = [(ICDocCamViewController *)self topToolbarForIPhone];
+      centerXAnchor12 = [topToolbarForIPhone20 centerXAnchor];
+      v431 = [centerXAnchor11 constraintEqualToAnchor:centerXAnchor12 constant:v630 + 22.0];
+      [array4 addObject:v431];
 
-      v432 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
-      [v432 addObjectsFromArray:v355];
+      iPhoneLandscapeLayoutConstraints17 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
+      [iPhoneLandscapeLayoutConstraints17 addObjectsFromArray:array4];
 
-      [v355 removeAllObjects];
-      v433 = [(ICDocCamViewController *)self filterButtonForIPhone];
-      v434 = [v433 centerXAnchor];
-      v435 = [(ICDocCamViewController *)self topToolbarForIPhone];
-      v436 = [v435 centerXAnchor];
-      v437 = [v434 constraintEqualToAnchor:v436 constant:v400 + 16.0];
-      [v355 addObject:v437];
+      [array4 removeAllObjects];
+      filterButtonForIPhone7 = [(ICDocCamViewController *)self filterButtonForIPhone];
+      centerXAnchor13 = [filterButtonForIPhone7 centerXAnchor];
+      topToolbarForIPhone21 = [(ICDocCamViewController *)self topToolbarForIPhone];
+      centerXAnchor14 = [topToolbarForIPhone21 centerXAnchor];
+      v437 = [centerXAnchor13 constraintEqualToAnchor:centerXAnchor14 constant:v400 + 16.0];
+      [array4 addObject:v437];
 
-      v438 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
-      [v438 addObjectsFromArray:v355];
+      iPhoneCompactLandscapeLayoutConstraints18 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
+      [iPhoneCompactLandscapeLayoutConstraints18 addObjectsFromArray:array4];
 
-      v439 = [MEMORY[0x277CBEB18] array];
+      array5 = [MEMORY[0x277CBEB18] array];
       v641 = 0u;
       v642 = 0u;
       v639 = 0u;
       v640 = 0u;
-      v440 = [(ICDocCamViewController *)self flashSettingView];
-      v441 = [v440 constraints];
+      flashSettingView = [(ICDocCamViewController *)self flashSettingView];
+      constraints = [flashSettingView constraints];
 
-      v442 = [v441 countByEnumeratingWithState:&v639 objects:v644 count:16];
+      v442 = [constraints countByEnumeratingWithState:&v639 objects:v644 count:16];
       if (v442)
       {
         v443 = *v640;
@@ -2930,31 +2930,31 @@ void __49__ICDocCamViewController_useDocumentSegmentation__block_invoke()
           {
             if (*v640 != v443)
             {
-              objc_enumerationMutation(v441);
+              objc_enumerationMutation(constraints);
             }
 
-            [v439 addObject:*(*(&v639 + 1) + 8 * i)];
+            [array5 addObject:*(*(&v639 + 1) + 8 * i)];
           }
 
-          v442 = [v441 countByEnumeratingWithState:&v639 objects:v644 count:16];
+          v442 = [constraints countByEnumeratingWithState:&v639 objects:v644 count:16];
         }
 
         while (v442);
       }
 
-      v445 = [(ICDocCamViewController *)self flashSettingView];
-      [v445 removeConstraints:v439];
+      flashSettingView2 = [(ICDocCamViewController *)self flashSettingView];
+      [flashSettingView2 removeConstraints:array5];
 
-      v446 = [MEMORY[0x277CBEB18] array];
+      array6 = [MEMORY[0x277CBEB18] array];
 
       v637 = 0u;
       v638 = 0u;
       v635 = 0u;
       v636 = 0u;
-      v447 = [(ICDocCamViewController *)self flashSettingButtonView];
-      v448 = [v447 constraints];
+      flashSettingButtonView = [(ICDocCamViewController *)self flashSettingButtonView];
+      constraints2 = [flashSettingButtonView constraints];
 
-      v449 = [v448 countByEnumeratingWithState:&v635 objects:v643 count:16];
+      v449 = [constraints2 countByEnumeratingWithState:&v635 objects:v643 count:16];
       if (v449)
       {
         v450 = *v636;
@@ -2964,175 +2964,175 @@ void __49__ICDocCamViewController_useDocumentSegmentation__block_invoke()
           {
             if (*v636 != v450)
             {
-              objc_enumerationMutation(v448);
+              objc_enumerationMutation(constraints2);
             }
 
-            [v446 addObject:*(*(&v635 + 1) + 8 * j)];
+            [array6 addObject:*(*(&v635 + 1) + 8 * j)];
           }
 
-          v449 = [v448 countByEnumeratingWithState:&v635 objects:v643 count:16];
+          v449 = [constraints2 countByEnumeratingWithState:&v635 objects:v643 count:16];
         }
 
         while (v449);
       }
 
-      v452 = [(ICDocCamViewController *)self flashSettingButtonView];
-      [v452 removeConstraints:v446];
+      flashSettingButtonView2 = [(ICDocCamViewController *)self flashSettingButtonView];
+      [flashSettingButtonView2 removeConstraints:array6];
 
-      v453 = [(ICDocCamViewController *)self view];
-      v454 = [(ICDocCamViewController *)self flashSettingView];
-      [v453 dc_removeAllConstraintsForSubview:v454];
+      view21 = [(ICDocCamViewController *)self view];
+      flashSettingView3 = [(ICDocCamViewController *)self flashSettingView];
+      [view21 dc_removeAllConstraintsForSubview:flashSettingView3];
 
-      v455 = [(ICDocCamViewController *)self flashSettingView];
-      [v455 setTranslatesAutoresizingMaskIntoConstraints:0];
+      flashSettingView4 = [(ICDocCamViewController *)self flashSettingView];
+      [flashSettingView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v456 = [(ICDocCamViewController *)self flashSettingView];
-      v457 = [(ICDocCamViewController *)self flashSettingButtonView];
-      [v456 dc_removeAllConstraintsForSubview:v457];
+      flashSettingView5 = [(ICDocCamViewController *)self flashSettingView];
+      flashSettingButtonView3 = [(ICDocCamViewController *)self flashSettingButtonView];
+      [flashSettingView5 dc_removeAllConstraintsForSubview:flashSettingButtonView3];
 
-      v458 = [(ICDocCamViewController *)self flashSettingButtonView];
-      [v458 setTranslatesAutoresizingMaskIntoConstraints:0];
+      flashSettingButtonView4 = [(ICDocCamViewController *)self flashSettingButtonView];
+      [flashSettingButtonView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v459 = [(ICDocCamViewController *)self flashSettingButtonView];
-      v460 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
-      [v459 dc_removeAllConstraintsForSubview:v460];
+      flashSettingButtonView5 = [(ICDocCamViewController *)self flashSettingButtonView];
+      flashSettingViewFlashIcon = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
+      [flashSettingButtonView5 dc_removeAllConstraintsForSubview:flashSettingViewFlashIcon];
 
-      v461 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
-      [v461 setTranslatesAutoresizingMaskIntoConstraints:0];
+      flashSettingViewFlashIcon2 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
+      [flashSettingViewFlashIcon2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v462 = [(ICDocCamViewController *)self flashSettingButtonView];
-      v463 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
-      [v462 dc_removeAllConstraintsForSubview:v463];
+      flashSettingButtonView6 = [(ICDocCamViewController *)self flashSettingButtonView];
+      flashSettingViewAutoButton = [(ICDocCamViewController *)self flashSettingViewAutoButton];
+      [flashSettingButtonView6 dc_removeAllConstraintsForSubview:flashSettingViewAutoButton];
 
-      v464 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
-      [v464 setTranslatesAutoresizingMaskIntoConstraints:0];
+      flashSettingViewAutoButton2 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
+      [flashSettingViewAutoButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v465 = [(ICDocCamViewController *)self flashSettingButtonView];
-      v466 = [(ICDocCamViewController *)self flashSettingViewOnButton];
-      [v465 dc_removeAllConstraintsForSubview:v466];
+      flashSettingButtonView7 = [(ICDocCamViewController *)self flashSettingButtonView];
+      flashSettingViewOnButton = [(ICDocCamViewController *)self flashSettingViewOnButton];
+      [flashSettingButtonView7 dc_removeAllConstraintsForSubview:flashSettingViewOnButton];
 
-      v467 = [(ICDocCamViewController *)self flashSettingViewOnButton];
-      [v467 setTranslatesAutoresizingMaskIntoConstraints:0];
+      flashSettingViewOnButton2 = [(ICDocCamViewController *)self flashSettingViewOnButton];
+      [flashSettingViewOnButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v468 = [(ICDocCamViewController *)self flashSettingButtonView];
-      v469 = [(ICDocCamViewController *)self flashSettingViewOffButton];
-      [v468 dc_removeAllConstraintsForSubview:v469];
+      flashSettingButtonView8 = [(ICDocCamViewController *)self flashSettingButtonView];
+      flashSettingViewOffButton = [(ICDocCamViewController *)self flashSettingViewOffButton];
+      [flashSettingButtonView8 dc_removeAllConstraintsForSubview:flashSettingViewOffButton];
 
-      v470 = [(ICDocCamViewController *)self flashSettingViewOffButton];
-      [v470 setTranslatesAutoresizingMaskIntoConstraints:0];
+      flashSettingViewOffButton2 = [(ICDocCamViewController *)self flashSettingViewOffButton];
+      [flashSettingViewOffButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v471 = [(ICDocCamViewController *)self flashButton];
-      [v471 setHidden:1];
+      flashButton = [(ICDocCamViewController *)self flashButton];
+      [flashButton setHidden:1];
 
-      v472 = [MEMORY[0x277CBEB18] array];
-      v473 = [(ICDocCamViewController *)self flashSettingView];
-      v474 = [v473 leadingAnchor];
-      v475 = [(ICDocCamViewController *)self view];
-      v476 = [v475 leadingAnchor];
-      v477 = [v474 constraintEqualToAnchor:v476 constant:0.0];
-      [v472 addObject:v477];
+      array7 = [MEMORY[0x277CBEB18] array];
+      flashSettingView6 = [(ICDocCamViewController *)self flashSettingView];
+      leadingAnchor8 = [flashSettingView6 leadingAnchor];
+      view22 = [(ICDocCamViewController *)self view];
+      leadingAnchor9 = [view22 leadingAnchor];
+      v477 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9 constant:0.0];
+      [array7 addObject:v477];
 
-      v478 = [(ICDocCamViewController *)self flashSettingView];
-      v479 = [v478 trailingAnchor];
-      v480 = [(ICDocCamViewController *)self view];
-      v481 = [v480 trailingAnchor];
-      v482 = [v479 constraintEqualToAnchor:v481 constant:0.0];
-      [v472 addObject:v482];
+      flashSettingView7 = [(ICDocCamViewController *)self flashSettingView];
+      trailingAnchor14 = [flashSettingView7 trailingAnchor];
+      view23 = [(ICDocCamViewController *)self view];
+      trailingAnchor15 = [view23 trailingAnchor];
+      v482 = [trailingAnchor14 constraintEqualToAnchor:trailingAnchor15 constant:0.0];
+      [array7 addObject:v482];
 
-      v483 = [(ICDocCamViewController *)self flashSettingView];
-      v484 = [v483 topAnchor];
-      v485 = [(ICDocCamViewController *)self view];
-      v486 = [v485 topAnchor];
-      v487 = [v484 constraintEqualToAnchor:v486 constant:0.0];
-      [v472 addObject:v487];
+      flashSettingView8 = [(ICDocCamViewController *)self flashSettingView];
+      topAnchor9 = [flashSettingView8 topAnchor];
+      view24 = [(ICDocCamViewController *)self view];
+      topAnchor10 = [view24 topAnchor];
+      v487 = [topAnchor9 constraintEqualToAnchor:topAnchor10 constant:0.0];
+      [array7 addObject:v487];
 
-      v488 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
-      [v488 addObjectsFromArray:v472];
+      iPhonePortraitLayoutConstraints19 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
+      [iPhonePortraitLayoutConstraints19 addObjectsFromArray:array7];
 
-      v489 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
-      [v489 addObjectsFromArray:v472];
+      iPhoneLandscapeLayoutConstraints18 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
+      [iPhoneLandscapeLayoutConstraints18 addObjectsFromArray:array7];
 
-      v490 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
-      [v490 addObjectsFromArray:v472];
+      iPhoneCompactLandscapeLayoutConstraints19 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
+      [iPhoneCompactLandscapeLayoutConstraints19 addObjectsFromArray:array7];
 
-      v491 = [(ICDocCamViewController *)self flashSettingView];
-      v492 = [v491 heightAnchor];
-      v493 = [v492 constraintEqualToConstant:v632];
+      flashSettingView9 = [(ICDocCamViewController *)self flashSettingView];
+      heightAnchor2 = [flashSettingView9 heightAnchor];
+      v493 = [heightAnchor2 constraintEqualToConstant:v632];
       [(ICDocCamViewController *)self setFlashSettingViewHeightConstraint:v493];
 
-      v494 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
-      v495 = [(ICDocCamViewController *)self flashSettingViewHeightConstraint];
-      [v494 addObject:v495];
+      iPhonePortraitLayoutConstraints20 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
+      flashSettingViewHeightConstraint = [(ICDocCamViewController *)self flashSettingViewHeightConstraint];
+      [iPhonePortraitLayoutConstraints20 addObject:flashSettingViewHeightConstraint];
 
-      v496 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
-      v497 = [(ICDocCamViewController *)self flashSettingViewHeightConstraint];
-      [v496 addObject:v497];
+      iPhoneLandscapeLayoutConstraints19 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
+      flashSettingViewHeightConstraint2 = [(ICDocCamViewController *)self flashSettingViewHeightConstraint];
+      [iPhoneLandscapeLayoutConstraints19 addObject:flashSettingViewHeightConstraint2];
 
-      v498 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
-      v499 = [(ICDocCamViewController *)self flashSettingViewHeightConstraint];
-      [v498 addObject:v499];
+      iPhoneCompactLandscapeLayoutConstraints20 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
+      flashSettingViewHeightConstraint3 = [(ICDocCamViewController *)self flashSettingViewHeightConstraint];
+      [iPhoneCompactLandscapeLayoutConstraints20 addObject:flashSettingViewHeightConstraint3];
 
-      v500 = [MEMORY[0x277CBEB18] array];
-      v501 = [(ICDocCamViewController *)self flashSettingButtonView];
-      v502 = [v501 leadingAnchor];
-      v503 = [(ICDocCamViewController *)self flashSettingView];
-      v504 = [v503 leadingAnchor];
-      v505 = [v502 constraintEqualToAnchor:v504 constant:0.0];
-      [v500 addObject:v505];
+      array8 = [MEMORY[0x277CBEB18] array];
+      flashSettingButtonView9 = [(ICDocCamViewController *)self flashSettingButtonView];
+      leadingAnchor10 = [flashSettingButtonView9 leadingAnchor];
+      flashSettingView10 = [(ICDocCamViewController *)self flashSettingView];
+      leadingAnchor11 = [flashSettingView10 leadingAnchor];
+      v505 = [leadingAnchor10 constraintEqualToAnchor:leadingAnchor11 constant:0.0];
+      [array8 addObject:v505];
 
-      v506 = [(ICDocCamViewController *)self flashSettingButtonView];
-      v507 = [v506 trailingAnchor];
-      v508 = [(ICDocCamViewController *)self flashSettingView];
-      v509 = [v508 trailingAnchor];
-      v510 = [v507 constraintEqualToAnchor:v509 constant:0.0];
-      [v500 addObject:v510];
+      flashSettingButtonView10 = [(ICDocCamViewController *)self flashSettingButtonView];
+      trailingAnchor16 = [flashSettingButtonView10 trailingAnchor];
+      flashSettingView11 = [(ICDocCamViewController *)self flashSettingView];
+      trailingAnchor17 = [flashSettingView11 trailingAnchor];
+      v510 = [trailingAnchor16 constraintEqualToAnchor:trailingAnchor17 constant:0.0];
+      [array8 addObject:v510];
 
-      v511 = [(ICDocCamViewController *)self flashSettingButtonView];
-      v512 = [v511 bottomAnchor];
-      v513 = [(ICDocCamViewController *)self flashSettingView];
-      v514 = [v513 bottomAnchor];
-      v515 = [v512 constraintEqualToAnchor:v514 constant:0.0];
-      [v500 addObject:v515];
+      flashSettingButtonView11 = [(ICDocCamViewController *)self flashSettingButtonView];
+      bottomAnchor26 = [flashSettingButtonView11 bottomAnchor];
+      flashSettingView12 = [(ICDocCamViewController *)self flashSettingView];
+      bottomAnchor27 = [flashSettingView12 bottomAnchor];
+      v515 = [bottomAnchor26 constraintEqualToAnchor:bottomAnchor27 constant:0.0];
+      [array8 addObject:v515];
 
-      v516 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
-      [v516 addObjectsFromArray:v500];
+      iPhonePortraitLayoutConstraints21 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
+      [iPhonePortraitLayoutConstraints21 addObjectsFromArray:array8];
 
-      v517 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
-      [v517 addObjectsFromArray:v500];
+      iPhoneLandscapeLayoutConstraints20 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
+      [iPhoneLandscapeLayoutConstraints20 addObjectsFromArray:array8];
 
-      v518 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
-      [v518 addObjectsFromArray:v500];
+      iPhoneCompactLandscapeLayoutConstraints21 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
+      [iPhoneCompactLandscapeLayoutConstraints21 addObjectsFromArray:array8];
 
-      v519 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
-      v520 = [(ICDocCamViewController *)self flashSettingButtonView];
-      v521 = [v520 topAnchor];
-      v522 = [(ICDocCamViewController *)self flashSettingView];
-      v523 = [v522 bottomAnchor];
-      v524 = [v521 constraintEqualToAnchor:v523 constant:-44.0];
-      [v519 addObject:v524];
+      iPhonePortraitLayoutConstraints22 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
+      flashSettingButtonView12 = [(ICDocCamViewController *)self flashSettingButtonView];
+      topAnchor11 = [flashSettingButtonView12 topAnchor];
+      flashSettingView13 = [(ICDocCamViewController *)self flashSettingView];
+      bottomAnchor28 = [flashSettingView13 bottomAnchor];
+      v524 = [topAnchor11 constraintEqualToAnchor:bottomAnchor28 constant:-44.0];
+      [iPhonePortraitLayoutConstraints22 addObject:v524];
 
-      v525 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
-      v526 = [(ICDocCamViewController *)self flashSettingButtonView];
-      v527 = [v526 topAnchor];
-      v528 = [(ICDocCamViewController *)self flashSettingView];
-      v529 = [v528 bottomAnchor];
-      v530 = [v527 constraintEqualToAnchor:v529 constant:-44.0];
-      [v525 addObject:v530];
+      iPhoneLandscapeLayoutConstraints21 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
+      flashSettingButtonView13 = [(ICDocCamViewController *)self flashSettingButtonView];
+      topAnchor12 = [flashSettingButtonView13 topAnchor];
+      flashSettingView14 = [(ICDocCamViewController *)self flashSettingView];
+      bottomAnchor29 = [flashSettingView14 bottomAnchor];
+      v530 = [topAnchor12 constraintEqualToAnchor:bottomAnchor29 constant:-44.0];
+      [iPhoneLandscapeLayoutConstraints21 addObject:v530];
 
-      v531 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
-      v532 = [(ICDocCamViewController *)self flashSettingButtonView];
-      v533 = [v532 topAnchor];
-      v534 = [(ICDocCamViewController *)self flashSettingView];
-      v535 = [v534 bottomAnchor];
-      v536 = [v533 constraintEqualToAnchor:v535 constant:-32.0];
-      [v531 addObject:v536];
+      iPhoneCompactLandscapeLayoutConstraints22 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
+      flashSettingButtonView14 = [(ICDocCamViewController *)self flashSettingButtonView];
+      topAnchor13 = [flashSettingButtonView14 topAnchor];
+      flashSettingView15 = [(ICDocCamViewController *)self flashSettingView];
+      bottomAnchor30 = [flashSettingView15 bottomAnchor];
+      v536 = [topAnchor13 constraintEqualToAnchor:bottomAnchor30 constant:-32.0];
+      [iPhoneCompactLandscapeLayoutConstraints22 addObject:v536];
 
-      v537 = [(ICDocCamViewController *)self view];
-      [v537 bounds];
+      view25 = [(ICDocCamViewController *)self view];
+      [view25 bounds];
       v539 = v538;
 
-      v540 = [(ICDocCamViewController *)self view];
-      [v540 bounds];
+      view26 = [(ICDocCamViewController *)self view];
+      [view26 bounds];
       v542 = v541;
 
       if (v539 >= v542)
@@ -3140,178 +3140,178 @@ void __49__ICDocCamViewController_useDocumentSegmentation__block_invoke()
         v539 = v542;
       }
 
-      v543 = [MEMORY[0x277CBEB18] array];
-      v544 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
-      v545 = [v544 centerXAnchor];
-      v546 = [(ICDocCamViewController *)self flashSettingButtonView];
-      v547 = [v546 leadingAnchor];
-      v548 = [v545 constraintEqualToAnchor:v547 constant:24.0];
-      [v543 addObject:v548];
+      array9 = [MEMORY[0x277CBEB18] array];
+      flashSettingViewFlashIcon3 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
+      centerXAnchor15 = [flashSettingViewFlashIcon3 centerXAnchor];
+      flashSettingButtonView15 = [(ICDocCamViewController *)self flashSettingButtonView];
+      leadingAnchor12 = [flashSettingButtonView15 leadingAnchor];
+      v548 = [centerXAnchor15 constraintEqualToAnchor:leadingAnchor12 constant:24.0];
+      [array9 addObject:v548];
 
-      v549 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
-      v550 = [v549 centerYAnchor];
-      v551 = [(ICDocCamViewController *)self flashSettingButtonView];
-      v552 = [v551 centerYAnchor];
-      v553 = [v550 constraintEqualToAnchor:v552 constant:0.0];
-      [v543 addObject:v553];
+      flashSettingViewFlashIcon4 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
+      centerYAnchor20 = [flashSettingViewFlashIcon4 centerYAnchor];
+      flashSettingButtonView16 = [(ICDocCamViewController *)self flashSettingButtonView];
+      centerYAnchor21 = [flashSettingButtonView16 centerYAnchor];
+      v553 = [centerYAnchor20 constraintEqualToAnchor:centerYAnchor21 constant:0.0];
+      [array9 addObject:v553];
 
-      v554 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
-      v555 = [v554 centerXAnchor];
-      v556 = [(ICDocCamViewController *)self flashSettingButtonView];
-      v557 = [v556 leadingAnchor];
+      flashSettingViewAutoButton3 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
+      centerXAnchor16 = [flashSettingViewAutoButton3 centerXAnchor];
+      flashSettingButtonView17 = [(ICDocCamViewController *)self flashSettingButtonView];
+      leadingAnchor13 = [flashSettingButtonView17 leadingAnchor];
       v558 = v539 * 0.5;
       v559 = (v558 + -32.0) * 0.5;
-      v560 = [v555 constraintEqualToAnchor:v557 constant:v559 + 32.0];
-      [v543 addObject:v560];
+      v560 = [centerXAnchor16 constraintEqualToAnchor:leadingAnchor13 constant:v559 + 32.0];
+      [array9 addObject:v560];
 
-      v561 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
-      v562 = [v561 centerYAnchor];
-      v563 = [(ICDocCamViewController *)self flashSettingButtonView];
-      v564 = [v563 centerYAnchor];
-      v565 = [v562 constraintEqualToAnchor:v564 constant:0.0];
-      [v543 addObject:v565];
+      flashSettingViewAutoButton4 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
+      centerYAnchor22 = [flashSettingViewAutoButton4 centerYAnchor];
+      flashSettingButtonView18 = [(ICDocCamViewController *)self flashSettingButtonView];
+      centerYAnchor23 = [flashSettingButtonView18 centerYAnchor];
+      v565 = [centerYAnchor22 constraintEqualToAnchor:centerYAnchor23 constant:0.0];
+      [array9 addObject:v565];
 
-      v566 = [(ICDocCamViewController *)self flashSettingViewOnButton];
-      v567 = [v566 centerXAnchor];
-      v568 = [(ICDocCamViewController *)self flashSettingButtonView];
-      v569 = [v568 leadingAnchor];
-      v570 = [v567 constraintEqualToAnchor:v569 constant:v558];
-      [v543 addObject:v570];
+      flashSettingViewOnButton3 = [(ICDocCamViewController *)self flashSettingViewOnButton];
+      centerXAnchor17 = [flashSettingViewOnButton3 centerXAnchor];
+      flashSettingButtonView19 = [(ICDocCamViewController *)self flashSettingButtonView];
+      leadingAnchor14 = [flashSettingButtonView19 leadingAnchor];
+      v570 = [centerXAnchor17 constraintEqualToAnchor:leadingAnchor14 constant:v558];
+      [array9 addObject:v570];
 
-      v571 = [(ICDocCamViewController *)self flashSettingViewOnButton];
-      v572 = [v571 centerYAnchor];
-      v573 = [(ICDocCamViewController *)self flashSettingButtonView];
-      v574 = [v573 centerYAnchor];
-      v575 = [v572 constraintEqualToAnchor:v574 constant:0.0];
-      [v543 addObject:v575];
+      flashSettingViewOnButton4 = [(ICDocCamViewController *)self flashSettingViewOnButton];
+      centerYAnchor24 = [flashSettingViewOnButton4 centerYAnchor];
+      flashSettingButtonView20 = [(ICDocCamViewController *)self flashSettingButtonView];
+      centerYAnchor25 = [flashSettingButtonView20 centerYAnchor];
+      v575 = [centerYAnchor24 constraintEqualToAnchor:centerYAnchor25 constant:0.0];
+      [array9 addObject:v575];
 
-      v576 = [(ICDocCamViewController *)self flashSettingViewOffButton];
-      v577 = [v576 centerXAnchor];
-      v578 = [(ICDocCamViewController *)self flashSettingButtonView];
-      v579 = [v578 leadingAnchor];
-      v580 = [v577 constraintEqualToAnchor:v579 constant:v558 + v559];
-      [v543 addObject:v580];
+      flashSettingViewOffButton3 = [(ICDocCamViewController *)self flashSettingViewOffButton];
+      centerXAnchor18 = [flashSettingViewOffButton3 centerXAnchor];
+      flashSettingButtonView21 = [(ICDocCamViewController *)self flashSettingButtonView];
+      leadingAnchor15 = [flashSettingButtonView21 leadingAnchor];
+      v559 = [centerXAnchor18 constraintEqualToAnchor:leadingAnchor15 constant:v558 + v559];
+      [array9 addObject:v559];
 
-      v581 = [(ICDocCamViewController *)self flashSettingViewOffButton];
-      v582 = [v581 centerYAnchor];
-      v583 = [(ICDocCamViewController *)self flashSettingButtonView];
-      v584 = [v583 centerYAnchor];
-      v585 = [v582 constraintEqualToAnchor:v584 constant:0.0];
-      [v543 addObject:v585];
+      flashSettingViewOffButton4 = [(ICDocCamViewController *)self flashSettingViewOffButton];
+      centerYAnchor26 = [flashSettingViewOffButton4 centerYAnchor];
+      flashSettingButtonView22 = [(ICDocCamViewController *)self flashSettingButtonView];
+      centerYAnchor27 = [flashSettingButtonView22 centerYAnchor];
+      v585 = [centerYAnchor26 constraintEqualToAnchor:centerYAnchor27 constant:0.0];
+      [array9 addObject:v585];
 
-      v586 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
-      [v586 addObjectsFromArray:v543];
+      iPhonePortraitLayoutConstraints23 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
+      [iPhonePortraitLayoutConstraints23 addObjectsFromArray:array9];
 
-      v587 = [MEMORY[0x277CBEB18] array];
-      v588 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
-      v589 = [v588 trailingAnchor];
-      v590 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
-      v591 = [v590 leadingAnchor];
-      v592 = [v589 constraintEqualToAnchor:v591 constant:-37.0];
-      [v587 addObject:v592];
+      array10 = [MEMORY[0x277CBEB18] array];
+      flashSettingViewFlashIcon5 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
+      trailingAnchor18 = [flashSettingViewFlashIcon5 trailingAnchor];
+      flashSettingViewAutoButton5 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
+      leadingAnchor16 = [flashSettingViewAutoButton5 leadingAnchor];
+      v592 = [trailingAnchor18 constraintEqualToAnchor:leadingAnchor16 constant:-37.0];
+      [array10 addObject:v592];
 
-      v593 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
-      v594 = [v593 centerYAnchor];
-      v595 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
-      v596 = [v595 centerYAnchor];
-      v597 = [v594 constraintEqualToAnchor:v596 constant:0.0];
-      [v587 addObject:v597];
+      flashSettingViewFlashIcon6 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
+      centerYAnchor28 = [flashSettingViewFlashIcon6 centerYAnchor];
+      flashSettingViewAutoButton6 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
+      centerYAnchor29 = [flashSettingViewAutoButton6 centerYAnchor];
+      v597 = [centerYAnchor28 constraintEqualToAnchor:centerYAnchor29 constant:0.0];
+      [array10 addObject:v597];
 
-      v598 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
-      v599 = [v598 trailingAnchor];
-      v600 = [(ICDocCamViewController *)self flashSettingViewOnButton];
-      v601 = [v600 leadingAnchor];
-      v602 = [v599 constraintEqualToAnchor:v601 constant:-46.0];
-      [v587 addObject:v602];
+      flashSettingViewAutoButton7 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
+      trailingAnchor19 = [flashSettingViewAutoButton7 trailingAnchor];
+      flashSettingViewOnButton5 = [(ICDocCamViewController *)self flashSettingViewOnButton];
+      leadingAnchor17 = [flashSettingViewOnButton5 leadingAnchor];
+      v602 = [trailingAnchor19 constraintEqualToAnchor:leadingAnchor17 constant:-46.0];
+      [array10 addObject:v602];
 
-      v603 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
-      v604 = [v603 centerYAnchor];
-      v605 = [(ICDocCamViewController *)self flashSettingButtonView];
-      v606 = [v605 centerYAnchor];
-      v607 = [v604 constraintEqualToAnchor:v606 constant:0.0];
-      [v587 addObject:v607];
+      flashSettingViewAutoButton8 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
+      centerYAnchor30 = [flashSettingViewAutoButton8 centerYAnchor];
+      flashSettingButtonView23 = [(ICDocCamViewController *)self flashSettingButtonView];
+      centerYAnchor31 = [flashSettingButtonView23 centerYAnchor];
+      v607 = [centerYAnchor30 constraintEqualToAnchor:centerYAnchor31 constant:0.0];
+      [array10 addObject:v607];
 
-      v608 = [(ICDocCamViewController *)self flashSettingViewOnButton];
-      v609 = [v608 centerXAnchor];
-      v610 = [(ICDocCamViewController *)self flashSettingButtonView];
-      v611 = [v610 centerXAnchor];
-      v612 = [v609 constraintEqualToAnchor:v611 constant:0.0];
-      [v587 addObject:v612];
+      flashSettingViewOnButton6 = [(ICDocCamViewController *)self flashSettingViewOnButton];
+      centerXAnchor19 = [flashSettingViewOnButton6 centerXAnchor];
+      flashSettingButtonView24 = [(ICDocCamViewController *)self flashSettingButtonView];
+      centerXAnchor20 = [flashSettingButtonView24 centerXAnchor];
+      v612 = [centerXAnchor19 constraintEqualToAnchor:centerXAnchor20 constant:0.0];
+      [array10 addObject:v612];
 
-      v613 = [(ICDocCamViewController *)self flashSettingViewOnButton];
-      v614 = [v613 centerYAnchor];
-      v615 = [(ICDocCamViewController *)self flashSettingButtonView];
-      v616 = [v615 centerYAnchor];
-      v617 = [v614 constraintEqualToAnchor:v616 constant:0.0];
-      [v587 addObject:v617];
+      flashSettingViewOnButton7 = [(ICDocCamViewController *)self flashSettingViewOnButton];
+      centerYAnchor32 = [flashSettingViewOnButton7 centerYAnchor];
+      flashSettingButtonView25 = [(ICDocCamViewController *)self flashSettingButtonView];
+      centerYAnchor33 = [flashSettingButtonView25 centerYAnchor];
+      v617 = [centerYAnchor32 constraintEqualToAnchor:centerYAnchor33 constant:0.0];
+      [array10 addObject:v617];
 
-      v618 = [(ICDocCamViewController *)self flashSettingViewOffButton];
-      v619 = [v618 leadingAnchor];
-      v620 = [(ICDocCamViewController *)self flashSettingViewOnButton];
-      v621 = [v620 trailingAnchor];
-      v622 = [v619 constraintEqualToAnchor:v621 constant:46.0];
-      [v587 addObject:v622];
+      flashSettingViewOffButton5 = [(ICDocCamViewController *)self flashSettingViewOffButton];
+      leadingAnchor18 = [flashSettingViewOffButton5 leadingAnchor];
+      flashSettingViewOnButton8 = [(ICDocCamViewController *)self flashSettingViewOnButton];
+      trailingAnchor20 = [flashSettingViewOnButton8 trailingAnchor];
+      v622 = [leadingAnchor18 constraintEqualToAnchor:trailingAnchor20 constant:46.0];
+      [array10 addObject:v622];
 
-      v623 = [(ICDocCamViewController *)self flashSettingViewOffButton];
-      v624 = [v623 centerYAnchor];
-      v625 = [(ICDocCamViewController *)self flashSettingButtonView];
-      v626 = [v625 centerYAnchor];
-      v627 = [v624 constraintEqualToAnchor:v626 constant:0.0];
-      [v587 addObject:v627];
+      flashSettingViewOffButton6 = [(ICDocCamViewController *)self flashSettingViewOffButton];
+      centerYAnchor34 = [flashSettingViewOffButton6 centerYAnchor];
+      flashSettingButtonView26 = [(ICDocCamViewController *)self flashSettingButtonView];
+      centerYAnchor35 = [flashSettingButtonView26 centerYAnchor];
+      v627 = [centerYAnchor34 constraintEqualToAnchor:centerYAnchor35 constant:0.0];
+      [array10 addObject:v627];
 
-      v628 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
-      [v628 addObjectsFromArray:v587];
+      iPhoneLandscapeLayoutConstraints22 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
+      [iPhoneLandscapeLayoutConstraints22 addObjectsFromArray:array10];
 
-      v629 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
-      [v629 addObjectsFromArray:v587];
+      iPhoneCompactLandscapeLayoutConstraints23 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
+      [iPhoneCompactLandscapeLayoutConstraints23 addObjectsFromArray:array10];
 
       [(ICDocCamViewController *)self updateThumbnailConstraintsForIPhone];
     }
   }
 
-  v26 = [(ICDocCamViewController *)self autoShutterOffTopLayoutConstraint];
-  [v26 setConstant:v6 + 60.0];
+  autoShutterOffTopLayoutConstraint = [(ICDocCamViewController *)self autoShutterOffTopLayoutConstraint];
+  [autoShutterOffTopLayoutConstraint setConstant:v6 + 60.0];
 
-  v27 = [(ICDocCamViewController *)self autoShutterOffTopLayoutConstraint];
-  [v27 setConstant:v6 + 60.0];
+  autoShutterOffTopLayoutConstraint2 = [(ICDocCamViewController *)self autoShutterOffTopLayoutConstraint];
+  [autoShutterOffTopLayoutConstraint2 setConstant:v6 + 60.0];
 
-  v28 = [(ICDocCamViewController *)self shutterButtonBottomConstraintForPortraitIPhone];
-  [v28 setConstant:v25];
+  shutterButtonBottomConstraintForPortraitIPhone2 = [(ICDocCamViewController *)self shutterButtonBottomConstraintForPortraitIPhone];
+  [shutterButtonBottomConstraintForPortraitIPhone2 setConstant:v25];
 
-  v29 = [(ICDocCamViewController *)self shutterButtonBottomConstraintForLandscapeIPhone];
-  [v29 setConstant:v25];
+  shutterButtonBottomConstraintForLandscapeIPhone3 = [(ICDocCamViewController *)self shutterButtonBottomConstraintForLandscapeIPhone];
+  [shutterButtonBottomConstraintForLandscapeIPhone3 setConstant:v25];
 
-  v30 = [(ICDocCamViewController *)self filterViewContainerHeightConstraint];
+  filterViewContainerHeightConstraint4 = [(ICDocCamViewController *)self filterViewContainerHeightConstraint];
   v31 = v14 + v6;
-  [v30 setConstant:v31];
+  [filterViewContainerHeightConstraint4 setConstant:v31];
 
-  v32 = [(ICDocCamViewController *)self flashSettingViewHeightConstraint];
-  [v32 setConstant:v31];
+  flashSettingViewHeightConstraint4 = [(ICDocCamViewController *)self flashSettingViewHeightConstraint];
+  [flashSettingViewHeightConstraint4 setConstant:v31];
 
-  v33 = [(ICDocCamViewController *)self thumbnailContainerViewBottomConstraintForIPhone];
-  [v33 setConstant:-16.0 - v8 - v12];
+  thumbnailContainerViewBottomConstraintForIPhone = [(ICDocCamViewController *)self thumbnailContainerViewBottomConstraintForIPhone];
+  [thumbnailContainerViewBottomConstraintForIPhone setConstant:-16.0 - v8 - v12];
 
-  v34 = [(ICDocCamViewController *)self thumbnailContainerViewLeadingConstraintForIPhone];
-  [v34 setConstant:v634 + 16.0];
+  thumbnailContainerViewLeadingConstraintForIPhone = [(ICDocCamViewController *)self thumbnailContainerViewLeadingConstraintForIPhone];
+  [thumbnailContainerViewLeadingConstraintForIPhone setConstant:v634 + 16.0];
 
-  v35 = [(ICDocCamViewController *)self cancelButtonForIPhoneLeadingConstraint];
-  [v35 setConstant:v634 + 12.0];
+  cancelButtonForIPhoneLeadingConstraint4 = [(ICDocCamViewController *)self cancelButtonForIPhoneLeadingConstraint];
+  [cancelButtonForIPhoneLeadingConstraint4 setConstant:v634 + 12.0];
 
-  v36 = [(ICDocCamViewController *)self autoButtonForIPhoneTrailingConstraint];
-  [v36 setConstant:-12.0 - v10];
+  autoButtonForIPhoneTrailingConstraint4 = [(ICDocCamViewController *)self autoButtonForIPhoneTrailingConstraint];
+  [autoButtonForIPhoneTrailingConstraint4 setConstant:-12.0 - v10];
 
-  v37 = [(ICDocCamViewController *)self saveButtonLandscapeVerticalConstraintForIPhone];
-  [v37 setConstant:-34.0 - v8];
+  saveButtonLandscapeVerticalConstraintForIPhone3 = [(ICDocCamViewController *)self saveButtonLandscapeVerticalConstraintForIPhone];
+  [saveButtonLandscapeVerticalConstraintForIPhone3 setConstant:-34.0 - v8];
 
-  v38 = [(ICDocCamViewController *)self saveButtonLandscapeTrailingConstraintForIPhone];
-  [v38 setConstant:-21.0 - v10];
+  saveButtonLandscapeTrailingConstraintForIPhone3 = [(ICDocCamViewController *)self saveButtonLandscapeTrailingConstraintForIPhone];
+  [saveButtonLandscapeTrailingConstraintForIPhone3 setConstant:-21.0 - v10];
 
-  v39 = [(ICDocCamViewController *)self view];
-  [v39 frame];
+  view27 = [(ICDocCamViewController *)self view];
+  [view27 frame];
   v41 = v40;
 
-  v42 = [(ICDocCamViewController *)self view];
-  [v42 frame];
+  view28 = [(ICDocCamViewController *)self view];
+  [view28 frame];
   v44 = v43;
 
   if (v41 >= v44)
@@ -3319,193 +3319,193 @@ void __49__ICDocCamViewController_useDocumentSegmentation__block_invoke()
     v41 = v44;
   }
 
-  v45 = [(ICDocCamViewController *)self saveButton];
-  [v45 setMaxWidthForPortraitIPhone:(v41 * 0.5 + -43.0 + -16.0)];
+  saveButton6 = [(ICDocCamViewController *)self saveButton];
+  [saveButton6 setMaxWidthForPortraitIPhone:(v41 * 0.5 + -43.0 + -16.0)];
 
-  v46 = [(ICDocCamViewController *)self filterButtonImage];
-  v47 = [(ICDocCamViewController *)self filterButton];
-  [v47 setImage:v46 forState:0];
+  filterButtonImage = [(ICDocCamViewController *)self filterButtonImage];
+  filterButton = [(ICDocCamViewController *)self filterButton];
+  [filterButton setImage:filterButtonImage forState:0];
 
-  v48 = [(ICDocCamViewController *)self filterButtonForIPhone];
-  [v48 setImage:v46 forState:0];
+  filterButtonForIPhone8 = [(ICDocCamViewController *)self filterButtonForIPhone];
+  [filterButtonForIPhone8 setImage:filterButtonImage forState:0];
 
-  v49 = [(ICDocCamViewController *)self filterViewButton];
-  [v49 setImage:v46 forState:0];
+  filterViewButton7 = [(ICDocCamViewController *)self filterViewButton];
+  [filterViewButton7 setImage:filterButtonImage forState:0];
 
-  v50 = [(ICDocCamViewController *)self flashButtonImage];
-  v51 = [(ICDocCamViewController *)self flashButton];
-  [v51 setImage:v50 forState:0];
+  flashButtonImage = [(ICDocCamViewController *)self flashButtonImage];
+  flashButton2 = [(ICDocCamViewController *)self flashButton];
+  [flashButton2 setImage:flashButtonImage forState:0];
 
-  v52 = [(ICDocCamViewController *)self flashButtonForIPhone];
-  [v52 setImage:v50 forState:0];
+  flashButtonForIPhone7 = [(ICDocCamViewController *)self flashButtonForIPhone];
+  [flashButtonForIPhone7 setImage:flashButtonImage forState:0];
 
-  v53 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
-  [v53 setImage:v50 forState:0];
+  flashSettingViewFlashIcon7 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
+  [flashSettingViewFlashIcon7 setImage:flashButtonImage forState:0];
 
   [(ICDocCamViewController *)self filterScrollViewContentWidthWithInterItemSpacing:20.0 startPadding:10.0 endPadding:0.0];
   v55 = v54;
-  v56 = [(ICDocCamViewController *)self filterViewButton];
-  [v56 frame];
+  filterViewButton8 = [(ICDocCamViewController *)self filterViewButton];
+  [filterViewButton8 frame];
   v58 = v57;
 
-  v59 = [(ICDocCamViewController *)self view];
-  [v59 bounds];
+  view29 = [(ICDocCamViewController *)self view];
+  [view29 bounds];
   v61 = v60;
 
-  v62 = [(ICDocCamViewController *)self filterViewLeadingConstraint];
-  [v62 setConstant:0.0];
+  filterViewLeadingConstraint = [(ICDocCamViewController *)self filterViewLeadingConstraint];
+  [filterViewLeadingConstraint setConstant:0.0];
 
-  v63 = [(ICDocCamViewController *)self filterViewTrailingConstraint];
-  [v63 setConstant:0.0];
+  filterViewTrailingConstraint = [(ICDocCamViewController *)self filterViewTrailingConstraint];
+  [filterViewTrailingConstraint setConstant:0.0];
 
   if (v61 <= v55 + v58 || v11 < 2)
   {
     if (v11 <= 1)
     {
       v65 = MEMORY[0x277CCAAD0];
-      v66 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
-      [v65 deactivateConstraints:v66];
+      iPhoneLandscapeLayoutConstraints23 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
+      [v65 deactivateConstraints:iPhoneLandscapeLayoutConstraints23];
 
       v67 = MEMORY[0x277CCAAD0];
-      v68 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
-      [v67 deactivateConstraints:v68];
+      iPhoneCompactLandscapeLayoutConstraints24 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
+      [v67 deactivateConstraints:iPhoneCompactLandscapeLayoutConstraints24];
 
       v69 = MEMORY[0x277CCAAD0];
-      v70 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
-      [v69 activateConstraints:v70];
+      iPhonePortraitLayoutConstraints24 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
+      [v69 activateConstraints:iPhonePortraitLayoutConstraints24];
 
-      v71 = [(ICDocCamViewController *)self topToolbarForIPhoneHeightConstraint];
-      [v71 setConstant:v6 + 44.0];
+      topToolbarForIPhoneHeightConstraint = [(ICDocCamViewController *)self topToolbarForIPhoneHeightConstraint];
+      [topToolbarForIPhoneHeightConstraint setConstant:v6 + 44.0];
 
-      v72 = [(ICDocCamViewController *)self filterNameFeedbackBottomConstraint];
-      [v72 setConstant:v6 + 59.0];
+      filterNameFeedbackBottomConstraint4 = [(ICDocCamViewController *)self filterNameFeedbackBottomConstraint];
+      [filterNameFeedbackBottomConstraint4 setConstant:v6 + 59.0];
       goto LABEL_25;
     }
   }
 
   else
   {
-    v73 = [(ICDocCamViewController *)self view];
-    [v73 bounds];
+    view30 = [(ICDocCamViewController *)self view];
+    [view30 bounds];
     v75 = v74;
 
-    v76 = [(ICDocCamViewController *)self filterViewButton];
-    [v76 frame];
+    filterViewButton9 = [(ICDocCamViewController *)self filterViewButton];
+    [filterViewButton9 frame];
     v78 = v77;
-    v79 = [(ICDocCamViewController *)self filterViewLeadingConstraint];
+    filterViewLeadingConstraint2 = [(ICDocCamViewController *)self filterViewLeadingConstraint];
     v80 = v75 - v55 + -10.0;
-    [v79 setConstant:v80 * 0.5 - v78 + -4.0];
+    [filterViewLeadingConstraint2 setConstant:v80 * 0.5 - v78 + -4.0];
 
-    v81 = [(ICDocCamViewController *)self filterViewTrailingConstraint];
-    [v81 setConstant:v80 * -0.5];
+    filterViewTrailingConstraint2 = [(ICDocCamViewController *)self filterViewTrailingConstraint];
+    [filterViewTrailingConstraint2 setConstant:v80 * -0.5];
   }
 
   v82 = MEMORY[0x277CCAAD0];
-  v83 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
-  [v82 deactivateConstraints:v83];
+  iPhonePortraitLayoutConstraints25 = [(ICDocCamViewController *)self iPhonePortraitLayoutConstraints];
+  [v82 deactivateConstraints:iPhonePortraitLayoutConstraints25];
 
   v84 = MEMORY[0x277CCAAD0];
   if (v633)
   {
-    v85 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
-    [v84 deactivateConstraints:v85];
+    iPhoneLandscapeLayoutConstraints24 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
+    [v84 deactivateConstraints:iPhoneLandscapeLayoutConstraints24];
 
     v86 = MEMORY[0x277CCAAD0];
-    v87 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
-    [v86 activateConstraints:v87];
+    iPhoneCompactLandscapeLayoutConstraints25 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
+    [v86 activateConstraints:iPhoneCompactLandscapeLayoutConstraints25];
 
-    v88 = [(ICDocCamViewController *)self topToolbarForIPhoneHeightConstraint];
-    [v88 setConstant:v6 + 32.0];
+    topToolbarForIPhoneHeightConstraint2 = [(ICDocCamViewController *)self topToolbarForIPhoneHeightConstraint];
+    [topToolbarForIPhoneHeightConstraint2 setConstant:v6 + 32.0];
 
-    v72 = [(ICDocCamViewController *)self filterNameFeedbackBottomConstraint];
-    [v72 setConstant:v6 + 45.0];
+    filterNameFeedbackBottomConstraint4 = [(ICDocCamViewController *)self filterNameFeedbackBottomConstraint];
+    [filterNameFeedbackBottomConstraint4 setConstant:v6 + 45.0];
   }
 
   else
   {
-    v89 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
-    [v84 deactivateConstraints:v89];
+    iPhoneCompactLandscapeLayoutConstraints26 = [(ICDocCamViewController *)self iPhoneCompactLandscapeLayoutConstraints];
+    [v84 deactivateConstraints:iPhoneCompactLandscapeLayoutConstraints26];
 
     v90 = MEMORY[0x277CCAAD0];
-    v91 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
-    [v90 activateConstraints:v91];
+    iPhoneLandscapeLayoutConstraints25 = [(ICDocCamViewController *)self iPhoneLandscapeLayoutConstraints];
+    [v90 activateConstraints:iPhoneLandscapeLayoutConstraints25];
 
-    v92 = [(ICDocCamViewController *)self topToolbarForIPhoneHeightConstraint];
-    [v92 setConstant:v6 + 44.0];
+    topToolbarForIPhoneHeightConstraint3 = [(ICDocCamViewController *)self topToolbarForIPhoneHeightConstraint];
+    [topToolbarForIPhoneHeightConstraint3 setConstant:v6 + 44.0];
 
-    v72 = [(ICDocCamViewController *)self filterNameFeedbackBottomConstraint];
-    [v72 setConstant:v6 + 59.0];
+    filterNameFeedbackBottomConstraint4 = [(ICDocCamViewController *)self filterNameFeedbackBottomConstraint];
+    [filterNameFeedbackBottomConstraint4 setConstant:v6 + 59.0];
   }
 
 LABEL_25:
 
-  v93 = [(ICDocCamViewController *)self view];
-  [v93 layoutIfNeeded];
+  view31 = [(ICDocCamViewController *)self view];
+  [view31 layoutIfNeeded];
 }
 
 - (void)updateThumbnailContainerViewConstraintConstantForIPad
 {
-  v8 = [(ICDocCamViewController *)self cancelButton];
-  [v8 bounds];
+  cancelButton = [(ICDocCamViewController *)self cancelButton];
+  [cancelButton bounds];
   v4 = v3;
 
-  v9 = [(ICDocCamViewController *)self saveButton];
-  [v9 bounds];
+  saveButton = [(ICDocCamViewController *)self saveButton];
+  [saveButton bounds];
   v6 = v5;
 
   v7 = vabdd_f64(v4, v6);
-  v10 = [(ICDocCamViewController *)self thumbnailContainerViewLeadingConstraintForIPad];
+  thumbnailContainerViewLeadingConstraintForIPad = [(ICDocCamViewController *)self thumbnailContainerViewLeadingConstraintForIPad];
   if (v4 >= v6)
   {
-    [v10 setConstant:48.0];
+    [thumbnailContainerViewLeadingConstraintForIPad setConstant:48.0];
 
-    v11 = [(ICDocCamViewController *)self thumbnailContainerViewTrailingConstraintForIPad];
-    [v11 setConstant:-(v7 + 48.0)];
+    thumbnailContainerViewTrailingConstraintForIPad = [(ICDocCamViewController *)self thumbnailContainerViewTrailingConstraintForIPad];
+    [thumbnailContainerViewTrailingConstraintForIPad setConstant:-(v7 + 48.0)];
   }
 
   else
   {
-    [v10 setConstant:v7 + 48.0];
+    [thumbnailContainerViewLeadingConstraintForIPad setConstant:v7 + 48.0];
 
-    v11 = [(ICDocCamViewController *)self thumbnailContainerViewTrailingConstraintForIPad];
-    [v11 setConstant:-48.0];
+    thumbnailContainerViewTrailingConstraintForIPad = [(ICDocCamViewController *)self thumbnailContainerViewTrailingConstraintForIPad];
+    [thumbnailContainerViewTrailingConstraintForIPad setConstant:-48.0];
   }
 }
 
-- (double)filterScrollViewContentWidthWithInterItemSpacing:(double)a3 startPadding:(double)a4 endPadding:(double)a5
+- (double)filterScrollViewContentWidthWithInterItemSpacing:(double)spacing startPadding:(double)padding endPadding:(double)endPadding
 {
   for (i = 0; ; ++i)
   {
-    v10 = [(ICDocCamViewController *)self filterButtons];
-    v11 = [v10 count];
+    filterButtons = [(ICDocCamViewController *)self filterButtons];
+    v11 = [filterButtons count];
 
     if (v11 <= i)
     {
       break;
     }
 
-    v12 = [(ICDocCamViewController *)self filterButtons];
-    v13 = [v12 objectAtIndexedSubscript:i];
+    filterButtons2 = [(ICDocCamViewController *)self filterButtons];
+    v13 = [filterButtons2 objectAtIndexedSubscript:i];
 
     [v13 frame];
     v15 = v14;
-    v16 = [(ICDocCamViewController *)self filterNames];
-    v17 = [v16 count] - 1;
+    filterNames = [(ICDocCamViewController *)self filterNames];
+    v17 = [filterNames count] - 1;
 
     if (v17 <= i)
     {
-      v18 = a5;
+      spacingCopy = endPadding;
     }
 
     else
     {
-      v18 = a3;
+      spacingCopy = spacing;
     }
 
-    a4 = a4 + v15 + v18;
+    padding = padding + v15 + spacingCopy;
   }
 
-  return a4;
+  return padding;
 }
 
 + (BOOL)isLiquidGlassEnabledForCapture
@@ -3530,45 +3530,45 @@ uint64_t __56__ICDocCamViewController_isLiquidGlassEnabledForCapture__block_invo
   return result;
 }
 
-- (void)overlayCloseButtonTapped:(id)a3
+- (void)overlayCloseButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = os_log_create("com.apple.documentcamera", "LiquidGlass");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [ICDocCamViewController overlayCloseButtonTapped:];
   }
 
-  [(ICDocCamViewController *)self cancelAction:v4];
+  [(ICDocCamViewController *)self cancelAction:tappedCopy];
 }
 
-- (void)overlayCaptureButtonTapped:(id)a3
+- (void)overlayCaptureButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = os_log_create("com.apple.documentcamera", "LiquidGlass");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [ICDocCamViewController overlayCaptureButtonTapped:];
   }
 
-  [(ICDocCamViewController *)self shutterButtonAction:v4];
-  v6 = [(ICDocCamViewController *)self thumbnailViewController];
-  [v6 update];
+  [(ICDocCamViewController *)self shutterButtonAction:tappedCopy];
+  thumbnailViewController = [(ICDocCamViewController *)self thumbnailViewController];
+  [thumbnailViewController update];
 }
 
-- (void)overlayDoneButtonTapped:(id)a3
+- (void)overlayDoneButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = os_log_create("com.apple.documentcamera", "LiquidGlass");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [ICDocCamViewController overlayDoneButtonTapped:];
   }
 
-  [(ICDocCamViewController *)self saveAction:v4];
+  [(ICDocCamViewController *)self saveAction:tappedCopy];
 }
 
-- (void)setOverlayFlashMode:(int64_t)a3
+- (void)setOverlayFlashMode:(int64_t)mode
 {
   v5 = os_log_create("com.apple.documentcamera", "LiquidGlass");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -3576,11 +3576,11 @@ uint64_t __56__ICDocCamViewController_isLiquidGlassEnabledForCapture__block_invo
     [ICDocCamViewController setOverlayFlashMode:];
   }
 
-  [(ICDocCamViewController *)self setFlashMode:a3];
+  [(ICDocCamViewController *)self setFlashMode:mode];
   [(ICDocCamViewController *)self flashFlashButtonNameFeedback];
 }
 
-- (void)setOverlayFilter:(signed __int16)a3
+- (void)setOverlayFilter:(signed __int16)filter
 {
   [(ICDocCamViewController *)self setDefaultFilter:?];
   [(ICDocCamViewController *)self flashFilterButtonNameFeedback];
@@ -3591,42 +3591,42 @@ uint64_t __56__ICDocCamViewController_isLiquidGlassEnabledForCapture__block_invo
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(ICDocCamViewController *)self processRequestsBlocker];
-  [v8 addBlockerOfType:@"OrientationBlocker" clearRectangles:1 clearQueue:1];
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  processRequestsBlocker = [(ICDocCamViewController *)self processRequestsBlocker];
+  [processRequestsBlocker addBlockerOfType:@"OrientationBlocker" clearRectangles:1 clearQueue:1];
 
   v20.receiver = self;
   v20.super_class = ICDocCamViewController;
-  [(ICDocCamViewController *)&v20 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v9 = [(ICDocCamViewController *)self accelerometer];
-  v10 = [v9 currentDeviceOrientation];
+  [(ICDocCamViewController *)&v20 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  accelerometer = [(ICDocCamViewController *)self accelerometer];
+  currentDeviceOrientation = [accelerometer currentDeviceOrientation];
 
-  if ((v10 - 1) <= 3)
+  if ((currentDeviceOrientation - 1) <= 3)
   {
-    v11 = [(ICDocCamViewController *)self videoPreviewLayer];
-    v12 = [v11 connection];
-    [v12 setVideoOrientation:v10];
+    videoPreviewLayer = [(ICDocCamViewController *)self videoPreviewLayer];
+    connection = [videoPreviewLayer connection];
+    [connection setVideoOrientation:currentDeviceOrientation];
   }
 
-  v13 = [(ICDocCamViewController *)self navigationController];
-  v14 = [v13 viewControllers];
-  v15 = [v14 lastObject];
-  v16 = v15;
-  if (v15 == self)
+  navigationController = [(ICDocCamViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  lastObject = [viewControllers lastObject];
+  v16 = lastObject;
+  if (lastObject == self)
   {
-    v17 = [(ICDocCamViewController *)self presentedViewController];
+    presentedViewController = [(ICDocCamViewController *)self presentedViewController];
 
-    if (v17)
+    if (presentedViewController)
     {
       goto LABEL_7;
     }
 
-    v13 = [(ICDocCamViewController *)self shutterButton];
-    [ICDocCamUtilities prepareForRotationIfNecessaryWithShutterButton:v13 coodinator:v7];
+    navigationController = [(ICDocCamViewController *)self shutterButton];
+    [ICDocCamUtilities prepareForRotationIfNecessaryWithShutterButton:navigationController coodinator:coordinatorCopy];
   }
 
   else
@@ -3644,7 +3644,7 @@ LABEL_7:
   v18[1] = 3221225472;
   v18[2] = __77__ICDocCamViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v18[3] = &unk_278F93AD8;
-  [v7 animateAlongsideTransition:v19 completion:v18];
+  [coordinatorCopy animateAlongsideTransition:v19 completion:v18];
 }
 
 uint64_t __77__ICDocCamViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -3683,66 +3683,66 @@ void __77__ICDocCamViewController_viewWillTransitionToSize_withTransitionCoordin
   }
 }
 
-- (void)updateAutoButtonTitleForAutoMode:(BOOL)a3
+- (void)updateAutoButtonTitleForAutoMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v27 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.5];
-  v5 = [MEMORY[0x277D75348] clearColor];
-  v6 = [(ICDocCamViewController *)self view];
-  v7 = [v6 tintColor];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  view = [(ICDocCamViewController *)self view];
+  tintColor = [view tintColor];
 
-  if (v3)
+  if (modeCopy)
   {
     v8 = [DCLocalization localizedStringForKey:@"Auto" value:@"Auto" table:@"Localizable"];
-    v9 = [(ICDocCamViewController *)self autoButtonForIPhone];
-    [v9 setTitle:v8 forState:0];
+    autoButtonForIPhone = [(ICDocCamViewController *)self autoButtonForIPhone];
+    [autoButtonForIPhone setTitle:v8 forState:0];
 
-    v10 = [(ICDocCamViewController *)self autoButtonForIPhone];
-    [v10 setLargeContentTitle:v8];
+    autoButtonForIPhone2 = [(ICDocCamViewController *)self autoButtonForIPhone];
+    [autoButtonForIPhone2 setLargeContentTitle:v8];
 
-    v11 = [(ICDocCamViewController *)self cameraHighlightColor];
-    v12 = [(ICDocCamViewController *)self autoButton];
-    [v12 setTintColor:v11];
+    cameraHighlightColor = [(ICDocCamViewController *)self cameraHighlightColor];
+    autoButton = [(ICDocCamViewController *)self autoButton];
+    [autoButton setTintColor:cameraHighlightColor];
 
-    v13 = [MEMORY[0x277D75348] whiteColor];
-    v14 = [(ICDocCamViewController *)self manualButton];
-    [v14 setTintColor:v13];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    manualButton = [(ICDocCamViewController *)self manualButton];
+    [manualButton setTintColor:whiteColor];
 
-    v15 = [(ICDocCamViewController *)self autoButton];
-    [v15 setBackgroundColor:v27];
+    autoButton2 = [(ICDocCamViewController *)self autoButton];
+    [autoButton2 setBackgroundColor:v27];
 
-    v16 = [(ICDocCamViewController *)self manualButton];
-    [v16 setBackgroundColor:v5];
+    manualButton2 = [(ICDocCamViewController *)self manualButton];
+    [manualButton2 setBackgroundColor:clearColor];
   }
 
   else
   {
     v8 = [DCLocalization localizedStringForKey:@"Manual" value:@"Manual" table:@"Localizable"];
-    v17 = [(ICDocCamViewController *)self autoButtonForIPhone];
-    [v17 setTitle:v8 forState:0];
+    autoButtonForIPhone3 = [(ICDocCamViewController *)self autoButtonForIPhone];
+    [autoButtonForIPhone3 setTitle:v8 forState:0];
 
-    v18 = [(ICDocCamViewController *)self autoButtonForIPhone];
-    [v18 setLargeContentTitle:v8];
+    autoButtonForIPhone4 = [(ICDocCamViewController *)self autoButtonForIPhone];
+    [autoButtonForIPhone4 setLargeContentTitle:v8];
 
-    v19 = [MEMORY[0x277D75348] whiteColor];
-    v20 = [(ICDocCamViewController *)self autoButton];
-    [v20 setTintColor:v19];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    autoButton3 = [(ICDocCamViewController *)self autoButton];
+    [autoButton3 setTintColor:whiteColor2];
 
-    v21 = [(ICDocCamViewController *)self cameraHighlightColor];
-    v22 = [(ICDocCamViewController *)self manualButton];
-    [v22 setTintColor:v21];
+    cameraHighlightColor2 = [(ICDocCamViewController *)self cameraHighlightColor];
+    manualButton3 = [(ICDocCamViewController *)self manualButton];
+    [manualButton3 setTintColor:cameraHighlightColor2];
 
-    v23 = [(ICDocCamViewController *)self autoButton];
-    [v23 setBackgroundColor:v5];
+    autoButton4 = [(ICDocCamViewController *)self autoButton];
+    [autoButton4 setBackgroundColor:clearColor];
 
-    v16 = [(ICDocCamViewController *)self manualButton];
-    [v16 setBackgroundColor:v27];
+    manualButton2 = [(ICDocCamViewController *)self manualButton];
+    [manualButton2 setBackgroundColor:v27];
   }
 
-  v24 = [(ICDocCamViewController *)self autoShutterOnView];
-  [v24 setBackgroundColor:v7];
+  autoShutterOnView = [(ICDocCamViewController *)self autoShutterOnView];
+  [autoShutterOnView setBackgroundColor:tintColor];
 
-  if ([v7 dc_colorIsLight])
+  if ([tintColor dc_colorIsLight])
   {
     [MEMORY[0x277D75348] blackColor];
   }
@@ -3752,8 +3752,8 @@ void __77__ICDocCamViewController_viewWillTransitionToSize_withTransitionCoordin
     [MEMORY[0x277D75348] whiteColor];
   }
   v25 = ;
-  v26 = [(ICDocCamViewController *)self autoShutterOnLabel];
-  [v26 setTextColor:v25];
+  autoShutterOnLabel = [(ICDocCamViewController *)self autoShutterOnLabel];
+  [autoShutterOnLabel setTextColor:v25];
 }
 
 - (void)enableShutterButtonIfPossible
@@ -3765,49 +3765,49 @@ void __77__ICDocCamViewController_viewWillTransitionToSize_withTransitionCoordin
 
   else
   {
-    v4 = [(ICDocCamViewController *)self delegate];
-    v5 = [(ICDocCamViewController *)self documentInfoCollection];
-    v6 = [v5 docInfos];
-    v3 = [v4 documentCameraController:self canAddImages:{objc_msgSend(v6, "count") + 1}];
+    delegate = [(ICDocCamViewController *)self delegate];
+    documentInfoCollection = [(ICDocCamViewController *)self documentInfoCollection];
+    docInfos = [documentInfoCollection docInfos];
+    v3 = [delegate documentCameraController:self canAddImages:{objc_msgSend(docInfos, "count") + 1}];
   }
 
   [(ICDocCamViewController *)self enableShutter:v3];
 }
 
-- (void)enableUIElements:(BOOL)a3
+- (void)enableUIElements:(BOOL)elements
 {
-  v3 = a3;
-  v5 = [(ICDocCamViewController *)self flashButton];
-  [v5 setEnabled:v3];
+  elementsCopy = elements;
+  flashButton = [(ICDocCamViewController *)self flashButton];
+  [flashButton setEnabled:elementsCopy];
 
-  v6 = [(ICDocCamViewController *)self filterButton];
-  [v6 setEnabled:v3];
+  filterButton = [(ICDocCamViewController *)self filterButton];
+  [filterButton setEnabled:elementsCopy];
 
-  v7 = [(ICDocCamViewController *)self autoButton];
-  [v7 setEnabled:v3];
+  autoButton = [(ICDocCamViewController *)self autoButton];
+  [autoButton setEnabled:elementsCopy];
 
-  v8 = [(ICDocCamViewController *)self manualButton];
-  [v8 setEnabled:v3];
+  manualButton = [(ICDocCamViewController *)self manualButton];
+  [manualButton setEnabled:elementsCopy];
 
-  v9 = [(ICDocCamViewController *)self flashButtonForIPhone];
-  [v9 setEnabled:v3];
+  flashButtonForIPhone = [(ICDocCamViewController *)self flashButtonForIPhone];
+  [flashButtonForIPhone setEnabled:elementsCopy];
 
-  v10 = [(ICDocCamViewController *)self filterButtonForIPhone];
-  [v10 setEnabled:v3];
+  filterButtonForIPhone = [(ICDocCamViewController *)self filterButtonForIPhone];
+  [filterButtonForIPhone setEnabled:elementsCopy];
 
-  v11 = [(ICDocCamViewController *)self autoButtonForIPhone];
-  [v11 setEnabled:v3];
+  autoButtonForIPhone = [(ICDocCamViewController *)self autoButtonForIPhone];
+  [autoButtonForIPhone setEnabled:elementsCopy];
 
   [(ICDocCamViewController *)self updateAccessibilityEnabledStateForUIElements];
 }
 
-- (void)killFeedbackDisplayIncludingUserPrompts:(BOOL)a3
+- (void)killFeedbackDisplayIncludingUserPrompts:(BOOL)prompts
 {
-  v3 = a3;
+  promptsCopy = prompts;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
 
-    [(ICDocCamViewController *)self killFeedbackDisplayInternalIncludingUserPrompts:v3];
+    [(ICDocCamViewController *)self killFeedbackDisplayInternalIncludingUserPrompts:promptsCopy];
   }
 
   else
@@ -3817,177 +3817,177 @@ void __77__ICDocCamViewController_viewWillTransitionToSize_withTransitionCoordin
     v5[2] = __66__ICDocCamViewController_killFeedbackDisplayIncludingUserPrompts___block_invoke;
     v5[3] = &unk_278F93B00;
     v5[4] = self;
-    v6 = v3;
+    v6 = promptsCopy;
     dispatch_async(MEMORY[0x277D85CD0], v5);
   }
 }
 
-- (void)killFeedbackDisplayInternalIncludingUserPrompts:(BOOL)a3
+- (void)killFeedbackDisplayInternalIncludingUserPrompts:(BOOL)prompts
 {
-  v3 = a3;
-  v16 = [(ICDocCamViewController *)self autoShutterOffView];
-  v5 = [v16 layer];
-  [v5 removeAllAnimations];
+  promptsCopy = prompts;
+  autoShutterOffView = [(ICDocCamViewController *)self autoShutterOffView];
+  layer = [autoShutterOffView layer];
+  [layer removeAllAnimations];
 
-  v17 = [(ICDocCamViewController *)self autoShutterOnView];
-  v6 = [v17 layer];
-  [v6 removeAllAnimations];
+  autoShutterOnView = [(ICDocCamViewController *)self autoShutterOnView];
+  layer2 = [autoShutterOnView layer];
+  [layer2 removeAllAnimations];
 
-  v18 = [(ICDocCamViewController *)self filterNameFeedbackView];
-  v7 = [v18 layer];
-  [v7 removeAllAnimations];
+  filterNameFeedbackView = [(ICDocCamViewController *)self filterNameFeedbackView];
+  layer3 = [filterNameFeedbackView layer];
+  [layer3 removeAllAnimations];
 
-  v19 = [(ICDocCamViewController *)self flashFeedbackView];
-  v8 = [v19 layer];
-  [v8 removeAllAnimations];
+  flashFeedbackView = [(ICDocCamViewController *)self flashFeedbackView];
+  layer4 = [flashFeedbackView layer];
+  [layer4 removeAllAnimations];
 
-  v20 = [(ICDocCamViewController *)self autoShutterOnView];
-  [v20 setHidden:0];
+  autoShutterOnView2 = [(ICDocCamViewController *)self autoShutterOnView];
+  [autoShutterOnView2 setHidden:0];
 
-  v21 = [(ICDocCamViewController *)self autoShutterOnView];
-  [v21 setAlpha:1.0];
+  autoShutterOnView3 = [(ICDocCamViewController *)self autoShutterOnView];
+  [autoShutterOnView3 setAlpha:1.0];
 
-  v22 = [(ICDocCamViewController *)self autoShutterOnView];
-  v9 = [v22 layer];
-  [v9 setOpacity:0.0];
+  autoShutterOnView4 = [(ICDocCamViewController *)self autoShutterOnView];
+  layer5 = [autoShutterOnView4 layer];
+  [layer5 setOpacity:0.0];
 
-  v23 = [(ICDocCamViewController *)self autoShutterOffView];
-  [v23 setHidden:0];
+  autoShutterOffView2 = [(ICDocCamViewController *)self autoShutterOffView];
+  [autoShutterOffView2 setHidden:0];
 
-  v24 = [(ICDocCamViewController *)self autoShutterOffView];
-  [v24 setAlpha:1.0];
+  autoShutterOffView3 = [(ICDocCamViewController *)self autoShutterOffView];
+  [autoShutterOffView3 setAlpha:1.0];
 
-  v25 = [(ICDocCamViewController *)self autoShutterOffView];
-  v10 = [v25 layer];
-  [v10 setOpacity:0.0];
+  autoShutterOffView4 = [(ICDocCamViewController *)self autoShutterOffView];
+  layer6 = [autoShutterOffView4 layer];
+  [layer6 setOpacity:0.0];
 
-  v26 = [(ICDocCamViewController *)self filterNameFeedbackView];
-  [v26 setHidden:0];
+  filterNameFeedbackView2 = [(ICDocCamViewController *)self filterNameFeedbackView];
+  [filterNameFeedbackView2 setHidden:0];
 
-  v27 = [(ICDocCamViewController *)self filterNameFeedbackView];
-  [v27 setAlpha:1.0];
+  filterNameFeedbackView3 = [(ICDocCamViewController *)self filterNameFeedbackView];
+  [filterNameFeedbackView3 setAlpha:1.0];
 
-  v28 = [(ICDocCamViewController *)self filterNameFeedbackView];
-  v11 = [v28 layer];
-  [v11 setOpacity:0.0];
+  filterNameFeedbackView4 = [(ICDocCamViewController *)self filterNameFeedbackView];
+  layer7 = [filterNameFeedbackView4 layer];
+  [layer7 setOpacity:0.0];
 
-  v29 = [(ICDocCamViewController *)self flashFeedbackView];
-  [v29 setHidden:0];
+  flashFeedbackView2 = [(ICDocCamViewController *)self flashFeedbackView];
+  [flashFeedbackView2 setHidden:0];
 
-  v30 = [(ICDocCamViewController *)self flashFeedbackView];
-  [v30 setAlpha:1.0];
+  flashFeedbackView3 = [(ICDocCamViewController *)self flashFeedbackView];
+  [flashFeedbackView3 setAlpha:1.0];
 
-  v31 = [(ICDocCamViewController *)self flashFeedbackView];
-  v12 = [v31 layer];
-  [v12 setOpacity:0.0];
+  flashFeedbackView4 = [(ICDocCamViewController *)self flashFeedbackView];
+  layer8 = [flashFeedbackView4 layer];
+  [layer8 setOpacity:0.0];
 
-  if (v3)
+  if (promptsCopy)
   {
-    v32 = [(ICDocCamViewController *)self moveCameraCloserView];
-    v13 = [v32 layer];
-    [v13 removeAllAnimations];
+    moveCameraCloserView = [(ICDocCamViewController *)self moveCameraCloserView];
+    layer9 = [moveCameraCloserView layer];
+    [layer9 removeAllAnimations];
 
-    v33 = [(ICDocCamViewController *)self userPromptView];
-    v14 = [v33 layer];
-    [v14 removeAllAnimations];
+    userPromptView = [(ICDocCamViewController *)self userPromptView];
+    layer10 = [userPromptView layer];
+    [layer10 removeAllAnimations];
 
-    v34 = [(ICDocCamViewController *)self moveCameraCloserView];
-    [v34 setHidden:0];
+    moveCameraCloserView2 = [(ICDocCamViewController *)self moveCameraCloserView];
+    [moveCameraCloserView2 setHidden:0];
 
-    v35 = [(ICDocCamViewController *)self moveCameraCloserView];
-    [v35 setAlpha:1.0];
+    moveCameraCloserView3 = [(ICDocCamViewController *)self moveCameraCloserView];
+    [moveCameraCloserView3 setAlpha:1.0];
 
-    v36 = [(ICDocCamViewController *)self moveCameraCloserView];
-    v15 = [v36 layer];
-    [v15 setOpacity:0.0];
+    moveCameraCloserView4 = [(ICDocCamViewController *)self moveCameraCloserView];
+    layer11 = [moveCameraCloserView4 layer];
+    [layer11 setOpacity:0.0];
 
-    v37 = [(ICDocCamViewController *)self userPromptView];
-    [v37 setAlpha:0.0];
+    userPromptView2 = [(ICDocCamViewController *)self userPromptView];
+    [userPromptView2 setAlpha:0.0];
 
-    v38 = [(ICDocCamViewController *)self userPromptView];
-    [v38 setHidden:1];
+    userPromptView3 = [(ICDocCamViewController *)self userPromptView];
+    [userPromptView3 setHidden:1];
   }
 }
 
 - (void)updateLabelColors
 {
-  v9 = [MEMORY[0x277D75348] labelColor];
-  v3 = [(ICDocCamViewController *)self autoShutterOffLabel];
-  [v3 setTextColor:v9];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  autoShutterOffLabel = [(ICDocCamViewController *)self autoShutterOffLabel];
+  [autoShutterOffLabel setTextColor:labelColor];
 
-  v10 = [MEMORY[0x277D75348] dc_labelBackgroundColor];
-  v4 = [(ICDocCamViewController *)self autoShutterOffView];
-  [v4 setBackgroundColor:v10];
+  dc_labelBackgroundColor = [MEMORY[0x277D75348] dc_labelBackgroundColor];
+  autoShutterOffView = [(ICDocCamViewController *)self autoShutterOffView];
+  [autoShutterOffView setBackgroundColor:dc_labelBackgroundColor];
 
-  v11 = [MEMORY[0x277D75348] labelColor];
-  v5 = [(ICDocCamViewController *)self filterNameFeedbackLabel];
-  [v5 setTextColor:v11];
+  labelColor2 = [MEMORY[0x277D75348] labelColor];
+  filterNameFeedbackLabel = [(ICDocCamViewController *)self filterNameFeedbackLabel];
+  [filterNameFeedbackLabel setTextColor:labelColor2];
 
-  v12 = [MEMORY[0x277D75348] dc_labelBackgroundColor];
-  v6 = [(ICDocCamViewController *)self filterNameFeedbackView];
-  [v6 setBackgroundColor:v12];
+  dc_labelBackgroundColor2 = [MEMORY[0x277D75348] dc_labelBackgroundColor];
+  filterNameFeedbackView = [(ICDocCamViewController *)self filterNameFeedbackView];
+  [filterNameFeedbackView setBackgroundColor:dc_labelBackgroundColor2];
 
-  v13 = [MEMORY[0x277D75348] labelColor];
-  v7 = [(ICDocCamViewController *)self flashFeedbackLabel];
-  [v7 setTextColor:v13];
+  labelColor3 = [MEMORY[0x277D75348] labelColor];
+  flashFeedbackLabel = [(ICDocCamViewController *)self flashFeedbackLabel];
+  [flashFeedbackLabel setTextColor:labelColor3];
 
-  v14 = [MEMORY[0x277D75348] dc_labelBackgroundColor];
-  v8 = [(ICDocCamViewController *)self flashFeedbackView];
-  [v8 setBackgroundColor:v14];
+  dc_labelBackgroundColor3 = [MEMORY[0x277D75348] dc_labelBackgroundColor];
+  flashFeedbackView = [(ICDocCamViewController *)self flashFeedbackView];
+  [flashFeedbackView setBackgroundColor:dc_labelBackgroundColor3];
 }
 
-- (void)setDoneButtonVisible:(BOOL)a3
+- (void)setDoneButtonVisible:(BOOL)visible
 {
-  v3 = a3;
-  v5 = [objc_opt_class() isLiquidGlassEnabledForCapture];
-  if (v3)
+  visibleCopy = visible;
+  isLiquidGlassEnabledForCapture = [objc_opt_class() isLiquidGlassEnabledForCapture];
+  if (visibleCopy)
   {
-    if (v5)
+    if (isLiquidGlassEnabledForCapture)
     {
-      v6 = [(ICDocCamViewController *)self liquidGlassEvolutionControlsOverlayViewController];
-      [v6 setDoneButtonShowing:1];
+      liquidGlassEvolutionControlsOverlayViewController = [(ICDocCamViewController *)self liquidGlassEvolutionControlsOverlayViewController];
+      [liquidGlassEvolutionControlsOverlayViewController setDoneButtonShowing:1];
     }
 
     else
     {
-      v6 = [(ICDocCamViewController *)self saveButton];
-      [v6 setHidden:0];
+      liquidGlassEvolutionControlsOverlayViewController = [(ICDocCamViewController *)self saveButton];
+      [liquidGlassEvolutionControlsOverlayViewController setHidden:0];
     }
   }
 
-  else if (v5)
+  else if (isLiquidGlassEnabledForCapture)
   {
-    v6 = [(ICDocCamViewController *)self liquidGlassEvolutionControlsOverlayViewController];
-    [v6 setDoneButtonShowing:0];
+    liquidGlassEvolutionControlsOverlayViewController = [(ICDocCamViewController *)self liquidGlassEvolutionControlsOverlayViewController];
+    [liquidGlassEvolutionControlsOverlayViewController setDoneButtonShowing:0];
   }
 
   else
   {
-    v6 = [(ICDocCamViewController *)self saveButton];
-    [v6 setHidden:1];
+    liquidGlassEvolutionControlsOverlayViewController = [(ICDocCamViewController *)self saveButton];
+    [liquidGlassEvolutionControlsOverlayViewController setHidden:1];
   }
 }
 
 - (void)retakeButtonWasPressed
 {
-  v6 = [(ICDocCamViewController *)self delegate];
+  delegate = [(ICDocCamViewController *)self delegate];
   v3 = objc_opt_respondsToSelector();
 
   if (v3)
   {
-    v7 = [(ICDocCamViewController *)self delegate];
-    v4 = [(ICDocCamViewController *)self documentInfoCollection];
-    v5 = [v4 docInfos];
-    [v7 documentCameraControllerDidRetake:self pageCount:{objc_msgSend(v5, "count")}];
+    delegate2 = [(ICDocCamViewController *)self delegate];
+    documentInfoCollection = [(ICDocCamViewController *)self documentInfoCollection];
+    docInfos = [documentInfoCollection docInfos];
+    [delegate2 documentCameraControllerDidRetake:self pageCount:{objc_msgSend(docInfos, "count")}];
   }
 }
 
-- (void)setFlashMode:(int64_t)a3
+- (void)setFlashMode:(int64_t)mode
 {
-  self->_flashMode = a3;
-  v5 = [(ICDocCamViewController *)self photoOutput];
-  v4 = [v5 photoSettingsForSceneMonitoring];
-  [v4 setFlashMode:a3];
+  self->_flashMode = mode;
+  photoOutput = [(ICDocCamViewController *)self photoOutput];
+  photoSettingsForSceneMonitoring = [photoOutput photoSettingsForSceneMonitoring];
+  [photoSettingsForSceneMonitoring setFlashMode:mode];
 }
 
 - (void)setupCaptureSession
@@ -3996,16 +3996,16 @@ void __77__ICDocCamViewController_viewWillTransitionToSize_withTransitionCoordin
   v3 = objc_alloc_init(MEMORY[0x277CE5B38]);
   [(ICDocCamViewController *)self setSession:v3];
 
-  v4 = [(ICDocCamViewController *)self session];
-  v5 = [(ICDocCamViewController *)self previewView];
-  [v5 setSession:v4];
+  session = [(ICDocCamViewController *)self session];
+  previewView = [(ICDocCamViewController *)self previewView];
+  [previewView setSession:session];
 
   [(ICDocCamViewController *)self setSetupResult:0];
   v6 = *MEMORY[0x277CE5EA8];
   if ([MEMORY[0x277CE5AC8] authorizationStatusForMediaType:*MEMORY[0x277CE5EA8]] != 3)
   {
-    v7 = [(ICDocCamViewController *)self sessionQueue];
-    dispatch_suspend(v7);
+    sessionQueue = [(ICDocCamViewController *)self sessionQueue];
+    dispatch_suspend(sessionQueue);
 
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
@@ -4043,13 +4043,13 @@ void __77__ICDocCamViewController_viewWillTransitionToSize_withTransitionCoordin
   v12 = [[ICDocCamImageSequenceAnalyzer alloc] initWithOptions:v10 callback:v11];
   [(ICDocCamViewController *)self setVkAnalyzer:v12];
 
-  v13 = [(ICDocCamViewController *)self sessionQueue];
+  sessionQueue2 = [(ICDocCamViewController *)self sessionQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__ICDocCamViewController_setupCaptureSession__block_invoke_3;
   block[3] = &unk_278F93AB0;
   block[4] = self;
-  dispatch_async(v13, block);
+  dispatch_async(sessionQueue2, block);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -4610,24 +4610,24 @@ void __45__ICDocCamViewController_setupCaptureSession__block_invoke_628(uint64_t
 
 - (void)launchCaptureSession
 {
-  v3 = [(ICDocCamViewController *)self sessionQueue];
+  sessionQueue = [(ICDocCamViewController *)self sessionQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__ICDocCamViewController_launchCaptureSession__block_invoke;
   block[3] = &unk_278F93AB0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(sessionQueue, block);
 
   if ([(ICDocCamViewController *)self isInRetakeMode])
   {
-    v4 = [(ICDocCamViewController *)self processRequestsBlocker];
-    [v4 addBlockerOfType:@"ViewLifetimeBlocker" clearRectangles:1 clearQueue:1];
+    processRequestsBlocker = [(ICDocCamViewController *)self processRequestsBlocker];
+    [processRequestsBlocker addBlockerOfType:@"ViewLifetimeBlocker" clearRectangles:1 clearQueue:1];
 
-    v5 = [(ICDocCamViewController *)self overlayView];
-    [v5 setHidden:1];
+    overlayView = [(ICDocCamViewController *)self overlayView];
+    [overlayView setHidden:1];
 
-    v6 = [(ICDocCamViewController *)self overlayView];
-    [v6 clearRectangles];
+    overlayView2 = [(ICDocCamViewController *)self overlayView];
+    [overlayView2 clearRectangles];
 
     v7 = dispatch_time(0, 500000000);
     v8[0] = MEMORY[0x277D85DD0];
@@ -4774,13 +4774,13 @@ void __46__ICDocCamViewController_launchCaptureSession__block_invoke_6(uint64_t 
 
 - (void)restartImageCaptureSessionIfNecessary
 {
-  v3 = [(ICDocCamViewController *)self sessionQueue];
+  sessionQueue = [(ICDocCamViewController *)self sessionQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__ICDocCamViewController_restartImageCaptureSessionIfNecessary__block_invoke;
   block[3] = &unk_278F93AB0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(sessionQueue, block);
 }
 
 void __63__ICDocCamViewController_restartImageCaptureSessionIfNecessary__block_invoke(uint64_t a1)
@@ -4795,13 +4795,13 @@ void __63__ICDocCamViewController_restartImageCaptureSessionIfNecessary__block_i
 
 - (void)stopImageCaptureSession
 {
-  v3 = [(ICDocCamViewController *)self sessionQueue];
+  sessionQueue = [(ICDocCamViewController *)self sessionQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__ICDocCamViewController_stopImageCaptureSession__block_invoke;
   block[3] = &unk_278F93AB0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(sessionQueue, block);
 }
 
 void __49__ICDocCamViewController_stopImageCaptureSession__block_invoke(uint64_t a1)
@@ -4828,15 +4828,15 @@ void __49__ICDocCamViewController_stopImageCaptureSession__block_invoke(uint64_t
 
 - (BOOL)isConstantColorAvailable
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v5 = [(ICDocCamViewController *)self photoOutput];
-  v6 = [v5 isConstantColorSupported];
+  photoOutput = [(ICDocCamViewController *)self photoOutput];
+  isConstantColorSupported = [photoOutput isConstantColorSupported];
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    return v6;
+    return isConstantColorSupported;
   }
 
   else
@@ -4861,27 +4861,27 @@ void __49__ICDocCamViewController_stopImageCaptureSession__block_invoke(uint64_t
 
   if ([MEMORY[0x277D74248] dc_isRTL])
   {
-    v13 = [(ICDocCamViewController *)self filterNames];
-    v14 = [v13 reverseObjectEnumerator];
-    v15 = [v14 allObjects];
-    [(ICDocCamViewController *)self setFilterNames:v15];
+    filterNames = [(ICDocCamViewController *)self filterNames];
+    reverseObjectEnumerator = [filterNames reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
+    [(ICDocCamViewController *)self setFilterNames:allObjects];
   }
 
-  v16 = [(ICDocCamViewController *)self filterButtons];
+  filterButtons = [(ICDocCamViewController *)self filterButtons];
 
-  if (!v16)
+  if (!filterButtons)
   {
-    v18 = [(ICDocCamViewController *)self filterScrollView];
-    [v18 setShowsVerticalScrollIndicator:0];
+    filterScrollView = [(ICDocCamViewController *)self filterScrollView];
+    [filterScrollView setShowsVerticalScrollIndicator:0];
 
-    v19 = [(ICDocCamViewController *)self filterScrollView];
-    [v19 setShowsHorizontalScrollIndicator:0];
+    filterScrollView2 = [(ICDocCamViewController *)self filterScrollView];
+    [filterScrollView2 setShowsHorizontalScrollIndicator:0];
 
-    v20 = [(ICDocCamViewController *)self filterScrollView];
-    [v20 setDelegate:self];
+    filterScrollView3 = [(ICDocCamViewController *)self filterScrollView];
+    [filterScrollView3 setDelegate:self];
 
-    v21 = [(ICDocCamViewController *)self filterScrollView];
-    [v21 setClipsToBounds:1];
+    filterScrollView4 = [(ICDocCamViewController *)self filterScrollView];
+    [filterScrollView4 setClipsToBounds:1];
 
     v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
     [(ICDocCamViewController *)self setFilterButtons:v22];
@@ -4890,8 +4890,8 @@ void __49__ICDocCamViewController_stopImageCaptureSession__block_invoke(uint64_t
     v24 = *MEMORY[0x277D74418];
     while (1)
     {
-      v25 = [(ICDocCamViewController *)self filterNames];
-      v26 = [v25 count];
+      filterNames2 = [(ICDocCamViewController *)self filterNames];
+      v26 = [filterNames2 count];
 
       if (v26 <= v23)
       {
@@ -4900,56 +4900,56 @@ void __49__ICDocCamViewController_stopImageCaptureSession__block_invoke(uint64_t
 
       v27 = [MEMORY[0x277D75220] buttonWithType:1];
       v28 = [MEMORY[0x277D74300] systemFontOfSize:14.0 weight:v24];
-      v29 = [v27 titleLabel];
-      [v29 setFont:v28];
+      titleLabel = [v27 titleLabel];
+      [titleLabel setFont:v28];
 
       [v27 addTarget:self action:sel_filterButtonChoiceAction_ forControlEvents:64];
-      v30 = [(ICDocCamViewController *)self filterNames];
-      v31 = [v30 objectAtIndexedSubscript:v23];
+      filterNames3 = [(ICDocCamViewController *)self filterNames];
+      v31 = [filterNames3 objectAtIndexedSubscript:v23];
       [v27 setTag:{+[ICDocCamImageFilters imageFilterTypeFromName:](ICDocCamImageFilters, "imageFilterTypeFromName:", v31)}];
 
-      v32 = [(ICDocCamViewController *)self filterNames];
-      v33 = [v32 objectAtIndexedSubscript:v23];
+      filterNames4 = [(ICDocCamViewController *)self filterNames];
+      v33 = [filterNames4 objectAtIndexedSubscript:v23];
       [v27 setTitle:v33 forState:0];
 
       [v27 sizeToFit];
       [v27 _accessibilitySetInterfaceStyleIntent:2];
-      v34 = [(ICDocCamViewController *)self filterButtons];
-      [v34 addObject:v27];
+      filterButtons2 = [(ICDocCamViewController *)self filterButtons];
+      [filterButtons2 addObject:v27];
 
-      v35 = [(ICDocCamViewController *)self filterScrollView];
-      [v35 addSubview:v27];
+      filterScrollView5 = [(ICDocCamViewController *)self filterScrollView];
+      [filterScrollView5 addSubview:v27];
 
       [v27 _accessibilitySetIsSpeakThisElement:1];
       ++v23;
     }
   }
 
-  v17 = [(ICDocCamViewController *)self defaultFilter];
+  defaultFilter = [(ICDocCamViewController *)self defaultFilter];
 
-  [(ICDocCamViewController *)self updateFilterChoiceButtonSelection:v17];
+  [(ICDocCamViewController *)self updateFilterChoiceButtonSelection:defaultFilter];
 }
 
-- (void)updateFilterChoiceButtonSelection:(signed __int16)a3
+- (void)updateFilterChoiceButtonSelection:(signed __int16)selection
 {
   v4 = 0;
-  v5 = a3;
+  selectionCopy = selection;
   v6 = MEMORY[0x277D85CD0];
   while (1)
   {
-    v7 = [(ICDocCamViewController *)self filterButtons];
-    v8 = [v7 count];
+    filterButtons = [(ICDocCamViewController *)self filterButtons];
+    v8 = [filterButtons count];
 
     if (v8 <= v4)
     {
       break;
     }
 
-    v9 = [(ICDocCamViewController *)self filterButtons];
-    v10 = [v9 objectAtIndexedSubscript:v4];
+    filterButtons2 = [(ICDocCamViewController *)self filterButtons];
+    v10 = [filterButtons2 objectAtIndexedSubscript:v4];
     v11 = [v10 tag];
 
-    if (v11 == v5)
+    if (v11 == selectionCopy)
     {
       [(ICDocCamViewController *)self cameraHighlightColor];
     }
@@ -4959,8 +4959,8 @@ void __49__ICDocCamViewController_stopImageCaptureSession__block_invoke(uint64_t
       [MEMORY[0x277D75348] whiteColor];
     }
     v12 = ;
-    v13 = [(ICDocCamViewController *)self filterButtons];
-    v14 = [v13 objectAtIndexedSubscript:v4];
+    filterButtons3 = [(ICDocCamViewController *)self filterButtons];
+    v14 = [filterButtons3 objectAtIndexedSubscript:v4];
     [v14 setTintColor:v12];
 
     v15[0] = MEMORY[0x277D85DD0];
@@ -4989,13 +4989,13 @@ void __60__ICDocCamViewController_updateFilterChoiceButtonSelection___block_invo
 {
   if ([(ICDocCamViewController *)self filterSettingUIShowing])
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v4)
+    if (userInterfaceIdiom)
     {
-      v5 = [(ICDocCamViewController *)self view];
-      [v5 layoutIfNeeded];
+      view = [(ICDocCamViewController *)self view];
+      [view layoutIfNeeded];
 
       [(ICDocCamViewController *)self updateFilterChoiceButtonScrollPositionAnimated:0];
       v11[0] = MEMORY[0x277D85DD0];
@@ -5014,17 +5014,17 @@ void __60__ICDocCamViewController_updateFilterChoiceButtonSelection___block_invo
 
     else
     {
-      v6 = [(ICDocCamViewController *)self topToolbarForIPhone];
-      [v6 setAlpha:0.0];
+      topToolbarForIPhone = [(ICDocCamViewController *)self topToolbarForIPhone];
+      [topToolbarForIPhone setAlpha:0.0];
 
-      v7 = [(ICDocCamViewController *)self topToolbarForIPhone];
-      [v7 setHidden:0];
+      topToolbarForIPhone2 = [(ICDocCamViewController *)self topToolbarForIPhone];
+      [topToolbarForIPhone2 setHidden:0];
 
-      v8 = [(ICDocCamViewController *)self filterViewContainer];
-      [v8 setAlpha:1.0];
+      filterViewContainer = [(ICDocCamViewController *)self filterViewContainer];
+      [filterViewContainer setAlpha:1.0];
 
-      v9 = [(ICDocCamViewController *)self filterViewContainer];
-      [v9 setHidden:0];
+      filterViewContainer2 = [(ICDocCamViewController *)self filterViewContainer];
+      [filterViewContainer2 setHidden:0];
 
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
@@ -5085,24 +5085,24 @@ uint64_t __45__ICDocCamViewController_hideFilterSettingUI__block_invoke_4(uint64
 - (void)setUpFilterScrollView
 {
   v83[4] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 20.0;
   v6 = 22.0;
-  if (!v4)
+  if (!userInterfaceIdiom)
   {
     v6 = 8.0;
     if (([(ICDocCamViewController *)self statusBarOrientation]- 1) <= 1)
     {
       [(ICDocCamViewController *)self filterScrollViewContentWidthWithInterItemSpacing:20.0 startPadding:10.0 endPadding:0.0];
       v8 = v7;
-      v9 = [(ICDocCamViewController *)self filterViewButton];
-      [v9 frame];
+      filterViewButton = [(ICDocCamViewController *)self filterViewButton];
+      [filterViewButton frame];
       v11 = v10;
 
-      v12 = [(ICDocCamViewController *)self view];
-      [v12 bounds];
+      view = [(ICDocCamViewController *)self view];
+      [view bounds];
       v13 = v8 + v11 + 4.0;
       v15 = v14 + -12.0;
 
@@ -5113,16 +5113,16 @@ uint64_t __45__ICDocCamViewController_hideFilterSettingUI__block_invoke_4(uint64
         v17 = 0.0;
         while (1)
         {
-          v18 = [(ICDocCamViewController *)self filterButtons];
-          v19 = [v18 count];
+          filterButtons = [(ICDocCamViewController *)self filterButtons];
+          v19 = [filterButtons count];
 
           if (v19 <= v16)
           {
             break;
           }
 
-          v20 = [(ICDocCamViewController *)self filterButtons];
-          v21 = [v20 objectAtIndexedSubscript:v16];
+          filterButtons2 = [(ICDocCamViewController *)self filterButtons];
+          v21 = [filterButtons2 objectAtIndexedSubscript:v16];
 
           [v21 frame];
           v17 = v17 + v22;
@@ -5130,46 +5130,46 @@ uint64_t __45__ICDocCamViewController_hideFilterSettingUI__block_invoke_4(uint64
           ++v16;
         }
 
-        v23 = [(ICDocCamViewController *)self filterScrollView];
-        [v23 bounds];
+        filterScrollView = [(ICDocCamViewController *)self filterScrollView];
+        [filterScrollView bounds];
         v25 = v24;
-        v26 = [(ICDocCamViewController *)self filterButtons];
-        v5 = (v25 + -12.0 + -10.0 - v17) / ([v26 count] - 1);
+        filterButtons3 = [(ICDocCamViewController *)self filterButtons];
+        v5 = (v25 + -12.0 + -10.0 - v17) / ([filterButtons3 count] - 1);
       }
     }
   }
 
   [(ICDocCamViewController *)self filterScrollViewContentWidthWithInterItemSpacing:v5 startPadding:10.0 endPadding:v6];
   v28 = v27;
-  v29 = [(ICDocCamViewController *)self filterScrollView];
-  [v29 bounds];
+  filterScrollView2 = [(ICDocCamViewController *)self filterScrollView];
+  [filterScrollView2 bounds];
   v31 = v30;
-  v32 = [(ICDocCamViewController *)self filterScrollView];
-  [v32 setContentSize:{v28, v31}];
+  filterScrollView3 = [(ICDocCamViewController *)self filterScrollView];
+  [filterScrollView3 setContentSize:{v28, v31}];
 
   v33 = 0;
   v34 = 10.0;
   while (1)
   {
-    v35 = [(ICDocCamViewController *)self filterButtons];
-    v36 = [v35 count];
+    filterButtons4 = [(ICDocCamViewController *)self filterButtons];
+    v36 = [filterButtons4 count];
 
     if (v36 <= v33)
     {
       break;
     }
 
-    v37 = [(ICDocCamViewController *)self filterButtons];
-    v38 = [v37 objectAtIndexedSubscript:v33];
+    filterButtons5 = [(ICDocCamViewController *)self filterButtons];
+    v38 = [filterButtons5 objectAtIndexedSubscript:v33];
 
     [v38 frame];
     v40 = v39;
-    v41 = [(ICDocCamViewController *)self filterScrollView];
-    [v41 bounds];
+    filterScrollView4 = [(ICDocCamViewController *)self filterScrollView];
+    [filterScrollView4 bounds];
     [v38 setFrame:{v34, 0.0, v40}];
 
-    v42 = [(ICDocCamViewController *)self filterNames];
-    v43 = [v42 count] - 1;
+    filterNames = [(ICDocCamViewController *)self filterNames];
+    v43 = [filterNames count] - 1;
 
     if (v43 <= v33)
     {
@@ -5186,74 +5186,74 @@ uint64_t __45__ICDocCamViewController_hideFilterSettingUI__block_invoke_4(uint64
     ++v33;
   }
 
-  v45 = [MEMORY[0x277CD9EB0] layer];
-  v46 = [(ICDocCamViewController *)self filterScrollViewContainer];
-  [v46 bounds];
-  [v45 setFrame:?];
+  layer = [MEMORY[0x277CD9EB0] layer];
+  filterScrollViewContainer = [(ICDocCamViewController *)self filterScrollViewContainer];
+  [filterScrollViewContainer bounds];
+  [layer setFrame:?];
 
-  v47 = [MEMORY[0x277D75418] currentDevice];
-  v48 = [v47 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
   v49 = MEMORY[0x277CBEA60];
   [MEMORY[0x277D75348] colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
-  if (v48)
+  if (userInterfaceIdiom2)
     v50 = {;
-    v51 = [v50 CGColor];
+    cGColor = [v50 CGColor];
     v52 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
-    v53 = [v52 CGColor];
+    cGColor2 = [v52 CGColor];
     v54 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
-    v55 = [v54 CGColor];
+    cGColor3 = [v54 CGColor];
     v56 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
-    v57 = [v49 arrayWithObjects:{v51, v53, v55, objc_msgSend(v56, "CGColor"), 0}];
-    [v45 setColors:v57];
+    v57 = [v49 arrayWithObjects:{cGColor, cGColor2, cGColor3, objc_msgSend(v56, "CGColor"), 0}];
+    [layer setColors:v57];
 
     v58 = MEMORY[0x277CCABB0];
-    [v45 frame];
+    [layer frame];
     v60 = [v58 numberWithDouble:8.0 / v59];
     v82[0] = v60;
     v61 = MEMORY[0x277CCABB0];
-    [v45 frame];
+    [layer frame];
     v63 = [v61 numberWithDouble:16.0 / v62];
     v82[1] = v63;
     v64 = MEMORY[0x277CCABB0];
-    [v45 frame];
+    [layer frame];
     v66 = [v64 numberWithDouble:-12.0 / v65 + 1.0];
     v82[2] = v66;
     v82[3] = &unk_285C6D4E0;
     v67 = [MEMORY[0x277CBEA60] arrayWithObjects:v82 count:4];
-    [v45 setLocations:v67];
+    [layer setLocations:v67];
   }
 
   else
     v68 = {;
-    v69 = [v68 CGColor];
+    cGColor4 = [v68 CGColor];
     v70 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
-    v71 = [v70 CGColor];
+    cGColor5 = [v70 CGColor];
     v72 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
-    v73 = [v72 CGColor];
+    cGColor6 = [v72 CGColor];
     v74 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
-    v75 = [v49 arrayWithObjects:{v69, v71, v73, objc_msgSend(v74, "CGColor"), 0}];
-    [v45 setColors:v75];
+    v75 = [v49 arrayWithObjects:{cGColor4, cGColor5, cGColor6, objc_msgSend(v74, "CGColor"), 0}];
+    [layer setColors:v75];
 
     v83[0] = &unk_285C6D510;
     v76 = MEMORY[0x277CCABB0];
-    [v45 frame];
+    [layer frame];
     v60 = [v76 numberWithDouble:8.0 / v77];
     v83[1] = v60;
     v78 = MEMORY[0x277CCABB0];
-    [v45 frame];
+    [layer frame];
     v63 = [v78 numberWithDouble:-8.0 / v79 + 1.0];
     v83[2] = v63;
     v83[3] = &unk_285C6D4E0;
     v66 = [MEMORY[0x277CBEA60] arrayWithObjects:v83 count:4];
-    [v45 setLocations:v66];
+    [layer setLocations:v66];
   }
 
-  [v45 setStartPoint:{0.0, 0.5}];
-  [v45 setEndPoint:{1.0, 0.5}];
-  v80 = [(ICDocCamViewController *)self filterScrollViewContainer];
-  v81 = [v80 layer];
-  [v81 setMask:v45];
+  [layer setStartPoint:{0.0, 0.5}];
+  [layer setEndPoint:{1.0, 0.5}];
+  filterScrollViewContainer2 = [(ICDocCamViewController *)self filterScrollViewContainer];
+  layer2 = [filterScrollViewContainer2 layer];
+  [layer2 setMask:layer];
 }
 
 - (void)updateFilterButtonTint
@@ -5262,16 +5262,16 @@ uint64_t __45__ICDocCamViewController_hideFilterSettingUI__block_invoke_4(uint64
   v4 = MEMORY[0x277D85CD0];
   while (1)
   {
-    v5 = [(ICDocCamViewController *)self filterButtons];
-    v6 = [v5 count];
+    filterButtons = [(ICDocCamViewController *)self filterButtons];
+    v6 = [filterButtons count];
 
     if (v6 <= v3)
     {
       break;
     }
 
-    v7 = [(ICDocCamViewController *)self filterButtons];
-    v8 = [v7 objectAtIndexedSubscript:v3];
+    filterButtons2 = [(ICDocCamViewController *)self filterButtons];
+    v8 = [filterButtons2 objectAtIndexedSubscript:v3];
 
     v9 = [v8 tag];
     if (v9 == [(ICDocCamViewController *)self defaultFilter])
@@ -5303,45 +5303,45 @@ uint64_t __45__ICDocCamViewController_hideFilterSettingUI__block_invoke_4(uint64
   if ((DCDebugInterfaceEnabled() & 1) != 0 || ([MEMORY[0x277D75418] currentDevice], v28 = objc_claimAutoreleasedReturnValue(), v3 = objc_msgSend(v28, "userInterfaceIdiom"), v28, v3 == 1))
   {
     v29 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.5];
-    v4 = [MEMORY[0x277D75348] whiteColor];
-    v5 = [v4 CGColor];
-    v6 = [(ICDocCamViewController *)self flashSettingView];
-    v7 = [v6 layer];
-    [v7 setBorderColor:v5];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    cGColor = [whiteColor CGColor];
+    flashSettingView = [(ICDocCamViewController *)self flashSettingView];
+    layer = [flashSettingView layer];
+    [layer setBorderColor:cGColor];
 
-    v8 = [(ICDocCamViewController *)self flashSettingView];
-    v9 = [v8 layer];
-    [v9 setBorderWidth:0.0];
+    flashSettingView2 = [(ICDocCamViewController *)self flashSettingView];
+    layer2 = [flashSettingView2 layer];
+    [layer2 setBorderWidth:0.0];
 
-    v10 = [(ICDocCamViewController *)self flashSettingView];
-    [v10 frame];
+    flashSettingView3 = [(ICDocCamViewController *)self flashSettingView];
+    [flashSettingView3 frame];
     v12 = v11;
-    v13 = [(ICDocCamViewController *)self flashSettingView];
-    v14 = [v13 layer];
-    [v14 setCornerRadius:v12 * 0.5];
+    flashSettingView4 = [(ICDocCamViewController *)self flashSettingView];
+    layer3 = [flashSettingView4 layer];
+    [layer3 setCornerRadius:v12 * 0.5];
 
-    v15 = [(ICDocCamViewController *)self flashSettingView];
-    [v15 setBackgroundColor:v29];
+    flashSettingView5 = [(ICDocCamViewController *)self flashSettingView];
+    [flashSettingView5 setBackgroundColor:v29];
 
-    v16 = [MEMORY[0x277D75348] whiteColor];
-    v17 = [v16 CGColor];
-    v18 = [(ICDocCamViewController *)self filterViewContainer];
-    v19 = [v18 layer];
-    [v19 setBorderColor:v17];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    cGColor2 = [whiteColor2 CGColor];
+    filterViewContainer = [(ICDocCamViewController *)self filterViewContainer];
+    layer4 = [filterViewContainer layer];
+    [layer4 setBorderColor:cGColor2];
 
-    v20 = [(ICDocCamViewController *)self filterViewContainer];
-    v21 = [v20 layer];
-    [v21 setBorderWidth:0.0];
+    filterViewContainer2 = [(ICDocCamViewController *)self filterViewContainer];
+    layer5 = [filterViewContainer2 layer];
+    [layer5 setBorderWidth:0.0];
 
-    v22 = [(ICDocCamViewController *)self filterViewContainer];
-    [v22 frame];
+    filterViewContainer3 = [(ICDocCamViewController *)self filterViewContainer];
+    [filterViewContainer3 frame];
     v24 = v23;
-    v25 = [(ICDocCamViewController *)self filterViewContainer];
-    v26 = [v25 layer];
-    [v26 setCornerRadius:v24 * 0.5];
+    filterViewContainer4 = [(ICDocCamViewController *)self filterViewContainer];
+    layer6 = [filterViewContainer4 layer];
+    [layer6 setCornerRadius:v24 * 0.5];
 
-    v27 = [(ICDocCamViewController *)self filterViewContainer];
-    [v27 setBackgroundColor:v29];
+    filterViewContainer5 = [(ICDocCamViewController *)self filterViewContainer];
+    [filterViewContainer5 setBackgroundColor:v29];
   }
 }
 
@@ -5397,15 +5397,15 @@ void __46__ICDocCamViewController_flashMenuButtonSizes__block_invoke(uint64_t a1
 
 - (double)flashSettingViewWidthForIPad
 {
-  v2 = [(ICDocCamViewController *)self flashMenuButtonSizes];
-  v3 = [v2 objectForKey:@"Auto"];
+  flashMenuButtonSizes = [(ICDocCamViewController *)self flashMenuButtonSizes];
+  v3 = [flashMenuButtonSizes objectForKey:@"Auto"];
   [v3 CGSizeValue];
   v5 = v4;
-  v6 = [v2 objectForKey:@"On"];
+  v6 = [flashMenuButtonSizes objectForKey:@"On"];
 
   [v6 CGSizeValue];
   v8 = v7;
-  v9 = [v2 objectForKey:@"Off"];
+  v9 = [flashMenuButtonSizes objectForKey:@"Off"];
 
   [v9 CGSizeValue];
   v11 = v5 + 0.0 + v8 + v10 + 72.0;
@@ -5458,8 +5458,8 @@ void __49__ICDocCamViewController_flashMoveCloserFeedback__block_invoke(uint64_t
 {
   [(ICDocCamViewController *)self killFeedbackDisplayIncludingUserPrompts:0];
   v3 = [ICDocCamImageFilters localizedImageFilterNameForType:[(ICDocCamViewController *)self defaultFilter]];
-  v4 = [(ICDocCamViewController *)self filterNameFeedbackLabel];
-  [v4 setText:v3];
+  filterNameFeedbackLabel = [(ICDocCamViewController *)self filterNameFeedbackLabel];
+  [filterNameFeedbackLabel setText:v3];
 
   v5 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"opacity"];
   [v5 setBeginTime:CACurrentMediaTime()];
@@ -5470,13 +5470,13 @@ void __49__ICDocCamViewController_flashMoveCloserFeedback__block_invoke(uint64_t
   [v5 setFillMode:*MEMORY[0x277CDA238]];
   LODWORD(v6) = 1.0;
   [v5 setRepeatCount:v6];
-  v7 = [(ICDocCamViewController *)self filterNameFeedbackView];
-  v8 = [v7 layer];
-  [v8 addAnimation:v5 forKey:@"filterName"];
+  filterNameFeedbackView = [(ICDocCamViewController *)self filterNameFeedbackView];
+  layer = [filterNameFeedbackView layer];
+  [layer addAnimation:v5 forKey:@"filterName"];
 
-  v9 = [(ICDocCamViewController *)self filterNameFeedbackView];
-  v10 = [v9 layer];
-  [v10 setOpacity:0.0];
+  filterNameFeedbackView2 = [(ICDocCamViewController *)self filterNameFeedbackView];
+  layer2 = [filterNameFeedbackView2 layer];
+  [layer2 setOpacity:0.0];
 
   v11 = dispatch_time(0, 2000000000);
   block[0] = MEMORY[0x277D85DD0];
@@ -5500,8 +5500,8 @@ void __55__ICDocCamViewController_flashFilterButtonNameFeedback__block_invoke(ui
 
 - (id)localizedFlashFlashDescription
 {
-  v2 = [(ICDocCamViewController *)self flashMode];
-  switch(v2)
+  flashMode = [(ICDocCamViewController *)self flashMode];
+  switch(flashMode)
   {
     case 2:
       v3 = @"Auto Flash On";
@@ -5525,9 +5525,9 @@ LABEL_9:
 - (void)flashFlashButtonNameFeedback
 {
   [(ICDocCamViewController *)self killFeedbackDisplayIncludingUserPrompts:0];
-  v3 = [(ICDocCamViewController *)self localizedFlashFlashDescription];
-  v4 = [(ICDocCamViewController *)self flashFeedbackLabel];
-  [v4 setText:v3];
+  localizedFlashFlashDescription = [(ICDocCamViewController *)self localizedFlashFlashDescription];
+  flashFeedbackLabel = [(ICDocCamViewController *)self flashFeedbackLabel];
+  [flashFeedbackLabel setText:localizedFlashFlashDescription];
 
   v5 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"opacity"];
   [v5 setBeginTime:CACurrentMediaTime()];
@@ -5538,13 +5538,13 @@ LABEL_9:
   [v5 setFillMode:*MEMORY[0x277CDA238]];
   LODWORD(v6) = 1.0;
   [v5 setRepeatCount:v6];
-  v7 = [(ICDocCamViewController *)self flashFeedbackView];
-  v8 = [v7 layer];
-  [v8 addAnimation:v5 forKey:@"filterName"];
+  flashFeedbackView = [(ICDocCamViewController *)self flashFeedbackView];
+  layer = [flashFeedbackView layer];
+  [layer addAnimation:v5 forKey:@"filterName"];
 
-  v9 = [(ICDocCamViewController *)self flashFeedbackView];
-  v10 = [v9 layer];
-  [v10 setOpacity:0.0];
+  flashFeedbackView2 = [(ICDocCamViewController *)self flashFeedbackView];
+  layer2 = [flashFeedbackView2 layer];
+  [layer2 setOpacity:0.0];
 
   v11 = dispatch_time(0, 2000000000);
   block[0] = MEMORY[0x277D85DD0];
@@ -5566,10 +5566,10 @@ void __54__ICDocCamViewController_flashFlashButtonNameFeedback__block_invoke(uin
   UIAccessibilityPostNotification(*MEMORY[0x277D76438], v5);
 }
 
-- (void)filterButtonChoiceAction:(id)a3
+- (void)filterButtonChoiceAction:(id)action
 {
-  v4 = a3;
-  -[ICDocCamViewController setDefaultFilter:](self, "setDefaultFilter:", [v4 tag]);
+  actionCopy = action;
+  -[ICDocCamViewController setDefaultFilter:](self, "setDefaultFilter:", [actionCopy tag]);
   [(ICDocCamViewController *)self updateFilterChoiceButtonSelection:[(ICDocCamViewController *)self defaultFilter]];
   [(ICDocCamViewController *)self hideFilterSettingUI];
   [(ICDocCamViewController *)self flashFilterButtonNameFeedback];
@@ -5590,8 +5590,8 @@ void __51__ICDocCamViewController_filterButtonChoiceAction___block_invoke(uint64
 
 - (void)updateAccessibilityFocusForHidingFilterSettingsUI
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  if ([v3 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
     [(ICDocCamViewController *)self filterButton];
   }
@@ -5607,8 +5607,8 @@ void __51__ICDocCamViewController_filterButtonChoiceAction___block_invoke(uint64
 
 - (void)updateAccessibilityFocusForHidingFlashSettingsUI
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  if ([v3 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
     [(ICDocCamViewController *)self flashButton];
   }
@@ -5622,9 +5622,9 @@ void __51__ICDocCamViewController_filterButtonChoiceAction___block_invoke(uint64
   UIAccessibilityPostNotification(*MEMORY[0x277D76488], argument);
 }
 
-- (void)updateFilterChoiceButtonScrollPositionAnimated:(BOOL)a3
+- (void)updateFilterChoiceButtonScrollPositionAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = 0;
   v7 = *MEMORY[0x277CBF3A0];
   v6 = *(MEMORY[0x277CBF3A0] + 8);
@@ -5632,16 +5632,16 @@ void __51__ICDocCamViewController_filterButtonChoiceAction___block_invoke(uint64
   v8 = *(MEMORY[0x277CBF3A0] + 24);
   while (1)
   {
-    v10 = [(ICDocCamViewController *)self filterButtons];
-    v11 = [v10 count];
+    filterButtons = [(ICDocCamViewController *)self filterButtons];
+    v11 = [filterButtons count];
 
     if (v11 <= v5)
     {
       break;
     }
 
-    v12 = [(ICDocCamViewController *)self filterButtons];
-    v13 = [v12 objectAtIndexedSubscript:v5];
+    filterButtons2 = [(ICDocCamViewController *)self filterButtons];
+    v13 = [filterButtons2 objectAtIndexedSubscript:v5];
 
     v14 = [v13 tag];
     if (v14 == [(ICDocCamViewController *)self defaultFilter])
@@ -5670,8 +5670,8 @@ void __51__ICDocCamViewController_filterButtonChoiceAction___block_invoke(uint64
       [ICDocCamViewController updateFilterChoiceButtonScrollPositionAnimated:];
     }
 
-    v20 = [(ICDocCamViewController *)self filterButtons];
-    v21 = [v20 objectAtIndexedSubscript:0];
+    filterButtons3 = [(ICDocCamViewController *)self filterButtons];
+    v21 = [filterButtons3 objectAtIndexedSubscript:0];
     [v21 frame];
     v7 = v22;
     v6 = v23;
@@ -5679,8 +5679,8 @@ void __51__ICDocCamViewController_filterButtonChoiceAction___block_invoke(uint64
     v8 = v25;
   }
 
-  v26 = [(ICDocCamViewController *)self filterScrollView];
-  [v26 scrollRectToVisible:v3 animated:{v7, v6, v9, v8}];
+  filterScrollView = [(ICDocCamViewController *)self filterScrollView];
+  [filterScrollView scrollRectToVisible:animatedCopy animated:{v7, v6, v9, v8}];
 }
 
 - (id)filterButtonImage
@@ -5700,15 +5700,15 @@ void __51__ICDocCamViewController_filterButtonChoiceAction___block_invoke(uint64
 
 - (id)flashButtonImage
 {
-  v3 = [(ICDocCamViewController *)self flashMode];
-  if (v3 > 2)
+  flashMode = [(ICDocCamViewController *)self flashMode];
+  if (flashMode > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = off_278F93FA0[v3];
+    v4 = off_278F93FA0[flashMode];
   }
 
   if ((-[ICDocCamViewController statusBarOrientation](self, "statusBarOrientation") - 3) <= 1 && (-[ICDocCamViewController view](self, "view"), v5 = objc_claimAutoreleasedReturnValue(), [v5 window], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "dc_requiresCompactLandscapeIcons"), v6, v5, v7))
@@ -5724,26 +5724,26 @@ void __51__ICDocCamViewController_filterButtonChoiceAction___block_invoke(uint64
   return v8;
 }
 
-- (void)myApplicationWillResignActive:(id)a3
+- (void)myApplicationWillResignActive:(id)active
 {
-  v4 = [(ICDocCamViewController *)self captureEventInteraction];
-  [v4 setEnabled:0];
+  captureEventInteraction = [(ICDocCamViewController *)self captureEventInteraction];
+  [captureEventInteraction setEnabled:0];
 
-  v5 = [(ICDocCamViewController *)self processRequestsBlocker];
-  [v5 addBlockerOfType:@"ApplicationActiveBlocker" clearRectangles:1 clearQueue:1];
+  processRequestsBlocker = [(ICDocCamViewController *)self processRequestsBlocker];
+  [processRequestsBlocker addBlockerOfType:@"ApplicationActiveBlocker" clearRectangles:1 clearQueue:1];
 
   [(ICDocCamViewController *)self dismissFilterAndFlashUI];
 }
 
-- (void)myApplicationDidBecomeActive:(id)a3
+- (void)myApplicationDidBecomeActive:(id)active
 {
   [(ICDocCamViewController *)self clearRectangles];
   [(ICDocCamViewController *)self clearQueue];
-  v4 = [(ICDocCamViewController *)self processRequestsBlocker];
-  [v4 removeBlockerOfType:@"ApplicationActiveBlocker"];
+  processRequestsBlocker = [(ICDocCamViewController *)self processRequestsBlocker];
+  [processRequestsBlocker removeBlockerOfType:@"ApplicationActiveBlocker"];
 
-  v5 = [(ICDocCamViewController *)self isSessionRunning];
-  if (v5)
+  isSessionRunning = [(ICDocCamViewController *)self isSessionRunning];
+  if (isSessionRunning)
   {
     [(ICDocCamViewController *)self enableShutterButtonIfPossible];
   }
@@ -5753,15 +5753,15 @@ void __51__ICDocCamViewController_filterButtonChoiceAction___block_invoke(uint64
     [(ICDocCamViewController *)self enableShutter:0];
   }
 
-  [(ICDocCamViewController *)self enableUIElements:v5];
-  v6 = [(ICDocCamViewController *)self view];
-  v7 = [v6 window];
-  v8 = [v7 isKeyWindow];
+  [(ICDocCamViewController *)self enableUIElements:isSessionRunning];
+  view = [(ICDocCamViewController *)self view];
+  window = [view window];
+  isKeyWindow = [window isKeyWindow];
 
-  if (v8)
+  if (isKeyWindow)
   {
-    v9 = [(ICDocCamViewController *)self captureEventInteraction];
-    [v9 setEnabled:1];
+    captureEventInteraction = [(ICDocCamViewController *)self captureEventInteraction];
+    [captureEventInteraction setEnabled:1];
   }
 
   [(ICDocCamViewController *)self logAlgoChoice];
@@ -5782,31 +5782,31 @@ void __51__ICDocCamViewController_filterButtonChoiceAction___block_invoke(uint64
 
   if ([(ICDocCamViewController *)self didAddAppLifetimeObservers])
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self name:*MEMORY[0x277D76768] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D76768] object:0];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 removeObserver:self name:*MEMORY[0x277D76648] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 removeObserver:self name:*MEMORY[0x277D76648] object:0];
 
     [(ICDocCamViewController *)self setDidAddAppLifetimeObservers:0];
   }
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 removeObserver:self];
 
   if (self->_sessionQueue)
   {
-    v7 = [(ICDocCamViewController *)self sessionQueue];
+    sessionQueue = [(ICDocCamViewController *)self sessionQueue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __48__ICDocCamViewController_removeAllNotifications__block_invoke_2;
     v9[3] = &unk_278F93AB0;
     v9[4] = self;
-    dispatch_sync(v7, v9);
+    dispatch_sync(sessionQueue, v9);
   }
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 removeObserver:self name:*MEMORY[0x277D76810] object:0];
+  defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter4 removeObserver:self name:*MEMORY[0x277D76810] object:0];
 }
 
 void __48__ICDocCamViewController_removeAllNotifications__block_invoke_2(uint64_t a1)
@@ -5831,29 +5831,29 @@ void __48__ICDocCamViewController_removeAllNotifications__block_invoke_2(uint64_
 {
   if (![(ICDocCamViewController *)self isObservingCaptureSession])
   {
-    v3 = [(ICDocCamViewController *)self session];
-    [v3 addObserver:self forKeyPath:@"running" options:1 context:SessionRunningContext];
+    session = [(ICDocCamViewController *)self session];
+    [session addObserver:self forKeyPath:@"running" options:1 context:SessionRunningContext];
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    v5 = [(ICDocCamViewController *)self videoDeviceInput];
-    v6 = [v5 device];
-    [v4 addObserver:self selector:sel_subjectAreaDidChange_ name:*MEMORY[0x277CE5838] object:v6];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    videoDeviceInput = [(ICDocCamViewController *)self videoDeviceInput];
+    device = [videoDeviceInput device];
+    [defaultCenter addObserver:self selector:sel_subjectAreaDidChange_ name:*MEMORY[0x277CE5838] object:device];
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    v8 = [(ICDocCamViewController *)self session];
-    [v7 addObserver:self selector:sel_sessionRuntimeError_ name:*MEMORY[0x277CE59C0] object:v8];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    session2 = [(ICDocCamViewController *)self session];
+    [defaultCenter2 addObserver:self selector:sel_sessionRuntimeError_ name:*MEMORY[0x277CE59C0] object:session2];
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    v10 = [(ICDocCamViewController *)self session];
-    [v9 addObserver:self selector:sel_sessionWasInterrupted_ name:*MEMORY[0x277CE59C8] object:v10];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    session3 = [(ICDocCamViewController *)self session];
+    [defaultCenter3 addObserver:self selector:sel_sessionWasInterrupted_ name:*MEMORY[0x277CE59C8] object:session3];
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    v12 = [(ICDocCamViewController *)self session];
-    [v11 addObserver:self selector:sel_sessionInterruptionEnded_ name:*MEMORY[0x277CE5948] object:v12];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    session4 = [(ICDocCamViewController *)self session];
+    [defaultCenter4 addObserver:self selector:sel_sessionInterruptionEnded_ name:*MEMORY[0x277CE5948] object:session4];
 
-    v13 = [(ICDocCamViewController *)self videoDeviceInput];
-    v14 = [v13 device];
-    [v14 addObserver:self forKeyPath:@"adjustingFocus" options:1 context:0];
+    videoDeviceInput2 = [(ICDocCamViewController *)self videoDeviceInput];
+    device2 = [videoDeviceInput2 device];
+    [device2 addObserver:self forKeyPath:@"adjustingFocus" options:1 context:0];
 
     [(ICDocCamViewController *)self setIsObservingCaptureSession:1];
   }
@@ -5863,62 +5863,62 @@ void __48__ICDocCamViewController_removeAllNotifications__block_invoke_2(uint64_
 {
   if ([(ICDocCamViewController *)self isObservingCaptureSession])
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    v4 = [(ICDocCamViewController *)self videoDeviceInput];
-    v5 = [v4 device];
-    [v3 removeObserver:self name:*MEMORY[0x277CE5838] object:v5];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    videoDeviceInput = [(ICDocCamViewController *)self videoDeviceInput];
+    device = [videoDeviceInput device];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277CE5838] object:device];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    v7 = [(ICDocCamViewController *)self session];
-    [v6 removeObserver:self name:*MEMORY[0x277CE59C0] object:v7];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    session = [(ICDocCamViewController *)self session];
+    [defaultCenter2 removeObserver:self name:*MEMORY[0x277CE59C0] object:session];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    v9 = [(ICDocCamViewController *)self session];
-    [v8 removeObserver:self name:*MEMORY[0x277CE59C8] object:v9];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    session2 = [(ICDocCamViewController *)self session];
+    [defaultCenter3 removeObserver:self name:*MEMORY[0x277CE59C8] object:session2];
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    v11 = [(ICDocCamViewController *)self session];
-    [v10 removeObserver:self name:*MEMORY[0x277CE5948] object:v11];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    session3 = [(ICDocCamViewController *)self session];
+    [defaultCenter4 removeObserver:self name:*MEMORY[0x277CE5948] object:session3];
 
-    v12 = [(ICDocCamViewController *)self session];
-    [v12 removeObserver:self forKeyPath:@"running" context:SessionRunningContext];
+    session4 = [(ICDocCamViewController *)self session];
+    [session4 removeObserver:self forKeyPath:@"running" context:SessionRunningContext];
 
-    v13 = [(ICDocCamViewController *)self videoDeviceInput];
-    v14 = [v13 device];
-    [v14 removeObserver:self forKeyPath:@"adjustingFocus"];
+    videoDeviceInput2 = [(ICDocCamViewController *)self videoDeviceInput];
+    device2 = [videoDeviceInput2 device];
+    [device2 removeObserver:self forKeyPath:@"adjustingFocus"];
 
     [(ICDocCamViewController *)self setIsObservingCaptureSession:0];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"adjustingFocus"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"adjustingFocus"])
   {
-    v13 = [v12 objectForKey:*MEMORY[0x277CCA2F0]];
+    v13 = [changeCopy objectForKey:*MEMORY[0x277CCA2F0]];
     v14 = [MEMORY[0x277CCABB0] numberWithInt:1];
     -[ICDocCamViewController setAdjustingFocus:](self, "setAdjustingFocus:", [v13 isEqualToNumber:v14]);
   }
 
-  else if (SessionRunningContext == a6)
+  else if (SessionRunningContext == context)
   {
-    v15 = [v12 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-    v33 = [v15 BOOLValue];
+    v15 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    bOOLValue = [v15 BOOLValue];
 
-    v16 = [(ICDocCamViewController *)self processRequestsBlocker];
-    if ([v16 blocked])
+    processRequestsBlocker = [(ICDocCamViewController *)self processRequestsBlocker];
+    if ([processRequestsBlocker blocked])
     {
-      v17 = [(ICDocCamViewController *)self processRequestsBlocker];
-      v18 = [v17 blockerSet];
-      if ([v18 count] == 1)
+      processRequestsBlocker2 = [(ICDocCamViewController *)self processRequestsBlocker];
+      blockerSet = [processRequestsBlocker2 blockerSet];
+      if ([blockerSet count] == 1)
       {
-        v19 = [(ICDocCamViewController *)self processRequestsBlocker];
-        v20 = [v19 blockerSet];
-        v21 = [v20 member:@"OrientationBlocker"];
+        processRequestsBlocker3 = [(ICDocCamViewController *)self processRequestsBlocker];
+        blockerSet2 = [processRequestsBlocker3 blockerSet];
+        v21 = [blockerSet2 member:@"OrientationBlocker"];
         v22 = v21 == 0;
       }
 
@@ -5934,13 +5934,13 @@ void __48__ICDocCamViewController_removeAllNotifications__block_invoke_2(uint64_
     }
 
     v23 = 0;
-    if (v33 && !v22)
+    if (bOOLValue && !v22)
     {
-      v24 = [(ICDocCamViewController *)self snapStillImageBlocker];
-      v23 = [v24 blocked] ^ 1;
+      snapStillImageBlocker = [(ICDocCamViewController *)self snapStillImageBlocker];
+      v23 = [snapStillImageBlocker blocked] ^ 1;
     }
 
-    [(ICDocCamViewController *)self setSessionRunning:v33];
+    [(ICDocCamViewController *)self setSessionRunning:bOOLValue];
     v25 = os_log_create("com.apple.documentcamera", "");
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
@@ -5952,7 +5952,7 @@ void __48__ICDocCamViewController_removeAllNotifications__block_invoke_2(uint64_
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       v27 = @"NO";
-      if (v33)
+      if (bOOLValue)
       {
         v27 = @"YES";
       }
@@ -5981,10 +5981,10 @@ void __48__ICDocCamViewController_removeAllNotifications__block_invoke_2(uint64_
       v30 = os_log_create("com.apple.documentcamera", "");
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
-        v31 = [(ICDocCamViewController *)self processRequestsBlocker];
-        v32 = [v31 blockerSet];
+        processRequestsBlocker4 = [(ICDocCamViewController *)self processRequestsBlocker];
+        blockerSet3 = [processRequestsBlocker4 blockerSet];
         *buf = 138412290;
-        v39 = v32;
+        v39 = blockerSet3;
         _os_log_impl(&dword_249253000, v30, OS_LOG_TYPE_DEFAULT, "  procReqBlockers : %@", buf, 0xCu);
       }
     }
@@ -5993,7 +5993,7 @@ void __48__ICDocCamViewController_removeAllNotifications__block_invoke_2(uint64_
     block[1] = 3221225472;
     block[2] = __73__ICDocCamViewController_observeValueForKeyPath_ofObject_change_context___block_invoke;
     block[3] = &unk_278F93BC8;
-    v36 = v33;
+    v36 = bOOLValue;
     block[4] = self;
     v37 = v23;
     dispatch_async(MEMORY[0x277D85CD0], block);
@@ -6003,7 +6003,7 @@ void __48__ICDocCamViewController_removeAllNotifications__block_invoke_2(uint64_
   {
     v34.receiver = self;
     v34.super_class = ICDocCamViewController;
-    [(ICDocCamViewController *)&v34 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(ICDocCamViewController *)&v34 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -6066,18 +6066,18 @@ void __73__ICDocCamViewController_observeValueForKeyPath_ofObject_change_context
   [v1 setOpacity:v2];
 }
 
-- (void)subjectAreaDidChange:(id)a3
+- (void)subjectAreaDidChange:(id)change
 {
-  v4 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   [(ICDocCamViewController *)self setLastSubjectAreaChange:?];
 }
 
-- (void)sessionRuntimeError:(id)a3
+- (void)sessionRuntimeError:(id)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277CE5940]];
+  errorCopy = error;
+  userInfo = [errorCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CE5940]];
 
   v7 = os_log_create("com.apple.documentcamera", "");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -6089,19 +6089,19 @@ void __73__ICDocCamViewController_observeValueForKeyPath_ofObject_change_context
 
   if ([v6 code] == -11819)
   {
-    v8 = [(ICDocCamViewController *)self sessionQueue];
+    sessionQueue = [(ICDocCamViewController *)self sessionQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __46__ICDocCamViewController_sessionRuntimeError___block_invoke;
     block[3] = &unk_278F93AB0;
     block[4] = self;
-    dispatch_async(v8, block);
+    dispatch_async(sessionQueue, block);
   }
 
   else
   {
-    v9 = [(ICDocCamViewController *)self resumeButton];
-    [v9 setHidden:0];
+    resumeButton = [(ICDocCamViewController *)self resumeButton];
+    [resumeButton setHidden:0];
   }
 }
 
@@ -6133,25 +6133,25 @@ void __46__ICDocCamViewController_sessionRuntimeError___block_invoke_2(uint64_t 
   [v1 setHidden:0];
 }
 
-- (void)hideUIForInterruptedSession:(BOOL)a3
+- (void)hideUIForInterruptedSession:(BOOL)session
 {
-  v3 = a3;
+  sessionCopy = session;
   if ((DCDebugInterfaceEnabled() & 1) != 0 || ([MEMORY[0x277D75418] currentDevice], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "userInterfaceIdiom"), v5, v6 == 1))
   {
-    if (v3)
+    if (sessionCopy)
     {
       [(ICDocCamViewController *)self enableShutter:0];
-      v7 = [(ICDocCamViewController *)self flashButton];
-      [v7 setEnabled:0];
+      flashButton = [(ICDocCamViewController *)self flashButton];
+      [flashButton setEnabled:0];
 
-      v8 = [(ICDocCamViewController *)self filterButton];
-      [v8 setEnabled:0];
+      filterButton = [(ICDocCamViewController *)self filterButton];
+      [filterButton setEnabled:0];
 
-      v9 = [(ICDocCamViewController *)self autoButton];
-      [v9 setEnabled:0];
+      autoButton = [(ICDocCamViewController *)self autoButton];
+      [autoButton setEnabled:0];
 
-      v10 = [(ICDocCamViewController *)self manualButton];
-      [v10 setEnabled:0];
+      manualButton = [(ICDocCamViewController *)self manualButton];
+      [manualButton setEnabled:0];
 
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
@@ -6163,17 +6163,17 @@ void __46__ICDocCamViewController_sessionRuntimeError___block_invoke_2(uint64_t 
 
     else
     {
-      v11 = [(ICDocCamViewController *)self flashButton];
-      [v11 setEnabled:1];
+      flashButton2 = [(ICDocCamViewController *)self flashButton];
+      [flashButton2 setEnabled:1];
 
-      v12 = [(ICDocCamViewController *)self filterButton];
-      [v12 setEnabled:1];
+      filterButton2 = [(ICDocCamViewController *)self filterButton];
+      [filterButton2 setEnabled:1];
 
-      v13 = [(ICDocCamViewController *)self autoButton];
-      [v13 setEnabled:1];
+      autoButton2 = [(ICDocCamViewController *)self autoButton];
+      [autoButton2 setEnabled:1];
 
-      v14 = [(ICDocCamViewController *)self manualButton];
-      [v14 setEnabled:1];
+      manualButton2 = [(ICDocCamViewController *)self manualButton];
+      [manualButton2 setEnabled:1];
 
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
@@ -6240,21 +6240,21 @@ void __54__ICDocCamViewController_hideUIForInterruptedSession___block_invoke_2(u
   [v8 setAlpha:1.0];
 }
 
-- (void)sessionWasInterrupted:(id)a3
+- (void)sessionWasInterrupted:(id)interrupted
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CE5950]];
-  v6 = [v5 integerValue];
+  userInfo = [interrupted userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CE5950]];
+  integerValue = [v5 integerValue];
 
-  if ((v6 - 1) >= 4)
+  if ((integerValue - 1) >= 4)
   {
     v7 = @"Unknown";
   }
 
   else
   {
-    v7 = off_278F93FB8[v6 - 1];
+    v7 = off_278F93FB8[integerValue - 1];
   }
 
   v8 = os_log_create("com.apple.documentcamera", "");
@@ -6267,15 +6267,15 @@ void __54__ICDocCamViewController_hideUIForInterruptedSession___block_invoke_2(u
 
   [(ICDocCamViewController *)self dismissFilterAndFlashUI];
   [(ICDocCamViewController *)self hideUIForInterruptedSession:1];
-  if (v6 != 1)
+  if (integerValue != 1)
   {
-    if ((v6 & 0xFFFFFFFFFFFFFFFELL) == 2)
+    if ((integerValue & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
-      v9 = [(ICDocCamViewController *)self resumeButton];
-      [v9 setAlpha:0.0];
+      resumeButton = [(ICDocCamViewController *)self resumeButton];
+      [resumeButton setAlpha:0.0];
 
-      v10 = [(ICDocCamViewController *)self resumeButton];
-      [v10 setHidden:0];
+      resumeButton2 = [(ICDocCamViewController *)self resumeButton];
+      [resumeButton2 setHidden:0];
 
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
@@ -6285,16 +6285,16 @@ void __54__ICDocCamViewController_hideUIForInterruptedSession___block_invoke_2(u
       [MEMORY[0x277D75D18] animateWithDuration:v16 animations:0.25];
     }
 
-    else if (v6 == 4)
+    else if (integerValue == 4)
     {
-      v11 = [(ICDocCamViewController *)self userPromptView];
-      [v11 setHidden:1];
+      userPromptView = [(ICDocCamViewController *)self userPromptView];
+      [userPromptView setHidden:1];
 
-      v12 = [(ICDocCamViewController *)self cameraUnavailableScrim];
-      [v12 setAlpha:0.0];
+      cameraUnavailableScrim = [(ICDocCamViewController *)self cameraUnavailableScrim];
+      [cameraUnavailableScrim setAlpha:0.0];
 
-      v13 = [(ICDocCamViewController *)self cameraUnavailableScrim];
-      [v13 setHidden:0];
+      cameraUnavailableScrim2 = [(ICDocCamViewController *)self cameraUnavailableScrim];
+      [cameraUnavailableScrim2 setHidden:0];
 
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
@@ -6302,8 +6302,8 @@ void __54__ICDocCamViewController_hideUIForInterruptedSession___block_invoke_2(u
       v15[3] = &unk_278F93AB0;
       v15[4] = self;
       [MEMORY[0x277D75D18] animateWithDuration:v15 animations:0.25];
-      v14 = [(ICDocCamViewController *)self cameraUnavailableLabel];
-      [(ICDocCamViewController *)self speakLabelTextForAccessibilityIfNecessary:v14 afterDelay:1.0];
+      cameraUnavailableLabel = [(ICDocCamViewController *)self cameraUnavailableLabel];
+      [(ICDocCamViewController *)self speakLabelTextForAccessibilityIfNecessary:cameraUnavailableLabel afterDelay:1.0];
     }
   }
 }
@@ -6320,7 +6320,7 @@ void __48__ICDocCamViewController_sessionWasInterrupted___block_invoke_2(uint64_
   [v1 setAlpha:1.0];
 }
 
-- (void)sessionInterruptionEnded:(id)a3
+- (void)sessionInterruptionEnded:(id)ended
 {
   v4 = os_log_create("com.apple.documentcamera", "");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -6329,10 +6329,10 @@ void __48__ICDocCamViewController_sessionWasInterrupted___block_invoke_2(uint64_
     _os_log_impl(&dword_249253000, v4, OS_LOG_TYPE_DEFAULT, "Capture session interruption ended", buf, 2u);
   }
 
-  v5 = [(ICDocCamViewController *)self resumeButton];
-  v6 = [v5 isHidden];
+  resumeButton = [(ICDocCamViewController *)self resumeButton];
+  isHidden = [resumeButton isHidden];
 
-  if ((v6 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -6347,10 +6347,10 @@ void __48__ICDocCamViewController_sessionWasInterrupted___block_invoke_2(uint64_
     [MEMORY[0x277D75D18] animateWithDuration:v12 animations:v11 completion:0.25];
   }
 
-  v7 = [(ICDocCamViewController *)self cameraUnavailableScrim];
-  v8 = [v7 isHidden];
+  cameraUnavailableScrim = [(ICDocCamViewController *)self cameraUnavailableScrim];
+  isHidden2 = [cameraUnavailableScrim isHidden];
 
-  if ((v8 & 1) == 0)
+  if ((isHidden2 & 1) == 0)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -6392,15 +6392,15 @@ void __51__ICDocCamViewController_sessionInterruptionEnded___block_invoke_4(uint
   [v1 setHidden:1];
 }
 
-- (void)resumeInterruptedSession:(id)a3
+- (void)resumeInterruptedSession:(id)session
 {
-  v4 = [(ICDocCamViewController *)self sessionQueue];
+  sessionQueue = [(ICDocCamViewController *)self sessionQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__ICDocCamViewController_resumeInterruptedSession___block_invoke;
   block[3] = &unk_278F93AB0;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(sessionQueue, block);
 }
 
 void __51__ICDocCamViewController_resumeInterruptedSession___block_invoke(uint64_t a1)
@@ -6460,56 +6460,56 @@ void __51__ICDocCamViewController_resumeInterruptedSession___block_invoke_3(uint
   [v1 setHidden:1];
 }
 
-- (id)createNSDataFrom:(id)a3 metaData:(id)a4
+- (id)createNSDataFrom:(id)from metaData:(id)data
 {
-  v5 = a3;
-  v6 = a4;
+  fromCopy = from;
+  dataCopy = data;
   v7 = MEMORY[0x277CBEA90];
-  v28 = v6;
-  v29 = v5;
-  v8 = UIImageJPEGRepresentation(v5, 1.0);
+  v28 = dataCopy;
+  v29 = fromCopy;
+  v8 = UIImageJPEGRepresentation(fromCopy, 1.0);
   v9 = [v7 dataWithData:v8];
 
   v27 = v9;
   v10 = CGImageSourceCreateWithData(v9, 0);
-  v11 = [v6 mutableCopy];
+  v11 = [dataCopy mutableCopy];
   v12 = *MEMORY[0x277CD3038];
-  v33 = [v11 objectForKey:*MEMORY[0x277CD3038]];
+  dictionary = [v11 objectForKey:*MEMORY[0x277CD3038]];
   v13 = *MEMORY[0x277CD3258];
-  v32 = [v11 objectForKey:*MEMORY[0x277CD3258]];
+  dictionary2 = [v11 objectForKey:*MEMORY[0x277CD3258]];
   v14 = *MEMORY[0x277CD3490];
-  v31 = [v11 objectForKey:*MEMORY[0x277CD3490]];
+  dictionary3 = [v11 objectForKey:*MEMORY[0x277CD3490]];
   v15 = *MEMORY[0x277CD3468];
-  v30 = [v11 objectForKey:*MEMORY[0x277CD3468]];
+  dictionary5 = [v11 objectForKey:*MEMORY[0x277CD3468]];
   v16 = *MEMORY[0x277CD33A8];
-  v17 = [v11 objectForKey:*MEMORY[0x277CD33A8]];
+  dictionary4 = [v11 objectForKey:*MEMORY[0x277CD33A8]];
   v18 = *MEMORY[0x277CD31C8];
-  v19 = [v11 objectForKey:*MEMORY[0x277CD31C8]];
-  if (!v33)
+  dictionary6 = [v11 objectForKey:*MEMORY[0x277CD31C8]];
+  if (!dictionary)
   {
-    v33 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  if (!v32)
+  if (!dictionary2)
   {
-    v32 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  if (!v31)
+  if (!dictionary3)
   {
-    v31 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  if (v30)
+  if (dictionary5)
   {
-    if (v17)
+    if (dictionary4)
     {
       goto LABEL_9;
     }
 
 LABEL_12:
-    v17 = [MEMORY[0x277CBEB38] dictionary];
-    if (v19)
+    dictionary4 = [MEMORY[0x277CBEB38] dictionary];
+    if (dictionary6)
     {
       goto LABEL_14;
     }
@@ -6517,36 +6517,36 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v30 = [MEMORY[0x277CBEB38] dictionary];
-  if (!v17)
+  dictionary5 = [MEMORY[0x277CBEB38] dictionary];
+  if (!dictionary4)
   {
     goto LABEL_12;
   }
 
 LABEL_9:
-  if (v19)
+  if (dictionary6)
   {
     goto LABEL_14;
   }
 
 LABEL_13:
-  v19 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary6 = [MEMORY[0x277CBEB38] dictionary];
 LABEL_14:
-  [v11 setObject:v33 forKey:v12];
-  [v11 setObject:v32 forKey:v13];
-  [v11 setObject:v31 forKey:v14];
-  [v11 setObject:v30 forKey:v15];
-  [v11 setObject:v17 forKey:v16];
-  [v11 setObject:v19 forKey:v18];
-  v20 = [(UIImage *)v29 imageOrientation];
-  if ((v20 - 1) >= 3)
+  [v11 setObject:dictionary forKey:v12];
+  [v11 setObject:dictionary2 forKey:v13];
+  [v11 setObject:dictionary3 forKey:v14];
+  [v11 setObject:dictionary5 forKey:v15];
+  [v11 setObject:dictionary4 forKey:v16];
+  [v11 setObject:dictionary6 forKey:v18];
+  imageOrientation = [(UIImage *)v29 imageOrientation];
+  if ((imageOrientation - 1) >= 3)
   {
     v21 = 1;
   }
 
   else
   {
-    v21 = dword_2492F7B00[v20 - 1];
+    v21 = dword_2492F7B00[imageOrientation - 1];
   }
 
   v22 = [MEMORY[0x277CCABB0] numberWithInt:v21];
@@ -6554,33 +6554,33 @@ LABEL_14:
 
   [v11 removeObjectForKey:@"Diagnostic"];
   Type = CGImageSourceGetType(v10);
-  v24 = [MEMORY[0x277CBEB28] data];
-  v25 = CGImageDestinationCreateWithData(v24, Type, 1uLL, 0);
+  data = [MEMORY[0x277CBEB28] data];
+  v25 = CGImageDestinationCreateWithData(data, Type, 1uLL, 0);
   CGImageDestinationAddImageFromSource(v25, v10, 0, v11);
   CGImageDestinationFinalize(v25);
   CFRelease(v25);
   CFRelease(v10);
 
-  return v24;
+  return data;
 }
 
-- (void)toggleAutoCapture:(id)a3
+- (void)toggleAutoCapture:(id)capture
 {
-  v4 = a3;
-  v5 = [(ICDocCamViewController *)self manualButton];
-  if (v5 == v4 && ![(ICDocCamViewController *)self autoMode])
+  captureCopy = capture;
+  manualButton = [(ICDocCamViewController *)self manualButton];
+  if (manualButton == captureCopy && ![(ICDocCamViewController *)self autoMode])
   {
 
     goto LABEL_13;
   }
 
-  v6 = [(ICDocCamViewController *)self autoButton];
-  v7 = v6;
-  if (v6 == v4)
+  autoButton = [(ICDocCamViewController *)self autoButton];
+  v7 = autoButton;
+  if (autoButton == captureCopy)
   {
-    v8 = [(ICDocCamViewController *)self autoMode];
+    autoMode = [(ICDocCamViewController *)self autoMode];
 
-    if (v8)
+    if (autoMode)
     {
       goto LABEL_13;
     }
@@ -6590,36 +6590,36 @@ LABEL_14:
   {
   }
 
-  v9 = [(ICDocCamViewController *)self processRequestsBlocker];
-  [v9 addBlockerOfType:@"ToggleAutoModeBlocker" clearRectangles:1 clearQueue:1];
+  processRequestsBlocker = [(ICDocCamViewController *)self processRequestsBlocker];
+  [processRequestsBlocker addBlockerOfType:@"ToggleAutoModeBlocker" clearRectangles:1 clearQueue:1];
 
   [(ICDocCamViewController *)self killFeedbackDisplayIncludingUserPrompts:1];
-  v10 = [(ICDocCamViewController *)self autoButton];
-  [v10 setEnabled:0];
+  autoButton2 = [(ICDocCamViewController *)self autoButton];
+  [autoButton2 setEnabled:0];
 
-  v11 = [(ICDocCamViewController *)self manualButton];
-  [v11 setEnabled:0];
+  manualButton2 = [(ICDocCamViewController *)self manualButton];
+  [manualButton2 setEnabled:0];
 
-  v12 = [(ICDocCamViewController *)self autoButtonForIPhone];
-  [v12 setEnabled:0];
+  autoButtonForIPhone = [(ICDocCamViewController *)self autoButtonForIPhone];
+  [autoButtonForIPhone setEnabled:0];
 
   [(ICDocCamViewController *)self clearRectangles];
   [(ICDocCamViewController *)self clearQueue];
   if ([(ICDocCamViewController *)self autoMode])
   {
     [(ICDocCamViewController *)self setAutoMode:0];
-    v13 = [(ICDocCamViewController *)self autoMode];
-    v14 = [(ICDocCamViewController *)self overlayView];
-    [v14 setShowGridAnimation:v13];
+    autoMode2 = [(ICDocCamViewController *)self autoMode];
+    overlayView = [(ICDocCamViewController *)self overlayView];
+    [overlayView setShowGridAnimation:autoMode2];
 
-    v15 = [MEMORY[0x277D75418] currentDevice];
-    v16 = [v15 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (!v16)
+    if (!userInterfaceIdiom)
     {
       [(ICDocCamViewController *)self updateConstraintsForIPhone];
-      v17 = [(ICDocCamViewController *)self thumbnailViewController];
-      [v17 animateLayoutChange];
+      thumbnailViewController = [(ICDocCamViewController *)self thumbnailViewController];
+      [thumbnailViewController animateLayoutChange];
     }
 
     [(ICDocCamViewController *)self updateAutoButtonTitleForAutoMode:1];
@@ -6643,13 +6643,13 @@ LABEL_14:
     [v18 setFillMode:*MEMORY[0x277CDA238]];
     LODWORD(v19) = 1.0;
     [v18 setRepeatCount:v19];
-    v20 = [(ICDocCamViewController *)self autoShutterOffView];
-    v21 = [v20 layer];
-    [v21 addAnimation:v18 forKey:@"autoOff"];
+    autoShutterOffView = [(ICDocCamViewController *)self autoShutterOffView];
+    layer = [autoShutterOffView layer];
+    [layer addAnimation:v18 forKey:@"autoOff"];
 
-    v22 = [(ICDocCamViewController *)self autoShutterOffView];
-    v23 = [v22 layer];
-    [v23 setOpacity:0.0];
+    autoShutterOffView2 = [(ICDocCamViewController *)self autoShutterOffView];
+    layer2 = [autoShutterOffView2 layer];
+    [layer2 setOpacity:0.0];
 
     [(ICDocCamViewController *)self updateAccessibilityForAutoShutterMode:0];
   }
@@ -6678,13 +6678,13 @@ LABEL_14:
     [v18 setFillMode:*MEMORY[0x277CDA238]];
     LODWORD(v24) = 1.0;
     [v18 setRepeatCount:v24];
-    v25 = [(ICDocCamViewController *)self autoShutterOnView];
-    v26 = [v25 layer];
-    [v26 addAnimation:v18 forKey:@"autoOn"];
+    autoShutterOnView = [(ICDocCamViewController *)self autoShutterOnView];
+    layer3 = [autoShutterOnView layer];
+    [layer3 addAnimation:v18 forKey:@"autoOn"];
 
-    v27 = [(ICDocCamViewController *)self autoShutterOnView];
-    v28 = [v27 layer];
-    [v28 setOpacity:0.0];
+    autoShutterOnView2 = [(ICDocCamViewController *)self autoShutterOnView];
+    layer4 = [autoShutterOnView2 layer];
+    [layer4 setOpacity:0.0];
 
     [(ICDocCamViewController *)self updateAccessibilityForAutoShutterMode:1];
   }
@@ -6725,7 +6725,7 @@ void __44__ICDocCamViewController_toggleAutoCapture___block_invoke_4(uint64_t a1
   [v5 removeBlockerOfType:@"ToggleAutoModeBlocker"];
 }
 
-- (void)filterButtonCancelUI:(id)a3
+- (void)filterButtonCancelUI:(id)i
 {
   [(ICDocCamViewController *)self hideFilterSettingUI];
   v4 = dispatch_time(0, 1000000000);
@@ -6743,45 +6743,45 @@ void __47__ICDocCamViewController_filterButtonCancelUI___block_invoke(uint64_t a
   [v1 removeBlockerOfType:@"FilterSettingBlocker"];
 }
 
-- (void)filterButtonAction:(id)a3
+- (void)filterButtonAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   if ([(ICDocCamViewController *)self filterSettingUIShowing])
   {
-    [(ICDocCamViewController *)self filterButtonCancelUI:v4];
+    [(ICDocCamViewController *)self filterButtonCancelUI:actionCopy];
   }
 
   else
   {
-    v5 = [(ICDocCamViewController *)self flashAndFilterUISemaphore];
-    v6 = dispatch_semaphore_wait(v5, 0);
+    flashAndFilterUISemaphore = [(ICDocCamViewController *)self flashAndFilterUISemaphore];
+    v6 = dispatch_semaphore_wait(flashAndFilterUISemaphore, 0);
 
     if (!v6)
     {
-      v7 = [(ICDocCamViewController *)self processRequestsBlocker];
-      [v7 addBlockerOfType:@"FilterSettingBlocker" clearRectangles:1 clearQueue:1];
+      processRequestsBlocker = [(ICDocCamViewController *)self processRequestsBlocker];
+      [processRequestsBlocker addBlockerOfType:@"FilterSettingBlocker" clearRectangles:1 clearQueue:1];
 
       [(ICDocCamViewController *)self dismissFlashUI];
-      v8 = [(ICDocCamViewController *)self userPromptView];
-      [v8 setHidden:1];
+      userPromptView = [(ICDocCamViewController *)self userPromptView];
+      [userPromptView setHidden:1];
 
-      v9 = [MEMORY[0x277D75418] currentDevice];
-      v10 = [v9 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v10)
+      if (userInterfaceIdiom)
       {
-        v11 = [(ICDocCamViewController *)self view];
-        [v11 layoutIfNeeded];
+        view = [(ICDocCamViewController *)self view];
+        [view layoutIfNeeded];
 
         [(ICDocCamViewController *)self setUpFilterScrollView];
         [(ICDocCamViewController *)self filterScrollViewContentWidthWithInterItemSpacing:20.0 startPadding:10.0 endPadding:22.0];
         v13 = v12;
-        v14 = [(ICDocCamViewController *)self filterScrollView];
-        [v14 contentInset];
+        filterScrollView = [(ICDocCamViewController *)self filterScrollView];
+        [filterScrollView contentInset];
         v16 = v15;
 
-        v17 = [MEMORY[0x277D759A0] mainScreen];
-        [v17 bounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen bounds];
         v19 = v18;
         v21 = v20;
         v22 = v13 + 44.0 + v16;
@@ -6818,20 +6818,20 @@ void __47__ICDocCamViewController_filterButtonCancelUI___block_invoke(uint64_t a
 
       else
       {
-        v25 = [(ICDocCamViewController *)self topToolbarForIPhone];
-        [v25 setAlpha:1.0];
+        topToolbarForIPhone = [(ICDocCamViewController *)self topToolbarForIPhone];
+        [topToolbarForIPhone setAlpha:1.0];
 
-        v26 = [(ICDocCamViewController *)self topToolbarForIPhone];
-        [v26 setHidden:0];
+        topToolbarForIPhone2 = [(ICDocCamViewController *)self topToolbarForIPhone];
+        [topToolbarForIPhone2 setHidden:0];
 
-        v27 = [(ICDocCamViewController *)self filterViewContainer];
-        [v27 setAlpha:0.0];
+        filterViewContainer = [(ICDocCamViewController *)self filterViewContainer];
+        [filterViewContainer setAlpha:0.0];
 
-        v28 = [(ICDocCamViewController *)self filterViewContainer];
-        [v28 setHidden:0];
+        filterViewContainer2 = [(ICDocCamViewController *)self filterViewContainer];
+        [filterViewContainer2 setHidden:0];
 
-        v29 = [(ICDocCamViewController *)self view];
-        [v29 layoutIfNeeded];
+        view2 = [(ICDocCamViewController *)self view];
+        [view2 layoutIfNeeded];
 
         [(ICDocCamViewController *)self setUpFilterScrollView];
         [(ICDocCamViewController *)self updateFilterChoiceButtonScrollPositionAnimated:0];
@@ -6909,20 +6909,20 @@ void __45__ICDocCamViewController_filterButtonAction___block_invoke_4(uint64_t a
   UIAccessibilityPostNotification(v2, v3);
 }
 
-- (void)cancelAction:(id)a3
+- (void)cancelAction:(id)action
 {
-  v4 = [(ICDocCamViewController *)self processRequestsBlocker];
-  [v4 addBlockerOfType:@"CancelActionBlocker" clearRectangles:1 clearQueue:1];
+  processRequestsBlocker = [(ICDocCamViewController *)self processRequestsBlocker];
+  [processRequestsBlocker addBlockerOfType:@"CancelActionBlocker" clearRectangles:1 clearQueue:1];
 
   [(ICDocCamViewController *)self dismissFilterAndFlashUI];
   if ([(ICDocCamViewController *)self isInRetakeMode])
   {
-    v5 = [(ICDocCamViewController *)self retakeIndex];
+    retakeIndex = [(ICDocCamViewController *)self retakeIndex];
     [(ICDocCamViewController *)self disableRetakeMode];
     v6 = [ICDocCamExtractedDocumentViewController alloc];
-    v7 = [(ICDocCamViewController *)self documentInfoCollection];
-    v8 = [(ICDocCamViewController *)self imageCache];
-    v9 = [(ICDocCamExtractedDocumentViewController *)v6 initWithDelegate:self documentInfoCollection:v7 imageCache:v8 currentIndex:v5 mode:0];
+    documentInfoCollection = [(ICDocCamViewController *)self documentInfoCollection];
+    imageCache = [(ICDocCamViewController *)self imageCache];
+    v9 = [(ICDocCamExtractedDocumentViewController *)v6 initWithDelegate:self documentInfoCollection:documentInfoCollection imageCache:imageCache currentIndex:retakeIndex mode:0];
 
     v10 = *MEMORY[0x277CDA928];
     v11 = *MEMORY[0x277CDA948];
@@ -6937,15 +6937,15 @@ LABEL_11:
     return;
   }
 
-  v12 = [(ICDocCamViewController *)self documentInfoCollection];
-  v13 = [v12 docInfos];
-  v14 = [v13 count];
+  documentInfoCollection2 = [(ICDocCamViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection2 docInfos];
+  v14 = [docInfos count];
 
   if (v14)
   {
-    v15 = [(ICDocCamViewController *)self documentInfoCollection];
-    v16 = [v15 docInfos];
-    v17 = [v16 count];
+    documentInfoCollection3 = [(ICDocCamViewController *)self documentInfoCollection];
+    docInfos2 = [documentInfoCollection3 docInfos];
+    v17 = [docInfos2 count];
 
     if (v17 == 1)
     {
@@ -6960,9 +6960,9 @@ LABEL_11:
     v9 = [DCLocalization localizedStringForKey:v18 value:v18 table:@"Localizable"];
     v21 = MEMORY[0x277CCACA8];
     v22 = [DCLocalization localizedStringForKey:@"DISCARD_%lu_SCANNED_IMAGES_ALERT_MESSAGE" value:@"DISCARD_%lu_SCANNED_IMAGES_ALERT_MESSAGE" table:@"Localizable"];
-    v23 = [(ICDocCamViewController *)self documentInfoCollection];
-    v24 = [v23 docInfos];
-    v25 = [v21 localizedStringWithFormat:v22, objc_msgSend(v24, "count")];
+    documentInfoCollection4 = [(ICDocCamViewController *)self documentInfoCollection];
+    docInfos3 = [documentInfoCollection4 docInfos];
+    v25 = [v21 localizedStringWithFormat:v22, objc_msgSend(docInfos3, "count")];
 
     v26 = [MEMORY[0x277D75110] alertControllerWithTitle:v9 message:v25 preferredStyle:1];
     v27 = [MEMORY[0x277D755B8] systemImageNamed:@"exclamationmark.triangle"];
@@ -6993,14 +6993,14 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v19 = [(ICDocCamViewController *)self cameraUnavailableScrim];
-  [v19 setHidden:1];
+  cameraUnavailableScrim = [(ICDocCamViewController *)self cameraUnavailableScrim];
+  [cameraUnavailableScrim setHidden:1];
 
-  v20 = [(ICDocCamViewController *)self delegate];
-  [v20 documentCameraControllerDidCancel:self];
+  delegate = [(ICDocCamViewController *)self delegate];
+  [delegate documentCameraControllerDidCancel:self];
 
-  v34 = [(ICDocCamViewController *)self processRequestsBlocker];
-  [v34 removeBlockerOfType:@"CancelActionBlocker"];
+  processRequestsBlocker2 = [(ICDocCamViewController *)self processRequestsBlocker];
+  [processRequestsBlocker2 removeBlockerOfType:@"CancelActionBlocker"];
 }
 
 void __39__ICDocCamViewController_cancelAction___block_invoke(uint64_t a1)
@@ -7052,43 +7052,43 @@ void __39__ICDocCamViewController_cancelAction___block_invoke_5(uint64_t a1)
 
 - (void)singleTap
 {
-  v3 = [(ICDocCamViewController *)self flashAndFilterUISemaphore];
-  v4 = dispatch_semaphore_wait(v3, 0);
+  flashAndFilterUISemaphore = [(ICDocCamViewController *)self flashAndFilterUISemaphore];
+  v4 = dispatch_semaphore_wait(flashAndFilterUISemaphore, 0);
 
   if (!v4)
   {
     [(ICDocCamViewController *)self dismissFilterAndFlashUI];
-    v5 = [(ICDocCamViewController *)self flashAndFilterUISemaphore];
-    dispatch_semaphore_signal(v5);
+    flashAndFilterUISemaphore2 = [(ICDocCamViewController *)self flashAndFilterUISemaphore];
+    dispatch_semaphore_signal(flashAndFilterUISemaphore2);
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(ICDocCamViewController *)self flashAndFilterUISemaphore];
-  v6 = dispatch_semaphore_wait(v5, 0);
+  beginCopy = begin;
+  flashAndFilterUISemaphore = [(ICDocCamViewController *)self flashAndFilterUISemaphore];
+  v6 = dispatch_semaphore_wait(flashAndFilterUISemaphore, 0);
 
   if (!v6)
   {
-    v8 = [(ICDocCamViewController *)self singleTapGestureRecognizer];
+    singleTapGestureRecognizer = [(ICDocCamViewController *)self singleTapGestureRecognizer];
 
-    if (v8 != v4)
+    if (singleTapGestureRecognizer != beginCopy)
     {
-      LOBYTE(v7) = 1;
+      LOBYTE(flashSettingUIShowing) = 1;
 LABEL_12:
-      v19 = [(ICDocCamViewController *)self flashAndFilterUISemaphore];
-      dispatch_semaphore_signal(v19);
+      flashAndFilterUISemaphore2 = [(ICDocCamViewController *)self flashAndFilterUISemaphore];
+      dispatch_semaphore_signal(flashAndFilterUISemaphore2);
 
       goto LABEL_13;
     }
 
-    v9 = [(ICDocCamViewController *)self filterViewContainer];
-    if ([v9 isHidden])
+    filterViewContainer = [(ICDocCamViewController *)self filterViewContainer];
+    if ([filterViewContainer isHidden])
     {
-      v7 = [(ICDocCamViewController *)self flashSettingUIShowing];
+      flashSettingUIShowing = [(ICDocCamViewController *)self flashSettingUIShowing];
 
-      if (!v7)
+      if (!flashSettingUIShowing)
       {
         goto LABEL_12;
       }
@@ -7098,158 +7098,158 @@ LABEL_12:
     {
     }
 
-    v10 = [(ICDocCamViewController *)self view];
-    [v4 locationInView:v10];
+    view = [(ICDocCamViewController *)self view];
+    [beginCopy locationInView:view];
     v12 = v11;
     v14 = v13;
 
-    v15 = [(ICDocCamViewController *)self view];
-    v16 = [v15 hitTest:0 withEvent:{v12, v14}];
+    view2 = [(ICDocCamViewController *)self view];
+    v16 = [view2 hitTest:0 withEvent:{v12, v14}];
 
-    v17 = [(ICDocCamViewController *)self thumbnailContainerView];
-    v18 = [v16 isDescendantOfView:v17];
+    thumbnailContainerView = [(ICDocCamViewController *)self thumbnailContainerView];
+    v18 = [v16 isDescendantOfView:thumbnailContainerView];
 
     if (v18)
     {
       [(ICDocCamViewController *)self dismissFilterAndFlashUI];
     }
 
-    LOBYTE(v7) = v18 ^ 1;
+    LOBYTE(flashSettingUIShowing) = v18 ^ 1;
 
     goto LABEL_12;
   }
 
-  LOBYTE(v7) = 0;
+  LOBYTE(flashSettingUIShowing) = 0;
 LABEL_13:
 
-  return v7;
+  return flashSettingUIShowing;
 }
 
-- (void)shutterButtonAction:(id)a3
+- (void)shutterButtonAction:(id)action
 {
-  v4 = [(ICDocCamViewController *)self flashAndFilterUISemaphore];
-  v5 = dispatch_semaphore_wait(v4, 0);
+  flashAndFilterUISemaphore = [(ICDocCamViewController *)self flashAndFilterUISemaphore];
+  v5 = dispatch_semaphore_wait(flashAndFilterUISemaphore, 0);
 
   if (!v5)
   {
     [(ICDocCamViewController *)self dismissFilterAndFlashUI];
-    v6 = [(ICDocCamViewController *)self overlayView];
-    v7 = [v6 documentQuad];
-    [(ICDocCamViewController *)self setBackupQuad:v7];
+    overlayView = [(ICDocCamViewController *)self overlayView];
+    documentQuad = [overlayView documentQuad];
+    [(ICDocCamViewController *)self setBackupQuad:documentQuad];
 
     [(ICDocCamViewController *)self snapStillImageWithMode:2];
-    v8 = [(ICDocCamViewController *)self flashAndFilterUISemaphore];
-    dispatch_semaphore_signal(v8);
+    flashAndFilterUISemaphore2 = [(ICDocCamViewController *)self flashAndFilterUISemaphore];
+    dispatch_semaphore_signal(flashAndFilterUISemaphore2);
   }
 }
 
-- (void)saveAction:(id)a3
+- (void)saveAction:(id)action
 {
   for (i = 0; ; ++i)
   {
-    v26 = [(ICDocCamViewController *)self documentInfoCollection];
-    v5 = [v26 docInfos];
-    v6 = [v5 count];
+    documentInfoCollection = [(ICDocCamViewController *)self documentInfoCollection];
+    docInfos = [documentInfoCollection docInfos];
+    v6 = [docInfos count];
 
     if (v6 <= i)
     {
       break;
     }
 
-    v27 = [(ICDocCamViewController *)self documentInfoCollection];
-    v7 = [v27 docInfos];
-    v8 = [v7 objectAtIndexedSubscript:i];
-    v9 = [v8 croppedAndFilteredImageUUID];
+    documentInfoCollection2 = [(ICDocCamViewController *)self documentInfoCollection];
+    docInfos2 = [documentInfoCollection2 docInfos];
+    v8 = [docInfos2 objectAtIndexedSubscript:i];
+    croppedAndFilteredImageUUID = [v8 croppedAndFilteredImageUUID];
 
-    if (!v9)
+    if (!croppedAndFilteredImageUUID)
     {
       return;
     }
   }
 
-  v28 = [(ICDocCamViewController *)self processRequestsBlocker];
-  v10 = [v28 blockerSet];
-  v11 = [v10 containsObject:@"SaveActionBlocker"];
+  processRequestsBlocker = [(ICDocCamViewController *)self processRequestsBlocker];
+  blockerSet = [processRequestsBlocker blockerSet];
+  v11 = [blockerSet containsObject:@"SaveActionBlocker"];
 
   if ((v11 & 1) == 0)
   {
-    v29 = [(ICDocCamViewController *)self processRequestsBlocker];
-    [v29 addBlockerOfType:@"SaveActionBlocker" clearRectangles:1 clearQueue:1];
+    processRequestsBlocker2 = [(ICDocCamViewController *)self processRequestsBlocker];
+    [processRequestsBlocker2 addBlockerOfType:@"SaveActionBlocker" clearRectangles:1 clearQueue:1];
 
     [(ICDocCamViewController *)self dismissFilterAndFlashUI];
-    v30 = [(ICDocCamViewController *)self documentInfoCollection];
-    v12 = [v30 docInfos];
-    v13 = [v12 count];
+    documentInfoCollection3 = [(ICDocCamViewController *)self documentInfoCollection];
+    docInfos3 = [documentInfoCollection3 docInfos];
+    v13 = [docInfos3 count];
 
     if (v13)
     {
-      v31 = [(ICDocCamViewController *)self delegate];
+      delegate = [(ICDocCamViewController *)self delegate];
       v14 = objc_opt_respondsToSelector();
 
       if (v14)
       {
-        v32 = [(ICDocCamViewController *)self delegate];
-        v15 = [(ICDocCamViewController *)self documentInfoCollection];
-        v16 = [(ICDocCamViewController *)self imageCache];
-        [v32 documentCameraController:self didFinishWithDocInfoCollection:v15 imageCache:v16 warnUser:1];
+        delegate2 = [(ICDocCamViewController *)self delegate];
+        documentInfoCollection4 = [(ICDocCamViewController *)self documentInfoCollection];
+        imageCache = [(ICDocCamViewController *)self imageCache];
+        [delegate2 documentCameraController:self didFinishWithDocInfoCollection:documentInfoCollection4 imageCache:imageCache warnUser:1];
       }
 
       else
       {
-        v33 = [(ICDocCamViewController *)self imageCache];
-        v17 = [(ICDocCamViewController *)self documentInfoCollection];
-        v18 = [v17 docInfos];
-        v19 = [v18 objectAtIndexedSubscript:0];
-        v20 = [v19 croppedAndFilteredImageUUID];
-        v21 = [v33 getImage:v20];
+        imageCache2 = [(ICDocCamViewController *)self imageCache];
+        documentInfoCollection5 = [(ICDocCamViewController *)self documentInfoCollection];
+        docInfos4 = [documentInfoCollection5 docInfos];
+        v19 = [docInfos4 objectAtIndexedSubscript:0];
+        croppedAndFilteredImageUUID2 = [v19 croppedAndFilteredImageUUID];
+        v21 = [imageCache2 getImage:croppedAndFilteredImageUUID2];
 
-        v22 = [(ICDocCamViewController *)self documentInfoCollection];
-        v23 = [v22 docInfos];
-        v24 = [v23 objectAtIndexedSubscript:0];
-        v25 = [v24 metaData];
-        v15 = [(ICDocCamViewController *)self createNSDataFrom:v21 metaData:v25];
+        documentInfoCollection6 = [(ICDocCamViewController *)self documentInfoCollection];
+        docInfos5 = [documentInfoCollection6 docInfos];
+        v24 = [docInfos5 objectAtIndexedSubscript:0];
+        metaData = [v24 metaData];
+        documentInfoCollection4 = [(ICDocCamViewController *)self createNSDataFrom:v21 metaData:metaData];
 
-        [(ICDocCamViewController *)self didFinishWithImage:v15];
-        v32 = v21;
+        [(ICDocCamViewController *)self didFinishWithImage:documentInfoCollection4];
+        delegate2 = v21;
       }
     }
   }
 }
 
-- (void)enableShutter:(BOOL)a3
+- (void)enableShutter:(BOOL)shutter
 {
-  v3 = a3;
-  if (a3)
+  shutterCopy = shutter;
+  if (shutter)
   {
-    v5 = [(ICDocCamViewController *)self shutterButton];
-    [v5 setPseudoDisabled:0];
+    shutterButton = [(ICDocCamViewController *)self shutterButton];
+    [shutterButton setPseudoDisabled:0];
   }
 
-  v6 = [(ICDocCamViewController *)self shutterButton];
-  [v6 setUserInteractionEnabled:v3];
+  shutterButton2 = [(ICDocCamViewController *)self shutterButton];
+  [shutterButton2 setUserInteractionEnabled:shutterCopy];
 
-  v7 = [(ICDocCamViewController *)self captureEventInteraction];
-  [v7 setEnabled:v3];
+  captureEventInteraction = [(ICDocCamViewController *)self captureEventInteraction];
+  [captureEventInteraction setEnabled:shutterCopy];
 
   if ([objc_opt_class() isLiquidGlassEnabledForCapture])
   {
-    v8 = [(ICDocCamViewController *)self liquidGlassEvolutionControlsOverlayViewController];
-    [v8 setCaptureButtonEnabled:v3];
+    liquidGlassEvolutionControlsOverlayViewController = [(ICDocCamViewController *)self liquidGlassEvolutionControlsOverlayViewController];
+    [liquidGlassEvolutionControlsOverlayViewController setCaptureButtonEnabled:shutterCopy];
   }
 }
 
 - (void)dismissFilterUI
 {
-  v3 = [(ICDocCamViewController *)self processRequestsBlocker];
-  [v3 removeBlockerOfType:@"FilterSettingBlocker"];
+  processRequestsBlocker = [(ICDocCamViewController *)self processRequestsBlocker];
+  [processRequestsBlocker removeBlockerOfType:@"FilterSettingBlocker"];
 
   [(ICDocCamViewController *)self hideFilterSettingUI];
 }
 
 - (void)dismissFlashUI
 {
-  v3 = [(ICDocCamViewController *)self processRequestsBlocker];
-  [v3 removeBlockerOfType:@"FlashSettingBlocker"];
+  processRequestsBlocker = [(ICDocCamViewController *)self processRequestsBlocker];
+  [processRequestsBlocker removeBlockerOfType:@"FlashSettingBlocker"];
 
   [(ICDocCamViewController *)self hideFlashSettingUI];
 }
@@ -7261,25 +7261,25 @@ LABEL_13:
   [(ICDocCamViewController *)self dismissFlashUI];
 }
 
-- (void)hideShutter:(BOOL)a3
+- (void)hideShutter:(BOOL)shutter
 {
-  v3 = a3;
-  v5 = !a3;
-  v6 = [(ICDocCamViewController *)self shutterButton];
-  [v6 setAlpha:v5];
+  shutterCopy = shutter;
+  v5 = !shutter;
+  shutterButton = [(ICDocCamViewController *)self shutterButton];
+  [shutterButton setAlpha:v5];
 
-  v7 = [(ICDocCamViewController *)self captureEventInteraction];
-  [v7 setEnabled:v3];
+  captureEventInteraction = [(ICDocCamViewController *)self captureEventInteraction];
+  [captureEventInteraction setEnabled:shutterCopy];
 }
 
 - (void)hideFlashSettingUI
 {
   if ([(ICDocCamViewController *)self flashSettingUIShowing])
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v4)
+    if (userInterfaceIdiom)
     {
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
@@ -7297,17 +7297,17 @@ LABEL_13:
 
     else
     {
-      v5 = [(ICDocCamViewController *)self topToolbarForIPhone];
-      [v5 setHidden:0];
+      topToolbarForIPhone = [(ICDocCamViewController *)self topToolbarForIPhone];
+      [topToolbarForIPhone setHidden:0];
 
-      v6 = [(ICDocCamViewController *)self topToolbarForIPhone];
-      [v6 setAlpha:0.0];
+      topToolbarForIPhone2 = [(ICDocCamViewController *)self topToolbarForIPhone];
+      [topToolbarForIPhone2 setAlpha:0.0];
 
-      v7 = [(ICDocCamViewController *)self flashSettingView];
-      [v7 setAlpha:1.0];
+      flashSettingView = [(ICDocCamViewController *)self flashSettingView];
+      [flashSettingView setAlpha:1.0];
 
-      v8 = [(ICDocCamViewController *)self flashSettingView];
-      [v8 setHidden:0];
+      flashSettingView2 = [(ICDocCamViewController *)self flashSettingView];
+      [flashSettingView2 setHidden:0];
 
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
@@ -7364,7 +7364,7 @@ uint64_t __44__ICDocCamViewController_hideFlashSettingUI__block_invoke_4(uint64_
   return [v2 updateAccessibilityFocusForHidingFlashSettingsUI];
 }
 
-- (void)flashButtonCancelUI:(id)a3
+- (void)flashButtonCancelUI:(id)i
 {
   [(ICDocCamViewController *)self hideFlashSettingUI];
   v4 = dispatch_time(0, 1000000000);
@@ -7382,153 +7382,153 @@ void __46__ICDocCamViewController_flashButtonCancelUI___block_invoke(uint64_t a1
   [v1 removeBlockerOfType:@"FlashSettingBlocker"];
 }
 
-- (void)changeFlashAction:(id)a3
+- (void)changeFlashAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICDocCamViewController *)self flashSettingViewOffButton];
+  actionCopy = action;
+  flashSettingViewOffButton = [(ICDocCamViewController *)self flashSettingViewOffButton];
 
-  if (v5 == v4)
+  if (flashSettingViewOffButton == actionCopy)
   {
     [(ICDocCamViewController *)self setFlashMode:0];
-    v8 = [(ICDocCamViewController *)self flashButtonImage];
-    v9 = [(ICDocCamViewController *)self flashButton];
-    [v9 setImage:v8 forState:0];
+    flashButtonImage = [(ICDocCamViewController *)self flashButtonImage];
+    flashButton = [(ICDocCamViewController *)self flashButton];
+    [flashButton setImage:flashButtonImage forState:0];
 
-    v10 = [(ICDocCamViewController *)self flashButton];
-    v11 = [MEMORY[0x277D75348] whiteColor];
-    [v10 setTintColor:v11];
+    flashButton2 = [(ICDocCamViewController *)self flashButton];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [flashButton2 setTintColor:whiteColor];
 
-    v12 = [(ICDocCamViewController *)self flashButtonForIPhone];
-    [v12 setImage:v8 forState:0];
+    flashButtonForIPhone = [(ICDocCamViewController *)self flashButtonForIPhone];
+    [flashButtonForIPhone setImage:flashButtonImage forState:0];
 
-    v13 = [(ICDocCamViewController *)self flashButtonForIPhone];
-    v14 = [MEMORY[0x277D75348] whiteColor];
-    [v13 setTintColor:v14];
+    flashButtonForIPhone2 = [(ICDocCamViewController *)self flashButtonForIPhone];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [flashButtonForIPhone2 setTintColor:whiteColor2];
 
-    v15 = [(ICDocCamViewController *)self flashButtonForIPhone];
-    [v15 setLargeContentImage:v8];
+    flashButtonForIPhone3 = [(ICDocCamViewController *)self flashButtonForIPhone];
+    [flashButtonForIPhone3 setLargeContentImage:flashButtonImage];
 
-    v16 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
-    [v16 setImage:v8 forState:0];
+    flashSettingViewFlashIcon = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
+    [flashSettingViewFlashIcon setImage:flashButtonImage forState:0];
 
-    v17 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
-    v18 = [MEMORY[0x277D75348] whiteColor];
-    [v17 setTintColor:v18];
+    flashSettingViewFlashIcon2 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
+    whiteColor3 = [MEMORY[0x277D75348] whiteColor];
+    [flashSettingViewFlashIcon2 setTintColor:whiteColor3];
   }
 
   else
   {
-    v6 = [(ICDocCamViewController *)self flashSettingViewOnButton];
+    flashSettingViewOnButton = [(ICDocCamViewController *)self flashSettingViewOnButton];
 
-    if (v6 == v4)
+    if (flashSettingViewOnButton == actionCopy)
     {
       [(ICDocCamViewController *)self setFlashMode:1];
-      v8 = [(ICDocCamViewController *)self flashButtonImage];
-      v19 = [(ICDocCamViewController *)self flashButton];
-      [v19 setImage:v8 forState:0];
+      flashButtonImage = [(ICDocCamViewController *)self flashButtonImage];
+      flashButton3 = [(ICDocCamViewController *)self flashButton];
+      [flashButton3 setImage:flashButtonImage forState:0];
 
-      v20 = [(ICDocCamViewController *)self flashButton];
-      v21 = [(ICDocCamViewController *)self cameraHighlightColor];
-      [v20 setTintColor:v21];
+      flashButton4 = [(ICDocCamViewController *)self flashButton];
+      cameraHighlightColor = [(ICDocCamViewController *)self cameraHighlightColor];
+      [flashButton4 setTintColor:cameraHighlightColor];
 
-      v22 = [(ICDocCamViewController *)self flashButtonForIPhone];
-      [v22 setImage:v8 forState:0];
+      flashButtonForIPhone4 = [(ICDocCamViewController *)self flashButtonForIPhone];
+      [flashButtonForIPhone4 setImage:flashButtonImage forState:0];
 
-      v23 = [(ICDocCamViewController *)self flashButtonForIPhone];
-      v24 = [(ICDocCamViewController *)self cameraHighlightColor];
-      [v23 setTintColor:v24];
+      flashButtonForIPhone5 = [(ICDocCamViewController *)self flashButtonForIPhone];
+      cameraHighlightColor2 = [(ICDocCamViewController *)self cameraHighlightColor];
+      [flashButtonForIPhone5 setTintColor:cameraHighlightColor2];
 
-      v25 = [(ICDocCamViewController *)self flashButtonForIPhone];
-      [v25 setLargeContentImage:v8];
+      flashButtonForIPhone6 = [(ICDocCamViewController *)self flashButtonForIPhone];
+      [flashButtonForIPhone6 setLargeContentImage:flashButtonImage];
 
-      v26 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
-      [v26 setImage:v8 forState:0];
+      flashSettingViewFlashIcon3 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
+      [flashSettingViewFlashIcon3 setImage:flashButtonImage forState:0];
 
-      v17 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
-      v18 = [(ICDocCamViewController *)self cameraHighlightColor];
-      [v17 setTintColor:v18];
+      flashSettingViewFlashIcon2 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
+      whiteColor3 = [(ICDocCamViewController *)self cameraHighlightColor];
+      [flashSettingViewFlashIcon2 setTintColor:whiteColor3];
     }
 
     else
     {
-      v7 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
+      flashSettingViewAutoButton = [(ICDocCamViewController *)self flashSettingViewAutoButton];
 
-      if (v7 != v4)
+      if (flashSettingViewAutoButton != actionCopy)
       {
-        v8 = 0;
+        flashButtonImage = 0;
         goto LABEL_9;
       }
 
       [(ICDocCamViewController *)self setFlashMode:2];
-      v8 = [(ICDocCamViewController *)self flashButtonImage];
-      v27 = [(ICDocCamViewController *)self flashButton];
-      [v27 setImage:v8 forState:0];
+      flashButtonImage = [(ICDocCamViewController *)self flashButtonImage];
+      flashButton5 = [(ICDocCamViewController *)self flashButton];
+      [flashButton5 setImage:flashButtonImage forState:0];
 
-      v28 = [(ICDocCamViewController *)self flashButton];
-      v29 = [MEMORY[0x277D75348] whiteColor];
-      [v28 setTintColor:v29];
+      flashButton6 = [(ICDocCamViewController *)self flashButton];
+      whiteColor4 = [MEMORY[0x277D75348] whiteColor];
+      [flashButton6 setTintColor:whiteColor4];
 
-      v30 = [(ICDocCamViewController *)self flashButtonForIPhone];
-      [v30 setImage:v8 forState:0];
+      flashButtonForIPhone7 = [(ICDocCamViewController *)self flashButtonForIPhone];
+      [flashButtonForIPhone7 setImage:flashButtonImage forState:0];
 
-      v31 = [(ICDocCamViewController *)self flashButtonForIPhone];
-      v32 = [MEMORY[0x277D75348] whiteColor];
-      [v31 setTintColor:v32];
+      flashButtonForIPhone8 = [(ICDocCamViewController *)self flashButtonForIPhone];
+      whiteColor5 = [MEMORY[0x277D75348] whiteColor];
+      [flashButtonForIPhone8 setTintColor:whiteColor5];
 
-      v33 = [(ICDocCamViewController *)self flashButtonForIPhone];
-      [v33 setLargeContentImage:v8];
+      flashButtonForIPhone9 = [(ICDocCamViewController *)self flashButtonForIPhone];
+      [flashButtonForIPhone9 setLargeContentImage:flashButtonImage];
 
-      v34 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
-      [v34 setImage:v8 forState:0];
+      flashSettingViewFlashIcon4 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
+      [flashSettingViewFlashIcon4 setImage:flashButtonImage forState:0];
 
-      v17 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
-      v18 = [MEMORY[0x277D75348] whiteColor];
-      [v17 setTintColor:v18];
+      flashSettingViewFlashIcon2 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
+      whiteColor3 = [MEMORY[0x277D75348] whiteColor];
+      [flashSettingViewFlashIcon2 setTintColor:whiteColor3];
     }
   }
 
 LABEL_9:
-  v35 = [(ICDocCamViewController *)self flashMode];
-  if (v35)
+  flashMode = [(ICDocCamViewController *)self flashMode];
+  if (flashMode)
   {
-    if (v35 == 1)
+    if (flashMode == 1)
     {
-      v36 = [(ICDocCamViewController *)self flashSettingViewOnButton];
+      flashSettingViewOnButton2 = [(ICDocCamViewController *)self flashSettingViewOnButton];
     }
 
     else
     {
-      if (v35 != 2)
+      if (flashMode != 2)
       {
         v37 = 0;
         goto LABEL_17;
       }
 
-      v36 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
+      flashSettingViewOnButton2 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
     }
   }
 
   else
   {
-    v36 = [(ICDocCamViewController *)self flashSettingViewOffButton];
+    flashSettingViewOnButton2 = [(ICDocCamViewController *)self flashSettingViewOffButton];
   }
 
-  v37 = v36;
+  v37 = flashSettingViewOnButton2;
 LABEL_17:
-  v38 = [MEMORY[0x277D75348] whiteColor];
-  v39 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
-  [v39 setTintColor:v38];
+  whiteColor6 = [MEMORY[0x277D75348] whiteColor];
+  flashSettingViewAutoButton2 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
+  [flashSettingViewAutoButton2 setTintColor:whiteColor6];
 
-  v40 = [MEMORY[0x277D75348] whiteColor];
-  v41 = [(ICDocCamViewController *)self flashSettingViewOnButton];
-  [v41 setTintColor:v40];
+  whiteColor7 = [MEMORY[0x277D75348] whiteColor];
+  flashSettingViewOnButton3 = [(ICDocCamViewController *)self flashSettingViewOnButton];
+  [flashSettingViewOnButton3 setTintColor:whiteColor7];
 
-  v42 = [MEMORY[0x277D75348] whiteColor];
-  v43 = [(ICDocCamViewController *)self flashSettingViewOffButton];
-  [v43 setTintColor:v42];
+  whiteColor8 = [MEMORY[0x277D75348] whiteColor];
+  flashSettingViewOffButton2 = [(ICDocCamViewController *)self flashSettingViewOffButton];
+  [flashSettingViewOffButton2 setTintColor:whiteColor8];
 
-  v44 = [(ICDocCamViewController *)self cameraHighlightColor];
-  [v37 setTintColor:v44];
+  cameraHighlightColor3 = [(ICDocCamViewController *)self cameraHighlightColor];
+  [v37 setTintColor:cameraHighlightColor3];
 
   [(ICDocCamViewController *)self hideFlashSettingUI];
   v45 = dispatch_time(0, 1000000000);
@@ -7547,73 +7547,73 @@ void __44__ICDocCamViewController_changeFlashAction___block_invoke(uint64_t a1)
   [v1 removeBlockerOfType:@"FlashSettingBlocker"];
 }
 
-- (void)flashButtonAction:(id)a3
+- (void)flashButtonAction:(id)action
 {
-  v4 = [(ICDocCamViewController *)self flashAndFilterUISemaphore];
-  v5 = dispatch_semaphore_wait(v4, 0);
+  flashAndFilterUISemaphore = [(ICDocCamViewController *)self flashAndFilterUISemaphore];
+  v5 = dispatch_semaphore_wait(flashAndFilterUISemaphore, 0);
 
   if (!v5)
   {
-    v6 = [(ICDocCamViewController *)self processRequestsBlocker];
-    [v6 addBlockerOfType:@"FlashSettingBlocker" clearRectangles:1 clearQueue:1];
+    processRequestsBlocker = [(ICDocCamViewController *)self processRequestsBlocker];
+    [processRequestsBlocker addBlockerOfType:@"FlashSettingBlocker" clearRectangles:1 clearQueue:1];
 
     [(ICDocCamViewController *)self dismissFilterUI];
-    v7 = [(ICDocCamViewController *)self userPromptView];
-    [v7 setHidden:1];
+    userPromptView = [(ICDocCamViewController *)self userPromptView];
+    [userPromptView setHidden:1];
 
-    v8 = [MEMORY[0x277D75418] currentDevice];
-    v9 = [v8 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v9)
+    if (userInterfaceIdiom)
     {
-      v10 = [(ICDocCamViewController *)self flashMode];
-      if (v10)
+      flashMode = [(ICDocCamViewController *)self flashMode];
+      if (flashMode)
       {
-        if (v10 == 1)
+        if (flashMode == 1)
         {
-          v11 = [(ICDocCamViewController *)self flashSettingViewOnButton];
+          flashSettingViewOnButton = [(ICDocCamViewController *)self flashSettingViewOnButton];
         }
 
         else
         {
-          if (v10 != 2)
+          if (flashMode != 2)
           {
             v18 = 0;
             goto LABEL_15;
           }
 
-          v11 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
+          flashSettingViewOnButton = [(ICDocCamViewController *)self flashSettingViewAutoButton];
         }
       }
 
       else
       {
-        v11 = [(ICDocCamViewController *)self flashSettingViewOffButton];
+        flashSettingViewOnButton = [(ICDocCamViewController *)self flashSettingViewOffButton];
       }
 
-      v18 = v11;
+      v18 = flashSettingViewOnButton;
 LABEL_15:
-      v19 = [MEMORY[0x277D75348] whiteColor];
-      v20 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
-      [v20 setTintColor:v19];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      flashSettingViewAutoButton = [(ICDocCamViewController *)self flashSettingViewAutoButton];
+      [flashSettingViewAutoButton setTintColor:whiteColor];
 
-      v21 = [MEMORY[0x277D75348] whiteColor];
-      v22 = [(ICDocCamViewController *)self flashSettingViewOnButton];
-      [v22 setTintColor:v21];
+      whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+      flashSettingViewOnButton2 = [(ICDocCamViewController *)self flashSettingViewOnButton];
+      [flashSettingViewOnButton2 setTintColor:whiteColor2];
 
-      v23 = [MEMORY[0x277D75348] whiteColor];
-      v24 = [(ICDocCamViewController *)self flashSettingViewOffButton];
-      [v24 setTintColor:v23];
+      whiteColor3 = [MEMORY[0x277D75348] whiteColor];
+      flashSettingViewOffButton = [(ICDocCamViewController *)self flashSettingViewOffButton];
+      [flashSettingViewOffButton setTintColor:whiteColor3];
 
-      v25 = [(ICDocCamViewController *)self cameraHighlightColor];
-      [v18 setTintColor:v25];
+      cameraHighlightColor = [(ICDocCamViewController *)self cameraHighlightColor];
+      [v18 setTintColor:cameraHighlightColor];
 
-      v26 = [(ICDocCamViewController *)self view];
-      [v26 layoutIfNeeded];
+      view = [(ICDocCamViewController *)self view];
+      [view layoutIfNeeded];
 
-      v27 = [(ICDocCamViewController *)self flashSettingUIShowing];
+      flashSettingUIShowing = [(ICDocCamViewController *)self flashSettingUIShowing];
       v28 = 0;
-      if (!v27)
+      if (!flashSettingUIShowing)
       {
         [(ICDocCamViewController *)self flashSettingViewWidthForIPad];
       }
@@ -7633,72 +7633,72 @@ LABEL_15:
       goto LABEL_23;
     }
 
-    v12 = [(ICDocCamViewController *)self flashButtonImage];
-    v13 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
-    [v13 setImage:v12 forState:0];
+    flashButtonImage = [(ICDocCamViewController *)self flashButtonImage];
+    flashSettingViewFlashIcon = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
+    [flashSettingViewFlashIcon setImage:flashButtonImage forState:0];
 
-    v14 = [(ICDocCamViewController *)self flashMode];
-    if (v14)
+    flashMode2 = [(ICDocCamViewController *)self flashMode];
+    if (flashMode2)
     {
-      if (v14 == 1)
+      if (flashMode2 == 1)
       {
-        v15 = [(ICDocCamViewController *)self flashSettingViewOnButton];
-        v16 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
-        v17 = [(ICDocCamViewController *)self cameraHighlightColor];
-        [v16 setTintColor:v17];
+        flashSettingViewOnButton3 = [(ICDocCamViewController *)self flashSettingViewOnButton];
+        flashSettingViewFlashIcon2 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
+        cameraHighlightColor2 = [(ICDocCamViewController *)self cameraHighlightColor];
+        [flashSettingViewFlashIcon2 setTintColor:cameraHighlightColor2];
       }
 
       else
       {
-        if (v14 != 2)
+        if (flashMode2 != 2)
         {
           v18 = 0;
           goto LABEL_22;
         }
 
-        v15 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
-        v16 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
-        v17 = [(ICDocCamViewController *)self cameraHighlightColor];
-        [v16 setTintColor:v17];
+        flashSettingViewOnButton3 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
+        flashSettingViewFlashIcon2 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
+        cameraHighlightColor2 = [(ICDocCamViewController *)self cameraHighlightColor];
+        [flashSettingViewFlashIcon2 setTintColor:cameraHighlightColor2];
       }
     }
 
     else
     {
-      v15 = [(ICDocCamViewController *)self flashSettingViewOffButton];
-      v16 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
-      v17 = [MEMORY[0x277D75348] whiteColor];
-      [v16 setTintColor:v17];
+      flashSettingViewOnButton3 = [(ICDocCamViewController *)self flashSettingViewOffButton];
+      flashSettingViewFlashIcon2 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
+      cameraHighlightColor2 = [MEMORY[0x277D75348] whiteColor];
+      [flashSettingViewFlashIcon2 setTintColor:cameraHighlightColor2];
     }
 
-    v18 = v15;
+    v18 = flashSettingViewOnButton3;
 LABEL_22:
-    v29 = [MEMORY[0x277D75348] whiteColor];
-    v30 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
-    [v30 setTintColor:v29];
+    whiteColor4 = [MEMORY[0x277D75348] whiteColor];
+    flashSettingViewAutoButton2 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
+    [flashSettingViewAutoButton2 setTintColor:whiteColor4];
 
-    v31 = [MEMORY[0x277D75348] whiteColor];
-    v32 = [(ICDocCamViewController *)self flashSettingViewOnButton];
-    [v32 setTintColor:v31];
+    whiteColor5 = [MEMORY[0x277D75348] whiteColor];
+    flashSettingViewOnButton4 = [(ICDocCamViewController *)self flashSettingViewOnButton];
+    [flashSettingViewOnButton4 setTintColor:whiteColor5];
 
-    v33 = [MEMORY[0x277D75348] whiteColor];
-    v34 = [(ICDocCamViewController *)self flashSettingViewOffButton];
-    [v34 setTintColor:v33];
+    whiteColor6 = [MEMORY[0x277D75348] whiteColor];
+    flashSettingViewOffButton2 = [(ICDocCamViewController *)self flashSettingViewOffButton];
+    [flashSettingViewOffButton2 setTintColor:whiteColor6];
 
-    v35 = [(ICDocCamViewController *)self cameraHighlightColor];
-    [v18 setTintColor:v35];
+    cameraHighlightColor3 = [(ICDocCamViewController *)self cameraHighlightColor];
+    [v18 setTintColor:cameraHighlightColor3];
 
-    v36 = [(ICDocCamViewController *)self flashSettingView];
-    [v36 setAlpha:0.0];
+    flashSettingView = [(ICDocCamViewController *)self flashSettingView];
+    [flashSettingView setAlpha:0.0];
 
-    v37 = [(ICDocCamViewController *)self flashSettingView];
-    [v37 setHidden:0];
+    flashSettingView2 = [(ICDocCamViewController *)self flashSettingView];
+    [flashSettingView2 setHidden:0];
 
-    v38 = [(ICDocCamViewController *)self topToolbarForIPhone];
-    [v38 setAlpha:1.0];
+    topToolbarForIPhone = [(ICDocCamViewController *)self topToolbarForIPhone];
+    [topToolbarForIPhone setAlpha:1.0];
 
-    v39 = [(ICDocCamViewController *)self topToolbarForIPhone];
-    [v39 setHidden:0];
+    topToolbarForIPhone2 = [(ICDocCamViewController *)self topToolbarForIPhone];
+    [topToolbarForIPhone2 setHidden:0];
 
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
@@ -7776,10 +7776,10 @@ void __44__ICDocCamViewController_flashButtonAction___block_invoke_4(uint64_t a1
   UIAccessibilityPostNotification(*MEMORY[0x277D76488], v6);
 }
 
-- (void)image:(id)a3 didFinishSavingWithError:(id)a4 contextInfo:(void *)a5
+- (void)image:(id)image didFinishSavingWithError:(id)error contextInfo:(void *)info
 {
-  v5 = a4;
-  if (v5)
+  errorCopy = error;
+  if (errorCopy)
   {
     v6 = os_log_create("com.apple.documentcamera", "");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -7789,20 +7789,20 @@ void __44__ICDocCamViewController_flashButtonAction___block_invoke_4(uint64_t a1
   }
 }
 
-- (void)didFinishWithImage:(id)a3
+- (void)didFinishWithImage:(id)image
 {
-  v5 = a3;
-  v4 = [(ICDocCamViewController *)self delegate];
-  [v4 documentCameraController:self didFinishWithImage:v5];
+  imageCopy = image;
+  delegate = [(ICDocCamViewController *)self delegate];
+  [delegate documentCameraController:self didFinishWithImage:imageCopy];
 }
 
-- (BOOL)validRect:(id)a3 forImageSize:(CGSize)a4
+- (BOOL)validRect:(id)rect forImageSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = v7;
-  if (!v7 || ![v7 count])
+  height = size.height;
+  width = size.width;
+  rectCopy = rect;
+  v8 = rectCopy;
+  if (!rectCopy || ![rectCopy count])
   {
     v22 = 0;
     goto LABEL_10;
@@ -7953,27 +7953,27 @@ LABEL_10:
   return v22;
 }
 
-- (BOOL)sufficientlyLarge:(id)a3 forImageSize:(CGSize)a4
+- (BOOL)sufficientlyLarge:(id)large forImageSize:(CGSize)size
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && [v5 count])
+  largeCopy = large;
+  v6 = largeCopy;
+  if (largeCopy && [largeCopy count])
   {
-    v7 = [(ICDocCamViewController *)self videoPreviewLayer];
-    v8 = [(ICDocCamViewController *)self videoPreviewLayer];
-    [v8 frame];
+    videoPreviewLayer = [(ICDocCamViewController *)self videoPreviewLayer];
+    videoPreviewLayer2 = [(ICDocCamViewController *)self videoPreviewLayer];
+    [videoPreviewLayer2 frame];
     v10 = v9;
-    v11 = [(ICDocCamViewController *)self videoPreviewLayer];
-    [v11 frame];
-    [v7 metadataOutputRectOfInterestForRect:{0.0, 0.0, v10}];
+    videoPreviewLayer3 = [(ICDocCamViewController *)self videoPreviewLayer];
+    [videoPreviewLayer3 frame];
+    [videoPreviewLayer metadataOutputRectOfInterestForRect:{0.0, 0.0, v10}];
     v13 = v12;
     v15 = v14;
 
-    v16 = [(ICDocCamViewController *)self videoPreviewLayer];
-    v17 = [v16 connection];
-    v18 = [v17 videoOrientation];
+    videoPreviewLayer4 = [(ICDocCamViewController *)self videoPreviewLayer];
+    connection = [videoPreviewLayer4 connection];
+    videoOrientation = [connection videoOrientation];
 
-    if ((v18 - 1) >= 2)
+    if ((videoOrientation - 1) >= 2)
     {
       v19 = v15;
     }
@@ -7983,7 +7983,7 @@ LABEL_10:
       v19 = v13;
     }
 
-    if ((v18 - 1) >= 2)
+    if ((videoOrientation - 1) >= 2)
     {
       v20 = v13;
     }
@@ -8065,10 +8065,10 @@ LABEL_24:
 
   if (![(ICDocCamViewController *)self isInRetakeMode])
   {
-    v3 = [(ICDocCamViewController *)self delegate];
-    v4 = [(ICDocCamViewController *)self documentInfoCollection];
-    v5 = [v4 docInfos];
-    v6 = [v3 documentCameraController:self canAddImages:{objc_msgSend(v5, "count") + 1}];
+    delegate = [(ICDocCamViewController *)self delegate];
+    documentInfoCollection = [(ICDocCamViewController *)self documentInfoCollection];
+    docInfos = [documentInfoCollection docInfos];
+    v6 = [delegate documentCameraController:self canAddImages:{objc_msgSend(docInfos, "count") + 1}];
 
     if ((v6 & 1) == 0)
     {
@@ -8076,34 +8076,34 @@ LABEL_24:
     }
   }
 
-  v7 = [(ICDocCamViewController *)self processRequestsBlocker];
-  v8 = [v7 blocked];
+  processRequestsBlocker = [(ICDocCamViewController *)self processRequestsBlocker];
+  blocked = [processRequestsBlocker blocked];
 
-  if (v8)
+  if (blocked)
   {
     return 0;
   }
 
-  v9 = [(ICDocCamViewController *)self snapStillImageBlocker];
-  v10 = [v9 blocked];
+  snapStillImageBlocker = [(ICDocCamViewController *)self snapStillImageBlocker];
+  blocked2 = [snapStillImageBlocker blocked];
 
-  if (v10)
+  if (blocked2)
   {
     return 0;
   }
 
-  v11 = [(ICDocCamViewController *)self rectResultsQueue];
-  v12 = [v11 size];
+  rectResultsQueue = [(ICDocCamViewController *)self rectResultsQueue];
+  v12 = [rectResultsQueue size];
 
   if (!v12)
   {
-    v19 = [(ICDocCamViewController *)self overlayView];
-    [v19 clearRectangles];
+    overlayView = [(ICDocCamViewController *)self overlayView];
+    [overlayView clearRectangles];
 
     return 0;
   }
 
-  v13 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v189[0] = 0;
   v189[1] = v189;
   v189[2] = 0x2020000000;
@@ -8141,13 +8141,13 @@ LABEL_24:
   v166 = 0x3032000000;
   v167 = __Block_byref_object_copy__811;
   v168 = __Block_byref_object_dispose__812;
-  v169 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v158 = 0;
   v159 = &v158;
   v160 = 0x3032000000;
   v161 = __Block_byref_object_copy__811;
   v162 = __Block_byref_object_dispose__812;
-  v163 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __41__ICDocCamViewController_shouldAutoShoot__block_invoke;
@@ -8156,7 +8156,7 @@ LABEL_24:
   v150 = &v174;
   v151 = v189;
   v152 = &v170;
-  v14 = v13;
+  v14 = date;
   v148 = v14;
   v153 = &v179;
   v157 = 1101004800;
@@ -8164,9 +8164,9 @@ LABEL_24:
   v155 = &v164;
   v156 = &v158;
   v15 = _Block_copy(aBlock);
-  v16 = [(ICDocCamViewController *)self rectResultsQueue];
-  v17 = [(ICDocCamViewController *)self rectResultsQueue];
-  [v16 apply:v15 fromIndex:objc_msgSend(v17 toIndex:{"size") - 1, 0}];
+  rectResultsQueue2 = [(ICDocCamViewController *)self rectResultsQueue];
+  rectResultsQueue3 = [(ICDocCamViewController *)self rectResultsQueue];
+  [rectResultsQueue2 apply:v15 fromIndex:objc_msgSend(rectResultsQueue3 toIndex:{"size") - 1, 0}];
 
   if (v180[6] <= 20.0 && v180[7] <= 20.0 && (v175[3] & 1) == 0 && v171[6] >= 2.0)
   {
@@ -8596,19 +8596,19 @@ LABEL_23:
   return v10;
 }
 
-- (id)cropAndFilterImage:(id)a3 rects:(id)a4 filterType:(signed __int16)a5 constantColor:(BOOL)a6
+- (id)cropAndFilterImage:(id)image rects:(id)rects filterType:(signed __int16)type constantColor:(BOOL)color
 {
-  v40 = a5;
-  v41 = a6;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 CGImage];
-  Width = CGImageGetWidth(v10);
-  Height = CGImageGetHeight(v10);
+  typeCopy = type;
+  colorCopy = color;
+  imageCopy = image;
+  rectsCopy = rects;
+  cGImage = [imageCopy CGImage];
+  Width = CGImageGetWidth(cGImage);
+  Height = CGImageGetHeight(cGImage);
   v13 = objc_autoreleasePoolPush();
-  if (v9 && [v9 count])
+  if (rectsCopy && [rectsCopy count])
   {
-    v14 = [v9 objectAtIndexedSubscript:0];
+    v14 = [rectsCopy objectAtIndexedSubscript:0];
     if (v14)
     {
       v15 = v14;
@@ -8624,16 +8624,16 @@ LABEL_23:
       v27 = v26;
       [v15 bottomRight];
       v30 = [[ICDocCamImageQuad alloc] initWithBottomLeft:v25 bottomRight:v27 topLeft:v28 topRight:v29, v17, v19, v21, v23];
-      v31 = [(ICDocCamImageQuad *)v30 imageQuadByScalingBy:Width, Height];
-      [v31 topLeft];
-      [v31 topRight];
-      [v31 bottomLeft];
-      [v31 bottomRight];
-      v38 = [objc_alloc(MEMORY[0x277CBF758]) initWithCGImage:v10];
-      v32 = [(ICDocCamViewController *)self sharedCoreImageContext];
-      v33 = [ICDocCamImageFilters perspectiveCorrectedCIImageFromCIImage:v38 imageQuad:v31];
+      height = [(ICDocCamImageQuad *)v30 imageQuadByScalingBy:Width, Height];
+      [height topLeft];
+      [height topRight];
+      [height bottomLeft];
+      [height bottomRight];
+      v38 = [objc_alloc(MEMORY[0x277CBF758]) initWithCGImage:cGImage];
+      sharedCoreImageContext = [(ICDocCamViewController *)self sharedCoreImageContext];
+      v33 = [ICDocCamImageFilters perspectiveCorrectedCIImageFromCIImage:v38 imageQuad:height];
       [v33 extent];
-      v34 = [v32 createCGImage:v33 fromRect:?];
+      v34 = [sharedCoreImageContext createCGImage:v33 fromRect:?];
       if (v34)
       {
         v35 = [MEMORY[0x277D755B8] imageWithCGImage:v34];
@@ -8664,21 +8664,21 @@ LABEL_23:
   objc_autoreleasePoolPop(v13);
   if (!v35)
   {
-    v35 = v8;
+    v35 = imageCopy;
   }
 
-  v36 = [ICDocCamImageFilters filteredImage:v35 orientation:0 imageFilterType:v40 constantColor:v41];
+  v36 = [ICDocCamImageFilters filteredImage:v35 orientation:0 imageFilterType:typeCopy constantColor:colorCopy];
 
   return v36;
 }
 
-- (void)saveCapturedImage:(id)a3 metaData:(id)a4 rects:(id)a5 constantColor:(BOOL)a6 completionHandler:(id)a7
+- (void)saveCapturedImage:(id)image metaData:(id)data rects:(id)rects constantColor:(BOOL)color completionHandler:(id)handler
 {
-  v134 = a6;
-  v135 = a3;
-  v137 = a4;
-  v11 = a5;
-  v136 = a7;
+  colorCopy = color;
+  imageCopy = image;
+  dataCopy = data;
+  rectsCopy = rects;
+  handlerCopy = handler;
   v12 = os_log_create("com.apple.documentcamera", "");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -8688,29 +8688,29 @@ LABEL_23:
   if (-[ICDocCamViewController isInRetakeMode](self, "isInRetakeMode") || (-[ICDocCamViewController delegate](self, "delegate"), v13 = objc_claimAutoreleasedReturnValue(), -[ICDocCamViewController documentInfoCollection](self, "documentInfoCollection"), v14 = objc_claimAutoreleasedReturnValue(), [v14 docInfos], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v13, "documentCameraController:canAddImages:", self, objc_msgSend(v15, "count") + 1), v15, v14, v13, (v16 & 1) != 0))
   {
     v17 = objc_opt_class();
-    v18 = DCDynamicCast(v17, v135);
+    v18 = DCDynamicCast(v17, imageCopy);
     if (v18)
     {
       [MEMORY[0x277D75D18] setAnimationsEnabled:0];
-      v19 = [(ICDocCamViewController *)self saveButton];
-      v20 = [(ICDocCamViewController *)self documentInfoCollection];
-      v21 = [v20 docInfos];
-      [v19 setDocumentCount:{objc_msgSend(v21, "count") + 1}];
+      saveButton = [(ICDocCamViewController *)self saveButton];
+      documentInfoCollection = [(ICDocCamViewController *)self documentInfoCollection];
+      docInfos = [documentInfoCollection docInfos];
+      [saveButton setDocumentCount:{objc_msgSend(docInfos, "count") + 1}];
 
       [MEMORY[0x277D75D18] setAnimationsEnabled:1];
       [(ICDocCamViewController *)self updateThumbnailContainerViewConstraintConstantForIPad];
-      v22 = [(ICDocCamViewController *)self documentInfoCollection];
-      v23 = [v22 docInfos];
-      v24 = [v23 count];
+      documentInfoCollection2 = [(ICDocCamViewController *)self documentInfoCollection];
+      docInfos2 = [documentInfoCollection2 docInfos];
+      v24 = [docInfos2 count];
 
       if (!v24)
       {
         [(ICDocCamViewController *)self setDoneButtonVisible:1];
-        v25 = [(ICDocCamViewController *)self saveButton];
-        [v25 setEnabled:0];
+        saveButton2 = [(ICDocCamViewController *)self saveButton];
+        [saveButton2 setEnabled:0];
 
-        v26 = [(ICDocCamViewController *)self saveButton];
-        [v26 setAlpha:0.0];
+        saveButton3 = [(ICDocCamViewController *)self saveButton];
+        [saveButton3 setAlpha:0.0];
 
         v163[0] = MEMORY[0x277D85DD0];
         v163[1] = 3221225472;
@@ -8722,10 +8722,10 @@ LABEL_23:
 
       if ([(ICDocCamViewController *)self isInRetakeMode])
       {
-        v27 = [(ICDocCamViewController *)self statusBarOrientation];
-        v28 = [(ICDocCamViewController *)self view];
-        v29 = [v28 window];
-        [ICDocCamExtractedDocumentViewController targetRectForOrientation:v27 window:v29];
+        statusBarOrientation = [(ICDocCamViewController *)self statusBarOrientation];
+        view = [(ICDocCamViewController *)self view];
+        window = [view window];
+        [ICDocCamExtractedDocumentViewController targetRectForOrientation:statusBarOrientation window:window];
         v31 = v30;
         v33 = v32;
       }
@@ -8737,14 +8737,14 @@ LABEL_23:
         v33 = v36;
       }
 
-      if (v11)
+      if (rectsCopy)
       {
-        if (![v11 count])
+        if (![rectsCopy count])
         {
           goto LABEL_27;
         }
 
-        v37 = [v11 objectAtIndexedSubscript:0];
+        v37 = [rectsCopy objectAtIndexedSubscript:0];
         if (!v37)
         {
           goto LABEL_27;
@@ -8765,8 +8765,8 @@ LABEL_23:
         v49 = v48;
         [v37 bottomRight];
         v52 = [[ICDocCamImageQuad alloc] initWithBottomLeft:v47 bottomRight:v49 topLeft:v50 topRight:v51, v128, v126, v43, v45];
-        v53 = [(ICDocCamImageQuad *)v52 imageQuadByScalingBy:v132, v130];
-        [v53 bounds];
+        v130 = [(ICDocCamImageQuad *)v52 imageQuadByScalingBy:v132, v130];
+        [v130 bounds];
         if (v54 / v55 < v31 / v33)
         {
           v56 = v33 / v55;
@@ -8779,23 +8779,23 @@ LABEL_23:
 
         if (MGGetProductType() != 1737882206)
         {
-          v57 = [MEMORY[0x277D759A0] mainScreen];
-          [v57 scale];
+          mainScreen = [MEMORY[0x277D759A0] mainScreen];
+          [mainScreen scale];
           v56 = v56 * v58;
         }
 
-        v59 = [ICDocCamUtilities resizedImage:v18 newSize:3 interpolationQuality:v56 * v132, v56 * v130];
+        v1302 = [ICDocCamUtilities resizedImage:v18 newSize:3 interpolationQuality:v56 * v132, v56 * v130];
 
-        v131 = v59;
-        if (!v59)
+        v131 = v1302;
+        if (!v1302)
         {
 LABEL_27:
           v131 = v18;
         }
 
-        if ([v11 count])
+        if ([rectsCopy count])
         {
-          v60 = [v11 objectAtIndexedSubscript:0];
+          v60 = [rectsCopy objectAtIndexedSubscript:0];
           v61 = v60;
           if (v60)
           {
@@ -8844,7 +8844,7 @@ LABEL_27:
       v63 = 0.0;
 LABEL_35:
       v133 = [[ICDocCamImageQuad alloc] initWithBottomLeft:v71 bottomRight:v73 topLeft:v75 topRight:v77, v63, v65, v67, v69];
-      v129 = [(ICDocCamViewController *)self defaultFilter];
+      defaultFilter = [(ICDocCamViewController *)self defaultFilter];
       v161[0] = 0;
       v161[1] = v161;
       v161[2] = 0x3032000000;
@@ -8859,8 +8859,8 @@ LABEL_35:
       else
       {
         objc_initWeak(&location, self);
-        v79 = [(ICDocCamViewController *)self saveButton];
-        [v79 setEnabled:0];
+        saveButton4 = [(ICDocCamViewController *)self saveButton];
+        [saveButton4 setEnabled:0];
 
         v80 = MEMORY[0x277D75D18];
         v158[0] = MEMORY[0x277D85DD0];
@@ -8879,9 +8879,9 @@ LABEL_35:
         v154 = v161;
         objc_copyWeak(&v155, &location);
         v152 = v18;
-        v153 = v11;
-        v156 = v129;
-        v157 = v134;
+        v153 = rectsCopy;
+        v156 = defaultFilter;
+        v157 = colorCopy;
         dispatch_async(v78, block);
 
         objc_destroyWeak(&v155);
@@ -8889,51 +8889,51 @@ LABEL_35:
         objc_destroyWeak(&location);
       }
 
-      v82 = [(ICDocCamViewController *)self cropAndFilterImage:v131 rects:v11 filterType:[(ICDocCamViewController *)self defaultFilter] constantColor:v134];
+      v82 = [(ICDocCamViewController *)self cropAndFilterImage:v131 rects:rectsCopy filterType:[(ICDocCamViewController *)self defaultFilter] constantColor:colorCopy];
       v127 = v78;
-      v83 = [(ICDocCamViewController *)self snapshotSpinnerQueue];
+      snapshotSpinnerQueue = [(ICDocCamViewController *)self snapshotSpinnerQueue];
       v150[0] = MEMORY[0x277D85DD0];
       v150[1] = 3221225472;
       v150[2] = __91__ICDocCamViewController_saveCapturedImage_metaData_rects_constantColor_completionHandler___block_invoke_4;
       v150[3] = &unk_278F93AB0;
       v150[4] = self;
-      dispatch_sync(v83, v150);
+      dispatch_sync(snapshotSpinnerQueue, v150);
 
       v84 = [ICDocCamDocumentInfo alloc];
-      v85 = [(ICDocCamViewController *)self delegate];
-      v86 = [(ICDocCamDocumentInfo *)v84 initWithDelegate:v85];
+      delegate = [(ICDocCamViewController *)self delegate];
+      v86 = [(ICDocCamDocumentInfo *)v84 initWithDelegate:delegate];
 
       [(ICDocCamDocumentInfo *)v86 setCurrentFilter:[(ICDocCamViewController *)self defaultFilter]];
-      [(ICDocCamDocumentInfo *)v86 setMetaData:v137];
+      [(ICDocCamDocumentInfo *)v86 setMetaData:dataCopy];
       [(ICDocCamDocumentInfo *)v86 setImageQuad:v133];
-      v87 = [(ICDocCamViewController *)self imageCache];
-      v88 = [v87 setImage:v82 metaData:v137 addToMemoryCache:1 completion:0];
+      imageCache = [(ICDocCamViewController *)self imageCache];
+      v88 = [imageCache setImage:v82 metaData:dataCopy addToMemoryCache:1 completion:0];
       [(ICDocCamDocumentInfo *)v86 setMeshAnimImageUUID:v88];
 
       [(ICDocCamDocumentInfo *)v86 setCroppedAndFilteredImageUUID:0];
       [(ICDocCamDocumentInfo *)v86 setCroppedButNotFilteredImageUUID:0];
-      v89 = [(ICDocCamViewController *)self imageCache];
-      v90 = [v89 setImage:v18 metaData:v137];
+      imageCache2 = [(ICDocCamViewController *)self imageCache];
+      v90 = [imageCache2 setImage:v18 metaData:dataCopy];
       [(ICDocCamDocumentInfo *)v86 setFullImageUUID:v90];
 
-      [(ICDocCamDocumentInfo *)v86 setConstantColor:v134];
+      [(ICDocCamDocumentInfo *)v86 setConstantColor:colorCopy];
       v91 = os_log_create("com.apple.documentcamera", "");
       if (os_log_type_enabled(v91, OS_LOG_TYPE_DEBUG))
       {
         [ICDocCamViewController saveCapturedImage:metaData:rects:constantColor:completionHandler:];
       }
 
-      v92 = [(ICDocCamViewController *)self overlayView];
-      [v92 setHidden:1];
+      overlayView = [(ICDocCamViewController *)self overlayView];
+      [overlayView setHidden:1];
 
-      v93 = [(ICDocCamViewController *)self retakeIndex];
+      retakeIndex = [(ICDocCamViewController *)self retakeIndex];
       if ([(ICDocCamViewController *)self isInRetakeMode])
       {
         [(ICDocCamViewController *)self stopImageCaptureSession];
-        v94 = [(ICDocCamViewController *)self statusBarOrientation];
-        v95 = [(ICDocCamViewController *)self view];
-        v96 = [v95 window];
-        [ICDocCamExtractedDocumentViewController targetRectForOrientation:v94 window:v96];
+        statusBarOrientation2 = [(ICDocCamViewController *)self statusBarOrientation];
+        view2 = [(ICDocCamViewController *)self view];
+        window2 = [view2 window];
+        [ICDocCamExtractedDocumentViewController targetRectForOrientation:statusBarOrientation2 window:window2];
         v98 = v97;
         v100 = v99;
         v102 = v101;
@@ -8949,16 +8949,16 @@ LABEL_35:
         v104 = v108;
       }
 
-      v109 = [(ICDocCamViewController *)self videoPreviewLayer];
-      [v109 rectForMetadataOutputRectOfInterest:{0.0, 0.0, 1.0, 1.0}];
+      videoPreviewLayer = [(ICDocCamViewController *)self videoPreviewLayer];
+      [videoPreviewLayer rectForMetadataOutputRectOfInterest:{0.0, 0.0, 1.0, 1.0}];
       v111 = v110;
       v113 = v112;
       v115 = v114;
       v117 = v116;
 
-      v118 = [(ICDocCamViewController *)self previewView];
-      v119 = [(ICDocCamViewController *)self scrimView];
-      v120 = [(ICDocCamViewController *)self imageMeshTransformWithImage:v82 backgroundImage:v18 imageViewFrame:v133 imageQuad:v118 previewView:v119 previewBounds:v98 scrimView:v100, v102, v104, v111, v113, v115, v117];
+      previewView = [(ICDocCamViewController *)self previewView];
+      scrimView = [(ICDocCamViewController *)self scrimView];
+      v117 = [(ICDocCamViewController *)self imageMeshTransformWithImage:v82 backgroundImage:v18 imageViewFrame:v133 imageQuad:previewView previewView:scrimView previewBounds:v98 scrimView:v100, v102, v104, v111, v113, v115, v117];
 
       v138[0] = MEMORY[0x277D85DD0];
       v138[1] = v125;
@@ -8967,19 +8967,19 @@ LABEL_35:
       v138[4] = self;
       v121 = v18;
       v139 = v121;
-      v140 = v11;
-      v148 = v129;
-      v149 = v134;
+      v140 = rectsCopy;
+      v148 = defaultFilter;
+      v149 = colorCopy;
       v122 = v86;
       v141 = v122;
-      v147 = v93;
-      v142 = v137;
-      v143 = v120;
-      v145 = v136;
+      v147 = retakeIndex;
+      v142 = dataCopy;
+      v143 = v117;
+      v145 = handlerCopy;
       v123 = v127;
       v144 = v123;
       v146 = v161;
-      v124 = v120;
+      v124 = v117;
       [v124 startWithCompletionBlock:v138];
 
       _Block_object_dispose(v161, 8);
@@ -8988,9 +8988,9 @@ LABEL_35:
     }
 
     [(ICDocCamViewController *)self restartImageCaptureSessionIfNecessary];
-    if (v136)
+    if (handlerCopy)
     {
-      v136[2](0.5);
+      handlerCopy[2](0.5);
     }
 
     v34 = os_log_create("com.apple.documentcamera", "");
@@ -9399,19 +9399,19 @@ void __91__ICDocCamViewController_saveCapturedImage_metaData_rects_constantColor
 
 - (unsigned)imageOrientationFromDevice
 {
-  v3 = [(ICDocCamViewController *)self videoDeviceInput];
-  v4 = [v3 device];
-  v5 = [v4 position];
+  videoDeviceInput = [(ICDocCamViewController *)self videoDeviceInput];
+  device = [videoDeviceInput device];
+  position = [device position];
 
-  v6 = [(ICDocCamViewController *)self accelerometer];
-  v7 = [v6 currentDeviceOrientation];
+  accelerometer = [(ICDocCamViewController *)self accelerometer];
+  currentDeviceOrientation = [accelerometer currentDeviceOrientation];
 
-  if ((v7 - 5) <= 1)
+  if ((currentDeviceOrientation - 5) <= 1)
   {
-    v7 = [(ICDocCamViewController *)self statusBarOrientation];
+    currentDeviceOrientation = [(ICDocCamViewController *)self statusBarOrientation];
   }
 
-  if (v5 == 2)
+  if (position == 2)
   {
     v8 = 2;
   }
@@ -9421,7 +9421,7 @@ void __91__ICDocCamViewController_saveCapturedImage_metaData_rects_constantColor
     v8 = 1;
   }
 
-  if (v5 == 2)
+  if (position == 2)
   {
     v9 = 4;
   }
@@ -9431,17 +9431,17 @@ void __91__ICDocCamViewController_saveCapturedImage_metaData_rects_constantColor
     v9 = 3;
   }
 
-  if (v7 != 4)
+  if (currentDeviceOrientation != 4)
   {
     v9 = 1;
   }
 
-  if (v7 != 3)
+  if (currentDeviceOrientation != 3)
   {
     v8 = v9;
   }
 
-  if (v5 == 2)
+  if (position == 2)
   {
     v10 = 7;
   }
@@ -9451,7 +9451,7 @@ void __91__ICDocCamViewController_saveCapturedImage_metaData_rects_constantColor
     v10 = 6;
   }
 
-  if (v5 == 2)
+  if (position == 2)
   {
     v11 = 5;
   }
@@ -9461,7 +9461,7 @@ void __91__ICDocCamViewController_saveCapturedImage_metaData_rects_constantColor
     v11 = 8;
   }
 
-  if (v7 == 2)
+  if (currentDeviceOrientation == 2)
   {
     v12 = v11;
   }
@@ -9471,12 +9471,12 @@ void __91__ICDocCamViewController_saveCapturedImage_metaData_rects_constantColor
     v12 = 1;
   }
 
-  if (v7 == 1)
+  if (currentDeviceOrientation == 1)
   {
     v12 = v10;
   }
 
-  if (v7 <= 2)
+  if (currentDeviceOrientation <= 2)
   {
     return v12;
   }
@@ -9487,28 +9487,28 @@ void __91__ICDocCamViewController_saveCapturedImage_metaData_rects_constantColor
   }
 }
 
-- (void)detectRectanglesAndSaveCapturedImage:(__CVBuffer *)a3 metadata:(id)a4 constantColor:(BOOL)a5 completionHandler:(id)a6
+- (void)detectRectanglesAndSaveCapturedImage:(__CVBuffer *)image metadata:(id)metadata constantColor:(BOOL)color completionHandler:(id)handler
 {
-  v7 = a5;
+  colorCopy = color;
   v200[2] = *MEMORY[0x277D85DE8];
-  v179 = a4;
-  v182 = a6;
-  v10 = [(ICDocCamViewController *)self imageOrientationFromDevice];
-  v11 = [(ICDocCamViewController *)self videoPreviewLayer];
-  v12 = [v11 connection];
-  v13 = [v12 videoOrientation];
+  metadataCopy = metadata;
+  handlerCopy = handler;
+  imageOrientationFromDevice = [(ICDocCamViewController *)self imageOrientationFromDevice];
+  videoPreviewLayer = [(ICDocCamViewController *)self videoPreviewLayer];
+  connection = [videoPreviewLayer connection];
+  videoOrientation = [connection videoOrientation];
 
-  v14 = [(ICDocCamViewController *)self accelerometer];
-  v15 = [v14 currentDeviceOrientation];
+  accelerometer = [(ICDocCamViewController *)self accelerometer];
+  currentDeviceOrientation = [accelerometer currentDeviceOrientation];
 
-  if ((v15 - 1) >= 4)
+  if ((currentDeviceOrientation - 1) >= 4)
   {
-    v16 = v13;
+    v16 = videoOrientation;
   }
 
   else
   {
-    v16 = v15;
+    v16 = currentDeviceOrientation;
   }
 
   v17 = *(MEMORY[0x277CBF2C0] + 16);
@@ -9541,8 +9541,8 @@ void __91__ICDocCamViewController_saveCapturedImage_metaData_rects_constantColor
     v195 = v194;
   }
 
-  v19 = [MEMORY[0x277CBF758] imageWithCVPixelBuffer:a3];
-  v177 = v7;
+  v19 = [MEMORY[0x277CBF758] imageWithCVPixelBuffer:image];
+  v177 = colorCopy;
   v194 = v195;
   v183 = [v19 imageByApplyingTransform:&v194];
 
@@ -9551,10 +9551,10 @@ void __91__ICDocCamViewController_saveCapturedImage_metaData_rects_constantColor
   v23 = v22;
   v25 = v24;
   v27 = v26;
-  v176 = [(ICDocCamViewController *)self sharedCoreImageContext];
-  v28 = [v176 createCGImage:v183 fromRect:{v21, v23, v25, v27}];
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  sharedCoreImageContext = [(ICDocCamViewController *)self sharedCoreImageContext];
+  v28 = [sharedCoreImageContext createCGImage:v183 fromRect:{v21, v23, v25, v27}];
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
   v31 = Height;
   if (Width <= Height)
   {
@@ -9574,8 +9574,8 @@ void __91__ICDocCamViewController_saveCapturedImage_metaData_rects_constantColor
     v34 = v35;
   }
 
-  v36 = [(ICDocCamViewController *)self cameraIntrinsicData];
-  v37 = v36 == 0;
+  cameraIntrinsicData = [(ICDocCamViewController *)self cameraIntrinsicData];
+  v37 = cameraIntrinsicData == 0;
 
   *&v38 = v32 / v34;
   v180 = v38;
@@ -9601,15 +9601,15 @@ void __91__ICDocCamViewController_saveCapturedImage_metaData_rects_constantColor
     v59 = *MEMORY[0x277CE3030];
     v197[0] = v58;
     v197[1] = v59;
-    v60 = [(ICDocCamViewController *)self sharedCoreImageContext];
-    v198[1] = v60;
+    sharedCoreImageContext2 = [(ICDocCamViewController *)self sharedCoreImageContext];
+    v198[1] = sharedCoreImageContext2;
     v181 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v198 forKeys:v197 count:2];
   }
 
   else
   {
-    v39 = [(ICDocCamViewController *)self cameraIntrinsicData];
-    [v39 getBytes:&v194 length:48];
+    cameraIntrinsicData2 = [(ICDocCamViewController *)self cameraIntrinsicData];
+    [cameraIntrinsicData2 getBytes:&v194 length:48];
 
     *bytes = 0u;
     v192 = 0u;
@@ -9628,21 +9628,21 @@ void __91__ICDocCamViewController_saveCapturedImage_metaData_rects_constantColor
     v44 = *MEMORY[0x277CE3030];
     v199[0] = v43;
     v199[1] = v44;
-    v45 = [(ICDocCamViewController *)self sharedCoreImageContext];
-    v200[1] = v45;
+    sharedCoreImageContext3 = [(ICDocCamViewController *)self sharedCoreImageContext];
+    v200[1] = sharedCoreImageContext3;
     v181 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v200 forKeys:v199 count:2];
   }
 
-  v178 = [objc_alloc(MEMORY[0x277CE2D50]) initWithCVPixelBuffer:a3 orientation:v10 options:v181];
-  v61 = [(ICDocCamViewController *)self detectRectanglesRequest];
-  v196 = v61;
+  v178 = [objc_alloc(MEMORY[0x277CE2D50]) initWithCVPixelBuffer:image orientation:imageOrientationFromDevice options:v181];
+  detectRectanglesRequest = [(ICDocCamViewController *)self detectRectanglesRequest];
+  v196 = detectRectanglesRequest;
   v62 = [MEMORY[0x277CBEA60] arrayWithObjects:&v196 count:1];
   v190 = 0;
   v63 = [v178 performRequests:v62 error:&v190];
   v175 = v190;
 
   v64 = [MEMORY[0x277D755B8] imageWithCGImage:v28];
-  v65 = [v61 results];
+  results = [detectRectanglesRequest results];
   if (([(ICDocCamViewController *)self statusBarOrientation]- 3) > 1)
   {
     [v64 size];
@@ -9657,11 +9657,11 @@ void __91__ICDocCamViewController_saveCapturedImage_metaData_rects_constantColor
     v68 = v67;
   }
 
-  if ([(ICDocCamViewController *)self validRect:v65 forImageSize:v68, v66])
+  if ([(ICDocCamViewController *)self validRect:results forImageSize:v68, v66])
   {
-    if (!-[ICDocCamViewController useDocumentSegmentation](self, "useDocumentSegmentation") || ([v65 objectAtIndexedSubscript:0], v71 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v71, "confidence"), v73 = v72, v71, -[ICDocCamViewController segmentMinimumVisualConfidenceFinalScan](self, "segmentMinimumVisualConfidenceFinalScan"), v75 = 0, v73 < 0.99999) && v73 > v74)
+    if (!-[ICDocCamViewController useDocumentSegmentation](self, "useDocumentSegmentation") || ([results objectAtIndexedSubscript:0], v71 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v71, "confidence"), v73 = v72, v71, -[ICDocCamViewController segmentMinimumVisualConfidenceFinalScan](self, "segmentMinimumVisualConfidenceFinalScan"), v75 = 0, v73 < 0.99999) && v73 > v74)
     {
-      v75 = v65;
+      v75 = results;
     }
   }
 
@@ -9670,31 +9670,31 @@ void __91__ICDocCamViewController_saveCapturedImage_metaData_rects_constantColor
     v75 = 0;
   }
 
-  v76 = [(ICDocCamViewController *)self lastHighConfidenceRectangle];
-  if (v76)
+  lastHighConfidenceRectangle = [(ICDocCamViewController *)self lastHighConfidenceRectangle];
+  if (lastHighConfidenceRectangle)
   {
-    v77 = [(ICDocCamViewController *)self overlayView];
-    if (([v77 rectangleIsActive] & 1) == 0)
+    overlayView = [(ICDocCamViewController *)self overlayView];
+    if (([overlayView rectangleIsActive] & 1) == 0)
     {
 
 LABEL_37:
       goto LABEL_38;
     }
 
-    v78 = [v75 firstObject];
-    v79 = v78 == 0;
+    firstObject = [v75 firstObject];
+    v79 = firstObject == 0;
 
     if (!v79)
     {
-      v80 = [(ICDocCamViewController *)self lastHighConfidenceRectangle];
-      [v80 boundingBox];
+      lastHighConfidenceRectangle2 = [(ICDocCamViewController *)self lastHighConfidenceRectangle];
+      [lastHighConfidenceRectangle2 boundingBox];
       v82 = v81;
       v84 = v83;
       v86 = v85;
       v88 = v87;
 
-      v89 = [v75 firstObject];
-      [v89 boundingBox];
+      firstObject2 = [v75 firstObject];
+      [firstObject2 boundingBox];
       v91 = v90;
       v93 = v92;
       v95 = v94;
@@ -9711,11 +9711,11 @@ LABEL_37:
       if (!CGRectIntersectsRect(v201, v202))
       {
 
-        v76 = os_log_create("com.apple.documentcamera", "");
-        if (os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT))
+        lastHighConfidenceRectangle = os_log_create("com.apple.documentcamera", "");
+        if (os_log_type_enabled(lastHighConfidenceRectangle, OS_LOG_TYPE_DEFAULT))
         {
           LOWORD(v194.a) = 0;
-          _os_log_impl(&dword_249253000, v76, OS_LOG_TYPE_DEFAULT, "The detected rectangle doesn't intersect with the last visible rectangle", &v194, 2u);
+          _os_log_impl(&dword_249253000, lastHighConfidenceRectangle, OS_LOG_TYPE_DEFAULT, "The detected rectangle doesn't intersect with the last visible rectangle", &v194, 2u);
         }
 
         v75 = 0;
@@ -9814,35 +9814,35 @@ LABEL_38:
       v146 = v168 - ((v164 - v163) * v131);
       v147 = v167 + ((v166 - v165) * v133);
       v148 = v169 - ((v164 - v163) * v135);
-      v149 = [(ICDocCamImageQuad *)v136 initWithBottomLeft:fmaxf(v145 bottomRight:0.0001) topLeft:fmaxf(v146 topRight:0.0001), fminf(v147, 0.9999), fmaxf(v148, 0.0001), v138, v140, v142, v144];
-      v150 = [MEMORY[0x277CBEB18] array];
-      [v150 addObject:v149];
-      [(ICDocCamViewController *)self saveCapturedImage:v64 metaData:v179 rects:v150 constantColor:v177 completionHandler:v182];
+      v144 = [(ICDocCamImageQuad *)v136 initWithBottomLeft:fmaxf(v145 bottomRight:0.0001) topLeft:fmaxf(v146 topRight:0.0001), fminf(v147, 0.9999), fmaxf(v148, 0.0001), v138, v140, v142, v144];
+      array = [MEMORY[0x277CBEB18] array];
+      [array addObject:v144];
+      [(ICDocCamViewController *)self saveCapturedImage:v64 metaData:metadataCopy rects:array constantColor:v177 completionHandler:handlerCopy];
     }
 
     else
     {
-      [(ICDocCamViewController *)self saveCapturedImage:v64 metaData:v179 rects:v75 constantColor:v177 completionHandler:v182];
+      [(ICDocCamViewController *)self saveCapturedImage:v64 metaData:metadataCopy rects:v75 constantColor:v177 completionHandler:handlerCopy];
     }
   }
 
   else
   {
-    v151 = [(ICDocCamViewController *)self snapshotSpinnerQueue];
+    snapshotSpinnerQueue = [(ICDocCamViewController *)self snapshotSpinnerQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __104__ICDocCamViewController_detectRectanglesAndSaveCapturedImage_metadata_constantColor_completionHandler___block_invoke;
     block[3] = &unk_278F93AB0;
     block[4] = self;
-    dispatch_sync(v151, block);
+    dispatch_sync(snapshotSpinnerQueue, block);
 
-    v152 = [v75 firstObject];
-    v153 = [ICDocCamImageQuad quadFromVNRectangle:v152];
+    firstObject3 = [v75 firstObject];
+    v153 = [ICDocCamImageQuad quadFromVNRectangle:firstObject3];
 
     if (!v153)
     {
-      v154 = [(ICDocCamViewController *)self backupQuad];
-      v155 = v154 == 0;
+      backupQuad = [(ICDocCamViewController *)self backupQuad];
+      v155 = backupQuad == 0;
 
       if (v155)
       {
@@ -9851,7 +9851,7 @@ LABEL_38:
 
       else
       {
-        v156 = [(ICDocCamViewController *)self backupQuad];
+        backupQuad2 = [(ICDocCamViewController *)self backupQuad];
         v157 = os_log_create("com.apple.documentcamera", "");
         if (os_log_type_enabled(v157, OS_LOG_TYPE_DEFAULT))
         {
@@ -9859,12 +9859,12 @@ LABEL_38:
           _os_log_impl(&dword_249253000, v157, OS_LOG_TYPE_DEFAULT, "No Quad found in image, falling back to visible quad at shutter press", &v194, 2u);
         }
 
-        v153 = v156;
+        v153 = backupQuad2;
       }
     }
 
-    v158 = [(ICDocCamViewController *)self userPromptView];
-    [v158 setHidden:1];
+    userPromptView = [(ICDocCamViewController *)self userPromptView];
+    [userPromptView setHidden:1];
 
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
@@ -9873,17 +9873,17 @@ LABEL_38:
     aBlock[4] = self;
     v185 = v75;
     v188 = v177;
-    v186 = v179;
-    v187 = v182;
+    v186 = metadataCopy;
+    v187 = handlerCopy;
     v159 = _Block_copy(aBlock);
     v160 = [[ICDocCamImageQuadEditViewController alloc] initWithImage:v64 quad:v153 scanDataDelegate:0 orientation:0 completionHandler:v159];
     [(ICDocCamImageQuadEditViewController *)v160 setInCaptureMode:1];
     [(ICDocCamViewController *)self setUseCustomRecropTransition:0];
-    v161 = [(ICDocCamViewController *)self navigationController];
-    [v161 setDelegate:0];
+    navigationController = [(ICDocCamViewController *)self navigationController];
+    [navigationController setDelegate:0];
 
-    v162 = [(ICDocCamImageQuadEditViewController *)v160 navigationController];
-    [v162 setDelegate:0];
+    navigationController2 = [(ICDocCamImageQuadEditViewController *)v160 navigationController];
+    [navigationController2 setDelegate:0];
 
     [(ICDocCamImageQuadEditViewController *)v160 setEdgesForExtendedLayout:15];
     [(ICDocCamImageQuadEditViewController *)v160 setExtendedLayoutIncludesOpaqueBars:1];
@@ -10035,7 +10035,7 @@ void __104__ICDocCamViewController_detectRectanglesAndSaveCapturedImage_metadata
   [v3 saveCapturedImage:v4 metaData:v5 rects:v6 constantColor:*(a1 + 72) completionHandler:*(a1 + 56)];
 }
 
-- (void)snapStillImageWithMode:(int64_t)a3
+- (void)snapStillImageWithMode:(int64_t)mode
 {
   v5 = os_log_create("com.apple.documentcamera", "");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -10043,32 +10043,32 @@ void __104__ICDocCamViewController_detectRectanglesAndSaveCapturedImage_metadata
     [ICDocCamViewController snapStillImageWithMode:];
   }
 
-  v6 = [(ICDocCamViewController *)self processRequestsBlocker];
-  v7 = [v6 blocked];
+  processRequestsBlocker = [(ICDocCamViewController *)self processRequestsBlocker];
+  blocked = [processRequestsBlocker blocked];
 
-  if ((v7 & 1) == 0)
+  if ((blocked & 1) == 0)
   {
-    v8 = self;
-    objc_sync_enter(v8);
-    v9 = [(ICDocCamViewController *)v8 snapStillImageBlocker];
-    v10 = [v9 blocked];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    snapStillImageBlocker = [(ICDocCamViewController *)selfCopy snapStillImageBlocker];
+    blocked2 = [snapStillImageBlocker blocked];
 
-    if (v10)
+    if (blocked2)
     {
-      objc_sync_exit(v8);
+      objc_sync_exit(selfCopy);
     }
 
     else
     {
-      v11 = [(ICDocCamViewController *)v8 snapStillImageBlocker];
-      [v11 addBlockerOfType:@"SnapStillImageBlocker" clearRectangles:0 clearQueue:1];
+      snapStillImageBlocker2 = [(ICDocCamViewController *)selfCopy snapStillImageBlocker];
+      [snapStillImageBlocker2 addBlockerOfType:@"SnapStillImageBlocker" clearRectangles:0 clearQueue:1];
 
-      v12 = [(ICDocCamViewController *)v8 processRequestsBlocker];
-      [v12 addBlockerOfType:@"SnapshotDelayBlocker" clearRectangles:0 clearQueue:0];
+      processRequestsBlocker2 = [(ICDocCamViewController *)selfCopy processRequestsBlocker];
+      [processRequestsBlocker2 addBlockerOfType:@"SnapshotDelayBlocker" clearRectangles:0 clearQueue:0];
 
-      objc_sync_exit(v8);
-      v13 = [(ICDocCamViewController *)v8 inProgressPhotoCaptureDelegates];
-      v14 = [v13 count];
+      objc_sync_exit(selfCopy);
+      inProgressPhotoCaptureDelegates = [(ICDocCamViewController *)selfCopy inProgressPhotoCaptureDelegates];
+      v14 = [inProgressPhotoCaptureDelegates count];
 
       v15 = os_log_create("com.apple.documentcamera", "");
       v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG);
@@ -10079,7 +10079,7 @@ void __104__ICDocCamViewController_detectRectanglesAndSaveCapturedImage_metadata
           [ICDocCamViewController snapStillImageWithMode:];
         }
 
-        [(ICDocCamViewController *)v8 clearQueue];
+        [(ICDocCamViewController *)selfCopy clearQueue];
       }
 
       else
@@ -10089,28 +10089,28 @@ void __104__ICDocCamViewController_detectRectanglesAndSaveCapturedImage_metadata
           [ICDocCamViewController snapStillImageWithMode:];
         }
 
-        [(ICDocCamViewController *)v8 setSnapStillImageMode:a3];
+        [(ICDocCamViewController *)selfCopy setSnapStillImageMode:mode];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __49__ICDocCamViewController_snapStillImageWithMode___block_invoke;
         block[3] = &unk_278F93AB0;
-        block[4] = v8;
+        block[4] = selfCopy;
         dispatch_async(MEMORY[0x277D85CD0], block);
-        v17 = [(ICDocCamViewController *)v8 videoPreviewLayer];
-        v18 = [v17 connection];
-        v19 = [v18 videoOrientation];
+        videoPreviewLayer = [(ICDocCamViewController *)selfCopy videoPreviewLayer];
+        connection = [videoPreviewLayer connection];
+        videoOrientation = [connection videoOrientation];
 
-        v20 = [(ICDocCamViewController *)v8 sessionQueue];
+        sessionQueue = [(ICDocCamViewController *)selfCopy sessionQueue];
         v22[0] = MEMORY[0x277D85DD0];
         v22[1] = 3221225472;
         v22[2] = __49__ICDocCamViewController_snapStillImageWithMode___block_invoke_2;
         v22[3] = &unk_278F93BA0;
-        v22[4] = v8;
-        v22[5] = v19;
-        dispatch_async(v20, v22);
+        v22[4] = selfCopy;
+        v22[5] = videoOrientation;
+        dispatch_async(sessionQueue, v22);
 
-        v21 = [MEMORY[0x277CBEAA8] date];
-        [(ICDocCamViewController *)v8 setLastAXPositionAnnouncementDate:v21];
+        date = [MEMORY[0x277CBEAA8] date];
+        [(ICDocCamViewController *)selfCopy setLastAXPositionAnnouncementDate:date];
       }
     }
   }
@@ -10505,18 +10505,18 @@ void __49__ICDocCamViewController_snapStillImageWithMode___block_invoke_2_853(ui
   }
 }
 
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection
 {
   v37[2] = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  connectionCopy = connection;
   if ([(ICDocCamViewController *)self scanMovieRecordingEnabled])
   {
-    v8 = [(ICDocCamViewController *)self movieController];
-    [v8 recordFrame:a4 fromConnection:v7];
+    movieController = [(ICDocCamViewController *)self movieController];
+    [movieController recordFrame:buffer fromConnection:connectionCopy];
   }
 
   [(ICDocCamViewController *)self setCameraIntrinsicData:0];
-  if (![v7 isCameraIntrinsicMatrixDeliverySupported])
+  if (![connectionCopy isCameraIntrinsicMatrixDeliverySupported])
   {
     v11 = os_log_create("com.apple.documentcamera", "");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -10528,7 +10528,7 @@ void __49__ICDocCamViewController_snapStillImageWithMode___block_invoke_2_853(ui
     goto LABEL_12;
   }
 
-  if (![v7 isCameraIntrinsicMatrixDeliveryEnabled])
+  if (![connectionCopy isCameraIntrinsicMatrixDeliveryEnabled])
   {
     v11 = os_log_create("com.apple.documentcamera", "");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -10542,34 +10542,34 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  [(ICDocCamViewController *)self setCameraIntrinsicData:CMGetAttachment(a4, *MEMORY[0x277CC06B0], 0)];
-  v9 = [(ICDocCamViewController *)self cameraIntrinsicData];
+  [(ICDocCamViewController *)self setCameraIntrinsicData:CMGetAttachment(buffer, *MEMORY[0x277CC06B0], 0)];
+  cameraIntrinsicData = [(ICDocCamViewController *)self cameraIntrinsicData];
 
-  if (v9)
+  if (cameraIntrinsicData)
   {
-    v10 = [(ICDocCamViewController *)self cameraIntrinsicData];
-    [v10 getBytes:buf length:48];
+    cameraIntrinsicData2 = [(ICDocCamViewController *)self cameraIntrinsicData];
+    [cameraIntrinsicData2 getBytes:buf length:48];
   }
 
 LABEL_13:
-  if (a4)
+  if (buffer)
   {
     if ([(ICDocCamViewController *)self adjustingFocus])
     {
       goto LABEL_15;
     }
 
-    v12 = [(ICDocCamViewController *)self processRequestsBlocker];
-    v13 = [v12 blocked];
+    processRequestsBlocker = [(ICDocCamViewController *)self processRequestsBlocker];
+    blocked = [processRequestsBlocker blocked];
 
-    if (v13)
+    if (blocked)
     {
       goto LABEL_26;
     }
 
-    v14 = [MEMORY[0x277CBEAA8] date];
-    v15 = [(ICDocCamViewController *)self lastSubjectAreaChange];
-    [v14 timeIntervalSinceDate:v15];
+    date = [MEMORY[0x277CBEAA8] date];
+    lastSubjectAreaChange = [(ICDocCamViewController *)self lastSubjectAreaChange];
+    [date timeIntervalSinceDate:lastSubjectAreaChange];
     v17 = v16;
 
     if (v17 < 1.0)
@@ -10584,15 +10584,15 @@ LABEL_15:
       [(ICDocCamViewController *)self streamingImageSize];
       if (v19 == *MEMORY[0x277CBF3A8] && v18 == *(MEMORY[0x277CBF3A8] + 8))
       {
-        ImageBuffer = CMSampleBufferGetImageBuffer(a4);
+        ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
         CVPixelBufferLockBaseAddress(ImageBuffer, 0);
         Width = CVPixelBufferGetWidth(ImageBuffer);
         [(ICDocCamViewController *)self setStreamingImageSize:Width, CVPixelBufferGetHeight(ImageBuffer)];
         CVPixelBufferUnlockBaseAddress(ImageBuffer, 0);
       }
 
-      v22 = CMCopyDictionaryOfAttachments(0, a4, 1u);
-      v23 = CMGetAttachment(a4, *MEMORY[0x277CC06B0], 0);
+      v22 = CMCopyDictionaryOfAttachments(0, buffer, 1u);
+      v23 = CMGetAttachment(buffer, *MEMORY[0x277CC06B0], 0);
       v24 = [(__CFDictionary *)v22 valueForKey:*MEMORY[0x277CF3F30]];
       v25 = v24;
       if (v24)
@@ -10602,25 +10602,25 @@ LABEL_15:
         [(ICDocCamViewController *)self setPixelFocalLength:?];
       }
 
-      v27 = CMSampleBufferGetImageBuffer(a4);
+      v27 = CMSampleBufferGetImageBuffer(buffer);
       if (v27)
       {
         memset(buf, 0, 24);
-        CMSampleBufferGetOutputPresentationTimeStamp(buf, a4);
-        v28 = [(ICDocCamViewController *)self imageOrientationFromDevice];
+        CMSampleBufferGetOutputPresentationTimeStamp(buf, buffer);
+        imageOrientationFromDevice = [(ICDocCamViewController *)self imageOrientationFromDevice];
         v36[0] = @"ICDocCamImageSequenceFrame_Timestamp";
         v34 = buf[0];
         v29 = CMTimeCopyAsDictionary(&v34, 0);
         v37[0] = v29;
         v36[1] = @"ICDocCamImageSequenceFrame_Orientation";
-        v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v28];
+        v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:imageOrientationFromDevice];
         v37[1] = v30;
         v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:2];
 
-        v32 = [(ICDocCamViewController *)self detectRectanglesRequest];
-        v33 = [(ICDocCamViewController *)self vkAnalyzer];
+        detectRectanglesRequest = [(ICDocCamViewController *)self detectRectanglesRequest];
+        vkAnalyzer = [(ICDocCamViewController *)self vkAnalyzer];
         [(ICDocCamViewController *)self pixelFocalLength];
-        [v33 addFrame:v27 metaData:v22 frameOptions:v31 rectangleRequest:v32 pixelFocalLength:v23 cameraIntrinsicData:?];
+        [vkAnalyzer addFrame:v27 metaData:v22 frameOptions:v31 rectangleRequest:detectRectanglesRequest pixelFocalLength:v23 cameraIntrinsicData:?];
       }
     }
   }
@@ -10630,69 +10630,69 @@ LABEL_26:
 
 - (void)clearRectangles
 {
-  v2 = [(ICDocCamViewController *)self overlayView];
-  [v2 clearRectangles];
+  overlayView = [(ICDocCamViewController *)self overlayView];
+  [overlayView clearRectangles];
 }
 
 - (void)clearQueue
 {
-  v2 = [(ICDocCamViewController *)self rectResultsQueue];
-  [v2 clear];
+  rectResultsQueue = [(ICDocCamViewController *)self rectResultsQueue];
+  [rectResultsQueue clear];
 }
 
-- (void)analyzerCallbackWithDictionaryResults:(id)a3
+- (void)analyzerCallbackWithDictionaryResults:(id)results
 {
   v74[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultsCopy = results;
   if (![(ICDocCamViewController *)self isInRetakeMode])
   {
-    v5 = [(ICDocCamViewController *)self delegate];
-    v6 = [(ICDocCamViewController *)self documentInfoCollection];
-    v7 = [v6 docInfos];
-    if ([v5 documentCameraController:self canAddImages:{objc_msgSend(v7, "count") + 1}])
+    delegate = [(ICDocCamViewController *)self delegate];
+    documentInfoCollection = [(ICDocCamViewController *)self documentInfoCollection];
+    docInfos = [documentInfoCollection docInfos];
+    if ([delegate documentCameraController:self canAddImages:{objc_msgSend(docInfos, "count") + 1}])
     {
     }
 
     else
     {
-      v8 = [(ICDocCamViewController *)self didWarnAboutMaxScans];
+      didWarnAboutMaxScans = [(ICDocCamViewController *)self didWarnAboutMaxScans];
 
-      if (v8)
+      if (didWarnAboutMaxScans)
       {
         goto LABEL_47;
       }
     }
   }
 
-  v9 = [(ICDocCamViewController *)self processRequestsBlocker];
-  v10 = [v9 blocked];
+  processRequestsBlocker = [(ICDocCamViewController *)self processRequestsBlocker];
+  blocked = [processRequestsBlocker blocked];
 
-  if ((v10 & 1) == 0)
+  if ((blocked & 1) == 0)
   {
-    v11 = [(ICDocCamViewController *)self snapStillImageBlocker];
-    v12 = [v11 blocked];
+    snapStillImageBlocker = [(ICDocCamViewController *)self snapStillImageBlocker];
+    blocked2 = [snapStillImageBlocker blocked];
 
-    if ((v12 & 1) == 0)
+    if ((blocked2 & 1) == 0)
     {
-      v13 = [v4 objectForKeyedSubscript:@"ICDocCamImageSequenceAnalyzerResults"];
+      v13 = [resultsCopy objectForKeyedSubscript:@"ICDocCamImageSequenceAnalyzerResults"];
       if (v13)
       {
-        v14 = [(ICDocCamViewController *)self videoPreviewLayer];
-        [v14 rectForMetadataOutputRectOfInterest:{0.0, 0.0, 1.0, 1.0}];
+        videoPreviewLayer = [(ICDocCamViewController *)self videoPreviewLayer];
+        [videoPreviewLayer rectForMetadataOutputRectOfInterest:{0.0, 0.0, 1.0, 1.0}];
         v16 = v15;
         v18 = v17;
         v20 = v19;
         v22 = v21;
 
-        v23 = [(ICDocCamViewController *)self overlayView];
-        [v23 setPreviewBounds:{v16, v18, v20, v22}];
+        overlayView = [(ICDocCamViewController *)self overlayView];
+        [overlayView setPreviewBounds:{v16, v18, v20, v22}];
 
-        v24 = [v4 objectForKeyedSubscript:@"ICDocCamImageSequenceFrame_Timestamp"];
-        v25 = [v4 objectForKeyedSubscript:@"ICDocCamImageSequenceFrame_MetaData"];
+        v24 = [resultsCopy objectForKeyedSubscript:@"ICDocCamImageSequenceFrame_Timestamp"];
+        v25 = [resultsCopy objectForKeyedSubscript:@"ICDocCamImageSequenceFrame_MetaData"];
 
         if (v25)
         {
-          v70 = [v4 objectForKeyedSubscript:@"ICDocCamImageSequenceFrame_MetaData"];
+          v70 = [resultsCopy objectForKeyedSubscript:@"ICDocCamImageSequenceFrame_MetaData"];
         }
 
         else
@@ -10727,30 +10727,30 @@ LABEL_26:
             v74[0] = v27;
             v74[1] = v24;
             v73[2] = @"RecognitionTime";
-            v35 = [MEMORY[0x277CBEAA8] date];
-            v74[2] = v35;
+            date = [MEMORY[0x277CBEAA8] date];
+            v74[2] = date;
             v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v74 forKeys:v73 count:3];
             [v34 addEntriesFromDictionary:v36];
 
-            v37 = [(ICDocCamViewController *)self rectResultsQueue];
-            [v37 enqueue:v34];
+            rectResultsQueue = [(ICDocCamViewController *)self rectResultsQueue];
+            [rectResultsQueue enqueue:v34];
 
-            v38 = [(ICDocCamViewController *)self rectResultsQueue];
-            v39 = [v38 size] > 250;
+            rectResultsQueue2 = [(ICDocCamViewController *)self rectResultsQueue];
+            v39 = [rectResultsQueue2 size] > 250;
 
             if (v39)
             {
-              v40 = [(ICDocCamViewController *)self rectResultsQueue];
-              v41 = [v40 dequeue];
+              rectResultsQueue3 = [(ICDocCamViewController *)self rectResultsQueue];
+              dequeue = [rectResultsQueue3 dequeue];
             }
 
             if ([(ICDocCamViewController *)self debugRectanglesEnabled])
             {
-              v42 = [(ICDocCamViewController *)self overlayView];
-              [v42 setDocumentQuad:0];
+              overlayView2 = [(ICDocCamViewController *)self overlayView];
+              [overlayView2 setDocumentQuad:0];
 
-              v43 = [(ICDocCamViewController *)self overlayView];
-              [v43 setDebugRects:v27];
+              overlayView3 = [(ICDocCamViewController *)self overlayView];
+              [overlayView3 setDebugRects:v27];
 
               block[0] = MEMORY[0x277D85DD0];
               block[1] = 3221225472;
@@ -10762,16 +10762,16 @@ LABEL_26:
 
             else if ([v27 count])
             {
-              v48 = [v27 firstObject];
-              if (!-[ICDocCamViewController useDocumentSegmentation](self, "useDocumentSegmentation") && ([v48 confidence], v50 = v49, -[ICDocCamViewController rectangleMinimumVisualConfidence](self, "rectangleMinimumVisualConfidence"), v50 > v51) || -[ICDocCamViewController useDocumentSegmentation](self, "useDocumentSegmentation") && (objc_msgSend(v48, "confidence"), v53 = v52, -[ICDocCamViewController segmentMinimumVisualConfidence](self, "segmentMinimumVisualConfidence"), v53 > v54) && (objc_msgSend(v48, "confidence"), v55 < 0.99999))
+              firstObject = [v27 firstObject];
+              if (!-[ICDocCamViewController useDocumentSegmentation](self, "useDocumentSegmentation") && ([firstObject confidence], v50 = v49, -[ICDocCamViewController rectangleMinimumVisualConfidence](self, "rectangleMinimumVisualConfidence"), v50 > v51) || -[ICDocCamViewController useDocumentSegmentation](self, "useDocumentSegmentation") && (objc_msgSend(firstObject, "confidence"), v53 = v52, -[ICDocCamViewController segmentMinimumVisualConfidence](self, "segmentMinimumVisualConfidence"), v53 > v54) && (objc_msgSend(firstObject, "confidence"), v55 < 0.99999))
               {
-                [(ICDocCamViewController *)self setLastHighConfidenceRectangle:v48];
-                v56 = [ICDocCamImageQuad quadFromVNRectangle:v48];
-                v57 = [(ICDocCamViewController *)self overlayView];
-                [v57 setDocumentQuad:v56];
+                [(ICDocCamViewController *)self setLastHighConfidenceRectangle:firstObject];
+                v56 = [ICDocCamImageQuad quadFromVNRectangle:firstObject];
+                overlayView4 = [(ICDocCamViewController *)self overlayView];
+                [overlayView4 setDocumentQuad:v56];
 
-                v58 = [(ICDocCamViewController *)self overlayView];
-                [v58 setDebugRects:0];
+                overlayView5 = [(ICDocCamViewController *)self overlayView];
+                [overlayView5 setDebugRects:0];
 
                 if (![(ICDocCamViewController *)self hideUserPrompt])
                 {
@@ -10784,37 +10784,37 @@ LABEL_26:
                   dispatch_async(MEMORY[0x277D85CD0], v71);
                 }
 
-                [(ICDocCamViewController *)self updateRecentlyObservedRectanglesWithRect:v48];
+                [(ICDocCamViewController *)self updateRecentlyObservedRectanglesWithRect:firstObject];
               }
             }
 
             else
             {
-              v59 = [(ICDocCamViewController *)self overlayView];
-              [v59 setDocumentQuad:0];
+              overlayView6 = [(ICDocCamViewController *)self overlayView];
+              [overlayView6 setDocumentQuad:0];
 
-              v60 = [(ICDocCamViewController *)self overlayView];
-              [v60 setDebugRects:v27];
+              overlayView7 = [(ICDocCamViewController *)self overlayView];
+              [overlayView7 setDebugRects:v27];
             }
           }
 
           else
           {
-            v46 = [(ICDocCamViewController *)self overlayView];
-            [v46 setDocumentQuad:0];
+            overlayView8 = [(ICDocCamViewController *)self overlayView];
+            [overlayView8 setDocumentQuad:0];
 
-            v47 = [(ICDocCamViewController *)self overlayView];
-            [v47 setDebugRects:0];
+            overlayView9 = [(ICDocCamViewController *)self overlayView];
+            [overlayView9 setDebugRects:0];
           }
 
-          v61 = [MEMORY[0x277CCAB68] string];
-          v62 = [v4 objectForKeyedSubscript:@"ICDocCamImageSequenceFrame_RequestTime"];
+          string = [MEMORY[0x277CCAB68] string];
+          v62 = [resultsCopy objectForKeyedSubscript:@"ICDocCamImageSequenceFrame_RequestTime"];
           v63 = v62 == 0;
 
           if (!v63)
           {
             self->_requestTimeSum = self->_requestTimeSum - self->_requestTime[self->_requestTimeIndex];
-            v64 = [v4 objectForKeyedSubscript:@"ICDocCamImageSequenceFrame_RequestTime"];
+            v64 = [resultsCopy objectForKeyedSubscript:@"ICDocCamImageSequenceFrame_RequestTime"];
             [v64 doubleValue];
             self->_requestTime[self->_requestTimeIndex] = v65;
 
@@ -10823,19 +10823,19 @@ LABEL_26:
             self->_requestTimeSum = v67;
             self->_requestTimeIndex = (requestTimeIndex + 1) % 10;
             v68 = [MEMORY[0x277CCACA8] stringWithFormat:@"Average request time = %.1fms", v67 / 10.0 * 1000.0, v70];
-            [v61 appendString:v68];
+            [string appendString:v68];
           }
 
           if ([(ICDocCamViewController *)self displayStringEnabled])
           {
-            v69 = [(ICDocCamViewController *)self overlayView];
-            [v69 setDisplayString:v61];
+            overlayView10 = [(ICDocCamViewController *)self overlayView];
+            [overlayView10 setDisplayString:string];
           }
 
           else
           {
-            v69 = [(ICDocCamViewController *)self overlayView];
-            [v69 setDisplayString:0];
+            overlayView10 = [(ICDocCamViewController *)self overlayView];
+            [overlayView10 setDisplayString:0];
           }
 
           if ([(ICDocCamViewController *)self shouldAutoShoot])
@@ -10856,11 +10856,11 @@ LABEL_26:
 
         else
         {
-          v44 = [(ICDocCamViewController *)self overlayView];
-          [v44 setDocumentQuad:0];
+          overlayView11 = [(ICDocCamViewController *)self overlayView];
+          [overlayView11 setDocumentQuad:0];
 
-          v45 = [(ICDocCamViewController *)self overlayView];
-          [v45 setDebugRects:v27];
+          overlayView12 = [(ICDocCamViewController *)self overlayView];
+          [overlayView12 setDebugRects:v27];
 
           [(ICDocCamViewController *)self didRecognizeRectangleForAccessibility:0];
         }
@@ -10868,8 +10868,8 @@ LABEL_26:
 
       else
       {
-        v26 = [(ICDocCamViewController *)self overlayView];
-        [v26 clearRectangles];
+        overlayView13 = [(ICDocCamViewController *)self overlayView];
+        [overlayView13 clearRectangles];
       }
     }
   }
@@ -10915,10 +10915,10 @@ void __64__ICDocCamViewController_analyzerCallbackWithDictionaryResults___block_
 
 - (void)logAlgoChoice
 {
-  v2 = [(ICDocCamViewController *)self useDocumentSegmentation];
+  useDocumentSegmentation = [(ICDocCamViewController *)self useDocumentSegmentation];
   v3 = os_log_create("com.apple.documentcamera", "");
   v4 = os_log_type_enabled(v3, OS_LOG_TYPE_INFO);
-  if (v2)
+  if (useDocumentSegmentation)
   {
     if (v4)
     {
@@ -10939,22 +10939,22 @@ LABEL_6:
   }
 }
 
-- (void)focusWithMode:(int64_t)a3 exposeWithMode:(int64_t)a4 atDevicePoint:(CGPoint)a5 monitorSubjectAreaChange:(BOOL)a6
+- (void)focusWithMode:(int64_t)mode exposeWithMode:(int64_t)withMode atDevicePoint:(CGPoint)point monitorSubjectAreaChange:(BOOL)change
 {
-  y = a5.y;
-  x = a5.x;
-  v12 = [(ICDocCamViewController *)self sessionQueue];
+  y = point.y;
+  x = point.x;
+  sessionQueue = [(ICDocCamViewController *)self sessionQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __94__ICDocCamViewController_focusWithMode_exposeWithMode_atDevicePoint_monitorSubjectAreaChange___block_invoke;
   v13[3] = &unk_278F93E70;
   v13[4] = self;
-  v13[5] = a3;
+  v13[5] = mode;
   *&v13[6] = x;
   *&v13[7] = y;
-  v13[8] = a4;
-  v14 = a6;
-  dispatch_async(v12, v13);
+  v13[8] = withMode;
+  changeCopy = change;
+  dispatch_async(sessionQueue, v13);
 }
 
 void __94__ICDocCamViewController_focusWithMode_exposeWithMode_atDevicePoint_monitorSubjectAreaChange___block_invoke(uint64_t a1)
@@ -10993,9 +10993,9 @@ void __94__ICDocCamViewController_focusWithMode_exposeWithMode_atDevicePoint_mon
   }
 }
 
-+ (id)deviceWithMediaType:(id)a3 preferringPosition:(int64_t)a4
++ (id)deviceWithMediaType:(id)type preferringPosition:(int64_t)position
 {
-  v4 = [MEMORY[0x277CE5AC8] defaultDeviceWithDeviceType:*MEMORY[0x277CE5878] mediaType:a3 position:a4];
+  v4 = [MEMORY[0x277CE5AC8] defaultDeviceWithDeviceType:*MEMORY[0x277CE5878] mediaType:type position:position];
 
   return v4;
 }
@@ -11008,81 +11008,81 @@ void __94__ICDocCamViewController_focusWithMode_exposeWithMode_atDevicePoint_mon
     [ICDocCamViewController prepareForDismissal];
   }
 
-  v4 = [(ICDocCamViewController *)self processRequestsBlocker];
-  [v4 addBlockerOfType:@"SaveActionBlocker" clearRectangles:1 clearQueue:1];
+  processRequestsBlocker = [(ICDocCamViewController *)self processRequestsBlocker];
+  [processRequestsBlocker addBlockerOfType:@"SaveActionBlocker" clearRectangles:1 clearQueue:1];
 
   [(ICDocCamViewController *)self stopImageCaptureSession];
-  v5 = [(ICDocCamViewController *)self markupDocumentInfo];
+  markupDocumentInfo = [(ICDocCamViewController *)self markupDocumentInfo];
 
-  if (v5)
+  if (markupDocumentInfo)
   {
     [(ICDocCamViewController *)self markupDoneAction:0];
   }
 
-  v6 = [(ICDocCamViewController *)self documentInfoCollection];
-  v7 = [v6 docInfos];
-  v8 = [v7 count];
+  documentInfoCollection = [(ICDocCamViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  v8 = [docInfos count];
 
   if (v8)
   {
-    v9 = [(ICDocCamViewController *)self delegate];
+    delegate = [(ICDocCamViewController *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(ICDocCamViewController *)self delegate];
-      v12 = [(ICDocCamViewController *)self documentInfoCollection];
-      v13 = [(ICDocCamViewController *)self imageCache];
-      [v11 documentCameraController:self didFinishWithDocInfoCollection:v12 imageCache:v13 warnUser:0 closeViewController:0];
+      delegate2 = [(ICDocCamViewController *)self delegate];
+      documentInfoCollection2 = [(ICDocCamViewController *)self documentInfoCollection];
+      imageCache = [(ICDocCamViewController *)self imageCache];
+      [delegate2 documentCameraController:self didFinishWithDocInfoCollection:documentInfoCollection2 imageCache:imageCache warnUser:0 closeViewController:0];
     }
 
     else
     {
-      v14 = [(ICDocCamViewController *)self imageCache];
-      v15 = [(ICDocCamViewController *)self documentInfoCollection];
-      v16 = [v15 docInfos];
-      v17 = [v16 objectAtIndexedSubscript:0];
-      v18 = [v17 croppedAndFilteredImageUUID];
-      v19 = [v14 getImage:v18];
+      imageCache2 = [(ICDocCamViewController *)self imageCache];
+      documentInfoCollection3 = [(ICDocCamViewController *)self documentInfoCollection];
+      docInfos2 = [documentInfoCollection3 docInfos];
+      v17 = [docInfos2 objectAtIndexedSubscript:0];
+      croppedAndFilteredImageUUID = [v17 croppedAndFilteredImageUUID];
+      v19 = [imageCache2 getImage:croppedAndFilteredImageUUID];
 
-      v20 = [(ICDocCamViewController *)self documentInfoCollection];
-      v21 = [v20 docInfos];
-      v22 = [v21 objectAtIndexedSubscript:0];
-      v23 = [v22 metaData];
-      v12 = [(ICDocCamViewController *)self createNSDataFrom:v19 metaData:v23];
+      documentInfoCollection4 = [(ICDocCamViewController *)self documentInfoCollection];
+      docInfos3 = [documentInfoCollection4 docInfos];
+      v22 = [docInfos3 objectAtIndexedSubscript:0];
+      metaData = [v22 metaData];
+      documentInfoCollection2 = [(ICDocCamViewController *)self createNSDataFrom:v19 metaData:metaData];
 
-      [(ICDocCamViewController *)self didFinishWithImage:v12];
-      v11 = v19;
+      [(ICDocCamViewController *)self didFinishWithImage:documentInfoCollection2];
+      delegate2 = v19;
     }
   }
 }
 
-- (void)thumbnailViewDidTap:(id)a3
+- (void)thumbnailViewDidTap:(id)tap
 {
-  v4 = a3;
-  v5 = [(ICDocCamViewController *)self processRequestsBlocker];
-  v6 = [v5 blocked];
+  tapCopy = tap;
+  processRequestsBlocker = [(ICDocCamViewController *)self processRequestsBlocker];
+  blocked = [processRequestsBlocker blocked];
 
-  if ((v6 & 1) == 0)
+  if ((blocked & 1) == 0)
   {
-    v7 = [v4 item];
-    v8 = [(ICDocCamViewController *)self documentInfoCollection];
-    v9 = [v8 docInfos];
+    item = [tapCopy item];
+    documentInfoCollection = [(ICDocCamViewController *)self documentInfoCollection];
+    docInfos = [documentInfoCollection docInfos];
 
-    if ((v7 & 0x8000000000000000) == 0 && v7 < [v9 count])
+    if ((item & 0x8000000000000000) == 0 && item < [docInfos count])
     {
-      v10 = [v9 objectAtIndexedSubscript:v7];
-      v11 = [v10 croppedAndFilteredImageUUID];
+      v10 = [docInfos objectAtIndexedSubscript:item];
+      croppedAndFilteredImageUUID = [v10 croppedAndFilteredImageUUID];
 
-      if (v11)
+      if (croppedAndFilteredImageUUID)
       {
-        v12 = [(ICDocCamViewController *)self processRequestsBlocker];
-        [v12 addBlockerOfType:@"ThumbnailTapBlocker" clearRectangles:1 clearQueue:1];
+        processRequestsBlocker2 = [(ICDocCamViewController *)self processRequestsBlocker];
+        [processRequestsBlocker2 addBlockerOfType:@"ThumbnailTapBlocker" clearRectangles:1 clearQueue:1];
 
-        v13 = [(ICDocCamViewController *)self cameraUnavailableScrim];
-        v14 = [v13 isHidden];
+        cameraUnavailableScrim = [(ICDocCamViewController *)self cameraUnavailableScrim];
+        isHidden = [cameraUnavailableScrim isHidden];
 
-        if ((v14 & 1) == 0)
+        if ((isHidden & 1) == 0)
         {
           [(ICDocCamViewController *)self dismissFilterAndFlashUI];
         }
@@ -11091,31 +11091,31 @@ void __94__ICDocCamViewController_focusWithMode_exposeWithMode_atDevicePoint_mon
         [(ICDocCamViewController *)self clearRectangles];
         [(ICDocCamViewController *)self disableRetakeMode];
         v15 = [ICDocCamExtractedDocumentViewController alloc];
-        v16 = [(ICDocCamViewController *)self documentInfoCollection];
-        v17 = [(ICDocCamViewController *)self imageCache];
-        v18 = [(ICDocCamExtractedDocumentViewController *)v15 initWithDelegate:self documentInfoCollection:v16 imageCache:v17 currentIndex:v7 mode:0];
+        documentInfoCollection2 = [(ICDocCamViewController *)self documentInfoCollection];
+        imageCache = [(ICDocCamViewController *)self imageCache];
+        v18 = [(ICDocCamExtractedDocumentViewController *)v15 initWithDelegate:self documentInfoCollection:documentInfoCollection2 imageCache:imageCache currentIndex:item mode:0];
 
         [(ICDocCamViewController *)self setUseCustomThumbnailZoomTransition:1];
-        v19 = [(ICDocCamViewController *)self navigationController];
-        [v19 setDelegate:self];
+        navigationController = [(ICDocCamViewController *)self navigationController];
+        [navigationController setDelegate:self];
 
-        v20 = [(ICDocCamExtractedDocumentViewController *)v18 navigationController];
-        [v20 setDelegate:self];
+        navigationController2 = [(ICDocCamExtractedDocumentViewController *)v18 navigationController];
+        [navigationController2 setDelegate:self];
 
-        v21 = [(ICDocCamViewController *)self thumbnailViewController];
-        v22 = [v21 collectionView];
-        v23 = [v22 cellForItemAtIndexPath:v4];
+        thumbnailViewController = [(ICDocCamViewController *)self thumbnailViewController];
+        collectionView = [thumbnailViewController collectionView];
+        v23 = [collectionView cellForItemAtIndexPath:tapCopy];
 
-        v24 = [(ICDocCamViewController *)self documentInfoCollection];
-        v25 = [v24 docInfos];
-        v26 = [v25 objectAtIndexedSubscript:v7];
+        documentInfoCollection3 = [(ICDocCamViewController *)self documentInfoCollection];
+        docInfos2 = [documentInfoCollection3 docInfos];
+        v26 = [docInfos2 objectAtIndexedSubscript:item];
 
-        v27 = [(ICDocCamViewController *)self imageCache];
-        v28 = [v26 croppedAndFilteredImageUUID];
-        v29 = [v27 getImage:v28];
+        imageCache2 = [(ICDocCamViewController *)self imageCache];
+        croppedAndFilteredImageUUID2 = [v26 croppedAndFilteredImageUUID];
+        v29 = [imageCache2 getImage:croppedAndFilteredImageUUID2];
 
         [(ICDocCamViewController *)self setImageForThumbnailZoom:v29];
-        [(ICDocCamViewController *)self setIndexPathForThumbnailZoom:v4];
+        [(ICDocCamViewController *)self setIndexPathForThumbnailZoom:tapCopy];
         objc_initWeak(&location, self);
         objc_initWeak(&from, v23);
         v37[0] = MEMORY[0x277D85DD0];
@@ -11132,12 +11132,12 @@ void __94__ICDocCamViewController_focusWithMode_exposeWithMode_atDevicePoint_mon
 
         else
         {
-          v35 = [(ICDocCamViewController *)self thumbnailContainerView];
-          [v35 setHidden:1];
+          thumbnailContainerView = [(ICDocCamViewController *)self thumbnailContainerView];
+          [thumbnailContainerView setHidden:1];
         }
 
-        v36 = [(ICDocCamViewController *)self navigationController];
-        [v36 pushViewController:v18 animated:1];
+        navigationController3 = [(ICDocCamViewController *)self navigationController];
+        [navigationController3 pushViewController:v18 animated:1];
 
         objc_destroyWeak(&v39);
         objc_destroyWeak(&v38);
@@ -11168,35 +11168,35 @@ void __46__ICDocCamViewController_thumbnailViewDidTap___block_invoke(uint64_t a1
   [v3 removeBlockerOfType:@"ThumbnailTapBlocker"];
 }
 
-- (void)addNewDocument:(id)a3
+- (void)addNewDocument:(id)document
 {
-  v7 = a3;
-  v4 = [(ICDocCamViewController *)self documentInfoCollection];
-  v5 = [v4 docInfos];
-  [v5 addObject:v7];
+  documentCopy = document;
+  documentInfoCollection = [(ICDocCamViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  [docInfos addObject:documentCopy];
 
-  v6 = [(ICDocCamViewController *)self documentInfoCollection];
-  [v6 bumpModificationDate];
+  documentInfoCollection2 = [(ICDocCamViewController *)self documentInfoCollection];
+  [documentInfoCollection2 bumpModificationDate];
 
   [(ICDocCamViewController *)self warnAboutMaxScansIfNecessary];
 }
 
 - (CGRect)targetViewRect
 {
-  v3 = [(ICDocCamViewController *)self statusBarOrientation];
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  statusBarOrientation = [(ICDocCamViewController *)self statusBarOrientation];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v6 = v3 - 1;
-  v7 = [(ICDocCamViewController *)self view];
-  v8 = v7;
-  if (v5)
+  v6 = statusBarOrientation - 1;
+  view = [(ICDocCamViewController *)self view];
+  v8 = view;
+  if (userInterfaceIdiom)
   {
-    [v7 bounds];
+    [view bounds];
     v10 = v9;
 
-    v11 = [(ICDocCamViewController *)self view];
-    [v11 bounds];
+    view2 = [(ICDocCamViewController *)self view];
+    [view2 bounds];
     v19 = v10 + -200.0;
     v21 = v20 + -200.0;
 
@@ -11206,11 +11206,11 @@ void __46__ICDocCamViewController_thumbnailViewDidTap___block_invoke(uint64_t a1
 
   else
   {
-    [v7 bounds];
+    [view bounds];
     v13 = v12;
 
-    v14 = [(ICDocCamViewController *)self view];
-    [v14 bounds];
+    view3 = [(ICDocCamViewController *)self view];
+    [view3 bounds];
     v16 = v15;
     if (v6 > 1)
     {
@@ -11226,8 +11226,8 @@ void __46__ICDocCamViewController_thumbnailViewDidTap___block_invoke(uint64_t a1
 
     v24 = *&v18;
 
-    v25 = [(ICDocCamViewController *)self view];
-    [v25 safeAreaInsets];
+    view4 = [(ICDocCamViewController *)self view];
+    [view4 safeAreaInsets];
     v27 = v26;
     v29 = v28;
     v30 = v16 + v24;
@@ -11255,22 +11255,22 @@ void __46__ICDocCamViewController_thumbnailViewDidTap___block_invoke(uint64_t a1
 
 - (void)warnAboutMaxScansIfNecessary
 {
-  v3 = [(ICDocCamViewController *)self delegate];
-  v4 = [(ICDocCamViewController *)self documentInfoCollection];
-  v5 = [v4 docInfos];
-  v6 = [v3 documentCameraController:self canAddImages:{objc_msgSend(v5, "count") + 1}];
+  delegate = [(ICDocCamViewController *)self delegate];
+  documentInfoCollection = [(ICDocCamViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  v6 = [delegate documentCameraController:self canAddImages:{objc_msgSend(docInfos, "count") + 1}];
 
   if ((v6 & 1) == 0)
   {
     [(ICDocCamViewController *)self enableShutter:0];
-    v7 = [(ICDocCamViewController *)self shutterButton];
-    [v7 setPseudoDisabled:1];
+    shutterButton = [(ICDocCamViewController *)self shutterButton];
+    [shutterButton setPseudoDisabled:1];
 
     if (![(ICDocCamViewController *)self didWarnAboutMaxScans])
     {
       [(ICDocCamViewController *)self setDidWarnAboutMaxScans:1];
-      v8 = [(ICDocCamViewController *)self processRequestsBlocker];
-      [v8 addBlockerOfType:@"MaxImageAlertBlocker" clearRectangles:1 clearQueue:1];
+      processRequestsBlocker = [(ICDocCamViewController *)self processRequestsBlocker];
+      [processRequestsBlocker addBlockerOfType:@"MaxImageAlertBlocker" clearRectangles:1 clearQueue:1];
 
       v9 = objc_opt_class();
       v10[0] = MEMORY[0x277D85DD0];
@@ -11289,10 +11289,10 @@ void __54__ICDocCamViewController_warnAboutMaxScansIfNecessary__block_invoke(uin
   [v1 removeBlockerOfType:@"MaxImageAlertBlocker"];
 }
 
-+ (void)warnAboutMaxScansReachedForViewController:(id)a3 completionHandler:(id)a4
++ (void)warnAboutMaxScansReachedForViewController:(id)controller completionHandler:(id)handler
 {
-  v13 = a3;
-  v5 = a4;
+  controllerCopy = controller;
+  handlerCopy = handler;
   v6 = [DCLocalization localizedStringForKey:@"Maximum Reached" value:@"Maximum Reached" table:@"Localizable"];
   v7 = [DCLocalization localizedStringForKey:@"You’ve added the maximum number of scans to this document. You can delete scans or create another document." value:@"You’ve added the maximum number of scans to this document. You can delete scans or create another document." table:@"Localizable"];
   v8 = [MEMORY[0x277D75110] alertControllerWithTitle:v6 message:v7 preferredStyle:1];
@@ -11301,81 +11301,81 @@ void __54__ICDocCamViewController_warnAboutMaxScansIfNecessary__block_invoke(uin
 
   v10 = MEMORY[0x277D750F8];
   v11 = [DCLocalization localizedStringForKey:@"OK" value:@"OK" table:@"Localizable"];
-  v12 = [v10 actionWithTitle:v11 style:1 handler:v5];
+  v12 = [v10 actionWithTitle:v11 style:1 handler:handlerCopy];
 
   [v8 addAction:v12];
-  [v13 presentViewController:v8 animated:1 completion:0];
+  [controllerCopy presentViewController:v8 animated:1 completion:0];
 }
 
-- (id)filteredImageForDocument:(id)a3
+- (id)filteredImageForDocument:(id)document
 {
-  v4 = a3;
-  v5 = [v4 croppedButNotFilteredImageUUID];
+  documentCopy = document;
+  croppedButNotFilteredImageUUID = [documentCopy croppedButNotFilteredImageUUID];
 
   [(ICDocCamViewController *)self imageCache];
-  if (v5)
+  if (croppedButNotFilteredImageUUID)
     v6 = {;
-    v7 = [v4 croppedButNotFilteredImageUUID];
-    [v6 getImage:v7];
+    croppedButNotFilteredImageUUID2 = [documentCopy croppedButNotFilteredImageUUID];
+    [v6 getImage:croppedButNotFilteredImageUUID2];
   }
 
   else
     v8 = {;
-    v9 = [v4 fullImageUUID];
-    v6 = [v8 getImage:v9];
+    fullImageUUID = [documentCopy fullImageUUID];
+    v6 = [v8 getImage:fullImageUUID];
 
-    v7 = [v4 imageQuad];
-    [ICDocCamImageFilters perspectiveCorrectedImageFromImage:v6 normalizedImageQuad:v7];
+    croppedButNotFilteredImageUUID2 = [documentCopy imageQuad];
+    [ICDocCamImageFilters perspectiveCorrectedImageFromImage:v6 normalizedImageQuad:croppedButNotFilteredImageUUID2];
   }
   v10 = ;
 
-  v11 = +[ICDocCamImageFilters filteredImage:orientation:imageFilterType:constantColor:](ICDocCamImageFilters, "filteredImage:orientation:imageFilterType:constantColor:", v10, [v4 currentOrientation], objc_msgSend(v4, "currentFilter"), objc_msgSend(v4, "constantColor"));
+  v11 = +[ICDocCamImageFilters filteredImage:orientation:imageFilterType:constantColor:](ICDocCamImageFilters, "filteredImage:orientation:imageFilterType:constantColor:", v10, [documentCopy currentOrientation], objc_msgSend(documentCopy, "currentFilter"), objc_msgSend(documentCopy, "constantColor"));
 
   return v11;
 }
 
-- (void)extractedDocumentController:(id)a3 startMarkupOnDocument:(id)a4 inkStyle:(unint64_t)a5 startPresentBlock:(id)a6 dismissCompletionBlock:(id)a7
+- (void)extractedDocumentController:(id)controller startMarkupOnDocument:(id)document inkStyle:(unint64_t)style startPresentBlock:(id)block dismissCompletionBlock:(id)completionBlock
 {
-  v11 = a4;
-  v12 = a6;
-  v30 = a7;
-  v13 = [(ICDocCamViewController *)self imageCache];
-  v14 = [v11 croppedAndFilteredImageUUID];
-  v31 = [v13 getImage:v14];
+  documentCopy = document;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  imageCache = [(ICDocCamViewController *)self imageCache];
+  croppedAndFilteredImageUUID = [documentCopy croppedAndFilteredImageUUID];
+  v31 = [imageCache getImage:croppedAndFilteredImageUUID];
 
-  v15 = [(ICDocCamViewController *)self filteredImageForDocument:v11];
+  v15 = [(ICDocCamViewController *)self filteredImageForDocument:documentCopy];
   v16 = +[DCMarkupUtilities createMarkupViewController];
-  [v16 setInkStyle:a5];
-  v17 = [MEMORY[0x277D75348] DCExtractedDocumentViewControllerBackgroundColor];
-  [v16 setBackgroundColor:v17];
+  [v16 setInkStyle:style];
+  dCExtractedDocumentViewControllerBackgroundColor = [MEMORY[0x277D75348] DCExtractedDocumentViewControllerBackgroundColor];
+  [v16 setBackgroundColor:dCExtractedDocumentViewControllerBackgroundColor];
 
-  v18 = [v11 markupModelData];
-  v19 = [v15 dc_JPEGData];
-  [v16 setData:v19 withArchivedModelData:v18 placeholderImage:v31];
+  markupModelData = [documentCopy markupModelData];
+  dc_JPEGData = [v15 dc_JPEGData];
+  [v16 setData:dc_JPEGData withArchivedModelData:markupModelData placeholderImage:v31];
 
   v20 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v16];
   v21 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_markupDoneAction_];
-  v22 = [v16 navigationItem];
-  [v22 setLeftBarButtonItem:v21];
+  navigationItem = [v16 navigationItem];
+  [navigationItem setLeftBarButtonItem:v21];
 
   v23 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_markupCancelAction_];
-  v24 = [v16 navigationItem];
-  [v24 setRightBarButtonItem:v23];
+  navigationItem2 = [v16 navigationItem];
+  [navigationItem2 setRightBarButtonItem:v23];
 
   [v20 setModalTransitionStyle:2];
   [v20 setModalPresentationStyle:6];
-  v25 = [MEMORY[0x277D75418] currentDevice];
-  v26 = [v25 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (!v26)
+  if (!userInterfaceIdiom)
   {
-    v27 = [v20 navigationBar];
+    navigationBar = [v20 navigationBar];
     v28 = [MEMORY[0x277D75348] colorWithWhite:0.1 alpha:1.0];
-    [v27 setBarTintColor:v28];
+    [navigationBar setBarTintColor:v28];
   }
 
-  [(ICDocCamViewController *)self setMarkupDocumentInfo:v11];
-  [(ICDocCamViewController *)self setMarkupDismissCompletionBlock:v30];
+  [(ICDocCamViewController *)self setMarkupDocumentInfo:documentCopy];
+  [(ICDocCamViewController *)self setMarkupDismissCompletionBlock:completionBlockCopy];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __126__ICDocCamViewController_extractedDocumentController_startMarkupOnDocument_inkStyle_startPresentBlock_dismissCompletionBlock___block_invoke;
@@ -11383,7 +11383,7 @@ void __54__ICDocCamViewController_warnAboutMaxScansIfNecessary__block_invoke(uin
   v32[4] = self;
   v29 = v20;
   v33 = v29;
-  v12[2](v12, v32);
+  blockCopy[2](blockCopy, v32);
 }
 
 void __126__ICDocCamViewController_extractedDocumentController_startMarkupOnDocument_inkStyle_startPresentBlock_dismissCompletionBlock___block_invoke(uint64_t a1)
@@ -11392,21 +11392,21 @@ void __126__ICDocCamViewController_extractedDocumentController_startMarkupOnDocu
   [v2 presentViewController:*(a1 + 40) animated:1 completion:0];
 }
 
-- (void)markupDoneAction:(id)a3
+- (void)markupDoneAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = objc_opt_class();
-  v6 = [(ICDocCamViewController *)self navigationController];
-  v7 = [v6 topViewController];
-  v8 = DCDynamicCast(v5, v7);
+  navigationController = [(ICDocCamViewController *)self navigationController];
+  topViewController = [navigationController topViewController];
+  v8 = DCDynamicCast(v5, topViewController);
 
   v9 = objc_opt_class();
-  v10 = [(ICDocCamViewController *)self presentedViewController];
-  v11 = DCDynamicCast(v9, v10);
+  presentedViewController = [(ICDocCamViewController *)self presentedViewController];
+  v11 = DCDynamicCast(v9, presentedViewController);
 
-  v12 = [(ICDocCamViewController *)self markupDocumentInfo];
+  markupDocumentInfo = [(ICDocCamViewController *)self markupDocumentInfo];
   [(ICDocCamViewController *)self setMarkupDocumentInfo:0];
-  v13 = [v11 topViewController];
+  topViewController2 = [v11 topViewController];
   v28 = 0;
   v29 = &v28;
   v30 = 0x2050000000;
@@ -11425,104 +11425,104 @@ void __126__ICDocCamViewController_extractedDocumentController_startMarkupOnDocu
 
   v15 = v14;
   _Block_object_dispose(&v28, 8);
-  if ((objc_opt_isKindOfClass() & (v12 != 0)) == 1)
+  if ((objc_opt_isKindOfClass() & (markupDocumentInfo != 0)) == 1)
   {
-    v16 = v13;
+    v16 = topViewController2;
     v26 = v8;
-    v17 = [v16 createArchivedModelData];
-    [v12 setMarkupModelData:v17];
+    createArchivedModelData = [v16 createArchivedModelData];
+    [markupDocumentInfo setMarkupModelData:createArchivedModelData];
 
     v18 = [v16 dataRepresentationEmbeddingSourceImageAndEditModel:0 error:0];
     if (v18)
     {
-      v25 = v4;
+      v25 = actionCopy;
       v19 = [MEMORY[0x277D755B8] imageWithData:v18];
-      v20 = [(ICDocCamViewController *)self imageCache];
-      v21 = [v12 metaData];
-      v22 = [v12 croppedAndFilteredImageUUID];
-      [v20 replaceImage:v19 metaData:v21 uuid:v22];
+      imageCache = [(ICDocCamViewController *)self imageCache];
+      metaData = [markupDocumentInfo metaData];
+      croppedAndFilteredImageUUID = [markupDocumentInfo croppedAndFilteredImageUUID];
+      [imageCache replaceImage:v19 metaData:metaData uuid:croppedAndFilteredImageUUID];
 
-      [v26 didUpdateDocumentImage:v12];
-      v4 = v25;
+      [v26 didUpdateDocumentImage:markupDocumentInfo];
+      actionCopy = v25;
     }
 
     v8 = v26;
   }
 
-  v23 = [(ICDocCamViewController *)self markupDismissCompletionBlock];
+  markupDismissCompletionBlock = [(ICDocCamViewController *)self markupDismissCompletionBlock];
   [(ICDocCamViewController *)self setMarkupDismissCompletionBlock:0];
-  v24 = [(ICDocCamViewController *)self presentedViewController];
-  [v24 dismissViewControllerAnimated:1 completion:v23];
+  presentedViewController2 = [(ICDocCamViewController *)self presentedViewController];
+  [presentedViewController2 dismissViewControllerAnimated:1 completion:markupDismissCompletionBlock];
 }
 
-- (void)markupCancelAction:(id)a3
+- (void)markupCancelAction:(id)action
 {
-  v5 = [(ICDocCamViewController *)self markupDismissCompletionBlock];
+  markupDismissCompletionBlock = [(ICDocCamViewController *)self markupDismissCompletionBlock];
   [(ICDocCamViewController *)self setMarkupDismissCompletionBlock:0];
   [(ICDocCamViewController *)self setMarkupDocumentInfo:0];
-  v4 = [(ICDocCamViewController *)self presentedViewController];
-  [v4 dismissViewControllerAnimated:1 completion:v5];
+  presentedViewController = [(ICDocCamViewController *)self presentedViewController];
+  [presentedViewController dismissViewControllerAnimated:1 completion:markupDismissCompletionBlock];
 }
 
-- (id)extractedDocumentControllerMarkupModelDataForDocument:(id)a3
+- (id)extractedDocumentControllerMarkupModelDataForDocument:(id)document
 {
-  v3 = [a3 markupModelData];
+  markupModelData = [document markupModelData];
 
-  return v3;
+  return markupModelData;
 }
 
-- (void)extractedDocumentControllerDiscardMarkupModelDataForDocument:(id)a3
+- (void)extractedDocumentControllerDiscardMarkupModelDataForDocument:(id)document
 {
-  v12 = a3;
-  [v12 setMarkupModelData:0];
+  documentCopy = document;
+  [documentCopy setMarkupModelData:0];
   v4 = objc_opt_class();
-  v5 = [(ICDocCamViewController *)self navigationController];
-  v6 = [v5 topViewController];
-  v7 = DCDynamicCast(v4, v6);
+  navigationController = [(ICDocCamViewController *)self navigationController];
+  topViewController = [navigationController topViewController];
+  v7 = DCDynamicCast(v4, topViewController);
 
-  v8 = [(ICDocCamViewController *)self filteredImageForDocument:v12];
-  v9 = [(ICDocCamViewController *)self imageCache];
-  v10 = [v12 metaData];
-  v11 = [v12 croppedAndFilteredImageUUID];
-  [v9 replaceImage:v8 metaData:v10 uuid:v11];
+  v8 = [(ICDocCamViewController *)self filteredImageForDocument:documentCopy];
+  imageCache = [(ICDocCamViewController *)self imageCache];
+  metaData = [documentCopy metaData];
+  croppedAndFilteredImageUUID = [documentCopy croppedAndFilteredImageUUID];
+  [imageCache replaceImage:v8 metaData:metaData uuid:croppedAndFilteredImageUUID];
 
-  [v7 didUpdateDocumentImage:v12];
+  [v7 didUpdateDocumentImage:documentCopy];
 }
 
-- (void)extractedDocumentControllerDidTapRetake:(unint64_t)a3
+- (void)extractedDocumentControllerDidTapRetake:(unint64_t)retake
 {
-  v5 = [(ICDocCamViewController *)self documentInfoCollection];
-  v6 = [v5 docInfos];
-  v7 = [v6 count];
+  documentInfoCollection = [(ICDocCamViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  v7 = [docInfos count];
 
-  if (v7 > a3)
+  if (v7 > retake)
   {
-    v8 = [(ICDocCamViewController *)self thumbnailViewController];
-    [v8 update];
+    thumbnailViewController = [(ICDocCamViewController *)self thumbnailViewController];
+    [thumbnailViewController update];
 
-    [(ICDocCamViewController *)self setRetakeIndex:a3];
+    [(ICDocCamViewController *)self setRetakeIndex:retake];
     [(ICDocCamViewController *)self setDoneButtonVisible:0];
-    v9 = [(ICDocCamViewController *)self thumbnailContainerView];
-    [v9 setHidden:1];
+    thumbnailContainerView = [(ICDocCamViewController *)self thumbnailContainerView];
+    [thumbnailContainerView setHidden:1];
 
     [(ICDocCamViewController *)self setUseCustomRetakeTransition:1];
-    v10 = [(ICDocCamViewController *)self navigationController];
-    [v10 setDelegate:self];
+    navigationController = [(ICDocCamViewController *)self navigationController];
+    [navigationController setDelegate:self];
 
-    v11 = [(ICDocCamViewController *)self navigationController];
-    v12 = [v11 topViewController];
-    v13 = [v12 navigationController];
-    [v13 setDelegate:self];
+    navigationController2 = [(ICDocCamViewController *)self navigationController];
+    topViewController = [navigationController2 topViewController];
+    navigationController3 = [topViewController navigationController];
+    [navigationController3 setDelegate:self];
 
-    v14 = [(ICDocCamViewController *)self documentInfoCollection];
-    v15 = [v14 docInfos];
-    v16 = [v15 objectAtIndexedSubscript:a3];
+    documentInfoCollection2 = [(ICDocCamViewController *)self documentInfoCollection];
+    docInfos2 = [documentInfoCollection2 docInfos];
+    v16 = [docInfos2 objectAtIndexedSubscript:retake];
 
-    v17 = [(ICDocCamViewController *)self imageCache];
-    v18 = [v16 croppedAndFilteredImageUUID];
-    v19 = [v17 getImage:v18];
+    imageCache = [(ICDocCamViewController *)self imageCache];
+    croppedAndFilteredImageUUID = [v16 croppedAndFilteredImageUUID];
+    v19 = [imageCache getImage:croppedAndFilteredImageUUID];
 
-    v20 = [MEMORY[0x277CCAA70] indexPathForItem:a3 inSection:0];
+    v20 = [MEMORY[0x277CCAA70] indexPathForItem:retake inSection:0];
     [(ICDocCamViewController *)self setIndexPathForRetake:v20];
 
     [(ICDocCamViewController *)self setImageForRetake:v19];
@@ -11535,9 +11535,9 @@ void __126__ICDocCamViewController_extractedDocumentController_startMarkupOnDocu
     objc_copyWeak(&v28, &location);
     [(ICDocCamViewController *)self setSessionStartNotificationBlock:&v24];
     v21 = [(ICDocCamViewController *)self previewView:v24];
-    v22 = [v21 layer];
+    layer = [v21 layer];
     LODWORD(v23) = 1.0;
-    [v22 setOpacity:v23];
+    [layer setOpacity:v23];
 
     [(ICDocCamViewController *)self restartImageCaptureSessionIfNecessary];
     [(ICDocCamViewController *)self retakeButtonWasPressed];
@@ -11553,57 +11553,57 @@ void __66__ICDocCamViewController_extractedDocumentControllerDidTapRetake___bloc
   v2 = [v1 popViewControllerAnimated:1];
 }
 
-- (void)extractedDocumentController:(id)a3 didTapRecrop:(id)a4 index:(int64_t)a5
+- (void)extractedDocumentController:(id)controller didTapRecrop:(id)recrop index:(int64_t)index
 {
-  v8 = a3;
-  v9 = a4;
-  v29 = [(ICDocCamViewController *)self imageCache];
-  v10 = [v9 fullImageUUID];
-  v11 = [v29 getImage:v10];
+  controllerCopy = controller;
+  recropCopy = recrop;
+  imageCache = [(ICDocCamViewController *)self imageCache];
+  fullImageUUID = [recropCopy fullImageUUID];
+  v11 = [imageCache getImage:fullImageUUID];
 
-  v12 = [v9 imageQuad];
-  v13 = [v9 currentOrientation];
+  imageQuad = [recropCopy imageQuad];
+  currentOrientation = [recropCopy currentOrientation];
   v14 = [ICDocCamImageQuadEditViewController alloc];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __73__ICDocCamViewController_extractedDocumentController_didTapRecrop_index___block_invoke;
   v30[3] = &unk_278F93EE8;
-  v15 = v9;
+  v15 = recropCopy;
   v31 = v15;
-  v32 = self;
-  v16 = v8;
+  selfCopy = self;
+  v16 = controllerCopy;
   v33 = v16;
-  v34 = a5;
-  v17 = [(ICDocCamImageQuadEditViewController *)v14 initWithImage:v11 quad:v12 scanDataDelegate:0 orientation:v13 completionHandler:v30];
+  indexCopy = index;
+  v17 = [(ICDocCamImageQuadEditViewController *)v14 initWithImage:v11 quad:imageQuad scanDataDelegate:0 orientation:currentOrientation completionHandler:v30];
   [(ICDocCamImageQuadEditViewController *)v17 setShowImageAsAspectFit:1];
   [(ICDocCamImageQuadEditViewController *)v17 setEdgesForExtendedLayout:15];
   [(ICDocCamImageQuadEditViewController *)v17 setExtendedLayoutIncludesOpaqueBars:1];
   [(ICDocCamViewController *)self setUseCustomRecropTransition:1];
-  v18 = [(ICDocCamViewController *)self navigationController];
-  [v18 setDelegate:self];
+  navigationController = [(ICDocCamViewController *)self navigationController];
+  [navigationController setDelegate:self];
 
-  v19 = [(ICDocCamImageQuadEditViewController *)v17 navigationController];
-  [v19 setDelegate:self];
+  navigationController2 = [(ICDocCamImageQuadEditViewController *)v17 navigationController];
+  [navigationController2 setDelegate:self];
 
-  v20 = [MEMORY[0x277CCAA70] indexPathForItem:a5 inSection:0];
+  v20 = [MEMORY[0x277CCAA70] indexPathForItem:index inSection:0];
   [(ICDocCamViewController *)self setIndexPathForRecrop:v20];
 
-  v21 = [(ICDocCamViewController *)self imageCache];
-  v22 = [v15 croppedAndFilteredImageUUID];
-  v23 = [v21 getImage:v22];
+  imageCache2 = [(ICDocCamViewController *)self imageCache];
+  croppedAndFilteredImageUUID = [v15 croppedAndFilteredImageUUID];
+  v23 = [imageCache2 getImage:croppedAndFilteredImageUUID];
   [(ICDocCamViewController *)self setFilteredImageForRecrop:v23];
 
   v24 = [v16 croppedButNotFilteredImageForDocInfo:v15];
   [(ICDocCamViewController *)self setUnfilteredImageForRecrop:v24];
 
   v25 = objc_alloc(MEMORY[0x277D755B8]);
-  v26 = [(ICDocCamViewController *)self unfilteredImageForRecrop];
-  v27 = [v25 initWithCGImage:objc_msgSend(v26 scale:"CGImage") orientation:{objc_msgSend(v15, "currentOrientation"), 1.0}];
+  unfilteredImageForRecrop = [(ICDocCamViewController *)self unfilteredImageForRecrop];
+  v27 = [v25 initWithCGImage:objc_msgSend(unfilteredImageForRecrop scale:"CGImage") orientation:{objc_msgSend(v15, "currentOrientation"), 1.0}];
   [(ICDocCamViewController *)self setUnfilteredImageForRecrop:v27];
 
   -[ICDocCamViewController setOrientationForRecrop:](self, "setOrientationForRecrop:", [v15 currentOrientation]);
-  v28 = [(ICDocCamViewController *)self navigationController];
-  [v28 pushViewController:v17 animated:1];
+  navigationController3 = [(ICDocCamViewController *)self navigationController];
+  [navigationController3 pushViewController:v17 animated:1];
 }
 
 void __73__ICDocCamViewController_extractedDocumentController_didTapRecrop_index___block_invoke(uint64_t a1, int a2, void *a3, void *a4)
@@ -11652,63 +11652,63 @@ void __73__ICDocCamViewController_extractedDocumentController_didTapRecrop_index
   v26 = [v25 popViewControllerAnimated:1];
 }
 
-- (void)extractedDocumentControllerDidTapDone:(unint64_t)a3
+- (void)extractedDocumentControllerDidTapDone:(unint64_t)done
 {
   [(ICDocCamViewController *)self disableRetakeMode];
-  v5 = [MEMORY[0x277CDA000] animation];
-  [v5 setRemovedOnCompletion:1];
-  [v5 setDuration:0.25];
+  animation = [MEMORY[0x277CDA000] animation];
+  [animation setRemovedOnCompletion:1];
+  [animation setDuration:0.25];
   v6 = *MEMORY[0x277CDA928];
-  [v5 setType:*MEMORY[0x277CDA928]];
+  [animation setType:*MEMORY[0x277CDA928]];
   v7 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
-  [v5 setTimingFunction:v7];
+  [animation setTimingFunction:v7];
 
-  v8 = [(ICDocCamViewController *)self saveButton];
-  v9 = [v8 layer];
-  [v9 addAnimation:v5 forKey:@"changeTextTransition"];
+  saveButton = [(ICDocCamViewController *)self saveButton];
+  layer = [saveButton layer];
+  [layer addAnimation:animation forKey:@"changeTextTransition"];
 
-  v10 = [(ICDocCamViewController *)self saveButton];
-  v11 = [(ICDocCamViewController *)self documentInfoCollection];
-  v12 = [v11 docInfos];
-  [v10 setDocumentCount:{objc_msgSend(v12, "count")}];
+  saveButton2 = [(ICDocCamViewController *)self saveButton];
+  documentInfoCollection = [(ICDocCamViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  [saveButton2 setDocumentCount:{objc_msgSend(docInfos, "count")}];
 
   [(ICDocCamViewController *)self updateThumbnailContainerViewConstraintConstantForIPad];
-  v13 = [(ICDocCamViewController *)self documentInfoCollection];
-  v14 = [v13 docInfos];
-  v15 = [v14 count];
+  documentInfoCollection2 = [(ICDocCamViewController *)self documentInfoCollection];
+  docInfos2 = [documentInfoCollection2 docInfos];
+  v15 = [docInfos2 count];
 
   if (v15)
   {
     [(ICDocCamViewController *)self setDoneButtonVisible:1];
   }
 
-  v16 = [(ICDocCamViewController *)self thumbnailContainerView];
-  [v16 setHidden:0];
+  thumbnailContainerView = [(ICDocCamViewController *)self thumbnailContainerView];
+  [thumbnailContainerView setHidden:0];
 
-  v17 = [(ICDocCamViewController *)self thumbnailViewController];
-  [v17 update];
+  thumbnailViewController = [(ICDocCamViewController *)self thumbnailViewController];
+  [thumbnailViewController update];
 
-  v18 = [(ICDocCamViewController *)self documentInfoCollection];
-  v19 = [v18 docInfos];
-  v20 = [v19 count];
+  documentInfoCollection3 = [(ICDocCamViewController *)self documentInfoCollection];
+  docInfos3 = [documentInfoCollection3 docInfos];
+  v20 = [docInfos3 count];
 
   if (v20)
   {
     [(ICDocCamViewController *)self setUseCustomThumbnailZoomTransition:1];
-    v21 = [(ICDocCamViewController *)self view];
-    [v21 setNeedsLayout];
+    view = [(ICDocCamViewController *)self view];
+    [view setNeedsLayout];
 
-    v22 = [(ICDocCamViewController *)self view];
-    [v22 layoutIfNeeded];
+    view2 = [(ICDocCamViewController *)self view];
+    [view2 layoutIfNeeded];
 
-    v23 = [MEMORY[0x277CCAA70] indexPathForItem:a3 inSection:0];
-    v24 = [(ICDocCamViewController *)self documentInfoCollection];
-    v25 = [v24 docInfos];
-    v26 = [v25 objectAtIndexedSubscript:a3];
+    v23 = [MEMORY[0x277CCAA70] indexPathForItem:done inSection:0];
+    documentInfoCollection4 = [(ICDocCamViewController *)self documentInfoCollection];
+    docInfos4 = [documentInfoCollection4 docInfos];
+    v26 = [docInfos4 objectAtIndexedSubscript:done];
 
-    v27 = [(ICDocCamViewController *)self imageCache];
-    v28 = [v26 croppedAndFilteredImageUUID];
-    v29 = [v27 getImage:v28];
+    imageCache = [(ICDocCamViewController *)self imageCache];
+    croppedAndFilteredImageUUID = [v26 croppedAndFilteredImageUUID];
+    v29 = [imageCache getImage:croppedAndFilteredImageUUID];
 
     [(ICDocCamViewController *)self setIndexPathForThumbnailZoom:v23];
     [(ICDocCamViewController *)self setImageForThumbnailZoom:v29];
@@ -11720,9 +11720,9 @@ void __73__ICDocCamViewController_extractedDocumentController_didTapRecrop_index
     objc_copyWeak(&v48, &location);
     [(ICDocCamViewController *)self setSessionStartNotificationBlock:&v44];
     v30 = [(ICDocCamViewController *)self previewView:v44];
-    v31 = [v30 layer];
+    layer2 = [v30 layer];
     LODWORD(v32) = 1.0;
-    [v31 setOpacity:v32];
+    [layer2 setOpacity:v32];
 
     [(ICDocCamViewController *)self restartImageCaptureSessionIfNecessary];
     objc_destroyWeak(&v48);
@@ -11732,31 +11732,31 @@ void __73__ICDocCamViewController_extractedDocumentController_didTapRecrop_index
   else
   {
     [(ICDocCamViewController *)self setUseCustomThumbnailZoomTransition:0];
-    v33 = [MEMORY[0x277D75418] currentDevice];
-    v34 = [v33 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (!v34)
+    if (!userInterfaceIdiom)
     {
-      v35 = [(ICDocCamViewController *)self thumbnailContainerView];
-      [v35 setHidden:0];
+      thumbnailContainerView2 = [(ICDocCamViewController *)self thumbnailContainerView];
+      [thumbnailContainerView2 setHidden:0];
     }
 
-    v36 = [(ICDocCamViewController *)self navigationController];
-    v37 = [v36 topViewController];
-    v38 = [v37 view];
+    navigationController = [(ICDocCamViewController *)self navigationController];
+    topViewController = [navigationController topViewController];
+    view3 = [topViewController view];
 
-    v39 = [MEMORY[0x277CDA000] animation];
-    [v39 setDuration:0.25];
-    [v39 setType:*MEMORY[0x277CDA958]];
-    [v39 setSubtype:v6];
+    animation2 = [MEMORY[0x277CDA000] animation];
+    [animation2 setDuration:0.25];
+    [animation2 setType:*MEMORY[0x277CDA958]];
+    [animation2 setSubtype:v6];
     v40 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7C0]];
-    [v39 setTimingFunction:v40];
+    [animation2 setTimingFunction:v40];
 
-    v41 = [v38 layer];
-    [v41 addAnimation:v39 forKey:&stru_285C55A80];
+    layer3 = [view3 layer];
+    [layer3 addAnimation:animation2 forKey:&stru_285C55A80];
 
-    v42 = [(ICDocCamViewController *)self navigationController];
-    v43 = [v42 popViewControllerAnimated:0];
+    navigationController2 = [(ICDocCamViewController *)self navigationController];
+    v43 = [navigationController2 popViewControllerAnimated:0];
   }
 }
 
@@ -11767,126 +11767,126 @@ void __64__ICDocCamViewController_extractedDocumentControllerDidTapDone___block_
   v2 = [v1 popViewControllerAnimated:1];
 }
 
-- (void)extractedDocumentControllerDidDeleteDocument:(id)a3
+- (void)extractedDocumentControllerDidDeleteDocument:(id)document
 {
-  v3 = [(ICDocCamViewController *)self thumbnailViewController];
-  [v3 update];
+  thumbnailViewController = [(ICDocCamViewController *)self thumbnailViewController];
+  [thumbnailViewController update];
 }
 
 - (void)setupAccessibilityInfo
 {
   v86 = *MEMORY[0x277D85DE8];
-  v3 = [(ICDocCamViewController *)self userPromptLabel];
-  [v3 setIsAccessibilityElement:0];
+  userPromptLabel = [(ICDocCamViewController *)self userPromptLabel];
+  [userPromptLabel setIsAccessibilityElement:0];
 
-  v4 = [(ICDocCamViewController *)self cameraUnavailableLabel];
-  [v4 setIsAccessibilityElement:0];
+  cameraUnavailableLabel = [(ICDocCamViewController *)self cameraUnavailableLabel];
+  [cameraUnavailableLabel setIsAccessibilityElement:0];
 
-  v5 = [(ICDocCamViewController *)self cancelButtonForIPhone];
-  [v5 setShowsLargeContentViewer:1];
+  cancelButtonForIPhone = [(ICDocCamViewController *)self cancelButtonForIPhone];
+  [cancelButtonForIPhone setShowsLargeContentViewer:1];
 
-  v6 = [(ICDocCamViewController *)self cancelButtonForIPhone];
+  cancelButtonForIPhone2 = [(ICDocCamViewController *)self cancelButtonForIPhone];
   v7 = objc_alloc_init(MEMORY[0x277D756C8]);
-  [v6 addInteraction:v7];
+  [cancelButtonForIPhone2 addInteraction:v7];
 
-  v8 = [(ICDocCamViewController *)self cancelButton];
-  [v8 setShowsLargeContentViewer:1];
+  cancelButton = [(ICDocCamViewController *)self cancelButton];
+  [cancelButton setShowsLargeContentViewer:1];
 
-  v9 = [(ICDocCamViewController *)self cancelButton];
+  cancelButton2 = [(ICDocCamViewController *)self cancelButton];
   v10 = objc_alloc_init(MEMORY[0x277D756C8]);
-  [v9 addInteraction:v10];
+  [cancelButton2 addInteraction:v10];
 
-  v11 = [(ICDocCamViewController *)self flashButton];
-  [v11 setShowsLargeContentViewer:1];
+  flashButton = [(ICDocCamViewController *)self flashButton];
+  [flashButton setShowsLargeContentViewer:1];
 
-  v12 = [(ICDocCamViewController *)self flashButton];
+  flashButton2 = [(ICDocCamViewController *)self flashButton];
   v13 = objc_alloc_init(MEMORY[0x277D756C8]);
-  [v12 addInteraction:v13];
+  [flashButton2 addInteraction:v13];
 
-  v14 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
-  [v14 setShowsLargeContentViewer:1];
+  flashSettingViewFlashIcon = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
+  [flashSettingViewFlashIcon setShowsLargeContentViewer:1];
 
-  v15 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
+  flashSettingViewFlashIcon2 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
   v16 = objc_alloc_init(MEMORY[0x277D756C8]);
-  [v15 addInteraction:v16];
+  [flashSettingViewFlashIcon2 addInteraction:v16];
 
-  v17 = [(ICDocCamViewController *)self flashButtonForIPhone];
-  [v17 setShowsLargeContentViewer:1];
+  flashButtonForIPhone = [(ICDocCamViewController *)self flashButtonForIPhone];
+  [flashButtonForIPhone setShowsLargeContentViewer:1];
 
-  v18 = [(ICDocCamViewController *)self flashButtonForIPhone];
+  flashButtonForIPhone2 = [(ICDocCamViewController *)self flashButtonForIPhone];
   v19 = objc_alloc_init(MEMORY[0x277D756C8]);
-  [v18 addInteraction:v19];
+  [flashButtonForIPhone2 addInteraction:v19];
 
-  v20 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
-  [v20 setShowsLargeContentViewer:1];
+  flashSettingViewAutoButton = [(ICDocCamViewController *)self flashSettingViewAutoButton];
+  [flashSettingViewAutoButton setShowsLargeContentViewer:1];
 
-  v21 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
+  flashSettingViewAutoButton2 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
   v22 = objc_alloc_init(MEMORY[0x277D756C8]);
-  [v21 addInteraction:v22];
+  [flashSettingViewAutoButton2 addInteraction:v22];
 
-  v23 = [(ICDocCamViewController *)self flashSettingViewOnButton];
-  [v23 setShowsLargeContentViewer:1];
+  flashSettingViewOnButton = [(ICDocCamViewController *)self flashSettingViewOnButton];
+  [flashSettingViewOnButton setShowsLargeContentViewer:1];
 
-  v24 = [(ICDocCamViewController *)self flashSettingViewOnButton];
+  flashSettingViewOnButton2 = [(ICDocCamViewController *)self flashSettingViewOnButton];
   v25 = objc_alloc_init(MEMORY[0x277D756C8]);
-  [v24 addInteraction:v25];
+  [flashSettingViewOnButton2 addInteraction:v25];
 
-  v26 = [(ICDocCamViewController *)self flashSettingViewOffButton];
-  [v26 setShowsLargeContentViewer:1];
+  flashSettingViewOffButton = [(ICDocCamViewController *)self flashSettingViewOffButton];
+  [flashSettingViewOffButton setShowsLargeContentViewer:1];
 
-  v27 = [(ICDocCamViewController *)self flashSettingViewOffButton];
+  flashSettingViewOffButton2 = [(ICDocCamViewController *)self flashSettingViewOffButton];
   v28 = objc_alloc_init(MEMORY[0x277D756C8]);
-  [v27 addInteraction:v28];
+  [flashSettingViewOffButton2 addInteraction:v28];
 
   v29 = [DCLocalization localizedStringForKey:@"Show filter settings" value:@"Show filter settings" table:@"Localizable"];
-  v30 = [(ICDocCamViewController *)self filterButton];
-  [v30 setAccessibilityLabel:v29];
+  filterButton = [(ICDocCamViewController *)self filterButton];
+  [filterButton setAccessibilityLabel:v29];
 
   v31 = [DCLocalization localizedStringForKey:@"Double-tap to choose a filter to apply to this scan." value:@"Double-tap to choose a filter to apply to this scan." table:@"Localizable"];
-  v32 = [(ICDocCamViewController *)self filterButton];
-  [v32 setAccessibilityHint:v31];
+  filterButton2 = [(ICDocCamViewController *)self filterButton];
+  [filterButton2 setAccessibilityHint:v31];
 
-  v33 = [(ICDocCamViewController *)self filterButton];
-  [v33 setShowsLargeContentViewer:1];
+  filterButton3 = [(ICDocCamViewController *)self filterButton];
+  [filterButton3 setShowsLargeContentViewer:1];
 
-  v34 = [(ICDocCamViewController *)self filterButton];
+  filterButton4 = [(ICDocCamViewController *)self filterButton];
   v35 = objc_alloc_init(MEMORY[0x277D756C8]);
-  [v34 addInteraction:v35];
+  [filterButton4 addInteraction:v35];
 
-  v36 = [(ICDocCamViewController *)self filterButton];
-  v37 = [v36 accessibilityLabel];
-  v38 = [(ICDocCamViewController *)self filterButtonForIPhone];
-  [v38 setAccessibilityLabel:v37];
+  filterButton5 = [(ICDocCamViewController *)self filterButton];
+  accessibilityLabel = [filterButton5 accessibilityLabel];
+  filterButtonForIPhone = [(ICDocCamViewController *)self filterButtonForIPhone];
+  [filterButtonForIPhone setAccessibilityLabel:accessibilityLabel];
 
-  v39 = [(ICDocCamViewController *)self filterButton];
-  v40 = [v39 accessibilityHint];
-  v41 = [(ICDocCamViewController *)self filterButtonForIPhone];
-  [v41 setAccessibilityHint:v40];
+  filterButton6 = [(ICDocCamViewController *)self filterButton];
+  accessibilityHint = [filterButton6 accessibilityHint];
+  filterButtonForIPhone2 = [(ICDocCamViewController *)self filterButtonForIPhone];
+  [filterButtonForIPhone2 setAccessibilityHint:accessibilityHint];
 
-  v42 = [(ICDocCamViewController *)self filterButtonForIPhone];
-  [v42 setShowsLargeContentViewer:1];
+  filterButtonForIPhone3 = [(ICDocCamViewController *)self filterButtonForIPhone];
+  [filterButtonForIPhone3 setShowsLargeContentViewer:1];
 
-  v43 = [(ICDocCamViewController *)self filterButtonForIPhone];
+  filterButtonForIPhone4 = [(ICDocCamViewController *)self filterButtonForIPhone];
   v44 = objc_alloc_init(MEMORY[0x277D756C8]);
-  [v43 addInteraction:v44];
+  [filterButtonForIPhone4 addInteraction:v44];
 
   v45 = [DCLocalization localizedStringForKey:@"Hide filter settings" value:@"Hide filter settings" table:@"Localizable"];
-  v46 = [(ICDocCamViewController *)self filterViewButton];
-  [v46 setAccessibilityLabel:v45];
+  filterViewButton = [(ICDocCamViewController *)self filterViewButton];
+  [filterViewButton setAccessibilityLabel:v45];
 
-  v47 = [(ICDocCamViewController *)self filterViewButton];
-  [v47 setShowsLargeContentViewer:1];
+  filterViewButton2 = [(ICDocCamViewController *)self filterViewButton];
+  [filterViewButton2 setShowsLargeContentViewer:1];
 
-  v48 = [(ICDocCamViewController *)self filterViewButton];
+  filterViewButton3 = [(ICDocCamViewController *)self filterViewButton];
   v49 = objc_alloc_init(MEMORY[0x277D756C8]);
-  [v48 addInteraction:v49];
+  [filterViewButton3 addInteraction:v49];
 
   v83 = 0u;
   v84 = 0u;
   v81 = 0u;
   v82 = 0u;
-  v50 = [(ICDocCamViewController *)self filterButtons];
-  v51 = [v50 countByEnumeratingWithState:&v81 objects:v85 count:16];
+  filterButtons = [(ICDocCamViewController *)self filterButtons];
+  v51 = [filterButtons countByEnumeratingWithState:&v81 objects:v85 count:16];
   if (v51)
   {
     v52 = *v82;
@@ -11896,7 +11896,7 @@ void __64__ICDocCamViewController_extractedDocumentControllerDidTapDone___block_
       {
         if (*v82 != v52)
         {
-          objc_enumerationMutation(v50);
+          objc_enumerationMutation(filterButtons);
         }
 
         v54 = *(*(&v81 + 1) + 8 * i);
@@ -11905,73 +11905,73 @@ void __64__ICDocCamViewController_extractedDocumentControllerDidTapDone___block_
         [v54 addInteraction:v55];
       }
 
-      v51 = [v50 countByEnumeratingWithState:&v81 objects:v85 count:16];
+      v51 = [filterButtons countByEnumeratingWithState:&v81 objects:v85 count:16];
     }
 
     while (v51);
   }
 
   v56 = [DCLocalization localizedStringForKey:@"Double-tap to resume" value:@"Double-tap to resume" table:@"Localizable"];
-  v57 = [(ICDocCamViewController *)self resumeButton];
-  [v57 setAccessibilityLabel:v56];
+  resumeButton = [(ICDocCamViewController *)self resumeButton];
+  [resumeButton setAccessibilityLabel:v56];
 
-  v58 = [(ICDocCamViewController *)self autoButtonForIPhone];
-  [v58 setShowsLargeContentViewer:1];
+  autoButtonForIPhone = [(ICDocCamViewController *)self autoButtonForIPhone];
+  [autoButtonForIPhone setShowsLargeContentViewer:1];
 
-  v59 = [(ICDocCamViewController *)self autoButtonForIPhone];
+  autoButtonForIPhone2 = [(ICDocCamViewController *)self autoButtonForIPhone];
   v60 = objc_alloc_init(MEMORY[0x277D756C8]);
-  [v59 addInteraction:v60];
+  [autoButtonForIPhone2 addInteraction:v60];
 
-  v61 = [(ICDocCamViewController *)self autoButton];
-  [v61 setShowsLargeContentViewer:1];
+  autoButton = [(ICDocCamViewController *)self autoButton];
+  [autoButton setShowsLargeContentViewer:1];
 
-  v62 = [(ICDocCamViewController *)self autoButton];
+  autoButton2 = [(ICDocCamViewController *)self autoButton];
   v63 = objc_alloc_init(MEMORY[0x277D756C8]);
-  [v62 addInteraction:v63];
+  [autoButton2 addInteraction:v63];
 
   [(ICDocCamViewController *)self updateAccessibilityForCurrentFlashMode];
   [(ICDocCamViewController *)self updateAccessibilityForCurrentFilter];
   [(ICDocCamViewController *)self updateAccessibilityForAutoShutterMode:[(ICDocCamViewController *)self autoMode]];
-  v64 = [(ICDocCamViewController *)self filterButton];
-  [v64 _accessibilitySetIsSpeakThisElement:1];
+  filterButton7 = [(ICDocCamViewController *)self filterButton];
+  [filterButton7 _accessibilitySetIsSpeakThisElement:1];
 
-  v65 = [(ICDocCamViewController *)self filterButtonForIPhone];
-  [v65 _accessibilitySetIsSpeakThisElement:1];
+  filterButtonForIPhone5 = [(ICDocCamViewController *)self filterButtonForIPhone];
+  [filterButtonForIPhone5 _accessibilitySetIsSpeakThisElement:1];
 
-  v66 = [(ICDocCamViewController *)self flashButton];
-  [v66 _accessibilitySetIsSpeakThisElement:1];
+  flashButton3 = [(ICDocCamViewController *)self flashButton];
+  [flashButton3 _accessibilitySetIsSpeakThisElement:1];
 
-  v67 = [(ICDocCamViewController *)self flashButtonForIPhone];
-  [v67 _accessibilitySetIsSpeakThisElement:1];
+  flashButtonForIPhone3 = [(ICDocCamViewController *)self flashButtonForIPhone];
+  [flashButtonForIPhone3 _accessibilitySetIsSpeakThisElement:1];
 
-  v68 = [(ICDocCamViewController *)self autoButton];
-  [v68 _accessibilitySetIsSpeakThisElement:1];
+  autoButton3 = [(ICDocCamViewController *)self autoButton];
+  [autoButton3 _accessibilitySetIsSpeakThisElement:1];
 
-  v69 = [(ICDocCamViewController *)self autoButtonForIPhone];
-  [v69 _accessibilitySetIsSpeakThisElement:1];
+  autoButtonForIPhone3 = [(ICDocCamViewController *)self autoButtonForIPhone];
+  [autoButtonForIPhone3 _accessibilitySetIsSpeakThisElement:1];
 
-  v70 = [(ICDocCamViewController *)self manualButton];
-  [v70 _accessibilitySetIsSpeakThisElement:1];
+  manualButton = [(ICDocCamViewController *)self manualButton];
+  [manualButton _accessibilitySetIsSpeakThisElement:1];
 
-  v71 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
-  v72 = [v71 accessibilityLabel];
-  v73 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
-  [v73 setLargeContentTitle:v72];
+  flashSettingViewFlashIcon3 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
+  accessibilityLabel2 = [flashSettingViewFlashIcon3 accessibilityLabel];
+  flashSettingViewFlashIcon4 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
+  [flashSettingViewFlashIcon4 setLargeContentTitle:accessibilityLabel2];
 
-  v74 = [(ICDocCamViewController *)self filterViewButton];
-  v75 = [v74 accessibilityLabel];
-  v76 = [(ICDocCamViewController *)self filterViewButton];
-  [v76 setLargeContentTitle:v75];
+  filterViewButton4 = [(ICDocCamViewController *)self filterViewButton];
+  accessibilityLabel3 = [filterViewButton4 accessibilityLabel];
+  filterViewButton5 = [(ICDocCamViewController *)self filterViewButton];
+  [filterViewButton5 setLargeContentTitle:accessibilityLabel3];
 
-  v77 = [(ICDocCamViewController *)self manualButton];
-  [v77 setShowsLargeContentViewer:1];
+  manualButton2 = [(ICDocCamViewController *)self manualButton];
+  [manualButton2 setShowsLargeContentViewer:1];
 
-  v78 = [(ICDocCamViewController *)self manualButton];
+  manualButton3 = [(ICDocCamViewController *)self manualButton];
   v79 = objc_alloc_init(MEMORY[0x277D756C8]);
-  [v78 addInteraction:v79];
+  [manualButton3 addInteraction:v79];
 
-  v80 = [(ICDocCamViewController *)self view];
-  [v80 setAccessibilityIgnoresInvertColors:1];
+  view = [(ICDocCamViewController *)self view];
+  [view setAccessibilityIgnoresInvertColors:1];
 }
 
 - (void)updateAccessibilityForCurrentFilter
@@ -11981,8 +11981,8 @@ void __64__ICDocCamViewController_extractedDocumentControllerDidTapDone___block_
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v3 = [(ICDocCamViewController *)self filterButtons];
-  v4 = [v3 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  filterButtons = [(ICDocCamViewController *)self filterButtons];
+  v4 = [filterButtons countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v4)
   {
     v5 = *v29;
@@ -11994,7 +11994,7 @@ void __64__ICDocCamViewController_extractedDocumentControllerDidTapDone___block_
       {
         if (*v29 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(filterButtons);
         }
 
         v9 = *(*(&v28 + 1) + 8 * i);
@@ -12012,106 +12012,106 @@ void __64__ICDocCamViewController_extractedDocumentControllerDidTapDone___block_
         [v9 setAccessibilityTraits:v11];
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v4 = [filterButtons countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v4);
   }
 
-  v12 = [(ICDocCamViewController *)self filterButton];
-  [v12 setAccessibilityValue:0];
+  filterButton = [(ICDocCamViewController *)self filterButton];
+  [filterButton setAccessibilityValue:0];
 
   if ([(ICDocCamViewController *)self filterSettingUIShowing])
   {
     v13 = [DCLocalization localizedStringForKey:@"Hide filter settings" value:@"Hide filter settings" table:@"Localizable"];
-    v14 = [(ICDocCamViewController *)self filterButton];
-    [v14 setAccessibilityLabel:v13];
+    filterButton2 = [(ICDocCamViewController *)self filterButton];
+    [filterButton2 setAccessibilityLabel:v13];
 
-    v15 = [(ICDocCamViewController *)self filterButton];
-    [v15 setAccessibilityValue:0];
+    filterButton3 = [(ICDocCamViewController *)self filterButton];
+    [filterButton3 setAccessibilityValue:0];
   }
 
   else
   {
     v16 = [DCLocalization localizedStringForKey:@"Show filter settings" value:@"Show filter settings" table:@"Localizable"];
-    v17 = [(ICDocCamViewController *)self filterButton];
-    [v17 setAccessibilityLabel:v16];
+    filterButton4 = [(ICDocCamViewController *)self filterButton];
+    [filterButton4 setAccessibilityLabel:v16];
 
-    v15 = [ICDocCamImageFilters localizedImageFilterNameForType:[(ICDocCamViewController *)self defaultFilter]];
-    v18 = [(ICDocCamViewController *)self filterButton];
-    [v18 setAccessibilityValue:v15];
+    filterButton3 = [ICDocCamImageFilters localizedImageFilterNameForType:[(ICDocCamViewController *)self defaultFilter]];
+    filterButton5 = [(ICDocCamViewController *)self filterButton];
+    [filterButton5 setAccessibilityValue:filterButton3];
   }
 
-  v19 = [(ICDocCamViewController *)self filterButton];
-  v20 = [v19 accessibilityValue];
-  v21 = [(ICDocCamViewController *)self filterButtonForIPhone];
-  [v21 setAccessibilityValue:v20];
+  filterButton6 = [(ICDocCamViewController *)self filterButton];
+  accessibilityValue = [filterButton6 accessibilityValue];
+  filterButtonForIPhone = [(ICDocCamViewController *)self filterButtonForIPhone];
+  [filterButtonForIPhone setAccessibilityValue:accessibilityValue];
 
-  v22 = [(ICDocCamViewController *)self filterButton];
-  v23 = [v22 accessibilityLabel];
-  v24 = [(ICDocCamViewController *)self filterButton];
-  [v24 setLargeContentTitle:v23];
+  filterButton7 = [(ICDocCamViewController *)self filterButton];
+  accessibilityLabel = [filterButton7 accessibilityLabel];
+  filterButton8 = [(ICDocCamViewController *)self filterButton];
+  [filterButton8 setLargeContentTitle:accessibilityLabel];
 
-  v25 = [(ICDocCamViewController *)self filterButtonForIPhone];
-  v26 = [v25 accessibilityLabel];
-  v27 = [(ICDocCamViewController *)self filterButtonForIPhone];
-  [v27 setLargeContentTitle:v26];
+  filterButtonForIPhone2 = [(ICDocCamViewController *)self filterButtonForIPhone];
+  accessibilityLabel2 = [filterButtonForIPhone2 accessibilityLabel];
+  filterButtonForIPhone3 = [(ICDocCamViewController *)self filterButtonForIPhone];
+  [filterButtonForIPhone3 setLargeContentTitle:accessibilityLabel2];
 }
 
 - (void)updateAccessibilityForCurrentFlashMode
 {
-  v3 = [(ICDocCamViewController *)self flashMode];
-  switch(v3)
+  flashMode = [(ICDocCamViewController *)self flashMode];
+  switch(flashMode)
   {
     case 2:
-      v37 = [(ICDocCamViewController *)self flashSettingViewOffButton];
-      v10 = [v37 accessibilityTraits];
+      flashSettingViewOffButton = [(ICDocCamViewController *)self flashSettingViewOffButton];
+      accessibilityTraits = [flashSettingViewOffButton accessibilityTraits];
       v11 = *MEMORY[0x277D76598];
-      [v37 setAccessibilityTraits:v10 & ~*MEMORY[0x277D76598]];
+      [flashSettingViewOffButton setAccessibilityTraits:accessibilityTraits & ~*MEMORY[0x277D76598]];
 
-      v38 = [(ICDocCamViewController *)self flashSettingViewOnButton];
-      [v38 setAccessibilityTraits:{objc_msgSend(v38, "accessibilityTraits") & ~v11}];
+      flashSettingViewOnButton = [(ICDocCamViewController *)self flashSettingViewOnButton];
+      [flashSettingViewOnButton setAccessibilityTraits:{objc_msgSend(flashSettingViewOnButton, "accessibilityTraits") & ~v11}];
 
-      v39 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
-      [v39 setAccessibilityTraits:{objc_msgSend(v39, "accessibilityTraits") | v11}];
+      flashSettingViewAutoButton = [(ICDocCamViewController *)self flashSettingViewAutoButton];
+      [flashSettingViewAutoButton setAccessibilityTraits:{objc_msgSend(flashSettingViewAutoButton, "accessibilityTraits") | v11}];
 
       v36 = [DCLocalization localizedStringForKey:@"auto" value:@"auto" table:@"Localizable"];
-      v9 = [(ICDocCamViewController *)self flashButton];
-      [v9 setAccessibilityValue:v36];
+      flashButton = [(ICDocCamViewController *)self flashButton];
+      [flashButton setAccessibilityValue:v36];
 LABEL_7:
 
       break;
     case 1:
-      v33 = [(ICDocCamViewController *)self flashSettingViewOffButton];
-      v7 = [v33 accessibilityTraits];
+      flashSettingViewOffButton2 = [(ICDocCamViewController *)self flashSettingViewOffButton];
+      accessibilityTraits2 = [flashSettingViewOffButton2 accessibilityTraits];
       v8 = *MEMORY[0x277D76598];
-      [v33 setAccessibilityTraits:v7 & ~*MEMORY[0x277D76598]];
+      [flashSettingViewOffButton2 setAccessibilityTraits:accessibilityTraits2 & ~*MEMORY[0x277D76598]];
 
-      v34 = [(ICDocCamViewController *)self flashSettingViewOnButton];
-      [v34 setAccessibilityTraits:{objc_msgSend(v34, "accessibilityTraits") | v8}];
+      flashSettingViewOnButton2 = [(ICDocCamViewController *)self flashSettingViewOnButton];
+      [flashSettingViewOnButton2 setAccessibilityTraits:{objc_msgSend(flashSettingViewOnButton2, "accessibilityTraits") | v8}];
 
-      v35 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
-      [v35 setAccessibilityTraits:{objc_msgSend(v35, "accessibilityTraits") & ~v8}];
+      flashSettingViewAutoButton2 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
+      [flashSettingViewAutoButton2 setAccessibilityTraits:{objc_msgSend(flashSettingViewAutoButton2, "accessibilityTraits") & ~v8}];
 
       v36 = [DCLocalization localizedStringForKey:@"on" value:@"on" table:@"Localizable"];
-      v9 = [(ICDocCamViewController *)self flashButton];
-      [v9 setAccessibilityValue:v36];
+      flashButton = [(ICDocCamViewController *)self flashButton];
+      [flashButton setAccessibilityValue:v36];
       goto LABEL_7;
     case 0:
       v29 = [DCLocalization localizedStringForKey:@"off" value:@"off" table:@"Localizable"];
-      v4 = [(ICDocCamViewController *)self flashButton];
-      [v4 setAccessibilityValue:v29];
+      flashButton2 = [(ICDocCamViewController *)self flashButton];
+      [flashButton2 setAccessibilityValue:v29];
 
-      v30 = [(ICDocCamViewController *)self flashSettingViewOffButton];
-      v5 = [v30 accessibilityTraits];
+      flashSettingViewOffButton3 = [(ICDocCamViewController *)self flashSettingViewOffButton];
+      accessibilityTraits3 = [flashSettingViewOffButton3 accessibilityTraits];
       v6 = *MEMORY[0x277D76598];
-      [v30 setAccessibilityTraits:*MEMORY[0x277D76598] | v5];
+      [flashSettingViewOffButton3 setAccessibilityTraits:*MEMORY[0x277D76598] | accessibilityTraits3];
 
-      v31 = [(ICDocCamViewController *)self flashSettingViewOnButton];
-      [v31 setAccessibilityTraits:{objc_msgSend(v31, "accessibilityTraits") & ~v6}];
+      flashSettingViewOnButton3 = [(ICDocCamViewController *)self flashSettingViewOnButton];
+      [flashSettingViewOnButton3 setAccessibilityTraits:{objc_msgSend(flashSettingViewOnButton3, "accessibilityTraits") & ~v6}];
 
-      v32 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
-      [v32 setAccessibilityTraits:{objc_msgSend(v32, "accessibilityTraits") & ~v6}];
+      flashSettingViewAutoButton3 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
+      [flashSettingViewAutoButton3 setAccessibilityTraits:{objc_msgSend(flashSettingViewAutoButton3, "accessibilityTraits") & ~v6}];
 
       break;
   }
@@ -12119,169 +12119,169 @@ LABEL_7:
   if ([(ICDocCamViewController *)self flashSettingUIShowing])
   {
     v40 = [DCLocalization localizedStringForKey:@"Hide flash settings" value:@"Hide flash settings" table:@"Localizable"];
-    v12 = [(ICDocCamViewController *)self flashButton];
-    [v12 setAccessibilityLabel:v40];
+    flashButton3 = [(ICDocCamViewController *)self flashButton];
+    [flashButton3 setAccessibilityLabel:v40];
 
-    v41 = [(ICDocCamViewController *)self flashButton];
-    [v41 setAccessibilityHint:0];
+    flashButton4 = [(ICDocCamViewController *)self flashButton];
+    [flashButton4 setAccessibilityHint:0];
   }
 
   else
   {
     v42 = [DCLocalization localizedStringForKey:@"Show flash settings" value:@"Show flash settings" table:@"Localizable"];
-    v13 = [(ICDocCamViewController *)self flashButton];
-    [v13 setAccessibilityLabel:v42];
+    flashButton5 = [(ICDocCamViewController *)self flashButton];
+    [flashButton5 setAccessibilityLabel:v42];
 
-    v41 = [DCLocalization localizedStringForKey:@"Double-tap to change the flash setting" value:@"Double-tap to change the flash setting" table:@"Localizable"];
-    v14 = [(ICDocCamViewController *)self flashButton];
-    [v14 setAccessibilityHint:v41];
+    flashButton4 = [DCLocalization localizedStringForKey:@"Double-tap to change the flash setting" value:@"Double-tap to change the flash setting" table:@"Localizable"];
+    flashButton6 = [(ICDocCamViewController *)self flashButton];
+    [flashButton6 setAccessibilityHint:flashButton4];
   }
 
   v43 = [DCLocalization localizedStringForKey:@"Double-tap to turn flash off" value:@"Double-tap to turn flash off" table:@"Localizable"];
-  v15 = [(ICDocCamViewController *)self flashSettingViewOffButton];
-  [v15 setAccessibilityHint:v43];
+  flashSettingViewOffButton4 = [(ICDocCamViewController *)self flashSettingViewOffButton];
+  [flashSettingViewOffButton4 setAccessibilityHint:v43];
 
   v44 = [DCLocalization localizedStringForKey:@"Double-tap to turn flash on" value:@"Double-tap to turn flash on" table:@"Localizable"];
-  v16 = [(ICDocCamViewController *)self flashSettingViewOnButton];
-  [v16 setAccessibilityHint:v44];
+  flashSettingViewOnButton4 = [(ICDocCamViewController *)self flashSettingViewOnButton];
+  [flashSettingViewOnButton4 setAccessibilityHint:v44];
 
   v45 = [DCLocalization localizedStringForKey:@"Double-tap to set flash to auto" value:@"Double-tap to set flash to auto" table:@"Localizable"];
-  v17 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
-  [v17 setAccessibilityHint:v45];
+  flashSettingViewAutoButton4 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
+  [flashSettingViewAutoButton4 setAccessibilityHint:v45];
 
   v46 = [DCLocalization localizedStringForKey:@"Hide flash settings" value:@"Hide flash settings" table:@"Localizable"];
-  v18 = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
-  [v18 setAccessibilityLabel:v46];
+  flashSettingViewFlashIcon = [(ICDocCamViewController *)self flashSettingViewFlashIcon];
+  [flashSettingViewFlashIcon setAccessibilityLabel:v46];
 
-  v47 = [(ICDocCamViewController *)self flashButton];
-  v19 = [v47 accessibilityLabel];
-  v20 = [(ICDocCamViewController *)self flashButtonForIPhone];
-  [v20 setAccessibilityLabel:v19];
+  flashButton7 = [(ICDocCamViewController *)self flashButton];
+  accessibilityLabel = [flashButton7 accessibilityLabel];
+  flashButtonForIPhone = [(ICDocCamViewController *)self flashButtonForIPhone];
+  [flashButtonForIPhone setAccessibilityLabel:accessibilityLabel];
 
-  v48 = [(ICDocCamViewController *)self flashButton];
-  v21 = [v48 accessibilityHint];
-  v22 = [(ICDocCamViewController *)self flashButtonForIPhone];
-  [v22 setAccessibilityHint:v21];
+  flashButton8 = [(ICDocCamViewController *)self flashButton];
+  accessibilityHint = [flashButton8 accessibilityHint];
+  flashButtonForIPhone2 = [(ICDocCamViewController *)self flashButtonForIPhone];
+  [flashButtonForIPhone2 setAccessibilityHint:accessibilityHint];
 
-  v49 = [(ICDocCamViewController *)self flashButton];
-  v23 = [v49 accessibilityValue];
-  v24 = [(ICDocCamViewController *)self flashButtonForIPhone];
-  [v24 setAccessibilityValue:v23];
+  flashButton9 = [(ICDocCamViewController *)self flashButton];
+  accessibilityValue = [flashButton9 accessibilityValue];
+  flashButtonForIPhone3 = [(ICDocCamViewController *)self flashButtonForIPhone];
+  [flashButtonForIPhone3 setAccessibilityValue:accessibilityValue];
 
-  v50 = [(ICDocCamViewController *)self flashSettingViewOffButton];
-  [v50 _accessibilitySetIsSpeakThisElement:1];
+  flashSettingViewOffButton5 = [(ICDocCamViewController *)self flashSettingViewOffButton];
+  [flashSettingViewOffButton5 _accessibilitySetIsSpeakThisElement:1];
 
-  v51 = [(ICDocCamViewController *)self flashSettingViewOnButton];
-  [v51 _accessibilitySetIsSpeakThisElement:1];
+  flashSettingViewOnButton5 = [(ICDocCamViewController *)self flashSettingViewOnButton];
+  [flashSettingViewOnButton5 _accessibilitySetIsSpeakThisElement:1];
 
-  v52 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
-  [v52 _accessibilitySetIsSpeakThisElement:1];
+  flashSettingViewAutoButton5 = [(ICDocCamViewController *)self flashSettingViewAutoButton];
+  [flashSettingViewAutoButton5 _accessibilitySetIsSpeakThisElement:1];
 
-  v53 = [(ICDocCamViewController *)self flashButton];
-  v25 = [v53 accessibilityLabel];
-  v26 = [(ICDocCamViewController *)self flashButton];
-  [v26 setLargeContentTitle:v25];
+  flashButton10 = [(ICDocCamViewController *)self flashButton];
+  accessibilityLabel2 = [flashButton10 accessibilityLabel];
+  flashButton11 = [(ICDocCamViewController *)self flashButton];
+  [flashButton11 setLargeContentTitle:accessibilityLabel2];
 
-  v54 = [(ICDocCamViewController *)self flashButtonForIPhone];
-  v27 = [v54 accessibilityLabel];
-  v28 = [(ICDocCamViewController *)self flashButtonForIPhone];
-  [v28 setLargeContentTitle:v27];
+  flashButtonForIPhone4 = [(ICDocCamViewController *)self flashButtonForIPhone];
+  accessibilityLabel3 = [flashButtonForIPhone4 accessibilityLabel];
+  flashButtonForIPhone5 = [(ICDocCamViewController *)self flashButtonForIPhone];
+  [flashButtonForIPhone5 setLargeContentTitle:accessibilityLabel3];
 }
 
-- (void)updateAccessibilityForAutoShutterMode:(BOOL)a3
+- (void)updateAccessibilityForAutoShutterMode:(BOOL)mode
 {
-  v3 = a3;
-  v14 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v14 userInterfaceIdiom];
+  modeCopy = mode;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v5)
+  if (userInterfaceIdiom)
   {
-    v15 = [(ICDocCamViewController *)self autoButton];
-    v6 = [v15 accessibilityTraits];
-    if (v3)
+    autoButton = [(ICDocCamViewController *)self autoButton];
+    accessibilityTraits = [autoButton accessibilityTraits];
+    if (modeCopy)
     {
       v7 = *MEMORY[0x277D76598];
-      [v15 setAccessibilityTraits:*MEMORY[0x277D76598] | v6];
+      [autoButton setAccessibilityTraits:*MEMORY[0x277D76598] | accessibilityTraits];
 
-      v16 = [(ICDocCamViewController *)self manualButton];
-      [v16 setAccessibilityTraits:{objc_msgSend(v16, "accessibilityTraits") & ~v7}];
+      manualButton = [(ICDocCamViewController *)self manualButton];
+      [manualButton setAccessibilityTraits:{objc_msgSend(manualButton, "accessibilityTraits") & ~v7}];
 
-      v17 = [(ICDocCamViewController *)self autoButton];
-      [v17 setAccessibilityHint:0];
+      autoButton2 = [(ICDocCamViewController *)self autoButton];
+      [autoButton2 setAccessibilityHint:0];
 
-      v18 = [DCLocalization localizedStringForKey:@"Double-tap to change shutter mode to manual." value:@"Double-tap to change shutter mode to manual." table:@"Localizable"];
-      v8 = [(ICDocCamViewController *)self manualButton];
-      [v8 setAccessibilityHint:v18];
+      manualButton4 = [DCLocalization localizedStringForKey:@"Double-tap to change shutter mode to manual." value:@"Double-tap to change shutter mode to manual." table:@"Localizable"];
+      manualButton2 = [(ICDocCamViewController *)self manualButton];
+      [manualButton2 setAccessibilityHint:manualButton4];
     }
 
     else
     {
       v11 = *MEMORY[0x277D76598];
-      [v15 setAccessibilityTraits:v6 & ~*MEMORY[0x277D76598]];
+      [autoButton setAccessibilityTraits:accessibilityTraits & ~*MEMORY[0x277D76598]];
 
-      v20 = [(ICDocCamViewController *)self manualButton];
-      [v20 setAccessibilityTraits:{objc_msgSend(v20, "accessibilityTraits") | v11}];
+      manualButton3 = [(ICDocCamViewController *)self manualButton];
+      [manualButton3 setAccessibilityTraits:{objc_msgSend(manualButton3, "accessibilityTraits") | v11}];
 
       v21 = [DCLocalization localizedStringForKey:@"Double-tap to change shutter mode to automatic." value:@"Double-tap to change shutter mode to automatic." table:@"Localizable"];
-      v12 = [(ICDocCamViewController *)self autoButton];
-      [v12 setAccessibilityHint:v21];
+      autoButton3 = [(ICDocCamViewController *)self autoButton];
+      [autoButton3 setAccessibilityHint:v21];
 
-      v18 = [(ICDocCamViewController *)self manualButton];
-      [v18 setAccessibilityHint:0];
+      manualButton4 = [(ICDocCamViewController *)self manualButton];
+      [manualButton4 setAccessibilityHint:0];
     }
   }
 
   else
   {
     v19 = [DCLocalization localizedStringForKey:@"Double-tap to toggle shutter mode." value:@"Double-tap to toggle shutter mode." table:@"Localizable"];
-    v9 = [(ICDocCamViewController *)self autoButtonForIPhone];
-    [v9 setAccessibilityHint:v19];
+    autoButtonForIPhone = [(ICDocCamViewController *)self autoButtonForIPhone];
+    [autoButtonForIPhone setAccessibilityHint:v19];
 
-    v18 = [(ICDocCamViewController *)self autoButtonForIPhone];
-    v10 = [v18 accessibilityTraits];
-    [v18 setAccessibilityTraits:v10 & ~*MEMORY[0x277D76580]];
+    manualButton4 = [(ICDocCamViewController *)self autoButtonForIPhone];
+    accessibilityTraits2 = [manualButton4 accessibilityTraits];
+    [manualButton4 setAccessibilityTraits:accessibilityTraits2 & ~*MEMORY[0x277D76580]];
   }
 
   v22 = [DCLocalization localizedStringForKey:@"Take picture" value:@"Take picture" table:@"Localizable"];
-  v13 = [(ICDocCamViewController *)self shutterButton];
-  [v13 setAccessibilityLabel:v22];
+  shutterButton = [(ICDocCamViewController *)self shutterButton];
+  [shutterButton setAccessibilityLabel:v22];
 }
 
-- (void)speakLabelTextForAccessibilityIfNecessary:(id)a3 afterDelay:(double)a4
+- (void)speakLabelTextForAccessibilityIfNecessary:(id)necessary afterDelay:(double)delay
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  necessaryCopy = necessary;
+  v6 = necessaryCopy;
+  if (necessaryCopy)
   {
-    v7 = v5;
+    v7 = necessaryCopy;
     do
     {
-      v8 = [v7 isHidden];
-      if (v8)
+      isHidden = [v7 isHidden];
+      if (isHidden)
       {
         break;
       }
 
-      v9 = [v7 superview];
+      superview = [v7 superview];
 
-      v7 = v9;
+      v7 = superview;
     }
 
-    while (v9);
+    while (superview);
   }
 
   else
   {
     v7 = 0;
-    v8 = 0;
+    isHidden = 0;
   }
 
-  v10 = dispatch_time(0, (a4 * 1000000000.0));
+  v10 = dispatch_time(0, (delay * 1000000000.0));
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __79__ICDocCamViewController_speakLabelTextForAccessibilityIfNecessary_afterDelay___block_invoke;
   v12[3] = &unk_278F93B00;
-  v14 = v8;
+  v14 = isHidden;
   v13 = v6;
   v11 = v6;
   dispatch_after(v10, MEMORY[0x277D85CD0], v12);
@@ -12304,37 +12304,37 @@ void __79__ICDocCamViewController_speakLabelTextForAccessibilityIfNecessary_afte
   }
 }
 
-- (void)updateRecentlyObservedRectanglesWithRect:(id)a3
+- (void)updateRecentlyObservedRectanglesWithRect:(id)rect
 {
   v56 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  rectCopy = rect;
+  if (rectCopy)
   {
-    v5 = [(ICDocCamViewController *)self recentRectangleObservations];
-    objc_sync_enter(v5);
-    v6 = [(ICDocCamViewController *)self recentRectangleObservations];
-    [v6 addObject:v4];
+    recentRectangleObservations = [(ICDocCamViewController *)self recentRectangleObservations];
+    objc_sync_enter(recentRectangleObservations);
+    recentRectangleObservations2 = [(ICDocCamViewController *)self recentRectangleObservations];
+    [recentRectangleObservations2 addObject:rectCopy];
 
-    v7 = [(ICDocCamViewController *)self recentRectangleObservations];
-    v8 = [v7 count];
+    recentRectangleObservations3 = [(ICDocCamViewController *)self recentRectangleObservations];
+    v8 = [recentRectangleObservations3 count];
 
     if (v8 < 6)
     {
 LABEL_29:
-      objc_sync_exit(v5);
+      objc_sync_exit(recentRectangleObservations);
 
       goto LABEL_30;
     }
 
-    v9 = [(ICDocCamViewController *)self recentRectangleObservations];
-    [v9 removeObjectAtIndex:0];
+    recentRectangleObservations4 = [(ICDocCamViewController *)self recentRectangleObservations];
+    [recentRectangleObservations4 removeObjectAtIndex:0];
 
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v10 = [(ICDocCamViewController *)self recentRectangleObservations];
-    v11 = [v10 countByEnumeratingWithState:&v51 objects:v55 count:16];
+    recentRectangleObservations5 = [(ICDocCamViewController *)self recentRectangleObservations];
+    v11 = [recentRectangleObservations5 countByEnumeratingWithState:&v51 objects:v55 count:16];
     if (v11)
     {
       v12 = *v52;
@@ -12349,7 +12349,7 @@ LABEL_29:
           v48 = v13;
           if (*v52 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(recentRectangleObservations5);
           }
 
           v16 = *(*(&v51 + 1) + 8 * i);
@@ -12374,7 +12374,7 @@ LABEL_29:
           v13 = v48 + (v30 + v31) * 0.5;
         }
 
-        v11 = [v10 countByEnumeratingWithState:&v51 objects:v55 count:16];
+        v11 = [recentRectangleObservations5 countByEnumeratingWithState:&v51 objects:v55 count:16];
       }
 
       while (v11);
@@ -12388,29 +12388,29 @@ LABEL_29:
       v14 = 0.0;
     }
 
-    v32 = [(ICDocCamViewController *)self recentRectangleObservations];
-    v33 = [v32 count];
+    recentRectangleObservations6 = [(ICDocCamViewController *)self recentRectangleObservations];
+    v33 = [recentRectangleObservations6 count];
 
-    v34 = [(ICDocCamViewController *)self recentRectangleObservations];
-    v35 = [v34 count];
+    recentRectangleObservations7 = [(ICDocCamViewController *)self recentRectangleObservations];
+    v35 = [recentRectangleObservations7 count];
 
-    v36 = [(ICDocCamViewController *)self recentRectangleObservations];
-    v37 = [v36 count];
+    recentRectangleObservations8 = [(ICDocCamViewController *)self recentRectangleObservations];
+    v37 = [recentRectangleObservations8 count];
 
-    v38 = [(ICDocCamViewController *)self recentRectangleObservations];
-    v39 = [v38 count];
+    recentRectangleObservations9 = [(ICDocCamViewController *)self recentRectangleObservations];
+    v39 = [recentRectangleObservations9 count];
 
-    v40 = [MEMORY[0x277CBEAA8] date];
-    v41 = [(ICDocCamViewController *)self lastAXPositionAnnouncementDate];
-    [v40 timeIntervalSinceDate:v41];
+    date = [MEMORY[0x277CBEAA8] date];
+    lastAXPositionAnnouncementDate = [(ICDocCamViewController *)self lastAXPositionAnnouncementDate];
+    [date timeIntervalSinceDate:lastAXPositionAnnouncementDate];
     if (v42 > 2.5)
     {
     }
 
     else
     {
-      v43 = [(ICDocCamViewController *)self lastAXPositionAnnouncementDate];
-      v44 = v43 == 0;
+      lastAXPositionAnnouncementDate2 = [(ICDocCamViewController *)self lastAXPositionAnnouncementDate];
+      v44 = lastAXPositionAnnouncementDate2 == 0;
 
       if (!v44)
       {
@@ -12431,7 +12431,7 @@ LABEL_28:
             v47 = 0;
             __UIAccessibilitySpeakAndDoNotBeInterrupted([DCLocalization localizedStringForKey:@"Hold camera still" value:@"Hold camera still" table:@"Localizable"]);
 LABEL_27:
-            [(ICDocCamViewController *)self setLastAXPositionAnnouncementDate:v40];
+            [(ICDocCamViewController *)self setLastAXPositionAnnouncementDate:date];
 
             goto LABEL_28;
           }
@@ -12485,20 +12485,20 @@ void __73__ICDocCamViewController_speakScannedDocumentForAccessibilityIfNecessar
   v24[7] = *MEMORY[0x277D85DE8];
   if (([objc_opt_class() isLiquidGlassEnabledForCapture] & 1) == 0)
   {
-    v3 = [(ICDocCamViewController *)self flashButton];
-    v24[0] = v3;
-    v4 = [(ICDocCamViewController *)self filterButton];
-    v24[1] = v4;
-    v5 = [(ICDocCamViewController *)self autoButton];
-    v24[2] = v5;
-    v6 = [(ICDocCamViewController *)self manualButton];
-    v24[3] = v6;
-    v7 = [(ICDocCamViewController *)self flashButtonForIPhone];
-    v24[4] = v7;
-    v8 = [(ICDocCamViewController *)self filterButtonForIPhone];
-    v24[5] = v8;
-    v9 = [(ICDocCamViewController *)self autoButtonForIPhone];
-    v24[6] = v9;
+    flashButton = [(ICDocCamViewController *)self flashButton];
+    v24[0] = flashButton;
+    filterButton = [(ICDocCamViewController *)self filterButton];
+    v24[1] = filterButton;
+    autoButton = [(ICDocCamViewController *)self autoButton];
+    v24[2] = autoButton;
+    manualButton = [(ICDocCamViewController *)self manualButton];
+    v24[3] = manualButton;
+    flashButtonForIPhone = [(ICDocCamViewController *)self flashButtonForIPhone];
+    v24[4] = flashButtonForIPhone;
+    filterButtonForIPhone = [(ICDocCamViewController *)self filterButtonForIPhone];
+    v24[5] = filterButtonForIPhone;
+    autoButtonForIPhone = [(ICDocCamViewController *)self autoButtonForIPhone];
+    v24[6] = autoButtonForIPhone;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:7];
 
     v21 = 0u;
@@ -12547,35 +12547,35 @@ void __73__ICDocCamViewController_speakScannedDocumentForAccessibilityIfNecessar
 {
   v3 = *MEMORY[0x277D76918];
   v9 = [MEMORY[0x277D74300] dc_preferredFontForTextStyle:*MEMORY[0x277D76918] adjustedForDefaultSize:16.0];
-  v4 = [(ICDocCamViewController *)self userPromptLabel];
-  [v4 setFont:v9];
+  userPromptLabel = [(ICDocCamViewController *)self userPromptLabel];
+  [userPromptLabel setFont:v9];
 
   v10 = [MEMORY[0x277D74300] dc_preferredFontForTextStyle:v3 adjustedForDefaultSize:16.0];
-  v5 = [(ICDocCamViewController *)self filterNameFeedbackLabel];
-  [v5 setFont:v10];
+  filterNameFeedbackLabel = [(ICDocCamViewController *)self filterNameFeedbackLabel];
+  [filterNameFeedbackLabel setFont:v10];
 
   v11 = [MEMORY[0x277D74300] dc_preferredFontForTextStyle:v3 adjustedForDefaultSize:14.0];
-  v6 = [(ICDocCamViewController *)self autoShutterOnLabel];
-  [v6 setFont:v11];
+  autoShutterOnLabel = [(ICDocCamViewController *)self autoShutterOnLabel];
+  [autoShutterOnLabel setFont:v11];
 
   v12 = [MEMORY[0x277D74300] dc_preferredFontForTextStyle:v3 adjustedForDefaultSize:14.0];
-  v7 = [(ICDocCamViewController *)self autoShutterOffLabel];
-  [v7 setFont:v12];
+  autoShutterOffLabel = [(ICDocCamViewController *)self autoShutterOffLabel];
+  [autoShutterOffLabel setFont:v12];
 
   v13 = [MEMORY[0x277D74300] dc_preferredFontForTextStyle:v3 adjustedForDefaultSize:16.0];
-  v8 = [(ICDocCamViewController *)self moveCameraCloserLabel];
-  [v8 setFont:v13];
+  moveCameraCloserLabel = [(ICDocCamViewController *)self moveCameraCloserLabel];
+  [moveCameraCloserLabel setFont:v13];
 }
 
-- (void)didRecognizeRectangleForAccessibility:(BOOL)a3
+- (void)didRecognizeRectangleForAccessibility:(BOOL)accessibility
 {
-  v3 = a3;
+  accessibilityCopy = accessibility;
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    v5 = [(ICDocCamViewController *)self hasCandidateRectanglesForAX];
-    if (v3)
+    hasCandidateRectanglesForAX = [(ICDocCamViewController *)self hasCandidateRectanglesForAX];
+    if (accessibilityCopy)
     {
-      if ((v5 & 1) == 0)
+      if ((hasCandidateRectanglesForAX & 1) == 0)
       {
         [(ICDocCamViewController *)self setHasCandidateRectanglesForAX:1];
         [(ICDocCamViewController *)self setAxConsecutiveRecognizerStateCount:1];
@@ -12605,10 +12605,10 @@ void __73__ICDocCamViewController_speakScannedDocumentForAccessibilityIfNecessar
         goto LABEL_16;
       }
 
-      v5 = [ICRemoteDocCamViewController viewDidLoad];
+      hasCandidateRectanglesForAX = [ICRemoteDocCamViewController viewDidLoad];
     }
 
-    if (v5)
+    if (hasCandidateRectanglesForAX)
     {
       [(ICDocCamViewController *)self setHasCandidateRectanglesForAX:0];
       [(ICDocCamViewController *)self setAxConsecutiveRecognizerStateCount:1];
@@ -12635,9 +12635,9 @@ void __73__ICDocCamViewController_speakScannedDocumentForAccessibilityIfNecessar
     _Block_object_dispose(&v10, 8);
     if (!v6)
     {
-      v9 = [ICRemoteDocCamViewController viewDidLoad];
+      viewDidLoad = [ICRemoteDocCamViewController viewDidLoad];
       _Block_object_dispose(&v10, 8);
-      _Unwind_Resume(v9);
+      _Unwind_Resume(viewDidLoad);
     }
 
 LABEL_16:
@@ -12647,41 +12647,41 @@ LABEL_17:
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = [a3 valueForKey:{@"animationCompletionBlockKey", a4}];
+  v4 = [stop valueForKey:{@"animationCompletionBlockKey", finished}];
   if (v4)
   {
     v4[2]();
   }
 }
 
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController
 {
-  if ([(ICDocCamViewController *)self useCustomThumbnailZoomTransition:a3])
+  if ([(ICDocCamViewController *)self useCustomThumbnailZoomTransition:controller])
   {
     [(ICDocCamViewController *)self setUseCustomThumbnailZoomTransition:0];
     v8 = [ICDocCamThumbnailZoomTransitionAnimator alloc];
-    v9 = [(ICDocCamViewController *)self imageForThumbnailZoom];
-    v10 = [(ICDocCamViewController *)self indexPathForThumbnailZoom];
-    v11 = [(ICDocCamViewController *)self thumbnailZoomCompletionBlock];
-    v12 = [(ICDocCamThumbnailZoomTransitionAnimator *)v8 initWithImage:v9 indexPath:v10 duration:v11 completion:0.5];
+    imageForThumbnailZoom = [(ICDocCamViewController *)self imageForThumbnailZoom];
+    indexPathForThumbnailZoom = [(ICDocCamViewController *)self indexPathForThumbnailZoom];
+    thumbnailZoomCompletionBlock = [(ICDocCamViewController *)self thumbnailZoomCompletionBlock];
+    v12 = [(ICDocCamThumbnailZoomTransitionAnimator *)v8 initWithImage:imageForThumbnailZoom indexPath:indexPathForThumbnailZoom duration:thumbnailZoomCompletionBlock completion:0.5];
 
-    [(ICDocCamThumbnailZoomTransitionAnimator *)v12 setPresenting:a4 == 1];
+    [(ICDocCamThumbnailZoomTransitionAnimator *)v12 setPresenting:operation == 1];
     [(ICDocCamViewController *)self setImageForThumbnailZoom:0];
   }
 
   else
   {
-    v13 = [(ICDocCamViewController *)self useCustomRetakeTransition];
-    if (a4 == 2 && v13)
+    useCustomRetakeTransition = [(ICDocCamViewController *)self useCustomRetakeTransition];
+    if (operation == 2 && useCustomRetakeTransition)
     {
       [(ICDocCamViewController *)self setUseCustomRetakeTransition:0];
       v14 = [ICDocCamRetakeTransitionAnimator alloc];
-      v15 = [(ICDocCamViewController *)self imageForRetake];
-      v16 = [(ICDocCamViewController *)self indexPathForRetake];
-      v17 = [(ICDocCamViewController *)self retakeCompletionBlock];
-      v12 = [(ICDocCamRetakeTransitionAnimator *)v14 initWithImage:v15 indexPath:v16 duration:v17 completion:0.28];
+      imageForRetake = [(ICDocCamViewController *)self imageForRetake];
+      indexPathForRetake = [(ICDocCamViewController *)self indexPathForRetake];
+      retakeCompletionBlock = [(ICDocCamViewController *)self retakeCompletionBlock];
+      v12 = [(ICDocCamRetakeTransitionAnimator *)v14 initWithImage:imageForRetake indexPath:indexPathForRetake duration:retakeCompletionBlock completion:0.28];
 
       [(ICDocCamThumbnailZoomTransitionAnimator *)v12 setPresenting:0];
       [(ICDocCamViewController *)self setImageForRetake:0];
@@ -12690,15 +12690,15 @@ LABEL_17:
     else if ([(ICDocCamViewController *)self useCustomRecropTransition])
     {
       v18 = [ICDocCamRecropTransitionAnimator alloc];
-      v19 = [(ICDocCamViewController *)self filteredImageForRecrop];
-      v20 = [(ICDocCamViewController *)self unfilteredImageForRecrop];
-      v21 = [(ICDocCamViewController *)self orientationForRecrop];
-      v22 = [(ICDocCamViewController *)self indexPathForRecrop];
-      v23 = [(ICDocCamRecropTransitionAnimator *)v18 initWithImage:v19 unfilteredImage:v20 orientation:v21 indexPath:v22 duration:0 completion:0.65];
+      filteredImageForRecrop = [(ICDocCamViewController *)self filteredImageForRecrop];
+      unfilteredImageForRecrop = [(ICDocCamViewController *)self unfilteredImageForRecrop];
+      orientationForRecrop = [(ICDocCamViewController *)self orientationForRecrop];
+      indexPathForRecrop = [(ICDocCamViewController *)self indexPathForRecrop];
+      v23 = [(ICDocCamRecropTransitionAnimator *)v18 initWithImage:filteredImageForRecrop unfilteredImage:unfilteredImageForRecrop orientation:orientationForRecrop indexPath:indexPathForRecrop duration:0 completion:0.65];
 
       [(ICDocCamViewController *)self setFilteredImageForRecrop:0];
       [(ICDocCamViewController *)self setUnfilteredImageForRecrop:0];
-      [(ICDocCamRecropTransitionAnimator *)v23 setPresenting:a4 == 1];
+      [(ICDocCamRecropTransitionAnimator *)v23 setPresenting:operation == 1];
       if (![(ICDocCamRecropTransitionAnimator *)v23 presenting])
       {
         [(ICDocCamViewController *)self setUseCustomRecropTransition:0];
@@ -12716,9 +12716,9 @@ LABEL_17:
   return v12;
 }
 
-- (CGRect)zoomTargetForIndexPath:(id)a3
+- (CGRect)zoomTargetForIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ([(ICDocCamViewController *)self zoomTargetShouldUseCustomImageFrame])
   {
     [(ICDocCamViewController *)self zoomTargetCustomImageFrame];
@@ -12730,36 +12730,36 @@ LABEL_17:
 
   else
   {
-    v13 = v4;
+    v13 = pathCopy;
     v14 = objc_opt_class();
-    v15 = [(ICDocCamViewController *)self thumbnailContainerView];
-    v16 = [v15 collectionView];
-    v17 = [v16 collectionViewLayout];
-    v18 = DCDynamicCast(v14, v17);
+    thumbnailContainerView = [(ICDocCamViewController *)self thumbnailContainerView];
+    collectionView = [thumbnailContainerView collectionView];
+    collectionViewLayout = [collectionView collectionViewLayout];
+    v18 = DCDynamicCast(v14, collectionViewLayout);
 
     if ([v18 compactLayout])
     {
       v19 = MEMORY[0x277CCAA70];
-      v20 = [(ICDocCamViewController *)self documentInfoCollection];
-      v21 = [v20 docInfos];
-      v22 = [v19 indexPathForItem:objc_msgSend(v21 inSection:{"count") - 1, 0}];
+      documentInfoCollection = [(ICDocCamViewController *)self documentInfoCollection];
+      docInfos = [documentInfoCollection docInfos];
+      v22 = [v19 indexPathForItem:objc_msgSend(docInfos inSection:{"count") - 1, 0}];
 
       v13 = v22;
     }
 
-    v23 = [(ICDocCamViewController *)self thumbnailViewController];
-    v24 = [v23 collectionView];
-    v25 = [v24 cellForItemAtIndexPath:v13];
+    thumbnailViewController = [(ICDocCamViewController *)self thumbnailViewController];
+    collectionView2 = [thumbnailViewController collectionView];
+    v25 = [collectionView2 cellForItemAtIndexPath:v13];
 
-    v26 = [(ICDocCamViewController *)self thumbnailViewController];
-    v27 = [v26 collectionView];
+    thumbnailViewController2 = [(ICDocCamViewController *)self thumbnailViewController];
+    collectionView3 = [thumbnailViewController2 collectionView];
     [v25 frame];
     v29 = v28;
     v31 = v30;
     v33 = v32;
     v35 = v34;
-    v36 = [(ICDocCamViewController *)self view];
-    [v27 convertRect:v36 toView:{v29, v31, v33, v35}];
+    view = [(ICDocCamViewController *)self view];
+    [collectionView3 convertRect:view toView:{v29, v31, v33, v35}];
     v6 = v37;
     v8 = v38;
     v10 = v39;
@@ -12777,15 +12777,15 @@ LABEL_17:
   return result;
 }
 
-- (void)toggleRecording:(id)a3
+- (void)toggleRecording:(id)recording
 {
-  v4 = [(ICDocCamViewController *)self recordButton];
-  [v4 setEnabled:0];
+  recordButton = [(ICDocCamViewController *)self recordButton];
+  [recordButton setEnabled:0];
 
-  v5 = [(ICDocCamViewController *)self movieController];
-  v6 = [v5 isRecording];
+  movieController = [(ICDocCamViewController *)self movieController];
+  isRecording = [movieController isRecording];
 
-  if (!v6)
+  if (!isRecording)
   {
     if ([(ICDocCamViewController *)self autoMode])
     {
@@ -12808,8 +12808,8 @@ LABEL_17:
     {
       if ([(ICDocCamViewController *)self scanMovieRecordingDontShowWarning])
       {
-        v14 = [(ICDocCamViewController *)self movieController];
-        [v14 startRecording];
+        movieController2 = [(ICDocCamViewController *)self movieController];
+        [movieController2 startRecording];
         goto LABEL_3;
       }
 
@@ -12847,8 +12847,8 @@ LABEL_17:
     return;
   }
 
-  v14 = [(ICDocCamViewController *)self movieController];
-  [v14 stopRecording];
+  movieController2 = [(ICDocCamViewController *)self movieController];
+  [movieController2 stopRecording];
 LABEL_3:
 }
 
@@ -12883,52 +12883,52 @@ void __42__ICDocCamViewController_toggleRecording___block_invoke_4(uint64_t a1)
   [v1 startRecording];
 }
 
-- (void)enableUIElementsForMovieRecording:(BOOL)a3
+- (void)enableUIElementsForMovieRecording:(BOOL)recording
 {
-  v3 = a3;
-  v5 = [(ICDocCamViewController *)self flashButton];
-  [v5 setEnabled:v3];
+  recordingCopy = recording;
+  flashButton = [(ICDocCamViewController *)self flashButton];
+  [flashButton setEnabled:recordingCopy];
 
-  v6 = [(ICDocCamViewController *)self filterButton];
-  [v6 setEnabled:v3];
+  filterButton = [(ICDocCamViewController *)self filterButton];
+  [filterButton setEnabled:recordingCopy];
 
-  v7 = [(ICDocCamViewController *)self autoButton];
-  [v7 setEnabled:v3];
+  autoButton = [(ICDocCamViewController *)self autoButton];
+  [autoButton setEnabled:recordingCopy];
 
-  v8 = [(ICDocCamViewController *)self manualButton];
-  [v8 setEnabled:v3];
+  manualButton = [(ICDocCamViewController *)self manualButton];
+  [manualButton setEnabled:recordingCopy];
 
-  v9 = [(ICDocCamViewController *)self shutterButton];
-  [v9 setEnabled:v3];
+  shutterButton = [(ICDocCamViewController *)self shutterButton];
+  [shutterButton setEnabled:recordingCopy];
 
-  v10 = [(ICDocCamViewController *)self cancelButton];
-  [v10 setEnabled:v3];
+  cancelButton = [(ICDocCamViewController *)self cancelButton];
+  [cancelButton setEnabled:recordingCopy];
 
-  v11 = [(ICDocCamViewController *)self flashButtonForIPhone];
-  [v11 setEnabled:v3];
+  flashButtonForIPhone = [(ICDocCamViewController *)self flashButtonForIPhone];
+  [flashButtonForIPhone setEnabled:recordingCopy];
 
-  v12 = [(ICDocCamViewController *)self filterButtonForIPhone];
-  [v12 setEnabled:v3];
+  filterButtonForIPhone = [(ICDocCamViewController *)self filterButtonForIPhone];
+  [filterButtonForIPhone setEnabled:recordingCopy];
 
-  v13 = [(ICDocCamViewController *)self autoButtonForIPhone];
-  [v13 setEnabled:v3];
+  autoButtonForIPhone = [(ICDocCamViewController *)self autoButtonForIPhone];
+  [autoButtonForIPhone setEnabled:recordingCopy];
 
-  v14 = [(ICDocCamViewController *)self cancelButtonForIPhone];
-  [v14 setEnabled:v3];
+  cancelButtonForIPhone = [(ICDocCamViewController *)self cancelButtonForIPhone];
+  [cancelButtonForIPhone setEnabled:recordingCopy];
 }
 
-- (void)showErrorForMovieRecording:(id)a3
+- (void)showErrorForMovieRecording:(id)recording
 {
-  v4 = a3;
+  recordingCopy = recording;
   Main = CFRunLoopGetMain();
   v6 = *MEMORY[0x277CBF048];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__ICDocCamViewController_showErrorForMovieRecording___block_invoke;
   v8[3] = &unk_278F93EC0;
-  v7 = v4;
+  v7 = recordingCopy;
   v9 = v7;
-  v10 = self;
+  selfCopy = self;
   CFRunLoopPerformBlock(Main, v6, v8);
 }
 
@@ -12952,47 +12952,47 @@ void __53__ICDocCamViewController_showErrorForMovieRecording___block_invoke(uint
 
 - (void)pauseCaptureSessionForMovieRecording
 {
-  v4 = [(ICDocCamViewController *)self session];
-  v3 = [v4 isRunning];
+  session = [(ICDocCamViewController *)self session];
+  isRunning = [session isRunning];
 
-  if (v3)
+  if (isRunning)
   {
-    v5 = [(ICDocCamViewController *)self session];
-    [v5 stopRunning];
+    session2 = [(ICDocCamViewController *)self session];
+    [session2 stopRunning];
   }
 }
 
 - (void)resumeCaptureSessionForMovieRecording
 {
-  v4 = [(ICDocCamViewController *)self session];
-  v3 = [v4 isRunning];
+  session = [(ICDocCamViewController *)self session];
+  isRunning = [session isRunning];
 
-  if ((v3 & 1) == 0)
+  if ((isRunning & 1) == 0)
   {
-    v5 = [(ICDocCamViewController *)self session];
-    [v5 startRunning];
+    session2 = [(ICDocCamViewController *)self session];
+    [session2 startRunning];
   }
 }
 
-- (void)enableRecordButton:(BOOL)a3
+- (void)enableRecordButton:(BOOL)button
 {
-  v3 = a3;
-  v4 = [(ICDocCamViewController *)self recordButton];
-  [v4 setEnabled:v3];
+  buttonCopy = button;
+  recordButton = [(ICDocCamViewController *)self recordButton];
+  [recordButton setEnabled:buttonCopy];
 }
 
-- (void)changeRecordButtonTitle:(id)a3
+- (void)changeRecordButtonTitle:(id)title
 {
-  v5 = a3;
-  v4 = [(ICDocCamViewController *)self recordButton];
-  [v4 setTitle:v5 forState:0];
+  titleCopy = title;
+  recordButton = [(ICDocCamViewController *)self recordButton];
+  [recordButton setTitle:titleCopy forState:0];
 }
 
 - (void)createCaptureEventInteractionIfNecessary
 {
-  v3 = [(ICDocCamViewController *)self captureEventInteraction];
+  captureEventInteraction = [(ICDocCamViewController *)self captureEventInteraction];
 
-  if (!v3)
+  if (!captureEventInteraction)
   {
     objc_initWeak(&location, self);
     v4 = objc_alloc(MEMORY[0x277CB8598]);
@@ -13004,9 +13004,9 @@ void __53__ICDocCamViewController_showErrorForMovieRecording___block_invoke(uint
     v5 = [v4 initWithEventHandler:&v8];
     [(ICDocCamViewController *)self setCaptureEventInteraction:v5, v8, v9, v10, v11];
 
-    v6 = [(ICDocCamViewController *)self view];
-    v7 = [(ICDocCamViewController *)self captureEventInteraction];
-    [v6 addInteraction:v7];
+    view = [(ICDocCamViewController *)self view];
+    captureEventInteraction2 = [(ICDocCamViewController *)self captureEventInteraction];
+    [view addInteraction:captureEventInteraction2];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
@@ -13020,24 +13020,24 @@ void __66__ICDocCamViewController_createCaptureEventInteractionIfNecessary__bloc
   [WeakRetained handleCaptureEventInteractionEvent:v3];
 }
 
-- (void)handleCaptureEventInteractionEvent:(id)a3
+- (void)handleCaptureEventInteractionEvent:(id)event
 {
-  v8 = a3;
-  v4 = [(ICDocCamViewController *)self view];
-  v5 = [v4 window];
-  v6 = [v5 isKeyWindow];
+  eventCopy = event;
+  view = [(ICDocCamViewController *)self view];
+  window = [view window];
+  isKeyWindow = [window isKeyWindow];
 
-  if (v6)
+  if (isKeyWindow)
   {
-    v7 = [v8 phase];
-    if (v7)
+    phase = [eventCopy phase];
+    if (phase)
     {
-      if (v7 == 1)
+      if (phase == 1)
       {
         [(ICDocCamViewController *)self handlePhysicalButtonReleased];
       }
 
-      else if (v7 == 2)
+      else if (phase == 2)
       {
         [(ICDocCamViewController *)self handlePhysicalButtonPressCancelled];
       }
@@ -13052,12 +13052,12 @@ void __66__ICDocCamViewController_createCaptureEventInteractionIfNecessary__bloc
 
 - (void)handlePhysicalButtonPressed
 {
-  v4 = [(ICDocCamViewController *)self shutterButton];
-  v3 = [v4 isEnabled];
-  if (!([v4 isTouchInside] & 1 | ((v3 & 1) == 0)))
+  shutterButton = [(ICDocCamViewController *)self shutterButton];
+  isEnabled = [shutterButton isEnabled];
+  if (!([shutterButton isTouchInside] & 1 | ((isEnabled & 1) == 0)))
   {
     [(ICDocCamViewController *)self setCapturingFromPhysicalButton:1];
-    [v4 setHighlighted:1];
+    [shutterButton setHighlighted:1];
   }
 }
 
@@ -13065,8 +13065,8 @@ void __66__ICDocCamViewController_createCaptureEventInteractionIfNecessary__bloc
 {
   if ([(ICDocCamViewController *)self capturingFromPhysicalButton])
   {
-    v3 = [(ICDocCamViewController *)self shutterButton];
-    [v3 setHighlighted:0];
+    shutterButton = [(ICDocCamViewController *)self shutterButton];
+    [shutterButton setHighlighted:0];
     [(ICDocCamViewController *)self shutterButtonAction:0];
     [(ICDocCamViewController *)self setCapturingFromPhysicalButton:0];
   }
@@ -13076,16 +13076,16 @@ void __66__ICDocCamViewController_createCaptureEventInteractionIfNecessary__bloc
 {
   if ([(ICDocCamViewController *)self capturingFromPhysicalButton])
   {
-    v3 = [(ICDocCamViewController *)self shutterButton];
-    [v3 setHighlighted:0];
+    shutterButton = [(ICDocCamViewController *)self shutterButton];
+    [shutterButton setHighlighted:0];
     [(ICDocCamViewController *)self setCapturingFromPhysicalButton:0];
   }
 }
 
 - (void)removeSaveActionBlockerForFiles
 {
-  v2 = [(ICDocCamViewController *)self processRequestsBlocker];
-  [v2 removeBlockerOfType:@"SaveActionBlocker"];
+  processRequestsBlocker = [(ICDocCamViewController *)self processRequestsBlocker];
+  [processRequestsBlocker removeBlockerOfType:@"SaveActionBlocker"];
 }
 
 - (ICDocCamViewControllerDelegate)delegate

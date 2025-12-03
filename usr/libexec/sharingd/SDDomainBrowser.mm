@@ -1,14 +1,14 @@
 @interface SDDomainBrowser
 + (id)sharedBrowser;
 - (SDDomainBrowser)init;
-- (id)childrenForNode:(__SFNode *)a3;
-- (id)displayNameForDomain:(id)a3;
-- (void)browseAfterDelay:(double)a3;
+- (id)childrenForNode:(__SFNode *)node;
+- (id)displayNameForDomain:(id)domain;
+- (void)browseAfterDelay:(double)delay;
 - (void)buildNodes;
-- (void)netServiceBrowser:(id)a3 didFindDomain:(id)a4 moreComing:(BOOL)a5;
-- (void)netServiceBrowser:(id)a3 didNotSearch:(id)a4;
-- (void)netServiceBrowser:(id)a3 didRemoveDomain:(id)a4 moreComing:(BOOL)a5;
-- (void)parseDomain:(id)a3;
+- (void)netServiceBrowser:(id)browser didFindDomain:(id)domain moreComing:(BOOL)coming;
+- (void)netServiceBrowser:(id)browser didNotSearch:(id)search;
+- (void)netServiceBrowser:(id)browser didRemoveDomain:(id)domain moreComing:(BOOL)coming;
+- (void)parseDomain:(id)domain;
 - (void)postNotification;
 - (void)restart;
 - (void)scheduleBrowser;
@@ -56,10 +56,10 @@
   return v3;
 }
 
-- (void)browseAfterDelay:(double)a3
+- (void)browseAfterDelay:(double)delay
 {
   timer = self->_timer;
-  v4 = sub_1001F0530(a3);
+  v4 = sub_1001F0530(delay);
 
   sub_1001F05F0(timer, v4);
 }
@@ -93,7 +93,7 @@
   }
 }
 
-- (id)childrenForNode:(__SFNode *)a3
+- (id)childrenForNode:(__SFNode *)node
 {
   if (SFNodeIsRoot())
   {
@@ -121,12 +121,12 @@
   return [Value allValues];
 }
 
-- (id)displayNameForDomain:(id)a3
+- (id)displayNameForDomain:(id)domain
 {
-  v3 = a3;
-  v4 = [(__CFString *)v3 length:0];
+  domainCopy = domain;
+  v4 = [(__CFString *)domainCopy length:0];
   v5 = malloc_type_malloc(v4 + 1, 0x100004077774924uLL);
-  if (CFStringGetCString(v3, v5, v4 + 1, 0x8000100u))
+  if (CFStringGetCString(domainCopy, v5, v4 + 1, 0x8000100u))
   {
     Mutable = CFStringCreateMutable(0, 0);
     if (v5 && *v5)
@@ -168,19 +168,19 @@
   return Mutable;
 }
 
-- (void)parseDomain:(id)a3
+- (void)parseDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v28 = 0u;
   v29 = 0u;
   *cStr = 0u;
   v27 = 0u;
-  if (v4)
+  if (domainCopy)
   {
     bzero(v25, 0x400uLL);
-    v5 = [(__CFString *)v4 length];
+    v5 = [(__CFString *)domainCopy length];
     v6 = malloc_type_malloc((v5 + 1), 0x100004077774924uLL);
-    CFStringGetCString(v4, v6, (v5 + 1), 0x8000100u);
+    CFStringGetCString(domainCopy, v6, (v5 + 1), 0x8000100u);
     v7 = 0;
     v5[v6 - 1] = 0;
     v8 = v6;
@@ -292,12 +292,12 @@ LABEL_7:
 - (void)buildNodes
 {
   CFDictionaryRemoveAllValues(self->_domainTree);
-  v3 = [(NSMutableSet *)self->_domains allObjects];
+  allObjects = [(NSMutableSet *)self->_domains allObjects];
 
-  if (v3)
+  if (allObjects)
   {
-    Count = CFArrayGetCount(v3);
-    MutableCopy = CFArrayCreateMutableCopy(0, Count, v3);
+    Count = CFArrayGetCount(allObjects);
+    MutableCopy = CFArrayCreateMutableCopy(0, Count, allObjects);
     v8.location = 0;
     v8.length = Count;
     CFArraySortValues(MutableCopy, v8, sub_1001F7FC8, self);
@@ -322,27 +322,27 @@ LABEL_7:
   }
 }
 
-- (void)netServiceBrowser:(id)a3 didFindDomain:(id)a4 moreComing:(BOOL)a5
+- (void)netServiceBrowser:(id)browser didFindDomain:(id)domain moreComing:(BOOL)coming
 {
-  v9 = a4;
-  v7 = [v9 lowercaseString];
-  v8 = v7;
-  if (v7 && ([v7 isEqualToString:@"local."] & 1) == 0)
+  domainCopy = domain;
+  lowercaseString = [domainCopy lowercaseString];
+  v8 = lowercaseString;
+  if (lowercaseString && ([lowercaseString isEqualToString:@"local."] & 1) == 0)
   {
-    [(NSMutableSet *)self->_domains addObject:v9];
+    [(NSMutableSet *)self->_domains addObject:domainCopy];
   }
 
-  if (!a5)
+  if (!coming)
   {
     [(SDDomainBrowser *)self buildNodes];
     [(SDDomainBrowser *)self postNotification];
   }
 }
 
-- (void)netServiceBrowser:(id)a3 didRemoveDomain:(id)a4 moreComing:(BOOL)a5
+- (void)netServiceBrowser:(id)browser didRemoveDomain:(id)domain moreComing:(BOOL)coming
 {
-  [(NSMutableSet *)self->_domains removeObject:a4];
-  if (!a5)
+  [(NSMutableSet *)self->_domains removeObject:domain];
+  if (!coming)
   {
     [(SDDomainBrowser *)self buildNodes];
 
@@ -350,13 +350,13 @@ LABEL_7:
   }
 }
 
-- (void)netServiceBrowser:(id)a3 didNotSearch:(id)a4
+- (void)netServiceBrowser:(id)browser didNotSearch:(id)search
 {
-  v4 = a4;
+  searchCopy = search;
   v5 = browser_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    sub_1001F84F4(v4, v5);
+    sub_1001F84F4(searchCopy, v5);
   }
 }
 

@@ -3,11 +3,11 @@
 - (UIMotionEffect)init;
 - (UIMotionEffect)initWithCoder:(NSCoder *)coder;
 - (id)_animationIdentifier;
-- (id)_keyPathsAndRelativeValuesForPose:(id)a3;
+- (id)_keyPathsAndRelativeValuesForPose:(id)pose;
 - (id)_preferredMotionAnalyzerSettings;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_setPreferredMotionAnalyzerSettings:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_setPreferredMotionAnalyzerSettings:(id)settings;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIMotionEffect
@@ -59,14 +59,14 @@
   return 0;
 }
 
-- (id)_keyPathsAndRelativeValuesForPose:(id)a3
+- (id)_keyPathsAndRelativeValuesForPose:(id)pose
 {
-  [a3 viewerOffset];
+  [pose viewerOffset];
 
   return [(UIMotionEffect *)self keyPathsAndRelativeValuesForViewerOffset:?];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 _setPreferredMotionAnalyzerSettings:self->_preferredMotionAnalyzerSettings];
@@ -91,24 +91,24 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   preferredMotionAnalyzerSettings = self->_preferredMotionAnalyzerSettings;
-  v4 = a3;
-  v5 = [(PTSettings *)preferredMotionAnalyzerSettings archiveDictionary];
-  [v4 encodeObject:v5 forKey:@"preferredMotionAnalyzerSettingsDictionary"];
+  coderCopy = coder;
+  archiveDictionary = [(PTSettings *)preferredMotionAnalyzerSettings archiveDictionary];
+  [coderCopy encodeObject:archiveDictionary forKey:@"preferredMotionAnalyzerSettingsDictionary"];
 }
 
-- (void)_setPreferredMotionAnalyzerSettings:(id)a3
+- (void)_setPreferredMotionAnalyzerSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   preferredMotionAnalyzerSettings = self->_preferredMotionAnalyzerSettings;
   p_preferredMotionAnalyzerSettings = &self->_preferredMotionAnalyzerSettings;
-  if (preferredMotionAnalyzerSettings != v5)
+  if (preferredMotionAnalyzerSettings != settingsCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_preferredMotionAnalyzerSettings, a3);
-    v5 = v8;
+    v8 = settingsCopy;
+    objc_storeStrong(p_preferredMotionAnalyzerSettings, settings);
+    settingsCopy = v8;
   }
 }
 

@@ -1,36 +1,36 @@
 @interface TSCEWhitespaceFormulaNode
-- (TSCEWhitespaceFormulaNode)initWithTag:(unsigned __int8)a3 whitespace:(id)a4 child:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSCEWhitespaceFormulaNode)initWithTag:(unsigned __int8)tag whitespace:(id)whitespace child:(id)child;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TSCEWhitespaceFormulaNode
 
-- (TSCEWhitespaceFormulaNode)initWithTag:(unsigned __int8)a3 whitespace:(id)a4 child:(id)a5
+- (TSCEWhitespaceFormulaNode)initWithTag:(unsigned __int8)tag whitespace:(id)whitespace child:(id)child
 {
-  v9 = a4;
-  v10 = a5;
+  whitespaceCopy = whitespace;
+  childCopy = child;
   v19.receiver = self;
   v19.super_class = TSCEWhitespaceFormulaNode;
   v11 = [(TSCEFormulaNode *)&v19 initWithNodeType:22];
   v12 = v11;
   if (v11)
   {
-    v11->_whitespaceTag = a3;
-    objc_storeStrong(&v11->_whitespace, a4);
+    v11->_whitespaceTag = tag;
+    objc_storeStrong(&v11->_whitespace, whitespace);
     v13 = objc_opt_new();
     children = v12->super._children;
     v12->super._children = v13;
 
-    if (v10)
+    if (childCopy)
     {
-      objc_msgSend_addObject_(v12->super._children, v15, v10, v16, v17);
+      objc_msgSend_addObject_(v12->super._children, v15, childCopy, v16, v17);
     }
   }
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = TSCEWhitespaceFormulaNode;

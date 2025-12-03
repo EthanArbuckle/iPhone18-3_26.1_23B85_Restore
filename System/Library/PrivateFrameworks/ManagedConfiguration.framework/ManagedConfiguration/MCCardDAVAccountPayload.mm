@@ -1,6 +1,6 @@
 @interface MCCardDAVAccountPayload
 - (BOOL)containsSensitiveUserInformation;
-- (MCCardDAVAccountPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCCardDAVAccountPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (NSArray)contactsAccountIdentifiers;
 - (id)payloadDescriptionKeyValueSections;
 - (id)restrictions;
@@ -13,21 +13,21 @@
 
 @implementation MCCardDAVAccountPayload
 
-- (MCCardDAVAccountPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCCardDAVAccountPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v67 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
   v62.receiver = self;
   v62.super_class = MCCardDAVAccountPayload;
-  v10 = [(MCPayload *)&v62 initWithDictionary:v8 profile:v9 outError:a5];
+  v10 = [(MCPayload *)&v62 initWithDictionary:dictionaryCopy profile:profileCopy outError:error];
   if (!v10)
   {
     goto LABEL_16;
   }
 
   v61 = 0;
-  v11 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"CardDAVAccountDescription" isRequired:0 outError:&v61];
+  v11 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"CardDAVAccountDescription" isRequired:0 outError:&v61];
   v12 = v61;
   accountDescription = v10->_accountDescription;
   v10->_accountDescription = v11;
@@ -38,7 +38,7 @@
   }
 
   v60 = 0;
-  v14 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"CardDAVUsername" isRequired:0 outError:&v60];
+  v14 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"CardDAVUsername" isRequired:0 outError:&v60];
   v12 = v60;
   username = v10->_username;
   v10->_username = v14;
@@ -49,7 +49,7 @@
   }
 
   v59 = 0;
-  v16 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"CardDAVPrincipalURL" isRequired:0 outError:&v59];
+  v16 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"CardDAVPrincipalURL" isRequired:0 outError:&v59];
   v12 = v59;
   principalURL = v10->_principalURL;
   v10->_principalURL = v16;
@@ -60,7 +60,7 @@
   }
 
   v58 = 0;
-  v18 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"CardDAVUseSSL" isRequired:0 outError:&v58];
+  v18 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"CardDAVUseSSL" isRequired:0 outError:&v58];
   v12 = v58;
   useSSLNum = v10->_useSSLNum;
   v10->_useSSLNum = v18;
@@ -72,7 +72,7 @@
 
   v10->_useSSL = [(NSNumber *)v10->_useSSLNum BOOLValue];
   v57 = 0;
-  v20 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"CardDAVPort" isRequired:0 outError:&v57];
+  v20 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"CardDAVPort" isRequired:0 outError:&v57];
   v12 = v57;
   portNum = v10->_portNum;
   v10->_portNum = v20;
@@ -84,7 +84,7 @@
 
   v10->_port = [(NSNumber *)v10->_portNum intValue];
   v56 = 0;
-  v23 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"CommunicationServiceRules" isRequired:0 outError:&v56];
+  v23 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"CommunicationServiceRules" isRequired:0 outError:&v56];
   v35 = v56;
   if (v35)
   {
@@ -94,10 +94,10 @@ LABEL_21:
 LABEL_7:
     v22 = [(MCPayload *)v10 malformedPayloadErrorWithError:v12];
     v23 = v22;
-    if (a5)
+    if (error)
     {
       v24 = v22;
-      *a5 = v23;
+      *error = v23;
     }
 
     v25 = _MCLogObjects;
@@ -106,11 +106,11 @@ LABEL_7:
       v26 = v25;
       v27 = objc_opt_class();
       v28 = v27;
-      v29 = [v23 MCVerboseDescription];
+      mCVerboseDescription = [v23 MCVerboseDescription];
       *buf = 138543618;
       v64 = v27;
       v65 = 2114;
-      v66 = v29;
+      v66 = mCVerboseDescription;
       _os_log_impl(&dword_1A795B000, v26, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
     }
 
@@ -130,7 +130,7 @@ LABEL_7:
   }
 
   v54 = 0;
-  v38 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"VPNUUID" isRequired:0 outError:&v54];
+  v38 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"VPNUUID" isRequired:0 outError:&v54];
   v12 = v54;
   VPNUUID = v10->_VPNUUID;
   v10->_VPNUUID = v38;
@@ -140,10 +140,10 @@ LABEL_7:
     goto LABEL_21;
   }
 
-  if ([v9 isStub])
+  if ([profileCopy isStub])
   {
     v51 = 0;
-    v40 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"CardDAVHostName" isRequired:0 outError:&v51];
+    v40 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"CardDAVHostName" isRequired:0 outError:&v51];
     v12 = v51;
     hostname = v10->_hostname;
     v10->_hostname = v40;
@@ -154,7 +154,7 @@ LABEL_7:
     }
 
     v50 = 0;
-    v42 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"CardDAVAccountPersistentUUID" isRequired:0 outError:&v50];
+    v42 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"CardDAVAccountPersistentUUID" isRequired:0 outError:&v50];
     v12 = v50;
     accountPersistentUUID = v10->_accountPersistentUUID;
     v10->_accountPersistentUUID = v42;
@@ -165,7 +165,7 @@ LABEL_7:
     }
 
     v49 = 0;
-    v44 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"ACAccountIdentifier" isRequired:0 outError:&v49];
+    v44 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"ACAccountIdentifier" isRequired:0 outError:&v49];
     v12 = v49;
     v45 = 152;
   }
@@ -173,7 +173,7 @@ LABEL_7:
   else
   {
     v53 = 0;
-    v46 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"CardDAVHostName" isRequired:1 outError:&v53];
+    v46 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"CardDAVHostName" isRequired:1 outError:&v53];
     v12 = v53;
     v47 = v10->_hostname;
     v10->_hostname = v46;
@@ -184,7 +184,7 @@ LABEL_7:
     }
 
     v52 = 0;
-    v44 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"CardDAVPassword" isRequired:0 outError:&v52];
+    v44 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"CardDAVPassword" isRequired:0 outError:&v52];
     v12 = v52;
     v45 = 112;
   }
@@ -199,17 +199,17 @@ LABEL_7:
 
 LABEL_12:
 
-  if ([v8 count])
+  if ([dictionaryCopy count])
   {
     v30 = _MCLogObjects;
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
     {
       v31 = v30;
-      v32 = [(MCPayload *)v10 friendlyName];
+      friendlyName = [(MCPayload *)v10 friendlyName];
       *buf = 138543618;
-      v64 = v32;
+      v64 = friendlyName;
       v65 = 2114;
-      v66 = v8;
+      v66 = dictionaryCopy;
       _os_log_impl(&dword_1A795B000, v31, OS_LOG_TYPE_INFO, "Payload “%{public}@” contains ignored fields. They are: %{public}@", buf, 0x16u);
     }
   }
@@ -223,8 +223,8 @@ LABEL_16:
 {
   v7.receiver = self;
   v7.super_class = MCCardDAVAccountPayload;
-  v3 = [(MCPayload *)&v7 verboseDescription];
-  v4 = [v3 mutableCopy];
+  verboseDescription = [(MCPayload *)&v7 verboseDescription];
+  v4 = [verboseDescription mutableCopy];
 
   if (self->_accountDescription)
   {
@@ -289,12 +289,12 @@ LABEL_16:
 {
   v16.receiver = self;
   v16.super_class = MCCardDAVAccountPayload;
-  v3 = [(MCPayload *)&v16 stubDictionary];
-  v4 = v3;
+  stubDictionary = [(MCPayload *)&v16 stubDictionary];
+  v4 = stubDictionary;
   accountDescription = self->_accountDescription;
   if (accountDescription)
   {
-    [v3 setObject:accountDescription forKey:@"CardDAVAccountDescription"];
+    [stubDictionary setObject:accountDescription forKey:@"CardDAVAccountDescription"];
   }
 
   hostname = self->_hostname;
@@ -353,16 +353,16 @@ LABEL_16:
 
 - (id)restrictions
 {
-  v2 = [(MCCardDAVAccountPayload *)self communicationServiceRules];
-  v3 = [MCCommunicationServiceRulesUtilities restrictionsForValidatedCommunicationServiceRules:v2];
+  communicationServiceRules = [(MCCardDAVAccountPayload *)self communicationServiceRules];
+  v3 = [MCCommunicationServiceRulesUtilities restrictionsForValidatedCommunicationServiceRules:communicationServiceRules];
 
   return v3;
 }
 
 - (id)subtitle1Label
 {
-  v2 = [(MCCardDAVAccountPayload *)self hostname];
-  if (v2)
+  hostname = [(MCCardDAVAccountPayload *)self hostname];
+  if (hostname)
   {
     v3 = @"CARDDAV_SERVER_NAME_COLON";
   }
@@ -379,46 +379,46 @@ LABEL_16:
 
 - (id)subtitle2Label
 {
-  v3 = [(MCCardDAVAccountPayload *)self username];
-  if (v3)
+  username = [(MCCardDAVAccountPayload *)self username];
+  if (username)
   {
-    v4 = v3;
-    v5 = [(MCCardDAVAccountPayload *)self hostname];
+    v4 = username;
+    hostname = [(MCCardDAVAccountPayload *)self hostname];
 
-    if (v5)
+    if (hostname)
     {
-      v3 = MCLocalizedString(@"CARDDAV_USERNAME_COLON");
+      username = MCLocalizedString(@"CARDDAV_USERNAME_COLON");
     }
 
     else
     {
-      v3 = 0;
+      username = 0;
     }
   }
 
-  return v3;
+  return username;
 }
 
 - (id)subtitle2Description
 {
-  v3 = [(MCCardDAVAccountPayload *)self username];
-  if (v3)
+  username = [(MCCardDAVAccountPayload *)self username];
+  if (username)
   {
-    v4 = v3;
-    v5 = [(MCCardDAVAccountPayload *)self hostname];
+    v4 = username;
+    hostname = [(MCCardDAVAccountPayload *)self hostname];
 
-    if (v5)
+    if (hostname)
     {
-      v3 = [(MCCardDAVAccountPayload *)self username];
+      username = [(MCCardDAVAccountPayload *)self username];
     }
 
     else
     {
-      v3 = 0;
+      username = 0;
     }
   }
 
-  return v3;
+  return username;
 }
 
 - (id)payloadDescriptionKeyValueSections
@@ -532,8 +532,8 @@ LABEL_16:
     return 1;
   }
 
-  v4 = [(MCCardDAVAccountPayload *)self password];
-  v3 = v4 != 0;
+  password = [(MCCardDAVAccountPayload *)self password];
+  v3 = password != 0;
 
   return v3;
 }

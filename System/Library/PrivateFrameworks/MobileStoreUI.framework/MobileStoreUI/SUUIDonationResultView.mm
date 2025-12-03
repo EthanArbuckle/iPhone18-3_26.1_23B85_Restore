@@ -1,21 +1,21 @@
 @interface SUUIDonationResultView
 - (void)layoutSubviews;
-- (void)setImage:(id)a3;
-- (void)setMessage:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setImage:(id)image;
+- (void)setMessage:(id)message;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SUUIDonationResultView
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v12 = a3;
-  v4 = [(UIImageView *)self->_imageView image];
+  imageCopy = image;
+  image = [(UIImageView *)self->_imageView image];
 
-  if (v4 != v12)
+  if (image != imageCopy)
   {
     imageView = self->_imageView;
-    if (v12)
+    if (imageCopy)
     {
       if (!imageView)
       {
@@ -24,8 +24,8 @@
         self->_imageView = v7;
 
         v9 = self->_imageView;
-        v10 = [(SUUIDonationResultView *)self backgroundColor];
-        [(UIImageView *)v9 setBackgroundColor:v10];
+        backgroundColor = [(SUUIDonationResultView *)self backgroundColor];
+        [(UIImageView *)v9 setBackgroundColor:backgroundColor];
 
         [(SUUIDonationResultView *)self addSubview:self->_imageView];
         imageView = self->_imageView;
@@ -42,20 +42,20 @@
       self->_imageView = 0;
     }
 
-    v5 = [(SUUIDonationResultView *)self setNeedsLayout];
+    setNeedsLayout = [(SUUIDonationResultView *)self setNeedsLayout];
   }
 
-  MEMORY[0x2821F9730](v5);
+  MEMORY[0x2821F9730](setNeedsLayout);
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v15 = a3;
-  v4 = [(SUUIDonationResultView *)self message];
-  if (v4 != v15 && ([v15 isEqualToString:v4] & 1) == 0)
+  messageCopy = message;
+  message = [(SUUIDonationResultView *)self message];
+  if (message != messageCopy && ([messageCopy isEqualToString:message] & 1) == 0)
   {
     messageLabel = self->_messageLabel;
-    if (v15)
+    if (messageCopy)
     {
       if (!messageLabel)
       {
@@ -64,8 +64,8 @@
         self->_messageLabel = v6;
 
         v8 = self->_messageLabel;
-        v9 = [(SUUIDonationResultView *)self backgroundColor];
-        [(UILabel *)v8 setBackgroundColor:v9];
+        backgroundColor = [(SUUIDonationResultView *)self backgroundColor];
+        [(UILabel *)v8 setBackgroundColor:backgroundColor];
 
         v10 = self->_messageLabel;
         v11 = [MEMORY[0x277D74300] systemFontOfSize:14.0];
@@ -74,8 +74,8 @@
         [(UILabel *)self->_messageLabel setNumberOfLines:0];
         [(UILabel *)self->_messageLabel setTextAlignment:1];
         v12 = self->_messageLabel;
-        v13 = [MEMORY[0x277D75348] secondaryLabelColor];
-        [(UILabel *)v12 setTextColor:v13];
+        secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+        [(UILabel *)v12 setTextColor:secondaryLabelColor];
 
         [(SUUIDonationResultView *)self addSubview:self->_messageLabel];
         messageLabel = self->_messageLabel;
@@ -95,14 +95,14 @@
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v15 = a3;
-  v4 = [(SUUIDonationResultView *)self title];
-  if (v4 != v15 && ([v15 isEqualToString:v4] & 1) == 0)
+  titleCopy = title;
+  title = [(SUUIDonationResultView *)self title];
+  if (title != titleCopy && ([titleCopy isEqualToString:title] & 1) == 0)
   {
     titleLabel = self->_titleLabel;
-    if (v15)
+    if (titleCopy)
     {
       if (!titleLabel)
       {
@@ -111,8 +111,8 @@
         self->_titleLabel = v6;
 
         v8 = self->_titleLabel;
-        v9 = [(SUUIDonationResultView *)self backgroundColor];
-        [(UILabel *)v8 setBackgroundColor:v9];
+        backgroundColor = [(SUUIDonationResultView *)self backgroundColor];
+        [(UILabel *)v8 setBackgroundColor:backgroundColor];
 
         v10 = self->_titleLabel;
         v11 = [MEMORY[0x277D74300] boldSystemFontOfSize:17.0];
@@ -121,8 +121,8 @@
         [(UILabel *)self->_titleLabel setNumberOfLines:0];
         [(UILabel *)self->_titleLabel setTextAlignment:1];
         v12 = self->_titleLabel;
-        v13 = [MEMORY[0x277D75348] labelColor];
-        [(UILabel *)v12 setTextColor:v13];
+        labelColor = [MEMORY[0x277D75348] labelColor];
+        [(UILabel *)v12 setTextColor:labelColor];
 
         [(SUUIDonationResultView *)self addSubview:self->_titleLabel];
         titleLabel = self->_titleLabel;
@@ -159,21 +159,21 @@
   [(UILabel *)self->_messageLabel frame];
   [(UILabel *)self->_messageLabel sizeThatFits:v6, 1.79769313e308];
   v16 = v15;
-  v17 = [MEMORY[0x277D75418] currentDevice];
-  v18 = [v17 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v19 = 8.0;
-  if ((v18 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v19 = 46.0;
   }
 
   v20 = v14 + v10 + v19;
-  v21 = [MEMORY[0x277D75418] currentDevice];
-  v22 = [v21 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
   v23 = 12.0;
-  if ((v22 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v23 = 10.0;
   }
@@ -186,11 +186,11 @@
   v38.size.width = v8;
   v38.size.height = v10;
   MaxY = CGRectGetMaxY(v38);
-  v27 = [MEMORY[0x277D75418] currentDevice];
-  v28 = [v27 userInterfaceIdiom];
+  currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
   v29 = 8.0;
-  if ((v28 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v29 = 46.0;
   }
@@ -202,11 +202,11 @@
   v39.size.width = v6;
   v39.size.height = v14;
   v31 = CGRectGetMaxY(v39);
-  v32 = [MEMORY[0x277D75418] currentDevice];
-  v33 = [v32 userInterfaceIdiom];
+  currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom4 = [currentDevice4 userInterfaceIdiom];
 
   v34 = 10.0;
-  if ((v33 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom4 & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     v34 = 12.0;
   }

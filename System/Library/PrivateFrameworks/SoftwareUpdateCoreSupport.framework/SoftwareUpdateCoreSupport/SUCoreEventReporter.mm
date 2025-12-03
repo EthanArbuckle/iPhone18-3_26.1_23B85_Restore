@@ -1,71 +1,71 @@
 @interface SUCoreEventReporter
-+ (id)_errorDomainAbbreviation:(id)a3;
-+ (id)_nsURLSessionTaskNameForState:(int64_t)a3;
-+ (id)_sharedReporter:(id)a3 withAccessControl:(int64_t)a4;
-+ (id)accessControlSummary:(int64_t)a3;
-+ (id)buildSplunkServerURLFromBase:(id)a3;
-+ (int64_t)eventForEventString:(id)a3;
-+ (void)augmentEvent:(id)a3 withError:(id)a4;
++ (id)_errorDomainAbbreviation:(id)abbreviation;
++ (id)_nsURLSessionTaskNameForState:(int64_t)state;
++ (id)_sharedReporter:(id)reporter withAccessControl:(int64_t)control;
++ (id)accessControlSummary:(int64_t)summary;
++ (id)buildSplunkServerURLFromBase:(id)base;
++ (int64_t)eventForEventString:(id)string;
++ (void)augmentEvent:(id)event withError:(id)error;
 - (BOOL)_sendFirstAwaitingRetry;
-- (BOOL)_storeServerURLMetadata:(id)a3 toFileUUID:(id)a4;
-- (BOOL)sendEvent:(id)a3 toServerURL:(id)a4 returningFinalEventDictionary:(id *)a5;
-- (id)_activeEventForFileUUID:(id)a3;
-- (id)_alignPersistedStateWithExistingFileUUIDs:(id)a3;
+- (BOOL)_storeServerURLMetadata:(id)metadata toFileUUID:(id)d;
+- (BOOL)sendEvent:(id)event toServerURL:(id)l returningFinalEventDictionary:(id *)dictionary;
+- (id)_activeEventForFileUUID:(id)d;
+- (id)_alignPersistedStateWithExistingFileUUIDs:(id)ds;
 - (id)_buildContextFromNVRAMBootArgs;
-- (id)_copyEscapeStringsForEventData:(id)a3;
-- (id)_getJSONDataFromPayload:(id)a3 withFileUUID:(id)a4 forEventUUID:(id)a5;
-- (id)_getSplunkRequestForURL:(id)a3;
-- (id)_getSplunkServerURL:(id)a3;
+- (id)_copyEscapeStringsForEventData:(id)data;
+- (id)_getJSONDataFromPayload:(id)payload withFileUUID:(id)d forEventUUID:(id)iD;
+- (id)_getSplunkRequestForURL:(id)l;
+- (id)_getSplunkServerURL:(id)l;
 - (id)_newExistingFileUUIDs;
-- (id)_newScrubbedEvents:(id)a3;
-- (id)_removeFileUUID:(id)a3 fromFilesToRetry:(id)a4;
-- (id)_storeJSONData:(id)a3 withFileUUID:(id)a4 forEventUUID:(id)a5;
-- (id)_synchonizeDiscoveredCanceling:(id)a3 forActiveEvent:(id)a4 withFileUUIDsToRetry:(id)a5;
-- (id)_synchonizeDiscoveredCompleted:(id)a3 forActiveEvent:(id)a4 withFileUUIDsToRetry:(id)a5;
-- (id)_synchonizeDiscoveredRunning:(id)a3 forActiveEvent:(id)a4 withFileUUIDsToRetry:(id)a5;
-- (id)_synchonizeDiscoveredSuspended:(id)a3 forActiveEvent:(id)a4 withFileUUIDsToRetry:(id)a5;
-- (id)_synchonizeDiscoveredUnknown:(id)a3 forActiveEvent:(id)a4 withFileUUIDsToRetry:(id)a5;
-- (id)initStoringToPath:(id)a3;
-- (id)initStoringToPath:(id)a3 withAccessControl:(int64_t)a4;
-- (id)sendEventReturningAugmented:(id)a3 toServerURL:(id)a4;
+- (id)_newScrubbedEvents:(id)events;
+- (id)_removeFileUUID:(id)d fromFilesToRetry:(id)retry;
+- (id)_storeJSONData:(id)data withFileUUID:(id)d forEventUUID:(id)iD;
+- (id)_synchonizeDiscoveredCanceling:(id)canceling forActiveEvent:(id)event withFileUUIDsToRetry:(id)retry;
+- (id)_synchonizeDiscoveredCompleted:(id)completed forActiveEvent:(id)event withFileUUIDsToRetry:(id)retry;
+- (id)_synchonizeDiscoveredRunning:(id)running forActiveEvent:(id)event withFileUUIDsToRetry:(id)retry;
+- (id)_synchonizeDiscoveredSuspended:(id)suspended forActiveEvent:(id)event withFileUUIDsToRetry:(id)retry;
+- (id)_synchonizeDiscoveredUnknown:(id)unknown forActiveEvent:(id)event withFileUUIDsToRetry:(id)retry;
+- (id)initStoringToPath:(id)path;
+- (id)initStoringToPath:(id)path withAccessControl:(int64_t)control;
+- (id)sendEventReturningAugmented:(id)augmented toServerURL:(id)l;
 - (int64_t)currentAccessControl;
-- (void)_adoptLastErrorEvent:(id)a3;
-- (void)_awaitRetryingFileUUID:(id)a3;
-- (void)_checkWhetherIdle:(id)a3;
+- (void)_adoptLastErrorEvent:(id)event;
+- (void)_awaitRetryingFileUUID:(id)d;
+- (void)_checkWhetherIdle:(id)idle;
 - (void)_decrementActiveSendCount;
 - (void)_determineEventExtensions;
-- (void)_incrementActiveSendCount:(id)a3;
-- (void)_removeActiveEventForFileUUID:(id)a3;
-- (void)_removeFileUUID:(id)a3 loggingError:(BOOL)a4 forReason:(id)a5;
+- (void)_incrementActiveSendCount:(id)count;
+- (void)_removeActiveEventForFileUUID:(id)d;
+- (void)_removeFileUUID:(id)d loggingError:(BOOL)error forReason:(id)reason;
 - (void)_sendAllAwaitingRetry;
-- (void)_sendCoreEvent:(id)a3;
-- (void)_sendCoreEvents:(id)a3 secondEvent:(id)a4;
-- (void)_sendInterruptedFromStorage:(id)a3;
-- (void)_sendSplunkEvents:(id)a3 forEventUUID:(id)a4 toServerURL:(id)a5;
+- (void)_sendCoreEvent:(id)event;
+- (void)_sendCoreEvents:(id)events secondEvent:(id)event;
+- (void)_sendInterruptedFromStorage:(id)storage;
+- (void)_sendSplunkEvents:(id)events forEventUUID:(id)d toServerURL:(id)l;
 - (void)_splunkAccessSetup;
-- (void)_synchronizeWithNSURLSessionExpecting:(id)a3;
-- (void)_updateActiveEvent:(id)a3 forFileUUID:(id)a4;
-- (void)_uploadFromFile:(id)a3 withFileUUID:(id)a4 forEventUUID:(id)a5 toServerURL:(id)a6;
-- (void)dropOnSendFailure:(BOOL)a3;
+- (void)_synchronizeWithNSURLSessionExpecting:(id)expecting;
+- (void)_updateActiveEvent:(id)event forFileUUID:(id)d;
+- (void)_uploadFromFile:(id)file withFileUUID:(id)d forEventUUID:(id)iD toServerURL:(id)l;
+- (void)dropOnSendFailure:(BOOL)failure;
 - (void)flushEvent;
-- (void)handleSendFinishedInvalidFileUUID:(id)a3 withError:(id)a4;
-- (void)handleSendFinishedWithFileUUID:(id)a3 sendSucceeded:(BOOL)a4 withStatusCode:(int64_t)a5 withError:(id)a6;
-- (void)indicateOnceIdle:(id)a3;
+- (void)handleSendFinishedInvalidFileUUID:(id)d withError:(id)error;
+- (void)handleSendFinishedWithFileUUID:(id)d sendSucceeded:(BOOL)succeeded withStatusCode:(int64_t)code withError:(id)error;
+- (void)indicateOnceIdle:(id)idle;
 @end
 
 @implementation SUCoreEventReporter
 
-+ (id)_sharedReporter:(id)a3 withAccessControl:(int64_t)a4
++ (id)_sharedReporter:(id)reporter withAccessControl:(int64_t)control
 {
-  v5 = a3;
+  reporterCopy = reporter;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __57__SUCoreEventReporter__sharedReporter_withAccessControl___block_invoke;
   v11[3] = &unk_1E86FC370;
-  v12 = v5;
-  v13 = a4;
+  v12 = reporterCopy;
+  controlCopy = control;
   v6 = _sharedReporter_withAccessControl__reporterOnce;
-  v7 = v5;
+  v7 = reporterCopy;
   if (v6 != -1)
   {
     dispatch_once(&_sharedReporter_withAccessControl__reporterOnce, v11);
@@ -84,18 +84,18 @@ uint64_t __57__SUCoreEventReporter__sharedReporter_withAccessControl___block_inv
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)initStoringToPath:(id)a3
+- (id)initStoringToPath:(id)path
 {
-  v4 = a3;
-  v5 = [[SUCoreEventReporter alloc] initStoringToPath:v4 withAccessControl:1];
+  pathCopy = path;
+  v5 = [[SUCoreEventReporter alloc] initStoringToPath:pathCopy withAccessControl:1];
 
   return v5;
 }
 
-- (id)initStoringToPath:(id)a3 withAccessControl:(int64_t)a4
+- (id)initStoringToPath:(id)path withAccessControl:(int64_t)control
 {
   v58 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  pathCopy = path;
   v53.receiver = self;
   v53.super_class = SUCoreEventReporter;
   v7 = [(SUCoreEventReporter *)&v53 init];
@@ -113,38 +113,38 @@ uint64_t __57__SUCoreEventReporter__sharedReporter_withAccessControl___block_inv
 
   v11 = objc_alloc(MEMORY[0x1E696AEC0]);
   v12 = +[SUCore sharedCore];
-  v13 = [v12 commonDomain];
-  v14 = [v11 initWithFormat:@"%@.%@", v13, @"core.splunk.state"];
-  v15 = [v14 UTF8String];
+  commonDomain = [v12 commonDomain];
+  v14 = [v11 initWithFormat:@"%@.%@", commonDomain, @"core.splunk.state"];
+  uTF8String = [v14 UTF8String];
   v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v17 = dispatch_queue_create(v15, v16);
+  v17 = dispatch_queue_create(uTF8String, v16);
   splunkStateQueue = v8->_splunkStateQueue;
   v8->_splunkStateQueue = v17;
 
   if (!v8->_splunkStateQueue)
   {
-    v20 = +[SUCoreDiag sharedDiag];
+    oslog = +[SUCoreDiag sharedDiag];
     v23 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v22 = +[SUCore sharedCore];
-    v24 = [(NSString *)v22 commonDomain];
-    v25 = [v23 initWithFormat:@"unable to create dispatch queue domain(%@.%@)", v24, @"core.splunk.state"];
-    [v20 trackError:@"[EVENT_REPORTER] INIT" forReason:v25 withResult:8100 withError:0];
+    commonDomain3 = +[SUCore sharedCore];
+    commonDomain2 = [(NSString *)commonDomain3 commonDomain];
+    v25 = [v23 initWithFormat:@"unable to create dispatch queue domain(%@.%@)", commonDomain2, @"core.splunk.state"];
+    [oslog trackError:@"[EVENT_REPORTER] INIT" forReason:v25 withResult:8100 withError:0];
 
     goto LABEL_6;
   }
 
   v19 = +[SUCoreLog sharedLogger];
-  v20 = [v19 oslog];
+  oslog = [v19 oslog];
 
-  if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     v21 = +[SUCore sharedCore];
-    v22 = [v21 commonDomain];
+    commonDomain3 = [v21 commonDomain];
     *buf = 138543618;
-    v55 = v22;
+    v55 = commonDomain3;
     v56 = 2114;
     v57 = @"core.splunk.state";
-    _os_log_impl(&dword_1E0F71000, v20, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] DISPATCH | created dispatch queue domain(%{public}@.%{public}@)", buf, 0x16u);
+    _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] DISPATCH | created dispatch queue domain(%{public}@.%{public}@)", buf, 0x16u);
 
 LABEL_6:
   }
@@ -161,14 +161,14 @@ LABEL_6:
   reporterDelegate = v8->_reporterDelegate;
   v8->_reporterDelegate = 0;
 
-  if (v6)
+  if (pathCopy)
   {
-    v30 = [v6 stringByAppendingPathComponent:@"/RecorderSplunkRecords"];
+    v30 = [pathCopy stringByAppendingPathComponent:@"/RecorderSplunkRecords"];
     storeToPath = v8->_storeToPath;
     v8->_storeToPath = v30;
 
-    v8->_accessControl = a4;
-    v32 = [v6 stringByAppendingPathComponent:@"/EventReporterPersistedState"];
+    v8->_accessControl = control;
+    v32 = [pathCopy stringByAppendingPathComponent:@"/EventReporterPersistedState"];
     persistedStatePath = v8->_persistedStatePath;
     v8->_persistedStatePath = v32;
   }
@@ -176,15 +176,15 @@ LABEL_6:
   else
   {
     v34 = +[SUCore sharedCore];
-    v35 = [v34 commonFilesystemBaseDir];
-    v36 = [v35 stringByAppendingPathComponent:@"/RecorderSplunkRecords"];
+    commonFilesystemBaseDir = [v34 commonFilesystemBaseDir];
+    v36 = [commonFilesystemBaseDir stringByAppendingPathComponent:@"/RecorderSplunkRecords"];
     v37 = v8->_storeToPath;
     v8->_storeToPath = v36;
 
-    v8->_accessControl = a4;
+    v8->_accessControl = control;
     persistedStatePath = +[SUCore sharedCore];
-    v38 = [persistedStatePath commonFilesystemBaseDir];
-    v39 = [v38 stringByAppendingPathComponent:@"/EventReporterPersistedState"];
+    commonFilesystemBaseDir2 = [persistedStatePath commonFilesystemBaseDir];
+    v39 = [commonFilesystemBaseDir2 stringByAppendingPathComponent:@"/EventReporterPersistedState"];
     v40 = v8->_persistedStatePath;
     v8->_persistedStatePath = v39;
   }
@@ -207,9 +207,9 @@ LABEL_6:
   v8->_onceIdleCompletion = 0;
 
   v47 = +[SUCoreLog sharedLogger];
-  v48 = [v47 oslog];
+  oslog2 = [v47 oslog];
 
-  if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
   {
     v49 = v8->_storeToPath;
     v50 = [SUCoreEventReporter accessControlSummary:v8->_accessControl];
@@ -217,7 +217,7 @@ LABEL_6:
     v55 = v49;
     v56 = 2114;
     v57 = v50;
-    _os_log_impl(&dword_1E0F71000, v48, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] INIT(v1.0) | storing to path: %{public}@, access control: %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_1E0F71000, oslog2, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] INIT(v1.0) | storing to path: %{public}@, access control: %{public}@", buf, 0x16u);
   }
 
 LABEL_13:
@@ -225,15 +225,15 @@ LABEL_13:
   return v8;
 }
 
-+ (void)augmentEvent:(id)a3 withError:(id)a4
++ (void)augmentEvent:(id)event withError:(id)error
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  eventCopy = event;
+  errorCopy = error;
+  v7 = errorCopy;
+  if (errorCopy)
   {
-    v8 = [v6 domain];
-    v9 = [a1 _errorDomainAbbreviation:v8];
+    domain = [errorCopy domain];
+    v9 = [self _errorDomainAbbreviation:domain];
 
     if (v9)
     {
@@ -249,12 +249,12 @@ LABEL_13:
     v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@", v7];
     if (v11)
     {
-      [v13 setSafeObject:v11 forKey:@"result"];
+      [eventCopy setSafeObject:v11 forKey:@"result"];
     }
 
     if (v12)
     {
-      [v13 setSafeObject:v12 forKey:@"failureReason"];
+      [eventCopy setSafeObject:v12 forKey:@"failureReason"];
     }
   }
 
@@ -266,12 +266,12 @@ LABEL_13:
   }
 }
 
-+ (id)buildSplunkServerURLFromBase:(id)a3
++ (id)buildSplunkServerURLFromBase:(id)base
 {
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  baseCopy = base;
+  if (baseCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@/%d/%@", v3, 2, @"psr_ota"];
+    v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@/%d/%@", baseCopy, 2, @"psr_ota"];
     v5 = [MEMORY[0x1E695DFF8] URLWithString:v4];
   }
 
@@ -283,12 +283,12 @@ LABEL_13:
   return v5;
 }
 
-+ (id)accessControlSummary:(int64_t)a3
++ (id)accessControlSummary:(int64_t)summary
 {
-  v3 = a3;
+  summaryCopy = summary;
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v5 = @"Y";
-  if ((v3 & 1) == 0)
+  if ((summaryCopy & 1) == 0)
   {
     v5 = @"N";
   }
@@ -301,75 +301,75 @@ LABEL_13:
   return v8;
 }
 
-+ (int64_t)eventForEventString:(id)a3
++ (int64_t)eventForEventString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"purge"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"purge"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"preflightScan"])
+  else if ([stringCopy isEqualToString:@"preflightScan"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"preflightDownload"])
+  else if ([stringCopy isEqualToString:@"preflightDownload"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"preflightPersonalize"])
+  else if ([stringCopy isEqualToString:@"preflightPersonalize"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"preflightFDR"])
+  else if ([stringCopy isEqualToString:@"preflightFDR"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"preflightWakeup"])
+  else if ([stringCopy isEqualToString:@"preflightWakeup"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"preflightPrerequisiteCheck"])
+  else if ([stringCopy isEqualToString:@"preflightPrerequisiteCheck"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"prepareStarted"])
+  else if ([stringCopy isEqualToString:@"prepareStarted"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"prepareFinished"])
+  else if ([stringCopy isEqualToString:@"prepareFinished"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"applyStarted"])
+  else if ([stringCopy isEqualToString:@"applyStarted"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"applyFinished"])
+  else if ([stringCopy isEqualToString:@"applyFinished"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"CryptegraftStarted"])
+  else if ([stringCopy isEqualToString:@"CryptegraftStarted"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"CryptegraftFinshed"])
+  else if ([stringCopy isEqualToString:@"CryptegraftFinshed"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"updateFinished"])
+  else if ([stringCopy isEqualToString:@"updateFinished"])
   {
     v4 = 13;
   }
@@ -382,12 +382,12 @@ LABEL_13:
   return v4;
 }
 
-- (BOOL)sendEvent:(id)a3 toServerURL:(id)a4 returningFinalEventDictionary:(id *)a5
+- (BOOL)sendEvent:(id)event toServerURL:(id)l returningFinalEventDictionary:(id *)dictionary
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_not_V2(v10);
+  eventCopy = event;
+  lCopy = l;
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_not_V2(splunkStateQueue);
 
   v27 = 0;
   v28 = &v27;
@@ -399,23 +399,23 @@ LABEL_13:
   v24 = __Block_byref_object_copy__1;
   v25 = __Block_byref_object_dispose__1;
   v26 = 0;
-  v11 = [(SUCoreEventReporter *)self splunkStateQueue];
+  splunkStateQueue2 = [(SUCoreEventReporter *)self splunkStateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__SUCoreEventReporter_sendEvent_toServerURL_returningFinalEventDictionary___block_invoke;
   block[3] = &unk_1E86FC398;
   block[4] = self;
-  v12 = v8;
+  v12 = eventCopy;
   v17 = v12;
-  v13 = v9;
+  v13 = lCopy;
   v18 = v13;
   v19 = &v27;
   v20 = &v21;
-  dispatch_sync(v11, block);
+  dispatch_sync(splunkStateQueue2, block);
 
-  if (a5)
+  if (dictionary)
   {
-    *a5 = v22[5];
+    *dictionary = v22[5];
   }
 
   v14 = *(v28 + 24);
@@ -460,12 +460,12 @@ void __75__SUCoreEventReporter_sendEvent_toServerURL_returningFinalEventDictiona
   }
 }
 
-- (id)sendEventReturningAugmented:(id)a3 toServerURL:(id)a4
+- (id)sendEventReturningAugmented:(id)augmented toServerURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_not_V2(v8);
+  augmentedCopy = augmented;
+  lCopy = l;
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_not_V2(splunkStateQueue);
 
   v18 = 0;
   v19 = &v18;
@@ -473,18 +473,18 @@ void __75__SUCoreEventReporter_sendEvent_toServerURL_returningFinalEventDictiona
   v21 = __Block_byref_object_copy__1;
   v22 = __Block_byref_object_dispose__1;
   v23 = 0;
-  v9 = [(SUCoreEventReporter *)self splunkStateQueue];
+  splunkStateQueue2 = [(SUCoreEventReporter *)self splunkStateQueue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __63__SUCoreEventReporter_sendEventReturningAugmented_toServerURL___block_invoke;
   v14[3] = &unk_1E86FC3C0;
   v14[4] = self;
-  v15 = v6;
-  v16 = v7;
+  v15 = augmentedCopy;
+  v16 = lCopy;
   v17 = &v18;
-  v10 = v7;
-  v11 = v6;
-  dispatch_sync(v9, v14);
+  v10 = lCopy;
+  v11 = augmentedCopy;
+  dispatch_sync(splunkStateQueue2, v14);
 
   v12 = v19[5];
   _Block_object_dispose(&v18, 8);
@@ -524,16 +524,16 @@ void __63__SUCoreEventReporter_sendEventReturningAugmented_toServerURL___block_i
   }
 }
 
-- (void)dropOnSendFailure:(BOOL)a3
+- (void)dropOnSendFailure:(BOOL)failure
 {
-  v5 = [(SUCoreEventReporter *)self splunkStateQueue];
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __41__SUCoreEventReporter_dropOnSendFailure___block_invoke;
   v6[3] = &unk_1E86FC3E8;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  failureCopy = failure;
+  dispatch_async(splunkStateQueue, v6);
 }
 
 void __41__SUCoreEventReporter_dropOnSendFailure___block_invoke(uint64_t a1)
@@ -565,13 +565,13 @@ void __41__SUCoreEventReporter_dropOnSendFailure___block_invoke(uint64_t a1)
 
 - (void)flushEvent
 {
-  v3 = [(SUCoreEventReporter *)self splunkStateQueue];
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __33__SUCoreEventReporter_flushEvent__block_invoke;
   block[3] = &unk_1E86FC178;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(splunkStateQueue, block);
 }
 
 uint64_t __33__SUCoreEventReporter_flushEvent__block_invoke(uint64_t a1)
@@ -613,21 +613,21 @@ uint64_t __33__SUCoreEventReporter_flushEvent__block_invoke(uint64_t a1)
 
 - (int64_t)currentAccessControl
 {
-  v3 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_not_V2(v3);
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_not_V2(splunkStateQueue);
 
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v4 = [(SUCoreEventReporter *)self splunkStateQueue];
+  splunkStateQueue2 = [(SUCoreEventReporter *)self splunkStateQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__SUCoreEventReporter_currentAccessControl__block_invoke;
   v7[3] = &unk_1E86FC1A0;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v4, v7);
+  dispatch_sync(splunkStateQueue2, v7);
 
   v5 = v9[3];
   _Block_object_dispose(&v8, 8);
@@ -641,18 +641,18 @@ uint64_t __43__SUCoreEventReporter_currentAccessControl__block_invoke(uint64_t a
   return result;
 }
 
-- (void)indicateOnceIdle:(id)a3
+- (void)indicateOnceIdle:(id)idle
 {
-  v4 = a3;
-  v5 = [(SUCoreEventReporter *)self splunkStateQueue];
+  idleCopy = idle;
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__SUCoreEventReporter_indicateOnceIdle___block_invoke;
   v7[3] = &unk_1E86FC438;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = idleCopy;
+  v6 = idleCopy;
+  dispatch_async(splunkStateQueue, v7);
 }
 
 uint64_t __40__SUCoreEventReporter_indicateOnceIdle___block_invoke(uint64_t a1)
@@ -686,78 +686,78 @@ uint64_t __40__SUCoreEventReporter_indicateOnceIdle___block_invoke(uint64_t a1)
 - (void)_splunkAccessSetup
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_V2(v3);
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_V2(splunkStateQueue);
 
   if (![(SUCoreEventReporter *)self splunkAccessCreated])
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v5 = [[SUCoreEventReporterDelegate alloc] initWithReporter:self];
     [(SUCoreEventReporter *)self setReporterDelegate:v5];
 
-    v6 = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
-    [(SUCoreEventReporter *)self setInProcessConfig:v6];
+    defaultSessionConfiguration = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
+    [(SUCoreEventReporter *)self setInProcessConfig:defaultSessionConfiguration];
 
     v7 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     [(SUCoreEventReporter *)self setInProcessOperationQueue:v7];
 
-    v8 = [(SUCoreEventReporter *)self inProcessOperationQueue];
-    [v8 setMaxConcurrentOperationCount:1];
+    inProcessOperationQueue = [(SUCoreEventReporter *)self inProcessOperationQueue];
+    [inProcessOperationQueue setMaxConcurrentOperationCount:1];
 
     v9 = MEMORY[0x1E696AF78];
-    v10 = [(SUCoreEventReporter *)self inProcessConfig];
-    v11 = [(SUCoreEventReporter *)self reporterDelegate];
-    v12 = [(SUCoreEventReporter *)self inProcessOperationQueue];
-    v13 = [v9 sessionWithConfiguration:v10 delegate:v11 delegateQueue:v12];
+    inProcessConfig = [(SUCoreEventReporter *)self inProcessConfig];
+    reporterDelegate = [(SUCoreEventReporter *)self reporterDelegate];
+    inProcessOperationQueue2 = [(SUCoreEventReporter *)self inProcessOperationQueue];
+    v13 = [v9 sessionWithConfiguration:inProcessConfig delegate:reporterDelegate delegateQueue:inProcessOperationQueue2];
     [(SUCoreEventReporter *)self setInProcessSession:v13];
 
     v14 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:@"https://xp.apple.com/report/2/psr_ota"];
     [(SUCoreEventReporter *)self setSplunkURL:v14];
 
     v15 = +[SUCoreLog sharedLogger];
-    v16 = [v15 oslog];
+    oslog = [v15 oslog];
 
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(SUCoreEventReporter *)self splunkURL];
+      splunkURL = [(SUCoreEventReporter *)self splunkURL];
       *buf = 138543362;
-      v39 = v17;
-      _os_log_impl(&dword_1E0F71000, v16, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SETUP | default Splunk URL: %{public}@", buf, 0xCu);
+      v39 = splunkURL;
+      _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SETUP | default Splunk URL: %{public}@", buf, 0xCu);
     }
 
-    v18 = [(SUCoreEventReporter *)self storeToPath];
+    storeToPath = [(SUCoreEventReporter *)self storeToPath];
     v37 = 0;
-    v19 = [v4 createDirectoryAtPath:v18 withIntermediateDirectories:1 attributes:0 error:&v37];
+    v19 = [defaultManager createDirectoryAtPath:storeToPath withIntermediateDirectories:1 attributes:0 error:&v37];
     v20 = v37;
 
     if ((v19 & 1) == 0 && (!v20 || [v20 code] != 17))
     {
       v21 = +[SUCoreDiag sharedDiag];
       v22 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v23 = [(SUCoreEventReporter *)self storeToPath];
-      v24 = [v22 initWithFormat:@"failed to create store-to directory: %@", v23];
+      storeToPath2 = [(SUCoreEventReporter *)self storeToPath];
+      v24 = [v22 initWithFormat:@"failed to create store-to directory: %@", storeToPath2];
       [v21 trackError:@"[EVENT_REPORTER] SETUP" forReason:v24 withResult:objc_msgSend(v20 withError:{"code"), v20}];
     }
 
-    v25 = [(SUCoreEventReporter *)self persistedStatePath];
+    persistedStatePath = [(SUCoreEventReporter *)self persistedStatePath];
     v36 = 0;
-    v26 = [v4 createDirectoryAtPath:v25 withIntermediateDirectories:1 attributes:0 error:&v36];
+    v26 = [defaultManager createDirectoryAtPath:persistedStatePath withIntermediateDirectories:1 attributes:0 error:&v36];
     v27 = v36;
 
     if ((v26 & 1) == 0 && (!v27 || [v27 code] != 17))
     {
       v28 = +[SUCoreDiag sharedDiag];
       v29 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v30 = [(SUCoreEventReporter *)self persistedStatePath];
-      v31 = [v29 initWithFormat:@"failed to create persisted-state directory: %@", v30];
+      persistedStatePath2 = [(SUCoreEventReporter *)self persistedStatePath];
+      v31 = [v29 initWithFormat:@"failed to create persisted-state directory: %@", persistedStatePath2];
       [v28 trackError:@"[EVENT_REPORTER] SETUP" forReason:v31 withResult:objc_msgSend(v27 withError:{"code"), v27}];
     }
 
-    v32 = [(SUCoreEventReporter *)self activeEventsState];
-    [v32 loadPersistedState];
+    activeEventsState = [(SUCoreEventReporter *)self activeEventsState];
+    [activeEventsState loadPersistedState];
 
-    v33 = [(SUCoreEventReporter *)self _newExistingFileUUIDs];
-    v34 = [(SUCoreEventReporter *)self _alignPersistedStateWithExistingFileUUIDs:v33];
+    _newExistingFileUUIDs = [(SUCoreEventReporter *)self _newExistingFileUUIDs];
+    v34 = [(SUCoreEventReporter *)self _alignPersistedStateWithExistingFileUUIDs:_newExistingFileUUIDs];
 
     [(SUCoreEventReporter *)self _synchronizeWithNSURLSessionExpecting:v34];
     [(SUCoreEventReporter *)self setSplunkAccessCreated:1];
@@ -768,8 +768,8 @@ uint64_t __40__SUCoreEventReporter_indicateOnceIdle___block_invoke(uint64_t a1)
 
 - (void)_determineEventExtensions
 {
-  v3 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_V2(v3);
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_V2(splunkStateQueue);
 
   if ([(SUCoreEventReporter *)self eventExtensionsDetermined])
   {
@@ -780,14 +780,14 @@ uint64_t __40__SUCoreEventReporter_indicateOnceIdle___block_invoke(uint64_t a1)
   v4 = [v9 stringForKey:@"Context"];
   if (v4)
   {
-    v5 = 0;
+    _buildContextFromNVRAMBootArgs = 0;
     goto LABEL_4;
   }
 
   if (([(SUCoreEventReporter *)self accessControl]& 1) != 0)
   {
-    v5 = [(SUCoreEventReporter *)self _buildContextFromNVRAMBootArgs];
-    if (v5)
+    _buildContextFromNVRAMBootArgs = [(SUCoreEventReporter *)self _buildContextFromNVRAMBootArgs];
+    if (_buildContextFromNVRAMBootArgs)
     {
 LABEL_4:
       v6 = objc_opt_new();
@@ -801,7 +801,7 @@ LABEL_4:
 
       else
       {
-        v8 = v5;
+        v8 = _buildContextFromNVRAMBootArgs;
       }
 
       [(NSMutableDictionary *)self->_eventExtensions setSafeObject:v8 forKey:@"context"];
@@ -814,8 +814,8 @@ LABEL_4:
 - (id)_buildContextFromNVRAMBootArgs
 {
   v30 = *MEMORY[0x1E69E9840];
-  v2 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_V2(v2);
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_V2(splunkStateQueue);
 
   v3 = IORegistryEntryFromPath(*MEMORY[0x1E696CD60], "IODeviceTree:/options");
   if (!v3)
@@ -920,24 +920,24 @@ LABEL_27:
   return v8;
 }
 
-- (void)_adoptLastErrorEvent:(id)a3
+- (void)_adoptLastErrorEvent:(id)event
 {
-  v5 = a3;
-  v4 = [v5 allFields];
-  [v4 setSafeObject:@"false" forKey:@"sameErrorSignature"];
+  eventCopy = event;
+  allFields = [eventCopy allFields];
+  [allFields setSafeObject:@"false" forKey:@"sameErrorSignature"];
 
-  [(SUCoreEventReporter *)self setLastErrorEvent:v5];
+  [(SUCoreEventReporter *)self setLastErrorEvent:eventCopy];
 }
 
-- (void)_sendCoreEvent:(id)a3
+- (void)_sendCoreEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_V2(v5);
+  eventCopy = event;
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_V2(splunkStateQueue);
 
   [(SUCoreEventReporter *)self _splunkAccessSetup];
-  v6 = [v4 allFields];
-  v7 = [v6 safeStringForKey:@"UUID"];
+  allFields = [eventCopy allFields];
+  v7 = [allFields safeStringForKey:@"UUID"];
 
   if (v7)
   {
@@ -945,28 +945,28 @@ LABEL_27:
     [v8 trackLastReportedUUID:v7];
   }
 
-  if ([v4 isSuccess])
+  if ([eventCopy isSuccess])
   {
     v9 = +[SUCoreLog sharedLogger];
-    v10 = [v9 oslog];
+    oslog = [v9 oslog];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1E0F71000, v10, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] STATUS | sending event [event indicating successful operation]", buf, 2u);
+      _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] STATUS | sending event [event indicating successful operation]", buf, 2u);
     }
 
-    v11 = [(SUCoreEventReporter *)self lastErrorEvent];
-    v12 = [v11 changedSinceReported];
+    lastErrorEvent = [(SUCoreEventReporter *)self lastErrorEvent];
+    changedSinceReported = [lastErrorEvent changedSinceReported];
 
-    if (v12)
+    if (changedSinceReported)
     {
-      v13 = [(SUCoreEventReporter *)self lastErrorEvent];
+      lastErrorEvent2 = [(SUCoreEventReporter *)self lastErrorEvent];
     }
 
     else
     {
-      v13 = 0;
+      lastErrorEvent2 = 0;
     }
 
     [(SUCoreEventReporter *)self setLastErrorEvent:0];
@@ -974,199 +974,199 @@ LABEL_27:
 
   else
   {
-    v14 = [(SUCoreEventReporter *)self lastErrorEvent];
+    lastErrorEvent3 = [(SUCoreEventReporter *)self lastErrorEvent];
 
-    if (v14)
+    if (lastErrorEvent3)
     {
-      v15 = [(SUCoreEventReporter *)self lastErrorEvent];
-      v16 = [v4 isEqualErrorEvent:v15];
+      lastErrorEvent4 = [(SUCoreEventReporter *)self lastErrorEvent];
+      v16 = [eventCopy isEqualErrorEvent:lastErrorEvent4];
 
       if (v16)
       {
-        v17 = [(SUCoreEventReporter *)self lastErrorEvent];
-        [v17 incrementErrorCount];
+        lastErrorEvent5 = [(SUCoreEventReporter *)self lastErrorEvent];
+        [lastErrorEvent5 incrementErrorCount];
 
         v18 = +[SUCoreLog sharedLogger];
-        v19 = [v18 oslog];
+        oslog2 = [v18 oslog];
 
-        if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
         {
           *v28 = 0;
-          _os_log_impl(&dword_1E0F71000, v19, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] STATUS | not sending event [event indicating error matching last reported]", v28, 2u);
+          _os_log_impl(&dword_1E0F71000, oslog2, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] STATUS | not sending event [event indicating error matching last reported]", v28, 2u);
         }
 
-        v13 = 0;
-        v4 = 0;
+        lastErrorEvent2 = 0;
+        eventCopy = 0;
       }
 
       else
       {
         v22 = +[SUCoreLog sharedLogger];
-        v23 = [v22 oslog];
+        oslog3 = [v22 oslog];
 
-        if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
         {
           *v27 = 0;
-          _os_log_impl(&dword_1E0F71000, v23, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] STATUS | sending event [event indicating error that is different than last reported]", v27, 2u);
+          _os_log_impl(&dword_1E0F71000, oslog3, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] STATUS | sending event [event indicating error that is different than last reported]", v27, 2u);
         }
 
-        v24 = [(SUCoreEventReporter *)self lastErrorEvent];
-        v25 = [v24 changedSinceReported];
+        lastErrorEvent6 = [(SUCoreEventReporter *)self lastErrorEvent];
+        changedSinceReported2 = [lastErrorEvent6 changedSinceReported];
 
-        if (v25)
+        if (changedSinceReported2)
         {
-          v13 = [(SUCoreEventReporter *)self lastErrorEvent];
+          lastErrorEvent2 = [(SUCoreEventReporter *)self lastErrorEvent];
         }
 
         else
         {
-          v13 = 0;
+          lastErrorEvent2 = 0;
         }
 
-        [(SUCoreEventReporter *)self _adoptLastErrorEvent:v4];
+        [(SUCoreEventReporter *)self _adoptLastErrorEvent:eventCopy];
       }
     }
 
     else
     {
       v20 = +[SUCoreLog sharedLogger];
-      v21 = [v20 oslog];
+      oslog4 = [v20 oslog];
 
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
       {
         *v26 = 0;
-        _os_log_impl(&dword_1E0F71000, v21, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] STATUS | sending event [event indicating error when no last error]", v26, 2u);
+        _os_log_impl(&dword_1E0F71000, oslog4, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] STATUS | sending event [event indicating error when no last error]", v26, 2u);
       }
 
-      [(SUCoreEventReporter *)self _adoptLastErrorEvent:v4];
-      v13 = 0;
+      [(SUCoreEventReporter *)self _adoptLastErrorEvent:eventCopy];
+      lastErrorEvent2 = 0;
     }
   }
 
-  [(SUCoreEventReporter *)self _sendCoreEvents:v13 secondEvent:v4];
+  [(SUCoreEventReporter *)self _sendCoreEvents:lastErrorEvent2 secondEvent:eventCopy];
 }
 
-- (void)_sendCoreEvents:(id)a3 secondEvent:(id)a4
+- (void)_sendCoreEvents:(id)events secondEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_V2(v8);
+  eventsCopy = events;
+  eventCopy = event;
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_V2(splunkStateQueue);
 
   v9 = objc_opt_new();
-  if (v6 && v7)
+  if (eventsCopy && eventCopy)
   {
-    v10 = [v6 reportedUUID];
-    v11 = [(SUCoreEventReporter *)self _getSplunkServerURL:v6];
-    v12 = [v7 reportedUUID];
-    v13 = [(SUCoreEventReporter *)self _getSplunkServerURL:v7];
-    v14 = [v6 allFields];
-    [v9 addObject:v14];
+    reportedUUID = [eventsCopy reportedUUID];
+    v11 = [(SUCoreEventReporter *)self _getSplunkServerURL:eventsCopy];
+    reportedUUID2 = [eventCopy reportedUUID];
+    v13 = [(SUCoreEventReporter *)self _getSplunkServerURL:eventCopy];
+    allFields = [eventsCopy allFields];
+    [v9 addObject:allFields];
 
-    [(SUCoreEventReporter *)self _sendSplunkEvents:v9 forEventUUID:v10 toServerURL:v11];
+    [(SUCoreEventReporter *)self _sendSplunkEvents:v9 forEventUUID:reportedUUID toServerURL:v11];
     v15 = objc_opt_new();
 
-    v16 = [v7 allFields];
-    [v15 addObject:v16];
+    allFields2 = [eventCopy allFields];
+    [v15 addObject:allFields2];
 
-    [(SUCoreEventReporter *)self _sendSplunkEvents:v15 forEventUUID:v12 toServerURL:v13];
+    [(SUCoreEventReporter *)self _sendSplunkEvents:v15 forEventUUID:reportedUUID2 toServerURL:v13];
     v9 = v15;
     goto LABEL_9;
   }
 
-  if (v6)
+  if (eventsCopy)
   {
-    v17 = [(SUCoreEventReporter *)self _getSplunkServerURL:v6];
-    v18 = [v6 allFields];
-    [v9 addObject:v18];
+    v17 = [(SUCoreEventReporter *)self _getSplunkServerURL:eventsCopy];
+    allFields3 = [eventsCopy allFields];
+    [v9 addObject:allFields3];
 
-    v19 = v6;
+    v19 = eventsCopy;
 LABEL_8:
-    v21 = [v19 reportedUUID];
-    [(SUCoreEventReporter *)self _sendSplunkEvents:v9 forEventUUID:v21 toServerURL:v17];
+    reportedUUID3 = [v19 reportedUUID];
+    [(SUCoreEventReporter *)self _sendSplunkEvents:v9 forEventUUID:reportedUUID3 toServerURL:v17];
 
     goto LABEL_9;
   }
 
-  if (v7)
+  if (eventCopy)
   {
-    v17 = [(SUCoreEventReporter *)self _getSplunkServerURL:v7];
-    v20 = [v7 allFields];
-    [v9 addObject:v20];
+    v17 = [(SUCoreEventReporter *)self _getSplunkServerURL:eventCopy];
+    allFields4 = [eventCopy allFields];
+    [v9 addObject:allFields4];
 
-    v19 = v7;
+    v19 = eventCopy;
     goto LABEL_8;
   }
 
   v22 = +[SUCoreLog sharedLogger];
-  v23 = [v22 oslog];
+  oslog = [v22 oslog];
 
-  if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *v24 = 0;
-    _os_log_impl(&dword_1E0F71000, v23, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] STATUS | send events with nothing to send", v24, 2u);
+    _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] STATUS | send events with nothing to send", v24, 2u);
   }
 
 LABEL_9:
 }
 
-- (void)_sendSplunkEvents:(id)a3 forEventUUID:(id)a4 toServerURL:(id)a5
+- (void)_sendSplunkEvents:(id)events forEventUUID:(id)d toServerURL:(id)l
 {
   v35[2] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_V2(v11);
+  dCopy = d;
+  lCopy = l;
+  eventsCopy = events;
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_V2(splunkStateQueue);
 
-  v12 = [(SUCoreEventReporter *)self _newScrubbedEvents:v10];
-  if (v8)
+  v12 = [(SUCoreEventReporter *)self _newScrubbedEvents:eventsCopy];
+  if (dCopy)
   {
-    v13 = v8;
+    uUIDString = dCopy;
   }
 
   else
   {
-    v14 = [MEMORY[0x1E696AFB0] UUID];
-    v13 = [v14 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
   }
 
-  v15 = [MEMORY[0x1E696AFB0] UUID];
-  v16 = [v15 UUIDString];
+  uUID2 = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString2 = [uUID2 UUIDString];
 
-  if (v9 && v12 && v13 && v16 && ([(SUCoreEventReporter *)self inProcessSession], v17 = objc_claimAutoreleasedReturnValue(), v17, v17))
+  if (lCopy && v12 && uUIDString && uUIDString2 && ([(SUCoreEventReporter *)self inProcessSession], v17 = objc_claimAutoreleasedReturnValue(), v17, v17))
   {
     v34[0] = @"clientId";
     v34[1] = @"events";
-    v35[0] = v13;
+    v35[0] = uUIDString;
     v35[1] = v12;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:2];
-    v19 = [(SUCoreEventReporter *)self _getJSONDataFromPayload:v18 withFileUUID:v16 forEventUUID:v13];
+    v19 = [(SUCoreEventReporter *)self _getJSONDataFromPayload:v18 withFileUUID:uUIDString2 forEventUUID:uUIDString];
     if (v19)
     {
-      v20 = [(SUCoreEventReporter *)self _storeJSONData:v19 withFileUUID:v16 forEventUUID:v13];
+      v20 = [(SUCoreEventReporter *)self _storeJSONData:v19 withFileUUID:uUIDString2 forEventUUID:uUIDString];
       if (v20)
       {
         v27 = v20;
-        v21 = [v9 dataRepresentation];
-        [(SUCoreEventReporter *)self _storeServerURLMetadata:v21 toFileUUID:v16];
+        dataRepresentation = [lCopy dataRepresentation];
+        [(SUCoreEventReporter *)self _storeServerURLMetadata:dataRepresentation toFileUUID:uUIDString2];
 
         v22 = +[SUCoreLog sharedLogger];
-        v23 = [v22 oslog];
+        oslog = [v22 oslog];
 
-        if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543874;
-          v29 = v13;
+          v29 = uUIDString;
           v30 = 2114;
-          v31 = v16;
+          v31 = uUIDString2;
           v32 = 2114;
           v33 = v18;
-          _os_log_impl(&dword_1E0F71000, v23, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] UPLOADING | sending [UUID: %{public}@] file: %{public}@ payload: %{public}@", buf, 0x20u);
+          _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] UPLOADING | sending [UUID: %{public}@] file: %{public}@ payload: %{public}@", buf, 0x20u);
         }
 
-        [(SUCoreEventReporter *)self _uploadFromFile:v27 withFileUUID:v16 forEventUUID:v13 toServerURL:v9];
-        [SUCoreSplunkHistory logEventUUID:v13];
+        [(SUCoreEventReporter *)self _uploadFromFile:v27 withFileUUID:uUIDString2 forEventUUID:uUIDString toServerURL:lCopy];
+        [SUCoreSplunkHistory logEventUUID:uUIDString];
       }
     }
   }
@@ -1174,7 +1174,7 @@ LABEL_9:
   else
   {
     v24 = +[SUCoreDiag sharedDiag];
-    v25 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"missing required event resources [UUID: %@]", v13];
+    v25 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"missing required event resources [UUID: %@]", uUIDString];
     [v24 trackAnomaly:@"[EVENT_REPORTER] SEND" forReason:v25 withResult:8101 withError:0];
 
     v18 = 0;
@@ -1184,18 +1184,18 @@ LABEL_9:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_uploadFromFile:(id)a3 withFileUUID:(id)a4 forEventUUID:(id)a5 toServerURL:(id)a6
+- (void)_uploadFromFile:(id)file withFileUUID:(id)d forEventUUID:(id)iD toServerURL:(id)l
 {
   v39 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_V2(v14);
+  fileCopy = file;
+  dCopy = d;
+  iDCopy = iD;
+  lCopy = l;
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_V2(splunkStateQueue);
 
-  v15 = +[SUCore getFileMetadata:forKey:](SUCore, "getFileMetadata:forKey:", [v10 fileSystemRepresentation], @"SUCoreEventReporterServerURL");
-  v16 = [(SUCoreEventReporter *)self _activeEventForFileUUID:v11];
+  v15 = +[SUCore getFileMetadata:forKey:](SUCore, "getFileMetadata:forKey:", [fileCopy fileSystemRepresentation], @"SUCoreEventReporterServerURL");
+  v16 = [(SUCoreEventReporter *)self _activeEventForFileUUID:dCopy];
   if (v16)
   {
     v17 = v16;
@@ -1203,30 +1203,30 @@ LABEL_9:
     if ([(SUCoreEventReporterActive *)v17 attemptedSendCount]>= 9)
     {
       v18 = +[SUCoreLog sharedLogger];
-      v19 = [v18 oslog];
+      oslog = [v18 oslog];
 
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [(SUCoreEventReporterActive *)v17 summary];
+        summary = [(SUCoreEventReporterActive *)v17 summary];
         *buf = 138543618;
-        v36 = v11;
+        v36 = dCopy;
         v37 = 2114;
-        v38 = v20;
-        _os_log_impl(&dword_1E0F71000, v19, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] UPLOADING | dropping event with fileUUID:%{public}@ - too many send attempts | active:%{public}@", buf, 0x16u);
+        v38 = summary;
+        _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] UPLOADING | dropping event with fileUUID:%{public}@ - too many send attempts | active:%{public}@", buf, 0x16u);
       }
 
-      [(SUCoreEventReporter *)self _removeFileUUID:v11 loggingError:1 forReason:@"too many send attempts"];
+      [(SUCoreEventReporter *)self _removeFileUUID:dCopy loggingError:1 forReason:@"too many send attempts"];
       goto LABEL_20;
     }
   }
 
   else
   {
-    v17 = [[SUCoreEventReporterActive alloc] initWithServerURL:v13];
+    v17 = [[SUCoreEventReporterActive alloc] initWithServerURL:lCopy];
     [(SUCoreEventReporterActive *)v17 setAttemptedSendCount:[(SUCoreEventReporterActive *)v17 attemptedSendCount]+ 1];
   }
 
-  [(SUCoreEventReporter *)self _updateActiveEvent:v17 forFileUUID:v11];
+  [(SUCoreEventReporter *)self _updateActiveEvent:v17 forFileUUID:dCopy];
   v34 = v15;
   if (v15)
   {
@@ -1246,46 +1246,46 @@ LABEL_9:
     v21 = 0;
   }
 
-  v22 = v13;
+  v22 = lCopy;
 LABEL_13:
   v23 = [(SUCoreEventReporter *)self _getSplunkRequestForURL:v22];
   if (v23)
   {
     v24 = v23;
-    v33 = v13;
-    v25 = v12;
-    v26 = [(SUCoreEventReporter *)self inProcessSession];
-    v27 = [v26 uploadTaskWithRequest:v24 fromFile:v10];
+    v33 = lCopy;
+    v25 = iDCopy;
+    inProcessSession = [(SUCoreEventReporter *)self inProcessSession];
+    v27 = [inProcessSession uploadTaskWithRequest:v24 fromFile:fileCopy];
 
     if (v27)
     {
       [(SUCoreEventReporter *)self _incrementActiveSendCount:@"uploading"];
-      [v27 setTaskDescription:v11];
+      [v27 setTaskDescription:dCopy];
       [v27 resume];
 
-      v12 = v25;
+      iDCopy = v25;
     }
 
     else
     {
       v30 = +[SUCoreDiag sharedDiag];
-      v31 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unable to create NSURL session task [UUID: %@] file: %@", v25, v11];
-      [v30 trackAnomaly:@"[EVENT_REPORTER] QUEUED" forReason:v31 withResult:8101 withError:0];
+      dCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unable to create NSURL session task [UUID: %@] file: %@", v25, dCopy];
+      [v30 trackAnomaly:@"[EVENT_REPORTER] QUEUED" forReason:dCopy withResult:8101 withError:0];
 
-      v12 = v25;
-      [(SUCoreEventReporter *)self _awaitRetryingFileUUID:v11];
+      iDCopy = v25;
+      [(SUCoreEventReporter *)self _awaitRetryingFileUUID:dCopy];
     }
 
-    v13 = v33;
+    lCopy = v33;
   }
 
   else
   {
     v28 = +[SUCoreDiag sharedDiag];
-    v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unable to create request to reach server [UUID: %@] file: %@", v12, v11];
-    [v28 trackAnomaly:@"[EVENT_REPORTER] QUEUED" forReason:v29 withResult:8101 withError:0];
+    dCopy2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unable to create request to reach server [UUID: %@] file: %@", iDCopy, dCopy];
+    [v28 trackAnomaly:@"[EVENT_REPORTER] QUEUED" forReason:dCopy2 withResult:8101 withError:0];
 
-    [(SUCoreEventReporter *)self _awaitRetryingFileUUID:v11];
+    [(SUCoreEventReporter *)self _awaitRetryingFileUUID:dCopy];
   }
 
   v15 = v34;
@@ -1294,21 +1294,21 @@ LABEL_20:
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendInterruptedFromStorage:(id)a3
+- (void)_sendInterruptedFromStorage:(id)storage
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_V2(v5);
+  storageCopy = storage;
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_V2(splunkStateQueue);
 
-  if (v4)
+  if (storageCopy)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v21 = v4;
-    obj = v4;
+    v21 = storageCopy;
+    obj = storageCopy;
     v6 = [obj countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (v6)
     {
@@ -1325,26 +1325,26 @@ LABEL_20:
 
           v10 = *(*(&v23 + 1) + 8 * i);
           v11 = MEMORY[0x1E695DFF8];
-          v12 = [(SUCoreEventReporter *)self storeToPath];
-          v13 = [v12 stringByAppendingPathComponent:v10];
+          storeToPath = [(SUCoreEventReporter *)self storeToPath];
+          v13 = [storeToPath stringByAppendingPathComponent:v10];
           v14 = [v11 fileURLWithPath:v13];
 
           v15 = [(SUCoreEventReporter *)self _activeEventForFileUUID:v10];
           v16 = +[SUCoreLog sharedLogger];
-          v17 = [v16 oslog];
+          oslog = [v16 oslog];
 
-          if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
           {
-            v18 = [v15 summary];
+            summary = [v15 summary];
             *buf = 138543618;
             v28 = v10;
             v29 = 2114;
-            v30 = v18;
-            _os_log_impl(&dword_1E0F71000, v17, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SYNCHRONIZING | retrying (recovered from storage), re-sending fileUUID:%{public}@ | active:%{public}@", buf, 0x16u);
+            v30 = summary;
+            _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SYNCHRONIZING | retrying (recovered from storage), re-sending fileUUID:%{public}@ | active:%{public}@", buf, 0x16u);
           }
 
-          v19 = [(SUCoreEventReporter *)self splunkURL];
-          [(SUCoreEventReporter *)self _uploadFromFile:v14 withFileUUID:v10 forEventUUID:0 toServerURL:v19];
+          splunkURL = [(SUCoreEventReporter *)self splunkURL];
+          [(SUCoreEventReporter *)self _uploadFromFile:v14 withFileUUID:v10 forEventUUID:0 toServerURL:splunkURL];
         }
 
         v7 = [obj countByEnumeratingWithState:&v23 objects:v31 count:16];
@@ -1353,7 +1353,7 @@ LABEL_20:
       while (v7);
     }
 
-    v4 = v21;
+    storageCopy = v21;
   }
 
   v20 = *MEMORY[0x1E69E9840];
@@ -1361,8 +1361,8 @@ LABEL_20:
 
 - (void)_sendAllAwaitingRetry
 {
-  v3 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_V2(v3);
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_V2(splunkStateQueue);
 
     ;
   }
@@ -1371,57 +1371,57 @@ LABEL_20:
 - (BOOL)_sendFirstAwaitingRetry
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_V2(v3);
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_V2(splunkStateQueue);
 
-  v4 = [(SUCoreEventReporter *)self awaitingRetry];
-  v5 = [v4 count];
+  awaitingRetry = [(SUCoreEventReporter *)self awaitingRetry];
+  v5 = [awaitingRetry count];
 
   if (v5)
   {
-    v6 = [(SUCoreEventReporter *)self awaitingRetry];
-    v7 = [v6 objectAtIndex:0];
+    awaitingRetry2 = [(SUCoreEventReporter *)self awaitingRetry];
+    v7 = [awaitingRetry2 objectAtIndex:0];
 
-    v8 = [(SUCoreEventReporter *)self awaitingRetry];
-    [v8 removeObjectAtIndex:0];
+    awaitingRetry3 = [(SUCoreEventReporter *)self awaitingRetry];
+    [awaitingRetry3 removeObjectAtIndex:0];
 
     v9 = +[SUCoreLog sharedLogger];
-    v10 = [v9 oslog];
+    oslog = [v9 oslog];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(SUCoreEventReporter *)self activeSendTaskCount];
-      v12 = [(SUCoreEventReporter *)self awaitingRetry];
+      activeSendTaskCount = [(SUCoreEventReporter *)self activeSendTaskCount];
+      awaitingRetry4 = [(SUCoreEventReporter *)self awaitingRetry];
       v24 = 67109376;
-      *v25 = v11;
+      *v25 = activeSendTaskCount;
       *&v25[4] = 2048;
-      *&v25[6] = [v12 count];
-      _os_log_impl(&dword_1E0F71000, v10, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] IDLE_TRACK | sending first awaiting retry - activeSendTaskCount:%d, awaitingRetry:%lu", &v24, 0x12u);
+      *&v25[6] = [awaitingRetry4 count];
+      _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] IDLE_TRACK | sending first awaiting retry - activeSendTaskCount:%d, awaitingRetry:%lu", &v24, 0x12u);
     }
 
     if (v7)
     {
       v13 = MEMORY[0x1E695DFF8];
-      v14 = [(SUCoreEventReporter *)self storeToPath];
-      v15 = [v14 stringByAppendingPathComponent:v7];
+      storeToPath = [(SUCoreEventReporter *)self storeToPath];
+      v15 = [storeToPath stringByAppendingPathComponent:v7];
       v16 = [v13 fileURLWithPath:v15];
 
       v17 = [(SUCoreEventReporter *)self _activeEventForFileUUID:v7];
       v18 = +[SUCoreLog sharedLogger];
-      v19 = [v18 oslog];
+      oslog2 = [v18 oslog];
 
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v17 summary];
+        summary = [v17 summary];
         v24 = 138543618;
         *v25 = v7;
         *&v25[8] = 2114;
-        *&v25[10] = v20;
-        _os_log_impl(&dword_1E0F71000, v19, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] UPLOADING | retrying, re-sending fileUUID:%{public}@ | active:%{public}@", &v24, 0x16u);
+        *&v25[10] = summary;
+        _os_log_impl(&dword_1E0F71000, oslog2, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] UPLOADING | retrying, re-sending fileUUID:%{public}@ | active:%{public}@", &v24, 0x16u);
       }
 
-      v21 = [(SUCoreEventReporter *)self splunkURL];
-      [(SUCoreEventReporter *)self _uploadFromFile:v16 withFileUUID:v7 forEventUUID:0 toServerURL:v21];
+      splunkURL = [(SUCoreEventReporter *)self splunkURL];
+      [(SUCoreEventReporter *)self _uploadFromFile:v16 withFileUUID:v7 forEventUUID:0 toServerURL:splunkURL];
     }
 
     else
@@ -1436,36 +1436,36 @@ LABEL_20:
   return result;
 }
 
-- (void)_awaitRetryingFileUUID:(id)a3
+- (void)_awaitRetryingFileUUID:(id)d
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_V2(splunkStateQueue);
 
-  v6 = [(SUCoreEventReporter *)self awaitingRetry];
+  awaitingRetry = [(SUCoreEventReporter *)self awaitingRetry];
 
-  if (!v6)
+  if (!awaitingRetry)
   {
     v7 = objc_opt_new();
     [(SUCoreEventReporter *)self setAwaitingRetry:v7];
   }
 
-  v8 = [(SUCoreEventReporter *)self awaitingRetry];
-  [v8 addObject:v4];
+  awaitingRetry2 = [(SUCoreEventReporter *)self awaitingRetry];
+  [awaitingRetry2 addObject:dCopy];
 
-  v9 = [(SUCoreEventReporter *)self awaitingRetry];
-  v10 = [v9 count];
+  awaitingRetry3 = [(SUCoreEventReporter *)self awaitingRetry];
+  v10 = [awaitingRetry3 count];
 
   if (v10 >= 0x11)
   {
     do
     {
-      v11 = [(SUCoreEventReporter *)self awaitingRetry];
-      v12 = [v11 objectAtIndex:0];
+      awaitingRetry4 = [(SUCoreEventReporter *)self awaitingRetry];
+      v12 = [awaitingRetry4 objectAtIndex:0];
 
-      v13 = [(SUCoreEventReporter *)self awaitingRetry];
-      [v13 removeObjectAtIndex:0];
+      awaitingRetry5 = [(SUCoreEventReporter *)self awaitingRetry];
+      [awaitingRetry5 removeObjectAtIndex:0];
 
       if (v12)
       {
@@ -1476,25 +1476,25 @@ LABEL_20:
         [(SUCoreEventReporter *)self _removeFileUUID:v12 loggingError:1 forReason:@"too many waiting retry"];
       }
 
-      v16 = [(SUCoreEventReporter *)self awaitingRetry];
-      v17 = [v16 count];
+      awaitingRetry6 = [(SUCoreEventReporter *)self awaitingRetry];
+      v17 = [awaitingRetry6 count];
     }
 
     while (v17 > 0x10);
   }
 
   v18 = +[SUCoreLog sharedLogger];
-  v19 = [v18 oslog];
+  oslog = [v18 oslog];
 
-  if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [(SUCoreEventReporter *)self activeSendTaskCount];
-    v21 = [(SUCoreEventReporter *)self awaitingRetry];
+    activeSendTaskCount = [(SUCoreEventReporter *)self activeSendTaskCount];
+    awaitingRetry7 = [(SUCoreEventReporter *)self awaitingRetry];
     *buf = 67109376;
-    v24 = v20;
+    v24 = activeSendTaskCount;
     v25 = 2048;
-    v26 = [v21 count];
-    _os_log_impl(&dword_1E0F71000, v19, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] IDLE_TRACK | awaiting retrying - activeSendTaskCount:%d, awaitingRetry:%lu", buf, 0x12u);
+    v26 = [awaitingRetry7 count];
+    _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] IDLE_TRACK | awaiting retrying - activeSendTaskCount:%d, awaitingRetry:%lu", buf, 0x12u);
   }
 
   v22 = *MEMORY[0x1E69E9840];
@@ -1502,10 +1502,10 @@ LABEL_20:
 
 - (id)_newExistingFileUUIDs
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(SUCoreEventReporter *)self storeToPath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  storeToPath = [(SUCoreEventReporter *)self storeToPath];
   v11 = 0;
-  v5 = [v3 contentsOfDirectoryAtPath:v4 error:&v11];
+  v5 = [defaultManager contentsOfDirectoryAtPath:storeToPath error:&v11];
   v6 = v11;
 
   if (v6)
@@ -1533,27 +1533,27 @@ LABEL_5:
   return v9;
 }
 
-- (void)_synchronizeWithNSURLSessionExpecting:(id)a3
+- (void)_synchronizeWithNSURLSessionExpecting:(id)expecting
 {
-  v4 = a3;
+  expectingCopy = expecting;
   v5 = +[SUCoreLog sharedLogger];
-  v6 = [v5 oslog];
+  oslog = [v5 oslog];
 
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_1E0F71000, v6, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SYNCHRONIZING | getAllTasksWithCompletionHandler... | synchronizing with NSURLSession to determine in-flight events", buf, 2u);
+    _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SYNCHRONIZING | getAllTasksWithCompletionHandler... | synchronizing with NSURLSession to determine in-flight events", buf, 2u);
   }
 
-  v7 = [(SUCoreEventReporter *)self inProcessSession];
+  inProcessSession = [(SUCoreEventReporter *)self inProcessSession];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __61__SUCoreEventReporter__synchronizeWithNSURLSessionExpecting___block_invoke;
   v9[3] = &unk_1E86FC488;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v7 getAllTasksWithCompletionHandler:v9];
+  v10 = expectingCopy;
+  v8 = expectingCopy;
+  [inProcessSession getAllTasksWithCompletionHandler:v9];
 }
 
 void __61__SUCoreEventReporter__synchronizeWithNSURLSessionExpecting___block_invoke(uint64_t a1, void *a2)
@@ -1790,39 +1790,39 @@ LABEL_37:
   v39 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_synchonizeDiscoveredRunning:(id)a3 forActiveEvent:(id)a4 withFileUUIDsToRetry:(id)a5
+- (id)_synchonizeDiscoveredRunning:(id)running forActiveEvent:(id)event withFileUUIDsToRetry:(id)retry
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_V2(v11);
+  eventCopy = event;
+  retryCopy = retry;
+  runningCopy = running;
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_V2(splunkStateQueue);
 
-  v12 = [v10 taskDescription];
-  v13 = [v10 state];
+  taskDescription = [runningCopy taskDescription];
+  state = [runningCopy state];
 
-  v14 = [SUCoreEventReporter _nsURLSessionTaskNameForState:v13];
+  v14 = [SUCoreEventReporter _nsURLSessionTaskNameForState:state];
   v15 = +[SUCoreLog sharedLogger];
-  v16 = [v15 oslog];
+  oslog = [v15 oslog];
 
-  v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  v17 = os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT);
+  if (eventCopy)
   {
     if (v17)
     {
-      v18 = [v8 summary];
+      summary = [eventCopy summary];
       v22 = 138543874;
-      v23 = v12;
+      v23 = taskDescription;
       v24 = 2114;
       v25 = v14;
       v26 = 2114;
-      v27 = v18;
-      _os_log_impl(&dword_1E0F71000, v16, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SYNCHRONIZING | tracked NSURLSession task for fileUUID:%{public}@, state:%{public}@ - continuing | active:%{public}@", &v22, 0x20u);
+      v27 = summary;
+      _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SYNCHRONIZING | tracked NSURLSession task for fileUUID:%{public}@, state:%{public}@ - continuing | active:%{public}@", &v22, 0x20u);
     }
 
-    [v8 setDiscoveredRunningCount:{objc_msgSend(v8, "discoveredRunningCount") + 1}];
-    [(SUCoreEventReporter *)self _updateActiveEvent:v8 forFileUUID:v12];
+    [eventCopy setDiscoveredRunningCount:{objc_msgSend(eventCopy, "discoveredRunningCount") + 1}];
+    [(SUCoreEventReporter *)self _updateActiveEvent:eventCopy forFileUUID:taskDescription];
   }
 
   else
@@ -1830,54 +1830,54 @@ LABEL_37:
     if (v17)
     {
       v22 = 138543618;
-      v23 = v12;
+      v23 = taskDescription;
       v24 = 2114;
       v25 = v14;
-      _os_log_impl(&dword_1E0F71000, v16, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SYNCHRONIZING | untracked NSURLSession task for fileUUID:%{public}@, state:%{public}@ - ignored", &v22, 0x16u);
+      _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SYNCHRONIZING | untracked NSURLSession task for fileUUID:%{public}@, state:%{public}@ - ignored", &v22, 0x16u);
     }
 
-    v19 = [(SUCoreEventReporter *)self _removeFileUUID:v12 fromFilesToRetry:v9];
+    v19 = [(SUCoreEventReporter *)self _removeFileUUID:taskDescription fromFilesToRetry:retryCopy];
 
-    v9 = v19;
+    retryCopy = v19;
   }
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return retryCopy;
 }
 
-- (id)_synchonizeDiscoveredSuspended:(id)a3 forActiveEvent:(id)a4 withFileUUIDsToRetry:(id)a5
+- (id)_synchonizeDiscoveredSuspended:(id)suspended forActiveEvent:(id)event withFileUUIDsToRetry:(id)retry
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_V2(v11);
+  suspendedCopy = suspended;
+  eventCopy = event;
+  retryCopy = retry;
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_V2(splunkStateQueue);
 
-  v12 = [v8 taskDescription];
-  v13 = +[SUCoreEventReporter _nsURLSessionTaskNameForState:](SUCoreEventReporter, "_nsURLSessionTaskNameForState:", [v8 state]);
+  taskDescription = [suspendedCopy taskDescription];
+  v13 = +[SUCoreEventReporter _nsURLSessionTaskNameForState:](SUCoreEventReporter, "_nsURLSessionTaskNameForState:", [suspendedCopy state]);
   v14 = +[SUCoreLog sharedLogger];
-  v15 = [v14 oslog];
+  oslog = [v14 oslog];
 
-  v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-  if (v9)
+  v16 = os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT);
+  if (eventCopy)
   {
     if (v16)
     {
-      v17 = [v9 summary];
+      summary = [eventCopy summary];
       v21 = 138543874;
-      v22 = v12;
+      v22 = taskDescription;
       v23 = 2114;
       v24 = v13;
       v25 = 2114;
-      v26 = v17;
-      _os_log_impl(&dword_1E0F71000, v15, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SYNCHRONIZING | tracked NSURLSession task for fileUUID:%{public}@, state:%{public}@ - resuming | active:%{public}@", &v21, 0x20u);
+      v26 = summary;
+      _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SYNCHRONIZING | tracked NSURLSession task for fileUUID:%{public}@, state:%{public}@ - resuming | active:%{public}@", &v21, 0x20u);
     }
 
-    [v9 setDiscoveredSuspendedCount:{objc_msgSend(v9, "discoveredSuspendedCount") + 1}];
-    [v8 resume];
-    [(SUCoreEventReporter *)self _updateActiveEvent:v9 forFileUUID:v12];
+    [eventCopy setDiscoveredSuspendedCount:{objc_msgSend(eventCopy, "discoveredSuspendedCount") + 1}];
+    [suspendedCopy resume];
+    [(SUCoreEventReporter *)self _updateActiveEvent:eventCopy forFileUUID:taskDescription];
   }
 
   else
@@ -1885,55 +1885,55 @@ LABEL_37:
     if (v16)
     {
       v21 = 138543618;
-      v22 = v12;
+      v22 = taskDescription;
       v23 = 2114;
       v24 = v13;
-      _os_log_impl(&dword_1E0F71000, v15, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SYNCHRONIZING | untracked NSURLSession task for fileUUID:%{public}@, state:%{public}@ - ignored", &v21, 0x16u);
+      _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SYNCHRONIZING | untracked NSURLSession task for fileUUID:%{public}@, state:%{public}@ - ignored", &v21, 0x16u);
     }
 
-    v18 = [(SUCoreEventReporter *)self _removeFileUUID:v12 fromFilesToRetry:v10];
+    v18 = [(SUCoreEventReporter *)self _removeFileUUID:taskDescription fromFilesToRetry:retryCopy];
 
-    v10 = v18;
+    retryCopy = v18;
   }
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return retryCopy;
 }
 
-- (id)_synchonizeDiscoveredCanceling:(id)a3 forActiveEvent:(id)a4 withFileUUIDsToRetry:(id)a5
+- (id)_synchonizeDiscoveredCanceling:(id)canceling forActiveEvent:(id)event withFileUUIDsToRetry:(id)retry
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_V2(v11);
+  eventCopy = event;
+  retryCopy = retry;
+  cancelingCopy = canceling;
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_V2(splunkStateQueue);
 
-  v12 = [v10 taskDescription];
-  v13 = [v10 state];
+  taskDescription = [cancelingCopy taskDescription];
+  state = [cancelingCopy state];
 
-  v14 = [SUCoreEventReporter _nsURLSessionTaskNameForState:v13];
+  v14 = [SUCoreEventReporter _nsURLSessionTaskNameForState:state];
   v15 = +[SUCoreLog sharedLogger];
-  v16 = [v15 oslog];
+  oslog = [v15 oslog];
 
-  v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  v17 = os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT);
+  if (eventCopy)
   {
     if (v17)
     {
-      v18 = [v8 summary];
+      summary = [eventCopy summary];
       v22 = 138543874;
-      v23 = v12;
+      v23 = taskDescription;
       v24 = 2114;
       v25 = v14;
       v26 = 2114;
-      v27 = v18;
-      _os_log_impl(&dword_1E0F71000, v16, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SYNCHRONIZING | tracked NSURLSession task for fileUUID:%{public}@, state:%{public}@ - awaiting didCompleteWithError | active:%{public}@", &v22, 0x20u);
+      v27 = summary;
+      _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SYNCHRONIZING | tracked NSURLSession task for fileUUID:%{public}@, state:%{public}@ - awaiting didCompleteWithError | active:%{public}@", &v22, 0x20u);
     }
 
-    [v8 setDiscoveredCancelingCount:{objc_msgSend(v8, "discoveredCancelingCount") + 1}];
-    [(SUCoreEventReporter *)self _updateActiveEvent:v8 forFileUUID:v12];
+    [eventCopy setDiscoveredCancelingCount:{objc_msgSend(eventCopy, "discoveredCancelingCount") + 1}];
+    [(SUCoreEventReporter *)self _updateActiveEvent:eventCopy forFileUUID:taskDescription];
   }
 
   else
@@ -1941,158 +1941,158 @@ LABEL_37:
     if (v17)
     {
       v22 = 138543618;
-      v23 = v12;
+      v23 = taskDescription;
       v24 = 2114;
       v25 = v14;
-      _os_log_impl(&dword_1E0F71000, v16, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SYNCHRONIZING | untracked NSURLSession task for fileUUID:%{public}@, state:%{public}@ - ignored", &v22, 0x16u);
+      _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SYNCHRONIZING | untracked NSURLSession task for fileUUID:%{public}@, state:%{public}@ - ignored", &v22, 0x16u);
     }
 
-    v19 = [(SUCoreEventReporter *)self _removeFileUUID:v12 fromFilesToRetry:v9];
+    v19 = [(SUCoreEventReporter *)self _removeFileUUID:taskDescription fromFilesToRetry:retryCopy];
 
-    v9 = v19;
+    retryCopy = v19;
   }
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return retryCopy;
 }
 
-- (id)_synchonizeDiscoveredCompleted:(id)a3 forActiveEvent:(id)a4 withFileUUIDsToRetry:(id)a5
+- (id)_synchonizeDiscoveredCompleted:(id)completed forActiveEvent:(id)event withFileUUIDsToRetry:(id)retry
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_V2(v11);
+  completedCopy = completed;
+  eventCopy = event;
+  retryCopy = retry;
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_V2(splunkStateQueue);
 
-  v12 = [v8 taskDescription];
-  v13 = +[SUCoreEventReporter _nsURLSessionTaskNameForState:](SUCoreEventReporter, "_nsURLSessionTaskNameForState:", [v8 state]);
-  if (v9)
+  taskDescription = [completedCopy taskDescription];
+  v13 = +[SUCoreEventReporter _nsURLSessionTaskNameForState:](SUCoreEventReporter, "_nsURLSessionTaskNameForState:", [completedCopy state]);
+  if (eventCopy)
   {
-    v14 = [v8 error];
-    if (v14)
+    error = [completedCopy error];
+    if (error)
     {
-      [v9 setFailedSendCount:{objc_msgSend(v9, "failedSendCount") + 1}];
-      v15 = [v9 failedSendCount];
+      [eventCopy setFailedSendCount:{objc_msgSend(eventCopy, "failedSendCount") + 1}];
+      failedSendCount = [eventCopy failedSendCount];
       v16 = +[SUCoreLog sharedLogger];
-      v17 = [v16 oslog];
+      oslog = [v16 oslog];
 
-      v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
-      if (v15 <= 7)
+      v18 = os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT);
+      if (failedSendCount <= 7)
       {
         if (v18)
         {
-          v19 = [v9 summary];
+          summary = [eventCopy summary];
           v30 = 138543874;
-          v31 = v12;
+          v31 = taskDescription;
           v32 = 2114;
           v33 = v13;
           v34 = 2114;
-          v35 = v19;
-          _os_log_impl(&dword_1E0F71000, v17, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SYNCHRONIZING | tracked NSURLSession task for fileUUID:%{public}@, state:%{public}@ [ERROR] - will retry | active:%{public}@", &v30, 0x20u);
+          v35 = summary;
+          _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SYNCHRONIZING | tracked NSURLSession task for fileUUID:%{public}@, state:%{public}@ [ERROR] - will retry | active:%{public}@", &v30, 0x20u);
         }
 
-        [(SUCoreEventReporter *)self _updateActiveEvent:v9 forFileUUID:v12];
+        [(SUCoreEventReporter *)self _updateActiveEvent:eventCopy forFileUUID:taskDescription];
         goto LABEL_17;
       }
 
       if (v18)
       {
-        v26 = [v9 summary];
+        summary2 = [eventCopy summary];
         v30 = 138543874;
-        v31 = v12;
+        v31 = taskDescription;
         v32 = 2114;
         v33 = v13;
         v34 = 2114;
-        v35 = v26;
-        _os_log_impl(&dword_1E0F71000, v17, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SYNCHRONIZING | tracked NSURLSession task for fileUUID:%{public}@, state:%{public}@ [ERROR] - dropping | active:%{public}@", &v30, 0x20u);
+        v35 = summary2;
+        _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SYNCHRONIZING | tracked NSURLSession task for fileUUID:%{public}@, state:%{public}@ [ERROR] - dropping | active:%{public}@", &v30, 0x20u);
       }
 
-      [(SUCoreEventReporter *)self _removeActiveEventForFileUUID:v12];
+      [(SUCoreEventReporter *)self _removeActiveEventForFileUUID:taskDescription];
     }
 
     else
     {
       v23 = +[SUCoreLog sharedLogger];
-      v24 = [v23 oslog];
+      oslog2 = [v23 oslog];
 
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = [v9 summary];
+        summary3 = [eventCopy summary];
         v30 = 138543874;
-        v31 = v12;
+        v31 = taskDescription;
         v32 = 2114;
         v33 = v13;
         v34 = 2114;
-        v35 = v25;
-        _os_log_impl(&dword_1E0F71000, v24, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SYNCHRONIZING | tracked NSURLSession task for fileUUID:%{public}@, state:%{public}@ [SUCCESS] - considering done | active:%{public}@", &v30, 0x20u);
+        v35 = summary3;
+        _os_log_impl(&dword_1E0F71000, oslog2, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SYNCHRONIZING | tracked NSURLSession task for fileUUID:%{public}@, state:%{public}@ [SUCCESS] - considering done | active:%{public}@", &v30, 0x20u);
       }
     }
 
-    v27 = [(SUCoreEventReporter *)self _removeFileUUID:v12 fromFilesToRetry:v10];
+    v27 = [(SUCoreEventReporter *)self _removeFileUUID:taskDescription fromFilesToRetry:retryCopy];
 
-    v10 = v27;
+    retryCopy = v27;
 LABEL_17:
 
     goto LABEL_18;
   }
 
   v20 = +[SUCoreLog sharedLogger];
-  v21 = [v20 oslog];
+  oslog3 = [v20 oslog];
 
-  if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
   {
     v30 = 138543618;
-    v31 = v12;
+    v31 = taskDescription;
     v32 = 2114;
     v33 = v13;
-    _os_log_impl(&dword_1E0F71000, v21, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SYNCHRONIZING | untracked NSURLSession task for fileUUID:%{public}@, state:%{public}@ - ignored", &v30, 0x16u);
+    _os_log_impl(&dword_1E0F71000, oslog3, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SYNCHRONIZING | untracked NSURLSession task for fileUUID:%{public}@, state:%{public}@ - ignored", &v30, 0x16u);
   }
 
-  v22 = [(SUCoreEventReporter *)self _removeFileUUID:v12 fromFilesToRetry:v10];
+  v22 = [(SUCoreEventReporter *)self _removeFileUUID:taskDescription fromFilesToRetry:retryCopy];
 
-  [(SUCoreEventReporter *)self _removeFileUUID:v12 loggingError:1 forReason:@"synchonize discovered Completed"];
-  v10 = v22;
+  [(SUCoreEventReporter *)self _removeFileUUID:taskDescription loggingError:1 forReason:@"synchonize discovered Completed"];
+  retryCopy = v22;
 LABEL_18:
 
   v28 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return retryCopy;
 }
 
-- (id)_synchonizeDiscoveredUnknown:(id)a3 forActiveEvent:(id)a4 withFileUUIDsToRetry:(id)a5
+- (id)_synchonizeDiscoveredUnknown:(id)unknown forActiveEvent:(id)event withFileUUIDsToRetry:(id)retry
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_V2(v11);
+  eventCopy = event;
+  retryCopy = retry;
+  unknownCopy = unknown;
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_V2(splunkStateQueue);
 
-  v12 = [v10 taskDescription];
-  v13 = [v10 state];
+  taskDescription = [unknownCopy taskDescription];
+  state = [unknownCopy state];
 
-  v14 = [SUCoreEventReporter _nsURLSessionTaskNameForState:v13];
+  v14 = [SUCoreEventReporter _nsURLSessionTaskNameForState:state];
   v15 = +[SUCoreLog sharedLogger];
-  v16 = [v15 oslog];
+  oslog = [v15 oslog];
 
-  v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  v17 = os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT);
+  if (eventCopy)
   {
     if (v17)
     {
-      v18 = [v8 summary];
+      summary = [eventCopy summary];
       v22 = 138543874;
-      v23 = v12;
+      v23 = taskDescription;
       v24 = 2114;
       v25 = v14;
       v26 = 2114;
-      v27 = v18;
-      _os_log_impl(&dword_1E0F71000, v16, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SYNCHRONIZING | tracked NSURLSession task for fileUUID:%{public}@, state:%{public}@ - dropping | active:%{public}@", &v22, 0x20u);
+      v27 = summary;
+      _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SYNCHRONIZING | tracked NSURLSession task for fileUUID:%{public}@, state:%{public}@ - dropping | active:%{public}@", &v22, 0x20u);
     }
 
-    [(SUCoreEventReporter *)self _removeActiveEventForFileUUID:v12];
+    [(SUCoreEventReporter *)self _removeActiveEventForFileUUID:taskDescription];
   }
 
   else
@@ -2100,29 +2100,29 @@ LABEL_18:
     if (v17)
     {
       v22 = 138543618;
-      v23 = v12;
+      v23 = taskDescription;
       v24 = 2114;
       v25 = v14;
-      _os_log_impl(&dword_1E0F71000, v16, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SYNCHRONIZING | untracked NSURLSession task for fileUUID:%{public}@, state:%{public}@ - ignored", &v22, 0x16u);
+      _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] SYNCHRONIZING | untracked NSURLSession task for fileUUID:%{public}@, state:%{public}@ - ignored", &v22, 0x16u);
     }
   }
 
-  v19 = [(SUCoreEventReporter *)self _removeFileUUID:v12 fromFilesToRetry:v9];
+  v19 = [(SUCoreEventReporter *)self _removeFileUUID:taskDescription fromFilesToRetry:retryCopy];
 
   v20 = *MEMORY[0x1E69E9840];
 
   return v19;
 }
 
-- (id)_alignPersistedStateWithExistingFileUUIDs:(id)a3
+- (id)_alignPersistedStateWithExistingFileUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_V2(v5);
+  dsCopy = ds;
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_V2(splunkStateQueue);
 
-  v6 = v4;
-  v7 = [(SUCoreEventReporter *)self activeEventsState];
-  v8 = [v7 dictionaryForKey:@"ActiveEventsState"];
+  v6 = dsCopy;
+  activeEventsState = [(SUCoreEventReporter *)self activeEventsState];
+  v8 = [activeEventsState dictionaryForKey:@"ActiveEventsState"];
 
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v16 = MEMORY[0x1E69E9820];
@@ -2201,14 +2201,14 @@ void __65__SUCoreEventReporter__alignPersistedStateWithExistingFileUUIDs___block
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_removeFileUUID:(id)a3 fromFilesToRetry:(id)a4
+- (id)_removeFileUUID:(id)d fromFilesToRetry:(id)retry
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_V2(v8);
+  dCopy = d;
+  retryCopy = retry;
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_V2(splunkStateQueue);
 
-  v9 = v7;
+  v9 = retryCopy;
   v10 = v9;
   if (v9 && [v9 count] && objc_msgSend(v10, "count"))
   {
@@ -2216,7 +2216,7 @@ void __65__SUCoreEventReporter__alignPersistedStateWithExistingFileUUIDs___block
     while (1)
     {
       v12 = [v10 objectAtIndex:v11];
-      if ([SUCore stringIsEqual:v6 to:v12])
+      if ([SUCore stringIsEqual:dCopy to:v12])
       {
         break;
       }
@@ -2235,17 +2235,17 @@ LABEL_9:
   return v10;
 }
 
-- (id)_activeEventForFileUUID:(id)a3
+- (id)_activeEventForFileUUID:(id)d
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_V2(splunkStateQueue);
 
-  v6 = [(SUCoreEventReporter *)self activeEventsState];
-  v7 = [v6 dictionaryForKey:@"ActiveEventsState"];
+  activeEventsState = [(SUCoreEventReporter *)self activeEventsState];
+  v7 = [activeEventsState dictionaryForKey:@"ActiveEventsState"];
 
-  if (v7 && ([v7 safeObjectForKey:v4 ofClass:objc_opt_class()], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v7 && ([v7 safeObjectForKey:dCopy ofClass:objc_opt_class()], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v9 = v8;
     v10 = [[SUCoreEventReporterActive alloc] initFromArchivedData:v8];
@@ -2253,16 +2253,16 @@ LABEL_9:
     if (v10)
     {
       v11 = +[SUCoreLog sharedLogger];
-      v12 = [v11 oslog];
+      oslog = [v11 oslog];
 
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v10 summary];
+        summary = [v10 summary];
         v16 = 138543618;
-        v17 = v4;
+        v17 = dCopy;
         v18 = 2114;
-        v19 = v13;
-        _os_log_impl(&dword_1E0F71000, v12, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] ACTIVE | found active event for fileUUID:%{public}@ | activeEvent:%{public}@", &v16, 0x16u);
+        v19 = summary;
+        _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] ACTIVE | found active event for fileUUID:%{public}@ | activeEvent:%{public}@", &v16, 0x16u);
       }
     }
   }
@@ -2277,16 +2277,16 @@ LABEL_9:
   return v10;
 }
 
-- (void)_updateActiveEvent:(id)a3 forFileUUID:(id)a4
+- (void)_updateActiveEvent:(id)event forFileUUID:(id)d
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_V2(v8);
+  eventCopy = event;
+  dCopy = d;
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_V2(splunkStateQueue);
 
-  v9 = [(SUCoreEventReporter *)self activeEventsState];
-  v10 = [v9 dictionaryForKey:@"ActiveEventsState"];
+  activeEventsState = [(SUCoreEventReporter *)self activeEventsState];
+  v10 = [activeEventsState dictionaryForKey:@"ActiveEventsState"];
   v11 = [v10 mutableCopy];
 
   if (!v11)
@@ -2294,63 +2294,63 @@ LABEL_9:
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  v12 = [v6 toArchivedData];
-  [v11 setSafeObject:v12 forKey:v7];
+  toArchivedData = [eventCopy toArchivedData];
+  [v11 setSafeObject:toArchivedData forKey:dCopy];
 
-  v13 = [(SUCoreEventReporter *)self activeEventsState];
-  [v13 persistDictionary:v11 forKey:@"ActiveEventsState"];
+  activeEventsState2 = [(SUCoreEventReporter *)self activeEventsState];
+  [activeEventsState2 persistDictionary:v11 forKey:@"ActiveEventsState"];
 
   v14 = +[SUCoreLog sharedLogger];
-  v15 = [v14 oslog];
+  oslog = [v14 oslog];
 
-  if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v6 summary];
+    summary = [eventCopy summary];
     v18 = 138543618;
-    v19 = v7;
+    v19 = dCopy;
     v20 = 2114;
-    v21 = v16;
-    _os_log_impl(&dword_1E0F71000, v15, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] ACTIVE | updated active event for fileUUID:%{public}@ | activeEvent:%{public}@", &v18, 0x16u);
+    v21 = summary;
+    _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] ACTIVE | updated active event for fileUUID:%{public}@ | activeEvent:%{public}@", &v18, 0x16u);
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_removeActiveEventForFileUUID:(id)a3
+- (void)_removeActiveEventForFileUUID:(id)d
 {
-  v9 = a3;
-  v4 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_V2(v4);
+  dCopy = d;
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_V2(splunkStateQueue);
 
-  v5 = [(SUCoreEventReporter *)self activeEventsState];
-  v6 = [v5 dictionaryForKey:@"ActiveEventsState"];
+  activeEventsState = [(SUCoreEventReporter *)self activeEventsState];
+  v6 = [activeEventsState dictionaryForKey:@"ActiveEventsState"];
   v7 = [v6 mutableCopy];
 
   if (v7)
   {
-    [v7 removeObjectForKey:v9];
-    v8 = [(SUCoreEventReporter *)self activeEventsState];
-    [v8 persistDictionary:v7 forKey:@"ActiveEventsState"];
+    [v7 removeObjectForKey:dCopy];
+    activeEventsState2 = [(SUCoreEventReporter *)self activeEventsState];
+    [activeEventsState2 persistDictionary:v7 forKey:@"ActiveEventsState"];
   }
 }
 
-- (id)_getSplunkServerURL:(id)a3
+- (id)_getSplunkServerURL:(id)l
 {
-  v4 = [a3 serverURL];
-  if (!v4)
+  serverURL = [l serverURL];
+  if (!serverURL)
   {
-    v4 = [(SUCoreEventReporter *)self splunkURL];
+    serverURL = [(SUCoreEventReporter *)self splunkURL];
   }
 
-  return v4;
+  return serverURL;
 }
 
-- (id)_getSplunkRequestForURL:(id)a3
+- (id)_getSplunkRequestForURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
-    v4 = [MEMORY[0x1E696AD68] requestWithURL:v3];
+    v4 = [MEMORY[0x1E696AD68] requestWithURL:lCopy];
     v5 = v4;
     if (v4)
     {
@@ -2367,10 +2367,10 @@ LABEL_9:
   return v5;
 }
 
-- (id)_newScrubbedEvents:(id)a3
+- (id)_newScrubbedEvents:(id)events
 {
-  v4 = a3;
-  if (v4 && (v5 = objc_opt_new()) != 0)
+  eventsCopy = events;
+  if (eventsCopy && (v5 = objc_opt_new()) != 0)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -2379,7 +2379,7 @@ LABEL_9:
     v8[4] = self;
     v6 = v5;
     v9 = v6;
-    [v4 enumerateObjectsUsingBlock:v8];
+    [eventsCopy enumerateObjectsUsingBlock:v8];
   }
 
   else
@@ -2396,24 +2396,24 @@ void __42__SUCoreEventReporter__newScrubbedEvents___block_invoke(uint64_t a1, ui
   [*(a1 + 40) addObject:v3];
 }
 
-- (id)_copyEscapeStringsForEventData:(id)a3
+- (id)_copyEscapeStringsForEventData:(id)data
 {
   v3 = MEMORY[0x1E696AD48];
-  v4 = a3;
+  dataCopy = data;
   v5 = [v3 characterSetWithCharactersInString:@"%\\""];
-  v6 = [MEMORY[0x1E696AB08] controlCharacterSet];
-  [v5 formUnionWithCharacterSet:v6];
+  controlCharacterSet = [MEMORY[0x1E696AB08] controlCharacterSet];
+  [v5 formUnionWithCharacterSet:controlCharacterSet];
 
-  v7 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-  [v5 formUnionWithCharacterSet:v7];
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  [v5 formUnionWithCharacterSet:newlineCharacterSet];
 
   v8 = [MEMORY[0x1E696AD48] characterSetWithRange:{0, 127}];
-  v9 = [v5 invertedSet];
-  [v8 formIntersectionWithCharacterSet:v9];
+  invertedSet = [v5 invertedSet];
+  [v8 formIntersectionWithCharacterSet:invertedSet];
 
-  v10 = [v4 allKeys];
-  v11 = [MEMORY[0x1E695DFB0] null];
-  v12 = [v4 objectsForKeys:v10 notFoundMarker:v11];
+  allKeys = [dataCopy allKeys];
+  null = [MEMORY[0x1E695DFB0] null];
+  v12 = [dataCopy objectsForKeys:allKeys notFoundMarker:null];
 
   v13 = [v12 mutableCopy];
   v19 = MEMORY[0x1E69E9820];
@@ -2426,7 +2426,7 @@ void __42__SUCoreEventReporter__newScrubbedEvents___block_invoke(uint64_t a1, ui
   v15 = v13;
   [v15 enumerateObjectsUsingBlock:&v19];
   v16 = objc_alloc(MEMORY[0x1E695DF20]);
-  v17 = [v16 initWithObjects:v15 forKeys:{v10, v19, v20, v21, v22}];
+  v17 = [v16 initWithObjects:v15 forKeys:{allKeys, v19, v20, v21, v22}];
 
   return v17;
 }
@@ -2445,43 +2445,43 @@ void __54__SUCoreEventReporter__copyEscapeStringsForEventData___block_invoke(uin
   }
 }
 
-+ (id)_errorDomainAbbreviation:(id)a3
++ (id)_errorDomainAbbreviation:(id)abbreviation
 {
-  v3 = a3;
-  if (([(__CFString *)v3 isEqualToString:@"com.apple.softwareupdateservices.errors"]& 1) != 0)
+  abbreviationCopy = abbreviation;
+  if (([(__CFString *)abbreviationCopy isEqualToString:@"com.apple.softwareupdateservices.errors"]& 1) != 0)
   {
     v4 = @"SUS";
   }
 
-  else if (([(__CFString *)v3 isEqualToString:@"SUControllerError"]& 1) != 0)
+  else if (([(__CFString *)abbreviationCopy isEqualToString:@"SUControllerError"]& 1) != 0)
   {
     v4 = @"SUC";
   }
 
-  else if (([(__CFString *)v3 isEqualToString:@"SUBError"]& 1) != 0)
+  else if (([(__CFString *)abbreviationCopy isEqualToString:@"SUBError"]& 1) != 0)
   {
     v4 = @"SUB";
   }
 
-  else if (([(__CFString *)v3 isEqualToString:@"BridgeOSSoftwareUpdateError"]& 1) != 0)
+  else if (([(__CFString *)abbreviationCopy isEqualToString:@"BridgeOSSoftwareUpdateError"]& 1) != 0)
   {
     v4 = @"BSU";
   }
 
-  else if (([(__CFString *)v3 isEqualToString:@"MobileSoftwareUpdateErrorDomain"]& 1) != 0)
+  else if (([(__CFString *)abbreviationCopy isEqualToString:@"MobileSoftwareUpdateErrorDomain"]& 1) != 0)
   {
     v4 = @"MSU";
   }
 
-  else if (([(__CFString *)v3 isEqualToString:@"ASError"]& 1) != 0)
+  else if (([(__CFString *)abbreviationCopy isEqualToString:@"ASError"]& 1) != 0)
   {
     v4 = @"AS";
   }
 
   else
   {
-    v4 = v3;
-    if (![(__CFString *)v3 isEqualToString:@"MobileAssetError"])
+    v4 = abbreviationCopy;
+    if (![(__CFString *)abbreviationCopy isEqualToString:@"MobileAssetError"])
     {
       goto LABEL_16;
     }
@@ -2494,39 +2494,39 @@ LABEL_16:
   return v4;
 }
 
-- (id)_getJSONDataFromPayload:(id)a3 withFileUUID:(id)a4 forEventUUID:(id)a5
+- (id)_getJSONDataFromPayload:(id)payload withFileUUID:(id)d forEventUUID:(id)iD
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v7])
+  payloadCopy = payload;
+  dCopy = d;
+  iDCopy = iD;
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:payloadCopy])
   {
     v18 = 0;
-    v10 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v7 options:0 error:&v18];
+    v10 = [MEMORY[0x1E696ACB0] dataWithJSONObject:payloadCopy options:0 error:&v18];
     v11 = v18;
     if (!v10)
     {
       v12 = +[SUCoreDiag sharedDiag];
-      v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unable to serialize data into JSON [UUID: %@] file: %@", v9, v8];
+      dCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unable to serialize data into JSON [UUID: %@] file: %@", iDCopy, dCopy];
       if (v11)
       {
-        v14 = [v11 code];
+        code = [v11 code];
       }
 
       else
       {
-        v14 = 8106;
+        code = 8106;
       }
 
-      [v12 trackError:@"[EVENT_REPORTER] DROP" forReason:v13 withResult:v14 withError:v11];
+      [v12 trackError:@"[EVENT_REPORTER] DROP" forReason:dCopy withResult:code withError:v11];
     }
   }
 
   else
   {
     v15 = +[SUCoreDiag sharedDiag];
-    v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"encountered invalid JSON payload [UUID: %@] file: %@", v9, v8];
-    [v15 trackError:@"[EVENT_REPORTER] DROP" forReason:v16 withResult:8107 withError:0];
+    dCopy2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"encountered invalid JSON payload [UUID: %@] file: %@", iDCopy, dCopy];
+    [v15 trackError:@"[EVENT_REPORTER] DROP" forReason:dCopy2 withResult:8107 withError:0];
 
     v10 = 0;
   }
@@ -2534,42 +2534,42 @@ LABEL_16:
   return v10;
 }
 
-- (id)_storeJSONData:(id)a3 withFileUUID:(id)a4 forEventUUID:(id)a5
+- (id)_storeJSONData:(id)data withFileUUID:(id)d forEventUUID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_V2(v11);
+  dataCopy = data;
+  dCopy = d;
+  iDCopy = iD;
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_V2(splunkStateQueue);
 
   v12 = MEMORY[0x1E695DFF8];
-  v13 = [(SUCoreEventReporter *)self storeToPath];
-  v14 = [v13 stringByAppendingPathComponent:v9];
+  storeToPath = [(SUCoreEventReporter *)self storeToPath];
+  v14 = [storeToPath stringByAppendingPathComponent:dCopy];
   v15 = [v12 fileURLWithPath:v14];
 
   if (v15)
   {
     v25 = 0;
-    v16 = [v8 writeToURL:v15 options:1 error:&v25];
+    v16 = [dataCopy writeToURL:v15 options:1 error:&v25];
     v17 = v25;
     v18 = v17;
     if (!v16 || v17)
     {
       v19 = +[SUCoreDiag sharedDiag];
-      v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"failed to write JSON data to file [UUID: %@] file: %@", v10, v9];
+      dCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"failed to write JSON data to file [UUID: %@] file: %@", iDCopy, dCopy];
       if (v18)
       {
-        v21 = [v18 code];
+        code = [v18 code];
       }
 
       else
       {
-        v21 = 8109;
+        code = 8109;
       }
 
-      [v19 trackError:@"[EVENT_REPORTER] DROP" forReason:v20 withResult:v21 withError:v18];
+      [v19 trackError:@"[EVENT_REPORTER] DROP" forReason:dCopy withResult:code withError:v18];
 
-      [(SUCoreEventReporter *)self _removeFileUUID:v9 loggingError:0 forReason:@"failed to write JSON data"];
+      [(SUCoreEventReporter *)self _removeFileUUID:dCopy loggingError:0 forReason:@"failed to write JSON data"];
       v15 = 0;
     }
   }
@@ -2577,8 +2577,8 @@ LABEL_16:
   else
   {
     v22 = +[SUCoreDiag sharedDiag];
-    v23 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"failed to form JSON data file [UUID: %@] file: %@", v10, v9];
-    [v22 trackAnomaly:@"[EVENT_REPORTER] DROP" forReason:v23 withResult:8100 withError:0];
+    dCopy2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"failed to form JSON data file [UUID: %@] file: %@", iDCopy, dCopy];
+    [v22 trackAnomaly:@"[EVENT_REPORTER] DROP" forReason:dCopy2 withResult:8100 withError:0];
 
     v15 = 0;
   }
@@ -2586,99 +2586,99 @@ LABEL_16:
   return v15;
 }
 
-- (BOOL)_storeServerURLMetadata:(id)a3 toFileUUID:(id)a4
+- (BOOL)_storeServerURLMetadata:(id)metadata toFileUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_V2(v8);
+  metadataCopy = metadata;
+  dCopy = d;
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_V2(splunkStateQueue);
 
   v9 = MEMORY[0x1E695DFF8];
-  v10 = [(SUCoreEventReporter *)self storeToPath];
-  v11 = [v10 stringByAppendingPathComponent:v7];
+  storeToPath = [(SUCoreEventReporter *)self storeToPath];
+  v11 = [storeToPath stringByAppendingPathComponent:dCopy];
   v12 = [v9 fileURLWithPath:v11];
 
   if (!v12)
   {
     v14 = +[SUCoreDiag sharedDiag];
-    v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"failed to create file: %@ for attaching of serverURL metadata", v7];
-    [v14 trackAnomaly:@"[EVENT_REPORTER] DROP" forReason:v15 withResult:8100 withError:0];
+    dCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"failed to create file: %@ for attaching of serverURL metadata", dCopy];
+    [v14 trackAnomaly:@"[EVENT_REPORTER] DROP" forReason:dCopy withResult:8100 withError:0];
     v13 = 0;
     goto LABEL_5;
   }
 
-  v13 = +[SUCore setFileMetadata:forKey:value:](SUCore, "setFileMetadata:forKey:value:", [v12 fileSystemRepresentation], @"SUCoreEventReporterServerURL", v6);
+  v13 = +[SUCore setFileMetadata:forKey:value:](SUCore, "setFileMetadata:forKey:value:", [v12 fileSystemRepresentation], @"SUCoreEventReporterServerURL", metadataCopy);
   if (!v13)
   {
     v14 = +[SUCoreDiag sharedDiag];
-    v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"failed to add serverURL metadata to file: %@", v7];
-    [v14 trackError:@"[EVENT_REPORTER] DROP" forReason:v15 withResult:8109 withError:0];
+    dCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"failed to add serverURL metadata to file: %@", dCopy];
+    [v14 trackError:@"[EVENT_REPORTER] DROP" forReason:dCopy withResult:8109 withError:0];
 LABEL_5:
   }
 
   return v13;
 }
 
-- (void)_removeFileUUID:(id)a3 loggingError:(BOOL)a4 forReason:(id)a5
+- (void)_removeFileUUID:(id)d loggingError:(BOOL)error forReason:(id)reason
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_V2(v10);
+  errorCopy = error;
+  dCopy = d;
+  reasonCopy = reason;
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_V2(splunkStateQueue);
 
-  v11 = [(SUCoreEventReporter *)self storeToPath];
-  v12 = [v11 stringByAppendingPathComponent:v8];
+  storeToPath = [(SUCoreEventReporter *)self storeToPath];
+  v12 = [storeToPath stringByAppendingPathComponent:dCopy];
 
-  v13 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v19 = 0;
-  v14 = [v13 removeItemAtPath:v12 error:&v19];
+  v14 = [defaultManager removeItemAtPath:v12 error:&v19];
   v15 = v19;
 
-  if ((v14 & 1) == 0 && v6)
+  if ((v14 & 1) == 0 && errorCopy)
   {
     v16 = +[SUCoreDiag sharedDiag];
-    v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ - could not remove event file: %@", v9, v12];
+    v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ - could not remove event file: %@", reasonCopy, v12];
     if (v15)
     {
-      v18 = [v15 code];
+      code = [v15 code];
     }
 
     else
     {
-      v18 = 8110;
+      code = 8110;
     }
 
-    [v16 trackAnomaly:@"[EVENT_REPORTER] REMOVE" forReason:v17 withResult:v18 withError:v15];
+    [v16 trackAnomaly:@"[EVENT_REPORTER] REMOVE" forReason:v17 withResult:code withError:v15];
   }
 
-  [(SUCoreEventReporter *)self _removeActiveEventForFileUUID:v8];
+  [(SUCoreEventReporter *)self _removeActiveEventForFileUUID:dCopy];
 }
 
-- (void)_incrementActiveSendCount:(id)a3
+- (void)_incrementActiveSendCount:(id)count
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_V2(v5);
+  countCopy = count;
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_V2(splunkStateQueue);
 
   if ([(SUCoreEventReporter *)self activeSendTaskCount]<= 127)
   {
     [(SUCoreEventReporter *)self setActiveSendTaskCount:[(SUCoreEventReporter *)self activeSendTaskCount]+ 1];
     v6 = +[SUCoreLog sharedLogger];
-    v7 = [v6 oslog];
+    oslog = [v6 oslog];
 
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(SUCoreEventReporter *)self activeSendTaskCount];
-      v9 = [(SUCoreEventReporter *)self awaitingRetry];
+      activeSendTaskCount = [(SUCoreEventReporter *)self activeSendTaskCount];
+      awaitingRetry = [(SUCoreEventReporter *)self awaitingRetry];
       v11 = 138543874;
-      v12 = v4;
+      v12 = countCopy;
       v13 = 1024;
-      v14 = v8;
+      v14 = activeSendTaskCount;
       v15 = 2048;
-      v16 = [v9 count];
-      _os_log_impl(&dword_1E0F71000, v7, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] IDLE_TRACK | %{public}@ - activeSendTaskCount:%d, awaitingRetry:%lu", &v11, 0x1Cu);
+      v16 = [awaitingRetry count];
+      _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] IDLE_TRACK | %{public}@ - activeSendTaskCount:%d, awaitingRetry:%lu", &v11, 0x1Cu);
     }
   }
 
@@ -2688,101 +2688,101 @@ LABEL_5:
 - (void)_decrementActiveSendCount
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_V2(v3);
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_V2(splunkStateQueue);
 
   if ([(SUCoreEventReporter *)self activeSendTaskCount]>= 1)
   {
     [(SUCoreEventReporter *)self setActiveSendTaskCount:[(SUCoreEventReporter *)self activeSendTaskCount]- 1];
     v4 = +[SUCoreLog sharedLogger];
-    v5 = [v4 oslog];
+    oslog = [v4 oslog];
 
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(SUCoreEventReporter *)self activeSendTaskCount];
-      v7 = [(SUCoreEventReporter *)self awaitingRetry];
+      activeSendTaskCount = [(SUCoreEventReporter *)self activeSendTaskCount];
+      awaitingRetry = [(SUCoreEventReporter *)self awaitingRetry];
       v9[0] = 67109376;
-      v9[1] = v6;
+      v9[1] = activeSendTaskCount;
       v10 = 2048;
-      v11 = [v7 count];
-      _os_log_impl(&dword_1E0F71000, v5, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] IDLE_TRACK | decrement active - activeSendTaskCount:%d, awaitingRetry:%lu", v9, 0x12u);
+      v11 = [awaitingRetry count];
+      _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] IDLE_TRACK | decrement active - activeSendTaskCount:%d, awaitingRetry:%lu", v9, 0x12u);
     }
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_checkWhetherIdle:(id)a3
+- (void)_checkWhetherIdle:(id)idle
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SUCoreEventReporter *)self splunkStateQueue];
-  dispatch_assert_queue_V2(v5);
+  idleCopy = idle;
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
+  dispatch_assert_queue_V2(splunkStateQueue);
 
   if (![(SUCoreEventReporter *)self activeSendTaskCount])
   {
-    v6 = [(SUCoreEventReporter *)self awaitingRetry];
-    if ([v6 count])
+    awaitingRetry = [(SUCoreEventReporter *)self awaitingRetry];
+    if ([awaitingRetry count])
     {
     }
 
     else
     {
-      v12 = [(SUCoreEventReporter *)self onceIdleCompletion];
+      onceIdleCompletion = [(SUCoreEventReporter *)self onceIdleCompletion];
 
-      if (v12)
+      if (onceIdleCompletion)
       {
         v13 = +[SUCoreLog sharedLogger];
-        v14 = [v13 oslog];
+        oslog = [v13 oslog];
 
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = [(SUCoreEventReporter *)self activeSendTaskCount];
-          v16 = [(SUCoreEventReporter *)self awaitingRetry];
+          activeSendTaskCount = [(SUCoreEventReporter *)self activeSendTaskCount];
+          awaitingRetry2 = [(SUCoreEventReporter *)self awaitingRetry];
           *buf = 138543874;
-          v24 = v4;
+          v24 = idleCopy;
           v25 = 1024;
-          v26 = v15;
+          v26 = activeSendTaskCount;
           v27 = 2048;
-          v28 = [v16 count];
-          _os_log_impl(&dword_1E0F71000, v14, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] IDLE_TRACK | now idle (%{public}@) - activeSendTaskCount:%d, awaitingRetry:%lu", buf, 0x1Cu);
+          v28 = [awaitingRetry2 count];
+          _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] IDLE_TRACK | now idle (%{public}@) - activeSendTaskCount:%d, awaitingRetry:%lu", buf, 0x1Cu);
         }
 
-        v17 = [(SUCoreEventReporter *)self onceIdleCompletion];
+        onceIdleCompletion2 = [(SUCoreEventReporter *)self onceIdleCompletion];
         [(SUCoreEventReporter *)self setOnceIdleCompletion:0];
         v18 = +[SUCore sharedCore];
-        v19 = [v18 completionQueue];
+        completionQueue = [v18 completionQueue];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __41__SUCoreEventReporter__checkWhetherIdle___block_invoke;
         block[3] = &unk_1E86FC528;
-        v22 = v17;
-        v9 = v17;
-        dispatch_async(v19, block);
+        v22 = onceIdleCompletion2;
+        oslog2 = onceIdleCompletion2;
+        dispatch_async(completionQueue, block);
 
         goto LABEL_11;
       }
     }
   }
 
-  v7 = [(SUCoreEventReporter *)self onceIdleCompletion];
+  onceIdleCompletion3 = [(SUCoreEventReporter *)self onceIdleCompletion];
 
-  if (v7)
+  if (onceIdleCompletion3)
   {
     v8 = +[SUCoreLog sharedLogger];
-    v9 = [v8 oslog];
+    oslog2 = [v8 oslog];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(SUCoreEventReporter *)self activeSendTaskCount];
-      v11 = [(SUCoreEventReporter *)self awaitingRetry];
+      activeSendTaskCount2 = [(SUCoreEventReporter *)self activeSendTaskCount];
+      awaitingRetry3 = [(SUCoreEventReporter *)self awaitingRetry];
       *buf = 138543874;
-      v24 = v4;
+      v24 = idleCopy;
       v25 = 1024;
-      v26 = v10;
+      v26 = activeSendTaskCount2;
       v27 = 2048;
-      v28 = [v11 count];
-      _os_log_impl(&dword_1E0F71000, v9, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] IDLE_TRACK | not idle (%{public}@) - activeSendTaskCount:%d, awaitingRetry:%lu", buf, 0x1Cu);
+      v28 = [awaitingRetry3 count];
+      _os_log_impl(&dword_1E0F71000, oslog2, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] IDLE_TRACK | not idle (%{public}@) - activeSendTaskCount:%d, awaitingRetry:%lu", buf, 0x1Cu);
     }
 
 LABEL_11:
@@ -2791,23 +2791,23 @@ LABEL_11:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleSendFinishedWithFileUUID:(id)a3 sendSucceeded:(BOOL)a4 withStatusCode:(int64_t)a5 withError:(id)a6
+- (void)handleSendFinishedWithFileUUID:(id)d sendSucceeded:(BOOL)succeeded withStatusCode:(int64_t)code withError:(id)error
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(SUCoreEventReporter *)self splunkStateQueue];
+  dCopy = d;
+  errorCopy = error;
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __93__SUCoreEventReporter_handleSendFinishedWithFileUUID_sendSucceeded_withStatusCode_withError___block_invoke;
   block[3] = &unk_1E86FC550;
   block[4] = self;
-  v16 = v10;
-  v19 = a4;
-  v17 = v11;
-  v18 = a5;
-  v13 = v11;
-  v14 = v10;
-  dispatch_async(v12, block);
+  v16 = dCopy;
+  succeededCopy = succeeded;
+  v17 = errorCopy;
+  codeCopy = code;
+  v13 = errorCopy;
+  v14 = dCopy;
+  dispatch_async(splunkStateQueue, block);
 }
 
 uint64_t __93__SUCoreEventReporter_handleSendFinishedWithFileUUID_sendSucceeded_withStatusCode_withError___block_invoke(uint64_t a1)
@@ -3006,21 +3006,21 @@ LABEL_36:
   return result;
 }
 
-- (void)handleSendFinishedInvalidFileUUID:(id)a3 withError:(id)a4
+- (void)handleSendFinishedInvalidFileUUID:(id)d withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUCoreEventReporter *)self splunkStateQueue];
+  dCopy = d;
+  errorCopy = error;
+  splunkStateQueue = [(SUCoreEventReporter *)self splunkStateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__SUCoreEventReporter_handleSendFinishedInvalidFileUUID_withError___block_invoke;
   block[3] = &unk_1E86FC460;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = errorCopy;
+  selfCopy = self;
+  v9 = errorCopy;
+  v10 = dCopy;
+  dispatch_async(splunkStateQueue, block);
 }
 
 uint64_t __67__SUCoreEventReporter_handleSendFinishedInvalidFileUUID_withError___block_invoke(uint64_t a1)
@@ -3048,19 +3048,19 @@ uint64_t __67__SUCoreEventReporter_handleSendFinishedInvalidFileUUID_withError__
   return [v7 _checkWhetherIdle:@"send finished with invalid file UUID"];
 }
 
-+ (id)_nsURLSessionTaskNameForState:(int64_t)a3
++ (id)_nsURLSessionTaskNameForState:(int64_t)state
 {
-  if (a3 >= 4)
+  if (state >= 4)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"NSURLSessionTaskState(%d)", a3];
+    state = [MEMORY[0x1E696AEC0] stringWithFormat:@"NSURLSessionTaskState(%d)", state];
   }
 
   else
   {
-    v4 = off_1E86FC570[a3];
+    state = off_1E86FC570[state];
   }
 
-  return v4;
+  return state;
 }
 
 void __61__SUCoreEventReporter__synchronizeWithNSURLSessionExpecting___block_invoke_2_cold_1(uint8_t *buf, _BYTE *a2, os_log_t log)

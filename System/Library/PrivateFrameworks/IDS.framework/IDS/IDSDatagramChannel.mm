@@ -1,82 +1,82 @@
 @interface IDSDatagramChannel
-- ($8401F4BB0FBBAD626D053E4AC6536F2D)_setWiFiAssist:(BOOL)a3;
-- ($B9DA14AB56F58BCD48907D5C6DBDA49C)_makeDirectPacketBufferFromDatagram:(const void *)a3 datagramSize:(unsigned int)a4 currentDatagramCount:(unsigned __int8)a5 totalDatagramCount:(unsigned __int8)a6 datagramInfo:(id)a7 datagramOptions:(id *)a8 linkContext:(id)a9 supportsQPod:(BOOL)a10;
-- (BOOL)processDatagram:(const char *)a3 datagramSize:(unint64_t)a4 readHandler:(id)a5 readHandlerWithOptions:(id)a6;
+- ($8401F4BB0FBBAD626D053E4AC6536F2D)_setWiFiAssist:(BOOL)assist;
+- ($B9DA14AB56F58BCD48907D5C6DBDA49C)_makeDirectPacketBufferFromDatagram:(const void *)datagram datagramSize:(unsigned int)size currentDatagramCount:(unsigned __int8)count totalDatagramCount:(unsigned __int8)datagramCount datagramInfo:(id)info datagramOptions:(id *)options linkContext:(id)context supportsQPod:(BOOL)self0;
+- (BOOL)processDatagram:(const char *)datagram datagramSize:(unint64_t)size readHandler:(id)handler readHandlerWithOptions:(id)options;
 - (IDSDataChannelLinkContext)defaultLink;
-- (IDSDatagramChannel)initWithDestination:(id)a3 options:(id)a4;
-- (IDSDatagramChannel)initWithSocketDescriptor:(int)a3;
+- (IDSDatagramChannel)initWithDestination:(id)destination options:(id)options;
+- (IDSDatagramChannel)initWithSocketDescriptor:(int)descriptor;
 - (NSArray)connectedLinks;
-- (id)_connectionInfoForDictionary:(id)a3;
-- (id)_directConnectionsForLinkID:(char)a3;
-- (id)_extractparticipantIDToHashedIDMappingFromData:(id)a3;
+- (id)_connectionInfoForDictionary:(id)dictionary;
+- (id)_directConnectionsForLinkID:(char)d;
+- (id)_extractparticipantIDToHashedIDMappingFromData:(id)data;
 - (id)_linkContextsCopy;
-- (id)_underlyingLinkContextForLinkID:(char)a3;
+- (id)_underlyingLinkContextForLinkID:(char)d;
 - (id)description;
-- (id)getDispatchDataForPacketBuffer:(id *)a3;
+- (id)getDispatchDataForPacketBuffer:(id *)buffer;
 - (id)getIDSDataChannelsQueue;
-- (id)protocolStackDescriptionFor:(id)a3;
+- (id)protocolStackDescriptionFor:(id)for;
 - (int)underlyingFileDescriptor;
-- (void)_addConnections:(id)a3 toLinkContext:(id)a4;
-- (void)_buildPacketBufferMetaData:(id *)a3;
+- (void)_addConnections:(id)connections toLinkContext:(id)context;
+- (void)_buildPacketBufferMetaData:(id *)data;
 - (void)_dumpLinkContextConnectionsInfo;
 - (void)_logFinalStats;
 - (void)_periodicTasks;
 - (void)_periodicTasksTick;
-- (void)_removeDirectConnection:(id)a3;
-- (void)_reportDictionary:(id)a3 forKey:(unsigned __int8)a4;
-- (void)_reportFirstIncomingPacketTimeForMKI:(id)a3 time:(id)a4 participantID:(id)a5;
-- (void)_reportFirstOutgoingPacketTimeForMKI:(id)a3 time:(id)a4 participantID:(id)a5;
+- (void)_removeDirectConnection:(id)connection;
+- (void)_reportDictionary:(id)dictionary forKey:(unsigned __int8)key;
+- (void)_reportFirstIncomingPacketTimeForMKI:(id)i time:(id)time participantID:(id)d;
+- (void)_reportFirstOutgoingPacketTimeForMKI:(id)i time:(id)time participantID:(id)d;
 - (void)_schedulePeriodicTasks;
-- (void)_sendDataChunkToDaemon:(id)a3 offset:(unint64_t)a4 length:(unint64_t)a5 withKey:(unsigned __int8)a6;
-- (void)_sendSequenceNumberMetadataToDaemon:(unint64_t)a3;
+- (void)_sendDataChunkToDaemon:(id)daemon offset:(unint64_t)offset length:(unint64_t)length withKey:(unsigned __int8)key;
+- (void)_sendSequenceNumberMetadataToDaemon:(unint64_t)daemon;
 - (void)_sendStatsRequestViaDaemon;
-- (void)_setDirectConnections:(id)a3 forLinkID:(char)a4;
+- (void)_setDirectConnections:(id)connections forLinkID:(char)d;
 - (void)_startStatsTimer;
 - (void)_stopStatsTimer;
 - (void)_syncLinkQualityMeasurement;
-- (void)_writeDatagram:(const void *)a3 datagramSize:(unsigned int)a4 datagramInfo:(id)a5 options:(id *)a6 completionHandler:(id)a7;
-- (void)_writeToNWConnectionArrayOfDatagrams:(const void *)a3 datagramSizes:(unsigned int *)a4 datagramInfo:(id *)a5 datagramOptions:(id *)a6 datagramCount:(int)a7 completionHandler:(id)a8;
-- (void)_writeToSocket:(int)a3 datagrams:(const void *)a4 datagramSizes:(unsigned int *)a5 datagramInfo:(id *)a6 datagramOptions:(id *)a7 datagramCount:(int)a8 completionHandler:(id)a9;
-- (void)addConnectionStateChangedHandlerForConnection:(id)a3 linkContext:(id)a4 linkID:(char)a5 connection:(id)a6 readyHandler:(id)a7;
-- (void)addNewIDSDataChannelLinkWithAttributes:(char *)a3 linkAttributesLength:(unsigned __int16)a4;
+- (void)_writeDatagram:(const void *)datagram datagramSize:(unsigned int)size datagramInfo:(id)info options:(id *)options completionHandler:(id)handler;
+- (void)_writeToNWConnectionArrayOfDatagrams:(const void *)datagrams datagramSizes:(unsigned int *)sizes datagramInfo:(id *)info datagramOptions:(id *)options datagramCount:(int)count completionHandler:(id)handler;
+- (void)_writeToSocket:(int)socket datagrams:(const void *)datagrams datagramSizes:(unsigned int *)sizes datagramInfo:(id *)info datagramOptions:(id *)options datagramCount:(int)count completionHandler:(id)handler;
+- (void)addConnectionStateChangedHandlerForConnection:(id)connection linkContext:(id)context linkID:(char)d connection:(id)a6 readyHandler:(id)handler;
+- (void)addNewIDSDataChannelLinkWithAttributes:(char *)attributes linkAttributesLength:(unsigned __int16)length;
 - (void)close;
 - (void)dealloc;
-- (void)flushLinkProbingStatusWithOptions:(id)a3;
-- (void)generateMetadataWithDatagramInfo:(id)a3 options:(id *)a4 currentDatagramCount:(unsigned __int8)a5 totalDatagramCount:(unsigned __int8)a6 byteBuffer:(id *)a7;
+- (void)flushLinkProbingStatusWithOptions:(id)options;
+- (void)generateMetadataWithDatagramInfo:(id)info options:(id *)options currentDatagramCount:(unsigned __int8)count totalDatagramCount:(unsigned __int8)datagramCount byteBuffer:(id *)buffer;
 - (void)invalidate;
 - (void)invalidateDirectConnections;
 - (void)osChannelInfoLog;
-- (void)processMetadataForDatagram:(const char *)a3 size:(unint64_t)a4 datagramInfo:(id *)a5 options:(id *)a6;
-- (void)queryStatusWithOptions:(id)a3;
-- (void)readDatagramWithCompletionHandler:(id)a3;
-- (void)readDatagramsWithCompletionHandler:(id)a3;
-- (void)readFromNWConnection:(id)a3 maximumDatagrams:(unsigned int)a4 readHandler:(id)a5 readHandlerWithOptions:(id)a6;
-- (void)readFromOSChannel:(channel *)a3 ring:(channel_ring_desc *)a4 maximumDatagrams:(unsigned int)a5 readHandler:(id)a6 readHandlerWithOptions:(id)a7;
-- (void)readFromSocketDescriptorWithReadHandler:(id)a3 readHandlerWithOptions:(id)a4;
+- (void)processMetadataForDatagram:(const char *)datagram size:(unint64_t)size datagramInfo:(id *)info options:(id *)options;
+- (void)queryStatusWithOptions:(id)options;
+- (void)readDatagramWithCompletionHandler:(id)handler;
+- (void)readDatagramsWithCompletionHandler:(id)handler;
+- (void)readFromNWConnection:(id)connection maximumDatagrams:(unsigned int)datagrams readHandler:(id)handler readHandlerWithOptions:(id)options;
+- (void)readFromOSChannel:(channel *)channel ring:(channel_ring_desc *)ring maximumDatagrams:(unsigned int)datagrams readHandler:(id)handler readHandlerWithOptions:(id)options;
+- (void)readFromSocketDescriptorWithReadHandler:(id)handler readHandlerWithOptions:(id)options;
 - (void)readyToRead;
-- (void)reportFirstIncomingPacketTimeForMKI:(id)a3 participantID:(id)a4;
-- (void)reportFirstOutgoingPacketTimeForMKI:(id)a3 participantID:(id)a4;
-- (void)reportMKIArrival:(id)a3 isLocallyGenerated:(BOOL)a4;
-- (void)requestPMTUEvaluationForLinkID:(char)a3;
-- (void)requestSessionInfoWithOptions:(id)a3;
-- (void)requestStatsWithOptions:(id)a3;
+- (void)reportFirstIncomingPacketTimeForMKI:(id)i participantID:(id)d;
+- (void)reportFirstOutgoingPacketTimeForMKI:(id)i participantID:(id)d;
+- (void)reportMKIArrival:(id)arrival isLocallyGenerated:(BOOL)generated;
+- (void)requestPMTUEvaluationForLinkID:(char)d;
+- (void)requestSessionInfoWithOptions:(id)options;
+- (void)requestStatsWithOptions:(id)options;
 - (void)scheduleRead;
-- (void)selectDefaultLink:(char)a3;
+- (void)selectDefaultLink:(char)link;
 - (void)sendEventConnectedWithDummyLinkInfo;
 - (void)sendMetadata;
-- (void)sendPacketLogData:(id)a3;
-- (void)setChannelPreferences:(id)a3;
-- (void)setEventHandler:(id)a3;
-- (void)setLinkIDToParticipantMap:(id)a3;
-- (void)setReadHandler:(id)a3;
-- (void)setReadHandlerWithOptions:(id)a3;
-- (void)setUPlusOneMode:(BOOL)a3 isInitiator:(BOOL)a4;
-- (void)setWriteCompletionHandler:(id)a3;
+- (void)sendPacketLogData:(id)data;
+- (void)setChannelPreferences:(id)preferences;
+- (void)setEventHandler:(id)handler;
+- (void)setLinkIDToParticipantMap:(id)map;
+- (void)setReadHandler:(id)handler;
+- (void)setReadHandlerWithOptions:(id)options;
+- (void)setUPlusOneMode:(BOOL)mode isInitiator:(BOOL)initiator;
+- (void)setWriteCompletionHandler:(id)handler;
 - (void)start;
-- (void)startActiveProbingWithOptions:(id)a3;
+- (void)startActiveProbingWithOptions:(id)options;
 - (void)startInternal;
-- (void)startMKMRecoveryForParticipantIDs:(id)a3;
-- (void)stopActiveProbingWithOptions:(id)a3;
+- (void)startMKMRecoveryForParticipantIDs:(id)ds;
+- (void)stopActiveProbingWithOptions:(id)options;
 @end
 
 @implementation IDSDatagramChannel
@@ -141,21 +141,21 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_directConnectionsForLinkID:(char)a3
+- (id)_directConnectionsForLinkID:(char)d
 {
-  v3 = a3;
+  dCopy = d;
   v12 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_internal->_directConnectionsByLinkIDLock);
-  v5 = self->_internal->_directConnectionsByLinkID[v3];
+  v5 = self->_internal->_directConnectionsByLinkID[dCopy];
   if (!v5)
   {
     v5 = objc_alloc_init(IDSDataChannelsDirectConnections);
-    objc_storeStrong(&self->_internal->_directConnectionsByLinkID[v3], v5);
+    objc_storeStrong(&self->_internal->_directConnectionsByLinkID[dCopy], v5);
     v6 = +[IDSLogging IDSDataChannels];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9[0] = 67109378;
-      v9[1] = v3;
+      v9[1] = dCopy;
       v10 = 2112;
       v11 = v5;
       _os_log_impl(&dword_1959FF000, v6, OS_LOG_TYPE_DEFAULT, "LinkID %d associated with direct connection %@", v9, 0x12u);
@@ -168,12 +168,12 @@
   return v5;
 }
 
-- (void)_setDirectConnections:(id)a3 forLinkID:(char)a4
+- (void)_setDirectConnections:(id)connections forLinkID:(char)d
 {
-  v4 = a4;
+  dCopy = d;
   v14 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (v4 < 0)
+  connectionsCopy = connections;
+  if (dCopy < 0)
   {
     v8 = +[IDSLogging IDSDataChannels];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -181,7 +181,7 @@
       v10 = 136315394;
       v11 = "[IDSDatagramChannel(DirectConnections) _setDirectConnections:forLinkID:]";
       v12 = 1024;
-      v13 = v4;
+      v13 = dCopy;
       _os_log_impl(&dword_1959FF000, v8, OS_LOG_TYPE_DEFAULT, "%s: Invalid LinkID %d", &v10, 0x12u);
     }
   }
@@ -189,18 +189,18 @@
   else
   {
     os_unfair_lock_lock(&self->_internal->_directConnectionsByLinkIDLock);
-    objc_storeStrong(&self->_internal->_directConnectionsByLinkID[v4], a3);
+    objc_storeStrong(&self->_internal->_directConnectionsByLinkID[dCopy], connections);
     os_unfair_lock_unlock(&self->_internal->_directConnectionsByLinkIDLock);
   }
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_removeDirectConnection:(id)a3
+- (void)_removeDirectConnection:(id)connection
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  connectionCopy = connection;
+  if (connectionCopy)
   {
     os_unfair_lock_lock(&self->_internal->_directConnectionsByLinkIDLock);
     v5 = 0;
@@ -209,16 +209,16 @@
     while (1)
     {
       v7 = self->_internal->_directConnectionsByLinkID[v5];
-      v8 = [(IDSDataChannelsDirectConnections *)v7 udpConnection];
-      v9 = v8;
-      if (v8 == v4)
+      udpConnection = [(IDSDataChannelsDirectConnections *)v7 udpConnection];
+      v9 = udpConnection;
+      if (udpConnection == connectionCopy)
       {
         break;
       }
 
-      v10 = [(IDSDataChannelsDirectConnections *)v7 qpodConnection];
+      qpodConnection = [(IDSDataChannelsDirectConnections *)v7 qpodConnection];
 
-      if (v10 == v4)
+      if (qpodConnection == connectionCopy)
       {
         goto LABEL_7;
       }
@@ -239,7 +239,7 @@ LABEL_7:
       *buf = v15;
       v17 = v5;
       v18 = 2112;
-      v19 = v4;
+      v19 = connectionCopy;
       _os_log_impl(&dword_1959FF000, v11, OS_LOG_TYPE_DEFAULT, "LinkID %d unassociated with direct connection %@", buf, 0x12u);
     }
 
@@ -255,9 +255,9 @@ LABEL_12:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_underlyingLinkContextForLinkID:(char)a3
+- (id)_underlyingLinkContextForLinkID:(char)d
 {
-  v4 = [(IDSDatagramChannel *)self _linkContextWithID:a3];
+  v4 = [(IDSDatagramChannel *)self _linkContextWithID:d];
   if ([v4 isVirtualRelayLink])
   {
     v5 = -[IDSDatagramChannel _linkContextWithID:](self, "_linkContextWithID:", [v4 delegatedLinkID]);
@@ -297,7 +297,7 @@ LABEL_12:
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
           *buf = v12;
-          v14 = self;
+          selfCopy = self;
           v15 = 2112;
           v16 = v9;
           v17 = 2112;
@@ -332,47 +332,47 @@ LABEL_12:
       os_unfair_lock_lock(&self->_internal->_directConnectionsByLinkIDLock);
       v7 = self->_internal->_directConnectionsByLinkID[v3];
       os_unfair_lock_unlock(&self->_internal->_directConnectionsByLinkIDLock);
-      v8 = [(IDSDataChannelsDirectConnections *)v7 udpConnection];
+      udpConnection = [(IDSDataChannelsDirectConnections *)v7 udpConnection];
 
-      if (v8)
+      if (udpConnection)
       {
-        v9 = [(IDSDataChannelsDirectConnections *)v7 udpConnection];
-        [(IDSDatagramChannel *)self _removeDirectConnection:v9];
+        udpConnection2 = [(IDSDataChannelsDirectConnections *)v7 udpConnection];
+        [(IDSDatagramChannel *)self _removeDirectConnection:udpConnection2];
 
-        v10 = [(IDSDataChannelsDirectConnections *)v7 udpConnection];
-        nw_connection_cancel(v10);
+        udpConnection3 = [(IDSDataChannelsDirectConnections *)v7 udpConnection];
+        nw_connection_cancel(udpConnection3);
       }
 
       else
       {
-        v10 = +[IDSLogging IDSDataChannels];
-        if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+        udpConnection3 = +[IDSLogging IDSDataChannels];
+        if (os_log_type_enabled(udpConnection3, OS_LOG_TYPE_DEFAULT))
         {
           *buf = v28;
           v31 = v6;
-          _os_log_impl(&dword_1959FF000, v10, OS_LOG_TYPE_DEFAULT, "Found empty udp connection for link context %@", buf, 0xCu);
+          _os_log_impl(&dword_1959FF000, udpConnection3, OS_LOG_TYPE_DEFAULT, "Found empty udp connection for link context %@", buf, 0xCu);
         }
       }
 
-      v11 = [(IDSDataChannelsDirectConnections *)v7 qpodConnection];
+      qpodConnection = [(IDSDataChannelsDirectConnections *)v7 qpodConnection];
 
-      if (v11)
+      if (qpodConnection)
       {
-        v12 = [(IDSDataChannelsDirectConnections *)v7 qpodConnection];
-        [(IDSDatagramChannel *)self _removeDirectConnection:v12];
+        qpodConnection2 = [(IDSDataChannelsDirectConnections *)v7 qpodConnection];
+        [(IDSDatagramChannel *)self _removeDirectConnection:qpodConnection2];
 
-        v13 = [(IDSDataChannelsDirectConnections *)v7 qpodConnection];
-        nw_connection_cancel(v13);
+        qpodConnection3 = [(IDSDataChannelsDirectConnections *)v7 qpodConnection];
+        nw_connection_cancel(qpodConnection3);
       }
 
       else
       {
-        v13 = +[IDSLogging IDSDataChannels];
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+        qpodConnection3 = +[IDSLogging IDSDataChannels];
+        if (os_log_type_enabled(qpodConnection3, OS_LOG_TYPE_DEFAULT))
         {
           *buf = v28;
           v31 = v6;
-          _os_log_impl(&dword_1959FF000, v13, OS_LOG_TYPE_DEFAULT, "Found empty udp connection for link context %@", buf, 0xCu);
+          _os_log_impl(&dword_1959FF000, qpodConnection3, OS_LOG_TYPE_DEFAULT, "Found empty udp connection for link context %@", buf, 0xCu);
         }
       }
     }
@@ -403,20 +403,20 @@ LABEL_12:
       }
 
       v20 = self->_internal->_directConnectionsByLinkID[v15];
-      v21 = [(IDSDataChannelsDirectConnections *)v20 udpConnection];
+      udpConnection4 = [(IDSDataChannelsDirectConnections *)v20 udpConnection];
 
-      if (v21)
+      if (udpConnection4)
       {
-        v22 = [(IDSDataChannelsDirectConnections *)v20 udpConnection];
-        nw_connection_cancel(v22);
+        udpConnection5 = [(IDSDataChannelsDirectConnections *)v20 udpConnection];
+        nw_connection_cancel(udpConnection5);
       }
 
-      v23 = [(IDSDataChannelsDirectConnections *)v20 qpodConnection];
+      qpodConnection4 = [(IDSDataChannelsDirectConnections *)v20 qpodConnection];
 
-      if (v23)
+      if (qpodConnection4)
       {
-        v24 = [(IDSDataChannelsDirectConnections *)v20 qpodConnection];
-        nw_connection_cancel(v24);
+        qpodConnection5 = [(IDSDataChannelsDirectConnections *)v20 qpodConnection];
+        nw_connection_cancel(qpodConnection5);
       }
 
       directConnectionsByLinkID = self->_internal->_directConnectionsByLinkID;
@@ -434,11 +434,11 @@ LABEL_12:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (id)protocolStackDescriptionFor:(id)a3
+- (id)protocolStackDescriptionFor:(id)for
 {
-  v3 = a3;
-  v4 = nw_protocol_stack_copy_internet_protocol(v3);
-  v5 = nw_protocol_stack_copy_transport_protocol(v3);
+  forCopy = for;
+  v4 = nw_protocol_stack_copy_internet_protocol(forCopy);
+  v5 = nw_protocol_stack_copy_transport_protocol(forCopy);
   v6 = MEMORY[0x1E696AEC0];
   v7 = sub_195AED510(v4);
   v8 = sub_195AED510(v5);
@@ -455,66 +455,66 @@ LABEL_12:
   iterate_block[2] = sub_195AED56C;
   iterate_block[3] = &unk_1E7442B30;
   iterate_block[4] = &v13;
-  nw_protocol_stack_iterate_application_protocols(v3, iterate_block);
+  nw_protocol_stack_iterate_application_protocols(forCopy, iterate_block);
   v10 = [v9 stringByAppendingString:v14[5]];
   _Block_object_dispose(&v13, 8);
 
   return v10;
 }
 
-- (void)addConnectionStateChangedHandlerForConnection:(id)a3 linkContext:(id)a4 linkID:(char)a5 connection:(id)a6 readyHandler:(id)a7
+- (void)addConnectionStateChangedHandlerForConnection:(id)connection linkContext:(id)context linkID:(char)d connection:(id)a6 readyHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
+  connectionCopy = connection;
+  contextCopy = context;
   v14 = a6;
-  v15 = a7;
+  handlerCopy = handler;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = sub_195AEDCAC;
   v20[3] = &unk_1E7442B58;
-  v21 = v12;
-  v22 = v13;
-  v26 = a5;
+  v21 = connectionCopy;
+  v22 = contextCopy;
+  dCopy = d;
   v24 = v14;
-  v25 = v15;
-  v23 = self;
+  v25 = handlerCopy;
+  selfCopy = self;
   v16 = v14;
-  v17 = v15;
-  v18 = v13;
-  v19 = v12;
+  v17 = handlerCopy;
+  v18 = contextCopy;
+  v19 = connectionCopy;
   nw_connection_set_state_changed_handler(v19, v20);
 }
 
-- ($B9DA14AB56F58BCD48907D5C6DBDA49C)_makeDirectPacketBufferFromDatagram:(const void *)a3 datagramSize:(unsigned int)a4 currentDatagramCount:(unsigned __int8)a5 totalDatagramCount:(unsigned __int8)a6 datagramInfo:(id)a7 datagramOptions:(id *)a8 linkContext:(id)a9 supportsQPod:(BOOL)a10
+- ($B9DA14AB56F58BCD48907D5C6DBDA49C)_makeDirectPacketBufferFromDatagram:(const void *)datagram datagramSize:(unsigned int)size currentDatagramCount:(unsigned __int8)count totalDatagramCount:(unsigned __int8)datagramCount datagramInfo:(id)info datagramOptions:(id *)options linkContext:(id)context supportsQPod:(BOOL)self0
 {
-  v10 = *&a7.var0;
+  v10 = *&info.var0;
   v65 = *MEMORY[0x1E69E9840];
-  v14 = a9;
+  contextCopy = context;
   v15 = _IDSLinkPacketBufferCreate();
   v58 = v15;
-  if ([v14 isPartialTLEUPlusOneEnabled])
+  if ([contextCopy isPartialTLEUPlusOneEnabled])
   {
-    if (a8->var11)
+    if (options->var11)
     {
-      if (!a10)
+      if (!pod)
       {
         goto LABEL_12;
       }
 
-      var0 = a8->var0;
+      var0 = options->var0;
     }
 
     else
     {
-      var0 = a8->var0;
-      if ((a8->var0 & 0x400) == 0 || !a10)
+      var0 = options->var0;
+      if ((options->var0 & 0x400) == 0 || !pod)
       {
         goto LABEL_12;
       }
     }
 
-    a8->var11 = 0;
-    a8->var0 = var0 & 0xFFFFFBFF;
+    options->var11 = 0;
+    options->var0 = var0 & 0xFFFFFBFF;
     v15->var39 = 1;
     internal = self->_internal;
     if (internal && internal->_verboseFunctionalLogging)
@@ -529,13 +529,13 @@ LABEL_12:
   }
 
 LABEL_12:
-  if (v15->var1 < a4)
+  if (v15->var1 < size)
   {
     v19 = +[IDSLogging IDSDataChannels];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v60) = a4;
+      LODWORD(v60) = size;
       _os_log_impl(&dword_1959FF000, v19, OS_LOG_TYPE_DEFAULT, "_makeDirectPacketBufferFromDatagram: datagramSize is %u, and exceeds IDSLinkPacketBuffer limit", buf, 8u);
     }
 
@@ -543,9 +543,9 @@ LABEL_12:
     goto LABEL_58;
   }
 
-  v20 = v10;
-  v21 = a4;
-  if (!a4)
+  delegatedLinkID = v10;
+  sizeCopy = size;
+  if (!size)
   {
     v22 = +[IDSLogging IDSDataChannels];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -555,9 +555,9 @@ LABEL_12:
     }
   }
 
-  memcpy(v15->var0, a3, v21);
-  v15->var2 = v21;
-  if (v20 < 1)
+  memcpy(v15->var0, datagram, sizeCopy);
+  v15->var2 = sizeCopy;
+  if (delegatedLinkID < 1)
   {
     v33 = +[IDSLogging IDSDataChannels];
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -581,13 +581,13 @@ LABEL_12:
     v15->var22 = BYTE4(v10);
   }
 
-  if ([v14 connectionType] != 1)
+  if ([contextCopy connectionType] != 1)
   {
-    if (!a8)
+    if (!options)
     {
 LABEL_50:
-      [v14 connectionType];
-      [v14 channelNumber];
+      [contextCopy connectionType];
+      [contextCopy channelNumber];
       v28 = StunUtilPrepareOutgoingChannelData();
       if (self->_internal->_verboseFunctionalLogging)
       {
@@ -596,13 +596,13 @@ LABEL_50:
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
         {
           var2 = v58->var2;
-          v32 = [v14 channelNumber];
+          channelNumber = [contextCopy channelNumber];
           *buf = 134218496;
           v60 = var2;
           v61 = 1024;
           v62 = v29;
           v63 = 1024;
-          v64 = v32;
+          v64 = channelNumber;
           _os_log_impl(&dword_1959FF000, v30, OS_LOG_TYPE_DEFAULT, "QuickRelayHeaderDebug _makeDirectPacketBufferFromDatagram: packetBufferSize is %zd, result:%d, channel number:%d", buf, 0x18u);
         }
       }
@@ -611,27 +611,27 @@ LABEL_50:
       goto LABEL_59;
     }
 
-    v23 = a8->var0;
-    if (a8->var0)
+    v23 = options->var0;
+    if (options->var0)
     {
       v15->var24[0].var20 |= 1u;
-      if ([v14 isVirtualRelayLink])
+      if ([contextCopy isVirtualRelayLink])
       {
-        v20 = [v14 delegatedLinkID];
+        delegatedLinkID = [contextCopy delegatedLinkID];
       }
 
-      v15->var24[0].var4 = [(IDSDatagramChannel *)self _translateParticipantID:a8->var1 forLinkID:v20];
-      v23 = a8->var0;
+      v15->var24[0].var4 = [(IDSDatagramChannel *)self _translateParticipantID:options->var1 forLinkID:delegatedLinkID];
+      v23 = options->var0;
     }
 
     if ((v23 & 2) != 0)
     {
       v15->var24[0].var20 |= 2u;
-      var4 = a8->var4;
+      var4 = options->var4;
       v15->var24[0].var2 = var4;
       if (var4 >= 1)
       {
-        var5 = a8->var5;
+        var5 = options->var5;
         var3 = v15->var24[0].var3;
         do
         {
@@ -647,7 +647,7 @@ LABEL_50:
     if ((v23 & 0x10) != 0)
     {
       v15->var24[0].var20 |= 0x10u;
-      v15->var24[0].var6 = a8->var2;
+      v15->var24[0].var6 = options->var2;
       if ((v23 & 0x40) == 0)
       {
 LABEL_37:
@@ -666,7 +666,7 @@ LABEL_37:
     }
 
     v15->var24[0].var20 |= 0x40u;
-    v15->var24[0].var10 = a8->var7;
+    v15->var24[0].var10 = options->var7;
     if ((v23 & 8) == 0)
     {
 LABEL_38:
@@ -680,7 +680,7 @@ LABEL_38:
 
 LABEL_62:
     v15->var24[0].var20 |= 8u;
-    v15->var24[0].var5 = a8->var3;
+    v15->var24[0].var5 = options->var3;
     if ((v23 & 0x20) == 0)
     {
 LABEL_39:
@@ -694,7 +694,7 @@ LABEL_39:
 
 LABEL_63:
     v15->var24[0].var20 |= 0x20u;
-    v15->var24[0].var7 = a8->var6;
+    v15->var24[0].var7 = options->var6;
     if ((v23 & 4) == 0)
     {
 LABEL_40:
@@ -725,7 +725,7 @@ LABEL_65:
     v15->var24[0].var13 = 1;
     v36 = v15->var0;
     v37 = v15->var2;
-    v38 = [v14 hbhEncryptionkey];
+    hbhEncryptionkey = [contextCopy hbhEncryptionkey];
     v39 = IDSHBHEncryptDataWithKey();
 
     if (v39)
@@ -746,8 +746,8 @@ LABEL_65:
           }
         }
 
-        v23 = a8->var0;
-        if ((a8->var0 & 0x100) == 0)
+        v23 = options->var0;
+        if ((options->var0 & 0x100) == 0)
         {
 LABEL_42:
           if ((v23 & 0x80) == 0)
@@ -781,16 +781,16 @@ LABEL_44:
           if ((v23 & 0x20000) == 0)
           {
 LABEL_46:
-            if ([v14 isVirtualRelayLink])
+            if ([contextCopy isVirtualRelayLink])
             {
               v15->var24[0].var20 |= 0x800u;
               v15->var24[0].var14 = 1;
-              v15->var24[0].var15[0] = [v14 remoteRelayLinkID];
+              v15->var24[0].var15[0] = [contextCopy remoteRelayLinkID];
             }
 
-            if ((a8->var0 & 0x8000) != 0)
+            if ((options->var0 & 0x8000) != 0)
             {
-              [(IDSDatagramChannel *)self _sendSequenceNumberMetadataToDaemon:a8->var12];
+              [(IDSDatagramChannel *)self _sendSequenceNumberMetadataToDaemon:options->var12];
             }
 
             goto LABEL_50;
@@ -905,7 +905,7 @@ LABEL_11:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendSequenceNumberMetadataToDaemon:(unint64_t)a3
+- (void)_sendSequenceNumberMetadataToDaemon:(unint64_t)daemon
 {
   v12 = *MEMORY[0x1E69E9840];
   v4 = _IDSLinkPacketBufferCreate();
@@ -928,9 +928,9 @@ LABEL_11:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setLinkIDToParticipantMap:(id)a3
+- (void)setLinkIDToParticipantMap:(id)map
 {
-  v4 = [a3 mutableCopy];
+  v4 = [map mutableCopy];
   internal = self->_internal;
   linkIDToParticipantMap = internal->_linkIDToParticipantMap;
   internal->_linkIDToParticipantMap = v4;
@@ -938,9 +938,9 @@ LABEL_11:
   MEMORY[0x1EEE66BB8](v4, linkIDToParticipantMap);
 }
 
-- (id)getDispatchDataForPacketBuffer:(id *)a3
+- (id)getDispatchDataForPacketBuffer:(id *)buffer
 {
-  v3 = sub_195A7FB04(a3, 0);
+  v3 = sub_195A7FB04(buffer, 0);
 
   return v3;
 }
@@ -960,10 +960,10 @@ LABEL_11:
 - (NSArray)connectedLinks
 {
   os_unfair_lock_lock(&self->_internal->_linkContextsLock);
-  v3 = [(NSMutableDictionary *)self->_internal->_linkContexts allValues];
+  allValues = [(NSMutableDictionary *)self->_internal->_linkContexts allValues];
   os_unfair_lock_unlock(&self->_internal->_linkContextsLock);
 
-  return v3;
+  return allValues;
 }
 
 - (id)_linkContextsCopy
@@ -986,22 +986,22 @@ LABEL_11:
 
   if (v7 || self->_internal->_socketDescriptor < 1)
   {
-    v8 = v7;
+    initWithDummyInformation = v7;
   }
 
   else
   {
-    v8 = [[IDSDataChannelLinkContext alloc] initWithDummyInformation];
+    initWithDummyInformation = [[IDSDataChannelLinkContext alloc] initWithDummyInformation];
   }
 
-  v9 = v8;
+  v9 = initWithDummyInformation;
 
   os_unfair_lock_unlock(&internal->_linkContextsLock);
 
   return v9;
 }
 
-- (IDSDatagramChannel)initWithSocketDescriptor:(int)a3
+- (IDSDatagramChannel)initWithSocketDescriptor:(int)descriptor
 {
   v34 = *MEMORY[0x1E69E9840];
   v5 = _IDSRunningInDaemon();
@@ -1020,9 +1020,9 @@ LABEL_11:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v31 = self;
+    selfCopy = self;
     v32 = 1024;
-    v33 = a3;
+    descriptorCopy = descriptor;
     _os_log_impl(&dword_1959FF000, v7, OS_LOG_TYPE_DEFAULT, "<%p> Creating with socket %d", buf, 0x12u);
   }
 
@@ -1033,7 +1033,7 @@ LABEL_11:
   {
 LABEL_13:
     self = self;
-    v8 = self;
+    selfCopy2 = self;
     goto LABEL_14;
   }
 
@@ -1044,7 +1044,7 @@ LABEL_13:
   v11 = self->_internal;
   if (v11)
   {
-    v11->_socketDescriptor = a3;
+    v11->_socketDescriptor = descriptor;
     v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v13 = self->_internal;
     linkContexts = v13->_linkContexts;
@@ -1079,18 +1079,18 @@ LABEL_13:
   }
 
 LABEL_5:
-  v8 = 0;
+  selfCopy2 = 0;
 LABEL_14:
 
   v27 = *MEMORY[0x1E69E9840];
-  return v8;
+  return selfCopy2;
 }
 
-- (IDSDatagramChannel)initWithDestination:(id)a3 options:(id)a4
+- (IDSDatagramChannel)initWithDestination:(id)destination options:(id)options
 {
   v141 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  destinationCopy = destination;
+  optionsCopy = options;
   v8 = _IDSRunningInDaemon();
   v9 = +[IDSLogging IDSDataChannels];
   v10 = v9;
@@ -1109,7 +1109,7 @@ LABEL_14:
     *buf = 134218242;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = destinationCopy;
     _os_log_impl(&dword_1959FF000, v10, OS_LOG_TYPE_DEFAULT, "<%p> Creating with destination %@", buf, 0x16u);
   }
 
@@ -1125,7 +1125,7 @@ LABEL_14:
     if (!self->_internal)
     {
 LABEL_85:
-      v109 = 0;
+      selfCopy3 = 0;
       goto LABEL_86;
     }
 
@@ -1165,14 +1165,14 @@ LABEL_85:
       v128[1] = 3221225472;
       v128[2] = sub_195AF681C;
       v128[3] = &unk_1E7442D80;
-      v129 = self;
-      v24 = [v23 initWithSessionID:v6 write:v128];
+      selfCopy = self;
+      v24 = [v23 initWithSessionID:destinationCopy write:v128];
       v25 = self->_internal;
       packetLog = v25->_packetLog;
       v25->_packetLog = v24;
     }
 
-    v125 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69A4B40]];
+    v125 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69A4B40]];
     if (v125)
     {
       self->_internal->_operationMode = [v125 integerValue];
@@ -1205,11 +1205,11 @@ LABEL_21:
     self->_internal->_queue = v32;
 
     v34 = *MEMORY[0x1E69A4B38];
-    v35 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69A4B38]];
+    v35 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69A4B38]];
 
     if (v35)
     {
-      v36 = [v7 objectForKeyedSubscript:v34];
+      v36 = [optionsCopy objectForKeyedSubscript:v34];
       v37 = self->_internal;
       v38 = v37->_context;
       v37->_context = v36;
@@ -1226,7 +1226,7 @@ LABEL_21:
       }
     }
 
-    v124 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69A4B48]];
+    v124 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69A4B48]];
     if (v124)
     {
       self->_internal->_preferredDataPathType = [v124 integerValue];
@@ -1329,19 +1329,19 @@ LABEL_31:
           nw_parameters_set_account_id();
         }
 
-        v60 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v62 = &self->_internal;
         v61 = self->_internal;
         MKIArrivalTime = v61->_MKIArrivalTime;
-        v61->_MKIArrivalTime = v60;
+        v61->_MKIArrivalTime = dictionary;
 
-        v64 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary2 = [MEMORY[0x1E695DF90] dictionary];
         firstPacketArrivalTimeForMKI = self->_internal->_firstPacketArrivalTimeForMKI;
-        (*v62)->_firstPacketArrivalTimeForMKI = v64;
+        (*v62)->_firstPacketArrivalTimeForMKI = dictionary2;
 
-        v66 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary3 = [MEMORY[0x1E695DF90] dictionary];
         probingDict = self->_internal->_probingDict;
-        (*v62)->_probingDict = v66;
+        (*v62)->_probingDict = dictionary3;
 
         (*v62)->_writeLock._os_unfair_lock_opaque = 0;
         (*v62)->_readLock._os_unfair_lock_opaque = 0;
@@ -1363,8 +1363,8 @@ LABEL_31:
             dispatch_activate(self->_internal->_queue);
           }
 
-          v106 = v6;
-          host = nw_endpoint_create_host([v6 UTF8String], "2");
+          v106 = destinationCopy;
+          host = nw_endpoint_create_host([destinationCopy UTF8String], "2");
           v107 = nw_connection_create(host, v51);
           v108 = self->_internal;
           connection = v108->_connection;
@@ -1388,8 +1388,8 @@ LABEL_31:
         }
 
         v69 = dispatch_semaphore_create(0);
-        v70 = v6;
-        host = nw_endpoint_create_host([v6 UTF8String], "3");
+        v70 = destinationCopy;
+        host = nw_endpoint_create_host([destinationCopy UTF8String], "3");
         *v138 = 0;
         *&v139 = v138;
         *(&v139 + 1) = 0x2020000000;
@@ -1414,7 +1414,7 @@ LABEL_31:
         v79 = v76;
         v80 = v78->_pathEvaluator;
         v81 = v78->_queue;
-        v123 = self;
+        selfCopy2 = self;
         connection = v69;
         v83 = v79;
         if (nw_path_evaluator_set_update_handler())
@@ -1496,7 +1496,7 @@ LABEL_68:
                 }
               }
 
-              [(IDSDatagramChannel *)v123 close];
+              [(IDSDatagramChannel *)selfCopy2 close];
               goto LABEL_83;
             }
 
@@ -1570,11 +1570,11 @@ LABEL_81:
 
 LABEL_69:
   self = self;
-  v109 = self;
+  selfCopy3 = self;
 LABEL_86:
 
   v119 = *MEMORY[0x1E69E9840];
-  return v109;
+  return selfCopy3;
 }
 
 - (void)dealloc
@@ -1584,7 +1584,7 @@ LABEL_86:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1959FF000, v3, OS_LOG_TYPE_DEFAULT, "-dealloc called for %@", buf, 0xCu);
   }
 
@@ -1659,7 +1659,7 @@ LABEL_86:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138412802;
-      v19 = self;
+      selfCopy3 = self;
       v20 = 2048;
       v21 = pendingOutgoingBytes / v5;
       v22 = 2048;
@@ -1679,7 +1679,7 @@ LABEL_86:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138412802;
-      v19 = self;
+      selfCopy3 = self;
       v20 = 2048;
       v21 = outgoingBytes / v9;
       v22 = 2048;
@@ -1699,7 +1699,7 @@ LABEL_86:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138412802;
-      v19 = self;
+      selfCopy3 = self;
       v20 = 2048;
       v21 = incomingBytes / v13;
       v22 = 2048;
@@ -1718,7 +1718,7 @@ LABEL_86:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1959FF000, v3, OS_LOG_TYPE_DEFAULT, "-underlyingFileDescriptor called for %@", &v8, 0xCu);
   }
 
@@ -1758,26 +1758,26 @@ LABEL_14:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1959FF000, v6, OS_LOG_TYPE_DEFAULT, "<%@> first read, will send dummy link information", buf, 0xCu);
     }
 
     v7 = self->_internal;
     if (v7->_eventHandler)
     {
-      v8 = [[IDSDataChannelLinkContext alloc] initWithDummyInformation];
+      initWithDummyInformation = [[IDSDataChannelLinkContext alloc] initWithDummyInformation];
       v9 = +[IDSTransportLog IDSDataChannels];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v18 = v8;
+        selfCopy = initWithDummyInformation;
         _os_log_impl(&dword_1959FF000, v9, OS_LOG_TYPE_DEFAULT, "<%@> dummy link information", buf, 0xCu);
       }
 
       eventHandler = self->_internal->_eventHandler;
       v15[1] = @"connected-link";
       v16[0] = &unk_1F0A29A68;
-      v14 = v8;
+      v14 = initWithDummyInformation;
       v15[0] = @"event-type";
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:1];
       v16[1] = v11;
@@ -1797,9 +1797,9 @@ LABEL_14:
   os_unfair_lock_unlock(&v4->_writeLock);
 }
 
-- (void)addNewIDSDataChannelLinkWithAttributes:(char *)a3 linkAttributesLength:(unsigned __int16)a4
+- (void)addNewIDSDataChannelLinkWithAttributes:(char *)attributes linkAttributesLength:(unsigned __int16)length
 {
-  v4 = a4;
+  lengthCopy = length;
   v200 = *MEMORY[0x1E69E9840];
   v199 = -1431655766;
   *&v5 = 0xAAAAAAAAAAAAAAAALL;
@@ -1811,13 +1811,13 @@ LABEL_14:
   v193 = v5;
   v194 = v5;
   v192 = v5;
-  if (a4 <= 0x73u)
+  if (length <= 0x73u)
   {
     v6 = +[IDSTransportLog IDSDataChannels];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf[0]) = 67109120;
-      DWORD1(buf[0]) = v4;
+      DWORD1(buf[0]) = lengthCopy;
       _os_log_impl(&dword_1959FF000, v6, OS_LOG_TYPE_DEFAULT, "invalid link attribute size (%u), too small.", buf, 8u);
     }
 
@@ -1825,21 +1825,21 @@ LABEL_14:
   }
 
   v132 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:&v196 + 15];
-  v9 = *(a3 + 5);
-  v196 = *(a3 + 4);
+  v9 = *(attributes + 5);
+  v196 = *(attributes + 4);
   v197 = v9;
-  v198 = *(a3 + 6);
-  v199 = *(a3 + 28);
-  v10 = *(a3 + 1);
-  v192 = *a3;
+  v198 = *(attributes + 6);
+  v199 = *(attributes + 28);
+  v10 = *(attributes + 1);
+  v192 = *attributes;
   v193 = v10;
-  v11 = *(a3 + 3);
-  v12 = a3 + 116;
-  v13 = v4 - 116;
-  v194 = *(a3 + 2);
+  v11 = *(attributes + 3);
+  v12 = attributes + 116;
+  v13 = lengthCopy - 116;
+  v194 = *(attributes + 2);
   v195 = v11;
-  v137 = self;
-  if ((v4 - 116) < 2)
+  selfCopy = self;
+  if ((lengthCopy - 116) < 2)
   {
     v124 = 0;
     v125 = 0;
@@ -1853,12 +1853,12 @@ LABEL_14:
     goto LABEL_49;
   }
 
-  v14 = __rev16(*(a3 + 58));
-  v15 = a3 + 118;
-  v16 = v4 - 118;
+  v14 = __rev16(*(attributes + 58));
+  v15 = attributes + 118;
+  v16 = lengthCopy - 118;
   if (v14 && (v17 = v16 - v14, v16 >= v14))
   {
-    v18 = [MEMORY[0x1E695DEF0] dataWithBytes:a3 + 118 length:v14];
+    v18 = [MEMORY[0x1E695DEF0] dataWithBytes:attributes + 118 length:v14];
     v15 += v14;
     if (v18)
     {
@@ -1880,7 +1880,7 @@ LABEL_14:
       goto LABEL_16;
     }
 
-    v17 = v4 - 118;
+    v17 = lengthCopy - 118;
     v130 = 0;
   }
 
@@ -1896,7 +1896,7 @@ LABEL_14:
     v121 = 0;
     v12 = v15;
 LABEL_48:
-    self = v137;
+    self = selfCopy;
     goto LABEL_49;
   }
 
@@ -2038,12 +2038,12 @@ LABEL_16:
     v124 = 0;
     v125 = 0;
 LABEL_147:
-    self = v137;
+    self = selfCopy;
     goto LABEL_148;
   }
 
   v110 = +[IDSTransportLog IDSDataChannels];
-  self = v137;
+  self = selfCopy;
   if (os_log_type_enabled(v110, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf[0]) = 138412290;
@@ -2123,15 +2123,15 @@ LABEL_52:
     v118 = 0;
     v135 = 0;
     v136 = 0;
-    v38 = 0;
+    relayServerProvider = 0;
     goto LABEL_109;
   }
 
-  v34 = &a3[v4];
+  v34 = &attributes[lengthCopy];
   if (v12 + 3 <= v34)
   {
     v39 = (v12 + 1);
-    LODWORD(v38) = *v12;
+    LODWORD(relayServerProvider) = *v12;
     v40 = v34 - (v12 + 1);
     if ((v40 & 0xFFFFFFFE) != 0)
     {
@@ -2229,7 +2229,7 @@ LABEL_83:
           v55 = [v136 length];
           v56 = [v135 length];
           LODWORD(buf[0]) = 67109632;
-          DWORD1(buf[0]) = v38;
+          DWORD1(buf[0]) = relayServerProvider;
           WORD4(buf[0]) = 1024;
           *(buf + 10) = v55;
           HIWORD(buf[0]) = 1024;
@@ -2271,9 +2271,9 @@ LABEL_83:
   v37 = 0;
   v135 = 0;
   v136 = 0;
-  LODWORD(v38) = 0;
+  LODWORD(relayServerProvider) = 0;
 LABEL_87:
-  v38 = v38;
+  relayServerProvider = relayServerProvider;
 
   if (BYTE12(v196) == 1)
   {
@@ -2291,18 +2291,18 @@ LABEL_87:
     v59 = v58;
     if (v58)
     {
-      v38 = [v58 relayServerProvider];
-      v60 = [v59 relaySessionToken];
-      v61 = [v60 copy];
+      relayServerProvider = [v58 relayServerProvider];
+      relaySessionToken = [v59 relaySessionToken];
+      v61 = [relaySessionToken copy];
 
-      v62 = [v59 relaySessionKey];
-      v63 = [v62 copy];
+      relaySessionKey = [v59 relaySessionKey];
+      v63 = [relaySessionKey copy];
 
-      v64 = [v59 hbhEncryptionkey];
-      v65 = [v64 copy];
+      hbhEncryptionkey = [v59 hbhEncryptionkey];
+      v65 = [hbhEncryptionkey copy];
 
-      v66 = [v59 hbhDecryptionkey];
-      v67 = [v66 copy];
+      hbhDecryptionkey = [v59 hbhDecryptionkey];
+      v67 = [hbhDecryptionkey copy];
 
       v36 = v67;
       v37 = v65;
@@ -2316,7 +2316,7 @@ LABEL_87:
       v69 = [v136 length];
       v70 = [v135 length];
       LODWORD(buf[0]) = 67109632;
-      DWORD1(buf[0]) = v38;
+      DWORD1(buf[0]) = relayServerProvider;
       WORD4(buf[0]) = 1024;
       *(buf + 10) = v69;
       HIWORD(buf[0]) = 1024;
@@ -2325,7 +2325,7 @@ LABEL_87:
     }
 
     v71 = +[IDSTransportLog IDSDataChannels];
-    self = v137;
+    self = selfCopy;
     if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf[0]) = 138412546;
@@ -2340,13 +2340,13 @@ LABEL_87:
   if (IMGetDomainBoolForKey())
   {
     v72 = [MEMORY[0x1E696AD60] stringWithCapacity:{2 * objc_msgSend(v37, "length")}];
-    v73 = [v37 bytes];
+    bytes = [v37 bytes];
     if ([v37 length])
     {
       v74 = 0;
       do
       {
-        [v72 appendFormat:@"%02x", *(v73 + v74++)];
+        [v72 appendFormat:@"%02x", *(bytes + v74++)];
       }
 
       while (v74 < [v37 length]);
@@ -2361,13 +2361,13 @@ LABEL_87:
     }
 
     v76 = [MEMORY[0x1E696AD60] stringWithCapacity:{2 * objc_msgSend(v36, "length")}];
-    v77 = [v36 bytes];
+    bytes2 = [v36 bytes];
     if ([v36 length])
     {
       v78 = 0;
       do
       {
-        [v76 appendFormat:@"%02x", *(v77 + v78++)];
+        [v76 appendFormat:@"%02x", *(bytes2 + v78++)];
       }
 
       while (v78 < [v36 length]);
@@ -2381,11 +2381,11 @@ LABEL_87:
       _os_log_impl(&dword_1959FF000, v79, OS_LOG_TYPE_DEFAULT, "Full hbhDecryptionkey: %@", buf, 0xCu);
     }
 
-    self = v137;
+    self = selfCopy;
   }
 
 LABEL_109:
-  v80 = [(IDSDatagramChannel *)self _linkContextsCopy];
+  _linkContextsCopy = [(IDSDatagramChannel *)self _linkContextsCopy];
   v81 = +[IDSTransportLog IDSDataChannels];
   if (os_log_type_enabled(v81, OS_LOG_TYPE_DEFAULT))
   {
@@ -2434,7 +2434,7 @@ LABEL_109:
     v188 = 2112;
     v189 = v126;
     v190 = 2112;
-    v191 = v80;
+    v191 = _linkContextsCopy;
     _os_log_impl(&dword_1959FF000, v81, OS_LOG_TYPE_DEFAULT, "<%@> got connectedLinkID %d (link family:%u) (mtu:%u) (l-conn:%u) (l-RAT:%u) (l-flags:0x%x) (l-dataSoMask: %u) (r-conn:%u) (r-RAT:%u) (r-flags:0x%x) (r-datasoMask:%u) isVirtualRelayLink: %@, childConnectionID: %@, channelNumber: %04X, relayProtocolStack: %@, connections: %@, feature flags: %@, qrExperiments: %@, (Current LinkContexts %@", buf, 0x9Au);
   }
 
@@ -2448,7 +2448,7 @@ LABEL_109:
   v156 = v194;
   v145 = sub_195AF915C;
   v146 = &unk_1E7442DF8;
-  v147 = self;
+  selfCopy2 = self;
   v161 = v199;
   v157 = v195;
   v117 = v132;
@@ -2458,7 +2458,7 @@ LABEL_109:
   v150 = v83;
   v151 = v125;
   v152 = v126;
-  v127 = v80;
+  v127 = _linkContextsCopy;
   v153 = v127;
   cut_dispatch_log_queue();
   v84 = [IDSDataChannelLinkContext alloc];
@@ -2467,7 +2467,7 @@ LABEL_109:
   v131 = v152;
   v133 = v149;
   v85 = v36;
-  v86 = [(IDSDataChannelLinkContext *)v84 initWithAttributes:&v192 maxBitrate:0xFFFFFFFFLL relayServerProvider:v38 relaySessionToken:v136 relaySessionKey:v135 hbhEncryptionkey:v118 hbhDecryptionkey:v36 relayProtocolStackDescription:v149 qrExperiments:v152 featureFlags:v151 linkEngineUniqueID:v134 estimatedPerPacketConstantOverhead:v116];
+  v86 = [(IDSDataChannelLinkContext *)v84 initWithAttributes:&v192 maxBitrate:0xFFFFFFFFLL relayServerProvider:relayServerProvider relaySessionToken:v136 relaySessionKey:v135 hbhEncryptionkey:v118 hbhDecryptionkey:v36 relayProtocolStackDescription:v149 qrExperiments:v152 featureFlags:v151 linkEngineUniqueID:v134 estimatedPerPacketConstantOverhead:v116];
   if (v83)
   {
     [(IDSDatagramChannel *)self _addConnections:v83 toLinkContext:v86];
@@ -2476,27 +2476,27 @@ LABEL_109:
   [(IDSDatagramChannel *)self _setLinkContext:v86 forLinkID:v195];
   if ([(IDSDataChannelLinkContext *)v86 RATType]&& [(IDSDataChannelLinkContext *)v86 RATType]!= 9)
   {
-    objc_storeStrong(&v137->_internal->_cellularLink, v86);
+    objc_storeStrong(&selfCopy->_internal->_cellularLink, v86);
   }
 
   v87 = BYTE2(v195) - 5;
-  v88 = [(IDSDataChannelLinkContext *)v86 connections];
-  v89 = [v88 udp];
+  connections = [(IDSDataChannelLinkContext *)v86 connections];
+  v89 = [connections udp];
 
-  v90 = [(IDSDataChannelLinkContext *)v86 connections];
-  v91 = [v90 qpod];
+  connections2 = [(IDSDataChannelLinkContext *)v86 connections];
+  qpod = [connections2 qpod];
 
-  if (v87 > 0xFFFFFFFD || v137->_internal->_preferredDataPathType != 1)
+  if (v87 > 0xFFFFFFFD || selfCopy->_internal->_preferredDataPathType != 1)
   {
     goto LABEL_131;
   }
 
-  if (v91)
+  if (qpod)
   {
-    v92 = [v91 childConnectionID];
+    childConnectionID = [qpod childConnectionID];
     *&buf[0] = 0xAAAAAAAAAAAAAAAALL;
     *(&buf[0] + 1) = 0xAAAAAAAAAAAAAAAALL;
-    [v92 getUUIDBytes:buf];
+    [childConnectionID getUUIDBytes:buf];
     v93 = uuid_is_null(buf) != 0;
 
     if (!v89)
@@ -2513,8 +2513,8 @@ LABEL_109:
 LABEL_125:
       if ([(IDSDataChannelLinkContext *)v86 isVirtualRelayLink])
       {
-        [(IDSDatagramChannel *)v137 reportEvent:*MEMORY[0x1E69A4CF0] forLinkID:[(IDSDataChannelLinkContext *)v86 linkID]];
-        [(IDSDatagramChannel *)v137 addDirectConnectionForLinkID:[(IDSDataChannelLinkContext *)v86 linkID] linkContext:v86];
+        [(IDSDatagramChannel *)selfCopy reportEvent:*MEMORY[0x1E69A4CF0] forLinkID:[(IDSDataChannelLinkContext *)v86 linkID]];
+        [(IDSDatagramChannel *)selfCopy addDirectConnectionForLinkID:[(IDSDataChannelLinkContext *)v86 linkID] linkContext:v86];
       }
 
       v96 = _IDSLinkPacketBufferCreate();
@@ -2526,7 +2526,7 @@ LABEL_125:
       v98 = *v96;
       v99 = v96[1];
       IDSByteBufferInitForWriteWithAllocatedSpace();
-      v138 = [(IDSDataChannelLinkContext *)v86 linkID];
+      linkID = [(IDSDataChannelLinkContext *)v86 linkID];
       IDSByteBufferWriteField();
       v96[2] = *&buf[1] - *v96;
       IDSByteBufferRelease();
@@ -2534,25 +2534,25 @@ LABEL_125:
       if (os_log_type_enabled(v100, OS_LOG_TYPE_DEFAULT))
       {
         *v141 = 67109120;
-        v142 = v138;
+        v142 = linkID;
         _os_log_impl(&dword_1959FF000, v100, OS_LOG_TYPE_DEFAULT, "addDirectConnectionForLinkID: request child connectionID for linkID %d", v141, 8u);
       }
 
-      [(IDSDatagramChannel *)v137 _buildPacketBufferMetaData:v96];
-      os_unfair_lock_lock(&v137->_internal->_writeLock);
-      sendingMetadata = v137->_internal->_sendingMetadata;
+      [(IDSDatagramChannel *)selfCopy _buildPacketBufferMetaData:v96];
+      os_unfair_lock_lock(&selfCopy->_internal->_writeLock);
+      sendingMetadata = selfCopy->_internal->_sendingMetadata;
       v102 = [MEMORY[0x1E696B098] valueWithPointer:v96];
       [(NSMutableArray *)sendingMetadata addObject:v102];
 
-      [(IDSDatagramChannel *)v137 sendMetadata];
-      os_unfair_lock_unlock(&v137->_internal->_writeLock);
+      [(IDSDatagramChannel *)selfCopy sendMetadata];
+      os_unfair_lock_unlock(&selfCopy->_internal->_writeLock);
       goto LABEL_131;
     }
   }
 
-  v94 = [v89 childConnectionID];
+  childConnectionID2 = [v89 childConnectionID];
   memset(buf, 170, 16);
-  [v94 getUUIDBytes:buf];
+  [childConnectionID2 getUUIDBytes:buf];
   v95 = uuid_is_null(buf) != 0 || v93;
 
   if (v95)
@@ -2560,30 +2560,30 @@ LABEL_125:
     goto LABEL_125;
   }
 
-  [(IDSDatagramChannel *)v137 reportEvent:*MEMORY[0x1E69A4CF0] forLinkID:[(IDSDataChannelLinkContext *)v86 linkID]];
-  [(IDSDatagramChannel *)v137 addDirectConnectionForLinkID:[(IDSDataChannelLinkContext *)v86 linkID] linkContext:v86];
+  [(IDSDatagramChannel *)selfCopy reportEvent:*MEMORY[0x1E69A4CF0] forLinkID:[(IDSDataChannelLinkContext *)v86 linkID]];
+  [(IDSDatagramChannel *)selfCopy addDirectConnectionForLinkID:[(IDSDataChannelLinkContext *)v86 linkID] linkContext:v86];
 LABEL_131:
-  if (!v137->_internal->_waitForPreConnectionDataForConnected)
+  if (!selfCopy->_internal->_waitForPreConnectionDataForConnected)
   {
     v103 = +[IDSTransportLog IDSDataChannels];
     if (os_log_type_enabled(v103, OS_LOG_TYPE_DEFAULT))
     {
-      v104 = [(IDSDatagramChannel *)v137 _linkContextsCopy];
+      _linkContextsCopy2 = [(IDSDatagramChannel *)selfCopy _linkContextsCopy];
       LODWORD(buf[0]) = 138412546;
-      *(buf + 4) = v137;
+      *(buf + 4) = selfCopy;
       WORD6(buf[0]) = 2112;
-      *(buf + 14) = v104;
+      *(buf + 14) = _linkContextsCopy2;
       _os_log_impl(&dword_1959FF000, v103, OS_LOG_TYPE_DEFAULT, "<%@> sent IDSDataChannelEventConnected, current link contexts %@", buf, 0x16u);
     }
 
-    eventHandler = v137->_internal->_eventHandler;
+    eventHandler = selfCopy->_internal->_eventHandler;
     if (eventHandler)
     {
       v139[0] = @"event-type";
       v139[1] = @"connected-link";
       v140[0] = &unk_1F0A29A68;
-      v106 = [(IDSDatagramChannel *)v137 connectedLinks];
-      v140[1] = v106;
+      connectedLinks = [(IDSDatagramChannel *)selfCopy connectedLinks];
+      v140[1] = connectedLinks;
       v107 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v140 forKeys:v139 count:2];
       eventHandler[2](eventHandler, v107);
     }
@@ -2595,12 +2595,12 @@ LABEL_137:
   v108 = *MEMORY[0x1E69E9840];
 }
 
-- (void)selectDefaultLink:(char)a3
+- (void)selectDefaultLink:(char)link
 {
-  v3 = a3;
+  linkCopy = link;
   v15 = *MEMORY[0x1E69E9840];
-  self->_internal->_defaultLinkID = a3;
-  v5 = [(IDSDatagramChannel *)self _linkContextWithID:a3];
+  self->_internal->_defaultLinkID = link;
+  v5 = [(IDSDatagramChannel *)self _linkContextWithID:link];
   v6 = v5;
   if (!v5)
   {
@@ -2608,7 +2608,7 @@ LABEL_137:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v14 = v3;
+      v14 = linkCopy;
       _os_log_impl(&dword_1959FF000, v8, OS_LOG_TYPE_DEFAULT, "can't find link %d for the default", buf, 8u);
     }
 
@@ -2629,7 +2629,7 @@ LABEL_6:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processMetadataForDatagram:(const char *)a3 size:(unint64_t)a4 datagramInfo:(id *)a5 options:(id *)a6
+- (void)processMetadataForDatagram:(const char *)datagram size:(unint64_t)size datagramInfo:(id *)info options:(id *)options
 {
   v395[2] = *MEMORY[0x1E69E9840];
   v354 = -86;
@@ -2640,21 +2640,21 @@ LABEL_6:
   *(&v7 + 1) = 0xAAAAAAAAAAAAAAAALL;
   v349 = v7;
   v350 = v7;
-  if (a4 > 2)
+  if (size > 2)
   {
-    v12 = __rev16(*a3);
-    if (v12 + 2 <= a4)
+    v12 = __rev16(*datagram);
+    if (v12 + 2 <= size)
     {
-      *&a5->var4 = 0;
-      *&a5->var0 = 0;
-      *&a6->var14 = 0;
-      *&a6->var11 = 0u;
-      *a6->var13 = 0u;
-      *&a6->var8.var0 = 0u;
-      *&a6->var9 = 0u;
-      *&a6->var2 = 0u;
-      *&a6->var5[6] = 0u;
-      *&a6->var0 = 0u;
+      *&info->var4 = 0;
+      *&info->var0 = 0;
+      *&options->var14 = 0;
+      *&options->var11 = 0u;
+      *options->var13 = 0u;
+      *&options->var8.var0 = 0u;
+      *&options->var9 = 0u;
+      *&options->var2 = 0u;
+      *&options->var5[6] = 0u;
+      *&options->var0 = 0u;
       IDSByteBufferInitForRead();
       if (IDSByteBufferReadField())
       {
@@ -2750,11 +2750,11 @@ LABEL_6:
               v145 = +[IDSLogging IDSDataChannels];
               if (os_log_type_enabled(v145, OS_LOG_TYPE_DEFAULT))
               {
-                v146 = [v144 UUIDString];
+                uUIDString = [v144 UUIDString];
                 *buf = 67109634;
                 *v385 = v141;
                 *&v385[4] = 2112;
-                *&v385[6] = v146;
+                *&v385[6] = uUIDString;
                 *&v385[14] = 1024;
                 *&v385[16] = v142;
                 _os_log_impl(&dword_1959FF000, v145, OS_LOG_TYPE_DEFAULT, "got disconnectedLinkID %d, linkUUID %@, reason: %d", buf, 0x18u);
@@ -2936,19 +2936,19 @@ LABEL_6:
                     _os_log_impl(&dword_1959FF000, v238, OS_LOG_TYPE_DEFAULT, "got preConnectionData, called IDSDataChannelEventPreConnectionData event", buf, 2u);
                   }
 
-                  v239 = [(IDSDatagramChannel *)self connectedLinks];
-                  v240 = [v239 count] == 0;
+                  connectedLinks = [(IDSDatagramChannel *)self connectedLinks];
+                  v240 = [connectedLinks count] == 0;
 
                   if (!v240)
                   {
                     v241 = +[IDSTransportLog IDSDataChannels];
                     if (os_log_type_enabled(v241, OS_LOG_TYPE_DEFAULT))
                     {
-                      v242 = [(IDSDatagramChannel *)self _linkContextsCopy];
+                      _linkContextsCopy = [(IDSDatagramChannel *)self _linkContextsCopy];
                       *buf = 138412546;
                       *v385 = self;
                       *&v385[8] = 2112;
-                      *&v385[10] = v242;
+                      *&v385[10] = _linkContextsCopy;
                       _os_log_impl(&dword_1959FF000, v241, OS_LOG_TYPE_DEFAULT, "<%@> sent IDSDataChannelEventConnected, current link contexts %@", buf, 0x16u);
                     }
 
@@ -2958,8 +2958,8 @@ LABEL_6:
                       v390[0] = @"event-type";
                       v390[1] = @"connected-link";
                       v391[0] = &unk_1F0A29A68;
-                      v244 = [(IDSDatagramChannel *)self connectedLinks];
-                      v391[1] = v244;
+                      connectedLinks2 = [(IDSDatagramChannel *)self connectedLinks];
+                      v391[1] = connectedLinks2;
                       v245 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v391 forKeys:v390 count:2];
                       v243[2](v243, v245);
                     }
@@ -3009,8 +3009,8 @@ LABEL_195:
                 v159 = *v353;
                 v160 = *(v157 + 2);
                 v353 = v157 + 12;
-                v161 = [(IDSDatagramChannel *)self connectedLinks];
-                v162 = [v161 count] == 0;
+                connectedLinks3 = [(IDSDatagramChannel *)self connectedLinks];
+                v162 = [connectedLinks3 count] == 0;
 
                 if (!v162)
                 {
@@ -3111,36 +3111,36 @@ LABEL_195:
                 v106 = v132;
                 if (!v132)
                 {
-                  v138 = +[IDSTransportLog IDSDataChannels];
-                  if (os_log_type_enabled(v138, OS_LOG_TYPE_DEFAULT))
+                  connectedLinks5 = +[IDSTransportLog IDSDataChannels];
+                  if (os_log_type_enabled(connectedLinks5, OS_LOG_TYPE_DEFAULT))
                   {
-                    v259 = [(IDSDatagramChannel *)self _linkContextsCopy];
+                    _linkContextsCopy2 = [(IDSDatagramChannel *)self _linkContextsCopy];
                     *buf = 138412802;
                     *v385 = self;
                     *&v385[8] = 1024;
                     *&v385[10] = v333;
                     *&v385[14] = 2112;
-                    *&v385[16] = v259;
-                    _os_log_impl(&dword_1959FF000, v138, OS_LOG_TYPE_DEFAULT, "<%@> Can't find the linkContext of linkID %u, linkContexts %@", buf, 0x1Cu);
+                    *&v385[16] = _linkContextsCopy2;
+                    _os_log_impl(&dword_1959FF000, connectedLinks5, OS_LOG_TYPE_DEFAULT, "<%@> Can't find the linkContext of linkID %u, linkContexts %@", buf, 0x1Cu);
                   }
 
                   goto LABEL_480;
                 }
 
                 [v132 setMaxBitrate:(v128 << 24) | (v129 << 16) | (v130 << 8) | v131];
-                v133 = [(IDSDatagramChannel *)self connectedLinks];
-                v134 = [v133 count] == 0;
+                connectedLinks4 = [(IDSDatagramChannel *)self connectedLinks];
+                v134 = [connectedLinks4 count] == 0;
 
                 if (!v134)
                 {
                   v135 = +[IDSTransportLog IDSDataChannels];
                   if (os_log_type_enabled(v135, OS_LOG_TYPE_DEFAULT))
                   {
-                    v136 = [(IDSDatagramChannel *)self _linkContextsCopy];
+                    _linkContextsCopy3 = [(IDSDatagramChannel *)self _linkContextsCopy];
                     *buf = 138412546;
                     *v385 = self;
                     *&v385[8] = 2112;
-                    *&v385[10] = v136;
+                    *&v385[10] = _linkContextsCopy3;
                     _os_log_impl(&dword_1959FF000, v135, OS_LOG_TYPE_DEFAULT, "<%@> sent IDSDataChannelEventConnected, current link contexts %@", buf, 0x16u);
                   }
 
@@ -3150,8 +3150,8 @@ LABEL_195:
                     v381[0] = &unk_1F0A29A68;
                     v380[0] = @"event-type";
                     v380[1] = @"connected-link";
-                    v138 = [(IDSDatagramChannel *)self connectedLinks];
-                    v381[1] = v138;
+                    connectedLinks5 = [(IDSDatagramChannel *)self connectedLinks];
+                    v381[1] = connectedLinks5;
                     v139 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v381 forKeys:v380 count:2];
                     v137[2](v137, v139);
 
@@ -3241,7 +3241,7 @@ LABEL_523:
             case 0x11u:
               if (v352 >= 8u)
               {
-                v111 = [MEMORY[0x1E695DF90] dictionary];
+                dictionary = [MEMORY[0x1E695DF90] dictionary];
                 if (v352 >= 8u)
                 {
                   LOWORD(v112) = 0;
@@ -3254,7 +3254,7 @@ LABEL_523:
                     v353 = v113 + 8;
                     v116 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{v115, v305}];
                     v117 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:bswap32(v114)];
-                    [v111 setObject:v116 forKey:v117];
+                    [dictionary setObject:v116 forKey:v117];
 
                     v112 = (v112 + 8);
                   }
@@ -3268,7 +3268,7 @@ LABEL_523:
                   if (os_log_type_enabled(v118, OS_LOG_TYPE_DEFAULT))
                   {
                     *buf = 138412290;
-                    *v385 = v111;
+                    *v385 = dictionary;
                     _os_log_impl(&dword_1959FF000, v118, OS_LOG_TYPE_DEFAULT, "kClientChannelMetadataType_InfoReportKey report %@", buf, 0xCu);
                   }
 
@@ -3276,7 +3276,7 @@ LABEL_523:
                   v376[0] = @"event-type";
                   v376[1] = @"info-report-events-key";
                   v377[0] = &unk_1F0A29B40;
-                  v377[1] = v111;
+                  v377[1] = dictionary;
                   v120 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v377 forKeys:v376 count:2];
                   v119[2](v119, v120);
                 }
@@ -3328,7 +3328,7 @@ LABEL_523:
             case 0x16u:
               if (v352 == 8)
               {
-                a6->var9 = *v353;
+                options->var9 = *v353;
                 if (!self->_internal->_verboseFunctionalLogging)
                 {
                   goto LABEL_585;
@@ -3337,7 +3337,7 @@ LABEL_523:
                 v18 = +[IDSTransportLog IDSDataChannels];
                 if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
                 {
-                  var9 = a6->var9;
+                  var9 = options->var9;
                   *buf = 134217984;
                   *v385 = var9;
                   _os_log_impl(&dword_1959FF000, v18, OS_LOG_TYPE_DEFAULT, "got arrivalTime %f", buf, 0xCu);
@@ -3547,7 +3547,7 @@ LABEL_523:
                   _os_log_impl(&dword_1959FF000, v91, OS_LOG_TYPE_DEFAULT, "got invalid streamIDCount %d", buf, 8u);
                 }
 
-                a6->var4 = 0;
+                options->var4 = 0;
                 goto LABEL_585;
               }
 
@@ -3556,7 +3556,7 @@ LABEL_523:
                 goto LABEL_585;
               }
 
-              a6->var4 = v90;
+              options->var4 = v90;
               if (!self->_internal->_verboseFunctionalLogging)
               {
                 goto LABEL_585;
@@ -3572,18 +3572,18 @@ LABEL_523:
 
               goto LABEL_523;
             case 0x24u:
-              if (a6->var4 < 1)
+              if (options->var4 < 1)
               {
                 goto LABEL_585;
               }
 
-              v148 = 2 * a6->var4;
-              if (v352 == (2 * a6->var4))
+              v148 = 2 * options->var4;
+              if (v352 == (2 * options->var4))
               {
-                var4 = a6->var4;
-                a6->var0 |= 2u;
+                var4 = options->var4;
+                options->var0 |= 2u;
                 v150 = v353;
-                var5 = a6->var5;
+                var5 = options->var5;
                 do
                 {
                   v152 = *v150;
@@ -3840,9 +3840,9 @@ LABEL_567:
             case 0x2Bu:
               if (v352 == 1)
               {
-                v19 = a6;
-                a6->var6 = *v353;
-                v20 = a6->var0 | 0x20;
+                optionsCopy5 = options;
+                options->var6 = *v353;
+                v20 = options->var0 | 0x20;
                 goto LABEL_255;
               }
 
@@ -3868,7 +3868,7 @@ LABEL_397:
             case 0x2Du:
               if (v352 == 2)
               {
-                a6->var7 = bswap32(*v353) >> 16;
+                options->var7 = bswap32(*v353) >> 16;
                 BYTE4(v331) = 1;
                 goto LABEL_585;
               }
@@ -3887,7 +3887,7 @@ LABEL_397:
             case 0x2Eu:
               if (v352 == 2)
               {
-                a6->var8.var0 = bswap32(*v353) >> 16;
+                options->var8.var0 = bswap32(*v353) >> 16;
                 goto LABEL_585;
               }
 
@@ -3905,7 +3905,7 @@ LABEL_397:
             case 0x2Fu:
               if (v352 == 2)
               {
-                a6->var8.var1 = bswap32(*v353) >> 16;
+                options->var8.var1 = bswap32(*v353) >> 16;
                 goto LABEL_585;
               }
 
@@ -3923,7 +3923,7 @@ LABEL_397:
             case 0x30u:
               if (v352 == 2)
               {
-                a6->var8.var2 = bswap32(*v353) >> 16;
+                options->var8.var2 = bswap32(*v353) >> 16;
                 goto LABEL_585;
               }
 
@@ -3941,7 +3941,7 @@ LABEL_397:
             case 0x31u:
               if (v352 == 2)
               {
-                a6->var8.var3 = bswap32(*v353) >> 16;
+                options->var8.var3 = bswap32(*v353) >> 16;
                 goto LABEL_585;
               }
 
@@ -3959,7 +3959,7 @@ LABEL_397:
             case 0x32u:
               if (v352 == 2)
               {
-                a6->var8.var4 = bswap32(*v353) >> 16;
+                options->var8.var4 = bswap32(*v353) >> 16;
                 goto LABEL_585;
               }
 
@@ -3977,8 +3977,8 @@ LABEL_397:
             case 0x33u:
               if (v352 == 1)
               {
-                v19 = a6;
-                v20 = a6->var0 | 0x80;
+                optionsCopy5 = options;
+                v20 = options->var0 | 0x80;
                 goto LABEL_255;
               }
 
@@ -3996,8 +3996,8 @@ LABEL_397:
             case 0x34u:
               if (v352 == 1)
               {
-                v19 = a6;
-                v20 = a6->var0 | 0x100;
+                optionsCopy5 = options;
+                v20 = options->var0 | 0x100;
                 goto LABEL_255;
               }
 
@@ -4325,11 +4325,11 @@ LABEL_536:
                         if (os_log_type_enabled(v295, OS_LOG_TYPE_DEFAULT))
                         {
                           v296 = [v294 count];
-                          v297 = [v294 allKeys];
+                          allKeys = [v294 allKeys];
                           *buf = 134218498;
                           *v385 = v296;
                           *&v385[8] = 2112;
-                          *&v385[10] = v297;
+                          *&v385[10] = allKeys;
                           *&v385[18] = 2112;
                           *&v385[20] = v294;
                           _os_log_impl(&dword_1959FF000, v295, OS_LOG_TYPE_DEFAULT, "kClientChannelMetadataType_ProbingRequestOffsetKey - total size: %lu, all keys: %@, output: %@", buf, 0x20u);
@@ -4649,9 +4649,9 @@ LABEL_536:
             case 0x47u:
               if (v352 == 1)
               {
-                v19 = a6;
-                a6->var14 = *v353 != 0;
-                v20 = a6->var0 | 0x10000;
+                optionsCopy5 = options;
+                options->var14 = *v353 != 0;
+                v20 = options->var0 | 0x10000;
                 goto LABEL_255;
               }
 
@@ -4682,11 +4682,11 @@ LABEL_536:
                 goto LABEL_523;
               }
 
-              v19 = a6;
-              a6->var15 = *v353 != 0;
-              v20 = a6->var0 | 0x20000;
+              optionsCopy5 = options;
+              options->var15 = *v353 != 0;
+              v20 = options->var0 | 0x20000;
 LABEL_255:
-              v19->var0 = v20;
+              optionsCopy5->var0 = v20;
               goto LABEL_585;
             case 0x49u:
               v21 = [MEMORY[0x1E695DEF0] dataWithBytes:v353 length:v352];
@@ -4777,23 +4777,23 @@ LABEL_576:
                 v94->_linkIDToParticipantMap = v93;
               }
 
-              v96 = [(IDSDatagramChannel *)self _extractparticipantIDToHashedIDMappingFromData:v92, v305];
+              v305 = [(IDSDatagramChannel *)self _extractparticipantIDToHashedIDMappingFromData:v92, v305];
               v97 = +[IDSTransportLog IDSDataChannels];
               v98 = os_log_type_enabled(v97, OS_LOG_TYPE_DEFAULT);
-              if (v96)
+              if (v305)
               {
                 if (v98)
                 {
                   *buf = 67109378;
                   *v385 = v333;
                   *&v385[4] = 2112;
-                  *&v385[6] = v96;
+                  *&v385[6] = v305;
                   _os_log_impl(&dword_1959FF000, v97, OS_LOG_TYPE_DEFAULT, "linkID %d, got kClientChannelMetadataType_ParticipantMappingReplacment: %@", buf, 0x12u);
                 }
 
                 v99 = self->_internal->_linkIDToParticipantMap;
                 v97 = [MEMORY[0x1E696AD98] numberWithChar:v333];
-                [(NSMutableDictionary *)v99 setObject:v96 forKeyedSubscript:v97];
+                [(NSMutableDictionary *)v99 setObject:v305 forKeyedSubscript:v97];
               }
 
               else if (v98)
@@ -4894,11 +4894,11 @@ LABEL_460:
                 v221 = v216;
                 if (os_log_type_enabled(v220, OS_LOG_TYPE_DEFAULT))
                 {
-                  v222 = [v217 isQUICPod];
+                  isQUICPod = [v217 isQUICPod];
                   v223 = @"NO";
                   *buf = 138412802;
                   *v385 = v219;
-                  if (v222)
+                  if (isQUICPod)
                   {
                     v223 = @"YES";
                   }
@@ -4917,8 +4917,8 @@ LABEL_460:
                   v345 = 0u;
                   v342 = 0u;
                   v343 = 0u;
-                  v224 = [(IDSDatagramChannel *)self connectedLinks];
-                  v225 = [v224 countByEnumeratingWithState:&v342 objects:v359 count:16];
+                  connectedLinks6 = [(IDSDatagramChannel *)self connectedLinks];
+                  v225 = [connectedLinks6 countByEnumeratingWithState:&v342 objects:v359 count:16];
                   if (v225)
                   {
                     v226 = *v343;
@@ -4928,18 +4928,18 @@ LABEL_460:
                       {
                         if (*v343 != v226)
                         {
-                          objc_enumerationMutation(v224);
+                          objc_enumerationMutation(connectedLinks6);
                         }
 
                         v228 = *(*(&v342 + 1) + 8 * i);
-                        v229 = [v228 delegatedLinkID];
-                        if (v229 == [v217 linkID])
+                        delegatedLinkID = [v228 delegatedLinkID];
+                        if (delegatedLinkID == [v217 linkID])
                         {
                           -[IDSDatagramChannel addDirectConnectionForLinkID:linkContext:](self, "addDirectConnectionForLinkID:linkContext:", [v228 linkID], v228);
                         }
                       }
 
-                      v225 = [v224 countByEnumeratingWithState:&v342 objects:v359 count:16];
+                      v225 = [connectedLinks6 countByEnumeratingWithState:&v342 objects:v359 count:16];
                     }
 
                     while (v225);
@@ -5051,9 +5051,9 @@ LABEL_287:
                   }
 
                   [v106 setPathMTU:v104];
-                  v268 = [v106 ipFamily];
+                  ipFamily = [v106 ipFamily];
                   v269 = self->_internal;
-                  if (v268 == 6 || v269->_shouldReportPMTUChangesOnIPv4)
+                  if (ipFamily == 6 || v269->_shouldReportPMTUChangesOnIPv4)
                   {
                     if (!v269->_eventHandler)
                     {
@@ -5218,51 +5218,51 @@ LABEL_588:
       v301 = v336;
       if (v330)
       {
-        a5->var0 = v333;
+        info->var0 = v333;
       }
 
       if ((v330 & 0x100000000) != 0)
       {
-        a5->var1 = v325;
+        info->var1 = v325;
       }
 
       if (v331)
       {
-        a5->var2 = BYTE4(v325);
+        info->var2 = BYTE4(v325);
       }
 
       if (v328)
       {
-        a6->var0 |= 1u;
-        a6->var1 = v334;
+        options->var0 |= 1u;
+        options->var1 = v334;
       }
 
       if (v329)
       {
-        a6->var0 |= 0x10u;
-        a6->var2 = v326;
+        options->var0 |= 0x10u;
+        options->var2 = v326;
       }
 
       if ((v329 & 0x100000000) != 0)
       {
-        a6->var0 |= 4u;
+        options->var0 |= 4u;
       }
 
       if (HIDWORD(v333))
       {
-        a6->var0 |= 8u;
-        a6->var3 = BYTE4(v333);
+        options->var0 |= 8u;
+        options->var3 = BYTE4(v333);
       }
 
       if ((v331 & 0x100000000) != 0)
       {
-        a6->var0 |= 0x40u;
+        options->var0 |= 0x40u;
       }
 
       if (v332)
       {
-        a6->var11 = 1;
-        a6->var0 |= 0x400u;
+        options->var11 = 1;
+        options->var0 |= 0x400u;
       }
 
       if (v335)
@@ -5302,7 +5302,7 @@ LABEL_588:
         *&v385[4] = 2048;
         *&v385[6] = v12;
         *&v385[14] = 2048;
-        *&v385[16] = a4;
+        *&v385[16] = size;
         v9 = "processMetadataForDatagram %d + metadataSize(%zd) > datagramSize(%zd) - returning";
         v10 = v8;
         v11 = 28;
@@ -5317,7 +5317,7 @@ LABEL_588:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      *v385 = a4;
+      *v385 = size;
       v9 = "processMetadataForDatagram datagramSize(%zd) <= kIDSClientChannelMetadataLengthSize - returning";
       v10 = v8;
       v11 = 12;
@@ -5329,16 +5329,16 @@ LABEL_7:
   v304 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_addConnections:(id)a3 toLinkContext:(id)a4
+- (void)_addConnections:(id)connections toLinkContext:(id)context
 {
-  v16 = a3;
-  v6 = a4;
-  if (v6)
+  connectionsCopy = connections;
+  contextCopy = context;
+  if (contextCopy)
   {
     v7 = *MEMORY[0x1E69A4D20];
-    v8 = [v16 objectForKeyedSubscript:*MEMORY[0x1E69A4D20]];
+    v8 = [connectionsCopy objectForKeyedSubscript:*MEMORY[0x1E69A4D20]];
     v9 = *MEMORY[0x1E69A4D28];
-    v10 = [v16 objectForKeyedSubscript:*MEMORY[0x1E69A4D28]];
+    v10 = [connectionsCopy objectForKeyedSubscript:*MEMORY[0x1E69A4D28]];
     v11 = [(IDSDatagramChannel *)self _connectionInfoForDictionary:v10];
     v12 = [(IDSDatagramChannel *)self _connectionInfoForDictionary:v8];
     internal = self->_internal;
@@ -5347,29 +5347,29 @@ LABEL_7:
     {
       [v12 setIsQUICPod:1];
       [v12 setType:v7];
-      v14 = [v6 connections];
-      [v14 setQpod:v12];
+      connections = [contextCopy connections];
+      [connections setQpod:v12];
     }
 
     if (v11)
     {
       [v11 setIsQUICPod:0];
       [v11 setType:v9];
-      v15 = [v6 connections];
-      [v15 setUdp:v11];
+      connections2 = [contextCopy connections];
+      [connections2 setUdp:v11];
     }
 
     os_unfair_lock_unlock(&internal->_linkContextsLock);
   }
 }
 
-- (id)_connectionInfoForDictionary:(id)a3
+- (id)_connectionInfoForDictionary:(id)dictionary
 {
-  v3 = a3;
-  if (v3)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v4 = objc_alloc_init(_IDSDataChannelLinkConnection);
-    v5 = [v3 objectForKeyedSubscript:*MEMORY[0x1E69A4CD0]];
+    v5 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E69A4CD0]];
     v6 = v5;
     if (v5 && [v5 length] == 16)
     {
@@ -5377,18 +5377,18 @@ LABEL_7:
       [(_IDSDataChannelLinkConnection *)v4 setChildConnectionID:v7];
     }
 
-    v8 = [v3 objectForKeyedSubscript:*MEMORY[0x1E69A4CE0]];
+    v8 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E69A4CE0]];
     [(_IDSDataChannelLinkConnection *)v4 setProtocolStack:v8];
-    v9 = [v3 objectForKeyedSubscript:*MEMORY[0x1E69A4CD8]];
+    v9 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E69A4CD8]];
     [(_IDSDataChannelLinkConnection *)v4 setNwConnectionToken:v9];
-    v10 = [v3 objectForKeyedSubscript:*MEMORY[0x1E69A4CE8]];
+    v10 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E69A4CE8]];
     if (v10)
     {
       v11 = [objc_alloc(MEMORY[0x1E69A5340]) initWithDictionary:v10];
       [(_IDSDataChannelLinkConnection *)v4 setQpodParameters:v11];
     }
 
-    v12 = [v3 objectForKeyedSubscript:*MEMORY[0x1E69A4CC8]];
+    v12 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E69A4CC8]];
     -[_IDSDataChannelLinkConnection setAllowOutgoing:](v4, "setAllowOutgoing:", [v12 BOOLValue]);
   }
 
@@ -5400,11 +5400,11 @@ LABEL_7:
   return v4;
 }
 
-- (id)_extractparticipantIDToHashedIDMappingFromData:(id)a3
+- (id)_extractparticipantIDToHashedIDMappingFromData:(id)data
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  dataCopy = data;
+  if (!dataCopy)
   {
     v11 = 0;
     goto LABEL_11;
@@ -5415,7 +5415,7 @@ LABEL_7:
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
   v19 = 0;
-  v8 = [v4 _strictlyUnarchivedObjectOfClasses:v7 fromData:v3 error:&v19];
+  v8 = [v4 _strictlyUnarchivedObjectOfClasses:v7 fromData:dataCopy error:&v19];
   v9 = v19;
 
   if (v9)
@@ -5462,26 +5462,26 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)processDatagram:(const char *)a3 datagramSize:(unint64_t)a4 readHandler:(id)a5 readHandlerWithOptions:(id)a6
+- (BOOL)processDatagram:(const char *)datagram datagramSize:(unint64_t)size readHandler:(id)handler readHandlerWithOptions:(id)options
 {
   v76[15] = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
+  handlerCopy = handler;
+  optionsCopy = options;
   v45 = -21846;
   v44 = 0xAAAAAAAAAAAAAAAALL;
   *&v76[8] = xmmword_195B54328;
   memset(&v76[10], 170, 40);
   memset(v76, 170, 64);
-  if (a4 < 2)
+  if (size < 2)
   {
     LODWORD(v13) = 0;
     LODWORD(v12) = 0;
     goto LABEL_10;
   }
 
-  v12 = __rev16(*a3);
+  v12 = __rev16(*datagram);
   v13 = (v12 + 2);
-  if (a4 < v13)
+  if (size < v13)
   {
 LABEL_10:
     v17 = +[IDSTransportLog IDSDataChannels];
@@ -5489,10 +5489,10 @@ LABEL_10:
     {
       *buf = 138413058;
       v18 = v12;
-      v49 = self;
+      selfCopy3 = self;
       v50 = 2048;
       v13 = v13;
-      v51 = a4;
+      sizeCopy = size;
       v52 = 2048;
       v53 = v12;
       v54 = 2048;
@@ -5506,19 +5506,19 @@ LABEL_10:
       v13 = v13;
     }
 
-    v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"read sanity check failed: datagramSize %ld metadataSize %ld dataOffset %ld", a4, v18, v13];
+    v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"read sanity check failed: datagramSize %ld metadataSize %ld dataOffset %ld", size, v18, v13];
     v20 = objc_alloc(MEMORY[0x1E695DF20]);
     v21 = [v20 initWithObjectsAndKeys:{v19, *MEMORY[0x1E696A578], 0}];
     v22 = objc_alloc(MEMORY[0x1E696ABC0]);
     v23 = [v22 initWithDomain:*MEMORY[0x1E69A4A18] code:3 userInfo:v21];
-    if (v10)
+    if (handlerCopy)
     {
-      (*(v10 + 2))(v10, 0, 0, 0, 0, v23);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0, v23);
     }
 
     else
     {
-      (*(v11 + 2))(v11, 0, 0, 0, 0, 0, v23);
+      (*(optionsCopy + 2))(optionsCopy, 0, 0, 0, 0, 0, v23);
     }
 
     eventHandler = self->_internal->_eventHandler;
@@ -5527,8 +5527,8 @@ LABEL_10:
       v46[0] = @"event-type";
       v46[1] = @"connected-link";
       v47[0] = &unk_1F0A29A50;
-      v25 = [(IDSDatagramChannel *)self connectedLinks];
-      v47[1] = v25;
+      connectedLinks = [(IDSDatagramChannel *)self connectedLinks];
+      v47[1] = connectedLinks;
       v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:v46 count:2];
       eventHandler[2](eventHandler, v26);
     }
@@ -5539,10 +5539,10 @@ LABEL_10:
     goto LABEL_19;
   }
 
-  [(IDSDatagramChannel *)self processMetadataForDatagram:a3 size:a4 datagramInfo:&v44 options:v76];
-  v14 = &a3[v13];
-  v15 = a4 - v13;
-  if (a4 == v13)
+  [(IDSDatagramChannel *)self processMetadataForDatagram:datagram size:size datagramInfo:&v44 options:v76];
+  v14 = &datagram[v13];
+  v15 = size - v13;
+  if (size == v13)
   {
     if ((v76[0] & 0x40) != 0)
     {
@@ -5550,18 +5550,18 @@ LABEL_10:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        LODWORD(v49) = HIWORD(v76[5]);
+        LODWORD(selfCopy3) = HIWORD(v76[5]);
         _os_log_impl(&dword_1959FF000, v16, OS_LOG_TYPE_DEFAULT, "readFromNWConnection: _internal->_connection: Only has statsID: %x", buf, 8u);
       }
 
-      if (v10)
+      if (handlerCopy)
       {
-        (*(v10 + 2))(v10, v14, 0, v44, v45, 0);
+        (*(handlerCopy + 2))(handlerCopy, v14, 0, v44, v45, 0);
       }
 
       else
       {
-        (*(v11 + 2))(v11, v14, 0, v44, v45, v76, 0);
+        (*(optionsCopy + 2))(optionsCopy, v14, 0, v44, v45, v76, 0);
       }
     }
   }
@@ -5575,14 +5575,14 @@ LABEL_10:
 
     mach_continuous_time();
     sub_195B4061C(self);
-    if (v10)
+    if (handlerCopy)
     {
-      (*(v10 + 2))(v10, v14, a4 - v13, v44, v45, 0);
+      (*(handlerCopy + 2))(handlerCopy, v14, size - v13, v44, v45, 0);
     }
 
     else
     {
-      (*(v11 + 2))(v11, v14, a4 - v13, v44, v45, v76, 0);
+      (*(optionsCopy + 2))(optionsCopy, v14, size - v13, v44, v45, v76, 0);
     }
   }
 
@@ -5599,9 +5599,9 @@ LABEL_10:
     if (v30)
     {
       *buf = 138413058;
-      v49 = self;
+      selfCopy3 = self;
       v50 = 2048;
-      v51 = v15;
+      sizeCopy = v15;
       v52 = 2048;
       v53 = v12;
       v54 = 2048;
@@ -5626,9 +5626,9 @@ LABEL_10:
     v39 = v14[8];
     v40 = v14[9];
     *buf = 138415618;
-    v49 = self;
+    selfCopy3 = self;
     v50 = 2048;
-    v51 = v15;
+    sizeCopy = v15;
     v52 = 2048;
     v53 = v12;
     v54 = 2048;
@@ -5668,21 +5668,21 @@ LABEL_20:
   return v27;
 }
 
-- (void)readFromNWConnection:(id)a3 maximumDatagrams:(unsigned int)a4 readHandler:(id)a5 readHandlerWithOptions:(id)a6
+- (void)readFromNWConnection:(id)connection maximumDatagrams:(unsigned int)datagrams readHandler:(id)handler readHandlerWithOptions:(id)options
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  if (v10 | v11)
+  connectionCopy = connection;
+  handlerCopy = handler;
+  optionsCopy = options;
+  if (handlerCopy | optionsCopy)
   {
-    v12 = [v10 copy];
-    v13 = [v11 copy];
+    v12 = [handlerCopy copy];
+    v13 = [optionsCopy copy];
     connection = self->_internal->_connection;
     v22 = v12;
-    v23 = v10;
-    v24 = v11;
-    v21 = v9;
+    v23 = handlerCopy;
+    v24 = optionsCopy;
+    v21 = connectionCopy;
     v15 = v13;
     v16 = v12;
     nw_connection_read_multiple();
@@ -5709,11 +5709,11 @@ LABEL_20:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)readFromOSChannel:(channel *)a3 ring:(channel_ring_desc *)a4 maximumDatagrams:(unsigned int)a5 readHandler:(id)a6 readHandlerWithOptions:(id)a7
+- (void)readFromOSChannel:(channel *)channel ring:(channel_ring_desc *)ring maximumDatagrams:(unsigned int)datagrams readHandler:(id)handler readHandlerWithOptions:(id)options
 {
   v34 = *MEMORY[0x1E69E9840];
-  v29 = a6;
-  v28 = a7;
+  handlerCopy = handler;
+  optionsCopy = options;
   internal = self->_internal;
   os_unfair_lock_lock(&internal->_readLock);
   if (self->_internal->_isInvalidated)
@@ -5734,7 +5734,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (!a4)
+  if (!ring)
   {
     v13 = +[IDSTransportLog IDSDataChannels];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -5764,17 +5764,17 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  if (v15 >= a5)
+  if (v15 >= datagrams)
   {
-    v16 = a5;
+    datagramsCopy = datagrams;
   }
 
   else
   {
-    v16 = v15;
+    datagramsCopy = v15;
   }
 
-  if (!a5)
+  if (!datagrams)
   {
 LABEL_31:
     v23 = os_channel_advance_slot();
@@ -5812,7 +5812,7 @@ LABEL_31:
   }
 
   v17 = 1;
-  v27 = v16;
+  v27 = datagramsCopy;
   v18 = 1;
   while (1)
   {
@@ -5832,29 +5832,29 @@ LABEL_31:
 
       mach_continuous_time();
       sub_195B4061C(self);
-      if (v29)
+      if (handlerCopy)
       {
         v8 &= 0xFFFFFFFFFFFF0000;
-        v29[2]();
+        handlerCopy[2]();
       }
 
       else
       {
         v7 &= 0xFFFFFFFFFFFF0000;
-        (*(v28 + 2))(v28, v31, *&buf[2], 0, v7, 0, 0);
+        (*(optionsCopy + 2))(optionsCopy, v31, *&buf[2], 0, v7, 0, 0);
       }
 
       goto LABEL_19;
     }
 
-    if (![(IDSDatagramChannel *)self processDatagram:v31 datagramSize:*&buf[2] readHandler:v29 readHandlerWithOptions:v28])
+    if (![(IDSDatagramChannel *)self processDatagram:v31 datagramSize:*&buf[2] readHandler:handlerCopy readHandlerWithOptions:optionsCopy])
     {
       break;
     }
 
 LABEL_19:
     v18 = v17++ < v27;
-    if (!--v16)
+    if (!--datagramsCopy)
     {
       goto LABEL_31;
     }
@@ -5871,11 +5871,11 @@ LABEL_28:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)readFromSocketDescriptorWithReadHandler:(id)a3 readHandlerWithOptions:(id)a4
+- (void)readFromSocketDescriptorWithReadHandler:(id)handler readHandlerWithOptions:(id)options
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  optionsCopy = options;
   internal = self->_internal;
   os_unfair_lock_lock(&internal->_readLock);
   v9 = self->_internal;
@@ -5908,7 +5908,7 @@ LABEL_28:
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v32 = self;
+            selfCopy3 = self;
             v33 = 1024;
             LODWORD(v34[0]) = v12;
             _os_log_impl(&dword_1959FF000, v13, OS_LOG_TYPE_DEFAULT, "<%@> read nonfatal failure errno %d", buf, 0x12u);
@@ -5922,7 +5922,7 @@ LABEL_28:
           {
             v22 = MEMORY[0x19A8BBEF0](self->_internal->_eventHandler);
             *buf = 138412802;
-            v32 = self;
+            selfCopy3 = self;
             v33 = 1024;
             LODWORD(v34[0]) = v12;
             WORD2(v34[0]) = 2048;
@@ -5936,8 +5936,8 @@ LABEL_28:
             v29[0] = @"event-type";
             v29[1] = @"connected-link";
             v30[0] = &unk_1F0A29A50;
-            v24 = [(IDSDatagramChannel *)self connectedLinks];
-            v30[1] = v24;
+            connectedLinks = [(IDSDatagramChannel *)self connectedLinks];
+            v30[1] = connectedLinks;
             v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:2];
             v23[2](v23, v25);
           }
@@ -5955,14 +5955,14 @@ LABEL_28:
 
         mach_continuous_time();
         sub_195B4061C(self);
-        if (v6)
+        if (handlerCopy)
         {
-          (*(v6 + 2))(v6, __b, v11, 0, 0, 0);
+          (*(handlerCopy + 2))(handlerCopy, __b, v11, 0, 0, 0);
         }
 
         else
         {
-          (*(v7 + 2))(v7, __b, v11, 0, 0, 0, 0);
+          (*(optionsCopy + 2))(optionsCopy, __b, v11, 0, 0, 0, 0);
         }
       }
     }
@@ -5974,7 +5974,7 @@ LABEL_28:
       {
         v17 = MEMORY[0x19A8BBEF0](self->_internal->_eventHandler);
         *buf = 138412546;
-        v32 = self;
+        selfCopy3 = self;
         v33 = 2048;
         v34[0] = v17;
         _os_log_impl(&dword_1959FF000, v16, OS_LOG_TYPE_DEFAULT, "<%@> read returned 0 bytes calling event handler %p", buf, 0x16u);
@@ -5998,14 +5998,14 @@ LABEL_28:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)readDatagramWithCompletionHandler:(id)a3
+- (void)readDatagramWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   internal = self->_internal;
-  v7 = v4;
+  v7 = handlerCopy;
   if (internal->_pathEvaluator)
   {
-    [(IDSDatagramChannel *)self readFromOSChannel:internal->_osChannel ring:internal->_osChannelRXRing maximumDatagrams:1 readHandler:v4 readHandlerWithOptions:0];
+    [(IDSDatagramChannel *)self readFromOSChannel:internal->_osChannel ring:internal->_osChannelRXRing maximumDatagrams:1 readHandler:handlerCopy readHandlerWithOptions:0];
   }
 
   else
@@ -6013,24 +6013,24 @@ LABEL_28:
     connection = internal->_connection;
     if (connection)
     {
-      [(IDSDatagramChannel *)self readFromNWConnection:connection maximumDatagrams:1 readHandler:v4 readHandlerWithOptions:0];
+      [(IDSDatagramChannel *)self readFromNWConnection:connection maximumDatagrams:1 readHandler:handlerCopy readHandlerWithOptions:0];
     }
 
     else
     {
-      [(IDSDatagramChannel *)self readFromSocketDescriptorWithReadHandler:v4 readHandlerWithOptions:0];
+      [(IDSDatagramChannel *)self readFromSocketDescriptorWithReadHandler:handlerCopy readHandlerWithOptions:0];
     }
   }
 }
 
-- (void)readDatagramsWithCompletionHandler:(id)a3
+- (void)readDatagramsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   internal = self->_internal;
-  v7 = v4;
+  v7 = handlerCopy;
   if (internal->_pathEvaluator)
   {
-    [(IDSDatagramChannel *)self readFromOSChannel:internal->_osChannel ring:internal->_osChannelRXRing maximumDatagrams:256 readHandler:0 readHandlerWithOptions:v4];
+    [(IDSDatagramChannel *)self readFromOSChannel:internal->_osChannel ring:internal->_osChannelRXRing maximumDatagrams:256 readHandler:0 readHandlerWithOptions:handlerCopy];
   }
 
   else
@@ -6038,12 +6038,12 @@ LABEL_28:
     connection = internal->_connection;
     if (connection)
     {
-      [(IDSDatagramChannel *)self readFromNWConnection:connection maximumDatagrams:256 readHandler:0 readHandlerWithOptions:v4];
+      [(IDSDatagramChannel *)self readFromNWConnection:connection maximumDatagrams:256 readHandler:0 readHandlerWithOptions:handlerCopy];
     }
 
     else
     {
-      [(IDSDatagramChannel *)self readFromSocketDescriptorWithReadHandler:0 readHandlerWithOptions:v4];
+      [(IDSDatagramChannel *)self readFromSocketDescriptorWithReadHandler:0 readHandlerWithOptions:handlerCopy];
     }
   }
 }
@@ -6056,7 +6056,7 @@ LABEL_28:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v37 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1959FF000, v3, OS_LOG_TYPE_DEFAULT, "-close called for %@", buf, 0xCu);
   }
 
@@ -6082,8 +6082,8 @@ LABEL_28:
   }
 
   [(IDSDatagramChannel *)self _logFinalStats];
-  v9 = [(IDSDatagramChannel *)self qualityMeasurer];
-  [v9 stopWithCompletionHandler:&unk_1F09E7300];
+  qualityMeasurer = [(IDSDatagramChannel *)self qualityMeasurer];
+  [qualityMeasurer stopWithCompletionHandler:&unk_1F09E7300];
 
   [(IDSDataChannelLinkEngineHandle *)self->_internal->_linkEngine setAllowOngoingTasks:0];
   v10 = self->_internal;
@@ -6174,7 +6174,7 @@ LABEL_28:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412290;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1959FF000, v3, OS_LOG_TYPE_DEFAULT, "-invalidate called for %@", &v17, 0xCu);
   }
 
@@ -6273,7 +6273,7 @@ LABEL_3:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v18 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1959FF000, v7, OS_LOG_TYPE_DEFAULT, "<%@> cannot start datagram channel with no socket and no connection", buf, 0xCu);
       }
     }
@@ -6303,7 +6303,7 @@ LABEL_3:
       {
         v15 = self->_internal->_socketDescriptor;
         *buf = 138412546;
-        v18 = self;
+        selfCopy2 = self;
         v19 = 1024;
         v20 = v15;
         _os_log_impl(&dword_1959FF000, v14, OS_LOG_TYPE_DEFAULT, "<%@> nw_connection_create_with_connected_socket failed. socketDescriptor %d might be invalid.", buf, 0x12u);
@@ -6337,7 +6337,7 @@ LABEL_5:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1959FF000, v4, OS_LOG_TYPE_DEFAULT, "-start called for %@", buf, 0xCu);
   }
 
@@ -6364,52 +6364,52 @@ LABEL_5:
     [(IDSDataChannelLinkEngineHandle *)linkEngine setAllowOngoingTasks:1];
   }
 
-  v8 = [(IDSDatagramChannel *)self qualityMeasurer];
-  [v8 startCapturingBasicStats:1 sendBursts:0 completionHandler:&unk_1F09E7320];
+  qualityMeasurer = [(IDSDatagramChannel *)self qualityMeasurer];
+  [qualityMeasurer startCapturingBasicStats:1 sendBursts:0 completionHandler:&unk_1F09E7320];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_writeToNWConnectionArrayOfDatagrams:(const void *)a3 datagramSizes:(unsigned int *)a4 datagramInfo:(id *)a5 datagramOptions:(id *)a6 datagramCount:(int)a7 completionHandler:(id)a8
+- (void)_writeToNWConnectionArrayOfDatagrams:(const void *)datagrams datagramSizes:(unsigned int *)sizes datagramInfo:(id *)info datagramOptions:(id *)options datagramCount:(int)count completionHandler:(id)handler
 {
   v44 = *MEMORY[0x1E69E9840];
-  v14 = a8;
+  handlerCopy = handler;
   internal = self->_internal;
   if (internal->_operationMode != 1)
   {
     sub_195B40974();
   }
 
-  v16 = v14;
-  v17 = (a7 - 1);
-  if (a7 == 1)
+  v16 = handlerCopy;
+  v17 = (count - 1);
+  if (count == 1)
   {
-    v18 = [(IDSDatagramChannel *)self connectionForLinkID:a5->var0 datagramOptions:*a6];
-    [(IDSDatagramChannel *)self _writeToNWConnection:v18 datagram:*a3 datagramSize:*a4 currentDatagramCount:0 totalDatagramCount:1 datagramInfo:*&a5->var0 datagramOptions:*&a5->var4 completionHandler:*a6, v16];
+    v18 = [(IDSDatagramChannel *)self connectionForLinkID:info->var0 datagramOptions:*options];
+    [(IDSDatagramChannel *)self _writeToNWConnection:v18 datagram:*datagrams datagramSize:*sizes currentDatagramCount:0 totalDatagramCount:1 datagramInfo:*&info->var0 datagramOptions:*&info->var4 completionHandler:*options, v16];
   }
 
-  else if (a7 < 2)
+  else if (count < 2)
   {
     v24 = +[IDSLogging IDSDataChannels];
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v41 = self;
+      selfCopy = self;
       v42 = 1024;
-      v43 = a7;
+      countCopy = count;
       _os_log_impl(&dword_1959FF000, v24, OS_LOG_TYPE_DEFAULT, "<%@> _writeToNWConnectionArrayOfDatagrams given %d datagrams, which is < 1", buf, 0x12u);
     }
   }
 
   else if (internal->_preferredDataPathType == 1)
   {
-    v19 = a5 + 1;
-    v20 = a7 - 1;
+    v19 = info + 1;
+    v20 = count - 1;
     while (1)
     {
       var0 = v19->var0;
       ++v19;
-      if (var0 != a5->var0)
+      if (var0 != info->var0)
       {
         break;
       }
@@ -6421,12 +6421,12 @@ LABEL_5:
     }
 
     v25 = 0;
-    v31 = a7;
-    v26 = a3;
-    v27 = a4;
+    countCopy2 = count;
+    datagramsCopy = datagrams;
+    sizesCopy = sizes;
     do
     {
-      v28 = [(IDSDatagramChannel *)self connectionForLinkID:a5->var0 datagramOptions:a6[v25]];
+      v28 = [(IDSDatagramChannel *)self connectionForLinkID:info->var0 datagramOptions:options[v25]];
       if (v17 == v25)
       {
         v29 = v16;
@@ -6437,11 +6437,11 @@ LABEL_5:
         v29 = 0;
       }
 
-      a4 = (a4 & 0xFFFFFFFFFFFF0000 | *&a5->var4);
-      [(IDSDatagramChannel *)self _writeToNWConnection:v28 datagram:v26[v25] datagramSize:v27[v25] currentDatagramCount:v25 totalDatagramCount:v31 datagramInfo:*&a5->var0 datagramOptions:a4 completionHandler:a6[v25], v29];
+      sizes = (sizes & 0xFFFFFFFFFFFF0000 | *&info->var4);
+      [(IDSDatagramChannel *)self _writeToNWConnection:v28 datagram:datagramsCopy[v25] datagramSize:sizesCopy[v25] currentDatagramCount:v25 totalDatagramCount:countCopy2 datagramInfo:*&info->var0 datagramOptions:sizes completionHandler:options[v25], v29];
 
       ++v25;
-      ++a5;
+      ++info;
     }
 
     while (v17 + 1 != v25);
@@ -6450,18 +6450,18 @@ LABEL_5:
   else
   {
 LABEL_9:
-    v22 = [(IDSDatagramChannel *)self connectionForLinkID:a5->var0 datagramOptions:*a6];
+    v22 = [(IDSDatagramChannel *)self connectionForLinkID:info->var0 datagramOptions:*options];
     batch_block[0] = MEMORY[0x1E69E9820];
     batch_block[1] = 3221225472;
     batch_block[2] = sub_195B0333C;
     batch_block[3] = &unk_1E7442EE0;
-    v39 = a7;
+    countCopy3 = count;
     batch_block[4] = self;
     v33 = v22;
-    v35 = a3;
-    v36 = a4;
-    v37 = a5;
-    v38 = a6;
+    datagramsCopy2 = datagrams;
+    sizesCopy2 = sizes;
+    infoCopy = info;
+    optionsCopy = options;
     v34 = v16;
     v23 = v22;
     nw_connection_batch(v23, batch_block);
@@ -6470,12 +6470,12 @@ LABEL_9:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_writeToSocket:(int)a3 datagrams:(const void *)a4 datagramSizes:(unsigned int *)a5 datagramInfo:(id *)a6 datagramOptions:(id *)a7 datagramCount:(int)a8 completionHandler:(id)a9
+- (void)_writeToSocket:(int)socket datagrams:(const void *)datagrams datagramSizes:(unsigned int *)sizes datagramInfo:(id *)info datagramOptions:(id *)options datagramCount:(int)count completionHandler:(id)handler
 {
   v46 = *MEMORY[0x1E69E9840];
-  v37 = a9;
+  handlerCopy = handler;
   v36 = [self->_internal->_writeHandler copy];
-  if (a8 < 1)
+  if (count < 1)
   {
     v14 = 0;
     v13 = 0;
@@ -6487,12 +6487,12 @@ LABEL_9:
   v15 = *MEMORY[0x1E696A578];
   v38 = *MEMORY[0x1E696A578];
   v39 = *MEMORY[0x1E69A4A18];
-  v16 = a8;
+  countCopy = count;
   while (1)
   {
-    v18 = *a5++;
+    v18 = *sizes++;
     v17 = v18;
-    v19 = write(self->_internal->_socketDescriptor, *a4, v18);
+    v19 = write(self->_internal->_socketDescriptor, *datagrams, v18);
     v14 += v19;
     if (v19 == v18)
     {
@@ -6518,7 +6518,7 @@ LABEL_9:
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v41 = self;
+        selfCopy4 = self;
         _os_log_impl(&dword_1959FF000, v33, OS_LOG_TYPE_DEFAULT, "<%@> write returned 0 - connection terminated", buf, 0xCu);
       }
 
@@ -6541,7 +6541,7 @@ LABEL_9:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v41 = self;
+        selfCopy4 = self;
         v42 = 1024;
         v43 = v21;
         _os_log_impl(&dword_1959FF000, v24, OS_LOG_TYPE_DEFAULT, "<%@> write failed errno %d", buf, 0x12u);
@@ -6581,7 +6581,7 @@ LABEL_9:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v41 = self;
+        selfCopy4 = self;
         v42 = 1024;
         v43 = v21;
         _os_log_impl(&dword_1959FF000, v23, OS_LOG_TYPE_DEFAULT, "<%@> write nonfatal failure errno %d", buf, 0x12u);
@@ -6594,8 +6594,8 @@ LABEL_9:
     }
 
 LABEL_14:
-    ++a4;
-    if (!--v16)
+    ++datagrams;
+    if (!--countCopy)
     {
       goto LABEL_38;
     }
@@ -6605,7 +6605,7 @@ LABEL_14:
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v41 = self;
+    selfCopy4 = self;
     v42 = 1024;
     v43 = v20;
     v44 = 1024;
@@ -6623,33 +6623,33 @@ LABEL_36:
 LABEL_37:
   v13 = v29;
 LABEL_38:
-  sub_195A7FC78(v37, v36, v13, v14);
+  sub_195A7FC78(handlerCopy, v36, v13, v14);
 
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_writeDatagram:(const void *)a3 datagramSize:(unsigned int)a4 datagramInfo:(id)a5 options:(id *)a6 completionHandler:(id)a7
+- (void)_writeDatagram:(const void *)datagram datagramSize:(unsigned int)size datagramInfo:(id)info options:(id *)options completionHandler:(id)handler
 {
-  v10 = a5;
-  v9 = a3;
-  v8 = a4;
-  v7 = a6;
-  [(IDSDatagramChannel *)self writeArrayOfDatagrams:&v9 datagramSizes:&v8 datagramInfo:&v10 datagramOptions:&v7 datagramCount:1 completionHandler:a7];
+  infoCopy = info;
+  datagramCopy = datagram;
+  sizeCopy = size;
+  optionsCopy = options;
+  [(IDSDatagramChannel *)self writeArrayOfDatagrams:&datagramCopy datagramSizes:&sizeCopy datagramInfo:&infoCopy datagramOptions:&optionsCopy datagramCount:1 completionHandler:handler];
 }
 
-- (void)setEventHandler:(id)a3
+- (void)setEventHandler:(id)handler
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[IDSTransportLog IDSDataChannels];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1959FF000, v5, OS_LOG_TYPE_DEFAULT, "-setEventHandler called for %@", &v10, 0xCu);
   }
 
-  v6 = [v4 copy];
+  v6 = [handlerCopy copy];
   internal = self->_internal;
   eventHandler = internal->_eventHandler;
   internal->_eventHandler = v6;
@@ -6657,19 +6657,19 @@ LABEL_38:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setReadHandler:(id)a3
+- (void)setReadHandler:(id)handler
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[IDSTransportLog IDSDataChannels];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1959FF000, v5, OS_LOG_TYPE_DEFAULT, "-setReadHandler called for %@", &v10, 0xCu);
   }
 
-  v6 = [v4 copy];
+  v6 = [handlerCopy copy];
   internal = self->_internal;
   readHandler = internal->_readHandler;
   internal->_readHandler = v6;
@@ -6677,19 +6677,19 @@ LABEL_38:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setReadHandlerWithOptions:(id)a3
+- (void)setReadHandlerWithOptions:(id)options
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   v5 = +[IDSTransportLog IDSDataChannels];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1959FF000, v5, OS_LOG_TYPE_DEFAULT, "-setReadHandlerWithOptions called for %@", &v10, 0xCu);
   }
 
-  v6 = [v4 copy];
+  v6 = [optionsCopy copy];
   internal = self->_internal;
   readHandlerWithOptions = internal->_readHandlerWithOptions;
   internal->_readHandlerWithOptions = v6;
@@ -6697,19 +6697,19 @@ LABEL_38:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setWriteCompletionHandler:(id)a3
+- (void)setWriteCompletionHandler:(id)handler
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[IDSTransportLog IDSDataChannels];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1959FF000, v5, OS_LOG_TYPE_DEFAULT, "-setWriteCompletionHandler called for %@", &v10, 0xCu);
   }
 
-  v6 = [v4 copy];
+  v6 = [handlerCopy copy];
   internal = self->_internal;
   writeHandler = internal->_writeHandler;
   internal->_writeHandler = v6;
@@ -6783,7 +6783,7 @@ LABEL_10:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1959FF000, v6, OS_LOG_TYPE_DEFAULT, "<%@> does not have readHandler!", &v8, 0xCu);
     }
 
@@ -6835,7 +6835,7 @@ LABEL_10:
           while (1)
           {
             v23 = [(NSMutableArray *)self->_internal->_sendingMetadata objectAtIndex:v22, v39];
-            v24 = [v23 pointerValue];
+            pointerValue = [v23 pointerValue];
 
             *&v25 = 0xAAAAAAAAAAAAAAAALL;
             *(&v25 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -6844,12 +6844,12 @@ LABEL_10:
             *buf = v25;
             *&buf[16] = v25;
             os_channel_get_next_slot();
-            v26 = *(v24 + 16);
+            v26 = *(pointerValue + 16);
             if (v26 <= *&buf[2])
             {
               *buf = 0;
               *&buf[2] = v26;
-              memcpy(*&buf[16], *v24, v26);
+              memcpy(*&buf[16], *pointerValue, v26);
               os_channel_set_slot_properties();
               v29 = os_channel_advance_slot();
               if (v29)
@@ -6860,7 +6860,7 @@ LABEL_10:
                 if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
                 {
                   *v41 = 67109120;
-                  LODWORD(v42) = v30;
+                  LODWORD(selfCopy) = v30;
                   _os_log_impl(&dword_1959FF000, v31, OS_LOG_TYPE_DEFAULT, "advance_slot failed for metadata write %d", v41, 8u);
                 }
               }
@@ -6873,9 +6873,9 @@ LABEL_10:
               v27 = +[IDSLogging IDSDataChannels];
               if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
               {
-                v32 = *(v24 + 16);
+                v32 = *(pointerValue + 16);
                 *v41 = v39;
-                v42 = self;
+                selfCopy = self;
                 v43 = 2048;
                 v44 = v32;
                 _os_log_impl(&dword_1959FF000, v27, OS_LOG_TYPE_DEFAULT, "<%@> write details: metadataSize %ld", v41, 0x16u);
@@ -6887,9 +6887,9 @@ LABEL_10:
               v27 = +[IDSTransportLog IDSDataChannels];
               if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
               {
-                v28 = *(v24 + 16);
+                v28 = *(pointerValue + 16);
                 *v41 = 134218240;
-                v42 = v28;
+                selfCopy = v28;
                 v43 = 2048;
                 v44 = *&buf[2];
                 _os_log_impl(&dword_1959FF000, v27, OS_LOG_TYPE_DEFAULT, "have metadata %lu to send to daemon but not enough bytes %lu in slot", v41, 0x16u);
@@ -6945,16 +6945,16 @@ LABEL_35:
           do
           {
             v14 = [(NSMutableArray *)self->_internal->_sendingMetadata objectAtIndex:v12];
-            v15 = [v14 pointerValue];
+            pointerValue2 = [v14 pointerValue];
 
-            v16 = sub_195A7FB04(v15, 0);
+            v16 = sub_195A7FB04(pointerValue2, 0);
             v17 = self->_internal;
             if (v17->_verboseFunctionalLogging)
             {
               v18 = +[IDSLogging IDSDataChannels];
               if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
               {
-                v19 = v15[2];
+                v19 = pointerValue2[2];
                 *buf = 138412546;
                 *&buf[4] = self;
                 *&buf[12] = 2048;
@@ -6999,32 +6999,32 @@ LABEL_41:
   v37 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_buildPacketBufferMetaData:(id *)a3
+- (void)_buildPacketBufferMetaData:(id *)data
 {
-  var2 = a3->var2;
+  var2 = data->var2;
   IDSLinkPacketBufferAddBufferStart();
-  *a3->var0 = BYTE1(var2);
-  a3->var0[1] = var2;
+  *data->var0 = BYTE1(var2);
+  data->var0[1] = var2;
 }
 
-- (void)setChannelPreferences:(id)a3
+- (void)setChannelPreferences:(id)preferences
 {
   v150 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v140 = 0;
+  preferencesCopy = preferences;
+  intValue = 0;
   v139 = -1;
-  v138 = 0;
+  intValue5 = 0;
   v5 = +[IDSLogging IDSDataChannels];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v4;
+    *&buf[14] = preferencesCopy;
     _os_log_impl(&dword_1959FF000, v5, OS_LOG_TYPE_DEFAULT, "<%@> setChannelPreferences dictionary: %@", buf, 0x16u);
   }
 
-  v6 = [v4 objectForKey:@"preference-pre-connection-data"];
+  v6 = [preferencesCopy objectForKey:@"preference-pre-connection-data"];
 
   if (v6)
   {
@@ -7034,7 +7034,7 @@ LABEL_41:
       internal->_waitForPreConnectionDataForConnected = 1;
     }
 
-    v8 = [v4 objectForKey:@"preference-pre-connection-data"];
+    v8 = [preferencesCopy objectForKey:@"preference-pre-connection-data"];
     v9 = +[IDSTransportLog IDSDataChannels];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -7091,7 +7091,7 @@ LABEL_41:
     v8 = 0;
   }
 
-  v20 = [v4 objectForKey:@"preference-needs-encryption-info"];
+  v20 = [preferencesCopy objectForKey:@"preference-needs-encryption-info"];
   if (v20)
   {
     v21 = 1;
@@ -7099,18 +7099,18 @@ LABEL_41:
 
   else
   {
-    v22 = [v4 objectForKey:@"preference-needs-force-update-encryption-info"];
+    v22 = [preferencesCopy objectForKey:@"preference-needs-force-update-encryption-info"];
     v23 = v22 | v6;
 
     v21 = v23 != 0;
   }
 
-  v24 = [v4 objectForKey:@"preference-default-link-selection"];
+  v24 = [preferencesCopy objectForKey:@"preference-default-link-selection"];
 
   if (v24)
   {
-    v25 = [v4 objectForKey:@"preference-default-link-selection"];
-    v140 = [v25 intValue];
+    v25 = [preferencesCopy objectForKey:@"preference-default-link-selection"];
+    intValue = [v25 intValue];
 
     v26 = +[IDSTransportLog IDSDataChannels];
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -7118,27 +7118,27 @@ LABEL_41:
       *buf = 138412546;
       *&buf[4] = self;
       *&buf[12] = 1024;
-      *&buf[14] = v140;
+      *&buf[14] = intValue;
       _os_log_impl(&dword_1959FF000, v26, OS_LOG_TYPE_DEFAULT, "<%@> IDSDataChannelPreferenceDefaultLinkSelectionKey - linkID:%d", buf, 0x12u);
     }
 
     v21 = 1;
   }
 
-  v27 = [v4 objectForKey:@"preference-baseband-registration"];
+  v27 = [preferencesCopy objectForKey:@"preference-baseband-registration"];
 
   v28 = MEMORY[0x1E69A4A40];
   if (v27)
   {
-    v29 = [v4 objectForKey:@"preference-baseband-registration"];
+    v29 = [preferencesCopy objectForKey:@"preference-baseband-registration"];
     v30 = [v29 objectForKey:*v28];
-    v31 = [v30 intValue];
+    intValue2 = [v30 intValue];
 
     v32 = [v29 objectForKey:@"baseband-registration-key"];
-    v33 = [v32 unsignedIntValue];
+    unsignedIntValue = [v32 unsignedIntValue];
 
     v34 = [v29 objectForKey:@"baseband-notification-operation-key"];
-    v35 = [v34 unsignedIntValue];
+    unsignedIntValue2 = [v34 unsignedIntValue];
 
     v36 = +[IDSTransportLog IDSDataChannels];
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -7146,32 +7146,32 @@ LABEL_41:
       *buf = 138413058;
       *&buf[4] = self;
       *&buf[12] = 1024;
-      *&buf[14] = v31;
+      *&buf[14] = intValue2;
       *&buf[18] = 1024;
-      *&buf[20] = v33;
+      *&buf[20] = unsignedIntValue;
       *&buf[24] = 1024;
-      *&buf[26] = v35;
+      *&buf[26] = unsignedIntValue2;
       _os_log_impl(&dword_1959FF000, v36, OS_LOG_TYPE_DEFAULT, "<%@> IDSDataChannelPreferenceBasebandRegistrationKey - linkID:%d, reg_key:%u registerOperation:%u", buf, 0x1Eu);
     }
 
-    LODWORD(v137) = v31;
+    LODWORD(v137) = intValue2;
 
     v21 = 1;
   }
 
   else
   {
-    v33 = 0;
+    unsignedIntValue = 0;
     LODWORD(v137) = 0;
-    v35 = 0;
+    unsignedIntValue2 = 0;
   }
 
-  LODWORD(v136) = v35;
-  v37 = [v4 objectForKey:@"preference-baseband-queue-flush"];
+  LODWORD(v136) = unsignedIntValue2;
+  v37 = [preferencesCopy objectForKey:@"preference-baseband-queue-flush"];
 
   if (v37)
   {
-    v38 = [v4 objectForKey:@"preference-baseband-queue-flush"];
+    v38 = [preferencesCopy objectForKey:@"preference-baseband-queue-flush"];
     v39 = [v38 objectForKey:*v28];
     LODWORD(v135) = [v39 intValue];
 
@@ -7195,11 +7195,11 @@ LABEL_41:
     LODWORD(v135) = 0;
   }
 
-  v41 = [v4 objectForKey:@"preference-discard-link-ids"];
+  v41 = [preferencesCopy objectForKey:@"preference-discard-link-ids"];
 
   if (v41)
   {
-    v131 = [v4 objectForKey:@"preference-discard-link-ids"];
+    v131 = [preferencesCopy objectForKey:@"preference-discard-link-ids"];
     v42 = +[IDSTransportLog IDSDataChannels];
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
     {
@@ -7218,17 +7218,17 @@ LABEL_41:
     v131 = 0;
   }
 
-  v43 = [v4 objectForKey:@"preference-update-qos"];
+  v43 = [preferencesCopy objectForKey:@"preference-update-qos"];
 
   if (v43)
   {
-    v44 = [v4 objectForKey:@"preference-update-qos"];
+    v44 = [preferencesCopy objectForKey:@"preference-update-qos"];
     v45 = [v44 objectForKey:*v28];
-    v130 = [v45 intValue];
+    intValue3 = [v45 intValue];
 
     v46 = [v44 objectForKey:@"preference-update-qos-is-good"];
-    v47 = [v46 unsignedIntValue];
-    v132 = v47;
+    unsignedIntValue3 = [v46 unsignedIntValue];
+    v132 = unsignedIntValue3;
 
     v48 = +[IDSTransportLog IDSDataChannels];
     if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
@@ -7236,13 +7236,13 @@ LABEL_41:
       v49 = @"YES";
       *buf = 138412802;
       *&buf[4] = self;
-      if (!v47)
+      if (!unsignedIntValue3)
       {
         v49 = @"NO";
       }
 
       *&buf[12] = 1024;
-      *&buf[14] = v130;
+      *&buf[14] = intValue3;
       *&buf[18] = 2112;
       *&buf[20] = v49;
       _os_log_impl(&dword_1959FF000, v48, OS_LOG_TYPE_DEFAULT, "<%@> IDSDataChannelPreferenceUpdateQualityOfServiceKey - LinkID: %d, %@", buf, 0x1Cu);
@@ -7254,16 +7254,16 @@ LABEL_41:
   else
   {
     v132 = 0;
-    v130 = 0;
+    intValue3 = 0;
   }
 
-  v50 = [v4 objectForKey:@"preference-query-information"];
+  v50 = [preferencesCopy objectForKey:@"preference-query-information"];
 
   if (v50)
   {
-    v51 = [v4 objectForKey:@"preference-query-information"];
-    v52 = [v51 unsignedIntValue];
-    v139 = v52;
+    v51 = [preferencesCopy objectForKey:@"preference-query-information"];
+    unsignedIntValue4 = [v51 unsignedIntValue];
+    v139 = unsignedIntValue4;
 
     v53 = +[IDSTransportLog IDSDataChannels];
     if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
@@ -7271,11 +7271,11 @@ LABEL_41:
       *buf = 138412546;
       *&buf[4] = self;
       *&buf[12] = 1024;
-      *&buf[14] = v52;
+      *&buf[14] = unsignedIntValue4;
       _os_log_impl(&dword_1959FF000, v53, OS_LOG_TYPE_DEFAULT, "<%@> IDSDataChannelPreferenceQueryInformationKey - queryType: %d", buf, 0x12u);
     }
 
-    v126 = v52 == 0;
+    v126 = unsignedIntValue4 == 0;
     v21 = 1;
   }
 
@@ -7284,16 +7284,16 @@ LABEL_41:
     v126 = 0;
   }
 
-  v54 = [v4 objectForKey:@"preference-max-bitrate"];
+  v54 = [preferencesCopy objectForKey:@"preference-max-bitrate"];
 
   if (v54)
   {
-    v55 = [v4 objectForKey:@"preference-max-bitrate"];
+    v55 = [preferencesCopy objectForKey:@"preference-max-bitrate"];
     v56 = [v55 objectForKey:*v28];
-    v57 = [v56 intValue];
+    intValue4 = [v56 intValue];
 
     v58 = [v55 objectForKey:@"max-bitrate-key"];
-    v129 = [v58 unsignedIntValue];
+    unsignedIntValue5 = [v58 unsignedIntValue];
 
     v59 = +[IDSTransportLog IDSDataChannels];
     if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
@@ -7301,9 +7301,9 @@ LABEL_41:
       *buf = 138412802;
       *&buf[4] = self;
       *&buf[12] = 1024;
-      *&buf[14] = v129;
+      *&buf[14] = unsignedIntValue5;
       *&buf[18] = 1024;
-      *&buf[20] = v57;
+      *&buf[20] = intValue4;
       _os_log_impl(&dword_1959FF000, v59, OS_LOG_TYPE_DEFAULT, "<%@> IDSDataChannelPreferenceSetMaxBitrateKey - maxBitrate: %u for LinkID: %d", buf, 0x18u);
     }
 
@@ -7312,20 +7312,20 @@ LABEL_41:
 
   else
   {
-    v57 = 0;
-    v129 = 100000;
+    intValue4 = 0;
+    unsignedIntValue5 = 100000;
   }
 
-  v127 = v57;
-  v60 = [v4 objectForKey:@"debug-data-type-key"];
+  v127 = intValue4;
+  v60 = [preferencesCopy objectForKey:@"debug-data-type-key"];
 
   v61 = v19;
   if (v60)
   {
-    v62 = [v4 objectForKey:@"debug-data-type-key"];
-    v138 = [v62 intValue];
+    v62 = [preferencesCopy objectForKey:@"debug-data-type-key"];
+    intValue5 = [v62 intValue];
 
-    v128 = [v4 objectForKey:@"debug-data-key"];
+    v128 = [preferencesCopy objectForKey:@"debug-data-key"];
     v21 = 1;
   }
 
@@ -7334,12 +7334,12 @@ LABEL_41:
     v128 = 0;
   }
 
-  v63 = [v4 objectForKey:@"preference-remote-device-version-key"];
+  v63 = [preferencesCopy objectForKey:@"preference-remote-device-version-key"];
 
   if (v63)
   {
-    v64 = [v4 objectForKey:@"preference-remote-device-version-key"];
-    v65 = [v64 intValue];
+    v64 = [preferencesCopy objectForKey:@"preference-remote-device-version-key"];
+    intValue6 = [v64 intValue];
 
     v66 = +[IDSTransportLog IDSDataChannels];
     v67 = 0x1E743D000;
@@ -7348,7 +7348,7 @@ LABEL_41:
       *buf = 138412546;
       *&buf[4] = self;
       *&buf[12] = 1024;
-      *&buf[14] = v65;
+      *&buf[14] = intValue6;
       _os_log_impl(&dword_1959FF000, v66, OS_LOG_TYPE_DEFAULT, "<%@> IDSDataChannelPreferenceRemoteDeviceVersionKey - remoteDeviceVersion: %u", buf, 0x12u);
     }
   }
@@ -7362,7 +7362,7 @@ LABEL_41:
       goto LABEL_131;
     }
 
-    v65 = 0;
+    intValue6 = 0;
     v67 = 0x1E743D000uLL;
   }
 
@@ -7376,10 +7376,10 @@ LABEL_41:
   v71 = v68[1];
   v125 = v68;
   IDSByteBufferInitForWriteWithAllocatedSpace();
-  v72 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v73 = [v72 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v73 && (byte_1EAEDDA00 & 1) == 0)
+  if (isInternalInstall && (byte_1EAEDDA00 & 1) == 0)
   {
     byte_1EAEDDA00 = 1;
     v74 = getpid();
@@ -7388,7 +7388,7 @@ LABEL_41:
     if (os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT))
     {
       *v141 = 138412546;
-      v142 = self;
+      selfCopy12 = self;
       v143 = 1024;
       *v144 = v74;
       _os_log_impl(&dword_1959FF000, v75, OS_LOG_TYPE_DEFAULT, "<%@> kClientChannelMetadataType_ProcessIDKey - %d", v141, 0x12u);
@@ -7397,35 +7397,35 @@ LABEL_41:
     IDSByteBufferWriteField();
   }
 
-  if (v140)
+  if (intValue)
   {
     IDSByteBufferWriteField();
   }
 
-  if (v65)
+  if (intValue6)
   {
-    v76 = [*(v67 + 1160) IDSDataChannels];
-    if (os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT))
+    iDSDataChannels = [*(v67 + 1160) IDSDataChannels];
+    if (os_log_type_enabled(iDSDataChannels, OS_LOG_TYPE_DEFAULT))
     {
       *v141 = 138412546;
-      v142 = self;
+      selfCopy12 = self;
       v143 = 1024;
-      *v144 = v65;
-      _os_log_impl(&dword_1959FF000, v76, OS_LOG_TYPE_DEFAULT, "<%@> kClientChannelMetadataType_RemoteDeviceVersionKey remoteDeviceVersion: %u", v141, 0x12u);
+      *v144 = intValue6;
+      _os_log_impl(&dword_1959FF000, iDSDataChannels, OS_LOG_TYPE_DEFAULT, "<%@> kClientChannelMetadataType_RemoteDeviceVersionKey remoteDeviceVersion: %u", v141, 0x12u);
     }
 
-    *v141 = bswap32(v65);
+    *v141 = bswap32(intValue6);
     IDSByteBufferWriteField();
   }
 
-  if (v33)
+  if (unsignedIntValue)
   {
     v141[0] = v137;
     v141[1] = v136;
-    v141[2] = HIBYTE(v33);
-    v141[3] = BYTE2(v33);
-    LOBYTE(v142) = BYTE1(v33);
-    BYTE1(v142) = v33;
+    v141[2] = HIBYTE(unsignedIntValue);
+    v141[3] = BYTE2(unsignedIntValue);
+    LOBYTE(selfCopy12) = BYTE1(unsignedIntValue);
+    BYTE1(selfCopy12) = unsignedIntValue;
     IDSByteBufferWriteField();
   }
 
@@ -7443,14 +7443,14 @@ LABEL_41:
     }
 
     LOBYTE(v146) = v79;
-    v80 = [*(v67 + 1160) IDSDataChannels];
-    if (os_log_type_enabled(v80, OS_LOG_TYPE_DEFAULT))
+    iDSDataChannels2 = [*(v67 + 1160) IDSDataChannels];
+    if (os_log_type_enabled(iDSDataChannels2, OS_LOG_TYPE_DEFAULT))
     {
       *v141 = 138412546;
-      v142 = self;
+      selfCopy12 = self;
       v143 = 1024;
       *v144 = v146;
-      _os_log_impl(&dword_1959FF000, v80, OS_LOG_TYPE_DEFAULT, "<%@> kClientChannelMetadataType_BasebandQueueFlushPayloadSizeKey %u", v141, 0x12u);
+      _os_log_impl(&dword_1959FF000, iDSDataChannels2, OS_LOG_TYPE_DEFAULT, "<%@> kClientChannelMetadataType_BasebandQueueFlushPayloadSizeKey %u", v141, 0x12u);
     }
 
     v81 = IDSByteBufferWriteField();
@@ -7462,8 +7462,8 @@ LABEL_41:
     {
       v121[2] = v121;
       v122 = v8;
-      v123 = self;
-      v124 = v4;
+      selfCopy4 = self;
+      v124 = preferencesCopy;
       v85 = 0;
       v121[1] = v83;
       v86 = v83 + 1;
@@ -7476,40 +7476,40 @@ LABEL_41:
       {
         v87 = [v19 objectAtIndexedSubscript:v85];
         v88 = [v87 objectForKey:v137];
-        v89 = [v88 intValue];
+        intValue7 = [v88 intValue];
 
         v90 = [v87 objectForKey:v136];
         v91 = v19;
-        v92 = [v90 intValue];
+        intValue8 = [v90 intValue];
 
         v93 = [v87 objectForKey:v135];
-        v94 = [v93 intValue];
+        intValue9 = [v93 intValue];
 
         v95 = [v87 objectForKey:v134];
-        v96 = [v95 intValue];
+        intValue10 = [v95 intValue];
 
         v97 = [v87 objectForKey:v133];
-        v98 = [v97 intValue];
+        intValue11 = [v97 intValue];
 
-        *v86 = v89;
-        v86[1] = HIBYTE(v92);
-        v86[2] = BYTE2(v92);
-        v86[3] = BYTE1(v92);
-        v86[4] = v92;
+        *v86 = intValue7;
+        v86[1] = HIBYTE(intValue8);
+        v86[2] = BYTE2(intValue8);
+        v86[3] = BYTE1(intValue8);
+        v86[4] = intValue8;
         v19 = v91;
-        v86[5] = v94;
-        v86[6] = HIBYTE(v96);
-        v86[7] = v96;
-        v86[8] = HIBYTE(v98);
-        v86[9] = v98;
+        v86[5] = intValue9;
+        v86[6] = HIBYTE(intValue10);
+        v86[7] = intValue10;
+        v86[8] = HIBYTE(intValue11);
+        v86[9] = intValue11;
         v86 += 10;
 
         ++v85;
       }
 
       while (v85 < v146);
-      v4 = v124;
-      self = v123;
+      preferencesCopy = v124;
+      self = selfCopy4;
       v8 = v122;
       v67 = 0x1E743D000uLL;
       v18 = v131;
@@ -7537,14 +7537,14 @@ LABEL_41:
         }
       }
 
-      v101 = [*(v67 + 1160) IDSDataChannels];
-      if (os_log_type_enabled(v101, OS_LOG_TYPE_DEFAULT))
+      iDSDataChannels3 = [*(v67 + 1160) IDSDataChannels];
+      if (os_log_type_enabled(iDSDataChannels3, OS_LOG_TYPE_DEFAULT))
       {
         *v141 = 138412546;
-        v142 = self;
+        selfCopy12 = self;
         v143 = 1024;
         *v144 = 10;
-        _os_log_impl(&dword_1959FF000, v101, OS_LOG_TYPE_DEFAULT, "<%@> kClientChannelMetadataType_DiscardLinkIDsKey the maximum of links is %d", v141, 0x12u);
+        _os_log_impl(&dword_1959FF000, iDSDataChannels3, OS_LOG_TYPE_DEFAULT, "<%@> kClientChannelMetadataType_DiscardLinkIDsKey the maximum of links is %d", v141, 0x12u);
       }
     }
 
@@ -7557,25 +7557,25 @@ LABEL_99:
   {
     v102 = [v8 length];
     LOBYTE(v146) = v102;
-    v103 = [*(v67 + 1160) IDSDataChannels];
-    if (os_log_type_enabled(v103, OS_LOG_TYPE_DEFAULT))
+    iDSDataChannels4 = [*(v67 + 1160) IDSDataChannels];
+    if (os_log_type_enabled(iDSDataChannels4, OS_LOG_TYPE_DEFAULT))
     {
       *v141 = 138412546;
-      v142 = self;
+      selfCopy12 = self;
       v143 = 1024;
       *v144 = v102;
-      _os_log_impl(&dword_1959FF000, v103, OS_LOG_TYPE_DEFAULT, "<%@> kClientChannelMetadataType_PreConnectionDataSizeKey %u", v141, 0x12u);
+      _os_log_impl(&dword_1959FF000, iDSDataChannels4, OS_LOG_TYPE_DEFAULT, "<%@> kClientChannelMetadataType_PreConnectionDataSizeKey %u", v141, 0x12u);
     }
 
     IDSByteBufferWriteField();
-    v104 = [*(v67 + 1160) IDSDataChannels];
-    if (os_log_type_enabled(v104, OS_LOG_TYPE_DEFAULT))
+    iDSDataChannels5 = [*(v67 + 1160) IDSDataChannels];
+    if (os_log_type_enabled(iDSDataChannels5, OS_LOG_TYPE_DEFAULT))
     {
       *v141 = 138412546;
-      v142 = self;
+      selfCopy12 = self;
       v143 = 2112;
       *v144 = v8;
-      _os_log_impl(&dword_1959FF000, v104, OS_LOG_TYPE_DEFAULT, "<%@> kClientChannelMetadataType_PreConnectionDataKey %@", v141, 0x16u);
+      _os_log_impl(&dword_1959FF000, iDSDataChannels5, OS_LOG_TYPE_DEFAULT, "<%@> kClientChannelMetadataType_PreConnectionDataKey %@", v141, 0x16u);
     }
 
     [v8 bytes];
@@ -7583,17 +7583,17 @@ LABEL_99:
     v77 = v132;
   }
 
-  v105 = v130;
-  if (v130)
+  v105 = intValue3;
+  if (intValue3)
   {
-    LOBYTE(v146) = v130;
+    LOBYTE(v146) = intValue3;
     BYTE1(v146) = v77;
-    v106 = [*(v67 + 1160) IDSDataChannels];
-    if (os_log_type_enabled(v106, OS_LOG_TYPE_DEFAULT))
+    iDSDataChannels6 = [*(v67 + 1160) IDSDataChannels];
+    if (os_log_type_enabled(iDSDataChannels6, OS_LOG_TYPE_DEFAULT))
     {
       v107 = @"YES";
       *v141 = 138412802;
-      v142 = self;
+      selfCopy12 = self;
       if (!v77)
       {
         v107 = @"NO";
@@ -7603,7 +7603,7 @@ LABEL_99:
       *v144 = v107;
       *&v144[8] = 1024;
       v145 = v105;
-      _os_log_impl(&dword_1959FF000, v106, OS_LOG_TYPE_DEFAULT, "<%@> kClientChannelMetadataType_UpdateQoSIsGoodKey IsGood:%@ LinkID:%d", v141, 0x1Cu);
+      _os_log_impl(&dword_1959FF000, iDSDataChannels6, OS_LOG_TYPE_DEFAULT, "<%@> kClientChannelMetadataType_UpdateQoSIsGoodKey IsGood:%@ LinkID:%d", v141, 0x1Cu);
     }
 
     IDSByteBufferWriteField();
@@ -7614,41 +7614,41 @@ LABEL_99:
   {
     v109 = self->_internal;
     IDSByteBufferWriteField();
-    v110 = [*(v67 + 1160) IDSDataChannels];
-    if (os_log_type_enabled(v110, OS_LOG_TYPE_DEFAULT))
+    iDSDataChannels7 = [*(v67 + 1160) IDSDataChannels];
+    if (os_log_type_enabled(iDSDataChannels7, OS_LOG_TYPE_DEFAULT))
     {
       *v141 = 138412290;
-      v142 = self;
-      _os_log_impl(&dword_1959FF000, v110, OS_LOG_TYPE_DEFAULT, "<%@> kClientChannelMetadataType_QueryRSSI", v141, 0xCu);
+      selfCopy12 = self;
+      _os_log_impl(&dword_1959FF000, iDSDataChannels7, OS_LOG_TYPE_DEFAULT, "<%@> kClientChannelMetadataType_QueryRSSI", v141, 0xCu);
     }
 
     IDSByteBufferWriteField();
   }
 
-  v111 = v129;
-  if (v129 != 100000)
+  v111 = unsignedIntValue5;
+  if (unsignedIntValue5 != 100000)
   {
     LOBYTE(v146) = v108;
-    BYTE1(v146) = HIBYTE(v129);
-    BYTE2(v146) = BYTE2(v129);
-    BYTE3(v146) = BYTE1(v129);
-    BYTE4(v146) = v129;
-    v112 = [*(v67 + 1160) IDSDataChannels];
-    if (os_log_type_enabled(v112, OS_LOG_TYPE_DEFAULT))
+    BYTE1(v146) = HIBYTE(unsignedIntValue5);
+    BYTE2(v146) = BYTE2(unsignedIntValue5);
+    BYTE3(v146) = BYTE1(unsignedIntValue5);
+    BYTE4(v146) = unsignedIntValue5;
+    iDSDataChannels8 = [*(v67 + 1160) IDSDataChannels];
+    if (os_log_type_enabled(iDSDataChannels8, OS_LOG_TYPE_DEFAULT))
     {
       *v141 = 138412802;
-      v142 = self;
+      selfCopy12 = self;
       v143 = 1024;
       *v144 = v111;
       *&v144[4] = 1024;
       *&v144[6] = v108;
-      _os_log_impl(&dword_1959FF000, v112, OS_LOG_TYPE_DEFAULT, "<%@> kClientChannelMetadataType_MaxBitrateKey maxBitrate:%u LinkID:%d", v141, 0x18u);
+      _os_log_impl(&dword_1959FF000, iDSDataChannels8, OS_LOG_TYPE_DEFAULT, "<%@> kClientChannelMetadataType_MaxBitrateKey maxBitrate:%u LinkID:%d", v141, 0x18u);
     }
 
     IDSByteBufferWriteField();
   }
 
-  v113 = [v4 objectForKey:@"preference-needs-encryption-info"];
+  v113 = [preferencesCopy objectForKey:@"preference-needs-encryption-info"];
 
   v17 = v128;
   if (v113)
@@ -7658,14 +7658,14 @@ LABEL_99:
     if (os_log_type_enabled(v114, OS_LOG_TYPE_DEFAULT))
     {
       *v141 = 138412290;
-      v142 = self;
+      selfCopy12 = self;
       _os_log_impl(&dword_1959FF000, v114, OS_LOG_TYPE_DEFAULT, "<%@> IDSDataChannelPreferenceNeedsEncryptionInfoKey - we'll request the encryption info", v141, 0xCu);
     }
 
     IDSByteBufferWriteField();
   }
 
-  v115 = [v4 objectForKey:@"preference-needs-force-update-encryption-info"];
+  v115 = [preferencesCopy objectForKey:@"preference-needs-force-update-encryption-info"];
 
   if (v115)
   {
@@ -7673,7 +7673,7 @@ LABEL_99:
     if (os_log_type_enabled(v116, OS_LOG_TYPE_DEFAULT))
     {
       *v141 = 138412290;
-      v142 = self;
+      selfCopy12 = self;
       _os_log_impl(&dword_1959FF000, v116, OS_LOG_TYPE_DEFAULT, "<%@> kClientChannelMetadataType_ForceUpdateEncryptionInfoKey - we'll update the encryption info.", v141, 0xCu);
     }
 
@@ -7705,15 +7705,15 @@ LABEL_131:
   v120 = *MEMORY[0x1E69E9840];
 }
 
-- ($8401F4BB0FBBAD626D053E4AC6536F2D)_setWiFiAssist:(BOOL)a3
+- ($8401F4BB0FBBAD626D053E4AC6536F2D)_setWiFiAssist:(BOOL)assist
 {
-  v3 = a3;
+  assistCopy = assist;
   v15 = *MEMORY[0x1E69E9840];
   v5 = +[IDSTransportLog IDSDataChannels];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v3)
+    if (assistCopy)
     {
       v6 = @"YES";
     }
@@ -7746,11 +7746,11 @@ LABEL_131:
   return v7;
 }
 
-- (void)startActiveProbingWithOptions:(id)a3
+- (void)startActiveProbingWithOptions:(id)options
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A5410] serializeSessionInfoMetadata:v4];
+  optionsCopy = options;
+  v5 = [MEMORY[0x1E69A5410] serializeSessionInfoMetadata:optionsCopy];
   v6 = v5;
   if (!v5)
   {
@@ -7804,9 +7804,9 @@ LABEL_7:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138412802;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
-    v22 = v4;
+    v22 = optionsCopy;
     v23 = 2048;
     v24 = [v6 length];
     _os_log_impl(&dword_1959FF000, v15, OS_LOG_TYPE_DEFAULT, "<%@>: startActiveProbingWithOptions: %@ size: %lu", &v19, 0x20u);
@@ -7829,11 +7829,11 @@ LABEL_12:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stopActiveProbingWithOptions:(id)a3
+- (void)stopActiveProbingWithOptions:(id)options
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A5410] serializeSessionInfoMetadata:v4];
+  optionsCopy = options;
+  v5 = [MEMORY[0x1E69A5410] serializeSessionInfoMetadata:optionsCopy];
   v6 = v5;
   if (!v5)
   {
@@ -7887,9 +7887,9 @@ LABEL_7:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138412802;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
-    v22 = v4;
+    v22 = optionsCopy;
     v23 = 2048;
     v24 = [v6 length];
     _os_log_impl(&dword_1959FF000, v15, OS_LOG_TYPE_DEFAULT, "<%@>: stopActiveProbingWithOptions: %@ size: %lu", &v19, 0x20u);
@@ -7912,11 +7912,11 @@ LABEL_12:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)flushLinkProbingStatusWithOptions:(id)a3
+- (void)flushLinkProbingStatusWithOptions:(id)options
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A5410] serializeSessionInfoMetadata:v4];
+  optionsCopy = options;
+  v5 = [MEMORY[0x1E69A5410] serializeSessionInfoMetadata:optionsCopy];
   v6 = v5;
   if (!v5)
   {
@@ -7970,9 +7970,9 @@ LABEL_7:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138412802;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
-    v22 = v4;
+    v22 = optionsCopy;
     v23 = 2048;
     v24 = [v6 length];
     _os_log_impl(&dword_1959FF000, v15, OS_LOG_TYPE_DEFAULT, "<%@>: flushLinkProbingStatusWithOptions: %@ size: %lu", &v19, 0x20u);
@@ -7995,11 +7995,11 @@ LABEL_12:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)queryStatusWithOptions:(id)a3
+- (void)queryStatusWithOptions:(id)options
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A5410] serializeSessionInfoMetadata:v4];
+  optionsCopy = options;
+  v5 = [MEMORY[0x1E69A5410] serializeSessionInfoMetadata:optionsCopy];
   v6 = v5;
   if (!v5)
   {
@@ -8053,9 +8053,9 @@ LABEL_7:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138412802;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
-    v22 = v4;
+    v22 = optionsCopy;
     v23 = 2048;
     v24 = [v6 length];
     _os_log_impl(&dword_1959FF000, v15, OS_LOG_TYPE_DEFAULT, "<%@>: queryStatusWithOptions: %@ size: %lu", &v19, 0x20u);
@@ -8078,10 +8078,10 @@ LABEL_12:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setUPlusOneMode:(BOOL)a3 isInitiator:(BOOL)a4
+- (void)setUPlusOneMode:(BOOL)mode isInitiator:(BOOL)initiator
 {
-  v4 = a4;
-  v5 = a3;
+  initiatorCopy = initiator;
+  modeCopy = mode;
   v24 = *MEMORY[0x1E69E9840];
   v7 = _IDSLinkPacketBufferCreate();
   *&v8 = 0xAAAAAAAAAAAAAAAALL;
@@ -8094,7 +8094,7 @@ LABEL_12:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = @"NO";
-    if (v5)
+    if (modeCopy)
     {
       v13 = @"YES";
     }
@@ -8105,10 +8105,10 @@ LABEL_12:
     }
 
     *buf = 138412802;
-    v19 = self;
+    selfCopy = self;
     v21 = v13;
     v20 = 2112;
-    if (v4)
+    if (initiatorCopy)
     {
       v12 = @"YES";
     }
@@ -8118,8 +8118,8 @@ LABEL_12:
     _os_log_impl(&dword_1959FF000, v11, OS_LOG_TYPE_DEFAULT, "<%@>: setUPlusOneMode: %@ isInitiator: %@", buf, 0x20u);
   }
 
-  buf[0] = v5;
-  buf[1] = v4;
+  buf[0] = modeCopy;
+  buf[1] = initiatorCopy;
   IDSByteBufferWriteField();
   if (*v7 < 0xAAAAAAAAAAAAAAAALL)
   {
@@ -8138,9 +8138,9 @@ LABEL_12:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestPMTUEvaluationForLinkID:(char)a3
+- (void)requestPMTUEvaluationForLinkID:(char)d
 {
-  v3 = a3;
+  dCopy = d;
   v18 = *MEMORY[0x1E69E9840];
   v5 = _IDSLinkPacketBufferCreate();
   *&v6 = 0xAAAAAAAAAAAAAAAALL;
@@ -8153,9 +8153,9 @@ LABEL_12:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v15 = self;
+    selfCopy = self;
     v16 = 1024;
-    v17 = v3;
+    v17 = dCopy;
     _os_log_impl(&dword_1959FF000, v9, OS_LOG_TYPE_DEFAULT, "<%@>: requestPMTUEvaluationForLinkID: %d", buf, 0x12u);
   }
 
@@ -8177,28 +8177,28 @@ LABEL_12:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startMKMRecoveryForParticipantIDs:(id)a3
+- (void)startMKMRecoveryForParticipantIDs:(id)ds
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v5 = +[IDSTransportLog IDSDataChannels];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     *&buf[4] = self;
     v29 = 2112;
-    v30 = v4;
+    v30 = dsCopy;
     _os_log_impl(&dword_1959FF000, v5, OS_LOG_TYPE_DEFAULT, "<%@>: startMKMRecoveryForParticipantIDs: %@", buf, 0x16u);
   }
 
-  if ([v4 count])
+  if ([dsCopy count])
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF88]);
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v7 = v4;
+    v7 = dsCopy;
     v8 = [v7 countByEnumeratingWithState:&v24 objects:v35 count:16];
     if (v8)
     {
@@ -8291,11 +8291,11 @@ LABEL_12:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestSessionInfoWithOptions:(id)a3
+- (void)requestSessionInfoWithOptions:(id)options
 {
   v34[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A5410] serializeSessionInfoMetadata:v4];
+  optionsCopy = options;
+  v5 = [MEMORY[0x1E69A5410] serializeSessionInfoMetadata:optionsCopy];
   v6 = v5;
   if (v5)
   {
@@ -8310,9 +8310,9 @@ LABEL_12:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412803;
-        v26 = self;
+        selfCopy = self;
         v27 = 2113;
-        v28 = v4;
+        v28 = optionsCopy;
         v29 = 2048;
         v30 = [v6 length];
         _os_log_impl(&dword_1959FF000, v21, OS_LOG_TYPE_DEFAULT, "%@: requestSessionInfoWithOptions: %{private}@ size: %lu", buf, 0x20u);
@@ -8372,11 +8372,11 @@ LABEL_7:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestStatsWithOptions:(id)a3
+- (void)requestStatsWithOptions:(id)options
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A5410] serializeSessionInfoMetadata:v4];
+  optionsCopy = options;
+  v5 = [MEMORY[0x1E69A5410] serializeSessionInfoMetadata:optionsCopy];
   v6 = v5;
   if (!v5)
   {
@@ -8430,9 +8430,9 @@ LABEL_7:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138412802;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
-    v22 = v4;
+    v22 = optionsCopy;
     v23 = 2048;
     v24 = [v6 length];
     _os_log_impl(&dword_1959FF000, v15, OS_LOG_TYPE_DEFAULT, "<%@>: requestStatsWithOptions: %@ size: %lu", &v19, 0x20u);
@@ -8455,9 +8455,9 @@ LABEL_12:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_reportDictionary:(id)a3 forKey:(unsigned __int8)a4
+- (void)_reportDictionary:(id)dictionary forKey:(unsigned __int8)key
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = _IDSLinkPacketBufferCreate();
   *&v7 = 0xAAAAAAAAAAAAAAAALL;
   *(&v7 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -8494,9 +8494,9 @@ LABEL_12:
   }
 }
 
-- (void)reportMKIArrival:(id)a3 isLocallyGenerated:(BOOL)a4
+- (void)reportMKIArrival:(id)arrival isLocallyGenerated:(BOOL)generated
 {
-  v6 = a3;
+  arrivalCopy = arrival;
   v7 = MEMORY[0x1E696AD98];
   if (qword_1EAEDBEE8 != -1)
   {
@@ -8510,18 +8510,18 @@ LABEL_12:
   v12[2] = sub_195B07E9C;
   v12[3] = &unk_1E743EFD8;
   v12[4] = self;
-  v13 = v6;
+  v13 = arrivalCopy;
   v14 = v8;
-  v15 = a4;
+  generatedCopy = generated;
   v10 = v8;
-  v11 = v6;
+  v11 = arrivalCopy;
   dispatch_async(v9, v12);
 }
 
-- (void)reportFirstIncomingPacketTimeForMKI:(id)a3 participantID:(id)a4
+- (void)reportFirstIncomingPacketTimeForMKI:(id)i participantID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  dCopy = d;
   v8 = MEMORY[0x1E696AD98];
   if (qword_1EAEDBEE8 != -1)
   {
@@ -8535,52 +8535,52 @@ LABEL_12:
   v14[2] = sub_195B08168;
   v14[3] = &unk_1E743EEE8;
   v14[4] = self;
-  v15 = v6;
+  v15 = iCopy;
   v16 = v9;
-  v17 = v7;
-  v11 = v7;
+  v17 = dCopy;
+  v11 = dCopy;
   v12 = v9;
-  v13 = v6;
+  v13 = iCopy;
   dispatch_async(v10, v14);
 }
 
-- (void)_reportFirstIncomingPacketTimeForMKI:(id)a3 time:(id)a4 participantID:(id)a5
+- (void)_reportFirstIncomingPacketTimeForMKI:(id)i time:(id)time participantID:(id)d
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 UUIDString];
+  timeCopy = time;
+  dCopy = d;
+  uUIDString = [i UUIDString];
   v11 = +[IDSLogging IDSDataChannels];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
-    v20 = v10;
+    v20 = uUIDString;
     v21 = 2112;
-    v22 = v8;
+    v22 = timeCopy;
     v23 = 2048;
-    v24 = [v9 unsignedLongLongValue];
+    unsignedLongLongValue = [dCopy unsignedLongLongValue];
     _os_log_impl(&dword_1959FF000, v11, OS_LOG_TYPE_DEFAULT, "%@: reportFirstIncomingPacketTimeForMKI: first incoming packet for mki %@ at %@ for participantID: %llu", buf, 0x2Au);
   }
 
   v12 = *MEMORY[0x1E69A4A58];
   v15[0] = *MEMORY[0x1E69A4A80];
   v15[1] = v12;
-  v16[0] = v8;
-  v16[1] = v10;
+  v16[0] = timeCopy;
+  v16[1] = uUIDString;
   v15[2] = *MEMORY[0x1E69A4A90];
-  v16[2] = v9;
+  v16[2] = dCopy;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:3];
   [(IDSDatagramChannel *)self _reportDictionary:v13 forKey:78];
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportFirstOutgoingPacketTimeForMKI:(id)a3 participantID:(id)a4
+- (void)reportFirstOutgoingPacketTimeForMKI:(id)i participantID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  dCopy = d;
   v8 = MEMORY[0x1E696AD98];
   if (qword_1EAEDBEE8 != -1)
   {
@@ -8594,52 +8594,52 @@ LABEL_12:
   v14[2] = sub_195B08434;
   v14[3] = &unk_1E743EEE8;
   v14[4] = self;
-  v15 = v6;
+  v15 = iCopy;
   v16 = v9;
-  v17 = v7;
-  v11 = v7;
+  v17 = dCopy;
+  v11 = dCopy;
   v12 = v9;
-  v13 = v6;
+  v13 = iCopy;
   dispatch_async(v10, v14);
 }
 
-- (void)_reportFirstOutgoingPacketTimeForMKI:(id)a3 time:(id)a4 participantID:(id)a5
+- (void)_reportFirstOutgoingPacketTimeForMKI:(id)i time:(id)time participantID:(id)d
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 UUIDString];
+  timeCopy = time;
+  dCopy = d;
+  uUIDString = [i UUIDString];
   v11 = +[IDSLogging IDSDataChannels];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
-    v20 = v10;
+    v20 = uUIDString;
     v21 = 2112;
-    v22 = v8;
+    v22 = timeCopy;
     v23 = 2048;
-    v24 = [v9 unsignedLongLongValue];
+    unsignedLongLongValue = [dCopy unsignedLongLongValue];
     _os_log_impl(&dword_1959FF000, v11, OS_LOG_TYPE_DEFAULT, "%@: reportFirstOutgoingPacketTimeForMKI: first outgoing packet for mki %@ at %@ for participantID: %llu", buf, 0x2Au);
   }
 
   v12 = *MEMORY[0x1E69A4A58];
   v15[0] = *MEMORY[0x1E69A4A80];
   v15[1] = v12;
-  v16[0] = v8;
-  v16[1] = v10;
+  v16[0] = timeCopy;
+  v16[1] = uUIDString;
   v15[2] = *MEMORY[0x1E69A4A90];
-  v16[2] = v9;
+  v16[2] = dCopy;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:3];
   [(IDSDatagramChannel *)self _reportDictionary:v13 forKey:79];
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)generateMetadataWithDatagramInfo:(id)a3 options:(id *)a4 currentDatagramCount:(unsigned __int8)a5 totalDatagramCount:(unsigned __int8)a6 byteBuffer:(id *)a7
+- (void)generateMetadataWithDatagramInfo:(id)info options:(id *)options currentDatagramCount:(unsigned __int8)count totalDatagramCount:(unsigned __int8)datagramCount byteBuffer:(id *)buffer
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (!a4 && !a3.var0)
+  if (!options && !info.var0)
   {
     goto LABEL_30;
   }
@@ -8649,17 +8649,17 @@ LABEL_12:
   IDSByteBufferWriteField();
   IDSByteBufferWriteField();
   IDSByteBufferWriteField();
-  if (!a4)
+  if (!options)
   {
     goto LABEL_30;
   }
 
-  var0 = a4->var0;
-  if ((a4->var0 & 8) != 0)
+  var0 = options->var0;
+  if ((options->var0 & 8) != 0)
   {
     IDSByteBufferWriteField();
-    var0 = a4->var0;
-    if ((a4->var0 & 1) == 0)
+    var0 = options->var0;
+    if ((options->var0 & 1) == 0)
     {
 LABEL_6:
       if ((var0 & 0x10) == 0)
@@ -8676,10 +8676,10 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  *buf = bswap64(a4->var1);
+  *buf = bswap64(options->var1);
   IDSByteBufferWriteField();
-  var0 = a4->var0;
-  if ((a4->var0 & 0x10) == 0)
+  var0 = options->var0;
+  if ((options->var0 & 0x10) == 0)
   {
 LABEL_7:
     if ((var0 & 2) == 0)
@@ -8691,19 +8691,19 @@ LABEL_7:
   }
 
 LABEL_11:
-  *buf = bswap32(a4->var2) >> 16;
+  *buf = bswap32(options->var2) >> 16;
   IDSByteBufferWriteField();
-  var0 = a4->var0;
-  if ((a4->var0 & 2) == 0)
+  var0 = options->var0;
+  if ((options->var0 & 2) == 0)
   {
     goto LABEL_19;
   }
 
 LABEL_12:
-  p_var4 = &a4->var4;
-  if (a4->var4 >= 1)
+  p_var4 = &options->var4;
+  if (options->var4 >= 1)
   {
-    if (a4->var4 >= 0xDu)
+    if (options->var4 >= 0xDu)
     {
       *p_var4 = 12;
     }
@@ -8713,7 +8713,7 @@ LABEL_12:
     v10 = *p_var4;
     if (v10 >= 1)
     {
-      var5 = a4->var5;
+      var5 = options->var5;
       v12 = buf;
       do
       {
@@ -8727,7 +8727,7 @@ LABEL_12:
     }
 
     IDSByteBufferWriteField();
-    var0 = a4->var0;
+    var0 = options->var0;
   }
 
 LABEL_19:
@@ -8735,8 +8735,8 @@ LABEL_19:
   {
     buf[0] = 1;
     IDSByteBufferWriteField();
-    var0 = a4->var0;
-    if ((a4->var0 & 0x40) == 0)
+    var0 = options->var0;
+    if ((options->var0 & 0x40) == 0)
     {
 LABEL_21:
       if ((var0 & 0x80) == 0)
@@ -8753,10 +8753,10 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  *buf = bswap32(a4->var7) >> 16;
+  *buf = bswap32(options->var7) >> 16;
   IDSByteBufferWriteField();
-  var0 = a4->var0;
-  if ((a4->var0 & 0x80) == 0)
+  var0 = options->var0;
+  if ((options->var0 & 0x80) == 0)
   {
 LABEL_22:
     if ((var0 & 0x100) == 0)
@@ -8770,8 +8770,8 @@ LABEL_22:
 LABEL_33:
   buf[0] = 1;
   IDSByteBufferWriteField();
-  var0 = a4->var0;
-  if ((a4->var0 & 0x100) == 0)
+  var0 = options->var0;
+  if ((options->var0 & 0x100) == 0)
   {
 LABEL_23:
     if ((var0 & 0x40000) == 0)
@@ -8785,8 +8785,8 @@ LABEL_23:
 LABEL_34:
   buf[0] = 1;
   IDSByteBufferWriteField();
-  var0 = a4->var0;
-  if ((a4->var0 & 0x40000) == 0)
+  var0 = options->var0;
+  if ((options->var0 & 0x40000) == 0)
   {
 LABEL_24:
     if ((var0 & 0x200) == 0)
@@ -8798,10 +8798,10 @@ LABEL_24:
   }
 
 LABEL_35:
-  *buf = *a4->var13;
+  *buf = *options->var13;
   IDSByteBufferWriteField();
-  var0 = a4->var0;
-  if ((a4->var0 & 0x200) == 0)
+  var0 = options->var0;
+  if ((options->var0 & 0x200) == 0)
   {
 LABEL_25:
     if ((var0 & 0x400) == 0)
@@ -8813,10 +8813,10 @@ LABEL_25:
   }
 
 LABEL_36:
-  *buf = bswap64(a4->var10);
+  *buf = bswap64(options->var10);
   IDSByteBufferWriteField();
-  var0 = a4->var0;
-  if ((a4->var0 & 0x400) == 0)
+  var0 = options->var0;
+  if ((options->var0 & 0x400) == 0)
   {
 LABEL_26:
     if ((var0 & 0x8000) == 0)
@@ -8830,8 +8830,8 @@ LABEL_26:
 LABEL_37:
   buf[0] = 1;
   IDSByteBufferWriteField();
-  var0 = a4->var0;
-  if ((a4->var0 & 0x8000) == 0)
+  var0 = options->var0;
+  if ((options->var0 & 0x8000) == 0)
   {
 LABEL_27:
     if ((var0 & 0x10000) == 0)
@@ -8842,7 +8842,7 @@ LABEL_27:
 LABEL_41:
     buf[0] = 1;
     IDSByteBufferWriteField();
-    if ((a4->var0 & 0x20000) == 0)
+    if ((options->var0 & 0x20000) == 0)
     {
       goto LABEL_30;
     }
@@ -8854,16 +8854,16 @@ LABEL_38:
   v15 = +[IDSTransportLog IDSDataChannels];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    var12 = a4->var12;
+    var12 = options->var12;
     *buf = 134217984;
     *&buf[4] = var12;
     _os_log_impl(&dword_1959FF000, v15, OS_LOG_TYPE_DEFAULT, "storing encryption sequence number: %llu (*Client -> IDSD)", buf, 0xCu);
   }
 
-  *buf = bswap64(a4->var12);
+  *buf = bswap64(options->var12);
   IDSByteBufferWriteField();
-  var0 = a4->var0;
-  if ((a4->var0 & 0x10000) != 0)
+  var0 = options->var0;
+  if ((options->var0 & 0x10000) != 0)
   {
     goto LABEL_41;
   }
@@ -9013,12 +9013,12 @@ LABEL_10:
 
   if (internal->_shouldForcePathMTUEvaluationPeriodically)
   {
-    v7 = [(IDSDatagramChannel *)self connectedLinks];
+    connectedLinks = [(IDSDatagramChannel *)self connectedLinks];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [v7 countByEnumeratingWithState:&v13 objects:v18 count:16];
+    v8 = [connectedLinks countByEnumeratingWithState:&v13 objects:v18 count:16];
     if (v8)
     {
       v9 = v8;
@@ -9030,14 +9030,14 @@ LABEL_10:
         {
           if (*v14 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(connectedLinks);
           }
 
           -[IDSDatagramChannel requestPMTUEvaluationForLinkID:](self, "requestPMTUEvaluationForLinkID:", [*(*(&v13 + 1) + 8 * v11++) linkID]);
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v13 objects:v18 count:16];
+        v9 = [connectedLinks countByEnumeratingWithState:&v13 objects:v18 count:16];
       }
 
       while (v9);
@@ -9047,10 +9047,10 @@ LABEL_10:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendDataChunkToDaemon:(id)a3 offset:(unint64_t)a4 length:(unint64_t)a5 withKey:(unsigned __int8)a6
+- (void)_sendDataChunkToDaemon:(id)daemon offset:(unint64_t)offset length:(unint64_t)length withKey:(unsigned __int8)key
 {
-  v8 = a3;
-  if (a5 < 0x401)
+  daemonCopy = daemon;
+  if (length < 0x401)
   {
     v10 = _IDSLinkPacketBufferCreateWithSize();
     *&v11 = 0xAAAAAAAAAAAAAAAALL;
@@ -9059,7 +9059,7 @@ LABEL_10:
     v12 = *v10;
     v13 = v10[1];
     IDSByteBufferInitForWriteWithAllocatedSpace();
-    [v8 bytes];
+    [daemonCopy bytes];
     IDSByteBufferWriteField();
     v10[2] = 0xAAAAAAAAAAAAAAAALL - *v10;
     IDSByteBufferRelease();
@@ -9078,7 +9078,7 @@ LABEL_10:
     v9 = +[IDSTransportLog IDSDataChannels];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      sub_195B40A9C(v8);
+      sub_195B40A9C(daemonCopy);
     }
   }
 }
@@ -9118,19 +9118,19 @@ LABEL_10:
   objc_destroyWeak(buf);
 }
 
-- (void)sendPacketLogData:(id)a3
+- (void)sendPacketLogData:(id)data
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v5 = +[IDSTransportLog IDSDataChannels];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = [v4 length];
+    v7[1] = [dataCopy length];
     _os_log_impl(&dword_1959FF000, v5, OS_LOG_TYPE_DEFAULT, "sendPacketLogData: packet log payload size: %d", v7, 8u);
   }
 
-  [(IDSDatagramChannel *)self _sendChunkedDataToDaemon:v4 withKey:86 shouldTerminateWithEmptyData:0];
+  [(IDSDatagramChannel *)self _sendChunkedDataToDaemon:dataCopy withKey:86 shouldTerminateWithEmptyData:0];
   v6 = *MEMORY[0x1E69E9840];
 }
 

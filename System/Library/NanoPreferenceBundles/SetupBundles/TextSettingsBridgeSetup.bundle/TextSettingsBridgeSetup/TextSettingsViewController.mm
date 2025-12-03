@@ -1,42 +1,42 @@
 @interface TextSettingsViewController
 - (BPSSetupMiniFlowControllerDelegate)miniFlowDelegate;
-- (CGPoint)watchScreenInsetForDeviceSize:(unint64_t)a3 screenScale:(double)a4;
-- (CGSize)watchScreenSizeForDeviceSize:(unint64_t)a3 screenScale:(double)a4;
+- (CGPoint)watchScreenInsetForDeviceSize:(unint64_t)size screenScale:(double)scale;
+- (CGSize)watchScreenSizeForDeviceSize:(unint64_t)size screenScale:(double)scale;
 - (TextSettingsObserver)observer;
-- (TextSettingsViewController)initWithDevice:(id)a3 observer:(id)a4;
-- (id)_sliderTextImageWithSystemImageName:(id)a3;
+- (TextSettingsViewController)initWithDevice:(id)device observer:(id)observer;
+- (id)_sliderTextImageWithSystemImageName:(id)name;
 - (id)detailString;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)alternateButtonPressed:(id)a3;
-- (void)setSelectedContentSizeValue:(unint64_t)a3;
-- (void)sliderValueTableViewCell:(id)a3 didChangeValue:(double)a4;
-- (void)suggestedButtonPressed:(id)a3;
-- (void)switchToggled:(id)a3;
-- (void)updateWatchScreenImageViewAndNotifyObserver:(BOOL)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)alternateButtonPressed:(id)pressed;
+- (void)setSelectedContentSizeValue:(unint64_t)value;
+- (void)sliderValueTableViewCell:(id)cell didChangeValue:(double)value;
+- (void)suggestedButtonPressed:(id)pressed;
+- (void)switchToggled:(id)toggled;
+- (void)updateWatchScreenImageViewAndNotifyObserver:(BOOL)observer;
 - (void)viewDidLoad;
 @end
 
 @implementation TextSettingsViewController
 
-- (TextSettingsViewController)initWithDevice:(id)a3 observer:(id)a4
+- (TextSettingsViewController)initWithDevice:(id)device observer:(id)observer
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  observerCopy = observer;
   v14.receiver = self;
   v14.super_class = TextSettingsViewController;
   v9 = [(TextSettingsViewController *)&v14 initWithTitle:&stru_C520 detailText:0 icon:0 contentLayout:3];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_device, a3);
-    objc_storeWeak(&v10->_observer, v8);
+    objc_storeStrong(&v9->_device, device);
+    objc_storeWeak(&v10->_observer, observerCopy);
     [(TextSettingsViewController *)v10 setStyle:10];
-    v11 = [(TextSettingsViewController *)v10 device];
-    [(TextSettingsViewController *)v10 setDefaultContentSizeValue:contentSizeValueOnDevice(v11)];
+    device = [(TextSettingsViewController *)v10 device];
+    [(TextSettingsViewController *)v10 setDefaultContentSizeValue:contentSizeValueOnDevice(device)];
 
     [(TextSettingsViewController *)v10 setSelectedContentSizeValue:[(TextSettingsViewController *)v10 defaultContentSizeValue]];
-    v12 = [(TextSettingsViewController *)v10 device];
-    [(TextSettingsViewController *)v10 setSelectedBoldTextEnabled:boldTextIsEnabledOnDevice(v12)];
+    device2 = [(TextSettingsViewController *)v10 device];
+    [(TextSettingsViewController *)v10 setSelectedBoldTextEnabled:boldTextIsEnabledOnDevice(device2)];
   }
 
   return v10;
@@ -58,50 +58,50 @@
   [v4 scale];
   v6 = v5;
 
-  v7 = [(TextSettingsViewController *)self alternateChoiceButton];
-  v8 = [v7 titleLabel];
-  [v8 setNumberOfLines:0];
+  alternateChoiceButton = [(TextSettingsViewController *)self alternateChoiceButton];
+  titleLabel = [alternateChoiceButton titleLabel];
+  [titleLabel setNumberOfLines:0];
 
-  v9 = [(TextSettingsViewController *)self alternateChoiceButton];
-  v10 = [v9 titleLabel];
-  [v10 setLineBreakMode:0];
+  alternateChoiceButton2 = [(TextSettingsViewController *)self alternateChoiceButton];
+  titleLabel2 = [alternateChoiceButton2 titleLabel];
+  [titleLabel2 setLineBreakMode:0];
 
   v11 = [AXContentSizedTableView alloc];
-  v12 = [(TextSettingsViewController *)self contentView];
-  [v12 bounds];
+  contentView = [(TextSettingsViewController *)self contentView];
+  [contentView bounds];
   v13 = [(AXContentSizedTableView *)v11 initWithFrame:2 style:?];
   [(TextSettingsViewController *)self setTableView:v13];
 
-  v14 = [(TextSettingsViewController *)self tableView];
-  [v14 registerClass:objc_opt_class() forCellReuseIdentifier:@"AXBoldTextCellReuseIdentifier"];
+  tableView = [(TextSettingsViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"AXBoldTextCellReuseIdentifier"];
 
-  v15 = [(TextSettingsViewController *)self tableView];
+  tableView2 = [(TextSettingsViewController *)self tableView];
   v16 = objc_opt_class();
   v17 = +[AXSliderValueTableViewCell cellReuseIdentifier];
-  [v15 registerClass:v16 forCellReuseIdentifier:v17];
+  [tableView2 registerClass:v16 forCellReuseIdentifier:v17];
 
-  v18 = [(TextSettingsViewController *)self tableView];
-  [v18 setRowHeight:UITableViewAutomaticDimension];
+  tableView3 = [(TextSettingsViewController *)self tableView];
+  [tableView3 setRowHeight:UITableViewAutomaticDimension];
 
-  v19 = [(TextSettingsViewController *)self tableView];
-  [v19 setDelegate:self];
+  tableView4 = [(TextSettingsViewController *)self tableView];
+  [tableView4 setDelegate:self];
 
-  v20 = [(TextSettingsViewController *)self tableView];
-  [v20 setDataSource:self];
+  tableView5 = [(TextSettingsViewController *)self tableView];
+  [tableView5 setDataSource:self];
 
   v21 = BPSSeparatorColor();
-  v22 = [(TextSettingsViewController *)self tableView];
-  [v22 setSeparatorColor:v21];
+  tableView6 = [(TextSettingsViewController *)self tableView];
+  [tableView6 setSeparatorColor:v21];
 
-  v23 = [(TextSettingsViewController *)self tableView];
-  [v23 setScrollEnabled:0];
+  tableView7 = [(TextSettingsViewController *)self tableView];
+  [tableView7 setScrollEnabled:0];
 
-  v24 = [(TextSettingsViewController *)self tableView];
-  [v24 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView8 = [(TextSettingsViewController *)self tableView];
+  [tableView8 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   buf[0] = 0;
-  v25 = [(TextSettingsViewController *)self device];
-  v26 = contentSizeCategoryOnDeviceOrCompanion(v25, buf);
+  device = [(TextSettingsViewController *)self device];
+  v26 = contentSizeCategoryOnDeviceOrCompanion(device, buf);
 
   v27 = objc_alloc_init(UILabel);
   [(TextSettingsViewController *)self setDefaultTextSizeLabel:v27];
@@ -117,66 +117,66 @@
   }
 
   v29 = textSettingsLocalizedString(v28);
-  v30 = [(TextSettingsViewController *)self defaultTextSizeLabel];
-  [v30 setText:v29];
+  defaultTextSizeLabel = [(TextSettingsViewController *)self defaultTextSizeLabel];
+  [defaultTextSizeLabel setText:v29];
 
   v31 = +[UIColor clearColor];
-  v32 = [(TextSettingsViewController *)self defaultTextSizeLabel];
-  [v32 setBackgroundColor:v31];
+  defaultTextSizeLabel2 = [(TextSettingsViewController *)self defaultTextSizeLabel];
+  [defaultTextSizeLabel2 setBackgroundColor:v31];
 
-  v33 = [(TextSettingsViewController *)self defaultTextSizeLabel];
-  [v33 setNumberOfLines:0];
+  defaultTextSizeLabel3 = [(TextSettingsViewController *)self defaultTextSizeLabel];
+  [defaultTextSizeLabel3 setNumberOfLines:0];
 
-  v34 = [(TextSettingsViewController *)self defaultTextSizeLabel];
-  [v34 setLineBreakMode:0];
+  defaultTextSizeLabel4 = [(TextSettingsViewController *)self defaultTextSizeLabel];
+  [defaultTextSizeLabel4 setLineBreakMode:0];
 
   v35 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  v36 = [(TextSettingsViewController *)self defaultTextSizeLabel];
-  [v36 setFont:v35];
+  defaultTextSizeLabel5 = [(TextSettingsViewController *)self defaultTextSizeLabel];
+  [defaultTextSizeLabel5 setFont:v35];
 
-  v37 = [(TextSettingsViewController *)self defaultTextSizeLabel];
-  [v37 setAdjustsFontForContentSizeCategory:1];
+  defaultTextSizeLabel6 = [(TextSettingsViewController *)self defaultTextSizeLabel];
+  [defaultTextSizeLabel6 setAdjustsFontForContentSizeCategory:1];
 
-  v38 = [(TextSettingsViewController *)self defaultTextSizeLabel];
-  [v38 setTextAlignment:1];
+  defaultTextSizeLabel7 = [(TextSettingsViewController *)self defaultTextSizeLabel];
+  [defaultTextSizeLabel7 setTextAlignment:1];
 
-  v39 = [(TextSettingsViewController *)self defaultTextSizeLabel];
-  [v39 setTranslatesAutoresizingMaskIntoConstraints:0];
+  defaultTextSizeLabel8 = [(TextSettingsViewController *)self defaultTextSizeLabel];
+  [defaultTextSizeLabel8 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v40 = [(TextSettingsViewController *)self device];
-  v41 = [PBBridgeWatchAttributeController sizeFromDevice:v40];
+  device2 = [(TextSettingsViewController *)self device];
+  v41 = [PBBridgeWatchAttributeController sizeFromDevice:device2];
 
-  v42 = [(TextSettingsViewController *)self device];
-  v43 = [PBBridgeWatchAttributeController materialFromDevice:v42];
+  device3 = [(TextSettingsViewController *)self device];
+  v43 = [PBBridgeWatchAttributeController materialFromDevice:device3];
 
   v44 = [[UIImageView alloc] initWithImage:0];
   [(TextSettingsViewController *)self setWatchScreenImageView:v44];
 
-  v45 = [(TextSettingsViewController *)self watchScreenImageView];
-  [v45 setContentMode:1];
+  watchScreenImageView = [(TextSettingsViewController *)self watchScreenImageView];
+  [watchScreenImageView setContentMode:1];
 
   if (_os_feature_enabled_impl())
   {
     v46 = [[BPSIllustratedWatchView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     [(TextSettingsViewController *)self setTextPreviewIllustratedWatchView:v46];
 
-    v47 = [(TextSettingsViewController *)self textPreviewIllustratedWatchView];
-    v48 = [(TextSettingsViewController *)self watchScreenImageView];
-    [v47 addSubview:v48];
+    textPreviewIllustratedWatchView = [(TextSettingsViewController *)self textPreviewIllustratedWatchView];
+    watchScreenImageView2 = [(TextSettingsViewController *)self watchScreenImageView];
+    [textPreviewIllustratedWatchView addSubview:watchScreenImageView2];
 
-    v49 = [(TextSettingsViewController *)self textPreviewIllustratedWatchView];
-    [v49 watchScreenInsetGuide];
+    textPreviewIllustratedWatchView2 = [(TextSettingsViewController *)self textPreviewIllustratedWatchView];
+    [textPreviewIllustratedWatchView2 watchScreenInsetGuide];
     v51 = v50;
     v53 = v52;
     v55 = v54;
     v57 = v56;
 
-    v58 = [(TextSettingsViewController *)self watchScreenImageView];
-    [v58 setFrame:{v51, v53, v55, v57}];
+    watchScreenImageView3 = [(TextSettingsViewController *)self watchScreenImageView];
+    [watchScreenImageView3 setFrame:{v51, v53, v55, v57}];
 
     v59 = [UIStackView alloc];
-    v60 = [(TextSettingsViewController *)self textPreviewIllustratedWatchView];
-    v103 = v60;
+    textPreviewIllustratedWatchView3 = [(TextSettingsViewController *)self textPreviewIllustratedWatchView];
+    v103 = textPreviewIllustratedWatchView3;
     v61 = &v103;
   }
 
@@ -185,15 +185,15 @@
     v62 = [[BPSWatchView alloc] initWithStyle:2];
     [(TextSettingsViewController *)self setTextPreviewWatchView:v62];
 
-    v63 = [(TextSettingsViewController *)self textPreviewWatchView];
-    [v63 overrideMaterial:v43 size:v41];
+    textPreviewWatchView = [(TextSettingsViewController *)self textPreviewWatchView];
+    [textPreviewWatchView overrideMaterial:v43 size:v41];
 
-    v64 = [(TextSettingsViewController *)self textPreviewWatchView];
-    [v64 setTranslatesAutoresizingMaskIntoConstraints:0];
+    textPreviewWatchView2 = [(TextSettingsViewController *)self textPreviewWatchView];
+    [textPreviewWatchView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v65 = [(TextSettingsViewController *)self textPreviewWatchView];
-    v66 = [(TextSettingsViewController *)self watchScreenImageView];
-    [v65 addSubview:v66];
+    textPreviewWatchView3 = [(TextSettingsViewController *)self textPreviewWatchView];
+    watchScreenImageView4 = [(TextSettingsViewController *)self watchScreenImageView];
+    [textPreviewWatchView3 addSubview:watchScreenImageView4];
 
     [(TextSettingsViewController *)self watchScreenSizeForDeviceSize:v41 screenScale:v6];
     v68 = v67;
@@ -201,19 +201,19 @@
     [(TextSettingsViewController *)self watchScreenInsetForDeviceSize:v41 screenScale:v6];
     v72 = v71;
     v74 = v73;
-    v75 = [(TextSettingsViewController *)self watchScreenImageView];
-    [v75 setFrame:{v72, v74, v68, v70}];
+    watchScreenImageView5 = [(TextSettingsViewController *)self watchScreenImageView];
+    [watchScreenImageView5 setFrame:{v72, v74, v68, v70}];
 
     v59 = [UIStackView alloc];
-    v60 = [(TextSettingsViewController *)self textPreviewWatchView];
-    v102 = v60;
+    textPreviewIllustratedWatchView3 = [(TextSettingsViewController *)self textPreviewWatchView];
+    v102 = textPreviewIllustratedWatchView3;
     v61 = &v102;
   }
 
-  v76 = [(TextSettingsViewController *)self tableView];
-  v61[1] = v76;
-  v77 = [(TextSettingsViewController *)self defaultTextSizeLabel];
-  v61[2] = v77;
+  tableView9 = [(TextSettingsViewController *)self tableView];
+  v61[1] = tableView9;
+  defaultTextSizeLabel9 = [(TextSettingsViewController *)self defaultTextSizeLabel];
+  v61[2] = defaultTextSizeLabel9;
   v78 = [NSArray arrayWithObjects:v61 count:3];
   v79 = [v59 initWithArrangedSubviews:v78];
 
@@ -222,65 +222,65 @@
   [v79 setBaselineRelativeArrangement:1];
   [v79 setSpacing:2.0];
   [v79 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v80 = [(TextSettingsViewController *)self contentView];
-  [v80 addSubview:v79];
+  contentView2 = [(TextSettingsViewController *)self contentView];
+  [contentView2 addSubview:v79];
 
-  v98 = [(TextSettingsViewController *)self contentView];
-  v97 = [v98 topAnchor];
-  v96 = [v79 topAnchor];
-  v95 = [v97 constraintEqualToAnchor:v96];
+  contentView3 = [(TextSettingsViewController *)self contentView];
+  topAnchor = [contentView3 topAnchor];
+  topAnchor2 = [v79 topAnchor];
+  v95 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v101[0] = v95;
-  v94 = [(TextSettingsViewController *)self contentView];
-  v93 = [v94 leadingAnchor];
-  v92 = [v79 leadingAnchor];
-  v91 = [v93 constraintEqualToAnchor:v92];
+  contentView4 = [(TextSettingsViewController *)self contentView];
+  leadingAnchor = [contentView4 leadingAnchor];
+  leadingAnchor2 = [v79 leadingAnchor];
+  v91 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v101[1] = v91;
-  v90 = [(TextSettingsViewController *)self contentView];
-  v81 = [v90 trailingAnchor];
-  v82 = [v79 trailingAnchor];
-  v83 = [v81 constraintEqualToAnchor:v82];
+  contentView5 = [(TextSettingsViewController *)self contentView];
+  trailingAnchor = [contentView5 trailingAnchor];
+  trailingAnchor2 = [v79 trailingAnchor];
+  v83 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v101[2] = v83;
-  v84 = [(TextSettingsViewController *)self contentView];
-  v85 = [v84 bottomAnchor];
-  v86 = [v79 bottomAnchor];
-  v87 = [v85 constraintEqualToAnchor:v86];
+  contentView6 = [(TextSettingsViewController *)self contentView];
+  bottomAnchor = [contentView6 bottomAnchor];
+  bottomAnchor2 = [v79 bottomAnchor];
+  v87 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v101[3] = v87;
   v88 = [NSArray arrayWithObjects:v101 count:4];
   [NSLayoutConstraint activateConstraints:v88];
 
-  v89 = [(TextSettingsViewController *)self tableView];
-  [v89 reloadData];
+  tableView10 = [(TextSettingsViewController *)self tableView];
+  [tableView10 reloadData];
 
   [(TextSettingsViewController *)self updateWatchScreenImageViewAndNotifyObserver:1];
 }
 
-- (void)setSelectedContentSizeValue:(unint64_t)a3
+- (void)setSelectedContentSizeValue:(unint64_t)value
 {
-  self->_selectedContentSizeValue = a3;
-  v4 = [(TextSettingsViewController *)self defaultContentSizeValue]!= a3;
-  v5 = [(TextSettingsViewController *)self defaultTextSizeLabel];
-  [v5 setHidden:v4];
+  self->_selectedContentSizeValue = value;
+  v4 = [(TextSettingsViewController *)self defaultContentSizeValue]!= value;
+  defaultTextSizeLabel = [(TextSettingsViewController *)self defaultTextSizeLabel];
+  [defaultTextSizeLabel setHidden:v4];
 }
 
-- (CGPoint)watchScreenInsetForDeviceSize:(unint64_t)a3 screenScale:(double)a4
+- (CGPoint)watchScreenInsetForDeviceSize:(unint64_t)size screenScale:(double)scale
 {
-  if (a4 <= 2.0)
+  if (scale <= 2.0)
   {
-    if (a3 == 2)
+    if (size == 2)
     {
       v5 = 56.0;
       v4 = 25.5;
       goto LABEL_17;
     }
 
-    if (a3 == 7)
+    if (size == 7)
     {
       v5 = 50.5;
       v4 = 19.5;
       goto LABEL_17;
     }
 
-    if (a3 != 8)
+    if (size != 8)
     {
       v5 = 54.0;
       v4 = 24.5;
@@ -291,7 +291,7 @@
     goto LABEL_11;
   }
 
-  switch(a3)
+  switch(size)
   {
     case 2uLL:
       v5 = 74.0;
@@ -318,11 +318,11 @@ LABEL_17:
   return result;
 }
 
-- (CGSize)watchScreenSizeForDeviceSize:(unint64_t)a3 screenScale:(double)a4
+- (CGSize)watchScreenSizeForDeviceSize:(unint64_t)size screenScale:(double)scale
 {
-  if (a4 <= 2.0)
+  if (scale <= 2.0)
   {
-    switch(a3)
+    switch(size)
     {
       case 2uLL:
         v4 = 85.0;
@@ -346,7 +346,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  switch(a3)
+  switch(size)
   {
     case 2uLL:
       v4 = 108.0;
@@ -372,22 +372,22 @@ LABEL_17:
   return result;
 }
 
-- (void)updateWatchScreenImageViewAndNotifyObserver:(BOOL)a3
+- (void)updateWatchScreenImageViewAndNotifyObserver:(BOOL)observer
 {
-  v3 = a3;
+  observerCopy = observer;
   if (([(TextSettingsViewController *)self isViewLoaded]& 1) != 0)
   {
-    v5 = [(TextSettingsViewController *)self device];
-    v6 = contentSizeCategoryOnDeviceForValue(v5, [(TextSettingsViewController *)self selectedContentSizeValue]);
+    device = [(TextSettingsViewController *)self device];
+    v6 = contentSizeCategoryOnDeviceForValue(device, [(TextSettingsViewController *)self selectedContentSizeValue]);
 
-    v7 = [(TextSettingsViewController *)self selectedBoldTextEnabled];
-    if (v3)
+    selectedBoldTextEnabled = [(TextSettingsViewController *)self selectedBoldTextEnabled];
+    if (observerCopy)
     {
-      v8 = [(TextSettingsViewController *)self observer];
-      [v8 didSelectContentSizeCategory:v6 boldTextEnabled:v7];
+      observer = [(TextSettingsViewController *)self observer];
+      [observer didSelectContentSizeCategory:v6 boldTextEnabled:selectedBoldTextEnabled];
     }
 
-    v9 = cachedTextPreviewImage(v6, v7);
+    v9 = cachedTextPreviewImage(v6, selectedBoldTextEnabled);
     v10 = v9;
     if (v9)
     {
@@ -400,7 +400,7 @@ LABEL_17:
       v11 = AXLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [(TextSettingsViewController *)v6 updateWatchScreenImageViewAndNotifyObserver:v7, v11];
+        [(TextSettingsViewController *)v6 updateWatchScreenImageViewAndNotifyObserver:selectedBoldTextEnabled, v11];
       }
     }
   }
@@ -428,11 +428,11 @@ void __74__TextSettingsViewController_updateWatchScreenImageViewAndNotifyObserve
 
 - (id)detailString
 {
-  v2 = [(TextSettingsViewController *)self device];
-  v3 = [v2 valueForProperty:NRDevicePropertyIsAltAccount];
-  v4 = [v3 BOOLValue];
+  device = [(TextSettingsViewController *)self device];
+  v3 = [device valueForProperty:NRDevicePropertyIsAltAccount];
+  bOOLValue = [v3 BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     textSettingsLocalizedTinkerString(@"text.settings.subtitle");
   }
@@ -446,7 +446,7 @@ void __74__TextSettingsViewController_updateWatchScreenImageViewAndNotifyObserve
   return v5;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
   v4 = AXLogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -460,19 +460,19 @@ void __74__TextSettingsViewController_updateWatchScreenImageViewAndNotifyObserve
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "Continue with content size: %@, bold enabled: %@", &v12, 0x16u);
   }
 
-  v7 = [(TextSettingsViewController *)self selectedContentSizeValue];
-  v8 = [(TextSettingsViewController *)self device];
-  contentSizeSetValueOnDevice(v7, v8);
+  selectedContentSizeValue = [(TextSettingsViewController *)self selectedContentSizeValue];
+  device = [(TextSettingsViewController *)self device];
+  contentSizeSetValueOnDevice(selectedContentSizeValue, device);
 
-  v9 = [(TextSettingsViewController *)self selectedBoldTextEnabled];
-  v10 = [(TextSettingsViewController *)self device];
-  boldTextSetEnabledOnDevice(v9, v10);
+  selectedBoldTextEnabled = [(TextSettingsViewController *)self selectedBoldTextEnabled];
+  device2 = [(TextSettingsViewController *)self device];
+  boldTextSetEnabledOnDevice(selectedBoldTextEnabled, device2);
 
-  v11 = [(TextSettingsViewController *)self miniFlowDelegate];
-  [v11 miniFlowStepComplete:self];
+  miniFlowDelegate = [(TextSettingsViewController *)self miniFlowDelegate];
+  [miniFlowDelegate miniFlowStepComplete:self];
 }
 
-- (void)alternateButtonPressed:(id)a3
+- (void)alternateButtonPressed:(id)pressed
 {
   v4 = AXLogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -481,33 +481,33 @@ void __74__TextSettingsViewController_updateWatchScreenImageViewAndNotifyObserve
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "Set up text settings later", v9, 2u);
   }
 
-  v5 = [(TextSettingsViewController *)self device];
-  [(TextSettingsViewController *)self setSelectedContentSizeValue:contentSizeValueOnDevice(v5)];
+  device = [(TextSettingsViewController *)self device];
+  [(TextSettingsViewController *)self setSelectedContentSizeValue:contentSizeValueOnDevice(device)];
 
-  v6 = [(TextSettingsViewController *)self device];
-  [(TextSettingsViewController *)self setSelectedBoldTextEnabled:boldTextIsEnabledOnDevice(v6)];
+  device2 = [(TextSettingsViewController *)self device];
+  [(TextSettingsViewController *)self setSelectedBoldTextEnabled:boldTextIsEnabledOnDevice(device2)];
 
   [(TextSettingsViewController *)self updateWatchScreenImageViewAndNotifyObserver:1];
-  v7 = [(TextSettingsViewController *)self tableView];
-  [v7 reloadData];
+  tableView = [(TextSettingsViewController *)self tableView];
+  [tableView reloadData];
 
-  v8 = [(TextSettingsViewController *)self miniFlowDelegate];
-  [v8 miniFlowStepComplete:self];
+  miniFlowDelegate = [(TextSettingsViewController *)self miniFlowDelegate];
+  [miniFlowDelegate miniFlowStepComplete:self];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 row])
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy row])
   {
     v8 = +[AXSliderValueTableViewCell cellReuseIdentifier];
-    v9 = [v6 dequeueReusableCellWithIdentifier:v8 forIndexPath:v7];
+    v9 = [viewCopy dequeueReusableCellWithIdentifier:v8 forIndexPath:pathCopy];
 
     [v9 setDelegate:self];
     [v9 setMinimumValue:0.0];
-    v10 = [(TextSettingsViewController *)self device];
-    v11 = contentSizeCategoriesOnDevice(v10);
+    device = [(TextSettingsViewController *)self device];
+    v11 = contentSizeCategoriesOnDevice(device);
     [v9 setMaximumValue:{(objc_msgSend(v11, "count") - 1)}];
 
     v12 = [(TextSettingsViewController *)self _sliderTextImageWithSystemImageName:@"textformat.size.smaller"];
@@ -516,51 +516,51 @@ void __74__TextSettingsViewController_updateWatchScreenImageViewAndNotifyObserve
     v13 = [(TextSettingsViewController *)self _sliderTextImageWithSystemImageName:@"textformat.size.larger"];
     [v9 setMaximumValueImage:v13];
 
-    v14 = [(TextSettingsViewController *)self device];
-    v15 = contentSizeCategoriesOnDevice(v14);
+    device2 = [(TextSettingsViewController *)self device];
+    v15 = contentSizeCategoriesOnDevice(device2);
     [v9 setSegmentCount:{objc_msgSend(v15, "count") - 1}];
 
-    v16 = [(TextSettingsViewController *)self device];
-    [v9 setValue:contentSizeValueOnDevice(v16)];
+    device3 = [(TextSettingsViewController *)self device];
+    [v9 setValue:contentSizeValueOnDevice(device3)];
   }
 
   else
   {
-    v9 = [v6 dequeueReusableCellWithIdentifier:@"AXBoldTextCellReuseIdentifier" forIndexPath:v7];
+    v9 = [viewCopy dequeueReusableCellWithIdentifier:@"AXBoldTextCellReuseIdentifier" forIndexPath:pathCopy];
     v17 = textSettingsLocalizedString(@"bold.text");
-    v18 = [v9 textLabel];
-    [v18 setText:v17];
+    textLabel = [v9 textLabel];
+    [textLabel setText:v17];
 
     [v9 setSelectionStyle:0];
-    v16 = [[UISwitch alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-    v19 = [(TextSettingsViewController *)self device];
-    [v16 setOn:boldTextIsEnabledOnDevice(v19) animated:0];
+    device3 = [[UISwitch alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
+    device4 = [(TextSettingsViewController *)self device];
+    [device3 setOn:boldTextIsEnabledOnDevice(device4) animated:0];
 
-    [v16 addTarget:self action:"switchToggled:" forControlEvents:4096];
-    [v9 setAccessoryView:v16];
+    [device3 addTarget:self action:"switchToggled:" forControlEvents:4096];
+    [v9 setAccessoryView:device3];
   }
 
   return v9;
 }
 
-- (void)switchToggled:(id)a3
+- (void)switchToggled:(id)toggled
 {
-  v5 = a3;
-  v4 = [v5 isOn];
-  if (v4 != [(TextSettingsViewController *)self selectedBoldTextEnabled])
+  toggledCopy = toggled;
+  isOn = [toggledCopy isOn];
+  if (isOn != [(TextSettingsViewController *)self selectedBoldTextEnabled])
   {
-    -[TextSettingsViewController setSelectedBoldTextEnabled:](self, "setSelectedBoldTextEnabled:", [v5 isOn]);
+    -[TextSettingsViewController setSelectedBoldTextEnabled:](self, "setSelectedBoldTextEnabled:", [toggledCopy isOn]);
     [(TextSettingsViewController *)self updateWatchScreenImageViewAndNotifyObserver:1];
   }
 }
 
-- (id)_sliderTextImageWithSystemImageName:(id)a3
+- (id)_sliderTextImageWithSystemImageName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = BPSFontWithSize();
   v5 = BPSTextColor();
   v6 = [UIImageSymbolConfiguration configurationWithFont:v4];
-  v7 = [UIImage systemImageNamed:v3];
+  v7 = [UIImage systemImageNamed:nameCopy];
 
   v8 = [v7 imageByApplyingSymbolConfiguration:v6];
   v9 = [v8 imageWithTintColor:v5 renderingMode:1];
@@ -568,12 +568,12 @@ void __74__TextSettingsViewController_updateWatchScreenImageViewAndNotifyObserve
   return v9;
 }
 
-- (void)sliderValueTableViewCell:(id)a3 didChangeValue:(double)a4
+- (void)sliderValueTableViewCell:(id)cell didChangeValue:(double)value
 {
-  v6 = [(TextSettingsViewController *)self selectedContentSizeValue];
-  if (v6 != a4)
+  selectedContentSizeValue = [(TextSettingsViewController *)self selectedContentSizeValue];
+  if (selectedContentSizeValue != value)
   {
-    [(TextSettingsViewController *)self setSelectedContentSizeValue:a4, v6];
+    [(TextSettingsViewController *)self setSelectedContentSizeValue:value, selectedContentSizeValue];
 
     [(TextSettingsViewController *)self updateWatchScreenImageViewAndNotifyObserver:1];
   }

@@ -1,9 +1,9 @@
 @interface _CardDAVActionsContactsHandler
 + (OS_os_log)os_log;
-- (_CardDAVActionsContactsHandler)initWithContactStore:(id)a3;
-- (id)localItemForExternalURL:(id)a3 forContainer:(id)a4 withStoreURL:(id)a5;
-- (id)matchingContactForExternalID:(id)a3;
-- (id)matchingGroupForExternalID:(id)a3 inContainer:(id)a4;
+- (_CardDAVActionsContactsHandler)initWithContactStore:(id)store;
+- (id)localItemForExternalURL:(id)l forContainer:(id)container withStoreURL:(id)rL;
+- (id)matchingContactForExternalID:(id)d;
+- (id)matchingGroupForExternalID:(id)d inContainer:(id)container;
 @end
 
 @implementation _CardDAVActionsContactsHandler
@@ -20,37 +20,37 @@
   return v3;
 }
 
-- (_CardDAVActionsContactsHandler)initWithContactStore:(id)a3
+- (_CardDAVActionsContactsHandler)initWithContactStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = _CardDAVActionsContactsHandler;
   v6 = [(_CardDAVActionsContactsHandler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contactStore, a3);
+    objc_storeStrong(&v6->_contactStore, store);
   }
 
   return v7;
 }
 
-- (id)localItemForExternalURL:(id)a3 forContainer:(id)a4 withStoreURL:(id)a5
+- (id)localItemForExternalURL:(id)l forContainer:(id)container withStoreURL:(id)rL
 {
-  v8 = a4;
-  v9 = [a3 da_leastInfoStringRepresentationRelativeToParentURL:a5];
+  containerCopy = container;
+  v9 = [l da_leastInfoStringRepresentationRelativeToParentURL:rL];
   v10 = [(_CardDAVActionsContactsHandler *)self matchingContactForExternalID:v9];
   if (!v10)
   {
-    v11 = [(_CardDAVActionsContactsHandler *)self matchingGroupForExternalID:v9 inContainer:v8];
+    v11 = [(_CardDAVActionsContactsHandler *)self matchingGroupForExternalID:v9 inContainer:containerCopy];
   }
 
   return v10;
 }
 
-- (id)matchingContactForExternalID:(id)a3
+- (id)matchingContactForExternalID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[CardDAVVCardItemCNImplementation keysToFetch];
   v6 = [[CNContactFetchRequest alloc] initWithKeysToFetch:v5];
   [v6 setUnifyResults:0];
@@ -61,15 +61,15 @@
   v21 = sub_23BE4;
   v22 = sub_23BF4;
   v23 = 0;
-  v7 = [(_CardDAVActionsContactsHandler *)self contactStore];
+  contactStore = [(_CardDAVActionsContactsHandler *)self contactStore];
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_23BFC;
   v15 = &unk_3CF18;
-  v8 = v4;
+  v8 = dCopy;
   v16 = v8;
   v17 = &v18;
-  [v7 enumerateContactsWithFetchRequest:v6 error:0 usingBlock:&v12];
+  [contactStore enumerateContactsWithFetchRequest:v6 error:0 usingBlock:&v12];
 
   if (v19[5])
   {
@@ -87,16 +87,16 @@
   return v10;
 }
 
-- (id)matchingGroupForExternalID:(id)a3 inContainer:(id)a4
+- (id)matchingGroupForExternalID:(id)d inContainer:(id)container
 {
-  v6 = a3;
-  v7 = [a4 asContainer];
-  v8 = [v7 identifier];
-  v9 = [CNGroup predicateForGroupsInContainerWithIdentifier:v8];
+  dCopy = d;
+  asContainer = [container asContainer];
+  identifier = [asContainer identifier];
+  v9 = [CNGroup predicateForGroupsInContainerWithIdentifier:identifier];
 
-  v10 = [(_CardDAVActionsContactsHandler *)self contactStore];
+  contactStore = [(_CardDAVActionsContactsHandler *)self contactStore];
   v26 = 0;
-  v11 = [v10 groupsMatchingPredicate:v9 error:&v26];
+  v11 = [contactStore groupsMatchingPredicate:v9 error:&v26];
   v12 = v26;
 
   v24 = 0u;
@@ -118,8 +118,8 @@ LABEL_3:
       }
 
       v17 = *(*(&v22 + 1) + 8 * v16);
-      v18 = [v17 externalIdentifier];
-      v19 = [v18 isEqualToString:v6];
+      externalIdentifier = [v17 externalIdentifier];
+      v19 = [externalIdentifier isEqualToString:dCopy];
 
       if (v19)
       {

@@ -1,13 +1,13 @@
 @interface EDSearchableIndexAttachmentItem
 + (OS_os_log)log;
-+ (id)attachmentPersistentIDFromItemIdentifier:(id)a3;
-+ (id)identifierForAttachmentPersistentID:(id)a3;
-- (EDSearchableIndexAttachmentItem)initWithAttachmentPersistentID:(id)a3 messagePersistentID:(id)a4 metadatum:(id)a5;
++ (id)attachmentPersistentIDFromItemIdentifier:(id)identifier;
++ (id)identifierForAttachmentPersistentID:(id)d;
+- (EDSearchableIndexAttachmentItem)initWithAttachmentPersistentID:(id)d messagePersistentID:(id)iD metadatum:(id)metadatum;
 - (EFPromise)attributeSetForFilePromise;
 - (NSString)domainIdentifier;
 - (id)searchableItem;
 - (unint64_t)estimatedSizeInBytes;
-- (void)setIndexingType:(int64_t)a3;
+- (void)setIndexingType:(int64_t)type;
 @end
 
 @implementation EDSearchableIndexAttachmentItem
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __38__EDSearchableIndexAttachmentItem_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_85 != -1)
   {
     dispatch_once(&log_onceToken_85, block);
@@ -37,18 +37,18 @@ void __38__EDSearchableIndexAttachmentItem_log__block_invoke(uint64_t a1)
   log_log_85 = v1;
 }
 
-+ (id)identifierForAttachmentPersistentID:(id)a3
++ (id)identifierForAttachmentPersistentID:(id)d
 {
   v3 = *MEMORY[0x1E699AFB0];
-  v4 = [a3 stringValue];
-  v5 = [v3 stringByAppendingString:v4];
+  stringValue = [d stringValue];
+  v5 = [v3 stringByAppendingString:stringValue];
 
   return v5;
 }
 
-+ (id)attachmentPersistentIDFromItemIdentifier:(id)a3
++ (id)attachmentPersistentIDFromItemIdentifier:(id)identifier
 {
-  v3 = [MEMORY[0x1E699AE70] attachmentPersistentIDFromItemIdentifier:a3];
+  v3 = [MEMORY[0x1E699AE70] attachmentPersistentIDFromItemIdentifier:identifier];
   if (v3)
   {
     v4 = [[EDPersistedAttachmentID alloc] initWithString:v3];
@@ -62,27 +62,27 @@ void __38__EDSearchableIndexAttachmentItem_log__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (EDSearchableIndexAttachmentItem)initWithAttachmentPersistentID:(id)a3 messagePersistentID:(id)a4 metadatum:(id)a5
+- (EDSearchableIndexAttachmentItem)initWithAttachmentPersistentID:(id)d messagePersistentID:(id)iD metadatum:(id)metadatum
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  metadatumCopy = metadatum;
   v19.receiver = self;
   v19.super_class = EDSearchableIndexAttachmentItem;
   v11 = [(EDSearchableIndexAttachmentItem *)&v19 init];
   if (v11)
   {
     v11->_itemInstantiationTime = mach_absolute_time();
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     attachmentPersistentID = v11->_attachmentPersistentID;
     v11->_attachmentPersistentID = v12;
 
-    v14 = [v9 copy];
+    v14 = [iDCopy copy];
     messagePersistentID = v11->_messagePersistentID;
     v11->_messagePersistentID = v14;
 
-    objc_storeStrong(&v11->_metadatum, a5);
-    v16 = [objc_opt_class() identifierForAttachmentPersistentID:v8];
+    objc_storeStrong(&v11->_metadatum, metadatum);
+    v16 = [objc_opt_class() identifierForAttachmentPersistentID:dCopy];
     identifier = v11->_identifier;
     v11->_identifier = v16;
 
@@ -100,12 +100,12 @@ void __38__EDSearchableIndexAttachmentItem_log__block_invoke(uint64_t a1)
   if (!self->_searchableItem && [(EDSearchableIndexAttachmentItem *)self requiresPreprocessing])
   {
     [(EDSearchableIndexAttachmentItem *)self setRequiresPreprocessing:0];
-    v3 = [(EDSearchableIndexAttachmentItem *)self metadatum];
+    metadatum = [(EDSearchableIndexAttachmentItem *)self metadatum];
     v4 = objc_alloc(MEMORY[0x1E6964E90]);
-    v5 = [v3 contentType];
-    v36 = [v4 initWithContentType:v5];
+    contentType = [metadatum contentType];
+    v36 = [v4 initWithContentType:contentType];
 
-    v32 = [v3 mailboxIdentifiers];
+    mailboxIdentifiers = [metadatum mailboxIdentifiers];
     v6.tv_sec = 0xAAAAAAAAAAAAAAAALL;
     v6.tv_nsec = 0xAAAAAAAAAAAAAAAALL;
     *&v37.st_blksize = v6;
@@ -117,8 +117,8 @@ void __38__EDSearchableIndexAttachmentItem_log__block_invoke(uint64_t a1)
     *&v37.st_uid = v6;
     v37.st_atimespec = v6;
     *&v37.st_dev = v6;
-    v7 = [v3 attachmentFileURL];
-    LODWORD(v4) = stat([v7 fileSystemRepresentation], &v37);
+    attachmentFileURL = [metadatum attachmentFileURL];
+    LODWORD(v4) = stat([attachmentFileURL fileSystemRepresentation], &v37);
 
     if (v4 || !v37.st_birthtimespec.tv_sec)
     {
@@ -131,46 +131,46 @@ void __38__EDSearchableIndexAttachmentItem_log__block_invoke(uint64_t a1)
     }
 
     v8 = [EDSearchableAttachment alloc];
-    v35 = [v3 attachmentFileURL];
-    v34 = [v3 contentType];
-    v33 = [v3 name];
-    v9 = [v3 accountIdentifier];
-    v10 = [(EDSearchableIndexAttachmentItem *)self messagePersistentID];
-    v11 = [v3 messageIDHeader];
-    v12 = [v3 dateSent];
-    v13 = [v3 dateReceived];
-    v14 = [v3 senderAddress];
-    v15 = [v3 recipientAddresses];
-    v16 = [(EDSearchableAttachment *)v8 initWithContentURL:v35 contentType:v34 name:v33 accountIdentifier:v9 mailboxIdentifiers:v32 messageID:v10 messageIDHeader:v11 dateSent:v12 dateReceived:v13 sender:v14 recipients:v15 downloadDate:v31];
+    attachmentFileURL2 = [metadatum attachmentFileURL];
+    contentType2 = [metadatum contentType];
+    name = [metadatum name];
+    accountIdentifier = [metadatum accountIdentifier];
+    messagePersistentID = [(EDSearchableIndexAttachmentItem *)self messagePersistentID];
+    messageIDHeader = [metadatum messageIDHeader];
+    dateSent = [metadatum dateSent];
+    dateReceived = [metadatum dateReceived];
+    senderAddress = [metadatum senderAddress];
+    recipientAddresses = [metadatum recipientAddresses];
+    v16 = [(EDSearchableAttachment *)v8 initWithContentURL:attachmentFileURL2 contentType:contentType2 name:name accountIdentifier:accountIdentifier mailboxIdentifiers:mailboxIdentifiers messageID:messagePersistentID messageIDHeader:messageIDHeader dateSent:dateSent dateReceived:dateReceived sender:senderAddress recipients:recipientAddresses downloadDate:v31];
 
     [(EDSearchableAttachment *)v16 addToAttributes:v36];
     v17 = +[EDSearchableIndexAttachmentItem log];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(EDSearchableAttachment *)v16 displayName];
-      v19 = [(EDSearchableAttachment *)v16 contentURL];
-      v20 = [(EDSearchableIndexAttachmentItem *)self identifier];
-      v21 = [(EDSearchableIndexAttachmentItem *)self messagePersistentID];
+      displayName = [(EDSearchableAttachment *)v16 displayName];
+      contentURL = [(EDSearchableAttachment *)v16 contentURL];
+      identifier = [(EDSearchableIndexAttachmentItem *)self identifier];
+      messagePersistentID2 = [(EDSearchableIndexAttachmentItem *)self messagePersistentID];
       *buf = 138413058;
-      v39 = v18;
+      v39 = displayName;
       v40 = 2112;
-      v41 = v19;
+      v41 = contentURL;
       v42 = 2114;
-      v43 = v20;
+      v43 = identifier;
       v44 = 2114;
-      v45 = v21;
+      v45 = messagePersistentID2;
       _os_log_impl(&dword_1C61EF000, v17, OS_LOG_TYPE_DEFAULT, "Creating attachment attribute set with displayName %@ contentURL %@ uniqueIdentifier %{public}@ relatedUniqueIdentifier %{public}@", buf, 0x2Au);
     }
 
     v22 = objc_alloc(MEMORY[0x1E6964E80]);
-    v23 = [(EDSearchableIndexAttachmentItem *)self identifier];
-    v24 = [(EDSearchableIndexAttachmentItem *)self domainIdentifier];
-    v25 = [v22 initWithUniqueIdentifier:v23 domainIdentifier:v24 attributeSet:v36];
+    identifier2 = [(EDSearchableIndexAttachmentItem *)self identifier];
+    domainIdentifier = [(EDSearchableIndexAttachmentItem *)self domainIdentifier];
+    v25 = [v22 initWithUniqueIdentifier:identifier2 domainIdentifier:domainIdentifier attributeSet:v36];
     searchableItem = self->_searchableItem;
     self->_searchableItem = v25;
 
-    v27 = [MEMORY[0x1E695DF00] distantFuture];
-    [(CSSearchableItem *)self->_searchableItem setExpirationDate:v27];
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+    [(CSSearchableItem *)self->_searchableItem setExpirationDate:distantFuture];
   }
 
   v28 = self->_searchableItem;
@@ -184,13 +184,13 @@ void __38__EDSearchableIndexAttachmentItem_log__block_invoke(uint64_t a1)
   attributeSetForFilePromise = self->_attributeSetForFilePromise;
   if (!attributeSetForFilePromise)
   {
-    v4 = [MEMORY[0x1E699B868] promise];
+    promise = [MEMORY[0x1E699B868] promise];
     v5 = self->_attributeSetForFilePromise;
-    self->_attributeSetForFilePromise = v4;
+    self->_attributeSetForFilePromise = promise;
 
     v6 = self->_attributeSetForFilePromise;
-    v7 = [MEMORY[0x1E696ABC0] ef_notSupportedError];
-    [(EFPromise *)v6 finishWithError:v7];
+    ef_notSupportedError = [MEMORY[0x1E696ABC0] ef_notSupportedError];
+    [(EFPromise *)v6 finishWithError:ef_notSupportedError];
 
     attributeSetForFilePromise = self->_attributeSetForFilePromise;
   }
@@ -200,33 +200,33 @@ void __38__EDSearchableIndexAttachmentItem_log__block_invoke(uint64_t a1)
 
 - (NSString)domainIdentifier
 {
-  v2 = [(EDSearchableIndexAttachmentItem *)self metadatum];
-  v3 = [v2 domainIdentifier];
+  metadatum = [(EDSearchableIndexAttachmentItem *)self metadatum];
+  domainIdentifier = [metadatum domainIdentifier];
 
-  return v3;
+  return domainIdentifier;
 }
 
 - (unint64_t)estimatedSizeInBytes
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(EDSearchableIndexAttachmentItem *)self metadatum];
-  v5 = [v4 attachmentFileURL];
-  v6 = [v5 path];
-  v7 = [v3 attributesOfItemAtPath:v6 error:0];
-  v8 = [v7 fileSize];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  metadatum = [(EDSearchableIndexAttachmentItem *)self metadatum];
+  attachmentFileURL = [metadatum attachmentFileURL];
+  path = [attachmentFileURL path];
+  v7 = [defaultManager attributesOfItemAtPath:path error:0];
+  fileSize = [v7 fileSize];
 
-  return v8;
+  return fileSize;
 }
 
-- (void)setIndexingType:(int64_t)a3
+- (void)setIndexingType:(int64_t)type
 {
-  if (a3 != 3)
+  if (type != 3)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"EDSearchableIndexAttachmentItem.m" lineNumber:174 description:@"Attempting to set unexpected indexing type on EDSearchableIndexAttachmentItem"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDSearchableIndexAttachmentItem.m" lineNumber:174 description:@"Attempting to set unexpected indexing type on EDSearchableIndexAttachmentItem"];
   }
 
-  self->_indexingType = a3;
+  self->_indexingType = type;
 }
 
 @end

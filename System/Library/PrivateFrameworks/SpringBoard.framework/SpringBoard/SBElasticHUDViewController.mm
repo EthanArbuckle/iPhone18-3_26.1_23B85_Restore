@@ -1,28 +1,28 @@
 @interface SBElasticHUDViewController
-- (BOOL)elasticValueViewControllerCanBePresented:(id)a3 withReason:(id *)a4;
-- (SBElasticHUDViewController)initWithElasticValueContentViewController:(id)a3;
-- (SBElasticHUDViewController)initWithFactory:(id)a3;
+- (BOOL)elasticValueViewControllerCanBePresented:(id)presented withReason:(id *)reason;
+- (SBElasticHUDViewController)initWithElasticValueContentViewController:(id)controller;
+- (SBElasticHUDViewController)initWithFactory:(id)factory;
 - (SBElasticHUDViewControllerDelegate)delegate;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (void)elasticValueViewControllerNeedsDismissal:(id)a3;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (void)elasticValueViewControllerNeedsDismissal:(id)dismissal;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation SBElasticHUDViewController
 
-- (SBElasticHUDViewController)initWithFactory:(id)a3
+- (SBElasticHUDViewController)initWithFactory:(id)factory
 {
-  v4 = [a3 elasticValueViewController];
-  v5 = [(SBElasticHUDViewController *)self initWithElasticValueContentViewController:v4];
+  elasticValueViewController = [factory elasticValueViewController];
+  v5 = [(SBElasticHUDViewController *)self initWithElasticValueContentViewController:elasticValueViewController];
 
   return v5;
 }
 
-- (SBElasticHUDViewController)initWithElasticValueContentViewController:(id)a3
+- (SBElasticHUDViewController)initWithElasticValueContentViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = SBElasticHUDViewController;
   v6 = [(SBElasticHUDViewController *)&v14 initWithNibName:0 bundle:0];
@@ -30,17 +30,17 @@
   if (v6)
   {
     [(SBElasticHUDViewController *)v6 setTransitioningDelegate:v6];
-    objc_storeStrong(&v7->_elasticValueViewController, a3);
+    objc_storeStrong(&v7->_elasticValueViewController, controller);
     [(SBElasticValueViewController *)v7->_elasticValueViewController setDelegate:v7];
     v8 = objc_opt_class();
     v9 = +[SBCoverSheetPresentationManager sharedInstance];
-    v10 = [v9 coverSheetSlidingViewController];
-    v11 = SBSafeCast(v8, v10);
+    coverSheetSlidingViewController = [v9 coverSheetSlidingViewController];
+    v11 = SBSafeCast(v8, coverSheetSlidingViewController);
 
-    v12 = [v11 edgePullGestureRecognizer];
-    if (v12)
+    edgePullGestureRecognizer = [v11 edgePullGestureRecognizer];
+    if (edgePullGestureRecognizer)
     {
-      [(SBElasticValueViewController *)v7->_elasticValueViewController setupFailureRelationshipForGestureRecognizer:v12];
+      [(SBElasticValueViewController *)v7->_elasticValueViewController setupFailureRelationshipForGestureRecognizer:edgePullGestureRecognizer];
     }
   }
 
@@ -53,16 +53,16 @@
   v8.super_class = SBElasticHUDViewController;
   [(SBElasticHUDViewController *)&v8 viewDidLoad];
   elasticValueViewController = self->_elasticValueViewController;
-  v4 = [(SBElasticHUDViewController *)self view];
-  [(SBElasticHUDViewController *)self bs_addChildViewController:elasticValueViewController withSuperview:v4];
+  view = [(SBElasticHUDViewController *)self view];
+  [(SBElasticHUDViewController *)self bs_addChildViewController:elasticValueViewController withSuperview:view];
 
-  v5 = [(SBElasticValueViewController *)self->_elasticValueViewController view];
-  v6 = [(SBElasticHUDViewController *)self view];
-  [v6 bounds];
-  [v5 setFrame:?];
+  view2 = [(SBElasticValueViewController *)self->_elasticValueViewController view];
+  view3 = [(SBElasticHUDViewController *)self view];
+  [view3 bounds];
+  [view2 setFrame:?];
 
-  v7 = [(SBElasticValueViewController *)self->_elasticValueViewController view];
-  [v7 setAutoresizingMask:18];
+  view4 = [(SBElasticValueViewController *)self->_elasticValueViewController view];
+  [view4 setAutoresizingMask:18];
 }
 
 - (void)viewDidLayoutSubviews
@@ -70,38 +70,38 @@
   v5.receiver = self;
   v5.super_class = SBElasticHUDViewController;
   [(SBElasticHUDViewController *)&v5 viewDidLayoutSubviews];
-  v3 = [(SBElasticValueViewController *)self->_elasticValueViewController view];
-  v4 = [(SBElasticHUDViewController *)self view];
-  [v4 bounds];
-  [v3 setFrame:?];
+  view = [(SBElasticValueViewController *)self->_elasticValueViewController view];
+  view2 = [(SBElasticHUDViewController *)self view];
+  [view2 bounds];
+  [view setFrame:?];
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
   v5 = objc_alloc_init(_SBElasticHUDViewControllerNullAnimator);
 
   return v5;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   v3 = objc_alloc_init(_SBElasticHUDViewControllerNullAnimator);
 
   return v3;
 }
 
-- (BOOL)elasticValueViewControllerCanBePresented:(id)a3 withReason:(id *)a4
+- (BOOL)elasticValueViewControllerCanBePresented:(id)presented withReason:(id *)reason
 {
-  v6 = [(SBElasticHUDViewController *)self delegate];
-  LOBYTE(a4) = [v6 elasticHUDViewControllerCanBePresented:self withReason:a4];
+  delegate = [(SBElasticHUDViewController *)self delegate];
+  LOBYTE(reason) = [delegate elasticHUDViewControllerCanBePresented:self withReason:reason];
 
-  return a4;
+  return reason;
 }
 
-- (void)elasticValueViewControllerNeedsDismissal:(id)a3
+- (void)elasticValueViewControllerNeedsDismissal:(id)dismissal
 {
-  v4 = [(SBElasticHUDViewController *)self delegate];
-  [v4 elasticHUDViewControllerRequestsDismissal:self];
+  delegate = [(SBElasticHUDViewController *)self delegate];
+  [delegate elasticHUDViewControllerRequestsDismissal:self];
 }
 
 - (SBElasticHUDViewControllerDelegate)delegate

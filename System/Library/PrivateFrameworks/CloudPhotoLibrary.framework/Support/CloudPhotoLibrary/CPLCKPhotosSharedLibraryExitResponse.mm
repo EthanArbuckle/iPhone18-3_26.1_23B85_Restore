@@ -2,8 +2,8 @@
 - (CKRecordZoneID)stagingZoneID;
 - (CPLCKPhotosSharedLibraryExitResponse)init;
 - (NSError)error;
-- (void)setError:(id)a3;
-- (void)setStagingZoneID:(id)a3;
+- (void)setError:(id)error;
+- (void)setStagingZoneID:(id)d;
 @end
 
 @implementation CPLCKPhotosSharedLibraryExitResponse
@@ -15,13 +15,13 @@
   return *(self + v3);
 }
 
-- (void)setStagingZoneID:(id)a3
+- (void)setStagingZoneID:(id)d
 {
   v5 = OBJC_IVAR___CPLCKPhotosSharedLibraryExitResponse_stagingZoneID;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = d;
+  dCopy = d;
 }
 
 - (NSError)error
@@ -42,14 +42,14 @@
   return v4;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
   v5 = OBJC_IVAR___CPLCKPhotosSharedLibraryExitResponse_error;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = self;
-  v8 = a3;
+  *(self + v5) = error;
+  selfCopy = self;
+  errorCopy = error;
 }
 
 - (CPLCKPhotosSharedLibraryExitResponse)init

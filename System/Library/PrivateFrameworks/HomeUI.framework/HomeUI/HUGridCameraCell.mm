@@ -2,61 +2,61 @@
 - (BOOL)shouldDisplayAccessModeErrorContent;
 - (BOOL)shouldDisplayErrorContent;
 - (CGRect)cameraViewFrame;
-- (HUGridCameraCell)initWithFrame:(CGRect)a3;
+- (HUGridCameraCell)initWithFrame:(CGRect)frame;
 - (HUVisualEffectContainerView)exclamationView;
 - (UIImage)exclamationImage;
 - (double)cameraViewAlpha;
-- (id)_descriptionLabelText:(id)a3;
+- (id)_descriptionLabelText:(id)text;
 - (void)_populateExclamationImageIfNeeded;
 - (void)_updateCameraViewAppearance;
 - (void)_updateRecordIndicatorColor;
 - (void)dealloc;
 - (void)layoutOptionsDidChange;
 - (void)prepareForReuse;
-- (void)setCameraViewAlpha:(double)a3;
-- (void)setLayoutOptions:(id)a3;
+- (void)setCameraViewAlpha:(double)alpha;
+- (void)setLayoutOptions:(id)options;
 - (void)updateConstraints;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUGridCameraCell
 
-- (HUGridCameraCell)initWithFrame:(CGRect)a3
+- (HUGridCameraCell)initWithFrame:(CGRect)frame
 {
   v29.receiver = self;
   v29.super_class = HUGridCameraCell;
-  v3 = [(HUGridCell *)&v29 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUGridCell *)&v29 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(HUGridCameraCell *)v3 contentView];
+    contentView = [(HUGridCameraCell *)v3 contentView];
     v6 = objc_alloc_init(MEMORY[0x277D75D18]);
     topBarView = v4->_topBarView;
     v4->_topBarView = v6;
 
     [(UIView *)v4->_topBarView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [MEMORY[0x277D75348] systemWhiteColor];
-    [(UIView *)v4->_topBarView setBackgroundColor:v8];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    [(UIView *)v4->_topBarView setBackgroundColor:systemWhiteColor];
 
-    [v5 addSubview:v4->_topBarView];
+    [contentView addSubview:v4->_topBarView];
     v9 = objc_alloc_init(MEMORY[0x277D756B8]);
     titleLabel = v4->_titleLabel;
     v4->_titleLabel = v9;
 
-    v11 = [MEMORY[0x277D75348] darkTextColor];
-    [(UILabel *)v4->_titleLabel setTextColor:v11];
+    darkTextColor = [MEMORY[0x277D75348] darkTextColor];
+    [(UILabel *)v4->_titleLabel setTextColor:darkTextColor];
 
     [(UILabel *)v4->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v5 addSubview:v4->_titleLabel];
+    [contentView addSubview:v4->_titleLabel];
     v12 = objc_alloc_init(MEMORY[0x277D755E8]);
     recordingIndicatorImageView = v4->_recordingIndicatorImageView;
     v4->_recordingIndicatorImageView = v12;
 
     [(UIImageView *)v4->_recordingIndicatorImageView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)v4->_recordingIndicatorImageView setContentMode:1];
-    [v5 addSubview:v4->_recordingIndicatorImageView];
-    v14 = [(HUGridCameraCell *)v4 exclamationView];
-    [v5 addSubview:v14];
+    [contentView addSubview:v4->_recordingIndicatorImageView];
+    exclamationView = [(HUGridCameraCell *)v4 exclamationView];
+    [contentView addSubview:exclamationView];
 
     v15 = objc_alloc_init(HUCameraView);
     cameraView = v4->_cameraView;
@@ -64,7 +64,7 @@
 
     [(HUCameraView *)v4->_cameraView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(HUCameraView *)v4->_cameraView setUserInteractionEnabled:0];
-    [v5 addSubview:v4->_cameraView];
+    [contentView addSubview:v4->_cameraView];
     v17 = [MEMORY[0x277D760A8] sharedInstanceForStyle:0];
     legibilitySettings = v4->_legibilitySettings;
     v4->_legibilitySettings = v17;
@@ -82,9 +82,9 @@
     [(HULegibilityLabel *)v4->_descriptionLabel setContentCompressionResistancePriority:0 forAxis:v25];
     LODWORD(v26) = 1132134400;
     [(HULegibilityLabel *)v4->_descriptionLabel setContentHuggingPriority:0 forAxis:v26];
-    [v5 addSubview:v4->_descriptionLabel];
-    v27 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v27 addObserver:v4 selector:sel__handleShouldDifferentiateWithoutColorDidChange name:*MEMORY[0x277D764E0] object:0];
+    [contentView addSubview:v4->_descriptionLabel];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__handleShouldDifferentiateWithoutColorDidChange name:*MEMORY[0x277D764E0] object:0];
   }
 
   return v4;
@@ -92,15 +92,15 @@
 
 - (void)prepareForReuse
 {
-  v3 = [(HUGridCameraCell *)self titleLabel];
-  [v3 setText:0];
+  titleLabel = [(HUGridCameraCell *)self titleLabel];
+  [titleLabel setText:0];
 
-  v4 = [(HUGridCameraCell *)self descriptionLabel];
-  [v4 setText:0];
+  descriptionLabel = [(HUGridCameraCell *)self descriptionLabel];
+  [descriptionLabel setText:0];
 
   [(HUGridCameraCell *)self setItem:0];
-  v5 = [(HUGridCameraCell *)self descriptionLabelUpdateTimer];
-  [v5 invalidate];
+  descriptionLabelUpdateTimer = [(HUGridCameraCell *)self descriptionLabelUpdateTimer];
+  [descriptionLabelUpdateTimer invalidate];
 
   [(HUGridCameraCell *)self setDescriptionLabelUpdateTimer:0];
   v6.receiver = self;
@@ -110,8 +110,8 @@
 
 - (void)dealloc
 {
-  v3 = [(HUGridCameraCell *)self descriptionLabelUpdateTimer];
-  [v3 invalidate];
+  descriptionLabelUpdateTimer = [(HUGridCameraCell *)self descriptionLabelUpdateTimer];
+  [descriptionLabelUpdateTimer invalidate];
 
   v4.receiver = self;
   v4.super_class = HUGridCameraCell;
@@ -120,29 +120,29 @@
 
 - (double)cameraViewAlpha
 {
-  v2 = [(HUGridCameraCell *)self cameraView];
-  [v2 alpha];
+  cameraView = [(HUGridCameraCell *)self cameraView];
+  [cameraView alpha];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setCameraViewAlpha:(double)a3
+- (void)setCameraViewAlpha:(double)alpha
 {
-  v4 = [(HUGridCameraCell *)self cameraView];
-  [v4 setAlpha:a3];
+  cameraView = [(HUGridCameraCell *)self cameraView];
+  [cameraView setAlpha:alpha];
 }
 
 - (CGRect)cameraViewFrame
 {
-  v3 = [(HUGridCameraCell *)self cameraView];
-  [v3 bounds];
+  cameraView = [(HUGridCameraCell *)self cameraView];
+  [cameraView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(HUGridCameraCell *)self cameraView];
-  [(HUGridCameraCell *)self convertRect:v12 fromView:v5, v7, v9, v11];
+  cameraView2 = [(HUGridCameraCell *)self cameraView];
+  [(HUGridCameraCell *)self convertRect:cameraView2 fromView:v5, v7, v9, v11];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -159,15 +159,15 @@
   return result;
 }
 
-- (void)setLayoutOptions:(id)a3
+- (void)setLayoutOptions:(id)options
 {
-  v5 = a3;
-  if (self->_layoutOptions != v5)
+  optionsCopy = options;
+  if (self->_layoutOptions != optionsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_layoutOptions, a3);
+    v6 = optionsCopy;
+    objc_storeStrong(&self->_layoutOptions, options);
     [(HUGridCameraCell *)self layoutOptionsDidChange];
-    v5 = v6;
+    optionsCopy = v6;
   }
 }
 
@@ -177,10 +177,10 @@
   if (([MEMORY[0x277D14CE8] isPressDemoModeEnabled] & 1) == 0)
   {
     objc_opt_class();
-    v4 = [(HUGridCameraCell *)self item];
+    item = [(HUGridCameraCell *)self item];
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = item;
     }
 
     else
@@ -190,43 +190,43 @@
 
     v6 = v5;
 
-    v7 = [v6 profile];
+    profile = [v6 profile];
 
-    v8 = [v7 accessory];
-    LOBYTE(v6) = [v8 isReachable];
+    accessory = [profile accessory];
+    LOBYTE(v6) = [accessory isReachable];
 
     if (v6)
     {
-      v9 = [v7 hf_cameraManager];
-      v10 = [v9 cachedStreamError];
+      hf_cameraManager = [profile hf_cameraManager];
+      cachedStreamError = [hf_cameraManager cachedStreamError];
 
-      if (!v10)
+      if (!cachedStreamError)
       {
         goto LABEL_13;
       }
 
-      v11 = [v7 hf_cameraManager];
-      v12 = [v11 cachedStreamError];
-      if ([v12 code] == 23)
+      hf_cameraManager2 = [profile hf_cameraManager];
+      cachedStreamError2 = [hf_cameraManager2 cachedStreamError];
+      if ([cachedStreamError2 code] == 23)
       {
 
         goto LABEL_13;
       }
 
-      v15 = [v7 hf_cameraManager];
-      v16 = [v15 cachedStreamError];
-      v17 = [v16 code];
+      hf_cameraManager3 = [profile hf_cameraManager];
+      cachedStreamError3 = [hf_cameraManager3 cachedStreamError];
+      code = [cachedStreamError3 code];
 
-      if (v17 == 14)
+      if (code == 14)
       {
 LABEL_13:
-        v18 = [(HUGridCameraCell *)self item];
-        v19 = [v18 latestResults];
-        v13 = [v19 objectForKeyedSubscript:*MEMORY[0x277D13D70]];
+        item2 = [(HUGridCameraCell *)self item];
+        latestResults = [item2 latestResults];
+        v13 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13D70]];
 
         if (v13 || (-[HUGridCameraCell item](self, "item"), v22 = objc_claimAutoreleasedReturnValue(), [v22 latestResults], v23 = objc_claimAutoreleasedReturnValue(), v23, v22, !v23))
         {
-          if (![v7 hf_thermalShutdownModeActive])
+          if (![profile hf_thermalShutdownModeActive])
           {
             v3 = 0;
 LABEL_27:
@@ -234,28 +234,28 @@ LABEL_27:
             return v3;
           }
 
-          v14 = HFLogForCategory();
-          if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+          uniqueIdentifier2 = HFLogForCategory();
+          if (!os_log_type_enabled(uniqueIdentifier2, OS_LOG_TYPE_DEFAULT))
           {
             goto LABEL_25;
           }
 
-          v20 = [v7 uniqueIdentifier];
+          uniqueIdentifier = [profile uniqueIdentifier];
           v26 = 138412290;
-          v27 = v20;
+          v27 = uniqueIdentifier;
           v21 = "Displaying error in tile because cameraProfile[%@] is in thermal shutdown mode";
           goto LABEL_21;
         }
 
-        v14 = HFLogForCategory();
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+        uniqueIdentifier2 = HFLogForCategory();
+        if (os_log_type_enabled(uniqueIdentifier2, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [v7 uniqueIdentifier];
+          uniqueIdentifier = [profile uniqueIdentifier];
           v26 = 138412290;
-          v27 = v20;
+          v27 = uniqueIdentifier;
           v21 = "Displaying error in tile because cameraProfile[%@] has no snapshot";
 LABEL_21:
-          _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, v21, &v26, 0xCu);
+          _os_log_impl(&dword_20CEB6000, uniqueIdentifier2, OS_LOG_TYPE_DEFAULT, v21, &v26, 0xCu);
 LABEL_24:
         }
 
@@ -267,13 +267,13 @@ LABEL_25:
       v13 = HFLogForCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v7 uniqueIdentifier];
-        v20 = [v7 hf_cameraManager];
-        v24 = [v20 cachedStreamError];
+        uniqueIdentifier2 = [profile uniqueIdentifier];
+        uniqueIdentifier = [profile hf_cameraManager];
+        cachedStreamError4 = [uniqueIdentifier cachedStreamError];
         v26 = 138412546;
-        v27 = v14;
+        v27 = uniqueIdentifier2;
         v28 = 2112;
-        v29 = v24;
+        v29 = cachedStreamError4;
         _os_log_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_DEFAULT, "Displaying error in tile because cameraProfile[%@] has a cached error:%@", &v26, 0x16u);
 
         goto LABEL_24;
@@ -285,9 +285,9 @@ LABEL_25:
       v13 = HFLogForCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v7 uniqueIdentifier];
+        uniqueIdentifier2 = [profile uniqueIdentifier];
         v26 = 138412290;
-        v27 = v14;
+        v27 = uniqueIdentifier2;
         _os_log_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_DEFAULT, "Displaying error in tile because cameraProfile[%@] is unreachable", &v26, 0xCu);
         goto LABEL_25;
       }
@@ -301,30 +301,30 @@ LABEL_26:
   return 0;
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   v46.receiver = self;
   v46.super_class = HUGridCameraCell;
   [(HUGridCell *)&v46 updateUIWithAnimation:?];
-  v5 = [(HUGridCameraCell *)self item];
-  v6 = [v5 latestResults];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13D70]];
+  item = [(HUGridCameraCell *)self item];
+  latestResults = [item latestResults];
+  v7 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13D70]];
 
-  v8 = [(HUGridCameraCell *)self cameraView];
-  v9 = [v8 cameraSource];
+  cameraView = [(HUGridCameraCell *)self cameraView];
+  cameraSource = [cameraView cameraSource];
 
   v40 = MEMORY[0x277D85DD0];
   v41 = 3221225472;
   v42 = __42__HUGridCameraCell_updateUIWithAnimation___block_invoke;
   v43 = &unk_277DB7558;
-  v44 = self;
+  selfCopy = self;
   v10 = v7;
   v45 = v10;
   v11 = _Block_copy(&v40);
   v12 = [(HUGridCameraCell *)self descriptionLabelUpdateTimer:v40];
   v13 = v12;
-  if (v7 == v9)
+  if (v7 == cameraSource)
   {
 
     if (v13)
@@ -344,42 +344,42 @@ LABEL_26:
   }
 
 LABEL_6:
-  v14 = [(HUGridCameraCell *)self item];
-  v15 = [v14 latestResults];
-  v16 = [v15 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-  v17 = [(HUGridCameraCell *)self titleLabel];
-  [v17 setText:v16];
+  item2 = [(HUGridCameraCell *)self item];
+  latestResults2 = [item2 latestResults];
+  v16 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  titleLabel = [(HUGridCameraCell *)self titleLabel];
+  [titleLabel setText:v16];
 
   v18 = [(HUGridCameraCell *)self _descriptionLabelText:v10];
-  v19 = [(HUGridCameraCell *)self descriptionLabel];
-  [v19 setText:v18];
+  descriptionLabel = [(HUGridCameraCell *)self descriptionLabel];
+  [descriptionLabel setText:v18];
 
   if ([MEMORY[0x277D14CE8] isPressDemoModeEnabled])
   {
-    v20 = [(HUGridCameraCell *)self item];
-    v21 = [v20 latestResults];
-    v22 = [v21 objectForKeyedSubscript:*MEMORY[0x277D13D58]];
+    item3 = [(HUGridCameraCell *)self item];
+    latestResults3 = [item3 latestResults];
+    cameraView3 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D13D58]];
 
-    v23 = [(HUGridCameraCell *)self cameraView];
-    [v23 setCameraSource:v10 withDemoSnapshotURL:v22 animated:v3];
+    cameraView2 = [(HUGridCameraCell *)self cameraView];
+    [cameraView2 setCameraSource:v10 withDemoSnapshotURL:cameraView3 animated:animationCopy];
 
-    v24 = [(HUGridCameraCell *)self exclamationView];
-    [v24 setHidden:1];
+    exclamationView = [(HUGridCameraCell *)self exclamationView];
+    [exclamationView setHidden:1];
   }
 
   else
   {
-    v22 = [(HUGridCameraCell *)self cameraView];
-    [v22 setCameraSource:v10 animated:v3];
+    cameraView3 = [(HUGridCameraCell *)self cameraView];
+    [cameraView3 setCameraSource:v10 animated:animationCopy];
   }
 
   if ([(HUGridCameraCell *)self shouldDisplayAccessModeErrorContent])
   {
     objc_opt_class();
-    v25 = [(HUGridCameraCell *)self item];
+    item4 = [(HUGridCameraCell *)self item];
     if (objc_opt_isKindOfClass())
     {
-      v26 = v25;
+      v26 = item4;
     }
 
     else
@@ -389,23 +389,23 @@ LABEL_6:
 
     v27 = v26;
 
-    v28 = [v27 profile];
+    profile = [v27 profile];
 
-    v29 = [v28 userSettings];
-    if ([v29 currentAccessMode])
+    userSettings = [profile userSettings];
+    if ([userSettings currentAccessMode])
     {
-      v30 = [v28 userSettings];
-      [v30 isCameraManuallyDisabled];
+      userSettings2 = [profile userSettings];
+      [userSettings2 isCameraManuallyDisabled];
     }
 
     v35 = HFLocalizedString();
     v32 = [HUCameraErrorContent errorWithTitle:v35 description:0];
 
-    v36 = [(HUGridCameraCell *)self exclamationView];
-    [v36 setHidden:1];
+    exclamationView2 = [(HUGridCameraCell *)self exclamationView];
+    [exclamationView2 setHidden:1];
 
-    v37 = [(HUGridCameraCell *)self recordingIndicatorImageView];
-    [v37 setHidden:0];
+    recordingIndicatorImageView = [(HUGridCameraCell *)self recordingIndicatorImageView];
+    [recordingIndicatorImageView setHidden:0];
   }
 
   else if ([(HUGridCameraCell *)self shouldDisplayErrorContent])
@@ -414,28 +414,28 @@ LABEL_6:
     v32 = [HUCameraErrorContent errorWithTitle:v31 description:0];
 
     [(HUGridCameraCell *)self _populateExclamationImageIfNeeded];
-    v33 = [(HUGridCameraCell *)self exclamationView];
-    [v33 setHidden:0];
+    exclamationView3 = [(HUGridCameraCell *)self exclamationView];
+    [exclamationView3 setHidden:0];
 
-    v28 = [(HUGridCameraCell *)self recordingIndicatorImageView];
-    [v28 setHidden:1];
+    profile = [(HUGridCameraCell *)self recordingIndicatorImageView];
+    [profile setHidden:1];
   }
 
   else
   {
-    v34 = [(HUGridCameraCell *)self exclamationView];
-    [v34 setHidden:1];
+    exclamationView4 = [(HUGridCameraCell *)self exclamationView];
+    [exclamationView4 setHidden:1];
 
-    v28 = [(HUGridCameraCell *)self recordingIndicatorImageView];
-    [v28 setHidden:0];
+    profile = [(HUGridCameraCell *)self recordingIndicatorImageView];
+    [profile setHidden:0];
     v32 = 0;
   }
 
-  v38 = [(HUGridCameraCell *)self descriptionLabel];
-  [v38 setHidden:v32 != 0];
+  descriptionLabel2 = [(HUGridCameraCell *)self descriptionLabel];
+  [descriptionLabel2 setHidden:v32 != 0];
 
-  v39 = [(HUGridCameraCell *)self cameraView];
-  [v39 setErrorContent:v32 animated:v3];
+  cameraView4 = [(HUGridCameraCell *)self cameraView];
+  [cameraView4 setErrorContent:v32 animated:animationCopy];
 
   [(HUGridCameraCell *)self _updateRecordIndicatorColor];
   [(HUGridCameraCell *)self _updateCameraViewAppearance];
@@ -470,10 +470,10 @@ void __42__HUGridCameraCell_updateUIWithAnimation___block_invoke_2(uint64_t a1)
 - (BOOL)shouldDisplayAccessModeErrorContent
 {
   objc_opt_class();
-  v3 = [(HUGridCameraCell *)self item];
+  item = [(HUGridCameraCell *)self item];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = item;
   }
 
   else
@@ -483,38 +483,38 @@ void __42__HUGridCameraCell_updateUIWithAnimation___block_invoke_2(uint64_t a1)
 
   v5 = v4;
 
-  v6 = [v5 profile];
+  profile = [v5 profile];
 
-  if (v6)
+  if (profile)
   {
-    v7 = [v6 userSettings];
-    if ([v7 currentAccessMode])
+    userSettings = [profile userSettings];
+    if ([userSettings currentAccessMode])
     {
-      v8 = [v6 userSettings];
-      if ([v8 currentAccessMode] == 3)
+      userSettings2 = [profile userSettings];
+      if ([userSettings2 currentAccessMode] == 3)
       {
-        v9 = 1;
+        isCameraManuallyDisabled = 1;
       }
 
       else
       {
-        v10 = [v6 userSettings];
-        v9 = [v10 isCameraManuallyDisabled];
+        userSettings3 = [profile userSettings];
+        isCameraManuallyDisabled = [userSettings3 isCameraManuallyDisabled];
       }
     }
 
     else
     {
-      v9 = 1;
+      isCameraManuallyDisabled = 1;
     }
   }
 
   else
   {
-    v9 = 0;
+    isCameraManuallyDisabled = 0;
   }
 
-  return v9;
+  return isCameraManuallyDisabled;
 }
 
 - (void)layoutOptionsDidChange
@@ -524,203 +524,203 @@ void __42__HUGridCameraCell_updateUIWithAnimation___block_invoke_2(uint64_t a1)
   [(HUGridCell *)&v23 layoutOptionsDidChange];
   [(HUGridCell *)self secondaryContentDimmingFactor];
   v4 = v3;
-  v5 = [(HUGridCameraCell *)self descriptionLabel];
-  [v5 setAlpha:v4];
+  descriptionLabel = [(HUGridCameraCell *)self descriptionLabel];
+  [descriptionLabel setAlpha:v4];
 
-  v6 = [(HUGridCameraCell *)self cameraView];
-  [v6 setMaskedCameraCorners:12];
+  cameraView = [(HUGridCameraCell *)self cameraView];
+  [cameraView setMaskedCameraCorners:12];
 
-  v7 = [(HUGridCameraCell *)self topBarView];
-  v8 = [v7 layer];
-  [v8 setMaskedCorners:3];
+  topBarView = [(HUGridCameraCell *)self topBarView];
+  layer = [topBarView layer];
+  [layer setMaskedCorners:3];
 
-  v9 = [(HUGridCameraCell *)self layoutOptions];
-  [v9 cellCornerRadius];
+  layoutOptions = [(HUGridCameraCell *)self layoutOptions];
+  [layoutOptions cellCornerRadius];
   v11 = v10;
-  v12 = [(HUGridCameraCell *)self cameraView];
-  [v12 _setContinuousCornerRadius:v11];
+  cameraView2 = [(HUGridCameraCell *)self cameraView];
+  [cameraView2 _setContinuousCornerRadius:v11];
 
-  v13 = [(HUGridCameraCell *)self layoutOptions];
-  [v13 cellCornerRadius];
+  layoutOptions2 = [(HUGridCameraCell *)self layoutOptions];
+  [layoutOptions2 cellCornerRadius];
   v15 = v14;
-  v16 = [(HUGridCameraCell *)self topBarView];
-  [v16 _setContinuousCornerRadius:v15];
+  topBarView2 = [(HUGridCameraCell *)self topBarView];
+  [topBarView2 _setContinuousCornerRadius:v15];
 
-  v17 = [(HUGridCameraCell *)self layoutOptions];
-  v18 = [v17 font];
-  v19 = [(HUGridCameraCell *)self titleLabel];
-  [v19 setFont:v18];
+  layoutOptions3 = [(HUGridCameraCell *)self layoutOptions];
+  font = [layoutOptions3 font];
+  titleLabel = [(HUGridCameraCell *)self titleLabel];
+  [titleLabel setFont:font];
 
-  v20 = [(HUGridCameraCell *)self layoutOptions];
-  v21 = [v20 font];
-  v22 = [(HUGridCameraCell *)self descriptionLabel];
-  [v22 setFont:v21];
+  layoutOptions4 = [(HUGridCameraCell *)self layoutOptions];
+  font2 = [layoutOptions4 font];
+  descriptionLabel2 = [(HUGridCameraCell *)self descriptionLabel];
+  [descriptionLabel2 setFont:font2];
 }
 
 - (void)updateConstraints
 {
   v115[9] = *MEMORY[0x277D85DE8];
-  v3 = [(HUGridCameraCell *)self allConstraints];
+  allConstraints = [(HUGridCameraCell *)self allConstraints];
 
-  if (!v3)
+  if (!allConstraints)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
-    v5 = [(HUGridCameraCell *)self topBarView];
-    v6 = [v5 topAnchor];
-    v7 = [(HUGridCameraCell *)self contentView];
-    v8 = [v7 topAnchor];
-    v9 = [v6 constraintEqualToAnchor:v8];
-    [v4 addObject:v9];
+    array = [MEMORY[0x277CBEB18] array];
+    topBarView = [(HUGridCameraCell *)self topBarView];
+    topAnchor = [topBarView topAnchor];
+    contentView = [(HUGridCameraCell *)self contentView];
+    topAnchor2 = [contentView topAnchor];
+    v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
+    [array addObject:v9];
 
-    v10 = [(HUGridCameraCell *)self topBarView];
-    v11 = [v10 heightAnchor];
-    v12 = [(HUGridCameraCell *)self layoutOptions];
-    [v12 headerViewHeight];
-    v13 = [v11 constraintEqualToConstant:?];
-    [v4 addObject:v13];
+    topBarView2 = [(HUGridCameraCell *)self topBarView];
+    heightAnchor = [topBarView2 heightAnchor];
+    layoutOptions = [(HUGridCameraCell *)self layoutOptions];
+    [layoutOptions headerViewHeight];
+    v13 = [heightAnchor constraintEqualToConstant:?];
+    [array addObject:v13];
 
-    v14 = [(HUGridCameraCell *)self topBarView];
-    v15 = [v14 leadingAnchor];
-    v16 = [(HUGridCameraCell *)self contentView];
-    v17 = [v16 leadingAnchor];
-    v18 = [v15 constraintEqualToAnchor:v17];
-    [v4 addObject:v18];
+    topBarView3 = [(HUGridCameraCell *)self topBarView];
+    leadingAnchor = [topBarView3 leadingAnchor];
+    contentView2 = [(HUGridCameraCell *)self contentView];
+    leadingAnchor2 = [contentView2 leadingAnchor];
+    v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+    [array addObject:v18];
 
-    v19 = [(HUGridCameraCell *)self topBarView];
-    v20 = [v19 trailingAnchor];
-    v21 = [(HUGridCameraCell *)self contentView];
-    v22 = [v21 trailingAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22];
-    [v4 addObject:v23];
+    topBarView4 = [(HUGridCameraCell *)self topBarView];
+    trailingAnchor = [topBarView4 trailingAnchor];
+    contentView3 = [(HUGridCameraCell *)self contentView];
+    trailingAnchor2 = [contentView3 trailingAnchor];
+    v23 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+    [array addObject:v23];
 
-    v24 = [(HUGridCameraCell *)self layoutOptions];
-    [v24 headerViewHeight];
+    layoutOptions2 = [(HUGridCameraCell *)self layoutOptions];
+    [layoutOptions2 headerViewHeight];
     v26 = v25 * 0.5;
 
-    v27 = [(HUGridCameraCell *)self labelsConstraints];
+    labelsConstraints = [(HUGridCameraCell *)self labelsConstraints];
 
-    if (!v27)
+    if (!labelsConstraints)
     {
-      v113 = [(HUGridCameraCell *)self titleLabel];
-      v111 = [v113 centerYAnchor];
-      v112 = [(HUGridCameraCell *)self contentView];
-      v110 = [v112 topAnchor];
-      v109 = [v111 constraintEqualToAnchor:v110 constant:v26];
+      titleLabel = [(HUGridCameraCell *)self titleLabel];
+      centerYAnchor = [titleLabel centerYAnchor];
+      contentView4 = [(HUGridCameraCell *)self contentView];
+      topAnchor3 = [contentView4 topAnchor];
+      v109 = [centerYAnchor constraintEqualToAnchor:topAnchor3 constant:v26];
       v115[0] = v109;
-      v108 = [(HUGridCameraCell *)self descriptionLabel];
-      v106 = [v108 centerYAnchor];
-      v107 = [(HUGridCameraCell *)self contentView];
-      v105 = [v107 bottomAnchor];
-      v104 = [v106 constraintEqualToAnchor:v105 constant:-v26];
+      descriptionLabel = [(HUGridCameraCell *)self descriptionLabel];
+      centerYAnchor2 = [descriptionLabel centerYAnchor];
+      contentView5 = [(HUGridCameraCell *)self contentView];
+      bottomAnchor = [contentView5 bottomAnchor];
+      v104 = [centerYAnchor2 constraintEqualToAnchor:bottomAnchor constant:-v26];
       v115[1] = v104;
-      v103 = [(HUGridCameraCell *)self recordingIndicatorImageView];
-      v101 = [v103 centerYAnchor];
-      v102 = [(HUGridCameraCell *)self contentView];
-      v100 = [v102 topAnchor];
-      v99 = [v101 constraintEqualToAnchor:v100 constant:v26];
+      recordingIndicatorImageView = [(HUGridCameraCell *)self recordingIndicatorImageView];
+      centerYAnchor3 = [recordingIndicatorImageView centerYAnchor];
+      contentView6 = [(HUGridCameraCell *)self contentView];
+      topAnchor4 = [contentView6 topAnchor];
+      v99 = [centerYAnchor3 constraintEqualToAnchor:topAnchor4 constant:v26];
       v115[2] = v99;
-      v98 = [(HUGridCameraCell *)self titleLabel];
-      v96 = [v98 leadingAnchor];
-      v97 = [(HUGridCameraCell *)self contentView];
-      v94 = [v97 leadingAnchor];
-      v95 = [(HUGridCameraCell *)self layoutOptions];
-      [v95 headerHorizontalInnerMargins];
-      v93 = [v96 constraintEqualToAnchor:v94 constant:?];
+      titleLabel2 = [(HUGridCameraCell *)self titleLabel];
+      leadingAnchor3 = [titleLabel2 leadingAnchor];
+      contentView7 = [(HUGridCameraCell *)self contentView];
+      leadingAnchor4 = [contentView7 leadingAnchor];
+      layoutOptions3 = [(HUGridCameraCell *)self layoutOptions];
+      [layoutOptions3 headerHorizontalInnerMargins];
+      v93 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:?];
       v115[3] = v93;
-      v92 = [(HUGridCameraCell *)self titleLabel];
-      v90 = [v92 trailingAnchor];
-      v91 = [(HUGridCameraCell *)self recordingIndicatorImageView];
-      v89 = [v91 leadingAnchor];
-      v88 = [v90 constraintEqualToAnchor:v89];
+      titleLabel3 = [(HUGridCameraCell *)self titleLabel];
+      trailingAnchor3 = [titleLabel3 trailingAnchor];
+      recordingIndicatorImageView2 = [(HUGridCameraCell *)self recordingIndicatorImageView];
+      leadingAnchor5 = [recordingIndicatorImageView2 leadingAnchor];
+      v88 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor5];
       v115[4] = v88;
-      v87 = [(HUGridCameraCell *)self descriptionLabel];
-      v85 = [v87 trailingAnchor];
-      v86 = [(HUGridCameraCell *)self contentView];
-      v83 = [v86 trailingAnchor];
-      v84 = [(HUGridCameraCell *)self layoutOptions];
-      [v84 headerHorizontalInnerMargins];
-      v82 = [v85 constraintEqualToAnchor:v83 constant:-v28];
+      descriptionLabel2 = [(HUGridCameraCell *)self descriptionLabel];
+      trailingAnchor4 = [descriptionLabel2 trailingAnchor];
+      contentView8 = [(HUGridCameraCell *)self contentView];
+      trailingAnchor5 = [contentView8 trailingAnchor];
+      layoutOptions4 = [(HUGridCameraCell *)self layoutOptions];
+      [layoutOptions4 headerHorizontalInnerMargins];
+      v82 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:-v28];
       v115[5] = v82;
-      v81 = [(HUGridCameraCell *)self recordingIndicatorImageView];
-      v79 = [v81 trailingAnchor];
-      v80 = [(HUGridCameraCell *)self contentView];
-      v77 = [v80 trailingAnchor];
-      v78 = [(HUGridCameraCell *)self layoutOptions];
-      [v78 headerHorizontalInnerMargins];
-      v30 = [v79 constraintEqualToAnchor:v77 constant:-v29];
+      recordingIndicatorImageView3 = [(HUGridCameraCell *)self recordingIndicatorImageView];
+      trailingAnchor6 = [recordingIndicatorImageView3 trailingAnchor];
+      contentView9 = [(HUGridCameraCell *)self contentView];
+      trailingAnchor7 = [contentView9 trailingAnchor];
+      layoutOptions5 = [(HUGridCameraCell *)self layoutOptions];
+      [layoutOptions5 headerHorizontalInnerMargins];
+      v30 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7 constant:-v29];
       v115[6] = v30;
-      v31 = [(HUGridCameraCell *)self recordingIndicatorImageView];
-      v32 = [v31 widthAnchor];
-      v33 = [v32 constraintEqualToConstant:12.0];
+      recordingIndicatorImageView4 = [(HUGridCameraCell *)self recordingIndicatorImageView];
+      widthAnchor = [recordingIndicatorImageView4 widthAnchor];
+      v33 = [widthAnchor constraintEqualToConstant:12.0];
       v115[7] = v33;
-      v34 = [(HUGridCameraCell *)self recordingIndicatorImageView];
-      v35 = [v34 heightAnchor];
-      v36 = [v35 constraintEqualToConstant:12.0];
+      recordingIndicatorImageView5 = [(HUGridCameraCell *)self recordingIndicatorImageView];
+      heightAnchor2 = [recordingIndicatorImageView5 heightAnchor];
+      v36 = [heightAnchor2 constraintEqualToConstant:12.0];
       v115[8] = v36;
       v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v115 count:9];
       [(HUGridCameraCell *)self setLabelsConstraints:v37];
 
-      v38 = [(HUGridCameraCell *)self labelsConstraints];
-      [v4 addObjectsFromArray:v38];
+      labelsConstraints2 = [(HUGridCameraCell *)self labelsConstraints];
+      [array addObjectsFromArray:labelsConstraints2];
     }
 
-    v39 = [(HUGridCameraCell *)self exclamationView];
-    v40 = [v39 trailingAnchor];
-    v41 = [(HUGridCameraCell *)self contentView];
-    v42 = [v41 trailingAnchor];
-    v43 = [(HUGridCameraCell *)self layoutOptions];
-    [v43 headerHorizontalInnerMargins];
-    v45 = [v40 constraintEqualToAnchor:v42 constant:-v44];
-    [v4 addObject:v45];
+    exclamationView = [(HUGridCameraCell *)self exclamationView];
+    trailingAnchor8 = [exclamationView trailingAnchor];
+    contentView10 = [(HUGridCameraCell *)self contentView];
+    trailingAnchor9 = [contentView10 trailingAnchor];
+    layoutOptions6 = [(HUGridCameraCell *)self layoutOptions];
+    [layoutOptions6 headerHorizontalInnerMargins];
+    v45 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9 constant:-v44];
+    [array addObject:v45];
 
-    v46 = [(HUGridCameraCell *)self exclamationView];
-    v47 = [v46 widthAnchor];
-    v48 = [v47 constraintEqualToConstant:24.0];
-    [v4 addObject:v48];
+    exclamationView2 = [(HUGridCameraCell *)self exclamationView];
+    widthAnchor2 = [exclamationView2 widthAnchor];
+    v48 = [widthAnchor2 constraintEqualToConstant:24.0];
+    [array addObject:v48];
 
-    v49 = [(HUGridCameraCell *)self exclamationView];
-    v50 = [v49 heightAnchor];
-    v51 = [v50 constraintEqualToConstant:24.0];
-    [v4 addObject:v51];
+    exclamationView3 = [(HUGridCameraCell *)self exclamationView];
+    heightAnchor3 = [exclamationView3 heightAnchor];
+    v51 = [heightAnchor3 constraintEqualToConstant:24.0];
+    [array addObject:v51];
 
-    v52 = [(HUGridCameraCell *)self exclamationView];
-    v53 = [v52 centerYAnchor];
-    v54 = [(HUGridCameraCell *)self contentView];
-    v55 = [v54 topAnchor];
-    v56 = [v53 constraintEqualToAnchor:v55 constant:v26];
-    [v4 addObject:v56];
+    exclamationView4 = [(HUGridCameraCell *)self exclamationView];
+    centerYAnchor4 = [exclamationView4 centerYAnchor];
+    contentView11 = [(HUGridCameraCell *)self contentView];
+    topAnchor5 = [contentView11 topAnchor];
+    v56 = [centerYAnchor4 constraintEqualToAnchor:topAnchor5 constant:v26];
+    [array addObject:v56];
 
-    v57 = [(HUGridCameraCell *)self cameraView];
-    v58 = [v57 leadingAnchor];
-    v59 = [(HUGridCameraCell *)self contentView];
-    v60 = [v59 leadingAnchor];
-    v61 = [v58 constraintEqualToAnchor:v60];
-    [v4 addObject:v61];
+    cameraView = [(HUGridCameraCell *)self cameraView];
+    leadingAnchor6 = [cameraView leadingAnchor];
+    contentView12 = [(HUGridCameraCell *)self contentView];
+    leadingAnchor7 = [contentView12 leadingAnchor];
+    v61 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
+    [array addObject:v61];
 
-    v62 = [(HUGridCameraCell *)self cameraView];
-    v63 = [v62 trailingAnchor];
-    v64 = [(HUGridCameraCell *)self contentView];
-    v65 = [v64 trailingAnchor];
-    v66 = [v63 constraintEqualToAnchor:v65];
-    [v4 addObject:v66];
+    cameraView2 = [(HUGridCameraCell *)self cameraView];
+    trailingAnchor10 = [cameraView2 trailingAnchor];
+    contentView13 = [(HUGridCameraCell *)self contentView];
+    trailingAnchor11 = [contentView13 trailingAnchor];
+    v66 = [trailingAnchor10 constraintEqualToAnchor:trailingAnchor11];
+    [array addObject:v66];
 
-    v67 = [(HUGridCameraCell *)self cameraView];
-    v68 = [v67 topAnchor];
-    v69 = [(HUGridCameraCell *)self topAnchor];
-    v70 = [(HUGridCameraCell *)self layoutOptions];
-    [v70 headerViewHeight];
-    v71 = [v68 constraintEqualToAnchor:v69 constant:?];
-    [v4 addObject:v71];
+    cameraView3 = [(HUGridCameraCell *)self cameraView];
+    topAnchor6 = [cameraView3 topAnchor];
+    topAnchor7 = [(HUGridCameraCell *)self topAnchor];
+    layoutOptions7 = [(HUGridCameraCell *)self layoutOptions];
+    [layoutOptions7 headerViewHeight];
+    v71 = [topAnchor6 constraintEqualToAnchor:topAnchor7 constant:?];
+    [array addObject:v71];
 
-    v72 = [(HUGridCameraCell *)self cameraView];
-    v73 = [v72 bottomAnchor];
-    v74 = [(HUGridCameraCell *)self contentView];
-    v75 = [v74 bottomAnchor];
-    v76 = [v73 constraintEqualToAnchor:v75];
-    [v4 addObject:v76];
+    cameraView4 = [(HUGridCameraCell *)self cameraView];
+    bottomAnchor2 = [cameraView4 bottomAnchor];
+    contentView14 = [(HUGridCameraCell *)self contentView];
+    bottomAnchor3 = [contentView14 bottomAnchor];
+    v76 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
+    [array addObject:v76];
 
-    [(HUGridCameraCell *)self setAllConstraints:v4];
-    [MEMORY[0x277CCAAD0] activateConstraints:v4];
+    [(HUGridCameraCell *)self setAllConstraints:array];
+    [MEMORY[0x277CCAAD0] activateConstraints:array];
   }
 
   v114.receiver = self;
@@ -731,21 +731,21 @@ void __42__HUGridCameraCell_updateUIWithAnimation___block_invoke_2(uint64_t a1)
 - (void)_updateCameraViewAppearance
 {
   v3 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.4];
-  v4 = [(HUGridCameraCell *)self cameraView];
-  [v4 setBackgroundColor:v3];
+  cameraView = [(HUGridCameraCell *)self cameraView];
+  [cameraView setBackgroundColor:v3];
 
   v6 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.75];
-  v5 = [(HUGridCameraCell *)self cameraView];
-  [v5 setTintColor:v6];
+  cameraView2 = [(HUGridCameraCell *)self cameraView];
+  [cameraView2 setTintColor:v6];
 }
 
 - (void)_updateRecordIndicatorColor
 {
   objc_opt_class();
-  v3 = [(HUGridCameraCell *)self item];
+  item = [(HUGridCameraCell *)self item];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = item;
   }
 
   else
@@ -755,13 +755,13 @@ void __42__HUGridCameraCell_updateUIWithAnimation___block_invoke_2(uint64_t a1)
 
   v5 = v4;
 
-  v6 = [v5 profile];
+  profile = [v5 profile];
 
-  v11 = [v6 userSettings];
+  userSettings = [profile userSettings];
 
-  if (v11)
+  if (userSettings)
   {
-    [v11 hu_indicatorColorForCurrentAccessMode];
+    [userSettings hu_indicatorColorForCurrentAccessMode];
   }
 
   else
@@ -772,31 +772,31 @@ void __42__HUGridCameraCell_updateUIWithAnimation___block_invoke_2(uint64_t a1)
   [(UIImageView *)self->_recordingIndicatorImageView setTintColor:v7];
 
   v8 = MEMORY[0x277D755B8];
-  v9 = [v11 hu_indicatorImageNameForCurrentAccessMode];
-  v10 = [v8 systemImageNamed:v9];
+  hu_indicatorImageNameForCurrentAccessMode = [userSettings hu_indicatorImageNameForCurrentAccessMode];
+  v10 = [v8 systemImageNamed:hu_indicatorImageNameForCurrentAccessMode];
   [(UIImageView *)self->_recordingIndicatorImageView setImage:v10];
 }
 
-- (id)_descriptionLabelText:(id)a3
+- (id)_descriptionLabelText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   if ([MEMORY[0x277D14CE8] shouldSuppressAllErrorsForDemo])
   {
     v5 = &stru_2823E0EE8;
     goto LABEL_8;
   }
 
-  if (v4)
+  if (textCopy)
   {
-    v6 = [v4 hf_localizedAge];
+    hf_localizedAge = [textCopy hf_localizedAge];
 LABEL_5:
-    v5 = v6;
+    v5 = hf_localizedAge;
     goto LABEL_8;
   }
 
   if (![(HUGridCell *)self primaryState])
   {
-    v6 = _HULocalizedStringWithDefaultValue(@"HUGridCameraCellNoResponseDescription", @"HUGridCameraCellNoResponseDescription", 1);
+    hf_localizedAge = _HULocalizedStringWithDefaultValue(@"HUGridCameraCellNoResponseDescription", @"HUGridCameraCellNoResponseDescription", 1);
     goto LABEL_5;
   }
 
@@ -808,14 +808,14 @@ LABEL_8:
 
 - (void)_populateExclamationImageIfNeeded
 {
-  v3 = [(HUGridCameraCell *)self exclamationImageView];
-  v4 = [v3 image];
+  exclamationImageView = [(HUGridCameraCell *)self exclamationImageView];
+  image = [exclamationImageView image];
 
-  if (!v4)
+  if (!image)
   {
-    v6 = [(HUGridCameraCell *)self exclamationImage];
-    v5 = [(HUGridCameraCell *)self exclamationImageView];
-    [v5 setImage:v6];
+    exclamationImage = [(HUGridCameraCell *)self exclamationImage];
+    exclamationImageView2 = [(HUGridCameraCell *)self exclamationImageView];
+    [exclamationImageView2 setImage:exclamationImage];
   }
 }
 
@@ -847,13 +847,13 @@ LABEL_8:
     self->_exclamationImageView = v5;
 
     v7 = [HUVisualEffectContainerView alloc];
-    v8 = [(HUGridCell *)self contentEffect];
-    v9 = [(HUVisualEffectContainerView *)v7 initWithEffect:v8];
+    contentEffect = [(HUGridCell *)self contentEffect];
+    v9 = [(HUVisualEffectContainerView *)v7 initWithEffect:contentEffect];
 
     [(HUVisualEffectContainerView *)v9 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(HUVisualEffectContainerView *)v9 setInnerContentView:self->_exclamationImageView];
-    v10 = [MEMORY[0x277D75348] systemRedColor];
-    [(HUVisualEffectContainerView *)v9 setTintColor:v10];
+    systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+    [(HUVisualEffectContainerView *)v9 setTintColor:systemRedColor];
 
     v11 = self->_exclamationView;
     self->_exclamationView = v9;

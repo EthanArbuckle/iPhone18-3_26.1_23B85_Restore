@@ -1,41 +1,41 @@
 @interface ORCHSchemaORCHIntelligenceFlowRequestFailed
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ORCHSchemaORCHIntelligenceFlowRequestFailed)initWithDictionary:(id)a3;
-- (ORCHSchemaORCHIntelligenceFlowRequestFailed)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ORCHSchemaORCHIntelligenceFlowRequestFailed)initWithDictionary:(id)dictionary;
+- (ORCHSchemaORCHIntelligenceFlowRequestFailed)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsSiriXFallback:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsSiriXFallback:(BOOL)fallback;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ORCHSchemaORCHIntelligenceFlowRequestFailed
 
-- (ORCHSchemaORCHIntelligenceFlowRequestFailed)initWithDictionary:(id)a3
+- (ORCHSchemaORCHIntelligenceFlowRequestFailed)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = ORCHSchemaORCHIntelligenceFlowRequestFailed;
   v5 = [(ORCHSchemaORCHIntelligenceFlowRequestFailed *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"reason"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"reason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ORCHSchemaORCHIntelligenceFlowRequestFailed setReason:](v5, "setReason:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"isSiriXFallback"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isSiriXFallback"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ORCHSchemaORCHIntelligenceFlowRequestFailed setIsSiriXFallback:](v5, "setIsSiriXFallback:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"ifflowError"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"ifflowError"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (ORCHSchemaORCHIntelligenceFlowRequestFailed)initWithJSON:(id)a3
+- (ORCHSchemaORCHIntelligenceFlowRequestFailed)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ORCHSchemaORCHIntelligenceFlowRequestFailed *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ORCHSchemaORCHIntelligenceFlowRequestFailed *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ORCHSchemaORCHIntelligenceFlowRequestFailed *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,20 +85,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_ifflowError)
   {
-    v4 = [(ORCHSchemaORCHIntelligenceFlowRequestFailed *)self ifflowError];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    ifflowError = [(ORCHSchemaORCHIntelligenceFlowRequestFailed *)self ifflowError];
+    dictionaryRepresentation = [ifflowError dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"ifflowError"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"ifflowError"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"ifflowError"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"ifflowError"];
     }
   }
 
@@ -106,7 +106,7 @@
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[ORCHSchemaORCHIntelligenceFlowRequestFailed isSiriXFallback](self, "isSiriXFallback")}];
-    [v3 setObject:v8 forKeyedSubscript:@"isSiriXFallback"];
+    [dictionary setObject:v8 forKeyedSubscript:@"isSiriXFallback"];
 
     has = self->_has;
   }
@@ -124,12 +124,12 @@
       v10 = off_1E78DEC08[v9];
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"reason"];
+    [dictionary setObject:v10 forKeyedSubscript:@"reason"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -158,16 +158,16 @@ LABEL_3:
   return v7 ^ v6 ^ [(ORCHSchemaORCHIFFlowError *)self->_ifflowError hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -176,27 +176,27 @@ LABEL_3:
   if (*&has)
   {
     reason = self->_reason;
-    if (reason != [v4 reason])
+    if (reason != [equalCopy reason])
     {
       goto LABEL_14;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
   if (v8 == ((v6 >> 1) & 1))
   {
-    if (!v8 || (isSiriXFallback = self->_isSiriXFallback, isSiriXFallback == [v4 isSiriXFallback]))
+    if (!v8 || (isSiriXFallback = self->_isSiriXFallback, isSiriXFallback == [equalCopy isSiriXFallback]))
     {
-      v10 = [(ORCHSchemaORCHIntelligenceFlowRequestFailed *)self ifflowError];
-      v11 = [v4 ifflowError];
-      v12 = v11;
-      if ((v10 != 0) != (v11 == 0))
+      ifflowError = [(ORCHSchemaORCHIntelligenceFlowRequestFailed *)self ifflowError];
+      ifflowError2 = [equalCopy ifflowError];
+      v12 = ifflowError2;
+      if ((ifflowError != 0) != (ifflowError2 == 0))
       {
-        v13 = [(ORCHSchemaORCHIntelligenceFlowRequestFailed *)self ifflowError];
-        if (!v13)
+        ifflowError3 = [(ORCHSchemaORCHIntelligenceFlowRequestFailed *)self ifflowError];
+        if (!ifflowError3)
         {
 
 LABEL_17:
@@ -204,10 +204,10 @@ LABEL_17:
           goto LABEL_15;
         }
 
-        v14 = v13;
-        v15 = [(ORCHSchemaORCHIntelligenceFlowRequestFailed *)self ifflowError];
-        v16 = [v4 ifflowError];
-        v17 = [v15 isEqual:v16];
+        v14 = ifflowError3;
+        ifflowError4 = [(ORCHSchemaORCHIntelligenceFlowRequestFailed *)self ifflowError];
+        ifflowError5 = [equalCopy ifflowError];
+        v17 = [ifflowError4 isEqual:ifflowError5];
 
         if (v17)
         {
@@ -228,9 +228,9 @@ LABEL_15:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -243,21 +243,21 @@ LABEL_15:
     PBDataWriterWriteBOOLField();
   }
 
-  v5 = [(ORCHSchemaORCHIntelligenceFlowRequestFailed *)self ifflowError];
+  ifflowError = [(ORCHSchemaORCHIntelligenceFlowRequestFailed *)self ifflowError];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (ifflowError)
   {
-    v7 = [(ORCHSchemaORCHIntelligenceFlowRequestFailed *)self ifflowError];
+    ifflowError2 = [(ORCHSchemaORCHIntelligenceFlowRequestFailed *)self ifflowError];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (void)setHasIsSiriXFallback:(BOOL)a3
+- (void)setHasIsSiriXFallback:(BOOL)fallback
 {
-  if (a3)
+  if (fallback)
   {
     v3 = 2;
   }
@@ -270,17 +270,17 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ORCHSchemaORCHIntelligenceFlowRequestFailed;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ORCHSchemaORCHIntelligenceFlowRequestFailed *)self ifflowError:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ORCHSchemaORCHIntelligenceFlowRequestFailed *)self deleteIfflowError];
   }

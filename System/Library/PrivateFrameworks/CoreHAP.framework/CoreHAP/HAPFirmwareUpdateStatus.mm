@@ -1,12 +1,12 @@
 @interface HAPFirmwareUpdateStatus
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPFirmwareUpdateStatus)init;
-- (HAPFirmwareUpdateStatus)initWithState:(id)a3 updateDuration:(id)a4 stagedFirmwareVersion:(id)a5;
+- (HAPFirmwareUpdateStatus)initWithState:(id)state updateDuration:(id)duration stagedFirmwareVersion:(id)version;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPFirmwareUpdateStatus
@@ -14,18 +14,18 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPFirmwareUpdateStatus *)self state];
-  v5 = [(HAPFirmwareUpdateStatus *)self updateDuration];
-  v6 = [(HAPFirmwareUpdateStatus *)self stagedFirmwareVersion];
-  v7 = [v3 stringWithFormat:@"<HAPFirmwareUpdateStatus state=%@, updateDuration=%@, stagedFirmwareVersion=%@>", v4, v5, v6];
+  state = [(HAPFirmwareUpdateStatus *)self state];
+  updateDuration = [(HAPFirmwareUpdateStatus *)self updateDuration];
+  stagedFirmwareVersion = [(HAPFirmwareUpdateStatus *)self stagedFirmwareVersion];
+  v7 = [v3 stringWithFormat:@"<HAPFirmwareUpdateStatus state=%@, updateDuration=%@, stagedFirmwareVersion=%@>", state, updateDuration, stagedFirmwareVersion];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -35,46 +35,46 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(HAPFirmwareUpdateStatus *)self state];
-      v9 = [(HAPFirmwareUpdateStatus *)v7 state];
-      if (v8 != v9)
+      v7 = equalCopy;
+      state = [(HAPFirmwareUpdateStatus *)self state];
+      state2 = [(HAPFirmwareUpdateStatus *)v7 state];
+      if (state != state2)
       {
-        v3 = [(HAPFirmwareUpdateStatus *)self state];
-        v4 = [(HAPFirmwareUpdateStatus *)v7 state];
-        if (![v3 isEqual:v4])
+        state3 = [(HAPFirmwareUpdateStatus *)self state];
+        state4 = [(HAPFirmwareUpdateStatus *)v7 state];
+        if (![state3 isEqual:state4])
         {
           v10 = 0;
           goto LABEL_19;
         }
       }
 
-      v11 = [(HAPFirmwareUpdateStatus *)self updateDuration];
-      v12 = [(HAPFirmwareUpdateStatus *)v7 updateDuration];
-      v13 = v12;
-      if (v11 == v12)
+      updateDuration = [(HAPFirmwareUpdateStatus *)self updateDuration];
+      updateDuration2 = [(HAPFirmwareUpdateStatus *)v7 updateDuration];
+      v13 = updateDuration2;
+      if (updateDuration == updateDuration2)
       {
-        v28 = v12;
+        v28 = updateDuration2;
       }
 
       else
       {
-        v14 = [(HAPFirmwareUpdateStatus *)self updateDuration];
-        v27 = [(HAPFirmwareUpdateStatus *)v7 updateDuration];
-        if (![v14 isEqual:?])
+        updateDuration3 = [(HAPFirmwareUpdateStatus *)self updateDuration];
+        updateDuration4 = [(HAPFirmwareUpdateStatus *)v7 updateDuration];
+        if (![updateDuration3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_17;
         }
 
-        v26 = v14;
+        v26 = updateDuration3;
         v28 = v13;
       }
 
-      v15 = [(HAPFirmwareUpdateStatus *)self stagedFirmwareVersion];
-      v16 = [(HAPFirmwareUpdateStatus *)v7 stagedFirmwareVersion];
-      v17 = v16;
-      if (v15 == v16)
+      stagedFirmwareVersion = [(HAPFirmwareUpdateStatus *)self stagedFirmwareVersion];
+      stagedFirmwareVersion2 = [(HAPFirmwareUpdateStatus *)v7 stagedFirmwareVersion];
+      v17 = stagedFirmwareVersion2;
+      if (stagedFirmwareVersion == stagedFirmwareVersion2)
       {
 
         v10 = 1;
@@ -83,29 +83,29 @@
       else
       {
         [(HAPFirmwareUpdateStatus *)self stagedFirmwareVersion];
-        v18 = v25 = v3;
+        v18 = v25 = state3;
         [(HAPFirmwareUpdateStatus *)v7 stagedFirmwareVersion];
-        v24 = v11;
-        v19 = v4;
-        v20 = v9;
-        v22 = v21 = v8;
+        v24 = updateDuration;
+        v19 = state4;
+        v20 = state2;
+        v22 = v21 = state;
         v10 = [v18 isEqual:v22];
 
-        v8 = v21;
-        v9 = v20;
-        v4 = v19;
-        v11 = v24;
+        state = v21;
+        state2 = v20;
+        state4 = v19;
+        updateDuration = v24;
 
-        v3 = v25;
+        state3 = v25;
       }
 
       v13 = v28;
-      v14 = v26;
-      if (v11 == v28)
+      updateDuration3 = v26;
+      if (updateDuration == v28)
       {
 LABEL_18:
 
-        if (v8 == v9)
+        if (state == state2)
         {
 LABEL_20:
 
@@ -130,18 +130,18 @@ LABEL_21:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPFirmwareUpdateStatus allocWithZone:a3];
-  v5 = [(HAPFirmwareUpdateStatus *)self state];
-  v6 = [(HAPFirmwareUpdateStatus *)self updateDuration];
-  v7 = [(HAPFirmwareUpdateStatus *)self stagedFirmwareVersion];
-  v8 = [(HAPFirmwareUpdateStatus *)v4 initWithState:v5 updateDuration:v6 stagedFirmwareVersion:v7];
+  v4 = [HAPFirmwareUpdateStatus allocWithZone:zone];
+  state = [(HAPFirmwareUpdateStatus *)self state];
+  updateDuration = [(HAPFirmwareUpdateStatus *)self updateDuration];
+  stagedFirmwareVersion = [(HAPFirmwareUpdateStatus *)self stagedFirmwareVersion];
+  v8 = [(HAPFirmwareUpdateStatus *)v4 initWithState:state updateDuration:updateDuration stagedFirmwareVersion:stagedFirmwareVersion];
 
   return v8;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v49 = *MEMORY[0x277D85DE8];
   v47 = 0u;
@@ -166,13 +166,13 @@ LABEL_21:
   v30 = 0u;
   v28 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPFirmwareUpdateStatus *)self state];
+  state = [(HAPFirmwareUpdateStatus *)self state];
 
-  if (v5)
+  if (state)
   {
-    v6 = [(HAPFirmwareUpdateStatus *)self state];
+    state2 = [(HAPFirmwareUpdateStatus *)self state];
     v27 = 0;
-    v7 = [v6 serializeWithError:&v27];
+    v7 = [state2 serializeWithError:&v27];
     v8 = v27;
 
     if (v8)
@@ -189,11 +189,11 @@ LABEL_8:
       v12 = v9;
 
 LABEL_9:
-      if (a3)
+      if (error)
       {
         HMErrorFromOSStatus(v12);
         v8 = 0;
-        *a3 = v13 = 0;
+        *error = v13 = 0;
         goto LABEL_32;
       }
 
@@ -204,13 +204,13 @@ LABEL_17:
     }
   }
 
-  v10 = [(HAPFirmwareUpdateStatus *)self updateDuration];
+  updateDuration = [(HAPFirmwareUpdateStatus *)self updateDuration];
 
-  if (v10)
+  if (updateDuration)
   {
-    v11 = [(HAPFirmwareUpdateStatus *)self updateDuration];
+    updateDuration2 = [(HAPFirmwareUpdateStatus *)self updateDuration];
     v26 = 0;
-    v7 = [v11 serializeWithError:&v26];
+    v7 = [updateDuration2 serializeWithError:&v26];
     v8 = v26;
 
     if (v8)
@@ -227,42 +227,42 @@ LABEL_17:
     }
   }
 
-  v14 = [(HAPFirmwareUpdateStatus *)self stagedFirmwareVersion];
+  stagedFirmwareVersion = [(HAPFirmwareUpdateStatus *)self stagedFirmwareVersion];
 
-  if (v14)
+  if (stagedFirmwareVersion)
   {
-    v15 = [(HAPFirmwareUpdateStatus *)self stagedFirmwareVersion];
+    stagedFirmwareVersion2 = [(HAPFirmwareUpdateStatus *)self stagedFirmwareVersion];
     v25 = 0;
-    v7 = [v15 serializeWithError:&v25];
+    v7 = [stagedFirmwareVersion2 serializeWithError:&v25];
     v8 = v25;
 
     if (v8)
     {
 LABEL_15:
 
-      if (a3)
+      if (error)
       {
         v16 = v8;
         v13 = 0;
-        *a3 = v8;
+        *error = v8;
         goto LABEL_32;
       }
 
       goto LABEL_17;
     }
 
-    v17 = [v7 bytes];
-    v18 = v17 + [v7 length];
+    bytes = [v7 bytes];
+    v18 = bytes + [v7 length];
     do
     {
-      if ((v18 - v17) >= 255)
+      if ((v18 - bytes) >= 255)
       {
         v19 = 255;
       }
 
       else
       {
-        v19 = v18 - v17;
+        v19 = v18 - bytes;
       }
 
       v20 = TLV8BufferAppend();
@@ -276,7 +276,7 @@ LABEL_15:
         v21 = v19;
       }
 
-      v17 += v21;
+      bytes += v21;
       if (v20)
       {
         v22 = 1;
@@ -284,7 +284,7 @@ LABEL_15:
 
       else
       {
-        v22 = v17 >= v18;
+        v22 = bytes >= v18;
       }
     }
 
@@ -307,18 +307,18 @@ LABEL_32:
   return v13;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v10 = 0;
     v11 = 0;
     v12 = 0;
 LABEL_23:
-    [(HAPFirmwareUpdateStatus *)self setState:v12, v25];
+    [(HAPFirmwareUpdateStatus *)self setState:v12, selfCopy];
     [(HAPFirmwareUpdateStatus *)self setUpdateDuration:v11];
     [(HAPFirmwareUpdateStatus *)self setStagedFirmwareVersion:v10];
     v9 = 0;
@@ -326,13 +326,13 @@ LABEL_23:
     goto LABEL_25;
   }
 
-  v25 = self;
-  v26 = a4;
+  selfCopy = self;
+  errorCopy = error;
   v9 = 0;
   v10 = 0;
   v11 = 0;
   v12 = 0;
-  v13 = v7 + v8;
+  v13 = bytes + v8;
   while (1)
   {
     v33 = 0;
@@ -362,7 +362,7 @@ LABEL_23:
     {
       case 3:
         v28 = v9;
-        v15 = HAPTLVParseContiguousTlvs(3, v7, v13, v31, &v28);
+        v15 = HAPTLVParseContiguousTlvs(3, bytes, v13, v31, &v28);
         v17 = v28;
 
         if (!v17)
@@ -397,17 +397,17 @@ LABEL_12:
         goto LABEL_12;
     }
 
-    v7 = v31[0];
+    bytes = v31[0];
     if (v31[0] >= v13)
     {
       if (v9)
       {
 LABEL_16:
-        if (v26)
+        if (errorCopy)
         {
           v21 = v9;
           v22 = 0;
-          *v26 = v9;
+          *errorCopy = v9;
           goto LABEL_25;
         }
 
@@ -415,15 +415,15 @@ LABEL_16:
       }
 
 LABEL_22:
-      self = v25;
+      self = selfCopy;
       goto LABEL_23;
     }
   }
 
-  if (v26)
+  if (errorCopy)
   {
     HMErrorFromOSStatus(Next);
-    *v26 = v22 = 0;
+    *errorCopy = v22 = 0;
     goto LABEL_25;
   }
 
@@ -434,20 +434,20 @@ LABEL_25:
   return v22;
 }
 
-- (HAPFirmwareUpdateStatus)initWithState:(id)a3 updateDuration:(id)a4 stagedFirmwareVersion:(id)a5
+- (HAPFirmwareUpdateStatus)initWithState:(id)state updateDuration:(id)duration stagedFirmwareVersion:(id)version
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  stateCopy = state;
+  durationCopy = duration;
+  versionCopy = version;
   v15.receiver = self;
   v15.super_class = HAPFirmwareUpdateStatus;
   v12 = [(HAPFirmwareUpdateStatus *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_state, a3);
-    objc_storeStrong(&v13->_updateDuration, a4);
-    objc_storeStrong(&v13->_stagedFirmwareVersion, a5);
+    objc_storeStrong(&v12->_state, state);
+    objc_storeStrong(&v13->_updateDuration, duration);
+    objc_storeStrong(&v13->_stagedFirmwareVersion, version);
   }
 
   return v13;
@@ -460,24 +460,24 @@ LABEL_25:
   return [(HAPFirmwareUpdateStatus *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPFirmwareUpdateStatus);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPFirmwareUpdateStatus *)v6 parseFromData:v5 error:&v11];
+    [(HAPFirmwareUpdateStatus *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

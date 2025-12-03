@@ -120,18 +120,18 @@
 
 - (id)ic_decodeInBackground
 {
-  v2 = [a1 imageRendererFormat];
-  [a1 scale];
-  [v2 setScale:?];
-  [v2 setPreferredRange:0];
+  imageRendererFormat = [self imageRendererFormat];
+  [self scale];
+  [imageRendererFormat setScale:?];
+  [imageRendererFormat setPreferredRange:0];
   v3 = objc_alloc(MEMORY[0x1E69DCA78]);
-  [a1 size];
-  v4 = [v3 initWithSize:v2 format:?];
+  [self size];
+  v4 = [v3 initWithSize:imageRendererFormat format:?];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__UIImage_Utilities__ic_decodeInBackground__block_invoke;
   v7[3] = &unk_1E8468D20;
-  v7[4] = a1;
+  v7[4] = self;
   v5 = [v4 imageWithActions:v7];
 
   return v5;
@@ -139,9 +139,9 @@
 
 - (uint64_t)ic_CGImage
 {
-  v1 = a1;
+  selfCopy = self;
 
-  return [v1 CGImage];
+  return [selfCopy CGImage];
 }
 
 + (id)ic_imageWithContentsOfURL:()Utilities
@@ -149,9 +149,9 @@
   v3 = MEMORY[0x1E69DCAB8];
   v4 = a3;
   v5 = [v3 alloc];
-  v6 = [v4 path];
+  path = [v4 path];
 
-  v7 = [v5 initWithContentsOfFile:v6];
+  v7 = [v5 initWithContentsOfFile:path];
 
   return v7;
 }
@@ -171,7 +171,7 @@
   v9 = MEMORY[0x1E69DCAB8];
   v10 = a6;
   v11 = [v9 imageNamed:a5];
-  v12 = [v11 ic_imageWithTint:v10 size:{a1, a2}];
+  v12 = [v11 ic_imageWithTint:v10 size:{self, a2}];
 
   return v12;
 }
@@ -188,8 +188,8 @@
 
   else
   {
-    v8 = [a1 ic_symbolsNeedingUIAsset];
-    v9 = [v8 containsObject:v4];
+    ic_symbolsNeedingUIAsset = [self ic_symbolsNeedingUIAsset];
+    v9 = [ic_symbolsNeedingUIAsset containsObject:v4];
 
     if (v9)
     {
@@ -202,10 +202,10 @@
       goto LABEL_7;
     }
 
-    v14 = [a1 ic_symbolsNeedingPrivateCatalog];
-    v15 = [v14 containsObject:v4];
+    ic_symbolsNeedingPrivateCatalog = [self ic_symbolsNeedingPrivateCatalog];
+    v15 = [ic_symbolsNeedingPrivateCatalog containsObject:v4];
 
-    v7 = [a1 ic_systemImageNamed:v4 usePrivateCatalog:v15];
+    v7 = [self ic_systemImageNamed:v4 usePrivateCatalog:v15];
   }
 
   v13 = v7;
@@ -228,13 +228,13 @@ LABEL_3:
     goto LABEL_4;
   }
 
-  v13 = [a1 ic_symbolsNeedingUIAsset];
-  v14 = [v13 containsObject:v6];
+  ic_symbolsNeedingUIAsset = [self ic_symbolsNeedingUIAsset];
+  v14 = [ic_symbolsNeedingUIAsset containsObject:v6];
 
   if (!v14)
   {
-    v18 = [a1 ic_symbolsNeedingPrivateCatalog];
-    v19 = [v18 containsObject:v6];
+    ic_symbolsNeedingPrivateCatalog = [self ic_symbolsNeedingPrivateCatalog];
+    v19 = [ic_symbolsNeedingPrivateCatalog containsObject:v6];
 
     if (v19)
     {
@@ -308,7 +308,7 @@ LABEL_3:
   v17 = 0;
 LABEL_6:
   v18 = objc_alloc_init(MEMORY[0x1E69A8970]);
-  [v18 setSize:{a1, a2}];
+  [v18 setSize:{self, a2}];
   if (v16)
   {
     v26[0] = v16;
@@ -325,8 +325,8 @@ LABEL_6:
 
   [v18 setRenderingMode:3];
   v21 = [v15 imageForGraphicSymbolDescriptor:v18];
-  v22 = [v21 CGImage];
-  v23 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v22 scale:0 orientation:CGImageGetWidth(v22) / a1];
+  cGImage = [v21 CGImage];
+  v23 = [MEMORY[0x1E69DCAB8] imageWithCGImage:cGImage scale:0 orientation:CGImageGetWidth(cGImage) / self];
 
   return v23;
 }
@@ -334,8 +334,8 @@ LABEL_6:
 - (id)ic_imageWithTint:()Utilities
 {
   v4 = a3;
-  [a1 size];
-  v5 = [a1 ic_imageWithTint:v4 size:?];
+  [self size];
+  v5 = [self ic_imageWithTint:v4 size:?];
 
   return v5;
 }
@@ -343,12 +343,12 @@ LABEL_6:
 - (id)ic_imageWithTint:()Utilities size:
 {
   v8 = a5;
-  v9 = [MEMORY[0x1E69DCA80] defaultFormat];
-  v10 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v10 scale];
-  [v9 setScale:?];
+  defaultFormat = [MEMORY[0x1E69DCA80] defaultFormat];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
+  [defaultFormat setScale:?];
 
-  v11 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:v9 format:{a2, a3}];
+  v11 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:defaultFormat format:{a2, a3}];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __44__UIImage_Utilities__ic_imageWithTint_size___block_invoke;
@@ -360,7 +360,7 @@ LABEL_6:
   v22 = a2;
   v23 = a3;
   v16 = v8;
-  v17 = a1;
+  selfCopy = self;
   v12 = v8;
   v13 = [v11 imageWithActions:v15];
 
@@ -369,7 +369,7 @@ LABEL_6:
 
 - (uint64_t)ic_scaledImageMinDimension:()Utilities scale:
 {
-  [a1 size];
+  [self size];
   if (v6 >= v7)
   {
     v8 = v7;
@@ -384,12 +384,12 @@ LABEL_6:
   v10 = round(v6 * v9);
   v11 = round(v7 * v9);
 
-  return [a1 ic_scaledImageWithSize:v10 scale:{v11, a3}];
+  return [self ic_scaledImageWithSize:v10 scale:{v11, a3}];
 }
 
 - (uint64_t)ic_scaledImageMaxDimension:()Utilities scale:
 {
-  [a1 size];
+  [self size];
   if (v6 >= v7)
   {
     v8 = v6;
@@ -404,26 +404,26 @@ LABEL_6:
   v10 = round(v6 * v9);
   v11 = round(v7 * v9);
 
-  return [a1 ic_scaledImageWithSize:v10 scale:{v11, a3}];
+  return [self ic_scaledImageWithSize:v10 scale:{v11, a3}];
 }
 
 - (id)ic_scaledImageWithSize:()Utilities scale:
 {
   if (_UIApplicationIsExtension())
   {
-    v8 = [a1 imageByPreparingThumbnailOfSize:{a2, a3}];
+    v8 = [self imageByPreparingThumbnailOfSize:{a2, a3}];
   }
 
   else
   {
-    v9 = [a1 imageRendererFormat];
-    [v9 setScale:a4];
-    v10 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:v9 format:{a2, a3}];
+    imageRendererFormat = [self imageRendererFormat];
+    [imageRendererFormat setScale:a4];
+    v10 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:imageRendererFormat format:{a2, a3}];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __51__UIImage_Utilities__ic_scaledImageWithSize_scale___block_invoke;
     v12[3] = &unk_1E8468C80;
-    v12[4] = a1;
+    v12[4] = self;
     *&v12[5] = a2;
     *&v12[6] = a3;
     v8 = [v10 imageWithActions:v12];
@@ -434,28 +434,28 @@ LABEL_6:
 
 - (id)ic_imageFromRect:()Utilities
 {
-  [a1 scale];
+  [self scale];
   if (v10 > 1.0)
   {
-    [a1 scale];
+    [self scale];
     a2 = a2 * v11;
-    [a1 scale];
+    [self scale];
     a3 = a3 * v12;
-    [a1 scale];
+    [self scale];
     a4 = a4 * v13;
-    [a1 scale];
+    [self scale];
     a5 = a5 * v14;
   }
 
-  v15 = [a1 ic_CGImage];
+  ic_CGImage = [self ic_CGImage];
   v22.origin.x = a2;
   v22.origin.y = a3;
   v22.size.width = a4;
   v22.size.height = a5;
-  v16 = CGImageCreateWithImageInRect(v15, v22);
+  v16 = CGImageCreateWithImageInRect(ic_CGImage, v22);
   v17 = MEMORY[0x1E69DCAB8];
-  [a1 scale];
-  v19 = [v17 imageWithCGImage:v16 scale:objc_msgSend(a1 orientation:{"imageOrientation"), v18}];
+  [self scale];
+  v19 = [v17 imageWithCGImage:v16 scale:objc_msgSend(self orientation:{"imageOrientation"), v18}];
   CGImageRelease(v16);
 
   return v19;
@@ -465,14 +465,14 @@ LABEL_6:
 {
   v4 = a3;
   v5 = objc_alloc(MEMORY[0x1E69DCA78]);
-  [a1 size];
+  [self size];
   v6 = [v5 initWithSize:?];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __50__UIImage_Utilities__ic_imageWithBackgroundColor___block_invoke;
   v10[3] = &unk_1E8468BC8;
   v11 = v4;
-  v12 = a1;
+  selfCopy = self;
   v7 = v4;
   v8 = [v6 imageWithActions:v10];
 
@@ -526,7 +526,7 @@ LABEL_6:
   x = v30.origin.x;
   y = v30.origin.y;
   v20 = TSUCreateRGBABitmapContext();
-  if (!v20 || (v21 = v20, CGContextTranslateCTM(v20, -x, -y), v22 = a5[1], *&transform.a = *a5, *&transform.c = v22, *&transform.tx = a5[2], CGContextConcatCTM(v21, &transform), v31.origin.x = v10, v31.origin.y = v11, v31.size.width = Width, v31.size.height = Height, CGContextDrawImage(v21, v31, a4), Image = CGBitmapContextCreateImage(v21), CGContextRelease(v21), !Image) || ([MEMORY[0x1E69DCAB8] ic_imageWithCGImage:Image scale:0 orientation:a1], v24 = objc_claimAutoreleasedReturnValue(), CGImageRelease(Image), !v24))
+  if (!v20 || (v21 = v20, CGContextTranslateCTM(v20, -x, -y), v22 = a5[1], *&transform.a = *a5, *&transform.c = v22, *&transform.tx = a5[2], CGContextConcatCTM(v21, &transform), v31.origin.x = v10, v31.origin.y = v11, v31.size.width = Width, v31.size.height = Height, CGContextDrawImage(v21, v31, a4), Image = CGBitmapContextCreateImage(v21), CGContextRelease(v21), !Image) || ([MEMORY[0x1E69DCAB8] ic_imageWithCGImage:Image scale:0 orientation:self], v24 = objc_claimAutoreleasedReturnValue(), CGImageRelease(Image), !v24))
   {
     v25 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -542,21 +542,21 @@ LABEL_6:
 
 + (id)ic_orientedImageFromImage:()Utilities fromOrientation:
 {
-  v3 = [a3 ic_CGImage];
-  CGImageGetWidth(v3);
-  CGImageGetHeight(v3);
+  ic_CGImage = [a3 ic_CGImage];
+  CGImageGetWidth(ic_CGImage);
+  CGImageGetHeight(ic_CGImage);
   ICTransformFromImageOrientation();
   memset(v6, 0, sizeof(v6));
-  v4 = [MEMORY[0x1E69DCAB8] ic_orientedImageFromCGImage:v3 scale:v6 transform:1.0];
+  v4 = [MEMORY[0x1E69DCAB8] ic_orientedImageFromCGImage:ic_CGImage scale:v6 transform:1.0];
 
   return v4;
 }
 
 + (id)ic_orientedImageFromImage:()Utilities toOrientation:
 {
-  v3 = [a3 ic_CGImage];
-  CGImageGetWidth(v3);
-  CGImageGetHeight(v3);
+  ic_CGImage = [a3 ic_CGImage];
+  CGImageGetWidth(ic_CGImage);
+  CGImageGetHeight(ic_CGImage);
   v10 = 0u;
   v11 = 0u;
   v9 = 0u;
@@ -564,7 +564,7 @@ LABEL_6:
   v4 = MEMORY[0x1E69DCAB8];
   memset(&v7, 0, sizeof(v7));
   CGAffineTransformInvert(&v8, &v7);
-  v5 = [v4 ic_orientedImageFromCGImage:v3 scale:&v8 transform:1.0];
+  v5 = [v4 ic_orientedImageFromCGImage:ic_CGImage scale:&v8 transform:1.0];
 
   return v5;
 }
@@ -572,10 +572,10 @@ LABEL_6:
 - (uint64_t)ic_horizontallyMirroredImage
 {
   v2 = MEMORY[0x1E69DCAB8];
-  v3 = [a1 ic_CGImage];
-  [a1 scale];
+  ic_CGImage = [self ic_CGImage];
+  [self scale];
 
-  return [v2 imageWithCGImage:v3 scale:4 orientation:?];
+  return [v2 imageWithCGImage:ic_CGImage scale:4 orientation:?];
 }
 
 - (id)ic_imageCenteredWithBackgroundColor:()Utilities size:cornerRadius:
@@ -590,7 +590,7 @@ LABEL_6:
   v19 = a3;
   v20 = a4;
   v16 = v10;
-  v17 = a1;
+  selfCopy = self;
   v12 = v10;
   v13 = [v11 imageWithActions:v15];
 
@@ -620,33 +620,33 @@ LABEL_6:
 
 - (uint64_t)ic_JPEGData
 {
-  v2 = [a1 ic_imageOrientation];
+  ic_imageOrientation = [self ic_imageOrientation];
 
-  return [a1 ic_JPEGDataWithOrientation:v2];
+  return [self ic_JPEGDataWithOrientation:ic_imageOrientation];
 }
 
 - (id)ic_JPEGDataWithOrientation:()Utilities
 {
-  v5 = [*MEMORY[0x1E6982E58] identifier];
+  identifier = [*MEMORY[0x1E6982E58] identifier];
   v6 = [objc_opt_class() ic_orientationMetadataFromImageOrientation:a3];
-  v7 = [a1 ic_imageDataWithUTType:v5 metadata:v6];
+  v7 = [self ic_imageDataWithUTType:identifier metadata:v6];
 
   return v7;
 }
 
 - (id)ic_PNGData
 {
-  v2 = [*MEMORY[0x1E6982F28] identifier];
-  v3 = [a1 ic_imageDataWithUTType:v2 metadata:0];
+  identifier = [*MEMORY[0x1E6982F28] identifier];
+  v3 = [self ic_imageDataWithUTType:identifier metadata:0];
 
   return v3;
 }
 
 - (id)ic_PNGDataWithOrientation:()Utilities
 {
-  v5 = [*MEMORY[0x1E6982F28] identifier];
+  identifier = [*MEMORY[0x1E6982F28] identifier];
   v6 = [objc_opt_class() ic_orientationMetadataFromImageOrientation:a3];
-  v7 = [a1 ic_imageDataWithUTType:v5 metadata:v6];
+  v7 = [self ic_imageDataWithUTType:identifier metadata:v6];
 
   return v7;
 }
@@ -654,22 +654,22 @@ LABEL_6:
 - (id)ic_PDFData
 {
   v2 = objc_alloc_init(MEMORY[0x1E6978028]);
-  v3 = [objc_alloc(MEMORY[0x1E6978038]) initWithImage:a1];
+  v3 = [objc_alloc(MEMORY[0x1E6978038]) initWithImage:self];
   [v2 insertPage:v3 atIndex:0];
-  v4 = [v2 dataRepresentation];
+  dataRepresentation = [v2 dataRepresentation];
 
-  return v4;
+  return dataRepresentation;
 }
 
 - (id)ic_imageDataWithUTType:()Utilities
 {
   v4 = a3;
-  v5 = [*MEMORY[0x1E6982E58] identifier];
-  v6 = [v4 isEqualToString:v5];
+  identifier = [*MEMORY[0x1E6982E58] identifier];
+  v6 = [v4 isEqualToString:identifier];
 
   if (v6)
   {
-    v7 = [objc_opt_class() ic_orientationMetadataFromImageOrientation:{objc_msgSend(a1, "ic_imageOrientation")}];
+    v7 = [objc_opt_class() ic_orientationMetadataFromImageOrientation:{objc_msgSend(self, "ic_imageOrientation")}];
   }
 
   else
@@ -677,7 +677,7 @@ LABEL_6:
     v7 = 0;
   }
 
-  v8 = [a1 ic_imageDataWithUTType:v4 metadata:v7];
+  v8 = [self ic_imageDataWithUTType:v4 metadata:v7];
 
   return v8;
 }
@@ -691,7 +691,7 @@ LABEL_6:
   if (v9)
   {
     v10 = v9;
-    CGImageDestinationAddImage(v9, [a1 ic_CGImage], v7);
+    CGImageDestinationAddImage(v9, [self ic_CGImage], v7);
     if (CGImageDestinationFinalize(v10))
     {
       CFRelease(v10);
@@ -734,7 +734,7 @@ LABEL_11:
   v7 = [MEMORY[0x1E6963658] documentProxyForURL:a5 isContentManaged:0 sourceAuditToken:0];
   v8 = [MEMORY[0x1E69DCAB8] _iconForResourceProxy:v7 format:3];
   v9 = v8;
-  if (!v8 || ([v8 size], v10 < a1) || (objc_msgSend(v9, "size"), v11 < a2))
+  if (!v8 || ([v8 size], v10 < self) || (objc_msgSend(v9, "size"), v11 < a2))
   {
     v12 = [MEMORY[0x1E69DCAB8] _iconForResourceProxy:v7 format:6];
     if (v12)
@@ -756,7 +756,7 @@ LABEL_11:
   }
 
   [v9 size];
-  if (v21 >= a1)
+  if (v21 >= self)
   {
     [v9 size];
     if (v22 >= a2)
@@ -800,7 +800,7 @@ LABEL_26:
 
 LABEL_22:
   [v9 size];
-  if (v32 < a1 || ([v9 size], v33 < a2))
+  if (v32 < self || ([v9 size], v33 < a2))
   {
     v34 = 0;
     goto LABEL_26;
@@ -829,26 +829,26 @@ LABEL_33:
   v11 = 3221225472;
   v12 = __46__UIImage_Utilities__ic_decodeWithCompletion___block_invoke_2;
   v13 = &unk_1E8468CF8;
-  v14 = a1;
+  selfCopy = self;
   v15 = v6;
   v8 = v6;
   v9 = [v7 blockOperationWithBlock:&v10];
-  [ic_decodeWithCompletion__drawingDecodingOperationQueue addOperation:{v9, v10, v11, v12, v13, v14}];
+  [ic_decodeWithCompletion__drawingDecodingOperationQueue addOperation:{v9, v10, v11, v12, v13, selfCopy}];
 }
 
 + (id)ic_imageWithColor:()Utilities size:
 {
   v7 = a5;
-  v13.width = a1;
+  v13.width = self;
   v13.height = a2;
   UIGraphicsBeginImageContext(v13);
   CurrentContext = UIGraphicsGetCurrentContext();
-  v9 = [v7 CGColor];
+  cGColor = [v7 CGColor];
 
-  CGContextSetFillColorWithColor(CurrentContext, v9);
+  CGContextSetFillColorWithColor(CurrentContext, cGColor);
   v14.origin.x = 0.0;
   v14.origin.y = 0.0;
-  v14.size.width = a1;
+  v14.size.width = self;
   v14.size.height = a2;
   CGContextFillRect(CurrentContext, v14);
   v10 = UIGraphicsGetImageFromCurrentImageContext();
@@ -879,23 +879,23 @@ LABEL_33:
   v21.size.width = a3;
   v21.size.height = a4;
   CGRectGetHeight(v21);
-  return a1 + v17;
+  return self + v17;
 }
 
 - (void)ic_cropRectZeroAlpha
 {
-  v2 = [a1 ic_CGImage];
-  v3 = [a1 ic_newARGB8BitmapContextFromImage:v2];
+  ic_CGImage = [self ic_CGImage];
+  v3 = [self ic_newARGB8BitmapContextFromImage:ic_CGImage];
   if (v3)
   {
     v4 = v3;
-    Width = CGImageGetWidth(v2);
-    Height = CGImageGetHeight(v2);
+    Width = CGImageGetWidth(ic_CGImage);
+    Height = CGImageGetHeight(ic_CGImage);
     v22.size.height = Height;
     v22.origin.x = 0.0;
     v22.origin.y = 0.0;
     v22.size.width = Width;
-    CGContextDrawImage(v4, v22, v2);
+    CGContextDrawImage(v4, v22, ic_CGImage);
     Data = CGBitmapContextGetData(v4);
     CGContextRelease(v4);
     if (Data)
@@ -981,7 +981,7 @@ LABEL_33:
       }
 
       free(Data);
-      [a1 scale];
+      [self scale];
     }
   }
 }

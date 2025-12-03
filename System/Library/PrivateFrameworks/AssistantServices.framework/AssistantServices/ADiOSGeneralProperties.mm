@@ -9,17 +9,17 @@
 - (BOOL)_getHasPairedAppleWatch
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 deviceHasPairedWatches];
+  deviceHasPairedWatches = [v2 deviceHasPairedWatches];
 
-  return v3;
+  return deviceHasPairedWatches;
 }
 
 - (BOOL)_getHasTvOSDeviceInHome
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 deviceHasAtvOrHomepodInHome];
+  deviceHasAtvOrHomepodInHome = [v2 deviceHasAtvOrHomepodInHome];
 
-  return v3;
+  return deviceHasAtvOrHomepodInHome;
 }
 
 - (id)getODDiOSGeneralProperties

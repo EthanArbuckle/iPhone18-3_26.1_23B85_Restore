@@ -2,8 +2,8 @@
 - (SPScheduler)init;
 - (SPSchedulerXPCProtocol)proxy;
 - (void)dealloc;
-- (void)publishImmediatelyWithCompletion:(id)a3;
-- (void)schedulePublishWakeWithInformation:(id)a3 completion:(id)a4;
+- (void)publishImmediatelyWithCompletion:(id)completion;
+- (void)schedulePublishWakeWithInformation:(id)information completion:(id)completion;
 @end
 
 @implementation SPScheduler
@@ -21,8 +21,8 @@
     v2->_queue = v4;
 
     v6 = objc_alloc(MEMORY[0x277D07BA0]);
-    v7 = [(SPScheduler *)v2 remoteInterface];
-    v8 = [v6 initWithMachServiceName:@"com.apple.icloud.searchpartyd.scheduler" options:0 remoteObjectInterface:v7 interruptionHandler:0 invalidationHandler:0];
+    remoteInterface = [(SPScheduler *)v2 remoteInterface];
+    v8 = [v6 initWithMachServiceName:@"com.apple.icloud.searchpartyd.scheduler" options:0 remoteObjectInterface:remoteInterface interruptionHandler:0 invalidationHandler:0];
     serviceDescription = v2->_serviceDescription;
     v2->_serviceDescription = v8;
   }
@@ -32,8 +32,8 @@
 
 - (void)dealloc
 {
-  v3 = [(SPScheduler *)self session];
-  [v3 invalidate];
+  session = [(SPScheduler *)self session];
+  [session invalidate];
 
   [(SPScheduler *)self setSession:0];
   v4.receiver = self;
@@ -44,52 +44,52 @@
 - (SPSchedulerXPCProtocol)proxy
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(SPScheduler *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SPScheduler *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SPScheduler *)self session];
+  session = [(SPScheduler *)self session];
 
-  if (!v4)
+  if (!session)
   {
     v5 = objc_alloc(MEMORY[0x277D07BA8]);
-    v6 = [(SPScheduler *)self serviceDescription];
-    v7 = [v5 initWithServiceDescription:v6];
+    serviceDescription = [(SPScheduler *)self serviceDescription];
+    v7 = [v5 initWithServiceDescription:serviceDescription];
     [(SPScheduler *)self setSession:v7];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(SPScheduler *)self serviceDescription];
-      v9 = [v8 machService];
+      serviceDescription2 = [(SPScheduler *)self serviceDescription];
+      machService = [serviceDescription2 machService];
       v15 = 138412290;
-      v16 = v9;
+      v16 = machService;
       _os_log_impl(&dword_2643BF000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "SPScheduler: Establishing XPC connection to %@", &v15, 0xCu);
     }
 
-    v10 = [(SPScheduler *)self session];
-    [v10 resume];
+    session2 = [(SPScheduler *)self session];
+    [session2 resume];
   }
 
-  v11 = [(SPScheduler *)self session];
-  v12 = [v11 proxy];
+  session3 = [(SPScheduler *)self session];
+  proxy = [session3 proxy];
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return proxy;
 }
 
-- (void)schedulePublishWakeWithInformation:(id)a3 completion:(id)a4
+- (void)schedulePublishWakeWithInformation:(id)information completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  informationCopy = information;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __61__SPScheduler_schedulePublishWakeWithInformation_completion___block_invoke;
   activity_block[3] = &unk_279B57798;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = informationCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = informationCopy;
   _os_activity_initiate(&dword_2643BF000, "SPScheduler schedulePublishWakeWithInformation", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -117,16 +117,16 @@ void __61__SPScheduler_schedulePublishWakeWithInformation_completion___block_inv
   [v2 schedulePublishWakeWithInformation:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)publishImmediatelyWithCompletion:(id)a3
+- (void)publishImmediatelyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__SPScheduler_publishImmediatelyWithCompletion___block_invoke;
   v6[3] = &unk_279B577E8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   _os_activity_initiate(&dword_2643BF000, "SPScheduler publishImmediatelyWithCompletion", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 

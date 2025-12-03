@@ -1,56 +1,56 @@
 @interface MTLGPUDebugCommandBuffer
-- (MTLGPUDebugCommandBuffer)initWithCommandBuffer:(id)a3 commandQueue:(id)a4 descriptor:(id)a5;
+- (MTLGPUDebugCommandBuffer)initWithCommandBuffer:(id)buffer commandQueue:(id)queue descriptor:(id)descriptor;
 - (id).cxx_construct;
-- (id)_internalBindingTableForStage:(unint64_t)a3;
+- (id)_internalBindingTableForStage:(unint64_t)stage;
 - (id)accelerationStructureCommandEncoder;
-- (id)accelerationStructureCommandEncoderWithDescriptor:(id)a3;
+- (id)accelerationStructureCommandEncoderWithDescriptor:(id)descriptor;
 - (id)blitCommandEncoder;
-- (id)blitCommandEncoderWithDescriptor:(id)a3;
-- (id)computeCommandEncoderWithDescriptor:(id)a3;
-- (id)computeCommandEncoderWithDispatchType:(unint64_t)a3;
-- (id)parallelRenderCommandEncoderWithDescriptor:(id)a3;
-- (id)renderCommandEncoderWithDescriptor:(id)a3;
-- (id)sampledComputeCommandEncoderWithDescriptor:(id)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5;
-- (id)sampledComputeCommandEncoderWithDispatchType:(unint64_t)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5;
-- (id)sampledRenderCommandEncoderWithDescriptor:(id)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5;
-- (id)temporaryBufferWithBytes:(const void *)a3 length:(unint64_t)a4;
-- (id)temporaryBufferWithLength:(unint64_t)a3;
-- (int)resourceUsageForTexture:(id)a3 stage:(unint64_t)a4;
-- (pair<id<MTLBuffer>,)_temporaryBufferWithLength:(unint64_t)a3;
-- (void)_addUsedBuffer:(id)a3;
+- (id)blitCommandEncoderWithDescriptor:(id)descriptor;
+- (id)computeCommandEncoderWithDescriptor:(id)descriptor;
+- (id)computeCommandEncoderWithDispatchType:(unint64_t)type;
+- (id)parallelRenderCommandEncoderWithDescriptor:(id)descriptor;
+- (id)renderCommandEncoderWithDescriptor:(id)descriptor;
+- (id)sampledComputeCommandEncoderWithDescriptor:(id)descriptor programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity;
+- (id)sampledComputeCommandEncoderWithDispatchType:(unint64_t)type programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity;
+- (id)sampledRenderCommandEncoderWithDescriptor:(id)descriptor programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity;
+- (id)temporaryBufferWithBytes:(const void *)bytes length:(unint64_t)length;
+- (id)temporaryBufferWithLength:(unint64_t)length;
+- (int)resourceUsageForTexture:(id)texture stage:(unint64_t)stage;
+- (pair<id<MTLBuffer>,)_temporaryBufferWithLength:(unint64_t)length;
+- (void)_addUsedBuffer:(id)buffer;
 - (void)_checkReportBuffers;
 - (void)_lateInit;
-- (void)_setInternalBindingTables:(id)a3 type:(unint64_t)a4;
-- (void)addResidencySetGPUDebug:(id)a3 fromEncoder:(id)a4;
-- (void)beginingEncoder:(id)a3 type:(unint64_t)a4;
+- (void)_setInternalBindingTables:(id)tables type:(unint64_t)type;
+- (void)addResidencySetGPUDebug:(id)debug fromEncoder:(id)encoder;
+- (void)beginingEncoder:(id)encoder type:(unint64_t)type;
 - (void)dealloc;
-- (void)encodeResourceTableBuffers:(id)a3 type:(unint64_t)a4;
-- (void)endingEncoder:(id)a3 type:(unint64_t)a4;
-- (void)markBuffer:(id)a3 usage:(unint64_t)a4 stages:(unint64_t)a5;
-- (void)markTexture:(unint64_t)a3 usage:(unint64_t)a4 stages:(unint64_t)a5;
+- (void)encodeResourceTableBuffers:(id)buffers type:(unint64_t)type;
+- (void)endingEncoder:(id)encoder type:(unint64_t)type;
+- (void)markBuffer:(id)buffer usage:(unint64_t)usage stages:(unint64_t)stages;
+- (void)markTexture:(unint64_t)texture usage:(unint64_t)usage stages:(unint64_t)stages;
 - (void)preCommit;
 - (void)preCompletionHandlers;
-- (void)useResidencySet:(id)a3;
-- (void)useResidencySets:(const void *)a3 count:(unint64_t)a4;
+- (void)useResidencySet:(id)set;
+- (void)useResidencySets:(const void *)sets count:(unint64_t)count;
 @end
 
 @implementation MTLGPUDebugCommandBuffer
 
-- (MTLGPUDebugCommandBuffer)initWithCommandBuffer:(id)a3 commandQueue:(id)a4 descriptor:(id)a5
+- (MTLGPUDebugCommandBuffer)initWithCommandBuffer:(id)buffer commandQueue:(id)queue descriptor:(id)descriptor
 {
   v12.receiver = self;
   v12.super_class = MTLGPUDebugCommandBuffer;
-  v6 = [(MTLToolsCommandBuffer *)&v12 initWithCommandBuffer:a3 parent:a4 descriptor:a5];
+  v6 = [(MTLToolsCommandBuffer *)&v12 initWithCommandBuffer:buffer parent:queue descriptor:descriptor];
   v7 = v6;
   if (v6)
   {
-    v8 = [(MTLToolsObject *)v6 device];
-    *(v7 + 19) = v8 + 264;
-    *(v7 + 20) = v8 + 292;
-    *(v7 + 98) = a4;
-    v9 = [(MTLDevice *)v8 areWritableHeapsEnabled];
+    device = [(MTLToolsObject *)v6 device];
+    *(v7 + 19) = device + 264;
+    *(v7 + 20) = device + 292;
+    *(v7 + 98) = queue;
+    areWritableHeapsEnabled = [(MTLDevice *)device areWritableHeapsEnabled];
     v10 = 3;
-    if (!v9)
+    if (!areWritableHeapsEnabled)
     {
       v10 = 1;
     }
@@ -67,7 +67,7 @@
   return v7;
 }
 
-- (void)_addUsedBuffer:(id)a3
+- (void)_addUsedBuffer:(id)buffer
 {
   std::mutex::lock((self + 248));
   v5 = (self + 224);
@@ -103,7 +103,7 @@
       std::__allocate_at_least[abi:ne200100]<std::allocator<objc_object  {objcproto19MTLGPUDebugViewable}*>>(self + 224, v12);
     }
 
-    *(8 * v9) = a3;
+    *(8 * v9) = buffer;
     v8 = 8 * v9 + 8;
     v13 = *(self + 29) - *v5;
     v14 = (8 * v9 - v13);
@@ -120,12 +120,12 @@
 
   else
   {
-    *v7 = a3;
+    *v7 = buffer;
     v8 = (v7 + 8);
   }
 
   *(self + 29) = v8;
-  [(MTLToolsCommandBuffer *)self addRetainedObject:a3];
+  [(MTLToolsCommandBuffer *)self addRetainedObject:buffer];
 
   std::mutex::unlock((self + 248));
 }
@@ -200,11 +200,11 @@
 
     *(self + 23) = v8;
     v17 = 5;
-    v18 = self;
+    selfCopy = self;
     do
     {
-      *(v18 + 54) = [*(self + 3) newInternalBufferWithLength:320 options:0];
-      v18 = (v18 + 8);
+      *(selfCopy + 54) = [*(self + 3) newInternalBufferWithLength:320 options:0];
+      selfCopy = (selfCopy + 8);
       --v17;
     }
 
@@ -245,49 +245,49 @@
   }
 }
 
-- (int)resourceUsageForTexture:(id)a3 stage:(unint64_t)a4
+- (int)resourceUsageForTexture:(id)texture stage:(unint64_t)stage
 {
-  if (a4 <= 3)
+  if (stage <= 3)
   {
-    if (a4 != 2)
+    if (stage != 2)
     {
 LABEL_9:
       v4 = (self + 536);
-      return TextureUsageTable::getUsage(v4, a3);
+      return TextureUsageTable::getUsage(v4, texture);
     }
 
 LABEL_8:
     v4 = (self + 552);
-    return TextureUsageTable::getUsage(v4, a3);
+    return TextureUsageTable::getUsage(v4, texture);
   }
 
-  if (a4 == 4)
+  if (stage == 4)
   {
     goto LABEL_8;
   }
 
-  if (a4 == 8)
+  if (stage == 8)
   {
     v4 = (self + 568);
-    return TextureUsageTable::getUsage(v4, a3);
+    return TextureUsageTable::getUsage(v4, texture);
   }
 
-  if (a4 != 16)
+  if (stage != 16)
   {
     goto LABEL_9;
   }
 
   v4 = (self + 584);
-  return TextureUsageTable::getUsage(v4, a3);
+  return TextureUsageTable::getUsage(v4, texture);
 }
 
-- (pair<id<MTLBuffer>,)_temporaryBufferWithLength:(unint64_t)a3
+- (pair<id<MTLBuffer>,)_temporaryBufferWithLength:(unint64_t)length
 {
   std::mutex::lock((self + 360));
   v5 = (self + 200);
   MTLBuffer = MetalBuffer::getMTLBuffer((self + 200));
   v7 = *(self + 27);
-  v8 = (a3 + 7) & 0xFFFFFFFFFFFFFFF8;
+  v8 = (length + 7) & 0xFFFFFFFFFFFFFFF8;
   if (v7 + v8 > [MTLBuffer length])
   {
     [(MTLToolsObject *)self device];
@@ -363,10 +363,10 @@ LABEL_8:
   return result;
 }
 
-- (id)temporaryBufferWithLength:(unint64_t)a3
+- (id)temporaryBufferWithLength:(unint64_t)length
 {
-  v5 = [(MTLToolsCommandBuffer *)self useRetainedObjectsLock];
-  if (v5)
+  useRetainedObjectsLock = [(MTLToolsCommandBuffer *)self useRetainedObjectsLock];
+  if (useRetainedObjectsLock)
   {
     v6 = (self + 424);
   }
@@ -376,13 +376,13 @@ LABEL_8:
     v6 = 0;
   }
 
-  if (v5)
+  if (useRetainedObjectsLock)
   {
     os_unfair_lock_lock(self + 106);
   }
 
-  v7 = [(MTLGPUDebugCommandBuffer *)self _temporaryBufferWithLength:a3];
-  v9 = [[MTLGPUDebugBuffer alloc] initWithBuffer:v7 device:*(self + 3) offset:v8 length:a3];
+  v7 = [(MTLGPUDebugCommandBuffer *)self _temporaryBufferWithLength:length];
+  v9 = [[MTLGPUDebugBuffer alloc] initWithBuffer:v7 device:*(self + 3) offset:v8 length:length];
   [(MTLToolsCommandBuffer *)self addRetainedObject:v9];
 
   if (v6)
@@ -393,17 +393,17 @@ LABEL_8:
   return v9;
 }
 
-- (id)temporaryBufferWithBytes:(const void *)a3 length:(unint64_t)a4
+- (id)temporaryBufferWithBytes:(const void *)bytes length:(unint64_t)length
 {
-  v6 = [(MTLGPUDebugCommandBuffer *)self temporaryBufferWithLength:a4];
-  memcpy([v6 contents], a3, a4);
+  v6 = [(MTLGPUDebugCommandBuffer *)self temporaryBufferWithLength:length];
+  memcpy([v6 contents], bytes, length);
   return v6;
 }
 
-- (void)markBuffer:(id)a3 usage:(unint64_t)a4 stages:(unint64_t)a5
+- (void)markBuffer:(id)buffer usage:(unint64_t)usage stages:(unint64_t)stages
 {
-  v5 = a5;
-  v6 = a4;
+  stagesCopy = stages;
+  usageCopy = usage;
   v9 = *(self + 44);
   v10 = (self + 40);
   if (v9)
@@ -421,24 +421,24 @@ LABEL_8:
     os_unfair_lock_lock(v10);
   }
 
-  if (v5)
+  if (stagesCopy)
   {
-    BufferUsageTable::addResource(self + 59, *(self + 3), a3, v6 & 7);
+    BufferUsageTable::addResource(self + 59, *(self + 3), buffer, usageCopy & 7);
   }
 
-  if ((v5 & 6) != 0)
+  if ((stagesCopy & 6) != 0)
   {
-    BufferUsageTable::addResource(self + 61, *(self + 3), a3, v6 & 7);
+    BufferUsageTable::addResource(self + 61, *(self + 3), buffer, usageCopy & 7);
   }
 
-  if ((v5 & 8) != 0)
+  if ((stagesCopy & 8) != 0)
   {
-    BufferUsageTable::addResource(self + 63, *(self + 3), a3, v6 & 7);
+    BufferUsageTable::addResource(self + 63, *(self + 3), buffer, usageCopy & 7);
   }
 
-  if ((v5 & 0x10) != 0)
+  if ((stagesCopy & 0x10) != 0)
   {
-    BufferUsageTable::addResource(self + 65, *(self + 3), a3, v6 & 7);
+    BufferUsageTable::addResource(self + 65, *(self + 3), buffer, usageCopy & 7);
   }
 
   if (v11)
@@ -448,11 +448,11 @@ LABEL_8:
   }
 }
 
-- (void)markTexture:(unint64_t)a3 usage:(unint64_t)a4 stages:(unint64_t)a5
+- (void)markTexture:(unint64_t)texture usage:(unint64_t)usage stages:(unint64_t)stages
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  stagesCopy = stages;
+  usageCopy = usage;
+  textureCopy = texture;
   v9 = *(self + 44);
   v10 = (self + 40);
   if (v9)
@@ -470,24 +470,24 @@ LABEL_8:
     os_unfair_lock_lock(v10);
   }
 
-  if (v5)
+  if (stagesCopy)
   {
-    TextureUsageTable::addResource(self + 67, *(self + 3), v7, v6 & 7);
+    TextureUsageTable::addResource(self + 67, *(self + 3), textureCopy, usageCopy & 7);
   }
 
-  if ((v5 & 6) != 0)
+  if ((stagesCopy & 6) != 0)
   {
-    TextureUsageTable::addResource(self + 69, *(self + 3), v7, v6 & 7);
+    TextureUsageTable::addResource(self + 69, *(self + 3), textureCopy, usageCopy & 7);
   }
 
-  if ((v5 & 8) != 0)
+  if ((stagesCopy & 8) != 0)
   {
-    TextureUsageTable::addResource(self + 71, *(self + 3), v7, v6 & 7);
+    TextureUsageTable::addResource(self + 71, *(self + 3), textureCopy, usageCopy & 7);
   }
 
-  if ((v5 & 0x10) != 0)
+  if ((stagesCopy & 0x10) != 0)
   {
-    TextureUsageTable::addResource(self + 73, *(self + 3), v7, v6 & 7);
+    TextureUsageTable::addResource(self + 73, *(self + 3), textureCopy, usageCopy & 7);
   }
 
   if (v11)
@@ -505,65 +505,65 @@ LABEL_8:
   }
 }
 
-- (void)beginingEncoder:(id)a3 type:(unint64_t)a4
+- (void)beginingEncoder:(id)encoder type:(unint64_t)type
 {
   [MTLGPUDebugCommandBuffer _setInternalBindingTables:"_setInternalBindingTables:type:" type:?];
   if ((*(*(self + 19) + 20) & 0x200000001) != 0)
   {
 
-    [(MTLGPUDebugCommandBuffer *)self encodeResourceTableBuffers:a3 type:a4];
+    [(MTLGPUDebugCommandBuffer *)self encodeResourceTableBuffers:encoder type:type];
   }
 }
 
-- (void)endingEncoder:(id)a3 type:(unint64_t)a4
+- (void)endingEncoder:(id)encoder type:(unint64_t)type
 {
   std::mutex::lock((self + 360));
   if ((*(*(self + 19) + 20) & 2) != 0)
   {
-    v7 = [a3 encoderID];
-    v10 = v7;
-    v8 = [a3 label];
-    if (a4 == 3)
+    encoderID = [encoder encoderID];
+    v10 = encoderID;
+    label = [encoder label];
+    if (type == 3)
     {
-      v9 = [*(a3 + 1) label];
-      if (v9)
+      label2 = [*(encoder + 1) label];
+      if (label2)
       {
 
-        v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@:%@", v9, v8];
+        label = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@:%@", label2, label];
       }
     }
 
-    if (!v8)
+    if (!label)
     {
-      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%u", v7];
+      label = [MEMORY[0x277CCACA8] stringWithFormat:@"%u", encoderID];
     }
 
     v11 = &v10;
-    std::__hash_table<std::__hash_value_type<unsigned int,NSString *>,std::__unordered_map_hasher<unsigned int,std::__hash_value_type<unsigned int,NSString *>,std::hash<unsigned int>,std::equal_to<unsigned int>,true>,std::__unordered_map_equal<unsigned int,std::__hash_value_type<unsigned int,NSString *>,std::equal_to<unsigned int>,std::hash<unsigned int>,true>,std::allocator<std::__hash_value_type<unsigned int,NSString *>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(self + 40, &v10)[3] = v8;
+    std::__hash_table<std::__hash_value_type<unsigned int,NSString *>,std::__unordered_map_hasher<unsigned int,std::__hash_value_type<unsigned int,NSString *>,std::hash<unsigned int>,std::equal_to<unsigned int>,true>,std::__unordered_map_equal<unsigned int,std::__hash_value_type<unsigned int,NSString *>,std::equal_to<unsigned int>,std::hash<unsigned int>,true>,std::allocator<std::__hash_value_type<unsigned int,NSString *>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(self + 40, &v10)[3] = label;
   }
 
   ++*(self + 78);
   std::mutex::unlock((self + 360));
 }
 
-- (void)_setInternalBindingTables:(id)a3 type:(unint64_t)a4
+- (void)_setInternalBindingTables:(id)tables type:(unint64_t)type
 {
-  if (a4 == 3)
+  if (type == 3)
   {
 LABEL_4:
-    [a3 _setInternalBindingTableForStage:-[MTLGPUDebugCommandBuffer _internalBindingTableForStage:](self stage:{"_internalBindingTableForStage:", 1), 1}];
-    [a3 _setInternalBindingTableForStage:-[MTLGPUDebugCommandBuffer _internalBindingTableForStage:](self stage:{"_internalBindingTableForStage:", 2), 2}];
-    [a3 _setInternalBindingTableForStage:-[MTLGPUDebugCommandBuffer _internalBindingTableForStage:](self stage:{"_internalBindingTableForStage:", 16), 16}];
-    [a3 _setInternalBindingTableForStage:-[MTLGPUDebugCommandBuffer _internalBindingTableForStage:](self stage:{"_internalBindingTableForStage:", 8), 8}];
+    [tables _setInternalBindingTableForStage:-[MTLGPUDebugCommandBuffer _internalBindingTableForStage:](self stage:{"_internalBindingTableForStage:", 1), 1}];
+    [tables _setInternalBindingTableForStage:-[MTLGPUDebugCommandBuffer _internalBindingTableForStage:](self stage:{"_internalBindingTableForStage:", 2), 2}];
+    [tables _setInternalBindingTableForStage:-[MTLGPUDebugCommandBuffer _internalBindingTableForStage:](self stage:{"_internalBindingTableForStage:", 16), 16}];
+    [tables _setInternalBindingTableForStage:-[MTLGPUDebugCommandBuffer _internalBindingTableForStage:](self stage:{"_internalBindingTableForStage:", 8), 8}];
     v6 = [(MTLGPUDebugCommandBuffer *)self _internalBindingTableForStage:4];
 
-    [a3 _setInternalBindingTableForStage:v6 stage:4];
+    [tables _setInternalBindingTableForStage:v6 stage:4];
     return;
   }
 
-  if (a4 != 1)
+  if (type != 1)
   {
-    if (a4)
+    if (type)
     {
       return;
     }
@@ -573,33 +573,33 @@ LABEL_4:
 
   v7 = *(self + 54);
 
-  [a3 setInternalBindingTable:v7];
+  [tables setInternalBindingTable:v7];
 }
 
-- (void)encodeResourceTableBuffers:(id)a3 type:(unint64_t)a4
+- (void)encodeResourceTableBuffers:(id)buffers type:(unint64_t)type
 {
-  if (a4 == 3)
+  if (type == 3)
   {
 LABEL_4:
-    [a3 setBufferUsageTable:*(self + 59) textureUsageTable:*(self + 67) textureTypeTable:*(*(self + 3) + 432) forStage:1];
-    [a3 setBufferUsageTable:*(self + 61) textureUsageTable:*(self + 69) textureTypeTable:*(*(self + 3) + 432) forStage:2];
+    [buffers setBufferUsageTable:*(self + 59) textureUsageTable:*(self + 67) textureTypeTable:*(*(self + 3) + 432) forStage:1];
+    [buffers setBufferUsageTable:*(self + 61) textureUsageTable:*(self + 69) textureTypeTable:*(*(self + 3) + 432) forStage:2];
     if ([*(self + 3) supportsMeshShaders])
     {
-      [a3 setBufferUsageTable:*(self + 63) textureUsageTable:*(self + 71) textureTypeTable:*(*(self + 3) + 432) forStage:8];
-      [a3 setBufferUsageTable:*(self + 65) textureUsageTable:*(self + 73) textureTypeTable:*(*(self + 3) + 432) forStage:16];
+      [buffers setBufferUsageTable:*(self + 63) textureUsageTable:*(self + 71) textureTypeTable:*(*(self + 3) + 432) forStage:8];
+      [buffers setBufferUsageTable:*(self + 65) textureUsageTable:*(self + 73) textureTypeTable:*(*(self + 3) + 432) forStage:16];
       v6 = *(self + 61);
       v7 = *(*(self + 3) + 432);
       v8 = *(self + 69);
 
-      [a3 setBufferUsageTable:v6 textureUsageTable:v8 textureTypeTable:v7 forStage:4];
+      [buffers setBufferUsageTable:v6 textureUsageTable:v8 textureTypeTable:v7 forStage:4];
     }
 
     return;
   }
 
-  if (a4 != 1)
+  if (type != 1)
   {
-    if (a4)
+    if (type)
     {
       return;
     }
@@ -611,13 +611,13 @@ LABEL_4:
   v10 = *(self + 67);
   v11 = *(*(self + 3) + 432);
 
-  [a3 setBufferUsageTable:v9 textureUsageTable:v10 textureTypeTable:v11];
+  [buffers setBufferUsageTable:v9 textureUsageTable:v10 textureTypeTable:v11];
 }
 
-- (id)_internalBindingTableForStage:(unint64_t)a3
+- (id)_internalBindingTableForStage:(unint64_t)stage
 {
   v3 = (self + 432);
-  v4 = __ROR8__(a3 - 2, 1);
+  v4 = __ROR8__(stage - 2, 1);
   v5 = (self + 448);
   v6 = (self + 456);
   if (v4 != 7)
@@ -648,63 +648,63 @@ LABEL_4:
   return *v3;
 }
 
-- (id)renderCommandEncoderWithDescriptor:(id)a3
+- (id)renderCommandEncoderWithDescriptor:(id)descriptor
 {
   [(MTLGPUDebugCommandBuffer *)self _lateInit];
-  v5 = -[MTLGPUDebugRenderCommandEncoder initWithRenderCommandEncoder:commandBuffer:descriptor:encoderID:]([MTLGPUDebugRenderCommandEncoder alloc], "initWithRenderCommandEncoder:commandBuffer:descriptor:encoderID:", [*(self + 2) renderCommandEncoderWithDescriptor:{-[MTLToolsCommandBuffer unwrapMTLRenderPassDescriptor:](self, "unwrapMTLRenderPassDescriptor:", a3)}], self, a3, *(self + 78));
+  v5 = -[MTLGPUDebugRenderCommandEncoder initWithRenderCommandEncoder:commandBuffer:descriptor:encoderID:]([MTLGPUDebugRenderCommandEncoder alloc], "initWithRenderCommandEncoder:commandBuffer:descriptor:encoderID:", [*(self + 2) renderCommandEncoderWithDescriptor:{-[MTLToolsCommandBuffer unwrapMTLRenderPassDescriptor:](self, "unwrapMTLRenderPassDescriptor:", descriptor)}], self, descriptor, *(self + 78));
   [(MTLGPUDebugCommandBuffer *)self beginingEncoder:v5 type:0];
 
   return v5;
 }
 
-- (id)sampledRenderCommandEncoderWithDescriptor:(id)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5
+- (id)sampledRenderCommandEncoderWithDescriptor:(id)descriptor programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity
 {
   [(MTLGPUDebugCommandBuffer *)self _lateInit];
-  v9 = -[MTLGPUDebugRenderCommandEncoder initWithRenderCommandEncoder:commandBuffer:descriptor:encoderID:]([MTLGPUDebugRenderCommandEncoder alloc], "initWithRenderCommandEncoder:commandBuffer:descriptor:encoderID:", [*(self + 2) sampledRenderCommandEncoderWithDescriptor:-[MTLToolsCommandBuffer unwrapMTLRenderPassDescriptor:](self programInfoBuffer:"unwrapMTLRenderPassDescriptor:" capacity:{a3), a4, a5}], self, a3, *(self + 78));
+  v9 = -[MTLGPUDebugRenderCommandEncoder initWithRenderCommandEncoder:commandBuffer:descriptor:encoderID:]([MTLGPUDebugRenderCommandEncoder alloc], "initWithRenderCommandEncoder:commandBuffer:descriptor:encoderID:", [*(self + 2) sampledRenderCommandEncoderWithDescriptor:-[MTLToolsCommandBuffer unwrapMTLRenderPassDescriptor:](self programInfoBuffer:"unwrapMTLRenderPassDescriptor:" capacity:{descriptor), buffer, capacity}], self, descriptor, *(self + 78));
   [(MTLGPUDebugCommandBuffer *)self beginingEncoder:v9 type:0];
 
   return v9;
 }
 
-- (id)parallelRenderCommandEncoderWithDescriptor:(id)a3
+- (id)parallelRenderCommandEncoderWithDescriptor:(id)descriptor
 {
   [(MTLGPUDebugCommandBuffer *)self _lateInit];
-  v5 = -[MTLGPUDebugParallelRenderCommandEncoder initWithParallelRenderCommandEncoder:parent:descriptor:encoderID:]([MTLGPUDebugParallelRenderCommandEncoder alloc], "initWithParallelRenderCommandEncoder:parent:descriptor:encoderID:", [*(self + 2) parallelRenderCommandEncoderWithDescriptor:{-[MTLToolsCommandBuffer unwrapMTLRenderPassDescriptor:](self, "unwrapMTLRenderPassDescriptor:", a3)}], self, a3, *(self + 78));
+  v5 = -[MTLGPUDebugParallelRenderCommandEncoder initWithParallelRenderCommandEncoder:parent:descriptor:encoderID:]([MTLGPUDebugParallelRenderCommandEncoder alloc], "initWithParallelRenderCommandEncoder:parent:descriptor:encoderID:", [*(self + 2) parallelRenderCommandEncoderWithDescriptor:{-[MTLToolsCommandBuffer unwrapMTLRenderPassDescriptor:](self, "unwrapMTLRenderPassDescriptor:", descriptor)}], self, descriptor, *(self + 78));
 
   return v5;
 }
 
-- (id)computeCommandEncoderWithDispatchType:(unint64_t)a3
+- (id)computeCommandEncoderWithDispatchType:(unint64_t)type
 {
   [(MTLGPUDebugCommandBuffer *)self _lateInit];
-  v5 = -[MTLGPUDebugComputeCommandEncoder initWithComputeCommandEncoder:commandBuffer:descriptor:encoderID:]([MTLGPUDebugComputeCommandEncoder alloc], "initWithComputeCommandEncoder:commandBuffer:descriptor:encoderID:", [*(self + 2) computeCommandEncoderWithDispatchType:a3], self, 0, *(self + 78));
+  v5 = -[MTLGPUDebugComputeCommandEncoder initWithComputeCommandEncoder:commandBuffer:descriptor:encoderID:]([MTLGPUDebugComputeCommandEncoder alloc], "initWithComputeCommandEncoder:commandBuffer:descriptor:encoderID:", [*(self + 2) computeCommandEncoderWithDispatchType:type], self, 0, *(self + 78));
   [(MTLGPUDebugCommandBuffer *)self beginingEncoder:v5 type:1];
 
   return v5;
 }
 
-- (id)sampledComputeCommandEncoderWithDispatchType:(unint64_t)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5
+- (id)sampledComputeCommandEncoderWithDispatchType:(unint64_t)type programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity
 {
   [(MTLGPUDebugCommandBuffer *)self _lateInit];
-  v9 = -[MTLGPUDebugComputeCommandEncoder initWithComputeCommandEncoder:commandBuffer:descriptor:encoderID:]([MTLGPUDebugComputeCommandEncoder alloc], "initWithComputeCommandEncoder:commandBuffer:descriptor:encoderID:", [*(self + 2) sampledComputeCommandEncoderWithDispatchType:a3 programInfoBuffer:a4 capacity:a5], self, 0, *(self + 78));
+  v9 = -[MTLGPUDebugComputeCommandEncoder initWithComputeCommandEncoder:commandBuffer:descriptor:encoderID:]([MTLGPUDebugComputeCommandEncoder alloc], "initWithComputeCommandEncoder:commandBuffer:descriptor:encoderID:", [*(self + 2) sampledComputeCommandEncoderWithDispatchType:type programInfoBuffer:buffer capacity:capacity], self, 0, *(self + 78));
   [(MTLGPUDebugCommandBuffer *)self beginingEncoder:v9 type:1];
 
   return v9;
 }
 
-- (id)computeCommandEncoderWithDescriptor:(id)a3
+- (id)computeCommandEncoderWithDescriptor:(id)descriptor
 {
   [(MTLGPUDebugCommandBuffer *)self _lateInit];
-  v5 = -[MTLGPUDebugComputeCommandEncoder initWithComputeCommandEncoder:commandBuffer:descriptor:encoderID:]([MTLGPUDebugComputeCommandEncoder alloc], "initWithComputeCommandEncoder:commandBuffer:descriptor:encoderID:", [*(self + 2) computeCommandEncoderWithDescriptor:{-[MTLToolsCommandBuffer unwrapMTLComputePassDescriptor:](self, "unwrapMTLComputePassDescriptor:", a3)}], self, a3, *(self + 78));
+  v5 = -[MTLGPUDebugComputeCommandEncoder initWithComputeCommandEncoder:commandBuffer:descriptor:encoderID:]([MTLGPUDebugComputeCommandEncoder alloc], "initWithComputeCommandEncoder:commandBuffer:descriptor:encoderID:", [*(self + 2) computeCommandEncoderWithDescriptor:{-[MTLToolsCommandBuffer unwrapMTLComputePassDescriptor:](self, "unwrapMTLComputePassDescriptor:", descriptor)}], self, descriptor, *(self + 78));
   [(MTLGPUDebugCommandBuffer *)self beginingEncoder:v5 type:1];
 
   return v5;
 }
 
-- (id)sampledComputeCommandEncoderWithDescriptor:(id)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5
+- (id)sampledComputeCommandEncoderWithDescriptor:(id)descriptor programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity
 {
   [(MTLGPUDebugCommandBuffer *)self _lateInit];
-  v9 = -[MTLGPUDebugComputeCommandEncoder initWithComputeCommandEncoder:commandBuffer:descriptor:encoderID:]([MTLGPUDebugComputeCommandEncoder alloc], "initWithComputeCommandEncoder:commandBuffer:descriptor:encoderID:", [*(self + 2) sampledComputeCommandEncoderWithDescriptor:-[MTLToolsCommandBuffer unwrapMTLComputePassDescriptor:](self programInfoBuffer:"unwrapMTLComputePassDescriptor:" capacity:{a3), a4, a5}], self, a3, *(self + 78));
+  v9 = -[MTLGPUDebugComputeCommandEncoder initWithComputeCommandEncoder:commandBuffer:descriptor:encoderID:]([MTLGPUDebugComputeCommandEncoder alloc], "initWithComputeCommandEncoder:commandBuffer:descriptor:encoderID:", [*(self + 2) sampledComputeCommandEncoderWithDescriptor:-[MTLToolsCommandBuffer unwrapMTLComputePassDescriptor:](self programInfoBuffer:"unwrapMTLComputePassDescriptor:" capacity:{descriptor), buffer, capacity}], self, descriptor, *(self + 78));
   [(MTLGPUDebugCommandBuffer *)self beginingEncoder:v9 type:1];
 
   return v9;
@@ -719,10 +719,10 @@ LABEL_4:
   return v3;
 }
 
-- (id)blitCommandEncoderWithDescriptor:(id)a3
+- (id)blitCommandEncoderWithDescriptor:(id)descriptor
 {
   [(MTLGPUDebugCommandBuffer *)self _lateInit];
-  v5 = -[MTLGPUDebugBlitCommandEncoder initWithBlitCommandEncoder:parent:descriptor:encoderID:]([MTLGPUDebugBlitCommandEncoder alloc], "initWithBlitCommandEncoder:parent:descriptor:encoderID:", [*(self + 2) blitCommandEncoderWithDescriptor:{-[MTLToolsCommandBuffer unwrapMTLBlitPassDescriptor:](self, "unwrapMTLBlitPassDescriptor:", a3)}], self, a3, *(self + 78));
+  v5 = -[MTLGPUDebugBlitCommandEncoder initWithBlitCommandEncoder:parent:descriptor:encoderID:]([MTLGPUDebugBlitCommandEncoder alloc], "initWithBlitCommandEncoder:parent:descriptor:encoderID:", [*(self + 2) blitCommandEncoderWithDescriptor:{-[MTLToolsCommandBuffer unwrapMTLBlitPassDescriptor:](self, "unwrapMTLBlitPassDescriptor:", descriptor)}], self, descriptor, *(self + 78));
   [(MTLGPUDebugCommandBuffer *)self beginingEncoder:v5 type:2];
 
   return v5;
@@ -741,13 +741,13 @@ LABEL_4:
   return result;
 }
 
-- (id)accelerationStructureCommandEncoderWithDescriptor:(id)a3
+- (id)accelerationStructureCommandEncoderWithDescriptor:(id)descriptor
 {
   [(MTLGPUDebugCommandBuffer *)self _lateInit];
-  result = [*(self + 2) accelerationStructureCommandEncoderWithDescriptor:{-[MTLToolsCommandBuffer unwrapMTLAccelerationStructurePassDescriptor:](self, "unwrapMTLAccelerationStructurePassDescriptor:", a3)}];
+  result = [*(self + 2) accelerationStructureCommandEncoderWithDescriptor:{-[MTLToolsCommandBuffer unwrapMTLAccelerationStructurePassDescriptor:](self, "unwrapMTLAccelerationStructurePassDescriptor:", descriptor)}];
   if (result)
   {
-    v6 = [[MTLGPUDebugAccelerationStructureCommandEncoder alloc] initWithAccelerationStructureCommandEncoder:result parent:self accelerationStructurePassDescriptor:a3];
+    v6 = [[MTLGPUDebugAccelerationStructureCommandEncoder alloc] initWithAccelerationStructureCommandEncoder:result parent:self accelerationStructurePassDescriptor:descriptor];
 
     return v6;
   }
@@ -755,11 +755,11 @@ LABEL_4:
   return result;
 }
 
-- (void)addResidencySetGPUDebug:(id)a3 fromEncoder:(id)a4
+- (void)addResidencySetGPUDebug:(id)debug fromEncoder:(id)encoder
 {
-  v30 = a3;
+  debugCopy = debug;
   v5 = (self + 736);
-  v6 = [a4 hash];
+  v6 = [encoder hash];
   v7 = v5[1];
   if (!*&v7)
   {
@@ -786,7 +786,7 @@ LABEL_4:
   if (!v10 || (v11 = *v10) == 0)
   {
 LABEL_17:
-    v13 = [a4 hash];
+    v13 = [encoder hash];
     v27 = 0u;
     v28 = 0u;
     LODWORD(v29) = 1065353216;
@@ -900,7 +900,7 @@ LABEL_16:
   }
 
 LABEL_35:
-  v20 = [a4 hash];
+  v20 = [encoder hash];
   v21 = v5[1];
   if (!*&v21)
   {
@@ -971,41 +971,41 @@ LABEL_50:
     break;
   }
 
-  *&v27 = [v30 hash];
+  *&v27 = [debugCopy hash];
   if (!std::__hash_table<std::__hash_value_type<unsigned long long,MTLLegacySVResidencySet *>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,MTLLegacySVResidencySet *>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,MTLLegacySVResidencySet *>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,MTLLegacySVResidencySet *>>>::find<unsigned long long>(v25 + 3, &v27))
   {
-    *&v27 = [v30 hash];
+    *&v27 = [debugCopy hash];
     std::__hash_table<std::__hash_value_type<unsigned long long,MTLGPUDebugResidencySet *>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,MTLGPUDebugResidencySet *>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,MTLGPUDebugResidencySet *>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,MTLGPUDebugResidencySet *>>>::__emplace_unique_impl<unsigned long,MTLGPUDebugResidencySet *&>();
   }
 }
 
-- (void)useResidencySet:(id)a3
+- (void)useResidencySet:(id)set
 {
   if ((*(*(self + 19) + 20) & 0x200000001) != 0)
   {
-    v7 = [a3 hash];
+    v7 = [set hash];
     if (!std::__hash_table<std::__hash_value_type<unsigned long long,MTLLegacySVResidencySet *>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,MTLLegacySVResidencySet *>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,MTLLegacySVResidencySet *>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,MTLLegacySVResidencySet *>>>::find<unsigned long long>(self + 87, &v7))
     {
-      v6 = a3;
-      v7 = [a3 hash];
+      setCopy = set;
+      v7 = [set hash];
       std::__hash_table<std::__hash_value_type<unsigned long,MTLGPUDebugResidencySet *>,std::__unordered_map_hasher<unsigned long,std::__hash_value_type<unsigned long,MTLGPUDebugResidencySet *>,std::hash<unsigned long>,std::equal_to<unsigned long>,true>,std::__unordered_map_equal<unsigned long,std::__hash_value_type<unsigned long,MTLGPUDebugResidencySet *>,std::equal_to<unsigned long>,std::hash<unsigned long>,true>,std::allocator<std::__hash_value_type<unsigned long,MTLGPUDebugResidencySet *>>>::__emplace_unique_key_args<unsigned long,unsigned long,MTLGPUDebugResidencySet *>(self + 87, &v7);
     }
   }
 
   v5.receiver = self;
   v5.super_class = MTLGPUDebugCommandBuffer;
-  [(MTLToolsCommandBuffer *)&v5 useResidencySet:a3];
+  [(MTLToolsCommandBuffer *)&v5 useResidencySet:set];
 }
 
-- (void)useResidencySets:(const void *)a3 count:(unint64_t)a4
+- (void)useResidencySets:(const void *)sets count:(unint64_t)count
 {
-  if ((*(*(self + 19) + 20) & 0x200000001) != 0 && a4 != 0)
+  if ((*(*(self + 19) + 20) & 0x200000001) != 0 && count != 0)
   {
-    v8 = a3;
-    v9 = a4;
+    setsCopy = sets;
+    countCopy = count;
     do
     {
-      v12 = *v8;
+      v12 = *setsCopy;
       v11 = [v12 hash];
       if (!std::__hash_table<std::__hash_value_type<unsigned long long,MTLLegacySVResidencySet *>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,MTLLegacySVResidencySet *>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,MTLLegacySVResidencySet *>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,MTLLegacySVResidencySet *>>>::find<unsigned long long>(self + 87, &v11))
       {
@@ -1013,16 +1013,16 @@ LABEL_50:
         std::__hash_table<std::__hash_value_type<unsigned long,MTLGPUDebugResidencySet *>,std::__unordered_map_hasher<unsigned long,std::__hash_value_type<unsigned long,MTLGPUDebugResidencySet *>,std::hash<unsigned long>,std::equal_to<unsigned long>,true>,std::__unordered_map_equal<unsigned long,std::__hash_value_type<unsigned long,MTLGPUDebugResidencySet *>,std::equal_to<unsigned long>,std::hash<unsigned long>,true>,std::allocator<std::__hash_value_type<unsigned long,MTLGPUDebugResidencySet *>>>::__emplace_unique_key_args<unsigned long,unsigned long,MTLGPUDebugResidencySet *&>(self + 87, &v11);
       }
 
-      ++v8;
-      --v9;
+      ++setsCopy;
+      --countCopy;
     }
 
-    while (v9);
+    while (countCopy);
   }
 
   v10.receiver = self;
   v10.super_class = MTLGPUDebugCommandBuffer;
-  [(MTLToolsCommandBuffer *)&v10 useResidencySets:a3 count:a4];
+  [(MTLToolsCommandBuffer *)&v10 useResidencySets:sets count:count];
 }
 
 - (void)preCommit
@@ -1043,27 +1043,27 @@ LABEL_50:
     v7 = MEMORY[0x277CCACA8];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"com.apple.Metal"];
     [*(ii + 97) populateDefaultLoggerCache:objc_msgSend(v7 logger:{"stringWithFormat:", @"%@%@", v8, objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", "GPUDebug")), v6}];
-    v9 = [(MTLToolsObject *)ii baseObject];
-    [v9 useInternalResidencySet:*(*(ii + 97) + *MEMORY[0x277CD70E0])];
-    v10 = [*(ii + 98) baseObject];
-    [*(v10 + *MEMORY[0x277CD70D0]) setReportBufferInPrivateData:objc_msgSend(*(ii + 2) privateDataOffset:"privateData") logState:{objc_msgSend(*(ii + 2), "privateDataOffset"), *(ii + 97)}];
+    baseObject = [(MTLToolsObject *)ii baseObject];
+    [baseObject useInternalResidencySet:*(*(ii + 97) + *MEMORY[0x277CD70E0])];
+    baseObject2 = [*(ii + 98) baseObject];
+    [*(baseObject2 + *MEMORY[0x277CD70D0]) setReportBufferInPrivateData:objc_msgSend(*(ii + 2) privateDataOffset:"privateData") logState:{objc_msgSend(*(ii + 2), "privateDataOffset"), *(ii + 97)}];
     v3 = *(*(ii + 19) + 20);
   }
 
   if ((v3 & 0x200000001) != 0)
   {
-    v11 = [(MTLToolsCommandBuffer *)ii commandQueue];
+    commandQueue = [(MTLToolsCommandBuffer *)ii commandQueue];
     v48 = 0u;
     v49 = 0u;
     v50 = 1065353216;
-    v12 = [(MTLCommandQueue *)v11 residencySetsLock];
-    os_unfair_lock_lock(v12);
+    residencySetsLock = [(MTLCommandQueue *)commandQueue residencySetsLock];
+    os_unfair_lock_lock(residencySetsLock);
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v13 = [(MTLCommandQueue *)v11 residencySetsArray];
-    v14 = [v13 countByEnumeratingWithState:&v44 objects:v55 count:16];
+    residencySetsArray = [(MTLCommandQueue *)commandQueue residencySetsArray];
+    v14 = [residencySetsArray countByEnumeratingWithState:&v44 objects:v55 count:16];
     if (v14)
     {
       v15 = *v45;
@@ -1073,7 +1073,7 @@ LABEL_50:
         {
           if (*v45 != v15)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(residencySetsArray);
           }
 
           *&v51 = *(*(&v44 + 1) + 8 * i);
@@ -1085,13 +1085,13 @@ LABEL_50:
           }
         }
 
-        v14 = [v13 countByEnumeratingWithState:&v44 objects:v55 count:16];
+        v14 = [residencySetsArray countByEnumeratingWithState:&v44 objects:v55 count:16];
       }
 
       while (v14);
     }
 
-    os_unfair_lock_unlock(v12);
+    os_unfair_lock_unlock(residencySetsLock);
     for (j = *(ii + 89); j; j = *j)
     {
       *&v51 = j[3];
@@ -1134,8 +1134,8 @@ LABEL_50:
         v37 = 0u;
         v34 = 0u;
         v35 = 0u;
-        v22 = [v21 allCommittedAllocations];
-        v23 = [v22 countByEnumeratingWithState:&v34 objects:v54 count:16];
+        allCommittedAllocations = [v21 allCommittedAllocations];
+        v23 = [allCommittedAllocations countByEnumeratingWithState:&v34 objects:v54 count:16];
         if (v23)
         {
           v24 = *v35;
@@ -1145,7 +1145,7 @@ LABEL_50:
             {
               if (*v35 != v24)
               {
-                objc_enumerationMutation(v22);
+                objc_enumerationMutation(allCommittedAllocations);
               }
 
               v26 = *(*(&v34 + 1) + 8 * n);
@@ -1162,7 +1162,7 @@ LABEL_50:
               }
             }
 
-            v23 = [v22 countByEnumeratingWithState:&v34 objects:v54 count:16];
+            v23 = [allCommittedAllocations countByEnumeratingWithState:&v34 objects:v54 count:16];
           }
 
           while (v23);

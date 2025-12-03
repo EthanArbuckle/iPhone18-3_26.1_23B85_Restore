@@ -1,20 +1,20 @@
 @interface DataBiomeEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 - (_TtC18ProtoDataExtractor14DataBiomeEvent)init;
 - (id)serialize;
 @end
 
 @implementation DataBiomeEvent
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = sub_260F49328();
   v8 = v7;
 
   v9 = type metadata accessor for DataBiomeEvent();
   v10 = objc_allocWithZone(v9);
-  *&v10[OBJC_IVAR____TtC18ProtoDataExtractor14DataBiomeEvent_dataVersion] = a4;
+  *&v10[OBJC_IVAR____TtC18ProtoDataExtractor14DataBiomeEvent_dataVersion] = version;
   v11 = &v10[OBJC_IVAR____TtC18ProtoDataExtractor14DataBiomeEvent_data];
   *v11 = v6;
   v11[1] = v8;

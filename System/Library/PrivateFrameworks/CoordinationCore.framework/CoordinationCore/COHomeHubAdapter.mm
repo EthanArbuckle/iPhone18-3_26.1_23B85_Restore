@@ -1,7 +1,7 @@
 @interface COHomeHubAdapter
 + (id)sharedInstance;
 - (COHomeHubAdapter)init;
-- (id)accessoryIdentifierForPeerInstance:(id)a3 usingHomeKitAdapter:(id)a4;
+- (id)accessoryIdentifierForPeerInstance:(id)instance usingHomeKitAdapter:(id)adapter;
 @end
 
 @implementation COHomeHubAdapter
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __34__COHomeHubAdapter_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -37,12 +37,12 @@ uint64_t __34__COHomeHubAdapter_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)accessoryIdentifierForPeerInstance:(id)a3 usingHomeKitAdapter:(id)a4
+- (id)accessoryIdentifierForPeerInstance:(id)instance usingHomeKitAdapter:(id)adapter
 {
-  v4 = [(COHomeHubAdapter *)self accessoryForPeerInstance:a3 usingHomeKitAdapter:a4];
-  v5 = [v4 uniqueIdentifier];
+  v4 = [(COHomeHubAdapter *)self accessoryForPeerInstance:instance usingHomeKitAdapter:adapter];
+  uniqueIdentifier = [v4 uniqueIdentifier];
 
-  return v5;
+  return uniqueIdentifier;
 }
 
 @end

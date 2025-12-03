@@ -1,42 +1,42 @@
 @interface PXPhotoKitAssetCollectionMomentShareActionPerformer
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4;
-- (void)completeUserInteractionTaskWithSuccess:(BOOL)a3 error:(id)a4;
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs;
+- (void)completeUserInteractionTaskWithSuccess:(BOOL)success error:(id)error;
 - (void)performUserInteractionTask;
-- (void)workflowCoordinator:(id)a3 workflowViewController:(id)a4 didFinishSession:(id)a5 withActivityState:(unint64_t)a6;
+- (void)workflowCoordinator:(id)coordinator workflowViewController:(id)controller didFinishSession:(id)session withActivityState:(unint64_t)state;
 @end
 
 @implementation PXPhotoKitAssetCollectionMomentShareActionPerformer
 
-- (void)completeUserInteractionTaskWithSuccess:(BOOL)a3 error:(id)a4
+- (void)completeUserInteractionTaskWithSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
+  successCopy = success;
   workflowCoordinator = self->_workflowCoordinator;
   self->_workflowCoordinator = 0;
-  v7 = a4;
+  errorCopy = error;
 
   v8.receiver = self;
   v8.super_class = PXPhotoKitAssetCollectionMomentShareActionPerformer;
-  [(PXActionPerformer *)&v8 completeUserInteractionTaskWithSuccess:v4 error:v7];
+  [(PXActionPerformer *)&v8 completeUserInteractionTaskWithSuccess:successCopy error:errorCopy];
 }
 
-- (void)workflowCoordinator:(id)a3 workflowViewController:(id)a4 didFinishSession:(id)a5 withActivityState:(unint64_t)a6
+- (void)workflowCoordinator:(id)coordinator workflowViewController:(id)controller didFinishSession:(id)session withActivityState:(unint64_t)state
 {
-  v7 = [(PXActionPerformer *)self dismissViewController:a4 completionHandler:0, a5, a6];
+  state = [(PXActionPerformer *)self dismissViewController:controller completionHandler:0, session, state];
   v8 = 0;
-  if (!v7)
+  if (!state)
   {
     v8 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXCMMErrorDomain" code:-1002 debugDescription:@"Failed to dismiss the CMM view controller"];
   }
 
   v9 = v8;
-  [(PXPhotoKitAssetCollectionMomentShareActionPerformer *)self completeUserInteractionTaskWithSuccess:v7 error:v8];
+  [(PXPhotoKitAssetCollectionMomentShareActionPerformer *)self completeUserInteractionTaskWithSuccess:state error:v8];
 }
 
 - (void)performUserInteractionTask
 {
   v3 = [PXCMMPhotoKitContext alloc];
-  v4 = [(PXAssetCollectionActionPerformer *)self assetCollection];
-  v9 = [(PXCMMPhotoKitContext *)v3 initWithAssetCollection:v4 activityType:1 sourceType:0];
+  assetCollection = [(PXAssetCollectionActionPerformer *)self assetCollection];
+  v9 = [(PXCMMPhotoKitContext *)v3 initWithAssetCollection:assetCollection activityType:1 sourceType:0];
 
   [(PXCMMContext *)v9 setHideActionMenu:1];
   v5 = objc_alloc_init(PXCMMWorkflowCoordinator);
@@ -52,15 +52,15 @@
   }
 }
 
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v6 = [a3 assetCollection];
-  if (!v6)
+  assetCollection = [reference assetCollection];
+  if (!assetCollection)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    [v11 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:1930 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollectionReference.assetCollection", v13}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:1930 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollectionReference.assetCollection", v13}];
 LABEL_10:
 
     goto LABEL_3;
@@ -69,20 +69,20 @@ LABEL_10:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = objc_opt_class();
     v13 = NSStringFromClass(v14);
-    v15 = [v6 px_descriptionForAssertionMessage];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:1930 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollectionReference.assetCollection", v13, v15}];
+    px_descriptionForAssertionMessage = [assetCollection px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:1930 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollectionReference.assetCollection", v13, px_descriptionForAssertionMessage}];
 
     goto LABEL_10;
   }
 
 LABEL_3:
-  v7 = [v6 photoLibrary];
-  v8 = PXCMMHasSendAndReceiveCapabilities(v7);
+  photoLibrary = [assetCollection photoLibrary];
+  v8 = PXCMMHasSendAndReceiveCapabilities(photoLibrary);
 
-  v9 = v8 && [v6 assetCollectionType] != 8 && objc_msgSend(v6, "assetCollectionType") != 7;
+  v9 = v8 && [assetCollection assetCollectionType] != 8 && objc_msgSend(assetCollection, "assetCollectionType") != 7;
   return v9;
 }
 

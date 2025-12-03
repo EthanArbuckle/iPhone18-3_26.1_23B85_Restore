@@ -1,19 +1,19 @@
 @interface PUITransformContainerView
 - (CGAffineTransform)contentViewTransform;
-- (PUITransformContainerView)initWithFrame:(CGRect)a3;
+- (PUITransformContainerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setContentView:(id)a3;
-- (void)setContentViewTransform:(CGAffineTransform *)a3;
+- (void)setContentView:(id)view;
+- (void)setContentViewTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation PUITransformContainerView
 
-- (PUITransformContainerView)initWithFrame:(CGRect)a3
+- (PUITransformContainerView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = PUITransformContainerView;
-  v3 = [(PUITransformContainerView *)&v8 initWithFrame:a3.origin.x, a3.origin.y];
+  v3 = [(PUITransformContainerView *)&v8 initWithFrame:frame.origin.x, frame.origin.y];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD250]);
@@ -44,27 +44,27 @@
   }
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  if (contentView != v5)
+  if (contentView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(UIView *)contentView removeFromSuperview];
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     v7 = self->_contentView;
     [(UIView *)v7 bounds];
     [(UIView *)v7 setFrame:?];
     [(UIView *)self->_containerView addSubview:v8];
     contentView = [(PUITransformContainerView *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](contentView, v5);
+  MEMORY[0x1EEE66BB8](contentView, viewCopy);
 }
 
-- (void)setContentViewTransform:(CGAffineTransform *)a3
+- (void)setContentViewTransform:(CGAffineTransform *)transform
 {
   containerView = self->_containerView;
   if (containerView)
@@ -77,17 +77,17 @@
     memset(&t2, 0, sizeof(t2));
   }
 
-  v6 = *&a3->c;
-  *&v9.a = *&a3->a;
+  v6 = *&transform->c;
+  *&v9.a = *&transform->a;
   *&v9.c = v6;
-  *&v9.tx = *&a3->tx;
+  *&v9.tx = *&transform->tx;
   if (!CGAffineTransformEqualToTransform(&v9, &t2))
   {
     v7 = self->_containerView;
-    v8 = *&a3->c;
-    *&t2.a = *&a3->a;
+    v8 = *&transform->c;
+    *&t2.a = *&transform->a;
     *&t2.c = v8;
-    *&t2.tx = *&a3->tx;
+    *&t2.tx = *&transform->tx;
     [(UIView *)v7 setTransform:&t2];
     [(PUITransformContainerView *)self setNeedsLayout];
   }

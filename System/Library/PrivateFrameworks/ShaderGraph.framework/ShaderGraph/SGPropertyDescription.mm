@@ -1,5 +1,5 @@
 @interface SGPropertyDescription
-+ (id)create:(id)a3 type:(id)a4;
++ (id)create:(id)create type:(id)type;
 - (NSString)description;
 - (NSString)name;
 - (SGPropertyDescription)init;
@@ -17,7 +17,7 @@
   return v4;
 }
 
-+ (id)create:(id)a3 type:(id)a4
++ (id)create:(id)create type:(id)type
 {
   ObjCClassMetadata = swift_getObjCClassMetadata();
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
@@ -26,11 +26,11 @@
   v10 = &v9[OBJC_IVAR___SGPropertyDescription_name];
   *v10 = v6;
   v10[1] = v8;
-  *&v9[OBJC_IVAR___SGPropertyDescription_type] = a4;
+  *&v9[OBJC_IVAR___SGPropertyDescription_type] = type;
   v9[OBJC_IVAR___SGPropertyDescription_visible] = 1;
   v14.receiver = v9;
   v14.super_class = ObjCClassMetadata;
-  v11 = a4;
+  typeCopy = type;
   v12 = objc_msgSendSuper2(&v14, sel_init);
 
   return v12;

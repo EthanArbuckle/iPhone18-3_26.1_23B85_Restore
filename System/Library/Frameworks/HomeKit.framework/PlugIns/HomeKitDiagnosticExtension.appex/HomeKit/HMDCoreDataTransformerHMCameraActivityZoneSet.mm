@@ -1,17 +1,17 @@
 @interface HMDCoreDataTransformerHMCameraActivityZoneSet
-+ (id)OPACKFromValue:(id)a3 error:(id *)a4;
-+ (id)valueFromOPACK:(id)a3 error:(id *)a4;
++ (id)OPACKFromValue:(id)value error:(id *)error;
++ (id)valueFromOPACK:(id)k error:(id *)error;
 @end
 
 @implementation HMDCoreDataTransformerHMCameraActivityZoneSet
 
-+ (id)valueFromOPACK:(id)a3 error:(id *)a4
++ (id)valueFromOPACK:(id)k error:(id *)error
 {
-  v5 = a3;
+  kCopy = k;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = kCopy;
   }
 
   else
@@ -41,9 +41,9 @@
     if (v9)
     {
       v10 = 0;
-      if (a4)
+      if (error)
       {
-        *a4 = v9;
+        *error = v9;
       }
     }
 
@@ -57,10 +57,10 @@
 
   else
   {
-    if (a4)
+    if (error)
     {
-      v11 = [NSString stringWithFormat:@"Expected NSArray value to create NSSet<HMCameraActivityZone>: %@", v5];
-      *a4 = [NSError hmfErrorWithCode:3 reason:v11];
+      kCopy = [NSString stringWithFormat:@"Expected NSArray value to create NSSet<HMCameraActivityZone>: %@", kCopy];
+      *error = [NSError hmfErrorWithCode:3 reason:kCopy];
     }
 
     v10 = 0;
@@ -69,30 +69,30 @@
   return v10;
 }
 
-+ (id)OPACKFromValue:(id)a3 error:(id *)a4
++ (id)OPACKFromValue:(id)value error:(id *)error
 {
-  v5 = a3;
+  valueCopy = value;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = sub_1000141D4;
   v20 = sub_1000141E4;
   v21 = 0;
-  +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+  +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [valueCopy count]);
   v10 = _NSConcreteStackBlock;
   v11 = 3221225472;
   v12 = sub_100014468;
   v13 = &unk_100030BD0;
   v6 = v15 = &v16;
   v14 = v6;
-  [v5 hmf_enumerateWithAutoreleasePoolUsingBlock:&v10];
+  [valueCopy hmf_enumerateWithAutoreleasePoolUsingBlock:&v10];
   v7 = v17[5];
   if (v7)
   {
     v8 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = v7;
+      *error = v7;
     }
   }
 

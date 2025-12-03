@@ -1,17 +1,17 @@
 @interface DMTWiFiAutoJoinValidator
-- (BOOL)validateProfile:(id)a3 error:(id *)a4;
+- (BOOL)validateProfile:(id)profile error:(id *)error;
 @end
 
 @implementation DMTWiFiAutoJoinValidator
 
-- (BOOL)validateProfile:(id)a3 error:(id *)a4
+- (BOOL)validateProfile:(id)profile error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [a3 payloadsOfType:{@"com.apple.wifi.managed", 0}];
+  v5 = [profile payloadsOfType:{@"com.apple.wifi.managed", 0}];
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -28,9 +28,9 @@
         }
 
         v10 = *(*(&v16 + 1) + 8 * v9);
-        v11 = [v10 autoJoin];
+        autoJoin = [v10 autoJoin];
 
-        if (v11)
+        if (autoJoin)
         {
 
           result = 1;
@@ -51,12 +51,12 @@
     }
   }
 
-  if (a4)
+  if (error)
   {
     v12 = DMTErrorWithCodeAndUserInfo(72, &unk_285B5BE60);
     v13 = v12;
     result = 0;
-    *a4 = v12;
+    *error = v12;
   }
 
   else

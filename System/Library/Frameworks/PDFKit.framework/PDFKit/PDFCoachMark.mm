@@ -1,25 +1,25 @@
 @interface PDFCoachMark
-- (PDFCoachMark)initWithFrame:(CGRect)a3;
+- (PDFCoachMark)initWithFrame:(CGRect)frame;
 - (double)effectTimeLeft;
-- (void)playEffect:(id)a3;
+- (void)playEffect:(id)effect;
 @end
 
 @implementation PDFCoachMark
 
-- (PDFCoachMark)initWithFrame:(CGRect)a3
+- (PDFCoachMark)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v11.receiver = self;
   v11.super_class = PDFCoachMark;
   v7 = [(PDFCoachMark *)&v11 init];
   if (v7)
   {
-    v8 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     creationTime = v7->creationTime;
-    v7->creationTime = v8;
+    v7->creationTime = date;
 
     v7->frame.origin.x = x;
     v7->frame.origin.y = y;
@@ -30,11 +30,11 @@
   return v7;
 }
 
-- (void)playEffect:(id)a3
+- (void)playEffect:(id)effect
 {
   v35[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [PDFPageLayerEffect createPDFCoachmarkLayerEffectsWithFrame:v4 withLayer:self->frame.origin.x, self->frame.origin.y, self->frame.size.width, self->frame.size.height];
+  effectCopy = effect;
+  v5 = [PDFPageLayerEffect createPDFCoachmarkLayerEffectsWithFrame:effectCopy withLayer:self->frame.origin.x, self->frame.origin.y, self->frame.size.width, self->frame.size.height];
   layerEffect = self->layerEffect;
   self->layerEffect = v5;
 
@@ -61,7 +61,7 @@
     v31[2] = __27__PDFCoachMark_playEffect___block_invoke;
     v31[3] = &unk_1E81510E8;
     objc_copyWeak(&v33, &location);
-    v32 = v4;
+    v32 = effectCopy;
     [v12 setCompletionBlock:v31];
     v13 = [MEMORY[0x1E6979390] animationWithKeyPath:@"transform"];
     v28 = *(MEMORY[0x1E69792E8] + 80);
@@ -102,11 +102,11 @@
     [v13 setDuration:0.2];
     LODWORD(v19) = 1.0;
     [v13 setRepeatCount:v19];
-    v20 = [(PDFPageLayerEffect *)self->layerEffect sublayers];
-    v21 = [v20 firstObject];
+    sublayers = [(PDFPageLayerEffect *)self->layerEffect sublayers];
+    firstObject = [sublayers firstObject];
 
-    [v21 addAnimation:v7 forKey:@"fadeAnimation"];
-    [v21 addAnimation:v13 forKey:@"scaleAnimation"];
+    [firstObject addAnimation:v7 forKey:@"fadeAnimation"];
+    [firstObject addAnimation:v13 forKey:@"scaleAnimation"];
 
     objc_destroyWeak(&v33);
     objc_destroyWeak(&location);
@@ -129,8 +129,8 @@ void __27__PDFCoachMark_playEffect___block_invoke(uint64_t a1)
 
 - (double)effectTimeLeft
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  [v3 timeIntervalSinceDate:self->creationTime];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceDate:self->creationTime];
   v5 = 1.2 - v4;
 
   return v5;

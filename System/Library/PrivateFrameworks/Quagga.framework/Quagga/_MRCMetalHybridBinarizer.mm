@@ -1,34 +1,34 @@
 @interface _MRCMetalHybridBinarizer
 - (_MRCMetalHybridBinarizer)init;
-- (_MRCMetalHybridBinarizer)initWithMetalContext:(id)a3 error:(id *)a4;
-- (id)newTextureByBinarizingPixelBuffer:(__CVBuffer *)a3 error:(id *)a4;
+- (_MRCMetalHybridBinarizer)initWithMetalContext:(id)context error:(id *)error;
+- (id)newTextureByBinarizingPixelBuffer:(__CVBuffer *)buffer error:(id *)error;
 @end
 
 @implementation _MRCMetalHybridBinarizer
 
-- (id)newTextureByBinarizingPixelBuffer:(__CVBuffer *)a3 error:(id *)a4
+- (id)newTextureByBinarizingPixelBuffer:(__CVBuffer *)buffer error:(id *)error
 {
   v126 = *MEMORY[0x277D85DE8];
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   if (PixelFormatType != 875704422 && PixelFormatType != 1278226488 && PixelFormatType != 875704438)
   {
     return 0;
   }
 
-  if (CVPixelBufferIsPlanar(a3))
+  if (CVPixelBufferIsPlanar(buffer))
   {
-    WidthOfPlane = CVPixelBufferGetWidthOfPlane(a3, 0);
-    HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, 0);
+    WidthOfPlane = CVPixelBufferGetWidthOfPlane(buffer, 0);
+    HeightOfPlane = CVPixelBufferGetHeightOfPlane(buffer, 0);
   }
 
   else
   {
-    WidthOfPlane = CVPixelBufferGetWidth(a3);
-    HeightOfPlane = CVPixelBufferGetHeight(a3);
+    WidthOfPlane = CVPixelBufferGetWidth(buffer);
+    HeightOfPlane = CVPixelBufferGetHeight(buffer);
   }
 
   v9 = HeightOfPlane;
-  IOSurface = CVPixelBufferGetIOSurface(a3);
+  IOSurface = CVPixelBufferGetIOSurface(buffer);
   if (!IOSurface)
   {
     return 0;
@@ -220,13 +220,13 @@
   return v108;
 }
 
-- (_MRCMetalHybridBinarizer)initWithMetalContext:(id)a3 error:(id *)a4
+- (_MRCMetalHybridBinarizer)initWithMetalContext:(id)context error:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   v24.receiver = self;
   v24.super_class = _MRCMetalHybridBinarizer;
   v7 = [(_MRCMetalHybridBinarizer *)&v24 init];
-  if (!v7 || (!v6 ? (v9 = [_MRCMetalContext alloc], v8 = objc_msgSend_initWithDevice_libraryURL_error_(v9, v10, 0, 0, a4)) : (v8 = v6), (metalContext = v7->_metalContext, v7->_metalContext = v8, metalContext, (v13 = v7->_metalContext) != 0) && (v14 = objc_msgSend_newComputePipelineStateWithFunctionName_constantValues_error_(v13, v12, @"_MRCMetalHybridBinarizer_calculateBlackPoints", 0, a4), calcuateBlackPointsPipelineState = v7->_calcuateBlackPointsPipelineState, v7->_calcuateBlackPointsPipelineState = v14, calcuateBlackPointsPipelineState, v7->_calcuateBlackPointsPipelineState) && (v17 = objc_msgSend_newComputePipelineStateWithFunctionName_constantValues_error_(v7->_metalContext, v16, @"_MRCMetalHybridBinarizer_fixBlackPoints", 0, a4), fixBlackPointsPipelineState = v7->_fixBlackPointsPipelineState, v7->_fixBlackPointsPipelineState = v17, fixBlackPointsPipelineState, v7->_fixBlackPointsPipelineState) && (v20 = objc_msgSend_newComputePipelineStateWithFunctionName_constantValues_error_(v7->_metalContext, v19, @"_MRCMetalHybridBinarizer_threshold", 0, a4), thresholdPipelineState = v7->_thresholdPipelineState, v7->_thresholdPipelineState = v20, thresholdPipelineState, v7->_thresholdPipelineState)))
+  if (!v7 || (!contextCopy ? (v9 = [_MRCMetalContext alloc], v8 = objc_msgSend_initWithDevice_libraryURL_error_(v9, v10, 0, 0, error)) : (v8 = contextCopy), (metalContext = v7->_metalContext, v7->_metalContext = v8, metalContext, (v13 = v7->_metalContext) != 0) && (v14 = objc_msgSend_newComputePipelineStateWithFunctionName_constantValues_error_(v13, v12, @"_MRCMetalHybridBinarizer_calculateBlackPoints", 0, error), calcuateBlackPointsPipelineState = v7->_calcuateBlackPointsPipelineState, v7->_calcuateBlackPointsPipelineState = v14, calcuateBlackPointsPipelineState, v7->_calcuateBlackPointsPipelineState) && (v17 = objc_msgSend_newComputePipelineStateWithFunctionName_constantValues_error_(v7->_metalContext, v16, @"_MRCMetalHybridBinarizer_fixBlackPoints", 0, error), fixBlackPointsPipelineState = v7->_fixBlackPointsPipelineState, v7->_fixBlackPointsPipelineState = v17, fixBlackPointsPipelineState, v7->_fixBlackPointsPipelineState) && (v20 = objc_msgSend_newComputePipelineStateWithFunctionName_constantValues_error_(v7->_metalContext, v19, @"_MRCMetalHybridBinarizer_threshold", 0, error), thresholdPipelineState = v7->_thresholdPipelineState, v7->_thresholdPipelineState = v20, thresholdPipelineState, v7->_thresholdPipelineState)))
   {
     v22 = v7;
   }

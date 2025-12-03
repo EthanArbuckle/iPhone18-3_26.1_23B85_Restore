@@ -14,9 +14,9 @@
   objc_sync_enter(obj);
   [(LEAudioXpcWatchdog *)obj setIsTransacting:1];
   [(LEAudioXpcWatchdog *)obj setTransactionCount:[(LEAudioXpcWatchdog *)obj transactionCount]+ 1];
-  v2 = [(LEAudioXpcWatchdog *)obj timer];
+  timer = [(LEAudioXpcWatchdog *)obj timer];
 
-  if (!v2)
+  if (!timer)
   {
     [(LEAudioXpcWatchdog *)obj _startTimer];
   }
@@ -38,42 +38,42 @@
   v4 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v3);
   [(LEAudioXpcWatchdog *)self setTimer:v4];
 
-  v5 = [(LEAudioXpcWatchdog *)self timer];
+  timer = [(LEAudioXpcWatchdog *)self timer];
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_10000AF28;
   handler[3] = &unk_100094CB8;
   handler[4] = self;
-  dispatch_source_set_event_handler(v5, handler);
+  dispatch_source_set_event_handler(timer, handler);
 
-  v6 = [(LEAudioXpcWatchdog *)self timer];
+  timer2 = [(LEAudioXpcWatchdog *)self timer];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000AF30;
   v10[3] = &unk_100094CB8;
   v10[4] = self;
-  dispatch_source_set_cancel_handler(v6, v10);
+  dispatch_source_set_cancel_handler(timer2, v10);
 
-  v7 = [(LEAudioXpcWatchdog *)self timer];
+  timer3 = [(LEAudioXpcWatchdog *)self timer];
   v8 = dispatch_time(0, 10000000000);
-  dispatch_source_set_timer(v7, v8, 0x2540BE400uLL, 0x3B9ACA00uLL);
+  dispatch_source_set_timer(timer3, v8, 0x2540BE400uLL, 0x3B9ACA00uLL);
 
-  v9 = [(LEAudioXpcWatchdog *)self timer];
-  dispatch_resume(v9);
+  timer4 = [(LEAudioXpcWatchdog *)self timer];
+  dispatch_resume(timer4);
 }
 
 - (void)_stopTimer
 {
-  v2 = [(LEAudioXpcWatchdog *)self timer];
-  dispatch_source_cancel(v2);
+  timer = [(LEAudioXpcWatchdog *)self timer];
+  dispatch_source_cancel(timer);
 }
 
 - (void)_timerEvent
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(LEAudioXpcWatchdog *)obj timerTransactionCount];
-  if (v2 == [(LEAudioXpcWatchdog *)obj transactionCount])
+  timerTransactionCount = [(LEAudioXpcWatchdog *)obj timerTransactionCount];
+  if (timerTransactionCount == [(LEAudioXpcWatchdog *)obj transactionCount])
   {
     if ([(LEAudioXpcWatchdog *)obj isTransacting])
     {

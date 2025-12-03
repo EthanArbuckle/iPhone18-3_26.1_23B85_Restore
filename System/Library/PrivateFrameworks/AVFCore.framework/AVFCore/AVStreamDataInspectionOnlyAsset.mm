@@ -1,12 +1,12 @@
 @interface AVStreamDataInspectionOnlyAsset
-- (AVStreamDataInspectionOnlyAsset)initWithFigAsset:(OpaqueFigAsset *)a3;
+- (AVStreamDataInspectionOnlyAsset)initWithFigAsset:(OpaqueFigAsset *)asset;
 @end
 
 @implementation AVStreamDataInspectionOnlyAsset
 
-- (AVStreamDataInspectionOnlyAsset)initWithFigAsset:(OpaqueFigAsset *)a3
+- (AVStreamDataInspectionOnlyAsset)initWithFigAsset:(OpaqueFigAsset *)asset
 {
-  v4 = [[AVFigAssetInspectorLoader alloc] initWithFigAsset:a3 forAsset:0];
+  v4 = [[AVFigAssetInspectorLoader alloc] initWithFigAsset:asset forAsset:0];
   if (v4 && (v5 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v4, 0x1F0A8D210, 0}]) != 0)
   {
     v7.receiver = self;

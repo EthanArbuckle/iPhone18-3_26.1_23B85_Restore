@@ -1,7 +1,7 @@
 @interface SBPrototypeAdvancedActivityElementViewProvider
-- (BOOL)handleElementViewEvent:(int64_t)a3;
-- (CGSize)sizeThatFitsSize:(CGSize)a3 forProvidedView:(id)a4 inLayoutMode:(int64_t)a5;
-- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)a3 suggestedOutsets:(NSDirectionalEdgeInsets)result maximumOutsets:(NSDirectionalEdgeInsets)a5;
+- (BOOL)handleElementViewEvent:(int64_t)event;
+- (CGSize)sizeThatFitsSize:(CGSize)size forProvidedView:(id)view inLayoutMode:(int64_t)mode;
+- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)mode suggestedOutsets:(NSDirectionalEdgeInsets)result maximumOutsets:(NSDirectionalEdgeInsets)outsets;
 - (SAElementHosting)elementHost;
 - (SAUILayoutHosting)layoutHost;
 - (SBPrototypeAdvancedActivityElementViewProvider)init;
@@ -13,9 +13,9 @@
 - (void)_incrementLayoutMode;
 - (void)_requestSignificantTransition;
 - (void)_updateLabel;
-- (void)_updateLabel:(id)a3 forLayoutMode:(int64_t)a4;
-- (void)contentProviderWillTransitionToSize:(CGSize)a3 inContainerView:(id)a4 transitionCoordinator:(id)a5;
-- (void)layoutHostContainerViewWillLayoutSubviews:(id)a3;
+- (void)_updateLabel:(id)label forLayoutMode:(int64_t)mode;
+- (void)contentProviderWillTransitionToSize:(CGSize)size inContainerView:(id)view transitionCoordinator:(id)coordinator;
+- (void)layoutHostContainerViewWillLayoutSubviews:(id)subviews;
 @end
 
 @implementation SBPrototypeAdvancedActivityElementViewProvider
@@ -33,9 +33,9 @@
   return result;
 }
 
-- (BOOL)handleElementViewEvent:(int64_t)a3
+- (BOOL)handleElementViewEvent:(int64_t)event
 {
-  switch(a3)
+  switch(event)
   {
     case 0:
       [(SBPrototypeAdvancedActivityElementViewProvider *)self _requestSignificantTransition];
@@ -59,8 +59,8 @@
     v4 = objc_alloc(MEMORY[0x277D755E8]);
     v5 = MEMORY[0x277D755B8];
     v6 = MEMORY[0x277D755D0];
-    v7 = [MEMORY[0x277D75348] systemGreenColor];
-    v8 = [v6 configurationWithHierarchicalColor:v7];
+    systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+    v8 = [v6 configurationWithHierarchicalColor:systemGreenColor];
     v9 = [v5 systemImageNamed:@"star.circle" withConfiguration:v8];
     v10 = [v4 initWithImage:v9];
     v11 = self->_leadingView;
@@ -77,9 +77,9 @@
   trailingView = self->_trailingView;
   if (!trailingView)
   {
-    v4 = [(SBPrototypeAdvancedActivityElementViewProvider *)self _newTrailingLabel];
+    _newTrailingLabel = [(SBPrototypeAdvancedActivityElementViewProvider *)self _newTrailingLabel];
     v5 = self->_trailingView;
-    self->_trailingView = v4;
+    self->_trailingView = _newTrailingLabel;
 
     [(SBPrototypeAdvancedActivityElementViewProvider *)self _updateLabel];
     trailingView = self->_trailingView;
@@ -88,13 +88,13 @@
   return trailingView;
 }
 
-- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)a3 suggestedOutsets:(NSDirectionalEdgeInsets)result maximumOutsets:(NSDirectionalEdgeInsets)a5
+- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)mode suggestedOutsets:(NSDirectionalEdgeInsets)result maximumOutsets:(NSDirectionalEdgeInsets)outsets
 {
   top = result.top;
-  if (a3 == 3)
+  if (mode == 3)
   {
-    trailing = a5.trailing;
-    leading = a5.leading;
+    trailing = outsets.trailing;
+    leading = outsets.leading;
     WeakRetained = objc_loadWeakRetained(&self->_layoutHost);
     [WeakRetained edgeOutsetsForSize:{1.79769313e308, 112.0}];
     bottom = v9;
@@ -115,19 +115,19 @@
   return result;
 }
 
-- (CGSize)sizeThatFitsSize:(CGSize)a3 forProvidedView:(id)a4 inLayoutMode:(int64_t)a5
+- (CGSize)sizeThatFitsSize:(CGSize)size forProvidedView:(id)view inLayoutMode:(int64_t)mode
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a4;
-  v10 = v9;
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
+  v10 = viewCopy;
   v11 = *MEMORY[0x277CBF3A8];
   v12 = *(MEMORY[0x277CBF3A8] + 8);
-  if (v9 && self->_trailingView == v9)
+  if (viewCopy && self->_trailingView == viewCopy)
   {
-    v13 = [(SBPrototypeAdvancedActivityElementViewProvider *)self _newTrailingLabel];
-    [(SBPrototypeAdvancedActivityElementViewProvider *)self _updateLabel:v13 forLayoutMode:a5];
-    [v13 sizeThatFits:{width, height}];
+    _newTrailingLabel = [(SBPrototypeAdvancedActivityElementViewProvider *)self _newTrailingLabel];
+    [(SBPrototypeAdvancedActivityElementViewProvider *)self _updateLabel:_newTrailingLabel forLayoutMode:mode];
+    [_newTrailingLabel sizeThatFits:{width, height}];
     v11 = v14;
     v12 = v15;
   }
@@ -139,9 +139,9 @@
   return result;
 }
 
-- (void)layoutHostContainerViewWillLayoutSubviews:(id)a3
+- (void)layoutHostContainerViewWillLayoutSubviews:(id)subviews
 {
-  [a3 bounds];
+  [subviews bounds];
   if (self->_layoutMode == 3)
   {
     v8 = v4;
@@ -178,10 +178,10 @@
 - (void)_requestSignificantTransition
 {
   self->_layoutCondensed ^= 1u;
-  v3 = [(SBPrototypeAdvancedActivityElementViewProvider *)self elementHost];
+  elementHost = [(SBPrototypeAdvancedActivityElementViewProvider *)self elementHost];
   if ([(SBPrototypeAdvancedActivityElementViewProvider *)self layoutMode]== 3 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v3 elementRequestsSignificantUpdateTransition:self];
+    [elementHost elementRequestsSignificantUpdateTransition:self];
   }
 }
 
@@ -213,37 +213,37 @@
 {
   v3 = objc_alloc_init(MEMORY[0x277D756B8]);
   [v3 setTextAlignment:2];
-  v4 = [MEMORY[0x277D75348] systemGreenColor];
-  [v3 setTextColor:v4];
+  systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+  [v3 setTextColor:systemGreenColor];
 
-  v5 = [(SBPrototypeAdvancedActivityElementViewProvider *)self _currentTrailingTitle];
-  [v3 setText:v5];
+  _currentTrailingTitle = [(SBPrototypeAdvancedActivityElementViewProvider *)self _currentTrailingTitle];
+  [v3 setText:_currentTrailingTitle];
 
   return v3;
 }
 
-- (void)_updateLabel:(id)a3 forLayoutMode:(int64_t)a4
+- (void)_updateLabel:(id)label forLayoutMode:(int64_t)mode
 {
-  v10 = a3;
-  v6 = [(SBPrototypeAdvancedActivityElementViewProvider *)self _currentTrailingTitle];
-  [v10 setText:v6];
+  labelCopy = label;
+  _currentTrailingTitle = [(SBPrototypeAdvancedActivityElementViewProvider *)self _currentTrailingTitle];
+  [labelCopy setText:_currentTrailingTitle];
 
   v7 = MEMORY[0x277D76968];
-  if (a4 == 3)
+  if (mode == 3)
   {
     v7 = MEMORY[0x277D76A08];
   }
 
   v8 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*v7];
   v9 = [MEMORY[0x277D74300] fontWithDescriptor:v8 size:0.0];
-  [v10 setFont:v9];
+  [labelCopy setFont:v9];
 }
 
 - (void)_updateLabel
 {
-  v3 = [(SBPrototypeAdvancedActivityElementViewProvider *)self trailingView];
+  trailingView = [(SBPrototypeAdvancedActivityElementViewProvider *)self trailingView];
   v4 = objc_opt_self();
-  v5 = v3;
+  v5 = trailingView;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -267,17 +267,17 @@
   [(SBPrototypeAdvancedActivityElementViewProvider *)self _updateLabel:v7 forLayoutMode:self->_layoutMode];
 }
 
-- (void)contentProviderWillTransitionToSize:(CGSize)a3 inContainerView:(id)a4 transitionCoordinator:(id)a5
+- (void)contentProviderWillTransitionToSize:(CGSize)size inContainerView:(id)view transitionCoordinator:(id)coordinator
 {
-  v7 = a4;
+  viewCopy = view;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __124__SBPrototypeAdvancedActivityElementViewProvider_contentProviderWillTransitionToSize_inContainerView_transitionCoordinator___block_invoke;
   v9[3] = &unk_2783B6F60;
   v9[4] = self;
-  v10 = v7;
-  v8 = v7;
-  [a5 animateAlongsideTransition:v9 completion:0];
+  v10 = viewCopy;
+  v8 = viewCopy;
+  [coordinator animateAlongsideTransition:v9 completion:0];
 }
 
 - (SAUILayoutHosting)layoutHost

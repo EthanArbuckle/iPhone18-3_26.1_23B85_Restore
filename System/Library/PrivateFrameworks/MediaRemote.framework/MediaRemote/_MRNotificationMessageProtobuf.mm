@@ -1,71 +1,71 @@
 @interface _MRNotificationMessageProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addNotification:(id)a3;
-- (void)addPlayerPath:(id)a3;
-- (void)addUserInfo:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addNotification:(id)notification;
+- (void)addPlayerPath:(id)path;
+- (void)addUserInfo:(id)info;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRNotificationMessageProtobuf
 
-- (void)addNotification:(id)a3
+- (void)addNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   notifications = self->_notifications;
-  v8 = v4;
+  v8 = notificationCopy;
   if (!notifications)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_notifications;
     self->_notifications = v6;
 
-    v4 = v8;
+    notificationCopy = v8;
     notifications = self->_notifications;
   }
 
-  [(NSMutableArray *)notifications addObject:v4];
+  [(NSMutableArray *)notifications addObject:notificationCopy];
 }
 
-- (void)addUserInfo:(id)a3
+- (void)addUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   userInfos = self->_userInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!userInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_userInfos;
     self->_userInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     userInfos = self->_userInfos;
   }
 
-  [(NSMutableArray *)userInfos addObject:v4];
+  [(NSMutableArray *)userInfos addObject:infoCopy];
 }
 
-- (void)addPlayerPath:(id)a3
+- (void)addPlayerPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   playerPaths = self->_playerPaths;
-  v8 = v4;
+  v8 = pathCopy;
   if (!playerPaths)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_playerPaths;
     self->_playerPaths = v6;
 
-    v4 = v8;
+    pathCopy = v8;
     playerPaths = self->_playerPaths;
   }
 
-  [(NSMutableArray *)playerPaths addObject:v4];
+  [(NSMutableArray *)playerPaths addObject:pathCopy];
 }
 
 - (id)description
@@ -74,8 +74,8 @@
   v8.receiver = self;
   v8.super_class = _MRNotificationMessageProtobuf;
   v4 = [(_MRNotificationMessageProtobuf *)&v8 description];
-  v5 = [(_MRNotificationMessageProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRNotificationMessageProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -83,12 +83,12 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   notifications = self->_notifications;
   if (notifications)
   {
-    [v3 setObject:notifications forKey:@"notification"];
+    [dictionary setObject:notifications forKey:@"notification"];
   }
 
   userInfos = self->_userInfos;
@@ -119,8 +119,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -137,10 +137,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -240,59 +240,59 @@
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v16 = a3;
+  toCopy = to;
   if ([(_MRNotificationMessageProtobuf *)self notificationsCount])
   {
-    [v16 clearNotifications];
-    v4 = [(_MRNotificationMessageProtobuf *)self notificationsCount];
-    if (v4)
+    [toCopy clearNotifications];
+    notificationsCount = [(_MRNotificationMessageProtobuf *)self notificationsCount];
+    if (notificationsCount)
     {
-      v5 = v4;
+      v5 = notificationsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(_MRNotificationMessageProtobuf *)self notificationAtIndex:i];
-        [v16 addNotification:v7];
+        [toCopy addNotification:v7];
       }
     }
   }
 
   if ([(_MRNotificationMessageProtobuf *)self userInfosCount])
   {
-    [v16 clearUserInfos];
-    v8 = [(_MRNotificationMessageProtobuf *)self userInfosCount];
-    if (v8)
+    [toCopy clearUserInfos];
+    userInfosCount = [(_MRNotificationMessageProtobuf *)self userInfosCount];
+    if (userInfosCount)
     {
-      v9 = v8;
+      v9 = userInfosCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(_MRNotificationMessageProtobuf *)self userInfoAtIndex:j];
-        [v16 addUserInfo:v11];
+        [toCopy addUserInfo:v11];
       }
     }
   }
 
   if ([(_MRNotificationMessageProtobuf *)self playerPathsCount])
   {
-    [v16 clearPlayerPaths];
-    v12 = [(_MRNotificationMessageProtobuf *)self playerPathsCount];
-    if (v12)
+    [toCopy clearPlayerPaths];
+    playerPathsCount = [(_MRNotificationMessageProtobuf *)self playerPathsCount];
+    if (playerPathsCount)
     {
-      v13 = v12;
+      v13 = playerPathsCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(_MRNotificationMessageProtobuf *)self playerPathAtIndex:k];
-        [v16 addPlayerPath:v15];
+        [toCopy addPlayerPath:v15];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
@@ -313,7 +313,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v34 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v34 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addNotification:v11];
 
         ++v10;
@@ -346,7 +346,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v30 + 1) + 8 * v16) copyWithZone:a3];
+        v17 = [*(*(&v30 + 1) + 8 * v16) copyWithZone:zone];
         [v5 addUserInfo:v17];
 
         ++v16;
@@ -379,7 +379,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v26 + 1) + 8 * v22) copyWithZone:{a3, v26}];
+        v23 = [*(*(&v26 + 1) + 8 * v22) copyWithZone:{zone, v26}];
         [v5 addPlayerPath:v23];
 
         ++v22;
@@ -396,13 +396,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((notifications = self->_notifications, !(notifications | v4[1])) || -[NSMutableArray isEqual:](notifications, "isEqual:")) && ((userInfos = self->_userInfos, !(userInfos | v4[3])) || -[NSMutableArray isEqual:](userInfos, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((notifications = self->_notifications, !(notifications | equalCopy[1])) || -[NSMutableArray isEqual:](notifications, "isEqual:")) && ((userInfos = self->_userInfos, !(userInfos | equalCopy[3])) || -[NSMutableArray isEqual:](userInfos, "isEqual:")))
   {
     playerPaths = self->_playerPaths;
-    if (playerPaths | v4[2])
+    if (playerPaths | equalCopy[2])
     {
       v8 = [(NSMutableArray *)playerPaths isEqual:?];
     }
@@ -428,15 +428,15 @@
   return v4 ^ [(NSMutableArray *)self->_playerPaths hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = v4[1];
+  v5 = fromCopy[1];
   v6 = [v5 countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v6)
   {
@@ -466,7 +466,7 @@
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = v4[3];
+  v10 = fromCopy[3];
   v11 = [v10 countByEnumeratingWithState:&v25 objects:v34 count:16];
   if (v11)
   {
@@ -496,7 +496,7 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v15 = v4[2];
+  v15 = fromCopy[2];
   v16 = [v15 countByEnumeratingWithState:&v21 objects:v33 count:16];
   if (v16)
   {

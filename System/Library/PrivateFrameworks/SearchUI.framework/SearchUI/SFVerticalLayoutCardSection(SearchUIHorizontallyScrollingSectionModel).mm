@@ -6,30 +6,30 @@
 
 - (double)searchUIHorizontallyScrollingSectionModel_widthDimensionMultiplier
 {
-  v2 = [a1 thumbnail];
-  [v2 size];
+  thumbnail = [self thumbnail];
+  [thumbnail size];
   v4 = v3;
   v6 = v5;
 
-  v7 = [a1 title];
-  v8 = [SearchUITLKMultilineTextConverter richTextForSearchUIText:v7];
+  title = [self title];
+  v8 = [SearchUITLKMultilineTextConverter richTextForSearchUIText:title];
   if ([v8 hasContent])
   {
 
     goto LABEL_4;
   }
 
-  v9 = [a1 footnote];
-  v10 = [SearchUITLKMultilineTextConverter richTextForSearchUIText:v9];
-  v11 = [v10 hasContent];
+  footnote = [self footnote];
+  v10 = [SearchUITLKMultilineTextConverter richTextForSearchUIText:footnote];
+  hasContent = [v10 hasContent];
 
-  if (v11)
+  if (hasContent)
   {
 LABEL_4:
     if (v4 <= 200.0)
     {
       v13 = 1.0;
-      if (([a1 contentsLeading] & 1) == 0)
+      if (([self contentsLeading] & 1) == 0)
       {
         if ([MEMORY[0x1E69D9240] isMacOS])
         {
@@ -42,7 +42,7 @@ LABEL_4:
         }
       }
 
-      if ([MEMORY[0x1E69D9240] isMacOS] && objc_msgSend(a1, "useAppIconMetrics"))
+      if ([MEMORY[0x1E69D9240] isMacOS] && objc_msgSend(self, "useAppIconMetrics"))
       {
         return v13 * 1.25;
       }
@@ -50,7 +50,7 @@ LABEL_4:
 
     else
     {
-      v19.receiver = a1;
+      v19.receiver = self;
       v19.super_class = &off_1F567DC90;
       objc_msgSendSuper2(&v19, sel_searchUIHorizontallyScrollingSectionModel_widthDimensionMultiplier);
       return v12;
@@ -61,9 +61,9 @@ LABEL_4:
 
   v14 = v4 / v6;
   v15 = roundf(v14);
-  v16 = [MEMORY[0x1E69D9240] isMacOS];
+  isMacOS = [MEMORY[0x1E69D9240] isMacOS];
   v17 = 0.666666667;
-  if (!v16)
+  if (!isMacOS)
   {
     v17 = 0.5;
   }

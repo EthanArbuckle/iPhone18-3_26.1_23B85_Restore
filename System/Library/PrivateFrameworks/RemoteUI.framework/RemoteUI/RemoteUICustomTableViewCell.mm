@@ -10,7 +10,7 @@
 - (id)_textLabelInternal;
 - (id)_valueLabelInternal;
 - (void)_initializeViews;
-- (void)addDetailLinkButton:(id)a3;
+- (void)addDetailLinkButton:(id)button;
 @end
 
 @implementation RemoteUICustomTableViewCell
@@ -18,8 +18,8 @@
 - (UILabel)customTextLabel
 {
   [(RemoteUICustomTableViewCell *)self _initializeViews];
-  v3 = [(RemoteUICustomTableViewCell *)self _textLabelInternal];
-  [v3 setHidden:0];
+  _textLabelInternal = [(RemoteUICustomTableViewCell *)self _textLabelInternal];
+  [_textLabelInternal setHidden:0];
 
   return [(RemoteUICustomTableViewCell *)self _textLabelInternal];
 }
@@ -47,8 +47,8 @@
 - (UILabel)customDetailTextLabel
 {
   [(RemoteUICustomTableViewCell *)self _initializeViews];
-  v3 = [(RemoteUICustomTableViewCell *)self _detailTextLabelInternal];
-  [v3 setHidden:0];
+  _detailTextLabelInternal = [(RemoteUICustomTableViewCell *)self _detailTextLabelInternal];
+  [_detailTextLabelInternal setHidden:0];
 
   return [(RemoteUICustomTableViewCell *)self _detailTextLabelInternal];
 }
@@ -76,8 +76,8 @@
 - (UILabel)customValueLabel
 {
   [(RemoteUICustomTableViewCell *)self _initializeViews];
-  v3 = [(RemoteUICustomTableViewCell *)self _valueLabelInternal];
-  [v3 setHidden:0];
+  _valueLabelInternal = [(RemoteUICustomTableViewCell *)self _valueLabelInternal];
+  [_valueLabelInternal setHidden:0];
 
   return [(RemoteUICustomTableViewCell *)self _valueLabelInternal];
 }
@@ -105,8 +105,8 @@
 - (UITextField)customEditableTextField
 {
   [(RemoteUICustomTableViewCell *)self _initializeViews];
-  v3 = [(RemoteUICustomTableViewCell *)self _editableTextFieldInternal];
-  [v3 setHidden:0];
+  _editableTextFieldInternal = [(RemoteUICustomTableViewCell *)self _editableTextFieldInternal];
+  [_editableTextFieldInternal setHidden:0];
 
   return [(RemoteUICustomTableViewCell *)self _editableTextFieldInternal];
 }
@@ -163,8 +163,8 @@
     [(UIStackView *)self->_stackView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIStackView *)self->_stackView setAlignment:3];
     [(UIStackView *)self->_stackView setAxis:0];
-    v5 = [MEMORY[0x277D75348] clearColor];
-    [(UIStackView *)self->_stackView setBackgroundColor:v5];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UIStackView *)self->_stackView setBackgroundColor:clearColor];
 
     v6 = objc_alloc_init(MEMORY[0x277D75A68]);
     verticalStackView = self->_verticalStackView;
@@ -173,159 +173,159 @@
     [(UIStackView *)self->_verticalStackView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIStackView *)self->_verticalStackView setAlignment:3];
     [(UIStackView *)self->_verticalStackView setAxis:1];
-    v8 = [MEMORY[0x277D75348] clearColor];
-    [(UIStackView *)self->_verticalStackView setBackgroundColor:v8];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UIStackView *)self->_verticalStackView setBackgroundColor:clearColor2];
 
     v9 = self->_verticalStackView;
-    v10 = [(RemoteUICustomTableViewCell *)self _textLabelInternal];
-    [(UIStackView *)v9 addArrangedSubview:v10];
+    _textLabelInternal = [(RemoteUICustomTableViewCell *)self _textLabelInternal];
+    [(UIStackView *)v9 addArrangedSubview:_textLabelInternal];
 
     v11 = self->_verticalStackView;
-    v12 = [(RemoteUICustomTableViewCell *)self _detailTextLabelInternal];
-    [(UIStackView *)v11 addArrangedSubview:v12];
+    _detailTextLabelInternal = [(RemoteUICustomTableViewCell *)self _detailTextLabelInternal];
+    [(UIStackView *)v11 addArrangedSubview:_detailTextLabelInternal];
 
     v13 = self->_verticalStackView;
-    v14 = [(RemoteUICustomTableViewCell *)self _valueLabelInternal];
-    [(UIStackView *)v13 addArrangedSubview:v14];
+    _valueLabelInternal = [(RemoteUICustomTableViewCell *)self _valueLabelInternal];
+    [(UIStackView *)v13 addArrangedSubview:_valueLabelInternal];
 
     v15 = self->_verticalStackView;
-    v16 = [(RemoteUICustomTableViewCell *)self _editableTextFieldInternal];
-    [(UIStackView *)v15 addArrangedSubview:v16];
+    _editableTextFieldInternal = [(RemoteUICustomTableViewCell *)self _editableTextFieldInternal];
+    [(UIStackView *)v15 addArrangedSubview:_editableTextFieldInternal];
 
     v17 = self->_stackView;
-    v18 = [(RemoteUICustomTableViewCell *)self _imageViewInternal];
-    [(UIStackView *)v17 addArrangedSubview:v18];
+    _imageViewInternal = [(RemoteUICustomTableViewCell *)self _imageViewInternal];
+    [(UIStackView *)v17 addArrangedSubview:_imageViewInternal];
 
     v19 = self->_stackView;
     [(RemoteUICustomTableViewCell *)self _imageViewToTextMargin];
     v21 = v20;
-    v22 = [(RemoteUICustomTableViewCell *)self _imageViewInternal];
-    [(UIStackView *)v19 setCustomSpacing:v22 afterView:v21];
+    _imageViewInternal2 = [(RemoteUICustomTableViewCell *)self _imageViewInternal];
+    [(UIStackView *)v19 setCustomSpacing:_imageViewInternal2 afterView:v21];
 
     [(UIStackView *)self->_stackView addArrangedSubview:self->_verticalStackView];
-    v23 = [(RemoteUICustomTableViewCell *)self _textLabelInternal];
-    [v23 setHidden:1];
+    _textLabelInternal2 = [(RemoteUICustomTableViewCell *)self _textLabelInternal];
+    [_textLabelInternal2 setHidden:1];
 
-    v24 = [(RemoteUICustomTableViewCell *)self _detailTextLabelInternal];
-    [v24 setHidden:1];
+    _detailTextLabelInternal2 = [(RemoteUICustomTableViewCell *)self _detailTextLabelInternal];
+    [_detailTextLabelInternal2 setHidden:1];
 
-    v25 = [(RemoteUICustomTableViewCell *)self _valueLabelInternal];
-    [v25 setHidden:1];
+    _valueLabelInternal2 = [(RemoteUICustomTableViewCell *)self _valueLabelInternal];
+    [_valueLabelInternal2 setHidden:1];
 
-    v26 = [(RemoteUICustomTableViewCell *)self _editableTextFieldInternal];
-    [v26 setHidden:1];
+    _editableTextFieldInternal2 = [(RemoteUICustomTableViewCell *)self _editableTextFieldInternal];
+    [_editableTextFieldInternal2 setHidden:1];
 
-    v27 = [(RemoteUICustomTableViewCell *)self _imageViewInternal];
-    [v27 setHidden:1];
+    _imageViewInternal3 = [(RemoteUICustomTableViewCell *)self _imageViewInternal];
+    [_imageViewInternal3 setHidden:1];
 
-    v28 = [(RemoteUICustomTableViewCell *)self contentView];
-    [v28 addSubview:self->_stackView];
+    contentView = [(RemoteUICustomTableViewCell *)self contentView];
+    [contentView addSubview:self->_stackView];
 
     v72 = MEMORY[0x277CCAAD0];
-    v97 = [(UIStackView *)self->_stackView topAnchor];
-    v98 = [(RemoteUICustomTableViewCell *)self contentView];
-    v96 = [v98 topAnchor];
-    v95 = [v97 constraintEqualToAnchor:v96];
+    topAnchor = [(UIStackView *)self->_stackView topAnchor];
+    contentView2 = [(RemoteUICustomTableViewCell *)self contentView];
+    topAnchor2 = [contentView2 topAnchor];
+    v95 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v99[0] = v95;
-    v93 = [(UIStackView *)self->_stackView leadingAnchor];
-    v94 = [(RemoteUICustomTableViewCell *)self contentView];
-    v92 = [v94 leadingAnchor];
-    v91 = [v93 constraintEqualToAnchor:v92];
+    leadingAnchor = [(UIStackView *)self->_stackView leadingAnchor];
+    contentView3 = [(RemoteUICustomTableViewCell *)self contentView];
+    leadingAnchor2 = [contentView3 leadingAnchor];
+    v91 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v99[1] = v91;
-    v89 = [(UIStackView *)self->_stackView trailingAnchor];
-    v90 = [(RemoteUICustomTableViewCell *)self contentView];
-    v88 = [v90 trailingAnchor];
-    v87 = [v89 constraintEqualToAnchor:v88];
+    trailingAnchor = [(UIStackView *)self->_stackView trailingAnchor];
+    contentView4 = [(RemoteUICustomTableViewCell *)self contentView];
+    trailingAnchor2 = [contentView4 trailingAnchor];
+    v87 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v99[2] = v87;
-    v85 = [(UIStackView *)self->_stackView bottomAnchor];
-    v86 = [(RemoteUICustomTableViewCell *)self contentView];
-    v84 = [v86 bottomAnchor];
-    v83 = [v85 constraintEqualToAnchor:v84];
+    bottomAnchor = [(UIStackView *)self->_stackView bottomAnchor];
+    contentView5 = [(RemoteUICustomTableViewCell *)self contentView];
+    bottomAnchor2 = [contentView5 bottomAnchor];
+    v83 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v99[3] = v83;
-    v82 = [(RemoteUICustomTableViewCell *)self _imageViewInternal];
-    v81 = [v82 centerYAnchor];
-    v80 = [(UIStackView *)self->_stackView centerYAnchor];
-    v79 = [v81 constraintEqualToAnchor:v80];
+    _imageViewInternal4 = [(RemoteUICustomTableViewCell *)self _imageViewInternal];
+    centerYAnchor = [_imageViewInternal4 centerYAnchor];
+    centerYAnchor2 = [(UIStackView *)self->_stackView centerYAnchor];
+    v79 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v99[4] = v79;
-    v78 = [(RemoteUICustomTableViewCell *)self _imageViewInternal];
-    v77 = [v78 widthAnchor];
+    _imageViewInternal5 = [(RemoteUICustomTableViewCell *)self _imageViewInternal];
+    widthAnchor = [_imageViewInternal5 widthAnchor];
     [(RemoteUICustomTableViewCell *)self _defaultImageViewMaxWidth];
-    v76 = [v77 constraintLessThanOrEqualToConstant:?];
+    v76 = [widthAnchor constraintLessThanOrEqualToConstant:?];
     v99[5] = v76;
-    v75 = [(RemoteUICustomTableViewCell *)self _imageViewInternal];
-    v74 = [v75 heightAnchor];
-    v73 = [v74 constraintLessThanOrEqualToConstant:25.0];
+    _imageViewInternal6 = [(RemoteUICustomTableViewCell *)self _imageViewInternal];
+    heightAnchor = [_imageViewInternal6 heightAnchor];
+    v73 = [heightAnchor constraintLessThanOrEqualToConstant:25.0];
     v99[6] = v73;
-    v71 = [(UIStackView *)self->_verticalStackView topAnchor];
-    v70 = [(UIStackView *)self->_stackView topAnchor];
-    v69 = [v71 constraintEqualToAnchor:v70];
+    topAnchor3 = [(UIStackView *)self->_verticalStackView topAnchor];
+    topAnchor4 = [(UIStackView *)self->_stackView topAnchor];
+    v69 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v99[7] = v69;
-    v68 = [(UIStackView *)self->_verticalStackView bottomAnchor];
-    v67 = [(UIStackView *)self->_stackView bottomAnchor];
-    v66 = [v68 constraintEqualToAnchor:v67];
+    bottomAnchor3 = [(UIStackView *)self->_verticalStackView bottomAnchor];
+    bottomAnchor4 = [(UIStackView *)self->_stackView bottomAnchor];
+    v66 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v99[8] = v66;
-    v65 = [(RemoteUICustomTableViewCell *)self _textLabelInternal];
-    v64 = [v65 leadingAnchor];
-    v63 = [(UIStackView *)self->_verticalStackView leadingAnchor];
-    v62 = [v64 constraintEqualToAnchor:v63 constant:9.0];
+    _textLabelInternal3 = [(RemoteUICustomTableViewCell *)self _textLabelInternal];
+    leadingAnchor3 = [_textLabelInternal3 leadingAnchor];
+    leadingAnchor4 = [(UIStackView *)self->_verticalStackView leadingAnchor];
+    v62 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:9.0];
     v99[9] = v62;
-    v61 = [(RemoteUICustomTableViewCell *)self _textLabelInternal];
-    v60 = [v61 trailingAnchor];
-    v59 = [(UIStackView *)self->_verticalStackView trailingAnchor];
-    v58 = [v60 constraintEqualToAnchor:v59 constant:0.0];
+    _textLabelInternal4 = [(RemoteUICustomTableViewCell *)self _textLabelInternal];
+    trailingAnchor3 = [_textLabelInternal4 trailingAnchor];
+    trailingAnchor4 = [(UIStackView *)self->_verticalStackView trailingAnchor];
+    v58 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:0.0];
     v99[10] = v58;
-    v57 = [(RemoteUICustomTableViewCell *)self _detailTextLabelInternal];
-    v56 = [v57 leadingAnchor];
-    v55 = [(UIStackView *)self->_verticalStackView leadingAnchor];
-    v54 = [v56 constraintEqualToAnchor:v55 constant:9.0];
+    _detailTextLabelInternal3 = [(RemoteUICustomTableViewCell *)self _detailTextLabelInternal];
+    leadingAnchor5 = [_detailTextLabelInternal3 leadingAnchor];
+    leadingAnchor6 = [(UIStackView *)self->_verticalStackView leadingAnchor];
+    v54 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:9.0];
     v99[11] = v54;
-    v53 = [(RemoteUICustomTableViewCell *)self _detailTextLabelInternal];
-    v52 = [v53 trailingAnchor];
-    v51 = [(UIStackView *)self->_verticalStackView trailingAnchor];
-    v50 = [v52 constraintEqualToAnchor:v51 constant:0.0];
+    _detailTextLabelInternal4 = [(RemoteUICustomTableViewCell *)self _detailTextLabelInternal];
+    trailingAnchor5 = [_detailTextLabelInternal4 trailingAnchor];
+    trailingAnchor6 = [(UIStackView *)self->_verticalStackView trailingAnchor];
+    v50 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:0.0];
     v99[12] = v50;
-    v49 = [(RemoteUICustomTableViewCell *)self _valueLabelInternal];
-    v48 = [v49 leadingAnchor];
-    v47 = [(UIStackView *)self->_verticalStackView leadingAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47 constant:9.0];
+    _valueLabelInternal3 = [(RemoteUICustomTableViewCell *)self _valueLabelInternal];
+    leadingAnchor7 = [_valueLabelInternal3 leadingAnchor];
+    leadingAnchor8 = [(UIStackView *)self->_verticalStackView leadingAnchor];
+    v46 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:9.0];
     v99[13] = v46;
-    v45 = [(RemoteUICustomTableViewCell *)self _valueLabelInternal];
-    v44 = [v45 trailingAnchor];
-    v43 = [(UIStackView *)self->_verticalStackView trailingAnchor];
-    v42 = [v44 constraintEqualToAnchor:v43 constant:0.0];
+    _valueLabelInternal4 = [(RemoteUICustomTableViewCell *)self _valueLabelInternal];
+    trailingAnchor7 = [_valueLabelInternal4 trailingAnchor];
+    trailingAnchor8 = [(UIStackView *)self->_verticalStackView trailingAnchor];
+    v42 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:0.0];
     v99[14] = v42;
-    v29 = [(RemoteUICustomTableViewCell *)self _editableTextFieldInternal];
-    v30 = [v29 leadingAnchor];
-    v31 = [(UIStackView *)self->_verticalStackView leadingAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31];
+    _editableTextFieldInternal3 = [(RemoteUICustomTableViewCell *)self _editableTextFieldInternal];
+    leadingAnchor9 = [_editableTextFieldInternal3 leadingAnchor];
+    leadingAnchor10 = [(UIStackView *)self->_verticalStackView leadingAnchor];
+    v32 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
     v99[15] = v32;
-    v33 = [(RemoteUICustomTableViewCell *)self _editableTextFieldInternal];
-    v34 = [v33 trailingAnchor];
-    v35 = [(UIStackView *)self->_verticalStackView trailingAnchor];
-    v36 = [v34 constraintEqualToAnchor:v35];
+    _editableTextFieldInternal4 = [(RemoteUICustomTableViewCell *)self _editableTextFieldInternal];
+    trailingAnchor9 = [_editableTextFieldInternal4 trailingAnchor];
+    trailingAnchor10 = [(UIStackView *)self->_verticalStackView trailingAnchor];
+    v36 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
     v99[16] = v36;
     v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v99 count:17];
     [v72 activateConstraints:v37];
 
-    v38 = [(RemoteUICustomTableViewCell *)self _imageViewInternal];
+    _imageViewInternal7 = [(RemoteUICustomTableViewCell *)self _imageViewInternal];
     LODWORD(v39) = 1148846080;
-    [v38 setContentCompressionResistancePriority:0 forAxis:v39];
+    [_imageViewInternal7 setContentCompressionResistancePriority:0 forAxis:v39];
 
-    v40 = [(RemoteUICustomTableViewCell *)self _imageViewInternal];
+    _imageViewInternal8 = [(RemoteUICustomTableViewCell *)self _imageViewInternal];
     LODWORD(v41) = 1148846080;
-    [v40 setContentCompressionResistancePriority:1 forAxis:v41];
+    [_imageViewInternal8 setContentCompressionResistancePriority:1 forAxis:v41];
   }
 }
 
-- (void)addDetailLinkButton:(id)a3
+- (void)addDetailLinkButton:(id)button
 {
   verticalStackView = self->_verticalStackView;
-  v5 = a3;
-  [(UIStackView *)verticalStackView addArrangedSubview:v5];
-  v8 = [v5 widthAnchor];
+  buttonCopy = button;
+  [(UIStackView *)verticalStackView addArrangedSubview:buttonCopy];
+  widthAnchor = [buttonCopy widthAnchor];
 
-  v6 = [(UIStackView *)self->_verticalStackView widthAnchor];
-  v7 = [v8 constraintEqualToAnchor:v6];
+  widthAnchor2 = [(UIStackView *)self->_verticalStackView widthAnchor];
+  v7 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   [v7 setActive:1];
 }
 

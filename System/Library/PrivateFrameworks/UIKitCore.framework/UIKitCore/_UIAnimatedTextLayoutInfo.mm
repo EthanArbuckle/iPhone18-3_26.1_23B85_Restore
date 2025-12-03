@@ -1,21 +1,21 @@
 @interface _UIAnimatedTextLayoutInfo
-- (_UIAnimatedTextLayoutInfo)initWithAnimatedTextSpacer:(id)a3 animatingTextRange:(id)a4;
+- (_UIAnimatedTextLayoutInfo)initWithAnimatedTextSpacer:(id)spacer animatingTextRange:(id)range;
 @end
 
 @implementation _UIAnimatedTextLayoutInfo
 
-- (_UIAnimatedTextLayoutInfo)initWithAnimatedTextSpacer:(id)a3 animatingTextRange:(id)a4
+- (_UIAnimatedTextLayoutInfo)initWithAnimatedTextSpacer:(id)spacer animatingTextRange:(id)range
 {
-  v7 = a3;
-  v8 = a4;
+  spacerCopy = spacer;
+  rangeCopy = range;
   v12.receiver = self;
   v12.super_class = _UIAnimatedTextLayoutInfo;
   v9 = [(_UIAnimatedTextLayoutInfo *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_animatedTextSpacer, a3);
-    objc_storeStrong(&v10->_animatingTextRange, a4);
+    objc_storeStrong(&v9->_animatedTextSpacer, spacer);
+    objc_storeStrong(&v10->_animatingTextRange, range);
   }
 
   return v10;

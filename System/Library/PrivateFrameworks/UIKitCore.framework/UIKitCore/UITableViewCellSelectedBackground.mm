@@ -1,10 +1,10 @@
 @interface UITableViewCellSelectedBackground
 - (void)layoutSubviews;
-- (void)setMultiselect:(BOOL)a3;
-- (void)setNoneStyleBackgroundColor:(id)a3;
-- (void)setSelectionEffects:(id)a3;
-- (void)setSelectionStyle:(int64_t)a3;
-- (void)setSelectionTintColor:(id)a3;
+- (void)setMultiselect:(BOOL)multiselect;
+- (void)setNoneStyleBackgroundColor:(id)color;
+- (void)setSelectionEffects:(id)effects;
+- (void)setSelectionStyle:(int64_t)style;
+- (void)setSelectionTintColor:(id)color;
 - (void)tintColorDidChange;
 - (void)updateBackgroundColor;
 @end
@@ -28,15 +28,15 @@
       goto LABEL_14;
     }
 
-    v4 = [(UIView *)self traitCollection];
-    if ([v4 userInterfaceIdiom] == 3)
+    traitCollection = [(UIView *)self traitCollection];
+    if ([traitCollection userInterfaceIdiom] == 3)
     {
       selectionStyle = self->_selectionStyle;
       if (selectionStyle == 1)
       {
 
 LABEL_19:
-        v6 = [(UIView *)self tintColor];
+        tintColor = [(UIView *)self tintColor];
         goto LABEL_15;
       }
 
@@ -56,50 +56,50 @@ LABEL_19:
 
   v3 = 432;
 LABEL_14:
-  v6 = *(&self->super.super.super.isa + v3);
+  tintColor = *(&self->super.super.super.isa + v3);
 LABEL_15:
-  v7 = v6;
-  [(UIView *)self setBackgroundColor:v6];
+  v7 = tintColor;
+  [(UIView *)self setBackgroundColor:tintColor];
 }
 
-- (void)setMultiselect:(BOOL)a3
+- (void)setMultiselect:(BOOL)multiselect
 {
-  if (self->_multiselect != a3)
+  if (self->_multiselect != multiselect)
   {
-    self->_multiselect = a3;
+    self->_multiselect = multiselect;
     [(UITableViewCellSelectedBackground *)self updateBackgroundColor];
   }
 }
 
-- (void)setSelectionStyle:(int64_t)a3
+- (void)setSelectionStyle:(int64_t)style
 {
-  if (self->_selectionStyle != a3)
+  if (self->_selectionStyle != style)
   {
-    self->_selectionStyle = a3;
+    self->_selectionStyle = style;
     [(UITableViewCellSelectedBackground *)self setSelectionTintColor:0];
 
     [(UITableViewCellSelectedBackground *)self updateBackgroundColor];
   }
 }
 
-- (void)setSelectionTintColor:(id)a3
+- (void)setSelectionTintColor:(id)color
 {
-  v5 = a3;
-  if (self->_selectionTintColor != v5)
+  colorCopy = color;
+  if (self->_selectionTintColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_selectionTintColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_selectionTintColor, color);
     [(UITableViewCellSelectedBackground *)self updateBackgroundColor];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setSelectionEffects:(id)a3
+- (void)setSelectionEffects:(id)effects
 {
-  v4 = a3;
+  effectsCopy = effects;
   selectionEffectsView = self->_selectionEffectsView;
-  v10 = v4;
-  if (v4)
+  v10 = effectsCopy;
+  if (effectsCopy)
   {
     if (!selectionEffectsView)
     {
@@ -110,11 +110,11 @@ LABEL_15:
       self->_selectionEffectsView = v7;
 
       [(UIView *)self addSubview:self->_selectionEffectsView];
-      v4 = v10;
+      effectsCopy = v10;
       selectionEffectsView = self->_selectionEffectsView;
     }
 
-    [(UIVisualEffectView *)selectionEffectsView setBackgroundEffects:v4];
+    [(UIVisualEffectView *)selectionEffectsView setBackgroundEffects:effectsCopy];
   }
 
   else
@@ -127,15 +127,15 @@ LABEL_15:
   [(UITableViewCellSelectedBackground *)self updateBackgroundColor];
 }
 
-- (void)setNoneStyleBackgroundColor:(id)a3
+- (void)setNoneStyleBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (self->_noneStyleBackgroundColor != v5)
+  colorCopy = color;
+  if (self->_noneStyleBackgroundColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_noneStyleBackgroundColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_noneStyleBackgroundColor, color);
     [(UITableViewCellSelectedBackground *)self updateBackgroundColor];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 

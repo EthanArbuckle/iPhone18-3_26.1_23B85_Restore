@@ -1,22 +1,22 @@
 @interface HDAudioExposureAggregator
-- (BOOL)shouldFreezeCurrentSeries:(id)a3 lastDatum:(id)a4 seriesLength:(int64_t)a5 configuration:(id)a6 aggregationInterval:(double)a7;
-- (void)addDatum:(id)a3 toAccumulatedData:(id)a4;
+- (BOOL)shouldFreezeCurrentSeries:(id)series lastDatum:(id)datum seriesLength:(int64_t)length configuration:(id)configuration aggregationInterval:(double)interval;
+- (void)addDatum:(id)datum toAccumulatedData:(id)data;
 @end
 
 @implementation HDAudioExposureAggregator
 
-- (void)addDatum:(id)a3 toAccumulatedData:(id)a4
+- (void)addDatum:(id)datum toAccumulatedData:(id)data
 {
   v29[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 lastObject];
-  if (v8)
+  datumCopy = datum;
+  dataCopy = data;
+  lastObject = [dataCopy lastObject];
+  if (lastObject)
   {
-    v9 = [(HDActiveQuantityDataAggregator *)self quantityType];
-    v10 = [v6 quantity];
-    v11 = [v9 canonicalUnit];
-    [v10 doubleValueForUnit:v11];
+    quantityType = [(HDActiveQuantityDataAggregator *)self quantityType];
+    quantity = [datumCopy quantity];
+    canonicalUnit = [quantityType canonicalUnit];
+    [quantity doubleValueForUnit:canonicalUnit];
     v13 = v12;
 
     if (v13 >= 80.0)
@@ -24,9 +24,9 @@
       goto LABEL_5;
     }
 
-    v14 = [v8 quantity];
-    v15 = [v9 canonicalUnit];
-    [v14 doubleValueForUnit:v15];
+    quantity2 = [lastObject quantity];
+    canonicalUnit2 = [quantityType canonicalUnit];
+    [quantity2 doubleValueForUnit:canonicalUnit2];
     v17 = v16;
 
     if (v17 >= 80.0)
@@ -34,31 +34,31 @@
       goto LABEL_5;
     }
 
-    v18 = [v6 dateInterval];
-    v19 = [v18 endDate];
-    v20 = [v8 dateInterval];
-    v21 = [v20 startDate];
-    [v19 timeIntervalSinceDate:v21];
+    dateInterval = [datumCopy dateInterval];
+    endDate = [dateInterval endDate];
+    dateInterval2 = [lastObject dateInterval];
+    startDate = [dateInterval2 startDate];
+    [endDate timeIntervalSinceDate:startDate];
     v23 = v22;
 
     if (v23 <= 30.0)
     {
-      v29[0] = v8;
-      v29[1] = v6;
+      v29[0] = lastObject;
+      v29[1] = datumCopy;
       v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:2];
-      v26 = HDMergedQuantitySensorData(v25, v9);
+      v26 = HDMergedQuantitySensorData(v25, quantityType);
 
-      v27 = v7;
+      v27 = dataCopy;
       if (v26)
       {
-        [v7 removeLastObject];
-        v27 = v7;
+        [dataCopy removeLastObject];
+        v27 = dataCopy;
         v28 = v26;
       }
 
       else
       {
-        v28 = v6;
+        v28 = datumCopy;
       }
 
       [v27 addObject:v28];
@@ -67,33 +67,33 @@
     else
     {
 LABEL_5:
-      [v7 addObject:v6];
+      [dataCopy addObject:datumCopy];
     }
   }
 
   else
   {
-    [v7 addObject:v6];
+    [dataCopy addObject:datumCopy];
   }
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldFreezeCurrentSeries:(id)a3 lastDatum:(id)a4 seriesLength:(int64_t)a5 configuration:(id)a6 aggregationInterval:(double)a7
+- (BOOL)shouldFreezeCurrentSeries:(id)series lastDatum:(id)datum seriesLength:(int64_t)length configuration:(id)configuration aggregationInterval:(double)interval
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = [(HDActiveQuantityDataAggregator *)self quantityType];
-  v12 = [v11 code];
+  seriesCopy = series;
+  configurationCopy = configuration;
+  quantityType = [(HDActiveQuantityDataAggregator *)self quantityType];
+  code = [quantityType code];
 
   v17 = 0;
-  if (v12 == 173)
+  if (code == 173)
   {
-    v13 = [v9 endDate];
-    [v13 timeIntervalSinceNow];
+    endDate = [seriesCopy endDate];
+    [endDate timeIntervalSinceNow];
     v15 = -v14;
 
-    [v10 maximumSeriesDuration];
+    [configurationCopy maximumSeriesDuration];
     if (v16 < v15)
     {
       v17 = 1;

@@ -1,25 +1,25 @@
 @interface TSOnDeviceConversionFlow
-- (TSOnDeviceConversionFlow)initWithPhoneNumber:(id)a3 carrierName:(id)a4;
+- (TSOnDeviceConversionFlow)initWithPhoneNumber:(id)number carrierName:(id)name;
 - (id)firstViewController;
-- (id)nextViewControllerFrom:(id)a3;
-- (void)firstViewController:(id)a3;
-- (void)setCancelNavigationBarItems:(id)a3;
+- (id)nextViewControllerFrom:(id)from;
+- (void)firstViewController:(id)controller;
+- (void)setCancelNavigationBarItems:(id)items;
 @end
 
 @implementation TSOnDeviceConversionFlow
 
-- (TSOnDeviceConversionFlow)initWithPhoneNumber:(id)a3 carrierName:(id)a4
+- (TSOnDeviceConversionFlow)initWithPhoneNumber:(id)number carrierName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  numberCopy = number;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = TSOnDeviceConversionFlow;
   v9 = [(TSSIMSetupFlow *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_phoneNumber, a3);
-    objc_storeStrong(&v10->_carrierName, a4);
+    objc_storeStrong(&v9->_phoneNumber, number);
+    objc_storeStrong(&v10->_carrierName, name);
     v11 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:v10 action:sel_userDidTapCancel];
     cancelButton = v10->_cancelButton;
     v10->_cancelButton = v11;
@@ -50,20 +50,20 @@
   return v3;
 }
 
-- (void)firstViewController:(id)a3
+- (void)firstViewController:(id)controller
 {
-  if (a3)
+  if (controller)
   {
-    v5 = a3;
-    v6 = [(TSOnDeviceConversionFlow *)self firstViewController];
-    (*(a3 + 2))(v5, v6);
+    controllerCopy = controller;
+    firstViewController = [(TSOnDeviceConversionFlow *)self firstViewController];
+    (*(controller + 2))(controllerCopy, firstViewController);
   }
 }
 
-- (id)nextViewControllerFrom:(id)a3
+- (id)nextViewControllerFrom:(id)from
 {
   v13[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -79,8 +79,8 @@
     v13[2] = &unk_287583E80;
     v13[3] = MEMORY[0x277CBEC38];
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:4];
-    v8 = [(TSSIMSetupFlow *)self navigationController];
-    v9 = [(TSSubFlowViewController *)v6 initWithOptions:v7 navigationController:v8 delegate:self];
+    navigationController = [(TSSIMSetupFlow *)self navigationController];
+    v9 = [(TSSubFlowViewController *)v6 initWithOptions:v7 navigationController:navigationController delegate:self];
   }
 
   else
@@ -93,23 +93,23 @@
   return v9;
 }
 
-- (void)setCancelNavigationBarItems:(id)a3
+- (void)setCancelNavigationBarItems:(id)items
 {
-  v7 = a3;
+  itemsCopy = items;
   v4 = +[TSUtilities isPad];
-  v5 = [v7 navigationItem];
-  v6 = v5;
+  navigationItem = [itemsCopy navigationItem];
+  navigationItem2 = navigationItem;
   if (v4)
   {
-    [v5 setRightBarButtonItem:self->_cancelButton];
+    [navigationItem setRightBarButtonItem:self->_cancelButton];
   }
 
   else
   {
-    [v5 setHidesBackButton:1 animated:0];
+    [navigationItem setHidesBackButton:1 animated:0];
 
-    v6 = [v7 navigationItem];
-    [v6 setLeftBarButtonItem:self->_cancelButton];
+    navigationItem2 = [itemsCopy navigationItem];
+    [navigationItem2 setLeftBarButtonItem:self->_cancelButton];
   }
 }
 

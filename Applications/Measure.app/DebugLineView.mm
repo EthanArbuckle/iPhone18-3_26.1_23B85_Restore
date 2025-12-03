@@ -1,16 +1,16 @@
 @interface DebugLineView
-- (_TtC7Measure13DebugLineView)initWithCoder:(id)a3;
-- (_TtC7Measure13DebugLineView)initWithFrame:(CGRect)a3;
+- (_TtC7Measure13DebugLineView)initWithCoder:(id)coder;
+- (_TtC7Measure13DebugLineView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation DebugLineView
 
-- (_TtC7Measure13DebugLineView)initWithFrame:(CGRect)a3
+- (_TtC7Measure13DebugLineView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC7Measure13DebugLineView_allRectangles) = _swiftEmptyArrayStorage;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC7Measure13DebugLineView_allRectangleLabels) = _swiftEmptyArrayStorage;
@@ -19,7 +19,7 @@
   return [(DebugLineView *)&v10 initWithFrame:x, y, width, height];
 }
 
-- (_TtC7Measure13DebugLineView)initWithCoder:(id)a3
+- (_TtC7Measure13DebugLineView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC7Measure13DebugLineView_allRectangles) = _swiftEmptyArrayStorage;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC7Measure13DebugLineView_allRectangleLabels) = _swiftEmptyArrayStorage;

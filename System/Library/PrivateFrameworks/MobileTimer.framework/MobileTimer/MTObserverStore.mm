@@ -1,38 +1,38 @@
 @interface MTObserverStore
-- (BOOL)containsObserver:(id)a3;
+- (BOOL)containsObserver:(id)observer;
 - (MTObserverStore)init;
-- (MTObserverStore)initWithCallbackScheduler:(id)a3;
+- (MTObserverStore)initWithCallbackScheduler:(id)scheduler;
 - (id)currentObservers;
 - (unint64_t)count;
-- (void)_withLock:(id)a3;
-- (void)addObserver:(id)a3 wasFirst:(BOOL *)a4;
-- (void)enumerateObserversWithBlock:(id)a3;
-- (void)removeObserver:(id)a3 wasLast:(BOOL *)a4;
+- (void)_withLock:(id)lock;
+- (void)addObserver:(id)observer wasFirst:(BOOL *)first;
+- (void)enumerateObserversWithBlock:(id)block;
+- (void)removeObserver:(id)observer wasLast:(BOOL *)last;
 @end
 
 @implementation MTObserverStore
 
 - (MTObserverStore)init
 {
-  v3 = [MEMORY[0x1E69B3790] mtMainThreadScheduler];
-  v4 = [(MTObserverStore *)self initWithCallbackScheduler:v3];
+  mtMainThreadScheduler = [MEMORY[0x1E69B3790] mtMainThreadScheduler];
+  v4 = [(MTObserverStore *)self initWithCallbackScheduler:mtMainThreadScheduler];
 
   return v4;
 }
 
-- (MTObserverStore)initWithCallbackScheduler:(id)a3
+- (MTObserverStore)initWithCallbackScheduler:(id)scheduler
 {
-  v5 = a3;
+  schedulerCopy = scheduler;
   v11.receiver = self;
   v11.super_class = MTObserverStore;
   v6 = [(MTObserverStore *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_callbackScheduler, a3);
-    v8 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    objc_storeStrong(&v6->_callbackScheduler, scheduler);
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v7->_observers;
-    v7->_observers = v8;
+    v7->_observers = weakObjectsHashTable;
 
     v7->_observersLock._os_unfair_lock_opaque = 0;
   }
@@ -40,19 +40,19 @@
   return v7;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_observersLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_observersLock);
 }
 
-- (void)addObserver:(id)a3 wasFirst:(BOOL *)a4
+- (void)addObserver:(id)observer wasFirst:(BOOL *)first
 {
-  v7 = a3;
-  if (!v7)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     [MTObserverStore addObserver:a2 wasFirst:self];
   }
@@ -62,9 +62,9 @@
   v9[2] = __40__MTObserverStore_addObserver_wasFirst___block_invoke;
   v9[3] = &unk_1E7B0CD10;
   v9[4] = self;
-  v10 = v7;
-  v11 = a4;
-  v8 = v7;
+  v10 = observerCopy;
+  firstCopy = first;
+  v8 = observerCopy;
   [(MTObserverStore *)self _withLock:v9];
 }
 
@@ -83,10 +83,10 @@ uint64_t __40__MTObserverStore_addObserver_wasFirst___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)removeObserver:(id)a3 wasLast:(BOOL *)a4
+- (void)removeObserver:(id)observer wasLast:(BOOL *)last
 {
-  v7 = a3;
-  if (!v7)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     [MTObserverStore removeObserver:a2 wasLast:self];
   }
@@ -96,9 +96,9 @@ uint64_t __40__MTObserverStore_addObserver_wasFirst___block_invoke(uint64_t a1)
   v9[2] = __42__MTObserverStore_removeObserver_wasLast___block_invoke;
   v9[3] = &unk_1E7B0CD10;
   v9[4] = self;
-  v10 = v7;
-  v11 = a4;
-  v8 = v7;
+  v10 = observerCopy;
+  lastCopy = last;
+  v8 = observerCopy;
   [(MTObserverStore *)self _withLock:v9];
 }
 
@@ -117,9 +117,9 @@ uint64_t __42__MTObserverStore_removeObserver_wasLast___block_invoke(uint64_t a1
   return result;
 }
 
-- (void)enumerateObserversWithBlock:(id)a3
+- (void)enumerateObserversWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x3032000000;
@@ -139,7 +139,7 @@ uint64_t __42__MTObserverStore_removeObserver_wasLast___block_invoke(uint64_t a1
   v7[2] = __47__MTObserverStore_enumerateObserversWithBlock___block_invoke_2;
   v7[3] = &unk_1E7B0F230;
   v9 = v11;
-  v6 = v4;
+  v6 = blockCopy;
   v8 = v6;
   [(NAScheduler *)callbackScheduler performBlock:v7];
 
@@ -197,10 +197,10 @@ void __47__MTObserverStore_enumerateObserversWithBlock___block_invoke_2(uint64_t
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)containsObserver:(id)a3
+- (BOOL)containsObserver:(id)observer
 {
-  v5 = a3;
-  if (!v5)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     [(MTObserverStore *)a2 containsObserver:?];
   }
@@ -215,7 +215,7 @@ void __47__MTObserverStore_enumerateObserversWithBlock___block_invoke_2(uint64_t
   v9[3] = &unk_1E7B0CB10;
   v11 = &v12;
   v9[4] = self;
-  v6 = v5;
+  v6 = observerCopy;
   v10 = v6;
   [(MTObserverStore *)self _withLock:v9];
   v7 = *(v13 + 24);

@@ -1,20 +1,20 @@
 @interface MRRemoteArtwork
-- (MRRemoteArtwork)initWithArtworkURLString:(id)a3 templateData:(id)a4;
-- (MRRemoteArtwork)initWithCoder:(id)a3;
-- (MRRemoteArtwork)initWithProtobuf:(id)a3;
-- (MRRemoteArtwork)initWithProtobufData:(id)a3;
+- (MRRemoteArtwork)initWithArtworkURLString:(id)string templateData:(id)data;
+- (MRRemoteArtwork)initWithCoder:(id)coder;
+- (MRRemoteArtwork)initWithProtobuf:(id)protobuf;
+- (MRRemoteArtwork)initWithProtobufData:(id)data;
 - (id)description;
 - (id)protobufData;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MRRemoteArtwork
 
-- (MRRemoteArtwork)initWithArtworkURLString:(id)a3 templateData:(id)a4
+- (MRRemoteArtwork)initWithArtworkURLString:(id)string templateData:(id)data
 {
-  v7 = a3;
-  v8 = a4;
-  if (!(v7 | v8))
+  stringCopy = string;
+  dataCopy = data;
+  if (!(stringCopy | dataCopy))
   {
     [MRRemoteArtwork initWithArtworkURLString:a2 templateData:self];
   }
@@ -24,11 +24,11 @@
   v9 = [(MRRemoteArtwork *)&v15 init];
   if (v9)
   {
-    v10 = [v7 copy];
+    v10 = [stringCopy copy];
     artworkURLString = v9->_artworkURLString;
     v9->_artworkURLString = v10;
 
-    v12 = [v8 copy];
+    v12 = [dataCopy copy];
     artworkURLTemplateData = v9->_artworkURLTemplateData;
     v9->_artworkURLTemplateData = v12;
   }
@@ -36,19 +36,19 @@
   return v9;
 }
 
-- (MRRemoteArtwork)initWithCoder:(id)a3
+- (MRRemoteArtwork)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MRRemoteArtwork;
   v5 = [(MRRemoteArtwork *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"artworkURLString"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"artworkURLString"];
     artworkURLString = v5->_artworkURLString;
     v5->_artworkURLString = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"artworkURLTemplateData"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"artworkURLTemplateData"];
     artworkURLTemplateData = v5->_artworkURLTemplateData;
     v5->_artworkURLTemplateData = v8;
   }
@@ -56,85 +56,85 @@
   return v5;
 }
 
-- (MRRemoteArtwork)initWithProtobuf:(id)a3
+- (MRRemoteArtwork)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
-  v5 = [v4 artworkURLString];
-  if (v5)
+  protobufCopy = protobuf;
+  artworkURLString = [protobufCopy artworkURLString];
+  if (artworkURLString)
   {
 
 LABEL_4:
-    v7 = [v4 artworkURLString];
-    v8 = [v4 artworkURLTemplateData];
-    v9 = [(MRRemoteArtwork *)self initWithArtworkURLString:v7 templateData:v8];
+    artworkURLString2 = [protobufCopy artworkURLString];
+    artworkURLTemplateData = [protobufCopy artworkURLTemplateData];
+    v9 = [(MRRemoteArtwork *)self initWithArtworkURLString:artworkURLString2 templateData:artworkURLTemplateData];
 
     self = v9;
-    v6 = self;
+    selfCopy = self;
     goto LABEL_5;
   }
 
-  v6 = [v4 artworkURLTemplateData];
+  selfCopy = [protobufCopy artworkURLTemplateData];
 
-  if (v6)
+  if (selfCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_5:
 
-  return v6;
+  return selfCopy;
 }
 
-- (MRRemoteArtwork)initWithProtobufData:(id)a3
+- (MRRemoteArtwork)initWithProtobufData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[_MRRemoteArtworkProtobuf alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[_MRRemoteArtworkProtobuf alloc] initWithData:dataCopy];
 
     self = [(MRRemoteArtwork *)self initWithProtobuf:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)protobufData
 {
   v3 = objc_alloc_init(_MRRemoteArtworkProtobuf);
-  v4 = [(MRRemoteArtwork *)self artworkURLString];
-  [(_MRRemoteArtworkProtobuf *)v3 setArtworkURLString:v4];
+  artworkURLString = [(MRRemoteArtwork *)self artworkURLString];
+  [(_MRRemoteArtworkProtobuf *)v3 setArtworkURLString:artworkURLString];
 
-  v5 = [(MRRemoteArtwork *)self artworkURLTemplateData];
-  [(_MRRemoteArtworkProtobuf *)v3 setArtworkURLTemplateData:v5];
+  artworkURLTemplateData = [(MRRemoteArtwork *)self artworkURLTemplateData];
+  [(_MRRemoteArtworkProtobuf *)v3 setArtworkURLTemplateData:artworkURLTemplateData];
 
-  v6 = [(_MRRemoteArtworkProtobuf *)v3 data];
+  data = [(_MRRemoteArtworkProtobuf *)v3 data];
 
-  return v6;
+  return data;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MRRemoteArtwork *)self artworkURLString];
-  [v4 encodeObject:v5 forKey:@"artworkURLString"];
+  coderCopy = coder;
+  artworkURLString = [(MRRemoteArtwork *)self artworkURLString];
+  [coderCopy encodeObject:artworkURLString forKey:@"artworkURLString"];
 
-  v6 = [(MRRemoteArtwork *)self artworkURLTemplateData];
-  [v4 encodeObject:v6 forKey:@"artworkURLTemplateData"];
+  artworkURLTemplateData = [(MRRemoteArtwork *)self artworkURLTemplateData];
+  [coderCopy encodeObject:artworkURLTemplateData forKey:@"artworkURLTemplateData"];
 }
 
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(MRRemoteArtwork *)self artworkURLString];
-  v6 = [(MRRemoteArtwork *)self artworkURLTemplateData];
-  v7 = [v3 initWithFormat:@"<%@: url=%@, templates=%@", v4, v5, v6];
+  artworkURLString = [(MRRemoteArtwork *)self artworkURLString];
+  artworkURLTemplateData = [(MRRemoteArtwork *)self artworkURLTemplateData];
+  v7 = [v3 initWithFormat:@"<%@: url=%@, templates=%@", v4, artworkURLString, artworkURLTemplateData];
 
   return v7;
 }

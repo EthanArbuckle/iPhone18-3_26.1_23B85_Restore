@@ -1,25 +1,25 @@
 @interface CLGatheringBleAdvertisement
-- (BOOL)isEqual:(id)a3;
-- (CLGatheringBleAdvertisement)initWithAddress:(id)a3 contactId:(id)a4 flags:(int64_t)a5 eFlags:(int64_t)a6 authTag:(id)a7 iTag:(id)a8 rssi:(int64_t)a9 count:(int64_t)a10 unixTime:(double)a11;
-- (CLGatheringBleAdvertisement)initWithAddress:(id)a3 withAuthTag:(id)a4 withRssi:(int64_t)a5 withCount:(int64_t)a6 withTime:(double)a7;
-- (CLGatheringBleAdvertisement)initWithCoder:(id)a3;
-- (CLGatheringBleAdvertisement)initWithData:(id)a3;
-- (CLGatheringBleAdvertisement)initWithPersistenceBytes:(id *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CLGatheringBleAdvertisement)initWithAddress:(id)address contactId:(id)id flags:(int64_t)flags eFlags:(int64_t)eFlags authTag:(id)tag iTag:(id)iTag rssi:(int64_t)rssi count:(int64_t)self0 unixTime:(double)self1;
+- (CLGatheringBleAdvertisement)initWithAddress:(id)address withAuthTag:(id)tag withRssi:(int64_t)rssi withCount:(int64_t)count withTime:(double)time;
+- (CLGatheringBleAdvertisement)initWithCoder:(id)coder;
+- (CLGatheringBleAdvertisement)initWithData:(id)data;
+- (CLGatheringBleAdvertisement)initWithPersistenceBytes:(id *)bytes;
 - (id)encodedBytes;
-- (id)getDateString:(double)a3;
-- (id)hexString:(id)a3;
+- (id)getDateString:(double)string;
+- (id)hexString:(id)string;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLGatheringBleAdvertisement
 
-- (CLGatheringBleAdvertisement)initWithAddress:(id)a3 withAuthTag:(id)a4 withRssi:(int64_t)a5 withCount:(int64_t)a6 withTime:(double)a7
+- (CLGatheringBleAdvertisement)initWithAddress:(id)address withAuthTag:(id)tag withRssi:(int64_t)rssi withCount:(int64_t)count withTime:(double)time
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (a3 && a4)
+  if (address && tag)
   {
-    if ((a5 & 0x80000000) == 0)
+    if ((rssi & 0x80000000) == 0)
     {
       if (qword_1EAFE46D8 != -1)
       {
@@ -30,7 +30,7 @@
       if (os_log_type_enabled(qword_1EAFE4710, OS_LOG_TYPE_DEBUG))
       {
         *buf = 67109120;
-        v27 = a5;
+        rssiCopy = rssi;
         _os_log_impl(&dword_19B873000, v13, OS_LOG_TYPE_DEBUG, "CLGatheringBleAdvertisement has RSSI %d!", buf, 8u);
       }
 
@@ -44,7 +44,7 @@
         }
 
         v24 = 67109120;
-        v25 = a5;
+        rssiCopy2 = rssi;
         v15 = _os_log_send_and_compose_impl();
         sub_19B885924("Generic", 1, 0, 2, "[CLGatheringBleAdvertisement initWithAddress:withAuthTag:withRssi:withCount:withTime:]", "CoreLocation: %s\n", v15);
         if (v15 != buf)
@@ -59,17 +59,17 @@
     v16 = [(CLGatheringBleAdvertisement *)&v23 init];
     if (v16)
     {
-      v16->_address = [a3 copy];
-      v16->_authTag = [a4 copy];
-      v17 = -80;
-      if (a5 < 0)
+      v16->_address = [address copy];
+      v16->_authTag = [tag copy];
+      rssiCopy3 = -80;
+      if (rssi < 0)
       {
-        v17 = a5;
+        rssiCopy3 = rssi;
       }
 
-      v16->_rssi = v17;
-      v16->_count = a6;
-      v16->_unixTime = a7;
+      v16->_rssi = rssiCopy3;
+      v16->_count = count;
+      v16->_unixTime = time;
     }
   }
 
@@ -112,12 +112,12 @@
   return v16;
 }
 
-- (CLGatheringBleAdvertisement)initWithAddress:(id)a3 contactId:(id)a4 flags:(int64_t)a5 eFlags:(int64_t)a6 authTag:(id)a7 iTag:(id)a8 rssi:(int64_t)a9 count:(int64_t)a10 unixTime:(double)a11
+- (CLGatheringBleAdvertisement)initWithAddress:(id)address contactId:(id)id flags:(int64_t)flags eFlags:(int64_t)eFlags authTag:(id)tag iTag:(id)iTag rssi:(int64_t)rssi count:(int64_t)self0 unixTime:(double)self1
 {
   v37 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (address)
   {
-    if ((a9 & 0x80000000) == 0)
+    if ((rssi & 0x80000000) == 0)
     {
       if (qword_1EAFE46D8 != -1)
       {
@@ -128,7 +128,7 @@
       if (os_log_type_enabled(qword_1EAFE4710, OS_LOG_TYPE_DEBUG))
       {
         *buf = 67109120;
-        v36 = a9;
+        rssiCopy = rssi;
         _os_log_impl(&dword_19B873000, v19, OS_LOG_TYPE_DEBUG, "CLGatheringBleAdvertisement has RSSI %d!", buf, 8u);
       }
 
@@ -142,7 +142,7 @@
         }
 
         v33 = 67109120;
-        v34 = a9;
+        rssiCopy2 = rssi;
         v21 = _os_log_send_and_compose_impl();
         sub_19B885924("Generic", 1, 0, 2, "[CLGatheringBleAdvertisement initWithAddress:contactId:flags:eFlags:authTag:iTag:rssi:count:unixTime:]", "CoreLocation: %s\n", v21);
         if (v21 != buf)
@@ -157,10 +157,10 @@
     v22 = [(CLGatheringBleAdvertisement *)&v32 init];
     if (v22)
     {
-      v22->_address = [a3 copy];
-      if (a4)
+      v22->_address = [address copy];
+      if (id)
       {
-        v23 = [a4 copy];
+        v23 = [id copy];
       }
 
       else
@@ -169,11 +169,11 @@
       }
 
       v22->_contactId = v23;
-      v22->_flags = a5;
-      v22->_eFlags = a6;
-      if (a7)
+      v22->_flags = flags;
+      v22->_eFlags = eFlags;
+      if (tag)
       {
-        v27 = [a7 copy];
+        v27 = [tag copy];
       }
 
       else
@@ -182,9 +182,9 @@
       }
 
       v22->_authTag = v27;
-      if (a8)
+      if (iTag)
       {
-        v28 = [a8 copy];
+        v28 = [iTag copy];
       }
 
       else
@@ -192,16 +192,16 @@
         v28 = 0;
       }
 
-      v29 = -80;
-      if (a9 < 0)
+      rssiCopy3 = -80;
+      if (rssi < 0)
       {
-        v29 = a9;
+        rssiCopy3 = rssi;
       }
 
       v22->_iTag = v28;
-      v22->_rssi = v29;
-      v22->_count = a10;
-      v22->_unixTime = a11;
+      v22->_rssi = rssiCopy3;
+      v22->_count = count;
+      v22->_unixTime = time;
     }
   }
 
@@ -251,9 +251,9 @@
   [(CLGatheringBleAdvertisement *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -265,33 +265,33 @@
   }
 
   address = self->_address;
-  v6 = [a3 address];
+  address = [equal address];
 
-  return [(NSData *)address isEqualToData:v6];
+  return [(NSData *)address isEqualToData:address];
 }
 
-- (id)hexString:(id)a3
+- (id)hexString:(id)string
 {
-  if (!a3 || ![a3 length] || !objc_msgSend(a3, "bytes"))
+  if (!string || ![string length] || !objc_msgSend(string, "bytes"))
   {
     return &stru_1F0E6F140;
   }
 
-  v4 = 2 * [a3 length];
+  v4 = 2 * [string length];
   v5 = malloc_type_malloc(v4 | 1, 0x100004077774924uLL);
   v5[v4] = 0;
-  v6 = [a3 bytes];
-  if ([a3 length])
+  bytes = [string bytes];
+  if ([string length])
   {
     v7 = 0;
     v8 = v5;
     do
     {
-      sprintf(v8, "%02X", *(v6 + v7++));
+      sprintf(v8, "%02X", *(bytes + v7++));
       v8 += 2;
     }
 
-    while ([a3 length] > v7);
+    while ([string length] > v7);
   }
 
   v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytesNoCopy:v5 length:v4 encoding:1 freeWhenDone:1];
@@ -299,7 +299,7 @@
   return v9;
 }
 
-- (id)getDateString:(double)a3
+- (id)getDateString:(double)string
 {
   if (qword_1ED519298 != -1)
   {
@@ -307,34 +307,34 @@
   }
 
   v4 = qword_1ED519290;
-  v5 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:a3];
+  v5 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:string];
 
   return [v4 stringFromDate:v5];
 }
 
-- (CLGatheringBleAdvertisement)initWithData:(id)a3
+- (CLGatheringBleAdvertisement)initWithData:(id)data
 {
-  if ([a3 length] != 84)
+  if ([data length] != 84)
   {
     return 0;
   }
 
-  [a3 bytes];
+  [data bytes];
 
   return MEMORY[0x1EEE66B58](self, sel_initWithPersistenceBytes_);
 }
 
-- (CLGatheringBleAdvertisement)initWithPersistenceBytes:(id *)a3
+- (CLGatheringBleAdvertisement)initWithPersistenceBytes:(id *)bytes
 {
   v14.receiver = self;
   v14.super_class = CLGatheringBleAdvertisement;
   v4 = [(CLGatheringBleAdvertisement *)&v14 init];
   if (v4)
   {
-    *(v4 + 1) = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:a3->var1 length:6];
-    if (a3->var2[0])
+    *(v4 + 1) = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:bytes->var1 length:6];
+    if (bytes->var2[0])
     {
-      v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:a3->var2];
+      v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:bytes->var2];
     }
 
     else
@@ -343,14 +343,14 @@
     }
 
     *(v4 + 2) = v5;
-    var5 = a3->var5;
-    v7 = *&a3->var3;
+    var5 = bytes->var5;
+    v7 = *&bytes->var3;
     *&v8 = v7;
     *(&v8 + 1) = SHIDWORD(v7);
     *(v4 + 24) = v8;
     if (var5)
     {
-      v9 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:&a3->var5 length:3];
+      v9 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:&bytes->var5 length:3];
     }
 
     else
@@ -359,9 +359,9 @@
     }
 
     *(v4 + 5) = v9;
-    if (a3->var6)
+    if (bytes->var6)
     {
-      v10 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:&a3->var6 length:3];
+      v10 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:&bytes->var6 length:3];
     }
 
     else
@@ -370,16 +370,16 @@
     }
 
     *(v4 + 6) = v10;
-    var8 = a3->var8;
+    var8 = bytes->var8;
     if (var8 >= 0)
     {
       var8 = -80;
     }
 
-    var7 = a3->var7;
+    var7 = bytes->var7;
     *(v4 + 7) = var8;
     *(v4 + 8) = var7;
-    *(v4 + 9) = *&a3->var0;
+    *(v4 + 9) = *&bytes->var0;
   }
 
   return v4;
@@ -404,32 +404,32 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_address forKey:@"Address"];
-  [a3 encodeObject:self->_contactId forKey:@"ContactId"];
-  [a3 encodeInteger:self->_flags forKey:@"Flags"];
-  [a3 encodeInteger:self->_eFlags forKey:@"EncryptedFlags"];
-  [a3 encodeObject:self->_authTag forKey:@"AuthTag"];
-  [a3 encodeObject:self->_iTag forKey:@"IntegrityTag"];
-  [a3 encodeInteger:self->_rssi forKey:@"RSSI"];
-  [a3 encodeInteger:self->_count forKey:@"Count"];
+  [coder encodeObject:self->_address forKey:@"Address"];
+  [coder encodeObject:self->_contactId forKey:@"ContactId"];
+  [coder encodeInteger:self->_flags forKey:@"Flags"];
+  [coder encodeInteger:self->_eFlags forKey:@"EncryptedFlags"];
+  [coder encodeObject:self->_authTag forKey:@"AuthTag"];
+  [coder encodeObject:self->_iTag forKey:@"IntegrityTag"];
+  [coder encodeInteger:self->_rssi forKey:@"RSSI"];
+  [coder encodeInteger:self->_count forKey:@"Count"];
   unixTime = self->_unixTime;
 
-  [a3 encodeDouble:@"Date" forKey:unixTime];
+  [coder encodeDouble:@"Date" forKey:unixTime];
 }
 
-- (CLGatheringBleAdvertisement)initWithCoder:(id)a3
+- (CLGatheringBleAdvertisement)initWithCoder:(id)coder
 {
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"Address"];
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"ContactId"];
-  v7 = [a3 decodeIntegerForKey:@"Flags"];
-  v8 = [a3 decodeIntegerForKey:@"EncryptedFlags"];
-  v9 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"AuthTag"];
-  v10 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"IntegrityTag"];
-  v11 = [a3 decodeIntegerForKey:@"RSSI"];
-  v12 = [a3 decodeIntegerForKey:@"Count"];
-  [a3 decodeDoubleForKey:@"Date"];
+  v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"Address"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"ContactId"];
+  v7 = [coder decodeIntegerForKey:@"Flags"];
+  v8 = [coder decodeIntegerForKey:@"EncryptedFlags"];
+  v9 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"AuthTag"];
+  v10 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"IntegrityTag"];
+  v11 = [coder decodeIntegerForKey:@"RSSI"];
+  v12 = [coder decodeIntegerForKey:@"Count"];
+  [coder decodeDoubleForKey:@"Date"];
   return [(CLGatheringBleAdvertisement *)self initWithAddress:v5 contactId:v6 flags:v7 eFlags:v8 authTag:v9 iTag:v10 rssi:v11 count:v12 unixTime:?];
 }
 

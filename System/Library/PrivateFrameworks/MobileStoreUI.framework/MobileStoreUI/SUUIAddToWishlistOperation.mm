@@ -1,26 +1,26 @@
 @interface SUUIAddToWishlistOperation
-- (SUUIAddToWishlistOperation)initWithItem:(id)a3 reason:(int64_t)a4;
+- (SUUIAddToWishlistOperation)initWithItem:(id)item reason:(int64_t)reason;
 - (void)main;
 @end
 
 @implementation SUUIAddToWishlistOperation
 
-- (SUUIAddToWishlistOperation)initWithItem:(id)a3 reason:(int64_t)a4
+- (SUUIAddToWishlistOperation)initWithItem:(id)item reason:(int64_t)reason
 {
-  v6 = a3;
+  itemCopy = item;
   v19.receiver = self;
   v19.super_class = SUUIAddToWishlistOperation;
   v7 = [(SUUIAddToWishlistOperation *)&v19 init];
   if (v7)
   {
-    v7->_itemIdentifier = [v6 itemIdentifier];
-    v7->_reason = a4;
-    v8 = [v6 primaryItemOffer];
-    v9 = [v8 actionParameters];
+    v7->_itemIdentifier = [itemCopy itemIdentifier];
+    v7->_reason = reason;
+    primaryItemOffer = [itemCopy primaryItemOffer];
+    actionParameters = [primaryItemOffer actionParameters];
 
-    if (v9)
+    if (actionParameters)
     {
-      v10 = [MEMORY[0x277CBEBC0] copyDictionaryForQueryString:v9 unescapedValues:1];
+      v10 = [MEMORY[0x277CBEBC0] copyDictionaryForQueryString:actionParameters unescapedValues:1];
       requestParameters = v7->_requestParameters;
       v7->_requestParameters = v10;
 
@@ -38,17 +38,17 @@
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", v7->_itemIdentifier];
     [(NSMutableDictionary *)v14 setObject:v15 forKey:@"id"];
 
-    v16 = [v6 title];
-    if (v16)
+    title = [itemCopy title];
+    if (title)
     {
-      [(NSMutableDictionary *)v7->_requestParameters setObject:v16 forKey:@"wishlistItemName"];
+      [(NSMutableDictionary *)v7->_requestParameters setObject:title forKey:@"wishlistItemName"];
     }
 
-    v17 = [v6 itemKindString];
+    itemKindString = [itemCopy itemKindString];
 
-    if (v17)
+    if (itemKindString)
     {
-      [(NSMutableDictionary *)v7->_requestParameters setObject:v17 forKey:@"kind"];
+      [(NSMutableDictionary *)v7->_requestParameters setObject:itemKindString forKey:@"kind"];
     }
   }
 
@@ -71,10 +71,10 @@
 
   v5 = [(SSURLConnectionRequest *)[SUUIURLConnectionRequest alloc] initWithRequestProperties:v3];
   [(SSURLConnectionRequest *)v5 setShouldMescalSign:1];
-  v6 = [MEMORY[0x277D69A20] defaultStore];
-  v7 = [v6 activeAccount];
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  activeAccount = [defaultStore activeAccount];
 
-  v8 = [objc_alloc(MEMORY[0x277D69A58]) initWithAccount:v7];
+  v8 = [objc_alloc(MEMORY[0x277D69A58]) initWithAccount:activeAccount];
   [(SSURLConnectionRequest *)v5 setAuthenticationContext:v8];
   v32 = 0;
   v33 = &v32;
@@ -105,22 +105,22 @@ LABEL_19:
     }
 
     v26 = [v27 objectForKey:@"status"];
-    v12 = [MEMORY[0x277D69B38] sharedConfig];
-    v13 = [v12 shouldLog];
-    v14 = [v12 shouldLogToDisk];
-    v15 = [v12 OSLogObject];
-    v16 = v15;
-    if (v14)
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    shouldLogToDisk = [mEMORY[0x277D69B38] shouldLogToDisk];
+    oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+    v16 = oSLogObject;
+    if (shouldLogToDisk)
     {
-      v17 = v13 | 2;
+      v17 = shouldLog | 2;
     }
 
     else
     {
-      v17 = v13;
+      v17 = shouldLog;
     }
 
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v18 = v17;
     }
@@ -163,8 +163,8 @@ LABEL_13:
         }
 
         v22 = objc_alloc(MEMORY[0x277D69D58]);
-        v23 = [v7 uniqueIdentifier];
-        v24 = [v22 initWithAccountIdentifier:{objc_msgSend(v23, "longLongValue")}];
+        uniqueIdentifier = [activeAccount uniqueIdentifier];
+        v24 = [v22 initWithAccountIdentifier:{objc_msgSend(uniqueIdentifier, "longLongValue")}];
 
         v28[0] = MEMORY[0x277D85DD0];
         v28[1] = 3221225472;

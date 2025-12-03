@@ -1,15 +1,15 @@
 @interface PGBackgroundPIPService
-- (BOOL)hasAcquiredAuthorizationForActivitySessionWithIdentifier:(id)a3 appBundleIdentifier:(id)a4;
+- (BOOL)hasAcquiredAuthorizationForActivitySessionWithIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier;
 - (PGBackgroundPIPService)init;
 - (PGBackgroundPIPServiceDelegate)delegate;
-- (id)_targetForIdentifier:(id)a3;
-- (void)_handleInvalidatedTarget:(id)a3;
-- (void)backgroundPIPTargetRequestsAuthorization:(id)a3;
+- (id)_targetForIdentifier:(id)identifier;
+- (void)_handleInvalidatedTarget:(id)target;
+- (void)backgroundPIPTargetRequestsAuthorization:(id)authorization;
 - (void)dealloc;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)pipDidStartForRemoteObject:(id)a3;
-- (void)pipDidStopForRemoteObject:(id)a3;
-- (void)revokeAuthorizationActivitySessionWithIdentifier:(id)a3;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)pipDidStartForRemoteObject:(id)object;
+- (void)pipDidStopForRemoteObject:(id)object;
+- (void)revokeAuthorizationActivitySessionWithIdentifier:(id)identifier;
 @end
 
 @implementation PGBackgroundPIPService
@@ -27,9 +27,9 @@
     lock_targets = v3->_lock_targets;
     v3->_lock_targets = v4;
 
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     lock_targetsByActivitySessionIdentifier = v3->_lock_targetsByActivitySessionIdentifier;
-    v3->_lock_targetsByActivitySessionIdentifier = v6;
+    v3->_lock_targetsByActivitySessionIdentifier = dictionary;
 
     v8 = [MEMORY[0x1E695DFA8] set];
     mutableIdentifiersForAuthorizedActivitySessions = v3->_mutableIdentifiersForAuthorizedActivitySessions;
@@ -72,20 +72,20 @@ void __30__PGBackgroundPIPService_init__block_invoke(uint64_t a1, void *a2)
   [(PGBackgroundPIPService *)&v3 dealloc];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  contextCopy = context;
   objc_initWeak(&location, self);
-  v11 = [(_PGBackgroundPIPServiceConnectionTarget *)v9 remoteProcess];
-  v12 = [v11 auditToken];
-  v13 = [v12 hasEntitlement:@"com.apple.pegasus.backgroundPIPServiceEntitlement"];
+  remoteProcess = [(_PGBackgroundPIPServiceConnectionTarget *)connectionCopy remoteProcess];
+  auditToken = [remoteProcess auditToken];
+  v13 = [auditToken hasEntitlement:@"com.apple.pegasus.backgroundPIPServiceEntitlement"];
 
   if (v13)
   {
-    v14 = [[_PGBackgroundPIPServiceConnectionTarget alloc] initWithConnection:v9 delegate:self];
+    v14 = [[_PGBackgroundPIPServiceConnectionTarget alloc] initWithConnection:connectionCopy delegate:self];
     v15 = PGLogCommon();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
@@ -105,19 +105,19 @@ void __30__PGBackgroundPIPService_init__block_invoke(uint64_t a1, void *a2)
     v19[3] = &unk_1E7F336D8;
     v16 = v14;
     v20 = v16;
-    v21 = self;
-    [(_PGBackgroundPIPServiceConnectionTarget *)v9 configureConnection:v19];
+    selfCopy = self;
+    [(_PGBackgroundPIPServiceConnectionTarget *)connectionCopy configureConnection:v19];
     v17 = PGLogCommon();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
       v24 = "[PGBackgroundPIPService listener:didReceiveConnection:withContext:]";
       v25 = 2114;
-      v26 = v9;
+      v26 = connectionCopy;
       _os_log_impl(&dword_1BB282000, v17, OS_LOG_TYPE_DEFAULT, "%s Activating connection %{public}@", buf, 0x16u);
     }
 
-    [(_PGBackgroundPIPServiceConnectionTarget *)v9 activate];
+    [(_PGBackgroundPIPServiceConnectionTarget *)connectionCopy activate];
   }
 
   else
@@ -128,11 +128,11 @@ void __30__PGBackgroundPIPService_init__block_invoke(uint64_t a1, void *a2)
       *buf = 136315394;
       v24 = "[PGBackgroundPIPService listener:didReceiveConnection:withContext:]";
       v25 = 2114;
-      v26 = v9;
+      v26 = connectionCopy;
       _os_log_impl(&dword_1BB282000, v18, OS_LOG_TYPE_DEFAULT, "%s Invalidating unvalidated client %{public}@", buf, 0x16u);
     }
 
-    [(_PGBackgroundPIPServiceConnectionTarget *)v9 invalidate];
+    [(_PGBackgroundPIPServiceConnectionTarget *)connectionCopy invalidate];
   }
 
   objc_destroyWeak(&location);
@@ -201,27 +201,27 @@ void __68__PGBackgroundPIPService_listener_didReceiveConnection_withContext___bl
   [*(a1 + 32) invalidate];
 }
 
-- (void)_handleInvalidatedTarget:(id)a3
+- (void)_handleInvalidatedTarget:(id)target
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  targetCopy = target;
   v5 = PGLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v12 = "[PGBackgroundPIPService _handleInvalidatedTarget:]";
     v13 = 2114;
-    v14 = v4;
+    v14 = targetCopy;
     _os_log_impl(&dword_1BB282000, v5, OS_LOG_TYPE_DEFAULT, "%s %{public}@", buf, 0x16u);
   }
 
-  v6 = [v4 activitySessionIdentifier];
-  [v4 transitionToStateIfPossible:5];
+  activitySessionIdentifier = [targetCopy activitySessionIdentifier];
+  [targetCopy transitionToStateIfPossible:5];
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_lock_targets removeObject:v4];
-  if (v6)
+  [(NSMutableSet *)self->_lock_targets removeObject:targetCopy];
+  if (activitySessionIdentifier)
   {
-    v7 = [(NSMutableDictionary *)self->_lock_targetsByActivitySessionIdentifier objectForKeyedSubscript:v6];
+    v7 = [(NSMutableDictionary *)self->_lock_targetsByActivitySessionIdentifier objectForKeyedSubscript:activitySessionIdentifier];
     v8 = PGLogCommon();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -232,9 +232,9 @@ void __68__PGBackgroundPIPService_listener_didReceiveConnection_withContext___bl
       _os_log_impl(&dword_1BB282000, v8, OS_LOG_TYPE_DEFAULT, "%s existingTargetForIdentifier %{public}@", buf, 0x16u);
     }
 
-    if ([v7 isEqual:v4])
+    if ([v7 isEqual:targetCopy])
     {
-      v9 = v6;
+      v9 = activitySessionIdentifier;
       [(NSMutableDictionary *)self->_lock_targetsByActivitySessionIdentifier setObject:0 forKeyedSubscript:v9];
     }
 
@@ -284,26 +284,26 @@ void __51__PGBackgroundPIPService__handleInvalidatedTarget___block_invoke(uint64
   }
 }
 
-- (void)backgroundPIPTargetRequestsAuthorization:(id)a3
+- (void)backgroundPIPTargetRequestsAuthorization:(id)authorization
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  authorizationCopy = authorization;
   v5 = PGLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v12 = "[PGBackgroundPIPService backgroundPIPTargetRequestsAuthorization:]";
     v13 = 2114;
-    v14 = v4;
+    v14 = authorizationCopy;
     _os_log_impl(&dword_1BB282000, v5, OS_LOG_TYPE_DEFAULT, "%s %{public}@", buf, 0x16u);
   }
 
-  v6 = [v4 activitySessionIdentifier];
+  activitySessionIdentifier = [authorizationCopy activitySessionIdentifier];
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(NSMutableDictionary *)self->_lock_targetsByActivitySessionIdentifier objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)self->_lock_targetsByActivitySessionIdentifier objectForKeyedSubscript:activitySessionIdentifier];
   if (!v7)
   {
-    [(NSMutableDictionary *)self->_lock_targetsByActivitySessionIdentifier setObject:v4 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_lock_targetsByActivitySessionIdentifier setObject:authorizationCopy forKeyedSubscript:activitySessionIdentifier];
     os_unfair_lock_unlock(&self->_lock);
     goto LABEL_9;
   }
@@ -313,8 +313,8 @@ void __51__PGBackgroundPIPService__handleInvalidatedTarget___block_invoke(uint64
   {
     [v7 invalidate];
 LABEL_9:
-    v9 = v4;
-    v10 = v6;
+    v9 = authorizationCopy;
+    v10 = activitySessionIdentifier;
     BSDispatchMain();
 
     goto LABEL_10;
@@ -324,15 +324,15 @@ LABEL_9:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v12 = v6;
+    v12 = activitySessionIdentifier;
     v13 = 2114;
-    v14 = v4;
+    v14 = authorizationCopy;
     v15 = 2114;
     v16 = v7;
     _os_log_impl(&dword_1BB282000, v8, OS_LOG_TYPE_DEFAULT, "Refusing authorization for %{public}@ because an authorization request (%{public}@) for this activitySessionIdentifier already exists %{public}@ and has not yet been revoked.", buf, 0x20u);
   }
 
-  [v4 transitionToStateIfPossible:4];
+  [authorizationCopy transitionToStateIfPossible:4];
 LABEL_10:
 }
 
@@ -384,17 +384,17 @@ void __67__PGBackgroundPIPService_backgroundPIPTargetRequestsAuthorization___blo
   }
 }
 
-- (void)pipDidStartForRemoteObject:(id)a3
+- (void)pipDidStartForRemoteObject:(id)object
 {
-  v4 = a3;
-  v5 = [v4 pictureInPictureApplication];
-  v10 = [v5 bundleIdentifier];
+  objectCopy = object;
+  pictureInPictureApplication = [objectCopy pictureInPictureApplication];
+  bundleIdentifier = [pictureInPictureApplication bundleIdentifier];
 
-  v6 = [v4 activitySessionIdentifier];
+  activitySessionIdentifier = [objectCopy activitySessionIdentifier];
 
-  v7 = [(PGBackgroundPIPService *)self _targetForIdentifier:v6];
-  v8 = [v7 bundleIdentifier];
-  v9 = [v8 isEqualToString:v10];
+  v7 = [(PGBackgroundPIPService *)self _targetForIdentifier:activitySessionIdentifier];
+  bundleIdentifier2 = [v7 bundleIdentifier];
+  v9 = [bundleIdentifier2 isEqualToString:bundleIdentifier];
 
   if (v9)
   {
@@ -402,25 +402,25 @@ void __67__PGBackgroundPIPService_backgroundPIPTargetRequestsAuthorization___blo
   }
 }
 
-- (void)pipDidStopForRemoteObject:(id)a3
+- (void)pipDidStopForRemoteObject:(id)object
 {
-  v13 = a3;
-  v4 = [v13 activitySessionIdentifier];
-  v5 = [(PGBackgroundPIPService *)self _targetForIdentifier:v4];
-  v6 = [v5 bundleIdentifier];
-  v7 = [v13 pictureInPictureApplication];
-  v8 = [v7 bundleIdentifier];
-  if ([v6 isEqualToString:v8])
+  objectCopy = object;
+  activitySessionIdentifier = [objectCopy activitySessionIdentifier];
+  v5 = [(PGBackgroundPIPService *)self _targetForIdentifier:activitySessionIdentifier];
+  bundleIdentifier = [v5 bundleIdentifier];
+  pictureInPictureApplication = [objectCopy pictureInPictureApplication];
+  bundleIdentifier2 = [pictureInPictureApplication bundleIdentifier];
+  if ([bundleIdentifier isEqualToString:bundleIdentifier2])
   {
-    v9 = [v5 state];
+    state = [v5 state];
 
-    if (v9 == 3)
+    if (state == 3)
     {
-      if ([v13 isVideoCall])
+      if ([objectCopy isVideoCall])
       {
-        v10 = [v13 pictureInPictureApplication];
-        v11 = [v10 bundleIdentifier];
-        v12 = [v11 isEqualToString:@"com.apple.InCallService"];
+        pictureInPictureApplication2 = [objectCopy pictureInPictureApplication];
+        bundleIdentifier3 = [pictureInPictureApplication2 bundleIdentifier];
+        v12 = [bundleIdentifier3 isEqualToString:@"com.apple.InCallService"];
 
         if (v12)
         {
@@ -435,17 +435,17 @@ void __67__PGBackgroundPIPService_backgroundPIPTargetRequestsAuthorization___blo
   }
 }
 
-- (BOOL)hasAcquiredAuthorizationForActivitySessionWithIdentifier:(id)a3 appBundleIdentifier:(id)a4
+- (BOOL)hasAcquiredAuthorizationForActivitySessionWithIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (-[PGBackgroundPIPService identifiersForAuthorizedActivitySessions](self, "identifiersForAuthorizedActivitySessions"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 containsObject:v6], v8, v9))
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  if (identifierCopy && (-[PGBackgroundPIPService identifiersForAuthorizedActivitySessions](self, "identifiersForAuthorizedActivitySessions"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 containsObject:identifierCopy], v8, v9))
   {
-    v10 = [(PGBackgroundPIPService *)self _targetForIdentifier:v6];
+    v10 = [(PGBackgroundPIPService *)self _targetForIdentifier:identifierCopy];
     if ([v10 isConnectionActive])
     {
-      v11 = [v10 bundleIdentifier];
-      v12 = [v7 isEqualToString:v11];
+      bundleIdentifier = [v10 bundleIdentifier];
+      v12 = [bundleIdentifierCopy isEqualToString:bundleIdentifier];
     }
 
     else
@@ -462,20 +462,20 @@ void __67__PGBackgroundPIPService_backgroundPIPTargetRequestsAuthorization___blo
   return v12;
 }
 
-- (void)revokeAuthorizationActivitySessionWithIdentifier:(id)a3
+- (void)revokeAuthorizationActivitySessionWithIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = [(PGBackgroundPIPService *)self _targetForIdentifier:?];
     [v3 invalidate];
   }
 }
 
-- (id)_targetForIdentifier:(id)a3
+- (id)_targetForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_lock_targetsByActivitySessionIdentifier objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_lock_targetsByActivitySessionIdentifier objectForKeyedSubscript:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 

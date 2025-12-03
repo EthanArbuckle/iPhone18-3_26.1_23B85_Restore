@@ -1,14 +1,14 @@
 @interface DDObjcCompatibility
-+ (BOOL)swiftUpdateLocalUsersAndGroupsAndReturnError:(id *)a3 perform:(id)a4;
-+ (void)swiftInitializeLocalUsersAndGroupsAndPerform:(id)a3;
++ (BOOL)swiftUpdateLocalUsersAndGroupsAndReturnError:(id *)error perform:(id)perform;
++ (void)swiftInitializeLocalUsersAndGroupsAndPerform:(id)perform;
 - (DDObjcCompatibility)init;
 @end
 
 @implementation DDObjcCompatibility
 
-+ (void)swiftInitializeLocalUsersAndGroupsAndPerform:(id)a3
++ (void)swiftInitializeLocalUsersAndGroupsAndPerform:(id)perform
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(perform);
   v4 = _Block_copy(v3);
   v5[2] = v4;
   if (qword_27EE87A00 != -1)
@@ -21,9 +21,9 @@
   _Block_release(v4);
 }
 
-+ (BOOL)swiftUpdateLocalUsersAndGroupsAndReturnError:(id *)a3 perform:(id)a4
++ (BOOL)swiftUpdateLocalUsersAndGroupsAndReturnError:(id *)error perform:(id)perform
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(perform);
   v5 = _Block_copy(v4);
   _Block_copy(v5);
   if (qword_27EE87A00 != -1)

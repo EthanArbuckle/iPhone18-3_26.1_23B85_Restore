@@ -6,11 +6,11 @@
 
 + (id)dc_mutableDefaultParagraphStyle
 {
-  v0 = [MEMORY[0x277D74248] defaultParagraphStyle];
-  v1 = [v0 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
+  v1 = [defaultParagraphStyle mutableCopy];
 
-  v2 = [v1 tabStops];
-  v3 = [v2 count];
+  tabStops = [v1 tabStops];
+  v3 = [tabStops count];
 
   if (v3 < 2)
   {
@@ -19,18 +19,18 @@
 
   else
   {
-    v4 = [v1 tabStops];
-    v5 = [v4 objectAtIndexedSubscript:1];
+    tabStops2 = [v1 tabStops];
+    v5 = [tabStops2 objectAtIndexedSubscript:1];
     [v5 location];
     v7 = v6;
-    v8 = [v1 tabStops];
-    v9 = [v8 objectAtIndexedSubscript:0];
+    tabStops3 = [v1 tabStops];
+    v9 = [tabStops3 objectAtIndexedSubscript:0];
     [v9 location];
     [v1 setDefaultTabInterval:v7 - v10];
   }
 
-  v11 = [MEMORY[0x277CBEA60] array];
-  [v1 setTabStops:v11];
+  array = [MEMORY[0x277CBEA60] array];
+  [v1 setTabStops:array];
 
   return v1;
 }

@@ -1,18 +1,18 @@
 @interface AutoCropper
 - (AutoCropper)init;
-- (CGRect)computeClippingWithinSize:(CGSize)a3 andImportantRect:(CGRect)a4;
-- (CGRect)computeClippingWithinSize:(CGSize)a3 andImportantRects:(id)a4;
-- (CGRect)computeClippingWithinSize:(CGSize)a3 forImportantRect:(CGRect)a4 andType:(int)a5 restrictRect:(CGRect)a6;
-- (CGRect)computeClippingWithinSize:(CGSize)a3 forMultipleRects:(id)a4;
-- (CGRect)expandRect:(CGRect)result toContainRect:(CGRect)a4;
-- (CGRect)rectContainingRect:(CGRect)result andOtherRect:(CGRect)a4;
-- (CGRect)rectWithSize:(CGSize)a3 andPoint:(CGPoint)a4 inPosition:(int)a5 fromOriginalSize:(CGSize)a6;
-- (CGRect)scaleRect:(CGRect)a3 byScale:(double)a4;
-- (CGRect)scaleRect:(CGRect)a3 toFitSize:(CGSize)a4 withAnchorPoint:(CGPoint)a5;
+- (CGRect)computeClippingWithinSize:(CGSize)size andImportantRect:(CGRect)rect;
+- (CGRect)computeClippingWithinSize:(CGSize)size andImportantRects:(id)rects;
+- (CGRect)computeClippingWithinSize:(CGSize)size forImportantRect:(CGRect)rect andType:(int)type restrictRect:(CGRect)restrictRect;
+- (CGRect)computeClippingWithinSize:(CGSize)size forMultipleRects:(id)rects;
+- (CGRect)expandRect:(CGRect)result toContainRect:(CGRect)rect;
+- (CGRect)rectContainingRect:(CGRect)result andOtherRect:(CGRect)rect;
+- (CGRect)rectWithSize:(CGSize)size andPoint:(CGPoint)point inPosition:(int)position fromOriginalSize:(CGSize)originalSize;
+- (CGRect)scaleRect:(CGRect)rect byScale:(double)scale;
+- (CGRect)scaleRect:(CGRect)rect toFitSize:(CGSize)size withAnchorPoint:(CGPoint)point;
 - (CGSize)originalImageSize;
-- (id)clusterRects:(id)a3;
-- (int)determineBestPositionWithinSize:(CGSize)a3 forImportantRect:(CGRect)a4 restrictRect:(CGRect)a5;
-- (int)getRatioOfSize:(CGSize)a3;
+- (id)clusterRects:(id)rects;
+- (int)determineBestPositionWithinSize:(CGSize)size forImportantRect:(CGRect)rect restrictRect:(CGRect)restrictRect;
+- (int)getRatioOfSize:(CGSize)size;
 @end
 
 @implementation AutoCropper
@@ -34,12 +34,12 @@
   return v3;
 }
 
-- (CGRect)scaleRect:(CGRect)a3 byScale:(double)a4
+- (CGRect)scaleRect:(CGRect)rect byScale:(double)scale
 {
-  v4 = a3.origin.x + a3.size.width * 0.5;
-  v5 = a3.origin.y + a3.size.height * 0.5;
-  v6 = a3.size.height * a4;
-  v7 = a3.size.width * a4;
+  v4 = rect.origin.x + rect.size.width * 0.5;
+  v5 = rect.origin.y + rect.size.height * 0.5;
+  v6 = rect.size.height * scale;
+  v7 = rect.size.width * scale;
   v8 = v4 - v7 * 0.5;
   v9 = v5 - v6 * 0.5;
   result.size.height = v6;
@@ -49,10 +49,10 @@
   return result;
 }
 
-- (CGRect)expandRect:(CGRect)result toContainRect:(CGRect)a4
+- (CGRect)expandRect:(CGRect)result toContainRect:(CGRect)rect
 {
-  v4 = a4.origin.y + a4.size.height;
-  v5 = a4.origin.x + a4.size.width;
+  v4 = rect.origin.y + rect.size.height;
+  v5 = rect.origin.x + rect.size.width;
   if (result.origin.y + result.size.height < v4)
   {
     result.size.height = v4 - result.origin.y;
@@ -63,26 +63,26 @@
     result.size.width = v5 - result.origin.x;
   }
 
-  if (result.origin.y > a4.origin.y)
+  if (result.origin.y > rect.origin.y)
   {
-    result.size.height = result.origin.y - a4.origin.y + result.size.height;
-    result.origin.y = a4.origin.y;
+    result.size.height = result.origin.y - rect.origin.y + result.size.height;
+    result.origin.y = rect.origin.y;
   }
 
-  if (result.origin.x > a4.origin.x)
+  if (result.origin.x > rect.origin.x)
   {
-    result.size.width = result.origin.x - a4.origin.x + result.size.width;
-    result.origin.x = a4.origin.x;
+    result.size.width = result.origin.x - rect.origin.x + result.size.width;
+    result.origin.x = rect.origin.x;
   }
 
   return result;
 }
 
-- (CGRect)computeClippingWithinSize:(CGSize)a3 andImportantRect:(CGRect)a4
+- (CGRect)computeClippingWithinSize:(CGSize)size andImportantRect:(CGRect)rect
 {
-  height = a3.height;
-  v5 = a4.origin.x + a4.size.width * 0.5;
-  v6 = a4.origin.y + a4.size.height * 0.5;
+  height = size.height;
+  v5 = rect.origin.x + rect.size.width * 0.5;
+  v6 = rect.origin.y + rect.size.height * 0.5;
   if (v6 >= height * 0.5)
   {
     if (v6 > (height + height) / 3.0)
@@ -133,12 +133,12 @@ LABEL_13:
   }
 
 LABEL_14:
-  if (v5 >= a3.width * 0.5)
+  if (v5 >= size.width * 0.5)
   {
     v15 = 3.0;
-    if (v5 > (a3.width + a3.width) / 3.0)
+    if (v5 > (size.width + size.width) / 3.0)
     {
-      v14 = a3.width - v5;
+      v14 = size.width - v5;
       goto LABEL_19;
     }
 
@@ -148,17 +148,17 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (v5 <= a3.width / 3.0)
+  if (v5 <= size.width / 3.0)
   {
     v16 = v5 * 3.0;
     goto LABEL_22;
   }
 
-  v14 = a3.width - v5;
+  v14 = size.width - v5;
   v15 = 1.5;
 LABEL_19:
   v16 = v14 * v15;
-  v17 = a3.width - v16;
+  v17 = size.width - v16;
 LABEL_23:
   v18 = height;
   result.size.height = v18;
@@ -168,35 +168,35 @@ LABEL_23:
   return result;
 }
 
-- (int)getRatioOfSize:(CGSize)a3
+- (int)getRatioOfSize:(CGSize)size
 {
-  if (a3.height * 4.0 == a3.width * 3.0)
+  if (size.height * 4.0 == size.width * 3.0)
   {
     return 1;
   }
 
-  if (a3.height * 3.0 == a3.width + a3.width)
+  if (size.height * 3.0 == size.width + size.width)
   {
     return 2;
   }
 
-  if (a3.height * 16.0 == a3.width * 9.0)
+  if (size.height * 16.0 == size.width * 9.0)
   {
     return 3;
   }
 
-  if (a3.height == a3.width)
+  if (size.height == size.width)
   {
     return 4;
   }
 
-  v4 = a3.height * 5.0;
-  if (v4 == a3.width * 3.0)
+  v4 = size.height * 5.0;
+  if (v4 == size.width * 3.0)
   {
     return 5;
   }
 
-  if (v4 == a3.width * 4.0)
+  if (v4 == size.width * 4.0)
   {
     return 6;
   }
@@ -204,17 +204,17 @@ LABEL_23:
   return 7;
 }
 
-- (CGRect)scaleRect:(CGRect)a3 toFitSize:(CGSize)a4 withAnchorPoint:(CGPoint)a5
+- (CGRect)scaleRect:(CGRect)rect toFitSize:(CGSize)size withAnchorPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  height = a4.height;
-  width = a4.width;
-  v15 = a3.size.height;
-  v16 = a3.size.width;
-  v17 = a3.origin.y;
-  v18 = a3.origin.x;
-  acLog("scaleRect:inner=(%.3f,%.3f,%.3f,%.3f), size=(%.3f,%.3f), anchor=(%.3f,%.3f)\n", a2, v5, v6, v7, v8, v9, v10, SLOBYTE(a3.origin.x));
+  y = point.y;
+  x = point.x;
+  height = size.height;
+  width = size.width;
+  v15 = rect.size.height;
+  v16 = rect.size.width;
+  v17 = rect.origin.y;
+  v18 = rect.origin.x;
+  acLog("scaleRect:inner=(%.3f,%.3f,%.3f,%.3f), size=(%.3f,%.3f), anchor=(%.3f,%.3f)\n", a2, v5, v6, v7, v8, v9, v10, SLOBYTE(rect.origin.x));
   if (v17 <= y && v17 + v16 >= y && v18 + v16 >= x && v18 <= x)
   {
     v29 = v15 - (y - v17);
@@ -260,21 +260,21 @@ LABEL_23:
   return result;
 }
 
-- (CGRect)rectWithSize:(CGSize)a3 andPoint:(CGPoint)a4 inPosition:(int)a5 fromOriginalSize:(CGSize)a6
+- (CGRect)rectWithSize:(CGSize)size andPoint:(CGPoint)point inPosition:(int)position fromOriginalSize:(CGSize)originalSize
 {
-  x = a4.x;
-  height = a3.height;
-  width = a3.width;
+  x = point.x;
+  height = size.height;
+  width = size.width;
   v9 = 0.0;
-  if (a5 > 0xD)
+  if (position > 0xD)
   {
     v10 = 0.0;
     goto LABEL_15;
   }
 
-  if (((1 << a5) & 0x854) != 0)
+  if (((1 << position) & 0x854) != 0)
   {
-    v12 = (a3.width - x) * 0.5;
+    v12 = (size.width - x) * 0.5;
     if (x < v12)
     {
       v12 = x;
@@ -284,10 +284,10 @@ LABEL_23:
     goto LABEL_14;
   }
 
-  if (((1 << a5) & 0x10A8) != 0)
+  if (((1 << position) & 0x10A8) != 0)
   {
-    v12 = a3.width - x;
-    if (a3.width - x >= x * 0.5)
+    v12 = size.width - x;
+    if (size.width - x >= x * 0.5)
     {
       v12 = x * 0.5;
     }
@@ -299,10 +299,10 @@ LABEL_14:
   }
 
   v10 = 0.0;
-  if (((1 << a5) & 0x2700) != 0)
+  if (((1 << position) & 0x2700) != 0)
   {
-    v11 = a3.width - x;
-    if (x < a3.width - x)
+    v11 = size.width - x;
+    if (x < size.width - x)
     {
       v11 = x;
     }
@@ -312,68 +312,68 @@ LABEL_14:
   }
 
 LABEL_15:
-  if (a5 > 0xE)
+  if (position > 0xE)
   {
     v13 = height;
     goto LABEL_31;
   }
 
-  if (((1 << a5) & 0x231) != 0)
+  if (((1 << position) & 0x231) != 0)
   {
-    if (a4.y >= (height - a4.y) * 0.5)
+    if (point.y >= (height - point.y) * 0.5)
     {
-      y = (height - a4.y) * 0.5;
+      y = (height - point.y) * 0.5;
     }
 
     else
     {
-      y = a4.y;
+      y = point.y;
     }
 
-    v9 = a4.y - y;
+    v9 = point.y - y;
 LABEL_30:
     v13 = y * 3.0;
     goto LABEL_31;
   }
 
-  if (((1 << a5) & 0x4C2) != 0)
+  if (((1 << position) & 0x4C2) != 0)
   {
-    y = a4.y * 0.5;
-    if (height - a4.y < a4.y * 0.5)
+    y = point.y * 0.5;
+    if (height - point.y < point.y * 0.5)
     {
-      y = height - a4.y;
+      y = height - point.y;
     }
 
-    v9 = a4.y + y * -2.0;
+    v9 = point.y + y * -2.0;
     goto LABEL_30;
   }
 
   v13 = height;
-  if (((1 << a5) & 0x5900) != 0)
+  if (((1 << position) & 0x5900) != 0)
   {
-    if (a4.y >= height - a4.y)
+    if (point.y >= height - point.y)
     {
-      v14 = height - a4.y;
+      v14 = height - point.y;
     }
 
     else
     {
-      v14 = a4.y;
+      v14 = point.y;
     }
 
-    v9 = a4.y - v14;
+    v9 = point.y - v14;
     v13 = v14 + v14;
   }
 
 LABEL_31:
-  v16 = height / a3.width;
+  v16 = height / size.width;
   if (v13 / width >= v16)
   {
     if (v13 / width > v16)
     {
-      v18 = -(a4.y - v9) / v13;
+      v18 = -(point.y - v9) / v13;
       v13 = v16 * width;
-      v9 = a4.y + v18 * (v16 * width);
+      v9 = point.y + v18 * (v16 * width);
     }
   }
 
@@ -393,30 +393,30 @@ LABEL_31:
   return result;
 }
 
-- (CGRect)rectContainingRect:(CGRect)result andOtherRect:(CGRect)a4
+- (CGRect)rectContainingRect:(CGRect)result andOtherRect:(CGRect)rect
 {
   v4 = result.origin.x + result.size.width;
-  v5 = a4.origin.x + a4.size.width;
+  v5 = rect.origin.x + rect.size.width;
   if (v4 <= v5)
   {
     v4 = v5;
   }
 
   v6 = result.origin.y + result.size.height;
-  if (v6 <= a4.origin.y + a4.size.height)
+  if (v6 <= rect.origin.y + rect.size.height)
   {
-    v6 = a4.origin.y + a4.size.height;
+    v6 = rect.origin.y + rect.size.height;
   }
 
-  if (result.origin.x >= a4.origin.x)
+  if (result.origin.x >= rect.origin.x)
   {
-    result.origin.x = a4.origin.x;
+    result.origin.x = rect.origin.x;
   }
 
   v7 = v4 - result.origin.x;
-  if (result.origin.y >= a4.origin.y)
+  if (result.origin.y >= rect.origin.y)
   {
-    result.origin.y = a4.origin.y;
+    result.origin.y = rect.origin.y;
   }
 
   v8 = v6 - result.origin.y;
@@ -425,17 +425,17 @@ LABEL_31:
   return result;
 }
 
-- (id)clusterRects:(id)a3
+- (id)clusterRects:(id)rects
 {
-  v3 = a3;
-  if ([a3 count] != 1)
+  rectsCopy = rects;
+  if ([rects count] != 1)
   {
-    v3 = [MEMORY[0x1E695DF70] arrayWithArray:v3];
-    if ([v3 count] != 1)
+    rectsCopy = [MEMORY[0x1E695DF70] arrayWithArray:rectsCopy];
+    if ([rectsCopy count] != 1)
     {
       while (2)
       {
-        v5 = [v3 count];
+        v5 = [rectsCopy count];
         v19 = 0u;
         v20 = 0u;
         if (v5 >= 2)
@@ -446,12 +446,12 @@ LABEL_31:
           v9 = 1;
 LABEL_5:
           memset(&v18, 0, sizeof(v18));
-          [objc_msgSend(v3 objectAtIndex:{v6), "getValue:", &v18}];
+          [objc_msgSend(rectsCopy objectAtIndex:{v6), "getValue:", &v18}];
           v10 = v6 + 1;
           v11 = v9;
           while (1)
           {
-            [objc_msgSend(v3 objectAtIndex:{v11, 0, 0, 0, 0), "getValue:", &v17}];
+            [objc_msgSend(rectsCopy objectAtIndex:{v11, 0, 0, 0, 0), "getValue:", &v17}];
             if (CGRectIntersectsRect(v18, v17))
             {
               break;
@@ -466,7 +466,7 @@ LABEL_5:
                 goto LABEL_5;
               }
 
-              return v3;
+              return rectsCopy;
             }
           }
 
@@ -475,9 +475,9 @@ LABEL_5:
           *(&v19 + 1) = v13;
           *&v20 = v14;
           *(&v20 + 1) = v15;
-          [v3 replaceObjectAtIndex:v6 withObject:{objc_msgSend(MEMORY[0x1E696B098], "valueWithBytes:objCType:", &v19, "{CGRect={CGPoint=dd}{CGSize=dd}}")}];
-          [v3 removeObjectAtIndex:v11];
-          if ([v3 count] != 1)
+          [rectsCopy replaceObjectAtIndex:v6 withObject:{objc_msgSend(MEMORY[0x1E696B098], "valueWithBytes:objCType:", &v19, "{CGRect={CGPoint=dd}{CGSize=dd}}")}];
+          [rectsCopy removeObjectAtIndex:v11];
+          if ([rectsCopy count] != 1)
           {
             continue;
           }
@@ -488,24 +488,24 @@ LABEL_5:
     }
   }
 
-  return v3;
+  return rectsCopy;
 }
 
-- (CGRect)computeClippingWithinSize:(CGSize)a3 andImportantRects:(id)a4
+- (CGRect)computeClippingWithinSize:(CGSize)size andImportantRects:(id)rects
 {
   v87 = *MEMORY[0x1E69E9840];
-  v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [objc_msgSend(v6 valueForKey:{@"AspectRatioCutoff", "floatValue"}];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [objc_msgSend(standardUserDefaults valueForKey:{@"AspectRatioCutoff", "floatValue"}];
   v76 = v7;
-  [objc_msgSend(v6 valueForKey:{@"MinimumCroppedArea", "floatValue"}];
+  [objc_msgSend(standardUserDefaults valueForKey:{@"MinimumCroppedArea", "floatValue"}];
   v9 = v8;
-  [objc_msgSend(v6 valueForKey:{@"ProximityToCenter", "floatValue"}];
+  [objc_msgSend(standardUserDefaults valueForKey:{@"ProximityToCenter", "floatValue"}];
   v11 = v10;
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
   v85 = 0u;
-  v12 = [a4 countByEnumeratingWithState:&v82 objects:v86 count:16];
+  v12 = [rects countByEnumeratingWithState:&v82 objects:v86 count:16];
   if (v12)
   {
     v20 = v12;
@@ -520,7 +520,7 @@ LABEL_5:
       {
         if (*v83 != v21)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(rects);
         }
 
         v27 = *(*(&v82 + 1) + 8 * i);
@@ -536,7 +536,7 @@ LABEL_5:
         }
       }
 
-      v20 = [a4 countByEnumeratingWithState:&v82 objects:v86 count:{16, *(&v81 + 1), *&v81, *(&v81 + 1) * *&v81}];
+      v20 = [rects countByEnumeratingWithState:&v82 objects:v86 count:{16, *(&v81 + 1), *&v81, *(&v81 + 1) * *&v81}];
     }
 
     while (v20);
@@ -554,13 +554,13 @@ LABEL_5:
   v29 = v22 * 0.5 + v24;
   v30 = v22 * v23;
   acLog("Face area is %f, Total is %f\n", v13, v14, v15, v16, v17, v18, v19, SLOBYTE(v30));
-  v78 = a3.width * a3.height;
-  if (v30 * 1.1 < a3.width * a3.height / 9.0 || (acLog("Large Face!\n", v31, v32, v33, v34, v35, v36, v37, v72), v38 = 0.0, (a3.height * a3.height + a3.width * a3.width) * v11 <= (v29 - a3.height * 0.5) * (v29 - a3.height * 0.5) + (v28 - a3.width * 0.5) * (v28 - a3.width * 0.5)))
+  v78 = size.width * size.height;
+  if (v30 * 1.1 < size.width * size.height / 9.0 || (acLog("Large Face!\n", v31, v32, v33, v34, v35, v36, v37, v72), v38 = 0.0, (size.height * size.height + size.width * size.width) * v11 <= (v29 - size.height * 0.5) * (v29 - size.height * 0.5) + (v28 - size.width * 0.5) * (v28 - size.width * 0.5)))
   {
     v40 = 0;
     v73 = *(MEMORY[0x1E695F058] + 8);
     v74 = *MEMORY[0x1E695F058];
-    v41 = a3.width * a3.height;
+    v41 = size.width * size.height;
     v42 = v76 + 1.0;
     v75 = *(MEMORY[0x1E695F058] + 16);
     v77 = *(MEMORY[0x1E695F058] + 24);
@@ -618,8 +618,8 @@ LABEL_5:
 
       if (!v40)
       {
-        width = a3.width;
-        height = a3.height;
+        width = size.width;
+        height = size.height;
       }
 
       if (v40 <= 2)
@@ -645,7 +645,7 @@ LABEL_5:
       v52 = 4;
       do
       {
-        [(AutoCropper *)self rectWithSize:v52 andPoint:v50 inPosition:v51 fromOriginalSize:v28, v29, a3.width, a3.height];
+        [(AutoCropper *)self rectWithSize:v52 andPoint:v50 inPosition:v51 fromOriginalSize:v28, v29, size.width, size.height];
         [AutoCropper scaleRect:"scaleRect:toFitSize:withAnchorPoint:" toFitSize:? withAnchorPoint:?];
         if ((v78 - v62 * v63) * v43 < v41 || v44 == 7)
         {
@@ -672,12 +672,12 @@ LABEL_5:
       v38 = 0.0;
       v67 = "No Crop. Reduces area too much\n";
       v39 = 0.0;
-      v66 = a3.width;
-      v65 = a3.height;
+      v66 = size.width;
+      v65 = size.height;
 LABEL_50:
       acLog(v67, v53, v54, v55, v56, v57, v58, v59, v72);
-      a3.width = v66;
-      a3.height = v65;
+      size.width = v66;
+      size.height = v65;
       goto LABEL_51;
     }
 
@@ -739,8 +739,8 @@ LABEL_50:
 LABEL_51:
   v68 = v38;
   v69 = v39;
-  v70 = a3.width;
-  v71 = a3.height;
+  v70 = size.width;
+  v71 = size.height;
   result.size.height = v71;
   result.size.width = v70;
   result.origin.y = v69;
@@ -748,13 +748,13 @@ LABEL_51:
   return result;
 }
 
-- (int)determineBestPositionWithinSize:(CGSize)a3 forImportantRect:(CGRect)a4 restrictRect:(CGRect)a5
+- (int)determineBestPositionWithinSize:(CGSize)size forImportantRect:(CGRect)rect restrictRect:(CGRect)restrictRect
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v88 = *MEMORY[0x1E69E9840];
-  v8 = a4.origin.x + a4.size.width * 0.5;
-  v9 = a4.origin.y + a4.size.height * 0.5;
+  v8 = rect.origin.x + rect.size.width * 0.5;
+  v9 = rect.origin.y + rect.size.height * 0.5;
   v10 = (getCFPreferenceNumber(@"MinCropPercentage", @"com.apple.mobileslideshow", 75) / 100.0);
   acLog("determineBestPositionWithinSize:size=%.3f,%.3f, center=%.3f,%.3f, minPercentage=%.3f, restrict=%.3f,%.3f,%.3f,%.3f\n", v11, v12, v13, v14, v15, v16, v17, SLOBYTE(width));
   if (self->originalImageSize.height * self->originalImageSize.width == 0.0)
@@ -1046,13 +1046,13 @@ LABEL_63:
   return v28;
 }
 
-- (CGRect)computeClippingWithinSize:(CGSize)a3 forImportantRect:(CGRect)a4 andType:(int)a5 restrictRect:(CGRect)a6
+- (CGRect)computeClippingWithinSize:(CGSize)size forImportantRect:(CGRect)rect andType:(int)type restrictRect:(CGRect)restrictRect
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a4.origin.x + a4.size.width * 0.5;
-  v10 = a4.origin.y + a4.size.height * 0.5;
-  v11 = [(AutoCropper *)self determineBestPositionWithinSize:*&a5 forImportantRect:a3.width restrictRect:a3.height, *&a6.origin.x, *&a6.origin.y, *&a6.size.width, *&a6.size.height];
+  height = size.height;
+  width = size.width;
+  v9 = rect.origin.x + rect.size.width * 0.5;
+  v10 = rect.origin.y + rect.size.height * 0.5;
+  v11 = [(AutoCropper *)self determineBestPositionWithinSize:*&type forImportantRect:size.width restrictRect:size.height, *&restrictRect.origin.x, *&restrictRect.origin.y, *&restrictRect.size.width, *&restrictRect.size.height];
   acLog("Best is %d\n", v12, v13, v14, v15, v16, v17, v18, v11);
   [(AutoCropper *)self rectWithSize:v11 andPoint:width inPosition:height fromOriginalSize:v9, v10, width, height];
 
@@ -1064,17 +1064,17 @@ LABEL_63:
   return result;
 }
 
-- (CGRect)computeClippingWithinSize:(CGSize)a3 forMultipleRects:(id)a4
+- (CGRect)computeClippingWithinSize:(CGSize)size forMultipleRects:(id)rects
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v44 = *MEMORY[0x1E69E9840];
   v39 = 0u;
   v40 = 0u;
-  v7 = a3.height;
+  v7 = size.height;
   v41 = 0u;
   v42 = 0u;
-  v8 = [a4 countByEnumeratingWithState:&v39 objects:v43 count:16];
+  v8 = [rects countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v8)
   {
     v16 = v8;
@@ -1086,7 +1086,7 @@ LABEL_63:
       {
         if (*v40 != v17)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(rects);
         }
 
         v20 = *(*(&v39 + 1) + 8 * i);
@@ -1104,7 +1104,7 @@ LABEL_63:
         }
       }
 
-      v16 = [a4 countByEnumeratingWithState:&v39 objects:v43 count:16];
+      v16 = [rects countByEnumeratingWithState:&v39 objects:v43 count:16];
     }
 
     while (v16);

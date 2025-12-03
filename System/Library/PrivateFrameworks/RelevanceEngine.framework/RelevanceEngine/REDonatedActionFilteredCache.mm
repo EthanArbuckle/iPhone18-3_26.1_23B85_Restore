@@ -1,28 +1,28 @@
 @interface REDonatedActionFilteredCache
 - (REDonatedActionFilteredCache)init;
 - (REDonatedActionFilteredCacheDelegate)delegate;
-- (id)_keyForAction:(id)a3;
-- (unint64_t)_queue_performedCountForDonation:(id)a3;
-- (unint64_t)_queue_performedTodayCountForBundleIdentifer:(id)a3 actionIdentifier:(unint64_t)a4;
-- (void)_queue_incrementPerformedCountForDonation:(id)a3;
+- (id)_keyForAction:(id)action;
+- (unint64_t)_queue_performedCountForDonation:(id)donation;
+- (unint64_t)_queue_performedTodayCountForBundleIdentifer:(id)identifer actionIdentifier:(unint64_t)identifier;
+- (void)_queue_incrementPerformedCountForDonation:(id)donation;
 - (void)_queue_removeAllData;
-- (void)_queue_removeDonation:(id)a3;
-- (void)_queue_removeDonationsForBundleIdentifier:(id)a3;
-- (void)_queue_storeDonation:(id)a3;
-- (void)_refreshAllDonations:(id)a3;
+- (void)_queue_removeDonation:(id)donation;
+- (void)_queue_removeDonationsForBundleIdentifier:(id)identifier;
+- (void)_queue_storeDonation:(id)donation;
+- (void)_refreshAllDonations:(id)donations;
 - (void)dealloc;
-- (void)donationActionStoreReceivedDonation:(id)a3 isNewDonation:(BOOL)a4;
+- (void)donationActionStoreReceivedDonation:(id)donation isNewDonation:(BOOL)newDonation;
 - (void)donationActionStoreRemoveAllDonations;
-- (void)donationActionStoreRemovedDonation:(id)a3;
-- (void)donationActionStoreRemovedDonationsFor:(id)a3;
-- (void)fetchAllUniqueActions:(id)a3 completion:(id)a4;
-- (void)fetchCountForAction:(id)a3 usingBlock:(id)a4;
-- (void)fetchDonationWithIdentifier:(id)a3 completion:(id)a4;
-- (void)fetchFirstPerformedActionDate:(id)a3;
-- (void)fetchPerformedCountForAction:(id)a3 usingBlock:(id)a4;
-- (void)fetchPerformedTodayCountForActionWithBundleIdentifer:(id)a3 actionIdentifier:(unint64_t)a4 completion:(id)a5;
+- (void)donationActionStoreRemovedDonation:(id)donation;
+- (void)donationActionStoreRemovedDonationsFor:(id)for;
+- (void)fetchAllUniqueActions:(id)actions completion:(id)completion;
+- (void)fetchCountForAction:(id)action usingBlock:(id)block;
+- (void)fetchDonationWithIdentifier:(id)identifier completion:(id)completion;
+- (void)fetchFirstPerformedActionDate:(id)date;
+- (void)fetchPerformedCountForAction:(id)action usingBlock:(id)block;
+- (void)fetchPerformedTodayCountForActionWithBundleIdentifer:(id)identifer actionIdentifier:(unint64_t)identifier completion:(id)completion;
 - (void)reset;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation REDonatedActionFilteredCache
@@ -34,34 +34,34 @@
   v2 = [(REDonatedActionFilteredCache *)&v18 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     actions = v2->_actions;
-    v2->_actions = v3;
+    v2->_actions = strongToStrongObjectsMapTable;
 
-    v5 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     countsByActionType = v2->_countsByActionType;
-    v2->_countsByActionType = v5;
+    v2->_countsByActionType = strongToStrongObjectsMapTable2;
 
-    v7 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     countPerformedTodayByActionType = v2->_countPerformedTodayByActionType;
-    v2->_countPerformedTodayByActionType = v7;
+    v2->_countPerformedTodayByActionType = strongToStrongObjectsMapTable3;
 
     v9 = +[(RESingleton *)REDonatedActionStore];
-    v10 = [v9 callbackQueue];
+    callbackQueue = [v9 callbackQueue];
     queue = v2->_queue;
-    v2->_queue = v10;
+    v2->_queue = callbackQueue;
 
     v12 = +[(RESingleton *)REDonatedActionStore];
     [v12 addObserver:v2];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, REDonatedActionFilteredCacheReset, @"com.apple.relevanceengine.resetpredictedactions", 0, CFNotificationSuspensionBehaviorCoalesce);
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:v2 selector:sel__refreshAllDonations_ name:@"REShowRecentDeveloperDonationsChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__refreshAllDonations_ name:@"REShowRecentDeveloperDonationsChangedNotification" object:0];
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
     v16 = RESignificantTimeChangeNotification();
-    [v15 addObserver:v2 selector:sel__refreshAllDonations_ name:v16 object:0];
+    [defaultCenter2 addObserver:v2 selector:sel__refreshAllDonations_ name:v16 object:0];
   }
 
   return v2;
@@ -74,21 +74,21 @@
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"com.apple.relevanceengine.resetpredictedactions", 0);
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:@"REShowRecentDeveloperDonationsChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"REShowRecentDeveloperDonationsChangedNotification" object:0];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
   v7 = RESignificantTimeChangeNotification();
-  [v6 removeObserver:self name:v7 object:0];
+  [defaultCenter2 removeObserver:self name:v7 object:0];
 
   v8.receiver = self;
   v8.super_class = REDonatedActionFilteredCache;
   [(REDonatedActionFilteredCache *)&v8 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -99,12 +99,12 @@
   }
 }
 
-- (void)fetchAllUniqueActions:(id)a3 completion:(id)a4
+- (void)fetchAllUniqueActions:(id)actions completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  actionsCopy = actions;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (actionsCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -112,14 +112,14 @@
     block[2] = __65__REDonatedActionFilteredCache_fetchAllUniqueActions_completion___block_invoke;
     block[3] = &unk_2785FB700;
     block[4] = self;
-    v11 = v6;
+    v11 = actionsCopy;
     v12 = v8;
     dispatch_async(queue, block);
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    dispatch_async(self->_queue, v7);
+    dispatch_async(self->_queue, completionCopy);
   }
 }
 
@@ -171,11 +171,11 @@ uint64_t __65__REDonatedActionFilteredCache_fetchAllUniqueActions_completion___b
   return result;
 }
 
-- (void)fetchCountForAction:(id)a3 usingBlock:(id)a4
+- (void)fetchCountForAction:(id)action usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  actionCopy = action;
+  blockCopy = block;
+  if (blockCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -183,8 +183,8 @@ uint64_t __65__REDonatedActionFilteredCache_fetchAllUniqueActions_completion___b
     block[2] = __63__REDonatedActionFilteredCache_fetchCountForAction_usingBlock___block_invoke;
     block[3] = &unk_2785F99C8;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = actionCopy;
+    v11 = blockCopy;
     dispatch_async(queue, block);
   }
 }
@@ -198,29 +198,29 @@ void __63__REDonatedActionFilteredCache_fetchCountForAction_usingBlock___block_i
   (*(v3 + 16))(v3, [v4 count]);
 }
 
-- (void)fetchDonationWithIdentifier:(id)a3 completion:(id)a4
+- (void)fetchDonationWithIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v7 = +[(RESingleton *)REDonatedActionStore];
-  [v7 fetchDonationWithIdentifier:v6 completion:v5];
+  [v7 fetchDonationWithIdentifier:identifierCopy completion:completionCopy];
 }
 
-- (void)fetchPerformedCountForAction:(id)a3 usingBlock:(id)a4
+- (void)fetchPerformedCountForAction:(id)action usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  actionCopy = action;
+  blockCopy = block;
+  v8 = blockCopy;
+  if (blockCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __72__REDonatedActionFilteredCache_fetchPerformedCountForAction_usingBlock___block_invoke;
     block[3] = &unk_2785FAE80;
-    v12 = v7;
+    v12 = blockCopy;
     block[4] = self;
-    v11 = v6;
+    v11 = actionCopy;
     dispatch_async(queue, block);
   }
 }
@@ -234,22 +234,22 @@ uint64_t __72__REDonatedActionFilteredCache_fetchPerformedCountForAction_usingBl
   return v3(v1, v2);
 }
 
-- (void)fetchPerformedTodayCountForActionWithBundleIdentifer:(id)a3 actionIdentifier:(unint64_t)a4 completion:(id)a5
+- (void)fetchPerformedTodayCountForActionWithBundleIdentifer:(id)identifer actionIdentifier:(unint64_t)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  identiferCopy = identifer;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __113__REDonatedActionFilteredCache_fetchPerformedTodayCountForActionWithBundleIdentifer_actionIdentifier_completion___block_invoke;
     v12[3] = &unk_2785FD410;
-    v14 = v9;
+    v14 = completionCopy;
     v12[4] = self;
-    v13 = v8;
-    v15 = a4;
+    v13 = identiferCopy;
+    identifierCopy = identifier;
     dispatch_async(queue, v12);
   }
 }
@@ -263,11 +263,11 @@ uint64_t __113__REDonatedActionFilteredCache_fetchPerformedTodayCountForActionWi
   return v3(v1, v2);
 }
 
-- (void)fetchFirstPerformedActionDate:(id)a3
+- (void)fetchFirstPerformedActionDate:(id)date
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dateCopy = date;
+  v5 = dateCopy;
+  if (dateCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -275,7 +275,7 @@ uint64_t __113__REDonatedActionFilteredCache_fetchPerformedTodayCountForActionWi
     v7[2] = __62__REDonatedActionFilteredCache_fetchFirstPerformedActionDate___block_invoke;
     v7[3] = &unk_2785FA150;
     v7[4] = self;
-    v8 = v4;
+    v8 = dateCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -298,28 +298,28 @@ void __37__REDonatedActionFilteredCache_reset__block_invoke(uint64_t a1)
   [v2 donatedActionFilteredCacheDonationRemoved];
 }
 
-- (void)donationActionStoreReceivedDonation:(id)a3 isNewDonation:(BOOL)a4
+- (void)donationActionStoreReceivedDonation:(id)donation isNewDonation:(BOOL)newDonation
 {
   queue = self->_queue;
-  v6 = a3;
+  donationCopy = donation;
   dispatch_assert_queue_V2(queue);
-  [(REDonatedActionFilteredCache *)self _queue_storeDonation:v6];
+  [(REDonatedActionFilteredCache *)self _queue_storeDonation:donationCopy];
 }
 
-- (void)donationActionStoreRemovedDonation:(id)a3
+- (void)donationActionStoreRemovedDonation:(id)donation
 {
   queue = self->_queue;
-  v5 = a3;
+  donationCopy = donation;
   dispatch_assert_queue_V2(queue);
-  [(REDonatedActionFilteredCache *)self _queue_removeDonation:v5];
+  [(REDonatedActionFilteredCache *)self _queue_removeDonation:donationCopy];
 }
 
-- (void)donationActionStoreRemovedDonationsFor:(id)a3
+- (void)donationActionStoreRemovedDonationsFor:(id)for
 {
   queue = self->_queue;
-  v5 = a3;
+  forCopy = for;
   dispatch_assert_queue_V2(queue);
-  [(REDonatedActionFilteredCache *)self _queue_removeDonationsForBundleIdentifier:v5];
+  [(REDonatedActionFilteredCache *)self _queue_removeDonationsForBundleIdentifier:forCopy];
 }
 
 - (void)donationActionStoreRemoveAllDonations
@@ -341,42 +341,42 @@ void __37__REDonatedActionFilteredCache_reset__block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v3);
 }
 
-- (id)_keyForAction:(id)a3
+- (id)_keyForAction:(id)action
 {
-  v3 = a3;
-  v4 = [v3 identifier];
-  if ([v3 type] != 2 && (REShowRecentDeveloperDonations() & 1) == 0)
+  actionCopy = action;
+  identifier = [actionCopy identifier];
+  if ([actionCopy type] != 2 && (REShowRecentDeveloperDonations() & 1) == 0)
   {
-    v5 = [v3 bundleIdentifier];
+    bundleIdentifier = [actionCopy bundleIdentifier];
 
-    v4 = v5;
+    identifier = bundleIdentifier;
   }
 
-  if ([v3 type] == 1)
+  if ([actionCopy type] == 1)
   {
-    [v3 simplifiedActionTypeIdentifier];
+    [actionCopy simplifiedActionTypeIdentifier];
   }
 
   else
   {
-    [v3 actionTypeIdentifier];
+    [actionCopy actionTypeIdentifier];
   }
   v6 = ;
-  v7 = -[_REActionKey initWithIdentifier:actionType:relevanceProvidersHash:]([_REActionKey alloc], "initWithIdentifier:actionType:relevanceProvidersHash:", v4, v6, [v3 relevanceProvidersHash]);
+  v7 = -[_REActionKey initWithIdentifier:actionType:relevanceProvidersHash:]([_REActionKey alloc], "initWithIdentifier:actionType:relevanceProvidersHash:", identifier, v6, [actionCopy relevanceProvidersHash]);
 
   return v7;
 }
 
-- (void)_queue_storeDonation:(id)a3
+- (void)_queue_storeDonation:(id)donation
 {
-  v16 = a3;
-  if ([v16 type] == 1)
+  donationCopy = donation;
+  if ([donationCopy type] == 1)
   {
-    [(REDonatedActionFilteredCache *)self _queue_incrementPerformedCountForDonation:v16];
+    [(REDonatedActionFilteredCache *)self _queue_incrementPerformedCountForDonation:donationCopy];
     v4 = +[RESiriActionsDonationsWhitelist sharedInstance];
-    v5 = [v16 bundleIdentifier];
-    v6 = [v16 intentTypeName];
-    v7 = [v4 intentIsWhitelistedForBundleID:v5 andTypeName:v6];
+    bundleIdentifier = [donationCopy bundleIdentifier];
+    intentTypeName = [donationCopy intentTypeName];
+    v7 = [v4 intentIsWhitelistedForBundleID:bundleIdentifier andTypeName:intentTypeName];
 
     if ((v7 & 1) == 0)
     {
@@ -384,37 +384,37 @@ void __37__REDonatedActionFilteredCache_reset__block_invoke(uint64_t a1)
     }
 
 LABEL_6:
-    v12 = [(REDonatedActionFilteredCache *)self _keyForAction:v16];
+    v12 = [(REDonatedActionFilteredCache *)self _keyForAction:donationCopy];
     v13 = [(NSMapTable *)self->_actions objectForKey:v12];
     if (v13)
     {
       v14 = v13;
-      [(_REActionValue *)v13 addAction:v16];
-      v15 = [(REDonatedActionFilteredCache *)self delegate];
-      [v15 donatedActionFilteredCacheCountDidChange];
+      [(_REActionValue *)v13 addAction:donationCopy];
+      delegate = [(REDonatedActionFilteredCache *)self delegate];
+      [delegate donatedActionFilteredCacheCountDidChange];
     }
 
     else
     {
-      v14 = [[_REActionValue alloc] initWithAction:v16];
+      v14 = [[_REActionValue alloc] initWithAction:donationCopy];
       [(NSMapTable *)self->_actions setObject:v14 forKey:v12];
-      v15 = [(REDonatedActionFilteredCache *)self delegate];
-      [v15 donatedActionFilteredCacheDidAddDonation:v16];
+      delegate = [(REDonatedActionFilteredCache *)self delegate];
+      [delegate donatedActionFilteredCacheDidAddDonation:donationCopy];
     }
 
     goto LABEL_10;
   }
 
-  if ([v16 type])
+  if ([donationCopy type])
   {
     goto LABEL_6;
   }
 
-  [(REDonatedActionFilteredCache *)self _queue_incrementPerformedCountForDonation:v16];
+  [(REDonatedActionFilteredCache *)self _queue_incrementPerformedCountForDonation:donationCopy];
   v8 = +[RESiriActionsDonationsWhitelist sharedInstance];
-  v9 = [v16 bundleIdentifier];
-  v10 = [v16 activityType];
-  v11 = [v8 userActivityIsWhitelistedForBundleID:v9 andActivityType:v10];
+  bundleIdentifier2 = [donationCopy bundleIdentifier];
+  activityType = [donationCopy activityType];
+  v11 = [v8 userActivityIsWhitelistedForBundleID:bundleIdentifier2 andActivityType:activityType];
 
   if (v11)
   {
@@ -424,10 +424,10 @@ LABEL_6:
 LABEL_10:
 }
 
-- (void)_queue_removeDonation:(id)a3
+- (void)_queue_removeDonation:(id)donation
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = [a3 objectForKeyedSubscript:@"uuid"];
+  v4 = [donation objectForKeyedSubscript:@"uuid"];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -449,8 +449,8 @@ LABEL_3:
 
       v10 = *(*(&v19 + 1) + 8 * v9);
       v11 = [(NSMapTable *)self->_actions objectForKey:v10, v19];
-      v12 = [v11 uuids];
-      v13 = [v12 containsObject:v4];
+      uuids = [v11 uuids];
+      v13 = [uuids containsObject:v4];
 
       if (v13)
       {
@@ -477,20 +477,20 @@ LABEL_3:
     }
 
     [v11 removeActionWithUUID:v4];
-    v15 = [v11 uuids];
-    v16 = [v15 count];
+    uuids2 = [v11 uuids];
+    v16 = [uuids2 count];
 
     if (v16)
     {
-      v17 = [(REDonatedActionFilteredCache *)self delegate];
-      [v17 donatedActionFilteredCacheCountDidChange];
+      delegate = [(REDonatedActionFilteredCache *)self delegate];
+      [delegate donatedActionFilteredCacheCountDidChange];
     }
 
     else
     {
       [(NSMapTable *)self->_actions removeObjectForKey:v14];
-      v17 = [(REDonatedActionFilteredCache *)self delegate];
-      [v17 donatedActionFilteredCacheDonationRemoved];
+      delegate = [(REDonatedActionFilteredCache *)self delegate];
+      [delegate donatedActionFilteredCacheDonationRemoved];
     }
   }
 
@@ -510,10 +510,10 @@ LABEL_13:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_removeDonationsForBundleIdentifier:(id)a3
+- (void)_queue_removeDonationsForBundleIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x277D85DE8];
-  v18 = a3;
+  identifierCopy = identifier;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -535,9 +535,9 @@ LABEL_3:
 
       v9 = *(*(&v19 + 1) + 8 * v8);
       v10 = [(NSMapTable *)self->_actions objectForKey:v9];
-      v11 = [v10 action];
-      v12 = [v11 bundleIdentifier];
-      v13 = [v18 isEqualToString:v12];
+      action = [v10 action];
+      bundleIdentifier = [action bundleIdentifier];
+      v13 = [identifierCopy isEqualToString:bundleIdentifier];
 
       if (v13)
       {
@@ -566,12 +566,12 @@ LABEL_3:
     v15 = RELogForDomain(14);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [(REDonatedActionFilteredCache *)v10 _queue_removeDonationsForBundleIdentifier:v18, v15];
+      [(REDonatedActionFilteredCache *)v10 _queue_removeDonationsForBundleIdentifier:identifierCopy, v15];
     }
 
     [(NSMapTable *)self->_actions removeObjectForKey:v14];
-    v16 = [(REDonatedActionFilteredCache *)self delegate];
-    [v16 donatedActionFilteredCacheDonationRemoved];
+    delegate = [(REDonatedActionFilteredCache *)self delegate];
+    [delegate donatedActionFilteredCacheDonationRemoved];
   }
 
   else
@@ -583,117 +583,117 @@ LABEL_14:
     v10 = RELogForDomain(14);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(REDonatedActionFilteredCache *)v18 _queue_removeDonationsForBundleIdentifier:v10];
+      [(REDonatedActionFilteredCache *)identifierCopy _queue_removeDonationsForBundleIdentifier:v10];
     }
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)_queue_performedTodayCountForBundleIdentifer:(id)a3 actionIdentifier:(unint64_t)a4
+- (unint64_t)_queue_performedTodayCountForBundleIdentifer:(id)identifer actionIdentifier:(unint64_t)identifier
 {
-  if (!a3)
+  if (!identifer)
   {
     return 0;
   }
 
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v8 = [v6 numberWithUnsignedLongLong:a4];
-  v9 = [_REPerformedActionKey keyForBundleIdentifier:v7 identifier:v8];
+  identiferCopy = identifer;
+  v8 = [v6 numberWithUnsignedLongLong:identifier];
+  v9 = [_REPerformedActionKey keyForBundleIdentifier:identiferCopy identifier:v8];
 
   v10 = [(NSMapTable *)self->_countPerformedTodayByActionType objectForKey:v9];
-  v11 = [v10 unsignedIntegerValue];
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-  return v11;
+  return unsignedIntegerValue;
 }
 
-- (unint64_t)_queue_performedCountForDonation:(id)a3
+- (unint64_t)_queue_performedCountForDonation:(id)donation
 {
-  v4 = a3;
-  v5 = [v4 simplifiedActionTypeIdentifier];
-  if (v5)
+  donationCopy = donation;
+  simplifiedActionTypeIdentifier = [donationCopy simplifiedActionTypeIdentifier];
+  if (simplifiedActionTypeIdentifier)
   {
-    v6 = [v4 bundleIdentifier];
-    v7 = [_REPerformedActionKey keyForBundleIdentifier:v6 identifier:v5];
+    bundleIdentifier = [donationCopy bundleIdentifier];
+    v7 = [_REPerformedActionKey keyForBundleIdentifier:bundleIdentifier identifier:simplifiedActionTypeIdentifier];
 
     v8 = [(NSMapTable *)self->_countsByActionType objectForKey:v7];
-    v9 = [v8 unsignedIntegerValue];
+    unsignedIntegerValue = [v8 unsignedIntegerValue];
   }
 
   else
   {
-    v9 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v9;
+  return unsignedIntegerValue;
 }
 
-- (void)_queue_incrementPerformedCountForDonation:(id)a3
+- (void)_queue_incrementPerformedCountForDonation:(id)donation
 {
-  v23 = a3;
-  v4 = [v23 simplifiedActionTypeIdentifier];
-  if (v4)
+  donationCopy = donation;
+  simplifiedActionTypeIdentifier = [donationCopy simplifiedActionTypeIdentifier];
+  if (simplifiedActionTypeIdentifier)
   {
-    v5 = [v23 bundleIdentifier];
-    v6 = [_REPerformedActionKey keyForBundleIdentifier:v5 identifier:v4];
+    bundleIdentifier = [donationCopy bundleIdentifier];
+    v6 = [_REPerformedActionKey keyForBundleIdentifier:bundleIdentifier identifier:simplifiedActionTypeIdentifier];
 
-    v7 = [v23 creationDate];
+    creationDate = [donationCopy creationDate];
     firstDonationDate = self->_firstDonationDate;
     if (firstDonationDate)
     {
-      v9 = [(NSDate *)firstDonationDate earlierDate:v7];
+      v9 = [(NSDate *)firstDonationDate earlierDate:creationDate];
     }
 
     else
     {
-      v9 = v7;
+      v9 = creationDate;
     }
 
     v10 = self->_firstDonationDate;
     self->_firstDonationDate = v9;
 
     v11 = [(NSMapTable *)self->_countsByActionType objectForKey:v6];
-    v12 = [v11 unsignedIntegerValue];
+    unsignedIntegerValue = [v11 unsignedIntegerValue];
 
     countsByActionType = self->_countsByActionType;
-    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12 + 1];
+    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue + 1];
     [(NSMapTable *)countsByActionType setObject:v14 forKey:v6];
 
-    if (REDateOccursToday(v7))
+    if (REDateOccursToday(creationDate))
     {
-      v15 = [v23 bundleIdentifier];
-      v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "re_actionIdentifierHashValue")}];
-      v17 = [_REPerformedActionKey keyForBundleIdentifier:v15 identifier:v16];
+      bundleIdentifier2 = [donationCopy bundleIdentifier];
+      v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(simplifiedActionTypeIdentifier, "re_actionIdentifierHashValue")}];
+      v17 = [_REPerformedActionKey keyForBundleIdentifier:bundleIdentifier2 identifier:v16];
 
       v18 = [(NSMapTable *)self->_countPerformedTodayByActionType objectForKey:v17];
-      v19 = [v18 unsignedIntegerValue];
+      unsignedIntegerValue2 = [v18 unsignedIntegerValue];
 
       countPerformedTodayByActionType = self->_countPerformedTodayByActionType;
-      v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v19 + 1];
+      v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue2 + 1];
       [(NSMapTable *)countPerformedTodayByActionType setObject:v21 forKey:v17];
     }
 
-    v22 = [(REDonatedActionFilteredCache *)self delegate];
-    [v22 donatedActionFilteredCacheCountDidChange];
+    delegate = [(REDonatedActionFilteredCache *)self delegate];
+    [delegate donatedActionFilteredCacheCountDidChange];
   }
 }
 
-- (void)_refreshAllDonations:(id)a3
+- (void)_refreshAllDonations:(id)donations
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  donationsCopy = donations;
   v5 = RELogForDomain(14);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [donationsCopy name];
     *buf = 138543362;
-    v14 = v6;
+    v14 = name;
     _os_log_impl(&dword_22859F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ received.", buf, 0xCu);
   }
 
-  v7 = [v4 name];
-  v8 = [@"REShowRecentDeveloperDonationsChangedNotification" isEqualToString:v7];
+  name2 = [donationsCopy name];
+  v8 = [@"REShowRecentDeveloperDonationsChangedNotification" isEqualToString:name2];
 
   queue = self->_queue;
   v11[0] = MEMORY[0x277D85DD0];

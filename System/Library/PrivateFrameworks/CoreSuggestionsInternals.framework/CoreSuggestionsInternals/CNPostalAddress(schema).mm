@@ -9,73 +9,73 @@
 {
   v2 = objc_opt_new();
   [v2 setObject:@"http://schema.org/PostalAddress" forKeyedSubscript:@"@type"];
-  v3 = [a1 street];
-  if (v3)
+  street = [self street];
+  if (street)
   {
-    v4 = v3;
-    v5 = [a1 street];
-    v6 = [v5 isEqualToString:&stru_284703F00];
+    v4 = street;
+    street2 = [self street];
+    v6 = [street2 isEqualToString:&stru_284703F00];
 
     if ((v6 & 1) == 0)
     {
-      v7 = [a1 street];
-      [v2 setObject:v7 forKeyedSubscript:@"streetAddress"];
+      street3 = [self street];
+      [v2 setObject:street3 forKeyedSubscript:@"streetAddress"];
     }
   }
 
-  v8 = [a1 city];
-  if (v8)
+  city = [self city];
+  if (city)
   {
-    v9 = v8;
-    v10 = [a1 city];
-    v11 = [v10 isEqualToString:&stru_284703F00];
+    v9 = city;
+    city2 = [self city];
+    v11 = [city2 isEqualToString:&stru_284703F00];
 
     if ((v11 & 1) == 0)
     {
-      v12 = [a1 city];
-      [v2 setObject:v12 forKeyedSubscript:@"addressLocality"];
+      city3 = [self city];
+      [v2 setObject:city3 forKeyedSubscript:@"addressLocality"];
     }
   }
 
-  v13 = [a1 state];
-  if (v13)
+  state = [self state];
+  if (state)
   {
-    v14 = v13;
-    v15 = [a1 state];
-    v16 = [v15 isEqualToString:&stru_284703F00];
+    v14 = state;
+    state2 = [self state];
+    v16 = [state2 isEqualToString:&stru_284703F00];
 
     if ((v16 & 1) == 0)
     {
-      v17 = [a1 state];
-      [v2 setObject:v17 forKeyedSubscript:@"addressRegion"];
+      state3 = [self state];
+      [v2 setObject:state3 forKeyedSubscript:@"addressRegion"];
     }
   }
 
-  v18 = [a1 postalCode];
-  if (v18)
+  postalCode = [self postalCode];
+  if (postalCode)
   {
-    v19 = v18;
-    v20 = [a1 postalCode];
-    v21 = [v20 isEqualToString:&stru_284703F00];
+    v19 = postalCode;
+    postalCode2 = [self postalCode];
+    v21 = [postalCode2 isEqualToString:&stru_284703F00];
 
     if ((v21 & 1) == 0)
     {
-      v22 = [a1 postalCode];
-      [v2 setObject:v22 forKeyedSubscript:@"postalCode"];
+      postalCode3 = [self postalCode];
+      [v2 setObject:postalCode3 forKeyedSubscript:@"postalCode"];
     }
   }
 
-  v23 = [a1 country];
-  if (v23)
+  country = [self country];
+  if (country)
   {
-    v24 = v23;
-    v25 = [a1 country];
-    v26 = [v25 isEqualToString:&stru_284703F00];
+    v24 = country;
+    country2 = [self country];
+    v26 = [country2 isEqualToString:&stru_284703F00];
 
     if ((v26 & 1) == 0)
     {
-      v27 = [a1 country];
-      [v2 setObject:v27 forKeyedSubscript:@"addressCountry"];
+      country3 = [self country];
+      [v2 setObject:country3 forKeyedSubscript:@"addressCountry"];
     }
   }
 

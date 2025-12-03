@@ -1,39 +1,39 @@
 @interface VMWeakConnectionDelegate
-+ (id)forConnection:(id)a3;
++ (id)forConnection:(id)connection;
 - (MFConnection)weak_connection;
-- (id)initForObj:(id)a3;
-- (void)handleStreamEvent:(unint64_t)a3;
+- (id)initForObj:(id)obj;
+- (void)handleStreamEvent:(unint64_t)event;
 @end
 
 @implementation VMWeakConnectionDelegate
 
-+ (id)forConnection:(id)a3
++ (id)forConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [[VMWeakConnectionDelegate alloc] initForObj:v3];
+  connectionCopy = connection;
+  v4 = [[VMWeakConnectionDelegate alloc] initForObj:connectionCopy];
 
   return v4;
 }
 
-- (id)initForObj:(id)a3
+- (id)initForObj:(id)obj
 {
-  v4 = a3;
+  objCopy = obj;
   v8.receiver = self;
   v8.super_class = VMWeakConnectionDelegate;
   v5 = [(VMWeakConnectionDelegate *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(VMWeakConnectionDelegate *)v5 setWeak_connection:v4];
+    [(VMWeakConnectionDelegate *)v5 setWeak_connection:objCopy];
   }
 
   return v6;
 }
 
-- (void)handleStreamEvent:(unint64_t)a3
+- (void)handleStreamEvent:(unint64_t)event
 {
-  v4 = [(VMWeakConnectionDelegate *)self weak_connection];
-  [v4 handleStreamEvent:a3];
+  weak_connection = [(VMWeakConnectionDelegate *)self weak_connection];
+  [weak_connection handleStreamEvent:event];
 }
 
 - (MFConnection)weak_connection

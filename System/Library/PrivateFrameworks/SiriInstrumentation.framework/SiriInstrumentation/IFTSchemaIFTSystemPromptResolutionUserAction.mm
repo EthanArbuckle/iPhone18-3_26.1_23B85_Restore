@@ -1,11 +1,11 @@
 @interface IFTSchemaIFTSystemPromptResolutionUserAction
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (IFTSchemaIFTSystemPromptResolutionActionCancellation)actionCanceled;
 - (IFTSchemaIFTSystemPromptResolutionRequirementResolution)requirementAddressed;
-- (IFTSchemaIFTSystemPromptResolutionUserAction)initWithDictionary:(id)a3;
-- (IFTSchemaIFTSystemPromptResolutionUserAction)initWithJSON:(id)a3;
+- (IFTSchemaIFTSystemPromptResolutionUserAction)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTSystemPromptResolutionUserAction)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (int64_t)disambiguationIndexSelected;
@@ -15,46 +15,46 @@
 - (void)deleteIsActionConfirmed;
 - (void)deleteIsParameterConfirmed;
 - (void)deleteRequirementAddressed;
-- (void)setActionCanceled:(id)a3;
-- (void)setDisambiguationIndexSelected:(int64_t)a3;
-- (void)setIsActionConfirmed:(BOOL)a3;
-- (void)setIsParameterConfirmed:(BOOL)a3;
-- (void)setRequirementAddressed:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setActionCanceled:(id)canceled;
+- (void)setDisambiguationIndexSelected:(int64_t)selected;
+- (void)setIsActionConfirmed:(BOOL)confirmed;
+- (void)setIsParameterConfirmed:(BOOL)confirmed;
+- (void)setRequirementAddressed:(id)addressed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTSystemPromptResolutionUserAction
 
-- (IFTSchemaIFTSystemPromptResolutionUserAction)initWithDictionary:(id)a3
+- (IFTSchemaIFTSystemPromptResolutionUserAction)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = IFTSchemaIFTSystemPromptResolutionUserAction;
   v5 = [(IFTSchemaIFTSystemPromptResolutionUserAction *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isActionConfirmed"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isActionConfirmed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTSystemPromptResolutionUserAction setIsActionConfirmed:](v5, "setIsActionConfirmed:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"isParameterConfirmed"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isParameterConfirmed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTSystemPromptResolutionUserAction setIsParameterConfirmed:](v5, "setIsParameterConfirmed:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"disambiguationIndexSelected"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"disambiguationIndexSelected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTSystemPromptResolutionUserAction setDisambiguationIndexSelected:](v5, "setDisambiguationIndexSelected:", [v8 longLongValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"requirementAddressed"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"requirementAddressed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -62,7 +62,7 @@
       [(IFTSchemaIFTSystemPromptResolutionUserAction *)v5 setRequirementAddressed:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"actionCanceled"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"actionCanceled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -76,30 +76,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTSystemPromptResolutionUserAction)initWithJSON:(id)a3
+- (IFTSchemaIFTSystemPromptResolutionUserAction)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -112,20 +112,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_actionCanceled)
   {
-    v4 = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self actionCanceled];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    actionCanceled = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self actionCanceled];
+    dictionaryRepresentation = [actionCanceled dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"actionCanceled"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"actionCanceled"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"actionCanceled"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"actionCanceled"];
     }
   }
 
@@ -133,7 +133,7 @@
   if (whichOneof_Systempromptresolutionuseraction == 6)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[IFTSchemaIFTSystemPromptResolutionUserAction disambiguationIndexSelected](self, "disambiguationIndexSelected")}];
-    [v3 setObject:v8 forKeyedSubscript:@"disambiguationIndexSelected"];
+    [dictionary setObject:v8 forKeyedSubscript:@"disambiguationIndexSelected"];
 
     whichOneof_Systempromptresolutionuseraction = self->_whichOneof_Systempromptresolutionuseraction;
   }
@@ -141,7 +141,7 @@
   if (whichOneof_Systempromptresolutionuseraction == 1)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTSystemPromptResolutionUserAction isActionConfirmed](self, "isActionConfirmed")}];
-    [v3 setObject:v9 forKeyedSubscript:@"isActionConfirmed"];
+    [dictionary setObject:v9 forKeyedSubscript:@"isActionConfirmed"];
 
     whichOneof_Systempromptresolutionuseraction = self->_whichOneof_Systempromptresolutionuseraction;
   }
@@ -149,28 +149,28 @@
   if (whichOneof_Systempromptresolutionuseraction == 3)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTSystemPromptResolutionUserAction isParameterConfirmed](self, "isParameterConfirmed")}];
-    [v3 setObject:v10 forKeyedSubscript:@"isParameterConfirmed"];
+    [dictionary setObject:v10 forKeyedSubscript:@"isParameterConfirmed"];
   }
 
   if (self->_requirementAddressed)
   {
-    v11 = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self requirementAddressed];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    requirementAddressed = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self requirementAddressed];
+    dictionaryRepresentation2 = [requirementAddressed dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"requirementAddressed"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"requirementAddressed"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"requirementAddressed"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"requirementAddressed"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -207,52 +207,52 @@ LABEL_9:
   return v6 ^ [(IFTSchemaIFTSystemPromptResolutionActionCancellation *)self->_actionCanceled hash]^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   whichOneof_Systempromptresolutionuseraction = self->_whichOneof_Systempromptresolutionuseraction;
-  if (whichOneof_Systempromptresolutionuseraction != [v4 whichOneof_Systempromptresolutionuseraction])
+  if (whichOneof_Systempromptresolutionuseraction != [equalCopy whichOneof_Systempromptresolutionuseraction])
   {
     goto LABEL_16;
   }
 
   isActionConfirmed = self->_isActionConfirmed;
-  if (isActionConfirmed != [v4 isActionConfirmed])
+  if (isActionConfirmed != [equalCopy isActionConfirmed])
   {
     goto LABEL_16;
   }
 
   isParameterConfirmed = self->_isParameterConfirmed;
-  if (isParameterConfirmed != [v4 isParameterConfirmed])
+  if (isParameterConfirmed != [equalCopy isParameterConfirmed])
   {
     goto LABEL_16;
   }
 
   disambiguationIndexSelected = self->_disambiguationIndexSelected;
-  if (disambiguationIndexSelected != [v4 disambiguationIndexSelected])
+  if (disambiguationIndexSelected != [equalCopy disambiguationIndexSelected])
   {
     goto LABEL_16;
   }
 
-  v9 = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self requirementAddressed];
-  v10 = [v4 requirementAddressed];
-  if ((v9 != 0) == (v10 == 0))
+  requirementAddressed = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self requirementAddressed];
+  requirementAddressed2 = [equalCopy requirementAddressed];
+  if ((requirementAddressed != 0) == (requirementAddressed2 == 0))
   {
     goto LABEL_15;
   }
 
-  v11 = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self requirementAddressed];
-  if (v11)
+  requirementAddressed3 = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self requirementAddressed];
+  if (requirementAddressed3)
   {
-    v12 = v11;
-    v13 = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self requirementAddressed];
-    v14 = [v4 requirementAddressed];
-    v15 = [v13 isEqual:v14];
+    v12 = requirementAddressed3;
+    requirementAddressed4 = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self requirementAddressed];
+    requirementAddressed5 = [equalCopy requirementAddressed];
+    v15 = [requirementAddressed4 isEqual:requirementAddressed5];
 
     if (!v15)
     {
@@ -264,12 +264,12 @@ LABEL_9:
   {
   }
 
-  v9 = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self actionCanceled];
-  v10 = [v4 actionCanceled];
-  if ((v9 != 0) != (v10 == 0))
+  requirementAddressed = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self actionCanceled];
+  requirementAddressed2 = [equalCopy actionCanceled];
+  if ((requirementAddressed != 0) != (requirementAddressed2 == 0))
   {
-    v16 = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self actionCanceled];
-    if (!v16)
+    actionCanceled = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self actionCanceled];
+    if (!actionCanceled)
     {
 
 LABEL_19:
@@ -277,10 +277,10 @@ LABEL_19:
       goto LABEL_17;
     }
 
-    v17 = v16;
-    v18 = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self actionCanceled];
-    v19 = [v4 actionCanceled];
-    v20 = [v18 isEqual:v19];
+    v17 = actionCanceled;
+    actionCanceled2 = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self actionCanceled];
+    actionCanceled3 = [equalCopy actionCanceled];
+    v20 = [actionCanceled2 isEqual:actionCanceled3];
 
     if (v20)
     {
@@ -300,9 +300,9 @@ LABEL_17:
   return v21;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   whichOneof_Systempromptresolutionuseraction = self->_whichOneof_Systempromptresolutionuseraction;
   if (whichOneof_Systempromptresolutionuseraction == 1)
   {
@@ -321,23 +321,23 @@ LABEL_17:
     PBDataWriterWriteInt64Field();
   }
 
-  v5 = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self requirementAddressed];
+  requirementAddressed = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self requirementAddressed];
 
-  if (v5)
+  if (requirementAddressed)
   {
-    v6 = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self requirementAddressed];
+    requirementAddressed2 = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self requirementAddressed];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self actionCanceled];
+  actionCanceled = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self actionCanceled];
 
-  v8 = v10;
-  if (v7)
+  v8 = toCopy;
+  if (actionCanceled)
   {
-    v9 = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self actionCanceled];
+    actionCanceled2 = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self actionCanceled];
     PBDataWriterWriteSubmessage();
 
-    v8 = v10;
+    v8 = toCopy;
   }
 }
 
@@ -366,18 +366,18 @@ LABEL_17:
   return v3;
 }
 
-- (void)setActionCanceled:(id)a3
+- (void)setActionCanceled:(id)canceled
 {
-  v4 = a3;
+  canceledCopy = canceled;
   self->_isActionConfirmed = 0;
   self->_isParameterConfirmed = 0;
   self->_disambiguationIndexSelected = 0;
   requirementAddressed = self->_requirementAddressed;
   self->_requirementAddressed = 0;
 
-  self->_whichOneof_Systempromptresolutionuseraction = 8 * (v4 != 0);
+  self->_whichOneof_Systempromptresolutionuseraction = 8 * (canceledCopy != 0);
   actionCanceled = self->_actionCanceled;
-  self->_actionCanceled = v4;
+  self->_actionCanceled = canceledCopy;
 }
 
 - (void)deleteRequirementAddressed
@@ -405,9 +405,9 @@ LABEL_17:
   return v3;
 }
 
-- (void)setRequirementAddressed:(id)a3
+- (void)setRequirementAddressed:(id)addressed
 {
-  v4 = a3;
+  addressedCopy = addressed;
   self->_isActionConfirmed = 0;
   self->_isParameterConfirmed = 0;
   self->_disambiguationIndexSelected = 0;
@@ -415,14 +415,14 @@ LABEL_17:
   self->_actionCanceled = 0;
 
   v6 = 7;
-  if (!v4)
+  if (!addressedCopy)
   {
     v6 = 0;
   }
 
   self->_whichOneof_Systempromptresolutionuseraction = v6;
   requirementAddressed = self->_requirementAddressed;
-  self->_requirementAddressed = v4;
+  self->_requirementAddressed = addressedCopy;
 }
 
 - (void)deleteDisambiguationIndexSelected
@@ -447,7 +447,7 @@ LABEL_17:
   }
 }
 
-- (void)setDisambiguationIndexSelected:(int64_t)a3
+- (void)setDisambiguationIndexSelected:(int64_t)selected
 {
   self->_isActionConfirmed = 0;
   self->_isParameterConfirmed = 0;
@@ -458,7 +458,7 @@ LABEL_17:
   self->_actionCanceled = 0;
 
   self->_whichOneof_Systempromptresolutionuseraction = 6;
-  self->_disambiguationIndexSelected = a3;
+  self->_disambiguationIndexSelected = selected;
 }
 
 - (void)deleteIsParameterConfirmed
@@ -470,7 +470,7 @@ LABEL_17:
   }
 }
 
-- (void)setIsParameterConfirmed:(BOOL)a3
+- (void)setIsParameterConfirmed:(BOOL)confirmed
 {
   self->_isActionConfirmed = 0;
   self->_disambiguationIndexSelected = 0;
@@ -481,7 +481,7 @@ LABEL_17:
   self->_actionCanceled = 0;
 
   self->_whichOneof_Systempromptresolutionuseraction = 3;
-  self->_isParameterConfirmed = a3;
+  self->_isParameterConfirmed = confirmed;
 }
 
 - (void)deleteIsActionConfirmed
@@ -493,7 +493,7 @@ LABEL_17:
   }
 }
 
-- (void)setIsActionConfirmed:(BOOL)a3
+- (void)setIsActionConfirmed:(BOOL)confirmed
 {
   self->_isParameterConfirmed = 0;
   self->_disambiguationIndexSelected = 0;
@@ -504,29 +504,29 @@ LABEL_17:
   self->_actionCanceled = 0;
 
   self->_whichOneof_Systempromptresolutionuseraction = 1;
-  self->_isActionConfirmed = a3;
+  self->_isActionConfirmed = confirmed;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = IFTSchemaIFTSystemPromptResolutionUserAction;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self requirementAddressed];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  requirementAddressed = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self requirementAddressed];
+  v7 = [requirementAddressed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaIFTSystemPromptResolutionUserAction *)self deleteRequirementAddressed];
   }
 
-  v9 = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self actionCanceled];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  actionCanceled = [(IFTSchemaIFTSystemPromptResolutionUserAction *)self actionCanceled];
+  v10 = [actionCanceled applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(IFTSchemaIFTSystemPromptResolutionUserAction *)self deleteActionCanceled];
   }

@@ -1,25 +1,25 @@
 @interface PHAssetCloudSharedProperties
 + (id)propertiesToFetch;
-- (PHAssetCloudSharedProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5;
+- (PHAssetCloudSharedProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched;
 @end
 
 @implementation PHAssetCloudSharedProperties
 
-- (PHAssetCloudSharedProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5
+- (PHAssetCloudSharedProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched
 {
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  assetCopy = asset;
   v14.receiver = self;
   v14.super_class = PHAssetCloudSharedProperties;
   v9 = [(PHAssetCloudSharedProperties *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->super._asset, v8);
-    v11 = [v7 objectForKeyedSubscript:@"cloudIsMyAsset"];
+    objc_storeWeak(&v9->super._asset, assetCopy);
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"cloudIsMyAsset"];
     v10->_cloudIsMyAsset = [v11 BOOLValue];
 
-    v12 = [v7 objectForKeyedSubscript:@"cloudHasCommentsByMe"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"cloudHasCommentsByMe"];
     v10->_cloudHasCommentsByMe = [v12 BOOLValue];
   }
 

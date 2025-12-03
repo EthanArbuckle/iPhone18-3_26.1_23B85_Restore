@@ -1,23 +1,23 @@
 @interface CPSScaledImageView
 - (CGSize)intrinsicContentSize;
 - (void)invalidateIntrinsicContentSize;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CPSScaledImageView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = CPSScaledImageView;
-  v4 = a3;
-  [(CPSScaledImageView *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(CPSScaledImageView *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(CPSScaledImageView *)self traitCollection:v8.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  LOBYTE(v4) = [v6 isEqualToString:v7];
-  if ((v4 & 1) == 0)
+  LOBYTE(changeCopy) = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
+  if ((changeCopy & 1) == 0)
   {
     [(CPSScaledImageView *)self invalidateIntrinsicContentSize];
   }
@@ -36,10 +36,10 @@
   if (self->_needsUpdateScaledImageSize)
   {
     self->_needsUpdateScaledImageSize = 0;
-    v3 = [(CPSScaledImageView *)self image];
-    if (v3)
+    image = [(CPSScaledImageView *)self image];
+    if (image)
     {
-      v4 = [(CPSScaledImageView *)self traitCollection];
+      traitCollection = [(CPSScaledImageView *)self traitCollection];
       if (self->_textStyleForScaling)
       {
         textStyleForScaling = self->_textStyleForScaling;
@@ -50,12 +50,12 @@
         textStyleForScaling = *MEMORY[0x277D76918];
       }
 
-      v6 = [MEMORY[0x277D74300] preferredFontForTextStyle:textStyleForScaling compatibleWithTraitCollection:v4];
-      [v3 size];
+      v6 = [MEMORY[0x277D74300] preferredFontForTextStyle:textStyleForScaling compatibleWithTraitCollection:traitCollection];
+      [image size];
       v8 = v7;
       [v6 _scaledValueForValue:?];
       [v6 _scaledValueForValue:v8];
-      [v4 displayScale];
+      [traitCollection displayScale];
       UISizeRoundToScale();
       self->_scaledImageSize.width = v9;
       self->_scaledImageSize.height = v10;

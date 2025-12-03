@@ -1,7 +1,7 @@
 @interface CNCoalescingTimer
 + (OS_os_log)os_log;
-- (CNCoalescingTimer)initWithDelay:(double)a3 options:(unint64_t)a4 block:(id)a5 schedulerProvider:(id)a6 downstreamScheduler:(id)a7;
-- (CNCoalescingTimer)initWithDelay:(double)a3 options:(unint64_t)a4 delegate:(id)a5;
+- (CNCoalescingTimer)initWithDelay:(double)delay options:(unint64_t)options block:(id)block schedulerProvider:(id)provider downstreamScheduler:(id)scheduler;
+- (CNCoalescingTimer)initWithDelay:(double)delay options:(unint64_t)options delegate:(id)delegate;
 - (void)dealloc;
 - (void)handleEvent;
 - (void)nts_closeDoor;
@@ -14,13 +14,13 @@
 
 - (void)handleEvent
 {
-  v3 = [(CNCoalescingTimer *)self resourceLock];
+  resourceLock = [(CNCoalescingTimer *)self resourceLock];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __32__CNCoalescingTimer_handleEvent__block_invoke;
   v4[3] = &unk_1E6ED5830;
   v4[4] = self;
-  CNRunWithLock(v3, v4);
+  CNRunWithLock(resourceLock, v4);
 }
 
 uint64_t __32__CNCoalescingTimer_handleEvent__block_invoke(uint64_t a1)
@@ -48,23 +48,23 @@ uint64_t __32__CNCoalescingTimer_handleEvent__block_invoke(uint64_t a1)
 - (void)nts_closeDoor
 {
   [(CNCoalescingTimer *)self setOpen:0];
-  v3 = [(CNCoalescingTimer *)self delayScheduler];
+  delayScheduler = [(CNCoalescingTimer *)self delayScheduler];
   [(CNCoalescingTimer *)self delay];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __34__CNCoalescingTimer_nts_closeDoor__block_invoke;
   v5[3] = &unk_1E6ED5830;
   v5[4] = self;
-  v4 = [v3 afterDelay:v5 performBlock:?];
+  v4 = [delayScheduler afterDelay:v5 performBlock:?];
   [(CNCoalescingTimer *)self setScheduledToken:v4];
 }
 
 - (void)nts_makeSomeoneWait
 {
-  v3 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
   {
-    [(CNCoalescingTimer *)v3 nts_makeSomeoneWait];
+    [(CNCoalescingTimer *)os_log nts_makeSomeoneWait];
   }
 
   [(CNCoalescingTimer *)self setSomeoneWaiting:1];
@@ -89,22 +89,22 @@ uint64_t __27__CNCoalescingTimer_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (CNCoalescingTimer)initWithDelay:(double)a3 options:(unint64_t)a4 delegate:(id)a5
+- (CNCoalescingTimer)initWithDelay:(double)delay options:(unint64_t)options delegate:(id)delegate
 {
-  v8 = a5;
-  objc_initWeak(&location, v8);
+  delegateCopy = delegate;
+  objc_initWeak(&location, delegateCopy);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __52__CNCoalescingTimer_initWithDelay_options_delegate___block_invoke;
   v16[3] = &unk_1E6ED5C10;
   objc_copyWeak(&v18, &location);
-  v17 = self;
+  selfCopy = self;
   v9 = +[(CNEnvironmentBase *)CNEnvironment];
-  v10 = [v9 schedulerProvider];
+  schedulerProvider = [v9 schedulerProvider];
   v11 = +[(CNEnvironmentBase *)CNEnvironment];
-  v12 = [v11 schedulerProvider];
-  v13 = [v12 backgroundScheduler];
-  v14 = [(CNCoalescingTimer *)v17 initWithDelay:a4 options:v16 block:v10 schedulerProvider:v13 downstreamScheduler:a3];
+  schedulerProvider2 = [v11 schedulerProvider];
+  backgroundScheduler = [schedulerProvider2 backgroundScheduler];
+  v14 = [(CNCoalescingTimer *)selfCopy initWithDelay:options options:v16 block:schedulerProvider schedulerProvider:backgroundScheduler downstreamScheduler:delay];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
@@ -118,31 +118,31 @@ void __52__CNCoalescingTimer_initWithDelay_options_delegate___block_invoke(uint6
   [WeakRetained timerDidEmitEvent:*(a1 + 32)];
 }
 
-- (CNCoalescingTimer)initWithDelay:(double)a3 options:(unint64_t)a4 block:(id)a5 schedulerProvider:(id)a6 downstreamScheduler:(id)a7
+- (CNCoalescingTimer)initWithDelay:(double)delay options:(unint64_t)options block:(id)block schedulerProvider:(id)provider downstreamScheduler:(id)scheduler
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  blockCopy = block;
+  providerCopy = provider;
+  schedulerCopy = scheduler;
   v25.receiver = self;
   v25.super_class = CNCoalescingTimer;
   v15 = [(CNCoalescingTimer *)&v25 init];
   v16 = v15;
   if (v15)
   {
-    v15->_delay = a3;
-    v17 = [v12 copy];
+    v15->_delay = delay;
+    v17 = [blockCopy copy];
     block = v16->_block;
     v16->_block = v17;
 
-    v16->_options = a4;
-    objc_storeStrong(&v16->_downstreamScheduler, a7);
+    v16->_options = options;
+    objc_storeStrong(&v16->_downstreamScheduler, scheduler);
     v19 = objc_alloc_init(CNUnfairLock);
     resourceLock = v16->_resourceLock;
     v16->_resourceLock = v19;
 
-    v21 = [v13 backgroundScheduler];
+    backgroundScheduler = [providerCopy backgroundScheduler];
     delayScheduler = v16->_delayScheduler;
-    v16->_delayScheduler = v21;
+    v16->_delayScheduler = backgroundScheduler;
 
     *&v16->_open = 1;
     v23 = v16;
@@ -163,9 +163,9 @@ void __52__CNCoalescingTimer_initWithDelay_options_delegate___block_invoke(uint6
 {
   [(CNCoalescingTimer *)self setSomeoneWaiting:0];
   [(CNCoalescingTimer *)self nts_closeDoor];
-  v4 = [(CNCoalescingTimer *)self downstreamScheduler];
-  v3 = [(CNCoalescingTimer *)self block];
-  [v4 performBlock:v3];
+  downstreamScheduler = [(CNCoalescingTimer *)self downstreamScheduler];
+  block = [(CNCoalescingTimer *)self block];
+  [downstreamScheduler performBlock:block];
 }
 
 - (void)nts_openDoor
@@ -173,10 +173,10 @@ void __52__CNCoalescingTimer_initWithDelay_options_delegate___block_invoke(uint6
   [(CNCoalescingTimer *)self setOpen:1];
   if ([(CNCoalescingTimer *)self isSomeoneWaiting])
   {
-    v3 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
     {
-      [(CNCoalescingTimer *)v3 nts_openDoor];
+      [(CNCoalescingTimer *)os_log nts_openDoor];
     }
 
     [(CNCoalescingTimer *)self nts_letSomeoneIn];

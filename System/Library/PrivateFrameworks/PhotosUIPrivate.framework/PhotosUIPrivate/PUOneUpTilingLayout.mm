@@ -1,19 +1,19 @@
 @interface PUOneUpTilingLayout
-+ (CGRect)rectForFittingToTargetPixelSize:(CGSize)a3 imagePixelSize:(CGSize)a4 bestSquareUnitRect:(CGRect)a5;
-+ (CGRect)untransformedRectForItemWithAspectRatio:(double)a3 pageRect:(CGRect)a4 safeInsets:(UIEdgeInsets)a5;
++ (CGRect)rectForFittingToTargetPixelSize:(CGSize)size imagePixelSize:(CGSize)pixelSize bestSquareUnitRect:(CGRect)rect;
++ (CGRect)untransformedRectForItemWithAspectRatio:(double)ratio pageRect:(CGRect)rect safeInsets:(UIEdgeInsets)insets;
 + (id)centerTileKinds;
-- (BOOL)_accessoryViewVisibilityForItemAtIndexPath:(id)a3;
-- (BOOL)_isShowingInfoPanelForItemAtIndexPath:(id)a3;
-- (BOOL)_isVideoPlacholderVisibleForItemAtIndexPath:(id)a3;
-- (BOOL)_shouldApplyInsetStylingToContentWithRect:(CGRect)a3 indexPath:(id)a4;
-- (BOOL)_shouldShowRenderIndicatorForIndexPath:(id)a3 size:(CGSize)a4;
-- (CGPoint)_contentOffsetForItemAtIndexPath:(id)a3;
-- (CGRect)_frameForTileWithSize:(CGSize)a3 centeredOnItemAtIndexPath:(id)a4;
-- (CGRect)_pageRectForItemAtIndexPath:(id)a3;
-- (CGRect)_untransformedRectForItemAtIndexPath:(id)a3;
-- (CGRect)_untransformedRectForItemAtIndexPath:(id)a3 pageRect:(CGRect)a4;
-- (CGRect)visibleRectForItemAtIndexPath:(id)a3 transitionProgress:(double)a4;
-- (CGSize)_contentPixelSizeForItemAtIndexPath:(id)a3;
+- (BOOL)_accessoryViewVisibilityForItemAtIndexPath:(id)path;
+- (BOOL)_isShowingInfoPanelForItemAtIndexPath:(id)path;
+- (BOOL)_isVideoPlacholderVisibleForItemAtIndexPath:(id)path;
+- (BOOL)_shouldApplyInsetStylingToContentWithRect:(CGRect)rect indexPath:(id)path;
+- (BOOL)_shouldShowRenderIndicatorForIndexPath:(id)path size:(CGSize)size;
+- (CGPoint)_contentOffsetForItemAtIndexPath:(id)path;
+- (CGRect)_frameForTileWithSize:(CGSize)size centeredOnItemAtIndexPath:(id)path;
+- (CGRect)_pageRectForItemAtIndexPath:(id)path;
+- (CGRect)_untransformedRectForItemAtIndexPath:(id)path;
+- (CGRect)_untransformedRectForItemAtIndexPath:(id)path pageRect:(CGRect)rect;
+- (CGRect)visibleRectForItemAtIndexPath:(id)path transitionProgress:(double)progress;
+- (CGSize)_contentPixelSizeForItemAtIndexPath:(id)path;
 - (CGSize)_itemSize;
 - (CGSize)assetExplorerReviewScreenProgressIndicatorSize;
 - (CGSize)bufferingIndicatorSize;
@@ -24,63 +24,63 @@
 - (CGSize)playButtonSize;
 - (CGSize)progressIndicatorSize;
 - (CGSize)renderIndicatorSize;
-- (CGSize)sizeForSection:(int64_t)a3 numberOfItems:(int64_t)a4;
+- (CGSize)sizeForSection:(int64_t)section numberOfItems:(int64_t)items;
 - (PUOneUpTilingLayout)init;
 - (PUOneUpTilingLayoutDelegate)delegate;
-- (UIEdgeInsets)_cropInsetsForTileAtIndexPath:(id)a3 layoutRect:(CGRect)a4;
+- (UIEdgeInsets)_cropInsetsForTileAtIndexPath:(id)path layoutRect:(CGRect)rect;
 - (UIEdgeInsets)contentDecorationAdditionalInsets;
 - (UIEdgeInsets)contentGuideInsets;
 - (UIEdgeInsets)contentSafeInsets;
 - (UIEdgeInsets)progressIndicatorContentInsets;
-- (double)_insetContentCornerRadiusForItemAtIndexPath:(id)a3;
-- (double)_normalizedTransitionProgressFrom:(id)a3 withAbscissa:(double)a4 outNeighbor:(id *)a5;
-- (id)_createLayoutInfoForTileWithIndexPath:(id)a3 kind:(id)a4;
-- (id)_displayTileTransformForItemAtIndexPath:(id)a3 options:(unint64_t)a4;
-- (id)_displayTileTransformForItemAtIndexPath:(id)a3 pageSize:(CGSize)a4 secondaryDisplayTransform:(id)a5 options:(unint64_t)a6;
-- (id)_indexPathOfItemClosestToAbscissa:(double)a3;
-- (id)layoutInfoForTileWithIndexPath:(id)a3 kind:(id)a4;
+- (double)_insetContentCornerRadiusForItemAtIndexPath:(id)path;
+- (double)_normalizedTransitionProgressFrom:(id)from withAbscissa:(double)abscissa outNeighbor:(id *)neighbor;
+- (id)_createLayoutInfoForTileWithIndexPath:(id)path kind:(id)kind;
+- (id)_displayTileTransformForItemAtIndexPath:(id)path options:(unint64_t)options;
+- (id)_displayTileTransformForItemAtIndexPath:(id)path pageSize:(CGSize)size secondaryDisplayTransform:(id)transform options:(unint64_t)options;
+- (id)_indexPathOfItemClosestToAbscissa:(double)abscissa;
+- (id)layoutInfoForTileWithIndexPath:(id)path kind:(id)kind;
 - (id)preferredScrollInfo;
-- (void)_collectLayoutInfosForTilesInRect:(CGRect)a3 withIndexPath:(id)a4 kinds:(id)a5 toSet:(id)a6;
-- (void)_getLayoutRect:(CGRect *)a3 transform:(CGAffineTransform *)a4 parallaxOffset:(CGPoint *)a5 contentsRect:(CGRect *)a6 alpha:(double *)a7 forContentOfItemAtIndexPath:(id)a8 options:(unint64_t)a9;
-- (void)_invalidateContentRelatedTilesWithIndexPath:(id)a3 inContext:(id)a4;
-- (void)addLayoutInfosForSupplementaryTilesInRect:(CGRect)a3 toSet:(id)a4;
-- (void)addLayoutInfosForTilesInRect:(CGRect)a3 section:(int64_t)a4 toSet:(id)a5;
-- (void)invalidateAccessoryForItemAtIndexPath:(id)a3 withOptions:(unint64_t)a4;
+- (void)_collectLayoutInfosForTilesInRect:(CGRect)rect withIndexPath:(id)path kinds:(id)kinds toSet:(id)set;
+- (void)_getLayoutRect:(CGRect *)rect transform:(CGAffineTransform *)transform parallaxOffset:(CGPoint *)offset contentsRect:(CGRect *)contentsRect alpha:(double *)alpha forContentOfItemAtIndexPath:(id)path options:(unint64_t)options;
+- (void)_invalidateContentRelatedTilesWithIndexPath:(id)path inContext:(id)context;
+- (void)addLayoutInfosForSupplementaryTilesInRect:(CGRect)rect toSet:(id)set;
+- (void)addLayoutInfosForTilesInRect:(CGRect)rect section:(int64_t)section toSet:(id)set;
+- (void)invalidateAccessoryForItemAtIndexPath:(id)path withOptions:(unint64_t)options;
 - (void)invalidateAllContentTiles;
-- (void)invalidateBadgeSizeForItemAtIndexPath:(id)a3;
-- (void)invalidateContentOffsetForItemAtIndexPath:(id)a3 withOptions:(unint64_t)a4;
-- (void)invalidateLayoutWithContext:(id)a3;
-- (void)invalidateLoadingIndicatorForItemAtIndexPath:(id)a3;
-- (void)invalidateModelTileTransformForItemAtIndexPath:(id)a3;
+- (void)invalidateBadgeSizeForItemAtIndexPath:(id)path;
+- (void)invalidateContentOffsetForItemAtIndexPath:(id)path withOptions:(unint64_t)options;
+- (void)invalidateLayoutWithContext:(id)context;
+- (void)invalidateLoadingIndicatorForItemAtIndexPath:(id)path;
+- (void)invalidateModelTileTransformForItemAtIndexPath:(id)path;
 - (void)invalidatePrimaryContentTiles;
-- (void)invalidateProgressIndicatorForItemAtIndexPath:(id)a3;
-- (void)invalidateVideoPlaceholderForItemAtIndexPath:(id)a3;
+- (void)invalidateProgressIndicatorForItemAtIndexPath:(id)path;
+- (void)invalidateVideoPlaceholderForItemAtIndexPath:(id)path;
 - (void)prepareLayout;
-- (void)setAssetExplorerReviewScreenProgressIndicatorSize:(CGSize)a3;
-- (void)setBufferingIndicatorSize:(CGSize)a3;
-- (void)setCanDisplayLoadingIndicators:(BOOL)a3;
-- (void)setContentDecorationAdditionalInsets:(UIEdgeInsets)a3;
-- (void)setContentSafeInsets:(UIEdgeInsets)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDisplaySizeForInsetMatching:(CGSize)a3;
-- (void)setInsetContentBorderColor:(id)a3;
-- (void)setInsetContentBorderWidth:(double)a3;
-- (void)setInsetContentCornerRadius:(double)a3;
-- (void)setPeopleRowSize:(CGSize)a3;
-- (void)setPlayButtonSize:(CGSize)a3;
-- (void)setProgressIndicatorContentInsets:(UIEdgeInsets)a3;
-- (void)setProgressIndicatorSize:(CGSize)a3;
-- (void)setRenderIndicatorSize:(CGSize)a3;
-- (void)setShouldHideMainContent:(BOOL)a3;
-- (void)setShouldPinContentToTop:(BOOL)a3;
-- (void)setUseAssetExplorerReviewScreenBadgeTiles:(BOOL)a3;
-- (void)setUseBadgeTiles:(BOOL)a3;
-- (void)setUseImportStatusIndicatorTiles:(BOOL)a3;
-- (void)setUseSelectionIndicatorTiles:(BOOL)a3;
-- (void)setUseSyndicationAttributionTile:(BOOL)a3;
-- (void)setUseVerticalReviewScreenControlBarLayout:(BOOL)a3;
-- (void)setVisibleRect:(CGRect)a3;
-- (void)setWindowInterfaceOrientation:(int64_t)a3;
+- (void)setAssetExplorerReviewScreenProgressIndicatorSize:(CGSize)size;
+- (void)setBufferingIndicatorSize:(CGSize)size;
+- (void)setCanDisplayLoadingIndicators:(BOOL)indicators;
+- (void)setContentDecorationAdditionalInsets:(UIEdgeInsets)insets;
+- (void)setContentSafeInsets:(UIEdgeInsets)insets;
+- (void)setDelegate:(id)delegate;
+- (void)setDisplaySizeForInsetMatching:(CGSize)matching;
+- (void)setInsetContentBorderColor:(id)color;
+- (void)setInsetContentBorderWidth:(double)width;
+- (void)setInsetContentCornerRadius:(double)radius;
+- (void)setPeopleRowSize:(CGSize)size;
+- (void)setPlayButtonSize:(CGSize)size;
+- (void)setProgressIndicatorContentInsets:(UIEdgeInsets)insets;
+- (void)setProgressIndicatorSize:(CGSize)size;
+- (void)setRenderIndicatorSize:(CGSize)size;
+- (void)setShouldHideMainContent:(BOOL)content;
+- (void)setShouldPinContentToTop:(BOOL)top;
+- (void)setUseAssetExplorerReviewScreenBadgeTiles:(BOOL)tiles;
+- (void)setUseBadgeTiles:(BOOL)tiles;
+- (void)setUseImportStatusIndicatorTiles:(BOOL)tiles;
+- (void)setUseSelectionIndicatorTiles:(BOOL)tiles;
+- (void)setUseSyndicationAttributionTile:(BOOL)tile;
+- (void)setUseVerticalReviewScreenControlBarLayout:(BOOL)layout;
+- (void)setVisibleRect:(CGRect)rect;
+- (void)setWindowInterfaceOrientation:(int64_t)orientation;
 @end
 
 @implementation PUOneUpTilingLayout
@@ -216,75 +216,75 @@
   return WeakRetained;
 }
 
-- (BOOL)_shouldApplyInsetStylingToContentWithRect:(CGRect)a3 indexPath:(id)a4
+- (BOOL)_shouldApplyInsetStylingToContentWithRect:(CGRect)rect indexPath:(id)path
 {
-  v5 = a4;
-  if ([v5 length] != 2 || -[PUOneUpTilingLayout _accessoryViewVisibilityForItemAtIndexPath:](self, "_accessoryViewVisibilityForItemAtIndexPath:", v5) || self->_delegateFlags.respondsToCanApplyInsetStylingToItemAtIndexPath && (-[PUOneUpTilingLayout delegate](self, "delegate"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "layout:canApplyInsetStylingToItemAtIndexPath:", self, v5), v8, !v9))
+  pathCopy = path;
+  if ([pathCopy length] != 2 || -[PUOneUpTilingLayout _accessoryViewVisibilityForItemAtIndexPath:](self, "_accessoryViewVisibilityForItemAtIndexPath:", pathCopy) || self->_delegateFlags.respondsToCanApplyInsetStylingToItemAtIndexPath && (-[PUOneUpTilingLayout delegate](self, "delegate"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "layout:canApplyInsetStylingToItemAtIndexPath:", self, pathCopy), v8, !v9))
   {
     v6 = 0;
   }
 
   else
   {
-    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:v5];
+    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:pathCopy];
     v6 = PXRectStrictlyContainsAnyVertexOfRect();
   }
 
   return v6;
 }
 
-- (double)_normalizedTransitionProgressFrom:(id)a3 withAbscissa:(double)a4 outNeighbor:(id *)a5
+- (double)_normalizedTransitionProgressFrom:(id)from withAbscissa:(double)abscissa outNeighbor:(id *)neighbor
 {
-  v9 = a3;
-  if (!v9)
+  fromCopy = from;
+  if (!fromCopy)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"PUOneUpTilingLayout.m" lineNumber:1937 description:{@"Invalid parameter not satisfying: %@", @"indexPath != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpTilingLayout.m" lineNumber:1937 description:{@"Invalid parameter not satisfying: %@", @"indexPath != nil"}];
   }
 
-  [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:v9];
+  [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:fromCopy];
   x = v40.origin.x;
   y = v40.origin.y;
   width = v40.size.width;
   height = v40.size.height;
   MidX = CGRectGetMidX(v40);
-  v15 = [(PUSectionedTilingLayout *)self leftToRight];
+  leftToRight = [(PUSectionedTilingLayout *)self leftToRight];
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
   v37 = __Block_byref_object_copy__46541;
   v38 = __Block_byref_object_dispose__46542;
   v39 = 0;
-  v16 = [(PUTilingLayout *)self dataSource];
-  if (v15)
+  dataSource = [(PUTilingLayout *)self dataSource];
+  if (leftToRight)
   {
-    v17 = MidX > a4;
+    v17 = MidX > abscissa;
   }
 
   else
   {
-    v17 = MidX < a4;
+    v17 = MidX < abscissa;
   }
 
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __82__PUOneUpTilingLayout__normalizedTransitionProgressFrom_withAbscissa_outNeighbor___block_invoke;
   v31[3] = &unk_1E7B7DD28;
-  v18 = v9;
+  v18 = fromCopy;
   v32 = v18;
   v33 = &v34;
-  [v16 enumerateIndexPathsStartingAtIndexPath:v18 reverseDirection:v17 usingBlock:v31];
+  [dataSource enumerateIndexPathsStartingAtIndexPath:v18 reverseDirection:v17 usingBlock:v31];
 
   if (v35[5])
   {
     [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:?];
-    v19 = fmax((a4 - MidX) / vabdd_f64(CGRectGetMidX(v41), MidX), -1.0);
+    v19 = fmax((abscissa - MidX) / vabdd_f64(CGRectGetMidX(v41), MidX), -1.0);
     if (v19 > 1.0)
     {
       v19 = 1.0;
     }
 
-    if (v15)
+    if (leftToRight)
     {
       v20 = v19;
     }
@@ -331,16 +331,16 @@
       v47.size.width = rect;
       v47.size.height = v21;
       v20 = 1.0 - v22 / v23;
-      if (MaxX > CGRectGetMaxX(v47) && v15 || (v48.origin.x = x, v48.origin.y = y, v48.size.width = width, v48.size.height = height, MinX = CGRectGetMinX(v48), v49.origin.y = v29, v49.origin.x = v30, v49.size.width = rect, v49.size.height = v21, MinX < CGRectGetMinX(v49) && !v15))
+      if (MaxX > CGRectGetMaxX(v47) && leftToRight || (v48.origin.x = x, v48.origin.y = y, v48.size.width = width, v48.size.height = height, MinX = CGRectGetMinX(v48), v49.origin.y = v29, v49.origin.x = v30, v49.size.width = rect, v49.size.height = v21, MinX < CGRectGetMinX(v49) && !leftToRight))
       {
         v20 = -v20;
       }
     }
   }
 
-  if (a5)
+  if (neighbor)
   {
-    *a5 = v35[5];
+    *neighbor = v35[5];
   }
 
   _Block_object_dispose(&v34, 8);
@@ -357,7 +357,7 @@ void __82__PUOneUpTilingLayout__normalizedTransitionProgressFrom_withAbscissa_ou
   }
 }
 
-- (id)_indexPathOfItemClosestToAbscissa:(double)a3
+- (id)_indexPathOfItemClosestToAbscissa:(double)abscissa
 {
   v61 = 0;
   v62 = &v61;
@@ -365,41 +365,41 @@ void __82__PUOneUpTilingLayout__normalizedTransitionProgressFrom_withAbscissa_ou
   v64 = __Block_byref_object_copy__46541;
   v65 = __Block_byref_object_dispose__46542;
   v66 = 0;
-  v6 = [(PUSectionedTilingLayout *)self leftToRight];
-  v7 = [(PUSectionedTilingLayout *)self computedSections];
-  v9 = v7 + v8;
-  if (v7 < (v7 + v8))
+  leftToRight = [(PUSectionedTilingLayout *)self leftToRight];
+  computedSections = [(PUSectionedTilingLayout *)self computedSections];
+  v9 = computedSections + v8;
+  if (computedSections < (computedSections + v8))
   {
     v10 = v9 - 1;
     while (1)
     {
-      [(PUSectionedTilingLayout *)self boundsForSection:v7];
+      [(PUSectionedTilingLayout *)self boundsForSection:computedSections];
       v15 = v11;
       v16 = v12;
       v17 = v13;
       v18 = v14;
-      if (v6)
+      if (leftToRight)
       {
-        v19 = CGRectGetMinX(*&v11) >= a3;
+        v19 = CGRectGetMinX(*&v11) >= abscissa;
       }
 
       else
       {
-        v19 = CGRectGetMaxX(*&v11) <= a3;
+        v19 = CGRectGetMaxX(*&v11) <= abscissa;
       }
 
-      v20 = [(PUSectionedTilingLayout *)self numberOfItemsInSection:v7];
+      v20 = [(PUSectionedTilingLayout *)self numberOfItemsInSection:computedSections];
       v68.origin.x = v15;
       v68.origin.y = v16;
       v68.size.width = v17;
       v68.size.height = v18;
-      if (CGRectGetMinX(v68) <= a3)
+      if (CGRectGetMinX(v68) <= abscissa)
       {
         v72.origin.x = v15;
         v72.origin.y = v16;
         v72.size.width = v17;
         v72.size.height = v18;
-        if (CGRectGetMaxX(v72) >= a3 && v20 >= 1)
+        if (CGRectGetMaxX(v72) >= abscissa && v20 >= 1)
         {
           v73.origin.x = v15;
           v73.origin.y = v16;
@@ -409,9 +409,9 @@ void __82__PUOneUpTilingLayout__normalizedTransitionProgressFrom_withAbscissa_ou
           [(PUOneUpTilingLayout *)self _itemSize];
           v35 = v34;
           [(PUOneUpTilingLayout *)self interpageSpacing];
-          v37 = (a3 - MinX) / (v35 + v36);
+          v37 = (abscissa - MinX) / (v35 + v36);
           v38 = v37;
-          if (!v6)
+          if (!leftToRight)
           {
             v38 = v20 + ~v37;
           }
@@ -436,7 +436,7 @@ void __82__PUOneUpTilingLayout__normalizedTransitionProgressFrom_withAbscissa_ou
             v40 = 0;
           }
 
-          v41 = [MEMORY[0x1E696AC88] indexPathForItem:v40 inSection:v7];
+          v41 = [MEMORY[0x1E696AC88] indexPathForItem:v40 inSection:computedSections];
 LABEL_36:
           v44 = v62[5];
           v62[5] = v41;
@@ -446,7 +446,7 @@ LABEL_36:
 
       if (!v19)
       {
-        if (v7 != v10 || v7 < 0)
+        if (computedSections != v10 || computedSections < 0)
         {
           goto LABEL_38;
         }
@@ -465,7 +465,7 @@ LABEL_36:
         goto LABEL_36;
       }
 
-      if (!v7)
+      if (!computedSections)
       {
         v21 = 0;
 LABEL_31:
@@ -474,23 +474,23 @@ LABEL_32:
         v44 = v43;
         if (v43)
         {
-          v45 = [(PUTilingLayout *)self dataSource];
+          dataSource = [(PUTilingLayout *)self dataSource];
           v60[0] = MEMORY[0x1E69E9820];
           v60[1] = 3221225472;
           v60[2] = __57__PUOneUpTilingLayout__indexPathOfItemClosestToAbscissa___block_invoke;
           v60[3] = &unk_1E7B79E20;
           v60[4] = &v61;
-          [v45 enumerateIndexPathsStartingAtIndexPath:v44 reverseDirection:1 usingBlock:v60];
+          [dataSource enumerateIndexPathsStartingAtIndexPath:v44 reverseDirection:1 usingBlock:v60];
 
           if (!v62[5])
           {
-            v46 = [(PUTilingLayout *)self dataSource];
+            dataSource2 = [(PUTilingLayout *)self dataSource];
             v59[0] = MEMORY[0x1E69E9820];
             v59[1] = 3221225472;
             v59[2] = __57__PUOneUpTilingLayout__indexPathOfItemClosestToAbscissa___block_invoke_2;
             v59[3] = &unk_1E7B79E20;
             v59[4] = &v61;
-            [v46 enumerateIndexPathsStartingAtIndexPath:v44 reverseDirection:0 usingBlock:v59];
+            [dataSource2 enumerateIndexPathsStartingAtIndexPath:v44 reverseDirection:0 usingBlock:v59];
           }
         }
 
@@ -498,17 +498,17 @@ LABEL_32:
       }
 
       v21 = v9 - 1;
-      if (v7 == v10)
+      if (computedSections == v10)
       {
         goto LABEL_31;
       }
 
-      [(PUSectionedTilingLayout *)self boundsForSection:v7 - 1, v21];
+      [(PUSectionedTilingLayout *)self boundsForSection:computedSections - 1, v21];
       v57 = v24;
       v58 = v25;
       v26 = v22;
       v27 = v23;
-      if (v6)
+      if (leftToRight)
       {
         MaxX = CGRectGetMaxX(*&v22);
         v69.origin.x = v15;
@@ -534,10 +534,10 @@ LABEL_32:
         }
       }
 
-      v54 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v54 handleFailureInMethod:a2 object:self file:@"PUOneUpTilingLayout.m" lineNumber:1879 description:{@"Invalid parameter not satisfying: %@", @"leftToRight ? CGRectGetMaxX(previousSectionBounds) <= CGRectGetMinX(sectionBounds) : CGRectGetMinX(previousSectionBounds) >= CGRectGetMaxX(sectionBounds)"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpTilingLayout.m" lineNumber:1879 description:{@"Invalid parameter not satisfying: %@", @"leftToRight ? CGRectGetMaxX(previousSectionBounds) <= CGRectGetMinX(sectionBounds) : CGRectGetMinX(previousSectionBounds) >= CGRectGetMaxX(sectionBounds)"}];
 
-      if (!v6)
+      if (!leftToRight)
       {
 LABEL_42:
         v75.origin.x = v26;
@@ -550,8 +550,8 @@ LABEL_42:
         v76.size.width = v17;
         v76.size.height = v18;
         v51 = CGRectGetMaxX(v76);
-        v31 = v50 - a3;
-        v32 = a3 - v51;
+        v31 = v50 - abscissa;
+        v32 = abscissa - v51;
         goto LABEL_43;
       }
 
@@ -566,17 +566,17 @@ LABEL_12:
       v71.size.width = v17;
       v71.size.height = v18;
       v30 = CGRectGetMinX(v71);
-      v31 = a3 - v29;
-      v32 = v30 - a3;
+      v31 = abscissa - v29;
+      v32 = v30 - abscissa;
 LABEL_43:
       if (v31 > v32)
       {
-        v43 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:v7];
+        v43 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:computedSections];
         goto LABEL_32;
       }
 
-      v52 = v7;
-      if (v7 >= 1)
+      v52 = computedSections;
+      if (computedSections >= 1)
       {
         while ([(PUSectionedTilingLayout *)self numberOfItemsInSection:--v52]< 1)
         {
@@ -602,7 +602,7 @@ LABEL_38:
         goto LABEL_54;
       }
 
-      if (++v7 == v9)
+      if (++computedSections == v9)
       {
         v48 = 0;
         goto LABEL_54;
@@ -618,20 +618,20 @@ LABEL_54:
   return v55;
 }
 
-- (void)_getLayoutRect:(CGRect *)a3 transform:(CGAffineTransform *)a4 parallaxOffset:(CGPoint *)a5 contentsRect:(CGRect *)a6 alpha:(double *)a7 forContentOfItemAtIndexPath:(id)a8 options:(unint64_t)a9
+- (void)_getLayoutRect:(CGRect *)rect transform:(CGAffineTransform *)transform parallaxOffset:(CGPoint *)offset contentsRect:(CGRect *)contentsRect alpha:(double *)alpha forContentOfItemAtIndexPath:(id)path options:(unint64_t)options
 {
   v174 = *MEMORY[0x1E69E9840];
-  v13 = a8;
-  [(PUOneUpTilingLayout *)self _untransformedRectForItemAtIndexPath:v13];
+  pathCopy = path;
+  [(PUOneUpTilingLayout *)self _untransformedRectForItemAtIndexPath:pathCopy];
   v165.origin.x = v14;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(PUOneUpTilingLayout *)self _displayTileTransformForItemAtIndexPath:v13 options:a9];
+  v21 = [(PUOneUpTilingLayout *)self _displayTileTransformForItemAtIndexPath:pathCopy options:options];
   if (self->_delegateFlags.respondsToWillApplyDisplayTransform)
   {
-    v22 = [(PUOneUpTilingLayout *)self delegate];
-    [v22 layout:self willApplyDisplayTileTransform:v21 forItemAtIndexPath:v13];
+    delegate = [(PUOneUpTilingLayout *)self delegate];
+    [delegate layout:self willApplyDisplayTileTransform:v21 forItemAtIndexPath:pathCopy];
   }
 
   v169 = 0u;
@@ -645,14 +645,14 @@ LABEL_54:
   v23 = MEMORY[0x1E695EFF8];
   v24 = *MEMORY[0x1E695EFF8];
   v25 = *(MEMORY[0x1E695EFF8] + 8);
-  if ((a9 & 2) == 0)
+  if ((options & 2) == 0)
   {
-    [(PUOneUpTilingLayout *)self _contentOffsetForItemAtIndexPath:v13];
+    [(PUOneUpTilingLayout *)self _contentOffsetForItemAtIndexPath:pathCopy];
     v24 = v26;
     v25 = v27;
   }
 
-  [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:v13];
+  [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:pathCopy];
   v158 = v29;
   v160 = v28;
   v31 = v30;
@@ -674,7 +674,7 @@ LABEL_54:
       *&transform[16] = v169;
       *&transform[32] = v170;
       v131 = NSStringFromCGAffineTransform(transform);
-      v164 = [(PUOneUpTilingLayout *)self delegate];
+      delegate2 = [(PUOneUpTilingLayout *)self delegate];
       v202.size.height = v158;
       v202.origin.x = v160;
       v202.origin.y = v31;
@@ -687,9 +687,9 @@ LABEL_54:
       *&transform[22] = 2112;
       *&transform[24] = self;
       *&transform[32] = 2112;
-      *&transform[34] = v164;
+      *&transform[34] = delegate2;
       *&transform[42] = 2112;
-      *&transform[44] = v13;
+      *&transform[44] = pathCopy;
       v172 = 2112;
       v173 = v132;
       v133 = v132;
@@ -712,31 +712,31 @@ LABEL_54:
   v156 = v31;
   if (self->_delegateFlags.respondsToShouldUseSquareImageInAccessoryForItemAtIndexPath)
   {
-    v36 = [(PUOneUpTilingLayout *)self delegate];
-    v37 = [v36 layout:self shouldUseSquareImageInAccessoryForItemAtIndexPath:v13];
+    delegate3 = [(PUOneUpTilingLayout *)self delegate];
+    v37 = [delegate3 layout:self shouldUseSquareImageInAccessoryForItemAtIndexPath:pathCopy];
 
     if (v37)
     {
       v144 = MidY;
-      v145 = a4;
-      v147 = a5;
-      v38 = [MEMORY[0x1E69DC668] sharedApplication];
-      v39 = [v38 windows];
-      v40 = [v39 firstObject];
-      v41 = [v40 windowScene];
-      v42 = [v41 interfaceOrientation];
+      transformCopy = transform;
+      offsetCopy = offset;
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      windows = [mEMORY[0x1E69DC668] windows];
+      firstObject = [windows firstObject];
+      windowScene = [firstObject windowScene];
+      interfaceOrientation = [windowScene interfaceOrientation];
 
-      v43 = [MEMORY[0x1E69DC938] currentDevice];
-      v44 = [v43 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v44)
+      if (userInterfaceIdiom)
       {
         v45 = 1;
       }
 
       else
       {
-        v45 = (v42 - 3) >= 2;
+        v45 = (interfaceOrientation - 3) >= 2;
       }
 
       v46 = !v45;
@@ -752,8 +752,8 @@ LABEL_54:
       Height = CGRectGetHeight(v179);
       if (self->_delegateFlags.respondsToBestSquareRectForItemAtIndexPath)
       {
-        v47 = [(PUOneUpTilingLayout *)self delegate];
-        [v47 layout:self bestSquareRectForItemAtIndexPath:v13];
+        delegate4 = [(PUOneUpTilingLayout *)self delegate];
+        [delegate4 layout:self bestSquareRectForItemAtIndexPath:pathCopy];
         v49 = v48;
         v51 = v50;
         v53 = v52;
@@ -768,7 +768,7 @@ LABEL_54:
         v55 = *(MEMORY[0x1E695F058] + 24);
       }
 
-      v59 = a7;
+      alphaCopy = alpha;
       v180.origin.x = v49;
       v180.origin.y = v51;
       v180.size.width = v53;
@@ -795,12 +795,12 @@ LABEL_54:
 
       v152 = v55;
       v64 = v25;
-      if (v59)
+      if (alphaCopy)
       {
         v64 = v25;
-        if ((a9 & 2) != 0)
+        if ((options & 2) != 0)
         {
-          [(PUOneUpTilingLayout *)self _contentOffsetForItemAtIndexPath:v13];
+          [(PUOneUpTilingLayout *)self _contentOffsetForItemAtIndexPath:pathCopy];
         }
       }
 
@@ -810,26 +810,26 @@ LABEL_54:
       {
         v57 = v20;
         v58 = v18;
-        a4 = v145;
-        a5 = v147;
+        transform = transformCopy;
+        offset = offsetCopy;
         v68 = v55;
 LABEL_60:
-        if (a6)
+        if (contentsRect)
         {
-          if ((a9 & 2) != 0)
+          if ((options & 2) != 0)
           {
             v87 = *(MEMORY[0x1E69C48E0] + 16);
-            a6->origin = *MEMORY[0x1E69C48E0];
-            a6->size = v87;
+            contentsRect->origin = *MEMORY[0x1E69C48E0];
+            contentsRect->size = v87;
           }
 
           else
           {
             [PUOneUpTilingLayout rectForFittingToTargetPixelSize:v58 imagePixelSize:v57 bestSquareUnitRect:v18, v20, v49, v138, v137, v68];
-            a6->origin.x = v88;
-            a6->origin.y = v89;
-            a6->size.width = v90;
-            a6->size.height = v91;
+            contentsRect->origin.x = v88;
+            contentsRect->origin.y = v89;
+            contentsRect->size.width = v90;
+            contentsRect->size.height = v91;
           }
         }
 
@@ -863,7 +863,7 @@ LABEL_60:
       else
       {
         v69 = +[PUOneUpSettings sharedInstance];
-        v70 = [v69 squareImageCapToHalfHeight];
+        squareImageCapToHalfHeight = [v69 squareImageCapToHalfHeight];
 
         v71 = Height * 0.5;
         if (Height * 0.5 >= v65)
@@ -871,7 +871,7 @@ LABEL_60:
           v71 = v65;
         }
 
-        if (v70)
+        if (squareImageCapToHalfHeight)
         {
           v66 = v71;
         }
@@ -924,12 +924,12 @@ LABEL_60:
         }
 
         v143 = v78;
-        if ((a9 & 2) != 0)
+        if ((options & 2) != 0)
         {
           v57 = v150;
           v58 = v18;
-          a4 = v145;
-          a5 = v147;
+          transform = transformCopy;
+          offset = offsetCopy;
           v20 = v150;
 LABEL_54:
           v24 = v149;
@@ -976,8 +976,8 @@ LABEL_54:
         PXPointMultiplyWithFloat();
         v167.x = v83;
         v167.y = v84;
-        a4 = v145;
-        a5 = v147;
+        transform = transformCopy;
+        offset = offsetCopy;
         v20 = v150;
         v25 = 0.0;
       }
@@ -1000,12 +1000,12 @@ LABEL_54:
         }
 
         v143 = v80;
-        if ((a9 & 2) != 0)
+        if ((options & 2) != 0)
         {
           v57 = v20;
           v58 = v18;
-          a4 = v145;
-          a5 = v147;
+          transform = transformCopy;
+          offset = offsetCopy;
           goto LABEL_54;
         }
 
@@ -1019,27 +1019,27 @@ LABEL_54:
         v196.size.width = v18;
         v196.size.height = v20;
         v25 = v136 + CGRectGetMaxY(v196) - v57;
-        a4 = v145;
-        a5 = v147;
+        transform = transformCopy;
+        offset = offsetCopy;
       }
 
       v24 = v149;
 LABEL_58:
       v68 = v152;
-      if (v59)
+      if (alphaCopy)
       {
-        *v59 = v143;
+        *alphaCopy = v143;
       }
 
       goto LABEL_60;
     }
   }
 
-  if (a6)
+  if (contentsRect)
   {
     v56 = *(MEMORY[0x1E69C48E0] + 16);
-    a6->origin = *MEMORY[0x1E69C48E0];
-    a6->size = v56;
+    contentsRect->origin = *MEMORY[0x1E69C48E0];
+    contentsRect->size = v56;
   }
 
   v57 = v20;
@@ -1075,11 +1075,11 @@ LABEL_65:
     v99 = v199.origin.y;
     v100 = v199.size.width;
     v101 = v199.size.height;
-    if (a5)
+    if (offset)
     {
-      v102 = [(PUOneUpTilingLayout *)self parallaxComputer];
+      parallaxComputer = [(PUOneUpTilingLayout *)self parallaxComputer];
       [(PUTilingLayout *)self visibleRect];
-      [v102 contentParallaxOffsetForViewFrame:v98 visibleRect:{v99, v100, v101, v103, v104, v105, v106}];
+      [parallaxComputer contentParallaxOffsetForViewFrame:v98 visibleRect:{v99, v100, v101, v103, v104, v105, v106}];
     }
 
     if (!PXFloatApproximatelyEqualToFloat() || !PXFloatApproximatelyEqualToFloat() || (PXFloatApproximatelyEqualToFloat() & 1) == 0)
@@ -1087,8 +1087,8 @@ LABEL_65:
       v107 = PLOneUpGetLog();
       if (os_log_type_enabled(v107, OS_LOG_TYPE_DEFAULT))
       {
-        v146 = a4;
-        v148 = a5;
+        transformCopy2 = transform;
+        offsetCopy2 = offset;
         v108 = NSStringFromCGPoint(v167);
         v109 = v165.size.width;
         v200.origin.x = v165.origin.x;
@@ -1129,21 +1129,21 @@ LABEL_65:
         v173 = v113;
         _os_log_impl(&dword_1B36F3000, v107, OS_LOG_TYPE_DEFAULT, "Clipped tile doesn't appear to be centered, the content might not be displayed properly. translation=%@; rotation=%f; untransformedRect=%@, affineTransform=%@, pageRect=%@, contentOffset=%@", transform, 0x3Eu);
 
-        a4 = v146;
-        a5 = v148;
+        transform = transformCopy2;
+        offset = offsetCopy2;
       }
     }
   }
 
   [(PUOneUpTilingLayout *)self shouldPinContentToTop];
-  v114 = [(PUOneUpTilingLayout *)self traitCollection];
-  [v114 displayScale];
+  traitCollection = [(PUOneUpTilingLayout *)self traitCollection];
+  [traitCollection displayScale];
   v116 = v115;
 
   if (v116 == 0.0)
   {
-    v117 = [MEMORY[0x1E69DCEB0] px_mainScreen];
-    [v117 scale];
+    px_mainScreen = [MEMORY[0x1E69DCEB0] px_mainScreen];
+    [px_mainScreen scale];
   }
 
   PXPointRoundToPixel();
@@ -1154,7 +1154,7 @@ LABEL_65:
   v125 = v124;
   v126 = PXFloatApproximatelyEqualToFloat();
   PXPointRoundToPixel();
-  if (a3)
+  if (rect)
   {
     v129 = 0.0;
     if (!v126)
@@ -1162,52 +1162,52 @@ LABEL_65:
       v129 = v121;
     }
 
-    a3->origin.x = v119;
-    a3->origin.y = v129;
-    a3->size.width = v123;
-    a3->size.height = v125;
+    rect->origin.x = v119;
+    rect->origin.y = v129;
+    rect->size.width = v123;
+    rect->size.height = v125;
   }
 
-  if (a4)
+  if (transform)
   {
     v130 = v169;
-    *&a4->a = v168;
-    *&a4->c = v130;
-    *&a4->tx = v170;
+    *&transform->a = v168;
+    *&transform->c = v130;
+    *&transform->tx = v170;
   }
 
-  if (a5)
+  if (offset)
   {
-    a5->x = v127;
-    a5->y = v128;
+    offset->x = v127;
+    offset->y = v128;
   }
 }
 
-- (id)_displayTileTransformForItemAtIndexPath:(id)a3 pageSize:(CGSize)a4 secondaryDisplayTransform:(id)a5 options:(unint64_t)a6
+- (id)_displayTileTransformForItemAtIndexPath:(id)path pageSize:(CGSize)size secondaryDisplayTransform:(id)transform options:(unint64_t)options
 {
-  v6 = a6;
-  height = a4.height;
-  width = a4.width;
-  v11 = a3;
-  v12 = a5;
-  if ((v6 & 1) != 0 || !self->_delegateFlags.respondsToModelTileTransformForItemAtIndexPath || (-[PUOneUpTilingLayout delegate](self, "delegate"), v13 = objc_claimAutoreleasedReturnValue(), [v13 layout:self modelTileTransformForItemAtIndexPath:v11], v14 = objc_claimAutoreleasedReturnValue(), v13, !v14))
+  optionsCopy = options;
+  height = size.height;
+  width = size.width;
+  pathCopy = path;
+  transformCopy = transform;
+  if ((optionsCopy & 1) != 0 || !self->_delegateFlags.respondsToModelTileTransformForItemAtIndexPath || (-[PUOneUpTilingLayout delegate](self, "delegate"), v13 = objc_claimAutoreleasedReturnValue(), [v13 layout:self modelTileTransformForItemAtIndexPath:pathCopy], initWithNoUserInput = objc_claimAutoreleasedReturnValue(), v13, !initWithNoUserInput))
   {
-    v14 = [[PUModelTileTransform alloc] initWithNoUserInput];
+    initWithNoUserInput = [[PUModelTileTransform alloc] initWithNoUserInput];
   }
 
-  [(PUOneUpTilingLayout *)self _untransformedRectForItemAtIndexPath:v11 pageRect:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), width, height];
+  [(PUOneUpTilingLayout *)self _untransformedRectForItemAtIndexPath:pathCopy pageRect:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), width, height];
   v16 = v15;
   v18 = v17;
   if (self->_delegateFlags.respondsToShouldInitiallyZoomToFillForItemAtIndexPath)
   {
-    v19 = [(PUOneUpTilingLayout *)self delegate];
-    v20 = [v19 layout:self shouldInitiallyZoomToFillForItemAtIndexPath:v11 contentSize:v16 viewportSize:{v18, width, height}];
+    delegate = [(PUOneUpTilingLayout *)self delegate];
+    v20 = [delegate layout:self shouldInitiallyZoomToFillForItemAtIndexPath:pathCopy contentSize:v16 viewportSize:{v18, width, height}];
 
     v21 = 1.0;
     if (v20)
     {
-      v22 = [MEMORY[0x1E69C3738] sharedInstance];
-      [v22 zoomFactorForContentWithSize:v16 toFillViewWithSize:{v18, width, height}];
+      mEMORY[0x1E69C3738] = [MEMORY[0x1E69C3738] sharedInstance];
+      [mEMORY[0x1E69C3738] zoomFactorForContentWithSize:v16 toFillViewWithSize:{v18, width, height}];
       v21 = v23;
     }
   }
@@ -1217,14 +1217,14 @@ LABEL_65:
     v21 = 1.0;
   }
 
-  v24 = [PUDisplayTileTransform displayTileTransformWithModelTileTransform:v14 initialScale:v12 initialSize:v21 displaySize:v16 secondaryDisplayTileTransform:v18, width, height];
+  height = [PUDisplayTileTransform displayTileTransformWithModelTileTransform:initWithNoUserInput initialScale:transformCopy initialSize:v21 displaySize:v16 secondaryDisplayTileTransform:v18, width, height];
 
-  return v24;
+  return height;
 }
 
-- (id)_displayTileTransformForItemAtIndexPath:(id)a3 options:(unint64_t)a4
+- (id)_displayTileTransformForItemAtIndexPath:(id)path options:(unint64_t)options
 {
-  v6 = a3;
+  pathCopy = path;
   [(PUOneUpTilingLayout *)self displaySizeForInsetMatching];
   if (v8 == *MEMORY[0x1E695F060] && v7 == *(MEMORY[0x1E695F060] + 8))
   {
@@ -1233,34 +1233,34 @@ LABEL_65:
 
   else
   {
-    v10 = [(PUOneUpTilingLayout *)self _displayTileTransformForItemAtIndexPath:v6 pageSize:0 secondaryDisplayTransform:a4 options:?];
+    v10 = [(PUOneUpTilingLayout *)self _displayTileTransformForItemAtIndexPath:pathCopy pageSize:0 secondaryDisplayTransform:options options:?];
   }
 
-  [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:v6];
-  v13 = [(PUOneUpTilingLayout *)self _displayTileTransformForItemAtIndexPath:v6 pageSize:v10 secondaryDisplayTransform:a4 options:v11, v12];
+  [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:pathCopy];
+  v13 = [(PUOneUpTilingLayout *)self _displayTileTransformForItemAtIndexPath:pathCopy pageSize:v10 secondaryDisplayTransform:options options:v11, v12];
 
   return v13;
 }
 
-- (CGRect)_untransformedRectForItemAtIndexPath:(id)a3 pageRect:(CGRect)a4
+- (CGRect)_untransformedRectForItemAtIndexPath:(id)path pageRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  pathCopy = path;
   v9 = 1.0;
   if (self->_delegateFlags.respondsToAspectRatioForItemAtIndexPath)
   {
-    v10 = [(PUOneUpTilingLayout *)self delegate];
-    [v10 layout:self aspectRatioForItemAtIndexPath:v8];
+    delegate = [(PUOneUpTilingLayout *)self delegate];
+    [delegate layout:self aspectRatioForItemAtIndexPath:pathCopy];
     v9 = v11;
   }
 
   if (self->_delegateFlags.respondsToInsetsWhenScaledToFitForItemAtIndexPath)
   {
-    v12 = [(PUOneUpTilingLayout *)self delegate];
-    [v12 layout:self insetsWhenScaledToFitForItemAtIndexPath:v8 inViewportSize:{width, height}];
+    delegate2 = [(PUOneUpTilingLayout *)self delegate];
+    [delegate2 layout:self insetsWhenScaledToFitForItemAtIndexPath:pathCopy inViewportSize:{width, height}];
     v14 = v13;
     v16 = v15;
     v18 = v17;
@@ -1304,24 +1304,24 @@ LABEL_65:
   return result;
 }
 
-- (CGSize)_contentPixelSizeForItemAtIndexPath:(id)a3
+- (CGSize)_contentPixelSizeForItemAtIndexPath:(id)path
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   if (self->_delegateFlags.respondsToPixelSizeForItemAtIndexPath)
   {
-    v5 = [(PUOneUpTilingLayout *)self delegate];
-    [v5 layout:self pixelSizeForItemAtIndexPath:v4];
+    delegate = [(PUOneUpTilingLayout *)self delegate];
+    [delegate layout:self pixelSizeForItemAtIndexPath:pathCopy];
     v7 = v6;
     v9 = v8;
   }
 
   else if (self->_delegateFlags.respondsToAspectRatioForItemAtIndexPath)
   {
-    v10 = [(PUOneUpTilingLayout *)self delegate];
-    [v10 layout:self aspectRatioForItemAtIndexPath:v4];
+    delegate2 = [(PUOneUpTilingLayout *)self delegate];
+    [delegate2 layout:self aspectRatioForItemAtIndexPath:pathCopy];
 
-    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:v4];
+    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:pathCopy];
     PFSizeWithAspectRatioFittingSize();
     v7 = v11;
     v9 = v12;
@@ -1333,7 +1333,7 @@ LABEL_65:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
     {
       v16 = 138412290;
-      v17 = v4;
+      v17 = pathCopy;
       _os_log_fault_impl(&dword_1B36F3000, v13, OS_LOG_TYPE_FAULT, "Unable to get content pixel size for item at index path %@. Delegate must implement pixelSizeForItemAtIndexPath or aspectRatioForItemAtIndexPath.", &v16, 0xCu);
     }
 
@@ -1348,11 +1348,11 @@ LABEL_65:
   return result;
 }
 
-- (CGRect)_untransformedRectForItemAtIndexPath:(id)a3
+- (CGRect)_untransformedRectForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:v4];
-  [(PUOneUpTilingLayout *)self _untransformedRectForItemAtIndexPath:v4 pageRect:?];
+  pathCopy = path;
+  [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:pathCopy];
+  [(PUOneUpTilingLayout *)self _untransformedRectForItemAtIndexPath:pathCopy pageRect:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -1369,10 +1369,10 @@ LABEL_65:
   return result;
 }
 
-- (CGRect)_frameForTileWithSize:(CGSize)a3 centeredOnItemAtIndexPath:(id)a4
+- (CGRect)_frameForTileWithSize:(CGSize)size centeredOnItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:v5];
+  pathCopy = path;
+  [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:pathCopy];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -1380,7 +1380,7 @@ LABEL_65:
   v14 = *(MEMORY[0x1E695F058] + 16);
   v38.origin = *MEMORY[0x1E695F058];
   v38.size = v14;
-  [(PUOneUpTilingLayout *)self _getLayoutRect:&v38 transform:0 parallaxOffset:0 forContentOfItemAtIndexPath:v5 options:0];
+  [(PUOneUpTilingLayout *)self _getLayoutRect:&v38 transform:0 parallaxOffset:0 forContentOfItemAtIndexPath:pathCopy options:0];
 
   y = v38.origin.y;
   x = v38.origin.x;
@@ -1405,7 +1405,7 @@ LABEL_65:
     y = v39.origin.y;
     width = v39.size.width;
     height = v39.size.height;
-    v22 = a3.width + 20.0 - CGRectGetWidth(v39);
+    v22 = size.width + 20.0 - CGRectGetWidth(v39);
     if (v22 >= 0.0)
     {
       v23 = v22;
@@ -1420,7 +1420,7 @@ LABEL_65:
     v40.origin.y = y;
     v40.size.width = width;
     v40.size.height = height;
-    v24 = a3.height + 20.0 - CGRectGetHeight(v40);
+    v24 = size.height + 20.0 - CGRectGetHeight(v40);
     if (v24 < 0.0)
     {
       v24 = 0.0;
@@ -1452,10 +1452,10 @@ LABEL_65:
   v43.size.width = width;
   v43.size.height = height;
   MidY = CGRectGetMidY(v43);
-  v32 = a3.width;
-  v33 = MidY - a3.height * 0.5;
-  v34 = MidX - a3.width * 0.5;
-  v35 = a3.height;
+  v32 = size.width;
+  v33 = MidY - size.height * 0.5;
+  v34 = MidX - size.width * 0.5;
+  v35 = size.height;
   result.size.height = v35;
   result.size.width = v32;
   result.origin.y = v33;
@@ -1463,10 +1463,10 @@ LABEL_65:
   return result;
 }
 
-- (CGRect)_pageRectForItemAtIndexPath:(id)a3
+- (CGRect)_pageRectForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  -[PUSectionedTilingLayout boundsForSection:](self, "boundsForSection:", [v4 section]);
+  pathCopy = path;
+  -[PUSectionedTilingLayout boundsForSection:](self, "boundsForSection:", [pathCopy section]);
   v6 = v5;
   v8 = v7;
   [(PUOneUpTilingLayout *)self _itemSize];
@@ -1474,14 +1474,14 @@ LABEL_65:
   v12 = v11;
   [(PUOneUpTilingLayout *)self interpageSpacing];
   v14 = v13;
-  v15 = -[PUSectionedTilingLayout numberOfItemsInSection:](self, "numberOfItemsInSection:", [v4 section]);
+  v15 = -[PUSectionedTilingLayout numberOfItemsInSection:](self, "numberOfItemsInSection:", [pathCopy section]);
   LODWORD(self) = [(PUSectionedTilingLayout *)self leftToRight];
-  v16 = [v4 item];
+  item = [pathCopy item];
 
-  v17 = v15 + ~v16;
+  v17 = v15 + ~item;
   if (self)
   {
-    v17 = v16;
+    v17 = item;
   }
 
   v18 = v6 + v17 * (v10 + v14);
@@ -1512,88 +1512,88 @@ LABEL_65:
   return result;
 }
 
-- (void)setUseSyndicationAttributionTile:(BOOL)a3
+- (void)setUseSyndicationAttributionTile:(BOOL)tile
 {
-  if (self->_useSyndicationAttributionTile != a3)
+  if (self->_useSyndicationAttributionTile != tile)
   {
-    self->_useSyndicationAttributionTile = a3;
+    self->_useSyndicationAttributionTile = tile;
     v5 = objc_alloc_init(PUOneUpTilingLayoutInvalidationContext);
     [(PUTilingLayoutInvalidationContext *)v5 invalidateAllTilesWithKind:PUTileKindSyndicationAttribution];
     [(PUOneUpTilingLayout *)self invalidateLayoutWithContext:v5];
   }
 }
 
-- (void)setShouldHideMainContent:(BOOL)a3
+- (void)setShouldHideMainContent:(BOOL)content
 {
-  if (self->_shouldHideMainContent != a3)
+  if (self->_shouldHideMainContent != content)
   {
-    self->_shouldHideMainContent = a3;
+    self->_shouldHideMainContent = content;
     v5 = objc_alloc_init(PUOneUpTilingLayoutInvalidationContext);
     [(PUTilingLayoutInvalidationContext *)v5 invalidateAllTiles];
     [(PUTilingLayout *)self invalidateLayoutWithContext:v5 updateImmediately:1];
   }
 }
 
-- (void)setUseVerticalReviewScreenControlBarLayout:(BOOL)a3
+- (void)setUseVerticalReviewScreenControlBarLayout:(BOOL)layout
 {
-  if (self->_useVerticalReviewScreenControlBarLayout != a3)
+  if (self->_useVerticalReviewScreenControlBarLayout != layout)
   {
-    self->_useVerticalReviewScreenControlBarLayout = a3;
+    self->_useVerticalReviewScreenControlBarLayout = layout;
     v5 = objc_alloc_init(PUOneUpTilingLayoutInvalidationContext);
     [(PUTilingLayoutInvalidationContext *)v5 invalidateAllTilesWithKind:PUTileKindReviewScreenControlBar];
     [(PUOneUpTilingLayout *)self invalidateLayoutWithContext:v5];
   }
 }
 
-- (void)setShouldPinContentToTop:(BOOL)a3
+- (void)setShouldPinContentToTop:(BOOL)top
 {
-  if (self->_shouldPinContentToTop != a3)
+  if (self->_shouldPinContentToTop != top)
   {
-    self->_shouldPinContentToTop = a3;
+    self->_shouldPinContentToTop = top;
     v5 = objc_alloc_init(PUOneUpTilingLayoutInvalidationContext);
     [(PUTilingLayoutInvalidationContext *)v5 invalidateAllTiles];
     [(PUOneUpTilingLayout *)self invalidateLayoutWithContext:v5];
   }
 }
 
-- (void)setDisplaySizeForInsetMatching:(CGSize)a3
+- (void)setDisplaySizeForInsetMatching:(CGSize)matching
 {
-  if (a3.width != self->_displaySizeForInsetMatching.width || a3.height != self->_displaySizeForInsetMatching.height)
+  if (matching.width != self->_displaySizeForInsetMatching.width || matching.height != self->_displaySizeForInsetMatching.height)
   {
-    self->_displaySizeForInsetMatching = a3;
+    self->_displaySizeForInsetMatching = matching;
     v6 = objc_alloc_init(PUOneUpTilingLayoutInvalidationContext);
     [(PUTilingLayoutInvalidationContext *)v6 invalidateAllTilesWithKind:PUTileKindUserTransform];
     [(PUOneUpTilingLayout *)self invalidateLayoutWithContext:v6];
   }
 }
 
-- (void)setCanDisplayLoadingIndicators:(BOOL)a3
+- (void)setCanDisplayLoadingIndicators:(BOOL)indicators
 {
-  if (self->_canDisplayLoadingIndicators != a3)
+  if (self->_canDisplayLoadingIndicators != indicators)
   {
-    self->_canDisplayLoadingIndicators = a3;
+    self->_canDisplayLoadingIndicators = indicators;
     v5 = objc_alloc_init(PUOneUpTilingLayoutInvalidationContext);
     [(PUTilingLayoutInvalidationContext *)v5 invalidateAllTilesWithKind:PUTileKindLoadingIndicator];
     [(PUOneUpTilingLayout *)self invalidateLayoutWithContext:v5];
   }
 }
 
-- (void)setBufferingIndicatorSize:(CGSize)a3
+- (void)setBufferingIndicatorSize:(CGSize)size
 {
-  if (a3.width != self->_bufferingIndicatorSize.width || a3.height != self->_bufferingIndicatorSize.height)
+  if (size.width != self->_bufferingIndicatorSize.width || size.height != self->_bufferingIndicatorSize.height)
   {
-    self->_bufferingIndicatorSize = a3;
+    self->_bufferingIndicatorSize = size;
     v6 = objc_alloc_init(PUOneUpTilingLayoutInvalidationContext);
     [(PUTilingLayoutInvalidationContext *)v6 invalidateAllTilesWithKind:PUTileKindBufferingIndicator];
     [(PUOneUpTilingLayout *)self invalidateLayoutWithContext:v6];
   }
 }
 
-- (void)setWindowInterfaceOrientation:(int64_t)a3
+- (void)setWindowInterfaceOrientation:(int64_t)orientation
 {
-  if (self->_windowInterfaceOrientation != a3)
+  if (self->_windowInterfaceOrientation != orientation)
   {
-    self->_windowInterfaceOrientation = a3;
+    self->_windowInterfaceOrientation = orientation;
     if ([(PUOneUpTilingLayout *)self useReviewScreenBars])
     {
       v4 = objc_alloc_init(PUOneUpTilingLayoutInvalidationContext);
@@ -1605,103 +1605,103 @@ LABEL_65:
   }
 }
 
-- (void)setUseAssetExplorerReviewScreenBadgeTiles:(BOOL)a3
+- (void)setUseAssetExplorerReviewScreenBadgeTiles:(BOOL)tiles
 {
-  if (self->_useAssetExplorerReviewScreenBadgeTiles != a3)
+  if (self->_useAssetExplorerReviewScreenBadgeTiles != tiles)
   {
-    self->_useAssetExplorerReviewScreenBadgeTiles = a3;
+    self->_useAssetExplorerReviewScreenBadgeTiles = tiles;
     v5 = objc_alloc_init(PUOneUpTilingLayoutInvalidationContext);
     [(PUTilingLayoutInvalidationContext *)v5 invalidateAllTilesWithKind:PUTileKindAssetExplorerReviewScreenBadge];
     [(PUOneUpTilingLayout *)self invalidateLayoutWithContext:v5];
   }
 }
 
-- (void)setAssetExplorerReviewScreenProgressIndicatorSize:(CGSize)a3
+- (void)setAssetExplorerReviewScreenProgressIndicatorSize:(CGSize)size
 {
-  if (a3.width != self->_assetExplorerReviewScreenProgressIndicatorSize.width || a3.height != self->_assetExplorerReviewScreenProgressIndicatorSize.height)
+  if (size.width != self->_assetExplorerReviewScreenProgressIndicatorSize.width || size.height != self->_assetExplorerReviewScreenProgressIndicatorSize.height)
   {
-    self->_assetExplorerReviewScreenProgressIndicatorSize = a3;
+    self->_assetExplorerReviewScreenProgressIndicatorSize = size;
     v6 = objc_alloc_init(PUOneUpTilingLayoutInvalidationContext);
     [(PUTilingLayoutInvalidationContext *)v6 invalidateAllTilesWithKind:PUTileKindAssetExplorerReviewScreenProgressIndicator];
     [(PUOneUpTilingLayout *)self invalidateLayoutWithContext:v6];
   }
 }
 
-- (void)setRenderIndicatorSize:(CGSize)a3
+- (void)setRenderIndicatorSize:(CGSize)size
 {
-  if (a3.width != self->_renderIndicatorSize.width || a3.height != self->_renderIndicatorSize.height)
+  if (size.width != self->_renderIndicatorSize.width || size.height != self->_renderIndicatorSize.height)
   {
-    self->_renderIndicatorSize = a3;
+    self->_renderIndicatorSize = size;
     v6 = objc_alloc_init(PUOneUpTilingLayoutInvalidationContext);
     [(PUTilingLayoutInvalidationContext *)v6 invalidateAllTilesWithKind:PUTileKindRenderIndicator];
     [(PUOneUpTilingLayout *)self invalidateLayoutWithContext:v6];
   }
 }
 
-- (void)setProgressIndicatorContentInsets:(UIEdgeInsets)a3
+- (void)setProgressIndicatorContentInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_progressIndicatorContentInsets.top), vceqq_f64(v4, *&self->_progressIndicatorContentInsets.bottom)))) & 1) == 0)
   {
-    self->_progressIndicatorContentInsets = a3;
+    self->_progressIndicatorContentInsets = insets;
     v6 = objc_alloc_init(PUOneUpTilingLayoutInvalidationContext);
     [(PUTilingLayoutInvalidationContext *)v6 invalidateAllTilesWithKind:PUTileKindProgressIndicator];
     [(PUOneUpTilingLayout *)self invalidateLayoutWithContext:v6];
   }
 }
 
-- (void)setPeopleRowSize:(CGSize)a3
+- (void)setPeopleRowSize:(CGSize)size
 {
-  if (a3.width != self->_peopleRowSize.width || a3.height != self->_peopleRowSize.height)
+  if (size.width != self->_peopleRowSize.width || size.height != self->_peopleRowSize.height)
   {
-    self->_peopleRowSize = a3;
+    self->_peopleRowSize = size;
     v6 = objc_alloc_init(PUOneUpTilingLayoutInvalidationContext);
     [(PUTilingLayoutInvalidationContext *)v6 invalidateAllTilesWithKind:PUTileKindPeople];
     [(PUOneUpTilingLayout *)self invalidateLayoutWithContext:v6];
   }
 }
 
-- (void)setProgressIndicatorSize:(CGSize)a3
+- (void)setProgressIndicatorSize:(CGSize)size
 {
-  if (a3.width != self->_progressIndicatorSize.width || a3.height != self->_progressIndicatorSize.height)
+  if (size.width != self->_progressIndicatorSize.width || size.height != self->_progressIndicatorSize.height)
   {
-    self->_progressIndicatorSize = a3;
+    self->_progressIndicatorSize = size;
     v6 = objc_alloc_init(PUOneUpTilingLayoutInvalidationContext);
     [(PUTilingLayoutInvalidationContext *)v6 invalidateAllTilesWithKind:PUTileKindProgressIndicator];
     [(PUOneUpTilingLayout *)self invalidateLayoutWithContext:v6];
   }
 }
 
-- (void)setUseBadgeTiles:(BOOL)a3
+- (void)setUseBadgeTiles:(BOOL)tiles
 {
-  if (self->_useBadgeTiles != a3)
+  if (self->_useBadgeTiles != tiles)
   {
-    self->_useBadgeTiles = a3;
+    self->_useBadgeTiles = tiles;
     v5 = objc_alloc_init(PUOneUpTilingLayoutInvalidationContext);
     [(PUTilingLayoutInvalidationContext *)v5 invalidateAllTilesWithKind:PUTileKindBadge];
     [(PUOneUpTilingLayout *)self invalidateLayoutWithContext:v5];
   }
 }
 
-- (void)setPlayButtonSize:(CGSize)a3
+- (void)setPlayButtonSize:(CGSize)size
 {
-  if (a3.width != self->_playButtonSize.width || a3.height != self->_playButtonSize.height)
+  if (size.width != self->_playButtonSize.width || size.height != self->_playButtonSize.height)
   {
-    self->_playButtonSize = a3;
+    self->_playButtonSize = size;
     v6 = objc_alloc_init(PUOneUpTilingLayoutInvalidationContext);
     [(PUTilingLayoutInvalidationContext *)v6 invalidateAllTilesWithKind:PUTileKindPlayButton];
     [(PUOneUpTilingLayout *)self invalidateLayoutWithContext:v6];
   }
 }
 
-- (void)setUseImportStatusIndicatorTiles:(BOOL)a3
+- (void)setUseImportStatusIndicatorTiles:(BOOL)tiles
 {
-  if (self->_useImportStatusIndicatorTiles != a3)
+  if (self->_useImportStatusIndicatorTiles != tiles)
   {
-    self->_useImportStatusIndicatorTiles = a3;
+    self->_useImportStatusIndicatorTiles = tiles;
     v5 = objc_alloc_init(PUOneUpTilingLayoutInvalidationContext);
     [(PUTilingLayoutInvalidationContext *)v5 invalidateAllTilesWithKind:PUTileKindImportStatusIndicator];
     [(PUTilingLayoutInvalidationContext *)v5 invalidateAllTilesWithKind:PUTileKindProgressIndicator];
@@ -1709,11 +1709,11 @@ LABEL_65:
   }
 }
 
-- (void)setUseSelectionIndicatorTiles:(BOOL)a3
+- (void)setUseSelectionIndicatorTiles:(BOOL)tiles
 {
-  if (self->_useSelectionIndicatorTiles != a3)
+  if (self->_useSelectionIndicatorTiles != tiles)
   {
-    self->_useSelectionIndicatorTiles = a3;
+    self->_useSelectionIndicatorTiles = tiles;
     v5 = objc_alloc_init(PUOneUpTilingLayoutInvalidationContext);
     [(PUTilingLayoutInvalidationContext *)v5 invalidateAllTilesWithKind:PUTileKindSelectionIndicator];
     [(PUTilingLayoutInvalidationContext *)v5 invalidateAllTilesWithKind:PUTileKindProgressIndicator];
@@ -1721,53 +1721,53 @@ LABEL_65:
   }
 }
 
-- (void)setInsetContentCornerRadius:(double)a3
+- (void)setInsetContentCornerRadius:(double)radius
 {
-  if (self->_insetContentCornerRadius != a3)
+  if (self->_insetContentCornerRadius != radius)
   {
-    self->_insetContentCornerRadius = a3;
+    self->_insetContentCornerRadius = radius;
     [(PUOneUpTilingLayout *)self invalidateAllContentTiles];
   }
 }
 
-- (void)setInsetContentBorderColor:(id)a3
+- (void)setInsetContentBorderColor:(id)color
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_insetContentBorderColor != v5)
+  colorCopy = color;
+  v6 = colorCopy;
+  if (self->_insetContentBorderColor != colorCopy)
   {
-    v7 = v5;
-    v5 = [v5 isEqual:?];
+    v7 = colorCopy;
+    colorCopy = [colorCopy isEqual:?];
     v6 = v7;
-    if ((v5 & 1) == 0)
+    if ((colorCopy & 1) == 0)
     {
-      objc_storeStrong(&self->_insetContentBorderColor, a3);
-      v5 = [(PUOneUpTilingLayout *)self invalidateAllContentTiles];
+      objc_storeStrong(&self->_insetContentBorderColor, color);
+      colorCopy = [(PUOneUpTilingLayout *)self invalidateAllContentTiles];
       v6 = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](colorCopy, v6);
 }
 
-- (void)setInsetContentBorderWidth:(double)a3
+- (void)setInsetContentBorderWidth:(double)width
 {
-  if (self->_insetContentBorderWidth != a3)
+  if (self->_insetContentBorderWidth != width)
   {
-    self->_insetContentBorderWidth = a3;
+    self->_insetContentBorderWidth = width;
     [(PUOneUpTilingLayout *)self invalidateAllContentTiles];
   }
 }
 
-- (void)setContentDecorationAdditionalInsets:(UIEdgeInsets)a3
+- (void)setContentDecorationAdditionalInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_contentDecorationAdditionalInsets.top), vceqq_f64(v4, *&self->_contentDecorationAdditionalInsets.bottom)))) & 1) == 0)
   {
-    self->_contentDecorationAdditionalInsets = a3;
+    self->_contentDecorationAdditionalInsets = insets;
     v6 = objc_alloc_init(PUOneUpTilingLayoutInvalidationContext);
     [(PUTilingLayoutInvalidationContext *)v6 invalidateAllTilesWithKind:PUTileKindSelectionIndicator];
     [(PUTilingLayoutInvalidationContext *)v6 invalidateAllTilesWithKind:PUTileKindProgressIndicator];
@@ -1780,15 +1780,15 @@ LABEL_65:
   }
 }
 
-- (void)setContentSafeInsets:(UIEdgeInsets)a3
+- (void)setContentSafeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_contentSafeInsets.top), vceqq_f64(v4, *&self->_contentSafeInsets.bottom)))) & 1) == 0)
   {
-    self->_contentSafeInsets = a3;
+    self->_contentSafeInsets = insets;
     v6 = objc_alloc_init(PUOneUpTilingLayoutInvalidationContext);
     [(PUOneUpTilingLayoutInvalidationContext *)v6 _setInvalidatedContentInsets:1];
     [(PUTilingLayoutInvalidationContext *)v6 invalidateAllTilesWithKind:@"PUTileKindItemContent"];
@@ -1829,11 +1829,11 @@ LABEL_65:
   [(PUOneUpTilingLayout *)self invalidateLayoutWithContext:v3];
 }
 
-- (BOOL)_shouldShowRenderIndicatorForIndexPath:(id)a3 size:(CGSize)a4
+- (BOOL)_shouldShowRenderIndicatorForIndexPath:(id)path size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  if ([a3 length] != 2)
+  height = size.height;
+  width = size.width;
+  if ([path length] != 2)
   {
     return 0;
   }
@@ -1846,58 +1846,58 @@ LABEL_65:
   return 1;
 }
 
-- (BOOL)_isVideoPlacholderVisibleForItemAtIndexPath:(id)a3
+- (BOOL)_isVideoPlacholderVisibleForItemAtIndexPath:(id)path
 {
   if (!self->_delegateFlags.respondsToShouldShowVideoPlaceholderForItemAtIndexPath)
   {
     return 0;
   }
 
-  v3 = self;
-  v4 = a3;
-  WeakRetained = objc_loadWeakRetained(&v3->_delegate);
-  LOBYTE(v3) = [WeakRetained layout:v3 shouldShowVideoPlaceholderForItemAtIndexPath:v4];
+  selfCopy = self;
+  pathCopy = path;
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+  LOBYTE(selfCopy) = [WeakRetained layout:selfCopy shouldShowVideoPlaceholderForItemAtIndexPath:pathCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)_isShowingInfoPanelForItemAtIndexPath:(id)a3
+- (BOOL)_isShowingInfoPanelForItemAtIndexPath:(id)path
 {
   if (!self->_delegateFlags.respondsToIsShowingInfoPanelForItemAtIndexPath)
   {
     return 0;
   }
 
-  v3 = self;
-  v4 = a3;
-  WeakRetained = objc_loadWeakRetained(&v3->_delegate);
-  LOBYTE(v3) = [WeakRetained layout:v3 isShowingInfoPanelForItemAtIndexPath:v4];
+  selfCopy = self;
+  pathCopy = path;
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+  LOBYTE(selfCopy) = [WeakRetained layout:selfCopy isShowingInfoPanelForItemAtIndexPath:pathCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)_accessoryViewVisibilityForItemAtIndexPath:(id)a3
+- (BOOL)_accessoryViewVisibilityForItemAtIndexPath:(id)path
 {
   if (!self->_delegateFlags.respondsToShouldShowAccessoryForItemAtIndexPath)
   {
     return 0;
   }
 
-  v3 = self;
-  v4 = a3;
-  WeakRetained = objc_loadWeakRetained(&v3->_delegate);
-  LOBYTE(v3) = [WeakRetained layout:v3 shouldShowAccessoryForItemAtIndexPath:v4];
+  selfCopy = self;
+  pathCopy = path;
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+  LOBYTE(selfCopy) = [WeakRetained layout:selfCopy shouldShowAccessoryForItemAtIndexPath:pathCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (CGPoint)_contentOffsetForItemAtIndexPath:(id)a3
+- (CGPoint)_contentOffsetForItemAtIndexPath:(id)path
 {
   if (self->_delegateFlags.respondsToContentOffsetForItemAtIndexPath)
   {
-    v4 = a3;
-    v5 = [(PUOneUpTilingLayout *)self delegate];
-    [v5 layout:self contentOffsetForItemAtIndexPath:v4];
+    pathCopy = path;
+    delegate = [(PUOneUpTilingLayout *)self delegate];
+    [delegate layout:self contentOffsetForItemAtIndexPath:pathCopy];
     v7 = v6;
     v9 = v8;
   }
@@ -1915,116 +1915,116 @@ LABEL_65:
   return result;
 }
 
-- (void)invalidateProgressIndicatorForItemAtIndexPath:(id)a3
+- (void)invalidateProgressIndicatorForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = objc_alloc_init(PUTilingLayoutInvalidationContext);
-  [(PUTilingLayoutInvalidationContext *)v5 invalidateTileWithIndexPath:v4 kind:PUTileKindProgressIndicator];
+  [(PUTilingLayoutInvalidationContext *)v5 invalidateTileWithIndexPath:pathCopy kind:PUTileKindProgressIndicator];
 
   [(PUOneUpTilingLayout *)self invalidateLayoutWithContext:v5];
 }
 
-- (void)invalidateLoadingIndicatorForItemAtIndexPath:(id)a3
+- (void)invalidateLoadingIndicatorForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = objc_alloc_init(PUTilingLayoutInvalidationContext);
-  [(PUTilingLayoutInvalidationContext *)v5 invalidateTileWithIndexPath:v4 kind:PUTileKindLoadingIndicator];
+  [(PUTilingLayoutInvalidationContext *)v5 invalidateTileWithIndexPath:pathCopy kind:PUTileKindLoadingIndicator];
 
   [(PUOneUpTilingLayout *)self invalidateLayoutWithContext:v5];
 }
 
-- (void)invalidateVideoPlaceholderForItemAtIndexPath:(id)a3
+- (void)invalidateVideoPlaceholderForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = objc_alloc_init(PUOneUpTilingLayoutInvalidationContext);
   [(PUOneUpTilingLayoutInvalidationContext *)v5 _setInvalidatedVideoPlaceholderTile:1];
-  [(PUTilingLayoutInvalidationContext *)v5 invalidateTileWithIndexPath:v4 kind:PUTileKindVideoPlaceholder];
+  [(PUTilingLayoutInvalidationContext *)v5 invalidateTileWithIndexPath:pathCopy kind:PUTileKindVideoPlaceholder];
 
   [(PUOneUpTilingLayout *)self invalidateLayoutWithContext:v5];
 }
 
-- (void)_invalidateContentRelatedTilesWithIndexPath:(id)a3 inContext:(id)a4
+- (void)_invalidateContentRelatedTilesWithIndexPath:(id)path inContext:(id)context
 {
-  v6 = a4;
-  v5 = a3;
-  [v6 invalidateTileWithIndexPath:v5 kind:@"PUTileKindItemContent"];
-  [v6 invalidateTileWithIndexPath:v5 kind:PUTileKindUserTransform];
-  [v6 invalidateTileWithIndexPath:v5 kind:PUTileKindBadge];
-  [v6 invalidateTileWithIndexPath:v5 kind:PUTileKindPlayButton];
-  [v6 invalidateTileWithIndexPath:v5 kind:PUTileKindProgressIndicator];
-  [v6 invalidateTileWithIndexPath:v5 kind:PUTileKindPeople];
-  [v6 invalidateTileWithIndexPath:v5 kind:PUTileKindRenderIndicator];
-  [v6 invalidateTileWithIndexPath:v5 kind:PUTileKindImportStatusIndicator];
-  [v6 invalidateTileWithIndexPath:v5 kind:PUTileKindBufferingIndicator];
-  [v6 invalidateTileWithIndexPath:v5 kind:PUTileKindLoadingIndicator];
-  [v6 invalidateTileWithIndexPath:v5 kind:PUTileKindAccessory];
-  [v6 invalidateTileWithIndexPath:v5 kind:PUTileKindAssetExplorerReviewScreenBadge];
-  [v6 invalidateTileWithIndexPath:v5 kind:PUTileKindSelectionIndicator];
-  [v6 invalidateTileWithIndexPath:v5 kind:PUTileKindAssetExplorerReviewScreenProgressIndicator];
-  [v6 invalidateTileWithIndexPath:v5 kind:PUTileKindCropButton];
+  contextCopy = context;
+  pathCopy = path;
+  [contextCopy invalidateTileWithIndexPath:pathCopy kind:@"PUTileKindItemContent"];
+  [contextCopy invalidateTileWithIndexPath:pathCopy kind:PUTileKindUserTransform];
+  [contextCopy invalidateTileWithIndexPath:pathCopy kind:PUTileKindBadge];
+  [contextCopy invalidateTileWithIndexPath:pathCopy kind:PUTileKindPlayButton];
+  [contextCopy invalidateTileWithIndexPath:pathCopy kind:PUTileKindProgressIndicator];
+  [contextCopy invalidateTileWithIndexPath:pathCopy kind:PUTileKindPeople];
+  [contextCopy invalidateTileWithIndexPath:pathCopy kind:PUTileKindRenderIndicator];
+  [contextCopy invalidateTileWithIndexPath:pathCopy kind:PUTileKindImportStatusIndicator];
+  [contextCopy invalidateTileWithIndexPath:pathCopy kind:PUTileKindBufferingIndicator];
+  [contextCopy invalidateTileWithIndexPath:pathCopy kind:PUTileKindLoadingIndicator];
+  [contextCopy invalidateTileWithIndexPath:pathCopy kind:PUTileKindAccessory];
+  [contextCopy invalidateTileWithIndexPath:pathCopy kind:PUTileKindAssetExplorerReviewScreenBadge];
+  [contextCopy invalidateTileWithIndexPath:pathCopy kind:PUTileKindSelectionIndicator];
+  [contextCopy invalidateTileWithIndexPath:pathCopy kind:PUTileKindAssetExplorerReviewScreenProgressIndicator];
+  [contextCopy invalidateTileWithIndexPath:pathCopy kind:PUTileKindCropButton];
 
-  [v6 invalidateAllTilesWithKind:PUTileKindLivePhotoVideoPlaybackOverlay];
+  [contextCopy invalidateAllTilesWithKind:PUTileKindLivePhotoVideoPlaybackOverlay];
 }
 
-- (void)invalidateContentOffsetForItemAtIndexPath:(id)a3 withOptions:(unint64_t)a4
+- (void)invalidateContentOffsetForItemAtIndexPath:(id)path withOptions:(unint64_t)options
 {
-  v6 = a3;
+  pathCopy = path;
   v7 = objc_alloc_init(PUOneUpTilingLayoutInvalidationContext);
   [(PUOneUpTilingLayoutInvalidationContext *)v7 _setInvalidatedContentOffset:1];
-  [(PUOneUpTilingLayoutInvalidationContext *)v7 _setOptions:a4];
-  [(PUOneUpTilingLayout *)self _invalidateContentRelatedTilesWithIndexPath:v6 inContext:v7];
+  [(PUOneUpTilingLayoutInvalidationContext *)v7 _setOptions:options];
+  [(PUOneUpTilingLayout *)self _invalidateContentRelatedTilesWithIndexPath:pathCopy inContext:v7];
 
   [(PUOneUpTilingLayout *)self invalidateLayoutWithContext:v7];
 }
 
-- (void)invalidateAccessoryForItemAtIndexPath:(id)a3 withOptions:(unint64_t)a4
+- (void)invalidateAccessoryForItemAtIndexPath:(id)path withOptions:(unint64_t)options
 {
-  v6 = a3;
+  pathCopy = path;
   v7 = objc_alloc_init(PUOneUpTilingLayoutInvalidationContext);
   [(PUOneUpTilingLayoutInvalidationContext *)v7 _setInvalidatedAccessoryTile:1];
-  [(PUOneUpTilingLayoutInvalidationContext *)v7 _setOptions:a4];
-  [(PUOneUpTilingLayout *)self _invalidateContentRelatedTilesWithIndexPath:v6 inContext:v7];
+  [(PUOneUpTilingLayoutInvalidationContext *)v7 _setOptions:options];
+  [(PUOneUpTilingLayout *)self _invalidateContentRelatedTilesWithIndexPath:pathCopy inContext:v7];
 
   [(PUOneUpTilingLayout *)self invalidateLayoutWithContext:v7];
 }
 
-- (void)invalidateModelTileTransformForItemAtIndexPath:(id)a3
+- (void)invalidateModelTileTransformForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = objc_alloc_init(PUTilingLayoutInvalidationContext);
-  [(PUOneUpTilingLayout *)self _invalidateContentRelatedTilesWithIndexPath:v4 inContext:v5];
+  [(PUOneUpTilingLayout *)self _invalidateContentRelatedTilesWithIndexPath:pathCopy inContext:v5];
 
   [(PUOneUpTilingLayout *)self invalidateLayoutWithContext:v5];
 }
 
-- (void)invalidateBadgeSizeForItemAtIndexPath:(id)a3
+- (void)invalidateBadgeSizeForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = objc_alloc_init(PUTilingLayoutInvalidationContext);
-  [(PUTilingLayoutInvalidationContext *)v5 invalidateTileWithIndexPath:v4 kind:PUTileKindBadge];
-  [(PUTilingLayoutInvalidationContext *)v5 invalidateTileWithIndexPath:v4 kind:PUTileKindAssetExplorerReviewScreenBadge];
+  [(PUTilingLayoutInvalidationContext *)v5 invalidateTileWithIndexPath:pathCopy kind:PUTileKindBadge];
+  [(PUTilingLayoutInvalidationContext *)v5 invalidateTileWithIndexPath:pathCopy kind:PUTileKindAssetExplorerReviewScreenBadge];
 
   [(PUOneUpTilingLayout *)self invalidateLayoutWithContext:v5];
 }
 
-- (CGRect)visibleRectForItemAtIndexPath:(id)a3 transitionProgress:(double)a4
+- (CGRect)visibleRectForItemAtIndexPath:(id)path transitionProgress:(double)progress
 {
-  v6 = a3;
+  pathCopy = path;
   [(PUOneUpTilingLayout *)self _itemSize];
   v8 = v7;
   [(PUOneUpTilingLayout *)self interpageSpacing];
   v10 = v8 + v9;
   if ([(PUSectionedTilingLayout *)self leftToRight])
   {
-    v11 = v10 * a4;
+    v11 = v10 * progress;
   }
 
   else
   {
-    v11 = -(v10 * a4);
+    v11 = -(v10 * progress);
   }
 
-  [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:v6];
+  [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:pathCopy];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -2038,29 +2038,29 @@ LABEL_65:
   return CGRectOffset(*&v20, v11, 0.0);
 }
 
-- (UIEdgeInsets)_cropInsetsForTileAtIndexPath:(id)a3 layoutRect:(CGRect)a4
+- (UIEdgeInsets)_cropInsetsForTileAtIndexPath:(id)path layoutRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = [(PUOneUpTilingLayout *)self delegate];
-  v11 = [v10 layout:self insetModeForItemAtIndexPath:v9];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  pathCopy = path;
+  delegate = [(PUOneUpTilingLayout *)self delegate];
+  v11 = [delegate layout:self insetModeForItemAtIndexPath:pathCopy];
 
   if (v11 == 1)
   {
     v43 = width;
     v44 = height;
-    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:v9];
+    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:pathCopy];
     v45 = v15;
     v46 = v14;
     if (self->_delegateFlags.respondsToInsetsWhenScaledToFitForItemAtIndexPath)
     {
       v16 = v12;
       v17 = v13;
-      v18 = [(PUOneUpTilingLayout *)self delegate];
-      [v18 layout:self insetsWhenScaledToFitForItemAtIndexPath:v9 inViewportSize:{v46, v45}];
+      delegate2 = [(PUOneUpTilingLayout *)self delegate];
+      [delegate2 layout:self insetsWhenScaledToFitForItemAtIndexPath:pathCopy inViewportSize:{v46, v45}];
       v20 = v19;
       v22 = v21;
       v24 = v23;
@@ -2128,14 +2128,14 @@ LABEL_65:
   return result;
 }
 
-- (id)_createLayoutInfoForTileWithIndexPath:(id)a3 kind:(id)a4
+- (id)_createLayoutInfoForTileWithIndexPath:(id)path kind:(id)kind
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(PUSectionedTilingLayout *)self leftToRight];
-  if ([v8 isEqualToString:@"PUTileKindItemContent"])
+  pathCopy = path;
+  kindCopy = kind;
+  leftToRight = [(PUSectionedTilingLayout *)self leftToRight];
+  if ([kindCopy isEqualToString:@"PUTileKindItemContent"])
   {
-    if ([v7 length] == 2)
+    if ([pathCopy length] == 2)
     {
       v10 = *(MEMORY[0x1E695F058] + 16);
       slice.origin = *MEMORY[0x1E695F058];
@@ -2148,21 +2148,21 @@ LABEL_65:
       v12 = *(MEMORY[0x1E69C48E0] + 16);
       v674 = *MEMORY[0x1E69C48E0];
       v675 = v12;
-      [(PUOneUpTilingLayout *)self _getLayoutRect:&slice transform:&v668 parallaxOffset:&v676 contentsRect:&v674 alpha:0 forContentOfItemAtIndexPath:v7 options:0];
-      v13 = [(PUOneUpTilingLayout *)self shouldHideMainContent];
+      [(PUOneUpTilingLayout *)self _getLayoutRect:&slice transform:&v668 parallaxOffset:&v676 contentsRect:&v674 alpha:0 forContentOfItemAtIndexPath:pathCopy options:0];
+      shouldHideMainContent = [(PUOneUpTilingLayout *)self shouldHideMainContent];
       v14 = 1.0;
-      if (v13)
+      if (shouldHideMainContent)
       {
         v14 = 0.0;
       }
 
       rect = v14;
-      if ([(PUOneUpTilingLayout *)self _shouldApplyInsetStylingToContentWithRect:v7 indexPath:slice.origin.x, slice.origin.y, slice.size.width, slice.size.height])
+      if ([(PUOneUpTilingLayout *)self _shouldApplyInsetStylingToContentWithRect:pathCopy indexPath:slice.origin.x, slice.origin.y, slice.size.width, slice.size.height])
       {
-        [(PUOneUpTilingLayout *)self _insetContentCornerRadiusForItemAtIndexPath:v7];
+        [(PUOneUpTilingLayout *)self _insetContentCornerRadiusForItemAtIndexPath:pathCopy];
         rect1 = v15;
-        v16 = *MEMORY[0x1E69796E8];
-        v17 = [(PUOneUpTilingLayout *)self insetContentBorderColor];
+        indexPathOfCurrentItem = *MEMORY[0x1E69796E8];
+        insetContentBorderColor = [(PUOneUpTilingLayout *)self insetContentBorderColor];
         [(PUOneUpTilingLayout *)self insetContentBorderWidth];
         v651 = v18;
         v19 = 15;
@@ -2174,18 +2174,18 @@ LABEL_65:
         [v45 itemContentCornerRadius];
         rect1 = v46;
 
-        v16 = *MEMORY[0x1E69796E8];
-        v17 = 0;
+        indexPathOfCurrentItem = *MEMORY[0x1E69796E8];
+        insetContentBorderColor = 0;
         v19 = 0;
         v651 = 0.0;
       }
 
-      [(PUOneUpTilingLayout *)self _cropInsetsForTileAtIndexPath:v7 layoutRect:slice.origin.x, slice.origin.y, slice.size.width, slice.size.height];
+      [(PUOneUpTilingLayout *)self _cropInsetsForTileAtIndexPath:pathCopy layoutRect:slice.origin.x, slice.origin.y, slice.size.width, slice.size.height];
       v647 = v47;
       v49 = v48;
       v51 = v50;
       v53 = v52;
-      v54 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:v7 kind:v8];
+      v54 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:pathCopy kind:kindCopy];
       v55 = [PUParallaxedTileLayoutInfo alloc];
       x = slice.origin.x;
       y = slice.origin.y;
@@ -2197,10 +2197,10 @@ LABEL_65:
       v680.size.width = width;
       v680.size.height = height;
       MidY = CGRectGetMidY(v680);
-      v62 = [(PUTilingLayout *)self coordinateSystem];
+      coordinateSystem = [(PUTilingLayout *)self coordinateSystem];
       remainder = v668;
       v673 = v669;
-      v34 = [(PUParallaxedTileLayoutInfo *)v55 initWithTileIdentifier:v54 center:v16 size:v19 alpha:v17 cornerRadius:&remainder cornerCurve:v62 cornerMask:MidX borderWidth:MidY borderColor:slice.size.width transform:slice.size.height zPosition:rect parallaxOffset:rect1 contentsRect:v651 coordinateSystem:0.0 cropInsets:v676 normalizedLegibilityInsets:*&v674, v675, v647, v49, v51, v53, *MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)];
+      v620 = [(PUParallaxedTileLayoutInfo *)v55 initWithTileIdentifier:v54 center:indexPathOfCurrentItem size:v19 alpha:insetContentBorderColor cornerRadius:&remainder cornerCurve:coordinateSystem cornerMask:MidX borderWidth:MidY borderColor:slice.size.width transform:slice.size.height zPosition:rect parallaxOffset:rect1 contentsRect:v651 coordinateSystem:0.0 cropInsets:v676 normalizedLegibilityInsets:*&v674, v675, v647, v49, v51, v53, *MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)];
 
 LABEL_19:
       goto LABEL_20;
@@ -2209,9 +2209,9 @@ LABEL_19:
     goto LABEL_219;
   }
 
-  if ([v8 isEqualToString:PUTileKindBackground])
+  if ([kindCopy isEqualToString:PUTileKindBackground])
   {
-    if (![v7 length] && -[PUOneUpTilingLayout useBackgroundTile](self, "useBackgroundTile"))
+    if (![pathCopy length] && -[PUOneUpTilingLayout useBackgroundTile](self, "useBackgroundTile"))
     {
       [(PUTilingLayout *)self visibleRect];
       PXRectScaleFromCenter();
@@ -2219,7 +2219,7 @@ LABEL_19:
       v23 = v22;
       v25 = v24;
       v27 = v26;
-      v16 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:v7 kind:v8];
+      indexPathOfCurrentItem = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:pathCopy kind:kindCopy];
       v28 = [PUTileLayoutInfo alloc];
       v678.origin.x = v21;
       v678.origin.y = v23;
@@ -2232,16 +2232,16 @@ LABEL_19:
       v679.size.height = v27;
       v30 = CGRectGetMidY(v679);
       v31 = *&PUTilingLayoutBackgroundZPosition;
-      v32 = [(PUTilingLayout *)self coordinateSystem];
+      coordinateSystem2 = [(PUTilingLayout *)self coordinateSystem];
       v33 = *(MEMORY[0x1E695EFD0] + 16);
       v668.origin = *MEMORY[0x1E695EFD0];
       v668.size = v33;
       v669 = *(MEMORY[0x1E695EFD0] + 32);
-      v34 = [(PUTileLayoutInfo *)v28 initWithTileIdentifier:v16 center:&v668 size:v32 alpha:v29 transform:v30 zPosition:v25 coordinateSystem:v27, 1.0, v31];
+      v620 = [(PUTileLayoutInfo *)v28 initWithTileIdentifier:indexPathOfCurrentItem center:&v668 size:coordinateSystem2 alpha:v29 transform:v30 zPosition:v25 coordinateSystem:v27, 1.0, v31];
 
       [(PUTilingLayout *)self visibleRect];
       PXEdgeInsetsBetweenRects();
-      [(PUTileLayoutInfo *)v34 setExpandedRectInsets:?];
+      [(PUTileLayoutInfo *)v620 setExpandedRectInsets:?];
 LABEL_20:
 
       goto LABEL_220;
@@ -2250,9 +2250,9 @@ LABEL_20:
     goto LABEL_219;
   }
 
-  if ([v8 isEqualToString:PUTileKindReviewScreenTopBar])
+  if ([kindCopy isEqualToString:PUTileKindReviewScreenTopBar])
   {
-    if (!-[PUOneUpTilingLayout useReviewScreenBars](self, "useReviewScreenBars") || [v7 length])
+    if (!-[PUOneUpTilingLayout useReviewScreenBars](self, "useReviewScreenBars") || [pathCopy length])
     {
       goto LABEL_219;
     }
@@ -2268,23 +2268,23 @@ LABEL_20:
     v39 = 1.0;
     if (self->_delegateFlags.respondsToAlphaForReviewScreenBarsInLayout)
     {
-      v40 = [(PUOneUpTilingLayout *)self delegate];
-      [v40 alphaForReviewScreenBarsInLayout:self];
+      delegate = [(PUOneUpTilingLayout *)self delegate];
+      [delegate alphaForReviewScreenBarsInLayout:self];
       v39 = v41;
     }
 
-    v16 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:v7 kind:v8];
+    indexPathOfCurrentItem = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:pathCopy kind:kindCopy];
     v42 = [PUTileLayoutInfo alloc];
-    v43 = [(PUTilingLayout *)self coordinateSystem];
+    coordinateSystem3 = [(PUTilingLayout *)self coordinateSystem];
     slice = remainder;
     v667 = v673;
     v44 = 1001.0;
     goto LABEL_27;
   }
 
-  if ([v8 isEqualToString:PUTileKindReviewScreenControlBar])
+  if ([kindCopy isEqualToString:PUTileKindReviewScreenControlBar])
   {
-    if (!-[PUOneUpTilingLayout useReviewScreenBars](self, "useReviewScreenBars") || [v7 length])
+    if (!-[PUOneUpTilingLayout useReviewScreenBars](self, "useReviewScreenBars") || [pathCopy length])
     {
       goto LABEL_219;
     }
@@ -2300,39 +2300,39 @@ LABEL_20:
     v39 = 1.0;
     if (self->_delegateFlags.respondsToAlphaForReviewScreenBarsInLayout)
     {
-      v67 = [(PUOneUpTilingLayout *)self delegate];
-      [v67 alphaForReviewScreenBarsInLayout:self];
+      delegate2 = [(PUOneUpTilingLayout *)self delegate];
+      [delegate2 alphaForReviewScreenBarsInLayout:self];
       v39 = v68;
     }
 
-    v16 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:v7 kind:v8];
+    indexPathOfCurrentItem = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:pathCopy kind:kindCopy];
     v42 = [PUTileLayoutInfo alloc];
-    v43 = [(PUTilingLayout *)self coordinateSystem];
+    coordinateSystem3 = [(PUTilingLayout *)self coordinateSystem];
     slice = remainder;
     v667 = v673;
     v44 = 1000.0;
 LABEL_27:
     p_slice = &slice;
     v70 = v42;
-    v71 = v16;
+    v71 = indexPathOfCurrentItem;
     v72 = 0.0;
     v73 = 0.0;
     v74 = 0.0;
     v75 = 0.0;
     v76 = v39;
 LABEL_28:
-    v77 = [(PUTileLayoutInfo *)v70 initWithTileIdentifier:v71 center:p_slice size:v43 alpha:v72 transform:v73 zPosition:v74 coordinateSystem:v75, v76, v44];
+    v161 = [(PUTileLayoutInfo *)v70 initWithTileIdentifier:v71 center:p_slice size:coordinateSystem3 alpha:v72 transform:v73 zPosition:v74 coordinateSystem:v75, v76, v44];
     goto LABEL_29;
   }
 
-  if ([v8 isEqualToString:PUTileKindReviewScreenScrubberBar])
+  if ([kindCopy isEqualToString:PUTileKindReviewScreenScrubberBar])
   {
     if (![(PUOneUpTilingLayout *)self useReviewScreenBars])
     {
       goto LABEL_219;
     }
 
-    v78 = [v7 length];
+    v78 = [pathCopy length];
     if (self->_delegateFlags.respondsToShouldShowReviewScreenScrubberBar)
     {
       if (v78)
@@ -2340,8 +2340,8 @@ LABEL_28:
         goto LABEL_219;
       }
 
-      v79 = [(PUOneUpTilingLayout *)self delegate];
-      v80 = [v79 layoutShouldShowReviewScreenScrubberBar:self];
+      delegate3 = [(PUOneUpTilingLayout *)self delegate];
+      v80 = [delegate3 layoutShouldShowReviewScreenScrubberBar:self];
 
       if ((v80 & 1) == 0)
       {
@@ -2359,13 +2359,13 @@ LABEL_28:
     v113 = v112;
     v115 = v114;
     v117 = v116;
-    v118 = [(PUOneUpTilingLayout *)self windowInterfaceOrientation];
+    windowInterfaceOrientation = [(PUOneUpTilingLayout *)self windowInterfaceOrientation];
     [(PUOneUpTilingLayout *)self contentSafeInsets];
     v671 = 0u;
     v669 = 0u;
     memset(&v670, 0, sizeof(v670));
     memset(&v668, 0, sizeof(v668));
-    [PUReviewScreenUtilities reviewScreenScrubberBarGeometryForReferenceBounds:v118 withOrientation:v111 safeAreaInsets:v113, v115, v117, v119, v120, v121, v122];
+    [PUReviewScreenUtilities reviewScreenScrubberBarGeometryForReferenceBounds:windowInterfaceOrientation withOrientation:v111 safeAreaInsets:v113, v115, v117, v119, v120, v121, v122];
     v124 = 0.0;
     v123 = 0.0;
     if (*MEMORY[0x1E695F060] == 0.0 && v668.size.height == *(MEMORY[0x1E695F060] + 8))
@@ -2377,9 +2377,9 @@ LABEL_28:
     v125 = *&v669;
     remainder = v670;
     v673 = v671;
-    v16 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:v7 kind:v8];
+    indexPathOfCurrentItem = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:pathCopy kind:kindCopy];
     v127 = [PUTileLayoutInfo alloc];
-    v43 = [(PUTilingLayout *)self coordinateSystem];
+    coordinateSystem3 = [(PUTilingLayout *)self coordinateSystem];
     slice = remainder;
     v667 = v673;
     v44 = 1002.0;
@@ -2388,32 +2388,32 @@ LABEL_28:
     goto LABEL_53;
   }
 
-  if ([v8 isEqualToString:PUTileKindUserTransform])
+  if ([kindCopy isEqualToString:PUTileKindUserTransform])
   {
-    if ([v7 length] != 2 || !-[PUOneUpTilingLayout useUserTransformTiles](self, "useUserTransformTiles"))
+    if ([pathCopy length] != 2 || !-[PUOneUpTilingLayout useUserTransformTiles](self, "useUserTransformTiles"))
     {
       goto LABEL_219;
     }
 
-    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:v7];
+    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:pathCopy];
     v82 = v81;
     v84 = v83;
     v86 = v85;
     v88 = v87;
-    [(PUOneUpTilingLayout *)self _untransformedRectForItemAtIndexPath:v7];
+    [(PUOneUpTilingLayout *)self _untransformedRectForItemAtIndexPath:pathCopy];
     v90 = v89;
     v92 = v91;
     recta = v93;
     rect1a = v94;
-    [(PUOneUpTilingLayout *)self _contentPixelSizeForItemAtIndexPath:v7];
+    [(PUOneUpTilingLayout *)self _contentPixelSizeForItemAtIndexPath:pathCopy];
     v643 = v96;
     v644 = v95;
     v648 = v92 - v84;
     v652 = v90 - v82;
     if (self->_delegateFlags.respondsToInsetsWhenScaledToFitForItemAtIndexPath)
     {
-      v97 = [(PUOneUpTilingLayout *)self delegate];
-      [v97 layout:self insetsWhenScaledToFitForItemAtIndexPath:v7 inViewportSize:{v86, v88}];
+      delegate4 = [(PUOneUpTilingLayout *)self delegate];
+      [delegate4 layout:self insetsWhenScaledToFitForItemAtIndexPath:pathCopy inViewportSize:{v86, v88}];
       v641 = v99;
       v642 = v98;
       v639 = v101;
@@ -2429,30 +2429,30 @@ LABEL_28:
       v640 = v152;
     }
 
-    [(PUOneUpTilingLayout *)self _cropInsetsForTileAtIndexPath:v7 layoutRect:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
+    [(PUOneUpTilingLayout *)self _cropInsetsForTileAtIndexPath:pathCopy layoutRect:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
     v155 = v154;
     v157 = v156;
     v159 = v158;
     v161 = v160;
-    v16 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:v7 kind:v8];
+    indexPathOfCurrentItem = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:pathCopy kind:kindCopy];
     v162 = [PUUserTransformTileLayoutInfo alloc];
     Center = PURectGetCenter(v82, v84, v86, v88);
     v165 = v164;
-    v43 = [(PUTilingLayout *)self coordinateSystem];
+    coordinateSystem3 = [(PUTilingLayout *)self coordinateSystem];
     v166 = *(MEMORY[0x1E695EFD0] + 16);
     v668.origin = *MEMORY[0x1E695EFD0];
     v668.size = v166;
     v669 = *(MEMORY[0x1E695EFD0] + 32);
-    v77 = [(PUUserTransformTileLayoutInfo *)v162 initWithTileIdentifier:v16 center:&v668 size:v43 alpha:Center transform:v165 zPosition:v86 coordinateSystem:v88 untransformedContentFrame:1.0 chromeInsets:20.0 contentPixelSize:*&v652 cropInsets:*&v648, recta, rect1a, v642, v641, v640, v639, v644, v643, v155, v157, v159, v161];
+    v161 = [(PUUserTransformTileLayoutInfo *)v162 initWithTileIdentifier:indexPathOfCurrentItem center:&v668 size:coordinateSystem3 alpha:Center transform:v165 zPosition:v86 coordinateSystem:v88 untransformedContentFrame:1.0 chromeInsets:20.0 contentPixelSize:*&v652 cropInsets:*&v648, recta, rect1a, v642, v641, v640, v639, v644, v643, v155, v157, v159, v161];
 LABEL_29:
-    v34 = v77;
+    v620 = v161;
 
     goto LABEL_20;
   }
 
-  if ([v8 isEqualToString:PUTileKindPlayButton])
+  if ([kindCopy isEqualToString:PUTileKindPlayButton])
   {
-    v102 = [v7 length];
+    v102 = [pathCopy length];
     [(PUOneUpTilingLayout *)self playButtonSize];
     if (v102 != 2)
     {
@@ -2474,8 +2474,8 @@ LABEL_29:
         goto LABEL_219;
       }
 
-      v108 = [(PUOneUpTilingLayout *)self delegate];
-      v109 = [v108 layout:self shouldShowPlayButtonForItemAtIndexPath:v7];
+      delegate5 = [(PUOneUpTilingLayout *)self delegate];
+      v109 = [delegate5 layout:self shouldShowPlayButtonForItemAtIndexPath:pathCopy];
 
       if ((v109 & 1) == 0)
       {
@@ -2488,16 +2488,16 @@ LABEL_29:
       goto LABEL_219;
     }
 
-    [(PUOneUpTilingLayout *)self _frameForTileWithSize:v7 centeredOnItemAtIndexPath:v105, v106];
+    [(PUOneUpTilingLayout *)self _frameForTileWithSize:pathCopy centeredOnItemAtIndexPath:v105, v106];
     v168 = v167;
     v170 = v169;
     v172 = v171;
     v174 = v173;
-    v16 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:v7 kind:v8];
+    indexPathOfCurrentItem = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:pathCopy kind:kindCopy];
     v175 = [PUTileLayoutInfo alloc];
     v176 = PURectGetCenter(v168, v170, v172, v174);
     v178 = v177;
-    v43 = [(PUTilingLayout *)self coordinateSystem];
+    coordinateSystem3 = [(PUTilingLayout *)self coordinateSystem];
     v179 = *(MEMORY[0x1E695EFD0] + 16);
     v668.origin = *MEMORY[0x1E695EFD0];
     v668.size = v179;
@@ -2508,9 +2508,9 @@ LABEL_29:
     goto LABEL_81;
   }
 
-  if ([v8 isEqualToString:PUTileKindProgressIndicator])
+  if ([kindCopy isEqualToString:PUTileKindProgressIndicator])
   {
-    v128 = [v7 length];
+    v128 = [pathCopy length];
     [(PUOneUpTilingLayout *)self progressIndicatorSize];
     v130 = v129;
     v132 = v131;
@@ -2536,8 +2536,8 @@ LABEL_29:
         goto LABEL_219;
       }
 
-      v140 = [(PUOneUpTilingLayout *)self delegate];
-      v141 = [v140 layout:self shouldShowProgressIndicatorForItemAtIndexPath:v7];
+      delegate6 = [(PUOneUpTilingLayout *)self delegate];
+      v141 = [delegate6 layout:self shouldShowProgressIndicatorForItemAtIndexPath:pathCopy];
 
       if ((v141 & 1) == 0)
       {
@@ -2554,7 +2554,7 @@ LABEL_29:
     v645 = v136;
     rect1b = v132;
     rectb = v130;
-    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:v7];
+    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:pathCopy];
     v213 = v212;
     v215 = v214;
     v217 = v216;
@@ -2570,7 +2570,7 @@ LABEL_29:
     v229 = v219 - v227;
     remainder.origin = *MEMORY[0x1E695F058];
     remainder.size = v228;
-    [(PUOneUpTilingLayout *)self _getLayoutRect:&remainder transform:0 parallaxOffset:0 forContentOfItemAtIndexPath:v7 options:0];
+    [(PUOneUpTilingLayout *)self _getLayoutRect:&remainder transform:0 parallaxOffset:0 forContentOfItemAtIndexPath:pathCopy options:0];
     v692.origin.x = v221;
     v692.origin.y = v223;
     v692.size.width = v225;
@@ -2595,8 +2595,8 @@ LABEL_29:
     remainder.size.height = v236;
     if (self->_delegateFlags.respondsToShouldMoveProgressIndicatorForItemAtIndexPath)
     {
-      v238 = [(PUOneUpTilingLayout *)self delegate];
-      v239 = [v238 layout:self shouldMoveProgressIndicatorForItemAtIndexPath:v7];
+      delegate7 = [(PUOneUpTilingLayout *)self delegate];
+      v239 = [delegate7 layout:self shouldMoveProgressIndicatorForItemAtIndexPath:pathCopy];
 
       v237.x = remainder.origin.x;
       v240 = remainder.origin.y;
@@ -2604,7 +2604,7 @@ LABEL_29:
       v236 = remainder.size.height;
       if (v239)
       {
-        v241 = _PUOneUpSelectionIndicatorFrame(v9, remainder.origin.x, remainder.origin.y, remainder.size.width, remainder.size.height);
+        v241 = _PUOneUpSelectionIndicatorFrame(leftToRight, remainder.origin.x, remainder.origin.y, remainder.size.width, remainder.size.height);
         v243 = v242;
         v245 = v244;
         v247 = v246;
@@ -2614,7 +2614,7 @@ LABEL_29:
         v251 = v250 + 15.5 + 17.0 - v645;
         v252 = rectb;
         v253 = v649 + v250 + -15.5 + -17.0 - rectb;
-        if (v9)
+        if (leftToRight)
         {
           v254 = v253;
         }
@@ -2625,11 +2625,11 @@ LABEL_29:
         }
 
 LABEL_117:
-        v16 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:v7 kind:v8];
+        indexPathOfCurrentItem = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:pathCopy kind:kindCopy];
         v345 = [PUTileLayoutInfo alloc];
         v346 = PURectGetCenter(v254, v249, v252, rect1b);
         v348 = v347;
-        v43 = [(PUTilingLayout *)self coordinateSystem];
+        coordinateSystem3 = [(PUTilingLayout *)self coordinateSystem];
         v349 = *(MEMORY[0x1E695EFD0] + 16);
         v668.origin = *MEMORY[0x1E695EFD0];
         v668.size = v349;
@@ -2638,7 +2638,7 @@ LABEL_117:
         p_slice = &v668;
         v44 = 31.0;
         v70 = v345;
-        v71 = v16;
+        v71 = indexPathOfCurrentItem;
         v72 = v346;
         v73 = v348;
         v74 = v252;
@@ -2653,7 +2653,7 @@ LABEL_117:
     }
 
     v252 = v130;
-    if (v9)
+    if (leftToRight)
     {
       v254 = v649 + CGRectGetMaxX(*&v237.x) + -17.0 - v130;
     }
@@ -2667,9 +2667,9 @@ LABEL_117:
     goto LABEL_117;
   }
 
-  if ([v8 isEqualToString:PUTileKindPeople])
+  if ([kindCopy isEqualToString:PUTileKindPeople])
   {
-    v142 = [v7 length];
+    v142 = [pathCopy length];
     [(PUOneUpTilingLayout *)self peopleRowSize];
     if (v142 != 2)
     {
@@ -2691,8 +2691,8 @@ LABEL_117:
         goto LABEL_219;
       }
 
-      v148 = [(PUOneUpTilingLayout *)self delegate];
-      v149 = [v148 layout:self shouldShowPeopleRowForItemAtIndexPath:v7];
+      delegate8 = [(PUOneUpTilingLayout *)self delegate];
+      v149 = [delegate8 layout:self shouldShowPeopleRowForItemAtIndexPath:pathCopy];
 
       if ((v149 & 1) == 0)
       {
@@ -2706,7 +2706,7 @@ LABEL_117:
     }
 
     rectc = v146;
-    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:v7];
+    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:pathCopy];
     v285 = v284;
     v287 = v286;
     v289 = v288;
@@ -2722,7 +2722,7 @@ LABEL_117:
     remainder.origin = *MEMORY[0x1E695F058];
     remainder.size = v299;
     slice.origin.x = 1.0;
-    [(PUOneUpTilingLayout *)self _getLayoutRect:&remainder transform:0 parallaxOffset:0 contentsRect:0 alpha:&slice forContentOfItemAtIndexPath:v7 options:0];
+    [(PUOneUpTilingLayout *)self _getLayoutRect:&remainder transform:0 parallaxOffset:0 contentsRect:0 alpha:&slice forContentOfItemAtIndexPath:pathCopy options:0];
     v696.origin.x = v292;
     v696.origin.y = v294;
     v696.size.width = v296;
@@ -2753,7 +2753,7 @@ LABEL_117:
       v306 = v145;
     }
 
-    if (v9)
+    if (leftToRight)
     {
       v307 = v304;
       v308 = remainder.origin.x;
@@ -2770,10 +2770,10 @@ LABEL_117:
       v311 = CGRectGetMaxX(*(&v305 - 2)) - v145;
     }
 
-    if (self->_delegateFlags.respondsToShouldMovePeopleRowForItemAtIndexPath && (-[PUOneUpTilingLayout renderIndicatorSize](self, "renderIndicatorSize"), -[PUOneUpTilingLayout _shouldShowRenderIndicatorForIndexPath:size:](self, "_shouldShowRenderIndicatorForIndexPath:size:", v7)) && (-[PUOneUpTilingLayout delegate](self, "delegate"), v382 = objc_claimAutoreleasedReturnValue(), v383 = [v382 layout:self shouldMovePeopleRowForItemAtIndexPath:v7], v382, v383))
+    if (self->_delegateFlags.respondsToShouldMovePeopleRowForItemAtIndexPath && (-[PUOneUpTilingLayout renderIndicatorSize](self, "renderIndicatorSize"), -[PUOneUpTilingLayout _shouldShowRenderIndicatorForIndexPath:size:](self, "_shouldShowRenderIndicatorForIndexPath:size:", pathCopy)) && (-[PUOneUpTilingLayout delegate](self, "delegate"), v382 = objc_claimAutoreleasedReturnValue(), v383 = [v382 layout:self shouldMovePeopleRowForItemAtIndexPath:pathCopy], v382, v383))
     {
       [(PUOneUpTilingLayout *)self renderIndicatorSize];
-      _PUOneUpRenderIndicatorFrame(v9, remainder.origin.x, remainder.origin.y, remainder.size.width, remainder.size.height, v384);
+      _PUOneUpRenderIndicatorFrame(leftToRight, remainder.origin.x, remainder.origin.y, remainder.size.width, remainder.size.height, v384);
       MaxY = v385 + 10.0;
     }
 
@@ -2783,12 +2783,12 @@ LABEL_117:
     }
 
     v387 = MaxY - v146;
-    v16 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:v7 kind:v8];
+    indexPathOfCurrentItem = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:pathCopy kind:kindCopy];
     v388 = [PUTileLayoutInfo alloc];
     v389 = PURectGetCenter(v311, v387, v306, rectc);
     v391 = v390;
     v392 = slice.origin.x;
-    v43 = [(PUTilingLayout *)self coordinateSystem];
+    coordinateSystem3 = [(PUTilingLayout *)self coordinateSystem];
     v393 = *(MEMORY[0x1E695EFD0] + 16);
     v668.origin = *MEMORY[0x1E695EFD0];
     v668.size = v393;
@@ -2796,7 +2796,7 @@ LABEL_117:
     v44 = 37.0;
     p_slice = &v668;
     v70 = v388;
-    v71 = v16;
+    v71 = indexPathOfCurrentItem;
     v72 = v389;
     v73 = v391;
     v74 = v306;
@@ -2805,16 +2805,16 @@ LABEL_117:
     goto LABEL_28;
   }
 
-  if ([v8 isEqualToString:PUTileKindRenderIndicator])
+  if ([kindCopy isEqualToString:PUTileKindRenderIndicator])
   {
     [(PUOneUpTilingLayout *)self renderIndicatorSize];
     v181 = v180;
-    if (![(PUOneUpTilingLayout *)self _shouldShowRenderIndicatorForIndexPath:v7 size:?])
+    if (![(PUOneUpTilingLayout *)self _shouldShowRenderIndicatorForIndexPath:pathCopy size:?])
     {
       goto LABEL_219;
     }
 
-    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:v7];
+    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:pathCopy];
     v183 = v182;
     v185 = v184;
     v187 = v186;
@@ -2830,7 +2830,7 @@ LABEL_117:
     v199 = v189 - v197;
     remainder.origin = *MEMORY[0x1E695F058];
     remainder.size = v198;
-    [(PUOneUpTilingLayout *)self _getLayoutRect:&remainder transform:0 parallaxOffset:0 forContentOfItemAtIndexPath:v7 options:0];
+    [(PUOneUpTilingLayout *)self _getLayoutRect:&remainder transform:0 parallaxOffset:0 forContentOfItemAtIndexPath:pathCopy options:0];
     v690.origin.x = v191;
     v690.origin.y = v193;
     v690.size.width = v195;
@@ -2849,15 +2849,15 @@ LABEL_117:
     remainder.origin.y = v202 + remainder.origin.y;
     remainder.size.width = remainder.size.width - (v203 + v200);
     remainder.size.height = remainder.size.height - (v202 + v201);
-    v204 = _PUOneUpRenderIndicatorFrame(v9, remainder.origin.x, remainder.origin.y, remainder.size.width, remainder.size.height, v181);
+    v204 = _PUOneUpRenderIndicatorFrame(leftToRight, remainder.origin.x, remainder.origin.y, remainder.size.width, remainder.size.height, v181);
     v206 = v205;
     v172 = v207;
     v174 = v208;
-    v16 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:v7 kind:v8];
+    indexPathOfCurrentItem = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:pathCopy kind:kindCopy];
     v175 = [PUTileLayoutInfo alloc];
     v176 = PURectGetCenter(v204, v206, v172, v174);
     v178 = v209;
-    v43 = [(PUTilingLayout *)self coordinateSystem];
+    coordinateSystem3 = [(PUTilingLayout *)self coordinateSystem];
     v210 = *(MEMORY[0x1E695EFD0] + 16);
     v668.origin = *MEMORY[0x1E695EFD0];
     v668.size = v210;
@@ -2866,14 +2866,14 @@ LABEL_117:
     goto LABEL_79;
   }
 
-  if ([v8 isEqualToString:PUTileKindImportStatusIndicator])
+  if ([kindCopy isEqualToString:PUTileKindImportStatusIndicator])
   {
-    if ([v7 length] != 2 || !-[PUOneUpTilingLayout useImportStatusIndicatorTiles](self, "useImportStatusIndicatorTiles"))
+    if ([pathCopy length] != 2 || !-[PUOneUpTilingLayout useImportStatusIndicatorTiles](self, "useImportStatusIndicatorTiles"))
     {
       goto LABEL_219;
     }
 
-    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:v7];
+    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:pathCopy];
     v256 = v255;
     v258 = v257;
     v260 = v259;
@@ -2887,7 +2887,7 @@ LABEL_117:
     v272 = v262 - v270;
     remainder.origin = *MEMORY[0x1E695F058];
     remainder.size = v271;
-    [(PUOneUpTilingLayout *)self _getLayoutRect:&remainder transform:0 parallaxOffset:0 forContentOfItemAtIndexPath:v7 options:0];
+    [(PUOneUpTilingLayout *)self _getLayoutRect:&remainder transform:0 parallaxOffset:0 forContentOfItemAtIndexPath:pathCopy options:0];
     v694.origin.x = v264;
     v694.origin.y = v266;
     v694.size.width = v268;
@@ -2906,15 +2906,15 @@ LABEL_117:
     remainder.origin.y = v275 + remainder.origin.y;
     remainder.size.width = remainder.size.width - (v276 + v273);
     remainder.size.height = remainder.size.height - (v275 + v274);
-    v277 = _PUOneUpSelectionIndicatorFrame(v9, remainder.origin.x, remainder.origin.y, remainder.size.width, remainder.size.height);
+    v277 = _PUOneUpSelectionIndicatorFrame(leftToRight, remainder.origin.x, remainder.origin.y, remainder.size.width, remainder.size.height);
     v279 = v278;
     v172 = v280;
     v174 = v281;
-    v16 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:v7 kind:v8];
+    indexPathOfCurrentItem = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:pathCopy kind:kindCopy];
     v175 = [PUTileLayoutInfo alloc];
     v176 = PURectGetCenter(v277, v279, v172, v174);
     v178 = v282;
-    v43 = [(PUTilingLayout *)self coordinateSystem];
+    coordinateSystem3 = [(PUTilingLayout *)self coordinateSystem];
     v283 = *(MEMORY[0x1E695EFD0] + 16);
     v668.origin = *MEMORY[0x1E695EFD0];
     v668.size = v283;
@@ -2923,9 +2923,9 @@ LABEL_117:
     goto LABEL_80;
   }
 
-  if ([v8 isEqualToString:PUTileKindAssetExplorerReviewScreenProgressIndicator])
+  if ([kindCopy isEqualToString:PUTileKindAssetExplorerReviewScreenProgressIndicator])
   {
-    v312 = [v7 length];
+    v312 = [pathCopy length];
     [(PUOneUpTilingLayout *)self assetExplorerReviewScreenProgressIndicatorSize];
     if (v312 != 2)
     {
@@ -2939,7 +2939,7 @@ LABEL_117:
       goto LABEL_219;
     }
 
-    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:v7];
+    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:pathCopy];
     v316 = v315;
     v318 = v317;
     v320 = v319;
@@ -2953,7 +2953,7 @@ LABEL_117:
     v332 = v322 - v330;
     remainder.origin = *MEMORY[0x1E695F058];
     remainder.size = v331;
-    [(PUOneUpTilingLayout *)self _getLayoutRect:&remainder transform:0 parallaxOffset:0 forContentOfItemAtIndexPath:v7 options:0];
+    [(PUOneUpTilingLayout *)self _getLayoutRect:&remainder transform:0 parallaxOffset:0 forContentOfItemAtIndexPath:pathCopy options:0];
     v698.origin.x = v324;
     v698.origin.y = v326;
     v698.size.width = v328;
@@ -2979,7 +2979,7 @@ LABEL_117:
     remainder.origin.y = v334 + remainder.origin.y;
     remainder.size.width = v342;
     remainder.size.height = v343;
-    if (v9)
+    if (leftToRight)
     {
       v344 = CGRectGetMaxX(*&v339) + -10.0 - v123;
     }
@@ -2990,11 +2990,11 @@ LABEL_117:
     }
 
     v416 = CGRectGetMaxY(remainder) + -15.0 - v124;
-    v16 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:v7 kind:v8];
+    indexPathOfCurrentItem = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:pathCopy kind:kindCopy];
     v127 = [PUTileLayoutInfo alloc];
     v125 = PURectGetCenter(v344, v416, v123, v124);
     v126 = v417;
-    v43 = [(PUTilingLayout *)self coordinateSystem];
+    coordinateSystem3 = [(PUTilingLayout *)self coordinateSystem];
     v418 = *(MEMORY[0x1E695EFD0] + 16);
     v668.origin = *MEMORY[0x1E695EFD0];
     v668.size = v418;
@@ -3004,7 +3004,7 @@ LABEL_117:
     p_slice = &v668;
 LABEL_53:
     v70 = v127;
-    v71 = v16;
+    v71 = indexPathOfCurrentItem;
     v72 = v125;
     v73 = v126;
     v74 = v123;
@@ -3012,14 +3012,14 @@ LABEL_53:
     goto LABEL_28;
   }
 
-  if ([v8 isEqualToString:PUTileKindSelectionIndicator])
+  if ([kindCopy isEqualToString:PUTileKindSelectionIndicator])
   {
-    if ([v7 length] != 2 || !-[PUOneUpTilingLayout useSelectionIndicatorTiles](self, "useSelectionIndicatorTiles"))
+    if ([pathCopy length] != 2 || !-[PUOneUpTilingLayout useSelectionIndicatorTiles](self, "useSelectionIndicatorTiles"))
     {
       goto LABEL_219;
     }
 
-    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:v7];
+    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:pathCopy];
     v351 = v350;
     v353 = v352;
     v355 = v354;
@@ -3033,7 +3033,7 @@ LABEL_53:
     v367 = v357 - v365;
     remainder.origin = *MEMORY[0x1E695F058];
     remainder.size = v366;
-    [(PUOneUpTilingLayout *)self _getLayoutRect:&remainder transform:0 parallaxOffset:0 forContentOfItemAtIndexPath:v7 options:0];
+    [(PUOneUpTilingLayout *)self _getLayoutRect:&remainder transform:0 parallaxOffset:0 forContentOfItemAtIndexPath:pathCopy options:0];
     v700.origin.x = v359;
     v700.origin.y = v361;
     v700.size.width = v363;
@@ -3052,15 +3052,15 @@ LABEL_53:
     remainder.origin.y = v370 + remainder.origin.y;
     remainder.size.width = remainder.size.width - (v371 + v368);
     remainder.size.height = remainder.size.height - (v370 + v369);
-    v372 = _PUOneUpSelectionIndicatorFrame(v9, remainder.origin.x, remainder.origin.y, remainder.size.width, remainder.size.height);
+    v372 = _PUOneUpSelectionIndicatorFrame(leftToRight, remainder.origin.x, remainder.origin.y, remainder.size.width, remainder.size.height);
     v374 = v373;
     v172 = v375;
     v174 = v376;
-    v16 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:v7 kind:v8];
+    indexPathOfCurrentItem = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:pathCopy kind:kindCopy];
     v175 = [PUTileLayoutInfo alloc];
     v176 = PURectGetCenter(v372, v374, v172, v174);
     v178 = v377;
-    v43 = [(PUTilingLayout *)self coordinateSystem];
+    coordinateSystem3 = [(PUTilingLayout *)self coordinateSystem];
     v378 = *(MEMORY[0x1E695EFD0] + 16);
     v668.origin = *MEMORY[0x1E695EFD0];
     v668.size = v378;
@@ -3069,9 +3069,9 @@ LABEL_53:
     goto LABEL_80;
   }
 
-  if ([v8 isEqualToString:PUTileKindBufferingIndicator])
+  if ([kindCopy isEqualToString:PUTileKindBufferingIndicator])
   {
-    if ([v7 length] != 2 || -[PUOneUpTilingLayout _accessoryViewVisibilityForItemAtIndexPath:](self, "_accessoryViewVisibilityForItemAtIndexPath:", v7) || -[PUOneUpTilingLayout _isShowingInfoPanelForItemAtIndexPath:](self, "_isShowingInfoPanelForItemAtIndexPath:", v7))
+    if ([pathCopy length] != 2 || -[PUOneUpTilingLayout _accessoryViewVisibilityForItemAtIndexPath:](self, "_accessoryViewVisibilityForItemAtIndexPath:", pathCopy) || -[PUOneUpTilingLayout _isShowingInfoPanelForItemAtIndexPath:](self, "_isShowingInfoPanelForItemAtIndexPath:", pathCopy))
     {
       goto LABEL_219;
     }
@@ -3092,8 +3092,8 @@ LABEL_53:
         goto LABEL_219;
       }
 
-      v399 = [(PUOneUpTilingLayout *)self delegate];
-      v400 = [v399 layout:self shouldShowBufferingIndicatorForItemAtIndexPath:v7];
+      delegate9 = [(PUOneUpTilingLayout *)self delegate];
+      v400 = [delegate9 layout:self shouldShowBufferingIndicatorForItemAtIndexPath:pathCopy];
 
       if ((v400 & 1) == 0)
       {
@@ -3106,16 +3106,16 @@ LABEL_53:
       goto LABEL_219;
     }
 
-    [(PUOneUpTilingLayout *)self _frameForTileWithSize:v7 centeredOnItemAtIndexPath:v395, v397];
+    [(PUOneUpTilingLayout *)self _frameForTileWithSize:pathCopy centeredOnItemAtIndexPath:v395, v397];
     v536 = v535;
     v538 = v537;
     v172 = v539;
     v174 = v540;
-    v16 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:v7 kind:v8];
+    indexPathOfCurrentItem = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:pathCopy kind:kindCopy];
     v175 = [PUTileLayoutInfo alloc];
     v176 = PURectGetCenter(v536, v538, v172, v174);
     v178 = v541;
-    v43 = [(PUTilingLayout *)self coordinateSystem];
+    coordinateSystem3 = [(PUTilingLayout *)self coordinateSystem];
     v542 = *(MEMORY[0x1E695EFD0] + 16);
     v668.origin = *MEMORY[0x1E695EFD0];
     v668.size = v542;
@@ -3126,7 +3126,7 @@ LABEL_53:
     goto LABEL_81;
   }
 
-  if ([v8 isEqualToString:PUTileKindLoadingIndicator])
+  if ([kindCopy isEqualToString:PUTileKindLoadingIndicator])
   {
     v402 = *MEMORY[0x1E695F060];
     v401 = *(MEMORY[0x1E695F060] + 8);
@@ -3136,14 +3136,14 @@ LABEL_53:
     {
       v403 = v402;
       v404 = v401;
-      if ([v7 length] == 2)
+      if ([pathCopy length] == 2)
       {
         v403 = v402;
         v404 = v401;
         if (self->_delegateFlags.respondsToLoadingIndicatorSizeForItemAtIndexPath)
         {
-          v405 = [(PUOneUpTilingLayout *)self delegate];
-          [v405 layout:self loadingIndicatorSizeForItemAtIndexPath:v7];
+          delegate10 = [(PUOneUpTilingLayout *)self delegate];
+          [delegate10 layout:self loadingIndicatorSizeForItemAtIndexPath:pathCopy];
           v403 = v406;
           v404 = v407;
         }
@@ -3155,16 +3155,16 @@ LABEL_53:
       goto LABEL_219;
     }
 
-    [(PUOneUpTilingLayout *)self _frameForTileWithSize:v7 centeredOnItemAtIndexPath:v403, v404];
+    [(PUOneUpTilingLayout *)self _frameForTileWithSize:pathCopy centeredOnItemAtIndexPath:v403, v404];
     v409 = v408;
     v411 = v410;
     v172 = v412;
     v174 = v413;
-    v16 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:v7 kind:v8];
+    indexPathOfCurrentItem = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:pathCopy kind:kindCopy];
     v175 = [PUTileLayoutInfo alloc];
     v176 = PURectGetCenter(v409, v411, v172, v174);
     v178 = v414;
-    v43 = [(PUTilingLayout *)self coordinateSystem];
+    coordinateSystem3 = [(PUTilingLayout *)self coordinateSystem];
     v415 = *(MEMORY[0x1E695EFD0] + 16);
     v668.origin = *MEMORY[0x1E695EFD0];
     v668.size = v415;
@@ -3175,9 +3175,9 @@ LABEL_53:
     goto LABEL_81;
   }
 
-  if ([v8 isEqualToString:PUTileKindBadge])
+  if ([kindCopy isEqualToString:PUTileKindBadge])
   {
-    if ([v7 length] != 2 || !-[PUOneUpTilingLayout useBadgeTiles](self, "useBadgeTiles"))
+    if ([pathCopy length] != 2 || !-[PUOneUpTilingLayout useBadgeTiles](self, "useBadgeTiles"))
     {
       goto LABEL_219;
     }
@@ -3192,11 +3192,11 @@ LABEL_53:
     rectd = v420;
     if (self->_delegateFlags.respondsToBadgeSizeForItemAtIndexPath)
     {
-      [(PUOneUpTilingLayout *)self _getLayoutRect:&remainder transform:0 parallaxOffset:0 forContentOfItemAtIndexPath:v7 options:0];
+      [(PUOneUpTilingLayout *)self _getLayoutRect:&remainder transform:0 parallaxOffset:0 forContentOfItemAtIndexPath:pathCopy options:0];
       v422 = remainder.size.width + -12.0;
-      v423 = [(PUOneUpTilingLayout *)self delegate];
+      delegate11 = [(PUOneUpTilingLayout *)self delegate];
       v653 = v422;
-      [v423 layout:self badgeSizeForItemAtIndexPath:v7 contentWidth:v422];
+      [delegate11 layout:self badgeSizeForItemAtIndexPath:pathCopy contentWidth:v422];
       rectd = v424;
       rect1c = v425;
     }
@@ -3211,7 +3211,7 @@ LABEL_53:
       }
     }
 
-    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:v7, v426];
+    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:pathCopy, v426];
     v428 = v427;
     v430 = v429;
     v432 = v431;
@@ -3243,7 +3243,7 @@ LABEL_53:
     v682.size.width = v441;
     v682.size.height = v442;
     v444 = CGRectGetMinY(v682) + 11.0;
-    [(PUOneUpTilingLayout *)self _untransformedRectForItemAtIndexPath:v7];
+    [(PUOneUpTilingLayout *)self _untransformedRectForItemAtIndexPath:pathCopy];
     PXEdgeInsetsMake();
     PXEdgeInsetsInsetRect();
     v702.origin.x = v445;
@@ -3271,9 +3271,9 @@ LABEL_53:
         v684 = CGRectIntersection(remainder, v704);
         remainder = v684;
         v451 = v684.size.width + -12.0;
-        v452 = [(PUOneUpTilingLayout *)self delegate];
+        delegate12 = [(PUOneUpTilingLayout *)self delegate];
         v653 = v451;
-        [v452 layout:self badgeSizeForItemAtIndexPath:v7 contentWidth:v451];
+        [delegate12 layout:self badgeSizeForItemAtIndexPath:pathCopy contentWidth:v451];
         rectd = v453;
         rect1c = v454;
 
@@ -3305,27 +3305,27 @@ LABEL_53:
     v459 = 0;
     if (self->_delegateFlags.respondsToLeadingBadgesWidthForItemAtIndexPath)
     {
-      v460 = [(PUOneUpTilingLayout *)self delegate];
-      [v460 layout:self leadingBadgesWidthForItemAtIndexPath:v7 contentWidth:v457];
+      delegate13 = [(PUOneUpTilingLayout *)self delegate];
+      [delegate13 layout:self leadingBadgesWidthForItemAtIndexPath:pathCopy contentWidth:v457];
       v459 = v461;
     }
 
-    v16 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:v7 kind:v8];
+    indexPathOfCurrentItem = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:pathCopy kind:kindCopy];
     v462 = [PUBadgeTileLayoutInfo alloc];
     v463 = PURectGetCenter(v449, v450, rectd, rect1c);
     v465 = v464;
-    v43 = [(PUTilingLayout *)self coordinateSystem];
+    coordinateSystem3 = [(PUTilingLayout *)self coordinateSystem];
     v466 = *(MEMORY[0x1E695EFD0] + 16);
     v668.origin = *MEMORY[0x1E695EFD0];
     v668.size = v466;
     v669 = *(MEMORY[0x1E695EFD0] + 32);
-    v77 = [(PUBadgeTileLayoutInfo *)v462 initWithTileIdentifier:v16 center:&v668 size:v43 alpha:v458 transform:v463 zPosition:v465 hitTestOutset:rectd coordinateSystem:rect1c isOverContent:1.0 contentWidth:26.0 leadingContentWidth:*MEMORY[0x1E69C4898], *(MEMORY[0x1E69C4898] + 8), *(MEMORY[0x1E69C4898] + 16), *(MEMORY[0x1E69C4898] + 24), *&v457, v459];
+    v161 = [(PUBadgeTileLayoutInfo *)v462 initWithTileIdentifier:indexPathOfCurrentItem center:&v668 size:coordinateSystem3 alpha:v458 transform:v463 zPosition:v465 hitTestOutset:rectd coordinateSystem:rect1c isOverContent:1.0 contentWidth:26.0 leadingContentWidth:*MEMORY[0x1E69C4898], *(MEMORY[0x1E69C4898] + 8), *(MEMORY[0x1E69C4898] + 16), *(MEMORY[0x1E69C4898] + 24), *&v457, v459];
     goto LABEL_29;
   }
 
-  if ([v8 isEqualToString:PUTileKindAssetExplorerReviewScreenBadge])
+  if ([kindCopy isEqualToString:PUTileKindAssetExplorerReviewScreenBadge])
   {
-    if ([v7 length] != 2 || !-[PUOneUpTilingLayout useAssetExplorerReviewScreenBadgeTiles](self, "useAssetExplorerReviewScreenBadgeTiles"))
+    if ([pathCopy length] != 2 || !-[PUOneUpTilingLayout useAssetExplorerReviewScreenBadgeTiles](self, "useAssetExplorerReviewScreenBadgeTiles"))
     {
       goto LABEL_219;
     }
@@ -3336,8 +3336,8 @@ LABEL_53:
     v470 = v467;
     if (self->_delegateFlags.respondsToAssetExplorerReviewScreenBadgeSizeForItemAtIndexPath)
     {
-      v471 = [(PUOneUpTilingLayout *)self delegate];
-      [v471 layout:self assetExplorerReviewScreenBadgeSizeForItemAtIndexPath:v7];
+      delegate14 = [(PUOneUpTilingLayout *)self delegate];
+      [delegate14 layout:self assetExplorerReviewScreenBadgeSizeForItemAtIndexPath:pathCopy];
       v469 = v472;
       v470 = v473;
     }
@@ -3347,7 +3347,7 @@ LABEL_53:
       goto LABEL_219;
     }
 
-    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:v7];
+    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:pathCopy];
     v475 = v474;
     v477 = v476;
     v479 = v478;
@@ -3361,7 +3361,7 @@ LABEL_53:
     v491 = v481 - v489;
     remainder.origin = *MEMORY[0x1E695F058];
     remainder.size = v490;
-    [(PUOneUpTilingLayout *)self _getLayoutRect:&remainder transform:0 parallaxOffset:0 forContentOfItemAtIndexPath:v7 options:0];
+    [(PUOneUpTilingLayout *)self _getLayoutRect:&remainder transform:0 parallaxOffset:0 forContentOfItemAtIndexPath:pathCopy options:0];
     v706.origin.x = v483;
     v706.origin.y = v485;
     v706.size.width = v487;
@@ -3391,27 +3391,27 @@ LABEL_53:
     v708.size.width = v469;
     v708.size.height = v470;
     v499 = CGRectIntersectsRect(remainder, v708);
-    v16 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:v7 kind:v8];
+    indexPathOfCurrentItem = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:pathCopy kind:kindCopy];
     v500 = [PUBadgeTileLayoutInfo alloc];
     v501 = PURectGetCenter(v497, v498, v469, v470);
     v503 = v502;
-    v43 = [(PUTilingLayout *)self coordinateSystem];
+    coordinateSystem3 = [(PUTilingLayout *)self coordinateSystem];
     v504 = *(MEMORY[0x1E695EFD0] + 16);
     v668.origin = *MEMORY[0x1E695EFD0];
     v668.size = v504;
     v669 = *(MEMORY[0x1E695EFD0] + 32);
-    v77 = [(PUBadgeTileLayoutInfo *)v500 initWithTileIdentifier:v16 center:&v668 size:v43 alpha:v499 transform:v501 zPosition:v503 hitTestOutset:v469 coordinateSystem:v470 isOverContent:1.0 contentWidth:34.0 leadingContentWidth:*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24), 0, 0];
+    v161 = [(PUBadgeTileLayoutInfo *)v500 initWithTileIdentifier:indexPathOfCurrentItem center:&v668 size:coordinateSystem3 alpha:v499 transform:v501 zPosition:v503 hitTestOutset:v469 coordinateSystem:v470 isOverContent:1.0 contentWidth:34.0 leadingContentWidth:*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24), 0, 0];
     goto LABEL_29;
   }
 
-  if ([v8 isEqualToString:PUTileKindAccessory])
+  if ([kindCopy isEqualToString:PUTileKindAccessory])
   {
-    if ([v7 length] != 2 || !-[PUOneUpTilingLayout _accessoryViewVisibilityForItemAtIndexPath:](self, "_accessoryViewVisibilityForItemAtIndexPath:", v7))
+    if ([pathCopy length] != 2 || !-[PUOneUpTilingLayout _accessoryViewVisibilityForItemAtIndexPath:](self, "_accessoryViewVisibilityForItemAtIndexPath:", pathCopy))
     {
       goto LABEL_219;
     }
 
-    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:v7];
+    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:pathCopy];
     v506 = v505;
     v508 = v507;
     v510 = v509;
@@ -3422,8 +3422,8 @@ LABEL_53:
 
     if (self->_delegateFlags.respondsToMinimumVisibleContentHeightForItemAtIndexPath)
     {
-      v516 = [(PUOneUpTilingLayout *)self delegate];
-      [v516 layout:self minimumVisibleContentHeightForItemAtIndexPath:v7];
+      delegate15 = [(PUOneUpTilingLayout *)self delegate];
+      [delegate15 layout:self minimumVisibleContentHeightForItemAtIndexPath:pathCopy];
       v515 = v517;
     }
 
@@ -3441,9 +3441,9 @@ LABEL_53:
     v675 = v520;
     *&v676 = 0x3FF0000000000000;
     v521 = +[PUOneUpSettings sharedInstance];
-    v522 = [v521 shouldFadeAccessoryView];
+    shouldFadeAccessoryView = [v521 shouldFadeAccessoryView];
 
-    if (v522)
+    if (shouldFadeAccessoryView)
     {
       v523 = &v676;
     }
@@ -3453,7 +3453,7 @@ LABEL_53:
       v523 = 0;
     }
 
-    [(PUOneUpTilingLayout *)self _getLayoutRect:&v674 transform:0 parallaxOffset:0 contentsRect:0 alpha:v523 forContentOfItemAtIndexPath:v7 options:3];
+    [(PUOneUpTilingLayout *)self _getLayoutRect:&v674 transform:0 parallaxOffset:0 contentsRect:0 alpha:v523 forContentOfItemAtIndexPath:pathCopy options:3];
     v674 = vsubq_f64(v674, remainder.origin);
     [(PUOneUpTilingLayout *)self contentGuideInsets];
     v525 = v524;
@@ -3462,8 +3462,8 @@ LABEL_53:
     v531 = v530;
     if (self->_delegateFlags.respondsToMinimumVisibleAccessoryHeightForItemAtIndexPath)
     {
-      v532 = [(PUOneUpTilingLayout *)self delegate];
-      [v532 layout:self minimumVisibleAccessoryHeightForItemAtIndexPath:v7];
+      delegate16 = [(PUOneUpTilingLayout *)self delegate];
+      [delegate16 layout:self minimumVisibleAccessoryHeightForItemAtIndexPath:pathCopy];
       v534 = v533;
     }
 
@@ -3472,45 +3472,45 @@ LABEL_53:
       v534 = 0x4049000000000000;
     }
 
-    v586 = [(PUOneUpTilingLayout *)self delegate];
-    [v586 layout:self accessoryOffsetForItemAtIndexPath:v7];
+    delegate17 = [(PUOneUpTilingLayout *)self delegate];
+    [delegate17 layout:self accessoryOffsetForItemAtIndexPath:pathCopy];
     rect1e = v588;
     recte = v587;
 
     v589.f64[0] = recte;
     v589.f64[1] = rect1e;
     remainder.origin = vaddq_f64(remainder.origin, v589);
-    v16 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:v7 kind:v8];
+    indexPathOfCurrentItem = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:pathCopy kind:kindCopy];
     v590 = [PUAccessoryTileLayoutInfo alloc];
     v591 = PURectGetCenter(remainder.origin.x, remainder.origin.y, remainder.size.width, remainder.size.height);
     v593 = v592;
     v594 = *&v676;
-    v43 = [(PUTilingLayout *)self coordinateSystem];
+    coordinateSystem3 = [(PUTilingLayout *)self coordinateSystem];
     v595 = *(MEMORY[0x1E695EFD0] + 16);
     v668.origin = *MEMORY[0x1E695EFD0];
     v668.size = v595;
     v669 = *(MEMORY[0x1E695EFD0] + 32);
-    v77 = [(PUAccessoryTileLayoutInfo *)v590 initWithTileIdentifier:v16 center:&v668 size:v43 alpha:v591 transform:v593 zPosition:remainder.size.width coordinateSystem:remainder.size.height untransformedContentFrame:v594 contentInsets:-1.0 minimumVisibleHeight:*&v674, v675, v525, v527, v529, v531, v534];
+    v161 = [(PUAccessoryTileLayoutInfo *)v590 initWithTileIdentifier:indexPathOfCurrentItem center:&v668 size:coordinateSystem3 alpha:v591 transform:v593 zPosition:remainder.size.width coordinateSystem:remainder.size.height untransformedContentFrame:v594 contentInsets:-1.0 minimumVisibleHeight:*&v674, v675, v525, v527, v529, v531, v534];
     goto LABEL_29;
   }
 
-  if ([v8 isEqualToString:PUTileKindVideoPlaceholder])
+  if ([kindCopy isEqualToString:PUTileKindVideoPlaceholder])
   {
-    if ([v7 length] != 2 || !-[PUOneUpTilingLayout _isVideoPlacholderVisibleForItemAtIndexPath:](self, "_isVideoPlacholderVisibleForItemAtIndexPath:", v7))
+    if ([pathCopy length] != 2 || !-[PUOneUpTilingLayout _isVideoPlacholderVisibleForItemAtIndexPath:](self, "_isVideoPlacholderVisibleForItemAtIndexPath:", pathCopy))
     {
       goto LABEL_219;
     }
 
-    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:v7];
+    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:pathCopy];
     v544 = v543;
     v546 = v545;
     v172 = v547;
     v174 = v548;
-    v16 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:v7 kind:v8];
+    indexPathOfCurrentItem = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:pathCopy kind:kindCopy];
     v175 = [PUTileLayoutInfo alloc];
     v176 = PURectGetCenter(v544, v546, v172, v174);
     v178 = v549;
-    v43 = [(PUTilingLayout *)self coordinateSystem];
+    coordinateSystem3 = [(PUTilingLayout *)self coordinateSystem];
     v550 = *(MEMORY[0x1E695EFD0] + 16);
     v668.origin = *MEMORY[0x1E695EFD0];
     v668.size = v550;
@@ -3523,7 +3523,7 @@ LABEL_80:
     p_slice = &v668;
 LABEL_81:
     v70 = v175;
-    v71 = v16;
+    v71 = indexPathOfCurrentItem;
     v72 = v176;
     v73 = v178;
     v74 = v172;
@@ -3531,11 +3531,11 @@ LABEL_81:
     goto LABEL_28;
   }
 
-  if (![v8 isEqualToString:PUTileKindLivePhotoVideoPlaybackOverlay])
+  if (![kindCopy isEqualToString:PUTileKindLivePhotoVideoPlaybackOverlay])
   {
-    if (![v8 isEqualToString:PUTileKindSyndicationAttribution])
+    if (![kindCopy isEqualToString:PUTileKindSyndicationAttribution])
     {
-      if (![v8 isEqualToString:PUTileKindCropButton])
+      if (![kindCopy isEqualToString:PUTileKindCropButton])
       {
         goto LABEL_219;
       }
@@ -3545,15 +3545,15 @@ LABEL_81:
         goto LABEL_219;
       }
 
-      v596 = [(PUOneUpTilingLayout *)self delegate];
-      v597 = [v596 layout:self shouldShowCropButtonForItemAtIndexPath:v7];
+      delegate18 = [(PUOneUpTilingLayout *)self delegate];
+      v597 = [delegate18 layout:self shouldShowCropButtonForItemAtIndexPath:pathCopy];
 
       if (!v597)
       {
         goto LABEL_219;
       }
 
-      [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:v7];
+      [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:pathCopy];
       v598 = v687.origin.x;
       v599 = v687.origin.y;
       v600 = v687.size.width;
@@ -3564,11 +3564,11 @@ LABEL_81:
       v688.size.width = v600;
       v688.size.height = v601;
       MinY = CGRectGetMinY(v688);
-      v16 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:v7 kind:v8];
+      indexPathOfCurrentItem = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:pathCopy kind:kindCopy];
       v604 = [PUTileLayoutInfo alloc];
       v605 = PURectGetCenter(v602, MinY, 140.0, 80.0);
       v607 = v606;
-      v43 = [(PUTilingLayout *)self coordinateSystem];
+      coordinateSystem3 = [(PUTilingLayout *)self coordinateSystem];
       v608 = *(MEMORY[0x1E695EFD0] + 16);
       v668.origin = *MEMORY[0x1E695EFD0];
       v668.size = v608;
@@ -3577,7 +3577,7 @@ LABEL_81:
       v76 = 1.0;
       p_slice = &v668;
       v70 = v604;
-      v71 = v16;
+      v71 = indexPathOfCurrentItem;
       v72 = v605;
       v73 = v607;
       v74 = 140.0;
@@ -3595,15 +3595,15 @@ LABEL_81:
       goto LABEL_219;
     }
 
-    v555 = [(PUOneUpTilingLayout *)self delegate];
-    v556 = [v555 layout:self shouldShowAttributionViewForItemAtIndexPath:v7];
+    delegate19 = [(PUOneUpTilingLayout *)self delegate];
+    v556 = [delegate19 layout:self shouldShowAttributionViewForItemAtIndexPath:pathCopy];
 
     if (!v556)
     {
       goto LABEL_219;
     }
 
-    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:v7];
+    [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:pathCopy];
     v558 = v557;
     v560 = v559;
     v562 = v561;
@@ -3613,7 +3613,7 @@ LABEL_81:
     v568 = v560 + v567;
     v570 = v565 + v569;
     v572 = v567 + v571;
-    v573 = [(PUOneUpTilingLayout *)self layoutInfoForTileWithIndexPath:v7 kind:PUTileKindBadge];
+    v573 = [(PUOneUpTilingLayout *)self layoutInfoForTileWithIndexPath:pathCopy kind:PUTileKindBadge];
     [v573 size];
     v575 = v574;
     objc_opt_class();
@@ -3624,10 +3624,10 @@ LABEL_211:
       v579 = v562 - v570;
       v580 = v564 - v572;
       v581 = v575 + 10.0;
-      v582 = [MEMORY[0x1E69C3408] sharedInstance];
-      v583 = [v582 syndicated1upPillAlignment];
+      mEMORY[0x1E69C3408] = [MEMORY[0x1E69C3408] sharedInstance];
+      syndicated1upPillAlignment = [mEMORY[0x1E69C3408] syndicated1upPillAlignment];
 
-      if (v583 == 1)
+      if (syndicated1upPillAlignment == 1)
       {
         v584 = v579 - v581 + -10.0;
         v585 = v578 + v581;
@@ -3643,16 +3643,16 @@ LABEL_211:
         v585 = CGRectGetMidX(v689) - v584 * 0.5;
       }
 
-      v627 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:v7 kind:v8];
+      v627 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:pathCopy kind:kindCopy];
       v628 = [PUTileLayoutInfo alloc];
       v629 = PURectGetCenter(v585, v568 + 9.0, v584, v580);
       v631 = v630;
-      v632 = [(PUTilingLayout *)self coordinateSystem];
+      coordinateSystem4 = [(PUTilingLayout *)self coordinateSystem];
       v633 = *(MEMORY[0x1E695EFD0] + 16);
       v668.origin = *MEMORY[0x1E695EFD0];
       v668.size = v633;
       v669 = *(MEMORY[0x1E695EFD0] + 32);
-      v34 = [(PUTileLayoutInfo *)v628 initWithTileIdentifier:v627 center:&v668 size:v632 alpha:v629 transform:v631 zPosition:v584 coordinateSystem:v580, 1.0, 14.0];
+      v620 = [(PUTileLayoutInfo *)v628 initWithTileIdentifier:v627 center:&v668 size:coordinateSystem4 alpha:v629 transform:v631 zPosition:v584 coordinateSystem:v580, 1.0, 14.0];
 
       goto LABEL_220;
     }
@@ -3670,32 +3670,32 @@ LABEL_210:
         goto LABEL_211;
       }
 
-      v634 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v637 = objc_opt_class();
       v636 = NSStringFromClass(v637);
-      v638 = [v576 px_descriptionForAssertionMessage];
-      [v634 handleFailureInMethod:a2 object:self file:@"PUOneUpTilingLayout.m" lineNumber:978 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"potentialBadgesLayoutInfo", v636, v638}];
+      px_descriptionForAssertionMessage = [v576 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpTilingLayout.m" lineNumber:978 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"potentialBadgesLayoutInfo", v636, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v634 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v635 = objc_opt_class();
       v636 = NSStringFromClass(v635);
-      [v634 handleFailureInMethod:a2 object:self file:@"PUOneUpTilingLayout.m" lineNumber:978 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"potentialBadgesLayoutInfo", v636}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpTilingLayout.m" lineNumber:978 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"potentialBadgesLayoutInfo", v636}];
     }
 
     goto LABEL_210;
   }
 
   v551 = +[PUOneUpSettings sharedInstance];
-  v552 = [v551 shouldMergeOverlappingLivePhotos];
+  shouldMergeOverlappingLivePhotos = [v551 shouldMergeOverlappingLivePhotos];
 
-  if (v552)
+  if (shouldMergeOverlappingLivePhotos)
   {
-    v16 = [(PUOneUpTilingLayout *)self indexPathOfCurrentItem];
-    v34 = 0;
-    if ([v7 length] || !v16)
+    indexPathOfCurrentItem = [(PUOneUpTilingLayout *)self indexPathOfCurrentItem];
+    v620 = 0;
+    if ([pathCopy length] || !indexPathOfCurrentItem)
     {
       goto LABEL_20;
     }
@@ -3703,8 +3703,8 @@ LABEL_210:
     memset(&slice, 0, sizeof(slice));
     v669 = 0u;
     memset(&v668, 0, sizeof(v668));
-    [(PUOneUpTilingLayout *)self _getLayoutRect:&slice transform:&v668 parallaxOffset:0 contentsRect:0 alpha:0 forContentOfItemAtIndexPath:v16 options:0];
-    if ([(PUOneUpTilingLayout *)self _shouldApplyInsetStylingToContentWithRect:v7 indexPath:slice.origin.x, slice.origin.y, slice.size.width, slice.size.height])
+    [(PUOneUpTilingLayout *)self _getLayoutRect:&slice transform:&v668 parallaxOffset:0 contentsRect:0 alpha:0 forContentOfItemAtIndexPath:indexPathOfCurrentItem options:0];
+    if ([(PUOneUpTilingLayout *)self _shouldApplyInsetStylingToContentWithRect:pathCopy indexPath:slice.origin.x, slice.origin.y, slice.size.width, slice.size.height])
     {
       [(PUOneUpTilingLayout *)self insetContentCornerRadius];
       v554 = v553;
@@ -3718,39 +3718,39 @@ LABEL_210:
     }
 
     v612 = *MEMORY[0x1E69796E8];
-    [(PUOneUpTilingLayout *)self _cropInsetsForTileAtIndexPath:v16 layoutRect:slice.origin.x, slice.origin.y, slice.size.width, slice.size.height];
+    [(PUOneUpTilingLayout *)self _cropInsetsForTileAtIndexPath:indexPathOfCurrentItem layoutRect:slice.origin.x, slice.origin.y, slice.size.width, slice.size.height];
     v614 = v613;
     v616 = v615;
     v618 = v617;
     v620 = v619;
-    v17 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:v7 kind:v8];
+    insetContentBorderColor = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:pathCopy kind:kindCopy];
     v621 = [PUTileLayoutInfo alloc];
     v622 = PURectGetCenter(slice.origin.x, slice.origin.y, slice.size.width, slice.size.height);
     v624 = v623;
-    v625 = [(PUTilingLayout *)self coordinateSystem];
+    coordinateSystem5 = [(PUTilingLayout *)self coordinateSystem];
     v626 = *(MEMORY[0x1E695EFD0] + 16);
     remainder.origin = *MEMORY[0x1E695EFD0];
     remainder.size = v626;
     v673 = *(MEMORY[0x1E695EFD0] + 32);
-    v34 = [(PUTileLayoutInfo *)v621 initWithTileIdentifier:v17 center:v612 size:0 alpha:&remainder cornerRadius:v625 cornerCurve:v622 cornerMask:v624 transform:slice.size.width zPosition:slice.size.height contentsRect:1.0 coordinateSystem:v554 cropInsets:11.0, *MEMORY[0x1E69C48E0], *(MEMORY[0x1E69C48E0] + 8), *(MEMORY[0x1E69C48E0] + 16), *(MEMORY[0x1E69C48E0] + 24), v614, v616, v618, v620];
+    v620 = [(PUTileLayoutInfo *)v621 initWithTileIdentifier:insetContentBorderColor center:v612 size:0 alpha:&remainder cornerRadius:coordinateSystem5 cornerCurve:v622 cornerMask:v624 transform:slice.size.width zPosition:slice.size.height contentsRect:1.0 coordinateSystem:v554 cropInsets:11.0, *MEMORY[0x1E69C48E0], *(MEMORY[0x1E69C48E0] + 8), *(MEMORY[0x1E69C48E0] + 16), *(MEMORY[0x1E69C48E0] + 24), v614, v616, v618, v620];
 
     goto LABEL_19;
   }
 
 LABEL_219:
-  v34 = 0;
+  v620 = 0;
 LABEL_220:
 
-  return v34;
+  return v620;
 }
 
-- (double)_insetContentCornerRadiusForItemAtIndexPath:(id)a3
+- (double)_insetContentCornerRadiusForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if (self->_delegateFlags.respondsToInsetContentCornerRadiusForItemAtIndexPath)
   {
-    v5 = [(PUOneUpTilingLayout *)self delegate];
-    [v5 layout:self insetContentCornerRadiusForItemAtIndexPath:v4];
+    delegate = [(PUOneUpTilingLayout *)self delegate];
+    [delegate layout:self insetContentCornerRadiusForItemAtIndexPath:pathCopy];
     v7 = v6;
   }
 
@@ -3763,26 +3763,26 @@ LABEL_220:
   return v7;
 }
 
-- (id)layoutInfoForTileWithIndexPath:(id)a3 kind:(id)a4
+- (id)layoutInfoForTileWithIndexPath:(id)path kind:(id)kind
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_layoutInfosByIndexPathByTileKind objectForKeyedSubscript:v7];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  pathCopy = path;
+  kindCopy = kind;
+  v8 = [(NSMutableDictionary *)self->_layoutInfosByIndexPathByTileKind objectForKeyedSubscript:kindCopy];
+  v9 = [v8 objectForKeyedSubscript:pathCopy];
 
   if (!v9)
   {
-    v9 = [(PUOneUpTilingLayout *)self _createLayoutInfoForTileWithIndexPath:v6 kind:v7];
-    v10 = [(NSMutableDictionary *)self->_layoutInfosByIndexPathByTileKind objectForKeyedSubscript:v7];
+    v9 = [(PUOneUpTilingLayout *)self _createLayoutInfoForTileWithIndexPath:pathCopy kind:kindCopy];
+    v10 = [(NSMutableDictionary *)self->_layoutInfosByIndexPathByTileKind objectForKeyedSubscript:kindCopy];
     if (v10)
     {
       if (v9)
       {
 LABEL_4:
-        v11 = v9;
+        null = v9;
 LABEL_7:
-        v12 = v11;
-        [v10 setObject:v11 forKeyedSubscript:v6];
+        v12 = null;
+        [v10 setObject:null forKeyedSubscript:pathCopy];
 
         goto LABEL_8;
       }
@@ -3791,20 +3791,20 @@ LABEL_7:
     else
     {
       v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      [(NSMutableDictionary *)self->_layoutInfosByIndexPathByTileKind setObject:v10 forKeyedSubscript:v7];
+      [(NSMutableDictionary *)self->_layoutInfosByIndexPathByTileKind setObject:v10 forKeyedSubscript:kindCopy];
       if (v9)
       {
         goto LABEL_4;
       }
     }
 
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     goto LABEL_7;
   }
 
 LABEL_8:
-  v13 = [MEMORY[0x1E695DFB0] null];
-  v14 = [v13 isEqual:v9];
+  null2 = [MEMORY[0x1E695DFB0] null];
+  v14 = [null2 isEqual:v9];
 
   if (v14)
   {
@@ -3815,11 +3815,11 @@ LABEL_8:
   return v9;
 }
 
-- (CGSize)sizeForSection:(int64_t)a3 numberOfItems:(int64_t)a4
+- (CGSize)sizeForSection:(int64_t)section numberOfItems:(int64_t)items
 {
   [(PUOneUpTilingLayout *)self _itemSize];
   v8 = v7;
-  if (a4 < 1)
+  if (items < 1)
   {
     v11 = *MEMORY[0x1E695F060];
   }
@@ -3828,7 +3828,7 @@ LABEL_8:
   {
     v9 = v6;
     [(PUOneUpTilingLayout *)self interpageSpacing];
-    v11 = -(v10 - a4 * (v9 + v10));
+    v11 = -(v10 - items * (v9 + v10));
   }
 
   v12 = v8;
@@ -3837,21 +3837,21 @@ LABEL_8:
   return result;
 }
 
-- (void)_collectLayoutInfosForTilesInRect:(CGRect)a3 withIndexPath:(id)a4 kinds:(id)a5 toSet:(id)a6
+- (void)_collectLayoutInfosForTilesInRect:(CGRect)rect withIndexPath:(id)path kinds:(id)kinds toSet:(id)set
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v27 = *MEMORY[0x1E69E9840];
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  pathCopy = path;
+  kindsCopy = kinds;
+  setCopy = set;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v16 = [v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v16 = [kindsCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v16)
   {
     v17 = v16;
@@ -3863,10 +3863,10 @@ LABEL_8:
       {
         if (*v23 != v18)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(kindsCopy);
         }
 
-        v20 = [(PUOneUpTilingLayout *)self layoutInfoForTileWithIndexPath:v13 kind:*(*(&v22 + 1) + 8 * v19)];
+        v20 = [(PUOneUpTilingLayout *)self layoutInfoForTileWithIndexPath:pathCopy kind:*(*(&v22 + 1) + 8 * v19)];
         v21 = v20;
         if (v20)
         {
@@ -3877,7 +3877,7 @@ LABEL_8:
           v29.size.height = height;
           if (CGRectIntersectsRect(v28, v29))
           {
-            [v15 addObject:v21];
+            [setCopy addObject:v21];
           }
         }
 
@@ -3885,19 +3885,19 @@ LABEL_8:
       }
 
       while (v17 != v19);
-      v17 = [v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v17 = [kindsCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v17);
   }
 }
 
-- (void)addLayoutInfosForSupplementaryTilesInRect:(CGRect)a3 toSet:(id)a4
+- (void)addLayoutInfosForSupplementaryTilesInRect:(CGRect)rect toSet:(id)set
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v18 = *MEMORY[0x1E69E9840];
   v13 = PUTileKindBackground;
   v14 = PUTileKindReviewScreenTopBar;
@@ -3905,49 +3905,49 @@ LABEL_8:
   v16 = PUTileKindReviewScreenScrubberBar;
   v17 = PUTileKindLivePhotoVideoPlaybackOverlay;
   v9 = MEMORY[0x1E695DEC8];
-  v10 = a4;
+  setCopy = set;
   v11 = [v9 arrayWithObjects:&v13 count:5];
-  v12 = [MEMORY[0x1E696AC88] pu_rootIndexPath];
-  [(PUOneUpTilingLayout *)self _collectLayoutInfosForTilesInRect:v12 withIndexPath:v11 kinds:v10 toSet:x, y, width, height];
+  pu_rootIndexPath = [MEMORY[0x1E696AC88] pu_rootIndexPath];
+  [(PUOneUpTilingLayout *)self _collectLayoutInfosForTilesInRect:pu_rootIndexPath withIndexPath:v11 kinds:setCopy toSet:x, y, width, height];
 }
 
-- (void)addLayoutInfosForTilesInRect:(CGRect)a3 section:(int64_t)a4 toSet:(id)a5
+- (void)addLayoutInfosForTilesInRect:(CGRect)rect section:(int64_t)section toSet:(id)set
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v31[16] = *MEMORY[0x1E69E9840];
-  v11 = a5;
-  [(PUSectionedTilingLayout *)self boundsForSection:a4];
+  setCopy = set;
+  [(PUSectionedTilingLayout *)self boundsForSection:section];
   v13 = v12;
   [(PUOneUpTilingLayout *)self _itemSize];
   v15 = v14;
   [(PUOneUpTilingLayout *)self interpageSpacing];
   v17 = v15 + v16;
-  v18 = [(PUSectionedTilingLayout *)self numberOfItemsInSection:a4];
-  v19 = [(PUSectionedTilingLayout *)self leftToRight];
+  v18 = [(PUSectionedTilingLayout *)self numberOfItemsInSection:section];
+  leftToRight = [(PUSectionedTilingLayout *)self leftToRight];
   v20 = width + x - v13;
-  if (v19)
+  if (leftToRight)
   {
     v20 = x - v13;
   }
 
   v21 = -width;
-  if (v19)
+  if (leftToRight)
   {
     v21 = width;
   }
 
   v22 = vcvtmd_s64_f64(v20 / v17);
-  if (!v19)
+  if (!leftToRight)
   {
     v22 = v18 + ~v22;
   }
 
   v23 = v22 & ~(v22 >> 63);
   v24 = vcvtpd_s64_f64((x - v13 + v21) / v17);
-  if (!v19)
+  if (!leftToRight)
   {
     v24 = v18 + ~v24;
   }
@@ -3962,7 +3962,7 @@ LABEL_8:
     v25 = v24 + 1;
     do
     {
-      v26 = [MEMORY[0x1E696AC88] indexPathForItem:v23 inSection:a4];
+      v26 = [MEMORY[0x1E696AC88] indexPathForItem:v23 inSection:section];
       [(PUOneUpTilingLayout *)self _pageRectForItemAtIndexPath:v26];
       v33.origin.x = x;
       v33.origin.y = y;
@@ -3988,16 +3988,16 @@ LABEL_8:
         v31[15] = PUTileKindSyndicationAttribution;
         v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:16];
         v28 = +[PUOneUpSettings sharedInstance];
-        v29 = [v28 quickCropEnabled];
+        quickCropEnabled = [v28 quickCropEnabled];
 
-        if (v29)
+        if (quickCropEnabled)
         {
           v30 = [v27 arrayByAddingObject:PUTileKindCropButton];
 
           v27 = v30;
         }
 
-        [(PUOneUpTilingLayout *)self _collectLayoutInfosForTilesInRect:v26 withIndexPath:v27 kinds:v11 toSet:x, y, width, height];
+        [(PUOneUpTilingLayout *)self _collectLayoutInfosForTilesInRect:v26 withIndexPath:v27 kinds:setCopy toSet:x, y, width, height];
       }
 
       ++v23;
@@ -4040,9 +4040,9 @@ LABEL_8:
   v14 = v13;
 
   v15 = +[PURootSettings sharedInstance];
-  v16 = [v15 irisUIEnabled];
+  irisUIEnabled = [v15 irisUIEnabled];
 
-  if (v16)
+  if (irisUIEnabled)
   {
     v17 = v11;
   }
@@ -4052,7 +4052,7 @@ LABEL_8:
     v17 = 0.0;
   }
 
-  if (v16)
+  if (irisUIEnabled)
   {
     v18 = v14;
   }
@@ -4067,11 +4067,11 @@ LABEL_8:
   return v19;
 }
 
-- (void)invalidateLayoutWithContext:(id)a3
+- (void)invalidateLayoutWithContext:(id)context
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 invalidatedAllTiles])
+  contextCopy = context;
+  if ([contextCopy invalidatedAllTiles])
   {
     [(NSMutableDictionary *)self->_layoutInfosByIndexPathByTileKind removeAllObjects];
   }
@@ -4082,8 +4082,8 @@ LABEL_8:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [v4 invalidatedTileKinds];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    invalidatedTileKinds = [contextCopy invalidatedTileKinds];
+    v6 = [invalidatedTileKinds countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -4095,7 +4095,7 @@ LABEL_8:
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(invalidatedTileKinds);
           }
 
           v10 = [(NSMutableDictionary *)self->_layoutInfosByIndexPathByTileKind objectForKeyedSubscript:*(*(&v13 + 1) + 8 * v9)];
@@ -4105,7 +4105,7 @@ LABEL_8:
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [invalidatedTileKinds countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v7);
@@ -4116,12 +4116,12 @@ LABEL_8:
     v12[2] = __51__PUOneUpTilingLayout_invalidateLayoutWithContext___block_invoke;
     v12[3] = &unk_1E7B7DD00;
     v12[4] = self;
-    [v4 enumerateInvalidatedTilesUsingBlock:v12];
+    [contextCopy enumerateInvalidatedTilesUsingBlock:v12];
   }
 
   v11.receiver = self;
   v11.super_class = PUOneUpTilingLayout;
-  [(PUTilingLayout *)&v11 invalidateLayoutWithContext:v4];
+  [(PUTilingLayout *)&v11 invalidateLayoutWithContext:contextCopy];
 }
 
 void __51__PUOneUpTilingLayout_invalidateLayoutWithContext___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -4166,12 +4166,12 @@ void __51__PUOneUpTilingLayout_invalidateLayoutWithContext___block_invoke(uint64
   self->_neighborIndexPath = v11;
 }
 
-- (void)setVisibleRect:(CGRect)a3
+- (void)setVisibleRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(PUTilingLayout *)self visibleRect];
   v9 = v8;
   v11 = v10;
@@ -4192,9 +4192,9 @@ void __51__PUOneUpTilingLayout_invalidateLayoutWithContext___block_invoke(uint64
   if (x != v9 || y != v11)
   {
     v19 = objc_alloc_init(PUTilingLayoutInvalidationContext);
-    v20 = [(PUOneUpTilingLayout *)self parallaxComputer];
+    parallaxComputer = [(PUOneUpTilingLayout *)self parallaxComputer];
 
-    if (v20)
+    if (parallaxComputer)
     {
       [(PUTilingLayoutInvalidationContext *)v19 invalidateAllTilesWithKind:@"PUTileKindItemContent"];
     }
@@ -4208,9 +4208,9 @@ void __51__PUOneUpTilingLayout_invalidateLayoutWithContext___block_invoke(uint64
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -4264,17 +4264,17 @@ void __51__PUOneUpTilingLayout_invalidateLayoutWithContext___block_invoke(uint64
     v2->_interpageSpacing = _Q0;
     v2->_itemSize = PUSizeNull;
     [(PUSectionedTilingLayout *)v2 setInterSectionSpacing:v2->_interpageSpacing.width, v2->_interpageSpacing.height];
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     layoutInfosByIndexPathByTileKind = v3->_layoutInfosByIndexPathByTileKind;
-    v3->_layoutInfosByIndexPathByTileKind = v9;
+    v3->_layoutInfosByIndexPathByTileKind = dictionary;
   }
 
   return v3;
 }
 
-+ (CGRect)untransformedRectForItemWithAspectRatio:(double)a3 pageRect:(CGRect)a4 safeInsets:(UIEdgeInsets)a5
++ (CGRect)untransformedRectForItemWithAspectRatio:(double)ratio pageRect:(CGRect)rect safeInsets:(UIEdgeInsets)insets
 {
-  [a1 untransformedRectForItemWithAspectRatio:a3 pageRect:a4.origin.x safeInsets:a4.origin.y minimumInsetMargin:{a4.size.width, a4.size.height, *&a5.top, *&a5.left, *&a5.bottom, *&a5.right, 0}];
+  [self untransformedRectForItemWithAspectRatio:ratio pageRect:rect.origin.x safeInsets:rect.origin.y minimumInsetMargin:{rect.size.width, rect.size.height, *&insets.top, *&insets.left, *&insets.bottom, *&insets.right, 0}];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -4306,7 +4306,7 @@ void __38__PUOneUpTilingLayout_centerTileKinds__block_invoke()
   centerTileKinds_centerTileKinds = v2;
 }
 
-+ (CGRect)rectForFittingToTargetPixelSize:(CGSize)a3 imagePixelSize:(CGSize)a4 bestSquareUnitRect:(CGRect)a5
++ (CGRect)rectForFittingToTargetPixelSize:(CGSize)size imagePixelSize:(CGSize)pixelSize bestSquareUnitRect:(CGRect)rect
 {
   v5 = 0.0;
   PXRectWithAspectRatioFittingRect();

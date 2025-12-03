@@ -14,8 +14,8 @@
   v4 = [(HDHealthTopicsDiagnostics *)&v9 init];
   v5 = objc_opt_self();
   v6 = v4;
-  v7 = [v5 sharedDiagnosticManager];
-  [v7 addObject_];
+  sharedDiagnosticManager = [v5 sharedDiagnosticManager];
+  [sharedDiagnosticManager addObject_];
 
   return v6;
 }
@@ -24,7 +24,7 @@
 {
   if (swift_weakLoadStrong())
   {
-    v3 = self;
+    selfCopy = self;
     sub_251F5A0A8();
   }
 

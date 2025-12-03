@@ -1,27 +1,27 @@
 @interface EDBorder
-+ (id)borderWithType:(int)a3 color:(id)a4 diagonalType:(int)a5 resources:(id)a6;
-+ (id)borderWithType:(int)a3 color:(id)a4 resources:(id)a5;
-+ (id)borderWithType:(int)a3 colorReference:(id)a4 diagonalType:(int)a5 resources:(id)a6;
-+ (id)borderWithType:(int)a3 colorReference:(id)a4 resources:(id)a5;
-+ (id)borderWithType:(int)a3 resources:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToBorder:(id)a3;
-- (EDBorder)initWithResources:(id)a3;
++ (id)borderWithType:(int)type color:(id)color diagonalType:(int)diagonalType resources:(id)resources;
++ (id)borderWithType:(int)type color:(id)color resources:(id)resources;
++ (id)borderWithType:(int)type colorReference:(id)reference diagonalType:(int)diagonalType resources:(id)resources;
++ (id)borderWithType:(int)type colorReference:(id)reference resources:(id)resources;
++ (id)borderWithType:(int)type resources:(id)resources;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToBorder:(id)border;
+- (EDBorder)initWithResources:(id)resources;
 - (id)description;
 @end
 
 @implementation EDBorder
 
-- (EDBorder)initWithResources:(id)a3
+- (EDBorder)initWithResources:(id)resources
 {
-  v4 = a3;
+  resourcesCopy = resources;
   v8.receiver = self;
   v8.super_class = EDBorder;
   v5 = [(EDBorder *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mResources, v4);
+    objc_storeWeak(&v5->mResources, resourcesCopy);
     v6->mType = 0;
     v6->mDiagonalType = 0;
   }
@@ -29,41 +29,41 @@
   return v6;
 }
 
-+ (id)borderWithType:(int)a3 resources:(id)a4
++ (id)borderWithType:(int)type resources:(id)resources
 {
-  v5 = a4;
-  v6 = [objc_alloc(objc_opt_class()) initWithResources:v5];
-  v6[4] = a3;
+  resourcesCopy = resources;
+  v6 = [objc_alloc(objc_opt_class()) initWithResources:resourcesCopy];
+  v6[4] = type;
 
   return v6;
 }
 
-+ (id)borderWithType:(int)a3 color:(id)a4 resources:(id)a5
++ (id)borderWithType:(int)type color:(id)color resources:(id)resources
 {
-  v6 = *&a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [a1 borderWithType:v6 resources:v9];
-  v11 = [[EDColorReference alloc] initWithColor:v8 resources:v9];
+  v6 = *&type;
+  colorCopy = color;
+  resourcesCopy = resources;
+  v10 = [self borderWithType:v6 resources:resourcesCopy];
+  v11 = [[EDColorReference alloc] initWithColor:colorCopy resources:resourcesCopy];
   v12 = v10[3];
   v10[3] = v11;
 
   return v10;
 }
 
-+ (id)borderWithType:(int)a3 color:(id)a4 diagonalType:(int)a5 resources:(id)a6
++ (id)borderWithType:(int)type color:(id)color diagonalType:(int)diagonalType resources:(id)resources
 {
-  v7 = [a1 borderWithType:*&a3 color:a4 resources:a6];
-  v7[8] = a5;
+  v7 = [self borderWithType:*&type color:color resources:resources];
+  v7[8] = diagonalType;
 
   return v7;
 }
 
-- (BOOL)isEqualToBorder:(id)a3
+- (BOOL)isEqualToBorder:(id)border
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->mType == *(v4 + 4) && self->mDiagonalType == *(v4 + 8))
+  borderCopy = border;
+  v5 = borderCopy;
+  if (self->mType == *(borderCopy + 4) && self->mDiagonalType == *(borderCopy + 8))
   {
     mColorReference = self->mColorReference;
     if (mColorReference == v5[3])
@@ -85,18 +85,18 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(EDBorder *)self isEqualToBorder:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(EDBorder *)self isEqualToBorder:v5];
   }
 
   return v6;
@@ -111,21 +111,21 @@
   return v2;
 }
 
-+ (id)borderWithType:(int)a3 colorReference:(id)a4 resources:(id)a5
++ (id)borderWithType:(int)type colorReference:(id)reference resources:(id)resources
 {
-  v6 = *&a3;
-  v8 = a4;
-  v9 = [a1 borderWithType:v6 resources:a5];
+  v6 = *&type;
+  referenceCopy = reference;
+  v9 = [self borderWithType:v6 resources:resources];
   v10 = v9[3];
-  v9[3] = v8;
+  v9[3] = referenceCopy;
 
   return v9;
 }
 
-+ (id)borderWithType:(int)a3 colorReference:(id)a4 diagonalType:(int)a5 resources:(id)a6
++ (id)borderWithType:(int)type colorReference:(id)reference diagonalType:(int)diagonalType resources:(id)resources
 {
-  v7 = [a1 borderWithType:*&a3 colorReference:a4 resources:a6];
-  v7[8] = a5;
+  v7 = [self borderWithType:*&type colorReference:reference resources:resources];
+  v7[8] = diagonalType;
 
   return v7;
 }

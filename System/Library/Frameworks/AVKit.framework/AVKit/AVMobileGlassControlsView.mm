@@ -4,31 +4,31 @@
 - (AVMobileGlassControlsViewDelegate)delegate;
 - (NSArray)detachedViews;
 - (double)_controlsExpansionYOffset;
-- (double)_layoutContentTabsInFrame:(_BYTE *)a3 withConfiguration:(double)a4 canFitState:(double)a5;
-- (void)_attachViews:(uint64_t)a1;
-- (void)_detachViews:(uint64_t)a1;
+- (double)_layoutContentTabsInFrame:(_BYTE *)frame withConfiguration:(double)configuration canFitState:(double)state;
+- (void)_attachViews:(uint64_t)views;
+- (void)_detachViews:(uint64_t)views;
 - (void)_setUpContentTabsContainerViewIfNeeded;
 - (void)_setUpPlaybackControlsContainerViewIfNeeded;
 - (void)_setUpTopControlsContainerViewIfNeeded;
 - (void)_setUpTransportControlsContainerViewIfNeeded;
 - (void)_setUpTransportControlsViewIfNeeded;
-- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)a3;
+- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)invalidated;
 - (void)didMoveToWindow;
-- (void)glassTransportControlsView:(id)a3 didAttachControlsViews:(id)a4;
-- (void)glassTransportControlsView:(id)a3 didDetachControlsViews:(id)a4;
+- (void)glassTransportControlsView:(id)view didAttachControlsViews:(id)views;
+- (void)glassTransportControlsView:(id)view didDetachControlsViews:(id)views;
 - (void)layoutSubviews;
-- (void)setAuxiliaryControlsView:(id)a3;
-- (void)setBackgroundView:(id)a3;
-- (void)setContentTabsView:(id)a3;
-- (void)setDisplayModeControlsView:(id)a3;
-- (void)setLayoutAllowed:(BOOL)a3;
-- (void)setLayoutConfiguration:(AVMobileGlassControlsLayoutConfiguration *)a3;
-- (void)setLiveEdgeContentTagView:(id)a3;
-- (void)setPlaybackControlsView:(id)a3;
-- (void)setStyleSheet:(id)a3;
-- (void)setTimelineView:(id)a3;
-- (void)setTitlebarView:(id)a3;
-- (void)setVolumeControlsView:(id)a3;
+- (void)setAuxiliaryControlsView:(id)view;
+- (void)setBackgroundView:(id)view;
+- (void)setContentTabsView:(id)view;
+- (void)setDisplayModeControlsView:(id)view;
+- (void)setLayoutAllowed:(BOOL)allowed;
+- (void)setLayoutConfiguration:(AVMobileGlassControlsLayoutConfiguration *)configuration;
+- (void)setLiveEdgeContentTagView:(id)view;
+- (void)setPlaybackControlsView:(id)view;
+- (void)setStyleSheet:(id)sheet;
+- (void)setTimelineView:(id)view;
+- (void)setTitlebarView:(id)view;
+- (void)setVolumeControlsView:(id)view;
 - (void)updateForContentIntersection;
 @end
 
@@ -69,8 +69,8 @@
   if (!self->_transportControlsContainerView)
   {
     v3 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.0];
-    v4 = [v3 CGColor];
-    v5 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:{1.0, v4}];
+    cGColor = [v3 CGColor];
+    v5 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:{1.0, cGColor}];
     v15[1] = [v5 CGColor];
     v6 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:1.0];
     v15[2] = [v6 CGColor];
@@ -85,8 +85,8 @@
     [(AVView *)v9 setIgnoresTouches:1];
     [(AVView *)v9 setAutomaticallyUpdatesSubviewContentIntersections:1];
     [(AVGlassBackedGroupView *)v9 setAutoresizingMask:0];
-    v10 = [(AVGlassBackedGroupView *)v9 layer];
-    [v10 setMask:v8];
+    layer = [(AVGlassBackedGroupView *)v9 layer];
+    [layer setMask:v8];
 
     transportControlsContainerMask = self->_transportControlsContainerMask;
     self->_transportControlsContainerMask = v8;
@@ -153,23 +153,23 @@
   v5.receiver = self;
   v5.super_class = AVMobileGlassControlsView;
   [(AVView *)&v5 updateForContentIntersection];
-  v3 = [(AVMobileGlassControlsView *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(AVMobileGlassControlsView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v4 == 1)
+  if (userInterfaceStyle == 1)
   {
     [(AVMobileGlassControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)a3
+- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)invalidated
 {
-  v4 = a3;
-  if (self->_displayModeControlsView == v4 || self->_volumeControlsView == v4 || self->_auxiliaryControlsView == v4 || self->_titlebarView == v4 || self->_transportControlsView == v4)
+  invalidatedCopy = invalidated;
+  if (self->_displayModeControlsView == invalidatedCopy || self->_volumeControlsView == invalidatedCopy || self->_auxiliaryControlsView == invalidatedCopy || self->_titlebarView == invalidatedCopy || self->_transportControlsView == invalidatedCopy)
   {
-    v5 = v4;
+    v5 = invalidatedCopy;
     [(AVMobileGlassControlsView *)self setNeedsLayout];
-    v4 = v5;
+    invalidatedCopy = v5;
   }
 }
 
@@ -191,8 +191,8 @@
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(AVMobileGlassControlsView *)self traitCollection];
-  if ([v18 userInterfaceStyle] == 1)
+  traitCollection = [(AVMobileGlassControlsView *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == 1)
   {
     v248.origin.x = v11;
     v248.origin.y = v13;
@@ -232,8 +232,8 @@
     v21 = v9;
   }
 
-  v22 = [(AVMobileGlassControlsView *)self layoutMarginsGuide];
-  [v22 layoutFrame];
+  layoutMarginsGuide = [(AVMobileGlassControlsView *)self layoutMarginsGuide];
+  [layoutMarginsGuide layoutFrame];
   v215 = v24;
   v216 = v23;
   v210 = v25;
@@ -282,7 +282,7 @@
   v200 = contentTabTransitioning;
   v214 = v34;
   v40 = self->_playbackControlsView;
-  v41 = [(AVMobileGlassControlsView *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(AVMobileGlassControlsView *)self effectiveUserInterfaceLayoutDirection];
   [(AVMobileGlassPlaybackControlsView *)v40 intrinsicContentSize];
   v43 = v42;
   [(AVMobileGlassControlsView *)self layoutMargins];
@@ -323,8 +323,8 @@
         v54 = v57 + (v58 - v43) * 0.5;
       }
 
-      v62 = [MEMORY[0x1E69DC938] currentDevice];
-      [v62 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      [currentDevice userInterfaceIdiom];
 
       v249.size.width = v215;
       v249.origin.x = v216;
@@ -347,7 +347,7 @@
       v64 = CGRectGetMidY(v252) + v43 * -0.5;
       v65 = x;
       v55 = v215;
-      [(UIView *)v40 avkit_setFrame:v41 inLayoutDirection:v65, v64, v215, v43];
+      [(UIView *)v40 avkit_setFrame:effectiveUserInterfaceLayoutDirection inLayoutDirection:v65, v64, v215, v43];
       v52 = 1;
       v53 = v216;
     }
@@ -431,7 +431,7 @@
     v211 = v214;
     v74 = self->_displayModeControlsView;
     v75 = self->_volumeControlsView;
-    v76 = [(AVMobileGlassControlsView *)self effectiveUserInterfaceLayoutDirection];
+    effectiveUserInterfaceLayoutDirection2 = [(AVMobileGlassControlsView *)self effectiveUserInterfaceLayoutDirection];
     v259.origin.x = v216;
     v259.origin.y = MinY;
     v259.size.width = v215;
@@ -479,7 +479,7 @@
 
     [(AVMobileGlassDisplayModeControlsView *)v74 sizeThatFits:v86, v84];
     v90 = v89;
-    v189 = [(AVMobileGlassControlsView *)self _controlsExpansionYOffset];
+    _controlsExpansionYOffset = [(AVMobileGlassControlsView *)self _controlsExpansionYOffset];
     v187 = v71;
     v91 = 0;
     v92 = v84 < Height;
@@ -509,13 +509,13 @@
 
       if (!v93 || !v99)
       {
-        [(UIView *)v74 avkit_setFrame:v76 inLayoutDirection:v216, MinY - v189, v90, v84];
+        [(UIView *)v74 avkit_setFrame:effectiveUserInterfaceLayoutDirection2 inLayoutDirection:v216, MinY - _controlsExpansionYOffset, v90, v84];
         v263.origin.y = v207;
         v263.origin.x = rect;
         v263.size.height = v205;
         v263.size.width = v206;
         v278.origin.x = v216;
-        v278.origin.y = MinY - v189;
+        v278.origin.y = MinY - _controlsExpansionYOffset;
         v278.size.width = v90;
         v278.size.height = v84;
         v264 = CGRectUnion(v263, v278);
@@ -554,13 +554,13 @@ LABEL_52:
       }
 
       v101 = v216 + Width - v190 + v100;
-      [(UIView *)v75 avkit_setFrame:v76 inLayoutDirection:v101, MinY - v189, v190, v84];
+      [(UIView *)v75 avkit_setFrame:effectiveUserInterfaceLayoutDirection2 inLayoutDirection:v101, MinY - _controlsExpansionYOffset, v190, v84];
       v261.origin.x = v97;
       v261.origin.y = y;
       v261.size.width = v95;
       v261.size.height = v94;
       v277.origin.x = v101;
-      v277.origin.y = MinY - v189;
+      v277.origin.y = MinY - _controlsExpansionYOffset;
       v277.size.width = v190;
       v277.size.height = v84;
       v262 = CGRectUnion(v261, v277);
@@ -594,10 +594,10 @@ LABEL_58:
       v105 = CGRectGetMinX(v266);
       [(AVMobileGlassControlsView *)self bounds];
       v106 = CGRectGetWidth(v267);
-      v108 = [MEMORY[0x1E69DC938] currentDevice];
-      v109 = [v108 userInterfaceIdiom];
+      currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+      userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
       v110 = 50.0;
-      if (v109 == 1)
+      if (userInterfaceIdiom == 1)
       {
         v110 = 70.0;
       }
@@ -635,7 +635,7 @@ LABEL_58:
       v233 = v104;
       v234 = v192;
       v235 = contentTabPresentationHeight;
-      v113 = [(AVMobileGlassControlsView *)&self->super.super.super.super.isa _layoutContentTabsInFrame:&v236 withConfiguration:v216 canFitState:v112, v215, v212 - v103];
+      v103 = [(AVMobileGlassControlsView *)&self->super.super.super.super.isa _layoutContentTabsInFrame:&v236 withConfiguration:v216 canFitState:v112, v215, v212 - v103];
       v115 = v114;
       v117 = v116;
       v119 = v118;
@@ -644,7 +644,7 @@ LABEL_58:
       v269.size.width = recta;
       v269.size.height = v103;
       v120 = CGRectGetMaxY(v269);
-      v270.origin.x = v113;
+      v270.origin.x = v103;
       v270.origin.y = v115;
       v270.size.width = v117;
       v270.size.height = v119;
@@ -752,10 +752,10 @@ LABEL_58:
     v137 = v136;
     v139 = v138;
     v141 = v140;
-    v142 = [(AVMobileGlassControlsView *)self _controlsExpansionYOffset];
-    v143 = [(AVMobileGlassControlsView *)self effectiveUserInterfaceLayoutDirection];
+    _controlsExpansionYOffset2 = [(AVMobileGlassControlsView *)self _controlsExpansionYOffset];
+    effectiveUserInterfaceLayoutDirection3 = [(AVMobileGlassControlsView *)self effectiveUserInterfaceLayoutDirection];
     [(AVGlassBackedGroupView *)v132 setFrame:v135, v137, v139, v141];
-    [(UIView *)v133 avkit_setFrame:v143 inLayoutDirection:v216, v120 + v142, v215, v122];
+    [(UIView *)v133 avkit_setFrame:effectiveUserInterfaceLayoutDirection3 inLayoutDirection:v216, v120 + _controlsExpansionYOffset2, v215, v122];
     v144 = v130;
     [(AVMobileGlassControlsView *)self bounds];
     v146 = v145;
@@ -820,8 +820,8 @@ LABEL_58:
   v237 = v165 & 0x101;
   v238 = BYTE2(v165) & 1;
   v239 = HIBYTE(v165) & 1;
-  v166 = [MEMORY[0x1E695DF70] array];
-  v167 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   for (i = 0; i != 4; ++i)
   {
     v169 = *&buf[8 * i];
@@ -834,12 +834,12 @@ LABEL_58:
         [v170 setHidden:v171 ^ 1u];
         if (v171)
         {
-          v172 = v167;
+          v172 = array2;
         }
 
         else
         {
-          v172 = v166;
+          v172 = array;
         }
 
         [v172 addObject:v170];
@@ -847,41 +847,41 @@ LABEL_58:
     }
   }
 
-  if ([v166 count])
+  if ([array count])
   {
-    v173 = v166;
+    v173 = array;
     [(AVMobileGlassControlsView *)self _detachViews:v173];
     if (v173)
     {
       if ([v173 count])
       {
-        v174 = [(AVMobileGlassControlsView *)self delegate];
+        delegate = [(AVMobileGlassControlsView *)self delegate];
         v175 = objc_opt_respondsToSelector();
 
         if (v175)
         {
-          v176 = [(AVMobileGlassControlsView *)self delegate];
-          [v176 glassControlsView:self didDetachControlsViews:v173];
+          delegate2 = [(AVMobileGlassControlsView *)self delegate];
+          [delegate2 glassControlsView:self didDetachControlsViews:v173];
         }
       }
     }
   }
 
-  if ([v167 count])
+  if ([array2 count])
   {
-    v177 = v167;
+    v177 = array2;
     [(AVMobileGlassControlsView *)self _attachViews:v177];
     if (v177)
     {
       if ([v177 count])
       {
-        v178 = [(AVMobileGlassControlsView *)self delegate];
+        delegate3 = [(AVMobileGlassControlsView *)self delegate];
         v179 = objc_opt_respondsToSelector();
 
         if (v179)
         {
-          v180 = [(AVMobileGlassControlsView *)self delegate];
-          [v180 glassControlsView:self didAttachControlsViews:v177];
+          delegate4 = [(AVMobileGlassControlsView *)self delegate];
+          [delegate4 glassControlsView:self didAttachControlsViews:v177];
         }
       }
     }
@@ -897,21 +897,21 @@ LABEL_114:
   [(AVView *)&v217 layoutSubviews];
 }
 
-- (double)_layoutContentTabsInFrame:(_BYTE *)a3 withConfiguration:(double)a4 canFitState:(double)a5
+- (double)_layoutContentTabsInFrame:(_BYTE *)frame withConfiguration:(double)configuration canFitState:(double)state
 {
-  v13 = a1[69];
+  v13 = self[69];
   v14 = *(a2 + 24);
-  [a1 layoutMargins];
+  [self layoutMargins];
   v56 = v16;
   v57 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [a1 effectiveUserInterfaceLayoutDirection];
-  v22 = [(AVMobileGlassControlsView *)a1 _controlsExpansionYOffset];
+  effectiveUserInterfaceLayoutDirection = [self effectiveUserInterfaceLayoutDirection];
+  _controlsExpansionYOffset = [(AVMobileGlassControlsView *)self _controlsExpansionYOffset];
   [v13 intrinsicContentSize];
   v24 = v23;
   v58 = v14 + v23 + 50.0;
-  v25 = a5 + a7;
+  v25 = state + a7;
   v26 = *(a2 + 128);
   v55 = a6;
   if (v26 == 1 && (*(a2 + 50) & 1) == 0)
@@ -954,10 +954,10 @@ LABEL_114:
 
   else
   {
-    v32 = a5 + a7;
+    v32 = state + a7;
   }
 
-  v33 = a4;
+  configurationCopy = configuration;
   if (v26 == 1)
   {
     v34 = v25 + v14;
@@ -967,7 +967,7 @@ LABEL_114:
     }
   }
 
-  v35 = v22;
+  v35 = _controlsExpansionYOffset;
   v54 = v20;
   if (!v29)
   {
@@ -1009,7 +1009,7 @@ LABEL_114:
   if (*(a2 + 48))
   {
 LABEL_30:
-    [a1 bounds];
+    [self bounds];
     v39 = 0.0;
     if (v40 > v41)
     {
@@ -1026,16 +1026,16 @@ LABEL_30:
 LABEL_33:
   v37 = v38 + v37;
 LABEL_34:
-  v42 = v33 - v57;
+  v42 = configurationCopy - v57;
   v43 = v35 + v32;
-  [a1[69] avkit_setFrame:v21 inLayoutDirection:{v33 - v57, v35 + v32, v56 + v55 + v57, v37}];
+  [self[69] avkit_setFrame:effectiveUserInterfaceLayoutDirection inLayoutDirection:{configurationCopy - v57, v35 + v32, v56 + v55 + v57, v37}];
   v45 = *MEMORY[0x1E695F050];
   v44 = *(MEMORY[0x1E695F050] + 8);
   v47 = *(MEMORY[0x1E695F050] + 16);
   v46 = *(MEMORY[0x1E695F050] + 24);
   if (v31)
   {
-    [a1 safeAreaInsets];
+    [self safeAreaInsets];
     if (v48 < v57)
     {
       v48 = v57;
@@ -1046,7 +1046,7 @@ LABEL_34:
       v49 = v56;
     }
 
-    [a1[69] setLayoutMargins:{v18, v48, v54, v49}];
+    [self[69] setLayoutMargins:{v18, v48, v54, v49}];
     v62.origin.x = v45;
     v62.origin.y = v44;
     v62.size.width = v47;
@@ -1058,7 +1058,7 @@ LABEL_34:
     *&v45 = CGRectUnion(v62, v64);
     if (*(a2 + 48) == 1)
     {
-      [a1 bounds];
+      [self bounds];
       MaxY = CGRectGetMaxY(v63);
       if (*(a2 + 48) == 1 && MaxY - v43 != *(a2 + 136))
       {
@@ -1072,9 +1072,9 @@ LABEL_34:
     }
   }
 
-  if (a3)
+  if (frame)
   {
-    *a3 = (a7 >= v58) & v28;
+    *frame = (a7 >= v58) & v28;
   }
 
   else
@@ -1090,12 +1090,12 @@ LABEL_34:
   return v45;
 }
 
-- (void)_attachViews:(uint64_t)a1
+- (void)_attachViews:(uint64_t)views
 {
   v15 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (views)
   {
     v12 = 0u;
     v13 = 0u;
@@ -1116,9 +1116,9 @@ LABEL_34:
           }
 
           v9 = *(*(&v10 + 1) + 8 * i);
-          if ([*(a1 + 520) containsObject:v9])
+          if ([*(views + 520) containsObject:v9])
           {
-            [*(a1 + 520) removeObject:v9];
+            [*(views + 520) removeObject:v9];
           }
         }
 
@@ -1130,12 +1130,12 @@ LABEL_34:
   }
 }
 
-- (void)_detachViews:(uint64_t)a1
+- (void)_detachViews:(uint64_t)views
 {
   v15 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (views)
   {
     v12 = 0u;
     v13 = 0u;
@@ -1156,9 +1156,9 @@ LABEL_34:
           }
 
           v9 = *(*(&v10 + 1) + 8 * i);
-          if (([*(a1 + 520) containsObject:v9] & 1) == 0)
+          if (([*(views + 520) containsObject:v9] & 1) == 0)
           {
-            [*(a1 + 520) addObject:v9];
+            [*(views + 520) addObject:v9];
           }
         }
 
@@ -1172,7 +1172,7 @@ LABEL_34:
 
 - (double)_controlsExpansionYOffset
 {
-  [a1 layoutConfiguration];
+  [self layoutConfiguration];
 
   return 0.0;
 }
@@ -1184,28 +1184,28 @@ LABEL_34:
   [(AVMobileGlassControlsView *)&v2 didMoveToWindow];
 }
 
-- (void)glassTransportControlsView:(id)a3 didDetachControlsViews:(id)a4
+- (void)glassTransportControlsView:(id)view didDetachControlsViews:(id)views
 {
-  v5 = a4;
-  [(AVMobileGlassControlsView *)self _detachViews:v5];
-  v6 = [(AVMobileGlassControlsView *)self delegate];
-  [v6 glassControlsView:self didDetachControlsViews:v5];
+  viewsCopy = views;
+  [(AVMobileGlassControlsView *)self _detachViews:viewsCopy];
+  delegate = [(AVMobileGlassControlsView *)self delegate];
+  [delegate glassControlsView:self didDetachControlsViews:viewsCopy];
 }
 
-- (void)glassTransportControlsView:(id)a3 didAttachControlsViews:(id)a4
+- (void)glassTransportControlsView:(id)view didAttachControlsViews:(id)views
 {
-  v5 = a4;
-  [(AVMobileGlassControlsView *)self _attachViews:v5];
-  v6 = [(AVMobileGlassControlsView *)self delegate];
-  [v6 glassControlsView:self didAttachControlsViews:v5];
+  viewsCopy = views;
+  [(AVMobileGlassControlsView *)self _attachViews:viewsCopy];
+  delegate = [(AVMobileGlassControlsView *)self delegate];
+  [delegate glassControlsView:self didAttachControlsViews:viewsCopy];
 }
 
-- (void)setVolumeControlsView:(id)a3
+- (void)setVolumeControlsView:(id)view
 {
-  v5 = a3;
-  v6 = [(AVMobileGlassVolumeControlsView *)v5 superview];
+  viewCopy = view;
+  superview = [(AVMobileGlassVolumeControlsView *)viewCopy superview];
 
-  if (v6)
+  if (superview)
   {
     v7 = _AVLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1232,10 +1232,10 @@ LABEL_34:
     volumeControlsView = 0;
   }
 
-  if (volumeControlsView != v5)
+  if (volumeControlsView != viewCopy)
   {
     [(AVMobileGlassVolumeControlsView *)volumeControlsView removeFromSuperview];
-    objc_storeStrong(&self->_volumeControlsView, a3);
+    objc_storeStrong(&self->_volumeControlsView, view);
     [(AVView *)self->_volumeControlsView setHidden:1];
     [(AVMobileGlassControlsView *)self _setUpTopControlsContainerViewIfNeeded];
     [(AVGlassBackedGroupView *)self->_topControlsContainerView addSubview:self->_volumeControlsView];
@@ -1243,63 +1243,63 @@ LABEL_34:
   }
 }
 
-- (void)setTitlebarView:(id)a3
+- (void)setTitlebarView:(id)view
 {
-  v5 = a3;
-  if (self->_titlebarView != v5)
+  viewCopy = view;
+  if (self->_titlebarView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_titlebarView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_titlebarView, view);
     [(AVMobileGlassControlsView *)self _setUpTransportControlsViewIfNeeded];
     [(AVMobileGlassTransportControlsView *)self->_transportControlsView setTitlebarView:self->_titlebarView];
     [(AVMobileGlassControlsView *)self setNeedsLayout];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
 - (void)_setUpTransportControlsViewIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    v2 = !*(a1 + 536) && !*(a1 + 568) && !*(a1 + 584) && *(a1 + 592) == 0;
-    if (*(a1 + 528) == 1 && !v2 && !*(a1 + 624))
+    v2 = !*(self + 536) && !*(self + 568) && !*(self + 584) && *(self + 592) == 0;
+    if (*(self + 528) == 1 && !v2 && !*(self + 624))
     {
-      [a1 _setUpTransportControlsContainerViewIfNeeded];
-      v5 = *(a1 + 504);
+      [self _setUpTransportControlsContainerViewIfNeeded];
+      v5 = *(self + 504);
       v3 = objc_alloc_init(AVMobileGlassTransportControlsView);
-      [(AVMobileGlassTransportControlsView *)v3 setDelegate:a1];
+      [(AVMobileGlassTransportControlsView *)v3 setDelegate:self];
       [(AVMobileGlassTransportControlsView *)v3 setAutoresizingMask:0];
       [(AVView *)v3 setAutomaticallyUpdatesSubviewContentIntersections:1];
       [(AVMobileGlassTransportControlsView *)v3 setLayoutAllowed:1];
       [(AVView *)v3 setIgnoresTouches:1];
-      [(AVMobileGlassTransportControlsView *)v3 setStyleSheet:*(a1 + 608)];
+      [(AVMobileGlassTransportControlsView *)v3 setStyleSheet:*(self + 608)];
       [v5 addSubview:v3];
-      v4 = *(a1 + 624);
-      *(a1 + 624) = v3;
+      v4 = *(self + 624);
+      *(self + 624) = v3;
     }
   }
 }
 
-- (void)setTimelineView:(id)a3
+- (void)setTimelineView:(id)view
 {
-  v5 = a3;
-  if (self->_timelineView != v5)
+  viewCopy = view;
+  if (self->_timelineView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_timelineView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_timelineView, view);
     [(AVMobileGlassControlsView *)self _setUpTransportControlsViewIfNeeded];
     [(AVMobileGlassTransportControlsView *)self->_transportControlsView setTimelineView:self->_timelineView];
     [(AVMobileGlassControlsView *)self setNeedsLayout];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)setPlaybackControlsView:(id)a3
+- (void)setPlaybackControlsView:(id)view
 {
-  v5 = a3;
-  v6 = [(AVMobileGlassPlaybackControlsView *)v5 superview];
+  viewCopy = view;
+  superview = [(AVMobileGlassPlaybackControlsView *)viewCopy superview];
 
-  if (v6)
+  if (superview)
   {
     v7 = _AVLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1326,10 +1326,10 @@ LABEL_34:
     playbackControlsView = 0;
   }
 
-  if (playbackControlsView != v5)
+  if (playbackControlsView != viewCopy)
   {
     [(AVMobileGlassPlaybackControlsView *)playbackControlsView removeFromSuperview];
-    objc_storeStrong(&self->_playbackControlsView, a3);
+    objc_storeStrong(&self->_playbackControlsView, view);
     [(AVView *)self->_playbackControlsView setHidden:1];
     [(AVMobileGlassControlsView *)self _setUpPlaybackControlsContainerViewIfNeeded];
     [(AVGlassBackedGroupView *)self->_playbackControlsContainerView addSubview:self->_playbackControlsView];
@@ -1337,26 +1337,26 @@ LABEL_34:
   }
 }
 
-- (void)setLiveEdgeContentTagView:(id)a3
+- (void)setLiveEdgeContentTagView:(id)view
 {
-  v5 = a3;
-  if (self->_liveEdgeContentTagView != v5)
+  viewCopy = view;
+  if (self->_liveEdgeContentTagView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_liveEdgeContentTagView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_liveEdgeContentTagView, view);
     [(AVMobileGlassControlsView *)self _setUpTransportControlsViewIfNeeded];
     [(AVMobileGlassTransportControlsView *)self->_transportControlsView setLiveEdgeContentTagView:self->_liveEdgeContentTagView];
     [(AVMobileGlassControlsView *)self setNeedsLayout];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)setDisplayModeControlsView:(id)a3
+- (void)setDisplayModeControlsView:(id)view
 {
-  v5 = a3;
-  v6 = [(AVMobileGlassDisplayModeControlsView *)v5 superview];
+  viewCopy = view;
+  superview = [(AVMobileGlassDisplayModeControlsView *)viewCopy superview];
 
-  if (v6)
+  if (superview)
   {
     v7 = _AVLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1383,10 +1383,10 @@ LABEL_34:
     displayModeControlsView = 0;
   }
 
-  if (displayModeControlsView != v5)
+  if (displayModeControlsView != viewCopy)
   {
     [(AVMobileGlassDisplayModeControlsView *)displayModeControlsView removeFromSuperview];
-    objc_storeStrong(&self->_displayModeControlsView, a3);
+    objc_storeStrong(&self->_displayModeControlsView, view);
     [(AVView *)self->_displayModeControlsView setHidden:1];
     [(AVMobileGlassControlsView *)self _setUpTopControlsContainerViewIfNeeded];
     [(AVGlassBackedGroupView *)self->_topControlsContainerView addSubview:self->_displayModeControlsView];
@@ -1394,12 +1394,12 @@ LABEL_34:
   }
 }
 
-- (void)setContentTabsView:(id)a3
+- (void)setContentTabsView:(id)view
 {
-  v5 = a3;
-  v6 = [(AVMobileGlassContentTabsView *)v5 superview];
+  viewCopy = view;
+  superview = [(AVMobileGlassContentTabsView *)viewCopy superview];
 
-  if (v6)
+  if (superview)
   {
     v7 = _AVLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1426,22 +1426,22 @@ LABEL_34:
     contentTabsView = 0;
   }
 
-  if (contentTabsView != v5)
+  if (contentTabsView != viewCopy)
   {
     [(AVMobileGlassContentTabsView *)contentTabsView removeFromSuperview];
-    objc_storeStrong(&self->_contentTabsView, a3);
+    objc_storeStrong(&self->_contentTabsView, view);
     [(AVMobileGlassControlsView *)self _setUpContentTabsContainerViewIfNeeded];
     [(AVGlassBackedGroupView *)self->_contentTabsContainerView addSubview:self->_contentTabsView];
     [(AVMobileGlassControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v5 = a3;
-  v6 = [(AVMobileGlassBackgroundView *)v5 superview];
+  viewCopy = view;
+  superview = [(AVMobileGlassBackgroundView *)viewCopy superview];
 
-  if (v6)
+  if (superview)
   {
     v7 = _AVLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1468,29 +1468,29 @@ LABEL_34:
     backgroundView = 0;
   }
 
-  if (backgroundView != v5)
+  if (backgroundView != viewCopy)
   {
     [(AVMobileGlassBackgroundView *)backgroundView removeFromSuperview];
-    objc_storeStrong(&self->_backgroundView, a3);
+    objc_storeStrong(&self->_backgroundView, view);
     [(AVMobileGlassControlsView *)self insertSubview:self->_backgroundView atIndex:0];
   }
 }
 
-- (void)setAuxiliaryControlsView:(id)a3
+- (void)setAuxiliaryControlsView:(id)view
 {
-  v5 = a3;
-  if (self->_auxiliaryControlsView != v5)
+  viewCopy = view;
+  if (self->_auxiliaryControlsView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_auxiliaryControlsView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_auxiliaryControlsView, view);
     [(AVMobileGlassControlsView *)self _setUpTransportControlsViewIfNeeded];
     [(AVMobileGlassTransportControlsView *)self->_transportControlsView setAuxiliaryControlsView:self->_auxiliaryControlsView];
     [(AVMobileGlassControlsView *)self setNeedsLayout];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)setLayoutConfiguration:(AVMobileGlassControlsLayoutConfiguration *)a3
+- (void)setLayoutConfiguration:(AVMobileGlassControlsLayoutConfiguration *)configuration
 {
   p_layoutConfiguration = &self->_layoutConfiguration;
   v6 = *&self->_layoutConfiguration.expanded;
@@ -1499,8 +1499,8 @@ LABEL_34:
   auxiliaryControlsPlacement = self->_layoutConfiguration.auxiliaryControlsPlacement;
   p_pinnedAuxiliaryControls = &self->_layoutConfiguration.pinnedAuxiliaryControls;
   v51 = self->_layoutConfiguration.pinnedAuxiliaryControls;
-  pinnedAuxiliaryControls = a3->pinnedAuxiliaryControls;
-  v41 = a3->auxiliaryControlsPlacement;
+  pinnedAuxiliaryControls = configuration->pinnedAuxiliaryControls;
+  v41 = configuration->auxiliaryControlsPlacement;
   v9 = *&p_layoutConfiguration->volumeSliderInsets.left;
   v54 = *&p_layoutConfiguration->timelineSliderInsets.right;
   v55 = v9;
@@ -1510,53 +1510,53 @@ LABEL_34:
   v11 = *&p_layoutConfiguration->timelineSliderInsets.left;
   v52 = *&p_layoutConfiguration->contentTabPresented;
   v53 = v11;
-  v12 = *&a3->expanded;
-  v39 = *&a3->includedControls;
+  v12 = *&configuration->expanded;
+  v39 = *&configuration->includedControls;
   v40 = v12;
   v42 = pinnedAuxiliaryControls;
-  v13 = *&a3->volumeSliderInsets.left;
-  v45 = *&a3->timelineSliderInsets.right;
+  v13 = *&configuration->volumeSliderInsets.left;
+  v45 = *&configuration->timelineSliderInsets.right;
   v46 = v13;
-  v14 = *&a3->contentTabsLayout;
-  v47 = *&a3->volumeSliderInsets.right;
+  v14 = *&configuration->contentTabsLayout;
+  v47 = *&configuration->volumeSliderInsets.right;
   v48 = v14;
-  v15 = *&a3->timelineSliderInsets.left;
-  v43 = *&a3->contentTabPresented;
+  v15 = *&configuration->timelineSliderInsets.left;
+  v43 = *&configuration->contentTabPresented;
   v44 = v15;
   if (!AVMobileGlassControlsLayoutConfigurationsEqual(v49, &v39))
   {
-    v16 = *&a3->includedControls;
-    v17 = *&a3->expanded;
-    p_layoutConfiguration->auxiliaryControlsPlacement = a3->auxiliaryControlsPlacement;
+    v16 = *&configuration->includedControls;
+    v17 = *&configuration->expanded;
+    p_layoutConfiguration->auxiliaryControlsPlacement = configuration->auxiliaryControlsPlacement;
     *&p_layoutConfiguration->includedControls = v16;
     *&p_layoutConfiguration->expanded = v17;
-    objc_storeStrong(p_pinnedAuxiliaryControls, a3->pinnedAuxiliaryControls);
-    v18 = *&a3->timelineSliderInsets.left;
-    *&p_layoutConfiguration->contentTabPresented = *&a3->contentTabPresented;
+    objc_storeStrong(p_pinnedAuxiliaryControls, configuration->pinnedAuxiliaryControls);
+    v18 = *&configuration->timelineSliderInsets.left;
+    *&p_layoutConfiguration->contentTabPresented = *&configuration->contentTabPresented;
     *&p_layoutConfiguration->timelineSliderInsets.left = v18;
-    v19 = *&a3->timelineSliderInsets.right;
-    v20 = *&a3->volumeSliderInsets.left;
-    v21 = *&a3->contentTabsLayout;
-    *&p_layoutConfiguration->volumeSliderInsets.right = *&a3->volumeSliderInsets.right;
+    v19 = *&configuration->timelineSliderInsets.right;
+    v20 = *&configuration->volumeSliderInsets.left;
+    v21 = *&configuration->contentTabsLayout;
+    *&p_layoutConfiguration->volumeSliderInsets.right = *&configuration->volumeSliderInsets.right;
     *&p_layoutConfiguration->contentTabsLayout = v21;
     *&p_layoutConfiguration->timelineSliderInsets.right = v19;
     *&p_layoutConfiguration->volumeSliderInsets.left = v20;
-    v22 = a3->pinnedAuxiliaryControls;
-    v31 = a3->auxiliaryControlsPlacement;
+    v22 = configuration->pinnedAuxiliaryControls;
+    v31 = configuration->auxiliaryControlsPlacement;
     transportControlsView = self->_transportControlsView;
-    v24 = *&a3->expanded;
-    v29 = *&a3->includedControls;
+    v24 = *&configuration->expanded;
+    v29 = *&configuration->includedControls;
     v30 = v24;
     v25 = v22;
     v32 = v25;
-    v26 = *&a3->volumeSliderInsets.left;
-    v35 = *&a3->timelineSliderInsets.right;
+    v26 = *&configuration->volumeSliderInsets.left;
+    v35 = *&configuration->timelineSliderInsets.right;
     v36 = v26;
-    v27 = *&a3->contentTabsLayout;
-    v37 = *&a3->volumeSliderInsets.right;
+    v27 = *&configuration->contentTabsLayout;
+    v37 = *&configuration->volumeSliderInsets.right;
     v38 = v27;
-    v28 = *&a3->timelineSliderInsets.left;
-    v33 = *&a3->contentTabPresented;
+    v28 = *&configuration->timelineSliderInsets.left;
+    v33 = *&configuration->contentTabPresented;
     v34 = v28;
     if (transportControlsView)
     {
@@ -1571,11 +1571,11 @@ LABEL_34:
   }
 }
 
-- (void)setLayoutAllowed:(BOOL)a3
+- (void)setLayoutAllowed:(BOOL)allowed
 {
-  if (self->_layoutAllowed != a3)
+  if (self->_layoutAllowed != allowed)
   {
-    self->_layoutAllowed = a3;
+    self->_layoutAllowed = allowed;
     [(AVMobileGlassTransportControlsView *)self->_transportControlsView setLayoutAllowed:?];
     if (self->_layoutAllowed)
     {
@@ -1593,30 +1593,30 @@ LABEL_34:
   return v2;
 }
 
-- (void)setStyleSheet:(id)a3
+- (void)setStyleSheet:(id)sheet
 {
-  v5 = a3;
-  if (self->_styleSheet != v5)
+  sheetCopy = sheet;
+  if (self->_styleSheet != sheetCopy)
   {
-    v13 = v5;
-    objc_storeStrong(&self->_styleSheet, a3);
-    v6 = [(AVMobileGlassControlsView *)self auxiliaryControlsView];
-    v7 = [(AVMobileGlassControlsView *)self displayModeControlsView];
-    v8 = [(AVMobileGlassControlsView *)self liveEdgeContentTagView];
-    v9 = [(AVMobileGlassControlsView *)self playbackControlsView];
-    v10 = [(AVMobileGlassControlsView *)self timelineView];
-    v11 = [(AVMobileGlassControlsView *)self titlebarView];
-    v12 = [(AVMobileGlassControlsView *)self transportControlsView];
-    [v6 setStyleSheet:self->_styleSheet];
-    [v7 setStyleSheet:self->_styleSheet];
-    [v8 setStyleSheet:self->_styleSheet];
-    [v9 setStyleSheet:self->_styleSheet];
-    [v10 setStyleSheet:self->_styleSheet];
-    [v11 setStyleSheet:self->_styleSheet];
-    [v12 setStyleSheet:self->_styleSheet];
+    v13 = sheetCopy;
+    objc_storeStrong(&self->_styleSheet, sheet);
+    auxiliaryControlsView = [(AVMobileGlassControlsView *)self auxiliaryControlsView];
+    displayModeControlsView = [(AVMobileGlassControlsView *)self displayModeControlsView];
+    liveEdgeContentTagView = [(AVMobileGlassControlsView *)self liveEdgeContentTagView];
+    playbackControlsView = [(AVMobileGlassControlsView *)self playbackControlsView];
+    timelineView = [(AVMobileGlassControlsView *)self timelineView];
+    titlebarView = [(AVMobileGlassControlsView *)self titlebarView];
+    transportControlsView = [(AVMobileGlassControlsView *)self transportControlsView];
+    [auxiliaryControlsView setStyleSheet:self->_styleSheet];
+    [displayModeControlsView setStyleSheet:self->_styleSheet];
+    [liveEdgeContentTagView setStyleSheet:self->_styleSheet];
+    [playbackControlsView setStyleSheet:self->_styleSheet];
+    [timelineView setStyleSheet:self->_styleSheet];
+    [titlebarView setStyleSheet:self->_styleSheet];
+    [transportControlsView setStyleSheet:self->_styleSheet];
 
     [(AVMobileGlassControlsView *)self setNeedsLayout];
-    v5 = v13;
+    sheetCopy = v13;
   }
 }
 
@@ -1641,9 +1641,9 @@ LABEL_34:
     *(v3 + 680) = 0u;
     *(v3 + 696) = 0u;
     v3[528] = 1;
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v6 = *(v3 + 65);
-    *(v3 + 65) = v5;
+    *(v3 + 65) = array;
   }
 
   return v3;

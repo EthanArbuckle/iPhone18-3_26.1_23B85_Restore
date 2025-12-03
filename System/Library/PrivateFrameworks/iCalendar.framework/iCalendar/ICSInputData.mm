@@ -1,19 +1,19 @@
 @interface ICSInputData
-- (ICSInputData)initWithData:(id)a3;
+- (ICSInputData)initWithData:(id)data;
 - (char)read;
 @end
 
 @implementation ICSInputData
 
-- (ICSInputData)initWithData:(id)a3
+- (ICSInputData)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = ICSInputData;
   v5 = [(ICSInputData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dataCopy copy];
     data = v5->_data;
     v5->_data = v6;
 

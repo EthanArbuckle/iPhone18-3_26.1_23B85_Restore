@@ -1,56 +1,56 @@
 @interface MSStickerView
 - (BOOL)_isInsideMessagesCamera;
 - (BOOL)isAnimated;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MSStickerView)initWithCoder:(id)a3;
-- (MSStickerView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MSStickerView)initWithCoder:(id)coder;
+- (MSStickerView)initWithFrame:(CGRect)frame;
 - (MSStickerView)initWithFrame:(CGRect)frame sticker:(MSSticker *)sticker;
 - (_MSStickerDragPreviewContainerView)container;
-- (id)_dragInteraction:(id)a3 sessionPropertiesForSession:(id)a4;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (id)representationForRole:(id)a3;
+- (id)_dragInteraction:(id)interaction sessionPropertiesForSession:(id)session;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (id)representationForRole:(id)role;
 - (void)_buildEffectView;
 - (void)_configureDragAndDrop;
 - (void)_configureEffectView;
 - (void)_configureStickerView;
-- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)a3;
+- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)dragging;
 - (void)_enableEffectView;
 - (void)_loadAnimatedStickerIfNecessary;
 - (void)_loadSticker;
 - (void)_logStickerUsage;
 - (void)_prepareForReuse;
-- (void)_registerRepresentationsInItemProvider:(id)a3;
-- (void)_registerStandardRepresentationsInItemProvider:(id)a3;
+- (void)_registerRepresentationsInItemProvider:(id)provider;
+- (void)_registerStandardRepresentationsInItemProvider:(id)provider;
 - (void)_removeEffectView;
 - (void)_resetPeel;
 - (void)_sendStickerUsageAnalyticsForDragAndDrop;
-- (void)_setImage:(id)a3;
-- (void)_stickerPreviewCachePreviewDidChange:(id)a3;
+- (void)_setImage:(id)image;
+- (void)_stickerPreviewCachePreviewDidChange:(id)change;
 - (void)_swapWithOutlineImage;
 - (void)_updateStickerView;
-- (void)addHEICImage:(id)a3 completion:(id)a4;
-- (void)addPNGImage:(id)a3 completion:(id)a4;
-- (void)animatedStickerCreationProgressChanged:(id)a3 progress:(double)a4;
-- (void)animationTimerFired:(double)a3;
+- (void)addHEICImage:(id)image completion:(id)completion;
+- (void)addPNGImage:(id)image completion:(id)completion;
+- (void)animatedStickerCreationProgressChanged:(id)changed progress:(double)progress;
+- (void)animationTimerFired:(double)fired;
 - (void)clearCachedPreviewsForCurrentSticker;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)dragInteraction:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5;
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5;
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4;
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5;
-- (void)handleLongPress:(id)a3;
-- (void)handleTap:(id)a3;
+- (void)dragInteraction:(id)interaction item:(id)item willAnimateCancelWithAnimator:(id)animator;
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation;
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin;
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session;
+- (void)handleLongPress:(id)press;
+- (void)handleTap:(id)tap;
 - (void)layoutSubviews;
-- (void)pauseVisionKitEffect:(BOOL)a3;
+- (void)pauseVisionKitEffect:(BOOL)effect;
 - (void)prepareForSnapshotting;
-- (void)setAnimating:(BOOL)a3;
-- (void)setEffectView:(id)a3;
-- (void)setImage:(id)a3;
+- (void)setAnimating:(BOOL)animating;
+- (void)setEffectView:(id)view;
+- (void)setImage:(id)image;
 - (void)setSticker:(MSSticker *)sticker;
-- (void)stageStickerForce:(BOOL)a3;
+- (void)stageStickerForce:(BOOL)force;
 - (void)updateAnimationTimerObserving;
 @end
 
@@ -107,15 +107,15 @@
   }
 
   [(MSStickerView *)self setEffectView:0];
-  v14 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v14 addObserver:self selector:sel__stickerPreviewCachePreviewDidChange_ name:@"MSStickerPreviewCachePreviewDidChange" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__stickerPreviewCachePreviewDidChange_ name:@"MSStickerPreviewCachePreviewDidChange" object:0];
 }
 
-- (MSStickerView)initWithFrame:(CGRect)a3
+- (MSStickerView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MSStickerView;
-  v3 = [(MSStickerView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MSStickerView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -132,21 +132,21 @@
   y = frame.origin.y;
   x = frame.origin.x;
   v9 = sticker;
-  v10 = [(MSStickerView *)self initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(MSStickerView *)self initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(MSStickerView *)v10 setSticker:v9];
+    [(MSStickerView *)height setSticker:v9];
   }
 
   return v11;
 }
 
-- (MSStickerView)initWithCoder:(id)a3
+- (MSStickerView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = MSStickerView;
-  v3 = [(MSStickerView *)&v6 initWithCoder:a3];
+  v3 = [(MSStickerView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -166,8 +166,8 @@
 
 - (void)_prepareForReuse
 {
-  v3 = [(MSStickerView *)self imageView];
-  [v3 setImage:0];
+  imageView = [(MSStickerView *)self imageView];
+  [imageView setImage:0];
 
   [(MSStickerView *)self setImage:0];
   [(MSStickerView *)self setImageData:0];
@@ -176,11 +176,11 @@
   [(MSStickerView *)self setAnimating:0];
   [(MSStickerView *)self setStickerError:0];
   [(MSStickerView *)self setStickerImage:0];
-  v4 = [(MSStickerView *)self roundProgressView];
-  [v4 setHidden:1];
+  roundProgressView = [(MSStickerView *)self roundProgressView];
+  [roundProgressView setHidden:1];
 
-  v5 = [(MSStickerView *)self roundProgressView];
-  [v5 prepareForReuse];
+  roundProgressView2 = [(MSStickerView *)self roundProgressView];
+  [roundProgressView2 prepareForReuse];
 
   [(MSStickerView *)self setEffectView:0];
   self->_animationDuration = 0.0;
@@ -200,9 +200,9 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(MSStickerView *)self imageView];
-  [v11 setBounds:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v8, v10}];
-  [v11 frame];
+  imageView = [(MSStickerView *)self imageView];
+  [imageView setBounds:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v8, v10}];
+  [imageView frame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -227,14 +227,14 @@
   v36.size.width = v17;
   v36.size.height = v19;
   v23 = v22 - CGRectGetHeight(v36) * 0.5;
-  [v11 setFrame:{v21, v23, v17, v19}];
-  v24 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v25 = [v24 isStickersAppEnabled];
+  [imageView setFrame:{v21, v23, v17, v19}];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isStickersAppEnabled = [mEMORY[0x1E69A8070] isStickersAppEnabled];
 
-  if (v25)
+  if (isStickersAppEnabled)
   {
-    v26 = [(MSStickerView *)self effectView];
-    [v26 setFrame:{v21, v23, v17, v19}];
+    effectView = [(MSStickerView *)self effectView];
+    [effectView setFrame:{v21, v23, v17, v19}];
   }
 
   if (![(MSStickerView *)self initialLayoutComplete])
@@ -243,13 +243,13 @@
     if (!CGRectEqualToRect(v37, *MEMORY[0x1E695F058]))
     {
       [(MSStickerView *)self setInitialLayoutComplete:1];
-      v27 = [(MSStickerView *)self sticker];
-      if (v27)
+      sticker = [(MSStickerView *)self sticker];
+      if (sticker)
       {
-        v28 = v27;
-        v29 = [(MSStickerView *)self image];
+        v28 = sticker;
+        image = [(MSStickerView *)self image];
 
-        if (!v29)
+        if (!image)
         {
           [(MSStickerView *)self _loadSticker];
         }
@@ -261,12 +261,12 @@
   [(MSStickerView *)self bringSubviewToFront:self->_roundProgressView];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(MSStickerView *)self imageData];
-  [v5 pxSize];
+  height = fits.height;
+  width = fits.width;
+  imageData = [(MSStickerView *)self imageData];
+  [imageData pxSize];
   v7 = v6;
   v9 = v8;
 
@@ -286,8 +286,8 @@
     [MSStickerView sizeThatFits:];
   }
 
-  v13 = [(objc_class *)CKUIBehaviorClass_0 sharedBehaviors];
-  [v13 stickerScreenScale];
+  cKUIBehaviorClass_0 = [(objc_class *)CKUIBehaviorClass_0 sharedBehaviors];
+  [cKUIBehaviorClass_0 stickerScreenScale];
   v15 = v14;
 
   v16 = v7 / v15;
@@ -321,24 +321,24 @@
 
     if (v5)
     {
-      v7 = [(MSSticker *)self->_sticker representations];
+      representations = [(MSSticker *)self->_sticker representations];
 
-      if (v7)
+      if (representations)
       {
         [(MSSticker *)self->_sticker _generateImageData];
       }
 
-      v8 = [(MSSticker *)self->_sticker _imageData];
+      _imageData = [(MSSticker *)self->_sticker _imageData];
       v9 = self->_sticker;
-      if (v8)
+      if (_imageData)
       {
-        v10 = [(MSSticker *)v9 _stickerError];
+        _stickerError = [(MSSticker *)v9 _stickerError];
         v11 = self->_stickerError;
-        self->_stickerError = v10;
+        self->_stickerError = _stickerError;
 
         if (!self->_stickerError)
         {
-          v12 = v8;
+          v12 = _imageData;
 LABEL_22:
           [(MSStickerView *)self setImageData:v12];
           if ([(MSStickerView *)self initialLayoutComplete])
@@ -352,11 +352,11 @@ LABEL_22:
 
       else
       {
-        v13 = [(MSSticker *)v9 imageFileURL];
-        v14 = v13;
-        if (v13)
+        imageFileURL = [(MSSticker *)v9 imageFileURL];
+        v14 = imageFileURL;
+        if (imageFileURL)
         {
-          if ([v13 __ms_conformsToUTI:*MEMORY[0x1E69637F8]])
+          if ([imageFileURL __ms_conformsToUTI:*MEMORY[0x1E69637F8]])
           {
             v37 = 0;
             v38 = &v37;
@@ -392,8 +392,8 @@ LABEL_22:
             }
 
             v25 = [v15 alloc];
-            v26 = [(MSSticker *)self->_sticker imageFileURL];
-            v12 = [v25 initWithURL:v26];
+            imageFileURL2 = [(MSSticker *)self->_sticker imageFileURL];
+            v12 = [v25 initWithURL:imageFileURL2];
 
             if (v12)
             {
@@ -401,9 +401,9 @@ LABEL_22:
               goto LABEL_22;
             }
 
-            v29 = [MEMORY[0x1E696AC08] defaultManager];
-            v30 = [v14 path];
-            if ([v29 fileExistsAtPath:v30])
+            defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+            path = [v14 path];
+            if ([defaultManager fileExistsAtPath:path])
             {
               v31 = 2;
             }
@@ -449,10 +449,10 @@ LABEL_22:
   }
 
 LABEL_25:
-  v27 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v28 = [v27 isStickersAppEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isStickersAppEnabled = [mEMORY[0x1E69A8070] isStickersAppEnabled];
 
-  if (v28)
+  if (isStickersAppEnabled)
   {
     [(MSStickerView *)self _configureEffectView];
   }
@@ -462,8 +462,8 @@ LABEL_33:
 
 - (void)_configureEffectView
 {
-  v3 = [(MSStickerView *)self sticker];
-  [v3 stickerEffectType];
+  sticker = [(MSStickerView *)self sticker];
+  [sticker stickerEffectType];
 
   if (!self->_sticker || (IMStickerEffectTypeShouldAvoidEffectView() & 1) != 0 || [(MSStickerView *)self isAnimated])
   {
@@ -481,10 +481,10 @@ LABEL_33:
 
 - (void)_removeEffectView
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isStickersAppEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isStickersAppEnabled = [mEMORY[0x1E69A8070] isStickersAppEnabled];
 
-  if (v4)
+  if (isStickersAppEnabled)
   {
     if (self->_imageView)
     {
@@ -497,17 +497,17 @@ LABEL_33:
 
 - (void)_buildEffectView
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isStickersAppEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isStickersAppEnabled = [mEMORY[0x1E69A8070] isStickersAppEnabled];
 
-  if (!v4)
+  if (!isStickersAppEnabled)
   {
     return;
   }
 
-  v5 = [(UIImageView *)self->_imageView image];
+  image = [(UIImageView *)self->_imageView image];
 
-  if (!v5)
+  if (!image)
   {
     [(MSStickerView *)self _loadSticker];
   }
@@ -529,31 +529,31 @@ LABEL_33:
   [(UIImageView *)self->_imageView frame];
   [(VKCStickerEffectView *)self->_effectView setFrame:?];
   v9 = MEMORY[0x1E69DFA00];
-  v10 = [(MSStickerView *)self sticker];
-  v11 = [v9 effectWithType:{objc_msgSend(v10, "stickerEffectType")}];
+  sticker = [(MSStickerView *)self sticker];
+  v11 = [v9 effectWithType:{objc_msgSend(sticker, "stickerEffectType")}];
   [(VKCStickerEffectView *)self->_effectView setEffect:v11];
 
   if (![(MSStickerView *)self isAnimated])
   {
     [(VKCStickerEffectView *)self->_effectView setImage:self->_stickerImage];
     v17 = MEMORY[0x1E69DFA00];
-    v21 = [(MSStickerView *)self sticker];
-    v18 = [v17 effectWithType:{objc_msgSend(v21, "stickerEffectType")}];
+    sticker2 = [(MSStickerView *)self sticker];
+    v18 = [v17 effectWithType:{objc_msgSend(sticker2, "stickerEffectType")}];
     [(VKCStickerEffectView *)self->_effectView setEffect:v18];
 
     goto LABEL_12;
   }
 
-  v12 = [(MSStickerView *)self sticker];
-  v13 = [v12 representations];
-  v14 = [v13 firstObject];
-  v15 = [v14 type];
-  v16 = [v15 containsString:@"public.heic"];
+  sticker3 = [(MSStickerView *)self sticker];
+  representations = [sticker3 representations];
+  firstObject = [representations firstObject];
+  type = [firstObject type];
+  v16 = [type containsString:@"public.heic"];
 
   if (v16)
   {
-    v21 = [(IMImageDataProtocol *)self->_imageData data];
-    [(VKCStickerEffectView *)self->_effectView setVideoData:v21];
+    sticker2 = [(IMImageDataProtocol *)self->_imageData data];
+    [(VKCStickerEffectView *)self->_effectView setVideoData:sticker2];
 LABEL_12:
 
     return;
@@ -565,17 +565,17 @@ LABEL_12:
   [(VKCStickerEffectView *)v20 setImage:stickerImage];
 }
 
-- (void)setEffectView:(id)a3
+- (void)setEffectView:(id)view
 {
-  v7 = a3;
-  v5 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v6 = [v5 isStickersAppEnabled];
+  viewCopy = view;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isStickersAppEnabled = [mEMORY[0x1E69A8070] isStickersAppEnabled];
 
-  if (v6)
+  if (isStickersAppEnabled)
   {
     [(VKCStickerEffectView *)self->_effectView setPaused:1];
     [(VKCStickerEffectView *)self->_effectView removeFromSuperview];
-    objc_storeStrong(&self->_effectView, a3);
+    objc_storeStrong(&self->_effectView, view);
     if (!self->_effectView && ([(MSStickerView *)self containsView:self->_imageView]& 1) == 0)
     {
       [(MSStickerView *)self addSubview:self->_imageView];
@@ -585,10 +585,10 @@ LABEL_12:
 
 - (void)_enableEffectView
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isStickersAppEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isStickersAppEnabled = [mEMORY[0x1E69A8070] isStickersAppEnabled];
 
-  if (v4)
+  if (isStickersAppEnabled)
   {
     if (self->_effectView && ([(MSStickerView *)self containsView:?]& 1) == 0)
     {
@@ -606,10 +606,10 @@ LABEL_12:
   }
 }
 
-- (void)_stickerPreviewCachePreviewDidChange:(id)a3
+- (void)_stickerPreviewCachePreviewDidChange:(id)change
 {
-  v4 = [(MSStickerView *)self sticker];
-  v5 = [MSSticker MSStickerPreviewCacheKeyForSticker:v4];
+  sticker = [(MSStickerView *)self sticker];
+  v5 = [MSSticker MSStickerPreviewCacheKeyForSticker:sticker];
 
   CKPreviewDispatchCacheClass = getCKPreviewDispatchCacheClass();
   v7 = IMLogHandleForCategory();
@@ -627,14 +627,14 @@ LABEL_12:
     [MSStickerView _stickerPreviewCachePreviewDidChange:];
   }
 
-  v9 = [(objc_class *)CKPreviewDispatchCacheClass stickerPreviewCache];
-  v10 = [v9 cachedPreviewForKey:v5];
+  stickerPreviewCache = [(objc_class *)CKPreviewDispatchCacheClass stickerPreviewCache];
+  v10 = [stickerPreviewCache cachedPreviewForKey:v5];
 
   if (v10 && v10 != self->_image)
   {
     [(MSStickerView *)self setImage:v10];
-    v11 = [(IMAnimatedImageProtocol *)v10 frames];
-    [(MSStickerView *)self setFrames:v11];
+    frames = [(IMAnimatedImageProtocol *)v10 frames];
+    [(MSStickerView *)self setFrames:frames];
 
     [(MSStickerView *)self _updateStickerView];
     [(MSStickerView *)self setNeedsLayout];
@@ -642,22 +642,22 @@ LABEL_12:
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_image != v5)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    objc_storeStrong(&self->_image, a3);
+    objc_storeStrong(&self->_image, image);
     self->_animationDuration = 0.0;
-    v6 = [(MSStickerView *)self image];
-    v7 = [v6 durations];
+    image = [(MSStickerView *)self image];
+    durations = [image durations];
 
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = v7;
+    v8 = durations;
     v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
     {
@@ -846,26 +846,26 @@ uint64_t __48__MSStickerView__loadAnimatedStickerIfNecessary__block_invoke_5(uin
 
 - (void)_updateStickerView
 {
-  v3 = [(MSStickerView *)self frames];
-  v4 = [v3 firstObject];
+  frames = [(MSStickerView *)self frames];
+  firstObject = [frames firstObject];
   stickerImage = self->_stickerImage;
-  self->_stickerImage = v4;
+  self->_stickerImage = firstObject;
 
   [(MSStickerView *)self _setImage:self->_stickerImage];
 
   [(MSStickerView *)self updateAnimationTimerObserving];
 }
 
-- (void)_setImage:(id)a3
+- (void)_setImage:(id)image
 {
-  v6 = a3;
+  imageCopy = image;
   v4 = self->_imageView;
-  v5 = [(UIImageView *)v4 image];
+  image = [(UIImageView *)v4 image];
 
-  if (v5 != v6)
+  if (image != imageCopy)
   {
-    [(MSStickerView *)self setStickerImage:v6];
-    [(UIImageView *)v4 setImage:v6];
+    [(MSStickerView *)self setStickerImage:imageCopy];
+    [(UIImageView *)v4 setImage:imageCopy];
   }
 }
 
@@ -879,15 +879,15 @@ uint64_t __48__MSStickerView__loadAnimatedStickerIfNecessary__block_invoke_5(uin
 
 - (void)_resetPeel
 {
-  v3 = [(MSStickerView *)self outlineImageView];
-  [v3 setHidden:1];
+  outlineImageView = [(MSStickerView *)self outlineImageView];
+  [outlineImageView setHidden:1];
 
-  v4 = [(MSStickerView *)self imageView];
-  [(MSStickerView *)self addSubview:v4];
+  imageView = [(MSStickerView *)self imageView];
+  [(MSStickerView *)self addSubview:imageView];
 
-  v5 = [(MSStickerView *)self stickerImage];
-  v6 = [(MSStickerView *)self imageView];
-  [v6 setImage:v5];
+  stickerImage = [(MSStickerView *)self stickerImage];
+  imageView2 = [(MSStickerView *)self imageView];
+  [imageView2 setImage:stickerImage];
 
   [(MSStickerView *)self setIsPeeled:0];
   [(MSStickerView *)self setAnimating:1];
@@ -895,14 +895,14 @@ uint64_t __48__MSStickerView__loadAnimatedStickerIfNecessary__block_invoke_5(uin
   [(MSStickerView *)self _configureEffectView];
 }
 
-- (void)setAnimating:(BOOL)a3
+- (void)setAnimating:(BOOL)animating
 {
-  v3 = a3;
-  if ([(MSStickerView *)self isAnimated]&& ![(MSStickerView *)self isPeeled]&& self->_animating != v3)
+  animatingCopy = animating;
+  if ([(MSStickerView *)self isAnimated]&& ![(MSStickerView *)self isPeeled]&& self->_animating != animatingCopy)
   {
-    self->_animating = v3;
-    v5 = [(MSStickerView *)self stickerImage];
-    [(MSStickerView *)self _setImage:v5];
+    self->_animating = animatingCopy;
+    stickerImage = [(MSStickerView *)self stickerImage];
+    [(MSStickerView *)self _setImage:stickerImage];
 
     [(MSStickerView *)self updateAnimationTimerObserving];
   }
@@ -910,8 +910,8 @@ uint64_t __48__MSStickerView__loadAnimatedStickerIfNecessary__block_invoke_5(uin
 
 - (BOOL)isAnimated
 {
-  v2 = [(MSStickerView *)self imageData];
-  v3 = [v2 count] > 1;
+  imageData = [(MSStickerView *)self imageData];
+  v3 = [imageData count] > 1;
 
   return v3;
 }
@@ -929,9 +929,9 @@ uint64_t __48__MSStickerView__loadAnimatedStickerIfNecessary__block_invoke_5(uin
   if ([(MSStickerView *)self isAnimated])
   {
     [(MSStickerView *)self setAnimating:0];
-    v4 = [(MSStickerView *)self frames];
-    v3 = [v4 firstObject];
-    [(MSStickerView *)self _setImage:v3];
+    frames = [(MSStickerView *)self frames];
+    firstObject = [frames firstObject];
+    [(MSStickerView *)self _setImage:firstObject];
   }
 }
 
@@ -943,18 +943,18 @@ uint64_t __48__MSStickerView__loadAnimatedStickerIfNecessary__block_invoke_5(uin
   [(MSStickerView *)self updateAnimationTimerObserving];
 }
 
-- (void)pauseVisionKitEffect:(BOOL)a3
+- (void)pauseVisionKitEffect:(BOOL)effect
 {
-  v3 = a3;
-  v4 = [(MSStickerView *)self effectView];
-  [v4 setPaused:v3];
+  effectCopy = effect;
+  effectView = [(MSStickerView *)self effectView];
+  [effectView setPaused:effectCopy];
 }
 
 - (void)_sendStickerUsageAnalyticsForDragAndDrop
 {
   v3 = [MSStickerUsageEvent alloc];
-  v4 = [(MSStickerView *)self sticker];
-  v5 = [(MSStickerUsageEvent *)v3 initWithSticker:v4];
+  sticker = [(MSStickerView *)self sticker];
+  v5 = [(MSStickerUsageEvent *)v3 initWithSticker:sticker];
 
   [(MSStickerUsageEvent *)v5 setUsageType:1];
   [(MSStickerUsageEvent *)v5 send];
@@ -967,22 +967,22 @@ uint64_t __48__MSStickerView__loadAnimatedStickerIfNecessary__block_invoke_5(uin
     getSTKStickerUsageManagerClass();
     if (objc_opt_respondsToSelector())
     {
-      v7 = [getSTKStickerUsageManagerClass() sharedManager];
-      v3 = [(MSSticker *)self->_sticker stickerIdentifier];
-      v4 = [v3 UUIDString];
+      sharedManager = [getSTKStickerUsageManagerClass() sharedManager];
+      stickerIdentifier = [(MSSticker *)self->_sticker stickerIdentifier];
+      uUIDString = [stickerIdentifier UUIDString];
       v5 = +[_MSStickerSendManager sharedInstance];
-      v6 = [v5 hostBundleID];
-      [v7 logStickerWithStickerIdentifier:v4 bundleIdentifier:v6];
+      hostBundleID = [v5 hostBundleID];
+      [sharedManager logStickerWithStickerIdentifier:uUIDString bundleIdentifier:hostBundleID];
     }
   }
 }
 
 - (void)_configureDragAndDrop
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isClingEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isClingEnabled = [mEMORY[0x1E69A8070] isClingEnabled];
 
-  if (v4 && ![(MSStickerView *)self _isInsideMessagesCamera])
+  if (isClingEnabled && ![(MSStickerView *)self _isInsideMessagesCamera])
   {
     v8 = [objc_alloc(MEMORY[0x1E69DC988]) initWithDelegate:self];
     dragInteraction = self->_dragInteraction;
@@ -1018,8 +1018,8 @@ uint64_t __48__MSStickerView__loadAnimatedStickerIfNecessary__block_invoke_5(uin
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v3 = [v2 inputItems];
-    v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    inputItems = [v2 inputItems];
+    v4 = [inputItems countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v4)
     {
       v5 = v4;
@@ -1030,11 +1030,11 @@ uint64_t __48__MSStickerView__loadAnimatedStickerIfNecessary__block_invoke_5(uin
         {
           if (*v14 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(inputItems);
           }
 
-          v8 = [*(*(&v13 + 1) + 8 * i) userInfo];
-          v9 = [v8 objectForKeyedSubscript:@"context-is-messages-camera"];
+          userInfo = [*(*(&v13 + 1) + 8 * i) userInfo];
+          v9 = [userInfo objectForKeyedSubscript:@"context-is-messages-camera"];
           v10 = [v9 isEqual:&unk_1F4AC7090];
 
           if (v10)
@@ -1044,7 +1044,7 @@ uint64_t __48__MSStickerView__loadAnimatedStickerIfNecessary__block_invoke_5(uin
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v5 = [inputItems countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v5)
         {
           continue;
@@ -1066,53 +1066,53 @@ LABEL_13:
   return v11;
 }
 
-- (void)animationTimerFired:(double)a3
+- (void)animationTimerFired:(double)fired
 {
-  v8 = [(MSStickerView *)self frames];
-  if ([v8 count] >= 2)
+  frames = [(MSStickerView *)self frames];
+  if ([frames count] >= 2)
   {
-    v5 = [(MSStickerView *)self image];
+    image = [(MSStickerView *)self image];
     [(MSStickerView *)self animationOffset];
-    v7 = [v5 frameForAnimationTime:v6 + a3];
+    fired = [image frameForAnimationTime:v6 + fired];
 
-    [(MSStickerView *)self _setImage:v7];
+    [(MSStickerView *)self _setImage:fired];
   }
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  if ([a3 state] == 3)
+  if ([tap state] == 3)
   {
 
     [(MSStickerView *)self stageStickerForce:0];
   }
 }
 
-- (void)stageStickerForce:(BOOL)a3
+- (void)stageStickerForce:(BOOL)force
 {
-  v3 = a3;
+  forceCopy = force;
   [(MSStickerView *)self frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(MSStickerView *)self window];
-  v14 = [v13 coordinateSpace];
-  [(MSStickerView *)self convertRect:v14 toCoordinateSpace:v6, v8, v10, v12];
+  window = [(MSStickerView *)self window];
+  coordinateSpace = [window coordinateSpace];
+  [(MSStickerView *)self convertRect:coordinateSpace toCoordinateSpace:v6, v8, v10, v12];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
-  v23 = [(MSSticker *)self->_sticker imageFileURL];
+  imageFileURL = [(MSSticker *)self->_sticker imageFileURL];
 
-  if (v23)
+  if (imageFileURL)
   {
     [(MSSticker *)self->_sticker _convertImageFileURLIfNeeded];
   }
 
-  v24 = [(MSStickerView *)self _stickerSendManager];
-  [v24 insertSticker:self->_sticker forceStage:v3 frameInRemoteView:&__block_literal_global_7 completionHandler:{v16, v18, v20, v22}];
+  _stickerSendManager = [(MSStickerView *)self _stickerSendManager];
+  [_stickerSendManager insertSticker:self->_sticker forceStage:forceCopy frameInRemoteView:&__block_literal_global_7 completionHandler:{v16, v18, v20, v22}];
 
   [(MSStickerView *)self _logStickerUsage];
 }
@@ -1125,37 +1125,37 @@ void __35__MSStickerView_stageStickerForce___block_invoke(uint64_t a1, uint64_t 
   }
 }
 
-- (void)handleLongPress:(id)a3
+- (void)handleLongPress:(id)press
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  pressCopy = press;
+  if ([pressCopy state] == 1)
   {
     [(MSStickerView *)self _swapWithOutlineImage];
     [(MSStickerView *)self setIsPeeled:1];
-    v5 = [(MSStickerView *)self imageView];
-    [v5 frame];
+    imageView = [(MSStickerView *)self imageView];
+    [imageView frame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
 
-    v14 = [(MSStickerView *)self window];
-    [(MSStickerView *)self convertRect:v14 toView:v7, v9, v11, v13];
+    window = [(MSStickerView *)self window];
+    [(MSStickerView *)self convertRect:window toView:v7, v9, v11, v13];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
 
     v23 = objc_autoreleasePoolPush();
-    v24 = [(MSStickerView *)self _stickerSendManager];
+    _stickerSendManager = [(MSStickerView *)self _stickerSendManager];
     sticker = self->_sticker;
-    v26 = [MEMORY[0x1E69DD2E8] _synchronizedDrawingFence];
+    _synchronizedDrawingFence = [MEMORY[0x1E69DD2E8] _synchronizedDrawingFence];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __33__MSStickerView_handleLongPress___block_invoke;
     v27[3] = &unk_1E83A2FB8;
     v27[4] = self;
-    [v24 startDragSticker:sticker frameInRemoteView:v26 fence:v27 completionHandler:{v16, v18, v20, v22}];
+    [_stickerSendManager startDragSticker:sticker frameInRemoteView:_synchronizedDrawingFence fence:v27 completionHandler:{v16, v18, v20, v22}];
 
     objc_autoreleasePoolPop(v23);
   }
@@ -1183,14 +1183,14 @@ void __33__MSStickerView_handleLongPress___block_invoke_2(uint64_t a1)
   }
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
   v6 = objc_alloc_init(MEMORY[0x1E69DC9A0]);
   v7 = objc_alloc_init(MEMORY[0x1E69DC728]);
   [v6 setShadowPath:v7];
 
-  v8 = [MEMORY[0x1E69DC888] clearColor];
-  [v6 setBackgroundColor:v8];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v6 setBackgroundColor:clearColor];
 
   v9 = +[_MSStickerDragPreviewContainerView shadowPropertiesForDrag];
   if (v9 && (objc_opt_respondsToSelector() & 1) != 0)
@@ -1198,51 +1198,51 @@ void __33__MSStickerView_handleLongPress___block_invoke_2(uint64_t a1)
     [v6 _setShadowProperties:v9];
   }
 
-  v10 = [(MSStickerView *)self superview];
+  superview = [(MSStickerView *)self superview];
   v11 = self->_effectView;
-  v12 = [(VKCStickerEffectView *)v11 superview];
+  superview2 = [(VKCStickerEffectView *)v11 superview];
   imageView = v11;
-  if (!v12)
+  if (!superview2)
   {
     imageView = self->_imageView;
   }
 
   v14 = imageView;
 
-  v15 = [(MSStickerView *)self dragPreviewLiftContainerProvider];
+  dragPreviewLiftContainerProvider = [(MSStickerView *)self dragPreviewLiftContainerProvider];
 
-  if (v15)
+  if (dragPreviewLiftContainerProvider)
   {
-    v16 = [(MSStickerView *)self dragPreviewLiftContainerProvider];
-    v17 = v16[2]();
+    dragPreviewLiftContainerProvider2 = [(MSStickerView *)self dragPreviewLiftContainerProvider];
+    v17 = dragPreviewLiftContainerProvider2[2]();
 
     if (v17)
     {
       v18 = v17;
 
-      v10 = v18;
+      superview = v18;
     }
   }
 
-  v19 = [(MSStickerView *)self superview];
+  superview3 = [(MSStickerView *)self superview];
   [(MSStickerView *)self center];
-  [v19 convertPoint:v10 toView:?];
+  [superview3 convertPoint:superview toView:?];
   v21 = v20;
   v23 = v22;
 
   v24 = objc_alloc(MEMORY[0x1E69DC9A8]);
   +[_MSStickerDragPreviewContainerView targetPreviewTransform];
-  v25 = [v24 initWithContainer:v10 center:v41 transform:{v21, v23}];
+  v25 = [v24 initWithContainer:superview center:v41 transform:{v21, v23}];
   v26 = [objc_alloc(MEMORY[0x1E69DD068]) initWithView:v14 parameters:v6 target:v25];
 
   v27 = [[_MSStickerDragPreviewContainerView alloc] initWithIsDropAnimation:0];
   [(MSStickerView *)self setContainer:v27];
-  v28 = [(MSStickerView *)self stickerImage];
-  [(_MSStickerDragPreviewContainerView *)v27 setImage:v28];
+  stickerImage = [(MSStickerView *)self stickerImage];
+  [(_MSStickerDragPreviewContainerView *)v27 setImage:stickerImage];
 
   [v26 _setPreviewContainer:v27];
-  v29 = [(MSStickerView *)self frames];
-  if ([v29 count] <= 1)
+  frames = [(MSStickerView *)self frames];
+  if ([frames count] <= 1)
   {
 
     v37 = 0;
@@ -1251,17 +1251,17 @@ void __33__MSStickerView_handleLongPress___block_invoke_2(uint64_t a1)
   else
   {
     v40 = v11;
-    v30 = [(MSStickerView *)self imageView];
-    v31 = [v30 image];
+    imageView = [(MSStickerView *)self imageView];
+    image = [imageView image];
 
-    if (v31)
+    if (image)
     {
-      v32 = [(MSStickerView *)self frames];
-      v33 = [(MSStickerView *)self imageView];
-      v34 = [v33 image];
-      v39 = v10;
+      frames2 = [(MSStickerView *)self frames];
+      imageView2 = [(MSStickerView *)self imageView];
+      image2 = [imageView2 image];
+      v39 = superview;
       v35 = v9;
-      v36 = [v32 indexOfObject:v34];
+      v36 = [frames2 indexOfObject:image2];
 
       if (v36 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -1274,7 +1274,7 @@ void __33__MSStickerView_handleLongPress___block_invoke_2(uint64_t a1)
       }
 
       v9 = v35;
-      v10 = v39;
+      superview = v39;
     }
 
     else
@@ -1290,53 +1290,53 @@ void __33__MSStickerView_handleLongPress___block_invoke_2(uint64_t a1)
   return v26;
 }
 
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default
 {
-  v6 = a5;
-  v7 = [(MSStickerView *)self superview];
-  v8 = [(MSStickerView *)self superview];
+  defaultCopy = default;
+  superview = [(MSStickerView *)self superview];
+  superview2 = [(MSStickerView *)self superview];
   [(MSStickerView *)self center];
-  [v8 convertPoint:v7 toView:?];
+  [superview2 convertPoint:superview toView:?];
   v10 = v9;
   v12 = v11;
 
-  v13 = [objc_alloc(MEMORY[0x1E69DC9A8]) initWithContainer:v7 center:{v10, v12}];
-  v14 = [v6 retargetedPreviewWithTarget:v13];
+  v13 = [objc_alloc(MEMORY[0x1E69DC9A8]) initWithContainer:superview center:{v10, v12}];
+  v14 = [defaultCopy retargetedPreviewWithTarget:v13];
 
   return v14;
 }
 
-- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)a3
+- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)dragging
 {
-  v4 = [(MSStickerView *)self container];
+  container = [(MSStickerView *)self container];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __62__MSStickerView__dragInteractionDidCancelLiftWithoutDragging___block_invoke;
   v5[3] = &unk_1E83A2C20;
   v5[4] = self;
-  [v4 _animateLiftCancellationAlongsideAnimator:0 completion:v5];
+  [container _animateLiftCancellationAlongsideAnimator:0 completion:v5];
 }
 
-- (void)dragInteraction:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5
+- (void)dragInteraction:(id)interaction item:(id)item willAnimateCancelWithAnimator:(id)animator
 {
-  v6 = a5;
-  v7 = [(MSStickerView *)self container];
+  animatorCopy = animator;
+  container = [(MSStickerView *)self container];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __68__MSStickerView_dragInteraction_item_willAnimateCancelWithAnimator___block_invoke;
   v8[3] = &unk_1E83A2C20;
   v8[4] = self;
-  [v7 _animateLiftCancellationAlongsideAnimator:v6 completion:v8];
+  [container _animateLiftCancellationAlongsideAnimator:animatorCopy completion:v8];
 }
 
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __69__MSStickerView_dragInteraction_willAnimateLiftWithAnimator_session___block_invoke;
   v5[3] = &unk_1E83A2FE0;
   v5[4] = self;
-  [a4 addCompletion:v5];
+  [animator addCompletion:v5];
 }
 
 uint64_t __69__MSStickerView_dragInteraction_willAnimateLiftWithAnimator_session___block_invoke(uint64_t result, uint64_t a2)
@@ -1353,20 +1353,20 @@ uint64_t __69__MSStickerView_dragInteraction_willAnimateLiftWithAnimator_session
   return result;
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
   v59 = *MEMORY[0x1E69E9840];
   v5 = ms_defaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v58 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CADE6000, v5, OS_LOG_TYPE_DEFAULT, "<MSStickerView: %p> dragInteraction:itemsForBeginningSession:", buf, 0xCu);
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E696ACA0]);
-  v7 = [(MSStickerView *)self effectView];
-  [v7 bounds];
+  effectView = [(MSStickerView *)self effectView];
+  [effectView bounds];
   v9 = v8;
   v11 = v10;
   v12 = *MEMORY[0x1E695F060];
@@ -1374,17 +1374,17 @@ uint64_t __69__MSStickerView_dragInteraction_willAnimateLiftWithAnimator_session
 
   if (v9 != v12 || v11 != v13)
   {
-    v15 = [(MSStickerView *)self effectView];
-    v16 = [(MSStickerView *)self effectView];
-    [v16 center];
-    [v15 convertPoint:0 toView:?];
+    effectView2 = [(MSStickerView *)self effectView];
+    effectView3 = [(MSStickerView *)self effectView];
+    [effectView3 center];
+    [effectView2 convertPoint:0 toView:?];
     v18 = v17;
     v20 = v19;
 
-    v21 = [(MSStickerView *)self effectView];
+    effectView4 = [(MSStickerView *)self effectView];
 LABEL_13:
-    v32 = v21;
-    [v21 bounds];
+    v32 = effectView4;
+    [effectView4 bounds];
     v34 = v33;
     v36 = v35;
     v37 = v18 - v33 * 0.5;
@@ -1393,21 +1393,21 @@ LABEL_13:
     goto LABEL_15;
   }
 
-  v22 = [(MSStickerView *)self imageView];
-  [v22 bounds];
+  imageView = [(MSStickerView *)self imageView];
+  [imageView bounds];
   v24 = v23;
   v26 = v25;
 
   if (v24 != v12 || v26 != v13)
   {
-    v28 = [(MSStickerView *)self effectView];
-    v29 = [(MSStickerView *)self effectView];
-    [v29 center];
-    [v28 convertPoint:0 toView:?];
+    effectView5 = [(MSStickerView *)self effectView];
+    effectView6 = [(MSStickerView *)self effectView];
+    [effectView6 center];
+    [effectView5 convertPoint:0 toView:?];
     v18 = v30;
     v20 = v31;
 
-    v21 = [(MSStickerView *)self imageView];
+    effectView4 = [(MSStickerView *)self imageView];
     goto LABEL_13;
   }
 
@@ -1417,19 +1417,19 @@ LABEL_13:
   v34 = v41;
   v36 = v42;
 LABEL_15:
-  v43 = [(MSStickerView *)self sticker];
+  sticker = [(MSStickerView *)self sticker];
   v44 = objc_opt_class();
   v50[0] = MEMORY[0x1E69E9820];
   v50[1] = 3221225472;
   v50[2] = __58__MSStickerView_dragInteraction_itemsForBeginningSession___block_invoke;
   v50[3] = &unk_1E83A3008;
   v50[4] = self;
-  v51 = v43;
+  v51 = sticker;
   v52 = v37;
   v53 = v38;
   v54 = v34;
   v55 = v36;
-  v45 = v43;
+  v45 = sticker;
   [v6 registerObjectOfClass:v44 visibility:0 loadHandler:v50];
   [(MSStickerView *)self _registerStandardRepresentationsInItemProvider:v6];
   [(MSStickerView *)self _registerRepresentationsInItemProvider:v6];
@@ -1484,18 +1484,18 @@ void __58__MSStickerView_dragInteraction_itemsForBeginningSession___block_invoke
   v3[2](v3, v6, 0);
 }
 
-- (void)_registerRepresentationsInItemProvider:(id)a3
+- (void)_registerRepresentationsInItemProvider:(id)provider
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  providerCopy = provider;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(MSStickerView *)self sticker];
-  v6 = [v5 representations];
+  sticker = [(MSStickerView *)self sticker];
+  representations = [sticker representations];
 
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v7 = [representations countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1506,26 +1506,26 @@ void __58__MSStickerView_dragInteraction_itemsForBeginningSession___block_invoke
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(representations);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 type];
-        v13 = [v4 hasItemConformingToTypeIdentifier:v12];
+        type = [v11 type];
+        v13 = [providerCopy hasItemConformingToTypeIdentifier:type];
 
         if ((v13 & 1) == 0)
         {
-          v14 = [v11 type];
+          type2 = [v11 type];
           v15[0] = MEMORY[0x1E69E9820];
           v15[1] = 3221225472;
           v15[2] = __56__MSStickerView__registerRepresentationsInItemProvider___block_invoke;
           v15[3] = &unk_1E83A3030;
           v15[4] = v11;
-          [v4 registerItemForTypeIdentifier:v14 loadHandler:v15];
+          [providerCopy registerItemForTypeIdentifier:type2 loadHandler:v15];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [representations countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -1540,88 +1540,88 @@ void __56__MSStickerView__registerRepresentationsInItemProvider___block_invoke(u
   (a2)[2](v4, v5, 0);
 }
 
-- (void)_registerStandardRepresentationsInItemProvider:(id)a3
+- (void)_registerStandardRepresentationsInItemProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(MSStickerView *)self sticker];
-  v6 = [v5 imageFileURL];
+  providerCopy = provider;
+  sticker = [(MSStickerView *)self sticker];
+  imageFileURL = [sticker imageFileURL];
 
-  v7 = [(MSStickerView *)self sticker];
-  v8 = v7;
-  if (v6)
+  sticker2 = [(MSStickerView *)self sticker];
+  v8 = sticker2;
+  if (imageFileURL)
   {
-    v9 = [*MEMORY[0x1E6982F28] identifier];
+    identifier = [*MEMORY[0x1E6982F28] identifier];
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
     v39[2] = __64__MSStickerView__registerStandardRepresentationsInItemProvider___block_invoke;
     v39[3] = &unk_1E83A3058;
     v40 = v8;
-    v41 = self;
-    v10 = v8;
-    [v4 registerItemForTypeIdentifier:v9 loadHandler:v39];
+    selfCopy = self;
+    firstObject = v8;
+    [providerCopy registerItemForTypeIdentifier:identifier loadHandler:v39];
 
     v11 = v40;
   }
 
   else
   {
-    v12 = [v7 representations];
-    v10 = [v12 firstObject];
+    representations = [sticker2 representations];
+    firstObject = [representations firstObject];
 
     v11 = [(MSStickerView *)self representationForRole:@"com.apple.stickers.role.animated"];
     v13 = [(MSStickerView *)self representationForRole:@"com.apple.stickers.role.still"];
-    if (v10 && v10 == v11)
+    if (firstObject && firstObject == v11)
     {
-      v14 = [v10 type];
+      type = [firstObject type];
       v37[0] = MEMORY[0x1E69E9820];
       v37[1] = 3221225472;
       v37[2] = __64__MSStickerView__registerStandardRepresentationsInItemProvider___block_invoke_2;
       v37[3] = &unk_1E83A3030;
-      v38 = v10;
-      [v4 registerItemForTypeIdentifier:v14 loadHandler:v37];
+      v38 = firstObject;
+      [providerCopy registerItemForTypeIdentifier:type loadHandler:v37];
     }
 
     if (v13)
     {
-      v15 = [(MSStickerView *)self effectView];
-      v16 = [v15 effect];
+      effectView = [(MSStickerView *)self effectView];
+      effect = [effectView effect];
 
       v17 = MEMORY[0x1E69DCAB8];
-      v18 = [v13 data];
-      v19 = [(MSStickerView *)self window];
-      v20 = [v19 screen];
-      [v20 scale];
-      v21 = [v17 imageWithData:v18 scale:?];
+      data = [v13 data];
+      window = [(MSStickerView *)self window];
+      screen = [window screen];
+      [screen scale];
+      v21 = [v17 imageWithData:data scale:?];
 
-      v22 = [v13 type];
-      v23 = [*MEMORY[0x1E6982E00] identifier];
-      LODWORD(v20) = [v22 isEqualToString:v23];
+      type2 = [v13 type];
+      identifier2 = [*MEMORY[0x1E6982E00] identifier];
+      LODWORD(screen) = [type2 isEqualToString:identifier2];
 
-      if (v20)
+      if (screen)
       {
-        v24 = [v13 type];
+        type3 = [v13 type];
         v32[0] = MEMORY[0x1E69E9820];
         v32[1] = 3221225472;
         v32[2] = __64__MSStickerView__registerStandardRepresentationsInItemProvider___block_invoke_3;
         v32[3] = &unk_1E83A30A8;
-        v33 = v16;
+        v33 = effect;
         v34 = v21;
-        v35 = self;
+        selfCopy2 = self;
         v36 = v13;
-        [v4 registerItemForTypeIdentifier:v24 loadHandler:v32];
+        [providerCopy registerItemForTypeIdentifier:type3 loadHandler:v32];
       }
 
-      v25 = [*MEMORY[0x1E6982F28] identifier];
+      identifier3 = [*MEMORY[0x1E6982F28] identifier];
       v28[0] = MEMORY[0x1E69E9820];
       v28[1] = 3221225472;
       v28[2] = __64__MSStickerView__registerStandardRepresentationsInItemProvider___block_invoke_5;
       v28[3] = &unk_1E83A30D0;
-      v29 = v16;
+      v29 = effect;
       v30 = v21;
-      v31 = self;
+      selfCopy3 = self;
       v26 = v21;
-      v27 = v16;
-      [v4 registerItemForTypeIdentifier:v25 loadHandler:v28];
+      v27 = effect;
+      [providerCopy registerItemForTypeIdentifier:identifier3 loadHandler:v28];
     }
   }
 }
@@ -1705,18 +1705,18 @@ void __64__MSStickerView__registerStandardRepresentationsInItemProvider___block_
   }
 }
 
-- (id)representationForRole:(id)a3
+- (id)representationForRole:(id)role
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  roleCopy = role;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(MSStickerView *)self sticker];
-  v6 = [v5 representations];
+  sticker = [(MSStickerView *)self sticker];
+  representations = [sticker representations];
 
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [representations countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -1726,12 +1726,12 @@ void __64__MSStickerView__registerStandardRepresentationsInItemProvider___block_
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(representations);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 role];
-        v12 = [v11 isEqualToString:v4];
+        role = [v10 role];
+        v12 = [role isEqualToString:roleCopy];
 
         if (v12)
         {
@@ -1740,7 +1740,7 @@ void __64__MSStickerView__registerStandardRepresentationsInItemProvider___block_
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [representations countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -1755,43 +1755,43 @@ LABEL_11:
   return v7;
 }
 
-- (void)addHEICImage:(id)a3 completion:(id)a4
+- (void)addHEICImage:(id)image completion:(id)completion
 {
-  v7 = a4;
-  v5 = [a3 __ms_HEICData];
-  if (v5)
+  completionCopy = completion;
+  __ms_HEICData = [image __ms_HEICData];
+  if (__ms_HEICData)
   {
-    v7[2](v7, v5, 0);
+    completionCopy[2](completionCopy, __ms_HEICData, 0);
   }
 
   else
   {
     v6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.messages.stickers-error" code:-1 userInfo:0];
-    (v7)[2](v7, 0, v6);
+    (completionCopy)[2](completionCopy, 0, v6);
   }
 }
 
-- (void)addPNGImage:(id)a3 completion:(id)a4
+- (void)addPNGImage:(id)image completion:(id)completion
 {
-  v5 = a4;
-  v6 = [a3 __ms_PNGData];
-  v5[2](v5, v6, 0);
+  completionCopy = completion;
+  __ms_PNGData = [image __ms_PNGData];
+  completionCopy[2](completionCopy, __ms_PNGData, 0);
 }
 
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin
 {
-  v4 = [(MSStickerView *)self _stickerSendManager:a3];
+  v4 = [(MSStickerView *)self _stickerSendManager:interaction];
   [v4 stickerDruidDragStarted];
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation
 {
-  v7 = [(MSStickerView *)self _stickerSendManager:a3];
-  v8 = [(MSStickerView *)self sticker];
-  [v7 stickerDruidDragEndedWithMSSticker:v8];
+  v7 = [(MSStickerView *)self _stickerSendManager:interaction];
+  sticker = [(MSStickerView *)self sticker];
+  [v7 stickerDruidDragEndedWithMSSticker:sticker];
 
   [(MSStickerView *)self _resetPeel];
-  if ((a5 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((operation & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     [(MSStickerView *)self _logStickerUsage];
 
@@ -1799,7 +1799,7 @@ LABEL_11:
   }
 }
 
-- (id)_dragInteraction:(id)a3 sessionPropertiesForSession:(id)a4
+- (id)_dragInteraction:(id)interaction sessionPropertiesForSession:(id)session
 {
   v5 = objc_alloc_init(MEMORY[0x1E69DD480]);
   [v5 set_wantsElasticEffects:1];
@@ -1814,27 +1814,27 @@ LABEL_11:
   return v5;
 }
 
-- (void)animatedStickerCreationProgressChanged:(id)a3 progress:(double)a4
+- (void)animatedStickerCreationProgressChanged:(id)changed progress:(double)progress
 {
-  v6 = a3;
-  v7 = [(MSStickerView *)self sticker];
-  v8 = [v7 stickerIdentifier];
-  v9 = [v6 valueForKey:@"stickerIDs"];
+  changedCopy = changed;
+  sticker = [(MSStickerView *)self sticker];
+  stickerIdentifier = [sticker stickerIdentifier];
+  v9 = [changedCopy valueForKey:@"stickerIDs"];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__MSStickerView_animatedStickerCreationProgressChanged_progress___block_invoke;
   block[3] = &unk_1E83A30F8;
   block[4] = self;
-  v15 = v7;
-  v16 = v8;
+  v15 = sticker;
+  v16 = stickerIdentifier;
   v17 = v9;
-  v18 = v6;
-  v19 = a4;
+  v18 = changedCopy;
+  progressCopy = progress;
   v20 = 1119092736;
-  v10 = v6;
+  v10 = changedCopy;
   v11 = v9;
-  v12 = v8;
-  v13 = v7;
+  v12 = stickerIdentifier;
+  v13 = sticker;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 

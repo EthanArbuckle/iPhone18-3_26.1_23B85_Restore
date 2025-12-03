@@ -1,33 +1,33 @@
 @interface UIInputSwitcherTableView
-- (void)deselectRowAtIndexPath:(id)a3 animated:(BOOL)a4;
-- (void)selectRowAtIndexPath:(id)a3 animated:(BOOL)a4 scrollPosition:(int64_t)a5;
+- (void)deselectRowAtIndexPath:(id)path animated:(BOOL)animated;
+- (void)selectRowAtIndexPath:(id)path animated:(BOOL)animated scrollPosition:(int64_t)position;
 @end
 
 @implementation UIInputSwitcherTableView
 
-- (void)deselectRowAtIndexPath:(id)a3 animated:(BOOL)a4
+- (void)deselectRowAtIndexPath:(id)path animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(UITableView *)self cellForRowAtIndexPath:v6];
-  v8 = [(UIView *)self _inheritedRenderConfig];
-  v9 = [v8 colorAdaptiveBackground];
+  animatedCopy = animated;
+  pathCopy = path;
+  v7 = [(UITableView *)self cellForRowAtIndexPath:pathCopy];
+  _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+  colorAdaptiveBackground = [_inheritedRenderConfig colorAdaptiveBackground];
 
-  if (v9)
+  if (colorAdaptiveBackground)
   {
     v10 = +[UIColor labelColor];
-    v11 = [v7 textLabel];
-    [v11 setTextColor:v10];
+    textLabel = [v7 textLabel];
+    [textLabel setTextColor:v10];
 
-    v12 = +[UIColor secondaryLabelColor];
-    v13 = [v7 detailTextLabel];
-    [v13 setTextColor:v12];
+    menu2 = +[UIColor secondaryLabelColor];
+    detailTextLabel = [v7 detailTextLabel];
+    [detailTextLabel setTextColor:menu2];
   }
 
   else
   {
-    v14 = [(UIInputSwitcherTableView *)self menu];
-    if ([v14 usesDarkTheme])
+    menu = [(UIInputSwitcherTableView *)self menu];
+    if ([menu usesDarkTheme])
     {
       +[UIColor whiteColor];
     }
@@ -37,11 +37,11 @@
       +[UIColor blackColor];
     }
     v15 = ;
-    v16 = [v7 textLabel];
-    [v16 setTextColor:v15];
+    textLabel2 = [v7 textLabel];
+    [textLabel2 setTextColor:v15];
 
-    v12 = [(UIInputSwitcherTableView *)self menu];
-    if ([v12 usesDarkTheme])
+    menu2 = [(UIInputSwitcherTableView *)self menu];
+    if ([menu2 usesDarkTheme])
     {
       +[UIColor whiteColor];
     }
@@ -50,26 +50,26 @@
     {
       +[UIColor blackColor];
     }
-    v13 = ;
-    v17 = [v7 detailTextLabel];
-    [v17 setTextColor:v13];
+    detailTextLabel = ;
+    detailTextLabel2 = [v7 detailTextLabel];
+    [detailTextLabel2 setTextColor:detailTextLabel];
   }
 
-  v18 = [v7 backgroundView];
-  [v18 setNeedsDisplay];
+  backgroundView = [v7 backgroundView];
+  [backgroundView setNeedsDisplay];
 
   v19.receiver = self;
   v19.super_class = UIInputSwitcherTableView;
-  [(UITableView *)&v19 deselectRowAtIndexPath:v6 animated:v4];
+  [(UITableView *)&v19 deselectRowAtIndexPath:pathCopy animated:animatedCopy];
 }
 
-- (void)selectRowAtIndexPath:(id)a3 animated:(BOOL)a4 scrollPosition:(int64_t)a5
+- (void)selectRowAtIndexPath:(id)path animated:(BOOL)animated scrollPosition:(int64_t)position
 {
-  v6 = a4;
+  animatedCopy = animated;
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [v8 section];
-  if (v9 >= -[UITableView numberOfSections](self, "numberOfSections") || (v10 = [v8 row], v10 >= -[UITableView numberOfRowsInSection:](self, "numberOfRowsInSection:", objc_msgSend(v8, "section"))))
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section >= -[UITableView numberOfSections](self, "numberOfSections") || (v10 = [pathCopy row], v10 >= -[UITableView numberOfRowsInSection:](self, "numberOfRowsInSection:", objc_msgSend(pathCopy, "section"))))
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -77,9 +77,9 @@
       if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412546;
-        v25 = v8;
+        v25 = pathCopy;
         v26 = 2112;
-        v27 = self;
+        selfCopy2 = self;
         _os_log_fault_impl(&dword_188A29000, v22, OS_LOG_TYPE_FAULT, "Attempted to select an out-of-bounds index path (%@) in %@", buf, 0x16u);
       }
     }
@@ -90,9 +90,9 @@
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v25 = v8;
+        v25 = pathCopy;
         v26 = 2112;
-        v27 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_188A29000, v16, OS_LOG_TYPE_ERROR, "Attempted to select an out-of-bounds index path (%@) in %@", buf, 0x16u);
       }
     }
@@ -100,15 +100,15 @@
 
   else
   {
-    v11 = [(UITableView *)self cellForRowAtIndexPath:v8];
-    v12 = [(UIView *)self _inheritedRenderConfig];
-    v13 = [v12 colorAdaptiveBackground];
+    v11 = [(UITableView *)self cellForRowAtIndexPath:pathCopy];
+    _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+    colorAdaptiveBackground = [_inheritedRenderConfig colorAdaptiveBackground];
 
-    if (v13)
+    if (colorAdaptiveBackground)
     {
       v14 = +[UIColor labelColor];
-      v15 = [v11 textLabel];
-      [v15 setTextColor:v14];
+      textLabel = [v11 textLabel];
+      [textLabel setTextColor:v14];
 
       +[UIColor secondaryLabelColor];
     }
@@ -116,21 +116,21 @@
     else
     {
       v17 = +[UIColor whiteColor];
-      v18 = [v11 textLabel];
-      [v18 setTextColor:v17];
+      textLabel2 = [v11 textLabel];
+      [textLabel2 setTextColor:v17];
 
       +[UIColor whiteColor];
     }
     v19 = ;
-    v20 = [v11 detailTextLabel];
-    [v20 setTextColor:v19];
+    detailTextLabel = [v11 detailTextLabel];
+    [detailTextLabel setTextColor:v19];
 
-    v21 = [v11 backgroundView];
-    [v21 setNeedsDisplay];
+    backgroundView = [v11 backgroundView];
+    [backgroundView setNeedsDisplay];
 
     v23.receiver = self;
     v23.super_class = UIInputSwitcherTableView;
-    [(UITableView *)&v23 selectRowAtIndexPath:v8 animated:v6 scrollPosition:a5];
+    [(UITableView *)&v23 selectRowAtIndexPath:pathCopy animated:animatedCopy scrollPosition:position];
   }
 }
 

@@ -1,52 +1,52 @@
 @interface DAKeyInvitationRequestConfig
-- (DAKeyInvitationRequestConfig)initWithCoder:(id)a3;
-- (DAKeyInvitationRequestConfig)initWithSharingSessionIdentifier:(id)a3 ownerIdsIdentifier:(id)a4;
+- (DAKeyInvitationRequestConfig)initWithCoder:(id)coder;
+- (DAKeyInvitationRequestConfig)initWithSharingSessionIdentifier:(id)identifier ownerIdsIdentifier:(id)idsIdentifier;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DAKeyInvitationRequestConfig
 
-- (DAKeyInvitationRequestConfig)initWithSharingSessionIdentifier:(id)a3 ownerIdsIdentifier:(id)a4
+- (DAKeyInvitationRequestConfig)initWithSharingSessionIdentifier:(id)identifier ownerIdsIdentifier:(id)idsIdentifier
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  idsIdentifierCopy = idsIdentifier;
   v12.receiver = self;
   v12.super_class = DAKeyInvitationRequestConfig;
   v9 = [(DAKeyInvitationRequestConfig *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sharingSessionIdentifier, a3);
-    objc_storeStrong(&v10->_ownerIdsIdentifier, a4);
+    objc_storeStrong(&v9->_sharingSessionIdentifier, identifier);
+    objc_storeStrong(&v10->_ownerIdsIdentifier, idsIdentifier);
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DAKeyInvitationRequestConfig *)self sharingSessionIdentifier];
-  [v4 encodeObject:v5 forKey:@"sharingSessionIdentifier"];
+  coderCopy = coder;
+  sharingSessionIdentifier = [(DAKeyInvitationRequestConfig *)self sharingSessionIdentifier];
+  [coderCopy encodeObject:sharingSessionIdentifier forKey:@"sharingSessionIdentifier"];
 
-  v6 = [(DAKeyInvitationRequestConfig *)self ownerIdsIdentifier];
-  [v4 encodeObject:v6 forKey:@"ownerIdsIdentifier"];
+  ownerIdsIdentifier = [(DAKeyInvitationRequestConfig *)self ownerIdsIdentifier];
+  [coderCopy encodeObject:ownerIdsIdentifier forKey:@"ownerIdsIdentifier"];
 }
 
-- (DAKeyInvitationRequestConfig)initWithCoder:(id)a3
+- (DAKeyInvitationRequestConfig)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = DAKeyInvitationRequestConfig;
   v5 = [(DAKeyInvitationRequestConfig *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharingSessionIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharingSessionIdentifier"];
     sharingSessionIdentifier = v5->_sharingSessionIdentifier;
     v5->_sharingSessionIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ownerIdsIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ownerIdsIdentifier"];
     ownerIdsIdentifier = v5->_ownerIdsIdentifier;
     v5->_ownerIdsIdentifier = v8;
   }
@@ -56,14 +56,14 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Sharing Session Id    : %@\n", self->_sharingSessionIdentifier];
-  [v3 appendString:v4];
+  [string appendString:v4];
 
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Owner IDS Id          : %@\n", self->_ownerIdsIdentifier];
-  [v3 appendString:v5];
+  [string appendString:v5];
 
-  return v3;
+  return string;
 }
 
 @end

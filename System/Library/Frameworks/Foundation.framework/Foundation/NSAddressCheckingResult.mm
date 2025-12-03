@@ -1,19 +1,19 @@
 @interface NSAddressCheckingResult
-- (BOOL)_adjustRangesWithOffset:(int64_t)a3;
-- (NSAddressCheckingResult)initWithCoder:(id)a3;
-- (NSAddressCheckingResult)initWithRange:(_NSRange)a3 components:(id)a4 underlyingResult:(void *)a5;
+- (BOOL)_adjustRangesWithOffset:(int64_t)offset;
+- (NSAddressCheckingResult)initWithCoder:(id)coder;
+- (NSAddressCheckingResult)initWithRange:(_NSRange)range components:(id)components underlyingResult:(void *)result;
 - (_NSRange)range;
-- (id)resultByAdjustingRangesWithOffset:(int64_t)a3;
+- (id)resultByAdjustingRangesWithOffset:(int64_t)offset;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSAddressCheckingResult
 
-- (NSAddressCheckingResult)initWithRange:(_NSRange)a3 components:(id)a4 underlyingResult:(void *)a5
+- (NSAddressCheckingResult)initWithRange:(_NSRange)range components:(id)components underlyingResult:(void *)result
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v13 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = NSAddressCheckingResult;
@@ -23,8 +23,8 @@
   {
     v9->_range.location = location;
     v9->_range.length = length;
-    v9->_components = [a4 copy];
-    v10->_underlyingResult = a5;
+    v9->_components = [components copy];
+    v10->_underlyingResult = result;
   }
 
   return v10;
@@ -39,38 +39,38 @@
   [(NSAddressCheckingResult *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = [(NSAddressCheckingResult *)self components];
-  v6 = [a3 allowsKeyedCoding];
-  [(NSTextCheckingResult *)self encodeRangeWithCoder:a3];
-  if (v6)
+  components = [(NSAddressCheckingResult *)self components];
+  allowsKeyedCoding = [coder allowsKeyedCoding];
+  [(NSTextCheckingResult *)self encodeRangeWithCoder:coder];
+  if (allowsKeyedCoding)
   {
 
-    [a3 encodeObject:v5 forKey:@"NSAddressComponents"];
+    [coder encodeObject:components forKey:@"NSAddressComponents"];
   }
 
   else
   {
 
-    [a3 encodeObject:v5];
+    [coder encodeObject:components];
   }
 }
 
-- (NSAddressCheckingResult)initWithCoder:(id)a3
+- (NSAddressCheckingResult)initWithCoder:(id)coder
 {
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    v6 = [(NSTextCheckingResult *)self decodeRangeWithCoder:a3];
+    v6 = [(NSTextCheckingResult *)self decodeRangeWithCoder:coder];
     v8 = v7;
     v9 = MEMORY[0x1E695DFD8];
     v10 = objc_opt_class();
-    v11 = [a3 decodeObjectOfClasses:objc_msgSend(v9 forKey:{"setWithObjects:", v10, objc_opt_class(), 0), @"NSAddressComponents"}];
+    decodeObject = [coder decodeObjectOfClasses:objc_msgSend(v9 forKey:{"setWithObjects:", v10, objc_opt_class(), 0), @"NSAddressComponents"}];
   }
 
   else
   {
-    v12 = [a3 versionForClassName:@"NSTextCheckingResult"];
+    v12 = [coder versionForClassName:@"NSTextCheckingResult"];
     if (v12 != 1)
     {
       v15 = v12;
@@ -80,12 +80,12 @@
       return 0;
     }
 
-    v6 = [(NSTextCheckingResult *)self decodeRangeWithCoder:a3];
+    v6 = [(NSTextCheckingResult *)self decodeRangeWithCoder:coder];
     v8 = v13;
-    v11 = [a3 decodeObject];
+    decodeObject = [coder decodeObject];
   }
 
-  return [(NSAddressCheckingResult *)self initWithRange:v6 components:v8, v11];
+  return [(NSAddressCheckingResult *)self initWithRange:v6 components:v8, decodeObject];
 }
 
 - (_NSRange)range
@@ -98,24 +98,24 @@
   return result;
 }
 
-- (id)resultByAdjustingRangesWithOffset:(int64_t)a3
+- (id)resultByAdjustingRangesWithOffset:(int64_t)offset
 {
-  v6 = [(NSAddressCheckingResult *)self range];
+  range = [(NSAddressCheckingResult *)self range];
   v8 = v7;
   v9 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v6 != 0x7FFFFFFFFFFFFFFFLL)
+  if (range != 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a3 < 0 && v6 < -a3)
+    if (offset < 0 && range < -offset)
     {
-      v12 = v6;
+      v12 = range;
       v13 = _NSFullMethodName(self, a2);
       v16.location = v12;
       v16.length = v8;
-      v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: %ld invalid offset for range %@", v13, a3, NSStringFromRange(v16)), 0}];
+      v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: %ld invalid offset for range %@", v13, offset, NSStringFromRange(v16)), 0}];
       objc_exception_throw(v14);
     }
 
-    v9 = v6 + a3;
+    v9 = range + offset;
   }
 
   v10 = [objc_alloc(objc_opt_class()) initWithRange:v9 components:v7 underlyingResult:{-[NSAddressCheckingResult components](self, "components"), -[NSAddressCheckingResult underlyingResult](self, "underlyingResult")}];
@@ -123,20 +123,20 @@
   return v10;
 }
 
-- (BOOL)_adjustRangesWithOffset:(int64_t)a3
+- (BOOL)_adjustRangesWithOffset:(int64_t)offset
 {
   location = self->_range.location;
   if (location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a3 < 0 && location < -a3)
+    if (offset < 0 && location < -offset)
     {
       p_range = &self->_range;
       v7 = _NSFullMethodName(self, a2);
-      v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: %ld invalid offset for range %@", v7, a3, NSStringFromRange(*p_range)), 0}];
+      v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: %ld invalid offset for range %@", v7, offset, NSStringFromRange(*p_range)), 0}];
       objc_exception_throw(v8);
     }
 
-    self->_range.location = location + a3;
+    self->_range.location = location + offset;
   }
 
   return 1;

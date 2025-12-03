@@ -1,29 +1,29 @@
 @interface CKTranscriptPrintPageRenderer
-+ (void)renderViewWithText:(id)a3 withOffsetVertical:(double)a4;
++ (void)renderViewWithText:(id)text withOffsetVertical:(double)vertical;
 - (CGRect)currentPrintableRect;
-- (CKTranscriptPrintPageRenderer)initWithTranscriptCollectionViewController:(id)a3;
-- (int64_t)__computedNumberOfPagesForPrintableRect:(CGRect)a3;
+- (CKTranscriptPrintPageRenderer)initWithTranscriptCollectionViewController:(id)controller;
+- (int64_t)__computedNumberOfPagesForPrintableRect:(CGRect)rect;
 - (int64_t)numberOfPages;
 - (void)_determineNumberOfPages;
-- (void)drawPageAtIndex:(int64_t)a3 inRect:(CGRect)a4;
-- (void)drawScrollViewAtIndex:(int64_t)a3 inRect:(CGRect)a4;
+- (void)drawPageAtIndex:(int64_t)index inRect:(CGRect)rect;
+- (void)drawScrollViewAtIndex:(int64_t)index inRect:(CGRect)rect;
 @end
 
 @implementation CKTranscriptPrintPageRenderer
 
-- (CKTranscriptPrintPageRenderer)initWithTranscriptCollectionViewController:(id)a3
+- (CKTranscriptPrintPageRenderer)initWithTranscriptCollectionViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = CKTranscriptPrintPageRenderer;
   v6 = [(CKTranscriptPrintPageRenderer *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_transcriptCollectionViewController, a3);
-    v8 = [v5 collectionView];
+    objc_storeStrong(&v6->_transcriptCollectionViewController, controller);
+    collectionView = [controllerCopy collectionView];
     scrollView = v7->_scrollView;
-    v7->_scrollView = v8;
+    v7->_scrollView = collectionView;
 
     [(CKTranscriptPrintPageRenderer *)v7 setCurrentPrintableRect:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [(CKTranscriptPrintPageRenderer *)v7 setNumberOfPagesForCurrentConfiguration:0];
@@ -55,32 +55,32 @@
     [(CKTranscriptPrintPageRenderer *)self setNumberOfPagesForCurrentConfiguration:[(CKTranscriptPrintPageRenderer *)self __computedNumberOfPagesForPrintableRect:?]];
     [(UIPrintPageRenderer *)self printableRect];
     [(CKTranscriptPrintPageRenderer *)self setCurrentPrintableRect:?];
-    v20 = [(CKTranscriptPrintPageRenderer *)self scrollView];
-    [v20 contentSize];
+    scrollView = [(CKTranscriptPrintPageRenderer *)self scrollView];
+    [scrollView contentSize];
     v16 = v15;
     v18 = v17;
-    v19 = [(CKTranscriptPrintPageRenderer *)self scrollView];
-    [v19 setFrame:{0.0, 0.0, v16, v18}];
+    scrollView2 = [(CKTranscriptPrintPageRenderer *)self scrollView];
+    [scrollView2 setFrame:{0.0, 0.0, v16, v18}];
   }
 }
 
-- (int64_t)__computedNumberOfPagesForPrintableRect:(CGRect)a3
+- (int64_t)__computedNumberOfPagesForPrintableRect:(CGRect)rect
 {
-  height = a3.size.height;
-  rect = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  rect = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = +[CKPrintController sharedInstance];
   [v8 setPrinting:1];
 
-  v9 = [(CKTranscriptPrintPageRenderer *)self scrollView];
-  [v9 setFrame:{x, y, width, height}];
-  v10 = [(CKTranscriptPrintPageRenderer *)self scrollView];
-  v11 = [v10 effectiveUserInterfaceLayoutDirection];
+  scrollView = [(CKTranscriptPrintPageRenderer *)self scrollView];
+  [scrollView setFrame:{x, y, width, height}];
+  scrollView2 = [(CKTranscriptPrintPageRenderer *)self scrollView];
+  effectiveUserInterfaceLayoutDirection = [scrollView2 effectiveUserInterfaceLayoutDirection];
   v12 = *MEMORY[0x1E69DC5C0];
   v13 = *(MEMORY[0x1E69DC5C0] + 16);
-  if (v11)
+  if (effectiveUserInterfaceLayoutDirection)
   {
     v14 = *(MEMORY[0x1E69DC5C0] + 24);
   }
@@ -90,7 +90,7 @@
     v14 = *(MEMORY[0x1E69DC5C0] + 8);
   }
 
-  if (v11)
+  if (effectiveUserInterfaceLayoutDirection)
   {
     v15 = *(MEMORY[0x1E69DC5C0] + 8);
   }
@@ -104,15 +104,15 @@
   [v16 balloonMaxWidthForTranscriptWidth:0 marginInsets:0 shouldShowPluginButtons:0 shouldShowCharacterCount:0 shouldCoverSendButton:width isStewieMode:{v12, v14, v13, v15}];
   v18 = v17;
 
-  v19 = [(CKTranscriptPrintPageRenderer *)self transcriptCollectionViewController];
-  v20 = [(CKTranscriptPrintPageRenderer *)self transcriptCollectionViewController];
-  v21 = [v20 traitCollection];
-  v22 = [(CKTranscriptPrintPageRenderer *)self transcriptCollectionViewController];
-  [v22 transcriptBackgroundLuminance];
-  [v19 invalidateChatItemLayoutWithNewBalloonMaxWidth:v21 marginInsets:v18 traitCollection:v12 transcriptBackgroundLuminance:{v14, v13, v15, v23}];
+  transcriptCollectionViewController = [(CKTranscriptPrintPageRenderer *)self transcriptCollectionViewController];
+  transcriptCollectionViewController2 = [(CKTranscriptPrintPageRenderer *)self transcriptCollectionViewController];
+  traitCollection = [transcriptCollectionViewController2 traitCollection];
+  transcriptCollectionViewController3 = [(CKTranscriptPrintPageRenderer *)self transcriptCollectionViewController];
+  [transcriptCollectionViewController3 transcriptBackgroundLuminance];
+  [transcriptCollectionViewController invalidateChatItemLayoutWithNewBalloonMaxWidth:traitCollection marginInsets:v18 traitCollection:v12 transcriptBackgroundLuminance:{v14, v13, v15, v23}];
 
-  [v9 layoutIfNeeded];
-  [v9 contentSize];
+  [scrollView layoutIfNeeded];
+  [scrollView contentSize];
   v25 = v24;
   v30.origin.x = x;
   v30.origin.y = y;
@@ -145,23 +145,23 @@
   return [(CKTranscriptPrintPageRenderer *)self numberOfPagesForCurrentConfiguration];
 }
 
-+ (void)renderViewWithText:(id)a3 withOffsetVertical:(double)a4
++ (void)renderViewWithText:(id)text withOffsetVertical:(double)vertical
 {
   v103 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  textCopy = text;
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
   objc_opt_class();
-  v83 = v5;
+  v83 = textCopy;
   if (objc_opt_isKindOfClass())
   {
-    CGContextTranslateCTM(CurrentContext, 0.0, -a4);
+    CGContextTranslateCTM(CurrentContext, 0.0, -vertical);
   }
 
-  [v5 layoutIfNeeded];
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [MEMORY[0x1E695DF70] array];
-  [v5 bounds];
+  [textCopy layoutIfNeeded];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  [textCopy bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -170,13 +170,13 @@
   v96[1] = 3221225472;
   v96[2] = __71__CKTranscriptPrintPageRenderer_renderViewWithText_withOffsetVertical___block_invoke;
   v96[3] = &unk_1E72ECA60;
-  v80 = v7;
+  v80 = array;
   v97 = v80;
-  v17 = v8;
+  v17 = array2;
   v98 = v17;
-  _DFSVisibleSubviewsInRect(v5, v96, v10, v12, v14, v16);
-  v18 = [v5 layer];
-  [v18 renderInContext:CurrentContext];
+  _DFSVisibleSubviewsInRect(textCopy, v96, v10, v12, v14, v16);
+  layer = [textCopy layer];
+  [layer renderInContext:CurrentContext];
 
   v94 = 0u;
   v95 = 0u;
@@ -217,12 +217,12 @@
 
           else
           {
-            v30 = [MEMORY[0x1E69A6138] warning];
-            if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+            warning = [MEMORY[0x1E69A6138] warning];
+            if (os_log_type_enabled(warning, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
               v101 = v28;
-              _os_log_error_impl(&dword_19020E000, v30, OS_LOG_TYPE_ERROR, "ASSERTION FAILED: %@", buf, 0xCu);
+              _os_log_error_impl(&dword_19020E000, warning, OS_LOG_TYPE_ERROR, "ASSERTION FAILED: %@", buf, 0xCu);
             }
           }
         }
@@ -233,7 +233,7 @@
         v32 = v31;
         [v23 frame];
         v34 = v33;
-        v35 = [v23 suppressMask];
+        suppressMask = [v23 suppressMask];
         [v23 setSuppressMask:1];
         [v23 setAlpha:1.0];
         [v23 frame];
@@ -247,7 +247,7 @@
         v88[4] = v23;
         v41 = [v40 imageWithActions:v88];
         [v41 drawInRect:{v34, v32, v37, v39}];
-        [v23 setSuppressMask:v35];
+        [v23 setSuppressMask:suppressMask];
         CGContextRestoreGState(CurrentContext);
       }
 
@@ -296,12 +296,12 @@
 
           else
           {
-            v53 = [MEMORY[0x1E69A6138] warning];
-            if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
+            warning2 = [MEMORY[0x1E69A6138] warning];
+            if (os_log_type_enabled(warning2, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
               v101 = v51;
-              _os_log_error_impl(&dword_19020E000, v53, OS_LOG_TYPE_ERROR, "ASSERTION FAILED: %@", buf, 0xCu);
+              _os_log_error_impl(&dword_19020E000, warning2, OS_LOG_TYPE_ERROR, "ASSERTION FAILED: %@", buf, 0xCu);
             }
           }
         }
@@ -368,12 +368,12 @@
 
           else
           {
-            v79 = [MEMORY[0x1E69A6138] warning];
-            if (os_log_type_enabled(v79, OS_LOG_TYPE_ERROR))
+            warning3 = [MEMORY[0x1E69A6138] warning];
+            if (os_log_type_enabled(warning3, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
               v101 = v60;
-              _os_log_error_impl(&dword_19020E000, v79, OS_LOG_TYPE_ERROR, "ASSERTION FAILED: %@", buf, 0xCu);
+              _os_log_error_impl(&dword_19020E000, warning3, OS_LOG_TYPE_ERROR, "ASSERTION FAILED: %@", buf, 0xCu);
             }
           }
         }
@@ -434,25 +434,25 @@ void __71__CKTranscriptPrintPageRenderer_renderViewWithText_withOffsetVertical__
   [v1 renderInContext:UIGraphicsGetCurrentContext()];
 }
 
-- (void)drawScrollViewAtIndex:(int64_t)a3 inRect:(CGRect)a4
+- (void)drawScrollViewAtIndex:(int64_t)index inRect:(CGRect)rect
 {
-  v6 = [CKPrintController sharedInstance:a4.origin.x];
+  v6 = [CKPrintController sharedInstance:rect.origin.x];
   [v6 setPrinting:1];
 
   [(UIPrintPageRenderer *)self printableRect];
   v8 = v7;
-  v10 = [(CKTranscriptPrintPageRenderer *)self scrollView];
-  [CKTranscriptPrintPageRenderer renderViewWithText:v10 withOffsetVertical:v8 * a3];
+  scrollView = [(CKTranscriptPrintPageRenderer *)self scrollView];
+  [CKTranscriptPrintPageRenderer renderViewWithText:scrollView withOffsetVertical:v8 * index];
   v9 = +[CKPrintController sharedInstance];
   [v9 setPrinting:0];
 }
 
-- (void)drawPageAtIndex:(int64_t)a3 inRect:(CGRect)a4
+- (void)drawPageAtIndex:(int64_t)index inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   CurrentContext = UIGraphicsGetCurrentContext();
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -464,7 +464,7 @@ void __71__CKTranscriptPrintPageRenderer_renderViewWithText_withOffsetVertical__
   *&aBlock[9] = height;
   aBlock[4] = self;
   aBlock[5] = CurrentContext;
-  aBlock[10] = a3;
+  aBlock[10] = index;
   v11 = _Block_copy(aBlock);
   if ([MEMORY[0x1E696AF00] isMainThread])
   {

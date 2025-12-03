@@ -1,31 +1,31 @@
 @interface _UIConcreteRemoteViewService
 - (BOOL)multipleInstances;
-- (_UIConcreteRemoteViewService)initWithExtension:(id)a3 andContextToken:(id)a4;
+- (_UIConcreteRemoteViewService)initWithExtension:(id)extension andContextToken:(id)token;
 - (id)identifier;
 - (id)multipleInstanceUUID;
 - (id)viewControllerClassName;
 - (id)xpcServiceNameRoot;
 - (int)processIdentifier;
-- (void)beginUsing:(id)a3;
-- (void)endUsing:(id)a3;
-- (void)setPlugin:(id)a3;
+- (void)beginUsing:(id)using;
+- (void)endUsing:(id)using;
+- (void)setPlugin:(id)plugin;
 - (void)updateOverridesHostAppearance;
 @end
 
 @implementation _UIConcreteRemoteViewService
 
-- (_UIConcreteRemoteViewService)initWithExtension:(id)a3 andContextToken:(id)a4
+- (_UIConcreteRemoteViewService)initWithExtension:(id)extension andContextToken:(id)token
 {
-  v7 = a3;
-  v8 = a4;
+  extensionCopy = extension;
+  tokenCopy = token;
   v14.receiver = self;
   v14.super_class = _UIConcreteRemoteViewService;
-  v9 = [(_UIRemoteViewService *)&v14 _init];
-  v10 = v9;
-  if (v9)
+  _init = [(_UIRemoteViewService *)&v14 _init];
+  v10 = _init;
+  if (_init)
   {
-    objc_storeStrong(v9 + 3, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(_init + 3, extension);
+    v11 = [tokenCopy copy];
     contextToken = v10->_contextToken;
     v10->_contextToken = v11;
 
@@ -37,76 +37,76 @@
 
 - (void)updateOverridesHostAppearance
 {
-  v6 = [(_UIConcreteRemoteViewService *)self plugin];
-  v3 = [v6 bundleInfoDictionary];
-  v4 = [v3 objectForKeyedSubscript:@"NSExtension"];
+  plugin = [(_UIConcreteRemoteViewService *)self plugin];
+  bundleInfoDictionary = [plugin bundleInfoDictionary];
+  v4 = [bundleInfoDictionary objectForKeyedSubscript:@"NSExtension"];
   v5 = [v4 objectForKeyedSubscript:@"NSExtensionOverridesHostUIAppearance"];
   self->_overridesHostAppearance = [v5 BOOLValue];
 }
 
-- (void)setPlugin:(id)a3
+- (void)setPlugin:(id)plugin
 {
-  [(NSExtension *)self->_extension _setPlugIn:a3];
+  [(NSExtension *)self->_extension _setPlugIn:plugin];
 
   [(_UIConcreteRemoteViewService *)self updateOverridesHostAppearance];
 }
 
 - (id)identifier
 {
-  v2 = [(_UIConcreteRemoteViewService *)self plugin];
-  v3 = [v2 identifier];
+  plugin = [(_UIConcreteRemoteViewService *)self plugin];
+  identifier = [plugin identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (id)xpcServiceNameRoot
 {
-  v3 = [(_UIConcreteRemoteViewService *)self extension];
-  v4 = [v3 _extensionBundle];
-  v5 = [v4 bundleIdentifier];
+  extension = [(_UIConcreteRemoteViewService *)self extension];
+  _extensionBundle = [extension _extensionBundle];
+  bundleIdentifier = [_extensionBundle bundleIdentifier];
 
-  if (!v5)
+  if (!bundleIdentifier)
   {
-    v6 = [(_UIConcreteRemoteViewService *)self plugin];
-    v5 = [v6 identifier];
+    plugin = [(_UIConcreteRemoteViewService *)self plugin];
+    bundleIdentifier = [plugin identifier];
   }
 
-  return v5;
+  return bundleIdentifier;
 }
 
 - (BOOL)multipleInstances
 {
-  v2 = [(_UIConcreteRemoteViewService *)self plugin];
-  v3 = [v2 bundleInfoDictionary];
-  v4 = [v3 objectForKeyedSubscript:@"XPCService"];
+  plugin = [(_UIConcreteRemoteViewService *)self plugin];
+  bundleInfoDictionary = [plugin bundleInfoDictionary];
+  v4 = [bundleInfoDictionary objectForKeyedSubscript:@"XPCService"];
   v5 = [v4 objectForKeyedSubscript:@"_MultipleInstances"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
 - (id)multipleInstanceUUID
 {
-  v2 = [(_UIConcreteRemoteViewService *)self plugin];
-  v3 = [v2 multipleInstanceUUID];
+  plugin = [(_UIConcreteRemoteViewService *)self plugin];
+  multipleInstanceUUID = [plugin multipleInstanceUUID];
 
-  return v3;
+  return multipleInstanceUUID;
 }
 
 - (int)processIdentifier
 {
-  v3 = [(_UIConcreteRemoteViewService *)self extension];
-  v4 = [(_UIConcreteRemoteViewService *)self contextToken];
-  v5 = [v3 pidForRequestIdentifier:v4];
+  extension = [(_UIConcreteRemoteViewService *)self extension];
+  contextToken = [(_UIConcreteRemoteViewService *)self contextToken];
+  v5 = [extension pidForRequestIdentifier:contextToken];
 
   return v5;
 }
 
 - (id)viewControllerClassName
 {
-  v3 = [(_UIConcreteRemoteViewService *)self plugin];
-  v4 = [v3 bundleInfoDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"NSExtension"];
+  plugin = [(_UIConcreteRemoteViewService *)self plugin];
+  bundleInfoDictionary = [plugin bundleInfoDictionary];
+  v5 = [bundleInfoDictionary objectForKeyedSubscript:@"NSExtension"];
   v6 = [v5 objectForKeyedSubscript:@"NSExtensionPrincipalClass"];
   v7 = [v6 copy];
   v8 = v7;
@@ -117,27 +117,27 @@
 
   else
   {
-    v10 = [(_UIConcreteRemoteViewService *)self plugin];
-    v11 = [v10 bundleInfoDictionary];
-    v12 = [v11 objectForKeyedSubscript:@"NSExtensionPrincipalClass"];
+    plugin2 = [(_UIConcreteRemoteViewService *)self plugin];
+    bundleInfoDictionary2 = [plugin2 bundleInfoDictionary];
+    v12 = [bundleInfoDictionary2 objectForKeyedSubscript:@"NSExtensionPrincipalClass"];
     v9 = [v12 copy];
   }
 
   return v9;
 }
 
-- (void)beginUsing:(id)a3
+- (void)beginUsing:(id)using
 {
-  v4 = a3;
-  v5 = [(_UIConcreteRemoteViewService *)self extension];
-  [v5 _safelyBeginUsing:v4];
+  usingCopy = using;
+  extension = [(_UIConcreteRemoteViewService *)self extension];
+  [extension _safelyBeginUsing:usingCopy];
 }
 
-- (void)endUsing:(id)a3
+- (void)endUsing:(id)using
 {
-  v4 = a3;
-  v5 = [(_UIConcreteRemoteViewService *)self extension];
-  [v5 _safelyEndUsing:v4];
+  usingCopy = using;
+  extension = [(_UIConcreteRemoteViewService *)self extension];
+  [extension _safelyEndUsing:usingCopy];
 }
 
 @end

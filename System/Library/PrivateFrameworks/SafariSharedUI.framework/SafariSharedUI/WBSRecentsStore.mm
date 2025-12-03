@@ -1,15 +1,15 @@
 @interface WBSRecentsStore
-- (WBSRecentsStore)initWithSiteMetadataManager:(id)a3;
+- (WBSRecentsStore)initWithSiteMetadataManager:(id)manager;
 - (WBSSiteMetadataManager)siteMetadataManager;
-- (id)providerForItem:(id)a3;
+- (id)providerForItem:(id)item;
 - (void)_fetchPendingMetadataAndNotifyRecentItemChanges;
 - (void)_notifyRecentItemsDidReceiveMetadata;
 - (void)_rebuildAllRecentItemsAndDevices;
 - (void)dealloc;
 - (void)fetchMetadata;
-- (void)ingestRecentItemsFromProvider:(id)a3;
-- (void)registerProvider:(id)a3;
-- (void)updateRecentItem:(id)a3 withLinkMetadata:(id)a4;
+- (void)ingestRecentItemsFromProvider:(id)provider;
+- (void)registerProvider:(id)provider;
+- (void)updateRecentItem:(id)item withLinkMetadata:(id)metadata;
 @end
 
 @implementation WBSRecentsStore
@@ -17,13 +17,13 @@
 - (void)_rebuildAllRecentItemsAndDevices
 {
   v44 = *MEMORY[0x1E69E9840];
-  v32 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v3 = [MEMORY[0x1E695DFA8] set];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v29 = self;
+  selfCopy = self;
   obj = self->_recentItemsByProviderIndex;
   v33 = [(NSMutableArray *)obj countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v33)
@@ -39,8 +39,8 @@
         }
 
         v5 = *(*(&v38 + 1) + 8 * i);
-        v6 = [v5 allObjects];
-        [v32 addObjectsFromArray:v6];
+        allObjects = [v5 allObjects];
+        [array addObjectsFromArray:allObjects];
 
         v36 = 0u;
         v37 = 0u;
@@ -62,12 +62,12 @@
               }
 
               v12 = *(*(&v34 + 1) + 8 * j);
-              v13 = [v12 device];
-              [v3 addObject:v13];
+              device = [v12 device];
+              [v3 addObject:device];
 
-              v14 = [v12 metadata];
+              metadata = [v12 metadata];
 
-              if (!v14)
+              if (!metadata)
               {
                 v15 = objc_alloc_init(MEMORY[0x1E696ECA0]);
                 v16 = [v12 URL];
@@ -76,8 +76,8 @@
                 v17 = [v12 URL];
                 [v15 setURL:v17];
 
-                v18 = [v12 title];
-                [v15 setTitle:v18];
+                title = [v12 title];
+                [v15 setTitle:title];
 
                 [v12 setMetadata:v15];
               }
@@ -96,22 +96,22 @@
     while (v33);
   }
 
-  [v32 sortUsingComparator:&__block_literal_global_70];
-  v19 = [v32 copy];
-  displayableRecentItems = v29->_displayableRecentItems;
-  v29->_displayableRecentItems = v19;
+  [array sortUsingComparator:&__block_literal_global_70];
+  v19 = [array copy];
+  displayableRecentItems = selfCopy->_displayableRecentItems;
+  selfCopy->_displayableRecentItems = v19;
 
-  v21 = [v3 allObjects];
-  v22 = [v21 sortedArrayUsingComparator:&__block_literal_global_19_1];
+  allObjects2 = [v3 allObjects];
+  v22 = [allObjects2 sortedArrayUsingComparator:&__block_literal_global_19_1];
 
-  availableDevices = v29->_availableDevices;
+  availableDevices = selfCopy->_availableDevices;
   if (availableDevices && v22)
   {
     v24 = [v22 differenceFromArray:? withOptions:?];
-    v25 = [v24 hasChanges];
+    hasChanges = [v24 hasChanges];
 
-    objc_storeStrong(&v29->_availableDevices, v22);
-    if ((v25 & 1) == 0)
+    objc_storeStrong(&selfCopy->_availableDevices, v22);
+    if ((hasChanges & 1) == 0)
     {
       goto LABEL_23;
     }
@@ -120,23 +120,23 @@
   }
 
   v26 = availableDevices != 0;
-  objc_storeStrong(&v29->_availableDevices, v22);
+  objc_storeStrong(&selfCopy->_availableDevices, v22);
   if ((v22 != 0) != v26)
   {
 LABEL_22:
-    v27 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v27 postNotificationName:@"WBSRecentsStoreDidUpdateAvailableDevices" object:v29];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"WBSRecentsStoreDidUpdateAvailableDevices" object:selfCopy];
   }
 
 LABEL_23:
-  v28 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v28 postNotificationName:@"WBSRecentsStoreDidRebuildRecentItems" object:v29];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 postNotificationName:@"WBSRecentsStoreDidRebuildRecentItems" object:selfCopy];
 }
 
 - (void)fetchMetadata
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:*MEMORY[0x1E69C9130]];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:*MEMORY[0x1E69C9130]];
 
   if (v4)
   {
@@ -145,26 +145,26 @@ LABEL_23:
   }
 }
 
-- (WBSRecentsStore)initWithSiteMetadataManager:(id)a3
+- (WBSRecentsStore)initWithSiteMetadataManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = WBSRecentsStore;
   v5 = [(WBSRecentsStore *)&v14 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     providers = v5->_providers;
-    v5->_providers = v6;
+    v5->_providers = array;
 
-    v8 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     recentItemsByProviderIndex = v5->_recentItemsByProviderIndex;
-    v5->_recentItemsByProviderIndex = v8;
+    v5->_recentItemsByProviderIndex = array2;
 
-    objc_storeWeak(&v5->_siteMetadataManager, v4);
-    v10 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    objc_storeWeak(&v5->_siteMetadataManager, managerCopy);
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     recentItemsToMetadataTokens = v5->_recentItemsToMetadataTokens;
-    v5->_recentItemsToMetadataTokens = v10;
+    v5->_recentItemsToMetadataTokens = strongToStrongObjectsMapTable;
 
     v12 = v5;
   }
@@ -175,35 +175,35 @@ LABEL_23:
 - (void)dealloc
 {
   WeakRetained = objc_loadWeakRetained(&self->_siteMetadataManager);
-  v4 = [(NSMapTable *)self->_recentItemsToMetadataTokens objectEnumerator];
-  v5 = [v4 allObjects];
-  [WeakRetained cancelRequestsWithTokens:v5];
+  objectEnumerator = [(NSMapTable *)self->_recentItemsToMetadataTokens objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
+  [WeakRetained cancelRequestsWithTokens:allObjects];
 
   v6.receiver = self;
   v6.super_class = WBSRecentsStore;
   [(WBSRecentsStore *)&v6 dealloc];
 }
 
-- (void)registerProvider:(id)a3
+- (void)registerProvider:(id)provider
 {
   providers = self->_providers;
-  v7 = a3;
-  [(NSMutableArray *)providers addObject:v7];
+  providerCopy = provider;
+  [(NSMutableArray *)providers addObject:providerCopy];
   recentItemsByProviderIndex = self->_recentItemsByProviderIndex;
   v6 = [MEMORY[0x1E695DFD8] set];
   [(NSMutableArray *)recentItemsByProviderIndex addObject:v6];
 
-  [v7 setRecentsStore:self];
-  [(WBSRecentsStore *)self ingestRecentItemsFromProvider:v7];
+  [providerCopy setRecentsStore:self];
+  [(WBSRecentsStore *)self ingestRecentItemsFromProvider:providerCopy];
 }
 
-- (void)ingestRecentItemsFromProvider:(id)a3
+- (void)ingestRecentItemsFromProvider:(id)provider
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMutableArray *)self->_providers indexOfObject:v4];
-  v30 = v4;
-  v6 = [v4 recentItems];
+  providerCopy = provider;
+  v5 = [(NSMutableArray *)self->_providers indexOfObject:providerCopy];
+  v30 = providerCopy;
+  recentItems = [providerCopy recentItems];
   v29 = v5;
   v7 = [(NSMutableArray *)self->_recentItemsByProviderIndex objectAtIndexedSubscript:v5];
   v8 = [MEMORY[0x1E695DFA8] set];
@@ -211,7 +211,7 @@ LABEL_23:
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v6;
+  obj = recentItems;
   v9 = [obj countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v9)
   {
@@ -240,11 +240,11 @@ LABEL_23:
         }
 
         v17 = v16;
-        v18 = [v13 device];
-        [v17 setDevice:v18];
+        device = [v13 device];
+        [v17 setDevice:device];
 
-        v19 = [v13 date];
-        [v17 setDate:v19];
+        date = [v13 date];
+        [v17 setDate:date];
 
         [v8 addObject:v17];
       }
@@ -303,13 +303,13 @@ LABEL_23:
 
 - (void)_notifyRecentItemsDidReceiveMetadata
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"WBSRecentsStoreDidUpdateRecentItemsWithMetadata" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"WBSRecentsStoreDidUpdateRecentItemsWithMetadata" object:self];
 }
 
-- (id)providerForItem:(id)a3
+- (id)providerForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -321,8 +321,8 @@ LABEL_23:
   v9[1] = 3221225472;
   v9[2] = __35__WBSRecentsStore_providerForItem___block_invoke;
   v9[3] = &unk_1E8289918;
-  v6 = v4;
-  v11 = self;
+  v6 = itemCopy;
+  selfCopy = self;
   v12 = &v13;
   v10 = v6;
   [(NSMutableArray *)recentItemsByProviderIndex enumerateObjectsUsingBlock:v9];
@@ -468,45 +468,45 @@ void __66__WBSRecentsStore__fetchPendingMetadataAndNotifyRecentItemChanges__bloc
   }
 }
 
-- (void)updateRecentItem:(id)a3 withLinkMetadata:(id)a4
+- (void)updateRecentItem:(id)item withLinkMetadata:(id)metadata
 {
-  v13 = a3;
-  v5 = a4;
-  v6 = [v13 title];
-  v7 = [v6 length];
+  itemCopy = item;
+  metadataCopy = metadata;
+  title = [itemCopy title];
+  v7 = [title length];
 
   if (v7)
   {
-    v8 = v13;
+    v8 = itemCopy;
   }
 
   else
   {
-    v8 = v5;
+    v8 = metadataCopy;
   }
 
   if (v7)
   {
-    v9 = v5;
+    v9 = metadataCopy;
   }
 
   else
   {
-    v9 = v13;
+    v9 = itemCopy;
   }
 
-  v10 = [v8 title];
-  [v9 setTitle:v10];
+  title2 = [v8 title];
+  [v9 setTitle:title2];
 
-  v11 = [v13 imageProvider];
+  imageProvider = [itemCopy imageProvider];
 
-  if (!v11)
+  if (!imageProvider)
   {
-    v12 = [v5 imageProvider];
-    [v13 setImageProvider:v12];
+    imageProvider2 = [metadataCopy imageProvider];
+    [itemCopy setImageProvider:imageProvider2];
   }
 
-  [v13 setMetadata:v5];
+  [itemCopy setMetadata:metadataCopy];
 }
 
 - (WBSSiteMetadataManager)siteMetadataManager

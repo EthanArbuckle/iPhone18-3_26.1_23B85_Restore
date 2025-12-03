@@ -1,9 +1,9 @@
 @interface ClimateQuickActionPopover
-- (_TtC7Climate25ClimateQuickActionPopover)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didTapDeepLinkButton:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (_TtC7Climate25ClimateQuickActionPopover)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didTapDeepLinkButton:(id)button;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)loadView;
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5;
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate;
 @end
 
 @implementation ClimateQuickActionPopover
@@ -11,46 +11,46 @@
 - (void)loadView
 {
   v3 = objc_allocWithZone(type metadata accessor for ClimateGlassView());
-  v5 = self;
+  selfCopy = self;
   v4 = ClimateGlassView.init(cornerRadius:cornerCurve:isTranslucent:)(kCACornerCurveContinuous, 1, 28.0);
-  [(ClimateQuickActionPopover *)v5 setView:v4];
+  [(ClimateQuickActionPopover *)selfCopy setView:v4];
 }
 
-- (void)didTapDeepLinkButton:(id)a3
+- (void)didTapDeepLinkButton:(id)button
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v4 = self;
+    selfCopy = self;
     sub_10007C424();
     swift_unknownObjectRelease();
   }
 }
 
-- (_TtC7Climate25ClimateQuickActionPopover)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Climate25ClimateQuickActionPopover)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v6 = self;
-    sub_10007C924(v6, 0);
+    selfCopy = self;
+    sub_10007C924(selfCopy, 0);
     swift_unknownObjectRelease();
   }
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for ClimateQuickActionPopover();
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
   v8 = v9.receiver;
-  [(ClimateQuickActionPopover *)&v9 didUpdateFocusInContext:v6 withAnimationCoordinator:v7];
+  [(ClimateQuickActionPopover *)&v9 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinatorCopy];
   if (swift_unknownObjectWeakLoadStrong())
   {
     sub_10007C924(v8, 0);

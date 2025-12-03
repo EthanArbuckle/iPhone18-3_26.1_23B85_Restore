@@ -13,10 +13,10 @@
   v3 = a3;
   v4 = objc_autoreleasePoolPush();
   objc_opt_class();
-  v5 = [v3 value];
+  value = [v3 value];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = value;
   }
 
   else
@@ -30,17 +30,17 @@
   {
     v8 = [objc_alloc(MEMORY[0x277D29720]) initWithEncodedDictionary:v7];
     v9 = [v8 decodeObjectForKey:@"MTAlarms"];
-    v10 = [v9 firstObject];
+    firstObject = [v9 firstObject];
   }
 
   else
   {
-    v10 = 0;
+    firstObject = 0;
   }
 
   objc_autoreleasePoolPop(v4);
 
-  return v10;
+  return firstObject;
 }
 
 + (id)hf_buildAlarmsFromCollectionSettingItems:()HFAlarmUtilities
@@ -49,8 +49,8 @@
   v4 = [a3 na_map:&__block_literal_global_115];
   v5 = [v3 setWithArray:v4];
 
-  v6 = [v5 allObjects];
-  v7 = [v6 sortedArrayUsingSelector:sel_compare_];
+  allObjects = [v5 allObjects];
+  v7 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
   return v7;
 }

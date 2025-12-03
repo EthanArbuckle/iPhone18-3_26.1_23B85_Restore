@@ -1,11 +1,11 @@
 @interface SFBadgeContainerView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGSize)intrinsicContentSize;
 - (void)layoutSubviews;
 - (void)pulse;
-- (void)setBadgeTintColor:(id)a3;
-- (void)setContentView:(id)a3;
-- (void)setShowsBadge:(BOOL)a3;
+- (void)setBadgeTintColor:(id)color;
+- (void)setContentView:(id)view;
+- (void)setShowsBadge:(BOOL)badge;
 @end
 
 @implementation SFBadgeContainerView
@@ -20,16 +20,16 @@
   contentView = self->_contentView;
   if (isKindOfClass)
   {
-    v5 = [(UIView *)contentView imageView];
+    imageView = [(UIView *)contentView imageView];
   }
 
   else
   {
-    v5 = contentView;
+    imageView = contentView;
   }
 
-  v6 = v5;
-  [(UIView *)v5 bounds];
+  v6 = imageView;
+  [(UIView *)imageView bounds];
   [(UIView *)v6 alignmentRectForFrame:?];
   [(SFBadgeContainerView *)self convertRect:v6 fromView:?];
   v29 = v8;
@@ -77,12 +77,12 @@
   [(SFBadgeMaskView *)self->_badgeMask setBadgeRect:?];
 }
 
-- (void)setShowsBadge:(BOOL)a3
+- (void)setShowsBadge:(BOOL)badge
 {
-  if (self->_showsBadge != a3)
+  if (self->_showsBadge != badge)
   {
-    self->_showsBadge = a3;
-    if (a3)
+    self->_showsBadge = badge;
+    if (badge)
     {
       v4 = objc_alloc_init(SFBadge);
       badge = self->_badge;
@@ -119,16 +119,16 @@
   }
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  v8 = v5;
-  if (contentView != v5)
+  v8 = viewCopy;
+  if (contentView != viewCopy)
   {
     [(UIView *)contentView removeFromSuperview];
     [(UIView *)self->_contentView setMaskView:0];
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     v7 = self->_contentView;
     if (v7)
     {
@@ -144,11 +144,11 @@
   }
 }
 
-- (void)setBadgeTintColor:(id)a3
+- (void)setBadgeTintColor:(id)color
 {
-  objc_storeStrong(&self->_badgeTintColor, a3);
-  v5 = a3;
-  [(SFBadge *)self->_badge setTintColor:v5];
+  objc_storeStrong(&self->_badgeTintColor, color);
+  colorCopy = color;
+  [(SFBadge *)self->_badge setTintColor:colorCopy];
 }
 
 - (void)pulse
@@ -161,17 +161,17 @@
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
+  y = inside.y;
+  x = inside.x;
+  selfCopy = self;
   contentView = self->_contentView;
-  v8 = a4;
-  [(UIView *)contentView convertPoint:v6 fromView:x, y];
-  LOBYTE(v6) = [(UIView *)contentView pointInside:v8 withEvent:?];
+  eventCopy = event;
+  [(UIView *)contentView convertPoint:selfCopy fromView:x, y];
+  LOBYTE(selfCopy) = [(UIView *)contentView pointInside:eventCopy withEvent:?];
 
-  return v6;
+  return selfCopy;
 }
 
 - (CGSize)intrinsicContentSize

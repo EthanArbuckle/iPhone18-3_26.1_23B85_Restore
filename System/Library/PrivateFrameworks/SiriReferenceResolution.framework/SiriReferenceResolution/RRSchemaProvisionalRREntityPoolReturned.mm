@@ -1,26 +1,26 @@
 @interface RRSchemaProvisionalRREntityPoolReturned
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (RRSchemaProvisionalRREntityPoolReturned)initWithDictionary:(id)a3;
-- (RRSchemaProvisionalRREntityPoolReturned)initWithJSON:(id)a3;
+- (RRSchemaProvisionalRREntityPoolReturned)initWithDictionary:(id)dictionary;
+- (RRSchemaProvisionalRREntityPoolReturned)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCandidateEntities:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCandidateEntities:(id)entities;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RRSchemaProvisionalRREntityPoolReturned
 
-- (RRSchemaProvisionalRREntityPoolReturned)initWithDictionary:(id)a3
+- (RRSchemaProvisionalRREntityPoolReturned)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = RRSchemaProvisionalRREntityPoolReturned;
   v5 = [(RRSchemaProvisionalRREntityPoolReturned *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"candidateEntities"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"candidateEntities"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,7 +64,7 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"entityCount", v19}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"entityCount", v19}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -78,30 +78,30 @@
   return v5;
 }
 
-- (RRSchemaProvisionalRREntityPoolReturned)initWithJSON:(id)a3
+- (RRSchemaProvisionalRREntityPoolReturned)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(RRSchemaProvisionalRREntityPoolReturned *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(RRSchemaProvisionalRREntityPoolReturned *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(RRSchemaProvisionalRREntityPoolReturned *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -115,10 +115,10 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_candidateEntities count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -138,16 +138,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -157,19 +157,19 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"candidateEntities"];
+    [dictionary setObject:array forKeyedSubscript:@"candidateEntities"];
   }
 
   if (*&self->_has)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[RRSchemaProvisionalRREntityPoolReturned entityCount](self, "entityCount")}];
-    [v3 setObject:v12 forKeyedSubscript:@"entityCount"];
+    [dictionary setObject:v12 forKeyedSubscript:@"entityCount"];
   }
 
-  [(RRSchemaProvisionalRREntityPoolReturned *)self willProduceDictionaryRepresentation:v3, v15];
+  [(RRSchemaProvisionalRREntityPoolReturned *)self willProduceDictionaryRepresentation:dictionary, v15];
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -188,18 +188,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(RRSchemaProvisionalRREntityPoolReturned *)self candidateEntities];
-  v6 = [v4 candidateEntities];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  candidateEntities = [(RRSchemaProvisionalRREntityPoolReturned *)self candidateEntities];
+  candidateEntities2 = [equalCopy candidateEntities];
+  v7 = candidateEntities2;
+  if ((candidateEntities != 0) == (candidateEntities2 == 0))
   {
 
 LABEL_12:
@@ -207,13 +207,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(RRSchemaProvisionalRREntityPoolReturned *)self candidateEntities];
-  if (v8)
+  candidateEntities3 = [(RRSchemaProvisionalRREntityPoolReturned *)self candidateEntities];
+  if (candidateEntities3)
   {
-    v9 = v8;
-    v10 = [(RRSchemaProvisionalRREntityPoolReturned *)self candidateEntities];
-    v11 = [v4 candidateEntities];
-    v12 = [v10 isEqual:v11];
+    v9 = candidateEntities3;
+    candidateEntities4 = [(RRSchemaProvisionalRREntityPoolReturned *)self candidateEntities];
+    candidateEntities5 = [equalCopy candidateEntities];
+    v12 = [candidateEntities4 isEqual:candidateEntities5];
 
     if (!v12)
     {
@@ -225,7 +225,7 @@ LABEL_12:
   {
   }
 
-  if ((v4[20] & 1) != (*&self->_has & 1))
+  if ((equalCopy[20] & 1) != (*&self->_has & 1))
   {
     goto LABEL_12;
   }
@@ -233,7 +233,7 @@ LABEL_12:
   if (*&self->_has)
   {
     entityCount = self->_entityCount;
-    if (entityCount != [v4 entityCount])
+    if (entityCount != [equalCopy entityCount])
     {
       goto LABEL_12;
     }
@@ -245,10 +245,10 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -290,22 +290,22 @@ LABEL_13:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addCandidateEntities:(id)a3
+- (void)addCandidateEntities:(id)entities
 {
-  v4 = a3;
+  entitiesCopy = entities;
   candidateEntities = self->_candidateEntities;
-  v8 = v4;
+  v8 = entitiesCopy;
   if (!candidateEntities)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_candidateEntities;
-    self->_candidateEntities = v6;
+    self->_candidateEntities = array;
 
-    v4 = v8;
+    entitiesCopy = v8;
     candidateEntities = self->_candidateEntities;
   }
 
-  [(NSArray *)candidateEntities addObject:v4];
+  [(NSArray *)candidateEntities addObject:entitiesCopy];
 }
 
 @end

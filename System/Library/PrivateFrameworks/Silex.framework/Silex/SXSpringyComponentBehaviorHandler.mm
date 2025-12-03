@@ -1,57 +1,57 @@
 @interface SXSpringyComponentBehaviorHandler
 - (CGPoint)originalCenter;
-- (SXSpringyComponentBehaviorHandler)initWithComponentView:(id)a3 withBehavior:(id)a4;
+- (SXSpringyComponentBehaviorHandler)initWithComponentView:(id)view withBehavior:(id)behavior;
 - (void)dealloc;
-- (void)destroyWithBehaviorController:(id)a3;
-- (void)setupWithBehaviorController:(id)a3;
-- (void)updateWithBehaviorController:(id)a3;
+- (void)destroyWithBehaviorController:(id)controller;
+- (void)setupWithBehaviorController:(id)controller;
+- (void)updateWithBehaviorController:(id)controller;
 @end
 
 @implementation SXSpringyComponentBehaviorHandler
 
-- (SXSpringyComponentBehaviorHandler)initWithComponentView:(id)a3 withBehavior:(id)a4
+- (SXSpringyComponentBehaviorHandler)initWithComponentView:(id)view withBehavior:(id)behavior
 {
   v13.receiver = self;
   v13.super_class = SXSpringyComponentBehaviorHandler;
-  v4 = [(SXComponentBehaviorHandler *)&v13 initWithComponentView:a3 withBehavior:a4];
+  v4 = [(SXComponentBehaviorHandler *)&v13 initWithComponentView:view withBehavior:behavior];
   v5 = v4;
   if (v4)
   {
-    v6 = [(SXComponentBehaviorHandler *)v4 behavior];
-    [v6 frequency];
+    behavior = [(SXComponentBehaviorHandler *)v4 behavior];
+    [behavior frequency];
     v5->_frequency = v7;
 
-    v8 = [(SXComponentBehaviorHandler *)v5 behavior];
-    [v8 damping];
+    behavior2 = [(SXComponentBehaviorHandler *)v5 behavior];
+    [behavior2 damping];
     v5->_damping = v9;
 
-    v10 = [(SXComponentBehaviorHandler *)v5 behavior];
-    [v10 delta];
+    behavior3 = [(SXComponentBehaviorHandler *)v5 behavior];
+    [behavior3 delta];
     v5->_delta = v11;
   }
 
   return v5;
 }
 
-- (void)setupWithBehaviorController:(id)a3
+- (void)setupWithBehaviorController:(id)controller
 {
   v20.receiver = self;
   v20.super_class = SXSpringyComponentBehaviorHandler;
-  v4 = a3;
-  [(SXComponentBehaviorHandler *)&v20 setupWithBehaviorController:v4];
+  controllerCopy = controller;
+  [(SXComponentBehaviorHandler *)&v20 setupWithBehaviorController:controllerCopy];
   v5 = [(SXComponentBehaviorHandler *)self behaviorView:v20.receiver];
-  v6 = [v4 animator];
+  animator = [controllerCopy animator];
 
-  [(SXSpringyComponentBehaviorHandler *)self setDynamicAnimator:v6];
+  [(SXSpringyComponentBehaviorHandler *)self setDynamicAnimator:animator];
   [v5 center];
   [(SXSpringyComponentBehaviorHandler *)self setOriginalCenter:?];
-  v7 = [v5 superview];
+  superview = [v5 superview];
   [v5 center];
   v9 = v8;
   v11 = v10;
-  v12 = [(SXSpringyComponentBehaviorHandler *)self dynamicAnimator];
-  v13 = [v12 referenceView];
-  [v7 convertPoint:v13 toView:{v9, v11}];
+  dynamicAnimator = [(SXSpringyComponentBehaviorHandler *)self dynamicAnimator];
+  referenceView = [dynamicAnimator referenceView];
+  [superview convertPoint:referenceView toView:{v9, v11}];
   v15 = v14;
   v17 = v16;
 
@@ -61,22 +61,22 @@
   [v18 setFrequency:?];
   [(SXSpringyComponentBehaviorHandler *)self damping];
   [v18 setDamping:?];
-  v19 = [(SXSpringyComponentBehaviorHandler *)self dynamicAnimator];
-  [v19 addBehavior:v18];
+  dynamicAnimator2 = [(SXSpringyComponentBehaviorHandler *)self dynamicAnimator];
+  [dynamicAnimator2 addBehavior:v18];
 
   [(SXSpringyComponentBehaviorHandler *)self setDynamicBehavior:v18];
 }
 
-- (void)updateWithBehaviorController:(id)a3
+- (void)updateWithBehaviorController:(id)controller
 {
   v18.receiver = self;
   v18.super_class = SXSpringyComponentBehaviorHandler;
-  v4 = a3;
-  [(SXComponentBehaviorHandler *)&v18 updateWithBehaviorController:v4];
+  controllerCopy = controller;
+  [(SXComponentBehaviorHandler *)&v18 updateWithBehaviorController:controllerCopy];
   v5 = [(SXComponentBehaviorHandler *)self behaviorView:v18.receiver];
-  v6 = [v4 viewport];
+  viewport = [controllerCopy viewport];
 
-  [v6 dynamicBounds];
+  [viewport dynamicBounds];
   v8 = v7;
 
   [(SXSpringyComponentBehaviorHandler *)self lastYOffset];
@@ -93,20 +93,20 @@
   }
 
   [v5 setCenter:{v14, v12 + v16}];
-  v17 = [(SXSpringyComponentBehaviorHandler *)self dynamicAnimator];
-  [v17 updateItemUsingCurrentState:v5];
+  dynamicAnimator = [(SXSpringyComponentBehaviorHandler *)self dynamicAnimator];
+  [dynamicAnimator updateItemUsingCurrentState:v5];
 
   [(SXSpringyComponentBehaviorHandler *)self setLastYOffset:v8];
 }
 
-- (void)destroyWithBehaviorController:(id)a3
+- (void)destroyWithBehaviorController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = SXSpringyComponentBehaviorHandler;
-  [(SXComponentBehaviorHandler *)&v6 destroyWithBehaviorController:a3];
-  v4 = [(SXSpringyComponentBehaviorHandler *)self dynamicAnimator];
-  v5 = [(SXSpringyComponentBehaviorHandler *)self dynamicBehavior];
-  [v4 removeBehavior:v5];
+  [(SXComponentBehaviorHandler *)&v6 destroyWithBehaviorController:controller];
+  dynamicAnimator = [(SXSpringyComponentBehaviorHandler *)self dynamicAnimator];
+  dynamicBehavior = [(SXSpringyComponentBehaviorHandler *)self dynamicBehavior];
+  [dynamicAnimator removeBehavior:dynamicBehavior];
 
   [(SXSpringyComponentBehaviorHandler *)self setDynamicBehavior:0];
   [(SXSpringyComponentBehaviorHandler *)self setDynamicAnimator:0];

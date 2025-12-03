@@ -1,23 +1,23 @@
 @interface RAPWebBundleBaseMapViewController
 - (CLLocationCoordinate2D)startingCoordinateForMapPicker;
-- (RAPWebBundleBaseMapViewController)initWithReport:(id)a3;
-- (void)_updateMapViewWithUpdateMapPickerViewDictionary:(id)a3;
-- (void)didReceiveMessageFromUserContentController:(id)a3 message:(id)a4 replyHandler:(id)a5;
-- (void)rapWebBundleMapViewController:(id)a3 marker:(id)a4 didUpdateLocationTo:(CLLocationCoordinate2D)a5;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (RAPWebBundleBaseMapViewController)initWithReport:(id)report;
+- (void)_updateMapViewWithUpdateMapPickerViewDictionary:(id)dictionary;
+- (void)didReceiveMessageFromUserContentController:(id)controller message:(id)message replyHandler:(id)handler;
+- (void)rapWebBundleMapViewController:(id)controller marker:(id)marker didUpdateLocationTo:(CLLocationCoordinate2D)to;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 - (void)viewDidLoad;
 @end
 
 @implementation RAPWebBundleBaseMapViewController
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSMutableDictionary *)self->_mapViews allValues:a3];
+  v5 = [(NSMutableDictionary *)self->_mapViews allValues:dragging];
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -45,13 +45,13 @@
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMutableDictionary *)self->_mapViews allValues:a3];
+  v3 = [(NSMutableDictionary *)self->_mapViews allValues:dragging];
   v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
@@ -79,20 +79,20 @@
   }
 }
 
-- (void)rapWebBundleMapViewController:(id)a3 marker:(id)a4 didUpdateLocationTo:(CLLocationCoordinate2D)a5
+- (void)rapWebBundleMapViewController:(id)controller marker:(id)marker didUpdateLocationTo:(CLLocationCoordinate2D)to
 {
-  longitude = a5.longitude;
-  latitude = a5.latitude;
-  v37 = a3;
-  v8 = a4;
+  longitude = to.longitude;
+  latitude = to.latitude;
+  controllerCopy = controller;
+  markerCopy = marker;
   v35 = objc_alloc_init(NSMutableDictionary);
   v39 = objc_alloc_init(NSMutableArray);
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v36 = v8;
-  obj = [v8 featureHandles];
+  v36 = markerCopy;
+  obj = [markerCopy featureHandles];
   v9 = [obj countByEnumeratingWithState:&v41 objects:v47 count:16];
   if (v9)
   {
@@ -139,12 +139,12 @@
     while (v10);
   }
 
-  v22 = [(NSMutableDictionary *)self->_mapViews allKeysForObject:v37];
-  v23 = [v22 firstObject];
+  v22 = [(NSMutableDictionary *)self->_mapViews allKeysForObject:controllerCopy];
+  firstObject = [v22 firstObject];
 
-  if (v23)
+  if (firstObject)
   {
-    [v35 setObject:v23 forKeyedSubscript:@"id"];
+    [v35 setObject:firstObject forKeyedSubscript:@"id"];
   }
 
   v24 = [NSNumber numberWithDouble:latitude];
@@ -154,8 +154,8 @@
   [v35 setObject:v25 forKeyedSubscript:@"longitude"];
 
   [v35 setObject:v39 forKeyedSubscript:@"featureHandle"];
-  v26 = [v36 name];
-  [v35 setObject:v26 forKeyedSubscript:@"featureName"];
+  name = [v36 name];
+  [v35 setObject:name forKeyedSubscript:@"featureName"];
 
   v40 = 0;
   v27 = [NSJSONSerialization dataWithJSONObject:v35 options:0 error:&v40];
@@ -173,30 +173,30 @@
 
   v30 = [[NSString alloc] initWithData:v27 encoding:4];
   v31 = [NSString stringWithFormat:@"return rapSetMapPickerValue(%@)", v30];
-  v32 = [(RAPWebBundleBaseViewController *)self webView];
+  webView = [(RAPWebBundleBaseViewController *)self webView];
   v33 = +[WKContentWorld pageWorld];
-  [v32 callAsyncJavaScript:v31 arguments:&__NSDictionary0__struct inFrame:0 inContentWorld:v33 completionHandler:&stru_101627848];
+  [webView callAsyncJavaScript:v31 arguments:&__NSDictionary0__struct inFrame:0 inContentWorld:v33 completionHandler:&stru_101627848];
 }
 
-- (void)didReceiveMessageFromUserContentController:(id)a3 message:(id)a4 replyHandler:(id)a5
+- (void)didReceiveMessageFromUserContentController:(id)controller message:(id)message replyHandler:(id)handler
 {
-  v8 = a4;
+  messageCopy = message;
   v10.receiver = self;
   v10.super_class = RAPWebBundleBaseMapViewController;
-  [(RAPWebBundleBaseViewController *)&v10 didReceiveMessageFromUserContentController:a3 message:v8 replyHandler:a5];
-  v9 = [v8 objectForKeyedSubscript:@"name"];
-  LODWORD(a3) = [v9 isEqualToString:@"updateMapPickerView"];
+  [(RAPWebBundleBaseViewController *)&v10 didReceiveMessageFromUserContentController:controller message:messageCopy replyHandler:handler];
+  v9 = [messageCopy objectForKeyedSubscript:@"name"];
+  LODWORD(controller) = [v9 isEqualToString:@"updateMapPickerView"];
 
-  if (a3)
+  if (controller)
   {
-    [(RAPWebBundleBaseMapViewController *)self _updateMapViewWithUpdateMapPickerViewDictionary:v8];
+    [(RAPWebBundleBaseMapViewController *)self _updateMapViewWithUpdateMapPickerViewDictionary:messageCopy];
   }
 }
 
-- (void)_updateMapViewWithUpdateMapPickerViewDictionary:(id)a3
+- (void)_updateMapViewWithUpdateMapPickerViewDictionary:(id)dictionary
 {
-  v86 = a3;
-  v4 = [v86 objectForKeyedSubscript:@"start"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"start"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -212,7 +212,7 @@
 
   if (v6)
   {
-    v7 = [v86 objectForKeyedSubscript:@"end"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"end"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -232,12 +232,12 @@
       v10 = [[RAPWebBundleMapViewPosition alloc] initWithDictionary:v6];
       v84 = v9;
       v83 = [[RAPWebBundleMapViewPosition alloc] initWithDictionary:v9];
-      v11 = [v86 objectForKeyedSubscript:@"duration"];
-      v82 = [v11 integerValue];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"duration"];
+      integerValue = [v11 integerValue];
 
       mapViews = self->_mapViews;
-      v13 = [(RAPWebBundleMapViewPosition *)v10 mapId];
-      v14 = [(NSMutableDictionary *)mapViews objectForKeyedSubscript:v13];
+      mapId = [(RAPWebBundleMapViewPosition *)v10 mapId];
+      v14 = [(NSMutableDictionary *)mapViews objectForKeyedSubscript:mapId];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -256,39 +256,39 @@
       {
         p_mapViewConstraints = &self->_mapViewConstraints;
         mapViewConstraints = self->_mapViewConstraints;
-        v18 = [(RAPWebBundleMapViewPosition *)v10 mapId];
-        v78 = [(NSMutableDictionary *)mapViewConstraints objectForKeyedSubscript:v18];
+        mapId2 = [(RAPWebBundleMapViewPosition *)v10 mapId];
+        v78 = [(NSMutableDictionary *)mapViewConstraints objectForKeyedSubscript:mapId2];
 
         [NSLayoutConstraint deactivateConstraints:v78];
-        v19 = [(RAPWebBundleMapViewController *)v16 view];
-        v20 = [v19 heightAnchor];
+        view = [(RAPWebBundleMapViewController *)v16 view];
+        heightAnchor = [view heightAnchor];
         [(RAPWebBundleMapViewPosition *)v10 height];
-        v77 = [v20 constraintEqualToConstant:?];
+        v77 = [heightAnchor constraintEqualToConstant:?];
 
-        v21 = [(RAPWebBundleMapViewController *)v16 view];
-        v22 = [v21 topAnchor];
-        v23 = [(RAPWebBundleBaseViewController *)self webView];
-        v24 = [v23 scrollView];
-        v25 = [v24 topAnchor];
+        view2 = [(RAPWebBundleMapViewController *)v16 view];
+        topAnchor = [view2 topAnchor];
+        webView = [(RAPWebBundleBaseViewController *)self webView];
+        scrollView = [webView scrollView];
+        topAnchor2 = [scrollView topAnchor];
         [(RAPWebBundleMapViewPosition *)v10 yPosition];
-        v80 = [v22 constraintEqualToAnchor:v25 constant:?];
+        v80 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
 
-        v26 = [(RAPWebBundleMapViewController *)v16 view];
-        v27 = [v26 leadingAnchor];
-        v28 = [(RAPWebBundleBaseViewController *)self webView];
-        v29 = [v28 safeAreaLayoutGuide];
-        v30 = [v29 leadingAnchor];
+        view3 = [(RAPWebBundleMapViewController *)v16 view];
+        leadingAnchor = [view3 leadingAnchor];
+        webView2 = [(RAPWebBundleBaseViewController *)self webView];
+        safeAreaLayoutGuide = [webView2 safeAreaLayoutGuide];
+        leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
         [(RAPWebBundleMapViewPosition *)v10 xPosition];
-        v31 = [v27 constraintEqualToAnchor:v30 constant:?];
+        v31 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
 
         v32 = v80;
-        v33 = [(RAPWebBundleMapViewController *)v16 view];
-        v34 = [v33 trailingAnchor];
-        v35 = [(RAPWebBundleBaseViewController *)self webView];
-        v36 = [v35 safeAreaLayoutGuide];
-        v37 = [v36 trailingAnchor];
+        view4 = [(RAPWebBundleMapViewController *)v16 view];
+        trailingAnchor = [view4 trailingAnchor];
+        webView3 = [(RAPWebBundleBaseViewController *)self webView];
+        safeAreaLayoutGuide2 = [webView3 safeAreaLayoutGuide];
+        trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
         [(RAPWebBundleMapViewPosition *)v10 xPosition];
-        v39 = [v34 constraintEqualToAnchor:v37 constant:-v38];
+        v39 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v38];
 
         v40 = v77;
         v90[0] = v77;
@@ -305,46 +305,46 @@
       {
         [(RAPWebBundleBaseMapViewController *)self startingCoordinateForMapPicker];
         v14 = [[RAPWebBundleMapViewController alloc] initWithReport:self->_report coordinate:v43, v44];
-        v45 = [(RAPWebBundleMapViewController *)v14 view];
-        [v45 setTranslatesAutoresizingMaskIntoConstraints:0];
+        view5 = [(RAPWebBundleMapViewController *)v14 view];
+        [view5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
         [(RAPWebBundleMapViewController *)v14 setDelegate:self];
         v46 = self->_mapViews;
-        v47 = [(RAPWebBundleMapViewPosition *)v10 mapId];
-        [(NSMutableDictionary *)v46 setObject:v14 forKeyedSubscript:v47];
+        mapId3 = [(RAPWebBundleMapViewPosition *)v10 mapId];
+        [(NSMutableDictionary *)v46 setObject:v14 forKeyedSubscript:mapId3];
 
         [(RAPWebBundleBaseMapViewController *)self addChildViewController:v14];
-        v48 = [(RAPWebBundleBaseViewController *)self webView];
-        v49 = [v48 scrollView];
-        v50 = [(RAPWebBundleMapViewController *)v14 view];
-        [v49 addSubview:v50];
+        webView4 = [(RAPWebBundleBaseViewController *)self webView];
+        scrollView2 = [webView4 scrollView];
+        view6 = [(RAPWebBundleMapViewController *)v14 view];
+        [scrollView2 addSubview:view6];
 
         [(RAPWebBundleMapViewController *)v14 didMoveToParentViewController:self];
-        v51 = [(RAPWebBundleMapViewController *)v14 view];
-        v52 = [v51 heightAnchor];
+        view7 = [(RAPWebBundleMapViewController *)v14 view];
+        heightAnchor2 = [view7 heightAnchor];
         [(RAPWebBundleMapViewPosition *)v10 height];
-        v53 = [v52 constraintEqualToConstant:?];
+        v53 = [heightAnchor2 constraintEqualToConstant:?];
 
-        v54 = [(RAPWebBundleMapViewController *)v14 view];
-        v55 = [v54 topAnchor];
-        v56 = [(RAPWebBundleBaseViewController *)self webView];
-        v57 = [v56 scrollView];
-        v58 = [v57 topAnchor];
+        view8 = [(RAPWebBundleMapViewController *)v14 view];
+        topAnchor3 = [view8 topAnchor];
+        webView5 = [(RAPWebBundleBaseViewController *)self webView];
+        scrollView3 = [webView5 scrollView];
+        topAnchor4 = [scrollView3 topAnchor];
         [(RAPWebBundleMapViewPosition *)v10 yPosition];
-        v81 = [v55 constraintEqualToAnchor:v58 constant:?];
+        v81 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:?];
 
         v40 = v53;
-        v59 = [(RAPWebBundleMapViewController *)v14 view];
-        v60 = [v59 leadingAnchor];
-        v61 = [(RAPWebBundleBaseViewController *)self webView];
-        v62 = [v61 leadingAnchor];
-        v31 = [v60 constraintEqualToAnchor:v62];
+        view9 = [(RAPWebBundleMapViewController *)v14 view];
+        leadingAnchor3 = [view9 leadingAnchor];
+        webView6 = [(RAPWebBundleBaseViewController *)self webView];
+        leadingAnchor4 = [webView6 leadingAnchor];
+        v31 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
 
-        v63 = [(RAPWebBundleMapViewController *)v14 view];
-        v64 = [v63 trailingAnchor];
-        v65 = [(RAPWebBundleBaseViewController *)self webView];
-        v66 = [v65 trailingAnchor];
-        v39 = [v64 constraintEqualToAnchor:v66];
+        view10 = [(RAPWebBundleMapViewController *)v14 view];
+        trailingAnchor3 = [view10 trailingAnchor];
+        webView7 = [(RAPWebBundleBaseViewController *)self webView];
+        trailingAnchor4 = [webView7 trailingAnchor];
+        v39 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
 
         v32 = v81;
         v91[0] = v40;
@@ -357,16 +357,16 @@
       }
 
       v67 = *v42;
-      v68 = [(RAPWebBundleMapViewPosition *)v10 mapId];
-      [(NSMutableDictionary *)v67 setObject:v41 forKeyedSubscript:v68];
+      mapId4 = [(RAPWebBundleMapViewPosition *)v10 mapId];
+      [(NSMutableDictionary *)v67 setObject:v41 forKeyedSubscript:mapId4];
 
       [(RAPWebBundleMapViewPosition *)v10 opacity];
       v70 = v69;
-      v71 = [(RAPWebBundleMapViewController *)v14 view];
-      [v71 setAlpha:v70];
+      view11 = [(RAPWebBundleMapViewController *)v14 view];
+      [view11 setAlpha:v70];
 
-      v72 = [(RAPWebBundleMapViewController *)v14 view];
-      [v72 layoutIfNeeded];
+      view12 = [(RAPWebBundleMapViewController *)v14 view];
+      [view12 layoutIfNeeded];
 
       [(RAPWebBundleMapViewPosition *)v83 height];
       [v40 setConstant:?];
@@ -376,8 +376,8 @@
       [v31 setConstant:?];
       [(RAPWebBundleMapViewPosition *)v83 xPosition];
       [v39 setConstant:-v73];
-      v74 = [(RAPWebBundleMapViewController *)v14 view];
-      [v74 layoutIfNeeded];
+      view13 = [(RAPWebBundleMapViewController *)v14 view];
+      [view13 layoutIfNeeded];
 
       v87[0] = _NSConcreteStackBlock;
       v87[1] = 3221225472;
@@ -387,7 +387,7 @@
       v89 = v83;
       v75 = v83;
       v76 = v14;
-      [UIView animateWithDuration:v87 animations:(v82 / 1000)];
+      [UIView animateWithDuration:v87 animations:(integerValue / 1000)];
       [(RAPWebBundleMapViewController *)v76 setMapViewEnabled:1];
 
       v9 = v84;
@@ -398,11 +398,11 @@
 
 - (CLLocationCoordinate2D)startingCoordinateForMapPicker
 {
-  v3 = [(RAPReport *)self->_report initialQuestion];
+  initialQuestion = [(RAPReport *)self->_report initialQuestion];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = initialQuestion;
   }
 
   else
@@ -414,24 +414,24 @@
 
   if (v5)
   {
-    v6 = [v5 reportedPlace];
-    v7 = [v6 mapItem];
+    reportedPlace = [v5 reportedPlace];
+    mapItem = [reportedPlace mapItem];
 
-    if (v7)
+    if (mapItem)
     {
-      v8 = [v5 reportedPlace];
-      v9 = [v8 mapItem];
-      v10 = [v9 location];
-      [v10 coordinate];
+      reportedPlace2 = [v5 reportedPlace];
+      mapItem2 = [reportedPlace2 mapItem];
+      location = [mapItem2 location];
+      [location coordinate];
       latitude = v11;
       longitude = v13;
     }
 
     else
     {
-      v8 = [(RAPReport *)self->_report _context];
-      v9 = [v8 mapCamera];
-      [v9 centerCoordinate];
+      reportedPlace2 = [(RAPReport *)self->_report _context];
+      mapItem2 = [reportedPlace2 mapCamera];
+      [mapItem2 centerCoordinate];
       latitude = v15;
       longitude = v16;
     }
@@ -464,16 +464,16 @@
   self->_mapViewConstraints = v5;
 }
 
-- (RAPWebBundleBaseMapViewController)initWithReport:(id)a3
+- (RAPWebBundleBaseMapViewController)initWithReport:(id)report
 {
-  v5 = a3;
+  reportCopy = report;
   v9.receiver = self;
   v9.super_class = RAPWebBundleBaseMapViewController;
-  v6 = [(RAPWebBundleBaseViewController *)&v9 initWithReport:v5];
+  v6 = [(RAPWebBundleBaseViewController *)&v9 initWithReport:reportCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_report, a3);
+    objc_storeStrong(&v6->_report, report);
   }
 
   return v7;

@@ -1,17 +1,17 @@
 @interface C2WarmRequest
-- (C2WarmRequest)initWithData:(id)a3 callback:(id)a4;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 needNewBodyStream:(id)a5;
+- (C2WarmRequest)initWithData:(id)data callback:(id)callback;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task needNewBodyStream:(id)stream;
 - (void)send;
 @end
 
 @implementation C2WarmRequest
 
-- (C2WarmRequest)initWithData:(id)a3 callback:(id)a4
+- (C2WarmRequest)initWithData:(id)data callback:(id)callback
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  callbackCopy = callback;
   v40.receiver = self;
   v40.super_class = C2WarmRequest;
   v8 = [(C2WarmRequest *)&v40 init];
@@ -20,7 +20,7 @@
     goto LABEL_38;
   }
 
-  if (!v6)
+  if (!dataCopy)
   {
     v15 = mmcs_logging_logger_default();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -33,7 +33,7 @@
   }
 
   v39 = 0;
-  v9 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v6 error:&v39];
+  v9 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v39];
   v10 = v39;
   v11 = v10;
   if (v9)
@@ -62,23 +62,23 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v16 = [v9 invokedURL];
+  invokedURL = [v9 invokedURL];
 
-  if (v16)
+  if (invokedURL)
   {
-    v17 = [MEMORY[0x277CCAD78] UUID];
-    v18 = [v17 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
-    if (v18)
+    if (uUIDString)
     {
-      v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"C2WarmRequest requestUUID:%@", v18];
+      v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"C2WarmRequest requestUUID:%@", uUIDString];
       if (v19)
       {
         v20 = v19;
         [v9 setIdentifier:v19];
         v21 = MEMORY[0x277CCACE0];
-        v22 = [v9 invokedURL];
-        v23 = [v21 componentsWithURL:v22 resolvingAgainstBaseURL:1];
+        invokedURL2 = [v9 invokedURL];
+        v23 = [v21 componentsWithURL:invokedURL2 resolvingAgainstBaseURL:1];
 
         if (v23)
         {
@@ -92,9 +92,9 @@ LABEL_20:
             v27 = v26;
             if (v26)
             {
-              [v26 setValue:v18 forHTTPHeaderField:@"x-apple-request-uuid"];
+              [v26 setValue:uUIDString forHTTPHeaderField:@"x-apple-request-uuid"];
               objc_storeStrong(&v8->_warmRequest, v27);
-              v28 = MEMORY[0x259C67460](v7);
+              v28 = MEMORY[0x259C67460](callbackCopy);
               callback = v8->_callback;
               v8->_callback = v28;
 
@@ -136,9 +136,9 @@ LABEL_38:
           v32 = mmcs_logging_logger_default();
           if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
           {
-            v33 = [v9 invokedURL];
+            invokedURL3 = [v9 invokedURL];
             *buf = 138412290;
-            v42 = v33;
+            v42 = invokedURL3;
             _os_log_impl(&dword_2577D8000, v32, OS_LOG_TYPE_ERROR, "Error initializing urlComponents with url %@", buf, 0xCu);
           }
         }
@@ -189,19 +189,19 @@ LABEL_39:
 
 - (void)send
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"mmcs_http_warm.m" lineNumber:80 description:@"warmOptions must not be nil."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"mmcs_http_warm.m" lineNumber:80 description:@"warmOptions must not be nil."];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v18 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
+  if (errorCopy)
   {
-    v14 = v9;
-    error_with_underlying_error = mmcs_cferror_create_error_with_underlying_error(@"com.apple.mmcs", 38, v9, @"Encountered Network Error on Warm Request", v10, v11, v12, v13, v17);
+    v14 = errorCopy;
+    error_with_underlying_error = mmcs_cferror_create_error_with_underlying_error(@"com.apple.mmcs", 38, errorCopy, @"Encountered Network Error on Warm Request", v10, v11, v12, v13, v17);
   }
 
   else
@@ -216,10 +216,10 @@ LABEL_39:
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 needNewBodyStream:(id)a5
+- (void)URLSession:(id)session task:(id)task needNewBodyStream:(id)stream
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"mmcs_http_warm.m" lineNumber:130 description:@"Unexpected callback."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"mmcs_http_warm.m" lineNumber:130 description:@"Unexpected callback."];
 }
 
 @end

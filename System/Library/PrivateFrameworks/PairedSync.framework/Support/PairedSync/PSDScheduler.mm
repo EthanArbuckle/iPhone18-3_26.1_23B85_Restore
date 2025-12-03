@@ -2,53 +2,53 @@
 + (BOOL)_isInternalInstall;
 + (BOOL)_isSyncShameDisabled;
 + (id)sharedScheduler;
-- (BOOL)_canAttemptRetryForActivity:(id)a3;
-- (BOOL)_shouldHandleCallbackForActivity:(id)a3;
-- (BOOL)buddyStageDependencyClearedForActivity:(id)a3;
-- (BOOL)scheduleSyncSession:(id)a3;
+- (BOOL)_canAttemptRetryForActivity:(id)activity;
+- (BOOL)_shouldHandleCallbackForActivity:(id)activity;
+- (BOOL)buddyStageDependencyClearedForActivity:(id)activity;
+- (BOOL)scheduleSyncSession:(id)session;
 - (BOOL)shouldLaunchAsDryRun;
 - (PSDScheduler)init;
 - (PSYSyncSession)syncSession;
-- (double)_timeoutForActivity:(id)a3;
-- (id)_localizedString:(id)a3;
-- (id)_syncOptionsForActivity:(id)a3;
-- (id)activitiesForSessionActivites:(id)a3;
-- (id)nrDeviceForPairingIdentifier:(id)a3;
+- (double)_timeoutForActivity:(id)activity;
+- (id)_localizedString:(id)string;
+- (id)_syncOptionsForActivity:(id)activity;
+- (id)activitiesForSessionActivites:(id)activites;
+- (id)nrDeviceForPairingIdentifier:(id)identifier;
 - (int)_indexOfNextEligibleActivity;
 - (int64_t)_maxSupportedActivitiesForCurrentLink;
-- (void)_abortActivity:(id)a3;
+- (void)_abortActivity:(id)activity;
 - (void)_abortRunningActivities;
-- (void)_activityDidTimeout:(id)a3;
-- (void)_activityTimeoutHandler:(id)a3;
-- (void)_activityWasInterrupted:(id)a3;
+- (void)_activityDidTimeout:(id)timeout;
+- (void)_activityTimeoutHandler:(id)handler;
+- (void)_activityWasInterrupted:(id)interrupted;
 - (void)_cancelAllActivityTimers;
-- (void)_clearActivityTimer:(id)a3;
-- (void)_currentProgressUpdated:(float)a3 forActivity:(id)a4;
-- (void)_dequeueNextActivityAfter:(id)a3;
-- (void)_finishActivity:(id)a3 success:(BOOL)a4 error:(id)a5;
-- (void)_popATimeoutAlert:(unint64_t)a3;
+- (void)_clearActivityTimer:(id)timer;
+- (void)_currentProgressUpdated:(float)updated forActivity:(id)activity;
+- (void)_dequeueNextActivityAfter:(id)after;
+- (void)_finishActivity:(id)activity success:(BOOL)success error:(id)error;
+- (void)_popATimeoutAlert:(unint64_t)alert;
 - (void)_queue_cleanup;
-- (void)_queue_enumerateSchedulerObserversWithBlock:(id)a3;
-- (void)_queue_tellObserversDidClearSyncSession:(id)a3 withBlock:(id)a4;
-- (void)_queue_tellObserversDidUpdateSyncSessionWithUpdate:(id)a3;
+- (void)_queue_enumerateSchedulerObserversWithBlock:(id)block;
+- (void)_queue_tellObserversDidClearSyncSession:(id)session withBlock:(id)block;
+- (void)_queue_tellObserversDidUpdateSyncSessionWithUpdate:(id)update;
 - (void)_queue_tellObserversWillStartSyncSession;
-- (void)_queue_updateSyncSessionActivity:(id)a3;
-- (void)_queue_updateWithSyncSession:(id)a3;
+- (void)_queue_updateSyncSessionActivity:(id)activity;
+- (void)_queue_updateWithSyncSession:(id)session;
 - (void)_resetLinkMonitor;
 - (void)_scheduleNextActivityIfPossible;
-- (void)_scheduleTimeoutForActivity:(id)a3;
+- (void)_scheduleTimeoutForActivity:(id)activity;
 - (void)_scheduledActivitiesDidComplete;
-- (void)_setupLinkMonitorForDevice:(id)a3;
-- (void)_startActivity:(id)a3;
-- (void)_takeStackshotSequenceWithLabel:(id)a3;
+- (void)_setupLinkMonitorForDevice:(id)device;
+- (void)_startActivity:(id)activity;
+- (void)_takeStackshotSequenceWithLabel:(id)label;
 - (void)_updateDefaults;
-- (void)activity:(id)a3 didUpdateProgress:(float)a4;
-- (void)activityDidCompleteSending:(id)a3;
-- (void)addSchedulerObserver:(id)a3;
+- (void)activity:(id)activity didUpdateProgress:(float)progress;
+- (void)activityDidCompleteSending:(id)sending;
+- (void)addSchedulerObserver:(id)observer;
 - (void)cancelSyncSession;
-- (void)linkChangedToLinkType:(int64_t)a3;
-- (void)registry:(id)a3 changed:(id)a4 properties:(id)a5;
-- (void)removeSchedulerObserver:(id)a3;
+- (void)linkChangedToLinkType:(int64_t)type;
+- (void)registry:(id)registry changed:(id)changed properties:(id)properties;
+- (void)removeSchedulerObserver:(id)observer;
 @end
 
 @implementation PSDScheduler
@@ -59,7 +59,7 @@
   block[1] = 3221225472;
   block[2] = sub_10001120C;
   block[3] = &unk_10002C778;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100038090 != -1)
   {
     dispatch_once(&qword_100038090, block);
@@ -114,10 +114,10 @@
   return v14;
 }
 
-- (void)addSchedulerObserver:(id)a3
+- (void)addSchedulerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [[PSDSchedulerObserver alloc] initWithObserver:v4];
+  observerCopy = observer;
+  v5 = [[PSDSchedulerObserver alloc] initWithObserver:observerCopy];
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -125,23 +125,23 @@
   block[3] = &unk_10002CC30;
   block[4] = self;
   v10 = v5;
-  v11 = v4;
-  v7 = v4;
+  v11 = observerCopy;
+  v7 = observerCopy;
   v8 = v5;
   dispatch_async(queue, block);
 }
 
-- (void)removeSchedulerObserver:(id)a3
+- (void)removeSchedulerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100011538;
   v7[3] = &unk_10002C8B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -178,10 +178,10 @@
   }
 }
 
-- (void)_setupLinkMonitorForDevice:(id)a3
+- (void)_setupLinkMonitorForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [[PSYLinkUpgradeMonitor alloc] initWithRegistryDevice:v4 delegateQueue:self->_queue];
+  deviceCopy = device;
+  v5 = [[PSYLinkUpgradeMonitor alloc] initWithRegistryDevice:deviceCopy delegateQueue:self->_queue];
 
   linkUpgradeMonitor = self->_linkUpgradeMonitor;
   self->_linkUpgradeMonitor = v5;
@@ -200,32 +200,32 @@
   self->_linkUpgradeMonitor = 0;
 }
 
-- (id)nrDeviceForPairingIdentifier:(id)a3
+- (id)nrDeviceForPairingIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (v3)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v4 = +[PSYRegistrySingleton registry];
-    v5 = [v4 getActiveDevice];
+    getActiveDevice = [v4 getActiveDevice];
 
-    v6 = [v5 pairingID];
-    v7 = [v6 isEqual:v3];
+    pairingID = [getActiveDevice pairingID];
+    v7 = [pairingID isEqual:identifierCopy];
 
     if (v7)
     {
-      v8 = v5;
+      v8 = getActiveDevice;
     }
 
     else
     {
       v9 = +[PSYRegistrySingleton registry];
-      v10 = [v9 getPairedDevices];
+      getPairedDevices = [v9 getPairedDevices];
 
       v21 = 0u;
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v11 = v10;
+      v11 = getPairedDevices;
       v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v12)
       {
@@ -240,8 +240,8 @@
             }
 
             v15 = *(*(&v19 + 1) + 8 * i);
-            v16 = [v15 pairingID];
-            v17 = [v16 isEqual:v3];
+            pairingID2 = [v15 pairingID];
+            v17 = [pairingID2 isEqual:identifierCopy];
 
             if (v17)
             {
@@ -274,9 +274,9 @@ LABEL_15:
   return v8;
 }
 
-- (BOOL)scheduleSyncSession:(id)a3
+- (BOOL)scheduleSyncSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -287,9 +287,9 @@ LABEL_15:
   block[2] = sub_100011A34;
   block[3] = &unk_10002C7C8;
   block[4] = self;
-  v9 = v4;
+  v9 = sessionCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = sessionCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -297,30 +297,30 @@ LABEL_15:
   return queue;
 }
 
-- (id)_localizedString:(id)a3
+- (id)_localizedString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = [NSBundle bundleWithIdentifier:@"com.apple.private.PairedSync"];
   v5 = +[NSLocale preferredLanguages];
-  v6 = [v5 firstObject];
-  if (!v6)
+  firstObject = [v5 firstObject];
+  if (!firstObject)
   {
     sub_10001B428();
   }
 
   v7 = +[NSLocale preferredLanguages];
-  v8 = [v7 firstObject];
-  v9 = v3;
+  firstObject2 = [v7 firstObject];
+  v9 = stringCopy;
   v10 = v4;
-  v11 = v8;
+  v11 = firstObject2;
   if (![v9 length] || !objc_msgSend(@"Localizable", "length") || !objc_msgSend(v11, "length"))
   {
     goto LABEL_10;
   }
 
-  v12 = [v10 localizations];
+  localizations = [v10 localizations];
   v13 = [NSArray arrayWithObject:v11];
-  v14 = CFBundleCopyLocalizationsForPreferences(v12, v13);
+  v14 = CFBundleCopyLocalizationsForPreferences(localizations, v13);
   if (![(__CFArray *)v14 count])
   {
     goto LABEL_8;
@@ -382,15 +382,15 @@ LABEL_10:
   return v4;
 }
 
-- (id)activitiesForSessionActivites:(id)a3
+- (id)activitiesForSessionActivites:(id)activites
 {
-  v4 = a3;
-  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  activitesCopy = activites;
+  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(activitesCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = activitesCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -407,8 +407,8 @@ LABEL_10:
 
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = [PSDActivity alloc];
-        v13 = [v11 activityInfo];
-        v14 = [(PSDActivity *)v12 initWithActivityInfo:v13 queue:self->_queue];
+        activityInfo = [v11 activityInfo];
+        v14 = [(PSDActivity *)v12 initWithActivityInfo:activityInfo queue:self->_queue];
 
         [(PSDActivity *)v14 setDelegate:self];
         if (v14)
@@ -426,22 +426,22 @@ LABEL_10:
   return v5;
 }
 
-- (void)_dequeueNextActivityAfter:(id)a3
+- (void)_dequeueNextActivityAfter:(id)after
 {
-  if (a3)
+  if (after)
   {
-    v4 = a3;
-    v5 = [v4 activityInfo];
-    v6 = [v5 label];
-    v7 = [v6 isEqualToString:@"com.apple.pairedsync.nanoprefsyncdfirst"];
+    afterCopy = after;
+    activityInfo = [afterCopy activityInfo];
+    label = [activityInfo label];
+    v7 = [label isEqualToString:@"com.apple.pairedsync.nanoprefsyncdfirst"];
 
     if (v7)
     {
       self->_completedNanoPreferencesSync = 1;
     }
 
-    [v4 setDelegate:0];
-    [(NSMutableArray *)self->_runningActivityQueue removeObject:v4];
+    [afterCopy setDelegate:0];
+    [(NSMutableArray *)self->_runningActivityQueue removeObject:afterCopy];
   }
 
   [(PSDScheduler *)self _scheduleNextActivityIfPossible];
@@ -449,14 +449,14 @@ LABEL_10:
 
 - (int)_indexOfNextEligibleActivity
 {
-  v3 = [(PSDScheduler *)self activityQueue];
-  v4 = [(PSYSyncSession *)self->_syncSession completedActivityLabelsSet];
-  if ([v3 count])
+  activityQueue = [(PSDScheduler *)self activityQueue];
+  completedActivityLabelsSet = [(PSYSyncSession *)self->_syncSession completedActivityLabelsSet];
+  if ([activityQueue count])
   {
     v5 = 0;
     while (1)
     {
-      v6 = [v3 objectAtIndex:v5];
+      v6 = [activityQueue objectAtIndex:v5];
       if ([(PSDScheduler *)self buddyStageDependencyClearedForActivity:v6])
       {
         break;
@@ -464,22 +464,22 @@ LABEL_10:
 
 LABEL_16:
 
-      if ([v3 count] <= ++v5)
+      if ([activityQueue count] <= ++v5)
       {
         goto LABEL_17;
       }
     }
 
-    v7 = [v6 activityInfo];
-    v8 = [v7 dependentServices];
+    activityInfo = [v6 activityInfo];
+    dependentServices = [activityInfo dependentServices];
 
-    if (v8 && [v8 count])
+    if (dependentServices && [dependentServices count])
     {
       v17 = 0u;
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v9 = v8;
+      v9 = dependentServices;
       v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v10)
       {
@@ -494,7 +494,7 @@ LABEL_16:
               objc_enumerationMutation(v9);
             }
 
-            if (![v4 containsObject:*(*(&v15 + 1) + 8 * i)])
+            if (![completedActivityLabelsSet containsObject:*(*(&v15 + 1) + 8 * i)])
             {
 
               goto LABEL_16;
@@ -522,10 +522,10 @@ LABEL_17:
   return v5;
 }
 
-- (BOOL)buddyStageDependencyClearedForActivity:(id)a3
+- (BOOL)buddyStageDependencyClearedForActivity:(id)activity
 {
-  v4 = a3;
-  if (-[PSYSyncSession syncSessionType](self->_syncSession, "syncSessionType") || ([v4 activityInfo], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "dependentBuddyStages"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6, !v8))
+  activityCopy = activity;
+  if (-[PSYSyncSession syncSessionType](self->_syncSession, "syncSessionType") || ([activityCopy activityInfo], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "dependentBuddyStages"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6, !v8))
   {
     v5 = 1;
   }
@@ -536,10 +536,10 @@ LABEL_17:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v9 = [v4 activityInfo];
-    v10 = [v9 dependentBuddyStages];
+    activityInfo = [activityCopy activityInfo];
+    dependentBuddyStages = [activityInfo dependentBuddyStages];
 
-    v11 = [v10 countByEnumeratingWithState:&v28 objects:v36 count:16];
+    v11 = [dependentBuddyStages countByEnumeratingWithState:&v28 objects:v36 count:16];
     if (v11)
     {
       v12 = v11;
@@ -550,13 +550,13 @@ LABEL_17:
         {
           if (*v29 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(dependentBuddyStages);
           }
 
-          v15 = [*(*(&v28 + 1) + 8 * i) unsignedIntegerValue];
-          if (v15 > 2)
+          unsignedIntegerValue = [*(*(&v28 + 1) + 8 * i) unsignedIntegerValue];
+          if (unsignedIntegerValue > 2)
           {
-            if (v15 == 3)
+            if (unsignedIntegerValue == 3)
             {
               if (!self->_buddyPastInstallAllAppsSelection)
               {
@@ -574,12 +574,12 @@ LABEL_17:
                   goto LABEL_37;
                 }
 
-                v19 = [v4 activityInfo];
-                v20 = [v19 label];
+                activityInfo2 = [activityCopy activityInfo];
+                label = [activityInfo2 label];
                 *buf = 134218242;
                 v33 = 3;
                 v34 = 2112;
-                v35 = v20;
+                v35 = label;
 LABEL_36:
                 _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "buddy stage dependency: %lu not cleared for :%@", buf, 0x16u);
 
@@ -587,7 +587,7 @@ LABEL_36:
               }
             }
 
-            else if (v15 == 4 && !self->_buddyPastApplePay)
+            else if (unsignedIntegerValue == 4 && !self->_buddyPastApplePay)
             {
               v16 = psd_log();
               v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
@@ -597,12 +597,12 @@ LABEL_36:
                 v18 = psd_log();
                 if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
                 {
-                  v19 = [v4 activityInfo];
-                  v20 = [v19 label];
+                  activityInfo2 = [activityCopy activityInfo];
+                  label = [activityInfo2 label];
                   *buf = 134218242;
                   v33 = 4;
                   v34 = 2112;
-                  v35 = v20;
+                  v35 = label;
                   goto LABEL_36;
                 }
 
@@ -615,7 +615,7 @@ LABEL_38:
             }
           }
 
-          else if (v15 == 1)
+          else if (unsignedIntegerValue == 1)
           {
             if (!self->_buddyPastActivation)
             {
@@ -633,17 +633,17 @@ LABEL_38:
                 goto LABEL_37;
               }
 
-              v19 = [v4 activityInfo];
-              v20 = [v19 label];
+              activityInfo2 = [activityCopy activityInfo];
+              label = [activityInfo2 label];
               *buf = 134218242;
               v33 = 1;
               v34 = 2112;
-              v35 = v20;
+              v35 = label;
               goto LABEL_36;
             }
           }
 
-          else if (v15 == 2 && !self->_buddyPastAppleID)
+          else if (unsignedIntegerValue == 2 && !self->_buddyPastAppleID)
           {
             v21 = psd_log();
             v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
@@ -659,17 +659,17 @@ LABEL_38:
               goto LABEL_37;
             }
 
-            v19 = [v4 activityInfo];
-            v20 = [v19 label];
+            activityInfo2 = [activityCopy activityInfo];
+            label = [activityInfo2 label];
             *buf = 134218242;
             v33 = 2;
             v34 = 2112;
-            v35 = v20;
+            v35 = label;
             goto LABEL_36;
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v28 objects:v36 count:16];
+        v12 = [dependentBuddyStages countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v12)
         {
           continue;
@@ -716,15 +716,15 @@ LABEL_39:
   {
     while (1)
     {
-      v9 = [(PSDScheduler *)self _indexOfNextEligibleActivity];
-      if ((v9 & 0x80000000) != 0)
+      _indexOfNextEligibleActivity = [(PSDScheduler *)self _indexOfNextEligibleActivity];
+      if ((_indexOfNextEligibleActivity & 0x80000000) != 0)
       {
         break;
       }
 
-      v10 = [(PSDScheduler *)self activityQueue];
-      v11 = v9;
-      v12 = [v10 objectAtIndex:v9];
+      activityQueue = [(PSDScheduler *)self activityQueue];
+      v11 = _indexOfNextEligibleActivity;
+      v12 = [activityQueue objectAtIndex:_indexOfNextEligibleActivity];
 
       if (!v12)
       {
@@ -738,9 +738,9 @@ LABEL_39:
 
       v13 = 0;
 LABEL_14:
-      v14 = [v12 activityInfo];
-      v15 = [v14 label];
-      v16 = [v15 isEqualToString:@"com.apple.pairedsync.nanoprefsyncdfirst"];
+      activityInfo = [v12 activityInfo];
+      label = [activityInfo label];
+      v16 = [label isEqualToString:@"com.apple.pairedsync.nanoprefsyncdfirst"];
 
       if (!v16)
       {
@@ -763,13 +763,13 @@ LABEL_14:
             {
               runningActivityQueue = self->_runningActivityQueue;
               completedNanoPreferencesSync = self->_completedNanoPreferencesSync;
-              v29 = [(PSDScheduler *)self activityQueue];
+              activityQueue2 = [(PSDScheduler *)self activityQueue];
               v30 = 138412802;
               v31 = runningActivityQueue;
               v32 = 1024;
               LODWORD(v33[0]) = completedNanoPreferencesSync;
               WORD2(v33[0]) = 2112;
-              *(v33 + 6) = v29;
+              *(v33 + 6) = activityQueue2;
               _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Waiting for completion of running activities to finish %@ completed nano preferences sync: %d pending activities: %@", &v30, 0x1Cu);
             }
           }
@@ -783,12 +783,12 @@ LABEL_14:
         goto LABEL_32;
       }
 
-      if ((v9 & 0x80000000) == 0)
+      if ((_indexOfNextEligibleActivity & 0x80000000) == 0)
       {
-        v11 = v9;
+        v11 = _indexOfNextEligibleActivity;
 LABEL_17:
-        v17 = [(PSDScheduler *)self activityQueue];
-        [v17 removeObjectAtIndex:v11];
+        activityQueue3 = [(PSDScheduler *)self activityQueue];
+        [activityQueue3 removeObjectAtIndex:v11];
       }
 
       [(NSMutableArray *)self->_runningActivityQueue addObject:v12];
@@ -825,12 +825,12 @@ LABEL_32:
   }
 }
 
-- (void)_startActivity:(id)a3
+- (void)_startActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(PSDScheduler *)self _syncOptionsForActivity:v4];
-  v6 = [v4 activityInfo];
-  v7 = [v6 label];
+  activityCopy = activity;
+  v5 = [(PSDScheduler *)self _syncOptionsForActivity:activityCopy];
+  activityInfo = [activityCopy activityInfo];
+  label = [activityInfo label];
 
   v8 = psd_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
@@ -841,37 +841,37 @@ LABEL_32:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      *&buf[4] = v7;
+      *&buf[4] = label;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Starting activity %{public}@", buf, 0xCu);
     }
   }
 
-  v11 = [(PSYSyncSession *)self->_syncSession activityForLabel:v7];
+  v11 = [(PSYSyncSession *)self->_syncSession activityForLabel:label];
   *buf = 0;
   v12 = [PDRConnectivityStatus getDropoutCounter:buf];
   v13 = [PSYSyncSessionActivity alloc];
-  v14 = [v11 activityInfo];
+  activityInfo2 = [v11 activityInfo];
   [v11 activityProgress];
   v16 = v15;
-  v17 = [v11 error];
-  v18 = [v11 interruptionCount];
+  error = [v11 error];
+  interruptionCount = [v11 interruptionCount];
   LOBYTE(v21) = v12;
-  v19 = [v13 initWithActivityInfo:v14 progress:v17 error:1 state:0 finishedSending:v18 interruptionCount:*buf startDropoutCount:v16 sawADropout:v21];
+  v19 = [v13 initWithActivityInfo:activityInfo2 progress:error error:1 state:0 finishedSending:interruptionCount interruptionCount:*buf startDropoutCount:v16 sawADropout:v21];
 
   [(PSDScheduler *)self _queue_updateSyncSessionActivity:v19];
-  [(PSDScheduler *)self _scheduleTimeoutForActivity:v4];
+  [(PSDScheduler *)self _scheduleTimeoutForActivity:activityCopy];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_100013100;
   v25[3] = &unk_10002CCA8;
-  v26 = v4;
-  v27 = self;
+  v26 = activityCopy;
+  selfCopy = self;
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_100013224;
   v22[3] = &unk_10002CCD0;
   v23 = v26;
-  v24 = self;
+  selfCopy2 = self;
   v20 = v26;
   [v20 beginSyncWithOptions:v5 completion:v25 interruptionHandler:v22];
 }
@@ -910,11 +910,11 @@ LABEL_32:
   }
 }
 
-- (void)_abortActivity:(id)a3
+- (void)_abortActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 activityInfo];
-  v6 = [v5 label];
+  activityCopy = activity;
+  activityInfo = [activityCopy activityInfo];
+  label = [activityInfo label];
 
   v7 = psd_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -925,7 +925,7 @@ LABEL_32:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v18 = v6;
+      v18 = label;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Canceling activity %{public}@", buf, 0xCu);
     }
   }
@@ -934,38 +934,38 @@ LABEL_32:
   v14[1] = 3221225472;
   v14[2] = sub_10001355C;
   v14[3] = &unk_10002CCA8;
-  v15 = v4;
-  v16 = self;
+  v15 = activityCopy;
+  selfCopy = self;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000136A0;
   v11[3] = &unk_10002CCD0;
   v12 = v15;
-  v13 = self;
+  selfCopy2 = self;
   v10 = v15;
   [v10 abortSyncWithCompletion:v14 interruptionHandler:v11];
 }
 
-- (void)_finishActivity:(id)a3 success:(BOOL)a4 error:(id)a5
+- (void)_finishActivity:(id)activity success:(BOOL)success error:(id)error
 {
-  v7 = a3;
-  v8 = a5;
+  activityCopy = activity;
+  errorCopy = error;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000137F0;
   block[3] = &unk_10002CC30;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = activityCopy;
+  v14 = errorCopy;
+  v10 = errorCopy;
+  v11 = activityCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_clearActivityTimer:(id)a3
+- (void)_clearActivityTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   v5 = psd_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_ERROR);
 
@@ -974,11 +974,11 @@ LABEL_32:
     v7 = psd_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_10001B5D4(v4);
+      sub_10001B5D4(timerCopy);
     }
   }
 
-  v8 = [NSValue valueWithPointer:v4];
+  v8 = [NSValue valueWithPointer:timerCopy];
   v9 = [(NSMutableDictionary *)self->_timeoutTimers objectForKeyedSubscript:v8];
   [v9 invalidate];
   [(NSMutableDictionary *)self->_timeoutTimers removeObjectForKey:v8];
@@ -1034,45 +1034,45 @@ LABEL_32:
   [(NSMutableDictionary *)self->_timeoutTimers removeAllObjects];
 }
 
-- (void)_activityWasInterrupted:(id)a3
+- (void)_activityWasInterrupted:(id)interrupted
 {
-  v4 = a3;
-  [(PSDScheduler *)self _clearActivityTimer:v4];
-  if ([(PSDScheduler *)self _shouldHandleCallbackForActivity:v4])
+  interruptedCopy = interrupted;
+  [(PSDScheduler *)self _clearActivityTimer:interruptedCopy];
+  if ([(PSDScheduler *)self _shouldHandleCallbackForActivity:interruptedCopy])
   {
-    v5 = [v4 activityInfo];
-    v6 = [v5 label];
+    activityInfo = [interruptedCopy activityInfo];
+    label = [activityInfo label];
 
-    v7 = [(PSYSyncSession *)self->_syncSession activityForLabel:v6];
+    v7 = [(PSYSyncSession *)self->_syncSession activityForLabel:label];
     v28 = 0;
     v8 = [PDRConnectivityStatus getDropoutCounter:&v28];
     v9 = 1;
     if (([v7 sawADropout] & 1) == 0 && (v8 & 1) == 0)
     {
-      v10 = [v7 startDropoutCount];
-      v9 = v10 != v28;
+      startDropoutCount = [v7 startDropoutCount];
+      v9 = startDropoutCount != v28;
     }
 
     v11 = [PSYSyncSessionActivity alloc];
-    v12 = [v7 activityInfo];
+    activityInfo2 = [v7 activityInfo];
     [v7 activityProgress];
     v14 = v13;
-    v15 = [v7 error];
+    error = [v7 error];
     LOBYTE(v27) = v9;
-    v16 = [v11 initWithActivityInfo:v12 progress:v15 error:2 state:objc_msgSend(v7 finishedSending:"isFinishedSending") interruptionCount:objc_msgSend(v7 startDropoutCount:"interruptionCount") + 1 sawADropout:{objc_msgSend(v7, "startDropoutCount"), v14, v27}];
+    v16 = [v11 initWithActivityInfo:activityInfo2 progress:error error:2 state:objc_msgSend(v7 finishedSending:"isFinishedSending") interruptionCount:objc_msgSend(v7 startDropoutCount:"interruptionCount") + 1 sawADropout:{objc_msgSend(v7, "startDropoutCount"), v14, v27}];
 
     [(PSDScheduler *)self _queue_updateSyncSessionActivity:v16];
-    if ([(PSDScheduler *)self _canAttemptRetryForActivity:v4])
+    if ([(PSDScheduler *)self _canAttemptRetryForActivity:interruptedCopy])
     {
-      [(PSDScheduler *)self _startActivity:v4];
+      [(PSDScheduler *)self _startActivity:interruptedCopy];
     }
 
     else
     {
-      v17 = [v4 activityInfo];
-      v18 = [v17 label];
+      activityInfo3 = [interruptedCopy activityInfo];
+      label2 = [activityInfo3 label];
 
-      v19 = [(PSYSyncSession *)self->_syncSession activityForLabel:v18];
+      v19 = [(PSYSyncSession *)self->_syncSession activityForLabel:label2];
       v20 = psd_log();
       v21 = os_log_type_enabled(v20, OS_LOG_TYPE_ERROR);
 
@@ -1081,36 +1081,36 @@ LABEL_32:
         v22 = psd_log();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          sub_10001B6B4(v4, v19);
+          sub_10001B6B4(interruptedCopy, v19);
         }
       }
 
-      v23 = [v4 activityInfo];
-      v24 = [v23 label];
+      activityInfo4 = [interruptedCopy activityInfo];
+      label3 = [activityInfo4 label];
 
-      v25 = [NSString stringWithFormat:@"Sync client %@ interrupted", v24];
+      v25 = [NSString stringWithFormat:@"Sync client %@ interrupted", label3];
       [(PSDScheduler *)self _takeStackshotSequenceWithLabel:v25];
 
       v26 = [NSError errorWithDomain:@"com.apple.pairedsync" code:42 userInfo:0];
-      [(PSDScheduler *)self _finishActivity:v4 success:0 error:v26];
+      [(PSDScheduler *)self _finishActivity:interruptedCopy success:0 error:v26];
     }
   }
 }
 
-- (void)_activityDidTimeout:(id)a3
+- (void)_activityDidTimeout:(id)timeout
 {
-  v4 = a3;
-  [(PSDScheduler *)self _clearActivityTimer:v4];
-  if ([(PSDScheduler *)self _shouldHandleCallbackForActivity:v4])
+  timeoutCopy = timeout;
+  [(PSDScheduler *)self _clearActivityTimer:timeoutCopy];
+  if ([(PSDScheduler *)self _shouldHandleCallbackForActivity:timeoutCopy])
   {
-    v5 = [v4 activityInfo];
-    v6 = [v5 label];
+    activityInfo = [timeoutCopy activityInfo];
+    label = [activityInfo label];
 
-    v7 = [(PSYSyncSession *)self->_syncSession activityForLabel:v6];
+    v7 = [(PSYSyncSession *)self->_syncSession activityForLabel:label];
     v19 = 0;
     v8 = [PDRConnectivityStatus getDropoutCounter:&v19];
-    v9 = [v7 startDropoutCount];
-    v10 = (v9 != v19) | v8;
+    startDropoutCount = [v7 startDropoutCount];
+    v10 = (startDropoutCount != v19) | v8;
     v11 = psd_log();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_ERROR);
 
@@ -1137,16 +1137,16 @@ LABEL_32:
         }
       }
 
-      v17 = [NSString stringWithFormat:@"Sync client %@ timed out", v6];
+      v17 = [NSString stringWithFormat:@"Sync client %@ timed out", label];
       [(PSDScheduler *)self _takeStackshotSequenceWithLabel:v17];
     }
 
     v18 = PSYErrorForCode();
-    [(PSDScheduler *)self _finishActivity:v4 success:0 error:v18];
+    [(PSDScheduler *)self _finishActivity:timeoutCopy success:0 error:v18];
   }
 }
 
-- (void)_takeStackshotSequenceWithLabel:(id)a3
+- (void)_takeStackshotSequenceWithLabel:(id)label
 {
   v16[0] = 0;
   v16[1] = v16;
@@ -1156,8 +1156,8 @@ LABEL_32:
   v13[1] = 3221225472;
   v13[2] = sub_1000141C4;
   v13[3] = &unk_10002C7F0;
-  v10 = a3;
-  v14 = v10;
+  labelCopy = label;
+  v14 = labelCopy;
   v15 = v16;
   v4 = objc_retainBlock(v13);
   (v4[2])();
@@ -1184,7 +1184,7 @@ LABEL_32:
   _Block_object_dispose(v16, 8);
 }
 
-- (void)_popATimeoutAlert:(unint64_t)a3
+- (void)_popATimeoutAlert:(unint64_t)alert
 {
   alertQueue = self->_alertQueue;
   if (alertQueue)
@@ -1193,7 +1193,7 @@ LABEL_32:
     block[1] = 3221225472;
     block[2] = sub_1000142CC;
     block[3] = &unk_10002C778;
-    block[4] = a3;
+    block[4] = alert;
     dispatch_async(alertQueue, block);
   }
 }
@@ -1218,10 +1218,10 @@ LABEL_32:
   return byte_100037DC8;
 }
 
-- (void)_scheduleTimeoutForActivity:(id)a3
+- (void)_scheduleTimeoutForActivity:(id)activity
 {
-  v4 = a3;
-  [(PSDScheduler *)self _timeoutForActivity:v4];
+  activityCopy = activity;
+  [(PSDScheduler *)self _timeoutForActivity:activityCopy];
   v6 = v5;
   v7 = psd_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -1231,32 +1231,32 @@ LABEL_32:
     v9 = psd_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v4 activityInfo];
-      v11 = [v10 label];
+      activityInfo = [activityCopy activityInfo];
+      label = [activityInfo label];
       *buf = 138543618;
-      v19 = v11;
+      v19 = label;
       v20 = 2048;
       v21 = v6;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Scheduling timeout for activity %{public}@ in %1.2f seconds", buf, 0x16u);
     }
   }
 
-  v12 = [v4 activityInfo];
-  v13 = [v12 label];
-  v14 = [NSString stringWithFormat:@"com.apple.pairedsync.activity.%@", v13];
+  activityInfo2 = [activityCopy activityInfo];
+  label2 = [activityInfo2 label];
+  v14 = [NSString stringWithFormat:@"com.apple.pairedsync.activity.%@", label2];
 
-  v15 = [[PCPersistentTimer alloc] initWithTimeInterval:v14 serviceIdentifier:self target:"_activityTimeoutHandler:" selector:v4 userInfo:v6];
+  v15 = [[PCPersistentTimer alloc] initWithTimeInterval:v14 serviceIdentifier:self target:"_activityTimeoutHandler:" selector:activityCopy userInfo:v6];
   [v15 setMinimumEarlyFireProportion:1.0];
   timeoutTimers = self->_timeoutTimers;
-  v17 = [NSValue valueWithPointer:v4];
+  v17 = [NSValue valueWithPointer:activityCopy];
   [(NSMutableDictionary *)timeoutTimers setObject:v15 forKeyedSubscript:v17];
 
   [v15 scheduleInQueue:self->_queue];
 }
 
-- (void)_activityTimeoutHandler:(id)a3
+- (void)_activityTimeoutHandler:(id)handler
 {
-  v4 = [a3 userInfo];
+  userInfo = [handler userInfo];
   v5 = psd_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1265,20 +1265,20 @@ LABEL_32:
     v7 = psd_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 activityInfo];
-      v9 = [v8 label];
+      activityInfo = [userInfo activityInfo];
+      label = [activityInfo label];
       v10 = 138543362;
-      v11 = v9;
+      v11 = label;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Activity %{public}@ timed out", &v10, 0xCu);
     }
   }
 
-  [(PSDScheduler *)self _activityDidTimeout:v4];
+  [(PSDScheduler *)self _activityDidTimeout:userInfo];
 }
 
-- (BOOL)_shouldHandleCallbackForActivity:(id)a3
+- (BOOL)_shouldHandleCallbackForActivity:(id)activity
 {
-  if (a3)
+  if (activity)
   {
     return [(NSMutableArray *)self->_runningActivityQueue containsObject:?];
   }
@@ -1289,13 +1289,13 @@ LABEL_32:
   }
 }
 
-- (double)_timeoutForActivity:(id)a3
+- (double)_timeoutForActivity:(id)activity
 {
-  v4 = [a3 activityInfo];
-  v5 = [v4 timeoutSeconds];
+  activityInfo = [activity activityInfo];
+  timeoutSeconds = [activityInfo timeoutSeconds];
 
-  [v5 doubleValue];
-  if (v6 <= 0.0 || ([v5 doubleValue], v7 > self->_syncTopicTimeout) || (objc_msgSend(v5, "doubleValue"), syncTopicTimeout = v8, v8 == 0.0))
+  [timeoutSeconds doubleValue];
+  if (v6 <= 0.0 || ([timeoutSeconds doubleValue], v7 > self->_syncTopicTimeout) || (objc_msgSend(timeoutSeconds, "doubleValue"), syncTopicTimeout = v8, v8 == 0.0))
   {
     v10 = +[NSUserDefaults standardUserDefaults];
     [v10 synchronize];
@@ -1316,32 +1316,32 @@ LABEL_32:
   return syncTopicTimeout;
 }
 
-- (BOOL)_canAttemptRetryForActivity:(id)a3
+- (BOOL)_canAttemptRetryForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 activityInfo];
-  v6 = [v5 label];
+  activityCopy = activity;
+  activityInfo = [activityCopy activityInfo];
+  label = [activityInfo label];
 
-  v7 = [(PSYSyncSession *)self->_syncSession activityForLabel:v6];
-  v8 = [v7 interruptionCount];
-  v9 = [(PSDScheduler *)self _maximumInterruptionCountForActivity:v4];
+  v7 = [(PSYSyncSession *)self->_syncSession activityForLabel:label];
+  interruptionCount = [v7 interruptionCount];
+  v9 = [(PSDScheduler *)self _maximumInterruptionCountForActivity:activityCopy];
 
-  return v8 < v9;
+  return interruptionCount < v9;
 }
 
-- (id)_syncOptionsForActivity:(id)a3
+- (id)_syncOptionsForActivity:(id)activity
 {
   v4 = objc_alloc_init(PSYSyncOptions);
   [v4 setDryRun:{-[PSDScheduler shouldLaunchAsDryRun](self, "shouldLaunchAsDryRun")}];
-  v5 = [(PSDScheduler *)self testInputsEnumerator];
-  v6 = [v5 nextObject];
+  testInputsEnumerator = [(PSDScheduler *)self testInputsEnumerator];
+  nextObject = [testInputsEnumerator nextObject];
 
-  [v4 setTestInput:v6];
-  v7 = [(PSYSyncSession *)self->_syncSession pairingIdentifier];
-  [v4 setPairingIdentifier:v7];
+  [v4 setTestInput:nextObject];
+  pairingIdentifier = [(PSYSyncSession *)self->_syncSession pairingIdentifier];
+  [v4 setPairingIdentifier:pairingIdentifier];
 
-  v8 = [(PSYSyncSession *)self->_syncSession sessionIdentifier];
-  [v4 setSessionIdentifier:v8];
+  sessionIdentifier = [(PSYSyncSession *)self->_syncSession sessionIdentifier];
+  [v4 setSessionIdentifier:sessionIdentifier];
 
   [v4 setSyncSessionType:{-[PSYSyncSession syncSessionType](self->_syncSession, "syncSessionType")}];
 
@@ -1366,9 +1366,9 @@ LABEL_32:
       }
     }
 
-    v7 = [(PSDScheduler *)self monitoredPairing];
+    monitoredPairing = [(PSDScheduler *)self monitoredPairing];
 
-    if (v7)
+    if (monitoredPairing)
     {
       v8 = +[PSYRegistrySingleton registry];
       [v8 removeDelegate:self];
@@ -1381,8 +1381,8 @@ LABEL_32:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v9 = [(PSYSyncSession *)self->_syncSession activities];
-    v10 = [v9 countByEnumeratingWithState:&v28 objects:v34 count:16];
+    activities = [(PSYSyncSession *)self->_syncSession activities];
+    v10 = [activities countByEnumeratingWithState:&v28 objects:v34 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1394,7 +1394,7 @@ LABEL_32:
         {
           if (*v29 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(activities);
           }
 
           if ([*(*(&v28 + 1) + 8 * v13) sawADropout])
@@ -1408,7 +1408,7 @@ LABEL_32:
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v28 objects:v34 count:16];
+        v11 = [activities countByEnumeratingWithState:&v28 objects:v34 count:16];
         if (v11)
         {
           continue;
@@ -1422,8 +1422,8 @@ LABEL_32:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v14 = [(PSYSyncSession *)self->_syncSession activities];
-    v15 = [v14 countByEnumeratingWithState:&v24 objects:v33 count:16];
+    activities2 = [(PSYSyncSession *)self->_syncSession activities];
+    v15 = [activities2 countByEnumeratingWithState:&v24 objects:v33 count:16];
     if (v15)
     {
       v16 = v15;
@@ -1435,13 +1435,13 @@ LABEL_32:
         {
           if (*v25 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(activities2);
           }
 
-          v19 = [*(*(&v24 + 1) + 8 * v18) error];
-          v20 = [v19 code];
+          error = [*(*(&v24 + 1) + 8 * v18) error];
+          code = [error code];
 
-          if (v20 == 2)
+          if (code == 2)
           {
 
             [(PSDScheduler *)self _popATimeoutAlert:[(PSYSyncSession *)self->_syncSession syncSessionType]];
@@ -1452,7 +1452,7 @@ LABEL_32:
         }
 
         while (v16 != v18);
-        v16 = [v14 countByEnumeratingWithState:&v24 objects:v33 count:16];
+        v16 = [activities2 countByEnumeratingWithState:&v24 objects:v33 count:16];
         if (v16)
         {
           continue;
@@ -1548,42 +1548,42 @@ LABEL_30:
   dispatch_async(queue, block);
 }
 
-- (void)_queue_updateSyncSessionActivity:(id)a3
+- (void)_queue_updateSyncSessionActivity:(id)activity
 {
   syncSession = self->_syncSession;
-  v8 = a3;
-  v5 = a3;
-  v6 = [NSArray arrayWithObjects:&v8 count:1];
-  v7 = [(PSYSyncSession *)syncSession syncSessionByUpdatingActivities:v6, v8];
+  activityCopy = activity;
+  activityCopy2 = activity;
+  v6 = [NSArray arrayWithObjects:&activityCopy count:1];
+  activityCopy = [(PSYSyncSession *)syncSession syncSessionByUpdatingActivities:v6, activityCopy];
 
-  if (v7)
+  if (activityCopy)
   {
-    [(PSDScheduler *)self _queue_updateWithSyncSession:v7];
+    [(PSDScheduler *)self _queue_updateWithSyncSession:activityCopy];
   }
 }
 
-- (void)_queue_updateWithSyncSession:(id)a3
+- (void)_queue_updateWithSyncSession:(id)session
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_syncSession] & 1) == 0)
+  sessionCopy = session;
+  if (([sessionCopy isEqual:self->_syncSession] & 1) == 0)
   {
-    v4 = [[PSYSyncSessionUpdate alloc] initWithOriginalSession:self->_syncSession updatedSession:v5];
-    [(PSDScheduler *)self setSyncSession:v5];
+    v4 = [[PSYSyncSessionUpdate alloc] initWithOriginalSession:self->_syncSession updatedSession:sessionCopy];
+    [(PSDScheduler *)self setSyncSession:sessionCopy];
     [(PSDScheduler *)self _queue_tellObserversDidUpdateSyncSessionWithUpdate:v4];
   }
 }
 
-- (void)_currentProgressUpdated:(float)a3 forActivity:(id)a4
+- (void)_currentProgressUpdated:(float)updated forActivity:(id)activity
 {
-  v6 = a4;
-  v7 = v6;
+  activityCopy = activity;
+  v7 = activityCopy;
   LODWORD(v8) = 1.0;
-  if (a3 <= 1.0)
+  if (updated <= 1.0)
   {
-    *&v8 = a3;
+    *&v8 = updated;
   }
 
-  if (a3 >= 0.0)
+  if (updated >= 0.0)
   {
     v9 = *&v8;
   }
@@ -1593,10 +1593,10 @@ LABEL_30:
     v9 = 0.0;
   }
 
-  v10 = [v6 activityInfo];
-  v11 = [v10 label];
+  activityInfo = [activityCopy activityInfo];
+  label = [activityInfo label];
 
-  v12 = [(PSYSyncSession *)self->_syncSession activityForLabel:v11];
+  v12 = [(PSYSyncSession *)self->_syncSession activityForLabel:label];
   v13 = v12;
   if (v12)
   {
@@ -1614,46 +1614,46 @@ LABEL_30:
   }
 }
 
-- (void)activityDidCompleteSending:(id)a3
+- (void)activityDidCompleteSending:(id)sending
 {
-  v4 = a3;
+  sendingCopy = sending;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001557C;
   v7[3] = &unk_10002C8B8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = sendingCopy;
+  selfCopy = self;
+  v6 = sendingCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)activity:(id)a3 didUpdateProgress:(float)a4
+- (void)activity:(id)activity didUpdateProgress:(float)progress
 {
-  v6 = a3;
+  activityCopy = activity;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100015820;
   block[3] = &unk_10002CD60;
-  v11 = a4;
+  progressCopy = progress;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = activityCopy;
+  v8 = activityCopy;
   dispatch_async(queue, block);
 }
 
 - (BOOL)shouldLaunchAsDryRun
 {
-  v2 = [(PSDScheduler *)self options];
-  v3 = [v2 dryRun];
+  options = [(PSDScheduler *)self options];
+  dryRun = [options dryRun];
 
-  return v3;
+  return dryRun;
 }
 
-- (void)_queue_enumerateSchedulerObserversWithBlock:(id)a3
+- (void)_queue_enumerateSchedulerObserversWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -1675,7 +1675,7 @@ LABEL_30:
         }
 
         v10 = [(NSMapTable *)self->_schedulerObservers objectForKey:*(*(&v11 + 1) + 8 * v9), v11];
-        v4[2](v4, v10);
+        blockCopy[2](blockCopy, v10);
 
         v9 = v9 + 1;
       }
@@ -1699,24 +1699,24 @@ LABEL_30:
   [(PSDScheduler *)self _queue_enumerateSchedulerObserversWithBlock:v3];
 }
 
-- (void)_queue_tellObserversDidUpdateSyncSessionWithUpdate:(id)a3
+- (void)_queue_tellObserversDidUpdateSyncSessionWithUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   dispatch_assert_queue_V2(self->_queue);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100015ACC;
   v6[3] = &unk_10002CDB0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = updateCopy;
+  v5 = updateCopy;
   [(PSDScheduler *)self _queue_enumerateSchedulerObserversWithBlock:v6];
 }
 
-- (void)_queue_tellObserversDidClearSyncSession:(id)a3 withBlock:(id)a4
+- (void)_queue_tellObserversDidClearSyncSession:(id)session withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  blockCopy = block;
   dispatch_assert_queue_V2(self->_queue);
   v15 = 0;
   v16 = &v15;
@@ -1729,9 +1729,9 @@ LABEL_30:
     v12[2] = sub_100015C64;
     v12[3] = &unk_10002CE00;
     v14[1] = &v15;
-    v14[0] = v7;
+    v14[0] = blockCopy;
     v12[4] = self;
-    v13 = v6;
+    v13 = sessionCopy;
     [(PSDScheduler *)self _queue_enumerateSchedulerObserversWithBlock:v12];
     v8 = v14;
   }
@@ -1744,7 +1744,7 @@ LABEL_30:
     block[2] = sub_100015E08;
     block[3] = &unk_10002CCF8;
     v8 = &v11;
-    v11 = v7;
+    v11 = blockCopy;
     dispatch_async(queue, block);
   }
 
@@ -1788,10 +1788,10 @@ LABEL_30:
   }
 }
 
-- (void)registry:(id)a3 changed:(id)a4 properties:(id)a5
+- (void)registry:(id)registry changed:(id)changed properties:(id)properties
 {
-  v7 = a4;
-  v8 = a5;
+  changedCopy = changed;
+  propertiesCopy = properties;
   v9 = psd_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -1805,15 +1805,15 @@ LABEL_30:
     }
   }
 
-  v12 = [v7 pairingID];
-  v13 = [(PSDScheduler *)self monitoredPairing];
-  if (![v12 isEqual:v13])
+  pairingID = [changedCopy pairingID];
+  monitoredPairing = [(PSDScheduler *)self monitoredPairing];
+  if (![pairingID isEqual:monitoredPairing])
   {
 
     goto LABEL_9;
   }
 
-  v14 = [v8 containsObject:PDRDevicePropertyKeyWatchBuddyStage];
+  v14 = [propertiesCopy containsObject:PDRDevicePropertyKeyWatchBuddyStage];
 
   if (v14)
   {
@@ -1822,19 +1822,19 @@ LABEL_30:
     v16[1] = 3221225472;
     v16[2] = sub_100015FD4;
     v16[3] = &unk_10002C8B8;
-    v17 = v7;
-    v18 = self;
+    v17 = changedCopy;
+    selfCopy = self;
     dispatch_async(queue, v16);
-    v12 = v17;
+    pairingID = v17;
 LABEL_9:
   }
 }
 
-- (void)linkChangedToLinkType:(int64_t)a3
+- (void)linkChangedToLinkType:(int64_t)type
 {
-  if (self->_currentNRLinkType != a3)
+  if (self->_currentNRLinkType != type)
   {
-    self->_currentNRLinkType = a3;
+    self->_currentNRLinkType = type;
     v4 = psd_log();
     v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 

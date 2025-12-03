@@ -1,30 +1,30 @@
 @interface ECEncodedWordDecoder
-- (BOOL)_decodeBEncodedTextToData:(id)a3;
-- (BOOL)_decodeQEncodedTextToData:(id)a3;
-- (BOOL)decodeEncodedTextToData:(id)a3;
+- (BOOL)_decodeBEncodedTextToData:(id)data;
+- (BOOL)_decodeQEncodedTextToData:(id)data;
+- (BOOL)decodeEncodedTextToData:(id)data;
 - (ECEncodedWordDecoder)init;
-- (ECEncodedWordDecoder)initWithHeaderData:(id)a3;
+- (ECEncodedWordDecoder)initWithHeaderData:(id)data;
 - (_NSRange)encodedTextRange;
-- (_NSRange)identifyRangeOfEncodedWordAtIndex:(unint64_t)a3;
+- (_NSRange)identifyRangeOfEncodedWordAtIndex:(unint64_t)index;
 - (id)_encodedWordDelimiter;
 - (id)_encodedWordEndSequence;
 - (id)_encodedWordLanguageDelimiter;
 - (id)_encodedWordStartSequence;
 - (id)_lineSeparator;
-- (void)_enumerateQByteRangesUsingBlock:(id)a3;
+- (void)_enumerateQByteRangesUsingBlock:(id)block;
 @end
 
 @implementation ECEncodedWordDecoder
 
-- (ECEncodedWordDecoder)initWithHeaderData:(id)a3
+- (ECEncodedWordDecoder)initWithHeaderData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = ECEncodedWordDecoder;
   v5 = [(ECEncodedWordDecoder *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dataCopy copy];
     headerData = v5->_headerData;
     v5->_headerData = v6;
 
@@ -37,26 +37,26 @@
 
 - (ECEncodedWordDecoder)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"ECEncodedWord.m" lineNumber:101 description:{@"Invalid initializer called, returning nil"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ECEncodedWord.m" lineNumber:101 description:{@"Invalid initializer called, returning nil"}];
 
   return 0;
 }
 
-- (_NSRange)identifyRangeOfEncodedWordAtIndex:(unint64_t)a3
+- (_NSRange)identifyRangeOfEncodedWordAtIndex:(unint64_t)index
 {
-  v6 = [(ECEncodedWordDecoder *)self headerData];
-  v58 = v6;
-  v7 = [v6 length];
-  v8 = v7 - a3;
-  if (v7 <= a3)
+  headerData = [(ECEncodedWordDecoder *)self headerData];
+  v58 = headerData;
+  v7 = [headerData length];
+  v8 = v7 - index;
+  if (v7 <= index)
   {
-    v54 = [MEMORY[0x277CCA890] currentHandler];
-    [v54 handleFailureInMethod:a2 object:self file:@"ECEncodedWord.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"index < headerLength"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ECEncodedWord.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"index < headerLength"}];
   }
 
-  v9 = [(ECEncodedWordDecoder *)self _encodedWordStartSequence];
-  v10 = [v6 rangeOfData:v9 options:2 range:{a3, v8}];
+  _encodedWordStartSequence = [(ECEncodedWordDecoder *)self _encodedWordStartSequence];
+  v10 = [headerData rangeOfData:_encodedWordStartSequence options:2 range:{index, v8}];
   v12 = v11;
 
   v13 = 0x7FFFFFFFFFFFFFFFLL;
@@ -71,18 +71,18 @@
 
   else
   {
-    v18 = [(ECEncodedWordDecoder *)self _lineSeparator];
-    v19 = v12 + a3;
+    _lineSeparator = [(ECEncodedWordDecoder *)self _lineSeparator];
+    v19 = v12 + index;
     v20 = v8 - v12;
-    v21 = [v58 rangeOfData:v18 options:0 range:{v12 + a3, v20}];
+    v21 = [v58 rangeOfData:_lineSeparator options:0 range:{v12 + index, v20}];
 
     if (v21 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v20 = v21 - v19;
     }
 
-    v22 = [(ECEncodedWordDecoder *)self _encodedWordDelimiter];
-    v23 = [v58 rangeOfData:v22 options:0 range:{v12 + a3, v20}];
+    _encodedWordDelimiter = [(ECEncodedWordDecoder *)self _encodedWordDelimiter];
+    v23 = [v58 rangeOfData:_encodedWordDelimiter options:0 range:{v12 + index, v20}];
     v16 = v23;
     v14 = v24;
     if (v23 == 0x7FFFFFFFFFFFFFFFLL)
@@ -93,24 +93,24 @@
       v16 = 0x7FFFFFFFFFFFFFFFLL;
       v13 = 0x7FFFFFFFFFFFFFFFLL;
       v17 = 0x7FFFFFFFFFFFFFFFLL;
-      v6 = v58;
+      headerData = v58;
       goto LABEL_13;
     }
 
     v25 = v20 + v19;
     v26 = v20 + v19 - (v23 + v24);
-    v6 = v58;
-    v27 = [v58 rangeOfData:v22 options:0 range:{v23 + v24, v26}];
+    headerData = v58;
+    v27 = [v58 rangeOfData:_encodedWordDelimiter options:0 range:{v23 + v24, v26}];
     v29 = v28;
 
     v13 = 0x7FFFFFFFFFFFFFFFLL;
     v56 = v29;
     if (v27 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v30 = [(ECEncodedWordDecoder *)self _encodedWordEndSequence];
+      _encodedWordEndSequence = [(ECEncodedWordDecoder *)self _encodedWordEndSequence];
       v31 = v25 - (v27 + v29);
-      v32 = v30;
-      v17 = [v58 rangeOfData:v30 options:0 range:{v27 + v29, v31}];
+      v32 = _encodedWordEndSequence;
+      v17 = [v58 rangeOfData:_encodedWordEndSequence options:0 range:{v27 + v29, v31}];
       v15 = v33;
 
       v13 = v27;
@@ -127,7 +127,7 @@ LABEL_13:
   if (v17 != 0x7FFFFFFFFFFFFFFFLL && v13 - v16 == 2)
   {
     v59 = 0;
-    [v6 getBytes:&v59 range:{v16 + v14, 1}];
+    [headerData getBytes:&v59 range:{v16 + v14, 1}];
     v34 = 0;
     if (v59 > 0x61u)
     {
@@ -161,12 +161,12 @@ LABEL_23:
   [(ECEncodedWordDecoder *)self setEncodedWordEncoding:v34];
   if (v34)
   {
-    v35 = [(ECEncodedWordDecoder *)self _encodedWordLanguageDelimiter];
+    _encodedWordLanguageDelimiter = [(ECEncodedWordDecoder *)self _encodedWordLanguageDelimiter];
     v36 = v57 + v12;
     v37 = v16 - (v57 + v12);
-    v38 = [v6 rangeOfData:v35 options:0 range:{v36, v37}];
+    v38 = [headerData rangeOfData:_encodedWordLanguageDelimiter options:0 range:{v36, v37}];
     v40 = v39;
-    v41 = v15 - a3 + v17;
+    v41 = v15 - index + v17;
 
     v42 = v16 - (v38 + v40);
     if (v38 == 0x7FFFFFFFFFFFFFFFLL)
@@ -232,7 +232,7 @@ LABEL_23:
       v51 = 0;
     }
 
-    v6 = v58;
+    headerData = v58;
     [(ECEncodedWordDecoder *)self setLanguage:v51];
     [(ECEncodedWordDecoder *)self setEncodedTextRange:v55 + v56, v17 - (v55 + v56)];
   }
@@ -241,15 +241,15 @@ LABEL_23:
   {
     [(ECEncodedWordDecoder *)self setStringEncoding:0];
     [(ECEncodedWordDecoder *)self setLanguage:0];
-    a3 = 0x7FFFFFFFFFFFFFFFLL;
+    index = 0x7FFFFFFFFFFFFFFFLL;
     [(ECEncodedWordDecoder *)self setEncodedTextRange:0x7FFFFFFFFFFFFFFFLL, 0];
     v41 = 0;
   }
 
-  v52 = a3;
+  indexCopy = index;
   v53 = v41;
   result.length = v53;
-  result.location = v52;
+  result.location = indexCopy;
   return result;
 }
 
@@ -348,16 +348,16 @@ uint64_t __53__ECEncodedWordDecoder__encodedWordLanguageDelimiter__block_invoke(
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)decodeEncodedTextToData:(id)a3
+- (BOOL)decodeEncodedTextToData:(id)data
 {
-  v4 = a3;
-  v5 = [(ECEncodedWordDecoder *)self encodedWordEncoding];
-  if (v5 == 1)
+  dataCopy = data;
+  encodedWordEncoding = [(ECEncodedWordDecoder *)self encodedWordEncoding];
+  if (encodedWordEncoding == 1)
   {
     [(ECEncodedWordDecoder *)self encodedTextRange];
     if (v8)
     {
-      v7 = [(ECEncodedWordDecoder *)self _decodeBEncodedTextToData:v4];
+      v7 = [(ECEncodedWordDecoder *)self _decodeBEncodedTextToData:dataCopy];
       goto LABEL_7;
     }
 
@@ -366,7 +366,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v5 != 2)
+  if (encodedWordEncoding != 2)
   {
     v9 = 0;
     goto LABEL_10;
@@ -378,7 +378,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v7 = [(ECEncodedWordDecoder *)self _decodeQEncodedTextToData:v4];
+  v7 = [(ECEncodedWordDecoder *)self _decodeQEncodedTextToData:dataCopy];
 LABEL_7:
   v9 = v7;
 LABEL_10:
@@ -386,25 +386,25 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)_decodeBEncodedTextToData:(id)a3
+- (BOOL)_decodeBEncodedTextToData:(id)data
 {
-  v4 = a3;
-  v5 = [(ECEncodedWordDecoder *)self headerData];
-  v6 = [(ECEncodedWordDecoder *)self encodedTextRange];
-  v8 = [v5 subdataWithRange:{v6, v7}];
+  dataCopy = data;
+  headerData = [(ECEncodedWordDecoder *)self headerData];
+  encodedTextRange = [(ECEncodedWordDecoder *)self encodedTextRange];
+  v8 = [headerData subdataWithRange:{encodedTextRange, v7}];
 
   v9 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedData:v8 options:1];
   if (v9)
   {
-    [v4 appendData:v9];
+    [dataCopy appendData:v9];
   }
 
   return v9 != 0;
 }
 
-- (BOOL)_decodeQEncodedTextToData:(id)a3
+- (BOOL)_decodeQEncodedTextToData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -416,12 +416,12 @@ LABEL_10:
   v10[3] = &unk_27874B9E0;
   v10[4] = &v11;
   [(ECEncodedWordDecoder *)self _enumerateQByteRangesUsingBlock:v10];
-  v6 = [v4 length];
-  [v4 increaseLengthBy:v12[3]];
+  v6 = [dataCopy length];
+  [dataCopy increaseLengthBy:v12[3]];
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x2020000000;
-  v9[3] = [v4 mutableBytes] + v6;
+  v9[3] = [dataCopy mutableBytes] + v6;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __50__ECEncodedWordDecoder__decodeQEncodedTextToData___block_invoke_2;
@@ -483,25 +483,25 @@ uint64_t __50__ECEncodedWordDecoder__decodeQEncodedTextToData___block_invoke_2(u
   return result;
 }
 
-- (void)_enumerateQByteRangesUsingBlock:(id)a3
+- (void)_enumerateQByteRangesUsingBlock:(id)block
 {
-  v23 = a3;
-  v4 = [(ECEncodedWordDecoder *)self encodedTextRange];
+  blockCopy = block;
+  encodedTextRange = [(ECEncodedWordDecoder *)self encodedTextRange];
   v6 = v5;
-  v7 = [(ECEncodedWordDecoder *)self headerData];
-  v8 = [v7 bytes];
+  headerData = [(ECEncodedWordDecoder *)self headerData];
+  bytes = [headerData bytes];
 
   if (v6 <= 0)
   {
-    v22 = v23;
+    v22 = blockCopy;
     goto LABEL_26;
   }
 
   v9 = 0;
-  v10 = (v8 + v4);
+  v10 = (bytes + encodedTextRange);
   v11 = &v10[v6];
-  v12 = v23;
-  v13 = v23 + 2;
+  v12 = blockCopy;
+  v13 = blockCopy + 2;
   v14 = MEMORY[0x277D85DE0];
   do
   {
@@ -543,7 +543,7 @@ uint64_t __50__ECEncodedWordDecoder__decodeQEncodedTextToData___block_invoke_2(u
         v9 = 0;
         v16 = 3;
 LABEL_14:
-        v12 = v23;
+        v12 = blockCopy;
         goto LABEL_18;
       }
 

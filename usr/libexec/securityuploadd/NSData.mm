@@ -10,7 +10,7 @@
   {
     memset(&v9.total_out, 0, 72);
     v9.avail_in = [(NSData *)self length:[(NSData *)self bytes]];
-    v3 = 0;
+    selfCopy = 0;
     if (!deflateInit2_(&v9, 9, 8, 31, 9, 0, "1.2.12", 112))
     {
       v4 = [NSMutableData dataWithLength:0x4000];
@@ -22,8 +22,8 @@
           [v4 increaseLengthBy:0x4000];
         }
 
-        v6 = [v4 mutableBytes];
-        v9.next_out = &v6[v9.total_out];
+        mutableBytes = [v4 mutableBytes];
+        v9.next_out = &mutableBytes[v9.total_out];
         v7 = [v4 length];
         v9.avail_out = v7 - LODWORD(v9.total_out);
         deflate(&v9, 4);
@@ -34,22 +34,22 @@
       [v4 setLength:v9.total_out];
       if (v9.avail_in)
       {
-        v3 = 0;
+        selfCopy = 0;
       }
 
       else
       {
-        v3 = [NSData dataWithData:v4];
+        selfCopy = [NSData dataWithData:v4];
       }
     }
   }
 
   else
   {
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

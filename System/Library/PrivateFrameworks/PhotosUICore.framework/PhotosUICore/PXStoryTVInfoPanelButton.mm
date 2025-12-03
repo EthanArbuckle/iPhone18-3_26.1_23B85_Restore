@@ -1,13 +1,13 @@
 @interface PXStoryTVInfoPanelButton
-+ (double)widthForText:(id)a3;
-- (PXStoryTVInfoPanelButton)initWithFrame:(CGRect)a3;
++ (double)widthForText:(id)text;
+- (PXStoryTVInfoPanelButton)initWithFrame:(CGRect)frame;
 - (id)elementTintColor;
 - (unint64_t)elementControlState;
 - (void)_updateAppearance;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)setControlState:(unint64_t)a3;
-- (void)setText:(id)a3;
-- (void)updateFocusState:(id)a3;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)setControlState:(unint64_t)state;
+- (void)setText:(id)text;
+- (void)updateFocusState:(id)state;
 @end
 
 @implementation PXStoryTVInfoPanelButton
@@ -20,17 +20,17 @@
     [(UIView *)self->_focusView setBackgroundColor:v3];
   }
 
-  v4 = [(PXStoryTVInfoPanelButton *)self elementTintColor];
-  [(UILabel *)self->_label setTextColor:v4];
+  elementTintColor = [(PXStoryTVInfoPanelButton *)self elementTintColor];
+  [(UILabel *)self->_label setTextColor:elementTintColor];
 }
 
-- (void)setControlState:(unint64_t)a3
+- (void)setControlState:(unint64_t)state
 {
-  if (a3)
+  if (state)
   {
-    if (a3 != 4)
+    if (state != 4)
     {
-      if (a3 != 8)
+      if (state != 8)
       {
         return;
       }
@@ -48,9 +48,9 @@
       {
         v9 = 0.0;
 LABEL_12:
-        v14 = [(UILabel *)*p_label layer];
+        layer = [(UILabel *)*p_label layer];
         *&v15 = v9;
-        [v14 setShadowOpacity:v15];
+        [layer setShadowOpacity:v15];
 
         goto LABEL_13;
       }
@@ -95,15 +95,15 @@ LABEL_13:
   [(UIView *)self->_backgroundView setAlpha:v8];
   floatingContentView = self->_floatingContentView;
 
-  [(_UIFloatingContentView *)floatingContentView setControlState:a3];
+  [(_UIFloatingContentView *)floatingContentView setControlState:state];
 }
 
-- (void)updateFocusState:(id)a3
+- (void)updateFocusState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   [(_UIFloatingContentView *)self->_floatingContentView setControlState:[(PXStoryTVInfoPanelButton *)self elementControlState]];
-  v5 = [(PXStoryTVInfoPanelButton *)self elementTintColor];
-  [(UILabel *)self->_label setTextColor:v5];
+  elementTintColor = [(PXStoryTVInfoPanelButton *)self elementTintColor];
+  [(UILabel *)self->_label setTextColor:elementTintColor];
 
   if ([(PXStoryTVInfoPanelButton *)self isFocused])
   {
@@ -112,7 +112,7 @@ LABEL_13:
     v7[2] = __45__PXStoryTVInfoPanelButton_updateFocusState___block_invoke;
     v7[3] = &unk_1E774AF60;
     v7[4] = self;
-    [v4 addCoordinatedFocusingAnimations:v7 completion:0];
+    [stateCopy addCoordinatedFocusingAnimations:v7 completion:0];
   }
 
   else
@@ -122,7 +122,7 @@ LABEL_13:
     v6[2] = __45__PXStoryTVInfoPanelButton_updateFocusState___block_invoke_2;
     v6[3] = &unk_1E774AF60;
     v6[4] = self;
-    [v4 addCoordinatedUnfocusingAnimations:v6 completion:0];
+    [stateCopy addCoordinatedUnfocusingAnimations:v6 completion:0];
   }
 }
 
@@ -163,25 +163,25 @@ uint64_t __45__PXStoryTVInfoPanelButton_updateFocusState___block_invoke_2(uint64
   return [v5 layoutIfNeeded];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v8 = a3;
-  v4 = [(UILabel *)self->_label text];
-  v5 = v4;
-  if (v4 == v8)
+  textCopy = text;
+  text = [(UILabel *)self->_label text];
+  v5 = text;
+  if (text == textCopy)
   {
   }
 
   else
   {
-    v6 = [v4 isEqualToString:v8];
+    v6 = [text isEqualToString:textCopy];
 
     if ((v6 & 1) == 0)
     {
-      [(UILabel *)self->_label setText:v8];
+      [(UILabel *)self->_label setText:textCopy];
       [(UILabel *)self->_label sizeToFit];
-      v7 = [(_UIFloatingContentView *)self->_floatingContentView contentView];
-      [v7 bounds];
+      contentView = [(_UIFloatingContentView *)self->_floatingContentView contentView];
+      [contentView bounds];
 
       PXRectGetCenter();
     }
@@ -217,27 +217,27 @@ uint64_t __45__PXStoryTVInfoPanelButton_updateFocusState___block_invoke_2(uint64
   }
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a4;
+  coordinatorCopy = coordinator;
   v8.receiver = self;
   v8.super_class = PXStoryTVInfoPanelButton;
-  [(PXStoryTVInfoPanelButton *)&v8 didUpdateFocusInContext:a3 withAnimationCoordinator:v6];
+  [(PXStoryTVInfoPanelButton *)&v8 didUpdateFocusInContext:context withAnimationCoordinator:coordinatorCopy];
   if ([(PXStoryTVInfoPanelButton *)self isFocused])
   {
-    v7 = [(PXStoryTVInfoPanelButton *)self superview];
-    [v7 bringSubviewToFront:self];
+    superview = [(PXStoryTVInfoPanelButton *)self superview];
+    [superview bringSubviewToFront:self];
   }
 
-  [(PXStoryTVInfoPanelButton *)self updateFocusState:v6];
+  [(PXStoryTVInfoPanelButton *)self updateFocusState:coordinatorCopy];
 }
 
-- (PXStoryTVInfoPanelButton)initWithFrame:(CGRect)a3
+- (PXStoryTVInfoPanelButton)initWithFrame:(CGRect)frame
 {
   v44 = *MEMORY[0x1E69E9840];
   v43.receiver = self;
   v43.super_class = PXStoryTVInfoPanelButton;
-  v3 = [(PXStoryTVInfoPanelButton *)&v43 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXStoryTVInfoPanelButton *)&v43 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   p_isa = &v3->super.super.super.isa;
   if (v3)
   {
@@ -272,29 +272,29 @@ uint64_t __45__PXStoryTVInfoPanelButton_updateFocusState___block_invoke_2(uint64
     [v9 setBackgroundColor:v10 forState:8];
 
     v11 = p_isa[51];
-    v12 = [MEMORY[0x1E69DC888] whiteColor];
-    [v11 setBackgroundColor:v12 forState:1];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [v11 setBackgroundColor:whiteColor forState:1];
 
     v13 = p_isa[51];
-    v14 = [MEMORY[0x1E69DC888] clearColor];
-    [v13 setBackgroundColor:v14 forState:4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [v13 setBackgroundColor:clearColor forState:4];
 
-    v15 = [p_isa[51] visualEffectContainerView];
-    [v15 setClipsToBounds:1];
+    visualEffectContainerView = [p_isa[51] visualEffectContainerView];
+    [visualEffectContainerView setClipsToBounds:1];
 
     if (!MEMORY[0x1A590D320]())
     {
       v7 = 12.0;
     }
 
-    v16 = [p_isa[51] visualEffectContainerView];
-    v17 = [v16 layer];
-    [v17 setCornerRadius:v7];
+    visualEffectContainerView2 = [p_isa[51] visualEffectContainerView];
+    layer = [visualEffectContainerView2 layer];
+    [layer setCornerRadius:v7];
 
     v18 = *MEMORY[0x1E69796E8];
-    v19 = [p_isa[51] visualEffectContainerView];
-    v20 = [v19 layer];
-    [v20 setCornerCurve:v18];
+    visualEffectContainerView3 = [p_isa[51] visualEffectContainerView];
+    layer2 = [visualEffectContainerView3 layer];
+    [layer2 setCornerCurve:v18];
 
     if (MEMORY[0x1A590D320]([p_isa addSubview:p_isa[51]]))
     {
@@ -303,8 +303,8 @@ uint64_t __45__PXStoryTVInfoPanelButton_updateFocusState___block_invoke_2(uint64
       [v21 setBackgroundMaterial:v22 forState:0];
 
       v23 = p_isa[51];
-      v24 = [objc_alloc(MEMORY[0x1E69DD818]) initWithVariant:8 size:2];
-      [v23 setBackgroundMaterial:v24 forState:4];
+      visualEffectContainerView4 = [objc_alloc(MEMORY[0x1E69DD818]) initWithVariant:8 size:2];
+      [v23 setBackgroundMaterial:visualEffectContainerView4 forState:4];
     }
 
     else
@@ -316,13 +316,13 @@ uint64_t __45__PXStoryTVInfoPanelButton_updateFocusState___block_invoke_2(uint64
       p_isa[54] = v27;
 
       v29 = p_isa[51];
-      v30 = [MEMORY[0x1E69DC888] clearColor];
-      [v29 setBackgroundColor:v30 forState:0];
+      clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+      [v29 setBackgroundColor:clearColor2 forState:0];
 
       [p_isa[54] setTranslatesAutoresizingMaskIntoConstraints:0];
       [p_isa[54] setAlpha:0.0];
-      v24 = [p_isa[51] visualEffectContainerView];
-      [v24 addSubview:p_isa[54]];
+      visualEffectContainerView4 = [p_isa[51] visualEffectContainerView];
+      [visualEffectContainerView4 addSubview:p_isa[54]];
     }
 
     v31 = objc_alloc_init(MEMORY[0x1E69DD250]);
@@ -341,14 +341,14 @@ uint64_t __45__PXStoryTVInfoPanelButton_updateFocusState___block_invoke_2(uint64
     [p_isa[53] setBackgroundColor:v35];
 
     [p_isa[53] setAlpha:0.0];
-    v36 = [p_isa[51] contentView];
-    [v36 bounds];
+    contentView = [p_isa[51] contentView];
+    [contentView bounds];
     [p_isa[53] setFrame:?];
 
     [p_isa[53] setAutoresizingMask:18];
     [p_isa[53] setClipsToBounds:1];
-    v37 = [p_isa[51] contentView];
-    [v37 addSubview:p_isa[53]];
+    contentView2 = [p_isa[51] contentView];
+    [contentView2 addSubview:p_isa[53]];
 
     v38 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     v39 = p_isa[52];
@@ -368,10 +368,10 @@ uint64_t __45__PXStoryTVInfoPanelButton_updateFocusState___block_invoke_2(uint64
   return 0;
 }
 
-+ (double)widthForText:(id)a3
++ (double)widthForText:(id)text
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  textCopy = text;
   if (MEMORY[0x1A590D320]())
   {
     v4 = 60.0;
@@ -386,7 +386,7 @@ uint64_t __45__PXStoryTVInfoPanelButton_updateFocusState___block_invoke_2(uint64
   v10 = *MEMORY[0x1E69DB648];
   v11[0] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  [v3 sizeWithAttributes:v6];
+  [textCopy sizeWithAttributes:v6];
   v8 = v7;
 
   return v4 + ceil(v8);

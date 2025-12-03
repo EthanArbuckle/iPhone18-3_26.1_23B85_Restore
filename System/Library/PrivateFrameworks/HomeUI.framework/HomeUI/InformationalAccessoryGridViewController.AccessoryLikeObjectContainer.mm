@@ -1,7 +1,7 @@
 @interface InformationalAccessoryGridViewController.AccessoryLikeObjectContainer
 - (NSSet)hf_accessoryLikeObjects;
 - (_TtCC6HomeUI40InformationalAccessoryGridViewControllerP33_1E0D713E2D70C07A82D0ABA514F9943228AccessoryLikeObjectContainer)init;
-- (void)setHf_accessoryLikeObjects:(id)a3;
+- (void)setHf_accessoryLikeObjects:(id)objects;
 @end
 
 @implementation InformationalAccessoryGridViewController.AccessoryLikeObjectContainer
@@ -16,7 +16,7 @@
   return v2;
 }
 
-- (void)setHf_accessoryLikeObjects:(id)a3
+- (void)setHf_accessoryLikeObjects:(id)objects
 {
   sub_20CECF940(0, &unk_27C81BF40);
   sub_20CFE165C();

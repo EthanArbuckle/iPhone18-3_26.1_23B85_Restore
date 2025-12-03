@@ -1,9 +1,9 @@
 @interface HRUITableViewSection
 - (HRUITableViewSection)init;
-- (HRUITableViewSection)initWithIdentifier:(id)a3;
+- (HRUITableViewSection)initWithIdentifier:(id)identifier;
 - (NSNumber)estimatedNumRows;
-- (void)addRowForReuseIdentifier:(id)a3;
-- (void)setEstimatedNumRows:(id)a3;
+- (void)addRowForReuseIdentifier:(id)identifier;
+- (void)setEstimatedNumRows:(id)rows;
 @end
 
 @implementation HRUITableViewSection
@@ -15,18 +15,18 @@
   return *(self + v3);
 }
 
-- (void)setEstimatedNumRows:(id)a3
+- (void)setEstimatedNumRows:(id)rows
 {
   v5 = OBJC_IVAR___HRUITableViewSection_estimatedNumRows;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = rows;
+  rowsCopy = rows;
 }
 
-- (HRUITableViewSection)initWithIdentifier:(id)a3
+- (HRUITableViewSection)initWithIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = sub_1D139016C();
     v6 = v5;
@@ -57,11 +57,11 @@
   return [(HRUITableViewSection *)&v11 init];
 }
 
-- (void)addRowForReuseIdentifier:(id)a3
+- (void)addRowForReuseIdentifier:(id)identifier
 {
   v4 = sub_1D139016C();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_1D125CA30(v4, v6);
 }
 

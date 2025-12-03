@@ -1,22 +1,22 @@
 @interface PeoplePickerViewController.FakeFooterView
 - (BOOL)isHidden;
-- (void)setHidden:(BOOL)a3;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation PeoplePickerViewController.FakeFooterView
 
 - (BOOL)isHidden
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PeoplePickerViewController.FakeFooterView.isHidden.getter();
 
   return v3 & 1;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v4 = self;
-  PeoplePickerViewController.FakeFooterView.isHidden.setter(a3);
+  selfCopy = self;
+  PeoplePickerViewController.FakeFooterView.isHidden.setter(hidden);
 }
 
 @end

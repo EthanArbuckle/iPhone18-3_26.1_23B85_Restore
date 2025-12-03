@@ -1,27 +1,27 @@
 @interface PCRemoteActivityClient
 - (PCRemoteActivityClient)init;
-- (PCRemoteActivityClient)initWithCoder:(id)a3;
-- (id)userActivitySetFromData:(id)a3;
-- (void)_activateWithCompletion:(id)a3;
+- (PCRemoteActivityClient)initWithCoder:(id)coder;
+- (id)userActivitySetFromData:(id)data;
+- (void)_activateWithCompletion:(id)completion;
 - (void)_interrupted;
 - (void)_invalidate;
 - (void)_invalidated;
 - (void)_xpcEnsureStarted;
 - (void)_xpcEnsureStopped;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)interrupted;
 - (void)invalidate;
-- (void)startObservingHomeKitIdentifier:(id)a3;
-- (void)startObservingMediaRemoteIdentifier:(id)a3;
+- (void)startObservingHomeKitIdentifier:(id)identifier;
+- (void)startObservingMediaRemoteIdentifier:(id)identifier;
 - (void)stopObservingAllDevices;
-- (void)stopObservingHomeKitIdentifier:(id)a3;
-- (void)stopObservingMediaRemoteIdentifier:(id)a3;
-- (void)updateHomeKitID:(id)a3 mediaRemoteID:(id)a4 withActivities:(id)a5 disambiguationContext:(id)a6;
-- (void)updateHomeKitID:(id)a3 withActivities:(id)a4 disambiguationContext:(id)a5;
-- (void)updateMediaRemoteID:(id)a3 withActivities:(id)a4 disambiguationContext:(id)a5;
+- (void)stopObservingHomeKitIdentifier:(id)identifier;
+- (void)stopObservingMediaRemoteIdentifier:(id)identifier;
+- (void)updateHomeKitID:(id)d mediaRemoteID:(id)iD withActivities:(id)activities disambiguationContext:(id)context;
+- (void)updateHomeKitID:(id)d withActivities:(id)activities disambiguationContext:(id)context;
+- (void)updateMediaRemoteID:(id)d withActivities:(id)activities disambiguationContext:(id)context;
 - (void)userTappedCloseButton;
-- (void)userTappedDisambiguationButton:(id)a3;
+- (void)userTappedDisambiguationButton:(id)button;
 @end
 
 @implementation PCRemoteActivityClient
@@ -138,23 +138,23 @@
   }
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__PCRemoteActivityClient_activateWithCompletion___block_invoke;
   v7[3] = &unk_279AD19E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   [(PCRemoteActivityClient *)self _xpcEnsureStarted];
   var0 = self->_ucat->var0;
@@ -180,7 +180,7 @@ LABEL_5:
   v13[2] = __50__PCRemoteActivityClient__activateWithCompletion___block_invoke;
   v13[3] = &unk_279AD1C20;
   v13[4] = self;
-  v7 = v4;
+  v7 = completionCopy;
   v14 = v7;
   v8 = [(NSXPCProxyCreating *)xpcCnx remoteObjectProxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x277D85DD0];
@@ -271,17 +271,17 @@ void __50__PCRemoteActivityClient__activateWithCompletion___block_invoke_2(uint6
   }
 }
 
-- (void)startObservingHomeKitIdentifier:(id)a3
+- (void)startObservingHomeKitIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__PCRemoteActivityClient_startObservingHomeKitIdentifier___block_invoke;
   v7[3] = &unk_279AD1A30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -352,17 +352,17 @@ LABEL_5:
   [v4 invalidate];
 }
 
-- (void)stopObservingHomeKitIdentifier:(id)a3
+- (void)stopObservingHomeKitIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__PCRemoteActivityClient_stopObservingHomeKitIdentifier___block_invoke;
   v7[3] = &unk_279AD1A30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -433,17 +433,17 @@ LABEL_5:
   [v4 invalidate];
 }
 
-- (void)startObservingMediaRemoteIdentifier:(id)a3
+- (void)startObservingMediaRemoteIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__PCRemoteActivityClient_startObservingMediaRemoteIdentifier___block_invoke;
   v7[3] = &unk_279AD1A30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -514,17 +514,17 @@ LABEL_5:
   [v4 invalidate];
 }
 
-- (void)stopObservingMediaRemoteIdentifier:(id)a3
+- (void)stopObservingMediaRemoteIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__PCRemoteActivityClient_stopObservingMediaRemoteIdentifier___block_invoke;
   v7[3] = &unk_279AD1A30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -749,17 +749,17 @@ LABEL_5:
   [v4 invalidate];
 }
 
-- (void)userTappedDisambiguationButton:(id)a3
+- (void)userTappedDisambiguationButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__PCRemoteActivityClient_userTappedDisambiguationButton___block_invoke;
   v7[3] = &unk_279AD1A30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = buttonCopy;
+  v6 = buttonCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -829,13 +829,13 @@ LABEL_5:
   [v4 invalidate];
 }
 
-- (void)updateHomeKitID:(id)a3 mediaRemoteID:(id)a4 withActivities:(id)a5 disambiguationContext:(id)a6
+- (void)updateHomeKitID:(id)d mediaRemoteID:(id)iD withActivities:(id)activities disambiguationContext:(id)context
 {
-  v19 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v19)
+  dCopy = d;
+  iDCopy = iD;
+  activitiesCopy = activities;
+  contextCopy = context;
+  if (dCopy)
   {
     var0 = self->_ucat->var0;
     if (var0 > 30)
@@ -848,8 +848,8 @@ LABEL_5:
       if (!_LogCategory_Initialize())
       {
 LABEL_10:
-        [(PCRemoteActivityClient *)self updateHomeKitID:v19 withActivities:v11 disambiguationContext:v12];
-        if (!v10)
+        [(PCRemoteActivityClient *)self updateHomeKitID:dCopy withActivities:activitiesCopy disambiguationContext:contextCopy];
+        if (!iDCopy)
         {
           goto LABEL_16;
         }
@@ -872,7 +872,7 @@ LABEL_11:
         }
 
 LABEL_15:
-        [(PCRemoteActivityClient *)self updateMediaRemoteID:v10 withActivities:v11 disambiguationContext:v12];
+        [(PCRemoteActivityClient *)self updateMediaRemoteID:iDCopy withActivities:activitiesCopy disambiguationContext:contextCopy];
         goto LABEL_16;
       }
 
@@ -883,7 +883,7 @@ LABEL_15:
     goto LABEL_10;
   }
 
-  if (v10)
+  if (iDCopy)
   {
     goto LABEL_11;
   }
@@ -910,16 +910,16 @@ LABEL_8:
 LABEL_16:
 }
 
-- (void)updateHomeKitID:(id)a3 withActivities:(id)a4 disambiguationContext:(id)a5
+- (void)updateHomeKitID:(id)d withActivities:(id)activities disambiguationContext:(id)context
 {
-  v17 = a3;
-  v8 = a5;
-  v9 = [(PCRemoteActivityClient *)self userActivitySetFromData:a4];
+  dCopy = d;
+  contextCopy = context;
+  v9 = [(PCRemoteActivityClient *)self userActivitySetFromData:activities];
   v10 = MEMORY[0x2666FB170](self->_homeKitUpdateHandler);
   v11 = v10;
   if (v10)
   {
-    (*(v10 + 16))(v10, v17, v9, v8);
+    (*(v10 + 16))(v10, dCopy, v9, contextCopy);
     goto LABEL_10;
   }
 
@@ -927,13 +927,13 @@ LABEL_16:
   if (v12)
   {
     var0 = self->_ucat->var0;
-    v14 = v17;
+    v14 = dCopy;
     if (var0 <= 60)
     {
       if (var0 == -1)
       {
         v15 = _LogCategory_Initialize();
-        v14 = v17;
+        v14 = dCopy;
         if (!v15)
         {
           goto LABEL_8;
@@ -943,26 +943,26 @@ LABEL_16:
       }
 
       LogPrintF();
-      v14 = v17;
+      v14 = dCopy;
     }
 
 LABEL_8:
-    (v12)[2](v12, v14, v9, v8);
+    (v12)[2](v12, v14, v9, contextCopy);
   }
 
 LABEL_10:
 }
 
-- (void)updateMediaRemoteID:(id)a3 withActivities:(id)a4 disambiguationContext:(id)a5
+- (void)updateMediaRemoteID:(id)d withActivities:(id)activities disambiguationContext:(id)context
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  activitiesCopy = activities;
+  contextCopy = context;
   v10 = MEMORY[0x2666FB170](self->_mediaRemoteUpdateHandler);
   if (v10)
   {
-    v11 = [(PCRemoteActivityClient *)self userActivitySetFromData:v8];
-    (v10)[2](v10, v14, v11, v9);
+    v11 = [(PCRemoteActivityClient *)self userActivitySetFromData:activitiesCopy];
+    (v10)[2](v10, dCopy, v11, contextCopy);
 
     goto LABEL_7;
   }
@@ -987,16 +987,16 @@ LABEL_5:
 LABEL_7:
 }
 
-- (id)userActivitySetFromData:(id)a3
+- (id)userActivitySetFromData:(id)data
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = dataCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -1035,7 +1035,7 @@ LABEL_7:
   return v4;
 }
 
-- (PCRemoteActivityClient)initWithCoder:(id)a3
+- (PCRemoteActivityClient)initWithCoder:(id)coder
 {
   v3 = [(PCRemoteActivityClient *)self init];
   v4 = v3;

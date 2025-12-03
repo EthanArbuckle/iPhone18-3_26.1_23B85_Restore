@@ -1,38 +1,38 @@
 @interface SSMetricsEventLocation
 - (NSDictionary)reportingDictionary;
-- (void)setValue:(id)a3 forLocationKey:(id)a4;
+- (void)setValue:(id)value forLocationKey:(id)key;
 @end
 
 @implementation SSMetricsEventLocation
 
 - (NSDictionary)reportingDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:self->_position];
-  [v3 setObject:v4 forKey:@"locationPosition"];
+  [dictionary setObject:v4 forKey:@"locationPosition"];
 
   type = self->_type;
   if (type)
   {
-    [v3 setObject:type forKey:@"locationType"];
+    [dictionary setObject:type forKey:@"locationType"];
   }
 
   if (self->_values)
   {
-    [v3 addEntriesFromDictionary:?];
+    [dictionary addEntriesFromDictionary:?];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)setValue:(id)a3 forLocationKey:(id)a4
+- (void)setValue:(id)value forLocationKey:(id)key
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = v12;
-  v8 = v6;
+  valueCopy = value;
+  keyCopy = key;
+  v7 = valueCopy;
+  v8 = keyCopy;
   values = self->_values;
-  if (v12)
+  if (valueCopy)
   {
     if (!values)
     {
@@ -40,7 +40,7 @@
       v11 = self->_values;
       self->_values = v10;
 
-      v7 = v12;
+      v7 = valueCopy;
       values = self->_values;
     }
 

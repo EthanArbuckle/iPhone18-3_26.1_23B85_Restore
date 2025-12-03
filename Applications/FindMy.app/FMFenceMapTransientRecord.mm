@@ -7,7 +7,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002D3DFC();
 
   v3 = String._bridgeToObjectiveC()();

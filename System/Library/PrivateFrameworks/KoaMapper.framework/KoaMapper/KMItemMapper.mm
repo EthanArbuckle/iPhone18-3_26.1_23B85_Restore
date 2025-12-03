@@ -1,25 +1,25 @@
 @interface KMItemMapper
-+ (id)_mapperForObjectClass:(Class)a3 error:(id *)a4;
++ (id)_mapperForObjectClass:(Class)class error:(id *)error;
 - (KMItemMapper)init;
-- (KMItemMapper)initWithObjectClass:(Class)a3 error:(id *)a4;
-- (id)itemsFromExternalObject:(id)a3 additionalFields:(id)a4 error:(id *)a5;
+- (KMItemMapper)initWithObjectClass:(Class)class error:(id *)error;
+- (id)itemsFromExternalObject:(id)object additionalFields:(id)fields error:(id *)error;
 @end
 
 @implementation KMItemMapper
 
-- (id)itemsFromExternalObject:(id)a3 additionalFields:(id)a4 error:(id *)a5
+- (id)itemsFromExternalObject:(id)object additionalFields:(id)fields error:(id *)error
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  objectCopy = object;
+  fieldsCopy = fields;
+  if (objectCopy)
   {
     externalObjectClass = self->_externalObjectClass;
     if (objc_opt_isKindOfClass())
     {
-      if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      if (!fieldsCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v11 = [(KMMapper *)self->_mapper itemsFromExternalObject:v8 additionalFields:v9 error:a5];
+        v11 = [(KMMapper *)self->_mapper itemsFromExternalObject:objectCopy additionalFields:fieldsCopy error:error];
         goto LABEL_11;
       }
 
@@ -28,7 +28,7 @@
       v24 = MEMORY[0x277CCACA8];
       v25 = objc_opt_class();
       v18 = NSStringFromClass(v25);
-      v26 = [v24 stringWithFormat:@"Invalid additional fields: %@ must be %@", v9, v18];
+      v26 = [v24 stringWithFormat:@"Invalid additional fields: %@ must be %@", fieldsCopy, v18];
       v32 = v26;
       v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
       v28 = [v23 errorWithDomain:@"com.apple.siri.koa.mapper" code:5 userInfo:v27];
@@ -69,14 +69,14 @@ LABEL_11:
   return v11;
 }
 
-- (KMItemMapper)initWithObjectClass:(Class)a3 error:(id *)a4
+- (KMItemMapper)initWithObjectClass:(Class)class error:(id *)error
 {
   v11.receiver = self;
   v11.super_class = KMItemMapper;
   v6 = [(KMItemMapper *)&v11 init];
   if (v6)
   {
-    v7 = [objc_opt_class() _mapperForObjectClass:a3 error:a4];
+    v7 = [objc_opt_class() _mapperForObjectClass:class error:error];
     mapper = v6->_mapper;
     v6->_mapper = v7;
 
@@ -101,77 +101,77 @@ LABEL_6:
   objc_exception_throw(v2);
 }
 
-+ (id)_mapperForObjectClass:(Class)a3 error:(id *)a4
++ (id)_mapperForObjectClass:(Class)class error:(id *)error
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  if (+[KMMapper_SAPerson externalObjectClass]== a3)
+  if (+[KMMapper_SAPerson externalObjectClass]== class)
   {
     v12 = KMMapper_SAPerson;
   }
 
-  else if (+[KMMapper_SAAppInfo externalObjectClass]== a3)
+  else if (+[KMMapper_SAAppInfo externalObjectClass]== class)
   {
     v12 = KMMapper_SAAppInfo;
   }
 
-  else if (+[KMMapper_INVocabularyItem externalObjectClass]== a3)
+  else if (+[KMMapper_INVocabularyItem externalObjectClass]== class)
   {
     v12 = KMMapper_INVocabularyItem;
   }
 
-  else if (+[KMMapper_CNContact externalObjectClass]== a3)
+  else if (+[KMMapper_CNContact externalObjectClass]== class)
   {
     v12 = KMMapper_CNContact;
   }
 
-  else if (+[KMMapper_LSApplicationRecord externalObjectClass]== a3)
+  else if (+[KMMapper_LSApplicationRecord externalObjectClass]== class)
   {
     v12 = KMMapper_LSApplicationRecord;
   }
 
-  else if (+[KMMapper_HMHome externalObjectClass]== a3)
+  else if (+[KMMapper_HMHome externalObjectClass]== class)
   {
     v12 = KMMapper_HMHome;
   }
 
-  else if (+[KMMapper_MPMediaEntity externalObjectClass]== a3)
+  else if (+[KMMapper_MPMediaEntity externalObjectClass]== class)
   {
     v12 = KMMapper_MPMediaEntity;
   }
 
-  else if (+[KMMapper_SASyncSiriKitAppVocabulary externalObjectClass]== a3)
+  else if (+[KMMapper_SASyncSiriKitAppVocabulary externalObjectClass]== class)
   {
     v12 = KMMapper_SASyncSiriKitAppVocabulary;
   }
 
-  else if (+[KMMapper_RTLocationOfInterest externalObjectClass]== a3)
+  else if (+[KMMapper_RTLocationOfInterest externalObjectClass]== class)
   {
     v12 = KMMapper_RTLocationOfInterest;
   }
 
-  else if (+[KMMapper_PortraitEntity externalObjectClass]== a3)
+  else if (+[KMMapper_PortraitEntity externalObjectClass]== class)
   {
     v12 = KMMapper_PortraitEntity;
   }
 
-  else if (+[KMMapper_AppGlobalVocabulary externalObjectClass]== a3)
+  else if (+[KMMapper_AppGlobalVocabulary externalObjectClass]== class)
   {
     v12 = KMMapper_AppGlobalVocabulary;
   }
 
-  else if (+[KMMapper_EKEvent externalObjectClass]== a3)
+  else if (+[KMMapper_EKEvent externalObjectClass]== class)
   {
     v12 = KMMapper_EKEvent;
   }
 
   else
   {
-    if (+[KMMapper_PBSUserProfile externalObjectClass]!= a3)
+    if (+[KMMapper_PBSUserProfile externalObjectClass]!= class)
     {
       v5 = MEMORY[0x277CCA9B8];
       v15 = *MEMORY[0x277CCA068];
       v6 = MEMORY[0x277CCACA8];
-      v7 = NSStringFromClass(a3);
+      v7 = NSStringFromClass(class);
       v8 = [v6 stringWithFormat:@"Object class (%@) not supported", v7, v15];
       v16[0] = v8;
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];

@@ -1,12 +1,12 @@
 @interface PFGenericValueTransformer
 - (PFGenericValueTransformer)init;
-- (PFGenericValueTransformer)initWithTransformedValueClass:(Class)a3 transformer:(id)a4;
-- (PFGenericValueTransformer)initWithTransformedValueClass:(Class)a3 transformer:(id)a4 reverseValueClass:(Class)a5 reverseTransformer:(id)a6;
+- (PFGenericValueTransformer)initWithTransformedValueClass:(Class)class transformer:(id)transformer;
+- (PFGenericValueTransformer)initWithTransformedValueClass:(Class)class transformer:(id)transformer reverseValueClass:(Class)valueClass reverseTransformer:(id)reverseTransformer;
 - (id)_init;
-- (id)reverseTransformedValue:(id)a3;
-- (id)reverseTransformedValue:(id)a3 context:(id)a4;
-- (id)transformedValue:(id)a3;
-- (id)transformedValue:(id)a3 context:(id)a4;
+- (id)reverseTransformedValue:(id)value;
+- (id)reverseTransformedValue:(id)value context:(id)context;
+- (id)transformedValue:(id)value;
+- (id)transformedValue:(id)value context:(id)context;
 @end
 
 @implementation PFGenericValueTransformer
@@ -25,20 +25,20 @@
   return [(PFGenericValueTransformer *)&v3 init];
 }
 
-- (PFGenericValueTransformer)initWithTransformedValueClass:(Class)a3 transformer:(id)a4 reverseValueClass:(Class)a5 reverseTransformer:(id)a6
+- (PFGenericValueTransformer)initWithTransformedValueClass:(Class)class transformer:(id)transformer reverseValueClass:(Class)valueClass reverseTransformer:(id)reverseTransformer
 {
   v9 = MEMORY[0x1E696AEC0];
-  v20 = a6;
-  v10 = a4;
+  reverseTransformerCopy = reverseTransformer;
+  transformerCopy = transformer;
   v11 = objc_opt_self();
   v12 = NSStringFromClass(v11);
-  if (a3)
+  if (class)
   {
-    v13 = NSStringFromClass(a3);
-    if (a5)
+    v13 = NSStringFromClass(class);
+    if (valueClass)
     {
 LABEL_3:
-      v14 = NSStringFromClass(a5);
+      v14 = NSStringFromClass(valueClass);
       goto LABEL_6;
     }
   }
@@ -46,7 +46,7 @@ LABEL_3:
   else
   {
     v13 = @"NILTRANSFORMEDVALUECLASS";
-    if (a5)
+    if (valueClass)
     {
       goto LABEL_3;
     }
@@ -58,15 +58,15 @@ LABEL_6:
   v16 = objc_opt_self();
   v17 = BSObjCClassCreate();
 
-  if (a5)
+  if (valueClass)
   {
   }
 
-  if (a3)
+  if (class)
   {
   }
 
-  v18 = [[v17 alloc] initWithTransformedValueClass:a3 transformer:v10 reverseValueClass:a5 reverseTransformer:v20];
+  v18 = [[v17 alloc] initWithTransformedValueClass:class transformer:transformerCopy reverseValueClass:valueClass reverseTransformer:reverseTransformerCopy];
   return v18;
 }
 
@@ -84,18 +84,18 @@ BOOL __108__PFGenericValueTransformer_initWithTransformedValueClass_transformer_
   return class_addMethod(Class, sel_transformedValueClass, v4, "@");
 }
 
-- (PFGenericValueTransformer)initWithTransformedValueClass:(Class)a3 transformer:(id)a4
+- (PFGenericValueTransformer)initWithTransformedValueClass:(Class)class transformer:(id)transformer
 {
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a4;
+  transformerCopy = transformer;
   v8 = objc_opt_self();
   v9 = NSStringFromClass(v8);
-  v10 = NSStringFromClass(a3);
+  v10 = NSStringFromClass(class);
   v11 = [v6 stringWithFormat:@"%@_%@", v9, v10];
   v12 = objc_opt_self();
   v13 = BSObjCClassCreate();
 
-  v14 = [[v13 alloc] initWithTransformedValueClass:a3 transformer:v7];
+  v14 = [[v13 alloc] initWithTransformedValueClass:class transformer:transformerCopy];
   return v14;
 }
 
@@ -113,40 +113,40 @@ BOOL __71__PFGenericValueTransformer_initWithTransformedValueClass_transformer__
   return class_addMethod(Class, sel_transformedValueClass, v4, "@");
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
   v5.receiver = self;
   v5.super_class = PFGenericValueTransformer;
-  v3 = [(PFGenericValueTransformer *)&v5 reverseTransformedValue:a3];
+  v3 = [(PFGenericValueTransformer *)&v5 reverseTransformedValue:value];
 
   return v3;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
   v5.receiver = self;
   v5.super_class = PFGenericValueTransformer;
-  v3 = [(PFGenericValueTransformer *)&v5 transformedValue:a3];
+  v3 = [(PFGenericValueTransformer *)&v5 transformedValue:value];
 
   return v3;
 }
 
-- (id)transformedValue:(id)a3 context:(id)a4
+- (id)transformedValue:(id)value context:(id)context
 {
   v6.receiver = self;
   v6.super_class = PFGenericValueTransformer;
-  v4 = [(PFGenericValueTransformer *)&v6 transformedValue:a3, a4];
+  context = [(PFGenericValueTransformer *)&v6 transformedValue:value, context];
 
-  return v4;
+  return context;
 }
 
-- (id)reverseTransformedValue:(id)a3 context:(id)a4
+- (id)reverseTransformedValue:(id)value context:(id)context
 {
   v6.receiver = self;
   v6.super_class = PFGenericValueTransformer;
-  v4 = [(PFGenericValueTransformer *)&v6 reverseTransformedValue:a3, a4];
+  context = [(PFGenericValueTransformer *)&v6 reverseTransformedValue:value, context];
 
-  return v4;
+  return context;
 }
 
 @end

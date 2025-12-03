@@ -1,36 +1,36 @@
 @interface CPAnalyticsBiomeBaseSample
-- (CPAnalyticsBiomeBaseSample)initWithIdentifier:(id)a3 andDate:(id)a4 forSubset:(id)a5;
+- (CPAnalyticsBiomeBaseSample)initWithIdentifier:(id)identifier andDate:(id)date forSubset:(id)subset;
 @end
 
 @implementation CPAnalyticsBiomeBaseSample
 
-- (CPAnalyticsBiomeBaseSample)initWithIdentifier:(id)a3 andDate:(id)a4 forSubset:(id)a5
+- (CPAnalyticsBiomeBaseSample)initWithIdentifier:(id)identifier andDate:(id)date forSubset:(id)subset
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  dateCopy = date;
+  subsetCopy = subset;
   v17.receiver = self;
   v17.super_class = CPAnalyticsBiomeBaseSample;
   v12 = [(CPAnalyticsBiomeBaseSample *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_identifier, a3);
-    objc_storeStrong(&v13->_date, a4);
+    objc_storeStrong(&v12->_identifier, identifier);
+    objc_storeStrong(&v13->_date, date);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = v11;
+      subsetCopy = subsetCopy;
 LABEL_6:
       subset = v13->_subset;
-      v13->_subset = v14;
+      v13->_subset = subsetCopy;
 
       goto LABEL_7;
     }
 
-    if (v11)
+    if (subsetCopy)
     {
-      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v11];
+      subsetCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", subsetCopy];
       goto LABEL_6;
     }
   }

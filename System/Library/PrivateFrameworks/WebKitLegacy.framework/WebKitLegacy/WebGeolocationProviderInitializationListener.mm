@@ -1,21 +1,21 @@
 @interface WebGeolocationProviderInitializationListener
-- (WebGeolocationProviderInitializationListener)initWithGeolocation:(reference_wrapper<WebCore::Geolocation>)a3;
-- (void)initializationAllowedWebView:(id)a3;
-- (void)initializationDeniedWebView:(id)a3;
+- (WebGeolocationProviderInitializationListener)initWithGeolocation:(reference_wrapper<WebCore::Geolocation>)geolocation;
+- (void)initializationAllowedWebView:(id)view;
+- (void)initializationDeniedWebView:(id)view;
 @end
 
 @implementation WebGeolocationProviderInitializationListener
 
-- (WebGeolocationProviderInitializationListener)initWithGeolocation:(reference_wrapper<WebCore::Geolocation>)a3
+- (WebGeolocationProviderInitializationListener)initWithGeolocation:(reference_wrapper<WebCore::Geolocation>)geolocation
 {
   v9.receiver = self;
   v9.super_class = WebGeolocationProviderInitializationListener;
   result = [(WebGeolocationProviderInitializationListener *)&v9 init];
   if (result)
   {
-    ++*(a3.var0 + 10);
+    ++*(geolocation.var0 + 10);
     m_ptr = result->m_geolocation.m_ptr;
-    result->m_geolocation.m_ptr = a3.var0;
+    result->m_geolocation.m_ptr = geolocation.var0;
     if (m_ptr)
     {
       if (*(m_ptr + 10) == 1)
@@ -36,7 +36,7 @@
   return result;
 }
 
-- (void)initializationAllowedWebView:(id)a3
+- (void)initializationAllowedWebView:(id)view
 {
   v5 = WebCore::Geolocation::frame(self->m_geolocation.m_ptr);
   if (v5)
@@ -44,7 +44,7 @@
     v6 = [[WebSecurityOrigin alloc] _initWithWebCoreSecurityOrigin:WebCore::SecurityContext::securityOrigin((*(v5 + 224) + 208))];
     v7 = [WebGeolocationPolicyListener alloc];
     m_ptr = self->m_geolocation.m_ptr;
-    v8 = [(WebGeolocationPolicyListener *)v7 initWithGeolocation:&m_ptr forWebView:a3];
+    v8 = [(WebGeolocationPolicyListener *)v7 initWithGeolocation:&m_ptr forWebView:view];
     v9 = *(*(v5 + 208) + 16);
     if ((*(*v9 + 1032))(v9))
     {
@@ -56,7 +56,7 @@
       v10 = v9[3];
     }
 
-    CallUIDelegate(a3, sel_webView_decidePolicyForGeolocationRequestFromOrigin_frame_listener_, v6, v10, v8);
+    CallUIDelegate(view, sel_webView_decidePolicyForGeolocationRequestFromOrigin_frame_listener_, v6, v10, v8);
     if (v8)
     {
     }
@@ -67,7 +67,7 @@
   }
 }
 
-- (void)initializationDeniedWebView:(id)a3
+- (void)initializationDeniedWebView:(id)view
 {
   m_ptr = self->m_geolocation.m_ptr;
   v6 = 0;

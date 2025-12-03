@@ -5,17 +5,17 @@
 - (CGPoint)center;
 - (CGRect)bounds;
 - (CGRect)frame;
-- (_TtC9DropletUI22DropletParticipantView)initWithFrame:(CGRect)a3;
+- (_TtC9DropletUI22DropletParticipantView)initWithFrame:(CGRect)frame;
 - (double)alpha;
-- (void)_removeAllRetargetableAnimations:(BOOL)a3;
-- (void)_setVelocity:(id)a3 forKey:(id)a4;
+- (void)_removeAllRetargetableAnimations:(BOOL)animations;
+- (void)_setVelocity:(id)velocity forKey:(id)key;
 - (void)removeFromSuperview;
-- (void)setAlpha:(double)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setCenter:(CGPoint)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setTransform3D:(CATransform3D *)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCenter:(CGPoint)center;
+- (void)setFrame:(CGRect)frame;
+- (void)setTransform3D:(CATransform3D *)d;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation DropletParticipantView
@@ -30,13 +30,13 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  selfCopy = self;
   sub_249ED3EA4(&selRef_frame, &selRef_setFrame_, x, y, width, height);
 }
 
@@ -50,13 +50,13 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  selfCopy = self;
   sub_249ED3EA4(&selRef_bounds, &selRef_setBounds_, x, y, width, height);
 }
 
@@ -70,11 +70,11 @@
   return result;
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = center.y;
+  x = center.x;
+  selfCopy = self;
   sub_249ED431C(x, y);
 }
 
@@ -91,13 +91,13 @@
   return result;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->c;
-  v5[0] = *&a3->a;
+  v3 = *&transform->c;
+  v5[0] = *&transform->a;
   v5[1] = v3;
-  v5[2] = *&a3->tx;
-  v4 = self;
+  v5[2] = *&transform->tx;
+  selfCopy = self;
   sub_249ED4774(v5);
 }
 
@@ -124,21 +124,21 @@
   return result;
 }
 
-- (void)setTransform3D:(CATransform3D *)a3
+- (void)setTransform3D:(CATransform3D *)d
 {
-  v3 = *&a3->m13;
-  v8[0] = *&a3->m11;
+  v3 = *&d->m13;
+  v8[0] = *&d->m11;
   v8[1] = v3;
-  v4 = *&a3->m23;
-  v8[2] = *&a3->m21;
+  v4 = *&d->m23;
+  v8[2] = *&d->m21;
   v8[3] = v4;
-  v5 = *&a3->m33;
-  v8[4] = *&a3->m31;
+  v5 = *&d->m33;
+  v8[4] = *&d->m31;
   v8[5] = v5;
-  v6 = *&a3->m43;
-  v8[6] = *&a3->m41;
+  v6 = *&d->m43;
+  v8[6] = *&d->m41;
   v8[7] = v6;
-  v7 = self;
+  selfCopy = self;
   sub_249ED4BB8(v8);
 }
 
@@ -150,17 +150,17 @@
   return result;
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v5 = type metadata accessor for DropletParticipantView();
   v10.receiver = self;
   v10.super_class = v5;
-  v6 = self;
+  selfCopy = self;
   [(DropletParticipantView *)&v10 alpha];
   v8 = v7;
-  v9.receiver = v6;
+  v9.receiver = selfCopy;
   v9.super_class = v5;
-  [(DropletParticipantView *)&v9 setAlpha:a3];
+  [(DropletParticipantView *)&v9 setAlpha:alpha];
   sub_249ED5020(v8);
 }
 
@@ -171,14 +171,14 @@
   return [(DropletParticipantView *)&v3 isHidden];
 }
 
-- (void)_setVelocity:(id)a3 forKey:(id)a4
+- (void)_setVelocity:(id)velocity forKey:(id)key
 {
-  if (!a3)
+  if (!velocity)
   {
     memset(v13, 0, sizeof(v13));
-    v11 = a4;
-    v12 = self;
-    if (a4)
+    keyCopy = key;
+    selfCopy = self;
+    if (key)
     {
       goto LABEL_3;
     }
@@ -189,12 +189,12 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v6 = a4;
-  v7 = self;
+  keyCopy2 = key;
+  selfCopy2 = self;
   swift_unknownObjectRetain();
   sub_249ED6D90();
   swift_unknownObjectRelease();
-  if (!a4)
+  if (!key)
   {
     goto LABEL_5;
   }
@@ -209,19 +209,19 @@ LABEL_6:
   sub_249EB371C(v13, &unk_27EF299E0, &qword_249ED8EB0);
 }
 
-- (void)_removeAllRetargetableAnimations:(BOOL)a3
+- (void)_removeAllRetargetableAnimations:(BOOL)animations
 {
-  v4 = self;
-  sub_249ED5674(a3);
+  selfCopy = self;
+  sub_249ED5674(animations);
 }
 
 - (void)removeFromSuperview
 {
-  v2 = self;
+  selfCopy = self;
   sub_249ED57B0();
 }
 
-- (_TtC9DropletUI22DropletParticipantView)initWithFrame:(CGRect)a3
+- (_TtC9DropletUI22DropletParticipantView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

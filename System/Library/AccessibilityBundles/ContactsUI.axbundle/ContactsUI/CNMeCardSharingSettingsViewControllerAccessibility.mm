@@ -1,17 +1,17 @@
 @interface CNMeCardSharingSettingsViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation CNMeCardSharingSettingsViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNMeCardSharingSettingsViewController" hasInstanceVariable:@"_givenNameField" withType:"UITextField"];
-  [v3 validateClass:@"CNMeCardSharingSettingsViewController" hasInstanceVariable:@"_familyNameField" withType:"UITextField"];
-  [v3 validateClass:@"CNMeCardSharingSettingsViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNMeCardSharingSettingsViewController" hasInstanceVariable:@"_givenNameField" withType:"UITextField"];
+  [validationsCopy validateClass:@"CNMeCardSharingSettingsViewController" hasInstanceVariable:@"_familyNameField" withType:"UITextField"];
+  [validationsCopy validateClass:@"CNMeCardSharingSettingsViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
 }
 
 - (void)viewDidLoad

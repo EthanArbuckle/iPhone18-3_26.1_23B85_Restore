@@ -1,6 +1,6 @@
 @interface KGDoublePropertyValue
-- (BOOL)isEqual:(id)a3;
-- (KGDoublePropertyValue)initWithValue:(double)a3;
+- (BOOL)isEqual:(id)equal;
+- (KGDoublePropertyValue)initWithValue:(double)value;
 - (unint64_t)hash;
 @end
 
@@ -14,14 +14,14 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     value = self->_value;
-    [v4 value];
+    [equalCopy value];
     v7 = vabdd_f64(value, v6) <= 2.22044605e-16;
   }
 
@@ -33,14 +33,14 @@
   return v7;
 }
 
-- (KGDoublePropertyValue)initWithValue:(double)a3
+- (KGDoublePropertyValue)initWithValue:(double)value
 {
   v5.receiver = self;
   v5.super_class = KGDoublePropertyValue;
   result = [(KGPropertyValue *)&v5 initForSubclasses];
   if (result)
   {
-    result->_value = a3;
+    result->_value = value;
   }
 
   return result;

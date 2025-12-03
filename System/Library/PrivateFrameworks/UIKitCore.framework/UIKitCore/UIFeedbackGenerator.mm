@@ -1,62 +1,62 @@
 @interface UIFeedbackGenerator
-+ (id)behaviorWithConfiguration:(id)a3 coordinateSpace:(id)a4;
-+ (id)feedbackGeneratorForView:(id)a3;
++ (id)behaviorWithConfiguration:(id)configuration coordinateSpace:(id)space;
++ (id)feedbackGeneratorForView:(id)view;
 - (BOOL)_isEnabled;
 - (NSString)_stats_key;
 - (NSString)description;
 - (UICoordinateSpace)coordinateSpace;
 - (UIFeedbackGenerator)init;
-- (UIFeedbackGenerator)initWithConfiguration:(id)a3 coordinateSpace:(id)a4;
-- (UIFeedbackGenerator)initWithConfiguration:(id)a3 view:(id)a4;
-- (UIFeedbackGenerator)initWithCoordinateSpace:(id)a3;
-- (UIFeedbackGenerator)initWithView:(id)a3;
+- (UIFeedbackGenerator)initWithConfiguration:(id)configuration coordinateSpace:(id)space;
+- (UIFeedbackGenerator)initWithConfiguration:(id)configuration view:(id)view;
+- (UIFeedbackGenerator)initWithCoordinateSpace:(id)space;
+- (UIFeedbackGenerator)initWithView:(id)view;
 - (UIView)view;
 - (id)_activationCountStatistics;
 - (id)_activationDurationStatistics;
 - (id)_activationTimeOutCountStatistics;
 - (id)_playCountStatistics;
 - (id)_preparationCountStatistics;
-- (id)_preparationTimerForStyle:(int64_t)a3;
+- (id)_preparationTimerForStyle:(int64_t)style;
 - (id)_statsSuffix;
 - (id)_ui_descriptionBuilder;
 - (int64_t)_outputMode;
-- (void)__activateWithStyle:(int64_t)a3 forFeedback:(id)a4 completionBlock:(id)a5;
-- (void)__deactivateWithStyle:(int64_t)a3;
+- (void)__activateWithStyle:(int64_t)style forFeedback:(id)feedback completionBlock:(id)block;
+- (void)__deactivateWithStyle:(int64_t)style;
 - (void)_activated;
 - (void)_autoDeactivate;
-- (void)_clientDidUpdateGeneratorWithSelector:(SEL)a3;
-- (void)_deactivateWithStyle:(int64_t)a3;
+- (void)_clientDidUpdateGeneratorWithSelector:(SEL)selector;
+- (void)_deactivateWithStyle:(int64_t)style;
 - (void)_deactivated;
-- (void)_forceDeactivationForStyle:(int64_t)a3;
-- (void)_playFeedback:(id)a3 withMinimumIntervalPassed:(double)a4 since:(double *)a5 prefersRegularPace:(BOOL)a6 atLocation:(CGPoint)a7;
-- (void)_prepareWithStyle:(int64_t)a3;
+- (void)_forceDeactivationForStyle:(int64_t)style;
+- (void)_playFeedback:(id)feedback withMinimumIntervalPassed:(double)passed since:(double *)since prefersRegularPace:(BOOL)pace atLocation:(CGPoint)location;
+- (void)_prepareWithStyle:(int64_t)style;
 - (void)_resetAutoDeactivationTimeout;
 - (void)_scheduleFeedbackWarming;
-- (void)_setOutputMode:(int64_t)a3;
-- (void)_setPreparationTimer:(id)a3 forStyle:(int64_t)a4;
+- (void)_setOutputMode:(int64_t)mode;
+- (void)_setPreparationTimer:(id)timer forStyle:(int64_t)style;
 - (void)_setupAutoDeactivateTimer;
-- (void)_setupEnginesIfNeededForFeedback:(id)a3;
-- (void)_setupForFeedback:(id)a3;
+- (void)_setupEnginesIfNeededForFeedback:(id)feedback;
+- (void)_setupForFeedback:(id)feedback;
 - (void)_startFeedbackWarming;
-- (void)_stats_activationDidChangeTo:(BOOL)a3;
+- (void)_stats_activationDidChangeTo:(BOOL)to;
 - (void)_stats_activationTimedOut;
 - (void)_stats_playedFeedback;
 - (void)_stats_prepared;
 - (void)_stopAutoDeactivateTimer;
-- (void)_stopFeedback:(id)a3;
+- (void)_stopFeedback:(id)feedback;
 - (void)_stopFeedbackWarming;
 - (void)_stopPreparationForAllStyles;
-- (void)_stopPreparationForStyle:(int64_t)a3;
-- (void)_updateActivationStateForRemovedEngines:(id)a3 addedEngines:(id)a4 prewarmCount:(int64_t)a5 turnOnCount:(int64_t)a6;
+- (void)_stopPreparationForStyle:(int64_t)style;
+- (void)_updateActivationStateForRemovedEngines:(id)engines addedEngines:(id)addedEngines prewarmCount:(int64_t)count turnOnCount:(int64_t)onCount;
 - (void)_updateForViewUserInterfaceIdiom;
-- (void)_updatePreparationTimer:(id)a3 withTimeout:(double)a4;
-- (void)activateWithCompletionBlock:(id)a3;
+- (void)_updatePreparationTimer:(id)timer withTimeout:(double)timeout;
+- (void)activateWithCompletionBlock:(id)block;
 - (void)deactivate;
 - (void)dealloc;
-- (void)didMoveToView:(id)a3;
-- (void)performFeedbackWithDelay:(double)a3 insideBlock:(id)a4;
+- (void)didMoveToView:(id)view;
+- (void)performFeedbackWithDelay:(double)delay insideBlock:(id)block;
 - (void)prepare;
-- (void)willMoveToView:(id)a3;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation UIFeedbackGenerator
@@ -68,11 +68,11 @@
   if (WeakRetained)
   {
     v4 = objc_loadWeakRetained(&self->_view);
-    v5 = [v4 traitCollection];
-    v6 = [v5 userInterfaceIdiom];
+    traitCollection = [v4 traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    self->_disabledByView = v6 == 3;
-    if (v6 == 1 && (+[UIDevice currentDevice], v7 = objc_claimAutoreleasedReturnValue(), v8 = [(UIDevice *)v7 _peripheralFeedbackSupportLevel], v7, v8 >= 1))
+    self->_disabledByView = userInterfaceIdiom == 3;
+    if (userInterfaceIdiom == 1 && (+[UIDevice currentDevice], v7 = objc_claimAutoreleasedReturnValue(), v8 = [(UIDevice *)v7 _peripheralFeedbackSupportLevel], v7, v8 >= 1))
     {
       if (self->_gestureRecognizer)
       {
@@ -129,8 +129,8 @@
   {
     if (self->_autoDeactivateTimer)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"UIFeedbackGenerator.m" lineNumber:696 description:@"trying to create an auto-deactivation timer when we already have one"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIFeedbackGenerator.m" lineNumber:696 description:@"trying to create an auto-deactivation timer when we already have one"];
     }
 
     v5 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, MEMORY[0x1E69E96A0]);
@@ -218,18 +218,18 @@
 
 - (id)_statsSuffix
 {
-  v3 = [(UIFeedbackGenerator *)self _stats_key];
-  v4 = [(UIFeedbackGenerator *)self _configuration];
-  v5 = [v4 _stats_key];
+  _stats_key = [(UIFeedbackGenerator *)self _stats_key];
+  _configuration = [(UIFeedbackGenerator *)self _configuration];
+  _stats_key2 = [_configuration _stats_key];
 
-  if (v5)
+  if (_stats_key2)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v3, v5];
+    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", _stats_key, _stats_key2];
   }
 
   else
   {
-    v6 = v3;
+    v6 = _stats_key;
   }
 
   v7 = v6;
@@ -240,8 +240,8 @@
 - (BOOL)_isEnabled
 {
   [(_UIFeedbackGeneratorConfiguration *)self->_configuration _setupIfNecessary];
-  v3 = [(UIFeedbackGenerator *)self _configuration];
-  if ([v3 isEnabled])
+  _configuration = [(UIFeedbackGenerator *)self _configuration];
+  if ([_configuration isEnabled])
   {
     v4 = !self->_disabledByView;
   }
@@ -271,16 +271,16 @@
 
 - (id)_activationCountStatistics
 {
-  v2 = [(UIFeedbackGenerator *)self _statsSuffix];
-  v3 = [_UIStatistics feedbackGeneratorActivationCountWithSuffix:v2];
+  _statsSuffix = [(UIFeedbackGenerator *)self _statsSuffix];
+  v3 = [_UIStatistics feedbackGeneratorActivationCountWithSuffix:_statsSuffix];
 
   return v3;
 }
 
 - (id)_activationDurationStatistics
 {
-  v2 = [(UIFeedbackGenerator *)self _statsSuffix];
-  v3 = [_UIStatistics feedbackGeneratorActivationDurationWithSuffix:v2];
+  _statsSuffix = [(UIFeedbackGenerator *)self _statsSuffix];
+  v3 = [_UIStatistics feedbackGeneratorActivationDurationWithSuffix:_statsSuffix];
 
   return v3;
 }
@@ -298,8 +298,8 @@ void __47__UIFeedbackGenerator__scheduleFeedbackWarming__block_invoke(uint64_t a
 
 - (id)_preparationCountStatistics
 {
-  v2 = [(UIFeedbackGenerator *)self _statsSuffix];
-  v3 = [_UIStatistics feedbackGeneratorPreparationCountWithSuffix:v2];
+  _statsSuffix = [(UIFeedbackGenerator *)self _statsSuffix];
+  v3 = [_UIStatistics feedbackGeneratorPreparationCountWithSuffix:_statsSuffix];
 
   return v3;
 }
@@ -325,8 +325,8 @@ void __47__UIFeedbackGenerator__scheduleFeedbackWarming__block_invoke(uint64_t a
 
 - (void)_stats_prepared
 {
-  v2 = [(UIFeedbackGenerator *)self _preparationCountStatistics];
-  [v2 incrementValueBy:1];
+  _preparationCountStatistics = [(UIFeedbackGenerator *)self _preparationCountStatistics];
+  [_preparationCountStatistics incrementValueBy:1];
 }
 
 - (void)dealloc
@@ -342,12 +342,12 @@ void __47__UIFeedbackGenerator__scheduleFeedbackWarming__block_invoke(uint64_t a
       if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
       {
         v4 = MEMORY[0x1E696AEC0];
-        v5 = self;
+        selfCopy = self;
         v6 = v3;
-        v7 = [v4 stringWithFormat:@"<%s: %p>", object_getClassName(v5), v5];
+        selfCopy = [v4 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy), selfCopy];
 
         *buf = 138412290;
-        v10 = v7;
+        v10 = selfCopy;
         _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_DEFAULT, "%@ is being deallocated while still being active, forcing deactivation", buf, 0xCu);
       }
     }
@@ -441,41 +441,41 @@ void __47__UIFeedbackGenerator__scheduleFeedbackWarming__block_invoke(uint64_t a
   }
 }
 
-- (UIFeedbackGenerator)initWithView:(id)a3
+- (UIFeedbackGenerator)initWithView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [objc_msgSend(objc_opt_class() "_configurationClass")];
-  v6 = [(UIFeedbackGenerator *)self initWithConfiguration:v5 view:v4];
+  v6 = [(UIFeedbackGenerator *)self initWithConfiguration:v5 view:viewCopy];
 
   return v6;
 }
 
-+ (id)feedbackGeneratorForView:(id)a3
++ (id)feedbackGeneratorForView:(id)view
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithView:v4];
+  viewCopy = view;
+  v5 = [[self alloc] initWithView:viewCopy];
 
   return v5;
 }
 
-- (UIFeedbackGenerator)initWithConfiguration:(id)a3 view:(id)a4
+- (UIFeedbackGenerator)initWithConfiguration:(id)configuration view:(id)view
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = UIFeedbackGenerator;
   v9 = [(UIFeedbackGenerator *)&v12 init];
   [objc_opt_class() _configurationClass];
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:v9 file:@"UIFeedbackGenerator.m" lineNumber:142 description:{@"Invalid configuration class %@ for generator %@", v7, v9}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:v9 file:@"UIFeedbackGenerator.m" lineNumber:142 description:{@"Invalid configuration class %@ for generator %@", configurationCopy, v9}];
   }
 
-  [(UIFeedbackGenerator *)v9 _setConfiguration:v7];
-  if (v8)
+  [(UIFeedbackGenerator *)v9 _setConfiguration:configurationCopy];
+  if (viewCopy)
   {
-    [v8 addInteraction:v9];
+    [viewCopy addInteraction:v9];
   }
 
   return v9;
@@ -483,10 +483,10 @@ void __47__UIFeedbackGenerator__scheduleFeedbackWarming__block_invoke(uint64_t a
 
 - (NSString)description
 {
-  v2 = [(UIFeedbackGenerator *)self _ui_descriptionBuilder];
-  v3 = [v2 string];
+  _ui_descriptionBuilder = [(UIFeedbackGenerator *)self _ui_descriptionBuilder];
+  string = [_ui_descriptionBuilder string];
 
-  return v3;
+  return string;
 }
 
 - (id)_ui_descriptionBuilder
@@ -494,7 +494,7 @@ void __47__UIFeedbackGenerator__scheduleFeedbackWarming__block_invoke(uint64_t a
   v12[2] = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = UIFeedbackGenerator;
-  v3 = [&v11 _ui_descriptionBuilder];
+  _ui_descriptionBuilder = [&v11 _ui_descriptionBuilder];
   if (os_variant_has_internal_diagnostics())
   {
     v5 = NSStringFromSelector(sel_active);
@@ -502,21 +502,21 @@ void __47__UIFeedbackGenerator__scheduleFeedbackWarming__block_invoke(uint64_t a
     v6 = NSStringFromSelector(sel_configuration);
     v12[1] = v6;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
-    v8 = [v3 appendKeys:v7];
+    v8 = [_ui_descriptionBuilder appendKeys:v7];
 
     WeakRetained = objc_loadWeakRetained(&self->_view);
-    v10 = [v3 appendName:@"view" object:WeakRetained usingLightweightDescription:1];
+    v10 = [_ui_descriptionBuilder appendName:@"view" object:WeakRetained usingLightweightDescription:1];
   }
 
-  return v3;
+  return _ui_descriptionBuilder;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_view);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != viewCopy)
   {
     if (self->_traitChangeRegistration)
     {
@@ -534,51 +534,51 @@ void __47__UIFeedbackGenerator__scheduleFeedbackWarming__block_invoke(uint64_t a
   }
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_view);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != viewCopy)
   {
-    objc_storeWeak(&self->_view, v4);
+    objc_storeWeak(&self->_view, viewCopy);
     [(UIFeedbackGenerator *)self _updateForViewUserInterfaceIdiom];
     v9[0] = 0x1EFE32398;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
-    v7 = [v4 _registerForTraitTokenChanges:v6 withTarget:self action:sel__updateForViewUserInterfaceIdiom];
+    v7 = [viewCopy _registerForTraitTokenChanges:v6 withTarget:self action:sel__updateForViewUserInterfaceIdiom];
     traitChangeRegistration = self->_traitChangeRegistration;
     self->_traitChangeRegistration = v7;
   }
 }
 
-- (id)_preparationTimerForStyle:(int64_t)a3
+- (id)_preparationTimerForStyle:(int64_t)style
 {
   preparationTimers = self->_preparationTimers;
   if (preparationTimers)
   {
-    v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v4 = [MEMORY[0x1E696AD98] numberWithInteger:style];
     preparationTimers = [preparationTimers objectForKeyedSubscript:v4];
   }
 
   return preparationTimers;
 }
 
-- (void)_setPreparationTimer:(id)a3 forStyle:(int64_t)a4
+- (void)_setPreparationTimer:(id)timer forStyle:(int64_t)style
 {
-  v10 = a3;
+  timerCopy = timer;
   if (!self->_preparationTimers)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     preparationTimers = self->_preparationTimers;
-    self->_preparationTimers = v6;
+    self->_preparationTimers = dictionary;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:style];
   v9 = self->_preparationTimers;
-  if (v10)
+  if (timerCopy)
   {
-    [(NSMutableDictionary *)v9 setObject:v10 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)v9 setObject:timerCopy forKeyedSubscript:v8];
   }
 
   else
@@ -587,7 +587,7 @@ void __47__UIFeedbackGenerator__scheduleFeedbackWarming__block_invoke(uint64_t a
   }
 }
 
-- (void)_prepareWithStyle:(int64_t)a3
+- (void)_prepareWithStyle:(int64_t)style
 {
   v24 = *MEMORY[0x1E69E9840];
   [(UIFeedbackGenerator *)self _preparationTimeoutForStyle:?];
@@ -603,7 +603,7 @@ void __47__UIFeedbackGenerator__scheduleFeedbackWarming__block_invoke(uint64_t a
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
           v11 = v10;
-          stringForActivationStyle(a3);
+          stringForActivationStyle(style);
           *location = 138412802;
           *&location[4] = self;
           v21 = v20 = 2112;
@@ -615,7 +615,7 @@ void __47__UIFeedbackGenerator__scheduleFeedbackWarming__block_invoke(uint64_t a
       }
     }
 
-    v8 = [(UIFeedbackGenerator *)self _preparationTimerForStyle:a3];
+    v8 = [(UIFeedbackGenerator *)self _preparationTimerForStyle:style];
     if (v8)
     {
       [(UIFeedbackGenerator *)self _updatePreparationTimer:v8 withTimeout:v6];
@@ -630,9 +630,9 @@ void __47__UIFeedbackGenerator__scheduleFeedbackWarming__block_invoke(uint64_t a
       handler[2] = __41__UIFeedbackGenerator__prepareWithStyle___block_invoke;
       handler[3] = &unk_1E70F8DC8;
       objc_copyWeak(v18, location);
-      v18[1] = a3;
+      v18[1] = style;
       dispatch_source_set_event_handler(v9, handler);
-      [(UIFeedbackGenerator *)self _setPreparationTimer:v9 forStyle:a3];
+      [(UIFeedbackGenerator *)self _setPreparationTimer:v9 forStyle:style];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __41__UIFeedbackGenerator__prepareWithStyle___block_invoke_30;
@@ -641,8 +641,8 @@ void __47__UIFeedbackGenerator__scheduleFeedbackWarming__block_invoke(uint64_t a
       v8 = v9;
       v14 = v8;
       v15 = v6;
-      v16 = a3;
-      [(UIFeedbackGenerator *)self _activateWithStyle:a3 completionBlock:v13];
+      styleCopy = style;
+      [(UIFeedbackGenerator *)self _activateWithStyle:style completionBlock:v13];
 
       objc_destroyWeak(v18);
       objc_destroyWeak(location);
@@ -699,68 +699,68 @@ void __41__UIFeedbackGenerator__prepareWithStyle___block_invoke_30(uint64_t a1, 
   }
 }
 
-- (void)_updatePreparationTimer:(id)a3 withTimeout:(double)a4
+- (void)_updatePreparationTimer:(id)timer withTimeout:(double)timeout
 {
-  v5 = (a4 * 1000000000.0);
-  source = a3;
+  v5 = (timeout * 1000000000.0);
+  source = timer;
   v6 = dispatch_time(0, v5);
-  dispatch_source_set_timer(source, v6, 0xFFFFFFFFFFFFFFFFLL, (a4 / 100.0 * 1000000000.0));
+  dispatch_source_set_timer(source, v6, 0xFFFFFFFFFFFFFFFFLL, (timeout / 100.0 * 1000000000.0));
 }
 
-- (void)_stopPreparationForStyle:(int64_t)a3
+- (void)_stopPreparationForStyle:(int64_t)style
 {
   v5 = [(UIFeedbackGenerator *)self _preparationTimerForStyle:?];
   if (v5)
   {
     source = v5;
-    [(UIFeedbackGenerator *)self _deactivateWithStyle:a3];
+    [(UIFeedbackGenerator *)self _deactivateWithStyle:style];
     dispatch_source_cancel(source);
     dispatch_activate(source);
-    [(UIFeedbackGenerator *)self _setPreparationTimer:0 forStyle:a3];
+    [(UIFeedbackGenerator *)self _setPreparationTimer:0 forStyle:style];
     v5 = source;
   }
 }
 
-- (void)_setupForFeedback:(id)a3
+- (void)_setupForFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_UIFeedbackGeneratorConfiguration *)self->_configuration _setupIfNecessary];
   if ([(_UIFeedbackGeneratorConfiguration *)self->_configuration isEnabled])
   {
-    [(UIFeedbackGenerator *)self _setupEnginesIfNeededForFeedback:v4];
+    [(UIFeedbackGenerator *)self _setupEnginesIfNeededForFeedback:feedbackCopy];
   }
 }
 
-- (void)activateWithCompletionBlock:(id)a3
+- (void)activateWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(UIFeedbackGenerator *)self _setupForFeedback:0];
-  [(UIFeedbackGenerator *)self _activateWithStyle:[(_UIFeedbackGeneratorConfiguration *)self->_configuration activationStyle] completionBlock:v4];
+  [(UIFeedbackGenerator *)self _activateWithStyle:[(_UIFeedbackGeneratorConfiguration *)self->_configuration activationStyle] completionBlock:blockCopy];
 }
 
-- (void)__activateWithStyle:(int64_t)a3 forFeedback:(id)a4 completionBlock:(id)a5
+- (void)__activateWithStyle:(int64_t)style forFeedback:(id)feedback completionBlock:(id)block
 {
   v48 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  [(UIFeedbackGenerator *)self _setupForFeedback:v9];
+  feedbackCopy = feedback;
+  blockCopy = block;
+  [(UIFeedbackGenerator *)self _setupForFeedback:feedbackCopy];
   if ([(UIFeedbackGenerator *)self _isEnabled])
   {
     [(UIFeedbackGenerator *)self setActivationCount:[(UIFeedbackGenerator *)self activationCount]+ 1];
-    v11 = self->_styleActivationCount[a3];
-    self->_styleActivationCount[a3] = v11 + 1;
+    v11 = self->_styleActivationCount[style];
+    self->_styleActivationCount[style] = v11 + 1;
     if ((_UIFeedbackLoggingDisabled & 1) == 0)
     {
       v12 = *(__UILogGetCategoryCachedImpl("FeedbackActivation", &__activateWithStyle_forFeedback_completionBlock____s_category) + 8);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v26 = v12;
-        v27 = stringForActivationStyle(a3);
+        v27 = stringForActivationStyle(style);
         activationCount = self->_activationCount;
-        v14 = self->_styleActivationCount[a3];
+        v14 = self->_styleActivationCount[style];
         v15 = MEMORY[0x1E696AEC0];
-        v16 = self;
-        v25 = [v15 stringWithFormat:@"<%s: %p>", object_getClassName(v16), v16];
+        selfCopy = self;
+        selfCopy = [v15 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy), selfCopy];
 
         *buf = 138413570;
         *&buf[4] = v27;
@@ -773,7 +773,7 @@ void __41__UIFeedbackGenerator__prepareWithStyle___block_invoke_30(uint64_t a1, 
         v44 = 2048;
         v45 = v14;
         v46 = 2112;
-        v47 = v25;
+        v47 = selfCopy;
         _os_log_impl(&dword_188A29000, v26, OS_LOG_TYPE_DEFAULT, "activate generator with style: %@; activationCount: %ld -> %ld; styleActivationCount: %ld -> %ld; %@", buf, 0x3Eu);
       }
     }
@@ -797,7 +797,7 @@ void __41__UIFeedbackGenerator__prepareWithStyle___block_invoke_30(uint64_t a1, 
     v37 = a2;
     v34 = buf;
     aBlock[4] = self;
-    v33 = v10;
+    v33 = blockCopy;
     v18 = _Block_copy(aBlock);
     v19 = v18;
     if (v17 < 1)
@@ -825,15 +825,15 @@ void __41__UIFeedbackGenerator__prepareWithStyle___block_invoke_30(uint64_t a1, 
               objc_enumerationMutation(v20);
             }
 
-            if (a3)
+            if (style)
             {
               v24 = *(*(&v28 + 1) + 8 * i);
-              if (a3 == 1)
+              if (style == 1)
               {
                 [v24 _prewarm:v11 == 0 andPerformWhenPrewarmed:v19];
               }
 
-              else if (a3 == 2)
+              else if (style == 2)
               {
                 [v24 _activate:v11 == 0 andPerformWhenRunning:v19];
               }
@@ -856,9 +856,9 @@ void __41__UIFeedbackGenerator__prepareWithStyle___block_invoke_30(uint64_t a1, 
     _Block_object_dispose(buf, 8);
   }
 
-  else if (v10)
+  else if (blockCopy)
   {
-    (*(v10 + 2))(v10, 0);
+    (*(blockCopy + 2))(blockCopy, 0);
   }
 }
 
@@ -898,23 +898,23 @@ void __71__UIFeedbackGenerator___activateWithStyle_forFeedback_completionBlock__
   }
 }
 
-- (void)_setupEnginesIfNeededForFeedback:(id)a3
+- (void)_setupEnginesIfNeededForFeedback:(id)feedback
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  feedbackCopy = feedback;
   usedFeedbacks = self->_usedFeedbacks;
-  if (v4)
+  if (feedbackCopy)
   {
     if (usedFeedbacks)
     {
-      v6 = [(NSSet *)usedFeedbacks setByAddingObject:v4];
-      v7 = [(NSSet *)v6 count];
+      usedFeedbacks = [(NSSet *)usedFeedbacks setByAddingObject:feedbackCopy];
+      v7 = [(NSSet *)usedFeedbacks count];
       v8 = v7 != [(NSSet *)self->_usedFeedbacks count];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFD8] setWithObject:v4];
+      usedFeedbacks = [MEMORY[0x1E695DFD8] setWithObject:feedbackCopy];
       v8 = 1;
     }
 
@@ -923,27 +923,27 @@ void __71__UIFeedbackGenerator___activateWithStyle_forFeedback_completionBlock__
 
   else if (usedFeedbacks)
   {
-    v6 = usedFeedbacks;
+    usedFeedbacks = usedFeedbacks;
   }
 
   else
   {
-    v22 = [(UIFeedbackGenerator *)self _configuration];
-    v6 = [v22 usedFeedbacks];
+    _configuration = [(UIFeedbackGenerator *)self _configuration];
+    usedFeedbacks = [_configuration usedFeedbacks];
   }
 
-  if (v6 == self->_usedFeedbacks)
+  if (usedFeedbacks == self->_usedFeedbacks)
   {
     goto LABEL_34;
   }
 
-  v33 = v4;
+  v33 = feedbackCopy;
   v9 = [MEMORY[0x1E695DFA8] set];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v10 = v6;
+  v10 = usedFeedbacks;
   v11 = [(NSSet *)v10 countByEnumeratingWithState:&v34 objects:v44 count:16];
   if (v11)
   {
@@ -1026,7 +1026,7 @@ LABEL_29:
   }
 
   objc_storeStrong(&self->_engines, v9);
-  v4 = v33;
+  feedbackCopy = v33;
   if ((_UIFeedbackLoggingDisabled & 1) == 0)
   {
     v24 = __UILogGetCategoryCachedImpl("FeedbackDebug", &qword_1ED49DB90);
@@ -1049,36 +1049,36 @@ LABEL_29:
     }
   }
 
-  objc_storeStrong(&self->_usedFeedbacks, v6);
+  objc_storeStrong(&self->_usedFeedbacks, usedFeedbacks);
 
 LABEL_34:
 }
 
-- (void)_updateActivationStateForRemovedEngines:(id)a3 addedEngines:(id)a4 prewarmCount:(int64_t)a5 turnOnCount:(int64_t)a6
+- (void)_updateActivationStateForRemovedEngines:(id)engines addedEngines:(id)addedEngines prewarmCount:(int64_t)count turnOnCount:(int64_t)onCount
 {
   v49 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  enginesCopy = engines;
+  addedEnginesCopy = addedEngines;
   if ((_UIFeedbackLoggingDisabled & 1) == 0)
   {
     v12 = *(__UILogGetCategoryCachedImpl("Feedback", &_updateActivationStateForRemovedEngines_addedEngines_prewarmCount_turnOnCount____s_category) + 8);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = MEMORY[0x1E696AEC0];
-      v14 = self;
+      selfCopy = self;
       v15 = v12;
-      v16 = [v13 stringWithFormat:@"<%s: %p>", object_getClassName(v14), v14];
+      selfCopy = [v13 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy), selfCopy];
 
       *buf = 134219010;
-      v40 = a5;
+      countCopy = count;
       v41 = 2048;
-      v42 = a6;
+      onCountCopy = onCount;
       v43 = 2112;
-      v44 = v16;
+      v44 = selfCopy;
       v45 = 2112;
-      v46 = v10;
+      v46 = enginesCopy;
       v47 = 2112;
-      v48 = v11;
+      v48 = addedEnginesCopy;
       _os_log_impl(&dword_188A29000, v15, OS_LOG_TYPE_DEFAULT, "updating activation state (prewarm: %ld; activation: %ld) for %@ removedEngines=%@; addedEngines=%@", buf, 0x34u);
     }
   }
@@ -1087,7 +1087,7 @@ LABEL_34:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v17 = v10;
+  v17 = enginesCopy;
   v18 = [v17 countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v18)
   {
@@ -1104,12 +1104,12 @@ LABEL_34:
         }
 
         v22 = *(*(&v33 + 1) + 8 * v21);
-        if (a5 >= 1)
+        if (count >= 1)
         {
           [*(*(&v33 + 1) + 8 * v21) _cooldown];
         }
 
-        if (a6 >= 1)
+        if (onCount >= 1)
         {
           [v22 _deactivate];
         }
@@ -1128,7 +1128,7 @@ LABEL_34:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v23 = v11;
+  v23 = addedEnginesCopy;
   v24 = [v23 countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v24)
   {
@@ -1145,12 +1145,12 @@ LABEL_34:
         }
 
         v28 = *(*(&v29 + 1) + 8 * v27);
-        if (a6 >= 1)
+        if (onCount >= 1)
         {
           [*(*(&v29 + 1) + 8 * v27) _activate:1 andPerformWhenRunning:0];
         }
 
-        if (a5 >= 1)
+        if (count >= 1)
         {
           [v28 _prewarm:1 andPerformWhenPrewarmed:0];
         }
@@ -1168,17 +1168,17 @@ LABEL_34:
 
 - (void)deactivate
 {
-  v3 = [(_UIFeedbackGeneratorConfiguration *)self->_configuration activationStyle];
+  activationStyle = [(_UIFeedbackGeneratorConfiguration *)self->_configuration activationStyle];
 
-  [(UIFeedbackGenerator *)self _deactivateWithStyle:v3];
+  [(UIFeedbackGenerator *)self _deactivateWithStyle:activationStyle];
 }
 
-- (void)_deactivateWithStyle:(int64_t)a3
+- (void)_deactivateWithStyle:(int64_t)style
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = [(UIFeedbackGenerator *)self _isEnabled];
+  _isEnabled = [(UIFeedbackGenerator *)self _isEnabled];
   externalActivationCount = self->_externalActivationCount;
-  if (v5 || externalActivationCount)
+  if (_isEnabled || externalActivationCount)
   {
     self->_externalActivationCount = externalActivationCount - 1;
     if (externalActivationCount <= 0)
@@ -1222,27 +1222,27 @@ LABEL_7:
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v11 = self;
+          selfCopy = self;
           _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_ERROR, "Feedback generator was deactivated by its client more times than it was activated: %@", buf, 0xCu);
         }
       }
     }
 
-    [(UIFeedbackGenerator *)self __deactivateWithStyle:a3];
+    [(UIFeedbackGenerator *)self __deactivateWithStyle:style];
   }
 }
 
-- (void)__deactivateWithStyle:(int64_t)a3
+- (void)__deactivateWithStyle:(int64_t)style
 {
   v53 = *MEMORY[0x1E69E9840];
-  v6 = [(UIFeedbackGenerator *)self _isEnabled];
+  _isEnabled = [(UIFeedbackGenerator *)self _isEnabled];
   activationCount = self->_activationCount;
-  if (v6)
+  if (_isEnabled)
   {
     if (!activationCount)
     {
       autoDeactivationCount = self->_autoDeactivationCount;
-      v9 = self->_autoDeactivationCount[a3];
+      v9 = self->_autoDeactivationCount[style];
       if (v9 >= 1)
       {
         if ((_UIFeedbackLoggingDisabled & 1) == 0)
@@ -1251,22 +1251,22 @@ LABEL_7:
           if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
           {
             v11 = v10;
-            v12 = stringForActivationStyle(a3);
+            v12 = stringForActivationStyle(style);
             v13 = MEMORY[0x1E696AEC0];
-            v14 = self;
-            v15 = [v13 stringWithFormat:@"<%s: %p>", object_getClassName(v14), v14];
+            selfCopy = self;
+            selfCopy = [v13 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy), selfCopy];
 
             *buf = 138412546;
             v42 = v12;
             v43 = 2112;
-            v44 = v15;
+            v44 = selfCopy;
             _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_DEFAULT, "generator was auto-deactivated for style %@ but finally got a deactivate, swallowing it: %@", buf, 0x16u);
           }
 
-          v9 = autoDeactivationCount[a3];
+          v9 = autoDeactivationCount[style];
         }
 
-        autoDeactivationCount[a3] = v9 - 1;
+        autoDeactivationCount[style] = v9 - 1;
         return;
       }
     }
@@ -1279,19 +1279,19 @@ LABEL_7:
 
   [(UIFeedbackGenerator *)self setActivationCount:[(UIFeedbackGenerator *)self activationCount]- 1];
   styleActivationCount = self->_styleActivationCount;
-  --self->_styleActivationCount[a3];
+  --self->_styleActivationCount[style];
   if ((_UIFeedbackLoggingDisabled & 1) == 0)
   {
     v17 = *(__UILogGetCategoryCachedImpl("FeedbackActivation", &qword_1ED49DBA8) + 8);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v35 = v17;
-      v18 = stringForActivationStyle(a3);
+      v18 = stringForActivationStyle(style);
       v19 = self->_activationCount;
-      v20 = styleActivationCount[a3];
+      v20 = styleActivationCount[style];
       v21 = MEMORY[0x1E696AEC0];
-      v22 = self;
-      v23 = [v21 stringWithFormat:@"<%s: %p>", object_getClassName(v22), v22];
+      selfCopy2 = self;
+      selfCopy2 = [v21 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy2), selfCopy2];
 
       *buf = 138413570;
       v42 = v18;
@@ -1304,7 +1304,7 @@ LABEL_7:
       v49 = 2048;
       v50 = v20;
       v51 = 2112;
-      v52 = v23;
+      v52 = selfCopy2;
       _os_log_impl(&dword_188A29000, v35, OS_LOG_TYPE_DEFAULT, "deactivate generator with style: %@; activationCount: %ld -> %ld; styleActivationCount: %ld -> %ld; %@", buf, 0x3Eu);
     }
   }
@@ -1315,16 +1315,16 @@ LABEL_7:
     return;
   }
 
-  v24 = styleActivationCount[a3];
+  v24 = styleActivationCount[style];
   if (v24 < 0)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v32 = self->_activationCount;
-    v33 = styleActivationCount[a3];
-    v34 = stringForActivationStyle(a3);
-    [v31 handleFailureInMethod:a2 object:self file:@"UIFeedbackGenerator.m" lineNumber:642 description:{@"_styleActivationCount shouldn't be negative. activationCount=%ld; styleActivationCount=%ld; style=%@", v32, v33, v34}];
+    v33 = styleActivationCount[style];
+    v34 = stringForActivationStyle(style);
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFeedbackGenerator.m" lineNumber:642 description:{@"_styleActivationCount shouldn't be negative. activationCount=%ld; styleActivationCount=%ld; style=%@", v32, v33, v34}];
 
-    if (!styleActivationCount[a3])
+    if (!styleActivationCount[style])
     {
       goto LABEL_16;
     }
@@ -1354,12 +1354,12 @@ LABEL_16:
           }
 
           v30 = *(*(&v36 + 1) + 8 * v29);
-          if (a3 == 2)
+          if (style == 2)
           {
             [v30 _deactivate];
           }
 
-          else if (a3 == 1)
+          else if (style == 1)
           {
             [v30 _cooldown];
           }
@@ -1381,14 +1381,14 @@ LABEL_16:
   }
 }
 
-- (void)_forceDeactivationForStyle:(int64_t)a3
+- (void)_forceDeactivationForStyle:(int64_t)style
 {
-  v5 = self->_styleActivationCount[a3];
+  v5 = self->_styleActivationCount[style];
   if (v5 < 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    v8 = stringForActivationStyle(a3);
-    [v7 handleFailureInMethod:a2 object:self file:@"UIFeedbackGenerator.m" lineNumber:682 description:{@"force deactivating %@ with style %@ which is not active (activationCount = %ld)", self, v8, v5}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v8 = stringForActivationStyle(style);
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFeedbackGenerator.m" lineNumber:682 description:{@"force deactivating %@ with style %@ which is not active (activationCount = %ld)", self, v8, v5}];
   }
 
   else if (!v5)
@@ -1399,7 +1399,7 @@ LABEL_16:
   do
   {
     --v5;
-    [(UIFeedbackGenerator *)self __deactivateWithStyle:a3];
+    [(UIFeedbackGenerator *)self __deactivateWithStyle:style];
   }
 
   while (v5);
@@ -1452,9 +1452,9 @@ void __48__UIFeedbackGenerator__setupAutoDeactivateTimer__block_invoke(uint64_t 
     {
       if (v4[4])
       {
-        v12 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v13 = stringForActivationStyle(v3);
-        [v12 handleFailureInMethod:a2 object:self file:@"UIFeedbackGenerator.m" lineNumber:739 description:{@"Generator is already auto-deactivated for style %@: %@", v13, self}];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UIFeedbackGenerator.m" lineNumber:739 description:{@"Generator is already auto-deactivated for style %@: %@", v13, self}];
       }
 
       v4[4] = v5;
@@ -1475,7 +1475,7 @@ void __48__UIFeedbackGenerator__setupAutoDeactivateTimer__block_invoke(uint64_t 
           v19 = 2048;
           v20 = v5;
           v21 = 2112;
-          v22 = self;
+          selfCopy = self;
           _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_DEFAULT, "performing auto-deactivate for style: %@; activationCount: %ld; styleActivationCount: %ld; %@", buf, 0x2Au);
         }
       }
@@ -1489,7 +1489,7 @@ void __48__UIFeedbackGenerator__setupAutoDeactivateTimer__block_invoke(uint64_t 
   while (v3 != 3);
 }
 
-- (void)_clientDidUpdateGeneratorWithSelector:(SEL)a3
+- (void)_clientDidUpdateGeneratorWithSelector:(SEL)selector
 {
   v21 = *MEMORY[0x1E69E9840];
   if ([(UIFeedbackGenerator *)self _isEnabled])
@@ -1502,12 +1502,12 @@ void __48__UIFeedbackGenerator__setupAutoDeactivateTimer__block_invoke(uint64_t 
         if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
         {
           v5 = MEMORY[0x1E696AEC0];
-          v6 = self;
+          selfCopy = self;
           v7 = v4;
-          v8 = [v5 stringWithFormat:@"<%s: %p>", object_getClassName(v6), v6];
+          selfCopy = [v5 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy), selfCopy];
 
           *buf = 138412290;
-          v16 = v8;
+          v16 = selfCopy;
           _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEFAULT, "auto-deactivated feedback generator was updated again, re-activate it: %@", buf, 0xCu);
         }
       }
@@ -1547,7 +1547,7 @@ LABEL_13:
           v17 = 2048;
           v18 = v11;
           v19 = 2112;
-          v20 = self;
+          selfCopy2 = self;
           _os_log_impl(&dword_188A29000, v13, OS_LOG_TYPE_DEFAULT, "performing re-activation for style: %@; autoDeactivationCount: %ld; %@", buf, 0x20u);
         }
       }
@@ -1568,22 +1568,22 @@ LABEL_14:
   }
 }
 
-- (void)performFeedbackWithDelay:(double)a3 insideBlock:(id)a4
+- (void)performFeedbackWithDelay:(double)delay insideBlock:(id)block
 {
   currentDelay = self->_currentDelay;
-  self->_currentDelay = currentDelay + a3;
-  (*(a4 + 2))(a4, a2);
+  self->_currentDelay = currentDelay + delay;
+  (*(block + 2))(block, a2);
   self->_currentDelay = currentDelay;
 }
 
-- (void)_playFeedback:(id)a3 withMinimumIntervalPassed:(double)a4 since:(double *)a5 prefersRegularPace:(BOOL)a6 atLocation:(CGPoint)a7
+- (void)_playFeedback:(id)feedback withMinimumIntervalPassed:(double)passed since:(double *)since prefersRegularPace:(BOOL)pace atLocation:(CGPoint)location
 {
-  y = a7.y;
-  x = a7.x;
+  y = location.y;
+  x = location.x;
   v61 = *MEMORY[0x1E69E9840];
-  v13 = a3;
+  feedbackCopy = feedback;
   kdebug_trace();
-  if (v13 && [(UIFeedbackGenerator *)self _isEnabled])
+  if (feedbackCopy && [(UIFeedbackGenerator *)self _isEnabled])
   {
     gestureRecognizer = self->_gestureRecognizer;
     if (!gestureRecognizer || x == 1.79769313e308 && y == 1.79769313e308)
@@ -1611,15 +1611,15 @@ LABEL_14:
       *buf = 0;
       if ([(_UIFeedbackGeneratorGestureRecognizer *)gestureRecognizer hasDeviceInputForLocation:buf type:&v58 senderID:x, y])
       {
-        v30 = [(UIFeedbackGenerator *)self _configuration];
-        v31 = [v30 _alternateFeedback:v13 forDevice:*buf senderID:v58];
+        _configuration = [(UIFeedbackGenerator *)self _configuration];
+        v31 = [_configuration _alternateFeedback:feedbackCopy forDevice:*buf senderID:v58];
 
-        v13 = v31;
+        feedbackCopy = v31;
       }
     }
 
-    v32 = [(UIFeedbackGenerator *)self _configuration];
-    v26 = [v32 _updateFeedbackForOutputMode:v13];
+    _configuration2 = [(UIFeedbackGenerator *)self _configuration];
+    v26 = [_configuration2 _updateFeedbackForOutputMode:feedbackCopy];
 
     v33 = [_UIFeedbackEngine engineForFeedback:v26];
     v34 = v33;
@@ -1638,13 +1638,13 @@ LABEL_14:
       v47[2] = __99__UIFeedbackGenerator__playFeedback_withMinimumIntervalPassed_since_prefersRegularPace_atLocation___block_invoke;
       v47[3] = &unk_1E7107050;
       v51 = buf;
-      v52 = a5;
-      v57 = a6;
+      sinceCopy = since;
+      paceCopy = pace;
       v48 = v34;
-      v53 = a4;
+      passedCopy = passed;
       v54 = v36;
       v49 = v26;
-      v50 = self;
+      selfCopy = self;
       v55 = x;
       v56 = y;
       [(UIFeedbackGenerator *)self __activateWithStyle:2 forFeedback:v49 completionBlock:v47];
@@ -1665,14 +1665,14 @@ LABEL_14:
         v42 = [v39 stringWithFormat:@"<%s: %p>", object_getClassName(v40), v40];
 
         v43 = MEMORY[0x1E696AEC0];
-        v44 = self;
+        selfCopy2 = self;
         v45 = v42;
-        v46 = [v43 stringWithFormat:@"<%s: %p>", object_getClassName(v44), v44];
+        selfCopy2 = [v43 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy2), selfCopy2];
 
         *buf = 138412546;
         *&buf[4] = v42;
         *&buf[12] = 2112;
-        *&buf[14] = v46;
+        *&buf[14] = selfCopy2;
         _os_log_impl(&dword_188A29000, v41, OS_LOG_TYPE_DEFAULT, "no engine to play feedback %@ for generator %@, dropping it", buf, 0x16u);
       }
     }
@@ -1680,28 +1680,28 @@ LABEL_14:
 
   else if ((_UIFeedbackLoggingDisabled & 1) != 0 || (v20 = *(__UILogGetCategoryCachedImpl("Feedback", &qword_1ED49DBC0) + 8), !os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT)))
   {
-    v26 = v13;
+    v26 = feedbackCopy;
   }
 
   else
   {
     v21 = MEMORY[0x1E696AEC0];
-    v22 = self;
+    selfCopy3 = self;
     v23 = v20;
-    v24 = [v21 stringWithFormat:@"<%s: %p>", object_getClassName(v22), v22];
+    selfCopy3 = [v21 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy3), selfCopy3];
 
     v25 = MEMORY[0x1E696AEC0];
-    v26 = v13;
-    v27 = v24;
+    v26 = feedbackCopy;
+    v27 = selfCopy3;
     v28 = [v25 stringWithFormat:@"<%s: %p>", object_getClassName(v26), v26];
 
     v29 = v28;
     *buf = 138412802;
-    *&buf[4] = v24;
+    *&buf[4] = selfCopy3;
     *&buf[12] = 2112;
     *&buf[14] = v28;
     *&buf[22] = 2048;
-    *&v60 = [(UIFeedbackGenerator *)v22 _isEnabled];
+    *&v60 = [(UIFeedbackGenerator *)selfCopy3 _isEnabled];
     _os_log_impl(&dword_188A29000, v23, OS_LOG_TYPE_DEFAULT, "generator %@ cannot play feedback %@ (enabled=%ld)", buf, 0x20u);
   }
 }
@@ -1829,11 +1829,11 @@ LABEL_19:
   }
 }
 
-- (void)_stopFeedback:(id)a3
+- (void)_stopFeedback:(id)feedback
 {
-  if (a3)
+  if (feedback)
   {
-    [a3 stop];
+    [feedback stop];
   }
 }
 
@@ -1844,33 +1844,33 @@ LABEL_19:
   return NSStringFromClass(v2);
 }
 
-- (void)_setOutputMode:(int64_t)a3
+- (void)_setOutputMode:(int64_t)mode
 {
-  v4 = [(UIFeedbackGenerator *)self _configuration];
-  [v4 setOutputMode:a3];
+  _configuration = [(UIFeedbackGenerator *)self _configuration];
+  [_configuration setOutputMode:mode];
 }
 
 - (int64_t)_outputMode
 {
-  v2 = [(UIFeedbackGenerator *)self _configuration];
-  v3 = [v2 outputMode];
+  _configuration = [(UIFeedbackGenerator *)self _configuration];
+  outputMode = [_configuration outputMode];
 
-  return v3;
+  return outputMode;
 }
 
-- (UIFeedbackGenerator)initWithCoordinateSpace:(id)a3
+- (UIFeedbackGenerator)initWithCoordinateSpace:(id)space
 {
-  v4 = _viewFromCoordinateSpace(a3);
+  v4 = _viewFromCoordinateSpace(space);
   v5 = [(UIFeedbackGenerator *)self initWithView:v4];
 
   return v5;
 }
 
-- (UIFeedbackGenerator)initWithConfiguration:(id)a3 coordinateSpace:(id)a4
+- (UIFeedbackGenerator)initWithConfiguration:(id)configuration coordinateSpace:(id)space
 {
-  v6 = a3;
-  v7 = _viewFromCoordinateSpace(a4);
-  v8 = [(UIFeedbackGenerator *)self initWithConfiguration:v6 view:v7];
+  configurationCopy = configuration;
+  v7 = _viewFromCoordinateSpace(space);
+  v8 = [(UIFeedbackGenerator *)self initWithConfiguration:configurationCopy view:v7];
 
   return v8;
 }
@@ -1882,10 +1882,10 @@ LABEL_19:
   return WeakRetained;
 }
 
-+ (id)behaviorWithConfiguration:(id)a3 coordinateSpace:(id)a4
++ (id)behaviorWithConfiguration:(id)configuration coordinateSpace:(id)space
 {
-  v6 = a4;
-  v7 = a3;
+  spaceCopy = space;
+  configurationCopy = configuration;
   if (os_variant_has_internal_diagnostics())
   {
     v11 = __UIFaultDebugAssertLog();
@@ -1906,55 +1906,55 @@ LABEL_19:
     }
   }
 
-  v9 = [[a1 alloc] initWithConfiguration:v7 coordinateSpace:v6];
+  v9 = [[self alloc] initWithConfiguration:configurationCopy coordinateSpace:spaceCopy];
 
   return v9;
 }
 
 - (id)_activationTimeOutCountStatistics
 {
-  v2 = [(UIFeedbackGenerator *)self _statsSuffix];
-  v3 = [_UIStatistics feedbackGeneratorActivationTimeOutCountWithSuffix:v2];
+  _statsSuffix = [(UIFeedbackGenerator *)self _statsSuffix];
+  v3 = [_UIStatistics feedbackGeneratorActivationTimeOutCountWithSuffix:_statsSuffix];
 
   return v3;
 }
 
 - (id)_playCountStatistics
 {
-  v2 = [(UIFeedbackGenerator *)self _statsSuffix];
-  v3 = [_UIStatistics feedbackGeneratorPlayCountWithSuffix:v2];
+  _statsSuffix = [(UIFeedbackGenerator *)self _statsSuffix];
+  v3 = [_UIStatistics feedbackGeneratorPlayCountWithSuffix:_statsSuffix];
 
   return v3;
 }
 
-- (void)_stats_activationDidChangeTo:(BOOL)a3
+- (void)_stats_activationDidChangeTo:(BOOL)to
 {
-  if (a3)
+  if (to)
   {
-    v4 = [(UIFeedbackGenerator *)self _activationCountStatistics];
-    [v4 incrementValueBy:1];
+    _activationCountStatistics = [(UIFeedbackGenerator *)self _activationCountStatistics];
+    [_activationCountStatistics incrementValueBy:1];
 
-    v5 = [(UIFeedbackGenerator *)self _activationDurationStatistics];
-    [v5 startTimingForObject:self];
+    _activationDurationStatistics = [(UIFeedbackGenerator *)self _activationDurationStatistics];
+    [_activationDurationStatistics startTimingForObject:self];
   }
 
   else
   {
-    v5 = [(UIFeedbackGenerator *)self _activationDurationStatistics];
-    [v5 recordTimingForObject:self];
+    _activationDurationStatistics = [(UIFeedbackGenerator *)self _activationDurationStatistics];
+    [_activationDurationStatistics recordTimingForObject:self];
   }
 }
 
 - (void)_stats_activationTimedOut
 {
-  v2 = [(UIFeedbackGenerator *)self _activationTimeOutCountStatistics];
-  [v2 incrementValueBy:1];
+  _activationTimeOutCountStatistics = [(UIFeedbackGenerator *)self _activationTimeOutCountStatistics];
+  [_activationTimeOutCountStatistics incrementValueBy:1];
 }
 
 - (void)_stats_playedFeedback
 {
-  v2 = [(UIFeedbackGenerator *)self _playCountStatistics];
-  [v2 incrementValueBy:1];
+  _playCountStatistics = [(UIFeedbackGenerator *)self _playCountStatistics];
+  [_playCountStatistics incrementValueBy:1];
 }
 
 @end

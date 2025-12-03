@@ -1,19 +1,19 @@
 @interface AEAssetHTMLGenerator
 - (AEAssetHTMLGenerator)init;
-- (id)CSSClassForStyle:(int)a3;
+- (id)CSSClassForStyle:(int)style;
 - (id)bookInfoSection;
 - (id)bookURL;
-- (id)citationIncludingStoreURL:(BOOL)a3;
+- (id)citationIncludingStoreURL:(BOOL)l;
 - (id)disclaimerSection;
 - (id)documentString;
 - (id)storeLink;
 - (id)storeURL;
 - (id)styleSection;
 - (id)templateBasedDocumentString;
-- (id)templateStringForName:(id)a3;
-- (id)userPublishing:(id)a3 storeURLForStoreId:(id)a4;
-- (id)userPublishing:(id)a3 tellAFriendEmailBaseURLForStoreId:(id)a4;
-- (unint64_t)characterCountLimitforAnnotation:(id)a3;
+- (id)templateStringForName:(id)name;
+- (id)userPublishing:(id)publishing storeURLForStoreId:(id)id;
+- (id)userPublishing:(id)publishing tellAFriendEmailBaseURLForStoreId:(id)id;
+- (unint64_t)characterCountLimitforAnnotation:(id)annotation;
 @end
 
 @implementation AEAssetHTMLGenerator
@@ -34,22 +34,22 @@
 
 - (id)documentString
 {
-  if (-[AEAssetHTMLGenerator isSeries](self, "isSeries") || (+[AEUserPublishing sharedInstance](AEUserPublishing, "sharedInstance"), v3 = objc_claimAutoreleasedReturnValue(), -[AEAssetHTMLGenerator storeId](self, "storeId"), v4 = objc_claimAutoreleasedReturnValue(), [v3 wholeHTMLForStoreId:v4 dataSource:self], v5 = objc_claimAutoreleasedReturnValue(), v4, v3, !v5))
+  if (-[AEAssetHTMLGenerator isSeries](self, "isSeries") || (+[AEUserPublishing sharedInstance](AEUserPublishing, "sharedInstance"), v3 = objc_claimAutoreleasedReturnValue(), -[AEAssetHTMLGenerator storeId](self, "storeId"), v4 = objc_claimAutoreleasedReturnValue(), [v3 wholeHTMLForStoreId:v4 dataSource:self], templateBasedDocumentString = objc_claimAutoreleasedReturnValue(), v4, v3, !templateBasedDocumentString))
   {
-    v5 = [(AEAssetHTMLGenerator *)self templateBasedDocumentString];
+    templateBasedDocumentString = [(AEAssetHTMLGenerator *)self templateBasedDocumentString];
   }
 
-  return v5;
+  return templateBasedDocumentString;
 }
 
 - (id)templateBasedDocumentString
 {
   v3 = [(AEAssetHTMLGenerator *)self templateStringForName:@"AEAssetShare"];
-  v4 = [(AEAssetHTMLGenerator *)self dataSource];
+  dataSource = [(AEAssetHTMLGenerator *)self dataSource];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(AEAssetHTMLGenerator *)self dataSource];
-    v6 = [v5 checkoutBookStringForHTMLGenerator:self];
+    dataSource2 = [(AEAssetHTMLGenerator *)self dataSource];
+    v6 = [dataSource2 checkoutBookStringForHTMLGenerator:self];
   }
 
   else
@@ -57,77 +57,77 @@
     v6 = &stru_2D2930;
   }
 
-  v7 = [(AEAssetHTMLGenerator *)self bookInfoSection];
-  if (v7)
+  bookInfoSection = [(AEAssetHTMLGenerator *)self bookInfoSection];
+  if (bookInfoSection)
   {
-    v8 = 0;
+    storeLink = 0;
     v9 = 0;
   }
 
   else
   {
     v9 = [(AEAssetHTMLGenerator *)self citationIncludingStoreURL:0];
-    v8 = [(AEAssetHTMLGenerator *)self storeLink];
+    storeLink = [(AEAssetHTMLGenerator *)self storeLink];
   }
 
   [v3 AEReplaceTemplatePlaceholder:@"<!-- %%CHECKOUTBOOK%% -->" withString:v6];
-  v10 = [(AEAssetHTMLGenerator *)self insertionHeaderSection];
-  [v3 AEReplaceTemplatePlaceholder:@"<!-- %%INSERTIONHEADER%% -->" withString:v10];
+  insertionHeaderSection = [(AEAssetHTMLGenerator *)self insertionHeaderSection];
+  [v3 AEReplaceTemplatePlaceholder:@"<!-- %%INSERTIONHEADER%% -->" withString:insertionHeaderSection];
 
-  v11 = [(AEAssetHTMLGenerator *)self styleSection];
-  [v3 AEReplaceTemplatePlaceholder:@"<!-- %%STYLESECTION%% -->" withString:v11];
+  styleSection = [(AEAssetHTMLGenerator *)self styleSection];
+  [v3 AEReplaceTemplatePlaceholder:@"<!-- %%STYLESECTION%% -->" withString:styleSection];
 
-  [v3 AEReplaceTemplatePlaceholder:@"<!-- %%BOOKINFO%% -->" withString:v7];
-  v12 = [(AEAssetHTMLGenerator *)self disclaimerSection];
-  [v3 AEReplaceTemplatePlaceholder:@"<!-- %%DISCLAIMERSECTION%% -->" withString:v12];
+  [v3 AEReplaceTemplatePlaceholder:@"<!-- %%BOOKINFO%% -->" withString:bookInfoSection];
+  disclaimerSection = [(AEAssetHTMLGenerator *)self disclaimerSection];
+  [v3 AEReplaceTemplatePlaceholder:@"<!-- %%DISCLAIMERSECTION%% -->" withString:disclaimerSection];
 
-  v13 = [(AEAssetHTMLGenerator *)self readingDirection];
-  [v3 AEReplaceTemplatePlaceholder:@"<!-- %%READINGDIRECTION%% -->" withString:v13];
+  readingDirection = [(AEAssetHTMLGenerator *)self readingDirection];
+  [v3 AEReplaceTemplatePlaceholder:@"<!-- %%READINGDIRECTION%% -->" withString:readingDirection];
 
   [v3 AEReplaceTemplatePlaceholder:@"<!-- %%CITATION%% -->" withString:v9];
-  [v3 AEReplaceTemplatePlaceholder:@"<!-- %%STORELINK%% -->" withString:v8];
+  [v3 AEReplaceTemplatePlaceholder:@"<!-- %%STORELINK%% -->" withString:storeLink];
 
   return v3;
 }
 
-- (unint64_t)characterCountLimitforAnnotation:(id)a3
+- (unint64_t)characterCountLimitforAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = [(AEAssetHTMLGenerator *)self wordLimit];
+  annotationCopy = annotation;
+  wordLimit = [(AEAssetHTMLGenerator *)self wordLimit];
   v15 = 0;
   v6 = 0;
   if ([(AEAssetHTMLGenerator *)self areCitationsAllowed])
   {
-    v7 = [v4 annotationSelectedText];
-    v8 = [v7 length];
+    annotationSelectedText = [annotationCopy annotationSelectedText];
+    v8 = [annotationSelectedText length];
 
-    v9 = [v4 annotationRepresentativeText];
-    v10 = [v9 length];
+    annotationRepresentativeText = [annotationCopy annotationRepresentativeText];
+    v10 = [annotationRepresentativeText length];
 
     v6 = (v8 <= v10 ? v10 : v8);
-    if (v6 >= 4 * v5)
+    if (v6 >= 4 * wordLimit)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [v4 annotatedAttributedString];
-        v12 = [v11 string];
+        annotatedAttributedString = [annotationCopy annotatedAttributedString];
+        string = [annotatedAttributedString string];
       }
 
       else
       {
-        v12 = [v4 annotationSelectedText];
+        string = [annotationCopy annotationSelectedText];
       }
 
-      v13 = [v12 tokenCountWithEnumerationOptions:3 maxTokenCount:-1 outLimitLength:0];
+      v13 = [string tokenCountWithEnumerationOptions:3 maxTokenCount:-1 outLimitLength:0];
       if (v13 >= [(AEAssetHTMLGenerator *)self wordLimit])
       {
-        [v12 tokenCountWithEnumerationOptions:3 maxTokenCount:-[AEAssetHTMLGenerator wordLimit](self outLimitLength:{"wordLimit"), &v15}];
+        [string tokenCountWithEnumerationOptions:3 maxTokenCount:-[AEAssetHTMLGenerator wordLimit](self outLimitLength:{"wordLimit"), &v15}];
       }
 
       else
       {
-        v15 = [v12 length];
+        v15 = [string length];
       }
 
       v6 = v15;
@@ -137,25 +137,25 @@
   return v6;
 }
 
-- (id)CSSClassForStyle:(int)a3
+- (id)CSSClassForStyle:(int)style
 {
-  if ((a3 - 1) > 4)
+  if ((style - 1) > 4)
   {
     return @"defaultColor";
   }
 
   else
   {
-    return *(&off_2CC370 + (a3 - 1));
+    return *(&off_2CC370 + (style - 1));
   }
 }
 
-- (id)userPublishing:(id)a3 storeURLForStoreId:(id)a4
+- (id)userPublishing:(id)publishing storeURLForStoreId:(id)id
 {
-  if ([a4 longLongValue])
+  if ([id longLongValue])
   {
-    v5 = [(AEAssetHTMLGenerator *)self dataSource];
-    v6 = [v5 storeURLForHTMLGenerator:self];
+    dataSource = [(AEAssetHTMLGenerator *)self dataSource];
+    v6 = [dataSource storeURLForHTMLGenerator:self];
   }
 
   else
@@ -166,9 +166,9 @@
   return v6;
 }
 
-- (id)userPublishing:(id)a3 tellAFriendEmailBaseURLForStoreId:(id)a4
+- (id)userPublishing:(id)publishing tellAFriendEmailBaseURLForStoreId:(id)id
 {
-  v5 = [(AEAssetHTMLGenerator *)self dataSource:a3];
+  v5 = [(AEAssetHTMLGenerator *)self dataSource:publishing];
   v6 = [v5 tellAFriendBaseURLForHTMLGenerator:self];
 
   return v6;
@@ -218,8 +218,8 @@
 - (id)bookInfoSection
 {
   v3 = +[AEUserPublishing sharedInstance];
-  v4 = [(AEAssetHTMLGenerator *)self storeId];
-  v5 = [v3 bookInfoHTMLForStoreId:v4 dataSource:self];
+  storeId = [(AEAssetHTMLGenerator *)self storeId];
+  v5 = [v3 bookInfoHTMLForStoreId:storeId dataSource:self];
 
   return v5;
 }
@@ -237,54 +237,54 @@
 
 - (id)storeURL
 {
-  v3 = [(AEAssetHTMLGenerator *)self dataSource];
+  dataSource = [(AEAssetHTMLGenerator *)self dataSource];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(AEAssetHTMLGenerator *)self dataSource];
-    v6 = [v5 storeURLForHTMLGenerator:self];
+    dataSource2 = [(AEAssetHTMLGenerator *)self dataSource];
+    v6 = [dataSource2 storeURLForHTMLGenerator:self];
 
-    v7 = [v6 absoluteString];
+    absoluteString = [v6 absoluteString];
   }
 
   else
   {
-    v7 = 0;
+    absoluteString = 0;
   }
 
-  return v7;
+  return absoluteString;
 }
 
 - (id)bookURL
 {
-  v2 = [(AEAssetHTMLGenerator *)self epubId];
-  v3 = [NSString stringWithFormat:@"ibooks://bookid/%@", v2];
+  epubId = [(AEAssetHTMLGenerator *)self epubId];
+  v3 = [NSString stringWithFormat:@"ibooks://bookid/%@", epubId];
 
   return v3;
 }
 
-- (id)citationIncludingStoreURL:(BOOL)a3
+- (id)citationIncludingStoreURL:(BOOL)l
 {
-  v3 = a3;
-  v5 = [(AEAssetHTMLGenerator *)self dataSource];
+  lCopy = l;
+  dataSource = [(AEAssetHTMLGenerator *)self dataSource];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(AEAssetHTMLGenerator *)self dataSource];
-    if (v3)
+    dataSource2 = [(AEAssetHTMLGenerator *)self dataSource];
+    if (lCopy)
     {
-      v8 = [(AEAssetHTMLGenerator *)self storeURL];
+      storeURL = [(AEAssetHTMLGenerator *)self storeURL];
     }
 
     else
     {
-      v8 = 0;
+      storeURL = 0;
     }
 
-    v9 = [v7 HTMLGenerator:self citationForStoreURL:v8];
-    if (v3)
+    v9 = [dataSource2 HTMLGenerator:self citationForStoreURL:storeURL];
+    if (lCopy)
     {
     }
   }
@@ -294,20 +294,20 @@
     v9 = 0;
   }
 
-  v10 = [v9 im_stringByReplacingNewLinesWithHTMLBreaks];
+  im_stringByReplacingNewLinesWithHTMLBreaks = [v9 im_stringByReplacingNewLinesWithHTMLBreaks];
 
-  return v10;
+  return im_stringByReplacingNewLinesWithHTMLBreaks;
 }
 
 - (id)storeLink
 {
-  v2 = [(AEAssetHTMLGenerator *)self storeURL];
-  if (v2)
+  storeURL = [(AEAssetHTMLGenerator *)self storeURL];
+  if (storeURL)
   {
     v3 = IMCommonCoreBundle();
     v4 = [v3 localizedStringForKey:@"Available in Apple Books" value:&stru_2D2930 table:@"BCCommonCoreLocalizable"];
 
-    v5 = [NSString stringWithFormat:@"<a href=%@>%@</a>", v2, v4];
+    v5 = [NSString stringWithFormat:@"<a href=%@>%@</a>", storeURL, v4];
   }
 
   else
@@ -318,11 +318,11 @@
   return v5;
 }
 
-- (id)templateStringForName:(id)a3
+- (id)templateStringForName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = [NSBundle bundleForClass:objc_opt_class()];
-  v5 = [v3 stringByAppendingFormat:@".%@", @"html"];
+  v5 = [nameCopy stringByAppendingFormat:@".%@", @"html"];
 
   v6 = [v4 pathForResource:v5 ofType:@"tmpl"];
 

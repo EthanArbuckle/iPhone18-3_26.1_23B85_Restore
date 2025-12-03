@@ -1,8 +1,8 @@
 @interface CTRFollowUpController
-- (BOOL)ctrUtilPostFollowUpItem:(id)a3;
+- (BOOL)ctrUtilPostFollowUpItem:(id)item;
 - (CTRFollowUpController)init;
-- (id)createFolloUpItem:(id)a3;
-- (void)ctrUtilClearFollowUpItem:(id)a3;
+- (id)createFolloUpItem:(id)item;
+- (void)ctrUtilClearFollowUpItem:(id)item;
 @end
 
 @implementation CTRFollowUpController
@@ -22,14 +22,14 @@
   return v2;
 }
 
-- (id)createFolloUpItem:(id)a3
+- (id)createFolloUpItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = objc_alloc_init(FLFollowUpItem);
   v5 = v4;
   if (v4)
   {
-    [v4 setUniqueIdentifier:v3];
+    [v4 setUniqueIdentifier:itemCopy];
     v6 = objc_alloc_init(FLFollowUpNotification);
     if (v6)
     {
@@ -64,11 +64,11 @@ LABEL_10:
   return v8;
 }
 
-- (void)ctrUtilClearFollowUpItem:(id)a3
+- (void)ctrUtilClearFollowUpItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   ctrFollowUpController = self->_ctrFollowUpController;
-  v15 = v4;
+  v15 = itemCopy;
   v6 = [NSArray arrayWithObjects:&v15 count:1];
   v7 = [(FLFollowUpController *)ctrFollowUpController clearPendingFollowUpItemsWithUniqueIdentifiers:v6 error:0];
 
@@ -78,16 +78,16 @@ LABEL_10:
     v9 = 136315650;
     v10 = "[CTRFollowUpController ctrUtilClearFollowUpItem:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = itemCopy;
     v13 = 1024;
     v14 = v7;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s: Cleared followup item, Unique Identifier : %@, ret : %d", &v9, 0x1Cu);
   }
 }
 
-- (BOOL)ctrUtilPostFollowUpItem:(id)a3
+- (BOOL)ctrUtilPostFollowUpItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (!self->_ctrFollowUpController)
   {
     v5 = log_get_logging_obg("com.apple.wpantund", "default");
@@ -96,20 +96,20 @@ LABEL_10:
       v9 = 136315394;
       v10 = "[CTRFollowUpController ctrUtilPostFollowUpItem:]";
       v11 = 2112;
-      v12 = v4;
+      v12 = itemCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s: Unique Identifier : %@, Followup controller instance is nil, returning false", &v9, 0x16u);
     }
 
     goto LABEL_10;
   }
 
-  v5 = [(CTRFollowUpController *)self createFolloUpItem:v4];
+  v5 = [(CTRFollowUpController *)self createFolloUpItem:itemCopy];
   if (!v5)
   {
     v5 = log_get_logging_obg("com.apple.wpantund", "default");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(CTRFollowUpController *)v4 ctrUtilPostFollowUpItem:v5];
+      [(CTRFollowUpController *)itemCopy ctrUtilPostFollowUpItem:v5];
     }
 
 LABEL_10:
@@ -124,7 +124,7 @@ LABEL_10:
     v9 = 136315650;
     v10 = "[CTRFollowUpController ctrUtilPostFollowUpItem:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = itemCopy;
     v13 = 1024;
     v14 = v6;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s: Unique Identifier : %@, Followup item post return val is : %d", &v9, 0x1Cu);

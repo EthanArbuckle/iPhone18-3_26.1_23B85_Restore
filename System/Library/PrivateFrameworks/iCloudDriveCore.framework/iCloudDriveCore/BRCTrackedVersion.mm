@@ -1,32 +1,32 @@
 @interface BRCTrackedVersion
-+ (id)trackedVersionFor:(id)a3 withEtagIfLoser:(id)a4 kind:(int)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)trackedVersionFor:(id)for withEtagIfLoser:(id)loser kind:(int)kind;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation BRCTrackedVersion
 
-+ (id)trackedVersionFor:(id)a3 withEtagIfLoser:(id)a4 kind:(int)a5
++ (id)trackedVersionFor:(id)for withEtagIfLoser:(id)loser kind:(int)kind
 {
-  v7 = a3;
-  v8 = a4;
+  forCopy = for;
+  loserCopy = loser;
   v9 = objc_alloc_init(BRCTrackedVersion);
   fileObjectID = v9->_fileObjectID;
-  v9->_fileObjectID = v7;
-  v11 = v7;
+  v9->_fileObjectID = forCopy;
+  v11 = forCopy;
 
   etagIfLoser = v9->_etagIfLoser;
-  v9->_etagIfLoser = v8;
+  v9->_etagIfLoser = loserCopy;
 
-  v9->_kind = a5;
+  v9->_kind = kind;
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -36,7 +36,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       fileObjectID = self->_fileObjectID;
       v8 = (!(fileObjectID | v5->_fileObjectID) || [(BRFileObjectID *)fileObjectID isEqual:?]) && ((etagIfLoser = self->_etagIfLoser, !(etagIfLoser | v5->_etagIfLoser)) || [(NSString *)etagIfLoser isEqual:?]) && self->_kind == v5->_kind;
     }

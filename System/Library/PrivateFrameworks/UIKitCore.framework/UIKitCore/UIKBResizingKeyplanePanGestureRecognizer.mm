@@ -7,22 +7,22 @@
 
 - (BOOL)_willScrollY
 {
-  v3 = [(UIKBResizingKeyplanePanGestureRecognizer *)self resizingDelegate];
-  v4 = [(UIGestureRecognizer *)self view];
-  [(UIPanGestureRecognizer *)self translationInView:v4];
-  if ([v3 shouldStartResizeForTranslationY:v5])
+  resizingDelegate = [(UIKBResizingKeyplanePanGestureRecognizer *)self resizingDelegate];
+  view = [(UIGestureRecognizer *)self view];
+  [(UIPanGestureRecognizer *)self translationInView:view];
+  if ([resizingDelegate shouldStartResizeForTranslationY:v5])
   {
     v8.receiver = self;
     v8.super_class = UIKBResizingKeyplanePanGestureRecognizer;
-    v6 = [(UIPanGestureRecognizer *)&v8 _willScrollY];
+    _willScrollY = [(UIPanGestureRecognizer *)&v8 _willScrollY];
   }
 
   else
   {
-    v6 = 0;
+    _willScrollY = 0;
   }
 
-  return v6;
+  return _willScrollY;
 }
 
 - (UIKBResizingKeyplanePanGestureRecognizerDelegate)resizingDelegate

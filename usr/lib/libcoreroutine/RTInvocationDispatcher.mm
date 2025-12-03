@@ -1,11 +1,11 @@
 @interface RTInvocationDispatcher
 - (BOOL)dispatchPendingInvocations;
 - (BOOL)invocationsPending;
-- (RTInvocationDispatcher)initWithQueue:(id)a3;
+- (RTInvocationDispatcher)initWithQueue:(id)queue;
 - (unint64_t)countOfPendingInvocations;
-- (void)_enqueueBlock:(id)a3 failureBlock:(id)a4 description:(id)a5;
-- (void)enqueueBlock:(id)a3 description:(id)a4;
-- (void)enqueueBlock:(id)a3 failureBlock:(id)a4 description:(id)a5;
+- (void)_enqueueBlock:(id)block failureBlock:(id)failureBlock description:(id)description;
+- (void)enqueueBlock:(id)block description:(id)description;
+- (void)enqueueBlock:(id)block failureBlock:(id)failureBlock description:(id)description;
 - (void)removeAllPendingInvocations;
 - (void)shutdown;
 @end
@@ -14,8 +14,8 @@
 
 - (unint64_t)countOfPendingInvocations
 {
-  v2 = [(RTInvocationDispatcher *)self pendingInvocations];
-  v3 = [v2 count];
+  pendingInvocations = [(RTInvocationDispatcher *)self pendingInvocations];
+  v3 = [pendingInvocations count];
 
   return v3;
 }
@@ -28,17 +28,17 @@
     v3 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [(RTInvocationDispatcher *)self pendingInvocations];
+      pendingInvocations = [(RTInvocationDispatcher *)self pendingInvocations];
       v7 = 134217984;
-      v8 = [v6 count];
+      v8 = [pendingInvocations count];
       _os_log_debug_impl(&dword_2304B3000, v3, OS_LOG_TYPE_DEBUG, "Pending invocation count, %lu", &v7, 0xCu);
     }
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(RTInvocationDispatcher *)self pendingInvocations];
-    [v4 enumerateObjectsUsingBlock:&__block_literal_global_5];
+    pendingInvocations2 = [(RTInvocationDispatcher *)self pendingInvocations];
+    [pendingInvocations2 enumerateObjectsUsingBlock:&__block_literal_global_5];
   }
 
   return [(RTInvocationDispatcher *)self countOfPendingInvocations]!= 0;
@@ -47,8 +47,8 @@
 - (BOOL)dispatchPendingInvocations
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [(RTInvocationDispatcher *)self pendingInvocations];
-  v4 = [v3 copy];
+  pendingInvocations = [(RTInvocationDispatcher *)self pendingInvocations];
+  v4 = [pendingInvocations copy];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
@@ -85,20 +85,20 @@
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
-        v15 = [(RTInvocationDispatcher *)self valid];
+        valid = [(RTInvocationDispatcher *)self valid];
         v16 = os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG);
-        if (v15)
+        if (valid)
         {
           if (v16)
           {
             v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
             {
-              v21 = [v14 invocationDescription];
+              invocationDescription = [v14 invocationDescription];
               *buf = 134218242;
               v27 = v9 + 1;
               v28 = 2112;
-              v29 = v21;
+              v29 = invocationDescription;
               _os_log_debug_impl(&dword_2304B3000, v17, OS_LOG_TYPE_DEBUG, "Invocation %lu, action, invoke, description, %@", buf, 0x16u);
             }
           }
@@ -113,11 +113,11 @@
             v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
             {
-              v19 = [v14 invocationDescription];
+              invocationDescription2 = [v14 invocationDescription];
               *buf = 134218242;
               v27 = v9 + 1;
               v28 = 2112;
-              v29 = v19;
+              v29 = invocationDescription2;
               _os_log_debug_impl(&dword_2304B3000, v18, OS_LOG_TYPE_DEBUG, "Invocation %lu, action, failure, description, %@", buf, 0x16u);
             }
           }
@@ -145,15 +145,15 @@
 
 - (void)removeAllPendingInvocations
 {
-  v2 = [(RTInvocationDispatcher *)self pendingInvocations];
-  [v2 removeAllObjects];
+  pendingInvocations = [(RTInvocationDispatcher *)self pendingInvocations];
+  [pendingInvocations removeAllObjects];
 }
 
-- (RTInvocationDispatcher)initWithQueue:(id)a3
+- (RTInvocationDispatcher)initWithQueue:(id)queue
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  queueCopy = queue;
+  if (!queueCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -172,7 +172,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_queue, a3);
+    objc_storeStrong(&v7->_queue, queue);
     v8->_valid = 1;
     v9 = objc_opt_new();
     pendingInvocations = v8->_pendingInvocations;
@@ -215,14 +215,14 @@
     }
   }
 
-  v11 = [(RTInvocationDispatcher *)self queue];
+  queue = [(RTInvocationDispatcher *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __34__RTInvocationDispatcher_shutdown__block_invoke;
   block[3] = &unk_2788C4FD8;
   block[4] = self;
   block[5] = v16;
-  dispatch_async(v11, block);
+  dispatch_async(queue, block);
 
   _Block_object_dispose(v16, 8);
 }
@@ -236,36 +236,36 @@ void __34__RTInvocationDispatcher_shutdown__block_invoke(uint64_t a1)
   *(v2 + 40) = 0;
 }
 
-- (void)enqueueBlock:(id)a3 description:(id)a4
+- (void)enqueueBlock:(id)block description:(id)description
 {
   v6 = MEMORY[0x277CCACA8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithFormat:v7 arguments:&v10];
+  descriptionCopy = description;
+  blockCopy = block;
+  v9 = [[v6 alloc] initWithFormat:descriptionCopy arguments:&v10];
 
-  [(RTInvocationDispatcher *)self _enqueueBlock:v8 failureBlock:0 description:v9];
+  [(RTInvocationDispatcher *)self _enqueueBlock:blockCopy failureBlock:0 description:v9];
 }
 
-- (void)enqueueBlock:(id)a3 failureBlock:(id)a4 description:(id)a5
+- (void)enqueueBlock:(id)block failureBlock:(id)failureBlock description:(id)description
 {
   v8 = MEMORY[0x277CCACA8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[v8 alloc] initWithFormat:v9 arguments:&v13];
+  descriptionCopy = description;
+  failureBlockCopy = failureBlock;
+  blockCopy = block;
+  v12 = [[v8 alloc] initWithFormat:descriptionCopy arguments:&v13];
 
-  [(RTInvocationDispatcher *)self _enqueueBlock:v11 failureBlock:v10 description:v12];
+  [(RTInvocationDispatcher *)self _enqueueBlock:blockCopy failureBlock:failureBlockCopy description:v12];
 }
 
-- (void)_enqueueBlock:(id)a3 failureBlock:(id)a4 description:(id)a5
+- (void)_enqueueBlock:(id)block failureBlock:(id)failureBlock description:(id)description
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(RTInvocationDispatcher *)self valid];
+  blockCopy = block;
+  failureBlockCopy = failureBlock;
+  descriptionCopy = description;
+  valid = [(RTInvocationDispatcher *)self valid];
   v12 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
-  if (!v9 || v11)
+  if (!failureBlockCopy || valid)
   {
     if (v12)
     {
@@ -273,14 +273,14 @@ void __34__RTInvocationDispatcher_shutdown__block_invoke(uint64_t a1)
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
         v17 = 138412290;
-        v18 = v10;
+        v18 = descriptionCopy;
         _os_log_debug_impl(&dword_2304B3000, v14, OS_LOG_TYPE_DEBUG, "Enqueuing invocation, description, %@", &v17, 0xCu);
       }
     }
 
-    v15 = [[RTInvocationRecord alloc] initWithBlock:v8 failureBlock:v9 description:v10];
-    v16 = [(RTInvocationDispatcher *)self pendingInvocations];
-    [v16 addObject:v15];
+    v15 = [[RTInvocationRecord alloc] initWithBlock:blockCopy failureBlock:failureBlockCopy description:descriptionCopy];
+    pendingInvocations = [(RTInvocationDispatcher *)self pendingInvocations];
+    [pendingInvocations addObject:v15];
   }
 
   else
@@ -291,12 +291,12 @@ void __34__RTInvocationDispatcher_shutdown__block_invoke(uint64_t a1)
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
         v17 = 138412290;
-        v18 = v10;
+        v18 = descriptionCopy;
         _os_log_debug_impl(&dword_2304B3000, v13, OS_LOG_TYPE_DEBUG, "Dispatcher invalid, invoking failure block, description, %@", &v17, 0xCu);
       }
     }
 
-    v9[2](v9);
+    failureBlockCopy[2](failureBlockCopy);
   }
 }
 

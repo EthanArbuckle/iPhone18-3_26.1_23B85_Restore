@@ -1,29 +1,29 @@
 @interface CKMentionsAnimationController
 - (BOOL)__startAnimationIfNeeded_legacy;
 - (BOOL)isAnyMentionAnimationActive;
-- (BOOL)shouldMakeNewRippleAnimatorForIdentifier:(id)a3;
-- (CKMentionsAnimationController)initWithEntryTextView:(id)a3;
+- (BOOL)shouldMakeNewRippleAnimatorForIdentifier:(id)identifier;
+- (CKMentionsAnimationController)initWithEntryTextView:(id)view;
 - (CKMentionsAnimationControllerDelegate)delegate;
 - (void)__startAnimationIfNeeded_legacy;
 - (void)__startAnimationIfNeeded_textEffects;
-- (void)_delegateDidFinishMentionAnimationWithIdentifier:(id)a3;
+- (void)_delegateDidFinishMentionAnimationWithIdentifier:(id)identifier;
 - (void)_startAnimationIfNeeded;
-- (void)_updateMentionAttributes_legacy:(id)a3;
-- (void)_updateMentionAttributes_textEffects:(id)a3;
+- (void)_updateMentionAttributes_legacy:(id)attributes_legacy;
+- (void)_updateMentionAttributes_textEffects:(id)effects;
 - (void)didSetAttributedTextOfTextView;
-- (void)markAnimationIdentifierAsFinishedButPendingAmongMarkedText:(id)a3;
-- (void)stopTimerRemovingAttribute:(BOOL)a3;
-- (void)updateDisplayForMentionGlyphRangeRemovingAttribute:(BOOL)a3;
-- (void)updateMentionAttributes:(id)a3;
+- (void)markAnimationIdentifierAsFinishedButPendingAmongMarkedText:(id)text;
+- (void)stopTimerRemovingAttribute:(BOOL)attribute;
+- (void)updateDisplayForMentionGlyphRangeRemovingAttribute:(BOOL)attribute;
+- (void)updateMentionAttributes:(id)attributes;
 - (void)updateMentionDisplay;
 @end
 
 @implementation CKMentionsAnimationController
 
-- (CKMentionsAnimationController)initWithEntryTextView:(id)a3
+- (CKMentionsAnimationController)initWithEntryTextView:(id)view
 {
-  v6 = a3;
-  if (!v6)
+  viewCopy = view;
+  if (!viewCopy)
   {
     [(CKMentionsAnimationController *)a2 initWithEntryTextView:?];
   }
@@ -45,7 +45,7 @@
     finishedAnimationsDuringMarkedTextByIdentifier = v7->_finishedAnimationsDuringMarkedTextByIdentifier;
     v7->_finishedAnimationsDuringMarkedTextByIdentifier = v12;
 
-    objc_storeStrong(&v7->_textView, a3);
+    objc_storeStrong(&v7->_textView, view);
     overlayView = v7->_overlayView;
     v7->_overlayView = 0;
   }
@@ -53,50 +53,50 @@
   return v7;
 }
 
-- (void)updateMentionAttributes:(id)a3
+- (void)updateMentionAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   if (CKShouldUseModernRippleAnimation())
   {
-    [(CKMentionsAnimationController *)self _updateMentionAttributes_textEffects:v4];
+    [(CKMentionsAnimationController *)self _updateMentionAttributes_textEffects:attributesCopy];
   }
 
   else
   {
-    [(CKMentionsAnimationController *)self _updateMentionAttributes_legacy:v4];
+    [(CKMentionsAnimationController *)self _updateMentionAttributes_legacy:attributesCopy];
   }
 }
 
-- (void)_updateMentionAttributes_legacy:(id)a3
+- (void)_updateMentionAttributes_legacy:(id)attributes_legacy
 {
-  v4 = a3;
+  attributes_legacyCopy = attributes_legacy;
   mentionAttributes = self->_mentionAttributes;
-  if (mentionAttributes == v4 || [(NSAttributedString *)mentionAttributes isEqualToAttributedString:v4])
+  if (mentionAttributes == attributes_legacyCopy || [(NSAttributedString *)mentionAttributes isEqualToAttributedString:attributes_legacyCopy])
   {
     [(CKMentionsAnimationController *)self didSetAttributedTextOfTextView];
   }
 
   else
   {
-    [(CKMentionsAnimationController *)self setMentionAttributes:v4];
-    v6 = [(CKMentionsAnimationController *)self textView];
-    v7 = [v6 textLayoutManager];
+    [(CKMentionsAnimationController *)self setMentionAttributes:attributes_legacyCopy];
+    textView = [(CKMentionsAnimationController *)self textView];
+    textLayoutManager = [textView textLayoutManager];
 
     if (objc_opt_respondsToSelector())
     {
-      [v7 setRequiresCTLineRef:1];
+      [textLayoutManager setRequiresCTLineRef:1];
     }
 
-    v8 = [v7 documentRange];
-    [v7 ensureLayoutForRange:v8];
+    documentRange = [textLayoutManager documentRange];
+    [textLayoutManager ensureLayoutForRange:documentRange];
 
-    v9 = [(CKMentionsAnimationController *)self mentionAttributes];
+    mentionAttributes = [(CKMentionsAnimationController *)self mentionAttributes];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __65__CKMentionsAnimationController__updateMentionAttributes_legacy___block_invoke;
     v10[3] = &unk_1E72EC2D8;
     v10[4] = self;
-    [v9 ck_enumerateAllMentionAnimationIdentifiersUsingBlock:v10];
+    [mentionAttributes ck_enumerateAllMentionAnimationIdentifiersUsingBlock:v10];
 
     [(CKMentionsAnimationController *)self didSetAttributedTextOfTextView];
   }
@@ -131,38 +131,38 @@ void __65__CKMentionsAnimationController__updateMentionAttributes_legacy___block
   }
 }
 
-- (void)_updateMentionAttributes_textEffects:(id)a3
+- (void)_updateMentionAttributes_textEffects:(id)effects
 {
-  v4 = a3;
+  effectsCopy = effects;
   mentionAttributes = self->_mentionAttributes;
-  if (mentionAttributes == v4 || [(NSAttributedString *)mentionAttributes isEqualToAttributedString:v4])
+  if (mentionAttributes == effectsCopy || [(NSAttributedString *)mentionAttributes isEqualToAttributedString:effectsCopy])
   {
     [(CKMentionsAnimationController *)self didSetAttributedTextOfTextView];
   }
 
   else
   {
-    [(CKMentionsAnimationController *)self setMentionAttributes:v4];
-    v6 = [(CKMentionsAnimationController *)self textView];
-    v7 = [v6 textStorage];
+    [(CKMentionsAnimationController *)self setMentionAttributes:effectsCopy];
+    textView = [(CKMentionsAnimationController *)self textView];
+    textStorage = [textView textStorage];
 
-    [v7 beginEditing];
-    v8 = [(CKMentionsAnimationController *)self mentionAttributes];
+    [textStorage beginEditing];
+    mentionAttributes = [(CKMentionsAnimationController *)self mentionAttributes];
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __70__CKMentionsAnimationController__updateMentionAttributes_textEffects___block_invoke;
     v15 = &unk_1E72EC328;
-    v16 = self;
-    v17 = v7;
-    v9 = v7;
-    [v8 ck_enumerateAllMentionAnimationIdentifiersUsingBlock:&v12];
+    selfCopy = self;
+    v17 = textStorage;
+    v9 = textStorage;
+    [mentionAttributes ck_enumerateAllMentionAnimationIdentifiersUsingBlock:&v12];
 
     [v9 endEditing];
-    v10 = [(CKMentionsAnimationController *)self textView];
-    [v10 setNeedsLayout];
+    textView2 = [(CKMentionsAnimationController *)self textView];
+    [textView2 setNeedsLayout];
 
-    v11 = [(CKMentionsAnimationController *)self textView];
-    [v11 layoutIfNeeded];
+    textView3 = [(CKMentionsAnimationController *)self textView];
+    [textView3 layoutIfNeeded];
 
     [(CKMentionsAnimationController *)self _startAnimationIfNeeded];
   }
@@ -236,9 +236,9 @@ uint64_t __70__CKMentionsAnimationController__updateMentionAttributes_textEffect
   return result;
 }
 
-- (BOOL)shouldMakeNewRippleAnimatorForIdentifier:(id)a3
+- (BOOL)shouldMakeNewRippleAnimatorForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (CKShouldUseModernRippleAnimation())
   {
     rippleAnimatorsByIdentifier = self->_rippleAnimatorsByIdentifier;
@@ -249,7 +249,7 @@ uint64_t __70__CKMentionsAnimationController__updateMentionAttributes_textEffect
     rippleAnimatorsByIdentifier = self->_animationsByIdentifier;
   }
 
-  v6 = [(NSMutableDictionary *)rippleAnimatorsByIdentifier objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)rippleAnimatorsByIdentifier objectForKeyedSubscript:identifierCopy];
 
   if (v6)
   {
@@ -258,19 +258,19 @@ uint64_t __70__CKMentionsAnimationController__updateMentionAttributes_textEffect
 
   else
   {
-    v7 = [(NSMutableSet *)self->_finishedAnimationsDuringMarkedTextByIdentifier containsObject:v4]^ 1;
+    v7 = [(NSMutableSet *)self->_finishedAnimationsDuringMarkedTextByIdentifier containsObject:identifierCopy]^ 1;
   }
 
   return v7;
 }
 
-- (void)markAnimationIdentifierAsFinishedButPendingAmongMarkedText:(id)a3
+- (void)markAnimationIdentifierAsFinishedButPendingAmongMarkedText:(id)text
 {
-  [(NSMutableSet *)self->_finishedAnimationsDuringMarkedTextByIdentifier addObject:a3];
+  [(NSMutableSet *)self->_finishedAnimationsDuringMarkedTextByIdentifier addObject:text];
   if (!CKShouldUseModernRippleAnimation())
   {
-    v4 = [(CKMentionsAnimationController *)self textView];
-    [v4 _setAnimatingMentionsHidden:0];
+    textView = [(CKMentionsAnimationController *)self textView];
+    [textView _setAnimatingMentionsHidden:0];
   }
 }
 
@@ -279,9 +279,9 @@ uint64_t __70__CKMentionsAnimationController__updateMentionAttributes_textEffect
   [(NSMutableSet *)self->_finishedAnimationsDuringMarkedTextByIdentifier removeAllObjects];
   if (!CKShouldUseModernRippleAnimation())
   {
-    v3 = [(CKMentionsAnimationController *)self isAnyMentionAnimationActive];
+    isAnyMentionAnimationActive = [(CKMentionsAnimationController *)self isAnyMentionAnimationActive];
     v4 = IMOSLoggingEnabled();
-    if (v3)
+    if (isAnyMentionAnimationActive)
     {
       if (v4)
       {
@@ -293,8 +293,8 @@ uint64_t __70__CKMentionsAnimationController__updateMentionAttributes_textEffect
         }
       }
 
-      v6 = [(CKMentionsAnimationController *)self textView];
-      [v6 _setAnimatingMentionsHidden:1];
+      textView = [(CKMentionsAnimationController *)self textView];
+      [textView _setAnimatingMentionsHidden:1];
 LABEL_8:
 
       return;
@@ -302,11 +302,11 @@ LABEL_8:
 
     if (v4)
     {
-      v6 = OSLogHandleForIMFoundationCategory();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+      textView = OSLogHandleForIMFoundationCategory();
+      if (os_log_type_enabled(textView, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
-        _os_log_impl(&dword_19020E000, v6, OS_LOG_TYPE_INFO, "didSetAttributedTextOfTextView - returning early because no animation is active", buf, 2u);
+        _os_log_impl(&dword_19020E000, textView, OS_LOG_TYPE_INFO, "didSetAttributedTextOfTextView - returning early because no animation is active", buf, 2u);
       }
 
       goto LABEL_8;
@@ -346,8 +346,8 @@ LABEL_8:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(CKMentionsAnimationController *)self rippleAnimatorsByIdentifier];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v22 count:16];
+  rippleAnimatorsByIdentifier = [(CKMentionsAnimationController *)self rippleAnimatorsByIdentifier];
+  v5 = [rippleAnimatorsByIdentifier countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v5)
   {
     v7 = *v17;
@@ -360,16 +360,16 @@ LABEL_8:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(rippleAnimatorsByIdentifier);
         }
 
         v9 = *(*(&v16 + 1) + 8 * v8);
-        v10 = [(CKMentionsAnimationController *)self rippleAnimatorsByIdentifier];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        rippleAnimatorsByIdentifier2 = [(CKMentionsAnimationController *)self rippleAnimatorsByIdentifier];
+        v11 = [rippleAnimatorsByIdentifier2 objectForKeyedSubscript:v9];
 
-        LODWORD(v10) = [v11 isPlaying];
+        LODWORD(rippleAnimatorsByIdentifier2) = [v11 isPlaying];
         v12 = IMOSLoggingEnabled();
-        if (v10)
+        if (rippleAnimatorsByIdentifier2)
         {
           if (v12)
           {
@@ -406,7 +406,7 @@ LABEL_8:
       }
 
       while (v5 != v8);
-      v5 = [v4 countByEnumeratingWithState:&v16 objects:v22 count:16];
+      v5 = [rippleAnimatorsByIdentifier countByEnumeratingWithState:&v16 objects:v22 count:16];
     }
 
     while (v5);
@@ -456,37 +456,37 @@ LABEL_8:
     }
   }
 
-  v6 = [(CKMentionsAnimationController *)self textView];
+  textView = [(CKMentionsAnimationController *)self textView];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = [CKMentionsTextContainerOverlayView alloc];
-    v9 = [(CKMentionsAnimationController *)self textView];
-    v10 = [(CKMentionsTextContainerOverlayView *)v8 initWithFrame:v9 textView:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+    textView2 = [(CKMentionsAnimationController *)self textView];
+    v10 = [(CKMentionsTextContainerOverlayView *)v8 initWithFrame:textView2 textView:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [(CKMentionsAnimationController *)self setOverlayView:v10];
 
-    v11 = [(CKMentionsAnimationController *)self overlayView];
-    v12 = [(CKMentionsAnimationController *)self textView];
-    [v12 setTextContainerOverlayView:v11];
+    overlayView = [(CKMentionsAnimationController *)self overlayView];
+    textView3 = [(CKMentionsAnimationController *)self textView];
+    [textView3 setTextContainerOverlayView:overlayView];
 
     v13 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel_updateMentionDisplay selector:0 userInfo:1 repeats:0.0166666667];
     [(CKMentionsAnimationController *)self setMentionTimer:v13];
 
-    v14 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    v15 = [(CKMentionsAnimationController *)self mentionTimer];
-    [v14 addTimer:v15 forMode:*MEMORY[0x1E69DE760]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    mentionTimer = [(CKMentionsAnimationController *)self mentionTimer];
+    [mainRunLoop addTimer:mentionTimer forMode:*MEMORY[0x1E69DE760]];
 
-    v16 = [(CKMentionsAnimationController *)self textView];
-    [v16 setNeedsDisplayCurrentRenderAttributes];
+    textView4 = [(CKMentionsAnimationController *)self textView];
+    [textView4 setNeedsDisplayCurrentRenderAttributes];
 
     [(CKMentionsAnimationController *)self updateMentionDisplay];
   }
 }
 
-- (void)stopTimerRemovingAttribute:(BOOL)a3
+- (void)stopTimerRemovingAttribute:(BOOL)attribute
 {
-  v3 = a3;
+  attributeCopy = attribute;
   v11 = *MEMORY[0x1E69E9840];
   if (!CKShouldUseModernRippleAnimation())
   {
@@ -496,32 +496,32 @@ LABEL_8:
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v10[0] = 67109120;
-        v10[1] = v3;
+        v10[1] = attributeCopy;
         _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "stopTimerRemovingAttribute: %{BOOL}d", v10, 8u);
       }
     }
 
-    [(CKMentionsAnimationController *)self updateDisplayForMentionGlyphRangeRemovingAttribute:v3];
-    v6 = [(CKMentionsAnimationController *)self mentionTimer];
-    [v6 invalidate];
+    [(CKMentionsAnimationController *)self updateDisplayForMentionGlyphRangeRemovingAttribute:attributeCopy];
+    mentionTimer = [(CKMentionsAnimationController *)self mentionTimer];
+    [mentionTimer invalidate];
 
     [(CKMentionsAnimationController *)self setMentionTimer:0];
-    v7 = [(CKMentionsAnimationController *)self textView];
+    textView = [(CKMentionsAnimationController *)self textView];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(CKMentionsAnimationController *)self textView];
-      [v9 setTextContainerOverlayView:0];
+      textView2 = [(CKMentionsAnimationController *)self textView];
+      [textView2 setTextContainerOverlayView:0];
     }
 
     [(CKMentionsAnimationController *)self setOverlayView:0];
   }
 }
 
-- (void)updateDisplayForMentionGlyphRangeRemovingAttribute:(BOOL)a3
+- (void)updateDisplayForMentionGlyphRangeRemovingAttribute:(BOOL)attribute
 {
-  v3 = a3;
+  attributeCopy = attribute;
   v19 = *MEMORY[0x1E69E9840];
   if (IMOSLoggingEnabled())
   {
@@ -529,19 +529,19 @@ LABEL_8:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       LODWORD(v17) = 67109120;
-      HIDWORD(v17) = v3;
+      HIDWORD(v17) = attributeCopy;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "updateDisplayForMentionGlyphRangeRemovingAttribute: %{BOOL}d", &v17, 8u);
     }
   }
 
-  v6 = [(CKMentionsAnimationController *)self mentionAttributes];
-  v7 = [v6 copy];
+  mentionAttributes = [(CKMentionsAnimationController *)self mentionAttributes];
+  v7 = [mentionAttributes copy];
 
   v17 = 0;
   v18 = 0;
-  v8 = [(CKMentionsAnimationController *)self textView];
-  v9 = [v8 textStorage];
-  v10 = [v9 length];
+  textView = [(CKMentionsAnimationController *)self textView];
+  textStorage = [textView textStorage];
+  v10 = [textStorage length];
 
   v11 = [v7 length];
   if (v11)
@@ -552,7 +552,7 @@ LABEL_8:
     {
       v14 = [v7 attribute:v13 atIndex:v12 longestEffectiveRange:&v17 inRange:{v12, v11 - v12}];
       v15 = v14;
-      if (v14 && [v14 length] && v18 + v17 <= v10 && v3)
+      if (v14 && [v14 length] && v18 + v17 <= v10 && attributeCopy)
       {
         [(CKMentionsAnimationController *)self _delegateDidFinishMentionAnimationWithIdentifier:v15];
       }
@@ -588,8 +588,8 @@ LABEL_8:
     [(NSAttributedString *)mentionAttributes ck_enumerateAllMentionAnimationIdentifiersUsingBlock:v9];
     if ((v11[3] & 1) == 0)
     {
-      v5 = [(CKMentionsAnimationController *)self animationsByIdentifier];
-      [v5 removeAllObjects];
+      animationsByIdentifier = [(CKMentionsAnimationController *)self animationsByIdentifier];
+      [animationsByIdentifier removeAllObjects];
     }
 
     if (IMOSLoggingEnabled())
@@ -660,29 +660,29 @@ void __60__CKMentionsAnimationController_isAnyMentionAnimationActive__block_invo
     [(CKMentionsAnimationController *)self stopTimerRemovingAttribute:1];
   }
 
-  v4 = [(CKMentionsAnimationController *)self overlayView];
-  v5 = [(CKMentionsAnimationController *)self animationsByIdentifier];
-  v6 = [v5 copy];
-  [v4 updateUsingAnimations:v6];
+  overlayView = [(CKMentionsAnimationController *)self overlayView];
+  animationsByIdentifier = [(CKMentionsAnimationController *)self animationsByIdentifier];
+  v6 = [animationsByIdentifier copy];
+  [overlayView updateUsingAnimations:v6];
 }
 
-- (void)_delegateDidFinishMentionAnimationWithIdentifier:(id)a3
+- (void)_delegateDidFinishMentionAnimationWithIdentifier:(id)identifier
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v7 = 138412290;
-      v8 = v4;
+      v8 = identifierCopy;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "_delegateDidFinishMentionAnimationWithIdentifier: %@", &v7, 0xCu);
     }
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained mentionsAnimationController:self didFinishMentionAnimationWithIdentifier:v4];
+  [WeakRetained mentionsAnimationController:self didFinishMentionAnimationWithIdentifier:identifierCopy];
 }
 
 - (CKMentionsAnimationControllerDelegate)delegate
@@ -700,8 +700,8 @@ void __60__CKMentionsAnimationController_isAnyMentionAnimationActive__block_invo
 
 - (BOOL)__startAnimationIfNeeded_legacy
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a1 object:a2 file:@"CKMentionsAnimationController.m" lineNumber:273 description:@"Invalid state"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"CKMentionsAnimationController.m" lineNumber:273 description:@"Invalid state"];
 
   return *a3 == 0;
 }

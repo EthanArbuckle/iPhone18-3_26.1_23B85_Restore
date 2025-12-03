@@ -1,13 +1,13 @@
 @interface ATXMicrolocationVisitDuetDataProvider
-- (id)fetchEventsBetweenStartDate:(id)a3 andEndDate:(id)a4 withPredicates:(id)a5;
+- (id)fetchEventsBetweenStartDate:(id)date andEndDate:(id)endDate withPredicates:(id)predicates;
 @end
 
 @implementation ATXMicrolocationVisitDuetDataProvider
 
-- (id)fetchEventsBetweenStartDate:(id)a3 andEndDate:(id)a4 withPredicates:(id)a5
+- (id)fetchEventsBetweenStartDate:(id)date andEndDate:(id)endDate withPredicates:(id)predicates
 {
-  v6 = a4;
-  v7 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v8 = objc_opt_new();
   v9 = objc_alloc_init(MEMORY[0x277CEBCA0]);
   v12[0] = MEMORY[0x277D85DD0];
@@ -16,7 +16,7 @@
   v12[3] = &unk_27859E388;
   v10 = v8;
   v13 = v10;
-  [v9 enumerateMicroLocationVisitEventsFromStartDate:v7 endDate:v6 filterBlock:&__block_literal_global_137 limit:1000000 ascending:1 block:v12];
+  [v9 enumerateMicroLocationVisitEventsFromStartDate:dateCopy endDate:endDateCopy filterBlock:&__block_literal_global_137 limit:1000000 ascending:1 block:v12];
 
   return v10;
 }

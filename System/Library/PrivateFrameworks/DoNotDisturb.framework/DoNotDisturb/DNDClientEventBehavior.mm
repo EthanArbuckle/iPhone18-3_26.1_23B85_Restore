@@ -1,44 +1,44 @@
 @interface DNDClientEventBehavior
-- (BOOL)isEqual:(id)a3;
-- (DNDClientEventBehavior)initWithCoder:(id)a3;
-- (DNDClientEventBehavior)initWithEventDetails:(id)a3 interruptionSuppression:(unint64_t)a4 intelligentBehavior:(int64_t)a5 resolutionReason:(unint64_t)a6 activeModeUUID:(id)a7;
-- (id)_descriptionForRedacted:(BOOL)a3;
+- (BOOL)isEqual:(id)equal;
+- (DNDClientEventBehavior)initWithCoder:(id)coder;
+- (DNDClientEventBehavior)initWithEventDetails:(id)details interruptionSuppression:(unint64_t)suppression intelligentBehavior:(int64_t)behavior resolutionReason:(unint64_t)reason activeModeUUID:(id)d;
+- (id)_descriptionForRedacted:(BOOL)redacted;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DNDClientEventBehavior
 
 - (unint64_t)hash
 {
-  v3 = [(DNDClientEventBehavior *)self eventDetails];
-  v4 = [v3 hash];
-  v5 = [(DNDClientEventBehavior *)self interruptionSuppression];
-  v6 = v5 ^ [(DNDClientEventBehavior *)self intelligentBehavior]^ v4;
-  v7 = [(DNDClientEventBehavior *)self resolutionReason];
-  v8 = [(DNDClientEventBehavior *)self activeModeUUID];
-  v9 = v7 ^ [v8 hash];
+  eventDetails = [(DNDClientEventBehavior *)self eventDetails];
+  v4 = [eventDetails hash];
+  interruptionSuppression = [(DNDClientEventBehavior *)self interruptionSuppression];
+  v6 = interruptionSuppression ^ [(DNDClientEventBehavior *)self intelligentBehavior]^ v4;
+  resolutionReason = [(DNDClientEventBehavior *)self resolutionReason];
+  activeModeUUID = [(DNDClientEventBehavior *)self activeModeUUID];
+  v9 = resolutionReason ^ [activeModeUUID hash];
 
   return v6 ^ v9;
 }
 
-- (DNDClientEventBehavior)initWithEventDetails:(id)a3 interruptionSuppression:(unint64_t)a4 intelligentBehavior:(int64_t)a5 resolutionReason:(unint64_t)a6 activeModeUUID:(id)a7
+- (DNDClientEventBehavior)initWithEventDetails:(id)details interruptionSuppression:(unint64_t)suppression intelligentBehavior:(int64_t)behavior resolutionReason:(unint64_t)reason activeModeUUID:(id)d
 {
-  v12 = a3;
-  v13 = a7;
+  detailsCopy = details;
+  dCopy = d;
   v20.receiver = self;
   v20.super_class = DNDClientEventBehavior;
   v14 = [(DNDClientEventBehavior *)&v20 init];
   if (v14)
   {
-    v15 = [v12 copy];
+    v15 = [detailsCopy copy];
     eventDetails = v14->_eventDetails;
     v14->_eventDetails = v15;
 
-    v14->_interruptionSuppression = a4;
-    v14->_intelligentBehavior = a5;
-    v14->_resolutionReason = a6;
-    v17 = [v13 copy];
+    v14->_interruptionSuppression = suppression;
+    v14->_intelligentBehavior = behavior;
+    v14->_resolutionReason = reason;
+    v17 = [dCopy copy];
     activeModeUUID = v14->_activeModeUUID;
     v14->_activeModeUUID = v17;
   }
@@ -46,10 +46,10 @@
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v8 = a3;
-  if (self == v8)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -59,21 +59,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
-      v10 = [(DNDClientEventBehavior *)self eventDetails];
-      v11 = [(DNDClientEventBehavior *)v9 eventDetails];
-      if (v10 != v11)
+      v9 = equalCopy;
+      eventDetails = [(DNDClientEventBehavior *)self eventDetails];
+      eventDetails2 = [(DNDClientEventBehavior *)v9 eventDetails];
+      if (eventDetails != eventDetails2)
       {
-        v12 = [(DNDClientEventBehavior *)self eventDetails];
-        if (!v12)
+        eventDetails3 = [(DNDClientEventBehavior *)self eventDetails];
+        if (!eventDetails3)
         {
           v14 = 0;
           goto LABEL_25;
         }
 
-        v3 = v12;
-        v4 = [(DNDClientEventBehavior *)v9 eventDetails];
-        if (!v4)
+        v3 = eventDetails3;
+        eventDetails4 = [(DNDClientEventBehavior *)v9 eventDetails];
+        if (!eventDetails4)
         {
           v13 = 0;
 LABEL_24:
@@ -82,9 +82,9 @@ LABEL_24:
           goto LABEL_25;
         }
 
-        v5 = [(DNDClientEventBehavior *)self eventDetails];
-        v6 = [(DNDClientEventBehavior *)v9 eventDetails];
-        if (![v5 isEqual:v6])
+        eventDetails5 = [(DNDClientEventBehavior *)self eventDetails];
+        eventDetails6 = [(DNDClientEventBehavior *)v9 eventDetails];
+        if (![eventDetails5 isEqual:eventDetails6])
         {
           v13 = 0;
 LABEL_23:
@@ -93,18 +93,18 @@ LABEL_23:
         }
       }
 
-      v15 = [(DNDClientEventBehavior *)self interruptionSuppression];
-      if (v15 == [(DNDClientEventBehavior *)v9 interruptionSuppression])
+      interruptionSuppression = [(DNDClientEventBehavior *)self interruptionSuppression];
+      if (interruptionSuppression == [(DNDClientEventBehavior *)v9 interruptionSuppression])
       {
-        v16 = [(DNDClientEventBehavior *)self intelligentBehavior];
-        if (v16 == [(DNDClientEventBehavior *)v9 intelligentBehavior])
+        intelligentBehavior = [(DNDClientEventBehavior *)self intelligentBehavior];
+        if (intelligentBehavior == [(DNDClientEventBehavior *)v9 intelligentBehavior])
         {
-          v17 = [(DNDClientEventBehavior *)self resolutionReason];
-          if (v17 == [(DNDClientEventBehavior *)v9 resolutionReason])
+          resolutionReason = [(DNDClientEventBehavior *)self resolutionReason];
+          if (resolutionReason == [(DNDClientEventBehavior *)v9 resolutionReason])
           {
-            v18 = [(DNDClientEventBehavior *)self activeModeUUID];
-            v19 = [(DNDClientEventBehavior *)v9 activeModeUUID];
-            if (v18 == v19)
+            activeModeUUID = [(DNDClientEventBehavior *)self activeModeUUID];
+            activeModeUUID2 = [(DNDClientEventBehavior *)v9 activeModeUUID];
+            if (activeModeUUID == activeModeUUID2)
             {
 
               v13 = 1;
@@ -112,21 +112,21 @@ LABEL_23:
               goto LABEL_22;
             }
 
-            v27 = v18;
-            v28 = v19;
-            v20 = [(DNDClientEventBehavior *)self activeModeUUID];
-            if (v20)
+            v27 = activeModeUUID;
+            v28 = activeModeUUID2;
+            activeModeUUID3 = [(DNDClientEventBehavior *)self activeModeUUID];
+            if (activeModeUUID3)
             {
-              v26 = v20;
-              v21 = [(DNDClientEventBehavior *)v9 activeModeUUID];
-              if (v21)
+              v26 = activeModeUUID3;
+              activeModeUUID4 = [(DNDClientEventBehavior *)v9 activeModeUUID];
+              if (activeModeUUID4)
               {
-                v25 = v21;
-                v24 = [(DNDClientEventBehavior *)self activeModeUUID];
-                v22 = [(DNDClientEventBehavior *)v9 activeModeUUID];
-                v13 = [v24 isEqual:v22];
+                v25 = activeModeUUID4;
+                activeModeUUID5 = [(DNDClientEventBehavior *)self activeModeUUID];
+                activeModeUUID6 = [(DNDClientEventBehavior *)v9 activeModeUUID];
+                v13 = [activeModeUUID5 isEqual:activeModeUUID6];
 
-                v21 = v25;
+                activeModeUUID4 = v25;
               }
 
               else
@@ -136,7 +136,7 @@ LABEL_23:
 
               v14 = v13;
 LABEL_22:
-              if (v10 != v11)
+              if (eventDetails != eventDetails2)
               {
                 goto LABEL_23;
               }
@@ -162,56 +162,56 @@ LABEL_26:
   return v14;
 }
 
-- (id)_descriptionForRedacted:(BOOL)a3
+- (id)_descriptionForRedacted:(BOOL)redacted
 {
-  v3 = a3;
+  redactedCopy = redacted;
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
-  v7 = [(DNDClientEventBehavior *)self eventDetails];
-  v8 = v7;
-  v9 = v7;
-  if (v3)
+  eventDetails = [(DNDClientEventBehavior *)self eventDetails];
+  v8 = eventDetails;
+  redactedDescription = eventDetails;
+  if (redactedCopy)
   {
-    v9 = [v7 redactedDescription];
+    redactedDescription = [eventDetails redactedDescription];
   }
 
   v10 = DNDStringFromInterruptionSuppression([(DNDClientEventBehavior *)self interruptionSuppression]);
   v11 = DNDIntelligentInterruptionBehaviorToString([(DNDClientEventBehavior *)self intelligentBehavior]);
   v12 = DNDResolutionReasonToString([(DNDClientEventBehavior *)self resolutionReason]);
-  v13 = [(DNDClientEventBehavior *)self activeModeUUID];
-  v14 = [v5 stringWithFormat:@"<%@: %p eventDetails: %@; interruptionSuppression: %@; intelligentBehavior: %@; resolutionReason: %@; activeModeUUID: %@>", v6, self, v9, v10, v11, v12, v13];;
+  activeModeUUID = [(DNDClientEventBehavior *)self activeModeUUID];
+  v14 = [v5 stringWithFormat:@"<%@: %p eventDetails: %@; interruptionSuppression: %@; intelligentBehavior: %@; resolutionReason: %@; activeModeUUID: %@>", v6, self, redactedDescription, v10, v11, v12, activeModeUUID];;
 
-  if (v3)
+  if (redactedCopy)
   {
   }
 
   return v14;
 }
 
-- (DNDClientEventBehavior)initWithCoder:(id)a3
+- (DNDClientEventBehavior)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eventDetails"];
-  v6 = [v4 decodeIntegerForKey:@"interruptionSuppression"];
-  v7 = [v4 decodeIntegerForKey:@"intelligentBehavior"];
-  v8 = [v4 decodeIntegerForKey:@"resolutionReason"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activeModeUUID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eventDetails"];
+  v6 = [coderCopy decodeIntegerForKey:@"interruptionSuppression"];
+  v7 = [coderCopy decodeIntegerForKey:@"intelligentBehavior"];
+  v8 = [coderCopy decodeIntegerForKey:@"resolutionReason"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activeModeUUID"];
 
   v10 = [(DNDClientEventBehavior *)self initWithEventDetails:v5 interruptionSuppression:v6 intelligentBehavior:v7 resolutionReason:v8 activeModeUUID:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DNDClientEventBehavior *)self eventDetails];
-  [v4 encodeObject:v5 forKey:@"eventDetails"];
+  coderCopy = coder;
+  eventDetails = [(DNDClientEventBehavior *)self eventDetails];
+  [coderCopy encodeObject:eventDetails forKey:@"eventDetails"];
 
-  [v4 encodeInteger:-[DNDClientEventBehavior interruptionSuppression](self forKey:{"interruptionSuppression"), @"interruptionSuppression"}];
-  [v4 encodeInteger:-[DNDClientEventBehavior intelligentBehavior](self forKey:{"intelligentBehavior"), @"intelligentBehavior"}];
-  [v4 encodeInteger:-[DNDClientEventBehavior resolutionReason](self forKey:{"resolutionReason"), @"resolutionReason"}];
-  v6 = [(DNDClientEventBehavior *)self activeModeUUID];
-  [v4 encodeObject:v6 forKey:@"activeModeUUID"];
+  [coderCopy encodeInteger:-[DNDClientEventBehavior interruptionSuppression](self forKey:{"interruptionSuppression"), @"interruptionSuppression"}];
+  [coderCopy encodeInteger:-[DNDClientEventBehavior intelligentBehavior](self forKey:{"intelligentBehavior"), @"intelligentBehavior"}];
+  [coderCopy encodeInteger:-[DNDClientEventBehavior resolutionReason](self forKey:{"resolutionReason"), @"resolutionReason"}];
+  activeModeUUID = [(DNDClientEventBehavior *)self activeModeUUID];
+  [coderCopy encodeObject:activeModeUUID forKey:@"activeModeUUID"];
 }
 
 @end

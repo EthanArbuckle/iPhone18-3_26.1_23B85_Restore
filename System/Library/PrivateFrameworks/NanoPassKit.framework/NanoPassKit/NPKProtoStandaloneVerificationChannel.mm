@@ -1,15 +1,15 @@
 @interface NPKProtoStandaloneVerificationChannel
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRequiresUserInteraction:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRequiresUserInteraction:(BOOL)interaction;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandaloneVerificationChannel
@@ -27,60 +27,60 @@
   }
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Email"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Email"])
   {
     v4 = 110;
   }
 
-  else if ([v3 isEqualToString:@"SMS"])
+  else if ([typeCopy isEqualToString:@"SMS"])
   {
     v4 = 120;
   }
 
-  else if ([v3 isEqualToString:@"InboundPhoneCall"])
+  else if ([typeCopy isEqualToString:@"InboundPhoneCall"])
   {
     v4 = 130;
   }
 
-  else if ([v3 isEqualToString:@"OutboundPhoneCall"])
+  else if ([typeCopy isEqualToString:@"OutboundPhoneCall"])
   {
     v4 = 140;
   }
 
-  else if ([v3 isEqualToString:@"BankApp"])
+  else if ([typeCopy isEqualToString:@"BankApp"])
   {
     v4 = 150;
   }
 
-  else if ([v3 isEqualToString:@"Statement"])
+  else if ([typeCopy isEqualToString:@"Statement"])
   {
     v4 = 160;
   }
 
-  else if ([v3 isEqualToString:@"Other"])
+  else if ([typeCopy isEqualToString:@"Other"])
   {
     v4 = 170;
   }
 
-  else if ([v3 isEqualToString:@"AppClip"])
+  else if ([typeCopy isEqualToString:@"AppClip"])
   {
     v4 = 180;
   }
 
-  else if ([v3 isEqualToString:@"WebPage"])
+  else if ([typeCopy isEqualToString:@"WebPage"])
   {
     v4 = 190;
   }
 
-  else if ([v3 isEqualToString:@"URL"])
+  else if ([typeCopy isEqualToString:@"URL"])
   {
     v4 = 200;
   }
 
-  else if ([v3 isEqualToString:@"Count"])
+  else if ([typeCopy isEqualToString:@"Count"])
   {
     v4 = 210;
   }
@@ -93,9 +93,9 @@
   return v4;
 }
 
-- (void)setHasRequiresUserInteraction:(BOOL)a3
+- (void)setHasRequiresUserInteraction:(BOOL)interaction
 {
-  if (a3)
+  if (interaction)
   {
     v3 = 2;
   }
@@ -114,20 +114,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandaloneVerificationChannel;
   v4 = [(NPKProtoStandaloneVerificationChannel *)&v8 description];
-  v5 = [(NPKProtoStandaloneVerificationChannel *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandaloneVerificationChannel *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   if (*&self->_has)
@@ -246,118 +246,118 @@ LABEL_31:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     type = self->_type;
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_typeDescriptionUnlocalized)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_typeDescription)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_organizationName)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     requiresUserInteraction = self->_requiresUserInteraction;
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_contactPoint)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_sourceAddress)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
-    v4 = v5;
+    [toCopy setIdentifier:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 10) = self->_type;
-    *(v4 + 68) |= 1u;
+    *(toCopy + 10) = self->_type;
+    *(toCopy + 68) |= 1u;
   }
 
   if (self->_typeDescriptionUnlocalized)
   {
     [v5 setTypeDescriptionUnlocalized:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_typeDescription)
   {
     [v5 setTypeDescription:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_organizationName)
   {
     [v5 setOrganizationName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 64) = self->_requiresUserInteraction;
-    *(v4 + 68) |= 2u;
+    *(toCopy + 64) = self->_requiresUserInteraction;
+    *(toCopy + 68) |= 2u;
   }
 
   if (self->_contactPoint)
   {
     [v5 setContactPoint:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_sourceAddress)
   {
     [v5 setSourceAddress:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -367,15 +367,15 @@ LABEL_31:
     *(v5 + 68) |= 1u;
   }
 
-  v8 = [(NSString *)self->_typeDescriptionUnlocalized copyWithZone:a3];
+  v8 = [(NSString *)self->_typeDescriptionUnlocalized copyWithZone:zone];
   v9 = *(v5 + 56);
   *(v5 + 56) = v8;
 
-  v10 = [(NSString *)self->_typeDescription copyWithZone:a3];
+  v10 = [(NSString *)self->_typeDescription copyWithZone:zone];
   v11 = *(v5 + 48);
   *(v5 + 48) = v10;
 
-  v12 = [(NSString *)self->_organizationName copyWithZone:a3];
+  v12 = [(NSString *)self->_organizationName copyWithZone:zone];
   v13 = *(v5 + 24);
   *(v5 + 24) = v12;
 
@@ -385,27 +385,27 @@ LABEL_31:
     *(v5 + 68) |= 2u;
   }
 
-  v14 = [(NSString *)self->_contactPoint copyWithZone:a3];
+  v14 = [(NSString *)self->_contactPoint copyWithZone:zone];
   v15 = *(v5 + 8);
   *(v5 + 8) = v14;
 
-  v16 = [(NSString *)self->_sourceAddress copyWithZone:a3];
+  v16 = [(NSString *)self->_sourceAddress copyWithZone:zone];
   v17 = *(v5 + 32);
   *(v5 + 32) = v16;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 2))
+  if (identifier | *(equalCopy + 2))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -413,28 +413,28 @@ LABEL_31:
     }
   }
 
-  v6 = *(v4 + 68);
+  v6 = *(equalCopy + 68);
   if (*&self->_has)
   {
-    if ((*(v4 + 68) & 1) == 0 || self->_type != *(v4 + 10))
+    if ((*(equalCopy + 68) & 1) == 0 || self->_type != *(equalCopy + 10))
     {
       goto LABEL_22;
     }
   }
 
-  else if (*(v4 + 68))
+  else if (*(equalCopy + 68))
   {
     goto LABEL_22;
   }
 
   typeDescriptionUnlocalized = self->_typeDescriptionUnlocalized;
-  if (typeDescriptionUnlocalized | *(v4 + 7) && ![(NSString *)typeDescriptionUnlocalized isEqual:?])
+  if (typeDescriptionUnlocalized | *(equalCopy + 7) && ![(NSString *)typeDescriptionUnlocalized isEqual:?])
   {
     goto LABEL_22;
   }
 
   typeDescription = self->_typeDescription;
-  if (typeDescription | *(v4 + 6))
+  if (typeDescription | *(equalCopy + 6))
   {
     if (![(NSString *)typeDescription isEqual:?])
     {
@@ -443,7 +443,7 @@ LABEL_31:
   }
 
   organizationName = self->_organizationName;
-  if (organizationName | *(v4 + 3))
+  if (organizationName | *(equalCopy + 3))
   {
     if (![(NSString *)organizationName isEqual:?])
     {
@@ -451,10 +451,10 @@ LABEL_31:
     }
   }
 
-  v10 = *(v4 + 68);
+  v10 = *(equalCopy + 68);
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 68) & 2) == 0)
+    if ((*(equalCopy + 68) & 2) == 0)
     {
       goto LABEL_17;
     }
@@ -464,34 +464,34 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if ((*(v4 + 68) & 2) == 0)
+  if ((*(equalCopy + 68) & 2) == 0)
   {
     goto LABEL_22;
   }
 
-  v15 = *(v4 + 64);
+  v15 = *(equalCopy + 64);
   if (self->_requiresUserInteraction)
   {
-    if ((*(v4 + 64) & 1) == 0)
+    if ((*(equalCopy + 64) & 1) == 0)
     {
       goto LABEL_22;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
     goto LABEL_22;
   }
 
 LABEL_17:
   contactPoint = self->_contactPoint;
-  if (contactPoint | *(v4 + 1) && ![(NSString *)contactPoint isEqual:?])
+  if (contactPoint | *(equalCopy + 1) && ![(NSString *)contactPoint isEqual:?])
   {
     goto LABEL_22;
   }
 
   sourceAddress = self->_sourceAddress;
-  if (sourceAddress | *(v4 + 4))
+  if (sourceAddress | *(equalCopy + 4))
   {
     v13 = [(NSString *)sourceAddress isEqual:?];
   }
@@ -536,56 +536,56 @@ LABEL_23:
   return v9 ^ [(NSString *)self->_sourceAddress hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(NPKProtoStandaloneVerificationChannel *)self setIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 68))
+  if (*(fromCopy + 68))
   {
-    self->_type = *(v4 + 10);
+    self->_type = *(fromCopy + 10);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(NPKProtoStandaloneVerificationChannel *)self setTypeDescriptionUnlocalized:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(NPKProtoStandaloneVerificationChannel *)self setTypeDescription:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NPKProtoStandaloneVerificationChannel *)self setOrganizationName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 68) & 2) != 0)
+  if ((*(fromCopy + 68) & 2) != 0)
   {
-    self->_requiresUserInteraction = *(v4 + 64);
+    self->_requiresUserInteraction = *(fromCopy + 64);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(NPKProtoStandaloneVerificationChannel *)self setContactPoint:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(NPKProtoStandaloneVerificationChannel *)self setSourceAddress:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

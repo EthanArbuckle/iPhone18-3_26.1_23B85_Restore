@@ -1,14 +1,14 @@
 @interface MemoryCreationAvailabilityMonitorObservable
-- (void)stateDidChangeWithMonitor:(id)a3;
+- (void)stateDidChangeWithMonitor:(id)monitor;
 @end
 
 @implementation MemoryCreationAvailabilityMonitorObservable
 
-- (void)stateDidChangeWithMonitor:(id)a3
+- (void)stateDidChangeWithMonitor:(id)monitor
 {
-  v3 = a3;
+  monitorCopy = monitor;
 
-  sub_1C6F66FFC(v3);
+  sub_1C6F66FFC(monitorCopy);
 }
 
 @end

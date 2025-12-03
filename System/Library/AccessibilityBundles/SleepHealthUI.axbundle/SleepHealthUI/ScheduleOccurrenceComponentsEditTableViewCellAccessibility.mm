@@ -1,20 +1,20 @@
 @interface ScheduleOccurrenceComponentsEditTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 @end
 
 @implementation ScheduleOccurrenceComponentsEditTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SleepHealthUI.ScheduleOccurrenceComponentsEditTableViewCell" hasInstanceMethod:@"accessibilityComponentsEditView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleComponentsEditView" hasInstanceMethod:@"accessibilityComponentsHeader" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleComponentsEditView" hasInstanceMethod:@"accessibilityClock" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleClock" hasInstanceMethod:@"accessibilityBedtimeHand" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleClock" hasInstanceMethod:@"accessibilityWakeUpHand" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleComponentsEditView" hasInstanceMethod:@"accessibilityTimeInBedLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleComponentsEditView" hasInstanceMethod:@"accessibilityClockCaption" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SleepHealthUI.ScheduleOccurrenceComponentsEditTableViewCell" hasInstanceMethod:@"accessibilityComponentsEditView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleComponentsEditView" hasInstanceMethod:@"accessibilityComponentsHeader" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleComponentsEditView" hasInstanceMethod:@"accessibilityClock" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleClock" hasInstanceMethod:@"accessibilityBedtimeHand" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleClock" hasInstanceMethod:@"accessibilityWakeUpHand" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleComponentsEditView" hasInstanceMethod:@"accessibilityTimeInBedLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleComponentsEditView" hasInstanceMethod:@"accessibilityClockCaption" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityElements

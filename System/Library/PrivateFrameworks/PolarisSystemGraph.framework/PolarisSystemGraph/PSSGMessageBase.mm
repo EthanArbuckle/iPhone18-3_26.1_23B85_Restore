@@ -1,8 +1,8 @@
 @interface PSSGMessageBase
 - ($995AEC83619B72959345773A9004CE00)serialize;
-- (BOOL)isEqual:(id)a3;
-- (PSSGMessageBase)initWithRawMessage:(pssg_tx_s *)a3;
-- (PSSGMessageBase)initWithType:(unint64_t)a3 string1:(id)a4 stringSet1:(id)a5 stringSet2:(id)a6 data:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (PSSGMessageBase)initWithRawMessage:(pssg_tx_s *)message;
+- (PSSGMessageBase)initWithType:(unint64_t)type string1:(id)string1 stringSet1:(id)set1 stringSet2:(id)set2 data:(id)data;
 - (unint64_t)hash;
 - (unsigned)count1;
 - (unsigned)count2;
@@ -12,23 +12,23 @@
 
 @implementation PSSGMessageBase
 
-- (PSSGMessageBase)initWithType:(unint64_t)a3 string1:(id)a4 stringSet1:(id)a5 stringSet2:(id)a6 data:(id)a7
+- (PSSGMessageBase)initWithType:(unint64_t)type string1:(id)string1 stringSet1:(id)set1 stringSet2:(id)set2 data:(id)data
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  string1Copy = string1;
+  set1Copy = set1;
+  set2Copy = set2;
+  dataCopy = data;
   v19.receiver = self;
   v19.super_class = PSSGMessageBase;
   v16 = [(PSSGMessageBase *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    [(PSSGMessageBase *)v16 setType:a3];
-    [(PSSGMessageBase *)v17 setString1:v12];
-    [(PSSGMessageBase *)v17 setStringSet1:v13];
-    [(PSSGMessageBase *)v17 setStringSet2:v14];
-    [(PSSGMessageBase *)v17 setData:v15];
+    [(PSSGMessageBase *)v16 setType:type];
+    [(PSSGMessageBase *)v17 setString1:string1Copy];
+    [(PSSGMessageBase *)v17 setStringSet1:set1Copy];
+    [(PSSGMessageBase *)v17 setStringSet2:set2Copy];
+    [(PSSGMessageBase *)v17 setData:dataCopy];
     v17->_stringArray = 0;
   }
 
@@ -37,32 +37,32 @@
 
 - (unsigned)count1
 {
-  v2 = [(PSSGMessageBase *)self stringSet1];
-  v3 = [v2 count];
+  stringSet1 = [(PSSGMessageBase *)self stringSet1];
+  v3 = [stringSet1 count];
 
   return v3;
 }
 
 - (unsigned)count2
 {
-  v2 = [(PSSGMessageBase *)self stringSet2];
-  v3 = [v2 count];
+  stringSet2 = [(PSSGMessageBase *)self stringSet2];
+  v3 = [stringSet2 count];
 
   return v3;
 }
 
 - (unsigned)dataLength
 {
-  v2 = [(PSSGMessageBase *)self data];
-  v3 = [v2 length];
+  data = [(PSSGMessageBase *)self data];
+  v3 = [data length];
 
   return v3;
 }
 
-- (PSSGMessageBase)initWithRawMessage:(pssg_tx_s *)a3
+- (PSSGMessageBase)initWithRawMessage:(pssg_tx_s *)message
 {
-  v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:a3->string1];
-  if ((a3->header.header.msgh_bits & 0x80000000) == 0 || a3->header.body.msgh_descriptor_count != 1 || HIBYTE(a3->header.ool_port_data.guarded_port.context) != 1)
+  v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:message->string1];
+  if ((message->header.header.msgh_bits & 0x80000000) == 0 || message->header.body.msgh_descriptor_count != 1 || HIBYTE(message->header.ool_port_data.guarded_port.context) != 1)
   {
     v17 = 0;
     v12 = 0;
@@ -70,9 +70,9 @@
     goto LABEL_13;
   }
 
-  countArray1 = a3->var0.var0.countArray1;
-  countArray2 = a3->var0.var0.countArray2;
-  v8 = *(&a3->header.body + 1);
+  countArray1 = message->var0.var0.countArray1;
+  countArray2 = message->var0.var0.countArray2;
+  v8 = *(&message->header.body + 1);
   v20 = v8;
   if (countArray1)
   {
@@ -124,7 +124,7 @@ LABEL_8:
 
   v12 = 0;
 LABEL_16:
-  if (a3->var0.var0.dataLength)
+  if (message->var0.var0.dataLength)
   {
     v17 = [MEMORY[0x277CBEA90] dataWithBytes:v20 length:?];
   }
@@ -135,7 +135,7 @@ LABEL_16:
   }
 
 LABEL_13:
-  v18 = [(PSSGMessageBase *)self initWithType:a3->type string1:v5 stringSet1:v9 stringSet2:v12 data:v17];
+  v18 = [(PSSGMessageBase *)self initWithType:message->type string1:v5 stringSet1:v9 stringSet2:v12 data:v17];
 
   return v18;
 }
@@ -169,15 +169,15 @@ LABEL_13:
     *&p_serializedMessage->var0.header.header.msgh_bits = 0u;
     *&self->_serializedMessage.message.header.header.msgh_voucher_port = 0u;
     self->_serializedMessage.message.type = [(PSSGMessageBase *)self type];
-    v4 = [(PSSGMessageBase *)self string1];
-    [v4 UTF8String];
+    string1 = [(PSSGMessageBase *)self string1];
+    [string1 UTF8String];
     __strlcpy_chk();
 
     self->_serializedMessage.message.var0.var0.countArray1 = [(PSSGMessageBase *)self count1];
     self->_serializedMessage.message.var0.var0.countArray2 = [(PSSGMessageBase *)self count2];
     self->_serializedMessage.message.var0.var0.dataLength = [(PSSGMessageBase *)self dataLength];
-    LODWORD(v4) = [(PSSGMessageBase *)self count1];
-    v5 = [(PSSGMessageBase *)self count2]+ v4;
+    LODWORD(string1) = [(PSSGMessageBase *)self count1];
+    v5 = [(PSSGMessageBase *)self count2]+ string1;
     if (v5)
     {
       v6 = malloc_type_calloc(v5, 0x100uLL, 0x8DE96732uLL);
@@ -191,8 +191,8 @@ LABEL_13:
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v7 = [(PSSGMessageBase *)self stringSet1];
-      v8 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      stringSet1 = [(PSSGMessageBase *)self stringSet1];
+      v8 = [stringSet1 countByEnumeratingWithState:&v26 objects:v31 count:16];
       if (v8)
       {
         v9 = v8;
@@ -204,13 +204,13 @@ LABEL_13:
           {
             if (*v27 != v11)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(stringSet1);
             }
 
             strlcpy(self->_stringArray[v10++], [*(*(&v26 + 1) + 8 * i) UTF8String], 0x100uLL);
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
+          v9 = [stringSet1 countByEnumeratingWithState:&v26 objects:v31 count:16];
         }
 
         while (v9);
@@ -225,8 +225,8 @@ LABEL_13:
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v15 = [(PSSGMessageBase *)self stringSet2];
-      v16 = [v15 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      stringSet2 = [(PSSGMessageBase *)self stringSet2];
+      v16 = [stringSet2 countByEnumeratingWithState:&v22 objects:v30 count:16];
       if (v16)
       {
         v17 = v16;
@@ -237,31 +237,31 @@ LABEL_13:
           {
             if (*v23 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(stringSet2);
             }
 
             strlcpy(self->_stringArray[v10++], [*(*(&v22 + 1) + 8 * j) UTF8String], 0x100uLL);
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v22 objects:v30 count:16];
+          v17 = [stringSet2 countByEnumeratingWithState:&v22 objects:v30 count:16];
         }
 
         while (v17);
       }
 
       self->_serializedMessage.var0.oolData = self->_stringArray;
-      v14 = v5 << 8;
+      dataLength = v5 << 8;
     }
 
     else
     {
-      v13 = [(PSSGMessageBase *)self data];
-      self->_serializedMessage.var0.oolData = [v13 bytes];
+      data = [(PSSGMessageBase *)self data];
+      self->_serializedMessage.var0.oolData = [data bytes];
 
-      v14 = [(PSSGMessageBase *)self dataLength];
+      dataLength = [(PSSGMessageBase *)self dataLength];
     }
 
-    self->_serializedMessage.oolDataLength = v14;
+    self->_serializedMessage.oolDataLength = dataLength;
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -276,27 +276,27 @@ LABEL_13:
   [(PSSGMessageBase *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(PSSGMessageBase *)self type];
-  if (v5 == [v4 type])
+  equalCopy = equal;
+  type = [(PSSGMessageBase *)self type];
+  if (type == [equalCopy type])
   {
-    v6 = [(PSSGMessageBase *)self string1];
-    v7 = [v4 string1];
-    if ([v6 isEqual:v7])
+    string1 = [(PSSGMessageBase *)self string1];
+    string12 = [equalCopy string1];
+    if ([string1 isEqual:string12])
     {
-      v8 = [(PSSGMessageBase *)self stringSet1];
-      v9 = [v4 stringSet1];
-      if ([(PSSGMessageBase *)self first:v8 isEqual:v9])
+      stringSet1 = [(PSSGMessageBase *)self stringSet1];
+      stringSet12 = [equalCopy stringSet1];
+      if ([(PSSGMessageBase *)self first:stringSet1 isEqual:stringSet12])
       {
-        v10 = [(PSSGMessageBase *)self stringSet2];
-        v11 = [v4 stringSet2];
-        if ([(PSSGMessageBase *)self first:v10 isEqual:v11])
+        stringSet2 = [(PSSGMessageBase *)self stringSet2];
+        stringSet22 = [equalCopy stringSet2];
+        if ([(PSSGMessageBase *)self first:stringSet2 isEqual:stringSet22])
         {
-          v12 = [(PSSGMessageBase *)self data];
-          v13 = [v4 data];
-          v14 = [(PSSGMessageBase *)self first:v12 isEqual:v13];
+          data = [(PSSGMessageBase *)self data];
+          data2 = [equalCopy data];
+          v14 = [(PSSGMessageBase *)self first:data isEqual:data2];
         }
 
         else
@@ -327,15 +327,15 @@ LABEL_13:
 
 - (unint64_t)hash
 {
-  v3 = [(PSSGMessageBase *)self type];
-  v4 = [(PSSGMessageBase *)self string1];
-  v5 = [v4 hash] ^ v3;
-  v6 = [(PSSGMessageBase *)self stringSet1];
-  v7 = [v6 hash];
-  v8 = [(PSSGMessageBase *)self stringSet2];
-  v9 = v5 ^ v7 ^ [v8 hash];
-  v10 = [(PSSGMessageBase *)self data];
-  v11 = [v10 hash];
+  type = [(PSSGMessageBase *)self type];
+  string1 = [(PSSGMessageBase *)self string1];
+  v5 = [string1 hash] ^ type;
+  stringSet1 = [(PSSGMessageBase *)self stringSet1];
+  v7 = [stringSet1 hash];
+  stringSet2 = [(PSSGMessageBase *)self stringSet2];
+  v9 = v5 ^ v7 ^ [stringSet2 hash];
+  data = [(PSSGMessageBase *)self data];
+  v11 = [data hash];
 
   return v9 ^ v11;
 }

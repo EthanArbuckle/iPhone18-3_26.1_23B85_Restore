@@ -1,17 +1,17 @@
 @interface CHPScatterWithStringValueX
-- (BOOL)isObjectSupported:(id)a3;
-- (void)applyProcessorToObject:(id)a3 sheet:(id)a4;
+- (BOOL)isObjectSupported:(id)supported;
+- (void)applyProcessorToObject:(id)object sheet:(id)sheet;
 @end
 
 @implementation CHPScatterWithStringValueX
 
-- (BOOL)isObjectSupported:(id)a3
+- (BOOL)isObjectSupported:(id)supported
 {
-  v3 = a3;
+  supportedCopy = supported;
   v4 = objc_opt_class();
   if (v4 == objc_opt_class())
   {
-    v5 = [v3 isEmpty] ^ 1;
+    v5 = [supportedCopy isEmpty] ^ 1;
   }
 
   else
@@ -22,17 +22,17 @@
   return v5;
 }
 
-- (void)applyProcessorToObject:(id)a3 sheet:(id)a4
+- (void)applyProcessorToObject:(id)object sheet:(id)sheet
 {
-  v4 = a3;
-  v5 = [v4 dataValues];
-  v6 = [v5 containsStringValue];
+  objectCopy = object;
+  dataValues = [objectCopy dataValues];
+  containsStringValue = [dataValues containsStringValue];
 
-  if (v6)
+  if (containsStringValue)
   {
-    v7 = [v4 dataValues];
-    v8 = [v7 count];
-    [v7 resetWithDataPointCount:v8];
+    dataValues2 = [objectCopy dataValues];
+    v8 = [dataValues2 count];
+    [dataValues2 resetWithDataPointCount:v8];
     if (v8)
     {
       for (i = 1; i <= v8; ++i)
@@ -42,13 +42,13 @@
         EDValue::makeWithNumber(v10, i, &v11);
         EDValue::operator=(&v13, &v11);
         EDValue::~EDValue(&v11);
-        [v7 addDataPoint:&v12];
+        [dataValues2 addDataPoint:&v12];
         EDValue::~EDValue(&v13);
       }
     }
 
-    [v7 finishReading];
-    [v4 setFormula:0 chart:0];
+    [dataValues2 finishReading];
+    [objectCopy setFormula:0 chart:0];
   }
 }
 

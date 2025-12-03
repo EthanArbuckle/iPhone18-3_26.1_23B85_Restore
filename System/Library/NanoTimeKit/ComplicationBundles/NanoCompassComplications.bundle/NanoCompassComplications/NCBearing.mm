@@ -1,14 +1,14 @@
 @interface NCBearing
 + (NCBearing)idealizedBearing;
 + (id)randomizedBearing;
-- (NCBearing)initWithBearing:(double)a3;
-- (NCBearing)initWithHeading:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NCBearing)initWithBearing:(double)bearing;
+- (NCBearing)initWithHeading:(id)heading;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NCBearing
 
-- (NCBearing)initWithBearing:(double)a3
+- (NCBearing)initWithBearing:(double)bearing
 {
   v10.receiver = self;
   v10.super_class = NCBearing;
@@ -19,13 +19,13 @@
     ;
   }
 
-  objc_msgSend_setBearing_(v4, v5, v6, v7, floor(a3));
+  objc_msgSend_setBearing_(v4, v5, v6, v7, floor(bearing));
   return i;
 }
 
-- (NCBearing)initWithHeading:(id)a3
+- (NCBearing)initWithHeading:(id)heading
 {
-  objc_msgSend_heading(a3, a2, a3, v3);
+  objc_msgSend_heading(heading, a2, heading, v3);
 
   return objc_msgSend_initWithBearing_(self, v5, v6, v7);
 }
@@ -51,7 +51,7 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [NCBearing alloc];
   objc_msgSend_bearing(self, v5, v6, v7);

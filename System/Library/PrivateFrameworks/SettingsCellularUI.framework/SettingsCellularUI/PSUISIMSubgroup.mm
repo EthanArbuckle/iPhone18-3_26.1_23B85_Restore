@@ -1,34 +1,34 @@
 @interface PSUISIMSubgroup
 - (PSListController)listController;
 - (PSSpecifier)parentSpecifier;
-- (PSUISIMSubgroup)initWithListController:(id)a3 groupSpecifier:(id)a4;
-- (PSUISIMSubgroup)initWithListController:(id)a3 groupSpecifier:(id)a4 parentSpecifier:(id)a5;
+- (PSUISIMSubgroup)initWithListController:(id)controller groupSpecifier:(id)specifier;
+- (PSUISIMSubgroup)initWithListController:(id)controller groupSpecifier:(id)specifier parentSpecifier:(id)parentSpecifier;
 - (id)specifiers;
 @end
 
 @implementation PSUISIMSubgroup
 
-- (PSUISIMSubgroup)initWithListController:(id)a3 groupSpecifier:(id)a4 parentSpecifier:(id)a5
+- (PSUISIMSubgroup)initWithListController:(id)controller groupSpecifier:(id)specifier parentSpecifier:(id)parentSpecifier
 {
-  v7 = a3;
-  v8 = a5;
+  controllerCopy = controller;
+  parentSpecifierCopy = parentSpecifier;
   v12.receiver = self;
   v12.super_class = PSUISIMSubgroup;
   v9 = [(PSUISIMSubgroup *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_listController, v7);
-    objc_storeWeak(&v10->_parentSpecifier, v8);
+    objc_storeWeak(&v9->_listController, controllerCopy);
+    objc_storeWeak(&v10->_parentSpecifier, parentSpecifierCopy);
   }
 
   return v10;
 }
 
-- (PSUISIMSubgroup)initWithListController:(id)a3 groupSpecifier:(id)a4
+- (PSUISIMSubgroup)initWithListController:(id)controller groupSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  specifierCopy = specifier;
   objc_exception_throw([objc_alloc(MEMORY[0x277CBEAD8]) initWithName:@"Unsupported initializer called" reason:@"Unsupported initializer called" userInfo:0]);
 }
 
@@ -50,7 +50,7 @@
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
   WeakRetained = objc_loadWeakRetained(&self->_parentSpecifier);
   v9 = objc_loadWeakRetained(&self->_listController);
-  v10 = [v9 bundle];
+  bundle = [v9 bundle];
   v11 = objc_loadWeakRetained(&self->_listController);
   v28 = 0;
   v12 = SpecifiersFromPlist();

@@ -1,45 +1,45 @@
 @interface HDCodableMedicationShareableModel
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addIngredientComponentStrings:(id)a3;
-- (void)addMonthHighlights:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasArchived:(BOOL)a3;
-- (void)setHasFreeTextMedicationLoggingUnit:(BOOL)a3;
-- (void)setHasIsLactationDescriptionCritical:(BOOL)a3;
-- (void)setHasIsPregnancyDescriptionCritical:(BOOL)a3;
-- (void)setHasLatestSupportedVersion:(BOOL)a3;
-- (void)setHasMinimumSupportedVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addIngredientComponentStrings:(id)strings;
+- (void)addMonthHighlights:(id)highlights;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasArchived:(BOOL)archived;
+- (void)setHasFreeTextMedicationLoggingUnit:(BOOL)unit;
+- (void)setHasIsLactationDescriptionCritical:(BOOL)critical;
+- (void)setHasIsPregnancyDescriptionCritical:(BOOL)critical;
+- (void)setHasLatestSupportedVersion:(BOOL)version;
+- (void)setHasMinimumSupportedVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableMedicationShareableModel
 
-- (void)addIngredientComponentStrings:(id)a3
+- (void)addIngredientComponentStrings:(id)strings
 {
-  v4 = a3;
+  stringsCopy = strings;
   ingredientComponentStrings = self->_ingredientComponentStrings;
-  v8 = v4;
+  v8 = stringsCopy;
   if (!ingredientComponentStrings)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_ingredientComponentStrings;
     self->_ingredientComponentStrings = v6;
 
-    v4 = v8;
+    stringsCopy = v8;
     ingredientComponentStrings = self->_ingredientComponentStrings;
   }
 
-  [(NSMutableArray *)ingredientComponentStrings addObject:v4];
+  [(NSMutableArray *)ingredientComponentStrings addObject:stringsCopy];
 }
 
-- (void)setHasFreeTextMedicationLoggingUnit:(BOOL)a3
+- (void)setHasFreeTextMedicationLoggingUnit:(BOOL)unit
 {
-  if (a3)
+  if (unit)
   {
     v3 = 2;
   }
@@ -52,27 +52,27 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addMonthHighlights:(id)a3
+- (void)addMonthHighlights:(id)highlights
 {
-  v4 = a3;
+  highlightsCopy = highlights;
   monthHighlights = self->_monthHighlights;
-  v8 = v4;
+  v8 = highlightsCopy;
   if (!monthHighlights)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_monthHighlights;
     self->_monthHighlights = v6;
 
-    v4 = v8;
+    highlightsCopy = v8;
     monthHighlights = self->_monthHighlights;
   }
 
-  [(NSMutableArray *)monthHighlights addObject:v4];
+  [(NSMutableArray *)monthHighlights addObject:highlightsCopy];
 }
 
-- (void)setHasArchived:(BOOL)a3
+- (void)setHasArchived:(BOOL)archived
 {
-  if (a3)
+  if (archived)
   {
     v3 = 16;
   }
@@ -85,9 +85,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasLatestSupportedVersion:(BOOL)a3
+- (void)setHasLatestSupportedVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -100,9 +100,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMinimumSupportedVersion:(BOOL)a3
+- (void)setHasMinimumSupportedVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 8;
   }
@@ -115,9 +115,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsPregnancyDescriptionCritical:(BOOL)a3
+- (void)setHasIsPregnancyDescriptionCritical:(BOOL)critical
 {
-  if (a3)
+  if (critical)
   {
     v3 = 64;
   }
@@ -130,9 +130,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasIsLactationDescriptionCritical:(BOOL)a3
+- (void)setHasIsLactationDescriptionCritical:(BOOL)critical
 {
-  if (a3)
+  if (critical)
   {
     v3 = 32;
   }
@@ -151,8 +151,8 @@
   v8.receiver = self;
   v8.super_class = HDCodableMedicationShareableModel;
   v4 = [(HDCodableMedicationShareableModel *)&v8 description];
-  v5 = [(HDCodableMedicationShareableModel *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableMedicationShareableModel *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -160,12 +160,12 @@
 - (id)dictionaryRepresentation
 {
   v54 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   conceptIdentifier = self->_conceptIdentifier;
   if (conceptIdentifier)
   {
-    [v3 setObject:conceptIdentifier forKey:@"conceptIdentifier"];
+    [dictionary setObject:conceptIdentifier forKey:@"conceptIdentifier"];
   }
 
   audienceRawValue = self->_audienceRawValue;
@@ -234,15 +234,15 @@
   schedule = self->_schedule;
   if (schedule)
   {
-    v18 = [(HDCodableMedicationSchedule *)schedule dictionaryRepresentation];
-    [v4 setObject:v18 forKey:@"schedule"];
+    dictionaryRepresentation = [(HDCodableMedicationSchedule *)schedule dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"schedule"];
   }
 
   mostRecentDose = self->_mostRecentDose;
   if (mostRecentDose)
   {
-    v20 = [(HDCodableMedicationDoseEvent *)mostRecentDose dictionaryRepresentation];
-    [v4 setObject:v20 forKey:@"mostRecentDose"];
+    dictionaryRepresentation2 = [(HDCodableMedicationDoseEvent *)mostRecentDose dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"mostRecentDose"];
   }
 
   if ([(NSMutableArray *)self->_monthHighlights count])
@@ -267,8 +267,8 @@
             objc_enumerationMutation(v22);
           }
 
-          v27 = [*(*(&v49 + 1) + 8 * i) dictionaryRepresentation];
-          [v21 addObject:v27];
+          dictionaryRepresentation3 = [*(*(&v49 + 1) + 8 * i) dictionaryRepresentation];
+          [v21 addObject:dictionaryRepresentation3];
         }
 
         v24 = [(NSMutableArray *)v22 countByEnumeratingWithState:&v49 objects:v53 count:16];
@@ -318,8 +318,8 @@ LABEL_40:
   chartSeries = self->_chartSeries;
   if (chartSeries)
   {
-    v31 = [(HDCodableMedicationChartSeries *)chartSeries dictionaryRepresentation];
-    [v4 setObject:v31 forKey:@"chartSeries"];
+    dictionaryRepresentation4 = [(HDCodableMedicationChartSeries *)chartSeries dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"chartSeries"];
   }
 
   preferredName = self->_preferredName;
@@ -361,8 +361,8 @@ LABEL_40:
   freeTextMedicationStrengthQuantity = self->_freeTextMedicationStrengthQuantity;
   if (freeTextMedicationStrengthQuantity)
   {
-    v39 = [(HDCodableQuantity *)freeTextMedicationStrengthQuantity dictionaryRepresentation];
-    [v4 setObject:v39 forKey:@"freeTextMedicationStrengthQuantity"];
+    dictionaryRepresentation5 = [(HDCodableQuantity *)freeTextMedicationStrengthQuantity dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation5 forKey:@"freeTextMedicationStrengthQuantity"];
   }
 
   pregnancyDescriptionContentString = self->_pregnancyDescriptionContentString;
@@ -397,10 +397,10 @@ LABEL_40:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_conceptIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -621,67 +621,67 @@ LABEL_41:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v16 = a3;
+  toCopy = to;
   if (self->_conceptIdentifier)
   {
-    [v16 setConceptIdentifier:?];
+    [toCopy setConceptIdentifier:?];
   }
 
   if (self->_audienceRawValue)
   {
-    [v16 setAudienceRawValue:?];
+    [toCopy setAudienceRawValue:?];
   }
 
   if (self->_baseUnitStrength)
   {
-    [v16 setBaseUnitStrength:?];
+    [toCopy setBaseUnitStrength:?];
   }
 
   if ([(HDCodableMedicationShareableModel *)self ingredientComponentStringsCount])
   {
-    [v16 clearIngredientComponentStrings];
-    v4 = [(HDCodableMedicationShareableModel *)self ingredientComponentStringsCount];
-    if (v4)
+    [toCopy clearIngredientComponentStrings];
+    ingredientComponentStringsCount = [(HDCodableMedicationShareableModel *)self ingredientComponentStringsCount];
+    if (ingredientComponentStringsCount)
     {
-      v5 = v4;
+      v5 = ingredientComponentStringsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HDCodableMedicationShareableModel *)self ingredientComponentStringsAtIndex:i];
-        [v16 addIngredientComponentStrings:v7];
+        [toCopy addIngredientComponentStrings:v7];
       }
     }
   }
 
   if (self->_ontologyLoggingUnitSingular)
   {
-    [v16 setOntologyLoggingUnitSingular:?];
+    [toCopy setOntologyLoggingUnitSingular:?];
   }
 
-  v8 = v16;
+  v8 = toCopy;
   if (self->_ontologyLoggingUnitPlural)
   {
-    [v16 setOntologyLoggingUnitPlural:?];
-    v8 = v16;
+    [toCopy setOntologyLoggingUnitPlural:?];
+    v8 = toCopy;
   }
 
   if (self->_eduContentString)
   {
-    [v16 setEduContentString:?];
-    v8 = v16;
+    [toCopy setEduContentString:?];
+    v8 = toCopy;
   }
 
   if (self->_sideEffectsContentString)
   {
-    [v16 setSideEffectsContentString:?];
-    v8 = v16;
+    [toCopy setSideEffectsContentString:?];
+    v8 = toCopy;
   }
 
   if (self->_medicationVisualizationConfigJSONString)
   {
-    [v16 setMedicationVisualizationConfigJSONString:?];
-    v8 = v16;
+    [toCopy setMedicationVisualizationConfigJSONString:?];
+    v8 = toCopy;
   }
 
   if (*&self->_has)
@@ -692,35 +692,35 @@ LABEL_41:
 
   if (self->_schedule)
   {
-    [v16 setSchedule:?];
+    [toCopy setSchedule:?];
   }
 
   if (self->_mostRecentDose)
   {
-    [v16 setMostRecentDose:?];
+    [toCopy setMostRecentDose:?];
   }
 
   if ([(HDCodableMedicationShareableModel *)self monthHighlightsCount])
   {
-    [v16 clearMonthHighlights];
-    v9 = [(HDCodableMedicationShareableModel *)self monthHighlightsCount];
-    if (v9)
+    [toCopy clearMonthHighlights];
+    monthHighlightsCount = [(HDCodableMedicationShareableModel *)self monthHighlightsCount];
+    if (monthHighlightsCount)
     {
-      v10 = v9;
+      v10 = monthHighlightsCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(HDCodableMedicationShareableModel *)self monthHighlightsAtIndex:j];
-        [v16 addMonthHighlights:v12];
+        [toCopy addMonthHighlights:v12];
       }
     }
   }
 
   has = self->_has;
-  v14 = v16;
+  v14 = toCopy;
   if ((has & 0x10) != 0)
   {
-    *(v16 + 216) = self->_archived;
-    *(v16 + 220) |= 0x10u;
+    *(toCopy + 216) = self->_archived;
+    *(toCopy + 220) |= 0x10u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -739,62 +739,62 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  *(v16 + 3) = self->_latestSupportedVersion;
-  *(v16 + 220) |= 4u;
+  *(toCopy + 3) = self->_latestSupportedVersion;
+  *(toCopy + 220) |= 4u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_34:
-    *(v16 + 4) = self->_minimumSupportedVersion;
-    *(v16 + 220) |= 8u;
+    *(toCopy + 4) = self->_minimumSupportedVersion;
+    *(toCopy + 220) |= 8u;
   }
 
 LABEL_35:
   if (self->_chartSeries)
   {
-    [v16 setChartSeries:?];
-    v14 = v16;
+    [toCopy setChartSeries:?];
+    v14 = toCopy;
   }
 
   if (self->_preferredName)
   {
-    [v16 setPreferredName:?];
-    v14 = v16;
+    [toCopy setPreferredName:?];
+    v14 = toCopy;
   }
 
   if (self->_brandName)
   {
-    [v16 setBrandName:?];
-    v14 = v16;
+    [toCopy setBrandName:?];
+    v14 = toCopy;
   }
 
   if (self->_genericName)
   {
-    [v16 setGenericName:?];
-    v14 = v16;
+    [toCopy setGenericName:?];
+    v14 = toCopy;
   }
 
   if (self->_manufacturedDoseForm)
   {
-    [v16 setManufacturedDoseForm:?];
-    v14 = v16;
+    [toCopy setManufacturedDoseForm:?];
+    v14 = toCopy;
   }
 
   if (self->_basicDoseForm)
   {
-    [v16 setBasicDoseForm:?];
-    v14 = v16;
+    [toCopy setBasicDoseForm:?];
+    v14 = toCopy;
   }
 
   if (self->_freeTextMedicationName)
   {
-    [v16 setFreeTextMedicationName:?];
-    v14 = v16;
+    [toCopy setFreeTextMedicationName:?];
+    v14 = toCopy;
   }
 
   if (self->_freeTextMedicationStrengthQuantity)
   {
-    [v16 setFreeTextMedicationStrengthQuantity:?];
-    v14 = v16;
+    [toCopy setFreeTextMedicationStrengthQuantity:?];
+    v14 = toCopy;
   }
 
   if ((*&self->_has & 2) != 0)
@@ -805,14 +805,14 @@ LABEL_35:
 
   if (self->_pregnancyDescriptionContentString)
   {
-    [v16 setPregnancyDescriptionContentString:?];
-    v14 = v16;
+    [toCopy setPregnancyDescriptionContentString:?];
+    v14 = toCopy;
   }
 
   if (self->_lactationDescriptionContentString)
   {
-    [v16 setLactationDescriptionContentString:?];
-    v14 = v16;
+    [toCopy setLactationDescriptionContentString:?];
+    v14 = toCopy;
   }
 
   v15 = self->_has;
@@ -830,19 +830,19 @@ LABEL_35:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v72 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_conceptIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_conceptIdentifier copyWithZone:zone];
   v7 = *(v5 + 80);
   *(v5 + 80) = v6;
 
-  v8 = [(NSString *)self->_audienceRawValue copyWithZone:a3];
+  v8 = [(NSString *)self->_audienceRawValue copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
-  v10 = [(NSString *)self->_baseUnitStrength copyWithZone:a3];
+  v10 = [(NSString *)self->_baseUnitStrength copyWithZone:zone];
   v11 = *(v5 + 48);
   *(v5 + 48) = v10;
 
@@ -865,7 +865,7 @@ LABEL_35:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v66 + 1) + 8 * i) copyWithZone:a3];
+        v17 = [*(*(&v66 + 1) + 8 * i) copyWithZone:zone];
         [v5 addIngredientComponentStrings:v17];
       }
 
@@ -875,23 +875,23 @@ LABEL_35:
     while (v14);
   }
 
-  v18 = [(NSString *)self->_ontologyLoggingUnitSingular copyWithZone:a3];
+  v18 = [(NSString *)self->_ontologyLoggingUnitSingular copyWithZone:zone];
   v19 = *(v5 + 176);
   *(v5 + 176) = v18;
 
-  v20 = [(NSString *)self->_ontologyLoggingUnitPlural copyWithZone:a3];
+  v20 = [(NSString *)self->_ontologyLoggingUnitPlural copyWithZone:zone];
   v21 = *(v5 + 168);
   *(v5 + 168) = v20;
 
-  v22 = [(NSString *)self->_eduContentString copyWithZone:a3];
+  v22 = [(NSString *)self->_eduContentString copyWithZone:zone];
   v23 = *(v5 + 88);
   *(v5 + 88) = v22;
 
-  v24 = [(NSString *)self->_sideEffectsContentString copyWithZone:a3];
+  v24 = [(NSString *)self->_sideEffectsContentString copyWithZone:zone];
   v25 = *(v5 + 208);
   *(v5 + 208) = v24;
 
-  v26 = [(NSString *)self->_medicationVisualizationConfigJSONString copyWithZone:a3];
+  v26 = [(NSString *)self->_medicationVisualizationConfigJSONString copyWithZone:zone];
   v27 = *(v5 + 144);
   *(v5 + 144) = v26;
 
@@ -901,11 +901,11 @@ LABEL_35:
     *(v5 + 220) |= 1u;
   }
 
-  v28 = [(HDCodableMedicationSchedule *)self->_schedule copyWithZone:a3];
+  v28 = [(HDCodableMedicationSchedule *)self->_schedule copyWithZone:zone];
   v29 = *(v5 + 200);
   *(v5 + 200) = v28;
 
-  v30 = [(HDCodableMedicationDoseEvent *)self->_mostRecentDose copyWithZone:a3];
+  v30 = [(HDCodableMedicationDoseEvent *)self->_mostRecentDose copyWithZone:zone];
   v31 = *(v5 + 160);
   *(v5 + 160) = v30;
 
@@ -928,7 +928,7 @@ LABEL_35:
           objc_enumerationMutation(v32);
         }
 
-        v37 = [*(*(&v62 + 1) + 8 * j) copyWithZone:{a3, v62}];
+        v37 = [*(*(&v62 + 1) + 8 * j) copyWithZone:{zone, v62}];
         [v5 addMonthHighlights:v37];
       }
 
@@ -971,35 +971,35 @@ LABEL_20:
   }
 
 LABEL_21:
-  v39 = [(HDCodableMedicationChartSeries *)self->_chartSeries copyWithZone:a3, v62];
+  v39 = [(HDCodableMedicationChartSeries *)self->_chartSeries copyWithZone:zone, v62];
   v40 = *(v5 + 72);
   *(v5 + 72) = v39;
 
-  v41 = [(NSString *)self->_preferredName copyWithZone:a3];
+  v41 = [(NSString *)self->_preferredName copyWithZone:zone];
   v42 = *(v5 + 184);
   *(v5 + 184) = v41;
 
-  v43 = [(NSString *)self->_brandName copyWithZone:a3];
+  v43 = [(NSString *)self->_brandName copyWithZone:zone];
   v44 = *(v5 + 64);
   *(v5 + 64) = v43;
 
-  v45 = [(NSString *)self->_genericName copyWithZone:a3];
+  v45 = [(NSString *)self->_genericName copyWithZone:zone];
   v46 = *(v5 + 112);
   *(v5 + 112) = v45;
 
-  v47 = [(NSString *)self->_manufacturedDoseForm copyWithZone:a3];
+  v47 = [(NSString *)self->_manufacturedDoseForm copyWithZone:zone];
   v48 = *(v5 + 136);
   *(v5 + 136) = v47;
 
-  v49 = [(NSString *)self->_basicDoseForm copyWithZone:a3];
+  v49 = [(NSString *)self->_basicDoseForm copyWithZone:zone];
   v50 = *(v5 + 56);
   *(v5 + 56) = v49;
 
-  v51 = [(NSString *)self->_freeTextMedicationName copyWithZone:a3];
+  v51 = [(NSString *)self->_freeTextMedicationName copyWithZone:zone];
   v52 = *(v5 + 96);
   *(v5 + 96) = v51;
 
-  v53 = [(HDCodableQuantity *)self->_freeTextMedicationStrengthQuantity copyWithZone:a3];
+  v53 = [(HDCodableQuantity *)self->_freeTextMedicationStrengthQuantity copyWithZone:zone];
   v54 = *(v5 + 104);
   *(v5 + 104) = v53;
 
@@ -1009,11 +1009,11 @@ LABEL_21:
     *(v5 + 220) |= 2u;
   }
 
-  v55 = [(NSString *)self->_pregnancyDescriptionContentString copyWithZone:a3];
+  v55 = [(NSString *)self->_pregnancyDescriptionContentString copyWithZone:zone];
   v56 = *(v5 + 192);
   *(v5 + 192) = v55;
 
-  v57 = [(NSString *)self->_lactationDescriptionContentString copyWithZone:a3];
+  v57 = [(NSString *)self->_lactationDescriptionContentString copyWithZone:zone];
   v58 = *(v5 + 128);
   *(v5 + 128) = v57;
 
@@ -1035,16 +1035,16 @@ LABEL_21:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_89;
   }
 
   conceptIdentifier = self->_conceptIdentifier;
-  if (conceptIdentifier | *(v4 + 10))
+  if (conceptIdentifier | *(equalCopy + 10))
   {
     if (![(NSString *)conceptIdentifier isEqual:?])
     {
@@ -1053,7 +1053,7 @@ LABEL_21:
   }
 
   audienceRawValue = self->_audienceRawValue;
-  if (audienceRawValue | *(v4 + 5))
+  if (audienceRawValue | *(equalCopy + 5))
   {
     if (![(NSString *)audienceRawValue isEqual:?])
     {
@@ -1062,7 +1062,7 @@ LABEL_21:
   }
 
   baseUnitStrength = self->_baseUnitStrength;
-  if (baseUnitStrength | *(v4 + 6))
+  if (baseUnitStrength | *(equalCopy + 6))
   {
     if (![(NSString *)baseUnitStrength isEqual:?])
     {
@@ -1071,7 +1071,7 @@ LABEL_21:
   }
 
   ingredientComponentStrings = self->_ingredientComponentStrings;
-  if (ingredientComponentStrings | *(v4 + 15))
+  if (ingredientComponentStrings | *(equalCopy + 15))
   {
     if (![(NSMutableArray *)ingredientComponentStrings isEqual:?])
     {
@@ -1080,7 +1080,7 @@ LABEL_21:
   }
 
   ontologyLoggingUnitSingular = self->_ontologyLoggingUnitSingular;
-  if (ontologyLoggingUnitSingular | *(v4 + 22))
+  if (ontologyLoggingUnitSingular | *(equalCopy + 22))
   {
     if (![(NSString *)ontologyLoggingUnitSingular isEqual:?])
     {
@@ -1089,7 +1089,7 @@ LABEL_21:
   }
 
   ontologyLoggingUnitPlural = self->_ontologyLoggingUnitPlural;
-  if (ontologyLoggingUnitPlural | *(v4 + 21))
+  if (ontologyLoggingUnitPlural | *(equalCopy + 21))
   {
     if (![(NSString *)ontologyLoggingUnitPlural isEqual:?])
     {
@@ -1098,7 +1098,7 @@ LABEL_21:
   }
 
   eduContentString = self->_eduContentString;
-  if (eduContentString | *(v4 + 11))
+  if (eduContentString | *(equalCopy + 11))
   {
     if (![(NSString *)eduContentString isEqual:?])
     {
@@ -1107,7 +1107,7 @@ LABEL_21:
   }
 
   sideEffectsContentString = self->_sideEffectsContentString;
-  if (sideEffectsContentString | *(v4 + 26))
+  if (sideEffectsContentString | *(equalCopy + 26))
   {
     if (![(NSString *)sideEffectsContentString isEqual:?])
     {
@@ -1116,7 +1116,7 @@ LABEL_21:
   }
 
   medicationVisualizationConfigJSONString = self->_medicationVisualizationConfigJSONString;
-  if (medicationVisualizationConfigJSONString | *(v4 + 18))
+  if (medicationVisualizationConfigJSONString | *(equalCopy + 18))
   {
     if (![(NSString *)medicationVisualizationConfigJSONString isEqual:?])
     {
@@ -1124,28 +1124,28 @@ LABEL_21:
     }
   }
 
-  v14 = *(v4 + 220);
+  v14 = *(equalCopy + 220);
   if (*&self->_has)
   {
-    if ((*(v4 + 220) & 1) == 0 || self->_freeTextMedicationForm != *(v4 + 1))
+    if ((*(equalCopy + 220) & 1) == 0 || self->_freeTextMedicationForm != *(equalCopy + 1))
     {
       goto LABEL_89;
     }
   }
 
-  else if (*(v4 + 220))
+  else if (*(equalCopy + 220))
   {
     goto LABEL_89;
   }
 
   schedule = self->_schedule;
-  if (schedule | *(v4 + 25) && ![(HDCodableMedicationSchedule *)schedule isEqual:?])
+  if (schedule | *(equalCopy + 25) && ![(HDCodableMedicationSchedule *)schedule isEqual:?])
   {
     goto LABEL_89;
   }
 
   mostRecentDose = self->_mostRecentDose;
-  if (mostRecentDose | *(v4 + 20))
+  if (mostRecentDose | *(equalCopy + 20))
   {
     if (![(HDCodableMedicationDoseEvent *)mostRecentDose isEqual:?])
     {
@@ -1154,7 +1154,7 @@ LABEL_21:
   }
 
   monthHighlights = self->_monthHighlights;
-  if (monthHighlights | *(v4 + 19))
+  if (monthHighlights | *(equalCopy + 19))
   {
     if (![(NSMutableArray *)monthHighlights isEqual:?])
     {
@@ -1162,68 +1162,68 @@ LABEL_21:
     }
   }
 
-  v18 = *(v4 + 220);
+  v18 = *(equalCopy + 220);
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 220) & 0x10) == 0)
+    if ((*(equalCopy + 220) & 0x10) == 0)
     {
       goto LABEL_89;
     }
 
-    v19 = *(v4 + 216);
+    v19 = *(equalCopy + 216);
     if (self->_archived)
     {
-      if ((*(v4 + 216) & 1) == 0)
+      if ((*(equalCopy + 216) & 1) == 0)
       {
         goto LABEL_89;
       }
     }
 
-    else if (*(v4 + 216))
+    else if (*(equalCopy + 216))
     {
       goto LABEL_89;
     }
   }
 
-  else if ((*(v4 + 220) & 0x10) != 0)
+  else if ((*(equalCopy + 220) & 0x10) != 0)
   {
     goto LABEL_89;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 220) & 4) == 0 || self->_latestSupportedVersion != *(v4 + 3))
+    if ((*(equalCopy + 220) & 4) == 0 || self->_latestSupportedVersion != *(equalCopy + 3))
     {
       goto LABEL_89;
     }
   }
 
-  else if ((*(v4 + 220) & 4) != 0)
+  else if ((*(equalCopy + 220) & 4) != 0)
   {
     goto LABEL_89;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 220) & 8) == 0 || self->_minimumSupportedVersion != *(v4 + 4))
+    if ((*(equalCopy + 220) & 8) == 0 || self->_minimumSupportedVersion != *(equalCopy + 4))
     {
       goto LABEL_89;
     }
   }
 
-  else if ((*(v4 + 220) & 8) != 0)
+  else if ((*(equalCopy + 220) & 8) != 0)
   {
     goto LABEL_89;
   }
 
   chartSeries = self->_chartSeries;
-  if (chartSeries | *(v4 + 9) && ![(HDCodableMedicationChartSeries *)chartSeries isEqual:?])
+  if (chartSeries | *(equalCopy + 9) && ![(HDCodableMedicationChartSeries *)chartSeries isEqual:?])
   {
     goto LABEL_89;
   }
 
   preferredName = self->_preferredName;
-  if (preferredName | *(v4 + 23))
+  if (preferredName | *(equalCopy + 23))
   {
     if (![(NSString *)preferredName isEqual:?])
     {
@@ -1232,7 +1232,7 @@ LABEL_21:
   }
 
   brandName = self->_brandName;
-  if (brandName | *(v4 + 8))
+  if (brandName | *(equalCopy + 8))
   {
     if (![(NSString *)brandName isEqual:?])
     {
@@ -1241,7 +1241,7 @@ LABEL_21:
   }
 
   genericName = self->_genericName;
-  if (genericName | *(v4 + 14))
+  if (genericName | *(equalCopy + 14))
   {
     if (![(NSString *)genericName isEqual:?])
     {
@@ -1250,7 +1250,7 @@ LABEL_21:
   }
 
   manufacturedDoseForm = self->_manufacturedDoseForm;
-  if (manufacturedDoseForm | *(v4 + 17))
+  if (manufacturedDoseForm | *(equalCopy + 17))
   {
     if (![(NSString *)manufacturedDoseForm isEqual:?])
     {
@@ -1259,7 +1259,7 @@ LABEL_21:
   }
 
   basicDoseForm = self->_basicDoseForm;
-  if (basicDoseForm | *(v4 + 7))
+  if (basicDoseForm | *(equalCopy + 7))
   {
     if (![(NSString *)basicDoseForm isEqual:?])
     {
@@ -1268,7 +1268,7 @@ LABEL_21:
   }
 
   freeTextMedicationName = self->_freeTextMedicationName;
-  if (freeTextMedicationName | *(v4 + 12))
+  if (freeTextMedicationName | *(equalCopy + 12))
   {
     if (![(NSString *)freeTextMedicationName isEqual:?])
     {
@@ -1277,7 +1277,7 @@ LABEL_21:
   }
 
   freeTextMedicationStrengthQuantity = self->_freeTextMedicationStrengthQuantity;
-  if (freeTextMedicationStrengthQuantity | *(v4 + 13))
+  if (freeTextMedicationStrengthQuantity | *(equalCopy + 13))
   {
     if (![(HDCodableQuantity *)freeTextMedicationStrengthQuantity isEqual:?])
     {
@@ -1285,28 +1285,28 @@ LABEL_21:
     }
   }
 
-  v28 = *(v4 + 220);
+  v28 = *(equalCopy + 220);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 220) & 2) == 0 || self->_freeTextMedicationLoggingUnit != *(v4 + 2))
+    if ((*(equalCopy + 220) & 2) == 0 || self->_freeTextMedicationLoggingUnit != *(equalCopy + 2))
     {
       goto LABEL_89;
     }
   }
 
-  else if ((*(v4 + 220) & 2) != 0)
+  else if ((*(equalCopy + 220) & 2) != 0)
   {
     goto LABEL_89;
   }
 
   pregnancyDescriptionContentString = self->_pregnancyDescriptionContentString;
-  if (pregnancyDescriptionContentString | *(v4 + 24) && ![(NSString *)pregnancyDescriptionContentString isEqual:?])
+  if (pregnancyDescriptionContentString | *(equalCopy + 24) && ![(NSString *)pregnancyDescriptionContentString isEqual:?])
   {
     goto LABEL_89;
   }
 
   lactationDescriptionContentString = self->_lactationDescriptionContentString;
-  if (lactationDescriptionContentString | *(v4 + 16))
+  if (lactationDescriptionContentString | *(equalCopy + 16))
   {
     if (![(NSString *)lactationDescriptionContentString isEqual:?])
     {
@@ -1316,44 +1316,44 @@ LABEL_21:
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 220) & 0x40) == 0)
+    if ((*(equalCopy + 220) & 0x40) == 0)
     {
       goto LABEL_89;
     }
 
-    v32 = *(v4 + 218);
+    v32 = *(equalCopy + 218);
     if (self->_isPregnancyDescriptionCritical)
     {
-      if ((*(v4 + 218) & 1) == 0)
+      if ((*(equalCopy + 218) & 1) == 0)
       {
         goto LABEL_89;
       }
     }
 
-    else if (*(v4 + 218))
+    else if (*(equalCopy + 218))
     {
       goto LABEL_89;
     }
   }
 
-  else if ((*(v4 + 220) & 0x40) != 0)
+  else if ((*(equalCopy + 220) & 0x40) != 0)
   {
     goto LABEL_89;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 220) & 0x20) != 0)
+    if ((*(equalCopy + 220) & 0x20) != 0)
     {
       if (self->_isLactationDescriptionCritical)
       {
-        if (*(v4 + 217))
+        if (*(equalCopy + 217))
         {
           goto LABEL_91;
         }
       }
 
-      else if (!*(v4 + 217))
+      else if (!*(equalCopy + 217))
       {
 LABEL_91:
         v31 = 1;
@@ -1366,7 +1366,7 @@ LABEL_89:
     goto LABEL_90;
   }
 
-  v31 = (*(v4 + 220) & 0x20) == 0;
+  v31 = (*(equalCopy + 220) & 0x20) == 0;
 LABEL_90:
 
   return v31;
@@ -1476,21 +1476,21 @@ LABEL_16:
   return v31 ^ v32 ^ v30 ^ v29 ^ v28 ^ v27 ^ v26 ^ v25 ^ v24 ^ v23 ^ v22 ^ v21 ^ v20 ^ v19 ^ v18 ^ v17 ^ v16 ^ v15 ^ v14 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 10))
+  fromCopy = from;
+  if (*(fromCopy + 10))
   {
     [(HDCodableMedicationShareableModel *)self setConceptIdentifier:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(HDCodableMedicationShareableModel *)self setAudienceRawValue:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(HDCodableMedicationShareableModel *)self setBaseUnitStrength:?];
   }
@@ -1499,7 +1499,7 @@ LABEL_16:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = *(v4 + 15);
+  v5 = *(fromCopy + 15);
   v6 = [v5 countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v6)
   {
@@ -1523,39 +1523,39 @@ LABEL_16:
     while (v7);
   }
 
-  if (*(v4 + 22))
+  if (*(fromCopy + 22))
   {
     [(HDCodableMedicationShareableModel *)self setOntologyLoggingUnitSingular:?];
   }
 
-  if (*(v4 + 21))
+  if (*(fromCopy + 21))
   {
     [(HDCodableMedicationShareableModel *)self setOntologyLoggingUnitPlural:?];
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(HDCodableMedicationShareableModel *)self setEduContentString:?];
   }
 
-  if (*(v4 + 26))
+  if (*(fromCopy + 26))
   {
     [(HDCodableMedicationShareableModel *)self setSideEffectsContentString:?];
   }
 
-  if (*(v4 + 18))
+  if (*(fromCopy + 18))
   {
     [(HDCodableMedicationShareableModel *)self setMedicationVisualizationConfigJSONString:?];
   }
 
-  if (*(v4 + 220))
+  if (*(fromCopy + 220))
   {
-    self->_freeTextMedicationForm = *(v4 + 1);
+    self->_freeTextMedicationForm = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
   schedule = self->_schedule;
-  v11 = *(v4 + 25);
+  v11 = *(fromCopy + 25);
   if (schedule)
   {
     if (v11)
@@ -1570,7 +1570,7 @@ LABEL_16:
   }
 
   mostRecentDose = self->_mostRecentDose;
-  v13 = *(v4 + 20);
+  v13 = *(fromCopy + 20);
   if (mostRecentDose)
   {
     if (v13)
@@ -1588,7 +1588,7 @@ LABEL_16:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v14 = *(v4 + 19);
+  v14 = *(fromCopy + 19);
   v15 = [v14 countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v15)
   {
@@ -1612,12 +1612,12 @@ LABEL_16:
     while (v16);
   }
 
-  v19 = *(v4 + 220);
+  v19 = *(fromCopy + 220);
   if ((v19 & 0x10) != 0)
   {
-    self->_archived = *(v4 + 216);
+    self->_archived = *(fromCopy + 216);
     *&self->_has |= 0x10u;
-    v19 = *(v4 + 220);
+    v19 = *(fromCopy + 220);
     if ((v19 & 4) == 0)
     {
 LABEL_45:
@@ -1630,23 +1630,23 @@ LABEL_45:
     }
   }
 
-  else if ((*(v4 + 220) & 4) == 0)
+  else if ((*(fromCopy + 220) & 4) == 0)
   {
     goto LABEL_45;
   }
 
-  self->_latestSupportedVersion = *(v4 + 3);
+  self->_latestSupportedVersion = *(fromCopy + 3);
   *&self->_has |= 4u;
-  if ((*(v4 + 220) & 8) != 0)
+  if ((*(fromCopy + 220) & 8) != 0)
   {
 LABEL_46:
-    self->_minimumSupportedVersion = *(v4 + 4);
+    self->_minimumSupportedVersion = *(fromCopy + 4);
     *&self->_has |= 8u;
   }
 
 LABEL_47:
   chartSeries = self->_chartSeries;
-  v21 = *(v4 + 9);
+  v21 = *(fromCopy + 9);
   if (chartSeries)
   {
     if (v21)
@@ -1660,38 +1660,38 @@ LABEL_47:
     [(HDCodableMedicationShareableModel *)self setChartSeries:?];
   }
 
-  if (*(v4 + 23))
+  if (*(fromCopy + 23))
   {
     [(HDCodableMedicationShareableModel *)self setPreferredName:?];
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(HDCodableMedicationShareableModel *)self setBrandName:?];
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(HDCodableMedicationShareableModel *)self setGenericName:?];
   }
 
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(HDCodableMedicationShareableModel *)self setManufacturedDoseForm:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(HDCodableMedicationShareableModel *)self setBasicDoseForm:?];
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(HDCodableMedicationShareableModel *)self setFreeTextMedicationName:?];
   }
 
   freeTextMedicationStrengthQuantity = self->_freeTextMedicationStrengthQuantity;
-  v23 = *(v4 + 13);
+  v23 = *(fromCopy + 13);
   if (freeTextMedicationStrengthQuantity)
   {
     if (v23)
@@ -1705,33 +1705,33 @@ LABEL_47:
     [(HDCodableMedicationShareableModel *)self setFreeTextMedicationStrengthQuantity:?];
   }
 
-  if ((*(v4 + 220) & 2) != 0)
+  if ((*(fromCopy + 220) & 2) != 0)
   {
-    self->_freeTextMedicationLoggingUnit = *(v4 + 2);
+    self->_freeTextMedicationLoggingUnit = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 24))
+  if (*(fromCopy + 24))
   {
     [(HDCodableMedicationShareableModel *)self setPregnancyDescriptionContentString:?];
   }
 
-  if (*(v4 + 16))
+  if (*(fromCopy + 16))
   {
     [(HDCodableMedicationShareableModel *)self setLactationDescriptionContentString:?];
   }
 
-  v24 = *(v4 + 220);
+  v24 = *(fromCopy + 220);
   if ((v24 & 0x40) != 0)
   {
-    self->_isPregnancyDescriptionCritical = *(v4 + 218);
+    self->_isPregnancyDescriptionCritical = *(fromCopy + 218);
     *&self->_has |= 0x40u;
-    v24 = *(v4 + 220);
+    v24 = *(fromCopy + 220);
   }
 
   if ((v24 & 0x20) != 0)
   {
-    self->_isLactationDescriptionCritical = *(v4 + 217);
+    self->_isLactationDescriptionCritical = *(fromCopy + 217);
     *&self->_has |= 0x20u;
   }
 

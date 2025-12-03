@@ -1,11 +1,11 @@
 @interface DebugFormatSnapshotView
-- (_TtC8NewsFeed23DebugFormatSnapshotView)initWithCoder:(id)a3;
-- (_TtC8NewsFeed23DebugFormatSnapshotView)initWithFrame:(CGRect)a3;
+- (_TtC8NewsFeed23DebugFormatSnapshotView)initWithCoder:(id)coder;
+- (_TtC8NewsFeed23DebugFormatSnapshotView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation DebugFormatSnapshotView
 
-- (_TtC8NewsFeed23DebugFormatSnapshotView)initWithCoder:(id)a3
+- (_TtC8NewsFeed23DebugFormatSnapshotView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8NewsFeed23DebugFormatSnapshotView_isSelected) = 0;
   v4 = OBJC_IVAR____TtC8NewsFeed23DebugFormatSnapshotView_onTap;
@@ -17,7 +17,7 @@
   return result;
 }
 
-- (_TtC8NewsFeed23DebugFormatSnapshotView)initWithFrame:(CGRect)a3
+- (_TtC8NewsFeed23DebugFormatSnapshotView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

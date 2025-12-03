@@ -1,50 +1,50 @@
 @interface IDSGroupSessionUnicastConnector
-+ (id)extractDictionaryFromDataBlobFrom:(id)a3 error:(id *)a4;
-+ (void)requestNWConnectionToVirtualParticipant:(unint64_t)a3 forSession:(id)a4 completionHandler:(id)a5;
-+ (void)requestNWConnectionWithDataBlob:(id)a3 completionHandler:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (IDSGroupSessionUnicastConnector)initWithCoder:(id)a3;
-- (IDSGroupSessionUnicastConnector)initWithGroupSessionID:(id)a3 participantID:(unint64_t)a4 dataMode:(int64_t)a5;
-- (IDSGroupSessionUnicastConnector)initWithGroupSessionIDAlias:(id)a3 participantIDAlias:(unint64_t)a4 salt:(id)a5 dataMode:(int64_t)a6;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)extractDictionaryFromDataBlobFrom:(id)from error:(id *)error;
++ (void)requestNWConnectionToVirtualParticipant:(unint64_t)participant forSession:(id)session completionHandler:(id)handler;
++ (void)requestNWConnectionWithDataBlob:(id)blob completionHandler:(id)handler;
+- (BOOL)isEqual:(id)equal;
+- (IDSGroupSessionUnicastConnector)initWithCoder:(id)coder;
+- (IDSGroupSessionUnicastConnector)initWithGroupSessionID:(id)d participantID:(unint64_t)iD dataMode:(int64_t)mode;
+- (IDSGroupSessionUnicastConnector)initWithGroupSessionIDAlias:(id)alias participantIDAlias:(unint64_t)dAlias salt:(id)salt dataMode:(int64_t)mode;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)listenForIncomingConnection:(id)a3;
-- (void)requestDataBlob:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)listenForIncomingConnection:(id)connection;
+- (void)requestDataBlob:(id)blob;
 @end
 
 @implementation IDSGroupSessionUnicastConnector
 
-- (IDSGroupSessionUnicastConnector)initWithGroupSessionID:(id)a3 participantID:(unint64_t)a4 dataMode:(int64_t)a5
+- (IDSGroupSessionUnicastConnector)initWithGroupSessionID:(id)d participantID:(unint64_t)iD dataMode:(int64_t)mode
 {
   v8 = MEMORY[0x1E695DEF0];
-  v9 = a3;
-  v10 = [v8 data];
-  v11 = [(IDSGroupSessionUnicastConnector *)self initWithGroupSessionIDAlias:v9 participantIDAlias:a4 salt:v10 dataMode:a5];
+  dCopy = d;
+  data = [v8 data];
+  v11 = [(IDSGroupSessionUnicastConnector *)self initWithGroupSessionIDAlias:dCopy participantIDAlias:iD salt:data dataMode:mode];
 
   return v11;
 }
 
-- (IDSGroupSessionUnicastConnector)initWithGroupSessionIDAlias:(id)a3 participantIDAlias:(unint64_t)a4 salt:(id)a5 dataMode:(int64_t)a6
+- (IDSGroupSessionUnicastConnector)initWithGroupSessionIDAlias:(id)alias participantIDAlias:(unint64_t)dAlias salt:(id)salt dataMode:(int64_t)mode
 {
-  v10 = a3;
-  v11 = a5;
+  aliasCopy = alias;
+  saltCopy = salt;
   v23.receiver = self;
   v23.super_class = IDSGroupSessionUnicastConnector;
   v12 = [(IDSGroupSessionUnicastConnector *)&v23 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [aliasCopy copy];
     groupSessionIDAlias = v12->_groupSessionIDAlias;
     v12->_groupSessionIDAlias = v13;
 
-    v12->_participantIDAlias = a4;
-    v15 = [v11 copy];
+    v12->_participantIDAlias = dAlias;
+    v15 = [saltCopy copy];
     salt = v12->_salt;
     v12->_salt = v15;
 
     connectionReadyCallback = v12->_connectionReadyCallback;
-    v12->_dataMode = a6;
+    v12->_dataMode = mode;
     v12->_connectionReadyCallback = 0;
 
     cachedConnection = v12->_cachedConnection;
@@ -59,17 +59,17 @@
   return v12;
 }
 
-+ (id)extractDictionaryFromDataBlobFrom:(id)a3 error:(id *)a4
++ (id)extractDictionaryFromDataBlobFrom:(id)from error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  fromCopy = from;
   v6 = MEMORY[0x1E696ACD0];
   v7 = MEMORY[0x1E695DFD8];
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = objc_opt_class();
   v11 = [v7 setWithObjects:{v8, v9, v10, objc_opt_class(), 0}];
-  v12 = [v6 _strictlyUnarchivedObjectOfClasses:v11 fromData:v5 error:a4];
+  v12 = [v6 _strictlyUnarchivedObjectOfClasses:v11 fromData:fromCopy error:error];
 
   if (v12)
   {
@@ -88,7 +88,7 @@
     {
       v16 = objc_alloc(MEMORY[0x1E695DF20]);
       v17 = [v16 initWithObjectsAndKeys:{@"PreSharedKey has Unexpected size.", *MEMORY[0x1E696A578], 0}];
-      *a4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"com.apple.identityservices.error" code:42 userInfo:v17];
+      *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"com.apple.identityservices.error" code:42 userInfo:v17];
 
       v12 = 0;
     }
@@ -99,9 +99,9 @@
   return v12;
 }
 
-- (void)requestDataBlob:(id)a3
+- (void)requestDataBlob:(id)blob
 {
-  v4 = a3;
+  blobCopy = blob;
   v5 = MEMORY[0x19A8BB9F0]();
   v6 = xpc_array_create(0, 0);
   v7 = xpc_array_create(0, 0);
@@ -116,7 +116,7 @@
     v27 = objc_alloc(MEMORY[0x1E695DF20]);
     v28 = [v27 initWithObjectsAndKeys:{@"Unknown parameter", *MEMORY[0x1E696A578], 0}];
     v29 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"com.apple.identityservices.error" code:42 userInfo:v28];
-    v4[2](v4, 0, v29);
+    blobCopy[2](blobCopy, 0, v29);
   }
 
   else
@@ -142,8 +142,8 @@
     [v14 setMultiplexer:@"groupsession"];
     [v14 setSessionID:self->_groupSessionIDAlias];
     [v14 setSalt:self->_salt];
-    v15 = [v14 stringRepresentation];
-    [v15 UTF8String];
+    stringRepresentation = [v14 stringRepresentation];
+    [stringRepresentation UTF8String];
     nw_parameters_set_account_id();
 
     v16 = [MEMORY[0x1E695DF88] dataWithLength:32];
@@ -152,7 +152,7 @@
       v17 = objc_alloc(MEMORY[0x1E695DF20]);
       v18 = [v17 initWithObjectsAndKeys:{@"Unable to create PSK.", *MEMORY[0x1E696A578], 0}];
       v19 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"com.apple.identityservices.error" code:42 userInfo:v18];
-      v4[2](v4, 0, v19);
+      blobCopy[2](blobCopy, 0, v19);
     }
 
     else
@@ -174,9 +174,9 @@
       handler[2] = sub_195A9CF90;
       handler[3] = &unk_1E74415C0;
       v34 = v25;
-      v35 = self;
+      selfCopy = self;
       v36 = v16;
-      v37 = v4;
+      v37 = blobCopy;
       v26 = v25;
       nw_listener_set_state_changed_handler(v26, handler);
       v32[0] = MEMORY[0x1E69E9820];
@@ -193,42 +193,42 @@
   }
 }
 
-- (void)listenForIncomingConnection:(id)a3
+- (void)listenForIncomingConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A9D28C;
   v7[3] = &unk_1E743EAA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = connectionCopy;
+  v6 = connectionCopy;
   dispatch_async(queue, v7);
 }
 
-+ (void)requestNWConnectionWithDataBlob:(id)a3 completionHandler:(id)a4
++ (void)requestNWConnectionWithDataBlob:(id)blob completionHandler:(id)handler
 {
   v67 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  handlerCopy = handler;
   v62 = 0;
-  v6 = [IDSGroupSessionUnicastConnector extractDictionaryFromDataBlobFrom:a3 error:&v62];
+  v6 = [IDSGroupSessionUnicastConnector extractDictionaryFromDataBlobFrom:blob error:&v62];
   v7 = v62;
   if (v7)
   {
-    v5[2](v5, 0, v7);
+    handlerCopy[2](handlerCopy, 0, v7);
   }
 
-  v58 = v5;
+  v58 = handlerCopy;
   v8 = [v6 objectForKeyedSubscript:@"groupSessionIDAlias"];
   v9 = [v6 objectForKeyedSubscript:@"participantIDAlias"];
   v60 = [v6 objectForKeyedSubscript:@"salt"];
   v10 = [v6 objectForKeyedSubscript:@"dataMode"];
-  v11 = [v10 integerValue];
+  integerValue = [v10 integerValue];
 
   v59 = [v6 objectForKeyedSubscript:@"psk"];
   v12 = [v6 objectForKeyedSubscript:@"listeningPort"];
-  v54 = [v12 integerValue];
+  integerValue2 = [v12 integerValue];
 
   v13 = MEMORY[0x19A8BB9F0]();
   v14 = xpc_array_create(0, 0);
@@ -240,7 +240,7 @@
   v56 = v15;
   v57 = v14;
   nw_parameters_set_required_netagent_classes();
-  if (v11 > 5)
+  if (integerValue > 5)
   {
     v48 = objc_alloc(MEMORY[0x1E695DF20]);
     v24 = [v48 initWithObjectsAndKeys:{@"Unknown parameter", *MEMORY[0x1E696A578], 0}];
@@ -251,7 +251,7 @@
 
   else
   {
-    if (((1 << v11) & 9) != 0)
+    if (((1 << integerValue) & 9) != 0)
     {
       v18 = 0x1E696A000;
       v17 = v60;
@@ -260,7 +260,7 @@
     else
     {
       v17 = v60;
-      if (((1 << v11) & 0x12) == 0)
+      if (((1 << integerValue) & 0x12) == 0)
       {
         v19 = nw_parameters_copy_default_protocol_stack(v13);
         v20 = sub_195A15A18();
@@ -274,7 +274,7 @@
       v18 = 0x1E696A000uLL;
     }
 
-    if (v11 - 3 <= 2)
+    if (integerValue - 3 <= 2)
     {
       v23 = IDSRealTimeContext();
       nw_parameters_set_context();
@@ -294,9 +294,9 @@
     v25 = +[IDSLogging _IDSGroupSession];
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [v24 participantID];
+      participantID = [v24 participantID];
       *buf = 134218242;
-      v64 = v26;
+      v64 = participantID;
       v65 = 2112;
       v66 = v9;
       _os_log_impl(&dword_1959FF000, v25, OS_LOG_TYPE_DEFAULT, "requestNWConnectionWithDataBlob: decoded participantIDAlias %llu from %@", buf, 0x16u);
@@ -305,15 +305,15 @@
     v50 = v9;
 
     [v24 setSalt:v17];
-    v27 = [v24 stringRepresentation];
-    [v27 UTF8String];
+    stringRepresentation = [v24 stringRepresentation];
+    [stringRepresentation UTF8String];
     nw_parameters_set_account_id();
 
-    v28 = [*(v18 + 3776) stringWithFormat:@"%d", v54];
+    v28 = [*(v18 + 3776) stringWithFormat:@"%d", integerValue2];
     v29 = v18;
     host = nw_endpoint_create_host("::", [v28 UTF8String]);
 
-    v31 = [*(v29 + 3776) stringWithFormat:@"%d", v54 + 1];
+    v31 = [*(v29 + 3776) stringWithFormat:@"%d", integerValue2 + 1];
     v32 = nw_endpoint_create_host("::", [v31 UTF8String]);
 
     v55 = v32;
@@ -355,11 +355,11 @@
   v47 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)requestNWConnectionToVirtualParticipant:(unint64_t)a3 forSession:(id)a4 completionHandler:(id)a5
++ (void)requestNWConnectionToVirtualParticipant:(unint64_t)participant forSession:(id)session completionHandler:(id)handler
 {
-  v22 = a5;
+  handlerCopy = handler;
   v7 = *MEMORY[0x1E6977EB8];
-  v8 = a4;
+  sessionCopy = session;
   quic_stream = nw_parameters_create_quic_stream();
   v10 = xpc_array_create(0, 0);
   v11 = xpc_array_create(0, 0);
@@ -368,13 +368,13 @@
 
   xpc_array_set_string(v11, 0xFFFFFFFFFFFFFFFFLL, [*MEMORY[0x1E69A4ED0] UTF8String]);
   nw_parameters_set_required_netagent_classes();
-  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", a3];
-  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"groupsession:%@:ids:%@:L", v8, v13];
+  participant = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", participant];
+  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"groupsession:%@:ids:%@:L", sessionCopy, participant];
 
   [v14 UTF8String];
   nw_parameters_set_account_id();
-  v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", 3030];
-  host = nw_endpoint_create_host("::", [v15 UTF8String]);
+  3030 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", 3030];
+  host = nw_endpoint_create_host("::", [3030 UTF8String]);
 
   v17 = nw_endpoint_create_host("::", "0");
   MEMORY[0x19A8BBA70](quic_stream, v17);
@@ -387,16 +387,16 @@
     v19 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"com.apple.identityservices.error" code:42 userInfo:v21];
   }
 
-  if (v22)
+  if (handlerCopy)
   {
-    v22[2](v22, v18, v19);
+    handlerCopy[2](handlerCopy, v18, v19);
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -406,15 +406,15 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(IDSGroupSessionUnicastConnector *)v5 groupSessionIDAlias];
-      v7 = [(IDSGroupSessionUnicastConnector *)self groupSessionIDAlias];
-      v8 = [v6 isEqual:v7];
+      v5 = equalCopy;
+      groupSessionIDAlias = [(IDSGroupSessionUnicastConnector *)v5 groupSessionIDAlias];
+      groupSessionIDAlias2 = [(IDSGroupSessionUnicastConnector *)self groupSessionIDAlias];
+      v8 = [groupSessionIDAlias isEqual:groupSessionIDAlias2];
 
       if (v8 && (v9 = [(IDSGroupSessionUnicastConnector *)v5 participantIDAlias], v9 == [(IDSGroupSessionUnicastConnector *)self participantIDAlias]))
       {
-        v10 = [(IDSGroupSessionUnicastConnector *)v5 dataMode];
-        v11 = v10 == [(IDSGroupSessionUnicastConnector *)self dataMode];
+        dataMode = [(IDSGroupSessionUnicastConnector *)v5 dataMode];
+        v11 = dataMode == [(IDSGroupSessionUnicastConnector *)self dataMode];
       }
 
       else
@@ -434,39 +434,39 @@
 
 - (unint64_t)hash
 {
-  v3 = [(IDSGroupSessionUnicastConnector *)self groupSessionIDAlias];
-  v4 = [v3 hash];
-  v5 = [(IDSGroupSessionUnicastConnector *)self salt];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(IDSGroupSessionUnicastConnector *)self participantIDAlias];
-  v8 = [(IDSGroupSessionUnicastConnector *)self dataMode]+ v7;
+  groupSessionIDAlias = [(IDSGroupSessionUnicastConnector *)self groupSessionIDAlias];
+  v4 = [groupSessionIDAlias hash];
+  salt = [(IDSGroupSessionUnicastConnector *)self salt];
+  v6 = [salt hash] ^ v4;
+  participantIDAlias = [(IDSGroupSessionUnicastConnector *)self participantIDAlias];
+  v8 = [(IDSGroupSessionUnicastConnector *)self dataMode]+ participantIDAlias;
 
   return v6 ^ v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   groupSessionIDAlias = self->_groupSessionIDAlias;
-  v5 = a3;
-  [v5 encodeObject:groupSessionIDAlias forKey:@"groupSessionIDAlias"];
-  [v5 encodeInt64:self->_participantIDAlias forKey:@"participantIDAlias"];
-  [v5 encodeObject:self->_salt forKey:@"salt"];
-  [v5 encodeInt:LODWORD(self->_dataMode) forKey:@"dataMode"];
+  coderCopy = coder;
+  [coderCopy encodeObject:groupSessionIDAlias forKey:@"groupSessionIDAlias"];
+  [coderCopy encodeInt64:self->_participantIDAlias forKey:@"participantIDAlias"];
+  [coderCopy encodeObject:self->_salt forKey:@"salt"];
+  [coderCopy encodeInt:LODWORD(self->_dataMode) forKey:@"dataMode"];
 }
 
-- (IDSGroupSessionUnicastConnector)initWithCoder:(id)a3
+- (IDSGroupSessionUnicastConnector)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupSessionIDAlias"];
-  v6 = [v4 decodeInt64ForKey:@"participantIDAlias"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"salt"];
-  v8 = [v4 decodeIntForKey:@"dataMode"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupSessionIDAlias"];
+  v6 = [coderCopy decodeInt64ForKey:@"participantIDAlias"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"salt"];
+  v8 = [coderCopy decodeIntForKey:@"dataMode"];
 
   v9 = [(IDSGroupSessionUnicastConnector *)self initWithGroupSessionIDAlias:v5 participantIDAlias:v6 salt:v7 dataMode:v8];
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [IDSGroupSessionUnicastConnector alloc];
   groupSessionIDAlias = self->_groupSessionIDAlias;

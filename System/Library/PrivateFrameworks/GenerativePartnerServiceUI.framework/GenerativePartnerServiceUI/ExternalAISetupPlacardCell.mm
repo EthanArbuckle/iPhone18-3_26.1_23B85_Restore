@@ -1,21 +1,21 @@
 @interface ExternalAISetupPlacardCell
-- (_TtC26GenerativePartnerServiceUI26ExternalAISetupPlacardCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (_TtC26GenerativePartnerServiceUI26ExternalAISetupPlacardCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (_TtC26GenerativePartnerServiceUI26ExternalAISetupPlacardCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (_TtC26GenerativePartnerServiceUI26ExternalAISetupPlacardCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation ExternalAISetupPlacardCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = self;
+  specifierCopy = specifier;
+  selfCopy = self;
   sub_1BE50AB94();
 }
 
-- (_TtC26GenerativePartnerServiceUI26ExternalAISetupPlacardCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (_TtC26GenerativePartnerServiceUI26ExternalAISetupPlacardCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  if (a4)
+  if (identifier)
   {
     v7 = sub_1BE54C70C();
     v9 = v8;
@@ -27,15 +27,15 @@
     v9 = 0;
   }
 
-  v10 = a5;
-  return sub_1BE50B348(a3, v7, v9, a5);
+  specifierCopy = specifier;
+  return sub_1BE50B348(style, v7, v9, specifier);
 }
 
-- (_TtC26GenerativePartnerServiceUI26ExternalAISetupPlacardCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC26GenerativePartnerServiceUI26ExternalAISetupPlacardCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_1BE54C70C();
+    identifier = sub_1BE54C70C();
     v6 = v5;
   }
 
@@ -44,7 +44,7 @@
     v6 = 0;
   }
 
-  return sub_1BE50B46C(a3, a4, v6);
+  return sub_1BE50B46C(style, identifier, v6);
 }
 
 @end

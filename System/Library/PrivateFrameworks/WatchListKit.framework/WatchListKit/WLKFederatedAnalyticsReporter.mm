@@ -2,7 +2,7 @@
 + (id)defaultFederatedAnalyticsReporter;
 - (NSXPCConnection)connection;
 - (void)_invalidationHandler;
-- (void)reportPunchout:(id)a3;
+- (void)reportPunchout:(id)punchout;
 @end
 
 @implementation WLKFederatedAnalyticsReporter
@@ -26,16 +26,16 @@ uint64_t __66__WLKFederatedAnalyticsReporter_defaultFederatedAnalyticsReporter__
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)reportPunchout:(id)a3
+- (void)reportPunchout:(id)punchout
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(WLKFederatedAnalyticsReporter *)v4 connection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:&__block_literal_global_3_0];
+  punchoutCopy = punchout;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  connection = [(WLKFederatedAnalyticsReporter *)selfCopy connection];
+  v6 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_3_0];
 
-  [v6 reportFederatedPunchout:v7];
-  objc_sync_exit(v4);
+  [v6 reportFederatedPunchout:punchoutCopy];
+  objc_sync_exit(selfCopy);
 }
 
 void __48__WLKFederatedAnalyticsReporter_reportPunchout___block_invoke(uint64_t a1, void *a2)
@@ -55,40 +55,40 @@ void __48__WLKFederatedAnalyticsReporter_reportPunchout___block_invoke(uint64_t 
 
 - (NSXPCConnection)connection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_connection)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_connection)
   {
     v3 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.watchlistd.xpc" options:0];
-    connection = v2->_connection;
-    v2->_connection = v3;
+    connection = selfCopy->_connection;
+    selfCopy->_connection = v3;
 
-    v5 = v2->_connection;
+    v5 = selfCopy->_connection;
     v6 = WLKConnectionClientInterface();
     [(NSXPCConnection *)v5 setExportedInterface:v6];
 
-    [(NSXPCConnection *)v2->_connection setExportedObject:v2];
-    v7 = v2->_connection;
+    [(NSXPCConnection *)selfCopy->_connection setExportedObject:selfCopy];
+    v7 = selfCopy->_connection;
     v8 = WLKConnectionServerInterface();
     [(NSXPCConnection *)v7 setRemoteObjectInterface:v8];
 
-    [(NSXPCConnection *)v2->_connection setInterruptionHandler:&__block_literal_global_7_0];
-    objc_initWeak(&location, v2);
-    v9 = v2->_connection;
+    [(NSXPCConnection *)selfCopy->_connection setInterruptionHandler:&__block_literal_global_7_0];
+    objc_initWeak(&location, selfCopy);
+    v9 = selfCopy->_connection;
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __43__WLKFederatedAnalyticsReporter_connection__block_invoke_8;
     v15 = &unk_279E5EC50;
     objc_copyWeak(&v16, &location);
     [(NSXPCConnection *)v9 setInvalidationHandler:&v12];
-    [(NSXPCConnection *)v2->_connection resume:v12];
+    [(NSXPCConnection *)selfCopy->_connection resume:v12];
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v10 = v2->_connection;
+  v10 = selfCopy->_connection;
 
   return v10;
 }
@@ -118,12 +118,12 @@ void __43__WLKFederatedAnalyticsReporter_connection__block_invoke_8(uint64_t a1)
     _os_log_impl(&dword_272A0F000, v3, OS_LOG_TYPE_DEFAULT, "WLKFederatedAnalyticsReporter - Connection invalidated.", v6, 2u);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  connection = v4->_connection;
-  v4->_connection = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  connection = selfCopy->_connection;
+  selfCopy->_connection = 0;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface PaperKitTestVC
-- (_TtC7Journal14PaperKitTestVC)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC7Journal14PaperKitTestVC)initWithNibName:(id)name bundle:(id)bundle;
 - (void)buttonTapped;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -9,25 +9,25 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006D31E4();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006D33D0();
 }
 
 - (void)buttonTapped
 {
   v2 = *(*(&self->super.super.super.isa + OBJC_IVAR____TtC7Journal14PaperKitTestVC_paperKitView) + OBJC_IVAR____TtC7Journal25PaperKitDrawingCanvasView_paperKitViewController);
-  v3 = self;
-  v4 = [v2 view];
-  if (v4)
+  selfCopy = self;
+  view = [v2 view];
+  if (view)
   {
-    v5 = v4;
-    [v4 becomeFirstResponder];
+    v5 = view;
+    [view becomeFirstResponder];
   }
 
   else
@@ -36,9 +36,9 @@
   }
 }
 
-- (_TtC7Journal14PaperKitTestVC)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Journal14PaperKitTestVC)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -50,8 +50,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1006D35C4(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1006D35C4(v5, v7, bundle);
 }
 
 @end

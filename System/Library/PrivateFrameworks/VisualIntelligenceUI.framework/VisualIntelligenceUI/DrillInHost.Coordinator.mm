@@ -8,7 +8,7 @@
 - (void)backButtonTapped
 {
   v2 = *&self->parent[OBJC_IVAR____TtCV20VisualIntelligenceUI11DrillInHost11Coordinator_parent];
-  v4 = self;
+  selfCopy = self;
 
   v2(v3);
 }

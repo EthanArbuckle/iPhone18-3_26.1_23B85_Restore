@@ -6,14 +6,14 @@
 
 - (void)_trialGroupIdentifierDidChange
 {
-  v3 = [MEMORY[0x1E69C90B0] shared];
-  if (![v3 isReady])
+  mEMORY[0x1E69C90B0] = [MEMORY[0x1E69C90B0] shared];
+  if (![mEMORY[0x1E69C90B0] isReady])
   {
     goto LABEL_6;
   }
 
-  v4 = [MEMORY[0x1E69C90B0] shared];
-  if (([v4 inExperiment] & 1) == 0)
+  mEMORY[0x1E69C90B0]2 = [MEMORY[0x1E69C90B0] shared];
+  if (([mEMORY[0x1E69C90B0]2 inExperiment] & 1) == 0)
   {
 
 LABEL_6:
@@ -26,8 +26,8 @@ LABEL_6:
   {
     v6 = MEMORY[0x1E696AEC0];
     templateStringGroupIdentifierParameterName = self->_templateStringGroupIdentifierParameterName;
-    v8 = [MEMORY[0x1E69C90B0] shared];
-    v9 = [v6 stringWithFormat:@"&%@=%lu", templateStringGroupIdentifierParameterName, objc_msgSend(v8, "trialABGroupIdentifier")];
+    mEMORY[0x1E69C90B0]3 = [MEMORY[0x1E69C90B0] shared];
+    v9 = [v6 stringWithFormat:@"&%@=%lu", templateStringGroupIdentifierParameterName, objc_msgSend(mEMORY[0x1E69C90B0]3, "trialABGroupIdentifier")];
 
     v10 = [(NSString *)self->_templateStringWithoutGroupIdentifier stringByAppendingString:v9];
     templateStringWithGroupIdentifier = self->_templateStringWithGroupIdentifier;
@@ -48,8 +48,8 @@ LABEL_7:
   self->_suggestionsURLTemplate = v15;
 LABEL_8:
 
-  v16 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v16 postNotificationName:@"WBSSearchTemplateUpdatedGroupIdentifiersNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"WBSSearchTemplateUpdatedGroupIdentifiersNotification" object:0];
 }
 
 @end

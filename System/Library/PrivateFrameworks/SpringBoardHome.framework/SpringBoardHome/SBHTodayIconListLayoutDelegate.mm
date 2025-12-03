@@ -1,27 +1,27 @@
 @interface SBHTodayIconListLayoutDelegate
-- (CGPoint)iconListView:(id)a3 centerForIconCoordinate:(SBIconCoordinate)a4 metrics:(id)a5 proposedCenter:(CGPoint)a6;
-- (CGPoint)iconListView:(id)a3 originForIconCoordinate:(SBIconCoordinate)a4 metrics:(id)a5 proposedOrigin:(CGPoint)a6;
-- (CGRect)unadjustedBoundsForIconCoordinate:(SBIconCoordinate)a3;
-- (CGSize)iconListView:(id)a3 sizeThatFits:(CGSize)a4 metrics:(id)a5 proposedSize:(CGSize)a6;
-- (SBHTodayIconListLayoutDelegate)initWithIconListView:(id)a3;
+- (CGPoint)iconListView:(id)view centerForIconCoordinate:(SBIconCoordinate)coordinate metrics:(id)metrics proposedCenter:(CGPoint)center;
+- (CGPoint)iconListView:(id)view originForIconCoordinate:(SBIconCoordinate)coordinate metrics:(id)metrics proposedOrigin:(CGPoint)origin;
+- (CGRect)unadjustedBoundsForIconCoordinate:(SBIconCoordinate)coordinate;
+- (CGSize)iconListView:(id)view sizeThatFits:(CGSize)fits metrics:(id)metrics proposedSize:(CGSize)size;
+- (SBHTodayIconListLayoutDelegate)initWithIconListView:(id)view;
 - (SBIconListView)iconListView;
-- (SBTodayIconListLayoutAttributes)layoutAttributesForIconCoordinate:(SEL)a3 metrics:(SBIconCoordinate)a4 adjustedForRevealProgress:(id)a5;
+- (SBTodayIconListLayoutAttributes)layoutAttributesForIconCoordinate:(SEL)coordinate metrics:(SBIconCoordinate)metrics adjustedForRevealProgress:(id)progress;
 - (UIEdgeInsets)additionalLayoutInsets;
 - (UIEdgeInsets)carouselInsets;
 - (UIScrollView)scrollView;
 - (UIView)containerView;
-- (double)_iconListView:(id)a3 originYForIconCoordinate:(SBIconCoordinate)a4 metrics:(id)a5 adjustedForRevealProgress:(BOOL)a6;
-- (double)unadjustedOriginYForIconCoordinate:(SBIconCoordinate)a3;
-- (unint64_t)iconListView:(id)a3 rowAtPoint:(CGPoint)a4 metrics:(id)a5 proposedRow:(unint64_t)a6;
-- (void)_layoutFocusGuideViewsInListView:(id)a3;
-- (void)_reorderSubviewsForCarouselLayoutInListView:(id)a3;
-- (void)iconListView:(id)a3 willLayoutIconView:(id)a4;
-- (void)iconListViewDidLayoutIcons:(id)a3;
-- (void)setAdditionalLayoutInsets:(UIEdgeInsets)a3;
-- (void)setDismissProgress:(double)a3;
-- (void)setRevealProgress:(double)a3;
-- (void)setRevealed:(BOOL)a3;
-- (void)setVisuallyRevealed:(BOOL)a3 animated:(BOOL)a4;
+- (double)_iconListView:(id)view originYForIconCoordinate:(SBIconCoordinate)coordinate metrics:(id)metrics adjustedForRevealProgress:(BOOL)progress;
+- (double)unadjustedOriginYForIconCoordinate:(SBIconCoordinate)coordinate;
+- (unint64_t)iconListView:(id)view rowAtPoint:(CGPoint)point metrics:(id)metrics proposedRow:(unint64_t)row;
+- (void)_layoutFocusGuideViewsInListView:(id)view;
+- (void)_reorderSubviewsForCarouselLayoutInListView:(id)view;
+- (void)iconListView:(id)view willLayoutIconView:(id)iconView;
+- (void)iconListViewDidLayoutIcons:(id)icons;
+- (void)setAdditionalLayoutInsets:(UIEdgeInsets)insets;
+- (void)setDismissProgress:(double)progress;
+- (void)setRevealProgress:(double)progress;
+- (void)setRevealed:(BOOL)revealed;
+- (void)setVisuallyRevealed:(BOOL)revealed animated:(BOOL)animated;
 @end
 
 @implementation SBHTodayIconListLayoutDelegate
@@ -40,23 +40,23 @@
   return WeakRetained;
 }
 
-- (SBHTodayIconListLayoutDelegate)initWithIconListView:(id)a3
+- (SBHTodayIconListLayoutDelegate)initWithIconListView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v18.receiver = self;
   v18.super_class = SBHTodayIconListLayoutDelegate;
   v5 = [(SBHTodayIconListLayoutDelegate *)&v18 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_iconListView, v4);
-    v7 = [v4 layout];
-    [v7 iconImageInfoForGridSizeClass:@"SBHIconGridSizeClassDefault"];
+    objc_storeWeak(&v5->_iconListView, viewCopy);
+    layout = [viewCopy layout];
+    [layout iconImageInfoForGridSizeClass:@"SBHIconGridSizeClassDefault"];
     v9 = v8;
-    [v7 iconImageInfoForGridSizeClass:@"SBHIconGridSizeClassSmall"];
+    [layout iconImageInfoForGridSizeClass:@"SBHIconGridSizeClassSmall"];
     v11 = v10;
     v6->_collapseHeight = v9;
-    [v4 iconSpacing];
+    [viewCopy iconSpacing];
     v6->_distanceToApex = (v9 + v12) * 0.5;
     v6->_revealProgressMaxTranslation = v11;
     *&v6->_carouselLayout = 256;
@@ -74,31 +74,31 @@
   return v6;
 }
 
-- (SBTodayIconListLayoutAttributes)layoutAttributesForIconCoordinate:(SEL)a3 metrics:(SBIconCoordinate)a4 adjustedForRevealProgress:(id)a5
+- (SBTodayIconListLayoutAttributes)layoutAttributesForIconCoordinate:(SEL)coordinate metrics:(SBIconCoordinate)metrics adjustedForRevealProgress:(id)progress
 {
   v6 = a6;
-  row = a4.row;
-  column = a4.column;
-  v65 = a5;
-  v11 = [(SBHTodayIconListLayoutDelegate *)self iconListView];
-  v12 = [v11 iconAtCoordinate:column metrics:{row, v65}];
+  row = metrics.row;
+  column = metrics.column;
+  progressCopy = progress;
+  iconListView = [(SBHTodayIconListLayoutDelegate *)self iconListView];
+  v12 = [iconListView iconAtCoordinate:column metrics:{row, progressCopy}];
   v13 = v12;
   if (v12)
   {
-    v14 = [v12 gridSizeClass];
+    gridSizeClass = [v12 gridSizeClass];
   }
 
   else
   {
-    v14 = @"SBHIconGridSizeClassDefault";
+    gridSizeClass = @"SBHIconGridSizeClassDefault";
   }
 
-  v15 = v14;
-  v16 = [v11 layout];
-  SBHIconListLayoutIconImageInfoForGridSizeClass(v16, v15);
+  v15 = gridSizeClass;
+  layout = [iconListView layout];
+  SBHIconListLayoutIconImageInfoForGridSizeClass(layout, v15);
   v18 = v17;
 
-  [(SBHTodayIconListLayoutDelegate *)self _iconListView:v11 originYForIconCoordinate:column metrics:row adjustedForRevealProgress:v65, v6];
+  [(SBHTodayIconListLayoutDelegate *)self _iconListView:iconListView originYForIconCoordinate:column metrics:row adjustedForRevealProgress:progressCopy, v6];
   v20 = v19;
   SBRectWithSize();
   v22 = v21;
@@ -120,12 +120,12 @@
   v62 = v26;
   v63 = v24;
   v64 = v22;
-  v30 = [(SBHTodayIconListLayoutDelegate *)self containerView];
+  containerView = [(SBHTodayIconListLayoutDelegate *)self containerView];
   v31 = 0.0;
-  [v30 convertPoint:v11 toView:{0.0, self->_carouselInsets.top}];
+  [containerView convertPoint:iconListView toView:{0.0, self->_carouselInsets.top}];
   v33 = v32;
-  [v30 bounds];
-  [v30 convertPoint:v11 toView:{0.0, v34 - self->_carouselInsets.bottom}];
+  [containerView bounds];
+  [containerView convertPoint:iconListView toView:{0.0, v34 - self->_carouselInsets.bottom}];
   v36 = v35;
   if (v20 >= v33)
   {
@@ -185,8 +185,8 @@ LABEL_13:
 
   v42 = fmin(fmax((v41 - (v18 - v39)) / v40, -2.0), 2.0);
   v43 = v40;
-  v44 = [(SBHTodayIconListLayoutDelegate *)self scrollView];
-  [v44 _verticalVelocity];
+  scrollView = [(SBHTodayIconListLayoutDelegate *)self scrollView];
+  [scrollView _verticalVelocity];
   v46 = v45;
 
   v47 = 3.0;
@@ -233,10 +233,10 @@ LABEL_13:
 
   v29 = v52 * -0.04 * 0.5 + 1.0;
 LABEL_35:
-  if ([v11 alignsIconsOnPixelBoundaries])
+  if ([iconListView alignsIconsOnPixelBoundaries])
   {
-    v54 = [v11 layout];
-    [v54 iconImageInfo];
+    layout2 = [iconListView layout];
+    [layout2 iconImageInfo];
 
     BSFloatRoundForScale();
     v20 = v55;
@@ -250,8 +250,8 @@ LABEL_38:
     if (!self->_visuallyRevealed)
     {
       catchupProperties = self->_catchupProperties;
-      v57 = [v13 uniqueIdentifier];
-      v58 = [(NSMutableDictionary *)catchupProperties objectForKey:v57];
+      uniqueIdentifier = [v13 uniqueIdentifier];
+      v58 = [(NSMutableDictionary *)catchupProperties objectForKey:uniqueIdentifier];
 
       if (v58)
       {
@@ -280,13 +280,13 @@ LABEL_43:
   return result;
 }
 
-- (CGRect)unadjustedBoundsForIconCoordinate:(SBIconCoordinate)a3
+- (CGRect)unadjustedBoundsForIconCoordinate:(SBIconCoordinate)coordinate
 {
-  row = a3.row;
-  column = a3.column;
-  v6 = [(SBHTodayIconListLayoutDelegate *)self iconListView];
-  v7 = [v6 layoutMetrics];
-  [(SBHTodayIconListLayoutDelegate *)self layoutAttributesForIconCoordinate:column metrics:row adjustedForRevealProgress:v7, 0];
+  row = coordinate.row;
+  column = coordinate.column;
+  iconListView = [(SBHTodayIconListLayoutDelegate *)self iconListView];
+  layoutMetrics = [iconListView layoutMetrics];
+  [(SBHTodayIconListLayoutDelegate *)self layoutAttributesForIconCoordinate:column metrics:row adjustedForRevealProgress:layoutMetrics, 0];
 
   v8 = v12;
   v9 = v13;
@@ -299,77 +299,77 @@ LABEL_43:
   return result;
 }
 
-- (double)unadjustedOriginYForIconCoordinate:(SBIconCoordinate)a3
+- (double)unadjustedOriginYForIconCoordinate:(SBIconCoordinate)coordinate
 {
-  row = a3.row;
-  column = a3.column;
-  v6 = [(SBHTodayIconListLayoutDelegate *)self iconListView];
-  v7 = [v6 layoutMetrics];
-  [(SBHTodayIconListLayoutDelegate *)self _iconListView:v6 originYForIconCoordinate:column metrics:row adjustedForRevealProgress:v7, 0];
+  row = coordinate.row;
+  column = coordinate.column;
+  iconListView = [(SBHTodayIconListLayoutDelegate *)self iconListView];
+  layoutMetrics = [iconListView layoutMetrics];
+  [(SBHTodayIconListLayoutDelegate *)self _iconListView:iconListView originYForIconCoordinate:column metrics:row adjustedForRevealProgress:layoutMetrics, 0];
   v9 = v8;
 
   return v9;
 }
 
-- (void)setAdditionalLayoutInsets:(UIEdgeInsets)a3
+- (void)setAdditionalLayoutInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_additionalLayoutInsets.top, v3), vceqq_f64(*&self->_additionalLayoutInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_additionalLayoutInsets = a3;
-    v5 = [(SBHTodayIconListLayoutDelegate *)self iconListView];
-    [v5 invalidateIntrinsicContentSize];
+    self->_additionalLayoutInsets = insets;
+    iconListView = [(SBHTodayIconListLayoutDelegate *)self iconListView];
+    [iconListView invalidateIntrinsicContentSize];
   }
 }
 
-- (void)setRevealed:(BOOL)a3
+- (void)setRevealed:(BOOL)revealed
 {
-  if (self->_revealed != a3)
+  if (self->_revealed != revealed)
   {
-    self->_revealed = a3;
-    v4 = [(SBHTodayIconListLayoutDelegate *)self iconListView];
-    [v4 setIconsNeedLayout];
+    self->_revealed = revealed;
+    iconListView = [(SBHTodayIconListLayoutDelegate *)self iconListView];
+    [iconListView setIconsNeedLayout];
   }
 }
 
-- (void)setRevealProgress:(double)a3
+- (void)setRevealProgress:(double)progress
 {
-  if (self->_revealProgress != a3)
+  if (self->_revealProgress != progress)
   {
-    self->_revealProgress = a3;
-    v4 = [(SBHTodayIconListLayoutDelegate *)self iconListView];
-    [v4 setIconsNeedLayout];
+    self->_revealProgress = progress;
+    iconListView = [(SBHTodayIconListLayoutDelegate *)self iconListView];
+    [iconListView setIconsNeedLayout];
   }
 }
 
-- (void)setDismissProgress:(double)a3
+- (void)setDismissProgress:(double)progress
 {
-  if (self->_dismissProgress != a3)
+  if (self->_dismissProgress != progress)
   {
-    self->_dismissProgress = a3;
-    v4 = [(SBHTodayIconListLayoutDelegate *)self iconListView];
-    [v4 setIconsNeedLayout];
+    self->_dismissProgress = progress;
+    iconListView = [(SBHTodayIconListLayoutDelegate *)self iconListView];
+    [iconListView setIconsNeedLayout];
   }
 }
 
-- (void)setVisuallyRevealed:(BOOL)a3 animated:(BOOL)a4
+- (void)setVisuallyRevealed:(BOOL)revealed animated:(BOOL)animated
 {
   v38 = *MEMORY[0x1E69E9840];
-  if (self->_visuallyRevealed != a3)
+  if (self->_visuallyRevealed != revealed)
   {
-    v4 = a4;
-    self->_visuallyRevealed = a3;
-    v6 = [(SBHTodayIconListLayoutDelegate *)self iconListView];
-    [v6 setIconsNeedLayout];
+    animatedCopy = animated;
+    self->_visuallyRevealed = revealed;
+    iconListView = [(SBHTodayIconListLayoutDelegate *)self iconListView];
+    [iconListView setIconsNeedLayout];
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v7 = [(NSMutableDictionary *)self->_catchupTimers allValues];
-    v8 = [v7 countByEnumeratingWithState:&v32 objects:v37 count:16];
+    allValues = [(NSMutableDictionary *)self->_catchupTimers allValues];
+    v8 = [allValues countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v8)
     {
       v9 = v8;
@@ -381,14 +381,14 @@ LABEL_43:
         {
           if (*v33 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v32 + 1) + 8 * v11++) invalidate];
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v32 objects:v37 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v32 objects:v37 count:16];
       }
 
       while (v9);
@@ -399,8 +399,8 @@ LABEL_43:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v12 = [(NSMutableDictionary *)self->_catchupProperties allValues];
-    v13 = [v12 countByEnumeratingWithState:&v28 objects:v36 count:16];
+    allValues2 = [(NSMutableDictionary *)self->_catchupProperties allValues];
+    v13 = [allValues2 countByEnumeratingWithState:&v28 objects:v36 count:16];
     if (v13)
     {
       v14 = v13;
@@ -412,37 +412,37 @@ LABEL_43:
         {
           if (*v29 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(allValues2);
           }
 
           [*(*(&v28 + 1) + 8 * v16++) invalidate];
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v28 objects:v36 count:16];
+        v14 = [allValues2 countByEnumeratingWithState:&v28 objects:v36 count:16];
       }
 
       while (v14);
     }
 
     [(NSMutableDictionary *)self->_catchupProperties removeAllObjects];
-    if (v4)
+    if (animatedCopy)
     {
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __63__SBHTodayIconListLayoutDelegate_setVisuallyRevealed_animated___block_invoke;
       v27[3] = &unk_1E808AEC0;
       v27[4] = self;
-      [v6 enumerateIconViewsUsingBlock:v27];
+      [iconListView enumerateIconViewsUsingBlock:v27];
       v17 = MEMORY[0x1E69DD250];
-      v18 = [(NSMutableDictionary *)self->_catchupProperties allValues];
+      allValues3 = [(NSMutableDictionary *)self->_catchupProperties allValues];
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __63__SBHTodayIconListLayoutDelegate_setVisuallyRevealed_animated___block_invoke_2;
       v25[3] = &unk_1E8088C90;
-      v19 = v6;
+      v19 = iconListView;
       v26 = v19;
-      [v17 _createTransformerWithInputAnimatableProperties:v18 presentationValueChangedCallback:v25];
+      [v17 _createTransformerWithInputAnimatableProperties:allValues3 presentationValueChangedCallback:v25];
 
       if (self->_visuallyRevealed)
       {
@@ -459,7 +459,7 @@ LABEL_43:
       v21[2] = __63__SBHTodayIconListLayoutDelegate_setVisuallyRevealed_animated___block_invoke_3;
       v21[3] = &unk_1E808FA50;
       v22 = v19;
-      v23 = self;
+      selfCopy = self;
       v24 = v20;
       [v22 enumerateIconViewsUsingBlock:v21];
     }
@@ -573,21 +573,21 @@ void __63__SBHTodayIconListLayoutDelegate_setVisuallyRevealed_animated___block_i
   }
 }
 
-- (CGPoint)iconListView:(id)a3 originForIconCoordinate:(SBIconCoordinate)a4 metrics:(id)a5 proposedOrigin:(CGPoint)a6
+- (CGPoint)iconListView:(id)view originForIconCoordinate:(SBIconCoordinate)coordinate metrics:(id)metrics proposedOrigin:(CGPoint)origin
 {
-  y = a6.y;
-  x = a6.x;
-  row = a4.row;
-  column = a4.column;
-  v12 = a3;
-  v13 = a5;
+  y = origin.y;
+  x = origin.x;
+  row = coordinate.row;
+  column = coordinate.column;
+  viewCopy = view;
+  metricsCopy = metrics;
   if ([(SBHTodayIconListLayoutDelegate *)self isCarouselLayout])
   {
-    [(SBHTodayIconListLayoutDelegate *)self layoutAttributesForIconCoordinate:column metrics:row adjustedForRevealProgress:v13, 1, 0, 0, 0];
-    v14 = [v12 iconAtCoordinate:column metrics:{row, v13}];
-    v15 = [v12 layout];
-    v16 = [v14 gridSizeClass];
-    [v15 iconImageInfoForGridSizeClass:v16];
+    [(SBHTodayIconListLayoutDelegate *)self layoutAttributesForIconCoordinate:column metrics:row adjustedForRevealProgress:metricsCopy, 1, 0, 0, 0];
+    v14 = [viewCopy iconAtCoordinate:column metrics:{row, metricsCopy}];
+    layout = [viewCopy layout];
+    gridSizeClass = [v14 gridSizeClass];
+    [layout iconImageInfoForGridSizeClass:gridSizeClass];
     v18 = v17;
 
     y = 0.0 * 0.5 + 0.0 - v18 * 0.5;
@@ -600,10 +600,10 @@ void __63__SBHTodayIconListLayoutDelegate_setVisuallyRevealed_animated___block_i
   return result;
 }
 
-- (CGPoint)iconListView:(id)a3 centerForIconCoordinate:(SBIconCoordinate)a4 metrics:(id)a5 proposedCenter:(CGPoint)a6
+- (CGPoint)iconListView:(id)view centerForIconCoordinate:(SBIconCoordinate)coordinate metrics:(id)metrics proposedCenter:(CGPoint)center
 {
-  x = a6.x;
-  [(SBHTodayIconListLayoutDelegate *)self layoutAttributesForIconCoordinate:a4.column metrics:a4.row adjustedForRevealProgress:a5, 1, 0, 0, 0];
+  x = center.x;
+  [(SBHTodayIconListLayoutDelegate *)self layoutAttributesForIconCoordinate:coordinate.column metrics:coordinate.row adjustedForRevealProgress:metrics, 1, 0, 0, 0];
   v7 = 0.0 * 0.5 + 0.0;
   v8 = x;
   result.y = v7;
@@ -611,24 +611,24 @@ void __63__SBHTodayIconListLayoutDelegate_setVisuallyRevealed_animated___block_i
   return result;
 }
 
-- (unint64_t)iconListView:(id)a3 rowAtPoint:(CGPoint)a4 metrics:(id)a5 proposedRow:(unint64_t)a6
+- (unint64_t)iconListView:(id)view rowAtPoint:(CGPoint)point metrics:(id)metrics proposedRow:(unint64_t)row
 {
-  y = a4.y;
+  y = point.y;
   v37 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = [a5 listModel];
-  [v10 iconSpacing];
+  viewCopy = view;
+  listModel = [metrics listModel];
+  [viewCopy iconSpacing];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v12 = [v11 icons];
-  v13 = [v12 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  icons = [listModel icons];
+  v13 = [icons countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v13)
   {
     v14 = v13;
-    v30 = a6;
-    v31 = v11;
+    rowCopy = row;
+    v31 = listModel;
     v15 = *v33;
     while (2)
     {
@@ -636,36 +636,36 @@ void __63__SBHTodayIconListLayoutDelegate_setVisuallyRevealed_animated___block_i
       {
         if (*v33 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(icons);
         }
 
         v17 = *(*(&v32 + 1) + 8 * i);
-        v18 = [v10 coordinateForIcon:{v17, v30}];
+        v18 = [viewCopy coordinateForIcon:{v17, rowCopy}];
         v20 = v19;
         if (!SBIconCoordinateIsNotFound(v18, v19))
         {
           [(SBHTodayIconListLayoutDelegate *)self unadjustedOriginYForIconCoordinate:v18, v20];
           v22 = v21;
-          v23 = [v17 gridSizeClass];
-          v24 = [v10 iconGridSizeForClass:v23];
+          gridSizeClass = [v17 gridSizeClass];
+          v24 = [viewCopy iconGridSizeForClass:gridSizeClass];
 
-          v25 = [v10 layout];
-          v26 = [v17 gridSizeClass];
-          SBHIconListLayoutIconImageInfoForGridSizeClass(v25, v26);
+          layout = [viewCopy layout];
+          gridSizeClass2 = [v17 gridSizeClass];
+          SBHIconListLayoutIconImageInfoForGridSizeClass(layout, gridSizeClass2);
           v28 = v27;
 
           if (BSFloatGreaterThanOrEqualToFloat())
           {
             if (BSFloatLessThanOrEqualToFloat())
             {
-              a6 = v20 + ((y - v22) / (v28 / HIWORD(v24))) - 1;
+              row = v20 + ((y - v22) / (v28 / HIWORD(v24))) - 1;
               goto LABEL_13;
             }
           }
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v14 = [icons countByEnumeratingWithState:&v32 objects:v36 count:16];
       if (v14)
       {
         continue;
@@ -674,34 +674,34 @@ void __63__SBHTodayIconListLayoutDelegate_setVisuallyRevealed_animated___block_i
       break;
     }
 
-    a6 = v30;
+    row = rowCopy;
 LABEL_13:
-    v11 = v31;
+    listModel = v31;
   }
 
-  return a6;
+  return row;
 }
 
-- (CGSize)iconListView:(id)a3 sizeThatFits:(CGSize)a4 metrics:(id)a5 proposedSize:(CGSize)a6
+- (CGSize)iconListView:(id)view sizeThatFits:(CGSize)fits metrics:(id)metrics proposedSize:(CGSize)size
 {
-  width = a6.width;
-  v9 = a3;
-  v10 = a5;
-  v11 = [v9 icons];
-  v12 = [v11 lastObject];
+  width = size.width;
+  viewCopy = view;
+  metricsCopy = metrics;
+  icons = [viewCopy icons];
+  lastObject = [icons lastObject];
 
-  [v10 iconInsets];
+  [metricsCopy iconInsets];
   v14 = v13;
   v16 = v15;
 
-  if (v12)
+  if (lastObject)
   {
-    v17 = [v9 coordinateForIcon:v12];
+    v17 = [viewCopy coordinateForIcon:lastObject];
     [(SBHTodayIconListLayoutDelegate *)self unadjustedOriginYForIconCoordinate:v17, v18];
     v20 = v19;
-    v21 = [v9 layout];
-    v22 = [v12 gridSizeClass];
-    [v21 iconImageInfoForGridSizeClass:v22];
+    layout = [viewCopy layout];
+    gridSizeClass = [lastObject gridSizeClass];
+    [layout iconImageInfoForGridSizeClass:gridSizeClass];
     v24 = v23;
   }
 
@@ -720,65 +720,65 @@ LABEL_13:
   return result;
 }
 
-- (void)iconListView:(id)a3 willLayoutIconView:(id)a4
+- (void)iconListView:(id)view willLayoutIconView:(id)iconView
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 layoutMetrics];
-  v9 = [v7 icon];
-  v10 = [v6 coordinateForIcon:v9];
+  viewCopy = view;
+  iconViewCopy = iconView;
+  layoutMetrics = [viewCopy layoutMetrics];
+  icon = [iconViewCopy icon];
+  v10 = [viewCopy coordinateForIcon:icon];
   v12 = v11;
 
   sx = 0.0;
   v26 = 0u;
   v27 = 0u;
   v25 = 0u;
-  [(SBHTodayIconListLayoutDelegate *)self layoutAttributesForIconCoordinate:v10 metrics:v12 adjustedForRevealProgress:v8, 1];
-  if (([v7 allIconElementsButLabelHidden] & 1) == 0)
+  [(SBHTodayIconListLayoutDelegate *)self layoutAttributesForIconCoordinate:v10 metrics:v12 adjustedForRevealProgress:layoutMetrics, 1];
+  if (([iconViewCopy allIconElementsButLabelHidden] & 1) == 0)
   {
-    [v7 setIconImageAndAccessoryAlpha:*(&v27 + 1)];
+    [iconViewCopy setIconImageAndAccessoryAlpha:*(&v27 + 1)];
   }
 
-  [v7 setIconImageSizeMatchesBoundsSize:1];
-  [v7 setBounds:{v25, v26}];
-  [v7 setUserInteractionEnabled:BSFloatGreaterThanFloat()];
+  [iconViewCopy setIconImageSizeMatchesBoundsSize:1];
+  [iconViewCopy setBounds:{v25, v26}];
+  [iconViewCopy setUserInteractionEnabled:BSFloatGreaterThanFloat()];
   memset(&v24, 0, sizeof(v24));
   CGAffineTransformMakeScale(&v24, sx, sx);
-  [v7 center];
+  [iconViewCopy center];
   v14 = v13;
-  [v6 bounds];
+  [viewCopy bounds];
   v22 = v24;
   CGAffineTransformTranslate(&v23, &v22, (1.0 - sx) * (v15 * 0.5 - v14), 0.0);
   v24 = v23;
-  [v7 setTransform:&v23];
-  v16 = [v7 customIconImageViewController];
-  if (v16 && (objc_opt_respondsToSelector() & 1) != 0)
+  [iconViewCopy setTransform:&v23];
+  customIconImageViewController = [iconViewCopy customIconImageViewController];
+  if (customIconImageViewController && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v17 = [(SBHTodayIconListLayoutDelegate *)self containerView];
-    [v7 bounds];
+    containerView = [(SBHTodayIconListLayoutDelegate *)self containerView];
+    [iconViewCopy bounds];
     UIRectGetCenter();
-    [v7 convertPoint:v17 toView:?];
+    [iconViewCopy convertPoint:containerView toView:?];
     v19 = v18;
-    [v17 bounds];
-    [v16 setImageViewAlignment:v19 < self->_carouselInsets.top + v20 + (v21 - (self->_carouselInsets.top + self->_carouselInsets.bottom)) * 0.5];
+    [containerView bounds];
+    [customIconImageViewController setImageViewAlignment:v19 < self->_carouselInsets.top + v20 + (v21 - (self->_carouselInsets.top + self->_carouselInsets.bottom)) * 0.5];
   }
 
-  [v7 layoutIfNeeded];
+  [iconViewCopy layoutIfNeeded];
 }
 
-- (void)iconListViewDidLayoutIcons:(id)a3
+- (void)iconListViewDidLayoutIcons:(id)icons
 {
-  v4 = a3;
+  iconsCopy = icons;
   if ([(SBHTodayIconListLayoutDelegate *)self isCarouselLayout])
   {
-    [(SBHTodayIconListLayoutDelegate *)self _reorderSubviewsForCarouselLayoutInListView:v4];
-    [(SBHTodayIconListLayoutDelegate *)self _layoutFocusGuideViewsInListView:v4];
+    [(SBHTodayIconListLayoutDelegate *)self _reorderSubviewsForCarouselLayoutInListView:iconsCopy];
+    [(SBHTodayIconListLayoutDelegate *)self _layoutFocusGuideViewsInListView:iconsCopy];
   }
 }
 
-- (void)_reorderSubviewsForCarouselLayoutInListView:(id)a3
+- (void)_reorderSubviewsForCarouselLayoutInListView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if ([(SBHTodayIconListLayoutDelegate *)self isCarouselLayout])
   {
     v70 = 0;
@@ -799,8 +799,8 @@ LABEL_13:
     v61 = __Block_byref_object_copy__20;
     v62 = __Block_byref_object_dispose__20;
     v63 = 0;
-    v5 = [(SBHTodayIconListLayoutDelegate *)self containerView];
-    [v5 bounds];
+    containerView = [(SBHTodayIconListLayoutDelegate *)self containerView];
+    [containerView bounds];
     top = self->_carouselInsets.top;
     left = self->_carouselInsets.left;
     v9 = v8 + left;
@@ -811,7 +811,7 @@ LABEL_13:
     v49[1] = 3221225472;
     v49[2] = __78__SBHTodayIconListLayoutDelegate__reorderSubviewsForCarouselLayoutInListView___block_invoke;
     v49[3] = &unk_1E808FA78;
-    v16 = v5;
+    v16 = containerView;
     v54 = v9;
     v55 = v11;
     v56 = v13;
@@ -820,7 +820,7 @@ LABEL_13:
     v51 = &v70;
     v52 = &v64;
     v53 = &v58;
-    [v4 enumerateIconViewsUsingBlock:v49];
+    [viewCopy enumerateIconViewsUsingBlock:v49];
     v17 = v71[5];
     if (!v17)
     {
@@ -832,27 +832,27 @@ LABEL_13:
     }
 
     v18 = v17;
-    v19 = [v18 icon];
-    if (v19)
+    icon = [v18 icon];
+    if (icon)
     {
-      v20 = [v4 layoutMetrics];
-      v21 = [v20 listModel];
-      v22 = [v4 gridCellInfo];
-      v23 = [v21 gridCellIndexForIcon:v19 gridCellInfo:v22];
+      layoutMetrics = [viewCopy layoutMetrics];
+      listModel = [layoutMetrics listModel];
+      gridCellInfo = [viewCopy gridCellInfo];
+      v23 = [listModel gridCellIndexForIcon:icon gridCellInfo:gridCellInfo];
       if (v23 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        [v22 coordinateForGridCellIndex:v23];
+        [gridCellInfo coordinateForGridCellIndex:v23];
         if (v24 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v34 = v20;
+          v34 = layoutMetrics;
           v35 = v16;
-          v25 = [v21 iconsInGridRow:v24 - 1 gridCellInfo:v22];
-          v37 = [v25 firstObject];
-          v36 = [v25 lastObject];
-          v26 = [v21 gridCellIndexForIcon:v37 gridCellInfo:v22];
-          v38 = [v21 gridCellIndexForIcon:v36 gridCellInfo:v22];
-          v27 = [v22 lastUsedGridCellIndex];
-          v32 = [v21 gridSize];
+          v25 = [listModel iconsInGridRow:v24 - 1 gridCellInfo:gridCellInfo];
+          firstObject = [v25 firstObject];
+          lastObject = [v25 lastObject];
+          v26 = [listModel gridCellIndexForIcon:firstObject gridCellInfo:gridCellInfo];
+          v38 = [listModel gridCellIndexForIcon:lastObject gridCellInfo:gridCellInfo];
+          lastUsedGridCellIndex = [gridCellInfo lastUsedGridCellIndex];
+          gridSize = [listModel gridSize];
           v43 = 0;
           v44 = &v43;
           v45 = 0x3032000000;
@@ -865,7 +865,7 @@ LABEL_13:
           aBlock[3] = &unk_1E808FAA0;
           v33 = v25;
           v40 = v33;
-          v41 = v4;
+          v41 = viewCopy;
           v42 = &v43;
           v28 = _Block_copy(aBlock);
           if (v26)
@@ -873,7 +873,7 @@ LABEL_13:
             v29 = v26 - 1;
             do
             {
-              v26 = [v21 iconAtGridCellIndex:v29 gridCellInfo:v22];
+              v26 = [listModel iconAtGridCellIndex:v29 gridCellInfo:gridCellInfo];
               v28[2](v28, v26);
 
               --v29;
@@ -884,14 +884,14 @@ LABEL_13:
 
           objc_storeStrong(v44 + 5, v17);
           v30 = v38 + 1;
-          if (v38 + 1 <= v27)
+          if (v38 + 1 <= lastUsedGridCellIndex)
           {
             while (1)
             {
-              v31 = [v21 iconAtGridCellIndex:v30 gridCellInfo:v22];
+              v31 = [listModel iconAtGridCellIndex:v30 gridCellInfo:gridCellInfo];
               if (!v31)
               {
-                v26 = v26 & 0xFFFFFFFF00000000 | v32;
+                v26 = v26 & 0xFFFFFFFF00000000 | gridSize;
                 if (SBIconCoordinateMakeWithGridCellIndex(v30, v26) == 1)
                 {
                   break;
@@ -900,7 +900,7 @@ LABEL_13:
 
               v28[2](v28, v31);
 
-              if (++v30 > v27)
+              if (++v30 > lastUsedGridCellIndex)
               {
                 goto LABEL_17;
               }
@@ -911,7 +911,7 @@ LABEL_17:
 
           _Block_object_dispose(&v43, 8);
           v16 = v35;
-          v20 = v34;
+          layoutMetrics = v34;
         }
       }
     }
@@ -1007,27 +1007,27 @@ uint64_t __78__SBHTodayIconListLayoutDelegate__reorderSubviewsForCarouselLayoutI
   return MEMORY[0x1EEE66BE0]();
 }
 
-- (void)_layoutFocusGuideViewsInListView:(id)a3
+- (void)_layoutFocusGuideViewsInListView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBHTodayIconListLayoutDelegate *)self isCarouselLayout];
-  v6 = [v4 layout];
-  v7 = [v4 gridCellInfo];
-  v8 = [v4 layoutMetrics];
+  viewCopy = view;
+  isCarouselLayout = [(SBHTodayIconListLayoutDelegate *)self isCarouselLayout];
+  layout = [viewCopy layout];
+  gridCellInfo = [viewCopy gridCellInfo];
+  layoutMetrics = [viewCopy layoutMetrics];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __67__SBHTodayIconListLayoutDelegate__layoutFocusGuideViewsInListView___block_invoke;
   v13[3] = &unk_1E808FAC8;
-  v14 = v7;
-  v15 = v6;
-  v16 = v4;
-  v17 = v8;
-  v19 = v5;
-  v18 = self;
-  v9 = v8;
-  v10 = v4;
-  v11 = v6;
-  v12 = v7;
+  v14 = gridCellInfo;
+  v15 = layout;
+  v16 = viewCopy;
+  v17 = layoutMetrics;
+  v19 = isCarouselLayout;
+  selfCopy = self;
+  v9 = layoutMetrics;
+  v10 = viewCopy;
+  v11 = layout;
+  v12 = gridCellInfo;
   [v10 enumerateIconViewsUsingBlock:v13];
 }
 
@@ -1059,72 +1059,72 @@ void __67__SBHTodayIconListLayoutDelegate__layoutFocusGuideViewsInListView___blo
   }
 }
 
-- (double)_iconListView:(id)a3 originYForIconCoordinate:(SBIconCoordinate)a4 metrics:(id)a5 adjustedForRevealProgress:(BOOL)a6
+- (double)_iconListView:(id)view originYForIconCoordinate:(SBIconCoordinate)coordinate metrics:(id)metrics adjustedForRevealProgress:(BOOL)progress
 {
-  row = a4.row;
-  column = a4.column;
-  v10 = a3;
-  v11 = a5;
-  v12 = [v11 gridCellInfo];
-  v13 = [v11 columns];
-  [v11 iconSpacing];
+  row = coordinate.row;
+  column = coordinate.column;
+  viewCopy = view;
+  metricsCopy = metrics;
+  gridCellInfo = [metricsCopy gridCellInfo];
+  columns = [metricsCopy columns];
+  [metricsCopy iconSpacing];
   v15 = v14;
-  [v11 iconInsets];
+  [metricsCopy iconInsets];
   v17 = v16;
   v42 = column;
   v43 = row;
   v18 = column - 1;
-  v19 = column - 1 + v13 * (row - 1);
-  v20 = [v12 iconIndexForGridCellIndex:v19];
-  v47 = v10;
-  v21 = [v10 layout];
-  v46 = v11;
-  v22 = [v11 listModel];
-  v44 = self;
+  v19 = column - 1 + columns * (row - 1);
+  v20 = [gridCellInfo iconIndexForGridCellIndex:v19];
+  v47 = viewCopy;
+  layout = [viewCopy layout];
+  v46 = metricsCopy;
+  listModel = [metricsCopy listModel];
+  selfCopy = self;
   v23 = v17 + self->_additionalLayoutInsets.top;
   if (v18 < v19)
   {
     v24 = 0x7FFFFFFFFFFFFFFFLL;
     do
     {
-      v25 = [v12 iconIndexForGridCellIndex:v18];
+      v25 = [gridCellInfo iconIndexForGridCellIndex:v18];
       v26 = v25;
       if (v25 == v24 || v25 >= v20)
       {
         if (v25 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          [v21 iconImageInfoForGridSizeClass:@"SBHIconGridSizeClassDefault"];
+          [layout iconImageInfoForGridSizeClass:@"SBHIconGridSizeClassDefault"];
           v23 = v23 + v15 + v31;
         }
       }
 
       else
       {
-        v27 = [v22 iconAtIndex:v25];
-        v28 = [v27 gridSizeClass];
-        [v21 iconImageInfoForGridSizeClass:v28];
+        v27 = [listModel iconAtIndex:v25];
+        gridSizeClass = [v27 gridSizeClass];
+        [layout iconImageInfoForGridSizeClass:gridSizeClass];
         v30 = v29;
 
         v23 = v23 + v15 + v30;
         v24 = v26;
       }
 
-      v18 += v13;
+      v18 += columns;
     }
 
     while (v18 < v19);
   }
 
-  if (a6)
+  if (progress)
   {
     v33 = v46;
     v32 = v47;
     v34 = [v47 iconAtCoordinate:v42 metrics:{v43, v46}];
-    catchupProperties = v44->_catchupProperties;
-    v36 = [v34 uniqueIdentifier];
-    v37 = [(NSMutableDictionary *)catchupProperties objectForKey:v36];
+    catchupProperties = selfCopy->_catchupProperties;
+    uniqueIdentifier = [v34 uniqueIdentifier];
+    v37 = [(NSMutableDictionary *)catchupProperties objectForKey:uniqueIdentifier];
 
-    [(SBHTodayIconListLayoutDelegate *)v44 revealProgressMaxTranslation];
+    [(SBHTodayIconListLayoutDelegate *)selfCopy revealProgressMaxTranslation];
     v39 = v38;
     if (v37)
     {
@@ -1132,7 +1132,7 @@ void __67__SBHTodayIconListLayoutDelegate__layoutFocusGuideViewsInListView___blo
       v23 = v23 + v39 * v40;
     }
 
-    else if (!v44->_visuallyRevealed)
+    else if (!selfCopy->_visuallyRevealed)
     {
       v23 = v23 + v38;
     }

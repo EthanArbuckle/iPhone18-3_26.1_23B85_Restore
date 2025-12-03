@@ -1,73 +1,73 @@
 @interface NCNotificationListSupplementaryViewConfiguration
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithGroupingIdentifier:(id)a3 groupName:(id)a4 defaultAction:(id)a5 supplementaryActions:(id)a6 auxiliaryOptionsSummaryText:(id)a7 auxiliaryOptionActions:(id)a8 tintColor:(id)a9 textColor:(id)a10 materialRecipe:(int64_t)a11 containsUnmanagedContent:(BOOL)a12 preventsUserDismissal:(BOOL)a13;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithGroupingIdentifier:(id)identifier groupName:(id)name defaultAction:(id)action supplementaryActions:(id)actions auxiliaryOptionsSummaryText:(id)text auxiliaryOptionActions:(id)optionActions tintColor:(id)color textColor:(id)self0 materialRecipe:(int64_t)self1 containsUnmanagedContent:(BOOL)self2 preventsUserDismissal:(BOOL)self3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (unint64_t)hash;
 @end
 
 @implementation NCNotificationListSupplementaryViewConfiguration
 
-- (id)_initWithGroupingIdentifier:(id)a3 groupName:(id)a4 defaultAction:(id)a5 supplementaryActions:(id)a6 auxiliaryOptionsSummaryText:(id)a7 auxiliaryOptionActions:(id)a8 tintColor:(id)a9 textColor:(id)a10 materialRecipe:(int64_t)a11 containsUnmanagedContent:(BOOL)a12 preventsUserDismissal:(BOOL)a13
+- (id)_initWithGroupingIdentifier:(id)identifier groupName:(id)name defaultAction:(id)action supplementaryActions:(id)actions auxiliaryOptionsSummaryText:(id)text auxiliaryOptionActions:(id)optionActions tintColor:(id)color textColor:(id)self0 materialRecipe:(int64_t)self1 containsUnmanagedContent:(BOOL)self2 preventsUserDismissal:(BOOL)self3
 {
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v23 = a7;
-  v24 = a8;
-  v25 = a9;
-  v26 = a10;
+  identifierCopy = identifier;
+  nameCopy = name;
+  actionCopy = action;
+  actionsCopy = actions;
+  textCopy = text;
+  optionActionsCopy = optionActions;
+  colorCopy = color;
+  textColorCopy = textColor;
   v45.receiver = self;
   v45.super_class = NCNotificationListSupplementaryViewConfiguration;
   v27 = [(NCNotificationListSupplementaryViewConfiguration *)&v45 init];
   if (v27)
   {
-    v28 = [v19 copy];
+    v28 = [identifierCopy copy];
     groupingIdentifier = v27->_groupingIdentifier;
     v27->_groupingIdentifier = v28;
 
-    v30 = [v20 copy];
+    v30 = [nameCopy copy];
     groupName = v27->_groupName;
     v27->_groupName = v30;
 
-    v32 = [v21 copy];
+    v32 = [actionCopy copy];
     defaultAction = v27->_defaultAction;
     v27->_defaultAction = v32;
 
-    v34 = [v22 copy];
+    v34 = [actionsCopy copy];
     supplementaryActions = v27->_supplementaryActions;
     v27->_supplementaryActions = v34;
 
-    v36 = [v23 copy];
+    v36 = [textCopy copy];
     auxiliaryOptionsSummaryText = v27->_auxiliaryOptionsSummaryText;
     v27->_auxiliaryOptionsSummaryText = v36;
 
-    v38 = [v24 copy];
+    v38 = [optionActionsCopy copy];
     auxiliaryOptionActions = v27->_auxiliaryOptionActions;
     v27->_auxiliaryOptionActions = v38;
 
-    v40 = [v25 copy];
+    v40 = [colorCopy copy];
     tintColor = v27->_tintColor;
     v27->_tintColor = v40;
 
-    v42 = [v26 copy];
+    v42 = [textColorCopy copy];
     textColor = v27->_textColor;
     v27->_textColor = v42;
 
-    v27->_materialRecipe = a11;
-    v27->_containsUnmanagedContent = a12;
-    v27->_preventsUserDismissal = a13;
+    v27->_materialRecipe = recipe;
+    v27->_containsUnmanagedContent = content;
+    v27->_preventsUserDismissal = dismissal;
   }
 
   return v27;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -81,14 +81,14 @@ LABEL_16:
     }
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   if (!v5)
   {
     goto LABEL_16;
   }
 
-  v6 = [(NCNotificationListSupplementaryViewConfiguration *)self groupingIdentifier];
-  v7 = [v5 groupingIdentifier];
+  groupingIdentifier = [(NCNotificationListSupplementaryViewConfiguration *)self groupingIdentifier];
+  groupingIdentifier2 = [v5 groupingIdentifier];
   v8 = NCIsEqual();
 
   if (!v8)
@@ -96,8 +96,8 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v9 = [(NCNotificationListSupplementaryViewConfiguration *)self groupName];
-  v10 = [v5 groupName];
+  groupName = [(NCNotificationListSupplementaryViewConfiguration *)self groupName];
+  groupName2 = [v5 groupName];
   v11 = NCIsEqual();
 
   if (!v11)
@@ -105,8 +105,8 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v12 = [(NCNotificationListSupplementaryViewConfiguration *)self defaultAction];
-  v13 = [v5 defaultAction];
+  defaultAction = [(NCNotificationListSupplementaryViewConfiguration *)self defaultAction];
+  defaultAction2 = [v5 defaultAction];
   v14 = NCIsEqual();
 
   if (!v14)
@@ -114,8 +114,8 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v15 = [(NCNotificationListSupplementaryViewConfiguration *)self supplementaryActions];
-  v16 = [v5 supplementaryActions];
+  supplementaryActions = [(NCNotificationListSupplementaryViewConfiguration *)self supplementaryActions];
+  supplementaryActions2 = [v5 supplementaryActions];
   v17 = NCIsEqualToArray();
 
   if (!v17)
@@ -123,8 +123,8 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v18 = [(NCNotificationListSupplementaryViewConfiguration *)self auxiliaryOptionsSummaryText];
-  v19 = [v5 auxiliaryOptionsSummaryText];
+  auxiliaryOptionsSummaryText = [(NCNotificationListSupplementaryViewConfiguration *)self auxiliaryOptionsSummaryText];
+  auxiliaryOptionsSummaryText2 = [v5 auxiliaryOptionsSummaryText];
   v20 = NCIsEqual();
 
   if (!v20)
@@ -132,8 +132,8 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v21 = [(NCNotificationListSupplementaryViewConfiguration *)self auxiliaryOptionActions];
-  v22 = [v5 auxiliaryOptionActions];
+  auxiliaryOptionActions = [(NCNotificationListSupplementaryViewConfiguration *)self auxiliaryOptionActions];
+  auxiliaryOptionActions2 = [v5 auxiliaryOptionActions];
   v23 = NCIsEqualToArray();
 
   if (!v23)
@@ -141,8 +141,8 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v24 = [(NCNotificationListSupplementaryViewConfiguration *)self tintColor];
-  v25 = [v5 tintColor];
+  tintColor = [(NCNotificationListSupplementaryViewConfiguration *)self tintColor];
+  tintColor2 = [v5 tintColor];
   v26 = NCIsEqual();
 
   if (!v26)
@@ -150,8 +150,8 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v27 = [(NCNotificationListSupplementaryViewConfiguration *)self textColor];
-  v28 = [v5 textColor];
+  textColor = [(NCNotificationListSupplementaryViewConfiguration *)self textColor];
+  textColor2 = [v5 textColor];
   v29 = NCIsEqual();
 
   if (!v29)
@@ -159,20 +159,20 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v30 = [(NCNotificationListSupplementaryViewConfiguration *)self materialRecipe];
-  if (v30 != [v5 materialRecipe])
+  materialRecipe = [(NCNotificationListSupplementaryViewConfiguration *)self materialRecipe];
+  if (materialRecipe != [v5 materialRecipe])
   {
     goto LABEL_16;
   }
 
-  v31 = [(NCNotificationListSupplementaryViewConfiguration *)self containsUnmanagedContent];
-  if (v31 != [v5 containsUnmanagedContent])
+  containsUnmanagedContent = [(NCNotificationListSupplementaryViewConfiguration *)self containsUnmanagedContent];
+  if (containsUnmanagedContent != [v5 containsUnmanagedContent])
   {
     goto LABEL_16;
   }
 
-  v32 = [(NCNotificationListSupplementaryViewConfiguration *)self preventsUserDismissal];
-  v33 = v32 ^ [v5 preventsUserDismissal] ^ 1;
+  preventsUserDismissal = [(NCNotificationListSupplementaryViewConfiguration *)self preventsUserDismissal];
+  v33 = preventsUserDismissal ^ [v5 preventsUserDismissal] ^ 1;
 LABEL_17:
 
   return v33;
@@ -190,47 +190,47 @@ LABEL_17:
   return v9 + [(UIColor *)self->_textColor hash]+ self->_materialRecipe + self->_containsUnmanagedContent + self->_preventsUserDismissal;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [NCNotificationListMutableSupplementaryViewConfiguration alloc];
   LOWORD(v6) = *&self->_containsUnmanagedContent;
   return [(NCNotificationListSupplementaryViewConfiguration *)v4 _initWithGroupingIdentifier:self->_groupingIdentifier groupName:self->_groupName defaultAction:self->_defaultAction supplementaryActions:self->_supplementaryActions auxiliaryOptionsSummaryText:self->_auxiliaryOptionsSummaryText auxiliaryOptionActions:self->_auxiliaryOptionActions tintColor:self->_tintColor textColor:self->_textColor materialRecipe:self->_materialRecipe containsUnmanagedContent:v6 preventsUserDismissal:?];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(NCNotificationListSupplementaryViewConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(NCNotificationListSupplementaryViewConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v5 = [(NCNotificationListSupplementaryViewConfiguration *)self groupingIdentifier];
-  [v4 appendString:v5 withName:@"groupingIdentifier"];
+  groupingIdentifier = [(NCNotificationListSupplementaryViewConfiguration *)self groupingIdentifier];
+  [v4 appendString:groupingIdentifier withName:@"groupingIdentifier"];
 
-  v6 = [(NCNotificationListSupplementaryViewConfiguration *)self groupName];
-  [v4 appendString:v6 withName:@"groupName"];
+  groupName = [(NCNotificationListSupplementaryViewConfiguration *)self groupName];
+  [v4 appendString:groupName withName:@"groupName"];
 
-  v7 = [(NCNotificationListSupplementaryViewConfiguration *)self defaultAction];
-  v8 = [v4 appendObject:v7 withName:@"defaultAction"];
+  defaultAction = [(NCNotificationListSupplementaryViewConfiguration *)self defaultAction];
+  v8 = [v4 appendObject:defaultAction withName:@"defaultAction"];
 
-  v9 = [(NCNotificationListSupplementaryViewConfiguration *)self supplementaryActions];
-  v10 = [v4 appendObject:v9 withName:@"supplementaryActions"];
+  supplementaryActions = [(NCNotificationListSupplementaryViewConfiguration *)self supplementaryActions];
+  v10 = [v4 appendObject:supplementaryActions withName:@"supplementaryActions"];
 
-  v11 = [(NCNotificationListSupplementaryViewConfiguration *)self auxiliaryOptionsSummaryText];
-  v12 = [v4 appendObject:v11 withName:@"auxiliaryOptionsSummaryText"];
+  auxiliaryOptionsSummaryText = [(NCNotificationListSupplementaryViewConfiguration *)self auxiliaryOptionsSummaryText];
+  v12 = [v4 appendObject:auxiliaryOptionsSummaryText withName:@"auxiliaryOptionsSummaryText"];
 
-  v13 = [(NCNotificationListSupplementaryViewConfiguration *)self auxiliaryOptionActions];
-  v14 = [v4 appendObject:v13 withName:@"auxiliaryOptionActions"];
+  auxiliaryOptionActions = [(NCNotificationListSupplementaryViewConfiguration *)self auxiliaryOptionActions];
+  v14 = [v4 appendObject:auxiliaryOptionActions withName:@"auxiliaryOptionActions"];
 
-  v15 = [(NCNotificationListSupplementaryViewConfiguration *)self tintColor];
-  v16 = [v4 appendObject:v15 withName:@"tintColor"];
+  tintColor = [(NCNotificationListSupplementaryViewConfiguration *)self tintColor];
+  v16 = [v4 appendObject:tintColor withName:@"tintColor"];
 
-  v17 = [(NCNotificationListSupplementaryViewConfiguration *)self textColor];
-  v18 = [v4 appendObject:v17 withName:@"textColor"];
+  textColor = [(NCNotificationListSupplementaryViewConfiguration *)self textColor];
+  v18 = [v4 appendObject:textColor withName:@"textColor"];
 
   [(NCNotificationListSupplementaryViewConfiguration *)self materialRecipe];
   v19 = MTStringFromMaterialRecipe();
@@ -244,10 +244,10 @@ LABEL_17:
 
 - (id)succinctDescription
 {
-  v2 = [(NCNotificationListSupplementaryViewConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(NCNotificationListSupplementaryViewConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 @end

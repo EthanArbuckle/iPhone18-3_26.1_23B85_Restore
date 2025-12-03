@@ -1,7 +1,7 @@
 @interface PXSharedLibraryParticipantValidationQuery
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PXSharedLibraryParticipantValidationQuery)init;
-- (PXSharedLibraryParticipantValidationQuery)initWithAddress:(id)a3;
+- (PXSharedLibraryParticipantValidationQuery)initWithAddress:(id)address;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -16,14 +16,14 @@
   v4 = [v3 mutableCopy];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(PXSharedLibraryParticipantValidationQuery *)self address];
-  v7 = [v5 stringWithFormat:@":\naddress: %@, \n", v6];
+  address = [(PXSharedLibraryParticipantValidationQuery *)self address];
+  v7 = [v5 stringWithFormat:@":\naddress: %@, \n", address];
   [v4 appendString:v7];
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(PXSharedLibraryParticipantValidationQuery *)self isValid];
+  isValid = [(PXSharedLibraryParticipantValidationQuery *)self isValid];
   v10 = @"NO";
-  if (v9)
+  if (isValid)
   {
     v10 = @"YES";
   }
@@ -37,29 +37,29 @@
 
 - (unint64_t)hash
 {
-  v2 = [(PXSharedLibraryParticipantValidationQuery *)self address];
-  v3 = [v2 hash];
+  address = [(PXSharedLibraryParticipantValidationQuery *)self address];
+  v3 = [address hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PXSharedLibraryParticipantValidationQuery *)self address];
-    v7 = [v5 address];
-    if (v6 == v7)
+    v5 = equalCopy;
+    address = [(PXSharedLibraryParticipantValidationQuery *)self address];
+    address2 = [v5 address];
+    if (address == address2)
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = [v6 isEqualToString:v7];
+      v8 = [address isEqualToString:address2];
     }
   }
 
@@ -71,13 +71,13 @@
   return v8;
 }
 
-- (PXSharedLibraryParticipantValidationQuery)initWithAddress:(id)a3
+- (PXSharedLibraryParticipantValidationQuery)initWithAddress:(id)address
 {
-  v5 = a3;
-  if (![v5 length])
+  addressCopy = address;
+  if (![addressCopy length])
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryParticipantValidationQuery.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"address.length > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryParticipantValidationQuery.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"address.length > 0"}];
   }
 
   v11.receiver = self;
@@ -85,7 +85,7 @@
   v6 = [(PXSharedLibraryParticipantValidationQuery *)&v11 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [addressCopy copy];
     address = v6->_address;
     v6->_address = v7;
   }
@@ -95,8 +95,8 @@
 
 - (PXSharedLibraryParticipantValidationQuery)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryParticipantValidationQuery.m" lineNumber:21 description:{@"%s is not available as initializer", "-[PXSharedLibraryParticipantValidationQuery init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryParticipantValidationQuery.m" lineNumber:21 description:{@"%s is not available as initializer", "-[PXSharedLibraryParticipantValidationQuery init]"}];
 
   abort();
 }

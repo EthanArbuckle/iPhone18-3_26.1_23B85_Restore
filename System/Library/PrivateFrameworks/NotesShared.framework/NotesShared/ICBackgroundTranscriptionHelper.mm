@@ -1,7 +1,7 @@
 @interface ICBackgroundTranscriptionHelper
 + (id)sharedInstance;
-- (void)addAudioTranscriptionTaskToQueueWithIdentifier:(id)a3;
-- (void)addCallRecordingTranscriptionTaskToQueueOnLaunch:(id)a3;
+- (void)addAudioTranscriptionTaskToQueueWithIdentifier:(id)identifier;
+- (void)addCallRecordingTranscriptionTaskToQueueOnLaunch:(id)launch;
 @end
 
 @implementation ICBackgroundTranscriptionHelper
@@ -13,18 +13,18 @@
   return v2;
 }
 
-- (void)addAudioTranscriptionTaskToQueueWithIdentifier:(id)a3
+- (void)addAudioTranscriptionTaskToQueueWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[ICTranscription sharedInstance];
-  [v4 addAudioTranscriptionTaskToQueueWithAttachmentIdentifier:v3];
+  [v4 addAudioTranscriptionTaskToQueueWithAttachmentIdentifier:identifierCopy];
 }
 
-- (void)addCallRecordingTranscriptionTaskToQueueOnLaunch:(id)a3
+- (void)addCallRecordingTranscriptionTaskToQueueOnLaunch:(id)launch
 {
-  v3 = a3;
+  launchCopy = launch;
   v4 = +[ICTranscription sharedInstance];
-  [v4 addCallRecordingTranscriptionTaskToQueueWithSpeakers:MEMORY[0x277CBEBF8] attachmentIdentifier:v3];
+  [v4 addCallRecordingTranscriptionTaskToQueueWithSpeakers:MEMORY[0x277CBEBF8] attachmentIdentifier:launchCopy];
 }
 
 @end

@@ -1,29 +1,29 @@
 @interface SUUIHorizontalScrollingContainerViewController
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (SUUIHorizontalScrollingContainerViewControllerDelegate)delegate;
 - (UIEdgeInsets)viewControllerContentScrollViewContentInset;
-- (id)_indexPathOfFocusedContentItemWithDistanceToFocusedPosition:(double *)a3 layoutAttributes:(id *)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)_indexPathOfFocusedContentItemWithDistanceToFocusedPosition:(double *)position layoutAttributes:(id *)attributes;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)contentScrollView;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)_applyNewContentInset:(UIEdgeInsets)a3 toViewController:(id)a4;
-- (void)_applyNewContentInset:(UIEdgeInsets)a3 toViewControllers:(id)a4;
-- (void)_scrollViewDidScroll:(id)a3;
-- (void)_scrollViewWillBeginDecelerating:(id)a3;
-- (void)_setViewControllers:(id)a3 collectionViewsUpdateHandler:(id)a4;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)_applyNewContentInset:(UIEdgeInsets)inset toViewController:(id)controller;
+- (void)_applyNewContentInset:(UIEdgeInsets)inset toViewControllers:(id)controllers;
+- (void)_scrollViewDidScroll:(id)scroll;
+- (void)_scrollViewWillBeginDecelerating:(id)decelerating;
+- (void)_setViewControllers:(id)controllers collectionViewsUpdateHandler:(id)handler;
 - (void)_synchronizeContentCollectionViewWithMenuBarCollectionView;
 - (void)_synchronizeMenuBarCollectionViewWithContentCollectionView;
 - (void)_updateScrollViewContentOffsetsToTargetContentOffsets;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)replaceViewControllerAtIndex:(unint64_t)a3 withViewController:(id)a4;
-- (void)scrollToItemAtIndexPath:(id)a3 animated:(BOOL)a4;
-- (void)scrollViewDidChangeContentInset:(id)a3;
-- (void)setClientContext:(id)a3;
-- (void)setMenuBarCollectionView:(id)a3;
+- (void)replaceViewControllerAtIndex:(unint64_t)index withViewController:(id)controller;
+- (void)scrollToItemAtIndexPath:(id)path animated:(BOOL)animated;
+- (void)scrollViewDidChangeContentInset:(id)inset;
+- (void)setClientContext:(id)context;
+- (void)setMenuBarCollectionView:(id)view;
 - (void)setNeedsViewControllerContentScrollViewContentInsetUpdate;
-- (void)setViewControllers:(id)a3;
+- (void)setViewControllers:(id)controllers;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -45,8 +45,8 @@
   v22.receiver = self;
   v22.super_class = SUUIHorizontalScrollingContainerViewController;
   [(SUUIHorizontalScrollingContainerViewController *)&v22 viewDidLayoutSubviews];
-  v3 = [(SUUIHorizontalScrollingContainerViewController *)self view];
-  [v3 bounds];
+  view = [(SUUIHorizontalScrollingContainerViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -54,11 +54,11 @@
   proxyScrollView = self->_proxyScrollView;
   if (proxyScrollView)
   {
-    v13 = [(SUUIProxyScrollView *)proxyScrollView superview];
+    superview = [(SUUIProxyScrollView *)proxyScrollView superview];
 
-    if (!v13)
+    if (!superview)
     {
-      [v3 addSubview:self->_proxyScrollView];
+      [view addSubview:self->_proxyScrollView];
     }
   }
 
@@ -97,12 +97,12 @@
   {
     self->_contentCollectionViewItemSize.width = v9;
     self->_contentCollectionViewItemSize.height = v11;
-    v19 = [(UICollectionView *)self->_contentCollectionView collectionViewLayout];
+    collectionViewLayout = [(UICollectionView *)self->_contentCollectionView collectionViewLayout];
     v20 = objc_alloc_init([objc_opt_class() invalidationContextClass]);
 
     [v20 setInvalidateFlowLayoutDelegateMetrics:1];
-    v21 = [(UICollectionView *)self->_contentCollectionView collectionViewLayout];
-    [v21 invalidateLayoutWithContext:v20];
+    collectionViewLayout2 = [(UICollectionView *)self->_contentCollectionView collectionViewLayout];
+    [collectionViewLayout2 invalidateLayoutWithContext:v20];
   }
 }
 
@@ -112,11 +112,11 @@
   v25.receiver = self;
   v25.super_class = SUUIHorizontalScrollingContainerViewController;
   [(SUUIHorizontalScrollingContainerViewController *)&v25 viewDidLoad];
-  v3 = [(SUUIHorizontalScrollingContainerViewController *)self view];
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [v3 setBackgroundColor:v4];
+  view = [(SUUIHorizontalScrollingContainerViewController *)self view];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [view setBackgroundColor:clearColor];
 
-  [v3 bounds];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -124,7 +124,7 @@
   v13 = objc_alloc(MEMORY[0x277D75D18]);
   v14 = [v13 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [v14 setHidden:1];
-  [v3 addSubview:v14];
+  [view addSubview:v14];
   self->_contentCollectionViewItemSize.width = v10;
   self->_contentCollectionViewItemSize.height = v12;
   v15 = objc_alloc_init(MEMORY[0x277D752F0]);
@@ -170,8 +170,8 @@
   self->_contentCollectionView = v21;
 
   v23 = self->_contentCollectionView;
-  v24 = [MEMORY[0x277D75348] clearColor];
-  [(UICollectionView *)v23 setBackgroundColor:v24];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  [(UICollectionView *)v23 setBackgroundColor:clearColor2];
 
   [(UICollectionView *)self->_contentCollectionView setDataSource:self];
   [(UICollectionView *)self->_contentCollectionView setDelegate:self];
@@ -181,7 +181,7 @@
   [(UICollectionView *)self->_contentCollectionView setShowsVerticalScrollIndicator:0];
   [(UICollectionView *)self->_contentCollectionView setPrefetchingEnabled:0];
   [(UICollectionView *)self->_contentCollectionView setPagingEnabled:1];
-  [v3 addSubview:self->_contentCollectionView];
+  [view addSubview:self->_contentCollectionView];
 }
 
 - (id)contentScrollView
@@ -197,8 +197,8 @@
     [(SUUIProxyScrollView *)self->_proxyScrollView setDelegate:self];
     [(SUUIProxyScrollView *)self->_proxyScrollView setScrollEnabled:0];
     [(SUUIProxyScrollView *)self->_proxyScrollView setScrollsToTop:0];
-    v6 = [(SUUIHorizontalScrollingContainerViewController *)self view];
-    [v6 addSubview:self->_proxyScrollView];
+    view = [(SUUIHorizontalScrollingContainerViewController *)self view];
+    [view addSubview:self->_proxyScrollView];
   }
 
   v7 = self->_proxyScrollView;
@@ -206,13 +206,13 @@
   return v7;
 }
 
-- (void)setClientContext:(id)a3
+- (void)setClientContext:(id)context
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = SUUIHorizontalScrollingContainerViewController;
-  [(SUUIViewController *)&v15 setClientContext:v4];
+  [(SUUIViewController *)&v15 setClientContext:contextCopy];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -235,7 +235,7 @@
         v10 = *(*(&v11 + 1) + 8 * i);
         if ([v10 conformsToProtocol:{&unk_286BCF1D8, v11}])
         {
-          [v10 setClientContext:v4];
+          [v10 setClientContext:contextCopy];
         }
       }
 
@@ -246,11 +246,11 @@
   }
 }
 
-- (void)scrollViewDidChangeContentInset:(id)a3
+- (void)scrollViewDidChangeContentInset:(id)inset
 {
-  if (self->_proxyScrollView == a3)
+  if (self->_proxyScrollView == inset)
   {
-    [a3 contentInset];
+    [inset contentInset];
     v8.f64[0] = v4;
     v8.f64[1] = v5;
     v9.f64[0] = v6;
@@ -266,15 +266,15 @@
       v13 = v12;
       v15 = v14;
       v17 = v16;
-      v18 = [(SUUIHorizontalScrollingContainerViewController *)self viewControllers];
-      [(SUUIHorizontalScrollingContainerViewController *)self _applyNewContentInset:v18 toViewControllers:v11, v13, v15, v17];
+      viewControllers = [(SUUIHorizontalScrollingContainerViewController *)self viewControllers];
+      [(SUUIHorizontalScrollingContainerViewController *)self _applyNewContentInset:viewControllers toViewControllers:v11, v13, v15, v17];
     }
   }
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  if (self->_contentCollectionView == a3)
+  if (self->_contentCollectionView == view)
   {
     return [(NSArray *)self->_viewControllers count];
   }
@@ -285,17 +285,17 @@
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  if (self->_contentCollectionView == a3)
+  if (self->_contentCollectionView == view)
   {
-    v7 = a4;
-    v4 = [a3 dequeueReusableCellWithReuseIdentifier:0x286AEFD80 forIndexPath:v7];
+    pathCopy = path;
+    v4 = [view dequeueReusableCellWithReuseIdentifier:0x286AEFD80 forIndexPath:pathCopy];
     viewControllers = self->_viewControllers;
-    v9 = [v7 item];
+    item = [pathCopy item];
 
-    v10 = [(NSArray *)viewControllers objectAtIndex:v9 % [(NSArray *)self->_viewControllers count]];
-    v11 = [v10 view];
+    v10 = [(NSArray *)viewControllers objectAtIndex:item % [(NSArray *)self->_viewControllers count]];
+    view = [v10 view];
     [(SUUIHorizontalScrollingContainerViewController *)self viewControllerContentScrollViewContentInset];
     [(SUUIHorizontalScrollingContainerViewController *)self _applyNewContentInset:v10 toViewController:?];
     [v4 setViewController:v10];
@@ -309,41 +309,41 @@
   return v4;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v7 = a5;
-  if (self->_contentCollectionView == a3)
+  pathCopy = path;
+  if (self->_contentCollectionView == view)
   {
-    v9 = v7;
-    v8 = [(SUUIHorizontalScrollingContainerViewController *)self delegate];
+    v9 = pathCopy;
+    delegate = [(SUUIHorizontalScrollingContainerViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v8 horizontalScrollingContainerViewController:self willDisplayViewControllerAtIndex:{objc_msgSend(v9, "item") % -[NSArray count](self->_viewControllers, "count")}];
+      [delegate horizontalScrollingContainerViewController:self willDisplayViewControllerAtIndex:{objc_msgSend(v9, "item") % -[NSArray count](self->_viewControllers, "count")}];
     }
 
-    v7 = v9;
+    pathCopy = v9;
   }
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v7 = a5;
-  if (self->_contentCollectionView == a3)
+  pathCopy = path;
+  if (self->_contentCollectionView == view)
   {
-    v9 = v7;
-    v8 = [(SUUIHorizontalScrollingContainerViewController *)self delegate];
+    v9 = pathCopy;
+    delegate = [(SUUIHorizontalScrollingContainerViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v8 horizontalScrollingContainerViewController:self didEndDisplayingViewControllerAtIndex:{objc_msgSend(v9, "item") % -[NSArray count](self->_viewControllers, "count")}];
+      [delegate horizontalScrollingContainerViewController:self didEndDisplayingViewControllerAtIndex:{objc_msgSend(v9, "item") % -[NSArray count](self->_viewControllers, "count")}];
     }
 
-    v7 = v9;
+    pathCopy = v9;
   }
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  if (self->_contentCollectionView == a3)
+  if (self->_contentCollectionView == view)
   {
     p_contentCollectionViewItemSize = &self->_contentCollectionViewItemSize;
   }
@@ -370,45 +370,45 @@
   return result;
 }
 
-- (void)setMenuBarCollectionView:(id)a3
+- (void)setMenuBarCollectionView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   menuBarCollectionView = self->_menuBarCollectionView;
-  if (menuBarCollectionView != v5)
+  if (menuBarCollectionView != viewCopy)
   {
-    v9 = v5;
+    v9 = viewCopy;
     [(UICollectionView *)menuBarCollectionView _setContentOffsetRoundingEnabled:1];
-    v7 = [(UICollectionView *)self->_menuBarCollectionView delegate];
-    if ([v7 conformsToProtocol:&unk_286C4CB88])
+    delegate = [(UICollectionView *)self->_menuBarCollectionView delegate];
+    if ([delegate conformsToProtocol:&unk_286C4CB88])
     {
-      [v7 setScrollViewDelegateObserver:0];
+      [delegate setScrollViewDelegateObserver:0];
     }
 
-    objc_storeStrong(&self->_menuBarCollectionView, a3);
+    objc_storeStrong(&self->_menuBarCollectionView, view);
     [(UICollectionView *)self->_menuBarCollectionView _setContentOffsetRoundingEnabled:0];
-    v8 = [(UICollectionView *)self->_menuBarCollectionView delegate];
+    delegate2 = [(UICollectionView *)self->_menuBarCollectionView delegate];
 
-    if ([v8 conformsToProtocol:&unk_286C4CB88])
+    if ([delegate2 conformsToProtocol:&unk_286C4CB88])
     {
-      [v8 setScrollViewDelegateObserver:self];
+      [delegate2 setScrollViewDelegateObserver:self];
     }
 
-    v5 = v9;
+    viewCopy = v9;
   }
 
-  MEMORY[0x2821F96F8](menuBarCollectionView, v5);
+  MEMORY[0x2821F96F8](menuBarCollectionView, viewCopy);
 }
 
-- (void)setViewControllers:(id)a3
+- (void)setViewControllers:(id)controllers
 {
-  v4 = self;
+  selfCopy = self;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __69__SUUIHorizontalScrollingContainerViewController_setViewControllers___block_invoke;
   v6[3] = &unk_2798F5BE8;
-  v7 = v4;
-  v5 = v4;
-  [(SUUIHorizontalScrollingContainerViewController *)v5 _setViewControllers:a3 collectionViewsUpdateHandler:v6];
+  v7 = selfCopy;
+  v5 = selfCopy;
+  [(SUUIHorizontalScrollingContainerViewController *)v5 _setViewControllers:controllers collectionViewsUpdateHandler:v6];
 }
 
 uint64_t __69__SUUIHorizontalScrollingContainerViewController_setViewControllers___block_invoke(uint64_t a1)
@@ -420,29 +420,29 @@ uint64_t __69__SUUIHorizontalScrollingContainerViewController_setViewControllers
   return [v2 _updateScrollViewContentOffsetsToTargetContentOffsets];
 }
 
-- (void)replaceViewControllerAtIndex:(unint64_t)a3 withViewController:(id)a4
+- (void)replaceViewControllerAtIndex:(unint64_t)index withViewController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   v7 = [(NSArray *)self->_viewControllers mutableCopy];
-  [v7 replaceObjectAtIndex:a3 withObject:v6];
-  v8 = [(NSArray *)self->_viewControllers objectAtIndex:a3];
-  v9 = [v8 title];
-  v10 = [v6 title];
-  v11 = [v9 isEqualToString:v10];
+  [v7 replaceObjectAtIndex:index withObject:controllerCopy];
+  v8 = [(NSArray *)self->_viewControllers objectAtIndex:index];
+  title = [v8 title];
+  title2 = [controllerCopy title];
+  v11 = [title isEqualToString:title2];
 
   if (v11)
   {
     v12 = [(NSArray *)self->_viewControllers count];
-    v13 = self;
+    selfCopy = self;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __98__SUUIHorizontalScrollingContainerViewController_replaceViewControllerAtIndex_withViewController___block_invoke;
     v15[3] = &unk_2798F81C8;
-    v16 = v13;
+    v16 = selfCopy;
     v18 = v12;
-    v19 = a3;
-    v17 = v6;
-    v14 = v13;
+    indexCopy = index;
+    v17 = controllerCopy;
+    v14 = selfCopy;
     [(SUUIHorizontalScrollingContainerViewController *)v14 _setViewControllers:v7 collectionViewsUpdateHandler:v15];
   }
 
@@ -506,10 +506,10 @@ LABEL_12:
   [v9 setViewController:*(a1 + 40)];
 }
 
-- (void)scrollToItemAtIndexPath:(id)a3 animated:(BOOL)a4
+- (void)scrollToItemAtIndexPath:(id)path animated:(BOOL)animated
 {
-  v4 = a4;
-  v20 = [(UICollectionView *)self->_contentCollectionView layoutAttributesForItemAtIndexPath:a3];
+  animatedCopy = animated;
+  v20 = [(UICollectionView *)self->_contentCollectionView layoutAttributesForItemAtIndexPath:path];
   [(UICollectionView *)self->_contentCollectionView bounds];
   v7 = v6;
   v9 = v8;
@@ -525,9 +525,9 @@ LABEL_12:
   v23.size.height = v13;
   v17 = MidX + CGRectGetWidth(v23) * -0.5;
   contentCollectionView = self->_contentCollectionView;
-  v19 = [(UICollectionView *)contentCollectionView collectionViewLayout];
-  [v19 targetContentOffsetForProposedContentOffset:{v17, v15}];
-  [(UICollectionView *)contentCollectionView setContentOffset:v4 animated:?];
+  collectionViewLayout = [(UICollectionView *)contentCollectionView collectionViewLayout];
+  [collectionViewLayout targetContentOffsetForProposedContentOffset:{v17, v15}];
+  [(UICollectionView *)contentCollectionView setContentOffset:animatedCopy animated:?];
 }
 
 - (void)setNeedsViewControllerContentScrollViewContentInsetUpdate
@@ -537,8 +537,8 @@ LABEL_12:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SUUIHorizontalScrollingContainerViewController *)self viewControllers];
-  [(SUUIHorizontalScrollingContainerViewController *)self _applyNewContentInset:v11 toViewControllers:v4, v6, v8, v10];
+  viewControllers = [(SUUIHorizontalScrollingContainerViewController *)self viewControllers];
+  [(SUUIHorizontalScrollingContainerViewController *)self _applyNewContentInset:viewControllers toViewControllers:v4, v6, v8, v10];
 }
 
 - (UIEdgeInsets)viewControllerContentScrollViewContentInset
@@ -554,18 +554,18 @@ LABEL_12:
   return result;
 }
 
-- (void)_applyNewContentInset:(UIEdgeInsets)a3 toViewController:(id)a4
+- (void)_applyNewContentInset:(UIEdgeInsets)inset toViewController:(id)controller
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v9 = a4;
-  v10 = v9;
-  if (v9)
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
+  controllerCopy = controller;
+  v10 = controllerCopy;
+  if (controllerCopy)
   {
-    v50 = v9;
-    v11 = [(NSMapTable *)self->_viewControllerToExistingContentInsetAdjustment objectForKey:v9];
+    v50 = controllerCopy;
+    v11 = [(NSMapTable *)self->_viewControllerToExistingContentInsetAdjustment objectForKey:controllerCopy];
     [v11 UIEdgeInsetsValue];
     v13 = v12;
     v15 = v14;
@@ -577,8 +577,8 @@ LABEL_12:
     v21 = v20 && right == v19;
     if (!v21 || bottom != v17)
     {
-      v23 = [v50 contentScrollView];
-      if (v23)
+      contentScrollView = [v50 contentScrollView];
+      if (contentScrollView)
       {
         viewControllerToExistingContentInsetAdjustment = self->_viewControllerToExistingContentInsetAdjustment;
         if (!viewControllerToExistingContentInsetAdjustment)
@@ -593,22 +593,22 @@ LABEL_12:
         v27 = [MEMORY[0x277CCAE60] valueWithUIEdgeInsets:{top, left, bottom, right}];
         [(NSMapTable *)viewControllerToExistingContentInsetAdjustment setObject:v27 forKey:v50];
 
-        [v23 contentOffset];
+        [contentScrollView contentOffset];
         v48 = v29;
         v49 = v28;
-        [v23 contentInset];
+        [contentScrollView contentInset];
         v40 = v30;
         v41 = v31;
         v42 = v32;
         v43 = v33;
-        [v23 scrollIndicatorInsets];
+        [contentScrollView scrollIndicatorInsets];
         v44 = v34;
         v45 = v35;
         v46 = v36;
         v47 = v37;
-        [v23 setContentInset:{top + v40 - v13, left + v41 - v15, bottom + v42 - v17, right + v43 - v19}];
-        [v23 setScrollIndicatorInsets:{top + v44 - v13, left + v45 - v15, bottom + v46 - v17, right + v47 - v19}];
-        [v23 setContentOffset:{v49, v13 + v48 - top}];
+        [contentScrollView setContentInset:{top + v40 - v13, left + v41 - v15, bottom + v42 - v17, right + v43 - v19}];
+        [contentScrollView setScrollIndicatorInsets:{top + v44 - v13, left + v45 - v15, bottom + v46 - v17, right + v47 - v19}];
+        [contentScrollView setContentOffset:{v49, v13 + v48 - top}];
       }
 
       v38 = self->_viewControllerToExistingContentInsetAdjustment;
@@ -622,22 +622,22 @@ LABEL_12:
     }
   }
 
-  MEMORY[0x2821F96F8](v9, v10);
+  MEMORY[0x2821F96F8](controllerCopy, v10);
 }
 
-- (void)_applyNewContentInset:(UIEdgeInsets)a3 toViewControllers:(id)a4
+- (void)_applyNewContentInset:(UIEdgeInsets)inset toViewControllers:(id)controllers
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
   v19 = *MEMORY[0x277D85DE8];
-  v9 = a4;
+  controllersCopy = controllers;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v10 = [controllersCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
     v11 = v10;
@@ -649,21 +649,21 @@ LABEL_12:
       {
         if (*v15 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(controllersCopy);
         }
 
         [(SUUIHorizontalScrollingContainerViewController *)self _applyNewContentInset:*(*(&v14 + 1) + 8 * v13++) toViewController:top, left, bottom, right];
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v11 = [controllersCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v11);
   }
 }
 
-- (id)_indexPathOfFocusedContentItemWithDistanceToFocusedPosition:(double *)a3 layoutAttributes:(id *)a4
+- (id)_indexPathOfFocusedContentItemWithDistanceToFocusedPosition:(double *)position layoutAttributes:(id *)attributes
 {
   v30 = *MEMORY[0x277D85DE8];
   [(UICollectionView *)self->_contentCollectionView layoutIfNeeded];
@@ -725,97 +725,97 @@ LABEL_12:
     v12 = 0.0;
   }
 
-  if (a3)
+  if (position)
   {
-    *a3 = v12;
+    *position = v12;
   }
 
-  if (a4)
+  if (attributes)
   {
     v20 = v10;
-    *a4 = v10;
+    *attributes = v10;
   }
 
   return v9;
 }
 
-- (void)_scrollViewDidScroll:(id)a3
+- (void)_scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  if (self->_proxyScrollView != v4 && !self->_isHandlingScrollViewDidScroll)
+  scrollCopy = scroll;
+  if (self->_proxyScrollView != scrollCopy && !self->_isHandlingScrollViewDidScroll)
   {
     self->_isHandlingScrollViewDidScroll = 1;
-    if (self->_menuBarCollectionView == v4)
+    if (self->_menuBarCollectionView == scrollCopy)
     {
-      v5 = v4;
+      v5 = scrollCopy;
       [(SUUIHorizontalScrollingContainerViewController *)self _synchronizeContentCollectionViewWithMenuBarCollectionView];
     }
 
     else
     {
-      if (self->_contentCollectionView != v4)
+      if (self->_contentCollectionView != scrollCopy)
       {
 LABEL_8:
         self->_isHandlingScrollViewDidScroll = 0;
         goto LABEL_9;
       }
 
-      v5 = v4;
+      v5 = scrollCopy;
       [(SUUIHorizontalScrollingContainerViewController *)self _synchronizeMenuBarCollectionViewWithContentCollectionView];
     }
 
-    v4 = v5;
+    scrollCopy = v5;
     goto LABEL_8;
   }
 
 LABEL_9:
 }
 
-- (void)_scrollViewWillBeginDecelerating:(id)a3
+- (void)_scrollViewWillBeginDecelerating:(id)decelerating
 {
-  v4 = a3;
+  deceleratingCopy = decelerating;
   contentCollectionView = self->_contentCollectionView;
-  if (self->_menuBarCollectionView == v4)
+  if (self->_menuBarCollectionView == deceleratingCopy)
   {
-    v7 = v4;
+    v7 = deceleratingCopy;
   }
 
   else
   {
-    if (contentCollectionView != v4)
+    if (contentCollectionView != deceleratingCopy)
     {
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = deceleratingCopy;
     contentCollectionView = self->_menuBarCollectionView;
   }
 
   v6 = contentCollectionView;
-  v4 = v7;
+  deceleratingCopy = v7;
   if (v6)
   {
     [(UICollectionView *)v6 contentOffset];
     [(UICollectionView *)v6 setContentOffset:0 animated:?];
 
-    v4 = v7;
+    deceleratingCopy = v7;
   }
 
 LABEL_7:
 }
 
-- (void)_setViewControllers:(id)a3 collectionViewsUpdateHandler:(id)a4
+- (void)_setViewControllers:(id)controllers collectionViewsUpdateHandler:(id)handler
 {
   v70 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  controllersCopy = controllers;
+  handlerCopy = handler;
   viewControllers = self->_viewControllers;
-  if (viewControllers != v6 && ![(NSArray *)viewControllers isEqualToArray:v6])
+  if (viewControllers != controllersCopy && ![(NSArray *)viewControllers isEqualToArray:controllersCopy])
   {
-    v48 = v7;
+    v48 = handlerCopy;
     v9 = [(NSArray *)self->_viewControllers copy];
-    v47 = v6;
-    v10 = [(NSArray *)v6 copy];
+    v47 = controllersCopy;
+    v10 = [(NSArray *)controllersCopy copy];
     v11 = self->_viewControllers;
     self->_viewControllers = v10;
 
@@ -843,9 +843,9 @@ LABEL_7:
           if (![(NSArray *)self->_viewControllers containsObject:v18])
           {
             [v12 addObject:v18];
-            v19 = [v18 parentViewController];
+            parentViewController = [v18 parentViewController];
 
-            if (v19 == self)
+            if (parentViewController == self)
             {
               [v18 willMoveToParentViewController:0];
             }
@@ -894,7 +894,7 @@ LABEL_7:
             {
               [(SUUIViewController *)self clientContext];
               v28 = v25;
-              v29 = self;
+              selfCopy = self;
               v30 = v21;
               v31 = v20;
               v32 = v13;
@@ -907,7 +907,7 @@ LABEL_7:
               v13 = v32;
               v20 = v31;
               v21 = v30;
-              self = v29;
+              self = selfCopy;
               v25 = v28;
               v24 = v49;
             }
@@ -989,18 +989,18 @@ LABEL_7:
       while (v43);
     }
 
-    v6 = v47;
-    v7 = v48;
+    controllersCopy = v47;
+    handlerCopy = v48;
   }
 }
 
 - (void)_synchronizeContentCollectionViewWithMenuBarCollectionView
 {
-  v3 = [(UICollectionView *)self->_menuBarCollectionView collectionViewLayout];
-  if ([v3 conformsToProtocol:&unk_286BF06E0])
+  collectionViewLayout = [(UICollectionView *)self->_menuBarCollectionView collectionViewLayout];
+  if ([collectionViewLayout conformsToProtocol:&unk_286BF06E0])
   {
     v10 = 0.0;
-    v4 = [v3 menuBarFocusedItemIndexPathWithTransitionProgress:&v10];
+    v4 = [collectionViewLayout menuBarFocusedItemIndexPathWithTransitionProgress:&v10];
     v5 = [(UICollectionView *)self->_contentCollectionView layoutAttributesForItemAtIndexPath:v4];
     [v5 frame];
     Width = CGRectGetWidth(v11);
@@ -1025,8 +1025,8 @@ LABEL_7:
     [v4 frame];
     Width = CGRectGetWidth(v12);
     v7 = v11;
-    v8 = [(UICollectionView *)self->_menuBarCollectionView collectionViewLayout];
-    if ([v8 conformsToProtocol:&unk_286BF06E0])
+    collectionViewLayout = [(UICollectionView *)self->_menuBarCollectionView collectionViewLayout];
+    if ([collectionViewLayout conformsToProtocol:&unk_286BF06E0])
     {
       v9 = v7 / Width;
       if (v7 / Width < -1.0)
@@ -1034,7 +1034,7 @@ LABEL_7:
         v9 = -1.0;
       }
 
-      [v8 setMenuBarFocusedItemIndexPath:v3 withTransitionProgress:{fmin(v9, 1.0)}];
+      [collectionViewLayout setMenuBarFocusedItemIndexPath:v3 withTransitionProgress:{fmin(v9, 1.0)}];
     }
   }
 }
@@ -1044,8 +1044,8 @@ LABEL_7:
   [(UICollectionView *)self->_menuBarCollectionView contentOffset];
   v4 = v3;
   v6 = v5;
-  v7 = [(UICollectionView *)self->_menuBarCollectionView collectionViewLayout];
-  [v7 targetContentOffsetForProposedContentOffset:{v4, v6}];
+  collectionViewLayout = [(UICollectionView *)self->_menuBarCollectionView collectionViewLayout];
+  [collectionViewLayout targetContentOffsetForProposedContentOffset:{v4, v6}];
   v9 = v8;
   v11 = v10;
 
@@ -1057,8 +1057,8 @@ LABEL_7:
   [(UICollectionView *)self->_contentCollectionView contentOffset];
   v14 = v13;
   v16 = v15;
-  v17 = [(UICollectionView *)self->_contentCollectionView collectionViewLayout];
-  [v17 targetContentOffsetForProposedContentOffset:{v14, v16}];
+  collectionViewLayout2 = [(UICollectionView *)self->_contentCollectionView collectionViewLayout];
+  [collectionViewLayout2 targetContentOffsetForProposedContentOffset:{v14, v16}];
   v19 = v18;
   v21 = v20;
 

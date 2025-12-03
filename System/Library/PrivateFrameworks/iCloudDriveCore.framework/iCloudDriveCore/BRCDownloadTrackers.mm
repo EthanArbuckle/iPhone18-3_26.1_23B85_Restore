@@ -1,23 +1,23 @@
 @interface BRCDownloadTrackers
 - (BRCAccountSession)session;
-- (BRCDownloadTrackers)initWithSession:(id)a3;
+- (BRCDownloadTrackers)initWithSession:(id)session;
 - (id)trackedFileObjectIDs;
-- (void)addDownloadTracker:(id)a3 forFileObjectID:(id)a4 withEtagIfLoser:(id)a5;
-- (void)removeDownloadTracker:(id)a3;
+- (void)addDownloadTracker:(id)tracker forFileObjectID:(id)d withEtagIfLoser:(id)loser;
+- (void)removeDownloadTracker:(id)tracker;
 @end
 
 @implementation BRCDownloadTrackers
 
-- (BRCDownloadTrackers)initWithSession:(id)a3
+- (BRCDownloadTrackers)initWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v8.receiver = self;
   v8.super_class = BRCDownloadTrackers;
   v5 = [(BRCDownloadTrackers *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_session, v4);
+    objc_storeWeak(&v5->_session, sessionCopy);
   }
 
   return v6;
@@ -25,96 +25,96 @@
 
 - (id)trackedFileObjectIDs
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_trackersByFileObjectID allKeys];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allKeys = [(NSMutableDictionary *)selfCopy->_trackersByFileObjectID allKeys];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return allKeys;
 }
 
-- (void)addDownloadTracker:(id)a3 forFileObjectID:(id)a4 withEtagIfLoser:(id)a5
+- (void)addDownloadTracker:(id)tracker forFileObjectID:(id)d withEtagIfLoser:(id)loser
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
+  trackerCopy = tracker;
+  dCopy = d;
+  loserCopy = loser;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v12 = brc_bread_crumbs();
   v13 = brc_notifications_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     v23 = 134219010;
-    v24 = v8;
+    v24 = trackerCopy;
     v25 = 2112;
-    v26 = v8;
+    v26 = trackerCopy;
     v27 = 2112;
-    v28 = v9;
+    v28 = dCopy;
     v29 = 2112;
-    v30 = v10;
+    v30 = loserCopy;
     v31 = 2112;
     v32 = v12;
     _os_log_debug_impl(&dword_223E7A000, v13, OS_LOG_TYPE_DEBUG, "[NOTIF] addDownloadTracker %p %@ forFileObjectID %@ withEtagIfLoser %@%@", &v23, 0x34u);
   }
 
-  if (!v11->_trackersByFileObjectID)
+  if (!selfCopy->_trackersByFileObjectID)
   {
     v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    trackersByFileObjectID = v11->_trackersByFileObjectID;
-    v11->_trackersByFileObjectID = v14;
+    trackersByFileObjectID = selfCopy->_trackersByFileObjectID;
+    selfCopy->_trackersByFileObjectID = v14;
   }
 
-  v16 = +[BRCTrackedVersion trackedVersionFor:withEtagIfLoser:kind:](BRCTrackedVersion, "trackedVersionFor:withEtagIfLoser:kind:", v9, v10, [v8 kind]);
-  v17 = [(NSMutableDictionary *)v11->_trackersByFileObjectID objectForKeyedSubscript:v16];
+  v16 = +[BRCTrackedVersion trackedVersionFor:withEtagIfLoser:kind:](BRCTrackedVersion, "trackedVersionFor:withEtagIfLoser:kind:", dCopy, loserCopy, [trackerCopy kind]);
+  v17 = [(NSMutableDictionary *)selfCopy->_trackersByFileObjectID objectForKeyedSubscript:v16];
   if (!v17)
   {
     v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    [(NSMutableDictionary *)v11->_trackersByFileObjectID setObject:v17 forKeyedSubscript:v16];
+    [(NSMutableDictionary *)selfCopy->_trackersByFileObjectID setObject:v17 forKeyedSubscript:v16];
   }
 
-  [v17 addObject:v8];
-  fileObjectIDsByTracker = v11->_fileObjectIDsByTracker;
+  [v17 addObject:trackerCopy];
+  fileObjectIDsByTracker = selfCopy->_fileObjectIDsByTracker;
   if (!fileObjectIDsByTracker)
   {
-    v19 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
-    v20 = v11->_fileObjectIDsByTracker;
-    v11->_fileObjectIDsByTracker = v19;
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    v20 = selfCopy->_fileObjectIDsByTracker;
+    selfCopy->_fileObjectIDsByTracker = strongToStrongObjectsMapTable;
 
-    fileObjectIDsByTracker = v11->_fileObjectIDsByTracker;
+    fileObjectIDsByTracker = selfCopy->_fileObjectIDsByTracker;
   }
 
-  v21 = [(NSMapTable *)fileObjectIDsByTracker objectForKey:v8];
+  v21 = [(NSMapTable *)fileObjectIDsByTracker objectForKey:trackerCopy];
   if (!v21)
   {
     v21 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    [(NSMapTable *)v11->_fileObjectIDsByTracker setObject:v21 forKey:v8];
+    [(NSMapTable *)selfCopy->_fileObjectIDsByTracker setObject:v21 forKey:trackerCopy];
   }
 
   [v21 addObject:v16];
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeDownloadTracker:(id)a3
+- (void)removeDownloadTracker:(id)tracker
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  trackerCopy = tracker;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = brc_bread_crumbs();
   v7 = brc_notifications_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [(BRCDownloadTrackers *)v4 removeDownloadTracker:v6, v7];
+    [(BRCDownloadTrackers *)trackerCopy removeDownloadTracker:v6, v7];
   }
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [(NSMapTable *)v5->_fileObjectIDsByTracker objectForKey:v4, 0];
+  v8 = [(NSMapTable *)selfCopy->_fileObjectIDsByTracker objectForKey:trackerCopy, 0];
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -129,11 +129,11 @@
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [(NSMutableDictionary *)v5->_trackersByFileObjectID objectForKeyedSubscript:v12];
-        [v13 removeObject:v4];
+        v13 = [(NSMutableDictionary *)selfCopy->_trackersByFileObjectID objectForKeyedSubscript:v12];
+        [v13 removeObject:trackerCopy];
         if (![v13 count])
         {
-          [(NSMutableDictionary *)v5->_trackersByFileObjectID removeObjectForKey:v12];
+          [(NSMutableDictionary *)selfCopy->_trackersByFileObjectID removeObjectForKey:v12];
         }
       }
 
@@ -143,20 +143,20 @@
     while (v9);
   }
 
-  if (![(NSMutableDictionary *)v5->_trackersByFileObjectID count])
+  if (![(NSMutableDictionary *)selfCopy->_trackersByFileObjectID count])
   {
-    trackersByFileObjectID = v5->_trackersByFileObjectID;
-    v5->_trackersByFileObjectID = 0;
+    trackersByFileObjectID = selfCopy->_trackersByFileObjectID;
+    selfCopy->_trackersByFileObjectID = 0;
   }
 
-  [(NSMapTable *)v5->_fileObjectIDsByTracker removeObjectForKey:v4];
-  if (![(NSMapTable *)v5->_fileObjectIDsByTracker count])
+  [(NSMapTable *)selfCopy->_fileObjectIDsByTracker removeObjectForKey:trackerCopy];
+  if (![(NSMapTable *)selfCopy->_fileObjectIDsByTracker count])
   {
-    fileObjectIDsByTracker = v5->_fileObjectIDsByTracker;
-    v5->_fileObjectIDsByTracker = 0;
+    fileObjectIDsByTracker = selfCopy->_fileObjectIDsByTracker;
+    selfCopy->_fileObjectIDsByTracker = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v16 = *MEMORY[0x277D85DE8];
 }

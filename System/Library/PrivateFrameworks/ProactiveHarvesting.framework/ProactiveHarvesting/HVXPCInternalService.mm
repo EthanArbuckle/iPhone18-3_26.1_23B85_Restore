@@ -1,16 +1,16 @@
 @interface HVXPCInternalService
-- (BOOL)deleteContentWithRequest:(id)a3 error:(id *)a4;
-- (BOOL)donateSearchableItem:(id)a3 error:(id *)a4;
-- (BOOL)harvestWithError:(id *)a3;
-- (BOOL)overrideIsConnectedToPower:(id)a3 error:(id *)a4;
-- (BOOL)refillHarvestBudgetWithError:(id *)a3;
+- (BOOL)deleteContentWithRequest:(id)request error:(id *)error;
+- (BOOL)donateSearchableItem:(id)item error:(id *)error;
+- (BOOL)harvestWithError:(id *)error;
+- (BOOL)overrideIsConnectedToPower:(id)power error:(id *)error;
+- (BOOL)refillHarvestBudgetWithError:(id *)error;
 - (HVXPCInternalService)init;
-- (id)statsWithError:(id *)a3;
+- (id)statsWithError:(id *)error;
 @end
 
 @implementation HVXPCInternalService
 
-- (BOOL)harvestWithError:(id *)a3
+- (BOOL)harvestWithError:(id *)error
 {
   v5 = hv_default_log_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -29,19 +29,19 @@
   v13 = __Block_byref_object_copy__1752;
   v14 = __Block_byref_object_dispose__1753;
   v15 = 0;
-  v6 = [(HVXPCInternalService *)self synchronousProxy];
+  synchronousProxy = [(HVXPCInternalService *)self synchronousProxy];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __41__HVXPCInternalService_harvestWithError___block_invoke;
   v9[3] = &unk_278969A90;
   v9[4] = &v16;
   v9[5] = buf;
-  [v6 harvestWithCompletion:v9];
+  [synchronousProxy harvestWithCompletion:v9];
 
   v7 = *(v17 + 24);
-  if (a3 && (v17[3] & 1) == 0)
+  if (error && (v17[3] & 1) == 0)
   {
-    *a3 = *(v11 + 5);
+    *error = *(v11 + 5);
     v7 = *(v17 + 24);
   }
 
@@ -51,7 +51,7 @@
   return v7 & 1;
 }
 
-- (id)statsWithError:(id *)a3
+- (id)statsWithError:(id *)error
 {
   v5 = hv_default_log_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -72,19 +72,19 @@
   v14 = __Block_byref_object_copy__1752;
   v15 = __Block_byref_object_dispose__1753;
   v16 = 0;
-  v6 = [(HVXPCInternalService *)self synchronousProxy];
+  synchronousProxy = [(HVXPCInternalService *)self synchronousProxy];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __39__HVXPCInternalService_statsWithError___block_invoke;
   v10[3] = &unk_278969AB8;
   v10[4] = buf;
   v10[5] = &v11;
-  [v6 statsWithCompletion:v10];
+  [synchronousProxy statsWithCompletion:v10];
 
   v7 = *(v18 + 5);
-  if (a3 && !v7)
+  if (error && !v7)
   {
-    *a3 = v12[5];
+    *error = v12[5];
     v7 = *(v18 + 5);
   }
 
@@ -110,9 +110,9 @@ void __39__HVXPCInternalService_statsWithError___block_invoke(uint64_t a1, void 
   *(v9 + 40) = v6;
 }
 
-- (BOOL)deleteContentWithRequest:(id)a3 error:(id *)a4
+- (BOOL)deleteContentWithRequest:(id)request error:(id *)error
 {
-  v7 = a3;
+  requestCopy = request;
   v8 = hv_default_log_handle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -120,10 +120,10 @@ void __39__HVXPCInternalService_statsWithError___block_invoke(uint64_t a1, void 
     _os_log_impl(&dword_2321EC000, v8, OS_LOG_TYPE_DEFAULT, "HVXPCInternalService: deleteContentWithRequest called.", buf, 2u);
   }
 
-  if (!v7)
+  if (!requestCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"HVXPCInternalService.m" lineNumber:200 description:{@"Invalid parameter not satisfying: %@", @"request"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HVXPCInternalService.m" lineNumber:200 description:{@"Invalid parameter not satisfying: %@", @"request"}];
   }
 
   v20 = 0;
@@ -136,19 +136,19 @@ void __39__HVXPCInternalService_statsWithError___block_invoke(uint64_t a1, void 
   v17 = __Block_byref_object_copy__1752;
   v18 = __Block_byref_object_dispose__1753;
   v19 = 0;
-  v9 = [(HVXPCInternalService *)self synchronousProxy];
+  synchronousProxy = [(HVXPCInternalService *)self synchronousProxy];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __55__HVXPCInternalService_deleteContentWithRequest_error___block_invoke;
   v13[3] = &unk_278969A90;
   v13[4] = &v20;
   v13[5] = buf;
-  [v9 deleteContentWithRequest:v7 completion:v13];
+  [synchronousProxy deleteContentWithRequest:requestCopy completion:v13];
 
   v10 = *(v21 + 24);
-  if (a4 && (v21[3] & 1) == 0)
+  if (error && (v21[3] & 1) == 0)
   {
-    *a4 = *(v15 + 5);
+    *error = *(v15 + 5);
     v10 = *(v21 + 24);
   }
 
@@ -158,9 +158,9 @@ void __39__HVXPCInternalService_statsWithError___block_invoke(uint64_t a1, void 
   return v10 & 1;
 }
 
-- (BOOL)donateSearchableItem:(id)a3 error:(id *)a4
+- (BOOL)donateSearchableItem:(id)item error:(id *)error
 {
-  v7 = a3;
+  itemCopy = item;
   v8 = hv_default_log_handle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -168,10 +168,10 @@ void __39__HVXPCInternalService_statsWithError___block_invoke(uint64_t a1, void 
     _os_log_impl(&dword_2321EC000, v8, OS_LOG_TYPE_DEFAULT, "HVXPCInternalService: donateSearchableItem called.", buf, 2u);
   }
 
-  if (!v7)
+  if (!itemCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"HVXPCInternalService.m" lineNumber:180 description:{@"Invalid parameter not satisfying: %@", @"searchableItem"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HVXPCInternalService.m" lineNumber:180 description:{@"Invalid parameter not satisfying: %@", @"searchableItem"}];
   }
 
   v20 = 0;
@@ -184,19 +184,19 @@ void __39__HVXPCInternalService_statsWithError___block_invoke(uint64_t a1, void 
   v17 = __Block_byref_object_copy__1752;
   v18 = __Block_byref_object_dispose__1753;
   v19 = 0;
-  v9 = [(HVXPCInternalService *)self synchronousProxy];
+  synchronousProxy = [(HVXPCInternalService *)self synchronousProxy];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __51__HVXPCInternalService_donateSearchableItem_error___block_invoke;
   v13[3] = &unk_278969A90;
   v13[4] = &v20;
   v13[5] = buf;
-  [v9 donateSearchableItem:v7 completion:v13];
+  [synchronousProxy donateSearchableItem:itemCopy completion:v13];
 
   v10 = *(v21 + 24);
-  if (a4 && (v21[3] & 1) == 0)
+  if (error && (v21[3] & 1) == 0)
   {
-    *a4 = *(v15 + 5);
+    *error = *(v15 + 5);
     v10 = *(v21 + 24);
   }
 
@@ -206,7 +206,7 @@ void __39__HVXPCInternalService_statsWithError___block_invoke(uint64_t a1, void 
   return v10 & 1;
 }
 
-- (BOOL)refillHarvestBudgetWithError:(id *)a3
+- (BOOL)refillHarvestBudgetWithError:(id *)error
 {
   v5 = hv_default_log_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -225,19 +225,19 @@ void __39__HVXPCInternalService_statsWithError___block_invoke(uint64_t a1, void 
   v13 = __Block_byref_object_copy__1752;
   v14 = __Block_byref_object_dispose__1753;
   v15 = 0;
-  v6 = [(HVXPCInternalService *)self synchronousProxy];
+  synchronousProxy = [(HVXPCInternalService *)self synchronousProxy];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__HVXPCInternalService_refillHarvestBudgetWithError___block_invoke;
   v9[3] = &unk_278969A90;
   v9[4] = &v16;
   v9[5] = buf;
-  [v6 refillHarvestBudgetWithCompletion:v9];
+  [synchronousProxy refillHarvestBudgetWithCompletion:v9];
 
   v7 = *(v17 + 24);
-  if (a3 && (v17[3] & 1) == 0)
+  if (error && (v17[3] & 1) == 0)
   {
-    *a3 = *(v11 + 5);
+    *error = *(v11 + 5);
     v7 = *(v17 + 24);
   }
 
@@ -247,9 +247,9 @@ void __39__HVXPCInternalService_statsWithError___block_invoke(uint64_t a1, void 
   return v7 & 1;
 }
 
-- (BOOL)overrideIsConnectedToPower:(id)a3 error:(id *)a4
+- (BOOL)overrideIsConnectedToPower:(id)power error:(id *)error
 {
-  v6 = a3;
+  powerCopy = power;
   v7 = hv_default_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -267,19 +267,19 @@ void __39__HVXPCInternalService_statsWithError___block_invoke(uint64_t a1, void 
   v15 = __Block_byref_object_copy__1752;
   v16 = __Block_byref_object_dispose__1753;
   v17 = 0;
-  v8 = [(HVXPCInternalService *)self synchronousProxy];
+  synchronousProxy = [(HVXPCInternalService *)self synchronousProxy];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __57__HVXPCInternalService_overrideIsConnectedToPower_error___block_invoke;
   v11[3] = &unk_278969A90;
   v11[4] = &v18;
   v11[5] = buf;
-  [v8 overrideIsConnectedToPower:v6 completion:v11];
+  [synchronousProxy overrideIsConnectedToPower:powerCopy completion:v11];
 
   v9 = *(v19 + 24);
-  if (a4 && (v19[3] & 1) == 0)
+  if (error && (v19[3] & 1) == 0)
   {
-    *a4 = *(v13 + 5);
+    *error = *(v13 + 5);
     v9 = *(v19 + 24);
   }
 

@@ -1,6 +1,6 @@
 @interface LibcoreUtilBasicLruCache
-- (id)getWithId:(id)a3;
-- (id)putWithId:(id)a3 withId:(id)a4;
+- (id)getWithId:(id)id;
+- (id)putWithId:(id)id withId:(id)withId;
 - (id)snapshot;
 - (void)dealloc;
 - (void)evictAll;
@@ -8,10 +8,10 @@
 
 @implementation LibcoreUtilBasicLruCache
 
-- (id)getWithId:(id)a3
+- (id)getWithId:(id)id
 {
   objc_sync_enter(self);
-  if (!a3)
+  if (!id)
   {
     v8 = new_JavaLangNullPointerException_initWithNSString_(@"key == null");
     objc_exception_throw(v8);
@@ -23,13 +23,13 @@
     JreThrowNullPointerException();
   }
 
-  v6 = [(JavaUtilLinkedHashMap *)map getWithId:a3];
+  v6 = [(JavaUtilLinkedHashMap *)map getWithId:id];
   if (!v6)
   {
-    v6 = [(LibcoreUtilBasicLruCache *)self createWithId:a3];
+    v6 = [(LibcoreUtilBasicLruCache *)self createWithId:id];
     if (v6)
     {
-      [(JavaUtilHashMap *)self->map_ putWithId:a3 withId:v6];
+      [(JavaUtilHashMap *)self->map_ putWithId:id withId:v6];
       sub_1001483A0(&self->super.isa, self->maxSize_);
     }
   }
@@ -38,16 +38,16 @@
   return v6;
 }
 
-- (id)putWithId:(id)a3 withId:(id)a4
+- (id)putWithId:(id)id withId:(id)withId
 {
   objc_sync_enter(self);
-  if (!a3)
+  if (!id)
   {
     v10 = @"key == null";
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!withId)
   {
     v10 = @"value == null";
 LABEL_8:
@@ -61,7 +61,7 @@ LABEL_8:
     JreThrowNullPointerException();
   }
 
-  v8 = [(JavaUtilHashMap *)map putWithId:a3 withId:a4];
+  v8 = [(JavaUtilHashMap *)map putWithId:id withId:withId];
   sub_1001483A0(&self->super.isa, self->maxSize_);
   objc_sync_exit(self);
   return v8;

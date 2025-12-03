@@ -1,11 +1,11 @@
 @interface SBIconDragPlaceholderIconViewController
 - (CGRect)visibleBounds;
-- (void)setIconImageInfo:(SBIconImageInfo *)a3;
+- (void)setIconImageInfo:(SBIconImageInfo *)info;
 @end
 
 @implementation SBIconDragPlaceholderIconViewController
 
-- (void)setIconImageInfo:(SBIconImageInfo *)a3
+- (void)setIconImageInfo:(SBIconImageInfo *)info
 {
   self->iconImageInfo.size.width = v3;
   self->iconImageInfo.size.height = v4;

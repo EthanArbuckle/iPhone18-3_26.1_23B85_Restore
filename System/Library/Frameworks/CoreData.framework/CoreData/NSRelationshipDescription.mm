@@ -1,19 +1,19 @@
 @interface NSRelationshipDescription
-- (BOOL)_isSchemaEqual:(id)a3;
-- (BOOL)_nonPredicateValidateValue:(id *)a3 forKey:(id)a4 inObject:(id)a5 error:(id *)a6;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_isSchemaEqual:(id)equal;
+- (BOOL)_nonPredicateValidateValue:(id *)value forKey:(id)key inObject:(id)object error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSData)versionHash;
 - (NSEntityDescription)destinationEntity;
-- (NSRelationshipDescription)initWithCoder:(id)a3;
+- (NSRelationshipDescription)initWithCoder:(id)coder;
 - (NSRelationshipDescription)inverseRelationship;
-- (id)_initWithName:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)_createCachesAndOptimizeState;
-- (void)_versionHash:(char *)a3 inStyle:(unint64_t)a4 proxyContext:(id)a5;
-- (void)_writeIntoData:(id)a3 propertiesDict:(id)a4 uniquedPropertyNames:(id)a5 uniquedStrings:(id)a6 uniquedData:(id)a7 entitiesSlots:(id)a8 fetchRequests:(id)a9;
+- (void)_versionHash:(char *)hash inStyle:(unint64_t)style proxyContext:(id)context;
+- (void)_writeIntoData:(id)data propertiesDict:(id)dict uniquedPropertyNames:(id)names uniquedStrings:(id)strings uniquedData:(id)uniquedData entitiesSlots:(id)slots fetchRequests:(id)requests;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setDestinationEntity:(NSEntityDescription *)destinationEntity;
 - (void)setInverseRelationship:(NSRelationshipDescription *)inverseRelationship;
 - (void)setMaxCount:(NSUInteger)maxCount;
@@ -55,10 +55,10 @@
   {
     if (self->_lazyInverseRelationshipName)
     {
-      v4 = [(NSRelationshipDescription *)self destinationEntity];
+      destinationEntity = [(NSRelationshipDescription *)self destinationEntity];
       lazyInverseRelationshipName = self->_lazyInverseRelationshipName;
 
-      return [(NSEntityDescription *)v4 _relationshipNamed:?];
+      return [(NSEntityDescription *)destinationEntity _relationshipNamed:?];
     }
 
     else
@@ -149,16 +149,16 @@ LABEL_8:
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = NSRelationshipDescription;
   [(NSPropertyDescription *)&v8 encodeWithCoder:?];
   v5 = objc_autoreleasePoolPush();
-  [a3 encodeInt:-[NSRelationshipDescription maxCount](self forKey:{"maxCount"), @"NSMaxCount"}];
-  [a3 encodeInt:-[NSRelationshipDescription minCount](self forKey:{"minCount"), @"NSMinCount"}];
-  [a3 encodeInt:-[NSRelationshipDescription deleteRule](self forKey:{"deleteRule"), @"NSDeleteRule"}];
-  [a3 encodeConditionalObject:-[NSRelationshipDescription destinationEntity](self forKey:{"destinationEntity"), @"NSDestinationEntity"}];
+  [coder encodeInt:-[NSRelationshipDescription maxCount](self forKey:{"maxCount"), @"NSMaxCount"}];
+  [coder encodeInt:-[NSRelationshipDescription minCount](self forKey:{"minCount"), @"NSMinCount"}];
+  [coder encodeInt:-[NSRelationshipDescription deleteRule](self forKey:{"deleteRule"), @"NSDeleteRule"}];
+  [coder encodeConditionalObject:-[NSRelationshipDescription destinationEntity](self forKey:{"destinationEntity"), @"NSDestinationEntity"}];
   if ([(NSRelationshipDescription *)self destinationEntity])
   {
     lazyDestinationEntityName = [(NSEntityDescription *)[(NSRelationshipDescription *)self destinationEntity] name];
@@ -169,8 +169,8 @@ LABEL_8:
     lazyDestinationEntityName = self->_lazyDestinationEntityName;
   }
 
-  [a3 encodeObject:lazyDestinationEntityName forKey:@"_NSDestinationEntityName"];
-  [a3 encodeConditionalObject:-[NSRelationshipDescription inverseRelationship](self forKey:{"inverseRelationship"), @"NSInverseRelationship"}];
+  [coder encodeObject:lazyDestinationEntityName forKey:@"_NSDestinationEntityName"];
+  [coder encodeConditionalObject:-[NSRelationshipDescription inverseRelationship](self forKey:{"inverseRelationship"), @"NSInverseRelationship"}];
   if ([(NSRelationshipDescription *)self inverseRelationship])
   {
     lazyInverseRelationshipName = [(NSPropertyDescription *)[(NSRelationshipDescription *)self inverseRelationship] name];
@@ -181,11 +181,11 @@ LABEL_8:
     lazyInverseRelationshipName = self->_lazyInverseRelationshipName;
   }
 
-  [a3 encodeObject:lazyInverseRelationshipName forKey:@"_NSInverseRelationshipName"];
+  [coder encodeObject:lazyInverseRelationshipName forKey:@"_NSInverseRelationshipName"];
   objc_autoreleasePoolPop(v5);
 }
 
-- (NSRelationshipDescription)initWithCoder:(id)a3
+- (NSRelationshipDescription)initWithCoder:(id)coder
 {
   v21.receiver = self;
   v21.super_class = NSRelationshipDescription;
@@ -198,11 +198,11 @@ LABEL_8:
     v18 = __43__NSRelationshipDescription_initWithCoder___block_invoke;
     v19 = &unk_1E6EC16F0;
     v20 = v5;
-    v4->_maxCount = [a3 decodeIntForKey:@"NSMaxCount"];
-    v4->_minCount = [a3 decodeIntForKey:@"NSMinCount"];
-    v4->_deleteRule = [a3 decodeIntForKey:@"NSDeleteRule"];
-    v4->_destinationEntity = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSDestinationEntity"];
-    v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"_NSDestinationEntityName"];
+    v4->_maxCount = [coder decodeIntForKey:@"NSMaxCount"];
+    v4->_minCount = [coder decodeIntForKey:@"NSMinCount"];
+    v4->_deleteRule = [coder decodeIntForKey:@"NSDeleteRule"];
+    v4->_destinationEntity = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSDestinationEntity"];
+    v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"_NSDestinationEntityName"];
     if (!v4->_destinationEntity)
     {
       v11 = v6;
@@ -257,8 +257,8 @@ LABEL_8:
     }
 
 LABEL_14:
-    v4->_inverseRelationship = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSInverseRelationship"];
-    v12 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"_NSInverseRelationshipName"];
+    v4->_inverseRelationship = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSInverseRelationship"];
+    v12 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"_NSInverseRelationshipName"];
     if (v4->_inverseRelationship)
     {
       if (v5)
@@ -305,7 +305,7 @@ LABEL_31:
     }
 
 LABEL_30:
-    [a3 failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 4866, v10)}];
+    [coder failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 4866, v10)}];
 
     v4 = 0;
     goto LABEL_31;
@@ -314,11 +314,11 @@ LABEL_30:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = NSRelationshipDescription;
-  v4 = [(NSPropertyDescription *)&v11 copyWithZone:a3];
+  v4 = [(NSPropertyDescription *)&v11 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -354,11 +354,11 @@ LABEL_30:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
-    LOBYTE(v7) = 1;
+    LOBYTE(name) = 1;
   }
 
   else
@@ -367,32 +367,32 @@ LABEL_30:
     v21 = v4;
     v19.receiver = self;
     v19.super_class = NSRelationshipDescription;
-    LODWORD(v7) = [(NSPropertyDescription *)&v19 isEqual:?];
-    if (v7)
+    LODWORD(name) = [(NSPropertyDescription *)&v19 isEqual:?];
+    if (name)
     {
-      v8 = [(NSRelationshipDescription *)self maxCount];
-      if (v8 == [a3 maxCount] && (v9 = -[NSRelationshipDescription minCount](self, "minCount"), v9 == objc_msgSend(a3, "minCount")) && (v10 = -[NSRelationshipDescription deleteRule](self, "deleteRule"), v10 == objc_msgSend(a3, "deleteRule")) && (v11 = -[NSRelationshipDescription isOrdered](self, "isOrdered"), v11 == objc_msgSend(a3, "isOrdered")))
+      maxCount = [(NSRelationshipDescription *)self maxCount];
+      if (maxCount == [equal maxCount] && (v9 = -[NSRelationshipDescription minCount](self, "minCount"), v9 == objc_msgSend(equal, "minCount")) && (v10 = -[NSRelationshipDescription deleteRule](self, "deleteRule"), v10 == objc_msgSend(equal, "deleteRule")) && (v11 = -[NSRelationshipDescription isOrdered](self, "isOrdered"), v11 == objc_msgSend(equal, "isOrdered")))
       {
-        v12 = [objc_msgSend(a3 "destinationEntity")];
-        v7 = [(NSEntityDescription *)[(NSRelationshipDescription *)self destinationEntity] name];
-        if (v12 == v7 || (v13 = v7, LOBYTE(v7) = 0, v12) && v13 && (LODWORD(v7) = [(NSString *)v12 isEqual:?], v7))
+        v12 = [objc_msgSend(equal "destinationEntity")];
+        name = [(NSEntityDescription *)[(NSRelationshipDescription *)self destinationEntity] name];
+        if (v12 == name || (v13 = name, LOBYTE(name) = 0, v12) && v13 && (LODWORD(name) = [(NSString *)v12 isEqual:?], name))
         {
-          v14 = [(NSRelationshipDescription *)self inverseRelationship];
-          v15 = [a3 inverseRelationship];
-          v16 = [(NSPropertyDescription *)v14 name];
-          v7 = [v15 name];
-          if (v16 == v7)
+          inverseRelationship = [(NSRelationshipDescription *)self inverseRelationship];
+          inverseRelationship2 = [equal inverseRelationship];
+          name2 = [(NSPropertyDescription *)inverseRelationship name];
+          name = [inverseRelationship2 name];
+          if (name2 == name)
           {
-            LOBYTE(v7) = 1;
+            LOBYTE(name) = 1;
           }
 
           else
           {
-            v17 = v7;
-            LOBYTE(v7) = 0;
-            if (v16 && v17)
+            v17 = name;
+            LOBYTE(name) = 0;
+            if (name2 && v17)
             {
-              LOBYTE(v7) = [(NSString *)v16 isEqual:?];
+              LOBYTE(name) = [(NSString *)name2 isEqual:?];
             }
           }
         }
@@ -400,49 +400,49 @@ LABEL_30:
 
       else
       {
-        LOBYTE(v7) = 0;
+        LOBYTE(name) = 0;
       }
     }
   }
 
-  return v7;
+  return name;
 }
 
-- (BOOL)_isSchemaEqual:(id)a3
+- (BOOL)_isSchemaEqual:(id)equal
 {
   v13.receiver = self;
   v13.super_class = NSRelationshipDescription;
-  LODWORD(v5) = [(NSPropertyDescription *)&v13 isEqual:?];
-  if (v5)
+  LODWORD(name) = [(NSPropertyDescription *)&v13 isEqual:?];
+  if (name)
   {
-    v6 = [(NSRelationshipDescription *)self maxCount];
-    if (v6 == [a3 maxCount] && (v7 = -[NSRelationshipDescription minCount](self, "minCount"), v7 == objc_msgSend(a3, "minCount")) && (v8 = -[NSRelationshipDescription deleteRule](self, "deleteRule"), v8 == objc_msgSend(a3, "deleteRule")) && (v9 = -[NSRelationshipDescription isOrdered](self, "isOrdered"), v9 == objc_msgSend(a3, "isOrdered")))
+    maxCount = [(NSRelationshipDescription *)self maxCount];
+    if (maxCount == [equal maxCount] && (v7 = -[NSRelationshipDescription minCount](self, "minCount"), v7 == objc_msgSend(equal, "minCount")) && (v8 = -[NSRelationshipDescription deleteRule](self, "deleteRule"), v8 == objc_msgSend(equal, "deleteRule")) && (v9 = -[NSRelationshipDescription isOrdered](self, "isOrdered"), v9 == objc_msgSend(equal, "isOrdered")))
     {
-      v10 = [objc_msgSend(a3 "destinationEntity")];
-      v5 = [(NSEntityDescription *)[(NSRelationshipDescription *)self destinationEntity] name];
-      if (v10 == v5)
+      v10 = [objc_msgSend(equal "destinationEntity")];
+      name = [(NSEntityDescription *)[(NSRelationshipDescription *)self destinationEntity] name];
+      if (v10 == name)
       {
-        LOBYTE(v5) = 1;
+        LOBYTE(name) = 1;
       }
 
       else
       {
-        v11 = v5;
-        LOBYTE(v5) = 0;
+        v11 = name;
+        LOBYTE(name) = 0;
         if (v10 && v11)
         {
-          LOBYTE(v5) = [(NSString *)v10 isEqual:?];
+          LOBYTE(name) = [(NSString *)v10 isEqual:?];
         }
       }
     }
 
     else
     {
-      LOBYTE(v5) = 0;
+      LOBYTE(name) = 0;
     }
   }
 
-  return v5;
+  return name;
 }
 
 - (id)description
@@ -492,11 +492,11 @@ LABEL_30:
   return [(NSPropertyDescription *)&v3 versionHash];
 }
 
-- (id)_initWithName:(id)a3
+- (id)_initWithName:(id)name
 {
   v4.receiver = self;
   v4.super_class = NSRelationshipDescription;
-  result = [(NSPropertyDescription *)&v4 _initWithName:a3];
+  result = [(NSPropertyDescription *)&v4 _initWithName:name];
   if (result)
   {
     *(result + 17) = 0;
@@ -507,23 +507,23 @@ LABEL_30:
   return result;
 }
 
-- (void)_versionHash:(char *)a3 inStyle:(unint64_t)a4 proxyContext:(id)a5
+- (void)_versionHash:(char *)hash inStyle:(unint64_t)style proxyContext:(id)context
 {
   v34 = *MEMORY[0x1E69E9840];
   memset(&c, 0, sizeof(c));
   CC_SHA256_Init(&c);
-  v9 = [(NSRelationshipDescription *)self destinationEntity];
+  destinationEntity = [(NSRelationshipDescription *)self destinationEntity];
   v31.receiver = self;
   v31.super_class = NSRelationshipDescription;
-  [(NSPropertyDescription *)&v31 _versionHash:data inStyle:a4];
+  [(NSPropertyDescription *)&v31 _versionHash:data inStyle:style];
   CC_SHA256_Update(&c, data, 0x20u);
-  if (v9)
+  if (destinationEntity)
   {
-    v10 = [(NSEntityDescription *)v9 name];
-    if (v10)
+    name = [(NSEntityDescription *)destinationEntity name];
+    if (name)
     {
-      v11 = v10;
-      CStringPtr = CFStringGetCStringPtr(v10, 0x8000100u);
+      v11 = name;
+      CStringPtr = CFStringGetCStringPtr(name, 0x8000100u);
       if (!CStringPtr)
       {
         CStringPtr = [(__CFString *)v11 UTF8String];
@@ -534,39 +534,39 @@ LABEL_30:
     }
   }
 
-  v14 = [(NSRelationshipDescription *)self inverseRelationship];
-  if (v14)
+  inverseRelationship = [(NSRelationshipDescription *)self inverseRelationship];
+  if (inverseRelationship)
   {
-    v15 = v14;
-    if (v14 != self || a4 == 1 && a5)
+    v15 = inverseRelationship;
+    if (inverseRelationship != self || style == 1 && context)
     {
-      v16 = [(NSEntityDescription *)[(NSPropertyDescription *)self entity] superentity];
-      v17 = [(NSPropertyDescription *)self name];
-      if (!v16)
+      superentity = [(NSEntityDescription *)[(NSPropertyDescription *)self entity] superentity];
+      name2 = [(NSPropertyDescription *)self name];
+      if (!superentity)
       {
         goto LABEL_19;
       }
 
-      v18 = v17;
+      v18 = name2;
       v19 = 0;
       do
       {
-        v20 = [(NSEntityDescription *)v16 _relationshipNamed:v18];
+        v20 = [(NSEntityDescription *)superentity _relationshipNamed:v18];
         if (v20)
         {
           v19 = v20;
         }
 
-        v16 = [(NSEntityDescription *)v16 superentity];
+        superentity = [(NSEntityDescription *)superentity superentity];
       }
 
-      while (v16);
-      if (a5 || !v19 || (v21 = [v19 inverseRelationship], a4) || v19 != v21)
+      while (superentity);
+      if (context || !v19 || (v21 = [v19 inverseRelationship], style) || v19 != v21)
       {
 LABEL_19:
-        v22 = [(NSPropertyDescription *)v15 name];
-        v23 = v22;
-        if (v22 && (v24 = CFStringGetCStringPtr(v22, 0x8000100u)) != 0 || (v24 = [(__CFString *)v23 UTF8String]) != 0)
+        name3 = [(NSPropertyDescription *)v15 name];
+        v23 = name3;
+        if (name3 && (v24 = CFStringGetCStringPtr(name3, 0x8000100u)) != 0 || (v24 = [(__CFString *)v23 UTF8String]) != 0)
         {
           v25 = v24;
           v26 = strlen(v24);
@@ -580,18 +580,18 @@ LABEL_19:
   CC_SHA256_Update(&c, &maxCount, 4u);
   maxCount = self->_minCount;
   CC_SHA256_Update(&c, &maxCount, 4u);
-  v27 = [(NSRelationshipDescription *)self isOrdered];
-  v29 = v27;
-  if (v27)
+  isOrdered = [(NSRelationshipDescription *)self isOrdered];
+  v29 = isOrdered;
+  if (isOrdered)
   {
     CC_SHA256_Update(&c, &v29, 2u);
   }
 
-  CC_SHA256_Final(a3, &c);
+  CC_SHA256_Final(hash, &c);
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_nonPredicateValidateValue:(id *)a3 forKey:(id)a4 inObject:(id)a5 error:(id *)a6
+- (BOOL)_nonPredicateValidateValue:(id *)value forKey:(id)key inObject:(id)object error:(id *)error
 {
   v119 = *MEMORY[0x1E69E9840];
   v104.receiver = self;
@@ -602,28 +602,28 @@ LABEL_19:
     goto LABEL_107;
   }
 
-  if (!*a3)
+  if (!*value)
   {
 LABEL_97:
     LOBYTE(v11) = 1;
     goto LABEL_107;
   }
 
-  v12 = [a5 isInserted];
-  v13 = [*a3 isFault];
-  v14 = [a5 managedObjectContext];
-  v101 = [v14 _isSwiftBound];
+  isInserted = [object isInserted];
+  isFault = [*value isFault];
+  managedObjectContext = [object managedObjectContext];
+  _isSwiftBound = [managedObjectContext _isSwiftBound];
   if (z9dsptsiQ80etb9782fsrs98bfdle88 == 1 && ![(NSRelationshipDescription *)self isToMany])
   {
-    v15 = *a3;
-    if (*a3)
+    v15 = *value;
+    if (*value)
     {
       if ((v15[16] & 0x24) != 0)
       {
-        LODWORD(v102) = v13;
-        LODWORD(v103) = v12;
-        v96 = v14;
-        v16 = a6;
+        LODWORD(v102) = isFault;
+        LODWORD(errorCopy2) = isInserted;
+        v96 = managedObjectContext;
+        errorCopy = error;
         v17 = objc_autoreleasePoolPush();
         _pflogInitialize(4);
         if (_NSCoreDataIsLogEnabled(4) && _pflogging_enable_oslog >= 1)
@@ -633,18 +633,18 @@ LABEL_97:
             LogStream = _PFLogGetLogStream(1);
             if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
             {
-              v19 = [a5 objectID];
-              v20 = [v15 objectID];
+              objectID = [object objectID];
+              objectID2 = [v15 objectID];
               *buf = 138413314;
-              v110 = a4;
+              keyCopy6 = key;
               v111 = 2048;
-              v112 = a5;
+              objectCopy6 = object;
               v113 = 2112;
-              v114 = v19;
+              v114 = objectID;
               v115 = 2048;
               v116 = v15;
               v117 = 2112;
-              v118 = v20;
+              v118 = objectID2;
               _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: error: repairing missing delete propagation for to-one relationship %@ on object %p (%@) with bad fault %p (%@)\n", buf, 0x34u);
             }
           }
@@ -654,75 +654,75 @@ LABEL_97:
             v30 = _PFLogGetLogStream(4);
             if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
             {
-              v31 = [a5 objectID];
-              v32 = [v15 objectID];
+              objectID3 = [object objectID];
+              objectID4 = [v15 objectID];
               *buf = 138413314;
-              v110 = a4;
+              keyCopy6 = key;
               v111 = 2048;
-              v112 = a5;
+              objectCopy6 = object;
               v113 = 2112;
-              v114 = v31;
+              v114 = objectID3;
               v115 = 2048;
               v116 = v15;
               v117 = 2112;
-              v118 = v32;
+              v118 = objectID4;
               _os_log_impl(&dword_18565F000, v30, OS_LOG_TYPE_DEFAULT, "CoreData: annotation: repairing missing delete propagation for to-one relationship %@ on object %p (%@) with bad fault %p (%@)\n", buf, 0x34u);
             }
           }
         }
 
         v33 = _pflogging_catastrophic_mode;
-        v34 = [a5 objectID];
-        v35 = [v15 objectID];
+        objectID5 = [object objectID];
+        objectID6 = [v15 objectID];
         v36 = 4;
         if (v33)
         {
           v36 = 1;
         }
 
-        _NSCoreDataLog_console(v36, "repairing missing delete propagation for to-one relationship %@ on object %p (%@) with bad fault %p (%@)", a4, a5, v34, v15, v35);
+        _NSCoreDataLog_console(v36, "repairing missing delete propagation for to-one relationship %@ on object %p (%@) with bad fault %p (%@)", key, object, objectID5, v15, objectID6);
         objc_autoreleasePoolPop(v17);
-        a6 = v16;
-        v14 = v96;
-        v12 = v103;
-        v13 = v102;
+        error = errorCopy;
+        managedObjectContext = v96;
+        isInserted = errorCopy2;
+        isFault = v102;
         if ([[(NSRelationshipDescription *)self inverseRelationship] deleteRule]== NSCascadeDeleteRule)
         {
-          if (![a5 managedObjectContext])
+          if (![object managedObjectContext])
           {
-            -[NSManagedObjectContext _forceRegisterLostFault:]([a5 managedObjectContext], a5);
+            -[NSManagedObjectContext _forceRegisterLostFault:]([object managedObjectContext], object);
           }
 
-          [objc_msgSend(a5 "managedObjectContext")];
+          [objc_msgSend(object "managedObjectContext")];
         }
 
-        [a5 setValue:0 forKey:a4];
+        [object setValue:0 forKey:key];
       }
 
       else
       {
-        if (v101 && ![*a3 managedObjectContext])
+        if (_isSwiftBound && ![*value managedObjectContext])
         {
-          [v14 insertObject:v15];
+          [managedObjectContext insertObject:v15];
         }
 
         if (([(NSManagedObject *)v15 _isValidRelationshipDestination__]& 1) == 0)
         {
-          if (a6)
+          if (error)
           {
-            v21 = *a3;
+            v21 = *value;
             v22 = MEMORY[0x1E695DF20];
             v23 = [MEMORY[0x1E695DEC8] arrayWithObject:v15];
-            v24 = [MEMORY[0x1E695DFB0] null];
-            v25 = [v22 dictionaryWithObjectsAndKeys:{v23, @"NSAffectedObjectsErrorKey", v24, @"Dangling reference to an invalid object.", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", 1), @"NSValidationErrorShouldAttemptRecoveryKey", 0}];
-            v26 = a5;
+            null = [MEMORY[0x1E695DFB0] null];
+            v25 = [v22 dictionaryWithObjectsAndKeys:{v23, @"NSAffectedObjectsErrorKey", null, @"Dangling reference to an invalid object.", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", 1), @"NSValidationErrorShouldAttemptRecoveryKey", 0}];
+            objectCopy8 = object;
             v27 = 1550;
-            v28 = a4;
+            keyCopy4 = key;
             v29 = v21;
 LABEL_57:
-            v55 = [(NSManagedObject *)v26 _generateErrorWithCode:v27 andMessage:0 forKey:v28 andValue:v29 additionalDetail:v25];
+            v55 = [(NSManagedObject *)objectCopy8 _generateErrorWithCode:v27 andMessage:0 forKey:keyCopy4 andValue:v29 additionalDetail:v25];
             LOBYTE(v11) = 0;
-            *a6 = v55;
+            *error = v55;
             goto LABEL_107;
           }
 
@@ -734,18 +734,18 @@ LABEL_57:
 
   if (![(NSRelationshipDescription *)self isToMany])
   {
-    v53 = *a3;
-    v54 = [(NSRelationshipDescription *)self destinationEntity];
-    if (!v53 || !v54 || ![(NSEntityDescription *)v54 _subentitiesIncludes:_PFEntityForManagedObject(v53)])
+    v53 = *value;
+    destinationEntity = [(NSRelationshipDescription *)self destinationEntity];
+    if (!v53 || !destinationEntity || ![(NSEntityDescription *)destinationEntity _subentitiesIncludes:_PFEntityForManagedObject(v53)])
     {
-      if (a6)
+      if (error)
       {
 LABEL_55:
-        v29 = *a3;
-        v26 = a5;
+        v29 = *value;
+        objectCopy8 = object;
         v27 = 1550;
 LABEL_56:
-        v28 = a4;
+        keyCopy4 = key;
         v25 = 0;
         goto LABEL_57;
       }
@@ -758,23 +758,23 @@ LABEL_106:
     goto LABEL_97;
   }
 
-  v103 = a6;
-  if (!-[NSRelationshipDescription isOrdered](self, "isOrdered") && ([*a3 isNSSet] & 1) == 0 || (v37 = v13, v96 = v14, -[NSRelationshipDescription isOrdered](self, "isOrdered")) && (objc_msgSend(*a3, "isNSOrderedSet") & 1) == 0)
+  errorCopy2 = error;
+  if (!-[NSRelationshipDescription isOrdered](self, "isOrdered") && ([*value isNSSet] & 1) == 0 || (v37 = isFault, v96 = managedObjectContext, -[NSRelationshipDescription isOrdered](self, "isOrdered")) && (objc_msgSend(*value, "isNSOrderedSet") & 1) == 0)
   {
     v87 = MEMORY[0x1E695DF30];
     v88 = *MEMORY[0x1E695D930];
-    v89 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Illegal container for relationship: value = %@; relationship = %@.", *a3, a4];
-    objc_exception_throw([v87 exceptionWithName:v88 reason:v89 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", *a3, a4)}]);
+    v89 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Illegal container for relationship: value = %@; relationship = %@.", *value, key];
+    objc_exception_throw([v87 exceptionWithName:v88 reason:v89 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", *value, key)}]);
   }
 
-  v97 = [(NSPropertyDescription *)self isOptional];
+  isOptional = [(NSPropertyDescription *)self isOptional];
   if (!self)
   {
     goto LABEL_58;
   }
 
-  v38 = *a3;
-  v39 = [(NSRelationshipDescription *)self destinationEntity];
+  v38 = *value;
+  destinationEntity2 = [(NSRelationshipDescription *)self destinationEntity];
   if (([v38 isFault] & 1) == 0)
   {
     if ([v38 count])
@@ -798,13 +798,13 @@ LABEL_37:
             objc_enumerationMutation(v38);
           }
 
-          if (!v39)
+          if (!destinationEntity2)
           {
             break;
           }
 
           v44 = *(*(&v105 + 1) + 8 * v43);
-          if (!v44 || ![(NSEntityDescription *)v39 _subentitiesIncludes:_PFEntityForManagedObject(v44)])
+          if (!v44 || ![(NSEntityDescription *)destinationEntity2 _subentitiesIncludes:_PFEntityForManagedObject(v44)])
           {
             break;
           }
@@ -825,8 +825,8 @@ LABEL_37:
         }
 
 LABEL_58:
-        a6 = v103;
-        if (!v103)
+        error = errorCopy2;
+        if (!errorCopy2)
         {
           goto LABEL_106;
         }
@@ -837,22 +837,22 @@ LABEL_58:
   }
 
 LABEL_45:
-  v45 = v97;
+  v45 = isOptional;
   LOBYTE(v11) = 1;
-  if (v97 & v37 & 1) == 0 && ((v12 | v37 ^ 1))
+  if (isOptional & v37 & 1) == 0 && ((isInserted | v37 ^ 1))
   {
-    a6 = v103;
+    error = errorCopy2;
     if (z9dsptsiQ80etb9782fsrs98bfdle88 == 1)
     {
-      v46 = *a3;
-      v47 = [*a3 count];
+      v46 = *value;
+      v47 = [*value count];
       if (v47)
       {
         v48 = v47;
-        v98 = [[(NSRelationshipDescription *)self inverseRelationship] deleteRule];
-        v49 = [(NSRelationshipDescription *)self isOrdered];
-        v95 = v49;
-        MEMORY[0x1EEE9AC00](v49);
+        deleteRule = [[(NSRelationshipDescription *)self inverseRelationship] deleteRule];
+        isOrdered = [(NSRelationshipDescription *)self isOrdered];
+        v95 = isOrdered;
+        MEMORY[0x1EEE9AC00](isOrdered);
         v51 = v92 - v50;
         v92[1] = v52;
         if (v48 > 0x200)
@@ -888,18 +888,18 @@ LABEL_45:
                 v61 = _PFLogGetLogStream(1);
                 if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
                 {
-                  v62 = [a5 objectID];
-                  v63 = [v59 objectID];
+                  objectID7 = [object objectID];
+                  objectID8 = [v59 objectID];
                   *buf = v93;
-                  v110 = a4;
+                  keyCopy6 = key;
                   v111 = 2048;
-                  v112 = a5;
+                  objectCopy6 = object;
                   v113 = 2112;
-                  v114 = v62;
+                  v114 = objectID7;
                   v115 = 2048;
                   v116 = v59;
                   v117 = 2112;
-                  v118 = v63;
+                  v118 = objectID8;
                   _os_log_error_impl(&dword_18565F000, v61, OS_LOG_TYPE_ERROR, "CoreData: error: repairing missing delete propagation for to-many relationship %@ on object %p (%@) with bad fault %p (%@)\n", buf, 0x34u);
                 }
               }
@@ -909,56 +909,56 @@ LABEL_45:
                 v73 = _PFLogGetLogStream(4);
                 if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
                 {
-                  v74 = [a5 objectID];
-                  v75 = [v59 objectID];
+                  objectID9 = [object objectID];
+                  objectID10 = [v59 objectID];
                   *buf = v93;
-                  v110 = a4;
+                  keyCopy6 = key;
                   v111 = 2048;
-                  v112 = a5;
+                  objectCopy6 = object;
                   v113 = 2112;
-                  v114 = v74;
+                  v114 = objectID9;
                   v115 = 2048;
                   v116 = v59;
                   v117 = 2112;
-                  v118 = v75;
+                  v118 = objectID10;
                   _os_log_impl(&dword_18565F000, v73, OS_LOG_TYPE_DEFAULT, "CoreData: annotation: repairing missing delete propagation for to-many relationship %@ on object %p (%@) with bad fault %p (%@)\n", buf, 0x34u);
                 }
               }
             }
 
             v76 = _pflogging_catastrophic_mode;
-            v77 = [a5 objectID];
-            v78 = [v59 objectID];
+            objectID11 = [object objectID];
+            objectID12 = [v59 objectID];
             v79 = 4;
             if (v76)
             {
               v79 = 1;
             }
 
-            _NSCoreDataLog_console(v79, "repairing missing delete propagation for to-many relationship %@ on object %p (%@) with bad fault %p (%@)", a4, a5, v77, v59, v78);
+            _NSCoreDataLog_console(v79, "repairing missing delete propagation for to-many relationship %@ on object %p (%@) with bad fault %p (%@)", key, object, objectID11, v59, objectID12);
             objc_autoreleasePoolPop(v60);
             v48 = v100;
             v51 = v99;
-            if (v98 == NSCascadeDeleteRule)
+            if (deleteRule == NSCascadeDeleteRule)
             {
-              if (![a5 managedObjectContext])
+              if (![object managedObjectContext])
               {
-                -[NSManagedObjectContext _forceRegisterLostFault:]([a5 managedObjectContext], a5);
+                -[NSManagedObjectContext _forceRegisterLostFault:]([object managedObjectContext], object);
               }
 
-              [objc_msgSend(a5 "managedObjectContext")];
+              [objc_msgSend(object "managedObjectContext")];
             }
 
             if (!v56)
             {
               if (v95)
               {
-                v80 = [a5 mutableOrderedSetValueForKey:a4];
+                v80 = [object mutableOrderedSetValueForKey:key];
               }
 
               else
               {
-                v80 = [a5 mutableSetValueForKey:a4];
+                v80 = [object mutableSetValueForKey:key];
               }
 
               v56 = v80;
@@ -969,28 +969,28 @@ LABEL_45:
 
           else
           {
-            if (v101 && ![*&v51[8 * v57] managedObjectContext])
+            if (_isSwiftBound && ![*&v51[8 * v57] managedObjectContext])
             {
               [v96 insertObject:v59];
             }
 
             isValidRelationshipDestination = [(NSManagedObject *)v59 _isValidRelationshipDestination__];
             v102 = isValidRelationshipDestination & v102;
-            if (v103 && (isValidRelationshipDestination & 1) == 0)
+            if (errorCopy2 && (isValidRelationshipDestination & 1) == 0)
             {
-              v65 = *a3;
+              v65 = *value;
               v66 = MEMORY[0x1E695DF20];
               v67 = [MEMORY[0x1E695DEC8] arrayWithObject:v59];
-              v68 = [MEMORY[0x1E695DFB0] null];
+              null2 = [MEMORY[0x1E695DFB0] null];
               v69 = [MEMORY[0x1E696AD98] numberWithBool:1];
-              v91 = v68;
+              v91 = null2;
               v51 = v99;
               v70 = [v66 dictionaryWithObjectsAndKeys:{v67, v94, v91, @"Dangling reference to an invalid object.", v69, @"NSValidationErrorShouldAttemptRecoveryKey", 0}];
               v71 = v65;
               v48 = v100;
-              v72 = [(NSManagedObject *)a5 _generateErrorWithCode:0 andMessage:a4 forKey:v71 andValue:v70 additionalDetail:?];
+              v72 = [(NSManagedObject *)object _generateErrorWithCode:0 andMessage:key forKey:v71 andValue:v70 additionalDetail:?];
               v102 = 0;
-              *v103 = v72;
+              *errorCopy2 = v72;
             }
           }
 
@@ -1003,8 +1003,8 @@ LABEL_45:
           NSZoneFree(0, v51);
         }
 
-        a6 = v103;
-        v45 = v97;
+        error = errorCopy2;
+        v45 = isOptional;
         if ((v102 & 1) == 0)
         {
           goto LABEL_106;
@@ -1012,9 +1012,9 @@ LABEL_45:
       }
     }
 
-    v81 = [(NSRelationshipDescription *)self minCount];
-    v82 = [(NSRelationshipDescription *)self maxCount];
-    v83 = [*a3 count];
+    minCount = [(NSRelationshipDescription *)self minCount];
+    maxCount = [(NSRelationshipDescription *)self maxCount];
+    v83 = [*value count];
     if (v83)
     {
       v84 = 0;
@@ -1031,12 +1031,12 @@ LABEL_45:
     }
 
     v85 = v83;
-    if (v81 && v83 < v81)
+    if (minCount && v83 < minCount)
     {
-      if (a6)
+      if (error)
       {
-        v29 = *a3;
-        v26 = a5;
+        v29 = *value;
+        objectCopy8 = object;
         v27 = 1580;
         goto LABEL_56;
       }
@@ -1045,13 +1045,13 @@ LABEL_45:
     }
 
     LOBYTE(v11) = 1;
-    if (v82 && v85 > v82)
+    if (maxCount && v85 > maxCount)
     {
-      a6 = v103;
-      if (v103)
+      error = errorCopy2;
+      if (errorCopy2)
       {
-        v29 = *a3;
-        v26 = a5;
+        v29 = *value;
+        objectCopy8 = object;
         v27 = 1590;
         goto LABEL_56;
       }
@@ -1065,20 +1065,20 @@ LABEL_107:
   return v11;
 }
 
-- (void)_writeIntoData:(id)a3 propertiesDict:(id)a4 uniquedPropertyNames:(id)a5 uniquedStrings:(id)a6 uniquedData:(id)a7 entitiesSlots:(id)a8 fetchRequests:(id)a9
+- (void)_writeIntoData:(id)data propertiesDict:(id)dict uniquedPropertyNames:(id)names uniquedStrings:(id)strings uniquedData:(id)uniquedData entitiesSlots:(id)slots fetchRequests:(id)requests
 {
-  _writeInt32IntoData(a3, 0);
-  v16 = [a3 length];
+  _writeInt32IntoData(data, 0);
+  v16 = [data length];
   v22.receiver = self;
   v22.super_class = NSRelationshipDescription;
-  [(NSPropertyDescription *)&v22 _appendPropertyFieldsToData:a3 propertiesDict:a4 uniquedPropertyNames:a5 uniquedStrings:a6 uniquedData:a7 entitiesSlots:a8];
-  _writeInt32IntoData(a3, [a8 indexForKey:{-[NSEntityDescription name](-[NSRelationshipDescription destinationEntity](self, "destinationEntity"), "name")}]);
-  v17 = [(NSRelationshipDescription *)self inverseRelationship];
-  if (v17)
+  [(NSPropertyDescription *)&v22 _appendPropertyFieldsToData:data propertiesDict:dict uniquedPropertyNames:names uniquedStrings:strings uniquedData:uniquedData entitiesSlots:slots];
+  _writeInt32IntoData(data, [slots indexForKey:{-[NSEntityDescription name](-[NSRelationshipDescription destinationEntity](self, "destinationEntity"), "name")}]);
+  inverseRelationship = [(NSRelationshipDescription *)self inverseRelationship];
+  if (inverseRelationship)
   {
-    v18 = v17;
-    _writeInt32IntoData(a3, 1u);
-    v19 = [objc_msgSend(a4 objectForKey:{v18), "unsignedIntegerValue"}];
+    v18 = inverseRelationship;
+    _writeInt32IntoData(data, 1u);
+    v19 = [objc_msgSend(dict objectForKey:{v18), "unsignedIntegerValue"}];
   }
 
   else
@@ -1086,13 +1086,13 @@ LABEL_107:
     v19 = 0;
   }
 
-  _writeInt32IntoData(a3, v19);
+  _writeInt32IntoData(data, v19);
   v20 = v16 - 4;
-  _writeInt32IntoData(a3, self->_maxCount);
-  _writeInt32IntoData(a3, self->_minCount);
-  _writeInt32IntoData(a3, self->_deleteRule);
-  v21 = bswap32([a3 length] - v20);
-  [a3 replaceBytesInRange:v20 withBytes:{4, &v21}];
+  _writeInt32IntoData(data, self->_maxCount);
+  _writeInt32IntoData(data, self->_minCount);
+  _writeInt32IntoData(data, self->_deleteRule);
+  v21 = bswap32([data length] - v20);
+  [data replaceBytesInRange:v20 withBytes:{4, &v21}];
 }
 
 @end

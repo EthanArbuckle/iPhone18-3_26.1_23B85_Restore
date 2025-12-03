@@ -84,7 +84,7 @@ LABEL_9:
   }
 
 LABEL_10:
-  v10 = [a1 errorWithDomain:v9 code:a4 localizedDescription:a5];
+  v10 = [self errorWithDomain:v9 code:a4 localizedDescription:a5];
 
   return v10;
 }
@@ -92,12 +92,12 @@ LABEL_10:
 - (BOOL)isEqualToError:()VVError
 {
   v4 = a3;
-  v5 = [a1 domain];
-  v6 = [v4 domain];
-  if ([v5 isEqualToString:v6])
+  domain = [self domain];
+  domain2 = [v4 domain];
+  if ([domain isEqualToString:domain2])
   {
-    v7 = [a1 code];
-    v8 = v7 == [v4 code];
+    code = [self code];
+    v8 = code == [v4 code];
   }
 
   else
@@ -166,10 +166,10 @@ LABEL_10:
   }
 
 LABEL_10:
-  v8 = [a1 domain];
-  if ([(__CFString *)v7 isEqualToString:v8])
+  domain = [self domain];
+  if ([(__CFString *)v7 isEqualToString:domain])
   {
-    v9 = [a1 code] == a4;
+    v9 = [self code] == a4;
   }
 
   else
@@ -182,18 +182,18 @@ LABEL_10:
 
 - (BOOL)isPasswordMismatchError
 {
-  v2 = [a1 domain];
-  v3 = [v2 isEqualToString:@"VVErrorDomain"];
+  domain = [self domain];
+  v3 = [domain isEqualToString:@"VVErrorDomain"];
 
-  return v3 && ([a1 code] - 1006) > 0xFFFFFFFFFFFFFFFCLL;
+  return v3 && ([self code] - 1006) > 0xFFFFFFFFFFFFFFFCLL;
 }
 
 - (BOOL)isExpiredPasswordError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:@"VVErrorDomain"])
+  domain = [self domain];
+  if ([domain isEqualToString:@"VVErrorDomain"])
   {
-    v3 = [a1 code] == 1005;
+    v3 = [self code] == 1005;
   }
 
   else
@@ -206,38 +206,38 @@ LABEL_10:
 
 - (BOOL)isNewPasswordError
 {
-  v2 = [a1 domain];
-  v3 = [v2 isEqualToString:@"VVErrorDomain"];
+  domain = [self domain];
+  v3 = [domain isEqualToString:@"VVErrorDomain"];
 
-  return v3 && ([a1 code] & 0xFFFFFFFFFFFFFFF8) == 0x400;
+  return v3 && ([self code] & 0xFFFFFFFFFFFFFFF8) == 0x400;
 }
 
 - (BOOL)isInvalidSubscriberError
 {
-  v2 = [a1 domain];
-  v3 = [v2 isEqualToString:@"VVErrorDomain"];
+  domain = [self domain];
+  v3 = [domain isEqualToString:@"VVErrorDomain"];
 
-  return v3 && [a1 code] == 1006;
+  return v3 && [self code] == 1006;
 }
 
 - (BOOL)isConnectivityError
 {
-  v2 = [a1 domain];
+  domain = [self domain];
   v3 = streamDomains();
-  v4 = [v3 containsObject:v2];
+  v4 = [v3 containsObject:domain];
 
   if (v4)
   {
     goto LABEL_2;
   }
 
-  if (![v2 isEqualToString:@"VVErrorDomain"])
+  if (![domain isEqualToString:@"VVErrorDomain"])
   {
     v5 = 0;
     goto LABEL_7;
   }
 
-  if ([a1 code] == 1011)
+  if ([self code] == 1011)
   {
 LABEL_2:
     v5 = 1;
@@ -245,7 +245,7 @@ LABEL_2:
 
   else
   {
-    v5 = [a1 code] == 1023;
+    v5 = [self code] == 1023;
   }
 
 LABEL_7:
@@ -255,14 +255,14 @@ LABEL_7:
 
 - (uint64_t)isServerError
 {
-  v2 = [a1 domain];
-  v3 = [v2 isEqualToString:@"VVErrorDomain"];
+  domain = [self domain];
+  v3 = [domain isEqualToString:@"VVErrorDomain"];
 
   if (v3)
   {
-    v4 = [a1 code];
-    v5 = 0xBu >> ((v4 + 7) & 0xF);
-    if ((v4 - 1017) > 3)
+    code = [self code];
+    v5 = 0xBu >> ((code + 7) & 0xF);
+    if ((code - 1017) > 3)
     {
       LOBYTE(v5) = 0;
     }
@@ -278,10 +278,10 @@ LABEL_7:
 
 - (BOOL)isSecurityError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:*MEMORY[0x277CCA670]])
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x277CCA670]])
   {
-    v3 = [a1 code] == -9829;
+    v3 = [self code] == -9829;
   }
 
   else
@@ -294,30 +294,30 @@ LABEL_7:
 
 - (uint64_t)shouldPresentErrorForTaskType:()VVError
 {
-  v3 = 0;
+  isConnectivityError = 0;
   if (a3 > 7)
   {
-    return v3;
+    return isConnectivityError;
   }
 
   if (((1 << a3) & 0xCC) != 0)
   {
-    if (([a1 isConnectivityError] & 1) == 0)
+    if (([self isConnectivityError] & 1) == 0)
     {
-      v5 = [a1 domain];
-      if ([v5 isEqualToString:@"VVErrorDomain"])
+      domain = [self domain];
+      if ([domain isEqualToString:@"VVErrorDomain"])
       {
-        v3 = [a1 isPasswordMismatchError] ^ 1;
+        isConnectivityError = [self isPasswordMismatchError] ^ 1;
       }
 
       else
       {
-        v3 = 0;
+        isConnectivityError = 0;
       }
 
 LABEL_17:
 
-      return v3;
+      return isConnectivityError;
     }
 
     return 1;
@@ -327,29 +327,29 @@ LABEL_17:
   {
     if (a3 == 5)
     {
-      v5 = [a1 domain];
-      if ([v5 isEqualToString:@"VVErrorDomain"])
+      domain = [self domain];
+      if ([domain isEqualToString:@"VVErrorDomain"])
       {
-        v3 = 1;
+        isConnectivityError = 1;
       }
 
       else
       {
-        v3 = [a1 isConnectivityError];
+        isConnectivityError = [self isConnectivityError];
       }
 
       goto LABEL_17;
     }
 
-    return v3;
+    return isConnectivityError;
   }
 
-  if ([a1 isServerError])
+  if ([self isServerError])
   {
     return 1;
   }
 
-  return [a1 isSecurityError];
+  return [self isSecurityError];
 }
 
 @end

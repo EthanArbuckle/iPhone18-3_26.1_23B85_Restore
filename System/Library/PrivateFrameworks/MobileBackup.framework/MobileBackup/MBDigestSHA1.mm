@@ -1,8 +1,8 @@
 @interface MBDigestSHA1
 - (MBDigestSHA1)init;
 - (id)final;
-- (void)finalWithBytes:(void *)a3 length:(unint64_t)a4;
-- (void)updateWithBytes:(const void *)a3 length:(unint64_t)a4;
+- (void)finalWithBytes:(void *)bytes length:(unint64_t)length;
+- (void)updateWithBytes:(const void *)bytes length:(unint64_t)length;
 @end
 
 @implementation MBDigestSHA1
@@ -21,42 +21,42 @@
   return v3;
 }
 
-- (void)updateWithBytes:(const void *)a3 length:(unint64_t)a4
+- (void)updateWithBytes:(const void *)bytes length:(unint64_t)length
 {
-  if (a4)
+  if (length)
   {
     v7 = 0;
-    v8 = a4;
+    lengthCopy = length;
     do
     {
-      v9 = v8 - 0x4000;
-      if (v8 >= 0x4000)
+      v9 = lengthCopy - 0x4000;
+      if (lengthCopy >= 0x4000)
       {
         v10 = 0x4000;
       }
 
       else
       {
-        v10 = v8;
+        v10 = lengthCopy;
       }
 
-      CC_SHA1_Update(&self->_context, a3 + v7, v10);
+      CC_SHA1_Update(&self->_context, bytes + v7, v10);
       v7 += 0x4000;
-      v8 = v9;
+      lengthCopy = v9;
     }
 
-    while (v7 < a4);
+    while (v7 < length);
   }
 }
 
-- (void)finalWithBytes:(void *)a3 length:(unint64_t)a4
+- (void)finalWithBytes:(void *)bytes length:(unint64_t)length
 {
-  if (a4 != 20)
+  if (length != 20)
   {
     [MBDigestSHA1 finalWithBytes:length:];
   }
 
-  CC_SHA1_Final(a3, &self->_context);
+  CC_SHA1_Final(bytes, &self->_context);
 }
 
 - (id)final

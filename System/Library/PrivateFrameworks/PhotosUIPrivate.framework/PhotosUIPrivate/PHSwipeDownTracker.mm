@@ -8,16 +8,16 @@
 - (double)dismissalProgress;
 - (double)finalAnimationDuration;
 - (double)finalAnimationSpringDamping;
-- (void)startTrackingCenter:(CGPoint)a3 bounds:(CGRect)a4 transform:(CGAffineTransform *)a5 withInitialGestureLocation:(CGPoint)a6;
-- (void)trackGestureTranslation:(CGPoint)a3 velocity:(CGPoint)a4;
+- (void)startTrackingCenter:(CGPoint)center bounds:(CGRect)bounds transform:(CGAffineTransform *)transform withInitialGestureLocation:(CGPoint)location;
+- (void)trackGestureTranslation:(CGPoint)translation velocity:(CGPoint)velocity;
 @end
 
 @implementation PHSwipeDownTracker
 
 - (double)finalAnimationSpringDamping
 {
-  v2 = [(PHSwipeDownTracker *)self impl];
-  [v2 finalAnimationSpringDamping];
+  impl = [(PHSwipeDownTracker *)self impl];
+  [impl finalAnimationSpringDamping];
   v4 = v3;
 
   return v4;
@@ -25,8 +25,8 @@
 
 - (double)finalAnimationDuration
 {
-  v2 = [(PHSwipeDownTracker *)self impl];
-  [v2 finalAnimationDuration];
+  impl = [(PHSwipeDownTracker *)self impl];
+  [impl finalAnimationDuration];
   v4 = v3;
 
   return v4;
@@ -34,8 +34,8 @@
 
 - (PHDisplayVelocity)trackedVelocity
 {
-  v2 = [(PHSwipeDownTracker *)self impl];
-  [v2 trackedVelocity];
+  impl = [(PHSwipeDownTracker *)self impl];
+  [impl trackedVelocity];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -54,12 +54,12 @@
 
 - (CGAffineTransform)trackedTransform
 {
-  v4 = [(PHSwipeDownTracker *)self impl];
-  if (v4)
+  impl = [(PHSwipeDownTracker *)self impl];
+  if (impl)
   {
-    v6 = v4;
-    [v4 trackedTransform];
-    v4 = v6;
+    v6 = impl;
+    [impl trackedTransform];
+    impl = v6;
   }
 
   else
@@ -74,8 +74,8 @@
 
 - (CGRect)trackedBounds
 {
-  v2 = [(PHSwipeDownTracker *)self impl];
-  [v2 trackedBounds];
+  impl = [(PHSwipeDownTracker *)self impl];
+  [impl trackedBounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -94,8 +94,8 @@
 
 - (CGPoint)trackedCenter
 {
-  v2 = [(PHSwipeDownTracker *)self impl];
-  [v2 trackedCenter];
+  impl = [(PHSwipeDownTracker *)self impl];
+  [impl trackedCenter];
   v4 = v3;
   v6 = v5;
 
@@ -108,47 +108,47 @@
 
 - (BOOL)shouldFinishDismissal
 {
-  v2 = [(PHSwipeDownTracker *)self impl];
-  v3 = [v2 shouldFinishDismissal];
+  impl = [(PHSwipeDownTracker *)self impl];
+  shouldFinishDismissal = [impl shouldFinishDismissal];
 
-  return v3;
+  return shouldFinishDismissal;
 }
 
 - (double)dismissalProgress
 {
-  v2 = [(PHSwipeDownTracker *)self impl];
-  [v2 dismissalProgress];
+  impl = [(PHSwipeDownTracker *)self impl];
+  [impl dismissalProgress];
   v4 = v3;
 
   return v4;
 }
 
-- (void)trackGestureTranslation:(CGPoint)a3 velocity:(CGPoint)a4
+- (void)trackGestureTranslation:(CGPoint)translation velocity:(CGPoint)velocity
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
-  v8 = [(PHSwipeDownTracker *)self impl];
-  [v8 trackGestureTranslation:v7 velocity:{v6, x, y}];
+  y = velocity.y;
+  x = velocity.x;
+  v6 = translation.y;
+  v7 = translation.x;
+  impl = [(PHSwipeDownTracker *)self impl];
+  [impl trackGestureTranslation:v7 velocity:{v6, x, y}];
 }
 
-- (void)startTrackingCenter:(CGPoint)a3 bounds:(CGRect)a4 transform:(CGAffineTransform *)a5 withInitialGestureLocation:(CGPoint)a6
+- (void)startTrackingCenter:(CGPoint)center bounds:(CGRect)bounds transform:(CGAffineTransform *)transform withInitialGestureLocation:(CGPoint)location
 {
-  y = a6.y;
-  x = a6.x;
-  height = a4.size.height;
-  width = a4.size.width;
-  v11 = a4.origin.y;
-  v12 = a4.origin.x;
-  v13 = a3.y;
-  v14 = a3.x;
-  v15 = [(PHSwipeDownTracker *)self impl];
-  v16 = *&a5->c;
-  v17[0] = *&a5->a;
+  y = location.y;
+  x = location.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  v11 = bounds.origin.y;
+  v12 = bounds.origin.x;
+  v13 = center.y;
+  v14 = center.x;
+  impl = [(PHSwipeDownTracker *)self impl];
+  v16 = *&transform->c;
+  v17[0] = *&transform->a;
   v17[1] = v16;
-  v17[2] = *&a5->tx;
-  [v15 startTrackingCenter:v17 bounds:v14 transform:v13 withInitialGestureLocation:v12 velocity:{v11, width, height, x, y, *MEMORY[0x1E69C48D8], *(MEMORY[0x1E69C48D8] + 8)}];
+  v17[2] = *&transform->tx;
+  [impl startTrackingCenter:v17 bounds:v14 transform:v13 withInitialGestureLocation:v12 velocity:{v11, width, height, x, y, *MEMORY[0x1E69C48D8], *(MEMORY[0x1E69C48D8] + 8)}];
 }
 
 - (PHSwipeDownTracker)init

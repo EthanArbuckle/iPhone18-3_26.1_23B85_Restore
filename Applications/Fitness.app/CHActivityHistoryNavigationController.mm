@@ -1,41 +1,41 @@
 @interface CHActivityHistoryNavigationController
-- (CHActivityHistoryNavigationController)initWithDateCache:(id)a3 pauseRingsCoordinator:(id)a4;
-- (void)attachPaletteWithHeight:(double)a3;
+- (CHActivityHistoryNavigationController)initWithDateCache:(id)cache pauseRingsCoordinator:(id)coordinator;
+- (void)attachPaletteWithHeight:(double)height;
 - (void)detachPalette;
-- (void)reattachPaletteIfNeededExpanded:(BOOL)a3;
+- (void)reattachPaletteIfNeededExpanded:(BOOL)expanded;
 - (void)scrollToTop;
 @end
 
 @implementation CHActivityHistoryNavigationController
 
-- (CHActivityHistoryNavigationController)initWithDateCache:(id)a3 pauseRingsCoordinator:(id)a4
+- (CHActivityHistoryNavigationController)initWithDateCache:(id)cache pauseRingsCoordinator:(id)coordinator
 {
-  v7 = a3;
-  v8 = a4;
+  cacheCopy = cache;
+  coordinatorCopy = coordinator;
   v12.receiver = self;
   v12.super_class = CHActivityHistoryNavigationController;
   v9 = [(CHActivityHistoryNavigationController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dateCache, a3);
-    objc_storeStrong(&v10->_pauseRingsCoordinator, a4);
+    objc_storeStrong(&v9->_dateCache, cache);
+    objc_storeStrong(&v10->_pauseRingsCoordinator, coordinator);
   }
 
   return v10;
 }
 
-- (void)attachPaletteWithHeight:(double)a3
+- (void)attachPaletteWithHeight:(double)height
 {
   if (!self->_palette)
   {
-    v5 = [(CHActivityHistoryNavigationController *)self view];
-    [v5 bounds];
+    view = [(CHActivityHistoryNavigationController *)self view];
+    [view bounds];
     v7 = v6;
 
-    v8 = [(CHActivityHistoryNavigationController *)self paletteForEdge:2 size:v7, a3];
+    height = [(CHActivityHistoryNavigationController *)self paletteForEdge:2 size:v7, height];
     palette = self->_palette;
-    self->_palette = v8;
+    self->_palette = height;
 
     paletteVC = self->_paletteVC;
     if (!paletteVC)
@@ -50,11 +50,11 @@
     }
 
     v14 = self->_palette;
-    v15 = [(PaletteViewController *)paletteVC view];
-    [(_UINavigationControllerPalette *)v14 addSubview:v15];
+    view2 = [(PaletteViewController *)paletteVC view];
+    [(_UINavigationControllerPalette *)v14 addSubview:view2];
 
-    v16 = [(PaletteViewController *)self->_paletteVC view];
-    [v16 setFrame:{0.0, 0.0, v7, a3}];
+    view3 = [(PaletteViewController *)self->_paletteVC view];
+    [view3 setFrame:{0.0, 0.0, v7, height}];
 
     v17 = self->_palette;
 
@@ -62,9 +62,9 @@
   }
 }
 
-- (void)reattachPaletteIfNeededExpanded:(BOOL)a3
+- (void)reattachPaletteIfNeededExpanded:(BOOL)expanded
 {
-  v3 = a3;
+  expandedCopy = expanded;
   if (self->_palette)
   {
     [(CHActivityHistoryNavigationController *)self detachPalette:?];
@@ -73,14 +73,14 @@
   }
 
   v6 = 70.0;
-  if (!v3)
+  if (!expandedCopy)
   {
     v6 = 20.0;
   }
 
   [(CHActivityHistoryNavigationController *)self attachPaletteWithHeight:v6];
 
-  [(CHActivityHistoryNavigationController *)self setPaletteExpanded:v3];
+  [(CHActivityHistoryNavigationController *)self setPaletteExpanded:expandedCopy];
 }
 
 - (void)detachPalette
@@ -92,13 +92,13 @@
 
 - (void)scrollToTop
 {
-  v3 = [(CHActivityHistoryNavigationController *)self topViewController];
+  topViewController = [(CHActivityHistoryNavigationController *)self topViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CHActivityHistoryNavigationController *)self topViewController];
-    [v5 performSelector:"scrollToTop"];
+    topViewController2 = [(CHActivityHistoryNavigationController *)self topViewController];
+    [topViewController2 performSelector:"scrollToTop"];
   }
 }
 

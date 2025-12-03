@@ -1,35 +1,35 @@
 @interface NavigationSettingsController
-- (void)_addAudioSettings:(id)a3;
-- (void)_addCustomRoutesSettings:(id)a3;
-- (void)_addETAUpdatesSettings:(id)a3;
-- (void)_addLocationsSettings:(id)a3;
-- (void)_addNavigationRowWithTitle:(id)a3 section:(id)a4 handler:(id)a5;
-- (void)_addParkingNavigationSettings:(id)a3;
-- (void)_addPreloadingSettings:(id)a3;
-- (void)_addRoutingSettings:(id)a3;
-- (void)_addThermalMitigationsSettings:(id)a3;
-- (void)_addTracesAndSimulationSettings:(id)a3;
-- (void)_addTrafficOverrideSettings:(id)a3;
-- (void)_addVisualFeaturesSettings:(id)a3;
-- (void)_addVisualizationSettings:(id)a3;
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4;
-- (void)imagePickerControllerDidCancel:(id)a3;
+- (void)_addAudioSettings:(id)settings;
+- (void)_addCustomRoutesSettings:(id)settings;
+- (void)_addETAUpdatesSettings:(id)settings;
+- (void)_addLocationsSettings:(id)settings;
+- (void)_addNavigationRowWithTitle:(id)title section:(id)section handler:(id)handler;
+- (void)_addParkingNavigationSettings:(id)settings;
+- (void)_addPreloadingSettings:(id)settings;
+- (void)_addRoutingSettings:(id)settings;
+- (void)_addThermalMitigationsSettings:(id)settings;
+- (void)_addTracesAndSimulationSettings:(id)settings;
+- (void)_addTrafficOverrideSettings:(id)settings;
+- (void)_addVisualFeaturesSettings:(id)settings;
+- (void)_addVisualizationSettings:(id)settings;
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info;
+- (void)imagePickerControllerDidCancel:(id)cancel;
 - (void)prepareContent;
 @end
 
 @implementation NavigationSettingsController
 
-- (void)imagePickerControllerDidCancel:(id)a3
+- (void)imagePickerControllerDidCancel:(id)cancel
 {
-  v3 = a3;
+  cancelCopy = cancel;
   _GEOConfigRemoveValue();
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  [cancelCopy dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info
 {
-  v5 = a3;
-  v8 = [a4 objectForKeyedSubscript:UIImagePickerControllerPHAsset];
+  controllerCopy = controller;
+  v8 = [info objectForKeyedSubscript:UIImagePickerControllerPHAsset];
   if (v8)
   {
     v6 = objc_alloc_init(PHVideoRequestOptions);
@@ -43,45 +43,45 @@
     _GEOConfigRemoveValue();
   }
 
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  [controllerCopy dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_addTracesAndSimulationSettings:(id)a3
+- (void)_addTracesAndSimulationSettings:(id)settings
 {
-  v6 = a3;
-  v3 = [v6 addSectionWithTitle:@"Trace Playback" content:&stru_10163A5F8];
-  v4 = [v6 addSectionWithTitle:@"Trace Recording" content:&stru_10163A6B8];
-  v5 = [v6 addSectionWithTitle:@"Simulation" content:&stru_10163A6D8];
+  settingsCopy = settings;
+  v3 = [settingsCopy addSectionWithTitle:@"Trace Playback" content:&stru_10163A5F8];
+  v4 = [settingsCopy addSectionWithTitle:@"Trace Recording" content:&stru_10163A6B8];
+  v5 = [settingsCopy addSectionWithTitle:@"Simulation" content:&stru_10163A6D8];
 }
 
-- (void)_addParkingNavigationSettings:(id)a3
+- (void)_addParkingNavigationSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   objc_initWeak(&location, self);
-  v5 = [v4 addSectionWithTitle:0 content:&stru_10163A598];
-  v6 = [v4 addSectionWithTitle:@"Background Walking Route Thresholds" content:&stru_10163A5B8];
+  v5 = [settingsCopy addSectionWithTitle:0 content:&stru_10163A598];
+  v6 = [settingsCopy addSectionWithTitle:@"Background Walking Route Thresholds" content:&stru_10163A5B8];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100B44214;
   v8[3] = &unk_10165E0A8;
   objc_copyWeak(&v9, &location);
-  v7 = [v4 addSectionWithTitle:0 content:v8];
+  v7 = [settingsCopy addSectionWithTitle:0 content:v8];
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)_addVisualFeaturesSettings:(id)a3
+- (void)_addVisualFeaturesSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v4);
+  objc_initWeak(&from, settingsCopy);
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100B4540C;
   v20[3] = &unk_101639930;
   objc_copyWeak(&v21, &from);
   objc_copyWeak(&v22, &location);
-  v5 = [v4 addSectionWithTitle:@"General" content:v20];
+  v5 = [settingsCopy addSectionWithTitle:@"General" content:v20];
   if (qword_10195E958 != -1)
   {
     dispatch_once(&qword_10195E958, &stru_10164C728);
@@ -94,7 +94,7 @@
     v18[2] = sub_100B45620;
     v18[3] = &unk_10165E0A8;
     objc_copyWeak(&v19, &from);
-    v6 = [v4 addSectionWithTitle:@"Pedestrian AR" content:v18];
+    v6 = [settingsCopy addSectionWithTitle:@"Pedestrian AR" content:v18];
     objc_destroyWeak(&v19);
   }
 
@@ -111,7 +111,7 @@
     v15[3] = &unk_101639930;
     objc_copyWeak(&v16, &location);
     objc_copyWeak(&v17, &from);
-    v7 = [v4 addSectionWithTitle:@"VLF" content:v15];
+    v7 = [settingsCopy addSectionWithTitle:@"VLF" content:v15];
     objc_destroyWeak(&v17);
     objc_destroyWeak(&v16);
     if (qword_10195CFF8 != -1)
@@ -141,7 +141,7 @@ LABEL_23:
       v12[3] = &unk_101639930;
       objc_copyWeak(&v13, &location);
       objc_copyWeak(&v14, &from);
-      v8 = [v4 addSectionWithTitle:@"VLF Crowdsourcing" content:v12];
+      v8 = [settingsCopy addSectionWithTitle:@"VLF Crowdsourcing" content:v12];
       objc_destroyWeak(&v14);
       objc_destroyWeak(&v13);
     }
@@ -159,7 +159,7 @@ LABEL_23:
     v10[2] = sub_100B466D4;
     v10[3] = &unk_10165E0A8;
     objc_copyWeak(&v11, &from);
-    v9 = [v4 addSectionWithTitle:@"MarcoLite" content:v10];
+    v9 = [settingsCopy addSectionWithTitle:@"MarcoLite" content:v10];
     objc_destroyWeak(&v11);
   }
 
@@ -169,18 +169,18 @@ LABEL_23:
   objc_destroyWeak(&location);
 }
 
-- (void)_addThermalMitigationsSettings:(id)a3
+- (void)_addThermalMitigationsSettings:(id)settings
 {
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_100B4C84C;
   v24[3] = &unk_101639868;
-  v15 = a3;
-  v25 = v15;
+  settingsCopy = settings;
+  v25 = settingsCopy;
   v3 = objc_retainBlock(v24);
   v4 = +[MapsThermalPressureController mitigations];
-  v5 = [v4 allKeys];
-  v6 = [v5 sortedArrayUsingSelector:"compare:"];
+  allKeys = [v4 allKeys];
+  v6 = [allKeys sortedArrayUsingSelector:"compare:"];
 
   v22 = 0u;
   v23 = 0u;
@@ -212,7 +212,7 @@ LABEL_23:
           v17[3] = &unk_10165BE30;
           v18 = v4;
           v19 = v11;
-          v14 = [v15 addSectionWithTitle:v13 content:v17];
+          v14 = [settingsCopy addSectionWithTitle:v13 content:v17];
 
           v13 = v18;
         }
@@ -230,88 +230,88 @@ LABEL_23:
   }
 }
 
-- (void)_addPreloadingSettings:(id)a3
+- (void)_addPreloadingSettings:(id)settings
 {
-  v5 = a3;
-  v3 = [v5 addSectionWithTitle:0 content:&stru_1016397E0];
-  v4 = [v5 addSectionWithTitle:0 content:&stru_101639800];
+  settingsCopy = settings;
+  v3 = [settingsCopy addSectionWithTitle:0 content:&stru_1016397E0];
+  v4 = [settingsCopy addSectionWithTitle:0 content:&stru_101639800];
 }
 
-- (void)_addCustomRoutesSettings:(id)a3
+- (void)_addCustomRoutesSettings:(id)settings
 {
-  v5 = a3;
-  v3 = [v5 addSectionWithTitle:0 content:&stru_1016396C0];
+  settingsCopy = settings;
+  v3 = [settingsCopy addSectionWithTitle:0 content:&stru_1016396C0];
   [v3 setFooter:{@"Enables navigation on a custom route as long as location is near the route, even if current location is not near the origin."}];
 
-  v4 = [v5 addSectionWithTitle:0 content:&stru_1016396E0];
+  v4 = [settingsCopy addSectionWithTitle:0 content:&stru_1016396E0];
 }
 
-- (void)_addAudioSettings:(id)a3
+- (void)_addAudioSettings:(id)settings
 {
-  v5 = a3;
-  v3 = [v5 addSectionWithTitle:0 content:&stru_101639620];
-  v4 = [v5 addSectionWithTitle:@"Server Side Instructions" content:&stru_101639680];
+  settingsCopy = settings;
+  v3 = [settingsCopy addSectionWithTitle:0 content:&stru_101639620];
+  v4 = [settingsCopy addSectionWithTitle:@"Server Side Instructions" content:&stru_101639680];
 }
 
-- (void)_addETAUpdatesSettings:(id)a3
+- (void)_addETAUpdatesSettings:(id)settings
 {
-  v5 = a3;
-  v3 = [v5 addSectionWithTitle:0 content:&stru_101639240];
-  v4 = [v5 addSectionWithTitle:@"ETA Stabilization" content:&stru_101639600];
+  settingsCopy = settings;
+  v3 = [settingsCopy addSectionWithTitle:0 content:&stru_101639240];
+  v4 = [settingsCopy addSectionWithTitle:@"ETA Stabilization" content:&stru_101639600];
 }
 
-- (void)_addTrafficOverrideSettings:(id)a3
+- (void)_addTrafficOverrideSettings:(id)settings
 {
-  v5 = a3;
-  v3 = [v5 addSectionWithTitle:@"Override Color" content:&stru_1016391C0];
-  v4 = [v5 addSectionWithTitle:@"Override Section" content:&stru_101639200];
+  settingsCopy = settings;
+  v3 = [settingsCopy addSectionWithTitle:@"Override Color" content:&stru_1016391C0];
+  v4 = [settingsCopy addSectionWithTitle:@"Override Section" content:&stru_101639200];
 }
 
-- (void)_addRoutingSettings:(id)a3
+- (void)_addRoutingSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   objc_initWeak(&location, self);
   v10 = _NSConcreteStackBlock;
   v11 = 3221225472;
   v12 = sub_100B4EF60;
   v13 = &unk_10165E0A8;
   objc_copyWeak(&v14, &location);
-  v5 = [v4 addSectionWithTitle:0 content:&v10];
-  v6 = [v4 addSectionWithTitle:@"Arrival" content:{&stru_101639080, v10, v11, v12, v13}];
-  v7 = [v4 addSectionWithTitle:@"Departure From Waypoint" content:&stru_1016390A0];
-  v8 = [v4 addSectionWithTitle:@"Logging" content:&stru_101639180];
-  v9 = [v4 addSectionWithTitle:0 content:&stru_1016391A0];
+  v5 = [settingsCopy addSectionWithTitle:0 content:&v10];
+  v6 = [settingsCopy addSectionWithTitle:@"Arrival" content:{&stru_101639080, v10, v11, v12, v13}];
+  v7 = [settingsCopy addSectionWithTitle:@"Departure From Waypoint" content:&stru_1016390A0];
+  v8 = [settingsCopy addSectionWithTitle:@"Logging" content:&stru_101639180];
+  v9 = [settingsCopy addSectionWithTitle:0 content:&stru_1016391A0];
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
 
-- (void)_addLocationsSettings:(id)a3
+- (void)_addLocationsSettings:(id)settings
 {
-  v7 = a3;
-  v3 = [v7 addSectionWithTitle:@"Map Matching" content:&stru_101638F60];
-  v4 = [v7 addSectionWithTitle:0 content:&stru_101638F80];
-  v5 = [v7 addSectionWithTitle:@"Location Projection" content:&stru_101638FA0];
-  v6 = [v7 addSectionWithTitle:@"Probe Crumbs" content:&stru_101638FE0];
+  settingsCopy = settings;
+  v3 = [settingsCopy addSectionWithTitle:@"Map Matching" content:&stru_101638F60];
+  v4 = [settingsCopy addSectionWithTitle:0 content:&stru_101638F80];
+  v5 = [settingsCopy addSectionWithTitle:@"Location Projection" content:&stru_101638FA0];
+  v6 = [settingsCopy addSectionWithTitle:@"Probe Crumbs" content:&stru_101638FE0];
 }
 
-- (void)_addVisualizationSettings:(id)a3
+- (void)_addVisualizationSettings:(id)settings
 {
-  v5 = a3;
-  v3 = [v5 addSectionWithTitle:0 content:&stru_101638F20];
-  v4 = [v5 addSectionWithTitle:@"Arrival Regions" content:&stru_101638F40];
+  settingsCopy = settings;
+  v3 = [settingsCopy addSectionWithTitle:0 content:&stru_101638F20];
+  v4 = [settingsCopy addSectionWithTitle:@"Arrival Regions" content:&stru_101638F40];
 }
 
-- (void)_addNavigationRowWithTitle:(id)a3 section:(id)a4 handler:(id)a5
+- (void)_addNavigationRowWithTitle:(id)title section:(id)section handler:(id)handler
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100B4FF74;
   v10[3] = &unk_101638F00;
-  v11 = a3;
-  v12 = a5;
-  v7 = v12;
-  v8 = v11;
-  v9 = [a4 addNavigationRowWithTitle:v8 viewControllerContent:v10];
+  titleCopy = title;
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  v8 = titleCopy;
+  v9 = [section addNavigationRowWithTitle:v8 viewControllerContent:v10];
 }
 
 - (void)prepareContent

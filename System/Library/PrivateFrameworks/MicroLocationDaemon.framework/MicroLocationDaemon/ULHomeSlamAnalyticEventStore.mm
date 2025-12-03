@@ -1,11 +1,11 @@
 @interface ULHomeSlamAnalyticEventStore
 + (unsigned)maxEntriesInTable;
-- (BOOL)insertDataObjects:(const void *)a3;
+- (BOOL)insertDataObjects:(const void *)objects;
 - (id)insertDataObjects:;
 - (optional<ULHomeSlamAnalyticEventDO>)fetchFirstEvent;
 - (optional<ULHomeSlamAnalyticEventDO>)fetchLatestAnalyticEventType:(ULHomeSlamAnalyticEventStore *)self beforeTime:;
 - (uint64_t)insertDataObjects:;
-- (vector<ULHomeSlamAnalyticEventDO,)fetchAnalyticEventsASCFromTime:(ULHomeSlamAnalyticEventStore *)self toTime:(SEL)a3;
+- (vector<ULHomeSlamAnalyticEventDO,)fetchAnalyticEventsASCFromTime:(ULHomeSlamAnalyticEventStore *)self toTime:(SEL)time;
 @end
 
 @implementation ULHomeSlamAnalyticEventStore
@@ -13,52 +13,52 @@
 + (unsigned)maxEntriesInTable
 {
   v2 = +[ULDefaultsSingleton shared];
-  v3 = [v2 defaultsDictionary];
+  defaultsDictionary = [v2 defaultsDictionary];
 
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULAnalyticEventsTableMaxRows"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaultsDictionary objectForKey:v4];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v5 unsignedIntValue];
+    unsignedIntValue = [v5 unsignedIntValue];
   }
 
   else
   {
-    v6 = [&unk_286A719D0 unsignedIntValue];
+    unsignedIntValue = [&unk_286A719D0 unsignedIntValue];
   }
 
-  v7 = v6;
+  v7 = unsignedIntValue;
 
   return v7;
 }
 
-- (BOOL)insertDataObjects:(const void *)a3
+- (BOOL)insertDataObjects:(const void *)objects
 {
   v7[4] = *MEMORY[0x277D85DE8];
-  v6 = self;
+  selfCopy = self;
   v7[0] = &unk_286A562D8;
-  v7[1] = &v6;
+  v7[1] = &selfCopy;
   v7[3] = v7;
-  inserted = ULDBUtils::insertDataObjects<ULHomeSlamAnalyticEventDO,ULHomeSlamAnalyticEventMO>(self, a3, v7);
+  inserted = ULDBUtils::insertDataObjects<ULHomeSlamAnalyticEventDO,ULHomeSlamAnalyticEventMO>(self, objects, v7);
   std::__function::__value_func<ULHomeSlamAnalyticEventMO * ()(ULHomeSlamAnalyticEventDO const&)>::~__value_func[abi:ne200100](v7);
   v4 = *MEMORY[0x277D85DE8];
   return inserted;
 }
 
-- (vector<ULHomeSlamAnalyticEventDO,)fetchAnalyticEventsASCFromTime:(ULHomeSlamAnalyticEventStore *)self toTime:(SEL)a3
+- (vector<ULHomeSlamAnalyticEventDO,)fetchAnalyticEventsASCFromTime:(ULHomeSlamAnalyticEventStore *)self toTime:(SEL)time
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v9 = MEMORY[0x277CCAC30];
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
   v11 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
   v12 = [v9 predicateWithFormat:@"%K > %@ && %K <= %@", @"timestamp", v10, @"timestamp", v11];
-  [v8 addObject:v12];
+  [array addObject:v12];
 
   v13 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"timestamp" ascending:1];
   v17[0] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-  [(ULHomeSlamAnalyticEventStore *)self _fetchAnalyticEventsByAndPredicates:v8 sortDescriptors:v14 andLimit:+[ULHomeSlamAnalyticEventStore maxEntriesInTable]];
+  [(ULHomeSlamAnalyticEventStore *)self _fetchAnalyticEventsByAndPredicates:array sortDescriptors:v14 andLimit:+[ULHomeSlamAnalyticEventStore maxEntriesInTable]];
 
   v16 = *MEMORY[0x277D85DE8];
   return result;
@@ -75,8 +75,8 @@
   v25 = 0;
   std::vector<ULHomeSlamAnalyticEventDO>::reserve(__p, 1uLL);
   v8 = objc_autoreleasePoolPush();
-  v9 = [MEMORY[0x277CBEB18] array];
-  v10 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v11 = *v5;
   v12 = v5[1];
   if (*v5 != v12)
@@ -84,7 +84,7 @@
     do
     {
       v13 = [MEMORY[0x277CCABB0] numberWithShort:*v11];
-      [v10 addObject:v13];
+      [array2 addObject:v13];
 
       ++v11;
     }
@@ -95,15 +95,15 @@
   v14 = MEMORY[0x277CCAC30];
   v15 = [MEMORY[0x277CCABB0] numberWithDouble:v4];
   v16 = [v14 predicateWithFormat:@"%K <= %@", @"timestamp", v15];
-  [v9 addObject:v16];
+  [array addObject:v16];
 
-  v17 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"event", v10];
-  [v9 addObject:v17];
+  v17 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"event", array2];
+  [array addObject:v17];
 
   v18 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"timestamp" ascending:0];
   v26[0] = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
-  [(ULHomeSlamAnalyticEventStore *)self _fetchAnalyticEventsByAndPredicates:v9 sortDescriptors:v19 andLimit:1];
+  [(ULHomeSlamAnalyticEventStore *)self _fetchAnalyticEventsByAndPredicates:array sortDescriptors:v19 andLimit:1];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -146,11 +146,11 @@ LABEL_9:
   v13 = 0;
   std::vector<ULHomeSlamAnalyticEventDO>::reserve(__p, 1uLL);
   v4 = objc_autoreleasePoolPush();
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"timestamp" ascending:1];
   v14[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-  [(ULHomeSlamAnalyticEventStore *)self _fetchAnalyticEventsByAndPredicates:v5 sortDescriptors:v7 andLimit:1];
+  [(ULHomeSlamAnalyticEventStore *)self _fetchAnalyticEventsByAndPredicates:array sortDescriptors:v7 andLimit:1];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -187,7 +187,7 @@ LABEL_7:
 - (uint64_t)insertDataObjects:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -198,8 +198,8 @@ LABEL_7:
 
 - (id)insertDataObjects:
 {
-  v3 = [**(a1 + 8) managedObjectContext];
-  v4 = [ULHomeSlamAnalyticEventMO createFromDO:a2 inManagedObjectContext:v3];
+  managedObjectContext = [**(self + 8) managedObjectContext];
+  v4 = [ULHomeSlamAnalyticEventMO createFromDO:a2 inManagedObjectContext:managedObjectContext];
 
   return v4;
 }

@@ -3,16 +3,16 @@
 - (WKWebGeolocationPolicyDecider)init;
 - (id).cxx_construct;
 - (id)_siteFile;
-- (id)_siteFileInContainerDirectory:(id)a3 creatingIntermediateDirectoriesIfNecessary:(BOOL)a4;
-- (int64_t)_getChallengeCountFromHistoryForToken:(id)a3 requestingURL:(id)a4;
-- (void)_addChallengeCount:(int64_t)a3 forToken:(id)a4 requestingURL:(id)a5;
+- (id)_siteFileInContainerDirectory:(id)directory creatingIntermediateDirectoriesIfNecessary:(BOOL)necessary;
+- (int64_t)_getChallengeCountFromHistoryForToken:(id)token requestingURL:(id)l;
+- (void)_addChallengeCount:(int64_t)count forToken:(id)token requestingURL:(id)l;
 - (void)_executeNextChallenge;
-- (void)_finishActiveChallenge:(BOOL)a3;
-- (void)_loadWithCompletionHandler:(id)a3;
+- (void)_finishActiveChallenge:(BOOL)challenge;
+- (void)_loadWithCompletionHandler:(id)handler;
 - (void)_save;
 - (void)clearCache;
 - (void)dealloc;
-- (void)decidePolicyForGeolocationRequestFromOrigin:(const void *)a3 requestingURL:(id)a4 view:(id)a5 listener:(id)m_buffer;
+- (void)decidePolicyForGeolocationRequestFromOrigin:(const void *)origin requestingURL:(id)l view:(id)view listener:(id)m_buffer;
 @end
 
 @implementation WKWebGeolocationPolicyDecider
@@ -59,28 +59,28 @@
   [(WKWebGeolocationPolicyDecider *)&v4 dealloc];
 }
 
-- (void)decidePolicyForGeolocationRequestFromOrigin:(const void *)a3 requestingURL:(id)a4 view:(id)a5 listener:(id)m_buffer
+- (void)decidePolicyForGeolocationRequestFromOrigin:(const void *)origin requestingURL:(id)l view:(id)view listener:(id)m_buffer
 {
   v11 = WTF::fastMalloc(0x28);
   *v11 = 0u;
   *(v11 + 16) = 0u;
   *(v11 + 32) = 0;
-  v12 = [a4 isFileURL];
-  if (!v12)
+  viewCopy = [l isFileURL];
+  if (!viewCopy)
   {
-    LODWORD(m_end) = *(a3 + 24);
-    if (*(a3 + 24))
+    LODWORD(m_end) = *(origin + 24);
+    if (*(origin + 24))
     {
       goto LABEL_60;
     }
 
-    v14 = (a3 + 8);
+    v14 = (origin + 8);
     goto LABEL_6;
   }
 
-  v12 = [a4 path];
-  v35 = v12;
-  if (v12)
+  viewCopy = [l path];
+  v35 = viewCopy;
+  if (viewCopy)
   {
     goto LABEL_10;
   }
@@ -101,41 +101,41 @@
       }
     }
 
-    if (a4)
+    if (l)
     {
-      v12 = a4;
+      viewCopy = l;
     }
 
     v20 = *(v11 + 16);
-    *(v11 + 16) = a4;
+    *(v11 + 16) = l;
     if (v20)
     {
 
-      if (!a5)
+      if (!view)
       {
         goto LABEL_21;
       }
 
 LABEL_20:
-      v12 = a5;
+      viewCopy = view;
       goto LABEL_21;
     }
 
-    if (a5)
+    if (view)
     {
       goto LABEL_20;
     }
 
 LABEL_21:
     v21 = *(v11 + 24);
-    *(v11 + 24) = a5;
+    *(v11 + 24) = view;
     if (v21)
     {
     }
 
     if (m_buffer)
     {
-      v12 = m_buffer;
+      viewCopy = m_buffer;
     }
 
     v22 = *(v11 + 32);
@@ -174,7 +174,7 @@ LABEL_21:
       }
     }
 
-    a5 = m_capacity;
+    view = m_capacity;
     v25 = (m_capacity >> 2) + m_capacity;
     if (v25 >= 0x1FFFFFFF)
     {
@@ -188,28 +188,28 @@ LABEL_21:
       v25 = 15;
     }
 
-    a4 = (v25 + 1);
-    v12 = WTF::fastMalloc((8 * (v25 + 1)));
-    self->_challenges.m_buffer.m_capacity = a4;
-    self->_challenges.m_buffer.m_buffer = v12;
+    l = (v25 + 1);
+    viewCopy = WTF::fastMalloc((8 * (v25 + 1)));
+    self->_challenges.m_buffer.m_capacity = l;
+    self->_challenges.m_buffer.m_buffer = viewCopy;
     m_end = self->_challenges.m_start;
     v26 = self->_challenges.m_end;
     v27 = v26 - m_end;
     if (v26 < m_end)
     {
-      if (v26 <= a5)
+      if (v26 <= view)
       {
-        v12 = memcpy(v12, m_buffer, 8 * v26);
+        viewCopy = memcpy(viewCopy, m_buffer, 8 * v26);
         m_end = self->_challenges.m_start;
-        v28 = a5 - m_end;
-        if (a5 >= m_end)
+        v28 = view - m_end;
+        if (view >= m_end)
         {
           v29 = self->_challenges.m_buffer.m_capacity;
           if (v29 >= v28)
           {
-            a5 = (v29 - (a5 - m_end));
-            v12 = memcpy(self->_challenges.m_buffer.m_buffer + 8 * a5, m_buffer + 8 * m_end, 8 * v28);
-            self->_challenges.m_start = a5;
+            view = (v29 - (view - m_end));
+            viewCopy = memcpy(self->_challenges.m_buffer.m_buffer + 8 * view, m_buffer + 8 * m_end, 8 * v28);
+            self->_challenges.m_start = view;
             if (!m_buffer)
             {
               goto LABEL_53;
@@ -223,7 +223,7 @@ LABEL_21:
       goto LABEL_59;
     }
 
-    if (a5 < m_end)
+    if (view < m_end)
     {
       goto LABEL_59;
     }
@@ -233,7 +233,7 @@ LABEL_21:
       break;
     }
 
-    if (a5 - m_end >= v27)
+    if (view - m_end >= v27)
     {
       goto LABEL_49;
     }
@@ -243,7 +243,7 @@ LABEL_59:
 LABEL_60:
     if (m_end != 1)
     {
-      mpark::throw_bad_variant_access(v12);
+      mpark::throw_bad_variant_access(viewCopy);
     }
 
     v14 = MEMORY[0x1E696EBA8];
@@ -251,24 +251,24 @@ LABEL_6:
     v15 = *v14;
     if (!*v14)
     {
-      v12 = &stru_1F1147748;
+      viewCopy = &stru_1F1147748;
       v35 = &stru_1F1147748;
 LABEL_10:
-      v12 = v12;
+      viewCopy = viewCopy;
       continue;
     }
 
     atomic_fetch_add_explicit(v15, 2u, memory_order_relaxed);
-    v12 = MEMORY[0x19EB00B70](&v35, v15);
+    viewCopy = MEMORY[0x19EB00B70](&v35, v15);
     if (atomic_fetch_add_explicit(v15, 0xFFFFFFFE, memory_order_relaxed) == 2)
     {
-      v12 = WTF::StringImpl::destroy(v15, v16);
+      viewCopy = WTF::StringImpl::destroy(v15, v16);
     }
   }
 
-  v27 = a5 - m_end;
+  v27 = view - m_end;
 LABEL_49:
-  v12 = memcpy(&v12->isa + m_end, m_buffer + 8 * m_end, 8 * v27);
+  viewCopy = memcpy(&viewCopy->isa + m_end, m_buffer + 8 * m_end, 8 * v27);
   if (!m_buffer)
   {
     goto LABEL_53;
@@ -281,7 +281,7 @@ LABEL_50:
     self->_challenges.m_buffer.m_capacity = 0;
   }
 
-  v12 = WTF::fastFree(m_buffer, v30);
+  viewCopy = WTF::fastFree(m_buffer, v30);
 LABEL_53:
   m_end = self->_challenges.m_end;
 LABEL_54:
@@ -655,14 +655,14 @@ void __54__WKWebGeolocationPolicyDecider__executeNextChallenge__block_invoke_244
   }
 }
 
-- (void)_finishActiveChallenge:(BOOL)a3
+- (void)_finishActiveChallenge:(BOOL)challenge
 {
   p_activeChallenge = &self->_activeChallenge;
   ptr = self->_activeChallenge.__ptr_;
   if (ptr)
   {
-    v5 = a3;
-    if (a3)
+    challengeCopy = challenge;
+    if (challenge)
     {
       v7 = 1;
     }
@@ -674,7 +674,7 @@ void __54__WKWebGeolocationPolicyDecider__executeNextChallenge__block_invoke_244
 
     [(WKWebGeolocationPolicyDecider *)self _addChallengeCount:v7 forToken:*ptr requestingURL:*(ptr + 2)];
     v8 = *(self->_activeChallenge.__ptr_ + 4);
-    if (v5)
+    if (challengeCopy)
     {
       [v8 allow];
     }
@@ -715,11 +715,11 @@ uint64_t __43__WKWebGeolocationPolicyDecider_clearCache__block_invoke(uint64_t a
   return [v2 _web_removeFileOnlyAtPath:v3];
 }
 
-- (id)_siteFileInContainerDirectory:(id)a3 creatingIntermediateDirectoriesIfNecessary:(BOOL)a4
+- (id)_siteFileInContainerDirectory:(id)directory creatingIntermediateDirectoriesIfNecessary:(BOOL)necessary
 {
-  v4 = a4;
-  v5 = [a3 stringByAppendingPathComponent:@"Library/WebKit"];
-  if (v4)
+  necessaryCopy = necessary;
+  v5 = [directory stringByAppendingPathComponent:@"Library/WebKit"];
+  if (necessaryCopy)
   {
     [objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")];
   }
@@ -739,13 +739,13 @@ uint64_t __43__WKWebGeolocationPolicyDecider_clearCache__block_invoke(uint64_t a
   return result;
 }
 
-- (void)_loadWithCompletionHandler:(id)a3
+- (void)_loadWithCompletionHandler:(id)handler
 {
   if (self->_sites.m_ptr)
   {
-    v5 = *(a3 + 2);
+    v5 = *(handler + 2);
 
-    v5(a3);
+    v5(handler);
   }
 
   else
@@ -758,7 +758,7 @@ uint64_t __43__WKWebGeolocationPolicyDecider_clearCache__block_invoke(uint64_t a
     v7[2] = __60__WKWebGeolocationPolicyDecider__loadWithCompletionHandler___block_invoke;
     v7[3] = &unk_1E76339A8;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = handler;
     dispatch_async(m_ptr, v7);
   }
 }
@@ -849,29 +849,29 @@ uint64_t __60__WKWebGeolocationPolicyDecider__loadWithCompletionHandler___block_
     if (v3)
     {
       v4 = v3;
-      v5 = [(WKWebGeolocationPolicyDecider *)self _siteFile];
+      _siteFile = [(WKWebGeolocationPolicyDecider *)self _siteFile];
       m_ptr = self->_diskDispatchQueue.m_ptr;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __38__WKWebGeolocationPolicyDecider__save__block_invoke;
       block[3] = &unk_1E76321C8;
       block[4] = v4;
-      block[5] = v5;
+      block[5] = _siteFile;
       dispatch_async(m_ptr, block);
     }
   }
 }
 
-- (int64_t)_getChallengeCountFromHistoryForToken:(id)a3 requestingURL:(id)a4
+- (int64_t)_getChallengeCountFromHistoryForToken:(id)token requestingURL:(id)l
 {
-  v5 = [(NSMutableDictionary *)self->_sites.m_ptr objectForKey:a3];
+  v5 = [(NSMutableDictionary *)self->_sites.m_ptr objectForKey:token];
   if (!v5)
   {
     return 0;
   }
 
   v6 = v5;
-  if ([objc_msgSend(a4 "scheme")])
+  if ([objc_msgSend(l "scheme")])
   {
     return 0;
   }
@@ -887,15 +887,15 @@ uint64_t __60__WKWebGeolocationPolicyDecider__loadWithCompletionHandler___block_
   return [v8 integerValue];
 }
 
-- (void)_addChallengeCount:(int64_t)a3 forToken:(id)a4 requestingURL:(id)a5
+- (void)_addChallengeCount:(int64_t)count forToken:(id)token requestingURL:(id)l
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v8 = [(WKWebGeolocationPolicyDecider *)self _getChallengeCountFromHistoryForToken:a4 requestingURL:a5];
+  v8 = [(WKWebGeolocationPolicyDecider *)self _getChallengeCountFromHistoryForToken:token requestingURL:l];
   v9[0] = @"ChallengeCount";
   v9[1] = @"ChallengeDate";
-  v10[0] = [MEMORY[0x1E696AD98] numberWithInteger:v8 + a3];
+  v10[0] = [MEMORY[0x1E696AD98] numberWithInteger:v8 + count];
   v10[1] = [MEMORY[0x1E695DF00] date];
-  -[NSMutableDictionary setObject:forKey:](self->_sites.m_ptr, "setObject:forKey:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2], a4);
+  -[NSMutableDictionary setObject:forKey:](self->_sites.m_ptr, "setObject:forKey:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2], token);
   [(WKWebGeolocationPolicyDecider *)self _save];
 }
 

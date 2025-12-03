@@ -1,16 +1,16 @@
 @interface SSDevice
-+ (BOOL)promptNeedsDisplay:(id)a3;
-+ (BOOL)setCachedAvailableItemKinds:(id)a3;
++ (BOOL)promptNeedsDisplay:(id)display;
++ (BOOL)setCachedAvailableItemKinds:(id)kinds;
 + (id)copyCachedAvailableItemKinds;
 + (id)currentDevice;
-+ (void)setLastPromptAttemptDate:(id)a3 forPromptWithIdentifier:(id)a4;
-+ (void)setPromptWithIdentifier:(id)a3 needsDisplay:(BOOL)a4;
-- (BOOL)_getDeviceType:(unsigned int *)a3 error:(id *)a4;
++ (void)setLastPromptAttemptDate:(id)date forPromptWithIdentifier:(id)identifier;
++ (void)setPromptWithIdentifier:(id)identifier needsDisplay:(BOOL)display;
+- (BOOL)_getDeviceType:(unsigned int *)type error:(id *)error;
 - (BOOL)_is1080pCapable;
 - (BOOL)_is720pCapable;
-- (BOOL)getMachineIdentifier:(id *)a3 otp:(id *)a4 forAccountIdentifier:(id)a5;
+- (BOOL)getMachineIdentifier:(id *)identifier otp:(id *)otp forAccountIdentifier:(id)accountIdentifier;
 - (BOOL)isPluggedIn;
-- (BOOL)supportsDeviceCapability:(int64_t)a3;
+- (BOOL)supportsDeviceCapability:(int64_t)capability;
 - (NSSet)automaticDownloadKinds;
 - (NSString)clientName;
 - (NSString)clientVersion;
@@ -31,30 +31,30 @@
 - (SSPromise)storeFrontIdentifierPromise;
 - (double)batteryLevel;
 - (id)_appleTVProductVersion;
-- (id)_copyCarrierBundleEligibilityWithStatus:(id)a3;
-- (id)_copyKeyValueStoreValueForDomain:(id)a3 key:(id)a4;
+- (id)_copyCarrierBundleEligibilityWithStatus:(id)status;
+- (id)_copyKeyValueStoreValueForDomain:(id)domain key:(id)key;
 - (id)_diskCapacityString;
 - (id)_fairPlayDeviceTypeString;
-- (id)_newLegacyUserAgent:(BOOL *)a3;
-- (id)_newModernUserAgentWithClientName:(id)a3 version:(id)a4 isCachable:(BOOL *)a5;
+- (id)_newLegacyUserAgent:(BOOL *)agent;
+- (id)_newModernUserAgentWithClientName:(id)name version:(id)version isCachable:(BOOL *)cachable;
 - (id)_productVersion;
-- (id)_userAgentClientNameForAppleTVBundleID:(id)a3;
-- (id)_userAgentClientNameForBundleID:(id)a3;
-- (id)_userAgentClientNameForInfoPlist:(id)a3;
-- (id)_userAgentClientVersionForInfoPlist:(id)a3 clientName:(id)a4;
-- (id)carrierBundleStatusForService:(int64_t)a3;
+- (id)_userAgentClientNameForAppleTVBundleID:(id)d;
+- (id)_userAgentClientNameForBundleID:(id)d;
+- (id)_userAgentClientNameForInfoPlist:(id)plist;
+- (id)_userAgentClientVersionForInfoPlist:(id)plist clientName:(id)name;
+- (id)carrierBundleStatusForService:(int64_t)service;
 - (id)copyStoreFrontRequestHeaders;
-- (id)userAgentWithBundleIdentifier:(id)a3 version:(id)a4;
-- (id)userAgentWithBundleRef:(__CFBundle *)a3 isCachable:(BOOL *)a4;
-- (id)userAgentWithClientName:(id)a3 version:(id)a4;
+- (id)userAgentWithBundleIdentifier:(id)identifier version:(id)version;
+- (id)userAgentWithBundleRef:(__CFBundle *)ref isCachable:(BOOL *)cachable;
+- (id)userAgentWithClientName:(id)name version:(id)version;
 - (int)_deviceClass;
 - (int)_screenClass;
 - (int64_t)_deviceType;
-- (int64_t)_deviceTypeForProductType:(id)a3;
-- (int64_t)_deviceTypeForUnknownAppleTV:(id)a3;
-- (int64_t)_deviceTypeForUnknownIPad:(id)a3;
-- (int64_t)_deviceTypeForUnknownIPhone:(id)a3;
-- (int64_t)_deviceTypeForUnknownIPod:(id)a3;
+- (int64_t)_deviceTypeForProductType:(id)type;
+- (int64_t)_deviceTypeForUnknownAppleTV:(id)v;
+- (int64_t)_deviceTypeForUnknownIPad:(id)pad;
+- (int64_t)_deviceTypeForUnknownIPhone:(id)phone;
+- (int64_t)_deviceTypeForUnknownIPod:(id)pod;
 - (int64_t)deviceBiometricStyle;
 - (int64_t)deviceType;
 - (unsigned)deviceTypeIdentifier;
@@ -64,31 +64,31 @@
 - (void)_invalidateSoftwareCUID;
 - (void)_postStoreFrontDidChangeNotification;
 - (void)_reloadPluggedInState;
-- (void)_updateAutomaticDownloadKinds:(id)a3 withValue:(id)a4 completionBlock:(id)a5;
-- (void)_updateBatteryLevelFromService:(unsigned int)a3;
+- (void)_updateAutomaticDownloadKinds:(id)kinds withValue:(id)value completionBlock:(id)block;
+- (void)_updateBatteryLevelFromService:(unsigned int)service;
 - (void)dealloc;
-- (void)enableAllAutomaticDownloadKindsWithCompletionBlock:(id)a3;
-- (void)getAvailableItemKindsWithBlock:(id)a3;
-- (void)getCarrierBundleStatusForService:(int64_t)a3 completionHandler:(id)a4;
-- (void)getCellularNetworkingAllowedWithBlock:(id)a3;
-- (void)loadStoreFrontWithCompletionHandler:(id)a3;
-- (void)minusAutomaticDownloadKinds:(id)a3 withCompletionBlock:(id)a4;
-- (void)sdk_loadStoreFrontIdentifier:(id)a3;
-- (void)sdk_loadStorefrontCountryCode:(id)a3;
-- (void)setAutomaticDownloadKinds:(id)a3 withCompletionBlock:(id)a4;
-- (void)setCellularNetworkingAllowed:(BOOL)a3;
-- (void)setCloudMediaLibraryIdentifier:(id)a3;
-- (void)setMediaLibraryIdentifier:(id)a3;
-- (void)setSoftwareLibraryIdentifier:(id)a3;
-- (void)setStoreFrontIdentifier:(id)a3;
-- (void)setStoreFrontIdentifier:(id)a3 accountIdentifier:(id)a4;
-- (void)setStoreFrontIdentifier:(id)a3 forRequest:(id)a4 response:(id)a5 account:(id)a6;
-- (void)setStoreFrontWithResponseHeaders:(id)a3;
-- (void)showPromptWithIdentifier:(id)a3 completionHandler:(id)a4;
+- (void)enableAllAutomaticDownloadKindsWithCompletionBlock:(id)block;
+- (void)getAvailableItemKindsWithBlock:(id)block;
+- (void)getCarrierBundleStatusForService:(int64_t)service completionHandler:(id)handler;
+- (void)getCellularNetworkingAllowedWithBlock:(id)block;
+- (void)loadStoreFrontWithCompletionHandler:(id)handler;
+- (void)minusAutomaticDownloadKinds:(id)kinds withCompletionBlock:(id)block;
+- (void)sdk_loadStoreFrontIdentifier:(id)identifier;
+- (void)sdk_loadStorefrontCountryCode:(id)code;
+- (void)setAutomaticDownloadKinds:(id)kinds withCompletionBlock:(id)block;
+- (void)setCellularNetworkingAllowed:(BOOL)allowed;
+- (void)setCloudMediaLibraryIdentifier:(id)identifier;
+- (void)setMediaLibraryIdentifier:(id)identifier;
+- (void)setSoftwareLibraryIdentifier:(id)identifier;
+- (void)setStoreFrontIdentifier:(id)identifier;
+- (void)setStoreFrontIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier;
+- (void)setStoreFrontIdentifier:(id)identifier forRequest:(id)request response:(id)response account:(id)account;
+- (void)setStoreFrontWithResponseHeaders:(id)headers;
+- (void)showPromptWithIdentifier:(id)identifier completionHandler:(id)handler;
 - (void)startPowerMonitoring;
 - (void)stopPowerMonitoring;
 - (void)synchronizeAutomaticDownloadKinds;
-- (void)unionAutomaticDownloadKinds:(id)a3 withCompletionBlock:(id)a4;
+- (void)unionAutomaticDownloadKinds:(id)kinds withCompletionBlock:(id)block;
 @end
 
 @implementation SSDevice
@@ -178,9 +178,9 @@ id __26__SSDevice_productVersion__block_invoke(uint64_t a1)
 
 - (NSString)storeFrontIdentifier
 {
-  v2 = [(SSDevice *)self storeFrontIdentifierPromise];
+  storeFrontIdentifierPromise = [(SSDevice *)self storeFrontIdentifierPromise];
 
-  return [(SSPromise *)v2 resultWithError:0];
+  return [(SSPromise *)storeFrontIdentifierPromise resultWithError:0];
 }
 
 - (SSPromise)storeFrontIdentifierPromise
@@ -214,9 +214,9 @@ SSPromise *__39__SSDevice_storeFrontIdentifierPromise__block_invoke(uint64_t a1,
     return self->_deviceType;
   }
 
-  v4 = [(SSDevice *)self _copyProductType];
-  self->_productType = v4;
-  result = [(SSDevice *)self _deviceTypeForProductType:v4];
+  _copyProductType = [(SSDevice *)self _copyProductType];
+  self->_productType = _copyProductType;
+  result = [(SSDevice *)self _deviceTypeForProductType:_copyProductType];
   self->_deviceType = result;
   return result;
 }
@@ -349,15 +349,15 @@ uint64_t __22__SSDevice_clientName__block_invoke(uint64_t a1)
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
     if (os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -513,20 +513,20 @@ id __39__SSDevice_cloudMediaLibraryIdentifier__block_invoke(uint64_t a1)
   }
 }
 
-- (void)getAvailableItemKindsWithBlock:(id)a3
+- (void)getAvailableItemKindsWithBlock:(id)block
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!block)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"block is nil"];
   }
 
   CFPreferencesAppSynchronize(@"com.apple.itunesstored");
-  v4 = [objc_opt_class() copyCachedAvailableItemKinds];
-  if (v4)
+  copyCachedAvailableItemKinds = [objc_opt_class() copyCachedAvailableItemKinds];
+  if (copyCachedAvailableItemKinds)
   {
-    v21 = v4;
-    (*(a3 + 2))(a3);
+    v21 = copyCachedAvailableItemKinds;
+    (*(block + 2))(block);
   }
 
   else
@@ -539,15 +539,15 @@ id __39__SSDevice_cloudMediaLibraryIdentifier__block_invoke(uint64_t a1)
         v5 = +[SSLogConfig sharedConfig];
       }
 
-      v6 = [v5 shouldLog];
+      shouldLog = [v5 shouldLog];
       if ([v5 shouldLogToDisk])
       {
-        v7 = v6 | 2;
+        v7 = shouldLog | 2;
       }
 
       else
       {
-        v7 = v6;
+        v7 = shouldLog;
       }
 
       if (os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -584,7 +584,7 @@ id __39__SSDevice_cloudMediaLibraryIdentifier__block_invoke(uint64_t a1)
     v22[2] = __43__SSDevice_getAvailableItemKindsWithBlock___block_invoke;
     v22[3] = &unk_1E84AC760;
     v22[4] = v19;
-    v22[5] = a3;
+    v22[5] = block;
     [(SSXPCConnection *)v19 sendMessage:v18 withReply:v22];
     xpc_release(v18);
   }
@@ -640,7 +640,7 @@ LABEL_7:
   dispatch_async(global_queue, block);
 }
 
-- (void)getCellularNetworkingAllowedWithBlock:(id)a3
+- (void)getCellularNetworkingAllowedWithBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
   if (MGGetBoolAnswer() && _os_feature_enabled_impl())
@@ -651,15 +651,15 @@ LABEL_7:
       v4 = +[SSLogConfig sharedConfig];
     }
 
-    v5 = [v4 shouldLog];
+    shouldLog = [v4 shouldLog];
     if ([v4 shouldLogToDisk])
     {
-      v6 = v5 | 2;
+      v6 = shouldLog | 2;
     }
 
     else
     {
-      v6 = v5;
+      v6 = shouldLog;
     }
 
     if (os_log_type_enabled([v4 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -695,7 +695,7 @@ LABEL_7:
   v20[2] = __50__SSDevice_getCellularNetworkingAllowedWithBlock___block_invoke;
   v20[3] = &unk_1E84AC760;
   v20[4] = v18;
-  v20[5] = a3;
+  v20[5] = block;
   [(SSXPCConnection *)v18 sendMessage:v17 withReply:v20];
   xpc_release(v17);
 }
@@ -711,15 +711,15 @@ void __50__SSDevice_getCellularNetworkingAllowedWithBlock___block_invoke(uint64_
   v4 = *(a1 + 32);
 }
 
-- (void)loadStoreFrontWithCompletionHandler:(id)a3
+- (void)loadStoreFrontWithCompletionHandler:(id)handler
 {
   if ([(NSString *)[(SSDevice *)self storeFrontIdentifier] length])
   {
-    if (a3)
+    if (handler)
     {
-      v5 = *(a3 + 2);
+      v5 = *(handler + 2);
 
-      v5(a3, 0);
+      v5(handler, 0);
     }
   }
 
@@ -731,7 +731,7 @@ void __50__SSDevice_getCellularNetworkingAllowedWithBlock___block_invoke(uint64_
     v7[2] = __48__SSDevice_loadStoreFrontWithCompletionHandler___block_invoke;
     v7[3] = &unk_1E84AF318;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = handler;
     dispatch_async(dispatchQueue, v7);
   }
 }
@@ -785,7 +785,7 @@ uint64_t __48__SSDevice_loadStoreFrontWithCompletionHandler___block_invoke_3(uin
   return result;
 }
 
-- (void)sdk_loadStorefrontCountryCode:(id)a3
+- (void)sdk_loadStorefrontCountryCode:(id)code
 {
   v23 = *MEMORY[0x1E69E9840];
   if (MGGetBoolAnswer() && _os_feature_enabled_impl())
@@ -796,15 +796,15 @@ uint64_t __48__SSDevice_loadStoreFrontWithCompletionHandler___block_invoke_3(uin
       v4 = +[SSLogConfig sharedConfig];
     }
 
-    v5 = [v4 shouldLog];
+    shouldLog = [v4 shouldLog];
     if ([v4 shouldLogToDisk])
     {
-      v6 = v5 | 2;
+      v6 = shouldLog | 2;
     }
 
     else
     {
-      v6 = v5;
+      v6 = shouldLog;
     }
 
     if (os_log_type_enabled([v4 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -841,7 +841,7 @@ uint64_t __48__SSDevice_loadStoreFrontWithCompletionHandler___block_invoke_3(uin
   v20[2] = __42__SSDevice_sdk_loadStorefrontCountryCode___block_invoke;
   v20[3] = &unk_1E84AC760;
   v20[4] = v18;
-  v20[5] = a3;
+  v20[5] = code;
   [(SSXPCConnection *)v18 sendMessage:v17 withReply:v20];
   xpc_release(v17);
 }
@@ -884,7 +884,7 @@ LABEL_7:
   dispatch_async(global_queue, block);
 }
 
-- (void)sdk_loadStoreFrontIdentifier:(id)a3
+- (void)sdk_loadStoreFrontIdentifier:(id)identifier
 {
   v34 = *MEMORY[0x1E69E9840];
   v26 = 0;
@@ -903,9 +903,9 @@ LABEL_7:
   dispatch_sync(dispatchQueue, block);
   if ([v27[5] length])
   {
-    if (a3)
+    if (identifier)
     {
-      (*(a3 + 2))(a3, v27[5], 0);
+      (*(identifier + 2))(identifier, v27[5], 0);
     }
   }
 
@@ -919,22 +919,22 @@ LABEL_7:
         v6 = +[SSLogConfig sharedConfig];
       }
 
-      v7 = [v6 shouldLog];
-      v8 = [v6 shouldLogToDisk];
-      v9 = [v6 OSLogObject];
-      if (v8)
+      shouldLog = [v6 shouldLog];
+      shouldLogToDisk = [v6 shouldLogToDisk];
+      oSLogObject = [v6 OSLogObject];
+      if (shouldLogToDisk)
       {
-        v7 |= 2u;
+        shouldLog |= 2u;
       }
 
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
       {
-        v10 = v7;
+        v10 = shouldLog;
       }
 
       else
       {
-        v10 = v7 & 2;
+        v10 = shouldLog & 2;
       }
 
       if (v10)
@@ -966,7 +966,7 @@ LABEL_7:
     v24[2] = __41__SSDevice_sdk_loadStoreFrontIdentifier___block_invoke_85;
     v24[3] = &unk_1E84AF340;
     v24[5] = v22;
-    v24[6] = a3;
+    v24[6] = identifier;
     v24[4] = self;
     [(SSXPCConnection *)v22 sendMessage:v21 withReply:v24];
     xpc_release(v21);
@@ -1077,7 +1077,7 @@ id __34__SSDevice_mediaLibraryIdentifier__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setCellularNetworkingAllowed:(BOOL)a3
+- (void)setCellularNetworkingAllowed:(BOOL)allowed
 {
   v22 = *MEMORY[0x1E69E9840];
   if (MGGetBoolAnswer() && _os_feature_enabled_impl())
@@ -1088,15 +1088,15 @@ id __34__SSDevice_mediaLibraryIdentifier__block_invoke(uint64_t a1)
       v4 = +[SSLogConfig sharedConfig];
     }
 
-    v5 = [v4 shouldLog];
+    shouldLog = [v4 shouldLog];
     if ([v4 shouldLogToDisk])
     {
-      v6 = v5 | 2;
+      v6 = shouldLog | 2;
     }
 
     else
     {
-      v6 = v5;
+      v6 = shouldLog;
     }
 
     if (os_log_type_enabled([v4 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -1127,14 +1127,14 @@ id __34__SSDevice_mediaLibraryIdentifier__block_invoke(uint64_t a1)
 
   v17 = [[SSXPCConnection alloc] initWithServiceName:@"com.apple.itunesstored.xpc"];
   v18 = SSXPCCreateMessageDictionary(88);
-  xpc_dictionary_set_BOOL(v18, "1", a3);
+  xpc_dictionary_set_BOOL(v18, "1", allowed);
   [(SSXPCConnection *)v17 sendMessage:v18];
   xpc_release(v18);
 }
 
-- (void)setStoreFrontWithResponseHeaders:(id)a3
+- (void)setStoreFrontWithResponseHeaders:(id)headers
 {
-  v4 = [a3 objectForKey:@"X-Set-Apple-Store-Front"];
+  v4 = [headers objectForKey:@"X-Set-Apple-Store-Front"];
   if ([v4 length])
   {
 
@@ -1142,16 +1142,16 @@ id __34__SSDevice_mediaLibraryIdentifier__block_invoke(uint64_t a1)
   }
 }
 
-- (void)showPromptWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)showPromptWithIdentifier:(id)identifier completionHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!identifier)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"promptIdentifier is nil"];
   }
 
   CFPreferencesAppSynchronize(@"com.apple.itunesstored");
-  if ([objc_opt_class() promptNeedsDisplay:a3])
+  if ([objc_opt_class() promptNeedsDisplay:identifier])
   {
     if (MGGetBoolAnswer() && _os_feature_enabled_impl())
     {
@@ -1161,15 +1161,15 @@ id __34__SSDevice_mediaLibraryIdentifier__block_invoke(uint64_t a1)
         v6 = +[SSLogConfig sharedConfig];
       }
 
-      v7 = [v6 shouldLog];
+      shouldLog = [v6 shouldLog];
       if ([v6 shouldLogToDisk])
       {
-        v8 = v7 | 2;
+        v8 = shouldLog | 2;
       }
 
       else
       {
-        v8 = v7;
+        v8 = shouldLog;
       }
 
       if (os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -1200,23 +1200,23 @@ id __34__SSDevice_mediaLibraryIdentifier__block_invoke(uint64_t a1)
 
     v19 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v19, "0", 69);
-    SSXPCDictionarySetCFObject(v19, "1", a3);
+    SSXPCDictionarySetCFObject(v19, "1", identifier);
     v20 = [[SSXPCConnection alloc] initWithServiceName:@"com.apple.itunesstored.xpc"];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __55__SSDevice_showPromptWithIdentifier_completionHandler___block_invoke;
     v23[3] = &unk_1E84AC760;
     v23[4] = v20;
-    v23[5] = a4;
+    v23[5] = handler;
     [(SSXPCConnection *)v20 sendMessage:v19 withReply:v23];
     xpc_release(v19);
   }
 
-  else if (a4)
+  else if (handler)
   {
-    v21 = *(a4 + 2);
+    v21 = *(handler + 2);
 
-    v21(a4, 0);
+    v21(handler, 0);
   }
 }
 
@@ -1402,9 +1402,9 @@ LABEL_3:
   *(*(*(a1 + 40) + 8) + 40) = *(*(a1 + 32) + 136);
 }
 
-- (id)userAgentWithBundleRef:(__CFBundle *)a3 isCachable:(BOOL *)a4
+- (id)userAgentWithBundleRef:(__CFBundle *)ref isCachable:(BOOL *)cachable
 {
-  InfoDictionary = CFBundleGetInfoDictionary(a3);
+  InfoDictionary = CFBundleGetInfoDictionary(ref);
   v7 = [(SSDevice *)self _userAgentClientNameForInfoPlist:InfoDictionary];
   if (v7)
   {
@@ -1427,14 +1427,14 @@ LABEL_3:
     v10 = @"1.0";
   }
 
-  v11 = [(SSDevice *)self _newModernUserAgentWithClientName:v8 version:v10 isCachable:a4];
+  v11 = [(SSDevice *)self _newModernUserAgentWithClientName:v8 version:v10 isCachable:cachable];
 
   return v11;
 }
 
-- (id)userAgentWithClientName:(id)a3 version:(id)a4
+- (id)userAgentWithClientName:(id)name version:(id)version
 {
-  v4 = [(SSDevice *)self _newModernUserAgentWithClientName:a3 version:a4 isCachable:0];
+  v4 = [(SSDevice *)self _newModernUserAgentWithClientName:name version:version isCachable:0];
 
   return v4;
 }
@@ -1456,15 +1456,15 @@ LABEL_3:
   return v3;
 }
 
-+ (BOOL)promptNeedsDisplay:(id)a3
++ (BOOL)promptNeedsDisplay:(id)display
 {
   v27 = *MEMORY[0x1E69E9840];
   v4 = +[SSAccountStore defaultStore];
-  v5 = [v4 activeAccount];
-  if (!v5)
+  activeAccount = [v4 activeAccount];
+  if (!activeAccount)
   {
-    v5 = [objc_msgSend(v4 "localAccount")];
-    if (!v5)
+    activeAccount = [objc_msgSend(v4 "localAccount")];
+    if (!activeAccount)
     {
       v10 = +[SSLogConfig sharedAccountsConfig];
       if (!v10)
@@ -1472,15 +1472,15 @@ LABEL_3:
         v10 = +[SSLogConfig sharedConfig];
       }
 
-      v11 = [v10 shouldLog];
+      shouldLog = [v10 shouldLog];
       if ([v10 shouldLogToDisk])
       {
-        v12 = v11 | 2;
+        v12 = shouldLog | 2;
       }
 
       else
       {
-        v12 = v11;
+        v12 = shouldLog;
       }
 
       if (!os_log_type_enabled([v10 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -1493,7 +1493,7 @@ LABEL_3:
         v23 = 138543618;
         v24 = objc_opt_class();
         v25 = 2114;
-        v26 = a3;
+        displayCopy = display;
         LODWORD(v22) = 22;
         v7 = _os_log_send_and_compose_impl();
         if (!v7)
@@ -1511,15 +1511,15 @@ LABEL_3:
     }
   }
 
-  v6 = v5;
-  if ([v5 displayedServerPromptWithIdentifier:a3])
+  v6 = activeAccount;
+  if ([activeAccount displayedServerPromptWithIdentifier:display])
   {
 LABEL_4:
     LOBYTE(v7) = 0;
     return v7;
   }
 
-  v8 = [v6 lastAttemptDateForServerPromptWithIdentifier:a3];
+  v8 = [v6 lastAttemptDateForServerPromptWithIdentifier:display];
   if (v8)
   {
     [v8 timeIntervalSinceNow];
@@ -1534,26 +1534,26 @@ LABEL_4:
   return v7;
 }
 
-+ (BOOL)setCachedAvailableItemKinds:(id)a3
++ (BOOL)setCachedAvailableItemKinds:(id)kinds
 {
   v4 = SSIsDaemon();
   if (v4)
   {
-    CFPreferencesSetAppValue(@"AvailableItemKinds", [a3 allObjects], @"com.apple.itunesstored");
+    CFPreferencesSetAppValue(@"AvailableItemKinds", [kinds allObjects], @"com.apple.itunesstored");
   }
 
   return v4;
 }
 
-+ (void)setLastPromptAttemptDate:(id)a3 forPromptWithIdentifier:(id)a4
++ (void)setLastPromptAttemptDate:(id)date forPromptWithIdentifier:(id)identifier
 {
   v35 = *MEMORY[0x1E69E9840];
   v6 = +[SSAccountStore defaultStore];
-  v7 = [v6 activeAccount];
-  if (v7 || (v7 = [objc_msgSend(v6 "localAccount")]) != 0)
+  activeAccount = [v6 activeAccount];
+  if (activeAccount || (activeAccount = [objc_msgSend(v6 "localAccount")]) != 0)
   {
-    v8 = v7;
-    [v7 setLastAttemptDate:a3 forServerPromptWithIdentifier:a4];
+    v8 = activeAccount;
+    [activeAccount setLastAttemptDate:date forServerPromptWithIdentifier:identifier];
     v26 = 0;
     if (([v6 saveAccount:v8 verifyCredentials:0 error:&v26] & 1) == 0)
     {
@@ -1563,8 +1563,8 @@ LABEL_4:
         v9 = +[SSLogConfig sharedConfig];
       }
 
-      v10 = [v9 shouldLog];
-      v11 = [v9 shouldLogToDisk] ? v10 | 2 : v10;
+      shouldLog = [v9 shouldLog];
+      v11 = [v9 shouldLogToDisk] ? shouldLog | 2 : shouldLog;
       if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_ERROR))
       {
         v11 &= 2u;
@@ -1573,13 +1573,13 @@ LABEL_4:
       if (v11)
       {
         v12 = objc_opt_class();
-        v13 = [v8 hashedDescription];
+        hashedDescription = [v8 hashedDescription];
         v27 = 138544130;
         v28 = v12;
         v29 = 2114;
-        v30 = v13;
+        identifierCopy2 = hashedDescription;
         v31 = 2114;
-        v32 = a4;
+        identifierCopy = identifier;
         v33 = 2114;
         v34 = v26;
         LODWORD(v25) = 42;
@@ -1596,15 +1596,15 @@ LABEL_4:
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v14 = [v9 shouldLog];
+    shouldLog2 = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v15 = v14 | 2;
+      v15 = shouldLog2 | 2;
     }
 
     else
     {
-      v15 = v14;
+      v15 = shouldLog2;
     }
 
     if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -1617,7 +1617,7 @@ LABEL_4:
       v27 = 138543618;
       v28 = objc_opt_class();
       v29 = 2114;
-      v30 = a4;
+      identifierCopy2 = identifier;
       LODWORD(v25) = 22;
 LABEL_22:
       v16 = _os_log_send_and_compose_impl();
@@ -1632,24 +1632,24 @@ LABEL_22:
   }
 }
 
-+ (void)setPromptWithIdentifier:(id)a3 needsDisplay:(BOOL)a4
++ (void)setPromptWithIdentifier:(id)identifier needsDisplay:(BOOL)display
 {
-  v4 = a4;
+  displayCopy = display;
   v45 = *MEMORY[0x1E69E9840];
   v6 = +[SSAccountStore defaultStore];
-  v7 = [v6 activeAccount];
-  if (v7 || (v7 = [objc_msgSend(v6 "localAccount")]) != 0)
+  activeAccount = [v6 activeAccount];
+  if (activeAccount || (activeAccount = [objc_msgSend(v6 "localAccount")]) != 0)
   {
-    v8 = v7;
-    if (v4)
+    v8 = activeAccount;
+    if (displayCopy)
     {
-      [v7 setDisplayedServerPrompt:0 withIdentifier:a3];
+      [activeAccount setDisplayedServerPrompt:0 withIdentifier:identifier];
     }
 
     else
     {
-      [v7 setDisplayedServerPrompt:1 withIdentifier:a3];
-      [v8 setLastAttemptDate:0 forServerPromptWithIdentifier:a3];
+      [activeAccount setDisplayedServerPrompt:1 withIdentifier:identifier];
+      [v8 setLastAttemptDate:0 forServerPromptWithIdentifier:identifier];
     }
 
     v36 = 0;
@@ -1661,15 +1661,15 @@ LABEL_22:
         v9 = +[SSLogConfig sharedConfig];
       }
 
-      v10 = [v9 shouldLog];
+      shouldLog = [v9 shouldLog];
       if ([v9 shouldLogToDisk])
       {
-        v11 = v10 | 2;
+        v11 = shouldLog | 2;
       }
 
       else
       {
-        v11 = v10;
+        v11 = shouldLog;
       }
 
       if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -1680,13 +1680,13 @@ LABEL_22:
       if (v11)
       {
         v12 = objc_opt_class();
-        v13 = [v8 hashedDescription];
+        hashedDescription = [v8 hashedDescription];
         v37 = 138544130;
         v38 = v12;
         v39 = 2114;
-        v40 = v13;
+        identifierCopy2 = hashedDescription;
         v41 = 2114;
-        v42 = a3;
+        identifierCopy = identifier;
         v43 = 2114;
         v44 = v36;
         LODWORD(v35) = 42;
@@ -1710,15 +1710,15 @@ LABEL_22:
       v23 = +[SSLogConfig sharedConfig];
     }
 
-    v24 = [v23 shouldLog];
+    shouldLog2 = [v23 shouldLog];
     if ([v23 shouldLogToDisk])
     {
-      v25 = v24 | 2;
+      v25 = shouldLog2 | 2;
     }
 
     else
     {
-      v25 = v24;
+      v25 = shouldLog2;
     }
 
     if (!os_log_type_enabled([v23 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -1731,7 +1731,7 @@ LABEL_22:
       v37 = 138543618;
       v38 = objc_opt_class();
       v39 = 2114;
-      v40 = a3;
+      identifierCopy2 = identifier;
       LODWORD(v35) = 22;
       v26 = _os_log_send_and_compose_impl();
       if (v26)
@@ -1776,9 +1776,9 @@ double __24__SSDevice_batteryLevel__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)carrierBundleStatusForService:(int64_t)a3
+- (id)carrierBundleStatusForService:(int64_t)service
 {
-  if (a3 || (CFPreferencesAppSynchronize(@"com.apple.itunesstored"), (v5 = CFPreferencesCopyAppValue(@"FuseSubscriptionStatus", @"com.apple.itunesstored")) == 0))
+  if (service || (CFPreferencesAppSynchronize(@"com.apple.itunesstored"), (v5 = CFPreferencesCopyAppValue(@"FuseSubscriptionStatus", @"com.apple.itunesstored")) == 0))
   {
     v3 = 0;
   }
@@ -1862,7 +1862,7 @@ uint64_t __22__SSDevice_deviceType__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)getCarrierBundleStatusForService:(int64_t)a3 completionHandler:(id)a4
+- (void)getCarrierBundleStatusForService:(int64_t)service completionHandler:(id)handler
 {
   v6 = objc_alloc_init(SSVSubscriptionStatusRequest);
   [(SSVSubscriptionStatusRequest *)v6 setCarrierBundleProvisioningStyle:2];
@@ -1871,7 +1871,7 @@ uint64_t __22__SSDevice_deviceType__block_invoke(uint64_t a1)
   v7[2] = __63__SSDevice_getCarrierBundleStatusForService_completionHandler___block_invoke;
   v7[3] = &unk_1E84AF388;
   v7[4] = self;
-  v7[5] = a4;
+  v7[5] = handler;
   [(SSVSubscriptionStatusRequest *)v6 startWithStatusResponseBlock:v7];
 }
 
@@ -1894,37 +1894,37 @@ void __63__SSDevice_getCarrierBundleStatusForService_completionHandler___block_i
   }
 }
 
-- (BOOL)getMachineIdentifier:(id *)a3 otp:(id *)a4 forAccountIdentifier:(id)a5
+- (BOOL)getMachineIdentifier:(id *)identifier otp:(id *)otp forAccountIdentifier:(id)accountIdentifier
 {
   v18 = 0;
   v17 = 0;
   v16 = 0;
   v15 = 0;
-  if (a5)
+  if (accountIdentifier)
   {
-    v7 = [a5 unsignedLongLongValue];
+    unsignedLongLongValue = [accountIdentifier unsignedLongLongValue];
   }
 
   else
   {
-    v7 = -1;
+    unsignedLongLongValue = -1;
   }
 
-  qi864985u0(v7, &v16, &v15, &v18, &v17);
+  qi864985u0(unsignedLongLongValue, &v16, &v15, &v18, &v17);
   v9 = v8;
   if (!v8)
   {
-    if (a3 && v16)
+    if (identifier && v16)
     {
       v10 = SSVCreateDataWithADIBytes(v16, v15);
-      *a3 = v10;
+      *identifier = v10;
       v11 = v10;
     }
 
-    if (a4 && v18)
+    if (otp && v18)
     {
       v12 = SSVCreateDataWithADIBytes(v18, v17);
-      *a4 = v12;
+      *otp = v12;
       v13 = v12;
     }
   }
@@ -1969,7 +1969,7 @@ uint64_t __23__SSDevice_isPluggedIn__block_invoke(uint64_t result)
   return result;
 }
 
-- (void)enableAllAutomaticDownloadKindsWithCompletionBlock:(id)a3
+- (void)enableAllAutomaticDownloadKindsWithCompletionBlock:(id)block
 {
   v21 = *MEMORY[0x1E69E9840];
   v5 = +[SSLogConfig sharedStoreServicesConfig];
@@ -1978,15 +1978,15 @@ uint64_t __23__SSDevice_isPluggedIn__block_invoke(uint64_t result)
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
   if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_INFO))
@@ -2010,10 +2010,10 @@ uint64_t __23__SSDevice_isPluggedIn__block_invoke(uint64_t result)
     }
   }
 
-  [(SSDevice *)self _updateAutomaticDownloadKinds:0 withValue:@"all" completionBlock:a3, v17];
+  [(SSDevice *)self _updateAutomaticDownloadKinds:0 withValue:@"all" completionBlock:block, v17];
 }
 
-- (void)minusAutomaticDownloadKinds:(id)a3 withCompletionBlock:(id)a4
+- (void)minusAutomaticDownloadKinds:(id)kinds withCompletionBlock:(id)block
 {
   v25 = *MEMORY[0x1E69E9840];
   v7 = +[SSLogConfig sharedStoreServicesConfig];
@@ -2022,15 +2022,15 @@ uint64_t __23__SSDevice_isPluggedIn__block_invoke(uint64_t result)
     v7 = +[SSLogConfig sharedConfig];
   }
 
-  v8 = [v7 shouldLog];
+  shouldLog = [v7 shouldLog];
   if ([v7 shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
   if (!os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_INFO))
@@ -2043,7 +2043,7 @@ uint64_t __23__SSDevice_isPluggedIn__block_invoke(uint64_t result)
     v21 = 138412546;
     v22 = objc_opt_class();
     v23 = 2112;
-    v24 = a3;
+    kindsCopy = kinds;
     LODWORD(v20) = 22;
     v19 = &v21;
     v10 = _os_log_send_and_compose_impl();
@@ -2056,7 +2056,7 @@ uint64_t __23__SSDevice_isPluggedIn__block_invoke(uint64_t result)
     }
   }
 
-  [(SSDevice *)self _updateAutomaticDownloadKinds:a3 withValue:@"minus" completionBlock:a4, v19];
+  [(SSDevice *)self _updateAutomaticDownloadKinds:kinds withValue:@"minus" completionBlock:block, v19];
 }
 
 - (NSString)phoneNumber
@@ -2110,7 +2110,7 @@ id __23__SSDevice_productType__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)setAutomaticDownloadKinds:(id)a3 withCompletionBlock:(id)a4
+- (void)setAutomaticDownloadKinds:(id)kinds withCompletionBlock:(id)block
 {
   v25 = *MEMORY[0x1E69E9840];
   v7 = +[SSLogConfig sharedStoreServicesConfig];
@@ -2119,15 +2119,15 @@ id __23__SSDevice_productType__block_invoke(uint64_t a1)
     v7 = +[SSLogConfig sharedConfig];
   }
 
-  v8 = [v7 shouldLog];
+  shouldLog = [v7 shouldLog];
   if ([v7 shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
   if (!os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_INFO))
@@ -2140,7 +2140,7 @@ id __23__SSDevice_productType__block_invoke(uint64_t a1)
     v21 = 138412546;
     v22 = objc_opt_class();
     v23 = 2112;
-    v24 = a3;
+    kindsCopy = kinds;
     LODWORD(v20) = 22;
     v19 = &v21;
     v10 = _os_log_send_and_compose_impl();
@@ -2153,10 +2153,10 @@ id __23__SSDevice_productType__block_invoke(uint64_t a1)
     }
   }
 
-  [(SSDevice *)self _updateAutomaticDownloadKinds:a3 withValue:@"set" completionBlock:a4, v19];
+  [(SSDevice *)self _updateAutomaticDownloadKinds:kinds withValue:@"set" completionBlock:block, v19];
 }
 
-- (void)setCloudMediaLibraryIdentifier:(id)a3
+- (void)setCloudMediaLibraryIdentifier:(id)identifier
 {
   dispatchQueue = self->_dispatchQueue;
   v6[0] = MEMORY[0x1E69E9820];
@@ -2164,9 +2164,9 @@ id __23__SSDevice_productType__block_invoke(uint64_t a1)
   v6[2] = __43__SSDevice_setCloudMediaLibraryIdentifier___block_invoke;
   v6[3] = &unk_1E84AC458;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = identifier;
   dispatch_sync(dispatchQueue, v6);
-  [(SSKeyValueStore *)self->_keyValueStore setValue:a3 forDomain:@"com.apple.itunesstored" key:@"CloudLibraryCUID" completionBlock:0];
+  [(SSKeyValueStore *)self->_keyValueStore setValue:identifier forDomain:@"com.apple.itunesstored" key:@"CloudLibraryCUID" completionBlock:0];
 }
 
 void *__43__SSDevice_setCloudMediaLibraryIdentifier___block_invoke(void *result)
@@ -2193,7 +2193,7 @@ void *__43__SSDevice_setCloudMediaLibraryIdentifier___block_invoke(void *result)
   return result;
 }
 
-- (void)setMediaLibraryIdentifier:(id)a3
+- (void)setMediaLibraryIdentifier:(id)identifier
 {
   dispatchQueue = self->_dispatchQueue;
   v6[0] = MEMORY[0x1E69E9820];
@@ -2201,9 +2201,9 @@ void *__43__SSDevice_setCloudMediaLibraryIdentifier___block_invoke(void *result)
   v6[2] = __38__SSDevice_setMediaLibraryIdentifier___block_invoke;
   v6[3] = &unk_1E84AC458;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = identifier;
   dispatch_sync(dispatchQueue, v6);
-  [(SSKeyValueStore *)self->_keyValueStore setValue:a3 forDomain:@"com.apple.itunesstored" key:@"LibraryCUID" completionBlock:0];
+  [(SSKeyValueStore *)self->_keyValueStore setValue:identifier forDomain:@"com.apple.itunesstored" key:@"LibraryCUID" completionBlock:0];
 }
 
 void *__38__SSDevice_setMediaLibraryIdentifier___block_invoke(void *result)
@@ -2230,7 +2230,7 @@ void *__38__SSDevice_setMediaLibraryIdentifier___block_invoke(void *result)
   return result;
 }
 
-- (void)setSoftwareLibraryIdentifier:(id)a3
+- (void)setSoftwareLibraryIdentifier:(id)identifier
 {
   v8 = 0;
   v9 = &v8;
@@ -2242,10 +2242,10 @@ void *__38__SSDevice_setMediaLibraryIdentifier___block_invoke(void *result)
   block[2] = __41__SSDevice_setSoftwareLibraryIdentifier___block_invoke;
   block[3] = &unk_1E84AC7B0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = identifier;
   block[6] = &v8;
   dispatch_sync(dispatchQueue, block);
-  [(SSKeyValueStore *)self->_keyValueStore setValue:a3 forDomain:@"com.apple.itunesstored" key:@"SoftwareCUID" completionBlock:0];
+  [(SSKeyValueStore *)self->_keyValueStore setValue:identifier forDomain:@"com.apple.itunesstored" key:@"SoftwareCUID" completionBlock:0];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.StoreServices.SoftwareCUIDChanged", 0, 0, 1u);
   if (*(v9 + 24) == 1)
@@ -2281,7 +2281,7 @@ void *__41__SSDevice_setSoftwareLibraryIdentifier___block_invoke(void *result)
   return result;
 }
 
-- (void)setStoreFrontIdentifier:(id)a3
+- (void)setStoreFrontIdentifier:(id)identifier
 {
   v4 = [+[SSAccountStore defaultStore](SSAccountStore "defaultStore")];
   [v4 addErrorBlock:&__block_literal_global_143];
@@ -2289,7 +2289,7 @@ void *__41__SSDevice_setSoftwareLibraryIdentifier___block_invoke(void *result)
   v5[1] = 3221225472;
   v5[2] = __36__SSDevice_setStoreFrontIdentifier___block_invoke_144;
   v5[3] = &unk_1E84AF3D0;
-  v5[4] = a3;
+  v5[4] = identifier;
   [v4 addSuccessBlock:v5];
 }
 
@@ -2564,9 +2564,9 @@ uint64_t __31__SSDevice_stopPowerMonitoring__block_invoke(uint64_t result)
   return result;
 }
 
-- (BOOL)supportsDeviceCapability:(int64_t)a3
+- (BOOL)supportsDeviceCapability:(int64_t)capability
 {
-  switch(a3)
+  switch(capability)
   {
     case 0:
       return MGGetBoolAnswer();
@@ -2627,15 +2627,15 @@ uint64_t __31__SSDevice_stopPowerMonitoring__block_invoke(uint64_t result)
       v2 = +[SSLogConfig sharedConfig];
     }
 
-    v3 = [v2 shouldLog];
+    shouldLog = [v2 shouldLog];
     if ([v2 shouldLogToDisk])
     {
-      v4 = v3 | 2;
+      v4 = shouldLog | 2;
     }
 
     else
     {
-      v4 = v3;
+      v4 = shouldLog;
     }
 
     if (os_log_type_enabled([v2 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -2696,16 +2696,16 @@ uint64_t __31__SSDevice_stopPowerMonitoring__block_invoke(uint64_t result)
   }
 
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v9 = [(SSDevice *)self productType];
-  if (v9)
+  productType = [(SSDevice *)self productType];
+  if (productType)
   {
-    [v8 addObject:v9];
+    [v8 addObject:productType];
   }
 
-  v10 = [(SSDevice *)self compatibleProductType];
-  if (v10)
+  compatibleProductType = [(SSDevice *)self compatibleProductType];
+  if (compatibleProductType)
   {
-    [v8 addObject:v10];
+    [v8 addObject:compatibleProductType];
   }
 
   v11 = [v8 componentsJoinedByString:@" "];
@@ -2713,7 +2713,7 @@ uint64_t __31__SSDevice_stopPowerMonitoring__block_invoke(uint64_t result)
   return v11;
 }
 
-- (void)unionAutomaticDownloadKinds:(id)a3 withCompletionBlock:(id)a4
+- (void)unionAutomaticDownloadKinds:(id)kinds withCompletionBlock:(id)block
 {
   v25 = *MEMORY[0x1E69E9840];
   v7 = +[SSLogConfig sharedStoreServicesConfig];
@@ -2722,15 +2722,15 @@ uint64_t __31__SSDevice_stopPowerMonitoring__block_invoke(uint64_t result)
     v7 = +[SSLogConfig sharedConfig];
   }
 
-  v8 = [v7 shouldLog];
+  shouldLog = [v7 shouldLog];
   if ([v7 shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
   if (!os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_INFO))
@@ -2743,7 +2743,7 @@ uint64_t __31__SSDevice_stopPowerMonitoring__block_invoke(uint64_t result)
     v21 = 138412546;
     v22 = objc_opt_class();
     v23 = 2112;
-    v24 = a3;
+    kindsCopy = kinds;
     LODWORD(v20) = 22;
     v19 = &v21;
     v10 = _os_log_send_and_compose_impl();
@@ -2756,7 +2756,7 @@ uint64_t __31__SSDevice_stopPowerMonitoring__block_invoke(uint64_t result)
     }
   }
 
-  [(SSDevice *)self _updateAutomaticDownloadKinds:a3 withValue:@"union" completionBlock:a4, v19];
+  [(SSDevice *)self _updateAutomaticDownloadKinds:kinds withValue:@"union" completionBlock:block, v19];
 }
 
 - (NSString)uniqueDeviceIdentifier
@@ -2794,56 +2794,56 @@ id __34__SSDevice_uniqueDeviceIdentifier__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)userAgentWithBundleIdentifier:(id)a3 version:(id)a4
+- (id)userAgentWithBundleIdentifier:(id)identifier version:(id)version
 {
   v7 = [(SSDevice *)self _userAgentClientNameForBundleID:?];
   if (v7)
   {
-    v8 = v7;
+    identifierCopy = v7;
   }
 
   else
   {
-    v8 = a3;
+    identifierCopy = identifier;
   }
 
-  return [(SSDevice *)self userAgentWithClientName:v8 version:a4];
+  return [(SSDevice *)self userAgentWithClientName:identifierCopy version:version];
 }
 
-- (void)setStoreFrontIdentifier:(id)a3 accountIdentifier:(id)a4
+- (void)setStoreFrontIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier
 {
   v7 = +[SSAccountStore defaultStore];
-  if (a4)
+  if (accountIdentifier)
   {
-    v8 = [v7 accountWithUniqueIdentifier:a4];
+    activeAccount = [v7 accountWithUniqueIdentifier:accountIdentifier];
   }
 
   else
   {
-    v8 = [v7 activeAccount];
+    activeAccount = [v7 activeAccount];
   }
 
-  [(SSDevice *)self setStoreFrontIdentifier:a3 account:v8];
+  [(SSDevice *)self setStoreFrontIdentifier:identifier account:activeAccount];
 }
 
-- (void)setStoreFrontIdentifier:(id)a3 forRequest:(id)a4 response:(id)a5 account:(id)a6
+- (void)setStoreFrontIdentifier:(id)identifier forRequest:(id)request response:(id)response account:(id)account
 {
   v56 = *MEMORY[0x1E69E9840];
   v11 = +[SSAccountStore defaultStore];
-  if (!a6)
+  if (!account)
   {
     goto LABEL_40;
   }
 
   v12 = v11;
-  if ([objc_msgSend(a6 "storeFrontIdentifier")] & 1) != 0 || (objc_msgSend(a6, "isLocalAccount"))
+  if ([objc_msgSend(account "storeFrontIdentifier")] & 1) != 0 || (objc_msgSend(account, "isLocalAccount"))
   {
     goto LABEL_38;
   }
 
   v13 = SSGenerateLogCorrelationString();
-  v14 = [a6 copy];
-  [v14 setStoreFrontIdentifier:a3 forRequest:a4 response:a5];
+  v14 = [account copy];
+  [v14 setStoreFrontIdentifier:identifier forRequest:request response:response];
   v15 = [+[SSLogConfig sharedAccountsConfig](SSLogConfig "sharedAccountsConfig")];
   v16 = +[SSLogConfig sharedAccountsStorefrontConfig];
   v17 = v16;
@@ -2854,15 +2854,15 @@ id __34__SSDevice_uniqueDeviceIdentifier__block_invoke(uint64_t a1)
       v17 = +[SSLogConfig sharedConfig];
     }
 
-    v18 = [v17 shouldLog];
+    shouldLog = [v17 shouldLog];
     if ([v17 shouldLogToDisk])
     {
-      v19 = v18 | 2;
+      v19 = shouldLog | 2;
     }
 
     else
     {
-      v19 = v18;
+      v19 = shouldLog;
     }
 
     if (os_log_type_enabled([v17 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -2885,7 +2885,7 @@ id __34__SSDevice_uniqueDeviceIdentifier__block_invoke(uint64_t a1)
     v50 = 2114;
     v51 = v13;
     v52 = 2114;
-    v53 = [a6 hashedDescription];
+    hashedDescription = [account hashedDescription];
     v54 = 2114;
     v55 = +[SSStackShot generateSymbolicatedStackShot];
     LODWORD(v46) = 42;
@@ -2899,20 +2899,20 @@ id __34__SSDevice_uniqueDeviceIdentifier__block_invoke(uint64_t a1)
       v17 = +[SSLogConfig sharedConfig];
     }
 
-    v21 = [v17 shouldLog];
+    shouldLog2 = [v17 shouldLog];
     if ([v17 shouldLogToDisk])
     {
-      v21 |= 2u;
+      shouldLog2 |= 2u;
     }
 
     if (os_log_type_enabled([v17 OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
-      v22 = v21;
+      v22 = shouldLog2;
     }
 
     else
     {
-      v22 = v21 & 2;
+      v22 = shouldLog2 & 2;
     }
 
     if (!v22)
@@ -2925,7 +2925,7 @@ id __34__SSDevice_uniqueDeviceIdentifier__block_invoke(uint64_t a1)
     v50 = 2114;
     v51 = v13;
     v52 = 2114;
-    v53 = [a6 hashedDescription];
+    hashedDescription = [account hashedDescription];
     LODWORD(v46) = 32;
     v45 = &v48;
   }
@@ -2949,20 +2949,20 @@ LABEL_26:
       v32 = +[SSLogConfig sharedConfig];
     }
 
-    v33 = [v32 shouldLog];
+    shouldLog3 = [v32 shouldLog];
     if ([v32 shouldLogToDisk])
     {
-      v33 |= 2u;
+      shouldLog3 |= 2u;
     }
 
     if (os_log_type_enabled([v32 OSLogObject], OS_LOG_TYPE_ERROR))
     {
-      v34 = v33;
+      v34 = shouldLog3;
     }
 
     else
     {
-      v34 = v33 & 2;
+      v34 = shouldLog3 & 2;
     }
 
     if (v34)
@@ -2986,10 +2986,10 @@ LABEL_26:
   }
 
 LABEL_38:
-  if (![v12 activeAccount] || objc_msgSend(a6, "isActive"))
+  if (![v12 activeAccount] || objc_msgSend(account, "isActive"))
   {
 LABEL_40:
-    [(SSDevice *)self setStoreFrontIdentifier:a3];
+    [(SSDevice *)self setStoreFrontIdentifier:identifier];
   }
 }
 
@@ -3068,41 +3068,41 @@ LABEL_40:
   v7 = v28[5];
   if (v7)
   {
-    v8 = v7;
+    null = v7;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  self->_cloudMediaLibraryIdentifier = v8;
+  self->_cloudMediaLibraryIdentifier = null;
 
   v9 = v22[5];
   if (v9)
   {
-    v10 = v9;
+    null2 = v9;
   }
 
   else
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  self->_mediaLibraryIdentifier = v10;
+  self->_mediaLibraryIdentifier = null2;
 
   v11 = v16[5];
   if (v11)
   {
-    v12 = v11;
+    null3 = v11;
   }
 
   else
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  self->_softwareLibraryIdentifier = v12;
+  self->_softwareLibraryIdentifier = null3;
 
   _Block_object_dispose(&v15, 8);
   _Block_object_dispose(&v21, 8);
@@ -3136,18 +3136,18 @@ intptr_t __37__SSDevice__cacheKeyValueStoreValues__block_invoke_2(void *a1, id *
   return dispatch_semaphore_signal(v4);
 }
 
-- (id)_copyCarrierBundleEligibilityWithStatus:(id)a3
+- (id)_copyCarrierBundleEligibilityWithStatus:(id)status
 {
-  if (!a3)
+  if (!status)
   {
     return 0;
   }
 
-  v3 = [a3 carrierBundlingStatus];
+  carrierBundlingStatus = [status carrierBundlingStatus];
   v4 = 1;
-  if (v3 != 1 && v3 != 4)
+  if (carrierBundlingStatus != 1 && carrierBundlingStatus != 4)
   {
-    if (v3 == 2)
+    if (carrierBundlingStatus == 2)
     {
       v4 = 0;
       goto LABEL_6;
@@ -3162,7 +3162,7 @@ LABEL_6:
   return [v5 initWithInteger:v4];
 }
 
-- (id)_copyKeyValueStoreValueForDomain:(id)a3 key:(id)a4
+- (id)_copyKeyValueStoreValueForDomain:(id)domain key:(id)key
 {
   v12 = 0;
   v13 = &v12;
@@ -3178,7 +3178,7 @@ LABEL_6:
   v11[3] = &unk_1E84AF470;
   v11[4] = v7;
   v11[5] = &v12;
-  [(SSKeyValueStore *)keyValueStore getValueForDomain:a3 key:a4 usingBlock:v11];
+  [(SSKeyValueStore *)keyValueStore getValueForDomain:domain key:key usingBlock:v11];
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   dispatch_release(v7);
   v9 = v13[5];
@@ -3199,20 +3199,20 @@ intptr_t __49__SSDevice__copyKeyValueStoreValueForDomain_key___block_invoke(uint
   v2 = MGCopyAnswer();
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v3 = -1;
+    intValue = -1;
   }
 
-  return v3;
+  return intValue;
 }
 
-- (int64_t)_deviceTypeForProductType:(id)a3
+- (int64_t)_deviceTypeForProductType:(id)type
 {
-  if (!a3)
+  if (!type)
   {
     return 0;
   }
@@ -3222,7 +3222,7 @@ intptr_t __49__SSDevice__copyKeyValueStoreValueForDomain_key___block_invoke(uint
   v7 = 27;
   do
   {
-    if ([*v6 isEqualToString:a3])
+    if ([*v6 isEqualToString:type])
     {
       v5 = *(v6 - 1);
     }
@@ -3237,32 +3237,32 @@ intptr_t __49__SSDevice__copyKeyValueStoreValueForDomain_key___block_invoke(uint
     return v5;
   }
 
-  if ([a3 hasPrefix:@"iPad"])
+  if ([type hasPrefix:@"iPad"])
   {
 
-    return [(SSDevice *)self _deviceTypeForUnknownIPad:a3];
+    return [(SSDevice *)self _deviceTypeForUnknownIPad:type];
   }
 
-  if ([a3 hasPrefix:@"iPhone"])
+  if ([type hasPrefix:@"iPhone"])
   {
 
-    return [(SSDevice *)self _deviceTypeForUnknownIPhone:a3];
+    return [(SSDevice *)self _deviceTypeForUnknownIPhone:type];
   }
 
-  if ([a3 hasPrefix:@"iPod"])
+  if ([type hasPrefix:@"iPod"])
   {
 
-    return [(SSDevice *)self _deviceTypeForUnknownIPod:a3];
+    return [(SSDevice *)self _deviceTypeForUnknownIPod:type];
   }
 
-  if (![a3 hasPrefix:@"AppleTV"])
+  if (![type hasPrefix:@"AppleTV"])
   {
-    if ([a3 hasPrefix:@"Watch"])
+    if ([type hasPrefix:@"Watch"])
     {
       return 2007;
     }
 
-    if ([a3 hasPrefix:@"iProd"])
+    if ([type hasPrefix:@"iProd"])
     {
       return 4002;
     }
@@ -3270,12 +3270,12 @@ intptr_t __49__SSDevice__copyKeyValueStoreValueForDomain_key___block_invoke(uint
     return 0;
   }
 
-  return [(SSDevice *)self _deviceTypeForUnknownAppleTV:a3];
+  return [(SSDevice *)self _deviceTypeForUnknownAppleTV:type];
 }
 
-- (int64_t)_deviceTypeForUnknownAppleTV:(id)a3
+- (int64_t)_deviceTypeForUnknownAppleTV:(id)v
 {
-  v3 = [objc_msgSend(a3 substringFromIndex:{7), "componentsSeparatedByString:", @", "}];
+  v3 = [objc_msgSend(v substringFromIndex:{7), "componentsSeparatedByString:", @", "}];
   if ([v3 count] != 2)
   {
     return 4;
@@ -3298,9 +3298,9 @@ intptr_t __49__SSDevice__copyKeyValueStoreValueForDomain_key___block_invoke(uint
   return result;
 }
 
-- (int64_t)_deviceTypeForUnknownIPad:(id)a3
+- (int64_t)_deviceTypeForUnknownIPad:(id)pad
 {
-  v3 = [objc_msgSend(a3 substringFromIndex:{4), "componentsSeparatedByString:", @", "}];
+  v3 = [objc_msgSend(pad substringFromIndex:{4), "componentsSeparatedByString:", @", "}];
   if ([v3 count] != 2)
   {
     return 1;
@@ -3323,9 +3323,9 @@ intptr_t __49__SSDevice__copyKeyValueStoreValueForDomain_key___block_invoke(uint
   return result;
 }
 
-- (int64_t)_deviceTypeForUnknownIPhone:(id)a3
+- (int64_t)_deviceTypeForUnknownIPhone:(id)phone
 {
-  v3 = [objc_msgSend(a3 substringFromIndex:{6), "componentsSeparatedByString:", @", "}];
+  v3 = [objc_msgSend(phone substringFromIndex:{6), "componentsSeparatedByString:", @", "}];
   if ([v3 count] != 2)
   {
     return 2;
@@ -3339,9 +3339,9 @@ intptr_t __49__SSDevice__copyKeyValueStoreValueForDomain_key___block_invoke(uint
   return 2007;
 }
 
-- (int64_t)_deviceTypeForUnknownIPod:(id)a3
+- (int64_t)_deviceTypeForUnknownIPod:(id)pod
 {
-  v3 = [objc_msgSend(a3 substringFromIndex:{4), "componentsSeparatedByString:", @", "}];
+  v3 = [objc_msgSend(pod substringFromIndex:{4), "componentsSeparatedByString:", @", "}];
   if ([v3 count] != 2)
   {
     return 3;
@@ -3398,17 +3398,17 @@ intptr_t __49__SSDevice__copyKeyValueStoreValueForDomain_key___block_invoke(uint
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"1%@", *v8, v12];
 }
 
-- (BOOL)_getDeviceType:(unsigned int *)a3 error:(id *)a4
+- (BOOL)_getDeviceType:(unsigned int *)type error:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
   v5 = MGCopyAnswer();
   v6 = MGCopyAnswer();
-  v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v8 = [v7 objectForKey:@"SSDeviceType"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v8 = [standardUserDefaults objectForKey:@"SSDeviceType"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && (v9 = [v8 objectForKey:@"hardwareModel"], v10 = objc_msgSend(v8, "objectForKey:", @"buildVersion"), v11 = objc_msgSend(v8, "objectForKey:", @"deviceTypeNumber"), objc_opt_class(), (objc_opt_isKindOfClass()) && objc_msgSend(v9, "isEqualToString:", v5) && (objc_opt_class(), (objc_opt_isKindOfClass()) && objc_msgSend(v10, "isEqualToString:", v6) && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v12 = [v11 intValue];
+    intValue = [v11 intValue];
     v13 = 0;
     v14 = 1;
   }
@@ -3427,18 +3427,18 @@ intptr_t __49__SSDevice__copyKeyValueStoreValueForDomain_key___block_invoke(uint
         v17 = +[SSLogConfig sharedConfig];
       }
 
-      v18 = [v17 shouldLog];
+      shouldLog = [v17 shouldLog];
       if ([v17 shouldLogToDisk])
       {
-        v18 |= 2u;
+        shouldLog |= 2u;
       }
 
       if (!os_log_type_enabled([v17 OSLogObject], OS_LOG_TYPE_ERROR))
       {
-        v18 &= 2u;
+        shouldLog &= 2u;
       }
 
-      if (v18)
+      if (shouldLog)
       {
         v19 = objc_opt_class();
         v20 = v16;
@@ -3464,9 +3464,9 @@ intptr_t __49__SSDevice__copyKeyValueStoreValueForDomain_key___block_invoke(uint
       }
 
       v13 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:v20 userInfo:{0, v32}];
-      [v7 removeObjectForKey:@"SSDeviceType"];
-      [v7 synchronize];
-      v12 = 0;
+      [standardUserDefaults removeObjectForKey:@"SSDeviceType"];
+      [standardUserDefaults synchronize];
+      intValue = 0;
     }
 
     else
@@ -3477,19 +3477,19 @@ intptr_t __49__SSDevice__copyKeyValueStoreValueForDomain_key___block_invoke(uint
       v37[1] = v6;
       v36[2] = @"deviceTypeNumber";
       v37[2] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:HIDWORD(v35)];
-      [v7 setObject:objc_msgSend(MEMORY[0x1E695DF20] forKey:{"dictionaryWithObjects:forKeys:count:", v37, v36, 3), @"SSDeviceType"}];
-      [v7 synchronize];
+      [standardUserDefaults setObject:objc_msgSend(MEMORY[0x1E695DF20] forKey:{"dictionaryWithObjects:forKeys:count:", v37, v36, 3), @"SSDeviceType"}];
+      [standardUserDefaults synchronize];
       v13 = 0;
-      v12 = HIDWORD(v35);
+      intValue = HIDWORD(v35);
     }
   }
 
-  if (a3 && v14)
+  if (type && v14)
   {
-    *a3 = v12;
+    *type = intValue;
   }
 
-  if (a4)
+  if (error)
   {
     v30 = v14;
   }
@@ -3501,7 +3501,7 @@ intptr_t __49__SSDevice__copyKeyValueStoreValueForDomain_key___block_invoke(uint
 
   if ((v30 & 1) == 0)
   {
-    *a4 = v13;
+    *error = v13;
   }
 
   return v14;
@@ -3648,8 +3648,8 @@ uint64_t __35__SSDevice__invalidateSoftwareCUID__block_invoke_2(uint64_t a1)
 
 - (BOOL)_is1080pCapable
 {
-  v3 = [(SSDevice *)self _screenClass];
-  if ([(SSDevice *)self _deviceClass]!= 3 && v3 != 9 && v3 != 15 && (v3 & 0xFFFFFFFE) != 0x12)
+  _screenClass = [(SSDevice *)self _screenClass];
+  if ([(SSDevice *)self _deviceClass]!= 3 && _screenClass != 9 && _screenClass != 15 && (_screenClass & 0xFFFFFFFE) != 0x12)
   {
     return 0;
   }
@@ -3673,7 +3673,7 @@ uint64_t __35__SSDevice__invalidateSoftwareCUID__block_invoke_2(uint64_t a1)
   return v8;
 }
 
-- (id)_newLegacyUserAgent:(BOOL *)a3
+- (id)_newLegacyUserAgent:(BOOL *)agent
 {
   v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"iTunes-"];
   v6 = MGGetSInt32Answer();
@@ -3715,17 +3715,17 @@ uint64_t __35__SSDevice__invalidateSoftwareCUID__block_invoke_2(uint64_t a1)
 
   [v5 appendString:v7];
 LABEL_15:
-  v12 = [(SSDevice *)self _productVersion];
-  if ([v12 length])
+  _productVersion = [(SSDevice *)self _productVersion];
+  if ([_productVersion length])
   {
-    [v5 appendFormat:@"/%@", v12];
+    [v5 appendFormat:@"/%@", _productVersion];
   }
 
   v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v14 = [(SSDevice *)self _deviceType];
+  _deviceType = [(SSDevice *)self _deviceType];
   v15 = &qword_1E84AF4A0;
   v16 = 27;
-  while (*(v15 - 2) != v14)
+  while (*(v15 - 2) != _deviceType)
   {
     v15 += 3;
     if (!--v16)
@@ -3740,16 +3740,16 @@ LABEL_15:
   }
 
 LABEL_23:
-  v17 = [(SSDevice *)self _diskCapacityString];
-  if (v17)
+  _diskCapacityString = [(SSDevice *)self _diskCapacityString];
+  if (_diskCapacityString)
   {
-    [v13 addObject:v17];
+    [v13 addObject:_diskCapacityString];
   }
 
-  v18 = [(SSDevice *)self _fairPlayDeviceTypeString];
-  if (v18)
+  _fairPlayDeviceTypeString = [(SSDevice *)self _fairPlayDeviceTypeString];
+  if (_fairPlayDeviceTypeString)
   {
-    [v13 addObject:v18];
+    [v13 addObject:_fairPlayDeviceTypeString];
   }
 
   if ([v13 count])
@@ -3757,19 +3757,19 @@ LABEL_23:
     [v5 appendFormat:@" (%@)", objc_msgSend(v13, "componentsJoinedByString:", @"; "];
   }
 
-  if (a3)
+  if (agent)
   {
-    *a3 = v18 != 0;
+    *agent = _fairPlayDeviceTypeString != 0;
   }
 
   return v5;
 }
 
-- (id)_newModernUserAgentWithClientName:(id)a3 version:(id)a4 isCachable:(BOOL *)a5
+- (id)_newModernUserAgentWithClientName:(id)name version:(id)version isCachable:(BOOL *)cachable
 {
-  v7 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@/%@", a3, a4];
-  v8 = [(SSDevice *)self _productVersion];
-  if ([v8 length])
+  version = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@/%@", name, version];
+  _productVersion = [(SSDevice *)self _productVersion];
+  if ([_productVersion length])
   {
     if (MGGetSInt32Answer() == 6)
     {
@@ -3781,15 +3781,15 @@ LABEL_23:
       v9 = @" iOS/%@";
     }
 
-    [v7 appendFormat:v9, v8];
+    [version appendFormat:v9, _productVersion];
   }
 
   if (MGGetSInt32Answer() == 4)
   {
-    v10 = [(SSDevice *)self _appleTVProductVersion];
-    if ([v10 length])
+    _appleTVProductVersion = [(SSDevice *)self _appleTVProductVersion];
+    if ([_appleTVProductVersion length])
     {
-      [v7 appendFormat:@" AppleTV/%@", v10];
+      [version appendFormat:@" AppleTV/%@", _appleTVProductVersion];
     }
   }
 
@@ -3802,26 +3802,26 @@ LABEL_23:
 
   if ([v11 length])
   {
-    [v7 appendFormat:@" model/%@", v11];
+    [version appendFormat:@" model/%@", v11];
   }
 
   v13 = MGCopyAnswer();
   if ([v13 length])
   {
-    [v7 appendFormat:@" hwp/%@", v13];
+    [version appendFormat:@" hwp/%@", v13];
   }
 
   v14 = MGCopyAnswer();
   if ([v14 length])
   {
-    [v7 appendFormat:@" build/%@", v14];
+    [version appendFormat:@" build/%@", v14];
   }
 
   v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v16 = [(SSDevice *)self _deviceType];
+  _deviceType = [(SSDevice *)self _deviceType];
   v17 = &qword_1E84AF4A0;
   v18 = 27;
-  while (*(v17 - 2) != v16)
+  while (*(v17 - 2) != _deviceType)
   {
     v17 += 3;
     if (!--v18)
@@ -3836,23 +3836,23 @@ LABEL_23:
   }
 
 LABEL_23:
-  v19 = [(SSDevice *)self _fairPlayDeviceTypeString];
-  if (v19)
+  _fairPlayDeviceTypeString = [(SSDevice *)self _fairPlayDeviceTypeString];
+  if (_fairPlayDeviceTypeString)
   {
-    [v15 addObject:v19];
+    [v15 addObject:_fairPlayDeviceTypeString];
   }
 
   if ([v15 count])
   {
-    [v7 appendFormat:@" (%@)", objc_msgSend(v15, "componentsJoinedByString:", @"; "];
+    [version appendFormat:@" (%@)", objc_msgSend(v15, "componentsJoinedByString:", @"; "];
   }
 
-  if (a5)
+  if (cachable)
   {
-    *a5 = v19 != 0;
+    *cachable = _fairPlayDeviceTypeString != 0;
   }
 
-  return v7;
+  return version;
 }
 
 - (void)_postStoreFrontDidChangeNotification
@@ -3892,15 +3892,15 @@ uint64_t __48__SSDevice__postStoreFrontDidChangeNotification__block_invoke(uint6
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
   if (!os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_INFO))
@@ -3934,18 +3934,18 @@ uint64_t __48__SSDevice__postStoreFrontDidChangeNotification__block_invoke(uint6
   v2 = MGCopyAnswer();
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v3 = -1;
+    intValue = -1;
   }
 
-  return v3;
+  return intValue;
 }
 
-- (void)_updateAutomaticDownloadKinds:(id)a3 withValue:(id)a4 completionBlock:(id)a5
+- (void)_updateAutomaticDownloadKinds:(id)kinds withValue:(id)value completionBlock:(id)block
 {
   v28 = *MEMORY[0x1E69E9840];
   if (MGGetBoolAnswer() && _os_feature_enabled_impl())
@@ -3956,15 +3956,15 @@ uint64_t __48__SSDevice__postStoreFrontDidChangeNotification__block_invoke(uint6
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v10 = [v9 shouldLog];
+    shouldLog = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
     if (os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -3995,15 +3995,15 @@ uint64_t __48__SSDevice__postStoreFrontDidChangeNotification__block_invoke(uint6
 
   v22 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v22, "0", 75);
-  SSXPCDictionarySetCFObject(v22, "1", [a3 allObjects]);
-  SSXPCDictionarySetCFObject(v22, "2", a4);
+  SSXPCDictionarySetCFObject(v22, "1", [kinds allObjects]);
+  SSXPCDictionarySetCFObject(v22, "2", value);
   v23 = [[SSXPCConnection alloc] initWithServiceName:@"com.apple.itunesstored.xpc"];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __68__SSDevice__updateAutomaticDownloadKinds_withValue_completionBlock___block_invoke;
   v25[3] = &unk_1E84AF748;
   v25[5] = v23;
-  v25[6] = a5;
+  v25[6] = block;
   v25[4] = self;
   [(SSXPCConnection *)v23 sendMessage:v22 withReply:v25];
   xpc_release(v22);
@@ -4035,11 +4035,11 @@ void __68__SSDevice__updateAutomaticDownloadKinds_withValue_completionBlock___bl
   }
 }
 
-- (void)_updateBatteryLevelFromService:(unsigned int)a3
+- (void)_updateBatteryLevelFromService:(unsigned int)service
 {
   v5 = *MEMORY[0x1E695E480];
-  CFProperty = IORegistryEntryCreateCFProperty(a3, @"MaxCapacity", *MEMORY[0x1E695E480], 0);
-  v7 = IORegistryEntryCreateCFProperty(a3, @"CurrentCapacity", v5, 0);
+  CFProperty = IORegistryEntryCreateCFProperty(service, @"MaxCapacity", *MEMORY[0x1E695E480], 0);
+  v7 = IORegistryEntryCreateCFProperty(service, @"CurrentCapacity", v5, 0);
   v8 = v7;
   if (CFProperty)
   {
@@ -4097,11 +4097,11 @@ uint64_t __43__SSDevice__updateBatteryLevelFromService___block_invoke(uint64_t a
   return [v2 postNotificationName:@"SSDeviceBatteryLevelChangedNotification" object:v3];
 }
 
-- (id)_userAgentClientNameForAppleTVBundleID:(id)a3
+- (id)_userAgentClientNameForAppleTVBundleID:(id)d
 {
-  if ([a3 hasPrefix:@"com.apple."])
+  if ([d hasPrefix:@"com.apple."])
   {
-    v4 = [a3 substringFromIndex:{objc_msgSend(@"com.apple.", "length")}];
+    v4 = [d substringFromIndex:{objc_msgSend(@"com.apple.", "length")}];
   }
 
   else
@@ -4120,74 +4120,74 @@ uint64_t __43__SSDevice__updateBatteryLevelFromService___block_invoke(uint64_t a
   }
 }
 
-- (id)_userAgentClientNameForBundleID:(id)a3
+- (id)_userAgentClientNameForBundleID:(id)d
 {
-  if ([a3 isEqualToString:@"com.apple.AppStore"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"com.apple.AppStore2") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"com.apple.AppStore3"))
+  if ([d isEqualToString:@"com.apple.AppStore"] & 1) != 0 || (objc_msgSend(d, "isEqualToString:", @"com.apple.AppStore2") & 1) != 0 || (objc_msgSend(d, "isEqualToString:", @"com.apple.AppStore3"))
   {
     return @"AppStore";
   }
 
-  if ([a3 isEqualToString:@"com.apple.MobileStore"])
+  if ([d isEqualToString:@"com.apple.MobileStore"])
   {
     return @"MobileStore";
   }
 
-  if ([a3 isEqualToString:@"com.apple.itunesstored"])
+  if ([d isEqualToString:@"com.apple.itunesstored"])
   {
     return @"itunesstored";
   }
 
-  if ([a3 isEqualToString:@"com.apple.Music"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"com.apple.Music."))
+  if ([d isEqualToString:@"com.apple.Music"] & 1) != 0 || (objc_msgSend(d, "hasPrefix:", @"com.apple.Music."))
   {
     return @"Music";
   }
 
-  if ([a3 isEqualToString:@"com.apple.lowtide"])
+  if ([d isEqualToString:@"com.apple.lowtide"])
   {
     return @"AppleTV";
   }
 
-  if ([a3 isEqualToString:@"com.apple.ios.StoreKitUIService"])
+  if ([d isEqualToString:@"com.apple.ios.StoreKitUIService"])
   {
     return @"StoreKitUIService";
   }
 
-  if ([a3 isEqualToString:@"com.apple.iBooks"])
+  if ([d isEqualToString:@"com.apple.iBooks"])
   {
     return @"iBooks";
   }
 
-  if ([a3 isEqualToString:@"com.apple.itunesu"])
+  if ([d isEqualToString:@"com.apple.itunesu"])
   {
     return @"iTunesU";
   }
 
-  if ([a3 isEqualToString:@"com.apple.podcasts"])
+  if ([d isEqualToString:@"com.apple.podcasts"])
   {
     return @"Podcasts";
   }
 
-  if ([a3 isEqualToString:@"com.apple.Maps"])
+  if ([d isEqualToString:@"com.apple.Maps"])
   {
     return @"Maps";
   }
 
-  if ([a3 isEqualToString:@"com.apple.Bridge"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"com.apple.AppStore.BridgeStoreExtension") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"com.apple.AppStore3.BridgeStoreExtension"))
+  if ([d isEqualToString:@"com.apple.Bridge"] & 1) != 0 || (objc_msgSend(d, "isEqualToString:", @"com.apple.AppStore.BridgeStoreExtension") & 1) != 0 || (objc_msgSend(d, "isEqualToString:", @"com.apple.AppStore3.BridgeStoreExtension"))
   {
     return @"Watch";
   }
 
-  if ([a3 isEqualToString:@"com.apple.Music.MediaSocialShareService"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"com.apple.Music.MediaPicker"))
+  if ([d isEqualToString:@"com.apple.Music.MediaSocialShareService"] & 1) != 0 || (objc_msgSend(d, "isEqualToString:", @"com.apple.Music.MediaPicker"))
   {
     return @"Music";
   }
 
-  if ([a3 isEqualToString:@"com.apple.WelcomeKit"])
+  if ([d isEqualToString:@"com.apple.WelcomeKit"])
   {
     return @"matd";
   }
 
-  if (([a3 isEqualToString:@"com.apple.MobileSMS"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"com.apple.AppStore.MessagesStoreExtension") & 1) != 0 || objc_msgSend(a3, "isEqualToString:", @"com.apple.AppStore3.MessagesStoreExtension"))
+  if (([d isEqualToString:@"com.apple.MobileSMS"] & 1) != 0 || (objc_msgSend(d, "isEqualToString:", @"com.apple.AppStore.MessagesStoreExtension") & 1) != 0 || objc_msgSend(d, "isEqualToString:", @"com.apple.AppStore3.MessagesStoreExtension"))
   {
     return @"Messages";
   }
@@ -4195,9 +4195,9 @@ uint64_t __43__SSDevice__updateBatteryLevelFromService___block_invoke(uint64_t a
   return 0;
 }
 
-- (id)_userAgentClientNameForInfoPlist:(id)a3
+- (id)_userAgentClientNameForInfoPlist:(id)plist
 {
-  v5 = [a3 objectForKey:*MEMORY[0x1E695E4F0]];
+  v5 = [plist objectForKey:*MEMORY[0x1E695E4F0]];
   if (MGGetSInt32Answer() == 4)
   {
     result = [(SSDevice *)self _userAgentClientNameForAppleTVBundleID:v5];
@@ -4221,22 +4221,22 @@ uint64_t __43__SSDevice__updateBatteryLevelFromService___block_invoke(uint64_t a
   {
     v7 = *MEMORY[0x1E695E4E8];
 
-    return [a3 objectForKey:v7];
+    return [plist objectForKey:v7];
   }
 
   return result;
 }
 
-- (id)_userAgentClientVersionForInfoPlist:(id)a3 clientName:(id)a4
+- (id)_userAgentClientVersionForInfoPlist:(id)plist clientName:(id)name
 {
   v6 = *MEMORY[0x1E695E148];
-  v7 = [a3 objectForKey:*MEMORY[0x1E695E148]];
+  v7 = [plist objectForKey:*MEMORY[0x1E695E148]];
   if (!v7)
   {
-    v7 = [a3 objectForKey:*MEMORY[0x1E695E500]];
+    v7 = [plist objectForKey:*MEMORY[0x1E695E500]];
   }
 
-  if ([a4 isEqualToString:@"Music"])
+  if ([name isEqualToString:@"Music"])
   {
     v8 = CFPreferencesCopyAppValue(@"UseNewMusicApp2", @"com.apple.mobileipod");
     v9 = v8;
@@ -4246,12 +4246,12 @@ uint64_t __43__SSDevice__updateBatteryLevelFromService___block_invoke(uint64_t a
     }
   }
 
-  if ([a4 isEqualToString:@"TVMusic"] && CFPreferencesGetAppBooleanValue(@"UseNewMusicApp", @"com.apple.TVMusic", 0))
+  if ([name isEqualToString:@"TVMusic"] && CFPreferencesGetAppBooleanValue(@"UseNewMusicApp", @"com.apple.TVMusic", 0))
   {
     v7 = @"10.0";
   }
 
-  if (![a4 isEqualToString:@"Messages"])
+  if (![name isEqualToString:@"Messages"])
   {
     return v7;
   }

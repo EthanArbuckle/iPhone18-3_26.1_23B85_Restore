@@ -1,26 +1,26 @@
 @interface PopoverViewController
-- (_TtC7MusicUI21PopoverViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC7MusicUI21PopoverViewController)initWithRequest:(id)a3 bag:(id)a4 account:(id)a5;
+- (_TtC7MusicUI21PopoverViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC7MusicUI21PopoverViewController)initWithRequest:(id)request bag:(id)bag account:(id)account;
 @end
 
 @implementation PopoverViewController
 
-- (_TtC7MusicUI21PopoverViewController)initWithRequest:(id)a3 bag:(id)a4 account:(id)a5
+- (_TtC7MusicUI21PopoverViewController)initWithRequest:(id)request bag:(id)bag account:(id)account
 {
-  v6 = a3;
+  requestCopy = request;
   swift_unknownObjectRetain();
-  v7 = a5;
+  accountCopy = account;
   sub_216DF2F84();
 }
 
-- (_TtC7MusicUI21PopoverViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7MusicUI21PopoverViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_21700E514();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_216DF2FE0();
 }
 

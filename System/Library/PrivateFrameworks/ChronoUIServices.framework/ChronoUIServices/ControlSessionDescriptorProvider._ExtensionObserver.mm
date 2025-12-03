@@ -1,15 +1,15 @@
 @interface ControlSessionDescriptorProvider._ExtensionObserver
 - (_TtCC16ChronoUIServicesP33_7A14CBC290C42AA348319CEA8012199432ControlSessionDescriptorProvider18_ExtensionObserver)init;
-- (void)extensionsDidChangeForExtensionProvider:(id)a3;
+- (void)extensionsDidChangeForExtensionProvider:(id)provider;
 @end
 
 @implementation ControlSessionDescriptorProvider._ExtensionObserver
 
-- (void)extensionsDidChangeForExtensionProvider:(id)a3
+- (void)extensionsDidChangeForExtensionProvider:(id)provider
 {
   if (swift_weakLoadStrong())
   {
-    v4 = self;
+    selfCopy = self;
     sub_1D92D8130();
   }
 }

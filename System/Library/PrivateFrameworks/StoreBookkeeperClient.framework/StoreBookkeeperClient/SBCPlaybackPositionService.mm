@@ -1,34 +1,34 @@
 @interface SBCPlaybackPositionService
-+ (id)serviceForSyncDomain:(id)a3;
-+ (id)serviceForValueDomain:(id)a3;
-- (SBCPlaybackPositionService)initWithPlaybackPositionDomain:(id)a3;
++ (id)serviceForSyncDomain:(id)domain;
++ (id)serviceForValueDomain:(id)domain;
+- (SBCPlaybackPositionService)initWithPlaybackPositionDomain:(id)domain;
 - (void)deletePlaybackPositionEntities;
-- (void)deletePlaybackPositionEntity:(id)a3;
-- (void)pullLocalPlaybackPositionForEntityIdentifiers:(id)a3 completionBlock:(id)a4;
-- (void)pullPlaybackPositionEntity:(id)a3 completionBlock:(id)a4;
-- (void)pushPlaybackPositionEntity:(id)a3 completionBlock:(id)a4;
-- (void)synchronizeImmediatelyWithCompletionHandler:(id)a3;
-- (void)updateForeignDatabaseWithValuesFromPlaybackPositionEntity:(id)a3;
+- (void)deletePlaybackPositionEntity:(id)entity;
+- (void)pullLocalPlaybackPositionForEntityIdentifiers:(id)identifiers completionBlock:(id)block;
+- (void)pullPlaybackPositionEntity:(id)entity completionBlock:(id)block;
+- (void)pushPlaybackPositionEntity:(id)entity completionBlock:(id)block;
+- (void)synchronizeImmediatelyWithCompletionHandler:(id)handler;
+- (void)updateForeignDatabaseWithValuesFromPlaybackPositionEntity:(id)entity;
 @end
 
 @implementation SBCPlaybackPositionService
 
-- (void)pushPlaybackPositionEntity:(id)a3 completionBlock:(id)a4
+- (void)pushPlaybackPositionEntity:(id)entity completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = MEMORY[0x277D7FBB0];
-  v8 = a3;
-  v9 = [v7 sharedService];
-  v10 = [v8 iTunesCloudEntity];
+  entityCopy = entity;
+  sharedService = [v7 sharedService];
+  iTunesCloudEntity = [entityCopy iTunesCloudEntity];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __73__SBCPlaybackPositionService_pushPlaybackPositionEntity_completionBlock___block_invoke;
   v12[3] = &unk_279D24DE0;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
-  [v9 pushPlaybackPositionEntity:v10 completionBlock:v12];
+  v13 = blockCopy;
+  v11 = blockCopy;
+  [sharedService pushPlaybackPositionEntity:iTunesCloudEntity completionBlock:v12];
 }
 
 void __73__SBCPlaybackPositionService_pushPlaybackPositionEntity_completionBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -78,22 +78,22 @@ void __73__SBCPlaybackPositionService_pushPlaybackPositionEntity_completionBlock
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pullPlaybackPositionEntity:(id)a3 completionBlock:(id)a4
+- (void)pullPlaybackPositionEntity:(id)entity completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = MEMORY[0x277D7FBB0];
-  v8 = a3;
-  v9 = [v7 sharedService];
-  v10 = [v8 iTunesCloudEntity];
+  entityCopy = entity;
+  sharedService = [v7 sharedService];
+  iTunesCloudEntity = [entityCopy iTunesCloudEntity];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __73__SBCPlaybackPositionService_pullPlaybackPositionEntity_completionBlock___block_invoke;
   v12[3] = &unk_279D24DE0;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
-  [v9 pullPlaybackPositionEntity:v10 completionBlock:v12];
+  v13 = blockCopy;
+  v11 = blockCopy;
+  [sharedService pullPlaybackPositionEntity:iTunesCloudEntity completionBlock:v12];
 }
 
 void __73__SBCPlaybackPositionService_pullPlaybackPositionEntity_completionBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -143,23 +143,23 @@ void __73__SBCPlaybackPositionService_pullPlaybackPositionEntity_completionBlock
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pullLocalPlaybackPositionForEntityIdentifiers:(id)a3 completionBlock:(id)a4
+- (void)pullLocalPlaybackPositionForEntityIdentifiers:(id)identifiers completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = MEMORY[0x277D7FBB0];
-  v8 = a3;
-  v9 = [v7 sharedService];
-  v10 = [(SBCPlaybackPositionDomain *)self->_playbackPositionDomain domainIdentifier];
-  v11 = [MEMORY[0x277D2B5F8] autoupdatingSharedLibrary];
-  v12 = [v11 libraryUID];
+  identifiersCopy = identifiers;
+  sharedService = [v7 sharedService];
+  domainIdentifier = [(SBCPlaybackPositionDomain *)self->_playbackPositionDomain domainIdentifier];
+  autoupdatingSharedLibrary = [MEMORY[0x277D2B5F8] autoupdatingSharedLibrary];
+  libraryUID = [autoupdatingSharedLibrary libraryUID];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __92__SBCPlaybackPositionService_pullLocalPlaybackPositionForEntityIdentifiers_completionBlock___block_invoke;
   v14[3] = &unk_279D24DB8;
   v14[4] = self;
-  v15 = v6;
-  v13 = v6;
-  [v9 getLocalPlaybackPositionForEntityIdentifiers:v8 forDomain:v10 fromLibraryWithIdentifier:v12 completionBlock:v14];
+  v15 = blockCopy;
+  v13 = blockCopy;
+  [sharedService getLocalPlaybackPositionForEntityIdentifiers:identifiersCopy forDomain:domainIdentifier fromLibraryWithIdentifier:libraryUID completionBlock:v14];
 }
 
 void __92__SBCPlaybackPositionService_pullLocalPlaybackPositionForEntityIdentifiers_completionBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -224,49 +224,49 @@ void __92__SBCPlaybackPositionService_pullLocalPlaybackPositionForEntityIdentifi
   [v2 addObject:v3];
 }
 
-- (void)synchronizeImmediatelyWithCompletionHandler:(id)a3
+- (void)synchronizeImmediatelyWithCompletionHandler:(id)handler
 {
-  v9 = a3;
-  v4 = [MEMORY[0x277D7FBB0] sharedService];
-  v5 = [MEMORY[0x277D2B5F8] autoupdatingSharedLibrary];
-  v6 = [v5 libraryUID];
-  v7 = [(SBCPlaybackPositionDomain *)self->_playbackPositionDomain domainIdentifier];
-  [v4 synchronizePlaybackPositionsForLibraryWithIdentifier:v6 forDomain:v7 isCheckpoint:0];
+  handlerCopy = handler;
+  mEMORY[0x277D7FBB0] = [MEMORY[0x277D7FBB0] sharedService];
+  autoupdatingSharedLibrary = [MEMORY[0x277D2B5F8] autoupdatingSharedLibrary];
+  libraryUID = [autoupdatingSharedLibrary libraryUID];
+  domainIdentifier = [(SBCPlaybackPositionDomain *)self->_playbackPositionDomain domainIdentifier];
+  [mEMORY[0x277D7FBB0] synchronizePlaybackPositionsForLibraryWithIdentifier:libraryUID forDomain:domainIdentifier isCheckpoint:0];
 
-  v8 = v9;
-  if (v9)
+  v8 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v9 + 2))(v9, 1, 0);
-    v8 = v9;
+    (*(handlerCopy + 2))(handlerCopy, 1, 0);
+    v8 = handlerCopy;
   }
 }
 
-- (void)updateForeignDatabaseWithValuesFromPlaybackPositionEntity:(id)a3
+- (void)updateForeignDatabaseWithValuesFromPlaybackPositionEntity:(id)entity
 {
   v3 = MEMORY[0x277D7FBB0];
-  v4 = a3;
-  v6 = [v3 sharedService];
-  v5 = [v4 iTunesCloudEntity];
+  entityCopy = entity;
+  sharedService = [v3 sharedService];
+  iTunesCloudEntity = [entityCopy iTunesCloudEntity];
 
-  [v6 updateForeignDatabaseWithValuesFromPlaybackPositionEntity:v5];
+  [sharedService updateForeignDatabaseWithValuesFromPlaybackPositionEntity:iTunesCloudEntity];
 }
 
 - (void)deletePlaybackPositionEntities
 {
-  v4 = [MEMORY[0x277D7FBB0] sharedService];
-  v2 = [MEMORY[0x277D2B5F8] autoupdatingSharedLibrary];
-  v3 = [v2 libraryUID];
-  [v4 deletePlaybackPositionEntitiesFromLibraryWithIdentifier:v3];
+  mEMORY[0x277D7FBB0] = [MEMORY[0x277D7FBB0] sharedService];
+  autoupdatingSharedLibrary = [MEMORY[0x277D2B5F8] autoupdatingSharedLibrary];
+  libraryUID = [autoupdatingSharedLibrary libraryUID];
+  [mEMORY[0x277D7FBB0] deletePlaybackPositionEntitiesFromLibraryWithIdentifier:libraryUID];
 }
 
-- (void)deletePlaybackPositionEntity:(id)a3
+- (void)deletePlaybackPositionEntity:(id)entity
 {
   v3 = MEMORY[0x277D7FBB0];
-  v4 = a3;
-  v6 = [v3 sharedService];
-  v5 = [v4 iTunesCloudEntity];
+  entityCopy = entity;
+  sharedService = [v3 sharedService];
+  iTunesCloudEntity = [entityCopy iTunesCloudEntity];
 
-  [v6 deletePlaybackPositionEntity:v5];
+  [sharedService deletePlaybackPositionEntity:iTunesCloudEntity];
 }
 
 void __89__SBCPlaybackPositionService_persistPlaybackPositionEntity_isCheckpoint_completionBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -310,34 +310,34 @@ void __89__SBCPlaybackPositionService_persistPlaybackPositionEntity_isCheckpoint
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (SBCPlaybackPositionService)initWithPlaybackPositionDomain:(id)a3
+- (SBCPlaybackPositionService)initWithPlaybackPositionDomain:(id)domain
 {
-  v5 = a3;
-  v6 = [[SBCClientConfiguration alloc] initWithPlaybackPositionDomain:v5];
+  domainCopy = domain;
+  v6 = [[SBCClientConfiguration alloc] initWithPlaybackPositionDomain:domainCopy];
   v10.receiver = self;
   v10.super_class = SBCPlaybackPositionService;
   v7 = [(SBCXPCService *)&v10 initWithClientConfiguration:v6];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_playbackPositionDomain, a3);
+    objc_storeStrong(&v7->_playbackPositionDomain, domain);
   }
 
   return v8;
 }
 
-+ (id)serviceForValueDomain:(id)a3
++ (id)serviceForValueDomain:(id)domain
 {
-  v3 = a3;
-  v4 = [(SBCPlaybackPositionService *)[SBCPlaybackPositionValueService alloc] initWithPlaybackPositionDomain:v3];
+  domainCopy = domain;
+  v4 = [(SBCPlaybackPositionService *)[SBCPlaybackPositionValueService alloc] initWithPlaybackPositionDomain:domainCopy];
 
   return v4;
 }
 
-+ (id)serviceForSyncDomain:(id)a3
++ (id)serviceForSyncDomain:(id)domain
 {
-  v3 = a3;
-  v4 = [(SBCPlaybackPositionService *)[SBCPlaybackPositionSyncService alloc] initWithPlaybackPositionDomain:v3];
+  domainCopy = domain;
+  v4 = [(SBCPlaybackPositionService *)[SBCPlaybackPositionSyncService alloc] initWithPlaybackPositionDomain:domainCopy];
 
   return v4;
 }

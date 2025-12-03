@@ -1,38 +1,38 @@
 @interface HomeKitSchemaHKAccessoryOperationReported
-- (BOOL)isEqual:(id)a3;
-- (HomeKitSchemaHKAccessoryOperationReported)initWithDictionary:(id)a3;
-- (HomeKitSchemaHKAccessoryOperationReported)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HomeKitSchemaHKAccessoryOperationReported)initWithDictionary:(id)dictionary;
+- (HomeKitSchemaHKAccessoryOperationReported)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasConsecutiveFailureCount:(BOOL)a3;
-- (void)setHasFinalErrorCode:(BOOL)a3;
-- (void)setHasOperationType:(BOOL)a3;
-- (void)setHasResidentFirstDuration:(BOOL)a3;
-- (void)setHasResidentFirstErrorCode:(BOOL)a3;
-- (void)setHasTotalDuration:(BOOL)a3;
-- (void)setHasTransportType:(BOOL)a3;
-- (void)setHasWasCached:(BOOL)a3;
-- (void)setHasWasLocal:(BOOL)a3;
-- (void)setHasWasRapportSlow:(BOOL)a3;
-- (void)setHasWasRemoteAccessAllowed:(BOOL)a3;
-- (void)setHasWasResidentFirstEnabled:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasConsecutiveFailureCount:(BOOL)count;
+- (void)setHasFinalErrorCode:(BOOL)code;
+- (void)setHasOperationType:(BOOL)type;
+- (void)setHasResidentFirstDuration:(BOOL)duration;
+- (void)setHasResidentFirstErrorCode:(BOOL)code;
+- (void)setHasTotalDuration:(BOOL)duration;
+- (void)setHasTransportType:(BOOL)type;
+- (void)setHasWasCached:(BOOL)cached;
+- (void)setHasWasLocal:(BOOL)local;
+- (void)setHasWasRapportSlow:(BOOL)slow;
+- (void)setHasWasRemoteAccessAllowed:(BOOL)allowed;
+- (void)setHasWasResidentFirstEnabled:(BOOL)enabled;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HomeKitSchemaHKAccessoryOperationReported
 
-- (HomeKitSchemaHKAccessoryOperationReported)initWithDictionary:(id)a3
+- (HomeKitSchemaHKAccessoryOperationReported)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v38.receiver = self;
   v38.super_class = HomeKitSchemaHKAccessoryOperationReported;
   v5 = [(HomeKitSchemaHKAccessoryOperationReported *)&v38 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"sharedMetricsId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"sharedMetricsId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,7 +41,7 @@
     }
 
     v36 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"accessoryCategory"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"accessoryCategory"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,49 +49,49 @@
       [(HomeKitSchemaHKAccessoryOperationReported *)v5 setAccessoryCategory:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"communicationProtocol"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"communicationProtocol"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[HomeKitSchemaHKAccessoryOperationReported setCommunicationProtocol:](v5, "setCommunicationProtocol:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"transportType"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"transportType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[HomeKitSchemaHKAccessoryOperationReported setTransportType:](v5, "setTransportType:", [v11 intValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"operationType"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"operationType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[HomeKitSchemaHKAccessoryOperationReported setOperationType:](v5, "setOperationType:", [v12 intValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"wasCached"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"wasCached"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[HomeKitSchemaHKAccessoryOperationReported setWasCached:](v5, "setWasCached:", [v13 BOOLValue]);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"wasLocal"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"wasLocal"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[HomeKitSchemaHKAccessoryOperationReported setWasLocal:](v5, "setWasLocal:", [v14 BOOLValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"wasRemoteAccessAllowed"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"wasRemoteAccessAllowed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[HomeKitSchemaHKAccessoryOperationReported setWasRemoteAccessAllowed:](v5, "setWasRemoteAccessAllowed:", [v15 BOOLValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"wasResidentFirstEnabled"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"wasResidentFirstEnabled"];
     objc_opt_class();
     v37 = v16;
     if (objc_opt_isKindOfClass())
@@ -101,7 +101,7 @@
 
     v34 = v11;
     v35 = v10;
-    v17 = [v4 objectForKeyedSubscript:@"wasRapportSlow"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"wasRapportSlow"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -109,7 +109,7 @@
     }
 
     v33 = v12;
-    v18 = [v4 objectForKeyedSubscript:{@"residentFirstDuration", v17}];
+    v18 = [dictionaryCopy objectForKeyedSubscript:{@"residentFirstDuration", v17}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -117,7 +117,7 @@
     }
 
     v32 = v13;
-    v19 = [v4 objectForKeyedSubscript:@"residentFirstErrorDomain"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"residentFirstErrorDomain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -126,7 +126,7 @@
     }
 
     v31 = v14;
-    v21 = [v4 objectForKeyedSubscript:@"residentFirstErrorCode"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"residentFirstErrorCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -134,14 +134,14 @@
     }
 
     v30 = v15;
-    v22 = [v4 objectForKeyedSubscript:@"totalDuration"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"totalDuration"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[HomeKitSchemaHKAccessoryOperationReported setTotalDuration:](v5, "setTotalDuration:", [v22 unsignedIntValue]);
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"finalErrorDomain"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"finalErrorDomain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -149,14 +149,14 @@
       [(HomeKitSchemaHKAccessoryOperationReported *)v5 setFinalErrorDomain:v24];
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"finalErrorCode"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"finalErrorCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[HomeKitSchemaHKAccessoryOperationReported setFinalErrorCode:](v5, "setFinalErrorCode:", [v25 unsignedIntValue]);
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"consecutiveFailureCount"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"consecutiveFailureCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -169,30 +169,30 @@
   return v5;
 }
 
-- (HomeKitSchemaHKAccessoryOperationReported)initWithJSON:(id)a3
+- (HomeKitSchemaHKAccessoryOperationReported)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(HomeKitSchemaHKAccessoryOperationReported *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(HomeKitSchemaHKAccessoryOperationReported *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(HomeKitSchemaHKAccessoryOperationReported *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -205,25 +205,25 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_accessoryCategory)
   {
-    v4 = [(HomeKitSchemaHKAccessoryOperationReported *)self accessoryCategory];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"accessoryCategory"];
+    accessoryCategory = [(HomeKitSchemaHKAccessoryOperationReported *)self accessoryCategory];
+    v5 = [accessoryCategory copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"accessoryCategory"];
   }
 
   has = self->_has;
   if (has)
   {
-    v7 = [(HomeKitSchemaHKAccessoryOperationReported *)self communicationProtocol];
+    communicationProtocol = [(HomeKitSchemaHKAccessoryOperationReported *)self communicationProtocol];
     v8 = @"HKACCESSORYCOMMUNICATIONPROTOCOL_UNKNOWN";
-    if (v7 == 1)
+    if (communicationProtocol == 1)
     {
       v8 = @"HKACCESSORYCOMMUNICATIONPROTOCOL_HAP";
     }
 
-    if (v7 == 2)
+    if (communicationProtocol == 2)
     {
       v9 = @"HKACCESSORYCOMMUNICATIONPROTOCOL_MATTER";
     }
@@ -233,14 +233,14 @@
       v9 = v8;
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"communicationProtocol"];
+    [dictionary setObject:v9 forKeyedSubscript:@"communicationProtocol"];
     has = self->_has;
   }
 
   if ((has & 0x1000) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[HomeKitSchemaHKAccessoryOperationReported consecutiveFailureCount](self, "consecutiveFailureCount")}];
-    [v3 setObject:v10 forKeyedSubscript:@"consecutiveFailureCount"];
+    [dictionary setObject:v10 forKeyedSubscript:@"consecutiveFailureCount"];
 
     has = self->_has;
   }
@@ -248,27 +248,27 @@
   if ((has & 0x800) != 0)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[HomeKitSchemaHKAccessoryOperationReported finalErrorCode](self, "finalErrorCode")}];
-    [v3 setObject:v11 forKeyedSubscript:@"finalErrorCode"];
+    [dictionary setObject:v11 forKeyedSubscript:@"finalErrorCode"];
   }
 
   if (self->_finalErrorDomain)
   {
-    v12 = [(HomeKitSchemaHKAccessoryOperationReported *)self finalErrorDomain];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"finalErrorDomain"];
+    finalErrorDomain = [(HomeKitSchemaHKAccessoryOperationReported *)self finalErrorDomain];
+    v13 = [finalErrorDomain copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"finalErrorDomain"];
   }
 
   v14 = self->_has;
   if ((v14 & 4) != 0)
   {
-    v20 = [(HomeKitSchemaHKAccessoryOperationReported *)self operationType];
+    operationType = [(HomeKitSchemaHKAccessoryOperationReported *)self operationType];
     v21 = @"HKACCESSORYOPERATIONTYPE_UNKNOWN";
-    if (v20 == 1)
+    if (operationType == 1)
     {
       v21 = @"HKACCESSORYOPERATIONTYPE_READ";
     }
 
-    if (v20 == 2)
+    if (operationType == 2)
     {
       v22 = @"HKACCESSORYOPERATIONTYPE_WRITE";
     }
@@ -278,7 +278,7 @@
       v22 = v21;
     }
 
-    [v3 setObject:v22 forKeyedSubscript:@"operationType"];
+    [dictionary setObject:v22 forKeyedSubscript:@"operationType"];
     v14 = self->_has;
     if ((v14 & 0x100) == 0)
     {
@@ -298,36 +298,36 @@ LABEL_18:
   }
 
   v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[HomeKitSchemaHKAccessoryOperationReported residentFirstDuration](self, "residentFirstDuration")}];
-  [v3 setObject:v23 forKeyedSubscript:@"residentFirstDuration"];
+  [dictionary setObject:v23 forKeyedSubscript:@"residentFirstDuration"];
 
   if ((*&self->_has & 0x200) != 0)
   {
 LABEL_19:
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[HomeKitSchemaHKAccessoryOperationReported residentFirstErrorCode](self, "residentFirstErrorCode")}];
-    [v3 setObject:v15 forKeyedSubscript:@"residentFirstErrorCode"];
+    [dictionary setObject:v15 forKeyedSubscript:@"residentFirstErrorCode"];
   }
 
 LABEL_20:
   if (self->_residentFirstErrorDomain)
   {
-    v16 = [(HomeKitSchemaHKAccessoryOperationReported *)self residentFirstErrorDomain];
-    v17 = [v16 copy];
-    [v3 setObject:v17 forKeyedSubscript:@"residentFirstErrorDomain"];
+    residentFirstErrorDomain = [(HomeKitSchemaHKAccessoryOperationReported *)self residentFirstErrorDomain];
+    v17 = [residentFirstErrorDomain copy];
+    [dictionary setObject:v17 forKeyedSubscript:@"residentFirstErrorDomain"];
   }
 
   if (self->_sharedMetricsId)
   {
-    v18 = [(HomeKitSchemaHKAccessoryOperationReported *)self sharedMetricsId];
-    v19 = [v18 dictionaryRepresentation];
-    if (v19)
+    sharedMetricsId = [(HomeKitSchemaHKAccessoryOperationReported *)self sharedMetricsId];
+    dictionaryRepresentation = [sharedMetricsId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v19 forKeyedSubscript:@"sharedMetricsId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"sharedMetricsId"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"sharedMetricsId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"sharedMetricsId"];
     }
   }
 
@@ -335,7 +335,7 @@ LABEL_20:
   if ((v25 & 0x400) != 0)
   {
     v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[HomeKitSchemaHKAccessoryOperationReported totalDuration](self, "totalDuration")}];
-    [v3 setObject:v28 forKeyedSubscript:@"totalDuration"];
+    [dictionary setObject:v28 forKeyedSubscript:@"totalDuration"];
 
     v25 = self->_has;
     if ((v25 & 2) == 0)
@@ -366,7 +366,7 @@ LABEL_37:
     v30 = off_1E78D8010[v29];
   }
 
-  [v3 setObject:v30 forKeyedSubscript:@"transportType"];
+  [dictionary setObject:v30 forKeyedSubscript:@"transportType"];
   v25 = self->_has;
   if ((v25 & 8) == 0)
   {
@@ -381,7 +381,7 @@ LABEL_38:
 
 LABEL_51:
   v31 = [MEMORY[0x1E696AD98] numberWithBool:{-[HomeKitSchemaHKAccessoryOperationReported wasCached](self, "wasCached")}];
-  [v3 setObject:v31 forKeyedSubscript:@"wasCached"];
+  [dictionary setObject:v31 forKeyedSubscript:@"wasCached"];
 
   v25 = self->_has;
   if ((v25 & 0x10) == 0)
@@ -397,7 +397,7 @@ LABEL_39:
 
 LABEL_52:
   v32 = [MEMORY[0x1E696AD98] numberWithBool:{-[HomeKitSchemaHKAccessoryOperationReported wasLocal](self, "wasLocal")}];
-  [v3 setObject:v32 forKeyedSubscript:@"wasLocal"];
+  [dictionary setObject:v32 forKeyedSubscript:@"wasLocal"];
 
   v25 = self->_has;
   if ((v25 & 0x80) == 0)
@@ -413,7 +413,7 @@ LABEL_40:
 
 LABEL_53:
   v33 = [MEMORY[0x1E696AD98] numberWithBool:{-[HomeKitSchemaHKAccessoryOperationReported wasRapportSlow](self, "wasRapportSlow")}];
-  [v3 setObject:v33 forKeyedSubscript:@"wasRapportSlow"];
+  [dictionary setObject:v33 forKeyedSubscript:@"wasRapportSlow"];
 
   v25 = self->_has;
   if ((v25 & 0x20) == 0)
@@ -429,19 +429,19 @@ LABEL_41:
 
 LABEL_54:
   v34 = [MEMORY[0x1E696AD98] numberWithBool:{-[HomeKitSchemaHKAccessoryOperationReported wasRemoteAccessAllowed](self, "wasRemoteAccessAllowed")}];
-  [v3 setObject:v34 forKeyedSubscript:@"wasRemoteAccessAllowed"];
+  [dictionary setObject:v34 forKeyedSubscript:@"wasRemoteAccessAllowed"];
 
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_42:
     v26 = [MEMORY[0x1E696AD98] numberWithBool:{-[HomeKitSchemaHKAccessoryOperationReported wasResidentFirstEnabled](self, "wasResidentFirstEnabled")}];
-    [v3 setObject:v26 forKeyedSubscript:@"wasResidentFirstEnabled"];
+    [dictionary setObject:v26 forKeyedSubscript:@"wasResidentFirstEnabled"];
   }
 
 LABEL_43:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -617,28 +617,28 @@ LABEL_27:
   return v20 ^ v21 ^ v19 ^ v18 ^ v17 ^ v16 ^ v15 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_64;
   }
 
-  v5 = [(HomeKitSchemaHKAccessoryOperationReported *)self sharedMetricsId];
-  v6 = [v4 sharedMetricsId];
-  if ((v5 != 0) == (v6 == 0))
+  sharedMetricsId = [(HomeKitSchemaHKAccessoryOperationReported *)self sharedMetricsId];
+  sharedMetricsId2 = [equalCopy sharedMetricsId];
+  if ((sharedMetricsId != 0) == (sharedMetricsId2 == 0))
   {
     goto LABEL_63;
   }
 
-  v7 = [(HomeKitSchemaHKAccessoryOperationReported *)self sharedMetricsId];
-  if (v7)
+  sharedMetricsId3 = [(HomeKitSchemaHKAccessoryOperationReported *)self sharedMetricsId];
+  if (sharedMetricsId3)
   {
-    v8 = v7;
-    v9 = [(HomeKitSchemaHKAccessoryOperationReported *)self sharedMetricsId];
-    v10 = [v4 sharedMetricsId];
-    v11 = [v9 isEqual:v10];
+    v8 = sharedMetricsId3;
+    sharedMetricsId4 = [(HomeKitSchemaHKAccessoryOperationReported *)self sharedMetricsId];
+    sharedMetricsId5 = [equalCopy sharedMetricsId];
+    v11 = [sharedMetricsId4 isEqual:sharedMetricsId5];
 
     if (!v11)
     {
@@ -650,20 +650,20 @@ LABEL_27:
   {
   }
 
-  v5 = [(HomeKitSchemaHKAccessoryOperationReported *)self accessoryCategory];
-  v6 = [v4 accessoryCategory];
-  if ((v5 != 0) == (v6 == 0))
+  sharedMetricsId = [(HomeKitSchemaHKAccessoryOperationReported *)self accessoryCategory];
+  sharedMetricsId2 = [equalCopy accessoryCategory];
+  if ((sharedMetricsId != 0) == (sharedMetricsId2 == 0))
   {
     goto LABEL_63;
   }
 
-  v12 = [(HomeKitSchemaHKAccessoryOperationReported *)self accessoryCategory];
-  if (v12)
+  accessoryCategory = [(HomeKitSchemaHKAccessoryOperationReported *)self accessoryCategory];
+  if (accessoryCategory)
   {
-    v13 = v12;
-    v14 = [(HomeKitSchemaHKAccessoryOperationReported *)self accessoryCategory];
-    v15 = [v4 accessoryCategory];
-    v16 = [v14 isEqual:v15];
+    v13 = accessoryCategory;
+    accessoryCategory2 = [(HomeKitSchemaHKAccessoryOperationReported *)self accessoryCategory];
+    accessoryCategory3 = [equalCopy accessoryCategory];
+    v16 = [accessoryCategory2 isEqual:accessoryCategory3];
 
     if (!v16)
     {
@@ -676,7 +676,7 @@ LABEL_27:
   }
 
   has = self->_has;
-  v18 = v4[40];
+  v18 = equalCopy[40];
   if ((*&has & 1) != (v18 & 1))
   {
     goto LABEL_64;
@@ -685,13 +685,13 @@ LABEL_27:
   if (*&has)
   {
     communicationProtocol = self->_communicationProtocol;
-    if (communicationProtocol != [v4 communicationProtocol])
+    if (communicationProtocol != [equalCopy communicationProtocol])
     {
       goto LABEL_64;
     }
 
     has = self->_has;
-    v18 = v4[40];
+    v18 = equalCopy[40];
   }
 
   v20 = (*&has >> 1) & 1;
@@ -703,13 +703,13 @@ LABEL_27:
   if (v20)
   {
     transportType = self->_transportType;
-    if (transportType != [v4 transportType])
+    if (transportType != [equalCopy transportType])
     {
       goto LABEL_64;
     }
 
     has = self->_has;
-    v18 = v4[40];
+    v18 = equalCopy[40];
   }
 
   v22 = (*&has >> 2) & 1;
@@ -721,13 +721,13 @@ LABEL_27:
   if (v22)
   {
     operationType = self->_operationType;
-    if (operationType != [v4 operationType])
+    if (operationType != [equalCopy operationType])
     {
       goto LABEL_64;
     }
 
     has = self->_has;
-    v18 = v4[40];
+    v18 = equalCopy[40];
   }
 
   v24 = (*&has >> 3) & 1;
@@ -739,13 +739,13 @@ LABEL_27:
   if (v24)
   {
     wasCached = self->_wasCached;
-    if (wasCached != [v4 wasCached])
+    if (wasCached != [equalCopy wasCached])
     {
       goto LABEL_64;
     }
 
     has = self->_has;
-    v18 = v4[40];
+    v18 = equalCopy[40];
   }
 
   v26 = (*&has >> 4) & 1;
@@ -757,13 +757,13 @@ LABEL_27:
   if (v26)
   {
     wasLocal = self->_wasLocal;
-    if (wasLocal != [v4 wasLocal])
+    if (wasLocal != [equalCopy wasLocal])
     {
       goto LABEL_64;
     }
 
     has = self->_has;
-    v18 = v4[40];
+    v18 = equalCopy[40];
   }
 
   v28 = (*&has >> 5) & 1;
@@ -775,13 +775,13 @@ LABEL_27:
   if (v28)
   {
     wasRemoteAccessAllowed = self->_wasRemoteAccessAllowed;
-    if (wasRemoteAccessAllowed != [v4 wasRemoteAccessAllowed])
+    if (wasRemoteAccessAllowed != [equalCopy wasRemoteAccessAllowed])
     {
       goto LABEL_64;
     }
 
     has = self->_has;
-    v18 = v4[40];
+    v18 = equalCopy[40];
   }
 
   v30 = (*&has >> 6) & 1;
@@ -793,13 +793,13 @@ LABEL_27:
   if (v30)
   {
     wasResidentFirstEnabled = self->_wasResidentFirstEnabled;
-    if (wasResidentFirstEnabled != [v4 wasResidentFirstEnabled])
+    if (wasResidentFirstEnabled != [equalCopy wasResidentFirstEnabled])
     {
       goto LABEL_64;
     }
 
     has = self->_has;
-    v18 = v4[40];
+    v18 = equalCopy[40];
   }
 
   v32 = (*&has >> 7) & 1;
@@ -811,13 +811,13 @@ LABEL_27:
   if (v32)
   {
     wasRapportSlow = self->_wasRapportSlow;
-    if (wasRapportSlow != [v4 wasRapportSlow])
+    if (wasRapportSlow != [equalCopy wasRapportSlow])
     {
       goto LABEL_64;
     }
 
     has = self->_has;
-    v18 = v4[40];
+    v18 = equalCopy[40];
   }
 
   v34 = (*&has >> 8) & 1;
@@ -829,26 +829,26 @@ LABEL_27:
   if (v34)
   {
     residentFirstDuration = self->_residentFirstDuration;
-    if (residentFirstDuration != [v4 residentFirstDuration])
+    if (residentFirstDuration != [equalCopy residentFirstDuration])
     {
       goto LABEL_64;
     }
   }
 
-  v5 = [(HomeKitSchemaHKAccessoryOperationReported *)self residentFirstErrorDomain];
-  v6 = [v4 residentFirstErrorDomain];
-  if ((v5 != 0) == (v6 == 0))
+  sharedMetricsId = [(HomeKitSchemaHKAccessoryOperationReported *)self residentFirstErrorDomain];
+  sharedMetricsId2 = [equalCopy residentFirstErrorDomain];
+  if ((sharedMetricsId != 0) == (sharedMetricsId2 == 0))
   {
     goto LABEL_63;
   }
 
-  v36 = [(HomeKitSchemaHKAccessoryOperationReported *)self residentFirstErrorDomain];
-  if (v36)
+  residentFirstErrorDomain = [(HomeKitSchemaHKAccessoryOperationReported *)self residentFirstErrorDomain];
+  if (residentFirstErrorDomain)
   {
-    v37 = v36;
-    v38 = [(HomeKitSchemaHKAccessoryOperationReported *)self residentFirstErrorDomain];
-    v39 = [v4 residentFirstErrorDomain];
-    v40 = [v38 isEqual:v39];
+    v37 = residentFirstErrorDomain;
+    residentFirstErrorDomain2 = [(HomeKitSchemaHKAccessoryOperationReported *)self residentFirstErrorDomain];
+    residentFirstErrorDomain3 = [equalCopy residentFirstErrorDomain];
+    v40 = [residentFirstErrorDomain2 isEqual:residentFirstErrorDomain3];
 
     if (!v40)
     {
@@ -862,7 +862,7 @@ LABEL_27:
 
   v41 = self->_has;
   v42 = (*&v41 >> 9) & 1;
-  v43 = v4[40];
+  v43 = equalCopy[40];
   if (v42 != ((v43 >> 9) & 1))
   {
     goto LABEL_64;
@@ -871,13 +871,13 @@ LABEL_27:
   if (v42)
   {
     residentFirstErrorCode = self->_residentFirstErrorCode;
-    if (residentFirstErrorCode != [v4 residentFirstErrorCode])
+    if (residentFirstErrorCode != [equalCopy residentFirstErrorCode])
     {
       goto LABEL_64;
     }
 
     v41 = self->_has;
-    v43 = v4[40];
+    v43 = equalCopy[40];
   }
 
   v45 = (*&v41 >> 10) & 1;
@@ -889,28 +889,28 @@ LABEL_27:
   if (v45)
   {
     totalDuration = self->_totalDuration;
-    if (totalDuration != [v4 totalDuration])
+    if (totalDuration != [equalCopy totalDuration])
     {
       goto LABEL_64;
     }
   }
 
-  v5 = [(HomeKitSchemaHKAccessoryOperationReported *)self finalErrorDomain];
-  v6 = [v4 finalErrorDomain];
-  if ((v5 != 0) == (v6 == 0))
+  sharedMetricsId = [(HomeKitSchemaHKAccessoryOperationReported *)self finalErrorDomain];
+  sharedMetricsId2 = [equalCopy finalErrorDomain];
+  if ((sharedMetricsId != 0) == (sharedMetricsId2 == 0))
   {
 LABEL_63:
 
     goto LABEL_64;
   }
 
-  v47 = [(HomeKitSchemaHKAccessoryOperationReported *)self finalErrorDomain];
-  if (v47)
+  finalErrorDomain = [(HomeKitSchemaHKAccessoryOperationReported *)self finalErrorDomain];
+  if (finalErrorDomain)
   {
-    v48 = v47;
-    v49 = [(HomeKitSchemaHKAccessoryOperationReported *)self finalErrorDomain];
-    v50 = [v4 finalErrorDomain];
-    v51 = [v49 isEqual:v50];
+    v48 = finalErrorDomain;
+    finalErrorDomain2 = [(HomeKitSchemaHKAccessoryOperationReported *)self finalErrorDomain];
+    finalErrorDomain3 = [equalCopy finalErrorDomain];
+    v51 = [finalErrorDomain2 isEqual:finalErrorDomain3];
 
     if (!v51)
     {
@@ -924,25 +924,25 @@ LABEL_63:
 
   v54 = self->_has;
   v55 = (*&v54 >> 11) & 1;
-  v56 = v4[40];
+  v56 = equalCopy[40];
   if (v55 == ((v56 >> 11) & 1))
   {
     if (v55)
     {
       finalErrorCode = self->_finalErrorCode;
-      if (finalErrorCode != [v4 finalErrorCode])
+      if (finalErrorCode != [equalCopy finalErrorCode])
       {
         goto LABEL_64;
       }
 
       v54 = self->_has;
-      v56 = v4[40];
+      v56 = equalCopy[40];
     }
 
     v58 = (*&v54 >> 12) & 1;
     if (v58 == ((v56 >> 12) & 1))
     {
-      if (!v58 || (consecutiveFailureCount = self->_consecutiveFailureCount, consecutiveFailureCount == [v4 consecutiveFailureCount]))
+      if (!v58 || (consecutiveFailureCount = self->_consecutiveFailureCount, consecutiveFailureCount == [equalCopy consecutiveFailureCount]))
       {
         v52 = 1;
         goto LABEL_65;
@@ -957,20 +957,20 @@ LABEL_65:
   return v52;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(HomeKitSchemaHKAccessoryOperationReported *)self sharedMetricsId];
+  toCopy = to;
+  sharedMetricsId = [(HomeKitSchemaHKAccessoryOperationReported *)self sharedMetricsId];
 
-  if (v4)
+  if (sharedMetricsId)
   {
-    v5 = [(HomeKitSchemaHKAccessoryOperationReported *)self sharedMetricsId];
+    sharedMetricsId2 = [(HomeKitSchemaHKAccessoryOperationReported *)self sharedMetricsId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(HomeKitSchemaHKAccessoryOperationReported *)self accessoryCategory];
+  accessoryCategory = [(HomeKitSchemaHKAccessoryOperationReported *)self accessoryCategory];
 
-  if (v6)
+  if (accessoryCategory)
   {
     PBDataWriterWriteStringField();
   }
@@ -1089,9 +1089,9 @@ LABEL_14:
   }
 
 LABEL_15:
-  v8 = [(HomeKitSchemaHKAccessoryOperationReported *)self residentFirstErrorDomain];
+  residentFirstErrorDomain = [(HomeKitSchemaHKAccessoryOperationReported *)self residentFirstErrorDomain];
 
-  if (v8)
+  if (residentFirstErrorDomain)
   {
     PBDataWriterWriteStringField();
   }
@@ -1108,32 +1108,32 @@ LABEL_15:
     PBDataWriterWriteUint32Field();
   }
 
-  v10 = [(HomeKitSchemaHKAccessoryOperationReported *)self finalErrorDomain];
+  finalErrorDomain = [(HomeKitSchemaHKAccessoryOperationReported *)self finalErrorDomain];
 
-  if (v10)
+  if (finalErrorDomain)
   {
     PBDataWriterWriteStringField();
   }
 
   v11 = self->_has;
-  v12 = v13;
+  v12 = toCopy;
   if ((v11 & 0x800) != 0)
   {
     PBDataWriterWriteUint32Field();
-    v12 = v13;
+    v12 = toCopy;
     v11 = self->_has;
   }
 
   if ((v11 & 0x1000) != 0)
   {
     PBDataWriterWriteUint32Field();
-    v12 = v13;
+    v12 = toCopy;
   }
 }
 
-- (void)setHasConsecutiveFailureCount:(BOOL)a3
+- (void)setHasConsecutiveFailureCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4096;
   }
@@ -1146,9 +1146,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasFinalErrorCode:(BOOL)a3
+- (void)setHasFinalErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 2048;
   }
@@ -1161,9 +1161,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasTotalDuration:(BOOL)a3
+- (void)setHasTotalDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 1024;
   }
@@ -1176,9 +1176,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasResidentFirstErrorCode:(BOOL)a3
+- (void)setHasResidentFirstErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 512;
   }
@@ -1191,9 +1191,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasResidentFirstDuration:(BOOL)a3
+- (void)setHasResidentFirstDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 256;
   }
@@ -1206,9 +1206,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasWasRapportSlow:(BOOL)a3
+- (void)setHasWasRapportSlow:(BOOL)slow
 {
-  if (a3)
+  if (slow)
   {
     v3 = 128;
   }
@@ -1221,9 +1221,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasWasResidentFirstEnabled:(BOOL)a3
+- (void)setHasWasResidentFirstEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 64;
   }
@@ -1236,9 +1236,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasWasRemoteAccessAllowed:(BOOL)a3
+- (void)setHasWasRemoteAccessAllowed:(BOOL)allowed
 {
-  if (a3)
+  if (allowed)
   {
     v3 = 32;
   }
@@ -1251,9 +1251,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasWasLocal:(BOOL)a3
+- (void)setHasWasLocal:(BOOL)local
 {
-  if (a3)
+  if (local)
   {
     v3 = 16;
   }
@@ -1266,9 +1266,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasWasCached:(BOOL)a3
+- (void)setHasWasCached:(BOOL)cached
 {
-  if (a3)
+  if (cached)
   {
     v3 = 8;
   }
@@ -1281,9 +1281,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasOperationType:(BOOL)a3
+- (void)setHasOperationType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -1296,9 +1296,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasTransportType:(BOOL)a3
+- (void)setHasTransportType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -1311,17 +1311,17 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = HomeKitSchemaHKAccessoryOperationReported;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(HomeKitSchemaHKAccessoryOperationReported *)self sharedMetricsId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(HomeKitSchemaHKAccessoryOperationReported *)self deleteSharedMetricsId];
   }

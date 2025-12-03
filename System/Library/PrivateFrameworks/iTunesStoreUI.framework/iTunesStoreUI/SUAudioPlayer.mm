@@ -1,37 +1,37 @@
 @interface SUAudioPlayer
-- (BOOL)resourceLoader:(id)a3 shouldWaitForLoadingOfRequestedResource:(id)a4;
-- (SUAudioPlayer)initWithURL:(id)a3;
+- (BOOL)resourceLoader:(id)loader shouldWaitForLoadingOfRequestedResource:(id)resource;
+- (SUAudioPlayer)initWithURL:(id)l;
 - (SUPlayerStatus)playerStatus;
-- (id)_newFadeInAudioMixForAsset:(id)a3;
-- (id)valueForNowPlayingKey:(id)a3;
+- (id)_newFadeInAudioMixForAsset:(id)asset;
+- (id)valueForNowPlayingKey:(id)key;
 - (void)_applyNowPlayingInfo;
 - (void)_destroyPlayer;
 - (void)_destroyPlayerItem;
-- (void)_failWithError:(id)a3;
+- (void)_failWithError:(id)error;
 - (void)_handleAssetValuesDidLoad;
-- (void)_itemFailedToPlayToEndNotification:(id)a3;
-- (void)_itemPlayedToEndNotification:(id)a3;
+- (void)_itemFailedToPlayToEndNotification:(id)notification;
+- (void)_itemPlayedToEndNotification:(id)notification;
 - (void)_postStatusChangeNotification;
-- (void)_setPlayerState:(int64_t)a3;
-- (void)_updateForPeriodicTickWithTime:(double)a3;
+- (void)_setPlayerState:(int64_t)state;
+- (void)_updateForPeriodicTickWithTime:(double)time;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)play;
-- (void)seekToTime:(double)a3;
-- (void)setValue:(id)a3 forNowPlayingKey:(id)a4;
+- (void)seekToTime:(double)time;
+- (void)setValue:(id)value forNowPlayingKey:(id)key;
 - (void)stop;
 @end
 
 @implementation SUAudioPlayer
 
-- (SUAudioPlayer)initWithURL:(id)a3
+- (SUAudioPlayer)initWithURL:(id)l
 {
   v7.receiver = self;
   v7.super_class = SUAudioPlayer;
   v4 = [(SUAudioPlayer *)&v7 init];
   if (v4)
   {
-    v4->_url = a3;
+    v4->_url = l;
     v5 = objc_alloc_init(SUPlayerStatus);
     v4->_status = v5;
     [(SUPlayerStatus *)v5 setPlayerState:0];
@@ -106,17 +106,17 @@ uint64_t __21__SUAudioPlayer_play__block_invoke_2(uint64_t a1)
   return [v1 _handleAssetValuesDidLoad];
 }
 
-- (void)seekToTime:(double)a3
+- (void)seekToTime:(double)time
 {
   player = self->_player;
-  CMTimeMakeWithSeconds(&v4, a3, 1);
+  CMTimeMakeWithSeconds(&v4, time, 1);
   [(AVPlayer *)player seekToTime:&v4];
 }
 
-- (void)setValue:(id)a3 forNowPlayingKey:(id)a4
+- (void)setValue:(id)value forNowPlayingKey:(id)key
 {
   nowPlayingInfo = self->_nowPlayingInfo;
-  if (a3)
+  if (value)
   {
     if (!nowPlayingInfo)
     {
@@ -124,12 +124,12 @@ uint64_t __21__SUAudioPlayer_play__block_invoke_2(uint64_t a1)
       self->_nowPlayingInfo = nowPlayingInfo;
     }
 
-    [(NSMutableDictionary *)nowPlayingInfo setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)nowPlayingInfo setObject:value forKey:key];
   }
 
   else
   {
-    [(NSMutableDictionary *)nowPlayingInfo removeObjectForKey:a4];
+    [(NSMutableDictionary *)nowPlayingInfo removeObjectForKey:key];
   }
 
   [(SUAudioPlayer *)self _applyNowPlayingInfo];
@@ -144,22 +144,22 @@ uint64_t __21__SUAudioPlayer_play__block_invoke_2(uint64_t a1)
   [(SUAudioPlayer *)self _setPlayerState:5];
 }
 
-- (id)valueForNowPlayingKey:(id)a3
+- (id)valueForNowPlayingKey:(id)key
 {
-  v3 = [(NSMutableDictionary *)self->_nowPlayingInfo objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_nowPlayingInfo objectForKey:key];
 
   return v3;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (![a3 isEqualToString:{@"status", a4, a5, a6}])
+  if (![path isEqualToString:{@"status", object, change, context}])
   {
     return;
   }
 
   player = self->_player;
-  if (player == a4)
+  if (player == object)
   {
     if ([(AVPlayer *)player status]!= AVPlayerStatusFailed)
     {
@@ -171,24 +171,24 @@ uint64_t __21__SUAudioPlayer_play__block_invoke_2(uint64_t a1)
   }
 
   playerItem = self->_playerItem;
-  if (playerItem != a4)
+  if (playerItem != object)
   {
     return;
   }
 
-  v10 = [(AVPlayerItem *)playerItem status];
-  if (v10 != 1)
+  status = [(AVPlayerItem *)playerItem status];
+  if (status != 1)
   {
-    if (v10 != 2)
+    if (status != 2)
     {
       return;
     }
 
     v11 = self->_playerItem;
 LABEL_9:
-    v12 = [v11 error];
+    error = [v11 error];
 
-    [(SUAudioPlayer *)self _failWithError:v12];
+    [(SUAudioPlayer *)self _failWithError:error];
     return;
   }
 
@@ -197,7 +197,7 @@ LABEL_9:
   [(AVPlayer *)v13 play];
 }
 
-- (void)_itemFailedToPlayToEndNotification:(id)a3
+- (void)_itemFailedToPlayToEndNotification:(id)notification
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -215,7 +215,7 @@ uint64_t __52__SUAudioPlayer__itemFailedToPlayToEndNotification___block_invoke(u
   return [v1 _failWithError:v2];
 }
 
-- (void)_itemPlayedToEndNotification:(id)a3
+- (void)_itemPlayedToEndNotification:(id)notification
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -225,10 +225,10 @@ uint64_t __52__SUAudioPlayer__itemFailedToPlayToEndNotification___block_invoke(u
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (BOOL)resourceLoader:(id)a3 shouldWaitForLoadingOfRequestedResource:(id)a4
+- (BOOL)resourceLoader:(id)loader shouldWaitForLoadingOfRequestedResource:(id)resource
 {
   v6 = objc_alloc_init(SUPastisOperation);
-  [(SUPastisOperation *)v6 setLoadingRequest:a4];
+  [(SUPastisOperation *)v6 setLoadingRequest:resource];
   [(SUPastisOperation *)v6 setKeyURL:self->_keyUrl];
   [(SUPastisOperation *)v6 setCertificateURL:self->_certificateUrl];
   [objc_msgSend(MEMORY[0x1E69E4798] "mainQueue")];
@@ -239,7 +239,7 @@ uint64_t __52__SUAudioPlayer__itemFailedToPlayToEndNotification___block_invoke(u
 - (void)_applyNowPlayingInfo
 {
   v3 = [(SUPlayerStatus *)self->_status playerState]- 1;
-  v4 = [MEMORY[0x1E6970850] defaultCenter];
+  defaultCenter = [MEMORY[0x1E6970850] defaultCenter];
   if (v3 > 2)
   {
     nowPlayingInfo = 0;
@@ -250,7 +250,7 @@ uint64_t __52__SUAudioPlayer__itemFailedToPlayToEndNotification___block_invoke(u
     nowPlayingInfo = self->_nowPlayingInfo;
   }
 
-  [v4 setNowPlayingInfo:nowPlayingInfo];
+  [defaultCenter setNowPlayingInfo:nowPlayingInfo];
 }
 
 - (void)_destroyPlayer
@@ -269,17 +269,17 @@ uint64_t __52__SUAudioPlayer__itemFailedToPlayToEndNotification___block_invoke(u
 
 - (void)_destroyPlayerItem
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E6987A20] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E6987A10] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E6987A20] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E6987A10] object:0];
   [(AVPlayerItem *)self->_playerItem removeObserver:self forKeyPath:@"status"];
 
   self->_playerItem = 0;
 }
 
-- (void)_failWithError:(id)a3
+- (void)_failWithError:(id)error
 {
-  [(SUPlayerStatus *)self->_status setError:a3];
+  [(SUPlayerStatus *)self->_status setError:error];
 
   [(SUAudioPlayer *)self _setPlayerState:4];
 }
@@ -310,9 +310,9 @@ uint64_t __52__SUAudioPlayer__itemFailedToPlayToEndNotification___block_invoke(u
     v9 = [(SUAudioPlayer *)self _newFadeInAudioMixForAsset:self->_asset];
     [(AVPlayerItem *)self->_playerItem setAudioMix:v9];
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:self selector:sel__itemFailedToPlayToEndNotification_ name:*MEMORY[0x1E6987A20] object:0];
-    [v10 addObserver:self selector:sel__itemPlayedToEndNotification_ name:*MEMORY[0x1E6987A10] object:self->_playerItem];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__itemFailedToPlayToEndNotification_ name:*MEMORY[0x1E6987A20] object:0];
+    [defaultCenter addObserver:self selector:sel__itemPlayedToEndNotification_ name:*MEMORY[0x1E6987A10] object:self->_playerItem];
     [(AVPlayer *)self->_player replaceCurrentItemWithPlayerItem:self->_playerItem];
     status = self->_status;
     asset = self->_asset;
@@ -343,11 +343,11 @@ uint64_t __42__SUAudioPlayer__handleAssetValuesDidLoad__block_invoke(uint64_t a1
   return [v3 _updateForPeriodicTickWithTime:CMTimeGetSeconds(&v5)];
 }
 
-- (id)_newFadeInAudioMixForAsset:(id)a3
+- (id)_newFadeInAudioMixForAsset:(id)asset
 {
   v23 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [a3 tracksWithMediaType:*MEMORY[0x1E69875A0]];
+  v5 = [asset tracksWithMediaType:*MEMORY[0x1E69875A0]];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -398,45 +398,45 @@ uint64_t __42__SUAudioPlayer__handleAssetValuesDidLoad__block_invoke(uint64_t a1
 
 - (void)_postStatusChangeNotification
 {
-  v3 = self;
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
+  selfCopy = self;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-  [v4 postNotificationName:@"SUAudioPlayerStatusChangeNotification" object:self];
+  [defaultCenter postNotificationName:@"SUAudioPlayerStatusChangeNotification" object:self];
 }
 
-- (void)_setPlayerState:(int64_t)a3
+- (void)_setPlayerState:(int64_t)state
 {
-  if ([(SUPlayerStatus *)self->_status playerState]!= a3)
+  if ([(SUPlayerStatus *)self->_status playerState]!= state)
   {
-    [(SUPlayerStatus *)self->_status setPlayerState:a3];
+    [(SUPlayerStatus *)self->_status setPlayerState:state];
     [(SUAudioPlayer *)self _applyNowPlayingInfo];
 
     [(SUAudioPlayer *)self _postStatusChangeNotification];
   }
 }
 
-- (void)_updateForPeriodicTickWithTime:(double)a3
+- (void)_updateForPeriodicTickWithTime:(double)time
 {
   [(SUPlayerStatus *)self->_status duration];
   v6 = v5;
-  [(SUPlayerStatus *)self->_status setCurrentTime:a3];
-  if (v6 >= a3)
+  [(SUPlayerStatus *)self->_status setCurrentTime:time];
+  if (v6 >= time)
   {
-    v7 = v6;
+    timeCopy = v6;
   }
 
   else
   {
-    v7 = a3;
+    timeCopy = time;
   }
 
-  [(SUPlayerStatus *)self->_status setDuration:v7];
-  v8 = [(SUPlayerStatus *)self->_status playerState];
+  [(SUPlayerStatus *)self->_status setDuration:timeCopy];
+  playerState = [(SUPlayerStatus *)self->_status playerState];
   [(AVPlayer *)self->_player rate];
   v10 = 3;
-  if (v8 != 2)
+  if (playerState != 2)
   {
-    v10 = v8;
+    v10 = playerState;
   }
 
   if (v9 <= 0.00000011921)
@@ -455,7 +455,7 @@ uint64_t __42__SUAudioPlayer__handleAssetValuesDidLoad__block_invoke(uint64_t a1
     [(SUAudioPlayer *)self _applyNowPlayingInfo];
   }
 
-  if (!self->_didPostForPreviewHistory && a3 >= 5.0)
+  if (!self->_didPostForPreviewHistory && time >= 5.0)
   {
     storeItemIdentifier = self->_storeItemIdentifier;
     if (storeItemIdentifier)

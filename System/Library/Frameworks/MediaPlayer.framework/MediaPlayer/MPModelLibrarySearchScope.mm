@@ -1,12 +1,12 @@
 @interface MPModelLibrarySearchScope
-- (BOOL)isEqual:(id)a3;
-- (MPModelLibrarySearchScope)initWithCoder:(id)a3;
-- (MPModelLibrarySearchScope)initWithItemKind:(id)a3 name:(id)a4 properties:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (MPModelLibrarySearchScope)initWithCoder:(id)coder;
+- (MPModelLibrarySearchScope)initWithItemKind:(id)kind name:(id)name properties:(id)properties;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (shared_ptr<mlcore::LocalizedSearchScope>)coreScope;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPModelLibrarySearchScope
@@ -20,7 +20,7 @@
 
 - (shared_ptr<mlcore::LocalizedSearchScope>)coreScope
 {
-  v3 = self;
+  selfCopy = self;
   v4 = v2;
   ptr = self->_coreScope.__ptr_;
   if (!ptr)
@@ -28,7 +28,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v3->_itemKind;
+      v7 = selfCopy->_itemKind;
       v11.__ptr_ = 0;
       v11.__cntrl_ = &v11;
       v12 = 0x4812000000;
@@ -38,32 +38,32 @@
       v17 = 0;
       v18 = 0;
       v16 = 0;
-      v8 = [(MPModelKind *)v7 relationshipKinds];
+      relationshipKinds = [(MPModelKind *)v7 relationshipKinds];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __38__MPModelLibrarySearchScope_coreScope__block_invoke_28;
       v10[3] = &unk_1E767C170;
-      v10[4] = v3;
+      v10[4] = selfCopy;
       v10[5] = &__block_literal_global_34459;
       v10[6] = &v11;
       v10[7] = a2;
-      [v8 enumerateKeysAndObjectsUsingBlock:v10];
+      [relationshipKinds enumerateKeysAndObjectsUsingBlock:v10];
 
       operator new();
     }
 
-    __38__MPModelLibrarySearchScope_coreScope__block_invoke(v3->_itemKind, v3->_itemProperties, &v11);
-    self = v3->_coreScope.__cntrl_;
-    v3->_coreScope = v11;
+    __38__MPModelLibrarySearchScope_coreScope__block_invoke(selfCopy->_itemKind, selfCopy->_itemProperties, &v11);
+    self = selfCopy->_coreScope.__cntrl_;
+    selfCopy->_coreScope = v11;
     if (self)
     {
       std::__shared_weak_count::__release_shared[abi:ne200100](self);
     }
 
-    ptr = v3->_coreScope.__ptr_;
+    ptr = selfCopy->_coreScope.__ptr_;
   }
 
-  cntrl = v3->_coreScope.__cntrl_;
+  cntrl = selfCopy->_coreScope.__cntrl_;
   *v4 = ptr;
   v4[1] = cntrl;
   if (cntrl)
@@ -128,9 +128,9 @@ LABEL_7:
   a3[1] = 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -156,29 +156,29 @@ LABEL_7:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_itemKind forKey:@"MPModelLibrarySearchScopeItemKind"];
-  [v4 encodeObject:self->_name forKey:@"MPModelLibrarySearchScopeName"];
-  [v4 encodeObject:self->_itemProperties forKey:@"MPModelLibrarySearchScopeItemProperties"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_itemKind forKey:@"MPModelLibrarySearchScopeItemKind"];
+  [coderCopy encodeObject:self->_name forKey:@"MPModelLibrarySearchScopeName"];
+  [coderCopy encodeObject:self->_itemProperties forKey:@"MPModelLibrarySearchScopeItemProperties"];
 }
 
-- (MPModelLibrarySearchScope)initWithCoder:(id)a3
+- (MPModelLibrarySearchScope)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(MPModelLibrarySearchScope *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPModelLibrarySearchScopeItemKind"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPModelLibrarySearchScopeItemKind"];
     itemKind = v5->_itemKind;
     v5->_itemKind = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPModelLibrarySearchScopeName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPModelLibrarySearchScopeName"];
     name = v5->_name;
     v5->_name = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPModelLibrarySearchScopeItemProperties"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPModelLibrarySearchScopeItemProperties"];
     itemProperties = v5->_itemProperties;
     v5->_itemProperties = v10;
   }
@@ -186,17 +186,17 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
-    v7 = [(MPModelLibrarySearchScope *)self itemKind];
-    v8 = [(MPModelLibrarySearchScope *)v6 itemKind];
-    v9 = v7;
-    v10 = v8;
+    v6 = equalCopy;
+    itemKind = [(MPModelLibrarySearchScope *)self itemKind];
+    itemKind2 = [(MPModelLibrarySearchScope *)v6 itemKind];
+    v9 = itemKind;
+    v10 = itemKind2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -212,10 +212,10 @@ LABEL_7:
       }
     }
 
-    v14 = [(MPModelLibrarySearchScope *)self name];
-    v15 = [(MPModelLibrarySearchScope *)v6 name];
-    v16 = v14;
-    v17 = v15;
+    name = [(MPModelLibrarySearchScope *)self name];
+    name2 = [(MPModelLibrarySearchScope *)v6 name];
+    v16 = name;
+    v17 = name2;
     v18 = v17;
     if (v16 == v17)
     {
@@ -235,10 +235,10 @@ LABEL_15:
       }
     }
 
-    v20 = [(MPModelLibrarySearchScope *)self itemProperties];
-    v21 = [(MPModelLibrarySearchScope *)v6 itemProperties];
-    v22 = v20;
-    v23 = v21;
+    itemProperties = [(MPModelLibrarySearchScope *)self itemProperties];
+    itemProperties2 = [(MPModelLibrarySearchScope *)v6 itemProperties];
+    v22 = itemProperties;
+    v23 = itemProperties2;
     if (v22 == v23)
     {
       v13 = 1;
@@ -285,18 +285,18 @@ LABEL_16:
   return v6;
 }
 
-- (MPModelLibrarySearchScope)initWithItemKind:(id)a3 name:(id)a4 properties:(id)a5
+- (MPModelLibrarySearchScope)initWithItemKind:(id)kind name:(id)name properties:(id)properties
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  kindCopy = kind;
+  nameCopy = name;
+  propertiesCopy = properties;
   v12 = [(MPModelLibrarySearchScope *)self init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_itemKind, a3);
-    objc_storeStrong(&v13->_name, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_itemKind, kind);
+    objc_storeStrong(&v13->_name, name);
+    v14 = [propertiesCopy copy];
     itemProperties = v13->_itemProperties;
     v13->_itemProperties = v14;
   }

@@ -1,29 +1,29 @@
 @interface RBSProcessPredicate
 + (id)predicate;
-+ (id)predicateMatching:(id)a3;
-+ (id)predicateMatchingAnyPredicate:(id)a3;
-+ (id)predicateMatchingAuid:(unsigned int)a3;
-+ (id)predicateMatchingBeforeTranslocationBundlePath:(id)a3;
-+ (id)predicateMatchingBundleIdentifier:(id)a3;
-+ (id)predicateMatchingBundleIdentifiers:(id)a3;
-+ (id)predicateMatchingDextsBundledWithBundleID:(id)a3;
-+ (id)predicateMatchingEuid:(unsigned int)a3;
-+ (id)predicateMatchingExecPathStartsWith:(id)a3;
-+ (id)predicateMatchingExtensionPoint:(id)a3;
-+ (id)predicateMatchingHandle:(id)a3;
-+ (id)predicateMatchingHostIdentifier:(id)a3;
-+ (id)predicateMatchingIdentifier:(id)a3;
-+ (id)predicateMatchingIdentifiers:(id)a3;
-+ (id)predicateMatchingIdentity:(id)a3;
-+ (id)predicateMatchingJobLabel:(id)a3;
-+ (id)predicateMatchingLSApplicationIdentity:(id)a3;
++ (id)predicateMatching:(id)matching;
++ (id)predicateMatchingAnyPredicate:(id)predicate;
++ (id)predicateMatchingAuid:(unsigned int)auid;
++ (id)predicateMatchingBeforeTranslocationBundlePath:(id)path;
++ (id)predicateMatchingBundleIdentifier:(id)identifier;
++ (id)predicateMatchingBundleIdentifiers:(id)identifiers;
++ (id)predicateMatchingDextsBundledWithBundleID:(id)d;
++ (id)predicateMatchingEuid:(unsigned int)euid;
++ (id)predicateMatchingExecPathStartsWith:(id)with;
++ (id)predicateMatchingExtensionPoint:(id)point;
++ (id)predicateMatchingHandle:(id)handle;
++ (id)predicateMatchingHostIdentifier:(id)identifier;
++ (id)predicateMatchingIdentifier:(id)identifier;
++ (id)predicateMatchingIdentifiers:(id)identifiers;
++ (id)predicateMatchingIdentity:(id)identity;
++ (id)predicateMatchingJobLabel:(id)label;
++ (id)predicateMatchingLSApplicationIdentity:(id)identity;
 + (id)predicateMatchingLaunchServicesProcesses;
-+ (id)predicateMatchingPredicates:(id)a3;
++ (id)predicateMatchingPredicates:(id)predicates;
 + (id)predicateMatchingProcessTypeApplication;
-+ (id)predicateMatchingServiceName:(id)a3;
++ (id)predicateMatchingServiceName:(id)name;
 + (id)predicateMatchingSuspendableProcesses;
-+ (id)predicateNotMatchingPredicate:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)predicateNotMatchingPredicate:(id)predicate;
+- (BOOL)isEqual:(id)equal;
 - (NSString)beforeTranslocationBundlePath;
 - (NSString)bundleIdentifier;
 - (NSString)description;
@@ -31,9 +31,9 @@
 - (NSString)jobLabel;
 - (NSString)serviceName;
 - (RBSProcessIdentity)processIdentity;
-- (RBSProcessPredicate)initWithPredicate:(id)a3;
-- (RBSProcessPredicate)initWithRBSXPCCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RBSProcessPredicate)initWithPredicate:(id)predicate;
+- (RBSProcessPredicate)initWithRBSXPCCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)processIdentifier;
 - (id)processIdentifiers;
 - (unsigned)auid;
@@ -44,11 +44,11 @@
 
 - (id)processIdentifiers
 {
-  v3 = [(RBSProcessPredicate *)self predicate];
+  predicate = [(RBSProcessPredicate *)self predicate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = predicate;
   }
 
   else
@@ -56,21 +56,21 @@
     v4 = 0;
   }
 
-  v5 = v4;
+  processIdentifier = v4;
 
-  v6 = [v5 processIdentifiers];
-  if (v6)
+  processIdentifiers = [processIdentifier processIdentifiers];
+  if (processIdentifiers)
   {
-    v7 = v6;
+    processIdentifiers4 = processIdentifiers;
   }
 
   else
   {
-    v8 = [(RBSProcessPredicate *)self predicate];
+    predicate2 = [(RBSProcessPredicate *)self predicate];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
+      v9 = predicate2;
     }
 
     else
@@ -80,20 +80,20 @@
 
     v10 = v9;
 
-    v11 = [v10 processIdentifiers];
-    v12 = v11;
-    if (v11)
+    processIdentifiers2 = [v10 processIdentifiers];
+    v12 = processIdentifiers2;
+    if (processIdentifiers2)
     {
-      v7 = v11;
+      processIdentifiers4 = processIdentifiers2;
     }
 
     else
     {
-      v13 = [(RBSProcessPredicate *)self predicate];
+      predicate3 = [(RBSProcessPredicate *)self predicate];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v14 = v13;
+        v14 = predicate3;
       }
 
       else
@@ -103,20 +103,20 @@
 
       v15 = v14;
 
-      v16 = [v15 processIdentifiers];
-      v17 = v16;
-      if (v16)
+      processIdentifiers3 = [v15 processIdentifiers];
+      v17 = processIdentifiers3;
+      if (processIdentifiers3)
       {
-        v7 = v16;
+        processIdentifiers4 = processIdentifiers3;
       }
 
       else
       {
-        v18 = [(RBSProcessPredicate *)self predicate];
+        predicate4 = [(RBSProcessPredicate *)self predicate];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v19 = v18;
+          v19 = predicate4;
         }
 
         else
@@ -126,41 +126,41 @@
 
         v20 = v19;
 
-        v7 = [v20 processIdentifiers];
+        processIdentifiers4 = [v20 processIdentifiers];
       }
     }
 
-    if (v7)
+    if (processIdentifiers4)
     {
       goto LABEL_23;
     }
 
-    v5 = [(RBSProcessPredicate *)self processIdentifier];
-    if (v5)
+    processIdentifier = [(RBSProcessPredicate *)self processIdentifier];
+    if (processIdentifier)
     {
       v22 = MEMORY[0x1E695DFD8];
-      v23 = [RBSProcessIdentifier identifierForIdentifier:v5];
-      v7 = [v22 setWithObject:v23];
+      v23 = [RBSProcessIdentifier identifierForIdentifier:processIdentifier];
+      processIdentifiers4 = [v22 setWithObject:v23];
     }
 
     else
     {
-      v7 = 0;
+      processIdentifiers4 = 0;
     }
   }
 
 LABEL_23:
 
-  return v7;
+  return processIdentifiers4;
 }
 
 - (id)processIdentifier
 {
-  v3 = [(RBSProcessPredicate *)self predicate];
+  predicate = [(RBSProcessPredicate *)self predicate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = predicate;
   }
 
   else
@@ -170,20 +170,20 @@ LABEL_23:
 
   v5 = v4;
 
-  v6 = [v5 identifier];
-  v7 = v6;
-  if (v6)
+  identifier = [v5 identifier];
+  v7 = identifier;
+  if (identifier)
   {
-    v8 = v6;
+    processIdentifier4 = identifier;
   }
 
   else
   {
-    v9 = [(RBSProcessPredicate *)self predicate];
+    predicate2 = [(RBSProcessPredicate *)self predicate];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v9;
+      v10 = predicate2;
     }
 
     else
@@ -193,20 +193,20 @@ LABEL_23:
 
     v11 = v10;
 
-    v12 = [v11 processIdentifier];
-    v13 = v12;
-    if (v12)
+    processIdentifier = [v11 processIdentifier];
+    v13 = processIdentifier;
+    if (processIdentifier)
     {
-      v8 = v12;
+      processIdentifier4 = processIdentifier;
     }
 
     else
     {
-      v14 = [(RBSProcessPredicate *)self predicate];
+      predicate3 = [(RBSProcessPredicate *)self predicate];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v15 = v14;
+        v15 = predicate3;
       }
 
       else
@@ -216,20 +216,20 @@ LABEL_23:
 
       v16 = v15;
 
-      v17 = [v16 processIdentifier];
-      v18 = v17;
-      if (v17)
+      processIdentifier2 = [v16 processIdentifier];
+      v18 = processIdentifier2;
+      if (processIdentifier2)
       {
-        v8 = v17;
+        processIdentifier4 = processIdentifier2;
       }
 
       else
       {
-        v19 = [(RBSProcessPredicate *)self predicate];
+        predicate4 = [(RBSProcessPredicate *)self predicate];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v20 = v19;
+          v20 = predicate4;
         }
 
         else
@@ -239,20 +239,20 @@ LABEL_23:
 
         v21 = v20;
 
-        v22 = [v21 processIdentifier];
-        v23 = v22;
-        if (v22)
+        processIdentifier3 = [v21 processIdentifier];
+        v23 = processIdentifier3;
+        if (processIdentifier3)
         {
-          v8 = v22;
+          processIdentifier4 = processIdentifier3;
         }
 
         else
         {
-          v24 = [(RBSProcessPredicate *)self predicate];
+          predicate5 = [(RBSProcessPredicate *)self predicate];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v25 = v24;
+            v25 = predicate5;
           }
 
           else
@@ -262,22 +262,22 @@ LABEL_23:
 
           v26 = v25;
 
-          v8 = [v26 processIdentifier];
+          processIdentifier4 = [v26 processIdentifier];
         }
       }
     }
   }
 
-  return v8;
+  return processIdentifier4;
 }
 
 - (RBSProcessIdentity)processIdentity
 {
-  v2 = [(RBSProcessPredicate *)self predicate];
+  predicate = [(RBSProcessPredicate *)self predicate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = predicate;
   }
 
   else
@@ -313,11 +313,11 @@ LABEL_23:
 
 - (NSString)bundleIdentifier
 {
-  v2 = [(RBSProcessPredicate *)self predicate];
+  predicate = [(RBSProcessPredicate *)self predicate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = predicate;
   }
 
   else
@@ -327,18 +327,18 @@ LABEL_23:
 
   v4 = v3;
 
-  v5 = [v4 identifier];
+  identifier = [v4 identifier];
 
-  return v5;
+  return identifier;
 }
 
 - (NSString)beforeTranslocationBundlePath
 {
-  v2 = [(RBSProcessPredicate *)self predicate];
+  predicate = [(RBSProcessPredicate *)self predicate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = predicate;
   }
 
   else
@@ -348,9 +348,9 @@ LABEL_23:
 
   v4 = v3;
 
-  v5 = [v4 beforeTranslocationBundlePath];
+  beforeTranslocationBundlePath = [v4 beforeTranslocationBundlePath];
 
-  return v5;
+  return beforeTranslocationBundlePath;
 }
 
 + (id)predicateMatchingProcessTypeApplication
@@ -363,15 +363,15 @@ LABEL_23:
 
 + (id)predicate
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)predicateMatching:(id)a3
++ (id)predicateMatching:(id)matching
 {
-  v4 = a3;
-  if (!v4)
+  matchingCopy = matching;
+  if (!matchingCopy)
   {
     +[RBSProcessPredicate predicateMatching:];
   }
@@ -379,31 +379,31 @@ LABEL_23:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [[a1 alloc] initWithPredicate:v4];
+    processPredicate = [[self alloc] initWithPredicate:matchingCopy];
   }
 
   else
   {
-    v5 = [v4 processPredicate];
+    processPredicate = [matchingCopy processPredicate];
   }
 
-  v6 = v5;
+  v6 = processPredicate;
 
   return v6;
 }
 
-+ (id)predicateMatchingPredicates:(id)a3
++ (id)predicateMatchingPredicates:(id)predicates
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] >= 2)
+  predicatesCopy = predicates;
+  if ([predicatesCopy count] >= 2)
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v11 = v4;
+    v11 = predicatesCopy;
     v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v12)
     {
@@ -418,8 +418,8 @@ LABEL_23:
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v17 + 1) + 8 * i) predicate];
-          [v5 addObject:v16];
+          predicate = [*(*(&v17 + 1) + 8 * i) predicate];
+          [array addObject:predicate];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -428,35 +428,35 @@ LABEL_23:
       while (v13);
     }
 
-    v6 = [[RBSCompoundAllPredicate alloc] initWithPredicates:v5];
+    predicate2 = [[RBSCompoundAllPredicate alloc] initWithPredicates:array];
   }
 
   else
   {
-    v5 = [v4 firstObject];
-    v6 = [v5 predicate];
+    array = [predicatesCopy firstObject];
+    predicate2 = [array predicate];
   }
 
-  v7 = v6;
+  v7 = predicate2;
 
-  v8 = [[a1 alloc] initWithPredicate:v7];
+  v8 = [[self alloc] initWithPredicate:v7];
   v9 = *MEMORY[0x1E69E9840];
 
   return v8;
 }
 
-+ (id)predicateMatchingAnyPredicate:(id)a3
++ (id)predicateMatchingAnyPredicate:(id)predicate
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] >= 2)
+  predicateCopy = predicate;
+  if ([predicateCopy count] >= 2)
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v11 = v4;
+    v11 = predicateCopy;
     v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v12)
     {
@@ -471,8 +471,8 @@ LABEL_23:
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v17 + 1) + 8 * i) predicate];
-          [v5 addObject:v16];
+          predicate = [*(*(&v17 + 1) + 8 * i) predicate];
+          [array addObject:predicate];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -481,40 +481,40 @@ LABEL_23:
       while (v13);
     }
 
-    v6 = [[RBSCompoundAnyPredicate alloc] initWithPredicates:v5];
+    predicate2 = [[RBSCompoundAnyPredicate alloc] initWithPredicates:array];
   }
 
   else
   {
-    v5 = [v4 firstObject];
-    v6 = [v5 predicate];
+    array = [predicateCopy firstObject];
+    predicate2 = [array predicate];
   }
 
-  v7 = v6;
+  v7 = predicate2;
 
-  v8 = [[a1 alloc] initWithPredicate:v7];
+  v8 = [[self alloc] initWithPredicate:v7];
   v9 = *MEMORY[0x1E69E9840];
 
   return v8;
 }
 
-+ (id)predicateNotMatchingPredicate:(id)a3
++ (id)predicateNotMatchingPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [a1 alloc];
+  predicateCopy = predicate;
+  v5 = [self alloc];
   v6 = [RBSNotPredicate alloc];
-  v7 = [v4 predicate];
+  predicate = [predicateCopy predicate];
 
-  v8 = [(RBSNotPredicate *)&v6->super.super.isa initNotWithPredicate:v7];
+  v8 = [(RBSNotPredicate *)&v6->super.super.isa initNotWithPredicate:predicate];
   v9 = [v5 initWithPredicate:v8];
 
   return v9;
 }
 
-- (RBSProcessPredicate)initWithPredicate:(id)a3
+- (RBSProcessPredicate)initWithPredicate:(id)predicate
 {
-  v5 = a3;
-  if (v5)
+  predicateCopy = predicate;
+  if (predicateCopy)
   {
     NSClassFromString(&cfstr_Rbsprocesspred_0.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -529,16 +529,16 @@ LABEL_23:
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_predicate, a3);
+    objc_storeStrong(&v6->_predicate, predicate);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_8;
   }
@@ -551,7 +551,7 @@ LABEL_23:
   }
 
   predicate = self->_predicate;
-  v8 = v4->_predicate;
+  v8 = equalCopy->_predicate;
   if (predicate == v8)
   {
 LABEL_8:
@@ -570,21 +570,21 @@ LABEL_9:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [RBSProcessPredicate allocWithZone:a3];
+  v4 = [RBSProcessPredicate allocWithZone:zone];
   predicate = self->_predicate;
 
   return [(RBSProcessPredicate *)v4 initWithPredicate:predicate];
 }
 
-- (RBSProcessPredicate)initWithRBSXPCCoder:(id)a3
+- (RBSProcessPredicate)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(RBSProcessPredicate *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_predicate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_predicate"];
     predicate = v5->_predicate;
     v5->_predicate = v6;
   }
@@ -592,17 +592,17 @@ LABEL_9:
   return v5;
 }
 
-+ (id)predicateMatchingEuid:(unsigned int)a3
++ (id)predicateMatchingEuid:(unsigned int)euid
 {
-  v3 = [(RBSProcessIntPredicate *)[RBSProcessEUIDPredicate alloc] initWithIdentifier:a3];
+  v3 = [(RBSProcessIntPredicate *)[RBSProcessEUIDPredicate alloc] initWithIdentifier:euid];
   v4 = [RBSProcessPredicate predicateMatching:v3];
 
   return v4;
 }
 
-+ (id)predicateMatchingAuid:(unsigned int)a3
++ (id)predicateMatchingAuid:(unsigned int)auid
 {
-  v3 = [(RBSProcessIntPredicate *)[RBSProcessAUIDPredicate alloc] initWithIdentifier:a3];
+  v3 = [(RBSProcessIntPredicate *)[RBSProcessAUIDPredicate alloc] initWithIdentifier:auid];
   v4 = [RBSProcessPredicate predicateMatching:v3];
 
   return v4;
@@ -610,11 +610,11 @@ LABEL_9:
 
 - (unsigned)euid
 {
-  v2 = [(RBSProcessPredicate *)self predicate];
+  predicate = [(RBSProcessPredicate *)self predicate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = predicate;
   }
 
   else
@@ -624,17 +624,17 @@ LABEL_9:
 
   v4 = v3;
 
-  v5 = [v4 identifier];
-  return v5;
+  identifier = [v4 identifier];
+  return identifier;
 }
 
 - (unsigned)auid
 {
-  v2 = [(RBSProcessPredicate *)self predicate];
+  predicate = [(RBSProcessPredicate *)self predicate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = predicate;
   }
 
   else
@@ -644,82 +644,82 @@ LABEL_9:
 
   v4 = v3;
 
-  v5 = [v4 identifier];
-  return v5;
+  identifier = [v4 identifier];
+  return identifier;
 }
 
-+ (id)predicateMatchingBundleIdentifier:(id)a3
++ (id)predicateMatchingBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [(RBSProcessStringPredicate *)[RBSProcessBundleIdentifierPredicate alloc] initWithIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [(RBSProcessStringPredicate *)[RBSProcessBundleIdentifierPredicate alloc] initWithIdentifier:identifierCopy];
 
   v5 = [RBSProcessPredicate predicateMatching:v4];
 
   return v5;
 }
 
-+ (id)predicateMatchingExtensionPoint:(id)a3
++ (id)predicateMatchingExtensionPoint:(id)point
 {
-  v3 = a3;
-  v4 = [(RBSProcessStringPredicate *)[RBSProcessExtensionPointPredicate alloc] initWithIdentifier:v3];
+  pointCopy = point;
+  v4 = [(RBSProcessStringPredicate *)[RBSProcessExtensionPointPredicate alloc] initWithIdentifier:pointCopy];
 
   v5 = [RBSProcessPredicate predicateMatching:v4];
 
   return v5;
 }
 
-+ (id)predicateMatchingBeforeTranslocationBundlePath:(id)a3
++ (id)predicateMatchingBeforeTranslocationBundlePath:(id)path
 {
-  v3 = a3;
-  v4 = [[RBSProcessBeforeTranslocationBundlePathPredicate alloc] initWithIdentifier:v3];
+  pathCopy = path;
+  v4 = [[RBSProcessBeforeTranslocationBundlePathPredicate alloc] initWithIdentifier:pathCopy];
 
   v5 = [RBSProcessPredicate predicateMatching:v4];
 
   return v5;
 }
 
-+ (id)predicateMatchingBundleIdentifiers:(id)a3
++ (id)predicateMatchingBundleIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  if ([v4 count] == 1)
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count] == 1)
   {
-    v5 = [v4 anyObject];
-    [a1 predicateMatchingBundleIdentifier:v5];
+    anyObject = [identifiersCopy anyObject];
+    [self predicateMatchingBundleIdentifier:anyObject];
   }
 
   else
   {
-    v5 = [[RBSProcessBundleIdentifiersPredicate alloc] initWithIdentifiers:v4];
-    [RBSProcessPredicate predicateMatching:v5];
+    anyObject = [[RBSProcessBundleIdentifiersPredicate alloc] initWithIdentifiers:identifiersCopy];
+    [RBSProcessPredicate predicateMatching:anyObject];
   }
   v6 = ;
 
   return v6;
 }
 
-+ (id)predicateMatchingExecPathStartsWith:(id)a3
++ (id)predicateMatchingExecPathStartsWith:(id)with
 {
-  v3 = a3;
-  v4 = [(RBSProcessStringPredicate *)[RBSProcessExecPathStartsWithPredicate alloc] initWithIdentifier:v3];
+  withCopy = with;
+  v4 = [(RBSProcessStringPredicate *)[RBSProcessExecPathStartsWithPredicate alloc] initWithIdentifier:withCopy];
 
   v5 = [RBSProcessPredicate predicateMatching:v4];
 
   return v5;
 }
 
-+ (id)predicateMatchingDextsBundledWithBundleID:(id)a3
++ (id)predicateMatchingDextsBundledWithBundleID:(id)d
 {
-  v3 = a3;
-  v4 = [(RBSProcessStringPredicate *)[RBSProcessBundledDextPredicate alloc] initWithIdentifier:v3];
+  dCopy = d;
+  v4 = [(RBSProcessStringPredicate *)[RBSProcessBundledDextPredicate alloc] initWithIdentifier:dCopy];
 
   v5 = [RBSProcessPredicate predicateMatching:v4];
 
   return v5;
 }
 
-+ (id)predicateMatchingLSApplicationIdentity:(id)a3
++ (id)predicateMatchingLSApplicationIdentity:(id)identity
 {
-  v3 = [RBSProcessIdentity identityForLSApplicationIdentity:a3];
+  v3 = [RBSProcessIdentity identityForLSApplicationIdentity:identity];
   v4 = [RBSProcessPredicate predicateMatchingIdentity:v3];
 
   return v4;
@@ -727,11 +727,11 @@ LABEL_9:
 
 - (NSString)extensionPoint
 {
-  v2 = [(RBSProcessPredicate *)self predicate];
+  predicate = [(RBSProcessPredicate *)self predicate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = predicate;
   }
 
   else
@@ -741,18 +741,18 @@ LABEL_9:
 
   v4 = v3;
 
-  v5 = [v4 identifier];
+  identifier = [v4 identifier];
 
-  return v5;
+  return identifier;
 }
 
-+ (id)predicateMatchingIdentifier:(id)a3
++ (id)predicateMatchingIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(RBSProcessIdentifierPredicate *)[RBSProcessInstancePredicate alloc] initWithIdentifier:v3];
+    v4 = [(RBSProcessIdentifierPredicate *)[RBSProcessInstancePredicate alloc] initWithIdentifier:identifierCopy];
   }
 
   else
@@ -761,16 +761,16 @@ LABEL_9:
     if (objc_opt_isKindOfClass())
     {
       v5 = [RBSProcessInstancePredicate alloc];
-      v6 = [v3 instance];
-      v4 = [(RBSProcessIdentifierPredicate *)v5 initWithIdentifier:v6];
+      instance = [identifierCopy instance];
+      v4 = [(RBSProcessIdentifierPredicate *)v5 initWithIdentifier:instance];
     }
 
     else
     {
-      v7 = [RBSProcessIdentifier identifierForIdentifier:v3];
+      v7 = [RBSProcessIdentifier identifierForIdentifier:identifierCopy];
 
       v4 = [[RBSProcessIdentifierPredicate alloc] initWithIdentifier:v7];
-      v3 = v7;
+      identifierCopy = v7;
     }
   }
 
@@ -779,30 +779,30 @@ LABEL_9:
   return v8;
 }
 
-+ (id)predicateMatchingHandle:(id)a3
++ (id)predicateMatchingHandle:(id)handle
 {
-  v3 = a3;
-  v4 = [[RBSProcessHandlePredicateImpl alloc] initWithHandle:v3];
+  handleCopy = handle;
+  v4 = [[RBSProcessHandlePredicateImpl alloc] initWithHandle:handleCopy];
 
   v5 = [RBSProcessPredicate predicateMatching:v4];
 
   return v5;
 }
 
-+ (id)predicateMatchingIdentifiers:(id)a3
++ (id)predicateMatchingIdentifiers:(id)identifiers
 {
-  v3 = a3;
-  v4 = [[RBSProcessIdentifiersPredicate alloc] initWithIdentifiers:v3];
+  identifiersCopy = identifiers;
+  v4 = [[RBSProcessIdentifiersPredicate alloc] initWithIdentifiers:identifiersCopy];
 
   v5 = [RBSProcessPredicate predicateMatching:v4];
 
   return v5;
 }
 
-+ (id)predicateMatchingHostIdentifier:(id)a3
++ (id)predicateMatchingHostIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [(RBSProcessIdentifierPredicate *)[RBSProcessHostIdentifierPredicate alloc] initWithIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [(RBSProcessIdentifierPredicate *)[RBSProcessHostIdentifierPredicate alloc] initWithIdentifier:identifierCopy];
 
   v5 = [RBSProcessPredicate predicateMatching:v4];
 
@@ -825,20 +825,20 @@ LABEL_9:
   return v3;
 }
 
-+ (id)predicateMatchingJobLabel:(id)a3
++ (id)predicateMatchingJobLabel:(id)label
 {
-  v3 = a3;
-  v4 = [(RBSProcessStringPredicate *)[RBSProcessLaunchdJobLabelPredicate alloc] initWithIdentifier:v3];
+  labelCopy = label;
+  v4 = [(RBSProcessStringPredicate *)[RBSProcessLaunchdJobLabelPredicate alloc] initWithIdentifier:labelCopy];
 
   v5 = [RBSProcessPredicate predicateMatching:v4];
 
   return v5;
 }
 
-+ (id)predicateMatchingServiceName:(id)a3
++ (id)predicateMatchingServiceName:(id)name
 {
-  v3 = a3;
-  v4 = [(RBSProcessStringPredicate *)[RBSProcessServiceNamePredicate alloc] initWithIdentifier:v3];
+  nameCopy = name;
+  v4 = [(RBSProcessStringPredicate *)[RBSProcessServiceNamePredicate alloc] initWithIdentifier:nameCopy];
 
   v5 = [RBSProcessPredicate predicateMatching:v4];
 
@@ -847,11 +847,11 @@ LABEL_9:
 
 - (NSString)jobLabel
 {
-  v2 = [(RBSProcessPredicate *)self predicate];
+  predicate = [(RBSProcessPredicate *)self predicate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = predicate;
   }
 
   else
@@ -861,18 +861,18 @@ LABEL_9:
 
   v4 = v3;
 
-  v5 = [v4 identifier];
+  identifier = [v4 identifier];
 
-  return v5;
+  return identifier;
 }
 
 - (NSString)serviceName
 {
-  v2 = [(RBSProcessPredicate *)self predicate];
+  predicate = [(RBSProcessPredicate *)self predicate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = predicate;
   }
 
   else
@@ -882,9 +882,9 @@ LABEL_9:
 
   v4 = v3;
 
-  v5 = [v4 identifier];
+  identifier = [v4 identifier];
 
-  return v5;
+  return identifier;
 }
 
 + (void)predicateMatching:.cold.1()
@@ -903,10 +903,10 @@ LABEL_9:
   [v0 handleFailureInMethod:@"[object isKindOfClass:RBSProcessPredicateImplClass]" object:? file:? lineNumber:? description:?];
 }
 
-+ (id)predicateMatchingIdentity:(id)a3
++ (id)predicateMatchingIdentity:(id)identity
 {
-  v3 = a3;
-  v4 = [[RBSProcessIdentityPredicate alloc] initWithIdentity:v3];
+  identityCopy = identity;
+  v4 = [[RBSProcessIdentityPredicate alloc] initWithIdentity:identityCopy];
 
   v5 = [RBSProcessPredicate predicateMatching:v4];
 

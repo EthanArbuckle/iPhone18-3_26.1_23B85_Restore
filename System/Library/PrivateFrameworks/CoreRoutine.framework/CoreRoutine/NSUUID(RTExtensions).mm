@@ -21,7 +21,7 @@
   v4[2] = *MEMORY[0x1E69E9840];
   v4[0] = 0;
   v4[1] = 0;
-  [a1 getUUIDBytes:v4];
+  [self getUUIDBytes:v4];
   v1 = [MEMORY[0x1E695DEF0] dataWithBytes:v4 length:16];
   v2 = *MEMORY[0x1E69E9840];
 

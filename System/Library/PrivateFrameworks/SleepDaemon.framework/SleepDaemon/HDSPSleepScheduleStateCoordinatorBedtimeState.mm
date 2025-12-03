@@ -2,7 +2,7 @@
 - (id)expirationDate;
 - (void)alarmDismissed;
 - (void)wakeTimeReached;
-- (void)wakeUpConfirmed:(BOOL)a3;
+- (void)wakeUpConfirmed:(BOOL)confirmed;
 @end
 
 @implementation HDSPSleepScheduleStateCoordinatorBedtimeState
@@ -10,11 +10,11 @@
 - (void)wakeTimeReached
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(HKSPStateMachineState *)self stateMachine];
-  v4 = [(HDSPSleepScheduleStateCoordinatorStateMachineState *)self isAlarmEnabled];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  isAlarmEnabled = [(HDSPSleepScheduleStateCoordinatorStateMachineState *)self isAlarmEnabled];
   v5 = HKSPLogForCategory();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (isAlarmEnabled)
   {
     if (v6)
     {
@@ -48,8 +48,8 @@
 
   v8[2] = v9;
   v8[3] = &unk_279C7B108;
-  v8[4] = v3;
-  v11 = v3;
+  v8[4] = stateMachine;
+  v11 = stateMachine;
   v12 = [HDSPSleepScheduleStateCoordinatorStateMachineContext contextWithReason:1];
   [v11 perform:v8 withContext:v12];
 
@@ -70,9 +70,9 @@ void __64__HDSPSleepScheduleStateCoordinatorBedtimeState_wakeTimeReached__block_
   [v1 enterState:v2];
 }
 
-- (void)wakeUpConfirmed:(BOOL)a3
+- (void)wakeUpConfirmed:(BOOL)confirmed
 {
-  v3 = a3;
+  confirmedCopy = confirmed;
   v18 = *MEMORY[0x277D85DE8];
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -80,13 +80,13 @@ void __64__HDSPSleepScheduleStateCoordinatorBedtimeState_wakeTimeReached__block_
     *buf = 138543618;
     v15 = objc_opt_class();
     v16 = 1024;
-    v17 = v3;
+    v17 = confirmedCopy;
     v6 = v15;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] wake up was confirmed (wasExplicitConfirmation: %d)", buf, 0x12u);
   }
 
-  v7 = [(HKSPStateMachineState *)self stateMachine];
-  if (v3)
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  if (confirmedCopy)
   {
     v8 = 3;
   }
@@ -100,8 +100,8 @@ void __64__HDSPSleepScheduleStateCoordinatorBedtimeState_wakeTimeReached__block_
   v12[1] = 3221225472;
   v12[2] = __65__HDSPSleepScheduleStateCoordinatorBedtimeState_wakeUpConfirmed___block_invoke;
   v12[3] = &unk_279C7B108;
-  v13 = v7;
-  v9 = v7;
+  v13 = stateMachine;
+  v9 = stateMachine;
   v10 = [HDSPSleepScheduleStateCoordinatorStateMachineContext contextWithReason:v8];
   [v9 perform:v12 withContext:v10];
 
@@ -127,13 +127,13 @@ void __65__HDSPSleepScheduleStateCoordinatorBedtimeState_wakeUpConfirmed___block
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] wake up alarm was dismissed", buf, 0xCu);
   }
 
-  v5 = [(HKSPStateMachineState *)self stateMachine];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __63__HDSPSleepScheduleStateCoordinatorBedtimeState_alarmDismissed__block_invoke;
   v9[3] = &unk_279C7B108;
-  v10 = v5;
-  v6 = v5;
+  v10 = stateMachine;
+  v6 = stateMachine;
   v7 = [HDSPSleepScheduleStateCoordinatorStateMachineContext contextWithReason:7];
   [v6 perform:v9 withContext:v7];
 
@@ -149,13 +149,13 @@ void __63__HDSPSleepScheduleStateCoordinatorBedtimeState_alarmDismissed__block_i
 
 - (id)expirationDate
 {
-  v2 = [(HKSPStateMachineState *)self stateMachine];
-  v3 = [v2 infoProvider];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  infoProvider = [stateMachine infoProvider];
 
-  v4 = [v3 sleepScheduleModel];
+  sleepScheduleModel = [infoProvider sleepScheduleModel];
   v5 = *MEMORY[0x277D621E0];
-  v6 = [v3 currentDate];
-  v7 = [v4 nextEventWithIdentifier:v5 dueAfterDate:v6];
+  currentDate = [infoProvider currentDate];
+  v7 = [sleepScheduleModel nextEventWithIdentifier:v5 dueAfterDate:currentDate];
 
   v8 = [v7 dateByAddingTimeInterval:900.0];
 

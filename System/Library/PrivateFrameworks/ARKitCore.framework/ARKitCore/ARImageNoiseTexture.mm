@@ -1,27 +1,27 @@
 @interface ARImageNoiseTexture
-+ (id)sharedInstanceForCameraPosition:(int64_t)a3 longEdgeImageResolution:(unsigned int)a4;
-- (ARImageNoiseTexture)initWithNoiseModel:(int)a3;
++ (id)sharedInstanceForCameraPosition:(int64_t)position longEdgeImageResolution:(unsigned int)resolution;
+- (ARImageNoiseTexture)initWithNoiseModel:(int)model;
 - (float)snrToNoiseIntensity:(float)lastSNR;
 @end
 
 @implementation ARImageNoiseTexture
 
-+ (id)sharedInstanceForCameraPosition:(int64_t)a3 longEdgeImageResolution:(unsigned int)a4
++ (id)sharedInstanceForCameraPosition:(int64_t)position longEdgeImageResolution:(unsigned int)resolution
 {
-  v4 = *&a4;
+  v4 = *&resolution;
   if (+[ARImageNoiseTexture sharedInstanceForCameraPosition:longEdgeImageResolution:]::onceToken != -1)
   {
     +[ARImageNoiseTexture sharedInstanceForCameraPosition:longEdgeImageResolution:];
   }
 
   dispatch_semaphore_wait(+[ARImageNoiseTexture sharedInstanceForCameraPosition:longEdgeImageResolution:]::semaphore, 0xFFFFFFFFFFFFFFFFLL);
-  if (+[ARImageNoiseTexture sharedInstanceForCameraPosition:longEdgeImageResolution:]::currentCameraPosition != a3 || +[ARImageNoiseTexture sharedInstanceForCameraPosition:longEdgeImageResolution:]::currentLongEdgeImageResolution != v4)
+  if (+[ARImageNoiseTexture sharedInstanceForCameraPosition:longEdgeImageResolution:]::currentCameraPosition != position || +[ARImageNoiseTexture sharedInstanceForCameraPosition:longEdgeImageResolution:]::currentLongEdgeImageResolution != v4)
   {
-    v7 = [[ARImageNoiseTexture alloc] initWithNoiseModel:[ARNoiseParameters modelIdentifierForDevicePosition:a3 longEdgeImageResolution:v4]];
+    v7 = [[ARImageNoiseTexture alloc] initWithNoiseModel:[ARNoiseParameters modelIdentifierForDevicePosition:position longEdgeImageResolution:v4]];
     v8 = +[ARImageNoiseTexture sharedInstanceForCameraPosition:longEdgeImageResolution:]::sharedInstance;
     +[ARImageNoiseTexture sharedInstanceForCameraPosition:longEdgeImageResolution:]::sharedInstance = v7;
 
-    +[ARImageNoiseTexture sharedInstanceForCameraPosition:longEdgeImageResolution:]::currentCameraPosition = a3;
+    +[ARImageNoiseTexture sharedInstanceForCameraPosition:longEdgeImageResolution:]::currentCameraPosition = position;
     +[ARImageNoiseTexture sharedInstanceForCameraPosition:longEdgeImageResolution:]::currentLongEdgeImageResolution = v4;
   }
 
@@ -38,7 +38,7 @@ void __79__ARImageNoiseTexture_sharedInstanceForCameraPosition_longEdgeImageReso
   +[ARImageNoiseTexture sharedInstanceForCameraPosition:longEdgeImageResolution:]::semaphore = v0;
 }
 
-- (ARImageNoiseTexture)initWithNoiseModel:(int)a3
+- (ARImageNoiseTexture)initWithNoiseModel:(int)model
 {
   v31 = *MEMORY[0x1E69E9840];
   v26.receiver = self;
@@ -61,7 +61,7 @@ void __79__ARImageNoiseTexture_sharedInstanceForCameraPosition_longEdgeImageReso
   *(v4 + 5) = v7;
 
   [*(v4 + 5) setLabel:@"com.apple.arkit.imagenoisetexture"];
-  if (a3 == 69)
+  if (model == 69)
   {
     if (ARShouldUseLogTypeError(void)::onceToken != -1)
     {
@@ -111,7 +111,7 @@ void __79__ARImageNoiseTexture_sharedInstanceForCameraPosition_longEdgeImageReso
     v23 = v5;
     v17 = v4;
     v24 = v17;
-    v25 = a3;
+    modelCopy = model;
     dispatch_async(v16, block);
     v18 = v24;
     v11 = v17;

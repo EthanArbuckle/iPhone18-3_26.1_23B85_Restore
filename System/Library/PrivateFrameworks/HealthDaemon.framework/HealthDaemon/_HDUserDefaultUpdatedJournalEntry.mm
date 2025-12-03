@@ -1,12 +1,12 @@
 @interface _HDUserDefaultUpdatedJournalEntry
-+ (void)applyEntries:(id)a3 withProfile:(id)a4;
-- (_HDUserDefaultUpdatedJournalEntry)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (void)applyEntries:(id)entries withProfile:(id)profile;
+- (_HDUserDefaultUpdatedJournalEntry)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HDUserDefaultUpdatedJournalEntry
 
-+ (void)applyEntries:(id)a3 withProfile:(id)a4
++ (void)applyEntries:(id)entries withProfile:(id)profile
 {
   v10 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -23,17 +23,17 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (_HDUserDefaultUpdatedJournalEntry)initWithCoder:(id)a3
+- (_HDUserDefaultUpdatedJournalEntry)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = _HDUserDefaultUpdatedJournalEntry;
-  return [(HDJournalEntry *)&v4 initWithCoder:a3];
+  return [(HDJournalEntry *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"LegacyProtectedDataJournalSupport.m" lineNumber:38 description:@"Encoding is not supported"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"LegacyProtectedDataJournalSupport.m" lineNumber:38 description:@"Encoding is not supported"];
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface LPCaptionBarButtonViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityConfigure;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)configureMenuButton:(id)a3;
-- (void)configurePillButton:(id)a3;
+- (void)configureMenuButton:(id)button;
+- (void)configurePillButton:(id)button;
 @end
 
 @implementation LPCaptionBarButtonViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"LPCaptionBarButtonView" hasInstanceVariable:@"_button" withType:"UIButton"];
-  [v3 validateClass:@"LPCaptionBarButtonView" hasInstanceMethod:@"configurePillButton:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"LPCaptionBarButtonView" hasInstanceMethod:@"configureMenuButton:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"LPCaptionBarButtonView" hasInstanceVariable:@"_button" withType:"UIButton"];
+  [validationsCopy validateClass:@"LPCaptionBarButtonView" hasInstanceMethod:@"configurePillButton:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"LPCaptionBarButtonView" hasInstanceMethod:@"configureMenuButton:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -24,19 +24,19 @@
   [(LPCaptionBarButtonViewAccessibility *)self _accessibilityConfigure];
 }
 
-- (void)configurePillButton:(id)a3
+- (void)configurePillButton:(id)button
 {
   v4.receiver = self;
   v4.super_class = LPCaptionBarButtonViewAccessibility;
-  [(LPCaptionBarButtonViewAccessibility *)&v4 configurePillButton:a3];
+  [(LPCaptionBarButtonViewAccessibility *)&v4 configurePillButton:button];
   [(LPCaptionBarButtonViewAccessibility *)self _accessibilityConfigure];
 }
 
-- (void)configureMenuButton:(id)a3
+- (void)configureMenuButton:(id)button
 {
   v4.receiver = self;
   v4.super_class = LPCaptionBarButtonViewAccessibility;
-  [(LPCaptionBarButtonViewAccessibility *)&v4 configureMenuButton:a3];
+  [(LPCaptionBarButtonViewAccessibility *)&v4 configureMenuButton:button];
   [(LPCaptionBarButtonViewAccessibility *)self _accessibilityConfigure];
 }
 
@@ -48,8 +48,8 @@
 
   if (v4)
   {
-    v5 = [v4 accessibilityLabel];
-    v6 = [v5 isEqualToString:@"person.2.fill"];
+    accessibilityLabel = [v4 accessibilityLabel];
+    v6 = [accessibilityLabel isEqualToString:@"person.2.fill"];
 
     if (v6)
     {

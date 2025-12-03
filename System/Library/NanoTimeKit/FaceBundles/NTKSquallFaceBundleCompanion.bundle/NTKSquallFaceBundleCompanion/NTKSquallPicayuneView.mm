@@ -1,26 +1,26 @@
 @interface NTKSquallPicayuneView
-- (NTKSquallPicayuneView)initWithDevice:(id)a3 clockTimer:(id)a4;
+- (NTKSquallPicayuneView)initWithDevice:(id)device clockTimer:(id)timer;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
+- (void)traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
 @end
 
 @implementation NTKSquallPicayuneView
 
-- (NTKSquallPicayuneView)initWithDevice:(id)a3 clockTimer:(id)a4
+- (NTKSquallPicayuneView)initWithDevice:(id)device clockTimer:(id)timer
 {
   v11.receiver = self;
   v11.super_class = NTKSquallPicayuneView;
-  v4 = [(NTKSquallPicayuneView *)&v11 initWithDevice:a3 clockTimer:a4];
+  v4 = [(NTKSquallPicayuneView *)&v11 initWithDevice:device clockTimer:timer];
   v5 = v4;
   if (v4)
   {
-    v6 = [(NTKSquallPicayuneView *)v4 hourLabel];
-    v7 = [v6 timeFormatter];
-    [v7 setZeroPadTimeSubstringToSeparatorText:1];
+    hourLabel = [(NTKSquallPicayuneView *)v4 hourLabel];
+    timeFormatter = [hourLabel timeFormatter];
+    [timeFormatter setZeroPadTimeSubstringToSeparatorText:1];
 
-    v8 = [(NTKSquallPicayuneView *)v5 inactiveHourLabel];
-    v9 = [v8 timeFormatter];
-    [v9 setZeroPadTimeSubstringToSeparatorText:1];
+    inactiveHourLabel = [(NTKSquallPicayuneView *)v5 inactiveHourLabel];
+    timeFormatter2 = [inactiveHourLabel timeFormatter];
+    [timeFormatter2 setZeroPadTimeSubstringToSeparatorText:1];
 
     [(NTKSquallPicayuneView *)v5 enumerateLabelsWithBlock:&stru_10468];
   }
@@ -33,8 +33,8 @@
   v51.receiver = self;
   v51.super_class = NTKSquallPicayuneView;
   [(NTKSquallPicayuneView *)&v51 layoutSubviews];
-  v3 = [(NTKSquallPicayuneView *)self device];
-  v50 = sub_3DEC(v3, v3);
+  device = [(NTKSquallPicayuneView *)self device];
+  v50 = sub_3DEC(device, device);
   v5 = v4;
 
   [(NTKSquallPicayuneView *)self bounds];
@@ -42,12 +42,12 @@
   v49 = Width;
   [(NTKSquallPicayuneView *)self bounds];
   Height = CGRectGetHeight(v53);
-  v8 = [(NTKSquallPicayuneView *)self minuteLabel];
-  [v8 frame];
+  minuteLabel = [(NTKSquallPicayuneView *)self minuteLabel];
+  [minuteLabel frame];
   v10 = v9;
 
-  v11 = [(NTKSquallPicayuneView *)self hourLabel];
-  [v11 frame];
+  hourLabel = [(NTKSquallPicayuneView *)self hourLabel];
+  [hourLabel frame];
   v13 = v12;
 
   if (v10 >= v13)
@@ -60,12 +60,12 @@
     v14 = v13;
   }
 
-  v15 = [(NTKSquallPicayuneView *)self minuteLabel];
-  [v15 opticalInsets];
+  minuteLabel2 = [(NTKSquallPicayuneView *)self minuteLabel];
+  [minuteLabel2 opticalInsets];
   v17 = v16;
 
-  v18 = [(NTKSquallPicayuneView *)self hourLabel];
-  [v18 opticalInsets];
+  hourLabel2 = [(NTKSquallPicayuneView *)self hourLabel];
+  [hourLabel2 opticalInsets];
   v20 = v19;
 
   if (v17 >= v20)
@@ -80,53 +80,53 @@
 
   [(NTKSquallPicayuneView *)self paddingInsets];
   v23 = v5 - v22;
-  v24 = [(NTKSquallPicayuneView *)self minuteLabel];
-  [v24 frame];
+  minuteLabel3 = [(NTKSquallPicayuneView *)self minuteLabel];
+  [minuteLabel3 frame];
   v26 = v25;
   v28 = v27;
 
   [(NTKSquallPicayuneView *)self paddingInsets];
   v30 = v21 + Width - v29 - v14;
-  v31 = [(NTKSquallPicayuneView *)self minuteLabel];
-  [v31 _lastLineBaseline];
+  minuteLabel4 = [(NTKSquallPicayuneView *)self minuteLabel];
+  [minuteLabel4 _lastLineBaseline];
   v33 = Height - v32 - v23;
 
-  v34 = [(NTKSquallPicayuneView *)self minuteLabel];
-  [v34 setFrame:{v30, v33, v26, v28}];
+  minuteLabel5 = [(NTKSquallPicayuneView *)self minuteLabel];
+  [minuteLabel5 setFrame:{v30, v33, v26, v28}];
 
-  v35 = [(NTKSquallPicayuneView *)self inactiveMinuteLabel];
-  [v35 setFrame:{v30, v33, v26, v28}];
+  inactiveMinuteLabel = [(NTKSquallPicayuneView *)self inactiveMinuteLabel];
+  [inactiveMinuteLabel setFrame:{v30, v33, v26, v28}];
 
   v36 = v50 + v23;
-  v37 = [(NTKSquallPicayuneView *)self hourLabel];
-  [v37 frame];
+  hourLabel3 = [(NTKSquallPicayuneView *)self hourLabel];
+  [hourLabel3 frame];
   v39 = v38;
   v41 = v40;
 
   [(NTKSquallPicayuneView *)self paddingInsets];
   v43 = v21 + v49 - v42 - v14;
-  v44 = [(NTKSquallPicayuneView *)self hourLabel];
-  [v44 _lastLineBaseline];
+  hourLabel4 = [(NTKSquallPicayuneView *)self hourLabel];
+  [hourLabel4 _lastLineBaseline];
   v46 = Height - v45 - v36;
 
-  v47 = [(NTKSquallPicayuneView *)self hourLabel];
-  [v47 setFrame:{v43, v46, v39, v41}];
+  hourLabel5 = [(NTKSquallPicayuneView *)self hourLabel];
+  [hourLabel5 setFrame:{v43, v46, v39, v41}];
 
-  v48 = [(NTKSquallPicayuneView *)self inactiveHourLabel];
-  [v48 setFrame:{v43, v46, v39, v41}];
+  inactiveHourLabel = [(NTKSquallPicayuneView *)self inactiveHourLabel];
+  [inactiveHourLabel setFrame:{v43, v46, v39, v41}];
 }
 
-- (void)traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [(NTKSquallPicayuneView *)self traitCollection];
-  v7 = [v6 activeAppearance];
-  v8 = [v5 activeAppearance];
+  collectionCopy = collection;
+  traitCollection = [(NTKSquallPicayuneView *)self traitCollection];
+  activeAppearance = [traitCollection activeAppearance];
+  activeAppearance2 = [collectionCopy activeAppearance];
 
-  if (v7 != v8)
+  if (activeAppearance != activeAppearance2)
   {
-    v9 = [(NTKSquallPicayuneView *)self traitCollection];
-    if ([v9 activeAppearance])
+    traitCollection2 = [(NTKSquallPicayuneView *)self traitCollection];
+    if ([traitCollection2 activeAppearance])
     {
       v10 = 1.0;
     }
@@ -136,18 +136,18 @@
       v10 = 0.0;
     }
 
-    v11 = [(NTKSquallPicayuneView *)self hourLabel];
-    [v11 setAlpha:v10];
+    hourLabel = [(NTKSquallPicayuneView *)self hourLabel];
+    [hourLabel setAlpha:v10];
 
-    v12 = [(NTKSquallPicayuneView *)self minuteLabel];
-    [v12 setAlpha:v10];
+    minuteLabel = [(NTKSquallPicayuneView *)self minuteLabel];
+    [minuteLabel setAlpha:v10];
 
     v13 = 1.0 - v10;
-    v14 = [(NTKSquallPicayuneView *)self inactiveHourLabel];
-    [v14 setAlpha:v13];
+    inactiveHourLabel = [(NTKSquallPicayuneView *)self inactiveHourLabel];
+    [inactiveHourLabel setAlpha:v13];
 
-    v15 = [(NTKSquallPicayuneView *)self inactiveMinuteLabel];
-    [v15 setAlpha:v13];
+    inactiveMinuteLabel = [(NTKSquallPicayuneView *)self inactiveMinuteLabel];
+    [inactiveMinuteLabel setAlpha:v13];
   }
 }
 

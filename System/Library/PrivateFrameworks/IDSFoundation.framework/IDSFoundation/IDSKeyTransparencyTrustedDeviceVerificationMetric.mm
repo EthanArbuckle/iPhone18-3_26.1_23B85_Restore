@@ -1,52 +1,52 @@
 @interface IDSKeyTransparencyTrustedDeviceVerificationMetric
-- (IDSKeyTransparencyTrustedDeviceVerificationMetric)initWithKeyTransparencyVersion:(unint64_t)a3 cloudKitSuccess:(BOOL)a4 cloudKitErrorDomain:(id)a5 cloudKitErrorCode:(int64_t)a6 cloudKitUnderlyingErrorDomain:(id)a7 cloudKitUnderlyingErrorCode:(int64_t)a8 cloudKitOperationTimeInterval:(double)a9 accountKeySuccess:(BOOL)a10 accountKeyErrorDomain:(id)a11 accountKeyErrorCode:(int64_t)a12 accountKeyUnderlyingErrorDomain:(id)a13 accountKeyUnderlyingErrorCode:(int64_t)a14 accountKeyOperationTimeInterval:(double)a15 numberOfTotalDevices:(unint64_t)a16 numberOfCandidateDevices:(unint64_t)a17 numberOfMatchesFromCloudKit:(unint64_t)a18 numberOfMatchesFromAccountKey:(unint64_t)a19;
+- (IDSKeyTransparencyTrustedDeviceVerificationMetric)initWithKeyTransparencyVersion:(unint64_t)version cloudKitSuccess:(BOOL)success cloudKitErrorDomain:(id)domain cloudKitErrorCode:(int64_t)code cloudKitUnderlyingErrorDomain:(id)errorDomain cloudKitUnderlyingErrorCode:(int64_t)errorCode cloudKitOperationTimeInterval:(double)interval accountKeySuccess:(BOOL)self0 accountKeyErrorDomain:(id)self1 accountKeyErrorCode:(int64_t)self2 accountKeyUnderlyingErrorDomain:(id)self3 accountKeyUnderlyingErrorCode:(int64_t)self4 accountKeyOperationTimeInterval:(double)self5 numberOfTotalDevices:(unint64_t)self6 numberOfCandidateDevices:(unint64_t)self7 numberOfMatchesFromCloudKit:(unint64_t)self8 numberOfMatchesFromAccountKey:(unint64_t)self9;
 - (NSDictionary)dictionaryRepresentation;
 - (NSString)description;
 @end
 
 @implementation IDSKeyTransparencyTrustedDeviceVerificationMetric
 
-- (IDSKeyTransparencyTrustedDeviceVerificationMetric)initWithKeyTransparencyVersion:(unint64_t)a3 cloudKitSuccess:(BOOL)a4 cloudKitErrorDomain:(id)a5 cloudKitErrorCode:(int64_t)a6 cloudKitUnderlyingErrorDomain:(id)a7 cloudKitUnderlyingErrorCode:(int64_t)a8 cloudKitOperationTimeInterval:(double)a9 accountKeySuccess:(BOOL)a10 accountKeyErrorDomain:(id)a11 accountKeyErrorCode:(int64_t)a12 accountKeyUnderlyingErrorDomain:(id)a13 accountKeyUnderlyingErrorCode:(int64_t)a14 accountKeyOperationTimeInterval:(double)a15 numberOfTotalDevices:(unint64_t)a16 numberOfCandidateDevices:(unint64_t)a17 numberOfMatchesFromCloudKit:(unint64_t)a18 numberOfMatchesFromAccountKey:(unint64_t)a19
+- (IDSKeyTransparencyTrustedDeviceVerificationMetric)initWithKeyTransparencyVersion:(unint64_t)version cloudKitSuccess:(BOOL)success cloudKitErrorDomain:(id)domain cloudKitErrorCode:(int64_t)code cloudKitUnderlyingErrorDomain:(id)errorDomain cloudKitUnderlyingErrorCode:(int64_t)errorCode cloudKitOperationTimeInterval:(double)interval accountKeySuccess:(BOOL)self0 accountKeyErrorDomain:(id)self1 accountKeyErrorCode:(int64_t)self2 accountKeyUnderlyingErrorDomain:(id)self3 accountKeyUnderlyingErrorCode:(int64_t)self4 accountKeyOperationTimeInterval:(double)self5 numberOfTotalDevices:(unint64_t)self6 numberOfCandidateDevices:(unint64_t)self7 numberOfMatchesFromCloudKit:(unint64_t)self8 numberOfMatchesFromAccountKey:(unint64_t)self9
 {
-  v27 = a5;
-  v28 = a7;
-  v29 = a11;
-  v30 = a13;
+  domainCopy = domain;
+  errorDomainCopy = errorDomain;
+  keyErrorDomainCopy = keyErrorDomain;
+  underlyingErrorDomainCopy = underlyingErrorDomain;
   v42.receiver = self;
   v42.super_class = IDSKeyTransparencyTrustedDeviceVerificationMetric;
   v31 = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)&v42 init];
   v32 = v31;
   if (v31)
   {
-    v31->_keyTransparencyVersion = a3;
-    v31->_cloudKitSuccess = a4;
-    v33 = [v27 copy];
+    v31->_keyTransparencyVersion = version;
+    v31->_cloudKitSuccess = success;
+    v33 = [domainCopy copy];
     cloudKitErrorDomain = v32->_cloudKitErrorDomain;
     v32->_cloudKitErrorDomain = v33;
 
-    v32->_cloudKitErrorCode = a6;
-    v35 = [v28 copy];
+    v32->_cloudKitErrorCode = code;
+    v35 = [errorDomainCopy copy];
     cloudKitUnderlyingErrorDomain = v32->_cloudKitUnderlyingErrorDomain;
     v32->_cloudKitUnderlyingErrorDomain = v35;
 
-    v32->_cloudKitUnderlyingErrorCode = a8;
-    v32->_cloudKitOperationTimeInterval = ceil(a9);
-    v32->_accountKeySuccess = a10;
-    v37 = [v29 copy];
+    v32->_cloudKitUnderlyingErrorCode = errorCode;
+    v32->_cloudKitOperationTimeInterval = ceil(interval);
+    v32->_accountKeySuccess = keySuccess;
+    v37 = [keyErrorDomainCopy copy];
     accountKeyErrorDomain = v32->_accountKeyErrorDomain;
     v32->_accountKeyErrorDomain = v37;
 
-    v32->_accountKeyErrorCode = a12;
-    v39 = [v30 copy];
+    v32->_accountKeyErrorCode = keyErrorCode;
+    v39 = [underlyingErrorDomainCopy copy];
     accountKeyUnderlyingErrorDomain = v32->_accountKeyUnderlyingErrorDomain;
     v32->_accountKeyUnderlyingErrorDomain = v39;
 
-    v32->_accountKeyUnderlyingErrorCode = a14;
-    v32->_accountKeyOperationTimeInterval = ceil(a15);
-    v32->_numberOfTotalDevices = a16;
-    v32->_numberOfCandidateDevices = a17;
-    v32->_numberOfMatchesFromCloudKit = a18;
-    v32->_numberOfMatchesFromAccountKey = a19;
+    v32->_accountKeyUnderlyingErrorCode = underlyingErrorCode;
+    v32->_accountKeyOperationTimeInterval = ceil(timeInterval);
+    v32->_numberOfTotalDevices = devices;
+    v32->_numberOfCandidateDevices = candidateDevices;
+    v32->_numberOfMatchesFromCloudKit = kit;
+    v32->_numberOfMatchesFromAccountKey = key;
   }
 
   return v32;
@@ -55,22 +55,22 @@
 - (NSString)description
 {
   v20 = MEMORY[0x1E696AEC0];
-  v19 = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self name];
-  v18 = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self keyTransparencyVersion];
-  v17 = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self cloudKitSuccess];
-  v16 = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self cloudKitErrorDomain];
-  v15 = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self cloudKitErrorCode];
-  v14 = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self cloudKitUnderlyingErrorDomain];
-  v13 = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self cloudKitUnderlyingErrorCode];
+  name = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self name];
+  keyTransparencyVersion = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self keyTransparencyVersion];
+  cloudKitSuccess = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self cloudKitSuccess];
+  cloudKitErrorDomain = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self cloudKitErrorDomain];
+  cloudKitErrorCode = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self cloudKitErrorCode];
+  cloudKitUnderlyingErrorDomain = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self cloudKitUnderlyingErrorDomain];
+  cloudKitUnderlyingErrorCode = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self cloudKitUnderlyingErrorCode];
   [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self cloudKitOperationTimeInterval];
   v12 = v3;
-  v4 = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self accountKeySuccess];
-  v5 = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self accountKeyErrorDomain];
-  v6 = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self accountKeyErrorCode];
-  v7 = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self accountKeyUnderlyingErrorDomain];
-  v8 = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self accountKeyUnderlyingErrorCode];
+  accountKeySuccess = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self accountKeySuccess];
+  accountKeyErrorDomain = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self accountKeyErrorDomain];
+  accountKeyErrorCode = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self accountKeyErrorCode];
+  accountKeyUnderlyingErrorDomain = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self accountKeyUnderlyingErrorDomain];
+  accountKeyUnderlyingErrorCode = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self accountKeyUnderlyingErrorCode];
   [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self accountKeyOperationTimeInterval];
-  v10 = [v20 stringWithFormat:@"%@: <vers: %ld, ck-success: %ld, ck-error-d: %@, ck-error-c: %ld, ck-uerror-d: %@, ck-uerror-c: %ld, ck-time: %d, ak-success: %ld, ak-error-d: %@, ak-error-c: %ld, ak-uerror-d: %@, ak-uerror-c: %ld, ak-time: %d, devices: %ld, candidates: %ld, ck-matches: %ld, ak-matches: %ld>", v19, v18, v17, v16, v15, v14, v13, v12, v4, v5, v6, v7, v8, v9, -[IDSKeyTransparencyTrustedDeviceVerificationMetric numberOfTotalDevices](self, "numberOfTotalDevices"), -[IDSKeyTransparencyTrustedDeviceVerificationMetric numberOfCandidateDevices](self, "numberOfCandidateDevices"), -[IDSKeyTransparencyTrustedDeviceVerificationMetric numberOfMatchesFromCloudKit](self, "numberOfMatchesFromCloudKit"), -[IDSKeyTransparencyTrustedDeviceVerificationMetric numberOfMatchesFromAccountKey](self, "numberOfMatchesFromAccountKey")];
+  v10 = [v20 stringWithFormat:@"%@: <vers: %ld, ck-success: %ld, ck-error-d: %@, ck-error-c: %ld, ck-uerror-d: %@, ck-uerror-c: %ld, ck-time: %d, ak-success: %ld, ak-error-d: %@, ak-error-c: %ld, ak-uerror-d: %@, ak-uerror-c: %ld, ak-time: %d, devices: %ld, candidates: %ld, ck-matches: %ld, ak-matches: %ld>", name, keyTransparencyVersion, cloudKitSuccess, cloudKitErrorDomain, cloudKitErrorCode, cloudKitUnderlyingErrorDomain, cloudKitUnderlyingErrorCode, v12, accountKeySuccess, accountKeyErrorDomain, accountKeyErrorCode, accountKeyUnderlyingErrorDomain, accountKeyUnderlyingErrorCode, v9, -[IDSKeyTransparencyTrustedDeviceVerificationMetric numberOfTotalDevices](self, "numberOfTotalDevices"), -[IDSKeyTransparencyTrustedDeviceVerificationMetric numberOfCandidateDevices](self, "numberOfCandidateDevices"), -[IDSKeyTransparencyTrustedDeviceVerificationMetric numberOfMatchesFromCloudKit](self, "numberOfMatchesFromCloudKit"), -[IDSKeyTransparencyTrustedDeviceVerificationMetric numberOfMatchesFromAccountKey](self, "numberOfMatchesFromAccountKey")];
 
   return v10;
 }
@@ -90,11 +90,11 @@
     CFDictionarySetValue(v3, @"CKSuccess", v5);
   }
 
-  v6 = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self cloudKitErrorDomain];
-  v7 = v6;
-  if (v6)
+  cloudKitErrorDomain = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self cloudKitErrorDomain];
+  v7 = cloudKitErrorDomain;
+  if (cloudKitErrorDomain)
   {
-    v8 = v6;
+    v8 = cloudKitErrorDomain;
   }
 
   else
@@ -111,11 +111,11 @@
     CFDictionarySetValue(v3, @"CKErrorCode", v10);
   }
 
-  v11 = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self cloudKitUnderlyingErrorDomain];
-  v12 = v11;
-  if (v11)
+  cloudKitUnderlyingErrorDomain = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self cloudKitUnderlyingErrorDomain];
+  v12 = cloudKitUnderlyingErrorDomain;
+  if (cloudKitUnderlyingErrorDomain)
   {
-    v13 = v11;
+    v13 = cloudKitUnderlyingErrorDomain;
   }
 
   else
@@ -146,11 +146,11 @@
     CFDictionarySetValue(v3, @"AKSuccess", v19);
   }
 
-  v20 = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self accountKeyErrorDomain];
-  v21 = v20;
-  if (v20)
+  accountKeyErrorDomain = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self accountKeyErrorDomain];
+  v21 = accountKeyErrorDomain;
+  if (accountKeyErrorDomain)
   {
-    v22 = v20;
+    v22 = accountKeyErrorDomain;
   }
 
   else
@@ -167,11 +167,11 @@
     CFDictionarySetValue(v3, @"AKErrorCode", v24);
   }
 
-  v25 = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self accountKeyUnderlyingErrorDomain];
-  v26 = v25;
-  if (v25)
+  accountKeyUnderlyingErrorDomain = [(IDSKeyTransparencyTrustedDeviceVerificationMetric *)self accountKeyUnderlyingErrorDomain];
+  v26 = accountKeyUnderlyingErrorDomain;
+  if (accountKeyUnderlyingErrorDomain)
   {
-    v27 = v25;
+    v27 = accountKeyUnderlyingErrorDomain;
   }
 
   else

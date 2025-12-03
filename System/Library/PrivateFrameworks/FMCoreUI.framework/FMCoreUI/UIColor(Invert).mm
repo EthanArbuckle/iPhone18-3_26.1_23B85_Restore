@@ -7,13 +7,13 @@
 - (id)invert
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v1 = a1;
-  v2 = [v1 CGColor];
-  NumberOfComponents = CGColorGetNumberOfComponents(v2);
+  selfCopy = self;
+  cGColor = [selfCopy CGColor];
+  NumberOfComponents = CGColorGetNumberOfComponents(cGColor);
   if (NumberOfComponents >= 2)
   {
     v4 = NumberOfComponents;
-    Components = CGColorGetComponents(v2);
+    Components = CGColorGetComponents(cGColor);
     if (v4 < 2)
     {
       v6 = 0;
@@ -36,15 +36,15 @@
     }
 
     *(&v15[v6] - ((8 * v4 + 15) & 0xFFFFFFFFFFFFFFF0)) = Components[v6];
-    ColorSpace = CGColorGetColorSpace(v2);
+    ColorSpace = CGColorGetColorSpace(cGColor);
     v12 = CGColorCreate(ColorSpace, (v15 - ((8 * v4 + 15) & 0xFFFFFFFFFFFFFFF0)));
     v13 = [MEMORY[0x277D75348] colorWithCGColor:v12];
 
     CGColorRelease(v12);
-    v1 = v13;
+    selfCopy = v13;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 @end

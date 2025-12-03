@@ -1,19 +1,19 @@
 @interface VMUInverseDepthGraphEnumerator
-- (VMUInverseDepthGraphEnumerator)initWithGraph:(id)a3 depthGraph:(id)a4;
+- (VMUInverseDepthGraphEnumerator)initWithGraph:(id)graph depthGraph:(id)depthGraph;
 @end
 
 @implementation VMUInverseDepthGraphEnumerator
 
-- (VMUInverseDepthGraphEnumerator)initWithGraph:(id)a3 depthGraph:(id)a4
+- (VMUInverseDepthGraphEnumerator)initWithGraph:(id)graph depthGraph:(id)depthGraph
 {
-  v6 = a4;
-  v7 = [a3 invertedGraph];
+  depthGraphCopy = depthGraph;
+  invertedGraph = [graph invertedGraph];
   v11.receiver = self;
   v11.super_class = VMUInverseDepthGraphEnumerator;
-  v8 = [(VMUGraphEnumerator *)&v11 initWithGraph:v7];
+  v8 = [(VMUGraphEnumerator *)&v11 initWithGraph:invertedGraph];
 
   depthGraph = v8->_depthGraph;
-  v8->_depthGraph = v6;
+  v8->_depthGraph = depthGraphCopy;
 
   return v8;
 }

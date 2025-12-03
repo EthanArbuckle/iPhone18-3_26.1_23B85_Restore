@@ -4,7 +4,7 @@
 - (SYBacklinkMonitorTestingDelegate)testingDelegate;
 - (void)_beginNewOperation;
 - (void)_evaluatePendingRequests;
-- (void)backlinkMonitorOperationDidFinish:(id)a3;
+- (void)backlinkMonitorOperationDidFinish:(id)finish;
 - (void)userActivityDidChange;
 @end
 
@@ -28,13 +28,13 @@
 
 - (void)userActivityDidChange
 {
-  v3 = [(SYBacklinkMonitor *)self _monitorQueue];
+  _monitorQueue = [(SYBacklinkMonitor *)self _monitorQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__SYBacklinkMonitor_userActivityDidChange__block_invoke;
   block[3] = &unk_27856B880;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(_monitorQueue, block);
 }
 
 uint64_t __42__SYBacklinkMonitor_userActivityDidChange__block_invoke(uint64_t a1)
@@ -48,14 +48,14 @@ uint64_t __42__SYBacklinkMonitor_userActivityDidChange__block_invoke(uint64_t a1
 - (void)_evaluatePendingRequests
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(SYBacklinkMonitor *)self _monitorQueue];
-  dispatch_assert_queue_V2(v3);
+  _monitorQueue = [(SYBacklinkMonitor *)self _monitorQueue];
+  dispatch_assert_queue_V2(_monitorQueue);
 
   if ([(SYBacklinkMonitor *)self _needsActivityUpdate])
   {
-    v4 = [(SYBacklinkMonitor *)self _delayedChangeEvaluationBlock];
+    _delayedChangeEvaluationBlock = [(SYBacklinkMonitor *)self _delayedChangeEvaluationBlock];
 
-    if (v4)
+    if (_delayedChangeEvaluationBlock)
     {
       v5 = os_log_create("com.apple.synapse", "BacklinkMonitor");
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -67,17 +67,17 @@ uint64_t __42__SYBacklinkMonitor_userActivityDidChange__block_invoke(uint64_t a1
 
     else
     {
-      v6 = [(SYBacklinkMonitor *)self _lastOperationStartTime];
+      _lastOperationStartTime = [(SYBacklinkMonitor *)self _lastOperationStartTime];
 
-      if (!v6)
+      if (!_lastOperationStartTime)
       {
         goto LABEL_13;
       }
 
       [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
       v8 = v7;
-      v9 = [(SYBacklinkMonitor *)self _lastOperationStartTime];
-      [v9 timeIntervalSinceReferenceDate];
+      _lastOperationStartTime2 = [(SYBacklinkMonitor *)self _lastOperationStartTime];
+      [_lastOperationStartTime2 timeIntervalSinceReferenceDate];
       v11 = v8 - v10;
 
       [(SYBacklinkMonitor *)self testingOperationCoalescingInterval];
@@ -110,9 +110,9 @@ uint64_t __42__SYBacklinkMonitor_userActivityDidChange__block_invoke(uint64_t a1
         [(SYBacklinkMonitor *)self set_delayedChangeEvaluationBlock:v17];
 
         v18 = dispatch_time(0, (v15 * 1000000000.0));
-        v19 = [(SYBacklinkMonitor *)self _monitorQueue];
-        v20 = [(SYBacklinkMonitor *)self _delayedChangeEvaluationBlock];
-        dispatch_after(v18, v19, v20);
+        _monitorQueue2 = [(SYBacklinkMonitor *)self _monitorQueue];
+        _delayedChangeEvaluationBlock2 = [(SYBacklinkMonitor *)self _delayedChangeEvaluationBlock];
+        dispatch_after(v18, _monitorQueue2, _delayedChangeEvaluationBlock2);
       }
 
       else
@@ -148,36 +148,36 @@ uint64_t __45__SYBacklinkMonitor__evaluatePendingRequests__block_invoke(uint64_t
 
 - (void)_beginNewOperation
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SYBacklinkMonitor.m" lineNumber:107 description:@"Cannot begin a new operation if there are no pending requests to process."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SYBacklinkMonitor.m" lineNumber:107 description:@"Cannot begin a new operation if there are no pending requests to process."];
 }
 
-- (void)backlinkMonitorOperationDidFinish:(id)a3
+- (void)backlinkMonitorOperationDidFinish:(id)finish
 {
-  v5 = a3;
-  v6 = [(SYBacklinkMonitor *)self _monitorQueue];
-  dispatch_assert_queue_V2(v6);
+  finishCopy = finish;
+  _monitorQueue = [(SYBacklinkMonitor *)self _monitorQueue];
+  dispatch_assert_queue_V2(_monitorQueue);
 
-  v7 = [(SYBacklinkMonitor *)self _activeOperation];
+  _activeOperation = [(SYBacklinkMonitor *)self _activeOperation];
 
-  if (v7 == v5)
+  if (_activeOperation == finishCopy)
   {
     [(SYBacklinkMonitor *)self set_activeOperation:0];
     if ([(SYBacklinkMonitor *)self _needsActivityUpdate])
     {
-      v8 = os_log_create("com.apple.synapse", "BacklinkMonitor");
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      delegate = os_log_create("com.apple.synapse", "BacklinkMonitor");
+      if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT))
       {
         *v11 = 0;
-        _os_log_impl(&dword_225901000, v8, OS_LOG_TYPE_DEFAULT, "BacklinkMonitor: operation finished. Has more pending work, requesting evaluation.", v11, 2u);
+        _os_log_impl(&dword_225901000, delegate, OS_LOG_TYPE_DEFAULT, "BacklinkMonitor: operation finished. Has more pending work, requesting evaluation.", v11, 2u);
       }
     }
 
     else
     {
-      v9 = [(SYBacklinkMonitor *)self _delayedChangeEvaluationBlock];
+      _delayedChangeEvaluationBlock = [(SYBacklinkMonitor *)self _delayedChangeEvaluationBlock];
 
-      if (v9)
+      if (_delayedChangeEvaluationBlock)
       {
         [(SYBacklinkMonitor *)a2 backlinkMonitorOperationDidFinish:?];
       }
@@ -189,8 +189,8 @@ uint64_t __45__SYBacklinkMonitor__evaluatePendingRequests__block_invoke(uint64_t
         _os_log_impl(&dword_225901000, v10, OS_LOG_TYPE_DEFAULT, "BacklinkMonitor: operation finished. No more pending work, notifying didFinishProcessing", buf, 2u);
       }
 
-      v8 = [(SYBacklinkMonitor *)self delegate];
-      [v8 backlinkMonitorDidFinishProcessingActivityChanges:self];
+      delegate = [(SYBacklinkMonitor *)self delegate];
+      [delegate backlinkMonitorDidFinishProcessingActivityChanges:self];
     }
 
     [(SYBacklinkMonitor *)self _evaluatePendingRequests];

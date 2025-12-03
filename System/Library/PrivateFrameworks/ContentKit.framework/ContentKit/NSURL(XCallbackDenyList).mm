@@ -6,15 +6,15 @@
 
 - (uint64_t)wf_isAllowedInXCallback
 {
-  v2 = [a1 scheme];
-  if (!v2)
+  scheme = [self scheme];
+  if (!scheme)
   {
     return 1;
   }
 
-  v3 = v2;
-  v4 = [a1 scheme];
-  v5 = [v4 length];
+  v3 = scheme;
+  scheme2 = [self scheme];
+  v5 = [scheme2 length];
 
   if (!v5)
   {
@@ -27,9 +27,9 @@
   }
 
   v6 = WFHighRiskURLSchemes_schemes;
-  v7 = [a1 scheme];
-  v8 = [v7 lowercaseString];
-  v9 = [v6 containsObject:v8];
+  scheme3 = [self scheme];
+  lowercaseString = [scheme3 lowercaseString];
+  v9 = [v6 containsObject:lowercaseString];
 
   v10 = v9 ^ 1u;
   return v10;

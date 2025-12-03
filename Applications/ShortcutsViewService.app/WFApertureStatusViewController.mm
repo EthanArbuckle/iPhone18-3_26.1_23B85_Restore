@@ -4,17 +4,17 @@
 - (NSString)requestIdentifier;
 - (UIColor)keyColor;
 - (WFApertureIconAccessoryView)iconView;
-- (WFApertureStatusViewController)initWithRunningContext:(id)a3 attribution:(id)a4 progress:(id)a5;
+- (WFApertureStatusViewController)initWithRunningContext:(id)context attribution:(id)attribution progress:(id)progress;
 - (WFApertureStatusViewControllerDelegate)delegate;
 - (WFProgressAccessoryView)progressView;
 - (int64_t)preferredLayoutMode;
 - (unint64_t)presentationBehaviors;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setActiveLayoutMode:(int64_t)a3;
-- (void)setAttribution:(id)a3;
-- (void)setCompletingSuccessfully:(BOOL)a3;
-- (void)setProgress:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setActiveLayoutMode:(int64_t)mode;
+- (void)setAttribution:(id)attribution;
+- (void)setCompletingSuccessfully:(BOOL)successfully;
+- (void)setProgress:(id)progress;
 - (void)startCollapseTimerIfNecessary;
 - (void)viewWillLayoutSubviews;
 @end
@@ -31,17 +31,17 @@
 - (NSString)requestIdentifier
 {
   v3 = objc_opt_class();
-  v4 = [(WFApertureStatusViewController *)self runningContext];
-  v5 = [v3 requestIdentifierForContext:v4];
+  runningContext = [(WFApertureStatusViewController *)self runningContext];
+  v5 = [v3 requestIdentifierForContext:runningContext];
 
   return v5;
 }
 
 - (unint64_t)presentationBehaviors
 {
-  v2 = [(WFApertureStatusViewController *)self runningContext];
-  v3 = [v2 originatingBundleIdentifier];
-  v4 = [v3 isEqualToString:VCBundleIdentifierShortcutsiOS];
+  runningContext = [(WFApertureStatusViewController *)self runningContext];
+  originatingBundleIdentifier = [runningContext originatingBundleIdentifier];
+  v4 = [originatingBundleIdentifier isEqualToString:VCBundleIdentifierShortcutsiOS];
 
   if (v4)
   {
@@ -56,10 +56,10 @@
 
 - (UIColor)keyColor
 {
-  v2 = [(WFApertureStatusViewController *)self iconView];
-  v3 = [v2 primaryColor];
+  iconView = [(WFApertureStatusViewController *)self iconView];
+  primaryColor = [iconView primaryColor];
 
-  return v3;
+  return primaryColor;
 }
 
 - (int64_t)preferredLayoutMode
@@ -72,31 +72,31 @@
 
   else
   {
-    v4 = [(WFApertureStatusViewController *)self runningContext];
-    v5 = [(WFApertureStatusViewController *)self preferredLayoutModeForRunningContext:v4];
+    runningContext = [(WFApertureStatusViewController *)self runningContext];
+    v5 = [(WFApertureStatusViewController *)self preferredLayoutModeForRunningContext:runningContext];
 
     return v5;
   }
 }
 
-- (void)setActiveLayoutMode:(int64_t)a3
+- (void)setActiveLayoutMode:(int64_t)mode
 {
   self->_previousLayoutMode = self->_activeLayoutMode;
-  self->_activeLayoutMode = a3;
-  v5 = [(WFApertureStatusViewController *)self progressView];
-  [v5 setActiveLayoutMode:a3];
+  self->_activeLayoutMode = mode;
+  progressView = [(WFApertureStatusViewController *)self progressView];
+  [progressView setActiveLayoutMode:mode];
 
-  if (a3 == 4)
+  if (mode == 4)
   {
-    v6 = [(WFApertureStatusViewController *)self view];
-    v7 = [v6 subviews];
-    v8 = [(WFApertureStatusViewController *)self iconView];
-    if ([v7 containsObject:v8])
+    view = [(WFApertureStatusViewController *)self view];
+    subviews = [view subviews];
+    iconView = [(WFApertureStatusViewController *)self iconView];
+    if ([subviews containsObject:iconView])
     {
-      v9 = [(WFApertureStatusViewController *)self view];
-      v10 = [v9 subviews];
-      v11 = [(WFApertureStatusViewController *)self progressView];
-      v12 = [v10 containsObject:v11];
+      view2 = [(WFApertureStatusViewController *)self view];
+      subviews2 = [view2 subviews];
+      progressView2 = [(WFApertureStatusViewController *)self progressView];
+      v12 = [subviews2 containsObject:progressView2];
 
       if (v12)
       {
@@ -108,83 +108,83 @@
     {
     }
 
-    v13 = [(WFApertureStatusViewController *)self view];
-    v14 = [(WFApertureStatusViewController *)self iconView];
-    [v13 addSubview:v14];
+    view3 = [(WFApertureStatusViewController *)self view];
+    iconView2 = [(WFApertureStatusViewController *)self iconView];
+    [view3 addSubview:iconView2];
 
-    v15 = [(WFApertureStatusViewController *)self view];
-    v16 = [(WFApertureStatusViewController *)self progressView];
-    [v15 addSubview:v16];
+    view4 = [(WFApertureStatusViewController *)self view];
+    progressView3 = [(WFApertureStatusViewController *)self progressView];
+    [view4 addSubview:progressView3];
   }
 
 LABEL_7:
   v17 = [(WFApertureStatusViewController *)self previousLayoutMode]== 3 || [(WFApertureStatusViewController *)self previousLayoutMode]== 3 || [(WFApertureStatusViewController *)self previousLayoutMode]== 2;
-  if (a3 == 4 && v17)
+  if (mode == 4 && v17)
   {
-    v18 = [(WFApertureStatusViewController *)self collapseTimer];
-    [v18 invalidate];
+    collapseTimer = [(WFApertureStatusViewController *)self collapseTimer];
+    [collapseTimer invalidate];
 
     [(WFApertureStatusViewController *)self setCollapseTimer:0];
-    v19 = [(WFApertureStatusViewController *)self delegate];
+    delegate = [(WFApertureStatusViewController *)self delegate];
     v20 = objc_opt_respondsToSelector();
 
     if (v20)
     {
-      v21 = [(WFApertureStatusViewController *)self delegate];
-      [v21 statusViewControllerDidTransitionFromVisibleToCustomLayout:self];
+      delegate2 = [(WFApertureStatusViewController *)self delegate];
+      [delegate2 statusViewControllerDidTransitionFromVisibleToCustomLayout:self];
     }
   }
 
-  v22 = [(WFApertureStatusViewController *)self previousLayoutMode];
-  if (a3 != 4 && v22 == 4)
+  previousLayoutMode = [(WFApertureStatusViewController *)self previousLayoutMode];
+  if (mode != 4 && previousLayoutMode == 4)
   {
-    v23 = [(WFApertureStatusViewController *)self delegate];
+    delegate3 = [(WFApertureStatusViewController *)self delegate];
     v24 = objc_opt_respondsToSelector();
 
     if (v24)
     {
-      v25 = [(WFApertureStatusViewController *)self delegate];
-      [v25 statusViewControllerDidCollapseFromCustomLayout:self];
+      delegate4 = [(WFApertureStatusViewController *)self delegate];
+      [delegate4 statusViewControllerDidCollapseFromCustomLayout:self];
     }
   }
 }
 
 - (NSString)elementIdentifier
 {
-  v2 = [(WFApertureStatusViewController *)self runningContext];
+  runningContext = [(WFApertureStatusViewController *)self runningContext];
   v3 = WFApertureStatusViewControllerIdentityFromRunningContext();
 
   return v3;
 }
 
-- (void)setAttribution:(id)a3
+- (void)setAttribution:(id)attribution
 {
-  v11 = a3;
+  attributionCopy = attribution;
   if ([(WFApertureStatusViewController *)self initialPresentationTransitioning])
   {
-    [(WFApertureStatusViewController *)self setPendingDelayedAttribution:v11];
+    [(WFApertureStatusViewController *)self setPendingDelayedAttribution:attributionCopy];
   }
 
   else
   {
-    objc_storeStrong(&self->_attribution, a3);
-    v5 = [(WFApertureStatusViewController *)self iconView];
-    v6 = [v11 icon];
-    v7 = [v11 appBundleIdentifier];
-    [v5 setIcon:v6 associatedAppBundleIdentifier:v7 animated:1];
+    objc_storeStrong(&self->_attribution, attribution);
+    iconView = [(WFApertureStatusViewController *)self iconView];
+    icon = [attributionCopy icon];
+    appBundleIdentifier = [attributionCopy appBundleIdentifier];
+    [iconView setIcon:icon associatedAppBundleIdentifier:appBundleIdentifier animated:1];
 
-    v8 = [(WFApertureStatusViewController *)self progressView];
-    v9 = [(WFApertureStatusViewController *)self iconView];
-    v10 = [v9 primaryColor];
-    [v8 tintControlWithColor:v10 animated:1];
+    progressView = [(WFApertureStatusViewController *)self progressView];
+    iconView2 = [(WFApertureStatusViewController *)self iconView];
+    primaryColor = [iconView2 primaryColor];
+    [progressView tintControlWithColor:primaryColor animated:1];
   }
 }
 
 - (void)startCollapseTimerIfNecessary
 {
-  v3 = [(WFApertureStatusViewController *)self collapseTimer];
+  collapseTimer = [(WFApertureStatusViewController *)self collapseTimer];
 
-  if (!v3)
+  if (!collapseTimer)
   {
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
@@ -196,9 +196,9 @@ LABEL_7:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_100016630 == a6)
+  if (off_100016630 == context)
   {
     block[5] = v6;
     block[6] = v7;
@@ -211,33 +211,33 @@ LABEL_7:
   }
 }
 
-- (void)setProgress:(id)a3
+- (void)setProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   progress = self->_progress;
-  if (progress != v5)
+  if (progress != progressCopy)
   {
-    v7 = progress;
-    v8 = v7;
-    if (v7)
+    progressCopy2 = progress;
+    v8 = progressCopy2;
+    if (progressCopy2)
     {
-      [(NSProgress *)v7 removeObserver:self forKeyPath:@"fractionCompleted"];
-      v9 = [(WFApertureStatusViewController *)self progressView];
-      [v9 setCancelAction:0];
+      [(NSProgress *)progressCopy2 removeObserver:self forKeyPath:@"fractionCompleted"];
+      progressView = [(WFApertureStatusViewController *)self progressView];
+      [progressView setCancelAction:0];
     }
 
-    objc_storeStrong(&self->_progress, a3);
-    if (v5)
+    objc_storeStrong(&self->_progress, progress);
+    if (progressCopy)
     {
-      [(NSProgress *)v5 addObserver:self forKeyPath:@"fractionCompleted" options:0 context:off_100016630];
-      v10 = [(WFApertureStatusViewController *)self progressView];
+      [(NSProgress *)progressCopy addObserver:self forKeyPath:@"fractionCompleted" options:0 context:off_100016630];
+      progressView2 = [(WFApertureStatusViewController *)self progressView];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_100005228;
       v12[3] = &unk_100010558;
-      v13 = v5;
+      v13 = progressCopy;
       v11 = [UIAction actionWithHandler:v12];
-      [v10 setCancelAction:v11];
+      [progressView2 setCancelAction:v11];
     }
   }
 }
@@ -247,44 +247,44 @@ LABEL_7:
   v36.receiver = self;
   v36.super_class = WFApertureStatusViewController;
   [(WFApertureStatusViewController *)&v36 viewWillLayoutSubviews];
-  v3 = [(WFApertureStatusViewController *)self activeLayoutMode];
-  v4 = [(WFApertureStatusViewController *)self view];
-  [v4 bounds];
+  activeLayoutMode = [(WFApertureStatusViewController *)self activeLayoutMode];
+  view = [(WFApertureStatusViewController *)self view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
 
-  v9 = [(WFApertureStatusViewController *)self view];
-  v10 = [v9 SBUISA_systemApertureObstructedAreaLayoutGuide];
-  [v10 layoutFrame];
+  view2 = [(WFApertureStatusViewController *)self view];
+  sBUISA_systemApertureObstructedAreaLayoutGuide = [view2 SBUISA_systemApertureObstructedAreaLayoutGuide];
+  [sBUISA_systemApertureObstructedAreaLayoutGuide layoutFrame];
   v12 = v11;
 
-  v13 = [(WFApertureStatusViewController *)self trailingView];
-  v14 = v13;
+  trailingView = [(WFApertureStatusViewController *)self trailingView];
+  v14 = trailingView;
   v15 = 50.0;
-  if (v3 != 4)
+  if (activeLayoutMode != 4)
   {
     v15 = 24.0;
   }
 
   v16 = (v8 - v15) * 0.5;
-  if (v3 == 4)
+  if (activeLayoutMode == 4)
   {
-    [v13 setFrame:{v6 + -50.0 + -17.0, v16, 50.0, 50.0}];
+    [trailingView setFrame:{v6 + -50.0 + -17.0, v16, 50.0, 50.0}];
 
-    v17 = [(WFApertureStatusViewController *)self leadingView];
-    [v17 setFrame:{17.0, v16, 50.0, 50.0}];
+    leadingView = [(WFApertureStatusViewController *)self leadingView];
+    [leadingView setFrame:{17.0, v16, 50.0, 50.0}];
 
-    v18 = [(WFApertureStatusViewController *)self leadingView];
-    [v18 frame];
+    leadingView2 = [(WFApertureStatusViewController *)self leadingView];
+    [leadingView2 frame];
     v19 = CGRectGetMaxX(v37) + 14.0;
 
     v20 = v12 + -4.0;
-    v21 = [(WFApertureStatusViewController *)self titleLabel];
-    [v21 intrinsicContentSize];
+    titleLabel = [(WFApertureStatusViewController *)self titleLabel];
+    [titleLabel intrinsicContentSize];
     v23 = v22;
 
-    v24 = [(WFApertureStatusViewController *)self trailingView];
-    [v24 frame];
+    trailingView2 = [(WFApertureStatusViewController *)self trailingView];
+    [trailingView2 frame];
     v26 = v25 - v19 + -6.0;
 
     if (v23 >= v26)
@@ -292,12 +292,12 @@ LABEL_7:
       v23 = v26;
     }
 
-    v27 = [(WFApertureStatusViewController *)self titleLabel];
-    [v27 intrinsicContentSize];
+    titleLabel2 = [(WFApertureStatusViewController *)self titleLabel];
+    [titleLabel2 intrinsicContentSize];
     v29 = v28;
 
-    v30 = [(WFApertureStatusViewController *)self titleLabel];
-    v31 = v30;
+    titleLabel3 = [(WFApertureStatusViewController *)self titleLabel];
+    v31 = titleLabel3;
     v32 = v19;
     v35 = v20;
     v33 = v23;
@@ -306,17 +306,17 @@ LABEL_7:
 
   else
   {
-    [v13 setFrame:{v6 + -7.0 + -24.0, v16, 24.0, 24.0}];
+    [trailingView setFrame:{v6 + -7.0 + -24.0, v16, 24.0, 24.0}];
 
-    v30 = [(WFApertureStatusViewController *)self leadingView];
-    v31 = v30;
+    titleLabel3 = [(WFApertureStatusViewController *)self leadingView];
+    v31 = titleLabel3;
     v32 = 7.0;
     v33 = 24.0;
     v34 = 24.0;
     v35 = v16;
   }
 
-  [v30 setFrame:{v32, v35, v33, v34}];
+  [titleLabel3 setFrame:{v32, v35, v33, v34}];
 }
 
 - (WFProgressAccessoryView)progressView
@@ -325,10 +325,10 @@ LABEL_7:
   if (!progressView)
   {
     v4 = [WFProgressAccessoryView alloc];
-    v5 = [(WFApertureStatusViewController *)self iconView];
-    v6 = [v5 primaryColor];
-    v7 = [(WFApertureStatusViewController *)self runningContext];
-    v8 = [(WFProgressAccessoryView *)v4 initWithTintColor:v6 runningContext:v7];
+    iconView = [(WFApertureStatusViewController *)self iconView];
+    primaryColor = [iconView primaryColor];
+    runningContext = [(WFApertureStatusViewController *)self runningContext];
+    v8 = [(WFProgressAccessoryView *)v4 initWithTintColor:primaryColor runningContext:runningContext];
     v9 = self->_progressView;
     self->_progressView = v8;
 
@@ -344,10 +344,10 @@ LABEL_7:
   if (!iconView)
   {
     v4 = [WFApertureIconAccessoryView alloc];
-    v5 = [(WFApertureStatusViewController *)self attribution];
-    v6 = [v5 icon];
-    v7 = [(WFApertureStatusViewController *)self runningContext];
-    v8 = [(WFApertureIconAccessoryView *)v4 initWithIcon:v6 runningContext:v7];
+    attribution = [(WFApertureStatusViewController *)self attribution];
+    icon = [attribution icon];
+    runningContext = [(WFApertureStatusViewController *)self runningContext];
+    v8 = [(WFApertureIconAccessoryView *)v4 initWithIcon:icon runningContext:runningContext];
     v9 = self->_iconView;
     self->_iconView = v8;
 
@@ -366,12 +366,12 @@ LABEL_7:
   return v2;
 }
 
-- (void)setCompletingSuccessfully:(BOOL)a3
+- (void)setCompletingSuccessfully:(BOOL)successfully
 {
-  if (a3)
+  if (successfully)
   {
-    v3 = [(WFApertureStatusViewController *)self progressView];
-    [v3 updateProgressWithValue:1.0];
+    progressView = [(WFApertureStatusViewController *)self progressView];
+    [progressView updateProgressWithValue:1.0];
   }
 }
 
@@ -383,14 +383,14 @@ LABEL_7:
   [(WFApertureStatusViewController *)&v3 dealloc];
 }
 
-- (WFApertureStatusViewController)initWithRunningContext:(id)a3 attribution:(id)a4 progress:(id)a5
+- (WFApertureStatusViewController)initWithRunningContext:(id)context attribution:(id)attribution progress:(id)progress
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  contextCopy = context;
+  attributionCopy = attribution;
+  progressCopy = progress;
+  if (contextCopy)
   {
-    if (v11)
+    if (attributionCopy)
     {
       goto LABEL_3;
     }
@@ -401,7 +401,7 @@ LABEL_7:
     v26 = +[NSAssertionHandler currentHandler];
     [v26 handleFailureInMethod:a2 object:self file:@"WFApertureStatusViewController.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"runningContext"}];
 
-    if (v11)
+    if (attributionCopy)
     {
       goto LABEL_3;
     }
@@ -419,29 +419,29 @@ LABEL_3:
   {
     v13->_overrideLayoutMode = 0;
     v13->_previousLayoutMode = 0;
-    objc_storeStrong(&v13->_attribution, a4);
-    objc_storeStrong(&v14->_runningContext, a3);
+    objc_storeStrong(&v13->_attribution, attribution);
+    objc_storeStrong(&v14->_runningContext, context);
     v15 = objc_alloc_init(UILabel);
-    v16 = [(WFApertureStatusViewController *)v14 titleFont];
-    [(UILabel *)v15 setFont:v16];
+    titleFont = [(WFApertureStatusViewController *)v14 titleFont];
+    [(UILabel *)v15 setFont:titleFont];
 
-    v17 = [v11 title];
-    [(UILabel *)v15 setText:v17];
+    title = [attributionCopy title];
+    [(UILabel *)v15 setText:title];
 
     [(UILabel *)v15 setNumberOfLines:1];
     v18 = +[UIColor systemWhiteColor];
     [(UILabel *)v15 setTextColor:v18];
 
-    v19 = [(WFApertureStatusViewController *)v14 view];
-    [v19 addSubview:v15];
+    view = [(WFApertureStatusViewController *)v14 view];
+    [view addSubview:v15];
 
     titleLabel = v14->_titleLabel;
     v14->_titleLabel = v15;
     v21 = v15;
 
-    [(WFApertureStatusViewController *)v14 setAssociatedRunningContext:v10];
+    [(WFApertureStatusViewController *)v14 setAssociatedRunningContext:contextCopy];
     [(WFApertureStatusViewController *)v14 startCollapseTimerIfNecessary];
-    [(WFApertureStatusViewController *)v14 setProgress:v12];
+    [(WFApertureStatusViewController *)v14 setProgress:progressCopy];
     v14->_initialPresentationTransitioning = 1;
     v22 = dispatch_time(0, 600000000);
     block[0] = _NSConcreteStackBlock;

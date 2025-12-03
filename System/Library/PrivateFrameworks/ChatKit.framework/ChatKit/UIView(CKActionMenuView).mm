@@ -6,7 +6,7 @@
 
 - (uint64_t)pointMostlyInside:()CKActionMenuView threshold:velocity:
 {
-  [a1 bounds];
+  [self bounds];
   v13 = v12 - a4;
   v15 = v14 - a4;
   v16 = a4 + a4;
@@ -18,7 +18,7 @@
   v32.size.height = v20;
   v31.x = a2;
   v31.y = a3;
-  if (CGRectContainsPoint(v32, v31) || ([a1 pointInside:0 withEvent:{a2, a3}] & 1) != 0)
+  if (CGRectContainsPoint(v32, v31) || ([self pointInside:0 withEvent:{a2, a3}] & 1) != 0)
   {
     return 1;
   }

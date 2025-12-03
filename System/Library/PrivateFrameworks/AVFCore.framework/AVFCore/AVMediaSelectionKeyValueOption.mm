@@ -1,6 +1,6 @@
 @interface AVMediaSelectionKeyValueOption
-- (AVMediaSelectionKeyValueOption)initWithAsset:(id)a3 group:(id)a4 dictionary:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (AVMediaSelectionKeyValueOption)initWithAsset:(id)asset group:(id)group dictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
 - (id)locale;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -8,22 +8,22 @@
 
 @implementation AVMediaSelectionKeyValueOption
 
-- (AVMediaSelectionKeyValueOption)initWithAsset:(id)a3 group:(id)a4 dictionary:(id)a5
+- (AVMediaSelectionKeyValueOption)initWithAsset:(id)asset group:(id)group dictionary:(id)dictionary
 {
   v10.receiver = self;
   v10.super_class = AVMediaSelectionKeyValueOption;
-  v7 = [(AVMediaSelectionOption *)&v10 initWithGroup:a4];
+  v7 = [(AVMediaSelectionOption *)&v10 initWithGroup:group];
   v8 = v7;
   if (v7)
   {
-    if (a4 && a5)
+    if (group && dictionary)
     {
-      v7->_groupID = [a4 _groupID];
-      v8->_groupMediaType = [objc_msgSend(a4 "_groupMediaType")];
-      v8->_optionMediaType = [objc_msgSend(a5 objectForKey:{*MEMORY[0x1E69737C8]), "copy"}];
-      v8->_dictionary = [a5 copy];
-      v8->_localizedMediaSelectionOptionDisplayNames = [objc_msgSend(a4 "_localizedMediaSelectionOptionDisplayNames")];
-      v8->_weakReferenceToGroup = [a4 _weakReference];
+      v7->_groupID = [group _groupID];
+      v8->_groupMediaType = [objc_msgSend(group "_groupMediaType")];
+      v8->_optionMediaType = [objc_msgSend(dictionary objectForKey:{*MEMORY[0x1E69737C8]), "copy"}];
+      v8->_dictionary = [dictionary copy];
+      v8->_localizedMediaSelectionOptionDisplayNames = [objc_msgSend(group "_localizedMediaSelectionOptionDisplayNames")];
+      v8->_weakReferenceToGroup = [group _weakReference];
     }
 
     else
@@ -43,9 +43,9 @@
   [(AVMediaSelectionOption *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -56,26 +56,26 @@
     return 0;
   }
 
-  v5 = [a3 _groupID];
+  _groupID = [equal _groupID];
   groupID = self->_groupID;
   if (groupID)
   {
-    if (([groupID isEqual:v5] & 1) == 0)
+    if (([groupID isEqual:_groupID] & 1) == 0)
     {
       return 0;
     }
   }
 
-  else if (v5)
+  else if (_groupID)
   {
     return 0;
   }
 
-  v8 = [a3 _groupMediaType];
+  _groupMediaType = [equal _groupMediaType];
   groupMediaType = self->_groupMediaType;
   if (!groupMediaType)
   {
-    if (!v8)
+    if (!_groupMediaType)
     {
       goto LABEL_10;
     }
@@ -83,16 +83,16 @@
     return 0;
   }
 
-  if (([groupMediaType isEqual:v8] & 1) == 0)
+  if (([groupMediaType isEqual:_groupMediaType] & 1) == 0)
   {
     return 0;
   }
 
 LABEL_10:
   dictionary = self->_dictionary;
-  v11 = [a3 dictionary];
+  dictionary = [equal dictionary];
 
-  return [(NSDictionary *)dictionary isEqual:v11];
+  return [(NSDictionary *)dictionary isEqual:dictionary];
 }
 
 - (unint64_t)hash

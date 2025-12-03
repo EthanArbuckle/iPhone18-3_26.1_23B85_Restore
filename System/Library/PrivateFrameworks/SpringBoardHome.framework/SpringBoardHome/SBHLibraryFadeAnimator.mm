@@ -1,10 +1,10 @@
 @interface SBHLibraryFadeAnimator
 - (SBHLibraryFadeAnimator)init;
-- (void)_configureIndicatorViewsForEndpoint:(int64_t)a3 withContext:(id)a4;
-- (void)_configurePrimaryViewsForEndpoint:(int64_t)a3 finalizing:(BOOL)a4 withContext:(id)a5;
-- (void)animateToEndpoint:(int64_t)a3 withContext:(id)a4 completion:(id)a5;
-- (void)finalizeAnimationAtEndpoint:(int64_t)a3 withContext:(id)a4;
-- (void)prepareToAnimateFromEndpoint:(int64_t)a3 withContext:(id)a4;
+- (void)_configureIndicatorViewsForEndpoint:(int64_t)endpoint withContext:(id)context;
+- (void)_configurePrimaryViewsForEndpoint:(int64_t)endpoint finalizing:(BOOL)finalizing withContext:(id)context;
+- (void)animateToEndpoint:(int64_t)endpoint withContext:(id)context completion:(id)completion;
+- (void)finalizeAnimationAtEndpoint:(int64_t)endpoint withContext:(id)context;
+- (void)prepareToAnimateFromEndpoint:(int64_t)endpoint withContext:(id)context;
 @end
 
 @implementation SBHLibraryFadeAnimator
@@ -17,43 +17,43 @@
   if (v2)
   {
     v3 = +[SBHHomeScreenDomain rootSettings];
-    v4 = [v3 iconAnimationSettings];
+    iconAnimationSettings = [v3 iconAnimationSettings];
 
-    v5 = [v4 reducedMotionSettings];
-    v6 = [v5 centralAnimationSettings];
+    reducedMotionSettings = [iconAnimationSettings reducedMotionSettings];
+    centralAnimationSettings = [reducedMotionSettings centralAnimationSettings];
 
-    v7 = [v6 BSAnimationSettings];
+    bSAnimationSettings = [centralAnimationSettings BSAnimationSettings];
     animationSettings = v2->_animationSettings;
-    v2->_animationSettings = v7;
+    v2->_animationSettings = bSAnimationSettings;
   }
 
   return v2;
 }
 
-- (void)prepareToAnimateFromEndpoint:(int64_t)a3 withContext:(id)a4
+- (void)prepareToAnimateFromEndpoint:(int64_t)endpoint withContext:(id)context
 {
-  v6 = [a4 userInfo];
+  userInfo = [context userInfo];
   v7 = MEMORY[0x1E69DD250];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __67__SBHLibraryFadeAnimator_prepareToAnimateFromEndpoint_withContext___block_invoke;
   v9[3] = &unk_1E808A090;
-  v10 = v6;
-  v11 = a3;
+  v10 = userInfo;
+  endpointCopy = endpoint;
   v9[4] = self;
-  v8 = v6;
+  v8 = userInfo;
   [v7 performWithoutAnimation:v9];
 }
 
-- (void)animateToEndpoint:(int64_t)a3 withContext:(id)a4 completion:(id)a5
+- (void)animateToEndpoint:(int64_t)endpoint withContext:(id)context completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [v9 userInfo];
-  v11 = [(SBHLibraryFadeAnimator *)self animationSettings];
-  [v11 duration];
+  completionCopy = completion;
+  contextCopy = context;
+  userInfo = [contextCopy userInfo];
+  animationSettings = [(SBHLibraryFadeAnimator *)self animationSettings];
+  [animationSettings duration];
   v13 = v12;
-  if ([v9 wantsAnimation])
+  if ([contextCopy wantsAnimation])
   {
     v14 = v13;
   }
@@ -63,19 +63,19 @@
     v14 = 0.0;
   }
 
-  [v10 noteWillAnimateToEndpoint:a3 withAnimationDuration:v14];
-  v15 = [v9 wantsAnimation];
+  [userInfo noteWillAnimateToEndpoint:endpoint withAnimationDuration:v14];
+  wantsAnimation = [contextCopy wantsAnimation];
 
-  if (v15)
+  if (wantsAnimation)
   {
     if ([(SBHLibraryFadeAnimator *)self isAlreadyAnimating])
     {
-      v16 = (2 * (a3 == 1)) | 4;
+      v16 = (2 * (endpoint == 1)) | 4;
     }
 
     else
     {
-      v16 = 2 * (a3 == 1);
+      v16 = 2 * (endpoint == 1);
     }
 
     [(SBHLibraryFadeAnimator *)self setAlreadyAnimating:1];
@@ -85,19 +85,19 @@
     v36[2] = __67__SBHLibraryFadeAnimator_animateToEndpoint_withContext_completion___block_invoke;
     v36[3] = &unk_1E808A090;
     v36[4] = self;
-    v37[1] = a3;
-    v18 = v10;
+    v37[1] = endpoint;
+    v18 = userInfo;
     v37[0] = v18;
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __67__SBHLibraryFadeAnimator_animateToEndpoint_withContext_completion___block_invoke_2;
     v34[3] = &unk_1E808A0B8;
-    v35 = v8;
-    [v17 animateWithSettings:v11 options:v16 actions:v36 completion:v34];
+    v35 = completionCopy;
+    [v17 animateWithSettings:animationSettings options:v16 actions:v36 completion:v34];
     v19 = v37;
     v20 = v13 / 3.0;
     v21 = v13 / 5.0;
-    if (a3 == 1)
+    if (endpoint == 1)
     {
       v22 = 0.0;
     }
@@ -107,7 +107,7 @@
       v22 = v13 / 3.0;
     }
 
-    if (a3 == 1)
+    if (endpoint == 1)
     {
       v23 = 0x20000;
     }
@@ -123,8 +123,8 @@
     v31[2] = __67__SBHLibraryFadeAnimator_animateToEndpoint_withContext_completion___block_invoke_3;
     v31[3] = &unk_1E808A090;
     v32 = v18;
-    v33 = a3;
-    if (a3 == 1)
+    endpointCopy = endpoint;
+    if (endpoint == 1)
     {
       v25 = v21;
     }
@@ -146,15 +146,15 @@
     v29[1] = 3221225472;
     v29[2] = __67__SBHLibraryFadeAnimator_animateToEndpoint_withContext_completion___block_invoke_4;
     v29[3] = &unk_1E808A090;
-    v30[0] = v10;
-    v30[1] = a3;
+    v30[0] = userInfo;
+    v30[1] = endpoint;
     v19 = v30;
     v29[4] = self;
-    v28 = v10;
+    v28 = userInfo;
     [v27 performWithoutAnimation:v29];
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -180,19 +180,19 @@ uint64_t __67__SBHLibraryFadeAnimator_animateToEndpoint_withContext_completion__
   return [v4 _configureIndicatorViewsForEndpoint:v2 withContext:v3];
 }
 
-- (void)finalizeAnimationAtEndpoint:(int64_t)a3 withContext:(id)a4
+- (void)finalizeAnimationAtEndpoint:(int64_t)endpoint withContext:(id)context
 {
-  v6 = [a4 userInfo];
+  userInfo = [context userInfo];
   [(SBHLibraryFadeAnimator *)self setAlreadyAnimating:0];
   v7 = MEMORY[0x1E69DD250];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __66__SBHLibraryFadeAnimator_finalizeAnimationAtEndpoint_withContext___block_invoke;
   v9[3] = &unk_1E808A090;
-  v10 = v6;
-  v11 = a3;
+  v10 = userInfo;
+  endpointCopy = endpoint;
   v9[4] = self;
-  v8 = v6;
+  v8 = userInfo;
   [v7 performWithoutAnimation:v9];
 }
 
@@ -206,10 +206,10 @@ uint64_t __66__SBHLibraryFadeAnimator_finalizeAnimationAtEndpoint_withContext___
   return [v4 _configureIndicatorViewsForEndpoint:v2 withContext:v3];
 }
 
-- (void)_configurePrimaryViewsForEndpoint:(int64_t)a3 finalizing:(BOOL)a4 withContext:(id)a5
+- (void)_configurePrimaryViewsForEndpoint:(int64_t)endpoint finalizing:(BOOL)finalizing withContext:(id)context
 {
-  v5 = a3 == 1 || a4;
-  if (a3 == 1)
+  v5 = endpoint == 1 || finalizing;
+  if (endpoint == 1)
   {
     v6 = 1.0;
   }
@@ -229,18 +229,18 @@ uint64_t __66__SBHLibraryFadeAnimator_finalizeAnimationAtEndpoint_withContext___
     v7 = 0.0;
   }
 
-  v8 = a5;
-  v9 = [v8 libraryView];
-  [v9 setAlpha:v7];
+  contextCopy = context;
+  libraryView = [contextCopy libraryView];
+  [libraryView setAlpha:v7];
 
-  v10 = [v8 backgroundView];
+  backgroundView = [contextCopy backgroundView];
 
-  [v10 setWeighting:v6];
+  [backgroundView setWeighting:v6];
 }
 
-- (void)_configureIndicatorViewsForEndpoint:(int64_t)a3 withContext:(id)a4
+- (void)_configureIndicatorViewsForEndpoint:(int64_t)endpoint withContext:(id)context
 {
-  if (a3 == 1)
+  if (endpoint == 1)
   {
     v4 = 1.0;
   }
@@ -250,7 +250,7 @@ uint64_t __66__SBHLibraryFadeAnimator_finalizeAnimationAtEndpoint_withContext___
     v4 = 0.0;
   }
 
-  if (a3 == 1)
+  if (endpoint == 1)
   {
     v5 = 0.0;
   }
@@ -260,12 +260,12 @@ uint64_t __66__SBHLibraryFadeAnimator_finalizeAnimationAtEndpoint_withContext___
     v5 = 1.0;
   }
 
-  v8 = [a4 libraryIconViewController];
-  v6 = [v8 categoryStackView];
-  [v6 setAlpha:v5];
+  libraryIconViewController = [context libraryIconViewController];
+  categoryStackView = [libraryIconViewController categoryStackView];
+  [categoryStackView setAlpha:v5];
 
-  v7 = [v8 dismissalView];
-  [v7 setAlpha:v4];
+  dismissalView = [libraryIconViewController dismissalView];
+  [dismissalView setAlpha:v4];
 }
 
 @end

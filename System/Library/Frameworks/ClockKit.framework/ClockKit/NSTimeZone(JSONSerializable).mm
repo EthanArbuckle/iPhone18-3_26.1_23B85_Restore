@@ -13,7 +13,7 @@
     [MEMORY[0x277CBEAD8] raise:@"CLKComplicationBundleException" format:{@"must be a string. Invalid value: %@", v4}];
   }
 
-  v5 = [a1 initWithName:v4];
+  v5 = [self initWithName:v4];
 
   return v5;
 }

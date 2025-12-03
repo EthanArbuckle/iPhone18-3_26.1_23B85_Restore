@@ -1,13 +1,13 @@
 @interface TodayConfigManager
-+ (void)prewarmTodayConfigWithContext:(id)a3;
++ (void)prewarmTodayConfigWithContext:(id)context;
 @end
 
 @implementation TodayConfigManager
 
-+ (void)prewarmTodayConfigWithContext:(id)a3
++ (void)prewarmTodayConfigWithContext:(id)context
 {
-  v3 = a3;
-  _s7NewsUI218TodayConfigManagerC07prewarmcD07contextySo14FCCloudContextC_tFZ_0(v3);
+  contextCopy = context;
+  _s7NewsUI218TodayConfigManagerC07prewarmcD07contextySo14FCCloudContextC_tFZ_0(contextCopy);
 }
 
 @end

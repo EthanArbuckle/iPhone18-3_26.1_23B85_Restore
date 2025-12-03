@@ -1,18 +1,18 @@
 @interface TKPickerDividerTableViewCell
 - (CGRect)_dividerViewFrame;
-- (TKPickerDividerTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (TKPickerDividerTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)setContentBackdropOverlayBlendMode:(int64_t)a3;
-- (void)setSeparatorStyle:(int64_t)a3;
+- (void)setContentBackdropOverlayBlendMode:(int64_t)mode;
+- (void)setSeparatorStyle:(int64_t)style;
 @end
 
 @implementation TKPickerDividerTableViewCell
 
-- (TKPickerDividerTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (TKPickerDividerTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = TKPickerDividerTableViewCell;
-  v4 = [(TKPickerDividerTableViewCell *)&v10 initWithStyle:0 reuseIdentifier:a4];
+  v4 = [(TKPickerDividerTableViewCell *)&v10 initWithStyle:0 reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x277D75D18]);
@@ -21,23 +21,23 @@
     dividerView = v4->_dividerView;
     v4->_dividerView = v6;
 
-    v8 = [(TKPickerDividerTableViewCell *)v4 contentView];
-    [v8 addSubview:v4->_dividerView];
+    contentView = [(TKPickerDividerTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_dividerView];
   }
 
   return v4;
 }
 
-- (void)setContentBackdropOverlayBlendMode:(int64_t)a3
+- (void)setContentBackdropOverlayBlendMode:(int64_t)mode
 {
-  if (self->_contentBackdropOverlayBlendMode != a3)
+  if (self->_contentBackdropOverlayBlendMode != mode)
   {
-    self->_contentBackdropOverlayBlendMode = a3;
+    self->_contentBackdropOverlayBlendMode = mode;
     [(UIView *)self->_dividerView _setDrawsAsBackdropOverlayWithBlendMode:?];
   }
 }
 
-- (void)setSeparatorStyle:(int64_t)a3
+- (void)setSeparatorStyle:(int64_t)style
 {
   v3.receiver = self;
   v3.super_class = TKPickerDividerTableViewCell;
@@ -61,22 +61,22 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TKPickerDividerTableViewCell *)self contentView];
-  [(TKPickerDividerTableViewCell *)self convertRect:v11 toView:v4, v6, v8, v10];
+  contentView = [(TKPickerDividerTableViewCell *)self contentView];
+  [(TKPickerDividerTableViewCell *)self convertRect:contentView toView:v4, v6, v8, v10];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
 
-  v20 = [(TKPickerDividerTableViewCell *)self window];
-  v21 = [v20 screen];
+  window = [(TKPickerDividerTableViewCell *)self window];
+  screen = [window screen];
 
-  if (!v21)
+  if (!screen)
   {
-    v21 = [MEMORY[0x277D759A0] mainScreen];
+    screen = [MEMORY[0x277D759A0] mainScreen];
   }
 
-  [v21 scale];
+  [screen scale];
   v23 = v19 + -1.0 / v22;
 
   v24 = v13;

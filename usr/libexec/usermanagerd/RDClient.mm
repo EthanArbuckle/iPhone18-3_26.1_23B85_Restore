@@ -1,43 +1,43 @@
 @interface RDClient
-+ (RDClient)clientWithXPCConnection:(id)a3;
++ (RDClient)clientWithXPCConnection:(id)connection;
 + (id)sharedBubbleXPCInterface;
 + (id)sharedXPCInterface;
 - ($115C4C562B26FF47E01F9F4EA65B5887)currentAuditToken;
-- (BOOL)hasEntitlement:(id)a3;
+- (BOOL)hasEntitlement:(id)entitlement;
 - (BOOL)hasUserSwitchTasks;
 - (BOOL)hasUserSyncTasks;
-- (BOOL)removeUserSwitchTask:(id)a3;
-- (BOOL)removeUserSyncTask:(id)a3;
+- (BOOL)removeUserSwitchTask:(id)task;
+- (BOOL)removeUserSyncTask:(id)task;
 - (RDClient)init;
 - (id)proxy;
 - (id)syncProxy;
-- (id)taskDictionaryInArray:(id)a3 withUUIDString:(id)a4;
+- (id)taskDictionaryInArray:(id)array withUUIDString:(id)string;
 - (int)pid;
-- (void)addUserSwitchTask:(id)a3;
-- (void)addUserSyncTask:(id)a3;
+- (void)addUserSwitchTask:(id)task;
+- (void)addUserSyncTask:(id)task;
 - (void)bubbleDidPop;
 - (void)bubbleShouldPop;
 - (void)clearTaskLists;
 - (void)deviceLoginSessionStateDidUpdate;
-- (void)personaListDidUpdateCompletionHandler:(id)a3;
-- (void)personaUpdateCallbackForMachServiceCompletionHandler:(id)a3;
-- (void)readyToSwitchToLoginSession:(id)a3 completionHandler:(id)a4;
-- (void)readyToSwitchToUser:(id)a3 completionHandler:(id)a4;
-- (void)uploadContentWithCompletionHandler:(id)a3;
+- (void)personaListDidUpdateCompletionHandler:(id)handler;
+- (void)personaUpdateCallbackForMachServiceCompletionHandler:(id)handler;
+- (void)readyToSwitchToLoginSession:(id)session completionHandler:(id)handler;
+- (void)readyToSwitchToUser:(id)user completionHandler:(id)handler;
+- (void)uploadContentWithCompletionHandler:(id)handler;
 - (void)userSwitchTaskListDidUpdate;
-- (void)willSwitchToUser:(id)a3 completionHandler:(id)a4;
+- (void)willSwitchToUser:(id)user completionHandler:(id)handler;
 @end
 
 @implementation RDClient
 
-+ (RDClient)clientWithXPCConnection:(id)a3
++ (RDClient)clientWithXPCConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   v4 = objc_opt_new();
   v5 = v4;
   if (v4)
   {
-    [v4 setXpcConnection:v3];
+    [v4 setXpcConnection:connectionCopy];
   }
 
   return v5;
@@ -88,22 +88,22 @@
 
 - (int)pid
 {
-  v2 = [(RDClient *)self xpcConnection];
-  v3 = [v2 processIdentifier];
+  xpcConnection = [(RDClient *)self xpcConnection];
+  processIdentifier = [xpcConnection processIdentifier];
 
-  return v3;
+  return processIdentifier;
 }
 
-- (BOOL)hasEntitlement:(id)a3
+- (BOOL)hasEntitlement:(id)entitlement
 {
-  if (!a3)
+  if (!entitlement)
   {
     return 1;
   }
 
-  v4 = a3;
-  v5 = [(RDClient *)self xpcConnection];
-  v6 = [v5 valueForEntitlement:v4];
+  entitlementCopy = entitlement;
+  xpcConnection = [(RDClient *)self xpcConnection];
+  v6 = [xpcConnection valueForEntitlement:entitlementCopy];
 
   v7 = 0;
   if (v6)
@@ -122,12 +122,12 @@
 {
   *retstr->var0 = 0u;
   *&retstr->var0[4] = 0u;
-  v4 = [(RDClient *)self xpcConnection];
-  if (v4)
+  xpcConnection = [(RDClient *)self xpcConnection];
+  if (xpcConnection)
   {
-    v6 = v4;
-    [v4 auditToken];
-    v4 = v6;
+    v6 = xpcConnection;
+    [xpcConnection auditToken];
+    xpcConnection = v6;
   }
 
   else
@@ -141,46 +141,46 @@
 
 - (id)proxy
 {
-  v3 = [(RDClient *)self xpcConnection];
+  xpcConnection = [(RDClient *)self xpcConnection];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100050DB0;
   v6[3] = &unk_1000DD6C8;
   v6[4] = self;
-  v4 = [v3 remoteObjectProxyWithErrorHandler:v6];
+  v4 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
 
   return v4;
 }
 
 - (id)syncProxy
 {
-  v3 = [(RDClient *)self xpcConnection];
+  xpcConnection = [(RDClient *)self xpcConnection];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100050EA8;
   v6[3] = &unk_1000DD6C8;
   v6[4] = self;
-  v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v6];
+  v4 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v6];
 
   return v4;
 }
 
-- (void)addUserSwitchTask:(id)a3
+- (void)addUserSwitchTask:(id)task
 {
-  v4 = a3;
-  v5 = [(RDClient *)self userSwitchTasks];
-  [v5 addObject:v4];
+  taskCopy = task;
+  userSwitchTasks = [(RDClient *)self userSwitchTasks];
+  [userSwitchTasks addObject:taskCopy];
 }
 
-- (id)taskDictionaryInArray:(id)a3 withUUIDString:(id)a4
+- (id)taskDictionaryInArray:(id)array withUUIDString:(id)string
 {
-  v5 = a3;
-  v6 = a4;
+  arrayCopy = array;
+  stringCopy = string;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v5;
+  v7 = arrayCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -196,7 +196,7 @@
 
         v11 = *(*(&v14 + 1) + 8 * i);
         v12 = [v11 objectForKeyedSubscript:{kUMUserSwitchTaskUUIDKey, v14}];
-        if ([v6 isEqualToString:v12])
+        if ([stringCopy isEqualToString:v12])
         {
           v8 = v11;
 
@@ -219,22 +219,22 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)removeUserSwitchTask:(id)a3
+- (BOOL)removeUserSwitchTask:(id)task
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:kUMUserSwitchTaskUUIDKey];
-  v6 = [(RDClient *)self userSwitchTasks];
-  v7 = [(RDClient *)self taskDictionaryInArray:v6 withUUIDString:v5];
+  taskCopy = task;
+  v5 = [taskCopy objectForKeyedSubscript:kUMUserSwitchTaskUUIDKey];
+  userSwitchTasks = [(RDClient *)self userSwitchTasks];
+  v7 = [(RDClient *)self taskDictionaryInArray:userSwitchTasks withUUIDString:v5];
 
   if (v7)
   {
-    v8 = [(RDClient *)self userSwitchTasks];
-    [v8 removeObject:v7];
+    userSwitchTasks2 = [(RDClient *)self userSwitchTasks];
+    [userSwitchTasks2 removeObject:v7];
   }
 
   else
   {
-    NSLog(@"Client %@ does not have user switch task %@", self, v4);
+    NSLog(@"Client %@ does not have user switch task %@", self, taskCopy);
   }
 
   return v7 != 0;
@@ -242,35 +242,35 @@ LABEL_11:
 
 - (BOOL)hasUserSwitchTasks
 {
-  v2 = [(RDClient *)self userSwitchTasks];
-  v3 = [v2 count] != 0;
+  userSwitchTasks = [(RDClient *)self userSwitchTasks];
+  v3 = [userSwitchTasks count] != 0;
 
   return v3;
 }
 
-- (void)addUserSyncTask:(id)a3
+- (void)addUserSyncTask:(id)task
 {
-  v4 = a3;
-  v5 = [(RDClient *)self userSyncTasks];
-  [v5 addObject:v4];
+  taskCopy = task;
+  userSyncTasks = [(RDClient *)self userSyncTasks];
+  [userSyncTasks addObject:taskCopy];
 }
 
-- (BOOL)removeUserSyncTask:(id)a3
+- (BOOL)removeUserSyncTask:(id)task
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:kUMUserSwitchTaskUUIDKey];
-  v6 = [(RDClient *)self userSyncTasks];
-  v7 = [(RDClient *)self taskDictionaryInArray:v6 withUUIDString:v5];
+  taskCopy = task;
+  v5 = [taskCopy objectForKeyedSubscript:kUMUserSwitchTaskUUIDKey];
+  userSyncTasks = [(RDClient *)self userSyncTasks];
+  v7 = [(RDClient *)self taskDictionaryInArray:userSyncTasks withUUIDString:v5];
 
   if (v7)
   {
-    v8 = [(RDClient *)self userSyncTasks];
-    [v8 removeObject:v4];
+    userSyncTasks2 = [(RDClient *)self userSyncTasks];
+    [userSyncTasks2 removeObject:taskCopy];
   }
 
   else
   {
-    NSLog(@"Client %@ does not have user sync task %@", self, v4);
+    NSLog(@"Client %@ does not have user sync task %@", self, taskCopy);
   }
 
   return v7 != 0;
@@ -278,49 +278,49 @@ LABEL_11:
 
 - (BOOL)hasUserSyncTasks
 {
-  v2 = [(RDClient *)self userSyncTasks];
-  v3 = [v2 count] != 0;
+  userSyncTasks = [(RDClient *)self userSyncTasks];
+  v3 = [userSyncTasks count] != 0;
 
   return v3;
 }
 
-- (void)willSwitchToUser:(id)a3 completionHandler:(id)a4
+- (void)willSwitchToUser:(id)user completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = self;
-  v8 = a3;
-  v9 = [(RDClient *)v7 proxy];
+  handlerCopy = handler;
+  selfCopy = self;
+  userCopy = user;
+  proxy = [(RDClient *)selfCopy proxy];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10005141C;
   v12[3] = &unk_1000DD188;
-  v13 = v7;
-  v14 = v6;
-  v10 = v6;
-  v11 = v7;
-  [v9 willSwitchToUser:v8 completionHandler:v12];
+  v13 = selfCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = selfCopy;
+  [proxy willSwitchToUser:userCopy completionHandler:v12];
 }
 
-- (void)personaListDidUpdateCompletionHandler:(id)a3
+- (void)personaListDidUpdateCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(RDClient *)v5 proxy];
+  handlerCopy = handler;
+  selfCopy = self;
+  proxy = [(RDClient *)selfCopy proxy];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100051650;
   v9[3] = &unk_1000DD188;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
-  [v6 personaListDidUpdateCompletionHandler:v9];
+  v10 = selfCopy;
+  v11 = handlerCopy;
+  v7 = handlerCopy;
+  v8 = selfCopy;
+  [proxy personaListDidUpdateCompletionHandler:v9];
 }
 
-- (void)personaUpdateCallbackForMachServiceCompletionHandler:(id)a3
+- (void)personaUpdateCallbackForMachServiceCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = self;
+  handlerCopy = handler;
+  selfCopy = self;
   if (qword_1000EB360 != -1)
   {
     sub_100089EE8();
@@ -340,7 +340,7 @@ LABEL_11:
     {
       v8 = v6;
       v17 = 67109120;
-      v18 = [(RDClient *)v5 pid];
+      v18 = [(RDClient *)selfCopy pid];
       v9 = _os_log_send_and_compose_impl();
 
       if (v9)
@@ -357,23 +357,23 @@ LABEL_11:
     free(v9);
   }
 
-  v10 = [(RDClient *)v5 syncProxy];
+  syncProxy = [(RDClient *)selfCopy syncProxy];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100051994;
   v13[3] = &unk_1000DD188;
-  v14 = v5;
-  v15 = v4;
-  v11 = v4;
-  v12 = v5;
-  [v10 personaUpdateCallbackForMachServiceCompletionHandler:v13];
+  v14 = selfCopy;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = selfCopy;
+  [syncProxy personaUpdateCallbackForMachServiceCompletionHandler:v13];
 }
 
-- (void)readyToSwitchToUser:(id)a3 completionHandler:(id)a4
+- (void)readyToSwitchToUser:(id)user completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  userCopy = user;
+  handlerCopy = handler;
+  selfCopy = self;
   if (qword_1000EB360 != -1)
   {
     sub_100089EE8();
@@ -391,7 +391,7 @@ LABEL_11:
     if (v10)
     {
       v11 = v9;
-      [(RDClient *)v8 pid];
+      [(RDClient *)selfCopy pid];
       v12 = _os_log_send_and_compose_impl();
 
       if (v12)
@@ -408,15 +408,15 @@ LABEL_11:
     free(v12);
   }
 
-  v13 = [(RDClient *)v8 proxy];
-  [v13 readyToSwitchToUser:v6 completionHandler:v7];
+  proxy = [(RDClient *)selfCopy proxy];
+  [proxy readyToSwitchToUser:userCopy completionHandler:handlerCopy];
 }
 
-- (void)readyToSwitchToLoginSession:(id)a3 completionHandler:(id)a4
+- (void)readyToSwitchToLoginSession:(id)session completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  sessionCopy = session;
+  handlerCopy = handler;
+  selfCopy = self;
   if (qword_1000EB360 != -1)
   {
     sub_100089EE8();
@@ -434,7 +434,7 @@ LABEL_11:
     if (v10)
     {
       v11 = v9;
-      [(RDClient *)v8 pid];
+      [(RDClient *)selfCopy pid];
       v12 = _os_log_send_and_compose_impl();
 
       if (v12)
@@ -451,34 +451,34 @@ LABEL_11:
     free(v12);
   }
 
-  v13 = [(RDClient *)v8 proxy];
-  [v13 readyToSwitchToLoginSession:v6 completionHandler:v7];
+  proxy = [(RDClient *)selfCopy proxy];
+  [proxy readyToSwitchToLoginSession:sessionCopy completionHandler:handlerCopy];
 }
 
 - (void)userSwitchTaskListDidUpdate
 {
-  v2 = [(RDClient *)self proxy];
-  [v2 userSwitchTaskListDidUpdate];
+  proxy = [(RDClient *)self proxy];
+  [proxy userSwitchTaskListDidUpdate];
 }
 
 - (void)deviceLoginSessionStateDidUpdate
 {
-  v2 = [(RDClient *)self proxy];
-  [v2 deviceLoginSessionStateDidUpdate];
+  proxy = [(RDClient *)self proxy];
+  [proxy deviceLoginSessionStateDidUpdate];
 }
 
-- (void)uploadContentWithCompletionHandler:(id)a3
+- (void)uploadContentWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   NSLog(@"BD: CLIENT IS ABOUT TO SEND UPLOAD CONTENT...");
-  v5 = [(RDClient *)self proxy];
-  [v5 uploadContentWithCompletionHandler:v4];
+  proxy = [(RDClient *)self proxy];
+  [proxy uploadContentWithCompletionHandler:handlerCopy];
 }
 
 - (void)bubbleDidPop
 {
-  v2 = [(RDClient *)self proxy];
-  [v2 bubbleDidPop];
+  proxy = [(RDClient *)self proxy];
+  [proxy bubbleDidPop];
 }
 
 - (void)bubbleShouldPop
@@ -520,17 +520,17 @@ LABEL_11:
     free(v7);
   }
 
-  v8 = [(RDClient *)self proxy];
-  [v8 bubbleShouldPop];
+  proxy = [(RDClient *)self proxy];
+  [proxy bubbleShouldPop];
 }
 
 - (void)clearTaskLists
 {
-  v3 = [(RDClient *)self userSwitchTasks];
-  [v3 removeAllObjects];
+  userSwitchTasks = [(RDClient *)self userSwitchTasks];
+  [userSwitchTasks removeAllObjects];
 
-  v4 = [(RDClient *)self userSyncTasks];
-  [v4 removeAllObjects];
+  userSyncTasks = [(RDClient *)self userSyncTasks];
+  [userSyncTasks removeAllObjects];
 }
 
 @end

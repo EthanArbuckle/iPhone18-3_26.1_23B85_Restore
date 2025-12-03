@@ -2,26 +2,26 @@
 - (BOOL)_isSecureAddress;
 - (BOOL)_shouldShowPromptLabels;
 - (BOOL)isChinaRegion;
-- (BOOL)isConfigurationProfileMIMEType:(id)a3;
-- (BOOL)isUserAprroved:(id)a3;
-- (WSWebSheetView)initWithFrame:(CGRect)a3 webSheetViewController:(id)a4;
+- (BOOL)isConfigurationProfileMIMEType:(id)type;
+- (BOOL)isUserAprroved:(id)aprroved;
+- (WSWebSheetView)initWithFrame:(CGRect)frame webSheetViewController:(id)controller;
 - (WSWebSheetViewDelegate)delegate;
 - (double)_promptLabelFontLineHeight;
 - (id)_evCertColor;
-- (id)_fetchCaptivePortalCredentialsAndReturnNetworkName:(id *)a3 deviceName:(id *)a4;
+- (id)_fetchCaptivePortalCredentialsAndReturnNetworkName:(id *)name deviceName:(id *)deviceName;
 - (id)_lockIconImage;
 - (id)_sheetController;
-- (id)_specializedMessageForError:(id)a3;
-- (id)_titleForError:(id)a3;
-- (id)_titleString:(BOOL)a3;
-- (id)appNametoOpenURL:(id)a3;
-- (id)webView:(id)a3 createWebViewWithConfiguration:(id)a4 forNavigationAction:(id)a5 windowFeatures:(id)a6;
+- (id)_specializedMessageForError:(id)error;
+- (id)_titleForError:(id)error;
+- (id)_titleString:(BOOL)string;
+- (id)appNametoOpenURL:(id)l;
+- (id)webView:(id)view createWebViewWithConfiguration:(id)configuration forNavigationAction:(id)action windowFeatures:(id)features;
 - (void)_addAndRemoveAddressViewsAsNeeded;
 - (void)_autoFillUserCredentialsUsingJavaScript;
-- (void)_autoFocusDelayTimerFired:(id)a3;
-- (void)_captiveProbeDispatchTimerDidFire:(id)a3;
-- (void)_populateTextSuggestionsWithCaptivePortalCredentials:(id)a3 networkName:(id)a4 deviceName:(id)a5 inputSession:(id)a6;
-- (void)_precheckTrustForServerCertificate:(__SecTrust *)a3 host:(id)a4;
+- (void)_autoFocusDelayTimerFired:(id)fired;
+- (void)_captiveProbeDispatchTimerDidFire:(id)fire;
+- (void)_populateTextSuggestionsWithCaptivePortalCredentials:(id)credentials networkName:(id)name deviceName:(id)deviceName inputSession:(id)session;
+- (void)_precheckTrustForServerCertificate:(__SecTrust *)certificate host:(id)host;
 - (void)_scrapeUserCredentialsUsingJavaScript;
 - (void)_showGenericDownloadAlert;
 - (void)_showProfileDownloadAlert;
@@ -30,67 +30,67 @@
 - (void)_stopCaptiveProbeDispatchTimer;
 - (void)_updateBackForwardButtons;
 - (void)_updateTitle;
-- (void)_webView:(id)a3 didStartInputSession:(id)a4;
-- (void)_webView:(id)a3 insertTextSuggestion:(id)a4 inInputSession:(id)a5;
-- (void)_webView:(id)a3 willSubmitFormValues:(id)a4 userObject:(id)a5 submissionHandler:(id)a6;
-- (void)addAlert:(id)a3;
+- (void)_webView:(id)view didStartInputSession:(id)session;
+- (void)_webView:(id)view insertTextSuggestion:(id)suggestion inInputSession:(id)session;
+- (void)_webView:(id)view willSubmitFormValues:(id)values userObject:(id)object submissionHandler:(id)handler;
+- (void)addAlert:(id)alert;
 - (void)cancelTapped;
 - (void)dealloc;
 - (void)dequeueRedirectTypeQueue;
-- (void)dismissWebSheetWithCaptiveWebSheetResult:(int64_t)a3;
+- (void)dismissWebSheetWithCaptiveWebSheetResult:(int64_t)result;
 - (void)dispatchCaptiveProbe;
-- (void)downloadDidFinish:(id)a3;
-- (void)handleProbeResult:(int64_t)a3;
+- (void)downloadDidFinish:(id)finish;
+- (void)handleProbeResult:(int64_t)result;
 - (void)layoutSubviews;
 - (void)pushBackToRedirectTypeQueue;
-- (void)setCurrentURL:(id)a3;
-- (void)setHasEVCert:(BOOL)a3;
-- (void)setProbeURL:(id)a3;
-- (void)setSSID:(id)a3;
-- (void)setWebViewWithInterfaceName:(id)a3;
+- (void)setCurrentURL:(id)l;
+- (void)setHasEVCert:(BOOL)cert;
+- (void)setProbeURL:(id)l;
+- (void)setSSID:(id)d;
+- (void)setWebViewWithInterfaceName:(id)name;
 - (void)updateRedirectURLTypeSetting;
 - (void)updateResultOptions;
 - (void)updateToDoneButton;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 decidePolicyForNavigationResponse:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didCommitLoadForFrame:(id)a4;
-- (void)webView:(id)a3 didCommitNavigation:(id)a4;
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
-- (void)webView:(id)a3 didReceiveAuthenticationChallenge:(id)a4 completionHandler:(id)a5;
-- (void)webView:(id)a3 didStartProvisionalNavigation:(id)a4;
-- (void)webView:(id)a3 resourceLoad:(id)a4 didCompleteWithError:(id)a5 response:(id)a6;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
+- (void)webView:(id)view decidePolicyForNavigationResponse:(id)response decisionHandler:(id)handler;
+- (void)webView:(id)view didCommitLoadForFrame:(id)frame;
+- (void)webView:(id)view didCommitNavigation:(id)navigation;
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
+- (void)webView:(id)view didReceiveAuthenticationChallenge:(id)challenge completionHandler:(id)handler;
+- (void)webView:(id)view didStartProvisionalNavigation:(id)navigation;
+- (void)webView:(id)view resourceLoad:(id)load didCompleteWithError:(id)error response:(id)response;
 @end
 
 @implementation WSWebSheetView
 
-- (WSWebSheetView)initWithFrame:(CGRect)a3 webSheetViewController:(id)a4
+- (WSWebSheetView)initWithFrame:(CGRect)frame webSheetViewController:(id)controller
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v66[2] = *MEMORY[0x277D85DE8];
-  v10 = a4;
+  controllerCopy = controller;
   v65.receiver = self;
   v65.super_class = WSWebSheetView;
-  v11 = [(WSWebSheetView *)&v65 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(WSWebSheetView *)&v65 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_webSheetViewController, a4);
+    objc_storeStrong(&height->_webSheetViewController, controller);
     v13 = objc_alloc_init(MEMORY[0x277D75780]);
     navigationBar = v12->_navigationBar;
     v12->_navigationBar = v13;
 
     v15 = v12->_navigationBar;
-    v16 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-    [(UINavigationBar *)v15 setBarTintColor:v16];
+    secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+    [(UINavigationBar *)v15 setBarTintColor:secondarySystemBackgroundColor];
 
     [(UINavigationBar *)v12->_navigationBar setTranslucent:0];
-    v17 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-    [(WSWebSheetView *)v12 setBackgroundColor:v17];
+    secondarySystemBackgroundColor2 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+    [(WSWebSheetView *)v12 setBackgroundColor:secondarySystemBackgroundColor2];
 
     [(UINavigationBar *)v12->_navigationBar setRequestedContentSize:2];
     v18 = [objc_alloc(MEMORY[0x277D757A8]) initWithTitle:&stru_2882BFA40];
@@ -111,15 +111,15 @@
     backButtonItem = v12->_backButtonItem;
     v12->_backButtonItem = v24;
 
-    v26 = [MEMORY[0x277D75348] linkColor];
-    [(UIBarButtonItem *)v12->_backButtonItem setTintColor:v26];
+    linkColor = [MEMORY[0x277D75348] linkColor];
+    [(UIBarButtonItem *)v12->_backButtonItem setTintColor:linkColor];
 
     v27 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:102 target:v12 action:sel__forwardButtonPressed];
     forwardButtonItem = v12->_forwardButtonItem;
     v12->_forwardButtonItem = v27;
 
-    v29 = [MEMORY[0x277D75348] linkColor];
-    [(UIBarButtonItem *)v12->_forwardButtonItem setTintColor:v29];
+    linkColor2 = [MEMORY[0x277D75348] linkColor];
+    [(UIBarButtonItem *)v12->_forwardButtonItem setTintColor:linkColor2];
 
     [(UIBarButtonItem *)v12->_backButtonItem setEnabled:0];
     [(UIBarButtonItem *)v12->_forwardButtonItem setEnabled:0];
@@ -145,28 +145,28 @@
     v12->_ssidLabel = v36;
 
     v38 = v12->_addressLabel;
-    v39 = [(WSWebSheetView *)v12 _promptLabelFont];
-    [(UILabel *)v38 setFont:v39];
+    _promptLabelFont = [(WSWebSheetView *)v12 _promptLabelFont];
+    [(UILabel *)v38 setFont:_promptLabelFont];
 
     [(WSWebSheetView *)v12 addSubview:v12->_addressView];
     v40 = v12->_ssidLabel;
-    v41 = [(WSWebSheetView *)v12 _promptLabelFont];
-    [(UILabel *)v40 setFont:v41];
+    _promptLabelFont2 = [(WSWebSheetView *)v12 _promptLabelFont];
+    [(UILabel *)v40 setFont:_promptLabelFont2];
 
     [(UILabel *)v12->_ssidLabel setTextAlignment:1];
     v42 = objc_alloc(MEMORY[0x277D755E8]);
-    v43 = [(WSWebSheetView *)v12 _lockIconImage];
-    v44 = [v42 initWithImage:v43];
+    _lockIconImage = [(WSWebSheetView *)v12 _lockIconImage];
+    v44 = [v42 initWithImage:_lockIconImage];
     lockIconView = v12->_lockIconView;
     v12->_lockIconView = v44;
 
-    v46 = [(UIImageView *)v12->_lockIconView image];
-    v47 = [v46 imageWithRenderingMode:2];
+    image = [(UIImageView *)v12->_lockIconView image];
+    v47 = [image imageWithRenderingMode:2];
     [(UIImageView *)v12->_lockIconView setImage:v47];
 
     v48 = v12->_lockIconView;
-    v49 = [MEMORY[0x277D75348] labelColor];
-    [(UIImageView *)v48 setTintColor:v49];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(UIImageView *)v48 setTintColor:labelColor];
 
     [(WSWebSheetView *)v12 addSubview:v12->_navigationBar];
     v50 = dispatch_queue_create("_redirectTypeQueue access thread", 0);
@@ -322,14 +322,14 @@ void __37__WSWebSheetView_updateResultOptions__block_invoke_2(uint64_t a1)
   [(UINavigationItem *)navigationItem setRightBarButtonItem:doneBarButtonItem];
 }
 
-- (void)setWebViewWithInterfaceName:(id)a3
+- (void)setWebViewWithInterfaceName:(id)name
 {
   v4 = MEMORY[0x277CE3890];
-  v5 = a3;
+  nameCopy = name;
   v21 = objc_alloc_init(v4);
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v7 = [v6 builtInPlugInsURL];
-  v8 = [v7 URLByAppendingPathComponent:@"SafariServices.wkbundle"];
+  builtInPlugInsURL = [v6 builtInPlugInsURL];
+  v8 = [builtInPlugInsURL URLByAppendingPathComponent:@"SafariServices.wkbundle"];
   [v21 setInjectedBundleURL:v8];
 
   if (objc_opt_respondsToSelector())
@@ -342,24 +342,24 @@ void __37__WSWebSheetView_updateResultOptions__block_invoke_2(uint64_t a1)
   [v10 _setApplePayEnabled:1];
   [v10 setAllowsInlineMediaPlayback:1];
   [v10 setDataDetectorTypes:3];
-  v11 = [objc_alloc(MEMORY[0x277CE38C8]) initNonPersistentConfiguration];
-  [v11 setSourceApplicationSecondaryIdentifier:@"com.apple.captive.websheet"];
-  [v11 setBoundInterfaceIdentifier:v5];
+  initNonPersistentConfiguration = [objc_alloc(MEMORY[0x277CE38C8]) initNonPersistentConfiguration];
+  [initNonPersistentConfiguration setSourceApplicationSecondaryIdentifier:@"com.apple.captive.websheet"];
+  [initNonPersistentConfiguration setBoundInterfaceIdentifier:nameCopy];
 
-  [v11 setAllowsCellularAccess:0];
+  [initNonPersistentConfiguration setAllowsCellularAccess:0];
   if (objc_opt_respondsToSelector())
   {
-    [v11 setLegacyTLSEnabled:1];
+    [initNonPersistentConfiguration setLegacyTLSEnabled:1];
   }
 
-  [v11 setProxyConfiguration:self->_proxyConfiguration];
-  v12 = [objc_alloc(MEMORY[0x277CE3868]) _initWithConfiguration:v11];
+  [initNonPersistentConfiguration setProxyConfiguration:self->_proxyConfiguration];
+  v12 = [objc_alloc(MEMORY[0x277CE3868]) _initWithConfiguration:initNonPersistentConfiguration];
   [v10 setWebsiteDataStore:v12];
 
   [v10 setProcessPool:v9];
   [v10 _setClientNavigationsRunAtForegroundPriority:1];
-  v13 = [v10 preferences];
-  [v13 _setDeviceOrientationEventEnabled:0];
+  preferences = [v10 preferences];
+  [preferences _setDeviceOrientationEventEnabled:0];
 
   v14 = objc_alloc(MEMORY[0x277CE3850]);
   [(WSWebSheetView *)self frame];
@@ -385,23 +385,23 @@ void __37__WSWebSheetView_updateResultOptions__block_invoke_2(uint64_t a1)
   [(WSWebSheetView *)self insertSubview:self->_webView belowSubview:self->_navigationBar];
 }
 
-- (void)setSSID:(id)a3
+- (void)setSSID:(id)d
 {
-  objc_storeStrong(&self->_ssid, a3);
-  v5 = a3;
-  [(UILabel *)self->_ssidLabel setText:v5];
+  objc_storeStrong(&self->_ssid, d);
+  dCopy = d;
+  [(UILabel *)self->_ssidLabel setText:dCopy];
 
   [(WSWebSheetView *)self _updateTitle];
 }
 
-- (id)_titleString:(BOOL)a3
+- (id)_titleString:(BOOL)string
 {
-  v3 = a3;
-  v5 = [(WSWebSheetView *)self isChinaRegion];
+  stringCopy = string;
+  isChinaRegion = [(WSWebSheetView *)self isChinaRegion];
   v6 = MEMORY[0x277CCACA8];
-  if (v3)
+  if (stringCopy)
   {
-    if (v5)
+    if (isChinaRegion)
     {
       v7 = "Captive WLAN - %@";
     }
@@ -417,7 +417,7 @@ void __37__WSWebSheetView_updateResultOptions__block_invoke_2(uint64_t a1)
 
   else
   {
-    if (v5)
+    if (isChinaRegion)
     {
       v9 = "Captive WLAN";
     }
@@ -449,7 +449,7 @@ void __37__WSWebSheetView_updateResultOptions__block_invoke_2(uint64_t a1)
   v6 = v5;
   [(WSWebSheetView *)self getHeaderFrameHeight];
   v8 = v7;
-  v9 = [(WSWebSheetView *)self _shouldShowPromptLabels];
+  _shouldShowPromptLabels = [(WSWebSheetView *)self _shouldShowPromptLabels];
   [(WSWebSheetView *)self _addAndRemoveAddressViewsAsNeeded];
   [(WSWebSheetView *)self _updateTitle];
   if (self->_inDoneState)
@@ -464,7 +464,7 @@ void __37__WSWebSheetView_updateResultOptions__block_invoke_2(uint64_t a1)
 
   [(UINavigationItem *)self->_navigationItem setRightBarButtonItem:*(&self->super.super.super.isa + *v10)];
   v11 = 0.0;
-  if (v9)
+  if (_shouldShowPromptLabels)
   {
     [(WSWebSheetView *)self getTopSafeAreaInsetTop];
     v13 = v12;
@@ -474,18 +474,18 @@ void __37__WSWebSheetView_updateResultOptions__block_invoke_2(uint64_t a1)
   }
 
   [(UINavigationBar *)self->_navigationBar setFrame:0.0, v11, v4, v8];
-  if (v9)
+  if (_shouldShowPromptLabels)
   {
     v31 = v6;
-    v15 = [(WSWebSheetView *)self _isSecureAddress];
+    _isSecureAddress = [(WSWebSheetView *)self _isSecureAddress];
     [(WSWebSheetView *)self _promptLabelFontLineHeight];
     v17 = v16;
-    v18 = [(UIImageView *)self->_lockIconView image];
-    [v18 size];
+    image = [(UIImageView *)self->_lockIconView image];
+    [image size];
     v20 = v19;
     v30 = v21;
 
-    if (v15)
+    if (_isSecureAddress)
     {
       v22 = v20 + 5.0;
     }
@@ -508,7 +508,7 @@ void __37__WSWebSheetView_updateResultOptions__block_invoke_2(uint64_t a1)
     }
 
     v27 = v22 + RoundFloatToPixels((v4 - v26 - v22) * 0.5);
-    if (v15)
+    if (_isSecureAddress)
     {
       [(UIImageView *)self->_lockIconView setFrame:?];
     }
@@ -535,8 +535,8 @@ void __37__WSWebSheetView_updateResultOptions__block_invoke_2(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   if (_os_feature_enabled_impl() && _os_feature_enabled_impl())
   {
@@ -549,24 +549,24 @@ void __37__WSWebSheetView_updateResultOptions__block_invoke_2(uint64_t a1)
   [(WSWebSheetView *)&v4 dealloc];
 }
 
-- (void)setProbeURL:(id)a3
+- (void)setProbeURL:(id)l
 {
-  v4 = [a3 copy];
+  v4 = [l copy];
   probeURL = self->_probeURL;
   self->_probeURL = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setCurrentURL:(id)a3
+- (void)setCurrentURL:(id)l
 {
-  v5 = a3;
-  if (self->_currentURL != v5)
+  lCopy = l;
+  if (self->_currentURL != lCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_currentURL, a3);
+    v6 = lCopy;
+    objc_storeStrong(&self->_currentURL, l);
     [(WSWebSheetView *)self _updateAddress];
-    v5 = v6;
+    lCopy = v6;
   }
 }
 
@@ -594,12 +594,12 @@ void __37__WSWebSheetView_updateResultOptions__block_invoke_2(uint64_t a1)
   return v4;
 }
 
-- (void)setHasEVCert:(BOOL)a3
+- (void)setHasEVCert:(BOOL)cert
 {
-  if (self->_hasEVCert != a3)
+  if (self->_hasEVCert != cert)
   {
-    self->_hasEVCert = a3;
-    if (a3)
+    self->_hasEVCert = cert;
+    if (cert)
     {
       [(WSWebSheetView *)self _evCertColor];
     }
@@ -610,8 +610,8 @@ void __37__WSWebSheetView_updateResultOptions__block_invoke_2(uint64_t a1)
     }
     v7 = ;
     [(UILabel *)self->_addressLabel setTextColor:v7];
-    v5 = [(UIImageView *)self->_lockIconView image];
-    v6 = [v5 imageWithRenderingMode:2];
+    image = [(UIImageView *)self->_lockIconView image];
+    v6 = [image imageWithRenderingMode:2];
     [(UIImageView *)self->_lockIconView setImage:v6];
 
     [(UIImageView *)self->_lockIconView setTintColor:v7];
@@ -624,7 +624,7 @@ void __37__WSWebSheetView_updateResultOptions__block_invoke_2(uint64_t a1)
   if ([(WSWebSheetView *)self _shouldShowPromptLabels])
   {
     [(UIView *)self->_addressView setHidden:0];
-    v4 = [(NSURL *)self->_currentURL _lp_simplifiedDisplayString];
+    _lp_simplifiedDisplayString = [(NSURL *)self->_currentURL _lp_simplifiedDisplayString];
     [(UILabel *)self->_addressLabel setText:?];
     if ([(WSWebSheetView *)self _isSecureAddress])
     {
@@ -648,30 +648,30 @@ void __37__WSWebSheetView_updateResultOptions__block_invoke_2(uint64_t a1)
 
 - (BOOL)_isSecureAddress
 {
-  v2 = [(NSURL *)self->_currentURL scheme];
-  v3 = [v2 lowercaseString];
-  v4 = [v3 isEqualToString:@"https"];
+  scheme = [(NSURL *)self->_currentURL scheme];
+  lowercaseString = [scheme lowercaseString];
+  v4 = [lowercaseString isEqualToString:@"https"];
 
   return v4;
 }
 
 - (BOOL)_shouldShowPromptLabels
 {
-  v2 = [(WSWebSheetView *)self window];
-  [v2 bounds];
+  window = [(WSWebSheetView *)self window];
+  [window bounds];
   v4 = v3;
   v6 = v5;
 
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  return v4 < v6 || (v8 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+  return v4 < v6 || (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
 }
 
 - (double)_promptLabelFontLineHeight
 {
-  v2 = [(WSWebSheetView *)self _promptLabelFont];
-  [v2 lineHeight];
+  _promptLabelFont = [(WSWebSheetView *)self _promptLabelFont];
+  [_promptLabelFont lineHeight];
   v4 = RoundFloatToPixels(v3);
 
   return v4;
@@ -681,9 +681,9 @@ void __37__WSWebSheetView_updateResultOptions__block_invoke_2(uint64_t a1)
 {
   [(UIBarButtonItem *)self->_backButtonItem setEnabled:[(WKWebView *)self->_webView canGoBack]];
   forwardButtonItem = self->_forwardButtonItem;
-  v4 = [(WKWebView *)self->_webView canGoForward];
+  canGoForward = [(WKWebView *)self->_webView canGoForward];
 
-  [(UIBarButtonItem *)forwardButtonItem setEnabled:v4];
+  [(UIBarButtonItem *)forwardButtonItem setEnabled:canGoForward];
 }
 
 - (void)cancelTapped
@@ -691,9 +691,9 @@ void __37__WSWebSheetView_updateResultOptions__block_invoke_2(uint64_t a1)
   NSLog(&cfstr_UserTappedCanc.isa, a2);
   if (self->_shouldShowStayConnectedOptions)
   {
-    v3 = [(WSWebSheetView *)self isChinaRegion];
+    isChinaRegion = [(WSWebSheetView *)self isChinaRegion];
     v4 = MEMORY[0x277CCACA8];
-    if (v3)
+    if (isChinaRegion)
     {
       v5 = "The WLAN “%@” is not connected to the Internet.";
     }
@@ -724,10 +724,10 @@ void __37__WSWebSheetView_updateResultOptions__block_invoke_2(uint64_t a1)
     v23[3] = &unk_279EAFE80;
     v23[4] = self;
     v13 = [MEMORY[0x277D750F8] actionWithTitle:v9 style:2 handler:v23];
-    v14 = [(WSWebSheetView *)self isSetupAssistantRunning];
-    v15 = v14;
+    isSetupAssistantRunning = [(WSWebSheetView *)self isSetupAssistantRunning];
+    v15 = isSetupAssistantRunning;
     v16 = "is not";
-    if (v14)
+    if (isSetupAssistantRunning)
     {
       v16 = "is";
     }
@@ -749,11 +749,11 @@ void __37__WSWebSheetView_updateResultOptions__block_invoke_2(uint64_t a1)
     [(UIAlertController *)self->_stayConnectedAlertController addAction:v13];
     [(UIAlertController *)self->_stayConnectedAlertController setModalPresentationStyle:7];
     cancelBarButtonItem = self->_cancelBarButtonItem;
-    v20 = [(UIAlertController *)self->_stayConnectedAlertController popoverPresentationController];
-    [v20 setBarButtonItem:cancelBarButtonItem];
+    popoverPresentationController = [(UIAlertController *)self->_stayConnectedAlertController popoverPresentationController];
+    [popoverPresentationController setBarButtonItem:cancelBarButtonItem];
 
-    v21 = [(WSWebSheetView *)self webSheetViewController];
-    [v21 presentViewController:self->_stayConnectedAlertController animated:1 completion:&__block_literal_global];
+    webSheetViewController = [(WSWebSheetView *)self webSheetViewController];
+    [webSheetViewController presentViewController:self->_stayConnectedAlertController animated:1 completion:&__block_literal_global];
   }
 
   else
@@ -796,18 +796,18 @@ uint64_t __30__WSWebSheetView_cancelTapped__block_invoke_3(uint64_t a1)
   return [v4 dismissWebSheetWithCaptiveWebSheetResult:5];
 }
 
-- (void)dismissWebSheetWithCaptiveWebSheetResult:(int64_t)a3
+- (void)dismissWebSheetWithCaptiveWebSheetResult:(int64_t)result
 {
-  NSLog(&cfstr_DismissingShee.isa, a2, a3);
-  v5 = [(WSWebSheetView *)self delegate];
+  NSLog(&cfstr_DismissingShee.isa, a2, result);
+  delegate = [(WSWebSheetView *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(WSWebSheetView *)self delegate];
-    [v6 handleCompleteNotificationWithRedirectURLtype:self->_currentRedirectURLType result:a3];
+    delegate2 = [(WSWebSheetView *)self delegate];
+    [delegate2 handleCompleteNotificationWithRedirectURLtype:self->_currentRedirectURLType result:result];
 
-    v7 = [(WSWebSheetView *)self delegate];
-    [v7 handleDismissal];
+    delegate3 = [(WSWebSheetView *)self delegate];
+    [delegate3 handleDismissal];
   }
 }
 
@@ -826,24 +826,24 @@ uint64_t __30__WSWebSheetView_cancelTapped__block_invoke_3(uint64_t a1)
   return sheetController;
 }
 
-- (void)addAlert:(id)a3
+- (void)addAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   alerts = self->_alerts;
-  v9 = v4;
+  v9 = alertCopy;
   if (!alerts)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_alerts;
     self->_alerts = v6;
 
-    v4 = v9;
+    alertCopy = v9;
     alerts = self->_alerts;
   }
 
-  [(NSMutableArray *)alerts addObject:v4];
-  v8 = [(WSWebSheetView *)self _sheetController];
-  [v8 showSheetForAlert:v9 inView:0];
+  [(NSMutableArray *)alerts addObject:alertCopy];
+  _sheetController = [(WSWebSheetView *)self _sheetController];
+  [_sheetController showSheetForAlert:v9 inView:0];
 }
 
 - (BOOL)isChinaRegion
@@ -865,14 +865,14 @@ uint64_t __31__WSWebSheetView_isChinaRegion__block_invoke()
   return result;
 }
 
-- (void)_precheckTrustForServerCertificate:(__SecTrust *)a3 host:(id)a4
+- (void)_precheckTrustForServerCertificate:(__SecTrust *)certificate host:(id)host
 {
   if (!self->_inDoneState)
   {
     result = kSecTrustResultInvalid;
     error = 0;
-    v6 = SecTrustEvaluateWithError(a3, &error);
-    TrustResult = SecTrustGetTrustResult(a3, &result);
+    v6 = SecTrustEvaluateWithError(certificate, &error);
+    TrustResult = SecTrustGetTrustResult(certificate, &result);
     if (!v6)
     {
       if (error)
@@ -927,11 +927,11 @@ LABEL_17:
   }
 }
 
-- (id)_specializedMessageForError:(id)a3
+- (id)_specializedMessageForError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKey:@"NSErrorFailingURLKey"];
+  errorCopy = error;
+  userInfo = [errorCopy userInfo];
+  v5 = [userInfo objectForKey:@"NSErrorFailingURLKey"];
 
   if (!v5)
   {
@@ -939,15 +939,15 @@ LABEL_17:
     goto LABEL_34;
   }
 
-  v6 = [v5 _lp_userVisibleString];
-  v7 = [v6 stringBySubstitutingHTMLEntitiesForAmpersandAndAngleBrackets];
+  _lp_userVisibleString = [v5 _lp_userVisibleString];
+  stringBySubstitutingHTMLEntitiesForAmpersandAndAngleBrackets = [_lp_userVisibleString stringBySubstitutingHTMLEntitiesForAmpersandAndAngleBrackets];
 
-  if ([v3 _web_errorIsInDomain:*MEMORY[0x277CCA738]])
+  if ([errorCopy _web_errorIsInDomain:*MEMORY[0x277CCA738]])
   {
-    v8 = [v3 code];
-    if (v8 > -1103)
+    code = [errorCopy code];
+    if (code > -1103)
     {
-      switch(v8)
+      switch(code)
       {
         case -1018:
           v9 = "Data Roaming is turned off. You can enable Data Roaming in the Cellular Data section of Settings.";
@@ -986,8 +986,8 @@ LABEL_17:
         case -1002:
           v16 = MEMORY[0x277CCACA8];
           v12 = GetLocalizedString("Hotspot login cannot open the page because it cannot redirect to locations starting with “%@:”.");
-          v13 = [v7 URLScheme];
-          v10 = [v16 stringWithFormat:v12, v13];
+          uRLScheme = [stringBySubstitutingHTMLEntitiesForAmpersandAndAngleBrackets URLScheme];
+          v10 = [v16 stringWithFormat:v12, uRLScheme];
           goto LABEL_40;
         case -1001:
           v9 = "Hotspot login could not open the page because the server stopped responding.";
@@ -996,28 +996,28 @@ LABEL_17:
           v9 = "Hotspot login cannot open the page because the address is invalid.";
           goto LABEL_32;
         default:
-          if (v8 == -1102)
+          if (code == -1102)
           {
             v17 = MEMORY[0x277CCACA8];
             v12 = GetLocalizedString("You do not have permission to view “%@”.");
-            v13 = [MEMORY[0x277CCAA00] defaultManager];
-            v14 = [v5 path];
-            v18 = [v13 displayNameAtPath:v14];
+            uRLScheme = [MEMORY[0x277CCAA00] defaultManager];
+            path = [v5 path];
+            v18 = [uRLScheme displayNameAtPath:path];
             v10 = [v17 stringWithFormat:v12, v18];
           }
 
           else
           {
-            if (v8 != -1100)
+            if (code != -1100)
             {
               goto LABEL_18;
             }
 
             v11 = MEMORY[0x277CCACA8];
             v12 = GetLocalizedString("No file exists at the address “%@”.");
-            v13 = [v5 path];
-            v14 = [v13 stringBySubstitutingHTMLEntitiesForAmpersandAndAngleBrackets];
-            v10 = [v11 stringWithFormat:v12, v14];
+            uRLScheme = [v5 path];
+            path = [uRLScheme stringBySubstitutingHTMLEntitiesForAmpersandAndAngleBrackets];
+            v10 = [v11 stringWithFormat:v12, path];
           }
 
 LABEL_40:
@@ -1027,15 +1027,15 @@ LABEL_40:
       goto LABEL_33;
     }
 
-    if (v8 > -1201)
+    if (code > -1201)
     {
-      if (v8 == -1200)
+      if (code == -1200)
       {
         v9 = "Hotspot login cannot open the page because it could not establish a secure connection to the server.";
         goto LABEL_32;
       }
 
-      if (v8 == -1103)
+      if (code == -1103)
       {
         v9 = "Hotspot login cannot open the page because it is too large.";
         goto LABEL_32;
@@ -1044,14 +1044,14 @@ LABEL_40:
 
     else
     {
-      if (v8 == -2000)
+      if (code == -2000)
       {
 LABEL_14:
         v9 = "Hotspot login cannot open the page because it is not connected to the Internet.";
         goto LABEL_32;
       }
 
-      if (v8 == -1205)
+      if (code == -1205)
       {
         v9 = "The website did not accept the certificate.";
 LABEL_32:
@@ -1062,7 +1062,7 @@ LABEL_32:
   }
 
 LABEL_18:
-  if ([v3 _web_errorIsInDomain:*MEMORY[0x277CCA5B8]] && objc_msgSend(v3, "code") == 54)
+  if ([errorCopy _web_errorIsInDomain:*MEMORY[0x277CCA5B8]] && objc_msgSend(errorCopy, "code") == 54)
   {
     v9 = "Hotspot login cannot open the page because the network connection was reset. The server may be busy.";
     goto LABEL_32;
@@ -1076,10 +1076,10 @@ LABEL_34:
   return v10;
 }
 
-- (id)_titleForError:(id)a3
+- (id)_titleForError:(id)error
 {
-  v3 = [a3 code];
-  switch(v3)
+  code = [error code];
+  switch(code)
   {
     case -1205:
       v4 = "Certificate Error";
@@ -1100,29 +1100,29 @@ LABEL_9:
   return v5;
 }
 
-- (void)webView:(id)a3 didCommitLoadForFrame:(id)a4
+- (void)webView:(id)view didCommitLoadForFrame:(id)frame
 {
-  v18 = a4;
-  v5 = [v18 dataSource];
-  v6 = [v5 request];
-  v7 = [v6 URL];
+  frameCopy = frame;
+  dataSource = [frameCopy dataSource];
+  request = [dataSource request];
+  v7 = [request URL];
 
-  v8 = [v7 host];
-  v9 = [v7 absoluteString];
-  v10 = v9;
-  if (v8 && v9)
+  host = [v7 host];
+  absoluteString = [v7 absoluteString];
+  v10 = absoluteString;
+  if (host && absoluteString)
   {
-    if ([v9 rangeOfString:v8] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([absoluteString rangeOfString:host] != 0x7FFFFFFFFFFFFFFFLL)
     {
       [(WSWebSheetView *)self setCurrentURL:v7];
     }
 
     if ([v10 hasPrefix:@"https://"])
     {
-      v11 = [v18 dataSource];
-      v12 = [v11 response];
+      dataSource2 = [frameCopy dataSource];
+      response = [dataSource2 response];
 
-      [v12 _CFURLResponse];
+      [response _CFURLResponse];
       SSLCertificateContext = _CFURLResponseGetSSLCertificateContext();
       if (SSLCertificateContext && CFDictionaryGetValue(SSLCertificateContext, *MEMORY[0x277CBAE60]))
       {
@@ -1169,16 +1169,16 @@ LABEL_9:
   [(WSWebSheetView *)self addAlert:v6];
 }
 
-- (void)handleProbeResult:(int64_t)a3
+- (void)handleProbeResult:(int64_t)result
 {
-  if (a3 != 3)
+  if (result != 3)
   {
-    if (!a3)
+    if (!result)
     {
       NSLog(&cfstr_CaptiveProbeWa.isa, a2);
-      v4 = [(WSWebSheetView *)self delegate];
-      v5 = v4;
-      if (v4 && self->_postMessage)
+      delegate = [(WSWebSheetView *)self delegate];
+      delegate2 = delegate;
+      if (delegate && self->_postMessage)
       {
         loginURL = self->_loginURL;
 
@@ -1187,8 +1187,8 @@ LABEL_9:
           goto LABEL_8;
         }
 
-        v5 = [(WSWebSheetView *)self delegate];
-        [v5 scrapeCredentialsUsingPOSTMessage:self->_postMessage loginURL:self->_loginURL];
+        delegate2 = [(WSWebSheetView *)self delegate];
+        [delegate2 scrapeCredentialsUsingPOSTMessage:self->_postMessage loginURL:self->_loginURL];
       }
 
 LABEL_8:
@@ -1207,9 +1207,9 @@ LABEL_8:
 
         corewifi = self->_corewifi;
         v9 = self->_scrapedUserCredentialsFromJavaScript;
-        v10 = [(CWFInterface *)corewifi currentKnownNetworkProfile];
+        currentKnownNetworkProfile = [(CWFInterface *)corewifi currentKnownNetworkProfile];
         v12 = 0;
-        [(CWFInterface *)corewifi setCaptivePortalCredentials:v9 knownNetworkProfile:v10 error:&v12];
+        [(CWFInterface *)corewifi setCaptivePortalCredentials:v9 knownNetworkProfile:currentKnownNetworkProfile error:&v12];
         v11 = v12;
 
         if (v11)
@@ -1229,7 +1229,7 @@ LABEL_8:
   if (self->_lastResultWasTimeoutError)
   {
 LABEL_18:
-    NSLog(&cfstr_CaptiveProbeFa.isa, a2, a3);
+    NSLog(&cfstr_CaptiveProbeFa.isa, a2, result);
 
     [(WSWebSheetView *)self dequeueRedirectTypeQueue];
     return;
@@ -1266,18 +1266,18 @@ void __36__WSWebSheetView_handleProbeResult___block_invoke(uint64_t a1, void *a2
   [(WSWebSheetView *)self addAlert:v6];
 }
 
-- (void)downloadDidFinish:(id)a3
+- (void)downloadDidFinish:(id)finish
 {
-  v4 = [(WSWebSheetDownloadManager *)self->_downloadManager fileDownloadPath];
-  if (v4)
+  fileDownloadPath = [(WSWebSheetDownloadManager *)self->_downloadManager fileDownloadPath];
+  if (fileDownloadPath)
   {
-    v5 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v4];
+    v5 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:fileDownloadPath];
     if (v5)
     {
-      v6 = [MEMORY[0x277D262A0] sharedConnection];
-      v7 = [v4 lastPathComponent];
+      mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+      lastPathComponent = [fileDownloadPath lastPathComponent];
       v11 = 0;
-      v8 = [v6 queueFileDataForAcceptance:v5 originalFileName:v7 outError:&v11];
+      v8 = [mEMORY[0x277D262A0] queueFileDataForAcceptance:v5 originalFileName:lastPathComponent outError:&v11];
       v9 = v11;
 
       [(WSWebSheetDownloadManager *)self->_downloadManager removeFromDisk];
@@ -1308,38 +1308,38 @@ void __36__WSWebSheetView_handleProbeResult___block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (id)webView:(id)a3 createWebViewWithConfiguration:(id)a4 forNavigationAction:(id)a5 windowFeatures:(id)a6
+- (id)webView:(id)view createWebViewWithConfiguration:(id)configuration forNavigationAction:(id)action windowFeatures:(id)features
 {
-  v7 = a3;
-  v8 = [a5 request];
-  v9 = [v7 loadRequest:v8];
+  viewCopy = view;
+  request = [action request];
+  v9 = [viewCopy loadRequest:request];
 
   return 0;
 }
 
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error
 {
-  v6 = a5;
+  errorCopy = error;
   self->_currentRedirectURLTypeSet = 0;
-  NSLog(&cfstr_WebSheetLoggin.isa, v6);
+  NSLog(&cfstr_WebSheetLoggin.isa, errorCopy);
   [(WSWebSheetView *)self displayLoadingSpinner:0];
-  v7 = [v6 code];
-  if (![v6 _web_errorIsInDomain:*MEMORY[0x277CCA738]] || v7 != -1012 && v7 != -999)
+  code = [errorCopy code];
+  if (![errorCopy _web_errorIsInDomain:*MEMORY[0x277CCA738]] || code != -1012 && code != -999)
   {
-    v8 = [v6 userInfo];
-    v9 = v8;
-    if (v8)
+    userInfo = [errorCopy userInfo];
+    v9 = userInfo;
+    if (userInfo)
     {
-      NSLog(&cfstr_WebsheetDidFai.isa, v8);
+      NSLog(&cfstr_WebsheetDidFai.isa, userInfo);
     }
 
-    v10 = [(WSWebSheetView *)self _specializedMessageForError:v6];
+    v10 = [(WSWebSheetView *)self _specializedMessageForError:errorCopy];
     if (!v10)
     {
       v10 = GetLocalizedString("An error occurred. The page could not be opened.");
     }
 
-    v11 = [(WSWebSheetView *)self _titleForError:v6];
+    v11 = [(WSWebSheetView *)self _titleForError:errorCopy];
     if (!v11)
     {
       v11 = GetLocalizedString("Error Opening Page");
@@ -1356,8 +1356,8 @@ void __36__WSWebSheetView_handleProbeResult___block_invoke(uint64_t a1, void *a2
     v15 = [v13 actionWithTitle:v14 style:0 handler:v17];
 
     [v12 addAction:v15];
-    v16 = [(WSWebSheetView *)self webSheetViewController];
-    [v16 presentViewController:v12 animated:1 completion:&__block_literal_global_228];
+    webSheetViewController = [(WSWebSheetView *)self webSheetViewController];
+    [webSheetViewController presentViewController:v12 animated:1 completion:&__block_literal_global_228];
   }
 }
 
@@ -1371,28 +1371,28 @@ void __54__WSWebSheetView_webView_didFailNavigation_withError___block_invoke(uin
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error
 {
-  v6 = a5;
+  errorCopy = error;
   self->_currentRedirectURLTypeSet = 0;
-  NSLog(&cfstr_WebSheetLoggin_0.isa, v6);
-  v7 = [v6 code];
-  if (![v6 _web_errorIsInDomain:*MEMORY[0x277CCA738]] || v7 != -1012 && v7 != -999)
+  NSLog(&cfstr_WebSheetLoggin_0.isa, errorCopy);
+  code = [errorCopy code];
+  if (![errorCopy _web_errorIsInDomain:*MEMORY[0x277CCA738]] || code != -1012 && code != -999)
   {
-    v8 = [v6 userInfo];
-    v9 = v8;
-    if (v8)
+    userInfo = [errorCopy userInfo];
+    v9 = userInfo;
+    if (userInfo)
     {
-      NSLog(&cfstr_WebsheetDidFai.isa, v8);
+      NSLog(&cfstr_WebsheetDidFai.isa, userInfo);
     }
 
-    v10 = [(WSWebSheetView *)self _specializedMessageForError:v6];
+    v10 = [(WSWebSheetView *)self _specializedMessageForError:errorCopy];
     if (!v10)
     {
       v10 = GetLocalizedString("An error occurred. The page could not be opened.");
     }
 
-    v11 = [(WSWebSheetView *)self _titleForError:v6];
+    v11 = [(WSWebSheetView *)self _titleForError:errorCopy];
     if (!v11)
     {
       v11 = GetLocalizedString("Error Opening Page");
@@ -1409,8 +1409,8 @@ void __54__WSWebSheetView_webView_didFailNavigation_withError___block_invoke(uin
     v15 = [v13 actionWithTitle:v14 style:0 handler:v17];
 
     [v12 addAction:v15];
-    v16 = [(WSWebSheetView *)self webSheetViewController];
-    [v16 presentViewController:v12 animated:1 completion:&__block_literal_global_233];
+    webSheetViewController = [(WSWebSheetView *)self webSheetViewController];
+    [webSheetViewController presentViewController:v12 animated:1 completion:&__block_literal_global_233];
   }
 }
 
@@ -1424,15 +1424,15 @@ void __65__WSWebSheetView_webView_didFailProvisionalNavigation_withError___block
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)webView:(id)a3 didCommitNavigation:(id)a4
+- (void)webView:(id)view didCommitNavigation:(id)navigation
 {
-  v10 = a3;
-  v5 = [v10 _committedURL];
-  [(WSWebSheetView *)self setCurrentURL:v5];
+  viewCopy = view;
+  _committedURL = [viewCopy _committedURL];
+  [(WSWebSheetView *)self setCurrentURL:_committedURL];
 
-  if ([v10 hasOnlySecureContent] && objc_msgSend(v10, "serverTrust"))
+  if ([viewCopy hasOnlySecureContent] && objc_msgSend(viewCopy, "serverTrust"))
   {
-    [v10 serverTrust];
+    [viewCopy serverTrust];
     v6 = SecTrustCopyInfo();
     v7 = v6;
     if (v6)
@@ -1456,55 +1456,55 @@ void __65__WSWebSheetView_webView_didFailProvisionalNavigation_withError___block
   MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)isUserAprroved:(id)a3
+- (BOOL)isUserAprroved:(id)aprroved
 {
   v12 = 0;
-  v3 = a3;
+  aprrovedCopy = aprroved;
   v4 = GetLocalizedString("Open in “%@”?");
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:v4, v3];
+  aprrovedCopy = [MEMORY[0x277CCACA8] stringWithFormat:v4, aprrovedCopy];
 
   LocalizedString = GetLocalizedString("SCHEME_APPROVAL_OPEN_BUTTON");
   v7 = GetLocalizedString("SCHEME_APPROVAL_DO_NOT_OPEN_BUTTON");
-  v8 = CFUserNotificationDisplayAlert(0.0, 0, 0, 0, 0, v5, 0, LocalizedString, v7, 0, &v12);
+  v8 = CFUserNotificationDisplayAlert(0.0, 0, 0, 0, 0, aprrovedCopy, 0, LocalizedString, v7, 0, &v12);
   v10 = (v12 & 3) == 0 && v8 == 0;
 
   return v10;
 }
 
-- (id)appNametoOpenURL:(id)a3
+- (id)appNametoOpenURL:(id)l
 {
-  v4 = a3;
-  NSLog(&cfstr_LookingForAnAp.isa, v4);
-  v5 = [v4 scheme];
-  if ([v5 isEqual:@"http"])
+  lCopy = l;
+  NSLog(&cfstr_LookingForAnAp.isa, lCopy);
+  scheme = [lCopy scheme];
+  if ([scheme isEqual:@"http"])
   {
   }
 
   else
   {
-    v6 = [v4 scheme];
-    v7 = [v6 isEqual:@"https"];
+    scheme2 = [lCopy scheme];
+    v7 = [scheme2 isEqual:@"https"];
 
     if (!v7)
     {
-      v15 = [MEMORY[0x277CC1E80] defaultWorkspace];
-      v16 = [v15 applicationsAvailableForOpeningURL:v4];
-      v10 = [v16 firstObject];
+      defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+      v16 = [defaultWorkspace applicationsAvailableForOpeningURL:lCopy];
+      firstObject = [v16 firstObject];
 
-      if (v10)
+      if (firstObject)
       {
         v17 = MEMORY[0x277CC1E60];
-        v18 = [v10 applicationIdentifier];
-        v19 = [v17 applicationProxyForIdentifier:v18];
-        v14 = [v19 localizedNameForContext:0];
+        applicationIdentifier = [firstObject applicationIdentifier];
+        v19 = [v17 applicationProxyForIdentifier:applicationIdentifier];
+        localizedName2 = [v19 localizedNameForContext:0];
 
-        NSLog(&cfstr_AppCanOpenTheU.isa, v14);
+        NSLog(&cfstr_AppCanOpenTheU.isa, localizedName2);
       }
 
       else
       {
         NSLog(&cfstr_FailedToFindAn.isa, self);
-        v14 = 0;
+        localizedName2 = 0;
       }
 
       goto LABEL_16;
@@ -1512,87 +1512,87 @@ void __65__WSWebSheetView_webView_didFailProvisionalNavigation_withError___block
   }
 
   v21 = 0;
-  v8 = [objc_alloc(MEMORY[0x277CC1E98]) initWithURL:v4 error:&v21];
+  v8 = [objc_alloc(MEMORY[0x277CC1E98]) initWithURL:lCopy error:&v21];
   v9 = v21;
-  v10 = v9;
+  firstObject = v9;
   if (v8)
   {
-    v11 = [v8 bundleRecord];
+    bundleRecord = [v8 bundleRecord];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = v11;
+      v12 = bundleRecord;
       if ([v12 isWebBrowser])
       {
-        v13 = [v12 localizedName];
-        NSLog(&cfstr_AppIsAWebBrows.isa, v13);
+        localizedName = [v12 localizedName];
+        NSLog(&cfstr_AppIsAWebBrows.isa, localizedName);
 
-        v14 = [v12 localizedName];
+        localizedName2 = [v12 localizedName];
       }
 
       else
       {
-        v14 = 0;
+        localizedName2 = 0;
       }
     }
 
     else
     {
-      v14 = 0;
+      localizedName2 = 0;
     }
   }
 
   else
   {
     NSLog(&cfstr_FailedToFindCl.isa, v9);
-    v14 = 0;
+    localizedName2 = 0;
   }
 
 LABEL_16:
 
-  return v14;
+  return localizedName2;
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 request];
-  v12 = [v9 navigationType];
-  v13 = [v11 URL];
+  viewCopy = view;
+  actionCopy = action;
+  handlerCopy = handler;
+  request = [actionCopy request];
+  navigationType = [actionCopy navigationType];
+  v13 = [request URL];
   v14 = v13;
-  if (v12 <= 1)
+  if (navigationType <= 1)
   {
     if ([v13 hasTelephonyScheme])
     {
       NSLog(&cfstr_FoundTelephony.isa);
-      v15 = [MEMORY[0x277CC1E80] defaultWorkspace];
+      defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
       v16 = MEMORY[0x277CBEBC0];
-      v17 = [v14 phoneNumber];
-      v18 = [v16 telephonyURLWithDestinationID:v17 promptUser:1];
-      [v15 openURL:v18 withOptions:0];
+      phoneNumber = [v14 phoneNumber];
+      v18 = [v16 telephonyURLWithDestinationID:phoneNumber promptUser:1];
+      [defaultWorkspace openURL:v18 withOptions:0];
 
 LABEL_4:
 LABEL_15:
-      v10[2](v10, 0);
+      handlerCopy[2](handlerCopy, 0);
       goto LABEL_16;
     }
 
-    v19 = [v14 scheme];
-    v20 = [v19 isEqualToString:@"mailto"];
+    scheme = [v14 scheme];
+    v20 = [scheme isEqualToString:@"mailto"];
 
     if (v20)
     {
       NSLog(&cfstr_FoundMailtoSch.isa);
-      v21 = [v9 targetFrame];
-      if (v21)
+      targetFrame = [actionCopy targetFrame];
+      if (targetFrame)
       {
-        v22 = v21;
-        v23 = [v9 targetFrame];
-        v24 = [v23 isMainFrame];
+        v22 = targetFrame;
+        targetFrame2 = [actionCopy targetFrame];
+        isMainFrame = [targetFrame2 isMainFrame];
 
-        if (!v24)
+        if (!isMainFrame)
         {
           goto LABEL_15;
         }
@@ -1603,8 +1603,8 @@ LABEL_15:
         goto LABEL_15;
       }
 
-      v15 = [MEMORY[0x277CC1E80] defaultWorkspace];
-      [v15 openURL:v14 withOptions:0];
+      defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+      [defaultWorkspace openURL:v14 withOptions:0];
       goto LABEL_4;
     }
   }
@@ -1613,9 +1613,9 @@ LABEL_15:
   {
     NSLog(&cfstr_AuthenticatedS.isa, v14);
     v25 = [(WSWebSheetView *)self appNametoOpenURL:v14];
-    if (v12)
+    if (navigationType)
     {
-      v10[2](v10, 1);
+      handlerCopy[2](handlerCopy, 1);
     }
 
     else
@@ -1626,19 +1626,19 @@ LABEL_15:
         if (![(WSWebSheetView *)self isUserAprroved:v25])
         {
           NSLog(&cfstr_AuthenticatedS_0.isa);
-          v10[2](v10, 0);
+          handlerCopy[2](handlerCopy, 0);
           goto LABEL_19;
         }
 
-        v26 = [MEMORY[0x277CC1E80] defaultWorkspace];
+        defaultWorkspace2 = [MEMORY[0x277CC1E80] defaultWorkspace];
         v47 = 0;
-        v27 = [v26 openURL:v14 withOptions:0 error:&v47];
+        v27 = [defaultWorkspace2 openURL:v14 withOptions:0 error:&v47];
         v28 = v47;
 
         if (v27)
         {
           NSLog(&cfstr_AuthenticatedS_1.isa);
-          v10[2](v10, 0);
+          handlerCopy[2](handlerCopy, 0);
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __74__WSWebSheetView_webView_decidePolicyForNavigationAction_decisionHandler___block_invoke;
@@ -1657,7 +1657,7 @@ LABEL_15:
         v28 = 0;
       }
 
-      if (![v9 _canHandleRequest])
+      if (![actionCopy _canHandleRequest])
       {
 
         goto LABEL_14;
@@ -1665,22 +1665,22 @@ LABEL_15:
 
       v44 = v28;
       v29 = [MEMORY[0x277CCAB68] stringWithString:@"com-apple-mobilesafari-tab:"];
-      v30 = [v11 URL];
+      v30 = [request URL];
       v31 = escapedStringFromURL(v30);
       [v29 appendString:v31];
 
-      v32 = [v8 URL];
+      v32 = [viewCopy URL];
 
       if (v32)
       {
         [v29 appendString:@"?back="];
-        v33 = [v8 URL];
+        v33 = [viewCopy URL];
         v34 = escapedStringFromURL(v33);
         [v29 appendString:v34];
       }
 
-      v35 = [v14 host];
-      v36 = [v35 isEqualToString:@"itunes.apple.com"];
+      host = [v14 host];
+      v36 = [host isEqualToString:@"itunes.apple.com"];
       v37 = @"Safari";
       if (v36)
       {
@@ -1692,16 +1692,16 @@ LABEL_15:
       if ([(WSWebSheetView *)self isUserAprroved:v38])
       {
         v43 = v38;
-        v39 = [MEMORY[0x277CC1E80] defaultWorkspace];
+        defaultWorkspace3 = [MEMORY[0x277CC1E80] defaultWorkspace];
         v40 = [MEMORY[0x277CBEBC0] URLWithString:v29];
-        v41 = [v39 openSensitiveURL:v40 withOptions:0];
+        v41 = [defaultWorkspace3 openSensitiveURL:v40 withOptions:0];
 
         if ((v41 & 1) == 0)
         {
           NSLog(&cfstr_AuthenticatedS_3.isa, v29);
         }
 
-        v10[2](v10, 0);
+        handlerCopy[2](handlerCopy, 0);
         v45[0] = MEMORY[0x277D85DD0];
         v45[1] = 3221225472;
         v45[2] = __74__WSWebSheetView_webView_decidePolicyForNavigationAction_decisionHandler___block_invoke_2;
@@ -1715,7 +1715,7 @@ LABEL_15:
       else
       {
         NSLog(&cfstr_AuthenticatedS_0.isa);
-        v10[2](v10, 0);
+        handlerCopy[2](handlerCopy, 0);
         v42 = v44;
       }
 
@@ -1728,28 +1728,28 @@ LABEL_19:
   }
 
   NSLog(&cfstr_PreAuthenticat.isa, v14);
-  if (([v9 _canHandleRequest] & 1) == 0)
+  if (([actionCopy _canHandleRequest] & 1) == 0)
   {
     goto LABEL_15;
   }
 
 LABEL_14:
-  v10[2](v10, 3);
+  handlerCopy[2](handlerCopy, 3);
 LABEL_16:
 }
 
-- (BOOL)isConfigurationProfileMIMEType:(id)a3
+- (BOOL)isConfigurationProfileMIMEType:(id)type
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  typeCopy = type;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  v5 = [v4 acceptedMIMETypes];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  acceptedMIMETypes = [mEMORY[0x277D262A0] acceptedMIMETypes];
 
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [acceptedMIMETypes countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -1759,17 +1759,17 @@ LABEL_16:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(acceptedMIMETypes);
         }
 
-        if (![v3 caseInsensitiveCompare:*(*(&v11 + 1) + 8 * i)])
+        if (![typeCopy caseInsensitiveCompare:*(*(&v11 + 1) + 8 * i)])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [acceptedMIMETypes countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -1785,85 +1785,85 @@ LABEL_11:
   return v6;
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationResponse:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationResponse:(id)response decisionHandler:(id)handler
 {
-  v14 = a5;
-  v7 = a4;
+  handlerCopy = handler;
+  responseCopy = response;
   NSLog(&cfstr_Decidepolicyfo.isa);
-  v8 = [v7 response];
+  response = [responseCopy response];
 
-  v9 = [v8 MIMEType];
-  if ([(WSWebSheetView *)self isConfigurationProfileMIMEType:v9])
+  mIMEType = [response MIMEType];
+  if ([(WSWebSheetView *)self isConfigurationProfileMIMEType:mIMEType])
   {
-    v10 = [v8 suggestedFilename];
-    v11 = [v10 lastPathComponent];
-    v12 = [v11 pathExtension];
-    v13 = [v12 lowercaseString];
-    [v13 isEqualToString:@"mobileconfig"];
+    suggestedFilename = [response suggestedFilename];
+    lastPathComponent = [suggestedFilename lastPathComponent];
+    pathExtension = [lastPathComponent pathExtension];
+    lowercaseString = [pathExtension lowercaseString];
+    [lowercaseString isEqualToString:@"mobileconfig"];
 
-    v14[2]();
+    handlerCopy[2]();
   }
 
   else
   {
     [(WSWebSheetView *)self dispatchCaptiveProbe];
-    (v14[2])(v14, 1);
+    (handlerCopy[2])(handlerCopy, 1);
   }
 }
 
-- (void)webView:(id)a3 didReceiveAuthenticationChallenge:(id)a4 completionHandler:(id)a5
+- (void)webView:(id)view didReceiveAuthenticationChallenge:(id)challenge completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 protectionSpace];
-  v12 = [v11 authenticationMethod];
-  if (![v12 isEqualToString:*MEMORY[0x277CBAB00]])
+  viewCopy = view;
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  protectionSpace = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
+  if (![authenticationMethod isEqualToString:*MEMORY[0x277CBAB00]])
   {
     goto LABEL_6;
   }
 
-  v13 = [v9 protectionSpace];
-  if (![v13 serverTrust])
+  protectionSpace2 = [challengeCopy protectionSpace];
+  if (![protectionSpace2 serverTrust])
   {
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  v25 = self;
-  v14 = [v9 protectionSpace];
-  v15 = [v14 host];
-  [v8 URL];
-  v17 = v16 = v8;
-  v18 = [v17 host];
-  v26 = [v15 isEqualToString:v18];
+  selfCopy = self;
+  protectionSpace3 = [challengeCopy protectionSpace];
+  host = [protectionSpace3 host];
+  [viewCopy URL];
+  v17 = v16 = viewCopy;
+  host2 = [v17 host];
+  v26 = [host isEqualToString:host2];
 
-  v8 = v16;
+  viewCopy = v16;
   if (!v26)
   {
 LABEL_7:
-    v10[2](v10, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
     goto LABEL_8;
   }
 
-  v19 = [v9 protectionSpace];
-  v20 = [v19 serverTrust];
+  protectionSpace4 = [challengeCopy protectionSpace];
+  serverTrust = [protectionSpace4 serverTrust];
 
-  v21 = [v9 protectionSpace];
-  v22 = [v21 host];
+  protectionSpace5 = [challengeCopy protectionSpace];
+  host3 = [protectionSpace5 host];
 
-  [(WSWebSheetView *)v25 _precheckTrustForServerCertificate:v20 host:v22];
+  [(WSWebSheetView *)selfCopy _precheckTrustForServerCertificate:serverTrust host:host3];
   v23 = dispatch_get_global_queue(25, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __78__WSWebSheetView_webView_didReceiveAuthenticationChallenge_completionHandler___block_invoke;
   block[3] = &unk_279EAFF18;
-  v30 = v20;
-  block[4] = v25;
-  v28 = v22;
-  v29 = v10;
-  v24 = v22;
+  v30 = serverTrust;
+  block[4] = selfCopy;
+  v28 = host3;
+  v29 = handlerCopy;
+  v24 = host3;
   dispatch_async(v23, block);
 
 LABEL_8:
@@ -1922,9 +1922,9 @@ void __78__WSWebSheetView_webView_didReceiveAuthenticationChallenge_completionHa
         return;
       }
 
-      v6 = [(NSURL *)navigationURLAtStart scheme];
-      v7 = v6;
-      if (v6 && ![v6 caseInsensitiveCompare:@"http"])
+      scheme = [(NSURL *)navigationURLAtStart scheme];
+      v7 = scheme;
+      if (scheme && ![scheme caseInsensitiveCompare:@"http"])
       {
         v9 = 3;
         if (!self->_everReceivedUntrustedCertificate)
@@ -1970,16 +1970,16 @@ void __78__WSWebSheetView_webView_didReceiveAuthenticationChallenge_completionHa
   v3 = self->_javaScriptScrapeCredentialsCounter + 1;
   self->_javaScriptScrapeCredentialsCounter = v3;
   NSLog(&cfstr_RegisteringUse.isa, a2, v3);
-  v4 = [(WSWebSheetView *)self webView];
+  webView = [(WSWebSheetView *)self webView];
   v5 = *MEMORY[0x277D02A70];
-  v6 = [MEMORY[0x277CE3800] defaultClientWorld];
+  defaultClientWorld = [MEMORY[0x277CE3800] defaultClientWorld];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__WSWebSheetView__scrapeUserCredentialsUsingJavaScript__block_invoke;
   v7[3] = &unk_279EAFF40;
   v7[4] = self;
   v7[5] = v3;
-  [v4 callAsyncJavaScript:v5 arguments:0 inFrame:0 inContentWorld:v6 completionHandler:v7];
+  [webView callAsyncJavaScript:v5 arguments:0 inFrame:0 inContentWorld:defaultClientWorld completionHandler:v7];
 }
 
 void __55__WSWebSheetView__scrapeUserCredentialsUsingJavaScript__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2033,7 +2033,7 @@ void __55__WSWebSheetView__scrapeUserCredentialsUsingJavaScript__block_invoke(ui
 LABEL_13:
 }
 
-- (void)webView:(id)a3 didStartProvisionalNavigation:(id)a4
+- (void)webView:(id)view didStartProvisionalNavigation:(id)navigation
 {
   [*MEMORY[0x277D76620] _beginShowingNetworkActivityIndicator];
   if (!self->_inDoneState)
@@ -2068,17 +2068,17 @@ LABEL_13:
       dispatch_async(queue, block);
     }
 
-    v4 = [(WSWebSheetView *)self delegate];
+    delegate = [(WSWebSheetView *)self delegate];
 
-    if (v4)
+    if (delegate)
     {
-      v5 = [(WSWebSheetView *)self delegate];
+      delegate2 = [(WSWebSheetView *)self delegate];
       v6[0] = MEMORY[0x277D85DD0];
       v6[1] = 3221225472;
       v6[2] = __38__WSWebSheetView_dispatchCaptiveProbe__block_invoke_2;
       v6[3] = &unk_279EAFF68;
       v6[4] = self;
-      [v5 handleWebNavigationWithCompletionHandler:v6];
+      [delegate2 handleWebNavigationWithCompletionHandler:v6];
     }
   }
 }
@@ -2102,9 +2102,9 @@ void __38__WSWebSheetView_dispatchCaptiveProbe__block_invoke_2(uint64_t a1, uint
   dispatch_async(MEMORY[0x277D85CD0], v2);
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  NSLog(&cfstr_Didfinishnavig.isa, a2, a3, a4);
+  NSLog(&cfstr_Didfinishnavig.isa, a2, view, navigation);
   [*MEMORY[0x277D76620] _endShowingNetworkActivityIndicator];
   [(WSWebSheetView *)self _stopCaptiveProbeDispatchTimer];
   [(WSWebSheetView *)self _updateBackForwardButtons];
@@ -2113,26 +2113,26 @@ void __38__WSWebSheetView_dispatchCaptiveProbe__block_invoke_2(uint64_t a1, uint
   [(WSWebSheetView *)self dispatchCaptiveProbe];
 }
 
-- (void)_autoFocusDelayTimerFired:(id)a3
+- (void)_autoFocusDelayTimerFired:(id)fired
 {
-  v5 = [(WSWebSheetView *)self webView];
+  webView = [(WSWebSheetView *)self webView];
   v3 = *MEMORY[0x277D02A68];
-  v4 = [MEMORY[0x277CE3800] defaultClientWorld];
-  [v5 callAsyncJavaScript:v3 arguments:0 inFrame:0 inContentWorld:v4 completionHandler:&__block_literal_global_348];
+  defaultClientWorld = [MEMORY[0x277CE3800] defaultClientWorld];
+  [webView callAsyncJavaScript:v3 arguments:0 inFrame:0 inContentWorld:defaultClientWorld completionHandler:&__block_literal_global_348];
 }
 
-- (void)webView:(id)a3 resourceLoad:(id)a4 didCompleteWithError:(id)a5 response:(id)a6
+- (void)webView:(id)view resourceLoad:(id)load didCompleteWithError:(id)error response:(id)response
 {
-  v11 = a4;
+  loadCopy = load;
   if (_os_feature_enabled_impl())
   {
     v8 = _os_feature_enabled_impl();
-    if (!a5)
+    if (!error)
     {
       if (v8)
       {
-        NSLog(&cfstr_DidCompleteRes.isa, [v11 resourceType], 0);
-        if ([v11 resourceType] == 3)
+        NSLog(&cfstr_DidCompleteRes.isa, [loadCopy resourceType], 0);
+        if ([loadCopy resourceType] == 3)
         {
           [(WSWebSheetView *)self _scrapeUserCredentialsUsingJavaScript];
         }
@@ -2146,17 +2146,17 @@ void __38__WSWebSheetView_dispatchCaptiveProbe__block_invoke_2(uint64_t a1, uint
   }
 }
 
-- (id)_fetchCaptivePortalCredentialsAndReturnNetworkName:(id *)a3 deviceName:(id *)a4
+- (id)_fetchCaptivePortalCredentialsAndReturnNetworkName:(id *)name deviceName:(id *)deviceName
 {
   v39 = *MEMORY[0x277D85DE8];
   if (_os_feature_enabled_impl() && _os_feature_enabled_impl())
   {
-    v7 = [(CWFInterface *)self->_corewifi currentKnownNetworkProfile];
-    v8 = v7;
-    if (v7)
+    currentKnownNetworkProfile = [(CWFInterface *)self->_corewifi currentKnownNetworkProfile];
+    v8 = currentKnownNetworkProfile;
+    if (currentKnownNetworkProfile)
     {
-      v9 = [v7 networkName];
-      if (v9)
+      networkName = [currentKnownNetworkProfile networkName];
+      if (networkName)
       {
         corewifi = self->_corewifi;
         v37 = 0;
@@ -2172,7 +2172,7 @@ void __38__WSWebSheetView_dispatchCaptiveProbe__block_invoke_2(uint64_t a1, uint
         else
         {
           v30 = v11;
-          v31 = v9;
+          v31 = networkName;
           [(CWFInterface *)self->_corewifi nearbyRecommendedNetworks];
           v33 = 0u;
           v34 = 0u;
@@ -2193,9 +2193,9 @@ LABEL_12:
               }
 
               v19 = *(*(&v33 + 1) + 8 * v18);
-              v20 = [v19 identifier];
-              v21 = [v8 identifier];
-              v22 = [v20 isEqualToString:v21];
+              identifier = [v19 identifier];
+              identifier2 = [v8 identifier];
+              v22 = [identifier isEqualToString:identifier2];
 
               if (v22)
               {
@@ -2214,9 +2214,9 @@ LABEL_12:
               }
             }
 
-            v23 = [v19 receivedFromDeviceName];
+            receivedFromDeviceName = [v19 receivedFromDeviceName];
 
-            if (!v23)
+            if (!receivedFromDeviceName)
             {
               goto LABEL_21;
             }
@@ -2231,27 +2231,27 @@ LABEL_18:
 LABEL_21:
             NSLog(&cfstr_CouldNotGetCwf.isa);
             v24 = 0;
-            v23 = 0;
+            receivedFromDeviceName = 0;
           }
 
           v11 = v30;
-          v9 = v31;
-          if (a3)
+          networkName = v31;
+          if (name)
           {
             v25 = v31;
-            *a3 = v31;
+            *name = v31;
           }
 
           v26 = v24 ^ 1;
-          if (!a4)
+          if (!deviceName)
           {
             v26 = 1;
           }
 
           if ((v26 & 1) == 0)
           {
-            v27 = v23;
-            *a4 = v23;
+            v27 = receivedFromDeviceName;
+            *deviceName = receivedFromDeviceName;
           }
 
           v14 = v30;
@@ -2284,23 +2284,23 @@ LABEL_21:
   return v14;
 }
 
-- (void)_populateTextSuggestionsWithCaptivePortalCredentials:(id)a3 networkName:(id)a4 deviceName:(id)a5 inputSession:(id)a6
+- (void)_populateTextSuggestionsWithCaptivePortalCredentials:(id)credentials networkName:(id)name deviceName:(id)deviceName inputSession:(id)session
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a6;
+  deviceNameCopy = deviceName;
+  sessionCopy = session;
   v10 = [(UITextSuggestion *)WSWebSheetAutoFillTextSuggestion textSuggestionWithInputText:&stru_2882BFA40];
-  if (v8)
+  if (deviceNameCopy)
   {
     v11 = MEMORY[0x277CCACA8];
     v12 = GetLocalizedString("From %@");
-    v13 = [v11 stringWithFormat:v12, v8];
-    [v10 setHeaderText:v13];
+    deviceNameCopy = [v11 stringWithFormat:v12, deviceNameCopy];
+    [v10 setHeaderText:deviceNameCopy];
   }
 
-  v14 = [(WSWebSheetView *)self isChinaRegion];
+  isChinaRegion = [(WSWebSheetView *)self isChinaRegion];
   v15 = MEMORY[0x277CCACA8];
-  if (v14)
+  if (isChinaRegion)
   {
     v16 = "Fill WLAN details";
   }
@@ -2316,14 +2316,14 @@ LABEL_21:
 
   v21[0] = v10;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
-  [v9 setSuggestions:v19];
+  [sessionCopy setSuggestions:v19];
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_webView:(id)a3 didStartInputSession:(id)a4
+- (void)_webView:(id)view didStartInputSession:(id)session
 {
-  v5 = a4;
+  sessionCopy = session;
   v10 = 0;
   v11 = 0;
   v6 = [(WSWebSheetView *)self _fetchCaptivePortalCredentialsAndReturnNetworkName:&v11 deviceName:&v10];
@@ -2332,23 +2332,23 @@ LABEL_21:
   if ([v6 count] && v7)
   {
     objc_storeStrong(&self->_fetchedCredentials, v6);
-    [(WSWebSheetView *)self _populateTextSuggestionsWithCaptivePortalCredentials:v6 networkName:v7 deviceName:v8 inputSession:v5];
-    v9 = [[WSWebSheetInputSessionProxy alloc] initWithInputSession:v5];
+    [(WSWebSheetView *)self _populateTextSuggestionsWithCaptivePortalCredentials:v6 networkName:v7 deviceName:v8 inputSession:sessionCopy];
+    v9 = [[WSWebSheetInputSessionProxy alloc] initWithInputSession:sessionCopy];
     [(_SFFormAutoFillController *)self->_autoFillController fieldFocusedWithInputSession:v9];
   }
 
   else
   {
-    [(_SFFormAutoFillController *)self->_autoFillController fieldFocusedWithInputSession:v5];
+    [(_SFFormAutoFillController *)self->_autoFillController fieldFocusedWithInputSession:sessionCopy];
   }
 }
 
-- (void)_webView:(id)a3 willSubmitFormValues:(id)a4 userObject:(id)a5 submissionHandler:(id)a6
+- (void)_webView:(id)view willSubmitFormValues:(id)values userObject:(id)object submissionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  viewCopy = view;
+  valuesCopy = values;
+  objectCopy = object;
+  handlerCopy = handler;
   NSLog(&cfstr_Willsubmitform.isa);
   v27 = 0;
   v28 = &v27;
@@ -2368,24 +2368,24 @@ LABEL_21:
   v20[3] = &unk_279EAFFB0;
   v20[4] = &v27;
   v20[5] = &v21;
-  [v11 enumerateKeysAndObjectsUsingBlock:v20];
+  [valuesCopy enumerateKeysAndObjectsUsingBlock:v20];
   if (v28[5] && (v14 = v22[5]) != 0)
   {
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"username=%@&password=%@", v28[5], v14];
     postMessage = self->_postMessage;
     self->_postMessage = v15;
 
-    v17 = [v10 _committedURL];
-    v18 = [v17 relativeString];
+    _committedURL = [viewCopy _committedURL];
+    relativeString = [_committedURL relativeString];
     loginURL = self->_loginURL;
-    self->_loginURL = v18;
+    self->_loginURL = relativeString;
 
-    v13[2](v13);
+    handlerCopy[2](handlerCopy);
   }
 
   else
   {
-    [(_SFFormAutoFillController *)self->_autoFillController willSubmitFormValues:v11 userObject:v12 submissionHandler:v13];
+    [(_SFFormAutoFillController *)self->_autoFillController willSubmitFormValues:valuesCopy userObject:objectCopy submissionHandler:handlerCopy];
   }
 
   _Block_object_dispose(&v21, 8);
@@ -2452,40 +2452,40 @@ void __57__WSWebSheetView__autoFillUserCredentialsUsingJavaScript__block_invoke_
   }
 }
 
-- (void)_webView:(id)a3 insertTextSuggestion:(id)a4 inInputSession:(id)a5
+- (void)_webView:(id)view insertTextSuggestion:(id)suggestion inInputSession:(id)session
 {
-  v11 = a3;
-  v7 = a4;
+  viewCopy = view;
+  suggestionCopy = suggestion;
   if (_os_feature_enabled_impl() && _os_feature_enabled_impl())
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [(WSWebSheetView *)self _autoFillUserCredentialsUsingJavaScript];
-      [v11 resignFirstResponder];
+      [viewCopy resignFirstResponder];
     }
 
     else
     {
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 && ![v7 textSuggestionType])
+      if ((objc_opt_isKindOfClass() & 1) != 0 && ![suggestionCopy textSuggestionType])
       {
-        v8 = [v7 inputText];
+        inputText = [suggestionCopy inputText];
 
-        if (v8)
+        if (inputText)
         {
           oneTimeCodesToFilterFromScrapedCredentials = self->_oneTimeCodesToFilterFromScrapedCredentials;
-          v10 = [v7 inputText];
-          [(NSMutableSet *)oneTimeCodesToFilterFromScrapedCredentials addObject:v10];
+          inputText2 = [suggestionCopy inputText];
+          [(NSMutableSet *)oneTimeCodesToFilterFromScrapedCredentials addObject:inputText2];
         }
       }
     }
   }
 
-  [(_SFFormAutoFillController *)self->_autoFillController insertTextSuggestion:v7];
+  [(_SFFormAutoFillController *)self->_autoFillController insertTextSuggestion:suggestionCopy];
 }
 
-- (void)_captiveProbeDispatchTimerDidFire:(id)a3
+- (void)_captiveProbeDispatchTimerDidFire:(id)fire
 {
   [(WSWebSheetView *)self dispatchCaptiveProbe];
 

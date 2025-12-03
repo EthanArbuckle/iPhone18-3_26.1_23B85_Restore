@@ -1,21 +1,21 @@
 @interface PPTUniversalCompletionProvider
-- (id)_generateResultsForString:(id)a3;
+- (id)_generateResultsForString:(id)string;
 - (id)_generateSingleResult;
-- (void)setQueryToComplete:(id)a3;
+- (void)setQueryToComplete:(id)complete;
 @end
 
 @implementation PPTUniversalCompletionProvider
 
-- (void)setQueryToComplete:(id)a3
+- (void)setQueryToComplete:(id)complete
 {
-  v4 = a3;
-  v5 = [v4 queryString];
-  v6 = [v5 isEqualToString:self->querySimulated];
+  completeCopy = complete;
+  queryString = [completeCopy queryString];
+  v6 = [queryString isEqualToString:self->querySimulated];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [v4 queryString];
-    v8 = [v7 copy];
+    queryString2 = [completeCopy queryString];
+    v8 = [queryString2 copy];
     querySimulated = self->querySimulated;
     self->querySimulated = v8;
 
@@ -37,25 +37,25 @@ void __53__PPTUniversalCompletionProvider_setQueryToComplete___block_invoke(uint
   [v2 setCompletions:v3 forString:*(*(a1 + 32) + 136)];
 }
 
-- (id)_generateResultsForString:(id)a3
+- (id)_generateResultsForString:(id)string
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  if ([v4 length])
+  stringCopy = string;
+  array = [MEMORY[0x277CBEB18] array];
+  if ([stringCopy length])
   {
     v6 = 0;
     do
     {
-      v7 = [(PPTUniversalCompletionProvider *)self _generateSingleResult];
-      [v5 addObject:v7];
+      _generateSingleResult = [(PPTUniversalCompletionProvider *)self _generateSingleResult];
+      [array addObject:_generateSingleResult];
 
       ++v6;
     }
 
-    while (v6 < [v4 length]);
+    while (v6 < [stringCopy length]);
   }
 
-  return v5;
+  return array;
 }
 
 - (id)_generateSingleResult

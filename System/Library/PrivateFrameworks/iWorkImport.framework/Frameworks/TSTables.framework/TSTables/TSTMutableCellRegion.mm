@@ -1,11 +1,11 @@
 @interface TSTMutableCellRegion
-- (void)addColumns:(id)a3;
-- (void)addRegion:(id)a3;
-- (void)addRows:(id)a3;
+- (void)addColumns:(id)columns;
+- (void)addRegion:(id)region;
+- (void)addRows:(id)rows;
 - (void)clear;
-- (void)p_addRange:(TSUCellRect)a3 calculateAncillaryInfo:(BOOL)a4;
-- (void)removeColumns:(id)a3;
-- (void)removeRows:(id)a3;
+- (void)p_addRange:(TSUCellRect)range calculateAncillaryInfo:(BOOL)info;
+- (void)removeColumns:(id)columns;
+- (void)removeRows:(id)rows;
 @end
 
 @implementation TSTMutableCellRegion
@@ -24,18 +24,18 @@
   *&self->super._firstCellID.row = vdupq_n_s64(0x7FFF7FFFFFFFuLL);
 }
 
-- (void)p_addRange:(TSUCellRect)a3 calculateAncillaryInfo:(BOOL)a4
+- (void)p_addRange:(TSUCellRect)range calculateAncillaryInfo:(BOOL)info
 {
-  origin = a3.origin;
+  origin = range.origin;
   v38[1] = *MEMORY[0x277D85DE8];
-  if (a3.origin.row != 0x7FFFFFFF && (*&a3.origin & 0xFFFF00000000) != 0x7FFF00000000)
+  if (range.origin.row != 0x7FFFFFFF && (*&range.origin & 0xFFFF00000000) != 0x7FFF00000000)
   {
-    size = a3.size;
-    if (a3.size.numberOfRows)
+    size = range.size;
+    if (range.size.numberOfRows)
     {
-      if (a3.size.numberOfColumns)
+      if (range.size.numberOfColumns)
       {
-        if (objc_msgSend_isValid(self, a2, *&a3.origin, *&a3.size, a4))
+        if (objc_msgSend_isValid(self, a2, *&range.origin, *&range.size, info))
         {
           v33 = 0;
           v34 = 0;
@@ -62,7 +62,7 @@
             objc_msgSend_p_insertRangeIntoRegion_(self, v16, *i, i[1], v19);
           }
 
-          if (a4)
+          if (info)
           {
             objc_msgSend_p_calculateAncillaryInformation(self, v16, v17, v18, v19);
           }
@@ -108,11 +108,11 @@
   }
 }
 
-- (void)addRegion:(id)a3
+- (void)addRegion:(id)region
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4 && objc_msgSend_isValid(v4, v5, v6, v7, v8))
+  regionCopy = region;
+  v9 = regionCopy;
+  if (regionCopy && objc_msgSend_isValid(regionCopy, v5, v6, v7, v8))
   {
     if (objc_msgSend_isValid(self, v10, v11, v12, v13))
     {
@@ -159,11 +159,11 @@
   }
 }
 
-- (void)addColumns:(id)a3
+- (void)addColumns:(id)columns
 {
-  v4 = a3;
-  v8 = v4;
-  if (v4)
+  columnsCopy = columns;
+  v8 = columnsCopy;
+  if (columnsCopy)
   {
     v14[0] = 0;
     v14[1] = v14;
@@ -175,17 +175,17 @@
     v13[3] = &unk_2784623E0;
     v13[4] = self;
     v13[5] = v14;
-    objc_msgSend_enumerateRangesUsingBlock_(v4, v5, v13, v6, v7);
+    objc_msgSend_enumerateRangesUsingBlock_(columnsCopy, v5, v13, v6, v7);
     objc_msgSend_p_calculateAncillaryInformation(self, v9, v10, v11, v12);
     _Block_object_dispose(v14, 8);
   }
 }
 
-- (void)addRows:(id)a3
+- (void)addRows:(id)rows
 {
-  v4 = a3;
-  v8 = v4;
-  if (v4)
+  rowsCopy = rows;
+  v8 = rowsCopy;
+  if (rowsCopy)
   {
     v14[0] = 0;
     v14[1] = v14;
@@ -197,16 +197,16 @@
     v13[3] = &unk_2784623E0;
     v13[4] = self;
     v13[5] = v14;
-    objc_msgSend_enumerateRangesUsingBlock_(v4, v5, v13, v6, v7);
+    objc_msgSend_enumerateRangesUsingBlock_(rowsCopy, v5, v13, v6, v7);
     objc_msgSend_p_calculateAncillaryInformation(self, v9, v10, v11, v12);
     _Block_object_dispose(v14, 8);
   }
 }
 
-- (void)removeRows:(id)a3
+- (void)removeRows:(id)rows
 {
-  v4 = a3;
-  if (objc_msgSend_count(v4, v5, v6, v7, v8))
+  rowsCopy = rows;
+  if (objc_msgSend_count(rowsCopy, v5, v6, v7, v8))
   {
     v13 = objc_msgSend_boundingCellRange(self, v9, v10, v11, v12);
     if (v14 >> 32)
@@ -232,7 +232,7 @@
     v20 = objc_msgSend_mutableCopy(self, v14, v15, v16, v17);
     objc_msgSend_clear(self, v21, v22, v23, v24);
     v27 = objc_msgSend_indexSetWithIndexesInRange_(MEMORY[0x277CCAB58], v25, 0, v19, v26);
-    objc_msgSend_removeIndexes_(v27, v28, v4, v29, v30);
+    objc_msgSend_removeIndexes_(v27, v28, rowsCopy, v29, v30);
     v49[0] = 0;
     v49[1] = v49;
     v49[2] = 0x2020000000;
@@ -249,7 +249,7 @@
     v46 = v49;
     v31 = v20;
     v43 = v31;
-    v44 = self;
+    selfCopy = self;
     objc_msgSend_enumerateRangesUsingBlock_(v27, v32, &v39, v33, v34);
     objc_msgSend_p_calculateAncillaryInformation(self, v35, v36, v37, v38, v39, v40, v41, v42);
 
@@ -258,10 +258,10 @@
   }
 }
 
-- (void)removeColumns:(id)a3
+- (void)removeColumns:(id)columns
 {
-  v4 = a3;
-  if (objc_msgSend_count(v4, v5, v6, v7, v8))
+  columnsCopy = columns;
+  if (objc_msgSend_count(columnsCopy, v5, v6, v7, v8))
   {
     v13 = objc_msgSend_boundingCellRange(self, v9, v10, v11, v12);
     if (v14)
@@ -287,7 +287,7 @@
     v20 = objc_msgSend_mutableCopy(self, v14, v15, v16, v17);
     objc_msgSend_clear(self, v21, v22, v23, v24);
     v27 = objc_msgSend_indexSetWithIndexesInRange_(MEMORY[0x277CCAB58], v25, 0, v19, v26);
-    objc_msgSend_removeIndexes_(v27, v28, v4, v29, v30);
+    objc_msgSend_removeIndexes_(v27, v28, columnsCopy, v29, v30);
     v49[0] = 0;
     v49[1] = v49;
     v49[2] = 0x2020000000;
@@ -304,7 +304,7 @@
     v46 = v49;
     v31 = v20;
     v43 = v31;
-    v44 = self;
+    selfCopy = self;
     objc_msgSend_enumerateRangesUsingBlock_(v27, v32, &v39, v33, v34);
     objc_msgSend_p_calculateAncillaryInformation(self, v35, v36, v37, v38, v39, v40, v41, v42);
 

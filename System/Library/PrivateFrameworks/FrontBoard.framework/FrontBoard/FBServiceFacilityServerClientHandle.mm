@@ -1,8 +1,8 @@
 @interface FBServiceFacilityServerClientHandle
-- (FBServiceFacilityServerClientHandle)initWithFacilityID:(id)a3 connection:(id)a4;
+- (FBServiceFacilityServerClientHandle)initWithFacilityID:(id)d connection:(id)connection;
 - (NSString)description;
 - (id)prettyProcessDescription;
-- (void)setContext:(id)a3;
+- (void)setContext:(id)context;
 @end
 
 @implementation FBServiceFacilityServerClientHandle
@@ -29,22 +29,22 @@
   v6 = FBSProcessPrettyDescription();
   v7 = [v3 appendObject:@"remote" withName:v6 skipIfNil:1];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (FBServiceFacilityServerClientHandle)initWithFacilityID:(id)a3 connection:(id)a4
+- (FBServiceFacilityServerClientHandle)initWithFacilityID:(id)d connection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dCopy = d;
+  connectionCopy = connection;
+  if (!dCopy)
   {
     [FBServiceFacilityServerClientHandle initWithFacilityID:a2 connection:?];
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = connectionCopy;
+  if (!connectionCopy)
   {
     [FBServiceFacilityServerClientHandle initWithFacilityID:a2 connection:?];
   }
@@ -54,21 +54,21 @@
   v10 = [(FBServiceFacilityServerClientHandle *)&v22 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [dCopy copy];
     facilityID = v10->_facilityID;
     v10->_facilityID = v11;
 
-    objc_storeStrong(&v10->_connection, a4);
-    v13 = [v9 remoteProcess];
+    objc_storeStrong(&v10->_connection, connection);
+    remoteProcess = [v9 remoteProcess];
     processHandle = v10->_processHandle;
-    v10->_processHandle = v13;
+    v10->_processHandle = remoteProcess;
 
     v15 = +[FBProcessManager sharedInstance];
-    v16 = [(BSProcessHandle *)v10->_processHandle auditToken];
-    v17 = v16;
-    if (v16)
+    auditToken = [(BSProcessHandle *)v10->_processHandle auditToken];
+    v17 = auditToken;
+    if (auditToken)
     {
-      [v16 realToken];
+      [auditToken realToken];
     }
 
     else
@@ -84,17 +84,17 @@
   return v10;
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   context = self->_context;
-  if (context != v5)
+  if (context != contextCopy)
   {
-    v7 = v5;
+    v7 = contextCopy;
     [(FBSServiceFacilityClientContext *)context setClientHandle:0];
-    objc_storeStrong(&self->_context, a3);
+    objc_storeStrong(&self->_context, context);
     [(FBSServiceFacilityClientContext *)self->_context setClientHandle:self];
-    v5 = v7;
+    contextCopy = v7;
   }
 }
 

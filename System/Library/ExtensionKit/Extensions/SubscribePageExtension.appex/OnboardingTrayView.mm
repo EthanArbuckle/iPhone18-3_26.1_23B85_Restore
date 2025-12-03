@@ -1,13 +1,13 @@
 @interface OnboardingTrayView
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (_TtC22SubscribePageExtension18OnboardingTrayView)initWithCoder:(id)a3;
-- (_TtC22SubscribePageExtension18OnboardingTrayView)initWithFrame:(CGRect)a3;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (_TtC22SubscribePageExtension18OnboardingTrayView)initWithCoder:(id)coder;
+- (_TtC22SubscribePageExtension18OnboardingTrayView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation OnboardingTrayView
 
-- (_TtC22SubscribePageExtension18OnboardingTrayView)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension18OnboardingTrayView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension18OnboardingTrayView_itemViewLayoutItems) = _swiftEmptyArrayStorage;
   result = sub_100754644();
@@ -17,16 +17,16 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006ECE64();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
-  width = a3.width;
+  width = fitting.width;
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_1006ED010(a4, width);
+  selfCopy = self;
+  v8 = sub_1006ED010(in, width);
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -43,7 +43,7 @@
   return result;
 }
 
-- (_TtC22SubscribePageExtension18OnboardingTrayView)initWithFrame:(CGRect)a3
+- (_TtC22SubscribePageExtension18OnboardingTrayView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

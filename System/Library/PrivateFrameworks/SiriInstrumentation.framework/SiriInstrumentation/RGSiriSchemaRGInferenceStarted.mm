@@ -1,25 +1,25 @@
 @interface RGSiriSchemaRGInferenceStarted
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (RGSiriSchemaRGInferenceStarted)initWithDictionary:(id)a3;
-- (RGSiriSchemaRGInferenceStarted)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (RGSiriSchemaRGInferenceStarted)initWithDictionary:(id)dictionary;
+- (RGSiriSchemaRGInferenceStarted)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RGSiriSchemaRGInferenceStarted
 
-- (RGSiriSchemaRGInferenceStarted)initWithDictionary:(id)a3
+- (RGSiriSchemaRGInferenceStarted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = RGSiriSchemaRGInferenceStarted;
   v5 = [(RGSiriSchemaRGInferenceStarted *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"modelVersion"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"modelVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(RGSiriSchemaRGInferenceStarted *)v5 setModelVersion:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"promptVersion"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"promptVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (RGSiriSchemaRGInferenceStarted)initWithJSON:(id)a3
+- (RGSiriSchemaRGInferenceStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(RGSiriSchemaRGInferenceStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(RGSiriSchemaRGInferenceStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(RGSiriSchemaRGInferenceStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,66 +77,66 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_modelVersion)
   {
-    v4 = [(RGSiriSchemaRGInferenceStarted *)self modelVersion];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    modelVersion = [(RGSiriSchemaRGInferenceStarted *)self modelVersion];
+    dictionaryRepresentation = [modelVersion dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"modelVersion"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"modelVersion"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"modelVersion"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"modelVersion"];
     }
   }
 
   if (self->_promptVersion)
   {
-    v7 = [(RGSiriSchemaRGInferenceStarted *)self promptVersion];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    promptVersion = [(RGSiriSchemaRGInferenceStarted *)self promptVersion];
+    dictionaryRepresentation2 = [promptVersion dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"promptVersion"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"promptVersion"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"promptVersion"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"promptVersion"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(RGSiriSchemaRGInferenceStarted *)self modelVersion];
-  v6 = [v4 modelVersion];
-  if ((v5 != 0) == (v6 == 0))
+  modelVersion = [(RGSiriSchemaRGInferenceStarted *)self modelVersion];
+  modelVersion2 = [equalCopy modelVersion];
+  if ((modelVersion != 0) == (modelVersion2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(RGSiriSchemaRGInferenceStarted *)self modelVersion];
-  if (v7)
+  modelVersion3 = [(RGSiriSchemaRGInferenceStarted *)self modelVersion];
+  if (modelVersion3)
   {
-    v8 = v7;
-    v9 = [(RGSiriSchemaRGInferenceStarted *)self modelVersion];
-    v10 = [v4 modelVersion];
-    v11 = [v9 isEqual:v10];
+    v8 = modelVersion3;
+    modelVersion4 = [(RGSiriSchemaRGInferenceStarted *)self modelVersion];
+    modelVersion5 = [equalCopy modelVersion];
+    v11 = [modelVersion4 isEqual:modelVersion5];
 
     if (!v11)
     {
@@ -148,12 +148,12 @@
   {
   }
 
-  v5 = [(RGSiriSchemaRGInferenceStarted *)self promptVersion];
-  v6 = [v4 promptVersion];
-  if ((v5 != 0) != (v6 == 0))
+  modelVersion = [(RGSiriSchemaRGInferenceStarted *)self promptVersion];
+  modelVersion2 = [equalCopy promptVersion];
+  if ((modelVersion != 0) != (modelVersion2 == 0))
   {
-    v12 = [(RGSiriSchemaRGInferenceStarted *)self promptVersion];
-    if (!v12)
+    promptVersion = [(RGSiriSchemaRGInferenceStarted *)self promptVersion];
+    if (!promptVersion)
     {
 
 LABEL_15:
@@ -161,10 +161,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(RGSiriSchemaRGInferenceStarted *)self promptVersion];
-    v15 = [v4 promptVersion];
-    v16 = [v14 isEqual:v15];
+    v13 = promptVersion;
+    promptVersion2 = [(RGSiriSchemaRGInferenceStarted *)self promptVersion];
+    promptVersion3 = [equalCopy promptVersion];
+    v16 = [promptVersion2 isEqual:promptVersion3];
 
     if (v16)
     {
@@ -184,46 +184,46 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(RGSiriSchemaRGInferenceStarted *)self modelVersion];
+  toCopy = to;
+  modelVersion = [(RGSiriSchemaRGInferenceStarted *)self modelVersion];
 
-  if (v4)
+  if (modelVersion)
   {
-    v5 = [(RGSiriSchemaRGInferenceStarted *)self modelVersion];
+    modelVersion2 = [(RGSiriSchemaRGInferenceStarted *)self modelVersion];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(RGSiriSchemaRGInferenceStarted *)self promptVersion];
+  promptVersion = [(RGSiriSchemaRGInferenceStarted *)self promptVersion];
 
-  if (v6)
+  if (promptVersion)
   {
-    v7 = [(RGSiriSchemaRGInferenceStarted *)self promptVersion];
+    promptVersion2 = [(RGSiriSchemaRGInferenceStarted *)self promptVersion];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = RGSiriSchemaRGInferenceStarted;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(RGSiriSchemaRGInferenceStarted *)self modelVersion];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  modelVersion = [(RGSiriSchemaRGInferenceStarted *)self modelVersion];
+  v7 = [modelVersion applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(RGSiriSchemaRGInferenceStarted *)self deleteModelVersion];
   }
 
-  v9 = [(RGSiriSchemaRGInferenceStarted *)self promptVersion];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  promptVersion = [(RGSiriSchemaRGInferenceStarted *)self promptVersion];
+  v10 = [promptVersion applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(RGSiriSchemaRGInferenceStarted *)self deletePromptVersion];
   }

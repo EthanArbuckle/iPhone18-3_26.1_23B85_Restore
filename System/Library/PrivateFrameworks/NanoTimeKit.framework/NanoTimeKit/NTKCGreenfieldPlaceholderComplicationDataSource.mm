@@ -1,41 +1,41 @@
 @interface NTKCGreenfieldPlaceholderComplicationDataSource
-- (Class)richComplicationDisplayViewClassForDevice:(id)a3;
-- (NTKCGreenfieldPlaceholderComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
+- (Class)richComplicationDisplayViewClassForDevice:(id)device;
+- (NTKCGreenfieldPlaceholderComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
 - (id)_currentTimelineEntry;
 - (id)currentSwitcherTemplate;
-- (void)getCurrentTimelineEntryWithHandler:(id)a3;
+- (void)getCurrentTimelineEntryWithHandler:(id)handler;
 - (void)pause;
 - (void)resume;
 @end
 
 @implementation NTKCGreenfieldPlaceholderComplicationDataSource
 
-- (NTKCGreenfieldPlaceholderComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (NTKCGreenfieldPlaceholderComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  complicationCopy = complication;
+  deviceCopy = device;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v17.receiver = self;
     v17.super_class = NTKCGreenfieldPlaceholderComplicationDataSource;
-    v11 = [(CLKCComplicationDataSource *)&v17 initWithComplication:v9 family:a4 forDevice:v10];
+    v11 = [(CLKCComplicationDataSource *)&v17 initWithComplication:complicationCopy family:family forDevice:deviceCopy];
     v12 = v11;
     if (v11)
     {
-      objc_storeStrong(&v11->_placeholderComplication, a3);
+      objc_storeStrong(&v11->_placeholderComplication, complication);
       v13 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v19 = v9;
+        v19 = complicationCopy;
         _os_log_impl(&dword_22D9C5000, v13, OS_LOG_TYPE_DEFAULT, "NTKCGreenfieldPlaceholderComplicationDataSource: Created for complication: %@", buf, 0xCu);
       }
     }
 
     self = v12;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
@@ -43,13 +43,13 @@
     v15 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [NTKCGreenfieldPlaceholderComplicationDataSource initWithComplication:v9 family:v15 forDevice:?];
+      [NTKCGreenfieldPlaceholderComplicationDataSource initWithComplication:complicationCopy family:v15 forDevice:?];
     }
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 - (void)pause
@@ -66,39 +66,39 @@
   [(CLKCComplicationDataSource *)&v2 resume];
 }
 
-- (Class)richComplicationDisplayViewClassForDevice:(id)a3
+- (Class)richComplicationDisplayViewClassForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(CLKCComplicationDataSource *)self complication];
-  if ([v5 complicationType] == 48)
+  deviceCopy = device;
+  complication = [(CLKCComplicationDataSource *)self complication];
+  if ([complication complicationType] == 48)
   {
     goto LABEL_4;
   }
 
-  v6 = [(CLKCComplicationDataSource *)self complication];
-  if ([v6 complicationType] == 55)
+  complication2 = [(CLKCComplicationDataSource *)self complication];
+  if ([complication2 complicationType] == 55)
   {
 
     goto LABEL_4;
   }
 
-  v9 = [(CLKCComplicationDataSource *)self complication];
-  v10 = [v9 complicationType];
+  complication3 = [(CLKCComplicationDataSource *)self complication];
+  complicationType = [complication3 complicationType];
 
-  if (v10 != 31)
+  if (complicationType != 31)
   {
-    v11 = [(CLKCComplicationDataSource *)self complication];
-    v12 = [NTKLocalTimelineComplicationController complicationDataSourceClassForComplication:v11 family:[(CLKCComplicationDataSource *)self family] device:v4];
+    complication4 = [(CLKCComplicationDataSource *)self complication];
+    v12 = [NTKLocalTimelineComplicationController complicationDataSourceClassForComplication:complication4 family:[(CLKCComplicationDataSource *)self family] device:deviceCopy];
 
     v13 = [v12 alloc];
-    v14 = [(CLKCComplicationDataSource *)self complication];
-    v15 = [(CLKCComplicationDataSource *)self family];
-    v16 = [(CLKCComplicationDataSource *)self context];
-    v5 = [v13 initWithComplication:v14 family:v15 forDevice:v4 context:v16];
+    complication5 = [(CLKCComplicationDataSource *)self complication];
+    family = [(CLKCComplicationDataSource *)self family];
+    context = [(CLKCComplicationDataSource *)self context];
+    complication = [v13 initWithComplication:complication5 family:family forDevice:deviceCopy context:context];
 
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v5 richComplicationDisplayViewClassForDevice:v4];
+      v7 = [complication richComplicationDisplayViewClassForDevice:deviceCopy];
       goto LABEL_5;
     }
 
@@ -117,17 +117,17 @@ LABEL_6:
 
 - (id)currentSwitcherTemplate
 {
-  v2 = [(NTKCGreenfieldPlaceholderComplicationDataSource *)self _currentTimelineEntry];
-  v3 = [v2 complicationTemplate];
+  _currentTimelineEntry = [(NTKCGreenfieldPlaceholderComplicationDataSource *)self _currentTimelineEntry];
+  complicationTemplate = [_currentTimelineEntry complicationTemplate];
 
-  return v3;
+  return complicationTemplate;
 }
 
-- (void)getCurrentTimelineEntryWithHandler:(id)a3
+- (void)getCurrentTimelineEntryWithHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(NTKCGreenfieldPlaceholderComplicationDataSource *)self _currentTimelineEntry];
-  (*(a3 + 2))(v5, v6);
+  handlerCopy = handler;
+  _currentTimelineEntry = [(NTKCGreenfieldPlaceholderComplicationDataSource *)self _currentTimelineEntry];
+  (*(handler + 2))(handlerCopy, _currentTimelineEntry);
 }
 
 - (id)_currentTimelineEntry
@@ -140,13 +140,13 @@ LABEL_6:
 
   else
   {
-    v5 = [(NTKGreenfieldPlaceholderComplication *)self->_placeholderComplication appStoreItemId];
+    appStoreItemId = [(NTKGreenfieldPlaceholderComplication *)self->_placeholderComplication appStoreItemId];
 
-    if (v5)
+    if (appStoreItemId)
     {
-      v6 = [(NTKGreenfieldPlaceholderComplication *)self->_placeholderComplication appName];
+      appName = [(NTKGreenfieldPlaceholderComplication *)self->_placeholderComplication appName];
       LODWORD(v7) = 1.0;
-      v8 = [NTKGreenfieldPlaceholderTimelineEntryModel entryModelWithAppIcon:0 appName:v6 installationProgress:v7];
+      v8 = [NTKGreenfieldPlaceholderTimelineEntryModel entryModelWithAppIcon:0 appName:appName installationProgress:v7];
     }
 
     else

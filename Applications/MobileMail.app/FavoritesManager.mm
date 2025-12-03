@@ -1,35 +1,35 @@
 @interface FavoritesManager
-+ (id)defaultsKeyForAutomaticMailboxVisibilityForSourceType:(unint64_t)a3;
-- (BOOL)_isDictionaryRepresentationValid:(id)a3;
-- (BOOL)updateCollections:(id)a3 withItems:(id)a4;
++ (id)defaultsKeyForAutomaticMailboxVisibilityForSourceType:(unint64_t)type;
+- (BOOL)_isDictionaryRepresentationValid:(id)valid;
+- (BOOL)updateCollections:(id)collections withItems:(id)items;
 - (FavoriteItem)lastSelectedItem;
-- (FavoritesManager)initWithFavoritesPersistence:(id)a3 collections:(id)a4 conversationSubscriptionProvider:(id)a5;
+- (FavoritesManager)initWithFavoritesPersistence:(id)persistence collections:(id)collections conversationSubscriptionProvider:(id)provider;
 - (NSArray)suggestedFavoriteItems;
 - (NSMutableArray)visibleMailboxCollections;
-- (id)collectionContainingItem:(id)a3;
+- (id)collectionContainingItem:(id)item;
 - (id)dictionaryRepresentation;
-- (id)favoriteMailboxesForAccount:(id)a3;
-- (id)itemsContainingName:(id)a3;
-- (id)itemsMatchingItemURLStrings:(id)a3;
-- (id)itemsMatchingName:(id)a3;
-- (id)itemsOfType:(int64_t)a3;
-- (id)orderedFavoriteMailboxesForAccount:(id)a3 includeUnifiedMailboxes:(BOOL)a4;
-- (id)visibleItemsOfType:(int64_t)a3;
-- (void)_debounceReload:(id)a3;
-- (void)_reload:(id)a3;
-- (void)_reloadFromCollectionDictionaries:(id)a3;
-- (void)_reportFollowUpFeatureSetting:(BOOL)a3;
-- (void)_sharedMailboxControllerBadgeCountDidChange:(id)a3;
+- (id)favoriteMailboxesForAccount:(id)account;
+- (id)itemsContainingName:(id)name;
+- (id)itemsMatchingItemURLStrings:(id)strings;
+- (id)itemsMatchingName:(id)name;
+- (id)itemsOfType:(int64_t)type;
+- (id)orderedFavoriteMailboxesForAccount:(id)account includeUnifiedMailboxes:(BOOL)mailboxes;
+- (id)visibleItemsOfType:(int64_t)type;
+- (void)_debounceReload:(id)reload;
+- (void)_reload:(id)_reload;
+- (void)_reloadFromCollectionDictionaries:(id)dictionaries;
+- (void)_reportFollowUpFeatureSetting:(BOOL)setting;
+- (void)_sharedMailboxControllerBadgeCountDidChange:(id)change;
 - (void)mf_resetMailboxVocabulary;
-- (void)mf_updateMailboxVocabularyForCollections:(id)a3;
-- (void)moveItemOfCollection:(id)a3 fromIndex:(int64_t)a4 toIndex:(int64_t)a5;
-- (void)performTransaction:(id)a3;
-- (void)refreshCollectionForItemExpansion:(id)a3 notify:(BOOL)a4;
-- (void)scheduleItemChangeUpdateFavoritesPersistence:(id)a3 removedItems:(id)a4 withReason:(id)a5;
-- (void)scheduleOrderChangeUpdateFavoritesPersistence:(unint64_t)a3 withReason:(id)a4;
-- (void)scheduleSetVisibility:(BOOL)a3 forSourceType:(unint64_t)a4;
-- (void)scheduleUpdateFavoritesPersistenceForChangeType:(unint64_t)a3 withReason:(id)a4;
-- (void)setLastSelectedItem:(id)a3;
+- (void)mf_updateMailboxVocabularyForCollections:(id)collections;
+- (void)moveItemOfCollection:(id)collection fromIndex:(int64_t)index toIndex:(int64_t)toIndex;
+- (void)performTransaction:(id)transaction;
+- (void)refreshCollectionForItemExpansion:(id)expansion notify:(BOOL)notify;
+- (void)scheduleItemChangeUpdateFavoritesPersistence:(id)persistence removedItems:(id)items withReason:(id)reason;
+- (void)scheduleOrderChangeUpdateFavoritesPersistence:(unint64_t)persistence withReason:(id)reason;
+- (void)scheduleSetVisibility:(BOOL)visibility forSourceType:(unint64_t)type;
+- (void)scheduleUpdateFavoritesPersistenceForChangeType:(unint64_t)type withReason:(id)reason;
+- (void)setLastSelectedItem:(id)item;
 @end
 
 @implementation FavoritesManager
@@ -42,16 +42,16 @@
   _objc_release(self);
 }
 
-- (void)mf_updateMailboxVocabularyForCollections:(id)a3
+- (void)mf_updateMailboxVocabularyForCollections:(id)collections
 {
   swift_getObjectType();
-  _objc_retain(a3);
+  _objc_retain(collections);
   _objc_retain(self);
   sub_10000D38C();
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
   sub_10000E550();
 
-  _objc_release(a3);
+  _objc_release(collections);
   _objc_release(self);
 }
 
@@ -67,14 +67,14 @@
   [(NSRecursiveLock *)self->_lock unlock];
   if (!lastSelectedItem)
   {
-    v5 = [(FavoritesManager *)self favoritesPersistence];
-    lastSelectedItem = [v5 lastSelectedItem];
+    favoritesPersistence = [(FavoritesManager *)self favoritesPersistence];
+    lastSelectedItem = [favoritesPersistence lastSelectedItem];
 
     [(NSRecursiveLock *)self->_lock lock];
-    v6 = [(FavoritesManager *)self favoritesPersistence];
-    v7 = [v6 lastSelectedItem];
+    favoritesPersistence2 = [(FavoritesManager *)self favoritesPersistence];
+    lastSelectedItem = [favoritesPersistence2 lastSelectedItem];
     v8 = self->_lastSelectedItem;
-    self->_lastSelectedItem = v7;
+    self->_lastSelectedItem = lastSelectedItem;
 
     [(NSRecursiveLock *)self->_lock unlock];
   }
@@ -82,36 +82,36 @@
   return lastSelectedItem;
 }
 
-- (FavoritesManager)initWithFavoritesPersistence:(id)a3 collections:(id)a4 conversationSubscriptionProvider:(id)a5
+- (FavoritesManager)initWithFavoritesPersistence:(id)persistence collections:(id)collections conversationSubscriptionProvider:(id)provider
 {
-  v34 = a3;
-  v36 = a4;
-  v35 = a5;
+  persistenceCopy = persistence;
+  collectionsCopy = collections;
+  providerCopy = provider;
   v47.receiver = self;
   v47.super_class = FavoritesManager;
   v9 = [(FavoritesManager *)&v47 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_favoritesPersistence, a3);
-    objc_storeStrong(&v10->_conversationSubscriptionProvider, a5);
+    objc_storeStrong(&v9->_favoritesPersistence, persistence);
+    objc_storeStrong(&v10->_conversationSubscriptionProvider, provider);
     v11 = +[NSUserDefaults em_userDefaults];
     v10->_hasLaunchedWithCollapsibleMailboxes = [v11 BOOLForKey:@"FavoritesManagerDefaultKeyHasLaunchedWithCollapsibleMailboxes"];
 
-    if (v36 && [(FavoritesManager *)v10 _isDictionaryRepresentationValid:v36])
+    if (collectionsCopy && [(FavoritesManager *)v10 _isDictionaryRepresentationValid:collectionsCopy])
     {
-      v12 = v36;
+      v12 = collectionsCopy;
     }
 
     else
     {
-      v13 = [(FavoritesPersistence *)v10->_favoritesPersistence dictionaryRepresentation];
+      dictionaryRepresentation = [(FavoritesPersistence *)v10->_favoritesPersistence dictionaryRepresentation];
 
-      v12 = v13;
+      v12 = dictionaryRepresentation;
     }
 
     v33 = [v12 objectForKeyedSubscript:@"Collections"];
-    v36 = v12;
+    collectionsCopy = v12;
     v32 = [v12 objectForKeyedSubscript:@"LastSelectedItem"];
     if (v32)
     {
@@ -188,15 +188,15 @@
   return v10;
 }
 
-- (void)_reportFollowUpFeatureSetting:(BOOL)a3
+- (void)_reportFollowUpFeatureSetting:(BOOL)setting
 {
-  v3 = a3;
+  settingCopy = setting;
   v4 = +[SGSuggestionsService serviceForMail];
   [v4 setSyncTimeout:0.1];
   if (objc_opt_respondsToSelector())
   {
     v10 = 0;
-    v5 = [v4 reportValue:!v3 forFeatureSetting:0 error:&v10];
+    v5 = [v4 reportValue:!settingCopy forFeatureSetting:0 error:&v10];
     v6 = v10;
     if (v6)
     {
@@ -204,33 +204,33 @@
       v8 = MFLogGeneral();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v9 = [v7 ef_publicDescription];
-        sub_100486F90(v9, buf, v8);
+        ef_publicDescription = [v7 ef_publicDescription];
+        sub_100486F90(ef_publicDescription, buf, v8);
       }
     }
   }
 }
 
-- (void)_reloadFromCollectionDictionaries:(id)a3
+- (void)_reloadFromCollectionDictionaries:(id)dictionaries
 {
-  v59 = a3;
+  dictionariesCopy = dictionaries;
   v3 = MFLogGeneral();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v116 = v59;
+    v116 = dictionariesCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#Favorites _reloadFromCollectionDictionaries:%@", buf, 0xCu);
   }
 
-  v4 = self;
+  selfCopy2 = self;
   [(NSRecursiveLock *)self->_lock lock];
   if ([(NSMutableArray *)self->_mailboxCollections count])
   {
-    v5 = [(FavoritesManager *)self accountsCollection];
-    v6 = [v5 items];
-    v65 = [v6 ef_filter:&stru_10064EE08];
+    accountsCollection = [(FavoritesManager *)self accountsCollection];
+    items = [accountsCollection items];
+    v65 = [items ef_filter:&stru_10064EE08];
 
-    v4 = self;
+    selfCopy2 = self;
   }
 
   else
@@ -238,9 +238,9 @@
     v65 = 0;
   }
 
-  [(NSRecursiveLock *)v4->_lock unlock];
-  v7 = [(FavoritesManager *)v4 hasLaunchedWithCollapsibleMailboxes];
-  if ((v7 & 1) == 0)
+  [(NSRecursiveLock *)selfCopy2->_lock unlock];
+  hasLaunchedWithCollapsibleMailboxes = [(FavoritesManager *)selfCopy2 hasLaunchedWithCollapsibleMailboxes];
+  if ((hasLaunchedWithCollapsibleMailboxes & 1) == 0)
   {
     sub_1000B1960(self, 1);
   }
@@ -251,7 +251,7 @@
   v106 = 0u;
   v103 = 0u;
   v104 = 0u;
-  obj = v59;
+  obj = dictionariesCopy;
   v8 = [obj countByEnumeratingWithState:&v103 objects:v114 count:16];
   if (v8)
   {
@@ -284,9 +284,9 @@
   [v71 addObjectsFromArray:v15];
 
   v16 = [v72 objectAtIndex:2];
-  v58 = [v16 items];
+  items2 = [v16 items];
 
-  v57 = [v58 ef_filter:&stru_10064EE88];
+  v57 = [items2 ef_filter:&stru_10064EE88];
   v73 = objc_opt_new();
   v74 = objc_opt_new();
   v101 = 0u;
@@ -308,10 +308,10 @@
         }
 
         v20 = *(*(&v99 + 1) + 8 * j);
-        v21 = [v20 itemUUID];
-        if (v21)
+        itemUUID = [v20 itemUUID];
+        if (itemUUID)
         {
-          [v74 setObject:v20 forKeyedSubscript:v21];
+          [v74 setObject:v20 forKeyedSubscript:itemUUID];
         }
       }
 
@@ -340,11 +340,11 @@
         }
 
         v22 = *(*(&v95 + 1) + 8 * k);
-        v67 = [v22 account];
+        account = [v22 account];
         v23 = +[MailChangeManager sharedChangeManager];
-        v24 = [(FavoritesManager *)self favoritesPersistence];
+        favoritesPersistence = [(FavoritesManager *)self favoritesPersistence];
         v63 = v22;
-        v64 = [v23 allMailboxUidsSortedWithSpecialsAtTopForAccount:v67 includingLocals:1 client:v24 outbox:0];
+        v64 = [v23 allMailboxUidsSortedWithSpecialsAtTopForAccount:account includingLocals:1 client:favoritesPersistence outbox:0];
 
         v25 = +[NSMutableArray array];
         v93 = 0u;
@@ -366,20 +366,20 @@
               }
 
               v30 = [FavoriteItem itemForMailbox:*(*(&v91 + 1) + 8 * m) selected:1];
-              v31 = [v30 itemUUID];
-              v32 = [v74 objectForKeyedSubscript:v31];
+              itemUUID2 = [v30 itemUUID];
+              v32 = [v74 objectForKeyedSubscript:itemUUID2];
 
-              if (v7)
+              if (hasLaunchedWithCollapsibleMailboxes)
               {
-                v33 = 0;
+                isExpandable = 0;
               }
 
               else
               {
-                v33 = [v30 isExpandable];
+                isExpandable = [v30 isExpandable];
               }
 
-              [v30 setExpanded:{(objc_msgSend(v32, "isExpanded") | v33) & 1}];
+              [v30 setExpanded:{(objc_msgSend(v32, "isExpanded") | isExpandable) & 1}];
               [v25 addObject:v30];
               if ([v30 isExpanded])
               {
@@ -396,9 +396,9 @@
         v34 = MFLogGeneral();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
         {
-          v35 = [v67 ef_publicDescription];
+          ef_publicDescription = [account ef_publicDescription];
           *buf = 138543362;
-          v116 = v35;
+          v116 = ef_publicDescription;
           _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "#Favorites Settings mailbox items for account: %{public}@", buf, 0xCu);
         }
 
@@ -500,7 +500,7 @@ LABEL_65:
   self->_visibleMailboxCollections = 0;
 
   [(NSRecursiveLock *)self->_lock unlock];
-  if ((v7 & 1) == 0)
+  if ((hasLaunchedWithCollapsibleMailboxes & 1) == 0)
   {
     [v60 ef_filter:&stru_10064EEA8];
     v81 = 0u;
@@ -560,51 +560,51 @@ LABEL_65:
   [(FavoritesManager *)self mf_updateMailboxVocabularyForCollections:v72];
 }
 
-- (void)_debounceReload:(id)a3
+- (void)_debounceReload:(id)reload
 {
-  v4 = a3;
-  if (sub_1000B1C6C(self, v4) && ([(FavoritesManager *)self reloadDebouncer], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  reloadCopy = reload;
+  if (sub_1000B1C6C(self, reloadCopy) && ([(FavoritesManager *)self reloadDebouncer], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     v6 = MFLogGeneral();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = reloadCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#Favorites _reload: debounced notification=%@", &v8, 0xCu);
     }
 
-    v7 = [(FavoritesManager *)self reloadDebouncer];
-    [v7 debounceResult:v4];
+    reloadDebouncer = [(FavoritesManager *)self reloadDebouncer];
+    [reloadDebouncer debounceResult:reloadCopy];
   }
 
   else
   {
-    [(FavoritesManager *)self _reload:v4];
+    [(FavoritesManager *)self _reload:reloadCopy];
   }
 }
 
-- (void)_reload:(id)a3
+- (void)_reload:(id)_reload
 {
-  v5 = a3;
+  _reloadCopy = _reload;
   if (pthread_main_np() != 1)
   {
     v11 = +[NSAssertionHandler currentHandler];
     [v11 handleFailureInMethod:a2 object:self file:@"FavoritesManager.m" lineNumber:297 description:@"Current thread must be main"];
   }
 
-  if (sub_1000B1C6C(self, v5))
+  if (sub_1000B1C6C(self, _reloadCopy))
   {
     v6 = MFLogGeneral();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412290;
-      v13 = v5;
+      v13 = _reloadCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#Favorites _reload:%@", &v12, 0xCu);
     }
 
-    v7 = [(FavoritesManager *)self favoritesPersistence];
-    v8 = [v7 dictionaryRepresentation];
-    v9 = [v8 objectForKeyedSubscript:@"Collections"];
+    favoritesPersistence = [(FavoritesManager *)self favoritesPersistence];
+    dictionaryRepresentation = [favoritesPersistence dictionaryRepresentation];
+    v9 = [dictionaryRepresentation objectForKeyedSubscript:@"Collections"];
 
     if (v9)
     {
@@ -625,9 +625,9 @@ LABEL_65:
   }
 }
 
-- (id)collectionContainingItem:(id)a3
+- (id)collectionContainingItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -647,8 +647,8 @@ LABEL_65:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 items];
-        v11 = [v10 containsObject:v4];
+        items = [v9 items];
+        v11 = [items containsObject:itemCopy];
 
         if (v11)
         {
@@ -714,10 +714,10 @@ LABEL_11:
           goto LABEL_13;
         }
 
-        v11 = [(FavoritesManager *)self favoritesPersistence];
-        v12 = [v11 showingOutbox];
+        favoritesPersistence = [(FavoritesManager *)self favoritesPersistence];
+        showingOutbox = [favoritesPersistence showingOutbox];
 
-        if (v12)
+        if (showingOutbox)
         {
           v13 = MFLogGeneral();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -756,7 +756,7 @@ LABEL_19:
   return v15;
 }
 
-- (id)itemsOfType:(int64_t)a3
+- (id)itemsOfType:(int64_t)type
 {
   v5 = objc_alloc_init(NSMutableArray);
   [(NSRecursiveLock *)self->_lock lock];
@@ -778,7 +778,7 @@ LABEL_19:
           objc_enumerationMutation(v6);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) itemsOfType:{a3, v12}];
+        v10 = [*(*(&v12 + 1) + 8 * i) itemsOfType:{type, v12}];
         [v5 addObjectsFromArray:v10];
       }
 
@@ -793,9 +793,9 @@ LABEL_19:
   return v5;
 }
 
-- (id)itemsMatchingName:(id)a3
+- (id)itemsMatchingName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_alloc_init(NSMutableOrderedSet);
   [(NSRecursiveLock *)self->_lock lock];
   v15 = 0u;
@@ -816,7 +816,7 @@ LABEL_19:
           objc_enumerationMutation(v6);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) itemsMatchingName:{v4, v13}];
+        v10 = [*(*(&v13 + 1) + 8 * i) itemsMatchingName:{nameCopy, v13}];
         [v5 addObjectsFromArray:v10];
       }
 
@@ -827,14 +827,14 @@ LABEL_19:
   }
 
   [(NSRecursiveLock *)self->_lock unlock];
-  v11 = [v5 array];
+  array = [v5 array];
 
-  return v11;
+  return array;
 }
 
-- (id)itemsMatchingItemURLStrings:(id)a3
+- (id)itemsMatchingItemURLStrings:(id)strings
 {
-  v4 = a3;
+  stringsCopy = strings;
   v5 = objc_alloc_init(NSMutableOrderedSet);
   [(NSRecursiveLock *)self->_lock lock];
   v15 = 0u;
@@ -855,7 +855,7 @@ LABEL_19:
           objc_enumerationMutation(v6);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) itemsMatchingItemURLStrings:{v4, v13}];
+        v10 = [*(*(&v13 + 1) + 8 * i) itemsMatchingItemURLStrings:{stringsCopy, v13}];
         [v5 addObjectsFromArray:v10];
       }
 
@@ -866,14 +866,14 @@ LABEL_19:
   }
 
   [(NSRecursiveLock *)self->_lock unlock];
-  v11 = [v5 array];
+  array = [v5 array];
 
-  return v11;
+  return array;
 }
 
-- (id)itemsContainingName:(id)a3
+- (id)itemsContainingName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_alloc_init(NSMutableOrderedSet);
   [(NSRecursiveLock *)self->_lock lock];
   v15 = 0u;
@@ -894,7 +894,7 @@ LABEL_19:
           objc_enumerationMutation(v6);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) itemsContainingName:{v4, v13}];
+        v10 = [*(*(&v13 + 1) + 8 * i) itemsContainingName:{nameCopy, v13}];
         [v5 addObjectsFromArray:v10];
       }
 
@@ -905,9 +905,9 @@ LABEL_19:
   }
 
   [(NSRecursiveLock *)self->_lock unlock];
-  v11 = [v5 array];
+  array = [v5 array];
 
-  return v11;
+  return array;
 }
 
 - (NSArray)suggestedFavoriteItems
@@ -932,8 +932,8 @@ LABEL_19:
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) itemsIncludingSubItems];
-        [v3 addObjectsFromArray:v8];
+        itemsIncludingSubItems = [*(*(&v11 + 1) + 8 * i) itemsIncludingSubItems];
+        [v3 addObjectsFromArray:itemsIncludingSubItems];
       }
 
       v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -943,71 +943,71 @@ LABEL_19:
   }
 
   [(NSRecursiveLock *)self->_lock unlock];
-  v9 = [v3 array];
+  array = [v3 array];
 
-  return v9;
+  return array;
 }
 
-- (id)visibleItemsOfType:(int64_t)a3
+- (id)visibleItemsOfType:(int64_t)type
 {
-  v3 = [(FavoritesManager *)self itemsOfType:a3];
+  v3 = [(FavoritesManager *)self itemsOfType:type];
   v4 = [v3 ef_filter:&stru_10064EEC8];
 
   return v4;
 }
 
-- (id)favoriteMailboxesForAccount:(id)a3
+- (id)favoriteMailboxesForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(FavoritesManager *)self favoritesPersistence];
-  v6 = [v5 favoriteMailboxesForAccount:v4];
+  accountCopy = account;
+  favoritesPersistence = [(FavoritesManager *)self favoritesPersistence];
+  v6 = [favoritesPersistence favoriteMailboxesForAccount:accountCopy];
 
   return v6;
 }
 
-- (id)orderedFavoriteMailboxesForAccount:(id)a3 includeUnifiedMailboxes:(BOOL)a4
+- (id)orderedFavoriteMailboxesForAccount:(id)account includeUnifiedMailboxes:(BOOL)mailboxes
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(FavoritesManager *)self favoritesPersistence];
-  v8 = [v7 orderedFavoriteMailboxesForAccount:v6 includeUnifiedMailboxes:v4];
+  mailboxesCopy = mailboxes;
+  accountCopy = account;
+  favoritesPersistence = [(FavoritesManager *)self favoritesPersistence];
+  v8 = [favoritesPersistence orderedFavoriteMailboxesForAccount:accountCopy includeUnifiedMailboxes:mailboxesCopy];
 
   return v8;
 }
 
-- (void)setLastSelectedItem:(id)a3
+- (void)setLastSelectedItem:(id)item
 {
-  v6 = a3;
+  itemCopy = item;
   [(NSRecursiveLock *)self->_lock lock];
   [(FavoritesManager *)self setPreviousSelectedItem:self->_lastSelectedItem];
-  objc_storeStrong(&self->_lastSelectedItem, a3);
+  objc_storeStrong(&self->_lastSelectedItem, item);
   [(NSRecursiveLock *)self->_lock unlock];
-  v5 = [(FavoritesManager *)self favoritesPersistence];
-  [v5 setLastSelectedItem:v6];
+  favoritesPersistence = [(FavoritesManager *)self favoritesPersistence];
+  [favoritesPersistence setLastSelectedItem:itemCopy];
 }
 
-- (void)performTransaction:(id)a3
+- (void)performTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   [(NSRecursiveLock *)self->_lock lock];
-  if (v4)
+  if (transactionCopy)
   {
-    v4[2](v4, self);
+    transactionCopy[2](transactionCopy, self);
   }
 
   [(NSRecursiveLock *)self->_lock unlock];
 }
 
-- (void)moveItemOfCollection:(id)a3 fromIndex:(int64_t)a4 toIndex:(int64_t)a5
+- (void)moveItemOfCollection:(id)collection fromIndex:(int64_t)index toIndex:(int64_t)toIndex
 {
-  v8 = a3;
+  collectionCopy = collection;
   [(NSRecursiveLock *)self->_lock lock];
-  v9 = [v8 visibleItems];
-  v10 = [v9 objectAtIndex:a4];
-  v11 = [v9 objectAtIndex:a5];
-  if ([v8 isAccountsCollection] && objc_msgSend(v11, "type") != 1)
+  visibleItems = [collectionCopy visibleItems];
+  v10 = [visibleItems objectAtIndex:index];
+  v11 = [visibleItems objectAtIndex:toIndex];
+  if ([collectionCopy isAccountsCollection] && objc_msgSend(v11, "type") != 1)
   {
-    if (a5 < 1)
+    if (toIndex < 1)
     {
 LABEL_8:
       v12 = v11;
@@ -1015,10 +1015,10 @@ LABEL_8:
 
     else
     {
-      v13 = a5 + 1;
+      v13 = toIndex + 1;
       while (1)
       {
-        v12 = [v9 objectAtIndexedSubscript:v13 - 2];
+        v12 = [visibleItems objectAtIndexedSubscript:v13 - 2];
         if ([v12 type] == 1)
         {
           break;
@@ -1035,7 +1035,7 @@ LABEL_8:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      v22 = v9;
+      v22 = visibleItems;
       v23 = 2112;
       v24 = v10;
       v25 = 2112;
@@ -1049,33 +1049,33 @@ LABEL_8:
     v12 = v11;
   }
 
-  v15 = [v8 items];
-  v16 = [v15 mutableCopy];
+  items = [collectionCopy items];
+  v16 = [items mutableCopy];
 
   v17 = [v16 indexOfObject:v10];
   v18 = [v16 indexOfObject:v12];
   [v16 ef_moveObjectAtIndex:v17 toIndex:v18];
-  [v8 setItems:v16];
-  v19 = [v8 isAccountsCollection];
+  [collectionCopy setItems:v16];
+  isAccountsCollection = [collectionCopy isAccountsCollection];
   [(NSRecursiveLock *)self->_lock unlock];
-  v20 = [NSString stringWithFormat:@"moveItemOfCollection:%@ from:%ld to:%ld", v8, v17, v18];
-  [(FavoritesManager *)self scheduleOrderChangeUpdateFavoritesPersistence:v19 ^ 1 withReason:v20];
+  v20 = [NSString stringWithFormat:@"moveItemOfCollection:%@ from:%ld to:%ld", collectionCopy, v17, v18];
+  [(FavoritesManager *)self scheduleOrderChangeUpdateFavoritesPersistence:isAccountsCollection ^ 1 withReason:v20];
 }
 
-- (BOOL)updateCollections:(id)a3 withItems:(id)a4
+- (BOOL)updateCollections:(id)collections withItems:(id)items
 {
-  v6 = a3;
-  v7 = a4;
-  v34 = v6;
-  v8 = v6;
-  v9 = v7;
+  collectionsCopy = collections;
+  itemsCopy = items;
+  v34 = collectionsCopy;
+  v8 = collectionsCopy;
+  v9 = itemsCopy;
   v10 = [v8 count];
   if (v10 != [v9 count])
   {
     __assert_rtn("[FavoritesManager updateCollections:withItems:]", "FavoritesManager.m", 531, "collections.count == itemArrays.count");
   }
 
-  v31 = self;
+  selfCopy = self;
   v32 = v9;
   v35 = +[NSMutableArray array];
   v11 = +[NSMutableArray array];
@@ -1096,8 +1096,8 @@ LABEL_8:
   {
     v15 = [v34 objectAtIndex:v13];
     v16 = [v32 objectAtIndex:v13];
-    v17 = [v15 items];
-    v18 = [NSArray arrayWithArray:v17];
+    items = [v15 items];
+    v18 = [NSArray arrayWithArray:items];
 
     v42 = 0u;
     v43 = 0u;
@@ -1169,17 +1169,17 @@ LABEL_8:
     v13 = v33 + 1;
   }
 
-  [(NSRecursiveLock *)v31->_lock unlock];
-  [(FavoritesManager *)v31 scheduleItemChangeUpdateFavoritesPersistence:v11 removedItems:v35 withReason:@"updateCollections:withItems:"];
+  [(NSRecursiveLock *)selfCopy->_lock unlock];
+  [(FavoritesManager *)selfCopy scheduleItemChangeUpdateFavoritesPersistence:v11 removedItems:v35 withReason:@"updateCollections:withItems:"];
 
   return v14 & 1;
 }
 
-- (void)refreshCollectionForItemExpansion:(id)a3 notify:(BOOL)a4
+- (void)refreshCollectionForItemExpansion:(id)expansion notify:(BOOL)notify
 {
-  v17 = a4;
-  v5 = a3;
-  v18 = self;
+  notifyCopy = notify;
+  expansionCopy = expansion;
+  selfCopy = self;
   [(FavoritesManager *)self visibleMailboxCollections];
   v21 = 0u;
   v22 = 0u;
@@ -1199,10 +1199,10 @@ LABEL_3:
       }
 
       v10 = *(*(&v19 + 1) + 8 * v9);
-      v11 = [v10 items];
-      v12 = [v11 indexOfObject:v5];
+      items = [v10 items];
+      v12 = [items indexOfObject:expansionCopy];
 
-      if (v12 != 0x7FFFFFFFFFFFFFFFLL || ([v10 expandedItems], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "indexOfObject:", v5), v13, v14 != 0x7FFFFFFFFFFFFFFFLL))
+      if (v12 != 0x7FFFFFFFFFFFFFFFLL || ([v10 expandedItems], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "indexOfObject:", expansionCopy), v13, v14 != 0x7FFFFFFFFFFFFFFFLL))
       {
         if (([v10 isMailboxesCollection] & 1) == 0)
         {
@@ -1229,21 +1229,21 @@ LABEL_3:
       goto LABEL_15;
     }
 
-    [(NSRecursiveLock *)v18->_lock lock];
+    [(NSRecursiveLock *)selfCopy->_lock lock];
     if (v12 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v15 addOrUpdateExpandedItem:v5 replacedItem:0];
+      [v15 addOrUpdateExpandedItem:expansionCopy replacedItem:0];
     }
 
     else
     {
-      [v15 addOrUpdateItem:v5 replacedItem:0];
+      [v15 addOrUpdateItem:expansionCopy replacedItem:0];
     }
 
-    [(NSRecursiveLock *)v18->_lock unlock];
-    if (v17)
+    [(NSRecursiveLock *)selfCopy->_lock unlock];
+    if (notifyCopy)
     {
-      [(FavoritesManager *)v18 scheduleUpdateFavoritesPersistenceForChangeType:2 withReason:@"refreshCollectionForItemExpansion"];
+      [(FavoritesManager *)selfCopy scheduleUpdateFavoritesPersistenceForChangeType:2 withReason:@"refreshCollectionForItemExpansion"];
     }
   }
 
@@ -1255,95 +1255,95 @@ LABEL_15:
     v16 = MFLogGeneral();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      sub_100486FE8(v5, v16);
+      sub_100486FE8(expansionCopy, v16);
     }
 
     v15 = 0;
   }
 }
 
-- (void)scheduleUpdateFavoritesPersistenceForChangeType:(unint64_t)a3 withReason:(id)a4
+- (void)scheduleUpdateFavoritesPersistenceForChangeType:(unint64_t)type withReason:(id)reason
 {
-  v6 = a4;
-  v7 = [(FavoritesManager *)self favoritesPersistence];
+  reasonCopy = reason;
+  favoritesPersistence = [(FavoritesManager *)self favoritesPersistence];
   v8 = self->_mailboxCollections;
   v9 = +[EFScheduler globalAsyncScheduler];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000B3984;
   v13[3] = &unk_10064EEF0;
-  v10 = v7;
+  v10 = favoritesPersistence;
   v14 = v10;
   v11 = v8;
   v15 = v11;
-  v18 = a3;
-  v12 = v6;
+  typeCopy = type;
+  v12 = reasonCopy;
   v16 = v12;
-  v17 = self;
+  selfCopy = self;
   [v9 performBlock:v13];
 }
 
-- (void)scheduleOrderChangeUpdateFavoritesPersistence:(unint64_t)a3 withReason:(id)a4
+- (void)scheduleOrderChangeUpdateFavoritesPersistence:(unint64_t)persistence withReason:(id)reason
 {
-  v6 = a4;
-  v7 = [(FavoritesManager *)self favoritesPersistence];
+  reasonCopy = reason;
+  favoritesPersistence = [(FavoritesManager *)self favoritesPersistence];
   v8 = self->_mailboxCollections;
   v9 = +[EFScheduler globalAsyncScheduler];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000B3AF8;
   v13[3] = &unk_10064EEF0;
-  v10 = v7;
+  v10 = favoritesPersistence;
   v14 = v10;
   v11 = v8;
   v15 = v11;
-  v18 = a3;
-  v12 = v6;
+  persistenceCopy = persistence;
+  v12 = reasonCopy;
   v16 = v12;
-  v17 = self;
+  selfCopy = self;
   [v9 performBlock:v13];
 }
 
-- (void)scheduleItemChangeUpdateFavoritesPersistence:(id)a3 removedItems:(id)a4 withReason:(id)a5
+- (void)scheduleItemChangeUpdateFavoritesPersistence:(id)persistence removedItems:(id)items withReason:(id)reason
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(FavoritesManager *)self favoritesPersistence];
+  persistenceCopy = persistence;
+  itemsCopy = items;
+  reasonCopy = reason;
+  favoritesPersistence = [(FavoritesManager *)self favoritesPersistence];
   v12 = self->_mailboxCollections;
   v13 = +[EFScheduler globalAsyncScheduler];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_1000B3CE0;
   v21[3] = &unk_10064EF18;
-  v14 = v11;
+  v14 = favoritesPersistence;
   v22 = v14;
   v15 = v12;
   v23 = v15;
-  v19 = v11;
-  v20 = v8;
-  v16 = v8;
+  v19 = favoritesPersistence;
+  v20 = persistenceCopy;
+  v16 = persistenceCopy;
   v24 = v16;
-  v17 = v9;
+  v17 = itemsCopy;
   v25 = v17;
-  v18 = v10;
+  v18 = reasonCopy;
   v26 = v18;
-  v27 = self;
+  selfCopy = self;
   [v13 performBlock:{v21, v19, v20}];
 }
 
-- (void)scheduleSetVisibility:(BOOL)a3 forSourceType:(unint64_t)a4
+- (void)scheduleSetVisibility:(BOOL)visibility forSourceType:(unint64_t)type
 {
-  v6 = [(FavoritesManager *)self favoritesPersistence];
+  favoritesPersistence = [(FavoritesManager *)self favoritesPersistence];
   v7 = +[EFScheduler globalAsyncScheduler];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000B3DE4;
   v9[3] = &unk_10064EF40;
-  v8 = v6;
-  v12 = a3;
+  v8 = favoritesPersistence;
+  visibilityCopy = visibility;
   v10 = v8;
-  v11 = a4;
+  typeCopy = type;
   [v7 performBlock:v9];
 }
 
@@ -1372,8 +1372,8 @@ LABEL_15:
         v9 = *(*(&v14 + 1) + 8 * i);
         if (([v9 transient] & 1) == 0)
         {
-          v10 = [v9 dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [v9 dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
       }
 
@@ -1387,23 +1387,23 @@ LABEL_15:
   lastSelectedItem = self->_lastSelectedItem;
   if (lastSelectedItem)
   {
-    v12 = [(FavoriteItem *)lastSelectedItem dictionaryRepresentation];
-    [v3 setObject:v12 forKeyedSubscript:@"LastSelectedItem"];
+    dictionaryRepresentation2 = [(FavoriteItem *)lastSelectedItem dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKeyedSubscript:@"LastSelectedItem"];
   }
 
   return v3;
 }
 
-- (BOOL)_isDictionaryRepresentationValid:(id)a3
+- (BOOL)_isDictionaryRepresentationValid:(id)valid
 {
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  validCopy = valid;
+  if (validCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 ef_objectOfClass:objc_opt_class() forKey:@"Collections"];
+    v4 = [validCopy ef_objectOfClass:objc_opt_class() forKey:@"Collections"];
     v5 = v4;
     if (v4 && ([v4 ef_all:&stru_10064EF60] & 1) != 0)
     {
-      v6 = [v3 ef_objectOfClass:objc_opt_class() forKey:@"LastSelectedItem"];
+      v6 = [validCopy ef_objectOfClass:objc_opt_class() forKey:@"LastSelectedItem"];
       v7 = v6 != 0;
     }
 
@@ -1421,33 +1421,33 @@ LABEL_15:
   return v7;
 }
 
-+ (id)defaultsKeyForAutomaticMailboxVisibilityForSourceType:(unint64_t)a3
++ (id)defaultsKeyForAutomaticMailboxVisibilityForSourceType:(unint64_t)type
 {
   v3 = @"ReadLaterMailboxWasDismissed";
   v4 = @"SendLaterMailboxWasDismissed";
-  if (a3 != 25)
+  if (type != 25)
   {
     v4 = 0;
   }
 
-  if (a3 != 15)
+  if (type != 15)
   {
     v3 = v4;
   }
 
   v5 = @"FlaggedMailboxWasDismissed";
   v6 = @"ThreadNotificationsMailboxWasDismissed";
-  if (a3 != 6)
+  if (type != 6)
   {
     v6 = 0;
   }
 
-  if (a3 != 2)
+  if (type != 2)
   {
     v5 = v6;
   }
 
-  if (a3 <= 14)
+  if (type <= 14)
   {
     return v5;
   }
@@ -1458,44 +1458,44 @@ LABEL_15:
   }
 }
 
-- (void)_sharedMailboxControllerBadgeCountDidChange:(id)a3
+- (void)_sharedMailboxControllerBadgeCountDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [v5 sourceType];
-  v7 = [v4 userInfo];
-  v8 = [objc_opt_class() defaultsKeyForAutomaticMailboxVisibilityForSourceType:v6];
+  changeCopy = change;
+  object = [changeCopy object];
+  sourceType = [object sourceType];
+  userInfo = [changeCopy userInfo];
+  v8 = [objc_opt_class() defaultsKeyForAutomaticMailboxVisibilityForSourceType:sourceType];
   v9 = 0;
-  if (v6 > 14)
+  if (sourceType > 14)
   {
-    if (v6 != 15)
+    if (sourceType != 15)
     {
-      v10 = 0;
-      if (v6 != 25)
+      hasSubscribedConversations = 0;
+      if (sourceType != 25)
       {
         goto LABEL_8;
       }
     }
 
 LABEL_7:
-    v9 = v6 != 2;
-    v12 = [v7 objectForKeyedSubscript:SharedNetworkControllerBadgeCountKey];
-    v13 = [v12 integerValue];
+    v9 = sourceType != 2;
+    v12 = [userInfo objectForKeyedSubscript:SharedNetworkControllerBadgeCountKey];
+    integerValue = [v12 integerValue];
 
-    v10 = v13 > 0;
+    hasSubscribedConversations = integerValue > 0;
     goto LABEL_8;
   }
 
-  if (v6 == 2)
+  if (sourceType == 2)
   {
     goto LABEL_7;
   }
 
-  v10 = 0;
-  if (v6 == 6)
+  hasSubscribedConversations = 0;
+  if (sourceType == 6)
   {
-    v11 = [(FavoritesManager *)self conversationSubscriptionProvider];
-    v10 = [v11 hasSubscribedConversations];
+    conversationSubscriptionProvider = [(FavoritesManager *)self conversationSubscriptionProvider];
+    hasSubscribedConversations = [conversationSubscriptionProvider hasSubscribedConversations];
 
     v9 = 0;
   }
@@ -1508,19 +1508,19 @@ LABEL_8:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     v17[0] = 67109890;
-    v17[1] = v10;
+    v17[1] = hasSubscribedConversations;
     v18 = 1024;
     v19 = v9;
     v20 = 1024;
     v21 = v15;
     v22 = 2112;
-    v23 = v4;
+    v23 = changeCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "#Favorites FavoritesManager _sharedMailboxControllerBadgeCountDidChange doShow:%{BOOL}d setHiddenVisibility:%{BOOL}d defaultsValue:%{BOOL}d notification:%@ ", v17, 0x1Eu);
   }
 
-  if (v8 && !(v15 & 1 | (((v10 | v9) & 1) == 0)))
+  if (v8 && !(v15 & 1 | (((hasSubscribedConversations | v9) & 1) == 0)))
   {
-    [(FavoritesManager *)self scheduleSetVisibility:v10 forSourceType:v6];
+    [(FavoritesManager *)self scheduleSetVisibility:hasSubscribedConversations forSourceType:sourceType];
   }
 }
 

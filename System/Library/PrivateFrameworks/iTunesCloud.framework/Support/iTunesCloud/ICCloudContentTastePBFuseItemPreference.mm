@@ -1,10 +1,10 @@
 @interface ICCloudContentTastePBFuseItemPreference
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ICCloudContentTastePBFuseItemPreference
@@ -61,31 +61,31 @@ LABEL_7:
   return v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ (2654435761 * preference);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || self->_preference != *(v4 + 10))
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || self->_preference != *(equalCopy + 10))
   {
     goto LABEL_25;
   }
 
   has = self->_has;
-  v6 = *(v4 + 48);
+  v6 = *(equalCopy + 48);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_adamId != *(v4 + 2))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_adamId != *(equalCopy + 2))
     {
       goto LABEL_25;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_25;
   }
 
   externalId = self->_externalId;
-  if (externalId | *(v4 + 4))
+  if (externalId | *(equalCopy + 4))
   {
     if (![(NSString *)externalId isEqual:?])
     {
@@ -95,12 +95,12 @@ LABEL_25:
     }
 
     has = self->_has;
-    v6 = *(v4 + 48);
+    v6 = *(equalCopy + 48);
   }
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_createdOffsetMillis != *(v4 + 3))
+    if ((v6 & 4) == 0 || self->_createdOffsetMillis != *(equalCopy + 3))
     {
       goto LABEL_25;
     }
@@ -113,7 +113,7 @@ LABEL_25:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_preferenceType != *(v4 + 11))
+    if ((v6 & 8) == 0 || self->_preferenceType != *(equalCopy + 11))
     {
       goto LABEL_25;
     }
@@ -127,7 +127,7 @@ LABEL_25:
   v8 = (v6 & 1) == 0;
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_actionTimestampMillis != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_actionTimestampMillis != *(equalCopy + 1))
     {
       goto LABEL_25;
     }
@@ -140,9 +140,9 @@ LABEL_26:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   v5[10] = self->_preference;
   if ((*&self->_has & 2) != 0)
@@ -151,7 +151,7 @@ LABEL_26:
     *(v5 + 48) |= 2u;
   }
 
-  v7 = [(NSString *)self->_externalId copyWithZone:a3];
+  v7 = [(NSString *)self->_externalId copyWithZone:zone];
   v8 = v6[4];
   v6[4] = v7;
 
@@ -193,11 +193,11 @@ LABEL_6:
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   preference = self->_preference;
-  v11 = v4;
+  v11 = toCopy;
   PBDataWriterWriteInt32Field();
   if ((*&self->_has & 2) != 0)
   {
@@ -307,8 +307,8 @@ LABEL_9:
   v7.receiver = self;
   v7.super_class = ICCloudContentTastePBFuseItemPreference;
   v3 = [(ICCloudContentTastePBFuseItemPreference *)&v7 description];
-  v4 = [(ICCloudContentTastePBFuseItemPreference *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(ICCloudContentTastePBFuseItemPreference *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }

@@ -1,20 +1,20 @@
 @interface GKSystemBulletin
-+ (void)expireCachesForBagKey:(id)a3 payload:(id)a4 context:(id)a5 group:(id)a6;
-+ (void)expireCachesForBagKey:(id)a3 payload:(id)a4 context:(id)a5 profile:(id)a6 client:(id)a7 localPlayerInternal:(id)a8;
-+ (void)expireFriendCodeDetails:(id)a3 context:(id)a4;
-+ (void)expireGetPerGameFriendPlayerIDsCache:(id)a3 context:(id)a4;
-+ (void)expireGetPerGameSettingsCaches:(id)a3 payload:(id)a4 context:(id)a5;
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4;
-+ (void)presentGameCenterInviteUpdate:(id)a3 playerAlias:(id)a4;
-- (void)handleAction:(id)a3;
++ (void)expireCachesForBagKey:(id)key payload:(id)payload context:(id)context group:(id)group;
++ (void)expireCachesForBagKey:(id)key payload:(id)payload context:(id)context profile:(id)profile client:(id)client localPlayerInternal:(id)internal;
++ (void)expireFriendCodeDetails:(id)details context:(id)context;
++ (void)expireGetPerGameFriendPlayerIDsCache:(id)cache context:(id)context;
++ (void)expireGetPerGameSettingsCaches:(id)caches payload:(id)payload context:(id)context;
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler;
++ (void)presentGameCenterInviteUpdate:(id)update playerAlias:(id)alias;
+- (void)handleAction:(id)action;
 @end
 
 @implementation GKSystemBulletin
 
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -29,25 +29,25 @@
 
   v10 = +[GKDataRequestManager sharedManager];
   v11 = +[GKBulletin cacheTransactionGroup];
-  v12 = [[a1 alloc] initWithPushNotification:v6];
-  v13 = [v12 pushCommand];
-  if (v13 <= 0xEFu)
+  v12 = [[self alloc] initWithPushNotification:notificationCopy];
+  pushCommand = [v12 pushCommand];
+  if (pushCommand <= 0xEFu)
   {
-    if (v13 == 51)
+    if (pushCommand == 51)
     {
-      v17 = [v6 objectForKey:GKFriendRequestURLFriendCode];
-      [v6 objectForKey:GKFriendRequestPushAcceptorID];
+      v17 = [notificationCopy objectForKey:GKFriendRequestURLFriendCode];
+      [notificationCopy objectForKey:GKFriendRequestPushAcceptorID];
       v24[0] = _NSConcreteStackBlock;
       v24[1] = 3221225472;
       v24[2] = sub_10017F894;
       v25 = v24[3] = &unk_100361348;
       v26 = v17;
-      v27 = v6;
+      v27 = notificationCopy;
       v18 = v17;
       v19 = v25;
       [v11 performOnManagedObjectContext:v24];
 
-      if (!v7)
+      if (!handlerCopy)
       {
         goto LABEL_30;
       }
@@ -55,12 +55,12 @@
       goto LABEL_29;
     }
 
-    if (v13 != 68)
+    if (pushCommand != 68)
     {
       goto LABEL_25;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"game"];
+    v14 = [notificationCopy objectForKeyedSubscript:@"game"];
     v15 = [v14 objectForKeyedSubscript:@"bundle-id"];
     v16 = v15;
     if (v14 && v15)
@@ -75,7 +75,7 @@
     }
 
 LABEL_19:
-    if (!v7)
+    if (!handlerCopy)
     {
       goto LABEL_30;
     }
@@ -83,10 +83,10 @@ LABEL_19:
     goto LABEL_29;
   }
 
-  switch(v13)
+  switch(pushCommand)
   {
     case 0xF0u:
-      v14 = [v6 objectForKeyedSubscript:GKPushReceiverID];
+      v14 = [notificationCopy objectForKeyedSubscript:GKPushReceiverID];
       if (![GKBulletin playerIsLocal:v14])
       {
         if (!os_log_GKGeneral)
@@ -101,7 +101,7 @@ LABEL_19:
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "GKSystemBulletin bulletin is not meant for current local player. Skipping.", buf, 2u);
         }
 
-        v7[2](v7, 0);
+        handlerCopy[2](handlerCopy, 0);
 
         goto LABEL_30;
       }
@@ -110,14 +110,14 @@ LABEL_19:
       v28[1] = 3221225472;
       v28[2] = sub_10017F724;
       v28[3] = &unk_100361708;
-      v29 = v6;
+      v29 = notificationCopy;
       v30 = v11;
       [v30 performOnManagedObjectContext:v28];
 
       goto LABEL_19;
     case 0xFEu:
       [v10 resetEnvironment];
-      if (!v7)
+      if (!handlerCopy)
       {
         goto LABEL_30;
       }
@@ -125,7 +125,7 @@ LABEL_19:
       goto LABEL_29;
     case 0xFDu:
       [v10 clearPushEnvironment];
-      if (!v7)
+      if (!handlerCopy)
       {
         goto LABEL_30;
       }
@@ -142,8 +142,8 @@ LABEL_25:
   v21 = os_log_GKError;
   if (os_log_type_enabled(os_log_GKError, OS_LOG_TYPE_ERROR))
   {
-    sub_100294E18(v13, v21);
-    if (!v7)
+    sub_100294E18(pushCommand, v21);
+    if (!handlerCopy)
     {
       goto LABEL_30;
     }
@@ -151,20 +151,20 @@ LABEL_25:
     goto LABEL_29;
   }
 
-  if (v7)
+  if (handlerCopy)
   {
 LABEL_29:
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
 LABEL_30:
 }
 
-+ (void)presentGameCenterInviteUpdate:(id)a3 playerAlias:(id)a4
++ (void)presentGameCenterInviteUpdate:(id)update playerAlias:(id)alias
 {
-  v6 = a4;
-  v7 = a3;
-  v16 = [[a1 alloc] initWithPushNotification:v7];
+  aliasCopy = alias;
+  updateCopy = update;
+  v16 = [[self alloc] initWithPushNotification:updateCopy];
   v8 = +[NSDate date];
   [v16 setDate:v8];
 
@@ -180,13 +180,13 @@ LABEL_30:
   v11 = +[NSDate date];
   [v16 setDate:v11];
 
-  [v16 setTitle:v6];
+  [v16 setTitle:aliasCopy];
   v12 = objc_alloc_init(GKBulletinAction);
   [(GKBulletinAction *)v12 setType:2];
   v13 = +[_TtC20GameCenterFoundation19GCFLocalizedStrings BULLETIN_VIEW];
   [(GKBulletinAction *)v12 setTitle:v13];
 
-  v14 = [v7 objectForKeyedSubscript:GKFriendRequestPushAcceptorID];
+  v14 = [updateCopy objectForKeyedSubscript:GKFriendRequestPushAcceptorID];
 
   [(GKBulletinAction *)v12 setInfo:v14];
   [v16 setDefaultAction:v12];
@@ -194,20 +194,20 @@ LABEL_30:
   [v15 presentBulletin:v16];
 }
 
-+ (void)expireGetPerGameSettingsCaches:(id)a3 payload:(id)a4 context:(id)a5
++ (void)expireGetPerGameSettingsCaches:(id)caches payload:(id)payload context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  cachesCopy = caches;
+  payloadCopy = payload;
+  contextCopy = context;
   v10 = +[GKCDGameSettings _gkFetchRequest];
-  if ([v7 length])
+  if ([cachesCopy length])
   {
-    v11 = [NSPredicate predicateWithFormat:@"bundleID == %@", v7];
-    [v10 setPredicate:v11];
+    cachesCopy = [NSPredicate predicateWithFormat:@"bundleID == %@", cachesCopy];
+    [v10 setPredicate:cachesCopy];
   }
 
   v42 = 0;
-  v12 = [v9 executeFetchRequest:v10 error:&v42];
+  v12 = [contextCopy executeFetchRequest:v10 error:&v42];
   v13 = v42;
   if (v13)
   {
@@ -230,7 +230,7 @@ LABEL_30:
             objc_enumerationMutation(v14);
           }
 
-          [v9 deleteObject:*(*(&v38 + 1) + 8 * i)];
+          [contextCopy deleteObject:*(*(&v38 + 1) + 8 * i)];
         }
 
         v16 = [v14 countByEnumeratingWithState:&v38 objects:v46 count:16];
@@ -285,15 +285,15 @@ LABEL_30:
   }
 
   v26 = GKPushFriendsAuthorizationStatus;
-  v27 = [v8 objectForKeyedSubscript:GKPushFriendsAuthorizationStatus];
+  v27 = [payloadCopy objectForKeyedSubscript:GKPushFriendsAuthorizationStatus];
   if (v27)
   {
     v28 = v27;
-    v29 = [v8 objectForKeyedSubscript:v26];
-    v30 = [v29 integerValue];
+    v29 = [payloadCopy objectForKeyedSubscript:v26];
+    integerValue = [v29 integerValue];
     v31 = GKPushFriendsAuthorizationStatusRemoved;
 
-    if (v30 == v31)
+    if (integerValue == v31)
     {
       v32 = +[GKClientProxy gameCenterClient];
       v33 = [(GKService *)GKGameService serviceWithTransport:0 forClient:v32 credential:0];
@@ -302,19 +302,19 @@ LABEL_30:
   }
 }
 
-+ (void)expireGetPerGameFriendPlayerIDsCache:(id)a3 context:(id)a4
++ (void)expireGetPerGameFriendPlayerIDsCache:(id)cache context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  cacheCopy = cache;
+  contextCopy = context;
   v7 = +[GKCDGameFriendList _gkFetchRequest];
-  if ([v5 length])
+  if ([cacheCopy length])
   {
-    v8 = [NSPredicate predicateWithFormat:@"bundleID == %@", v5];
-    [v7 setPredicate:v8];
+    cacheCopy = [NSPredicate predicateWithFormat:@"bundleID == %@", cacheCopy];
+    [v7 setPredicate:cacheCopy];
   }
 
   v31 = 0;
-  v9 = [v6 executeFetchRequest:v7 error:&v31];
+  v9 = [contextCopy executeFetchRequest:v7 error:&v31];
   v10 = v31;
   if (v10)
   {
@@ -337,7 +337,7 @@ LABEL_30:
             objc_enumerationMutation(v11);
           }
 
-          [v6 deleteObject:*(*(&v27 + 1) + 8 * i)];
+          [contextCopy deleteObject:*(*(&v27 + 1) + 8 * i)];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v27 objects:v35 count:16];
@@ -392,19 +392,19 @@ LABEL_30:
   }
 }
 
-+ (void)expireFriendCodeDetails:(id)a3 context:(id)a4
++ (void)expireFriendCodeDetails:(id)details context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  detailsCopy = details;
+  contextCopy = context;
   v7 = +[GKCDFriendCodeDetail _gkFetchRequest];
-  if ([v5 length])
+  if ([detailsCopy length])
   {
-    v8 = [NSPredicate predicateWithFormat:@"friendCode == %@", v5];
-    [v7 setPredicate:v8];
+    detailsCopy = [NSPredicate predicateWithFormat:@"friendCode == %@", detailsCopy];
+    [v7 setPredicate:detailsCopy];
   }
 
   v31 = 0;
-  v9 = [v6 executeFetchRequest:v7 error:&v31];
+  v9 = [contextCopy executeFetchRequest:v7 error:&v31];
   v10 = v31;
   if (v10)
   {
@@ -427,7 +427,7 @@ LABEL_30:
             objc_enumerationMutation(v11);
           }
 
-          [v6 deleteObject:*(*(&v27 + 1) + 8 * i)];
+          [contextCopy deleteObject:*(*(&v27 + 1) + 8 * i)];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v27 objects:v35 count:16];
@@ -482,12 +482,12 @@ LABEL_30:
   }
 }
 
-+ (void)expireCachesForBagKey:(id)a3 payload:(id)a4 context:(id)a5 group:(id)a6
++ (void)expireCachesForBagKey:(id)key payload:(id)payload context:(id)context group:(id)group
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  keyCopy = key;
+  payloadCopy = payload;
+  contextCopy = context;
+  groupCopy = group;
   if (!os_log_GKGeneral)
   {
     v13 = GKOSLoggers();
@@ -508,7 +508,7 @@ LABEL_30:
   v16 = os_log_GKCache;
   if (os_log_type_enabled(os_log_GKCache, OS_LOG_TYPE_DEBUG))
   {
-    sub_100294E90(v9, v16);
+    sub_100294E90(keyCopy, v16);
   }
 
   v17 = dispatch_get_current_queue();
@@ -517,168 +517,168 @@ LABEL_30:
     v18 = +[NSThread callStackSymbols];
     v19 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s not invoked on managed object context queue at %@", "+[GKSystemBulletin expireCachesForBagKey:payload:context:group:]", v18);
     v20 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKSystemBulletin.m"];
-    v21 = [v20 lastPathComponent];
-    v22 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v19, "+[GKSystemBulletin expireCachesForBagKey:payload:context:group:]", [v21 UTF8String], 253);
+    lastPathComponent = [v20 lastPathComponent];
+    v22 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v19, "+[GKSystemBulletin expireCachesForBagKey:payload:context:group:]", [lastPathComponent UTF8String], 253);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v22];
   }
 
-  v23 = [GKPlayerProfileCacheObject localPlayerInManagedObjectContext:v11];
+  v23 = [GKPlayerProfileCacheObject localPlayerInManagedObjectContext:contextCopy];
   if (v23)
   {
     v24 = +[GKClientProxy gameCenterClient];
-    v25 = [v23 internalRepresentation];
-    v26 = [(GKService *)GKUtilityServicePrivate serviceWithTransport:0 forClient:v24 localPlayer:v25];
-    if (v9)
+    internalRepresentation = [v23 internalRepresentation];
+    v26 = [(GKService *)GKUtilityServicePrivate serviceWithTransport:0 forClient:v24 localPlayer:internalRepresentation];
+    if (keyCopy)
     {
-      v27 = [v25 playerID];
+      playerID = [internalRepresentation playerID];
 
-      if (v27)
+      if (playerID)
       {
-        v28 = [v25 playerID];
-        [v24 onServerCacheInvalidationReceivedWithBagKey:v9 playerID:v28];
+        playerID2 = [internalRepresentation playerID];
+        [v24 onServerCacheInvalidationReceivedWithBagKey:keyCopy playerID:playerID2];
       }
     }
 
-    [GKSystemBulletin expireCachesForBagKey:v9 payload:v10 context:v11 profile:v23 client:v24 localPlayerInternal:v25];
+    [GKSystemBulletin expireCachesForBagKey:keyCopy payload:payloadCopy context:contextCopy profile:v23 client:v24 localPlayerInternal:internalRepresentation];
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = sub_100180720;
     v30[3] = &unk_100360FF0;
     v31 = v26;
-    v32 = v9;
+    v32 = keyCopy;
     v29 = v26;
-    [v12 perform:v30];
+    [groupCopy perform:v30];
   }
 }
 
-+ (void)expireCachesForBagKey:(id)a3 payload:(id)a4 context:(id)a5 profile:(id)a6 client:(id)a7 localPlayerInternal:(id)a8
++ (void)expireCachesForBagKey:(id)key payload:(id)payload context:(id)context profile:(id)profile client:(id)client localPlayerInternal:(id)internal
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = [(GKService *)GKFriendServicePrivate serviceWithTransport:0 forClient:v18 localPlayer:v19];
-  v21 = [(GKService *)GKGameServicePrivate serviceWithTransport:0 forClient:v18 localPlayer:v19];
-  v22 = [(GKService *)GKGameStatServicePrivate serviceWithTransport:0 forClient:v18 localPlayer:v19];
-  v63 = [(GKService *)GKProfileServicePrivate serviceWithTransport:0 forClient:v18 localPlayer:v19];
-  if ([v14 isEqualToString:GKBagKeyGetFriendIDs])
+  keyCopy = key;
+  payloadCopy = payload;
+  contextCopy = context;
+  profileCopy = profile;
+  clientCopy = client;
+  internalCopy = internal;
+  v20 = [(GKService *)GKFriendServicePrivate serviceWithTransport:0 forClient:clientCopy localPlayer:internalCopy];
+  v21 = [(GKService *)GKGameServicePrivate serviceWithTransport:0 forClient:clientCopy localPlayer:internalCopy];
+  v22 = [(GKService *)GKGameStatServicePrivate serviceWithTransport:0 forClient:clientCopy localPlayer:internalCopy];
+  v63 = [(GKService *)GKProfileServicePrivate serviceWithTransport:0 forClient:clientCopy localPlayer:internalCopy];
+  if ([keyCopy isEqualToString:GKBagKeyGetFriendIDs])
   {
     v55 = v21;
-    [v17 invalidate];
-    v23 = [v17 friendList];
-    [v23 invalidate];
+    [profileCopy invalidate];
+    friendList = [profileCopy friendList];
+    [friendList invalidate];
 
-    v24 = [v17 friendRequestList];
-    [v24 invalidate];
+    friendRequestList = [profileCopy friendRequestList];
+    [friendRequestList invalidate];
 
-    v25 = [v17 playerID];
-    v26 = v25;
-    if (v25)
+    playerID = [profileCopy playerID];
+    v26 = playerID;
+    if (playerID)
     {
-      v69 = v25;
+      v69 = playerID;
       v27 = [NSArray arrayWithObjects:&v69 count:1];
       [v63 getProfilesForPlayerIDs:v27 handler:&stru_100369F18];
     }
 
-    v28 = [v17 internalRepresentation];
+    internalRepresentation = [profileCopy internalRepresentation];
     v64[0] = _NSConcreteStackBlock;
     v64[1] = 3221225472;
     v64[2] = sub_100180EE4;
     v64[3] = &unk_100368508;
-    v65 = v18;
-    v66 = v19;
-    [v20 getFriendsForPlayer:v28 commonFriends:0 handler:v64];
+    v65 = clientCopy;
+    v66 = internalCopy;
+    [v20 getFriendsForPlayer:internalRepresentation commonFriends:0 handler:v64];
 
-    [(GKExpiringCacheObject *)GKCompatiblePlayerListCacheObject invalidateObjectsMatchingPredicate:0 context:v16];
-    [GKSystemBulletin expireGetPerGameFriendPlayerIDsCache:0 context:v16];
-    [GKSystemBulletin expireFriendCodeDetails:0 context:v16];
+    [(GKExpiringCacheObject *)GKCompatiblePlayerListCacheObject invalidateObjectsMatchingPredicate:0 context:contextCopy];
+    [GKSystemBulletin expireGetPerGameFriendPlayerIDsCache:0 context:contextCopy];
+    [GKSystemBulletin expireFriendCodeDetails:0 context:contextCopy];
 
-    v29 = v15;
+    v29 = payloadCopy;
     v21 = v55;
     goto LABEL_5;
   }
 
-  if (([v14 isEqualToString:GKBagKeyGetGamesPlayed] & 1) != 0 || objc_msgSend(v14, "isEqualToString:", @"gk-get-games-played"))
+  if (([keyCopy isEqualToString:GKBagKeyGetGamesPlayed] & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"gk-get-games-played"))
   {
-    [v17 expire];
-    v31 = [v17 gameList];
-    [v31 expire];
+    [profileCopy expire];
+    gameList = [profileCopy gameList];
+    [gameList expire];
 
-    v54 = [NSPredicate predicateWithFormat:@"player = %@", v17];
-    [(GKExpiringCacheObject *)GKGameRecordCacheObject expireObjectsMatchingPredicate:v54 context:v16];
-    [v17 playerID];
-    v32 = v19;
-    v33 = v18;
-    v34 = v17;
-    v35 = v16;
-    v36 = v14;
+    profileCopy = [NSPredicate predicateWithFormat:@"player = %@", profileCopy];
+    [(GKExpiringCacheObject *)GKGameRecordCacheObject expireObjectsMatchingPredicate:profileCopy context:contextCopy];
+    [profileCopy playerID];
+    v32 = internalCopy;
+    v33 = clientCopy;
+    v34 = profileCopy;
+    v35 = contextCopy;
+    v36 = keyCopy;
     v38 = v37 = v21;
     v68 = v38;
     [NSArray arrayWithObjects:&v68 count:1];
     v56 = v20;
     v58 = v22;
-    v40 = v39 = v15;
+    v40 = v39 = payloadCopy;
     v30 = v63;
     [v63 getProfilesForPlayerIDs:v40 handler:&stru_100369F38];
 
     v21 = v37;
-    v14 = v36;
-    v16 = v35;
-    v17 = v34;
-    v18 = v33;
-    v19 = v32;
-    v41 = [v17 internalRepresentation];
-    [v21 getGamesForPlayer:v41 includeInstalled:0 handler:0];
+    keyCopy = v36;
+    contextCopy = v35;
+    profileCopy = v34;
+    clientCopy = v33;
+    internalCopy = v32;
+    internalRepresentation2 = [profileCopy internalRepresentation];
+    [v21 getGamesForPlayer:internalRepresentation2 includeInstalled:0 handler:0];
 
     v29 = v39;
     v20 = v56;
     v22 = v58;
 LABEL_9:
-    v42 = v54;
+    v42 = profileCopy;
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  if ([v14 isEqualToString:GKBagKeyGamesFriendsPlayed])
+  if ([keyCopy isEqualToString:GKBagKeyGamesFriendsPlayed])
   {
     [v22 expireGamesFriendsPlayed];
   }
 
   else
   {
-    if ([v14 isEqualToString:@"gk-get-player-achievements"])
+    if ([keyCopy isEqualToString:@"gk-get-player-achievements"])
     {
-      [v17 expire];
-      [v17 gameRecords];
+      [profileCopy expire];
+      [profileCopy gameRecords];
       v57 = v20;
-      v43 = v59 = v15;
+      v43 = v59 = payloadCopy;
       [v43 makeObjectsPerformSelector:"expire"];
 
-      v54 = [NSPredicate predicateWithFormat:@"player == %@", a1];
-      [(GKExpiringCacheObject *)GKAchievementListCacheObject expireObjectsMatchingPredicate:v54 context:v16];
-      v44 = [v17 playerID];
-      v67 = v44;
+      profileCopy = [NSPredicate predicateWithFormat:@"player == %@", self];
+      [(GKExpiringCacheObject *)GKAchievementListCacheObject expireObjectsMatchingPredicate:profileCopy context:contextCopy];
+      playerID2 = [profileCopy playerID];
+      v67 = playerID2;
       [NSArray arrayWithObjects:&v67 count:1];
       v45 = v22;
-      v46 = v19;
-      v47 = v18;
-      v48 = v17;
-      v49 = v16;
-      v50 = v14;
+      v46 = internalCopy;
+      v47 = clientCopy;
+      v48 = profileCopy;
+      v49 = contextCopy;
+      v50 = keyCopy;
       v52 = v51 = v21;
       v30 = v63;
       [v63 getProfilesForPlayerIDs:v52 handler:&stru_100369F58];
 
       v21 = v51;
-      v14 = v50;
-      v16 = v49;
-      v17 = v48;
-      v18 = v47;
-      v19 = v46;
+      keyCopy = v50;
+      contextCopy = v49;
+      profileCopy = v48;
+      clientCopy = v47;
+      internalCopy = v46;
       v22 = v45;
 
       v20 = v57;
@@ -686,50 +686,50 @@ LABEL_10:
       goto LABEL_9;
     }
 
-    if ([v14 isEqualToString:GKBagKeyGetPerGameSettings])
+    if ([keyCopy isEqualToString:GKBagKeyGetPerGameSettings])
     {
-      v53 = [v15 objectForKeyedSubscript:GKInviteGameIDKey];
-      [GKSystemBulletin expireGetPerGameSettingsCaches:v53 payload:v15 context:v16];
+      v53 = [payloadCopy objectForKeyedSubscript:GKInviteGameIDKey];
+      [GKSystemBulletin expireGetPerGameSettingsCaches:v53 payload:payloadCopy context:contextCopy];
     }
 
     else
     {
-      if (![v14 isEqualToString:GKBagKeyGetPerGameFriendPlayerIDs])
+      if (![keyCopy isEqualToString:GKBagKeyGetPerGameFriendPlayerIDs])
       {
-        v29 = v15;
+        v29 = payloadCopy;
         v30 = v63;
-        if (![v14 isEqualToString:GKBagKeyGetFriendInvitationMailbox])
+        if (![keyCopy isEqualToString:GKBagKeyGetFriendInvitationMailbox])
         {
           goto LABEL_11;
         }
 
-        [v17 invalidate];
-        v60 = [v17 friendList];
-        [v60 invalidate];
+        [profileCopy invalidate];
+        friendList2 = [profileCopy friendList];
+        [friendList2 invalidate];
 
-        v61 = [v17 friendRequestList];
-        [v61 invalidate];
+        friendRequestList2 = [profileCopy friendRequestList];
+        [friendRequestList2 invalidate];
 
-        v62 = [(GKService *)GKBulletinService serviceWithTransport:0 forClient:v18 localPlayer:v19];
+        v62 = [(GKService *)GKBulletinService serviceWithTransport:0 forClient:clientCopy localPlayer:internalCopy];
         [v62 sendRefreshContentsForDataTypeToAllClientProxy:3];
         v42 = v62;
         goto LABEL_10;
       }
 
-      v53 = [v15 objectForKeyedSubscript:GKInviteGameIDKey];
-      [GKSystemBulletin expireGetPerGameFriendPlayerIDsCache:v53 context:v16];
+      v53 = [payloadCopy objectForKeyedSubscript:GKInviteGameIDKey];
+      [GKSystemBulletin expireGetPerGameFriendPlayerIDsCache:v53 context:contextCopy];
     }
   }
 
-  v29 = v15;
+  v29 = payloadCopy;
 LABEL_5:
   v30 = v63;
 LABEL_11:
 }
 
-- (void)handleAction:(id)a3
+- (void)handleAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -739,13 +739,13 @@ LABEL_11:
   if (os_log_type_enabled(os_log_GKTrace, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v9 = v4;
+    v9 = actionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "GKSystemBulletin handleAction: %@", buf, 0xCu);
   }
 
   v7.receiver = self;
   v7.super_class = GKSystemBulletin;
-  [(GKBulletin *)&v7 handleAction:v4];
+  [(GKBulletin *)&v7 handleAction:actionCopy];
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface IdentityProofingImageDimensions
 - (_TtC13CoreIDVShared31IdentityProofingImageDimensions)init;
-- (_TtC13CoreIDVShared31IdentityProofingImageDimensions)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC13CoreIDVShared31IdentityProofingImageDimensions)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IdentityProofingImageDimensions
 
-- (_TtC13CoreIDVShared31IdentityProofingImageDimensions)initWithCoder:(id)a3
+- (_TtC13CoreIDVShared31IdentityProofingImageDimensions)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   type metadata accessor for IdentityImageDimension();
-  v6 = a3;
+  coderCopy = coder;
   *(&self->super.isa + OBJC_IVAR____TtC13CoreIDVShared31IdentityProofingImageDimensions_idFront) = sub_225CCEF14();
   *(&self->super.isa + OBJC_IVAR____TtC13CoreIDVShared31IdentityProofingImageDimensions_idBack) = sub_225CCEF14();
   *(&self->super.isa + OBJC_IVAR____TtC13CoreIDVShared31IdentityProofingImageDimensions_selfie) = sub_225CCEF14();
@@ -21,11 +21,11 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  IdentityProofingImageDimensions.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  IdentityProofingImageDimensions.encode(with:)(coderCopy);
 }
 
 - (_TtC13CoreIDVShared31IdentityProofingImageDimensions)init

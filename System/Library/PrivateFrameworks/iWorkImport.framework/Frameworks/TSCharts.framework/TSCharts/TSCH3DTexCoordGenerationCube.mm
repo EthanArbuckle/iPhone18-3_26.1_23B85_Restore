@@ -1,67 +1,67 @@
 @interface TSCH3DTexCoordGenerationCube
-+ (id)generatorWithBBox:(const void *)a3;
-+ (id)generatorWithBBox:(const void *)a3 transform:(const void *)a4;
-- (TSCH3DTexCoordGenerationCube)initWithBBox:(const void *)a3;
-- (TSCH3DTexCoordGenerationCube)initWithBBox:(const void *)a3 transform:(const void *)a4;
++ (id)generatorWithBBox:(const void *)box;
++ (id)generatorWithBBox:(const void *)box transform:(const void *)transform;
+- (TSCH3DTexCoordGenerationCube)initWithBBox:(const void *)box;
+- (TSCH3DTexCoordGenerationCube)initWithBBox:(const void *)box transform:(const void *)transform;
 - (id).cxx_construct;
-- (void)generateFromVertexArray:(const void *)a3 normalArray:(const void *)a4 numVertices:(int64_t)a5 destination4D:(void *)a6;
+- (void)generateFromVertexArray:(const void *)array normalArray:(const void *)normalArray numVertices:(int64_t)vertices destination4D:(void *)d;
 @end
 
 @implementation TSCH3DTexCoordGenerationCube
 
-+ (id)generatorWithBBox:(const void *)a3
++ (id)generatorWithBBox:(const void *)box
 {
-  v4 = [a1 alloc];
-  v9 = objc_msgSend_initWithBBox_(v4, v5, v6, v7, v8, a3);
+  v4 = [self alloc];
+  v9 = objc_msgSend_initWithBBox_(v4, v5, v6, v7, v8, box);
 
   return v9;
 }
 
-+ (id)generatorWithBBox:(const void *)a3 transform:(const void *)a4
++ (id)generatorWithBBox:(const void *)box transform:(const void *)transform
 {
-  v6 = [a1 alloc];
-  v11 = objc_msgSend_initWithBBox_transform_(v6, v7, v8, v9, v10, a3, a4);
+  v6 = [self alloc];
+  v11 = objc_msgSend_initWithBBox_transform_(v6, v7, v8, v9, v10, box, transform);
 
   return v11;
 }
 
-- (TSCH3DTexCoordGenerationCube)initWithBBox:(const void *)a3 transform:(const void *)a4
+- (TSCH3DTexCoordGenerationCube)initWithBBox:(const void *)box transform:(const void *)transform
 {
   v6.receiver = self;
   v6.super_class = TSCH3DTexCoordGenerationCube;
-  result = [(TSCH3DTexCoordGeneration *)&v6 initWithTransform:a4];
+  result = [(TSCH3DTexCoordGeneration *)&v6 initWithTransform:transform];
   if (result)
   {
-    result->_bbox._min.var0.var0 = *a3;
-    result->_bbox._min.var1.var0 = *(a3 + 1);
-    result->_bbox._min.var2.var0 = *(a3 + 2);
-    result->_bbox._max.var0.var0 = *(a3 + 3);
-    result->_bbox._max.var1.var0 = *(a3 + 4);
-    result->_bbox._max.var2.var0 = *(a3 + 5);
+    result->_bbox._min.var0.var0 = *box;
+    result->_bbox._min.var1.var0 = *(box + 1);
+    result->_bbox._min.var2.var0 = *(box + 2);
+    result->_bbox._max.var0.var0 = *(box + 3);
+    result->_bbox._max.var1.var0 = *(box + 4);
+    result->_bbox._max.var2.var0 = *(box + 5);
   }
 
   return result;
 }
 
-- (TSCH3DTexCoordGenerationCube)initWithBBox:(const void *)a3
+- (TSCH3DTexCoordGenerationCube)initWithBBox:(const void *)box
 {
   v5.receiver = self;
   v5.super_class = TSCH3DTexCoordGenerationCube;
   result = [(TSCH3DTexCoordGeneration *)&v5 init];
   if (result)
   {
-    result->_bbox._min.var0.var0 = *a3;
-    result->_bbox._min.var1.var0 = *(a3 + 1);
-    result->_bbox._min.var2.var0 = *(a3 + 2);
-    result->_bbox._max.var0.var0 = *(a3 + 3);
-    result->_bbox._max.var1.var0 = *(a3 + 4);
-    result->_bbox._max.var2.var0 = *(a3 + 5);
+    result->_bbox._min.var0.var0 = *box;
+    result->_bbox._min.var1.var0 = *(box + 1);
+    result->_bbox._min.var2.var0 = *(box + 2);
+    result->_bbox._max.var0.var0 = *(box + 3);
+    result->_bbox._max.var1.var0 = *(box + 4);
+    result->_bbox._max.var2.var0 = *(box + 5);
   }
 
   return result;
 }
 
-- (void)generateFromVertexArray:(const void *)a3 normalArray:(const void *)a4 numVertices:(int64_t)a5 destination4D:(void *)a6
+- (void)generateFromVertexArray:(const void *)array normalArray:(const void *)normalArray numVertices:(int64_t)vertices destination4D:(void *)d
 {
   var0 = self->_bbox._min.var2.var0;
   v12 = self->_bbox._max.var2.var0 - var0;
@@ -81,7 +81,7 @@
   __p[1] = 0;
   *v99 = 0;
   v17 = objc_msgSend_normalDirectionMapper(self, v16, *&v14, *&v15, COERCE_DOUBLE(__PAIR64__(HIDWORD(v100), LODWORD(v101))));
-  objc_msgSend_mapFromVertexArray_normalArray_normalMatrix_numVertices_destination_(v17, v18, v19, v20, v21, a3, a4, v102, a5, __p);
+  objc_msgSend_mapFromVertexArray_normalArray_normalMatrix_numVertices_destination_(v17, v18, v19, v20, v21, array, normalArray, v102, vertices, __p);
 
   v22 = 0;
   v23 = v95.f32[0];
@@ -96,18 +96,18 @@
   }
 
   while (v22 != 3);
-  if (a5 > 0)
+  if (vertices > 0)
   {
     v24 = 0;
     v25 = v104;
-    v26 = a3 + 8;
+    v26 = array + 8;
     v27 = v105;
     v28 = &off_2764D5000;
-    v93 = a3;
-    v94 = a3 + 8;
+    arrayCopy = array;
+    v94 = array + 8;
     while (1)
     {
-      v29 = (a3 + 12 * v24);
+      v29 = (array + 12 * v24);
       v30 = v29[1];
       v31 = v29[2];
       v32 = v29[3] - *v29;
@@ -162,8 +162,8 @@
       v58 = __p[0];
       if ((v24 / 3) >= __p[1] - __p[0])
       {
-        v59 = a6;
-        v60 = a5;
+        dCopy = d;
+        verticesCopy = vertices;
         v61 = MEMORY[0x277D81150];
         v62 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v28, *&v102[24], v54, v57, "[TSCH3DTexCoordGenerationCube generateFromVertexArray:normalArray:numVertices:destination4D:]");
         v67 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v63, v64, v65, v66, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DTexCoordGenerationCube.mm");
@@ -171,9 +171,9 @@
 
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v72, v73, v74, v75);
         v58 = __p[0];
-        a5 = v60;
-        a6 = v59;
-        a3 = v93;
+        vertices = verticesCopy;
+        d = dCopy;
+        array = arrayCopy;
         v26 = v94;
         v23 = v95.f32[0];
         v28 = &off_2764D5000;
@@ -182,7 +182,7 @@
       v76 = v58[v24 / 3];
       v77 = v24 + 2;
       v78 = &v26[12 * v24];
-      v79 = (a6 + 16 * v24);
+      v79 = (d + 16 * v24);
       do
       {
         v80 = *(v78 - 2);
@@ -212,7 +212,7 @@
             goto LABEL_27;
           }
 
-          v92 = (a6 + 16 * v24 + 4);
+          v92 = (d + 16 * v24 + 4);
           goto LABEL_26;
         }
 
@@ -243,7 +243,7 @@ LABEL_27:
       }
 
       while (v87 < v77);
-      if (v24 >= a5)
+      if (v24 >= vertices)
       {
         if (v58)
         {

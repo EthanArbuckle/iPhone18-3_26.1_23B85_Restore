@@ -1,39 +1,39 @@
 @interface CHRecentAndRelevantCollectionViewCell
-- (void)setCollectionView:(id)a3;
+- (void)setCollectionView:(id)view;
 @end
 
 @implementation CHRecentAndRelevantCollectionViewCell
 
-- (void)setCollectionView:(id)a3
+- (void)setCollectionView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   collectionView = self->_collectionView;
-  if (collectionView != v5)
+  if (collectionView != viewCopy)
   {
     [(UICollectionView *)collectionView removeFromSuperview];
-    objc_storeStrong(&self->_collectionView, a3);
-    v7 = [(CHRecentAndRelevantCollectionViewCell *)self contentView];
-    [v7 addSubview:self->_collectionView];
+    objc_storeStrong(&self->_collectionView, view);
+    contentView = [(CHRecentAndRelevantCollectionViewCell *)self contentView];
+    [contentView addSubview:self->_collectionView];
 
-    v8 = [(UICollectionView *)self->_collectionView leadingAnchor];
-    v9 = [(CHRecentAndRelevantCollectionViewCell *)self contentView];
-    v10 = [v9 leadingAnchor];
-    v11 = [v8 constraintEqualToAnchor:v10];
+    leadingAnchor = [(UICollectionView *)self->_collectionView leadingAnchor];
+    contentView2 = [(CHRecentAndRelevantCollectionViewCell *)self contentView];
+    leadingAnchor2 = [contentView2 leadingAnchor];
+    v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-    v12 = [(UICollectionView *)self->_collectionView trailingAnchor];
-    v13 = [(CHRecentAndRelevantCollectionViewCell *)self contentView];
-    v14 = [v13 trailingAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    trailingAnchor = [(UICollectionView *)self->_collectionView trailingAnchor];
+    contentView3 = [(CHRecentAndRelevantCollectionViewCell *)self contentView];
+    trailingAnchor2 = [contentView3 trailingAnchor];
+    v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
-    v16 = [(UICollectionView *)self->_collectionView topAnchor];
-    v17 = [(CHRecentAndRelevantCollectionViewCell *)self contentView];
-    v18 = [v17 topAnchor];
-    v19 = [v16 constraintEqualToAnchor:v18];
+    topAnchor = [(UICollectionView *)self->_collectionView topAnchor];
+    contentView4 = [(CHRecentAndRelevantCollectionViewCell *)self contentView];
+    topAnchor2 = [contentView4 topAnchor];
+    v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
-    v20 = [(UICollectionView *)self->_collectionView bottomAnchor];
-    v21 = [(CHRecentAndRelevantCollectionViewCell *)self contentView];
-    v22 = [v21 bottomAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22];
+    bottomAnchor = [(UICollectionView *)self->_collectionView bottomAnchor];
+    contentView5 = [(CHRecentAndRelevantCollectionViewCell *)self contentView];
+    bottomAnchor2 = [contentView5 bottomAnchor];
+    v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
     v25[0] = v11;
     v25[1] = v15;

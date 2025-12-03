@@ -1,6 +1,6 @@
 @interface CBEDRModulator
 - (BOOL)isConfigured;
-- (BOOL)modulatedHeadroom:(float *)a3 forHeadroom:(float)a4 forSDRNits:(float)a5;
+- (BOOL)modulatedHeadroom:(float *)headroom forHeadroom:(float)forHeadroom forSDRNits:(float)nits;
 - (CBEDRModulator)init;
 - (id)description;
 - (void)dealloc;
@@ -10,33 +10,33 @@
 
 - (CBEDRModulator)init
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   v4.receiver = self;
   v4.super_class = CBEDRModulator;
-  v6 = [(CBEDRModulator *)&v4 init];
-  if (v6)
+  selfCopy = [(CBEDRModulator *)&v4 init];
+  if (selfCopy)
   {
     v2 = os_log_create("com.apple.CoreBrightness.EDR", "modulator");
-    v6->_logHandle = v2;
+    selfCopy->_logHandle = v2;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   if (self->_logHandle)
   {
-    MEMORY[0x1E69E5920](v5->_logHandle);
-    v5->_logHandle = 0;
+    MEMORY[0x1E69E5920](selfCopy->_logHandle);
+    selfCopy->_logHandle = 0;
   }
 
-  MEMORY[0x1E69E5920](v5->_headroomDataPointsConfig);
-  *&v2 = MEMORY[0x1E69E5920](v5->_nitsDataPointsConfig).n128_u64[0];
-  v3.receiver = v5;
+  MEMORY[0x1E69E5920](selfCopy->_headroomDataPointsConfig);
+  *&v2 = MEMORY[0x1E69E5920](selfCopy->_nitsDataPointsConfig).n128_u64[0];
+  v3.receiver = selfCopy;
   v3.super_class = CBEDRModulator;
   [(CBEDRModulator *)&v3 dealloc];
 }
@@ -62,28 +62,28 @@
   return v5;
 }
 
-- (BOOL)modulatedHeadroom:(float *)a3 forHeadroom:(float)a4 forSDRNits:(float)a5
+- (BOOL)modulatedHeadroom:(float *)headroom forHeadroom:(float)forHeadroom forSDRNits:(float)nits
 {
   v32 = *MEMORY[0x1E69E9840];
-  *a3 = a4;
+  *headroom = forHeadroom;
   if ([(CBEDRModulator *)self isConfigured])
   {
     [-[NSArray objectAtIndexedSubscript:](self->_nitsDataPointsConfig objectAtIndexedSubscript:{0), "floatValue"}];
     v5 = *&v6;
-    *&v6 = a5;
-    if (a5 > v5)
+    *&v6 = nits;
+    if (nits > v5)
     {
       [-[NSArray objectAtIndexedSubscript:](self->_nitsDataPointsConfig objectAtIndexedSubscript:{-[NSArray count](self->_nitsDataPointsConfig, "count") - 1), "floatValue"}];
       v8 = *&v9;
-      *&v9 = a5;
-      if (a5 < v8)
+      *&v9 = nits;
+      if (nits < v8)
       {
         v24 = 0;
         v23 = [(NSArray *)self->_nitsDataPointsConfig count]- 1;
         while (v23 - v24 > 1)
         {
           [-[NSArray objectAtIndexedSubscript:](self->_nitsDataPointsConfig objectAtIndexedSubscript:{(v23 - v24) / 2 + v24), "floatValue"}];
-          if (a5 > v11)
+          if (nits > v11)
           {
             v24 += (v23 - v24) / 2;
           }
@@ -101,7 +101,7 @@
         [-[NSArray objectAtIndexedSubscript:](self->_nitsDataPointsConfig objectAtIndexedSubscript:{v23), "floatValue"}];
         v22 = v14;
         [-[NSArray objectAtIndexedSubscript:](self->_headroomDataPointsConfig objectAtIndexedSubscript:{v23), "floatValue"}];
-        v25 = linear_interpolation(a5, v20, v21, v22, v15);
+        v25 = linear_interpolation(nits, v20, v21, v22, v15);
       }
 
       else
@@ -139,21 +139,21 @@
 
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_0_3_8_0_8_0_8_0(v31, COERCE__INT64(a4), COERCE__INT64(a5), COERCE__INT64(v25));
+      __os_log_helper_16_0_3_8_0_8_0_8_0(v31, COERCE__INT64(forHeadroom), COERCE__INT64(nits), COERCE__INT64(v25));
       _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "headroom = %f | SDR = %f | modulated cap = %f", v31, 0x20u);
     }
 
-    if (a4 >= v25)
+    if (forHeadroom >= v25)
     {
-      v17 = v25;
+      forHeadroomCopy = v25;
     }
 
     else
     {
-      v17 = a4;
+      forHeadroomCopy = forHeadroom;
     }
 
-    *a3 = v17;
+    *headroom = forHeadroomCopy;
     v30 = 1;
   }
 

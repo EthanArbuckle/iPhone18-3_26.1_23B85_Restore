@@ -1,23 +1,23 @@
 @interface TSTTableStrokePresetList
 + (id)init;
-+ (id)strokePresetListForDefaultPropertyMapForTablePresetIndex:(unint64_t)a3 colors:(id)a4;
-+ (id)strokePresetListForDefaultPropertyMapWithFatStroke:(id)a3 andThinStroke:(id)a4;
-+ (id)strokePresetListForDefaultPropertyMapWithHorizontalStroke:(id)a3 verticalStroke:(id)a4 exteriorStroke:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (id)exteriorStrokeForStrokePreset:(unint64_t)a3;
-- (id)horizontalStrokeForStrokePreset:(unint64_t)a3;
-- (id)verticalStrokeForStrokePreset:(unint64_t)a3;
-- (unsigned)maskForStrokePreset:(unint64_t)a3;
++ (id)strokePresetListForDefaultPropertyMapForTablePresetIndex:(unint64_t)index colors:(id)colors;
++ (id)strokePresetListForDefaultPropertyMapWithFatStroke:(id)stroke andThinStroke:(id)thinStroke;
++ (id)strokePresetListForDefaultPropertyMapWithHorizontalStroke:(id)stroke verticalStroke:(id)verticalStroke exteriorStroke:(id)exteriorStroke;
+- (BOOL)isEqual:(id)equal;
+- (id)exteriorStrokeForStrokePreset:(unint64_t)preset;
+- (id)horizontalStrokeForStrokePreset:(unint64_t)preset;
+- (id)verticalStrokeForStrokePreset:(unint64_t)preset;
+- (unsigned)maskForStrokePreset:(unint64_t)preset;
 - (void)dealloc;
-- (void)setStroke:(id)a3 forPresetIndex:(unint64_t)a4;
-- (void)setStrokePreset:(id)a3 atIndex:(unint64_t)a4;
+- (void)setStroke:(id)stroke forPresetIndex:(unint64_t)index;
+- (void)setStrokePreset:(id)preset atIndex:(unint64_t)index;
 @end
 
 @implementation TSTTableStrokePresetList
 
 + (id)init
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___TSTTableStrokePresetList;
   return objc_msgSendSuper2(&v3, sel_init);
 }
@@ -39,9 +39,9 @@
   [(TSTTableStrokePresetList *)&v4 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v9 = *(a3 + 1);
+  v9 = *(equal + 1);
   if (v9 != self->mCount)
   {
     return 0;
@@ -60,7 +60,7 @@
   v20 = v8;
   v11 = 0;
   mPresets = self->mPresets;
-  v13 = a3 + 16;
+  v13 = equal + 16;
   do
   {
     result = [(TSTTableStrokePresetData *)mPresets[v11] isEqual:*&v13[8 * v11], v15, v16, v17, v18, v19, v20];
@@ -76,53 +76,53 @@
   return result;
 }
 
-- (void)setStrokePreset:(id)a3 atIndex:(unint64_t)a4
+- (void)setStrokePreset:(id)preset atIndex:(unint64_t)index
 {
-  if (self->mCount <= a4)
+  if (self->mCount <= index)
   {
-    v9 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTTableStrokePresetList setStrokePreset:atIndex:]"];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTTableStrokePresetList.mm"];
 
-    [v9 handleFailureInFunction:v10 file:v11 lineNumber:109 description:@"preset index higher than count"];
+    [currentHandler handleFailureInFunction:v10 file:v11 lineNumber:109 description:@"preset index higher than count"];
   }
 
   else
   {
     mPresets = self->mPresets;
-    v7 = self->mPresets[a4];
-    v8 = a3;
+    v7 = self->mPresets[index];
+    presetCopy = preset;
     if (v7)
     {
     }
 
-    mPresets[a4] = a3;
+    mPresets[index] = preset;
   }
 }
 
-+ (id)strokePresetListForDefaultPropertyMapForTablePresetIndex:(unint64_t)a3 colors:(id)a4
++ (id)strokePresetListForDefaultPropertyMapForTablePresetIndex:(unint64_t)index colors:(id)colors
 {
-  if (a4)
+  if (colors)
   {
-    v6 = s_TSTStrokePresetColors[a3];
-    v7 = +[TSDStroke strokeWithColor:width:](TSDStroke, "strokeWithColor:width:", [a4 objectAtIndex:v6], 1.0);
-    v8 = +[TSDStroke strokeWithColor:width:](TSDStroke, "strokeWithColor:width:", [a4 objectAtIndex:v6], 1.0);
-    v9 = [a4 objectAtIndex:v6];
+    v6 = s_TSTStrokePresetColors[index];
+    v7 = +[TSDStroke strokeWithColor:width:](TSDStroke, "strokeWithColor:width:", [colors objectAtIndex:v6], 1.0);
+    v8 = +[TSDStroke strokeWithColor:width:](TSDStroke, "strokeWithColor:width:", [colors objectAtIndex:v6], 1.0);
+    blackColor = [colors objectAtIndex:v6];
   }
 
   else
   {
     v7 = +[TSDStroke strokeWithColor:width:](TSDStroke, "strokeWithColor:width:", [MEMORY[0x277D6C2A8] blackColor], 1.0);
     v8 = +[TSDStroke strokeWithColor:width:](TSDStroke, "strokeWithColor:width:", [MEMORY[0x277D6C2A8] blackColor], 1.0);
-    v9 = [MEMORY[0x277D6C2A8] blackColor];
+    blackColor = [MEMORY[0x277D6C2A8] blackColor];
   }
 
-  v10 = [TSDStroke strokeWithColor:v9 width:1.0];
+  v10 = [TSDStroke strokeWithColor:blackColor width:1.0];
 
-  return [a1 strokePresetListForDefaultPropertyMapWithHorizontalStroke:v7 verticalStroke:v8 exteriorStroke:v10];
+  return [self strokePresetListForDefaultPropertyMapWithHorizontalStroke:v7 verticalStroke:v8 exteriorStroke:v10];
 }
 
-+ (id)strokePresetListForDefaultPropertyMapWithHorizontalStroke:(id)a3 verticalStroke:(id)a4 exteriorStroke:(id)a5
++ (id)strokePresetListForDefaultPropertyMapWithHorizontalStroke:(id)stroke verticalStroke:(id)verticalStroke exteriorStroke:(id)exteriorStroke
 {
   v8 = objc_alloc_init(TSTTableStrokePresetList);
   v8->mCount = 15;
@@ -132,7 +132,7 @@
     v10 = v9;
     for (i = 0; i != v10; ++i)
     {
-      v12 = [[TSTTableStrokePresetData alloc] initWithMask:sHardCodedMasks[i] horizontalStroke:a3 verticalStroke:a4 exteriorStroke:a5];
+      v12 = [[TSTTableStrokePresetData alloc] initWithMask:sHardCodedMasks[i] horizontalStroke:stroke verticalStroke:verticalStroke exteriorStroke:exteriorStroke];
       [(TSTTableStrokePresetList *)v8 setStrokePreset:v12 atIndex:i];
     }
   }
@@ -140,7 +140,7 @@
   return v8;
 }
 
-+ (id)strokePresetListForDefaultPropertyMapWithFatStroke:(id)a3 andThinStroke:(id)a4
++ (id)strokePresetListForDefaultPropertyMapWithFatStroke:(id)stroke andThinStroke:(id)thinStroke
 {
   v6 = objc_alloc_init(TSTTableStrokePresetList);
   v6->mCount = 15;
@@ -152,15 +152,15 @@
     {
       if (sUseFatStroke[i])
       {
-        v10 = a3;
+        thinStrokeCopy = stroke;
       }
 
       else
       {
-        v10 = a4;
+        thinStrokeCopy = thinStroke;
       }
 
-      v11 = [[TSTTableStrokePresetData alloc] initWithMask:sHardCodedMasks[i] horizontalStroke:v10 verticalStroke:v10 exteriorStroke:v10];
+      v11 = [[TSTTableStrokePresetData alloc] initWithMask:sHardCodedMasks[i] horizontalStroke:thinStrokeCopy verticalStroke:thinStrokeCopy exteriorStroke:thinStrokeCopy];
       [(TSTTableStrokePresetList *)v6 setStrokePreset:v11 atIndex:i];
     }
   }
@@ -168,66 +168,66 @@
   return v6;
 }
 
-- (id)horizontalStrokeForStrokePreset:(unint64_t)a3
+- (id)horizontalStrokeForStrokePreset:(unint64_t)preset
 {
-  if (self->mCount <= a3)
+  if (self->mCount <= preset)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTTableStrokePresetList horizontalStrokeForStrokePreset:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTTableStrokePresetList.mm"), 225, @"illegal preset index"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTTableStrokePresetList.mm"), 225, @"illegal preset index"}];
   }
 
-  v7 = self->mPresets[a3];
+  v7 = self->mPresets[preset];
 
   return [(TSTTableStrokePresetData *)v7 horizontalStroke];
 }
 
-- (id)verticalStrokeForStrokePreset:(unint64_t)a3
+- (id)verticalStrokeForStrokePreset:(unint64_t)preset
 {
-  if (self->mCount <= a3)
+  if (self->mCount <= preset)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTTableStrokePresetList verticalStrokeForStrokePreset:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTTableStrokePresetList.mm"), 234, @"illegal preset index"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTTableStrokePresetList.mm"), 234, @"illegal preset index"}];
   }
 
-  v7 = self->mPresets[a3];
+  v7 = self->mPresets[preset];
 
   return [(TSTTableStrokePresetData *)v7 verticalStroke];
 }
 
-- (id)exteriorStrokeForStrokePreset:(unint64_t)a3
+- (id)exteriorStrokeForStrokePreset:(unint64_t)preset
 {
-  if (self->mCount <= a3)
+  if (self->mCount <= preset)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTTableStrokePresetList exteriorStrokeForStrokePreset:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTTableStrokePresetList.mm"), 244, @"illegal preset index"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTTableStrokePresetList.mm"), 244, @"illegal preset index"}];
   }
 
-  v7 = self->mPresets[a3];
+  v7 = self->mPresets[preset];
 
   return [(TSTTableStrokePresetData *)v7 exteriorStroke];
 }
 
-- (unsigned)maskForStrokePreset:(unint64_t)a3
+- (unsigned)maskForStrokePreset:(unint64_t)preset
 {
-  if (self->mCount <= a3)
+  if (self->mCount <= preset)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTTableStrokePresetList maskForStrokePreset:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTTableStrokePresetList.mm"), 253, @"illegal preset index"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTTableStrokePresetList.mm"), 253, @"illegal preset index"}];
   }
 
-  v7 = self->mPresets[a3];
+  v7 = self->mPresets[preset];
 
   return [(TSTTableStrokePresetData *)v7 mask];
 }
 
-- (void)setStroke:(id)a3 forPresetIndex:(unint64_t)a4
+- (void)setStroke:(id)stroke forPresetIndex:(unint64_t)index
 {
-  v6 = -[TSTTableStrokePresetData initWithMask:horizontalStroke:verticalStroke:exteriorStroke:]([TSTTableStrokePresetData alloc], "initWithMask:horizontalStroke:verticalStroke:exteriorStroke:", [-[TSTTableStrokePresetList presetAtIndex:](self presetAtIndex:{a4), "mask"}], a3, a3, a3);
-  [(TSTTableStrokePresetList *)self setStrokePreset:v6 atIndex:a4];
+  v6 = -[TSTTableStrokePresetData initWithMask:horizontalStroke:verticalStroke:exteriorStroke:]([TSTTableStrokePresetData alloc], "initWithMask:horizontalStroke:verticalStroke:exteriorStroke:", [-[TSTTableStrokePresetList presetAtIndex:](self presetAtIndex:{index), "mask"}], stroke, stroke, stroke);
+  [(TSTTableStrokePresetList *)self setStrokePreset:v6 atIndex:index];
 }
 
 @end

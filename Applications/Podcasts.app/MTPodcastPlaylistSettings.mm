@@ -1,40 +1,40 @@
 @interface MTPodcastPlaylistSettings
-+ (id)_longStringForEpisodes:(int64_t)a3 defaultValue:(int64_t)a4;
-+ (id)_shortStringForEpisodes:(int64_t)a3 defaultValue:(int64_t)a4;
-+ (id)episodesOptionArray:(BOOL)a3 defaultValue:(int64_t)a4;
-+ (id)insertNewSettingsInManagedObjectContext:(id)a3;
-+ (id)mediaOptionArray:(BOOL)a3;
-+ (id)stringForEpisodes:(int64_t)a3 short:(BOOL)a4 defaultValue:(int64_t)a5;
-+ (id)stringForMedia:(int)a3 short:(BOOL)a4;
++ (id)_longStringForEpisodes:(int64_t)episodes defaultValue:(int64_t)value;
++ (id)_shortStringForEpisodes:(int64_t)episodes defaultValue:(int64_t)value;
++ (id)episodesOptionArray:(BOOL)array defaultValue:(int64_t)value;
++ (id)insertNewSettingsInManagedObjectContext:(id)context;
++ (id)mediaOptionArray:(BOOL)array;
++ (id)stringForEpisodes:(int64_t)episodes short:(BOOL)short defaultValue:(int64_t)value;
++ (id)stringForMedia:(int)media short:(BOOL)short;
 - (double)latestEpisodeDate;
 - (double)oldestEpisodeDate;
 - (id)metricsAdditionalData;
 - (id)metricsContentIdentifier;
 - (id)metricsKeys;
 - (id)predicateForSettings;
-- (void)setNeedsUpdate:(BOOL)a3;
-- (void)setTracksDefault:(BOOL)a3;
-- (void)takeValuesFromDefaultSettings:(id)a3;
+- (void)setNeedsUpdate:(BOOL)update;
+- (void)setTracksDefault:(BOOL)default;
+- (void)takeValuesFromDefaultSettings:(id)settings;
 @end
 
 @implementation MTPodcastPlaylistSettings
 
-+ (id)_shortStringForEpisodes:(int64_t)a3 defaultValue:(int64_t)a4
++ (id)_shortStringForEpisodes:(int64_t)episodes defaultValue:(int64_t)value
 {
-  if (a3 > 2)
+  if (episodes > 2)
   {
-    if (a3 == 6)
+    if (episodes == 6)
     {
-      v4 = [a1 stringForEpisodes:a4 short:1 defaultValue:0];
+      v4 = [self stringForEpisodes:value short:1 defaultValue:0];
       goto LABEL_12;
     }
 
     goto LABEL_9;
   }
 
-  if (a3)
+  if (episodes)
   {
-    if (a3 != 1)
+    if (episodes != 1)
     {
 LABEL_9:
       v8 = +[NSBundle mainBundle];
@@ -65,25 +65,25 @@ LABEL_12:
   return v4;
 }
 
-+ (id)_longStringForEpisodes:(int64_t)a3 defaultValue:(int64_t)a4
++ (id)_longStringForEpisodes:(int64_t)episodes defaultValue:(int64_t)value
 {
-  if (a3 > 2)
+  if (episodes > 2)
   {
-    if (a3 > 4)
+    if (episodes > 4)
     {
-      if (a3 == 5)
+      if (episodes == 5)
       {
         v5 = 10;
       }
 
       else
       {
-        if (a3 == 6)
+        if (episodes == 6)
         {
           v8 = +[NSBundle mainBundle];
           v9 = [v8 localizedStringForKey:@"Default (%@)" value:&stru_1004F3018 table:0];
 
-          v10 = [a1 stringForEpisodes:a4 short:1 defaultValue:0];
+          v10 = [self stringForEpisodes:value short:1 defaultValue:0];
           v11 = [NSString stringWithValidatedFormat:v9 validFormatSpecifiers:@"%@" error:0, v10];
 
           goto LABEL_22;
@@ -96,12 +96,12 @@ LABEL_12:
     else
     {
       v4 = 5;
-      if (a3 != 4)
+      if (episodes != 4)
       {
         v4 = 0;
       }
 
-      if (a3 == 3)
+      if (episodes == 3)
       {
         v5 = 3;
       }
@@ -115,7 +115,7 @@ LABEL_12:
     goto LABEL_18;
   }
 
-  switch(a3)
+  switch(episodes)
   {
     case 0:
       v12 = [NSBundle mainBundle:0];
@@ -149,27 +149,27 @@ LABEL_22:
   return v11;
 }
 
-+ (id)stringForEpisodes:(int64_t)a3 short:(BOOL)a4 defaultValue:(int64_t)a5
++ (id)stringForEpisodes:(int64_t)episodes short:(BOOL)short defaultValue:(int64_t)value
 {
-  if (a4)
+  if (short)
   {
-    [a1 _shortStringForEpisodes:a3 defaultValue:a5];
+    [self _shortStringForEpisodes:episodes defaultValue:value];
   }
 
   else
   {
-    [a1 _longStringForEpisodes:a3 defaultValue:a5];
+    [self _longStringForEpisodes:episodes defaultValue:value];
   }
   v5 = ;
 
   return v5;
 }
 
-+ (id)stringForMedia:(int)a3 short:(BOOL)a4
++ (id)stringForMedia:(int)media short:(BOOL)short
 {
-  if (a3 <= 2)
+  if (media <= 2)
   {
-    v5 = *(&off_1004DC6E0 + a3);
+    v5 = *(&off_1004DC6E0 + media);
     v6 = +[NSBundle mainBundle];
     v4 = [v6 localizedStringForKey:v5 value:&stru_1004F3018 table:0];
   }
@@ -177,43 +177,43 @@ LABEL_22:
   return v4;
 }
 
-+ (id)episodesOptionArray:(BOOL)a3 defaultValue:(int64_t)a4
++ (id)episodesOptionArray:(BOOL)array defaultValue:(int64_t)value
 {
-  v5 = a3;
-  v7 = [a1 stringForEpisodes:6 short:a3 defaultValue:a4];
-  v8 = [a1 stringForEpisodes:1 short:v5 defaultValue:{a4, v7}];
+  arrayCopy = array;
+  v7 = [self stringForEpisodes:6 short:array defaultValue:value];
+  v8 = [self stringForEpisodes:1 short:arrayCopy defaultValue:{value, v7}];
   v16[1] = v8;
-  v9 = [a1 stringForEpisodes:2 short:v5 defaultValue:a4];
+  v9 = [self stringForEpisodes:2 short:arrayCopy defaultValue:value];
   v16[2] = v9;
-  v10 = [a1 stringForEpisodes:3 short:v5 defaultValue:a4];
+  v10 = [self stringForEpisodes:3 short:arrayCopy defaultValue:value];
   v16[3] = v10;
-  v11 = [a1 stringForEpisodes:4 short:v5 defaultValue:a4];
+  v11 = [self stringForEpisodes:4 short:arrayCopy defaultValue:value];
   v16[4] = v11;
-  v12 = [a1 stringForEpisodes:5 short:v5 defaultValue:a4];
+  v12 = [self stringForEpisodes:5 short:arrayCopy defaultValue:value];
   v16[5] = v12;
-  v13 = [a1 stringForEpisodes:0 short:v5 defaultValue:a4];
+  v13 = [self stringForEpisodes:0 short:arrayCopy defaultValue:value];
   v16[6] = v13;
   v14 = [NSArray arrayWithObjects:v16 count:7];
 
   return v14;
 }
 
-+ (id)mediaOptionArray:(BOOL)a3
++ (id)mediaOptionArray:(BOOL)array
 {
-  v3 = a3;
-  v5 = [a1 stringForMedia:0 short:a3];
-  v6 = [a1 stringForMedia:1 short:{v3, v5}];
+  arrayCopy = array;
+  v5 = [self stringForMedia:0 short:array];
+  v6 = [self stringForMedia:1 short:{arrayCopy, v5}];
   v10[1] = v6;
-  v7 = [a1 stringForMedia:2 short:v3];
+  v7 = [self stringForMedia:2 short:arrayCopy];
   v10[2] = v7;
   v8 = [NSArray arrayWithObjects:v10 count:3];
 
   return v8;
 }
 
-+ (id)insertNewSettingsInManagedObjectContext:(id)a3
++ (id)insertNewSettingsInManagedObjectContext:(id)context
 {
-  v3 = [NSEntityDescription insertNewObjectForEntityForName:kMTPodcastPlaylistSettingsEntityName inManagedObjectContext:a3];
+  v3 = [NSEntityDescription insertNewObjectForEntityForName:kMTPodcastPlaylistSettingsEntityName inManagedObjectContext:context];
   v4 = +[NSString UUID];
   [v3 setUuid:v4];
 
@@ -227,32 +227,32 @@ LABEL_22:
   return v3;
 }
 
-- (void)setTracksDefault:(BOOL)a3
+- (void)setTracksDefault:(BOOL)default
 {
-  v3 = a3;
-  v5 = [(MTPodcastPlaylistSettings *)self flags];
-  if ((v5 & 1) != v3)
+  defaultCopy = default;
+  flags = [(MTPodcastPlaylistSettings *)self flags];
+  if ((flags & 1) != defaultCopy)
   {
 
-    [(MTPodcastPlaylistSettings *)self setFlags:v5 & 0xFFFFFFFFFFFFFFFELL | v3];
+    [(MTPodcastPlaylistSettings *)self setFlags:flags & 0xFFFFFFFFFFFFFFFELL | defaultCopy];
   }
 }
 
 - (double)latestEpisodeDate
 {
-  v3 = [(MTPodcastPlaylistSettings *)self podcast];
-  v4 = [v3 playbackNewestToOldest];
+  podcast = [(MTPodcastPlaylistSettings *)self podcast];
+  playbackNewestToOldest = [podcast playbackNewestToOldest];
 
-  v5 = [(MTPodcastPlaylistSettings *)self episodes];
-  v6 = v5;
-  if (v4)
+  episodes = [(MTPodcastPlaylistSettings *)self episodes];
+  v6 = episodes;
+  if (playbackNewestToOldest)
   {
-    [v5 firstObject];
+    [episodes firstObject];
   }
 
   else
   {
-    [v5 lastObject];
+    [episodes lastObject];
   }
   v7 = ;
 
@@ -264,19 +264,19 @@ LABEL_22:
 
 - (double)oldestEpisodeDate
 {
-  v3 = [(MTPodcastPlaylistSettings *)self podcast];
-  v4 = [v3 playbackNewestToOldest];
+  podcast = [(MTPodcastPlaylistSettings *)self podcast];
+  playbackNewestToOldest = [podcast playbackNewestToOldest];
 
-  v5 = [(MTPodcastPlaylistSettings *)self episodes];
-  v6 = v5;
-  if (v4)
+  episodes = [(MTPodcastPlaylistSettings *)self episodes];
+  v6 = episodes;
+  if (playbackNewestToOldest)
   {
-    [v5 lastObject];
+    [episodes lastObject];
   }
 
   else
   {
-    [v5 firstObject];
+    [episodes firstObject];
   }
   v7 = ;
 
@@ -288,9 +288,9 @@ LABEL_22:
 
 - (id)predicateForSettings
 {
-  v3 = [(MTPodcastPlaylistSettings *)self podcast];
-  v4 = [v3 uuid];
-  v5 = [MTEpisode predicateForAllEpisodesOnPodcastUuid:v4];
+  podcast = [(MTPodcastPlaylistSettings *)self podcast];
+  uuid = [podcast uuid];
+  v5 = [MTEpisode predicateForAllEpisodesOnPodcastUuid:uuid];
 
   v6 = [MTEpisode predicateForExternalType:0];
   v7 = [v5 AND:v6];
@@ -305,10 +305,10 @@ LABEL_22:
 
   if ((+[PFRestrictionsController isExplicitContentAllowed]& 1) == 0)
   {
-    v10 = [(MTPodcastPlaylistSettings *)self podcast];
-    v11 = [v10 isExplicit];
+    podcast2 = [(MTPodcastPlaylistSettings *)self podcast];
+    isExplicit = [podcast2 isExplicit];
 
-    if (v11)
+    if (isExplicit)
     {
       v12 = +[NSPredicate falsePredicate];
     }
@@ -326,9 +326,9 @@ LABEL_22:
 
   if ([(MTPodcastPlaylistSettings *)self mediaType])
   {
-    v14 = [(MTPodcastPlaylistSettings *)self mediaType];
+    mediaType = [(MTPodcastPlaylistSettings *)self mediaType];
     v15 = &kEpisodeAudio;
-    if (v14 != 1)
+    if (mediaType != 1)
     {
       v15 = &kEpisodeVideo;
     }
@@ -346,8 +346,8 @@ LABEL_22:
   v20 = +[MTEpisode predicateForStationEligibleEpisodes];
   v21 = [v7 AND:v20];
 
-  v22 = [(MTPodcastPlaylistSettings *)self downloaded];
-  if (v22 == 1)
+  downloaded = [(MTPodcastPlaylistSettings *)self downloaded];
+  if (downloaded == 1)
   {
     v33 = v21;
     v23 = @"%K != nil";
@@ -356,7 +356,7 @@ LABEL_22:
 
   else
   {
-    if (v22 != 2)
+    if (downloaded != 2)
     {
       goto LABEL_17;
     }
@@ -373,37 +373,37 @@ LABEL_22:
 
   v21 = v27;
 LABEL_17:
-  v28 = [(MTPodcastPlaylistSettings *)self podcast];
-  v29 = [v28 uuid];
-  v30 = [MTEpisode predicateForAllEpisodesOnPodcastUuid:v29];
+  podcast3 = [(MTPodcastPlaylistSettings *)self podcast];
+  uuid2 = [podcast3 uuid];
+  v30 = [MTEpisode predicateForAllEpisodesOnPodcastUuid:uuid2];
   v31 = [v21 AND:v30];
 
   return v31;
 }
 
-- (void)takeValuesFromDefaultSettings:(id)a3
+- (void)takeValuesFromDefaultSettings:(id)settings
 {
-  v4 = a3;
-  -[MTPodcastPlaylistSettings setMediaType:](self, "setMediaType:", [v4 mediaType]);
-  v5 = [v4 showPlayedEpisodes];
+  settingsCopy = settings;
+  -[MTPodcastPlaylistSettings setMediaType:](self, "setMediaType:", [settingsCopy mediaType]);
+  showPlayedEpisodes = [settingsCopy showPlayedEpisodes];
 
-  [(MTPodcastPlaylistSettings *)self setShowPlayedEpisodes:v5];
+  [(MTPodcastPlaylistSettings *)self setShowPlayedEpisodes:showPlayedEpisodes];
 
   [(MTPodcastPlaylistSettings *)self setNeedsUpdate:1];
 }
 
 - (id)metricsContentIdentifier
 {
-  v2 = [(MTPodcastPlaylistSettings *)self playlist];
-  v3 = [v2 metricsContentIdentifier];
+  playlist = [(MTPodcastPlaylistSettings *)self playlist];
+  metricsContentIdentifier = [playlist metricsContentIdentifier];
 
-  return v3;
+  return metricsContentIdentifier;
 }
 
 - (id)metricsAdditionalData
 {
-  v3 = [(MTPodcastPlaylistSettings *)self metricsKeys];
-  v4 = [(MTPodcastPlaylistSettings *)self dictionaryWithValuesForKeys:v3];
+  metricsKeys = [(MTPodcastPlaylistSettings *)self metricsKeys];
+  v4 = [(MTPodcastPlaylistSettings *)self dictionaryWithValuesForKeys:metricsKeys];
   v7 = @"settings";
   v8 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
@@ -421,31 +421,31 @@ LABEL_17:
   return v2;
 }
 
-- (void)setNeedsUpdate:(BOOL)a3
+- (void)setNeedsUpdate:(BOOL)update
 {
-  v3 = a3;
-  v5 = [(MTPodcastPlaylistSettings *)self playlist];
-  v6 = [v5 needsUpdate];
+  updateCopy = update;
+  playlist = [(MTPodcastPlaylistSettings *)self playlist];
+  needsUpdate = [playlist needsUpdate];
 
-  v7 = [(MTPodcastPlaylistSettings *)self flags];
-  if (((((v7 & 2) == 0) ^ v3) & 1) == 0)
+  flags = [(MTPodcastPlaylistSettings *)self flags];
+  if (((((flags & 2) == 0) ^ updateCopy) & 1) == 0)
   {
-    v8 = v3 | v6;
+    v8 = updateCopy | needsUpdate;
     v9 = 2;
-    if (!v3)
+    if (!updateCopy)
     {
       v9 = 0;
     }
 
-    [(MTPodcastPlaylistSettings *)self setFlags:v7 & 0xFFFFFFFFFFFFFFFDLL | v9];
-    v10 = [(MTPodcastPlaylistSettings *)self playlist];
-    [v10 setNeedsUpdate:v8 & 1];
+    [(MTPodcastPlaylistSettings *)self setFlags:flags & 0xFFFFFFFFFFFFFFFDLL | v9];
+    playlist2 = [(MTPodcastPlaylistSettings *)self playlist];
+    [playlist2 setNeedsUpdate:v8 & 1];
 
-    v11 = [(MTPodcastPlaylistSettings *)self playlistIfDefault];
-    v12 = [v11 needsUpdate];
+    playlistIfDefault = [(MTPodcastPlaylistSettings *)self playlistIfDefault];
+    needsUpdate2 = [playlistIfDefault needsUpdate];
 
-    v13 = [(MTPodcastPlaylistSettings *)self playlistIfDefault];
-    [v13 setNeedsUpdate:(v3 | v12) & 1];
+    playlistIfDefault2 = [(MTPodcastPlaylistSettings *)self playlistIfDefault];
+    [playlistIfDefault2 setNeedsUpdate:(updateCopy | needsUpdate2) & 1];
   }
 }
 

@@ -1,8 +1,8 @@
 @interface STStorageDataNotifier
 + (id)sharedNotifier;
 - (STStorageDataNotifier)init;
-- (void)_notify:(id)a3;
-- (void)notify:(id)a3 forBundleIDs:(id)a4;
+- (void)_notify:(id)_notify;
+- (void)notify:(id)notify forBundleIDs:(id)ds;
 @end
 
 @implementation STStorageDataNotifier
@@ -42,15 +42,15 @@ uint64_t __39__STStorageDataNotifier_sharedNotifier__block_invoke()
   return v3;
 }
 
-- (void)_notify:(id)a3
+- (void)_notify:(id)_notify
 {
-  v4 = a3;
-  STLog(1, @"STStorageNotification: _notify: %@", v5, v6, v7, v8, v9, v10, v4);
+  _notifyCopy = _notify;
+  STLog(1, @"STStorageNotification: _notify: %@", v5, v6, v7, v8, v9, v10, _notifyCopy);
   os_unfair_lock_lock(&self->_changesLock);
-  v11 = [(NSMutableDictionary *)self->_changes objectForKey:v4];
+  v11 = [(NSMutableDictionary *)self->_changes objectForKey:_notifyCopy];
   if (v11)
   {
-    [(NSMutableDictionary *)self->_changes removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_changes removeObjectForKey:_notifyCopy];
   }
 
   os_unfair_lock_unlock(&self->_changesLock);
@@ -60,9 +60,9 @@ uint64_t __39__STStorageDataNotifier_sharedNotifier__block_invoke()
   block[2] = __33__STStorageDataNotifier__notify___block_invoke;
   block[3] = &unk_279D1D2E0;
   v16 = v11;
-  v17 = v4;
-  v18 = self;
-  v13 = v4;
+  v17 = _notifyCopy;
+  selfCopy = self;
+  v13 = _notifyCopy;
   v14 = v11;
   dispatch_async(v12, block);
 }
@@ -83,21 +83,21 @@ void __33__STStorageDataNotifier__notify___block_invoke(uint64_t a1)
   [v2 postNotificationName:*(a1 + 40) object:*(a1 + 48) userInfo:v3];
 }
 
-- (void)notify:(id)a3 forBundleIDs:(id)a4
+- (void)notify:(id)notify forBundleIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  notifyCopy = notify;
+  dsCopy = ds;
+  if (dsCopy)
   {
     os_unfair_lock_lock(&self->_changesLock);
-    v8 = [(NSMutableDictionary *)self->_changes objectForKey:v6];
+    v8 = [(NSMutableDictionary *)self->_changes objectForKey:notifyCopy];
     if (!v8)
     {
       v8 = [MEMORY[0x277CBEB58] setWithCapacity:4];
     }
 
-    [v8 addObjectsFromArray:v7];
-    [(NSMutableDictionary *)self->_changes setObject:v8 forKey:v6];
+    [v8 addObjectsFromArray:dsCopy];
+    [(NSMutableDictionary *)self->_changes setObject:v8 forKey:notifyCopy];
     os_unfair_lock_unlock(&self->_changesLock);
   }
 
@@ -106,8 +106,8 @@ void __33__STStorageDataNotifier__notify___block_invoke(uint64_t a1)
   v10[2] = __45__STStorageDataNotifier_notify_forBundleIDs___block_invoke;
   v10[3] = &unk_279D1CEB0;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = notifyCopy;
+  v9 = notifyCopy;
   dispatch_async(MEMORY[0x277D85CD0], v10);
 }
 

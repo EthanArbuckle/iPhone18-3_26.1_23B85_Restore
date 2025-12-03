@@ -37,15 +37,15 @@
       result = self->inputImage;
     }
 
-    v6 = [result imageByUnpremultiplyingAlpha];
+    imageByUnpremultiplyingAlpha = [result imageByUnpremultiplyingAlpha];
     v7 = [CIVector vectorWithX:0.99609375 Y:0.001953125];
-    v8 = [(CILumaMap *)self _kernel];
+    _kernel = [(CILumaMap *)self _kernel];
     [(CIImage *)self->inputImage extent];
     tableImage = self->_tableImage;
-    v14[0] = v6;
+    v14[0] = imageByUnpremultiplyingAlpha;
     v14[1] = tableImage;
     v14[2] = v7;
-    return [objc_msgSend(v8 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v14, 3), v10, v11, v12, v13), "imageByPremultiplyingAlpha"}];
+    return [objc_msgSend(_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v14, 3), v10, v11, v12, v13), "imageByPremultiplyingAlpha"}];
   }
 
   return result;

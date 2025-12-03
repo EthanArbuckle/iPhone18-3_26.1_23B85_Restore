@@ -1,13 +1,13 @@
 @interface TRConnection
 - (void)invalidate;
-- (void)sendEvent:(id)a3;
-- (void)sendRequest:(id)a3;
-- (void)sendResponse:(id)a3;
+- (void)sendEvent:(id)event;
+- (void)sendRequest:(id)request;
+- (void)sendResponse:(id)response;
 @end
 
 @implementation TRConnection
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE658];
@@ -15,7 +15,7 @@
   [v3 raise:v4 format:{@"You must override %@ in a subclass", v5}];
 }
 
-- (void)sendRequest:(id)a3
+- (void)sendRequest:(id)request
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE658];
@@ -23,7 +23,7 @@
   [v3 raise:v4 format:{@"You must override %@ in a subclass", v5}];
 }
 
-- (void)sendResponse:(id)a3
+- (void)sendResponse:(id)response
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE658];

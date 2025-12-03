@@ -1,40 +1,40 @@
 @interface HDCodableWorkout
-- (BOOL)applyToObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)applyToObject:(id)object;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addEvents:(id)a3;
-- (void)addSubActivities:(id)a3;
-- (void)addZones:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasGoal:(BOOL)a3;
-- (void)setHasGoalType:(BOOL)a3;
-- (void)setHasTotalBasalEnergyBurnedInCanonicalUnit:(BOOL)a3;
-- (void)setHasTotalDistanceInCanonicalUnit:(BOOL)a3;
-- (void)setHasTotalEnergyBurnedInCanonicalUnit:(BOOL)a3;
-- (void)setHasTotalFlightsClimbedInCanonicalUnit:(BOOL)a3;
-- (void)setHasTotalSwimmingStrokeCountInCanonicalUnit:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addEvents:(id)events;
+- (void)addSubActivities:(id)activities;
+- (void)addZones:(id)zones;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasGoal:(BOOL)goal;
+- (void)setHasGoalType:(BOOL)type;
+- (void)setHasTotalBasalEnergyBurnedInCanonicalUnit:(BOOL)unit;
+- (void)setHasTotalDistanceInCanonicalUnit:(BOOL)unit;
+- (void)setHasTotalEnergyBurnedInCanonicalUnit:(BOOL)unit;
+- (void)setHasTotalFlightsClimbedInCanonicalUnit:(BOOL)unit;
+- (void)setHasTotalSwimmingStrokeCountInCanonicalUnit:(BOOL)unit;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableWorkout
 
-- (BOOL)applyToObject:(id)a3
+- (BOOL)applyToObject:(id)object
 {
   v85 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (-[HDCodableWorkout sample](self, "sample"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 applyToObject:v4], v5, v6) && (type = self->_type, _HKWorkoutActivityTypeIsValid()))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (-[HDCodableWorkout sample](self, "sample"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 applyToObject:objectCopy], v5, v6) && (type = self->_type, _HKWorkoutActivityTypeIsValid()))
   {
-    [v4 _setWorkoutActivityType:self->_type];
-    [v4 _setDuration:self->_duration];
+    [objectCopy _setWorkoutActivityType:self->_type];
+    [objectCopy _setDuration:self->_duration];
     if ([(NSMutableArray *)self->_events count])
     {
-      v8 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v79 = 0u;
       v80 = 0u;
       v81 = 0u;
@@ -57,7 +57,7 @@
             v14 = [MEMORY[0x277CCDC68] createWithCodable:*(*(&v79 + 1) + 8 * i)];
             if (v14)
             {
-              [v8 addObject:v14];
+              [array addObject:v14];
             }
           }
 
@@ -70,10 +70,10 @@
 
     else
     {
-      v8 = 0;
+      array = 0;
     }
 
-    [v4 _setWorkoutEvents:v8];
+    [objectCopy _setWorkoutEvents:array];
 
     if ([(NSMutableArray *)self->_zones count])
     {
@@ -82,7 +82,7 @@
       v80 = 0u;
       v81 = 0u;
       v82 = 0u;
-      v74 = self;
+      selfCopy = self;
       v19 = self->_zones;
       v20 = [(NSMutableArray *)v19 countByEnumeratingWithState:&v79 objects:v84 count:16];
       if (v20)
@@ -102,16 +102,16 @@
             v25 = v24;
             if (v24)
             {
-              v26 = [v24 type];
-              v27 = [v18 objectForKeyedSubscript:v26];
+              type = [v24 type];
+              v27 = [v18 objectForKeyedSubscript:type];
 
               if (!v27)
               {
                 v28 = objc_alloc_init(MEMORY[0x277CBEB18]);
-                [v18 setObject:v28 forKeyedSubscript:v26];
+                [v18 setObject:v28 forKeyedSubscript:type];
               }
 
-              v29 = [v18 objectForKeyedSubscript:v26];
+              v29 = [v18 objectForKeyedSubscript:type];
               [v29 addObject:v25];
             }
           }
@@ -122,7 +122,7 @@
         while (v21);
       }
 
-      self = v74;
+      self = selfCopy;
     }
 
     else
@@ -130,25 +130,25 @@
       v18 = 0;
     }
 
-    [v4 _setWorkoutZonesByType:v18];
+    [objectCopy _setWorkoutZonesByType:v18];
 
     v30 = [MEMORY[0x277CCDBF0] createWithCodable:self->_primaryActivity];
     if (!v30)
     {
-      [v4 workoutActivityType];
-      v31 = [v4 metadata];
+      [objectCopy workoutActivityType];
+      metadata = [objectCopy metadata];
       v32 = _HKWorkoutConfigurationWithActivityTypeAndMetadata();
 
       v33 = objc_alloc(MEMORY[0x277CCDBF0]);
-      v34 = [v4 UUID];
-      v35 = [v4 startDate];
-      v36 = [v4 endDate];
-      v37 = [v4 workoutEvents];
-      [v4 duration];
-      v30 = [v33 _initWithUUID:v34 workoutConfiguration:v32 startDate:v35 endDate:v36 workoutEvents:v37 startsPaused:0 duration:0 metadata:0 statisticsPerType:?];
+      uUID = [objectCopy UUID];
+      startDate = [objectCopy startDate];
+      endDate = [objectCopy endDate];
+      workoutEvents = [objectCopy workoutEvents];
+      [objectCopy duration];
+      v30 = [v33 _initWithUUID:uUID workoutConfiguration:v32 startDate:startDate endDate:endDate workoutEvents:workoutEvents startsPaused:0 duration:0 metadata:0 statisticsPerType:?];
     }
 
-    [v4 _setPrimaryActivity:v30];
+    [objectCopy _setPrimaryActivity:v30];
     if ([(NSMutableArray *)self->_subActivities count])
     {
       v38 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -190,10 +190,10 @@
       v38 = 0;
     }
 
-    [v4 _setSubActivities:v38];
+    [objectCopy _setSubActivities:v38];
 
-    v45 = [v4 workoutEvents];
-    v46 = [v45 count];
+    workoutEvents2 = [objectCopy workoutEvents];
+    v46 = [workoutEvents2 count];
 
     if (v46)
     {
@@ -201,8 +201,8 @@
       v78 = 0u;
       v75 = 0u;
       v76 = 0u;
-      v47 = [v4 _subActivities];
-      v48 = [v47 countByEnumeratingWithState:&v75 objects:v83 count:16];
+      _subActivities = [objectCopy _subActivities];
+      v48 = [_subActivities countByEnumeratingWithState:&v75 objects:v83 count:16];
       if (v48)
       {
         v49 = v48;
@@ -213,15 +213,15 @@
           {
             if (*v76 != v50)
             {
-              objc_enumerationMutation(v47);
+              objc_enumerationMutation(_subActivities);
             }
 
             v52 = *(*(&v75 + 1) + 8 * m);
-            v53 = [v4 workoutEvents];
-            [v52 _filterAndSetWorkoutEvents:v53];
+            workoutEvents3 = [objectCopy workoutEvents];
+            [v52 _filterAndSetWorkoutEvents:workoutEvents3];
           }
 
-          v49 = [v47 countByEnumeratingWithState:&v75 objects:v83 count:16];
+          v49 = [_subActivities countByEnumeratingWithState:&v75 objects:v83 count:16];
         }
 
         while (v49);
@@ -242,7 +242,7 @@
         v54 = 0;
       }
 
-      [v4 _setTotalEnergyBurned:v54];
+      [objectCopy _setTotalEnergyBurned:v54];
     }
 
     if ([(HDCodableWorkout *)self hasTotalBasalEnergyBurnedInCanonicalUnit])
@@ -259,7 +259,7 @@
         v57 = 0;
       }
 
-      [v4 _setTotalBasalEnergyBurned:v57];
+      [objectCopy _setTotalBasalEnergyBurned:v57];
     }
 
     if ([(HDCodableWorkout *)self hasTotalDistanceInCanonicalUnit])
@@ -276,7 +276,7 @@
         v60 = 0;
       }
 
-      [v4 _setTotalDistance:v60];
+      [objectCopy _setTotalDistance:v60];
     }
 
     if ([(HDCodableWorkout *)self hasTotalSwimmingStrokeCountInCanonicalUnit])
@@ -293,7 +293,7 @@
         v63 = 0;
       }
 
-      [v4 _setTotalSwimmingStrokeCount:v63];
+      [objectCopy _setTotalSwimmingStrokeCount:v63];
     }
 
     if ([(HDCodableWorkout *)self hasTotalFlightsClimbedInCanonicalUnit])
@@ -310,7 +310,7 @@
         v66 = 0;
       }
 
-      [v4 _setTotalFlightsClimbed:v66];
+      [objectCopy _setTotalFlightsClimbed:v66];
     }
 
     if ([(HDCodableWorkout *)self hasGoalType])
@@ -325,7 +325,7 @@
         goalType = 0;
       }
 
-      [v4 _setGoalType:goalType];
+      [objectCopy _setGoalType:goalType];
     }
 
     if ([(HDCodableWorkout *)self hasGoal])
@@ -343,7 +343,7 @@
         v73 = [v70 quantityWithUnit:v72 doubleValue:self->_goal];
       }
 
-      [v4 _setGoal:v73];
+      [objectCopy _setGoal:v73];
     }
 
     v15 = 1;
@@ -358,9 +358,9 @@
   return v15;
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 256;
   }
@@ -373,27 +373,27 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)addEvents:(id)a3
+- (void)addEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   events = self->_events;
-  v8 = v4;
+  v8 = eventsCopy;
   if (!events)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_events;
     self->_events = v6;
 
-    v4 = v8;
+    eventsCopy = v8;
     events = self->_events;
   }
 
-  [(NSMutableArray *)events addObject:v4];
+  [(NSMutableArray *)events addObject:eventsCopy];
 }
 
-- (void)setHasTotalEnergyBurnedInCanonicalUnit:(BOOL)a3
+- (void)setHasTotalEnergyBurnedInCanonicalUnit:(BOOL)unit
 {
-  if (a3)
+  if (unit)
   {
     v3 = 32;
   }
@@ -406,9 +406,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasTotalDistanceInCanonicalUnit:(BOOL)a3
+- (void)setHasTotalDistanceInCanonicalUnit:(BOOL)unit
 {
-  if (a3)
+  if (unit)
   {
     v3 = 16;
   }
@@ -421,9 +421,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasGoalType:(BOOL)a3
+- (void)setHasGoalType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -436,9 +436,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasGoal:(BOOL)a3
+- (void)setHasGoal:(BOOL)goal
 {
-  if (a3)
+  if (goal)
   {
     v3 = 2;
   }
@@ -451,9 +451,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasTotalBasalEnergyBurnedInCanonicalUnit:(BOOL)a3
+- (void)setHasTotalBasalEnergyBurnedInCanonicalUnit:(BOOL)unit
 {
-  if (a3)
+  if (unit)
   {
     v3 = 8;
   }
@@ -466,9 +466,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasTotalSwimmingStrokeCountInCanonicalUnit:(BOOL)a3
+- (void)setHasTotalSwimmingStrokeCountInCanonicalUnit:(BOOL)unit
 {
-  if (a3)
+  if (unit)
   {
     v3 = 128;
   }
@@ -481,9 +481,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasTotalFlightsClimbedInCanonicalUnit:(BOOL)a3
+- (void)setHasTotalFlightsClimbedInCanonicalUnit:(BOOL)unit
 {
-  if (a3)
+  if (unit)
   {
     v3 = 64;
   }
@@ -496,40 +496,40 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)addSubActivities:(id)a3
+- (void)addSubActivities:(id)activities
 {
-  v4 = a3;
+  activitiesCopy = activities;
   subActivities = self->_subActivities;
-  v8 = v4;
+  v8 = activitiesCopy;
   if (!subActivities)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_subActivities;
     self->_subActivities = v6;
 
-    v4 = v8;
+    activitiesCopy = v8;
     subActivities = self->_subActivities;
   }
 
-  [(NSMutableArray *)subActivities addObject:v4];
+  [(NSMutableArray *)subActivities addObject:activitiesCopy];
 }
 
-- (void)addZones:(id)a3
+- (void)addZones:(id)zones
 {
-  v4 = a3;
+  zonesCopy = zones;
   zones = self->_zones;
-  v8 = v4;
+  v8 = zonesCopy;
   if (!zones)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_zones;
     self->_zones = v6;
 
-    v4 = v8;
+    zonesCopy = v8;
     zones = self->_zones;
   }
 
-  [(NSMutableArray *)zones addObject:v4];
+  [(NSMutableArray *)zones addObject:zonesCopy];
 }
 
 - (NSString)description
@@ -538,8 +538,8 @@
   v8.receiver = self;
   v8.super_class = HDCodableWorkout;
   v4 = [(HDCodableWorkout *)&v8 description];
-  v5 = [(HDCodableWorkout *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableWorkout *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -547,18 +547,18 @@
 - (id)dictionaryRepresentation
 {
   v56 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   sample = self->_sample;
   if (sample)
   {
-    v5 = [(HDCodableSample *)sample dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"sample"];
+    dictionaryRepresentation = [(HDCodableSample *)sample dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"sample"];
   }
 
   if ((*&self->_has & 0x100) != 0)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_type];
-    [v3 setObject:v6 forKey:@"type"];
+    [dictionary setObject:v6 forKey:@"type"];
   }
 
   if ([(NSMutableArray *)self->_events count])
@@ -583,8 +583,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v49 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation2 = [*(*(&v49 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation2];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v49 objects:v55 count:16];
@@ -593,14 +593,14 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"events"];
+    [dictionary setObject:v7 forKey:@"events"];
   }
 
   has = self->_has;
   if (has)
   {
     v34 = [MEMORY[0x277CCABB0] numberWithDouble:self->_duration];
-    [v3 setObject:v34 forKey:@"duration"];
+    [dictionary setObject:v34 forKey:@"duration"];
 
     has = self->_has;
     if ((has & 0x20) == 0)
@@ -621,7 +621,7 @@ LABEL_16:
   }
 
   v35 = [MEMORY[0x277CCABB0] numberWithDouble:self->_totalEnergyBurnedInCanonicalUnit];
-  [v3 setObject:v35 forKey:@"totalEnergyBurnedInCanonicalUnit"];
+  [dictionary setObject:v35 forKey:@"totalEnergyBurnedInCanonicalUnit"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -637,7 +637,7 @@ LABEL_17:
 
 LABEL_48:
   v36 = [MEMORY[0x277CCABB0] numberWithDouble:self->_totalDistanceInCanonicalUnit];
-  [v3 setObject:v36 forKey:@"totalDistanceInCanonicalUnit"];
+  [dictionary setObject:v36 forKey:@"totalDistanceInCanonicalUnit"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -653,7 +653,7 @@ LABEL_18:
 
 LABEL_49:
   v37 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_goalType];
-  [v3 setObject:v37 forKey:@"goalType"];
+  [dictionary setObject:v37 forKey:@"goalType"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -669,7 +669,7 @@ LABEL_19:
 
 LABEL_50:
   v38 = [MEMORY[0x277CCABB0] numberWithDouble:self->_goal];
-  [v3 setObject:v38 forKey:@"goal"];
+  [dictionary setObject:v38 forKey:@"goal"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -685,7 +685,7 @@ LABEL_20:
 
 LABEL_51:
   v39 = [MEMORY[0x277CCABB0] numberWithDouble:self->_totalBasalEnergyBurnedInCanonicalUnit];
-  [v3 setObject:v39 forKey:@"totalBasalEnergyBurnedInCanonicalUnit"];
+  [dictionary setObject:v39 forKey:@"totalBasalEnergyBurnedInCanonicalUnit"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -701,21 +701,21 @@ LABEL_21:
 
 LABEL_52:
   v40 = [MEMORY[0x277CCABB0] numberWithDouble:self->_totalSwimmingStrokeCountInCanonicalUnit];
-  [v3 setObject:v40 forKey:@"totalSwimmingStrokeCountInCanonicalUnit"];
+  [dictionary setObject:v40 forKey:@"totalSwimmingStrokeCountInCanonicalUnit"];
 
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_22:
     v15 = [MEMORY[0x277CCABB0] numberWithDouble:self->_totalFlightsClimbedInCanonicalUnit];
-    [v3 setObject:v15 forKey:@"totalFlightsClimbedInCanonicalUnit"];
+    [dictionary setObject:v15 forKey:@"totalFlightsClimbedInCanonicalUnit"];
   }
 
 LABEL_23:
   primaryActivity = self->_primaryActivity;
   if (primaryActivity)
   {
-    v17 = [(HDCodableWorkoutActivity *)primaryActivity dictionaryRepresentation];
-    [v3 setObject:v17 forKey:@"primaryActivity"];
+    dictionaryRepresentation3 = [(HDCodableWorkoutActivity *)primaryActivity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"primaryActivity"];
   }
 
   if ([(NSMutableArray *)self->_subActivities count])
@@ -740,8 +740,8 @@ LABEL_23:
             objc_enumerationMutation(v19);
           }
 
-          v24 = [*(*(&v45 + 1) + 8 * j) dictionaryRepresentation];
-          [v18 addObject:v24];
+          dictionaryRepresentation4 = [*(*(&v45 + 1) + 8 * j) dictionaryRepresentation];
+          [v18 addObject:dictionaryRepresentation4];
         }
 
         v21 = [(NSMutableArray *)v19 countByEnumeratingWithState:&v45 objects:v54 count:16];
@@ -750,7 +750,7 @@ LABEL_23:
       while (v21);
     }
 
-    [v3 setObject:v18 forKey:@"subActivities"];
+    [dictionary setObject:v18 forKey:@"subActivities"];
   }
 
   if ([(NSMutableArray *)self->_zones count])
@@ -775,8 +775,8 @@ LABEL_23:
             objc_enumerationMutation(v26);
           }
 
-          v31 = [*(*(&v41 + 1) + 8 * k) dictionaryRepresentation];
-          [v25 addObject:v31];
+          dictionaryRepresentation5 = [*(*(&v41 + 1) + 8 * k) dictionaryRepresentation];
+          [v25 addObject:dictionaryRepresentation5];
         }
 
         v28 = [(NSMutableArray *)v26 countByEnumeratingWithState:&v41 objects:v53 count:16];
@@ -785,18 +785,18 @@ LABEL_23:
       while (v28);
     }
 
-    [v3 setObject:v25 forKey:@"zones"];
+    [dictionary setObject:v25 forKey:@"zones"];
   }
 
   v32 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_sample)
   {
     PBDataWriterWriteSubmessage();
@@ -1020,29 +1020,29 @@ LABEL_21:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v18 = v4;
+  toCopy = to;
+  v18 = toCopy;
   if (self->_sample)
   {
-    [v4 setSample:?];
-    v4 = v18;
+    [toCopy setSample:?];
+    toCopy = v18;
   }
 
   if ((*&self->_has & 0x100) != 0)
   {
-    *(v4 + 9) = self->_type;
-    *(v4 + 60) |= 0x100u;
+    *(toCopy + 9) = self->_type;
+    *(toCopy + 60) |= 0x100u;
   }
 
   if ([(HDCodableWorkout *)self eventsCount])
   {
     [v18 clearEvents];
-    v5 = [(HDCodableWorkout *)self eventsCount];
-    if (v5)
+    eventsCount = [(HDCodableWorkout *)self eventsCount];
+    if (eventsCount)
     {
-      v6 = v5;
+      v6 = eventsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(HDCodableWorkout *)self eventsAtIndex:i];
@@ -1167,10 +1167,10 @@ LABEL_18:
   if ([(HDCodableWorkout *)self subActivitiesCount])
   {
     [v18 clearSubActivities];
-    v10 = [(HDCodableWorkout *)self subActivitiesCount];
-    if (v10)
+    subActivitiesCount = [(HDCodableWorkout *)self subActivitiesCount];
+    if (subActivitiesCount)
     {
-      v11 = v10;
+      v11 = subActivitiesCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(HDCodableWorkout *)self subActivitiesAtIndex:j];
@@ -1182,10 +1182,10 @@ LABEL_18:
   if ([(HDCodableWorkout *)self zonesCount])
   {
     [v18 clearZones];
-    v14 = [(HDCodableWorkout *)self zonesCount];
-    if (v14)
+    zonesCount = [(HDCodableWorkout *)self zonesCount];
+    if (zonesCount)
     {
-      v15 = v14;
+      v15 = zonesCount;
       for (k = 0; k != v15; ++k)
       {
         v17 = [(HDCodableWorkout *)self zonesAtIndex:k];
@@ -1195,11 +1195,11 @@ LABEL_18:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HDCodableSample *)self->_sample copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HDCodableSample *)self->_sample copyWithZone:zone];
   v7 = *(v5 + 96);
   *(v5 + 96) = v6;
 
@@ -1229,7 +1229,7 @@ LABEL_18:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v39 + 1) + 8 * v12) copyWithZone:a3];
+        v13 = [*(*(&v39 + 1) + 8 * v12) copyWithZone:zone];
         [v5 addEvents:v13];
 
         ++v12;
@@ -1350,7 +1350,7 @@ LABEL_18:
   }
 
 LABEL_19:
-  v15 = [(HDCodableWorkoutActivity *)self->_primaryActivity copyWithZone:a3];
+  v15 = [(HDCodableWorkoutActivity *)self->_primaryActivity copyWithZone:zone];
   v16 = *(v5 + 88);
   *(v5 + 88) = v15;
 
@@ -1374,7 +1374,7 @@ LABEL_19:
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v35 + 1) + 8 * v21) copyWithZone:a3];
+        v22 = [*(*(&v35 + 1) + 8 * v21) copyWithZone:zone];
         [v5 addSubActivities:v22];
 
         ++v21;
@@ -1407,7 +1407,7 @@ LABEL_19:
           objc_enumerationMutation(v23);
         }
 
-        v28 = [*(*(&v31 + 1) + 8 * v27) copyWithZone:{a3, v31}];
+        v28 = [*(*(&v31 + 1) + 8 * v27) copyWithZone:{zone, v31}];
         [v5 addZones:v28];
 
         ++v27;
@@ -1424,16 +1424,16 @@ LABEL_19:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_58;
   }
 
   sample = self->_sample;
-  if (sample | *(v4 + 12))
+  if (sample | *(equalCopy + 12))
   {
     if (![(HDCodableSample *)sample isEqual:?])
     {
@@ -1442,22 +1442,22 @@ LABEL_19:
   }
 
   has = self->_has;
-  v7 = *(v4 + 60);
+  v7 = *(equalCopy + 60);
   if ((has & 0x100) != 0)
   {
-    if ((*(v4 + 60) & 0x100) == 0 || self->_type != *(v4 + 9))
+    if ((*(equalCopy + 60) & 0x100) == 0 || self->_type != *(equalCopy + 9))
     {
       goto LABEL_58;
     }
   }
 
-  else if ((*(v4 + 60) & 0x100) != 0)
+  else if ((*(equalCopy + 60) & 0x100) != 0)
   {
     goto LABEL_58;
   }
 
   events = self->_events;
-  if (events | *(v4 + 10))
+  if (events | *(equalCopy + 10))
   {
     if (![(NSMutableArray *)events isEqual:?])
     {
@@ -1467,12 +1467,12 @@ LABEL_58:
     }
 
     has = self->_has;
-    v7 = *(v4 + 60);
+    v7 = *(equalCopy + 60);
   }
 
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_duration != *(v4 + 1))
+    if ((v7 & 1) == 0 || self->_duration != *(equalCopy + 1))
     {
       goto LABEL_58;
     }
@@ -1485,7 +1485,7 @@ LABEL_58:
 
   if ((has & 0x20) != 0)
   {
-    if ((v7 & 0x20) == 0 || self->_totalEnergyBurnedInCanonicalUnit != *(v4 + 6))
+    if ((v7 & 0x20) == 0 || self->_totalEnergyBurnedInCanonicalUnit != *(equalCopy + 6))
     {
       goto LABEL_58;
     }
@@ -1498,7 +1498,7 @@ LABEL_58:
 
   if ((has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_totalDistanceInCanonicalUnit != *(v4 + 5))
+    if ((v7 & 0x10) == 0 || self->_totalDistanceInCanonicalUnit != *(equalCopy + 5))
     {
       goto LABEL_58;
     }
@@ -1511,7 +1511,7 @@ LABEL_58:
 
   if ((has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_goalType != *(v4 + 3))
+    if ((v7 & 4) == 0 || self->_goalType != *(equalCopy + 3))
     {
       goto LABEL_58;
     }
@@ -1524,7 +1524,7 @@ LABEL_58:
 
   if ((has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_goal != *(v4 + 2))
+    if ((v7 & 2) == 0 || self->_goal != *(equalCopy + 2))
     {
       goto LABEL_58;
     }
@@ -1537,7 +1537,7 @@ LABEL_58:
 
   if ((has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_totalBasalEnergyBurnedInCanonicalUnit != *(v4 + 4))
+    if ((v7 & 8) == 0 || self->_totalBasalEnergyBurnedInCanonicalUnit != *(equalCopy + 4))
     {
       goto LABEL_58;
     }
@@ -1550,7 +1550,7 @@ LABEL_58:
 
   if ((has & 0x80) != 0)
   {
-    if ((v7 & 0x80) == 0 || self->_totalSwimmingStrokeCountInCanonicalUnit != *(v4 + 8))
+    if ((v7 & 0x80) == 0 || self->_totalSwimmingStrokeCountInCanonicalUnit != *(equalCopy + 8))
     {
       goto LABEL_58;
     }
@@ -1563,7 +1563,7 @@ LABEL_58:
 
   if ((has & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_totalFlightsClimbedInCanonicalUnit != *(v4 + 7))
+    if ((v7 & 0x40) == 0 || self->_totalFlightsClimbedInCanonicalUnit != *(equalCopy + 7))
     {
       goto LABEL_58;
     }
@@ -1575,13 +1575,13 @@ LABEL_58:
   }
 
   primaryActivity = self->_primaryActivity;
-  if (primaryActivity | *(v4 + 11) && ![(HDCodableWorkoutActivity *)primaryActivity isEqual:?])
+  if (primaryActivity | *(equalCopy + 11) && ![(HDCodableWorkoutActivity *)primaryActivity isEqual:?])
   {
     goto LABEL_58;
   }
 
   subActivities = self->_subActivities;
-  if (subActivities | *(v4 + 13))
+  if (subActivities | *(equalCopy + 13))
   {
     if (![(NSMutableArray *)subActivities isEqual:?])
     {
@@ -1590,7 +1590,7 @@ LABEL_58:
   }
 
   zones = self->_zones;
-  if (zones | *(v4 + 14))
+  if (zones | *(equalCopy + 14))
   {
     v12 = [(NSMutableArray *)zones isEqual:?];
   }
@@ -1876,12 +1876,12 @@ LABEL_36:
   return v40 ^ [(NSMutableArray *)self->_zones hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   sample = self->_sample;
-  v6 = *(v4 + 12);
+  v6 = *(fromCopy + 12);
   if (sample)
   {
     if (v6)
@@ -1895,9 +1895,9 @@ LABEL_36:
     [(HDCodableWorkout *)self setSample:?];
   }
 
-  if ((*(v4 + 60) & 0x100) != 0)
+  if ((*(fromCopy + 60) & 0x100) != 0)
   {
-    self->_type = *(v4 + 9);
+    self->_type = *(fromCopy + 9);
     *&self->_has |= 0x100u;
   }
 
@@ -1905,7 +1905,7 @@ LABEL_36:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = *(v4 + 10);
+  v7 = *(fromCopy + 10);
   v8 = [v7 countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v8)
   {
@@ -1929,12 +1929,12 @@ LABEL_36:
     while (v9);
   }
 
-  v12 = *(v4 + 60);
+  v12 = *(fromCopy + 60);
   if (v12)
   {
-    self->_duration = *(v4 + 1);
+    self->_duration = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v12 = *(v4 + 60);
+    v12 = *(fromCopy + 60);
     if ((v12 & 0x20) == 0)
     {
 LABEL_17:
@@ -1952,9 +1952,9 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  self->_totalEnergyBurnedInCanonicalUnit = *(v4 + 6);
+  self->_totalEnergyBurnedInCanonicalUnit = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  v12 = *(v4 + 60);
+  v12 = *(fromCopy + 60);
   if ((v12 & 0x10) == 0)
   {
 LABEL_18:
@@ -1967,9 +1967,9 @@ LABEL_18:
   }
 
 LABEL_29:
-  self->_totalDistanceInCanonicalUnit = *(v4 + 5);
+  self->_totalDistanceInCanonicalUnit = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v12 = *(v4 + 60);
+  v12 = *(fromCopy + 60);
   if ((v12 & 4) == 0)
   {
 LABEL_19:
@@ -1982,9 +1982,9 @@ LABEL_19:
   }
 
 LABEL_30:
-  self->_goalType = *(v4 + 3);
+  self->_goalType = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v12 = *(v4 + 60);
+  v12 = *(fromCopy + 60);
   if ((v12 & 2) == 0)
   {
 LABEL_20:
@@ -1997,9 +1997,9 @@ LABEL_20:
   }
 
 LABEL_31:
-  self->_goal = *(v4 + 2);
+  self->_goal = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v12 = *(v4 + 60);
+  v12 = *(fromCopy + 60);
   if ((v12 & 8) == 0)
   {
 LABEL_21:
@@ -2012,9 +2012,9 @@ LABEL_21:
   }
 
 LABEL_32:
-  self->_totalBasalEnergyBurnedInCanonicalUnit = *(v4 + 4);
+  self->_totalBasalEnergyBurnedInCanonicalUnit = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v12 = *(v4 + 60);
+  v12 = *(fromCopy + 60);
   if ((v12 & 0x80) == 0)
   {
 LABEL_22:
@@ -2027,18 +2027,18 @@ LABEL_22:
   }
 
 LABEL_33:
-  self->_totalSwimmingStrokeCountInCanonicalUnit = *(v4 + 8);
+  self->_totalSwimmingStrokeCountInCanonicalUnit = *(fromCopy + 8);
   *&self->_has |= 0x80u;
-  if ((*(v4 + 60) & 0x40) != 0)
+  if ((*(fromCopy + 60) & 0x40) != 0)
   {
 LABEL_23:
-    self->_totalFlightsClimbedInCanonicalUnit = *(v4 + 7);
+    self->_totalFlightsClimbedInCanonicalUnit = *(fromCopy + 7);
     *&self->_has |= 0x40u;
   }
 
 LABEL_24:
   primaryActivity = self->_primaryActivity;
-  v14 = *(v4 + 11);
+  v14 = *(fromCopy + 11);
   if (primaryActivity)
   {
     if (v14)
@@ -2056,7 +2056,7 @@ LABEL_24:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v15 = *(v4 + 13);
+  v15 = *(fromCopy + 13);
   v16 = [v15 countByEnumeratingWithState:&v30 objects:v39 count:16];
   if (v16)
   {
@@ -2084,7 +2084,7 @@ LABEL_24:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v20 = *(v4 + 14);
+  v20 = *(fromCopy + 14);
   v21 = [v20 countByEnumeratingWithState:&v26 objects:v38 count:16];
   if (v21)
   {

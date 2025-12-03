@@ -2,14 +2,14 @@
 - (BOOL)hidden;
 - (BOOL)isCompact;
 - (BOOL)movieIsPlaying;
-- (BOOL)shouldPlayOnMainCanvasWithSize:(double)a3;
+- (BOOL)shouldPlayOnMainCanvasWithSize:(double)size;
 - (BOOL)shouldShowControlsOnCanvas;
 - (CGRect)frameForOnCanvasUI;
 - (CGRect)layoutRect;
 - (THCustomLayerView)onCanvasView;
-- (THWAVTransportUI)initWithTransportController:(id)a3;
+- (THWAVTransportUI)initWithTransportController:(id)controller;
 - (id)onCanvasViews;
-- (void)changeCurrentTimeTo:(double)a3;
+- (void)changeCurrentTimeTo:(double)to;
 - (void)compactnessChanged;
 - (void)configureButtonsForPaused;
 - (void)configureButtonsForPlaying;
@@ -18,19 +18,19 @@
 - (void)createMovieUIViewBackground;
 - (void)createViewsForConfigurationChange;
 - (void)dealloc;
-- (void)detailSlider:(id)a3 didChangeValue:(float)a4;
+- (void)detailSlider:(id)slider didChangeValue:(float)value;
 - (void)didLayout;
-- (void)durationChanged:(double)a3;
+- (void)durationChanged:(double)changed;
 - (void)i_layout;
 - (void)initialConfiguration;
 - (void)layout;
 - (void)mediaDidPlayToEnd;
 - (void)pause;
 - (void)play;
-- (void)rateChanged:(double)a3;
+- (void)rateChanged:(double)changed;
 - (void)reconfigureViewsAndLayout;
-- (void)setHidden:(BOOL)a3;
-- (void)timeChanged:(double)a3;
+- (void)setHidden:(BOOL)hidden;
+- (void)timeChanged:(double)changed;
 - (void)toggleHidden;
 - (void)togglePlay;
 - (void)willLayout;
@@ -38,7 +38,7 @@
 
 @implementation THWAVTransportUI
 
-- (THWAVTransportUI)initWithTransportController:(id)a3
+- (THWAVTransportUI)initWithTransportController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = THWAVTransportUI;
@@ -46,7 +46,7 @@
   v5 = v4;
   if (v4)
   {
-    [(THWAVTransportUI *)v4 setTransportController:a3];
+    [(THWAVTransportUI *)v4 setTransportController:controller];
     [(THWAVTransportUI *)v5 createMovieUIView];
     [(THWAVTransportUI *)v5 initialConfiguration];
     [(THWAVTransportUI *)v5 createViewsForConfigurationChange];
@@ -81,9 +81,9 @@
   [v3 size];
   v5 = 1.0 / v4;
   v7 = 1.0 / v6;
-  v8 = [(THWAVTransportUI *)self movieUIView];
+  movieUIView = [(THWAVTransportUI *)self movieUIView];
 
-  [(THCustomLayerView *)v8 setContentsCenter:0.5, 0.5, v5, v7];
+  [(THCustomLayerView *)movieUIView setContentsCenter:0.5, 0.5, v5, v7];
 }
 
 - (void)createMovieUIView
@@ -153,9 +153,9 @@
 
 - (id)onCanvasViews
 {
-  v2 = [(THWAVTransportUI *)self onCanvasView];
+  onCanvasView = [(THWAVTransportUI *)self onCanvasView];
 
-  return [NSArray arrayWithObject:v2];
+  return [NSArray arrayWithObject:onCanvasView];
 }
 
 - (void)reconfigureViewsAndLayout
@@ -168,9 +168,9 @@
 
 - (BOOL)isCompact
 {
-  v2 = [(THWAVTransportUI *)self transportController];
+  transportController = [(THWAVTransportUI *)self transportController];
 
-  return [(THWAVTransportController *)v2 isCompact];
+  return [(THWAVTransportController *)transportController isCompact];
 }
 
 - (void)compactnessChanged
@@ -221,44 +221,44 @@
 {
   if ([(THWAVTransportUI *)self playButton])
   {
-    v3 = [(THWAVTransportUI *)self playButton];
+    playButton = [(THWAVTransportUI *)self playButton];
     if ([(THWAVTransportController *)[(THWAVTransportUI *)self transportController] movieIsPlaying])
     {
-      v4 = [(THWAVTransportUI *)self imageNameForPauseButton];
+      imageNameForPauseButton = [(THWAVTransportUI *)self imageNameForPauseButton];
     }
 
     else
     {
-      v4 = [(THWAVTransportUI *)self imageNameForPlayButton];
+      imageNameForPauseButton = [(THWAVTransportUI *)self imageNameForPlayButton];
     }
 
-    [(UIButton *)v3 setImageNamed:v4 inBundle:THBundle()];
-    v5 = [(THWAVTransportUI *)self playButton];
+    [(UIButton *)playButton setImageNamed:imageNameForPauseButton inBundle:THBundle()];
+    playButton2 = [(THWAVTransportUI *)self playButton];
     if ([(THWAVTransportController *)[(THWAVTransportUI *)self transportController] movieIsPlaying])
     {
-      v6 = [(THWAVTransportUI *)self imageNameForPauseButtonPressed];
+      imageNameForPauseButtonPressed = [(THWAVTransportUI *)self imageNameForPauseButtonPressed];
     }
 
     else
     {
-      v6 = [(THWAVTransportUI *)self imageNameForPlayButtonPressed];
+      imageNameForPauseButtonPressed = [(THWAVTransportUI *)self imageNameForPlayButtonPressed];
     }
 
-    [(UIButton *)v5 setAlternateImageNamed:v6 inBundle:THBundle()];
+    [(UIButton *)playButton2 setAlternateImageNamed:imageNameForPauseButtonPressed inBundle:THBundle()];
   }
 
   if ([(THWAVTransportUI *)self scrubber])
   {
-    v7 = [(THWAVTransportUI *)self scrubber];
+    scrubber = [(THWAVTransportUI *)self scrubber];
     [(THWAVTransportController *)[(THWAVTransportUI *)self transportController] duration];
     *&v8 = v8;
-    [(THWDetailSlider *)v7 setDuration:roundf(*&v8)];
-    v9 = [(THWAVTransportUI *)self scrubber];
+    [(THWDetailSlider *)scrubber setDuration:roundf(*&v8)];
+    scrubber2 = [(THWAVTransportUI *)self scrubber];
     [(THWAVTransportController *)[(THWAVTransportUI *)self transportController] currentTime];
     *&v10 = v10;
     *&v10 = roundf(*&v10);
 
-    [(THWDetailSlider *)v9 setValue:v10];
+    [(THWDetailSlider *)scrubber2 setValue:v10];
   }
 }
 
@@ -272,19 +272,19 @@
 
 - (void)willLayout
 {
-  v3 = [(THWAVTransportUI *)self onCanvasView];
+  onCanvasView = [(THWAVTransportUI *)self onCanvasView];
   v6 = *&CGAffineTransformIdentity.c;
   v8 = *&CGAffineTransformIdentity.a;
   v7 = v8;
   v9 = v6;
   v10 = *&CGAffineTransformIdentity.tx;
   v5 = v10;
-  [(THCustomLayerView *)v3 setTransform:&v8];
-  v4 = [(THWAVTransportUI *)self inHUDView];
+  [(THCustomLayerView *)onCanvasView setTransform:&v8];
+  inHUDView = [(THWAVTransportUI *)self inHUDView];
   v8 = v7;
   v9 = v6;
   v10 = v5;
-  [(THCustomLayerView *)v4 setTransform:&v8];
+  [(THCustomLayerView *)inHUDView setTransform:&v8];
 }
 
 - (void)didLayout
@@ -295,9 +295,9 @@
   *&v6.c = v3;
   *&v6.tx = *&CGAffineTransformIdentity.tx;
   CGAffineTransformScale(&v7, &v6, v4, v4);
-  v5 = [(THWAVTransportUI *)self onCanvasView];
+  onCanvasView = [(THWAVTransportUI *)self onCanvasView];
   v6 = v7;
-  [(THCustomLayerView *)v5 setTransform:&v6];
+  [(THCustomLayerView *)onCanvasView setTransform:&v6];
 }
 
 - (void)layout
@@ -345,57 +345,57 @@
 
   if (![(THWAVTransportUI *)self shouldShowControlsOnCanvas])
   {
-    v28 = [(THWAVTransportUI *)self movieUIView];
+    movieUIView = [(THWAVTransportUI *)self movieUIView];
 
-    [(THCustomLayerView *)v28 setHidden:1];
+    [(THCustomLayerView *)movieUIView setHidden:1];
   }
 }
 
-- (void)durationChanged:(double)a3
+- (void)durationChanged:(double)changed
 {
-  v4 = [(THWAVTransportUI *)self scrubber];
-  v5 = a3;
-  v6 = roundf(v5);
+  scrubber = [(THWAVTransportUI *)self scrubber];
+  changedCopy = changed;
+  v6 = roundf(changedCopy);
 
-  [(THWDetailSlider *)v4 setDuration:v6];
+  [(THWDetailSlider *)scrubber setDuration:v6];
 }
 
-- (void)timeChanged:(double)a3
+- (void)timeChanged:(double)changed
 {
-  v4 = [(THWAVTransportUI *)self scrubber];
-  *&v5 = a3;
+  scrubber = [(THWAVTransportUI *)self scrubber];
+  *&v5 = changed;
   *&v5 = roundf(*&v5);
 
-  [(THWDetailSlider *)v4 setValue:v5];
+  [(THWDetailSlider *)scrubber setValue:v5];
 }
 
 - (void)configureButtonsForPlaying
 {
   [(UIButton *)[(THWAVTransportUI *)self playButton] setImageNamed:[(THWAVTransportUI *)self imageNameForPauseButton] inBundle:THBundle()];
-  v3 = [(THWAVTransportUI *)self playButton];
-  v4 = [(THWAVTransportUI *)self imageNameForPauseButtonPressed];
+  playButton = [(THWAVTransportUI *)self playButton];
+  imageNameForPauseButtonPressed = [(THWAVTransportUI *)self imageNameForPauseButtonPressed];
   v5 = THBundle();
 
-  [(UIButton *)v3 setAlternateImageNamed:v4 inBundle:v5];
+  [(UIButton *)playButton setAlternateImageNamed:imageNameForPauseButtonPressed inBundle:v5];
 }
 
 - (void)configureButtonsForPaused
 {
   [(UIButton *)[(THWAVTransportUI *)self playButton] setImageNamed:[(THWAVTransportUI *)self imageNameForPlayButton] inBundle:THBundle()];
-  v3 = [(THWAVTransportUI *)self playButton];
-  v4 = [(THWAVTransportUI *)self imageNameForPlayButtonPressed];
+  playButton = [(THWAVTransportUI *)self playButton];
+  imageNameForPlayButtonPressed = [(THWAVTransportUI *)self imageNameForPlayButtonPressed];
   v5 = THBundle();
 
-  [(UIButton *)v3 setAlternateImageNamed:v4 inBundle:v5];
+  [(UIButton *)playButton setAlternateImageNamed:imageNameForPlayButtonPressed inBundle:v5];
 }
 
-- (void)rateChanged:(double)a3
+- (void)rateChanged:(double)changed
 {
   if ([(THWAVTransportUI *)self playButton])
   {
     if (+[NSThread isMainThread])
     {
-      if (a3 == 0.0)
+      if (changed == 0.0)
       {
 
         [(THWAVTransportUI *)self configureButtonsForPaused];
@@ -421,9 +421,9 @@
 {
   if ([(THWAVTransportUI *)self scrubber])
   {
-    v3 = [(THWAVTransportUI *)self scrubber];
+    scrubber = [(THWAVTransportUI *)self scrubber];
 
-    [(THWDetailSlider *)v3 setValue:0.0];
+    [(THWDetailSlider *)scrubber setValue:0.0];
   }
 }
 
@@ -439,19 +439,19 @@
 
 - (BOOL)hidden
 {
-  v2 = [(THWAVTransportUI *)self movieUIView];
+  movieUIView = [(THWAVTransportUI *)self movieUIView];
 
-  return [(THCustomLayerView *)v2 isHidden];
+  return [(THCustomLayerView *)movieUIView isHidden];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  if ([(THCustomLayerView *)[(THWAVTransportUI *)self movieUIView] isHidden]!= a3)
+  hiddenCopy = hidden;
+  if ([(THCustomLayerView *)[(THWAVTransportUI *)self movieUIView] isHidden]!= hidden)
   {
     v5 = +[NSNotificationCenter defaultCenter];
     v6 = &THWAVTransportUIWillHideNotification;
-    if (!v3)
+    if (!hiddenCopy)
     {
       v6 = &THWAVTransportUIWillShowNotification;
     }
@@ -462,21 +462,21 @@
     v9[2] = sub_169714;
     v9[3] = &unk_45B2C0;
     v9[4] = self;
-    v10 = v3;
+    v10 = hiddenCopy;
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_169760;
     v7[3] = &unk_45DE60;
     v7[4] = self;
-    v8 = v3;
+    v8 = hiddenCopy;
     [UIView animateWithDuration:v9 animations:v7 completion:0.3];
   }
 }
 
-- (BOOL)shouldPlayOnMainCanvasWithSize:(double)a3
+- (BOOL)shouldPlayOnMainCanvasWithSize:(double)size
 {
   v4 = TSUPhoneUI() ^ 1;
-  if (a3 >= 150.0)
+  if (size >= 150.0)
   {
     return v4;
   }
@@ -520,9 +520,9 @@
 
 - (BOOL)movieIsPlaying
 {
-  v2 = [(THWAVTransportUI *)self transportController];
+  transportController = [(THWAVTransportUI *)self transportController];
 
-  return [(THWAVTransportController *)v2 movieIsPlaying];
+  return [(THWAVTransportController *)transportController movieIsPlaying];
 }
 
 - (void)togglePlay
@@ -535,19 +535,19 @@
   _os_activity_initiate(&dword_0, "AVTransport Toggle Play", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)changeCurrentTimeTo:(double)a3
+- (void)changeCurrentTimeTo:(double)to
 {
-  v4 = [(THWAVTransportUI *)self transportController];
+  transportController = [(THWAVTransportUI *)self transportController];
 
-  [(THWAVTransportController *)v4 changeCurrentTimeTo:a3];
+  [(THWAVTransportController *)transportController changeCurrentTimeTo:to];
 }
 
-- (void)detailSlider:(id)a3 didChangeValue:(float)a4
+- (void)detailSlider:(id)slider didChangeValue:(float)value
 {
-  if ([(THWAVTransportUI *)self scrubber]== a3)
+  if ([(THWAVTransportUI *)self scrubber]== slider)
   {
 
-    [(THWAVTransportUI *)self changeCurrentTimeTo:a4];
+    [(THWAVTransportUI *)self changeCurrentTimeTo:value];
   }
 }
 

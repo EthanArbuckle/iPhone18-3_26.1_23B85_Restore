@@ -4,13 +4,13 @@
 - (BOOL)isBackgroundCountdownRunning;
 - (BOOL)isStewieActive;
 - (_TtP13InCallService24AlertCoordinatorDelegate_)delegate;
-- (void)invokeAlertWithRequestUnlock:(BOOL)a3 automaticallyInvoked:(BOOL)a4;
-- (void)performAlertRequestWithRequestUnlock:(BOOL)a3 automaticallyInvoked:(BOOL)a4;
+- (void)invokeAlertWithRequestUnlock:(BOOL)unlock automaticallyInvoked:(BOOL)invoked;
+- (void)performAlertRequestWithRequestUnlock:(BOOL)unlock automaticallyInvoked:(BOOL)invoked;
 - (void)refreshDelegateWithState;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)startMonitoring;
-- (void)stateChanged:(id)a3;
-- (void)statusChanged:(int64_t)a3;
+- (void)stateChanged:(id)changed;
+- (void)statusChanged:(int64_t)changed;
 - (void)stopBackgroundCountdown;
 - (void)stopMonitoring;
 @end
@@ -19,34 +19,34 @@
 
 - (BOOL)isStewieActive
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000B3C8(&OBJC_IVAR____TtC13InCallService16AlertCoordinator_stateMonitor, &selRef_isAlertActive);
 
   return v3 & 1;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_100029C54();
 }
 
 - (void)startMonitoring
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002AC0C();
 }
 
 - (void)refreshDelegateWithState
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002AEA4();
 }
 
-- (void)statusChanged:(int64_t)a3
+- (void)statusChanged:(int64_t)changed
 {
-  v3 = self;
+  selfCopy = self;
   sub_10002B304();
 }
 
@@ -67,7 +67,7 @@
 
 - (BOOL)isAvailable
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10002B048();
 
   return v3 & 1;
@@ -75,19 +75,19 @@
 
 - (void)stopMonitoring
 {
-  v2 = self;
+  selfCopy = self;
   sub_100252C40();
 }
 
-- (void)invokeAlertWithRequestUnlock:(BOOL)a3 automaticallyInvoked:(BOOL)a4
+- (void)invokeAlertWithRequestUnlock:(BOOL)unlock automaticallyInvoked:(BOOL)invoked
 {
-  v6 = self;
-  sub_100252D18(a3, a4);
+  selfCopy = self;
+  sub_100252D18(unlock, invoked);
 }
 
 - (BOOL)isBackgroundCountdownRunning
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000B3C8(&OBJC_IVAR____TtC13InCallService16AlertCoordinator_backgroundCountdownTimer, &selRef_isValid);
 
   return v3 & 1;
@@ -95,21 +95,21 @@
 
 - (void)stopBackgroundCountdown
 {
-  v2 = self;
+  selfCopy = self;
   sub_100252E94();
 }
 
-- (void)performAlertRequestWithRequestUnlock:(BOOL)a3 automaticallyInvoked:(BOOL)a4
+- (void)performAlertRequestWithRequestUnlock:(BOOL)unlock automaticallyInvoked:(BOOL)invoked
 {
-  v6 = self;
-  sub_100252F30(a3, a4);
+  selfCopy = self;
+  sub_100252F30(unlock, invoked);
 }
 
-- (void)stateChanged:(id)a3
+- (void)stateChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  sub_100253B24(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  sub_100253B24(changedCopy);
 }
 
 @end

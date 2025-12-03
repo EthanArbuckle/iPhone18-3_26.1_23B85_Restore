@@ -1,18 +1,18 @@
 @interface TPHObjectiveC
 + (ccec_full_ctx)ccec384Context;
-+ (id)digestUsingSha384:(id)a3;
-+ (id)fetchKeyPairWithPrivateKeyPersistentRef:(id)a3 error:(id *)a4;
++ (id)digestUsingSha384:(id)sha384;
++ (id)fetchKeyPairWithPrivateKeyPersistentRef:(id)ref error:(id *)error;
 @end
 
 @implementation TPHObjectiveC
 
-+ (id)digestUsingSha384:(id)a3
++ (id)digestUsingSha384:(id)sha384
 {
-  v3 = a3;
+  sha384Copy = sha384;
   ccsha384_di();
   v4 = [[NSMutableData alloc] initWithLength:*ccsha384_di()];
-  [v3 length];
-  [v3 bytes];
+  [sha384Copy length];
+  [sha384Copy bytes];
 
   [v4 mutableBytes];
   ccdigest();
@@ -29,24 +29,24 @@
   return result;
 }
 
-+ (id)fetchKeyPairWithPrivateKeyPersistentRef:(id)a3 error:(id *)a4
++ (id)fetchKeyPairWithPrivateKeyPersistentRef:(id)ref error:(id *)error
 {
-  v5 = a3;
+  refCopy = ref;
   v14[0] = kSecReturnRef;
   v14[1] = kSecClass;
   v15[0] = &__kCFBooleanTrue;
   v15[1] = kSecClassKey;
   v14[2] = kSecValuePersistentRef;
-  v15[2] = v5;
+  v15[2] = refCopy;
   v6 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:3];
   cf = 0;
   v7 = SecItemCopyMatching(v6, &cf);
   if (v7 || (v8 = CFGetTypeID(cf), v8 != SecKeyGetTypeID()))
   {
-    if (a4)
+    if (error)
     {
       [NSError errorWithDomain:NSOSStatusErrorDomain code:v7 userInfo:0];
-      *a4 = v10 = 0;
+      *error = v10 = 0;
     }
 
     else

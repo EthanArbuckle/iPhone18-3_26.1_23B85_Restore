@@ -1,14 +1,14 @@
 @interface TICutEvent
-- (TICutEvent)initWithTIKeyboardState:(id)a3;
+- (TICutEvent)initWithTIKeyboardState:(id)state;
 @end
 
 @implementation TICutEvent
 
-- (TICutEvent)initWithTIKeyboardState:(id)a3
+- (TICutEvent)initWithTIKeyboardState:(id)state
 {
   v4.receiver = self;
   v4.super_class = TICutEvent;
-  return [(TIContextChangeEvent *)&v4 initWithTIKeyboardState:a3 andActionType:8];
+  return [(TIContextChangeEvent *)&v4 initWithTIKeyboardState:state andActionType:8];
 }
 
 @end

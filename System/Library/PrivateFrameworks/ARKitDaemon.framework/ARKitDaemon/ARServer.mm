@@ -1,40 +1,40 @@
 @interface ARServer
-- (ARServer)initWithDaemonConfiguration:(id)a3 spawnTime:(id)a4 sessionUUID:(id)a5 watchdogMonitor:(id)a6 executionManager:(id)a7;
-- (BOOL)_addServices:(id)a3;
-- (BOOL)_updateAlgorithmConfigurationWithServices:(id)a3;
-- (BOOL)_updateWithServices:(id)a3 error:(id *)a4;
-- (BOOL)commitServices:(id)a3;
+- (ARServer)initWithDaemonConfiguration:(id)configuration spawnTime:(id)time sessionUUID:(id)d watchdogMonitor:(id)monitor executionManager:(id)manager;
+- (BOOL)_addServices:(id)services;
+- (BOOL)_updateAlgorithmConfigurationWithServices:(id)services;
+- (BOOL)_updateWithServices:(id)services error:(id *)error;
+- (BOOL)commitServices:(id)services;
 - (BOOL)servicesIsEmpty;
-- (id)_peerServicesOfService:(id)a3;
-- (id)listenerEndPointForServiceNamed:(id)a3;
-- (id)service:(id)a3 peerServiceOfType:(Class)a4;
-- (id)statusDictionaryWithWaitEndOfTransition:(BOOL)a3;
-- (id)statusStringWithWaitEndOfTransition:(BOOL)a3;
-- (int64_t)numberOfActiveConnectionsForService:(id)a3;
-- (void)_configureServiceForExecution:(id)a3;
+- (id)_peerServicesOfService:(id)service;
+- (id)listenerEndPointForServiceNamed:(id)named;
+- (id)service:(id)service peerServiceOfType:(Class)type;
+- (id)statusDictionaryWithWaitEndOfTransition:(BOOL)transition;
+- (id)statusStringWithWaitEndOfTransition:(BOOL)transition;
+- (int64_t)numberOfActiveConnectionsForService:(id)service;
+- (void)_configureServiceForExecution:(id)execution;
 - (void)_logDaemonStatus;
-- (void)_removeService:(id)a3;
-- (void)_removeServiceFromServicesByClass:(id)a3;
+- (void)_removeService:(id)service;
+- (void)_removeServiceFromServicesByClass:(id)class;
 - (void)_setupUserProfile;
 - (void)_updateServicesByPID;
 - (void)dealloc;
-- (void)didDiscoverControl:(id)a3;
-- (void)didDiscoverService:(id)a3;
+- (void)didDiscoverControl:(id)control;
+- (void)didDiscoverService:(id)service;
 - (void)invalidate;
-- (void)serviceDidInterrupt:(id)a3;
-- (void)serviceDidInvalidate:(id)a3;
-- (void)setServices:(id)a3;
+- (void)serviceDidInterrupt:(id)interrupt;
+- (void)serviceDidInvalidate:(id)invalidate;
+- (void)setServices:(id)services;
 @end
 
 @implementation ARServer
 
-- (ARServer)initWithDaemonConfiguration:(id)a3 spawnTime:(id)a4 sessionUUID:(id)a5 watchdogMonitor:(id)a6 executionManager:(id)a7
+- (ARServer)initWithDaemonConfiguration:(id)configuration spawnTime:(id)time sessionUUID:(id)d watchdogMonitor:(id)monitor executionManager:(id)manager
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  configurationCopy = configuration;
+  timeCopy = time;
+  dCopy = d;
+  monitorCopy = monitor;
+  managerCopy = manager;
   v18 = _ARLogDaemon_6();
   if (os_signpost_enabled(v18))
   {
@@ -48,9 +48,9 @@
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_daemonConfiguration, a3);
-    objc_storeStrong(&v20->_spawnTime, a4);
-    objc_storeStrong(&v20->_sessionUUID, a5);
+    objc_storeStrong(&v19->_daemonConfiguration, configuration);
+    objc_storeStrong(&v20->_spawnTime, time);
+    objc_storeStrong(&v20->_sessionUUID, d);
     v21 = objc_opt_new();
     services = v20->_services;
     v20->_services = v21;
@@ -72,10 +72,10 @@
     serviceQueue = v20->_serviceQueue;
     v20->_serviceQueue = v28;
 
-    [v16 addQueue:v20->_serviceQueue hangPolicy:0];
-    v30 = [MEMORY[0x277CBEB18] array];
+    [monitorCopy addQueue:v20->_serviceQueue hangPolicy:0];
+    array = [MEMORY[0x277CBEB18] array];
     batchedServices = v20->_batchedServices;
-    v20->_batchedServices = v30;
+    v20->_batchedServices = array;
 
     v32 = dispatch_semaphore_create(0);
     batchedServicesConfiguredSemaphore = v20->_batchedServicesConfiguredSemaphore;
@@ -109,9 +109,9 @@ void __95__ARServer_initWithDaemonConfiguration_spawnTime_sessionUUID_watchdogMo
 
 - (void)_setupUserProfile
 {
-  v3 = [MEMORY[0x277CE5390] defaultProfile];
+  defaultProfile = [MEMORY[0x277CE5390] defaultProfile];
   userProfile = self->_userProfile;
-  self->_userProfile = v3;
+  self->_userProfile = defaultProfile;
 
   MEMORY[0x2821F96F8]();
 }
@@ -135,7 +135,7 @@ void __95__ARServer_initWithDaemonConfiguration_spawnTime_sessionUUID_watchdogMo
     *buf = 138543618;
     v10 = v5;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23D391000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Invalidating services", buf, 0x16u);
   }
 
@@ -167,10 +167,10 @@ void __22__ARServer_invalidate__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (BOOL)_addServices:(id)a3
+- (BOOL)_addServices:(id)services
 {
   v59 = *MEMORY[0x277D85DE8];
-  v44 = a3;
+  servicesCopy = services;
   dispatch_assert_queue_V2(self->_serviceQueue);
   v4 = _ARLogDaemon_6();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -180,15 +180,15 @@ void __22__ARServer_invalidate__block_invoke(uint64_t a1)
     *buf = 138543874;
     v51 = v6;
     v52 = 2048;
-    v53 = self;
+    selfCopy5 = self;
     v54 = 2112;
-    v55 = v44;
+    v55 = servicesCopy;
     _os_log_impl(&dword_23D391000, v4, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Adding services '%@'", buf, 0x20u);
   }
 
-  v43 = [MEMORY[0x277CBEB18] arrayWithArray:v44];
+  v43 = [MEMORY[0x277CBEB18] arrayWithArray:servicesCopy];
   os_unfair_lock_lock(&self->_servicesLock);
-  [(ARServer *)self setServicesBeingAdded:v44];
+  [(ARServer *)self setServicesBeingAdded:servicesCopy];
   if ([v43 count])
   {
     v39 = [v43 arrayByAddingObjectsFromArray:self->_services];
@@ -248,9 +248,9 @@ void __22__ARServer_invalidate__block_invoke(uint64_t a1)
 
             [v17 addObject:v16];
             v18 = +[ARDaemonMetrics sharedDaemonMetrics];
-            v19 = [objc_opt_class() serviceName];
-            v20 = [v16 clientBundleIdentifier];
-            [v18 reportServiceAddedWithName:v19 clientBundleIdentifier:v20];
+            serviceName = [objc_opt_class() serviceName];
+            clientBundleIdentifier = [v16 clientBundleIdentifier];
+            [v18 reportServiceAddedWithName:serviceName clientBundleIdentifier:clientBundleIdentifier];
           }
 
           v13 = [v12 countByEnumeratingWithState:&v45 objects:v58 count:16];
@@ -281,15 +281,15 @@ void __22__ARServer_invalidate__block_invoke(uint64_t a1)
       {
         v24 = objc_opt_class();
         v25 = NSStringFromClass(v24);
-        v26 = [(NSMutableDictionary *)self->_servicesByClass allKeys];
+        allKeys = [(NSMutableDictionary *)self->_servicesByClass allKeys];
         *buf = 138544130;
         v51 = v25;
         v52 = 2048;
-        v53 = self;
+        selfCopy5 = self;
         v54 = 2112;
-        v55 = v44;
+        v55 = servicesCopy;
         v56 = 2112;
-        v57 = v26;
+        v57 = allKeys;
         _os_log_impl(&dword_23D391000, v21, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: No services to be added from %@ to %@", buf, 0x2Au);
       }
     }
@@ -298,15 +298,15 @@ void __22__ARServer_invalidate__block_invoke(uint64_t a1)
     {
       v27 = objc_opt_class();
       v28 = NSStringFromClass(v27);
-      v29 = [(NSMutableDictionary *)self->_servicesByClass allKeys];
+      allKeys2 = [(NSMutableDictionary *)self->_servicesByClass allKeys];
       *buf = 138544130;
       v51 = v28;
       v52 = 2048;
-      v53 = self;
+      selfCopy5 = self;
       v54 = 2112;
-      v55 = v44;
+      v55 = servicesCopy;
       v56 = 2112;
-      v57 = v29;
+      v57 = allKeys2;
       _os_log_impl(&dword_23D391000, v21, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: No services to be added from %@ to %@", buf, 0x2Au);
     }
 
@@ -335,7 +335,7 @@ void __22__ARServer_invalidate__block_invoke(uint64_t a1)
         *buf = 138543874;
         v51 = v34;
         v52 = 2048;
-        v53 = self;
+        selfCopy5 = self;
         v54 = 2112;
         v55 = v42;
         _os_log_impl(&dword_23D391000, v32, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Error setting up service: %@", buf, 0x20u);
@@ -349,7 +349,7 @@ void __22__ARServer_invalidate__block_invoke(uint64_t a1)
       *buf = 138543874;
       v51 = v36;
       v52 = 2048;
-      v53 = self;
+      selfCopy5 = self;
       v54 = 2112;
       v55 = v42;
       _os_log_impl(&dword_23D391000, v32, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Error setting up service: %@", buf, 0x20u);
@@ -372,41 +372,41 @@ void __25__ARServer__addServices___block_invoke()
   }
 }
 
-- (id)listenerEndPointForServiceNamed:(id)a3
+- (id)listenerEndPointForServiceNamed:(id)named
 {
   daemonConfiguration = self->_daemonConfiguration;
-  v5 = a3;
+  namedCopy = named;
   v6 = [-[ARDaemonConfiguration controlClass](daemonConfiguration "controlClass")];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [namedCopy isEqualToString:v6];
 
   if (v7)
   {
-    v8 = [(ARControlListener *)self->_controlListener endpoint];
+    endpoint = [(ARControlListener *)self->_controlListener endpoint];
   }
 
   else
   {
-    v8 = 0;
+    endpoint = 0;
   }
 
-  return v8;
+  return endpoint;
 }
 
-- (id)statusDictionaryWithWaitEndOfTransition:(BOOL)a3
+- (id)statusDictionaryWithWaitEndOfTransition:(BOOL)transition
 {
   v44[1] = *MEMORY[0x277D85DE8];
   v4 = objc_opt_new();
-  v5 = [MEMORY[0x277CCAC38] processInfo];
-  v6 = [v5 processName];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processName = [processInfo processName];
 
   v43 = @"pid";
   v7 = MEMORY[0x277CCABB0];
-  v8 = [MEMORY[0x277CCAC38] processInfo];
-  v9 = [v7 numberWithInt:{objc_msgSend(v8, "processIdentifier")}];
+  processInfo2 = [MEMORY[0x277CCAC38] processInfo];
+  v9 = [v7 numberWithInt:{objc_msgSend(processInfo2, "processIdentifier")}];
   v44[0] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:&v43 count:1];
 
-  v41 = v6;
+  v41 = processName;
   v42 = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
   [v4 addEntriesFromDictionary:v11];
@@ -419,25 +419,25 @@ void __25__ARServer__addServices___block_invoke()
   [(ARSystemTimeSnapshot *)self->_spawnTime upTimeIncludingSleepAndDriftCorrection];
   v18 = [v16 dateWithTimeIntervalSince1970:v13 + v17];
   v19 = [MEMORY[0x277CCACA8] ar_timestampWithDate:v18];
-  v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_spawn_time", v6];
+  v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_spawn_time", processName];
   [v4 setObject:v19 forKeyedSubscript:v20];
 
   v21 = MEMORY[0x277CCACA8];
   [v15 upTime];
   v22 = [v21 ar_hoursMinutesSecondsWithTimeInterval:?];
-  v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_up_time", v6];
+  v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_up_time", processName];
   [v4 setObject:v22 forKeyedSubscript:v23];
 
   v24 = MEMORY[0x277CCACA8];
   [v15 upTimeIncludingSleep];
   v25 = [v24 ar_hoursMinutesSecondsWithTimeInterval:?];
-  v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_up_time_including_sleep", v6];
+  v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_up_time_including_sleep", processName];
   [v4 setObject:v25 forKeyedSubscript:v26];
 
   v27 = MEMORY[0x277CCACA8];
   [v15 upTimeIncludingSleepAndDriftCorrection];
   v28 = [v27 ar_hoursMinutesSecondsWithTimeInterval:?];
-  v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_up_time_including_sleep_and_drift_correction", v6];
+  v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_up_time_including_sleep_and_drift_correction", processName];
   [v4 setObject:v28 forKeyedSubscript:v29];
 
   v30 = MEMORY[0x277CCACA8];
@@ -465,11 +465,11 @@ void __25__ARServer__addServices___block_invoke()
   return v4;
 }
 
-- (id)statusStringWithWaitEndOfTransition:(BOOL)a3
+- (id)statusStringWithWaitEndOfTransition:(BOOL)transition
 {
   v4 = objc_opt_new();
-  v5 = [MEMORY[0x277CCAC38] processInfo];
-  v6 = [v5 processName];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processName = [processInfo processName];
 
   ARGetSystemBootTime();
   v8 = v7;
@@ -478,26 +478,26 @@ void __25__ARServer__addServices___block_invoke()
   v11 = MEMORY[0x277CBEAA8];
   [(ARSystemTimeSnapshot *)self->_spawnTime upTimeIncludingSleepAndDriftCorrection];
   v13 = [v11 dateWithTimeIntervalSince1970:v8 + v12];
-  v14 = [MEMORY[0x277CCAC38] processInfo];
-  [v4 appendFormat:@"%@ pid: %d\n", v6, objc_msgSend(v14, "processIdentifier")];
+  processInfo2 = [MEMORY[0x277CCAC38] processInfo];
+  [v4 appendFormat:@"%@ pid: %d\n", processName, objc_msgSend(processInfo2, "processIdentifier")];
 
   v15 = [MEMORY[0x277CCACA8] ar_timestampWithDate:v13];
-  [v4 appendFormat:@"%@ spawn time: %@\n", v6, v15];
+  [v4 appendFormat:@"%@ spawn time: %@\n", processName, v15];
 
   v16 = MEMORY[0x277CCACA8];
   [v10 upTime];
   v17 = [v16 ar_hoursMinutesSecondsWithTimeInterval:?];
-  [v4 appendFormat:@"%@ up time: %@\n", v6, v17];
+  [v4 appendFormat:@"%@ up time: %@\n", processName, v17];
 
   v18 = MEMORY[0x277CCACA8];
   [v10 upTimeIncludingSleep];
   v19 = [v18 ar_hoursMinutesSecondsWithTimeInterval:?];
-  [v4 appendFormat:@"%@ up time (including sleep): %@\n", v6, v19];
+  [v4 appendFormat:@"%@ up time (including sleep): %@\n", processName, v19];
 
   v20 = MEMORY[0x277CCACA8];
   [v10 upTimeIncludingSleepAndDriftCorrection];
   v21 = [v20 ar_hoursMinutesSecondsWithTimeInterval:?];
-  [v4 appendFormat:@"%@ up time (including sleep and drift correction): %@\n", v6, v21];
+  [v4 appendFormat:@"%@ up time (including sleep and drift correction): %@\n", processName, v21];
 
   v22 = MEMORY[0x277CCACA8];
   v23 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v8];
@@ -522,14 +522,14 @@ void __25__ARServer__addServices___block_invoke()
   return v4;
 }
 
-- (id)service:(id)a3 peerServiceOfType:(Class)a4
+- (id)service:(id)service peerServiceOfType:(Class)type
 {
-  v5 = [(ARServer *)self _peerServicesOfService:a3];
+  v5 = [(ARServer *)self _peerServicesOfService:service];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __38__ARServer_service_peerServiceOfType___block_invoke;
   v8[3] = &__block_descriptor_40_e32_B32__0__ARDaemonService_8Q16_B24lu32l8;
-  v8[4] = a4;
+  v8[4] = type;
   v6 = [v5 ar_firstObjectPassingTest:v8];
 
   return v6;
@@ -551,11 +551,11 @@ uint64_t __38__ARServer_service_peerServiceOfType___block_invoke(uint64_t a1, vo
   return v4;
 }
 
-- (int64_t)numberOfActiveConnectionsForService:(id)a3
+- (int64_t)numberOfActiveConnectionsForService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   os_unfair_lock_lock(&self->_servicesLock);
-  v5 = [objc_opt_class() serviceName];
+  serviceName = [objc_opt_class() serviceName];
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -565,7 +565,7 @@ uint64_t __38__ARServer_service_peerServiceOfType___block_invoke(uint64_t a1, vo
   v10[1] = 3221225472;
   v10[2] = __48__ARServer_numberOfActiveConnectionsForService___block_invoke;
   v10[3] = &unk_278BCBE18;
-  v7 = v5;
+  v7 = serviceName;
   v11 = v7;
   v12 = &v13;
   [(NSMutableArray *)services enumerateObjectsUsingBlock:v10];
@@ -589,9 +589,9 @@ void __48__ARServer_numberOfActiveConnectionsForService___block_invoke(uint64_t 
   }
 }
 
-- (id)_peerServicesOfService:(id)a3
+- (id)_peerServicesOfService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   os_unfair_lock_lock(&self->_servicesLock);
   v5 = objc_opt_new();
   services = self->_services;
@@ -599,7 +599,7 @@ void __48__ARServer_numberOfActiveConnectionsForService___block_invoke(uint64_t 
   v12[1] = 3221225472;
   v12[2] = __35__ARServer__peerServicesOfService___block_invoke;
   v12[3] = &unk_278BCBE40;
-  v7 = v4;
+  v7 = serviceCopy;
   v13 = v7;
   v8 = v5;
   v14 = v8;
@@ -632,17 +632,17 @@ uint64_t __35__ARServer__peerServicesOfService___block_invoke(uint64_t a1, void 
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-- (BOOL)_updateWithServices:(id)a3 error:(id *)a4
+- (BOOL)_updateWithServices:(id)services error:(id *)error
 {
   dispatch_assert_queue_V2(self->_serviceQueue);
   [(ARServer *)self _logDaemonStatus];
   return 1;
 }
 
-- (void)_removeService:(id)a3
+- (void)_removeService:(id)service
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serviceCopy = service;
   dispatch_assert_queue_V2(self->_serviceQueue);
   v5 = _ARLogDaemon_6();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -652,18 +652,18 @@ uint64_t __35__ARServer__peerServicesOfService___block_invoke(uint64_t a1, void 
     *buf = 138543874;
     v30 = v7;
     v31 = 2048;
-    v32 = self;
+    selfCopy4 = self;
     v33 = 2112;
-    v34 = v4;
+    v34 = serviceCopy;
     _os_log_impl(&dword_23D391000, v5, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Removing service '%@'", buf, 0x20u);
   }
 
   os_unfair_lock_lock(&self->_servicesLock);
-  [(ARServer *)self setServiceBeingRemoved:v4];
+  [(ARServer *)self setServiceBeingRemoved:serviceCopy];
   v8 = [(NSMutableArray *)self->_services mutableCopy];
-  if ([v8 containsObject:v4])
+  if ([v8 containsObject:serviceCopy])
   {
-    [v8 removeObject:v4];
+    [v8 removeObject:serviceCopy];
   }
 
   else
@@ -673,23 +673,23 @@ uint64_t __35__ARServer__peerServicesOfService___block_invoke(uint64_t a1, void 
     {
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
-      v12 = [v4 shortenedServiceNameForLogging];
+      shortenedServiceNameForLogging = [serviceCopy shortenedServiceNameForLogging];
       *buf = 138543874;
       v30 = v11;
       v31 = 2048;
-      v32 = self;
+      selfCopy4 = self;
       v33 = 2112;
-      v34 = v12;
+      v34 = shortenedServiceNameForLogging;
       _os_log_impl(&dword_23D391000, v9, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Tried to remove service %@, but it was not found in active services", buf, 0x20u);
     }
   }
 
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"ARServer: Triggering algorithm update due to the removal of a service: %@", v4];
+  serviceCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"ARServer: Triggering algorithm update due to the removal of a service: %@", serviceCopy];
   v14 = _ARLogGeneral_2();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v30 = v13;
+    v30 = serviceCopy;
     _os_log_impl(&dword_23D391000, v14, OS_LOG_TYPE_INFO, "%{public}@", buf, 0xCu);
   }
 
@@ -697,7 +697,7 @@ uint64_t __35__ARServer__peerServicesOfService___block_invoke(uint64_t a1, void 
   if (os_signpost_enabled(v15))
   {
     *buf = 138543362;
-    v30 = v13;
+    v30 = serviceCopy;
     _os_signpost_emit_with_name_impl(&dword_23D391000, v15, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "ARKitTransitionUpdateWithServices", "%{public}@", buf, 0xCu);
   }
 
@@ -707,11 +707,11 @@ uint64_t __35__ARServer__peerServicesOfService___block_invoke(uint64_t a1, void 
   if (v16)
   {
     [(ARServer *)self setServices:v8];
-    [(ARServer *)self _removeServiceFromServicesByClass:v4];
+    [(ARServer *)self _removeServiceFromServicesByClass:serviceCopy];
     v18 = +[ARDaemonMetrics sharedDaemonMetrics];
-    v19 = [objc_opt_class() serviceName];
-    v20 = [v4 clientBundleIdentifier];
-    [v18 reportServiceRemovedWithName:v19 clientBundleIdentifier:v20];
+    serviceName = [objc_opt_class() serviceName];
+    clientBundleIdentifier = [serviceCopy clientBundleIdentifier];
+    [v18 reportServiceRemovedWithName:serviceName clientBundleIdentifier:clientBundleIdentifier];
   }
 
   else
@@ -733,9 +733,9 @@ uint64_t __35__ARServer__peerServicesOfService___block_invoke(uint64_t a1, void 
         *buf = 138544130;
         v30 = v24;
         v31 = 2048;
-        v32 = self;
+        selfCopy4 = self;
         v33 = 2112;
-        v34 = v4;
+        v34 = serviceCopy;
         v35 = 2112;
         v36 = v17;
         _os_log_impl(&dword_23D391000, v18, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Error removing service %@: %@", buf, 0x2Au);
@@ -749,9 +749,9 @@ uint64_t __35__ARServer__peerServicesOfService___block_invoke(uint64_t a1, void 
       *buf = 138544130;
       v30 = v26;
       v31 = 2048;
-      v32 = self;
+      selfCopy4 = self;
       v33 = 2112;
-      v34 = v4;
+      v34 = serviceCopy;
       v35 = 2112;
       v36 = v17;
       _os_log_impl(&dword_23D391000, v18, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Error removing service %@: %@", buf, 0x2Au);
@@ -765,9 +765,9 @@ uint64_t __35__ARServer__peerServicesOfService___block_invoke(uint64_t a1, void 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setServices:(id)a3
+- (void)setServices:(id)services
 {
-  v5 = a3;
+  servicesCopy = services;
   dispatch_assert_queue_V2(self->_serviceQueue);
   if (os_unfair_lock_trylock(&self->_servicesLock))
   {
@@ -776,7 +776,7 @@ uint64_t __35__ARServer__peerServicesOfService___block_invoke(uint64_t a1, void 
 
   else
   {
-    objc_storeStrong(&self->_services, a3);
+    objc_storeStrong(&self->_services, services);
     [(ARServer *)self _updateServicesByPID];
   }
 }
@@ -826,14 +826,14 @@ void __32__ARServer__updateServicesByPID__block_invoke(uint64_t a1, void *a2)
   [v8 addObject:v4];
 }
 
-- (void)_removeServiceFromServicesByClass:(id)a3
+- (void)_removeServiceFromServicesByClass:(id)class
 {
-  v6 = a3;
+  classCopy = class;
   v4 = [(NSMutableDictionary *)self->_servicesByClass objectForKeyedSubscript:objc_opt_class()];
   v5 = v4;
   if (v4)
   {
-    [v4 removeObject:v6];
+    [v4 removeObject:classCopy];
     if (![v5 count])
     {
       [(NSMutableDictionary *)self->_servicesByClass removeObjectForKey:objc_opt_class()];
@@ -841,10 +841,10 @@ void __32__ARServer__updateServicesByPID__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)didDiscoverService:(id)a3
+- (void)didDiscoverService:(id)service
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serviceCopy = service;
   dispatch_assert_queue_not_V2(self->_serviceQueue);
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
@@ -859,24 +859,24 @@ void __32__ARServer__updateServicesByPID__block_invoke(uint64_t a1, void *a2)
     *buf = 138543874;
     v12 = v8;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v4;
+    v16 = serviceCopy;
     _os_log_impl(&dword_23D391000, v6, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Service '%@' was discovered.", buf, 0x20u);
   }
 
-  [v4 setDelegate:{self, v10.opaque[0], v10.opaque[1]}];
-  [v4 setDataSource:self];
-  [(ARServer *)self _configureServiceForExecution:v4];
+  [serviceCopy setDelegate:{self, v10.opaque[0], v10.opaque[1]}];
+  [serviceCopy setDataSource:self];
+  [(ARServer *)self _configureServiceForExecution:serviceCopy];
   os_activity_scope_leave(&v10);
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_configureServiceForExecution:(id)a3
+- (void)_configureServiceForExecution:(id)execution
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  executionCopy = execution;
   dispatch_assert_queue_not_V2(self->_serviceQueue);
   v5 = _ARLogDaemon_6();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -888,7 +888,7 @@ void __32__ARServer__updateServicesByPID__block_invoke(uint64_t a1, void *a2)
     *&buf[12] = 2048;
     *&buf[14] = self;
     *&buf[22] = 2114;
-    v31 = v4;
+    v31 = executionCopy;
     _os_log_impl(&dword_23D391000, v5, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Configuring service '%{public}@' for execution", buf, 0x20u);
   }
 
@@ -901,11 +901,11 @@ void __32__ARServer__updateServicesByPID__block_invoke(uint64_t a1, void *a2)
   {
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    v14 = [v4 clientProcessName];
+    clientProcessName = [executionCopy clientProcessName];
     *buf = 138543618;
     *&buf[4] = v13;
     *&buf[12] = 2114;
-    *&buf[14] = v14;
+    *&buf[14] = clientProcessName;
     _os_signpost_emit_with_name_impl(&dword_23D391000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "AddServiceWaitServiceQueue", "%{public}@(%{public}@)", buf, 0x16u);
   }
 
@@ -922,7 +922,7 @@ void __32__ARServer__updateServicesByPID__block_invoke(uint64_t a1, void *a2)
     block[2] = __42__ARServer__configureServiceForExecution___block_invoke;
     block[3] = &unk_278BCBE90;
     objc_copyWeak(&v28, &location);
-    v16 = v4;
+    v16 = executionCopy;
     v26 = v16;
     v27 = buf;
     dispatch_async_and_wait(serviceQueue, block);
@@ -964,7 +964,7 @@ void __32__ARServer__updateServicesByPID__block_invoke(uint64_t a1, void *a2)
     v21[3] = &unk_278BCBEB8;
     objc_copyWeak(v23, &location);
     v23[1] = v9;
-    v22 = v4;
+    v22 = executionCopy;
     dispatch_async_and_wait(v17, v21);
 
     objc_destroyWeak(v23);
@@ -1059,10 +1059,10 @@ void __42__ARServer__configureServiceForExecution___block_invoke_104(uint64_t a1
   }
 }
 
-- (BOOL)commitServices:(id)a3
+- (BOOL)commitServices:(id)services
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  servicesCopy = services;
   dispatch_assert_queue_not_V2(self->_serviceQueue);
   v5 = _ARLogDaemon_6();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -1074,7 +1074,7 @@ void __42__ARServer__configureServiceForExecution___block_invoke_104(uint64_t a1
     *&buf[12] = 2048;
     *&buf[14] = self;
     *&buf[22] = 2114;
-    v33 = v4;
+    v33 = servicesCopy;
     _os_log_impl(&dword_23D391000, v5, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Committing batched services: %{public}@", buf, 0x20u);
   }
 
@@ -1082,7 +1082,7 @@ void __42__ARServer__configureServiceForExecution___block_invoke_104(uint64_t a1
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   LOBYTE(v33) = 0;
-  v8 = [v4 count];
+  v8 = [servicesCopy count];
   self->_numServicesToBatchCommit = v8;
   if (v8)
   {
@@ -1094,9 +1094,9 @@ void __42__ARServer__configureServiceForExecution___block_invoke_104(uint64_t a1
       *v26 = 138543874;
       v27 = v11;
       v28 = 2048;
-      v29 = self;
+      selfCopy = self;
       v30 = 2114;
-      v31 = v4;
+      v31 = servicesCopy;
       _os_log_impl(&dword_23D391000, v9, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Preparing to start sorted batched services: %{public}@", v26, 0x20u);
     }
 
@@ -1104,7 +1104,7 @@ void __42__ARServer__configureServiceForExecution___block_invoke_104(uint64_t a1
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v12 = v4;
+    v12 = servicesCopy;
     v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v13)
     {
@@ -1206,12 +1206,12 @@ void __27__ARServer_commitServices___block_invoke(uint64_t a1)
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_updateAlgorithmConfigurationWithServices:(id)a3
+- (BOOL)_updateAlgorithmConfigurationWithServices:(id)services
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  servicesCopy = services;
   dispatch_assert_queue_V2(self->_serviceQueue);
-  v5 = [(ARServer *)self _addServices:v4];
+  v5 = [(ARServer *)self _addServices:servicesCopy];
   v6 = _ARLogGeneral_2();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
   if (v5)
@@ -1223,9 +1223,9 @@ void __27__ARServer_commitServices___block_invoke(uint64_t a1)
       *buf = 138543874;
       v27 = v9;
       v28 = 2048;
-      v29 = self;
+      selfCopy2 = self;
       v30 = 2114;
-      v31 = v4;
+      v31 = servicesCopy;
       _os_log_impl(&dword_23D391000, v6, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Updated algorithms for service: %{public}@", buf, 0x20u);
     }
 
@@ -1241,9 +1241,9 @@ void __27__ARServer_commitServices___block_invoke(uint64_t a1)
       *buf = 138543874;
       v27 = v12;
       v28 = 2048;
-      v29 = self;
+      selfCopy2 = self;
       v30 = 2114;
-      v31 = v4;
+      v31 = servicesCopy;
       _os_log_impl(&dword_23D391000, v6, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Failed to update algorithms for services: %{public}@", buf, 0x20u);
     }
 
@@ -1254,7 +1254,7 @@ void __27__ARServer_commitServices___block_invoke(uint64_t a1)
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v13 = v4;
+  v13 = servicesCopy;
   v14 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v14)
   {
@@ -1270,8 +1270,8 @@ void __27__ARServer_commitServices___block_invoke(uint64_t a1)
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v21 + 1) + 8 * v17) clientService];
-        [v18 serviceConfiguredWithError:v10];
+        clientService = [*(*(&v21 + 1) + 8 * v17) clientService];
+        [clientService serviceConfiguredWithError:v10];
 
         ++v17;
       }
@@ -1287,17 +1287,17 @@ void __27__ARServer_commitServices___block_invoke(uint64_t a1)
   return v10 == 0;
 }
 
-- (void)didDiscoverControl:(id)a3
+- (void)didDiscoverControl:(id)control
 {
-  v4 = a3;
-  [v4 setServer:self];
-  [v4 setStatusLogger:self];
+  controlCopy = control;
+  [controlCopy setServer:self];
+  [controlCopy setStatusLogger:self];
 }
 
-- (void)serviceDidInvalidate:(id)a3
+- (void)serviceDidInvalidate:(id)invalidate
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  invalidateCopy = invalidate;
   dispatch_assert_queue_not_V2(self->_serviceQueue);
   v5 = _ARLogDaemon_6();
   v6 = os_signpost_id_generate(v5);
@@ -1307,7 +1307,7 @@ void __27__ARServer_commitServices___block_invoke(uint64_t a1)
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
   {
     *buf = 138543362;
-    v16 = v4;
+    v16 = invalidateCopy;
     _os_signpost_emit_with_name_impl(&dword_23D391000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "TransitionQueueDelaySync", "service invalidated %{public}@", buf, 0xCu);
   }
 
@@ -1316,10 +1316,10 @@ void __27__ARServer_commitServices___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __33__ARServer_serviceDidInvalidate___block_invoke;
   block[3] = &unk_278BCBF08;
-  v13 = v4;
+  v13 = invalidateCopy;
   v14 = v6;
   block[4] = self;
-  v10 = v4;
+  v10 = invalidateCopy;
   dispatch_async_and_wait(serviceQueue, block);
 
   v11 = *MEMORY[0x277D85DE8];
@@ -1339,10 +1339,10 @@ uint64_t __33__ARServer_serviceDidInvalidate___block_invoke(uint64_t a1)
   return [*(a1 + 32) _removeService:*(a1 + 40)];
 }
 
-- (void)serviceDidInterrupt:(id)a3
+- (void)serviceDidInterrupt:(id)interrupt
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  interruptCopy = interrupt;
   dispatch_assert_queue_not_V2(self->_serviceQueue);
   v5 = _ARLogDaemon_6();
   v6 = os_signpost_id_generate(v5);
@@ -1352,7 +1352,7 @@ uint64_t __33__ARServer_serviceDidInvalidate___block_invoke(uint64_t a1)
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
   {
     *buf = 138543362;
-    v16 = v4;
+    v16 = interruptCopy;
     _os_signpost_emit_with_name_impl(&dword_23D391000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "TransitionQueueDelaySync", "service interrupted %{public}@", buf, 0xCu);
   }
 
@@ -1361,10 +1361,10 @@ uint64_t __33__ARServer_serviceDidInvalidate___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __32__ARServer_serviceDidInterrupt___block_invoke;
   block[3] = &unk_278BCBF08;
-  v13 = v4;
+  v13 = interruptCopy;
   v14 = v6;
   block[4] = self;
-  v10 = v4;
+  v10 = interruptCopy;
   dispatch_async_and_wait(serviceQueue, block);
 
   v11 = *MEMORY[0x277D85DE8];
@@ -1388,9 +1388,9 @@ uint64_t __32__ARServer_serviceDidInterrupt___block_invoke(uint64_t a1)
 {
   statusLogger = self->_statusLogger;
   v6 = [(ARServer *)self statusDictionaryWithWaitEndOfTransition:0];
-  v4 = [MEMORY[0x277CCAC38] processInfo];
-  v5 = [v4 processName];
-  [(ARDaemonStatusLogger *)statusLogger logStatusUpdateWithDictionary:v6 forServerObject:self andProcessName:v5];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processName = [processInfo processName];
+  [(ARDaemonStatusLogger *)statusLogger logStatusUpdateWithDictionary:v6 forServerObject:self andProcessName:processName];
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface HMDHouseholdActivityLogEventFactory
-- (HMDHouseholdActivityLogEventFactory)initWithContributors:(id)a3;
-- (id)coalescedLogEventsFromLogEvents:(id)a3 homeUUID:(id)a4;
-- (id)logEventsFromDictionary:(id)a3;
-- (id)logEventsPopulatedForHomeWithUUID:(id)a3 associatedWithDate:(id)a4;
-- (id)serializeLogEvents:(id)a3;
-- (void)deleteCountersAfterDate:(id)a3;
-- (void)deleteCountersBeforeDate:(id)a3;
+- (HMDHouseholdActivityLogEventFactory)initWithContributors:(id)contributors;
+- (id)coalescedLogEventsFromLogEvents:(id)events homeUUID:(id)d;
+- (id)logEventsFromDictionary:(id)dictionary;
+- (id)logEventsPopulatedForHomeWithUUID:(id)d associatedWithDate:(id)date;
+- (id)serializeLogEvents:(id)events;
+- (void)deleteCountersAfterDate:(id)date;
+- (void)deleteCountersBeforeDate:(id)date;
 @end
 
 @implementation HMDHouseholdActivityLogEventFactory
 
-- (void)deleteCountersAfterDate:(id)a3
+- (void)deleteCountersAfterDate:(id)date
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(HMDHouseholdActivityLogEventFactory *)self contributors];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  contributors = [(HMDHouseholdActivityLogEventFactory *)self contributors];
+  v6 = [contributors countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -31,14 +31,14 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(contributors);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) deleteCountersAfterDate:v4];
+        [*(*(&v11 + 1) + 8 * v9++) deleteCountersAfterDate:dateCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [contributors countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -47,16 +47,16 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteCountersBeforeDate:(id)a3
+- (void)deleteCountersBeforeDate:(id)date
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(HMDHouseholdActivityLogEventFactory *)self contributors];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  contributors = [(HMDHouseholdActivityLogEventFactory *)self contributors];
+  v6 = [contributors countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -68,14 +68,14 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(contributors);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) deleteCountersBeforeDate:v4];
+        [*(*(&v11 + 1) + 8 * v9++) deleteCountersBeforeDate:dateCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [contributors countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -84,17 +84,17 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)coalescedLogEventsFromLogEvents:(id)a3 homeUUID:(id)a4
+- (id)coalescedLogEventsFromLogEvents:(id)events homeUUID:(id)d
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  eventsCopy = events;
+  dCopy = d;
+  v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(eventsCopy, "count")}];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = v6;
+  v9 = eventsCopy;
   v10 = [v9 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v10)
   {
@@ -135,8 +135,8 @@
     while (v11);
   }
 
-  v17 = [(HMDHouseholdActivityLogEventFactory *)self contributors];
-  v18 = [HMDHouseholdActivityLogEvent coalescedEventFromHouseholdActivityLogEvents:v8 homeUUID:v7 contributors:v17];
+  contributors = [(HMDHouseholdActivityLogEventFactory *)self contributors];
+  v18 = [HMDHouseholdActivityLogEvent coalescedEventFromHouseholdActivityLogEvents:v8 homeUUID:dCopy contributors:contributors];
   v26 = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
 
@@ -145,13 +145,13 @@
   return v19;
 }
 
-- (id)logEventsFromDictionary:(id)a3
+- (id)logEventsFromDictionary:(id)dictionary
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [HMDHouseholdActivityLogEvent alloc];
-  v6 = [(HMDHouseholdActivityLogEventFactory *)self contributors];
-  v7 = [(HMDHouseholdActivityLogEvent *)v5 initWithDictionary:v4 contributors:v6];
+  contributors = [(HMDHouseholdActivityLogEventFactory *)self contributors];
+  v7 = [(HMDHouseholdActivityLogEvent *)v5 initWithDictionary:dictionaryCopy contributors:contributors];
 
   if (v7)
   {
@@ -169,9 +169,9 @@
   return v8;
 }
 
-- (id)serializeLogEvents:(id)a3
+- (id)serializeLogEvents:(id)events
 {
-  v3 = [a3 objectAtIndexedSubscript:0];
+  v3 = [events objectAtIndexedSubscript:0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -185,19 +185,19 @@
 
   v5 = v4;
 
-  v6 = [v5 serializedMetric];
+  serializedMetric = [v5 serializedMetric];
 
-  return v6;
+  return serializedMetric;
 }
 
-- (id)logEventsPopulatedForHomeWithUUID:(id)a3 associatedWithDate:(id)a4
+- (id)logEventsPopulatedForHomeWithUUID:(id)d associatedWithDate:(id)date
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  dateCopy = date;
+  dCopy = d;
   v8 = [HMDHouseholdActivityLogEvent alloc];
-  v9 = [(HMDHouseholdActivityLogEventFactory *)self contributors];
-  v10 = [(HMDHouseholdActivityLogEvent *)v8 initPopulatedFromDate:v6 homeUUID:v7 contributors:v9];
+  contributors = [(HMDHouseholdActivityLogEventFactory *)self contributors];
+  v10 = [(HMDHouseholdActivityLogEvent *)v8 initPopulatedFromDate:dateCopy homeUUID:dCopy contributors:contributors];
 
   v14[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
@@ -207,16 +207,16 @@
   return v11;
 }
 
-- (HMDHouseholdActivityLogEventFactory)initWithContributors:(id)a3
+- (HMDHouseholdActivityLogEventFactory)initWithContributors:(id)contributors
 {
-  v5 = a3;
+  contributorsCopy = contributors;
   v9.receiver = self;
   v9.super_class = HMDHouseholdActivityLogEventFactory;
   v6 = [(HMDHouseholdActivityLogEventFactory *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contributors, a3);
+    objc_storeStrong(&v6->_contributors, contributors);
   }
 
   return v7;

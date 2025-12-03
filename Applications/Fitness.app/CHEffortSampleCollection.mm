@@ -1,21 +1,21 @@
 @interface CHEffortSampleCollection
 - (CHEffortSampleCollection)init;
-- (CHEffortSampleCollection)initWithEffortSample:(id)a3 estimatedEffortSample:(id)a4;
-- (CHEffortSampleCollection)initWithQuantitySamples:(id)a3;
-- (CHEffortSampleCollection)initWithSamples:(id)a3;
+- (CHEffortSampleCollection)initWithEffortSample:(id)sample estimatedEffortSample:(id)effortSample;
+- (CHEffortSampleCollection)initWithQuantitySamples:(id)samples;
+- (CHEffortSampleCollection)initWithSamples:(id)samples;
 - (HKQuantity)preferredQuantity;
 - (HKQuantitySample)preferredSample;
 @end
 
 @implementation CHEffortSampleCollection
 
-- (CHEffortSampleCollection)initWithEffortSample:(id)a3 estimatedEffortSample:(id)a4
+- (CHEffortSampleCollection)initWithEffortSample:(id)sample estimatedEffortSample:(id)effortSample
 {
   objc_allocWithZone(type metadata accessor for EffortSampleCollection());
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
-  v10 = v8;
+  sampleCopy = sample;
+  effortSampleCopy = effortSample;
+  v9 = sampleCopy;
+  v10 = effortSampleCopy;
   *(&self->super.isa + OBJC_IVAR___CHEffortSampleCollection_collection) = EffortSampleCollection.init(effortSample:estimatedEffortSample:)();
   v13.receiver = self;
   v13.super_class = type metadata accessor for CHEffortSampleCollection();
@@ -24,7 +24,7 @@
   return v11;
 }
 
-- (CHEffortSampleCollection)initWithQuantitySamples:(id)a3
+- (CHEffortSampleCollection)initWithQuantitySamples:(id)samples
 {
   sub_1000059F8(0, &qword_1008EE6F0);
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -37,7 +37,7 @@
   return [(CHEffortSampleCollection *)&v6 init];
 }
 
-- (CHEffortSampleCollection)initWithSamples:(id)a3
+- (CHEffortSampleCollection)initWithSamples:(id)samples
 {
   sub_1000059F8(0, &qword_1008E04D0);
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -46,7 +46,7 @@
 
 - (HKQuantitySample)preferredSample
 {
-  v2 = self;
+  selfCopy = self;
   v3 = dispatch thunk of EffortSampleCollection.preferredSample.getter();
 
   return v3;
@@ -54,7 +54,7 @@
 
 - (HKQuantity)preferredQuantity
 {
-  v2 = self;
+  selfCopy = self;
   v3 = dispatch thunk of EffortSampleCollection.preferredQuantity.getter();
 
   return v3;

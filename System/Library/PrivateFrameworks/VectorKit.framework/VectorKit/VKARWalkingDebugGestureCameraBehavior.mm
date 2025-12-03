@@ -1,40 +1,40 @@
 @interface VKARWalkingDebugGestureCameraBehavior
-- (VKARWalkingDebugGestureCameraBehavior)initWithCameraController:(id)a3;
-- (void)updatePan:(CGPoint)a3 lastScreenPoint:(CGPoint)a4;
-- (void)updateRotate:(double)a3 atScreenPoint:(CGPoint)a4;
+- (VKARWalkingDebugGestureCameraBehavior)initWithCameraController:(id)controller;
+- (void)updatePan:(CGPoint)pan lastScreenPoint:(CGPoint)point;
+- (void)updateRotate:(double)rotate atScreenPoint:(CGPoint)point;
 @end
 
 @implementation VKARWalkingDebugGestureCameraBehavior
 
-- (void)updateRotate:(double)a3 atScreenPoint:(CGPoint)a4
+- (void)updateRotate:(double)rotate atScreenPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
-  v9 = [WeakRetained canvas];
-  [v9 size];
+  canvas = [WeakRetained canvas];
+  [canvas size];
   v11 = v10;
   v13 = v12;
 
   v14 = objc_loadWeakRetained(&self->_controller);
   v15 = v11 * x;
   v16 = v13 - y * v13;
-  v17 = a3;
+  rotateCopy = rotate;
   v18 = v15;
   v19 = v16;
   v20 = 1;
-  [v14 pushGesture:&v17];
+  [v14 pushGesture:&rotateCopy];
 }
 
-- (void)updatePan:(CGPoint)a3 lastScreenPoint:(CGPoint)a4
+- (void)updatePan:(CGPoint)pan lastScreenPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = point.y;
+  x = point.x;
+  v6 = pan.y;
+  v7 = pan.x;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
-  v10 = [WeakRetained canvas];
-  [v10 size];
+  canvas = [WeakRetained canvas];
+  [canvas size];
   v12 = v11;
   v14 = v13;
 
@@ -75,16 +75,16 @@
   }
 }
 
-- (VKARWalkingDebugGestureCameraBehavior)initWithCameraController:(id)a3
+- (VKARWalkingDebugGestureCameraBehavior)initWithCameraController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = VKARWalkingDebugGestureCameraBehavior;
-  v5 = [(VKGestureCameraBehavior *)&v8 initWithCameraController:v4];
+  v5 = [(VKGestureCameraBehavior *)&v8 initWithCameraController:controllerCopy];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_controller, v4);
+    objc_storeWeak(&v5->_controller, controllerCopy);
     v6->super._notifyCameraStateChanges = 1;
   }
 

@@ -1,7 +1,7 @@
 @interface BLSHCacheFlipbookOnDisplayWakeAttributeHandler
 + (id)attributeClasses;
-- (void)activateForSceneEnvironment:(id)a3;
-- (void)deactivateForSceneEnvironment:(id)a3;
+- (void)activateForSceneEnvironment:(id)environment;
+- (void)deactivateForSceneEnvironment:(id)environment;
 @end
 
 @implementation BLSHCacheFlipbookOnDisplayWakeAttributeHandler
@@ -16,10 +16,10 @@
   return v2;
 }
 
-- (void)activateForSceneEnvironment:(id)a3
+- (void)activateForSceneEnvironment:(id)environment
 {
-  v4 = a3;
-  v3 = v4;
+  environmentCopy = environment;
+  v3 = environmentCopy;
   BSDispatchMain();
 }
 
@@ -37,10 +37,10 @@ uint64_t __78__BLSHCacheFlipbookOnDisplayWakeAttributeHandler_activateForSceneEn
   return [v4 setCacheFlipbookOnDisplayWake:1];
 }
 
-- (void)deactivateForSceneEnvironment:(id)a3
+- (void)deactivateForSceneEnvironment:(id)environment
 {
-  v4 = a3;
-  v3 = v4;
+  environmentCopy = environment;
+  v3 = environmentCopy;
   BSDispatchMain();
 }
 

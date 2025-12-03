@@ -1,53 +1,53 @@
 @interface MXCleanUtil
-- (BOOL)_isDiagnosticDeliveryStaleForDirectory:(id)a3;
-- (BOOL)_isDiagnosticSourceFilename:(id)a3;
-- (BOOL)_isMetricDeliveryStaleForDirectory:(id)a3;
-- (BOOL)_isMetricSourceFilename:(id)a3;
-- (BOOL)_isStaleDiagnosticSourceForFilename:(id)a3;
-- (BOOL)_isStaleForDate:(id)a3;
-- (BOOL)_isStaleMetricSourceForFilename:(id)a3;
-- (BOOL)_isStaleSourceForFilename:(id)a3;
-- (MXCleanUtil)initWithClientUtil:(id)a3 andDeliveryPathUtil:(id)a4;
-- (MXCleanUtil)initWithClientUtil:(id)a3 andDeliveryPathUtil:(id)a4 andDateUtil:(id)a5;
+- (BOOL)_isDiagnosticDeliveryStaleForDirectory:(id)directory;
+- (BOOL)_isDiagnosticSourceFilename:(id)filename;
+- (BOOL)_isMetricDeliveryStaleForDirectory:(id)directory;
+- (BOOL)_isMetricSourceFilename:(id)filename;
+- (BOOL)_isStaleDiagnosticSourceForFilename:(id)filename;
+- (BOOL)_isStaleForDate:(id)date;
+- (BOOL)_isStaleMetricSourceForFilename:(id)filename;
+- (BOOL)_isStaleSourceForFilename:(id)filename;
+- (MXCleanUtil)initWithClientUtil:(id)util andDeliveryPathUtil:(id)pathUtil;
+- (MXCleanUtil)initWithClientUtil:(id)util andDeliveryPathUtil:(id)pathUtil andDateUtil:(id)dateUtil;
 - (id)_clientfulSourceDirectories;
 - (id)_clientlessSourceDirectories;
-- (id)_dateFromDateString:(id)a3;
-- (id)_dateFromDiagnosticFilename:(id)a3;
-- (id)_dateFromMetricFilename:(id)a3;
-- (id)_dateStringFromDiagnosticSourceFilename:(id)a3;
-- (id)_dateStringFromMetricSourceFilename:(id)a3;
-- (id)_dateStringFromUnprefixedFilename:(id)a3;
-- (id)_datesFromDiagnosticFilenames:(id)a3;
-- (id)_datesFromMetricFilenames:(id)a3;
+- (id)_dateFromDateString:(id)string;
+- (id)_dateFromDiagnosticFilename:(id)filename;
+- (id)_dateFromMetricFilename:(id)filename;
+- (id)_dateStringFromDiagnosticSourceFilename:(id)filename;
+- (id)_dateStringFromMetricSourceFilename:(id)filename;
+- (id)_dateStringFromUnprefixedFilename:(id)filename;
+- (id)_datesFromDiagnosticFilenames:(id)filenames;
+- (id)_datesFromMetricFilenames:(id)filenames;
 - (id)_diagnosticDeliveryDirectories;
-- (id)_diagnosticDeliveryDirectoryForClient:(id)a3;
+- (id)_diagnosticDeliveryDirectoryForClient:(id)client;
 - (id)_diagnosticDeliveryParentDirectory;
-- (id)_filenamesFromDirectory:(id)a3;
-- (id)_lastFileDateFromDiagnosticFilenames:(id)a3;
-- (id)_lastFileDateFromMetricFilenames:(id)a3;
-- (id)_latestDateFromDates:(id)a3;
+- (id)_filenamesFromDirectory:(id)directory;
+- (id)_lastFileDateFromDiagnosticFilenames:(id)filenames;
+- (id)_lastFileDateFromMetricFilenames:(id)filenames;
+- (id)_latestDateFromDates:(id)dates;
 - (id)_metricDeliveryDirectories;
-- (id)_metricDeliveryDirectoryForClient:(id)a3;
+- (id)_metricDeliveryDirectoryForClient:(id)client;
 - (id)_metricDeliveryParentDirectory;
-- (id)_sourceDirectoryForSource:(id)a3 andClient:(id)a4;
-- (id)_subdirectoriesFromDirectory:(id)a3;
+- (id)_sourceDirectoryForSource:(id)source andClient:(id)client;
+- (id)_subdirectoriesFromDirectory:(id)directory;
 - (void)_cleanClientfulSourceDirectoriesForStaleData;
 - (void)_cleanClientlessSourceDirectoriesForStaleData;
-- (void)_cleanDeliveryDirectoriesForClient:(id)a3;
+- (void)_cleanDeliveryDirectoriesForClient:(id)client;
 - (void)_cleanDeliveryDirectoriesForStaleData;
 - (void)_cleanDiagnosticDeliveryDirectoriesForStaleData;
-- (void)_cleanDiagnosticDeliveryDirectoryForStaleDataForDirectory:(id)a3;
+- (void)_cleanDiagnosticDeliveryDirectoryForStaleDataForDirectory:(id)directory;
 - (void)_cleanDirectoriesForStaleData;
-- (void)_cleanDirectoriesForUninstalledClient:(id)a3;
+- (void)_cleanDirectoriesForUninstalledClient:(id)client;
 - (void)_cleanDirectoriesForUninstalledClients;
-- (void)_cleanDirectory:(id)a3;
-- (void)_cleanFileFromFilePath:(id)a3;
+- (void)_cleanDirectory:(id)directory;
+- (void)_cleanFileFromFilePath:(id)path;
 - (void)_cleanMetricDeliveryDirectoriesForStaleData;
-- (void)_cleanMetricDeliveryDirectoryForStaleDataForDirectory:(id)a3;
-- (void)_cleanSourceDirectoriesForClient:(id)a3;
+- (void)_cleanMetricDeliveryDirectoryForStaleDataForDirectory:(id)directory;
+- (void)_cleanSourceDirectoriesForClient:(id)client;
 - (void)_cleanSourceDirectoriesForStaleData;
-- (void)_cleanSourceDirectoryForSource:(id)a3 andClient:(id)a4;
-- (void)_cleanStaleDataForSourceDirectory:(id)a3;
+- (void)_cleanSourceDirectoryForSource:(id)source andClient:(id)client;
+- (void)_cleanStaleDataForSourceDirectory:(id)directory;
 - (void)_clientlessSourceDirectories;
 - (void)_diagnosticDeliveryDirectories;
 - (void)_diagnosticDeliveryParentDirectory;
@@ -58,18 +58,18 @@
 
 @implementation MXCleanUtil
 
-- (MXCleanUtil)initWithClientUtil:(id)a3 andDeliveryPathUtil:(id)a4
+- (MXCleanUtil)initWithClientUtil:(id)util andDeliveryPathUtil:(id)pathUtil
 {
-  v7 = a3;
-  v8 = a4;
+  utilCopy = util;
+  pathUtilCopy = pathUtil;
   v14.receiver = self;
   v14.super_class = MXCleanUtil;
   v9 = [(MXCleanUtil *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_clientUtil, a3);
-    objc_storeStrong(&v10->_deliveryPathUtil, a4);
+    objc_storeStrong(&v9->_clientUtil, util);
+    objc_storeStrong(&v10->_deliveryPathUtil, pathUtil);
     v11 = os_log_create("com.apple.metrickit", "cache.clean.utility");
     logHandle = v10->_logHandle;
     v10->_logHandle = v11;
@@ -83,20 +83,20 @@
   return v10;
 }
 
-- (MXCleanUtil)initWithClientUtil:(id)a3 andDeliveryPathUtil:(id)a4 andDateUtil:(id)a5
+- (MXCleanUtil)initWithClientUtil:(id)util andDeliveryPathUtil:(id)pathUtil andDateUtil:(id)dateUtil
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  utilCopy = util;
+  pathUtilCopy = pathUtil;
+  dateUtilCopy = dateUtil;
   v17.receiver = self;
   v17.super_class = MXCleanUtil;
   v12 = [(MXCleanUtil *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_clientUtil, a3);
-    objc_storeStrong(&v13->_deliveryPathUtil, a4);
-    objc_storeStrong(&v13->_dateUtil, a5);
+    objc_storeStrong(&v12->_clientUtil, util);
+    objc_storeStrong(&v13->_deliveryPathUtil, pathUtil);
+    objc_storeStrong(&v13->_dateUtil, dateUtil);
     v14 = os_log_create("com.apple.metrickit", "cache.clean.utility");
     logHandle = v13->_logHandle;
     v13->_logHandle = v14;
@@ -124,40 +124,40 @@
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)_cleanDirectoriesForUninstalledClient:(id)a3
+- (void)_cleanDirectoriesForUninstalledClient:(id)client
 {
-  v4 = a3;
-  if (([MEMORY[0x277D28708] isAppInstalledForBundleID:v4] & 1) == 0)
+  clientCopy = client;
+  if (([MEMORY[0x277D28708] isAppInstalledForBundleID:clientCopy] & 1) == 0)
   {
     if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
     {
       [MXCleanUtil _cleanDirectoriesForUninstalledClient:];
     }
 
-    [(MXCleanUtil *)self _cleanDeliveryDirectoriesForClient:v4];
-    [(MXCleanUtil *)self _cleanSourceDirectoriesForClient:v4];
+    [(MXCleanUtil *)self _cleanDeliveryDirectoriesForClient:clientCopy];
+    [(MXCleanUtil *)self _cleanSourceDirectoriesForClient:clientCopy];
   }
 }
 
-- (void)_cleanDeliveryDirectoriesForClient:(id)a3
+- (void)_cleanDeliveryDirectoriesForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
   {
     [MXCleanUtil _cleanDeliveryDirectoriesForClient:];
   }
 
-  v5 = [(MXCleanUtil *)self _metricDeliveryDirectoryForClient:v4];
+  v5 = [(MXCleanUtil *)self _metricDeliveryDirectoryForClient:clientCopy];
   [(MXCleanUtil *)self _cleanDirectory:v5];
-  v6 = [(MXCleanUtil *)self _diagnosticDeliveryDirectoryForClient:v4];
+  v6 = [(MXCleanUtil *)self _diagnosticDeliveryDirectoryForClient:clientCopy];
   [(MXCleanUtil *)self _cleanDirectory:v6];
 }
 
-- (id)_metricDeliveryDirectoryForClient:(id)a3
+- (id)_metricDeliveryDirectoryForClient:(id)client
 {
-  v4 = a3;
-  v5 = [(MXCleanUtil *)self _metricDeliveryParentDirectory];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  clientCopy = client;
+  _metricDeliveryParentDirectory = [(MXCleanUtil *)self _metricDeliveryParentDirectory];
+  v6 = [_metricDeliveryParentDirectory stringByAppendingPathComponent:clientCopy];
 
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
   {
@@ -169,8 +169,8 @@
 
 - (id)_metricDeliveryParentDirectory
 {
-  v3 = [(MXDeliveryPathUtilProtocol *)self->_deliveryPathUtil applicationContainerPath];
-  v4 = [v3 stringByAppendingPathComponent:@"Reports"];
+  applicationContainerPath = [(MXDeliveryPathUtilProtocol *)self->_deliveryPathUtil applicationContainerPath];
+  v4 = [applicationContainerPath stringByAppendingPathComponent:@"Reports"];
 
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
   {
@@ -180,11 +180,11 @@
   return v4;
 }
 
-- (id)_diagnosticDeliveryDirectoryForClient:(id)a3
+- (id)_diagnosticDeliveryDirectoryForClient:(id)client
 {
-  v4 = a3;
-  v5 = [(MXCleanUtil *)self _diagnosticDeliveryParentDirectory];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  clientCopy = client;
+  _diagnosticDeliveryParentDirectory = [(MXCleanUtil *)self _diagnosticDeliveryParentDirectory];
+  v6 = [_diagnosticDeliveryParentDirectory stringByAppendingPathComponent:clientCopy];
 
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
   {
@@ -196,8 +196,8 @@
 
 - (id)_diagnosticDeliveryParentDirectory
 {
-  v3 = [(MXDeliveryPathUtilProtocol *)self->_deliveryPathUtil applicationContainerPath];
-  v4 = [v3 stringByAppendingPathComponent:@"Diagnostics"];
+  applicationContainerPath = [(MXDeliveryPathUtilProtocol *)self->_deliveryPathUtil applicationContainerPath];
+  v4 = [applicationContainerPath stringByAppendingPathComponent:@"Diagnostics"];
 
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
   {
@@ -207,10 +207,10 @@
   return v4;
 }
 
-- (void)_cleanSourceDirectoriesForClient:(id)a3
+- (void)_cleanSourceDirectoriesForClient:(id)client
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clientCopy = client;
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
   {
     [MXCleanUtil _cleanSourceDirectoriesForClient:];
@@ -235,7 +235,7 @@
           objc_enumerationMutation(&unk_286A1B9E8);
         }
 
-        [(MXCleanUtil *)self _cleanSourceDirectoryForSource:*(*(&v10 + 1) + 8 * v8++) andClient:v4];
+        [(MXCleanUtil *)self _cleanSourceDirectoryForSource:*(*(&v10 + 1) + 8 * v8++) andClient:clientCopy];
       }
 
       while (v6 != v8);
@@ -248,25 +248,25 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_cleanSourceDirectoryForSource:(id)a3 andClient:(id)a4
+- (void)_cleanSourceDirectoryForSource:(id)source andClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  clientCopy = client;
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
   {
     [MXCleanUtil _cleanSourceDirectoryForSource:andClient:];
   }
 
-  v8 = [(MXCleanUtil *)self _sourceDirectoryForSource:v6 andClient:v7];
+  v8 = [(MXCleanUtil *)self _sourceDirectoryForSource:sourceCopy andClient:clientCopy];
   [(MXCleanUtil *)self _cleanDirectory:v8];
 }
 
-- (void)_cleanDirectory:(id)a3
+- (void)_cleanDirectory:(id)directory
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  directoryCopy = directory;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v7 = 0;
-  [v5 removeItemAtPath:v4 error:&v7];
+  [defaultManager removeItemAtPath:directoryCopy error:&v7];
   v6 = v7;
   if (v6 && os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_ERROR))
   {
@@ -274,13 +274,13 @@
   }
 }
 
-- (id)_sourceDirectoryForSource:(id)a3 andClient:(id)a4
+- (id)_sourceDirectoryForSource:(id)source andClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D28708] containerPath];
-  v9 = [v8 stringByAppendingPathComponent:v6];
-  v10 = [v9 stringByAppendingPathComponent:v7];
+  sourceCopy = source;
+  clientCopy = client;
+  containerPath = [MEMORY[0x277D28708] containerPath];
+  v9 = [containerPath stringByAppendingPathComponent:sourceCopy];
+  v10 = [v9 stringByAppendingPathComponent:clientCopy];
 
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
   {
@@ -313,8 +313,8 @@
 
 - (id)_metricDeliveryDirectories
 {
-  v3 = [(MXCleanUtil *)self _metricDeliveryParentDirectory];
-  v4 = [(MXCleanUtil *)self _subdirectoriesFromDirectory:v3];
+  _metricDeliveryParentDirectory = [(MXCleanUtil *)self _metricDeliveryParentDirectory];
+  v4 = [(MXCleanUtil *)self _subdirectoriesFromDirectory:_metricDeliveryParentDirectory];
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
   {
     [MXCleanUtil _metricDeliveryDirectories];
@@ -323,13 +323,13 @@
   return v4;
 }
 
-- (id)_subdirectoriesFromDirectory:(id)a3
+- (id)_subdirectoriesFromDirectory:(id)directory
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  directoryCopy = directory;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v22 = 0;
-  v6 = [v5 contentsOfDirectoryAtPath:v4 error:&v22];
+  v6 = [defaultManager contentsOfDirectoryAtPath:directoryCopy error:&v22];
   v7 = v22;
   if (v7)
   {
@@ -363,9 +363,9 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [v4 stringByAppendingPathComponent:*(*(&v18 + 1) + 8 * i)];
+          v14 = [directoryCopy stringByAppendingPathComponent:*(*(&v18 + 1) + 8 * i)];
           v17 = 0;
-          if ([v5 fileExistsAtPath:v14 isDirectory:&v17] && v17 == 1)
+          if ([defaultManager fileExistsAtPath:v14 isDirectory:&v17] && v17 == 1)
           {
             [v8 addObject:v14];
           }
@@ -383,24 +383,24 @@
   return v8;
 }
 
-- (void)_cleanMetricDeliveryDirectoryForStaleDataForDirectory:(id)a3
+- (void)_cleanMetricDeliveryDirectoryForStaleDataForDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
   {
     [MXCleanUtil _cleanMetricDeliveryDirectoryForStaleDataForDirectory:];
   }
 
-  if ([(MXCleanUtil *)self _isMetricDeliveryStaleForDirectory:v4])
+  if ([(MXCleanUtil *)self _isMetricDeliveryStaleForDirectory:directoryCopy])
   {
-    [(MXCleanUtil *)self _cleanDirectory:v4];
+    [(MXCleanUtil *)self _cleanDirectory:directoryCopy];
   }
 }
 
-- (BOOL)_isMetricDeliveryStaleForDirectory:(id)a3
+- (BOOL)_isMetricDeliveryStaleForDirectory:(id)directory
 {
-  v4 = a3;
-  v5 = [(MXCleanUtil *)self _filenamesFromDirectory:v4];
+  directoryCopy = directory;
+  v5 = [(MXCleanUtil *)self _filenamesFromDirectory:directoryCopy];
   v6 = [(MXCleanUtil *)self _lastFileDateFromMetricFilenames:v5];
   v7 = [(MXCleanUtil *)self _isStaleForDate:v6];
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
@@ -411,13 +411,13 @@
   return v7;
 }
 
-- (id)_filenamesFromDirectory:(id)a3
+- (id)_filenamesFromDirectory:(id)directory
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  directoryCopy = directory;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v25 = 0;
-  v6 = [v5 contentsOfDirectoryAtPath:v4 error:&v25];
+  v6 = [defaultManager contentsOfDirectoryAtPath:directoryCopy error:&v25];
   v7 = v25;
   if (v7)
   {
@@ -431,7 +431,7 @@
 
   else
   {
-    v18 = self;
+    selfCopy = self;
     v8 = objc_opt_new();
     v21 = 0u;
     v22 = 0u;
@@ -454,9 +454,9 @@
           }
 
           v14 = *(*(&v21 + 1) + 8 * i);
-          v15 = [v4 stringByAppendingPathComponent:v14];
+          v15 = [directoryCopy stringByAppendingPathComponent:v14];
           v20 = 0;
-          if ([v5 fileExistsAtPath:v15 isDirectory:&v20] && (v20 & 1) == 0)
+          if ([defaultManager fileExistsAtPath:v15 isDirectory:&v20] && (v20 & 1) == 0)
           {
             [v8 addObject:v14];
           }
@@ -468,7 +468,7 @@
       while (v11);
     }
 
-    if (os_log_type_enabled(v18->_logHandle, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(selfCopy->_logHandle, OS_LOG_TYPE_DEBUG))
     {
       [MXCleanUtil _filenamesFromDirectory:];
     }
@@ -481,9 +481,9 @@
   return v8;
 }
 
-- (id)_lastFileDateFromMetricFilenames:(id)a3
+- (id)_lastFileDateFromMetricFilenames:(id)filenames
 {
-  v4 = [(MXCleanUtil *)self _datesFromMetricFilenames:a3];
+  v4 = [(MXCleanUtil *)self _datesFromMetricFilenames:filenames];
   v5 = [(MXCleanUtil *)self _latestDateFromDates:v4];
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
   {
@@ -493,16 +493,16 @@
   return v5;
 }
 
-- (id)_datesFromMetricFilenames:(id)a3
+- (id)_datesFromMetricFilenames:(id)filenames
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  filenamesCopy = filenames;
   v5 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = filenamesCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -549,8 +549,8 @@
 
 - (id)_diagnosticDeliveryDirectories
 {
-  v3 = [(MXCleanUtil *)self _diagnosticDeliveryParentDirectory];
-  v4 = [(MXCleanUtil *)self _subdirectoriesFromDirectory:v3];
+  _diagnosticDeliveryParentDirectory = [(MXCleanUtil *)self _diagnosticDeliveryParentDirectory];
+  v4 = [(MXCleanUtil *)self _subdirectoriesFromDirectory:_diagnosticDeliveryParentDirectory];
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
   {
     [MXCleanUtil _diagnosticDeliveryDirectories];
@@ -559,24 +559,24 @@
   return v4;
 }
 
-- (void)_cleanDiagnosticDeliveryDirectoryForStaleDataForDirectory:(id)a3
+- (void)_cleanDiagnosticDeliveryDirectoryForStaleDataForDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
   {
     [MXCleanUtil _cleanDiagnosticDeliveryDirectoryForStaleDataForDirectory:];
   }
 
-  if ([(MXCleanUtil *)self _isDiagnosticDeliveryStaleForDirectory:v4])
+  if ([(MXCleanUtil *)self _isDiagnosticDeliveryStaleForDirectory:directoryCopy])
   {
-    [(MXCleanUtil *)self _cleanDirectory:v4];
+    [(MXCleanUtil *)self _cleanDirectory:directoryCopy];
   }
 }
 
-- (BOOL)_isDiagnosticDeliveryStaleForDirectory:(id)a3
+- (BOOL)_isDiagnosticDeliveryStaleForDirectory:(id)directory
 {
-  v4 = a3;
-  v5 = [(MXCleanUtil *)self _filenamesFromDirectory:v4];
+  directoryCopy = directory;
+  v5 = [(MXCleanUtil *)self _filenamesFromDirectory:directoryCopy];
   v6 = [(MXCleanUtil *)self _lastFileDateFromDiagnosticFilenames:v5];
   v7 = [(MXCleanUtil *)self _isStaleForDate:v6];
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
@@ -587,9 +587,9 @@
   return v7;
 }
 
-- (id)_lastFileDateFromDiagnosticFilenames:(id)a3
+- (id)_lastFileDateFromDiagnosticFilenames:(id)filenames
 {
-  v4 = [(MXCleanUtil *)self _datesFromDiagnosticFilenames:a3];
+  v4 = [(MXCleanUtil *)self _datesFromDiagnosticFilenames:filenames];
   v5 = [(MXCleanUtil *)self _latestDateFromDates:v4];
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
   {
@@ -599,16 +599,16 @@
   return v5;
 }
 
-- (id)_datesFromDiagnosticFilenames:(id)a3
+- (id)_datesFromDiagnosticFilenames:(id)filenames
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  filenamesCopy = filenames;
   v5 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = filenamesCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -646,9 +646,9 @@
   return v5;
 }
 
-- (id)_dateFromDiagnosticFilename:(id)a3
+- (id)_dateFromDiagnosticFilename:(id)filename
 {
-  v4 = [a3 stringByReplacingOccurrencesOfString:@"diagnostic_report_" withString:&stru_286A18718];
+  v4 = [filename stringByReplacingOccurrencesOfString:@"diagnostic_report_" withString:&stru_286A18718];
   v5 = [(MXCleanUtil *)self _dateStringFromUnprefixedFilename:v4];
   v6 = [(MXCleanUtil *)self _dateFromDateString:v5];
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
@@ -659,9 +659,9 @@
   return v6;
 }
 
-- (id)_dateFromMetricFilename:(id)a3
+- (id)_dateFromMetricFilename:(id)filename
 {
-  v4 = [a3 stringByReplacingOccurrencesOfString:@"report_" withString:&stru_286A18718];
+  v4 = [filename stringByReplacingOccurrencesOfString:@"report_" withString:&stru_286A18718];
   v5 = [(MXCleanUtil *)self _dateStringFromUnprefixedFilename:v4];
   v6 = [(MXCleanUtil *)self _dateFromDateString:v5];
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
@@ -672,9 +672,9 @@
   return v6;
 }
 
-- (id)_dateFromDateString:(id)a3
+- (id)_dateFromDateString:(id)string
 {
-  v4 = [(MXDateUtil *)self->_dateUtil dateFromString:a3];
+  v4 = [(MXDateUtil *)self->_dateUtil dateFromString:string];
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
   {
     [MXCleanUtil _dateFromDateString:];
@@ -683,15 +683,15 @@
   return v4;
 }
 
-- (id)_latestDateFromDates:(id)a3
+- (id)_latestDateFromDates:(id)dates
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  datesCopy = dates;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [datesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -703,7 +703,7 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(datesCopy);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -716,7 +716,7 @@
         v7 = [v10 laterDate:v7];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [datesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -737,11 +737,11 @@
   return v7;
 }
 
-- (BOOL)_isStaleForDate:(id)a3
+- (BOOL)_isStaleForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = [MEMORY[0x277CBEAA8] now];
-  v6 = [v4 dateByAddingTimeInterval:1209600.0];
+  v6 = [dateCopy dateByAddingTimeInterval:1209600.0];
   v7 = [v5 laterDate:v6];
   v8 = [v7 isEqualToDate:v5];
 
@@ -763,12 +763,12 @@
 - (void)_cleanClientlessSourceDirectoriesForStaleData
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(MXCleanUtil *)self _clientlessSourceDirectories];
+  _clientlessSourceDirectories = [(MXCleanUtil *)self _clientlessSourceDirectories];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [_clientlessSourceDirectories countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -780,14 +780,14 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_clientlessSourceDirectories);
         }
 
         [(MXCleanUtil *)self _cleanStaleDataForSourceDirectory:*(*(&v9 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [_clientlessSourceDirectories countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -796,16 +796,16 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_cleanStaleDataForSourceDirectory:(id)a3
+- (void)_cleanStaleDataForSourceDirectory:(id)directory
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  directoryCopy = directory;
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
   {
     [MXCleanUtil _cleanStaleDataForSourceDirectory:];
   }
 
-  v5 = [(MXCleanUtil *)self _filenamesFromDirectory:v4];
+  v5 = [(MXCleanUtil *)self _filenamesFromDirectory:directoryCopy];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -827,7 +827,7 @@
         v10 = *(*(&v13 + 1) + 8 * i);
         if ([(MXCleanUtil *)self _isStaleSourceForFilename:v10])
         {
-          v11 = [v4 stringByAppendingPathComponent:v10];
+          v11 = [directoryCopy stringByAppendingPathComponent:v10];
           [(MXCleanUtil *)self _cleanFileFromFilePath:v11];
         }
       }
@@ -841,12 +841,12 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isStaleSourceForFilename:(id)a3
+- (BOOL)_isStaleSourceForFilename:(id)filename
 {
-  v4 = a3;
-  if ([(MXCleanUtil *)self _isMetricSourceFilename:v4])
+  filenameCopy = filename;
+  if ([(MXCleanUtil *)self _isMetricSourceFilename:filenameCopy])
   {
-    v5 = [(MXCleanUtil *)self _isStaleMetricSourceForFilename:v4];
+    v5 = [(MXCleanUtil *)self _isStaleMetricSourceForFilename:filenameCopy];
   }
 
   else
@@ -854,10 +854,10 @@
     v5 = 0;
   }
 
-  v6 = [(MXCleanUtil *)self _isDiagnosticSourceFilename:v4];
+  v6 = [(MXCleanUtil *)self _isDiagnosticSourceFilename:filenameCopy];
   if (v6)
   {
-    LOBYTE(v6) = [(MXCleanUtil *)self _isStaleDiagnosticSourceForFilename:v4];
+    LOBYTE(v6) = [(MXCleanUtil *)self _isStaleDiagnosticSourceForFilename:filenameCopy];
   }
 
   v7 = v5 || v6;
@@ -869,9 +869,9 @@
   return v7;
 }
 
-- (BOOL)_isMetricSourceFilename:(id)a3
+- (BOOL)_isMetricSourceFilename:(id)filename
 {
-  v4 = [a3 containsString:@"log-"];
+  v4 = [filename containsString:@"log-"];
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
   {
     [MXCleanUtil _isMetricSourceFilename:];
@@ -880,10 +880,10 @@
   return v4;
 }
 
-- (BOOL)_isStaleMetricSourceForFilename:(id)a3
+- (BOOL)_isStaleMetricSourceForFilename:(id)filename
 {
-  v4 = a3;
-  v5 = [(MXCleanUtil *)self _dateStringFromMetricSourceFilename:v4];
+  filenameCopy = filename;
+  v5 = [(MXCleanUtil *)self _dateStringFromMetricSourceFilename:filenameCopy];
   v6 = [(MXCleanUtil *)self _dateFromDateString:v5];
   v7 = [(MXCleanUtil *)self _isStaleForDate:v6];
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
@@ -894,10 +894,10 @@
   return v7;
 }
 
-- (id)_dateStringFromMetricSourceFilename:(id)a3
+- (id)_dateStringFromMetricSourceFilename:(id)filename
 {
-  v4 = a3;
-  v5 = [v4 stringByReplacingOccurrencesOfString:@"log-" withString:&stru_286A18718];
+  filenameCopy = filename;
+  v5 = [filenameCopy stringByReplacingOccurrencesOfString:@"log-" withString:&stru_286A18718];
   v6 = [(MXCleanUtil *)self _dateStringFromUnprefixedFilename:v5];
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
   {
@@ -907,10 +907,10 @@
   return v6;
 }
 
-- (id)_dateStringFromUnprefixedFilename:(id)a3
+- (id)_dateStringFromUnprefixedFilename:(id)filename
 {
-  v4 = a3;
-  v5 = [v4 substringToIndex:{objc_msgSend(@"yyyy-MM-dd", "length")}];
+  filenameCopy = filename;
+  v5 = [filenameCopy substringToIndex:{objc_msgSend(@"yyyy-MM-dd", "length")}];
 
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
   {
@@ -920,9 +920,9 @@
   return v5;
 }
 
-- (BOOL)_isDiagnosticSourceFilename:(id)a3
+- (BOOL)_isDiagnosticSourceFilename:(id)filename
 {
-  v4 = [a3 containsString:@"diag-log-"];
+  v4 = [filename containsString:@"diag-log-"];
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
   {
     [MXCleanUtil _isDiagnosticSourceFilename:];
@@ -931,10 +931,10 @@
   return v4;
 }
 
-- (BOOL)_isStaleDiagnosticSourceForFilename:(id)a3
+- (BOOL)_isStaleDiagnosticSourceForFilename:(id)filename
 {
-  v4 = a3;
-  v5 = [(MXCleanUtil *)self _dateStringFromDiagnosticSourceFilename:v4];
+  filenameCopy = filename;
+  v5 = [(MXCleanUtil *)self _dateStringFromDiagnosticSourceFilename:filenameCopy];
   v6 = [(MXCleanUtil *)self _dateFromDateString:v5];
   v7 = [(MXCleanUtil *)self _isStaleForDate:v6];
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
@@ -945,10 +945,10 @@
   return v7;
 }
 
-- (id)_dateStringFromDiagnosticSourceFilename:(id)a3
+- (id)_dateStringFromDiagnosticSourceFilename:(id)filename
 {
-  v4 = a3;
-  v5 = [v4 stringByReplacingOccurrencesOfString:@"diag-log-" withString:&stru_286A18718];
+  filenameCopy = filename;
+  v5 = [filenameCopy stringByReplacingOccurrencesOfString:@"diag-log-" withString:&stru_286A18718];
   v6 = [(MXCleanUtil *)self _dateStringFromUnprefixedFilename:v5];
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
   {
@@ -961,7 +961,7 @@
 - (id)_clientlessSourceDirectories
 {
   v21[2] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D28708] containerPath];
+  containerPath = [MEMORY[0x277D28708] containerPath];
   v4 = [&unk_286A1BA00 objectAtIndexedSubscript:2];
   v21[0] = v4;
   v5 = [&unk_286A1BA18 objectAtIndexedSubscript:6];
@@ -988,7 +988,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [v3 stringByAppendingPathComponent:{*(*(&v16 + 1) + 8 * i), v16}];
+        v13 = [containerPath stringByAppendingPathComponent:{*(*(&v16 + 1) + 8 * i), v16}];
         [v7 addObject:v13];
       }
 
@@ -1011,12 +1011,12 @@
 - (void)_cleanClientfulSourceDirectoriesForStaleData
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(MXCleanUtil *)self _clientfulSourceDirectories];
+  _clientfulSourceDirectories = [(MXCleanUtil *)self _clientfulSourceDirectories];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [_clientfulSourceDirectories countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1028,14 +1028,14 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_clientfulSourceDirectories);
         }
 
         [(MXCleanUtil *)self _cleanStaleDataForSourceDirectory:*(*(&v9 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [_clientfulSourceDirectories countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -1047,7 +1047,7 @@
 - (id)_clientfulSourceDirectories
 {
   v23[3] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D28708] containerPath];
+  containerPath = [MEMORY[0x277D28708] containerPath];
   v4 = [&unk_286A1BA30 objectAtIndexedSubscript:4];
   v23[0] = v4;
   v5 = [&unk_286A1BA48 objectAtIndexedSubscript:3];
@@ -1076,7 +1076,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [v3 stringByAppendingPathComponent:{*(*(&v18 + 1) + 8 * i), v18}];
+        v14 = [containerPath stringByAppendingPathComponent:{*(*(&v18 + 1) + 8 * i), v18}];
         v15 = [(MXCleanUtil *)self _subdirectoriesFromDirectory:v14];
         [v8 addObjectsFromArray:v15];
       }
@@ -1097,17 +1097,17 @@
   return v8;
 }
 
-- (void)_cleanFileFromFilePath:(id)a3
+- (void)_cleanFileFromFilePath:(id)path
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
   {
     [MXCleanUtil _cleanFileFromFilePath:];
   }
 
   v7 = 0;
-  [v5 removeItemAtPath:v4 error:&v7];
+  [defaultManager removeItemAtPath:pathCopy error:&v7];
   v6 = v7;
   if (v6 && os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_ERROR))
   {

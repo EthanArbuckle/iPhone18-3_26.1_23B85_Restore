@@ -1,10 +1,10 @@
 @interface MTSiriPlistDumper
-- (MTSiriPlistDumper)initWithBackgroundTaskManager:(id)a3;
-- (id)_childFromPlistAtIndex:(int64_t)a3 plistArray:(id)a4;
-- (id)createDiffWithAddedPodcasts:(id)a3 addedStations:(id)a4 removedPodcasts:(id)a5 removedStations:(id)a6;
-- (id)subtractDictionary:(id)a3 fromDictionary:(id)a4 uniqueKey:(id)a5;
+- (MTSiriPlistDumper)initWithBackgroundTaskManager:(id)manager;
+- (id)_childFromPlistAtIndex:(int64_t)index plistArray:(id)array;
+- (id)createDiffWithAddedPodcasts:(id)podcasts addedStations:(id)stations removedPodcasts:(id)removedPodcasts removedStations:(id)removedStations;
+- (id)subtractDictionary:(id)dictionary fromDictionary:(id)fromDictionary uniqueKey:(id)key;
 - (void)dumpPlist;
-- (void)writeDiffs:(id)a3 stationItems:(id)a4 existingPodcastItems:(id)a5 existingStationItems:(id)a6;
+- (void)writeDiffs:(id)diffs stationItems:(id)items existingPodcastItems:(id)podcastItems existingStationItems:(id)stationItems;
 @end
 
 @implementation MTSiriPlistDumper
@@ -21,13 +21,13 @@
   v4 = objc_opt_new();
   v5 = objc_opt_new();
   v6 = +[MTDB sharedInstance];
-  v7 = [v6 mainOrPrivateContext];
+  mainOrPrivateContext = [v6 mainOrPrivateContext];
 
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __30__MTSiriPlistDumper_dumpPlist__block_invoke;
   v25[3] = &unk_1E856AFB8;
-  v26 = v7;
+  v26 = mainOrPrivateContext;
   v8 = v4;
   v27 = v8;
   v9 = v5;
@@ -59,12 +59,12 @@
 
   v12 = +[MTConstants documentsDirectory];
   v13 = [v12 URLByAppendingPathComponent:@"PodcastsDB.plist"];
-  v14 = [v13 path];
+  path = [v13 path];
 
   v15 = objc_alloc_init(MEMORY[0x1E696AC08]);
-  if ([v15 fileExistsAtPath:v14])
+  if ([v15 fileExistsAtPath:path])
   {
-    v16 = [v15 contentsAtPath:v14];
+    v16 = [v15 contentsAtPath:path];
     if (v16)
     {
       v17 = [MEMORY[0x1E696AE40] propertyListWithData:v16 options:0 format:0 error:0];
@@ -86,10 +86,10 @@
   }
 
   [(MTSiriPlistDumper *)self writeDiffs:v8 stationItems:v9 existingPodcastItems:v18 existingStationItems:v19];
-  [v15 removeItemAtPath:v14 error:0];
+  [v15 removeItemAtPath:path error:0];
   v29 = v11;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v29 count:1];
-  [v20 writeToFile:v14 atomically:1];
+  [v20 writeToFile:path atomically:1];
 
   v21 = *MEMORY[0x1E69E9840];
 }
@@ -257,15 +257,15 @@ void __30__MTSiriPlistDumper_dumpPlist__block_invoke(id *a1)
   v37 = *MEMORY[0x1E69E9840];
 }
 
-- (MTSiriPlistDumper)initWithBackgroundTaskManager:(id)a3
+- (MTSiriPlistDumper)initWithBackgroundTaskManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = MTSiriPlistDumper;
   v5 = [(MTSiriPlistDumper *)&v9 init];
   if (v5)
   {
-    v6 = [[_TtC18PodcastsFoundation11SiriDonator alloc] initWithBackgroundTaskManager:v4];
+    v6 = [[_TtC18PodcastsFoundation11SiriDonator alloc] initWithBackgroundTaskManager:managerCopy];
     siriDonator = v5->_siriDonator;
     v5->_siriDonator = v6;
   }
@@ -273,22 +273,22 @@ void __30__MTSiriPlistDumper_dumpPlist__block_invoke(id *a1)
   return v5;
 }
 
-- (void)writeDiffs:(id)a3 stationItems:(id)a4 existingPodcastItems:(id)a5 existingStationItems:(id)a6
+- (void)writeDiffs:(id)diffs stationItems:(id)items existingPodcastItems:(id)podcastItems existingStationItems:(id)stationItems
 {
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v26 = a5;
-  v28 = a6;
+  diffsCopy = diffs;
+  itemsCopy = items;
+  podcastItemsCopy = podcastItems;
+  stationItemsCopy = stationItems;
   v12 = +[MTConstants documentsDirectory];
   v13 = [v12 URLByAppendingPathComponent:@"PodcastsDiff.plist"];
-  v14 = [v13 path];
+  path = [v13 path];
 
   v15 = objc_opt_new();
   v16 = objc_alloc_init(MEMORY[0x1E696AC08]);
-  if ([v16 fileExistsAtPath:v14])
+  if ([v16 fileExistsAtPath:path])
   {
-    v17 = [v16 contentsAtPath:v14];
+    v17 = [v16 contentsAtPath:path];
     if (v17)
     {
       v18 = [MEMORY[0x1E696AE40] propertyListWithData:v17 options:0 format:0 error:0];
@@ -303,10 +303,10 @@ void __30__MTSiriPlistDumper_dumpPlist__block_invoke(id *a1)
 
   if ([v15 count] && objc_msgSend(v15, "count") < 0x65)
   {
-    v20 = [(MTSiriPlistDumper *)self subtractDictionary:v27 fromDictionary:v10 uniqueKey:@"uuid"];
-    v21 = [(MTSiriPlistDumper *)self subtractDictionary:v28 fromDictionary:v11 uniqueKey:@"uuid"];
-    v22 = [(MTSiriPlistDumper *)self subtractDictionary:v10 fromDictionary:v27 uniqueKey:@"uuid"];
-    v23 = [(MTSiriPlistDumper *)self subtractDictionary:v11 fromDictionary:v28 uniqueKey:@"uuid"];
+    v20 = [(MTSiriPlistDumper *)self subtractDictionary:v27 fromDictionary:diffsCopy uniqueKey:@"uuid"];
+    v21 = [(MTSiriPlistDumper *)self subtractDictionary:stationItemsCopy fromDictionary:itemsCopy uniqueKey:@"uuid"];
+    v22 = [(MTSiriPlistDumper *)self subtractDictionary:diffsCopy fromDictionary:v27 uniqueKey:@"uuid"];
+    v23 = [(MTSiriPlistDumper *)self subtractDictionary:itemsCopy fromDictionary:stationItemsCopy uniqueKey:@"uuid"];
     if (![v20 count] && !objc_msgSend(v21, "count") && !objc_msgSend(v22, "count") && !objc_msgSend(v23, "count"))
     {
 
@@ -319,41 +319,41 @@ void __30__MTSiriPlistDumper_dumpPlist__block_invoke(id *a1)
 
   else
   {
-    v20 = [(MTSiriPlistDumper *)self createDiffWithAddedPodcasts:v10 addedStations:v11 removedPodcasts:MEMORY[0x1E695E0F0] removedStations:MEMORY[0x1E695E0F0]];
+    v20 = [(MTSiriPlistDumper *)self createDiffWithAddedPodcasts:diffsCopy addedStations:itemsCopy removedPodcasts:MEMORY[0x1E695E0F0] removedStations:MEMORY[0x1E695E0F0]];
     [v15 removeAllObjects];
     [v15 addObject:v20];
   }
 
-  [v16 removeItemAtPath:v14 error:0];
-  [v15 writeToFile:v14 atomically:1];
+  [v16 removeItemAtPath:path error:0];
+  [v15 writeToFile:path atomically:1];
 LABEL_16:
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (id)createDiffWithAddedPodcasts:(id)a3 addedStations:(id)a4 removedPodcasts:(id)a5 removedStations:(id)a6
+- (id)createDiffWithAddedPodcasts:(id)podcasts addedStations:(id)stations removedPodcasts:(id)removedPodcasts removedStations:(id)removedStations
 {
   v25[3] = *MEMORY[0x1E69E9840];
   v24[0] = @"uuid";
   v9 = MEMORY[0x1E696AEC0];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v9 UUID];
-  v25[0] = v14;
+  removedStationsCopy = removedStations;
+  removedPodcastsCopy = removedPodcasts;
+  stationsCopy = stations;
+  podcastsCopy = podcasts;
+  uUID = [v9 UUID];
+  v25[0] = uUID;
   v24[1] = @"podcasts";
   v22[0] = @"inserted";
   v22[1] = @"deleted";
-  v23[0] = v13;
-  v23[1] = v11;
+  v23[0] = podcastsCopy;
+  v23[1] = removedPodcastsCopy;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:2];
   v25[1] = v15;
   v24[2] = @"stations";
   v20[0] = @"inserted";
   v20[1] = @"deleted";
-  v21[0] = v12;
-  v21[1] = v10;
+  v21[0] = stationsCopy;
+  v21[1] = removedStationsCopy;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:2];
   v25[2] = v16;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:3];
@@ -363,17 +363,17 @@ LABEL_16:
   return v17;
 }
 
-- (id)subtractDictionary:(id)a3 fromDictionary:(id)a4 uniqueKey:(id)a5
+- (id)subtractDictionary:(id)dictionary fromDictionary:(id)fromDictionary uniqueKey:(id)key
 {
-  v7 = a5;
+  keyCopy = key;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __65__MTSiriPlistDumper_subtractDictionary_fromDictionary_uniqueKey___block_invoke;
   v26[3] = &unk_1E856B3C8;
-  v8 = v7;
+  v8 = keyCopy;
   v27 = v8;
-  v9 = a4;
-  v10 = [a3 mt_compactMap:v26];
+  fromDictionaryCopy = fromDictionary;
+  v10 = [dictionary mt_compactMap:v26];
   v11 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v10];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
@@ -381,7 +381,7 @@ LABEL_16:
   v24[3] = &unk_1E856B3C8;
   v12 = v8;
   v25 = v12;
-  v13 = [v9 mt_compactMap:v24];
+  v13 = [fromDictionaryCopy mt_compactMap:v24];
   v14 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:v13];
   [v14 minusSet:v11];
   v21[0] = MEMORY[0x1E69E9820];
@@ -392,7 +392,7 @@ LABEL_16:
   v23 = v14;
   v15 = v14;
   v16 = v12;
-  v17 = [v9 mt_filter:v21];
+  v17 = [fromDictionaryCopy mt_filter:v21];
 
   if (v17)
   {
@@ -417,20 +417,20 @@ uint64_t __65__MTSiriPlistDumper_subtractDictionary_fromDictionary_uniqueKey___b
   return v4;
 }
 
-- (id)_childFromPlistAtIndex:(int64_t)a3 plistArray:(id)a4
+- (id)_childFromPlistAtIndex:(int64_t)index plistArray:(id)array
 {
-  v5 = a4;
-  if ([v5 count])
+  arrayCopy = array;
+  if ([arrayCopy count])
   {
-    v6 = [v5 objectAtIndex:0];
+    v6 = [arrayCopy objectAtIndex:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v7 = [v6 objectForKey:@"children"];
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 && [v7 count] > a3)
+      if ((objc_opt_isKindOfClass() & 1) != 0 && [v7 count] > index)
       {
-        v8 = [v7 objectAtIndex:a3];
+        v8 = [v7 objectAtIndex:index];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {

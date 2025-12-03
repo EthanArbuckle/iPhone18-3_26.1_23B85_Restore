@@ -1,23 +1,23 @@
 @interface OrgApacheLuceneCodecsLucene50Lucene50StoredFieldsFormat
-- (id)fieldsReaderWithOrgApacheLuceneStoreDirectory:(id)a3 withOrgApacheLuceneIndexSegmentInfo:(id)a4 withOrgApacheLuceneIndexFieldInfos:(id)a5 withOrgApacheLuceneStoreIOContext:(id)a6;
-- (id)fieldsWriterWithOrgApacheLuceneStoreDirectory:(id)a3 withOrgApacheLuceneIndexSegmentInfo:(id)a4 withOrgApacheLuceneStoreIOContext:(id)a5;
-- (id)implWithOrgApacheLuceneCodecsLucene50Lucene50StoredFieldsFormat_ModeEnum:(id)a3;
+- (id)fieldsReaderWithOrgApacheLuceneStoreDirectory:(id)directory withOrgApacheLuceneIndexSegmentInfo:(id)info withOrgApacheLuceneIndexFieldInfos:(id)infos withOrgApacheLuceneStoreIOContext:(id)context;
+- (id)fieldsWriterWithOrgApacheLuceneStoreDirectory:(id)directory withOrgApacheLuceneIndexSegmentInfo:(id)info withOrgApacheLuceneStoreIOContext:(id)context;
+- (id)implWithOrgApacheLuceneCodecsLucene50Lucene50StoredFieldsFormat_ModeEnum:(id)enum;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneCodecsLucene50Lucene50StoredFieldsFormat
 
-- (id)fieldsReaderWithOrgApacheLuceneStoreDirectory:(id)a3 withOrgApacheLuceneIndexSegmentInfo:(id)a4 withOrgApacheLuceneIndexFieldInfos:(id)a5 withOrgApacheLuceneStoreIOContext:(id)a6
+- (id)fieldsReaderWithOrgApacheLuceneStoreDirectory:(id)directory withOrgApacheLuceneIndexSegmentInfo:(id)info withOrgApacheLuceneIndexFieldInfos:(id)infos withOrgApacheLuceneStoreIOContext:(id)context
 {
-  if (!a4)
+  if (!info)
   {
     goto LABEL_7;
   }
 
-  v11 = [a4 getAttributeWithNSString:OrgApacheLuceneCodecsLucene50Lucene50StoredFieldsFormat_MODE_KEY_];
+  v11 = [info getAttributeWithNSString:OrgApacheLuceneCodecsLucene50Lucene50StoredFieldsFormat_MODE_KEY_];
   if (!v11)
   {
-    v23 = *(a4 + 1);
+    v23 = *(info + 1);
     v21 = JreStrcat("$$$$", v12, v13, v14, v15, v16, v17, v18, @"missing value for ");
     v22 = new_JavaLangIllegalStateException_initWithNSString_(v21);
     objc_exception_throw(v22);
@@ -30,12 +30,12 @@ LABEL_7:
     JreThrowNullPointerException();
   }
 
-  return [v19 fieldsReaderWithOrgApacheLuceneStoreDirectory:a3 withOrgApacheLuceneIndexSegmentInfo:a4 withOrgApacheLuceneIndexFieldInfos:a5 withOrgApacheLuceneStoreIOContext:a6];
+  return [v19 fieldsReaderWithOrgApacheLuceneStoreDirectory:directory withOrgApacheLuceneIndexSegmentInfo:info withOrgApacheLuceneIndexFieldInfos:infos withOrgApacheLuceneStoreIOContext:context];
 }
 
-- (id)fieldsWriterWithOrgApacheLuceneStoreDirectory:(id)a3 withOrgApacheLuceneIndexSegmentInfo:(id)a4 withOrgApacheLuceneStoreIOContext:(id)a5
+- (id)fieldsWriterWithOrgApacheLuceneStoreDirectory:(id)directory withOrgApacheLuceneIndexSegmentInfo:(id)info withOrgApacheLuceneStoreIOContext:(id)context
 {
-  if (!a4)
+  if (!info)
   {
     goto LABEL_8;
   }
@@ -46,9 +46,9 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([a4 putAttributeWithNSString:OrgApacheLuceneCodecsLucene50Lucene50StoredFieldsFormat_MODE_KEY_ withNSString:{-[JavaLangEnum name](mode, "name")}])
+  if ([info putAttributeWithNSString:OrgApacheLuceneCodecsLucene50Lucene50StoredFieldsFormat_MODE_KEY_ withNSString:{-[JavaLangEnum name](mode, "name")}])
   {
-    v11 = *(a4 + 1);
+    v11 = *(info + 1);
     [(JavaLangEnum *)self->mode_ name];
     v19 = JreStrcat("$$$$$$$$", v12, v13, v14, v15, v16, v17, v18, @"found existing value for ");
     v20 = new_JavaLangIllegalStateException_initWithNSString_(v19);
@@ -62,13 +62,13 @@ LABEL_8:
     JreThrowNullPointerException();
   }
 
-  return [v10 fieldsWriterWithOrgApacheLuceneStoreDirectory:a3 withOrgApacheLuceneIndexSegmentInfo:a4 withOrgApacheLuceneStoreIOContext:a5];
+  return [v10 fieldsWriterWithOrgApacheLuceneStoreDirectory:directory withOrgApacheLuceneIndexSegmentInfo:info withOrgApacheLuceneStoreIOContext:context];
 }
 
-- (id)implWithOrgApacheLuceneCodecsLucene50Lucene50StoredFieldsFormat_ModeEnum:(id)a3
+- (id)implWithOrgApacheLuceneCodecsLucene50Lucene50StoredFieldsFormat_ModeEnum:(id)enum
 {
-  v3 = [a3 ordinal];
-  if (v3 == 1)
+  ordinal = [enum ordinal];
+  if (ordinal == 1)
   {
     if ((atomic_load_explicit(OrgApacheLuceneCodecsCompressingCompressionMode__initialized, memory_order_acquire) & 1) == 0)
     {
@@ -83,7 +83,7 @@ LABEL_8:
 
   else
   {
-    if (v3)
+    if (ordinal)
     {
       v10 = new_JavaLangAssertionError_init();
       objc_exception_throw(v10);

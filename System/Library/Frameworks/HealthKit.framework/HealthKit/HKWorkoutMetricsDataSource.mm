@@ -4,9 +4,9 @@
 - (_TtP9HealthKit24HKWorkoutMetricsDelegate_)delegate;
 - (id)exportedInterface;
 - (id)identifier;
-- (void)clientRemote_didReceiveMetrics:(id)a3;
+- (void)clientRemote_didReceiveMetrics:(id)metrics;
 - (void)connectionInterrupted;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation HKWorkoutMetricsDataSource
@@ -22,7 +22,7 @@
 {
   v3 = OBJC_IVAR____TtC9HealthKit26HKWorkoutMetricsDataSource_lock;
   v4 = *(&self->super.isa + OBJC_IVAR____TtC9HealthKit26HKWorkoutMetricsDataSource_lock);
-  v5 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v4 + 4);
   Strong = swift_unknownObjectWeakLoadStrong();
   os_unfair_lock_unlock(*(&self->super.isa + v3) + 4);
@@ -30,12 +30,12 @@
   return Strong;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v4 = OBJC_IVAR____TtC9HealthKit26HKWorkoutMetricsDataSource_lock;
   v5 = *(&self->super.isa + OBJC_IVAR____TtC9HealthKit26HKWorkoutMetricsDataSource_lock);
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v5 + 4);
   swift_unknownObjectWeakAssign();
   os_unfair_lock_unlock(*(&self->super.isa + v4) + 4);
@@ -43,11 +43,11 @@
   swift_unknownObjectRelease();
 }
 
-- (void)clientRemote_didReceiveMetrics:(id)a3
+- (void)clientRemote_didReceiveMetrics:(id)metrics
 {
   type metadata accessor for HKWorkoutMetric();
   v4 = sub_191CC68E8();
-  v5 = self;
+  selfCopy = self;
   HKWorkoutMetricsDataSource.clientRemote_didReceiveMetrics(_:)(v4);
 }
 
@@ -76,7 +76,7 @@
 
 - (void)connectionInterrupted
 {
-  v2 = self;
+  selfCopy = self;
   HKWorkoutMetricsDataSource.connectionInterrupted()();
 }
 

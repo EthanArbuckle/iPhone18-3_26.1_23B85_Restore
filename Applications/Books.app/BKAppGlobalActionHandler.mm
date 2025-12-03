@@ -1,12 +1,12 @@
 @interface BKAppGlobalActionHandler
 - (BKAppGlobalActionHandler)init;
 - (BKAppGlobalActionHandlerDelegate)delegate;
-- (void)books_aboutKeyboardShortcuts:(id)a3;
-- (void)books_aboutServicesAndSupport:(id)a3;
-- (void)books_aboutTermsAndConditions:(id)a3;
-- (void)books_import:(id)a3;
-- (void)books_openRecent:(id)a3;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
+- (void)books_aboutKeyboardShortcuts:(id)shortcuts;
+- (void)books_aboutServicesAndSupport:(id)support;
+- (void)books_aboutTermsAndConditions:(id)conditions;
+- (void)books_import:(id)books_import;
+- (void)books_openRecent:(id)recent;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
 @end
 
 @implementation BKAppGlobalActionHandler
@@ -18,11 +18,11 @@
   return Strong;
 }
 
-- (void)books_openRecent:(id)a3
+- (void)books_openRecent:(id)recent
 {
-  if (a3)
+  if (recent)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1007A3504();
     swift_unknownObjectRelease();
@@ -31,7 +31,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_10023AAE8(v6);
@@ -39,11 +39,11 @@
   sub_100007840(v6, &unk_100AD5B40);
 }
 
-- (void)books_import:(id)a3
+- (void)books_import:(id)books_import
 {
-  if (a3)
+  if (books_import)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1007A3504();
     swift_unknownObjectRelease();
@@ -52,7 +52,7 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = *(self + OBJC_IVAR___BKAppGlobalActionHandler_sceneManager);
@@ -72,11 +72,11 @@
   sub_100007840(v10, &unk_100AD5B40);
 }
 
-- (void)books_aboutKeyboardShortcuts:(id)a3
+- (void)books_aboutKeyboardShortcuts:(id)shortcuts
 {
-  if (a3)
+  if (shortcuts)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1007A3504();
     swift_unknownObjectRelease();
@@ -85,7 +85,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_10023D4B0();
@@ -93,9 +93,9 @@
   sub_100007840(v6, &unk_100AD5B40);
 }
 
-- (void)books_aboutTermsAndConditions:(id)a3
+- (void)books_aboutTermsAndConditions:(id)conditions
 {
-  if (a3)
+  if (conditions)
   {
     swift_unknownObjectRetain();
     sub_1007A3504();
@@ -114,12 +114,12 @@
   sub_100007840(v4, &unk_100AD5B40);
 }
 
-- (void)books_aboutServicesAndSupport:(id)a3
+- (void)books_aboutServicesAndSupport:(id)support
 {
   v4 = sub_1001F1160(&qword_100AD67D0);
   __chkstk_darwin(v4 - 8);
   v6 = v10 - v5;
-  if (a3)
+  if (support)
   {
     swift_unknownObjectRetain();
     sub_1007A3504();
@@ -150,7 +150,7 @@
   return result;
 }
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
   sub_1007969B4();
   v6 = sub_1007A25E4();
@@ -167,8 +167,8 @@
   v13[2] = sub_100201C54;
   v13[3] = &unk_100A0FE40;
   v10 = _Block_copy(v13);
-  v11 = a3;
-  v12 = self;
+  pickerCopy = picker;
+  selfCopy = self;
 
   [v7 requestPrimaryScene:v10];
   _Block_release(v10);

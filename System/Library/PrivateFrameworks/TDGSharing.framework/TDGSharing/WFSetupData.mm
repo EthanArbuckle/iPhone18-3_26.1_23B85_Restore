@@ -1,47 +1,47 @@
 @interface WFSetupData
-- (WFSetupData)initWithCoder:(id)a3;
-- (WFSetupData)initWithKeyboards:(void *)a3 appleID:(id)a4 usesSameAccountForiTunes:(BOOL)a5 isConnectedToWiFi:(BOOL)a6 networks:(id)a7 networkPasswords:(id)a8 localePreferences:(id)a9 isAutomaticTimeZoneEnabled:(BOOL)a10 timeZone:(id)a11 accessibilitySettings:(id)a12 firstName:(id)a13 deviceModel:(id)a14 deviceClass:(id)a15 hasHomeButton:(BOOL)a16 isRestoring:(BOOL)a17 deviceName:(id)a18 backupUUID:(id)a19 isBackupEnabled:(BOOL)a20 dateOfLastBackup:(id)a21 isOptedInToLocationServices:(BOOL)a22 isOptedInToDeviceAnalytics:(BOOL)a23 locationServicesData:(id)a24 isOptedInToFindMyDevice:(BOOL)a25 isOptedInToAppAnalytics:(BOOL)a26 siriAssistantIsEnabled:(BOOL)a27 siriVoiceTriggerIsEnabled:(BOOL)a28 siriAssistantLanguageCode:(id)a29 siriAssistantOutputVoice:(id)a30 siriDataSharingIsEnabled:(BOOL)a31 dictationIsEnabled:(BOOL)a32 suppressDictationOptIn:(BOOL)a33 deviceTermsIdentifier:(int64_t)a34 productVersion:(id)a35 anisetteDataProvider:(id)a36 prescriptionRecords:(id)a37 walletData:(id)a38;
-- (void)encodeWithCoder:(id)a3;
+- (WFSetupData)initWithCoder:(id)coder;
+- (WFSetupData)initWithKeyboards:(void *)keyboards appleID:(id)d usesSameAccountForiTunes:(BOOL)tunes isConnectedToWiFi:(BOOL)fi networks:(id)networks networkPasswords:(id)passwords localePreferences:(id)preferences isAutomaticTimeZoneEnabled:(BOOL)self0 timeZone:(id)self1 accessibilitySettings:(id)self2 firstName:(id)self3 deviceModel:(id)self4 deviceClass:(id)self5 hasHomeButton:(BOOL)self6 isRestoring:(BOOL)self7 deviceName:(id)self8 backupUUID:(id)self9 isBackupEnabled:(BOOL)backupEnabled dateOfLastBackup:(id)backup isOptedInToLocationServices:(BOOL)services isOptedInToDeviceAnalytics:(BOOL)analytics locationServicesData:(id)data isOptedInToFindMyDevice:(BOOL)device isOptedInToAppAnalytics:(BOOL)appAnalytics siriAssistantIsEnabled:(BOOL)isEnabled siriVoiceTriggerIsEnabled:(BOOL)triggerIsEnabled siriAssistantLanguageCode:(id)code siriAssistantOutputVoice:(id)keyboards0 siriDataSharingIsEnabled:(BOOL)keyboards1 dictationIsEnabled:(BOOL)keyboards2 suppressDictationOptIn:(BOOL)keyboards3 deviceTermsIdentifier:(int64_t)keyboards4 productVersion:(id)keyboards5 anisetteDataProvider:(id)keyboards6 prescriptionRecords:(id)keyboards7 walletData:(id)keyboards8;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFSetupData
 
-- (WFSetupData)initWithKeyboards:(void *)a3 appleID:(id)a4 usesSameAccountForiTunes:(BOOL)a5 isConnectedToWiFi:(BOOL)a6 networks:(id)a7 networkPasswords:(id)a8 localePreferences:(id)a9 isAutomaticTimeZoneEnabled:(BOOL)a10 timeZone:(id)a11 accessibilitySettings:(id)a12 firstName:(id)a13 deviceModel:(id)a14 deviceClass:(id)a15 hasHomeButton:(BOOL)a16 isRestoring:(BOOL)a17 deviceName:(id)a18 backupUUID:(id)a19 isBackupEnabled:(BOOL)a20 dateOfLastBackup:(id)a21 isOptedInToLocationServices:(BOOL)a22 isOptedInToDeviceAnalytics:(BOOL)a23 locationServicesData:(id)a24 isOptedInToFindMyDevice:(BOOL)a25 isOptedInToAppAnalytics:(BOOL)a26 siriAssistantIsEnabled:(BOOL)a27 siriVoiceTriggerIsEnabled:(BOOL)a28 siriAssistantLanguageCode:(id)a29 siriAssistantOutputVoice:(id)a30 siriDataSharingIsEnabled:(BOOL)a31 dictationIsEnabled:(BOOL)a32 suppressDictationOptIn:(BOOL)a33 deviceTermsIdentifier:(int64_t)a34 productVersion:(id)a35 anisetteDataProvider:(id)a36 prescriptionRecords:(id)a37 walletData:(id)a38
+- (WFSetupData)initWithKeyboards:(void *)keyboards appleID:(id)d usesSameAccountForiTunes:(BOOL)tunes isConnectedToWiFi:(BOOL)fi networks:(id)networks networkPasswords:(id)passwords localePreferences:(id)preferences isAutomaticTimeZoneEnabled:(BOOL)self0 timeZone:(id)self1 accessibilitySettings:(id)self2 firstName:(id)self3 deviceModel:(id)self4 deviceClass:(id)self5 hasHomeButton:(BOOL)self6 isRestoring:(BOOL)self7 deviceName:(id)self8 backupUUID:(id)self9 isBackupEnabled:(BOOL)backupEnabled dateOfLastBackup:(id)backup isOptedInToLocationServices:(BOOL)services isOptedInToDeviceAnalytics:(BOOL)analytics locationServicesData:(id)data isOptedInToFindMyDevice:(BOOL)device isOptedInToAppAnalytics:(BOOL)appAnalytics siriAssistantIsEnabled:(BOOL)isEnabled siriVoiceTriggerIsEnabled:(BOOL)triggerIsEnabled siriAssistantLanguageCode:(id)code siriAssistantOutputVoice:(id)keyboards0 siriDataSharingIsEnabled:(BOOL)keyboards1 dictationIsEnabled:(BOOL)keyboards2 suppressDictationOptIn:(BOOL)keyboards3 deviceTermsIdentifier:(int64_t)keyboards4 productVersion:(id)keyboards5 anisetteDataProvider:(id)keyboards6 prescriptionRecords:(id)keyboards7 walletData:(id)keyboards8
 {
-  v60 = a5;
-  v61 = a6;
-  v71 = a4;
-  v70 = a7;
-  v40 = a8;
-  v41 = a9;
-  v42 = a11;
-  v43 = a12;
-  v44 = a13;
-  v45 = a14;
-  v46 = a15;
-  v47 = a18;
-  v48 = a19;
-  v69 = a24;
-  v68 = a29;
-  v67 = a30;
-  v66 = a35;
-  v65 = a36;
-  v64 = a37;
-  v63 = a38;
+  tunesCopy = tunes;
+  fiCopy = fi;
+  dCopy = d;
+  networksCopy = networks;
+  passwordsCopy = passwords;
+  preferencesCopy = preferences;
+  zoneCopy = zone;
+  settingsCopy = settings;
+  nameCopy = name;
+  modelCopy = model;
+  classCopy = class;
+  deviceNameCopy = deviceName;
+  iDCopy = iD;
+  dataCopy = data;
+  codeCopy = code;
+  voiceCopy = voice;
+  versionCopy = version;
+  providerCopy = provider;
+  recordsCopy = records;
+  walletDataCopy = walletData;
   v72.receiver = self;
   v72.super_class = WFSetupData;
   v49 = [(WFSetupData *)&v72 init];
   if (v49)
   {
-    BYTE2(v58) = a33;
-    LOWORD(v58) = __PAIR16__(a32, a31);
-    WORD1(v57) = __PAIR16__(a28, a27);
-    LOWORD(v57) = __PAIR16__(a26, a25);
-    *(&v56 + 1) = __PAIR16__(a23, a22);
-    LOBYTE(v56) = a20;
-    LOWORD(v55) = __PAIR16__(a17, a16);
-    LOBYTE(v54) = a10;
-    v50 = [WFSetupDataInternal initWithKeyboards:"initWithKeyboards:appleID:usesSameAccountForiTunes:isConnectedToWiFi:networks:networkPasswords:localePreferences:isAutomaticTimeZoneEnabled:timeZone:accessibilitySettings:firstName:deviceModel:deviceClass:hasHomeButton:isRestoring:deviceName:backupUUID:isBackupEnabled:isOptedInToLocationServices:isOptedInToDeviceAnalytics:locationServicesData:isOptedInToFindMyDevice:isOptedInToAppAnalytics:siriAssistantIsEnabled:siriVoiceTriggerIsEnabled:siriAssistantLanguageCode:siriAssistantOutputVoice:siriDataSharingIsEnabled:dictationIsEnabled:suppressDictationOptIn:deviceTermsIdentifier:productVersion:anisetteDataProvider:prescriptionRecords:walletData:" appleID:a3 usesSameAccountForiTunes:v71 isConnectedToWiFi:v60 networks:v61 networkPasswords:v70 localePreferences:v41 isAutomaticTimeZoneEnabled:v54 timeZone:v42 accessibilitySettings:v43 firstName:v44 deviceModel:v45 deviceClass:v46 hasHomeButton:v55 isRestoring:v47 deviceName:v48 backupUUID:v56 isBackupEnabled:v69 isOptedInToLocationServices:v57 isOptedInToDeviceAnalytics:v68 locationServicesData:v67 isOptedInToFindMyDevice:v58 isOptedInToAppAnalytics:a34 siriAssistantIsEnabled:v66 siriVoiceTriggerIsEnabled:v65 siriAssistantLanguageCode:v64 siriAssistantOutputVoice:v63 siriDataSharingIsEnabled:? dictationIsEnabled:? suppressDictationOptIn:? deviceTermsIdentifier:? productVersion:? anisetteDataProvider:? prescriptionRecords:? walletData:?];
+    BYTE2(v58) = in;
+    LOWORD(v58) = __PAIR16__(dictationIsEnabled, sharingIsEnabled);
+    WORD1(v57) = __PAIR16__(triggerIsEnabled, isEnabled);
+    LOWORD(v57) = __PAIR16__(appAnalytics, device);
+    *(&v56 + 1) = __PAIR16__(analytics, services);
+    LOBYTE(v56) = backupEnabled;
+    LOWORD(v55) = __PAIR16__(restoring, button);
+    LOBYTE(v54) = enabled;
+    v50 = [WFSetupDataInternal initWithKeyboards:"initWithKeyboards:appleID:usesSameAccountForiTunes:isConnectedToWiFi:networks:networkPasswords:localePreferences:isAutomaticTimeZoneEnabled:timeZone:accessibilitySettings:firstName:deviceModel:deviceClass:hasHomeButton:isRestoring:deviceName:backupUUID:isBackupEnabled:isOptedInToLocationServices:isOptedInToDeviceAnalytics:locationServicesData:isOptedInToFindMyDevice:isOptedInToAppAnalytics:siriAssistantIsEnabled:siriVoiceTriggerIsEnabled:siriAssistantLanguageCode:siriAssistantOutputVoice:siriDataSharingIsEnabled:dictationIsEnabled:suppressDictationOptIn:deviceTermsIdentifier:productVersion:anisetteDataProvider:prescriptionRecords:walletData:" appleID:keyboards usesSameAccountForiTunes:dCopy isConnectedToWiFi:tunesCopy networks:fiCopy networkPasswords:networksCopy localePreferences:preferencesCopy isAutomaticTimeZoneEnabled:v54 timeZone:zoneCopy accessibilitySettings:settingsCopy firstName:nameCopy deviceModel:modelCopy deviceClass:classCopy hasHomeButton:v55 isRestoring:deviceNameCopy deviceName:iDCopy backupUUID:v56 isBackupEnabled:dataCopy isOptedInToLocationServices:v57 isOptedInToDeviceAnalytics:codeCopy locationServicesData:voiceCopy isOptedInToFindMyDevice:v58 isOptedInToAppAnalytics:identifier siriAssistantIsEnabled:versionCopy siriVoiceTriggerIsEnabled:providerCopy siriAssistantLanguageCode:recordsCopy siriAssistantOutputVoice:walletDataCopy siriDataSharingIsEnabled:? dictationIsEnabled:? suppressDictationOptIn:? deviceTermsIdentifier:? productVersion:? anisetteDataProvider:? prescriptionRecords:? walletData:?];
     underlyingSwiftObject = v49->_underlyingSwiftObject;
     v49->_underlyingSwiftObject = v50;
 
@@ -51,38 +51,38 @@
   return v49;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFSetupData *)self underlyingSwiftObject];
-  [v5 encodeWithCoder:v4];
+  coderCopy = coder;
+  underlyingSwiftObject = [(WFSetupData *)self underlyingSwiftObject];
+  [underlyingSwiftObject encodeWithCoder:coderCopy];
 }
 
-- (WFSetupData)initWithCoder:(id)a3
+- (WFSetupData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = WFSetupData;
   v5 = [(WFSetupData *)&v9 init];
   if (v5)
   {
-    v6 = [[WFSetupDataInternal alloc] initWithCoder:v4];
+    v6 = [[WFSetupDataInternal alloc] initWithCoder:coderCopy];
     [(WFSetupData *)v5 setUnderlyingSwiftObject:v6];
 
-    v7 = [(WFSetupData *)v5 underlyingSwiftObject];
+    underlyingSwiftObject = [(WFSetupData *)v5 underlyingSwiftObject];
 
-    if (v7)
+    if (underlyingSwiftObject)
     {
-      v7 = v5;
+      underlyingSwiftObject = v5;
     }
   }
 
   else
   {
-    v7 = 0;
+    underlyingSwiftObject = 0;
   }
 
-  return v7;
+  return underlyingSwiftObject;
 }
 
 @end

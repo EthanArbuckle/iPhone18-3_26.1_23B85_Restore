@@ -1,12 +1,12 @@
 @interface APSRateControllerDelegate
-- (APSRateControllerDelegate)initWithContext:(void *)a3;
+- (APSRateControllerDelegate)initWithContext:(void *)context;
 - (void)dealloc;
-- (void)rateController:(id)a3 targetBitrateDidChange:(unsigned int)a4 rateChangeCounter:(unsigned int)a5;
+- (void)rateController:(id)controller targetBitrateDidChange:(unsigned int)change rateChangeCounter:(unsigned int)counter;
 @end
 
 @implementation APSRateControllerDelegate
 
-- (void)rateController:(id)a3 targetBitrateDidChange:(unsigned int)a4 rateChangeCounter:(unsigned int)a5
+- (void)rateController:(id)controller targetBitrateDidChange:(unsigned int)change rateChangeCounter:(unsigned int)counter
 {
   if (gLogCategory_APSRateControllerAVCWrapper <= 50 && (gLogCategory_APSRateControllerAVCWrapper != -1 || _LogCategory_Initialize()))
   {
@@ -18,7 +18,7 @@
   if (v8)
   {
     v9 = v8;
-    v8[4] = a4;
+    v8[4] = change;
     v10 = v8[5];
     if (v10)
     {
@@ -42,7 +42,7 @@
   [(APSRateControllerDelegate *)&v4 dealloc];
 }
 
-- (APSRateControllerDelegate)initWithContext:(void *)a3
+- (APSRateControllerDelegate)initWithContext:(void *)context
 {
   v5.receiver = self;
   v5.super_class = APSRateControllerDelegate;

@@ -1,18 +1,18 @@
 @interface CBSceneManager
-+ (double)windowLevel:(unint64_t)a3;
-+ (id)rootViewController:(unint64_t)a3;
-+ (id)sceneIdentifier:(unint64_t)a3;
++ (double)windowLevel:(unint64_t)level;
++ (id)rootViewController:(unint64_t)controller;
++ (id)sceneIdentifier:(unint64_t)identifier;
 + (id)sharedInstance;
 - (CBSceneManager)init;
 - (UIEdgeInsets)_additionalSafeAreaInsets;
 - (id)_rootStatusBarViewController;
-- (id)presentViewController:(id)a3 completion:(id)a4;
+- (id)presentViewController:(id)controller completion:(id)completion;
 - (void)_removeAllScenes;
-- (void)_showSceneStatusBar:(BOOL)a3;
-- (void)addScene:(unint64_t)a3;
+- (void)_showSceneStatusBar:(BOOL)bar;
+- (void)addScene:(unint64_t)scene;
 - (void)hideSceneStatusBar;
 - (void)showSceneStatusBar;
-- (void)statusBarStyle:(int64_t)a3;
+- (void)statusBarStyle:(int64_t)style;
 @end
 
 @implementation CBSceneManager
@@ -47,11 +47,11 @@
   return v2;
 }
 
-- (void)addScene:(unint64_t)a3
+- (void)addScene:(unint64_t)scene
 {
   v5 = [CBSceneManager sceneIdentifier:?];
-  v6 = [(CBSceneManager *)self windowDict];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  windowDict = [(CBSceneManager *)self windowDict];
+  v7 = [windowDict objectForKeyedSubscript:v5];
 
   if (v7)
   {
@@ -66,9 +66,9 @@
 
   else
   {
-    [CBSceneManager windowLevel:a3];
+    [CBSceneManager windowLevel:scene];
     v10 = v9;
-    v8 = [CBSceneManager rootViewController:a3];
+    v8 = [CBSceneManager rootViewController:scene];
     v11 = +[FBSMutableSceneDefinition definition];
     v12 = [FBSSceneIdentity identityForIdentifier:v5];
     [v11 setIdentity:v12];
@@ -79,8 +79,8 @@
     v14 = +[UIWindowSceneSpecification specification];
     [v11 setSpecification:v14];
 
-    v15 = [v11 specification];
-    v16 = [FBSMutableSceneParameters parametersForSpecification:v15];
+    specification = [v11 specification];
+    v16 = [FBSMutableSceneParameters parametersForSpecification:specification];
 
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
@@ -100,12 +100,12 @@
 
     v20 = +[FBLocalSynchronousSceneClientProvider sharedInstance];
     v34 = v19;
-    v21 = [v19 identifier];
-    v22 = [v20 fbsSceneWithIdentifier:v21];
+    identifier = [v19 identifier];
+    v22 = [v20 fbsSceneWithIdentifier:identifier];
 
     v23 = +[FBLocalSynchronousSceneClientProvider sharedInstance];
-    v24 = [v22 identifier];
-    v25 = [v23 fbsSceneWithIdentifier:v24];
+    identifier2 = [v22 identifier];
+    v25 = [v23 fbsSceneWithIdentifier:identifier2];
     v26 = [UIWindowScene _sceneForFBSScene:v25];
 
     v27 = [CBSceneWindow alloc];
@@ -126,8 +126,8 @@
     v31 = [[CBRecordingIndicatorManager alloc] initWithWindowScene:v26];
     [v29 setRecordingIndicatorManager:v31];
     [v29 setRootViewController:v8];
-    v32 = [(CBSceneManager *)self windowDict];
-    [v32 setObject:v29 forKeyedSubscript:v5];
+    windowDict2 = [(CBSceneManager *)self windowDict];
+    [windowDict2 setObject:v29 forKeyedSubscript:v5];
 
     v33 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -139,53 +139,53 @@
   }
 }
 
-- (id)presentViewController:(id)a3 completion:(id)a4
+- (id)presentViewController:(id)controller completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   v8 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v6;
+    v16 = controllerCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "CBSceneManager: presenting %@", &v15, 0xCu);
   }
 
   v9 = [CBSceneManager sceneIdentifier:0];
-  v10 = [(CBSceneManager *)self windowDict];
-  v11 = [v10 objectForKeyedSubscript:v9];
+  windowDict = [(CBSceneManager *)self windowDict];
+  v11 = [windowDict objectForKeyedSubscript:v9];
 
   if (!v11)
   {
     [(CBSceneManager *)self addScene:0];
   }
 
-  [v6 setModalPresentationStyle:0];
+  [controllerCopy setModalPresentationStyle:0];
   [(CBSceneManager *)self _additionalSafeAreaInsets];
-  [v6 setAdditionalSafeAreaInsets:?];
-  v12 = [(CBSceneManager *)self windowDict];
-  v13 = [v12 objectForKeyedSubscript:v9];
+  [controllerCopy setAdditionalSafeAreaInsets:?];
+  windowDict2 = [(CBSceneManager *)self windowDict];
+  v13 = [windowDict2 objectForKeyedSubscript:v9];
 
-  [v13 presentViewController:v6 animated:1 completion:v7];
+  [v13 presentViewController:controllerCopy animated:1 completion:completionCopy];
 
   return v13;
 }
 
-- (void)statusBarStyle:(int64_t)a3
+- (void)statusBarStyle:(int64_t)style
 {
   v5 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = a3;
+    styleCopy = style;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "CBSceneManager: statusBarStyle %li", &v8, 0xCu);
   }
 
-  v6 = [(CBSceneManager *)self _rootStatusBarViewController];
-  v7 = v6;
-  if (v6)
+  _rootStatusBarViewController = [(CBSceneManager *)self _rootStatusBarViewController];
+  v7 = _rootStatusBarViewController;
+  if (_rootStatusBarViewController)
   {
-    [v6 statusBarStyle:a3];
+    [_rootStatusBarViewController statusBarStyle:style];
   }
 }
 
@@ -213,40 +213,40 @@
   [(CBSceneManager *)self _showSceneStatusBar:0];
 }
 
-- (void)_showSceneStatusBar:(BOOL)a3
+- (void)_showSceneStatusBar:(BOOL)bar
 {
-  v3 = a3;
-  v4 = [(CBSceneManager *)self _rootStatusBarViewController];
-  if (v4)
+  barCopy = bar;
+  _rootStatusBarViewController = [(CBSceneManager *)self _rootStatusBarViewController];
+  if (_rootStatusBarViewController)
   {
-    v5 = v4;
-    if (v3)
+    v5 = _rootStatusBarViewController;
+    if (barCopy)
     {
-      [v4 showStatusBar];
+      [_rootStatusBarViewController showStatusBar];
     }
 
     else
     {
-      [v4 hideStatusBar];
+      [_rootStatusBarViewController hideStatusBar];
     }
 
-    v4 = v5;
+    _rootStatusBarViewController = v5;
   }
 }
 
 - (id)_rootStatusBarViewController
 {
   v3 = [CBSceneManager sceneIdentifier:2];
-  v4 = [(CBSceneManager *)self windowDict];
-  v5 = [v4 objectForKeyedSubscript:v3];
+  windowDict = [(CBSceneManager *)self windowDict];
+  v5 = [windowDict objectForKeyedSubscript:v3];
 
-  v6 = [v5 rootViewController];
+  rootViewController = [v5 rootViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [v5 rootViewController];
+    rootViewController2 = [v5 rootViewController];
   }
 
   else
@@ -258,10 +258,10 @@
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "CBSceneManager: CBRootStatusBarViewController is nil", v11, 2u);
     }
 
-    v8 = 0;
+    rootViewController2 = 0;
   }
 
-  return v8;
+  return rootViewController2;
 }
 
 - (void)_removeAllScenes
@@ -273,8 +273,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "CBSceneManager: _removeAllScenes", buf, 2u);
   }
 
-  v4 = [(CBSceneManager *)self windowDict];
-  v5 = [v4 copy];
+  windowDict = [(CBSceneManager *)self windowDict];
+  v5 = [windowDict copy];
 
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -283,50 +283,50 @@
   v9 = v5;
   v6 = v5;
   dispatch_async(&_dispatch_main_q, block);
-  v7 = [(CBSceneManager *)self windowDict];
-  [v7 removeAllObjects];
+  windowDict2 = [(CBSceneManager *)self windowDict];
+  [windowDict2 removeAllObjects];
 }
 
-+ (id)sceneIdentifier:(unint64_t)a3
++ (id)sceneIdentifier:(unint64_t)identifier
 {
-  if (a3 == 2)
+  if (identifier == 2)
   {
-    v3 = @"checkerboard-diagnostics-statusbar";
+    identifier = @"checkerboard-diagnostics-statusbar";
   }
 
-  else if (a3 == 1)
+  else if (identifier == 1)
   {
     v4 = +[FBSceneManager keyboardScene];
-    v3 = [v4 identifier];
+    identifier = [v4 identifier];
   }
 
-  else if (a3)
+  else if (identifier)
   {
-    v3 = 0;
+    identifier = 0;
   }
 
   else
   {
-    v3 = @"checkerboard-diagnostics-viewcontroller";
+    identifier = @"checkerboard-diagnostics-viewcontroller";
   }
 
-  return v3;
+  return identifier;
 }
 
-+ (double)windowLevel:(unint64_t)a3
++ (double)windowLevel:(unint64_t)level
 {
   result = UIWindowLevelStatusBar;
-  if (!a3)
+  if (!level)
   {
     result = UIWindowLevelStatusBar + 1.0;
   }
 
-  if (a3 == 1)
+  if (level == 1)
   {
     result = UIWindowLevelStatusBar + 2.0;
   }
 
-  if (a3 == 2)
+  if (level == 2)
   {
     return UIWindowLevelStatusBar + 3.0;
   }
@@ -334,9 +334,9 @@
   return result;
 }
 
-+ (id)rootViewController:(unint64_t)a3
++ (id)rootViewController:(unint64_t)controller
 {
-  if (!a3)
+  if (!controller)
   {
     v4 = &off_10007CA60;
 LABEL_5:
@@ -345,7 +345,7 @@ LABEL_5:
     return v5;
   }
 
-  if (a3 == 2)
+  if (controller == 2)
   {
     v4 = off_10007CA58;
     goto LABEL_5;
@@ -363,11 +363,11 @@ LABEL_5:
   v4 = v3;
 
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 windows];
-  v7 = [v6 firstObject];
-  v8 = [v7 windowScene];
-  v9 = [v8 statusBarManager];
-  [v9 statusBarFrame];
+  windows = [v5 windows];
+  firstObject = [windows firstObject];
+  windowScene = [firstObject windowScene];
+  statusBarManager = [windowScene statusBarManager];
+  [statusBarManager statusBarFrame];
   v11 = v10;
 
   v12 = 0.0;

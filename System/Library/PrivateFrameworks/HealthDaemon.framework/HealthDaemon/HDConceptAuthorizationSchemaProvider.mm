@@ -1,31 +1,31 @@
 @interface HDConceptAuthorizationSchemaProvider
-+ (BOOL)_createRecordsAndInsertByLookingUpUDCs:(id)a3 sourceUUID:(id)a4 profile:(id)a5 transaction:(id)a6 errorOut:(id *)a7;
-+ (id)_allUserDomainConceptsThatSupportUserAnnotatedMedicationDerivation:(id)a3 transaction:(id)a4 errorOut:(id *)a5;
-- (BOOL)setObjectAuthorizationStatusContext:(id)a3 forObjectType:(id)a4 bundleIdentifier:(id)a5 profile:(id)a6 error:(id *)a7;
-- (id)filterForClientUserAnnotatedMedications:(id)a3 bundleIdentifier:(id)a4 clientEntitlements:(id)a5 profile:(id)a6 error:(id *)a7;
-- (id)filteredAuthorizedObjectsForClient:(id)a3 anchor:(id)a4 bundleIdentifier:(id)a5 clientEntitlements:(id)a6 profile:(id)a7 error:(id *)a8;
-- (int64_t)isClientAuthorizedToReadObject:(id)a3 sourceBundleIdentifier:(id)a4 clientEntitlements:(id)a5 profile:(id)a6 error:(id *)a7;
-- (int64_t)isClientAuthorizedToReadType:(id)a3 sourceBundleIdentifier:(id)a4 clientEntitlements:(id)a5 profile:(id)a6 error:(id *)a7;
++ (BOOL)_createRecordsAndInsertByLookingUpUDCs:(id)cs sourceUUID:(id)d profile:(id)profile transaction:(id)transaction errorOut:(id *)out;
++ (id)_allUserDomainConceptsThatSupportUserAnnotatedMedicationDerivation:(id)derivation transaction:(id)transaction errorOut:(id *)out;
+- (BOOL)setObjectAuthorizationStatusContext:(id)context forObjectType:(id)type bundleIdentifier:(id)identifier profile:(id)profile error:(id *)error;
+- (id)filterForClientUserAnnotatedMedications:(id)medications bundleIdentifier:(id)identifier clientEntitlements:(id)entitlements profile:(id)profile error:(id *)error;
+- (id)filteredAuthorizedObjectsForClient:(id)client anchor:(id)anchor bundleIdentifier:(id)identifier clientEntitlements:(id)entitlements profile:(id)profile error:(id *)error;
+- (int64_t)isClientAuthorizedToReadObject:(id)object sourceBundleIdentifier:(id)identifier clientEntitlements:(id)entitlements profile:(id)profile error:(id *)error;
+- (int64_t)isClientAuthorizedToReadType:(id)type sourceBundleIdentifier:(id)identifier clientEntitlements:(id)entitlements profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDConceptAuthorizationSchemaProvider
 
-- (int64_t)isClientAuthorizedToReadObject:(id)a3 sourceBundleIdentifier:(id)a4 clientEntitlements:(id)a5 profile:(id)a6 error:(id *)a7
+- (int64_t)isClientAuthorizedToReadObject:(id)object sourceBundleIdentifier:(id)identifier clientEntitlements:(id)entitlements profile:(id)profile error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if ([v14 arrayEntitlement:*MEMORY[0x277CCCCE0] containsString:*MEMORY[0x277CCBBE8]] & 1) != 0 || (objc_msgSend(v14, "hasEntitlement:", *MEMORY[0x277CCC8B0]))
+  objectCopy = object;
+  identifierCopy = identifier;
+  entitlementsCopy = entitlements;
+  profileCopy = profile;
+  if ([entitlementsCopy arrayEntitlement:*MEMORY[0x277CCCCE0] containsString:*MEMORY[0x277CCBBE8]] & 1) != 0 || (objc_msgSend(entitlementsCopy, "hasEntitlement:", *MEMORY[0x277CCC8B0]))
   {
     v16 = 1;
   }
 
   else
   {
-    v17 = [v15 sourceManager];
+    sourceManager = [profileCopy sourceManager];
     v39 = 0;
-    v18 = [v17 sourceUUIDForBundleIdentifier:v13 error:&v39];
+    v18 = [sourceManager sourceUUIDForBundleIdentifier:identifierCopy error:&v39];
     v19 = v39;
     v20 = v19;
     if (v18)
@@ -33,14 +33,14 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v27 = v12;
+        v27 = objectCopy;
         v33 = 0;
         v34 = &v33;
         v35 = 0x3032000000;
         v36 = __Block_byref_object_copy__145;
         v37 = __Block_byref_object_dispose__145;
         v38 = 0;
-        v21 = [v15 database];
+        database = [profileCopy database];
         v29[0] = MEMORY[0x277D85DD0];
         v29[1] = 3221225472;
         v29[2] = __127__HDConceptAuthorizationSchemaProvider_isClientAuthorizedToReadObject_sourceBundleIdentifier_clientEntitlements_profile_error___block_invoke;
@@ -49,7 +49,7 @@
         v30 = v28;
         v31 = v18;
         v32 = &v33;
-        v22 = [(HDHealthEntity *)HDConceptAuthorizationEntity performReadTransactionWithHealthDatabase:v21 error:a7 block:v29];
+        v22 = [(HDHealthEntity *)HDConceptAuthorizationEntity performReadTransactionWithHealthDatabase:database error:error block:v29];
 
         if (v22)
         {
@@ -76,18 +76,18 @@
 
       else
       {
-        v26 = self;
+        selfCopy = self;
         v16 = 3;
-        [MEMORY[0x277CCA9B8] hk_assignError:a7 code:3 format:{@"%@ Authorization Information requested from non-UserAnnotatedMedicaionObject with class: %@", v26, objc_opt_class()}];
+        [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:{@"%@ Authorization Information requested from non-UserAnnotatedMedicaionObject with class: %@", selfCopy, objc_opt_class()}];
       }
     }
 
     else if (v19)
     {
-      if (a7)
+      if (error)
       {
         v24 = v19;
-        *a7 = v20;
+        *error = v20;
       }
 
       else
@@ -127,26 +127,26 @@ BOOL __127__HDConceptAuthorizationSchemaProvider_isClientAuthorizedToReadObject_
   return v12;
 }
 
-- (int64_t)isClientAuthorizedToReadType:(id)a3 sourceBundleIdentifier:(id)a4 clientEntitlements:(id)a5 profile:(id)a6 error:(id *)a7
+- (int64_t)isClientAuthorizedToReadType:(id)type sourceBundleIdentifier:(id)identifier clientEntitlements:(id)entitlements profile:(id)profile error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if ([v14 arrayEntitlement:*MEMORY[0x277CCCCE0] containsString:*MEMORY[0x277CCC3F8]] & 1) != 0 || (objc_msgSend(v14, "hasEntitlement:", *MEMORY[0x277CCC8B0]))
+  typeCopy = type;
+  identifierCopy = identifier;
+  entitlementsCopy = entitlements;
+  profileCopy = profile;
+  if ([entitlementsCopy arrayEntitlement:*MEMORY[0x277CCCCE0] containsString:*MEMORY[0x277CCC3F8]] & 1) != 0 || (objc_msgSend(entitlementsCopy, "hasEntitlement:", *MEMORY[0x277CCC8B0]))
   {
     v16 = 1;
   }
 
   else
   {
-    v17 = [MEMORY[0x277CCD658] medicationDoseEventType];
-    v18 = v17;
-    if (v17 == v12 || v17 && ([v12 isEqual:v17] & 1) != 0)
+    medicationDoseEventType = [MEMORY[0x277CCD658] medicationDoseEventType];
+    v18 = medicationDoseEventType;
+    if (medicationDoseEventType == typeCopy || medicationDoseEventType && ([typeCopy isEqual:medicationDoseEventType] & 1) != 0)
     {
-      v19 = [v15 sourceManager];
+      sourceManager = [profileCopy sourceManager];
       v40 = 0;
-      v20 = [v19 sourceUUIDForBundleIdentifier:v13 error:&v40];
+      v20 = [sourceManager sourceUUIDForBundleIdentifier:identifierCopy error:&v40];
       v21 = v40;
 
       if (v20)
@@ -159,7 +159,7 @@ BOOL __127__HDConceptAuthorizationSchemaProvider_isClientAuthorizedToReadObject_
         v33 = &v32;
         v34 = 0x2020000000;
         v35 = 0;
-        v22 = [v15 database];
+        database = [profileCopy database];
         v28[0] = MEMORY[0x277D85DD0];
         v28[1] = 3221225472;
         v28[2] = __125__HDConceptAuthorizationSchemaProvider_isClientAuthorizedToReadType_sourceBundleIdentifier_clientEntitlements_profile_error___block_invoke;
@@ -167,7 +167,7 @@ BOOL __127__HDConceptAuthorizationSchemaProvider_isClientAuthorizedToReadObject_
         v29 = v20;
         v30 = &v36;
         v31 = &v32;
-        v23 = [(HDHealthEntity *)HDConceptAuthorizationEntity performReadTransactionWithHealthDatabase:v22 error:a7 block:v28];
+        v23 = [(HDHealthEntity *)HDConceptAuthorizationEntity performReadTransactionWithHealthDatabase:database error:error block:v28];
 
         if (v23)
         {
@@ -198,10 +198,10 @@ BOOL __127__HDConceptAuthorizationSchemaProvider_isClientAuthorizedToReadObject_
 
       else if (v21)
       {
-        if (a7)
+        if (error)
         {
           v26 = v21;
-          *a7 = v21;
+          *error = v21;
         }
 
         else
@@ -221,8 +221,8 @@ BOOL __127__HDConceptAuthorizationSchemaProvider_isClientAuthorizedToReadObject_
     else
     {
       v24 = MEMORY[0x277CCA9B8];
-      v25 = [v12 identifier];
-      [v24 hk_assignError:a7 code:100 format:{@"%@ does not support looking up authorization for non-dose-event type %@", self, v25}];
+      identifier = [typeCopy identifier];
+      [v24 hk_assignError:error code:100 format:{@"%@ does not support looking up authorization for non-dose-event type %@", self, identifier}];
 
       v16 = 3;
     }
@@ -266,45 +266,45 @@ uint64_t __125__HDConceptAuthorizationSchemaProvider_isClientAuthorizedToReadTyp
   return v5 & 1;
 }
 
-- (id)filteredAuthorizedObjectsForClient:(id)a3 anchor:(id)a4 bundleIdentifier:(id)a5 clientEntitlements:(id)a6 profile:(id)a7 error:(id *)a8
+- (id)filteredAuthorizedObjectsForClient:(id)client anchor:(id)anchor bundleIdentifier:(id)identifier clientEntitlements:(id)entitlements profile:(id)profile error:(id *)error
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [a3 array];
-  if (([v14 arrayEntitlement:*MEMORY[0x277CCCCE0] containsString:*MEMORY[0x277CCC3F8]] & 1) != 0 || objc_msgSend(v14, "hasEntitlement:", *MEMORY[0x277CCC8B0]))
+  identifierCopy = identifier;
+  entitlementsCopy = entitlements;
+  profileCopy = profile;
+  array = [client array];
+  if (([entitlementsCopy arrayEntitlement:*MEMORY[0x277CCCCE0] containsString:*MEMORY[0x277CCC3F8]] & 1) != 0 || objc_msgSend(entitlementsCopy, "hasEntitlement:", *MEMORY[0x277CCC8B0]))
   {
-    v17 = v16;
+    v17 = array;
   }
 
   else
   {
-    v18 = [v15 sourceManager];
+    sourceManager = [profileCopy sourceManager];
     v36 = 0;
-    v19 = [v18 localSourceForBundleIdentifier:v13 error:&v36];
+    v19 = [sourceManager localSourceForBundleIdentifier:identifierCopy error:&v36];
     v20 = v36;
 
     if (v19)
     {
-      v21 = [v16 hk_firstObjectPassingTest:&__block_literal_global_178];
+      v21 = [array hk_firstObjectPassingTest:&__block_literal_global_178];
       if (v21)
       {
         v22 = v19;
         v23 = v20;
         v24 = MEMORY[0x277CCA9B8];
         v25 = v21;
-        v33 = [v21 UUID];
+        uUID = [v21 UUID];
         v26 = v24;
         v20 = v23;
         v19 = v22;
-        v27 = v33;
-        [v26 hk_assignError:a8 code:100 format:{@"%@ does not support filtering HKObjects that are not HKMedicationDoseEvents. Found mismatched object with UUID %@", self, v33}];
+        v27 = uUID;
+        [v26 hk_assignError:error code:100 format:{@"%@ does not support filtering HKObjects that are not HKMedicationDoseEvents. Found mismatched object with UUID %@", self, uUID}];
         v17 = 0;
       }
 
       else
       {
-        v27 = v16;
+        v27 = array;
         v29 = [v27 hk_map:&__block_literal_global_312_0];
         v30 = [HDConceptAuthorizationEntity authorizationRecordsForHealthConceptIdentifiers:"authorizationRecordsForHealthConceptIdentifiers:sourceEntity:profile:error:" sourceEntity:? profile:? error:?];
         v31 = v30;
@@ -329,11 +329,11 @@ uint64_t __125__HDConceptAuthorizationSchemaProvider_isClientAuthorizedToReadTyp
 
     else if (v20)
     {
-      if (a8)
+      if (error)
       {
         v28 = v20;
         v17 = 0;
-        *a8 = v20;
+        *error = v20;
       }
 
       else
@@ -420,28 +420,28 @@ BOOL __132__HDConceptAuthorizationSchemaProvider_filteredAuthorizedObjectsForCli
   return v9;
 }
 
-- (id)filterForClientUserAnnotatedMedications:(id)a3 bundleIdentifier:(id)a4 clientEntitlements:(id)a5 profile:(id)a6 error:(id *)a7
+- (id)filterForClientUserAnnotatedMedications:(id)medications bundleIdentifier:(id)identifier clientEntitlements:(id)entitlements profile:(id)profile error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (([v13 arrayEntitlement:*MEMORY[0x277CCCCE0] containsString:*MEMORY[0x277CCBBE8]] & 1) != 0 || objc_msgSend(v13, "hasEntitlement:", *MEMORY[0x277CCC8B0]))
+  medicationsCopy = medications;
+  identifierCopy = identifier;
+  entitlementsCopy = entitlements;
+  profileCopy = profile;
+  if (([entitlementsCopy arrayEntitlement:*MEMORY[0x277CCCCE0] containsString:*MEMORY[0x277CCBBE8]] & 1) != 0 || objc_msgSend(entitlementsCopy, "hasEntitlement:", *MEMORY[0x277CCC8B0]))
   {
-    v15 = v11;
+    v15 = medicationsCopy;
   }
 
   else
   {
-    v16 = [v14 sourceManager];
+    sourceManager = [profileCopy sourceManager];
     v26 = 0;
-    v17 = [v16 localSourceForBundleIdentifier:v12 error:&v26];
+    v17 = [sourceManager localSourceForBundleIdentifier:identifierCopy error:&v26];
     v18 = v26;
 
     if (v17)
     {
-      v19 = [v11 hk_map:&__block_literal_global_318_1];
-      v20 = [HDConceptAuthorizationEntity authorizationRecordsForHealthConceptIdentifiers:v19 sourceEntity:v17 profile:v14 error:a7];
+      v19 = [medicationsCopy hk_map:&__block_literal_global_318_1];
+      v20 = [HDConceptAuthorizationEntity authorizationRecordsForHealthConceptIdentifiers:v19 sourceEntity:v17 profile:profileCopy error:error];
       v21 = v20;
       if (v20)
       {
@@ -450,7 +450,7 @@ BOOL __132__HDConceptAuthorizationSchemaProvider_filteredAuthorizedObjectsForCli
         v24[2] = __130__HDConceptAuthorizationSchemaProvider_filterForClientUserAnnotatedMedications_bundleIdentifier_clientEntitlements_profile_error___block_invoke_2;
         v24[3] = &unk_278621BD8;
         v25 = v20;
-        v15 = [v11 hk_filter:v24];
+        v15 = [medicationsCopy hk_filter:v24];
       }
 
       else
@@ -461,11 +461,11 @@ BOOL __132__HDConceptAuthorizationSchemaProvider_filteredAuthorizedObjectsForCli
 
     else if (v18)
     {
-      if (a7)
+      if (error)
       {
         v22 = v18;
         v15 = 0;
-        *a7 = v18;
+        *error = v18;
       }
 
       else
@@ -547,16 +547,16 @@ BOOL __130__HDConceptAuthorizationSchemaProvider_filterForClientUserAnnotatedMed
   return v12;
 }
 
-- (BOOL)setObjectAuthorizationStatusContext:(id)a3 forObjectType:(id)a4 bundleIdentifier:(id)a5 profile:(id)a6 error:(id *)a7
+- (BOOL)setObjectAuthorizationStatusContext:(id)context forObjectType:(id)type bundleIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [v13 identifier];
-  v17 = v16;
+  contextCopy = context;
+  typeCopy = type;
+  identifierCopy = identifier;
+  profileCopy = profile;
+  identifier = [typeCopy identifier];
+  v17 = identifier;
   v18 = *MEMORY[0x277CCBBE8];
-  if (v16 == *MEMORY[0x277CCBBE8])
+  if (identifier == *MEMORY[0x277CCBBE8])
   {
   }
 
@@ -566,13 +566,13 @@ BOOL __130__HDConceptAuthorizationSchemaProvider_filterForClientUserAnnotatedMed
     {
 
 LABEL_10:
-      [MEMORY[0x277CCA9B8] hk_assignError:a7 code:3 format:{@"%@ Attempting to save authorizations for unsupported data type %@", self, v13}];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:{@"%@ Attempting to save authorizations for unsupported data type %@", self, typeCopy}];
       v25 = 0;
       goto LABEL_11;
     }
 
-    v19 = [v13 identifier];
-    v20 = [v19 isEqualToString:v18];
+    identifier2 = [typeCopy identifier];
+    v20 = [identifier2 isEqualToString:v18];
 
     if ((v20 & 1) == 0)
     {
@@ -580,31 +580,31 @@ LABEL_10:
     }
   }
 
-  v21 = [v15 sourceManager];
+  sourceManager = [profileCopy sourceManager];
   v32 = 0;
-  v22 = [v21 sourceUUIDForBundleIdentifier:v14 error:&v32];
+  v22 = [sourceManager sourceUUIDForBundleIdentifier:identifierCopy error:&v32];
   v23 = v32;
 
   if (v22)
   {
-    v24 = [v15 database];
+    database = [profileCopy database];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __121__HDConceptAuthorizationSchemaProvider_setObjectAuthorizationStatusContext_forObjectType_bundleIdentifier_profile_error___block_invoke;
     v28[3] = &unk_278615D40;
-    v29 = v12;
+    v29 = contextCopy;
     v30 = v22;
-    v31 = v15;
-    v25 = [(HDHealthEntity *)HDConceptAuthorizationEntity performWriteTransactionWithHealthDatabase:v24 error:a7 block:v28];
+    v31 = profileCopy;
+    v25 = [(HDHealthEntity *)HDConceptAuthorizationEntity performWriteTransactionWithHealthDatabase:database error:error block:v28];
   }
 
   else if (v23)
   {
-    if (a7)
+    if (error)
     {
       v27 = v23;
       v25 = 0;
-      *a7 = v23;
+      *error = v23;
     }
 
     else
@@ -633,28 +633,28 @@ BOOL __121__HDConceptAuthorizationSchemaProvider_setObjectAuthorizationStatusCon
   return v8;
 }
 
-+ (BOOL)_createRecordsAndInsertByLookingUpUDCs:(id)a3 sourceUUID:(id)a4 profile:(id)a5 transaction:(id)a6 errorOut:(id *)a7
++ (BOOL)_createRecordsAndInsertByLookingUpUDCs:(id)cs sourceUUID:(id)d profile:(id)profile transaction:(id)transaction errorOut:(id *)out
 {
   v44 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v34 = a4;
-  v13 = a5;
-  v14 = a6;
+  csCopy = cs;
+  dCopy = d;
+  profileCopy = profile;
+  transactionCopy = transaction;
   v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v32 = a1;
-  v33 = a7;
-  v37 = [a1 _allUserDomainConceptsThatSupportUserAnnotatedMedicationDerivation:v13 transaction:v14 errorOut:a7];
+  selfCopy = self;
+  outCopy = out;
+  v37 = [self _allUserDomainConceptsThatSupportUserAnnotatedMedicationDerivation:profileCopy transaction:transactionCopy errorOut:out];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v16 = v12;
+  v16 = csCopy;
   v36 = [v16 countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v36)
   {
     v35 = *v40;
-    v30 = v14;
-    v31 = v13;
+    v30 = transactionCopy;
+    v31 = profileCopy;
     while (2)
     {
       for (i = 0; i != v36; ++i)
@@ -669,22 +669,22 @@ BOOL __121__HDConceptAuthorizationSchemaProvider_setObjectAuthorizationStatusCon
         v20 = v19;
         if (v19)
         {
-          v21 = [v19 longLongValue];
-          if (v21 >= 3)
+          longLongValue = [v19 longLongValue];
+          if (longLongValue >= 3)
           {
-            [MEMORY[0x277CCA9B8] hk_assignError:v33 code:100 format:{@"%@ Attempting ot save an authorization status that is not currently supported %ld", v32, v21}];
+            [MEMORY[0x277CCA9B8] hk_assignError:outCopy code:100 format:{@"%@ Attempting ot save an authorization status that is not currently supported %ld", selfCopy, longLongValue}];
 
 LABEL_17:
             v27 = 0;
-            v14 = v30;
-            v13 = v31;
+            transactionCopy = v30;
+            profileCopy = v31;
             goto LABEL_18;
           }
         }
 
         else
         {
-          v21 = 1;
+          longLongValue = 1;
         }
 
         v38[0] = MEMORY[0x277D85DD0];
@@ -696,16 +696,16 @@ LABEL_17:
         if (v22)
         {
           v23 = objc_alloc(MEMORY[0x277CCD1C8]);
-          v24 = [v22 semanticIdentifier];
-          v25 = [v24 stringValue];
-          v26 = [v23 initWithHealthConceptIdentifier:v18 semanticIdentifierString:v25 sourceUUID:v34 status:v21 modificationDate:CFAbsoluteTimeGetCurrent()];
+          semanticIdentifier = [v22 semanticIdentifier];
+          stringValue = [semanticIdentifier stringValue];
+          v26 = [v23 initWithHealthConceptIdentifier:v18 semanticIdentifierString:stringValue sourceUUID:dCopy status:longLongValue modificationDate:CFAbsoluteTimeGetCurrent()];
 
           [v15 hk_addNonNilObject:v26];
         }
 
         else
         {
-          [MEMORY[0x277CCA9B8] hk_assignError:v33 code:100 format:{@"%@ Unable to find user domain concept matching records health concept identifier %@", v32, v18}];
+          [MEMORY[0x277CCA9B8] hk_assignError:outCopy code:100 format:{@"%@ Unable to find user domain concept matching records health concept identifier %@", selfCopy, v18}];
         }
 
         if (!v22)
@@ -714,8 +714,8 @@ LABEL_17:
         }
       }
 
-      v14 = v30;
-      v13 = v31;
+      transactionCopy = v30;
+      profileCopy = v31;
       v36 = [v16 countByEnumeratingWithState:&v39 objects:v43 count:16];
       if (v36)
       {
@@ -726,7 +726,7 @@ LABEL_17:
     }
   }
 
-  v27 = [HDConceptAuthorizationEntity insertConceptAuthorizationRecords:v15 transaction:v14 profile:v13 error:v33];
+  v27 = [HDConceptAuthorizationEntity insertConceptAuthorizationRecords:v15 transaction:transactionCopy profile:profileCopy error:outCopy];
 LABEL_18:
 
   v28 = *MEMORY[0x277D85DE8];
@@ -759,17 +759,17 @@ uint64_t __119__HDConceptAuthorizationSchemaProvider__createRecordsAndInsertByLo
   return v9;
 }
 
-+ (id)_allUserDomainConceptsThatSupportUserAnnotatedMedicationDerivation:(id)a3 transaction:(id)a4 errorOut:(id *)a5
++ (id)_allUserDomainConceptsThatSupportUserAnnotatedMedicationDerivation:(id)derivation transaction:(id)transaction errorOut:(id *)out
 {
-  v6 = a3;
-  v7 = [v6 daemon];
-  v8 = [v7 userDomainConceptEntityRegistry];
-  v9 = [v8 registeredUserDomainConceptEntityClasses];
+  derivationCopy = derivation;
+  daemon = [derivationCopy daemon];
+  userDomainConceptEntityRegistry = [daemon userDomainConceptEntityRegistry];
+  registeredUserDomainConceptEntityClasses = [userDomainConceptEntityRegistry registeredUserDomainConceptEntityClasses];
 
-  v10 = [v9 hk_map:&__block_literal_global_335_0];
+  v10 = [registeredUserDomainConceptEntityClasses hk_map:&__block_literal_global_335_0];
   v11 = HDUserDomainConceptEntityPredicateForConceptsWithTypeIdentifiers(v10);
   v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v13 = [v6 userDomainConceptManager];
+  userDomainConceptManager = [derivationCopy userDomainConceptManager];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -777,9 +777,9 @@ uint64_t __119__HDConceptAuthorizationSchemaProvider__createRecordsAndInsertByLo
   v18[3] = &unk_278616670;
   v19 = v12;
   v14 = v12;
-  LODWORD(a5) = [v13 enumerateUserDomainConceptsWithPredicate:v11 error:a5 enumerationHandler:v18];
+  LODWORD(out) = [userDomainConceptManager enumerateUserDomainConceptsWithPredicate:v11 error:out enumerationHandler:v18];
 
-  if (a5)
+  if (out)
   {
     v15 = v14;
   }

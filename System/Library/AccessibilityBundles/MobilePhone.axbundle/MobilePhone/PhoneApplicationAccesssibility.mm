@@ -1,5 +1,5 @@
 @interface PhoneApplicationAccesssibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityAllowsNotificationsDuringSuspension;
 - (BOOL)accessibilityStartStopToggle;
 - (id)_accessibilitySoftwareMimicKeyboard;
@@ -7,30 +7,30 @@
 
 @implementation PhoneApplicationAccesssibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PhoneTabBarController"];
-  [v3 validateClass:@"PHVoicemailGreetingViewController"];
-  [v3 validateClass:@"MPVoicemailTableViewController"];
-  [v3 validateClass:@"PHVoicemailPlayerController" hasClassMethod:@"sharedPlayerController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PhoneApplication" hasInstanceMethod:@"rootViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHAudioRecorder" hasInstanceMethod:@"stop" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PHVoicemailPlayerController" hasInstanceMethod:@"isPlaying" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PHVoicemailPlayerController" hasInstanceMethod:@"pause" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PHVoicemailPlayerController" hasInstanceMethod:@"play" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MPVoicemailTableViewController" hasInstanceMethod:@"detailIndexPath" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHVoicemailGreetingViewController" hasInstanceMethod:@"recordStopButtonTapped" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PhoneRootViewController"];
-  [v3 validateClass:@"PhoneTabBarController"];
-  [v3 validateClass:@"PhoneTabBarController" hasInstanceMethod:@"keypadViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PhoneTabBarController" hasInstanceMethod:@"currentTabViewType" withFullSignature:{"i", 0}];
-  [v3 validateClass:@"MPKeypadViewController" isKindOfClass:@"DialerController"];
-  [v3 validateClass:@"DialerController" hasInstanceVariable:@"_dialerView" withType:"PHAbstractDialerView"];
-  [v3 validateClass:@"PhoneTabBarController" hasInstanceVariable:@"_voicemailViewController" withType:"PHVoicemailNavigationController"];
-  [v3 validateClass:@"PHVoicemailNavigationController" hasInstanceVariable:@"_inboxViewController" withType:"MPVoicemailTableViewController<PHVoicemailListProtocol>"];
-  [v3 validateClass:@"MPVoicemailTableViewController" isKindOfClass:@"UITableViewController"];
-  [v3 validateClass:@"PHAbstractDialerView" hasInstanceMethod:@"phonePadView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PhoneTabBarController"];
+  [validationsCopy validateClass:@"PHVoicemailGreetingViewController"];
+  [validationsCopy validateClass:@"MPVoicemailTableViewController"];
+  [validationsCopy validateClass:@"PHVoicemailPlayerController" hasClassMethod:@"sharedPlayerController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PhoneApplication" hasInstanceMethod:@"rootViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHAudioRecorder" hasInstanceMethod:@"stop" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PHVoicemailPlayerController" hasInstanceMethod:@"isPlaying" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PHVoicemailPlayerController" hasInstanceMethod:@"pause" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PHVoicemailPlayerController" hasInstanceMethod:@"play" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MPVoicemailTableViewController" hasInstanceMethod:@"detailIndexPath" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHVoicemailGreetingViewController" hasInstanceMethod:@"recordStopButtonTapped" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PhoneRootViewController"];
+  [validationsCopy validateClass:@"PhoneTabBarController"];
+  [validationsCopy validateClass:@"PhoneTabBarController" hasInstanceMethod:@"keypadViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PhoneTabBarController" hasInstanceMethod:@"currentTabViewType" withFullSignature:{"i", 0}];
+  [validationsCopy validateClass:@"MPKeypadViewController" isKindOfClass:@"DialerController"];
+  [validationsCopy validateClass:@"DialerController" hasInstanceVariable:@"_dialerView" withType:"PHAbstractDialerView"];
+  [validationsCopy validateClass:@"PhoneTabBarController" hasInstanceVariable:@"_voicemailViewController" withType:"PHVoicemailNavigationController"];
+  [validationsCopy validateClass:@"PHVoicemailNavigationController" hasInstanceVariable:@"_inboxViewController" withType:"MPVoicemailTableViewController<PHVoicemailListProtocol>"];
+  [validationsCopy validateClass:@"MPVoicemailTableViewController" isKindOfClass:@"UITableViewController"];
+  [validationsCopy validateClass:@"PHAbstractDialerView" hasInstanceMethod:@"phonePadView" withFullSignature:{"@", 0}];
 }
 
 - (id)_accessibilitySoftwareMimicKeyboard
@@ -56,8 +56,8 @@
     v9 = [v8 safeValueForKey:@"_dialerView"];
     v10 = __UIAccessibilitySafeClass();
 
-    v11 = [v10 safeValueForKey:@"phonePadView"];
-    if ([v11 _accessibilityViewIsVisible])
+    _accessibilitySoftwareMimicKeyboard = [v10 safeValueForKey:@"phonePadView"];
+    if ([_accessibilitySoftwareMimicKeyboard _accessibilityViewIsVisible])
     {
 
       goto LABEL_10;
@@ -66,10 +66,10 @@
 
   v13.receiver = self;
   v13.super_class = PhoneApplicationAccesssibility;
-  v11 = [(PhoneApplicationAccesssibility *)&v13 _accessibilitySoftwareMimicKeyboard];
+  _accessibilitySoftwareMimicKeyboard = [(PhoneApplicationAccesssibility *)&v13 _accessibilitySoftwareMimicKeyboard];
 LABEL_10:
 
-  return v11;
+  return _accessibilitySoftwareMimicKeyboard;
 }
 
 - (BOOL)accessibilityStartStopToggle

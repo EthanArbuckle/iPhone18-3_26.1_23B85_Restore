@@ -1,5 +1,5 @@
 @interface _AFBluetoothDeviceBooleanSettingResponseMutation
-- (_AFBluetoothDeviceBooleanSettingResponseMutation)initWithBase:(id)a3;
+- (_AFBluetoothDeviceBooleanSettingResponseMutation)initWithBase:(id)base;
 - (int64_t)getStatus;
 - (int64_t)getValue;
 @end
@@ -32,16 +32,16 @@
   }
 }
 
-- (_AFBluetoothDeviceBooleanSettingResponseMutation)initWithBase:(id)a3
+- (_AFBluetoothDeviceBooleanSettingResponseMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFBluetoothDeviceBooleanSettingResponseMutation;
   v6 = [(_AFBluetoothDeviceBooleanSettingResponseMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

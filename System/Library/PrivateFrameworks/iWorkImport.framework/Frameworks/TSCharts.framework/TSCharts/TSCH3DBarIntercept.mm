@@ -1,30 +1,30 @@
 @interface TSCH3DBarIntercept
-+ (id)interceptWithValueAxis:(id)a3 value:(double)a4;
-- (TSCH3DBarIntercept)initWithValueAxis:(id)a3 value:(double)a4;
++ (id)interceptWithValueAxis:(id)axis value:(double)value;
+- (TSCH3DBarIntercept)initWithValueAxis:(id)axis value:(double)value;
 @end
 
 @implementation TSCH3DBarIntercept
 
-+ (id)interceptWithValueAxis:(id)a3 value:(double)a4
++ (id)interceptWithValueAxis:(id)axis value:(double)value
 {
-  v6 = a3;
-  v7 = [a1 alloc];
-  v11 = objc_msgSend_initWithValueAxis_value_(v7, v8, a4, v9, v10, v6);
+  axisCopy = axis;
+  v7 = [self alloc];
+  v11 = objc_msgSend_initWithValueAxis_value_(v7, v8, value, v9, v10, axisCopy);
 
   return v11;
 }
 
-- (TSCH3DBarIntercept)initWithValueAxis:(id)a3 value:(double)a4
+- (TSCH3DBarIntercept)initWithValueAxis:(id)axis value:(double)value
 {
-  v7 = a3;
+  axisCopy = axis;
   v11.receiver = self;
   v11.super_class = TSCH3DBarIntercept;
   v8 = [(TSCH3DBarIntercept *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_valueAxis, a3);
-    v9->_value = a4;
+    objc_storeStrong(&v8->_valueAxis, axis);
+    v9->_value = value;
   }
 
   return v9;

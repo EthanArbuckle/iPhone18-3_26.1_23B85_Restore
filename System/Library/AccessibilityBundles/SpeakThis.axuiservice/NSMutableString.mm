@@ -1,18 +1,18 @@
 @interface NSMutableString
-- (void)_speakThisAppendString:(id)a3 withPause:(BOOL)a4;
+- (void)_speakThisAppendString:(id)string withPause:(BOOL)pause;
 @end
 
 @implementation NSMutableString
 
-- (void)_speakThisAppendString:(id)a3 withPause:(BOOL)a4
+- (void)_speakThisAppendString:(id)string withPause:(BOOL)pause
 {
-  v9 = a3;
-  if (![v9 length])
+  stringCopy = string;
+  if (![stringCopy length])
   {
     goto LABEL_12;
   }
 
-  if (a4)
+  if (pause)
   {
     v6 = @",\n ";
   }
@@ -29,19 +29,19 @@
 
   [(NSMutableString *)self appendString:v6];
 LABEL_7:
-  if ([v9 isAXAttributedString] && objc_msgSend(v9, "hasAttribute:", UIAccessibilityTokenConvertTextToLowercase))
+  if ([stringCopy isAXAttributedString] && objc_msgSend(stringCopy, "hasAttribute:", UIAccessibilityTokenConvertTextToLowercase))
   {
-    v7 = [v9 lowercaseString];
+    lowercaseString = [stringCopy lowercaseString];
 
-    v8 = v7;
+    v8 = lowercaseString;
   }
 
   else
   {
-    v8 = v9;
+    v8 = stringCopy;
   }
 
-  v9 = v8;
+  stringCopy = v8;
   [(NSMutableString *)self appendString:v8];
 LABEL_12:
 }

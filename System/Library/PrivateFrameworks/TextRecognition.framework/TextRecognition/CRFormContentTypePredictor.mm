@@ -1,11 +1,11 @@
 @interface CRFormContentTypePredictor
-- (BOOL)_predictAndAssignContentTypesForFields:(id)a3 fieldsAndRegions:(id)a4 locale:(id)a5 updateExternal:(BOOL)a6;
-- (BOOL)predictAndAssignContentTypesForFields:(id)a3 fieldsAndRegions:(id)a4 locale:(id)a5 updateExternal:(BOOL)a6;
+- (BOOL)_predictAndAssignContentTypesForFields:(id)fields fieldsAndRegions:(id)regions locale:(id)locale updateExternal:(BOOL)external;
+- (BOOL)predictAndAssignContentTypesForFields:(id)fields fieldsAndRegions:(id)regions locale:(id)locale updateExternal:(BOOL)external;
 - (CRFormContentTypePredictor)init;
 - (id).cxx_construct;
-- (id)_modelInputWithFields:(id)a3 fieldsAndRegions:(id)a4 locale:(id)a5;
-- (void)_decodeCoreMLOutput:(id)a3 forFields:(id)a4 updateExternal:(BOOL)a5;
-- (void)_decodeEspressoOutput:(id *)a3 forFields:(id)a4 locale:(id)a5 updateExternal:(BOOL)a6;
+- (id)_modelInputWithFields:(id)fields fieldsAndRegions:(id)regions locale:(id)locale;
+- (void)_decodeCoreMLOutput:(id)output forFields:(id)fields updateExternal:(BOOL)external;
+- (void)_decodeEspressoOutput:(id *)output forFields:(id)fields locale:(id)locale updateExternal:(BOOL)external;
 @end
 
 @implementation CRFormContentTypePredictor
@@ -23,14 +23,14 @@
   return 0;
 }
 
-- (id)_modelInputWithFields:(id)a3 fieldsAndRegions:(id)a4 locale:(id)a5
+- (id)_modelInputWithFields:(id)fields fieldsAndRegions:(id)regions locale:(id)locale
 {
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 _nonFieldRegions];
-  if ([v7 count] && objc_msgSend(v10, "count"))
+  fieldsCopy = fields;
+  regionsCopy = regions;
+  localeCopy = locale;
+  _nonFieldRegions = [regionsCopy _nonFieldRegions];
+  if ([fieldsCopy count] && objc_msgSend(_nonFieldRegions, "count"))
   {
     v35 = 0;
     v11 = [objc_alloc(MEMORY[0x1E695FED0]) initWithShape:&unk_1F2BF8908 dataType:65568 error:&v35];
@@ -56,9 +56,9 @@
       v32[1] = 3221225472;
       v32[2] = __76__CRFormContentTypePredictor__modelInputWithFields_fieldsAndRegions_locale___block_invoke;
       v32[3] = &unk_1E7BC28F0;
-      v17 = v7;
+      v17 = fieldsCopy;
       v33 = v17;
-      v18 = v8;
+      v18 = regionsCopy;
       v34 = v18;
       [v11 getMutableBytesWithHandler:v32];
       v19 = objc_alloc(MEMORY[0x1E695FED0]);
@@ -91,10 +91,10 @@
         v27[1] = 3221225472;
         v27[2] = __76__CRFormContentTypePredictor__modelInputWithFields_fieldsAndRegions_locale___block_invoke_73;
         v27[3] = &unk_1E7BC2918;
-        v24 = v10;
+        v24 = _nonFieldRegions;
         v28 = v24;
         v29 = v18;
-        v30 = v9;
+        v30 = localeCopy;
         [v26 getMutableBytesWithHandler:v27];
         v16 = [[CRFormContentTypeModelInput alloc] initWithFieldArray:v11 labelArray:v26 fieldCount:[v17 count] labelCount:[v24 count] useFloatOnly:1];
 
@@ -649,27 +649,27 @@ LABEL_95:
 LABEL_96:
 }
 
-- (void)_decodeCoreMLOutput:(id)a3 forFields:(id)a4 updateExternal:(BOOL)a5
+- (void)_decodeCoreMLOutput:(id)output forFields:(id)fields updateExternal:(BOOL)external
 {
-  v20 = a5;
+  externalCopy = external;
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v17 = a4;
-  v15 = v6;
-  v7 = [v6 featureValueForName:@"score"];
-  v8 = [v7 multiArrayValue];
+  outputCopy = output;
+  fieldsCopy = fields;
+  v15 = outputCopy;
+  v7 = [outputCopy featureValueForName:@"score"];
+  multiArrayValue = [v7 multiArrayValue];
 
-  v16 = v8;
-  [v8 dataPointer];
-  v9 = [v8 shape];
-  v10 = [v9 objectAtIndexedSubscript:2];
-  v11 = [v10 unsignedIntegerValue];
+  v16 = multiArrayValue;
+  [multiArrayValue dataPointer];
+  shape = [multiArrayValue shape];
+  v10 = [shape objectAtIndexedSubscript:2];
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v17;
+  obj = fieldsCopy;
   v12 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v12)
   {
@@ -686,12 +686,12 @@ LABEL_96:
         }
 
         v22 = *(*(&v23 + 1) + 8 * v13);
-        if (v11)
+        if (unsignedIntegerValue)
         {
           std::__allocate_at_least[abi:ne200100]<std::allocator<std::tuple<float,unsigned long>>>(1uLL);
         }
 
-        if ([CRFormContentTypeUtilities shouldAssignTextContentTypeForField:v22 updateExternalFields:v20 allowOverride:0 allowAllDetectionSources:1])
+        if ([CRFormContentTypeUtilities shouldAssignTextContentTypeForField:v22 updateExternalFields:externalCopy allowOverride:0 allowAllDetectionSources:1])
         {
           std::__introsort<std::_ClassicAlgPolicy,std::greater<void> &,std::tuple<float,unsigned long> *,false>(0, 0, 0, 1);
           v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:(&CRFormContentTypeModelVocabulary::classnames)[MEMORY[8]]];
@@ -711,11 +711,11 @@ LABEL_96:
   }
 }
 
-- (void)_decodeEspressoOutput:(id *)a3 forFields:(id)a4 locale:(id)a5 updateExternal:(BOOL)a6
+- (void)_decodeEspressoOutput:(id *)output forFields:(id)fields locale:(id)locale updateExternal:(BOOL)external
 {
   v48 = *MEMORY[0x1E69E9840];
-  v43 = a4;
-  v41 = a5;
+  fieldsCopy = fields;
+  localeCopy = locale;
   std::string::basic_string[abi:ne200100]<0>(&__p, "None");
   v8 = v46;
   v9 = &CRFormContentTypeModelVocabulary::classnames;
@@ -766,7 +766,7 @@ LABEL_8:
     operator delete(v10);
   }
 
-  v16 = v41;
+  v16 = localeCopy;
   v42 = v16;
   if (v16 && [v16 length] >= 2)
   {
@@ -905,7 +905,7 @@ LABEL_8:
   }
 
   espresso_buffer_unpack_tensor_shape();
-  v39 = [v43 count];
+  v39 = [fieldsCopy count];
   v40 = v47;
   if (v47 >= v39)
   {
@@ -918,76 +918,76 @@ LABEL_8:
   }
 }
 
-- (BOOL)_predictAndAssignContentTypesForFields:(id)a3 fieldsAndRegions:(id)a4 locale:(id)a5 updateExternal:(BOOL)a6
+- (BOOL)_predictAndAssignContentTypesForFields:(id)fields fieldsAndRegions:(id)regions locale:(id)locale updateExternal:(BOOL)external
 {
-  v6 = a6;
+  externalCopy = external;
   v65[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(CRFormContentTypePredictor *)self _modelInputWithFields:v10 fieldsAndRegions:v11 locale:v12];
+  fieldsCopy = fields;
+  regionsCopy = regions;
+  localeCopy = locale;
+  v13 = [(CRFormContentTypePredictor *)self _modelInputWithFields:fieldsCopy fieldsAndRegions:regionsCopy locale:localeCopy];
   if (v13)
   {
-    v14 = self;
-    objc_sync_enter(v14);
-    v15 = [v13 fields];
-    v43 = [v15 shape];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    fields = [v13 fields];
+    shape = [fields shape];
 
-    v16 = [v13 labels];
-    v42 = [v16 shape];
-    v40 = v6;
+    labels = [v13 labels];
+    shape2 = [labels shape];
+    v40 = externalCopy;
 
-    ptr = v14->_espressoModel.__ptr_;
-    v18 = [v13 fields];
-    v19 = [v18 dataPointer];
+    ptr = selfCopy->_espressoModel.__ptr_;
+    fields2 = [v13 fields];
+    dataPointer = [fields2 dataPointer];
     *buf = vdupq_n_s64(1uLL);
-    v20 = [v43 objectAtIndexedSubscript:1];
-    v57 = [v20 unsignedIntegerValue];
-    v21 = [v43 objectAtIndexedSubscript:2];
-    v58 = [v21 unsignedIntegerValue];
+    v20 = [shape objectAtIndexedSubscript:1];
+    unsignedIntegerValue = [v20 unsignedIntegerValue];
+    v21 = [shape objectAtIndexedSubscript:2];
+    unsignedIntegerValue2 = [v21 unsignedIntegerValue];
     v54 = 0;
     v55 = 0;
     v53 = 0;
     std::vector<unsigned long>::__init_with_size[abi:ne200100]<unsigned long const*,unsigned long const*>(&v53, buf, &v59, 4uLL);
-    if (CoreRecognition::EspressoModelWrapper::bindInput(ptr, v19))
+    if (CoreRecognition::EspressoModelWrapper::bindInput(ptr, dataPointer))
     {
-      v22 = v14->_espressoModel.__ptr_;
-      v41 = [v13 labels];
-      v23 = v41;
-      v24 = [v41 dataPointer];
+      v22 = selfCopy->_espressoModel.__ptr_;
+      labels2 = [v13 labels];
+      v23 = labels2;
+      dataPointer2 = [labels2 dataPointer];
       *v62 = vdupq_n_s64(1uLL);
-      v39 = [v42 objectAtIndexedSubscript:1];
-      v63 = [v39 unsignedIntegerValue];
-      v38 = [v42 objectAtIndexedSubscript:2];
-      v64 = [v38 unsignedIntegerValue];
+      v39 = [shape2 objectAtIndexedSubscript:1];
+      unsignedIntegerValue3 = [v39 unsignedIntegerValue];
+      v38 = [shape2 objectAtIndexedSubscript:2];
+      unsignedIntegerValue4 = [v38 unsignedIntegerValue];
       v51 = 0;
       v52 = 0;
       v50 = 0;
       std::vector<unsigned long>::__init_with_size[abi:ne200100]<unsigned long const*,unsigned long const*>(&v50, v62, v65, 4uLL);
-      if (CoreRecognition::EspressoModelWrapper::bindInput(v22, v24))
+      if (CoreRecognition::EspressoModelWrapper::bindInput(v22, dataPointer2))
       {
-        v25 = v14->_espressoModel.__ptr_;
+        v25 = selfCopy->_espressoModel.__ptr_;
         v37 = [v13 length];
         v26 = v37;
-        v27 = [v37 dataPointer];
+        dataPointer3 = [v37 dataPointer];
         v61[0] = xmmword_1B42AF3F0;
         v61[1] = unk_1B42AF400;
         v48 = 0;
         v49 = 0;
         v47 = 0;
         std::vector<unsigned long>::__init_with_size[abi:ne200100]<unsigned long const*,unsigned long const*>(&v47, v61, v62, 4uLL);
-        if (CoreRecognition::EspressoModelWrapper::bindInput(v25, v27))
+        if (CoreRecognition::EspressoModelWrapper::bindInput(v25, dataPointer3))
         {
-          v28 = v14->_espressoModel.__ptr_;
-          v36 = [v13 num_labels];
-          v29 = [v36 dataPointer];
+          v28 = selfCopy->_espressoModel.__ptr_;
+          num_labels = [v13 num_labels];
+          dataPointer4 = [num_labels dataPointer];
           v60[0] = xmmword_1B42AF3F0;
           v60[1] = unk_1B42AF400;
           v45 = 0;
           v46 = 0;
           __p = 0;
           std::vector<unsigned long>::__init_with_size[abi:ne200100]<unsigned long const*,unsigned long const*>(&__p, v60, v61, 4uLL);
-          v30 = CoreRecognition::EspressoModelWrapper::bindInput(v28, v29);
+          v30 = CoreRecognition::EspressoModelWrapper::bindInput(v28, dataPointer4);
           if (__p)
           {
             v45 = __p;
@@ -1045,15 +1045,15 @@ LABEL_8:
       goto LABEL_32;
     }
 
-    if (CoreRecognition::EspressoModelWrapper::bindOutput(v14->_espressoModel.__ptr_, buf, "score", 1))
+    if (CoreRecognition::EspressoModelWrapper::bindOutput(selfCopy->_espressoModel.__ptr_, buf, "score", 1))
     {
-      if (CoreRecognition::EspressoModelWrapper::execute(v14->_espressoModel.__ptr_))
+      if (CoreRecognition::EspressoModelWrapper::execute(selfCopy->_espressoModel.__ptr_))
       {
-        [(CRFormContentTypePredictor *)v14 _decodeEspressoOutput:buf forFields:v10 locale:v12 updateExternal:v40];
+        [(CRFormContentTypePredictor *)selfCopy _decodeEspressoOutput:buf forFields:fieldsCopy locale:localeCopy updateExternal:v40];
         v32 = 1;
 LABEL_33:
 
-        objc_sync_exit(v14);
+        objc_sync_exit(selfCopy);
         goto LABEL_34;
       }
 
@@ -1092,25 +1092,25 @@ LABEL_34:
   return v32;
 }
 
-- (BOOL)predictAndAssignContentTypesForFields:(id)a3 fieldsAndRegions:(id)a4 locale:(id)a5 updateExternal:(BOOL)a6
+- (BOOL)predictAndAssignContentTypesForFields:(id)fields fieldsAndRegions:(id)regions locale:(id)locale updateExternal:(BOOL)external
 {
-  v6 = a6;
+  externalCopy = external;
   v52 = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v35 = a4;
-  v34 = a5;
+  fieldsCopy = fields;
+  regionsCopy = regions;
+  localeCopy = locale;
   v36 = objc_opt_new();
   v9 = 0;
   for (i = 1; ; ++i)
   {
-    v11 = [v35 count];
+    v11 = [regionsCopy count];
     v12 = i - 1;
     if (i - 1 >= v11)
     {
       break;
     }
 
-    v13 = [v35 objectAtIndexedSubscript:i - 1];
+    v13 = [regionsCopy objectAtIndexedSubscript:i - 1];
     v14 = &unk_1F2C0BF90;
     v15 = v13;
     if ([v15 conformsToProtocol:v14])
@@ -1134,18 +1134,18 @@ LABEL_34:
 
       else
       {
-        v21 = [v18 originalField];
-        [v36 addObject:v21];
+        originalField = [v18 originalField];
+        [v36 addObject:originalField];
       }
     }
 
-    if (i - v9 - [v36 count] == 128 || objc_msgSend(v36, "count") == 128 || i == objc_msgSend(v35, "count"))
+    if (i - v9 - [v36 count] == 128 || objc_msgSend(v36, "count") == 128 || i == objc_msgSend(regionsCopy, "count"))
     {
-      v22 = [v35 subarrayWithRange:{v9, i - v9}];
+      v22 = [regionsCopy subarrayWithRange:{v9, i - v9}];
       v23 = CROSLogForCategory(6);
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
       {
-        v24 = [v35 count];
+        v24 = [regionsCopy count];
         v25 = [v36 count];
         *buf = 136316162;
         v43 = "[CRFormContentTypePredictor predictAndAssignContentTypesForFields:fieldsAndRegions:locale:updateExternal:]";
@@ -1160,14 +1160,14 @@ LABEL_34:
         _os_log_impl(&dword_1B40D2000, v23, OS_LOG_TYPE_DEBUG, "%s: Predicting content types for range #%lu–%lu/%lu (including %lu fields)", buf, 0x34u);
       }
 
-      if ([v36 count] && !-[CRFormContentTypePredictor _predictAndAssignContentTypesForFields:fieldsAndRegions:locale:updateExternal:](self, "_predictAndAssignContentTypesForFields:fieldsAndRegions:locale:updateExternal:", v36, v22, v34, v6))
+      if ([v36 count] && !-[CRFormContentTypePredictor _predictAndAssignContentTypesForFields:fieldsAndRegions:locale:updateExternal:](self, "_predictAndAssignContentTypesForFields:fieldsAndRegions:locale:updateExternal:", v36, v22, localeCopy, externalCopy))
       {
 
         v39 = 0u;
         v40 = 0u;
         v37 = 0u;
         v38 = 0u;
-        v26 = v32;
+        v26 = fieldsCopy;
         v27 = [v26 countByEnumeratingWithState:&v37 objects:v41 count:16];
         if (v27)
         {
@@ -1182,7 +1182,7 @@ LABEL_34:
               }
 
               v30 = *(*(&v37 + 1) + 8 * j);
-              if ([CRFormContentTypeUtilities shouldAssignTextContentTypeForField:v30 updateExternalFields:v6 allowOverride:1 allowAllDetectionSources:1])
+              if ([CRFormContentTypeUtilities shouldAssignTextContentTypeForField:v30 updateExternalFields:externalCopy allowOverride:1 allowAllDetectionSources:1])
               {
                 [v30 setTextContentType:1];
               }

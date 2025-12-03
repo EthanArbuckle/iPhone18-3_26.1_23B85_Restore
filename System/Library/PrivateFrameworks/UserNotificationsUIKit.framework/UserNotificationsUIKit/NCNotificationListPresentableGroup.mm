@@ -1,35 +1,35 @@
 @interface NCNotificationListPresentableGroup
 - (BOOL)_shouldAllowRestacking;
 - (BOOL)_shouldAllowRestackingFromFooter;
-- (BOOL)actionsRevealedForNotificationListCell:(id)a3;
+- (BOOL)actionsRevealedForNotificationListCell:(id)cell;
 - (BOOL)adjustForContentSizeCategoryChange;
 - (BOOL)isGrouped;
-- (BOOL)shouldPerformClippingForNotificationListCell:(id)a3;
+- (BOOL)shouldPerformClippingForNotificationListCell:(id)cell;
 - (NCNotificationListBaseComponentDelegate)delegate;
 - (NCNotificationListViewProtocol)listView;
 - (NSString)materialGroupNameBase;
-- (double)footerViewHeightForNotificationList:(id)a3 withWidth:(double)a4;
-- (double)headerViewHeightForNotificationList:(id)a3 withWidth:(double)a4;
+- (double)footerViewHeightForNotificationList:(id)list withWidth:(double)width;
+- (double)headerViewHeightForNotificationList:(id)list withWidth:(double)width;
 - (id)_legibilitySettings;
-- (id)containerViewForCoalescingControlsHandlerPreviewInteractionPresentedContent:(id)a3;
-- (id)footerViewForNotificationList:(id)a3;
-- (id)headerViewForNotificationList:(id)a3;
+- (id)containerViewForCoalescingControlsHandlerPreviewInteractionPresentedContent:(id)content;
+- (id)footerViewForNotificationList:(id)list;
+- (id)headerViewForNotificationList:(id)list;
 - (void)_didSignificantInteraction;
-- (void)_scrollToTopIfNecessaryAndPerformBlock:(id)a3;
-- (void)adjustForLegibilitySettingsChange:(id)a3;
-- (void)notificationListCell:(id)a3 didBeginHidingActionsForSwipeInteraction:(id)a4;
-- (void)notificationListCell:(id)a3 didBeginRevealingActionsForSwipeInteraction:(id)a4;
-- (void)notificationListCell:(id)a3 didMoveToNewXPosition:(double)a4;
-- (void)notificationListCoalescingControlsHandler:(id)a3 didTransitionToClearState:(BOOL)a4;
-- (void)notificationListCoalescingControlsHandlerDidBeginPreviewInteraction:(id)a3;
-- (void)notificationListCoalescingControlsHandlerDidDismissPreviewInteractionPresentedContent:(id)a3;
-- (void)notificationListCoalescingControlsHandlerDidPresentPreviewInteractionPresentedContent:(id)a3;
-- (void)notificationListCoalescingControlsHandlerRequestsClearingAllNotifications:(id)a3;
-- (void)notificationListCoalescingControlsHandlerRequestsClearingNotifications:(id)a3;
-- (void)notificationListCoalescingControlsHandlerRequestsRestackingNotifications:(id)a3;
+- (void)_scrollToTopIfNecessaryAndPerformBlock:(id)block;
+- (void)adjustForLegibilitySettingsChange:(id)change;
+- (void)notificationListCell:(id)cell didBeginHidingActionsForSwipeInteraction:(id)interaction;
+- (void)notificationListCell:(id)cell didBeginRevealingActionsForSwipeInteraction:(id)interaction;
+- (void)notificationListCell:(id)cell didMoveToNewXPosition:(double)position;
+- (void)notificationListCoalescingControlsHandler:(id)handler didTransitionToClearState:(BOOL)state;
+- (void)notificationListCoalescingControlsHandlerDidBeginPreviewInteraction:(id)interaction;
+- (void)notificationListCoalescingControlsHandlerDidDismissPreviewInteractionPresentedContent:(id)content;
+- (void)notificationListCoalescingControlsHandlerDidPresentPreviewInteractionPresentedContent:(id)content;
+- (void)notificationListCoalescingControlsHandlerRequestsClearingAllNotifications:(id)notifications;
+- (void)notificationListCoalescingControlsHandlerRequestsClearingNotifications:(id)notifications;
+- (void)notificationListCoalescingControlsHandlerRequestsRestackingNotifications:(id)notifications;
 - (void)notificationListWillLayoutSubviews;
-- (void)recycleView:(id)a3;
-- (void)setGrouped:(BOOL)a3 animated:(BOOL)a4;
+- (void)recycleView:(id)view;
+- (void)setGrouped:(BOOL)grouped animated:(BOOL)animated;
 @end
 
 @implementation NCNotificationListPresentableGroup
@@ -50,9 +50,9 @@
     [(NCNotificationListViewProtocol *)self->_listView setDataSource:self];
     [(NCNotificationListViewProtocol *)self->_listView setSupportsGrouping:1];
     [(NCNotificationListViewProtocol *)self->_listView setGrouped:1];
-    v10 = [(NCNotificationListPresentableGroup *)self shouldImmediatelyReveal];
+    shouldImmediatelyReveal = [(NCNotificationListPresentableGroup *)self shouldImmediatelyReveal];
     listView = self->_listView;
-    if (v10)
+    if (shouldImmediatelyReveal)
     {
       [(NCNotificationListViewProtocol *)listView setRevealed:1];
       [(NCNotificationListViewProtocol *)self->_listView setRevealPercentage:1.0];
@@ -68,9 +68,9 @@
   footerView = self->_footerView;
   if (footerView)
   {
-    v3 = [(NCNotificationListPresentableGroup *)self _shouldAllowRestackingFromFooter];
+    _shouldAllowRestackingFromFooter = [(NCNotificationListPresentableGroup *)self _shouldAllowRestackingFromFooter];
 
-    [(NCNotificationListCoalescingControlsCell *)footerView setShouldShowCoalescingControls:v3];
+    [(NCNotificationListCoalescingControlsCell *)footerView setShouldShowCoalescingControls:_shouldAllowRestackingFromFooter];
   }
 }
 
@@ -88,24 +88,24 @@
     return 0;
   }
 
-  v3 = [(NCNotificationListPresentableGroup *)self listView];
-  v4 = [v3 isGrouped];
+  listView = [(NCNotificationListPresentableGroup *)self listView];
+  isGrouped = [listView isGrouped];
 
-  return v4;
+  return isGrouped;
 }
 
-- (void)setGrouped:(BOOL)a3 animated:(BOOL)a4
+- (void)setGrouped:(BOOL)grouped animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(NCNotificationListPresentableGroup *)self count]> 1 || [(NCNotificationListPresentableGroup *)self count]== 1 && (v5 & 1) == 0)
+  animatedCopy = animated;
+  groupedCopy = grouped;
+  if ([(NCNotificationListPresentableGroup *)self count]> 1 || [(NCNotificationListPresentableGroup *)self count]== 1 && (groupedCopy & 1) == 0)
   {
-    v7 = [(NCNotificationListPresentableGroup *)self listView];
-    v8 = [v7 isGrouped];
+    listView = [(NCNotificationListPresentableGroup *)self listView];
+    isGrouped = [listView isGrouped];
 
-    if (v8 != v5)
+    if (isGrouped != groupedCopy)
     {
-      if (v4)
+      if (animatedCopy)
       {
         objc_initWeak(&location, self);
         v9[0] = MEMORY[0x277D85DD0];
@@ -133,31 +133,31 @@ void __58__NCNotificationListPresentableGroup_setGrouped_animated___block_invoke
   [WeakRetained toggleGroupedState];
 }
 
-- (BOOL)actionsRevealedForNotificationListCell:(id)a3
+- (BOOL)actionsRevealedForNotificationListCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(NCNotificationListPresentableGroup *)self cellWithActionsRevealed];
+  cellCopy = cell;
+  cellWithActionsRevealed = [(NCNotificationListPresentableGroup *)self cellWithActionsRevealed];
 
-  return v5 == v4;
+  return cellWithActionsRevealed == cellCopy;
 }
 
-- (void)adjustForLegibilitySettingsChange:(id)a3
+- (void)adjustForLegibilitySettingsChange:(id)change
 {
-  v4 = a3;
-  v5 = [(NCNotificationListPresentableGroup *)self headerView];
-  [v5 adjustForLegibilitySettingsChange:v4];
+  changeCopy = change;
+  headerView = [(NCNotificationListPresentableGroup *)self headerView];
+  [headerView adjustForLegibilitySettingsChange:changeCopy];
 }
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v3 = [(NCNotificationListPresentableGroup *)self listView];
-  [v3 invalidateData];
+  listView = [(NCNotificationListPresentableGroup *)self listView];
+  [listView invalidateData];
 
-  v4 = [(NCNotificationListPresentableGroup *)self headerView];
-  [v4 adjustForContentSizeCategoryChange];
+  headerView = [(NCNotificationListPresentableGroup *)self headerView];
+  [headerView adjustForContentSizeCategoryChange];
 
-  v5 = [(NCNotificationListPresentableGroup *)self footerView];
-  [v5 adjustForContentSizeCategoryChange];
+  footerView = [(NCNotificationListPresentableGroup *)self footerView];
+  [footerView adjustForContentSizeCategoryChange];
 
   return 1;
 }
@@ -167,10 +167,10 @@ void __58__NCNotificationListPresentableGroup_setGrouped_animated___block_invoke
   materialGroupNameBase = self->_materialGroupNameBase;
   if (!materialGroupNameBase)
   {
-    v4 = [(NCNotificationListPresentableGroup *)self delegate];
-    if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
+    delegate = [(NCNotificationListPresentableGroup *)self delegate];
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v5 = [v4 backgroundGroupNameBaseForNotificationListBaseComponent:self];
+      v5 = [delegate backgroundGroupNameBaseForNotificationListBaseComponent:self];
       v6 = self->_materialGroupNameBase;
       self->_materialGroupNameBase = v5;
     }
@@ -181,31 +181,31 @@ void __58__NCNotificationListPresentableGroup_setGrouped_animated___block_invoke
   return materialGroupNameBase;
 }
 
-- (id)headerViewForNotificationList:(id)a3
+- (id)headerViewForNotificationList:(id)list
 {
   if (!self->_headerView && [(NCNotificationListPresentableGroup *)self _shouldAllowRestacking])
   {
-    v4 = [(NCNotificationListPresentableGroup *)self listView];
-    [v4 bounds];
+    listView = [(NCNotificationListPresentableGroup *)self listView];
+    [listView bounds];
     Width = CGRectGetWidth(v17);
 
-    v6 = [(NCNotificationListPresentableGroup *)self headerText];
-    v7 = [(NCNotificationListPresentableGroup *)self clearAllText];
-    v8 = [(NCNotificationListCache *)self->_notificationListCache coalescingHeaderCellWithTitle:v6 clearAllText:v7 width:Width];
+    headerText = [(NCNotificationListPresentableGroup *)self headerText];
+    clearAllText = [(NCNotificationListPresentableGroup *)self clearAllText];
+    v8 = [(NCNotificationListCache *)self->_notificationListCache coalescingHeaderCellWithTitle:headerText clearAllText:clearAllText width:Width];
     headerView = self->_headerView;
     self->_headerView = v8;
 
-    [(NCNotificationListCoalescingHeaderCell *)self->_headerView setTitle:v6];
-    [(NCNotificationListCoalescingHeaderCell *)self->_headerView setClearAllText:v7];
+    [(NCNotificationListCoalescingHeaderCell *)self->_headerView setTitle:headerText];
+    [(NCNotificationListCoalescingHeaderCell *)self->_headerView setClearAllText:clearAllText];
     [(NCNotificationListCoalescingHeaderCell *)self->_headerView setHandlerDelegate:self];
     v10 = self->_headerView;
-    v11 = [(NCNotificationListPresentableGroup *)self materialGroupNameBase];
-    [(NCNotificationListCoalescingHeaderCell *)v10 setMaterialGroupNameBase:v11];
+    materialGroupNameBase = [(NCNotificationListPresentableGroup *)self materialGroupNameBase];
+    [(NCNotificationListCoalescingHeaderCell *)v10 setMaterialGroupNameBase:materialGroupNameBase];
 
     [(NCNotificationListCoalescingHeaderCell *)self->_headerView setAdjustsFontForContentSizeCategory:1];
     v12 = self->_headerView;
-    v13 = [(NCNotificationListPresentableGroup *)self _legibilitySettings];
-    [(NCNotificationListCoalescingHeaderCell *)v12 adjustForLegibilitySettingsChange:v13];
+    _legibilitySettings = [(NCNotificationListPresentableGroup *)self _legibilitySettings];
+    [(NCNotificationListCoalescingHeaderCell *)v12 adjustForLegibilitySettingsChange:_legibilitySettings];
 
     [(NCNotificationListCoalescingHeaderCell *)self->_headerView frame];
     self->_headerViewHeight = CGRectGetHeight(v18);
@@ -216,21 +216,21 @@ void __58__NCNotificationListPresentableGroup_setGrouped_animated___block_invoke
   return v14;
 }
 
-- (void)recycleView:(id)a3
+- (void)recycleView:(id)view
 {
-  v11 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v11;
+    v4 = viewCopy;
     headerView = self->_headerView;
     if (headerView == v4)
     {
       v6 = v4;
       self->_headerView = 0;
 
-      v7 = [(NCNotificationListPresentableGroup *)self notificationListCache];
-      [v7 recycleNotificationListCoalescingHeaderCell:v6];
+      notificationListCache = [(NCNotificationListPresentableGroup *)self notificationListCache];
+      [notificationListCache recycleNotificationListCoalescingHeaderCell:v6];
 LABEL_7:
     }
   }
@@ -243,7 +243,7 @@ LABEL_7:
       goto LABEL_9;
     }
 
-    v8 = v11;
+    v8 = viewCopy;
     if (self->_footerView == v8)
     {
       v9 = v8;
@@ -251,8 +251,8 @@ LABEL_7:
       footerView = self->_footerView;
       self->_footerView = 0;
 
-      v7 = [(NCNotificationListPresentableGroup *)self notificationListCache];
-      [v7 recycleNotificationListCoalescingControlsCell:v9];
+      notificationListCache = [(NCNotificationListPresentableGroup *)self notificationListCache];
+      [notificationListCache recycleNotificationListCoalescingControlsCell:v9];
       goto LABEL_7;
     }
   }
@@ -260,27 +260,27 @@ LABEL_7:
 LABEL_9:
 }
 
-- (id)footerViewForNotificationList:(id)a3
+- (id)footerViewForNotificationList:(id)list
 {
   if (!self->_footerView && [(NCNotificationListPresentableGroup *)self _shouldAllowRestacking])
   {
-    v4 = [(NCNotificationListPresentableGroup *)self listView];
-    [v4 bounds];
+    listView = [(NCNotificationListPresentableGroup *)self listView];
+    [listView bounds];
     Width = CGRectGetWidth(v15);
 
-    v6 = [(NCNotificationListPresentableGroup *)self notificationListCache];
-    v7 = [v6 coalescingControlsCellWithWidth:Width];
+    notificationListCache = [(NCNotificationListPresentableGroup *)self notificationListCache];
+    v7 = [notificationListCache coalescingControlsCellWithWidth:Width];
     footerView = self->_footerView;
     self->_footerView = v7;
 
     [(NCNotificationListCoalescingControlsCell *)self->_footerView setFooterCell:1];
     [(NCNotificationListCoalescingControlsCell *)self->_footerView setHandlerDelegate:self];
-    v9 = [(NCNotificationListPresentableGroup *)self clearAllText];
-    [(NCNotificationListCoalescingControlsCell *)self->_footerView setClearAllText:v9];
+    clearAllText = [(NCNotificationListPresentableGroup *)self clearAllText];
+    [(NCNotificationListCoalescingControlsCell *)self->_footerView setClearAllText:clearAllText];
     [(NCNotificationListCoalescingControlsCell *)self->_footerView setShouldShowCoalescingControls:[(NCNotificationListPresentableGroup *)self _shouldAllowRestackingFromFooter]];
     v10 = self->_footerView;
-    v11 = [(NCNotificationListPresentableGroup *)self materialGroupNameBase];
-    [(NCNotificationListCoalescingControlsCell *)v10 setMaterialGroupNameBase:v11];
+    materialGroupNameBase = [(NCNotificationListPresentableGroup *)self materialGroupNameBase];
+    [(NCNotificationListCoalescingControlsCell *)v10 setMaterialGroupNameBase:materialGroupNameBase];
 
     [(NCNotificationListCoalescingControlsCell *)self->_footerView setAdjustsFontForContentSizeCategory:1];
     [(NCNotificationListCoalescingControlsCell *)self->_footerView frame];
@@ -292,9 +292,9 @@ LABEL_9:
   return v12;
 }
 
-- (double)headerViewHeightForNotificationList:(id)a3 withWidth:(double)a4
+- (double)headerViewHeightForNotificationList:(id)list withWidth:(double)width
 {
-  if (![(NCNotificationListPresentableGroup *)self _shouldAllowRestacking:a3])
+  if (![(NCNotificationListPresentableGroup *)self _shouldAllowRestacking:list])
   {
     return 0.0;
   }
@@ -303,9 +303,9 @@ LABEL_9:
   return result;
 }
 
-- (double)footerViewHeightForNotificationList:(id)a3 withWidth:(double)a4
+- (double)footerViewHeightForNotificationList:(id)list withWidth:(double)width
 {
-  if (![(NCNotificationListPresentableGroup *)self _shouldAllowRestackingFromFooter:a3])
+  if (![(NCNotificationListPresentableGroup *)self _shouldAllowRestackingFromFooter:list])
   {
     return 0.0;
   }
@@ -314,55 +314,55 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)shouldPerformClippingForNotificationListCell:(id)a3
+- (BOOL)shouldPerformClippingForNotificationListCell:(id)cell
 {
-  v3 = [(NCNotificationListPresentableGroup *)self listView];
-  v4 = [v3 isGrouped];
+  listView = [(NCNotificationListPresentableGroup *)self listView];
+  isGrouped = [listView isGrouped];
 
-  return v4 ^ 1;
+  return isGrouped ^ 1;
 }
 
-- (void)notificationListCell:(id)a3 didBeginHidingActionsForSwipeInteraction:(id)a4
+- (void)notificationListCell:(id)cell didBeginHidingActionsForSwipeInteraction:(id)interaction
 {
-  v6 = a4;
-  v5 = [(NCNotificationListPresentableGroup *)self delegate];
+  interactionCopy = interaction;
+  delegate = [(NCNotificationListPresentableGroup *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 notificationListBaseComponent:self didTransitionActionsForSwipeInteraction:v6 revealed:0];
+    [delegate notificationListBaseComponent:self didTransitionActionsForSwipeInteraction:interactionCopy revealed:0];
   }
 
   [(NCNotificationListPresentableGroup *)self setCellWithActionsRevealed:0];
 }
 
-- (void)notificationListCell:(id)a3 didBeginRevealingActionsForSwipeInteraction:(id)a4
+- (void)notificationListCell:(id)cell didBeginRevealingActionsForSwipeInteraction:(id)interaction
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(NCNotificationListPresentableGroup *)self delegate];
+  cellCopy = cell;
+  interactionCopy = interaction;
+  delegate = [(NCNotificationListPresentableGroup *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 notificationListBaseComponent:self didTransitionActionsForSwipeInteraction:v6 revealed:1];
+    [delegate notificationListBaseComponent:self didTransitionActionsForSwipeInteraction:interactionCopy revealed:1];
   }
 
-  [(NCNotificationListPresentableGroup *)self setCellWithActionsRevealed:v8];
+  [(NCNotificationListPresentableGroup *)self setCellWithActionsRevealed:cellCopy];
 }
 
-- (void)notificationListCell:(id)a3 didMoveToNewXPosition:(double)a4
+- (void)notificationListCell:(id)cell didMoveToNewXPosition:(double)position
 {
-  v8 = a3;
-  v6 = [(NCNotificationListPresentableGroup *)self listView];
-  [v6 updateSubviewTranslation:a4];
+  cellCopy = cell;
+  listView = [(NCNotificationListPresentableGroup *)self listView];
+  [listView updateSubviewTranslation:position];
 
-  v7 = [(NCNotificationListPresentableGroup *)self delegate];
-  if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(NCNotificationListPresentableGroup *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v7 notificationListPresentableGroup:self didReceivedHorizontalTranslation:v8 forCell:a4];
+    [delegate notificationListPresentableGroup:self didReceivedHorizontalTranslation:cellCopy forCell:position];
   }
 }
 
-- (void)notificationListCoalescingControlsHandlerRequestsRestackingNotifications:(id)a3
+- (void)notificationListCoalescingControlsHandlerRequestsRestackingNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   [(NCNotificationListPresentableGroup *)self _didSignificantInteraction];
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x277D85DD0];
@@ -381,9 +381,9 @@ void __111__NCNotificationListPresentableGroup_notificationListCoalescingControl
   [WeakRetained toggleGroupedState];
 }
 
-- (void)notificationListCoalescingControlsHandlerRequestsClearingNotifications:(id)a3
+- (void)notificationListCoalescingControlsHandlerRequestsClearingNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   [(NCNotificationListPresentableGroup *)self _didSignificantInteraction];
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x277D85DD0];
@@ -411,9 +411,9 @@ void __109__NCNotificationListPresentableGroup_notificationListCoalescingControl
   }
 }
 
-- (void)notificationListCoalescingControlsHandlerRequestsClearingAllNotifications:(id)a3
+- (void)notificationListCoalescingControlsHandlerRequestsClearingAllNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   v5 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
@@ -422,24 +422,24 @@ void __109__NCNotificationListPresentableGroup_notificationListCoalescingControl
   }
 
   [(NCNotificationListPresentableGroup *)self _didSignificantInteraction];
-  v6 = [(NCNotificationListPresentableGroup *)self delegate];
+  delegate = [(NCNotificationListPresentableGroup *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 notificationListBaseComponentRequestsClearingAll:self];
+    [delegate notificationListBaseComponentRequestsClearingAll:self];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v6 notificationListBaseComponent:self didEndUserInteractionWithViewController:0];
+    [delegate notificationListBaseComponent:self didEndUserInteractionWithViewController:0];
   }
 }
 
-- (id)containerViewForCoalescingControlsHandlerPreviewInteractionPresentedContent:(id)a3
+- (id)containerViewForCoalescingControlsHandlerPreviewInteractionPresentedContent:(id)content
 {
-  v4 = [(NCNotificationListPresentableGroup *)self delegate];
+  delegate = [(NCNotificationListPresentableGroup *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 containerViewForPreviewInteractionPresentedContentForNotificationListBaseComponent:self];
+    v5 = [delegate containerViewForPreviewInteractionPresentedContentForNotificationListBaseComponent:self];
   }
 
   else
@@ -450,65 +450,65 @@ void __109__NCNotificationListPresentableGroup_notificationListCoalescingControl
   return v5;
 }
 
-- (void)notificationListCoalescingControlsHandlerDidBeginPreviewInteraction:(id)a3
+- (void)notificationListCoalescingControlsHandlerDidBeginPreviewInteraction:(id)interaction
 {
-  v4 = [(NCNotificationListPresentableGroup *)self delegate];
+  delegate = [(NCNotificationListPresentableGroup *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 notificationListBaseComponent:self didBeginUserInteractionWithViewController:0];
+    [delegate notificationListBaseComponent:self didBeginUserInteractionWithViewController:0];
   }
 }
 
-- (void)notificationListCoalescingControlsHandlerDidPresentPreviewInteractionPresentedContent:(id)a3
+- (void)notificationListCoalescingControlsHandlerDidPresentPreviewInteractionPresentedContent:(id)content
 {
-  v5 = a3;
-  v4 = [(NCNotificationListPresentableGroup *)self delegate];
+  contentCopy = content;
+  delegate = [(NCNotificationListPresentableGroup *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 notificationListBaseComponent:self didPresentCoalescingControlsHandler:v5 inForceTouchState:1];
+    [delegate notificationListBaseComponent:self didPresentCoalescingControlsHandler:contentCopy inForceTouchState:1];
   }
 }
 
-- (void)notificationListCoalescingControlsHandlerDidDismissPreviewInteractionPresentedContent:(id)a3
+- (void)notificationListCoalescingControlsHandlerDidDismissPreviewInteractionPresentedContent:(id)content
 {
-  v5 = a3;
-  v4 = [(NCNotificationListPresentableGroup *)self delegate];
+  contentCopy = content;
+  delegate = [(NCNotificationListPresentableGroup *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 notificationListBaseComponent:self didPresentCoalescingControlsHandler:v5 inForceTouchState:0];
+    [delegate notificationListBaseComponent:self didPresentCoalescingControlsHandler:contentCopy inForceTouchState:0];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 notificationListBaseComponent:self didEndUserInteractionWithViewController:0];
+    [delegate notificationListBaseComponent:self didEndUserInteractionWithViewController:0];
   }
 }
 
-- (void)notificationListCoalescingControlsHandler:(id)a3 didTransitionToClearState:(BOOL)a4
+- (void)notificationListCoalescingControlsHandler:(id)handler didTransitionToClearState:(BOOL)state
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(NCNotificationListPresentableGroup *)self delegate];
-  [v7 notificationListBaseComponent:self didTransitionCoalescingControlsHandler:v6 toClearState:v4];
+  stateCopy = state;
+  handlerCopy = handler;
+  delegate = [(NCNotificationListPresentableGroup *)self delegate];
+  [delegate notificationListBaseComponent:self didTransitionCoalescingControlsHandler:handlerCopy toClearState:stateCopy];
 
   [(NCNotificationListPresentableGroup *)self _didSignificantInteraction];
 }
 
 - (void)_didSignificantInteraction
 {
-  v3 = [(NCNotificationListPresentableGroup *)self delegate];
+  delegate = [(NCNotificationListPresentableGroup *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 notificationListBaseComponentDidSignificantUserInteraction:self];
+    [delegate notificationListBaseComponentDidSignificantUserInteraction:self];
   }
 }
 
 - (BOOL)_shouldAllowRestacking
 {
-  v3 = [(NCNotificationListPresentableGroup *)self delegate];
+  delegate = [(NCNotificationListPresentableGroup *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 shouldAllowRestackingForNotificationListPresentableGroup:self];
+    v4 = [delegate shouldAllowRestackingForNotificationListPresentableGroup:self];
   }
 
   else
@@ -523,8 +523,8 @@ void __109__NCNotificationListPresentableGroup_notificationListCoalescingControl
 {
   [(NCNotificationListViewProtocol *)self->_listView frame];
   Height = CGRectGetHeight(v7);
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = CGRectGetHeight(v8) * 0.8;
 
   result = [(NCNotificationListPresentableGroup *)self _shouldAllowRestacking];
@@ -536,13 +536,13 @@ void __109__NCNotificationListPresentableGroup_notificationListCoalescingControl
   return result;
 }
 
-- (void)_scrollToTopIfNecessaryAndPerformBlock:(id)a3
+- (void)_scrollToTopIfNecessaryAndPerformBlock:(id)block
 {
-  v8 = a3;
-  v4 = [(NCNotificationListPresentableGroup *)self delegate];
+  blockCopy = block;
+  delegate = [(NCNotificationListPresentableGroup *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 shouldScrollToTopForNotificationListBaseComponent:self];
+    v5 = [delegate shouldScrollToTopForNotificationListBaseComponent:self];
   }
 
   else
@@ -550,29 +550,29 @@ void __109__NCNotificationListPresentableGroup_notificationListCoalescingControl
     v5 = 0;
   }
 
-  v6 = [(NCNotificationListPresentableGroup *)self listView];
-  v7 = [v6 isVisibleForViewAtIndex:0];
+  listView = [(NCNotificationListPresentableGroup *)self listView];
+  v7 = [listView isVisibleForViewAtIndex:0];
 
   if (!v7 || v5)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v4 notificationListPresentableGroup:self requestsScrollToTopOfCollectionWithCompletion:v8];
+      [delegate notificationListPresentableGroup:self requestsScrollToTopOfCollectionWithCompletion:blockCopy];
     }
   }
 
-  else if (v8)
+  else if (blockCopy)
   {
-    v8[2]();
+    blockCopy[2]();
   }
 }
 
 - (id)_legibilitySettings
 {
-  v3 = [(NCNotificationListPresentableGroup *)self delegate];
+  delegate = [(NCNotificationListPresentableGroup *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 legibilitySettingsForNotificationListBaseComponent:self];
+    v4 = [delegate legibilitySettingsForNotificationListBaseComponent:self];
   }
 
   else

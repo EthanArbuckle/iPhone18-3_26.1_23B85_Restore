@@ -1,18 +1,18 @@
 @interface BEScrollView
 - (id)_actingParentScrollView;
 - (id)delegateFromSuperclass;
-- (void)_asynchronouslyHandleScrollEvent:(id)a3 completion:(id)a4;
-- (void)setDelegate:(id)a3;
+- (void)_asynchronouslyHandleScrollEvent:(id)event completion:(id)completion;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation BEScrollView
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v7.receiver = self;
   v7.super_class = BEScrollView;
-  v4 = a3;
-  [(BEScrollView *)&v7 setDelegate:v4];
+  delegateCopy = delegate;
+  [(BEScrollView *)&v7 setDelegate:delegateCopy];
   *&self->_beScrollViewFlags = *&self->_beScrollViewFlags & 0xFE | objc_opt_respondsToSelector() & 1;
   v5 = objc_opt_respondsToSelector();
 
@@ -33,41 +33,41 @@
 {
   v4.receiver = self;
   v4.super_class = BEScrollView;
-  v2 = [(BEScrollView *)&v4 delegate];
+  delegate = [(BEScrollView *)&v4 delegate];
 
-  return v2;
+  return delegate;
 }
 
-- (void)_asynchronouslyHandleScrollEvent:(id)a3 completion:(id)a4
+- (void)_asynchronouslyHandleScrollEvent:(id)event completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [v10 phase] - 2;
+  eventCopy = event;
+  completionCopy = completion;
+  v7 = [eventCopy phase] - 2;
   if (v7 < 4)
   {
-    v8 = [[BEScrollViewScrollUpdate alloc] initWithScrollEvent:v10 phase:v7];
-    v9 = [(BEScrollView *)self delegateFromSuperclass];
-    [v9 scrollView:self handleScrollUpdate:v8 completion:v6];
+    v8 = [[BEScrollViewScrollUpdate alloc] initWithScrollEvent:eventCopy phase:v7];
+    delegateFromSuperclass = [(BEScrollView *)self delegateFromSuperclass];
+    [delegateFromSuperclass scrollView:self handleScrollUpdate:v8 completion:completionCopy];
   }
 
   else
   {
-    v6[2](v6, [(BEScrollView *)self isScrollEnabled]^ 1);
+    completionCopy[2](completionCopy, [(BEScrollView *)self isScrollEnabled]^ 1);
   }
 }
 
 - (id)_actingParentScrollView
 {
-  v3 = [(BEScrollView *)self delegateFromSuperclass];
-  v4 = v3;
-  if ((*&self->_beScrollViewFlags & 2) == 0 || ([v3 parentScrollViewForScrollView:self], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+  delegateFromSuperclass = [(BEScrollView *)self delegateFromSuperclass];
+  v4 = delegateFromSuperclass;
+  if ((*&self->_beScrollViewFlags & 2) == 0 || ([delegateFromSuperclass parentScrollViewForScrollView:self], (_actingParentScrollView = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v7.receiver = self;
     v7.super_class = BEScrollView;
-    v5 = [(BEScrollView *)&v7 _actingParentScrollView];
+    _actingParentScrollView = [(BEScrollView *)&v7 _actingParentScrollView];
   }
 
-  return v5;
+  return _actingParentScrollView;
 }
 
 @end

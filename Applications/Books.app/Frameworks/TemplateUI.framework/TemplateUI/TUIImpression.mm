@@ -1,32 +1,32 @@
 @interface TUIImpression
-- ($F24F406B2B787EFB06265DBA3D28CBD5)timingAtIndex:(unint64_t)a3;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)timingAtIndex:(unint64_t)index;
 - (CGSize)size;
-- (TUIImpression)initWithData:(id)a3 size:(CGSize)a4 identifier:(id)a5;
-- (TUIImpression)initWithImpression:(id)a3;
+- (TUIImpression)initWithData:(id)data size:(CGSize)size identifier:(id)identifier;
+- (TUIImpression)initWithImpression:(id)impression;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (unint64_t)timingCountWithTime:(double)a3 threshold:(double)a4;
-- (void)becameHiddenAtTime:(double)a3 threshold:(double)a4;
-- (void)becameVisibleAtTime:(double)a3;
+- (unint64_t)timingCountWithTime:(double)time threshold:(double)threshold;
+- (void)becameHiddenAtTime:(double)time threshold:(double)threshold;
+- (void)becameVisibleAtTime:(double)time;
 @end
 
 @implementation TUIImpression
 
-- (TUIImpression)initWithData:(id)a3 size:(CGSize)a4 identifier:(id)a5
+- (TUIImpression)initWithData:(id)data size:(CGSize)size identifier:(id)identifier
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
-  v11 = a5;
+  height = size.height;
+  width = size.width;
+  dataCopy = data;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = TUIImpression;
   v12 = [(TUIImpression *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_data, a3);
-    v14 = [v11 copyWithZone:0];
+    objc_storeStrong(&v12->_data, data);
+    v14 = [identifierCopy copyWithZone:0];
     identifier = v13->_identifier;
     v13->_identifier = v14;
 
@@ -38,48 +38,48 @@
   return v13;
 }
 
-- (TUIImpression)initWithImpression:(id)a3
+- (TUIImpression)initWithImpression:(id)impression
 {
-  v4 = a3;
+  impressionCopy = impression;
   v11.receiver = self;
   v11.super_class = TUIImpression;
   v5 = [(TUIImpression *)&v11 init];
   v6 = v5;
   v7 = v5;
-  if (v4 && v5)
+  if (impressionCopy && v5)
   {
-    objc_storeStrong(&v5->_data, v4->_data);
-    if (v6 != v4)
+    objc_storeStrong(&v5->_data, impressionCopy->_data);
+    if (v6 != impressionCopy)
     {
-      sub_1360A8(&v6->_timings.__begin_, v4->_timings.__begin_, v4->_timings.__end_, (v4->_timings.__end_ - v4->_timings.__begin_) >> 4);
+      sub_1360A8(&v6->_timings.__begin_, impressionCopy->_timings.__begin_, impressionCopy->_timings.__end_, (impressionCopy->_timings.__end_ - impressionCopy->_timings.__begin_) >> 4);
     }
 
-    v7->_visible = v4->_visible;
-    v8 = [(TUIIdentifier *)v4->_identifier copyWithZone:0];
+    v7->_visible = impressionCopy->_visible;
+    v8 = [(TUIIdentifier *)impressionCopy->_identifier copyWithZone:0];
     identifier = v7->_identifier;
     v7->_identifier = v8;
 
-    v7->_size = v4->_size;
+    v7->_size = impressionCopy->_size;
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 initWithImpression:self];
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)timingAtIndex:(unint64_t)a3
+- ($F24F406B2B787EFB06265DBA3D28CBD5)timingAtIndex:(unint64_t)index
 {
   begin = self->_timings.__begin_;
   v4 = 0.0;
   v5 = 0.0;
-  if (a3 < (self->_timings.__end_ - begin) >> 4)
+  if (index < (self->_timings.__end_ - begin) >> 4)
   {
-    v6 = (begin + 16 * a3);
+    v6 = (begin + 16 * index);
     v5 = *v6;
     v4 = v6[1];
   }
@@ -89,7 +89,7 @@
   return result;
 }
 
-- (void)becameVisibleAtTime:(double)a3
+- (void)becameVisibleAtTime:(double)time
 {
   if (!self->_visible)
   {
@@ -125,7 +125,7 @@
         sub_21464(&self->_timings, v13);
       }
 
-      *(16 * v9) = vdupq_lane_s64(*&a3, 0);
+      *(16 * v9) = vdupq_lane_s64(*&time, 0);
       v6 = (16 * v9 + 16);
       memcpy(0, begin, v8);
       v14 = self->_timings.__begin_;
@@ -140,8 +140,8 @@
 
     else
     {
-      *end = a3;
-      *(end + 1) = a3;
+      *end = time;
+      *(end + 1) = time;
       v6 = (end + 16);
     }
 
@@ -149,7 +149,7 @@
   }
 }
 
-- (void)becameHiddenAtTime:(double)a3 threshold:(double)a4
+- (void)becameHiddenAtTime:(double)time threshold:(double)threshold
 {
   if (self->_visible)
   {
@@ -157,9 +157,9 @@
     end = self->_timings.__end_;
     if (self->_timings.__begin_ != end)
     {
-      if (a3 - *(end - 2) >= a4)
+      if (time - *(end - 2) >= threshold)
       {
-        *(end - 1) = a3;
+        *(end - 1) = time;
       }
 
       else
@@ -170,13 +170,13 @@
   }
 }
 
-- (unint64_t)timingCountWithTime:(double)a3 threshold:(double)a4
+- (unint64_t)timingCountWithTime:(double)time threshold:(double)threshold
 {
   begin = self->_timings.__begin_;
   end = self->_timings.__end_;
   result = (end - begin) >> 4;
   v8 = !self->_visible || end == begin;
-  if (!v8 && a3 - *(end - 2) < a4)
+  if (!v8 && time - *(end - 2) < threshold)
   {
     --result;
   }
@@ -188,11 +188,11 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(TUIImpression *)self data];
-  v6 = [(TUIImpression *)self timingCount];
+  data = [(TUIImpression *)self data];
+  timingCount = [(TUIImpression *)self timingCount];
   [(TUIImpression *)self size];
   v7 = NSStringFromCGSize(v11);
-  v8 = [NSString stringWithFormat:@"<%@: %p> [Data: %@] [Timing Count: %lu] [Size: %@]", v4, self, v5, v6, v7];
+  v8 = [NSString stringWithFormat:@"<%@: %p> [Data: %@] [Timing Count: %lu] [Size: %@]", v4, self, data, timingCount, v7];
 
   return v8;
 }

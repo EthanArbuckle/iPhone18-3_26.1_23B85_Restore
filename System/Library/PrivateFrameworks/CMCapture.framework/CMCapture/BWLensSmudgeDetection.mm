@@ -1,20 +1,20 @@
 @interface BWLensSmudgeDetection
-- (BWLensSmudgeDetection)initWithConfiguration:(BWLensSmudgeDetectionConfiguration *)a3 activePortTypes:(id)a4;
+- (BWLensSmudgeDetection)initWithConfiguration:(BWLensSmudgeDetectionConfiguration *)configuration activePortTypes:(id)types;
 - (CMTime)_updateInternalStateUsingPTS:(CMTime *)result;
-- (float)_calculateKLDistanceUsingHistogramData:(int)a3 pixelFormat:;
-- (int)readISPMotionDataUsingMetadata:(id)a3 attitude:(id *)a4;
+- (float)_calculateKLDistanceUsingHistogramData:(int)data pixelFormat:;
+- (int)readISPMotionDataUsingMetadata:(id)metadata attitude:(id *)attitude;
 - (uint64_t)_triggerInferenceToTearDownOrPauseUsingPTS:(uint64_t)result;
 - (uint64_t)_updateDetectionStatusUsingPTS:(uint64_t)result;
-- (uint64_t)_updateISPMotionDataUsingMetadata:(uint64_t)a1;
-- (void)_getLensSmudgeInferenceResultUsingSampleBuffer:(uint64_t)a1;
-- (void)_processDetectionIntermediateData:(void *)a3 TuningParameters:(float)a4 KLDistance:;
+- (uint64_t)_updateISPMotionDataUsingMetadata:(uint64_t)metadata;
+- (void)_getLensSmudgeInferenceResultUsingSampleBuffer:(uint64_t)buffer;
+- (void)_processDetectionIntermediateData:(void *)data TuningParameters:(float)parameters KLDistance:;
 - (void)dealloc;
-- (void)updateDetectionUsingSampleBuffer:(opaqueCMSampleBuffer *)a3 detectionUpdatedBlock:(id)a4;
+- (void)updateDetectionUsingSampleBuffer:(opaqueCMSampleBuffer *)buffer detectionUpdatedBlock:(id)block;
 @end
 
 @implementation BWLensSmudgeDetection
 
-- (BWLensSmudgeDetection)initWithConfiguration:(BWLensSmudgeDetectionConfiguration *)a3 activePortTypes:(id)a4
+- (BWLensSmudgeDetection)initWithConfiguration:(BWLensSmudgeDetectionConfiguration *)configuration activePortTypes:(id)types
 {
   v43.receiver = self;
   v43.super_class = BWLensSmudgeDetection;
@@ -22,19 +22,19 @@
   if (v6)
   {
     *(v6 + 5) = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v7 = *(&a3->lensSmudgeDetectionInterval.value + 4);
-    v25 = a3;
-    *(v6 + 8) = *&a3->lensSmudgeDetectionEnabled;
+    v7 = *(&configuration->lensSmudgeDetectionInterval.value + 4);
+    configurationCopy = configuration;
+    *(v6 + 8) = *&configuration->lensSmudgeDetectionEnabled;
     *(v6 + 20) = v7;
     *(v6 + 6) = objc_alloc_init(MEMORY[0x1E695DF90]);
     v8 = +[FigCaptureCameraParameters sharedInstance];
-    v28 = [(FigCaptureCameraParameters *)v8 cameraTuningParameters];
+    cameraTuningParameters = [(FigCaptureCameraParameters *)v8 cameraTuningParameters];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    obj = a4;
-    v29 = [a4 countByEnumeratingWithState:&v39 objects:v38 count:16];
+    obj = types;
+    v29 = [types countByEnumeratingWithState:&v39 objects:v38 count:16];
     if (v29)
     {
       v27 = *v40;
@@ -50,13 +50,13 @@
 
           v30 = v9;
           v10 = *(*(&v39 + 1) + 8 * v9);
-          v11 = [(NSDictionary *)v28 objectForKeyedSubscript:v10];
+          v11 = [(NSDictionary *)cameraTuningParameters objectForKeyedSubscript:v10];
           v34 = 0u;
           v35 = 0u;
           v36 = 0u;
           v37 = 0u;
-          v12 = [v11 allKeys];
-          v13 = [v12 countByEnumeratingWithState:&v34 objects:v33 count:16];
+          allKeys = [v11 allKeys];
+          v13 = [allKeys countByEnumeratingWithState:&v34 objects:v33 count:16];
           if (v13)
           {
             v14 = v13;
@@ -67,7 +67,7 @@
               {
                 if (*v35 != v15)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v17 = [(FigCaptureCameraParameters *)v8 lensSmudgeDetectionParametersForPortType:v10 sensorIDString:*(*(&v34 + 1) + 8 * i)];
@@ -80,7 +80,7 @@
                 }
               }
 
-              v14 = [v12 countByEnumeratingWithState:&v34 objects:v33 count:16];
+              v14 = [allKeys countByEnumeratingWithState:&v34 objects:v33 count:16];
             }
 
             while (v14);
@@ -98,9 +98,9 @@
 
     CMTimeMakeWithSeconds(&time1, 10.0, 1000);
     *(v6 + 156) = time1;
-    if (v25->lensSmudgeDetectionInterval.timescale)
+    if (configurationCopy->lensSmudgeDetectionInterval.timescale)
     {
-      time1 = *(&v25->lensSmudgeDetectionEnabled + 4);
+      time1 = *(&configurationCopy->lensSmudgeDetectionEnabled + 4);
       time2 = *(v6 + 156);
       if (CMTimeCompare(&time1, &time2) <= 0)
       {
@@ -151,11 +151,11 @@
   [(BWLensSmudgeDetection *)&v3 dealloc];
 }
 
-- (int)readISPMotionDataUsingMetadata:(id)a3 attitude:(id *)a4
+- (int)readISPMotionDataUsingMetadata:(id)metadata attitude:(id *)attitude
 {
   bzero(&v10, 0x14A0uLL);
   v9 = 0;
-  MotionDataFromISP = FigMotionGetMotionDataFromISP(a3, &v10, 0, 110, &v9, 0, 0, 0, 0);
+  MotionDataFromISP = FigMotionGetMotionDataFromISP(metadata, &v10, 0, 110, &v9, 0, 0, 0, 0);
   if (MotionDataFromISP)
   {
     v7 = MotionDataFromISP;
@@ -170,21 +170,21 @@
 
   else
   {
-    FigMotionAttitudeFromQuaternion(&a4->var0, v11, v12, v13, v14);
+    FigMotionAttitudeFromQuaternion(&attitude->var0, v11, v12, v13, v14);
     return 0;
   }
 
   return v7;
 }
 
-- (void)updateDetectionUsingSampleBuffer:(opaqueCMSampleBuffer *)a3 detectionUpdatedBlock:(id)a4
+- (void)updateDetectionUsingSampleBuffer:(opaqueCMSampleBuffer *)buffer detectionUpdatedBlock:(id)block
 {
   memset(&v38, 0, sizeof(v38));
-  CMSampleBufferGetPresentationTimeStamp(&v38, a3);
+  CMSampleBufferGetPresentationTimeStamp(&v38, buffer);
   v6 = OUTLINED_FUNCTION_0_70();
   [(BWLensSmudgeDetection *)v6 _updateInternalStateUsingPTS:v7];
-  v8 = [(BWLensSmudgeDetection *)self _getLensSmudgeInferenceResultUsingSampleBuffer:a3];
-  v9 = CMGetAttachment(a3, @"InferenceHistogramData", 0);
+  v8 = [(BWLensSmudgeDetection *)self _getLensSmudgeInferenceResultUsingSampleBuffer:buffer];
+  v9 = CMGetAttachment(buffer, @"InferenceHistogramData", 0);
   if (!v9)
   {
     return;
@@ -196,7 +196,7 @@
     return;
   }
 
-  v11 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v11 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   if (!v11)
   {
     goto LABEL_26;
@@ -236,7 +236,7 @@ LABEL_26:
   }
 
   v21 = v20 & v18 & v19;
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
   PixelFormatType = CVPixelBufferGetPixelFormatType(ImageBuffer);
   v24 = [(BWLensSmudgeDetection *)self _calculateKLDistanceUsingHistogramData:v10 pixelFormat:PixelFormatType];
   if (v8)
@@ -298,7 +298,7 @@ LABEL_10:
   }
 
 LABEL_13:
-  if (a4)
+  if (block)
   {
     v27 = [(NSMutableDictionary *)self->_detectionInfo copy];
     v28 = OUTLINED_FUNCTION_5_56();
@@ -370,9 +370,9 @@ LABEL_3:
   return result;
 }
 
-- (void)_getLensSmudgeInferenceResultUsingSampleBuffer:(uint64_t)a1
+- (void)_getLensSmudgeInferenceResultUsingSampleBuffer:(uint64_t)buffer
 {
-  if (!a1)
+  if (!buffer)
   {
     return 0;
   }
@@ -392,16 +392,16 @@ LABEL_3:
   return v3;
 }
 
-- (uint64_t)_updateISPMotionDataUsingMetadata:(uint64_t)a1
+- (uint64_t)_updateISPMotionDataUsingMetadata:(uint64_t)metadata
 {
-  if (!a1)
+  if (!metadata)
   {
     return 0;
   }
 
   v8 = 0uLL;
   v9 = 0.0;
-  v3 = [a1 readISPMotionDataUsingMetadata:a2 attitude:&v8];
+  v3 = [metadata readISPMotionDataUsingMetadata:a2 attitude:&v8];
   if (v3)
   {
     fig_log_get_emitter();
@@ -413,26 +413,26 @@ LABEL_3:
   {
     if (*(&v8 + 1) != 0.0)
     {
-      v4 = *(&v8 + 1) - *(a1 + 120);
-      v5 = vabdd_f64(*&v8, *(a1 + 112)) + fabsf(v4);
-      v6 = vabdd_f64(v9, *(a1 + 128)) + v5;
-      *(a1 + 136) = v6;
+      v4 = *(&v8 + 1) - *(metadata + 120);
+      v5 = vabdd_f64(*&v8, *(metadata + 112)) + fabsf(v4);
+      v6 = vabdd_f64(v9, *(metadata + 128)) + v5;
+      *(metadata + 136) = v6;
     }
 
-    *(a1 + 112) = v8;
-    *(a1 + 128) = v9;
+    *(metadata + 112) = v8;
+    *(metadata + 128) = v9;
   }
 
   return v3;
 }
 
-- (float)_calculateKLDistanceUsingHistogramData:(int)a3 pixelFormat:
+- (float)_calculateKLDistanceUsingHistogramData:(int)data pixelFormat:
 {
   v3 = 0.0;
-  if (a1 && a2 && (FigCapturePixelFormatIsTenBit(a3) & 1) == 0 && ([a2 length] / 0xCuLL) == 128)
+  if (self && a2 && (FigCapturePixelFormatIsTenBit(data) & 1) == 0 && ([a2 length] / 0xCuLL) == 128)
   {
-    IsFullRange = FigCapturePixelFormatIsFullRange(a3);
-    v7 = [a2 bytes];
+    IsFullRange = FigCapturePixelFormatIsFullRange(data);
+    bytes = [a2 bytes];
     v8 = 8;
     if (IsFullRange)
     {
@@ -449,7 +449,7 @@ LABEL_3:
     v11 = v8;
     do
     {
-      v10 = v10 + *(v7 + 4 * v11++);
+      v10 = v10 + *(bytes + 4 * v11++);
     }
 
     while (v11 < v9);
@@ -461,7 +461,7 @@ LABEL_3:
 
     v13 = (2.0 / v12);
     v14 = (1.0 / v12);
-    v15 = (v7 + 4 * v8);
+    v15 = (bytes + 4 * v8);
     v16 = v9 - v8;
     v3 = 0.0;
     do
@@ -481,37 +481,37 @@ LABEL_3:
   return v3;
 }
 
-- (void)_processDetectionIntermediateData:(void *)a3 TuningParameters:(float)a4 KLDistance:
+- (void)_processDetectionIntermediateData:(void *)data TuningParameters:(float)parameters KLDistance:
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"KLDistanceFeatureThreshold", "floatValue"}];
+  [objc_msgSend(data objectForKeyedSubscript:{@"KLDistanceFeatureThreshold", "floatValue"}];
   v9 = v8;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"KLDistanceFeatureTmpDampingFactor", "floatValue"}];
+  [objc_msgSend(data objectForKeyedSubscript:{@"KLDistanceFeatureTmpDampingFactor", "floatValue"}];
   v11 = v10;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"MotionDeltaThreshold", "floatValue"}];
+  [objc_msgSend(data objectForKeyedSubscript:{@"MotionDeltaThreshold", "floatValue"}];
   v13 = v12;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"ConfidenceUpperBound", "floatValue"}];
+  [objc_msgSend(data objectForKeyedSubscript:{@"ConfidenceUpperBound", "floatValue"}];
   v15 = v14;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"ConfidenceLowerBound", "floatValue"}];
+  [objc_msgSend(data objectForKeyedSubscript:{@"ConfidenceLowerBound", "floatValue"}];
   v33 = v16;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"ProbabilityThreshold", "floatValue"}];
+  [objc_msgSend(data objectForKeyedSubscript:{@"ProbabilityThreshold", "floatValue"}];
   v34 = v17;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"ProbabilityUpperBound", "floatValue"}];
+  [objc_msgSend(data objectForKeyedSubscript:{@"ProbabilityUpperBound", "floatValue"}];
   v19 = v18;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"ProbabilityLowerBound", "floatValue"}];
+  [objc_msgSend(data objectForKeyedSubscript:{@"ProbabilityLowerBound", "floatValue"}];
   v21 = v20;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"ProbabilityMaxDeviation", "floatValue"}];
-  if (v9 <= a4)
+  [objc_msgSend(data objectForKeyedSubscript:{@"ProbabilityMaxDeviation", "floatValue"}];
+  if (v9 <= parameters)
   {
     return;
   }
 
   v23 = v22;
-  if (*(a1 + 136) >= v13)
+  if (*(self + 136) >= v13)
   {
     return;
   }
@@ -524,7 +524,7 @@ LABEL_3:
 
   else
   {
-    v26 = expf(-(a4 * v11));
+    v26 = expf(-(parameters * v11));
     *(a2 + 12) = v24;
     v25 = (v26 * *(a2 + 4)) + (1.0 - v26) * v24;
   }

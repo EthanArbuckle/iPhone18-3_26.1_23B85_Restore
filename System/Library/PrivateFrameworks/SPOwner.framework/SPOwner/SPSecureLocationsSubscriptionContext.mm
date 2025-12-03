@@ -1,9 +1,9 @@
 @interface SPSecureLocationsSubscriptionContext
 - (SPSecureLocationsSubscriptionContext)init;
-- (SPSecureLocationsSubscriptionContext)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SPSecureLocationsSubscriptionContext)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPSecureLocationsSubscriptionContext
@@ -26,44 +26,44 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SPSecureLocationsSubscriptionContext);
-  v5 = [(SPSecureLocationsSubscriptionContext *)self clientApp];
-  [(SPSecureLocationsSubscriptionContext *)v4 setClientApp:v5];
+  clientApp = [(SPSecureLocationsSubscriptionContext *)self clientApp];
+  [(SPSecureLocationsSubscriptionContext *)v4 setClientApp:clientApp];
 
   [(SPSecureLocationsSubscriptionContext *)v4 setSubscriptionMode:[(SPSecureLocationsSubscriptionContext *)self subscriptionMode]];
   [(SPSecureLocationsSubscriptionContext *)v4 setFetchMode:[(SPSecureLocationsSubscriptionContext *)self fetchMode]];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   clientApp = self->_clientApp;
-  v5 = a3;
-  [v5 encodeObject:clientApp forKey:@"clientApp"];
-  [v5 encodeInteger:self->_subscriptionMode forKey:@"subscriptionMode"];
-  [v5 encodeInteger:self->_fetchMode forKey:@"fetchMode"];
-  [v5 encodeObject:self->_pushIdentifiers forKey:@"pushIdentifiers"];
+  coderCopy = coder;
+  [coderCopy encodeObject:clientApp forKey:@"clientApp"];
+  [coderCopy encodeInteger:self->_subscriptionMode forKey:@"subscriptionMode"];
+  [coderCopy encodeInteger:self->_fetchMode forKey:@"fetchMode"];
+  [coderCopy encodeObject:self->_pushIdentifiers forKey:@"pushIdentifiers"];
 }
 
-- (SPSecureLocationsSubscriptionContext)initWithCoder:(id)a3
+- (SPSecureLocationsSubscriptionContext)initWithCoder:(id)coder
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientApp"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientApp"];
   clientApp = self->_clientApp;
   self->_clientApp = v5;
 
-  self->_subscriptionMode = [v4 decodeIntegerForKey:@"subscriptionMode"];
-  self->_fetchMode = [v4 decodeIntegerForKey:@"fetchMode"];
+  self->_subscriptionMode = [coderCopy decodeIntegerForKey:@"subscriptionMode"];
+  self->_fetchMode = [coderCopy decodeIntegerForKey:@"fetchMode"];
   v7 = MEMORY[0x277CBEB98];
   v14 = objc_opt_class();
   v15 = objc_opt_class();
   v16 = objc_opt_class();
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v14 count:3];
   v9 = [v7 setWithArray:{v8, v14, v15}];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"pushIdentifiers"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"pushIdentifiers"];
 
   pushIdentifiers = self->_pushIdentifiers;
   self->_pushIdentifiers = v10;
@@ -75,8 +75,8 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SPSecureLocationsSubscriptionContext *)self clientApp];
-  v5 = [v3 stringWithFormat:@"<clientApp %@, subMode %ld, fetchMode %ld>", v4, -[SPSecureLocationsSubscriptionContext subscriptionMode](self, "subscriptionMode"), -[SPSecureLocationsSubscriptionContext fetchMode](self, "fetchMode")];
+  clientApp = [(SPSecureLocationsSubscriptionContext *)self clientApp];
+  v5 = [v3 stringWithFormat:@"<clientApp %@, subMode %ld, fetchMode %ld>", clientApp, -[SPSecureLocationsSubscriptionContext subscriptionMode](self, "subscriptionMode"), -[SPSecureLocationsSubscriptionContext fetchMode](self, "fetchMode")];
 
   return v5;
 }

@@ -1,21 +1,21 @@
 @interface HMDAccessoryNetworkProtectionGroupRecord
-- (HMDAccessoryNetworkProtectionGroupRecord)initWithGroup:(id)a3 active:(BOOL)a4 persisted:(BOOL)a5;
+- (HMDAccessoryNetworkProtectionGroupRecord)initWithGroup:(id)group active:(BOOL)active persisted:(BOOL)persisted;
 @end
 
 @implementation HMDAccessoryNetworkProtectionGroupRecord
 
-- (HMDAccessoryNetworkProtectionGroupRecord)initWithGroup:(id)a3 active:(BOOL)a4 persisted:(BOOL)a5
+- (HMDAccessoryNetworkProtectionGroupRecord)initWithGroup:(id)group active:(BOOL)active persisted:(BOOL)persisted
 {
-  v9 = a3;
+  groupCopy = group;
   v13.receiver = self;
   v13.super_class = HMDAccessoryNetworkProtectionGroupRecord;
   v10 = [(HMDAccessoryNetworkProtectionGroupRecord *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_active = a4;
-    v10->_persisted = a5;
-    objc_storeStrong(&v10->_group, a3);
+    v10->_active = active;
+    v10->_persisted = persisted;
+    objc_storeStrong(&v10->_group, group);
   }
 
   return v11;

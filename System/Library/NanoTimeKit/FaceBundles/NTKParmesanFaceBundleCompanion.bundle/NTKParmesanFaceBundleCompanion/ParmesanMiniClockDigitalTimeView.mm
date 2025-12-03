@@ -1,12 +1,12 @@
 @interface ParmesanMiniClockDigitalTimeView
-- (_TtC30NTKParmesanFaceBundleCompanion32ParmesanMiniClockDigitalTimeView)initWithCoder:(id)a3;
-- (_TtC30NTKParmesanFaceBundleCompanion32ParmesanMiniClockDigitalTimeView)initWithFrame:(CGRect)a3;
+- (_TtC30NTKParmesanFaceBundleCompanion32ParmesanMiniClockDigitalTimeView)initWithCoder:(id)coder;
+- (_TtC30NTKParmesanFaceBundleCompanion32ParmesanMiniClockDigitalTimeView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation ParmesanMiniClockDigitalTimeView
 
-- (_TtC30NTKParmesanFaceBundleCompanion32ParmesanMiniClockDigitalTimeView)initWithCoder:(id)a3
+- (_TtC30NTKParmesanFaceBundleCompanion32ParmesanMiniClockDigitalTimeView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion32ParmesanMiniClockDigitalTimeView_overrideDate;
   v5 = sub_23BFF8D90();
@@ -30,7 +30,7 @@
   [v3 setFrame_];
 }
 
-- (_TtC30NTKParmesanFaceBundleCompanion32ParmesanMiniClockDigitalTimeView)initWithFrame:(CGRect)a3
+- (_TtC30NTKParmesanFaceBundleCompanion32ParmesanMiniClockDigitalTimeView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

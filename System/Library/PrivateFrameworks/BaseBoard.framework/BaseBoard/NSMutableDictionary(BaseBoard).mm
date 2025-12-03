@@ -13,19 +13,19 @@
   {
     if (a4)
     {
-      return [a1 setObject:? forKey:?];
+      return [self setObject:? forKey:?];
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (id)bs_takeObjectForKey:()BaseBoard
 {
-  v5 = [a1 objectForKey:?];
+  v5 = [self objectForKey:?];
   if (v5)
   {
-    [a1 removeObjectForKey:a3];
+    [self removeObjectForKey:a3];
     v6 = v5;
   }
 
@@ -48,7 +48,7 @@
       v18 = 2114;
       v19 = v13;
       v20 = 2048;
-      v21 = a1;
+      selfCopy = self;
       v22 = 2114;
       v23 = @"NSDictionary+BaseBoard.m";
       v24 = 1024;
@@ -64,11 +64,11 @@
     JUMPOUT(0x18FF33C48);
   }
 
-  v15 = [a1 objectForKey:a5];
+  v15 = [self objectForKey:a5];
   if (!v15)
   {
     v15 = objc_alloc_init(a4);
-    [a1 setObject:v15 forKey:a5];
+    [self setObject:v15 forKey:a5];
   }
 
   [v15 addObject:a3];
@@ -77,7 +77,7 @@
 - (void)bs_removeObject:()BaseBoard fromCollectionForKey:
 {
   v26 = *MEMORY[0x1E69E9840];
-  v13 = [a1 objectForKey:a4];
+  v13 = [self objectForKey:a4];
   if (v13)
   {
     if ((_NSIsNSSet() & 1) == 0 && (_NSIsNSOrderedSet() & 1) == 0 && (_NSIsNSArray() & 1) == 0)
@@ -93,7 +93,7 @@
         v16 = 2114;
         v17 = v11;
         v18 = 2048;
-        v19 = a1;
+        selfCopy = self;
         v20 = 2114;
         v21 = @"NSDictionary+BaseBoard.m";
         v22 = 1024;
@@ -112,7 +112,7 @@
     [v13 removeObject:a3];
     if (![v13 count])
     {
-      [a1 removeObjectForKey:a4];
+      [self removeObjectForKey:a4];
     }
   }
 }

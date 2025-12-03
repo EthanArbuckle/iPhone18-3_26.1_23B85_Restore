@@ -1,56 +1,56 @@
 @interface CPLCloudKitZoneIdentification
-+ (BOOL)isSupportedShare:(id)a3;
-+ (BOOL)isSupportedShareType:(id)a3;
-+ (BOOL)isSupportedZoneID:(id)a3;
-+ (BOOL)shouldIgnoreZoneID:(id)a3 forMainScopeIdentifier:(id)a4;
-+ (BOOL)shouldProtectZoneIDFromDeletion:(id)a3;
++ (BOOL)isSupportedShare:(id)share;
++ (BOOL)isSupportedShareType:(id)type;
++ (BOOL)isSupportedZoneID:(id)d;
++ (BOOL)shouldIgnoreZoneID:(id)d forMainScopeIdentifier:(id)identifier;
++ (BOOL)shouldProtectZoneIDFromDeletion:(id)deletion;
 + (NSArray)recordNamesForScopeInfo;
-+ (id)recordsToFetchToIdentifyZoneID:(id)a3 proposedScopeType:(int64_t)a4 currentUserID:(id)a5;
-+ (int64_t)_permissionFromCKShare:(id)a3;
-- (BOOL)_isScopeReadonlyFromCKShare:(id)a3;
-- (BOOL)isSupportedShare:(id)a3;
-- (BOOL)isSupportedShareType:(id)a3;
-- (BOOL)supportsDownloadOfChange:(id)a3 scopeProvider:(id)a4;
-- (BOOL)supportsUploadOfChange:(id)a3 scopeProvider:(id)a4;
++ (id)recordsToFetchToIdentifyZoneID:(id)d proposedScopeType:(int64_t)type currentUserID:(id)iD;
++ (int64_t)_permissionFromCKShare:(id)share;
+- (BOOL)_isScopeReadonlyFromCKShare:(id)share;
+- (BOOL)isSupportedShare:(id)share;
+- (BOOL)isSupportedShareType:(id)type;
+- (BOOL)supportsDownloadOfChange:(id)change scopeProvider:(id)provider;
+- (BOOL)supportsUploadOfChange:(id)change scopeProvider:(id)provider;
 - (CKRecordID)libraryInfoRecordID;
 - (CKRecordID)rootRecordID;
 - (CKRecordZone)zone;
 - (CKRecordZoneID)zoneID;
-- (CPLCloudKitZoneIdentification)initWithCloudKitScope:(id)a3 engineScope:(id)a4;
+- (CPLCloudKitZoneIdentification)initWithCloudKitScope:(id)scope engineScope:(id)engineScope;
 - (NSString)libraryInfoRecordName;
 - (NSString)shareRecordName;
 - (id)_baseScopeChange;
 - (id)_rootRef;
-- (id)newScopeIdentifierRelativeToMainScopeIdentifier:(id)a3;
-- (id)recordIDWithRecordName:(id)a3;
-- (id)recordsToFetchForScopeInfoWithCurrentUserID:(id)a3;
-- (id)scopeChangeFromCKRecords:(id)a3 currentUserID:(id)a4 previousScopeChange:(id)a5;
-- (id)scopeFlagsUpdateFromCKRecords:(id)a3;
-- (id)scopedIdentifierWithIdentifier:(id)a3;
+- (id)newScopeIdentifierRelativeToMainScopeIdentifier:(id)identifier;
+- (id)recordIDWithRecordName:(id)name;
+- (id)recordsToFetchForScopeInfoWithCurrentUserID:(id)d;
+- (id)scopeChangeFromCKRecords:(id)records currentUserID:(id)d previousScopeChange:(id)change;
+- (id)scopeFlagsUpdateFromCKRecords:(id)records;
+- (id)scopedIdentifierWithIdentifier:(id)identifier;
 - (id)shareType;
-- (id)shareTypeForScopeChange:(id)a3;
-- (id)updatedFlagsFromCKRecord:(id)a3;
-- (id)updatedScopeChangeFromScopeChange:(id)a3 currentUserID:(id)a4 withCKRecord:(id)a5;
+- (id)shareTypeForScopeChange:(id)change;
+- (id)updatedFlagsFromCKRecord:(id)record;
+- (id)updatedScopeChangeFromScopeChange:(id)change currentUserID:(id)d withCKRecord:(id)record;
 - (int64_t)databaseScope;
 - (int64_t)operationType;
-- (void)setupRootOnRecord:(id)a3;
+- (void)setupRootOnRecord:(id)record;
 @end
 
 @implementation CPLCloudKitZoneIdentification
 
-+ (BOOL)shouldProtectZoneIDFromDeletion:(id)a3
++ (BOOL)shouldProtectZoneIDFromDeletion:(id)deletion
 {
-  v3 = [a3 zoneName];
-  v4 = [v3 hasPrefix:CPLPrimaryScopeIdentifier];
+  zoneName = [deletion zoneName];
+  v4 = [zoneName hasPrefix:CPLPrimaryScopeIdentifier];
 
   return v4;
 }
 
-- (CPLCloudKitZoneIdentification)initWithCloudKitScope:(id)a3 engineScope:(id)a4
+- (CPLCloudKitZoneIdentification)initWithCloudKitScope:(id)scope engineScope:(id)engineScope
 {
-  v6 = a3;
-  v7 = a4;
-  if ([objc_opt_class() supportsCloudKitScope:v6 engineScope:v7])
+  scopeCopy = scope;
+  engineScopeCopy = engineScope;
+  if ([objc_opt_class() supportsCloudKitScope:scopeCopy engineScope:engineScopeCopy])
   {
     v26.receiver = self;
     v26.super_class = CPLCloudKitZoneIdentification;
@@ -59,17 +59,17 @@
     {
 LABEL_17:
       self = v8;
-      v14 = self;
+      selfCopy = self;
       goto LABEL_18;
     }
 
-    v9 = [v6 options];
-    v10 = v9;
-    v11 = [(CPLCloudKitZoneIdentification *)v8 shareRecordName];
-    v12 = v11;
-    if (v11 && CKRecordNameZoneWideShare)
+    options = [scopeCopy options];
+    v10 = options;
+    shareRecordName = [(CPLCloudKitZoneIdentification *)v8 shareRecordName];
+    v12 = shareRecordName;
+    if (shareRecordName && CKRecordNameZoneWideShare)
     {
-      v13 = [v11 isEqual:CKRecordNameZoneWideShare];
+      v13 = [shareRecordName isEqual:CKRecordNameZoneWideShare];
 
       if ((v13 & 1) == 0)
       {
@@ -79,14 +79,14 @@ LABEL_17:
 
     else
     {
-      v15 = v11 | CKRecordNameZoneWideShare;
+      v15 = shareRecordName | CKRecordNameZoneWideShare;
 
       if (v15)
       {
 LABEL_10:
-        v16 = [v6 zoneID];
-        v17 = [v16 ownerName];
-        v18 = [v17 isEqualToString:CKCurrentUserDefaultName];
+        zoneID = [scopeCopy zoneID];
+        ownerName = [zoneID ownerName];
+        v18 = [ownerName isEqualToString:CKCurrentUserDefaultName];
 
         if (v18)
         {
@@ -98,9 +98,9 @@ LABEL_10:
           v19 = v10 | 2;
         }
 
-        if (v19 == v9)
+        if (v19 == options)
         {
-          v20 = v6;
+          v20 = scopeCopy;
           cloudKitScope = v8->_cloudKitScope;
           v8->_cloudKitScope = v20;
         }
@@ -108,61 +108,61 @@ LABEL_10:
         else
         {
           v22 = [CPLCloudKitScope alloc];
-          cloudKitScope = [v6 zone];
+          cloudKitScope = [scopeCopy zone];
           v23 = [(CPLCloudKitScope *)v22 initWithZone:cloudKitScope options:v19];
           v24 = v8->_cloudKitScope;
           v8->_cloudKitScope = v23;
         }
 
-        objc_storeStrong(&v8->_engineScope, a4);
+        objc_storeStrong(&v8->_engineScope, engineScope);
         goto LABEL_17;
       }
     }
 
-    v10 = v9 | 4;
+    v10 = options | 4;
     goto LABEL_10;
   }
 
-  v14 = 0;
+  selfCopy = 0;
 LABEL_18:
 
-  return v14;
+  return selfCopy;
 }
 
 + (NSArray)recordNamesForScopeInfo
 {
   v3 = [[NSMutableArray alloc] initWithCapacity:3];
-  v4 = [a1 rootRecordName];
-  if (v4)
+  rootRecordName = [self rootRecordName];
+  if (rootRecordName)
   {
-    [v3 addObject:v4];
+    [v3 addObject:rootRecordName];
   }
 
-  v5 = [a1 shareRecordName];
-  if (v5)
+  shareRecordName = [self shareRecordName];
+  if (shareRecordName)
   {
-    [v3 addObject:v5];
+    [v3 addObject:shareRecordName];
   }
 
-  v6 = [a1 libraryInfoRecordName];
-  if (v6)
+  libraryInfoRecordName = [self libraryInfoRecordName];
+  if (libraryInfoRecordName)
   {
-    [v3 addObject:v6];
+    [v3 addObject:libraryInfoRecordName];
   }
 
   return v3;
 }
 
-+ (id)recordsToFetchToIdentifyZoneID:(id)a3 proposedScopeType:(int64_t)a4 currentUserID:(id)a5
++ (id)recordsToFetchToIdentifyZoneID:(id)d proposedScopeType:(int64_t)type currentUserID:(id)iD
 {
-  v6 = a3;
-  v7 = [a1 recordNamesForScopeInfo];
-  v8 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
+  dCopy = d;
+  recordNamesForScopeInfo = [self recordNamesForScopeInfo];
+  v8 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(recordNamesForScopeInfo, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v7;
+  v9 = recordNamesForScopeInfo;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -179,7 +179,7 @@ LABEL_18:
 
         v14 = *(*(&v18 + 1) + 8 * i);
         v15 = [CKRecordID alloc];
-        v16 = [v15 initWithRecordName:v14 zoneID:{v6, v18}];
+        v16 = [v15 initWithRecordName:v14 zoneID:{dCopy, v18}];
         [v8 addObject:v16];
       }
 
@@ -192,113 +192,113 @@ LABEL_18:
   return v8;
 }
 
-- (id)recordsToFetchForScopeInfoWithCurrentUserID:(id)a3
+- (id)recordsToFetchForScopeInfoWithCurrentUserID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_opt_class();
-  v6 = [(CPLCloudKitZoneIdentification *)self cloudKitScope];
-  v7 = [v6 zoneID];
-  v8 = [v5 recordsToFetchToIdentifyZoneID:v7 proposedScopeType:-[CPLEngineScope scopeType](self->_engineScope currentUserID:{"scopeType"), v4}];
+  cloudKitScope = [(CPLCloudKitZoneIdentification *)self cloudKitScope];
+  zoneID = [cloudKitScope zoneID];
+  v8 = [v5 recordsToFetchToIdentifyZoneID:zoneID proposedScopeType:-[CPLEngineScope scopeType](self->_engineScope currentUserID:{"scopeType"), dCopy}];
 
   return v8;
 }
 
 - (id)_baseScopeChange
 {
-  v3 = [(CPLEngineScope *)self->_engineScope scopeType];
-  v4 = [(CPLEngineScope *)self->_engineScope scopeIdentifier];
-  v5 = [CPLScopeChange newScopeChangeInferClassWithScopeIdentifier:v4 type:v3];
+  scopeType = [(CPLEngineScope *)self->_engineScope scopeType];
+  scopeIdentifier = [(CPLEngineScope *)self->_engineScope scopeIdentifier];
+  v5 = [CPLScopeChange newScopeChangeInferClassWithScopeIdentifier:scopeIdentifier type:scopeType];
 
   return v5;
 }
 
-- (id)scopeChangeFromCKRecords:(id)a3 currentUserID:(id)a4 previousScopeChange:(id)a5
+- (id)scopeChangeFromCKRecords:(id)records currentUserID:(id)d previousScopeChange:(id)change
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(CPLCloudKitZoneIdentification *)self _baseScopeChange];
-  v13 = [(CPLCloudKitZoneIdentification *)self libraryInfoRecordName];
-  if (v13)
+  recordsCopy = records;
+  dCopy = d;
+  changeCopy = change;
+  _baseScopeChange = [(CPLCloudKitZoneIdentification *)self _baseScopeChange];
+  libraryInfoRecordName = [(CPLCloudKitZoneIdentification *)self libraryInfoRecordName];
+  if (libraryInfoRecordName)
   {
-    v14 = [(CPLCloudKitZoneIdentification *)self zoneID];
-    v15 = [v9 cplRecordWithName:v13 zonedID:v14];
+    zoneID = [(CPLCloudKitZoneIdentification *)self zoneID];
+    v15 = [recordsCopy cplRecordWithName:libraryInfoRecordName zonedID:zoneID];
 
     if (v15)
     {
       v16 = [(CPLCloudKitZoneIdentification *)self zone];
-      [v12 updateWithLibraryInfoCKRecord:v15 zone:v16 userRecordID:v10];
+      [_baseScopeChange updateWithLibraryInfoCKRecord:v15 zone:v16 userRecordID:dCopy];
     }
   }
 
-  v17 = [(CPLCloudKitZoneIdentification *)self shareRecordName];
-  if (v17)
+  shareRecordName = [(CPLCloudKitZoneIdentification *)self shareRecordName];
+  if (shareRecordName)
   {
-    v18 = [(CPLCloudKitZoneIdentification *)self zoneID];
-    v19 = [v9 cplRecordWithName:v17 zonedID:v18];
+    zoneID2 = [(CPLCloudKitZoneIdentification *)self zoneID];
+    v19 = [recordsCopy cplRecordWithName:shareRecordName zonedID:zoneID2];
 
     if (v19 && [(CPLCloudKitZoneIdentification *)self isSupportedShare:v19])
     {
-      [v12 updateWithCKShare:v19 currentUserID:v10];
+      [_baseScopeChange updateWithCKShare:v19 currentUserID:dCopy];
     }
   }
 
-  v20 = [(CPLCloudKitZoneIdentification *)self rootRecordID];
-  if (v20)
+  rootRecordID = [(CPLCloudKitZoneIdentification *)self rootRecordID];
+  if (rootRecordID)
   {
     v30 = a2;
-    v21 = [v9 objectForKeyedSubscript:v20];
-    v22 = [(CPLCloudKitZoneIdentification *)self rootRecordType];
-    if (!v22)
+    v21 = [recordsCopy objectForKeyedSubscript:rootRecordID];
+    rootRecordType = [(CPLCloudKitZoneIdentification *)self rootRecordType];
+    if (!rootRecordType)
     {
       sub_1001A9210(self, v30);
     }
 
-    v23 = v22;
-    v31 = v13;
-    v24 = v9;
-    v25 = v10;
-    v26 = v11;
+    v23 = rootRecordType;
+    v31 = libraryInfoRecordName;
+    v24 = recordsCopy;
+    v25 = dCopy;
+    v26 = changeCopy;
     if (v21)
     {
-      v27 = [v21 recordType];
-      v28 = [v27 isEqualToString:v23];
+      recordType = [v21 recordType];
+      v28 = [recordType isEqualToString:v23];
 
       if (v28)
       {
-        [v12 updateWithRootCKRecord:v21];
+        [_baseScopeChange updateWithRootCKRecord:v21];
       }
     }
 
-    v11 = v26;
-    v10 = v25;
-    v9 = v24;
-    v13 = v31;
+    changeCopy = v26;
+    dCopy = v25;
+    recordsCopy = v24;
+    libraryInfoRecordName = v31;
   }
 
-  return v12;
+  return _baseScopeChange;
 }
 
-- (id)updatedScopeChangeFromScopeChange:(id)a3 currentUserID:(id)a4 withCKRecord:(id)a5
+- (id)updatedScopeChangeFromScopeChange:(id)change currentUserID:(id)d withCKRecord:(id)record
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  changeCopy = change;
+  dCopy = d;
+  recordCopy = record;
+  if (!changeCopy)
   {
     sub_1001A93B8(self, a2);
   }
 
-  v12 = v11;
-  v13 = [(CPLCloudKitZoneIdentification *)self libraryInfoRecordName];
-  if (v13)
+  v12 = recordCopy;
+  libraryInfoRecordName = [(CPLCloudKitZoneIdentification *)self libraryInfoRecordName];
+  if (libraryInfoRecordName)
   {
-    v14 = [v12 selfIfMatchesRecordName:v13];
+    v14 = [v12 selfIfMatchesRecordName:libraryInfoRecordName];
     if (v14)
     {
-      v15 = [v9 copy];
+      v15 = [changeCopy copy];
       v16 = [(CPLCloudKitZoneIdentification *)self zone];
-      [v15 updateWithLibraryInfoCKRecord:v14 zone:v16 userRecordID:v10];
+      [v15 updateWithLibraryInfoCKRecord:v14 zone:v16 userRecordID:dCopy];
     }
 
     else
@@ -312,27 +312,27 @@ LABEL_18:
     v15 = 0;
   }
 
-  v17 = [(CPLCloudKitZoneIdentification *)self shareRecordName];
-  if (v17)
+  shareRecordName = [(CPLCloudKitZoneIdentification *)self shareRecordName];
+  if (shareRecordName)
   {
-    v18 = [v12 selfIfMatchesRecordName:v17];
+    v18 = [v12 selfIfMatchesRecordName:shareRecordName];
     if (v18 && [(CPLCloudKitZoneIdentification *)self isSupportedShare:v18])
     {
       if (!v15)
       {
-        v15 = [v9 copy];
+        v15 = [changeCopy copy];
       }
 
-      [v15 updateWithCKShare:v18 currentUserID:v10];
+      [v15 updateWithCKShare:v18 currentUserID:dCopy];
     }
   }
 
-  v19 = [(CPLCloudKitZoneIdentification *)self rootRecordID];
-  if (v19)
+  rootRecordID = [(CPLCloudKitZoneIdentification *)self rootRecordID];
+  if (rootRecordID)
   {
     v29 = a2;
-    v20 = [v12 recordID];
-    if ([v20 isEqual:v19])
+    recordID = [v12 recordID];
+    if ([recordID isEqual:rootRecordID])
     {
       v21 = v12;
     }
@@ -346,17 +346,17 @@ LABEL_18:
 
     if (v22)
     {
-      v23 = [(CPLCloudKitZoneIdentification *)self rootRecordType];
-      if (!v23)
+      rootRecordType = [(CPLCloudKitZoneIdentification *)self rootRecordType];
+      if (!rootRecordType)
       {
         sub_1001A92E4(self, v29);
       }
 
-      v24 = v23;
-      v30 = v9;
-      v25 = v10;
-      v26 = [v22 recordType];
-      v27 = [v26 isEqualToString:v24];
+      v24 = rootRecordType;
+      v30 = changeCopy;
+      v25 = dCopy;
+      recordType = [v22 recordType];
+      v27 = [recordType isEqualToString:v24];
 
       if (v27)
       {
@@ -368,31 +368,31 @@ LABEL_18:
         [v15 updateWithRootCKRecord:v22];
       }
 
-      v10 = v25;
+      dCopy = v25;
 
-      v9 = v30;
+      changeCopy = v30;
     }
   }
 
   return v15;
 }
 
-- (id)scopeFlagsUpdateFromCKRecords:(id)a3
+- (id)scopeFlagsUpdateFromCKRecords:(id)records
 {
-  v5 = a3;
+  recordsCopy = records;
   v6 = objc_alloc_init(CPLEngineScopeFlagsUpdate);
-  v7 = [(CPLCloudKitZoneIdentification *)self shareRecordName];
-  if (v7)
+  shareRecordName = [(CPLCloudKitZoneIdentification *)self shareRecordName];
+  if (shareRecordName)
   {
-    v8 = [objc_opt_class() shareTypes];
-    if (!v8)
+    shareTypes = [objc_opt_class() shareTypes];
+    if (!shareTypes)
     {
       sub_1001A948C(self, a2);
     }
 
-    v9 = v8;
-    v10 = [(CPLCloudKitZoneIdentification *)self zoneID];
-    v11 = [v5 cplRecordWithName:v7 zonedID:v10];
+    v9 = shareTypes;
+    zoneID = [(CPLCloudKitZoneIdentification *)self zoneID];
+    v11 = [recordsCopy cplRecordWithName:shareRecordName zonedID:zoneID];
     if (v11)
     {
       v12 = v11;
@@ -406,11 +406,11 @@ LABEL_18:
   return v6;
 }
 
-- (id)updatedFlagsFromCKRecord:(id)a3
+- (id)updatedFlagsFromCKRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(CPLCloudKitZoneIdentification *)self shareRecordName];
-  if (v5 && ([v4 selfIfMatchesRecordName:v5], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  recordCopy = record;
+  shareRecordName = [(CPLCloudKitZoneIdentification *)self shareRecordName];
+  if (shareRecordName && ([recordCopy selfIfMatchesRecordName:shareRecordName], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
     if ([(CPLCloudKitZoneIdentification *)self isSupportedShare:v6])
@@ -433,15 +433,15 @@ LABEL_18:
   return v8;
 }
 
-+ (BOOL)isSupportedZoneID:(id)a3
++ (BOOL)isSupportedZoneID:(id)d
 {
-  v4 = [a3 zoneName];
+  zoneName = [d zoneName];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [a1 supportedZonePrefixes];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  supportedZonePrefixes = [self supportedZonePrefixes];
+  v6 = [supportedZonePrefixes countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -451,17 +451,17 @@ LABEL_18:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(supportedZonePrefixes);
         }
 
-        if ([v4 hasPrefix:*(*(&v10 + 1) + 8 * i)])
+        if ([zoneName hasPrefix:*(*(&v10 + 1) + 8 * i)])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [supportedZonePrefixes countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;
@@ -476,15 +476,15 @@ LABEL_11:
   return v6;
 }
 
-+ (BOOL)isSupportedShareType:(id)a3
++ (BOOL)isSupportedShareType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [a1 shareTypes];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  shareTypes = [self shareTypes];
+  v6 = [shareTypes countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -494,17 +494,17 @@ LABEL_11:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(shareTypes);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) isEqualToString:v4])
+        if ([*(*(&v10 + 1) + 8 * i) isEqualToString:typeCopy])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [shareTypes countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;
@@ -519,16 +519,16 @@ LABEL_11:
   return v6;
 }
 
-+ (BOOL)isSupportedShare:(id)a3
++ (BOOL)isSupportedShare:(id)share
 {
-  v4 = a3;
+  shareCopy = share;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 objectForKey:CKShareTypeKey];
+    v5 = [shareCopy objectForKey:CKShareTypeKey];
     if (v5)
     {
-      v6 = [a1 isSupportedShareType:v5];
+      v6 = [self isSupportedShareType:v5];
     }
 
     else
@@ -545,28 +545,28 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)isSupportedShareType:(id)a3
+- (BOOL)isSupportedShareType:(id)type
 {
-  v3 = a3;
-  v4 = [objc_opt_class() isSupportedShareType:v3];
+  typeCopy = type;
+  v4 = [objc_opt_class() isSupportedShareType:typeCopy];
 
   return v4;
 }
 
-- (BOOL)isSupportedShare:(id)a3
+- (BOOL)isSupportedShare:(id)share
 {
-  v3 = a3;
-  v4 = [objc_opt_class() isSupportedShare:v3];
+  shareCopy = share;
+  v4 = [objc_opt_class() isSupportedShare:shareCopy];
 
   return v4;
 }
 
 - (CKRecordID)rootRecordID
 {
-  v3 = [objc_opt_class() rootRecordName];
-  if (v3)
+  rootRecordName = [objc_opt_class() rootRecordName];
+  if (rootRecordName)
   {
-    v4 = [(CPLCloudKitZoneIdentification *)self recordIDWithRecordName:v3];
+    v4 = [(CPLCloudKitZoneIdentification *)self recordIDWithRecordName:rootRecordName];
   }
 
   else
@@ -591,12 +591,12 @@ LABEL_11:
   return [v2 shareType];
 }
 
-- (id)shareTypeForScopeChange:(id)a3
+- (id)shareTypeForScopeChange:(id)change
 {
-  v3 = [objc_opt_class() shareTypes];
-  v4 = [v3 firstObject];
+  shareTypes = [objc_opt_class() shareTypes];
+  firstObject = [shareTypes firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (NSString)libraryInfoRecordName
@@ -608,10 +608,10 @@ LABEL_11:
 
 - (CKRecordID)libraryInfoRecordID
 {
-  v3 = [(CPLCloudKitZoneIdentification *)self libraryInfoRecordName];
-  if (v3)
+  libraryInfoRecordName = [(CPLCloudKitZoneIdentification *)self libraryInfoRecordName];
+  if (libraryInfoRecordName)
   {
-    v4 = [(CPLCloudKitZoneIdentification *)self recordIDWithRecordName:v3];
+    v4 = [(CPLCloudKitZoneIdentification *)self recordIDWithRecordName:libraryInfoRecordName];
   }
 
   else
@@ -632,15 +632,15 @@ LABEL_11:
   else
   {
     self->_hasCachedRootRef = 1;
-    v4 = [(CPLCloudKitZoneIdentification *)self rootRecordID];
-    v5 = v4;
-    if (v4)
+    rootRecordID = [(CPLCloudKitZoneIdentification *)self rootRecordID];
+    v5 = rootRecordID;
+    if (rootRecordID)
     {
-      v4 = [[CKReference alloc] initWithRecordID:v4 action:0];
+      rootRecordID = [[CKReference alloc] initWithRecordID:rootRecordID action:0];
     }
 
     cachedRootRef = self->_cachedRootRef;
-    self->_cachedRootRef = v4;
+    self->_cachedRootRef = rootRecordID;
 
     v3 = self->_cachedRootRef;
   }
@@ -650,114 +650,114 @@ LABEL_11:
 
 - (int64_t)operationType
 {
-  v2 = [(CPLCloudKitZoneIdentification *)self cloudKitScope];
-  v3 = CPLCloudKitOperationTypeForScope(v2);
+  cloudKitScope = [(CPLCloudKitZoneIdentification *)self cloudKitScope];
+  v3 = CPLCloudKitOperationTypeForScope(cloudKitScope);
 
   return v3;
 }
 
 - (int64_t)databaseScope
 {
-  v2 = [(CPLCloudKitZoneIdentification *)self cloudKitScope];
-  v3 = [v2 databaseScope];
+  cloudKitScope = [(CPLCloudKitZoneIdentification *)self cloudKitScope];
+  databaseScope = [cloudKitScope databaseScope];
 
-  return v3;
+  return databaseScope;
 }
 
-- (void)setupRootOnRecord:(id)a3
+- (void)setupRootOnRecord:(id)record
 {
-  v5 = a3;
-  v4 = [(CPLCloudKitZoneIdentification *)self _rootRef];
-  if (v4)
+  recordCopy = record;
+  _rootRef = [(CPLCloudKitZoneIdentification *)self _rootRef];
+  if (_rootRef)
   {
-    [v5 setParent:v4];
+    [recordCopy setParent:_rootRef];
   }
 }
 
-- (BOOL)supportsUploadOfChange:(id)a3 scopeProvider:(id)a4
+- (BOOL)supportsUploadOfChange:(id)change scopeProvider:(id)provider
 {
-  v5 = [a3 recordClass];
+  recordClass = [change recordClass];
 
-  return [(CPLCloudKitZoneIdentification *)self supportsUploadOfRecordClass:v5];
+  return [(CPLCloudKitZoneIdentification *)self supportsUploadOfRecordClass:recordClass];
 }
 
-- (BOOL)supportsDownloadOfChange:(id)a3 scopeProvider:(id)a4
+- (BOOL)supportsDownloadOfChange:(id)change scopeProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  providerCopy = provider;
   if ((+[CPLFingerprintScheme supportsEPP]& 1) != 0)
   {
     goto LABEL_2;
   }
 
-  if ([v6 isAssetChange])
+  if ([changeCopy isAssetChange])
   {
-    v8 = [v6 relatedIdentifier];
+    relatedIdentifier = [changeCopy relatedIdentifier];
 
-    if (!v8)
+    if (!relatedIdentifier)
     {
       goto LABEL_2;
     }
 
 LABEL_7:
-    self = [v7 fingerprintContext];
-    v9 = [v6 fingerprintSchemeWithContext:self];
+    self = [providerCopy fingerprintContext];
+    v9 = [changeCopy fingerprintSchemeWithContext:self];
 
     LODWORD(self) = [v9 isMMCSv2] ^ 1;
     goto LABEL_8;
   }
 
-  if ([v6 isMasterChange])
+  if ([changeCopy isMasterChange])
   {
     goto LABEL_7;
   }
 
 LABEL_2:
-  LOBYTE(self) = -[CPLCloudKitZoneIdentification supportsDownloadOfRecordClass:](self, "supportsDownloadOfRecordClass:", [v6 recordClass]);
+  LOBYTE(self) = -[CPLCloudKitZoneIdentification supportsDownloadOfRecordClass:](self, "supportsDownloadOfRecordClass:", [changeCopy recordClass]);
 LABEL_8:
 
   return self;
 }
 
-- (id)recordIDWithRecordName:(id)a3
+- (id)recordIDWithRecordName:(id)name
 {
-  v4 = a3;
-  v5 = [(CPLCloudKitZoneIdentification *)self cloudKitScope];
-  v6 = [v5 recordIDWithRecordName:v4];
+  nameCopy = name;
+  cloudKitScope = [(CPLCloudKitZoneIdentification *)self cloudKitScope];
+  v6 = [cloudKitScope recordIDWithRecordName:nameCopy];
 
   return v6;
 }
 
-- (id)scopedIdentifierWithIdentifier:(id)a3
+- (id)scopedIdentifierWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [CPLScopedIdentifier alloc];
-  v6 = [(CPLEngineScope *)self->_engineScope scopeIdentifier];
-  v7 = [v5 initWithScopeIdentifier:v6 identifier:v4];
+  scopeIdentifier = [(CPLEngineScope *)self->_engineScope scopeIdentifier];
+  v7 = [v5 initWithScopeIdentifier:scopeIdentifier identifier:identifierCopy];
 
   return v7;
 }
 
 - (CKRecordZoneID)zoneID
 {
-  v2 = [(CPLCloudKitZoneIdentification *)self cloudKitScope];
-  v3 = [v2 zoneID];
+  cloudKitScope = [(CPLCloudKitZoneIdentification *)self cloudKitScope];
+  zoneID = [cloudKitScope zoneID];
 
-  return v3;
+  return zoneID;
 }
 
 - (CKRecordZone)zone
 {
-  v2 = [(CPLCloudKitZoneIdentification *)self cloudKitScope];
-  v3 = [v2 zone];
+  cloudKitScope = [(CPLCloudKitZoneIdentification *)self cloudKitScope];
+  v3 = [cloudKitScope zone];
 
   return v3;
 }
 
-- (id)newScopeIdentifierRelativeToMainScopeIdentifier:(id)a3
+- (id)newScopeIdentifierRelativeToMainScopeIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [objc_opt_class() prefixForNewScopesRelativeToMainScopeIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [objc_opt_class() prefixForNewScopesRelativeToMainScopeIdentifier:identifierCopy];
 
   if (v4)
   {
@@ -776,8 +776,8 @@ LABEL_8:
     v9 = v7;
 
     v10 = [NSString alloc];
-    v11 = [v9 UUIDString];
-    v8 = [v10 initWithFormat:@"%@%@", v4, v11];
+    uUIDString = [v9 UUIDString];
+    v8 = [v10 initWithFormat:@"%@%@", v4, uUIDString];
   }
 
   else
@@ -788,50 +788,50 @@ LABEL_8:
   return v8;
 }
 
-+ (int64_t)_permissionFromCKShare:(id)a3
++ (int64_t)_permissionFromCKShare:(id)share
 {
-  v3 = a3;
-  v4 = [v3 currentUserParticipant];
-  v5 = v4;
-  if (v4)
+  shareCopy = share;
+  currentUserParticipant = [shareCopy currentUserParticipant];
+  v5 = currentUserParticipant;
+  if (currentUserParticipant)
   {
-    v6 = [v4 permission];
+    permission = [currentUserParticipant permission];
   }
 
   else
   {
-    v6 = [v3 publicPermission];
+    permission = [shareCopy publicPermission];
   }
 
-  v7 = v6;
+  v7 = permission;
 
   return v7;
 }
 
-- (BOOL)_isScopeReadonlyFromCKShare:(id)a3
+- (BOOL)_isScopeReadonlyFromCKShare:(id)share
 {
-  v4 = a3;
-  v5 = [objc_opt_class() isScopeReadonlyFromCKShare:v4];
+  shareCopy = share;
+  v5 = [objc_opt_class() isScopeReadonlyFromCKShare:shareCopy];
 
   if (!v5)
   {
     return 0;
   }
 
-  v6 = [(CPLCloudKitZoneIdentification *)self cloudKitScope];
-  v7 = [v6 isShared];
+  cloudKitScope = [(CPLCloudKitZoneIdentification *)self cloudKitScope];
+  isShared = [cloudKitScope isShared];
 
-  return v7;
+  return isShared;
 }
 
-+ (BOOL)shouldIgnoreZoneID:(id)a3 forMainScopeIdentifier:(id)a4
++ (BOOL)shouldIgnoreZoneID:(id)d forMainScopeIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = [a1 prefixForNewScopesRelativeToMainScopeIdentifier:a4];
-  if (v7 && [a1 isSupportedZoneID:v6])
+  dCopy = d;
+  v7 = [self prefixForNewScopesRelativeToMainScopeIdentifier:identifier];
+  if (v7 && [self isSupportedZoneID:dCopy])
   {
-    v8 = [v6 zoneName];
-    v9 = [v8 hasPrefix:v7] ^ 1;
+    zoneName = [dCopy zoneName];
+    v9 = [zoneName hasPrefix:v7] ^ 1;
   }
 
   else

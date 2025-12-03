@@ -1,27 +1,27 @@
 @interface MSXPCAppRemovalService
 - (id)_deleteAllUserDefaults;
-- (void)removeAppWithReply:(id)a3;
+- (void)removeAppWithReply:(id)reply;
 @end
 
 @implementation MSXPCAppRemovalService
 
-- (void)removeAppWithReply:(id)a3
+- (void)removeAppWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = OS_LOG_XPCAPPREMOVAL();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     sub_100001060(v5, v6, v7, v8, v9, v10, v11, v12);
   }
 
-  v13 = [(MSXPCAppRemovalService *)self _deleteAllUserDefaults];
+  _deleteAllUserDefaults = [(MSXPCAppRemovalService *)self _deleteAllUserDefaults];
   v14 = OS_LOG_XPCAPPREMOVAL();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_ERROR);
-  if (v13)
+  if (_deleteAllUserDefaults)
   {
     if (v15)
     {
-      sub_1000010D8(v13, v14, v17, v18, v19, v20, v21, v22);
+      sub_1000010D8(_deleteAllUserDefaults, v14, v17, v18, v19, v20, v21, v22);
     }
   }
 
@@ -30,7 +30,7 @@
     sub_100001144(v14, v16, v17, v18, v19, v20, v21, v22);
   }
 
-  v4[2](v4, v13);
+  replyCopy[2](replyCopy, _deleteAllUserDefaults);
 }
 
 - (id)_deleteAllUserDefaults
@@ -40,10 +40,10 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [v2 dictionaryRepresentation];
-  v4 = [v3 allKeys];
+  dictionaryRepresentation = [v2 dictionaryRepresentation];
+  allKeys = [dictionaryRepresentation allKeys];
 
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v22 count:16];
+  v5 = [allKeys countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -55,7 +55,7 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v14 + 1) + 8 * v8);
@@ -72,7 +72,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v22 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v14 objects:v22 count:16];
     }
 
     while (v6);

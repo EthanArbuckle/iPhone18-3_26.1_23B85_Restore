@@ -1,19 +1,19 @@
 @interface INSetNicknameIntent
 - (INModifyNickname)targetNickname;
-- (INSetNicknameIntent)initWithTargetNickname:(id)a3;
+- (INSetNicknameIntent)initWithTargetNickname:(id)nickname;
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setTargetNickname:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setTargetNickname:(id)nickname;
 @end
 
 @implementation INSetNicknameIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INSetNicknameIntent *)self _typedBackingStore:a3];
+  v6 = [(INSetNicknameIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -22,16 +22,16 @@
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"targetNickname";
-  v2 = [(INSetNicknameIntent *)self targetNickname];
-  v3 = v2;
-  if (!v2)
+  targetNickname = [(INSetNicknameIntent *)self targetNickname];
+  null = targetNickname;
+  if (!targetNickname)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v8[0] = v3;
+  v8[0] = null;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  if (!v2)
+  if (!targetNickname)
   {
   }
 
@@ -40,61 +40,61 @@
   return v4;
 }
 
-- (void)setTargetNickname:(id)a3
+- (void)setTargetNickname:(id)nickname
 {
-  v4 = a3;
-  v6 = [(INSetNicknameIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToModifyNickname(v4);
+  nicknameCopy = nickname;
+  _typedBackingStore = [(INSetNicknameIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToModifyNickname(nicknameCopy);
 
-  [v6 setTargetNickname:v5];
+  [_typedBackingStore setTargetNickname:v5];
 }
 
 - (INModifyNickname)targetNickname
 {
-  v2 = [(INSetNicknameIntent *)self _typedBackingStore];
-  v3 = [v2 targetNickname];
-  v4 = INIntentSlotValueTransformFromModifyNickname(v3);
+  _typedBackingStore = [(INSetNicknameIntent *)self _typedBackingStore];
+  targetNickname = [_typedBackingStore targetNickname];
+  v4 = INIntentSlotValueTransformFromModifyNickname(targetNickname);
 
   return v4;
 }
 
-- (INSetNicknameIntent)initWithTargetNickname:(id)a3
+- (INSetNicknameIntent)initWithTargetNickname:(id)nickname
 {
-  v4 = a3;
+  nicknameCopy = nickname;
   v8.receiver = self;
   v8.super_class = INSetNicknameIntent;
   v5 = [(INIntent *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(INSetNicknameIntent *)v5 setTargetNickname:v4];
+    [(INSetNicknameIntent *)v5 setTargetNickname:nicknameCopy];
   }
 
   return v6;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INSetNicknameIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INSetNicknameIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INSetNicknameIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INSetNicknameIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

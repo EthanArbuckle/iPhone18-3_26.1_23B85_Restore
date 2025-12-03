@@ -1,15 +1,15 @@
 @interface _PNSafeAssetAnalyzer
-- (signed)eligibilityStateWithAsset:(id)a3 curationContext:(id)a4;
+- (signed)eligibilityStateWithAsset:(id)asset curationContext:(id)context;
 @end
 
 @implementation _PNSafeAssetAnalyzer
 
-- (signed)eligibilityStateWithAsset:(id)a3 curationContext:(id)a4
+- (signed)eligibilityStateWithAsset:(id)asset curationContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = SafeAssetAnalyzer.eligibilityState(asset:curationContext:)(v6, v7);
+  assetCopy = asset;
+  contextCopy = context;
+  selfCopy = self;
+  v9 = SafeAssetAnalyzer.eligibilityState(asset:curationContext:)(assetCopy, contextCopy);
 
   return v9;
 }

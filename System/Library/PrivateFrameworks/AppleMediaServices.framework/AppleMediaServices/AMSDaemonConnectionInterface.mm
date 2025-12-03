@@ -16,13 +16,13 @@
 + (id)_securityClientInterface;
 + (id)_securityServiceInterface;
 + (id)interface;
-+ (void)_configureURLPresentationDelegateClasses:(id)a3;
-+ (void)_setUpSecurityInterfaceApplePayClassic:(id)a3;
-+ (void)_setUpSecurityInterfaceBiometricSelectors:(id)a3;
-+ (void)_setUpSecurityInterfaceDeviceIdentitySelectors:(id)a3;
-+ (void)_setUpSecurityInterfaceHandleResponseSelector:(id)a3;
-+ (void)_setUpSecurityInterfaceSignedHeadersSelector:(id)a3;
-+ (void)_setUpSecurityInterfaceSilentEnrollmentSelector:(id)a3;
++ (void)_configureURLPresentationDelegateClasses:(id)classes;
++ (void)_setUpSecurityInterfaceApplePayClassic:(id)classic;
++ (void)_setUpSecurityInterfaceBiometricSelectors:(id)selectors;
++ (void)_setUpSecurityInterfaceDeviceIdentitySelectors:(id)selectors;
++ (void)_setUpSecurityInterfaceHandleResponseSelector:(id)selector;
++ (void)_setUpSecurityInterfaceSignedHeadersSelector:(id)selector;
++ (void)_setUpSecurityInterfaceSilentEnrollmentSelector:(id)selector;
 @end
 
 @implementation AMSDaemonConnectionInterface
@@ -33,7 +33,7 @@
   block[1] = 3221225472;
   block[2] = __41__AMSDaemonConnectionInterface_interface__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED6E2858 != -1)
   {
     dispatch_once(&qword_1ED6E2858, block);
@@ -189,17 +189,17 @@ void __41__AMSDaemonConnectionInterface_interface__block_invoke(uint64_t a1)
 + (id)_autoBugCaptureServiceInterface
 {
   v2 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F07996D0];
-  v3 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
-  [v2 setClasses:v3 forSelector:sel_captureSnapshotWithSignature_delay_events_payload_actions_completion_ argumentIndex:0 ofReply:0];
+  ams_JSONClasses = [MEMORY[0x1E695DFD8] ams_JSONClasses];
+  [v2 setClasses:ams_JSONClasses forSelector:sel_captureSnapshotWithSignature_delay_events_payload_actions_completion_ argumentIndex:0 ofReply:0];
 
-  v4 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
-  [v2 setClasses:v4 forSelector:sel_captureSnapshotWithSignature_delay_events_payload_actions_completion_ argumentIndex:2 ofReply:0];
+  ams_JSONClasses2 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
+  [v2 setClasses:ams_JSONClasses2 forSelector:sel_captureSnapshotWithSignature_delay_events_payload_actions_completion_ argumentIndex:2 ofReply:0];
 
-  v5 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
-  [v2 setClasses:v5 forSelector:sel_captureSnapshotWithSignature_delay_events_payload_actions_completion_ argumentIndex:3 ofReply:0];
+  ams_JSONClasses3 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
+  [v2 setClasses:ams_JSONClasses3 forSelector:sel_captureSnapshotWithSignature_delay_events_payload_actions_completion_ argumentIndex:3 ofReply:0];
 
-  v6 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
-  [v2 setClasses:v6 forSelector:sel_captureSnapshotWithSignature_delay_events_payload_actions_completion_ argumentIndex:4 ofReply:0];
+  ams_JSONClasses4 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
+  [v2 setClasses:ams_JSONClasses4 forSelector:sel_captureSnapshotWithSignature_delay_events_payload_actions_completion_ argumentIndex:4 ofReply:0];
 
   [v2 setClass:objc_opt_class() forSelector:sel_captureSnapshotWithSignature_delay_events_payload_actions_completion_ argumentIndex:1 ofReply:1];
 
@@ -223,20 +223,20 @@ void __41__AMSDaemonConnectionInterface_interface__block_invoke(uint64_t a1)
   [v2 setClass:objc_opt_class() forSelector:sel_getCookieDatabasePathForAccount_withCompletion_ argumentIndex:0 ofReply:1];
   [v2 setClass:objc_opt_class() forSelector:sel_getCookieDatabasePathForAccount_withCompletion_ argumentIndex:1 ofReply:1];
   [v2 setClass:objc_opt_class() forSelector:sel_getCookiePropertiesForAccount_withCompletion_ argumentIndex:0 ofReply:0];
-  v3 = [MEMORY[0x1E695ABF8] ams_propertyXPCClasses];
-  [v2 setClasses:v3 forSelector:sel_getCookiePropertiesForAccount_withCompletion_ argumentIndex:0 ofReply:1];
+  ams_propertyXPCClasses = [MEMORY[0x1E695ABF8] ams_propertyXPCClasses];
+  [v2 setClasses:ams_propertyXPCClasses forSelector:sel_getCookiePropertiesForAccount_withCompletion_ argumentIndex:0 ofReply:1];
 
   [v2 setClass:objc_opt_class() forSelector:sel_getCookiePropertiesForAccount_withCompletion_ argumentIndex:1 ofReply:1];
   [v2 setClass:objc_opt_class() forSelector:sel_getCookiePropertiesForAccount_cookieDatabaseOnly_withCompletion_ argumentIndex:0 ofReply:0];
-  v4 = [MEMORY[0x1E695ABF8] ams_propertyXPCClasses];
-  [v2 setClasses:v4 forSelector:sel_getCookiePropertiesForAccount_cookieDatabaseOnly_withCompletion_ argumentIndex:0 ofReply:1];
+  ams_propertyXPCClasses2 = [MEMORY[0x1E695ABF8] ams_propertyXPCClasses];
+  [v2 setClasses:ams_propertyXPCClasses2 forSelector:sel_getCookiePropertiesForAccount_cookieDatabaseOnly_withCompletion_ argumentIndex:0 ofReply:1];
 
   [v2 setClass:objc_opt_class() forSelector:sel_getCookiePropertiesForAccount_cookieDatabaseOnly_withCompletion_ argumentIndex:1 ofReply:1];
-  v5 = [MEMORY[0x1E695ABF8] ams_propertyXPCClasses];
-  [v2 setClasses:v5 forSelector:sel_updateCookiesWithCookiePropertiesToAdd_cookiePropertiesToRemove_forAccount_withCompletion_ argumentIndex:0 ofReply:0];
+  ams_propertyXPCClasses3 = [MEMORY[0x1E695ABF8] ams_propertyXPCClasses];
+  [v2 setClasses:ams_propertyXPCClasses3 forSelector:sel_updateCookiesWithCookiePropertiesToAdd_cookiePropertiesToRemove_forAccount_withCompletion_ argumentIndex:0 ofReply:0];
 
-  v6 = [MEMORY[0x1E695ABF8] ams_propertyXPCClasses];
-  [v2 setClasses:v6 forSelector:sel_updateCookiesWithCookiePropertiesToAdd_cookiePropertiesToRemove_forAccount_withCompletion_ argumentIndex:1 ofReply:0];
+  ams_propertyXPCClasses4 = [MEMORY[0x1E695ABF8] ams_propertyXPCClasses];
+  [v2 setClasses:ams_propertyXPCClasses4 forSelector:sel_updateCookiesWithCookiePropertiesToAdd_cookiePropertiesToRemove_forAccount_withCompletion_ argumentIndex:1 ofReply:0];
 
   [v2 setClass:objc_opt_class() forSelector:sel_updateCookiesWithCookiePropertiesToAdd_cookiePropertiesToRemove_forAccount_withCompletion_ argumentIndex:2 ofReply:0];
   [v2 setClass:objc_opt_class() forSelector:sel_updateCookiesWithCookiePropertiesToAdd_cookiePropertiesToRemove_forAccount_withCompletion_ argumentIndex:1 ofReply:1];
@@ -357,7 +357,7 @@ void __41__AMSDaemonConnectionInterface_interface__block_invoke(uint64_t a1)
 + (id)_securityClientInterface
 {
   v3 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F07CDF88];
-  [a1 _configureURLPresentationDelegateClasses:v3];
+  [self _configureURLPresentationDelegateClasses:v3];
 
   return v3;
 }
@@ -367,120 +367,120 @@ void __41__AMSDaemonConnectionInterface_interface__block_invoke(uint64_t a1)
   v3 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F07CD988];
   [v3 setClass:objc_opt_class() forSelector:sel_performBiometricTokenUpdateWithAccount_clientInfo_additionalDialogMetrics_shouldGenerateKeysOnly_shouldRequestConfirmation_userInitiated_completion_ argumentIndex:0 ofReply:0];
   [v3 setClass:objc_opt_class() forSelector:sel_performBiometricTokenUpdateWithAccount_clientInfo_additionalDialogMetrics_shouldGenerateKeysOnly_shouldRequestConfirmation_userInitiated_completion_ argumentIndex:1 ofReply:0];
-  v4 = [MEMORY[0x1E695DFD8] ams_PLISTClasses];
-  [v3 setClasses:v4 forSelector:sel_performBiometricTokenUpdateWithAccount_clientInfo_additionalDialogMetrics_shouldGenerateKeysOnly_shouldRequestConfirmation_userInitiated_completion_ argumentIndex:2 ofReply:0];
+  ams_PLISTClasses = [MEMORY[0x1E695DFD8] ams_PLISTClasses];
+  [v3 setClasses:ams_PLISTClasses forSelector:sel_performBiometricTokenUpdateWithAccount_clientInfo_additionalDialogMetrics_shouldGenerateKeysOnly_shouldRequestConfirmation_userInitiated_completion_ argumentIndex:2 ofReply:0];
 
   [v3 setClass:objc_opt_class() forSelector:sel_performBiometricTokenUpdateWithAccount_clientInfo_additionalDialogMetrics_shouldGenerateKeysOnly_shouldRequestConfirmation_userInitiated_completion_ argumentIndex:1 ofReply:1];
   [v3 setClass:objc_opt_class() forSelector:sel_performDevicePasscodeVerificationWithCompletion_ argumentIndex:1 ofReply:1];
-  v5 = [MEMORY[0x1E695DFD8] ams_PLISTClasses];
-  [v3 setClasses:v5 forSelector:sel_performRemoteSignInWithAuthenticationResults_signInContext_serviceTypes_clientInfo_completion_ argumentIndex:0 ofReply:0];
+  ams_PLISTClasses2 = [MEMORY[0x1E695DFD8] ams_PLISTClasses];
+  [v3 setClasses:ams_PLISTClasses2 forSelector:sel_performRemoteSignInWithAuthenticationResults_signInContext_serviceTypes_clientInfo_completion_ argumentIndex:0 ofReply:0];
 
   [v3 setClass:objc_opt_class() forSelector:sel_performRemoteSignInWithAuthenticationResults_signInContext_serviceTypes_clientInfo_completion_ argumentIndex:1 ofReply:0];
-  v6 = [MEMORY[0x1E695DFD8] ams_PLISTClasses];
-  [v3 setClasses:v6 forSelector:sel_performRemoteSignInWithAuthenticationResults_signInContext_serviceTypes_clientInfo_completion_ argumentIndex:2 ofReply:0];
+  ams_PLISTClasses3 = [MEMORY[0x1E695DFD8] ams_PLISTClasses];
+  [v3 setClasses:ams_PLISTClasses3 forSelector:sel_performRemoteSignInWithAuthenticationResults_signInContext_serviceTypes_clientInfo_completion_ argumentIndex:2 ofReply:0];
 
   [v3 setClass:objc_opt_class() forSelector:sel_performRemoteSignInWithAuthenticationResults_signInContext_serviceTypes_clientInfo_completion_ argumentIndex:3 ofReply:0];
-  v7 = [MEMORY[0x1E695DFD8] ams_PLISTClasses];
-  [v3 setClasses:v7 forSelector:sel_performRemoteSignInWithAuthenticationResults_signInContext_serviceTypes_clientInfo_completion_ argumentIndex:0 ofReply:1];
+  ams_PLISTClasses4 = [MEMORY[0x1E695DFD8] ams_PLISTClasses];
+  [v3 setClasses:ams_PLISTClasses4 forSelector:sel_performRemoteSignInWithAuthenticationResults_signInContext_serviceTypes_clientInfo_completion_ argumentIndex:0 ofReply:1];
 
   [v3 setClass:objc_opt_class() forSelector:sel_performRemoteSignInWithAuthenticationResults_signInContext_serviceTypes_clientInfo_completion_ argumentIndex:1 ofReply:1];
   [v3 setClass:objc_opt_class() forSelector:sel_signChallengeForRequest_completion_ argumentIndex:0 ofReply:0];
   [v3 setClass:objc_opt_class() forSelector:sel_signChallengeForRequest_completion_ argumentIndex:0 ofReply:1];
-  [a1 _setUpSecurityInterfaceApplePayClassic:v3];
-  [a1 _setUpSecurityInterfaceBiometricSelectors:v3];
-  [a1 _setUpSecurityInterfaceDeviceIdentitySelectors:v3];
-  [a1 _setUpSecurityInterfaceHandleResponseSelector:v3];
-  [a1 _setUpSecurityInterfaceSignedHeadersSelector:v3];
-  [a1 _setUpSecurityInterfaceSilentEnrollmentSelector:v3];
+  [self _setUpSecurityInterfaceApplePayClassic:v3];
+  [self _setUpSecurityInterfaceBiometricSelectors:v3];
+  [self _setUpSecurityInterfaceDeviceIdentitySelectors:v3];
+  [self _setUpSecurityInterfaceHandleResponseSelector:v3];
+  [self _setUpSecurityInterfaceSignedHeadersSelector:v3];
+  [self _setUpSecurityInterfaceSilentEnrollmentSelector:v3];
 
   return v3;
 }
 
-+ (void)_configureURLPresentationDelegateClasses:(id)a3
++ (void)_configureURLPresentationDelegateClasses:(id)classes
 {
-  v3 = a3;
-  [v3 setClass:objc_opt_class() forSelector:sel_handleAuthenticateRequest_completion_ argumentIndex:0 ofReply:0];
-  [v3 setClass:objc_opt_class() forSelector:sel_handleAuthenticateRequest_completion_ argumentIndex:0 ofReply:1];
-  [v3 setClass:objc_opt_class() forSelector:sel_handleAuthenticateRequest_completion_ argumentIndex:1 ofReply:1];
-  [v3 setClass:objc_opt_class() forSelector:sel_handleDialogRequest_completion_ argumentIndex:0 ofReply:0];
-  [v3 setClass:objc_opt_class() forSelector:sel_handleDialogRequest_completion_ argumentIndex:0 ofReply:1];
-  [v3 setClass:objc_opt_class() forSelector:sel_handleDialogRequest_completion_ argumentIndex:1 ofReply:1];
+  classesCopy = classes;
+  [classesCopy setClass:objc_opt_class() forSelector:sel_handleAuthenticateRequest_completion_ argumentIndex:0 ofReply:0];
+  [classesCopy setClass:objc_opt_class() forSelector:sel_handleAuthenticateRequest_completion_ argumentIndex:0 ofReply:1];
+  [classesCopy setClass:objc_opt_class() forSelector:sel_handleAuthenticateRequest_completion_ argumentIndex:1 ofReply:1];
+  [classesCopy setClass:objc_opt_class() forSelector:sel_handleDialogRequest_completion_ argumentIndex:0 ofReply:0];
+  [classesCopy setClass:objc_opt_class() forSelector:sel_handleDialogRequest_completion_ argumentIndex:0 ofReply:1];
+  [classesCopy setClass:objc_opt_class() forSelector:sel_handleDialogRequest_completion_ argumentIndex:1 ofReply:1];
 }
 
-+ (void)_setUpSecurityInterfaceApplePayClassic:(id)a3
++ (void)_setUpSecurityInterfaceApplePayClassic:(id)classic
 {
-  v9 = a3;
-  [v9 setClass:objc_opt_class() forSelector:sel_shouldAttemptApplePayWithCountryCode_paymentNetworks_completion_ argumentIndex:0 ofReply:0];
+  classicCopy = classic;
+  [classicCopy setClass:objc_opt_class() forSelector:sel_shouldAttemptApplePayWithCountryCode_paymentNetworks_completion_ argumentIndex:0 ofReply:0];
   v3 = MEMORY[0x1E695DFD8];
   v4 = objc_opt_class();
   v5 = [v3 setWithObjects:{v4, objc_opt_class(), 0}];
-  [v9 setClasses:v5 forSelector:sel_shouldAttemptApplePayWithCountryCode_paymentNetworks_completion_ argumentIndex:1 ofReply:0];
+  [classicCopy setClasses:v5 forSelector:sel_shouldAttemptApplePayWithCountryCode_paymentNetworks_completion_ argumentIndex:1 ofReply:0];
 
-  [v9 setClass:objc_opt_class() forSelector:sel_shouldAttemptApplePayWithCountryCode_paymentNetworks_completion_ argumentIndex:1 ofReply:1];
-  [v9 setClass:objc_opt_class() forSelector:sel_shouldAttemptApplePayWithAccount_options_countryCode_paymentNetworks_completion_ argumentIndex:0 ofReply:0];
-  [v9 setClass:objc_opt_class() forSelector:sel_shouldAttemptApplePayWithAccount_options_countryCode_paymentNetworks_completion_ argumentIndex:1 ofReply:0];
-  [v9 setClass:objc_opt_class() forSelector:sel_shouldAttemptApplePayWithAccount_options_countryCode_paymentNetworks_completion_ argumentIndex:2 ofReply:0];
+  [classicCopy setClass:objc_opt_class() forSelector:sel_shouldAttemptApplePayWithCountryCode_paymentNetworks_completion_ argumentIndex:1 ofReply:1];
+  [classicCopy setClass:objc_opt_class() forSelector:sel_shouldAttemptApplePayWithAccount_options_countryCode_paymentNetworks_completion_ argumentIndex:0 ofReply:0];
+  [classicCopy setClass:objc_opt_class() forSelector:sel_shouldAttemptApplePayWithAccount_options_countryCode_paymentNetworks_completion_ argumentIndex:1 ofReply:0];
+  [classicCopy setClass:objc_opt_class() forSelector:sel_shouldAttemptApplePayWithAccount_options_countryCode_paymentNetworks_completion_ argumentIndex:2 ofReply:0];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  [v9 setClasses:v8 forSelector:sel_shouldAttemptApplePayWithAccount_options_countryCode_paymentNetworks_completion_ argumentIndex:3 ofReply:0];
+  [classicCopy setClasses:v8 forSelector:sel_shouldAttemptApplePayWithAccount_options_countryCode_paymentNetworks_completion_ argumentIndex:3 ofReply:0];
 
-  [v9 setClass:objc_opt_class() forSelector:sel_shouldAttemptApplePayWithAccount_options_countryCode_paymentNetworks_completion_ argumentIndex:1 ofReply:1];
-  [v9 setClass:objc_opt_class() forSelector:sel_paymentServicesMerchantURLWithCompletion_ argumentIndex:0 ofReply:1];
-  [v9 setClass:objc_opt_class() forSelector:sel_paymentServicesMerchantURLWithCompletion_ argumentIndex:1 ofReply:1];
+  [classicCopy setClass:objc_opt_class() forSelector:sel_shouldAttemptApplePayWithAccount_options_countryCode_paymentNetworks_completion_ argumentIndex:1 ofReply:1];
+  [classicCopy setClass:objc_opt_class() forSelector:sel_paymentServicesMerchantURLWithCompletion_ argumentIndex:0 ofReply:1];
+  [classicCopy setClass:objc_opt_class() forSelector:sel_paymentServicesMerchantURLWithCompletion_ argumentIndex:1 ofReply:1];
 }
 
-+ (void)_setUpSecurityInterfaceBiometricSelectors:(id)a3
++ (void)_setUpSecurityInterfaceBiometricSelectors:(id)selectors
 {
-  v3 = a3;
-  [v3 setClass:objc_opt_class() forSelector:sel_deleteAllKeysWithCompletion_ argumentIndex:1 ofReply:1];
-  [v3 setClass:objc_opt_class() forSelector:sel_isActionSupportedForType_account_options_completion_ argumentIndex:1 ofReply:0];
-  [v3 setClass:objc_opt_class() forSelector:sel_isActionSupportedForType_account_options_completion_ argumentIndex:2 ofReply:0];
-  [v3 setClass:objc_opt_class() forSelector:sel_isActionSupportedForType_account_options_completion_ argumentIndex:1 ofReply:1];
-  [v3 setClass:objc_opt_class() forSelector:sel_isBiometricsAvailableForAccount_completion_ argumentIndex:0 ofReply:0];
-  [v3 setClass:objc_opt_class() forSelector:sel_isBiometricsAvailableForAccount_completion_ argumentIndex:1 ofReply:1];
-  [v3 setClass:objc_opt_class() forSelector:sel_isIdentityMapValidWithCompletion_ argumentIndex:1 ofReply:1];
-  [v3 setClass:objc_opt_class() forSelector:sel_saveIdentityMapWithCompletion_ argumentIndex:0 ofReply:1];
+  selectorsCopy = selectors;
+  [selectorsCopy setClass:objc_opt_class() forSelector:sel_deleteAllKeysWithCompletion_ argumentIndex:1 ofReply:1];
+  [selectorsCopy setClass:objc_opt_class() forSelector:sel_isActionSupportedForType_account_options_completion_ argumentIndex:1 ofReply:0];
+  [selectorsCopy setClass:objc_opt_class() forSelector:sel_isActionSupportedForType_account_options_completion_ argumentIndex:2 ofReply:0];
+  [selectorsCopy setClass:objc_opt_class() forSelector:sel_isActionSupportedForType_account_options_completion_ argumentIndex:1 ofReply:1];
+  [selectorsCopy setClass:objc_opt_class() forSelector:sel_isBiometricsAvailableForAccount_completion_ argumentIndex:0 ofReply:0];
+  [selectorsCopy setClass:objc_opt_class() forSelector:sel_isBiometricsAvailableForAccount_completion_ argumentIndex:1 ofReply:1];
+  [selectorsCopy setClass:objc_opt_class() forSelector:sel_isIdentityMapValidWithCompletion_ argumentIndex:1 ofReply:1];
+  [selectorsCopy setClass:objc_opt_class() forSelector:sel_saveIdentityMapWithCompletion_ argumentIndex:0 ofReply:1];
 }
 
-+ (void)_setUpSecurityInterfaceDeviceIdentitySelectors:(id)a3
++ (void)_setUpSecurityInterfaceDeviceIdentitySelectors:(id)selectors
 {
-  v6 = a3;
-  [v6 setClass:objc_opt_class() forSelector:sel_performClientCertChainRequestWithAccount_options_completion_ argumentIndex:0 ofReply:0];
-  [v6 setClass:objc_opt_class() forSelector:sel_performClientCertChainRequestWithAccount_options_completion_ argumentIndex:1 ofReply:0];
+  selectorsCopy = selectors;
+  [selectorsCopy setClass:objc_opt_class() forSelector:sel_performClientCertChainRequestWithAccount_options_completion_ argumentIndex:0 ofReply:0];
+  [selectorsCopy setClass:objc_opt_class() forSelector:sel_performClientCertChainRequestWithAccount_options_completion_ argumentIndex:1 ofReply:0];
   v3 = MEMORY[0x1E695DFD8];
   v4 = objc_opt_class();
   v5 = [v3 setWithObjects:{v4, objc_opt_class(), 0}];
-  [v6 setClasses:v5 forSelector:sel_performClientCertChainRequestWithAccount_options_completion_ argumentIndex:0 ofReply:1];
+  [selectorsCopy setClasses:v5 forSelector:sel_performClientCertChainRequestWithAccount_options_completion_ argumentIndex:0 ofReply:1];
 
-  [v6 setClass:objc_opt_class() forSelector:sel_performClientCertChainRequestWithAccount_options_completion_ argumentIndex:1 ofReply:1];
+  [selectorsCopy setClass:objc_opt_class() forSelector:sel_performClientCertChainRequestWithAccount_options_completion_ argumentIndex:1 ofReply:1];
 }
 
-+ (void)_setUpSecurityInterfaceHandleResponseSelector:(id)a3
++ (void)_setUpSecurityInterfaceHandleResponseSelector:(id)selector
 {
-  v3 = a3;
-  [v3 setClass:objc_opt_class() forSelector:sel_handleResponse_completion_ argumentIndex:0 ofReply:0];
-  [v3 setClass:objc_opt_class() forSelector:sel_handleResponse_completion_ argumentIndex:0 ofReply:1];
+  selectorCopy = selector;
+  [selectorCopy setClass:objc_opt_class() forSelector:sel_handleResponse_completion_ argumentIndex:0 ofReply:0];
+  [selectorCopy setClass:objc_opt_class() forSelector:sel_handleResponse_completion_ argumentIndex:0 ofReply:1];
 }
 
-+ (void)_setUpSecurityInterfaceSignedHeadersSelector:(id)a3
++ (void)_setUpSecurityInterfaceSignedHeadersSelector:(id)selector
 {
-  v4 = a3;
-  [v4 setClass:objc_opt_class() forSelector:sel_signedHeadersForRequest_buyParams_completion_ argumentIndex:0 ofReply:0];
-  [v4 setClass:objc_opt_class() forSelector:sel_signedHeadersForRequest_buyParams_completion_ argumentIndex:1 ofReply:0];
-  v3 = [MEMORY[0x1E695DFD8] ams_PLISTClasses];
-  [v4 setClasses:v3 forSelector:sel_signedHeadersForRequest_buyParams_completion_ argumentIndex:0 ofReply:1];
+  selectorCopy = selector;
+  [selectorCopy setClass:objc_opt_class() forSelector:sel_signedHeadersForRequest_buyParams_completion_ argumentIndex:0 ofReply:0];
+  [selectorCopy setClass:objc_opt_class() forSelector:sel_signedHeadersForRequest_buyParams_completion_ argumentIndex:1 ofReply:0];
+  ams_PLISTClasses = [MEMORY[0x1E695DFD8] ams_PLISTClasses];
+  [selectorCopy setClasses:ams_PLISTClasses forSelector:sel_signedHeadersForRequest_buyParams_completion_ argumentIndex:0 ofReply:1];
 
-  [v4 setClass:objc_opt_class() forSelector:sel_signedHeadersForRequest_buyParams_completion_ argumentIndex:1 ofReply:1];
+  [selectorCopy setClass:objc_opt_class() forSelector:sel_signedHeadersForRequest_buyParams_completion_ argumentIndex:1 ofReply:1];
 }
 
-+ (void)_setUpSecurityInterfaceSilentEnrollmentSelector:(id)a3
++ (void)_setUpSecurityInterfaceSilentEnrollmentSelector:(id)selector
 {
-  v3 = a3;
-  [v3 setClass:objc_opt_class() forSelector:sel_performSilentEnrollmentWithRequest_logKey_completion_ argumentIndex:0 ofReply:0];
-  [v3 setClass:objc_opt_class() forSelector:sel_performSilentEnrollmentWithRequest_logKey_completion_ argumentIndex:1 ofReply:0];
-  [v3 setClass:objc_opt_class() forSelector:sel_performSilentEnrollmentWithRequest_logKey_completion_ argumentIndex:0 ofReply:1];
-  [v3 setClass:objc_opt_class() forSelector:sel_performSilentEnrollmentWithRequest_logKey_completion_ argumentIndex:1 ofReply:1];
+  selectorCopy = selector;
+  [selectorCopy setClass:objc_opt_class() forSelector:sel_performSilentEnrollmentWithRequest_logKey_completion_ argumentIndex:0 ofReply:0];
+  [selectorCopy setClass:objc_opt_class() forSelector:sel_performSilentEnrollmentWithRequest_logKey_completion_ argumentIndex:1 ofReply:0];
+  [selectorCopy setClass:objc_opt_class() forSelector:sel_performSilentEnrollmentWithRequest_logKey_completion_ argumentIndex:0 ofReply:1];
+  [selectorCopy setClass:objc_opt_class() forSelector:sel_performSilentEnrollmentWithRequest_logKey_completion_ argumentIndex:1 ofReply:1];
 }
 
 @end

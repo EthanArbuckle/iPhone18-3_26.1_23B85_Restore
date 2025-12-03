@@ -1,17 +1,17 @@
 @interface LSSXPCService
-- (id)initWithTargetQueue:(void *)a3 subscriber:;
-- (void)_onQueue_resendLastTo:(uint64_t)a1;
-- (void)_onQueue_updateLightDirection:(uint64_t)a1;
+- (id)initWithTargetQueue:(void *)queue subscriber:;
+- (void)_onQueue_resendLastTo:(uint64_t)to;
+- (void)_onQueue_updateLightDirection:(uint64_t)direction;
 - (void)_start;
 - (void)dealloc;
-- (void)updateLightDirection:(uint64_t)a1;
+- (void)updateLightDirection:(uint64_t)direction;
 @end
 
 @implementation LSSXPCService
 
 - (void)_start
 {
-  if (a1)
+  if (self)
   {
     if (qword_280D2F5E0 == -1)
     {
@@ -19,15 +19,15 @@
       if (!os_log_type_enabled(_MergedGlobals_12, OS_LOG_TYPE_DEFAULT))
       {
 LABEL_5:
-        objc_initWeak(buf, a1);
-        v3 = a1[1];
+        objc_initWeak(buf, self);
+        v3 = self[1];
         handler[0] = MEMORY[0x277D85DD0];
         handler[1] = 3221225472;
         handler[2] = __23__LSSXPCService__start__block_invoke;
         handler[3] = &unk_279812A60;
         objc_copyWeak(&v5, buf);
         xpc_connection_set_event_handler(v3, handler);
-        xpc_connection_activate(a1[1]);
+        xpc_connection_activate(self[1]);
         objc_destroyWeak(&v5);
         objc_destroyWeak(buf);
         return;
@@ -333,61 +333,61 @@ LABEL_44:
   [(LSSXPCService *)&v5 dealloc];
 }
 
-- (void)updateLightDirection:(uint64_t)a1
+- (void)updateLightDirection:(uint64_t)direction
 {
   v3[17] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (direction)
   {
     if (*__src < 0.0)
     {
       [LSSXPCService updateLightDirection:];
     }
 
-    [(LSSXPCService *)a1 updateLightDirection:v3, __src];
+    [(LSSXPCService *)direction updateLightDirection:v3, __src];
   }
 
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (id)initWithTargetQueue:(void *)a3 subscriber:
+- (id)initWithTargetQueue:(void *)queue subscriber:
 {
   v24 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  queueCopy = queue;
+  if (self)
   {
-    v22.receiver = a1;
+    v22.receiver = self;
     v22.super_class = LSSXPCService;
-    a1 = objc_msgSendSuper2(&v22, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v22, sel_init);
+    if (self)
     {
       v7 = [MEMORY[0x277CBEB58] set];
-      v8 = *(a1 + 2);
-      *(a1 + 2) = v7;
+      v8 = *(self + 2);
+      *(self + 2) = v7;
 
-      objc_storeWeak(a1 + 17, v6);
+      objc_storeWeak(self + 17, queueCopy);
       v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v10 = dispatch_queue_create_with_target_V2("com.apple.LightSourceService", v9, v5);
-      v11 = *(a1 + 16);
-      *(a1 + 16) = v10;
+      v11 = *(self + 16);
+      *(self + 16) = v10;
 
       empty = xpc_dictionary_create_empty();
-      v13 = *(a1 + 3);
-      *(a1 + 3) = empty;
+      v13 = *(self + 3);
+      *(self + 3) = empty;
 
-      *(a1 + 4) = 0xBFF0000000000000;
+      *(self + 4) = 0xBFF0000000000000;
       [@"com.apple.lightsourcesupport.listener" UTF8String];
       entitlement_exists = xpc_peer_requirement_create_entitlement_exists();
       if (entitlement_exists)
       {
         v15 = entitlement_exists;
-        mach_service = xpc_connection_create_mach_service([@"com.apple.lightsourcesupport.lightstate" UTF8String], *(a1 + 16), 1uLL);
-        v17 = *(a1 + 1);
-        *(a1 + 1) = mach_service;
+        mach_service = xpc_connection_create_mach_service([@"com.apple.lightsourcesupport.lightstate" UTF8String], *(self + 16), 1uLL);
+        v17 = *(self + 1);
+        *(self + 1) = mach_service;
 
-        v18 = *(a1 + 1);
+        v18 = *(self + 1);
         xpc_connection_set_peer_requirement();
-        [(LSSXPCService *)a1 _start];
+        [(LSSXPCService *)self _start];
       }
 
       else
@@ -404,23 +404,23 @@ LABEL_44:
           _os_log_fault_impl(&dword_255E8B000, v19, OS_LOG_TYPE_FAULT, "failed to create peer requirement", buf, 2u);
         }
 
-        a1 = 0;
+        self = 0;
       }
     }
   }
 
   v20 = *MEMORY[0x277D85DE8];
-  return a1;
+  return self;
 }
 
-- (void)_onQueue_resendLastTo:(uint64_t)a1
+- (void)_onQueue_resendLastTo:(uint64_t)to
 {
   v9 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (to)
   {
-    dispatch_assert_queue_V2(*(a1 + 128));
-    if (*(a1 + 32) >= 0.0)
+    dispatch_assert_queue_V2(*(to + 128));
+    if (*(to + 32) >= 0.0)
     {
       if (qword_280D2F5E0 != -1)
       {
@@ -434,10 +434,10 @@ LABEL_44:
         _os_signpost_emit_with_name_impl(&dword_255E8B000, v4, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "new connection", &unk_255E9DB2B, v8, 2u);
       }
 
-      v5 = *(a1 + 24);
-      memcpy(v8, (a1 + 32), 0x60uLL);
+      v5 = *(to + 24);
+      memcpy(v8, (to + 32), 0x60uLL);
       xpc_dictionary_set_data(v5, "s", v8, 0x60uLL);
-      xpc_connection_send_message(v3, *(a1 + 24));
+      xpc_connection_send_message(v3, *(to + 24));
       if (qword_280D2F5E0 != -1)
       {
         dispatch_once(&qword_280D2F5E0, &__block_literal_global_12);
@@ -455,14 +455,14 @@ LABEL_44:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_onQueue_updateLightDirection:(uint64_t)a1
+- (void)_onQueue_updateLightDirection:(uint64_t)direction
 {
   v29 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (direction)
   {
-    dispatch_assert_queue_V2(*(a1 + 128));
-    memcpy((a1 + 32), a2, 0x60uLL);
-    if ([*(a1 + 16) count])
+    dispatch_assert_queue_V2(*(direction + 128));
+    memcpy((direction + 32), a2, 0x60uLL);
+    if ([*(direction + 16) count])
     {
       if (qword_280D2F5E0 != -1)
       {
@@ -477,14 +477,14 @@ LABEL_44:
         _os_signpost_emit_with_name_impl(v5, v4, OS_SIGNPOST_INTERVAL_BEGIN, v6, v7, v8, v9, 2u);
       }
 
-      v10 = *(a1 + 24);
+      v10 = *(direction + 24);
       memcpy(__dst, a2, 0x60uLL);
       xpc_dictionary_set_data(v10, "s", __dst, 0x60uLL);
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v11 = *(a1 + 16);
+      v11 = *(direction + 16);
       v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v12)
       {
@@ -499,7 +499,7 @@ LABEL_44:
               objc_enumerationMutation(v11);
             }
 
-            xpc_connection_send_message(*(*(&v23 + 1) + 8 * i), *(a1 + 24));
+            xpc_connection_send_message(*(*(&v23 + 1) + 8 * i), *(direction + 24));
           }
 
           v13 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];

@@ -1,10 +1,10 @@
 @interface CPSIncomingCallsResponse
-- (CPSIncomingCallsResponse)initWithCoder:(id)a3;
+- (CPSIncomingCallsResponse)initWithCoder:(id)coder;
 @end
 
 @implementation CPSIncomingCallsResponse
 
-- (CPSIncomingCallsResponse)initWithCoder:(id)a3
+- (CPSIncomingCallsResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = CPSIncomingCallsResponse;

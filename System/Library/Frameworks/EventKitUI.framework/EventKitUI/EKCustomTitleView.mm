@@ -1,19 +1,19 @@
 @interface EKCustomTitleView
-- (CGRect)_centerAndClipFrame:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (EKCustomTitleView)initWithTitle:(id)a3 subTitle:(id)a4 eventViewController:(id)a5;
-- (id)accessibilityElementAtIndex:(int64_t)a3;
-- (void)animateInWithCompletionBlock:(id)a3;
-- (void)animateOutWithCompletionBlock:(id)a3;
+- (CGRect)_centerAndClipFrame:(CGRect)frame;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (EKCustomTitleView)initWithTitle:(id)title subTitle:(id)subTitle eventViewController:(id)controller;
+- (id)accessibilityElementAtIndex:(int64_t)index;
+- (void)animateInWithCompletionBlock:(id)block;
+- (void)animateOutWithCompletionBlock:(id)block;
 - (void)layoutSubviews;
 @end
 
 @implementation EKCustomTitleView
 
-- (EKCustomTitleView)initWithTitle:(id)a3 subTitle:(id)a4 eventViewController:(id)a5
+- (EKCustomTitleView)initWithTitle:(id)title subTitle:(id)subTitle eventViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  titleCopy = title;
+  subTitleCopy = subTitle;
   v32.receiver = self;
   v32.super_class = EKCustomTitleView;
   v9 = [(EKCustomTitleView *)&v32 init];
@@ -23,13 +23,13 @@
     originalTitle = v9->_originalTitle;
     v9->_originalTitle = v10;
 
-    [(UILabel *)v9->_originalTitle setText:v7];
+    [(UILabel *)v9->_originalTitle setText:titleCopy];
     v12 = *MEMORY[0x1E69DB980];
     v13 = [MEMORY[0x1E69DB878] systemFontOfSize:17.0 weight:*MEMORY[0x1E69DB980]];
     [(UILabel *)v9->_originalTitle setFont:v13];
 
-    v14 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v9->_originalTitle setTextColor:v14];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v9->_originalTitle setTextColor:labelColor];
 
     [(UILabel *)v9->_originalTitle setTextAlignment:1];
     [(EKCustomTitleView *)v9 addSubview:v9->_originalTitle];
@@ -46,12 +46,12 @@
     title = v9->_title;
     v9->_title = v19;
 
-    [(UILabel *)v9->_title setText:v7];
+    [(UILabel *)v9->_title setText:titleCopy];
     v21 = [MEMORY[0x1E69DB878] systemFontOfSize:15.0 weight:v12];
     [(UILabel *)v9->_title setFont:v21];
 
-    v22 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v9->_title setTextColor:v22];
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v9->_title setTextColor:labelColor2];
 
     [(UILabel *)v9->_title setTextAlignment:1];
     [(EKCustomTitleView *)v9 addSubview:v9->_title];
@@ -68,12 +68,12 @@
     subTitle = v9->_subTitle;
     v9->_subTitle = v27;
 
-    [(UILabel *)v9->_subTitle setText:v8];
+    [(UILabel *)v9->_subTitle setText:subTitleCopy];
     v29 = [MEMORY[0x1E69DB878] systemFontOfSize:11.0 weight:*MEMORY[0x1E69DB970]];
     [(UILabel *)v9->_subTitle setFont:v29];
 
-    v30 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v9->_subTitle setTextColor:v30];
+    labelColor3 = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v9->_subTitle setTextColor:labelColor3];
 
     [(UILabel *)v9->_subTitle setTextAlignment:1];
     [(UILabel *)v9->_subTitle setAlpha:0.0];
@@ -85,10 +85,10 @@
   return v9;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(UILabel *)self->_originalTitle sizeThatFits:?];
   v7 = v6;
   [(UILabel *)self->_subTitle sizeThatFits:width, height];
@@ -103,14 +103,14 @@
   return result;
 }
 
-- (CGRect)_centerAndClipFrame:(CGRect)a3
+- (CGRect)_centerAndClipFrame:(CGRect)frame
 {
-  rect_16 = a3.origin.y;
-  rect_24 = a3.size.height;
-  width = a3.size.width;
-  rect = a3.origin.x;
-  v5 = [(EKCustomTitleView *)self window];
-  [v5 bounds];
+  rect_16 = frame.origin.y;
+  rect_24 = frame.size.height;
+  width = frame.size.width;
+  rect = frame.origin.x;
+  window = [(EKCustomTitleView *)self window];
+  [window bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -145,9 +145,9 @@
   v24 = MinX + (v22 - CGRectGetWidth(v46)) * 0.5;
   [(EKCustomTitleView *)self contentScaleFactor];
   v26 = EKRoundWithScale(v24, v25);
-  v27 = [(EKCustomTitleView *)self window];
+  window2 = [(EKCustomTitleView *)self window];
   v28 = 0.0;
-  [v27 convertPoint:self toView:{v26, 0.0}];
+  [window2 convertPoint:self toView:{v26, 0.0}];
   v30 = v29;
 
   v38 = v30;
@@ -206,17 +206,17 @@
   v52.receiver = self;
   v52.super_class = EKCustomTitleView;
   [(EKCustomTitleView *)&v52 layoutSubviews];
-  v7 = [(EKCustomTitleView *)self window];
+  window = [(EKCustomTitleView *)self window];
 
-  if (v7)
+  if (window)
   {
     if (self->_showSubtitle)
     {
-      v8 = [(UILabel *)self->_title font];
+      font = [(UILabel *)self->_title font];
       [(UILabel *)self->_title sizeThatFits:v4, v6];
       v10 = v9;
       v12 = v11;
-      [v8 ascender];
+      [font ascender];
       v14 = v13;
       [(EKCustomTitleView *)self contentScaleFactor];
       v16 = 19.0 - EKRoundWithScale(v14, v15);
@@ -226,7 +226,7 @@
 
     else
     {
-      v8 = [(UILabel *)self->_originalTitle font];
+      font = [(UILabel *)self->_originalTitle font];
       [(UILabel *)self->_originalTitle sizeThatFits:v4, v6];
       v10 = v19;
       v12 = v20;
@@ -244,10 +244,10 @@
     [(UILabel *)self->_subTitle sizeThatFits:v4, v6];
     v25 = v24;
     v27 = v26;
-    [v8 descender];
+    [font descender];
     v29 = v28;
-    v30 = [(UILabel *)self->_subTitle font];
-    [v30 ascender];
+    font2 = [(UILabel *)self->_subTitle font];
+    [font2 ascender];
     v32 = v31 - v29;
     [(EKCustomTitleView *)self contentScaleFactor];
     v34 = 16.0 - EKRoundWithScale(v32, v33);
@@ -274,16 +274,16 @@
   }
 }
 
-- (void)animateInWithCompletionBlock:(id)a3
+- (void)animateInWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(EKCustomTitleView *)self layoutIfNeeded];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __50__EKCustomTitleView_animateInWithCompletionBlock___block_invoke;
   v5[3] = &unk_1E843EC60;
   v5[4] = self;
-  [MEMORY[0x1E69DD250] animateWithDuration:v5 animations:v4 completion:0.300000012];
+  [MEMORY[0x1E69DD250] animateWithDuration:v5 animations:blockCopy completion:0.300000012];
 }
 
 uint64_t __50__EKCustomTitleView_animateInWithCompletionBlock___block_invoke(uint64_t a1)
@@ -295,16 +295,16 @@ uint64_t __50__EKCustomTitleView_animateInWithCompletionBlock___block_invoke(uin
   return [v2 layoutIfNeeded];
 }
 
-- (void)animateOutWithCompletionBlock:(id)a3
+- (void)animateOutWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(EKCustomTitleView *)self layoutIfNeeded];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __51__EKCustomTitleView_animateOutWithCompletionBlock___block_invoke;
   v5[3] = &unk_1E843EC60;
   v5[4] = self;
-  [MEMORY[0x1E69DD250] animateWithDuration:v5 animations:v4 completion:0.300000012];
+  [MEMORY[0x1E69DD250] animateWithDuration:v5 animations:blockCopy completion:0.300000012];
 }
 
 uint64_t __51__EKCustomTitleView_animateOutWithCompletionBlock___block_invoke(uint64_t a1)
@@ -316,10 +316,10 @@ uint64_t __51__EKCustomTitleView_animateOutWithCompletionBlock___block_invoke(ui
   return [v2 layoutIfNeeded];
 }
 
-- (id)accessibilityElementAtIndex:(int64_t)a3
+- (id)accessibilityElementAtIndex:(int64_t)index
 {
   v3 = &OBJC_IVAR___EKCustomTitleView__subTitle;
-  if (!a3)
+  if (!index)
   {
     v3 = &OBJC_IVAR___EKCustomTitleView__title;
   }

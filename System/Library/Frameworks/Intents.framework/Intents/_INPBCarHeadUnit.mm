@@ -1,58 +1,58 @@
 @interface _INPBCarHeadUnit
-- (BOOL)isEqual:(id)a3;
-- (_INPBCarHeadUnit)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBCarHeadUnit)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBluetoothIdentifier:(id)a3;
-- (void)setIAP2Identifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBluetoothIdentifier:(id)identifier;
+- (void)setIAP2Identifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBCarHeadUnit
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_bluetoothIdentifier)
   {
-    v4 = [(_INPBCarHeadUnit *)self bluetoothIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"bluetoothIdentifier"];
+    bluetoothIdentifier = [(_INPBCarHeadUnit *)self bluetoothIdentifier];
+    v5 = [bluetoothIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"bluetoothIdentifier"];
   }
 
   if (self->_iAP2Identifier)
   {
-    v6 = [(_INPBCarHeadUnit *)self iAP2Identifier];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"iAP2Identifier"];
+    iAP2Identifier = [(_INPBCarHeadUnit *)self iAP2Identifier];
+    v7 = [iAP2Identifier copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"iAP2Identifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_INPBCarHeadUnit *)self bluetoothIdentifier];
-  v6 = [v4 bluetoothIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  bluetoothIdentifier = [(_INPBCarHeadUnit *)self bluetoothIdentifier];
+  bluetoothIdentifier2 = [equalCopy bluetoothIdentifier];
+  if ((bluetoothIdentifier != 0) == (bluetoothIdentifier2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_INPBCarHeadUnit *)self bluetoothIdentifier];
-  if (v7)
+  bluetoothIdentifier3 = [(_INPBCarHeadUnit *)self bluetoothIdentifier];
+  if (bluetoothIdentifier3)
   {
-    v8 = v7;
-    v9 = [(_INPBCarHeadUnit *)self bluetoothIdentifier];
-    v10 = [v4 bluetoothIdentifier];
-    v11 = [v9 isEqual:v10];
+    v8 = bluetoothIdentifier3;
+    bluetoothIdentifier4 = [(_INPBCarHeadUnit *)self bluetoothIdentifier];
+    bluetoothIdentifier5 = [equalCopy bluetoothIdentifier];
+    v11 = [bluetoothIdentifier4 isEqual:bluetoothIdentifier5];
 
     if (!v11)
     {
@@ -64,12 +64,12 @@
   {
   }
 
-  v5 = [(_INPBCarHeadUnit *)self iAP2Identifier];
-  v6 = [v4 iAP2Identifier];
-  if ((v5 != 0) != (v6 == 0))
+  bluetoothIdentifier = [(_INPBCarHeadUnit *)self iAP2Identifier];
+  bluetoothIdentifier2 = [equalCopy iAP2Identifier];
+  if ((bluetoothIdentifier != 0) != (bluetoothIdentifier2 == 0))
   {
-    v12 = [(_INPBCarHeadUnit *)self iAP2Identifier];
-    if (!v12)
+    iAP2Identifier = [(_INPBCarHeadUnit *)self iAP2Identifier];
+    if (!iAP2Identifier)
     {
 
 LABEL_15:
@@ -77,10 +77,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_INPBCarHeadUnit *)self iAP2Identifier];
-    v15 = [v4 iAP2Identifier];
-    v16 = [v14 isEqual:v15];
+    v13 = iAP2Identifier;
+    iAP2Identifier2 = [(_INPBCarHeadUnit *)self iAP2Identifier];
+    iAP2Identifier3 = [equalCopy iAP2Identifier];
+    v16 = [iAP2Identifier2 isEqual:iAP2Identifier3];
 
     if (v16)
     {
@@ -100,74 +100,74 @@ LABEL_13:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBCarHeadUnit allocWithZone:](_INPBCarHeadUnit init];
-  v6 = [(NSString *)self->_bluetoothIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_bluetoothIdentifier copyWithZone:zone];
   [(_INPBCarHeadUnit *)v5 setBluetoothIdentifier:v6];
 
-  v7 = [(NSString *)self->_iAP2Identifier copyWithZone:a3];
+  v7 = [(NSString *)self->_iAP2Identifier copyWithZone:zone];
   [(_INPBCarHeadUnit *)v5 setIAP2Identifier:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBCarHeadUnit *)self data];
+  coderCopy = coder;
+  data = [(_INPBCarHeadUnit *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBCarHeadUnit)initWithCoder:(id)a3
+- (_INPBCarHeadUnit)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBCarHeadUnit *)self initWithData:v6];
+    self = [(_INPBCarHeadUnit *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(_INPBCarHeadUnit *)self bluetoothIdentifier];
+  toCopy = to;
+  bluetoothIdentifier = [(_INPBCarHeadUnit *)self bluetoothIdentifier];
 
-  if (v4)
+  if (bluetoothIdentifier)
   {
     bluetoothIdentifier = self->_bluetoothIdentifier;
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_INPBCarHeadUnit *)self iAP2Identifier];
+  iAP2Identifier = [(_INPBCarHeadUnit *)self iAP2Identifier];
 
-  if (v6)
+  if (iAP2Identifier)
   {
     iAP2Identifier = self->_iAP2Identifier;
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setIAP2Identifier:(id)a3
+- (void)setIAP2Identifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   iAP2Identifier = self->_iAP2Identifier;
   self->_iAP2Identifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, iAP2Identifier);
 }
 
-- (void)setBluetoothIdentifier:(id)a3
+- (void)setBluetoothIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   bluetoothIdentifier = self->_bluetoothIdentifier;
   self->_bluetoothIdentifier = v4;
 

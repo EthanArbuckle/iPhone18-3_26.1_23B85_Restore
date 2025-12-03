@@ -1,14 +1,14 @@
 @interface HMDLegacyModel
-+ (id)createWithLegacyRecord:(id)a3 modelContainer:(id)a4 error:(id *)a5;
-- (id)encodeWithExistingRecord:(id)a3 cloudZone:(id)a4 modelContainer:(id)a5 error:(id *)a6;
++ (id)createWithLegacyRecord:(id)record modelContainer:(id)container error:(id *)error;
+- (id)encodeWithExistingRecord:(id)record cloudZone:(id)zone modelContainer:(id)container error:(id *)error;
 @end
 
 @implementation HMDLegacyModel
 
-+ (id)createWithLegacyRecord:(id)a3 modelContainer:(id)a4 error:(id *)a5
++ (id)createWithLegacyRecord:(id)record modelContainer:(id)container error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  recordCopy = record;
+  containerCopy = container;
   v9 = MEMORY[0x277CBEAD8];
   v10 = *MEMORY[0x277CBE658];
   v11 = MEMORY[0x277CCACA8];
@@ -20,11 +20,11 @@
   objc_exception_throw(v14);
 }
 
-- (id)encodeWithExistingRecord:(id)a3 cloudZone:(id)a4 modelContainer:(id)a5 error:(id *)a6
+- (id)encodeWithExistingRecord:(id)record cloudZone:(id)zone modelContainer:(id)container error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  recordCopy = record;
+  zoneCopy = zone;
+  containerCopy = container;
   v12 = MEMORY[0x277CBEAD8];
   v13 = *MEMORY[0x277CBE658];
   v14 = MEMORY[0x277CCACA8];

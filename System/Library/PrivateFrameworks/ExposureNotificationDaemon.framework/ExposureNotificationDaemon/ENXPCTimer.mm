@@ -1,9 +1,9 @@
 @interface ENXPCTimer
-- (ENXPCTimer)initWithName:(id)a3 date:(id)a4 gracePeriod:(double)a5 cadence:(unint64_t)a6 priority:(int64_t)a7 options:(unint64_t)a8 block:(id)a9;
-- (ENXPCTimer)initWithName:(id)a3 date:(id)a4 gracePeriod:(double)a5 priority:(int64_t)a6 options:(unint64_t)a7 block:(id)a8;
-- (ENXPCTimer)initWithName:(id)a3 delay:(double)a4 gracePeriod:(double)a5 cadence:(unint64_t)a6 priority:(int64_t)a7 options:(unint64_t)a8 block:(id)a9;
-- (ENXPCTimer)initWithName:(id)a3 delay:(double)a4 gracePeriod:(double)a5 priority:(int64_t)a6 options:(unint64_t)a7 block:(id)a8;
-- (ENXPCTimer)initWithName:(id)a3 timeInterval:(double)a4 priority:(int64_t)a5 options:(unint64_t)a6 block:(id)a7;
+- (ENXPCTimer)initWithName:(id)name date:(id)date gracePeriod:(double)period cadence:(unint64_t)cadence priority:(int64_t)priority options:(unint64_t)options block:(id)block;
+- (ENXPCTimer)initWithName:(id)name date:(id)date gracePeriod:(double)period priority:(int64_t)priority options:(unint64_t)options block:(id)block;
+- (ENXPCTimer)initWithName:(id)name delay:(double)delay gracePeriod:(double)period cadence:(unint64_t)cadence priority:(int64_t)priority options:(unint64_t)options block:(id)block;
+- (ENXPCTimer)initWithName:(id)name delay:(double)delay gracePeriod:(double)period priority:(int64_t)priority options:(unint64_t)options block:(id)block;
+- (ENXPCTimer)initWithName:(id)name timeInterval:(double)interval priority:(int64_t)priority options:(unint64_t)options block:(id)block;
 - (id)activityHandler;
 - (id)criteria;
 - (id)description;
@@ -14,70 +14,70 @@
 
 @implementation ENXPCTimer
 
-- (ENXPCTimer)initWithName:(id)a3 date:(id)a4 gracePeriod:(double)a5 priority:(int64_t)a6 options:(unint64_t)a7 block:(id)a8
+- (ENXPCTimer)initWithName:(id)name date:(id)date gracePeriod:(double)period priority:(int64_t)priority options:(unint64_t)options block:(id)block
 {
-  v14 = a8;
-  v15 = a4;
-  v16 = a3;
-  [v15 timeIntervalSinceNow];
-  v18 = [(ENXPCTimer *)self initWithName:v16 date:v15 gracePeriod:v17 cadence:a6 priority:a7 options:v14 block:a5];
+  blockCopy = block;
+  dateCopy = date;
+  nameCopy = name;
+  [dateCopy timeIntervalSinceNow];
+  v18 = [(ENXPCTimer *)self initWithName:nameCopy date:dateCopy gracePeriod:v17 cadence:priority priority:options options:blockCopy block:period];
 
   return v18;
 }
 
-- (ENXPCTimer)initWithName:(id)a3 date:(id)a4 gracePeriod:(double)a5 cadence:(unint64_t)a6 priority:(int64_t)a7 options:(unint64_t)a8 block:(id)a9
+- (ENXPCTimer)initWithName:(id)name date:(id)date gracePeriod:(double)period cadence:(unint64_t)cadence priority:(int64_t)priority options:(unint64_t)options block:(id)block
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a9;
+  nameCopy = name;
+  dateCopy = date;
+  blockCopy = block;
   v22.receiver = self;
   v22.super_class = ENXPCTimer;
   v19 = [(ENXPCTimer *)&v22 init];
   v20 = v19;
   if (v19)
   {
-    [(ENXPCTimer *)v19 setName:v16];
-    [(ENXPCTimer *)v20 setDate:v17];
-    [(ENXPCTimer *)v20 setGracePeriod:a5];
-    [(ENXPCTimer *)v20 setPriority:a7];
-    [(ENXPCTimer *)v20 setOptions:a8];
-    [(ENXPCTimer *)v20 setCadence:a6 & (([(ENXPCTimer *)v20 options]<< 50) >> 63)];
-    [(ENXPCTimer *)v20 setBlock:v18];
+    [(ENXPCTimer *)v19 setName:nameCopy];
+    [(ENXPCTimer *)v20 setDate:dateCopy];
+    [(ENXPCTimer *)v20 setGracePeriod:period];
+    [(ENXPCTimer *)v20 setPriority:priority];
+    [(ENXPCTimer *)v20 setOptions:options];
+    [(ENXPCTimer *)v20 setCadence:cadence & (([(ENXPCTimer *)v20 options]<< 50) >> 63)];
+    [(ENXPCTimer *)v20 setBlock:blockCopy];
     [(ENXPCTimer *)v20 handleActivity];
   }
 
   return v20;
 }
 
-- (ENXPCTimer)initWithName:(id)a3 delay:(double)a4 gracePeriod:(double)a5 cadence:(unint64_t)a6 priority:(int64_t)a7 options:(unint64_t)a8 block:(id)a9
+- (ENXPCTimer)initWithName:(id)name delay:(double)delay gracePeriod:(double)period cadence:(unint64_t)cadence priority:(int64_t)priority options:(unint64_t)options block:(id)block
 {
   v16 = MEMORY[0x277CBEAA0];
-  v17 = a9;
-  v18 = a3;
-  v19 = [v16 dateWithTimeIntervalSinceNow:a4];
-  v20 = [(ENXPCTimer *)self initWithName:v18 date:v19 gracePeriod:a6 cadence:a7 priority:a8 options:v17 block:a5];
+  blockCopy = block;
+  nameCopy = name;
+  v19 = [v16 dateWithTimeIntervalSinceNow:delay];
+  v20 = [(ENXPCTimer *)self initWithName:nameCopy date:v19 gracePeriod:cadence cadence:priority priority:options options:blockCopy block:period];
 
   return v20;
 }
 
-- (ENXPCTimer)initWithName:(id)a3 delay:(double)a4 gracePeriod:(double)a5 priority:(int64_t)a6 options:(unint64_t)a7 block:(id)a8
+- (ENXPCTimer)initWithName:(id)name delay:(double)delay gracePeriod:(double)period priority:(int64_t)priority options:(unint64_t)options block:(id)block
 {
   v14 = MEMORY[0x277CBEAA0];
-  v15 = a8;
-  v16 = a3;
-  v17 = [v14 dateWithTimeIntervalSinceNow:a4];
-  v18 = [(ENXPCTimer *)self initWithName:v16 date:v17 gracePeriod:a6 priority:a7 options:v15 block:a5];
+  blockCopy = block;
+  nameCopy = name;
+  v17 = [v14 dateWithTimeIntervalSinceNow:delay];
+  v18 = [(ENXPCTimer *)self initWithName:nameCopy date:v17 gracePeriod:priority priority:options options:blockCopy block:period];
 
   return v18;
 }
 
-- (ENXPCTimer)initWithName:(id)a3 timeInterval:(double)a4 priority:(int64_t)a5 options:(unint64_t)a6 block:(id)a7
+- (ENXPCTimer)initWithName:(id)name timeInterval:(double)interval priority:(int64_t)priority options:(unint64_t)options block:(id)block
 {
   v12 = MEMORY[0x277CBEAA0];
-  v13 = a7;
-  v14 = a3;
-  v15 = [v12 dateWithTimeIntervalSinceNow:a4];
-  v16 = [(ENXPCTimer *)self initWithName:v14 date:v15 gracePeriod:a5 priority:a6 options:v13 block:0.0];
+  blockCopy = block;
+  nameCopy = name;
+  v15 = [v12 dateWithTimeIntervalSinceNow:interval];
+  v16 = [(ENXPCTimer *)self initWithName:nameCopy date:v15 gracePeriod:priority priority:options options:blockCopy block:0.0];
 
   return v16;
 }
@@ -85,17 +85,17 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA0];
-  v4 = [(ENXPCTimer *)self name];
-  v5 = [(ENXPCTimer *)self criteria];
-  v6 = [v3 stringWithFormat:@"EN XPC Activity: %@, %@", v4, v5];
+  name = [(ENXPCTimer *)self name];
+  criteria = [(ENXPCTimer *)self criteria];
+  v6 = [v3 stringWithFormat:@"EN XPC Activity: %@, %@", name, criteria];
 
   return v6;
 }
 
 - (id)criteria
 {
-  v3 = [(ENXPCTimer *)self date];
-  [v3 timeIntervalSinceNow];
+  date = [(ENXPCTimer *)self date];
+  [date timeIntervalSinceNow];
   v5 = v4;
 
   v6 = 0.0;
@@ -108,29 +108,29 @@
   [(ENXPCTimer *)self gracePeriod];
   v9 = v8;
   v10 = xpc_dictionary_create(0, 0, 0);
-  v11 = [(ENXPCTimer *)self options];
-  xpc_dictionary_set_BOOL(v10, *MEMORY[0x277D86360], (v11 & 0x2000) != 0);
+  options = [(ENXPCTimer *)self options];
+  xpc_dictionary_set_BOOL(v10, *MEMORY[0x277D86360], (options & 0x2000) != 0);
   xpc_dictionary_set_int64(v10, *MEMORY[0x277D86250], v7);
   xpc_dictionary_set_int64(v10, *MEMORY[0x277D86270], v9);
-  v12 = [(ENXPCTimer *)self priority];
+  priority = [(ENXPCTimer *)self priority];
   v13 = MEMORY[0x277D86350];
-  if (v12 != 1)
+  if (priority != 1)
   {
     v13 = MEMORY[0x277D86348];
   }
 
   xpc_dictionary_set_string(v10, *MEMORY[0x277D86340], *v13);
-  v14 = [(ENXPCTimer *)self cadence];
-  if (v14 <= 3599)
+  cadence = [(ENXPCTimer *)self cadence];
+  if (cadence <= 3599)
   {
-    if (v14 <= 299)
+    if (cadence <= 299)
     {
-      if (!v14)
+      if (!cadence)
       {
         goto LABEL_31;
       }
 
-      if (v14 == 60)
+      if (cadence == 60)
       {
         v15 = *MEMORY[0x277D86288];
         v16 = MEMORY[0x277D862A8];
@@ -140,7 +140,7 @@
 
     else
     {
-      switch(v14)
+      switch(cadence)
       {
         case 300:
           v15 = *MEMORY[0x277D86288];
@@ -158,9 +158,9 @@
     }
   }
 
-  else if (v14 > 86399)
+  else if (cadence > 86399)
   {
-    switch(v14)
+    switch(cadence)
     {
       case 86400:
         v15 = *MEMORY[0x277D86288];
@@ -182,7 +182,7 @@ LABEL_30:
 
   else
   {
-    switch(v14)
+    switch(cadence)
     {
       case 3600:
         v15 = *MEMORY[0x277D86288];
@@ -202,24 +202,24 @@ LABEL_29:
     }
   }
 
-  v31 = [(ENXPCTimer *)self cadence];
+  cadence2 = [(ENXPCTimer *)self cadence];
   if (([(ENXPCTimer *)self options]& 0x2000) != 0)
   {
     v15 = *MEMORY[0x277D86288];
     v17 = v10;
-    v18 = v31;
+    v18 = cadence2;
     goto LABEL_30;
   }
 
 LABEL_31:
-  v19 = [(ENXPCTimer *)self options];
-  xpc_dictionary_set_BOOL(v10, *MEMORY[0x277D86330], v19 & 1);
-  v20 = [(ENXPCTimer *)self options];
-  xpc_dictionary_set_BOOL(v10, *MEMORY[0x277D863A8], (v20 & 4) != 0);
-  v21 = [(ENXPCTimer *)self options];
-  xpc_dictionary_set_BOOL(v10, *MEMORY[0x277D863B0], (v21 & 2) != 0);
-  v22 = [(ENXPCTimer *)self options];
-  xpc_dictionary_set_BOOL(v10, *MEMORY[0x277D863C8], (v22 & 8) != 0);
+  options2 = [(ENXPCTimer *)self options];
+  xpc_dictionary_set_BOOL(v10, *MEMORY[0x277D86330], options2 & 1);
+  options3 = [(ENXPCTimer *)self options];
+  xpc_dictionary_set_BOOL(v10, *MEMORY[0x277D863A8], (options3 & 4) != 0);
+  options4 = [(ENXPCTimer *)self options];
+  xpc_dictionary_set_BOOL(v10, *MEMORY[0x277D863B0], (options4 & 2) != 0);
+  options5 = [(ENXPCTimer *)self options];
+  xpc_dictionary_set_BOOL(v10, *MEMORY[0x277D863C8], (options5 & 8) != 0);
   if (([(ENXPCTimer *)self options]& 0x10) != 0)
   {
     v23 = MEMORY[0x277D86370];
@@ -246,33 +246,33 @@ LABEL_31:
   }
 
 LABEL_39:
-  v24 = [(ENXPCTimer *)self options];
-  xpc_dictionary_set_BOOL(v10, *MEMORY[0x277D86398], v24 < 0);
-  v25 = [(ENXPCTimer *)self options];
-  xpc_dictionary_set_BOOL(v10, *MEMORY[0x277D86390], v25 & 0x100);
-  v26 = [(ENXPCTimer *)self options];
-  xpc_dictionary_set_BOOL(v10, *MEMORY[0x277D86230], (v26 & 0x200) != 0);
-  v27 = [(ENXPCTimer *)self options];
-  xpc_dictionary_set_BOOL(v10, *MEMORY[0x277D862E0], (v27 & 0x400) != 0);
-  v28 = [(ENXPCTimer *)self options];
-  xpc_dictionary_set_BOOL(v10, *MEMORY[0x277D86248], (v28 & 0x800) != 0);
-  v29 = [(ENXPCTimer *)self options];
-  xpc_dictionary_set_BOOL(v10, *MEMORY[0x277D86258], (v29 & 0x1000) != 0);
+  options6 = [(ENXPCTimer *)self options];
+  xpc_dictionary_set_BOOL(v10, *MEMORY[0x277D86398], options6 < 0);
+  options7 = [(ENXPCTimer *)self options];
+  xpc_dictionary_set_BOOL(v10, *MEMORY[0x277D86390], options7 & 0x100);
+  options8 = [(ENXPCTimer *)self options];
+  xpc_dictionary_set_BOOL(v10, *MEMORY[0x277D86230], (options8 & 0x200) != 0);
+  options9 = [(ENXPCTimer *)self options];
+  xpc_dictionary_set_BOOL(v10, *MEMORY[0x277D862E0], (options9 & 0x400) != 0);
+  options10 = [(ENXPCTimer *)self options];
+  xpc_dictionary_set_BOOL(v10, *MEMORY[0x277D86248], (options10 & 0x800) != 0);
+  options11 = [(ENXPCTimer *)self options];
+  xpc_dictionary_set_BOOL(v10, *MEMORY[0x277D86258], (options11 & 0x1000) != 0);
 
   return v10;
 }
 
 - (void)invalidate
 {
-  v1 = [a1 name];
+  name = [self name];
   LogPrintF_safe();
 }
 
 - (id)activityHandler
 {
-  v3 = [(ENXPCTimer *)self name];
-  v4 = [(ENXPCTimer *)self date];
-  [v4 timeIntervalSinceNow];
+  name = [(ENXPCTimer *)self name];
+  date = [(ENXPCTimer *)self date];
+  [date timeIntervalSinceNow];
 
   if (gLogCategory_ENXPCTimer <= 30 && (gLogCategory_ENXPCTimer != -1 || _LogCategory_Initialize()))
   {
@@ -280,16 +280,16 @@ LABEL_39:
   }
 
   objc_initWeak(&location, self);
-  v5 = [(ENXPCTimer *)self block];
+  block = [(ENXPCTimer *)self block];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __29__ENXPCTimer_activityHandler__block_invoke;
   v10[3] = &unk_278FD2608;
   objc_copyWeak(&v13, &location);
-  v11 = v3;
-  v12 = v5;
-  v6 = v5;
-  v7 = v3;
+  v11 = name;
+  v12 = block;
+  v6 = block;
+  v7 = name;
   v8 = MEMORY[0x24C214430](v10);
 
   objc_destroyWeak(&v13);
@@ -410,17 +410,17 @@ LABEL_43:
 
 - (void)handleActivity
 {
-  v6 = [(ENXPCTimer *)self name];
-  v3 = [v6 utf8ValueSafe];
+  name = [(ENXPCTimer *)self name];
+  utf8ValueSafe = [name utf8ValueSafe];
   v4 = *MEMORY[0x277D86238];
-  v5 = [(ENXPCTimer *)self activityHandler];
-  xpc_activity_register(v3, v4, v5);
+  activityHandler = [(ENXPCTimer *)self activityHandler];
+  xpc_activity_register(utf8ValueSafe, v4, activityHandler);
 }
 
 - (uint64_t)activityHandler
 {
-  [a1 cadence];
-  [a1 gracePeriod];
+  [self cadence];
+  [self gracePeriod];
   return LogPrintF_safe();
 }
 

@@ -15,10 +15,10 @@
   v9[1] = 3221225472;
   v9[2] = __60__UIView_BatteryCenterUI__observeContentSizeCategoryChange___block_invoke;
   v9[3] = &unk_1E814EE28;
-  v9[4] = a1;
+  v9[4] = self;
   v10 = v4;
   v7 = v4;
-  v8 = [a1 registerForTraitChanges:v6 withHandler:v9];
+  v8 = [self registerForTraitChanges:v6 withHandler:v9];
 }
 
 @end

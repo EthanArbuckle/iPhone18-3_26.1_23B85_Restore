@@ -35,8 +35,8 @@
 
 - (void)clearLegacyDefaults
 {
-  v3 = [(BSAbstractDefaultDomain *)self _store];
-  [v3 removeObjectForKey:@"SBUseUniqueHomeScreenWallpaper"];
+  _store = [(BSAbstractDefaultDomain *)self _store];
+  [_store removeObjectForKey:@"SBUseUniqueHomeScreenWallpaper"];
 
   [(BSAbstractDefaultDomain *)self synchronizeDefaults];
 }

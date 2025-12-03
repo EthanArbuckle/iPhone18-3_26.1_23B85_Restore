@@ -1,47 +1,47 @@
 @interface ACHMonthlyChallengeEvaluationEnvironment
 - (ACHMonthlyChallengeDataSource)dataSource;
-- (ACHMonthlyChallengeEvaluationEnvironment)initWithMonthlyChallengeDataSource:(id)a3 dateComponentInterval:(id)a4 calendar:(id)a5;
-- (double)_valueForMonthlyChallengeType:(unint64_t)a3;
+- (ACHMonthlyChallengeEvaluationEnvironment)initWithMonthlyChallengeDataSource:(id)source dateComponentInterval:(id)interval calendar:(id)calendar;
+- (double)_valueForMonthlyChallengeType:(unint64_t)type;
 - (double)longestMoveStreakInCurrentMonth;
 - (id)eligibleSpecificWorkoutChallengeType;
-- (id)numberOfCompletedWorkoutsInCurrentMonthForChallengeType:(id)a3;
-- (id)numberOfDaysWithAppleMoveTimeOver:(id)a3;
-- (id)numberOfDaysWithCaloriesBurnedOver:(id)a3;
-- (id)numberOfDaysWithDistanceOver:(id)a3;
-- (id)numberOfDaysWithExerciseMinutesOver:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)numberOfCompletedWorkoutsInCurrentMonthForChallengeType:(id)type;
+- (id)numberOfDaysWithAppleMoveTimeOver:(id)over;
+- (id)numberOfDaysWithCaloriesBurnedOver:(id)over;
+- (id)numberOfDaysWithDistanceOver:(id)over;
+- (id)numberOfDaysWithExerciseMinutesOver:(id)over;
+- (id)valueForUndefinedKey:(id)key;
 @end
 
 @implementation ACHMonthlyChallengeEvaluationEnvironment
 
-- (ACHMonthlyChallengeEvaluationEnvironment)initWithMonthlyChallengeDataSource:(id)a3 dateComponentInterval:(id)a4 calendar:(id)a5
+- (ACHMonthlyChallengeEvaluationEnvironment)initWithMonthlyChallengeDataSource:(id)source dateComponentInterval:(id)interval calendar:(id)calendar
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourceCopy = source;
+  intervalCopy = interval;
+  calendarCopy = calendar;
   v14.receiver = self;
   v14.super_class = ACHMonthlyChallengeEvaluationEnvironment;
   v11 = [(ACHMonthlyChallengeEvaluationEnvironment *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_dataSource, v8);
-    objc_storeStrong(&v12->_dateComponentInterval, a4);
-    objc_storeStrong(&v12->_calendar, a5);
+    objc_storeWeak(&v11->_dataSource, sourceCopy);
+    objc_storeStrong(&v12->_dateComponentInterval, interval);
+    objc_storeStrong(&v12->_calendar, calendar);
   }
 
   return v12;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  keyCopy = key;
   v4 = ACHLogMonthlyChallenges();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v3;
+    v8 = keyCopy;
     _os_log_impl(&dword_221DDC000, v4, OS_LOG_TYPE_DEFAULT, "Monthly Challenge Evaluation environment asked for key it doesn't support: %{public}@", &v7, 0xCu);
   }
 
@@ -52,10 +52,10 @@
 - (double)longestMoveStreakInCurrentMonth
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(ACHMonthlyChallengeEvaluationEnvironment *)self dataSource];
-  v4 = [(ACHMonthlyChallengeEvaluationEnvironment *)self dateComponentInterval];
+  dataSource = [(ACHMonthlyChallengeEvaluationEnvironment *)self dataSource];
+  dateComponentInterval = [(ACHMonthlyChallengeEvaluationEnvironment *)self dateComponentInterval];
   v10 = 0;
-  v5 = [v3 longestStreakOfType:0 duringDateComponentInterval:v4 error:&v10];
+  v5 = [dataSource longestStreakOfType:0 duringDateComponentInterval:dateComponentInterval error:&v10];
   v6 = v10;
 
   if (v6)
@@ -73,9 +73,9 @@
   return v5;
 }
 
-- (id)numberOfCompletedWorkoutsInCurrentMonthForChallengeType:(id)a3
+- (id)numberOfCompletedWorkoutsInCurrentMonthForChallengeType:(id)type
 {
-  -[ACHMonthlyChallengeEvaluationEnvironment _valueForMonthlyChallengeType:](self, "_valueForMonthlyChallengeType:", [a3 integerValue]);
+  -[ACHMonthlyChallengeEvaluationEnvironment _valueForMonthlyChallengeType:](self, "_valueForMonthlyChallengeType:", [type integerValue]);
   v3 = MEMORY[0x277CCABB0];
 
   return [v3 numberWithDouble:?];
@@ -152,18 +152,18 @@ void __80__ACHMonthlyChallengeEvaluationEnvironment_eligibleSpecificWorkoutChall
   }
 }
 
-- (id)numberOfDaysWithCaloriesBurnedOver:(id)a3
+- (id)numberOfDaysWithCaloriesBurnedOver:(id)over
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACHMonthlyChallengeEvaluationEnvironment *)self dataSource];
-  [v4 doubleValue];
+  overCopy = over;
+  dataSource = [(ACHMonthlyChallengeEvaluationEnvironment *)self dataSource];
+  [overCopy doubleValue];
   v7 = v6;
 
-  v8 = [(ACHMonthlyChallengeEvaluationEnvironment *)self dateComponentInterval];
-  v9 = [(ACHMonthlyChallengeEvaluationEnvironment *)self calendar];
+  dateComponentInterval = [(ACHMonthlyChallengeEvaluationEnvironment *)self dateComponentInterval];
+  calendar = [(ACHMonthlyChallengeEvaluationEnvironment *)self calendar];
   v17 = 0;
-  [v5 numberOfDaysWithCaloriesBurnedOver:v8 forDateComponentInterval:v9 calendar:&v17 error:v7];
+  [dataSource numberOfDaysWithCaloriesBurnedOver:dateComponentInterval forDateComponentInterval:calendar calendar:&v17 error:v7];
   v11 = v10;
   v12 = v17;
 
@@ -185,18 +185,18 @@ void __80__ACHMonthlyChallengeEvaluationEnvironment_eligibleSpecificWorkoutChall
   return v14;
 }
 
-- (id)numberOfDaysWithExerciseMinutesOver:(id)a3
+- (id)numberOfDaysWithExerciseMinutesOver:(id)over
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACHMonthlyChallengeEvaluationEnvironment *)self dataSource];
-  [v4 doubleValue];
+  overCopy = over;
+  dataSource = [(ACHMonthlyChallengeEvaluationEnvironment *)self dataSource];
+  [overCopy doubleValue];
   v7 = v6;
 
-  v8 = [(ACHMonthlyChallengeEvaluationEnvironment *)self dateComponentInterval];
-  v9 = [(ACHMonthlyChallengeEvaluationEnvironment *)self calendar];
+  dateComponentInterval = [(ACHMonthlyChallengeEvaluationEnvironment *)self dateComponentInterval];
+  calendar = [(ACHMonthlyChallengeEvaluationEnvironment *)self calendar];
   v17 = 0;
-  [v5 numberOfDaysWithExerciseMinutesOver:v8 forDateComponentInterval:v9 calendar:&v17 error:v7];
+  [dataSource numberOfDaysWithExerciseMinutesOver:dateComponentInterval forDateComponentInterval:calendar calendar:&v17 error:v7];
   v11 = v10;
   v12 = v17;
 
@@ -218,18 +218,18 @@ void __80__ACHMonthlyChallengeEvaluationEnvironment_eligibleSpecificWorkoutChall
   return v14;
 }
 
-- (id)numberOfDaysWithDistanceOver:(id)a3
+- (id)numberOfDaysWithDistanceOver:(id)over
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACHMonthlyChallengeEvaluationEnvironment *)self dataSource];
-  [v4 doubleValue];
+  overCopy = over;
+  dataSource = [(ACHMonthlyChallengeEvaluationEnvironment *)self dataSource];
+  [overCopy doubleValue];
   v7 = v6;
 
-  v8 = [(ACHMonthlyChallengeEvaluationEnvironment *)self dateComponentInterval];
-  v9 = [(ACHMonthlyChallengeEvaluationEnvironment *)self calendar];
+  dateComponentInterval = [(ACHMonthlyChallengeEvaluationEnvironment *)self dateComponentInterval];
+  calendar = [(ACHMonthlyChallengeEvaluationEnvironment *)self calendar];
   v17 = 0;
-  [v5 numberOfDaysWithDistanceOver:v8 forDateComponentInterval:v9 calendar:&v17 error:v7];
+  [dataSource numberOfDaysWithDistanceOver:dateComponentInterval forDateComponentInterval:calendar calendar:&v17 error:v7];
   v11 = v10;
   v12 = v17;
 
@@ -251,18 +251,18 @@ void __80__ACHMonthlyChallengeEvaluationEnvironment_eligibleSpecificWorkoutChall
   return v14;
 }
 
-- (id)numberOfDaysWithAppleMoveTimeOver:(id)a3
+- (id)numberOfDaysWithAppleMoveTimeOver:(id)over
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACHMonthlyChallengeEvaluationEnvironment *)self dataSource];
-  [v4 doubleValue];
+  overCopy = over;
+  dataSource = [(ACHMonthlyChallengeEvaluationEnvironment *)self dataSource];
+  [overCopy doubleValue];
   v7 = v6;
 
-  v8 = [(ACHMonthlyChallengeEvaluationEnvironment *)self dateComponentInterval];
-  v9 = [(ACHMonthlyChallengeEvaluationEnvironment *)self calendar];
+  dateComponentInterval = [(ACHMonthlyChallengeEvaluationEnvironment *)self dateComponentInterval];
+  calendar = [(ACHMonthlyChallengeEvaluationEnvironment *)self calendar];
   v17 = 0;
-  [v5 numberOfDaysWithAppleMoveTimeOver:v8 forDateComponentInterval:v9 calendar:&v17 error:v7];
+  [dataSource numberOfDaysWithAppleMoveTimeOver:dateComponentInterval forDateComponentInterval:calendar calendar:&v17 error:v7];
   v11 = v10;
   v12 = v17;
 
@@ -284,14 +284,14 @@ void __80__ACHMonthlyChallengeEvaluationEnvironment_eligibleSpecificWorkoutChall
   return v14;
 }
 
-- (double)_valueForMonthlyChallengeType:(unint64_t)a3
+- (double)_valueForMonthlyChallengeType:(unint64_t)type
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [(ACHMonthlyChallengeEvaluationEnvironment *)self dataSource];
-  v6 = [(ACHMonthlyChallengeEvaluationEnvironment *)self dateComponentInterval];
-  v7 = [(ACHMonthlyChallengeEvaluationEnvironment *)self calendar];
+  dataSource = [(ACHMonthlyChallengeEvaluationEnvironment *)self dataSource];
+  dateComponentInterval = [(ACHMonthlyChallengeEvaluationEnvironment *)self dateComponentInterval];
+  calendar = [(ACHMonthlyChallengeEvaluationEnvironment *)self calendar];
   v14 = 0;
-  [v5 valueForMonthlyChallengeType:a3 forDateComponentInterval:v6 calendar:v7 error:&v14];
+  [dataSource valueForMonthlyChallengeType:type forDateComponentInterval:dateComponentInterval calendar:calendar error:&v14];
   v9 = v8;
   v10 = v14;
 
@@ -301,7 +301,7 @@ void __80__ACHMonthlyChallengeEvaluationEnvironment_eligibleSpecificWorkoutChall
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v16 = a3;
+      typeCopy = type;
       v17 = 2112;
       v18 = v10;
       _os_log_impl(&dword_221DDC000, v11, OS_LOG_TYPE_DEFAULT, "Error fetching value for monthly challenge type %lu: %@", buf, 0x16u);

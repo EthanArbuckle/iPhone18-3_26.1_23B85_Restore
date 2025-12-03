@@ -1,16 +1,16 @@
 @interface GKInstrumentedURLSessionDelegate
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5;
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics;
 @end
 
 @implementation GKInstrumentedURLSessionDelegate
 
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1001FC1A4(v11, v9, v10);
+  sessionCopy = session;
+  taskCopy = task;
+  metricsCopy = metrics;
+  selfCopy = self;
+  sub_1001FC1A4(selfCopy, taskCopy, metricsCopy);
 }
 
 @end

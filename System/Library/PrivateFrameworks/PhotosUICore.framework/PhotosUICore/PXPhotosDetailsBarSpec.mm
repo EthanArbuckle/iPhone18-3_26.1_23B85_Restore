@@ -1,23 +1,23 @@
 @interface PXPhotosDetailsBarSpec
-- (BOOL)_shouldIncludeItem:(id)a3;
-- (PXPhotosDetailsBarSpec)initWithExtendedTraitCollection:(id)a3;
-- (id)_placementForBarItem:(id)a3;
-- (id)_sortPriorityForBarItem:(id)a3 placement:(id)a4;
-- (id)sortedBarItemsByPlacement:(id)a3;
+- (BOOL)_shouldIncludeItem:(id)item;
+- (PXPhotosDetailsBarSpec)initWithExtendedTraitCollection:(id)collection;
+- (id)_placementForBarItem:(id)item;
+- (id)_sortPriorityForBarItem:(id)item placement:(id)placement;
+- (id)sortedBarItemsByPlacement:(id)placement;
 @end
 
 @implementation PXPhotosDetailsBarSpec
 
-- (id)sortedBarItemsByPlacement:(id)a3
+- (id)sortedBarItemsByPlacement:(id)placement
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  placementCopy = placement;
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(placementCopy, "count")}];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v6 = v4;
+  v6 = placementCopy;
   v7 = [v6 countByEnumeratingWithState:&v42 objects:v48 count:16];
   if (v7)
   {
@@ -69,14 +69,14 @@
 
         v18 = *(*(&v38 + 1) + 8 * j);
         v19 = [(PXPhotosDetailsBarSpec *)self _placementForBarItem:v18];
-        v20 = [v12 objectForKeyedSubscript:v19];
-        if (!v20)
+        array = [v12 objectForKeyedSubscript:v19];
+        if (!array)
         {
-          v20 = [MEMORY[0x1E695DF70] array];
-          [v12 setObject:v20 forKeyedSubscript:v19];
+          array = [MEMORY[0x1E695DF70] array];
+          [v12 setObject:array forKeyedSubscript:v19];
         }
 
-        [v20 addObject:v18];
+        [array addObject:v18];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v38 objects:v47 count:16];
@@ -140,19 +140,19 @@ uint64_t __52__PXPhotosDetailsBarSpec_sortedBarItemsByPlacement___block_invoke(u
   return v10;
 }
 
-- (BOOL)_shouldIncludeItem:(id)a3
+- (BOOL)_shouldIncludeItem:(id)item
 {
   includedBarItemIdentifiers = self->_includedBarItemIdentifiers;
-  v4 = [a3 identifier];
-  LOBYTE(includedBarItemIdentifiers) = [(NSSet *)includedBarItemIdentifiers containsObject:v4];
+  identifier = [item identifier];
+  LOBYTE(includedBarItemIdentifiers) = [(NSSet *)includedBarItemIdentifiers containsObject:identifier];
 
   return includedBarItemIdentifiers;
 }
 
-- (id)_placementForBarItem:(id)a3
+- (id)_placementForBarItem:(id)item
 {
-  v4 = [a3 identifier];
-  if ([v4 isEqualToString:*off_1E7721F08])
+  identifier = [item identifier];
+  if ([identifier isEqualToString:*off_1E7721F08])
   {
     if (self->_shouldPlaceEditActionsInToolbar)
     {
@@ -174,7 +174,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if ([v4 isEqualToString:*off_1E7721F00])
+  if ([identifier isEqualToString:*off_1E7721F00])
   {
     if (self->_shouldPlaceEditActionsInToolbar)
     {
@@ -189,19 +189,19 @@ LABEL_16:
 
   else
   {
-    if (([v4 isEqualToString:*off_1E7721F50] & 1) == 0 && !objc_msgSend(v4, "isEqualToString:", *off_1E7721E10))
+    if (([identifier isEqualToString:*off_1E7721F50] & 1) == 0 && !objc_msgSend(identifier, "isEqualToString:", *off_1E7721E10))
     {
-      if ([v4 isEqualToString:*off_1E7721E78] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *off_1E7721E08) & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *off_1E7721EE8) & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *off_1E7721E28) & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *off_1E7721E00) & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *off_1E7721E68))
+      if ([identifier isEqualToString:*off_1E7721E78] & 1) != 0 || (objc_msgSend(identifier, "isEqualToString:", *off_1E7721E08) & 1) != 0 || (objc_msgSend(identifier, "isEqualToString:", *off_1E7721EE8) & 1) != 0 || (objc_msgSend(identifier, "isEqualToString:", *off_1E7721E28) & 1) != 0 || (objc_msgSend(identifier, "isEqualToString:", *off_1E7721E00) & 1) != 0 || (objc_msgSend(identifier, "isEqualToString:", *off_1E7721E68))
       {
         v5 = 4;
       }
 
-      else if ([v4 isEqualToString:*off_1E7721E60])
+      else if ([identifier isEqualToString:*off_1E7721E60])
       {
         v5 = ([(PXPhotosDetailsBarSpec *)self detailsOptions]>> 9) & 2;
       }
 
-      else if ([v4 isEqualToString:*off_1E7721E90])
+      else if ([identifier isEqualToString:*off_1E7721E90])
       {
         v5 = 6;
       }
@@ -236,17 +236,17 @@ LABEL_17:
   return v6;
 }
 
-- (id)_sortPriorityForBarItem:(id)a3 placement:(id)a4
+- (id)_sortPriorityForBarItem:(id)item placement:(id)placement
 {
-  v6 = a4;
-  v7 = [a3 identifier];
-  v8 = [(NSDictionary *)self->_sortPriorityByBarItemIdentifierByPlacement objectForKeyedSubscript:v6];
+  placementCopy = placement;
+  identifier = [item identifier];
+  v8 = [(NSDictionary *)self->_sortPriorityByBarItemIdentifierByPlacement objectForKeyedSubscript:placementCopy];
 
-  v9 = [v8 objectForKeyedSubscript:v7];
+  v9 = [v8 objectForKeyedSubscript:identifier];
   if (!v9)
   {
     v10 = [(NSDictionary *)self->_sortPriorityByBarItemIdentifierByPlacement objectForKeyedSubscript:&unk_1F1909BE0];
-    v11 = [v10 objectForKeyedSubscript:v7];
+    v11 = [v10 objectForKeyedSubscript:identifier];
     v12 = v11;
     v13 = &unk_1F1909C40;
     if (v11)
@@ -260,13 +260,13 @@ LABEL_17:
   return v9;
 }
 
-- (PXPhotosDetailsBarSpec)initWithExtendedTraitCollection:(id)a3
+- (PXPhotosDetailsBarSpec)initWithExtendedTraitCollection:(id)collection
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  collectionCopy = collection;
   v33.receiver = self;
   v33.super_class = PXPhotosDetailsBarSpec;
-  v5 = [(PXBarSpec *)&v33 initWithExtendedTraitCollection:v4];
+  v5 = [(PXBarSpec *)&v33 initWithExtendedTraitCollection:collectionCopy];
   if (v5)
   {
     v6 = *off_1E7721EE8;
@@ -305,8 +305,8 @@ LABEL_17:
     v35[3] = v16;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:4];
     v18 = [MEMORY[0x1E695DFA8] set];
-    v19 = [v17 allKeys];
-    v20 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v19, "count")}];
+    allKeys = [v17 allKeys];
+    v20 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(allKeys, "count")}];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __58__PXPhotosDetailsBarSpec_initWithExtendedTraitCollection___block_invoke;
@@ -317,7 +317,7 @@ LABEL_17:
     v22 = v20;
     v32 = v22;
     v23 = v17;
-    [v19 enumerateObjectsUsingBlock:v29];
+    [allKeys enumerateObjectsUsingBlock:v29];
     sortPriorityByBarItemIdentifierByPlacement = v5->_sortPriorityByBarItemIdentifierByPlacement;
     v5->_sortPriorityByBarItemIdentifierByPlacement = v22;
     v25 = v22;
@@ -326,7 +326,7 @@ LABEL_17:
     v5->_includedBarItemIdentifiers = v21;
     v27 = v21;
 
-    v5->_shouldPlaceEditActionsInToolbar = [v4 layoutSizeClass] == 1;
+    v5->_shouldPlaceEditActionsInToolbar = [collectionCopy layoutSizeClass] == 1;
   }
 
   return v5;

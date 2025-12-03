@@ -2,34 +2,34 @@
 + (BOOL)controllerNeedsToRun;
 + (id)allowedFlowItems;
 - (ActivationController)activationController;
-- (BuddyActivationFlow)initWithNavigationController:(id)a3 flowDelegate:(id)a4 flowStarter:(id)a5 dependencyInjector:(id)a6;
+- (BuddyActivationFlow)initWithNavigationController:(id)controller flowDelegate:(id)delegate flowStarter:(id)starter dependencyInjector:(id)injector;
 - (id)_activationController;
-- (void)configureFlowItem:(id)a3;
-- (void)flowItemDone:(id)a3 nextItem:(id)a4;
-- (void)presentWiFiPaneForFlowItem:(id)a3;
+- (void)configureFlowItem:(id)item;
+- (void)flowItemDone:(id)done nextItem:(id)item;
+- (void)presentWiFiPaneForFlowItem:(id)item;
 @end
 
 @implementation BuddyActivationFlow
 
-- (BuddyActivationFlow)initWithNavigationController:(id)a3 flowDelegate:(id)a4 flowStarter:(id)a5 dependencyInjector:(id)a6
+- (BuddyActivationFlow)initWithNavigationController:(id)controller flowDelegate:(id)delegate flowStarter:(id)starter dependencyInjector:(id)injector
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, delegate);
   v15 = 0;
-  objc_storeStrong(&v15, a5);
+  objc_storeStrong(&v15, starter);
   v14 = 0;
-  objc_storeStrong(&v14, a6);
-  v9 = v18;
-  v18 = 0;
+  objc_storeStrong(&v14, injector);
+  v9 = selfCopy;
+  selfCopy = 0;
   v13.receiver = v9;
   v13.super_class = BuddyActivationFlow;
-  v18 = [(BuddyActivationFlow *)&v13 initWithNavigationController:location[0] flowDelegate:v16 flowStarter:v15 dependencyInjector:v14];
-  objc_storeStrong(&v18, v18);
-  if (v18)
+  selfCopy = [(BuddyActivationFlow *)&v13 initWithNavigationController:location[0] flowDelegate:v16 flowStarter:v15 dependencyInjector:v14];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v19[0] = objc_opt_class();
     v19[1] = objc_opt_class();
@@ -38,15 +38,15 @@
     v19[4] = objc_opt_class();
     v19[5] = objc_opt_class();
     v10 = [NSArray arrayWithObjects:v19 count:6];
-    [v18 setClassList:v10];
+    [selfCopy setClassList:v10];
   }
 
-  v11 = v18;
+  v11 = selfCopy;
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v11;
 }
 
@@ -61,13 +61,13 @@
   return [NSArray arrayWithObjects:v3 count:6];
 }
 
-- (void)configureFlowItem:(id)a3
+- (void)configureFlowItem:(id)item
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v10.receiver = v12;
+  objc_storeStrong(location, item);
+  v10.receiver = selfCopy;
   v10.super_class = BuddyActivationFlow;
   [(BuddyActivationFlow *)&v10 configureFlowItem:location[0]];
   if ([location[0] conformsToProtocol:&OBJC_PROTOCOL___BuddyActivationRestarting])
@@ -78,7 +78,7 @@
     v5 = 0;
     v6 = sub_1000A1034;
     v7 = &unk_10032B0D0;
-    v8 = v12;
+    v8 = selfCopy;
     [v9 setRestartActivation:&v3];
     objc_storeStrong(&v8, 0);
     objc_storeStrong(&v9, 0);
@@ -87,14 +87,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)flowItemDone:(id)a3 nextItem:(id)a4
+- (void)flowItemDone:(id)done nextItem:(id)item
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, done);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, item);
   v21[0] = objc_opt_class();
   v21[1] = objc_opt_class();
   v21[2] = objc_opt_class();
@@ -104,8 +104,8 @@
   {
     v15 = objc_alloc_init(NSMutableArray);
     memset(__b, 0, sizeof(__b));
-    v5 = [(BuddyActivationFlow *)v19 controllers];
-    v6 = [v5 countByEnumeratingWithState:__b objects:v20 count:16];
+    controllers = [(BuddyActivationFlow *)selfCopy controllers];
+    v6 = [controllers countByEnumeratingWithState:__b objects:v20 count:16];
     if (v6)
     {
       v7 = *__b[2];
@@ -115,7 +115,7 @@
         {
           if (*__b[2] != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(controllers);
           }
 
           v14 = *(__b[1] + 8 * i);
@@ -130,25 +130,25 @@
             else if (objc_opt_respondsToSelector())
             {
               v9 = v15;
-              v10 = [v14 viewController];
-              [v9 addObject:v10];
+              viewController = [v14 viewController];
+              [v9 addObject:viewController];
             }
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:__b objects:v20 count:16];
+        v6 = [controllers countByEnumeratingWithState:__b objects:v20 count:16];
       }
 
       while (v6);
     }
 
-    v11 = [(BuddyActivationFlow *)v19 navigationFlowDelegate];
-    [v11 removeViewControllersOnNextPush:v15];
+    navigationFlowDelegate = [(BuddyActivationFlow *)selfCopy navigationFlowDelegate];
+    [navigationFlowDelegate removeViewControllersOnNextPush:v15];
 
     objc_storeStrong(&v15, 0);
   }
 
-  v12.receiver = v19;
+  v12.receiver = selfCopy;
   v12.super_class = BuddyActivationFlow;
   [(BuddyActivationFlow *)&v12 flowItemDone:location[0] nextItem:v17];
   objc_storeStrong(&v16, 0);
@@ -164,19 +164,19 @@
   return v3 & 1;
 }
 
-- (void)presentWiFiPaneForFlowItem:(id)a3
+- (void)presentWiFiPaneForFlowItem:(id)item
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyActivationFlow *)v7 flowItemDelegate];
+  objc_storeStrong(location, item);
+  flowItemDelegate = [(BuddyActivationFlow *)selfCopy flowItemDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(BuddyActivationFlow *)v7 flowItemDelegate];
-    [v5 presentWiFiPaneForFlowItem:location[0]];
+    flowItemDelegate2 = [(BuddyActivationFlow *)selfCopy flowItemDelegate];
+    [flowItemDelegate2 presentWiFiPaneForFlowItem:location[0]];
   }
 
   objc_storeStrong(location, 0);
@@ -184,11 +184,11 @@
 
 - (id)_activationController
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
   memset(__b, 0, sizeof(__b));
-  v2 = [(BuddyActivationFlow *)v12 controllers];
-  v3 = [v2 countByEnumeratingWithState:__b objects:v14 count:16];
+  controllers = [(BuddyActivationFlow *)selfCopy controllers];
+  v3 = [controllers countByEnumeratingWithState:__b objects:v14 count:16];
   if (v3)
   {
     v4 = *__b[2];
@@ -198,7 +198,7 @@
       {
         if (*__b[2] != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(controllers);
         }
 
         v10 = *(__b[1] + 8 * i);
@@ -211,7 +211,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:__b objects:v14 count:16];
+      v3 = [controllers countByEnumeratingWithState:__b objects:v14 count:16];
     }
 
     while (v3);

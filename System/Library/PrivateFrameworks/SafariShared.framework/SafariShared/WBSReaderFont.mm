@@ -1,14 +1,14 @@
 @interface WBSReaderFont
-+ (WBSReaderFont)fontWithFamilyName:(id)a3 displayName:(id)a4;
++ (WBSReaderFont)fontWithFamilyName:(id)name displayName:(id)displayName;
 + (WBSReaderFont)systemSerifFont;
-+ (id)systemFontWithDisplayName:(id)a3;
-+ (void)postActivateNotification:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)systemFontWithDisplayName:(id)name;
++ (void)postActivateNotification:(id)notification;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isInstalled;
 - (NSString)displayName;
 - (NSString)familyNameForWebContent;
-- (__CTFontDescriptor)_createFontDescriptorRefForFontFamilyName:(id)a3 restrictToEnabled:(BOOL)a4;
-- (id)_initWithFamilyName:(id)a3 displayName:(id)a4 type:(int64_t)a5;
+- (__CTFontDescriptor)_createFontDescriptorRefForFontFamilyName:(id)name restrictToEnabled:(BOOL)enabled;
+- (id)_initWithFamilyName:(id)name displayName:(id)displayName type:(int64_t)type;
 - (id)_localizedName;
 - (id)description;
 - (unint64_t)hash;
@@ -16,48 +16,48 @@
 
 @implementation WBSReaderFont
 
-+ (id)systemFontWithDisplayName:(id)a3
++ (id)systemFontWithDisplayName:(id)name
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithFamilyName:@"System" displayName:v4 type:1];
+  nameCopy = name;
+  v5 = [[self alloc] _initWithFamilyName:@"System" displayName:nameCopy type:1];
 
   return v5;
 }
 
 + (WBSReaderFont)systemSerifFont
 {
-  v2 = [[a1 alloc] _initWithFamilyName:@"System Serif" displayName:@"New York" type:2];
+  v2 = [[self alloc] _initWithFamilyName:@"System Serif" displayName:@"New York" type:2];
 
   return v2;
 }
 
-+ (WBSReaderFont)fontWithFamilyName:(id)a3 displayName:(id)a4
++ (WBSReaderFont)fontWithFamilyName:(id)name displayName:(id)displayName
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[a1 alloc] _initWithFamilyName:v6 displayName:v7 type:0];
+  nameCopy = name;
+  displayNameCopy = displayName;
+  v8 = [[self alloc] _initWithFamilyName:nameCopy displayName:displayNameCopy type:0];
 
   return v8;
 }
 
-- (id)_initWithFamilyName:(id)a3 displayName:(id)a4 type:(int64_t)a5
+- (id)_initWithFamilyName:(id)name displayName:(id)displayName type:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  displayNameCopy = displayName;
   v17.receiver = self;
   v17.super_class = WBSReaderFont;
   v10 = [(WBSReaderFont *)&v17 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [nameCopy copy];
     familyName = v10->_familyName;
     v10->_familyName = v11;
 
-    v13 = [v9 copy];
+    v13 = [displayNameCopy copy];
     displayName = v10->_displayName;
     v10->_displayName = v13;
 
-    v10->_type = a5;
+    v10->_type = type;
     v15 = v10;
   }
 
@@ -84,15 +84,15 @@
   displayName = self->_displayName;
   if (displayName)
   {
-    v3 = displayName;
+    _localizedName = displayName;
   }
 
   else
   {
-    v3 = [(WBSReaderFont *)self _localizedName];
+    _localizedName = [(WBSReaderFont *)self _localizedName];
   }
 
-  return v3;
+  return _localizedName;
 }
 
 - (BOOL)isInstalled
@@ -108,15 +108,15 @@
   return v2;
 }
 
-+ (void)postActivateNotification:(id)a3
++ (void)postActivateNotification:(id)notification
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
+  notificationCopy = notification;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6 = @"FontActivateNotificationFontFamilyKey";
-  v7[0] = v3;
+  v7[0] = notificationCopy;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
-  [v4 postNotificationName:@"FontActivateNotification" object:0 userInfo:v5];
+  [defaultCenter postNotificationName:@"FontActivateNotification" object:0 userInfo:v5];
 }
 
 - (id)_localizedName
@@ -153,12 +153,12 @@
   return v8;
 }
 
-- (__CTFontDescriptor)_createFontDescriptorRefForFontFamilyName:(id)a3 restrictToEnabled:(BOOL)a4
+- (__CTFontDescriptor)_createFontDescriptorRefForFontFamilyName:(id)name restrictToEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v6 setObject:self->_familyName forKeyedSubscript:*MEMORY[0x1E6965790]];
-  if (v4)
+  if (enabledCopy)
   {
     [v6 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E6965780]];
   }
@@ -179,10 +179,10 @@
   return MatchingFontDescriptor;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -192,13 +192,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(WBSReaderFont *)self familyName];
-      v7 = [(WBSReaderFont *)v5 familyName];
+      v5 = equalCopy;
+      familyName = [(WBSReaderFont *)self familyName];
+      familyName2 = [(WBSReaderFont *)v5 familyName];
       if (WBSIsEqual())
       {
-        v8 = [(WBSReaderFont *)self displayName];
-        v9 = [(WBSReaderFont *)v5 displayName];
+        displayName = [(WBSReaderFont *)self displayName];
+        displayName2 = [(WBSReaderFont *)v5 displayName];
         if (WBSIsEqual())
         {
           v10 = self->_type == v5->_type;
@@ -227,10 +227,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(WBSReaderFont *)self familyName];
-  v4 = [v3 hash];
-  v5 = [(WBSReaderFont *)self displayName];
-  v6 = [v5 hash] ^ v4;
+  familyName = [(WBSReaderFont *)self familyName];
+  v4 = [familyName hash];
+  displayName = [(WBSReaderFont *)self displayName];
+  v6 = [displayName hash] ^ v4;
   type = self->_type;
 
   return v6 ^ type;

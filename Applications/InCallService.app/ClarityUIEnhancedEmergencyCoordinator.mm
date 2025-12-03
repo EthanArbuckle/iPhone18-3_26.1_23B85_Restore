@@ -1,8 +1,8 @@
 @interface ClarityUIEnhancedEmergencyCoordinator
 - (id)getCurrentCall;
-- (void)addMediaRequestViewController:(id)a3;
-- (void)hideWebRTCViewController:(id)a3;
-- (void)removeMediaRequestViewController:(id)a3;
+- (void)addMediaRequestViewController:(id)controller;
+- (void)hideWebRTCViewController:(id)controller;
+- (void)removeMediaRequestViewController:(id)controller;
 - (void)requestHapticForRequest;
 - (void)requestToAddResumeCameraLabel;
 - (void)requestToDisableMediaUploadButton;
@@ -13,66 +13,66 @@
 
 @implementation ClarityUIEnhancedEmergencyCoordinator
 
-- (void)addMediaRequestViewController:(id)a3
+- (void)addMediaRequestViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1001FDFD0();
 }
 
-- (void)removeMediaRequestViewController:(id)a3
+- (void)removeMediaRequestViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_1001FE2C4(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1001FE2C4(controllerCopy);
 }
 
-- (void)hideWebRTCViewController:(id)a3
+- (void)hideWebRTCViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_1001FE768(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1001FE768(controllerCopy);
 }
 
 - (void)requestToEnableVideoStreamingButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001FEE5C();
 }
 
 - (void)requestToDisableVideoStreamingButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001FEEB8();
 }
 
 - (void)requestToEnableMediaUploadButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001FEF10();
 }
 
 - (void)requestToDisableMediaUploadButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001FEF68();
 }
 
 - (void)requestHapticForRequest
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001FF0A8();
 }
 
 - (void)requestToAddResumeCameraLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001FF1EC();
 }
 
 - (id)getCurrentCall
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001FF344();
 
   return v3;

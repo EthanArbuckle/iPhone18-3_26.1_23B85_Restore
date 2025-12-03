@@ -1,7 +1,7 @@
 @interface BiometricInterface
 + (_TtC12ClarityBoard18BiometricInterface)sharedInstance;
 - (void)forceBioLockout;
-- (void)setNeedsAuthentication:(BOOL)a3;
+- (void)setNeedsAuthentication:(BOOL)authentication;
 @end
 
 @implementation BiometricInterface
@@ -20,14 +20,14 @@
 
 - (void)forceBioLockout
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000591C8();
 }
 
-- (void)setNeedsAuthentication:(BOOL)a3
+- (void)setNeedsAuthentication:(BOOL)authentication
 {
-  v4 = self;
-  sub_1000596A8(a3);
+  selfCopy = self;
+  sub_1000596A8(authentication);
 }
 
 @end

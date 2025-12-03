@@ -1,25 +1,25 @@
 @interface ContainerViewController
 - (BOOL)_chromeEnabled;
 - (BOOL)_isCurrentSheetDragging;
-- (BOOL)_updateContaineeIfNeeded:(id)a3 withLayout:(unint64_t)a4;
-- (BOOL)cardDismissalHelperShouldObserveGestures:(id)a3;
-- (BOOL)controllerIsInStack:(id)a3;
+- (BOOL)_updateContaineeIfNeeded:(id)needed withLayout:(unint64_t)layout;
+- (BOOL)cardDismissalHelperShouldObserveGestures:(id)gestures;
+- (BOOL)controllerIsInStack:(id)stack;
 - (BOOL)delaysFirstCardPresentation;
 - (BOOL)hasMargin;
 - (BOOL)hideContaineesOnViewDidDisappear;
 - (BOOL)isVLFCrowdsourcingPermissionCardActive;
-- (BOOL)presentationControllerShouldDismiss:(id)a3;
-- (BOOL)presentationStackAppearsCorrectWithInternalStack:(id)a3 uikitStack:(id)a4;
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss;
+- (BOOL)presentationStackAppearsCorrectWithInternalStack:(id)stack uikitStack:(id)uikitStack;
 - (BOOL)shouldHideCard;
-- (BOOL)shouldPassPoint:(CGPoint)a3 withEvent:(id)a4 inView:(id)a5;
-- (BOOL)showVLFCrowdsourcingPermissionCardWithContaineeDelegate:(id)a3 delegate:(id)a4 completion:(id)a5;
+- (BOOL)shouldPassPoint:(CGPoint)point withEvent:(id)event inView:(id)view;
+- (BOOL)showVLFCrowdsourcingPermissionCardWithContaineeDelegate:(id)delegate delegate:(id)a4 completion:(id)completion;
 - (CardAnimation)cardHeightAnimation;
 - (ContaineeProtocol)currentOrPendingViewController;
 - (ContaineeProtocol)currentViewController;
 - (ContaineeProtocol)modalPresenter;
 - (ContaineeProtocol)rootPresentingViewController;
 - (ContainerDelegate)containerDelegate;
-- (ContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (ContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (IOSBasedChromeContext)chromeContext;
 - (IOSBasedChromeViewController)chromeViewController;
 - (NSArray)visibleCardViews;
@@ -28,12 +28,12 @@
 - (double)_cardHeightForComputingBottomMapEdgeInsets;
 - (double)attributionVerticalPadding;
 - (double)availableHeight;
-- (double)availableHeightForViewController:(id)a3;
+- (double)availableHeightForViewController:(id)controller;
 - (double)bottomEdgeInset;
 - (double)bottomEdgePadding;
-- (double)bottomLabelEdgeInsetWithMapEdgeInsets:(UIEdgeInsets)a3;
+- (double)bottomLabelEdgeInsetWithMapEdgeInsets:(UIEdgeInsets)insets;
 - (double)bottomSafeOffset;
-- (double)dismissalRectTopEdgeForCardDismissalHelper:(id)a3 coordinateSpace:(id)a4;
+- (double)dismissalRectTopEdgeForCardDismissalHelper:(id)helper coordinateSpace:(id)space;
 - (double)edgePadding;
 - (double)floatingContainerBottomVerticalPadding;
 - (double)leadingEdgePadding;
@@ -43,113 +43,113 @@
 - (double)statusBarHeight;
 - (double)topEdgePadding;
 - (double)topLabelEdgeInset;
-- (id)cardForViewController:(id)a3;
-- (id)currentViewControllerWithPresentationStyle:(unint64_t)a3;
+- (id)cardForViewController:(id)controller;
+- (id)currentViewControllerWithPresentationStyle:(unint64_t)style;
 - (id)internalStackLessWaitingForPresentation;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
 - (id)uikitPresentationStack;
 - (int)currentMapViewTargetForAnalytics;
 - (int)currentUITargetForAnalytics;
-- (int64_t)VKApplicationUILayoutForStyle:(unint64_t)a3;
-- (unint64_t)layoutForCurrentViewControllerWithStyle:(unint64_t)a3;
+- (int64_t)VKApplicationUILayoutForStyle:(unint64_t)style;
+- (unint64_t)layoutForCurrentViewControllerWithStyle:(unint64_t)style;
 - (unint64_t)layoutModalPresenter;
-- (unint64_t)originalLayoutForViewController:(id)a3;
-- (unint64_t)overriddenLayoutForCurrentController:(unint64_t)a3;
-- (unint64_t)transitionFrom:(id)a3 to:(id)a4;
-- (void)_actuallyUpdateMapEdgeInsets:(UIEdgeInsets)a3;
+- (unint64_t)originalLayoutForViewController:(id)controller;
+- (unint64_t)overriddenLayoutForCurrentController:(unint64_t)controller;
+- (unint64_t)transitionFrom:(id)from to:(id)to;
+- (void)_actuallyUpdateMapEdgeInsets:(UIEdgeInsets)insets;
 - (void)_completeStateIfNeeded;
-- (void)_dismissCurrentMenuViewControllerAnimated:(BOOL)a3;
-- (void)_dismissMenuViewController:(id)a3 animated:(BOOL)a4;
-- (void)_dismissPresentedViewControllersIfNeededForViewController:(id)a3;
+- (void)_dismissCurrentMenuViewControllerAnimated:(BOOL)animated;
+- (void)_dismissMenuViewController:(id)controller animated:(BOOL)animated;
+- (void)_dismissPresentedViewControllersIfNeededForViewController:(id)controller;
 - (void)_installBottomPocketIfNeeded;
-- (void)_internal_ensurePresentationsMatchContaineeStackAllowingFault:(BOOL)a3 allowingAnimations:(BOOL)a4 skipUnlock:(BOOL)a5;
-- (void)_notifyObserversWithContainerStyle:(unint64_t)a3 value:(double)a4;
-- (void)_notifyResizingObserversWithValue:(double)a3 onlyIfDragging:(BOOL)a4;
+- (void)_internal_ensurePresentationsMatchContaineeStackAllowingFault:(BOOL)fault allowingAnimations:(BOOL)animations skipUnlock:(BOOL)unlock;
+- (void)_notifyObserversWithContainerStyle:(unint64_t)style value:(double)value;
+- (void)_notifyResizingObserversWithValue:(double)value onlyIfDragging:(BOOL)dragging;
 - (void)_performDeferredMapEdgeInsetUpdate;
-- (void)_popPalette:(BOOL)a3 completion:(id)a4;
-- (void)_presentCurrentMenuViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)_presentMenuViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_pushPalette:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)_popPalette:(BOOL)palette completion:(id)completion;
+- (void)_presentCurrentMenuViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)_presentMenuViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)_pushPalette:(id)palette animated:(BOOL)animated completion:(id)completion;
 - (void)_removeBottomPocketIfNeeded;
-- (void)_sequentiallyPresentViewControllers:(id)a3 allowAnimations:(BOOL)a4;
-- (void)_sheetPresentationControllerDidInvalidateCurrentPresentedViewFrame:(id)a3;
+- (void)_sequentiallyPresentViewControllers:(id)controllers allowAnimations:(BOOL)animations;
+- (void)_sheetPresentationControllerDidInvalidateCurrentPresentedViewFrame:(id)frame;
 - (void)_statusBarHeightChanged;
 - (void)_unlockCardQueue;
 - (void)_updateAttributionBadgeHiding;
 - (void)_updateBackdropConstraints;
-- (void)_updateBottomPocketForContaineeHeight:(double)a3;
+- (void)_updateBottomPocketForContaineeHeight:(double)height;
 - (void)_updateContainerMargins;
-- (void)_updateMapEdgeInsetsImmediately:(BOOL)a3;
-- (void)_updateOverrideTraitCollectionsForStyle:(unint64_t)a3;
-- (void)_updateVisibleContentForLayout:(unint64_t)a3;
-- (void)addChildViewController:(id)a3;
+- (void)_updateMapEdgeInsetsImmediately:(BOOL)immediately;
+- (void)_updateOverrideTraitCollectionsForStyle:(unint64_t)style;
+- (void)_updateVisibleContentForLayout:(unint64_t)layout;
+- (void)addChildViewController:(id)controller;
 - (void)animateAlongsideCardTransition;
 - (void)assertPresentationStackAppearsCorrect;
-- (void)containee:(id)a3 didChangeLayout:(unint64_t)a4;
-- (void)containee:(id)a3 willChangeLayout:(unint64_t)a4 source:(unint64_t)a5;
-- (void)containerStyleManagerConfigureLayoutForStyle:(unint64_t)a3;
-- (void)containerStyleManagerDidChangeStyle:(unint64_t)a3;
-- (void)containerStyleManagerWillChangeStyle:(unint64_t)a3;
-- (void)contentHeightUpdatedWithValue:(double)a3;
-- (void)controller:(id)a3 wantsLayout:(unint64_t)a4;
+- (void)containee:(id)containee didChangeLayout:(unint64_t)layout;
+- (void)containee:(id)containee willChangeLayout:(unint64_t)layout source:(unint64_t)source;
+- (void)containerStyleManagerConfigureLayoutForStyle:(unint64_t)style;
+- (void)containerStyleManagerDidChangeStyle:(unint64_t)style;
+- (void)containerStyleManagerWillChangeStyle:(unint64_t)style;
+- (void)contentHeightUpdatedWithValue:(double)value;
+- (void)controller:(id)controller wantsLayout:(unint64_t)layout;
 - (void)customInit;
-- (void)didChangeStyle:(unint64_t)a3;
-- (void)didPresentContainee:(id)a3 finished:(BOOL)a4;
-- (void)didResignContainee:(id)a3 finished:(BOOL)a4;
-- (void)expandContainee:(id)a3;
-- (void)generateAttachmentsForRadarDraft:(id)a3 withCompletion:(id)a4;
-- (void)macMenuPresentationControllerDidDismiss:(id)a3;
-- (void)macMenuPresentationControllerWillDismiss:(id)a3;
-- (void)minimizeContainee:(id)a3;
-- (void)popLastViewControllerAnimated:(BOOL)a3 useDefaultContaineeLayout:(BOOL)a4;
-- (void)popLastViewControllerFromViewController:(id)a3 animated:(BOOL)a4 useDefaultContaineeLayout:(BOOL)a5;
-- (void)popLastViewControllerWithInitialVelocity:(double)a3;
-- (void)presentController:(id)a3 animated:(BOOL)a4 useDefaultContaineeLayout:(BOOL)a5 completion:(id)a6;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)presentationControllerWillDismiss:(id)a3;
-- (void)registerResizingObserver:(id)a3 withBlock:(id)a4;
-- (void)removeCardforViewController:(id)a3;
-- (void)removeChildViewController:(id)a3;
-- (void)removeControllerFromStack:(id)a3;
-- (void)replaceCurrentWithController:(id)a3 moveToContaineeDefaultLayout:(BOOL)a4;
-- (void)replaceCurrentWithController:(id)a3 moveToContaineeLayout:(unint64_t)a4;
-- (void)requestDismissalWithCardDismissalHelper:(id)a3;
+- (void)didChangeStyle:(unint64_t)style;
+- (void)didPresentContainee:(id)containee finished:(BOOL)finished;
+- (void)didResignContainee:(id)containee finished:(BOOL)finished;
+- (void)expandContainee:(id)containee;
+- (void)generateAttachmentsForRadarDraft:(id)draft withCompletion:(id)completion;
+- (void)macMenuPresentationControllerDidDismiss:(id)dismiss;
+- (void)macMenuPresentationControllerWillDismiss:(id)dismiss;
+- (void)minimizeContainee:(id)containee;
+- (void)popLastViewControllerAnimated:(BOOL)animated useDefaultContaineeLayout:(BOOL)layout;
+- (void)popLastViewControllerFromViewController:(id)controller animated:(BOOL)animated useDefaultContaineeLayout:(BOOL)layout;
+- (void)popLastViewControllerWithInitialVelocity:(double)velocity;
+- (void)presentController:(id)controller animated:(BOOL)animated useDefaultContaineeLayout:(BOOL)layout completion:(id)completion;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)presentationControllerWillDismiss:(id)dismiss;
+- (void)registerResizingObserver:(id)observer withBlock:(id)block;
+- (void)removeCardforViewController:(id)controller;
+- (void)removeChildViewController:(id)controller;
+- (void)removeControllerFromStack:(id)stack;
+- (void)replaceCurrentWithController:(id)controller moveToContaineeDefaultLayout:(BOOL)layout;
+- (void)replaceCurrentWithController:(id)controller moveToContaineeLayout:(unint64_t)layout;
+- (void)requestDismissalWithCardDismissalHelper:(id)helper;
 - (void)reset;
 - (void)resumePropagatingEdgeInsets;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)setCaptureViewForCardView:(id)a3;
-- (void)setChromeHidden:(BOOL)a3;
-- (void)setContaineesHidden:(BOOL)a3;
-- (void)setControllerStack:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setCurrentViewController:(id)a3;
-- (void)setFullscreenMode:(BOOL)a3;
-- (void)setLayoutIfSupported:(unint64_t)a3 animated:(BOOL)a4 source:(unint64_t)a5;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)setCaptureViewForCardView:(id)view;
+- (void)setChromeHidden:(BOOL)hidden;
+- (void)setContaineesHidden:(BOOL)hidden;
+- (void)setControllerStack:(id)stack animated:(BOOL)animated completion:(id)completion;
+- (void)setCurrentViewController:(id)controller;
+- (void)setFullscreenMode:(BOOL)mode;
+- (void)setLayoutIfSupported:(unint64_t)supported animated:(BOOL)animated source:(unint64_t)source;
 - (void)setNeedsUserInterfaceAppearanceUpdate;
-- (void)setUseBackdropFullScreen:(BOOL)a3;
-- (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(id)a3;
-- (void)sidebarVisibilityDidChange:(BOOL)a3;
-- (void)snapToLayout:(unint64_t)a3;
-- (void)suspendPropagatingEdgeInsetsForReason:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setUseBackdropFullScreen:(BOOL)screen;
+- (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(id)identifier;
+- (void)sidebarVisibilityDidChange:(BOOL)change;
+- (void)snapToLayout:(unint64_t)layout;
+- (void)suspendPropagatingEdgeInsetsForReason:(id)reason;
+- (void)traitCollectionDidChange:(id)change;
 - (void)transitionEnded;
 - (void)updateContaineeStackState;
-- (void)updateEdgeInsets:(UIEdgeInsets)a3 immediately:(BOOL)a4;
-- (void)updateHeightConstraintWithValue:(double)a3;
-- (void)updateLayoutAnimated:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)updateEdgeInsets:(UIEdgeInsets)insets immediately:(BOOL)immediately;
+- (void)updateHeightConstraintWithValue:(double)value;
+- (void)updateLayoutAnimated:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewLayoutMarginsDidChange;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willChangeStyle:(unint64_t)a3;
-- (void)willPresentContainee:(id)a3 animated:(BOOL)a4;
-- (void)willResignContainee:(id)a3 animated:(BOOL)a4;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willChangeStyle:(unint64_t)style;
+- (void)willPresentContainee:(id)containee animated:(BOOL)animated;
+- (void)willResignContainee:(id)containee animated:(BOOL)animated;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation ContainerViewController
@@ -190,16 +190,16 @@
   v59.receiver = self;
   v59.super_class = ContainerViewController;
   [(ContainerViewController *)&v59 viewDidLoad];
-  v3 = [(ContainerViewController *)self view];
-  v4 = [v3 layer];
-  [v4 setAllowsGroupOpacity:0];
+  view = [(ContainerViewController *)self view];
+  layer = [view layer];
+  [layer setAllowsGroupOpacity:0];
 
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 addObserver:self selector:"_statusBarHeightChanged" name:@"IOSBasedChromeStatusBarHeightDidUpdateNotification" object:0];
 
   v6 = [UIView alloc];
-  v7 = [(ContainerViewController *)self view];
-  [v7 bounds];
+  view2 = [(ContainerViewController *)self view];
+  [view2 bounds];
   v8 = [v6 initWithFrame:?];
   containerView = self->_containerView;
   self->_containerView = v8;
@@ -213,40 +213,40 @@
   [(UIView *)self->_containerView setContentHuggingPriority:1 forAxis:v11];
   LODWORD(v12) = 1148846080;
   [(UIView *)self->_containerView setContentHuggingPriority:0 forAxis:v12];
-  v13 = [(ContainerViewController *)self view];
-  [v13 addSubview:self->_containerView];
+  view3 = [(ContainerViewController *)self view];
+  [view3 addSubview:self->_containerView];
 
   v14 = +[MKSystemController sharedInstance];
-  LODWORD(v7) = [v14 isInternalInstall];
+  LODWORD(view2) = [v14 isInternalInstall];
 
-  if (v7)
+  if (view2)
   {
     v15 = +[NSUserDefaults standardUserDefaults];
     v16 = [v15 BOOLForKey:@"__internal__DisableChrome"];
-    v17 = [(ContainerViewController *)self view];
-    [v17 setHidden:v16];
+    view4 = [(ContainerViewController *)self view];
+    [view4 setHidden:v16];
   }
 
   if ([(ContainerViewController *)self useBackdrop])
   {
     v18 = [BackdropView alloc];
-    v19 = [(ContainerViewController *)self view];
-    [v19 bounds];
+    view5 = [(ContainerViewController *)self view];
+    [view5 bounds];
     v20 = [(BackdropView *)v18 initWithFrame:?];
     backdropView = self->_backdropView;
     self->_backdropView = v20;
 
     [(BackdropView *)self->_backdropView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v22 = [(ContainerViewController *)self blurGroupName];
-    v23 = [(BackdropView *)self->_backdropView captureGroup];
-    [v23 setGroupName:v22];
+    blurGroupName = [(ContainerViewController *)self blurGroupName];
+    captureGroup = [(BackdropView *)self->_backdropView captureGroup];
+    [captureGroup setGroupName:blurGroupName];
 
     LODWORD(v24) = 1148846080;
     [(BackdropView *)self->_backdropView setContentHuggingPriority:1 forAxis:v24];
     LODWORD(v25) = 1148846080;
     [(BackdropView *)self->_backdropView setContentHuggingPriority:0 forAxis:v25];
-    v26 = [(ContainerViewController *)self view];
-    [v26 insertSubview:self->_backdropView atIndex:0];
+    view6 = [(ContainerViewController *)self view];
+    [view6 insertSubview:self->_backdropView atIndex:0];
 
     [(ContainerViewController *)self _updateBackdropConstraints];
   }
@@ -258,39 +258,39 @@
     self->_paletteViewController = v27;
 
     v29 = +[UIColor secondarySystemBackgroundColor];
-    v30 = [(SupplementalStackViewController *)self->_paletteViewController view];
-    [v30 setBackgroundColor:v29];
+    view7 = [(SupplementalStackViewController *)self->_paletteViewController view];
+    [view7 setBackgroundColor:v29];
 
-    v31 = [(ContainerViewController *)self view];
-    v32 = [(SupplementalStackViewController *)self->_paletteViewController view];
-    [v31 addSubview:v32];
+    view8 = [(ContainerViewController *)self view];
+    view9 = [(SupplementalStackViewController *)self->_paletteViewController view];
+    [view8 addSubview:view9];
 
-    v33 = [(SupplementalStackViewController *)self->_paletteViewController view];
-    [v33 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view10 = [(SupplementalStackViewController *)self->_paletteViewController view];
+    [view10 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v34 = [(SupplementalStackViewController *)self->_paletteViewController view];
-    v35 = [v34 widthAnchor];
-    v36 = [v35 constraintEqualToConstant:0.0];
+    view11 = [(SupplementalStackViewController *)self->_paletteViewController view];
+    widthAnchor = [view11 widthAnchor];
+    v36 = [widthAnchor constraintEqualToConstant:0.0];
     paletteWidthConstraint = self->_paletteWidthConstraint;
     self->_paletteWidthConstraint = v36;
 
-    v58 = [(SupplementalStackViewController *)self->_paletteViewController view];
-    v56 = [v58 topAnchor];
-    v57 = [(ContainerViewController *)self view];
-    v55 = [v57 topAnchor];
-    v54 = [v56 constraintEqualToAnchor:v55];
+    view12 = [(SupplementalStackViewController *)self->_paletteViewController view];
+    topAnchor = [view12 topAnchor];
+    view13 = [(ContainerViewController *)self view];
+    topAnchor2 = [view13 topAnchor];
+    v54 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v60[0] = v54;
-    v53 = [(SupplementalStackViewController *)self->_paletteViewController view];
-    v51 = [v53 leadingAnchor];
-    v52 = [(ContainerViewController *)self view];
-    v38 = [v52 leadingAnchor];
-    v39 = [v51 constraintEqualToAnchor:v38];
+    view14 = [(SupplementalStackViewController *)self->_paletteViewController view];
+    leadingAnchor = [view14 leadingAnchor];
+    view15 = [(ContainerViewController *)self view];
+    leadingAnchor2 = [view15 leadingAnchor];
+    v39 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v60[1] = v39;
-    v40 = [(SupplementalStackViewController *)self->_paletteViewController view];
-    v41 = [v40 bottomAnchor];
-    v42 = [(ContainerViewController *)self view];
-    v43 = [v42 bottomAnchor];
-    v44 = [v41 constraintEqualToAnchor:v43];
+    view16 = [(SupplementalStackViewController *)self->_paletteViewController view];
+    bottomAnchor = [view16 bottomAnchor];
+    view17 = [(ContainerViewController *)self view];
+    bottomAnchor2 = [view17 bottomAnchor];
+    v44 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v45 = self->_paletteWidthConstraint;
     v60[2] = v44;
     v60[3] = v45;
@@ -336,30 +336,30 @@
 
   if (self->_useBackdropFullScreen)
   {
-    v3 = [(ContainerViewController *)self view];
+    view = [(ContainerViewController *)self view];
   }
 
   else
   {
-    v3 = self->_containerView;
+    view = self->_containerView;
   }
 
-  v4 = v3;
-  v18 = [(BackdropView *)self->_backdropView topAnchor];
-  v17 = [(UIView *)v4 topAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17];
+  v4 = view;
+  topAnchor = [(BackdropView *)self->_backdropView topAnchor];
+  topAnchor2 = [(UIView *)v4 topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v19[0] = v16;
-  v15 = [(BackdropView *)self->_backdropView bottomAnchor];
-  v14 = [(UIView *)v4 bottomAnchor];
-  v5 = [v15 constraintEqualToAnchor:v14];
+  bottomAnchor = [(BackdropView *)self->_backdropView bottomAnchor];
+  bottomAnchor2 = [(UIView *)v4 bottomAnchor];
+  v5 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v19[1] = v5;
-  v6 = [(BackdropView *)self->_backdropView leadingAnchor];
-  v7 = [(UIView *)v4 leadingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  leadingAnchor = [(BackdropView *)self->_backdropView leadingAnchor];
+  leadingAnchor2 = [(UIView *)v4 leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v19[2] = v8;
-  v9 = [(BackdropView *)self->_backdropView trailingAnchor];
-  v10 = [(UIView *)v4 trailingAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  trailingAnchor = [(BackdropView *)self->_backdropView trailingAnchor];
+  trailingAnchor2 = [(UIView *)v4 trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v19[3] = v11;
   v12 = [NSArray arrayWithObjects:v19 count:4];
   backdropConstraints = self->_backdropConstraints;
@@ -378,10 +378,10 @@
 
   else
   {
-    v3 = [(ContainerViewController *)self view];
-    v4 = [v3 effectiveUserInterfaceLayoutDirection];
-    [v3 safeAreaInsets];
-    if (v4 == 1)
+    view = [(ContainerViewController *)self view];
+    effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
+    [view safeAreaInsets];
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v7 = v6;
     }
@@ -407,22 +407,22 @@
 
   else
   {
-    v4 = [(ContainerViewController *)self currentViewController];
-    v5 = [v4 cardPresentationController];
-    if ([v5 usingSheetPresentation])
+    currentViewController = [(ContainerViewController *)self currentViewController];
+    cardPresentationController = [currentViewController cardPresentationController];
+    if ([cardPresentationController usingSheetPresentation])
     {
-      v6 = [(ContainerViewController *)self currentViewController];
-      v7 = [v6 cardPresentationController];
-      v8 = [v7 takesAvailableWidth];
+      currentViewController2 = [(ContainerViewController *)self currentViewController];
+      cardPresentationController2 = [currentViewController2 cardPresentationController];
+      takesAvailableWidth = [cardPresentationController2 takesAvailableWidth];
     }
 
     else
     {
-      v8 = 0;
+      takesAvailableWidth = 0;
     }
 
-    v9 = [(ContainerViewController *)self containerStyle];
-    if (v9 <= 7 && ((1 << v9) & 0xA3) != 0 || (sub_10000FA08(self) == 5) | v8 & 1)
+    containerStyle = [(ContainerViewController *)self containerStyle];
+    if (containerStyle <= 7 && ((1 << containerStyle) & 0xA3) != 0 || (sub_10000FA08(self) == 5) | takesAvailableWidth & 1)
     {
       if (sub_10000FA08(self) || (_UISolariumEnabled() & 1) == 0)
       {
@@ -450,17 +450,17 @@
 {
   if (self->_enableMacPresentationStyles)
   {
-    v3 = [(ContainerViewController *)self presentedViewController];
-    if (v3)
+    presentedViewController = [(ContainerViewController *)self presentedViewController];
+    if (presentedViewController)
     {
-      v4 = v3;
-      v5 = [(ContainerViewController *)self presentedViewController];
-      v6 = [v5 conformsToProtocol:&OBJC_PROTOCOL___ContaineeProtocol];
+      v4 = presentedViewController;
+      presentedViewController2 = [(ContainerViewController *)self presentedViewController];
+      v6 = [presentedViewController2 conformsToProtocol:&OBJC_PROTOCOL___ContaineeProtocol];
 
       if (v6)
       {
-        v7 = [(ContainerViewController *)self presentedViewController];
-        if ([(ContaineeProtocol *)v7 preferredPresentationStyle]== 5)
+        presentedViewController3 = [(ContainerViewController *)self presentedViewController];
+        if ([(ContaineeProtocol *)presentedViewController3 preferredPresentationStyle]== 5)
         {
           goto LABEL_9;
         }
@@ -470,18 +470,18 @@
 
   if (self->_willBeginDisplayingInLockScreen)
   {
-    v8 = [(ContainerStack *)self->_containerStack lastState];
-    v7 = [v8 viewController];
+    lastState = [(ContainerStack *)self->_containerStack lastState];
+    presentedViewController3 = [lastState viewController];
   }
 
   else
   {
-    v7 = self->_currentViewController;
+    presentedViewController3 = self->_currentViewController;
   }
 
 LABEL_9:
 
-  return v7;
+  return presentedViewController3;
 }
 
 - (IOSBasedChromeViewController)chromeViewController
@@ -493,10 +493,10 @@ LABEL_9:
 
 - (BOOL)hasMargin
 {
-  v2 = [(ContainerViewController *)self view];
-  v3 = [v2 effectiveUserInterfaceLayoutDirection];
-  [v2 safeAreaInsets];
-  if (v3 == 1)
+  view = [(ContainerViewController *)self view];
+  effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
+  [view safeAreaInsets];
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v6 = v5;
   }
@@ -513,8 +513,8 @@ LABEL_9:
 
 - (double)statusBarHeight
 {
-  v2 = [(ContainerViewController *)self iosBasedChromeViewController];
-  [v2 statusBarHeight];
+  iosBasedChromeViewController = [(ContainerViewController *)self iosBasedChromeViewController];
+  [iosBasedChromeViewController statusBarHeight];
   v4 = v3;
 
   return v4;
@@ -525,10 +525,10 @@ LABEL_9:
   v3 = 0.0;
   if ([(ContainerViewController *)self containerStyle]!= 6)
   {
-    v4 = [(ContainerViewController *)self view];
-    v5 = [v4 window];
+    view = [(ContainerViewController *)self view];
+    window = [view window];
 
-    if (v5)
+    if (window)
     {
       goto LABEL_3;
     }
@@ -540,14 +540,14 @@ LABEL_9:
 
     if (byte_10195DF08 == 1)
     {
-      v7 = [(ContainerViewController *)self currentViewController];
-      v8 = [v7 view];
-      v5 = [v8 window];
+      currentViewController = [(ContainerViewController *)self currentViewController];
+      view2 = [currentViewController view];
+      window = [view2 window];
 
-      if (v5)
+      if (window)
       {
 LABEL_3:
-        [v5 safeAreaInsets];
+        [window safeAreaInsets];
         v3 = v6;
       }
     }
@@ -561,10 +561,10 @@ LABEL_3:
   v5.receiver = self;
   v5.super_class = ContainerViewController;
   [(ContainerViewController *)&v5 viewWillLayoutSubviews];
-  v3 = [(ContainerViewController *)self view];
-  v4 = [v3 superview];
+  view = [(ContainerViewController *)self view];
+  superview = [view superview];
 
-  if (v4)
+  if (superview)
   {
     [(ContainerStyleManager *)self->_containerStyleManager updateLayoutStyle];
   }
@@ -586,9 +586,9 @@ LABEL_3:
     [(ContainerViewController *)self _unlockCardQueue];
   }
 
-  v3 = [(StatusBarBackgroundView *)self->_bottomPocketView superview];
+  superview = [(StatusBarBackgroundView *)self->_bottomPocketView superview];
 
-  if (v3)
+  if (superview)
   {
     if (self->_bottomPocketHidingHeightThreshold <= 0.0)
     {
@@ -621,16 +621,16 @@ LABEL_3:
     }
   }
 
-  v8 = [(ContainerViewController *)self view];
-  v9 = [v8 superview];
-  if (v9)
+  view = [(ContainerViewController *)self view];
+  superview2 = [view superview];
+  if (superview2)
   {
-    v10 = v9;
-    v11 = [(ContainerViewController *)self currentViewController];
-    v12 = [v11 cardPresentationController];
-    v13 = [v12 usingSheetPresentation];
+    v10 = superview2;
+    currentViewController = [(ContainerViewController *)self currentViewController];
+    cardPresentationController = [currentViewController cardPresentationController];
+    usingSheetPresentation = [cardPresentationController usingSheetPresentation];
 
-    if (v13)
+    if (usingSheetPresentation)
     {
       [(ContainerViewController *)self _cardHeightForComputingBottomMapEdgeInsets];
       [(ContainerViewController *)self contentHeightUpdatedWithValue:?];
@@ -644,10 +644,10 @@ LABEL_3:
 
 - (void)_updateContainerMargins
 {
-  v3 = [(ContainerViewController *)self view];
-  v4 = [v3 superview];
+  view = [(ContainerViewController *)self view];
+  superview = [view superview];
 
-  if (v4)
+  if (superview)
   {
     [(ContainerStyleManager *)self->_containerStyleManager updateLayoutStyle];
   }
@@ -667,15 +667,15 @@ LABEL_3:
 
 - (NSArray)visibleCardViews
 {
-  v3 = [(ContainerViewController *)self visibleViewControllers];
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  visibleViewControllers = [(ContainerViewController *)self visibleViewControllers];
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [visibleViewControllers count]);
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(ContainerViewController *)self visibleViewControllers];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  visibleViewControllers2 = [(ContainerViewController *)self visibleViewControllers];
+  v6 = [visibleViewControllers2 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -686,7 +686,7 @@ LABEL_3:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(visibleViewControllers2);
         }
 
         v10 = [(NSMapTable *)self->_cards objectForKey:*(*(&v13 + 1) + 8 * i)];
@@ -696,7 +696,7 @@ LABEL_3:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [visibleViewControllers2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -709,23 +709,23 @@ LABEL_3:
 
 - (UIEdgeInsets)_calculateMapEdgeInsets
 {
-  v3 = [(ContainerViewController *)self viewIfLoaded];
-  if (!v3)
+  viewIfLoaded = [(ContainerViewController *)self viewIfLoaded];
+  if (!viewIfLoaded)
   {
     goto LABEL_8;
   }
 
-  v4 = v3;
-  v5 = [(ContainerViewController *)self view];
-  v6 = [v5 superview];
+  v4 = viewIfLoaded;
+  view = [(ContainerViewController *)self view];
+  superview = [view superview];
 
-  if (!v6)
+  if (!superview)
   {
     goto LABEL_8;
   }
 
-  v7 = [(ContainerViewController *)self view];
-  [v7 bounds];
+  view2 = [(ContainerViewController *)self view];
+  [view2 bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -739,8 +739,8 @@ LABEL_3:
   left = v20;
   if (sub_10000FA08(self) == 5)
   {
-    v22 = [(ContainerViewController *)self view];
-    [v22 safeAreaInsets];
+    view3 = [(ContainerViewController *)self view];
+    [view3 safeAreaInsets];
     left = v23 + left;
   }
 
@@ -748,58 +748,58 @@ LABEL_3:
   right = v24;
   if (sub_10000FA08(self) == 5)
   {
-    v26 = [(ContainerViewController *)self view];
-    [v26 safeAreaInsets];
+    view4 = [(ContainerViewController *)self view];
+    [view4 safeAreaInsets];
     right = v27 + right;
   }
 
   if (!self->_chromeHidden)
   {
-    v32 = [(ContainerViewController *)self view];
-    v33 = [v32 effectiveUserInterfaceLayoutDirection] == 1;
+    view5 = [(ContainerViewController *)self view];
+    v33 = [view5 effectiveUserInterfaceLayoutDirection] == 1;
 
-    v34 = [(ContainerViewController *)self stackOnOppositeSide];
+    stackOnOppositeSide = [(ContainerViewController *)self stackOnOppositeSide];
     v35 = sub_10000FA08(self);
-    v36 = [(ContainerViewController *)self isContaineeStackEmpty];
+    isContaineeStackEmpty = [(ContainerViewController *)self isContaineeStackEmpty];
     if ((_UISolariumEnabled() & 1) == 0)
     {
-      v36 = [(ContainerViewController *)self isContaineeStackEmpty];
-      if (!v36 && v35 == 5)
+      isContaineeStackEmpty = [(ContainerViewController *)self isContaineeStackEmpty];
+      if (!isContaineeStackEmpty && v35 == 5)
       {
-        v37 = [(ContainerViewController *)self currentViewController];
-        if (v37)
+        currentViewController = [(ContainerViewController *)self currentViewController];
+        if (currentViewController)
         {
-          v38 = [(ContainerViewController *)self currentViewController];
-          v36 = [v38 preferredPresentationStyle] > 1;
+          currentViewController2 = [(ContainerViewController *)self currentViewController];
+          isContaineeStackEmpty = [currentViewController2 preferredPresentationStyle] > 1;
         }
 
         else
         {
-          v36 = 1;
+          isContaineeStackEmpty = 1;
         }
       }
     }
 
-    v39 = [(ContainerViewController *)self currentViewController];
-    v40 = [v39 cardPresentationController];
-    if ([v40 usingSheetPresentation])
+    currentViewController3 = [(ContainerViewController *)self currentViewController];
+    cardPresentationController = [currentViewController3 cardPresentationController];
+    if ([cardPresentationController usingSheetPresentation])
     {
-      v41 = [(ContainerViewController *)self currentViewController];
-      v42 = [v41 cardPresentationController];
-      v43 = [v42 takesAvailableWidth];
+      currentViewController4 = [(ContainerViewController *)self currentViewController];
+      cardPresentationController2 = [currentViewController4 cardPresentationController];
+      takesAvailableWidth = [cardPresentationController2 takesAvailableWidth];
     }
 
     else
     {
-      v43 = 0;
+      takesAvailableWidth = 0;
     }
 
     if (!self->_chromeHidden)
     {
-      v44 = [(ContainerViewController *)self containerStyle];
-      if ((v44 > 7 || ((1 << v44) & 0xA3) == 0) && ((v36 | v43) & 1) == 0)
+      containerStyle = [(ContainerViewController *)self containerStyle];
+      if ((containerStyle > 7 || ((1 << containerStyle) & 0xA3) == 0) && ((isContaineeStackEmpty | takesAvailableWidth) & 1) == 0)
       {
-        if (v33 != v34)
+        if (v33 != stackOnOppositeSide)
         {
           v49.origin.x = v9;
           v49.origin.y = v11;
@@ -851,31 +851,31 @@ LABEL_8:
 
 - (double)bottomEdgeInset
 {
-  v3 = [(ContainerViewController *)self currentViewController];
-  v4 = [v3 cardPresentationController];
-  v5 = [v4 usingSheetPresentation];
+  currentViewController = [(ContainerViewController *)self currentViewController];
+  cardPresentationController = [currentViewController cardPresentationController];
+  usingSheetPresentation = [cardPresentationController usingSheetPresentation];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10004CF68;
   v13[3] = &unk_101623350;
   v13[4] = self;
-  v14 = v5;
+  v14 = usingSheetPresentation;
   v6 = objc_retainBlock(v13);
-  v7 = [(ContainerViewController *)self containerStyle];
+  containerStyle = [(ContainerViewController *)self containerStyle];
   v8 = 0.0;
-  if (v7 - 2 < 3)
+  if (containerStyle - 2 < 3)
   {
-    if (!v5)
+    if (!usingSheetPresentation)
     {
       goto LABEL_8;
     }
 
-    v9 = [(ContainerViewController *)self currentViewController];
-    v10 = [v9 cardPresentationController];
-    v11 = [v10 takesAvailableWidth];
+    currentViewController2 = [(ContainerViewController *)self currentViewController];
+    cardPresentationController2 = [currentViewController2 cardPresentationController];
+    takesAvailableWidth = [cardPresentationController2 takesAvailableWidth];
 
-    if (!v11)
+    if (!takesAvailableWidth)
     {
       goto LABEL_8;
     }
@@ -885,7 +885,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v7 == 1 || v7 == 5)
+  if (containerStyle == 1 || containerStyle == 5)
   {
     goto LABEL_7;
   }
@@ -899,19 +899,19 @@ LABEL_8:
 {
   if (self->_enableMacPresentationStyles)
   {
-    v3 = [(ContainerViewController *)self view];
-    if ([v3 effectiveUserInterfaceLayoutDirection] == 1)
+    view = [(ContainerViewController *)self view];
+    if ([view effectiveUserInterfaceLayoutDirection] == 1)
     {
     }
 
     else
     {
-      v4 = [(SupplementalStackViewController *)self->_paletteViewController isEmpty];
+      isEmpty = [(SupplementalStackViewController *)self->_paletteViewController isEmpty];
 
-      if ((v4 & 1) == 0)
+      if ((isEmpty & 1) == 0)
       {
-        v8 = [(SupplementalStackViewController *)self->_paletteViewController view];
-        [v8 frame];
+        view2 = [(SupplementalStackViewController *)self->_paletteViewController view];
+        [view2 frame];
         Width = CGRectGetWidth(v10);
 
         return Width;
@@ -919,13 +919,13 @@ LABEL_8:
     }
   }
 
-  v5 = [(ContainerViewController *)self hasMargin];
+  hasMargin = [(ContainerViewController *)self hasMargin];
   result = 0.0;
-  if (v5)
+  if (hasMargin)
   {
-    v7 = [(ContainerViewController *)self interfaceOrientation];
+    interfaceOrientation = [(ContainerViewController *)self interfaceOrientation];
     result = 0.0;
-    if (v7 == 3)
+    if (interfaceOrientation == 3)
     {
       return 21.0;
     }
@@ -938,15 +938,15 @@ LABEL_8:
 {
   if (self->_enableMacPresentationStyles)
   {
-    v3 = [(ContainerViewController *)self view];
-    if ([v3 effectiveUserInterfaceLayoutDirection] == 1)
+    view = [(ContainerViewController *)self view];
+    if ([view effectiveUserInterfaceLayoutDirection] == 1)
     {
-      v4 = [(SupplementalStackViewController *)self->_paletteViewController isEmpty];
+      isEmpty = [(SupplementalStackViewController *)self->_paletteViewController isEmpty];
 
-      if ((v4 & 1) == 0)
+      if ((isEmpty & 1) == 0)
       {
-        v5 = [(SupplementalStackViewController *)self->_paletteViewController view];
-        [v5 frame];
+        view2 = [(SupplementalStackViewController *)self->_paletteViewController view];
+        [view2 frame];
         Width = CGRectGetWidth(v10);
 
         return Width;
@@ -958,13 +958,13 @@ LABEL_8:
     }
   }
 
-  v8 = [(ContainerViewController *)self hasMargin];
+  hasMargin = [(ContainerViewController *)self hasMargin];
   result = 0.0;
-  if (v8)
+  if (hasMargin)
   {
-    v9 = [(ContainerViewController *)self interfaceOrientation];
+    interfaceOrientation = [(ContainerViewController *)self interfaceOrientation];
     result = 0.0;
-    if (v9 == 4)
+    if (interfaceOrientation == 4)
     {
       return 21.0;
     }
@@ -997,10 +997,10 @@ LABEL_8:
 
   else
   {
-    v4 = [(ContainerViewController *)self chromeViewController];
-    v5 = [v4 contexts];
-    v6 = [(ContainerViewController *)self chromeContext];
-    v7 = [v5 containsObject:v6] ^ 1;
+    chromeViewController = [(ContainerViewController *)self chromeViewController];
+    contexts = [chromeViewController contexts];
+    chromeContext = [(ContainerViewController *)self chromeContext];
+    v7 = [contexts containsObject:chromeContext] ^ 1;
   }
 
   return v7;
@@ -1013,37 +1013,37 @@ LABEL_8:
     return 1;
   }
 
-  v3 = [(ContainerViewController *)self chromeViewController];
+  chromeViewController = [(ContainerViewController *)self chromeViewController];
 
-  if (!v3)
+  if (!chromeViewController)
   {
     return 0;
   }
 
-  v4 = [(ContainerViewController *)self chromeContext];
-  v5 = [(ContainerViewController *)self chromeViewController];
-  v6 = v5;
-  if (v4)
+  chromeContext = [(ContainerViewController *)self chromeContext];
+  chromeViewController2 = [(ContainerViewController *)self chromeViewController];
+  v6 = chromeViewController2;
+  if (chromeContext)
   {
-    v7 = [v5 isHidingCardsForContext:v4];
+    isHidingCards = [chromeViewController2 isHidingCardsForContext:chromeContext];
   }
 
   else
   {
-    v7 = [v5 isHidingCards];
+    isHidingCards = [chromeViewController2 isHidingCards];
   }
 
-  v8 = v7;
+  v8 = isHidingCards;
 
   return v8;
 }
 
 - (BOOL)_chromeEnabled
 {
-  v2 = [(ContainerViewController *)self chromeViewController];
-  v3 = [v2 _internal_isChromeDisabled];
+  chromeViewController = [(ContainerViewController *)self chromeViewController];
+  _internal_isChromeDisabled = [chromeViewController _internal_isChromeDisabled];
 
-  return v3 ^ 1;
+  return _internal_isChromeDisabled ^ 1;
 }
 
 - (double)topEdgePadding
@@ -1066,8 +1066,8 @@ LABEL_8:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(ContainerStack *)self->_containerStack allObjects];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v22 count:16];
+  allObjects = [(ContainerStack *)self->_containerStack allObjects];
+  v5 = [allObjects countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1078,12 +1078,12 @@ LABEL_8:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allObjects);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 presentingViewController];
-        if (v10 && ![v9 isBeingDismissed])
+        presentingViewController = [v9 presentingViewController];
+        if (presentingViewController && ![v9 isBeingDismissed])
         {
 
 LABEL_11:
@@ -1099,7 +1099,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v22 count:16];
+      v6 = [allObjects countByEnumeratingWithState:&v14 objects:v22 count:16];
     }
 
     while (v6);
@@ -1109,7 +1109,7 @@ LABEL_11:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
     v21 = v3;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "%@ containerStackLessControllersWaitingForPresentation %@", buf, 0x16u);
@@ -1121,27 +1121,27 @@ LABEL_11:
 - (id)uikitPresentationStack
 {
   v3 = +[NSMutableArray array];
-  v4 = [(ContainerViewController *)self chromeViewController];
-  v5 = [v4 presentedViewController];
+  chromeViewController = [(ContainerViewController *)self chromeViewController];
+  presentedViewController = [chromeViewController presentedViewController];
 
-  if (v5)
+  if (presentedViewController)
   {
     do
     {
-      [v3 addObject:v5];
-      v6 = [v5 presentedViewController];
+      [v3 addObject:presentedViewController];
+      v5PresentedViewController = [presentedViewController presentedViewController];
 
-      v5 = v6;
+      presentedViewController = v5PresentedViewController;
     }
 
-    while (v6);
+    while (v5PresentedViewController);
   }
 
   v7 = sub_10002A8B8();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v9 = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = v3;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "%@ UIKitPresentationStack %@", &v9, 0x16u);
@@ -1165,16 +1165,16 @@ LABEL_11:
 
   if (byte_10195DF08)
   {
-    v4 = [(ContainerViewController *)self currentViewController];
-    v5 = [v4 presentedViewController];
+    currentViewController = [(ContainerViewController *)self currentViewController];
+    presentedViewController = [currentViewController presentedViewController];
 
-    v6 = [(ContainerViewController *)self currentViewController];
-    v7 = [v6 presentedViewController];
+    currentViewController2 = [(ContainerViewController *)self currentViewController];
+    presentedViewController2 = [currentViewController2 presentedViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v9 = [(ContainerViewController *)self currentViewController];
-    v10 = [v9 presentedViewController];
+    currentViewController3 = [(ContainerViewController *)self currentViewController];
+    presentedViewController3 = [currentViewController3 presentedViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1183,33 +1183,33 @@ LABEL_11:
 
     else
     {
-      v12 = [(ContainerViewController *)self currentViewController];
-      v13 = [v12 presentedViewController];
+      currentViewController4 = [(ContainerViewController *)self currentViewController];
+      presentedViewController4 = [currentViewController4 presentedViewController];
       objc_opt_class();
       v11 = objc_opt_isKindOfClass();
     }
 
     if ([(ContainerViewController *)self isRootContainer])
     {
-      v14 = [(ContainerViewController *)self chromeViewController];
-      v15 = [v14 presentedViewController];
-      if (v15)
+      chromeViewController = [(ContainerViewController *)self chromeViewController];
+      presentedViewController5 = [chromeViewController presentedViewController];
+      if (presentedViewController5)
       {
-        v16 = v15;
-        v17 = [(ContainerViewController *)self chromeViewController];
-        v18 = [v17 presentedViewController];
+        v16 = presentedViewController5;
+        chromeViewController2 = [(ContainerViewController *)self chromeViewController];
+        presentedViewController6 = [chromeViewController2 presentedViewController];
         v19 = [(ContainerStack *)self->_containerStack containeeStateAtIndex:0];
         [v19 viewController];
         v20 = v27 = isKindOfClass;
 
-        v21 = v18 == v20;
+        v21 = presentedViewController6 == v20;
         isKindOfClass = v27;
         if (!v21)
         {
-          v22 = [(ContainerViewController *)self chromeViewController];
+          chromeViewController3 = [(ContainerViewController *)self chromeViewController];
 LABEL_17:
-          v26 = v22;
-          [v22 dismissViewControllerAnimated:1 completion:v3];
+          v26 = chromeViewController3;
+          [chromeViewController3 dismissViewControllerAnimated:1 completion:v3];
 
           goto LABEL_15;
         }
@@ -1220,15 +1220,15 @@ LABEL_17:
       }
     }
 
-    if (!((v5 == 0 || (isKindOfClass & 1) == 0) | v11 & 1))
+    if (!((presentedViewController == 0 || (isKindOfClass & 1) == 0) | v11 & 1))
     {
-      v23 = [(ContainerViewController *)self currentViewController];
-      v24 = [v23 presentedViewController];
-      v25 = [v24 isBeingDismissed];
+      currentViewController5 = [(ContainerViewController *)self currentViewController];
+      presentedViewController7 = [currentViewController5 presentedViewController];
+      isBeingDismissed = [presentedViewController7 isBeingDismissed];
 
-      if ((v25 & 1) == 0)
+      if ((isBeingDismissed & 1) == 0)
       {
-        v22 = [(ContainerViewController *)self currentViewController];
+        chromeViewController3 = [(ContainerViewController *)self currentViewController];
         goto LABEL_17;
       }
     }
@@ -1240,23 +1240,23 @@ LABEL_15:
 
 - (double)_cardHeightForComputingBottomMapEdgeInsets
 {
-  v4 = [(ContainerViewController *)self currentViewController];
-  v5 = [v4 isBeingDismissed];
-  if ((v5 & 1) == 0)
+  currentViewController = [(ContainerViewController *)self currentViewController];
+  isBeingDismissed = [currentViewController isBeingDismissed];
+  if ((isBeingDismissed & 1) == 0)
   {
-    v2 = [(ContainerViewController *)self currentViewController];
+    currentViewController2 = [(ContainerViewController *)self currentViewController];
     v6 = 0.0;
-    if (![v2 isBeingPresented])
+    if (![currentViewController2 isBeingPresented])
     {
       goto LABEL_8;
     }
   }
 
-  v7 = [(ContainerViewController *)self currentViewController];
-  v8 = [v7 presentingViewController];
-  v9 = sub_100010C34(v8, &OBJC_PROTOCOL___ContaineeProtocol);
+  currentViewController3 = [(ContainerViewController *)self currentViewController];
+  presentingViewController = [currentViewController3 presentingViewController];
+  v9 = sub_100010C34(presentingViewController, &OBJC_PROTOCOL___ContaineeProtocol);
 
-  if (v5)
+  if (isBeingDismissed)
   {
 
     v6 = 0.0;
@@ -1272,26 +1272,26 @@ LABEL_15:
   if (v9)
   {
 LABEL_7:
-    v10 = [(ContainerViewController *)self currentViewController];
-    v11 = [v10 presentingViewController];
-    v4 = [v11 sheetPresentationController];
+    currentViewController4 = [(ContainerViewController *)self currentViewController];
+    presentingViewController2 = [currentViewController4 presentingViewController];
+    currentViewController = [presentingViewController2 sheetPresentationController];
 
-    v2 = [v4 containerView];
-    [v2 bounds];
+    currentViewController2 = [currentViewController containerView];
+    [currentViewController2 bounds];
     Height = CGRectGetHeight(v19);
-    [v4 _currentPresentedViewFrame];
+    [currentViewController _currentPresentedViewFrame];
     v6 = Height - CGRectGetMinY(v20);
 LABEL_8:
   }
 
 LABEL_9:
-  v13 = [(ContainerViewController *)self currentViewController];
-  v14 = [v13 sheetPresentationController];
+  currentViewController5 = [(ContainerViewController *)self currentViewController];
+  sheetPresentationController = [currentViewController5 sheetPresentationController];
 
-  v15 = [v14 containerView];
-  [v15 bounds];
+  containerView = [sheetPresentationController containerView];
+  [containerView bounds];
   v16 = CGRectGetHeight(v21);
-  [v14 _currentPresentedViewFrame];
+  [sheetPresentationController _currentPresentedViewFrame];
   v17 = v16 - CGRectGetMinY(v22);
 
   return fmax(v6, v17);
@@ -1304,112 +1304,112 @@ LABEL_9:
   return WeakRetained;
 }
 
-- (void)generateAttachmentsForRadarDraft:(id)a3 withCompletion:(id)a4
+- (void)generateAttachmentsForRadarDraft:(id)draft withCompletion:(id)completion
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1005DB8C8;
   block[3] = &unk_1016605F8;
   block[4] = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v9;
-  v6 = v8;
+  draftCopy = draft;
+  completionCopy = completion;
+  v5 = completionCopy;
+  v6 = draftCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)macMenuPresentationControllerDidDismiss:(id)a3
+- (void)macMenuPresentationControllerDidDismiss:(id)dismiss
 {
-  [a3 removeObserver:self];
+  [dismiss removeObserver:self];
 
   [(ContainerViewController *)self _presentCurrentMenuViewControllerAnimated:1 completion:0];
 }
 
-- (void)macMenuPresentationControllerWillDismiss:(id)a3
+- (void)macMenuPresentationControllerWillDismiss:(id)dismiss
 {
   currentMenuViewController = self->_currentMenuViewController;
-  v5 = a3;
-  v6 = [(ContaineeProtocol *)currentMenuViewController macMenuPresentationController];
+  dismissCopy = dismiss;
+  macMenuPresentationController = [(ContaineeProtocol *)currentMenuViewController macMenuPresentationController];
 
-  if (v6 == v5)
+  if (macMenuPresentationController == dismissCopy)
   {
     v7 = self->_currentMenuViewController;
     self->_currentMenuViewController = 0;
   }
 }
 
-- (void)_dismissCurrentMenuViewControllerAnimated:(BOOL)a3
+- (void)_dismissCurrentMenuViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   currentMenuViewController = self->_currentMenuViewController;
   if (currentMenuViewController)
   {
-    [(ContainerViewController *)self _dismissMenuViewController:currentMenuViewController animated:v3];
+    [(ContainerViewController *)self _dismissMenuViewController:currentMenuViewController animated:animatedCopy];
   }
 }
 
-- (void)_dismissMenuViewController:(id)a3 animated:(BOOL)a4
+- (void)_dismissMenuViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  if (controllerCopy)
   {
     currentMenuViewController = self->_currentMenuViewController;
-    if (currentMenuViewController == v6)
+    if (currentMenuViewController == controllerCopy)
     {
       self->_currentMenuViewController = 0;
-      v11 = v6;
+      v11 = controllerCopy;
 
-      v8 = [(ContaineeProtocol *)v11 macMenuPresentationController];
-      v9 = [v8 isPresented];
+      macMenuPresentationController = [(ContaineeProtocol *)v11 macMenuPresentationController];
+      isPresented = [macMenuPresentationController isPresented];
 
-      v6 = v11;
-      if (v9)
+      controllerCopy = v11;
+      if (isPresented)
       {
-        v10 = [(ContaineeProtocol *)v11 macMenuPresentationController];
-        [v10 dismissAnimated:v4 completion:&stru_101623430];
+        macMenuPresentationController2 = [(ContaineeProtocol *)v11 macMenuPresentationController];
+        [macMenuPresentationController2 dismissAnimated:animatedCopy completion:&stru_101623430];
 
-        v6 = v11;
+        controllerCopy = v11;
       }
     }
   }
 }
 
-- (void)_presentCurrentMenuViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)_presentCurrentMenuViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   currentMenuViewController = self->_currentMenuViewController;
   if (!currentMenuViewController)
   {
     goto LABEL_5;
   }
 
-  v8 = [(ContaineeProtocol *)currentMenuViewController macMenuPresentationController];
-  if ([v8 isPresented])
+  macMenuPresentationController = [(ContaineeProtocol *)currentMenuViewController macMenuPresentationController];
+  if ([macMenuPresentationController isPresented])
   {
 
     goto LABEL_5;
   }
 
-  v9 = [(ContaineeProtocol *)self->_currentMenuViewController macMenuPresentationController];
-  v10 = [v9 isDismissing];
+  macMenuPresentationController2 = [(ContaineeProtocol *)self->_currentMenuViewController macMenuPresentationController];
+  isDismissing = [macMenuPresentationController2 isDismissing];
 
-  if (v10)
+  if (isDismissing)
   {
 LABEL_5:
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     goto LABEL_14;
   }
 
-  v11 = [(ContaineeProtocol *)self->_currentMenuViewController macMenuPresentationController];
-  v12 = [v11 containerViewController];
+  macMenuPresentationController3 = [(ContaineeProtocol *)self->_currentMenuViewController macMenuPresentationController];
+  containerViewController = [macMenuPresentationController3 containerViewController];
 
-  if (!v12)
+  if (!containerViewController)
   {
     if (qword_10195DF00 != -1)
     {
@@ -1418,48 +1418,48 @@ LABEL_5:
 
     if (byte_10195DF08 == 1)
     {
-      [v11 setContainerViewController:self];
+      [macMenuPresentationController3 setContainerViewController:self];
     }
 
     else
     {
-      v13 = [(ContainerViewController *)self chromeViewController];
-      [v11 setContainerViewController:v13];
+      chromeViewController = [(ContainerViewController *)self chromeViewController];
+      [macMenuPresentationController3 setContainerViewController:chromeViewController];
     }
   }
 
-  [v11 addObserver:self];
-  v14 = [v11 containerViewController];
+  [macMenuPresentationController3 addObserver:self];
+  containerViewController2 = [macMenuPresentationController3 containerViewController];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1005DBD64;
   v15[3] = &unk_101661760;
-  v16 = v6;
-  [v11 presentFromViewController:v14 animated:v4 completion:v15];
+  v16 = completionCopy;
+  [macMenuPresentationController3 presentFromViewController:containerViewController2 animated:animatedCopy completion:v15];
 
 LABEL_14:
 }
 
-- (void)_presentMenuViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_presentMenuViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v10 = a5;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
   currentMenuViewController = self->_currentMenuViewController;
   if (currentMenuViewController)
   {
-    [(ContainerViewController *)self _dismissCurrentMenuViewControllerAnimated:v6];
+    [(ContainerViewController *)self _dismissCurrentMenuViewControllerAnimated:animatedCopy];
     currentMenuViewController = self->_currentMenuViewController;
   }
 
-  self->_currentMenuViewController = v8;
+  self->_currentMenuViewController = controllerCopy;
 
-  [(ContainerViewController *)self _presentCurrentMenuViewControllerAnimated:v6 completion:v10];
+  [(ContainerViewController *)self _presentCurrentMenuViewControllerAnimated:animatedCopy completion:completionCopy];
 }
 
-- (void)_popPalette:(BOOL)a3 completion:(id)a4
+- (void)_popPalette:(BOOL)palette completion:(id)completion
 {
-  [(SupplementalStackViewController *)self->_paletteViewController popContainee:a3 completion:a4];
+  [(SupplementalStackViewController *)self->_paletteViewController popContainee:palette completion:completion];
   if ([(SupplementalStackViewController *)self->_paletteViewController isEmpty])
   {
     paletteWidthConstraint = self->_paletteWidthConstraint;
@@ -1468,24 +1468,24 @@ LABEL_14:
   }
 }
 
-- (void)_pushPalette:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_pushPalette:(id)palette animated:(BOOL)animated completion:(id)completion
 {
-  [(SupplementalStackViewController *)self->_paletteViewController pushContainee:a3 animated:a4 completion:a5];
+  [(SupplementalStackViewController *)self->_paletteViewController pushContainee:palette animated:animated completion:completion];
   paletteWidthConstraint = self->_paletteWidthConstraint;
 
   [(NSLayoutConstraint *)paletteWidthConstraint setConstant:282.0];
 }
 
-- (void)_dismissPresentedViewControllersIfNeededForViewController:(id)a3
+- (void)_dismissPresentedViewControllersIfNeededForViewController:(id)controller
 {
-  v43 = a3;
-  v4 = [(ContainerViewController *)self topMostPresentedViewController];
-  v5 = v4;
-  if (v4 && v4 != self)
+  controllerCopy = controller;
+  topMostPresentedViewController = [(ContainerViewController *)self topMostPresentedViewController];
+  topMostPresentedViewController2 = topMostPresentedViewController;
+  if (topMostPresentedViewController && topMostPresentedViewController != self)
   {
     while (1)
     {
-      if ([(ContainerStack *)self->_containerStack indexOfContainee:v5]!= 0x7FFFFFFFFFFFFFFFLL)
+      if ([(ContainerStack *)self->_containerStack indexOfContainee:topMostPresentedViewController2]!= 0x7FFFFFFFFFFFFFFFLL)
       {
         goto LABEL_47;
       }
@@ -1505,7 +1505,7 @@ LABEL_24:
       {
         if (v29)
         {
-          v37 = self;
+          selfCopy = self;
           v38 = objc_opt_class();
           v39 = NSStringFromClass(v38);
           if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -1513,22 +1513,22 @@ LABEL_24:
             goto LABEL_44;
           }
 
-          v40 = [(ContainerViewController *)v37 performSelector:"accessibilityIdentifier"];
+          v40 = [(ContainerViewController *)selfCopy performSelector:"accessibilityIdentifier"];
           v41 = v40;
           if (v40 && ![v40 isEqualToString:v39])
           {
-            v42 = [NSString stringWithFormat:@"%@<%p, %@>", v39, v37, v41];
+            selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v39, selfCopy, v41];
           }
 
           else
           {
 
 LABEL_44:
-            v42 = [NSString stringWithFormat:@"%@<%p>", v39, v37];
+            selfCopy = [NSString stringWithFormat:@"%@<%p>", v39, selfCopy];
           }
 
           *buf = 138543362;
-          v47 = v42;
+          v47 = selfCopy;
           _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "[%{public}@] Allowing presentation on top of non-containee VC (opted out via config)", buf, 0xCu);
         }
 
@@ -1537,7 +1537,7 @@ LABEL_44:
 
       if (v29)
       {
-        v30 = self;
+        selfCopy2 = self;
         v31 = objc_opt_class();
         v32 = NSStringFromClass(v31);
         if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -1545,22 +1545,22 @@ LABEL_44:
           goto LABEL_30;
         }
 
-        v33 = [(ContainerViewController *)v30 performSelector:"accessibilityIdentifier"];
+        v33 = [(ContainerViewController *)selfCopy2 performSelector:"accessibilityIdentifier"];
         v34 = v33;
         if (v33 && ![v33 isEqualToString:v32])
         {
-          v35 = [NSString stringWithFormat:@"%@<%p, %@>", v32, v30, v34];
+          selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v32, selfCopy2, v34];
         }
 
         else
         {
 
 LABEL_30:
-          v35 = [NSString stringWithFormat:@"%@<%p>", v32, v30];
+          selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v32, selfCopy2];
         }
 
         *buf = 138543362;
-        v47 = v35;
+        v47 = selfCopy2;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "[%{public}@] Dismissing non-containee VC before presenting new VC", buf, 0xCu);
       }
 
@@ -1568,39 +1568,39 @@ LABEL_30:
       v44[1] = 3221225472;
       v44[2] = sub_1005DC4F8;
       v44[3] = &unk_101661B18;
-      v45 = v5;
-      v36 = v5;
+      v45 = topMostPresentedViewController2;
+      v36 = topMostPresentedViewController2;
       [UIViewController _performWithoutDeferringTransitions:v44];
 
-      v5 = [(ContainerViewController *)self topMostPresentedViewController];
+      topMostPresentedViewController2 = [(ContainerViewController *)self topMostPresentedViewController];
 
-      if (!v5 || v5 == self)
+      if (!topMostPresentedViewController2 || topMostPresentedViewController2 == self)
       {
         goto LABEL_47;
       }
     }
 
-    v7 = self;
+    selfCopy3 = self;
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(ContainerViewController *)v7 performSelector:"accessibilityIdentifier"];
+      v10 = [(ContainerViewController *)selfCopy3 performSelector:"accessibilityIdentifier"];
       v11 = v10;
       if (v10 && ![v10 isEqualToString:v9])
       {
-        v12 = [NSString stringWithFormat:@"%@<%p, %@>", v9, v7, v11];
+        selfCopy3 = [NSString stringWithFormat:@"%@<%p, %@>", v9, selfCopy3, v11];
 
 LABEL_10:
-        v13 = v12;
-        v14 = v43;
-        if (!v43)
+        v13 = selfCopy3;
+        v14 = controllerCopy;
+        if (!controllerCopy)
         {
           v19 = @"<nil>";
 LABEL_18:
 
           v20 = v19;
-          v21 = v5;
+          v21 = topMostPresentedViewController2;
           v22 = objc_opt_class();
           v23 = NSStringFromClass(v22);
           if (objc_opt_respondsToSelector())
@@ -1650,26 +1650,26 @@ LABEL_16:
       }
     }
 
-    v12 = [NSString stringWithFormat:@"%@<%p>", v9, v7];
+    selfCopy3 = [NSString stringWithFormat:@"%@<%p>", v9, selfCopy3];
     goto LABEL_10;
   }
 
 LABEL_47:
 }
 
-- (void)_sequentiallyPresentViewControllers:(id)a3 allowAnimations:(BOOL)a4
+- (void)_sequentiallyPresentViewControllers:(id)controllers allowAnimations:(BOOL)animations
 {
-  v4 = a4;
+  animationsCopy = animations;
   v9 = _NSConcreteStackBlock;
   v10 = 3221225472;
   v11 = sub_1005DC5F8;
   v12 = &unk_101661A90;
-  v6 = a3;
-  v13 = v6;
-  v14 = self;
+  controllersCopy = controllers;
+  v13 = controllersCopy;
+  selfCopy = self;
   v7 = objc_retainBlock(&v9);
   v8 = v7;
-  if (v4)
+  if (animationsCopy)
   {
     (v7[2])(v7);
   }
@@ -1680,15 +1680,15 @@ LABEL_47:
   }
 }
 
-- (void)_internal_ensurePresentationsMatchContaineeStackAllowingFault:(BOOL)a3 allowingAnimations:(BOOL)a4 skipUnlock:(BOOL)a5
+- (void)_internal_ensurePresentationsMatchContaineeStackAllowingFault:(BOOL)fault allowingAnimations:(BOOL)animations skipUnlock:(BOOL)unlock
 {
-  v6 = a4;
-  v7 = a3;
+  animationsCopy = animations;
+  faultCopy = fault;
   v9 = sub_10002A8B8();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v35 = self;
+    selfCopy6 = self;
     v36 = 2080;
     v37 = "[ContainerViewController _internal_ensurePresentationsMatchContaineeStackAllowingFault:allowingAnimations:skipUnlock:]";
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "%@ %s", buf, 0x16u);
@@ -1696,21 +1696,21 @@ LABEL_47:
 
   if (-[ContainerViewController allowsDisplayOnLockScreen](self, "allowsDisplayOnLockScreen") || (-[ContainerViewController view](self, "view"), v10 = objc_claimAutoreleasedReturnValue(), [v10 window], v11 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v11, v10, (isKindOfClass & 1) == 0))
   {
-    v13 = [(ContainerViewController *)self internalStackLessWaitingForPresentation];
-    v14 = [(ContainerViewController *)self uikitPresentationStack];
-    if ([(ContainerViewController *)self presentationStackAppearsCorrectWithInternalStack:v13 uikitStack:v14])
+    internalStackLessWaitingForPresentation = [(ContainerViewController *)self internalStackLessWaitingForPresentation];
+    uikitPresentationStack = [(ContainerViewController *)self uikitPresentationStack];
+    if ([(ContainerViewController *)self presentationStackAppearsCorrectWithInternalStack:internalStackLessWaitingForPresentation uikitStack:uikitPresentationStack])
     {
-      if (!a5)
+      if (!unlock)
       {
         v15 = sub_10002A8B8();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          v35 = self;
+          selfCopy6 = self;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "%@ unlocking card queue because presentationStackAppearsCorrect YES", buf, 0xCu);
         }
 
-        if (v6)
+        if (animationsCopy)
         {
           [(ContainerViewController *)self _unlockCardQueue];
         }
@@ -1729,60 +1729,60 @@ LABEL_47:
       goto LABEL_30;
     }
 
-    v16 = [(ContainerViewController *)self chromeViewController];
-    v17 = [v16 presentedViewController];
+    chromeViewController = [(ContainerViewController *)self chromeViewController];
+    presentedViewController = [chromeViewController presentedViewController];
 
-    if (v17)
+    if (presentedViewController)
     {
       do
       {
-        v18 = [v16 presentedViewController];
+        presentedViewController2 = [chromeViewController presentedViewController];
 
-        v19 = [v18 presentedViewController];
+        v18PresentedViewController = [presentedViewController2 presentedViewController];
 
-        v16 = v18;
+        chromeViewController = presentedViewController2;
       }
 
-      while (v19);
+      while (v18PresentedViewController);
     }
 
     else
     {
-      v18 = v16;
+      presentedViewController2 = chromeViewController;
     }
 
-    v20 = [v18 transitionCoordinator];
+    transitionCoordinator = [presentedViewController2 transitionCoordinator];
 
     v21 = sub_10002A8B8();
     v22 = v21;
-    if (v20)
+    if (transitionCoordinator)
     {
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v35 = self;
+        selfCopy6 = self;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEBUG, "%@ presentation stack is incorrect but a presentation is occuring. adding completion to try again.", buf, 0xCu);
       }
 
-      v23 = [v18 transitionCoordinator];
+      transitionCoordinator2 = [presentedViewController2 transitionCoordinator];
       v30[0] = _NSConcreteStackBlock;
       v30[1] = 3221225472;
       v30[2] = sub_1005DCE78;
       v30[3] = &unk_101623410;
       v30[4] = self;
-      v31 = v7;
-      v32 = v6;
-      v33 = a5;
-      [v23 animateAlongsideTransition:0 completion:v30];
+      v31 = faultCopy;
+      v32 = animationsCopy;
+      unlockCopy = unlock;
+      [transitionCoordinator2 animateAlongsideTransition:0 completion:v30];
       goto LABEL_29;
     }
 
-    if (v7)
+    if (faultCopy)
     {
       if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        v35 = self;
+        selfCopy6 = self;
         v24 = v22;
         v25 = OS_LOG_TYPE_FAULT;
 LABEL_27:
@@ -1793,7 +1793,7 @@ LABEL_27:
     else if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v35 = self;
+      selfCopy6 = self;
       v24 = v22;
       v25 = OS_LOG_TYPE_ERROR;
       goto LABEL_27;
@@ -1804,22 +1804,22 @@ LABEL_27:
     v27[2] = sub_1005DCE90;
     v27[3] = &unk_101660CE8;
     v27[4] = self;
-    v28 = v13;
-    v29 = v6;
+    v28 = internalStackLessWaitingForPresentation;
+    v29 = animationsCopy;
     [UIViewController _performWithoutDeferringTransitions:v27];
-    v23 = v28;
+    transitionCoordinator2 = v28;
 LABEL_29:
 
 LABEL_30:
     goto LABEL_31;
   }
 
-  v13 = sub_10002A8B8();
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+  internalStackLessWaitingForPresentation = sub_10002A8B8();
+  if (os_log_type_enabled(internalStackLessWaitingForPresentation, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v35 = self;
-    _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "%@ bailing on ensure check because we're on the lock screen, and this container cannot present on lock screen", buf, 0xCu);
+    selfCopy6 = self;
+    _os_log_impl(&_mh_execute_header, internalStackLessWaitingForPresentation, OS_LOG_TYPE_DEBUG, "%@ bailing on ensure check because we're on the lock screen, and this container cannot present on lock screen", buf, 0xCu);
   }
 
 LABEL_31:
@@ -1834,9 +1834,9 @@ LABEL_31:
 
   if (byte_10195DF08 == 1)
   {
-    v3 = [(ContainerViewController *)self internalStackLessWaitingForPresentation];
-    v4 = [(ContainerViewController *)self uikitPresentationStack];
-    if ([(ContainerViewController *)self presentationStackAppearsCorrectWithInternalStack:v3 uikitStack:v4])
+    internalStackLessWaitingForPresentation = [(ContainerViewController *)self internalStackLessWaitingForPresentation];
+    uikitPresentationStack = [(ContainerViewController *)self uikitPresentationStack];
+    if ([(ContainerViewController *)self presentationStackAppearsCorrectWithInternalStack:internalStackLessWaitingForPresentation uikitStack:uikitPresentationStack])
     {
 LABEL_16:
 
@@ -1851,10 +1851,10 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v6 = self;
-    if (!v6)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v11 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_14;
     }
 
@@ -1862,56 +1862,56 @@ LABEL_15:
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(ContainerViewController *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(ContainerViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_12;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_12:
 
 LABEL_14:
     *buf = 138543874;
-    v13 = v11;
+    v13 = selfCopy;
     v14 = 2112;
-    v15 = v3;
+    v15 = internalStackLessWaitingForPresentation;
     v16 = 2112;
-    v17 = v4;
+    v17 = uikitPresentationStack;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_FAULT, "[%{public}@] presentation stack appears incorrect. internalStack: %@ uikitStack: %@", buf, 0x20u);
 
     goto LABEL_15;
   }
 }
 
-- (BOOL)presentationStackAppearsCorrectWithInternalStack:(id)a3 uikitStack:(id)a4
+- (BOOL)presentationStackAppearsCorrectWithInternalStack:(id)stack uikitStack:(id)uikitStack
 {
-  v6 = a3;
-  v7 = a4;
+  stackCopy = stack;
+  uikitStackCopy = uikitStack;
   v8 = sub_10002A8B8();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v24 = self;
+    selfCopy3 = self;
     v25 = 2080;
     v26 = "[ContainerViewController presentationStackAppearsCorrectWithInternalStack:uikitStack:]";
     v27 = 2112;
-    v28 = v6;
+    v28 = stackCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%@ %s %@", buf, 0x20u);
   }
 
-  v9 = [v6 count];
-  if (v9 <= [v7 count])
+  v9 = [stackCopy count];
+  if (v9 <= [uikitStackCopy count])
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v10 = v6;
+    v10 = stackCopy;
     v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v11)
     {
@@ -1926,13 +1926,13 @@ LABEL_14:
             objc_enumerationMutation(v10);
           }
 
-          if (([v7 containsObject:{*(*(&v18 + 1) + 8 * i), v18}] & 1) == 0)
+          if (([uikitStackCopy containsObject:{*(*(&v18 + 1) + 8 * i), v18}] & 1) == 0)
           {
             v16 = sub_10002A8B8();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
-              v24 = self;
+              selfCopy3 = self;
               _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%@ presentationStackAppearsCorrect NO containees not in UIKit presentation", buf, 0xCu);
             }
 
@@ -1963,7 +1963,7 @@ LABEL_14:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v24 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%@ presentationStackAppearsCorrect NO because more containees in stack than UIKit", buf, 0xCu);
     }
 
@@ -1974,17 +1974,17 @@ LABEL_18:
   return v15;
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v15 = a3;
-  v4 = [v15 presentedViewController];
-  v5 = [v4 conformsToProtocol:&OBJC_PROTOCOL___ContaineeProtocol];
+  dismissCopy = dismiss;
+  presentedViewController = [dismissCopy presentedViewController];
+  v5 = [presentedViewController conformsToProtocol:&OBJC_PROTOCOL___ContaineeProtocol];
 
-  v6 = v15;
+  v6 = dismissCopy;
   if (v5)
   {
-    v7 = [v15 presentedViewController];
-    v8 = [(ContainerStack *)self->_containerStack indexOfContainee:v7];
+    presentedViewController2 = [dismissCopy presentedViewController];
+    v8 = [(ContainerStack *)self->_containerStack indexOfContainee:presentedViewController2];
     v9 = v8;
     if (v8)
     {
@@ -1992,27 +1992,27 @@ LABEL_18:
       {
 LABEL_7:
 
-        v6 = v15;
+        v6 = dismissCopy;
         goto LABEL_8;
       }
 
       v10 = [(ContainerStack *)self->_containerStack containeeStateAtIndex:v8 - 1];
-      v11 = [v10 viewController];
+      viewController = [v10 viewController];
     }
 
     else
     {
-      v11 = 0;
+      viewController = 0;
     }
 
-    [v7 didDismissByGesture];
-    [(ContainerTransitionManager *)self->_transitionManager didPerformUnmanagedDismissOfViewController:v7 revealingViewController:v11];
+    [presentedViewController2 didDismissByGesture];
+    [(ContainerTransitionManager *)self->_transitionManager didPerformUnmanagedDismissOfViewController:presentedViewController2 revealingViewController:viewController];
     containerStack = self->_containerStack;
     v13 = [(ContainerStack *)containerStack containeeStateAtIndex:v9];
     [(ContainerStack *)containerStack removeContaineeState:v13];
 
-    v14 = [v11 cardPresentationController];
-    [v14 cardHeight];
+    cardPresentationController = [viewController cardPresentationController];
+    [cardPresentationController cardHeight];
     [(ContainerViewController *)self _notifyResizingObserversWithValue:0 onlyIfDragging:?];
 
     goto LABEL_7;
@@ -2021,67 +2021,67 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = [v4 presentedViewController];
-  v6 = [v5 conformsToProtocol:&OBJC_PROTOCOL___ContaineeProtocol];
+  dismissCopy = dismiss;
+  presentedViewController = [dismissCopy presentedViewController];
+  v6 = [presentedViewController conformsToProtocol:&OBJC_PROTOCOL___ContaineeProtocol];
 
   if (v6)
   {
-    v7 = [v4 presentedViewController];
-    v8 = [(ContainerStack *)self->_containerStack indexOfContainee:v7];
+    presentedViewController2 = [dismissCopy presentedViewController];
+    v8 = [(ContainerStack *)self->_containerStack indexOfContainee:presentedViewController2];
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v9 = v8;
-      [v7 willDismissByGesture];
+      [presentedViewController2 willDismissByGesture];
       if (v9)
       {
         v10 = [(ContainerStack *)self->_containerStack containeeStateAtIndex:v9 - 1];
-        v11 = [v10 viewController];
+        viewController = [v10 viewController];
       }
 
       else
       {
-        v11 = 0;
+        viewController = 0;
       }
 
-      [v11 willBecomeCurrentByGesture];
-      v12 = [v11 presentedViewController];
-      if (v12)
+      [viewController willBecomeCurrentByGesture];
+      presentedViewController3 = [viewController presentedViewController];
+      if (presentedViewController3)
       {
-        v13 = v12;
-        v14 = [v11 presentedViewController];
-        v15 = v14;
-        if (v14 == v7)
+        v13 = presentedViewController3;
+        presentedViewController4 = [viewController presentedViewController];
+        v15 = presentedViewController4;
+        if (presentedViewController4 == presentedViewController2)
         {
         }
 
         else
         {
-          v16 = [v11 presentedViewController];
-          v17 = [v16 conformsToProtocol:&OBJC_PROTOCOL___ContaineeProtocol];
+          presentedViewController5 = [viewController presentedViewController];
+          v17 = [presentedViewController5 conformsToProtocol:&OBJC_PROTOCOL___ContaineeProtocol];
 
           if (v17)
           {
-            v18 = [v11 presentedViewController];
-            v19 = [v18 cardPresentationController];
-            v20 = [v19 hidden];
+            presentedViewController6 = [viewController presentedViewController];
+            cardPresentationController = [presentedViewController6 cardPresentationController];
+            hidden = [cardPresentationController hidden];
 
-            v21 = [v7 transitionCoordinator];
+            transitionCoordinator = [presentedViewController2 transitionCoordinator];
             v26[0] = _NSConcreteStackBlock;
             v26[1] = 3221225472;
             v26[2] = sub_1005DD78C;
             v26[3] = &unk_101661710;
-            v27 = v18;
+            v27 = presentedViewController6;
             v23[0] = _NSConcreteStackBlock;
             v23[1] = 3221225472;
             v23[2] = sub_1005DD7D4;
             v23[3] = &unk_101623308;
             v24 = v27;
-            v25 = v20;
+            v25 = hidden;
             v22 = v27;
-            [v21 animateAlongsideTransition:v26 completion:v23];
+            [transitionCoordinator animateAlongsideTransition:v26 completion:v23];
           }
         }
       }
@@ -2089,96 +2089,96 @@ LABEL_8:
   }
 }
 
-- (BOOL)presentationControllerShouldDismiss:(id)a3
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss
 {
-  v4 = [(ContainerViewController *)self currentViewController];
-  v5 = [v4 cardPresentationController];
-  if ([v5 usingSheetPresentation])
+  currentViewController = [(ContainerViewController *)self currentViewController];
+  cardPresentationController = [currentViewController cardPresentationController];
+  if ([cardPresentationController usingSheetPresentation])
   {
-    v6 = [(ContainerViewController *)self currentViewController];
-    v7 = [v6 cardPresentationController];
-    v8 = [v7 allowsSwipeToDismiss];
+    currentViewController2 = [(ContainerViewController *)self currentViewController];
+    cardPresentationController2 = [currentViewController2 cardPresentationController];
+    allowsSwipeToDismiss = [cardPresentationController2 allowsSwipeToDismiss];
   }
 
   else
   {
-    v8 = 1;
+    allowsSwipeToDismiss = 1;
   }
 
-  return v8;
+  return allowsSwipeToDismiss;
 }
 
-- (void)_sheetPresentationControllerDidInvalidateCurrentPresentedViewFrame:(id)a3
+- (void)_sheetPresentationControllerDidInvalidateCurrentPresentedViewFrame:(id)frame
 {
-  v4 = a3;
-  v5 = [(ContainerViewController *)self view];
-  [v5 setNeedsLayout];
+  frameCopy = frame;
+  view = [(ContainerViewController *)self view];
+  [view setNeedsLayout];
 
-  LODWORD(v5) = [v4 _isDragging];
-  if (v5)
+  LODWORD(view) = [frameCopy _isDragging];
+  if (view)
   {
-    v6 = [(ContainerViewController *)self currentViewController];
-    [v6 didInvalidateVisibleFrameByGesture];
+    currentViewController = [(ContainerViewController *)self currentViewController];
+    [currentViewController didInvalidateVisibleFrameByGesture];
   }
 }
 
-- (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(id)a3
+- (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ContainerViewController *)self view];
-  [v5 setNeedsLayout];
+  identifierCopy = identifier;
+  view = [(ContainerViewController *)self view];
+  [view setNeedsLayout];
 
-  v6 = [v4 presentedViewController];
-  v7 = [v6 conformsToProtocol:&OBJC_PROTOCOL___ContaineeProtocol];
+  presentedViewController = [identifierCopy presentedViewController];
+  v7 = [presentedViewController conformsToProtocol:&OBJC_PROTOCOL___ContaineeProtocol];
 
   if (v7)
   {
-    v8 = [(ContainerViewController *)self view];
-    v9 = [v8 window];
-    [v9 endEditing:1];
+    view2 = [(ContainerViewController *)self view];
+    window = [view2 window];
+    [window endEditing:1];
 
-    v10 = [v4 presentedViewController];
-    v11 = [v10 cardPresentationController];
-    -[ContainerViewController containee:willChangeLayout:source:](self, "containee:willChangeLayout:source:", v10, [v11 containeeLayout], 0);
+    presentedViewController2 = [identifierCopy presentedViewController];
+    cardPresentationController = [presentedViewController2 cardPresentationController];
+    -[ContainerViewController containee:willChangeLayout:source:](self, "containee:willChangeLayout:source:", presentedViewController2, [cardPresentationController containeeLayout], 0);
 
-    v12 = [v4 selectedDetentIdentifier];
-    v13 = [v4 detents];
+    selectedDetentIdentifier = [identifierCopy selectedDetentIdentifier];
+    detents = [identifierCopy detents];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_1005DDC54;
     v25[3] = &unk_1016233E8;
-    v26 = v12;
-    v14 = v12;
-    v15 = [v13 indexOfObjectPassingTest:v25];
+    v26 = selectedDetentIdentifier;
+    v14 = selectedDetentIdentifier;
+    v15 = [detents indexOfObjectPassingTest:v25];
 
-    if (v15 == 0x7FFFFFFFFFFFFFFFLL || ([v4 _detentValues], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "count"), v16, v15 >= v17) || (objc_msgSend(v4, "_detentValues"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "objectAtIndexedSubscript:", v15), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "cgFloatValue"), v21 = v20, v19, v18, v21 == UISheetPresentationControllerDetentInactive) || v21 < 0.0)
+    if (v15 == 0x7FFFFFFFFFFFFFFFLL || ([identifierCopy _detentValues], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "count"), v16, v15 >= v17) || (objc_msgSend(identifierCopy, "_detentValues"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "objectAtIndexedSubscript:", v15), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "cgFloatValue"), v21 = v20, v19, v18, v21 == UISheetPresentationControllerDetentInactive) || v21 < 0.0)
     {
-      v22 = [v10 cardPresentationController];
-      [v22 cardHeight];
+      cardPresentationController2 = [presentedViewController2 cardPresentationController];
+      [cardPresentationController2 cardHeight];
       v21 = v23;
     }
 
     [(ContainerViewController *)self _notifyResizingObserversWithValue:0 onlyIfDragging:v21];
-    v24 = [v10 cardPresentationController];
-    -[ContainerViewController containee:didChangeLayout:](self, "containee:didChangeLayout:", v10, [v24 containeeLayout]);
+    cardPresentationController3 = [presentedViewController2 cardPresentationController];
+    -[ContainerViewController containee:didChangeLayout:](self, "containee:didChangeLayout:", presentedViewController2, [cardPresentationController3 containeeLayout]);
   }
 }
 
-- (void)requestDismissalWithCardDismissalHelper:(id)a3
+- (void)requestDismissalWithCardDismissalHelper:(id)helper
 {
-  v4 = [(ContainerViewController *)self currentViewController];
-  v3 = [v4 cardPresentationController];
-  [v3 wantsLayout:1];
+  currentViewController = [(ContainerViewController *)self currentViewController];
+  cardPresentationController = [currentViewController cardPresentationController];
+  [cardPresentationController wantsLayout:1];
 }
 
-- (double)dismissalRectTopEdgeForCardDismissalHelper:(id)a3 coordinateSpace:(id)a4
+- (double)dismissalRectTopEdgeForCardDismissalHelper:(id)helper coordinateSpace:(id)space
 {
-  v5 = a4;
-  v6 = [(ContainerViewController *)self currentViewController];
-  v7 = [v6 view];
+  spaceCopy = space;
+  currentViewController = [(ContainerViewController *)self currentViewController];
+  view = [currentViewController view];
 
-  [v7 bounds];
-  [v7 convertRect:v5 toCoordinateSpace:?];
+  [view bounds];
+  [view convertRect:spaceCopy toCoordinateSpace:?];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -2193,62 +2193,62 @@ LABEL_8:
   return MinY;
 }
 
-- (BOOL)cardDismissalHelperShouldObserveGestures:(id)a3
+- (BOOL)cardDismissalHelperShouldObserveGestures:(id)gestures
 {
-  v4 = [(ContainerViewController *)self currentViewController];
-  result = (!v4 || (v5 = v4, -[ContainerViewController currentViewController](self, "currentViewController"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 shouldCollapseOnMapGesture], v6, v5, v7)) && -[ContainerViewController containeeLayout](self, "containeeLayout") != 1 && -[ContainerViewController containerStyle](self, "containerStyle") == 1;
+  currentViewController = [(ContainerViewController *)self currentViewController];
+  result = (!currentViewController || (v5 = currentViewController, -[ContainerViewController currentViewController](self, "currentViewController"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 shouldCollapseOnMapGesture], v6, v5, v7)) && -[ContainerViewController containeeLayout](self, "containeeLayout") != 1 && -[ContainerViewController containerStyle](self, "containerStyle") == 1;
   return result;
 }
 
 - (int)currentMapViewTargetForAnalytics
 {
-  v3 = [(ContainerViewController *)self currentViewController];
-  v4 = [v3 conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate];
+  currentViewController = [(ContainerViewController *)self currentViewController];
+  v4 = [currentViewController conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(ContainerViewController *)self currentViewController];
+  currentViewController2 = [(ContainerViewController *)self currentViewController];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 currentMapViewTargetForAnalytics];
+    currentMapViewTargetForAnalytics = [currentViewController2 currentMapViewTargetForAnalytics];
   }
 
   else
   {
-    v6 = 0;
+    currentMapViewTargetForAnalytics = 0;
   }
 
-  return v6;
+  return currentMapViewTargetForAnalytics;
 }
 
 - (int)currentUITargetForAnalytics
 {
-  v3 = [(ContainerViewController *)self currentViewController];
-  v4 = [v3 conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate];
+  currentViewController = [(ContainerViewController *)self currentViewController];
+  v4 = [currentViewController conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(ContainerViewController *)self currentViewController];
+  currentViewController2 = [(ContainerViewController *)self currentViewController];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 currentUITargetForAnalytics];
+    currentUITargetForAnalytics = [currentViewController2 currentUITargetForAnalytics];
   }
 
   else
   {
-    v6 = 0;
+    currentUITargetForAnalytics = 0;
   }
 
-  return v6;
+  return currentUITargetForAnalytics;
 }
 
-- (unint64_t)overriddenLayoutForCurrentController:(unint64_t)a3
+- (unint64_t)overriddenLayoutForCurrentController:(unint64_t)controller
 {
   if ([(ContainerViewController *)self containerStyle]== 3)
   {
@@ -2259,29 +2259,29 @@ LABEL_8:
   {
     if ([(ContainerViewController *)self containerStyle]!= 6)
     {
-      v8 = [(ContainerViewController *)self currentViewController];
-      v9 = [v8 cardPresentationController];
-      v10 = [v9 presentedModally];
+      currentViewController = [(ContainerViewController *)self currentViewController];
+      cardPresentationController = [currentViewController cardPresentationController];
+      presentedModally = [cardPresentationController presentedModally];
 
-      if (v10)
+      if (presentedModally)
       {
         return 5;
       }
     }
 
-    if (![(ContainerViewController *)self allowOnlyStandardStyle]&& a3 != 5)
+    if (![(ContainerViewController *)self allowOnlyStandardStyle]&& controller != 5)
     {
-      v11 = [(ContainerViewController *)self containerStyle];
-      if (v11 <= 7)
+      containerStyle = [(ContainerViewController *)self containerStyle];
+      if (containerStyle <= 7)
       {
-        if (((1 << v11) & 0xC8) != 0)
+        if (((1 << containerStyle) & 0xC8) != 0)
         {
           return 4;
         }
 
-        if (((1 << v11) & 6) != 0)
+        if (((1 << containerStyle) & 6) != 0)
         {
-          if (a3 == 4)
+          if (controller == 4)
           {
             return 3;
           }
@@ -2290,12 +2290,12 @@ LABEL_8:
         else
         {
           v12 = 4;
-          if (a3 - 1 < 2)
+          if (controller - 1 < 2)
           {
             v12 = 1;
           }
 
-          if (((1 << v11) & 0x30) != 0)
+          if (((1 << containerStyle) & 0x30) != 0)
           {
             return v12;
           }
@@ -2304,35 +2304,35 @@ LABEL_8:
     }
   }
 
-  return a3;
+  return controller;
 }
 
-- (void)updateHeightConstraintWithValue:(double)a3
+- (void)updateHeightConstraintWithValue:(double)value
 {
-  v5 = [(ContaineeProtocol *)self->_currentViewController cardPresentationController];
-  v6 = [v5 updateHeightConstraintWithValue:a3];
+  cardPresentationController = [(ContaineeProtocol *)self->_currentViewController cardPresentationController];
+  v6 = [cardPresentationController updateHeightConstraintWithValue:value];
 
   if (v6)
   {
     self->_shouldEndTransitionWhenAnimationCompletes = 0;
 
-    [(ContainerViewController *)self contentHeightUpdatedWithValue:a3];
+    [(ContainerViewController *)self contentHeightUpdatedWithValue:value];
   }
 }
 
-- (void)_notifyObserversWithContainerStyle:(unint64_t)a3 value:(double)a4
+- (void)_notifyObserversWithContainerStyle:(unint64_t)style value:(double)value
 {
   v6 = 0.0;
-  if ((a3 | 4) == 5)
+  if ((style | 4) == 5)
   {
-    v7 = a3 == 5 ? 1 : 2;
-    v8 = [(ContainerViewController *)self currentViewController];
-    [v8 heightForLayout:v7];
+    v7 = style == 5 ? 1 : 2;
+    currentViewController = [(ContainerViewController *)self currentViewController];
+    [currentViewController heightForLayout:v7];
     v10 = v9;
 
-    if (v10 < a4)
+    if (v10 < value)
     {
-      v6 = fmin(fmax((a4 - v10) / (v10 * 0.100000024), 0.0), 1.0);
+      v6 = fmin(fmax((value - v10) / (v10 * 0.100000024), 0.0), 1.0);
     }
   }
 
@@ -2340,8 +2340,8 @@ LABEL_8:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v11 = [(NSMapTable *)self->_resizingBlocksByObserver objectEnumerator];
-  v12 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  objectEnumerator = [(NSMapTable *)self->_resizingBlocksByObserver objectEnumerator];
+  v12 = [objectEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v12)
   {
     v13 = v12;
@@ -2352,13 +2352,13 @@ LABEL_8:
       {
         if (*v17 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        (*(*(*(&v16 + 1) + 8 * i) + 16))(a4, v6);
+        (*(*(*(&v16 + 1) + 8 * i) + 16))(value, v6);
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v13 = [objectEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v13);
@@ -2367,50 +2367,50 @@ LABEL_8:
 
 - (BOOL)_isCurrentSheetDragging
 {
-  v3 = [(ContainerViewController *)self currentViewController];
-  v4 = [v3 sheetPresentationController];
-  if ([v4 _isDragging])
+  currentViewController = [(ContainerViewController *)self currentViewController];
+  sheetPresentationController = [currentViewController sheetPresentationController];
+  if ([sheetPresentationController _isDragging])
   {
-    v5 = 1;
+    _isGeneratingAnimations = 1;
   }
 
   else
   {
-    v6 = [(ContainerViewController *)self currentViewController];
-    v7 = [v6 sheetPresentationController];
-    v5 = [v7 _isGeneratingAnimations];
+    currentViewController2 = [(ContainerViewController *)self currentViewController];
+    sheetPresentationController2 = [currentViewController2 sheetPresentationController];
+    _isGeneratingAnimations = [sheetPresentationController2 _isGeneratingAnimations];
   }
 
-  return v5;
+  return _isGeneratingAnimations;
 }
 
-- (void)_notifyResizingObserversWithValue:(double)a3 onlyIfDragging:(BOOL)a4
+- (void)_notifyResizingObserversWithValue:(double)value onlyIfDragging:(BOOL)dragging
 {
-  v4 = a4;
+  draggingCopy = dragging;
   if (![(NSMapTable *)self->_resizingBlocksByObserver count])
   {
     return;
   }
 
-  v7 = [(ContainerViewController *)self containerStyle];
-  v8 = [(ContainerViewController *)self currentViewController];
-  v9 = [v8 cardPresentationController];
-  v10 = [v9 usingSheetPresentation];
+  containerStyle = [(ContainerViewController *)self containerStyle];
+  currentViewController = [(ContainerViewController *)self currentViewController];
+  cardPresentationController = [currentViewController cardPresentationController];
+  usingSheetPresentation = [cardPresentationController usingSheetPresentation];
 
-  if (!v10)
+  if (!usingSheetPresentation)
   {
     goto LABEL_7;
   }
 
-  if (!v4 || self->_transitioning || [(ContainerViewController *)self _isCurrentSheetDragging])
+  if (!draggingCopy || self->_transitioning || [(ContainerViewController *)self _isCurrentSheetDragging])
   {
-    v11 = [(ContainerViewController *)self currentViewController];
-    v12 = [v11 cardPresentationController];
-    v7 = [v12 containerStyle];
+    currentViewController2 = [(ContainerViewController *)self currentViewController];
+    cardPresentationController2 = [currentViewController2 cardPresentationController];
+    containerStyle = [cardPresentationController2 containerStyle];
 
 LABEL_7:
 
-    [(ContainerViewController *)self _notifyObserversWithContainerStyle:v7 value:a3];
+    [(ContainerViewController *)self _notifyObserversWithContainerStyle:containerStyle value:value];
     return;
   }
 
@@ -2425,35 +2425,35 @@ LABEL_7:
   }
 }
 
-- (void)contentHeightUpdatedWithValue:(double)a3
+- (void)contentHeightUpdatedWithValue:(double)value
 {
   if (self->_transitioning)
   {
-    v5 = [(ContainerViewController *)self currentViewController];
-    v6 = [v5 cardPresentationController];
-    [v6 cardHeight];
-    a3 = v7;
+    currentViewController = [(ContainerViewController *)self currentViewController];
+    cardPresentationController = [currentViewController cardPresentationController];
+    [cardPresentationController cardHeight];
+    value = v7;
   }
 
-  [(ContainerViewController *)self _updateBottomPocketForContaineeHeight:a3];
+  [(ContainerViewController *)self _updateBottomPocketForContaineeHeight:value];
 
-  [(ContainerViewController *)self _notifyResizingObserversWithValue:1 onlyIfDragging:a3];
+  [(ContainerViewController *)self _notifyResizingObserversWithValue:1 onlyIfDragging:value];
 }
 
-- (void)registerResizingObserver:(id)a3 withBlock:(id)a4
+- (void)registerResizingObserver:(id)observer withBlock:(id)block
 {
-  v11 = a3;
-  v6 = a4;
-  if (v11)
+  observerCopy = observer;
+  blockCopy = block;
+  if (observerCopy)
   {
     resizingBlocksByObserver = self->_resizingBlocksByObserver;
     if (resizingBlocksByObserver)
     {
-      if (v6)
+      if (blockCopy)
       {
 LABEL_4:
-        v8 = [v6 copy];
-        [(NSMapTable *)resizingBlocksByObserver setObject:v8 forKey:v11];
+        v8 = [blockCopy copy];
+        [(NSMapTable *)resizingBlocksByObserver setObject:v8 forKey:observerCopy];
 
         goto LABEL_7;
       }
@@ -2466,19 +2466,19 @@ LABEL_4:
       self->_resizingBlocksByObserver = v9;
 
       resizingBlocksByObserver = self->_resizingBlocksByObserver;
-      if (v6)
+      if (blockCopy)
       {
         goto LABEL_4;
       }
     }
 
-    [(NSMapTable *)resizingBlocksByObserver removeObjectForKey:v11];
+    [(NSMapTable *)resizingBlocksByObserver removeObjectForKey:observerCopy];
   }
 
 LABEL_7:
 }
 
-- (void)snapToLayout:(unint64_t)a3
+- (void)snapToLayout:(unint64_t)layout
 {
   if (qword_10195DF00 != -1)
   {
@@ -2488,55 +2488,55 @@ LABEL_7:
   if ((byte_10195DF08 & 1) == 0)
   {
     self->_shouldEndTransitionWhenAnimationCompletes = 1;
-    v5 = [(ContainerViewController *)self currentViewController];
-    [v5 heightForLayout:a3];
+    currentViewController = [(ContainerViewController *)self currentViewController];
+    [currentViewController heightForLayout:layout];
     v7 = v6;
 
-    v8 = [(ContainerViewController *)self currentViewController];
-    v9 = [v8 cardPresentationController];
-    v10 = [v9 updateHeightConstraintWithValue:v7];
+    currentViewController2 = [(ContainerViewController *)self currentViewController];
+    cardPresentationController = [currentViewController2 cardPresentationController];
+    v10 = [cardPresentationController updateHeightConstraintWithValue:v7];
 
     if (v10)
     {
       if ([(ContainerViewController *)self layoutModalPresenter]== 3)
       {
-        v11 = [(ContainerViewController *)self currentViewController];
-        v12 = [v11 cardPresentationController];
-        v13 = [v12 presentedModally];
+        currentViewController3 = [(ContainerViewController *)self currentViewController];
+        cardPresentationController2 = [currentViewController3 cardPresentationController];
+        presentedModally = [cardPresentationController2 presentedModally];
 
-        if (v13)
+        if (presentedModally)
         {
-          v14 = [(ContainerViewController *)self modalPresenter];
-          v15 = [v14 cardPresentationController];
-          [v15 updateHeightConstraintWithValue:v7];
+          modalPresenter = [(ContainerViewController *)self modalPresenter];
+          cardPresentationController3 = [modalPresenter cardPresentationController];
+          [cardPresentationController3 updateHeightConstraintWithValue:v7];
         }
       }
 
-      v16 = [(ContainerViewController *)self view];
-      [v16 updateConstraintsIfNeeded];
+      view = [(ContainerViewController *)self view];
+      [view updateConstraintsIfNeeded];
 
-      v17 = [(ContainerViewController *)self animationManager];
-      v18 = [v17 cardHeightAnimation];
+      animationManager = [(ContainerViewController *)self animationManager];
+      cardHeightAnimation = [animationManager cardHeightAnimation];
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_1005DE880;
       v22[3] = &unk_1016575B0;
       v22[4] = self;
       *&v22[5] = v7;
-      v22[6] = a3;
+      v22[6] = layout;
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_1005DE8DC;
       v21[3] = &unk_101661738;
       v21[4] = self;
-      [v18 applyWithAnimations:v22 completion:v21];
+      [cardHeightAnimation applyWithAnimations:v22 completion:v21];
     }
 
     else
     {
-      v19 = [(ContainerViewController *)self currentViewController];
-      v20 = [v19 cardPresentationController];
-      [v20 cardHeight];
+      currentViewController4 = [(ContainerViewController *)self currentViewController];
+      cardPresentationController4 = [currentViewController4 cardPresentationController];
+      [cardPresentationController4 cardHeight];
 
       [(ContainerViewController *)self _completeStateIfNeeded];
     }
@@ -2546,22 +2546,22 @@ LABEL_7:
 - (void)transitionEnded
 {
   self->_transitioning = 0;
-  v2 = [(ContainerViewController *)self _maps_mapsSceneDelegate];
-  [v2 setNeedsUserActivityUpdate];
+  _maps_mapsSceneDelegate = [(ContainerViewController *)self _maps_mapsSceneDelegate];
+  [_maps_mapsSceneDelegate setNeedsUserActivityUpdate];
 }
 
-- (void)sidebarVisibilityDidChange:(BOOL)a3
+- (void)sidebarVisibilityDidChange:(BOOL)change
 {
-  v3 = a3;
-  v4 = [(ContainerViewController *)self containerStyleManager];
-  [v4 sidebarVisibilityDidChange:v3];
+  changeCopy = change;
+  containerStyleManager = [(ContainerViewController *)self containerStyleManager];
+  [containerStyleManager sidebarVisibilityDidChange:changeCopy];
 }
 
 - (void)animateAlongsideCardTransition
 {
-  v4 = [(ContainerViewController *)self currentViewController];
-  v3 = [v4 cardPresentationController];
-  [v3 cardHeight];
+  currentViewController = [(ContainerViewController *)self currentViewController];
+  cardPresentationController = [currentViewController cardPresentationController];
+  [cardPresentationController cardHeight];
   [(ContainerViewController *)self _notifyResizingObserversWithValue:0 onlyIfDragging:?];
 }
 
@@ -2571,34 +2571,34 @@ LABEL_7:
   {
     self->_incompleteCompletion = 0;
     [(ContainerViewController *)self containee:self->_currentViewController didChangeLayout:self->_containeeLayout];
-    v4 = [(ContainerViewController *)self currentViewController];
-    [v4 didChangeLayout:self->_containeeLayout];
+    currentViewController = [(ContainerViewController *)self currentViewController];
+    [currentViewController didChangeLayout:self->_containeeLayout];
 
     [(ContainerViewController *)self transitionEnded];
   }
 }
 
-- (void)setLayoutIfSupported:(unint64_t)a3 animated:(BOOL)a4 source:(unint64_t)a5
+- (void)setLayoutIfSupported:(unint64_t)supported animated:(BOOL)animated source:(unint64_t)source
 {
-  v6 = a4;
-  v9 = [(ContainerViewController *)self currentViewController];
+  animatedCopy = animated;
+  currentViewController = [(ContainerViewController *)self currentViewController];
 
-  if (!v9)
+  if (!currentViewController)
   {
     return;
   }
 
-  v10 = [(ContainerViewController *)self currentViewController];
-  v11 = [v10 cardPresentationController];
-  v12 = [v11 usingSheetPresentation];
+  currentViewController2 = [(ContainerViewController *)self currentViewController];
+  cardPresentationController = [currentViewController2 cardPresentationController];
+  usingSheetPresentation = [cardPresentationController usingSheetPresentation];
 
-  if (v12)
+  if (usingSheetPresentation)
   {
-    v13 = [(ContainerViewController *)self currentViewController];
-    v14 = [v13 cardPresentationController];
-    v15 = [v14 containeeLayout];
+    currentViewController3 = [(ContainerViewController *)self currentViewController];
+    cardPresentationController2 = [currentViewController3 cardPresentationController];
+    containeeLayout = [cardPresentationController2 containeeLayout];
 
-    if (v15 == a3)
+    if (containeeLayout == supported)
     {
       self->_incompleteCompletion = 1;
 LABEL_17:
@@ -2607,14 +2607,14 @@ LABEL_17:
       return;
     }
 
-    v19 = [(ContainerViewController *)self currentViewController];
-    v17 = [v19 cardPresentationController];
-    [v17 wantsLayout:a3];
+    currentViewController4 = [(ContainerViewController *)self currentViewController];
+    cardPresentationController3 = [currentViewController4 cardPresentationController];
+    [cardPresentationController3 wantsLayout:supported];
   }
 
   else
   {
-    v16 = [(ContainerViewController *)self overriddenLayoutForCurrentController:a3];
+    v16 = [(ContainerViewController *)self overriddenLayoutForCurrentController:supported];
     if ([(ContainerViewController *)self containeeLayout]== v16)
     {
 
@@ -2628,23 +2628,23 @@ LABEL_17:
         goto LABEL_17;
       }
 
-      [(ContainerViewController *)self containee:self->_currentViewController willChangeLayout:v16 source:a5];
-      v18 = [(ContainerViewController *)self currentViewController];
-      [v18 willChangeLayout:v16];
+      [(ContainerViewController *)self containee:self->_currentViewController willChangeLayout:v16 source:source];
+      currentViewController5 = [(ContainerViewController *)self currentViewController];
+      [currentViewController5 willChangeLayout:v16];
 
       self->_containeeLayout = v16;
       [(ContainerViewController *)self _updateContaineeIfNeeded:self->_currentViewController withLayout:v16];
 
-      [(ContainerViewController *)self updateLayoutAnimated:v6];
+      [(ContainerViewController *)self updateLayoutAnimated:animatedCopy];
     }
   }
 }
 
-- (void)updateLayoutAnimated:(BOOL)a3
+- (void)updateLayoutAnimated:(BOOL)animated
 {
   if (self->_currentViewController)
   {
-    v3 = a3;
+    animatedCopy = animated;
     if (qword_10195DF00 != -1)
     {
       dispatch_once(&qword_10195DF00, &stru_1016303F0);
@@ -2652,14 +2652,14 @@ LABEL_17:
 
     if ((byte_10195DF08 & 1) == 0)
     {
-      if (v3)
+      if (animatedCopy)
       {
         self->_shouldEndTransitionWhenAnimationCompletes = 1;
-        v5 = [(ContainerViewController *)self view];
-        [v5 updateConstraintsIfNeeded];
+        view = [(ContainerViewController *)self view];
+        [view updateConstraintsIfNeeded];
 
-        v6 = [(ContainerViewController *)self animationManager];
-        v7 = [v6 cardHeightAnimation];
+        animationManager = [(ContainerViewController *)self animationManager];
+        cardHeightAnimation = [animationManager cardHeightAnimation];
         v13[0] = _NSConcreteStackBlock;
         v13[1] = 3221225472;
         v13[2] = sub_1005DEFA0;
@@ -2670,7 +2670,7 @@ LABEL_17:
         v12[2] = sub_1005DF038;
         v12[3] = &unk_101661738;
         v12[4] = self;
-        [v7 applyWithAnimations:v13 completion:v12];
+        [cardHeightAnimation applyWithAnimations:v13 completion:v12];
       }
 
       else
@@ -2678,36 +2678,36 @@ LABEL_17:
         [(ContainerViewController *)self _updateVisibleContentForLayout:self->_containeeLayout];
         if (self->_transitioning)
         {
-          v8 = [(ContainerViewController *)self view];
-          [v8 layoutIfNeeded];
+          view2 = [(ContainerViewController *)self view];
+          [view2 layoutIfNeeded];
         }
 
         [(ContainerViewController *)self containee:self->_currentViewController didChangeLayout:self->_containeeLayout];
-        v9 = [(ContainerViewController *)self currentViewController];
-        [v9 didChangeLayout:self->_containeeLayout];
+        currentViewController = [(ContainerViewController *)self currentViewController];
+        [currentViewController didChangeLayout:self->_containeeLayout];
 
-        v10 = [(ContainerViewController *)self currentViewController];
-        [v10 heightForLayout:self->_containeeLayout];
+        currentViewController2 = [(ContainerViewController *)self currentViewController];
+        [currentViewController2 heightForLayout:self->_containeeLayout];
         [(ContainerViewController *)self contentHeightUpdatedWithValue:?];
 
         [(ContainerViewController *)self updateContaineeStackState];
       }
 
-      v11 = [(ContainerViewController *)self iosBasedChromeViewController];
-      [v11 setNeedsUpdateComponent:@"statusBarStyle" animated:v3];
+      iosBasedChromeViewController = [(ContainerViewController *)self iosBasedChromeViewController];
+      [iosBasedChromeViewController setNeedsUpdateComponent:@"statusBarStyle" animated:animatedCopy];
     }
   }
 }
 
-- (BOOL)_updateContaineeIfNeeded:(id)a3 withLayout:(unint64_t)a4
+- (BOOL)_updateContaineeIfNeeded:(id)needed withLayout:(unint64_t)layout
 {
-  v5 = a3;
-  [v5 heightForLayout:a4];
+  neededCopy = needed;
+  [neededCopy heightForLayout:layout];
   v7 = v6;
   if (v6 != -1.0)
   {
-    v8 = [v5 cardPresentationController];
-    [v8 updateHeightConstraintWithValue:v7];
+    cardPresentationController = [neededCopy cardPresentationController];
+    [cardPresentationController updateHeightConstraintWithValue:v7];
   }
 
   return v7 != -1.0;
@@ -2728,8 +2728,8 @@ LABEL_17:
 
   else
   {
-    v4 = [(ContainerViewController *)self view];
-    [v4 safeAreaInsets];
+    view = [(ContainerViewController *)self view];
+    [view safeAreaInsets];
     v6 = v5;
 
     result = 24.0;
@@ -2742,36 +2742,36 @@ LABEL_17:
   return result;
 }
 
-- (void)setChromeHidden:(BOOL)a3
+- (void)setChromeHidden:(BOOL)hidden
 {
-  if (self->_chromeHidden != a3)
+  if (self->_chromeHidden != hidden)
   {
-    self->_chromeHidden = a3;
+    self->_chromeHidden = hidden;
   }
 }
 
-- (void)_updateVisibleContentForLayout:(unint64_t)a3
+- (void)_updateVisibleContentForLayout:(unint64_t)layout
 {
-  v4 = [(ContainerViewController *)self currentViewController];
-  v6 = v4;
+  currentViewController = [(ContainerViewController *)self currentViewController];
+  v6 = currentViewController;
   v5 = 1.0;
-  if (a3 == 1)
+  if (layout == 1)
   {
     v5 = 0.0;
   }
 
-  [v4 applyAlphaToContent:v5];
+  [currentViewController applyAlphaToContent:v5];
 }
 
-- (BOOL)shouldPassPoint:(CGPoint)a3 withEvent:(id)a4 inView:(id)a5
+- (BOOL)shouldPassPoint:(CGPoint)point withEvent:(id)event inView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a5;
-  v9 = [(ContainerViewController *)self currentViewController];
-  v10 = [v9 view];
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  currentViewController = [(ContainerViewController *)self currentViewController];
+  view = [currentViewController view];
 
-  [v10 alpha];
+  [view alpha];
   if (v11 == 0.0)
   {
     LOBYTE(v12) = 1;
@@ -2779,13 +2779,13 @@ LABEL_17:
 
   else
   {
-    v13 = [(ContainerViewController *)self view];
-    [v13 convertPoint:v8 fromView:{x, y}];
+    view2 = [(ContainerViewController *)self view];
+    [view2 convertPoint:viewCopy fromView:{x, y}];
     v15 = v14;
     v17 = v16;
 
-    v18 = [(ContainerViewController *)self containerView];
-    [v18 frame];
+    containerView = [(ContainerViewController *)self containerView];
+    [containerView frame];
     v20 = v19;
     v22 = v21;
     v24 = v23;
@@ -2804,22 +2804,22 @@ LABEL_17:
 
 - (CardAnimation)cardHeightAnimation
 {
-  v2 = [(ContainerViewController *)self animationManager];
-  v3 = [v2 cardHeightAnimation];
+  animationManager = [(ContainerViewController *)self animationManager];
+  cardHeightAnimation = [animationManager cardHeightAnimation];
 
-  return v3;
+  return cardHeightAnimation;
 }
 
-- (void)removeControllerFromStack:(id)a3
+- (void)removeControllerFromStack:(id)stack
 {
-  v4 = a3;
+  stackCopy = stack;
   v5 = sub_10002A8B8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = self;
-    if (!v6)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v11 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -2827,31 +2827,31 @@ LABEL_17:
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(ContainerViewController *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(ContainerViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_8;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
 LABEL_10:
-    containerStack = v6->_containerStack;
+    containerStack = selfCopy->_containerStack;
     *buf = 138543874;
-    v16 = v11;
+    v16 = selfCopy;
     v17 = 2112;
-    v18 = v4;
+    v18 = stackCopy;
     v19 = 2112;
     v20 = containerStack;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] removeControllerFromStack: %@, containerStack: %@", buf, 0x20u);
   }
 
-  v13 = [(ContainerStack *)self->_containerStack indexOfContainee:v4];
+  v13 = [(ContainerStack *)self->_containerStack indexOfContainee:stackCopy];
   if (v13 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v14 = [(ContainerStack *)self->_containerStack containeeStateAtIndex:v13];
@@ -2862,21 +2862,21 @@ LABEL_10:
   }
 }
 
-- (void)presentController:(id)a3 animated:(BOOL)a4 useDefaultContaineeLayout:(BOOL)a5 completion:(id)a6
+- (void)presentController:(id)controller animated:(BOOL)animated useDefaultContaineeLayout:(BOOL)layout completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
+  layoutCopy = layout;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
   v12 = sub_10002A8B8();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v46 = v11;
-    v13 = v8;
-    v14 = self;
-    if (!v14)
+    v46 = completionCopy;
+    v13 = animatedCopy;
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v19 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -2884,64 +2884,64 @@ LABEL_10:
     v16 = NSStringFromClass(v15);
     if (objc_opt_respondsToSelector())
     {
-      v17 = [(ContainerViewController *)v14 performSelector:"accessibilityIdentifier"];
+      v17 = [(ContainerViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v18 = v17;
       if (v17 && ![v17 isEqualToString:v16])
       {
-        v19 = [NSString stringWithFormat:@"%@<%p, %@>", v16, v14, v18];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v16, selfCopy, v18];
 
         goto LABEL_8;
       }
     }
 
-    v19 = [NSString stringWithFormat:@"%@<%p>", v16, v14];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v16, selfCopy];
 LABEL_8:
 
 LABEL_10:
-    v20 = v19;
-    v21 = [(ContaineeProtocol *)v10 preferredPresentationStyle];
-    containerStack = v14->_containerStack;
+    v20 = selfCopy;
+    preferredPresentationStyle = [(ContaineeProtocol *)controllerCopy preferredPresentationStyle];
+    containerStack = selfCopy->_containerStack;
 
     *buf = 138544642;
-    v59 = v19;
+    v59 = selfCopy;
     v60 = 2112;
-    v61 = v10;
+    v61 = controllerCopy;
     v62 = 1024;
-    v8 = v13;
+    animatedCopy = v13;
     v63 = v13;
     v64 = 1024;
-    v65 = v7;
+    v65 = layoutCopy;
     v66 = 2048;
-    v67 = v21;
+    v67 = preferredPresentationStyle;
     v68 = 2112;
     v69 = containerStack;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[%{public}@] presentController: %@, animated: %d, useDefaultContaineeLayout: %d, preferredStyle: %lu, containerStack: %@", buf, 0x36u);
 
-    v11 = v46;
+    completionCopy = v46;
   }
 
   if (self->_enableMacPresentationStyles)
   {
-    v23 = [(ContaineeProtocol *)v10 preferredPresentationStyle];
-    if (v23 > 2)
+    preferredPresentationStyle2 = [(ContaineeProtocol *)controllerCopy preferredPresentationStyle];
+    if (preferredPresentationStyle2 > 2)
     {
-      switch(v23)
+      switch(preferredPresentationStyle2)
       {
         case 3:
-          [(ContainerViewController *)self _pushPalette:v10 animated:v8 completion:v11];
+          [(ContainerViewController *)self _pushPalette:controllerCopy animated:animatedCopy completion:completionCopy];
           goto LABEL_40;
         case 4:
-          [(ContainerViewController *)self _presentMenuViewController:v10 animated:v8 completion:v11];
+          [(ContainerViewController *)self _presentMenuViewController:controllerCopy animated:animatedCopy completion:completionCopy];
           goto LABEL_40;
         case 5:
-          [(ContaineeProtocol *)v10 setModalPresentationStyle:2];
+          [(ContaineeProtocol *)controllerCopy setModalPresentationStyle:2];
           v55[0] = _NSConcreteStackBlock;
           v55[1] = 3221225472;
           v55[2] = sub_1005DFC68;
           v55[3] = &unk_1016605F8;
           v55[4] = self;
-          v56 = v10;
-          v57 = v11;
+          v56 = controllerCopy;
+          v57 = completionCopy;
           [(ContainerViewController *)self presentViewController:v56 animated:1 completion:v55];
 
           goto LABEL_40;
@@ -2950,18 +2950,18 @@ LABEL_10:
 
     else
     {
-      switch(v23)
+      switch(preferredPresentationStyle2)
       {
         case 0:
           goto LABEL_16;
         case 1:
-          v42 = [(ContainerViewController *)self chromeViewController];
+          chromeViewController = [(ContainerViewController *)self chromeViewController];
           v43 = objc_opt_respondsToSelector();
 
           if (v43)
           {
-            v44 = [(ContainerViewController *)self chromeViewController];
-            [v44 pushSidebarViewController:v10];
+            chromeViewController2 = [(ContainerViewController *)self chromeViewController];
+            [chromeViewController2 pushSidebarViewController:controllerCopy];
           }
 
           goto LABEL_40;
@@ -2975,7 +2975,7 @@ LABEL_16:
     }
   }
 
-  if (self->_currentViewController != v10)
+  if (self->_currentViewController != controllerCopy)
   {
     if (qword_10195CBD0 != -1)
     {
@@ -2984,20 +2984,20 @@ LABEL_16:
 
     if (byte_101928890 == 1)
     {
-      v25 = [(ContaineeProtocol *)v10 cardPresentationController];
-      v26 = [v25 alwaysUseDefaultContaineeLayout];
+      cardPresentationController = [(ContaineeProtocol *)controllerCopy cardPresentationController];
+      alwaysUseDefaultContaineeLayout = [cardPresentationController alwaysUseDefaultContaineeLayout];
 
-      v7 |= v26;
+      layoutCopy |= alwaysUseDefaultContaineeLayout;
     }
 
     self->_containeeLayout = 0;
-    v45 = v8;
-    if (v10)
+    v45 = animatedCopy;
+    if (controllerCopy)
     {
-      v27 = [(ContainerStack *)self->_containerStack indexOfContainee:v10];
+      v27 = [(ContainerStack *)self->_containerStack indexOfContainee:controllerCopy];
       if (v27 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v28 = [[ContaineeState alloc] initWithContainee:v10];
+        v28 = [[ContaineeState alloc] initWithContainee:controllerCopy];
         v29 = 0;
         v30 = 0;
         goto LABEL_34;
@@ -3013,17 +3013,17 @@ LABEL_16:
     v30 = [(ContaineeState *)v28 layoutForStyle:[(ContainerViewController *)self containerStyle]];
     v29 = 1;
 LABEL_34:
-    v31 = [(ContainerViewController *)self currentViewController];
-    v32 = [v31 cardPresentationController];
-    v33 = [v32 presentedModally] ^ 1;
+    currentViewController = [(ContainerViewController *)self currentViewController];
+    cardPresentationController2 = [currentViewController cardPresentationController];
+    v33 = [cardPresentationController2 presentedModally] ^ 1;
 
-    if ((v7 & v33 & 1) != 0 || !v30)
+    if ((layoutCopy & v33 & 1) != 0 || !v30)
     {
-      v34 = [(ContainerViewController *)self originalLayoutForViewController:v10];
-      v35 = [(ContaineeProtocol *)v10 cardPresentationController];
-      v36 = [v35 presentedModally];
+      v34 = [(ContainerViewController *)self originalLayoutForViewController:controllerCopy];
+      cardPresentationController3 = [(ContaineeProtocol *)controllerCopy cardPresentationController];
+      presentedModally = [cardPresentationController3 presentedModally];
 
-      if (v36)
+      if (presentedModally)
       {
         v30 = 5;
       }
@@ -3039,7 +3039,7 @@ LABEL_34:
     v51[2] = sub_1005DFCD0;
     v51[3] = &unk_101651258;
     v51[4] = self;
-    v37 = v10;
+    v37 = controllerCopy;
     v54 = v29;
     v52 = v37;
     v53 = v28;
@@ -3052,34 +3052,34 @@ LABEL_34:
     v50 = v29;
     v40 = v37;
     v48 = v40;
-    v49 = self;
+    selfCopy2 = self;
     v41 = objc_retainBlock(v47);
-    [(ContainerTransitionManager *)self->_transitionManager presentViewController:v40 isAlreadyInStack:v29 layout:v30 animated:v45 preprocess:v39 postprocess:v41 completion:v11];
+    [(ContainerTransitionManager *)self->_transitionManager presentViewController:v40 isAlreadyInStack:v29 layout:v30 animated:v45 preprocess:v39 postprocess:v41 completion:completionCopy];
 
     goto LABEL_40;
   }
 
-  if (v11)
+  if (completionCopy)
   {
-    (*(v11 + 2))(v11, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 
   [(ContainerTransitionManager *)self->_transitionManager dequeueWaitingContainees];
 LABEL_40:
 }
 
-- (void)setControllerStack:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setControllerStack:(id)stack animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  stackCopy = stack;
+  completionCopy = completion;
   v10 = sub_10002A8B8();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = self;
-    if (!v11)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v16 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -3087,84 +3087,84 @@ LABEL_40:
     v13 = NSStringFromClass(v12);
     if (objc_opt_respondsToSelector())
     {
-      v14 = [(ContainerViewController *)v11 performSelector:"accessibilityIdentifier"];
+      v14 = [(ContainerViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v15 = v14;
       if (v14 && ![v14 isEqualToString:v13])
       {
-        v16 = [NSString stringWithFormat:@"%@<%p, %@>", v13, v11, v15];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v13, selfCopy, v15];
 
         goto LABEL_8;
       }
     }
 
-    v16 = [NSString stringWithFormat:@"%@<%p>", v13, v11];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v13, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543874;
-    v80 = v16;
+    v80 = selfCopy;
     v81 = 2112;
-    v82 = v8;
+    v82 = stackCopy;
     v83 = 1024;
-    v84 = v6;
+    v84 = animatedCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[%{public}@] setControllerStack: %@, animated: %d", buf, 0x1Cu);
   }
 
   v17 = &OBJC_IVAR___VenueDropDownOutlineCellModel__venueIdentifier;
-  if (self->_enableMacPresentationStyles && self->_currentMenuViewController && ([v8 containsObject:?] & 1) == 0)
+  if (self->_enableMacPresentationStyles && self->_currentMenuViewController && ([stackCopy containsObject:?] & 1) == 0)
   {
-    [(ContainerViewController *)self _dismissCurrentMenuViewControllerAnimated:v6];
+    [(ContainerViewController *)self _dismissCurrentMenuViewControllerAnimated:animatedCopy];
   }
 
-  v18 = [(ContainerStack *)self->_containerStack allObjects];
-  if (![v18 isEqualToArray:v8])
+  allObjects = [(ContainerStack *)self->_containerStack allObjects];
+  if (![allObjects isEqualToArray:stackCopy])
   {
     v19 = objc_alloc_init(ContainerStack);
-    if ([v8 count])
+    if ([stackCopy count])
     {
       v73[0] = _NSConcreteStackBlock;
       v73[1] = 3221225472;
       v73[2] = sub_1005E06D0;
       v73[3] = &unk_101623378;
       v73[4] = self;
-      v8 = v8;
-      v74 = v8;
+      stackCopy = stackCopy;
+      v74 = stackCopy;
       v75 = v19;
-      [v8 enumerateObjectsUsingBlock:v73];
+      [stackCopy enumerateObjectsUsingBlock:v73];
 
       goto LABEL_30;
     }
 
-    v20 = [(ContainerStack *)self->_containerStack lastState];
+    lastState = [(ContainerStack *)self->_containerStack lastState];
     if (![(ContainerViewController *)self supportsEmptyStack])
     {
       if ([(ContainerStack *)self->_containerStack count]>= 2 && ([(ContainerStack *)self->_containerStack containeeStateAtIndex:0], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v22 = v21;
+        lastObject2 = v21;
         [(ContainerStack *)v19 pushContaineeState:v21];
-        [v18 firstObject];
+        [allObjects firstObject];
         v56 = v19;
-        v23 = v9;
-        v25 = v24 = v6;
+        v23 = completionCopy;
+        v25 = v24 = animatedCopy;
         v78 = v25;
         v26 = [NSArray arrayWithObjects:&v78 count:1];
 
-        v8 = v25;
-        v6 = v24;
-        v9 = v23;
+        stackCopy = v25;
+        animatedCopy = v24;
+        completionCopy = v23;
         v19 = v56;
       }
 
       else
       {
-        if (!v20)
+        if (!lastState)
         {
 LABEL_29:
 
 LABEL_30:
-          v27 = [(ContainerStack *)self->_containerStack lastState];
-          v28 = [(ContainerStack *)v19 lastState];
-          if (v27 == v28)
+          lastState2 = [(ContainerStack *)self->_containerStack lastState];
+          lastState3 = [(ContainerStack *)v19 lastState];
+          if (lastState2 == lastState3)
           {
             v40 = v19;
             if (qword_10195DF00 != -1)
@@ -3182,44 +3182,44 @@ LABEL_30:
 LABEL_32:
               objc_storeStrong(&self->_containerStack, v19);
               v29 = v17[536];
-              if (*(&self->super.super.super.super.super.isa + v29) && ([v8 containsObject:?] & 1) == 0)
+              if (*(&self->super.super.super.super.super.isa + v29) && ([stackCopy containsObject:?] & 1) == 0)
               {
                 [(ContainerViewController *)self _dismissMenuViewController:*(&self->super.super.super.super.super.isa + v29) animated:1];
               }
 
-              v30 = [(ContainerViewController *)self presentedViewController];
-              if (v30)
+              presentedViewController = [(ContainerViewController *)self presentedViewController];
+              if (presentedViewController)
               {
-                v31 = v30;
-                v32 = [(ContainerViewController *)self presentedViewController];
-                v33 = sub_100010C34(v32, &OBJC_PROTOCOL___ContaineeProtocol);
+                v31 = presentedViewController;
+                presentedViewController2 = [(ContainerViewController *)self presentedViewController];
+                v33 = sub_100010C34(presentedViewController2, &OBJC_PROTOCOL___ContaineeProtocol);
 
                 if (v33)
                 {
-                  v34 = [(ContainerViewController *)self presentedViewController];
-                  if ([v34 preferredPresentationStyle] == 5)
+                  presentedViewController3 = [(ContainerViewController *)self presentedViewController];
+                  if ([presentedViewController3 preferredPresentationStyle] == 5)
                   {
-                    [v8 lastObject];
+                    [stackCopy lastObject];
                     v57 = v19;
-                    v36 = v35 = v6;
-                    v37 = [v36 preferredPresentationStyle];
+                    v36 = v35 = animatedCopy;
+                    preferredPresentationStyle = [v36 preferredPresentationStyle];
                     v59[0] = _NSConcreteStackBlock;
                     v59[1] = 3221225472;
                     v59[2] = sub_1005E08A0;
                     v59[3] = &unk_1016233A0;
                     v59[4] = self;
-                    v38 = v34;
-                    v63 = v37 == 5;
-                    v60 = v38;
+                    lastObject = presentedViewController3;
+                    v63 = preferredPresentationStyle == 5;
+                    v60 = lastObject;
                     v61 = v36;
                     v64 = v35;
-                    v62 = v9;
+                    v62 = completionCopy;
                     v39 = v36;
                     [(ContainerViewController *)self dismissViewControllerAnimated:v35 completion:v59];
 
-                    v6 = v35;
+                    animatedCopy = v35;
                     v19 = v57;
-                    if (v37 == 5)
+                    if (preferredPresentationStyle == 5)
                     {
                       goto LABEL_41;
                     }
@@ -3227,39 +3227,39 @@ LABEL_32:
                 }
               }
 
-              v38 = [v8 lastObject];
-              [(ContainerViewController *)self presentController:v38 animated:v6 useDefaultContaineeLayout:1 completion:v9];
+              lastObject = [stackCopy lastObject];
+              [(ContainerViewController *)self presentController:lastObject animated:animatedCopy useDefaultContaineeLayout:1 completion:completionCopy];
 LABEL_41:
 
               goto LABEL_42;
             }
 
-            v27 = [(ContainerStack *)self->_containerStack allObjects];
-            v28 = [(ContainerStack *)v19 allObjects];
-            if (([v27 isEqualToArray:v28] & 1) == 0)
+            lastState2 = [(ContainerStack *)self->_containerStack allObjects];
+            lastState3 = [(ContainerStack *)v19 allObjects];
+            if (([lastState2 isEqualToArray:lastState3] & 1) == 0)
             {
-              v55 = v6;
-              v43 = [v27 firstObject];
-              v44 = [v43 presentingViewController];
-              v45 = v44;
+              v55 = animatedCopy;
+              firstObject = [lastState2 firstObject];
+              presentingViewController = [firstObject presentingViewController];
+              v45 = presentingViewController;
               v58 = v19;
-              if (v44)
+              if (presentingViewController)
               {
-                v46 = v44;
+                chromeViewController = presentingViewController;
               }
 
               else
               {
-                v46 = [(ContainerViewController *)self chromeViewController];
+                chromeViewController = [(ContainerViewController *)self chromeViewController];
               }
 
-              v54 = v46;
+              v54 = chromeViewController;
 
               v71 = 0u;
               v72 = 0u;
               v69 = 0u;
               v70 = 0u;
-              v47 = v28;
+              v47 = lastState3;
               v48 = [v47 countByEnumeratingWithState:&v69 objects:v76 count:16];
               if (v48)
               {
@@ -3288,13 +3288,13 @@ LABEL_41:
               v65[2] = sub_1005E07D0;
               v65[3] = &unk_101661A40;
               v66 = v54;
-              v67 = self;
-              v28 = v47;
-              v68 = v28;
+              selfCopy2 = self;
+              lastState3 = v47;
+              v68 = lastState3;
               v53 = v54;
               [UIViewController _performWithoutDeferringTransitions:v65];
 
-              v6 = v55;
+              animatedCopy = v55;
               v19 = v58;
               v17 = &OBJC_IVAR___VenueDropDownOutlineCellModel__venueIdentifier;
             }
@@ -3303,49 +3303,49 @@ LABEL_41:
           goto LABEL_32;
         }
 
-        v22 = [v18 lastObject];
-        v77 = v22;
+        lastObject2 = [allObjects lastObject];
+        v77 = lastObject2;
         v26 = [NSArray arrayWithObjects:&v77 count:1];
       }
 
-      v8 = v26;
+      stackCopy = v26;
       v17 = &OBJC_IVAR___VenueDropDownOutlineCellModel__venueIdentifier;
     }
 
-    if (v20)
+    if (lastState)
     {
-      [(ContainerStack *)v19 pushContaineeState:v20];
+      [(ContainerStack *)v19 pushContaineeState:lastState];
     }
 
     goto LABEL_29;
   }
 
-  if (v9)
+  if (completionCopy)
   {
-    (*(v9 + 2))(v9, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 
 LABEL_42:
 }
 
-- (BOOL)controllerIsInStack:(id)a3
+- (BOOL)controllerIsInStack:(id)stack
 {
-  v4 = a3;
-  v5 = [(ContainerTransitionManager *)self->_transitionManager hasWaitingTransitionForViewController:v4]|| [(ContainerStack *)self->_containerStack indexOfContainee:v4]!= 0x7FFFFFFFFFFFFFFFLL;
+  stackCopy = stack;
+  v5 = [(ContainerTransitionManager *)self->_transitionManager hasWaitingTransitionForViewController:stackCopy]|| [(ContainerStack *)self->_containerStack indexOfContainee:stackCopy]!= 0x7FFFFFFFFFFFFFFFLL;
 
   return v5;
 }
 
-- (void)replaceCurrentWithController:(id)a3 moveToContaineeLayout:(unint64_t)a4
+- (void)replaceCurrentWithController:(id)controller moveToContaineeLayout:(unint64_t)layout
 {
-  v6 = a3;
+  controllerCopy = controller;
   v7 = sub_10002A8B8();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = self;
-    if (!v8)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v13 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -3353,56 +3353,56 @@ LABEL_42:
     v10 = NSStringFromClass(v9);
     if (objc_opt_respondsToSelector())
     {
-      v11 = [(ContainerViewController *)v8 performSelector:"accessibilityIdentifier"];
+      v11 = [(ContainerViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v12 = v11;
       if (v11 && ![v11 isEqualToString:v10])
       {
-        v13 = [NSString stringWithFormat:@"%@<%p, %@>", v10, v8, v12];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v10, selfCopy, v12];
 
         goto LABEL_8;
       }
     }
 
-    v13 = [NSString stringWithFormat:@"%@<%p>", v10, v8];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v10, selfCopy];
 LABEL_8:
 
 LABEL_10:
-    containerStack = v8->_containerStack;
+    containerStack = selfCopy->_containerStack;
     *buf = 138544130;
-    v23 = v13;
+    v23 = selfCopy;
     v24 = 2112;
-    v25 = v6;
+    v25 = controllerCopy;
     v26 = 2048;
-    v27 = a4;
+    layoutCopy = layout;
     v28 = 2112;
     v29 = containerStack;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}@] replaceCurrentWithController: %@, newContaineeLayout: %lu, containerStack: %@", buf, 0x2Au);
   }
 
-  if (!self->_enableMacPresentationStyles || [(ContainerViewController *)self containeeLayout]| a4 && ([(ContaineeProtocol *)v6 preferredPresentationStyle]== 2 || ![(ContaineeProtocol *)v6 preferredPresentationStyle]))
+  if (!self->_enableMacPresentationStyles || [(ContainerViewController *)self containeeLayout]| layout && ([(ContaineeProtocol *)controllerCopy preferredPresentationStyle]== 2 || ![(ContaineeProtocol *)controllerCopy preferredPresentationStyle]))
   {
-    if (self->_currentViewController == v6)
+    if (self->_currentViewController == controllerCopy)
     {
       [(ContainerTransitionManager *)self->_transitionManager dequeueWaitingContainees];
     }
 
     else
     {
-      v15 = [(ContainerStack *)self->_containerStack lastState];
+      lastState = [(ContainerStack *)self->_containerStack lastState];
       self->_containeeLayout = 0;
-      if ([(ContainerStack *)self->_containerStack indexOfContainee:v6]== 0x7FFFFFFFFFFFFFFFLL)
+      if ([(ContainerStack *)self->_containerStack indexOfContainee:controllerCopy]== 0x7FFFFFFFFFFFFFFFLL)
       {
         v20[0] = _NSConcreteStackBlock;
         v20[1] = 3221225472;
         v20[2] = sub_1005E0CE8;
         v20[3] = &unk_101661A90;
         v20[4] = self;
-        v16 = v6;
+        v16 = controllerCopy;
         v21 = v16;
         v17 = objc_retainBlock(v20);
-        if (v15)
+        if (lastState)
         {
-          v18 = [v15 layoutForStyle:{-[ContainerViewController containerStyle](self, "containerStyle")}];
+          v18 = [lastState layoutForStyle:{-[ContainerViewController containerStyle](self, "containerStyle")}];
         }
 
         else
@@ -3410,50 +3410,50 @@ LABEL_10:
           v18 = 0;
         }
 
-        if (a4)
+        if (layout)
         {
-          v19 = a4;
+          layoutCopy2 = layout;
         }
 
         else
         {
-          v19 = v18;
+          layoutCopy2 = v18;
         }
 
-        [(ContainerTransitionManager *)self->_transitionManager replaceCurrentWithViewController:v16 isAlreadyInStack:0 layout:v19 animated:1 postprocess:v17];
+        [(ContainerTransitionManager *)self->_transitionManager replaceCurrentWithViewController:v16 isAlreadyInStack:0 layout:layoutCopy2 animated:1 postprocess:v17];
       }
 
       else
       {
-        [(ContainerViewController *)self presentController:v6];
+        [(ContainerViewController *)self presentController:controllerCopy];
       }
     }
   }
 
   else
   {
-    [(ContainerViewController *)self presentController:v6 animated:1 useDefaultContaineeLayout:1 completion:0];
+    [(ContainerViewController *)self presentController:controllerCopy animated:1 useDefaultContaineeLayout:1 completion:0];
   }
 }
 
-- (void)replaceCurrentWithController:(id)a3 moveToContaineeDefaultLayout:(BOOL)a4
+- (void)replaceCurrentWithController:(id)controller moveToContaineeDefaultLayout:(BOOL)layout
 {
-  v5 = a3;
-  [(ContainerViewController *)self replaceCurrentWithController:v5 moveToContaineeLayout:[(ContainerViewController *)self originalLayoutForViewController:v5]];
+  controllerCopy = controller;
+  [(ContainerViewController *)self replaceCurrentWithController:controllerCopy moveToContaineeLayout:[(ContainerViewController *)self originalLayoutForViewController:controllerCopy]];
 }
 
-- (void)popLastViewControllerFromViewController:(id)a3 animated:(BOOL)a4 useDefaultContaineeLayout:(BOOL)a5
+- (void)popLastViewControllerFromViewController:(id)controller animated:(BOOL)animated useDefaultContaineeLayout:(BOOL)layout
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  layoutCopy = layout;
+  animatedCopy = animated;
+  controllerCopy = controller;
   v9 = sub_10002A8B8();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = self;
-    if (!v10)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v15 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -3461,34 +3461,34 @@ LABEL_10:
     v12 = NSStringFromClass(v11);
     if (objc_opt_respondsToSelector())
     {
-      v13 = [(ContainerViewController *)v10 performSelector:"accessibilityIdentifier"];
+      v13 = [(ContainerViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v14 = v13;
       if (v13 && ![v13 isEqualToString:v12])
       {
-        v15 = [NSString stringWithFormat:@"%@<%p, %@>", v12, v10, v14];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v12, selfCopy, v14];
 
         goto LABEL_8;
       }
     }
 
-    v15 = [NSString stringWithFormat:@"%@<%p>", v12, v10];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v12, selfCopy];
 LABEL_8:
 
 LABEL_10:
-    v16 = v15;
-    v17 = [v8 preferredPresentationStyle];
-    containerStack = v10->_containerStack;
+    v16 = selfCopy;
+    preferredPresentationStyle = [controllerCopy preferredPresentationStyle];
+    containerStack = selfCopy->_containerStack;
 
     *buf = 138544642;
-    v32 = v15;
+    v32 = selfCopy;
     v33 = 2112;
-    v34 = v8;
+    v34 = controllerCopy;
     v35 = 1024;
-    v36 = v6;
+    v36 = animatedCopy;
     v37 = 1024;
-    v38 = v5;
+    v38 = layoutCopy;
     v39 = 2048;
-    v40 = v17;
+    v40 = preferredPresentationStyle;
     v41 = 2112;
     v42 = containerStack;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}@] popLastViewControllerFromViewController: %@, animated: %d, useDefaultContaineeLayout: %d, preferredStyle: %lu, containerStack: %@", buf, 0x36u);
@@ -3499,16 +3499,16 @@ LABEL_10:
     goto LABEL_17;
   }
 
-  v19 = [v8 preferredPresentationStyle];
-  if (v19 > 2)
+  preferredPresentationStyle2 = [controllerCopy preferredPresentationStyle];
+  if (preferredPresentationStyle2 > 2)
   {
-    switch(v19)
+    switch(preferredPresentationStyle2)
     {
       case 3:
-        [(ContainerViewController *)self _popPalette:v6 completion:0];
+        [(ContainerViewController *)self _popPalette:animatedCopy completion:0];
         goto LABEL_35;
       case 4:
-        [(ContainerViewController *)self _dismissMenuViewController:v8 animated:v6];
+        [(ContainerViewController *)self _dismissMenuViewController:controllerCopy animated:animatedCopy];
         goto LABEL_35;
       case 5:
         v29[0] = _NSConcreteStackBlock;
@@ -3516,7 +3516,7 @@ LABEL_10:
         v29[2] = sub_1005E11E4;
         v29[3] = &unk_101661A90;
         v29[4] = self;
-        v30 = v8;
+        v30 = controllerCopy;
         [(ContainerViewController *)self dismissViewControllerAnimated:1 completion:v29];
 
         goto LABEL_35;
@@ -3525,14 +3525,14 @@ LABEL_10:
     goto LABEL_17;
   }
 
-  if (!v19)
+  if (!preferredPresentationStyle2)
   {
 LABEL_16:
     v20 = +[UIMenuSystem mainSystem];
     [v20 setNeedsRebuild];
 
 LABEL_17:
-    v21 = [(ContainerStack *)self->_containerStack indexOfContainee:v8];
+    v21 = [(ContainerStack *)self->_containerStack indexOfContainee:controllerCopy];
     if (v21)
     {
       if (v21 != 0x7FFFFFFFFFFFFFFFLL)
@@ -3540,16 +3540,16 @@ LABEL_17:
         v22 = self->_containerStack;
         if (self->_willBeginDisplayingInLockScreen)
         {
-          v23 = [(ContainerStack *)v22 containeeStateAtIndex:v21];
-          [(ContainerStack *)v22 removeContaineeState:v23];
+          chromeViewController2 = [(ContainerStack *)v22 containeeStateAtIndex:v21];
+          [(ContainerStack *)v22 removeContaineeState:chromeViewController2];
 LABEL_32:
 
           goto LABEL_35;
         }
 
         v25 = [(ContainerStack *)v22 containeeStateAtIndex:v21 - 1];
-        v26 = [v25 viewController];
-        [(ContainerViewController *)self presentController:v26 animated:v6 useDefaultContaineeLayout:v5];
+        viewController = [v25 viewController];
+        [(ContainerViewController *)self presentController:viewController animated:animatedCopy useDefaultContaineeLayout:layoutCopy];
       }
     }
 
@@ -3557,21 +3557,21 @@ LABEL_32:
     {
       if (self->_willBeginDisplayingInLockScreen)
       {
-        v24 = [(ContainerStack *)self->_containerStack popAll];
+        popAll = [(ContainerStack *)self->_containerStack popAll];
       }
 
       else
       {
-        [(ContainerViewController *)self presentController:0 animated:v6 useDefaultContaineeLayout:v5];
+        [(ContainerViewController *)self presentController:0 animated:animatedCopy useDefaultContaineeLayout:layoutCopy];
       }
     }
 
     goto LABEL_35;
   }
 
-  if (v19 != 1)
+  if (preferredPresentationStyle2 != 1)
   {
-    if (v19 != 2)
+    if (preferredPresentationStyle2 != 2)
     {
       goto LABEL_17;
     }
@@ -3579,91 +3579,91 @@ LABEL_32:
     goto LABEL_16;
   }
 
-  v27 = [(ContainerViewController *)self chromeViewController];
+  chromeViewController = [(ContainerViewController *)self chromeViewController];
   v28 = objc_opt_respondsToSelector();
 
   if (v28)
   {
-    v23 = [(ContainerViewController *)self chromeViewController];
-    [v23 popSidebarViewController];
+    chromeViewController2 = [(ContainerViewController *)self chromeViewController];
+    [chromeViewController2 popSidebarViewController];
     goto LABEL_32;
   }
 
 LABEL_35:
 }
 
-- (void)popLastViewControllerAnimated:(BOOL)a3 useDefaultContaineeLayout:(BOOL)a4
+- (void)popLastViewControllerAnimated:(BOOL)animated useDefaultContaineeLayout:(BOOL)layout
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(ContainerViewController *)self currentViewController];
-  [(ContainerViewController *)self popLastViewControllerFromViewController:v7 animated:v5 useDefaultContaineeLayout:v4];
+  layoutCopy = layout;
+  animatedCopy = animated;
+  currentViewController = [(ContainerViewController *)self currentViewController];
+  [(ContainerViewController *)self popLastViewControllerFromViewController:currentViewController animated:animatedCopy useDefaultContaineeLayout:layoutCopy];
 }
 
-- (void)popLastViewControllerWithInitialVelocity:(double)a3
+- (void)popLastViewControllerWithInitialVelocity:(double)velocity
 {
-  [(ContainerTransitionManager *)self->_transitionManager setInitialVelocity:a3];
+  [(ContainerTransitionManager *)self->_transitionManager setInitialVelocity:velocity];
 
   [(ContainerViewController *)self popLastViewControllerAnimated:1 useDefaultContaineeLayout:0];
 }
 
-- (unint64_t)originalLayoutForViewController:(id)a3
+- (unint64_t)originalLayoutForViewController:(id)controller
 {
-  v4 = a3;
-  v5 = v4;
+  controllerCopy = controller;
+  v5 = controllerCopy;
   if (self->_enableMacPresentationStyles)
   {
-    v6 = [(ContainerViewController *)self currentViewController];
-    if (v6)
+    currentViewController = [(ContainerViewController *)self currentViewController];
+    if (currentViewController)
     {
-      v7 = [(ContainerViewController *)self currentViewController];
-      v8 = [v7 cardPresentationController];
-      v9 = [v8 defaultContaineeLayout];
+      currentViewController2 = [(ContainerViewController *)self currentViewController];
+      cardPresentationController = [currentViewController2 cardPresentationController];
+      defaultContaineeLayout = [cardPresentationController defaultContaineeLayout];
     }
 
     else
     {
-      v7 = [v5 cardPresentationController];
-      v9 = [v7 defaultContaineeLayout];
+      currentViewController2 = [v5 cardPresentationController];
+      defaultContaineeLayout = [currentViewController2 defaultContaineeLayout];
     }
   }
 
   else
   {
-    v6 = [v4 cardPresentationController];
-    v9 = [v6 defaultContaineeLayout];
+    currentViewController = [controllerCopy cardPresentationController];
+    defaultContaineeLayout = [currentViewController defaultContaineeLayout];
   }
 
-  if (!v9)
+  if (!defaultContaineeLayout)
   {
     if (self->_enableMacPresentationStyles && ([(ContainerViewController *)self containerStyle]== 5 || [(ContainerViewController *)self containerStyle]== 4))
     {
-      v9 = 3;
+      defaultContaineeLayout = 3;
     }
 
     else
     {
-      v9 = 2;
+      defaultContaineeLayout = 2;
     }
   }
 
-  return v9;
+  return defaultContaineeLayout;
 }
 
-- (void)controller:(id)a3 wantsLayout:(unint64_t)a4
+- (void)controller:(id)controller wantsLayout:(unint64_t)layout
 {
-  if (self->_currentViewController == a3)
+  if (self->_currentViewController == controller)
   {
     v7 = +[UIView areAnimationsEnabled];
 
-    [(ContainerViewController *)self setLayoutIfSupported:a4 animated:v7];
+    [(ContainerViewController *)self setLayoutIfSupported:layout animated:v7];
   }
 }
 
-- (double)availableHeightForViewController:(id)a3
+- (double)availableHeightForViewController:(id)controller
 {
-  v4 = [(ContainerViewController *)self view];
-  [v4 frame];
+  view = [(ContainerViewController *)self view];
+  [view frame];
   Height = CGRectGetHeight(v13);
 
   if (qword_10195DF00 != -1)
@@ -3673,7 +3673,7 @@ LABEL_35:
 
   if (byte_10195DF08 == 1 && [(ContainerViewController *)self containerStyle]== 1)
   {
-    v6 = [(ContainerViewController *)self view];
+    view2 = [(ContainerViewController *)self view];
     _UISheetMinimumTopInset();
     Height = Height - v7;
 
@@ -3691,14 +3691,14 @@ LABEL_35:
     Height = Height - v8;
   }
 
-  v9 = [(ContainerViewController *)self containerStyle];
-  if (v9 - 2 < 4)
+  containerStyle = [(ContainerViewController *)self containerStyle];
+  if (containerStyle - 2 < 4)
   {
     [(ContainerViewController *)self mapPeek];
     return Height - v10;
   }
 
-  if (v9 == 6)
+  if (containerStyle == 6)
   {
     [(ContainerViewController *)self bottomEdgePadding];
     Height = Height - v12;
@@ -3714,18 +3714,18 @@ LABEL_35:
 
 - (double)availableHeight
 {
-  v3 = [(ContainerViewController *)self currentViewController];
-  [(ContainerViewController *)self availableHeightForViewController:v3];
+  currentViewController = [(ContainerViewController *)self currentViewController];
+  [(ContainerViewController *)self availableHeightForViewController:currentViewController];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setFullscreenMode:(BOOL)a3
+- (void)setFullscreenMode:(BOOL)mode
 {
-  if (self->_fullscreenMode != a3)
+  if (self->_fullscreenMode != mode)
   {
-    self->_fullscreenMode = a3;
+    self->_fullscreenMode = mode;
     if ([(ContainerTransitionManager *)self->_transitionManager containerReadyToInsert])
     {
       containerStyleManager = self->_containerStyleManager;
@@ -3735,9 +3735,9 @@ LABEL_35:
   }
 }
 
-- (void)minimizeContainee:(id)a3
+- (void)minimizeContainee:(id)containee
 {
-  v7 = a3;
+  containeeCopy = containee;
   if ([(ContainerViewController *)self containeeLayout]== 3)
   {
     if ([(ContainerViewController *)self containerStyle]== 5)
@@ -3750,14 +3750,14 @@ LABEL_35:
       v4 = 2;
     }
 
-    v5 = v7;
+    v5 = containeeCopy;
   }
 
   else
   {
-    v6 = [(ContainerViewController *)self containeeLayout];
-    v5 = v7;
-    if (v6 != 2)
+    containeeLayout = [(ContainerViewController *)self containeeLayout];
+    v5 = containeeCopy;
+    if (containeeLayout != 2)
     {
       goto LABEL_9;
     }
@@ -3766,13 +3766,13 @@ LABEL_35:
   }
 
   [(ContainerViewController *)self controller:v5 wantsLayout:v4];
-  v5 = v7;
+  v5 = containeeCopy;
 LABEL_9:
 }
 
-- (void)expandContainee:(id)a3
+- (void)expandContainee:(id)containee
 {
-  v7 = a3;
+  containeeCopy = containee;
   if ([(ContainerViewController *)self containeeLayout]== 1)
   {
     if ([(ContainerViewController *)self containerStyle]== 5)
@@ -3785,14 +3785,14 @@ LABEL_9:
       v4 = 2;
     }
 
-    v5 = v7;
+    v5 = containeeCopy;
   }
 
   else
   {
-    v6 = [(ContainerViewController *)self containeeLayout];
-    v5 = v7;
-    if (v6 != 2)
+    containeeLayout = [(ContainerViewController *)self containeeLayout];
+    v5 = containeeCopy;
+    if (containeeLayout != 2)
     {
       goto LABEL_9;
     }
@@ -3801,14 +3801,14 @@ LABEL_9:
   }
 
   [(ContainerViewController *)self controller:v5 wantsLayout:v4];
-  v5 = v7;
+  v5 = containeeCopy;
 LABEL_9:
 }
 
-- (unint64_t)transitionFrom:(id)a3 to:(id)a4
+- (unint64_t)transitionFrom:(id)from to:(id)to
 {
-  v6 = [(ContainerStack *)self->_containerStack indexOfContainee:a4];
-  if (a4)
+  v6 = [(ContainerStack *)self->_containerStack indexOfContainee:to];
+  if (to)
   {
     v7 = v6;
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
@@ -3820,8 +3820,8 @@ LABEL_6:
       goto LABEL_8;
     }
 
-    v9 = [(ContainerStack *)self->_containerStack allObjects];
-    v10 = [v9 count] - 1;
+    allObjects = [(ContainerStack *)self->_containerStack allObjects];
+    v10 = [allObjects count] - 1;
 
     v8 = [(ContainerViewController *)self containerStyle]== 6;
     if (v7 == v10)
@@ -3855,11 +3855,11 @@ LABEL_8:
   self->_mapInsetPropagationSuspensionToken = 0;
 }
 
-- (void)suspendPropagatingEdgeInsetsForReason:(id)a3
+- (void)suspendPropagatingEdgeInsetsForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
-  v6 = [WeakRetained acquireMapInsetPropagationSuspensionTokenForReason:v4];
+  v6 = [WeakRetained acquireMapInsetPropagationSuspensionTokenForReason:reasonCopy];
 
   mapInsetPropagationSuspensionToken = self->_mapInsetPropagationSuspensionToken;
   self->_mapInsetPropagationSuspensionToken = v6;
@@ -3871,8 +3871,8 @@ LABEL_8:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(ContainerStack *)self->_containerStack allObjects];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allObjects = [(ContainerStack *)self->_containerStack allObjects];
+  v4 = [allObjects countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3884,17 +3884,17 @@ LABEL_8:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObjects);
         }
 
-        v8 = [*(*(&v9 + 1) + 8 * v7) cardPresentationController];
-        [v8 updateAdditionalTopMargin];
+        cardPresentationController = [*(*(&v9 + 1) + 8 * v7) cardPresentationController];
+        [cardPresentationController updateAdditionalTopMargin];
 
         v7 = v7 + 1;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allObjects countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -3912,12 +3912,12 @@ LABEL_8:
       return;
     }
 
-    v6 = [(ContainerViewController *)self iosChromeViewController];
-    v3 = [v6 acquireMapAttributionSuppressonTokenForReason:@"interactinve sheet resizing"];
+    iosChromeViewController = [(ContainerViewController *)self iosChromeViewController];
+    v3 = [iosChromeViewController acquireMapAttributionSuppressonTokenForReason:@"interactinve sheet resizing"];
     attributionBadgeSuppressionToken = self->_attributionBadgeSuppressionToken;
     self->_attributionBadgeSuppressionToken = v3;
 
-    v5 = v6;
+    v5 = iosChromeViewController;
   }
 
   else
@@ -3934,26 +3934,26 @@ LABEL_8:
 
 - (UIEdgeInsets)mapAttributionInsets
 {
-  v3 = [(ContainerViewController *)self view];
-  v4 = [v3 effectiveUserInterfaceLayoutDirection];
+  view = [(ContainerViewController *)self view];
+  effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
 
   WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
-  v6 = [WeakRetained mapView];
-  [v6 _attributionInsets];
+  mapView = [WeakRetained mapView];
+  [mapView _attributionInsets];
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
   v13 = objc_loadWeakRetained(&self->_chromeViewController);
-  v14 = [v13 mapView];
-  [v14 _edgeInsets];
+  mapView2 = [v13 mapView];
+  [mapView2 _edgeInsets];
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
   if ([(ContainerViewController *)self containerStyle]== 6)
   {
-    if (v4 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       if (v20 >= 0.0)
       {
@@ -3969,7 +3969,7 @@ LABEL_8:
     }
   }
 
-  else if (v4 == 1)
+  else if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v12 = 0.0;
   }
@@ -3983,24 +3983,24 @@ LABEL_8:
   {
     [(ContainerViewController *)self floatingContainerBottomVerticalPadding];
     v22 = v21;
-    v23 = objc_loadWeakRetained(&self->_chromeViewController);
-    v24 = [v23 mapView];
-    [v24 attributionBadgeBounds];
+    view3 = objc_loadWeakRetained(&self->_chromeViewController);
+    mapView3 = [view3 mapView];
+    [mapView3 attributionBadgeBounds];
     v25 = -(_MKAttributionBadgePaddingVertical + (CGRectGetHeight(v35) - v22) * 0.5);
 
 LABEL_12:
     goto LABEL_13;
   }
 
-  v26 = [(ContainerViewController *)self view];
-  [v26 safeAreaInsets];
+  view2 = [(ContainerViewController *)self view];
+  [view2 safeAreaInsets];
   v28 = v27;
 
   v25 = 0.0;
   if (v28 > v18)
   {
-    v23 = [(ContainerViewController *)self view];
-    [v23 safeAreaInsets];
+    view3 = [(ContainerViewController *)self view];
+    [view3 safeAreaInsets];
     v25 = v29 - v18;
     goto LABEL_12;
   }
@@ -4020,11 +4020,11 @@ LABEL_13:
 - (double)attributionVerticalPadding
 {
   WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
-  v3 = [WeakRetained mapView];
-  v4 = [v3 _isShowingAttributionBadge];
+  mapView = [WeakRetained mapView];
+  _isShowingAttributionBadge = [mapView _isShowingAttributionBadge];
 
   result = 0.0;
-  if (v4)
+  if (_isShowingAttributionBadge)
   {
     return 10.0;
   }
@@ -4034,8 +4034,8 @@ LABEL_13:
 
 - (double)floatingContainerBottomVerticalPadding
 {
-  v3 = [(ContainerViewController *)self containerStyle];
-  if (v3 > 7 || ((1 << v3) & 0xA3) == 0)
+  containerStyle = [(ContainerViewController *)self containerStyle];
+  if (containerStyle > 7 || ((1 << containerStyle) & 0xA3) == 0)
   {
     v10 = sub_100019A44();
   }
@@ -4067,12 +4067,12 @@ LABEL_9:
   return v8;
 }
 
-- (void)_actuallyUpdateMapEdgeInsets:(UIEdgeInsets)a3
+- (void)_actuallyUpdateMapEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   [(ContainerViewController *)self topLabelEdgeInset];
   v9 = v8;
   [(ContainerViewController *)self bottomLabelEdgeInsetWithMapEdgeInsets:top, left, bottom, right];
@@ -4080,21 +4080,21 @@ LABEL_9:
   WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
   [WeakRetained setLabelEdgeInsets:{v9, 0.0, v11, 0.0}];
 
-  v13 = [(ContainerViewController *)self chromeContext];
-  if (!v13)
+  chromeContext = [(ContainerViewController *)self chromeContext];
+  if (!chromeContext)
   {
     return;
   }
 
-  v14 = v13;
-  v15 = [(ContainerViewController *)self currentViewController];
-  if (!v15 || [(ContainerViewController *)self containeeLayout])
+  v14 = chromeContext;
+  currentViewController = [(ContainerViewController *)self currentViewController];
+  if (!currentViewController || [(ContainerViewController *)self containeeLayout])
   {
 
 LABEL_5:
     v18 = objc_loadWeakRetained(&self->_chromeViewController);
-    v16 = [(ContainerViewController *)self chromeContext];
-    [v18 setMapEdgeInsets:0 animated:v16 forContext:{top, left, bottom, right}];
+    chromeContext2 = [(ContainerViewController *)self chromeContext];
+    [v18 setMapEdgeInsets:0 animated:chromeContext2 forContext:{top, left, bottom, right}];
 
     return;
   }
@@ -4122,14 +4122,14 @@ LABEL_5:
   deferredEdgeInsetUpdateBlock = self->_deferredEdgeInsetUpdateBlock;
   self->_deferredEdgeInsetUpdateBlock = 0;
 
-  v4 = [(ContainerViewController *)self viewIfLoaded];
-  if (v4)
+  viewIfLoaded = [(ContainerViewController *)self viewIfLoaded];
+  if (viewIfLoaded)
   {
-    v5 = v4;
-    v6 = [(ContainerViewController *)self view];
-    v7 = [v6 superview];
+    v5 = viewIfLoaded;
+    view = [(ContainerViewController *)self view];
+    superview = [view superview];
 
-    if (v7)
+    if (superview)
     {
       bottom = deferredEdgeInsets.bottom;
       top = deferredEdgeInsets.top;
@@ -4149,22 +4149,22 @@ LABEL_5:
   }
 }
 
-- (void)updateEdgeInsets:(UIEdgeInsets)a3 immediately:(BOOL)a4
+- (void)updateEdgeInsets:(UIEdgeInsets)insets immediately:(BOOL)immediately
 {
-  v4.f64[0] = a3.top;
-  v4.f64[1] = a3.left;
-  v5.f64[0] = a3.bottom;
-  v5.f64[1] = a3.right;
+  v4.f64[0] = insets.top;
+  v4.f64[1] = insets.left;
+  v5.f64[0] = insets.bottom;
+  v5.f64[1] = insets.right;
   if ((vminv_u16(vcltz_s16(vshl_n_s16(vmovn_s32(vuzp1q_s32(vceqq_f64(v4, *&self->_deferredEdgeInsets.top), vceqq_f64(v5, *&self->_deferredEdgeInsets.bottom))), 0xFuLL))) & 1) == 0)
   {
-    self->_deferredEdgeInsets = a3;
+    self->_deferredEdgeInsets = insets;
     deferredEdgeInsetUpdateBlock = self->_deferredEdgeInsetUpdateBlock;
     if (deferredEdgeInsetUpdateBlock)
     {
       dispatch_block_cancel(deferredEdgeInsetUpdateBlock);
     }
 
-    if (a4 || self->_edgeInsetUpdateDeferralInterval <= 0.0)
+    if (immediately || self->_edgeInsetUpdateDeferralInterval <= 0.0)
     {
 
       [(ContainerViewController *)self _performDeferredMapEdgeInsetUpdate];
@@ -4190,21 +4190,21 @@ LABEL_5:
   }
 }
 
-- (void)_updateMapEdgeInsetsImmediately:(BOOL)a3
+- (void)_updateMapEdgeInsetsImmediately:(BOOL)immediately
 {
-  v3 = a3;
-  v5 = [(ContainerViewController *)self viewIfLoaded];
-  if (v5)
+  immediatelyCopy = immediately;
+  viewIfLoaded = [(ContainerViewController *)self viewIfLoaded];
+  if (viewIfLoaded)
   {
-    v6 = v5;
-    v7 = [(ContainerViewController *)self view];
-    v8 = [v7 superview];
+    v6 = viewIfLoaded;
+    view = [(ContainerViewController *)self view];
+    superview = [view superview];
 
-    if (v8)
+    if (superview)
     {
       [(ContainerViewController *)self _calculateMapEdgeInsets];
 
-      [(ContainerViewController *)self updateEdgeInsets:v3 immediately:?];
+      [(ContainerViewController *)self updateEdgeInsets:immediatelyCopy immediately:?];
     }
   }
 }
@@ -4215,10 +4215,10 @@ LABEL_5:
   {
     [(ContainerViewController *)self edgePadding];
     v4 = v3;
-    v5 = [(ContainerViewController *)self view];
-    v6 = [v5 effectiveUserInterfaceLayoutDirection];
-    [v5 safeAreaInsets];
-    if (v6 == 1)
+    view = [(ContainerViewController *)self view];
+    effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
+    [view safeAreaInsets];
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v9 = v8;
     }
@@ -4246,17 +4246,17 @@ LABEL_5:
   return result;
 }
 
-- (double)bottomLabelEdgeInsetWithMapEdgeInsets:(UIEdgeInsets)a3
+- (double)bottomLabelEdgeInsetWithMapEdgeInsets:(UIEdgeInsets)insets
 {
   if (!self->_permitsBottomPocket)
   {
-    return a3.bottom * 0.699999988;
+    return insets.bottom * 0.699999988;
   }
 
   result = 0.0;
   if (self->_usesFadingLabels)
   {
-    return a3.bottom * 0.699999988;
+    return insets.bottom * 0.699999988;
   }
 
   return result;
@@ -4273,29 +4273,29 @@ LABEL_5:
   return result;
 }
 
-- (int64_t)VKApplicationUILayoutForStyle:(unint64_t)a3
+- (int64_t)VKApplicationUILayoutForStyle:(unint64_t)style
 {
-  if (a3 > 7)
+  if (style > 7)
   {
     return 1;
   }
 
   else
   {
-    return qword_101212FC8[a3];
+    return qword_101212FC8[style];
   }
 }
 
-- (void)containerStyleManagerDidChangeStyle:(unint64_t)a3
+- (void)containerStyleManagerDidChangeStyle:(unint64_t)style
 {
   [(ContainerTransitionManager *)self->_transitionManager styleDidChange];
-  [(ContainerViewController *)self didChangeStyle:a3];
+  [(ContainerViewController *)self didChangeStyle:style];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(ContainerStack *)self->_containerStack allObjects];
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  allObjects = [(ContainerStack *)self->_containerStack allObjects];
+  v6 = [allObjects countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
     v7 = v6;
@@ -4307,15 +4307,15 @@ LABEL_5:
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
-        [*(*(&v20 + 1) + 8 * v9) didChangeContainerStyle:a3];
+        [*(*(&v20 + 1) + 8 * v9) didChangeContainerStyle:style];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v7);
@@ -4325,8 +4325,8 @@ LABEL_5:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = [(ContainerViewController *)self visibleCardViews];
-  v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
+  visibleCardViews = [(ContainerViewController *)self visibleCardViews];
+  v11 = [visibleCardViews countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {
     v12 = v11;
@@ -4338,41 +4338,41 @@ LABEL_5:
       {
         if (*v17 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(visibleCardViews);
         }
 
-        [*(*(&v16 + 1) + 8 * v14) setLayoutStyle:a3];
+        [*(*(&v16 + 1) + 8 * v14) setLayoutStyle:style];
         v14 = v14 + 1;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
+      v12 = [visibleCardViews countByEnumeratingWithState:&v16 objects:v24 count:16];
     }
 
     while (v12);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
-  [WeakRetained setVKApplicationUILayout:{-[ContainerViewController VKApplicationUILayoutForStyle:](self, "VKApplicationUILayoutForStyle:", a3)}];
+  [WeakRetained setVKApplicationUILayout:{-[ContainerViewController VKApplicationUILayoutForStyle:](self, "VKApplicationUILayoutForStyle:", style)}];
 
   [(ContainerTransitionManager *)self->_transitionManager dequeueWaitingContainees];
 }
 
-- (void)containerStyleManagerConfigureLayoutForStyle:(unint64_t)a3
+- (void)containerStyleManagerConfigureLayoutForStyle:(unint64_t)style
 {
-  v3 = [(ContainerViewController *)self iosBasedChromeViewController];
-  [v3 setNeedsUpdateComponent:@"statusBarStyle" animated:0];
+  iosBasedChromeViewController = [(ContainerViewController *)self iosBasedChromeViewController];
+  [iosBasedChromeViewController setNeedsUpdateComponent:@"statusBarStyle" animated:0];
 }
 
-- (void)containerStyleManagerWillChangeStyle:(unint64_t)a3
+- (void)containerStyleManagerWillChangeStyle:(unint64_t)style
 {
   [(ContainerViewController *)self willChangeStyle:?];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(ContainerStack *)self->_containerStack allObjects];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allObjects = [(ContainerStack *)self->_containerStack allObjects];
+  v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -4384,35 +4384,35 @@ LABEL_5:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) willChangeContainerStyle:a3];
+        [*(*(&v10 + 1) + 8 * v9) willChangeContainerStyle:style];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 
-  [(ContainerViewController *)self _updateOverrideTraitCollectionsForStyle:a3];
+  [(ContainerViewController *)self _updateOverrideTraitCollectionsForStyle:style];
 }
 
-- (void)_updateOverrideTraitCollectionsForStyle:(unint64_t)a3
+- (void)_updateOverrideTraitCollectionsForStyle:(unint64_t)style
 {
-  v5 = [(ContainerViewController *)self currentViewController];
-  if (v5)
+  currentViewController = [(ContainerViewController *)self currentViewController];
+  if (currentViewController)
   {
-    v6 = v5;
-    v7 = [(ContainerViewController *)self currentViewController];
-    v8 = [v7 parentViewController];
+    v6 = currentViewController;
+    currentViewController2 = [(ContainerViewController *)self currentViewController];
+    parentViewController = [currentViewController2 parentViewController];
 
-    if (v8 == self)
+    if (parentViewController == self)
     {
-      if (a3 < 8 && ((0xA3u >> a3) & 1) != 0)
+      if (style < 8 && ((0xA3u >> style) & 1) != 0)
       {
         v10 = 0;
       }
@@ -4422,17 +4422,17 @@ LABEL_5:
         v10 = [UITraitCollection traitCollectionWithHorizontalSizeClass:1];
       }
 
-      v9 = [(ContainerViewController *)self currentViewController];
-      [(ContainerViewController *)self setOverrideTraitCollection:v10 forChildViewController:v9];
+      currentViewController3 = [(ContainerViewController *)self currentViewController];
+      [(ContainerViewController *)self setOverrideTraitCollection:v10 forChildViewController:currentViewController3];
     }
   }
 }
 
-- (void)didResignContainee:(id)a3 finished:(BOOL)a4
+- (void)didResignContainee:(id)containee finished:(BOOL)finished
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  finishedCopy = finished;
+  containeeCopy = containee;
+  if (containeeCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_containerDelegate);
     v8 = objc_opt_respondsToSelector();
@@ -4440,33 +4440,33 @@ LABEL_5:
     if (v8)
     {
       v9 = objc_loadWeakRetained(&self->_containerDelegate);
-      [v9 container:self didResignContainee:v6 finished:v4];
+      [v9 container:self didResignContainee:containeeCopy finished:finishedCopy];
     }
 
     v10 = +[NSNotificationCenter defaultCenter];
     v17[0] = @"ContainerFinished";
-    v11 = [NSNumber numberWithBool:v4];
+    v11 = [NSNumber numberWithBool:finishedCopy];
     v17[1] = @"ContainerContainee";
     v18[0] = v11;
-    v18[1] = v6;
+    v18[1] = containeeCopy;
     v12 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:2];
     [v10 postNotificationName:@"ContainerDidResignContaineeNotification" object:self userInfo:v12];
 
     v15[0] = @"ContainerFinished";
-    v13 = [NSNumber numberWithBool:v4];
+    v13 = [NSNumber numberWithBool:finishedCopy];
     v15[1] = @"ContainerContainee";
     v16[0] = v13;
-    v16[1] = v6;
+    v16[1] = containeeCopy;
     v14 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:2];
     [PPTNotificationCenter postNotificationIfNeededWithName:@"PPTTestTrayDidDismissNotification" object:self userInfo:v14];
   }
 }
 
-- (void)didPresentContainee:(id)a3 finished:(BOOL)a4
+- (void)didPresentContainee:(id)containee finished:(BOOL)finished
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  finishedCopy = finished;
+  containeeCopy = containee;
+  if (containeeCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_containerDelegate);
     v8 = objc_opt_respondsToSelector();
@@ -4474,33 +4474,33 @@ LABEL_5:
     if (v8)
     {
       v9 = objc_loadWeakRetained(&self->_containerDelegate);
-      [v9 container:self didPresentContainee:v6 finished:v4];
+      [v9 container:self didPresentContainee:containeeCopy finished:finishedCopy];
     }
 
     v10 = +[NSNotificationCenter defaultCenter];
     v17[0] = @"ContainerFinished";
-    v11 = [NSNumber numberWithBool:v4];
+    v11 = [NSNumber numberWithBool:finishedCopy];
     v17[1] = @"ContainerContainee";
     v18[0] = v11;
-    v18[1] = v6;
+    v18[1] = containeeCopy;
     v12 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:2];
     [v10 postNotificationName:@"ContainerDidPresentContaineeNotification" object:self userInfo:v12];
 
     v15[0] = @"ContainerFinished";
-    v13 = [NSNumber numberWithBool:v4];
+    v13 = [NSNumber numberWithBool:finishedCopy];
     v15[1] = @"ContainerContainee";
     v16[0] = v13;
-    v16[1] = v6;
+    v16[1] = containeeCopy;
     v14 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:2];
     [PPTNotificationCenter postNotificationIfNeededWithName:@"PPTTestTrayDidPresentNotification" object:self userInfo:v14];
   }
 }
 
-- (void)willResignContainee:(id)a3 animated:(BOOL)a4
+- (void)willResignContainee:(id)containee animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  animatedCopy = animated;
+  containeeCopy = containee;
+  if (containeeCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_containerDelegate);
     v8 = objc_opt_respondsToSelector();
@@ -4508,25 +4508,25 @@ LABEL_5:
     if (v8)
     {
       v9 = objc_loadWeakRetained(&self->_containerDelegate);
-      [v9 container:self willResignContainee:v6 animated:v4];
+      [v9 container:self willResignContainee:containeeCopy animated:animatedCopy];
     }
 
     v10 = +[NSNotificationCenter defaultCenter];
     v13[0] = @"ContainerAnimated";
-    v11 = [NSNumber numberWithBool:v4];
+    v11 = [NSNumber numberWithBool:animatedCopy];
     v13[1] = @"ContainerContainee";
     v14[0] = v11;
-    v14[1] = v6;
+    v14[1] = containeeCopy;
     v12 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:2];
     [v10 postNotificationName:@"ContainerWillResignContaineeNotification" object:self userInfo:v12];
   }
 }
 
-- (void)willPresentContainee:(id)a3 animated:(BOOL)a4
+- (void)willPresentContainee:(id)containee animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  animatedCopy = animated;
+  containeeCopy = containee;
+  if (containeeCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_containerDelegate);
     v8 = objc_opt_respondsToSelector();
@@ -4534,30 +4534,30 @@ LABEL_5:
     if (v8)
     {
       v9 = objc_loadWeakRetained(&self->_containerDelegate);
-      [v9 container:self willPresentContainee:v6 animated:v4];
+      [v9 container:self willPresentContainee:containeeCopy animated:animatedCopy];
     }
 
     v10 = +[NSNotificationCenter defaultCenter];
     v13[0] = @"ContainerAnimated";
-    v11 = [NSNumber numberWithBool:v4];
+    v11 = [NSNumber numberWithBool:animatedCopy];
     v13[1] = @"ContainerContainee";
     v14[0] = v11;
-    v14[1] = v6;
+    v14[1] = containeeCopy;
     v12 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:2];
     [v10 postNotificationName:@"ContainerWillPresentContaineeNotification" object:self userInfo:v12];
   }
 }
 
-- (void)containee:(id)a3 didChangeLayout:(unint64_t)a4
+- (void)containee:(id)containee didChangeLayout:(unint64_t)layout
 {
-  v6 = a3;
-  if (v6)
+  containeeCopy = containee;
+  if (containeeCopy)
   {
     [(ContainerViewController *)self resumePropagatingEdgeInsets];
-    v7 = [v6 viewIfLoaded];
-    v8 = [v7 window];
+    viewIfLoaded = [containeeCopy viewIfLoaded];
+    window = [viewIfLoaded window];
 
-    if (v8)
+    if (window)
     {
       WeakRetained = objc_loadWeakRetained(&self->_containerDelegate);
       v10 = objc_opt_respondsToSelector();
@@ -4565,40 +4565,40 @@ LABEL_5:
       if (v10)
       {
         v11 = objc_loadWeakRetained(&self->_containerDelegate);
-        [v11 container:self containee:v6 didChangeLayout:a4];
+        [v11 container:self containee:containeeCopy didChangeLayout:layout];
       }
 
-      v12 = [v6 cardPresentationController];
-      v13 = [v12 usingSheetPresentation];
+      cardPresentationController = [containeeCopy cardPresentationController];
+      usingSheetPresentation = [cardPresentationController usingSheetPresentation];
 
-      if (v13)
+      if (usingSheetPresentation)
       {
-        v14 = [v6 cardPresentationController];
-        [v6 didChangeLayout:{objc_msgSend(v14, "containeeLayout")}];
+        cardPresentationController2 = [containeeCopy cardPresentationController];
+        [containeeCopy didChangeLayout:{objc_msgSend(cardPresentationController2, "containeeLayout")}];
 
-        v15 = [(ContainerStack *)self->_containerStack containeeStateForContainee:v6];
-        v16 = [v15 viewController];
-        v17 = [v16 cardPresentationController];
-        [v15 setLayout:objc_msgSend(v17 forStyle:{"containeeLayout"), -[ContainerViewController containerStyle](self, "containerStyle")}];
+        v15 = [(ContainerStack *)self->_containerStack containeeStateForContainee:containeeCopy];
+        viewController = [v15 viewController];
+        cardPresentationController3 = [viewController cardPresentationController];
+        [v15 setLayout:objc_msgSend(cardPresentationController3 forStyle:{"containeeLayout"), -[ContainerViewController containerStyle](self, "containerStyle")}];
       }
 
-      v18 = [(ContainerViewController *)self chromeViewController];
-      [v18 setNeedsUpdateComponent:@"lookAroundButton" animated:1];
+      chromeViewController = [(ContainerViewController *)self chromeViewController];
+      [chromeViewController setNeedsUpdateComponent:@"lookAroundButton" animated:1];
 
       v19 = +[NSNotificationCenter defaultCenter];
       v26[0] = @"ContainerLayout";
-      v20 = [NSNumber numberWithUnsignedInteger:a4];
+      v20 = [NSNumber numberWithUnsignedInteger:layout];
       v26[1] = @"ContainerContainee";
       v27[0] = v20;
-      v27[1] = v6;
+      v27[1] = containeeCopy;
       v21 = [NSDictionary dictionaryWithObjects:v27 forKeys:v26 count:2];
       [v19 postNotificationName:@"ContainerDidChangeLayoutNotification" object:self userInfo:v21];
 
       v24[0] = @"ContainerLayout";
-      v22 = [NSNumber numberWithUnsignedInteger:a4];
+      v22 = [NSNumber numberWithUnsignedInteger:layout];
       v24[1] = @"ContainerContainee";
       v25[0] = v22;
-      v25[1] = v6;
+      v25[1] = containeeCopy;
       v23 = [NSDictionary dictionaryWithObjects:v25 forKeys:v24 count:2];
       [PPTNotificationCenter postNotificationIfNeededWithName:@"PPTTestTrayLayoutDidUpdateNotification" object:self userInfo:v23];
 
@@ -4607,18 +4607,18 @@ LABEL_5:
   }
 }
 
-- (void)containee:(id)a3 willChangeLayout:(unint64_t)a4 source:(unint64_t)a5
+- (void)containee:(id)containee willChangeLayout:(unint64_t)layout source:(unint64_t)source
 {
-  v8 = a3;
-  v9 = v8;
-  if (v8)
+  containeeCopy = containee;
+  v9 = containeeCopy;
+  if (containeeCopy)
   {
-    v10 = [v8 cardPresentationController];
-    v11 = [v10 usingSheetPresentation];
+    cardPresentationController = [containeeCopy cardPresentationController];
+    usingSheetPresentation = [cardPresentationController usingSheetPresentation];
 
-    if (v11)
+    if (usingSheetPresentation)
     {
-      [v9 willChangeLayout:a4];
+      [v9 willChangeLayout:layout];
     }
 
     if (GEOConfigGetBOOL())
@@ -4632,26 +4632,26 @@ LABEL_5:
     if (v13)
     {
       v14 = objc_loadWeakRetained(&self->_containerDelegate);
-      [v14 container:self containee:v9 willChangeLayout:a4];
+      [v14 container:self containee:v9 willChangeLayout:layout];
     }
 
     v15 = +[NSNotificationCenter defaultCenter];
     v19[0] = @"ContainerLayout";
-    v16 = [NSNumber numberWithUnsignedInteger:a4];
+    v16 = [NSNumber numberWithUnsignedInteger:layout];
     v20[0] = v16;
     v20[1] = v9;
     v19[1] = @"ContainerContainee";
     v19[2] = @"ContainerUpdateSource";
-    v17 = [NSNumber numberWithUnsignedInteger:a5];
+    v17 = [NSNumber numberWithUnsignedInteger:source];
     v20[2] = v17;
     v18 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:3];
     [v15 postNotificationName:@"ContainerWillChangeLayoutNotification" object:self userInfo:v18];
   }
 }
 
-- (void)didChangeStyle:(unint64_t)a3
+- (void)didChangeStyle:(unint64_t)style
 {
-  self->_hideAttributionBadgeWhileDragging = (a3 < 8) & (0xA3u >> a3);
+  self->_hideAttributionBadgeWhileDragging = (style < 8) & (0xA3u >> style);
   [(ContainerViewController *)self _updateAttributionBadgeHiding];
   WeakRetained = objc_loadWeakRetained(&self->_containerDelegate);
   v6 = objc_opt_respondsToSelector();
@@ -4664,7 +4664,7 @@ LABEL_5:
 
   v8 = +[NSNotificationCenter defaultCenter];
   v11 = @"ContainerStyle";
-  v9 = [NSNumber numberWithUnsignedInteger:a3];
+  v9 = [NSNumber numberWithUnsignedInteger:style];
   v12 = v9;
   v10 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
   [v8 postNotificationName:@"ContainerDidChangeStyleNotification" object:self userInfo:v10];
@@ -4672,7 +4672,7 @@ LABEL_5:
   [MapsAnalyticStateProvider updateLayoutInformation:self];
 }
 
-- (void)willChangeStyle:(unint64_t)a3
+- (void)willChangeStyle:(unint64_t)style
 {
   WeakRetained = objc_loadWeakRetained(&self->_containerDelegate);
   v6 = objc_opt_respondsToSelector();
@@ -4685,7 +4685,7 @@ LABEL_5:
 
   v8 = +[NSNotificationCenter defaultCenter];
   v11 = @"ContainerStyle";
-  v9 = [NSNumber numberWithUnsignedInteger:a3];
+  v9 = [NSNumber numberWithUnsignedInteger:style];
   v12 = v9;
   v10 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
   [v8 postNotificationName:@"ContainerWillChangeStyleNotification" object:self userInfo:v10];
@@ -4729,16 +4729,16 @@ LABEL_5:
 {
   if (self->_bottomPocketLayoutGuide)
   {
-    v3 = [(ContainerViewController *)self view];
-    [v3 removeLayoutGuide:self->_bottomPocketLayoutGuide];
+    view = [(ContainerViewController *)self view];
+    [view removeLayoutGuide:self->_bottomPocketLayoutGuide];
 
     bottomPocketLayoutGuide = self->_bottomPocketLayoutGuide;
     self->_bottomPocketLayoutGuide = 0;
   }
 
-  v5 = [(StatusBarBackgroundView *)self->_bottomPocketView superview];
+  superview = [(StatusBarBackgroundView *)self->_bottomPocketView superview];
 
-  if (v5)
+  if (superview)
   {
     [(StatusBarBackgroundView *)self->_bottomPocketView removeFromSuperview];
     bottomPocketView = self->_bottomPocketView;
@@ -4746,7 +4746,7 @@ LABEL_5:
   }
 }
 
-- (void)_updateBottomPocketForContaineeHeight:(double)a3
+- (void)_updateBottomPocketForContaineeHeight:(double)height
 {
   if (self->_bottomPocketView)
   {
@@ -4758,13 +4758,13 @@ LABEL_5:
 
     else if (self->_shouldAdjustBottomPocketAlphaOnResize)
     {
-      v8 = [(ContainerViewController *)self currentViewController];
-      v9 = [v8 cardPresentationController];
-      [v9 transitionProgressFromLayout:2 toLayout:3];
+      currentViewController = [(ContainerViewController *)self currentViewController];
+      cardPresentationController = [currentViewController cardPresentationController];
+      [cardPresentationController transitionProgressFromLayout:2 toLayout:3];
       v4 = v10;
 
-      a3 = fabs(v4 + -1.0);
-      v6 = a3 <= 2.22044605e-16;
+      height = fabs(v4 + -1.0);
+      v6 = height <= 2.22044605e-16;
     }
 
     else
@@ -4772,7 +4772,7 @@ LABEL_5:
       v6 = 0;
     }
 
-    [(StatusBarBackgroundView *)self->_bottomPocketView setHidden:v6, a3];
+    [(StatusBarBackgroundView *)self->_bottomPocketView setHidden:v6, height];
     if (!v6 && self->_shouldAdjustBottomPocketAlphaOnResize)
     {
       bottomPocketView = self->_bottomPocketView;
@@ -4798,14 +4798,14 @@ LABEL_5:
         self->_bottomPocketLayoutGuide = v5;
 
         [(UILayoutGuide *)self->_bottomPocketLayoutGuide setIdentifier:@"ContainerVC.BottomPocket"];
-        v7 = [(ContainerViewController *)self view];
-        [v7 addLayoutGuide:self->_bottomPocketLayoutGuide];
+        view = [(ContainerViewController *)self view];
+        [view addLayoutGuide:self->_bottomPocketLayoutGuide];
 
         v8 = [StatusBarBackgroundView alloc];
-        v9 = [(ContainerViewController *)self chromeViewController];
-        v10 = [v9 mapView];
-        v11 = [v10 bottomAnchor];
-        v12 = [(StatusBarBackgroundView *)v8 initWithSafeAreaTopLayoutAnchor:v11];
+        chromeViewController = [(ContainerViewController *)self chromeViewController];
+        mapView = [chromeViewController mapView];
+        bottomAnchor = [mapView bottomAnchor];
+        v12 = [(StatusBarBackgroundView *)v8 initWithSafeAreaTopLayoutAnchor:bottomAnchor];
         v13 = self->_bottomPocketView;
         self->_bottomPocketView = v12;
 
@@ -4818,55 +4818,55 @@ LABEL_5:
         v57 = v58;
         [(StatusBarBackgroundView *)v15 setTransform:&v57];
         [(StatusBarBackgroundView *)self->_bottomPocketView setUserInteractionEnabled:0];
-        v16 = [(ContainerViewController *)self view];
-        [v16 addSubview:self->_bottomPocketView];
+        view2 = [(ContainerViewController *)self view];
+        [view2 addSubview:self->_bottomPocketView];
 
-        v54 = [(UILayoutGuide *)self->_bottomPocketLayoutGuide topAnchor];
-        v56 = [(ContainerViewController *)self chromeViewController];
-        v55 = [v56 mapView];
-        v53 = [v55 _edgeInsetsLayoutGuide];
-        v52 = [v53 bottomAnchor];
-        v51 = [v54 constraintEqualToAnchor:v52];
+        topAnchor = [(UILayoutGuide *)self->_bottomPocketLayoutGuide topAnchor];
+        chromeViewController2 = [(ContainerViewController *)self chromeViewController];
+        mapView2 = [chromeViewController2 mapView];
+        _edgeInsetsLayoutGuide = [mapView2 _edgeInsetsLayoutGuide];
+        bottomAnchor2 = [_edgeInsetsLayoutGuide bottomAnchor];
+        v51 = [topAnchor constraintEqualToAnchor:bottomAnchor2];
         v59[0] = v51;
-        v49 = [(UILayoutGuide *)self->_bottomPocketLayoutGuide bottomAnchor];
-        v50 = [(ContainerViewController *)self chromeViewController];
-        v48 = [v50 mapView];
-        v47 = [v48 bottomAnchor];
-        v46 = [v49 constraintEqualToAnchor:v47];
+        bottomAnchor3 = [(UILayoutGuide *)self->_bottomPocketLayoutGuide bottomAnchor];
+        chromeViewController3 = [(ContainerViewController *)self chromeViewController];
+        mapView3 = [chromeViewController3 mapView];
+        bottomAnchor4 = [mapView3 bottomAnchor];
+        v46 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
         v59[1] = v46;
-        v44 = [(UILayoutGuide *)self->_bottomPocketLayoutGuide leadingAnchor];
-        v45 = [(ContainerViewController *)self chromeViewController];
-        v43 = [v45 mapView];
-        v42 = [v43 leadingAnchor];
-        v41 = [v44 constraintEqualToAnchor:v42];
+        leadingAnchor = [(UILayoutGuide *)self->_bottomPocketLayoutGuide leadingAnchor];
+        chromeViewController4 = [(ContainerViewController *)self chromeViewController];
+        mapView4 = [chromeViewController4 mapView];
+        leadingAnchor2 = [mapView4 leadingAnchor];
+        v41 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         v59[2] = v41;
-        v39 = [(UILayoutGuide *)self->_bottomPocketLayoutGuide trailingAnchor];
-        v40 = [(ContainerViewController *)self chromeViewController];
-        v38 = [v40 mapView];
-        v37 = [v38 trailingAnchor];
-        v36 = [v39 constraintEqualToAnchor:v37];
+        trailingAnchor = [(UILayoutGuide *)self->_bottomPocketLayoutGuide trailingAnchor];
+        chromeViewController5 = [(ContainerViewController *)self chromeViewController];
+        mapView5 = [chromeViewController5 mapView];
+        trailingAnchor2 = [mapView5 trailingAnchor];
+        v36 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         v59[3] = v36;
-        v35 = [(StatusBarBackgroundView *)self->_bottomPocketView heightAnchor];
-        v34 = [(UILayoutGuide *)self->_bottomPocketLayoutGuide heightAnchor];
-        v33 = [v35 constraintEqualToAnchor:v34 multiplier:0.699999988];
+        heightAnchor = [(StatusBarBackgroundView *)self->_bottomPocketView heightAnchor];
+        heightAnchor2 = [(UILayoutGuide *)self->_bottomPocketLayoutGuide heightAnchor];
+        v33 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:0.699999988];
         v59[4] = v33;
-        v31 = [(StatusBarBackgroundView *)self->_bottomPocketView bottomAnchor];
-        v32 = [(ContainerViewController *)self chromeViewController];
-        v30 = [v32 mapView];
-        v29 = [v30 bottomAnchor];
-        v28 = [v31 constraintEqualToAnchor:v29];
+        bottomAnchor5 = [(StatusBarBackgroundView *)self->_bottomPocketView bottomAnchor];
+        chromeViewController6 = [(ContainerViewController *)self chromeViewController];
+        mapView6 = [chromeViewController6 mapView];
+        bottomAnchor6 = [mapView6 bottomAnchor];
+        v28 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
         v59[5] = v28;
-        v27 = [(StatusBarBackgroundView *)self->_bottomPocketView leadingAnchor];
-        v17 = [(ContainerViewController *)self chromeViewController];
-        v18 = [v17 mapView];
-        v19 = [v18 leadingAnchor];
-        v20 = [v27 constraintEqualToAnchor:v19];
+        leadingAnchor3 = [(StatusBarBackgroundView *)self->_bottomPocketView leadingAnchor];
+        chromeViewController7 = [(ContainerViewController *)self chromeViewController];
+        mapView7 = [chromeViewController7 mapView];
+        leadingAnchor4 = [mapView7 leadingAnchor];
+        v20 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
         v59[6] = v20;
-        v21 = [(StatusBarBackgroundView *)self->_bottomPocketView trailingAnchor];
-        v22 = [(ContainerViewController *)self chromeViewController];
-        v23 = [v22 mapView];
-        v24 = [v23 trailingAnchor];
-        v25 = [v21 constraintEqualToAnchor:v24];
+        trailingAnchor3 = [(StatusBarBackgroundView *)self->_bottomPocketView trailingAnchor];
+        chromeViewController8 = [(ContainerViewController *)self chromeViewController];
+        mapView8 = [chromeViewController8 mapView];
+        trailingAnchor4 = [mapView8 trailingAnchor];
+        v25 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
         v59[7] = v25;
         v26 = [NSArray arrayWithObjects:v59 count:8];
         [NSLayoutConstraint activateConstraints:v26];
@@ -4880,13 +4880,13 @@ LABEL_5:
   v14.receiver = self;
   v14.super_class = ContainerViewController;
   [(ContainerViewController *)&v14 setNeedsUserInterfaceAppearanceUpdate];
-  v3 = [(ContainerViewController *)self preferredUserInterfaceStyle];
+  preferredUserInterfaceStyle = [(ContainerViewController *)self preferredUserInterfaceStyle];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(ContainerStack *)self->_containerStack allObjects];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  allObjects = [(ContainerStack *)self->_containerStack allObjects];
+  v5 = [allObjects countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4898,39 +4898,39 @@ LABEL_5:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allObjects);
         }
 
-        v9 = [*(*(&v10 + 1) + 8 * v8) cardPresentationController];
-        [v9 setPreferredUserInterfaceStyle:v3];
+        cardPresentationController = [*(*(&v10 + 1) + 8 * v8) cardPresentationController];
+        [cardPresentationController setPreferredUserInterfaceStyle:preferredUserInterfaceStyle];
 
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v6 = [allObjects countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)currentViewControllerWithPresentationStyle:(unint64_t)a3
+- (id)currentViewControllerWithPresentationStyle:(unint64_t)style
 {
   if (!self->_enableMacPresentationStyles)
   {
     goto LABEL_13;
   }
 
-  if (a3 > 3)
+  if (style > 3)
   {
-    if (a3 == 4)
+    if (style == 4)
     {
       v7 = 168;
       goto LABEL_14;
     }
 
-    if (a3 == 5)
+    if (style == 5)
     {
       goto LABEL_4;
     }
@@ -4942,7 +4942,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (a3 - 1 >= 3)
+  if (style - 1 >= 3)
   {
     goto LABEL_13;
   }
@@ -4978,10 +4978,10 @@ LABEL_15:
   return v6;
 }
 
-- (void)setCurrentViewController:(id)a3
+- (void)setCurrentViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_currentViewController == v5)
+  controllerCopy = controller;
+  if (self->_currentViewController == controllerCopy)
   {
     goto LABEL_11;
   }
@@ -4989,35 +4989,35 @@ LABEL_15:
   v6 = sub_10002A8B8();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = self;
+    selfCopy = self;
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(ContainerViewController *)v7 performSelector:"accessibilityIdentifier"];
+      v10 = [(ContainerViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v11 = v10;
       if (v10 && ![v10 isEqualToString:v9])
       {
-        v12 = [NSString stringWithFormat:@"%@<%p, %@>", v9, v7, v11];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v9, selfCopy, v11];
 
         goto LABEL_8;
       }
     }
 
-    v12 = [NSString stringWithFormat:@"%@<%p>", v9, v7];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v9, selfCopy];
 LABEL_8:
 
     *buf = 138543618;
-    v15 = v12;
+    v15 = selfCopy;
     v16 = 2114;
-    v17 = v5;
+    v17 = controllerCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}@] currentViewController is now: %{public}@", buf, 0x16u);
   }
 
-  objc_storeStrong(&self->_currentViewController, a3);
-  v13 = [(ContaineeProtocol *)v5 parentViewController];
+  objc_storeStrong(&self->_currentViewController, controller);
+  parentViewController = [(ContaineeProtocol *)controllerCopy parentViewController];
 
-  if (v13 == self)
+  if (parentViewController == self)
   {
     [(ContainerViewController *)self _updateOverrideTraitCollectionsForStyle:[(ContainerViewController *)self containerStyle]];
   }
@@ -5025,86 +5025,86 @@ LABEL_8:
 LABEL_11:
 }
 
-- (void)removeChildViewController:(id)a3
+- (void)removeChildViewController:(id)controller
 {
-  v4 = a3;
-  [(ContainerViewController *)self setOverrideTraitCollection:0 forChildViewController:v4];
+  controllerCopy = controller;
+  [(ContainerViewController *)self setOverrideTraitCollection:0 forChildViewController:controllerCopy];
   v5.receiver = self;
   v5.super_class = ContainerViewController;
-  [(ContainerViewController *)&v5 removeChildViewController:v4];
+  [(ContainerViewController *)&v5 removeChildViewController:controllerCopy];
 }
 
-- (void)addChildViewController:(id)a3
+- (void)addChildViewController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = ContainerViewController;
-  v4 = a3;
-  [(ContainerViewController *)&v6 addChildViewController:v4];
+  controllerCopy = controller;
+  [(ContainerViewController *)&v6 addChildViewController:controllerCopy];
   v5 = [(ContainerViewController *)self currentViewController:v6.receiver];
 
-  if (v5 == v4)
+  if (v5 == controllerCopy)
   {
     [(ContainerViewController *)self _updateOverrideTraitCollectionsForStyle:[(ContainerViewController *)self containerStyle]];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = ContainerViewController;
-  [(MapsThemeViewController *)&v4 traitCollectionDidChange:a3];
+  [(MapsThemeViewController *)&v4 traitCollectionDidChange:change];
   [(ContainerViewController *)self _updateOverrideTraitCollectionsForStyle:[(ContainerViewController *)self containerStyle]];
   [(ContainerViewController *)self setNeedsUserInterfaceAppearanceUpdate];
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a4;
-  v7 = a3;
+  coordinatorCopy = coordinator;
+  collectionCopy = collection;
   v8 = sub_10004B334();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = coordinatorCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "Container willTransitionToTraitCollection %@", buf, 0xCu);
   }
 
   v14.receiver = self;
   v14.super_class = ContainerViewController;
-  [(ContainerViewController *)&v14 willTransitionToTraitCollection:v7 withTransitionCoordinator:v6];
-  v9 = [(ContainerViewController *)self traitCollection];
-  v10 = [v9 verticalSizeClass];
-  v11 = [v7 verticalSizeClass];
+  [(ContainerViewController *)&v14 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinatorCopy];
+  traitCollection = [(ContainerViewController *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
+  verticalSizeClass2 = [collectionCopy verticalSizeClass];
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1005E46E4;
   v12[3] = &unk_101623308;
   v12[4] = self;
-  v13 = v10 != v11;
-  [v6 animateAlongsideTransition:v12 completion:&stru_101623328];
+  v13 = verticalSizeClass != verticalSizeClass2;
+  [coordinatorCopy animateAlongsideTransition:v12 completion:&stru_101623328];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v8 = sub_10004B334();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v23 = v7;
+    v23 = coordinatorCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "Container viewWillTransitionToSize %@", buf, 0xCu);
   }
 
   v21.receiver = self;
   v21.super_class = ContainerViewController;
-  [(ContainerViewController *)&v21 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(ContainerViewController *)&v21 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   self->_nextHeight = height;
   self->_needToUpdateHeight = !self->_viewHasAppeared;
-  v9 = [(ContainerViewController *)self view];
-  [v9 bounds];
+  view = [(ContainerViewController *)self view];
+  [view bounds];
   v12 = v10 == width && v11 == height;
 
   v20[0] = _NSConcreteStackBlock;
@@ -5127,21 +5127,21 @@ LABEL_11:
   v15 = v18;
   v16 = v12;
   v13 = v18;
-  [v7 animateAlongsideTransition:v17 completion:v14];
+  [coordinatorCopy animateAlongsideTransition:v17 completion:v14];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v19.receiver = self;
   v19.super_class = ContainerViewController;
-  [(ContainerViewController *)&v19 viewDidAppear:a3];
+  [(ContainerViewController *)&v19 viewDidAppear:appear];
   v4 = sub_10002A8B8();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = self;
-    if (!v5)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v10 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -5149,22 +5149,22 @@ LABEL_11:
     v7 = NSStringFromClass(v6);
     if (objc_opt_respondsToSelector())
     {
-      v8 = [(ContainerViewController *)v5 performSelector:"accessibilityIdentifier"];
+      v8 = [(ContainerViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v9 = v8;
       if (v8 && ![v8 isEqualToString:v7])
       {
-        v10 = [NSString stringWithFormat:@"%@<%p, %@>", v7, v5, v9];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v7, selfCopy, v9];
 
         goto LABEL_8;
       }
     }
 
-    v10 = [NSString stringWithFormat:@"%@<%p>", v7, v5];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v7, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543618;
-    v21 = v10;
+    v21 = selfCopy;
     v22 = 2080;
     v23 = "[ContainerViewController viewDidAppear:]";
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}@] %s", buf, 0x16u);
@@ -5183,10 +5183,10 @@ LABEL_10:
 
   if (byte_10195DF08 == 1)
   {
-    v11 = [(ContainerViewController *)self view];
-    v12 = [v11 window];
-    v13 = [v12 _rootSheetPresentationController];
-    [v13 _setShouldScaleDownBehindDescendantSheets:0];
+    view = [(ContainerViewController *)self view];
+    window = [view window];
+    _rootSheetPresentationController = [window _rootSheetPresentationController];
+    [_rootSheetPresentationController _setShouldScaleDownBehindDescendantSheets:0];
 
     if (qword_10195DF00 != -1)
     {
@@ -5205,9 +5205,9 @@ LABEL_10:
   }
 
   v14 = [MapGestureCardDismissalHelper alloc];
-  v15 = [(ContainerViewController *)self chromeViewController];
-  v16 = [v15 mapView];
-  v17 = [(MapGestureCardDismissalHelper *)v14 initWithMapView:v16];
+  chromeViewController = [(ContainerViewController *)self chromeViewController];
+  mapView = [chromeViewController mapView];
+  v17 = [(MapGestureCardDismissalHelper *)v14 initWithMapView:mapView];
   cardDismissalHelper = self->_cardDismissalHelper;
   self->_cardDismissalHelper = v17;
 
@@ -5215,19 +5215,19 @@ LABEL_10:
   [(ContainerViewController *)self _installBottomPocketIfNeeded];
 }
 
-- (void)setContaineesHidden:(BOOL)a3
+- (void)setContaineesHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v5 = sub_10002A8B8();
   if (!os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     goto LABEL_13;
   }
 
-  v6 = self;
-  if (!v6)
+  selfCopy = self;
+  if (!selfCopy)
   {
-    v11 = @"<nil>";
+    selfCopy = @"<nil>";
     goto LABEL_10;
   }
 
@@ -5235,28 +5235,28 @@ LABEL_10:
   v8 = NSStringFromClass(v7);
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(ContainerViewController *)v6 performSelector:"accessibilityIdentifier"];
+    v9 = [(ContainerViewController *)selfCopy performSelector:"accessibilityIdentifier"];
     v10 = v9;
     if (v9 && ![v9 isEqualToString:v8])
     {
-      v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+      selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
       goto LABEL_8;
     }
   }
 
-  v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+  selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
 LABEL_10:
   v12 = @"NO";
-  if (v3)
+  if (hiddenCopy)
   {
     v12 = @"YES";
   }
 
   *buf = 138543874;
-  v25 = v11;
+  v25 = selfCopy;
   v26 = 2080;
   v27 = "[ContainerViewController setContaineesHidden:]";
   v28 = 2112;
@@ -5265,21 +5265,21 @@ LABEL_10:
   _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] %s: %@", buf, 0x20u);
 
 LABEL_13:
-  if (self->_containeesHidden != v3)
+  if (self->_containeesHidden != hiddenCopy)
   {
-    self->_containeesHidden = v3;
+    self->_containeesHidden = hiddenCopy;
   }
 
-  v14 = [(ContainerStack *)self->_containerStack allObjects];
-  v15 = [v14 firstObject];
+  allObjects = [(ContainerStack *)self->_containerStack allObjects];
+  firstObject = [allObjects firstObject];
 
-  v16 = [(ContainerViewController *)self currentViewController];
-  v17 = v16;
-  if (v15 == v16)
+  currentViewController = [(ContainerViewController *)self currentViewController];
+  v17 = currentViewController;
+  if (firstObject == currentViewController)
   {
-    v18 = [v15 presentingViewController];
+    presentingViewController = [firstObject presentingViewController];
 
-    if (!v18)
+    if (!presentingViewController)
     {
       goto LABEL_25;
     }
@@ -5289,34 +5289,34 @@ LABEL_13:
   {
   }
 
-  if (!v15)
+  if (!firstObject)
   {
     return;
   }
 
   while ((objc_opt_respondsToSelector() & 1) != 0)
   {
-    v19 = v15;
-    v20 = [v19 cardPresentationController];
-    v21 = [v20 usingSheetPresentation];
+    v19 = firstObject;
+    cardPresentationController = [v19 cardPresentationController];
+    usingSheetPresentation = [cardPresentationController usingSheetPresentation];
 
-    if (v21)
+    if (usingSheetPresentation)
     {
-      v22 = [v19 cardPresentationController];
-      [v22 setHidden:v3];
+      cardPresentationController2 = [v19 cardPresentationController];
+      [cardPresentationController2 setHidden:hiddenCopy];
     }
 
-    v23 = [(ContainerViewController *)self currentViewController];
+    currentViewController2 = [(ContainerViewController *)self currentViewController];
 
-    if (v19 == v23)
+    if (v19 == currentViewController2)
     {
 
       goto LABEL_27;
     }
 
-    v15 = [v19 presentedViewController];
+    firstObject = [v19 presentedViewController];
 
-    if (!v15)
+    if (!firstObject)
     {
       v19 = 0;
       goto LABEL_27;
@@ -5324,23 +5324,23 @@ LABEL_13:
   }
 
 LABEL_25:
-  v19 = v15;
+  v19 = firstObject;
 LABEL_27:
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = [a3 object];
-  v5 = [(ContainerViewController *)self chromeViewController];
-  v6 = [v5 _maps_uiScene];
+  object = [foreground object];
+  chromeViewController = [(ContainerViewController *)self chromeViewController];
+  _maps_uiScene = [chromeViewController _maps_uiScene];
 
-  if (v4 == v6)
+  if (object == _maps_uiScene)
   {
     v7 = sub_10002A8B8();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v12 = 138412546;
-      v13 = self;
+      selfCopy = self;
       v14 = 2080;
       v15 = "[ContainerViewController sceneWillEnterForeground:]";
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "%@ %s", &v12, 0x16u);
@@ -5353,14 +5353,14 @@ LABEL_27:
 
     if (byte_10195DF08 == 1)
     {
-      v8 = [(ContainerViewController *)self view];
-      v9 = [v8 window];
-      v10 = v9;
-      if (v9 && self->_viewHasAppeared)
+      view = [(ContainerViewController *)self view];
+      window = [view window];
+      v10 = window;
+      if (window && self->_viewHasAppeared)
       {
-        v11 = [(ContainerViewController *)self isRootContainer];
+        isRootContainer = [(ContainerViewController *)self isRootContainer];
 
-        if (v11)
+        if (isRootContainer)
         {
           [(ContainerTransitionManager *)self->_transitionManager setContainerReadyToInsert:0];
           [(ContainerViewController *)self _internal_ensurePresentationsMatchContaineeStackAllowingFault:1 allowingAnimations:0 skipUnlock:0];
@@ -5374,32 +5374,32 @@ LABEL_27:
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = ContainerViewController;
   [(ContainerViewController *)&v7 viewWillAppear:?];
-  v5 = [(ContainerViewController *)self currentViewController];
-  [v5 willBecomeCurrent:v3];
+  currentViewController = [(ContainerViewController *)self currentViewController];
+  [currentViewController willBecomeCurrent:appearCopy];
 
   v6 = +[NSNotificationCenter defaultCenter];
   [v6 addObserver:self selector:"sceneWillEnterForeground:" name:UISceneWillEnterForegroundNotification object:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v14.receiver = self;
   v14.super_class = ContainerViewController;
   [(ContainerViewController *)&v14 viewWillDisappear:?];
   v5 = sub_10002A8B8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = self;
-    if (!v6)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v11 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -5407,44 +5407,44 @@ LABEL_27:
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(ContainerViewController *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(ContainerViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_8;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543618;
-    v16 = v11;
+    v16 = selfCopy;
     v17 = 2080;
     v18 = "[ContainerViewController viewWillDisappear:]";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] %s", buf, 0x16u);
   }
 
   [(ContainerTransitionManager *)self->_transitionManager setContainerReadyToInsert:0];
-  v12 = [(ContainerViewController *)self currentViewController];
-  [v12 willResignCurrent:v3];
+  currentViewController = [(ContainerViewController *)self currentViewController];
+  [currentViewController willResignCurrent:disappearCopy];
 
   [(ContainerViewController *)self setContaineesHidden:[(ContainerViewController *)self hideContaineesOnViewDidDisappear]];
   v13 = +[NSNotificationCenter defaultCenter];
   [v13 removeObserver:self name:UISceneWillEnterForegroundNotification object:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = ContainerViewController;
-  [(ContainerViewController *)&v6 viewDidDisappear:a3];
+  [(ContainerViewController *)&v6 viewDidDisappear:disappear];
   [(ContainerViewController *)self _removeBottomPocketIfNeeded];
-  v4 = [(ContainerViewController *)self currentViewController];
-  [v4 didResignCurrent];
+  currentViewController = [(ContainerViewController *)self currentViewController];
+  [currentViewController didResignCurrent];
 
   self->_viewHasAppeared = 0;
   [(MapGestureCardDismissalHelper *)self->_cardDismissalHelper setDelegate:0];
@@ -5452,11 +5452,11 @@ LABEL_10:
   self->_cardDismissalHelper = 0;
 }
 
-- (ContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = ContainerViewController;
-  v4 = [(ContainerViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(ContainerViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -5472,8 +5472,8 @@ LABEL_10:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(ContainerViewController *)self visibleViewControllers];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  visibleViewControllers = [(ContainerViewController *)self visibleViewControllers];
+  v4 = [visibleViewControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -5484,20 +5484,20 @@ LABEL_10:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(visibleViewControllers);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [(ContainerViewController *)self currentViewController];
+        currentViewController = [(ContainerViewController *)self currentViewController];
 
-        if (v8 != v9)
+        if (v8 != currentViewController)
         {
           v10 = v8;
           goto LABEL_11;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [visibleViewControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -5515,10 +5515,10 @@ LABEL_11:
 
 - (unint64_t)layoutModalPresenter
 {
-  v3 = [(ContainerViewController *)self modalPresenter];
-  if (v3)
+  modalPresenter = [(ContainerViewController *)self modalPresenter];
+  if (modalPresenter)
   {
-    v4 = [(ContainerStack *)self->_containerStack containeeStateForContainee:v3];
+    v4 = [(ContainerStack *)self->_containerStack containeeStateForContainee:modalPresenter];
     v5 = [v4 layoutForStyle:{-[ContainerViewController containerStyle](self, "containerStyle")}];
   }
 
@@ -5530,20 +5530,20 @@ LABEL_11:
   return v5;
 }
 
-- (unint64_t)layoutForCurrentViewControllerWithStyle:(unint64_t)a3
+- (unint64_t)layoutForCurrentViewControllerWithStyle:(unint64_t)style
 {
-  v4 = [(ContainerViewController *)self currentContaineeState];
-  v5 = [v4 layoutForStyle:a3];
+  currentContaineeState = [(ContainerViewController *)self currentContaineeState];
+  v5 = [currentContaineeState layoutForStyle:style];
 
   return v5;
 }
 
 - (void)updateContaineeStackState
 {
-  v5 = [(ContainerViewController *)self currentContaineeState];
-  v3 = [v5 viewController];
-  v4 = [v3 cardPresentationController];
-  [v5 setLayout:objc_msgSend(v4 forStyle:{"containeeLayout"), -[ContainerViewController containerStyle](self, "containerStyle")}];
+  currentContaineeState = [(ContainerViewController *)self currentContaineeState];
+  viewController = [currentContaineeState viewController];
+  cardPresentationController = [viewController cardPresentationController];
+  [currentContaineeState setLayout:objc_msgSend(cardPresentationController forStyle:{"containeeLayout"), -[ContainerViewController containerStyle](self, "containerStyle")}];
 }
 
 - (ContaineeProtocol)currentOrPendingViewController
@@ -5562,10 +5562,10 @@ LABEL_11:
   return v2;
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v6 = a3;
-  v7 = [[CustomContaineePresentationController alloc] initWithPresentedViewController:v6 presentingViewController:self];
+  controllerCopy = controller;
+  v7 = [[CustomContaineePresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:self];
 
   return v7;
 }
@@ -5573,49 +5573,49 @@ LABEL_11:
 - (ContaineeProtocol)rootPresentingViewController
 {
   v2 = [(ContainerStack *)self->_containerStack containeeStateAtIndex:0];
-  v3 = [v2 viewController];
-  v4 = [v3 presentingViewController];
+  viewController = [v2 viewController];
+  presentingViewController = [viewController presentingViewController];
 
-  return v4;
+  return presentingViewController;
 }
 
-- (void)removeCardforViewController:(id)a3
+- (void)removeCardforViewController:(id)controller
 {
-  if (a3)
+  if (controller)
   {
     cards = self->_cards;
-    v5 = a3;
-    v7 = [(NSMapTable *)cards objectForKey:v5];
-    [(NSMapTable *)self->_cards removeObjectForKey:v5];
-    v6 = [v5 cardPresentationController];
+    controllerCopy = controller;
+    v7 = [(NSMapTable *)cards objectForKey:controllerCopy];
+    [(NSMapTable *)self->_cards removeObjectForKey:controllerCopy];
+    cardPresentationController = [controllerCopy cardPresentationController];
 
-    [v6 setCardView:0 fromContainer:0];
+    [cardPresentationController setCardView:0 fromContainer:0];
     [(CardProvider *)self->_cardProvider recycleCard:v7];
   }
 }
 
-- (id)cardForViewController:(id)a3
+- (id)cardForViewController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
-    v5 = [(NSMapTable *)self->_cards objectForKey:v4];
+    v5 = [(NSMapTable *)self->_cards objectForKey:controllerCopy];
     if (!v5)
     {
-      v6 = [v4 cardPresentationController];
-      v5 = -[ContainerViewController cardWithBlur:](self, "cardWithBlur:", [v6 blurInCardView]);
+      cardPresentationController = [controllerCopy cardPresentationController];
+      v5 = -[ContainerViewController cardWithBlur:](self, "cardWithBlur:", [cardPresentationController blurInCardView]);
 
       [v5 setLayoutStyle:{-[ContainerViewController containerStyle](self, "containerStyle")}];
       [(ContainerViewController *)self setCaptureViewForCardView:v5];
-      [(NSMapTable *)self->_cards setObject:v5 forKey:v4];
+      [(NSMapTable *)self->_cards setObject:v5 forKey:controllerCopy];
     }
 
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     [v5 setAccessibilityIdentifier:v8];
 
-    v9 = [v4 cardPresentationController];
-    [v9 setCardView:v5 fromContainer:self];
+    cardPresentationController2 = [controllerCopy cardPresentationController];
+    [cardPresentationController2 setCardView:v5 fromContainer:self];
   }
 
   else
@@ -5626,48 +5626,48 @@ LABEL_11:
   return v5;
 }
 
-- (void)setCaptureViewForCardView:(id)a3
+- (void)setCaptureViewForCardView:(id)view
 {
-  v5 = a3;
-  v4 = [(ContainerViewController *)self blurGroupName];
-  [v5 setBlurGroupName:v4];
+  viewCopy = view;
+  blurGroupName = [(ContainerViewController *)self blurGroupName];
+  [viewCopy setBlurGroupName:blurGroupName];
 
   if ([(ContainerViewController *)self useBackdrop])
   {
-    [v5 setCaptureView:self->_backdropView];
+    [viewCopy setCaptureView:self->_backdropView];
   }
 }
 
-- (void)setUseBackdropFullScreen:(BOOL)a3
+- (void)setUseBackdropFullScreen:(BOOL)screen
 {
-  if (self->_useBackdropFullScreen != a3)
+  if (self->_useBackdropFullScreen != screen)
   {
-    self->_useBackdropFullScreen = a3;
+    self->_useBackdropFullScreen = screen;
     [(ContainerViewController *)self _updateBackdropConstraints];
   }
 }
 
-- (BOOL)showVLFCrowdsourcingPermissionCardWithContaineeDelegate:(id)a3 delegate:(id)a4 completion:(id)a5
+- (BOOL)showVLFCrowdsourcingPermissionCardWithContaineeDelegate:(id)delegate delegate:(id)a4 completion:(id)completion
 {
-  v8 = a3;
+  delegateCopy = delegate;
   v9 = a4;
-  v10 = a5;
+  completionCopy = completion;
   if (![(ContainerViewController *)self isVLFCrowdsourcingPermissionCardActive])
   {
-    v18 = [(ContainerViewController *)self containerStyle];
+    containerStyle = [(ContainerViewController *)self containerStyle];
     if (+[VLFCrowdsourcingPermissionContaineeViewController shouldShowPermissionViewController])
     {
-      v19 = v18 & 0xFFFFFFFFFFFFFFFDLL;
+      v19 = containerStyle & 0xFFFFFFFFFFFFFFFDLL;
       v20 = sub_100C6497C();
       v21 = os_log_type_enabled(&v20->super.super.super.super.super.super, OS_LOG_TYPE_INFO);
       if (v19 == 4)
       {
         if (v21)
         {
-          v22 = self;
-          if (!v22)
+          selfCopy = self;
+          if (!selfCopy)
           {
-            v27 = @"<nil>";
+            selfCopy = @"<nil>";
             goto LABEL_48;
           }
 
@@ -5675,22 +5675,22 @@ LABEL_11:
           v24 = NSStringFromClass(v23);
           if (objc_opt_respondsToSelector())
           {
-            v25 = [(ContainerViewController *)v22 performSelector:"accessibilityIdentifier"];
+            v25 = [(ContainerViewController *)selfCopy performSelector:"accessibilityIdentifier"];
             v26 = v25;
             if (v25 && ![v25 isEqualToString:v24])
             {
-              v27 = [NSString stringWithFormat:@"%@<%p, %@>", v24, v22, v26];
+              selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v24, selfCopy, v26];
 
               goto LABEL_19;
             }
           }
 
-          v27 = [NSString stringWithFormat:@"%@<%p>", v24, v22];
+          selfCopy = [NSString stringWithFormat:@"%@<%p>", v24, selfCopy];
 LABEL_19:
 
 LABEL_48:
           *buf = 138543362;
-          v45 = v27;
+          v45 = selfCopy;
           v42 = "[%{public}@] Not showing VLF crowdsourcing permission card because the phone is in landscape";
           goto LABEL_49;
         }
@@ -5706,18 +5706,18 @@ LABEL_51:
       {
 LABEL_55:
 
-        v20 = [[VLFCrowdsourcingPermissionContaineeViewController alloc] initWithCompletion:v10];
-        [(ContaineeViewController *)v20 setContaineeDelegate:v8];
+        v20 = [[VLFCrowdsourcingPermissionContaineeViewController alloc] initWithCompletion:completionCopy];
+        [(ContaineeViewController *)v20 setContaineeDelegate:delegateCopy];
         [(ControlContaineeViewController *)v20 setDelegate:v9];
         v41 = 1;
         [(ContainerViewController *)self presentController:v20 animated:1];
         goto LABEL_51;
       }
 
-      v33 = self;
-      if (!v33)
+      selfCopy2 = self;
+      if (!selfCopy2)
       {
-        v38 = @"<nil>";
+        selfCopy2 = @"<nil>";
         goto LABEL_54;
       }
 
@@ -5725,22 +5725,22 @@ LABEL_55:
       v35 = NSStringFromClass(v34);
       if (objc_opt_respondsToSelector())
       {
-        v36 = [(ContainerViewController *)v33 performSelector:"accessibilityIdentifier"];
+        v36 = [(ContainerViewController *)selfCopy2 performSelector:"accessibilityIdentifier"];
         v37 = v36;
         if (v36 && ![v36 isEqualToString:v35])
         {
-          v38 = [NSString stringWithFormat:@"%@<%p, %@>", v35, v33, v37];
+          selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v35, selfCopy2, v37];
 
           goto LABEL_35;
         }
       }
 
-      v38 = [NSString stringWithFormat:@"%@<%p>", v35, v33];
+      selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v35, selfCopy2];
 LABEL_35:
 
 LABEL_54:
       *buf = 138543362;
-      v45 = v38;
+      v45 = selfCopy2;
       _os_log_impl(&_mh_execute_header, &v20->super.super.super.super.super.super, OS_LOG_TYPE_INFO, "[%{public}@] Showing VLF crowdsourcing permission card", buf, 0xCu);
 
       goto LABEL_55;
@@ -5752,10 +5752,10 @@ LABEL_54:
       goto LABEL_50;
     }
 
-    v28 = self;
-    if (!v28)
+    selfCopy3 = self;
+    if (!selfCopy3)
     {
-      v27 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_45;
     }
 
@@ -5763,22 +5763,22 @@ LABEL_54:
     v30 = NSStringFromClass(v29);
     if (objc_opt_respondsToSelector())
     {
-      v31 = [(ContainerViewController *)v28 performSelector:"accessibilityIdentifier"];
+      v31 = [(ContainerViewController *)selfCopy3 performSelector:"accessibilityIdentifier"];
       v32 = v31;
       if (v31 && ![v31 isEqualToString:v30])
       {
-        v27 = [NSString stringWithFormat:@"%@<%p, %@>", v30, v28, v32];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v30, selfCopy3, v32];
 
         goto LABEL_27;
       }
     }
 
-    v27 = [NSString stringWithFormat:@"%@<%p>", v30, v28];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v30, selfCopy3];
 LABEL_27:
 
 LABEL_45:
     *buf = 138543362;
-    v45 = v27;
+    v45 = selfCopy;
     v42 = "[%{public}@] The VLF crowdsourcing permission card is not eligible to be shown";
 LABEL_49:
     _os_log_impl(&_mh_execute_header, &v20->super.super.super.super.super.super, OS_LOG_TYPE_INFO, v42, buf, 0xCu);
@@ -5792,10 +5792,10 @@ LABEL_49:
     goto LABEL_38;
   }
 
-  v12 = self;
-  if (!v12)
+  selfCopy4 = self;
+  if (!selfCopy4)
   {
-    v17 = @"<nil>";
+    selfCopy4 = @"<nil>";
     goto LABEL_37;
   }
 
@@ -5803,22 +5803,22 @@ LABEL_49:
   v14 = NSStringFromClass(v13);
   if (objc_opt_respondsToSelector())
   {
-    v15 = [(ContainerViewController *)v12 performSelector:"accessibilityIdentifier"];
+    v15 = [(ContainerViewController *)selfCopy4 performSelector:"accessibilityIdentifier"];
     v16 = v15;
     if (v15 && ![v15 isEqualToString:v14])
     {
-      v17 = [NSString stringWithFormat:@"%@<%p, %@>", v14, v12, v16];
+      selfCopy4 = [NSString stringWithFormat:@"%@<%p, %@>", v14, selfCopy4, v16];
 
       goto LABEL_9;
     }
   }
 
-  v17 = [NSString stringWithFormat:@"%@<%p>", v14, v12];
+  selfCopy4 = [NSString stringWithFormat:@"%@<%p>", v14, selfCopy4];
 LABEL_9:
 
 LABEL_37:
   *buf = 138543362;
-  v45 = v17;
+  v45 = selfCopy4;
   _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "[%{public}@] The VLF crowdsourcing card is already visible; can't show twice", buf, 0xCu);
 
 LABEL_38:
@@ -5856,7 +5856,7 @@ LABEL_52:
 
 - (BOOL)isVLFCrowdsourcingPermissionCardActive
 {
-  v2 = [(ContainerViewController *)self currentViewController];
+  currentViewController = [(ContainerViewController *)self currentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

@@ -1,11 +1,11 @@
 @interface AMLStorageFeatures
-- (AMLStorageFeatures)initWithFeatureProvider:(id)a3 batchProvider:(id)a4 arrayProvider:(id)a5;
+- (AMLStorageFeatures)initWithFeatureProvider:(id)provider batchProvider:(id)batchProvider arrayProvider:(id)arrayProvider;
 - (MLArrayBatchProvider)arrayProvider;
 - (MLBatchProvider)batchProvider;
 - (MLFeatureProvider)featureProvider;
-- (void)setArrayProvider:(id)a3;
-- (void)setBatchProvider:(id)a3;
-- (void)setFeatureProvider:(id)a3;
+- (void)setArrayProvider:(id)provider;
+- (void)setBatchProvider:(id)provider;
+- (void)setFeatureProvider:(id)provider;
 @end
 
 @implementation AMLStorageFeatures
@@ -17,11 +17,11 @@
   return v2;
 }
 
-- (void)setFeatureProvider:(id)a3
+- (void)setFeatureProvider:(id)provider
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_21AEA2C0C(a3);
+  selfCopy = self;
+  sub_21AEA2C0C(provider);
 }
 
 - (MLBatchProvider)batchProvider
@@ -31,11 +31,11 @@
   return v2;
 }
 
-- (void)setBatchProvider:(id)a3
+- (void)setBatchProvider:(id)provider
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_21AEA2CB8(a3);
+  selfCopy = self;
+  sub_21AEA2CB8(provider);
 }
 
 - (MLArrayBatchProvider)arrayProvider
@@ -45,18 +45,18 @@
   return v2;
 }
 
-- (void)setArrayProvider:(id)a3
+- (void)setArrayProvider:(id)provider
 {
-  v5 = a3;
-  v6 = self;
-  sub_21AEA2D84(a3);
+  providerCopy = provider;
+  selfCopy = self;
+  sub_21AEA2D84(provider);
 }
 
-- (AMLStorageFeatures)initWithFeatureProvider:(id)a3 batchProvider:(id)a4 arrayProvider:(id)a5
+- (AMLStorageFeatures)initWithFeatureProvider:(id)provider batchProvider:(id)batchProvider arrayProvider:(id)arrayProvider
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v6 = a5;
+  arrayProviderCopy = arrayProvider;
   return AMLStorageFeatures.init(featureProvider:batchProvider:arrayProvider:)();
 }
 

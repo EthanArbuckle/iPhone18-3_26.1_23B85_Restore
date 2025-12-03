@@ -1,11 +1,11 @@
 @interface TUConversationPresentationContext
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPresentationContext:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPresentationContext:(id)context;
 - (TUConversationPresentationContext)init;
-- (TUConversationPresentationContext)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TUConversationPresentationContext)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUConversationPresentationContext
@@ -23,32 +23,32 @@
   return result;
 }
 
-- (TUConversationPresentationContext)initWithCoder:(id)a3
+- (TUConversationPresentationContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = TUConversationPresentationContext;
   v5 = [(TUConversationPresentationContext *)&v8 init];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_mode);
-    v5->_mode = [v4 decodeIntegerForKey:v6];
+    v5->_mode = [coderCopy decodeIntegerForKey:v6];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TUConversationPresentationContext *)self mode];
+  coderCopy = coder;
+  mode = [(TUConversationPresentationContext *)self mode];
   v6 = NSStringFromSelector(sel_mode);
-  [v4 encodeInteger:v5 forKey:v6];
+  [coderCopy encodeInteger:mode forKey:v6];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setMode:{-[TUConversationPresentationContext mode](self, "mode")}];
   return v4;
 }
@@ -63,10 +63,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -74,19 +74,19 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUConversationPresentationContext *)self isEqualToPresentationContext:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUConversationPresentationContext *)self isEqualToPresentationContext:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToPresentationContext:(id)a3
+- (BOOL)isEqualToPresentationContext:(id)context
 {
-  v4 = a3;
-  v5 = [(TUConversationPresentationContext *)self mode];
-  v6 = [v4 mode];
+  contextCopy = context;
+  mode = [(TUConversationPresentationContext *)self mode];
+  mode2 = [contextCopy mode];
 
-  return v5 == v6;
+  return mode == mode2;
 }
 
 @end

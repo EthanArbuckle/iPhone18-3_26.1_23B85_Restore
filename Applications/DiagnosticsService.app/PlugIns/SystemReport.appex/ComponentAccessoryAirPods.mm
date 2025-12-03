@@ -1,35 +1,35 @@
 @interface ComponentAccessoryAirPods
 - (BOOL)isPresent;
 - (void)bluetoothManagerDidBecomeAvailable;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentAccessoryAirPods
 
 - (void)bluetoothManagerDidBecomeAvailable
 {
-  v3 = [(ComponentAirPodsBase *)self getPairedAppleAudioDevices];
-  [(ComponentAccessoryAirPods *)self setDevices:v3];
+  getPairedAppleAudioDevices = [(ComponentAirPodsBase *)self getPairedAppleAudioDevices];
+  [(ComponentAccessoryAirPods *)self setDevices:getPairedAppleAudioDevices];
 
-  v4 = [(ComponentAirPodsBase *)self getCBDevices];
-  [(ComponentAccessoryAirPods *)self setCbDevices:v4];
+  getCBDevices = [(ComponentAirPodsBase *)self getCBDevices];
+  [(ComponentAccessoryAirPods *)self setCbDevices:getCBDevices];
 }
 
 - (BOOL)isPresent
 {
-  v3 = [(ComponentAirPodsBase *)self btManagerAvailableSemaphore];
+  btManagerAvailableSemaphore = [(ComponentAirPodsBase *)self btManagerAvailableSemaphore];
   v4 = dispatch_time(0, 3000000000);
-  dispatch_semaphore_wait(v3, v4);
+  dispatch_semaphore_wait(btManagerAvailableSemaphore, v4);
 
-  v5 = [(ComponentAccessoryAirPods *)self devices];
-  LOBYTE(v3) = [v5 count] != 0;
+  devices = [(ComponentAccessoryAirPods *)self devices];
+  LOBYTE(btManagerAvailableSemaphore) = [devices count] != 0;
 
-  return v3;
+  return btManagerAvailableSemaphore;
 }
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v40 = a3;
+  attributesCopy = attributes;
   v43 = objc_alloc_init(NSMutableArray);
   v44 = 0u;
   v45 = 0u;
@@ -52,14 +52,14 @@
 
         v7 = *(*(&v44 + 1) + 8 * i);
         v8 = objc_alloc_init(NSMutableDictionary);
-        v9 = [v7 address];
-        [v8 setObject:v9 forKeyedSubscript:@"MACAddress"];
+        address = [v7 address];
+        [v8 setObject:address forKeyedSubscript:@"MACAddress"];
 
-        v10 = [v7 name];
-        [v8 setObject:v10 forKeyedSubscript:@"name"];
+        name = [v7 name];
+        [v8 setObject:name forKeyedSubscript:@"name"];
 
-        v11 = [v7 productName];
-        [v8 setObject:v11 forKeyedSubscript:@"productName"];
+        productName = [v7 productName];
+        [v8 setObject:productName forKeyedSubscript:@"productName"];
 
         v12 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v7 productId]);
         [v8 setObject:v12 forKeyedSubscript:@"prodId"];
@@ -86,8 +86,8 @@
         [v8 setObject:v19 forKeyedSubscript:@"listeningMode"];
 
         v20 = +[HUAccessoryHearingSettings sharedInstance];
-        v21 = [v7 address];
-        v22 = [v20 activeHearingProtectionAvailableForAddress:v21];
+        address2 = [v7 address];
+        v22 = [v20 activeHearingProtectionAvailableForAddress:address2];
 
         if ([v7 getAdaptiveVolumeSupport] & 1) != 0 || ((objc_msgSend(v7, "getConversationDetectSupport") | v22))
         {
@@ -119,16 +119,16 @@
 
         else
         {
-          v29 = [v7 accessoryInfo];
-          v28 = [(ComponentAirPodsBase *)self aacpInfoFromAccessoryInfo:v29];
+          accessoryInfo = [v7 accessoryInfo];
+          v28 = [(ComponentAirPodsBase *)self aacpInfoFromAccessoryInfo:accessoryInfo];
 
           if (v28)
           {
             [v8 addEntriesFromDictionary:v28];
           }
 
-          v30 = [v7 accessoryInfo];
-          v31 = [(ComponentAirPodsBase *)self caseInfoFromAccessoryInfo:v30];
+          accessoryInfo2 = [v7 accessoryInfo];
+          v31 = [(ComponentAirPodsBase *)self caseInfoFromAccessoryInfo:accessoryInfo2];
 
           if (v31)
           {
@@ -137,8 +137,8 @@
         }
 
         v32 = [v8 objectForKeyedSubscript:@"systemSerialNumber"];
-        v33 = [(ComponentAccessoryAirPods *)self cbDevices];
-        v34 = [v33 objectForKeyedSubscript:v32];
+        cbDevices = [(ComponentAccessoryAirPods *)self cbDevices];
+        v34 = [cbDevices objectForKeyedSubscript:v32];
 
         v35 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v7 isGenuineAirPods]);
         [v8 setObject:v35 forKeyedSubscript:@"authPassed"];
@@ -185,7 +185,7 @@
     while (v5);
   }
 
-  [v40 setObject:v43 forKeyedSubscript:@"AirPods"];
+  [attributesCopy setObject:v43 forKeyedSubscript:@"AirPods"];
 }
 
 @end

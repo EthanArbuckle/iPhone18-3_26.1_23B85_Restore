@@ -1,22 +1,22 @@
 @interface NNHeadlineResultChange
-- (NNHeadlineResultChange)initWithHeadlineResult:(id)a3;
+- (NNHeadlineResultChange)initWithHeadlineResult:(id)result;
 - (NSString)sequencer;
 @end
 
 @implementation NNHeadlineResultChange
 
-- (NNHeadlineResultChange)initWithHeadlineResult:(id)a3
+- (NNHeadlineResultChange)initWithHeadlineResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v27.receiver = self;
   v27.super_class = NNHeadlineResultChange;
   v6 = [(NNHeadlineResultChange *)&v27 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_result, a3);
-    v8 = [v5 sync_sections];
-    v9 = [v8 count];
+    objc_storeStrong(&v6->_result, result);
+    sync_sections = [resultCopy sync_sections];
+    v9 = [sync_sections count];
 
     if (v9)
     {
@@ -25,8 +25,8 @@
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v11 = [v5 sync_sections];
-      v12 = [v11 copy];
+      sync_sections2 = [resultCopy sync_sections];
+      v12 = [sync_sections2 copy];
 
       v13 = [v12 countByEnumeratingWithState:&v23 objects:v28 count:16];
       if (v13)
@@ -50,8 +50,8 @@
               [v10 appendString:{@", "}];
             }
 
-            v19 = [v18 sync_identifier];
-            [v10 appendString:v19];
+            sync_identifier = [v18 sync_identifier];
+            [v10 appendString:sync_identifier];
 
             v17 = v17 + 1;
             v15 = 1;
@@ -81,13 +81,13 @@
 
 - (NSString)sequencer
 {
-  v2 = [(NNHeadlineResultChange *)self result];
-  v3 = [v2 sync_expirationDate];
-  [v3 timeIntervalSinceReferenceDate];
+  result = [(NNHeadlineResultChange *)self result];
+  sync_expirationDate = [result sync_expirationDate];
+  [sync_expirationDate timeIntervalSinceReferenceDate];
   v4 = [NSNumber numberWithDouble:?];
-  v5 = [v4 stringValue];
+  stringValue = [v4 stringValue];
 
-  return v5;
+  return stringValue;
 }
 
 @end

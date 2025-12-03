@@ -1,16 +1,16 @@
 @interface SHJSONLFileReader
-- (BOOL)loadDataFromURL:(id)a3 error:(id *)a4;
+- (BOOL)loadDataFromURL:(id)l error:(id *)error;
 - (SHJSONLDataDetokenizerDelegate)delegate;
 @end
 
 @implementation SHJSONLFileReader
 
-- (BOOL)loadDataFromURL:(id)a3 error:(id *)a4
+- (BOOL)loadDataFromURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  LOBYTE(a4) = [(SHJSONLFileReader *)self loadDataFromURL:v6 withCompression:[SHDataCompression error:"supportedCompressionTypeFromFileURL:" supportedCompressionTypeFromFileURL:v6], a4];
+  lCopy = l;
+  LOBYTE(error) = [(SHJSONLFileReader *)self loadDataFromURL:lCopy withCompression:[SHDataCompression error:"supportedCompressionTypeFromFileURL:" supportedCompressionTypeFromFileURL:lCopy], error];
 
-  return a4;
+  return error;
 }
 
 - (SHJSONLDataDetokenizerDelegate)delegate

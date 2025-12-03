@@ -1,25 +1,25 @@
 @interface _CKWeakWrapper
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isKindOfClass:(Class)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isKindOfClass:(Class)class;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (Class)class;
-- (_CKWeakWrapper)initWithObject:(id)a3;
+- (_CKWeakWrapper)initWithObject:(id)object;
 - (id)description;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (unint64_t)hash;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation _CKWeakWrapper
 
-- (_CKWeakWrapper)initWithObject:(id)a3
+- (_CKWeakWrapper)initWithObject:(id)object
 {
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
-    v5 = [MEMORY[0x1E69A61A0] weakRefWithObject:v4];
+    v5 = [MEMORY[0x1E69A61A0] weakRefWithObject:objectCopy];
     weakReference = self->_weakReference;
     self->_weakReference = v5;
 
@@ -37,36 +37,36 @@
   return self;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
-  v3 = [(_CKWeakWrapper *)self weakReference];
-  v4 = [v3 object];
+  weakReference = [(_CKWeakWrapper *)self weakReference];
+  object = [weakReference object];
 
-  return v4;
+  return object;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 methodSignature];
-  v5 = [v4 methodReturnLength];
-  if (v5)
+  invocationCopy = invocation;
+  methodSignature = [invocationCopy methodSignature];
+  methodReturnLength = [methodSignature methodReturnLength];
+  if (methodReturnLength)
   {
-    v6 = v5;
-    v7 = v8 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-    bzero(v7, v5);
+    v6 = methodReturnLength;
+    v7 = v8 - ((methodReturnLength + 15) & 0xFFFFFFFFFFFFFFF0);
+    bzero(v7, methodReturnLength);
     bzero(v7, v6);
-    [v3 setReturnValue:v7];
+    [invocationCopy setReturnValue:v7];
   }
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  v3 = [(_CKWeakWrapper *)self weakReference];
-  v4 = [v3 object];
+  weakReference = [(_CKWeakWrapper *)self weakReference];
+  object = [weakReference object];
 
-  if (v4)
+  if (object)
   {
     v5 = objc_opt_respondsToSelector();
   }
@@ -79,15 +79,15 @@
   return v5 & 1;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  v4 = a3;
-  v5 = [(_CKWeakWrapper *)self weakReference];
-  v6 = [v5 object];
+  protocolCopy = protocol;
+  weakReference = [(_CKWeakWrapper *)self weakReference];
+  object = [weakReference object];
 
-  if (v6)
+  if (object)
   {
-    v7 = [v6 conformsToProtocol:v4];
+    v7 = [object conformsToProtocol:protocolCopy];
   }
 
   else
@@ -98,45 +98,45 @@
   return v7;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v4 = [(_CKWeakWrapper *)self targetClass];
+  targetClass = [(_CKWeakWrapper *)self targetClass];
 
-  return [(objc_class *)v4 instanceMethodSignatureForSelector:a3];
+  return [(objc_class *)targetClass instanceMethodSignatureForSelector:selector];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(_CKWeakWrapper *)self weakReference];
-  v3 = [v2 object];
-  v4 = [v3 hash];
+  weakReference = [(_CKWeakWrapper *)self weakReference];
+  object = [weakReference object];
+  v4 = [object hash];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(_CKWeakWrapper *)self weakReference];
-  v6 = [v5 object];
-  v7 = [v6 isEqual:v4];
+  equalCopy = equal;
+  weakReference = [(_CKWeakWrapper *)self weakReference];
+  object = [weakReference object];
+  v7 = [object isEqual:equalCopy];
 
   return v7;
 }
 
 - (Class)class
 {
-  v2 = [(_CKWeakWrapper *)self weakReference];
-  v3 = [v2 object];
+  weakReference = [(_CKWeakWrapper *)self weakReference];
+  object = [weakReference object];
   v4 = objc_opt_class();
 
   return v4;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
-  v3 = [(_CKWeakWrapper *)self weakReference];
-  v4 = [v3 object];
+  weakReference = [(_CKWeakWrapper *)self weakReference];
+  object = [weakReference object];
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
@@ -144,9 +144,9 @@
 
 - (id)description
 {
-  v2 = [(_CKWeakWrapper *)self weakReference];
-  v3 = [v2 object];
-  v4 = [v3 description];
+  weakReference = [(_CKWeakWrapper *)self weakReference];
+  object = [weakReference object];
+  v4 = [object description];
 
   return v4;
 }

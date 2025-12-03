@@ -1,18 +1,18 @@
 @interface CAMExposureBiasStatusIndicatorTickMarksView
-- (CAMExposureBiasStatusIndicatorTickMarksView)initWithFrame:(CGRect)a3;
+- (CAMExposureBiasStatusIndicatorTickMarksView)initWithFrame:(CGRect)frame;
 - (CGSize)intrinsicContentSize;
 - (_NSRange)selectedRange;
-- (void)drawRect:(CGRect)a3;
-- (void)setSelectedRange:(_NSRange)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setSelectedRange:(_NSRange)range;
 @end
 
 @implementation CAMExposureBiasStatusIndicatorTickMarksView
 
-- (CAMExposureBiasStatusIndicatorTickMarksView)initWithFrame:(CGRect)a3
+- (CAMExposureBiasStatusIndicatorTickMarksView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CAMExposureBiasStatusIndicatorTickMarksView;
-  v3 = [(CAMExposureBiasStatusIndicatorTickMarksView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMExposureBiasStatusIndicatorTickMarksView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -22,11 +22,11 @@
   return v4;
 }
 
-- (void)setSelectedRange:(_NSRange)a3
+- (void)setSelectedRange:(_NSRange)range
 {
-  if (self->_selectedRange.location != a3.location || self->_selectedRange.length != a3.length)
+  if (self->_selectedRange.location != range.location || self->_selectedRange.length != range.length)
   {
-    self->_selectedRange = a3;
+    self->_selectedRange = range;
     [(CAMExposureBiasStatusIndicatorTickMarksView *)self setNeedsDisplay];
   }
 }
@@ -40,9 +40,9 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(CAMExposureBiasStatusIndicatorTickMarksView *)self bounds:a3.origin.x];
+  [(CAMExposureBiasStatusIndicatorTickMarksView *)self bounds:rect.origin.x];
   v5 = v4;
   CurrentContext = UIGraphicsGetCurrentContext();
   v14 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.6];
@@ -59,8 +59,8 @@
       v9 = 6.0;
     }
 
-    v10 = [(CAMExposureBiasStatusIndicatorTickMarksView *)self selectedRange];
-    v12 = i - v10 < v11 && i >= v10;
+    selectedRange = [(CAMExposureBiasStatusIndicatorTickMarksView *)self selectedRange];
+    v12 = i - selectedRange < v11 && i >= selectedRange;
     v13 = v14;
     if (v12)
     {

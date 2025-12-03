@@ -1,32 +1,32 @@
 @interface EnhancedLoggingStateConfigurator
-- (EnhancedLoggingStateConfigurator)initWithParameters:(id)a3 ticket:(id)a4;
+- (EnhancedLoggingStateConfigurator)initWithParameters:(id)parameters ticket:(id)ticket;
 - (id)aggregateMetadata;
-- (id)createQueueEntryInputDictionary:(id)a3;
-- (id)formatNewQueueEntries:(BOOL *)a3;
+- (id)createQueueEntryInputDictionary:(id)dictionary;
+- (id)formatNewQueueEntries:(BOOL *)entries;
 - (id)getDeviceSelectionMap;
 - (id)getTopLevelPrivacyPolicy;
-- (void)addEnrollmentTicketNumber:(id)a3;
-- (void)addPayload:(id)a3;
-- (void)addServerSuppliedMetadata:(id)a3;
-- (void)finishWithStatusCode:(int64_t)a3 metadata:(id)a4;
-- (void)injectDefaultValuesToParameters:(id)a3 bundleID:(id)a4;
-- (void)startWithCompletionHandler:(id)a3;
+- (void)addEnrollmentTicketNumber:(id)number;
+- (void)addPayload:(id)payload;
+- (void)addServerSuppliedMetadata:(id)metadata;
+- (void)finishWithStatusCode:(int64_t)code metadata:(id)metadata;
+- (void)injectDefaultValuesToParameters:(id)parameters bundleID:(id)d;
+- (void)startWithCompletionHandler:(id)handler;
 - (void)unenroll;
-- (void)updateEnhancedLoggingStateWithNewQueueEntries:(id)a3 commit:(BOOL)a4;
+- (void)updateEnhancedLoggingStateWithNewQueueEntries:(id)entries commit:(BOOL)commit;
 @end
 
 @implementation EnhancedLoggingStateConfigurator
 
-- (EnhancedLoggingStateConfigurator)initWithParameters:(id)a3 ticket:(id)a4
+- (EnhancedLoggingStateConfigurator)initWithParameters:(id)parameters ticket:(id)ticket
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  ticketCopy = ticket;
   v13.receiver = self;
   v13.super_class = EnhancedLoggingStateConfigurator;
   v8 = [(EnhancedLoggingStateConfigurator *)&v13 init];
   if (v8)
   {
-    v9 = [[EnhancedLoggingStateInputs alloc] initWithParameters:v6];
+    v9 = [[EnhancedLoggingStateInputs alloc] initWithParameters:parametersCopy];
     inputs = v8->_inputs;
     v8->_inputs = v9;
 
@@ -36,7 +36,7 @@
       goto LABEL_6;
     }
 
-    objc_storeStrong(&v8->_ticketNumber, a4);
+    objc_storeStrong(&v8->_ticketNumber, ticket);
   }
 
   v11 = v8;
@@ -45,9 +45,9 @@ LABEL_6:
   return v11;
 }
 
-- (void)startWithCompletionHandler:(id)a3
+- (void)startWithCompletionHandler:(id)handler
 {
-  [(EnhancedLoggingStateConfigurator *)self setCompletionHandler:a3];
+  [(EnhancedLoggingStateConfigurator *)self setCompletionHandler:handler];
   v4 = +[ELSManager sharedManager];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
@@ -57,15 +57,15 @@ LABEL_6:
   [v4 refreshWithCompletion:v5];
 }
 
-- (void)finishWithStatusCode:(int64_t)a3 metadata:(id)a4
+- (void)finishWithStatusCode:(int64_t)code metadata:(id)metadata
 {
-  v8 = a4;
-  v6 = [(EnhancedLoggingStateConfigurator *)self completionHandler];
+  metadataCopy = metadata;
+  completionHandler = [(EnhancedLoggingStateConfigurator *)self completionHandler];
 
-  if (v6)
+  if (completionHandler)
   {
-    v7 = [(EnhancedLoggingStateConfigurator *)self completionHandler];
-    (v7)[2](v7, a3, v8);
+    completionHandler2 = [(EnhancedLoggingStateConfigurator *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, code, metadataCopy);
   }
 
   [(EnhancedLoggingStateConfigurator *)self setCompletionHandler:0];
@@ -74,10 +74,10 @@ LABEL_6:
 - (void)unenroll
 {
   v3 = +[ELSManager sharedManager];
-  v4 = [v3 snapshot];
-  v5 = [v4 status];
+  snapshot = [v3 snapshot];
+  status = [snapshot status];
 
-  if (v5)
+  if (status)
   {
     v6 = +[ELSManager sharedManager];
     v15[0] = _NSConcreteStackBlock;
@@ -100,21 +100,21 @@ LABEL_6:
   }
 }
 
-- (id)formatNewQueueEntries:(BOOL *)a3
+- (id)formatNewQueueEntries:(BOOL *)entries
 {
   v5 = +[ELSManager sharedManager];
-  v6 = [v5 snapshot];
-  v7 = [v6 queue];
+  snapshot = [v5 snapshot];
+  queue = [snapshot queue];
 
   v8 = +[NSMutableArray array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = [(EnhancedLoggingStateConfigurator *)self inputs];
-  v10 = [v9 queue];
+  inputs = [(EnhancedLoggingStateConfigurator *)self inputs];
+  queue2 = [inputs queue];
 
-  v11 = [v10 countByEnumeratingWithState:&v19 objects:v25 count:16];
+  v11 = [queue2 countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v11)
   {
     v12 = v11;
@@ -125,11 +125,11 @@ LABEL_6:
       {
         if (*v20 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(queue2);
         }
 
         v15 = [(EnhancedLoggingStateConfigurator *)self createQueueEntryInputDictionary:*(*(&v19 + 1) + 8 * i)];
-        if ([v7 containsObject:v15])
+        if ([queue containsObject:v15])
         {
           v16 = sub_1000026D0();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -138,13 +138,13 @@ LABEL_6:
           }
 
           [(EnhancedLoggingStateConfigurator *)self finishWithStatusCode:-3 metadata:0];
-          *a3 = 0;
+          *entries = 0;
 LABEL_14:
 
           goto LABEL_15;
         }
 
-        if (!*a3)
+        if (!*entries)
         {
           goto LABEL_14;
         }
@@ -152,7 +152,7 @@ LABEL_14:
         [v8 addObject:v15];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v19 objects:v25 count:16];
+      v12 = [queue2 countByEnumeratingWithState:&v19 objects:v25 count:16];
       if (v12)
       {
         continue;
@@ -169,30 +169,30 @@ LABEL_15:
   return v17;
 }
 
-- (id)createQueueEntryInputDictionary:(id)a3
+- (id)createQueueEntryInputDictionary:(id)dictionary
 {
   v4 = ELSSubDefaultQueueEntryType;
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:v4];
-  v7 = [v5 objectForKeyedSubscript:ELSParameterPayload];
-  v8 = [v5 objectForKeyedSubscript:ELSSubDefaultQueueEntryExecuteAfterDuration];
-  v9 = [v5 objectForKeyedSubscript:ELSSubDefaultQueueEntryRetry];
-  v31 = [v5 objectForKeyedSubscript:ELSSubDefaultQueueEntryPlatform];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:v4];
+  v7 = [dictionaryCopy objectForKeyedSubscript:ELSParameterPayload];
+  v8 = [dictionaryCopy objectForKeyedSubscript:ELSSubDefaultQueueEntryExecuteAfterDuration];
+  v9 = [dictionaryCopy objectForKeyedSubscript:ELSSubDefaultQueueEntryRetry];
+  v31 = [dictionaryCopy objectForKeyedSubscript:ELSSubDefaultQueueEntryPlatform];
 
   v10 = [ELSWhitelist findEntryForParameterName:v6];
-  v11 = [v10 bundleIdentifier];
+  bundleIdentifier = [v10 bundleIdentifier];
   v12 = +[NSMutableDictionary dictionary];
   v33 = v7;
   if (v7)
   {
-    v13 = [(EnhancedLoggingStateConfigurator *)self inputs];
-    v14 = [v13 parameterPayloads];
+    inputs = [(EnhancedLoggingStateConfigurator *)self inputs];
+    parameterPayloads = [inputs parameterPayloads];
 
-    if (v14)
+    if (parameterPayloads)
     {
-      v15 = [(EnhancedLoggingStateConfigurator *)self inputs];
-      v16 = [v15 parameterPayloads];
-      v17 = [v16 objectForKeyedSubscript:v33];
+      inputs2 = [(EnhancedLoggingStateConfigurator *)self inputs];
+      parameterPayloads2 = [inputs2 parameterPayloads];
+      v17 = [parameterPayloads2 objectForKeyedSubscript:v33];
 
       if (v17)
       {
@@ -200,14 +200,14 @@ LABEL_15:
       }
     }
 
-    v18 = [(EnhancedLoggingStateConfigurator *)self inputs];
-    v19 = [v18 specificationPayloads];
+    inputs3 = [(EnhancedLoggingStateConfigurator *)self inputs];
+    specificationPayloads = [inputs3 specificationPayloads];
 
-    if (v19)
+    if (specificationPayloads)
     {
-      v20 = [(EnhancedLoggingStateConfigurator *)self inputs];
-      v21 = [v20 specificationPayloads];
-      v22 = [v21 objectForKeyedSubscript:v33];
+      inputs4 = [(EnhancedLoggingStateConfigurator *)self inputs];
+      specificationPayloads2 = [inputs4 specificationPayloads];
+      v22 = [specificationPayloads2 objectForKeyedSubscript:v33];
 
       if (v22)
       {
@@ -216,7 +216,7 @@ LABEL_15:
     }
   }
 
-  [(EnhancedLoggingStateConfigurator *)self injectDefaultValuesToParameters:v12 bundleID:v11, v31];
+  [(EnhancedLoggingStateConfigurator *)self injectDefaultValuesToParameters:v12 bundleID:bundleIdentifier, v31];
   if (v8)
   {
     [v8 doubleValue];
@@ -224,7 +224,7 @@ LABEL_15:
     if (v9)
     {
 LABEL_12:
-      v25 = [v9 BOOLValue];
+      bOOLValue = [v9 BOOLValue];
       goto LABEL_15;
     }
   }
@@ -238,43 +238,43 @@ LABEL_12:
     }
   }
 
-  v25 = [v10 retry];
+  bOOLValue = [v10 retry];
 LABEL_15:
-  v26 = v25;
+  v26 = bOOLValue;
   v27 = [ELSQueueEntry alloc];
   v28 = [NSDictionary dictionaryWithDictionary:v12];
-  v29 = [v27 initWithType:v11 typeName:v6 parameters:v28 executeAfterDuration:v26 retry:v32 platform:v24];
+  v29 = [v27 initWithType:bundleIdentifier typeName:v6 parameters:v28 executeAfterDuration:v26 retry:v32 platform:v24];
 
   return v29;
 }
 
-- (void)injectDefaultValuesToParameters:(id)a3 bundleID:(id)a4
+- (void)injectDefaultValuesToParameters:(id)parameters bundleID:(id)d
 {
-  v6 = a3;
-  if ([a4 isEqualToString:@"com.apple.DiagnosticExtensions.sysdiagnose"])
+  parametersCopy = parameters;
+  if ([d isEqualToString:@"com.apple.DiagnosticExtensions.sysdiagnose"])
   {
-    v5 = [v6 objectForKeyedSubscript:@"shouldDisplayTarBall"];
+    v5 = [parametersCopy objectForKeyedSubscript:@"shouldDisplayTarBall"];
 
     if (!v5)
     {
-      [v6 setObject:&__kCFBooleanFalse forKeyedSubscript:@"shouldDisplayTarBall"];
+      [parametersCopy setObject:&__kCFBooleanFalse forKeyedSubscript:@"shouldDisplayTarBall"];
     }
   }
 }
 
-- (void)updateEnhancedLoggingStateWithNewQueueEntries:(id)a3 commit:(BOOL)a4
+- (void)updateEnhancedLoggingStateWithNewQueueEntries:(id)entries commit:(BOOL)commit
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v4)
+  commitCopy = commit;
+  entriesCopy = entries;
+  if (!commitCopy)
   {
     goto LABEL_5;
   }
 
   v7 = +[ELSManager sharedManager];
-  v8 = [v7 snapshot];
-  v9 = [v8 queue];
-  if ([v9 count])
+  snapshot = [v7 snapshot];
+  queue = [snapshot queue];
+  if ([queue count])
   {
 
 LABEL_5:
@@ -283,9 +283,9 @@ LABEL_5:
     v21[1] = 3221225472;
     v21[2] = sub_1000033AC;
     v21[3] = &unk_100045168;
-    v24 = v4;
-    v22 = v6;
-    v23 = self;
+    v24 = commitCopy;
+    v22 = entriesCopy;
+    selfCopy = self;
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_10000357C;
@@ -296,7 +296,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v10 = [v6 count];
+  v10 = [entriesCopy count];
 
   if (v10)
   {
@@ -324,66 +324,66 @@ LABEL_6:
   return v4;
 }
 
-- (void)addEnrollmentTicketNumber:(id)a3
+- (void)addEnrollmentTicketNumber:(id)number
 {
-  v6 = a3;
-  v4 = [(EnhancedLoggingStateConfigurator *)self ticketNumber];
+  numberCopy = number;
+  ticketNumber = [(EnhancedLoggingStateConfigurator *)self ticketNumber];
 
-  if (v4)
+  if (ticketNumber)
   {
-    v5 = [(EnhancedLoggingStateConfigurator *)self ticketNumber];
-    [v6 setObject:v5 forKeyedSubscript:ELSMetadataEnrollmentTicketNumber];
+    ticketNumber2 = [(EnhancedLoggingStateConfigurator *)self ticketNumber];
+    [numberCopy setObject:ticketNumber2 forKeyedSubscript:ELSMetadataEnrollmentTicketNumber];
   }
 }
 
-- (void)addServerSuppliedMetadata:(id)a3
+- (void)addServerSuppliedMetadata:(id)metadata
 {
-  v14 = a3;
-  v4 = [(EnhancedLoggingStateConfigurator *)self inputs];
-  v5 = [v4 metadata];
+  metadataCopy = metadata;
+  inputs = [(EnhancedLoggingStateConfigurator *)self inputs];
+  metadata = [inputs metadata];
 
-  if (v5)
+  if (metadata)
   {
-    v6 = [(EnhancedLoggingStateConfigurator *)self inputs];
-    v7 = [v6 metadata];
-    v8 = [v7 allKeys];
+    inputs2 = [(EnhancedLoggingStateConfigurator *)self inputs];
+    metadata2 = [inputs2 metadata];
+    allKeys = [metadata2 allKeys];
     v9 = ELSMetadataGigafilesToken;
-    v10 = [v8 containsObject:ELSMetadataGigafilesToken];
+    v10 = [allKeys containsObject:ELSMetadataGigafilesToken];
 
     if (v10)
     {
-      v11 = [(EnhancedLoggingStateConfigurator *)self inputs];
-      v12 = [v11 metadata];
-      v13 = [v12 objectForKeyedSubscript:v9];
-      [v14 setObject:v13 forKeyedSubscript:v9];
+      inputs3 = [(EnhancedLoggingStateConfigurator *)self inputs];
+      metadata3 = [inputs3 metadata];
+      v13 = [metadata3 objectForKeyedSubscript:v9];
+      [metadataCopy setObject:v13 forKeyedSubscript:v9];
     }
   }
 }
 
-- (void)addPayload:(id)a3
+- (void)addPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [(EnhancedLoggingStateConfigurator *)self inputs];
-  v6 = [v5 queue];
-  if (v6)
+  payloadCopy = payload;
+  inputs = [(EnhancedLoggingStateConfigurator *)self inputs];
+  queue = [inputs queue];
+  if (queue)
   {
-    v7 = v6;
-    v8 = [(EnhancedLoggingStateConfigurator *)self inputs];
-    v9 = [v8 queue];
-    v10 = [v9 count];
+    v7 = queue;
+    inputs2 = [(EnhancedLoggingStateConfigurator *)self inputs];
+    queue2 = [inputs2 queue];
+    v10 = [queue2 count];
 
     if (v10)
     {
-      v11 = [(EnhancedLoggingStateConfigurator *)self inputs];
-      v12 = [v11 rawParameters];
+      inputs3 = [(EnhancedLoggingStateConfigurator *)self inputs];
+      rawParameters = [inputs3 rawParameters];
       v16 = 0;
-      v13 = [NSJSONSerialization dataWithJSONObject:v12 options:1 error:&v16];
+      v13 = [NSJSONSerialization dataWithJSONObject:rawParameters options:1 error:&v16];
       v14 = v16;
 
       if (!v14 && v13)
       {
         v15 = [[NSString alloc] initWithData:v13 encoding:4];
-        [v4 setObject:v15 forKeyedSubscript:ELSMetadataPayload];
+        [payloadCopy setObject:v15 forKeyedSubscript:ELSMetadataPayload];
       }
     }
   }
@@ -395,22 +395,22 @@ LABEL_6:
 
 - (id)getTopLevelPrivacyPolicy
 {
-  v3 = [(EnhancedLoggingStateConfigurator *)self inputs];
-  v4 = [v3 topLevelPrivacyPolicy];
+  inputs = [(EnhancedLoggingStateConfigurator *)self inputs];
+  topLevelPrivacyPolicy = [inputs topLevelPrivacyPolicy];
 
-  if (v4)
+  if (topLevelPrivacyPolicy)
   {
-    v5 = [(EnhancedLoggingStateConfigurator *)self inputs];
-    v6 = [v5 topLevelPrivacyPolicy];
-    v7 = [v6 objectForKey:ELSPrivacyPolicyDescriptionPolicyKey];
+    inputs2 = [(EnhancedLoggingStateConfigurator *)self inputs];
+    topLevelPrivacyPolicy2 = [inputs2 topLevelPrivacyPolicy];
+    v7 = [topLevelPrivacyPolicy2 objectForKey:ELSPrivacyPolicyDescriptionPolicyKey];
 
-    v8 = [(EnhancedLoggingStateConfigurator *)self inputs];
-    v9 = [v8 topLevelPrivacyPolicy];
-    v10 = [v9 objectForKey:ELSPrivacyPolicyDescriptionSuiteNameKey];
+    inputs3 = [(EnhancedLoggingStateConfigurator *)self inputs];
+    topLevelPrivacyPolicy3 = [inputs3 topLevelPrivacyPolicy];
+    v10 = [topLevelPrivacyPolicy3 objectForKey:ELSPrivacyPolicyDescriptionSuiteNameKey];
 
-    v11 = [(EnhancedLoggingStateConfigurator *)self inputs];
-    v12 = [v11 topLevelPrivacyPolicy];
-    v13 = [v12 objectForKey:ELSPrivacyPolicyDescriptionSensitiveInformationKey];
+    inputs4 = [(EnhancedLoggingStateConfigurator *)self inputs];
+    topLevelPrivacyPolicy4 = [inputs4 topLevelPrivacyPolicy];
+    v13 = [topLevelPrivacyPolicy4 objectForKey:ELSPrivacyPolicyDescriptionSensitiveInformationKey];
 
     v14 = [[ELSPrivacyPolicyDescription alloc] initWithPolicyKey:v7 andSuiteNameKey:v10 andSensitiveInformationKey:v13];
   }
@@ -425,10 +425,10 @@ LABEL_6:
 
 - (id)getDeviceSelectionMap
 {
-  v2 = [(EnhancedLoggingStateConfigurator *)self inputs];
-  v3 = [v2 deviceSelection];
+  inputs = [(EnhancedLoggingStateConfigurator *)self inputs];
+  deviceSelection = [inputs deviceSelection];
 
-  return v3;
+  return deviceSelection;
 }
 
 @end

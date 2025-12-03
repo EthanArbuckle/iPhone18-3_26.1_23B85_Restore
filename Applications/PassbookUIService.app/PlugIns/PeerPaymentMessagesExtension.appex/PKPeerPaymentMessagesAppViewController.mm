@@ -1,33 +1,33 @@
 @interface PKPeerPaymentMessagesAppViewController
 - (BOOL)_accountIsLocked;
-- (BOOL)_canPerformQuoteForMessage:(id)a3 error:(id *)a4;
-- (BOOL)_handlePaymentRequestMessage:(id)a3;
-- (BOOL)_handleTextInputPayload:(id)a3 withPayloadID:(id)a4;
+- (BOOL)_canPerformQuoteForMessage:(id)message error:(id *)error;
+- (BOOL)_handlePaymentRequestMessage:(id)message;
+- (BOOL)_handleTextInputPayload:(id)payload withPayloadID:(id)d;
 - (BOOL)_iMessageIsEnabled;
 - (BOOL)_isBusinessConversation;
 - (BOOL)_isGroupConversation;
 - (BOOL)_openWallet;
-- (BOOL)_peerPaymentParicipantShouldSeeMemoSharingMessageForMemo:(id)a3;
-- (BOOL)_recipientAddressFoundInContacts:(id)a3;
-- (BOOL)_recipientAddressIsValid:(id)a3;
+- (BOOL)_peerPaymentParicipantShouldSeeMemoSharingMessageForMemo:(id)memo;
+- (BOOL)_recipientAddressFoundInContacts:(id)contacts;
+- (BOOL)_recipientAddressIsValid:(id)valid;
 - (BOOL)_requiresEnablement;
 - (BOOL)_requiresSetupFlow;
 - (BOOL)displaysAfterAppearance;
-- (CGSize)_contentSizeThatFits:(CGSize)result presentationStyle:(unint64_t)a4;
+- (CGSize)_contentSizeThatFits:(CGSize)result presentationStyle:(unint64_t)style;
 - (CGSize)contentSize;
-- (CGSize)contentSizeThatFits:(CGSize)a3;
-- (PKPeerPaymentMessagesAppViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CGSize)contentSizeThatFits:(CGSize)fits;
+- (PKPeerPaymentMessagesAppViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)_analyticsP2PContext;
 - (id)_analyticsPageTag;
 - (id)_conversationAddress;
-- (id)_createViewControllerForState:(unint64_t)a3;
-- (id)_currentRequestTokenForAmount:(id)a3;
-- (id)_identifiedRecipientForRecipientAddress:(id)a3;
-- (id)_inCurrencyAmountForPeerPaymentMessage:(id)a3;
+- (id)_createViewControllerForState:(unint64_t)state;
+- (id)_currentRequestTokenForAmount:(id)amount;
+- (id)_identifiedRecipientForRecipientAddress:(id)address;
+- (id)_inCurrencyAmountForPeerPaymentMessage:(id)message;
 - (id)_recipientErrorTitle;
 - (id)_recipientPersonForIntentDonation;
 - (id)_senderAddress;
-- (id)_viewControllerForState:(unint64_t)a3 shouldLoad:(BOOL)a4;
+- (id)_viewControllerForState:(unint64_t)state shouldLoad:(BOOL)load;
 - (id)analyticsMessagesContext;
 - (id)currentBalance;
 - (id)maximumTransferAmount;
@@ -38,79 +38,79 @@
 - (unint64_t)conversationSize;
 - (unint64_t)ineligibleCount;
 - (void)_applicationDidEnterBackground;
-- (void)_confirmPaymentMessageInsertionWithQuote:(id)a3 completion:(id)a4;
-- (void)_confirmRequestAmount:(id)a3 toRecipientWithCompletion:(id)a4;
-- (void)_confirmSendAmount:(id)a3 toRecipientWithCompletion:(id)a4;
-- (void)_donatePeerPaymentInteractionForMessage:(id)a3;
-- (void)_handleAccountChanged:(id)a3;
-- (void)_handleError:(id)a3 forAction:(unint64_t)a4 withCompletion:(id)a5;
-- (void)_handleNetworkConnectivityChanged:(id)a3;
-- (void)_handlePeerPaymentRemoteAlertCompletedForPaymentIdentifier:(id)a3 completion:(id)a4;
-- (void)_handleRecipientBecameInvalid:(id)a3;
-- (void)_handleRecipientError:(id)a3;
-- (void)_handleRespondToPaymentRequestActionWithMessage:(id)a3 completion:(id)a4;
-- (void)_handleUpdatedTransaction:(id)a3 forTransactionSourceIdentifier:(id)a4;
-- (void)_hostSceneIdentifierForMessageIdentifier:(id)a3 withCompletion:(id)a4;
-- (void)_identifyGroupRecipientsWithCompletion:(id)a3;
+- (void)_confirmPaymentMessageInsertionWithQuote:(id)quote completion:(id)completion;
+- (void)_confirmRequestAmount:(id)amount toRecipientWithCompletion:(id)completion;
+- (void)_confirmSendAmount:(id)amount toRecipientWithCompletion:(id)completion;
+- (void)_donatePeerPaymentInteractionForMessage:(id)message;
+- (void)_handleAccountChanged:(id)changed;
+- (void)_handleError:(id)error forAction:(unint64_t)action withCompletion:(id)completion;
+- (void)_handleNetworkConnectivityChanged:(id)changed;
+- (void)_handlePeerPaymentRemoteAlertCompletedForPaymentIdentifier:(id)identifier completion:(id)completion;
+- (void)_handleRecipientBecameInvalid:(id)invalid;
+- (void)_handleRecipientError:(id)error;
+- (void)_handleRespondToPaymentRequestActionWithMessage:(id)message completion:(id)completion;
+- (void)_handleUpdatedTransaction:(id)transaction forTransactionSourceIdentifier:(id)identifier;
+- (void)_hostSceneIdentifierForMessageIdentifier:(id)identifier withCompletion:(id)completion;
+- (void)_identifyGroupRecipientsWithCompletion:(id)completion;
 - (void)_identifyRecipient;
-- (void)_insertPaymentMessageWithQuote:(id)a3 completion:(id)a4;
-- (void)_insertRequestMessageWithAmount:(id)a3 requestToken:(id)a4 completion:(id)a5;
-- (void)_prepareIdentifiedRecipient:(id)a3 forAmountEntryViewController:(id)a4;
-- (void)_presentAlertWithDisplayableError:(id)a3;
-- (void)_presentInlineSetupFlowWithAmount:(id)a3 flowState:(unint64_t)a4 completion:(id)a5;
-- (void)_presentInlineSetupFlowWithAmount:(id)a3 flowState:(unint64_t)a4 senderAddress:(id)a5 hostSceneIdentifier:(id)a6 completion:(id)a7;
-- (void)_presentInlineSetupFlowWithPeerPaymentMessage:(id)a3 flowState:(unint64_t)a4 completion:(id)a5;
-- (void)_presentSetupFlowWithPeerPaymentMessage:(id)a3 flowState:(unint64_t)a4 completion:(id)a5;
-- (void)_prewarmDeviceScoreForGroupsWithRecipients:(id)a3;
-- (void)_prewarmDeviceScoreForRecipient:(id)a3;
+- (void)_insertPaymentMessageWithQuote:(id)quote completion:(id)completion;
+- (void)_insertRequestMessageWithAmount:(id)amount requestToken:(id)token completion:(id)completion;
+- (void)_prepareIdentifiedRecipient:(id)recipient forAmountEntryViewController:(id)controller;
+- (void)_presentAlertWithDisplayableError:(id)error;
+- (void)_presentInlineSetupFlowWithAmount:(id)amount flowState:(unint64_t)state completion:(id)completion;
+- (void)_presentInlineSetupFlowWithAmount:(id)amount flowState:(unint64_t)state senderAddress:(id)address hostSceneIdentifier:(id)identifier completion:(id)completion;
+- (void)_presentInlineSetupFlowWithPeerPaymentMessage:(id)message flowState:(unint64_t)state completion:(id)completion;
+- (void)_presentSetupFlowWithPeerPaymentMessage:(id)message flowState:(unint64_t)state completion:(id)completion;
+- (void)_prewarmDeviceScoreForGroupsWithRecipients:(id)recipients;
+- (void)_prewarmDeviceScoreForRecipient:(id)recipient;
 - (void)_registerForPresentationSemanticContextChanges;
 - (void)_reloadContent;
-- (void)_reportAnalyticsForStateWithEventType:(id)a3;
-- (void)_reportAnalyticsStagedBubbleButtonTap:(id)a3;
-- (void)_reportAnalyticsViewAppearedWithArchivedParent:(id)a3;
+- (void)_reportAnalyticsForStateWithEventType:(id)type;
+- (void)_reportAnalyticsStagedBubbleButtonTap:(id)tap;
+- (void)_reportAnalyticsViewAppearedWithArchivedParent:(id)parent;
 - (void)_reportAnalyticsViewDisappeared;
-- (void)_resetIdentifiedRecipientForAmountEntryViewController:(id)a3;
-- (void)_shouldProceedPerformingQuote:(id)a3 message:(id)a4 memoText:(id)a5 completion:(id)a6;
-- (void)_showPaymentDetailsForMessage:(id)a3 completion:(id)a4;
-- (void)_showRecurringPaymentDetailsForMessage:(id)a3 completion:(id)a4;
-- (void)_stagePaymentWithAmount:(id)a3 completion:(id)a4;
-- (void)_stageRecurringPayment:(id)a3 completion:(id)a4;
-- (void)_stageRequestWithAmount:(id)a3 completion:(id)a4;
-- (void)_transitionToState:(unint64_t)a3 animated:(BOOL)a4;
-- (void)_updateWithFamilyCollection:(id)a3;
-- (void)_validateMessageForSending:(id)a3 conversation:(id)a4 associatedText:(id)a5 completionHandler:(id)a6;
+- (void)_resetIdentifiedRecipientForAmountEntryViewController:(id)controller;
+- (void)_shouldProceedPerformingQuote:(id)quote message:(id)message memoText:(id)text completion:(id)completion;
+- (void)_showPaymentDetailsForMessage:(id)message completion:(id)completion;
+- (void)_showRecurringPaymentDetailsForMessage:(id)message completion:(id)completion;
+- (void)_stagePaymentWithAmount:(id)amount completion:(id)completion;
+- (void)_stageRecurringPayment:(id)payment completion:(id)completion;
+- (void)_stageRequestWithAmount:(id)amount completion:(id)completion;
+- (void)_transitionToState:(unint64_t)state animated:(BOOL)animated;
+- (void)_updateWithFamilyCollection:(id)collection;
+- (void)_validateMessageForSending:(id)sending conversation:(id)conversation associatedText:(id)text completionHandler:(id)handler;
 - (void)dealloc;
-- (void)didBecomeActiveWithConversation:(id)a3;
-- (void)didCancelSendingMessage:(id)a3 conversation:(id)a4;
-- (void)didReceiveMessage:(id)a3 conversation:(id)a4;
-- (void)didResignActiveWithConversation:(id)a3;
-- (void)didSelectMessage:(id)a3 conversation:(id)a4;
-- (void)didStartSendingMessage:(id)a3 conversation:(id)a4;
-- (void)didTransitionToPresentationStyle:(unint64_t)a3;
+- (void)didBecomeActiveWithConversation:(id)conversation;
+- (void)didCancelSendingMessage:(id)message conversation:(id)conversation;
+- (void)didReceiveMessage:(id)message conversation:(id)conversation;
+- (void)didResignActiveWithConversation:(id)conversation;
+- (void)didSelectMessage:(id)message conversation:(id)conversation;
+- (void)didStartSendingMessage:(id)message conversation:(id)conversation;
+- (void)didTransitionToPresentationStyle:(unint64_t)style;
 - (void)enableLiveBubbleDebugMode;
-- (void)handleAction:(unint64_t)a3 sender:(id)a4 completion:(id)a5;
+- (void)handleAction:(unint64_t)action sender:(id)sender completion:(id)completion;
 - (void)loadView;
-- (void)localStatusForMessage:(id)a3 completion:(id)a4;
+- (void)localStatusForMessage:(id)message completion:(id)completion;
 - (void)noteContentSizeNeedsUpdate;
 - (void)noteReadyForDisplay;
-- (void)remoteStatusForMessage:(id)a3 completion:(id)a4;
-- (void)stageRecurringPayment:(id)a3 completion:(id)a4;
-- (void)updateSnapshotWithCompletionBlock:(id)a3;
+- (void)remoteStatusForMessage:(id)message completion:(id)completion;
+- (void)stageRecurringPayment:(id)payment completion:(id)completion;
+- (void)updateSnapshotWithCompletionBlock:(id)block;
 - (void)updateSupportsGroupMessage;
 - (void)viewDidLayoutSubviews;
-- (void)willBecomeActiveWithConversation:(id)a3;
-- (void)willResignActiveWithConversation:(id)a3;
+- (void)willBecomeActiveWithConversation:(id)conversation;
+- (void)willResignActiveWithConversation:(id)conversation;
 @end
 
 @implementation PKPeerPaymentMessagesAppViewController
 
-- (PKPeerPaymentMessagesAppViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PKPeerPaymentMessagesAppViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v33.receiver = self;
   v33.super_class = PKPeerPaymentMessagesAppViewController;
-  v8 = [(PKPeerPaymentMessagesAppViewController *)&v33 initWithNibName:v6 bundle:v7];
+  v8 = [(PKPeerPaymentMessagesAppViewController *)&v33 initWithNibName:nameCopy bundle:bundleCopy];
   if (v8)
   {
     v9 = PKLogFacilityTypeGetObject();
@@ -141,8 +141,8 @@
     v8->_viewControllerForState = v18;
 
     v20 = [PKTransactionSource alloc];
-    v21 = [(PKPeerPaymentController *)v8->_peerPaymentController peerPaymentPass];
-    v22 = [v20 initWithPaymentPass:v21];
+    peerPaymentPass = [(PKPeerPaymentController *)v8->_peerPaymentController peerPaymentPass];
+    v22 = [v20 initWithPaymentPass:peerPaymentPass];
     transactionSource = v8->_transactionSource;
     v8->_transactionSource = v22;
 
@@ -187,7 +187,7 @@
     *buf = 138543618;
     v10 = v5;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: %p Dealloc'd", buf, 0x16u);
   }
 
@@ -212,9 +212,9 @@
     v12 = 138543874;
     v13 = v5;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2048;
-    v17 = [(PKPeerPaymentMessagesAppViewController *)self presentationStyle];
+    presentationStyle = [(PKPeerPaymentMessagesAppViewController *)self presentationStyle];
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: %p loadView presentationStyle = %lu", &v12, 0x20u);
   }
 
@@ -257,9 +257,9 @@
   v27.receiver = self;
   v27.super_class = PKPeerPaymentMessagesAppViewController;
   [(PKPeerPaymentMessagesAppViewController *)&v27 viewDidLayoutSubviews];
-  v3 = [(PKPeerPaymentMessagesAppViewController *)self view];
-  v4 = [v3 safeAreaLayoutGuide];
-  [v4 layoutFrame];
+  view = [(PKPeerPaymentMessagesAppViewController *)self view];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -276,7 +276,7 @@
       v32.size.height = v12;
       v14 = NSStringFromCGRect(v32);
       *buf = 134218242;
-      v29 = self;
+      selfCopy = self;
       v30 = 2114;
       v31 = v14;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "PKPeerPaymentMessagesAppViewController %p: viewDidLayoutSubviews layoutFrame = %{public}@", buf, 0x16u);
@@ -291,14 +291,14 @@
     v19 = v18;
     v21 = v20;
     v23 = v22;
-    v24 = [v15 bubbleView];
-    [v24 setContentInset:{v17, v19, v21, v23}];
+    bubbleView = [v15 bubbleView];
+    [bubbleView setContentInset:{v17, v19, v21, v23}];
   }
 
-  v25 = [(PKPeerPaymentMessagesContent *)self->_activeViewController view];
-  v26 = [(PKPeerPaymentMessagesAppViewController *)self view];
-  [v26 bounds];
-  [v25 setFrame:?];
+  view2 = [(PKPeerPaymentMessagesContent *)self->_activeViewController view];
+  view3 = [(PKPeerPaymentMessagesAppViewController *)self view];
+  [view3 bounds];
+  [view2 setFrame:?];
 
   if (self->_debugBallView)
   {
@@ -312,8 +312,8 @@
   if ([(PKPeerPaymentMessagesAppViewController *)self presentationStyle]== 2)
   {
     v4 = [(PKPeerPaymentMessagesAppViewController *)self _viewControllerForState:12 shouldLoad:0];
-    v5 = [v4 bubbleView];
-    v6 = +[PKPeerPaymentBubbleView referenceBackgroundColorForState:](PKPeerPaymentBubbleView, "referenceBackgroundColorForState:", [v5 state]);
+    bubbleView = [v4 bubbleView];
+    v6 = +[PKPeerPaymentBubbleView referenceBackgroundColorForState:](PKPeerPaymentBubbleView, "referenceBackgroundColorForState:", [bubbleView state]);
 
     v3 = v6;
   }
@@ -321,9 +321,9 @@
   return v3;
 }
 
-- (id)_viewControllerForState:(unint64_t)a3 shouldLoad:(BOOL)a4
+- (id)_viewControllerForState:(unint64_t)state shouldLoad:(BOOL)load
 {
-  v4 = a4;
+  loadCopy = load;
   viewControllerForState = self->_viewControllerForState;
   v8 = [NSNumber numberWithUnsignedInteger:?];
   v9 = [(NSMutableDictionary *)viewControllerForState objectForKeyedSubscript:v8];
@@ -335,16 +335,16 @@
 
   else
   {
-    v10 = !v4;
+    v10 = !loadCopy;
   }
 
   if (!v10)
   {
-    v9 = [(PKPeerPaymentMessagesAppViewController *)self _createViewControllerForState:a3];
+    v9 = [(PKPeerPaymentMessagesAppViewController *)self _createViewControllerForState:state];
     if (v9)
     {
       v11 = self->_viewControllerForState;
-      v12 = [NSNumber numberWithUnsignedInteger:a3];
+      v12 = [NSNumber numberWithUnsignedInteger:state];
       [(NSMutableDictionary *)v11 setObject:v9 forKeyedSubscript:v12];
     }
   }
@@ -352,9 +352,9 @@
   return v9;
 }
 
-- (id)_createViewControllerForState:(unint64_t)a3
+- (id)_createViewControllerForState:(unint64_t)state
 {
-  switch(a3)
+  switch(state)
   {
     case 0uLL:
       v4 = PKPeerPaymentMessagesContentBaseViewController;
@@ -455,7 +455,7 @@ LABEL_24:
       goto LABEL_35;
     case 8uLL:
       v5 = [[PKPeerPaymentMessagesExplanationViewController alloc] initWithContentDelegate:self];
-      v26 = [(PKPeerPaymentMessagesAppViewController *)self _recipientErrorTitle];
+      _recipientErrorTitle = [(PKPeerPaymentMessagesAppViewController *)self _recipientErrorTitle];
       goto LABEL_34;
     case 9uLL:
       if ([(PKPeerPaymentController *)self->_peerPaymentController supportsGroupMessage])
@@ -470,9 +470,9 @@ LABEL_24:
         }
 
         [v5 setDelegate:self];
-        v10 = [(PKPeerPaymentMessagesAppViewController *)self _conversationAddress];
+        _conversationAddress = [(PKPeerPaymentMessagesAppViewController *)self _conversationAddress];
 
-        if (!v10)
+        if (!_conversationAddress)
         {
           [v5 setLeadingAction:2];
         }
@@ -483,10 +483,10 @@ LABEL_24:
         v5 = [[PKPeerPaymentMessagesExplanationViewController alloc] initWithContentDelegate:self];
         v6 = @"PEER_PAYMENT_MESSAGES_RECIPIENT_INVALID_GROUP";
 LABEL_33:
-        v26 = PKLocalizedPeerPaymentString(&v6->isa);
+        _recipientErrorTitle = PKLocalizedPeerPaymentString(&v6->isa);
 LABEL_34:
-        v27 = v26;
-        [v5 setExplanation:v26];
+        v27 = _recipientErrorTitle;
+        [v5 setExplanation:_recipientErrorTitle];
       }
 
 LABEL_35:
@@ -532,8 +532,8 @@ LABEL_35:
   if (self->_state == 8)
   {
     v3 = self->_activeViewController;
-    v4 = [(PKPeerPaymentMessagesAppViewController *)self _recipientErrorTitle];
-    [(PKPeerPaymentMessagesContent *)v3 setExplanation:v4];
+    _recipientErrorTitle = [(PKPeerPaymentMessagesAppViewController *)self _recipientErrorTitle];
+    [(PKPeerPaymentMessagesContent *)v3 setExplanation:_recipientErrorTitle];
   }
 }
 
@@ -546,9 +546,9 @@ LABEL_35:
 
   else
   {
-    v4 = [(PKPeerPaymentMessagesAppViewController *)self recipientDisplayName];
-    v5 = v4;
-    if (v4 && [v4 length])
+    recipientDisplayName = [(PKPeerPaymentMessagesAppViewController *)self recipientDisplayName];
+    v5 = recipientDisplayName;
+    if (recipientDisplayName && [recipientDisplayName length])
     {
       v6 = PKLocalizedPeerPaymentString(@"PEER_PAYMENT_MESSAGES_RECIPIENT_INVALID_FORMAT", @"%@", v5);
     }
@@ -564,54 +564,54 @@ LABEL_35:
   return v3;
 }
 
-- (void)_transitionToState:(unint64_t)a3 animated:(BOOL)a4
+- (void)_transitionToState:(unint64_t)state animated:(BOOL)animated
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000256C;
   block[3] = &unk_10001C968;
   block[4] = self;
-  block[5] = a3;
-  v5 = a4;
+  block[5] = state;
+  animatedCopy = animated;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_prewarmDeviceScoreForRecipient:(id)a3
+- (void)_prewarmDeviceScoreForRecipient:(id)recipient
 {
-  v7 = a3;
-  if ([v7 length])
+  recipientCopy = recipient;
+  if ([recipientCopy length])
   {
     v4 = +[PKPeerPaymentWebService sharedService];
     v5 = objc_alloc_init(PKPeerPaymentDeviceScoreAttributes);
     [v5 setEndpoint:5];
-    [v5 setRecipientAddress:v7];
+    [v5 setRecipientAddress:recipientCopy];
     [v5 setQuoteRequestDestination:1];
     [v5 setMessagesContext:{-[PKPeerPaymentController messagesContext](self->_peerPaymentController, "messagesContext")}];
     [v4 prewarmDeviceScoreForAttributes:v5];
     v6 = objc_alloc_init(PKPeerPaymentDeviceScoreAttributes);
     [v6 setEndpoint:3];
-    [v6 setRecipientAddress:v7];
+    [v6 setRecipientAddress:recipientCopy];
     [v6 setQuoteRequestDestination:1];
     [v6 setMessagesContext:{-[PKPeerPaymentController messagesContext](self->_peerPaymentController, "messagesContext")}];
     [v4 prewarmDeviceScoreForAttributes:v6];
   }
 }
 
-- (void)_prewarmDeviceScoreForGroupsWithRecipients:(id)a3
+- (void)_prewarmDeviceScoreForGroupsWithRecipients:(id)recipients
 {
-  v7 = a3;
-  if ([v7 count])
+  recipientsCopy = recipients;
+  if ([recipientsCopy count])
   {
     v4 = +[PKPeerPaymentWebService sharedService];
     v5 = objc_alloc_init(PKPeerPaymentDeviceScoreAttributes);
     [v5 setEndpoint:5];
-    [v5 setRecipientAddresses:v7];
+    [v5 setRecipientAddresses:recipientsCopy];
     [v5 setQuoteRequestDestination:1];
     [v5 setMessagesContext:{-[PKPeerPaymentController messagesContext](self->_peerPaymentController, "messagesContext")}];
     [v4 prewarmDeviceScoreForAttributes:v5];
     v6 = objc_alloc_init(PKPeerPaymentDeviceScoreAttributes);
     [v6 setEndpoint:3];
-    [v6 setRecipientAddresses:v7];
+    [v6 setRecipientAddresses:recipientsCopy];
     [v6 setQuoteRequestDestination:1];
     [v6 setMessagesContext:{-[PKPeerPaymentController messagesContext](self->_peerPaymentController, "messagesContext")}];
     [v4 prewarmDeviceScoreForAttributes:v6];
@@ -620,7 +620,7 @@ LABEL_35:
 
 - (unint64_t)_requiredContentState
 {
-  v3 = [(PKPeerPaymentController *)self->_peerPaymentController recipient];
+  recipient = [(PKPeerPaymentController *)self->_peerPaymentController recipient];
   if ([(PKPeerPaymentMessagesAppViewController *)self presentationStyle]== 2)
   {
     v4 = 12;
@@ -682,22 +682,22 @@ LABEL_12:
     goto LABEL_5;
   }
 
-  if (v3)
+  if (recipient)
   {
-    v8 = [v3 status];
-    if (v8)
+    status = [recipient status];
+    if (status)
     {
-      if (v8 == 2)
+      if (status == 2)
       {
-        v13 = [v3 statusReason];
-        if (v13 < 3)
+        statusReason = [recipient statusReason];
+        if (statusReason < 3)
         {
-          v4 = qword_100014830[v13];
+          v4 = qword_100014830[statusReason];
           goto LABEL_5;
         }
       }
 
-      else if (v8 == 1)
+      else if (status == 1)
       {
         goto LABEL_12;
       }
@@ -716,12 +716,12 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  v9 = [(PKPeerPaymentMessagesAppViewController *)self ineligibleCount];
-  v10 = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
-  v11 = [v10 recipientAddresses];
-  v12 = [v11 count];
+  ineligibleCount = [(PKPeerPaymentMessagesAppViewController *)self ineligibleCount];
+  activeConversation = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
+  recipientAddresses = [activeConversation recipientAddresses];
+  v12 = [recipientAddresses count];
 
-  if (v9 == v12)
+  if (ineligibleCount == v12)
   {
     v4 = 8;
   }
@@ -738,10 +738,10 @@ LABEL_5:
 
 - (void)_identifyRecipient
 {
-  v3 = [(PKPeerPaymentMessagesAppViewController *)self _conversationAddress];
-  v4 = [(PKPeerPaymentMessagesAppViewController *)self _senderAddress];
-  v5 = v4;
-  if (v3 && v4)
+  _conversationAddress = [(PKPeerPaymentMessagesAppViewController *)self _conversationAddress];
+  _senderAddress = [(PKPeerPaymentMessagesAppViewController *)self _senderAddress];
+  v5 = _senderAddress;
+  if (_conversationAddress && _senderAddress)
   {
     peerPaymentController = self->_peerPaymentController;
     v7[0] = _NSConcreteStackBlock;
@@ -749,7 +749,7 @@ LABEL_5:
     v7[2] = sub_1000030F0;
     v7[3] = &unk_10001C9B8;
     v7[4] = self;
-    [(PKPeerPaymentController *)peerPaymentController identifyRecipientWithConversationAddress:v3 senderAddress:v5 completion:v7];
+    [(PKPeerPaymentController *)peerPaymentController identifyRecipientWithConversationAddress:_conversationAddress senderAddress:v5 completion:v7];
   }
 
   else
@@ -758,44 +758,44 @@ LABEL_5:
   }
 }
 
-- (void)_identifyGroupRecipientsWithCompletion:(id)a3
+- (void)_identifyGroupRecipientsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (([(PKPeerPaymentController *)self->_peerPaymentController supportsGroupMessage]& 1) != 0)
   {
-    v5 = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
-    v6 = [v5 recipientAddresses];
+    activeConversation = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
+    recipientAddresses = [activeConversation recipientAddresses];
 
-    v7 = [(PKPeerPaymentMessagesAppViewController *)self _senderAddress];
+    _senderAddress = [(PKPeerPaymentMessagesAppViewController *)self _senderAddress];
     peerPaymentController = self->_peerPaymentController;
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1000032F0;
     v10[3] = &unk_10001C9E0;
-    v11 = v6;
-    v12 = v4;
+    v11 = recipientAddresses;
+    v12 = completionCopy;
     v10[4] = self;
-    v9 = v6;
-    [(PKPeerPaymentController *)peerPaymentController identifyRecipientsWithConversationAddresses:v9 senderAddress:v7 completion:v10];
+    v9 = recipientAddresses;
+    [(PKPeerPaymentController *)peerPaymentController identifyRecipientsWithConversationAddresses:v9 senderAddress:_senderAddress completion:v10];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)_handleRecipientError:(id)a3
+- (void)_handleRecipientError:(id)error
 {
-  v13 = a3;
-  v4 = [v13 domain];
-  v5 = [v4 isEqualToString:PKDisplayableErrorDomain];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:PKDisplayableErrorDomain];
 
-  v6 = v13;
+  v6 = errorCopy;
   if (v5)
   {
-    v7 = [v13 userInfo];
-    v6 = [v7 objectForKeyedSubscript:NSUnderlyingErrorKey];
+    userInfo = [errorCopy userInfo];
+    v6 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
   }
 
   if ([PKPeerPaymentController errorIsTermsAcceptanceRequiredError:v6])
@@ -803,50 +803,50 @@ LABEL_5:
     goto LABEL_4;
   }
 
-  v8 = [v6 domain];
-  v9 = [v8 isEqualToString:PKPeerPaymentWebServiceErrorDomain];
+  domain2 = [v6 domain];
+  v9 = [domain2 isEqualToString:PKPeerPaymentWebServiceErrorDomain];
 
   if (!v9)
   {
-    v10 = self;
+    selfCopy3 = self;
     v11 = 8;
     goto LABEL_9;
   }
 
   if ([v6 code] == 40312)
   {
-    v10 = self;
+    selfCopy3 = self;
     v11 = 6;
 LABEL_9:
-    [(PKPeerPaymentMessagesAppViewController *)v10 _transitionToState:v11 animated:1];
+    [(PKPeerPaymentMessagesAppViewController *)selfCopy3 _transitionToState:v11 animated:1];
     goto LABEL_10;
   }
 
   if ([v6 code] == 40309)
   {
-    v10 = self;
+    selfCopy3 = self;
     v11 = 5;
     goto LABEL_9;
   }
 
-  v12 = [v6 code];
+  code = [v6 code];
   [(PKPeerPaymentMessagesAppViewController *)self _transitionToState:8 animated:1];
-  if (v12 == 40310)
+  if (code == 40310)
   {
 LABEL_4:
-    [(PKPeerPaymentMessagesAppViewController *)self _handleError:v13];
+    [(PKPeerPaymentMessagesAppViewController *)self _handleError:errorCopy];
   }
 
 LABEL_10:
 }
 
-- (id)_identifiedRecipientForRecipientAddress:(id)a3
+- (id)_identifiedRecipientForRecipientAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v5 = 0;
   if ([(PKPeerPaymentMessagesAppViewController *)self _isGroupConversation])
   {
-    if (v4)
+    if (addressCopy)
     {
       identifiedRecipients = self->_identifiedRecipients;
       if (identifiedRecipients)
@@ -872,10 +872,10 @@ LABEL_10:
               }
 
               v12 = *(*(&v18 + 1) + 8 * i);
-              v13 = [v12 idsQualifiedNormalizedAddress];
+              idsQualifiedNormalizedAddress = [v12 idsQualifiedNormalizedAddress];
               v14 = v8;
               v15 = v14;
-              if (v13 == v14)
+              if (idsQualifiedNormalizedAddress == v14)
               {
 
 LABEL_19:
@@ -883,9 +883,9 @@ LABEL_19:
                 goto LABEL_20;
               }
 
-              if (v8 && v13)
+              if (v8 && idsQualifiedNormalizedAddress)
               {
-                v16 = [v13 isEqualToString:v14];
+                v16 = [idsQualifiedNormalizedAddress isEqualToString:v14];
 
                 if (v16)
                 {
@@ -916,16 +916,16 @@ LABEL_20:
   return v5;
 }
 
-- (void)_prepareIdentifiedRecipient:(id)a3 forAmountEntryViewController:(id)a4
+- (void)_prepareIdentifiedRecipient:(id)recipient forAmountEntryViewController:(id)controller
 {
-  v8 = a3;
-  v6 = a4;
+  recipientCopy = recipient;
+  controllerCopy = controller;
   if ([(PKPeerPaymentMessagesAppViewController *)self _isGroupConversation])
   {
     [(PKPeerPaymentController *)self->_peerPaymentController selectMode:1];
-    [(PKPeerPaymentController *)self->_peerPaymentController selectIdentifiedRecipient:v8];
-    [v6 setRecipient:v8];
-    [v6 setLeadingAction:0];
+    [(PKPeerPaymentController *)self->_peerPaymentController selectIdentifiedRecipient:recipientCopy];
+    [controllerCopy setRecipient:recipientCopy];
+    [controllerCopy setLeadingAction:0];
     if (self->_pendingFormalPaymentRequestMesssage || self->_pendingInformalPaymentRequestAmount)
     {
       v7 = 0;
@@ -936,27 +936,27 @@ LABEL_20:
       v7 = 11;
     }
 
-    [v6 setCenterAction:v7];
+    [controllerCopy setCenterAction:v7];
   }
 }
 
-- (void)_resetIdentifiedRecipientForAmountEntryViewController:(id)a3
+- (void)_resetIdentifiedRecipientForAmountEntryViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   if ([(PKPeerPaymentMessagesAppViewController *)self _isGroupConversation])
   {
     [(PKPeerPaymentController *)self->_peerPaymentController reset];
-    [v5 setRecipient:0];
-    [v5 setLeadingAction:2];
-    [v5 setCenterAction:0];
+    [controllerCopy setRecipient:0];
+    [controllerCopy setLeadingAction:2];
+    [controllerCopy setCenterAction:0];
     pendingInformalPaymentRequestRecipientAddress = self->_pendingInformalPaymentRequestRecipientAddress;
     self->_pendingInformalPaymentRequestRecipientAddress = 0;
   }
 }
 
-- (void)_handleNetworkConnectivityChanged:(id)a3
+- (void)_handleNetworkConnectivityChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -964,9 +964,9 @@ LABEL_20:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Peer Payment Messages Extension: Network connectivity changed.", buf, 2u);
   }
 
-  v6 = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
+  activeConversation = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
 
-  if (v6 && [(PKPeerPaymentMessagesAppViewController *)self _requiredContentState]!= self->_state)
+  if (activeConversation && [(PKPeerPaymentMessagesAppViewController *)self _requiredContentState]!= self->_state)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -978,26 +978,26 @@ LABEL_20:
   }
 }
 
-- (void)willBecomeActiveWithConversation:(id)a3
+- (void)willBecomeActiveWithConversation:(id)conversation
 {
-  v4 = a3;
+  conversationCopy = conversation;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 recipientAddresses];
+    recipientAddresses = [conversationCopy recipientAddresses];
     v10 = 134218498;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v4;
+    v13 = conversationCopy;
     v14 = 2112;
-    v15 = v6;
+    v15 = recipientAddresses;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "PKPeerPaymentMessagesAppViewController: %p; Will become active with conversation: %@, recipientAddresses:%@", &v10, 0x20u);
   }
 
   if (![(PKPeerPaymentController *)self->_peerPaymentController messagesContext])
   {
-    v7 = [v4 recipientAddresses];
-    v8 = [v7 count];
+    recipientAddresses2 = [conversationCopy recipientAddresses];
+    v8 = [recipientAddresses2 count];
 
     if (v8 <= 1)
     {
@@ -1013,37 +1013,37 @@ LABEL_20:
   }
 }
 
-- (void)didBecomeActiveWithConversation:(id)a3
+- (void)didBecomeActiveWithConversation:(id)conversation
 {
-  v4 = a3;
+  conversationCopy = conversation;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 recipientAddresses];
+    recipientAddresses = [conversationCopy recipientAddresses];
     *buf = 134218498;
-    v25 = self;
+    selfCopy = self;
     v26 = 2112;
-    v27 = v4;
+    v27 = conversationCopy;
     v28 = 2112;
-    v29 = v6;
+    v29 = recipientAddresses;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "PKPeerPaymentMessagesAppViewController: %p; Did become active with conversation: %@, recipientAddresses:%@", buf, 0x20u);
   }
 
   if ([(PKPeerPaymentMessagesAppViewController *)self presentationStyle]== 2)
   {
-    v7 = [v4 selectedMessage];
-    v8 = [v7 peerPaymentMessage];
+    selectedMessage = [conversationCopy selectedMessage];
+    peerPaymentMessage = [selectedMessage peerPaymentMessage];
 
-    v9 = [v8 localProperties];
-    v10 = v9;
-    if (v9)
+    localProperties = [peerPaymentMessage localProperties];
+    v10 = localProperties;
+    if (localProperties)
     {
-      self->_messageSource = [v9 source];
-      objc_storeStrong(&self->_stagedPeerPaymentMessage, v8);
-      v11 = [v10 analyticsSessionToken];
-      if (v11)
+      self->_messageSource = [localProperties source];
+      objc_storeStrong(&self->_stagedPeerPaymentMessage, peerPaymentMessage);
+      analyticsSessionToken = [v10 analyticsSessionToken];
+      if (analyticsSessionToken)
       {
-        [(PKPeerPaymentMessagesAppViewController *)self _reportAnalyticsViewAppearedWithArchivedParent:v11];
+        [(PKPeerPaymentMessagesAppViewController *)self _reportAnalyticsViewAppearedWithArchivedParent:analyticsSessionToken];
       }
     }
   }
@@ -1052,13 +1052,13 @@ LABEL_20:
   {
     self->_messageSource = 2;
     v12 = +[PKMessagesAppSharedContext sharedContext];
-    v13 = [v12 bubbleAppControllers];
+    bubbleAppControllers = [v12 bubbleAppControllers];
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = v13;
+    v10 = bubbleAppControllers;
     v14 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v14)
     {
@@ -1092,35 +1092,35 @@ LABEL_20:
     }
 
 LABEL_18:
-    v8 = v10;
+    peerPaymentMessage = v10;
   }
 
   [(PKPeerPaymentMessagesAppViewController *)self _transitionToRequiredContentStateAnimated:0];
 }
 
-- (void)willResignActiveWithConversation:(id)a3
+- (void)willResignActiveWithConversation:(id)conversation
 {
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134218242;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = a3;
+    conversationCopy = conversation;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Peer Payment Messages Extension: Controller:%p Will resign active with conversation: %@", &v6, 0x16u);
   }
 }
 
-- (void)didResignActiveWithConversation:(id)a3
+- (void)didResignActiveWithConversation:(id)conversation
 {
-  v4 = a3;
+  conversationCopy = conversation;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 134218242;
-    v12 = self;
+    selfCopy2 = self;
     v13 = 2112;
-    v14 = v4;
+    v14 = conversationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Peer Payment Messages Extension: Controller:%p Did resign active with conversation: %@", &v11, 0x16u);
   }
 
@@ -1130,7 +1130,7 @@ LABEL_18:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 134217984;
-      v12 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Peer Payment Messages Extension: Controller:%p Invalidating pending request values.", &v11, 0xCu);
     }
 
@@ -1152,60 +1152,60 @@ LABEL_18:
   }
 }
 
-- (void)didReceiveMessage:(id)a3 conversation:(id)a4
+- (void)didReceiveMessage:(id)message conversation:(id)conversation
 {
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [a3 peerPaymentMessage];
+    peerPaymentMessage = [message peerPaymentMessage];
     v7 = 138412290;
-    v8 = v6;
+    v8 = peerPaymentMessage;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Peer Payment Messages Extension: Received message: %@", &v7, 0xCu);
   }
 }
 
-- (void)didSelectMessage:(id)a3 conversation:(id)a4
+- (void)didSelectMessage:(id)message conversation:(id)conversation
 {
-  v5 = [a3 peerPaymentMessage];
+  peerPaymentMessage = [message peerPaymentMessage];
   v6 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v5;
+    v13 = peerPaymentMessage;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Peer Payment Messages Extension: Selected message: %@", &v12, 0xCu);
   }
 
-  if ([v5 type] == 2)
+  if ([peerPaymentMessage type] == 2)
   {
-    v7 = [v5 currency];
-    v8 = [v5 amount];
-    v9 = v8;
-    if (v7 && v8)
+    currency = [peerPaymentMessage currency];
+    amount = [peerPaymentMessage amount];
+    v9 = amount;
+    if (currency && amount)
     {
       v10 = [(PKPeerPaymentMessagesAppViewController *)self _viewControllerForState:11 shouldLoad:1];
-      v11 = PKCurrencyAmountCreate(v9, v7, 0);
+      v11 = PKCurrencyAmountCreate(v9, currency, 0);
       [v10 setAmount:v11];
     }
   }
 }
 
-- (BOOL)_canPerformQuoteForMessage:(id)a3 error:(id *)a4
+- (BOOL)_canPerformQuoteForMessage:(id)message error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 recipientAddress];
-  if ([v6 type] == 2 && objc_msgSend(v6, "context") == 2)
+  messageCopy = message;
+  recipientAddress = [messageCopy recipientAddress];
+  if ([messageCopy type] == 2 && objc_msgSend(messageCopy, "context") == 2)
   {
     goto LABEL_13;
   }
 
-  if ([(PKPeerPaymentMessagesAppViewController *)self _recipientAddressIsValid:v7])
+  if ([(PKPeerPaymentMessagesAppViewController *)self _recipientAddressIsValid:recipientAddress])
   {
-    if (![(PKPeerPaymentMessagesAppViewController *)self _recipientAddressFoundInContacts:v7])
+    if (![(PKPeerPaymentMessagesAppViewController *)self _recipientAddressFoundInContacts:recipientAddress])
     {
-      v8 = [(PKPeerPaymentController *)self->_peerPaymentController account];
-      v9 = [v8 sendRestrictionType];
+      account = [(PKPeerPaymentController *)self->_peerPaymentController account];
+      sendRestrictionType = [account sendRestrictionType];
 
-      if (v9 == 2)
+      if (sendRestrictionType == 2)
       {
         v10 = PKLogFacilityTypeGetObject();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1214,9 +1214,9 @@ LABEL_18:
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Peer Payment Messages Extension: The curent user cannot sent to people outside of their contacts. Hence failing validation.", v17, 2u);
         }
 
-        if (a4)
+        if (error)
         {
-          if ([v6 type] == 2)
+          if ([messageCopy type] == 2)
           {
             v11 = @"PEER_PAYMENT_RECIPIENT_DOES_NOT_ALLOW_REQUESTS_TITLE";
           }
@@ -1235,7 +1235,7 @@ LABEL_18:
     }
 
 LABEL_13:
-    LOBYTE(a4) = 1;
+    LOBYTE(error) = 1;
     goto LABEL_19;
   }
 
@@ -1246,41 +1246,41 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Peer Payment Messages Extension: Recipient identifier doesn't match current conversation recipient. Hence failing validation.", buf, 2u);
   }
 
-  if (a4)
+  if (error)
   {
     v12 = @"PEER_PAYMENT_BUBBLE_RECIPIENT_MISMATCH_ERROR_DESCRIPTION";
     v11 = @"PEER_PAYMENT_BUBBLE_RECIPIENT_MISMATCH_ERROR_TITLE";
 LABEL_18:
     v14 = PKLocalizedPeerPaymentString(&v11->isa);
     v15 = PKLocalizedPeerPaymentString(&v12->isa);
-    *a4 = PKDisplayableErrorCustom();
+    *error = PKDisplayableErrorCustom();
 
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
   }
 
 LABEL_19:
 
-  return a4;
+  return error;
 }
 
-- (BOOL)_recipientAddressIsValid:(id)a3
+- (BOOL)_recipientAddressIsValid:(id)valid
 {
   v4 = PKIDSNormalizedAddress();
   if ([(PKPeerPaymentMessagesAppViewController *)self _isGroupConversation])
   {
-    v5 = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
-    v6 = [v5 recipientAddresses];
+    activeConversation = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
+    recipientAddresses = [activeConversation recipientAddresses];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1000047B0;
     v15[3] = &unk_10001CA08;
     v16 = v4;
-    v7 = [v6 pk_firstObjectPassingTest:v15];
+    _conversationAddress = [recipientAddresses pk_firstObjectPassingTest:v15];
   }
 
   else
   {
-    v7 = [(PKPeerPaymentMessagesAppViewController *)self _conversationAddress];
+    _conversationAddress = [(PKPeerPaymentMessagesAppViewController *)self _conversationAddress];
   }
 
   v8 = PKIDSNormalizedAddress();
@@ -1328,32 +1328,32 @@ LABEL_19:
   return v10;
 }
 
-- (BOOL)_recipientAddressFoundInContacts:(id)a3
+- (BOOL)_recipientAddressFoundInContacts:(id)contacts
 {
   v5 = 0;
-  v3 = [(PKPeerPaymentController *)self->_peerPaymentController displayNameForRecipientAddress:a3 foundInContacts:&v5];
+  v3 = [(PKPeerPaymentController *)self->_peerPaymentController displayNameForRecipientAddress:contacts foundInContacts:&v5];
   return v5;
 }
 
-- (void)_shouldProceedPerformingQuote:(id)a3 message:(id)a4 memoText:(id)a5 completion:(id)a6
+- (void)_shouldProceedPerformingQuote:(id)quote message:(id)message memoText:(id)text completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  quoteCopy = quote;
+  messageCopy = message;
+  textCopy = text;
+  completionCopy = completion;
   v14 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     sub_10000FF20();
   }
 
-  if (v13)
+  if (completionCopy)
   {
     v26 = 0;
     v27 = &v26;
     v28 = 0x2020000000;
     v29 = 1;
-    if (![(PKPeerPaymentMessagesAppViewController *)self _peerPaymentParicipantShouldSeeMemoSharingMessageForMemo:v12])
+    if (![(PKPeerPaymentMessagesAppViewController *)self _peerPaymentParicipantShouldSeeMemoSharingMessageForMemo:textCopy])
     {
       goto LABEL_7;
     }
@@ -1383,25 +1383,25 @@ LABEL_19:
       v25 = 0;
       v21 = &stru_10001CA28;
       v22 = &stru_10001CA48;
-      v23 = v13;
+      v23 = completionCopy;
       [PKUserNotificationAgent presentNotificationWithParameters:v15 flags:0 responseHandler:v20];
     }
 
     else
     {
 LABEL_7:
-      (*(v13 + 2))(v13, *(v27 + 24));
+      (*(completionCopy + 2))(completionCopy, *(v27 + 24));
     }
 
     _Block_object_dispose(&v26, 8);
   }
 }
 
-- (void)_validateMessageForSending:(id)a3 conversation:(id)a4 associatedText:(id)a5 completionHandler:(id)a6
+- (void)_validateMessageForSending:(id)sending conversation:(id)conversation associatedText:(id)text completionHandler:(id)handler
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = [a3 peerPaymentMessage];
+  textCopy = text;
+  handlerCopy = handler;
+  peerPaymentMessage = [sending peerPaymentMessage];
   [(PKPeerPaymentMessagesAppViewController *)self _reportAnalyticsStagedBubbleButtonTap:PKAnalyticsReportPeerPaymentSendButtonTag];
   v12 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -1410,20 +1410,20 @@ LABEL_7:
   }
 
   v42 = 0;
-  v13 = [(PKPeerPaymentMessagesAppViewController *)self _canPerformQuoteForMessage:v11 error:&v42];
+  v13 = [(PKPeerPaymentMessagesAppViewController *)self _canPerformQuoteForMessage:peerPaymentMessage error:&v42];
   v14 = v42;
   v15 = v14;
   if (v13)
   {
-    v16 = [v11 localProperties];
-    [v11 setLocalProperties:0];
-    v17 = [v11 type];
-    v18 = v17;
-    if (v17 > 1)
+    localProperties = [peerPaymentMessage localProperties];
+    [peerPaymentMessage setLocalProperties:0];
+    type = [peerPaymentMessage type];
+    v18 = type;
+    if (type > 1)
     {
-      if (v17 != 2)
+      if (type != 2)
       {
-        if (v17 != 3)
+        if (type != 3)
         {
 LABEL_21:
 
@@ -1437,38 +1437,38 @@ LABEL_14:
 
         [v21 setDelegate:self];
         v22 = +[PKMessagesAppSharedContext sharedContext];
-        [v11 identifier];
-        v23 = v31 = v16;
+        [peerPaymentMessage identifier];
+        v23 = v31 = localProperties;
         v24 = [v22 externalizedControllerStateForMessageIdentifier:v23];
 
         LOBYTE(v23) = [v21 restoreStateWithExternalizedControllerState:v24];
-        v30 = [v21 quote];
+        quote = [v21 quote];
         v32[0] = _NSConcreteStackBlock;
         v32[1] = 3221225472;
         v32[2] = sub_100004FA8;
         v32[3] = &unk_10001CAE8;
         v41 = v23;
         v33 = v24;
-        v34 = self;
-        v35 = v11;
+        selfCopy = self;
+        v35 = peerPaymentMessage;
         v36 = v21;
-        v37 = v9;
+        v37 = textCopy;
         v40 = v18;
         v38 = v31;
-        v39 = v10;
+        v39 = handlerCopy;
         v25 = v21;
         v26 = v24;
-        v16 = v31;
-        [(PKPeerPaymentMessagesAppViewController *)self _shouldProceedPerformingQuote:v30 message:v35 memoText:v37 completion:v32];
+        localProperties = v31;
+        [(PKPeerPaymentMessagesAppViewController *)self _shouldProceedPerformingQuote:quote message:v35 memoText:v37 completion:v32];
 
         goto LABEL_21;
       }
 
       DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
       CFNotificationCenterPostNotification(DarwinNotifyCenter, PKDarwinNotificationEventInAppDismissed, 0, 0, 1u);
-      if ([v9 length])
+      if ([textCopy length])
       {
-        [v11 setMemo:v9];
+        [peerPaymentMessage setMemo:textCopy];
         v28 = &PKAggDKeyPeerPaymentBubbleRequestWithMemo;
       }
 
@@ -1479,12 +1479,12 @@ LABEL_14:
 
       v29 = *v28;
       PKAnalyticsSendEvent();
-      [v11 reportMessageSentWithLocalProperties:v16];
+      [peerPaymentMessage reportMessageSentWithLocalProperties:localProperties];
     }
 
-    else if (v17)
+    else if (type)
     {
-      if (v17 != 1)
+      if (type != 1)
       {
         goto LABEL_21;
       }
@@ -1492,9 +1492,9 @@ LABEL_14:
       goto LABEL_14;
     }
 
-    if (v10)
+    if (handlerCopy)
     {
-      (*(v10 + 2))(v10, 1, 0);
+      (*(handlerCopy + 2))(handlerCopy, 1, 0);
     }
 
     goto LABEL_21;
@@ -1505,68 +1505,68 @@ LABEL_14:
     [(PKPeerPaymentMessagesAppViewController *)self _handleError:v14];
   }
 
-  if (v10)
+  if (handlerCopy)
   {
-    (*(v10 + 2))(v10, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
 LABEL_22:
 }
 
-- (void)_hostSceneIdentifierForMessageIdentifier:(id)a3 withCompletion:(id)a4
+- (void)_hostSceneIdentifierForMessageIdentifier:(id)identifier withCompletion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 
-- (void)didStartSendingMessage:(id)a3 conversation:(id)a4
+- (void)didStartSendingMessage:(id)message conversation:(id)conversation
 {
-  v5 = a3;
-  v6 = [v5 peerPaymentMessage];
+  messageCopy = message;
+  peerPaymentMessage = [messageCopy peerPaymentMessage];
   v7 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
-    v22 = v6;
+    v22 = peerPaymentMessage;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "PKPeerPaymentMessagesAppViewController: %p; Did start sending message: %@", buf, 0x16u);
   }
 
-  [(PKPeerPaymentMessagesAppViewController *)self _donatePeerPaymentInteractionForMessage:v5];
+  [(PKPeerPaymentMessagesAppViewController *)self _donatePeerPaymentInteractionForMessage:messageCopy];
   [(PKPeerPaymentMessagesAppViewController *)self dismiss];
   stagedPeerPaymentMessage = self->_stagedPeerPaymentMessage;
   self->_stagedPeerPaymentMessage = 0;
 
-  if ([v6 type] == 1)
+  if ([peerPaymentMessage type] == 1)
   {
-    v9 = +[PKMessagesAppSharedContext sharedContext];
-    [v9 _unregisterAppViewController:self];
+    v10RequestToken = +[PKMessagesAppSharedContext sharedContext];
+    [v10RequestToken _unregisterAppViewController:self];
 LABEL_5:
 
     goto LABEL_12;
   }
 
-  if ([v6 type] == 2 && objc_msgSend(v6, "context") == 2)
+  if ([peerPaymentMessage type] == 2 && objc_msgSend(peerPaymentMessage, "context") == 2)
   {
-    v10 = [v6 requestToken];
-    v9 = [v10 requestToken];
+    requestToken = [peerPaymentMessage requestToken];
+    v10RequestToken = [requestToken requestToken];
 
-    v11 = [v6 messagesGroupIdentifier];
-    v12 = v11;
-    if (v9 && v11)
+    messagesGroupIdentifier = [peerPaymentMessage messagesGroupIdentifier];
+    v12 = messagesGroupIdentifier;
+    if (v10RequestToken && messagesGroupIdentifier)
     {
       v13 = +[PKPeerPaymentService sharedInstance];
-      v18 = v9;
+      v18 = v10RequestToken;
       v14 = [NSArray arrayWithObjects:&v18 count:1];
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = sub_100005B20;
       v15[3] = &unk_10001CB10;
       v15[4] = self;
-      v16 = v9;
+      v16 = v10RequestToken;
       v17 = v12;
       [v13 peerPaymentPendingRequestsForRequestTokens:v14 completion:v15];
     }
@@ -1577,16 +1577,16 @@ LABEL_5:
 LABEL_12:
 }
 
-- (void)didCancelSendingMessage:(id)a3 conversation:(id)a4
+- (void)didCancelSendingMessage:(id)message conversation:(id)conversation
 {
-  v5 = [a3 peerPaymentMessage];
+  peerPaymentMessage = [message peerPaymentMessage];
   v6 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 134218242;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v5;
+    v16 = peerPaymentMessage;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "PKPeerPaymentMessagesAppViewController: %p; Did cancel sending message: %@", &v13, 0x16u);
   }
 
@@ -1603,20 +1603,20 @@ LABEL_12:
     [PKAnalyticsReporter endSubjectReporting:v8];
   }
 
-  if ([v5 type] == 1)
+  if ([peerPaymentMessage type] == 1)
   {
     v10 = +[PKMessagesAppSharedContext sharedContext];
-    v11 = [v5 identifier];
-    [v10 removeExternalizedControllerStateDataForMessageIdentifier:v11];
+    identifier = [peerPaymentMessage identifier];
+    [v10 removeExternalizedControllerStateDataForMessageIdentifier:identifier];
 
     v12 = +[PKMessagesAppSharedContext sharedContext];
     [v12 _unregisterAppViewController:self];
   }
 }
 
-- (void)didTransitionToPresentationStyle:(unint64_t)a3
+- (void)didTransitionToPresentationStyle:(unint64_t)style
 {
-  if (!a3 && self->_state != 9)
+  if (!style && self->_state != 9)
   {
     activeViewController = self->_activeViewController;
     objc_opt_class();
@@ -1629,9 +1629,9 @@ LABEL_12:
   [(PKPeerPaymentMessagesAppViewController *)self _reloadContent];
 }
 
-- (CGSize)_contentSizeThatFits:(CGSize)result presentationStyle:(unint64_t)a4
+- (CGSize)_contentSizeThatFits:(CGSize)result presentationStyle:(unint64_t)style
 {
-  if (a4 == 2)
+  if (style == 2)
   {
     [(PKPeerPaymentMessagesAppViewController *)self contentSizeThatFits:result.width, result.height, v4, v5];
   }
@@ -1639,10 +1639,10 @@ LABEL_12:
   return result;
 }
 
-- (CGSize)contentSizeThatFits:(CGSize)a3
+- (CGSize)contentSizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v5 = [(PKPeerPaymentMessagesAppViewController *)self _viewControllerForState:12 shouldLoad:1];
   [v5 contentSizeThatFits:{width, height}];
   v7 = v6;
@@ -1711,13 +1711,13 @@ LABEL_12:
   return result;
 }
 
-- (void)updateSnapshotWithCompletionBlock:(id)a3
+- (void)updateSnapshotWithCompletionBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    v4 = a3;
-    v5 = [(PKPeerPaymentMessagesAppViewController *)self view];
-    [v5 bounds];
+    blockCopy = block;
+    view = [(PKPeerPaymentMessagesAppViewController *)self view];
+    [view bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -1734,50 +1734,50 @@ LABEL_12:
     *&v16[8] = v13;
     v16[4] = self;
     v15 = [v14 imageWithActions:v16];
-    v4[2](v4, v15);
+    blockCopy[2](blockCopy, v15);
   }
 }
 
 - (id)recipientDisplayName
 {
   peerPaymentController = self->_peerPaymentController;
-  v3 = [(PKPeerPaymentMessagesAppViewController *)self _conversationAddress];
-  v4 = [(PKPeerPaymentController *)peerPaymentController displayNameForRecipientAddress:v3];
+  _conversationAddress = [(PKPeerPaymentMessagesAppViewController *)self _conversationAddress];
+  v4 = [(PKPeerPaymentController *)peerPaymentController displayNameForRecipientAddress:_conversationAddress];
 
   return v4;
 }
 
 - (id)currentBalance
 {
-  v2 = [(PKPeerPaymentController *)self->_peerPaymentController account];
-  v3 = [v2 currentBalance];
+  account = [(PKPeerPaymentController *)self->_peerPaymentController account];
+  currentBalance = [account currentBalance];
 
-  return v3;
+  return currentBalance;
 }
 
 - (id)minimumTransferAmount
 {
-  v2 = [(PKPeerPaymentController *)self->_peerPaymentController account];
-  v3 = [v2 sendToUserFeatureDescriptor];
-  v4 = [v3 minimumAmount];
+  account = [(PKPeerPaymentController *)self->_peerPaymentController account];
+  sendToUserFeatureDescriptor = [account sendToUserFeatureDescriptor];
+  minimumAmount = [sendToUserFeatureDescriptor minimumAmount];
 
-  return v4;
+  return minimumAmount;
 }
 
 - (id)maximumTransferAmount
 {
-  v2 = [(PKPeerPaymentController *)self->_peerPaymentController account];
-  v3 = [v2 sendToUserFeatureDescriptor];
-  v4 = [v3 maximumAmount];
+  account = [(PKPeerPaymentController *)self->_peerPaymentController account];
+  sendToUserFeatureDescriptor = [account sendToUserFeatureDescriptor];
+  maximumAmount = [sendToUserFeatureDescriptor maximumAmount];
 
-  return v4;
+  return maximumAmount;
 }
 
 - (unint64_t)conversationSize
 {
-  v2 = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
-  v3 = [v2 recipientAddresses];
-  v4 = [v3 count];
+  activeConversation = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
+  recipientAddresses = [activeConversation recipientAddresses];
+  v4 = [recipientAddresses count];
 
   return v4 + 1;
 }
@@ -1792,9 +1792,9 @@ LABEL_12:
 
 - (id)analyticsMessagesContext
 {
-  v3 = [(PKPeerPaymentMessagesAppViewController *)self _isGroupConversation];
+  _isGroupConversation = [(PKPeerPaymentMessagesAppViewController *)self _isGroupConversation];
   v4 = &PKAnalyticsReportPeerPaymentMessagesContextConversationTypeGroup;
-  if (!v3)
+  if (!_isGroupConversation)
   {
     v4 = &PKAnalyticsReportPeerPaymentMessagesContextConversationTypeIndividual;
   }
@@ -1818,9 +1818,9 @@ LABEL_12:
 
   if (self->_messageSource == 2)
   {
-    v10 = [(PKPeerPaymentMessagesAppViewController *)self presentationStyle];
+    presentationStyle = [(PKPeerPaymentMessagesAppViewController *)self presentationStyle];
     v11 = &PKAnalyticsReportPeerPaymentMessagesContextStyleExpanded;
-    if (v10 != 1)
+    if (presentationStyle != 1)
     {
       v11 = &PKAnalyticsReportPeerPaymentMessagesContextStyleCompact;
     }
@@ -1832,9 +1832,9 @@ LABEL_12:
   pendingFormalPaymentRequestMesssage = self->_pendingFormalPaymentRequestMesssage;
   if (pendingFormalPaymentRequestMesssage || self->_pendingInformalPaymentRequestRecipientAddress)
   {
-    v14 = [(PKPeerPaymentMessage *)pendingFormalPaymentRequestMesssage amount];
+    amount = [(PKPeerPaymentMessage *)pendingFormalPaymentRequestMesssage amount];
     v15 = +[NSDecimalNumber zero];
-    if ([v14 pk_isGreaterThan:v15])
+    if ([amount pk_isGreaterThan:v15])
     {
 
       v16 = &PKAnalyticsReportPeerPaymentMessagesContextRequestTypeClosed;
@@ -1861,38 +1861,38 @@ LABEL_12:
   return v7;
 }
 
-- (void)handleAction:(unint64_t)a3 sender:(id)a4 completion:(id)a5
+- (void)handleAction:(unint64_t)action sender:(id)sender completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  senderCopy = sender;
+  completionCopy = completion;
   v10 = 0;
-  if (a3 <= 5)
+  if (action <= 5)
   {
-    if (a3 > 2)
+    if (action > 2)
     {
-      if (a3 == 3)
+      if (action == 3)
       {
-        v66 = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
-        v67 = [v66 selectedMessage];
-        v68 = [v67 peerPaymentMessage];
+        activeConversation = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
+        selectedMessage = [activeConversation selectedMessage];
+        peerPaymentMessage = [selectedMessage peerPaymentMessage];
 
-        [(PKPeerPaymentMessagesAppViewController *)self _handleRespondToPaymentRequestActionWithMessage:v68 completion:v9];
+        [(PKPeerPaymentMessagesAppViewController *)self _handleRespondToPaymentRequestActionWithMessage:peerPaymentMessage completion:completionCopy];
       }
 
       else
       {
-        if (a3 == 4)
+        if (action == 4)
         {
-          v31 = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
-          v32 = [v31 selectedMessage];
-          v13 = [v32 peerPaymentMessage];
+          activeConversation2 = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
+          selectedMessage2 = [activeConversation2 selectedMessage];
+          peerPaymentMessage2 = [selectedMessage2 peerPaymentMessage];
 
-          if (v13 && [v13 type] == 1)
+          if (peerPaymentMessage2 && [peerPaymentMessage2 type] == 1)
           {
             if ([(PKPeerPaymentMessagesAppViewController *)self _requiresSetupFlow])
             {
-              v88 = [v13 senderAddress];
-              v33 = [v88 length];
+              senderAddress = [peerPaymentMessage2 senderAddress];
+              v33 = [senderAddress length];
               v34 = 1;
               if (v33)
               {
@@ -1906,14 +1906,14 @@ LABEL_12:
               v97[3] = &unk_10001CB88;
               v97[4] = self;
               v35 = &v98;
-              v36 = v13;
+              v36 = peerPaymentMessage2;
               v98 = v36;
-              v99 = v9;
+              v99 = completionCopy;
               v37 = objc_retainBlock(v97);
-              v38 = [(PKPeerPaymentController *)self->_peerPaymentController account];
-              v39 = [v38 stage];
+              account = [(PKPeerPaymentController *)self->_peerPaymentController account];
+              stage = [account stage];
 
-              if (v39 == 1)
+              if (stage == 1)
               {
                 [(PKPeerPaymentMessagesAppViewController *)self _presentSetupFlowWithPeerPaymentMessage:v36 flowState:v85 completion:v37];
               }
@@ -1923,12 +1923,12 @@ LABEL_12:
                 [(PKPeerPaymentMessagesAppViewController *)self _presentInlineSetupFlowWithPeerPaymentMessage:v36 flowState:v85 completion:v37];
               }
 
-              v76 = v88;
+              paymentIdentifier = senderAddress;
             }
 
             else
             {
-              v76 = [v13 paymentIdentifier];
+              paymentIdentifier = [peerPaymentMessage2 paymentIdentifier];
               peerPaymentController = self->_peerPaymentController;
               v78 = PKPeerPaymentActionAccept;
               v95[0] = _NSConcreteStackBlock;
@@ -1937,8 +1937,8 @@ LABEL_12:
               v95[3] = &unk_10001CBD8;
               v95[4] = self;
               v35 = &v96;
-              v96 = v9;
-              [(PKPeerPaymentController *)peerPaymentController performAction:v78 withPaymentIdentifier:v76 completion:v95];
+              v96 = completionCopy;
+              [(PKPeerPaymentController *)peerPaymentController performAction:v78 withPaymentIdentifier:paymentIdentifier completion:v95];
             }
 
             goto LABEL_74;
@@ -1947,19 +1947,19 @@ LABEL_12:
           goto LABEL_54;
         }
 
-        v15 = [(PKPeerPaymentMessagesAppViewController *)self _openWallet];
-        if (v9)
+        _openWallet = [(PKPeerPaymentMessagesAppViewController *)self _openWallet];
+        if (completionCopy)
         {
-          (*(v9 + 2))(v9, v15);
+          (*(completionCopy + 2))(completionCopy, _openWallet);
         }
       }
 
       goto LABEL_62;
     }
 
-    if (a3 != 1)
+    if (action != 1)
     {
-      if (a3 != 2)
+      if (action != 2)
       {
         goto LABEL_76;
       }
@@ -1971,40 +1971,40 @@ LABEL_12:
       }
 
       [(PKPeerPaymentController *)self->_peerPaymentController selectMode:3];
-      v20 = [v8 amount];
-      [(PKPeerPaymentMessagesAppViewController *)self _stageRequestWithAmount:v20 completion:v9];
+      amount = [senderCopy amount];
+      [(PKPeerPaymentMessagesAppViewController *)self _stageRequestWithAmount:amount completion:completionCopy];
       goto LABEL_61;
     }
 
-    v20 = [(PKPeerPaymentMessagesAppViewController *)self _conversationAddress];
-    if ([(PKPeerPaymentController *)self->_peerPaymentController mode]!= 1 || v20 == 0)
+    amount = [(PKPeerPaymentMessagesAppViewController *)self _conversationAddress];
+    if ([(PKPeerPaymentController *)self->_peerPaymentController mode]!= 1 || amount == 0)
     {
       [(PKPeerPaymentController *)self->_peerPaymentController selectMode:1];
     }
 
-    v22 = [(PKPeerPaymentMessagesAppViewController *)self _isGroupConversation];
-    v23 = v8;
-    v24 = v23;
-    if (!v22 || v20)
+    _isGroupConversation = [(PKPeerPaymentMessagesAppViewController *)self _isGroupConversation];
+    v23 = senderCopy;
+    v20Amount = v23;
+    if (!_isGroupConversation || amount)
     {
-      v25 = [v23 amount];
-      [(PKPeerPaymentMessagesAppViewController *)self _stagePaymentWithAmount:v25 completion:v9];
+      amount2 = [v23 amount];
+      [(PKPeerPaymentMessagesAppViewController *)self _stagePaymentWithAmount:amount2 completion:completionCopy];
     }
 
     else
     {
-      v25 = [(NSDictionary *)self->_identifiedRecipients objectForKeyedSubscript:@"PKPeerPaymentGroupValidRecipientsKey"];
+      amount2 = [(NSDictionary *)self->_identifiedRecipients objectForKeyedSubscript:@"PKPeerPaymentGroupValidRecipientsKey"];
       [(NSDictionary *)self->_identifiedRecipients objectForKeyedSubscript:@"PKPeerPaymentGroupInvalidRecipientsKey"];
-      v26 = v87 = v8;
+      v26 = v87 = senderCopy;
       v27 = [PKPeerPaymentMessagesRecipientPickerViewController alloc];
-      v28 = [v24 amount];
-      v29 = [v27 initWithValidRecipients:v25 invalidRecipients:v26 amount:v28 peerPaymentController:self->_peerPaymentController contentDelegate:self];
+      amount3 = [v20Amount amount];
+      v29 = [v27 initWithValidRecipients:amount2 invalidRecipients:v26 amount:amount3 peerPaymentController:self->_peerPaymentController contentDelegate:self];
 
-      v30 = [v24 navigationController];
-      [v30 pushViewController:v29 animated:1];
-      (*(v9 + 2))(v9, 1);
+      navigationController = [v20Amount navigationController];
+      [navigationController pushViewController:v29 animated:1];
+      (*(completionCopy + 2))(completionCopy, 1);
 
-      v8 = v87;
+      senderCopy = v87;
     }
 
 LABEL_60:
@@ -2013,9 +2013,9 @@ LABEL_61:
     goto LABEL_62;
   }
 
-  if (a3 > 8)
+  if (action > 8)
   {
-    if (a3 == 9)
+    if (action == 9)
     {
       if ([(PKPeerPaymentMessagesAppViewController *)self _requiredContentState]== 11)
       {
@@ -2027,9 +2027,9 @@ LABEL_61:
       goto LABEL_57;
     }
 
-    if (a3 != 10)
+    if (action != 10)
     {
-      if (a3 != 11)
+      if (action != 11)
       {
         goto LABEL_76;
       }
@@ -2042,36 +2042,36 @@ LABEL_61:
 
       [(PKPeerPaymentController *)self->_peerPaymentController selectMode:3];
       v16 = +[NSDecimalNumber zero];
-      v17 = [v8 amount];
-      v18 = [v17 currency];
+      amount4 = [senderCopy amount];
+      currency = [amount4 currency];
       v19 = PKCurrencyAmountMake();
 
-      [(PKPeerPaymentMessagesAppViewController *)self _stageRequestWithAmount:v19 completion:v9];
+      [(PKPeerPaymentMessagesAppViewController *)self _stageRequestWithAmount:v19 completion:completionCopy];
 LABEL_62:
       v10 = 1;
       goto LABEL_76;
     }
 
-    v20 = [(PKPeerPaymentMessagesAppViewController *)self _viewControllerForState:9 shouldLoad:0];
-    v24 = [v20 amount];
-    [(PKPeerPaymentMessagesAppViewController *)self _stagePaymentWithAmount:v24 completion:v9];
+    amount = [(PKPeerPaymentMessagesAppViewController *)self _viewControllerForState:9 shouldLoad:0];
+    v20Amount = [amount amount];
+    [(PKPeerPaymentMessagesAppViewController *)self _stagePaymentWithAmount:v20Amount completion:completionCopy];
     goto LABEL_60;
   }
 
-  if (a3 == 6)
+  if (action == 6)
   {
-    v69 = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
-    v70 = [v69 selectedMessage];
-    v13 = [v70 peerPaymentMessage];
+    activeConversation3 = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
+    selectedMessage3 = [activeConversation3 selectedMessage];
+    peerPaymentMessage2 = [selectedMessage3 peerPaymentMessage];
 
-    if (v13 && [v13 type] == 1 && objc_msgSend(v13, "hasBeenSent"))
+    if (peerPaymentMessage2 && [peerPaymentMessage2 type] == 1 && objc_msgSend(peerPaymentMessage2, "hasBeenSent"))
     {
       v93[0] = _NSConcreteStackBlock;
       v93[1] = 3221225472;
       v93[2] = sub_1000078DC;
       v93[3] = &unk_10001CC00;
-      v94 = v9;
-      [(PKPeerPaymentMessagesAppViewController *)self _showPaymentDetailsForMessage:v13 completion:v93];
+      v94 = completionCopy;
+      [(PKPeerPaymentMessagesAppViewController *)self _showPaymentDetailsForMessage:peerPaymentMessage2 completion:v93];
       v14 = v94;
       goto LABEL_53;
     }
@@ -2083,20 +2083,20 @@ LABEL_75:
     goto LABEL_76;
   }
 
-  if (a3 != 7)
+  if (action != 7)
   {
-    v11 = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
-    v12 = [v11 selectedMessage];
-    v13 = [v12 peerPaymentMessage];
+    activeConversation4 = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
+    selectedMessage4 = [activeConversation4 selectedMessage];
+    peerPaymentMessage2 = [selectedMessage4 peerPaymentMessage];
 
-    if (v13 && [v13 type] == 3 && objc_msgSend(v13, "hasBeenSent"))
+    if (peerPaymentMessage2 && [peerPaymentMessage2 type] == 3 && objc_msgSend(peerPaymentMessage2, "hasBeenSent"))
     {
       v90[0] = _NSConcreteStackBlock;
       v90[1] = 3221225472;
       v90[2] = sub_1000079A8;
       v90[3] = &unk_10001CC00;
-      v91 = v9;
-      [(PKPeerPaymentMessagesAppViewController *)self _showRecurringPaymentDetailsForMessage:v13 completion:v90];
+      v91 = completionCopy;
+      [(PKPeerPaymentMessagesAppViewController *)self _showRecurringPaymentDetailsForMessage:peerPaymentMessage2 completion:v90];
       v14 = v91;
 LABEL_53:
 
@@ -2116,19 +2116,19 @@ LABEL_57:
     goto LABEL_76;
   }
 
-  v40 = [(PKPeerPaymentController *)self->_peerPaymentController account];
+  account2 = [(PKPeerPaymentController *)self->_peerPaymentController account];
   *buf = 0;
   v92 = 0;
-  v10 = [PKPeerPaymentActionController canPerformPeerPaymentAction:3 account:v40 unableReason:buf displayableError:&v92];
+  v10 = [PKPeerPaymentActionController canPerformPeerPaymentAction:3 account:account2 unableReason:buf displayableError:&v92];
   v41 = v92;
   v42 = v41;
   if (v10)
   {
     v84 = v41;
-    v86 = v40;
-    v43 = [v8 amount];
-    v44 = [(PKPeerPaymentController *)self->_peerPaymentController account];
-    v89 = [v44 recurringPaymentsFeatureDescriptor];
+    v86 = account2;
+    amount5 = [senderCopy amount];
+    account3 = [(PKPeerPaymentController *)self->_peerPaymentController account];
+    recurringPaymentsFeatureDescriptor = [account3 recurringPaymentsFeatureDescriptor];
 
     pendingRecurringPayment = self->_pendingRecurringPayment;
     if (!pendingRecurringPayment)
@@ -2145,39 +2145,39 @@ LABEL_57:
       pendingRecurringPayment = self->_pendingRecurringPayment;
     }
 
-    v50 = [v43 currency];
-    [(PKPeerPaymentRecurringPayment *)pendingRecurringPayment setCurrency:v50];
+    currency2 = [amount5 currency];
+    [(PKPeerPaymentRecurringPayment *)pendingRecurringPayment setCurrency:currency2];
 
     v51 = self->_pendingRecurringPayment;
-    v83 = v43;
-    v52 = [v43 amount];
-    [(PKPeerPaymentRecurringPayment *)v51 setAmount:v52];
+    v83 = amount5;
+    v43Amount = [amount5 amount];
+    [(PKPeerPaymentRecurringPayment *)v51 setAmount:v43Amount];
 
-    v53 = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
-    v54 = [v53 recipientAddresses];
-    v55 = [v54 firstObject];
+    activeConversation5 = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
+    recipientAddresses = [activeConversation5 recipientAddresses];
+    firstObject = [recipientAddresses firstObject];
 
     v56 = [PKPeerPaymentRecurringPaymentDetailViewController alloc];
     v57 = [(PKPeerPaymentRecurringPayment *)self->_pendingRecurringPayment copy];
-    v58 = [v56 initWithRecurringPayment:v57 recipientAddress:v55 mode:1 context:9 peerPaymentController:self->_peerPaymentController remoteMessagesComposer:0];
+    v58 = [v56 initWithRecurringPayment:v57 recipientAddress:firstObject mode:1 context:9 peerPaymentController:self->_peerPaymentController remoteMessagesComposer:0];
 
     [v58 setDelegate:self];
-    v59 = v89;
-    v60 = [v89 minimumAmount];
-    [v58 setMinimumAmount:v60];
+    v59 = recurringPaymentsFeatureDescriptor;
+    minimumAmount = [recurringPaymentsFeatureDescriptor minimumAmount];
+    [v58 setMinimumAmount:minimumAmount];
 
-    v61 = [v89 maximumAmount];
-    [v58 setMaximumAmount:v61];
+    maximumAmount = [recurringPaymentsFeatureDescriptor maximumAmount];
+    [v58 setMaximumAmount:maximumAmount];
 
     [v58 setOverrideUserInterfaceStyle:2];
     activeViewController = self->_activeViewController;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v63 = [(PKPeerPaymentMessagesAppViewController *)self traitCollection];
-      v64 = [v63 _presentationSemanticContext];
+      traitCollection = [(PKPeerPaymentMessagesAppViewController *)self traitCollection];
+      _presentationSemanticContext = [traitCollection _presentationSemanticContext];
 
-      if (v64 == 3 && PKIsPad())
+      if (_presentationSemanticContext == 3 && PKIsPad())
       {
         [v58 setShowCancelButton:1];
         v65 = [[PKNavigationController alloc] initWithRootViewController:v58];
@@ -2193,13 +2193,13 @@ LABEL_57:
         [(PKPeerPaymentMessagesContent *)v65 pushViewController:v58 animated:1];
       }
 
-      v59 = v89;
+      v59 = recurringPaymentsFeatureDescriptor;
     }
 
-    v40 = v86;
-    if (v9)
+    account2 = v86;
+    if (completionCopy)
     {
-      (*(v9 + 2))(v9, 1);
+      (*(completionCopy + 2))(completionCopy, 1);
     }
 
     v42 = v84;
@@ -2230,14 +2230,14 @@ LABEL_76:
   v79 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3 > 0xC)
+    if (action > 0xC)
     {
       v80 = @"unknown";
     }
 
     else
     {
-      v80 = off_10001D2C8[a3];
+      v80 = off_10001D2C8[action];
     }
 
     v81 = @"NO";
@@ -2255,7 +2255,7 @@ LABEL_76:
     _os_log_impl(&_mh_execute_header, v79, OS_LOG_TYPE_DEFAULT, "PKPeerPaymentMessagesAppViewController: %p; Handle action: %{public}@, handled: %{public}@", buf, 0x20u);
   }
 
-  if (v9)
+  if (completionCopy)
   {
     v82 = v10;
   }
@@ -2267,7 +2267,7 @@ LABEL_76:
 
   if ((v82 & 1) == 0)
   {
-    (*(v9 + 2))(v9, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -2310,30 +2310,30 @@ LABEL_76:
   }
 }
 
-- (void)localStatusForMessage:(id)a3 completion:(id)a4
+- (void)localStatusForMessage:(id)message completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  messageCopy = message;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if ([v6 type] == 1)
+    if ([messageCopy type] == 1)
     {
-      v8 = [v6 paymentIdentifier];
-      if (v8)
+      paymentIdentifier = [messageCopy paymentIdentifier];
+      if (paymentIdentifier)
       {
-        v9 = [(PKTransactionSource *)self->_transactionSource transactionSourceIdentifiers];
-        v10 = [v9 anyObject];
+        transactionSourceIdentifiers = [(PKTransactionSource *)self->_transactionSource transactionSourceIdentifiers];
+        anyObject = [transactionSourceIdentifiers anyObject];
 
         paymentService = self->_paymentService;
         v17[0] = _NSConcreteStackBlock;
         v17[1] = 3221225472;
         v17[2] = sub_100007D58;
         v17[3] = &unk_10001CC68;
-        v18 = v6;
-        v19 = self;
-        v20 = v8;
-        v21 = v7;
-        [(PKPaymentService *)paymentService transactionWithServiceIdentifier:v20 transactionSourceIdentifier:v10 completion:v17];
+        v18 = messageCopy;
+        selfCopy = self;
+        v20 = paymentIdentifier;
+        v21 = completionCopy;
+        [(PKPaymentService *)paymentService transactionWithServiceIdentifier:v20 transactionSourceIdentifier:anyObject completion:v17];
 
         v12 = v18;
 LABEL_5:
@@ -2345,70 +2345,70 @@ LABEL_12:
       goto LABEL_11;
     }
 
-    if ([v6 type] == 2 && (objc_msgSend(v6, "isFromMe") & 1) == 0)
+    if ([messageCopy type] == 2 && (objc_msgSend(messageCopy, "isFromMe") & 1) == 0)
     {
-      v13 = [v6 requestToken];
-      v8 = [v13 requestToken];
+      requestToken = [messageCopy requestToken];
+      paymentIdentifier = [requestToken requestToken];
 
-      if (v8)
+      if (paymentIdentifier)
       {
-        v10 = objc_alloc_init(PKPaymentTransactionRequest);
-        [v10 setPeerPaymentRequestToken:v8];
-        [v10 setLimit:1];
+        anyObject = objc_alloc_init(PKPaymentTransactionRequest);
+        [anyObject setPeerPaymentRequestToken:paymentIdentifier];
+        [anyObject setLimit:1];
         v14 = self->_paymentService;
         v15[0] = _NSConcreteStackBlock;
         v15[1] = 3221225472;
         v15[2] = sub_100007EC0;
         v15[3] = &unk_10001CC90;
-        v16 = v7;
-        [(PKPaymentService *)v14 transactionsForRequest:v10 completion:v15];
+        v16 = completionCopy;
+        [(PKPaymentService *)v14 transactionsForRequest:anyObject completion:v15];
         v12 = v16;
         goto LABEL_5;
       }
 
 LABEL_11:
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
       goto LABEL_12;
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
 LABEL_13:
 }
 
-- (void)remoteStatusForMessage:(id)a3 completion:(id)a4
+- (void)remoteStatusForMessage:(id)message completion:(id)completion
 {
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = [a3 paymentIdentifier];
-    if (v7 && PKNetworkConnectivityAvailable())
+    paymentIdentifier = [message paymentIdentifier];
+    if (paymentIdentifier && PKNetworkConnectivityAvailable())
     {
       peerPaymentController = self->_peerPaymentController;
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
       v9[2] = sub_10000800C;
       v9[3] = &unk_10001CCB8;
-      v10 = v6;
-      [(PKPeerPaymentController *)peerPaymentController statusForPaymentIdentifier:v7 withCompletion:v9];
+      v10 = completionCopy;
+      [(PKPeerPaymentController *)peerPaymentController statusForPaymentIdentifier:paymentIdentifier withCompletion:v9];
     }
 
     else
     {
-      (*(v6 + 2))(v6, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
 - (BOOL)_openWallet
 {
-  v2 = [(PKPeerPaymentController *)self->_peerPaymentController account];
-  v3 = [v2 associatedPassUniqueID];
+  account = [(PKPeerPaymentController *)self->_peerPaymentController account];
+  associatedPassUniqueID = [account associatedPassUniqueID];
 
   if (PKPassbookIsSupported())
   {
-    v4 = [NSString stringWithFormat:@"shoebox://card/%@", v3];
+    v4 = [NSString stringWithFormat:@"shoebox://card/%@", associatedPassUniqueID];
     v5 = [NSURL URLWithString:v4];
   }
 
@@ -2423,12 +2423,12 @@ LABEL_13:
   return v7;
 }
 
-- (void)_showPaymentDetailsForMessage:(id)a3 completion:(id)a4
+- (void)_showPaymentDetailsForMessage:(id)message completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 transactionIdentifier];
-  if (!v6 || [v6 type] != 1 || !objc_msgSend(v6, "hasBeenSent") || !objc_msgSend(v8, "length"))
+  messageCopy = message;
+  completionCopy = completion;
+  transactionIdentifier = [messageCopy transactionIdentifier];
+  if (!messageCopy || [messageCopy type] != 1 || !objc_msgSend(messageCopy, "hasBeenSent") || !objc_msgSend(transactionIdentifier, "length"))
   {
     v9 = 0;
     goto LABEL_8;
@@ -2485,15 +2485,15 @@ LABEL_15:
     v26[2] = sub_100008710;
     v26[3] = &unk_10001CD00;
     v26[4] = self;
-    v27 = v6;
+    v27 = messageCopy;
     [PKUserNotificationAgent presentNotificationWithParameters:v15 flags:0 responseHandler:v26];
 
     goto LABEL_15;
   }
 
-  v20 = [(PKPeerPaymentController *)self->_peerPaymentController peerPaymentPass];
-  v21 = [v20 deviceTransactionSourceIdentifiers];
-  v22 = [v21 anyObject];
+  peerPaymentPass = [(PKPeerPaymentController *)self->_peerPaymentController peerPaymentPass];
+  deviceTransactionSourceIdentifiers = [peerPaymentPass deviceTransactionSourceIdentifiers];
+  anyObject = [deviceTransactionSourceIdentifiers anyObject];
 
   v23 = PKTransactionDetailsSensitiveURL();
   if (v23)
@@ -2517,7 +2517,7 @@ LABEL_15:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v29 = v6;
+      v29 = messageCopy;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Peer Payment Messages Extension: Could not construct transaction details URL for message: %@", buf, 0xCu);
     }
 
@@ -2525,18 +2525,18 @@ LABEL_15:
   }
 
 LABEL_8:
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, v9);
+    completionCopy[2](completionCopy, v9);
   }
 }
 
-- (void)_showRecurringPaymentDetailsForMessage:(id)a3 completion:(id)a4
+- (void)_showRecurringPaymentDetailsForMessage:(id)message completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 recurringPaymentIdentifier];
-  if (v6 && [v6 type] == 3 && objc_msgSend(v6, "hasBeenSent") && objc_msgSend(v8, "length"))
+  messageCopy = message;
+  completionCopy = completion;
+  recurringPaymentIdentifier = [messageCopy recurringPaymentIdentifier];
+  if (messageCopy && [messageCopy type] == 3 && objc_msgSend(messageCopy, "hasBeenSent") && objc_msgSend(recurringPaymentIdentifier, "length"))
   {
     if (PKPassbookIsCurrentlyDeletedByUser())
     {
@@ -2587,12 +2587,12 @@ LABEL_8:
       v24[2] = sub_100008C48;
       v24[3] = &unk_10001CD00;
       v24[4] = self;
-      v25 = v6;
+      v25 = messageCopy;
       [PKUserNotificationAgent presentNotificationWithParameters:v14 flags:0 responseHandler:v24];
 
 LABEL_11:
       v19 = 1;
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_18;
       }
@@ -2600,7 +2600,7 @@ LABEL_11:
       goto LABEL_17;
     }
 
-    v20 = [NSString stringWithFormat:@"https://wallet.apple.com/%@/%@/%@", PKURLActionRoutePeerPaymentPass, PKURLActionRouteRecurringPayment, v8];
+    v20 = [NSString stringWithFormat:@"https://wallet.apple.com/%@/%@/%@", PKURLActionRoutePeerPaymentPass, PKURLActionRouteRecurringPayment, recurringPaymentIdentifier];
     v21 = [NSURL URLWithString:v20];
 
     v22 = PKLogFacilityTypeGetObject();
@@ -2616,10 +2616,10 @@ LABEL_11:
   }
 
   v19 = 0;
-  if (v7)
+  if (completionCopy)
   {
 LABEL_17:
-    v7[2](v7, v19);
+    completionCopy[2](completionCopy, v19);
   }
 
 LABEL_18:
@@ -2642,16 +2642,16 @@ LABEL_18:
     return 0;
   }
 
-  v4 = [(PKPeerPaymentController *)self->_peerPaymentController webService];
-  v5 = [v4 needsRegistration];
+  webService = [(PKPeerPaymentController *)self->_peerPaymentController webService];
+  needsRegistration = [webService needsRegistration];
 
-  return v5;
+  return needsRegistration;
 }
 
 - (BOOL)_requiresSetupFlow
 {
-  v2 = [(PKPeerPaymentController *)self->_peerPaymentController account];
-  if (([PKPeerPaymentOnDeviceProvisioningCheck peerPaymentPassIsProvisionedOnDeviceForAccount:v2]& 1) != 0)
+  account = [(PKPeerPaymentController *)self->_peerPaymentController account];
+  if (([PKPeerPaymentOnDeviceProvisioningCheck peerPaymentPassIsProvisionedOnDeviceForAccount:account]& 1) != 0)
   {
     LOBYTE(v3) = 0;
   }
@@ -2668,17 +2668,17 @@ LABEL_18:
 {
   if ((PKUseMockSURFServer() & 1) == 0)
   {
-    v4 = [(PKPeerPaymentController *)self->_peerPaymentController account];
-    v5 = [v4 state];
+    account = [(PKPeerPaymentController *)self->_peerPaymentController account];
+    state = [account state];
     v6 = +[PKPassLibrary sharedInstance];
-    v7 = [v4 associatedPassUniqueID];
-    v8 = [v6 passWithUniqueID:v7];
+    associatedPassUniqueID = [account associatedPassUniqueID];
+    v8 = [v6 passWithUniqueID:associatedPassUniqueID];
 
-    v9 = [v8 paymentPass];
-    v10 = [v9 activationState];
-    if ((v5 & 0xFFFFFFFFFFFFFFFELL) == 2)
+    paymentPass = [v8 paymentPass];
+    activationState = [paymentPass activationState];
+    if ((state & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
-      if (([v4 identityVerificationRequired] & 1) == 0)
+      if (([account identityVerificationRequired] & 1) == 0)
       {
 LABEL_5:
         v3 = 1;
@@ -2688,12 +2688,12 @@ LABEL_8:
       }
     }
 
-    else if (v5 == 4)
+    else if (state == 4)
     {
       goto LABEL_5;
     }
 
-    v3 = v10 == 3;
+    v3 = activationState == 3;
     goto LABEL_8;
   }
 
@@ -2702,39 +2702,39 @@ LABEL_8:
 
 - (BOOL)_isGroupConversation
 {
-  v2 = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
-  v3 = [v2 recipientAddresses];
-  v4 = [v3 count] > 1;
+  activeConversation = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
+  recipientAddresses = [activeConversation recipientAddresses];
+  v4 = [recipientAddresses count] > 1;
 
   return v4;
 }
 
 - (BOOL)_isBusinessConversation
 {
-  v2 = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
-  v3 = [v2 recipientAddresses];
-  v4 = [v3 firstObject];
-  v5 = [v4 lowercaseString];
+  activeConversation = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
+  recipientAddresses = [activeConversation recipientAddresses];
+  firstObject = [recipientAddresses firstObject];
+  lowercaseString = [firstObject lowercaseString];
 
-  LOBYTE(v2) = IMStringIsBusinessID();
-  return v2;
+  LOBYTE(activeConversation) = IMStringIsBusinessID();
+  return activeConversation;
 }
 
 - (id)_senderAddress
 {
-  v2 = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
-  v3 = [v2 senderAddress];
+  activeConversation = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
+  senderAddress = [activeConversation senderAddress];
 
-  return v3;
+  return senderAddress;
 }
 
 - (id)_conversationAddress
 {
   if (![(PKPeerPaymentMessagesAppViewController *)self _isGroupConversation])
   {
-    v4 = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
-    v7 = [v4 recipientAddresses];
-    v6 = [v7 firstObject];
+    activeConversation = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
+    recipientAddresses = [activeConversation recipientAddresses];
+    firstObject = [recipientAddresses firstObject];
 
 LABEL_7:
     goto LABEL_9;
@@ -2742,30 +2742,30 @@ LABEL_7:
 
   if ([(PKPeerPaymentController *)self->_peerPaymentController supportsGroupMessage])
   {
-    v3 = [(PKPeerPaymentController *)self->_peerPaymentController recipient];
-    v4 = [v3 conversationAddress];
+    recipient = [(PKPeerPaymentController *)self->_peerPaymentController recipient];
+    activeConversation = [recipient conversationAddress];
 
-    pendingInformalPaymentRequestRecipientAddress = v4;
-    if (!v4)
+    pendingInformalPaymentRequestRecipientAddress = activeConversation;
+    if (!activeConversation)
     {
       pendingInformalPaymentRequestRecipientAddress = self->_pendingInformalPaymentRequestRecipientAddress;
     }
 
-    v6 = pendingInformalPaymentRequestRecipientAddress;
+    firstObject = pendingInformalPaymentRequestRecipientAddress;
     goto LABEL_7;
   }
 
-  v6 = 0;
+  firstObject = 0;
 LABEL_9:
 
-  return v6;
+  return firstObject;
 }
 
-- (void)_confirmSendAmount:(id)a3 toRecipientWithCompletion:(id)a4
+- (void)_confirmSendAmount:(id)amount toRecipientWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  amountCopy = amount;
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (PKStoreDemoModeEnabled())
     {
@@ -2782,23 +2782,23 @@ LABEL_9:
       v21[1] = 3221225472;
       v21[2] = sub_1000093E8;
       v21[3] = &unk_10001CD48;
-      v22 = v7;
+      v22 = completionCopy;
       [PKUserNotificationAgent presentNotificationWithParameters:v8 flags:0 responseHandler:v21];
     }
 
     else
     {
-      v11 = [(PKPeerPaymentMessagesAppViewController *)self _conversationAddress];
-      if ([(PKPeerPaymentMessagesAppViewController *)self _recipientAddressFoundInContacts:v11])
+      _conversationAddress = [(PKPeerPaymentMessagesAppViewController *)self _conversationAddress];
+      if ([(PKPeerPaymentMessagesAppViewController *)self _recipientAddressFoundInContacts:_conversationAddress])
       {
       }
 
       else
       {
-        v12 = [(PKPeerPaymentController *)self->_peerPaymentController account];
-        v13 = [v12 sendRestrictionType];
+        account = [(PKPeerPaymentController *)self->_peerPaymentController account];
+        sendRestrictionType = [account sendRestrictionType];
 
-        if (v13 == 2)
+        if (sendRestrictionType == 2)
         {
           [PKAnalyticsReporter reportAppleCashSenderErrorPage:PKAnalyticsReportPeerPaymentErrorContactsOnlyPageTag];
           v14 = +[NSMutableDictionary dictionary];
@@ -2807,15 +2807,15 @@ LABEL_9:
           v15 = PKLocalizedPeerPaymentString(@"PEER_PAYMENT_RECIPIENT_DOES_NOT_ALLOW_SENDS_TITLE");
           [v14 setObject:v15 forKeyedSubscript:kCFUserNotificationAlertHeaderKey];
 
-          v16 = [(PKPeerPaymentMessagesAppViewController *)self recipientDisplayName];
-          v17 = PKLocalizedPeerPaymentString(@"PEER_PAYMENT_MESSAGES_RECIPIENT_CONTACTS_RESTRICTED_MESSAGE", @"%@", v16);
+          recipientDisplayName = [(PKPeerPaymentMessagesAppViewController *)self recipientDisplayName];
+          v17 = PKLocalizedPeerPaymentString(@"PEER_PAYMENT_MESSAGES_RECIPIENT_CONTACTS_RESTRICTED_MESSAGE", @"%@", recipientDisplayName);
           [v14 setObject:v17 forKeyedSubscript:kCFUserNotificationAlertMessageKey];
 
           v18 = PKLocalizedString(@"OK_BUTTON_TITLE");
           [v14 setObject:v18 forKeyedSubscript:kCFUserNotificationDefaultButtonTitleKey];
 
           [PKUserNotificationAgent presentNotificationWithParameters:v14 flags:0 responseHandler:&stru_10001CD68];
-          (*(v7 + 2))(v7, 0);
+          (*(completionCopy + 2))(completionCopy, 0);
 
           goto LABEL_11;
         }
@@ -2827,13 +2827,13 @@ LABEL_9:
         v19[1] = 3221225472;
         v19[2] = sub_100009428;
         v19[3] = &unk_10001CC00;
-        v20 = v7;
-        [(PKPeerPaymentMessagesAppViewController *)self _presentInlineSetupFlowWithAmount:v6 flowState:4 completion:v19];
+        v20 = completionCopy;
+        [(PKPeerPaymentMessagesAppViewController *)self _presentInlineSetupFlowWithAmount:amountCopy flowState:4 completion:v19];
       }
 
       else
       {
-        (*(v7 + 2))(v7, 1);
+        (*(completionCopy + 2))(completionCopy, 1);
       }
     }
   }
@@ -2841,11 +2841,11 @@ LABEL_9:
 LABEL_11:
 }
 
-- (void)_confirmRequestAmount:(id)a3 toRecipientWithCompletion:(id)a4
+- (void)_confirmRequestAmount:(id)amount toRecipientWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  amountCopy = amount;
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (PKStoreDemoModeEnabled())
     {
@@ -2862,7 +2862,7 @@ LABEL_11:
       v18[1] = 3221225472;
       v18[2] = sub_10000978C;
       v18[3] = &unk_10001CD48;
-      v19 = v7;
+      v19 = completionCopy;
       [PKUserNotificationAgent presentNotificationWithParameters:v8 flags:0 responseHandler:v18];
     }
 
@@ -2872,13 +2872,13 @@ LABEL_11:
       v16[1] = 3221225472;
       v16[2] = sub_1000097A0;
       v16[3] = &unk_10001CC00;
-      v17 = v7;
-      [(PKPeerPaymentMessagesAppViewController *)self _presentInlineSetupFlowWithAmount:v6 flowState:5 completion:v16];
+      v17 = completionCopy;
+      [(PKPeerPaymentMessagesAppViewController *)self _presentInlineSetupFlowWithAmount:amountCopy flowState:5 completion:v16];
     }
 
     else if (([(PKPeerPaymentController *)self->_peerPaymentController allowsPaymentRequests]& 1) != 0)
     {
-      (*(v7 + 2))(v7, 1);
+      (*(completionCopy + 2))(completionCopy, 1);
     }
 
     else
@@ -2889,74 +2889,74 @@ LABEL_11:
       v12 = PKLocalizedPeerPaymentString(@"PEER_PAYMENT_RECIPIENT_DOES_NOT_ALLOW_REQUESTS_TITLE");
       [v11 setObject:v12 forKeyedSubscript:kCFUserNotificationAlertHeaderKey];
 
-      v13 = [(PKPeerPaymentMessagesAppViewController *)self recipientDisplayName];
-      v14 = PKLocalizedPeerPaymentString(@"PEER_PAYMENT_RECIPIENT_DOES_NOT_ALLOW_REQUESTS_FORMAT", @"%@", v13);
+      recipientDisplayName = [(PKPeerPaymentMessagesAppViewController *)self recipientDisplayName];
+      v14 = PKLocalizedPeerPaymentString(@"PEER_PAYMENT_RECIPIENT_DOES_NOT_ALLOW_REQUESTS_FORMAT", @"%@", recipientDisplayName);
       [v11 setObject:v14 forKeyedSubscript:kCFUserNotificationAlertMessageKey];
 
       v15 = PKLocalizedString(@"OK_BUTTON_TITLE");
       [v11 setObject:v15 forKeyedSubscript:kCFUserNotificationDefaultButtonTitleKey];
 
       [PKUserNotificationAgent presentNotificationWithParameters:v11 flags:0 responseHandler:&stru_10001CD88];
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
-- (void)_presentInlineSetupFlowWithAmount:(id)a3 flowState:(unint64_t)a4 completion:(id)a5
+- (void)_presentInlineSetupFlowWithAmount:(id)amount flowState:(unint64_t)state completion:(id)completion
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100009880;
   v9[3] = &unk_10001CDB0;
-  v10 = self;
-  v11 = a3;
-  v12 = a5;
-  v13 = a4;
-  v7 = v12;
-  v8 = v11;
-  [(PKPeerPaymentMessagesAppViewController *)v10 _hostSceneIdentifierForMessageIdentifier:0 withCompletion:v9];
+  selfCopy = self;
+  amountCopy = amount;
+  completionCopy = completion;
+  stateCopy = state;
+  v7 = completionCopy;
+  v8 = amountCopy;
+  [(PKPeerPaymentMessagesAppViewController *)selfCopy _hostSceneIdentifierForMessageIdentifier:0 withCompletion:v9];
 }
 
-- (void)_presentInlineSetupFlowWithPeerPaymentMessage:(id)a3 flowState:(unint64_t)a4 completion:(id)a5
+- (void)_presentInlineSetupFlowWithPeerPaymentMessage:(id)message flowState:(unint64_t)state completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 identifier];
+  messageCopy = message;
+  completionCopy = completion;
+  identifier = [messageCopy identifier];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100009980;
   v13[3] = &unk_10001CDB0;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
-  [(PKPeerPaymentMessagesAppViewController *)self _hostSceneIdentifierForMessageIdentifier:v10 withCompletion:v13];
+  v14 = messageCopy;
+  v15 = completionCopy;
+  stateCopy = state;
+  v11 = completionCopy;
+  v12 = messageCopy;
+  [(PKPeerPaymentMessagesAppViewController *)self _hostSceneIdentifierForMessageIdentifier:identifier withCompletion:v13];
 }
 
-- (void)_presentInlineSetupFlowWithAmount:(id)a3 flowState:(unint64_t)a4 senderAddress:(id)a5 hostSceneIdentifier:(id)a6 completion:(id)a7
+- (void)_presentInlineSetupFlowWithAmount:(id)amount flowState:(unint64_t)state senderAddress:(id)address hostSceneIdentifier:(id)identifier completion:(id)completion
 {
-  v12 = a7;
+  completionCopy = completion;
   peerPaymentController = self->_peerPaymentController;
-  v28 = a6;
-  v14 = a5;
-  v15 = a3;
-  v16 = [(PKPeerPaymentController *)peerPaymentController webService];
-  v17 = [v16 peerPaymentService];
+  identifierCopy = identifier;
+  addressCopy = address;
+  amountCopy = amount;
+  webService = [(PKPeerPaymentController *)peerPaymentController webService];
+  peerPaymentService = [webService peerPaymentService];
 
   if (PKIsPad())
   {
     +[UIApplication sharedApplication];
-    v18 = v27 = a4;
+    v18 = v27 = state;
     [v18 windows];
-    v19 = v26 = v17;
-    v20 = [v19 firstObject];
-    v21 = [v20 windowScene];
-    v22 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v21 interfaceOrientation]);
+    v19 = v26 = peerPaymentService;
+    firstObject = [v19 firstObject];
+    windowScene = [firstObject windowScene];
+    v22 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [windowScene interfaceOrientation]);
 
-    v17 = v26;
-    a4 = v27;
+    peerPaymentService = v26;
+    state = v27;
   }
 
   else
@@ -2964,29 +2964,29 @@ LABEL_11:
     v22 = &off_10001E168;
   }
 
-  v23 = [(PKPeerPaymentController *)self->_peerPaymentController account];
+  account = [(PKPeerPaymentController *)self->_peerPaymentController account];
   v24 = PKMobileSMSBundleIdentifier;
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_100009C08;
   v29[3] = &unk_10001CC00;
-  v30 = v12;
-  v25 = v12;
-  [v17 presentRegistrationFlowWithAccount:v23 amount:v15 state:a4 senderAddress:v14 orientation:v22 hostSceneIdentifier:v28 hostSceneBundleIdentifier:v24 completion:v29];
+  v30 = completionCopy;
+  v25 = completionCopy;
+  [peerPaymentService presentRegistrationFlowWithAccount:account amount:amountCopy state:state senderAddress:addressCopy orientation:v22 hostSceneIdentifier:identifierCopy hostSceneBundleIdentifier:v24 completion:v29];
 }
 
-- (void)_presentSetupFlowWithPeerPaymentMessage:(id)a3 flowState:(unint64_t)a4 completion:(id)a5
+- (void)_presentSetupFlowWithPeerPaymentMessage:(id)message flowState:(unint64_t)state completion:(id)completion
 {
-  v7 = a5;
-  v8 = a3;
+  completionCopy = completion;
+  messageCopy = message;
   v9 = objc_alloc_init(PKPeerPaymentAccountResolutionControllerConfiguration);
-  v10 = [v8 currencyAmount];
-  [v9 setCurrencyAmount:v10];
+  currencyAmount = [messageCopy currencyAmount];
+  [v9 setCurrencyAmount:currencyAmount];
 
-  [v9 setRegistrationFlowState:a4];
-  v11 = [v8 senderAddress];
+  [v9 setRegistrationFlowState:state];
+  senderAddress = [messageCopy senderAddress];
 
-  [v9 setSenderAddress:v11];
+  [v9 setSenderAddress:senderAddress];
   v12 = PKPeerPaymentGetSetupSensitiveURLWithConfiguration();
   v13 = +[LSApplicationWorkspace defaultWorkspace];
   v14 = [v13 openSensitiveURL:v12 withOptions:0];
@@ -3005,15 +3005,15 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Peer payment setup flow presented with success %{public}@.", &v17, 0xCu);
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, v14);
+    completionCopy[2](completionCopy, v14);
   }
 }
 
-- (void)_handleRecipientBecameInvalid:(id)a3
+- (void)_handleRecipientBecameInvalid:(id)invalid
 {
-  v4 = a3;
+  invalidCopy = invalid;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3033,11 +3033,11 @@ LABEL_11:
   }
 }
 
-- (BOOL)_peerPaymentParicipantShouldSeeMemoSharingMessageForMemo:(id)a3
+- (BOOL)_peerPaymentParicipantShouldSeeMemoSharingMessageForMemo:(id)memo
 {
-  v4 = a3;
-  v5 = [(PKPeerPaymentController *)self->_peerPaymentController account];
-  if ([v5 role] == 1 && objc_msgSend(v4, "length"))
+  memoCopy = memo;
+  account = [(PKPeerPaymentController *)self->_peerPaymentController account];
+  if ([account role] == 1 && objc_msgSend(memoCopy, "length"))
   {
     v6 = +[NSUserDefaults standardUserDefaults];
     v7 = [v6 objectForKey:@"PKPeerPaymentParticipantSharingMemoMessage"];
@@ -3052,31 +3052,31 @@ LABEL_11:
   return v8;
 }
 
-- (id)_currentRequestTokenForAmount:(id)a3
+- (id)_currentRequestTokenForAmount:(id)amount
 {
   if (self->_pendingFormalPaymentRequestMesssage)
   {
-    v3 = [(PKPeerPaymentMessage *)self->_pendingFormalPaymentRequestMesssage requestToken];
+    requestToken = [(PKPeerPaymentMessage *)self->_pendingFormalPaymentRequestMesssage requestToken];
   }
 
-  else if ([(PKCurrencyAmount *)self->_pendingInformalPaymentRequestAmount isEqual:a3])
+  else if ([(PKCurrencyAmount *)self->_pendingInformalPaymentRequestAmount isEqual:amount])
   {
-    v3 = +[PKPeerPaymentInformalRequestToken token];
+    requestToken = +[PKPeerPaymentInformalRequestToken token];
   }
 
   else
   {
-    v3 = 0;
+    requestToken = 0;
   }
 
-  return v3;
+  return requestToken;
 }
 
-- (void)_handleAccountChanged:(id)a3
+- (void)_handleAccountChanged:(id)changed
 {
-  v4 = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
+  activeConversation = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
 
-  if (v4 && [(PKPeerPaymentMessagesAppViewController *)self _requiredContentState]!= self->_state)
+  if (activeConversation && [(PKPeerPaymentMessagesAppViewController *)self _requiredContentState]!= self->_state)
   {
     v5 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -3089,15 +3089,15 @@ LABEL_11:
   }
 }
 
-- (void)_updateWithFamilyCollection:(id)a3
+- (void)_updateWithFamilyCollection:(id)collection
 {
-  v8 = a3;
-  v4 = [(PKPeerPaymentController *)self->_peerPaymentController account];
+  collectionCopy = collection;
+  account = [(PKPeerPaymentController *)self->_peerPaymentController account];
   v5 = [(PKPeerPaymentMessagesAppViewController *)self _viewControllerForState:11 shouldLoad:1];
-  if ([v4 supportsRecurringPayments])
+  if ([account supportsRecurringPayments])
   {
-    v6 = [v8 currentUser];
-    if ([v4 isEligibleForRecurringPaymentsForUser:v6])
+    currentUser = [collectionCopy currentUser];
+    if ([account isEligibleForRecurringPaymentsForUser:currentUser])
     {
       v7 = PKIsVision();
 
@@ -3113,10 +3113,10 @@ LABEL_11:
   }
 }
 
-- (void)_stagePaymentWithAmount:(id)a3 completion:(id)a4
+- (void)_stagePaymentWithAmount:(id)amount completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  amountCopy = amount;
+  completionCopy = completion;
   pendingRecurringPayment = self->_pendingRecurringPayment;
   self->_pendingRecurringPayment = 0;
 
@@ -3138,9 +3138,9 @@ LABEL_11:
   v13[2] = sub_10000A36C;
   v13[3] = &unk_10001CE50;
   objc_copyWeak(&v16, &location);
-  v11 = v7;
+  v11 = completionCopy;
   v15 = v11;
-  v12 = v6;
+  v12 = amountCopy;
   v14 = v12;
   [(PKPeerPaymentMessagesAppViewController *)self _confirmSendAmount:v12 toRecipientWithCompletion:v13];
 
@@ -3148,10 +3148,10 @@ LABEL_11:
   objc_destroyWeak(&location);
 }
 
-- (void)_stageRequestWithAmount:(id)a3 completion:(id)a4
+- (void)_stageRequestWithAmount:(id)amount completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  amountCopy = amount;
+  completionCopy = completion;
   pendingRecurringPayment = self->_pendingRecurringPayment;
   self->_pendingRecurringPayment = 0;
 
@@ -3172,34 +3172,34 @@ LABEL_11:
   v13[2] = sub_10000A9C8;
   v13[3] = &unk_10001CB88;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = amountCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = amountCopy;
   [(PKPeerPaymentMessagesAppViewController *)self _confirmRequestAmount:v12 toRecipientWithCompletion:v13];
 }
 
-- (void)_stageRecurringPayment:(id)a3 completion:(id)a4
+- (void)_stageRecurringPayment:(id)payment completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_pendingRecurringPayment, a3);
+  paymentCopy = payment;
+  completionCopy = completion;
+  objc_storeStrong(&self->_pendingRecurringPayment, payment);
   objc_initWeak(&location, self);
-  v9 = [v7 amount];
-  v10 = [v7 currency];
+  amount = [paymentCopy amount];
+  currency = [paymentCopy currency];
   v11 = PKCurrencyAmountMake();
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10000AEC8;
   v15[3] = &unk_10001CEF0;
-  v12 = v7;
+  v12 = paymentCopy;
   v16 = v12;
-  v17 = self;
+  selfCopy = self;
   v13 = v11;
   v18 = v13;
   objc_copyWeak(&v20, &location);
-  v14 = v8;
+  v14 = completionCopy;
   v19 = v14;
   [(PKPeerPaymentMessagesAppViewController *)self _confirmSendAmount:v13 toRecipientWithCompletion:v15];
 
@@ -3207,19 +3207,19 @@ LABEL_11:
   objc_destroyWeak(&location);
 }
 
-- (void)_confirmPaymentMessageInsertionWithQuote:(id)a3 completion:(id)a4
+- (void)_confirmPaymentMessageInsertionWithQuote:(id)quote completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  quoteCopy = quote;
+  completionCopy = completion;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v30 = v6;
+    v30 = quoteCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Peer Payment Messages Extension: Confirm payment message insertion with peer payment quote: %@", buf, 0xCu);
   }
 
-  if ([v6 riskLevel])
+  if ([quoteCopy riskLevel])
   {
     objc_initWeak(buf, self);
     v25[0] = _NSConcreteStackBlock;
@@ -3227,19 +3227,19 @@ LABEL_11:
     v25[2] = sub_10000B6FC;
     v25[3] = &unk_10001CF18;
     objc_copyWeak(&v28, buf);
-    v26 = v6;
-    v27 = v7;
+    v26 = quoteCopy;
+    v27 = completionCopy;
     v9 = [PKPeerPaymentFraudUIFactory fraudUIViewControllerForQuote:v26 continuationHandler:v25];
-    v10 = [(PKPeerPaymentMessagesAppViewController *)self traitCollection];
-    v11 = [v10 _presentationSemanticContext];
+    traitCollection = [(PKPeerPaymentMessagesAppViewController *)self traitCollection];
+    _presentationSemanticContext = [traitCollection _presentationSemanticContext];
 
-    if (v11 == 3 && PKIsPad())
+    if (_presentationSemanticContext == 3 && PKIsPad())
     {
       [v9 setModalPresentationStyle:6];
     }
 
-    v12 = [(PKPeerPaymentMessagesAppViewController *)self pkui_frontMostViewController];
-    [v12 presentViewController:v9 animated:1 completion:0];
+    pkui_frontMostViewController = [(PKPeerPaymentMessagesAppViewController *)self pkui_frontMostViewController];
+    [pkui_frontMostViewController presentViewController:v9 animated:1 completion:0];
 
     objc_destroyWeak(&v28);
     objc_destroyWeak(buf);
@@ -3252,8 +3252,8 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    v13 = [(PKPeerPaymentMessagesAppViewController *)self _conversationAddress];
-    v14 = [(PKPeerPaymentMessagesAppViewController *)self _recipientAddressFoundInContacts:v13];
+    _conversationAddress = [(PKPeerPaymentMessagesAppViewController *)self _conversationAddress];
+    v14 = [(PKPeerPaymentMessagesAppViewController *)self _recipientAddressFoundInContacts:_conversationAddress];
 
     if (v14)
     {
@@ -3285,41 +3285,41 @@ LABEL_11:
       v22 = &stru_10001CF38;
       v23 = &stru_10001CF58;
       v20[4] = self;
-      v21 = v6;
-      v24 = v7;
+      v21 = quoteCopy;
+      v24 = completionCopy;
       [PKUserNotificationAgent presentNotificationWithParameters:v15 flags:0 responseHandler:v20];
     }
 
     else
     {
 LABEL_12:
-      [(PKPeerPaymentMessagesAppViewController *)self _insertPaymentMessageWithQuote:v6 completion:v7];
+      [(PKPeerPaymentMessagesAppViewController *)self _insertPaymentMessageWithQuote:quoteCopy completion:completionCopy];
     }
   }
 }
 
-- (void)_insertPaymentMessageWithQuote:(id)a3 completion:(id)a4
+- (void)_insertPaymentMessageWithQuote:(id)quote completion:(id)completion
 {
-  v6 = a3;
-  v39 = a4;
+  quoteCopy = quote;
+  completionCopy = completion;
   v7 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v46 = v6;
+    v46 = quoteCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Peer Payment Messages Extension: Insert payment message with peer payment quote: %@", buf, 0xCu);
   }
 
-  v8 = [(PKPeerPaymentMessage *)v6 totalReceiveAmount];
-  v9 = [(PKPeerPaymentMessage *)v6 totalReceiveAmountCurrency];
-  v10 = PKCurrencyAmountCreate(v8, v9, 0);
+  totalReceiveAmount = [(PKPeerPaymentMessage *)quoteCopy totalReceiveAmount];
+  totalReceiveAmountCurrency = [(PKPeerPaymentMessage *)quoteCopy totalReceiveAmountCurrency];
+  v10 = PKCurrencyAmountCreate(totalReceiveAmount, totalReceiveAmountCurrency, 0);
 
   if (self->_pendingFormalPaymentRequestMesssage && ![(PKPeerPaymentMessagesAppViewController *)self _isGroupConversation])
   {
-    v12 = [(PKPeerPaymentMessage *)self->_pendingFormalPaymentRequestMesssage underlyingMessage];
-    v11 = [v12 session];
+    underlyingMessage = [(PKPeerPaymentMessage *)self->_pendingFormalPaymentRequestMesssage underlyingMessage];
+    session = [underlyingMessage session];
 
-    if (v11)
+    if (session)
     {
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
@@ -3333,24 +3333,24 @@ LABEL_12:
 
   else
   {
-    v11 = 0;
+    session = 0;
   }
 
-  v14 = [(PKPeerPaymentMessage *)v6 isRecurringPayment];
-  if (v14)
+  isRecurringPayment = [(PKPeerPaymentMessage *)quoteCopy isRecurringPayment];
+  if (isRecurringPayment)
   {
-    v15 = [(PKPeerPaymentMessage *)v6 recurringPaymentIdentifier];
+    recurringPaymentIdentifier = [(PKPeerPaymentMessage *)quoteCopy recurringPaymentIdentifier];
 
-    if (v15)
+    if (recurringPaymentIdentifier)
     {
       v16 = [MSSession alloc];
       v17 = [NSUUID alloc];
-      v18 = [(PKPeerPaymentMessage *)v6 recurringPaymentIdentifier];
-      v19 = [v17 initWithUUIDString:v18];
+      recurringPaymentIdentifier2 = [(PKPeerPaymentMessage *)quoteCopy recurringPaymentIdentifier];
+      v19 = [v17 initWithUUIDString:recurringPaymentIdentifier2];
       v20 = [v16 initWithIdentifier:v19];
 
       v21 = 3;
-      v11 = v20;
+      session = v20;
     }
 
     else
@@ -3364,14 +3364,14 @@ LABEL_12:
     v21 = 1;
   }
 
-  v22 = [[PKPeerPaymentMessage alloc] initWithType:v21 session:v11];
+  v22 = [[PKPeerPaymentMessage alloc] initWithType:v21 session:session];
   [v22 setCurrencyAmount:v10];
-  v23 = [(PKPeerPaymentMessagesAppViewController *)self _senderAddress];
-  [v22 setSenderAddress:v23];
+  _senderAddress = [(PKPeerPaymentMessagesAppViewController *)self _senderAddress];
+  [v22 setSenderAddress:_senderAddress];
 
-  v24 = [(PKPeerPaymentController *)self->_peerPaymentController recipient];
-  v25 = [v24 normalizedAddress];
-  [v22 setRecipientAddress:v25];
+  recipient = [(PKPeerPaymentController *)self->_peerPaymentController recipient];
+  normalizedAddress = [recipient normalizedAddress];
+  [v22 setRecipientAddress:normalizedAddress];
 
   v26 = [[PKPeerPaymentMessageLocalProperties alloc] initWithSource:2];
   [v22 setLocalProperties:v26];
@@ -3380,122 +3380,122 @@ LABEL_12:
   v27 = self->_pendingFormalPaymentRequestMesssage;
   if (v27)
   {
-    v28 = [(PKPeerPaymentMessage *)v27 memo];
-    [v22 setMemo:v28];
+    memo = [(PKPeerPaymentMessage *)v27 memo];
+    [v22 setMemo:memo];
 
-    v29 = [(PKPeerPaymentMessage *)self->_pendingFormalPaymentRequestMesssage requestToken];
-    [v22 setRequestToken:v29];
+    requestToken = [(PKPeerPaymentMessage *)self->_pendingFormalPaymentRequestMesssage requestToken];
+    [v22 setRequestToken:requestToken];
   }
 
-  if (v14)
+  if (isRecurringPayment)
   {
-    v30 = [(PKPeerPaymentMessage *)v6 startDate];
-    [v22 setRecurringPaymentStartDate:v30];
+    startDate = [(PKPeerPaymentMessage *)quoteCopy startDate];
+    [v22 setRecurringPaymentStartDate:startDate];
 
-    [v22 setRecurringPaymentFrequency:{-[PKPeerPaymentMessage frequency](v6, "frequency")}];
-    v31 = [(PKPeerPaymentRecurringPayment *)self->_pendingRecurringPayment memo];
-    [v22 setRecurringPaymentMemo:v31];
+    [v22 setRecurringPaymentFrequency:{-[PKPeerPaymentMessage frequency](quoteCopy, "frequency")}];
+    memo2 = [(PKPeerPaymentRecurringPayment *)self->_pendingRecurringPayment memo];
+    [v22 setRecurringPaymentMemo:memo2];
   }
 
   objc_storeStrong(&self->_stagedPeerPaymentMessage, v22);
   v32 = +[PKMessagesAppSharedContext sharedContext];
-  v33 = [(PKPeerPaymentController *)self->_peerPaymentController externalizedControllerState];
-  v34 = [v22 identifier];
-  [v32 persistExternalizedControllerState:v33 forMessageIdentifier:v34];
+  externalizedControllerState = [(PKPeerPaymentController *)self->_peerPaymentController externalizedControllerState];
+  identifier = [v22 identifier];
+  [v32 persistExternalizedControllerState:externalizedControllerState forMessageIdentifier:identifier];
 
-  v35 = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
-  v36 = [v22 underlyingMessage];
+  activeConversation = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
+  underlyingMessage2 = [v22 underlyingMessage];
   v41[0] = _NSConcreteStackBlock;
   v41[1] = 3221225472;
   v41[2] = sub_10000BD80;
   v41[3] = &unk_10001CFF8;
   v42 = v22;
-  v43 = self;
+  selfCopy = self;
   v44 = v40;
   v37 = v40;
   v38 = v22;
-  [v35 insertMessage:v36 completionHandler:v41];
+  [activeConversation insertMessage:underlyingMessage2 completionHandler:v41];
 }
 
-- (void)_insertRequestMessageWithAmount:(id)a3 requestToken:(id)a4 completion:(id)a5
+- (void)_insertRequestMessageWithAmount:(id)amount requestToken:(id)token completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  amountCopy = amount;
+  tokenCopy = token;
+  completionCopy = completion;
   v11 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v32 = v8;
+    v32 = amountCopy;
     v33 = 2112;
-    v34 = v9;
+    v34 = tokenCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Peer Payment Messages Extension: Insert request with amount: %@ requestToken: %@", buf, 0x16u);
   }
 
   v12 = objc_alloc_init(PKPeerPaymentMessage);
-  v13 = [(PKPeerPaymentController *)self->_peerPaymentController messagesContext];
+  messagesContext = [(PKPeerPaymentController *)self->_peerPaymentController messagesContext];
   [v12 setType:2];
-  [v12 setCurrencyAmount:v8];
-  [v12 setRequestToken:v9];
-  v14 = [(PKPeerPaymentMessagesAppViewController *)self _senderAddress];
-  [v12 setSenderAddress:v14];
+  [v12 setCurrencyAmount:amountCopy];
+  [v12 setRequestToken:tokenCopy];
+  _senderAddress = [(PKPeerPaymentMessagesAppViewController *)self _senderAddress];
+  [v12 setSenderAddress:_senderAddress];
 
-  v15 = [(PKPeerPaymentController *)self->_peerPaymentController recipient];
-  v16 = [v15 normalizedAddress];
-  [v12 setRecipientAddress:v16];
+  recipient = [(PKPeerPaymentController *)self->_peerPaymentController recipient];
+  normalizedAddress = [recipient normalizedAddress];
+  [v12 setRecipientAddress:normalizedAddress];
 
   v17 = [[PKPeerPaymentMessageLocalProperties alloc] initWithSource:2];
   [v12 setLocalProperties:v17];
 
-  [v12 setContext:v13];
-  if (v13 == 2)
+  [v12 setContext:messagesContext];
+  if (messagesContext == 2)
   {
-    v18 = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
-    v19 = [v18 groupID];
-    [v12 setMessagesGroupIdentifier:v19];
+    activeConversation = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
+    groupID = [activeConversation groupID];
+    [v12 setMessagesGroupIdentifier:groupID];
   }
 
   objc_storeStrong(&self->_stagedPeerPaymentMessage, v12);
   v20 = +[PKMessagesAppSharedContext sharedContext];
-  v21 = [(PKPeerPaymentController *)self->_peerPaymentController externalizedControllerState];
-  v22 = [v12 identifier];
-  [v20 persistExternalizedControllerState:v21 forMessageIdentifier:v22];
+  externalizedControllerState = [(PKPeerPaymentController *)self->_peerPaymentController externalizedControllerState];
+  identifier = [v12 identifier];
+  [v20 persistExternalizedControllerState:externalizedControllerState forMessageIdentifier:identifier];
 
-  v23 = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
-  v24 = [v12 underlyingMessage];
+  activeConversation2 = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
+  underlyingMessage = [v12 underlyingMessage];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_10000C424;
   v27[3] = &unk_10001CFF8;
   v28 = v12;
-  v29 = self;
-  v30 = v10;
-  v25 = v10;
+  selfCopy = self;
+  v30 = completionCopy;
+  v25 = completionCopy;
   v26 = v12;
-  [v23 insertMessage:v24 completionHandler:v27];
+  [activeConversation2 insertMessage:underlyingMessage completionHandler:v27];
 }
 
-- (void)_handleRespondToPaymentRequestActionWithMessage:(id)a3 completion:(id)a4
+- (void)_handleRespondToPaymentRequestActionWithMessage:(id)message completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  messageCopy = message;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (messageCopy)
   {
-    v9 = [v6 type];
-    if (v8 && v9 != 2)
+    type = [messageCopy type];
+    if (v8 && type != 2)
     {
       goto LABEL_4;
     }
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
 LABEL_4:
     v8[2](v8, 0);
   }
 
-  if ([v6 context] == 2)
+  if ([messageCopy context] == 2)
   {
     objc_initWeak(&location, self);
     v15[0] = _NSConcreteStackBlock;
@@ -3504,8 +3504,8 @@ LABEL_4:
     v15[3] = &unk_10001D040;
     objc_copyWeak(&v19, &location);
     v18 = v8;
-    v16 = v6;
-    v17 = self;
+    v16 = messageCopy;
+    selfCopy = self;
     v10 = objc_retainBlock(v15);
     v11 = v10;
     if (self->_identifiedRecipients)
@@ -3530,15 +3530,15 @@ LABEL_4:
   else
   {
     v12 = +[PKMessagesAppSharedContext sharedContext];
-    [v12 handlePaymentRequestMessage:v6 sender:self completion:v8];
+    [v12 handlePaymentRequestMessage:messageCopy sender:self completion:v8];
   }
 }
 
-- (void)_handleError:(id)a3 forAction:(unint64_t)a4 withCompletion:(id)a5
+- (void)_handleError:(id)error forAction:(unint64_t)action withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [PKPeerPaymentController proposedResolutionForError:v8];
+  errorCopy = error;
+  completionCopy = completion;
+  v10 = [PKPeerPaymentController proposedResolutionForError:errorCopy];
   if (v10 > 1)
   {
     if (v10 == 2)
@@ -3554,10 +3554,10 @@ LABEL_4:
       v28[1] = 3221225472;
       v28[2] = sub_10000CE80;
       v28[3] = &unk_10001D090;
-      v30 = a4;
+      actionCopy = action;
       v28[4] = self;
-      v29 = v9;
-      [(PKPeerPaymentController *)peerPaymentController handleTermsAcceptanceRequiredWithError:v8 completion:v28];
+      v29 = completionCopy;
+      [(PKPeerPaymentController *)peerPaymentController handleTermsAcceptanceRequiredWithError:errorCopy completion:v28];
       v14 = v29;
     }
 
@@ -3577,17 +3577,17 @@ LABEL_4:
       if ((PKDeviceSupportsPeerPaymentIdentityVerification() & 1) == 0)
       {
         v17 = PKCreateAlertControllerForPeerPaymentIdentityVerificationNotSupported();
-        v18 = [v17 title];
-        v19 = [v17 message];
-        v20 = [v17 actions];
-        v21 = [v20 firstObject];
-        v22 = [v21 title];
+        title = [v17 title];
+        message = [v17 message];
+        actions = [v17 actions];
+        firstObject = [actions firstObject];
+        title2 = [firstObject title];
         v26[0] = _NSConcreteStackBlock;
         v26[1] = 3221225472;
         v26[2] = sub_10000CF64;
         v26[3] = &unk_10001D0B8;
-        v27 = v9;
-        [(PKPeerPaymentMessagesAppViewController *)self _presentAlertWithTitle:v18 message:v19 buttonTitle:v22 completion:v26];
+        v27 = completionCopy;
+        [(PKPeerPaymentMessagesAppViewController *)self _presentAlertWithTitle:title message:message buttonTitle:title2 completion:v26];
 
         goto LABEL_20;
       }
@@ -3597,10 +3597,10 @@ LABEL_4:
       v23[1] = 3221225472;
       v23[2] = sub_10000CF80;
       v23[3] = &unk_10001D090;
-      v25 = a4;
+      actionCopy2 = action;
       v23[4] = self;
-      v24 = v9;
-      [(PKPeerPaymentController *)v13 handleIdentityVerificationWithError:v8 completion:v23];
+      v24 = completionCopy;
+      [(PKPeerPaymentController *)v13 handleIdentityVerificationWithError:errorCopy completion:v23];
       v14 = v24;
     }
 
@@ -3611,45 +3611,45 @@ LABEL_4:
   {
     if (v10 == 1)
     {
-      v11 = [PKPeerPaymentController displayableErrorForError:v8];
+      v11 = [PKPeerPaymentController displayableErrorForError:errorCopy];
 
       [(PKPeerPaymentMessagesAppViewController *)self _presentAlertWithDisplayableError:v11];
-      if (v9)
+      if (completionCopy)
       {
-        (*(v9 + 2))(v9, 1);
+        (*(completionCopy + 2))(completionCopy, 1);
       }
 
-      v8 = v11;
+      errorCopy = v11;
     }
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    (*(v9 + 2))(v9, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 
 LABEL_20:
 }
 
-- (void)_handlePeerPaymentRemoteAlertCompletedForPaymentIdentifier:(id)a3 completion:(id)a4
+- (void)_handlePeerPaymentRemoteAlertCompletedForPaymentIdentifier:(id)identifier completion:(id)completion
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000D12C;
   block[3] = &unk_10001D0E0;
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   block[4] = self;
-  v6 = v9;
-  v7 = v10;
+  v6 = identifierCopy;
+  v7 = completionCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_presentAlertWithDisplayableError:(id)a3
+- (void)_presentAlertWithDisplayableError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [PKAnalyticsReporter pageTagForAppleCashSenderError:v3];
+  v5 = [PKAnalyticsReporter pageTagForAppleCashSenderError:errorCopy];
   [PKAnalyticsReporter reportAppleCashSenderErrorPage:v5];
   [v4 setObject:&__kCFBooleanTrue forKeyedSubscript:PKUserNotificationDontDismissOnUnlock];
   [v4 setObject:&__kCFBooleanTrue forKeyedSubscript:PKUserNotificationAllowMenuButtonDismissal];
@@ -3669,19 +3669,19 @@ LABEL_20:
   v9 = v5;
   v25 = v9;
   v10 = objc_retainBlock(v24);
-  v11 = [v3 localizedRecoveryOptions];
-  v12 = [v11 firstObject];
+  localizedRecoveryOptions = [errorCopy localizedRecoveryOptions];
+  firstObject = [localizedRecoveryOptions firstObject];
 
-  v13 = [v3 userInfo];
+  userInfo = [errorCopy userInfo];
 
-  v14 = [v13 objectForKeyedSubscript:PKErrorRecoveryURLKey];
+  v14 = [userInfo objectForKeyedSubscript:PKErrorRecoveryURLKey];
 
-  if (v12 && v14)
+  if (firstObject && v14)
   {
     v15 = PKLocalizedString(@"CANCEL_BUTTON_TITLE");
     [v4 setObject:v15 forKeyedSubscript:kCFUserNotificationDefaultButtonTitleKey];
 
-    [v4 setObject:v12 forKeyedSubscript:kCFUserNotificationOtherButtonTitleKey];
+    [v4 setObject:firstObject forKeyedSubscript:kCFUserNotificationOtherButtonTitleKey];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_10000D7D4;
@@ -3703,17 +3703,17 @@ LABEL_20:
   [PKUserNotificationAgent presentNotificationWithParameters:v4 flags:0 responseHandler:v19];
 }
 
-- (BOOL)_handleTextInputPayload:(id)a3 withPayloadID:(id)a4
+- (BOOL)_handleTextInputPayload:(id)payload withPayloadID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:@"com.apple.messages.surf"] & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"com.apple.messages.datadetectors.currency") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"com.apple.messages.appLaunchURLPluginPayload"))
+  payloadCopy = payload;
+  dCopy = d;
+  if ([dCopy isEqualToString:@"com.apple.messages.surf"] & 1) != 0 || (objc_msgSend(dCopy, "isEqualToString:", @"com.apple.messages.datadetectors.currency") & 1) != 0 || (objc_msgSend(dCopy, "isEqualToString:", @"com.apple.messages.appLaunchURLPluginPayload"))
   {
-    v8 = [v6 objectForKeyedSubscript:@"Currency"];
+    v8 = [payloadCopy objectForKeyedSubscript:@"Currency"];
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v42 = v6;
-      v43 = v7;
+      v42 = payloadCopy;
+      v43 = dCopy;
       v56 = 0u;
       v57 = 0u;
       v54 = 0u;
@@ -3815,54 +3815,54 @@ LABEL_18:
                 if (!v26)
                 {
                   v8 = v41;
-                  v6 = v42;
+                  payloadCopy = v42;
                   v23 = v44;
                   goto LABEL_52;
                 }
 
-                v27 = [(PKPeerPaymentMessagesAppViewController *)val currentBalance];
-                v28 = [v27 currency];
+                currentBalance = [(PKPeerPaymentMessagesAppViewController *)val currentBalance];
+                currency = [currentBalance currency];
 
-                v29 = [v26 currency];
-                v24 = [v29 isEqualToString:v28];
-                v6 = v42;
+                currency2 = [v26 currency];
+                v24 = [currency2 isEqualToString:currency];
+                payloadCopy = v42;
                 if (v24)
                 {
-                  v30 = [v26 amount];
-                  v31 = [(PKPeerPaymentMessagesAppViewController *)val minimumTransferAmount];
-                  v32 = [(PKPeerPaymentMessagesAppViewController *)val maximumTransferAmount];
+                  amount = [v26 amount];
+                  minimumTransferAmount = [(PKPeerPaymentMessagesAppViewController *)val minimumTransferAmount];
+                  maximumTransferAmount = [(PKPeerPaymentMessagesAppViewController *)val maximumTransferAmount];
                   v33 = v26;
-                  obja = v32;
-                  if (v31 && [v30 compare:v31]== -1)
+                  obja = maximumTransferAmount;
+                  if (minimumTransferAmount && [amount compare:minimumTransferAmount]== -1)
                   {
                     v34 = PKLogFacilityTypeGetObject();
                     if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
                     {
                       *buf = 138412546;
-                      v59 = v30;
+                      v59 = amount;
                       v60 = 2112;
-                      v61 = v31;
+                      v61 = minimumTransferAmount;
                       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_INFO, "Suggested amount %@ is less than the minimum transfer amount %@. Using minimum transfer amount instead.", buf, 0x16u);
                     }
 
-                    v35 = [[PKCurrencyAmount alloc] initWithAmount:v31 currency:v28 exponent:0];
+                    v35 = [[PKCurrencyAmount alloc] initWithAmount:minimumTransferAmount currency:currency exponent:0];
                     v33 = v35;
-                    v32 = obja;
+                    maximumTransferAmount = obja;
                   }
 
-                  if (v32 && [v30 compare:v32]== 1)
+                  if (maximumTransferAmount && [amount compare:maximumTransferAmount]== 1)
                   {
                     v36 = PKLogFacilityTypeGetObject();
                     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
                     {
                       *buf = 138412546;
-                      v59 = v30;
+                      v59 = amount;
                       v60 = 2112;
                       v61 = obja;
                       _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Suggested amount %@ is greater than the maximum transfer amount %@. Using maximum transfer amount instead.", buf, 0x16u);
                     }
 
-                    v37 = [[PKCurrencyAmount alloc] initWithAmount:obja currency:v28 exponent:0];
+                    v37 = [[PKCurrencyAmount alloc] initWithAmount:obja currency:currency exponent:0];
                     v33 = v37;
                   }
 
@@ -3876,7 +3876,7 @@ LABEL_18:
                   v38 = v33;
                   objc_copyWeak(&v53, buf);
                   v50 = v44;
-                  v7 = v43;
+                  dCopy = v43;
                   v51 = v43;
                   v52 = val;
                   dispatch_async(&_dispatch_main_q, block);
@@ -3887,13 +3887,13 @@ LABEL_18:
 
                 else
                 {
-                  v30 = PKLogFacilityTypeGetObject();
-                  if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+                  amount = PKLogFacilityTypeGetObject();
+                  if (os_log_type_enabled(amount, OS_LOG_TYPE_ERROR))
                   {
                     sub_100010454();
                   }
 
-                  v7 = v43;
+                  dCopy = v43;
                 }
 
                 v8 = v41;
@@ -3914,10 +3914,10 @@ LABEL_50:
 
       v23 = v11;
       v8 = v41;
-      v6 = v42;
+      payloadCopy = v42;
 LABEL_52:
       v26 = PKLogFacilityTypeGetObject();
-      v7 = v43;
+      dCopy = v43;
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
         sub_1000104D0();
@@ -3953,32 +3953,32 @@ LABEL_59:
   return v24;
 }
 
-- (void)_donatePeerPaymentInteractionForMessage:(id)a3
+- (void)_donatePeerPaymentInteractionForMessage:(id)message
 {
-  v4 = [a3 peerPaymentMessage];
-  if (v4)
+  peerPaymentMessage = [message peerPaymentMessage];
+  if (peerPaymentMessage)
   {
-    v12 = v4;
-    v5 = [v4 type];
-    v6 = [(PKPeerPaymentMessagesAppViewController *)self _recipientPersonForIntentDonation];
+    v12 = peerPaymentMessage;
+    type = [peerPaymentMessage type];
+    _recipientPersonForIntentDonation = [(PKPeerPaymentMessagesAppViewController *)self _recipientPersonForIntentDonation];
     v7 = [(PKPeerPaymentMessagesAppViewController *)self _inCurrencyAmountForPeerPaymentMessage:v12];
-    v8 = [v12 memo];
-    if (v5 == 2)
+    memo = [v12 memo];
+    if (type == 2)
     {
-      v9 = [[INRequestPaymentIntent alloc] initWithPayer:v6 currencyAmount:v7 note:v8];
+      v9 = [[INRequestPaymentIntent alloc] initWithPayer:_recipientPersonForIntentDonation currencyAmount:v7 note:memo];
     }
 
     else
     {
-      if (v5 != 1)
+      if (type != 1)
       {
 LABEL_8:
 
-        v4 = v12;
+        peerPaymentMessage = v12;
         goto LABEL_9;
       }
 
-      v9 = [[INSendPaymentIntent alloc] initWithPayee:v6 currencyAmount:v7 note:v8];
+      v9 = [[INSendPaymentIntent alloc] initWithPayee:_recipientPersonForIntentDonation currencyAmount:v7 note:memo];
     }
 
     v10 = v9;
@@ -3997,16 +3997,16 @@ LABEL_8:
 LABEL_9:
 }
 
-- (id)_inCurrencyAmountForPeerPaymentMessage:(id)a3
+- (id)_inCurrencyAmountForPeerPaymentMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 amount];
-  v5 = [v3 currency];
+  messageCopy = message;
+  amount = [messageCopy amount];
+  currency = [messageCopy currency];
 
   v6 = 0;
-  if (v4 && v5)
+  if (amount && currency)
   {
-    v6 = [[INCurrencyAmount alloc] initWithAmount:v4 currencyCode:v5];
+    v6 = [[INCurrencyAmount alloc] initWithAmount:amount currencyCode:currency];
   }
 
   return v6;
@@ -4014,11 +4014,11 @@ LABEL_9:
 
 - (id)_recipientPersonForIntentDonation
 {
-  v3 = [(PKPeerPaymentMessagesAppViewController *)self _conversationAddress];
-  v4 = v3;
-  if (v3)
+  _conversationAddress = [(PKPeerPaymentMessagesAppViewController *)self _conversationAddress];
+  v4 = _conversationAddress;
+  if (_conversationAddress)
   {
-    if ([v3 containsString:@"@"])
+    if ([_conversationAddress containsString:@"@"])
     {
       v5 = 1;
     }
@@ -4030,10 +4030,10 @@ LABEL_9:
 
     v6 = [[INPersonHandle alloc] initWithValue:v4 type:v5];
     v7 = [(PKPeerPaymentController *)self->_peerPaymentController contactForHandle:v4];
-    v8 = [v7 identifier];
+    identifier = [v7 identifier];
     v9 = [PKPeerPaymentCounterpartHandleFormatter displayNameForCounterpartHandle:v4 contact:v7];
-    v10 = [v7 nameComponents];
-    v11 = [[INPerson alloc] initWithPersonHandle:v6 nameComponents:v10 displayName:v9 image:0 contactIdentifier:v8 customIdentifier:v8];
+    nameComponents = [v7 nameComponents];
+    v11 = [[INPerson alloc] initWithPersonHandle:v6 nameComponents:nameComponents displayName:v9 image:0 contactIdentifier:identifier customIdentifier:identifier];
   }
 
   else
@@ -4044,31 +4044,31 @@ LABEL_9:
   return v11;
 }
 
-- (BOOL)_handlePaymentRequestMessage:(id)a3
+- (BOOL)_handlePaymentRequestMessage:(id)message
 {
-  v5 = a3;
-  v6 = [v5 type];
-  v7 = PKLogFacilityTypeGetObject();
-  v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6 == 2)
+  messageCopy = message;
+  type = [messageCopy type];
+  currency = PKLogFacilityTypeGetObject();
+  v8 = os_log_type_enabled(currency, OS_LOG_TYPE_DEFAULT);
+  if (type == 2)
   {
     if (v8)
     {
       v26 = 134218242;
-      v27 = self;
+      selfCopy2 = self;
       v28 = 2112;
-      v29 = v5;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "PKPeerPaymentMessagesAppViewController: %p; Handle Payment Request Message: %@", &v26, 0x16u);
+      v29 = messageCopy;
+      _os_log_impl(&_mh_execute_header, currency, OS_LOG_TYPE_DEFAULT, "PKPeerPaymentMessagesAppViewController: %p; Handle Payment Request Message: %@", &v26, 0x16u);
     }
 
-    v7 = [v5 currency];
-    v9 = [v5 amount];
+    currency = [messageCopy currency];
+    amount = [messageCopy amount];
     v10 = +[NSDecimalNumber zero];
-    v11 = [v9 pk_isGreaterThan:v10];
+    v11 = [amount pk_isGreaterThan:v10];
 
     if (v11)
     {
-      v12 = v9;
+      v12 = amount;
     }
 
     else
@@ -4077,12 +4077,12 @@ LABEL_9:
     }
 
     v14 = v12;
-    -[PKPeerPaymentController setMessagesContext:](self->_peerPaymentController, "setMessagesContext:", [v5 context]);
-    objc_storeStrong(&self->_pendingFormalPaymentRequestMesssage, a3);
+    -[PKPeerPaymentController setMessagesContext:](self->_peerPaymentController, "setMessagesContext:", [messageCopy context]);
+    objc_storeStrong(&self->_pendingFormalPaymentRequestMesssage, message);
     pendingInformalPaymentRequestAmount = self->_pendingInformalPaymentRequestAmount;
     self->_pendingInformalPaymentRequestAmount = 0;
 
-    if (v7)
+    if (currency)
     {
       v16 = v14 == 0;
     }
@@ -4098,8 +4098,8 @@ LABEL_9:
       goto LABEL_25;
     }
 
-    v17 = PKCurrencyAmountCreate(v14, &v7->isa, 0);
-    if ([v5 context] == 2)
+    v17 = PKCurrencyAmountCreate(v14, &currency->isa, 0);
+    if ([messageCopy context] == 2)
     {
       if (![(PKPeerPaymentController *)self->_peerPaymentController supportsGroupMessage])
       {
@@ -4116,12 +4116,12 @@ LABEL_25:
         v19 = [(PKPeerPaymentMessagesContent *)self->_activeViewController popToRootViewControllerAnimated:1];
       }
 
-      v20 = [v5 underlyingMessage];
-      v21 = [v20 senderAddress];
+      underlyingMessage = [messageCopy underlyingMessage];
+      senderAddress = [underlyingMessage senderAddress];
 
-      v22 = [(PKPeerPaymentMessagesAppViewController *)self _identifiedRecipientForRecipientAddress:v21];
+      v22 = [(PKPeerPaymentMessagesAppViewController *)self _identifiedRecipientForRecipientAddress:senderAddress];
       pendingInformalPaymentRequestRecipientAddress = self->_pendingInformalPaymentRequestRecipientAddress;
-      self->_pendingInformalPaymentRequestRecipientAddress = v21;
+      self->_pendingInformalPaymentRequestRecipientAddress = senderAddress;
 
       v24 = [(PKPeerPaymentMessagesAppViewController *)self _viewControllerForState:9 shouldLoad:1];
       [(PKPeerPaymentMessagesAppViewController *)self _prepareIdentifiedRecipient:v22 forAmountEntryViewController:v24];
@@ -4142,10 +4142,10 @@ LABEL_25:
   if (v8)
   {
     v26 = 134218242;
-    v27 = self;
+    selfCopy2 = self;
     v28 = 2112;
-    v29 = v5;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "PKPeerPaymentMessagesAppViewController: %p; Asked to handle a Payment Message of incorrect type: %@", &v26, 0x16u);
+    v29 = messageCopy;
+    _os_log_impl(&_mh_execute_header, currency, OS_LOG_TYPE_DEFAULT, "PKPeerPaymentMessagesAppViewController: %p; Asked to handle a Payment Message of incorrect type: %@", &v26, 0x16u);
   }
 
   v13 = 0;
@@ -4154,22 +4154,22 @@ LABEL_26:
   return v13;
 }
 
-- (void)_handleUpdatedTransaction:(id)a3 forTransactionSourceIdentifier:(id)a4
+- (void)_handleUpdatedTransaction:(id)transaction forTransactionSourceIdentifier:(id)identifier
 {
-  v5 = a3;
+  transactionCopy = transaction;
   if ([(PKPeerPaymentMessagesAppViewController *)self _requiredContentState]== 12)
   {
-    v6 = [v5 serviceIdentifier];
-    v7 = [v5 peerPaymentRequestToken];
-    v8 = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
-    v9 = [v8 selectedMessage];
-    v10 = [v9 peerPaymentMessage];
+    serviceIdentifier = [transactionCopy serviceIdentifier];
+    peerPaymentRequestToken = [transactionCopy peerPaymentRequestToken];
+    activeConversation = [(PKPeerPaymentMessagesAppViewController *)self activeConversation];
+    selectedMessage = [activeConversation selectedMessage];
+    peerPaymentMessage = [selectedMessage peerPaymentMessage];
 
-    v11 = [v10 transactionIdentifier];
-    v12 = [v10 requestToken];
-    v13 = [v12 requestToken];
+    transactionIdentifier = [peerPaymentMessage transactionIdentifier];
+    requestToken = [peerPaymentMessage requestToken];
+    v12RequestToken = [requestToken requestToken];
 
-    if (([v11 isEqualToString:v6] & 1) != 0 || objc_msgSend(v13, "isEqualToString:", v7))
+    if (([transactionIdentifier isEqualToString:serviceIdentifier] & 1) != 0 || objc_msgSend(v12RequestToken, "isEqualToString:", peerPaymentRequestToken))
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
@@ -4189,17 +4189,17 @@ LABEL_26:
     debugBallView = self->_debugBallView;
     self->_debugBallView = v3;
 
-    v5 = [(PKShapeView *)self->_debugBallView shapeLayer];
+    shapeLayer = [(PKShapeView *)self->_debugBallView shapeLayer];
     v6 = +[UIColor redColor];
-    [v5 setFillColor:{objc_msgSend(v6, "CGColor")}];
+    [shapeLayer setFillColor:{objc_msgSend(v6, "CGColor")}];
 
-    v7 = [(PKShapeView *)self->_debugBallView shapeLayer];
+    shapeLayer2 = [(PKShapeView *)self->_debugBallView shapeLayer];
     [(PKShapeView *)self->_debugBallView center];
     v9 = v8;
     v11 = v10;
     [(PKShapeView *)self->_debugBallView bounds];
     v12 = [UIBezierPath bezierPathWithArcCenter:1 radius:v9 startAngle:v11 endAngle:CGRectGetWidth(v33) * 0.5 clockwise:0.0, 6.28318531];
-    [v7 setPath:{objc_msgSend(v12, "CGPath")}];
+    [shapeLayer2 setPath:{objc_msgSend(v12, "CGPath")}];
 
     [(UIView *)self->_rootView addSubview:self->_debugBallView];
     v13 = [[UIDynamicAnimator alloc] initWithReferenceView:self->_rootView];
@@ -4258,24 +4258,24 @@ LABEL_26:
   [(PKPeerPaymentMessagesAppViewController *)self _transitionToRequiredContentStateAnimated:0];
 }
 
-- (void)stageRecurringPayment:(id)a3 completion:(id)a4
+- (void)stageRecurringPayment:(id)payment completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   peerPaymentController = self->_peerPaymentController;
-  v8 = a3;
+  paymentCopy = payment;
   [(PKPeerPaymentController *)peerPaymentController selectMode:1];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000F574;
   v10[3] = &unk_10001CC00;
-  v11 = v6;
-  v9 = v6;
-  [(PKPeerPaymentMessagesAppViewController *)self _stageRecurringPayment:v8 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(PKPeerPaymentMessagesAppViewController *)self _stageRecurringPayment:paymentCopy completion:v10];
 }
 
-- (void)_reportAnalyticsForStateWithEventType:(id)a3
+- (void)_reportAnalyticsForStateWithEventType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -4287,36 +4287,36 @@ LABEL_26:
 
   if (([(PKPeerPaymentMessagesContent *)self->_activeViewController reportAnalyticsInternally]& 1) == 0 && [(PKPeerPaymentMessagesAppViewController *)self _requiredContentState]!= 12)
   {
-    v7 = [(PKPeerPaymentMessagesAppViewController *)self _analyticsPageTag];
+    _analyticsPageTag = [(PKPeerPaymentMessagesAppViewController *)self _analyticsPageTag];
     v12[0] = PKAnalyticsReportFeatureTypeKey;
     v12[1] = PKAnalyticsReportEventKey;
     v13[0] = PKAnalyticsReportPeerPaymentFeatureType;
-    v13[1] = v4;
+    v13[1] = typeCopy;
     v12[2] = PKAnalyticsReportPeerPaymentP2PSideKey;
     v13[2] = PKAnalyticsReportPeerPaymentP2PSideSender;
     v8 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:3];
     v9 = [v8 mutableCopy];
 
-    v10 = [(PKPeerPaymentMessagesAppViewController *)self _analyticsP2PContext];
-    [v9 safelySetObject:v10 forKey:PKAnalyticsReportPeerPaymentP2PContextKey];
+    _analyticsP2PContext = [(PKPeerPaymentMessagesAppViewController *)self _analyticsP2PContext];
+    [v9 safelySetObject:_analyticsP2PContext forKey:PKAnalyticsReportPeerPaymentP2PContextKey];
 
-    [v9 safelySetObject:v7 forKey:PKAnalyticsReportPageTagKey];
-    v11 = [(PKPeerPaymentMessagesAppViewController *)self analyticsMessagesContext];
-    [PKAnalyticsReporter reportAppleCashEvent:v9 withMessagesContext:v11];
+    [v9 safelySetObject:_analyticsPageTag forKey:PKAnalyticsReportPageTagKey];
+    analyticsMessagesContext = [(PKPeerPaymentMessagesAppViewController *)self analyticsMessagesContext];
+    [PKAnalyticsReporter reportAppleCashEvent:v9 withMessagesContext:analyticsMessagesContext];
   }
 }
 
-- (void)_reportAnalyticsViewAppearedWithArchivedParent:(id)a3
+- (void)_reportAnalyticsViewAppearedWithArchivedParent:(id)parent
 {
-  v6 = a3;
+  parentCopy = parent;
   v4 = PKAnalyticsSubjectAppleCash;
   v5 = [PKAnalyticsReporter reporterForSubject:PKAnalyticsSubjectAppleCash];
 
   if (!v5)
   {
-    if (v6)
+    if (parentCopy)
     {
-      [PKAnalyticsReporter beginSubjectReporting:v4 withArchivedParent:v6];
+      [PKAnalyticsReporter beginSubjectReporting:v4 withArchivedParent:parentCopy];
     }
 
     else
@@ -4341,17 +4341,17 @@ LABEL_26:
   v3 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:4];
   v4 = [v3 mutableCopy];
 
-  v5 = [(PKPeerPaymentMessagesAppViewController *)self _analyticsP2PContext];
-  [v4 safelySetObject:v5 forKey:PKAnalyticsReportPeerPaymentP2PContextKey];
+  _analyticsP2PContext = [(PKPeerPaymentMessagesAppViewController *)self _analyticsP2PContext];
+  [v4 safelySetObject:_analyticsP2PContext forKey:PKAnalyticsReportPeerPaymentP2PContextKey];
 
-  v6 = [(PKPeerPaymentMessagesAppViewController *)self analyticsMessagesContext];
-  [PKAnalyticsReporter reportAppleCashEvent:v4 withMessagesContext:v6];
+  analyticsMessagesContext = [(PKPeerPaymentMessagesAppViewController *)self analyticsMessagesContext];
+  [PKAnalyticsReporter reportAppleCashEvent:v4 withMessagesContext:analyticsMessagesContext];
 
   stagedPeerPaymentMessage = self->_stagedPeerPaymentMessage;
   if (self->_messageSource == 2)
   {
-    v8 = [(PKPeerPaymentMessage *)self->_stagedPeerPaymentMessage identifier];
-    v9 = v8;
+    identifier = [(PKPeerPaymentMessage *)self->_stagedPeerPaymentMessage identifier];
+    v9 = identifier;
     if (stagedPeerPaymentMessage)
     {
       v10 = +[PKMessagesAppSharedContext sharedContext];
@@ -4384,7 +4384,7 @@ LABEL_26:
 LABEL_10:
 }
 
-- (void)_reportAnalyticsStagedBubbleButtonTap:(id)a3
+- (void)_reportAnalyticsStagedBubbleButtonTap:(id)tap
 {
   v9[0] = PKAnalyticsReportFeatureTypeKey;
   v9[1] = PKAnalyticsReportPageTagKey;
@@ -4393,18 +4393,18 @@ LABEL_10:
   v9[2] = PKAnalyticsReportEventKey;
   v9[3] = PKAnalyticsReportButtonTagKey;
   v10[2] = PKAnalyticsReportEventTypeButtonTap;
-  v10[3] = a3;
+  v10[3] = tap;
   v9[4] = PKAnalyticsReportPeerPaymentP2PSideKey;
   v10[4] = PKAnalyticsReportPeerPaymentP2PSideSender;
-  v4 = a3;
+  tapCopy = tap;
   v5 = [NSDictionary dictionaryWithObjects:v10 forKeys:v9 count:5];
   v6 = [v5 mutableCopy];
 
-  v7 = [(PKPeerPaymentMessagesAppViewController *)self _analyticsP2PContext];
-  [v6 safelySetObject:v7 forKey:PKAnalyticsReportPeerPaymentP2PContextKey];
+  _analyticsP2PContext = [(PKPeerPaymentMessagesAppViewController *)self _analyticsP2PContext];
+  [v6 safelySetObject:_analyticsP2PContext forKey:PKAnalyticsReportPeerPaymentP2PContextKey];
 
-  v8 = [(PKPeerPaymentMessagesAppViewController *)self analyticsMessagesContext];
-  [PKAnalyticsReporter reportAppleCashEvent:v6 withMessagesContext:v8];
+  analyticsMessagesContext = [(PKPeerPaymentMessagesAppViewController *)self analyticsMessagesContext];
+  [PKAnalyticsReporter reportAppleCashEvent:v6 withMessagesContext:analyticsMessagesContext];
 }
 
 - (id)_analyticsPageTag
@@ -4415,14 +4415,14 @@ LABEL_10:
     goto LABEL_21;
   }
 
-  v4 = [(PKPeerPaymentMessagesAppViewController *)self _requiredContentState];
+  _requiredContentState = [(PKPeerPaymentMessagesAppViewController *)self _requiredContentState];
   v5 = 0;
   v6 = &PKAnalyticsReportPeerPaymentMessagesAppExtensionPageTag;
-  if (v4 > 6)
+  if (_requiredContentState > 6)
   {
-    if (v4 <= 8)
+    if (_requiredContentState <= 8)
     {
-      if (v4 != 7)
+      if (_requiredContentState != 7)
       {
         v6 = &PKAnalyticsReportPeerPaymentErrorNoEligibleParticipantsPageTag;
       }
@@ -4430,18 +4430,18 @@ LABEL_10:
       goto LABEL_20;
     }
 
-    if ((v4 - 9) < 4)
+    if ((_requiredContentState - 9) < 4)
     {
       goto LABEL_21;
     }
 
-    if (v4 == 13)
+    if (_requiredContentState == 13)
     {
       v6 = &PKAnalyticsReportPeerPaymentErrorContactsOnlyPageTag;
       goto LABEL_20;
     }
 
-    if (v4 == 14)
+    if (_requiredContentState == 14)
     {
       v6 = &PKAnalyticsReportPeerPaymentErrorFamilyOnlyPageTag;
       goto LABEL_20;
@@ -4452,9 +4452,9 @@ LABEL_17:
     goto LABEL_20;
   }
 
-  if (v4 > 4)
+  if (_requiredContentState > 4)
   {
-    if (v4 == 5)
+    if (_requiredContentState == 5)
     {
       v6 = &PKAnalyticsReportPeerPaymentErrorAccountRestrictedLockedPageTag;
     }
@@ -4467,12 +4467,12 @@ LABEL_17:
     goto LABEL_20;
   }
 
-  if ((v4 - 1) < 4)
+  if ((_requiredContentState - 1) < 4)
   {
     goto LABEL_21;
   }
 
-  if (v4)
+  if (_requiredContentState)
   {
     goto LABEL_17;
   }

@@ -1,38 +1,38 @@
 @interface dockDebug
-- (void)migrateDataWithUpdate:(BOOL)a3 completion:(id)a4;
-- (void)setDockAccessoryStateWithInfo:(id)a3 docked:(int64_t)a4 completion:(id)a5;
-- (void)setTrackingButtonStateWithState:(int64_t)a3 completion:(id)a4;
-- (void)triggerSystemEventWithInfo:(id)a3 event:(id)a4 completion:(id)a5;
+- (void)migrateDataWithUpdate:(BOOL)update completion:(id)completion;
+- (void)setDockAccessoryStateWithInfo:(id)info docked:(int64_t)docked completion:(id)completion;
+- (void)setTrackingButtonStateWithState:(int64_t)state completion:(id)completion;
+- (void)triggerSystemEventWithInfo:(id)info event:(id)event completion:(id)completion;
 @end
 
 @implementation dockDebug
 
-- (void)setDockAccessoryStateWithInfo:(id)a3 docked:(int64_t)a4 completion:(id)a5
+- (void)setDockAccessoryStateWithInfo:(id)info docked:(int64_t)docked completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   _Block_copy(v8);
-  v9 = a3;
-  v10 = self;
-  sub_1001DF9E0(a3, a4, v10, v8);
+  infoCopy = info;
+  selfCopy = self;
+  sub_1001DF9E0(info, docked, selfCopy, v8);
   _Block_release(v8);
   _Block_release(v8);
 }
 
-- (void)triggerSystemEventWithInfo:(id)a3 event:(id)a4 completion:(id)a5
+- (void)triggerSystemEventWithInfo:(id)info event:(id)event completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   _Block_copy(v8);
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  sub_1001E0674(a3, v10, v8);
+  infoCopy = info;
+  eventCopy = event;
+  selfCopy = self;
+  sub_1001E0674(info, eventCopy, v8);
   _Block_release(v8);
   _Block_release(v8);
 }
 
-- (void)setTrackingButtonStateWithState:(int64_t)a3 completion:(id)a4
+- (void)setTrackingButtonStateWithState:(int64_t)state completion:(id)completion
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(completion);
   if (qword_1002A6780 != -1)
   {
     swift_once();
@@ -58,12 +58,12 @@ LABEL_9:
   _Block_release(v4);
 }
 
-- (void)migrateDataWithUpdate:(BOOL)a3 completion:(id)a4
+- (void)migrateDataWithUpdate:(BOOL)update completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   _Block_copy(v5);
-  v6 = self;
-  sub_1001E23C8(v6, v5);
+  selfCopy = self;
+  sub_1001E23C8(selfCopy, v5);
   _Block_release(v5);
   _Block_release(v5);
 }

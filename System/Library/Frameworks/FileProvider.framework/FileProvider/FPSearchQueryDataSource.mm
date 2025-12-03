@@ -1,45 +1,45 @@
 @interface FPSearchQueryDataSource
 - (BOOL)hasMoreIncoming;
-- (FPSearchQueryDataSource)initWithQueryDescriptor:(id)a3 predicate:(id)a4;
+- (FPSearchQueryDataSource)initWithQueryDescriptor:(id)descriptor predicate:(id)predicate;
 - (FPSpotlightDataSourceDelegate)delegate;
 - (unint64_t)lastForcedUpdate;
-- (void)dataSource:(id)a3 didChangeItemsOrigin:(unint64_t)a4;
-- (void)dataSource:(id)a3 receivedUpdatedItems:(id)a4 deletedItems:(id)a5 hasMoreChanges:(BOOL)a6;
-- (void)dataSource:(id)a3 replaceContentsWithItems:(id)a4 hasMoreChanges:(BOOL)a5;
-- (void)dataSource:(id)a3 wasInvalidatedWithError:(id)a4;
+- (void)dataSource:(id)source didChangeItemsOrigin:(unint64_t)origin;
+- (void)dataSource:(id)source receivedUpdatedItems:(id)items deletedItems:(id)deletedItems hasMoreChanges:(BOOL)changes;
+- (void)dataSource:(id)source replaceContentsWithItems:(id)items hasMoreChanges:(BOOL)changes;
+- (void)dataSource:(id)source wasInvalidatedWithError:(id)error;
 - (void)enumerationMightHaveResumed;
 - (void)invalidate;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)start;
 @end
 
 @implementation FPSearchQueryDataSource
 
-- (FPSearchQueryDataSource)initWithQueryDescriptor:(id)a3 predicate:(id)a4
+- (FPSearchQueryDataSource)initWithQueryDescriptor:(id)descriptor predicate:(id)predicate
 {
-  v8 = a3;
-  v9 = a4;
+  descriptorCopy = descriptor;
+  predicateCopy = predicate;
   v37.receiver = self;
   v37.super_class = FPSearchQueryDataSource;
   v10 = [(FPSearchQueryDataSource *)&v37 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_queryDescriptor, a3);
+    objc_storeStrong(&v10->_queryDescriptor, descriptor);
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.FileProvider.ExtensionDataSource.queue (%p)", v11];
-    v13 = [v12 UTF8String];
+    uTF8String = [v12 UTF8String];
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v15 = FPDataSourceBaseQueue();
-    v16 = dispatch_queue_create_with_target_V2(v13, v14, v15);
+    v16 = dispatch_queue_create_with_target_V2(uTF8String, v14, v15);
     queue = v11->_queue;
     v11->_queue = v16;
 
-    v18 = [v8 settings];
-    v19 = [v18 searchQuery];
+    settings = [descriptorCopy settings];
+    searchQuery = [settings searchQuery];
 
-    v20 = [v19 providerDomainID];
-    v21 = [v20 fp_toProviderID];
-    v22 = [v21 isEqualToString:@"com.apple.filesystems.UserFS.FileProvider"];
+    providerDomainID = [searchQuery providerDomainID];
+    fp_toProviderID = [providerDomainID fp_toProviderID];
+    v22 = [fp_toProviderID isEqualToString:@"com.apple.filesystems.UserFS.FileProvider"];
 
     v23 = fp_current_or_default_log();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -47,11 +47,11 @@
       [FPSearchQueryDataSource initWithQueryDescriptor:v22 predicate:v23];
     }
 
-    if (v22 & 1) != 0 || ([v8 avoidCoreSpotlightSearch])
+    if (v22 & 1) != 0 || ([descriptorCopy avoidCoreSpotlightSearch])
     {
-      if ([v19 shouldPerformServerSearch] & 1) != 0 || (objc_msgSend(v19, "shouldPerformServerSearch"))
+      if ([searchQuery shouldPerformServerSearch] & 1) != 0 || (objc_msgSend(searchQuery, "shouldPerformServerSearch"))
       {
-        if (!v20)
+        if (!providerDomainID)
         {
           goto LABEL_9;
         }
@@ -60,13 +60,13 @@
       else
       {
         [FPSearchQueryDataSource initWithQueryDescriptor:a2 predicate:v11];
-        if (!v20)
+        if (!providerDomainID)
         {
 LABEL_9:
-          v24 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v24 handleFailureInMethod:a2 object:v11 file:@"FPSearchQueryDataSource.m" lineNumber:59 description:{@"When search on USB, the provider domain ID should be set to the USB provider domain ID."}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:v11 file:@"FPSearchQueryDataSource.m" lineNumber:59 description:{@"When search on USB, the provider domain ID should be set to the USB provider domain ID."}];
 
-          if ([v19 shouldPerformServerSearch])
+          if ([searchQuery shouldPerformServerSearch])
           {
             goto LABEL_20;
           }
@@ -78,36 +78,36 @@ LABEL_9:
 
     else
     {
-      v25 = [v8 searchQueryString];
+      searchQueryString = [descriptorCopy searchQueryString];
 
-      if (!v25)
+      if (!searchQueryString)
       {
-        v26 = [v8 searchQueryString];
+        searchQueryString2 = [descriptorCopy searchQueryString];
 
-        if (!v26)
+        if (!searchQueryString2)
         {
           [FPSearchQueryDataSource initWithQueryDescriptor:a2 predicate:v11];
         }
       }
 
-      v27 = [[FPSpotlightDataSource alloc] initWithQueryDescriptor:v8 predicate:v9];
+      v27 = [[FPSpotlightDataSource alloc] initWithQueryDescriptor:descriptorCopy predicate:predicateCopy];
       spotlightDataSource = v11->_spotlightDataSource;
       v11->_spotlightDataSource = v27;
     }
 
-    if ([v19 shouldPerformServerSearch])
+    if ([searchQuery shouldPerformServerSearch])
     {
-      if (v20)
+      if (providerDomainID)
       {
         v29 = v11->_queue;
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __61__FPSearchQueryDataSource_initWithQueryDescriptor_predicate___block_invoke;
         block[3] = &unk_1E7939090;
-        v34 = v20;
-        v35 = v8;
+        v34 = providerDomainID;
+        v35 = descriptorCopy;
         v36 = v11;
-        v30 = v20;
+        v30 = providerDomainID;
         dispatch_async(v29, block);
 
         v31 = v34;
@@ -298,11 +298,11 @@ void __61__FPSearchQueryDataSource_initWithQueryDescriptor_predicate___block_inv
   return [(FPExtensionDataSource *)serverSearchDataSource hasMoreIncoming];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained isEqual:v4];
+  v6 = [WeakRetained isEqual:delegateCopy];
 
   if ((v6 & 1) == 0)
   {
@@ -312,7 +312,7 @@ void __61__FPSearchQueryDataSource_initWithQueryDescriptor_predicate___block_inv
     v8[2] = __39__FPSearchQueryDataSource_setDelegate___block_invoke;
     v8[3] = &unk_1E79390B8;
     v8[4] = self;
-    v9 = v4;
+    v9 = delegateCopy;
     dispatch_sync(queue, v8);
   }
 }
@@ -343,38 +343,38 @@ uint64_t __39__FPSearchQueryDataSource_setDelegate___block_invoke(uint64_t a1)
 - (unint64_t)lastForcedUpdate
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained lastForcedUpdate];
+  lastForcedUpdate = [WeakRetained lastForcedUpdate];
 
-  return v3;
+  return lastForcedUpdate;
 }
 
-- (void)dataSource:(id)a3 replaceContentsWithItems:(id)a4 hasMoreChanges:(BOOL)a5
+- (void)dataSource:(id)source replaceContentsWithItems:(id)items hasMoreChanges:(BOOL)changes
 {
-  v6 = a4;
+  itemsCopy = items;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained dataSource:self replaceContentsWithItems:v6 hasMoreChanges:0];
+  [WeakRetained dataSource:self replaceContentsWithItems:itemsCopy hasMoreChanges:0];
 }
 
-- (void)dataSource:(id)a3 receivedUpdatedItems:(id)a4 deletedItems:(id)a5 hasMoreChanges:(BOOL)a6
+- (void)dataSource:(id)source receivedUpdatedItems:(id)items deletedItems:(id)deletedItems hasMoreChanges:(BOOL)changes
 {
-  v8 = a5;
-  v9 = a4;
+  deletedItemsCopy = deletedItems;
+  itemsCopy = items;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained dataSource:self receivedUpdatedItems:v9 deletedItems:v8 hasMoreChanges:0];
+  [WeakRetained dataSource:self receivedUpdatedItems:itemsCopy deletedItems:deletedItemsCopy hasMoreChanges:0];
 }
 
-- (void)dataSource:(id)a3 wasInvalidatedWithError:(id)a4
+- (void)dataSource:(id)source wasInvalidatedWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained dataSource:self wasInvalidatedWithError:v5];
+  [WeakRetained dataSource:self wasInvalidatedWithError:errorCopy];
 }
 
-- (void)dataSource:(id)a3 didChangeItemsOrigin:(unint64_t)a4
+- (void)dataSource:(id)source didChangeItemsOrigin:(unint64_t)origin
 {
-  v6 = a3;
+  sourceCopy = source;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained dataSource:v6 didChangeItemsOrigin:a4];
+  [WeakRetained dataSource:sourceCopy didChangeItemsOrigin:origin];
 }
 
 - (FPSpotlightDataSourceDelegate)delegate

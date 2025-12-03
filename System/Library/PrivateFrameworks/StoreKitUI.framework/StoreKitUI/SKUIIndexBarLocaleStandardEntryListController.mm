@@ -1,16 +1,16 @@
 @interface SKUIIndexBarLocaleStandardEntryListController
-- (SKUIIndexBarLocaleStandardEntryListController)initWithSKUIIndexBarEntryListViewElement:(id)a3;
-- (id)entryDescriptorAtIndex:(int64_t)a3;
-- (id)targetIndexBarEntryIDForEntryDescriptorAtIndex:(int64_t)a3 returningRelativeSectionIndex:(int64_t *)a4;
+- (SKUIIndexBarLocaleStandardEntryListController)initWithSKUIIndexBarEntryListViewElement:(id)element;
+- (id)entryDescriptorAtIndex:(int64_t)index;
+- (id)targetIndexBarEntryIDForEntryDescriptorAtIndex:(int64_t)index returningRelativeSectionIndex:(int64_t *)sectionIndex;
 - (int64_t)numberOfEntryDescriptors;
 - (void)reloadViewElementData;
 @end
 
 @implementation SKUIIndexBarLocaleStandardEntryListController
 
-- (SKUIIndexBarLocaleStandardEntryListController)initWithSKUIIndexBarEntryListViewElement:(id)a3
+- (SKUIIndexBarLocaleStandardEntryListController)initWithSKUIIndexBarEntryListViewElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -29,7 +29,7 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_entryListViewElement, a3);
+    objc_storeStrong(&v14->_entryListViewElement, element);
     v16 = SKUIRequiredVisibilitySetForLocalizedIndexedCollation();
     requiredVisibilitySet = v15->_requiredVisibilitySet;
     v15->_requiredVisibilitySet = v16;
@@ -40,18 +40,18 @@
 
 - (int64_t)numberOfEntryDescriptors
 {
-  v2 = [MEMORY[0x277D75700] currentCollation];
-  v3 = [v2 sectionIndexTitles];
-  v4 = [v3 count];
+  currentCollation = [MEMORY[0x277D75700] currentCollation];
+  sectionIndexTitles = [currentCollation sectionIndexTitles];
+  v4 = [sectionIndexTitles count];
 
   return v4;
 }
 
-- (id)entryDescriptorAtIndex:(int64_t)a3
+- (id)entryDescriptorAtIndex:(int64_t)index
 {
-  v5 = [MEMORY[0x277D75700] currentCollation];
-  v6 = [v5 sectionIndexTitles];
-  v7 = [v6 objectAtIndex:a3];
+  currentCollation = [MEMORY[0x277D75700] currentCollation];
+  sectionIndexTitles = [currentCollation sectionIndexTitles];
+  v7 = [sectionIndexTitles objectAtIndex:index];
 
   v8 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v7];
   v9 = [v8 length];
@@ -76,19 +76,19 @@
   return v12;
 }
 
-- (id)targetIndexBarEntryIDForEntryDescriptorAtIndex:(int64_t)a3 returningRelativeSectionIndex:(int64_t *)a4
+- (id)targetIndexBarEntryIDForEntryDescriptorAtIndex:(int64_t)index returningRelativeSectionIndex:(int64_t *)sectionIndex
 {
-  if (a4)
+  if (sectionIndex)
   {
-    *a4 = 0;
+    *sectionIndex = 0;
   }
 
-  v5 = [MEMORY[0x277D75700] currentCollation];
-  v6 = [v5 sectionForSectionIndexTitleAtIndex:a3];
+  currentCollation = [MEMORY[0x277D75700] currentCollation];
+  v6 = [currentCollation sectionForSectionIndexTitleAtIndex:index];
 
-  v7 = [MEMORY[0x277D75700] currentCollation];
-  v8 = [v7 sectionTitles];
-  v9 = [v8 objectAtIndex:v6];
+  currentCollation2 = [MEMORY[0x277D75700] currentCollation];
+  sectionTitles = [currentCollation2 sectionTitles];
+  v9 = [sectionTitles objectAtIndex:v6];
 
   v10 = SKUIIndexBarIDForLocaleStandardIndexBarEntrySectionTitle(v9);
 
@@ -100,11 +100,11 @@
   v5.receiver = self;
   v5.super_class = SKUIIndexBarLocaleStandardEntryListController;
   [(SKUIIndexBarEntryListController *)&v5 reloadViewElementData];
-  v3 = [(SKUIIndexBarEntryListViewElement *)self->_entryListViewElement style];
+  style = [(SKUIIndexBarEntryListViewElement *)self->_entryListViewElement style];
   style = self->_style;
-  if (style != v3 && ([(IKViewElementStyle *)style isEqual:v3]& 1) == 0)
+  if (style != style && ([(IKViewElementStyle *)style isEqual:style]& 1) == 0)
   {
-    objc_storeStrong(&self->_style, v3);
+    objc_storeStrong(&self->_style, style);
     [(SKUIIndexBarEntryListController *)self _didInvalidate];
   }
 }

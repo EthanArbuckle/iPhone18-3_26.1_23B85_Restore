@@ -1,14 +1,14 @@
 @interface STDynamicActivityAttributionPublisher
 + (id)sharedInstance;
-+ (void)setCurrentAttributionKey:(id)a3 andApp:(id)a4;
-+ (void)setCurrentAttributionLocalizableKey:(id)a3 auditToken:(id *)a4;
-+ (void)setCurrentAttributionStringWithFormat:(id)a3 auditToken:(id *)a4;
-+ (void)setCurrentAttributionWebsiteString:(id)a3 auditToken:(id *)a4;
++ (void)setCurrentAttributionKey:(id)key andApp:(id)app;
++ (void)setCurrentAttributionLocalizableKey:(id)key auditToken:(id *)token;
++ (void)setCurrentAttributionStringWithFormat:(id)format auditToken:(id *)token;
++ (void)setCurrentAttributionWebsiteString:(id)string auditToken:(id *)token;
 - (STDynamicActivityAttributionPublisher)init;
-- (void)_internalQueue_sendAttributionKey:(void *)a3 andApp:;
+- (void)_internalQueue_sendAttributionKey:(void *)key andApp:;
 - (void)_internalQueue_setupXPCConnectionIfNecessary;
 - (void)dealloc;
-- (void)didObserveServerLaunch:(id)a3;
+- (void)didObserveServerLaunch:(id)launch;
 @end
 
 @implementation STDynamicActivityAttributionPublisher
@@ -35,11 +35,11 @@ uint64_t __55__STDynamicActivityAttributionPublisher_sharedInstance__block_invok
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (void)setCurrentAttributionKey:(id)a3 andApp:(id)a4
++ (void)setCurrentAttributionKey:(id)key andApp:(id)app
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  keyCopy = key;
+  appCopy = app;
   if (STSystemStatusIsInternalLoggingEnabled_onceToken != -1)
   {
     dispatch_once(&STSystemStatusIsInternalLoggingEnabled_onceToken, &__block_literal_global_56);
@@ -51,16 +51,16 @@ uint64_t __55__STDynamicActivityAttributionPublisher_sharedInstance__block_invok
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *v13 = 138543618;
-      *&v13[4] = v5;
+      *&v13[4] = keyCopy;
       *&v13[12] = 2114;
-      *&v13[14] = v6;
+      *&v13[14] = appCopy;
       _os_log_impl(&dword_1DA9C2000, v7, OS_LOG_TYPE_DEFAULT, "setCurrentAttributionKey: %{public}@, andApp: %{public}@", v13, 0x16u);
     }
   }
 
   v8 = +[STDynamicActivityAttributionPublisher sharedInstance];
-  v9 = v5;
-  v10 = v6;
+  v9 = keyCopy;
+  v10 = appCopy;
   if (v8)
   {
     v11 = v8[1];
@@ -77,10 +77,10 @@ uint64_t __55__STDynamicActivityAttributionPublisher_sharedInstance__block_invok
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)setCurrentAttributionLocalizableKey:(id)a3 auditToken:(id *)a4
++ (void)setCurrentAttributionLocalizableKey:(id)key auditToken:(id *)token
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  keyCopy = key;
   if (STSystemStatusIsInternalLoggingEnabled_onceToken != -1)
   {
     dispatch_once(&STSystemStatusIsInternalLoggingEnabled_onceToken, &__block_literal_global_56);
@@ -92,7 +92,7 @@ uint64_t __55__STDynamicActivityAttributionPublisher_sharedInstance__block_invok
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      *&buf[4] = v5;
+      *&buf[4] = keyCopy;
       *&buf[12] = 1026;
       *&buf[14] = BSPIDForAuditToken();
       _os_log_impl(&dword_1DA9C2000, v6, OS_LOG_TYPE_DEFAULT, "setCurrentAttributionLocalizableKey: %{public}@, auditToken(pid): %{public}d", buf, 0x12u);
@@ -100,9 +100,9 @@ uint64_t __55__STDynamicActivityAttributionPublisher_sharedInstance__block_invok
   }
 
   v7 = +[STDynamicActivityAttributionPublisher sharedInstance];
-  v12 = *a4->var0;
-  v13 = *&a4->var0[4];
-  v8 = v5;
+  v12 = *token->var0;
+  v13 = *&token->var0[4];
+  v8 = keyCopy;
   v9 = v8;
   if (v7)
   {
@@ -121,10 +121,10 @@ uint64_t __55__STDynamicActivityAttributionPublisher_sharedInstance__block_invok
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)setCurrentAttributionStringWithFormat:(id)a3 auditToken:(id *)a4
++ (void)setCurrentAttributionStringWithFormat:(id)format auditToken:(id *)token
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  formatCopy = format;
   if (STSystemStatusIsInternalLoggingEnabled_onceToken != -1)
   {
     dispatch_once(&STSystemStatusIsInternalLoggingEnabled_onceToken, &__block_literal_global_56);
@@ -136,7 +136,7 @@ uint64_t __55__STDynamicActivityAttributionPublisher_sharedInstance__block_invok
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      *&buf[4] = v5;
+      *&buf[4] = formatCopy;
       *&buf[12] = 1026;
       *&buf[14] = BSPIDForAuditToken();
       _os_log_impl(&dword_1DA9C2000, v6, OS_LOG_TYPE_DEFAULT, "setCurrentAttributionStringWithFormat: %{public}@, auditToken(pid): %{public}d", buf, 0x12u);
@@ -144,9 +144,9 @@ uint64_t __55__STDynamicActivityAttributionPublisher_sharedInstance__block_invok
   }
 
   v7 = +[STDynamicActivityAttributionPublisher sharedInstance];
-  v12 = *a4->var0;
-  v13 = *&a4->var0[4];
-  v8 = v5;
+  v12 = *token->var0;
+  v13 = *&token->var0[4];
+  v8 = formatCopy;
   v9 = v8;
   if (v7)
   {
@@ -165,10 +165,10 @@ uint64_t __55__STDynamicActivityAttributionPublisher_sharedInstance__block_invok
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)setCurrentAttributionWebsiteString:(id)a3 auditToken:(id *)a4
++ (void)setCurrentAttributionWebsiteString:(id)string auditToken:(id *)token
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  stringCopy = string;
   if (STSystemStatusIsInternalLoggingEnabled_onceToken != -1)
   {
     dispatch_once(&STSystemStatusIsInternalLoggingEnabled_onceToken, &__block_literal_global_56);
@@ -179,7 +179,7 @@ uint64_t __55__STDynamicActivityAttributionPublisher_sharedInstance__block_invok
     v6 = STSystemStatusLogDynamicAttribution();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      if (v5)
+      if (stringCopy)
       {
         v7 = @"non-nil";
       }
@@ -198,9 +198,9 @@ uint64_t __55__STDynamicActivityAttributionPublisher_sharedInstance__block_invok
   }
 
   v8 = +[STDynamicActivityAttributionPublisher sharedInstance];
-  v13 = *a4->var0;
-  v14 = *&a4->var0[4];
-  v9 = v5;
+  v13 = *token->var0;
+  v14 = *&token->var0[4];
+  v9 = stringCopy;
   v10 = v9;
   if (v8)
   {
@@ -242,19 +242,19 @@ uint64_t __55__STDynamicActivityAttributionPublisher_sharedInstance__block_invok
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_serverLaunchObservable;
   }
 
-  [(STDynamicActivityAttributionPublisher *)self removeObserver:v2];
-  v3.receiver = v2;
+  [(STDynamicActivityAttributionPublisher *)self removeObserver:selfCopy];
+  v3.receiver = selfCopy;
   v3.super_class = STDynamicActivityAttributionPublisher;
   [(STDynamicActivityAttributionPublisher *)&v3 dealloc];
 }
 
-- (void)didObserveServerLaunch:(id)a3
+- (void)didObserveServerLaunch:(id)launch
 {
   v4 = STSystemStatusLogDynamicAttribution();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -295,11 +295,11 @@ void __78__STDynamicActivityAttributionPublisher_setCurrentAttributionKey_applic
   [(STDynamicActivityAttributionPublisher *)v4 _internalQueue_sendAttributionKey:v5 andApp:v6];
 }
 
-- (void)_internalQueue_sendAttributionKey:(void *)a3 andApp:
+- (void)_internalQueue_sendAttributionKey:(void *)key andApp:
 {
-  if (a1)
+  if (self)
   {
-    v5 = a3;
+    keyCopy = key;
     v6 = a2;
     if (STSystemStatusIsInternalLoggingEnabled_onceToken != -1)
     {
@@ -316,9 +316,9 @@ void __78__STDynamicActivityAttributionPublisher_setCurrentAttributionKey_applic
       }
     }
 
-    [(STDynamicActivityAttributionPublisher *)a1 _internalQueue_setupXPCConnectionIfNecessary];
-    v8 = [*(a1 + 16) synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_17_0];
-    [v8 setCurrentAttributionKey:v6 application:v5 reply:&__block_literal_global_21];
+    [(STDynamicActivityAttributionPublisher *)self _internalQueue_setupXPCConnectionIfNecessary];
+    v8 = [*(self + 16) synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_17_0];
+    [v8 setCurrentAttributionKey:v6 application:keyCopy reply:&__block_literal_global_21];
   }
 }
 
@@ -432,15 +432,15 @@ void __100__STDynamicActivityAttributionPublisher_setCurrentAttributionWebsiteSt
 
 - (void)_internalQueue_setupXPCConnectionIfNecessary
 {
-  dispatch_assert_queue_V2(*(a1 + 8));
-  if (!*(a1 + 16))
+  dispatch_assert_queue_V2(*(self + 8));
+  if (!*(self + 16))
   {
     v2 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.systemstatus.activityattribution" options:0];
     v3 = STDynamicAttributionXPCServerInterface();
     [v2 setRemoteObjectInterface:v3];
 
-    objc_storeStrong((a1 + 16), v2);
-    objc_initWeak(&location, a1);
+    objc_storeStrong((self + 16), v2);
+    objc_initWeak(&location, self);
     [v2 setInterruptionHandler:&__block_literal_global_13];
     v4 = MEMORY[0x1E69E9820];
     v5 = 3221225472;

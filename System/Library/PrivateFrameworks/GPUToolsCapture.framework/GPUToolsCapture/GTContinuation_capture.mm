@@ -1,6 +1,6 @@
 @interface GTContinuation_capture
 - (GTContinuation_capture)init;
-- (GTContinuation_capture)initWithQueue:(id)a3 block:(id)a4;
+- (GTContinuation_capture)initWithQueue:(id)queue block:(id)block;
 - (void)dealloc;
 @end
 
@@ -14,9 +14,9 @@
   [(GTContinuation_capture *)&v3 dealloc];
 }
 
-- (GTContinuation_capture)initWithQueue:(id)a3 block:(id)a4
+- (GTContinuation_capture)initWithQueue:(id)queue block:(id)block
 {
-  if (!a3)
+  if (!queue)
   {
     if (s_logUsingOsLog == 1)
     {
@@ -39,7 +39,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!a4)
+  if (!block)
   {
     if (s_logUsingOsLog == 1)
     {
@@ -66,9 +66,9 @@ LABEL_12:
   v6 = [(GTContinuation_capture *)&v12 init];
   if (v6)
   {
-    dispatch_retain(a3);
-    v6->queue = a3;
-    v6->block = [a4 copy];
+    dispatch_retain(queue);
+    v6->queue = queue;
+    v6->block = [block copy];
   }
 
   return v6;

@@ -1,6 +1,6 @@
 @interface SAUILayoutModePreference
 - (NSString)description;
-- (SAUILayoutModePreference)initWithPreferredLayoutMode:(int64_t)a3 reason:(int64_t)a4;
+- (SAUILayoutModePreference)initWithPreferredLayoutMode:(int64_t)mode reason:(int64_t)reason;
 @end
 
 @implementation SAUILayoutModePreference
@@ -16,15 +16,15 @@
   return v7;
 }
 
-- (SAUILayoutModePreference)initWithPreferredLayoutMode:(int64_t)a3 reason:(int64_t)a4
+- (SAUILayoutModePreference)initWithPreferredLayoutMode:(int64_t)mode reason:(int64_t)reason
 {
   v7.receiver = self;
   v7.super_class = SAUILayoutModePreference;
   result = [(SAUILayoutModePreference *)&v7 init];
   if (result)
   {
-    result->_preferredLayoutMode = a3;
-    result->_layoutModeChangeReason = a4;
+    result->_preferredLayoutMode = mode;
+    result->_layoutModeChangeReason = reason;
   }
 
   return result;

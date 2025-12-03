@@ -1,17 +1,17 @@
 @interface CellOutrankHandlerSTM
-- (BOOL)armedEntryAction:(id)a3;
-- (BOOL)armedExitAction:(id)a3;
-- (BOOL)idleEntryAction:(id)a3;
-- (BOOL)idleExitAction:(id)a3;
-- (BOOL)outrankEntryAction:(id)a3;
-- (BOOL)outrankExitAction:(id)a3;
-- (CellOutrankHandlerSTM)initWithQueue:(id)a3;
-- (id)getState:(BOOL)a3;
+- (BOOL)armedEntryAction:(id)action;
+- (BOOL)armedExitAction:(id)action;
+- (BOOL)idleEntryAction:(id)action;
+- (BOOL)idleExitAction:(id)action;
+- (BOOL)outrankEntryAction:(id)action;
+- (BOOL)outrankExitAction:(id)action;
+- (CellOutrankHandlerSTM)initWithQueue:(id)queue;
+- (id)getState:(BOOL)state;
 - (id)internalStateDictionary;
 - (unint64_t)currentQualifier;
-- (unsigned)evaluateState:(id)a3;
+- (unsigned)evaluateState:(id)state;
 - (void)_bringStateToIdle;
-- (void)_postUpwards:(unint64_t)a3;
+- (void)_postUpwards:(unint64_t)upwards;
 - (void)administrativeDisable;
 - (void)administrativeEnable;
 - (void)completeInitialization;
@@ -22,11 +22,11 @@
 
 @implementation CellOutrankHandlerSTM
 
-- (CellOutrankHandlerSTM)initWithQueue:(id)a3
+- (CellOutrankHandlerSTM)initWithQueue:(id)queue
 {
   v4.receiver = self;
   v4.super_class = CellOutrankHandlerSTM;
-  result = [(ExpertSystemHandlerCore *)&v4 initWithQueue:a3];
+  result = [(ExpertSystemHandlerCore *)&v4 initWithQueue:queue];
   if (result)
   {
     result->_administrativeState = 2;
@@ -201,16 +201,16 @@ uint64_t __47__CellOutrankHandlerSTM_completeInitialization__block_invoke_6(uint
   return v3;
 }
 
-- (BOOL)idleEntryAction:(id)a3
+- (BOOL)idleEntryAction:(id)action
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = outrankLogHandle;
   if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v5 = v4;
-    v6 = [a3 label];
+    label = [action label];
     v9 = 138412290;
-    v10 = v6;
+    v10 = label;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEBUG, "COSM STM entry action for: %@", &v9, 0xCu);
   }
 
@@ -218,16 +218,16 @@ uint64_t __47__CellOutrankHandlerSTM_completeInitialization__block_invoke_6(uint
   return 1;
 }
 
-- (BOOL)armedEntryAction:(id)a3
+- (BOOL)armedEntryAction:(id)action
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = outrankLogHandle;
   if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v5 = v4;
-    v6 = [a3 label];
+    label = [action label];
     v9 = 138412290;
-    v10 = v6;
+    v10 = label;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEBUG, "COSM STM entry action for: %@", &v9, 0xCu);
   }
 
@@ -235,16 +235,16 @@ uint64_t __47__CellOutrankHandlerSTM_completeInitialization__block_invoke_6(uint
   return 1;
 }
 
-- (BOOL)outrankEntryAction:(id)a3
+- (BOOL)outrankEntryAction:(id)action
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = outrankLogHandle;
   if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v5 = v4;
-    v6 = [a3 label];
+    label = [action label];
     v9 = 138412290;
-    v10 = v6;
+    v10 = label;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEBUG, "COSM STM entry action for: %@", &v9, 0xCu);
   }
 
@@ -252,16 +252,16 @@ uint64_t __47__CellOutrankHandlerSTM_completeInitialization__block_invoke_6(uint
   return 1;
 }
 
-- (BOOL)idleExitAction:(id)a3
+- (BOOL)idleExitAction:(id)action
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = outrankLogHandle;
   if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v5 = v4;
-    v6 = [a3 label];
+    label = [action label];
     v9 = 138412290;
-    v10 = v6;
+    v10 = label;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEBUG, "COSM STM exit action for: %@", &v9, 0xCu);
   }
 
@@ -269,16 +269,16 @@ uint64_t __47__CellOutrankHandlerSTM_completeInitialization__block_invoke_6(uint
   return 1;
 }
 
-- (BOOL)armedExitAction:(id)a3
+- (BOOL)armedExitAction:(id)action
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = outrankLogHandle;
   if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v5 = v4;
-    v6 = [a3 label];
+    label = [action label];
     v9 = 138412290;
-    v10 = v6;
+    v10 = label;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEBUG, "COSM STM exit action for: %@", &v9, 0xCu);
   }
 
@@ -286,16 +286,16 @@ uint64_t __47__CellOutrankHandlerSTM_completeInitialization__block_invoke_6(uint
   return 1;
 }
 
-- (BOOL)outrankExitAction:(id)a3
+- (BOOL)outrankExitAction:(id)action
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = outrankLogHandle;
   if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v5 = v4;
-    v6 = [a3 label];
+    label = [action label];
     v9 = 138412290;
-    v10 = v6;
+    v10 = label;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEBUG, "COSM STM exit action for: %@", &v9, 0xCu);
   }
 
@@ -368,9 +368,9 @@ uint64_t __47__CellOutrankHandlerSTM_completeInitialization__block_invoke_6(uint
   currentState = self->_currentState;
   if (currentState)
   {
-    v6 = [(ExpertSystemStateCore *)currentState label];
-    v7 = [v3 label];
-    v8 = [v6 isEqualToString:v7];
+    label = [(ExpertSystemStateCore *)currentState label];
+    label2 = [v3 label];
+    v8 = [label isEqualToString:label2];
 
     if ((v8 & 1) == 0)
     {
@@ -379,9 +379,9 @@ uint64_t __47__CellOutrankHandlerSTM_completeInitialization__block_invoke_6(uint
       {
         v10 = self->_currentState;
         v11 = v9;
-        v12 = [(ExpertSystemStateCore *)v10 label];
+        label3 = [(ExpertSystemStateCore *)v10 label];
         *buf = 138412290;
-        v21 = v12;
+        v21 = label3;
         _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_DEFAULT, "COSM STM Idling from %@ state", buf, 0xCu);
       }
 
@@ -408,8 +408,8 @@ uint64_t __47__CellOutrankHandlerSTM_completeInitialization__block_invoke_6(uint
     v16 = self->_currentState;
     self->_currentState = v15;
 
-    v17 = [(ExpertSystemStateCore *)self->_currentState entryAction];
-    v17[2]();
+    entryAction = [(ExpertSystemStateCore *)self->_currentState entryAction];
+    entryAction[2]();
   }
 
   self->_inDampeningPeriod = 0;
@@ -456,9 +456,9 @@ void __42__CellOutrankHandlerSTM__bringStateToIdle__block_invoke(uint64_t a1, vo
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getState:(BOOL)a3
+- (id)getState:(BOOL)state
 {
-  v53 = a3;
+  stateCopy = state;
   v76 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v5 = objc_alloc(MEMORY[0x277CCACA8]);
@@ -472,8 +472,8 @@ void __42__CellOutrankHandlerSTM__bringStateToIdle__block_invoke(uint64_t a1, vo
     v6 = "Disabled";
   }
 
-  v7 = [(ExpertSystemStateCore *)self->_currentState label];
-  v8 = [v5 initWithFormat:@"COSM STM Administrative state: %s   CurrentState: %@", v6, v7];
+  label = [(ExpertSystemStateCore *)self->_currentState label];
+  v8 = [v5 initWithFormat:@"COSM STM Administrative state: %s   CurrentState: %@", v6, label];
 
   v60 = v4;
   [v4 addObject:v8];
@@ -483,7 +483,7 @@ void __42__CellOutrankHandlerSTM__bringStateToIdle__block_invoke(uint64_t a1, vo
   v70 = 0u;
   v9 = self->_states;
   v10 = [(NSArray *)v9 countByEnumeratingWithState:&v69 objects:v75 count:16];
-  v57 = self;
+  selfCopy = self;
   if (v10)
   {
     v11 = v10;
@@ -503,12 +503,12 @@ void __42__CellOutrankHandlerSTM__bringStateToIdle__block_invoke(uint64_t a1, vo
         if (v14 != v15)
         {
           v16 = objc_alloc(MEMORY[0x277CCACA8]);
-          v17 = [v14 label];
-          v18 = [v14 sojournTime];
-          [v18 total];
-          v20 = [v16 initWithFormat:@"COSM STM Cumulative time on state %@: %f", v17, v19];
+          label2 = [v14 label];
+          sojournTime = [v14 sojournTime];
+          [sojournTime total];
+          v20 = [v16 initWithFormat:@"COSM STM Cumulative time on state %@: %f", label2, v19];
 
-          self = v57;
+          self = selfCopy;
           [v4 addObject:v20];
           v8 = v20;
         }
@@ -520,7 +520,7 @@ void __42__CellOutrankHandlerSTM__bringStateToIdle__block_invoke(uint64_t a1, vo
     while (v11);
   }
 
-  if (v53)
+  if (stateCopy)
   {
     v67 = 0u;
     v68 = 0u;
@@ -547,8 +547,8 @@ void __42__CellOutrankHandlerSTM__bringStateToIdle__block_invoke(uint64_t a1, vo
           v62 = 0u;
           v63 = 0u;
           v64 = 0u;
-          v59 = [v22 entryPreds];
-          v23 = [v59 countByEnumeratingWithState:&v61 objects:v73 count:16];
+          entryPreds = [v22 entryPreds];
+          v23 = [entryPreds countByEnumeratingWithState:&v61 objects:v73 count:16];
           if (v23)
           {
             v24 = v23;
@@ -561,15 +561,15 @@ void __42__CellOutrankHandlerSTM__bringStateToIdle__block_invoke(uint64_t a1, vo
               {
                 if (*v62 != v25)
                 {
-                  objc_enumerationMutation(v59);
+                  objc_enumerationMutation(entryPreds);
                 }
 
                 v28 = *(*(&v61 + 1) + 8 * v26);
                 v29 = objc_alloc(MEMORY[0x277CCACA8]);
-                v30 = [v22 label];
-                v31 = [v22 entryPreds];
-                v32 = [v31 objectForKeyedSubscript:v28];
-                v8 = [v29 initWithFormat:@"COSM STM state %@  Pred %@:  %@", v30, v28, v32];
+                label3 = [v22 label];
+                entryPreds2 = [v22 entryPreds];
+                v32 = [entryPreds2 objectForKeyedSubscript:v28];
+                v8 = [v29 initWithFormat:@"COSM STM state %@  Pred %@:  %@", label3, v28, v32];
 
                 [v60 addObject:v8];
                 ++v26;
@@ -577,7 +577,7 @@ void __42__CellOutrankHandlerSTM__bringStateToIdle__block_invoke(uint64_t a1, vo
               }
 
               while (v24 != v26);
-              v24 = [v59 countByEnumeratingWithState:&v61 objects:v73 count:16];
+              v24 = [entryPreds countByEnumeratingWithState:&v61 objects:v73 count:16];
             }
 
             while (v24);
@@ -593,7 +593,7 @@ void __42__CellOutrankHandlerSTM__bringStateToIdle__block_invoke(uint64_t a1, vo
       while (v56);
     }
 
-    self = v57;
+    self = selfCopy;
   }
 
   if (self->_lastStateSummaryProcessed)
@@ -629,15 +629,15 @@ void __42__CellOutrankHandlerSTM__bringStateToIdle__block_invoke(uint64_t a1, vo
     v8 = v44;
   }
 
-  if (v53)
+  if (stateCopy)
   {
     if (self->_lastStateSummaryProcessed)
     {
       v45 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"COSM STM Most recent input:      %@", self->_lastStateSummaryProcessed];
 
       [v60 addObject:v45];
-      v46 = [(COSMStateSummary *)self->_lastStateSummaryProcessed arrayOfStringsDescription];
-      [v60 addObjectsFromArray:v46];
+      arrayOfStringsDescription = [(COSMStateSummary *)self->_lastStateSummaryProcessed arrayOfStringsDescription];
+      [v60 addObjectsFromArray:arrayOfStringsDescription];
 
       v8 = v45;
     }
@@ -647,8 +647,8 @@ void __42__CellOutrankHandlerSTM__bringStateToIdle__block_invoke(uint64_t a1, vo
       v47 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"COSM STM Previous input:         %@", self->_prevStateSummaryProcessed];
 
       [v60 addObject:v47];
-      v48 = [(COSMStateSummary *)self->_prevStateSummaryProcessed arrayOfStringsDescription];
-      [v60 addObjectsFromArray:v48];
+      arrayOfStringsDescription2 = [(COSMStateSummary *)self->_prevStateSummaryProcessed arrayOfStringsDescription];
+      [v60 addObjectsFromArray:arrayOfStringsDescription2];
 
       v8 = v47;
     }
@@ -658,8 +658,8 @@ void __42__CellOutrankHandlerSTM__bringStateToIdle__block_invoke(uint64_t a1, vo
       v49 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"COSM STM Last state change via:  %@", self->_lastStateSummaryCausingChange];
 
       [v60 addObject:v49];
-      v50 = [(COSMStateSummary *)self->_lastStateSummaryCausingChange arrayOfStringsDescription];
-      [v60 addObjectsFromArray:v50];
+      arrayOfStringsDescription3 = [(COSMStateSummary *)self->_lastStateSummaryCausingChange arrayOfStringsDescription];
+      [v60 addObjectsFromArray:arrayOfStringsDescription3];
 
       v8 = v49;
     }
@@ -672,17 +672,17 @@ void __42__CellOutrankHandlerSTM__bringStateToIdle__block_invoke(uint64_t a1, vo
 
 - (id)internalStateDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_administrativeState];
-  [v3 setObject:v4 forKeyedSubscript:@"adminEnabled"];
+  [dictionary setObject:v4 forKeyedSubscript:@"adminEnabled"];
 
-  v5 = [(ExpertSystemStateCore *)self->_currentState label];
-  [v3 setObject:v5 forKeyedSubscript:@"stateMachineState"];
+  label = [(ExpertSystemStateCore *)self->_currentState label];
+  [dictionary setObject:label forKeyedSubscript:@"stateMachineState"];
 
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  [v3 setObject:v6 forKeyedSubscript:@"internalStateVariables"];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:dictionary2 forKeyedSubscript:@"internalStateVariables"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)currentQualifier
@@ -696,14 +696,14 @@ void __42__CellOutrankHandlerSTM__bringStateToIdle__block_invoke(uint64_t a1, vo
   return result;
 }
 
-- (void)_postUpwards:(unint64_t)a3
+- (void)_postUpwards:(unint64_t)upwards
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = outrankLogHandle;
   if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = a3;
+    upwardsCopy = upwards;
     _os_log_impl(&dword_23255B000, v4, OS_LOG_TYPE_DEFAULT, "COSM STM posting recommendation code: %llu", &v6, 0xCu);
   }
 
@@ -828,12 +828,12 @@ void __42__CellOutrankHandlerSTM__bringStateToIdle__block_invoke(uint64_t a1, vo
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (unsigned)evaluateState:(id)a3
+- (unsigned)evaluateState:(id)state
 {
   v116 = *MEMORY[0x277D85DE8];
-  v104 = a3;
+  stateCopy = state;
   v5 = &outrankLogHandle;
-  if ([v104 dampeningTimerExpiryEvent])
+  if ([stateCopy dampeningTimerExpiryEvent])
   {
     if (self->_inDampeningPeriod)
     {
@@ -868,19 +868,19 @@ void __42__CellOutrankHandlerSTM__bringStateToIdle__block_invoke(uint64_t a1, vo
   }
 
 LABEL_8:
-  v99 = a3;
-  [v104 setInDampeningPeriod:self->_inDampeningPeriod];
-  [v104 setInRegretAvoidanceOutrank:self->_inRegretAvoidanceOutrank];
-  [v104 setInCellPrivateNetworkOutrank:self->_inCellPrivateNetworkActiveOutrank];
+  stateCopy2 = state;
+  [stateCopy setInDampeningPeriod:self->_inDampeningPeriod];
+  [stateCopy setInRegretAvoidanceOutrank:self->_inRegretAvoidanceOutrank];
+  [stateCopy setInCellPrivateNetworkOutrank:self->_inCellPrivateNetworkActiveOutrank];
   v11 = outrankLogHandle;
   if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     currentState = self->_currentState;
     v13 = v11;
-    v14 = [(ExpertSystemStateCore *)currentState label];
-    v15 = +[COSMStateSummary summaryFromFlags:](COSMStateSummary, "summaryFromFlags:", [v104 reasonFlags]);
+    label = [(ExpertSystemStateCore *)currentState label];
+    v15 = +[COSMStateSummary summaryFromFlags:](COSMStateSummary, "summaryFromFlags:", [stateCopy reasonFlags]);
     *buf = 138412546;
-    v110 = v14;
+    v110 = label;
     v111 = 2112;
     v112 = v15;
     _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_DEFAULT, "COSM STM evaluateState <%@> %@", buf, 0x16u);
@@ -890,7 +890,7 @@ LABEL_8:
   if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v110 = v104;
+    v110 = stateCopy;
     _os_log_impl(&dword_23255B000, v16, OS_LOG_TYPE_DEFAULT, "COSM STM evaluateState %@", buf, 0xCu);
   }
 
@@ -898,9 +898,9 @@ LABEL_8:
   if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v18 = v17;
-    v19 = [v104 prettyJSONStringPart1];
+    prettyJSONStringPart1 = [stateCopy prettyJSONStringPart1];
     *buf = 138412290;
-    v110 = v19;
+    v110 = prettyJSONStringPart1;
     _os_log_impl(&dword_23255B000, v18, OS_LOG_TYPE_DEBUG, "COSM STM evaluateState entered with machine state: %@", buf, 0xCu);
   }
 
@@ -908,9 +908,9 @@ LABEL_8:
   if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v21 = v20;
-    v22 = [v104 prettyJSONStringPart2];
+    prettyJSONStringPart2 = [stateCopy prettyJSONStringPart2];
     *buf = 138412290;
-    v110 = v22;
+    v110 = prettyJSONStringPart2;
     _os_log_impl(&dword_23255B000, v21, OS_LOG_TYPE_DEBUG, "COSM STM evaluateState entered with machine state: %@", buf, 0xCu);
   }
 
@@ -918,9 +918,9 @@ LABEL_8:
   if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v24 = v23;
-    v25 = [v104 prettyJSONStringPart3];
+    prettyJSONStringPart3 = [stateCopy prettyJSONStringPart3];
     *buf = 138412290;
-    v110 = v25;
+    v110 = prettyJSONStringPart3;
     _os_log_impl(&dword_23255B000, v24, OS_LOG_TYPE_DEBUG, "COSM STM evaluateState entered with machine state: %@", buf, 0xCu);
   }
 
@@ -962,9 +962,9 @@ LABEL_21:
         goto LABEL_33;
       }
 
-      v35 = [*(*(&v105 + 1) + 8 * v33) entryPreds];
-      v36 = [(ExpertSystemStateCore *)self->_currentState label];
-      v37 = [v35 objectForKeyedSubscript:v36];
+      entryPreds = [*(*(&v105 + 1) + 8 * v33) entryPreds];
+      label2 = [(ExpertSystemStateCore *)self->_currentState label];
+      v37 = [entryPreds objectForKeyedSubscript:label2];
 
       if (v37)
       {
@@ -976,12 +976,12 @@ LABEL_21:
       {
         v48 = self->_currentState;
         v40 = v47;
-        v41 = [(ExpertSystemStateCore *)v48 label];
-        v42 = [(ExpertSystemStateCore *)v34 label];
+        label3 = [(ExpertSystemStateCore *)v48 label];
+        label4 = [(ExpertSystemStateCore *)v34 label];
         *buf = 138412802;
-        v110 = v41;
+        v110 = label3;
         v111 = 2112;
-        v112 = v42;
+        v112 = label4;
         v113 = 2048;
         v114 = 0;
         v44 = v40;
@@ -1008,20 +1008,20 @@ LABEL_33:
     }
 
     [(CellOutrankHandlerState *)self->_currentState noPreconditions];
-    if (![v37 evaluateWithObject:v104])
+    if (![v37 evaluateWithObject:stateCopy])
     {
       v38 = *v31;
       if (os_log_type_enabled(*v31, OS_LOG_TYPE_DEBUG))
       {
         v39 = self->_currentState;
         v40 = v38;
-        v41 = [(ExpertSystemStateCore *)v39 label];
-        v42 = [(ExpertSystemStateCore *)v34 label];
-        v43 = [v37 evaluateWithObject:v104];
+        label3 = [(ExpertSystemStateCore *)v39 label];
+        label4 = [(ExpertSystemStateCore *)v34 label];
+        v43 = [v37 evaluateWithObject:stateCopy];
         *buf = 138412802;
-        v110 = v41;
+        v110 = label3;
         v111 = 2112;
-        v112 = v42;
+        v112 = label4;
         v113 = 1024;
         LODWORD(v114) = v43;
         v44 = v40;
@@ -1036,8 +1036,8 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    v50 = [(ExpertSystemStateCore *)self->_currentState exitAction];
-    v51 = v50[2]();
+    exitAction = [(ExpertSystemStateCore *)self->_currentState exitAction];
+    v51 = exitAction[2]();
 
     v5 = v31;
     v52 = *v31;
@@ -1048,9 +1048,9 @@ LABEL_31:
       {
         v67 = self->_currentState;
         v68 = v52;
-        v69 = [(ExpertSystemStateCore *)v67 label];
+        label5 = [(ExpertSystemStateCore *)v67 label];
         *buf = 138412290;
-        v110 = v69;
+        v110 = label5;
         _os_log_impl(&dword_23255B000, v68, OS_LOG_TYPE_DEFAULT, "COSM STM Current state: %@, exit denied", buf, 0xCu);
       }
 
@@ -1064,12 +1064,12 @@ LABEL_47:
     {
       v54 = self->_currentState;
       v55 = v52;
-      v56 = [(ExpertSystemStateCore *)v54 label];
-      v57 = [(ExpertSystemStateCore *)v34 label];
+      label6 = [(ExpertSystemStateCore *)v54 label];
+      label7 = [(ExpertSystemStateCore *)v34 label];
       *buf = 138412546;
-      v110 = v56;
+      v110 = label6;
       v111 = 2112;
-      v112 = v57;
+      v112 = label7;
       _os_log_impl(&dword_23255B000, v55, OS_LOG_TYPE_DEFAULT, "COSM STM State change!!!   %@ -> %@", buf, 0x16u);
     }
 
@@ -1079,8 +1079,8 @@ LABEL_47:
 
     if (v58 != v59)
     {
-      v60 = [(ExpertSystemStateCore *)self->_currentState sojournTime];
-      [v60 stop];
+      sojournTime = [(ExpertSystemStateCore *)self->_currentState sojournTime];
+      [sojournTime stop];
     }
 
     v61 = self->_currentState;
@@ -1092,12 +1092,12 @@ LABEL_47:
 
     if (v62 != v63)
     {
-      v64 = [(ExpertSystemStateCore *)self->_currentState sojournTime];
-      [v64 start];
+      sojournTime2 = [(ExpertSystemStateCore *)self->_currentState sojournTime];
+      [sojournTime2 start];
     }
 
-    v65 = [(ExpertSystemStateCore *)self->_currentState entryAction];
-    v65[2]();
+    entryAction = [(ExpertSystemStateCore *)self->_currentState entryAction];
+    entryAction[2]();
 
     v66 = v102 + 1;
     v49 = 1;
@@ -1109,14 +1109,14 @@ LABEL_48:
       if (os_log_type_enabled(*v5, OS_LOG_TYPE_ERROR))
       {
         v79 = v78;
-        v80 = [(ExpertSystemStateCore *)v100 label];
-        v81 = [(ExpertSystemStateCore *)self->_currentState label];
+        label8 = [(ExpertSystemStateCore *)v100 label];
+        label9 = [(ExpertSystemStateCore *)self->_currentState label];
         *buf = 138412802;
-        v110 = v80;
+        v110 = label8;
         v111 = 2112;
-        v112 = v81;
+        v112 = label9;
         v113 = 2112;
-        v114 = v104;
+        v114 = stateCopy;
         _os_log_impl(&dword_23255B000, v79, OS_LOG_TYPE_ERROR, "COSM STM Pingponging from %@ to %@, incoming state %@", buf, 0x20u);
       }
 
@@ -1124,9 +1124,9 @@ LABEL_48:
       if ([v82 autoBugCaptureEnabled])
       {
         v83 = +[SystemProperties sharedInstance];
-        v84 = [v83 internalBuild];
+        internalBuild = [v83 internalBuild];
 
-        if (!v84)
+        if (!internalBuild)
         {
 LABEL_69:
           [(CellOutrankHandlerSTM *)self _bringStateToIdle];
@@ -1147,8 +1147,8 @@ LABEL_69:
 
     if (v49)
     {
-      v70 = [(ExpertSystemStateCore *)v101 label];
-      v71 = [v70 isEqualToString:@"outrank"];
+      label10 = [(ExpertSystemStateCore *)v101 label];
+      v71 = [label10 isEqualToString:@"outrank"];
 
       if (v71)
       {
@@ -1156,11 +1156,11 @@ LABEL_69:
         self->_inCellPrivateNetworkActiveOutrank = 0;
       }
 
-      v72 = [(ExpertSystemStateCore *)self->_currentState label];
-      if ([v72 isEqualToString:@"idle"])
+      label11 = [(ExpertSystemStateCore *)self->_currentState label];
+      if ([label11 isEqualToString:@"idle"])
       {
-        v73 = [(ExpertSystemStateCore *)v101 label];
-        v74 = [v73 isEqualToString:@"outrank"];
+        label12 = [(ExpertSystemStateCore *)v101 label];
+        v74 = [label12 isEqualToString:@"outrank"];
 
         if (v74)
         {
@@ -1174,15 +1174,15 @@ LABEL_69:
       }
 
       v102 = v66;
-      v75 = [(ExpertSystemStateCore *)self->_currentState label];
-      v76 = [v75 isEqualToString:@"outrank"];
+      label13 = [(ExpertSystemStateCore *)self->_currentState label];
+      v76 = [label13 isEqualToString:@"outrank"];
 
       if (v76)
       {
-        v77 = [(CellOutrankHandlerSTM *)self armedToOutrankRegretAvoidancePred];
-        self->_inRegretAvoidanceOutrank = [v77 evaluateWithObject:v104];
+        armedToOutrankRegretAvoidancePred = [(CellOutrankHandlerSTM *)self armedToOutrankRegretAvoidancePred];
+        self->_inRegretAvoidanceOutrank = [armedToOutrankRegretAvoidancePred evaluateWithObject:stateCopy];
 
-        self->_inCellPrivateNetworkActiveOutrank = [v104 cellPrivateNetworkActive];
+        self->_inCellPrivateNetworkActiveOutrank = [stateCopy cellPrivateNetworkActive];
       }
 
       v107 = 0u;
@@ -1206,12 +1206,12 @@ LABEL_61:
 
   objc_storeStrong(&self->_prevStateSummaryProcessed, self->_lastStateSummaryProcessed);
   self->_prevStateSummaryTimestamp = self->_lastStateSummaryTimestamp;
-  objc_storeStrong(&self->_lastStateSummaryProcessed, v99);
+  objc_storeStrong(&self->_lastStateSummaryProcessed, stateCopy2);
   self->_lastStateSummaryTimestamp = v27;
   [(CellOutrankHandlerSTM *)self valdateExitState:self->_currentState originally:v101];
   if (v101 != self->_currentState || !self->_lastStateSummaryCausingChange)
   {
-    objc_storeStrong(&self->_lastStateSummaryCausingChange, v99);
+    objc_storeStrong(&self->_lastStateSummaryCausingChange, stateCopy2);
     self->_lastStateSummaryCausingChangeTimestamp = v27;
   }
 
@@ -1220,14 +1220,14 @@ LABEL_61:
   {
     v88 = self->_currentState;
     v89 = v87;
-    v90 = [(ExpertSystemStateCore *)v88 label];
+    label14 = [(ExpertSystemStateCore *)v88 label];
     *buf = 138412290;
-    v110 = v90;
+    v110 = label14;
     _os_log_impl(&dword_23255B000, v89, OS_LOG_TYPE_INFO, "COSM STM evaluateState exit with state label: <%@>", buf, 0xCu);
   }
 
-  v91 = [(ExpertSystemStateCore *)self->_currentState label];
-  v92 = [v91 isEqualToString:@"idle"];
+  label15 = [(ExpertSystemStateCore *)self->_currentState label];
+  v92 = [label15 isEqualToString:@"idle"];
 
   if (v92)
   {
@@ -1236,8 +1236,8 @@ LABEL_61:
 
   else
   {
-    v94 = [(ExpertSystemStateCore *)self->_currentState label];
-    v95 = [v94 isEqualToString:@"armed"];
+    label16 = [(ExpertSystemStateCore *)self->_currentState label];
+    v95 = [label16 isEqualToString:@"armed"];
 
     if (v95)
     {

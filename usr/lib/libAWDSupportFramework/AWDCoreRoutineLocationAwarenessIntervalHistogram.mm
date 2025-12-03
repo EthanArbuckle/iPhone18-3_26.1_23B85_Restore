@@ -1,19 +1,19 @@
 @interface AWDCoreRoutineLocationAwarenessIntervalHistogram
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAnyPositiveIntervalHistogram:(id)a3;
-- (void)addLessThan10mIntervalHistogram:(id)a3;
-- (void)addLessThan200mIntervalHistogram:(id)a3;
-- (void)addLessThan25mIntervalHistogram:(id)a3;
-- (void)addLessThan55mIntervalHistogram:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addAnyPositiveIntervalHistogram:(id)histogram;
+- (void)addLessThan10mIntervalHistogram:(id)histogram;
+- (void)addLessThan200mIntervalHistogram:(id)histogram;
+- (void)addLessThan25mIntervalHistogram:(id)histogram;
+- (void)addLessThan55mIntervalHistogram:(id)histogram;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineLocationAwarenessIntervalHistogram
@@ -30,9 +30,9 @@
   [(AWDCoreRoutineLocationAwarenessIntervalHistogram *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -45,7 +45,7 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addLessThan10mIntervalHistogram:(id)a3
+- (void)addLessThan10mIntervalHistogram:(id)histogram
 {
   lessThan10mIntervalHistograms = self->_lessThan10mIntervalHistograms;
   if (!lessThan10mIntervalHistograms)
@@ -54,10 +54,10 @@
     self->_lessThan10mIntervalHistograms = lessThan10mIntervalHistograms;
   }
 
-  [(NSMutableArray *)lessThan10mIntervalHistograms addObject:a3];
+  [(NSMutableArray *)lessThan10mIntervalHistograms addObject:histogram];
 }
 
-- (void)addLessThan25mIntervalHistogram:(id)a3
+- (void)addLessThan25mIntervalHistogram:(id)histogram
 {
   lessThan25mIntervalHistograms = self->_lessThan25mIntervalHistograms;
   if (!lessThan25mIntervalHistograms)
@@ -66,10 +66,10 @@
     self->_lessThan25mIntervalHistograms = lessThan25mIntervalHistograms;
   }
 
-  [(NSMutableArray *)lessThan25mIntervalHistograms addObject:a3];
+  [(NSMutableArray *)lessThan25mIntervalHistograms addObject:histogram];
 }
 
-- (void)addLessThan55mIntervalHistogram:(id)a3
+- (void)addLessThan55mIntervalHistogram:(id)histogram
 {
   lessThan55mIntervalHistograms = self->_lessThan55mIntervalHistograms;
   if (!lessThan55mIntervalHistograms)
@@ -78,10 +78,10 @@
     self->_lessThan55mIntervalHistograms = lessThan55mIntervalHistograms;
   }
 
-  [(NSMutableArray *)lessThan55mIntervalHistograms addObject:a3];
+  [(NSMutableArray *)lessThan55mIntervalHistograms addObject:histogram];
 }
 
-- (void)addLessThan200mIntervalHistogram:(id)a3
+- (void)addLessThan200mIntervalHistogram:(id)histogram
 {
   lessThan200mIntervalHistograms = self->_lessThan200mIntervalHistograms;
   if (!lessThan200mIntervalHistograms)
@@ -90,10 +90,10 @@
     self->_lessThan200mIntervalHistograms = lessThan200mIntervalHistograms;
   }
 
-  [(NSMutableArray *)lessThan200mIntervalHistograms addObject:a3];
+  [(NSMutableArray *)lessThan200mIntervalHistograms addObject:histogram];
 }
 
-- (void)addAnyPositiveIntervalHistogram:(id)a3
+- (void)addAnyPositiveIntervalHistogram:(id)histogram
 {
   anyPositiveIntervalHistograms = self->_anyPositiveIntervalHistograms;
   if (!anyPositiveIntervalHistograms)
@@ -102,7 +102,7 @@
     self->_anyPositiveIntervalHistograms = anyPositiveIntervalHistograms;
   }
 
-  [(NSMutableArray *)anyPositiveIntervalHistograms addObject:a3];
+  [(NSMutableArray *)anyPositiveIntervalHistograms addObject:histogram];
 }
 
 - (id)description
@@ -115,17 +115,17 @@
 - (id)dictionaryRepresentation
 {
   v62 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
   }
 
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_duration), @"duration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_duration), @"duration"}];
   }
 
   if ([(NSMutableArray *)self->_lessThan10mIntervalHistograms count])
@@ -159,7 +159,7 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"LessThan10mIntervalHistogram"];
+    [dictionary setObject:v5 forKey:@"LessThan10mIntervalHistogram"];
   }
 
   if ([(NSMutableArray *)self->_lessThan25mIntervalHistograms count])
@@ -193,7 +193,7 @@
       while (v14);
     }
 
-    [v3 setObject:v11 forKey:@"LessThan25mIntervalHistogram"];
+    [dictionary setObject:v11 forKey:@"LessThan25mIntervalHistogram"];
   }
 
   if ([(NSMutableArray *)self->_lessThan55mIntervalHistograms count])
@@ -227,7 +227,7 @@
       while (v20);
     }
 
-    [v3 setObject:v17 forKey:@"LessThan55mIntervalHistogram"];
+    [dictionary setObject:v17 forKey:@"LessThan55mIntervalHistogram"];
   }
 
   if ([(NSMutableArray *)self->_lessThan200mIntervalHistograms count])
@@ -261,7 +261,7 @@
       while (v26);
     }
 
-    [v3 setObject:v23 forKey:@"LessThan200mIntervalHistogram"];
+    [dictionary setObject:v23 forKey:@"LessThan200mIntervalHistogram"];
   }
 
   if ([(NSMutableArray *)self->_anyPositiveIntervalHistograms count])
@@ -295,14 +295,14 @@
       while (v32);
     }
 
-    [v3 setObject:v29 forKey:@"AnyPositiveIntervalHistogram"];
+    [dictionary setObject:v29 forKey:@"AnyPositiveIntervalHistogram"];
   }
 
   v35 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v63 = *MEMORY[0x29EDCA608];
   has = self->_has;
@@ -467,97 +467,97 @@
   v37 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 2) = self->_timestamp;
-    *(a3 + 64) |= 2u;
+    *(to + 2) = self->_timestamp;
+    *(to + 64) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(a3 + 1) = self->_duration;
-    *(a3 + 64) |= 1u;
+    *(to + 1) = self->_duration;
+    *(to + 64) |= 1u;
   }
 
   if ([(AWDCoreRoutineLocationAwarenessIntervalHistogram *)self lessThan10mIntervalHistogramsCount])
   {
-    [a3 clearLessThan10mIntervalHistograms];
-    v6 = [(AWDCoreRoutineLocationAwarenessIntervalHistogram *)self lessThan10mIntervalHistogramsCount];
-    if (v6)
+    [to clearLessThan10mIntervalHistograms];
+    lessThan10mIntervalHistogramsCount = [(AWDCoreRoutineLocationAwarenessIntervalHistogram *)self lessThan10mIntervalHistogramsCount];
+    if (lessThan10mIntervalHistogramsCount)
     {
-      v7 = v6;
+      v7 = lessThan10mIntervalHistogramsCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addLessThan10mIntervalHistogram:{-[AWDCoreRoutineLocationAwarenessIntervalHistogram lessThan10mIntervalHistogramAtIndex:](self, "lessThan10mIntervalHistogramAtIndex:", i)}];
+        [to addLessThan10mIntervalHistogram:{-[AWDCoreRoutineLocationAwarenessIntervalHistogram lessThan10mIntervalHistogramAtIndex:](self, "lessThan10mIntervalHistogramAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDCoreRoutineLocationAwarenessIntervalHistogram *)self lessThan25mIntervalHistogramsCount])
   {
-    [a3 clearLessThan25mIntervalHistograms];
-    v9 = [(AWDCoreRoutineLocationAwarenessIntervalHistogram *)self lessThan25mIntervalHistogramsCount];
-    if (v9)
+    [to clearLessThan25mIntervalHistograms];
+    lessThan25mIntervalHistogramsCount = [(AWDCoreRoutineLocationAwarenessIntervalHistogram *)self lessThan25mIntervalHistogramsCount];
+    if (lessThan25mIntervalHistogramsCount)
     {
-      v10 = v9;
+      v10 = lessThan25mIntervalHistogramsCount;
       for (j = 0; j != v10; ++j)
       {
-        [a3 addLessThan25mIntervalHistogram:{-[AWDCoreRoutineLocationAwarenessIntervalHistogram lessThan25mIntervalHistogramAtIndex:](self, "lessThan25mIntervalHistogramAtIndex:", j)}];
+        [to addLessThan25mIntervalHistogram:{-[AWDCoreRoutineLocationAwarenessIntervalHistogram lessThan25mIntervalHistogramAtIndex:](self, "lessThan25mIntervalHistogramAtIndex:", j)}];
       }
     }
   }
 
   if ([(AWDCoreRoutineLocationAwarenessIntervalHistogram *)self lessThan55mIntervalHistogramsCount])
   {
-    [a3 clearLessThan55mIntervalHistograms];
-    v12 = [(AWDCoreRoutineLocationAwarenessIntervalHistogram *)self lessThan55mIntervalHistogramsCount];
-    if (v12)
+    [to clearLessThan55mIntervalHistograms];
+    lessThan55mIntervalHistogramsCount = [(AWDCoreRoutineLocationAwarenessIntervalHistogram *)self lessThan55mIntervalHistogramsCount];
+    if (lessThan55mIntervalHistogramsCount)
     {
-      v13 = v12;
+      v13 = lessThan55mIntervalHistogramsCount;
       for (k = 0; k != v13; ++k)
       {
-        [a3 addLessThan55mIntervalHistogram:{-[AWDCoreRoutineLocationAwarenessIntervalHistogram lessThan55mIntervalHistogramAtIndex:](self, "lessThan55mIntervalHistogramAtIndex:", k)}];
+        [to addLessThan55mIntervalHistogram:{-[AWDCoreRoutineLocationAwarenessIntervalHistogram lessThan55mIntervalHistogramAtIndex:](self, "lessThan55mIntervalHistogramAtIndex:", k)}];
       }
     }
   }
 
   if ([(AWDCoreRoutineLocationAwarenessIntervalHistogram *)self lessThan200mIntervalHistogramsCount])
   {
-    [a3 clearLessThan200mIntervalHistograms];
-    v15 = [(AWDCoreRoutineLocationAwarenessIntervalHistogram *)self lessThan200mIntervalHistogramsCount];
-    if (v15)
+    [to clearLessThan200mIntervalHistograms];
+    lessThan200mIntervalHistogramsCount = [(AWDCoreRoutineLocationAwarenessIntervalHistogram *)self lessThan200mIntervalHistogramsCount];
+    if (lessThan200mIntervalHistogramsCount)
     {
-      v16 = v15;
+      v16 = lessThan200mIntervalHistogramsCount;
       for (m = 0; m != v16; ++m)
       {
-        [a3 addLessThan200mIntervalHistogram:{-[AWDCoreRoutineLocationAwarenessIntervalHistogram lessThan200mIntervalHistogramAtIndex:](self, "lessThan200mIntervalHistogramAtIndex:", m)}];
+        [to addLessThan200mIntervalHistogram:{-[AWDCoreRoutineLocationAwarenessIntervalHistogram lessThan200mIntervalHistogramAtIndex:](self, "lessThan200mIntervalHistogramAtIndex:", m)}];
       }
     }
   }
 
   if ([(AWDCoreRoutineLocationAwarenessIntervalHistogram *)self anyPositiveIntervalHistogramsCount])
   {
-    [a3 clearAnyPositiveIntervalHistograms];
-    v18 = [(AWDCoreRoutineLocationAwarenessIntervalHistogram *)self anyPositiveIntervalHistogramsCount];
-    if (v18)
+    [to clearAnyPositiveIntervalHistograms];
+    anyPositiveIntervalHistogramsCount = [(AWDCoreRoutineLocationAwarenessIntervalHistogram *)self anyPositiveIntervalHistogramsCount];
+    if (anyPositiveIntervalHistogramsCount)
     {
-      v19 = v18;
+      v19 = anyPositiveIntervalHistogramsCount;
       for (n = 0; n != v19; ++n)
       {
-        [a3 addAnyPositiveIntervalHistogram:{-[AWDCoreRoutineLocationAwarenessIntervalHistogram anyPositiveIntervalHistogramAtIndex:](self, "anyPositiveIntervalHistogramAtIndex:", n)}];
+        [to addAnyPositiveIntervalHistogram:{-[AWDCoreRoutineLocationAwarenessIntervalHistogram anyPositiveIntervalHistogramAtIndex:](self, "anyPositiveIntervalHistogramAtIndex:", n)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v65 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -592,7 +592,7 @@
           objc_enumerationMutation(lessThan10mIntervalHistograms);
         }
 
-        v13 = [*(*(&v56 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v56 + 1) + 8 * i) copyWithZone:zone];
         [v6 addLessThan10mIntervalHistogram:v13];
       }
 
@@ -621,7 +621,7 @@
           objc_enumerationMutation(lessThan25mIntervalHistograms);
         }
 
-        v19 = [*(*(&v52 + 1) + 8 * j) copyWithZone:a3];
+        v19 = [*(*(&v52 + 1) + 8 * j) copyWithZone:zone];
         [v6 addLessThan25mIntervalHistogram:v19];
       }
 
@@ -650,7 +650,7 @@
           objc_enumerationMutation(lessThan55mIntervalHistograms);
         }
 
-        v25 = [*(*(&v48 + 1) + 8 * k) copyWithZone:a3];
+        v25 = [*(*(&v48 + 1) + 8 * k) copyWithZone:zone];
         [v6 addLessThan55mIntervalHistogram:v25];
       }
 
@@ -679,7 +679,7 @@
           objc_enumerationMutation(lessThan200mIntervalHistograms);
         }
 
-        v31 = [*(*(&v44 + 1) + 8 * m) copyWithZone:a3];
+        v31 = [*(*(&v44 + 1) + 8 * m) copyWithZone:zone];
         [v6 addLessThan200mIntervalHistogram:v31];
       }
 
@@ -708,7 +708,7 @@
           objc_enumerationMutation(anyPositiveIntervalHistograms);
         }
 
-        v37 = [*(*(&v40 + 1) + 8 * n) copyWithZone:a3];
+        v37 = [*(*(&v40 + 1) + 8 * n) copyWithZone:zone];
         [v6 addAnyPositiveIntervalHistogram:v37];
       }
 
@@ -722,21 +722,21 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 64);
+    v6 = *(equal + 64);
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 64) & 2) == 0 || self->_timestamp != *(a3 + 2))
+      if ((*(equal + 64) & 2) == 0 || self->_timestamp != *(equal + 2))
       {
         goto LABEL_22;
       }
     }
 
-    else if ((*(a3 + 64) & 2) != 0)
+    else if ((*(equal + 64) & 2) != 0)
     {
 LABEL_22:
       LOBYTE(v5) = 0;
@@ -745,31 +745,31 @@ LABEL_22:
 
     if (*&self->_has)
     {
-      if ((*(a3 + 64) & 1) == 0 || self->_duration != *(a3 + 1))
+      if ((*(equal + 64) & 1) == 0 || self->_duration != *(equal + 1))
       {
         goto LABEL_22;
       }
     }
 
-    else if (*(a3 + 64))
+    else if (*(equal + 64))
     {
       goto LABEL_22;
     }
 
     lessThan10mIntervalHistograms = self->_lessThan10mIntervalHistograms;
-    if (!(lessThan10mIntervalHistograms | *(a3 + 4)) || (v5 = [(NSMutableArray *)lessThan10mIntervalHistograms isEqual:?]) != 0)
+    if (!(lessThan10mIntervalHistograms | *(equal + 4)) || (v5 = [(NSMutableArray *)lessThan10mIntervalHistograms isEqual:?]) != 0)
     {
       lessThan25mIntervalHistograms = self->_lessThan25mIntervalHistograms;
-      if (!(lessThan25mIntervalHistograms | *(a3 + 6)) || (v5 = [(NSMutableArray *)lessThan25mIntervalHistograms isEqual:?]) != 0)
+      if (!(lessThan25mIntervalHistograms | *(equal + 6)) || (v5 = [(NSMutableArray *)lessThan25mIntervalHistograms isEqual:?]) != 0)
       {
         lessThan55mIntervalHistograms = self->_lessThan55mIntervalHistograms;
-        if (!(lessThan55mIntervalHistograms | *(a3 + 7)) || (v5 = [(NSMutableArray *)lessThan55mIntervalHistograms isEqual:?]) != 0)
+        if (!(lessThan55mIntervalHistograms | *(equal + 7)) || (v5 = [(NSMutableArray *)lessThan55mIntervalHistograms isEqual:?]) != 0)
         {
           lessThan200mIntervalHistograms = self->_lessThan200mIntervalHistograms;
-          if (!(lessThan200mIntervalHistograms | *(a3 + 5)) || (v5 = [(NSMutableArray *)lessThan200mIntervalHistograms isEqual:?]) != 0)
+          if (!(lessThan200mIntervalHistograms | *(equal + 5)) || (v5 = [(NSMutableArray *)lessThan200mIntervalHistograms isEqual:?]) != 0)
           {
             anyPositiveIntervalHistograms = self->_anyPositiveIntervalHistograms;
-            if (anyPositiveIntervalHistograms | *(a3 + 3))
+            if (anyPositiveIntervalHistograms | *(equal + 3))
             {
 
               LOBYTE(v5) = [(NSMutableArray *)anyPositiveIntervalHistograms isEqual:?];
@@ -819,20 +819,20 @@ LABEL_6:
   return v7 ^ v8 ^ [(NSMutableArray *)self->_anyPositiveIntervalHistograms hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v57 = *MEMORY[0x29EDCA608];
-  v5 = *(a3 + 64);
+  v5 = *(from + 64);
   if ((v5 & 2) != 0)
   {
-    self->_timestamp = *(a3 + 2);
+    self->_timestamp = *(from + 2);
     *&self->_has |= 2u;
-    v5 = *(a3 + 64);
+    v5 = *(from + 64);
   }
 
   if (v5)
   {
-    self->_duration = *(a3 + 1);
+    self->_duration = *(from + 1);
     *&self->_has |= 1u;
   }
 
@@ -840,7 +840,7 @@ LABEL_6:
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v6 = *(a3 + 4);
+  v6 = *(from + 4);
   v7 = [v6 countByEnumeratingWithState:&v48 objects:v56 count:16];
   if (v7)
   {
@@ -868,7 +868,7 @@ LABEL_6:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v11 = *(a3 + 6);
+  v11 = *(from + 6);
   v12 = [v11 countByEnumeratingWithState:&v44 objects:v55 count:16];
   if (v12)
   {
@@ -896,7 +896,7 @@ LABEL_6:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v16 = *(a3 + 7);
+  v16 = *(from + 7);
   v17 = [v16 countByEnumeratingWithState:&v40 objects:v54 count:16];
   if (v17)
   {
@@ -924,7 +924,7 @@ LABEL_6:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v21 = *(a3 + 5);
+  v21 = *(from + 5);
   v22 = [v21 countByEnumeratingWithState:&v36 objects:v53 count:16];
   if (v22)
   {
@@ -952,7 +952,7 @@ LABEL_6:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v26 = *(a3 + 3);
+  v26 = *(from + 3);
   v27 = [v26 countByEnumeratingWithState:&v32 objects:v52 count:16];
   if (v27)
   {

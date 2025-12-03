@@ -1,59 +1,59 @@
 @interface BWFaceDetectionNode
-- (BWFaceDetectionNode)initWithObjectMetadataIdentifiers:(id)a3 movieFileOutputMetadataIdentifierGroups:(id)a4;
+- (BWFaceDetectionNode)initWithObjectMetadataIdentifiers:(id)identifiers movieFileOutputMetadataIdentifierGroups:(id)groups;
 - (CGRect)rectOfInterest;
 - (__n128)_resetDetection;
-- (uint64_t)_addDetectedObjectsInfo:(uint64_t)a3 detectedObjectsSource:(const void *)a4 toSampleBuffer:;
-- (uint64_t)_addFacesArray:(const void *)a3 toSampleBuffer:;
+- (uint64_t)_addDetectedObjectsInfo:(uint64_t)info detectedObjectsSource:(const void *)source toSampleBuffer:;
+- (uint64_t)_addFacesArray:(const void *)array toSampleBuffer:;
 - (uint64_t)_getEmptyMetadataSampleData;
-- (uint64_t)append:(_DWORD *)a3 toBoxedData:(_DWORD *)a4 localIDs:(int)a5 isFace:;
+- (uint64_t)append:(_DWORD *)append toBoxedData:(_DWORD *)data localIDs:(int)ds isFace:;
 - (uint64_t)localIDsForKey:(uint64_t)result;
-- (void)_populateLocalIDsForCatBodiesWithFormatDescription:(uint64_t)a1;
-- (void)_populateLocalIDsForCatHeadsWithFormatDescription:(uint64_t)a1;
-- (void)_populateLocalIDsForDogBodiesWithFormatDescription:(uint64_t)a1;
-- (void)_populateLocalIDsForDogHeadsWithFormatDescription:(uint64_t)a1;
-- (void)_populateLocalIDsForFacesWithFormatDescription:(_DWORD *)a1;
-- (void)_populateLocalIDsForHumanBodiesWithFormatDescription:(uint64_t)a1;
-- (void)_populateLocalIDsForSalientObjectsWithFormatDescription:(uint64_t)a1;
+- (void)_populateLocalIDsForCatBodiesWithFormatDescription:(uint64_t)description;
+- (void)_populateLocalIDsForCatHeadsWithFormatDescription:(uint64_t)description;
+- (void)_populateLocalIDsForDogBodiesWithFormatDescription:(uint64_t)description;
+- (void)_populateLocalIDsForDogHeadsWithFormatDescription:(uint64_t)description;
+- (void)_populateLocalIDsForFacesWithFormatDescription:(_DWORD *)description;
+- (void)_populateLocalIDsForHumanBodiesWithFormatDescription:(uint64_t)description;
+- (void)_populateLocalIDsForSalientObjectsWithFormatDescription:(uint64_t)description;
 - (void)_renderSampleBuffer:forBoxedMetadataOutput:withDetectedObjectsInfo:;
 - (void)_renderSampleBufferForBoxedMetadataOutput:withDetectedObjectsInfo:;
 - (void)_renderSampleBufferForBoxedMetadataOutput:withFaceArray:;
-- (void)_renderSampleBufferWithLock:(uint64_t)a1 forInput:;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)_renderSampleBufferWithLock:(uint64_t)lock forInput:;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
-- (void)setEmitsEmptyObjectDetectionMetadata:(BOOL)a3;
-- (void)setMetadataObjectOutputEnabled:(BOOL)a3;
-- (void)setRectOfInterest:(CGRect)a3;
-- (void)updateMetadataIdentifiers:(id)a3 rectOfInterest:(CGRect)a4 emitsEmptyObjectDetectionMetadata:(BOOL)a5;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
+- (void)setEmitsEmptyObjectDetectionMetadata:(BOOL)metadata;
+- (void)setMetadataObjectOutputEnabled:(BOOL)enabled;
+- (void)setRectOfInterest:(CGRect)interest;
+- (void)updateMetadataIdentifiers:(id)identifiers rectOfInterest:(CGRect)interest emitsEmptyObjectDetectionMetadata:(BOOL)metadata;
 @end
 
 @implementation BWFaceDetectionNode
 
 - (__n128)_resetDetection
 {
-  if (a1)
+  if (self)
   {
-    *(a1 + 480) = 0;
+    *(self + 480) = 0;
     v1 = MEMORY[0x1E6960C70];
     result = *MEMORY[0x1E6960C70];
-    *(a1 + 408) = *MEMORY[0x1E6960C70];
+    *(self + 408) = *MEMORY[0x1E6960C70];
     v3 = *(v1 + 16);
-    *(a1 + 424) = v3;
-    *(a1 + 432) = result;
-    *(a1 + 448) = v3;
-    *(a1 + 456) = result;
-    *(a1 + 472) = v3;
-    *(a1 + 496) = 0;
-    *(a1 + 504) = 0;
-    *(a1 + 240) = -1;
-    *(a1 + 244) = -1;
+    *(self + 424) = v3;
+    *(self + 432) = result;
+    *(self + 448) = v3;
+    *(self + 456) = result;
+    *(self + 472) = v3;
+    *(self + 496) = 0;
+    *(self + 504) = 0;
+    *(self + 240) = -1;
+    *(self + 244) = -1;
   }
 
   return result;
 }
 
-- (BWFaceDetectionNode)initWithObjectMetadataIdentifiers:(id)a3 movieFileOutputMetadataIdentifierGroups:(id)a4
+- (BWFaceDetectionNode)initWithObjectMetadataIdentifiers:(id)identifiers movieFileOutputMetadataIdentifierGroups:(id)groups
 {
   v83.receiver = self;
   v83.super_class = BWFaceDetectionNode;
@@ -73,8 +73,8 @@
   v67->_rectOfInterest.size = _Q0;
   v67->_configurationLock._os_unfair_lock_opaque = 0;
   v67->_metadataObjectOutput = [[BWNodeOutput alloc] initWithMediaType:1836016234 node:v67];
-  v41 = a3;
-  [(BWNodeOutput *)v67->_metadataObjectOutput setFormat:[BWMetadataObjectFormat formatWithMetadataIdentifiers:a3]];
+  identifiersCopy = identifiers;
+  [(BWNodeOutput *)v67->_metadataObjectOutput setFormat:[BWMetadataObjectFormat formatWithMetadataIdentifiers:identifiers]];
   [(BWNode *)v67 addOutput:v67->_metadataObjectOutput];
   v67->_localIDsForFaces_BE[0] = 0;
   v67->_localIDsForDetectedHumanBodies_BE[0] = 0;
@@ -83,7 +83,7 @@
   v67->_localIDsForDetectedDogHeads_BE[0] = 0;
   v67->_localIDsForDetectedDogBodies_BE[0] = 0;
   v67->_localIDsForDetectedSalientObjects_BE[0] = 0;
-  v13 = [a4 count];
+  v13 = [groups count];
   v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:v13];
   allocator = *MEMORY[0x1E695E480];
   theDict = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], v13, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
@@ -92,7 +92,7 @@
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
-  v66 = [a4 countByEnumeratingWithState:&v79 objects:v78 count:16];
+  v66 = [groups countByEnumeratingWithState:&v79 objects:v78 count:16];
   if (!v66)
   {
     goto LABEL_5;
@@ -132,7 +132,7 @@
   v42 = v14;
   v43 = *MEMORY[0x1E69629C8];
   v23 = 0x1E695D000;
-  obj = a4;
+  obj = groups;
   v62 = *MEMORY[0x1E6960338];
   v68 = *MEMORY[0x1E6960298];
   do
@@ -148,7 +148,7 @@
       v69 = v24;
       v25 = *(*(&v79 + 1) + 8 * v24);
       formatDescriptionOut = 0;
-      v26 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       if ([v25 containsObject:v73])
       {
         v135[0] = v18;
@@ -192,7 +192,7 @@
         v123[2] = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v121 forKeys:&v120 count:1];
         v134[3] = [MEMORY[0x1E695DF20] dictionaryWithObjects:v123 forKeys:v122 count:3];
         v136[2] = [MEMORY[0x1E695DEC8] arrayWithObjects:v134 count:4];
-        [v26 addObject:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v136, v135, 3)}];
+        [array addObject:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v136, v135, 3)}];
       }
 
       if ([v25 containsObject:v22])
@@ -217,7 +217,7 @@
         v114[2] = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v112 forKeys:&v111 count:1];
         v117[1] = [MEMORY[0x1E695DF20] dictionaryWithObjects:v114 forKeys:v113 count:3];
         v119[2] = [*(v23 + 3784) arrayWithObjects:v117 count:2];
-        [v26 addObject:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v119, v118, 3)}];
+        [array addObject:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v119, v118, 3)}];
       }
 
       if ([v25 containsObject:v71])
@@ -242,7 +242,7 @@
         v105[2] = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v103 forKeys:&v102 count:1];
         v108[1] = [MEMORY[0x1E695DF20] dictionaryWithObjects:v105 forKeys:v104 count:3];
         v110[2] = [*(v23 + 3784) arrayWithObjects:v108 count:2];
-        [v26 addObject:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v110, v109, 3)}];
+        [array addObject:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v110, v109, 3)}];
       }
 
       if ([v25 containsObject:v72])
@@ -267,7 +267,7 @@
         v96[2] = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v94 forKeys:&v93 count:1];
         v99[1] = [MEMORY[0x1E695DF20] dictionaryWithObjects:v96 forKeys:v95 count:3];
         v101[2] = [*(v23 + 3784) arrayWithObjects:v99 count:2];
-        [v26 addObject:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v101, v100, 3)}];
+        [array addObject:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v101, v100, 3)}];
       }
 
       if ([v25 containsObject:v70])
@@ -292,10 +292,10 @@
         v87[2] = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v85 forKeys:&v84 count:1];
         v90[1] = [MEMORY[0x1E695DF20] dictionaryWithObjects:v87 forKeys:v86 count:3];
         v92[2] = [*(v23 + 3784) arrayWithObjects:v90 count:2];
-        [v26 addObject:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v92, v91, 3)}];
+        [array addObject:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v92, v91, 3)}];
       }
 
-      if (CMMetadataFormatDescriptionCreateWithMetadataSpecifications(allocator, 0x6D656278u, v26, &formatDescriptionOut))
+      if (CMMetadataFormatDescriptionCreateWithMetadataSpecifications(allocator, 0x6D656278u, array, &formatDescriptionOut))
       {
         [BWFaceDetectionNode initWithObjectMetadataIdentifiers:movieFileOutputMetadataIdentifierGroups:];
         goto LABEL_49;
@@ -394,7 +394,7 @@ LABEL_49:
     }
 
     while (v66 != v69 + 1);
-    a4 = obj;
+    groups = obj;
     v40 = [obj countByEnumeratingWithState:&v79 objects:v78 count:16];
     v66 = v40;
   }
@@ -410,10 +410,10 @@ LABEL_5:
   v67->_boxedMetadataOutputs = v15;
   v67->_detectionTimingInfoByBoxedOutput = theDict;
   v16 = [MEMORY[0x1E695DFA8] set];
-  FigCaptureAddDetectedObjectTypesFromMetadataIdentifiersToSet(v41, v16);
+  FigCaptureAddDetectedObjectTypesFromMetadataIdentifiersToSet(identifiersCopy, v16);
   v67->_enabledDetectedObjectTypes = v16;
-  v67->_metadataObjectOutputEnabled = [v41 count] != 0;
-  v67->_boxedMetadataOutputEnabled = [a4 count] != 0;
+  v67->_metadataObjectOutputEnabled = [identifiersCopy count] != 0;
+  v67->_boxedMetadataOutputEnabled = [groups count] != 0;
   v67->_emitsEmptyObjectDetectionMetadata = 0;
   *&v17 = [(BWFaceDetectionNode *)v67 _resetDetection].n128_u64[0];
   v67->_recordCollectionAtomIdentifier_BE = 1667592803;
@@ -436,15 +436,15 @@ LABEL_5:
   [(BWFanOutNode *)&v4 dealloc];
 }
 
-- (void)updateMetadataIdentifiers:(id)a3 rectOfInterest:(CGRect)a4 emitsEmptyObjectDetectionMetadata:(BOOL)a5
+- (void)updateMetadataIdentifiers:(id)identifiers rectOfInterest:(CGRect)interest emitsEmptyObjectDetectionMetadata:(BOOL)metadata
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   os_unfair_lock_lock(&self->_configurationLock);
   v12 = [MEMORY[0x1E695DFA8] set];
-  FigCaptureAddDetectedObjectTypesFromMetadataIdentifiersToSet(a3, v12);
+  FigCaptureAddDetectedObjectTypesFromMetadataIdentifiersToSet(identifiers, v12);
   if (![(NSSet *)self->_enabledDetectedObjectTypes isEqualToSet:v12])
   {
 
@@ -476,19 +476,19 @@ LABEL_5:
   self->_rectOfInterest.origin.y = v14;
   self->_rectOfInterest.size.width = v15;
   self->_rectOfInterest.size.height = v16;
-  self->_metadataObjectOutputEnabled = [a3 count] != 0;
-  self->_emitsEmptyObjectDetectionMetadata = a5;
+  self->_metadataObjectOutputEnabled = [identifiers count] != 0;
+  self->_emitsEmptyObjectDetectionMetadata = metadata;
 
   os_unfair_lock_unlock(&self->_configurationLock);
 }
 
-- (void)setRectOfInterest:(CGRect)a3
+- (void)setRectOfInterest:(CGRect)interest
 {
   v10.origin.x = 0.0;
   v10.origin.y = 0.0;
   v10.size.width = 1.0;
   v10.size.height = 1.0;
-  v9 = CGRectIntersection(a3, v10);
+  v9 = CGRectIntersection(interest, v10);
   x = v9.origin.x;
   y = v9.origin.y;
   width = v9.size.width;
@@ -523,35 +523,35 @@ LABEL_5:
   return result;
 }
 
-- (void)setMetadataObjectOutputEnabled:(BOOL)a3
+- (void)setMetadataObjectOutputEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   os_unfair_lock_lock(&self->_configurationLock);
-  if (self->_metadataObjectOutputEnabled != v3)
+  if (self->_metadataObjectOutputEnabled != enabledCopy)
   {
-    self->_metadataObjectOutputEnabled = v3;
+    self->_metadataObjectOutputEnabled = enabledCopy;
   }
 
   os_unfair_lock_unlock(&self->_configurationLock);
 }
 
-- (void)setEmitsEmptyObjectDetectionMetadata:(BOOL)a3
+- (void)setEmitsEmptyObjectDetectionMetadata:(BOOL)metadata
 {
-  v3 = a3;
+  metadataCopy = metadata;
   os_unfair_lock_lock(&self->_configurationLock);
-  if (self->_emitsEmptyObjectDetectionMetadata != v3)
+  if (self->_emitsEmptyObjectDetectionMetadata != metadataCopy)
   {
-    self->_emitsEmptyObjectDetectionMetadata = v3;
+    self->_emitsEmptyObjectDetectionMetadata = metadataCopy;
   }
 
   os_unfair_lock_unlock(&self->_configurationLock);
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
   if (self->_metadataObjectOutputEnabled)
   {
-    [(BWNodeOutput *)self->_metadataObjectOutput makeConfiguredFormatLive:a3];
+    [(BWNodeOutput *)self->_metadataObjectOutput makeConfiguredFormatLive:d];
   }
 
   if (self->_boxedMetadataOutputEnabled)
@@ -588,7 +588,7 @@ LABEL_5:
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   os_unfair_lock_lock(&self->_configurationLock);
   [BWFaceDetectionNode _renderSampleBufferWithLock:? forInput:?];
@@ -596,11 +596,11 @@ LABEL_5:
   os_unfair_lock_unlock(&self->_configurationLock);
 }
 
-- (void)_populateLocalIDsForFacesWithFormatDescription:(_DWORD *)a1
+- (void)_populateLocalIDsForFacesWithFormatDescription:(_DWORD *)description
 {
-  if (a1)
+  if (description)
   {
-    if (a1[62])
+    if (description[62])
     {
       fig_log_get_emitter();
       OUTLINED_FUNCTION_4_8();
@@ -610,32 +610,32 @@ LABEL_5:
     else if (OUTLINED_FUNCTION_12_51())
     {
       OUTLINED_FUNCTION_24_22();
-      *(a1 + v3) = v2;
-      a1[88] = a1[62];
+      *(description + v3) = v2;
+      description[88] = description[62];
       if (OUTLINED_FUNCTION_12_51())
       {
         OUTLINED_FUNCTION_24_22();
         OUTLINED_FUNCTION_10_54(v4);
         OUTLINED_FUNCTION_25_22();
-        a1[89] = *(v5 + 4);
+        description[89] = *(v5 + 4);
         if (OUTLINED_FUNCTION_12_51())
         {
           OUTLINED_FUNCTION_24_22();
           OUTLINED_FUNCTION_11_53(v6);
           OUTLINED_FUNCTION_25_22();
-          a1[90] = *(v7 + 8);
+          description[90] = *(v7 + 8);
           if (FigMetadataFormatDescriptionGetLocalIDForMetadataIdentifyingFactors())
           {
             OUTLINED_FUNCTION_24_22();
-            *(a1 + v8 + 12) = v9;
+            *(description + v8 + 12) = v9;
             OUTLINED_FUNCTION_25_22();
-            a1[91] = *(v10 + 12);
+            description[91] = *(v10 + 12);
             if (FigMetadataFormatDescriptionGetLocalIDForMetadataIdentifyingFactors())
             {
               OUTLINED_FUNCTION_5_87();
-              a1[66] = v11;
+              description[66] = v11;
               OUTLINED_FUNCTION_25_22();
-              a1[92] = *(v12 + 16);
+              description[92] = *(v12 + 16);
             }
           }
         }
@@ -644,11 +644,11 @@ LABEL_5:
   }
 }
 
-- (void)_populateLocalIDsForHumanBodiesWithFormatDescription:(uint64_t)a1
+- (void)_populateLocalIDsForHumanBodiesWithFormatDescription:(uint64_t)description
 {
-  if (a1)
+  if (description)
   {
-    if (*(a1 + 268))
+    if (*(description + 268))
     {
       fig_log_get_emitter();
       OUTLINED_FUNCTION_4_8();
@@ -660,7 +660,7 @@ LABEL_5:
       v2 = OUTLINED_FUNCTION_12_51();
       if (v2)
       {
-        *(a1 + 268) = bswap32(v2);
+        *(description + 268) = bswap32(v2);
         v3 = OUTLINED_FUNCTION_12_51();
         if (v3)
         {
@@ -676,11 +676,11 @@ LABEL_5:
   }
 }
 
-- (void)_populateLocalIDsForCatHeadsWithFormatDescription:(uint64_t)a1
+- (void)_populateLocalIDsForCatHeadsWithFormatDescription:(uint64_t)description
 {
-  if (a1)
+  if (description)
   {
-    if (*(a1 + 280))
+    if (*(description + 280))
     {
       fig_log_get_emitter();
       OUTLINED_FUNCTION_4_8();
@@ -692,7 +692,7 @@ LABEL_5:
       v2 = OUTLINED_FUNCTION_12_51();
       if (v2)
       {
-        *(a1 + 280) = bswap32(v2);
+        *(description + 280) = bswap32(v2);
         v3 = OUTLINED_FUNCTION_12_51();
         if (v3)
         {
@@ -708,11 +708,11 @@ LABEL_5:
   }
 }
 
-- (void)_populateLocalIDsForCatBodiesWithFormatDescription:(uint64_t)a1
+- (void)_populateLocalIDsForCatBodiesWithFormatDescription:(uint64_t)description
 {
-  if (a1)
+  if (description)
   {
-    if (*(a1 + 292))
+    if (*(description + 292))
     {
       fig_log_get_emitter();
       OUTLINED_FUNCTION_4_8();
@@ -724,7 +724,7 @@ LABEL_5:
       v2 = OUTLINED_FUNCTION_12_51();
       if (v2)
       {
-        *(a1 + 292) = bswap32(v2);
+        *(description + 292) = bswap32(v2);
         v3 = OUTLINED_FUNCTION_12_51();
         if (v3)
         {
@@ -740,11 +740,11 @@ LABEL_5:
   }
 }
 
-- (void)_populateLocalIDsForDogHeadsWithFormatDescription:(uint64_t)a1
+- (void)_populateLocalIDsForDogHeadsWithFormatDescription:(uint64_t)description
 {
-  if (a1)
+  if (description)
   {
-    if (*(a1 + 304))
+    if (*(description + 304))
     {
       fig_log_get_emitter();
       OUTLINED_FUNCTION_4_8();
@@ -756,7 +756,7 @@ LABEL_5:
       v2 = OUTLINED_FUNCTION_12_51();
       if (v2)
       {
-        *(a1 + 304) = bswap32(v2);
+        *(description + 304) = bswap32(v2);
         v3 = OUTLINED_FUNCTION_12_51();
         if (v3)
         {
@@ -772,11 +772,11 @@ LABEL_5:
   }
 }
 
-- (void)_populateLocalIDsForDogBodiesWithFormatDescription:(uint64_t)a1
+- (void)_populateLocalIDsForDogBodiesWithFormatDescription:(uint64_t)description
 {
-  if (a1)
+  if (description)
   {
-    if (*(a1 + 316))
+    if (*(description + 316))
     {
       fig_log_get_emitter();
       OUTLINED_FUNCTION_4_8();
@@ -788,7 +788,7 @@ LABEL_5:
       v2 = OUTLINED_FUNCTION_12_51();
       if (v2)
       {
-        *(a1 + 316) = bswap32(v2);
+        *(description + 316) = bswap32(v2);
         v3 = OUTLINED_FUNCTION_12_51();
         if (v3)
         {
@@ -804,11 +804,11 @@ LABEL_5:
   }
 }
 
-- (void)_populateLocalIDsForSalientObjectsWithFormatDescription:(uint64_t)a1
+- (void)_populateLocalIDsForSalientObjectsWithFormatDescription:(uint64_t)description
 {
-  if (a1)
+  if (description)
   {
-    if (*(a1 + 328))
+    if (*(description + 328))
     {
       fig_log_get_emitter();
       OUTLINED_FUNCTION_4_8();
@@ -820,7 +820,7 @@ LABEL_5:
       v2 = OUTLINED_FUNCTION_12_51();
       if (v2)
       {
-        *(a1 + 328) = bswap32(v2);
+        *(description + 328) = bswap32(v2);
         v3 = OUTLINED_FUNCTION_12_51();
         if (v3)
         {
@@ -836,12 +836,12 @@ LABEL_5:
   }
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
   *&v14 = [(BWFaceDetectionNode *)self _resetDetection].n128_u64[0];
   if (self->_metadataObjectOutputEnabled)
   {
-    v6 = [(BWNodeOutput *)self->_metadataObjectOutput markEndOfLiveOutputForConfigurationID:a3, v14];
+    v6 = [(BWNodeOutput *)self->_metadataObjectOutput markEndOfLiveOutputForConfigurationID:d, v14];
   }
 
   if (self->_boxedMetadataOutputEnabled)
@@ -861,7 +861,7 @@ LABEL_5:
             objc_enumerationMutation(boxedMetadataOutputs);
           }
 
-          v20 = [*(8 * i) markEndOfLiveOutputForConfigurationID:a3];
+          v20 = [*(8 * i) markEndOfLiveOutputForConfigurationID:d];
         }
 
         v17 = OUTLINED_FUNCTION_32_16(v20, v21, v22, v23, v24, v25, v26, v27, v29);
@@ -872,9 +872,9 @@ LABEL_5:
   }
 }
 
-- (void)_renderSampleBufferWithLock:(uint64_t)a1 forInput:
+- (void)_renderSampleBufferWithLock:(uint64_t)lock forInput:
 {
-  if (a1)
+  if (lock)
   {
     OUTLINED_FUNCTION_84();
     v3 = v2;
@@ -948,8 +948,8 @@ LABEL_5:
             v125 = 0u;
             v126 = 0u;
             v127 = 0u;
-            v81 = [*(v4 + 344) allValues];
-            v82 = [v81 countByEnumeratingWithState:&v124 objects:v123 count:16];
+            allValues = [*(v4 + 344) allValues];
+            v82 = [allValues countByEnumeratingWithState:&v124 objects:v123 count:16];
             if (v82)
             {
               v84 = v82;
@@ -961,7 +961,7 @@ LABEL_5:
                 {
                   if (*v125 != v85)
                   {
-                    objc_enumerationMutation(v81);
+                    objc_enumerationMutation(allValues);
                   }
 
                   v87 = *(*(&v124 + 1) + 8 * v86);
@@ -1095,8 +1095,8 @@ LABEL_48:
           v117 = 0u;
           v114 = 0u;
           v115 = 0u;
-          v54 = [v19 allValues];
-          v55 = [v54 countByEnumeratingWithState:&v114 objects:&v98 count:16];
+          allValues2 = [v19 allValues];
+          v55 = [allValues2 countByEnumeratingWithState:&v114 objects:&v98 count:16];
           if (v55)
           {
             v56 = v55;
@@ -1109,7 +1109,7 @@ LABEL_50:
             {
               if (*v115 != v57)
               {
-                objc_enumerationMutation(v54);
+                objc_enumerationMutation(allValues2);
               }
 
               v60 = [objc_msgSend(*(*(&v114 + 1) + 8 * v59) objectForKeyedSubscript:{v58), "longLongValue"}];
@@ -1205,14 +1205,14 @@ LABEL_69:
   }
 }
 
-- (uint64_t)_addFacesArray:(const void *)a3 toSampleBuffer:
+- (uint64_t)_addFacesArray:(const void *)array toSampleBuffer:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if (![a2 count] && !*(a1 + 240))
+  if (![a2 count] && !*(self + 240))
   {
     OUTLINED_FUNCTION_33();
     if (!v6)
@@ -1222,9 +1222,9 @@ LABEL_69:
   }
 
   v7 = 1;
-  CMSetAttachment(a3, *off_1E798A378, a2, 1u);
-  CMSetAttachment(a3, *off_1E798A380, [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(a2, "count")}], 1u);
-  *(a1 + 240) = [a2 count];
+  CMSetAttachment(array, *off_1E798A378, a2, 1u);
+  CMSetAttachment(array, *off_1E798A380, [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(a2, "count")}], 1u);
+  *(self + 240) = [a2 count];
   return v7;
 }
 
@@ -1654,12 +1654,12 @@ LABEL_54:
 
           v31 = v8;
           Identifiers = CMMetadataFormatDescriptionGetIdentifiers([objc_msgSend(*(v47[1] + 8 * v8) "format")]);
-          v11 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
           v42 = 0u;
           v43 = 0u;
           v44 = 0u;
           v45 = 0u;
-          v13 = OUTLINED_FUNCTION_1_18(v11, v12, &v42, v41);
+          v13 = OUTLINED_FUNCTION_1_18(dictionary, v12, &v42, v41);
           if (v13)
           {
             v14 = v13;
@@ -1717,7 +1717,7 @@ LABEL_54:
                 v25 = [(__CFArray *)Identifiers containsObject:v19];
                 if (v25)
                 {
-                  v25 = [v11 setObject:objc_msgSend(v2 forKeyedSubscript:{"objectForKeyedSubscript:", v17), v17}];
+                  v25 = [dictionary setObject:objc_msgSend(v2 forKeyedSubscript:{"objectForKeyedSubscript:", v17), v17}];
                 }
               }
 
@@ -1742,9 +1742,9 @@ LABEL_54:
   OUTLINED_FUNCTION_81();
 }
 
-- (uint64_t)_addDetectedObjectsInfo:(uint64_t)a3 detectedObjectsSource:(const void *)a4 toSampleBuffer:
+- (uint64_t)_addDetectedObjectsInfo:(uint64_t)info detectedObjectsSource:(const void *)source toSampleBuffer:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -1794,7 +1794,7 @@ LABEL_54:
     goto LABEL_12;
   }
 
-  if (*(a1 + 244))
+  if (*(self + 244))
   {
     if ((v10 & 1) == 0)
     {
@@ -1802,16 +1802,16 @@ LABEL_54:
     }
   }
 
-  else if ((*(a1 + 230) & v10 & 1) == 0)
+  else if ((*(self + 230) & v10 & 1) == 0)
   {
     return 0;
   }
 
 LABEL_12:
   v16 = 1;
-  CMSetAttachment(a4, *off_1E798A330, a2, 1u);
-  *(a1 + 244) = v11;
-  CMSetAttachment(a4, *off_1E798A338, [MEMORY[0x1E696AD98] numberWithInt:a3], 1u);
+  CMSetAttachment(source, *off_1E798A330, a2, 1u);
+  *(self + 244) = v11;
+  CMSetAttachment(source, *off_1E798A338, [MEMORY[0x1E696AD98] numberWithInt:info], 1u);
   return v16;
 }
 
@@ -2304,15 +2304,15 @@ LABEL_68:
   return result;
 }
 
-- (uint64_t)append:(_DWORD *)a3 toBoxedData:(_DWORD *)a4 localIDs:(int)a5 isFace:
+- (uint64_t)append:(_DWORD *)append toBoxedData:(_DWORD *)data localIDs:(int)ds isFace:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v10 = off_1E798B2B8;
-  if (!a5)
+  if (!ds)
   {
     v10 = off_1E798AC78;
   }
@@ -2320,10 +2320,10 @@ LABEL_68:
   v11 = [a2 objectForKeyedSubscript:*v10];
   if (v11)
   {
-    v12 = a4[1];
-    a3[6] = 201326592;
-    a3[7] = v12;
-    a3[8] = bswap32([v11 unsignedIntValue]);
+    v12 = data[1];
+    append[6] = 201326592;
+    append[7] = v12;
+    append[8] = bswap32([v11 unsignedIntValue]);
     v13 = 9;
   }
 
@@ -2338,8 +2338,8 @@ LABEL_68:
     goto LABEL_10;
   }
 
-  v15 = a4[2];
-  v16 = &a3[v13];
+  v15 = data[2];
+  v16 = &append[v13];
   *v16 = 671088640;
   v16[1] = v15;
   memset(&rect, 0, sizeof(rect));
@@ -2368,13 +2368,13 @@ LABEL_68:
   v16[9] = v20.i32[0];
   v13 += 10;
 LABEL_10:
-  if (a5)
+  if (ds)
   {
     v21 = [a2 objectForKeyedSubscript:*off_1E798B160];
     if (v21)
     {
-      v22 = a4[3];
-      v23 = &a3[v13];
+      v22 = data[3];
+      v23 = &append[v13];
       *v23 = 201326592;
       v23[1] = v22;
       [v21 floatValue];
@@ -2386,8 +2386,8 @@ LABEL_10:
     v25 = [a2 objectForKeyedSubscript:*off_1E798B168];
     if (v25)
     {
-      v26 = a4[4];
-      v27 = &a3[v13];
+      v26 = data[4];
+      v27 = &append[v13];
       *v27 = 201326592;
       v27[1] = v26;
       [v25 floatValue];
@@ -2397,12 +2397,12 @@ LABEL_10:
     }
   }
 
-  *a3 = bswap32(v13 * 4);
-  a3[1] = *a4;
-  a3[2] = bswap32(v13 * 4 - 8);
-  a3[3] = *(a1 + 484);
-  a3[4] = bswap32(v13 * 4 - 16);
-  a3[5] = *(a1 + 488);
+  *append = bswap32(v13 * 4);
+  append[1] = *data;
+  append[2] = bswap32(v13 * 4 - 8);
+  append[3] = *(self + 484);
+  append[4] = bswap32(v13 * 4 - 16);
+  append[5] = *(self + 488);
   return v13 * 4;
 }
 

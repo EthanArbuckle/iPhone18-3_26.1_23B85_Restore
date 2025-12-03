@@ -1,17 +1,17 @@
 @interface WFTriggerTableViewController
-- (WFTriggerTableViewController)initWithOptions:(id)a3 anySelected:(BOOL)a4 nameOfAnyOption:(id)a5 mainSectionTitle:(id)a6;
+- (WFTriggerTableViewController)initWithOptions:(id)options anySelected:(BOOL)selected nameOfAnyOption:(id)option mainSectionTitle:(id)title;
 - (WFTriggerTableViewControllerDelegate)delegate;
-- (id)infoForSection:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)cancel:(id)a3;
-- (void)done:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)infoForSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)cancel:(id)cancel;
+- (void)done:(id)done;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateDoneButtonEnabledState;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WFTriggerTableViewController
@@ -23,7 +23,7 @@
   return WeakRetained;
 }
 
-- (void)done:(id)a3
+- (void)done:(id)done
 {
   if ([(WFTriggerTableViewController *)self anyOptionSelected])
   {
@@ -32,12 +32,12 @@
 
   else
   {
-    v4 = [(WFTriggerTableViewController *)self options];
-    v6 = [v4 if_compactMap:&__block_literal_global_7738];
+    options = [(WFTriggerTableViewController *)self options];
+    v6 = [options if_compactMap:&__block_literal_global_7738];
   }
 
-  v5 = [(WFTriggerTableViewController *)self delegate];
-  [v5 triggerTableViewController:self didFinishWithAnySelected:-[WFTriggerTableViewController anyOptionSelected](self orSelectedOptions:{"anyOptionSelected"), v6}];
+  delegate = [(WFTriggerTableViewController *)self delegate];
+  [delegate triggerTableViewController:self didFinishWithAnySelected:-[WFTriggerTableViewController anyOptionSelected](self orSelectedOptions:{"anyOptionSelected"), v6}];
 }
 
 void *__37__WFTriggerTableViewController_done___block_invoke(uint64_t a1, void *a2)
@@ -58,10 +58,10 @@ void *__37__WFTriggerTableViewController_done___block_invoke(uint64_t a1, void *
   return v3;
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
-  v4 = [(WFTriggerTableViewController *)self delegate];
-  [v4 triggerTableViewControllerDidCancel:self];
+  delegate = [(WFTriggerTableViewController *)self delegate];
+  [delegate triggerTableViewControllerDidCancel:self];
 }
 
 - (void)updateDoneButtonEnabledState
@@ -78,8 +78,8 @@ void *__37__WFTriggerTableViewController_done___block_invoke(uint64_t a1, void *
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v4 = [(WFTriggerTableViewController *)self options];
-    v3 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    options = [(WFTriggerTableViewController *)self options];
+    v3 = [options countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v3)
     {
       v5 = *v10;
@@ -89,7 +89,7 @@ void *__37__WFTriggerTableViewController_done___block_invoke(uint64_t a1, void *
         {
           if (*v10 != v5)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(options);
           }
 
           if ([*(*(&v9 + 1) + 8 * i) isSelected])
@@ -99,7 +99,7 @@ void *__37__WFTriggerTableViewController_done___block_invoke(uint64_t a1, void *
           }
         }
 
-        v3 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v3 = [options countByEnumeratingWithState:&v9 objects:v13 count:16];
         if (v3)
         {
           continue;
@@ -112,19 +112,19 @@ void *__37__WFTriggerTableViewController_done___block_invoke(uint64_t a1, void *
 LABEL_13:
   }
 
-  v7 = [(WFTriggerTableViewController *)self navigationItem];
-  v8 = [v7 rightBarButtonItem];
-  [v8 setEnabled:v3];
+  navigationItem = [(WFTriggerTableViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v3];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [v6 deselectRowAtIndexPath:v7 animated:1];
-  v8 = [v6 cellForRowAtIndexPath:v7];
-  v9 = -[WFTriggerTableViewController infoForSection:](self, "infoForSection:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
+  v9 = -[WFTriggerTableViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v10 = getWFTriggersLogObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -146,8 +146,8 @@ LABEL_13:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v13 = [(WFTriggerTableViewController *)self options];
-    v14 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    options = [(WFTriggerTableViewController *)self options];
+    v14 = [options countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v14)
     {
       v15 = v14;
@@ -158,13 +158,13 @@ LABEL_13:
         {
           if (*v24 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(options);
           }
 
           [*(*(&v23 + 1) + 8 * i) setSelected:0];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v15 = [options countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v15);
@@ -179,11 +179,11 @@ LABEL_13:
   if (v19)
   {
     [(WFTriggerTableViewController *)self setAnyOptionSelected:0];
-    v20 = [(WFTriggerTableViewController *)self options];
-    v13 = [v20 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+    options2 = [(WFTriggerTableViewController *)self options];
+    options = [options2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-    [v13 setSelected:{objc_msgSend(v13, "isSelected") ^ 1}];
-    if ([v13 isSelected])
+    [options setSelected:{objc_msgSend(options, "isSelected") ^ 1}];
+    if ([options isSelected])
     {
       v21 = 3;
     }
@@ -198,45 +198,45 @@ LABEL_17:
   }
 
   [(WFTriggerTableViewController *)self updateDoneButtonEnabledState];
-  v22 = [(WFTriggerTableViewController *)self tableView];
-  [v22 reloadData];
+  tableView = [(WFTriggerTableViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(WFTriggerTableViewController *)self infoForSection:a4];
+  v5 = [(WFTriggerTableViewController *)self infoForSection:section];
   v6 = [v5 objectForKeyedSubscript:@"identifier"];
   v7 = [v6 isEqualToString:@"options"];
 
   if (v7)
   {
-    v8 = [(WFTriggerTableViewController *)self mainSectionTitle];
+    mainSectionTitle = [(WFTriggerTableViewController *)self mainSectionTitle];
   }
 
   else
   {
-    v8 = 0;
+    mainSectionTitle = 0;
   }
 
-  return v8;
+  return mainSectionTitle;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = -[WFTriggerTableViewController infoForSection:](self, "infoForSection:", [v6 section]);
+  pathCopy = path;
+  viewCopy = view;
+  v8 = -[WFTriggerTableViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v9 = [v8 objectForKeyedSubscript:@"cellIdentifier"];
-  v10 = [v7 dequeueReusableCellWithIdentifier:v9 forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9 forIndexPath:pathCopy];
 
   v11 = [v8 objectForKeyedSubscript:@"identifier"];
   v12 = [v11 isEqual:@"anyOption"];
 
   if (v12)
   {
-    v13 = [(WFTriggerTableViewController *)self nameOfAnyOption];
-    v14 = [v10 textLabel];
-    [v14 setText:v13];
+    nameOfAnyOption = [(WFTriggerTableViewController *)self nameOfAnyOption];
+    textLabel = [v10 textLabel];
+    [textLabel setText:nameOfAnyOption];
 
     if ([(WFTriggerTableViewController *)self anyOptionSelected])
     {
@@ -251,12 +251,12 @@ LABEL_17:
 
     if (v16)
     {
-      v17 = [(WFTriggerTableViewController *)self options];
-      v18 = [v17 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+      options = [(WFTriggerTableViewController *)self options];
+      v18 = [options objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-      v19 = [v18 displayTitle];
-      v20 = [v10 textLabel];
-      [v20 setText:v19];
+      displayTitle = [v18 displayTitle];
+      textLabel2 = [v10 textLabel];
+      [textLabel2 setText:displayTitle];
 
       if ([(WFTriggerTableViewController *)self anyOptionSelected])
       {
@@ -280,16 +280,16 @@ LABEL_17:
   return v10;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(WFTriggerTableViewController *)self infoForSection:a4];
+  v5 = [(WFTriggerTableViewController *)self infoForSection:section];
   v6 = [v5 objectForKeyedSubscript:@"identifier"];
   v7 = [v6 isEqual:@"options"];
 
   if (v7)
   {
-    v8 = [(WFTriggerTableViewController *)self options];
-    v9 = [v8 count];
+    options = [(WFTriggerTableViewController *)self options];
+    v9 = [options count];
   }
 
   else
@@ -300,27 +300,27 @@ LABEL_17:
   return v9;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(WFTriggerTableViewController *)self sections];
-  v4 = [v3 count];
+  sections = [(WFTriggerTableViewController *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (id)infoForSection:(int64_t)a3
+- (id)infoForSection:(int64_t)section
 {
-  v4 = [(WFTriggerTableViewController *)self sections];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  sections = [(WFTriggerTableViewController *)self sections];
+  v5 = [sections objectAtIndexedSubscript:section];
 
   return v5;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = WFTriggerTableViewController;
-  [(WFTriggerTableViewController *)&v4 viewWillAppear:a3];
+  [(WFTriggerTableViewController *)&v4 viewWillAppear:appear];
   [(WFTriggerTableViewController *)self updateDoneButtonEnabledState];
 }
 
@@ -329,27 +329,27 @@ LABEL_17:
   v9.receiver = self;
   v9.super_class = WFTriggerTableViewController;
   [(WFTriggerTableViewController *)&v9 viewDidLoad];
-  v3 = [(WFTriggerTableViewController *)self tableView];
+  tableView = [(WFTriggerTableViewController *)self tableView];
   v4 = objc_opt_class();
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v3 registerClass:v4 forCellReuseIdentifier:v6];
+  [tableView registerClass:v4 forCellReuseIdentifier:v6];
 
-  v7 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-  v8 = [(WFTriggerTableViewController *)self tableView];
-  [v8 setBackgroundColor:v7];
+  systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+  tableView2 = [(WFTriggerTableViewController *)self tableView];
+  [tableView2 setBackgroundColor:systemGroupedBackgroundColor];
 }
 
-- (WFTriggerTableViewController)initWithOptions:(id)a3 anySelected:(BOOL)a4 nameOfAnyOption:(id)a5 mainSectionTitle:(id)a6
+- (WFTriggerTableViewController)initWithOptions:(id)options anySelected:(BOOL)selected nameOfAnyOption:(id)option mainSectionTitle:(id)title
 {
   v41[2] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (!v11)
+  optionsCopy = options;
+  optionCopy = option;
+  titleCopy = title;
+  if (!optionsCopy)
   {
-    v36 = [MEMORY[0x277CCA890] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"WFTriggerTableViewController.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"options"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTriggerTableViewController.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"options"}];
   }
 
   v37.receiver = self;
@@ -357,29 +357,29 @@ LABEL_17:
   v14 = [(WFTriggerTableViewController *)&v37 initWithStyle:2];
   if (v14)
   {
-    v15 = [v11 copy];
+    v15 = [optionsCopy copy];
     options = v14->_options;
     v14->_options = v15;
 
-    v14->_anyOptionSelected = a4;
-    v17 = [v12 copy];
+    v14->_anyOptionSelected = selected;
+    v17 = [optionCopy copy];
     nameOfAnyOption = v14->_nameOfAnyOption;
     v14->_nameOfAnyOption = v17;
 
-    v19 = [v13 copy];
+    v19 = [titleCopy copy];
     mainSectionTitle = v14->_mainSectionTitle;
     v14->_mainSectionTitle = v19;
 
-    v21 = [(WFTriggerTableViewController *)v14 navigationItem];
+    navigationItem = [(WFTriggerTableViewController *)v14 navigationItem];
     v22 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:v14 action:sel_cancel_];
-    [v21 setLeftBarButtonItem:v22];
+    [navigationItem setLeftBarButtonItem:v22];
 
-    v23 = [(WFTriggerTableViewController *)v14 navigationItem];
+    navigationItem2 = [(WFTriggerTableViewController *)v14 navigationItem];
     v24 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:v14 action:sel_done_];
-    [v23 setRightBarButtonItem:v24];
+    [navigationItem2 setRightBarButtonItem:v24];
 
     v25 = objc_opt_new();
-    if (v12)
+    if (optionCopy)
     {
       v40[1] = @"cellIdentifier";
       v41[0] = @"anyOption";

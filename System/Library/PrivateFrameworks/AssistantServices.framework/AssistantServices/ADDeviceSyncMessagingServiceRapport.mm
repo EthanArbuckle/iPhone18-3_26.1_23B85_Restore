@@ -1,40 +1,40 @@
 @interface ADDeviceSyncMessagingServiceRapport
-- (ADDeviceSyncMessagingServiceRapport)initWithMode:(int64_t)a3 delegate:(id)a4;
+- (ADDeviceSyncMessagingServiceRapport)initWithMode:(int64_t)mode delegate:(id)delegate;
 - (void)_handleCompanionServiceActiveDevicesDidChange;
 - (void)_handleCompanionServiceReadyStateDidChange;
 - (void)_handleCompanionServiceStereoConfigurationDidChange;
-- (void)_handleIncomingDictionary:(id)a3 fromDeviceWithIdentifier:(id)a4 completion:(id)a5;
-- (void)_handleOutgoingMessage:(id)a3 toDeviceWithIdentifier:(id)a4 completion:(id)a5;
+- (void)_handleIncomingDictionary:(id)dictionary fromDeviceWithIdentifier:(id)identifier completion:(id)completion;
+- (void)_handleOutgoingMessage:(id)message toDeviceWithIdentifier:(id)identifier completion:(id)completion;
 - (void)_invalidate;
-- (void)_setDeviceIdentifiers:(id)a3;
-- (void)_setIsReady:(BOOL)a3;
-- (void)_setStereoPartnerDeviceIdentifier:(id)a3;
-- (void)companionServiceActiveDevicesDidChange:(id)a3;
-- (void)companionServiceReadyStateDidChange:(id)a3;
-- (void)companionServiceStereoConfigurationDidChange:(id)a3;
+- (void)_setDeviceIdentifiers:(id)identifiers;
+- (void)_setIsReady:(BOOL)ready;
+- (void)_setStereoPartnerDeviceIdentifier:(id)identifier;
+- (void)companionServiceActiveDevicesDidChange:(id)change;
+- (void)companionServiceReadyStateDidChange:(id)change;
+- (void)companionServiceStereoConfigurationDidChange:(id)change;
 - (void)dealloc;
-- (void)handleMessage:(id)a3 messageType:(id)a4 fromDeviceWithIdentifier:(id)a5 completion:(id)a6;
+- (void)handleMessage:(id)message messageType:(id)type fromDeviceWithIdentifier:(id)identifier completion:(id)completion;
 - (void)invalidate;
-- (void)sendMessage:(id)a3 toDeviceWithIdentifier:(id)a4 completion:(id)a5;
+- (void)sendMessage:(id)message toDeviceWithIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation ADDeviceSyncMessagingServiceRapport
 
-- (void)_setStereoPartnerDeviceIdentifier:(id)a3
+- (void)_setStereoPartnerDeviceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = AFSiriLogContextDeviceSync;
   if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_INFO))
   {
     v13 = 136315394;
     v14 = "[ADDeviceSyncMessagingServiceRapport _setStereoPartnerDeviceIdentifier:]";
     v15 = 2112;
-    v16 = v4;
+    v16 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s stereoPartnerDeviceIdentifier = %@", &v13, 0x16u);
   }
 
   stereoPartnerDeviceIdentifier = self->_stereoPartnerDeviceIdentifier;
-  if (stereoPartnerDeviceIdentifier != v4 && ![(NSString *)stereoPartnerDeviceIdentifier isEqualToString:v4])
+  if (stereoPartnerDeviceIdentifier != identifierCopy && ![(NSString *)stereoPartnerDeviceIdentifier isEqualToString:identifierCopy])
   {
     v7 = AFSiriLogContextDeviceSync;
     if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_INFO))
@@ -45,7 +45,7 @@
       v15 = 2112;
       v16 = v8;
       v17 = 2112;
-      v18 = v4;
+      v18 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s stereoPartnerDeviceIdentifier: %@ -> %@", &v13, 0x20u);
     }
 
@@ -55,7 +55,7 @@
       [WeakRetained deviceSyncMessageService:self didLostDeviceWithIdentifier:self->_stereoPartnerDeviceIdentifier];
     }
 
-    v10 = [(NSString *)v4 copy];
+    v10 = [(NSString *)identifierCopy copy];
     v11 = self->_stereoPartnerDeviceIdentifier;
     self->_stereoPartnerDeviceIdentifier = v10;
 
@@ -92,33 +92,33 @@
   }
 }
 
-- (void)_setDeviceIdentifiers:(id)a3
+- (void)_setDeviceIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = AFSiriLogContextDeviceSync;
   if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v42 = "[ADDeviceSyncMessagingServiceRapport _setDeviceIdentifiers:]";
     v43 = 2112;
-    v44 = v4;
+    v44 = identifiersCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s deviceIdentifiers = %@", buf, 0x16u);
   }
 
   deviceIdentifiers = self->_deviceIdentifiers;
-  if (deviceIdentifiers != v4 && ![(NSSet *)deviceIdentifiers isEqualToSet:v4])
+  if (deviceIdentifiers != identifiersCopy && ![(NSSet *)deviceIdentifiers isEqualToSet:identifiersCopy])
   {
-    if ([(NSSet *)v4 count])
+    if ([(NSSet *)identifiersCopy count])
     {
       if ([(NSSet *)self->_deviceIdentifiers count])
       {
-        v7 = [(NSSet *)v4 mutableCopy];
+        v7 = [(NSSet *)identifiersCopy mutableCopy];
         [(NSSet *)v7 minusSet:self->_deviceIdentifiers];
       }
 
       else
       {
-        v7 = v4;
+        v7 = identifiersCopy;
       }
     }
 
@@ -142,12 +142,12 @@
 
     if ([(NSSet *)self->_deviceIdentifiers count])
     {
-      v9 = [(NSSet *)v4 count];
+      v9 = [(NSSet *)identifiersCopy count];
       v10 = self->_deviceIdentifiers;
       if (v9)
       {
         v11 = [(NSSet *)v10 mutableCopy];
-        [(NSSet *)v11 minusSet:v4];
+        [(NSSet *)v11 minusSet:identifiersCopy];
       }
 
       else
@@ -181,7 +181,7 @@
       v43 = 2112;
       v44 = v14;
       v45 = 2112;
-      v46 = v4;
+      v46 = identifiersCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%s deviceIdentifiers: %@ -> %@", buf, 0x20u);
     }
 
@@ -215,7 +215,7 @@
       while (v17);
     }
 
-    v22 = [(NSSet *)v4 copy];
+    v22 = [(NSSet *)identifiersCopy copy];
     v23 = self->_deviceIdentifiers;
     self->_deviceIdentifiers = v22;
 
@@ -276,21 +276,21 @@
   }
 }
 
-- (void)_setIsReady:(BOOL)a3
+- (void)_setIsReady:(BOOL)ready
 {
-  v3 = a3;
+  readyCopy = ready;
   v5 = AFSiriLogContextDeviceSync;
   if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_INFO))
   {
     v8 = 136315394;
     v9 = "[ADDeviceSyncMessagingServiceRapport _setIsReady:]";
     v10 = 1024;
-    v11 = v3;
+    v11 = readyCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s isReady = %d", &v8, 0x12u);
   }
 
   isReady = self->_isReady;
-  if (isReady != v3)
+  if (isReady != readyCopy)
   {
     v7 = AFSiriLogContextDeviceSync;
     if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_INFO))
@@ -300,11 +300,11 @@
       v10 = 1024;
       v11 = isReady;
       v12 = 1024;
-      v13 = v3;
+      v13 = readyCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s isReady: %d -> %d", &v8, 0x18u);
     }
 
-    self->_isReady = v3;
+    self->_isReady = readyCopy;
   }
 }
 
@@ -321,25 +321,25 @@
   [(ADDeviceSyncMessagingServiceRapport *)self _setIsReady:[(ADCompanionService *)self->_companionService isReady]];
 }
 
-- (void)_handleIncomingDictionary:(id)a3 fromDeviceWithIdentifier:(id)a4 completion:(id)a5
+- (void)_handleIncomingDictionary:(id)dictionary fromDeviceWithIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v11 = AFSiriLogContextDeviceSync;
   if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v22 = "[ADDeviceSyncMessagingServiceRapport _handleIncomingDictionary:fromDeviceWithIdentifier:completion:]";
     v23 = 2112;
-    v24 = v9;
+    v24 = identifierCopy;
     v25 = 2112;
-    v26 = v8;
+    v26 = dictionaryCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s deviceIdentifier = %@, incomingDictionary = %@", buf, 0x20u);
   }
 
   v20 = 0;
-  v12 = sub_1002EF2E4(v8, &v20);
+  v12 = sub_1002EF2E4(dictionaryCopy, &v20);
   v13 = v20;
   if (!v13)
   {
@@ -349,7 +349,7 @@
       *buf = 136315650;
       v22 = "[ADDeviceSyncMessagingServiceRapport _handleIncomingDictionary:fromDeviceWithIdentifier:completion:]";
       v23 = 2112;
-      v24 = v9;
+      v24 = identifierCopy;
       v25 = 2112;
       v26 = v12;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s deviceIdentifier = %@, incomingMessage = %@", buf, 0x20u);
@@ -362,8 +362,8 @@
       v17[1] = 3221225472;
       v17[2] = sub_1000CF1F8;
       v17[3] = &unk_100510C70;
-      v18 = v9;
-      v19 = v10;
+      v18 = identifierCopy;
+      v19 = completionCopy;
       [WeakRetained deviceSyncMessageService:self didReceiveMessage:v12 fromDeviceWithIdentifier:v18 completion:v17];
 
       v16 = v18;
@@ -371,7 +371,7 @@
 
     else
     {
-      if (!v10)
+      if (!completionCopy)
       {
 LABEL_13:
 
@@ -379,45 +379,45 @@ LABEL_13:
       }
 
       v16 = [AFError errorWithCode:2404 description:@"No messaging service delegate to handle incoming message." underlyingError:0];
-      (*(v10 + 2))(v10, 0, v16);
+      (*(completionCopy + 2))(completionCopy, 0, v16);
     }
 
     goto LABEL_13;
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    (*(v10 + 2))(v10, 0, v13);
+    (*(completionCopy + 2))(completionCopy, 0, v13);
   }
 
 LABEL_14:
 }
 
-- (void)_handleOutgoingMessage:(id)a3 toDeviceWithIdentifier:(id)a4 completion:(id)a5
+- (void)_handleOutgoingMessage:(id)message toDeviceWithIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v11 = AFSiriLogContextDeviceSync;
   if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v22 = "[ADDeviceSyncMessagingServiceRapport _handleOutgoingMessage:toDeviceWithIdentifier:completion:]";
     v23 = 2112;
-    v24 = v9;
+    v24 = identifierCopy;
     v25 = 2112;
-    v26 = v8;
+    v26 = messageCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s deviceIdentifier = %@, outgoingMessage = %@", buf, 0x20u);
   }
 
   v20 = 0;
-  v12 = sub_1002EF120(v8, &v20);
+  v12 = sub_1002EF120(messageCopy, &v20);
   v13 = v20;
   if (v13)
   {
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10, 0, v13);
+      completionCopy[2](completionCopy, 0, v13);
     }
   }
 
@@ -429,7 +429,7 @@ LABEL_14:
       *buf = 136315650;
       v22 = "[ADDeviceSyncMessagingServiceRapport _handleOutgoingMessage:toDeviceWithIdentifier:completion:]";
       v23 = 2112;
-      v24 = v9;
+      v24 = identifierCopy;
       v25 = 2112;
       v26 = v12;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s deviceIdentifier = %@, outgoingDictionary = %@", buf, 0x20u);
@@ -443,15 +443,15 @@ LABEL_14:
       v17[2] = sub_1000CF66C;
       v17[3] = &unk_1005173D8;
       v17[4] = self;
-      v18 = v9;
-      v19 = v10;
+      v18 = identifierCopy;
+      v19 = completionCopy;
       [(ADCompanionService *)companionService sendMessage:v12 messageType:@"devicesync" toDeviceWithIDSIdentifier:v18 completion:v17];
     }
 
-    else if (v10)
+    else if (completionCopy)
     {
       v16 = [AFError errorWithCode:2413 description:@"Rapport messaging channel is nil." underlyingError:0];
-      v10[2](v10, 0, v16);
+      completionCopy[2](completionCopy, 0, v16);
     }
   }
 }
@@ -468,20 +468,20 @@ LABEL_14:
   objc_storeWeak(&self->_delegate, 0);
 }
 
-- (void)sendMessage:(id)a3 toDeviceWithIdentifier:(id)a4 completion:(id)a5
+- (void)sendMessage:(id)message toDeviceWithIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v11 = AFSiriLogContextDeviceSync;
   if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v21 = "[ADDeviceSyncMessagingServiceRapport sendMessage:toDeviceWithIdentifier:completion:]";
     v22 = 2112;
-    v23 = v9;
+    v23 = identifierCopy;
     v24 = 2112;
-    v25 = v8;
+    v25 = messageCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s deviceIdentifier = %@, outgoingMessage = %@", buf, 0x20u);
   }
 
@@ -491,21 +491,21 @@ LABEL_14:
   v16[2] = sub_1000CFB20;
   v16[3] = &unk_10051E0D8;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v17 = messageCopy;
+  v18 = identifierCopy;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  v14 = identifierCopy;
+  v15 = messageCopy;
   dispatch_async(queue, v16);
 }
 
-- (void)handleMessage:(id)a3 messageType:(id)a4 fromDeviceWithIdentifier:(id)a5 completion:(id)a6
+- (void)handleMessage:(id)message messageType:(id)type fromDeviceWithIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if ([a4 isEqualToString:@"devicesync"])
+  messageCopy = message;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if ([type isEqualToString:@"devicesync"])
   {
     queue = self->_queue;
     v15[0] = _NSConcreteStackBlock;
@@ -513,16 +513,16 @@ LABEL_14:
     v15[2] = sub_1000CFC7C;
     v15[3] = &unk_10051E0D8;
     v15[4] = self;
-    v16 = v10;
-    v17 = v11;
-    v18 = v12;
+    v16 = messageCopy;
+    v17 = identifierCopy;
+    v18 = completionCopy;
     dispatch_async(queue, v15);
   }
 
-  else if (v12)
+  else if (completionCopy)
   {
     v14 = [AFError errorWithCode:1004];
-    (*(v12 + 2))(v12, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
   }
 }
 
@@ -537,7 +537,7 @@ LABEL_14:
   dispatch_async(queue, block);
 }
 
-- (void)companionServiceStereoConfigurationDidChange:(id)a3
+- (void)companionServiceStereoConfigurationDidChange:(id)change
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -548,7 +548,7 @@ LABEL_14:
   dispatch_async(queue, block);
 }
 
-- (void)companionServiceActiveDevicesDidChange:(id)a3
+- (void)companionServiceActiveDevicesDidChange:(id)change
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -559,7 +559,7 @@ LABEL_14:
   dispatch_async(queue, block);
 }
 
-- (void)companionServiceReadyStateDidChange:(id)a3
+- (void)companionServiceReadyStateDidChange:(id)change
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -578,9 +578,9 @@ LABEL_14:
   [(ADDeviceSyncMessagingServiceRapport *)&v3 dealloc];
 }
 
-- (ADDeviceSyncMessagingServiceRapport)initWithMode:(int64_t)a3 delegate:(id)a4
+- (ADDeviceSyncMessagingServiceRapport)initWithMode:(int64_t)mode delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = ADDeviceSyncMessagingServiceRapport;
   v7 = [(ADDeviceSyncMessagingServiceRapport *)&v21 init];
@@ -593,8 +593,8 @@ LABEL_14:
     queue = v7->_queue;
     v7->_queue = v10;
 
-    v7->_mode = a3;
-    objc_storeWeak(&v7->_delegate, v6);
+    v7->_mode = mode;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
     v12 = +[ADCompanionService sharedInstance];
     companionService = v7->_companionService;
     v7->_companionService = v12;

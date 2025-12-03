@@ -2,10 +2,10 @@
 + (id)sharedObserver;
 - (AFDeviceRingerSwitchObserver)init;
 - (int64_t)state;
-- (void)_updateStateWithNotifyState:(unint64_t)a3;
-- (void)addListener:(id)a3;
-- (void)notifyObserver:(id)a3 didChangeStateFrom:(unint64_t)a4 to:(unint64_t)a5;
-- (void)removeListener:(id)a3;
+- (void)_updateStateWithNotifyState:(unint64_t)state;
+- (void)addListener:(id)listener;
+- (void)notifyObserver:(id)observer didChangeStateFrom:(unint64_t)from to:(unint64_t)to;
+- (void)removeListener:(id)listener;
 @end
 
 @implementation AFDeviceRingerSwitchObserver
@@ -37,10 +37,10 @@
   return v3;
 }
 
-- (void)_updateStateWithNotifyState:(unint64_t)a3
+- (void)_updateStateWithNotifyState:(unint64_t)state
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (state)
   {
     v4 = 1;
   }
@@ -83,19 +83,19 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyObserver:(id)a3 didChangeStateFrom:(unint64_t)a4 to:(unint64_t)a5
+- (void)notifyObserver:(id)observer didChangeStateFrom:(unint64_t)from to:(unint64_t)to
 {
-  if (self->_notifyObserver == a3)
+  if (self->_notifyObserver == observer)
   {
-    [(AFDeviceRingerSwitchObserver *)self _updateStateWithNotifyState:a5, a4];
+    [(AFDeviceRingerSwitchObserver *)self _updateStateWithNotifyState:to, from];
   }
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_isActive)
+  listenerCopy = listener;
+  v5 = listenerCopy;
+  if (listenerCopy && self->_isActive)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -103,16 +103,16 @@
     v7[2] = __47__AFDeviceRingerSwitchObserver_removeListener___block_invoke;
     v7[3] = &unk_1E7349860;
     v7[4] = self;
-    v8 = v4;
+    v8 = listenerCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_isActive)
+  listenerCopy = listener;
+  v5 = listenerCopy;
+  if (listenerCopy && self->_isActive)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -120,7 +120,7 @@
     v7[2] = __44__AFDeviceRingerSwitchObserver_addListener___block_invoke;
     v7[3] = &unk_1E7349860;
     v7[4] = self;
-    v8 = v4;
+    v8 = listenerCopy;
     dispatch_async(queue, v7);
   }
 }

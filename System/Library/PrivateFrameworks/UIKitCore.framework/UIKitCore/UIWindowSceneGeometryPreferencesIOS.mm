@@ -1,5 +1,5 @@
 @interface UIWindowSceneGeometryPreferencesIOS
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UIWindowSceneGeometryPreferencesIOS)init;
 - (UIWindowSceneGeometryPreferencesIOS)initWithInterfaceOrientations:(UIInterfaceOrientationMask)interfaceOrientations;
 @end
@@ -30,14 +30,14 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = UIWindowSceneGeometryPreferencesIOS;
-  if ([(UIWindowSceneGeometryPreferences *)&v7 isEqual:v4])
+  if ([(UIWindowSceneGeometryPreferences *)&v7 isEqual:equalCopy])
   {
-    v5 = [v4 interfaceOrientations] == self->_interfaceOrientations;
+    v5 = [equalCopy interfaceOrientations] == self->_interfaceOrientations;
   }
 
   else

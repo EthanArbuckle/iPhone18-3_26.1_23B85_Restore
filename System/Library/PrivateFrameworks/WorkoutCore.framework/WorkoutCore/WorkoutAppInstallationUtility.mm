@@ -22,14 +22,14 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 sharedDeviceConnection];
-  if (v5)
+  selfCopy = self;
+  sharedDeviceConnection = [v3 sharedDeviceConnection];
+  if (sharedDeviceConnection)
   {
-    v6 = v5;
-    [v5 removeObserver_];
+    v6 = sharedDeviceConnection;
+    [sharedDeviceConnection removeObserver_];
 
-    v7.receiver = v4;
+    v7.receiver = selfCopy;
     v7.super_class = type metadata accessor for WorkoutAppInstallationUtility();
     [(WorkoutAppInstallationUtility *)&v7 dealloc];
   }

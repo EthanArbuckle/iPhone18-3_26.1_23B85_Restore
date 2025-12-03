@@ -1,14 +1,14 @@
 @interface SSSRoundedCropOverlayView
-- (SSSRoundedCropOverlayView)initWithFrame:(CGRect)a3;
+- (SSSRoundedCropOverlayView)initWithFrame:(CGRect)frame;
 - (UIColor)borderColor;
 - (double)borderWidth;
 - (double)cornerRadius;
-- (id)accessibilityElementAtIndex:(int64_t)a3;
+- (id)accessibilityElementAtIndex:(int64_t)index;
 - (int64_t)accessibilityElementCount;
-- (int64_t)indexOfAccessibilityElement:(id)a3;
+- (int64_t)indexOfAccessibilityElement:(id)element;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setBorderColor:(id)a3;
+- (void)setBorderColor:(id)color;
 @end
 
 @implementation SSSRoundedCropOverlayView
@@ -36,11 +36,11 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setBorderColor:(id)a3
+- (void)setBorderColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_100072820(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_100072820(color);
 }
 
 - (double)borderWidth
@@ -87,10 +87,10 @@
   }
 }
 
-- (id)accessibilityElementAtIndex:(int64_t)a3
+- (id)accessibilityElementAtIndex:(int64_t)index
 {
-  v4 = self;
-  sub_100072DC4(a3, v13);
+  selfCopy = self;
+  sub_100072DC4(index, v13);
 
   v5 = v14;
   if (v14)
@@ -113,10 +113,10 @@
   return v11;
 }
 
-- (int64_t)indexOfAccessibilityElement:(id)a3
+- (int64_t)indexOfAccessibilityElement:(id)element
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   v5 = sub_100073000(v7);
@@ -125,7 +125,7 @@
   return v5;
 }
 
-- (SSSRoundedCropOverlayView)initWithFrame:(CGRect)a3
+- (SSSRoundedCropOverlayView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

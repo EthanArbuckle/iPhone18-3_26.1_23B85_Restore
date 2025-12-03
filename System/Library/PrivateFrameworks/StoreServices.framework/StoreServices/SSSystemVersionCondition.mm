@@ -1,13 +1,13 @@
 @interface SSSystemVersionCondition
-- (BOOL)evaluateWithContext:(id)a3;
+- (BOOL)evaluateWithContext:(id)context;
 @end
 
 @implementation SSSystemVersionCondition
 
-- (BOOL)evaluateWithContext:(id)a3
+- (BOOL)evaluateWithContext:(id)context
 {
-  v4 = [a3 systemVersion];
-  if (!v4)
+  systemVersion = [context systemVersion];
+  if (!systemVersion)
   {
     return 0;
   }
@@ -18,7 +18,7 @@
     return 0;
   }
 
-  v6 = SSCompareProductVersions(v4, value);
+  v6 = SSCompareProductVersions(systemVersion, value);
   operator = self->super._operator;
 
   return ConditionResultForComparisonResult(v6, operator);

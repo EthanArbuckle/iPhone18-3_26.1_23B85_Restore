@@ -1,30 +1,30 @@
 @interface DMDActivationPredicateNot
-- (DMDActivationPredicateNot)initWithDelegate:(id)a3 uniqueIdentifier:(id)a4 subPredicateObserver:(id)a5 predicate:(id)a6;
-- (id)evaluatePredicateWithError:(id *)a3;
+- (DMDActivationPredicateNot)initWithDelegate:(id)delegate uniqueIdentifier:(id)identifier subPredicateObserver:(id)observer predicate:(id)predicate;
+- (id)evaluatePredicateWithError:(id *)error;
 - (id)metadata;
 @end
 
 @implementation DMDActivationPredicateNot
 
-- (DMDActivationPredicateNot)initWithDelegate:(id)a3 uniqueIdentifier:(id)a4 subPredicateObserver:(id)a5 predicate:(id)a6
+- (DMDActivationPredicateNot)initWithDelegate:(id)delegate uniqueIdentifier:(id)identifier subPredicateObserver:(id)observer predicate:(id)predicate
 {
-  v11 = a5;
+  observerCopy = observer;
   v15.receiver = self;
   v15.super_class = DMDActivationPredicateNot;
-  v12 = [(DMDActivationPredicateObserver *)&v15 initWithDelegate:a3 uniqueIdentifier:a4 predicate:a6];
+  v12 = [(DMDActivationPredicateObserver *)&v15 initWithDelegate:delegate uniqueIdentifier:identifier predicate:predicate];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_subPredicateObserver, a5);
+    objc_storeStrong(&v12->_subPredicateObserver, observer);
   }
 
   return v13;
 }
 
-- (id)evaluatePredicateWithError:(id *)a3
+- (id)evaluatePredicateWithError:(id *)error
 {
-  v5 = [(DMDActivationPredicateNot *)self subPredicateObserver];
-  v6 = [v5 evaluatePredicateWithError:a3];
+  subPredicateObserver = [(DMDActivationPredicateNot *)self subPredicateObserver];
+  v6 = [subPredicateObserver evaluatePredicateWithError:error];
 
   if (v6)
   {
@@ -32,14 +32,14 @@
     v7 = DMFConfigurationEngineLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(DMDActivationPredicateObserver *)self predicateType];
-      v9 = [(DMDActivationPredicateObserver *)self uniqueIdentifier];
+      predicateType = [(DMDActivationPredicateObserver *)self predicateType];
+      uniqueIdentifier = [(DMDActivationPredicateObserver *)self uniqueIdentifier];
       v12 = 138543874;
-      v13 = v8;
+      v13 = predicateType;
       v14 = 2114;
-      v15 = v9;
+      v15 = uniqueIdentifier;
       v16 = 1024;
-      v17 = [(DMDActivationPredicateObserver *)self lastPredicateEvaluationValue];
+      lastPredicateEvaluationValue = [(DMDActivationPredicateObserver *)self lastPredicateEvaluationValue];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Predicate type: %{public}@ with unique identifier: %{public}@ evaluated predicate: %d", &v12, 0x1Cu);
     }
 
@@ -58,18 +58,18 @@
 {
   v8.receiver = self;
   v8.super_class = DMDActivationPredicateNot;
-  v3 = [(DMDActivationPredicateObserver *)&v8 metadata];
-  v4 = [(DMDActivationPredicateNot *)self subPredicateObserver];
-  v5 = [v4 metadata];
+  metadata = [(DMDActivationPredicateObserver *)&v8 metadata];
+  subPredicateObserver = [(DMDActivationPredicateNot *)self subPredicateObserver];
+  metadata2 = [subPredicateObserver metadata];
 
-  if (v5)
+  if (metadata2)
   {
-    v9 = v5;
+    v9 = metadata2;
     v6 = [NSArray arrayWithObjects:&v9 count:1];
-    [v3 setObject:v6 forKeyedSubscript:DMFDeclarationStatePredicateSubPredicatesKey];
+    [metadata setObject:v6 forKeyedSubscript:DMFDeclarationStatePredicateSubPredicatesKey];
   }
 
-  return v3;
+  return metadata;
 }
 
 @end

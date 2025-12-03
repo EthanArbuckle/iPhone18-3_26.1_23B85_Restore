@@ -1,26 +1,26 @@
 @interface PKPaymentOfferRewardsCriteriaEligibilityConfiguration
 - (NSString)description;
-- (PKPaymentOfferRewardsCriteriaEligibilityConfiguration)initWithAmount:(id)a3 currencyCode:(id)a4 merchantCountryCode:(id)a5 context:(unint64_t)a6 options:(unint64_t)a7;
+- (PKPaymentOfferRewardsCriteriaEligibilityConfiguration)initWithAmount:(id)amount currencyCode:(id)code merchantCountryCode:(id)countryCode context:(unint64_t)context options:(unint64_t)options;
 @end
 
 @implementation PKPaymentOfferRewardsCriteriaEligibilityConfiguration
 
-- (PKPaymentOfferRewardsCriteriaEligibilityConfiguration)initWithAmount:(id)a3 currencyCode:(id)a4 merchantCountryCode:(id)a5 context:(unint64_t)a6 options:(unint64_t)a7
+- (PKPaymentOfferRewardsCriteriaEligibilityConfiguration)initWithAmount:(id)amount currencyCode:(id)code merchantCountryCode:(id)countryCode context:(unint64_t)context options:(unint64_t)options
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  amountCopy = amount;
+  codeCopy = code;
+  countryCodeCopy = countryCode;
   v19.receiver = self;
   v19.super_class = PKPaymentOfferRewardsCriteriaEligibilityConfiguration;
   v16 = [(PKPaymentOfferRewardsCriteriaEligibilityConfiguration *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_amount, a3);
-    objc_storeStrong(&v17->_currencyCode, a4);
-    objc_storeStrong(&v17->_merchantCountryCode, a5);
-    v17->_context = a6;
-    v17->_options = a7;
+    objc_storeStrong(&v16->_amount, amount);
+    objc_storeStrong(&v17->_currencyCode, code);
+    objc_storeStrong(&v17->_merchantCountryCode, countryCode);
+    v17->_context = context;
+    v17->_options = options;
   }
 
   return v17;

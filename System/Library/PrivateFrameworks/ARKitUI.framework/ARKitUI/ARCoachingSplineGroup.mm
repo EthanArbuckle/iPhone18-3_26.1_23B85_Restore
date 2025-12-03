@@ -1,7 +1,7 @@
 @interface ARCoachingSplineGroup
 - ($3BA783FF50B239963188BE194EBFFEBA)controlPoints;
 - ($8EF4127CF77ECA3DDB612FCF233DC3A8)patchData;
-- (ARCoachingSplineGroup)initWithSplines:(id)a3;
+- (ARCoachingSplineGroup)initWithSplines:(id)splines;
 - (id).cxx_construct;
 - (unsigned)indices;
 @end
@@ -47,10 +47,10 @@
   }
 }
 
-- (ARCoachingSplineGroup)initWithSplines:(id)a3
+- (ARCoachingSplineGroup)initWithSplines:(id)splines
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  splinesCopy = splines;
   v24.receiver = self;
   v24.super_class = ARCoachingSplineGroup;
   v5 = [(ARCoachingSplineGroup *)&v24 init];
@@ -60,7 +60,7 @@
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v6 = v4;
+    v6 = splinesCopy;
     v7 = [v6 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v7)
     {

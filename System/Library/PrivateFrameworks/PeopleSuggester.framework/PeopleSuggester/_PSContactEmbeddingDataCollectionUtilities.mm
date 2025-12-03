@@ -1,18 +1,18 @@
 @interface _PSContactEmbeddingDataCollectionUtilities
-+ (id)prepareAllEventsFromContactEmbeddingsDict:(id)a3;
-+ (id)prepareEventArrayFromEmbeddingDict:(id)a3 forUser:(id)a4 sessionId:(id)a5;
-+ (id)prepareEventFromContactEmbedding:(id)a3 contactId:(id)a4;
++ (id)prepareAllEventsFromContactEmbeddingsDict:(id)dict;
++ (id)prepareEventArrayFromEmbeddingDict:(id)dict forUser:(id)user sessionId:(id)id;
++ (id)prepareEventFromContactEmbedding:(id)embedding contactId:(id)id;
 @end
 
 @implementation _PSContactEmbeddingDataCollectionUtilities
 
-+ (id)prepareEventFromContactEmbedding:(id)a3 contactId:(id)a4
++ (id)prepareEventFromContactEmbedding:(id)embedding contactId:(id)id
 {
   v46 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v33 = a4;
+  embeddingCopy = embedding;
+  idCopy = id;
   v35 = objc_alloc_init(ContactEmbeddingAnalysisPETNeuralNetEmbedding);
-  v6 = [v5 objectForKey:@"last_layer_before_activation"];
+  v6 = [embeddingCopy objectForKey:@"last_layer_before_activation"];
   v7 = [v6 count];
   v32 = &v32;
   v8 = &v32 - ((4 * v7 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -48,8 +48,8 @@
 
   [(ContactEmbeddingAnalysisPETNeuralNetEmbedding *)v35 setEmbeddings:v8 count:v7];
   v16 = objc_alloc_init(ContactEmbeddingAnalysisPETNeuralNetEmbedding);
-  v34 = v5;
-  v17 = [v5 objectForKey:@"last_layer_after_activation"];
+  v34 = embeddingCopy;
+  v17 = [embeddingCopy objectForKey:@"last_layer_after_activation"];
   v18 = [v17 count];
   v19 = &v32 - ((4 * v18 + 15) & 0xFFFFFFFFFFFFFFF0);
   v38 = 0u;
@@ -84,8 +84,8 @@
 
   [(ContactEmbeddingAnalysisPETNeuralNetEmbedding *)v16 setEmbeddings:v19 count:v18];
   v27 = objc_alloc_init(ContactEmbeddingAnalysisPETContactEmbeddingAnalysisEvent);
-  v28 = v33;
-  [(ContactEmbeddingAnalysisPETContactEmbeddingAnalysisEvent *)v27 setContactId:v33];
+  v28 = idCopy;
+  [(ContactEmbeddingAnalysisPETContactEmbeddingAnalysisEvent *)v27 setContactId:idCopy];
   v29 = v35;
   [(ContactEmbeddingAnalysisPETContactEmbeddingAnalysisEvent *)v27 setEmbeddingsBeforeActivation:v35];
   [(ContactEmbeddingAnalysisPETContactEmbeddingAnalysisEvent *)v27 setEmbeddingsAfterActivation:v16];
@@ -95,16 +95,16 @@
   return v27;
 }
 
-+ (id)prepareAllEventsFromContactEmbeddingsDict:(id)a3
++ (id)prepareAllEventsFromContactEmbeddingsDict:(id)dict
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictCopy = dict;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = dictCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -121,7 +121,7 @@
 
         v11 = *(*(&v17 + 1) + 8 * i);
         v12 = [v6 objectForKey:{v11, v17}];
-        v13 = [a1 prepareEventFromContactEmbedding:v12 contactId:v11];
+        v13 = [self prepareEventFromContactEmbedding:v12 contactId:v11];
         [v5 setObject:v13 forKey:v11];
       }
 
@@ -137,19 +137,19 @@
   return v14;
 }
 
-+ (id)prepareEventArrayFromEmbeddingDict:(id)a3 forUser:(id)a4 sessionId:(id)a5
++ (id)prepareEventArrayFromEmbeddingDict:(id)dict forUser:(id)user sessionId:(id)id
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dictCopy = dict;
+  userCopy = user;
+  idCopy = id;
   v10 = objc_alloc_init(ContactEmbeddingAnalysisPETContactEmbeddingArrayEvent);
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v12 = v7;
+  v12 = dictCopy;
   v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v13)
   {
@@ -175,8 +175,8 @@
   }
 
   [(ContactEmbeddingAnalysisPETContactEmbeddingArrayEvent *)v10 setContactEmbeddings:v11];
-  [(ContactEmbeddingAnalysisPETContactEmbeddingArrayEvent *)v10 setUserId:v8];
-  [(ContactEmbeddingAnalysisPETContactEmbeddingArrayEvent *)v10 setSessinobd:v9];
+  [(ContactEmbeddingAnalysisPETContactEmbeddingArrayEvent *)v10 setUserId:userCopy];
+  [(ContactEmbeddingAnalysisPETContactEmbeddingArrayEvent *)v10 setSessinobd:idCopy];
 
   v18 = *MEMORY[0x1E69E9840];
 

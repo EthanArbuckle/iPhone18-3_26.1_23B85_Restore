@@ -7,21 +7,21 @@
 
 - (uint64_t)uns_willNotifyUser
 {
-  if ([a1 uns_willAlertUser])
+  if ([self uns_willAlertUser])
   {
     return 1;
   }
 
-  v3 = [a1 badge];
-  if (v3)
+  badge = [self badge];
+  if (badge)
   {
     v2 = 1;
   }
 
   else
   {
-    v4 = [a1 sound];
-    v2 = v4 != 0;
+    sound = [self sound];
+    v2 = sound != 0;
   }
 
   return v2;
@@ -29,24 +29,24 @@
 
 - (BOOL)uns_willAlertUser
 {
-  v2 = [a1 body];
-  if ([v2 length])
+  body = [self body];
+  if ([body length])
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = [a1 subtitle];
-    if ([v4 length])
+    subtitle = [self subtitle];
+    if ([subtitle length])
     {
       v3 = 1;
     }
 
     else
     {
-      v5 = [a1 title];
-      v3 = [v5 length] != 0;
+      title = [self title];
+      v3 = [title length] != 0;
     }
   }
 

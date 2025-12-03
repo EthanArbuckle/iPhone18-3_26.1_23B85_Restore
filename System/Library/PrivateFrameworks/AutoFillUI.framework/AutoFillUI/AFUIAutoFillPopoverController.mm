@@ -1,21 +1,21 @@
 @interface AFUIAutoFillPopoverController
-+ (id)presentAsPopoverFromWindow:(id)a3 documentTraits:(id)a4 documentState:(id)a5 modalUIDelegate:(id)a6 textOperationsHandler:(id)a7;
-- (AFUIAutoFillPopoverController)initWithDocumentTraits:(id)a3 documentState:(id)a4 keyboardOutputHandler:(id)a5;
-- (AFUIAutoFillPopoverController)initWithDocumentTraits:(id)a3 documentState:(id)a4 textOperationsHandler:(id)a5;
++ (id)presentAsPopoverFromWindow:(id)window documentTraits:(id)traits documentState:(id)state modalUIDelegate:(id)delegate textOperationsHandler:(id)handler;
+- (AFUIAutoFillPopoverController)initWithDocumentTraits:(id)traits documentState:(id)state keyboardOutputHandler:(id)handler;
+- (AFUIAutoFillPopoverController)initWithDocumentTraits:(id)traits documentState:(id)state textOperationsHandler:(id)handler;
 - (AFUIModalUIDelegate)modalUIDelegate;
 - (BOOL)hasSuggestions;
 - (CGRect)_sourceRectInApplicationCoordinates;
-- (CGRect)_translatedRectFromApplication:(CGRect)a3;
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (CGRect)_translatedRectFromApplication:(CGRect)application;
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (void)_displayContextMenu;
-- (void)_displayContextMenuForSourceRect:(CGRect)a3 caretRect:(CGRect)a4;
+- (void)_displayContextMenuForSourceRect:(CGRect)rect caretRect:(CGRect)caretRect;
 - (void)_displayContextMenuWhenReady;
-- (void)_displayMenuForContentController:(id)a3;
-- (void)_presentViewControllerForAutoFillMode:(unint64_t)a3;
+- (void)_displayMenuForContentController:(id)controller;
+- (void)_presentViewControllerForAutoFillMode:(unint64_t)mode;
 - (void)_removeFromSuperview;
 - (void)dismissMenu;
-- (void)documentStateChanged:(id)a3;
+- (void)documentStateChanged:(id)changed;
 - (void)presentContacts;
 - (void)presentCreditCards;
 - (void)presentPassword;
@@ -24,20 +24,20 @@
 
 @implementation AFUIAutoFillPopoverController
 
-- (AFUIAutoFillPopoverController)initWithDocumentTraits:(id)a3 documentState:(id)a4 textOperationsHandler:(id)a5
+- (AFUIAutoFillPopoverController)initWithDocumentTraits:(id)traits documentState:(id)state textOperationsHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  traitsCopy = traits;
+  stateCopy = state;
+  handlerCopy = handler;
   v17.receiver = self;
   v17.super_class = AFUIAutoFillPopoverController;
   v12 = [(AFUIAutoFillPopoverController *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_documentTraits, a3);
-    objc_storeStrong(&v13->_documentState, a4);
-    v14 = MEMORY[0x1D38AFC90](v11);
+    objc_storeStrong(&v12->_documentTraits, traits);
+    objc_storeStrong(&v13->_documentState, state);
+    v14 = MEMORY[0x1D38AFC90](handlerCopy);
     performTextOperations = v13->_performTextOperations;
     v13->_performTextOperations = v14;
   }
@@ -45,40 +45,40 @@
   return v13;
 }
 
-- (AFUIAutoFillPopoverController)initWithDocumentTraits:(id)a3 documentState:(id)a4 keyboardOutputHandler:(id)a5
+- (AFUIAutoFillPopoverController)initWithDocumentTraits:(id)traits documentState:(id)state keyboardOutputHandler:(id)handler
 {
   v6.receiver = self;
   v6.super_class = AFUIAutoFillPopoverController;
-  return [(AFUIAutoFillPopoverController *)&v6 init:a3];
+  return [(AFUIAutoFillPopoverController *)&v6 init:traits];
 }
 
-+ (id)presentAsPopoverFromWindow:(id)a3 documentTraits:(id)a4 documentState:(id)a5 modalUIDelegate:(id)a6 textOperationsHandler:(id)a7
++ (id)presentAsPopoverFromWindow:(id)window documentTraits:(id)traits documentState:(id)state modalUIDelegate:(id)delegate textOperationsHandler:(id)handler
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [[AFUIAutoFillPopoverController alloc] initWithDocumentTraits:v14 documentState:v13 textOperationsHandler:v11];
+  handlerCopy = handler;
+  delegateCopy = delegate;
+  stateCopy = state;
+  traitsCopy = traits;
+  windowCopy = window;
+  v16 = [[AFUIAutoFillPopoverController alloc] initWithDocumentTraits:traitsCopy documentState:stateCopy textOperationsHandler:handlerCopy];
 
-  [(AFUIAutoFillPopoverController *)v16 setModalUIDelegate:v12];
-  v17 = [(AFUIAutoFillPopoverController *)v16 view];
-  [v15 addSubview:v17];
+  [(AFUIAutoFillPopoverController *)v16 setModalUIDelegate:delegateCopy];
+  view = [(AFUIAutoFillPopoverController *)v16 view];
+  [windowCopy addSubview:view];
 
-  v18 = [v15 rootViewController];
+  rootViewController = [windowCopy rootViewController];
 
-  [v18 addChildViewController:v16];
-  v19 = [v14 autofillMode];
+  [rootViewController addChildViewController:v16];
+  autofillMode = [traitsCopy autofillMode];
 
-  [(AFUIAutoFillPopoverController *)v16 _presentViewControllerForAutoFillMode:v19];
+  [(AFUIAutoFillPopoverController *)v16 _presentViewControllerForAutoFillMode:autofillMode];
 
   return v16;
 }
 
-- (void)documentStateChanged:(id)a3
+- (void)documentStateChanged:(id)changed
 {
-  v44 = a3;
-  [v44 clientFrameInWindow];
+  changedCopy = changed;
+  [changedCopy clientFrameInWindow];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -97,7 +97,7 @@
     goto LABEL_14;
   }
 
-  [v44 clientFrameInEntitySpace];
+  [changedCopy clientFrameInEntitySpace];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -119,7 +119,7 @@ LABEL_14:
     v31 = v30;
     v33 = v32;
     v35 = v34;
-    [v44 caretRectInWindow];
+    [changedCopy caretRectInWindow];
     v51.origin.x = v36;
     v51.origin.y = v37;
     v51.size.width = v38;
@@ -134,21 +134,21 @@ LABEL_14:
     }
   }
 
-  v40 = [v44 scrolling];
-  v41 = [(AFUIAutoFillPopoverController *)self documentState];
-  v42 = [v41 scrolling];
+  scrolling = [changedCopy scrolling];
+  documentState = [(AFUIAutoFillPopoverController *)self documentState];
+  scrolling2 = [documentState scrolling];
 
-  if (v40 == v42)
+  if (scrolling == scrolling2)
   {
-    [(AFUIAutoFillPopoverController *)self setDocumentState:v44];
+    [(AFUIAutoFillPopoverController *)self setDocumentState:changedCopy];
   }
 
   else
   {
 LABEL_5:
-    v43 = [(AFUIAutoFillPopoverController *)self willPresentMenu];
-    [(AFUIAutoFillPopoverController *)self setDocumentState:v44];
-    if (!v43)
+    willPresentMenu = [(AFUIAutoFillPopoverController *)self willPresentMenu];
+    [(AFUIAutoFillPopoverController *)self setDocumentState:changedCopy];
+    if (!willPresentMenu)
     {
       [(AFUIAutoFillPopoverController *)self dismissMenu];
       if (self->_contentController)
@@ -161,7 +161,7 @@ LABEL_5:
 
 - (BOOL)hasSuggestions
 {
-  v3 = [(AFUIAutoFillPopoverController *)self contentController];
+  contentController = [(AFUIAutoFillPopoverController *)self contentController];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -169,30 +169,30 @@ LABEL_5:
     return 0;
   }
 
-  v5 = [(AFUIAutoFillPopoverController *)self contentController];
-  v6 = [v5 hasSuggestions];
+  contentController2 = [(AFUIAutoFillPopoverController *)self contentController];
+  hasSuggestions = [contentController2 hasSuggestions];
 
-  return v6;
+  return hasSuggestions;
 }
 
 - (void)dismissMenu
 {
-  v3 = [(AFUIAutoFillPopoverController *)self modalUIDelegate];
-  [v3 setIsMenuPresented:0 forSessionUUID:0];
+  modalUIDelegate = [(AFUIAutoFillPopoverController *)self modalUIDelegate];
+  [modalUIDelegate setIsMenuPresented:0 forSessionUUID:0];
 
-  v4 = [(AFUIAutoFillPopoverController *)self contextMenuInteraction];
-  [v4 dismissMenu];
+  contextMenuInteraction = [(AFUIAutoFillPopoverController *)self contextMenuInteraction];
+  [contextMenuInteraction dismissMenu];
 
-  v5 = [(AFUIAutoFillPopoverController *)self contextMenuInteraction];
-  v6 = [v5 view];
-  [v6 removeFromSuperview];
+  contextMenuInteraction2 = [(AFUIAutoFillPopoverController *)self contextMenuInteraction];
+  view = [contextMenuInteraction2 view];
+  [view removeFromSuperview];
 
   [(AFUIAutoFillPopoverController *)self setContextMenuInteraction:0];
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
+  interactionCopy = interaction;
   objc_initWeak(&location, self);
   v6 = MEMORY[0x1E69DC8D8];
   v9 = MEMORY[0x1E69E9820];
@@ -216,20 +216,20 @@ id __87__AFUIAutoFillPopoverController_contextMenuInteraction_configurationForMe
   return v2;
 }
 
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration
 {
-  v5 = [MEMORY[0x1E69DD440] defaultStyle];
-  [v5 setPreferredLayout:3];
+  defaultStyle = [MEMORY[0x1E69DD440] defaultStyle];
+  [defaultStyle setPreferredLayout:3];
   if (objc_opt_respondsToSelector())
   {
-    [v5 setAllowsBackgroundInteractionAcrossProccesses:1];
+    [defaultStyle setAllowsBackgroundInteractionAcrossProccesses:1];
   }
 
-  v6 = [(AFUIAutoFillPopoverController *)self view];
-  v7 = [v6 window];
-  [v5 setContainerView:v7];
+  view = [(AFUIAutoFillPopoverController *)self view];
+  window = [view window];
+  [defaultStyle setContainerView:window];
 
-  return v5;
+  return defaultStyle;
 }
 
 - (void)viewDidLoad
@@ -237,22 +237,22 @@ id __87__AFUIAutoFillPopoverController_contextMenuInteraction_configurationForMe
   v5.receiver = self;
   v5.super_class = AFUIAutoFillPopoverController;
   [(AFUIAutoFillPopoverController *)&v5 viewDidLoad];
-  v3 = [(AFUIAutoFillPopoverController *)self view];
-  [v3 setUserInteractionEnabled:0];
+  view = [(AFUIAutoFillPopoverController *)self view];
+  [view setUserInteractionEnabled:0];
 
-  v4 = [(AFUIAutoFillPopoverController *)self view];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view2 = [(AFUIAutoFillPopoverController *)self view];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
 - (void)presentPassword
 {
   v3 = [AFUIAutoFillPasswordController alloc];
-  v4 = [(AFUIAutoFillPopoverController *)self documentTraits];
-  v5 = [(AFUIAutoFillPopoverController *)self performTextOperations];
-  v7 = [(AFUIAutoFillPasswordController *)v3 initWithDocumentTraits:v4 presentingViewController:self textOperationsHandler:v5];
+  documentTraits = [(AFUIAutoFillPopoverController *)self documentTraits];
+  performTextOperations = [(AFUIAutoFillPopoverController *)self performTextOperations];
+  v7 = [(AFUIAutoFillPasswordController *)v3 initWithDocumentTraits:documentTraits presentingViewController:self textOperationsHandler:performTextOperations];
 
-  v6 = [(AFUIAutoFillPopoverController *)self modalUIDelegate];
-  [(AFUIAutoFillPasswordController *)v7 setModalUIDelegate:v6];
+  modalUIDelegate = [(AFUIAutoFillPopoverController *)self modalUIDelegate];
+  [(AFUIAutoFillPasswordController *)v7 setModalUIDelegate:modalUIDelegate];
 
   [(AFUIAutoFillPopoverController *)self _displayMenuForContentController:v7];
 }
@@ -260,12 +260,12 @@ id __87__AFUIAutoFillPopoverController_contextMenuInteraction_configurationForMe
 - (void)presentContacts
 {
   v3 = [AFUIAutofillContactsController alloc];
-  v4 = [(AFUIAutoFillPopoverController *)self documentTraits];
-  v5 = [(AFUIAutoFillPopoverController *)self performTextOperations];
-  v7 = [(AFUIAutofillContactsController *)v3 initWithDocumentTraits:v4 presentingViewController:self textOperationsHandler:v5];
+  documentTraits = [(AFUIAutoFillPopoverController *)self documentTraits];
+  performTextOperations = [(AFUIAutoFillPopoverController *)self performTextOperations];
+  v7 = [(AFUIAutofillContactsController *)v3 initWithDocumentTraits:documentTraits presentingViewController:self textOperationsHandler:performTextOperations];
 
-  v6 = [(AFUIAutoFillPopoverController *)self modalUIDelegate];
-  [(AFUIAutofillContactsController *)v7 setModalUIDelegate:v6];
+  modalUIDelegate = [(AFUIAutoFillPopoverController *)self modalUIDelegate];
+  [(AFUIAutofillContactsController *)v7 setModalUIDelegate:modalUIDelegate];
 
   [(AFUIAutoFillPopoverController *)self _displayMenuForContentController:v7];
 }
@@ -273,21 +273,21 @@ id __87__AFUIAutoFillPopoverController_contextMenuInteraction_configurationForMe
 - (void)presentCreditCards
 {
   v3 = [AFUIAutoFillCreditCardController alloc];
-  v4 = [(AFUIAutoFillPopoverController *)self documentTraits];
-  v5 = [(AFUIAutoFillPopoverController *)self documentState];
-  v6 = [(AFUIAutoFillPopoverController *)self performTextOperations];
-  v8 = [(AFUIAutoFillCreditCardController *)v3 initWithDocumentTraits:v4 documentState:v5 presentingViewController:self textOperationsHandler:v6];
+  documentTraits = [(AFUIAutoFillPopoverController *)self documentTraits];
+  documentState = [(AFUIAutoFillPopoverController *)self documentState];
+  performTextOperations = [(AFUIAutoFillPopoverController *)self performTextOperations];
+  v8 = [(AFUIAutoFillCreditCardController *)v3 initWithDocumentTraits:documentTraits documentState:documentState presentingViewController:self textOperationsHandler:performTextOperations];
 
-  v7 = [(AFUIAutoFillPopoverController *)self modalUIDelegate];
-  [(AFUIAutoFillCreditCardController *)v8 setModalUIDelegate:v7];
+  modalUIDelegate = [(AFUIAutoFillPopoverController *)self modalUIDelegate];
+  [(AFUIAutoFillCreditCardController *)v8 setModalUIDelegate:modalUIDelegate];
 
   [(AFUIAutoFillPopoverController *)self _displayMenuForContentController:v8];
 }
 
-- (void)_displayMenuForContentController:(id)a3
+- (void)_displayMenuForContentController:(id)controller
 {
-  v4 = a3;
-  [(AFUIAutoFillPopoverController *)self setContentController:v4];
+  controllerCopy = controller;
+  [(AFUIAutoFillPopoverController *)self setContentController:controllerCopy];
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -299,7 +299,7 @@ id __87__AFUIAutoFillPopoverController_contextMenuInteraction_configurationForMe
   v5[2] = __66__AFUIAutoFillPopoverController__displayMenuForContentController___block_invoke_2;
   v5[3] = &unk_1E8424558;
   objc_copyWeak(&v6, &location);
-  [v4 generateInitialMenu:v7 menuChanged:v5];
+  [controllerCopy generateInitialMenu:v7 menuChanged:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -413,8 +413,8 @@ void __61__AFUIAutoFillPopoverController__displayContextMenuWhenReady__block_inv
 
 - (void)_displayContextMenu
 {
-  v3 = [(AFUIAutoFillPopoverController *)self documentState];
-  [v3 caretRectInWindow];
+  documentState = [(AFUIAutoFillPopoverController *)self documentState];
+  [documentState caretRectInWindow];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -433,27 +433,27 @@ void __61__AFUIAutoFillPopoverController__displayContextMenuWhenReady__block_inv
 
 - (CGRect)_sourceRectInApplicationCoordinates
 {
-  v3 = [(AFUIAutoFillPopoverController *)self documentState];
-  [v3 clientFrameInWindow];
+  documentState = [(AFUIAutoFillPopoverController *)self documentState];
+  [documentState clientFrameInWindow];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(AFUIAutoFillPopoverController *)self documentState];
-  [v12 caretRectInWindow];
+  documentState2 = [(AFUIAutoFillPopoverController *)self documentState];
+  [documentState2 caretRectInWindow];
   if (CGRectIsNull(v23))
   {
     goto LABEL_4;
   }
 
-  v13 = [(AFUIAutoFillPopoverController *)self documentTraits];
-  v14 = [v13 _isExplicitAutoFillInvocation];
+  documentTraits = [(AFUIAutoFillPopoverController *)self documentTraits];
+  _isExplicitAutoFillInvocation = [documentTraits _isExplicitAutoFillInvocation];
 
-  if (v14)
+  if (_isExplicitAutoFillInvocation)
   {
-    v12 = [(AFUIAutoFillPopoverController *)self documentState];
-    [v12 caretRectInWindow];
+    documentState2 = [(AFUIAutoFillPopoverController *)self documentState];
+    [documentState2 caretRectInWindow];
     v5 = v15;
     v7 = v16;
     v9 = v17;
@@ -472,28 +472,28 @@ LABEL_4:
   return result;
 }
 
-- (void)_displayContextMenuForSourceRect:(CGRect)a3 caretRect:(CGRect)a4
+- (void)_displayContextMenuForSourceRect:(CGRect)rect caretRect:(CGRect)caretRect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = caretRect.size.height;
+  width = caretRect.size.width;
+  y = caretRect.origin.y;
+  x = caretRect.origin.x;
   v47 = *MEMORY[0x1E69E9840];
-  v9 = [(AFUIAutoFillPopoverController *)self view];
-  v10 = [(AFUIAutoFillPopoverController *)self view];
-  v11 = [v10 window];
-  v12 = [v11 screen];
-  v13 = [v12 coordinateSpace];
-  [v9 convertRect:v13 toCoordinateSpace:{x, y, width, height}];
+  view = [(AFUIAutoFillPopoverController *)self view];
+  view2 = [(AFUIAutoFillPopoverController *)self view];
+  window = [view2 window];
+  screen = [window screen];
+  coordinateSpace = [screen coordinateSpace];
+  [view convertRect:coordinateSpace toCoordinateSpace:{x, y, width, height}];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
-  v22 = [(AFUIAutoFillPopoverController *)self view];
-  v23 = [v22 window];
-  v24 = [v23 screen];
-  [v24 bounds];
+  view3 = [(AFUIAutoFillPopoverController *)self view];
+  window2 = [view3 window];
+  screen2 = [window2 screen];
+  [screen2 bounds];
   v53.origin.x = v25;
   v53.origin.y = v26;
   v53.size.width = v27;
@@ -536,31 +536,31 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v44 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
-  v35 = [(AFUIAutoFillPopoverController *)self view];
-  [v35 addSubview:v44];
+  v44 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
+  view4 = [(AFUIAutoFillPopoverController *)self view];
+  [view4 addSubview:v44];
 
-  v36 = [(AFUIAutoFillPopoverController *)self contextMenuInteraction];
-  [v44 addInteraction:v36];
+  contextMenuInteraction = [(AFUIAutoFillPopoverController *)self contextMenuInteraction];
+  [v44 addInteraction:contextMenuInteraction];
 
-  v37 = [(AFUIAutoFillPopoverController *)self contextMenuInteraction];
-  [v37 _presentMenuAtLocation:{MidX, MidY}];
+  contextMenuInteraction2 = [(AFUIAutoFillPopoverController *)self contextMenuInteraction];
+  [contextMenuInteraction2 _presentMenuAtLocation:{MidX, MidY}];
 
-  v38 = [(AFUIAutoFillPopoverController *)self modalUIDelegate];
-  [v38 setIsMenuPresented:1 forSessionUUID:0];
+  modalUIDelegate = [(AFUIAutoFillPopoverController *)self modalUIDelegate];
+  [modalUIDelegate setIsMenuPresented:1 forSessionUUID:0];
 
   v39 = *MEMORY[0x1E69E9840];
 }
 
-- (CGRect)_translatedRectFromApplication:(CGRect)a3
+- (CGRect)_translatedRectFromApplication:(CGRect)application
 {
-  v4 = [(AFUIAutoFillPopoverController *)self view];
-  v5 = [v4 window];
-  [v5 _contextId];
+  view = [(AFUIAutoFillPopoverController *)self view];
+  window = [view window];
+  [window _contextId];
 
-  v6 = [(AFUIAutoFillPopoverController *)self view];
-  v7 = [v6 window];
-  v8 = [v7 layer];
+  view2 = [(AFUIAutoFillPopoverController *)self view];
+  window2 = [view2 window];
+  layer = [window2 layer];
   CALayerGetRenderId();
 
   memset(&v42, 0, sizeof(v42));
@@ -577,15 +577,15 @@ LABEL_15:
   v12 = *(MEMORY[0x1E69792E8] + 48);
   *&v41.m21 = *(MEMORY[0x1E69792E8] + 32);
   *&v41.m23 = v12;
-  v13 = [(AFUIAutoFillPopoverController *)self documentTraits];
-  LODWORD(v7) = [v13 contextID];
+  documentTraits = [(AFUIAutoFillPopoverController *)self documentTraits];
+  LODWORD(window2) = [documentTraits contextID];
 
-  if (v7)
+  if (window2)
   {
-    v14 = [(AFUIAutoFillPopoverController *)self documentTraits];
-    [v14 contextID];
-    v15 = [(AFUIAutoFillPopoverController *)self documentTraits];
-    [v15 layerID];
+    documentTraits2 = [(AFUIAutoFillPopoverController *)self documentTraits];
+    [documentTraits2 contextID];
+    documentTraits3 = [(AFUIAutoFillPopoverController *)self documentTraits];
+    [documentTraits3 layerID];
     BKSHIDServicesGetCALayerTransform();
   }
 
@@ -598,10 +598,10 @@ LABEL_15:
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  v24 = [(AFUIAutoFillPopoverController *)self view];
-  v25 = [(AFUIAutoFillPopoverController *)self view];
-  v26 = [v25 window];
-  [v24 convertRect:v26 fromView:{v17, v19, v21, v23}];
+  view3 = [(AFUIAutoFillPopoverController *)self view];
+  view4 = [(AFUIAutoFillPopoverController *)self view];
+  window3 = [view4 window];
+  [view3 convertRect:window3 fromView:{v17, v19, v21, v23}];
   v28 = v27;
   v30 = v29;
   v32 = v31;
@@ -620,29 +620,29 @@ LABEL_15:
 
 - (void)_removeFromSuperview
 {
-  v3 = [(AFUIAutoFillPopoverController *)self modalUIDelegate];
-  [v3 setIsMenuPresented:0 forSessionUUID:0];
+  modalUIDelegate = [(AFUIAutoFillPopoverController *)self modalUIDelegate];
+  [modalUIDelegate setIsMenuPresented:0 forSessionUUID:0];
 
-  v4 = [(AFUIAutoFillPopoverController *)self performTextOperations];
-  v4[2](v4, 0);
+  performTextOperations = [(AFUIAutoFillPopoverController *)self performTextOperations];
+  performTextOperations[2](performTextOperations, 0);
 
-  v5 = [(AFUIAutoFillPopoverController *)self view];
-  [v5 removeFromSuperview];
+  view = [(AFUIAutoFillPopoverController *)self view];
+  [view removeFromSuperview];
 
   [(AFUIAutoFillPopoverController *)self removeFromParentViewController];
 }
 
-- (void)_presentViewControllerForAutoFillMode:(unint64_t)a3
+- (void)_presentViewControllerForAutoFillMode:(unint64_t)mode
 {
-  if (a3 <= 7)
+  if (mode <= 7)
   {
-    if (a3 - 5 < 3)
+    if (mode - 5 < 3)
     {
       [(AFUIAutoFillPopoverController *)self presentContacts];
       return;
     }
 
-    if (a3 != 1)
+    if (mode != 1)
     {
       return;
     }
@@ -652,13 +652,13 @@ LABEL_6:
     return;
   }
 
-  if (a3 == 9)
+  if (mode == 9)
   {
     [(AFUIAutoFillPopoverController *)self presentCreditCards];
     return;
   }
 
-  if (a3 == 8)
+  if (mode == 8)
   {
     goto LABEL_6;
   }

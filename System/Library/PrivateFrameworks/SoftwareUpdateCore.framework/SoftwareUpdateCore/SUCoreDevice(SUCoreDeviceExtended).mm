@@ -8,12 +8,12 @@
 
 - (uint64_t)rootVolumeUUID
 {
-  v0 = [MEMORY[0x277D64460] sharedLogger];
-  v1 = [v0 oslog];
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460] oslog];
 
-  if (os_log_type_enabled(v1, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
   {
-    [(SUCoreDevice(SUCoreDeviceExtended) *)v1 rootVolumeUUID:v2];
+    [(SUCoreDevice(SUCoreDeviceExtended) *)oslog rootVolumeUUID:v2];
   }
 
   return 0;
@@ -29,10 +29,10 @@
   v24 = 1;
   if (getattrlist("/", &v25, &v27, 0x24uLL, 0))
   {
-    v0 = [MEMORY[0x277D64460] sharedLogger];
-    v1 = [v0 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v1, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       [SUCoreDevice(SUCoreDeviceExtended) rootVolumeSealValid];
     }
@@ -44,12 +44,12 @@ LABEL_16:
 
   if ((BYTE7(v28) & 2) == 0)
   {
-    v2 = [MEMORY[0x277D64460] sharedLogger];
-    v1 = [v2 oslog];
+    mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460]2 oslog];
 
-    if (os_log_type_enabled(v1, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      [(SUCoreDevice(SUCoreDeviceExtended) *)v1 rootVolumeSealValid:v3];
+      [(SUCoreDevice(SUCoreDeviceExtended) *)oslog rootVolumeSealValid:v3];
     }
 
     goto LABEL_16;
@@ -57,12 +57,12 @@ LABEL_16:
 
   if ((BYTE7(v27) & 2) == 0)
   {
-    v10 = [MEMORY[0x277D64460] sharedLogger];
-    v1 = [v10 oslog];
+    mEMORY[0x277D64460]3 = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460]3 oslog];
 
-    if (os_log_type_enabled(v1, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      [(SUCoreDevice(SUCoreDeviceExtended) *)v1 rootVolumeSealValid:v11];
+      [(SUCoreDevice(SUCoreDeviceExtended) *)oslog rootVolumeSealValid:v11];
     }
 
     goto LABEL_16;
@@ -70,10 +70,10 @@ LABEL_16:
 
   if (fsctl("/", 0x20006832uLL, 0, 0))
   {
-    v18 = [MEMORY[0x277D64460] sharedLogger];
-    v1 = [v18 oslog];
+    mEMORY[0x277D64460]4 = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460]4 oslog];
 
-    if (os_log_type_enabled(v1, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       [SUCoreDevice(SUCoreDeviceExtended) rootVolumeSealValid];
     }
@@ -82,12 +82,12 @@ LABEL_16:
   }
 
   v19 = fsctl("/", 0x80044A58uLL, &v24, 0);
-  v20 = [MEMORY[0x277D64460] sharedLogger];
-  v1 = [v20 oslog];
+  mEMORY[0x277D64460]5 = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460]5 oslog];
 
   if (v19)
   {
-    if (os_log_type_enabled(v1, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       [SUCoreDevice(SUCoreDeviceExtended) rootVolumeSealValid];
     }
@@ -95,10 +95,10 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (os_log_type_enabled(v1, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *v23 = 0;
-    _os_log_impl(&dword_23193C000, v1, OS_LOG_TYPE_DEFAULT, "[SUCoreDevice] RootVolumeSealValid: Root volume is sealed", v23, 2u);
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[SUCoreDevice] RootVolumeSealValid: Root volume is sealed", v23, 2u);
   }
 
   v21 = 1;

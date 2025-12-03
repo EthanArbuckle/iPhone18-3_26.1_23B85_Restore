@@ -1,8 +1,8 @@
 @interface SUTallLinkCellConfiguration
 + (id)copyDefaultContext;
-- (id)colorForLabelAtIndex:(unint64_t)a3 withModifiers:(unint64_t)a4;
+- (id)colorForLabelAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers;
 - (id)copyImageDataProvider;
-- (id)fontForLabelAtIndex:(unint64_t)a3;
+- (id)fontForLabelAtIndex:(unint64_t)index;
 - (void)reloadImages;
 - (void)reloadLayoutInformation;
 - (void)reloadStrings;
@@ -12,7 +12,7 @@
 
 + (id)copyDefaultContext
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___SUTallLinkCellConfiguration;
   v2 = objc_msgSendSuper2(&v6, sel_copyDefaultContext);
   v3 = SUTableCellCopyImageProviderForSize(88.0, 88.0);
@@ -24,14 +24,14 @@
   return v2;
 }
 
-- (id)colorForLabelAtIndex:(unint64_t)a3 withModifiers:(unint64_t)a4
+- (id)colorForLabelAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers
 {
-  if (a4)
+  if (modifiers)
   {
     return [MEMORY[0x1E69DC888] whiteColor];
   }
 
-  if ((a4 & 2) != 0)
+  if ((modifiers & 2) != 0)
   {
     v4 = MEMORY[0x1E69DC888];
   }
@@ -39,7 +39,7 @@
   else
   {
     v4 = MEMORY[0x1E69DC888];
-    if (a3 == 4)
+    if (index == 4)
     {
       return [MEMORY[0x1E69DC888] blackColor];
     }
@@ -52,20 +52,20 @@
 {
   v5.receiver = self;
   v5.super_class = SUTallLinkCellConfiguration;
-  v3 = [(SUMediaItemCellConfiguration *)&v5 copyImageDataProvider];
+  copyImageDataProvider = [(SUMediaItemCellConfiguration *)&v5 copyImageDataProvider];
   if (SUItemTypeIsVideoType([self->super.super.super.super.super._representedObject itemType]))
   {
-    [v3 setFillColor:{objc_msgSend(MEMORY[0x1E69DC888], "blackColor")}];
+    [copyImageDataProvider setFillColor:{objc_msgSend(MEMORY[0x1E69DC888], "blackColor")}];
   }
 
-  return v3;
+  return copyImageDataProvider;
 }
 
-- (id)fontForLabelAtIndex:(unint64_t)a3
+- (id)fontForLabelAtIndex:(unint64_t)index
 {
-  if (a3 != 3)
+  if (index != 3)
   {
-    if (a3 == 4)
+    if (index == 4)
     {
       v5 = MEMORY[0x1E69DB878];
       v6 = 15.0;
@@ -80,9 +80,9 @@ LABEL_11:
     return [v5 boldSystemFontOfSize:v6];
   }
 
-  v8 = [self->super.super.super.super.super._representedObject itemType];
+  itemType = [self->super.super.super.super.super._representedObject itemType];
   v5 = MEMORY[0x1E69DB878];
-  if (v8 == 1009)
+  if (itemType == 1009)
   {
     goto LABEL_11;
   }
@@ -100,8 +100,8 @@ LABEL_11:
     *self->super.super.super.super._images = [self->super.super.super.super.super._context placeholderImage];
   }
 
-  v3 = [self->super.super.super.super.super._representedObject reviewStatistics];
-  if ([v3 numberOfUserRatings] < 1)
+  reviewStatistics = [self->super.super.super.super.super._representedObject reviewStatistics];
+  if ([reviewStatistics numberOfUserRatings] < 1)
   {
     v5 = 0;
   }
@@ -109,7 +109,7 @@ LABEL_11:
   else
   {
     context = self->super.super.super.super.super._context;
-    [v3 averageUserRating];
+    [reviewStatistics averageUserRating];
     v5 = [context ratingImageForRating:1 style:?];
   }
 
@@ -244,25 +244,25 @@ LABEL_11:
   v16.receiver = self;
   v16.super_class = SUTallLinkCellConfiguration;
   [(SUMediaItemCellConfiguration *)&v16 reloadStrings];
-  v3 = [self->super.super.super.super.super._representedObject title];
+  title = [self->super.super.super.super.super._representedObject title];
 
-  v4 = [v3 length];
+  v4 = [title length];
   if (v4)
   {
-    v4 = v3;
+    v4 = title;
   }
 
   *(self->super.super.super.super._strings + 4) = v4;
-  v5 = [self->super.super.super.super.super._representedObject containerName];
-  if (![v5 length])
+  containerName = [self->super.super.super.super.super._representedObject containerName];
+  if (![containerName length])
   {
-    v5 = [self->super.super.super.super.super._representedObject artistName];
+    containerName = [self->super.super.super.super.super._representedObject artistName];
   }
 
-  v6 = [v5 length];
+  v6 = [containerName length];
   if (v6)
   {
-    v6 = v5;
+    v6 = containerName;
   }
 
   *(self->super.super.super.super._strings + 1) = v6;
@@ -284,9 +284,9 @@ LABEL_11:
 
   *(self->super.super.super.super._strings + 2) = v8;
   v9 = [objc_msgSend(self->super.super.super.super.super._representedObject "reviewStatistics")];
-  v10 = [self->super.super.super.super.super._representedObject secondaryTitle];
+  secondaryTitle = [self->super.super.super.super.super._representedObject secondaryTitle];
 
-  v11 = [v10 length];
+  v11 = [secondaryTitle length];
   if (v9 == 1)
   {
     if (!v11)
@@ -312,10 +312,10 @@ LABEL_11:
     v12 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v13 = @"NO_REVIEWS";
 LABEL_18:
-    v10 = [v12 localizedStringForKey:v13 value:&stru_1F41B3660 table:0];
+    secondaryTitle = [v12 localizedStringForKey:v13 value:&stru_1F41B3660 table:0];
   }
 
-  v14 = v10;
+  v14 = secondaryTitle;
 LABEL_21:
   *(self->super.super.super.super._strings + 3) = v14;
 }

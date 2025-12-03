@@ -1,24 +1,24 @@
 @interface HKMenstrualCyclesDiagnostics
-- (HKMenstrualCyclesDiagnostics)initWithHealthStore:(id)a3;
-- (id)_actionCompletionOnClientQueue:(id)a3;
-- (void)triggerAnalysisForDiagnosticsWithCompletion:(id)a3;
+- (HKMenstrualCyclesDiagnostics)initWithHealthStore:(id)store;
+- (id)_actionCompletionOnClientQueue:(id)queue;
+- (void)triggerAnalysisForDiagnosticsWithCompletion:(id)completion;
 @end
 
 @implementation HKMenstrualCyclesDiagnostics
 
-- (HKMenstrualCyclesDiagnostics)initWithHealthStore:(id)a3
+- (HKMenstrualCyclesDiagnostics)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = HKMenstrualCyclesDiagnostics;
   v6 = [(HKMenstrualCyclesDiagnostics *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
+    objc_storeStrong(&v6->_healthStore, store);
     v8 = objc_alloc(MEMORY[0x277CCDAA0]);
-    v9 = [MEMORY[0x277CCAD78] UUID];
-    v10 = [v8 initWithHealthStore:v5 taskIdentifier:@"HKMCDiagnosticsServer" exportedObject:v7 taskUUID:v9];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v10 = [v8 initWithHealthStore:storeCopy taskIdentifier:@"HKMCDiagnosticsServer" exportedObject:v7 taskUUID:uUID];
     proxyProvider = v7->_proxyProvider;
     v7->_proxyProvider = v10;
 
@@ -28,9 +28,9 @@
   return v7;
 }
 
-- (void)triggerAnalysisForDiagnosticsWithCompletion:(id)a3
+- (void)triggerAnalysisForDiagnosticsWithCompletion:(id)completion
 {
-  v4 = [(HKMenstrualCyclesDiagnostics *)self _actionCompletionOnClientQueue:a3];
+  v4 = [(HKMenstrualCyclesDiagnostics *)self _actionCompletionOnClientQueue:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -46,16 +46,16 @@
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v9 errorHandler:v7];
 }
 
-- (id)_actionCompletionOnClientQueue:(id)a3
+- (id)_actionCompletionOnClientQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __63__HKMenstrualCyclesDiagnostics__actionCompletionOnClientQueue___block_invoke;
   v8[3] = &unk_2796D49B0;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = queueCopy;
+  v5 = queueCopy;
   v6 = [v8 copy];
 
   return v6;

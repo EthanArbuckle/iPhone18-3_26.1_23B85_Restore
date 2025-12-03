@@ -1,26 +1,26 @@
 @interface SUUIComposeReviewHeaderView
 - (SUUIComposeReviewHeaderDelegate)delegate;
-- (SUUIComposeReviewHeaderView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
-- (id)textFieldList:(id)a3 configurationForFieldAtIndex:(unint64_t)a4;
+- (SUUIComposeReviewHeaderView)initWithFrame:(CGRect)frame style:(int64_t)style;
+- (id)textFieldList:(id)list configurationForFieldAtIndex:(unint64_t)index;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setReview:(id)a3;
+- (void)setReview:(id)review;
 - (void)sizeToFit;
-- (void)textFieldListValidityDidChange:(id)a3;
-- (void)textFieldListValuesDidChange:(id)a3;
+- (void)textFieldListValidityDidChange:(id)change;
+- (void)textFieldListValuesDidChange:(id)change;
 @end
 
 @implementation SUUIComposeReviewHeaderView
 
-- (SUUIComposeReviewHeaderView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (SUUIComposeReviewHeaderView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
   v22.receiver = self;
   v22.super_class = SUUIComposeReviewHeaderView;
-  v5 = [(SUUIComposeReviewHeaderView *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(SUUIComposeReviewHeaderView *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_style = a4;
+    v5->_style = style;
     v7 = [MEMORY[0x277D755B8] systemImageNamed:@"star"];
     v8 = [MEMORY[0x277D755B8] systemImageNamed:@"star.fill"];
     v9 = SKGetRatingStarsImage();
@@ -89,14 +89,14 @@
   [(SUUIComposeReviewHeaderView *)self setFrame:v4, v6, v8, v9 + 44.0];
 }
 
-- (void)setReview:(id)a3
+- (void)setReview:(id)review
 {
-  v5 = a3;
+  reviewCopy = review;
   review = self->_review;
-  v8 = v5;
-  if (review != v5)
+  v8 = reviewCopy;
+  if (review != reviewCopy)
   {
-    objc_storeStrong(&self->_review, a3);
+    objc_storeStrong(&self->_review, review);
     review = self->_review;
   }
 
@@ -106,10 +106,10 @@
   [(SUUIComposeTextFieldListView *)self->_textFieldListView reloadData];
 }
 
-- (id)textFieldList:(id)a3 configurationForFieldAtIndex:(unint64_t)a4
+- (id)textFieldList:(id)list configurationForFieldAtIndex:(unint64_t)index
 {
   v6 = objc_alloc_init(SUUIComposeTextFieldConfiguration);
-  if (!a4)
+  if (!index)
   {
     style = self->_style;
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -127,20 +127,20 @@
     }
 
     [(SUUIComposeTextFieldConfiguration *)v6 setMaxLength:[(SUUIReviewMetadata *)self->_review titleMaxLength]];
-    v11 = [(SUUIReviewMetadata *)self->_review title];
-    [(SUUIComposeTextFieldConfiguration *)v6 setValue:v11];
+    title = [(SUUIReviewMetadata *)self->_review title];
+    [(SUUIComposeTextFieldConfiguration *)v6 setValue:title];
   }
 
   return v6;
 }
 
-- (void)textFieldListValidityDidChange:(id)a3
+- (void)textFieldListValidityDidChange:(id)change
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained composeHeaderViewValidityDidChange:self];
 }
 
-- (void)textFieldListValuesDidChange:(id)a3
+- (void)textFieldListValuesDidChange:(id)change
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained composeHeaderViewValuesDidChange:self];

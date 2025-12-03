@@ -1,11 +1,11 @@
 @interface AVFigEndpointUIAgentOutputDeviceAuthorizationSessionImpl
-- (AVFigEndpointUIAgentOutputDeviceAuthorizationSessionImpl)initWithFigEndpointUIAgent:(OpaqueFigEndpointUIAgent *)a3;
-- (void)_notifyCurrentRequestOfTerminalStatus:(int64_t)a3 error:(id)a4;
-- (void)_showAuthPromptWithUniqueID:(id)a3 routeDescriptor:(__CFDictionary *)a4 pinMode:(BOOL)a5 reason:(__CFString *)a6;
-- (void)_startNewRequest:(id)a3 impl:(id)a4;
+- (AVFigEndpointUIAgentOutputDeviceAuthorizationSessionImpl)initWithFigEndpointUIAgent:(OpaqueFigEndpointUIAgent *)agent;
+- (void)_notifyCurrentRequestOfTerminalStatus:(int64_t)status error:(id)error;
+- (void)_showAuthPromptWithUniqueID:(id)d routeDescriptor:(__CFDictionary *)descriptor pinMode:(BOOL)mode reason:(__CFString *)reason;
+- (void)_startNewRequest:(id)request impl:(id)impl;
 - (void)dealloc;
-- (void)outputDeviceAuthorizationRequestImpl:(id)a3 didRespondWithAuthorizationToken:(id)a4;
-- (void)outputDeviceAuthorizationRequestImplDidCancel:(id)a3;
+- (void)outputDeviceAuthorizationRequestImpl:(id)impl didRespondWithAuthorizationToken:(id)token;
+- (void)outputDeviceAuthorizationRequestImplDidCancel:(id)cancel;
 @end
 
 @implementation AVFigEndpointUIAgentOutputDeviceAuthorizationSessionImpl
@@ -30,12 +30,12 @@
   [(AVFigEndpointUIAgentOutputDeviceAuthorizationSessionImpl *)&v5 dealloc];
 }
 
-- (void)_showAuthPromptWithUniqueID:(id)a3 routeDescriptor:(__CFDictionary *)a4 pinMode:(BOOL)a5 reason:(__CFString *)a6
+- (void)_showAuthPromptWithUniqueID:(id)d routeDescriptor:(__CFDictionary *)descriptor pinMode:(BOOL)mode reason:(__CFString *)reason
 {
-  v6 = a5;
+  modeCopy = mode;
   v29 = *MEMORY[0x1E69E9840];
   v10 = *MEMORY[0x1E69AF298];
-  if (!a6)
+  if (!reason)
   {
     v11 = self->_currentRequest ? *MEMORY[0x1E69AF2A0] : *MEMORY[0x1E69AF298];
     if (dword_1EB46D568)
@@ -48,15 +48,15 @@
 
   if (FigCFEqual())
   {
-    v13 = [AVOutputDevice outputDeviceWithRouteDescriptor:a4 withRoutingContext:0];
+    v13 = [AVOutputDevice outputDeviceWithRouteDescriptor:descriptor withRoutingContext:0];
     v14 = [AVFigEndpointUIAgentOutputDeviceAuthorizationRequestImpl alloc];
     v15 = &AVOutputDeviceAuthorizationTokenTypePIN;
-    if (!v6)
+    if (!modeCopy)
     {
       v15 = AVOutputDeviceAuthorizationTokenTypePassword;
     }
 
-    v16 = [(AVFigEndpointUIAgentOutputDeviceAuthorizationRequestImpl *)v14 initWithID:a3 outputDevice:v13 authorizationTokenType:*v15, v27, v28];
+    v16 = [(AVFigEndpointUIAgentOutputDeviceAuthorizationRequestImpl *)v14 initWithID:d outputDevice:v13 authorizationTokenType:*v15, v27, v28];
     v17 = [[AVOutputDeviceAuthorizationRequest alloc] initWithOutputDeviceAuthorizationRequestImpl:v16];
     [(AVFigEndpointUIAgentOutputDeviceAuthorizationSessionImpl *)self _startNewRequest:v17 impl:v16];
   }
@@ -108,26 +108,26 @@
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startNewRequest:(id)a3 impl:(id)a4
+- (void)_startNewRequest:(id)request impl:(id)impl
 {
-  self->_currentRequest = a3;
-  v7 = a4;
-  self->_currentRequestImpl = v7;
-  [(AVFigEndpointUIAgentOutputDeviceAuthorizationRequestImpl *)v7 setParentAuthorizationSessionImpl:self];
-  v8 = [(AVFigEndpointUIAgentOutputDeviceAuthorizationSessionImpl *)self parentAuthorizationSession];
+  self->_currentRequest = request;
+  implCopy = impl;
+  self->_currentRequestImpl = implCopy;
+  [(AVFigEndpointUIAgentOutputDeviceAuthorizationRequestImpl *)implCopy setParentAuthorizationSessionImpl:self];
+  parentAuthorizationSession = [(AVFigEndpointUIAgentOutputDeviceAuthorizationSessionImpl *)self parentAuthorizationSession];
 
-  [(AVOutputDeviceAuthorizationSession *)v8 outputDeviceAuthorizationSessionImpl:self didProvideAuthorizationRequest:a3];
+  [(AVOutputDeviceAuthorizationSession *)parentAuthorizationSession outputDeviceAuthorizationSessionImpl:self didProvideAuthorizationRequest:request];
 }
 
-- (void)_notifyCurrentRequestOfTerminalStatus:(int64_t)a3 error:(id)a4
+- (void)_notifyCurrentRequestOfTerminalStatus:(int64_t)status error:(id)error
 {
-  [(AVFigEndpointUIAgentOutputDeviceAuthorizationRequestImpl *)self->_currentRequestImpl enterTerminalStatus:a3 error:a4];
+  [(AVFigEndpointUIAgentOutputDeviceAuthorizationRequestImpl *)self->_currentRequestImpl enterTerminalStatus:status error:error];
 
   self->_currentRequestImpl = 0;
   self->_currentRequest = 0;
 }
 
-- (void)outputDeviceAuthorizationRequestImpl:(id)a3 didRespondWithAuthorizationToken:(id)a4
+- (void)outputDeviceAuthorizationRequestImpl:(id)impl didRespondWithAuthorizationToken:(id)token
 {
   v10 = *MEMORY[0x1E69E9840];
   if (dword_1EB46D568)
@@ -141,13 +141,13 @@
   v8 = *(*(CMBaseObjectGetVTable() + 16) + 8);
   if (v8)
   {
-    v8(agent, a4, 0);
+    v8(agent, token, 0);
   }
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)outputDeviceAuthorizationRequestImplDidCancel:(id)a3
+- (void)outputDeviceAuthorizationRequestImplDidCancel:(id)cancel
 {
   v8 = *MEMORY[0x1E69E9840];
   if (dword_1EB46D568)
@@ -167,7 +167,7 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (AVFigEndpointUIAgentOutputDeviceAuthorizationSessionImpl)initWithFigEndpointUIAgent:(OpaqueFigEndpointUIAgent *)a3
+- (AVFigEndpointUIAgentOutputDeviceAuthorizationSessionImpl)initWithFigEndpointUIAgent:(OpaqueFigEndpointUIAgent *)agent
 {
   v5 = [AVRoutingCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
   v16.receiver = self;
@@ -179,14 +179,14 @@
     goto LABEL_10;
   }
 
-  if (!a3)
+  if (!agent)
   {
     v14 = 0;
     v6->_agent = 0;
     goto LABEL_9;
   }
 
-  v8 = CFRetain(a3);
+  v8 = CFRetain(agent);
   v7->_agent = v8;
   if (!v8)
   {

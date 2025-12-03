@@ -1,29 +1,29 @@
 @interface BWDeferredArrayIntermediate
-- (BWDeferredArrayIntermediate)initWithArray:(id)a3 tag:(id)a4 URL:(id)a5;
-- (BWDeferredArrayIntermediate)initWithCoder:(id)a3;
-- (id)archive:(int *)a3;
+- (BWDeferredArrayIntermediate)initWithArray:(id)array tag:(id)tag URL:(id)l;
+- (BWDeferredArrayIntermediate)initWithCoder:(id)coder;
+- (id)archive:(int *)archive;
 - (id)description;
-- (id)fetchWithCustomClassesAndRetain:(id)a3 err:(int *)a4;
+- (id)fetchWithCustomClassesAndRetain:(id)retain err:(int *)err;
 - (int)flush;
-- (int)setArchive:(id)a3;
-- (int)setURL:(id)a3 prefetchQueue:(id)a4;
+- (int)setArchive:(id)archive;
+- (int)setURL:(id)l prefetchQueue:(id)queue;
 - (uint64_t)flush;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BWDeferredArrayIntermediate
 
-- (BWDeferredArrayIntermediate)initWithArray:(id)a3 tag:(id)a4 URL:(id)a5
+- (BWDeferredArrayIntermediate)initWithArray:(id)array tag:(id)tag URL:(id)l
 {
-  if (a3)
+  if (array)
   {
     v8.receiver = self;
     v8.super_class = BWDeferredArrayIntermediate;
-    v6 = [(BWDeferredIntermediate *)&v8 initWithTag:a4 URL:a5];
+    v6 = [(BWDeferredIntermediate *)&v8 initWithTag:tag URL:l];
     if (v6)
     {
-      v6->_array = a3;
+      v6->_array = array;
     }
   }
 
@@ -36,18 +36,18 @@
   return v6;
 }
 
-- (BWDeferredArrayIntermediate)initWithCoder:(id)a3
+- (BWDeferredArrayIntermediate)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = BWDeferredArrayIntermediate;
-  return [(BWDeferredIntermediate *)&v4 initWithCoder:a3];
+  return [(BWDeferredIntermediate *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = BWDeferredArrayIntermediate;
-  [(BWDeferredIntermediate *)&v3 encodeWithCoder:a3];
+  [(BWDeferredIntermediate *)&v3 encodeWithCoder:coder];
 }
 
 - (void)dealloc
@@ -57,7 +57,7 @@
   [(BWDeferredDataIntermediate *)&v3 dealloc];
 }
 
-- (int)setURL:(id)a3 prefetchQueue:(id)a4
+- (int)setURL:(id)l prefetchQueue:(id)queue
 {
   pthread_mutex_lock(&self->super.super._lock);
   if (self->_array)
@@ -68,7 +68,7 @@
 
   else
   {
-    [(BWDeferredDataIntermediate *)self _setURL:a3 prefetchQueue:a4];
+    [(BWDeferredDataIntermediate *)self _setURL:l prefetchQueue:queue];
     v7 = 0;
   }
 
@@ -76,7 +76,7 @@
   return v7;
 }
 
-- (int)setArchive:(id)a3
+- (int)setArchive:(id)archive
 {
   pthread_mutex_lock(&self->super.super._lock);
   if (self->_array)
@@ -99,7 +99,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v5 = [a3 copy];
+  v5 = [archive copy];
   v6 = 0;
   self->super._archive = v5;
 LABEL_5:
@@ -107,7 +107,7 @@ LABEL_5:
   return v6;
 }
 
-- (id)fetchWithCustomClassesAndRetain:(id)a3 err:(int *)a4
+- (id)fetchWithCustomClassesAndRetain:(id)retain err:(int *)err
 {
   v13 = 0;
   pthread_mutex_lock(&self->super.super._lock);
@@ -121,7 +121,7 @@ LABEL_5:
     pthread_cond_wait(&self->super.super._cv, &self->super.super._lock);
   }
 
-  v7 = [BWDeferredContainer buildArchiveClasses:a3];
+  v7 = [BWDeferredContainer buildArchiveClasses:retain];
   archive = self->super._archive;
   if (archive)
   {
@@ -162,15 +162,15 @@ LABEL_13:
   v9 = -16134;
 LABEL_8:
   pthread_mutex_unlock(&self->super.super._lock);
-  if (a4)
+  if (err)
   {
-    *a4 = v9;
+    *err = v9;
   }
 
   return self->_array;
 }
 
-- (id)archive:(int *)a3
+- (id)archive:(int *)archive
 {
   v10 = 0;
   pthread_mutex_lock(&self->super.super._lock);
@@ -210,9 +210,9 @@ LABEL_8:
   }
 
   pthread_mutex_unlock(&self->super.super._lock);
-  if (a3)
+  if (archive)
   {
-    *a3 = v8;
+    *archive = v8;
   }
 
   return v7;
@@ -269,7 +269,7 @@ LABEL_8:
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_autoreleasePoolPush();
   v5 = [(NSArray *)self->_array description];
   if ([(NSString *)v5 length]>= 0x201)
@@ -277,9 +277,9 @@ LABEL_8:
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@..."], -[NSString substringToIndex:](v5, "substringToIndex:", 512));
   }
 
-  [v3 appendFormat:@"<%@ %p>: tag:%@ array:%@", objc_opt_class(), self, -[BWDeferredIntermediate tag](self, "tag"), v5];
+  [string appendFormat:@"<%@ %p>: tag:%@ array:%@", objc_opt_class(), self, -[BWDeferredIntermediate tag](self, "tag"), v5];
   objc_autoreleasePoolPop(v4);
-  v6 = [v3 copy];
+  v6 = [string copy];
 
   return v6;
 }
@@ -304,7 +304,7 @@ LABEL_8:
 {
   OUTLINED_FUNCTION_0();
   FigDebugAssert3();
-  result = [*a1 code];
+  result = [*self code];
   *a2 = result;
   return result;
 }

@@ -1,40 +1,40 @@
 @interface GreenGhostLowLightStage
-+ (int)prewarmShaders:(id)a3;
-- (GreenGhostLowLightStage)initWithMetalContext:(id)a3;
++ (int)prewarmShaders:(id)shaders;
+- (GreenGhostLowLightStage)initWithMetalContext:(id)context;
 - (SidecarWriter)sidecarWriter;
-- (id)functionNameForProgram:(int)a3;
-- (int)allocateFusionWeightTexturesWithWidth:(unint64_t)a3 height:(unint64_t)a4;
-- (int)applyInpaintWithDownscaledLuma:(id)a3 propagatedLuma:(id)a4 downscaledChroma:(id)a5 propagatedChroma:(id)a6 propagatedGradient:(id)a7 maskPreInpainting:(id)a8 outputLuma:(id)a9 outputChroma:(id)a10 params:(LowLightInpaintTuning *)a11;
-- (int)canMitigationProceedWithMaxMaskAverage:(float)a3;
+- (id)functionNameForProgram:(int)program;
+- (int)allocateFusionWeightTexturesWithWidth:(unint64_t)width height:(unint64_t)height;
+- (int)applyInpaintWithDownscaledLuma:(id)luma propagatedLuma:(id)propagatedLuma downscaledChroma:(id)chroma propagatedChroma:(id)propagatedChroma propagatedGradient:(id)gradient maskPreInpainting:(id)inpainting outputLuma:(id)outputLuma outputChroma:(id)self0 params:(LowLightInpaintTuning *)self1;
+- (int)canMitigationProceedWithMaxMaskAverage:(float)average;
 - (int)compileShaders;
-- (int)detectionWithRefPyramid:(id)a3 otherPyramid:(id)a4 refDetection:(BOOL)a5 refProperties:(frameProperties_t *)a6 otherProperties:(frameProperties_t *)a7 maskMBBinary:(id)a8 params:(LowLightTuning *)a9;
-- (int)fuseRefPyramid:(id)a3 withOtherPyramid:(id)a4 refProperties:(frameProperties_t *)a5 otherProperties:(frameProperties_t *)a6 currentFusionWeights:(id)a7 relativeBrightness:(float)a8;
-- (int)fuseRefPyramid:(id)a3 withOtherPyramid:(id)a4 refProperties:(frameProperties_t *)a5 otherProperties:(frameProperties_t *)a6 maskMBBinary:(id)a7 params:(LowLightFusionTuning *)a8;
-- (int)guidedFilter:(id)a3 withGuideLuma:(id)a4 guideChroma:(id)a5 params:(LowLightRefinementTuning *)a6 output:(id)a7;
-- (int)inpaintLuma:(id)a3 andChroma:(id)a4 tuningParams:(id)a5;
-- (int)mixFusedTexturesWithRefLuma:(id)a3 refChroma:(id)a4 refProperties:(frameProperties_t *)a5 tuningParams:(id)a6;
-- (int)prepareInpaintingWithLuma:(id)a3 andChroma:(id)a4 outputLuma:(id)a5 outputChroma:(id)a6 outputGradient:(id)a7 params:(LowLightInpaintTuning *)a8;
-- (int)propagateLuma:(id)a3 chroma:(id)a4 gradient:(id)a5 outputLuma:(id)a6 outputChroma:(id)a7 outputGradient:(id)a8 params:(LowLightInpaintTuning *)a9;
-- (int)refineDetectionWithGuideLuma:(id)a3 guideChroma:(id)a4 params:(LowLightRefinementTuning *)a5 output:(id)a6;
-- (int)singleBracketDetectionWithLuma:(id)a3 chroma:(id)a4 params:(DetectionTuning *)a5;
-- (int)updateFusionWeights:(id)a3;
-- (int)updateMaskAndComputeGradientForLuma:(id)a3 output:(id)a4 params:(LowLightInpaintTuning *)a5;
-- (uint64_t)computeFusionWeightsRefLuma:(__n128)a3 refChroma:(__n128)a4 otherLuma:(__n128)a5 otherChroma:(uint64_t)a6 maskMBBinary:(void *)a7 innerMask:(void *)a8 relativeBrightness:(void *)a9 homography:(void *)a10 output:(void *)a11 params:(void *)a12;
-- (uint64_t)computeTemporalVariationsRefImg:(uint64_t)a3 OtherImg:(void *)a4 refProperties:(void *)a5 otherProperties:(uint64_t)a6 params:(_OWORD *)a7;
-- (uint64_t)prepareFusionRefLuma:(double)a3 refChroma:(double)a4 otherLuma:(double)a5 otherChroma:(uint64_t)a6 maskMBBinary:(void *)a7 relativeBrightness:(void *)a8 homography:(void *)a9 output:(void *)a10 params:(void *)a11;
+- (int)detectionWithRefPyramid:(id)pyramid otherPyramid:(id)otherPyramid refDetection:(BOOL)detection refProperties:(frameProperties_t *)properties otherProperties:(frameProperties_t *)otherProperties maskMBBinary:(id)binary params:(LowLightTuning *)params;
+- (int)fuseRefPyramid:(id)pyramid withOtherPyramid:(id)otherPyramid refProperties:(frameProperties_t *)properties otherProperties:(frameProperties_t *)otherProperties currentFusionWeights:(id)weights relativeBrightness:(float)brightness;
+- (int)fuseRefPyramid:(id)pyramid withOtherPyramid:(id)otherPyramid refProperties:(frameProperties_t *)properties otherProperties:(frameProperties_t *)otherProperties maskMBBinary:(id)binary params:(LowLightFusionTuning *)params;
+- (int)guidedFilter:(id)filter withGuideLuma:(id)luma guideChroma:(id)chroma params:(LowLightRefinementTuning *)params output:(id)output;
+- (int)inpaintLuma:(id)luma andChroma:(id)chroma tuningParams:(id)params;
+- (int)mixFusedTexturesWithRefLuma:(id)luma refChroma:(id)chroma refProperties:(frameProperties_t *)properties tuningParams:(id)params;
+- (int)prepareInpaintingWithLuma:(id)luma andChroma:(id)chroma outputLuma:(id)outputLuma outputChroma:(id)outputChroma outputGradient:(id)gradient params:(LowLightInpaintTuning *)params;
+- (int)propagateLuma:(id)luma chroma:(id)chroma gradient:(id)gradient outputLuma:(id)outputLuma outputChroma:(id)outputChroma outputGradient:(id)outputGradient params:(LowLightInpaintTuning *)params;
+- (int)refineDetectionWithGuideLuma:(id)luma guideChroma:(id)chroma params:(LowLightRefinementTuning *)params output:(id)output;
+- (int)singleBracketDetectionWithLuma:(id)luma chroma:(id)chroma params:(DetectionTuning *)params;
+- (int)updateFusionWeights:(id)weights;
+- (int)updateMaskAndComputeGradientForLuma:(id)luma output:(id)output params:(LowLightInpaintTuning *)params;
+- (uint64_t)computeFusionWeightsRefLuma:(__n128)luma refChroma:(__n128)chroma otherLuma:(__n128)otherLuma otherChroma:(uint64_t)otherChroma maskMBBinary:(void *)binary innerMask:(void *)mask relativeBrightness:(void *)brightness homography:(void *)self0 output:(void *)self1 params:(void *)self2;
+- (uint64_t)computeTemporalVariationsRefImg:(uint64_t)img OtherImg:(void *)otherImg refProperties:(void *)properties otherProperties:(uint64_t)otherProperties params:(_OWORD *)params;
+- (uint64_t)prepareFusionRefLuma:(double)luma refChroma:(double)chroma otherLuma:(double)otherLuma otherChroma:(uint64_t)otherChroma maskMBBinary:(void *)binary relativeBrightness:(void *)brightness homography:(void *)homography output:(void *)self0 params:(void *)self1;
 - (void)dealloc;
 - (void)releaseTextures;
 - (void)reset;
-- (void)scaleFaceBodyBoundariesWithSizeRatio:(float)a3;
+- (void)scaleFaceBodyBoundariesWithSizeRatio:(float)ratio;
 @end
 
 @implementation GreenGhostLowLightStage
 
-- (id)functionNameForProgram:(int)a3
+- (id)functionNameForProgram:(int)program
 {
-  if (a3 < 0xD)
+  if (program < 0xD)
   {
-    return *(&off_29EDDC060 + a3);
+    return *(&off_29EDDC060 + program);
   }
 
   FigDebugAssert3();
@@ -202,16 +202,16 @@
   return 0;
 }
 
-- (GreenGhostLowLightStage)initWithMetalContext:(id)a3
+- (GreenGhostLowLightStage)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v31.receiver = self;
   v31.super_class = GreenGhostLowLightStage;
   v6 = [(GreenGhostLowLightStage *)&v31 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_metal, a3);
+    objc_storeStrong(&v6->_metal, context);
     *&v7->_detectionLvl = 2;
     v7->_nonRefFramesCount = 0;
     v7->_isFirstNonRefFrame = 1;
@@ -226,14 +226,14 @@
       if (!objc_msgSend_compileShaders(v7, v15, v16, v17))
       {
         v18 = [GreenGhostCommon alloc];
-        v21 = objc_msgSend_initWithMetalContext_(v18, v19, v5, v20);
+        v21 = objc_msgSend_initWithMetalContext_(v18, v19, contextCopy, v20);
         greenGhostCommon = v7->_greenGhostCommon;
         v7->_greenGhostCommon = v21;
 
         if (v7->_greenGhostCommon)
         {
           v23 = [TextureUtils alloc];
-          v26 = objc_msgSend_initWithMetalContext_(v23, v24, v5, v25);
+          v26 = objc_msgSend_initWithMetalContext_(v23, v24, contextCopy, v25);
           textureUtils = v7->_textureUtils;
           v7->_textureUtils = v26;
 
@@ -278,11 +278,11 @@ LABEL_8:
   return v29;
 }
 
-+ (int)prewarmShaders:(id)a3
++ (int)prewarmShaders:(id)shaders
 {
-  v3 = a3;
+  shadersCopy = shaders;
   v4 = [GreenGhostLowLightStage alloc];
-  v7 = objc_msgSend_initWithMetalContext_(v4, v5, v3, v6);
+  v7 = objc_msgSend_initWithMetalContext_(v4, v5, shadersCopy, v6);
 
   if (v7)
   {
@@ -332,27 +332,27 @@ LABEL_8:
   [(GreenGhostLowLightStage *)&v4 dealloc];
 }
 
-- (int)singleBracketDetectionWithLuma:(id)a3 chroma:(id)a4 params:(DetectionTuning *)a5
+- (int)singleBracketDetectionWithLuma:(id)luma chroma:(id)chroma params:(DetectionTuning *)params
 {
   v29 = 0;
-  v8 = a4;
-  v9 = a3;
-  v13 = objc_msgSend_width(v9, v10, v11, v12);
-  v17 = objc_msgSend_height(v9, v14, v15, v16);
+  chromaCopy = chroma;
+  lumaCopy = luma;
+  v13 = objc_msgSend_width(lumaCopy, v10, v11, v12);
+  v17 = objc_msgSend_height(lumaCopy, v14, v15, v16);
   *&v18 = 0;
   *(&v18 + 1) = __PAIR64__(v17, v13);
   v27 = v18;
   v28 = 1065353216;
   greenGhostCommon = self->_greenGhostCommon;
   maskSB = self->_maskSB;
-  v21 = *&a5[1].var2.var1;
-  v26[2] = *&a5[1].var0.var1;
+  v21 = *&params[1].var2.var1;
+  v26[2] = *&params[1].var0.var1;
   v26[3] = v21;
-  v26[4] = *&a5[2].var0.var2;
-  v22 = *&a5->var2.var0;
-  v26[0] = *&a5->var0.var0;
+  v26[4] = *&params[2].var0.var2;
+  v22 = *&params->var2.var0;
+  v26[0] = *&params->var0.var0;
   v26[1] = v22;
-  v24 = objc_msgSend_detectionWithLuma_croppedLuma_chroma_outputMask_params_processingROIInfo_(greenGhostCommon, v23, v9, v9, v8, maskSB, v26, &v27);
+  v24 = objc_msgSend_detectionWithLuma_croppedLuma_chroma_outputMask_params_processingROIInfo_(greenGhostCommon, v23, lumaCopy, lumaCopy, chromaCopy, maskSB, v26, &v27);
 
   if (v24)
   {
@@ -362,21 +362,21 @@ LABEL_8:
   return v24;
 }
 
-- (uint64_t)computeTemporalVariationsRefImg:(uint64_t)a3 OtherImg:(void *)a4 refProperties:(void *)a5 otherProperties:(uint64_t)a6 params:(_OWORD *)a7
+- (uint64_t)computeTemporalVariationsRefImg:(uint64_t)img OtherImg:(void *)otherImg refProperties:(void *)properties otherProperties:(uint64_t)otherProperties params:(_OWORD *)params
 {
   v130 = a2;
-  v11 = a4;
-  v12 = a5;
-  v129 = sub_295820728(a6 + 16, (a7 + 1), a6);
-  v16 = a7[13994];
-  v128[0] = a7[13993];
+  otherImgCopy = otherImg;
+  propertiesCopy = properties;
+  v129 = sub_295820728(otherProperties + 16, (params + 1), otherProperties);
+  v16 = params[13994];
+  v128[0] = params[13993];
   v128[1] = v16;
-  v128[2] = a7[13995];
-  v17 = *(a1 + 144);
+  v128[2] = params[13995];
+  v17 = *(self + 144);
   v127 = (v17 & 1) == 0;
   if (v17)
   {
-    v18 = objc_msgSend_allocator(*(a1 + 8), v13, v14, v15);
+    v18 = objc_msgSend_allocator(*(self + 8), v13, v14, v15);
     v22 = objc_msgSend_newTextureDescriptor(v18, v19, v20, v21);
 
     if (v22)
@@ -387,21 +387,21 @@ LABEL_8:
       v32 = objc_msgSend_desc(v22, v29, v30, v31);
       objc_msgSend_setPixelFormat_(v32, v33, 25, v34);
 
-      v38 = objc_msgSend_width(v11, v35, v36, v37);
+      v38 = objc_msgSend_width(otherImgCopy, v35, v36, v37);
       v42 = objc_msgSend_desc(v22, v39, v40, v41);
       objc_msgSend_setWidth_(v42, v43, v38, v44);
 
-      v48 = objc_msgSend_height(v11, v45, v46, v47);
+      v48 = objc_msgSend_height(otherImgCopy, v45, v46, v47);
       v52 = objc_msgSend_desc(v22, v49, v50, v51);
       objc_msgSend_setHeight_(v52, v53, v48, v54);
 
       objc_msgSend_setLabel_(v22, v55, 0, v56);
-      v60 = objc_msgSend_allocator(*(a1 + 8), v57, v58, v59);
+      v60 = objc_msgSend_allocator(*(self + 8), v57, v58, v59);
       v63 = objc_msgSend_newTextureWithDescriptor_(v60, v61, v22, v62);
-      v64 = *(a1 + 168);
-      *(a1 + 168) = v63;
+      v64 = *(self + 168);
+      *(self + 168) = v63;
 
-      if (*(a1 + 168))
+      if (*(self + 168))
       {
         v68 = objc_msgSend_desc(v22, v65, v66, v67);
         objc_msgSend_setCompressionMode_(v68, v69, 2, v70);
@@ -410,12 +410,12 @@ LABEL_8:
         objc_msgSend_setCompressionFootprint_(v74, v75, 0, v76);
 
         objc_msgSend_setLabel_(v22, v77, 0, v78);
-        v82 = objc_msgSend_allocator(*(a1 + 8), v79, v80, v81);
+        v82 = objc_msgSend_allocator(*(self + 8), v79, v80, v81);
         v85 = objc_msgSend_newTextureWithDescriptor_(v82, v83, v22, v84);
-        v86 = *(a1 + 176);
-        *(a1 + 176) = v85;
+        v86 = *(self + 176);
+        *(self + 176) = v85;
 
-        if (*(a1 + 176))
+        if (*(self + 176))
         {
 
           goto LABEL_8;
@@ -440,7 +440,7 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  if (!*(a1 + 176) || !*(a1 + 168))
+  if (!*(self + 176) || !*(self + 168))
   {
     sub_2958A0C5C(v126);
 LABEL_15:
@@ -449,7 +449,7 @@ LABEL_15:
   }
 
 LABEL_8:
-  v87 = objc_msgSend_commandQueue(*(a1 + 8), v13, v14, v15);
+  v87 = objc_msgSend_commandQueue(*(self + 8), v13, v14, v15);
   v91 = objc_msgSend_commandBuffer(v87, v88, v89, v90);
 
   if (!v91)
@@ -466,19 +466,19 @@ LABEL_8:
   }
 
   v98 = v95;
-  objc_msgSend_setComputePipelineState_(v95, v96, *(a1 + 24), v97);
+  objc_msgSend_setComputePipelineState_(v95, v96, *(self + 24), v97);
   objc_msgSend_setImageblockWidth_height_(v98, v99, 16, 16);
-  objc_msgSend_setTexture_atIndex_(v98, v100, v11, 0);
-  objc_msgSend_setTexture_atIndex_(v98, v101, v12, 1);
-  objc_msgSend_setTexture_atIndex_(v98, v102, *(a1 + 160), 2);
-  objc_msgSend_setTexture_atIndex_(v98, v103, *(a1 + 168), 3);
-  objc_msgSend_setTexture_atIndex_(v98, v104, *(a1 + 176), 4);
+  objc_msgSend_setTexture_atIndex_(v98, v100, otherImgCopy, 0);
+  objc_msgSend_setTexture_atIndex_(v98, v101, propertiesCopy, 1);
+  objc_msgSend_setTexture_atIndex_(v98, v102, *(self + 160), 2);
+  objc_msgSend_setTexture_atIndex_(v98, v103, *(self + 168), 3);
+  objc_msgSend_setTexture_atIndex_(v98, v104, *(self + 176), 4);
   objc_msgSend_setBytes_length_atIndex_(v98, v105, &v129, 4, 0);
   objc_msgSend_setBytes_length_atIndex_(v98, v106, v128, 48, 1);
   objc_msgSend_setBytes_length_atIndex_(v98, v107, &v130, 8, 2);
   objc_msgSend_setBytes_length_atIndex_(v98, v108, &v127, 1, 3);
-  v126[0] = objc_msgSend_width(v11, v109, v110, v111);
-  v126[1] = objc_msgSend_height(v11, v112, v113, v114);
+  v126[0] = objc_msgSend_width(otherImgCopy, v109, v110, v111);
+  v126[1] = objc_msgSend_height(otherImgCopy, v112, v113, v114);
   v126[2] = 1;
   v124 = vdupq_n_s64(0x10uLL);
   v125 = 1;
@@ -492,18 +492,18 @@ LABEL_11:
   return v122;
 }
 
-- (int)guidedFilter:(id)a3 withGuideLuma:(id)a4 guideChroma:(id)a5 params:(LowLightRefinementTuning *)a6 output:(id)a7
+- (int)guidedFilter:(id)filter withGuideLuma:(id)luma guideChroma:(id)chroma params:(LowLightRefinementTuning *)params output:(id)output
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  filterCopy = filter;
+  lumaCopy = luma;
+  chromaCopy = chroma;
+  outputCopy = output;
   v171 = 0;
-  var0 = a6->var0;
-  var1 = a6->var1;
-  var2 = a6->var2;
+  var0 = params->var0;
+  var1 = params->var1;
+  var2 = params->var2;
   v169 = var1;
-  if (objc_msgSend_width(v15, v17, v18, v19) & 1) != 0 || (objc_msgSend_height(v15, v20, v21, v22))
+  if (objc_msgSend_width(outputCopy, v17, v18, v19) & 1) != 0 || (objc_msgSend_height(outputCopy, v20, v21, v22))
   {
     sub_2958A1014(&v165);
 LABEL_13:
@@ -537,7 +537,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v161 = v15;
+  v161 = outputCopy;
   v47 = objc_msgSend_desc(v43, v44, v45, v46);
   objc_msgSend_setCompressionMode_(v47, v48, 2, v49);
 
@@ -547,15 +547,15 @@ LABEL_13:
   v59 = objc_msgSend_desc(v43, v56, v57, v58);
   objc_msgSend_setUsage_(v59, v60, 7, v61);
 
-  v65 = objc_msgSend_pixelFormat(v12, v62, v63, v64);
+  v65 = objc_msgSend_pixelFormat(filterCopy, v62, v63, v64);
   v69 = objc_msgSend_desc(v43, v66, v67, v68);
   objc_msgSend_setPixelFormat_(v69, v70, v65, v71);
 
-  v75 = objc_msgSend_width(v12, v72, v73, v74);
+  v75 = objc_msgSend_width(filterCopy, v72, v73, v74);
   v79 = objc_msgSend_desc(v43, v76, v77, v78);
   objc_msgSend_setWidth_(v79, v80, v75, v81);
 
-  v85 = objc_msgSend_height(v12, v82, v83, v84);
+  v85 = objc_msgSend_height(filterCopy, v82, v83, v84);
   v89 = objc_msgSend_desc(v43, v86, v87, v88);
   objc_msgSend_setHeight_(v89, v90, v85, v91);
 
@@ -567,18 +567,18 @@ LABEL_13:
   if (v100)
   {
     objc_msgSend_setComputePipelineState_(v38, v101, self->_pipelineStates[2], v102);
-    objc_msgSend_setTexture_atIndex_(v38, v103, v12, 0);
-    objc_msgSend_setTexture_atIndex_(v38, v104, v13, 1);
-    objc_msgSend_setTexture_atIndex_(v38, v105, v14, 2);
+    objc_msgSend_setTexture_atIndex_(v38, v103, filterCopy, 0);
+    objc_msgSend_setTexture_atIndex_(v38, v104, lumaCopy, 1);
+    objc_msgSend_setTexture_atIndex_(v38, v105, chromaCopy, 2);
     objc_msgSend_setTexture_atIndex_(v38, v106, v100, 3);
     objc_msgSend_setBytes_length_atIndex_(v38, v107, &var0, 4, 0);
     objc_msgSend_setBytes_length_atIndex_(v38, v108, &v169, 4, 1);
     v112 = objc_msgSend_threadExecutionWidth(self->_pipelineStates[2], v109, v110, v111);
     v159 = v30;
-    v116 = v14;
+    v116 = chromaCopy;
     v117 = objc_msgSend_maxTotalThreadsPerThreadgroup(self->_pipelineStates[2], v113, v114, v115) / v112;
-    v15 = v161;
-    v160 = v12;
+    outputCopy = v161;
+    v160 = filterCopy;
     v165 = objc_msgSend_width(v161, v118, v119, v120) >> 1;
     v166 = objc_msgSend_height(v161, v121, v122, v123) >> 1;
     v167 = 1;
@@ -588,7 +588,7 @@ LABEL_13:
     objc_msgSend_dispatchThreads_threadsPerThreadgroup_(v38, v124, &v165, &v162);
     objc_msgSend_setComputePipelineState_(v38, v125, self->_pipelineStates[3], v126);
     objc_msgSend_setTexture_atIndex_(v38, v127, v100, 0);
-    objc_msgSend_setTexture_atIndex_(v38, v128, v13, 1);
+    objc_msgSend_setTexture_atIndex_(v38, v128, lumaCopy, 1);
     objc_msgSend_setTexture_atIndex_(v38, v129, v116, 2);
     objc_msgSend_setTexture_atIndex_(v38, v130, v161, 3);
     objc_msgSend_setBytes_length_atIndex_(v38, v131, &var0, 4, 0);
@@ -600,11 +600,11 @@ LABEL_13:
     v149 = objc_msgSend_height(v161, v146, v147, v148);
     v165 = v145;
     v166 = v149 >> 1;
-    v14 = v116;
+    chromaCopy = v116;
     v167 = 1;
     v162 = v137;
     v163 = v141;
-    v12 = v160;
+    filterCopy = v160;
     v164 = 1;
     objc_msgSend_dispatchThreads_threadsPerThreadgroup_(v38, v150, &v165, &v162);
     objc_msgSend_endEncoding(v38, v151, v152, v153);
@@ -618,7 +618,7 @@ LABEL_13:
   {
     sub_2958A10B0(v43, v38, v30, &v165);
     v157 = v165;
-    v15 = v161;
+    outputCopy = v161;
   }
 
 LABEL_8:
@@ -626,11 +626,11 @@ LABEL_8:
   return v157;
 }
 
-- (int)refineDetectionWithGuideLuma:(id)a3 guideChroma:(id)a4 params:(LowLightRefinementTuning *)a5 output:(id)a6
+- (int)refineDetectionWithGuideLuma:(id)luma guideChroma:(id)chroma params:(LowLightRefinementTuning *)params output:(id)output
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  lumaCopy = luma;
+  chromaCopy = chroma;
+  outputCopy = output;
   v145 = 0;
   v146 = 0;
   if (objc_msgSend_width(self->_maskMB, v13, v14, v15) & 1) != 0 || (objc_msgSend_height(self->_maskMB, v16, v17, v18))
@@ -682,7 +682,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v85 = objc_msgSend_guidedFilter_withGuideLuma_guideChroma_params_output_(self, v84, self->_maskMB, v10, v11, a5, v83);
+  v85 = objc_msgSend_guidedFilter_withGuideLuma_guideChroma_params_output_(self, v84, self->_maskMB, lumaCopy, chromaCopy, params, v83);
   if (v85)
   {
     LODWORD(v97) = v85;
@@ -701,7 +701,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  *&v96 = a5->var3;
+  *&v96 = params->var3;
   v97 = objc_msgSend_dilateTexture_withNormalizedRadius_output_(self->_greenGhostCommon, v95, v83, v94, v96);
   FigMetalDecRef();
   if (v97)
@@ -731,18 +731,18 @@ LABEL_20:
   objc_msgSend_setTexture_atIndex_(v111, v112, v94, 0);
   objc_msgSend_setTexture_atIndex_(v111, v113, v94, 1);
   objc_msgSend_setTexture_atIndex_(v111, v114, self->_maskMB, 2);
-  objc_msgSend_setTexture_atIndex_(v111, v115, v12, 3);
-  objc_msgSend_setBytes_length_atIndex_(v111, v116, &a5->var4, 4, 0);
+  objc_msgSend_setTexture_atIndex_(v111, v115, outputCopy, 3);
+  objc_msgSend_setBytes_length_atIndex_(v111, v116, &params->var4, 4, 0);
   v120 = objc_msgSend_threadExecutionWidth(self->_pipelineStates[4], v117, v118, v119);
   v124 = objc_msgSend_maxTotalThreadsPerThreadgroup(self->_pipelineStates[4], v121, v122, v123) / v120;
-  v128 = v11;
-  v129 = v10;
+  v128 = chromaCopy;
+  v129 = lumaCopy;
   v130 = objc_msgSend_width(self->_maskMB, v125, v126, v127) >> 1;
   v134 = objc_msgSend_height(self->_maskMB, v131, v132, v133);
   v144[0] = v130;
   v144[1] = v134 >> 1;
-  v10 = v129;
-  v11 = v128;
+  lumaCopy = v129;
+  chromaCopy = v128;
   v144[2] = 1;
   v143[0] = v120;
   v143[1] = v124;
@@ -758,13 +758,13 @@ LABEL_11:
   return v97;
 }
 
-- (int)detectionWithRefPyramid:(id)a3 otherPyramid:(id)a4 refDetection:(BOOL)a5 refProperties:(frameProperties_t *)a6 otherProperties:(frameProperties_t *)a7 maskMBBinary:(id)a8 params:(LowLightTuning *)a9
+- (int)detectionWithRefPyramid:(id)pyramid otherPyramid:(id)otherPyramid refDetection:(BOOL)detection refProperties:(frameProperties_t *)properties otherProperties:(frameProperties_t *)otherProperties maskMBBinary:(id)binary params:(LowLightTuning *)params
 {
-  v12 = a5;
-  v15 = a3;
-  v16 = a4;
-  v20 = a8;
-  if (v12)
+  detectionCopy = detection;
+  pyramidCopy = pyramid;
+  otherPyramidCopy = otherPyramid;
+  binaryCopy = binary;
+  if (detectionCopy)
   {
     v21 = objc_msgSend_allocator(self->_metal, v17, v18, v19);
     v25 = objc_msgSend_newTextureDescriptor(v21, v22, v23, v24);
@@ -777,11 +777,11 @@ LABEL_11:
       v35 = objc_msgSend_desc(v25, v32, v33, v34);
       objc_msgSend_setPixelFormat_(v35, v36, 65, v37);
 
-      v41 = objc_msgSend_width(v15[self->_detectionLvl + 61], v38, v39, v40);
+      v41 = objc_msgSend_width(pyramidCopy[self->_detectionLvl + 61], v38, v39, v40);
       v45 = objc_msgSend_desc(v25, v42, v43, v44);
       objc_msgSend_setWidth_(v45, v46, v41, v47);
 
-      v51 = objc_msgSend_height(v15[self->_detectionLvl + 61], v48, v49, v50);
+      v51 = objc_msgSend_height(pyramidCopy[self->_detectionLvl + 61], v48, v49, v50);
       v55 = objc_msgSend_desc(v25, v52, v53, v54);
       objc_msgSend_setHeight_(v55, v56, v51, v57);
 
@@ -794,7 +794,7 @@ LABEL_11:
       v69 = self->_refChroma;
       if (v69)
       {
-        v70 = objc_msgSend_downscaleInput_output_(self->_greenGhostCommon, v68, v15[self->_detectionLvl + 60], v69);
+        v70 = objc_msgSend_downscaleInput_output_(self->_greenGhostCommon, v68, pyramidCopy[self->_detectionLvl + 60], v69);
         if (v70)
         {
           v104 = v70;
@@ -821,14 +821,14 @@ LABEL_8:
 
         if (self->_maskSB)
         {
-          v100 = v15[self->_detectionLvl + 42];
+          v100 = pyramidCopy[self->_detectionLvl + 42];
           v101 = self->_refChroma;
-          v102 = *&a9[2].maxMaskAverage;
-          v103 = *&a9[4].maxMaskAverage;
-          v108[2] = *(a9 + 56);
+          v102 = *&params[2].maxMaskAverage;
+          v103 = *&params[4].maxMaskAverage;
+          v108[2] = *(params + 56);
           v108[3] = v103;
-          v108[4] = *(a9 + 88);
-          v108[0] = *(a9 + 24);
+          v108[4] = *(params + 88);
+          v108[0] = *(params + 24);
           v108[1] = v102;
           v104 = objc_msgSend_singleBracketDetectionWithLuma_chroma_params_(self, v99, v100, v101, v108);
           if (v104)
@@ -857,7 +857,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v105 = objc_msgSend_computeTemporalVariationsRefImg_OtherImg_refProperties_otherProperties_params_(self, v17, v15[self->_detectionLvl + 42], v16[self->_detectionLvl + 42], a6, a7, *&a9[6].maxMaskAverage);
+  v105 = objc_msgSend_computeTemporalVariationsRefImg_OtherImg_refProperties_otherProperties_params_(self, v17, pyramidCopy[self->_detectionLvl + 42], otherPyramidCopy[self->_detectionLvl + 42], properties, otherProperties, *&params[6].maxMaskAverage);
   if (v105)
   {
     v104 = v105;
@@ -866,7 +866,7 @@ LABEL_8:
 
   else
   {
-    v104 = objc_msgSend_refineDetectionWithGuideLuma_guideChroma_params_output_(self, v106, v15[self->_detectionLvl + 42], self->_refChroma, &a9[7], v20);
+    v104 = objc_msgSend_refineDetectionWithGuideLuma_guideChroma_params_output_(self, v106, pyramidCopy[self->_detectionLvl + 42], self->_refChroma, &params[7], binaryCopy);
     if (v104)
     {
       sub_2958A18AC();
@@ -878,7 +878,7 @@ LABEL_12:
   return v104;
 }
 
-- (int)canMitigationProceedWithMaxMaskAverage:(float)a3
+- (int)canMitigationProceedWithMaxMaskAverage:(float)average
 {
   v5 = objc_opt_new();
   *objc_msgSend_contents(self->_sumMaskBuffer, v6, v7, v8) = 0;
@@ -918,7 +918,7 @@ LABEL_12:
     objc_msgSend_addToSidecar_forKey_(WeakRetained, v70, v5, @"GreenGhostLowLight");
 
     v71 = 0;
-    self->_canMitigationProceed = *&v55 < a3;
+    self->_canMitigationProceed = *&v55 < average;
   }
 
   else
@@ -930,17 +930,17 @@ LABEL_12:
   return v71;
 }
 
-- (void)scaleFaceBodyBoundariesWithSizeRatio:(float)a3
+- (void)scaleFaceBodyBoundariesWithSizeRatio:(float)ratio
 {
   nFaces = self->_faceBodyBoundaries.nFaces;
   self->_faceBodyBoundariesDownscaled.nFaces = nFaces;
   if (nFaces)
   {
-    v4 = self;
+    selfCopy = self;
     do
     {
-      v4[38] = vmulq_n_f32(v4[16], a3);
-      ++v4;
+      selfCopy[38] = vmulq_n_f32(selfCopy[16], ratio);
+      ++selfCopy;
       --nFaces;
     }
 
@@ -954,7 +954,7 @@ LABEL_12:
     v6 = &self->_anon_f4[188];
     do
     {
-      v6[22] = vmulq_n_f32(*v6, a3);
+      v6[22] = vmulq_n_f32(*v6, ratio);
       ++v6;
       --v5;
     }
@@ -963,9 +963,9 @@ LABEL_12:
   }
 }
 
-- (int)allocateFusionWeightTexturesWithWidth:(unint64_t)a3 height:(unint64_t)a4
+- (int)allocateFusionWeightTexturesWithWidth:(unint64_t)width height:(unint64_t)height
 {
-  v7 = objc_msgSend_allocator(self->_metal, a2, a3, a4);
+  v7 = objc_msgSend_allocator(self->_metal, a2, width, height);
   v11 = objc_msgSend_newTextureDescriptor(v7, v8, v9, v10);
 
   if (!v11)
@@ -981,10 +981,10 @@ LABEL_11:
   objc_msgSend_setUsage_(v15, v16, 7, v17);
 
   v21 = objc_msgSend_desc(v11, v18, v19, v20);
-  objc_msgSend_setWidth_(v21, v22, a3, v23);
+  objc_msgSend_setWidth_(v21, v22, width, v23);
 
   v27 = objc_msgSend_desc(v11, v24, v25, v26);
-  objc_msgSend_setHeight_(v27, v28, a4, v29);
+  objc_msgSend_setHeight_(v27, v28, height, v29);
 
   v33 = objc_msgSend_desc(v11, v30, v31, v32);
   objc_msgSend_setPixelFormat_(v33, v34, 25, v35);
@@ -1048,17 +1048,17 @@ LABEL_6:
   return v118;
 }
 
-- (uint64_t)computeFusionWeightsRefLuma:(__n128)a3 refChroma:(__n128)a4 otherLuma:(__n128)a5 otherChroma:(uint64_t)a6 maskMBBinary:(void *)a7 innerMask:(void *)a8 relativeBrightness:(void *)a9 homography:(void *)a10 output:(void *)a11 params:(void *)a12
+- (uint64_t)computeFusionWeightsRefLuma:(__n128)luma refChroma:(__n128)chroma otherLuma:(__n128)otherLuma otherChroma:(uint64_t)otherChroma maskMBBinary:(void *)binary innerMask:(void *)mask relativeBrightness:(void *)brightness homography:(void *)self0 output:(void *)self1 params:(void *)self2
 {
-  v217[0] = a3;
-  v217[1] = a4;
-  v217[2] = a5;
-  v204 = a7;
-  v21 = a8;
-  v206 = a9;
-  v22 = a10;
-  v23 = a11;
-  v205 = a12;
+  v217[0] = luma;
+  v217[1] = chroma;
+  v217[2] = otherLuma;
+  binaryCopy = binary;
+  maskCopy = mask;
+  brightnessCopy = brightness;
+  homographyCopy = homography;
+  outputCopy = output;
+  paramsCopy = params;
   v216 = a2;
   v24 = a13;
   v214 = 0;
@@ -1072,7 +1072,7 @@ LABEL_20:
     goto LABEL_12;
   }
 
-  v31 = objc_msgSend_allocator(*(a1 + 8), v28, v29, v30);
+  v31 = objc_msgSend_allocator(*(self + 8), v28, v29, v30);
   v35 = objc_msgSend_newTextureDescriptor(v31, v32, v33, v34);
 
   if (!v35)
@@ -1090,20 +1090,20 @@ LABEL_20:
   v51 = objc_msgSend_desc(v35, v48, v49, v50);
   objc_msgSend_setUsage_(v51, v52, 7, v53);
 
-  v57 = objc_msgSend_pixelFormat(v23, v54, v55, v56);
+  v57 = objc_msgSend_pixelFormat(outputCopy, v54, v55, v56);
   v61 = objc_msgSend_desc(v35, v58, v59, v60);
   objc_msgSend_setPixelFormat_(v61, v62, v57, v63);
 
-  v67 = objc_msgSend_width(v23, v64, v65, v66);
+  v67 = objc_msgSend_width(outputCopy, v64, v65, v66);
   v71 = objc_msgSend_desc(v35, v68, v69, v70);
   objc_msgSend_setWidth_(v71, v72, v67, v73);
 
-  v77 = objc_msgSend_height(v23, v74, v75, v76);
+  v77 = objc_msgSend_height(outputCopy, v74, v75, v76);
   v81 = objc_msgSend_desc(v35, v78, v79, v80);
   objc_msgSend_setHeight_(v81, v82, v77, v83);
 
   objc_msgSend_setLabel_(v35, v84, 0, v85);
-  v89 = objc_msgSend_allocator(*(a1 + 8), v86, v87, v88);
+  v89 = objc_msgSend_allocator(*(self + 8), v86, v87, v88);
   v92 = objc_msgSend_newTextureWithDescriptor_(v89, v90, v35, v91);
   v215 = v92;
 
@@ -1114,7 +1114,7 @@ LABEL_20:
   }
 
   objc_msgSend_setLabel_(v35, v93, 0, v94);
-  v98 = objc_msgSend_allocator(*(a1 + 8), v95, v96, v97);
+  v98 = objc_msgSend_allocator(*(self + 8), v95, v96, v97);
   v101 = objc_msgSend_newTextureWithDescriptor_(v98, v99, v35, v100);
   v214 = v101;
 
@@ -1125,7 +1125,7 @@ LABEL_20:
   }
 
   objc_msgSend_setLabel_(v35, v102, 0, v103);
-  v107 = objc_msgSend_allocator(*(a1 + 8), v104, v105, v106);
+  v107 = objc_msgSend_allocator(*(self + 8), v104, v105, v106);
   v213 = objc_msgSend_newTextureWithDescriptor_(v107, v108, v35, v109);
 
   v202 = v213;
@@ -1135,7 +1135,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v113 = objc_msgSend_commandQueue(*(a1 + 8), v110, v111, v112);
+  v113 = objc_msgSend_commandQueue(*(self + 8), v110, v111, v112);
   v117 = objc_msgSend_commandBuffer(v113, v114, v115, v116);
 
   if (!v117)
@@ -1153,23 +1153,23 @@ LABEL_20:
 
   v124 = v121;
   v200 = v35;
-  objc_msgSend_setComputePipelineState_(v121, v122, *(a1 + 56), v123);
-  objc_msgSend_setTexture_atIndex_(v124, v125, v204, 0);
-  objc_msgSend_setTexture_atIndex_(v124, v126, v21, 1);
-  objc_msgSend_setTexture_atIndex_(v124, v127, v206, 2);
-  objc_msgSend_setTexture_atIndex_(v124, v128, v22, 3);
-  v201 = v23;
-  objc_msgSend_setTexture_atIndex_(v124, v129, v23, 4);
-  objc_msgSend_setTexture_atIndex_(v124, v130, v205, 5);
+  objc_msgSend_setComputePipelineState_(v121, v122, *(self + 56), v123);
+  objc_msgSend_setTexture_atIndex_(v124, v125, binaryCopy, 0);
+  objc_msgSend_setTexture_atIndex_(v124, v126, maskCopy, 1);
+  objc_msgSend_setTexture_atIndex_(v124, v127, brightnessCopy, 2);
+  objc_msgSend_setTexture_atIndex_(v124, v128, homographyCopy, 3);
+  v201 = outputCopy;
+  objc_msgSend_setTexture_atIndex_(v124, v129, outputCopy, 4);
+  objc_msgSend_setTexture_atIndex_(v124, v130, paramsCopy, 5);
   objc_msgSend_setTexture_atIndex_(v124, v131, v101, 6);
   objc_msgSend_setTexture_atIndex_(v124, v132, v92, 7);
   objc_msgSend_setBytes_length_atIndex_(v124, v133, &v216, 4, 0);
   objc_msgSend_setBytes_length_atIndex_(v124, v134, v217, 48, 1);
   objc_msgSend_setBytes_length_atIndex_(v124, v135, a14, 40, 2);
   v139 = v92;
-  v140 = v21;
-  v141 = objc_msgSend_threadExecutionWidth(*(a1 + 56), v136, v137, v138);
-  v145 = objc_msgSend_maxTotalThreadsPerThreadgroup(*(a1 + 56), v142, v143, v144) / v141;
+  v140 = maskCopy;
+  v141 = objc_msgSend_threadExecutionWidth(*(self + 56), v136, v137, v138);
+  v145 = objc_msgSend_maxTotalThreadsPerThreadgroup(*(self + 56), v142, v143, v144) / v141;
   v203 = v24;
   v210 = objc_msgSend_width(v101, v146, v147, v148);
   v211 = objc_msgSend_height(v101, v149, v150, v151);
@@ -1178,24 +1178,24 @@ LABEL_20:
   v208 = v145;
   v209 = 1;
   objc_msgSend_dispatchThreads_threadsPerThreadgroup_(v124, v152, &v210, &v207);
-  objc_msgSend_setComputePipelineState_(v124, v153, *(a1 + 64), v154);
+  objc_msgSend_setComputePipelineState_(v124, v153, *(self + 64), v154);
   objc_msgSend_setTexture_atIndex_(v124, v155, v139, 0);
-  objc_msgSend_setTexture_atIndex_(v124, v156, v205, 1);
+  objc_msgSend_setTexture_atIndex_(v124, v156, paramsCopy, 1);
   objc_msgSend_setTexture_atIndex_(v124, v157, v101, 2);
-  objc_msgSend_setTexture_atIndex_(v124, v158, v204, 3);
+  objc_msgSend_setTexture_atIndex_(v124, v158, binaryCopy, 3);
   objc_msgSend_setTexture_atIndex_(v124, v159, v140, 4);
-  objc_msgSend_setTexture_atIndex_(v124, v160, v206, 5);
-  v161 = v22;
-  objc_msgSend_setTexture_atIndex_(v124, v162, v22, 6);
-  objc_msgSend_setTexture_atIndex_(v124, v163, *(a1 + 176), 7);
+  objc_msgSend_setTexture_atIndex_(v124, v160, brightnessCopy, 5);
+  v161 = homographyCopy;
+  objc_msgSend_setTexture_atIndex_(v124, v162, homographyCopy, 6);
+  objc_msgSend_setTexture_atIndex_(v124, v163, *(self + 176), 7);
   objc_msgSend_setTexture_atIndex_(v124, v164, v24, 8);
-  objc_msgSend_setBytes_length_atIndex_(v124, v165, a1 + 144, 1, 0);
+  objc_msgSend_setBytes_length_atIndex_(v124, v165, self + 144, 1, 0);
   objc_msgSend_setBytes_length_atIndex_(v124, v166, &v216, 4, 1);
   objc_msgSend_setBytes_length_atIndex_(v124, v167, v217, 48, 2);
   objc_msgSend_setBytes_length_atIndex_(v124, v168, a14, 40, 3);
-  objc_msgSend_setBytes_length_atIndex_(v124, v169, a1 + 592, 352, 4);
-  v173 = objc_msgSend_threadExecutionWidth(*(a1 + 64), v170, v171, v172);
-  v177 = objc_msgSend_maxTotalThreadsPerThreadgroup(*(a1 + 64), v174, v175, v176) / v173;
+  objc_msgSend_setBytes_length_atIndex_(v124, v169, self + 592, 352, 4);
+  v173 = objc_msgSend_threadExecutionWidth(*(self + 64), v170, v171, v172);
+  v177 = objc_msgSend_maxTotalThreadsPerThreadgroup(*(self + 64), v174, v175, v176) / v173;
   v181 = objc_msgSend_width(v101, v178, v179, v180);
   v185 = objc_msgSend_height(v101, v182, v183, v184);
   v210 = v181;
@@ -1209,7 +1209,7 @@ LABEL_20:
   objc_msgSend_endEncoding(v124, v187, v188, v189);
   objc_msgSend_commit(v117, v190, v191, v192);
   *&v193 = a14[1].var1;
-  v195 = objc_msgSend_erodeTexture_withNormalizedRadius_output_(*(a1 + 120), v194, v203, v202, v193);
+  v195 = objc_msgSend_erodeTexture_withNormalizedRadius_output_(*(self + 120), v194, v203, v202, v193);
   if (v195)
   {
     v198 = v195;
@@ -1218,7 +1218,7 @@ LABEL_20:
 
   else
   {
-    v197 = objc_msgSend_boxFilter_withRadius_output_(*(a1 + 120), v196, v202, a14[1].var2, v203);
+    v197 = objc_msgSend_boxFilter_withRadius_output_(*(self + 120), v196, v202, a14[1].var2, v203);
     v198 = v197;
     if (v197)
     {
@@ -1233,24 +1233,24 @@ LABEL_20:
     }
   }
 
-  v21 = v140;
-  v22 = v161;
-  v23 = v201;
+  maskCopy = v140;
+  homographyCopy = v161;
+  outputCopy = v201;
 LABEL_12:
 
   return v198;
 }
 
-- (uint64_t)prepareFusionRefLuma:(double)a3 refChroma:(double)a4 otherLuma:(double)a5 otherChroma:(uint64_t)a6 maskMBBinary:(void *)a7 relativeBrightness:(void *)a8 homography:(void *)a9 output:(void *)a10 params:(void *)a11
+- (uint64_t)prepareFusionRefLuma:(double)luma refChroma:(double)chroma otherLuma:(double)otherLuma otherChroma:(uint64_t)otherChroma maskMBBinary:(void *)binary relativeBrightness:(void *)brightness homography:(void *)homography output:(void *)self0 params:(void *)self1
 {
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
+  binaryCopy = binary;
+  brightnessCopy = brightness;
+  homographyCopy = homography;
+  outputCopy = output;
+  paramsCopy = params;
   v25 = a12;
   v112 = 0;
-  v29 = objc_msgSend_allocator(a1[1], v26, v27, v28);
+  v29 = objc_msgSend_allocator(self[1], v26, v27, v28);
   v33 = objc_msgSend_newTextureDescriptor(v29, v30, v31, v32);
 
   if (!v33)
@@ -1270,20 +1270,20 @@ LABEL_12:
   v49 = objc_msgSend_desc(v33, v46, v47, v48);
   objc_msgSend_setUsage_(v49, v50, 7, v51);
 
-  v55 = objc_msgSend_pixelFormat(v24, v52, v53, v54);
+  v55 = objc_msgSend_pixelFormat(paramsCopy, v52, v53, v54);
   v59 = objc_msgSend_desc(v33, v56, v57, v58);
   objc_msgSend_setPixelFormat_(v59, v60, v55, v61);
 
-  v65 = objc_msgSend_width(v24, v62, v63, v64);
+  v65 = objc_msgSend_width(paramsCopy, v62, v63, v64);
   v69 = objc_msgSend_desc(v33, v66, v67, v68);
   objc_msgSend_setWidth_(v69, v70, v65, v71);
 
-  v75 = objc_msgSend_height(v24, v72, v73, v74);
+  v75 = objc_msgSend_height(paramsCopy, v72, v73, v74);
   v79 = objc_msgSend_desc(v33, v76, v77, v78);
   objc_msgSend_setHeight_(v79, v80, v75, v81);
 
   objc_msgSend_setLabel_(v33, v82, 0, v83);
-  v87 = objc_msgSend_allocator(a1[1], v84, v85, v86);
+  v87 = objc_msgSend_allocator(self[1], v84, v85, v86);
   v90 = objc_msgSend_newTextureWithDescriptor_(v87, v88, v33, v89);
   v112 = v90;
 
@@ -1293,19 +1293,19 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v94 = objc_msgSend_width(v24, v91, v92, v93);
-  if (v94 <= objc_msgSend_height(v24, v95, v96, v97))
+  v94 = objc_msgSend_width(paramsCopy, v91, v92, v93);
+  if (v94 <= objc_msgSend_height(paramsCopy, v95, v96, v97))
   {
-    v101 = objc_msgSend_height(v24, v98, v99, v100);
+    v101 = objc_msgSend_height(paramsCopy, v98, v99, v100);
   }
 
   else
   {
-    v101 = objc_msgSend_width(v24, v98, v99, v100);
+    v101 = objc_msgSend_width(paramsCopy, v98, v99, v100);
   }
 
   *&v103 = 1.0 / v101;
-  v104 = objc_msgSend_erodeTexture_withNormalizedRadius_output_(a1[15], v102, v24, v90, v103);
+  v104 = objc_msgSend_erodeTexture_withNormalizedRadius_output_(self[15], v102, paramsCopy, v90, v103);
   if (v104)
   {
     v107 = v104;
@@ -1315,7 +1315,7 @@ LABEL_12:
   else
   {
     *&v106 = a2;
-    v107 = objc_msgSend_computeFusionWeightsRefLuma_refChroma_otherLuma_otherChroma_maskMBBinary_innerMask_relativeBrightness_homography_output_params_(a1, v105, v20, v21, v22, v23, v24, v90, v106, a3, a4, a5, v25, a13);
+    v107 = objc_msgSend_computeFusionWeightsRefLuma_refChroma_otherLuma_otherChroma_maskMBBinary_innerMask_relativeBrightness_homography_output_params_(self, v105, binaryCopy, brightnessCopy, homographyCopy, outputCopy, paramsCopy, v90, v106, luma, chroma, otherLuma, v25, a13);
     if (v107)
     {
       sub_2958A24C0();
@@ -1332,62 +1332,62 @@ LABEL_9:
   return v107;
 }
 
-- (int)fuseRefPyramid:(id)a3 withOtherPyramid:(id)a4 refProperties:(frameProperties_t *)a5 otherProperties:(frameProperties_t *)a6 currentFusionWeights:(id)a7 relativeBrightness:(float)a8
+- (int)fuseRefPyramid:(id)pyramid withOtherPyramid:(id)otherPyramid refProperties:(frameProperties_t *)properties otherProperties:(frameProperties_t *)otherProperties currentFusionWeights:(id)weights relativeBrightness:(float)brightness
 {
-  v14 = a3;
-  v15 = a4;
-  v76 = a7;
-  v19 = objc_msgSend_width(v14[self->_repairLvl + 42], v16, v17, v18);
-  v23 = objc_msgSend_height(v14[self->_repairLvl + 42], v20, v21, v22);
-  y_low = LODWORD(a5[1].meta.ROI.origin.y);
-  v25 = *&a5[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].GG.highlights;
-  v85[10] = *&a5[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].RB.shadows;
+  pyramidCopy = pyramid;
+  otherPyramidCopy = otherPyramid;
+  weightsCopy = weights;
+  v19 = objc_msgSend_width(pyramidCopy[self->_repairLvl + 42], v16, v17, v18);
+  v23 = objc_msgSend_height(pyramidCopy[self->_repairLvl + 42], v20, v21, v22);
+  y_low = LODWORD(properties[1].meta.ROI.origin.y);
+  v25 = *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].GG.highlights;
+  v85[10] = *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].RB.shadows;
   v85[11] = v25;
-  v85[12] = *&a5[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].BG.mid;
-  v26 = *&a5[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].GR.shadows;
-  v85[6] = *&a5[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].RR.mid;
+  v85[12] = *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].BG.mid;
+  v26 = *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].GR.shadows;
+  v85[6] = *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].RR.mid;
   v85[7] = v26;
-  v27 = *&a5[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].BB.mid;
-  v85[8] = *&a5[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].GB.highlights;
+  v27 = *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].BB.mid;
+  v85[8] = *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].GB.highlights;
   v85[9] = v27;
-  v28 = *&a5[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[0].RG.mid;
-  v85[2] = *&a5[1].meta.ltmCurves.ltmLut.ccmV1.rightPadding;
+  v28 = *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[0].RG.mid;
+  v85[2] = *&properties[1].meta.ltmCurves.ltmLut.ccmV1.rightPadding;
   v85[3] = v28;
-  v29 = *&a5[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[0].BR.highlights;
-  v85[4] = *&a5[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[0].GG.shadows;
+  v29 = *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[0].BR.highlights;
+  v85[4] = *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[0].GG.shadows;
   v85[5] = v29;
-  v30 = *&a5[1].meta.ltmCurves.ltmLut.version;
-  v85[0] = *&a5[1].meta.ROI.size.height;
+  v30 = *&properties[1].meta.ltmCurves.ltmLut.version;
+  v85[0] = *&properties[1].meta.ROI.size.height;
   v85[1] = v30;
-  v31 = *&a6[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].GG.highlights;
-  v84[10] = *&a6[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].RB.shadows;
+  v31 = *&otherProperties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].GG.highlights;
+  v84[10] = *&otherProperties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].RB.shadows;
   v84[11] = v31;
-  v84[12] = *&a6[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].BG.mid;
-  v32 = *&a6[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].GR.shadows;
-  v84[6] = *&a6[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].RR.mid;
+  v84[12] = *&otherProperties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].BG.mid;
+  v32 = *&otherProperties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].GR.shadows;
+  v84[6] = *&otherProperties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].RR.mid;
   v84[7] = v32;
-  v33 = *&a6[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].BB.mid;
-  v84[8] = *&a6[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].GB.highlights;
+  v33 = *&otherProperties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].BB.mid;
+  v84[8] = *&otherProperties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].GB.highlights;
   v84[9] = v33;
-  v34 = *&a6[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[0].RG.mid;
-  v84[2] = *&a6[1].meta.ltmCurves.ltmLut.ccmV1.rightPadding;
+  v34 = *&otherProperties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[0].RG.mid;
+  v84[2] = *&otherProperties[1].meta.ltmCurves.ltmLut.ccmV1.rightPadding;
   v84[3] = v34;
-  v35 = *&a6[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[0].BR.highlights;
-  v84[4] = *&a6[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[0].GG.shadows;
+  v35 = *&otherProperties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[0].BR.highlights;
+  v84[4] = *&otherProperties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[0].GG.shadows;
   v84[5] = v35;
-  v36 = *&a6[1].meta.ltmCurves.ltmLut.version;
-  v84[0] = *&a6[1].meta.ROI.size.height;
+  v36 = *&otherProperties[1].meta.ltmCurves.ltmLut.version;
+  v84[0] = *&otherProperties[1].meta.ROI.size.height;
   v84[1] = v36;
   v80[0] = 0;
   v80[1] = 0;
   LOBYTE(v80[0]) = self->_isFirstNonRefFrame;
   *(v80 + 1) = y_low == 1;
   *(v80 + 2) = y_low == 2;
-  *(v80 + 1) = a8;
-  v37 = *&a6[1].meta.exposureParams.luxLevel;
-  v81 = *&a6[1].meta.exposureParams.conversion_gain;
+  *(v80 + 1) = brightness;
+  v37 = *&otherProperties[1].meta.exposureParams.luxLevel;
+  v81 = *&otherProperties[1].meta.exposureParams.conversion_gain;
   v82 = v37;
-  v83 = *&a6[1].meta.exposureParams.CCT;
+  v83 = *&otherProperties[1].meta.exposureParams.CCT;
   v41 = objc_msgSend_commandQueue(self->_metal, v38, v39, v40);
   v45 = objc_msgSend_commandBuffer(v41, v42, v43, v44);
 
@@ -1396,7 +1396,7 @@ LABEL_9:
     sub_2958A26F4(v79);
 LABEL_7:
     v74 = v79[0];
-    v59 = v76;
+    v59 = weightsCopy;
     goto LABEL_4;
   }
 
@@ -1410,13 +1410,13 @@ LABEL_7:
   v52 = v49;
   objc_msgSend_setComputePipelineState_(v49, v50, self->_pipelineStates[7], v51);
   objc_msgSend_setImageblockWidth_height_(v52, v53, 32, 32);
-  objc_msgSend_setTexture_atIndex_(v52, v54, v14[self->_repairLvl + 42], 0);
-  objc_msgSend_setTexture_atIndex_(v52, v55, v14[self->_repairLvl + 62], 1);
-  objc_msgSend_setTexture_atIndex_(v52, v56, v15[self->_repairLvl + 42], 2);
-  objc_msgSend_setTexture_atIndex_(v52, v57, v15[self->_repairLvl + 62], 3);
+  objc_msgSend_setTexture_atIndex_(v52, v54, pyramidCopy[self->_repairLvl + 42], 0);
+  objc_msgSend_setTexture_atIndex_(v52, v55, pyramidCopy[self->_repairLvl + 62], 1);
+  objc_msgSend_setTexture_atIndex_(v52, v56, otherPyramidCopy[self->_repairLvl + 42], 2);
+  objc_msgSend_setTexture_atIndex_(v52, v57, otherPyramidCopy[self->_repairLvl + 62], 3);
   objc_msgSend_setTexture_atIndex_(v52, v58, self->_maskMB, 4);
-  v59 = v76;
-  objc_msgSend_setTexture_atIndex_(v52, v60, v76, 5);
+  v59 = weightsCopy;
+  objc_msgSend_setTexture_atIndex_(v52, v60, weightsCopy, 5);
   objc_msgSend_setTexture_atIndex_(v52, v61, self->_ggFusionWeightsAcc, 6);
   objc_msgSend_setTexture_atIndex_(v52, v62, self->_fusedLuma, 7);
   objc_msgSend_setTexture_atIndex_(v52, v63, self->_fusedChroma, 8);
@@ -1438,9 +1438,9 @@ LABEL_4:
   return v74;
 }
 
-- (int)updateFusionWeights:(id)a3
+- (int)updateFusionWeights:(id)weights
 {
-  v4 = a3;
+  weightsCopy = weights;
   v8 = objc_msgSend_commandQueue(self->_metal, v5, v6, v7);
   v12 = objc_msgSend_commandBuffer(v8, v9, v10, v11);
 
@@ -1462,13 +1462,13 @@ LABEL_7:
   v19 = v16;
   objc_msgSend_setComputePipelineState_(v16, v17, self->_pipelineStates[8], v18);
   objc_msgSend_setImageblockWidth_height_(v19, v20, 16, 16);
-  objc_msgSend_setTexture_atIndex_(v19, v21, v4, 0);
+  objc_msgSend_setTexture_atIndex_(v19, v21, weightsCopy, 0);
   objc_msgSend_setTexture_atIndex_(v19, v22, self->_maskMB, 1);
   objc_msgSend_setTexture_atIndex_(v19, v23, self->_ggFusionWeightsAcc, 2);
   objc_msgSend_setTexture_atIndex_(v19, v24, self->_ggMaxFusionWeights, 3);
   objc_msgSend_setBytes_length_atIndex_(v19, v25, &self->_isFirstNonRefFrame, 1, 0);
-  v43[0] = objc_msgSend_width(v4, v26, v27, v28);
-  v43[1] = objc_msgSend_height(v4, v29, v30, v31);
+  v43[0] = objc_msgSend_width(weightsCopy, v26, v27, v28);
+  v43[1] = objc_msgSend_height(weightsCopy, v29, v30, v31);
   v43[2] = 1;
   v41 = vdupq_n_s64(0x10uLL);
   v42 = 1;
@@ -1482,12 +1482,12 @@ LABEL_4:
   return v39;
 }
 
-- (int)fuseRefPyramid:(id)a3 withOtherPyramid:(id)a4 refProperties:(frameProperties_t *)a5 otherProperties:(frameProperties_t *)a6 maskMBBinary:(id)a7 params:(LowLightFusionTuning *)a8
+- (int)fuseRefPyramid:(id)pyramid withOtherPyramid:(id)otherPyramid refProperties:(frameProperties_t *)properties otherProperties:(frameProperties_t *)otherProperties maskMBBinary:(id)binary params:(LowLightFusionTuning *)params
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = sub_295820728(&a5->meta.exposureParams, &a6->meta.exposureParams, a5);
+  pyramidCopy = pyramid;
+  otherPyramidCopy = otherPyramid;
+  binaryCopy = binary;
+  v17 = sub_295820728(&properties->meta.exposureParams, &otherProperties->meta.exposureParams, properties);
   v94 = 0;
   v21 = objc_msgSend_allocator(self->_metal, v18, v19, v20);
   v25 = objc_msgSend_newTextureDescriptor(v21, v22, v23, v24);
@@ -1503,15 +1503,15 @@ LABEL_4:
     v41 = objc_msgSend_desc(v25, v38, v39, v40);
     objc_msgSend_setUsage_(v41, v42, 7, v43);
 
-    v47 = objc_msgSend_pixelFormat(v14[self->_detectionLvl + 42], v44, v45, v46);
+    v47 = objc_msgSend_pixelFormat(pyramidCopy[self->_detectionLvl + 42], v44, v45, v46);
     v51 = objc_msgSend_desc(v25, v48, v49, v50);
     objc_msgSend_setPixelFormat_(v51, v52, v47, v53);
 
-    v57 = objc_msgSend_width(v14[self->_detectionLvl + 42], v54, v55, v56);
+    v57 = objc_msgSend_width(pyramidCopy[self->_detectionLvl + 42], v54, v55, v56);
     v61 = objc_msgSend_desc(v25, v58, v59, v60);
     objc_msgSend_setWidth_(v61, v62, v57, v63);
 
-    v67 = objc_msgSend_height(v14[self->_detectionLvl + 42], v64, v65, v66);
+    v67 = objc_msgSend_height(pyramidCopy[self->_detectionLvl + 42], v64, v65, v66);
     v71 = objc_msgSend_desc(v25, v68, v69, v70);
     objc_msgSend_setHeight_(v71, v72, v67, v73);
 
@@ -1524,7 +1524,7 @@ LABEL_4:
     {
       v85 = 8 * self->_detectionLvl - 8;
       *&v84 = v17;
-      v86 = objc_msgSend_prepareFusionRefLuma_refChroma_otherLuma_otherChroma_maskMBBinary_relativeBrightness_homography_output_params_(self, v83, *(v14 + v85 + 336), *(v14 + v85 + 496), *&v15[v85 + 336], *&v15[v85 + 496], v16, v82, v84, *&a6[1].meta.exposureParams.conversion_gain, *&a6[1].meta.exposureParams.luxLevel, *&a6[1].meta.exposureParams.CCT, a8);
+      v86 = objc_msgSend_prepareFusionRefLuma_refChroma_otherLuma_otherChroma_maskMBBinary_relativeBrightness_homography_output_params_(self, v83, *(pyramidCopy + v85 + 336), *(pyramidCopy + v85 + 496), *&otherPyramidCopy[v85 + 336], *&otherPyramidCopy[v85 + 496], binaryCopy, v82, v84, *&otherProperties[1].meta.exposureParams.conversion_gain, *&otherProperties[1].meta.exposureParams.luxLevel, *&otherProperties[1].meta.exposureParams.CCT, params);
       if (v86)
       {
         updated = v86;
@@ -1534,7 +1534,7 @@ LABEL_4:
       else
       {
         *&v88 = v17;
-        v89 = objc_msgSend_fuseRefPyramid_withOtherPyramid_refProperties_otherProperties_currentFusionWeights_relativeBrightness_(self, v87, v14, v15, a5, a6, v82, v88);
+        v89 = objc_msgSend_fuseRefPyramid_withOtherPyramid_refProperties_otherProperties_currentFusionWeights_relativeBrightness_(self, v87, pyramidCopy, otherPyramidCopy, properties, otherProperties, v82, v88);
         if (v89)
         {
           updated = v89;
@@ -1573,16 +1573,16 @@ LABEL_4:
   return updated;
 }
 
-- (int)mixFusedTexturesWithRefLuma:(id)a3 refChroma:(id)a4 refProperties:(frameProperties_t *)a5 tuningParams:(id)a6
+- (int)mixFusedTexturesWithRefLuma:(id)luma refChroma:(id)chroma refProperties:(frameProperties_t *)properties tuningParams:(id)params
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v16 = v12;
+  lumaCopy = luma;
+  chromaCopy = chroma;
+  paramsCopy = params;
+  v16 = paramsCopy;
   v175 = 0;
-  if (v12)
+  if (paramsCopy)
   {
-    objc_msgSend_tuningParams(v12, v13, v14, v15);
+    objc_msgSend_tuningParams(paramsCopy, v13, v14, v15);
     v17 = DWORD2(v168);
     objc_msgSend_tuningParams(v16, v18, v19, v20);
     v21 = HIDWORD(v150);
@@ -1631,27 +1631,27 @@ LABEL_4:
   v157 = v21;
   v22 = objc_msgSend_width(self->_fusedLuma, v13, v14, v15);
   v26 = objc_msgSend_height(self->_fusedLuma, v23, v24, v25);
-  y_low = LODWORD(a5[1].meta.ROI.origin.y);
+  y_low = LODWORD(properties[1].meta.ROI.origin.y);
   v139 = y_low == 1;
   v138 = y_low == 2;
-  v31 = *&a5[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].GG.highlights;
-  v137[10] = *&a5[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].RB.shadows;
+  v31 = *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].GG.highlights;
+  v137[10] = *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].RB.shadows;
   v137[11] = v31;
-  v137[12] = *&a5[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].BG.mid;
-  v32 = *&a5[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].GR.shadows;
-  v137[6] = *&a5[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].RR.mid;
+  v137[12] = *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].BG.mid;
+  v32 = *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].GR.shadows;
+  v137[6] = *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].RR.mid;
   v137[7] = v32;
-  v33 = *&a5[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].BB.mid;
-  v137[8] = *&a5[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].GB.highlights;
+  v33 = *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].BB.mid;
+  v137[8] = *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].GB.highlights;
   v137[9] = v33;
-  v34 = *&a5[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[0].RG.mid;
-  v137[2] = *&a5[1].meta.ltmCurves.ltmLut.ccmV1.rightPadding;
+  v34 = *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[0].RG.mid;
+  v137[2] = *&properties[1].meta.ltmCurves.ltmLut.ccmV1.rightPadding;
   v137[3] = v34;
-  v35 = *&a5[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[0].BR.highlights;
-  v137[4] = *&a5[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[0].GG.shadows;
+  v35 = *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[0].BR.highlights;
+  v137[4] = *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[0].GG.shadows;
   v137[5] = v35;
-  v36 = *&a5[1].meta.ltmCurves.ltmLut.version;
-  v137[0] = *&a5[1].meta.ROI.size.height;
+  v36 = *&properties[1].meta.ltmCurves.ltmLut.version;
+  v137[0] = *&properties[1].meta.ROI.size.height;
   v137[1] = v36;
   if (!self->_canMitigationProceed || !self->_maskMB || !self->_ggFusionWeightsAcc)
   {
@@ -1729,8 +1729,8 @@ LABEL_20:
   v113 = v110;
   objc_msgSend_setComputePipelineState_(v110, v111, self->_pipelineStates[9], v112);
   objc_msgSend_setImageblockWidth_height_(v113, v114, 32, 32);
-  objc_msgSend_setTexture_atIndex_(v113, v115, v10, 0);
-  objc_msgSend_setTexture_atIndex_(v113, v116, v11, 1);
+  objc_msgSend_setTexture_atIndex_(v113, v115, lumaCopy, 0);
+  objc_msgSend_setTexture_atIndex_(v113, v116, chromaCopy, 1);
   objc_msgSend_setTexture_atIndex_(v113, v117, v95, 2);
   objc_msgSend_setTexture_atIndex_(v113, v118, self->_ggFusionWeightsAcc, 3);
   objc_msgSend_setTexture_atIndex_(v113, v119, self->_fusedLuma, 4);
@@ -1756,12 +1756,12 @@ LABEL_14:
   return v132;
 }
 
-- (int)updateMaskAndComputeGradientForLuma:(id)a3 output:(id)a4 params:(LowLightInpaintTuning *)a5
+- (int)updateMaskAndComputeGradientForLuma:(id)luma output:(id)output params:(LowLightInpaintTuning *)params
 {
-  v8 = a3;
-  v9 = a4;
+  lumaCopy = luma;
+  outputCopy = output;
   v139 = 0;
-  v138 = *&a5->var0;
+  v138 = *&params->var0;
   v13 = objc_msgSend_allocator(self->_metal, v10, v11, v12);
   v17 = objc_msgSend_newTextureDescriptor(v13, v14, v15, v16);
 
@@ -1823,18 +1823,18 @@ LABEL_15:
 
   v89 = v86;
   objc_msgSend_setComputePipelineState_(v86, v87, self->_pipelineStates[10], v88);
-  objc_msgSend_setTexture_atIndex_(v89, v90, v8, 0);
+  objc_msgSend_setTexture_atIndex_(v89, v90, lumaCopy, 0);
   objc_msgSend_setTexture_atIndex_(v89, v91, self->_ggMaxFusionWeights, 1);
   objc_msgSend_setTexture_atIndex_(v89, v92, self->_maskMB, 2);
-  v135 = v9;
-  objc_msgSend_setTexture_atIndex_(v89, v93, v9, 3);
+  v135 = outputCopy;
+  objc_msgSend_setTexture_atIndex_(v89, v93, outputCopy, 3);
   objc_msgSend_setTexture_atIndex_(v89, v94, v74, 4);
   objc_msgSend_setBytes_length_atIndex_(v89, v95, &v138, 8, 0);
-  v99 = a5;
+  paramsCopy = params;
   v100 = objc_msgSend_threadExecutionWidth(self->_pipelineStates[10], v96, v97, v98);
   v104 = objc_msgSend_maxTotalThreadsPerThreadgroup(self->_pipelineStates[10], v101, v102, v103) / v100;
-  v137[0] = objc_msgSend_width(v8, v105, v106, v107);
-  v137[1] = objc_msgSend_height(v8, v108, v109, v110);
+  v137[0] = objc_msgSend_width(lumaCopy, v105, v106, v107);
+  v137[1] = objc_msgSend_height(lumaCopy, v108, v109, v110);
   v137[2] = 1;
   v136[0] = v100;
   v136[1] = v104;
@@ -1842,7 +1842,7 @@ LABEL_15:
   objc_msgSend_dispatchThreads_threadsPerThreadgroup_(v89, v111, v137, v136);
   objc_msgSend_endEncoding(v89, v112, v113, v114);
   objc_msgSend_commit(v82, v115, v116, v117);
-  var2 = v99->var2;
+  var2 = paramsCopy->var2;
   v122 = objc_msgSend_width(v74, v119, v120, v121);
   if (v122 <= objc_msgSend_height(v74, v123, v124, v125))
   {
@@ -1857,7 +1857,7 @@ LABEL_15:
   *&v131 = var2 / v129;
   v132 = objc_msgSend_dilateTexture_withNormalizedRadius_output_(self->_greenGhostCommon, v130, v74, self->_maskMB, v131);
   v133 = v132;
-  v9 = v135;
+  outputCopy = v135;
   if (v132)
   {
     sub_2958A3078(v132, v89, v82);
@@ -1873,14 +1873,14 @@ LABEL_10:
   return v133;
 }
 
-- (int)propagateLuma:(id)a3 chroma:(id)a4 gradient:(id)a5 outputLuma:(id)a6 outputChroma:(id)a7 outputGradient:(id)a8 params:(LowLightInpaintTuning *)a9
+- (int)propagateLuma:(id)luma chroma:(id)chroma gradient:(id)gradient outputLuma:(id)outputLuma outputChroma:(id)outputChroma outputGradient:(id)outputGradient params:(LowLightInpaintTuning *)params
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  lumaCopy = luma;
+  chromaCopy = chroma;
+  gradientCopy = gradient;
+  outputLumaCopy = outputLuma;
+  outputChromaCopy = outputChroma;
+  outputGradientCopy = outputGradient;
   var0 = 0.0;
   v157 = 0;
   v24 = objc_msgSend_allocator(self->_metal, v21, v22, v23);
@@ -1918,7 +1918,7 @@ LABEL_10:
   v80 = objc_msgSend_width(self->_maskMB, v77, v78, v79);
   v87 = objc_msgSend_height(self->_maskMB, v81, v82, v83);
   maskMB = self->_maskMB;
-  v89 = v16;
+  v89 = chromaCopy;
   if (v80 <= v87)
   {
     v90 = objc_msgSend_height(maskMB, v84, v85, v86);
@@ -1950,11 +1950,11 @@ LABEL_16:
     v151 = v103;
     sub_2958A3370();
 LABEL_17:
-    v16 = v89;
+    chromaCopy = v89;
     goto LABEL_10;
   }
 
-  var0 = a9->var5.var0;
+  var0 = params->var5.var0;
   v107 = objc_msgSend_commandQueue(self->_metal, v104, v105, v106);
   v111 = objc_msgSend_commandBuffer(v107, v108, v109, v110);
 
@@ -1973,47 +1973,47 @@ LABEL_17:
 
   v118 = v115;
   objc_msgSend_setComputePipelineState_(v115, v116, self->_pipelineStates[11], v117);
-  objc_msgSend_setTexture_atIndex_(v118, v119, v15, 0);
+  objc_msgSend_setTexture_atIndex_(v118, v119, lumaCopy, 0);
   v153 = v89;
   objc_msgSend_setTexture_atIndex_(v118, v120, v89, 1);
-  objc_msgSend_setTexture_atIndex_(v118, v121, v17, 2);
+  objc_msgSend_setTexture_atIndex_(v118, v121, gradientCopy, 2);
   objc_msgSend_setTexture_atIndex_(v118, v122, self->_maskMB, 3);
   objc_msgSend_setTexture_atIndex_(v118, v123, v100, 4);
-  objc_msgSend_setTexture_atIndex_(v118, v124, v18, 5);
-  objc_msgSend_setTexture_atIndex_(v118, v125, v19, 6);
-  objc_msgSend_setTexture_atIndex_(v118, v126, v20, 7);
+  objc_msgSend_setTexture_atIndex_(v118, v124, outputLumaCopy, 5);
+  objc_msgSend_setTexture_atIndex_(v118, v125, outputChromaCopy, 6);
+  objc_msgSend_setTexture_atIndex_(v118, v126, outputGradientCopy, 7);
   objc_msgSend_setBytes_length_atIndex_(v118, v127, &var0, 4, 0);
   v131 = objc_msgSend_threadExecutionWidth(self->_pipelineStates[11], v128, v129, v130);
-  v135 = v19;
-  v136 = v18;
+  v135 = outputChromaCopy;
+  v136 = outputLumaCopy;
   v137 = objc_msgSend_maxTotalThreadsPerThreadgroup(self->_pipelineStates[11], v132, v133, v134) / v131;
-  v156[0] = objc_msgSend_width(v15, v138, v139, v140);
-  v156[1] = objc_msgSend_height(v15, v141, v142, v143);
+  v156[0] = objc_msgSend_width(lumaCopy, v138, v139, v140);
+  v156[1] = objc_msgSend_height(lumaCopy, v141, v142, v143);
   v156[2] = 1;
   v155[0] = v131;
   v155[1] = v137;
-  v18 = v136;
-  v19 = v135;
+  outputLumaCopy = v136;
+  outputChromaCopy = v135;
   v155[2] = 1;
   objc_msgSend_dispatchThreads_threadsPerThreadgroup_(v118, v144, v156, v155);
   objc_msgSend_endEncoding(v118, v145, v146, v147);
   objc_msgSend_commit(v111, v148, v149, v150);
   FigMetalDecRef();
 
-  v16 = v153;
+  chromaCopy = v153;
   v151 = 0;
 LABEL_10:
 
   return v151;
 }
 
-- (int)prepareInpaintingWithLuma:(id)a3 andChroma:(id)a4 outputLuma:(id)a5 outputChroma:(id)a6 outputGradient:(id)a7 params:(LowLightInpaintTuning *)a8
+- (int)prepareInpaintingWithLuma:(id)luma andChroma:(id)chroma outputLuma:(id)outputLuma outputChroma:(id)outputChroma outputGradient:(id)gradient params:(LowLightInpaintTuning *)params
 {
-  v14 = a3;
-  v113 = a4;
-  v112 = a5;
-  v15 = a6;
-  v16 = a7;
+  lumaCopy = luma;
+  chromaCopy = chroma;
+  outputLumaCopy = outputLuma;
+  outputChromaCopy = outputChroma;
+  gradientCopy = gradient;
   v115 = 0;
   v116 = 0;
   v114 = 0;
@@ -2026,7 +2026,7 @@ LABEL_10:
 LABEL_16:
     v110 = v117;
 LABEL_17:
-    v105 = v112;
+    v105 = outputLumaCopy;
     goto LABEL_11;
   }
 
@@ -2039,15 +2039,15 @@ LABEL_17:
   v40 = objc_msgSend_desc(v24, v37, v38, v39);
   objc_msgSend_setUsage_(v40, v41, 7, v42);
 
-  v46 = objc_msgSend_pixelFormat(v16, v43, v44, v45);
+  v46 = objc_msgSend_pixelFormat(gradientCopy, v43, v44, v45);
   v50 = objc_msgSend_desc(v24, v47, v48, v49);
   objc_msgSend_setPixelFormat_(v50, v51, v46, v52);
 
-  v56 = objc_msgSend_width(v16, v53, v54, v55);
+  v56 = objc_msgSend_width(gradientCopy, v53, v54, v55);
   v60 = objc_msgSend_desc(v24, v57, v58, v59);
   objc_msgSend_setWidth_(v60, v61, v56, v62);
 
-  v66 = objc_msgSend_height(v16, v63, v64, v65);
+  v66 = objc_msgSend_height(gradientCopy, v63, v64, v65);
   v70 = objc_msgSend_desc(v24, v67, v68, v69);
   objc_msgSend_setHeight_(v70, v71, v66, v72);
 
@@ -2084,7 +2084,7 @@ LABEL_17:
     goto LABEL_16;
   }
 
-  updated = objc_msgSend_updateMaskAndComputeGradientForLuma_output_params_(self, v100, v14, v81, a8);
+  updated = objc_msgSend_updateMaskAndComputeGradientForLuma_output_params_(self, v100, lumaCopy, v81, params);
   if (updated)
   {
     v110 = updated;
@@ -2092,7 +2092,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v103 = objc_msgSend_propagateLuma_chroma_gradient_outputLuma_outputChroma_outputGradient_params_(self, v102, v14, v113, v81, v99, v15, v16, a8);
+  v103 = objc_msgSend_propagateLuma_chroma_gradient_outputLuma_outputChroma_outputGradient_params_(self, v102, lumaCopy, chromaCopy, v81, v99, outputChromaCopy, gradientCopy, params);
   if (v103)
   {
     v110 = v103;
@@ -2100,8 +2100,8 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v105 = v112;
-  v106 = objc_msgSend_boxFilter_withRadius_output_(self->_greenGhostCommon, v104, v99, LODWORD(a8->var3), v112);
+  v105 = outputLumaCopy;
+  v106 = objc_msgSend_boxFilter_withRadius_output_(self->_greenGhostCommon, v104, v99, LODWORD(params->var3), outputLumaCopy);
   if (v106)
   {
     v110 = v106;
@@ -2110,7 +2110,7 @@ LABEL_17:
 
   else
   {
-    v108 = objc_msgSend_boxFilter_withRadius_output_(self->_greenGhostCommon, v107, self->_maskMB, LODWORD(a8->var4), v90);
+    v108 = objc_msgSend_boxFilter_withRadius_output_(self->_greenGhostCommon, v107, self->_maskMB, LODWORD(params->var4), v90);
     if (v108)
     {
       v110 = v108;
@@ -2119,7 +2119,7 @@ LABEL_17:
 
     else
     {
-      v110 = objc_msgSend_boxFilter_withRadius_output_(self->_greenGhostCommon, v109, v90, LODWORD(a8->var4), self->_maskMB);
+      v110 = objc_msgSend_boxFilter_withRadius_output_(self->_greenGhostCommon, v109, v90, LODWORD(params->var4), self->_maskMB);
       if (v110)
       {
         sub_2958A37D0();
@@ -2139,34 +2139,34 @@ LABEL_11:
   return v110;
 }
 
-- (int)applyInpaintWithDownscaledLuma:(id)a3 propagatedLuma:(id)a4 downscaledChroma:(id)a5 propagatedChroma:(id)a6 propagatedGradient:(id)a7 maskPreInpainting:(id)a8 outputLuma:(id)a9 outputChroma:(id)a10 params:(LowLightInpaintTuning *)a11
+- (int)applyInpaintWithDownscaledLuma:(id)luma propagatedLuma:(id)propagatedLuma downscaledChroma:(id)chroma propagatedChroma:(id)propagatedChroma propagatedGradient:(id)gradient maskPreInpainting:(id)inpainting outputLuma:(id)outputLuma outputChroma:(id)self0 params:(LowLightInpaintTuning *)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v74 = a6;
-  v75 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v26 = objc_msgSend_width(v21, v23, v24, v25);
-  v73 = objc_msgSend_height(v21, v27, v28, v29);
+  lumaCopy = luma;
+  propagatedLumaCopy = propagatedLuma;
+  chromaCopy = chroma;
+  propagatedChromaCopy = propagatedChroma;
+  gradientCopy = gradient;
+  inpaintingCopy = inpainting;
+  outputLumaCopy = outputLuma;
+  outputChromaCopy = outputChroma;
+  v26 = objc_msgSend_width(outputLumaCopy, v23, v24, v25);
+  v73 = objc_msgSend_height(outputLumaCopy, v27, v28, v29);
   v33 = objc_msgSend_commandQueue(self->_metal, v30, v31, v32);
   v37 = objc_msgSend_commandBuffer(v33, v34, v35, v36);
 
   if (!v37)
   {
     sub_2958A3B3C(v78);
-    v41 = v21;
+    v41 = outputLumaCopy;
 LABEL_7:
     v70 = v78[0];
-    v69 = v74;
-    v60 = v75;
+    v69 = propagatedChromaCopy;
+    v60 = gradientCopy;
     goto LABEL_4;
   }
 
   v72 = v26;
-  v41 = v21;
+  v41 = outputLumaCopy;
   v42 = objc_msgSend_computeCommandEncoder(v37, v38, v39, v40);
   if (!v42)
   {
@@ -2177,20 +2177,20 @@ LABEL_7:
   v45 = v42;
   objc_msgSend_setComputePipelineState_(v42, v43, self->_pipelineStates[12], v44);
   objc_msgSend_setImageblockWidth_height_(v45, v46, 32, 32);
-  objc_msgSend_setTexture_atIndex_(v45, v47, v17, 0);
-  objc_msgSend_setTexture_atIndex_(v45, v48, v18, 1);
-  objc_msgSend_setTexture_atIndex_(v45, v49, v19, 2);
-  objc_msgSend_setTexture_atIndex_(v45, v50, v74, 3);
+  objc_msgSend_setTexture_atIndex_(v45, v47, lumaCopy, 0);
+  objc_msgSend_setTexture_atIndex_(v45, v48, propagatedLumaCopy, 1);
+  objc_msgSend_setTexture_atIndex_(v45, v49, chromaCopy, 2);
+  objc_msgSend_setTexture_atIndex_(v45, v50, propagatedChromaCopy, 3);
   objc_msgSend_setTexture_atIndex_(v45, v51, self->_maskMB, 4);
-  objc_msgSend_setTexture_atIndex_(v45, v52, v75, 5);
-  objc_msgSend_setTexture_atIndex_(v45, v53, v21, 6);
-  objc_msgSend_setTexture_atIndex_(v45, v54, v22, 7);
-  objc_msgSend_setTexture_atIndex_(v45, v55, v20, 8);
+  objc_msgSend_setTexture_atIndex_(v45, v52, gradientCopy, 5);
+  objc_msgSend_setTexture_atIndex_(v45, v53, outputLumaCopy, 6);
+  objc_msgSend_setTexture_atIndex_(v45, v54, outputChromaCopy, 7);
+  objc_msgSend_setTexture_atIndex_(v45, v55, inpaintingCopy, 8);
   objc_msgSend_setTexture_atIndex_(v45, v56, self->_ggFusionWeightsAcc, 9);
-  objc_msgSend_setBytes_length_atIndex_(v45, v57, a11, 88, 0);
+  objc_msgSend_setBytes_length_atIndex_(v45, v57, params, 88, 0);
   objc_msgSend_setBytes_length_atIndex_(v45, v58, &self->_faceBodyBoundaries, 352, 1);
   p_nonRefFramesCount = &self->_nonRefFramesCount;
-  v60 = v75;
+  v60 = gradientCopy;
   objc_msgSend_setBytes_length_atIndex_(v45, v61, p_nonRefFramesCount, 4, 2);
   v78[0] = v72 >> 1;
   v78[1] = v73 >> 1;
@@ -2201,24 +2201,24 @@ LABEL_7:
   objc_msgSend_endEncoding(v45, v63, v64, v65);
   objc_msgSend_commit(v37, v66, v67, v68);
 
-  v69 = v74;
+  v69 = propagatedChromaCopy;
   v70 = 0;
 LABEL_4:
 
   return v70;
 }
 
-- (int)inpaintLuma:(id)a3 andChroma:(id)a4 tuningParams:(id)a5
+- (int)inpaintLuma:(id)luma andChroma:(id)chroma tuningParams:(id)params
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lumaCopy = luma;
+  chromaCopy = chroma;
+  paramsCopy = params;
   FigMetalDecRef();
   FigMetalDecRef();
   FigMetalDecRef();
-  if (v10)
+  if (paramsCopy)
   {
-    objc_msgSend_tuningParams(v10, v11, v12, v13);
+    objc_msgSend_tuningParams(paramsCopy, v11, v12, v13);
   }
 
   else
@@ -2243,8 +2243,8 @@ LABEL_4:
   v147 = 0;
   v144 = 0;
   v145 = 0;
-  v14 = objc_msgSend_width(v8, v11, v12, v13);
-  v18 = objc_msgSend_height(v8, v15, v16, v17);
+  v14 = objc_msgSend_width(lumaCopy, v11, v12, v13);
+  v18 = objc_msgSend_height(lumaCopy, v15, v16, v17);
   if (!self->_canMitigationProceed)
   {
     goto LABEL_22;
@@ -2316,7 +2316,7 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v142 = v10;
+  v142 = paramsCopy;
   objc_msgSend_setLabel_(v27, v84, 0, v85);
   v89 = objc_msgSend_allocator(self->_metal, v86, v87, v88);
   v92 = objc_msgSend_newTextureWithDescriptor_(v89, v90, v27, v91);
@@ -2329,7 +2329,7 @@ LABEL_27:
     goto LABEL_20;
   }
 
-  v143 = v9;
+  v143 = chromaCopy;
   objc_msgSend_setLabel_(v27, v93, 0, v94);
   v98 = objc_msgSend_allocator(self->_metal, v95, v96, v97);
   v101 = objc_msgSend_newTextureWithDescriptor_(v98, v99, v27, v100);
@@ -2363,7 +2363,7 @@ LABEL_27:
 
         else
         {
-          v129 = objc_msgSend_downscaleInput_output_(self->_greenGhostCommon, v128, v8, v83);
+          v129 = objc_msgSend_downscaleInput_output_(self->_greenGhostCommon, v128, lumaCopy, v83);
           if (v129)
           {
             v136 = v129;
@@ -2390,7 +2390,7 @@ LABEL_27:
 
               else
               {
-                v135 = objc_msgSend_applyInpaintWithDownscaledLuma_propagatedLuma_downscaledChroma_propagatedChroma_propagatedGradient_maskPreInpainting_outputLuma_outputChroma_params_(self, v134, v83, v92, v116, v125, v101, v74, v8, v143, v156);
+                v135 = objc_msgSend_applyInpaintWithDownscaledLuma_propagatedLuma_downscaledChroma_propagatedChroma_propagatedGradient_maskPreInpainting_outputLuma_outputChroma_params_(self, v134, v83, v92, v116, v125, v101, v74, lumaCopy, v143, v156);
                 v136 = v135;
                 if (v135)
                 {
@@ -2430,9 +2430,9 @@ LABEL_27:
 
   v136 = v158[0];
 LABEL_19:
-  v9 = v143;
+  chromaCopy = v143;
 LABEL_20:
-  v10 = v142;
+  paramsCopy = v142;
 LABEL_23:
   objc_msgSend_releaseTextures(self, v19, v20, v21);
 

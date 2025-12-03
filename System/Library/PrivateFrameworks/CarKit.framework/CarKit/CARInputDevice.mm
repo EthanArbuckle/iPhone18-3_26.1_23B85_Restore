@@ -1,22 +1,22 @@
 @interface CARInputDevice
-- (CARInputDevice)initWithServiceClient:(__IOHIDServiceClient *)a3 UUID:(id)a4;
-- (void)_setSenderID:(unint64_t)a3;
-- (void)_setUUID:(id)a3;
+- (CARInputDevice)initWithServiceClient:(__IOHIDServiceClient *)client UUID:(id)d;
+- (void)_setSenderID:(unint64_t)d;
+- (void)_setUUID:(id)d;
 @end
 
 @implementation CARInputDevice
 
-- (CARInputDevice)initWithServiceClient:(__IOHIDServiceClient *)a3 UUID:(id)a4
+- (CARInputDevice)initWithServiceClient:(__IOHIDServiceClient *)client UUID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = CARInputDevice;
   v7 = [(CARInputDevice *)&v12 init];
   if (v7)
   {
-    v8 = IOHIDServiceClientGetRegistryID(a3);
+    v8 = IOHIDServiceClientGetRegistryID(client);
     v7->_senderID = [v8 unsignedLongValue];
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     UUID = v7->_UUID;
     v7->_UUID = v9;
   }
@@ -24,25 +24,25 @@
   return v7;
 }
 
-- (void)_setUUID:(id)a3
+- (void)_setUUID:(id)d
 {
-  v8 = a3;
-  v4 = [(CARInputDevice *)self UUID];
-  v5 = [v4 isEqualToString:v8];
+  dCopy = d;
+  uUID = [(CARInputDevice *)self UUID];
+  v5 = [uUID isEqualToString:dCopy];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [v8 copy];
+    v6 = [dCopy copy];
     UUID = self->_UUID;
     self->_UUID = v6;
   }
 }
 
-- (void)_setSenderID:(unint64_t)a3
+- (void)_setSenderID:(unint64_t)d
 {
-  if ([(CARInputDevice *)self senderID]!= a3)
+  if ([(CARInputDevice *)self senderID]!= d)
   {
-    self->_senderID = a3;
+    self->_senderID = d;
   }
 }
 

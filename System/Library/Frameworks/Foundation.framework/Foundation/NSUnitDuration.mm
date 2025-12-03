@@ -1,5 +1,5 @@
 @interface NSUnitDuration
-+ (id)_measurementWithNaturalScale:(id)a3 system:(unint64_t)a4;
++ (id)_measurementWithNaturalScale:(id)scale system:(unint64_t)system;
 + (void)initialize;
 @end
 
@@ -7,26 +7,26 @@
 
 + (void)initialize
 {
-  if (NSUnitDuration == a1)
+  if (NSUnitDuration == self)
   {
     objc_opt_class();
   }
 }
 
-+ (id)_measurementWithNaturalScale:(id)a3 system:(unint64_t)a4
++ (id)_measurementWithNaturalScale:(id)scale system:(unint64_t)system
 {
-  v4 = a3;
-  if (a4 != 3)
+  scaleCopy = scale;
+  if (system != 3)
   {
-    return v4;
+    return scaleCopy;
   }
 
-  if (([objc_msgSend(a3 "unit")] & 1) == 0)
+  if (([objc_msgSend(scale "unit")] & 1) == 0)
   {
-    v4 = [v4 measurementByConvertingToUnit:{+[NSUnitDuration baseUnit](NSUnitDuration, "baseUnit")}];
+    scaleCopy = [scaleCopy measurementByConvertingToUnit:{+[NSUnitDuration baseUnit](NSUnitDuration, "baseUnit")}];
   }
 
-  [v4 doubleValue];
+  [scaleCopy doubleValue];
   if (v5 >= 3600.0)
   {
     v8 = +[NSUnitDuration hours];
@@ -35,13 +35,13 @@
 
   if (v5 > 3600.0 || v5 < 60.0)
   {
-    return v4;
+    return scaleCopy;
   }
 
   v8 = +[NSUnitDuration minutes];
 LABEL_12:
 
-  return [v4 measurementByConvertingToUnit:v8];
+  return [scaleCopy measurementByConvertingToUnit:v8];
 }
 
 @end

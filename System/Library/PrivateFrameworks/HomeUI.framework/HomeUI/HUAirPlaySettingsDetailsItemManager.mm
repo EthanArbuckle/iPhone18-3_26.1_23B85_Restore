@@ -1,43 +1,43 @@
 @interface HUAirPlaySettingsDetailsItemManager
-- (BOOL)_shouldHideModuleHavingGroupKeyPath:(id)a3;
-- (HUAirPlaySettingsDetailsItemManager)initWithDelegate:(id)a3 module:(id)a4;
-- (id)_buildItemModulesForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
-- (id)updateSettingItem:(id)a3 withValue:(id)a4;
-- (void)_subscribeToAccessorySettings:(id)a3;
+- (BOOL)_shouldHideModuleHavingGroupKeyPath:(id)path;
+- (HUAirPlaySettingsDetailsItemManager)initWithDelegate:(id)delegate module:(id)module;
+- (id)_buildItemModulesForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
+- (id)updateSettingItem:(id)item withValue:(id)value;
+- (void)_subscribeToAccessorySettings:(id)settings;
 @end
 
 @implementation HUAirPlaySettingsDetailsItemManager
 
-- (HUAirPlaySettingsDetailsItemManager)initWithDelegate:(id)a3 module:(id)a4
+- (HUAirPlaySettingsDetailsItemManager)initWithDelegate:(id)delegate module:(id)module
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 accessorySettingsItemProvider];
-  v10 = [v9 items];
-  v11 = [v10 anyObject];
+  moduleCopy = module;
+  delegateCopy = delegate;
+  accessorySettingsItemProvider = [moduleCopy accessorySettingsItemProvider];
+  items = [accessorySettingsItemProvider items];
+  anyObject = [items anyObject];
 
-  v12 = [v11 copy];
+  v12 = [anyObject copy];
   v22.receiver = self;
   v22.super_class = HUAirPlaySettingsDetailsItemManager;
-  v13 = [(HFItemManager *)&v22 initWithDelegate:v8 sourceItem:v12];
+  v13 = [(HFItemManager *)&v22 initWithDelegate:delegateCopy sourceItem:v12];
 
   if (v13)
   {
-    v14 = [v7 settingsController];
+    settingsController = [moduleCopy settingsController];
     settingsController = v13->_settingsController;
-    v13->_settingsController = v14;
+    v13->_settingsController = settingsController;
 
-    v16 = [v7 settingGroupKeyPath];
+    settingGroupKeyPath = [moduleCopy settingGroupKeyPath];
     settingGroupKeyPath = v13->_settingGroupKeyPath;
-    v13->_settingGroupKeyPath = v16;
+    v13->_settingGroupKeyPath = settingGroupKeyPath;
 
-    v18 = [MEMORY[0x277D146E8] sharedDispatcher];
-    v19 = [v18 accessorySettingsDataSource];
-    [v19 addObserver:v13];
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    accessorySettingsDataSource = [mEMORY[0x277D146E8] accessorySettingsDataSource];
+    [accessorySettingsDataSource addObserver:v13];
 
-    objc_storeStrong(&v13->_module, a4);
+    objc_storeStrong(&v13->_module, module);
     v23[0] = *MEMORY[0x277D133A0];
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
     [(HUAirPlaySettingsDetailsItemManager *)v13 _subscribeToAccessorySettings:v20];
@@ -46,22 +46,22 @@
   return v13;
 }
 
-- (id)updateSettingItem:(id)a3 withValue:(id)a4
+- (id)updateSettingItem:(id)item withValue:(id)value
 {
-  v5 = a3;
-  v6 = a4;
+  itemCopy = item;
+  valueCopy = value;
   v7 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v8 = [v5 updateValue:v6];
+  v8 = [itemCopy updateValue:valueCopy];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __67__HUAirPlaySettingsDetailsItemManager_updateSettingItem_withValue___block_invoke;
   v16[3] = &unk_277DC0040;
   v9 = v7;
   v17 = v9;
-  v18 = v6;
-  v19 = v5;
-  v10 = v5;
-  v11 = v6;
+  v18 = valueCopy;
+  v19 = itemCopy;
+  v10 = itemCopy;
+  v11 = valueCopy;
   v12 = [v8 addCompletionBlock:v16];
   v13 = v19;
   v14 = v9;
@@ -93,19 +93,19 @@ uint64_t __67__HUAirPlaySettingsDetailsItemManager_updateSettingItem_withValue__
   }
 }
 
-- (id)_buildItemModulesForHome:(id)a3
+- (id)_buildItemModulesForHome:(id)home
 {
   v46 = *MEMORY[0x277D85DE8];
   v4 = objc_opt_new();
-  v30 = [MEMORY[0x277D14368] hf_accessorySettingsDictionary];
-  v29 = [MEMORY[0x277D14368] hf_groupKeyPaths];
-  v5 = [MEMORY[0x277D14368] hf_accessorySettingsDictionary];
+  hf_accessorySettingsDictionary = [MEMORY[0x277D14368] hf_accessorySettingsDictionary];
+  hf_groupKeyPaths = [MEMORY[0x277D14368] hf_groupKeyPaths];
+  hf_accessorySettingsDictionary2 = [MEMORY[0x277D14368] hf_accessorySettingsDictionary];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v37 objects:v45 count:16];
-  v33 = v5;
+  v6 = [hf_accessorySettingsDictionary2 countByEnumeratingWithState:&v37 objects:v45 count:16];
+  v33 = hf_accessorySettingsDictionary2;
   if (v6)
   {
     v7 = v6;
@@ -119,33 +119,33 @@ uint64_t __67__HUAirPlaySettingsDetailsItemManager_updateSettingItem_withValue__
       {
         if (*v38 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(hf_accessorySettingsDictionary2);
         }
 
         v11 = *(*(&v37 + 1) + 8 * i);
         if (![(HUAirPlaySettingsDetailsItemManager *)self _shouldHideModuleHavingGroupKeyPath:v11])
         {
-          v12 = [0 settingGroupKeyPath];
-          v13 = [v12 isEqualToString:*v9];
+          settingGroupKeyPath = [0 settingGroupKeyPath];
+          v13 = [settingGroupKeyPath isEqualToString:*v9];
 
           if (v13)
           {
-            v14 = [(HUAirPlaySettingsDetailsItemManager *)self module];
+            module = [(HUAirPlaySettingsDetailsItemManager *)self module];
           }
 
           else
           {
             v34 = [HUHomeKitAccessorySettingsItemModule alloc];
-            v15 = [(HUAirPlaySettingsDetailsItemManager *)self settingsController];
-            v16 = [(HUAirPlaySettingsDetailsItemManager *)self module];
-            v17 = [v16 home];
+            settingsController = [(HUAirPlaySettingsDetailsItemManager *)self settingsController];
+            module2 = [(HUAirPlaySettingsDetailsItemManager *)self module];
+            home = [module2 home];
             [(HUAirPlaySettingsDetailsItemManager *)self module];
             v18 = v9;
             v20 = v19 = v7;
-            v21 = [v20 sourceItem];
-            v14 = [(HUHomeKitAccessorySettingsItemModule *)v34 initWithSettingsController:v15 itemUpdater:self home:v17 sourceItem:v21 settingGroupKeyPath:v11 isCollapsed:0];
+            sourceItem = [v20 sourceItem];
+            module = [(HUHomeKitAccessorySettingsItemModule *)v34 initWithSettingsController:settingsController itemUpdater:self home:home sourceItem:sourceItem settingGroupKeyPath:v11 isCollapsed:0];
 
-            v5 = v33;
+            hf_accessorySettingsDictionary2 = v33;
             v7 = v19;
             v9 = v18;
 
@@ -153,35 +153,35 @@ uint64_t __67__HUAirPlaySettingsDetailsItemManager_updateSettingItem_withValue__
             v4 = v32;
           }
 
-          [v4 na_safeAddObject:v14];
+          [v4 na_safeAddObject:module];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v37 objects:v45 count:16];
+      v7 = [hf_accessorySettingsDictionary2 countByEnumeratingWithState:&v37 objects:v45 count:16];
     }
 
     while (v7);
   }
 
   [(HUAirPlaySettingsDetailsItemManager *)self setHomeKitAccessorySettingsModules:v4];
-  v22 = [(HUAirPlaySettingsDetailsItemManager *)self homeKitAccessorySettingsModules];
+  homeKitAccessorySettingsModules = [(HUAirPlaySettingsDetailsItemManager *)self homeKitAccessorySettingsModules];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __64__HUAirPlaySettingsDetailsItemManager__buildItemModulesForHome___block_invoke;
   v35[3] = &unk_277DC0C38;
-  v36 = v29;
-  v23 = v29;
-  v24 = [v22 sortedArrayUsingComparator:v35];
+  v36 = hf_groupKeyPaths;
+  v23 = hf_groupKeyPaths;
+  v24 = [homeKitAccessorySettingsModules sortedArrayUsingComparator:v35];
   [(HUAirPlaySettingsDetailsItemManager *)self setHomeKitAccessorySettingsModules:v24];
 
   v25 = HFLogForCategory();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
   {
-    v28 = [(HUAirPlaySettingsDetailsItemManager *)self homeKitAccessorySettingsModules];
+    homeKitAccessorySettingsModules2 = [(HUAirPlaySettingsDetailsItemManager *)self homeKitAccessorySettingsModules];
     *buf = 138412546;
-    v42 = v30;
+    v42 = hf_accessorySettingsDictionary;
     v43 = 2112;
-    v44 = v28;
+    v44 = homeKitAccessorySettingsModules2;
     _os_log_debug_impl(&dword_20CEB6000, v25, OS_LOG_TYPE_DEBUG, ". settingsDict = [%@] Generated homeKitAccessorySettingsModules = [%@]", buf, 0x16u);
   }
 
@@ -212,21 +212,21 @@ uint64_t __64__HUAirPlaySettingsDetailsItemManager__buildItemModulesForHome___bl
   }
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v66[1] = *MEMORY[0x277D85DE8];
-  v53 = a3;
+  itemsCopy = items;
   v54 = objc_opt_new();
   v4 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"AirPlayMasterSettingSection"];
-  v5 = [(HUAirPlaySettingsDetailsItemManager *)self module];
-  v6 = [(HUAirPlaySettingsDetailsItemManager *)self module];
-  v7 = [v6 accessorySettingsItemProvider];
-  v8 = [v7 items];
-  v9 = [v8 anyObject];
+  module = [(HUAirPlaySettingsDetailsItemManager *)self module];
+  module2 = [(HUAirPlaySettingsDetailsItemManager *)self module];
+  accessorySettingsItemProvider = [module2 accessorySettingsItemProvider];
+  items = [accessorySettingsItemProvider items];
+  anyObject = [items anyObject];
 
-  if (v9)
+  if (anyObject)
   {
-    v66[0] = v9;
+    v66[0] = anyObject;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v66 count:1];
     [v4 setItems:v10];
   }
@@ -236,16 +236,16 @@ uint64_t __64__HUAirPlaySettingsDetailsItemManager__buildItemModulesForHome___bl
     [v4 setItems:0];
   }
 
-  v11 = [MEMORY[0x277D14368] hf_accessorySettingsDictionary];
-  v12 = [(HUAirPlaySettingsDetailsItemManager *)self settingGroupKeyPath];
-  v13 = [v11 objectForKey:v12];
+  hf_accessorySettingsDictionary = [MEMORY[0x277D14368] hf_accessorySettingsDictionary];
+  settingGroupKeyPath = [(HUAirPlaySettingsDetailsItemManager *)self settingGroupKeyPath];
+  v13 = [hf_accessorySettingsDictionary objectForKey:settingGroupKeyPath];
 
   v49 = v13;
   v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277D138B0]];
   if (v14)
   {
-    v15 = [MEMORY[0x277D14338] defaultFactory];
-    v16 = [v15 formatterForKey:v14];
+    defaultFactory = [MEMORY[0x277D14338] defaultFactory];
+    v16 = [defaultFactory formatterForKey:v14];
   }
 
   else
@@ -254,7 +254,7 @@ uint64_t __64__HUAirPlaySettingsDetailsItemManager__buildItemModulesForHome___bl
   }
 
   v17 = [v16 attributedStringForObjectValue:self withDefaultAttributes:0];
-  v50 = v9;
+  v50 = anyObject;
   v47 = v16;
   v48 = v14;
   v46 = v17;
@@ -272,13 +272,13 @@ uint64_t __64__HUAirPlaySettingsDetailsItemManager__buildItemModulesForHome___bl
   v52 = v4;
   [v54 na_safeAddObject:v4];
   objc_opt_class();
-  v51 = v5;
-  v19 = [v5 itemProviders];
-  v20 = [v19 allObjects];
-  v21 = [v20 lastObject];
+  v51 = module;
+  itemProviders = [module itemProviders];
+  allObjects = [itemProviders allObjects];
+  lastObject = [allObjects lastObject];
   if (objc_opt_isKindOfClass())
   {
-    v22 = v21;
+    v22 = lastObject;
   }
 
   else
@@ -290,12 +290,12 @@ uint64_t __64__HUAirPlaySettingsDetailsItemManager__buildItemModulesForHome___bl
 
   objc_opt_class();
   v45 = v23;
-  v24 = [v23 items];
-  v25 = [v24 allObjects];
-  v26 = [v25 lastObject];
+  items2 = [v23 items];
+  allObjects2 = [items2 allObjects];
+  lastObject2 = [allObjects2 lastObject];
   if (objc_opt_isKindOfClass())
   {
-    v27 = v26;
+    v27 = lastObject2;
   }
 
   else
@@ -305,20 +305,20 @@ uint64_t __64__HUAirPlaySettingsDetailsItemManager__buildItemModulesForHome___bl
 
   v28 = v27;
 
-  v29 = [v28 settingValue];
-  v30 = [v29 BOOLValue];
+  settingValue = [v28 settingValue];
+  bOOLValue = [settingValue BOOLValue];
 
-  v31 = [(HUAirPlaySettingsDetailsItemManager *)self module];
-  v32 = [v31 sourceItem];
-  v33 = [v32 accessories];
-  v34 = [v33 anyObject];
+  module3 = [(HUAirPlaySettingsDetailsItemManager *)self module];
+  sourceItem = [module3 sourceItem];
+  accessories = [sourceItem accessories];
+  anyObject2 = [accessories anyObject];
 
   v59 = 0u;
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v35 = [(HUAirPlaySettingsDetailsItemManager *)self homeKitAccessorySettingsModules];
-  v36 = [v35 countByEnumeratingWithState:&v57 objects:v65 count:16];
+  homeKitAccessorySettingsModules = [(HUAirPlaySettingsDetailsItemManager *)self homeKitAccessorySettingsModules];
+  v36 = [homeKitAccessorySettingsModules countByEnumeratingWithState:&v57 objects:v65 count:16];
   if (v36)
   {
     v37 = v36;
@@ -329,18 +329,18 @@ uint64_t __64__HUAirPlaySettingsDetailsItemManager__buildItemModulesForHome___bl
       {
         if (*v58 != v38)
         {
-          objc_enumerationMutation(v35);
+          objc_enumerationMutation(homeKitAccessorySettingsModules);
         }
 
-        if (v30)
+        if (bOOLValue)
         {
           v40 = *(*(&v57 + 1) + 8 * i);
-          v41 = [v40 buildSectionsWithDisplayedItems:v53];
+          v41 = [v40 buildSectionsWithDisplayedItems:itemsCopy];
           v55[0] = MEMORY[0x277D85DD0];
           v55[1] = 3221225472;
           v55[2] = __72__HUAirPlaySettingsDetailsItemManager__buildSectionsWithDisplayedItems___block_invoke;
           v55[3] = &unk_277DBE440;
-          v56 = v34;
+          v56 = anyObject2;
           v42 = [v41 na_filter:v55];
 
           [v54 addObjectsFromArray:v42];
@@ -367,7 +367,7 @@ uint64_t __64__HUAirPlaySettingsDetailsItemManager__buildItemModulesForHome___bl
         }
       }
 
-      v37 = [v35 countByEnumeratingWithState:&v57 objects:v65 count:16];
+      v37 = [homeKitAccessorySettingsModules countByEnumeratingWithState:&v57 objects:v65 count:16];
     }
 
     while (v37);
@@ -391,7 +391,7 @@ uint64_t __72__HUAirPlaySettingsDetailsItemManager__buildSectionsWithDisplayedIt
   return [v5 supportsPreferredMediaUser];
 }
 
-- (BOOL)_shouldHideModuleHavingGroupKeyPath:(id)a3
+- (BOOL)_shouldHideModuleHavingGroupKeyPath:(id)path
 {
   v11[8] = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277D133A8];
@@ -407,46 +407,46 @@ uint64_t __72__HUAirPlaySettingsDetailsItemManager__buildSectionsWithDisplayedIt
   v11[6] = *MEMORY[0x277D13840];
   v11[7] = v6;
   v7 = MEMORY[0x277CBEA60];
-  v8 = a3;
+  pathCopy = path;
   v9 = [v7 arrayWithObjects:v11 count:8];
-  LOBYTE(v7) = [v9 containsObject:v8];
+  LOBYTE(v7) = [v9 containsObject:pathCopy];
 
   return v7;
 }
 
-- (void)_subscribeToAccessorySettings:(id)a3
+- (void)_subscribeToAccessorySettings:(id)settings
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUAirPlaySettingsDetailsItemManager *)self module];
-  v6 = [v5 sourceItem];
-  v7 = [v6 accessories];
-  v8 = [v7 anyObject];
+  settingsCopy = settings;
+  module = [(HUAirPlaySettingsDetailsItemManager *)self module];
+  sourceItem = [module sourceItem];
+  accessories = [sourceItem accessories];
+  anyObject = [accessories anyObject];
 
   v9 = HFLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 uniqueIdentifier];
+    uniqueIdentifier = [anyObject uniqueIdentifier];
     *buf = 138412546;
-    v21 = v10;
+    v21 = uniqueIdentifier;
     v22 = 2112;
-    v23 = v4;
+    v23 = settingsCopy;
     _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "Now subscribing to setting accessoryUUID [%@] - keyPaths [%@]", buf, 0x16u);
   }
 
-  v11 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v12 = [v11 accessorySettingsDataSource];
-  v13 = [(HUAirPlaySettingsDetailsItemManager *)self module];
-  v14 = [v13 home];
-  v15 = [v14 uniqueIdentifier];
-  v16 = [v8 uniqueIdentifier];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  accessorySettingsDataSource = [mEMORY[0x277D146E8] accessorySettingsDataSource];
+  module2 = [(HUAirPlaySettingsDetailsItemManager *)self module];
+  home = [module2 home];
+  uniqueIdentifier2 = [home uniqueIdentifier];
+  uniqueIdentifier3 = [anyObject uniqueIdentifier];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __69__HUAirPlaySettingsDetailsItemManager__subscribeToAccessorySettings___block_invoke;
   v18[3] = &unk_277DB8C00;
-  v19 = v4;
-  v17 = v4;
-  [v12 hf_subscribeToAccessorySettingsWithHomeIdentifier:v15 accessoryIdentifier:v16 keyPaths:v17 options:0 completionHandler:v18];
+  v19 = settingsCopy;
+  v17 = settingsCopy;
+  [accessorySettingsDataSource hf_subscribeToAccessorySettingsWithHomeIdentifier:uniqueIdentifier2 accessoryIdentifier:uniqueIdentifier3 keyPaths:v17 options:0 completionHandler:v18];
 }
 
 void __69__HUAirPlaySettingsDetailsItemManager__subscribeToAccessorySettings___block_invoke(uint64_t a1, void *a2)

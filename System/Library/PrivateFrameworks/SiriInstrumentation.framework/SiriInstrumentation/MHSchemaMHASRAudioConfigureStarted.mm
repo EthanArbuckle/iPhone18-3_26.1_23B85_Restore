@@ -1,41 +1,41 @@
 @interface MHSchemaMHASRAudioConfigureStarted
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaMHASRAudioConfigureStarted)initWithDictionary:(id)a3;
-- (MHSchemaMHASRAudioConfigureStarted)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaMHASRAudioConfigureStarted)initWithDictionary:(id)dictionary;
+- (MHSchemaMHASRAudioConfigureStarted)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAudioSkippedNumSamples:(BOOL)a3;
-- (void)setHasAudioSkippedTimeInNs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAudioSkippedNumSamples:(BOOL)samples;
+- (void)setHasAudioSkippedTimeInNs:(BOOL)ns;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHASRAudioConfigureStarted
 
-- (MHSchemaMHASRAudioConfigureStarted)initWithDictionary:(id)a3
+- (MHSchemaMHASRAudioConfigureStarted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = MHSchemaMHASRAudioConfigureStarted;
   v5 = [(MHSchemaMHASRAudioConfigureStarted *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"audioCodec"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"audioCodec"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHASRAudioConfigureStarted setAudioCodec:](v5, "setAudioCodec:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"audioSkippedTimeInNs"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"audioSkippedTimeInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHASRAudioConfigureStarted setAudioSkippedTimeInNs:](v5, "setAudioSkippedTimeInNs:", [v7 unsignedLongLongValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"audioSkippedNumSamples"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"audioSkippedNumSamples"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (MHSchemaMHASRAudioConfigureStarted)initWithJSON:(id)a3
+- (MHSchemaMHASRAudioConfigureStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHASRAudioConfigureStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHASRAudioConfigureStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHASRAudioConfigureStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,7 +84,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
@@ -99,14 +99,14 @@
       v6 = off_1E78D8E18[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"audioCodec"];
+    [dictionary setObject:v6 forKeyedSubscript:@"audioCodec"];
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHASRAudioConfigureStarted audioSkippedNumSamples](self, "audioSkippedNumSamples")}];
-    [v3 setObject:v7 forKeyedSubscript:@"audioSkippedNumSamples"];
+    [dictionary setObject:v7 forKeyedSubscript:@"audioSkippedNumSamples"];
 
     has = self->_has;
   }
@@ -114,12 +114,12 @@
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHASRAudioConfigureStarted audioSkippedTimeInNs](self, "audioSkippedTimeInNs")}];
-    [v3 setObject:v8 forKeyedSubscript:@"audioSkippedTimeInNs"];
+    [dictionary setObject:v8 forKeyedSubscript:@"audioSkippedTimeInNs"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -162,16 +162,16 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = v4[32];
+  v6 = equalCopy[32];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -180,13 +180,13 @@ LABEL_4:
   if (*&has)
   {
     audioCodec = self->_audioCodec;
-    if (audioCodec != [v4 audioCodec])
+    if (audioCodec != [equalCopy audioCodec])
     {
       goto LABEL_14;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -198,10 +198,10 @@ LABEL_4:
   if (v8)
   {
     audioSkippedTimeInNs = self->_audioSkippedTimeInNs;
-    if (audioSkippedTimeInNs == [v4 audioSkippedTimeInNs])
+    if (audioSkippedTimeInNs == [equalCopy audioSkippedTimeInNs])
     {
       has = self->_has;
-      v6 = v4[32];
+      v6 = equalCopy[32];
       goto LABEL_10;
     }
 
@@ -220,7 +220,7 @@ LABEL_10:
   if (v10)
   {
     audioSkippedNumSamples = self->_audioSkippedNumSamples;
-    if (audioSkippedNumSamples != [v4 audioSkippedNumSamples])
+    if (audioSkippedNumSamples != [equalCopy audioSkippedNumSamples])
     {
       goto LABEL_14;
     }
@@ -232,15 +232,15 @@ LABEL_15:
   return v12;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -260,20 +260,20 @@ LABEL_3:
   }
 
   PBDataWriterWriteUint64Field();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_5:
 }
 
-- (void)setHasAudioSkippedNumSamples:(BOOL)a3
+- (void)setHasAudioSkippedNumSamples:(BOOL)samples
 {
-  if (a3)
+  if (samples)
   {
     v3 = 4;
   }
@@ -286,9 +286,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasAudioSkippedTimeInNs:(BOOL)a3
+- (void)setHasAudioSkippedTimeInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 2;
   }

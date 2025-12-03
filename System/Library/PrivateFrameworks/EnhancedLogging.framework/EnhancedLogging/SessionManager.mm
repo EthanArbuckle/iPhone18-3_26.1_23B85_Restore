@@ -1,21 +1,21 @@
 @interface SessionManager
-- (void)session:(id)a3 didDiscoverDevices:(id)a4;
-- (void)session:(id)a3 didEndWithError:(id)a4;
-- (void)session:(id)a3 didUpdateCollectionProgress:(id)a4;
-- (void)session:(id)a3 didUpdateStatus:(unint64_t)a4;
+- (void)session:(id)session didDiscoverDevices:(id)devices;
+- (void)session:(id)session didEndWithError:(id)error;
+- (void)session:(id)session didUpdateCollectionProgress:(id)progress;
+- (void)session:(id)session didUpdateStatus:(unint64_t)status;
 @end
 
 @implementation SessionManager
 
-- (void)session:(id)a3 didUpdateStatus:(unint64_t)a4
+- (void)session:(id)session didUpdateStatus:(unint64_t)status
 {
   v5 = sub_24A0761C8();
   v7 = v6;
 
-  SessionManager.session(_:didUpdateStatus:)(v5, v7, a4);
+  SessionManager.session(_:didUpdateStatus:)(v5, v7, status);
 }
 
-- (void)session:(id)a3 didUpdateCollectionProgress:(id)a4
+- (void)session:(id)session didUpdateCollectionProgress:(id)progress
 {
   v4 = sub_24A076108();
   v5 = *(v4 - 8);
@@ -31,16 +31,16 @@
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)session:(id)a3 didEndWithError:(id)a4
+- (void)session:(id)session didEndWithError:(id)error
 {
   v5 = sub_24A0761C8();
   v7 = v6;
 
-  v8 = a4;
-  SessionManager.session(_:didEndWithError:)(v5, v7, a4);
+  errorCopy = error;
+  SessionManager.session(_:didEndWithError:)(v5, v7, error);
 }
 
-- (void)session:(id)a3 didDiscoverDevices:(id)a4
+- (void)session:(id)session didDiscoverDevices:(id)devices
 {
   v4 = sub_24A0761C8();
   v6 = v5;

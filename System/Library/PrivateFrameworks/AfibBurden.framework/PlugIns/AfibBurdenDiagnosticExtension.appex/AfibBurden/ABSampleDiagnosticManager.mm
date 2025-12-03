@@ -1,24 +1,24 @@
 @interface ABSampleDiagnosticManager
-- (ABSampleDiagnosticManager)initWithLoggingDirectoryPath:(id)a3 healthStore:(id)a4 numberOfWeeks:(int64_t)a5;
+- (ABSampleDiagnosticManager)initWithLoggingDirectoryPath:(id)path healthStore:(id)store numberOfWeeks:(int64_t)weeks;
 - (id)_determineQueryInterval;
-- (id)_formattedDateInterval:(id)a3 timeZone:(id)a4;
-- (id)_queryForAFibBurdenSamplesWithinDateInterval:(id)a3;
+- (id)_formattedDateInterval:(id)interval timeZone:(id)zone;
+- (id)_queryForAFibBurdenSamplesWithinDateInterval:(id)interval;
 - (id)extractDiagnosticContent;
 @end
 
 @implementation ABSampleDiagnosticManager
 
-- (ABSampleDiagnosticManager)initWithLoggingDirectoryPath:(id)a3 healthStore:(id)a4 numberOfWeeks:(int64_t)a5
+- (ABSampleDiagnosticManager)initWithLoggingDirectoryPath:(id)path healthStore:(id)store numberOfWeeks:(int64_t)weeks
 {
-  v9 = a4;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = ABSampleDiagnosticManager;
-  v10 = [(ABDiagnosticManager *)&v13 initWithDiagnosticName:@"Samples" loggingDirectoryPath:a3];
+  v10 = [(ABDiagnosticManager *)&v13 initWithDiagnosticName:@"Samples" loggingDirectoryPath:path];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_healthStore, a4);
-    v11->_numberOfWeeks = a5;
+    objc_storeStrong(&v10->_healthStore, store);
+    v11->_numberOfWeeks = weeks;
   }
 
   return v11;
@@ -26,22 +26,22 @@
 
 - (id)extractDiagnosticContent
 {
-  v3 = [(ABSampleDiagnosticManager *)self _determineQueryInterval];
-  v4 = [(ABSampleDiagnosticManager *)self _queryForAFibBurdenSamplesWithinDateInterval:v3];
+  _determineQueryInterval = [(ABSampleDiagnosticManager *)self _determineQueryInterval];
+  v4 = [(ABSampleDiagnosticManager *)self _queryForAFibBurdenSamplesWithinDateInterval:_determineQueryInterval];
   if (v4)
   {
     v5 = +[NSCalendar currentCalendar];
-    v6 = [v5 timeZone];
-    v7 = [(ABSampleDiagnosticManager *)self _formattedDateInterval:v3 timeZone:v6];
+    timeZone = [v5 timeZone];
+    v7 = [(ABSampleDiagnosticManager *)self _formattedDateInterval:_determineQueryInterval timeZone:timeZone];
 
     if ([v4 count])
     {
       v8 = [[NSMutableString alloc] initWithFormat:@"Samples within range %@:\n\n", v7];
       if ([v4 count])
       {
-        v39 = self;
+        selfCopy = self;
         v37 = v7;
-        v38 = v3;
+        v38 = _determineQueryInterval;
         v9 = 0;
         v40 = v4;
         do
@@ -49,35 +49,35 @@
           v44 = (v9 + 1);
           [v8 appendFormat:@"------------ Sample %ld/%ld ------------\n", v9 + 1, objc_msgSend(v4, "count")];
           v10 = [v4 objectAtIndexedSubscript:v9];
-          v11 = [v10 quantity];
+          quantity = [v10 quantity];
           v12 = +[HKUnit percentUnit];
-          [v11 doubleValueForUnit:v12];
+          [quantity doubleValueForUnit:v12];
           [v8 appendFormat:@"Value: %f\n", v13];
 
-          v14 = [v10 metadata];
-          v15 = [v14 objectForKeyedSubscript:HKMetadataKeyTimeZone];
+          metadata = [v10 metadata];
+          v15 = [metadata objectForKeyedSubscript:HKMetadataKeyTimeZone];
           v16 = v15;
           v43 = v9;
           if (v15)
           {
-            v17 = v15;
+            name = v15;
           }
 
           else
           {
             v18 = +[NSCalendar currentCalendar];
-            v19 = [v18 timeZone];
-            v17 = [v19 name];
+            timeZone2 = [v18 timeZone];
+            name = [timeZone2 name];
           }
 
-          v42 = v17;
-          v20 = [NSTimeZone timeZoneWithName:v17];
+          v42 = name;
+          v20 = [NSTimeZone timeZoneWithName:name];
           v21 = [NSDateInterval alloc];
-          v22 = [v10 startDate];
-          v23 = [v10 endDate];
-          v24 = [v21 initWithStartDate:v22 endDate:v23];
+          startDate = [v10 startDate];
+          endDate = [v10 endDate];
+          v24 = [v21 initWithStartDate:startDate endDate:endDate];
           v41 = v20;
-          v25 = [(ABSampleDiagnosticManager *)v39 _formattedDateInterval:v24 timeZone:v20];
+          v25 = [(ABSampleDiagnosticManager *)selfCopy _formattedDateInterval:v24 timeZone:v20];
           [v8 appendFormat:@"Date Range: %@\n", v25];
 
           [v8 appendString:@"Metadata:\n"];
@@ -85,10 +85,10 @@
           v48 = 0u;
           v45 = 0u;
           v46 = 0u;
-          v26 = [v10 metadata];
-          v27 = [v26 allKeys];
+          metadata2 = [v10 metadata];
+          allKeys = [metadata2 allKeys];
 
-          v28 = [v27 countByEnumeratingWithState:&v45 objects:v49 count:16];
+          v28 = [allKeys countByEnumeratingWithState:&v45 objects:v49 count:16];
           if (v28)
           {
             v29 = v28;
@@ -99,16 +99,16 @@
               {
                 if (*v46 != v30)
                 {
-                  objc_enumerationMutation(v27);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v32 = *(*(&v45 + 1) + 8 * i);
-                v33 = [v10 metadata];
-                v34 = [v33 objectForKeyedSubscript:v32];
+                metadata3 = [v10 metadata];
+                v34 = [metadata3 objectForKeyedSubscript:v32];
                 [v8 appendFormat:@"%@: %@\n", v32, v34];
               }
 
-              v29 = [v27 countByEnumeratingWithState:&v45 objects:v49 count:16];
+              v29 = [allKeys countByEnumeratingWithState:&v45 objects:v49 count:16];
             }
 
             while (v29);
@@ -125,7 +125,7 @@
 
         while (v44 < [v40 count]);
         v7 = v37;
-        v3 = v38;
+        _determineQueryInterval = v38;
       }
     }
 
@@ -135,7 +135,7 @@
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v51 = self;
+        selfCopy3 = self;
         v52 = 2112;
         v53 = v7;
         _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "[%{public}@]: No samples within range %@", buf, 0x16u);
@@ -151,7 +151,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v51 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Nil samples given, not writing file", buf, 0xCu);
     }
 
@@ -171,26 +171,26 @@
   return v6;
 }
 
-- (id)_formattedDateInterval:(id)a3 timeZone:(id)a4
+- (id)_formattedDateInterval:(id)interval timeZone:(id)zone
 {
   v4 = qword_10000C798;
-  v5 = a3;
+  intervalCopy = interval;
   if (v4 != -1)
   {
     sub_100002DA0();
   }
 
-  v6 = [qword_10000C7A0 stringFromDateInterval:v5];
+  v6 = [qword_10000C7A0 stringFromDateInterval:intervalCopy];
 
   return v6;
 }
 
-- (id)_queryForAFibBurdenSamplesWithinDateInterval:(id)a3
+- (id)_queryForAFibBurdenSamplesWithinDateInterval:(id)interval
 {
-  v4 = a3;
-  v5 = [v4 startDate];
-  v6 = [v4 endDate];
-  v7 = [HKQuery predicateForSamplesWithStartDate:v5 endDate:v6 options:1];
+  intervalCopy = interval;
+  startDate = [intervalCopy startDate];
+  endDate = [intervalCopy endDate];
+  v7 = [HKQuery predicateForSamplesWithStartDate:startDate endDate:endDate options:1];
 
   v8 = [[NSSortDescriptor alloc] initWithKey:HKSampleSortIdentifierStartDate ascending:1];
   v9 = dispatch_semaphore_create(0);
@@ -218,7 +218,7 @@
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v29 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Executing query for samples", buf, 0xCu);
   }
 

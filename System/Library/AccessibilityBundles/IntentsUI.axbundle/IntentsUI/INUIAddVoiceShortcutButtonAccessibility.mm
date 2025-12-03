@@ -1,14 +1,14 @@
 @interface INUIAddVoiceShortcutButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation INUIAddVoiceShortcutButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"INUIAddVoiceShortcutButton" hasInstanceMethod:@"addToSiriLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"INUIAddVoiceShortcutButton" hasInstanceMethod:@"phraseLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"INUIAddVoiceShortcutButton" hasInstanceMethod:@"addToSiriLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"INUIAddVoiceShortcutButton" hasInstanceMethod:@"phraseLabel" withFullSignature:{"@", 0}];
 }
 
 @end

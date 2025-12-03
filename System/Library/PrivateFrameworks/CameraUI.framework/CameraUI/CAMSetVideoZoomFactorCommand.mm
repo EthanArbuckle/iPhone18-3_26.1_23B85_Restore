@@ -1,57 +1,57 @@
 @interface CAMSetVideoZoomFactorCommand
-- (CAMSetVideoZoomFactorCommand)initWithVideoZoomFactor:(double)a3 graphConfiguration:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMSetVideoZoomFactorCommand)initWithVideoZoomFactor:(double)factor graphConfiguration:(id)configuration;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMSetVideoZoomFactorCommand
 
-- (CAMSetVideoZoomFactorCommand)initWithVideoZoomFactor:(double)a3 graphConfiguration:(id)a4
+- (CAMSetVideoZoomFactorCommand)initWithVideoZoomFactor:(double)factor graphConfiguration:(id)configuration
 {
-  v7 = a4;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = CAMSetVideoZoomFactorCommand;
   v8 = [(CAMCaptureCommand *)&v12 initWithSubcommands:0];
   v9 = v8;
   if (v8)
   {
-    v8->__videoZoomFactor = a3;
-    objc_storeStrong(&v8->__graphConfiguration, a4);
+    v8->__videoZoomFactor = factor;
+    objc_storeStrong(&v8->__graphConfiguration, configuration);
     v10 = v9;
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = CAMSetVideoZoomFactorCommand;
-  v4 = [(CAMCaptureCommand *)&v9 copyWithZone:a3];
+  v4 = [(CAMCaptureCommand *)&v9 copyWithZone:zone];
   [(CAMSetVideoZoomFactorCommand *)self _videoZoomFactor];
   v4[3] = v5;
-  v6 = [(CAMSetVideoZoomFactorCommand *)self _graphConfiguration];
+  _graphConfiguration = [(CAMSetVideoZoomFactorCommand *)self _graphConfiguration];
   v7 = v4[4];
-  v4[4] = v6;
+  v4[4] = _graphConfiguration;
 
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 currentVideoDevice];
-  v6 = [v4 currentVideoDeviceFormat];
-  v7 = [v4 currentStillImageOutput];
+  contextCopy = context;
+  currentVideoDevice = [contextCopy currentVideoDevice];
+  currentVideoDeviceFormat = [contextCopy currentVideoDeviceFormat];
+  currentStillImageOutput = [contextCopy currentStillImageOutput];
   [(CAMSetVideoZoomFactorCommand *)self _videoZoomFactor];
   v9 = v8;
-  v10 = [(CAMSetVideoZoomFactorCommand *)self _graphConfiguration];
-  v11 = [v10 mode];
+  _graphConfiguration = [(CAMSetVideoZoomFactorCommand *)self _graphConfiguration];
+  mode = [_graphConfiguration mode];
 
-  if ([v7 isDepthDataDeliveryEnabled] && v11)
+  if ([currentStillImageOutput isDepthDataDeliveryEnabled] && mode)
   {
-    [v6 supportedVideoZoomRangesForDepthDataDelivery];
+    [currentVideoDeviceFormat supportedVideoZoomRangesForDepthDataDelivery];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -105,7 +105,7 @@
   else
   {
 LABEL_16:
-    [v6 videoMaxZoomFactor];
+    [currentVideoDeviceFormat videoMaxZoomFactor];
     if (v9 <= v21)
     {
       v22 = v9;
@@ -140,7 +140,7 @@ LABEL_16:
       v22 = 1.0;
     }
 
-    [v5 setVideoZoomFactor:v22];
+    [currentVideoDevice setVideoZoomFactor:v22];
   }
 }
 

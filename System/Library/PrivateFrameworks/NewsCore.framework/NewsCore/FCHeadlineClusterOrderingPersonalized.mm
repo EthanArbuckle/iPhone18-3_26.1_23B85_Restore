@@ -1,15 +1,15 @@
 @interface FCHeadlineClusterOrderingPersonalized
-- (id)orderTopicsWithClusteredHeadlines:(id)a3 additionalHeadlines:(id)a4 subscribedTagIDs:(id)a5 scoresByArticleID:(id)a6 personalizer:(id)a7 tagNameProvider:(id)a8 personalizationTreatment:(id)a9 translationProvider:(id)a10;
+- (id)orderTopicsWithClusteredHeadlines:(id)headlines additionalHeadlines:(id)additionalHeadlines subscribedTagIDs:(id)ds scoresByArticleID:(id)d personalizer:(id)personalizer tagNameProvider:(id)provider personalizationTreatment:(id)treatment translationProvider:(id)self0;
 @end
 
 @implementation FCHeadlineClusterOrderingPersonalized
 
-- (id)orderTopicsWithClusteredHeadlines:(id)a3 additionalHeadlines:(id)a4 subscribedTagIDs:(id)a5 scoresByArticleID:(id)a6 personalizer:(id)a7 tagNameProvider:(id)a8 personalizationTreatment:(id)a9 translationProvider:(id)a10
+- (id)orderTopicsWithClusteredHeadlines:(id)headlines additionalHeadlines:(id)additionalHeadlines subscribedTagIDs:(id)ds scoresByArticleID:(id)d personalizer:(id)personalizer tagNameProvider:(id)provider personalizationTreatment:(id)treatment translationProvider:(id)self0
 {
   v11 = MEMORY[0x1E695DFB8];
-  v12 = a7;
-  v13 = [a3 allKeys];
-  v14 = [v12 rankTagIDsDescending:v13];
+  personalizerCopy = personalizer;
+  allKeys = [headlines allKeys];
+  v14 = [personalizerCopy rankTagIDsDescending:allKeys];
 
   if (v14)
   {

@@ -1,14 +1,14 @@
 @interface SASetRestrictionsThunk
-- (SASetRestrictionsThunk)initWithThunk:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SASetRestrictionsThunk)initWithThunk:(id)thunk;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)siriCore_invokeThunk;
 @end
 
 @implementation SASetRestrictionsThunk
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   thunk = self->_thunk;
 
   return [v4 initWithThunk:thunk];
@@ -25,15 +25,15 @@
   }
 }
 
-- (SASetRestrictionsThunk)initWithThunk:(id)a3
+- (SASetRestrictionsThunk)initWithThunk:(id)thunk
 {
-  v4 = a3;
+  thunkCopy = thunk;
   v9.receiver = self;
   v9.super_class = SASetRestrictionsThunk;
   v5 = [(SASetRestrictionsThunk *)&v9 init];
   if (v5)
   {
-    v6 = MEMORY[0x26D5E5DB0](v4);
+    v6 = MEMORY[0x26D5E5DB0](thunkCopy);
     thunk = v5->_thunk;
     v5->_thunk = v6;
   }

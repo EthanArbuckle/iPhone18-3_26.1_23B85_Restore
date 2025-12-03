@@ -1,7 +1,7 @@
 @interface _DASPowerNapPolicy
 + (id)policyInstance;
 - (_DASPowerNapPolicy)init;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 @end
 
 @implementation _DASPowerNapPolicy
@@ -27,7 +27,7 @@
   block[1] = 3221225472;
   block[2] = sub_10006958C;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B3A0 != -1)
   {
     dispatch_once(&qword_10020B3A0, block);
@@ -38,9 +38,9 @@
   return v2;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = +[_DASDaemon sharedInstance];
   v6 = [_DASSleepWakeMonitor sharedMonitorWithDaemon:v5];
 
@@ -49,43 +49,43 @@
   v9 = [NSPredicate predicateWithFormat:@"inADarkWake == %@", v8];
   [(_DASPolicyResponseRationale *)v7 addRationaleWithCondition:v9];
 
-  if (([v4 darkWakeEligible] & 1) != 0 && objc_msgSend(v4, "beforeDaysFirstActivity"))
+  if (([activityCopy darkWakeEligible] & 1) != 0 && objc_msgSend(activityCopy, "beforeDaysFirstActivity"))
   {
-    v10 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 beforeDaysFirstActivity]);
+    v10 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [activityCopy beforeDaysFirstActivity]);
     [NSPredicate predicateWithFormat:@"appRefresh == %@", v10];
   }
 
   else
   {
-    v10 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 darkWakeEligible]);
+    v10 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [activityCopy darkWakeEligible]);
     [NSPredicate predicateWithFormat:@"darkWakeEligible == %@", v10];
   }
   v11 = ;
   [(_DASPolicyResponseRationale *)v7 addRationaleWithCondition:v11];
 
-  if (([v6 canRunInCurrentWakeState:v4] & 1) == 0)
+  if (([v6 canRunInCurrentWakeState:activityCopy] & 1) == 0)
   {
-    v14 = [v6 wakeStateDescription];
-    if (v14)
+    wakeStateDescription = [v6 wakeStateDescription];
+    if (wakeStateDescription)
     {
-      v15 = [NSPredicate predicateWithFormat:@"wakeState == (%@)", v14];
+      v15 = [NSPredicate predicateWithFormat:@"wakeState == (%@)", wakeStateDescription];
       [(_DASPolicyResponseRationale *)v7 addRationaleWithCondition:v15];
     }
 
     goto LABEL_12;
   }
 
-  if ([v4 darkWakeEligible])
+  if ([activityCopy darkWakeEligible])
   {
-    if (([v4 beforeDaysFirstActivity] & 1) == 0)
+    if (([activityCopy beforeDaysFirstActivity] & 1) == 0)
     {
-      v12 = [v4 name];
-      v13 = [v6 hasFinishedRunningSinceLastWake:v12];
+      name = [activityCopy name];
+      v13 = [v6 hasFinishedRunningSinceLastWake:name];
 
       if (v13)
       {
-        v14 = [NSPredicate predicateWithFormat:@"runSinceLastWake == YES"];
-        [(_DASPolicyResponseRationale *)v7 addRationaleWithCondition:v14];
+        wakeStateDescription = [NSPredicate predicateWithFormat:@"runSinceLastWake == YES"];
+        [(_DASPolicyResponseRationale *)v7 addRationaleWithCondition:wakeStateDescription];
 LABEL_12:
 
         v16 = 33;

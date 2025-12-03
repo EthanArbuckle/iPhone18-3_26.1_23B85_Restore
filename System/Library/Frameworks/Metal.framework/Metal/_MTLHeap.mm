@@ -1,21 +1,21 @@
 @interface _MTLHeap
-- (_MTLHeap)initWithType:(int64_t)a3 options:(unint64_t)a4;
-- (id)formattedDescription:(unint64_t)a3;
+- (_MTLHeap)initWithType:(int64_t)type options:(unint64_t)options;
+- (id)formattedDescription:(unint64_t)description;
 - (unint64_t)hazardTrackingMode;
 - (unint64_t)resourceOptions;
 @end
 
 @implementation _MTLHeap
 
-- (_MTLHeap)initWithType:(int64_t)a3 options:(unint64_t)a4
+- (_MTLHeap)initWithType:(int64_t)type options:(unint64_t)options
 {
   v7.receiver = self;
   v7.super_class = _MTLHeap;
   result = [(_MTLAllocation *)&v7 initWithAllocationType:2];
   if (result)
   {
-    result->_heapType = a3;
-    result->_heapResourceOptions = a4;
+    result->_heapType = type;
+    result->_heapResourceOptions = options;
   }
 
   return result;
@@ -37,16 +37,16 @@
 
 - (unint64_t)resourceOptions
 {
-  v3 = [(_MTLHeap *)self storageMode];
-  v4 = [(_MTLHeap *)self cpuCacheMode];
-  return v4 & 0xF | (16 * (v3 & 0xF)) | (([(_MTLHeap *)self hazardTrackingMode]& 3) << 8);
+  storageMode = [(_MTLHeap *)self storageMode];
+  cpuCacheMode = [(_MTLHeap *)self cpuCacheMode];
+  return cpuCacheMode & 0xF | (16 * (storageMode & 0xF)) | (([(_MTLHeap *)self hazardTrackingMode]& 3) << 8);
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v19[24] = *MEMORY[0x1E69E9840];
-  v4 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
-  v5 = [(_MTLObjectWithLabel *)self retainedLabel];
+  v4 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
+  retainedLabel = [(_MTLObjectWithLabel *)self retainedLabel];
   v6 = MEMORY[0x1E696AEC0];
   v18.receiver = self;
   v18.super_class = _MTLHeap;
@@ -54,22 +54,22 @@
   v19[0] = v4;
   v19[1] = @"label =";
   v8 = @"<none>";
-  if (v5)
+  if (retainedLabel)
   {
-    v8 = v5;
+    v8 = retainedLabel;
   }
 
   v19[2] = v8;
   v19[3] = v4;
   v19[4] = @"type =";
-  v9 = [(_MTLHeap *)self type];
+  type = [(_MTLHeap *)self type];
   v10 = @"MTLHeapTypePlacement";
-  if (v9 != 1)
+  if (type != 1)
   {
     v10 = @"Invalid";
   }
 
-  if (!v9)
+  if (!type)
   {
     v10 = @"MTLHeapTypeAutomatic";
   }
@@ -83,14 +83,14 @@
   v19[11] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[_MTLHeap usedSize](self, "usedSize")}];
   v19[12] = v4;
   v19[13] = @"cpuCacheMode =";
-  v11 = [(_MTLHeap *)self cpuCacheMode];
+  cpuCacheMode = [(_MTLHeap *)self cpuCacheMode];
   v12 = @"MTLCPUCacheModeDefaultCache";
-  if (v11)
+  if (cpuCacheMode)
   {
     v12 = @"Invalid";
   }
 
-  if (v11 == 1)
+  if (cpuCacheMode == 1)
   {
     v12 = @"MTLCPUCacheModeWriteCombined";
   }
@@ -98,14 +98,14 @@
   v19[14] = v12;
   v19[15] = v4;
   v19[16] = @"storageMode =";
-  v13 = [(_MTLHeap *)self storageMode];
+  storageMode = [(_MTLHeap *)self storageMode];
   v14 = @"MTLStorageModePrivate";
-  if (v13 != 2)
+  if (storageMode != 2)
   {
     v14 = @"Invalid";
   }
 
-  if (!v13)
+  if (!storageMode)
   {
     v14 = @"MTLStorageModeShared";
   }

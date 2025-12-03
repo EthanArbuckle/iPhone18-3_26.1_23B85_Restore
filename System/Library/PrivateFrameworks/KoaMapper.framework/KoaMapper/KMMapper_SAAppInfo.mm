@@ -1,36 +1,36 @@
 @interface KMMapper_SAAppInfo
 - (KMMapper_SAAppInfo)init;
-- (id)itemsFromExternalObject:(id)a3 additionalFields:(id)a4 error:(id *)a5;
+- (id)itemsFromExternalObject:(id)object additionalFields:(id)fields error:(id *)error;
 @end
 
 @implementation KMMapper_SAAppInfo
 
-- (id)itemsFromExternalObject:(id)a3 additionalFields:(id)a4 error:(id *)a5
+- (id)itemsFromExternalObject:(id)object additionalFields:(id)fields error:(id *)error
 {
   v54 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
-  v11 = [v10 appIdentifyingInfo];
-  v12 = [v11 bundleId];
+  objectCopy = object;
+  fieldsCopy = fields;
+  v10 = objectCopy;
+  appIdentifyingInfo = [v10 appIdentifyingInfo];
+  bundleId = [appIdentifyingInfo bundleId];
 
   builder = self->_builder;
   v51 = 0;
-  v14 = [(KVItemBuilder *)builder setItemType:3 itemId:v12 error:&v51];
+  v14 = [(KVItemBuilder *)builder setItemType:3 itemId:bundleId error:&v51];
   v15 = v51;
   v16 = v15;
   if (!v14)
   {
     v19 = v15;
 LABEL_20:
-    KMMapperSetBuilderError(a5, v19);
+    KMMapperSetBuilderError(error, v19);
     v36 = 0;
     goto LABEL_21;
   }
 
   v17 = self->_builder;
   v50 = v16;
-  v18 = [(KVItemBuilder *)v17 addFieldWithType:100 value:v12 error:&v50];
+  v18 = [(KVItemBuilder *)v17 addFieldWithType:100 value:bundleId error:&v50];
   v19 = v50;
 
   if (!v18)
@@ -39,29 +39,29 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v42 = v12;
+  v42 = bundleId;
   v20 = self->_builder;
-  v21 = [v10 displayAppName];
+  displayAppName = [v10 displayAppName];
   v49 = v19;
-  v22 = [(KVItemBuilder *)v20 addFieldWithType:102 value:v21 error:&v49];
+  v22 = [(KVItemBuilder *)v20 addFieldWithType:102 value:displayAppName error:&v49];
   v23 = v49;
 
   if (!v22)
   {
     v19 = v23;
-    v12 = v42;
+    bundleId = v42;
     goto LABEL_20;
   }
 
-  v39 = a5;
+  errorCopy = error;
   v40 = v10;
-  v41 = v9;
+  v41 = fieldsCopy;
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v24 = [v10 appNameSynonyms];
-  v25 = [v24 countByEnumeratingWithState:&v45 objects:v53 count:16];
+  appNameSynonyms = [v10 appNameSynonyms];
+  v25 = [appNameSynonyms countByEnumeratingWithState:&v45 objects:v53 count:16];
   if (v25)
   {
     v26 = v25;
@@ -72,27 +72,27 @@ LABEL_20:
       {
         if (*v46 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(appNameSynonyms);
         }
 
         v29 = *(*(&v45 + 1) + 8 * i);
-        v30 = [v29 phrase];
-        if ([v30 length])
+        phrase = [v29 phrase];
+        if ([phrase length])
         {
           v31 = self->_builder;
-          v32 = [v29 phrase];
+          phrase2 = [v29 phrase];
           v44 = v23;
-          v33 = [(KVItemBuilder *)v31 addFieldWithType:104 value:v32 error:&v44];
+          v33 = [(KVItemBuilder *)v31 addFieldWithType:104 value:phrase2 error:&v44];
           v19 = v44;
 
           if (!v33)
           {
-            KMMapperSetBuilderError(v39, v19);
+            KMMapperSetBuilderError(errorCopy, v19);
 
             v36 = 0;
             v10 = v40;
-            v9 = v41;
-            v12 = v42;
+            fieldsCopy = v41;
+            bundleId = v42;
             goto LABEL_21;
           }
 
@@ -104,7 +104,7 @@ LABEL_20:
         }
       }
 
-      v26 = [v24 countByEnumeratingWithState:&v45 objects:v53 count:16];
+      v26 = [appNameSynonyms countByEnumeratingWithState:&v45 objects:v53 count:16];
       if (v26)
       {
         continue;
@@ -127,13 +127,13 @@ LABEL_20:
 
   else
   {
-    KMMapperSetBuilderError(v39, v19);
+    KMMapperSetBuilderError(errorCopy, v19);
     v36 = 0;
   }
 
   v10 = v40;
-  v9 = v41;
-  v12 = v42;
+  fieldsCopy = v41;
+  bundleId = v42;
 
 LABEL_21:
   v37 = *MEMORY[0x277D85DE8];

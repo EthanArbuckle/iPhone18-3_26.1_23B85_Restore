@@ -1,18 +1,18 @@
 @interface TTRIListDetailEmblemsTableCell
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (_TtC9Reminders30TTRIListDetailEmblemsTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (_TtC9Reminders30TTRIListDetailEmblemsTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)cancelEmojiSelection;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)textFieldDidEndEditing:(id)editing;
 @end
 
 @implementation TTRIListDetailEmblemsTableCell
 
-- (_TtC9Reminders30TTRIListDetailEmblemsTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC9Reminders30TTRIListDetailEmblemsTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -21,13 +21,13 @@
     v6 = 0;
   }
 
-  return sub_1005CF0CC(a3, a4, v6);
+  return sub_1005CF0CC(style, identifier, v6);
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  width = a3.width;
-  v6 = self;
+  width = size.width;
+  selfCopy = self;
   dispatch thunk of TTRListAppearanceGridView.height(forWidth:)();
   v8 = v7;
 
@@ -40,25 +40,25 @@
 
 - (void)cancelEmojiSelection
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005CFE70();
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
-  v10 = a3;
-  v11 = self;
+  fieldCopy = field;
+  selfCopy = self;
   LOBYTE(v7) = sub_1005D0808(v7, v9);
 
   return v7 & 1;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
+  editingCopy = editing;
+  selfCopy = self;
   sub_1005D08EC();
 }
 

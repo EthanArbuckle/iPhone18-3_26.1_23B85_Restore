@@ -1,34 +1,34 @@
 @interface SKFilesystemMaintainer
-- (BOOL)repairWithError:(id *)a3;
-- (BOOL)runMaintenanceOperationWithArgsCreator:(id)a3 error:(id *)a4;
-- (BOOL)verifyWithError:(id *)a3;
+- (BOOL)repairWithError:(id *)error;
+- (BOOL)runMaintenanceOperationWithArgsCreator:(id)creator error:(id *)error;
+- (BOOL)verifyWithError:(id *)error;
 - (FSClient)client;
-- (SKFilesystemMaintainer)initWithDisk:(id)a3;
-- (SKFilesystemMaintainer)initWithDisks:(id)a3;
+- (SKFilesystemMaintainer)initWithDisk:(id)disk;
+- (SKFilesystemMaintainer)initWithDisks:(id)disks;
 @end
 
 @implementation SKFilesystemMaintainer
 
-- (SKFilesystemMaintainer)initWithDisk:(id)a3
+- (SKFilesystemMaintainer)initWithDisk:(id)disk
 {
-  v8 = a3;
-  v4 = a3;
-  v5 = [NSArray arrayWithObjects:&v8 count:1];
+  diskCopy = disk;
+  diskCopy2 = disk;
+  v5 = [NSArray arrayWithObjects:&diskCopy count:1];
 
-  v6 = [(SKFilesystemMaintainer *)self initWithDisks:v5, v8];
-  return v6;
+  diskCopy = [(SKFilesystemMaintainer *)self initWithDisks:v5, diskCopy];
+  return diskCopy;
 }
 
-- (SKFilesystemMaintainer)initWithDisks:(id)a3
+- (SKFilesystemMaintainer)initWithDisks:(id)disks
 {
-  v5 = a3;
+  disksCopy = disks;
   v11.receiver = self;
   v11.super_class = SKFilesystemMaintainer;
   v6 = [(SKFilesystemMaintainer *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_disks, a3);
+    objc_storeStrong(&v6->_disks, disks);
     v8 = [SKProgress progressWithTotalUnitCount:100];
     progress = v7->_progress;
     v7->_progress = v8;
@@ -42,8 +42,8 @@
   client = self->_client;
   if (!client)
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (!self->_client)
     {
       v5 = +[FSClient sharedInstance];
@@ -51,7 +51,7 @@
       self->_client = v5;
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
     client = self->_client;
   }
@@ -59,12 +59,12 @@
   return client;
 }
 
-- (BOOL)runMaintenanceOperationWithArgsCreator:(id)a3 error:(id *)a4
+- (BOOL)runMaintenanceOperationWithArgsCreator:(id)creator error:(id *)error
 {
-  v6 = a3;
-  v7 = [(SKFilesystemMaintainer *)self disks];
+  creatorCopy = creator;
+  disks = [(SKFilesystemMaintainer *)self disks];
   v8 = [NSPredicate predicateWithBlock:&stru_1000497D0];
-  v9 = [v7 filteredArrayUsingPredicate:v8];
+  v9 = [disks filteredArrayUsingPredicate:v8];
 
   if ([v9 count])
   {
@@ -79,18 +79,18 @@
     }
 
     v11 = [SKError errorWithCode:117 disks:v9 userInfo:0];
-    v12 = [SKError failWithError:v11 error:a4];
+    v12 = [SKError failWithError:v11 error:error];
     goto LABEL_29;
   }
 
-  v13 = [(SKFilesystemMaintainer *)self progress];
-  [v13 setCompletedUnitCount:0];
+  progress = [(SKFilesystemMaintainer *)self progress];
+  [progress setCompletedUnitCount:0];
 
   v53 = objc_opt_new();
   v14 = objc_opt_new();
   v58 = dispatch_group_create();
-  v15 = [(SKFilesystemMaintainer *)self disks];
-  v16 = [v15 count];
+  disks2 = [(SKFilesystemMaintainer *)self disks];
+  v16 = [disks2 count];
 
   if (!v16)
   {
@@ -104,22 +104,22 @@ LABEL_18:
     v41 = [NSArray arrayWithObjects:v66 count:2];
     v42 = [(SKWaitableAggregate *)v38 initWithWaitables:v41];
 
-    v12 = [(SKWaitableAggregate *)v42 waitWithError:a4];
+    v12 = [(SKWaitableAggregate *)v42 waitWithError:error];
     goto LABEL_28;
   }
 
   v17 = 0;
   v57 = v14;
-  v55 = a4;
-  v56 = v6;
-  v54 = self;
+  errorCopy = error;
+  v56 = creatorCopy;
+  selfCopy = self;
   while (1)
   {
-    v18 = [(SKFilesystemMaintainer *)self disks];
+    disks3 = [(SKFilesystemMaintainer *)self disks];
     v60 = v17;
-    v19 = [v18 objectAtIndexedSubscript:v17];
+    v19 = [disks3 objectAtIndexedSubscript:v17];
 
-    v20 = v6[2](v6, v19, a4);
+    v20 = creatorCopy[2](creatorCopy, v19, error);
     v61 = v19;
     if (!v20)
     {
@@ -130,41 +130,41 @@ LABEL_23:
       goto LABEL_27;
     }
 
-    v21 = [(SKWaitableAggregate *)v19 filesystem];
-    v22 = [v21 repairArgs];
-    v59 = [v20 containsObject:v22];
+    filesystem = [(SKWaitableAggregate *)v19 filesystem];
+    repairArgs = [filesystem repairArgs];
+    v59 = [v20 containsObject:repairArgs];
 
-    v23 = [(SKWaitableAggregate *)v19 filesystem];
-    LODWORD(v22) = [v23 isExtension];
+    filesystem2 = [(SKWaitableAggregate *)v19 filesystem];
+    LODWORD(repairArgs) = [filesystem2 isExtension];
 
-    if (!v22)
+    if (!repairArgs)
     {
       v43 = objc_opt_new();
       [v43 addObjectsFromArray:v20];
-      v44 = [(SKWaitableAggregate *)v19 filesystem];
-      [v44 xmlOutputArg];
+      filesystem3 = [(SKWaitableAggregate *)v19 filesystem];
+      [filesystem3 xmlOutputArg];
       v46 = v45 = v19;
 
       v11 = v53;
       if (v46)
       {
-        v47 = [(SKWaitableAggregate *)v45 filesystem];
-        v48 = [v47 xmlOutputArg];
-        [v43 addObject:v48];
+        filesystem4 = [(SKWaitableAggregate *)v45 filesystem];
+        xmlOutputArg = [filesystem4 xmlOutputArg];
+        [v43 addObject:xmlOutputArg];
       }
 
-      v49 = [(SKWaitableAggregate *)v45 diskIdentifier];
-      v50 = [NSString stringWithFormat:@"/dev/%@", v49];
+      diskIdentifier = [(SKWaitableAggregate *)v45 diskIdentifier];
+      v50 = [NSString stringWithFormat:@"/dev/%@", diskIdentifier];
       [v43 addObject:v50];
 
-      v12 = [SKError failWithPOSIXCode:45 error:a4];
+      v12 = [SKError failWithPOSIXCode:45 error:error];
       goto LABEL_23;
     }
 
-    v24 = [(SKWaitableAggregate *)v19 filesystem];
-    v25 = [v24 bundle];
-    v26 = [v25 bundleIdentifier];
-    v27 = sub_1000253B4(v26, 0, a4);
+    filesystem5 = [(SKWaitableAggregate *)v19 filesystem];
+    bundle = [filesystem5 bundle];
+    bundleIdentifier = [bundle bundleIdentifier];
+    v27 = sub_1000253B4(bundleIdentifier, 0, error);
 
     if (!v27)
     {
@@ -201,17 +201,17 @@ LABEL_23:
       while (v30);
     }
 
-    v35 = [(SKFilesystemMaintainer *)v54 createReceiverUsingFSKit:v61 opts:v27 taskGroup:v58 writable:([(SKWaitableAggregate *)v61 isWritable]| v59) & 1];
+    v35 = [(SKFilesystemMaintainer *)selfCopy createReceiverUsingFSKit:v61 opts:v27 taskGroup:v58 writable:([(SKWaitableAggregate *)v61 isWritable]| v59) & 1];
     v14 = v57;
     [v57 addObject:v35];
 
-    self = v54;
+    self = selfCopy;
     v17 = v60 + 1;
-    v36 = [(SKFilesystemMaintainer *)v54 disks];
-    v37 = [v36 count];
+    disks4 = [(SKFilesystemMaintainer *)selfCopy disks];
+    v37 = [disks4 count];
 
-    a4 = v55;
-    v6 = v56;
+    error = errorCopy;
+    creatorCopy = v56;
     if (v60 + 1 >= v37)
     {
       goto LABEL_18;
@@ -237,16 +237,16 @@ LABEL_29:
   return v12;
 }
 
-- (BOOL)verifyWithError:(id *)a3
+- (BOOL)verifyWithError:(id *)error
 {
   v5 = sub_10000BFD0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(SKFilesystemMaintainer *)self disks];
+    disks = [(SKFilesystemMaintainer *)self disks];
     *buf = 136315394;
     v17 = "[SKFilesystemMaintainer verifyWithError:]";
     v18 = 2112;
-    v19 = v6;
+    v19 = disks;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: Started verify on %@", buf, 0x16u);
   }
 
@@ -259,11 +259,11 @@ LABEL_29:
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(SKFilesystemMaintainer *)self disks];
+      disks2 = [(SKFilesystemMaintainer *)self disks];
       *buf = 136315394;
       v17 = "[SKFilesystemMaintainer verifyWithError:]";
       v18 = 2112;
-      v19 = v11;
+      v19 = disks2;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s: Finished verify on %@", buf, 0x16u);
     }
 
@@ -274,31 +274,31 @@ LABEL_29:
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v13 = [(SKFilesystemMaintainer *)self disks];
+      disks3 = [(SKFilesystemMaintainer *)self disks];
       *buf = 136315394;
       v17 = "[SKFilesystemMaintainer verifyWithError:]";
       v18 = 2112;
-      v19 = v13;
+      v19 = disks3;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%s: Failed to verify disk(s) %@", buf, 0x16u);
     }
 
     v10 = [SKError errorWithCode:350 underlyingError:v8];
-    v12 = [SKError failWithError:v10 error:a3];
+    v12 = [SKError failWithError:v10 error:error];
   }
 
   return v12;
 }
 
-- (BOOL)repairWithError:(id *)a3
+- (BOOL)repairWithError:(id *)error
 {
   v4 = sub_10000BFD0();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(SKFilesystemMaintainer *)self disks];
+    disks = [(SKFilesystemMaintainer *)self disks];
     *buf = 136315394;
     v37 = "[SKFilesystemMaintainer repairWithError:]";
     v38 = 2112;
-    v39 = v5;
+    v39 = disks;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s: Started repair on %@", buf, 0x16u);
   }
 
@@ -330,15 +330,15 @@ LABEL_29:
 
           v13 = *(*(&v28 + 1) + 8 * i);
           v14 = +[SKManager syncSharedManager];
-          v15 = [v13 diskIdentifier];
-          v16 = [v14 diskForString:v15];
+          diskIdentifier = [v13 diskIdentifier];
+          v16 = [v14 diskForString:diskIdentifier];
 
           v33 = kSKDiskMountOptionRestore;
           v34 = &__kCFBooleanTrue;
           v17 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
-          LOBYTE(v15) = [v16 mountWithOptionsDictionary:v17 error:a3];
+          LOBYTE(diskIdentifier) = [v16 mountWithOptionsDictionary:v17 error:error];
 
-          if ((v15 & 1) == 0)
+          if ((diskIdentifier & 1) == 0)
           {
             v23 = sub_10000BFD0();
             if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -370,11 +370,11 @@ LABEL_29:
     v18 = sub_10000BFD0();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [(SKFilesystemMaintainer *)self disks];
+      disks2 = [(SKFilesystemMaintainer *)self disks];
       *buf = 136315394;
       v37 = "[SKFilesystemMaintainer repairWithError:]";
       v38 = 2112;
-      v39 = v19;
+      v39 = disks2;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%s: Finished repair on %@", buf, 0x16u);
     }
 
@@ -387,16 +387,16 @@ LABEL_29:
     v21 = sub_10000BFD0();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v22 = [(SKFilesystemMaintainer *)self disks];
+      disks3 = [(SKFilesystemMaintainer *)self disks];
       *buf = 136315394;
       v37 = "[SKFilesystemMaintainer repairWithError:]";
       v38 = 2112;
-      v39 = v22;
+      v39 = disks3;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "%s: Failed to repair disk(s) %@", buf, 0x16u);
     }
 
     v18 = [SKError errorWithCode:351 underlyingError:v8];
-    v20 = [SKError failWithError:v18 error:a3];
+    v20 = [SKError failWithError:v18 error:error];
   }
 
 LABEL_21:

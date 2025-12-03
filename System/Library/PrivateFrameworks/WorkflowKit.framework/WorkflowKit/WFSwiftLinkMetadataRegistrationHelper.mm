@@ -1,14 +1,14 @@
 @interface WFSwiftLinkMetadataRegistrationHelper
-+ (BOOL)registerWithBundle:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5;
++ (BOOL)registerWithBundle:(id)bundle forBundleIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation WFSwiftLinkMetadataRegistrationHelper
 
-+ (BOOL)registerWithBundle:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5
++ (BOOL)registerWithBundle:(id)bundle forBundleIdentifier:(id)identifier error:(id *)error
 {
   sub_1CA94C3A8();
-  v6 = a3;
-  sub_1CA285F3C(v6);
+  bundleCopy = bundle;
+  sub_1CA285F3C(bundleCopy);
 
   return 1;
 }

@@ -5,7 +5,7 @@
 - (CGPoint)accessibilityActivationPoint;
 - (CGRect)accessibilityFrame;
 - (ICPencilKitAttachmentAccessibilityElement)attachmentElement;
-- (ICPencilKitAttachmentResizeHandleAccessibilityElement)initWithAttachmentAccessibilityElement:(id)a3 drawingResizeView:(id)a4;
+- (ICPencilKitAttachmentResizeHandleAccessibilityElement)initWithAttachmentAccessibilityElement:(id)element drawingResizeView:(id)view;
 - (UIView)drawingResizeView;
 - (id)accessibilityContainer;
 - (id)accessibilityHint;
@@ -15,13 +15,13 @@
 
 @implementation ICPencilKitAttachmentResizeHandleAccessibilityElement
 
-- (ICPencilKitAttachmentResizeHandleAccessibilityElement)initWithAttachmentAccessibilityElement:(id)a3 drawingResizeView:(id)a4
+- (ICPencilKitAttachmentResizeHandleAccessibilityElement)initWithAttachmentAccessibilityElement:(id)element drawingResizeView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 textView];
-  v9 = [v8 accessibilityContainer];
-  v10 = ICAccessibilityFindReparentingTarget(v9);
+  elementCopy = element;
+  viewCopy = view;
+  textView = [elementCopy textView];
+  accessibilityContainer = [textView accessibilityContainer];
+  v10 = ICAccessibilityFindReparentingTarget(accessibilityContainer);
 
   v14.receiver = self;
   v14.super_class = ICPencilKitAttachmentResizeHandleAccessibilityElement;
@@ -29,8 +29,8 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_attachmentElement, v6);
-    objc_storeWeak(&v12->_drawingResizeView, v7);
+    objc_storeWeak(&v11->_attachmentElement, elementCopy);
+    objc_storeWeak(&v12->_drawingResizeView, viewCopy);
   }
 
   return v12;
@@ -38,11 +38,11 @@
 
 - (BOOL)top
 {
-  v3 = [(ICPencilKitAttachmentResizeHandleAccessibilityElement *)self drawingResizeView];
-  [v3 accessibilityFrame];
+  drawingResizeView = [(ICPencilKitAttachmentResizeHandleAccessibilityElement *)self drawingResizeView];
+  [drawingResizeView accessibilityFrame];
   MidY = CGRectGetMidY(v8);
-  v5 = [(ICPencilKitAttachmentResizeHandleAccessibilityElement *)self attachmentElement];
-  [v5 accessibilityFrame];
+  attachmentElement = [(ICPencilKitAttachmentResizeHandleAccessibilityElement *)self attachmentElement];
+  [attachmentElement accessibilityFrame];
   v6 = MidY < CGRectGetMidY(v9);
 
   return v6;
@@ -50,27 +50,27 @@
 
 - (BOOL)isEnabled
 {
-  v2 = [(ICPencilKitAttachmentResizeHandleAccessibilityElement *)self drawingResizeView];
-  v3 = [v2 safeBoolForKey:@"enabled"];
+  drawingResizeView = [(ICPencilKitAttachmentResizeHandleAccessibilityElement *)self drawingResizeView];
+  v3 = [drawingResizeView safeBoolForKey:@"enabled"];
 
   return v3;
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(ICPencilKitAttachmentResizeHandleAccessibilityElement *)self drawingResizeView];
-  if ([v3 safeBoolForKey:@"shown"])
+  drawingResizeView = [(ICPencilKitAttachmentResizeHandleAccessibilityElement *)self drawingResizeView];
+  if ([drawingResizeView safeBoolForKey:@"shown"])
   {
-    v4 = [(ICPencilKitAttachmentResizeHandleAccessibilityElement *)self drawingResizeView];
-    if ([v4 isHidden])
+    drawingResizeView2 = [(ICPencilKitAttachmentResizeHandleAccessibilityElement *)self drawingResizeView];
+    if ([drawingResizeView2 isHidden])
     {
       v5 = 0;
     }
 
     else
     {
-      v6 = [(ICPencilKitAttachmentResizeHandleAccessibilityElement *)self drawingResizeView];
-      [v6 alpha];
+      drawingResizeView3 = [(ICPencilKitAttachmentResizeHandleAccessibilityElement *)self drawingResizeView];
+      [drawingResizeView3 alpha];
       v5 = v7 > 0.0;
     }
   }
@@ -87,22 +87,22 @@
 {
   v7.receiver = self;
   v7.super_class = ICPencilKitAttachmentResizeHandleAccessibilityElement;
-  v3 = [(ICPencilKitAttachmentResizeHandleAccessibilityElement *)&v7 accessibilityTraits];
-  v4 = [(ICPencilKitAttachmentResizeHandleAccessibilityElement *)self isEnabled];
+  accessibilityTraits = [(ICPencilKitAttachmentResizeHandleAccessibilityElement *)&v7 accessibilityTraits];
+  isEnabled = [(ICPencilKitAttachmentResizeHandleAccessibilityElement *)self isEnabled];
   v5 = *MEMORY[0x277D76580];
-  if (v4)
+  if (isEnabled)
   {
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(ICPencilKitAttachmentResizeHandleAccessibilityElement *)self top];
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = v3;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v4 = mainBundle;
   if (v2)
   {
     v5 = @"Handwriting area top resize handle";
@@ -113,15 +113,15 @@
     v5 = @"Handwriting area bottom resize handle";
   }
 
-  v6 = [v3 localizedStringForKey:v5 value:&stru_282757698 table:0];
+  v6 = [mainBundle localizedStringForKey:v5 value:&stru_282757698 table:0];
 
   return v6;
 }
 
 - (id)accessibilityHint
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Double tap and hold value:then drag to resize handwriting area." table:{&stru_282757698, 0}];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Double tap and hold value:then drag to resize handwriting area." table:{&stru_282757698, 0}];
 
   return v3;
 }
@@ -137,10 +137,10 @@
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = [(ICPencilKitAttachmentResizeHandleAccessibilityElement *)self drawingResizeView];
-  v7 = [v6 subviews];
+  drawingResizeView = [(ICPencilKitAttachmentResizeHandleAccessibilityElement *)self drawingResizeView];
+  subviews = [drawingResizeView subviews];
 
-  v8 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v8 = [subviews countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v8)
   {
     v9 = v8;
@@ -155,7 +155,7 @@
       {
         if (*v27 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(subviews);
         }
 
         v16 = *(*(&v26 + 1) + 8 * i);
@@ -184,7 +184,7 @@
         v11 = v21;
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v9 = [subviews countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v9);
@@ -211,8 +211,8 @@
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v2 = [(ICPencilKitAttachmentResizeHandleAccessibilityElement *)self drawingResizeView];
-  v3 = [v2 safeValueForKey:@"knobView"];
+  drawingResizeView = [(ICPencilKitAttachmentResizeHandleAccessibilityElement *)self drawingResizeView];
+  v3 = [drawingResizeView safeValueForKey:@"knobView"];
 
   [v3 accessibilityActivationPoint];
   v5 = v4;
@@ -229,8 +229,8 @@
 {
   v5.receiver = self;
   v5.super_class = ICPencilKitAttachmentResizeHandleAccessibilityElement;
-  v2 = [(ICPencilKitAttachmentResizeHandleAccessibilityElement *)&v5 accessibilityContainer];
-  v3 = ICAccessibilityFindReparentingTarget(v2);
+  accessibilityContainer = [(ICPencilKitAttachmentResizeHandleAccessibilityElement *)&v5 accessibilityContainer];
+  v3 = ICAccessibilityFindReparentingTarget(accessibilityContainer);
 
   return v3;
 }

@@ -2,16 +2,16 @@
 - (BOOL)_canAccessDatabase;
 - (BOOL)_hasBeenUpgraded;
 - (BOOL)_performUpgrade;
-- (MFUserNotificationCenterUpgrader)initWithDelegate:(id)a3 systemUserNotificationCenter:(id)a4 conversationSubscriptionProvider:(id)a5 favoritesReader:(id)a6 vipReader:(id)a7 activeAccounts:(id)a8;
+- (MFUserNotificationCenterUpgrader)initWithDelegate:(id)delegate systemUserNotificationCenter:(id)center conversationSubscriptionProvider:(id)provider favoritesReader:(id)reader vipReader:(id)vipReader activeAccounts:(id)accounts;
 - (MFUserNotificationCenterUpgraderDelegate)delegate;
-- (id)_criteriaForAccountIDs:(id)a3 clearedInfo:(id)a4 since:(id)a5 favoritesReader:(id)a6;
-- (id)_criterionForCutOffDates:(id)a3 sinceDate:(id)a4;
-- (id)_criterionForDismissedMessages:(id)a3;
-- (id)_criterionForExcludedDateRanges:(id)a3;
-- (id)_criterionForObservedMailboxesInAccount:(id)a3 favoritesReader:(id)a4;
-- (id)_criterionForSpecialNotifications:(id)a3;
+- (id)_criteriaForAccountIDs:(id)ds clearedInfo:(id)info since:(id)since favoritesReader:(id)reader;
+- (id)_criterionForCutOffDates:(id)dates sinceDate:(id)date;
+- (id)_criterionForDismissedMessages:(id)messages;
+- (id)_criterionForExcludedDateRanges:(id)ranges;
+- (id)_criterionForObservedMailboxesInAccount:(id)account favoritesReader:(id)reader;
+- (id)_criterionForSpecialNotifications:(id)notifications;
 - (id)_lastClearedInfo;
-- (id)_notificationMessagesForAccountIDs:(id)a3 count:(unint64_t)a4 clearedInfo:(id)a5 sinceDate:(id)a6;
+- (id)_notificationMessagesForAccountIDs:(id)ds count:(unint64_t)count clearedInfo:(id)info sinceDate:(id)date;
 - (void)_markUpgradeComplete;
 - (void)_upgrade;
 - (void)_verifyDatabaseAccessAndPerformUpgrade;
@@ -20,26 +20,26 @@
 
 @implementation MFUserNotificationCenterUpgrader
 
-- (MFUserNotificationCenterUpgrader)initWithDelegate:(id)a3 systemUserNotificationCenter:(id)a4 conversationSubscriptionProvider:(id)a5 favoritesReader:(id)a6 vipReader:(id)a7 activeAccounts:(id)a8
+- (MFUserNotificationCenterUpgrader)initWithDelegate:(id)delegate systemUserNotificationCenter:(id)center conversationSubscriptionProvider:(id)provider favoritesReader:(id)reader vipReader:(id)vipReader activeAccounts:(id)accounts
 {
-  v14 = a3;
-  v24 = a4;
-  v23 = a5;
-  v22 = a6;
-  v15 = a7;
-  v16 = a8;
+  delegateCopy = delegate;
+  centerCopy = center;
+  providerCopy = provider;
+  readerCopy = reader;
+  vipReaderCopy = vipReader;
+  accountsCopy = accounts;
   v25.receiver = self;
   v25.super_class = MFUserNotificationCenterUpgrader;
   v17 = [(MFUserNotificationCenterUpgrader *)&v25 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeWeak(&v17->_delegate, v14);
-    objc_storeStrong(&v18->_systemUserNotificationCenter, a4);
-    objc_storeStrong(&v18->_conversationSubscriptionProvider, a5);
-    objc_storeStrong(&v18->_vipReader, a7);
-    objc_storeStrong(&v18->_favoritesReader, a6);
-    objc_storeStrong(&v18->_activeAccounts, a8);
+    objc_storeWeak(&v17->_delegate, delegateCopy);
+    objc_storeStrong(&v18->_systemUserNotificationCenter, center);
+    objc_storeStrong(&v18->_conversationSubscriptionProvider, provider);
+    objc_storeStrong(&v18->_vipReader, vipReader);
+    objc_storeStrong(&v18->_favoritesReader, reader);
+    objc_storeStrong(&v18->_activeAccounts, accounts);
     v19 = [EFScheduler serialDispatchQueueSchedulerWithName:@"com.apple.email.MFUserNotificationCenterUpgrader" qualityOfService:17];
     scheduler = v18->_scheduler;
     v18->_scheduler = v19;
@@ -110,10 +110,10 @@
 
 - (id)_lastClearedInfo
 {
-  v2 = [(MFUserNotificationCenterUpgrader *)self systemUserNotificationCenter];
-  v3 = [v2 clearedInfoForDataProviderMigration];
+  systemUserNotificationCenter = [(MFUserNotificationCenterUpgrader *)self systemUserNotificationCenter];
+  clearedInfoForDataProviderMigration = [systemUserNotificationCenter clearedInfoForDataProviderMigration];
 
-  return v3;
+  return clearedInfoForDataProviderMigration;
 }
 
 - (BOOL)_performUpgrade
@@ -126,14 +126,14 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "UPGRADE: Starting upgrade to notification center", buf, 2u);
   }
 
-  v17 = [(MFUserNotificationCenterUpgrader *)self _lastClearedInfo];
+  _lastClearedInfo = [(MFUserNotificationCenterUpgrader *)self _lastClearedInfo];
   v4 = +[NSDate date];
   v18 = [v4 dateByAddingTimeInterval:-604800.0];
 
-  v5 = [(MFUserNotificationCenterUpgrader *)self activeAccounts];
-  v19 = [v5 ef_compactMap:&stru_10015A1B8];
+  activeAccounts = [(MFUserNotificationCenterUpgrader *)self activeAccounts];
+  v19 = [activeAccounts ef_compactMap:&stru_10015A1B8];
 
-  v20 = [(MFUserNotificationCenterUpgrader *)self _notificationMessagesForAccountIDs:v19 count:500 clearedInfo:v17 sinceDate:v18];
+  v20 = [(MFUserNotificationCenterUpgrader *)self _notificationMessagesForAccountIDs:v19 count:500 clearedInfo:_lastClearedInfo sinceDate:v18];
   v6 = MSUserNotificationsLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -151,7 +151,7 @@
     v26[3] = &unk_10015A1E0;
     v16 = objc_alloc_init(NSMutableSet);
     v27 = v16;
-    v28 = self;
+    selfCopy = self;
     [v20 ef_compactMap:v26];
     v24 = 0u;
     v25 = 0u;
@@ -171,13 +171,13 @@
           }
 
           v12 = *(*(&v22 + 1) + 8 * i);
-          v13 = [(MFUserNotificationCenterUpgrader *)self systemUserNotificationCenter];
+          systemUserNotificationCenter = [(MFUserNotificationCenterUpgrader *)self systemUserNotificationCenter];
           v21[0] = _NSConcreteStackBlock;
           v21[1] = 3221225472;
           v21[2] = sub_1000A7E88;
           v21[3] = &unk_100156918;
           v21[4] = v12;
-          [v13 addNotificationRequest:v12 withCompletionHandler:v21];
+          [systemUserNotificationCenter addNotificationRequest:v12 withCompletionHandler:v21];
         }
 
         v9 = [v8 countByEnumeratingWithState:&v22 objects:v29 count:16];
@@ -197,27 +197,27 @@
   return v14;
 }
 
-- (id)_notificationMessagesForAccountIDs:(id)a3 count:(unint64_t)a4 clearedInfo:(id)a5 sinceDate:(id)a6
+- (id)_notificationMessagesForAccountIDs:(id)ds count:(unint64_t)count clearedInfo:(id)info sinceDate:(id)date
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dsCopy = ds;
+  infoCopy = info;
+  dateCopy = date;
   v13 = MSUserNotificationsLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *&buf[4] = v10;
+    *&buf[4] = dsCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "UPGRADE: Gathering criteria for accounts: %@", buf, 0xCu);
   }
 
-  v14 = [(MFUserNotificationCenterUpgrader *)self favoritesReader];
-  v15 = [(MFUserNotificationCenterUpgrader *)self _criteriaForAccountIDs:v10 clearedInfo:v11 since:v12 favoritesReader:v14];
+  favoritesReader = [(MFUserNotificationCenterUpgrader *)self favoritesReader];
+  v15 = [(MFUserNotificationCenterUpgrader *)self _criteriaForAccountIDs:dsCopy clearedInfo:infoCopy since:dateCopy favoritesReader:favoritesReader];
 
   v16 = MSUserNotificationsLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    *&buf[4] = a4;
+    *&buf[4] = count;
     *&buf[12] = 2112;
     *&buf[14] = v15;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "UPGRADE: for %lu messages matching criteria: %@", buf, 0x16u);
@@ -235,7 +235,7 @@
     v36[3] = &unk_10015A208;
     v37 = 6330559;
     v36[4] = buf;
-    v36[5] = a4;
+    v36[5] = count;
     v17 = [v15 ef_map:v36];
     if (*(*&buf[8] + 24) == 1)
     {
@@ -247,17 +247,17 @@
       v35 = 256;
       v18 = [v17 ef_uniquifyWithComparator:v34];
       v19 = [v18 count];
-      if (v19 >= a4)
+      if (v19 >= count)
       {
-        v20 = a4;
+        countCopy = count;
       }
 
       else
       {
-        v20 = v19;
+        countCopy = v19;
       }
 
-      v21 = [v18 subarrayWithRange:{0, v20}];
+      v21 = [v18 subarrayWithRange:{0, countCopy}];
 
       v22 = [MFMessageResultsGenerator alloc];
       v38 = @"MSResultsKeyBodySummary";
@@ -271,7 +271,7 @@
       v30[3] = &unk_10015A250;
       v26 = v24;
       v31 = v26;
-      v32 = self;
+      selfCopy = self;
       v33 = v25;
       v27 = v25;
       v28 = [v21 ef_compactMap:v30];
@@ -293,39 +293,39 @@
   return v28;
 }
 
-- (id)_criteriaForAccountIDs:(id)a3 clearedInfo:(id)a4 since:(id)a5 favoritesReader:(id)a6
+- (id)_criteriaForAccountIDs:(id)ds clearedInfo:(id)info since:(id)since favoritesReader:(id)reader
 {
-  v9 = a3;
-  v10 = a4;
-  v35 = a5;
-  v42 = v10;
+  dsCopy = ds;
+  infoCopy = info;
+  sinceCopy = since;
+  v42 = infoCopy;
   v36 = +[NSMutableArray array];
-  v34 = [v10 objectForKeyedSubscript:@"MFMailBulletinLastAllClearedKey"];
+  v34 = [infoCopy objectForKeyedSubscript:@"MFMailBulletinLastAllClearedKey"];
   v47[0] = _NSConcreteStackBlock;
   v47[1] = 3221225472;
   v47[2] = sub_1000A8E58;
   v47[3] = &unk_10015A278;
-  v11 = v9;
+  v11 = dsCopy;
   v48 = v11;
-  v49 = self;
+  selfCopy = self;
   v32 = objc_retainBlock(v47);
-  v12 = [(MFUserNotificationCenterUpgrader *)self activeAccounts];
+  activeAccounts = [(MFUserNotificationCenterUpgrader *)self activeAccounts];
   v45[0] = _NSConcreteStackBlock;
   v45[1] = 3221225472;
   v45[2] = sub_1000A8F2C;
   v45[3] = &unk_10015A2A0;
   v13 = v32;
   v46 = v13;
-  v41 = [v12 ef_compactMap:v45];
+  v41 = [activeAccounts ef_compactMap:v45];
 
-  v14 = [(MFUserNotificationCenterUpgrader *)self activeAccounts];
+  activeAccounts2 = [(MFUserNotificationCenterUpgrader *)self activeAccounts];
   v43[0] = _NSConcreteStackBlock;
   v43[1] = 3221225472;
   v43[2] = sub_1000A8F68;
   v43[3] = &unk_10015A2A0;
   v15 = v13;
   v44 = v15;
-  v40 = [v14 ef_compactMap:v43];
+  v40 = [activeAccounts2 ef_compactMap:v43];
 
   v37 = +[MFMessageCriterion unreadMessageCriterion];
   v38 = [MFMessageCriterion messageIsServerSearchResultCriterion:0];
@@ -339,7 +339,7 @@
   v20 = +[MFMessageCriterion threadMuteMessageCriterion];
   v33 = [MFMessageCriterion notCriterionWithCriterion:v20];
 
-  v21 = [(MFUserNotificationCenterUpgrader *)self _criterionForCutOffDates:v34 sinceDate:v35];
+  v21 = [(MFUserNotificationCenterUpgrader *)self _criterionForCutOffDates:v34 sinceDate:sinceCopy];
   if ([v41 count])
   {
     v22 = [MFMessageCriterion orCompoundCriterionWithCriteria:v41];
@@ -407,16 +407,16 @@
   return v36;
 }
 
-- (id)_criterionForObservedMailboxesInAccount:(id)a3 favoritesReader:(id)a4
+- (id)_criterionForObservedMailboxesInAccount:(id)account favoritesReader:(id)reader
 {
-  v5 = a3;
-  v6 = a4;
+  accountCopy = account;
+  readerCopy = reader;
   v7 = +[NSMutableArray array];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [v5 mailboxesToBeObservedWithFavoritesReader:{v6, 0}];
+  v8 = [accountCopy mailboxesToBeObservedWithFavoritesReader:{readerCopy, 0}];
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -430,10 +430,10 @@
           objc_enumerationMutation(v8);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * i) criterion];
-        if (v12)
+        criterion = [*(*(&v15 + 1) + 8 * i) criterion];
+        if (criterion)
         {
-          [v7 addObject:v12];
+          [v7 addObject:criterion];
         }
       }
 
@@ -456,9 +456,9 @@
   return v13;
 }
 
-- (id)_criterionForDismissedMessages:(id)a3
+- (id)_criterionForDismissedMessages:(id)messages
 {
-  v3 = [a3 ef_compactMap:&stru_10015A2E0];
+  v3 = [messages ef_compactMap:&stru_10015A2E0];
   if ([v3 count])
   {
     v4 = [MFMessageCriterion orCompoundCriterionWithCriteria:v3];
@@ -473,28 +473,28 @@
   return v5;
 }
 
-- (id)_criterionForCutOffDates:(id)a3 sinceDate:(id)a4
+- (id)_criterionForCutOffDates:(id)dates sinceDate:(id)date
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  datesCopy = dates;
+  dateCopy = date;
+  v7 = dateCopy;
+  if (dateCopy)
   {
-    if (!v5 || ([v6 laterDate:v5], v8 = objc_claimAutoreleasedReturnValue(), v8, v8 == v7))
+    if (!datesCopy || ([dateCopy laterDate:datesCopy], v8 = objc_claimAutoreleasedReturnValue(), v8, v8 == v7))
     {
       v9 = v7;
 
-      v5 = v9;
+      datesCopy = v9;
     }
 
     goto LABEL_6;
   }
 
-  if (v5)
+  if (datesCopy)
   {
 LABEL_6:
     v10 = [MFMessageCriterion alloc];
-    [v5 timeIntervalSince1970];
+    [datesCopy timeIntervalSince1970];
     v12 = [NSString stringWithFormat:@"%lld", v11];
     v13 = [v10 initWithType:11 qualifier:6 expression:v12];
 
@@ -507,12 +507,12 @@ LABEL_7:
   return v13;
 }
 
-- (id)_criterionForExcludedDateRanges:(id)a3
+- (id)_criterionForExcludedDateRanges:(id)ranges
 {
-  v3 = a3;
-  if ([v3 count])
+  rangesCopy = ranges;
+  if ([rangesCopy count])
   {
-    v4 = [v3 ef_map:&stru_10015A320];
+    v4 = [rangesCopy ef_map:&stru_10015A320];
     v5 = [MFMessageCriterion orCompoundCriterionWithCriteria:v4];
     v6 = [MFMessageCriterion notCriterionWithCriterion:v5];
   }
@@ -525,11 +525,11 @@ LABEL_7:
   return v6;
 }
 
-- (id)_criterionForSpecialNotifications:(id)a3
+- (id)_criterionForSpecialNotifications:(id)notifications
 {
-  v3 = a3;
-  v4 = [v3 containsObject:MSUserNotificationCenterTopicVIP];
-  v5 = [v3 containsObject:MSUserNotificationCenterTopicNotifiedThreads];
+  notificationsCopy = notifications;
+  v4 = [notificationsCopy containsObject:MSUserNotificationCenterTopicVIP];
+  v5 = [notificationsCopy containsObject:MSUserNotificationCenterTopicNotifiedThreads];
   v6 = +[NSMutableArray array];
   if (v4)
   {
@@ -568,16 +568,16 @@ LABEL_8:
   }
 
   v2 = +[MFMailMessageLibrary defaultInstance];
-  v3 = [v2 protectedDataAvailability];
+  protectedDataAvailability = [v2 protectedDataAvailability];
 
   v4 = MSUserNotificationsLog();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (protectedDataAvailability)
   {
     if (v5)
     {
       v11 = 134217984;
-      v12 = v3;
+      v12 = protectedDataAvailability;
       v6 = "Upgrader: Protected database is not available (= %lu), waiting for reconciliation to finish/or device to unlock";
       v7 = v4;
       v8 = 12;

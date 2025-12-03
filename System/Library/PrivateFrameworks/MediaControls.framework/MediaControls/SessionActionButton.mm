@@ -1,13 +1,13 @@
 @interface SessionActionButton
 - (BOOL)isHighlighted;
-- (_TtC13MediaControls19SessionActionButton)initWithCoder:(id)a3;
+- (_TtC13MediaControls19SessionActionButton)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation SessionActionButton
 
-- (_TtC13MediaControls19SessionActionButton)initWithCoder:(id)a3
+- (_TtC13MediaControls19SessionActionButton)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC13MediaControls19SessionActionButton_action;
   v5 = sub_1A22E5BD8();
@@ -29,10 +29,10 @@
   v3 = *&v2[OBJC_IVAR____TtC13MediaControls19SessionActionButton_backgroundView];
   [v2 bounds];
   [v3 setFrame_];
-  v4 = [v2 imageView];
-  if (v4)
+  imageView = [v2 imageView];
+  if (imageView)
   {
-    v5 = v4;
+    v5 = imageView;
     [v2 bounds];
     [v5 setFrame_];
   }
@@ -45,10 +45,10 @@
   return [(SessionActionButton *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_1A22495C4(a3);
+  selfCopy = self;
+  sub_1A22495C4(highlighted);
 }
 
 @end

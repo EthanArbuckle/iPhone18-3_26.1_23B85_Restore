@@ -1,5 +1,5 @@
 @interface CSDPendingConversation
-- (CSDPendingConversation)initWithConversationLink:(id)a3 localMember:(id)a4 queue:(id)a5;
+- (CSDPendingConversation)initWithConversationLink:(id)link localMember:(id)member queue:(id)queue;
 - (TUConversation)tuConversation;
 - (id)description;
 - (id)groupUUID;
@@ -7,24 +7,24 @@
 
 @implementation CSDPendingConversation
 
-- (CSDPendingConversation)initWithConversationLink:(id)a3 localMember:(id)a4 queue:(id)a5
+- (CSDPendingConversation)initWithConversationLink:(id)link localMember:(id)member queue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  linkCopy = link;
+  memberCopy = member;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = CSDPendingConversation;
   v12 = [(CSDPendingConversation *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_queue, a5);
+    objc_storeStrong(&v12->_queue, queue);
     v14 = +[NSUUID UUID];
     temporaryGroupUUID = v13->_temporaryGroupUUID;
     v13->_temporaryGroupUUID = v14;
 
-    objc_storeStrong(&v13->_link, a3);
-    objc_storeStrong(&v13->_localMember, a4);
+    objc_storeStrong(&v13->_link, link);
+    objc_storeStrong(&v13->_localMember, member);
     v13->_letMeInRequestState = 1;
     *&v13->_videoEnabled = 257;
     v13->_video = 1;
@@ -40,20 +40,20 @@
 {
   v3 = [NSMutableString stringWithFormat:@"<%@ %p", objc_opt_class(), self];
   [v3 appendFormat:@" letMeInRequestState=%ld", -[CSDPendingConversation letMeInRequestState](self, "letMeInRequestState")];
-  v4 = [(CSDPendingConversation *)self temporaryGroupUUID];
-  [v3 appendFormat:@" temporaryGroupUUID=%@", v4];
+  temporaryGroupUUID = [(CSDPendingConversation *)self temporaryGroupUUID];
+  [v3 appendFormat:@" temporaryGroupUUID=%@", temporaryGroupUUID];
 
-  v5 = [(CSDPendingConversation *)self conversationGroupUUID];
-  [v3 appendFormat:@" conversationGroupUUID=%@", v5];
+  conversationGroupUUID = [(CSDPendingConversation *)self conversationGroupUUID];
+  [v3 appendFormat:@" conversationGroupUUID=%@", conversationGroupUUID];
 
-  v6 = [(CSDPendingConversation *)self approverHandle];
-  [v3 appendFormat:@" approverHandle=%@", v6];
+  approverHandle = [(CSDPendingConversation *)self approverHandle];
+  [v3 appendFormat:@" approverHandle=%@", approverHandle];
 
-  v7 = [(CSDPendingConversation *)self link];
-  [v3 appendFormat:@" link=%@", v7];
+  link = [(CSDPendingConversation *)self link];
+  [v3 appendFormat:@" link=%@", link];
 
-  v8 = [(CSDPendingConversation *)self localMember];
-  [v3 appendFormat:@" localMember=%@", v8];
+  localMember = [(CSDPendingConversation *)self localMember];
+  [v3 appendFormat:@" localMember=%@", localMember];
 
   [v3 appendFormat:@" isAudioEnabled=%d", -[CSDPendingConversation isAudioEnabled](self, "isAudioEnabled")];
   [v3 appendFormat:@" isVideoEnabled=%d", -[CSDPendingConversation isVideoEnabled](self, "isVideoEnabled")];
@@ -67,8 +67,8 @@
 
 - (id)groupUUID
 {
-  v3 = [(CSDPendingConversation *)self conversationGroupUUID];
-  if (v3)
+  conversationGroupUUID = [(CSDPendingConversation *)self conversationGroupUUID];
+  if (conversationGroupUUID)
   {
     [(CSDPendingConversation *)self conversationGroupUUID];
   }
@@ -84,26 +84,26 @@
 
 - (TUConversation)tuConversation
 {
-  v3 = [(CSDPendingConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDPendingConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = [TUMutableConversation alloc];
-  v5 = [(CSDPendingConversation *)self UUID];
-  v6 = [(CSDPendingConversation *)self groupUUID];
+  uUID = [(CSDPendingConversation *)self UUID];
+  groupUUID = [(CSDPendingConversation *)self groupUUID];
   v7 = +[TUConversationProvider faceTimeProvider];
-  v8 = [v4 initWithUUID:v5 groupUUID:v6 provider:v7];
+  v8 = [v4 initWithUUID:uUID groupUUID:groupUUID provider:v7];
 
   [v8 setLetMeInRequestState:{-[CSDPendingConversation letMeInRequestState](self, "letMeInRequestState")}];
-  v9 = [(CSDPendingConversation *)self link];
-  [v8 setLink:v9];
+  link = [(CSDPendingConversation *)self link];
+  [v8 setLink:link];
 
   [v8 setState:{-[CSDPendingConversation state](self, "state")}];
-  v10 = [(CSDPendingConversation *)self localMember];
-  [v8 setLocalMember:v10];
+  localMember = [(CSDPendingConversation *)self localMember];
+  [v8 setLocalMember:localMember];
 
-  v11 = [(CSDPendingConversation *)self localMember];
-  v12 = [v11 handle];
-  [v8 setInitiator:v12];
+  localMember2 = [(CSDPendingConversation *)self localMember];
+  handle = [localMember2 handle];
+  [v8 setInitiator:handle];
 
   [v8 setAudioEnabled:1];
   [v8 setVideoEnabled:{-[CSDPendingConversation isVideoEnabled](self, "isVideoEnabled")}];

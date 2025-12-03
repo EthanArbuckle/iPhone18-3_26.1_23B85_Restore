@@ -13,7 +13,7 @@
   }
 
   v2 = MEMORY[0x1E695DF00];
-  [a1 timeIntervalSinceReferenceDate];
+  [self timeIntervalSinceReferenceDate];
   v4 = [v2 dateWithTimeIntervalSinceReferenceDate:floor(v3)];
   os_unfair_lock_lock(&dk_dedup_lock_10);
   v5 = [dk_dedup_set_9 member:v4];
@@ -60,9 +60,9 @@
     [(NSString(_DKDeduping) *)v2 dedup:v3];
   }
 
-  v10 = [a1 dk_dedup];
+  dk_dedup = [self dk_dedup];
 
-  return v10;
+  return dk_dedup;
 }
 
 @end

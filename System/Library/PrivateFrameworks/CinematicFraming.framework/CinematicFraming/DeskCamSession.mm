@@ -1,17 +1,17 @@
 @interface DeskCamSession
-- (CGRect)rectangleForZoomFactorValue:(float)a3;
-- (DeskCamSession)initWithOutputDimensions:(id)a3 portType:(id)a4 deviceModelName:(id)a5;
+- (CGRect)rectangleForZoomFactorValue:(float)value;
+- (DeskCamSession)initWithOutputDimensions:(id)dimensions portType:(id)type deviceModelName:(id)name;
 - (DeskCamSessionDelegate)delegate;
 - (int)_deviceType;
-- (int)processPixelBuffer:(__CVBuffer *)a3 withMetadata:(id)a4 outputPixelBuffer:(__CVBuffer *)a5;
+- (int)processPixelBuffer:(__CVBuffer *)buffer withMetadata:(id)metadata outputPixelBuffer:(__CVBuffer *)pixelBuffer;
 @end
 
 @implementation DeskCamSession
 
-- (DeskCamSession)initWithOutputDimensions:(id)a3 portType:(id)a4 deviceModelName:(id)a5
+- (DeskCamSession)initWithOutputDimensions:(id)dimensions portType:(id)type deviceModelName:(id)name
 {
-  v9 = a4;
-  v10 = a5;
+  typeCopy = type;
+  nameCopy = name;
   v26.receiver = self;
   v26.super_class = DeskCamSession;
   v11 = [(DeskCamSession *)&v26 init];
@@ -30,17 +30,17 @@
   }
 
   v13 = 0;
-  if (HIDWORD(*&a3) && a3.var0)
+  if (HIDWORD(*&dimensions) && dimensions.var0)
   {
-    if (isDeskCamAllowedCamera(v9))
+    if (isDeskCamAllowedCamera(typeCopy))
     {
-      *(v11 + 28) = a3;
-      objc_storeStrong(v11 + 5, a4);
-      objc_storeStrong(v11 + 6, a5);
+      *(v11 + 28) = dimensions;
+      objc_storeStrong(v11 + 5, type);
+      objc_storeStrong(v11 + 6, name);
       v11[164] = [*(v11 + 5) isEqualToString:*MEMORY[0x277CF3D20]];
-      v14 = [v11 _deviceType];
-      *(v11 + 14) = v14;
-      if (v14)
+      _deviceType = [v11 _deviceType];
+      *(v11 + 14) = _deviceType;
+      if (_deviceType)
       {
         v15 = [[DeskCamSessionOptions alloc] initWithDeviceType:*(v11 + 14)];
         v16 = *(v11 + 2);
@@ -109,8 +109,8 @@ LABEL_13:
 
   else
   {
-    v4 = [v2 lowercaseString];
-    v5 = [v4 containsString:@"display"];
+    lowercaseString = [v2 lowercaseString];
+    v5 = [lowercaseString containsString:@"display"];
 
     if (v5)
     {
@@ -126,7 +126,7 @@ LABEL_13:
   return v3;
 }
 
-- (CGRect)rectangleForZoomFactorValue:(float)a3
+- (CGRect)rectangleForZoomFactorValue:(float)value
 {
   [(DeskCamRenderingSession *)self->_renderingSession rectangleForZoomFactorValue:?];
   result.size.height = v6;
@@ -136,19 +136,19 @@ LABEL_13:
   return result;
 }
 
-- (int)processPixelBuffer:(__CVBuffer *)a3 withMetadata:(id)a4 outputPixelBuffer:(__CVBuffer *)a5
+- (int)processPixelBuffer:(__CVBuffer *)buffer withMetadata:(id)metadata outputPixelBuffer:(__CVBuffer *)pixelBuffer
 {
-  v8 = a4;
+  metadataCopy = metadata;
   renderingSession = self->_renderingSession;
-  v10 = [v8 cameraCalibrationDictionary];
-  [(DeskCamRenderingSession *)renderingSession registerCameraCalibrationDictionary:v10];
+  cameraCalibrationDictionary = [metadataCopy cameraCalibrationDictionary];
+  [(DeskCamRenderingSession *)renderingSession registerCameraCalibrationDictionary:cameraCalibrationDictionary];
 
-  -[DeskCamRenderingSession registerCameraOrientation:](self->_renderingSession, "registerCameraOrientation:", [v8 cameraOrientation]);
+  -[DeskCamRenderingSession registerCameraOrientation:](self->_renderingSession, "registerCameraOrientation:", [metadataCopy cameraOrientation]);
   v11 = self->_renderingSession;
-  v12 = [v8 bodyDetections];
-  [(DeskCamRenderingSession *)v11 registerBodyDetections:v12];
+  bodyDetections = [metadataCopy bodyDetections];
+  [(DeskCamRenderingSession *)v11 registerBodyDetections:bodyDetections];
 
-  [v8 gravity];
+  [metadataCopy gravity];
   v14 = vmvnq_s8(vorrq_s8(vcltzq_f32(v13), vcgezq_f32(v13)));
   v14.i32[3] = v14.i32[2];
   if ((vmaxvq_u32(v14) & 0x80000000) != 0)
@@ -160,14 +160,14 @@ LABEL_13:
 
   else
   {
-    [v8 gravity];
+    [metadataCopy gravity];
   }
 
   [(DeskCamRenderingSession *)self->_renderingSession registerGravity:v15];
   if (self->_outputType)
   {
     [(DeskCamRenderingSession *)self->_renderingSession registerOutputType:?];
-    v17 = [(DeskCamRenderingSession *)self->_renderingSession processBuffer:a3 outputPixelBuffer:a5];
+    v17 = [(DeskCamRenderingSession *)self->_renderingSession processBuffer:buffer outputPixelBuffer:pixelBuffer];
     if (v17)
     {
       v31 = v17;
@@ -197,8 +197,8 @@ LABEL_13:
       *(&self->_autoZoomValue + 5) = [(DeskCamRenderingSession *)self->_renderingSession autoZoomSupported];
       if ([(DeskCamRenderingSession *)self->_renderingSession gravityVectorUpdated])
       {
-        v30 = [(DeskCamSession *)self delegate];
-        [v30 deskViewTrapezoidDidUpdate];
+        delegate = [(DeskCamSession *)self delegate];
+        [delegate deskViewTrapezoidDidUpdate];
       }
 
       v31 = 0;

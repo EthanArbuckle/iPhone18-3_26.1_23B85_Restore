@@ -1,64 +1,64 @@
 @interface NSHTMLReader
-+ (BOOL)allowsAttributedStringAgentForOptions:(id)a3;
++ (BOOL)allowsAttributedStringAgentForOptions:(id)options;
 + (id)defaultParagraphStyle;
 + (void)initialize;
-- (BOOL)_addAttachmentForElement:(id)a3 URL:(id)a4 needsParagraph:(BOOL)a5 usePlaceholder:(BOOL)a6;
-- (BOOL)_elementHasOwnBackgroundColor:(id)a3;
-- (BOOL)_elementIsBlockLevel:(id)a3;
-- (BOOL)_enterElement:(id)a3 tag:(id)a4 display:(id)a5 depth:(int64_t)a6 embedded:(BOOL)a7;
-- (BOOL)_getComputedFloat:(double *)a3 forNode:(id)a4 property:(id)a5;
-- (BOOL)_getFloat:(double *)a3 forNode:(id)a4 property:(id)a5;
-- (BOOL)_processElement:(id)a3 tag:(id)a4 display:(id)a5 depth:(int64_t)a6;
-- (BOOL)_sanitizeWebArchiveArray:(id)a3;
-- (BOOL)_sanitizeWebArchiveDictionary:(id)a3;
+- (BOOL)_addAttachmentForElement:(id)element URL:(id)l needsParagraph:(BOOL)paragraph usePlaceholder:(BOOL)placeholder;
+- (BOOL)_elementHasOwnBackgroundColor:(id)color;
+- (BOOL)_elementIsBlockLevel:(id)level;
+- (BOOL)_enterElement:(id)element tag:(id)tag display:(id)display depth:(int64_t)depth embedded:(BOOL)embedded;
+- (BOOL)_getComputedFloat:(double *)float forNode:(id)node property:(id)property;
+- (BOOL)_getFloat:(double *)float forNode:(id)node property:(id)property;
+- (BOOL)_processElement:(id)element tag:(id)tag display:(id)display depth:(int64_t)depth;
+- (BOOL)_sanitizeWebArchiveArray:(id)array;
+- (BOOL)_sanitizeWebArchiveDictionary:(id)dictionary;
 - (Class)_DOMHTMLTableCellElementClass;
 - (Class)_webArchiveClass;
 - (Class)_webViewClass;
-- (NSHTMLReader)initWithDOMRange:(id)a3;
-- (NSHTMLReader)initWithData:(id)a3 options:(id)a4;
-- (NSHTMLReader)initWithPath:(id)a3 options:(id)a4;
-- (id)_attributesForElement:(id)a3;
-- (id)_childrenForNode:(id)a3;
-- (id)_colorForNode:(id)a3 property:(id)a4;
-- (id)_computedAttributesForElement:(id)a3;
-- (id)_computedColorForNode:(id)a3 property:(id)a4;
-- (id)_computedStringForNode:(id)a3 property:(id)a4;
-- (id)_computedStyleForElement:(id)a3;
-- (id)_createWebArchiveForData:(id)a3;
-- (id)_specifiedStyleForElement:(id)a3;
-- (id)_stringForNode:(id)a3 property:(id)a4;
+- (NSHTMLReader)initWithDOMRange:(id)range;
+- (NSHTMLReader)initWithData:(id)data options:(id)options;
+- (NSHTMLReader)initWithPath:(id)path options:(id)options;
+- (id)_attributesForElement:(id)element;
+- (id)_childrenForNode:(id)node;
+- (id)_colorForNode:(id)node property:(id)property;
+- (id)_computedAttributesForElement:(id)element;
+- (id)_computedColorForNode:(id)node property:(id)property;
+- (id)_computedStringForNode:(id)node property:(id)property;
+- (id)_computedStyleForElement:(id)element;
+- (id)_createWebArchiveForData:(id)data;
+- (id)_specifiedStyleForElement:(id)element;
+- (id)_stringForNode:(id)node property:(id)property;
 - (id)_webPreferences;
 - (id)attributedString;
 - (id)documentAttributes;
-- (void)_addMarkersToList:(id)a3 range:(_NSRange)a4;
-- (void)_addQuoteForElement:(id)a3 opening:(BOOL)a4 level:(int64_t)a5;
-- (void)_addTableCellForElement:(id)a3;
-- (void)_addTableForElement:(id)a3;
-- (void)_addValue:(id)a3 forElement:(id)a4;
+- (void)_addMarkersToList:(id)list range:(_NSRange)range;
+- (void)_addQuoteForElement:(id)element opening:(BOOL)opening level:(int64_t)level;
+- (void)_addTableCellForElement:(id)element;
+- (void)_addTableForElement:(id)element;
+- (void)_addValue:(id)value forElement:(id)element;
 - (void)_adjustTrailingNewline;
-- (void)_exitElement:(id)a3 tag:(id)a4 display:(id)a5 depth:(int64_t)a6 startIndex:(unint64_t)a7;
-- (void)_fillInBlock:(id)a3 forElement:(id)a4 backgroundColor:(id)a5 extraMargin:(double)a6 extraPadding:(double)a7 isTable:(BOOL)a8;
+- (void)_exitElement:(id)element tag:(id)tag display:(id)display depth:(int64_t)depth startIndex:(unint64_t)index;
+- (void)_fillInBlock:(id)block forElement:(id)element backgroundColor:(id)color extraMargin:(double)margin extraPadding:(double)padding isTable:(BOOL)table;
 - (void)_load;
 - (void)_loadFromDOMRange;
 - (void)_loadUsingWebKit;
 - (void)_loadUsingWebKitOnMainThread;
-- (void)_newLineForElement:(id)a3;
-- (void)_newParagraphForElement:(id)a3 tag:(id)a4 allowEmpty:(BOOL)a5 suppressTrailingSpace:(BOOL)a6 isEntering:(BOOL)a7;
-- (void)_newTabForElement:(id)a3;
-- (void)_processHeadElement:(id)a3;
-- (void)_processMetaElementWithName:(id)a3 content:(id)a4;
-- (void)_processText:(id)a3;
-- (void)_traverseFooterNode:(id)a3 depth:(int64_t)a4;
-- (void)_traverseNode:(id)a3 depth:(int64_t)a4 embedded:(BOOL)a5;
+- (void)_newLineForElement:(id)element;
+- (void)_newParagraphForElement:(id)element tag:(id)tag allowEmpty:(BOOL)empty suppressTrailingSpace:(BOOL)space isEntering:(BOOL)entering;
+- (void)_newTabForElement:(id)element;
+- (void)_processHeadElement:(id)element;
+- (void)_processMetaElementWithName:(id)name content:(id)content;
+- (void)_processText:(id)text;
+- (void)_traverseFooterNode:(id)node depth:(int64_t)depth;
+- (void)_traverseNode:(id)node depth:(int64_t)depth embedded:(BOOL)embedded;
 - (void)dealloc;
-- (void)setMutableAttributedString:(id)a3;
+- (void)setMutableAttributedString:(id)string;
 @end
 
 @implementation NSHTMLReader
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     __NSLoadWebKit();
@@ -162,14 +162,14 @@
   return result;
 }
 
-+ (BOOL)allowsAttributedStringAgentForOptions:(id)a3
++ (BOOL)allowsAttributedStringAgentForOptions:(id)options
 {
   if (allowsAttributedStringAgentForOptions__onceToken != -1)
   {
     +[NSHTMLReader allowsAttributedStringAgentForOptions:];
   }
 
-  return allowsAttributedStringAgentForOptions__triesAgent == 1 && ([a1 _usesLibXML2ForOptions:a3] & 1) == 0 && !objc_msgSend(a3, "objectForKeyedSubscript:", NSWebPreferencesDocumentOption) && !objc_msgSend(a3, "objectForKeyedSubscript:", NSWebResourceLoadDelegateDocumentOption) && !objc_msgSend(a3, "objectForKeyedSubscript:", __NSHTMLReaderDelegateDocumentOption) && objc_msgSend(a3, "objectForKeyedSubscript:", @"WebPolicyDelegate") == 0;
+  return allowsAttributedStringAgentForOptions__triesAgent == 1 && ([self _usesLibXML2ForOptions:options] & 1) == 0 && !objc_msgSend(options, "objectForKeyedSubscript:", NSWebPreferencesDocumentOption) && !objc_msgSend(options, "objectForKeyedSubscript:", NSWebResourceLoadDelegateDocumentOption) && !objc_msgSend(options, "objectForKeyedSubscript:", __NSHTMLReaderDelegateDocumentOption) && objc_msgSend(options, "objectForKeyedSubscript:", @"WebPolicyDelegate") == 0;
 }
 
 void *__54__NSHTMLReader_allowsAttributedStringAgentForOptions___block_invoke()
@@ -184,28 +184,28 @@ void *__54__NSHTMLReader_allowsAttributedStringAgentForOptions___block_invoke()
   return result;
 }
 
-- (id)_childrenForNode:(id)a3
+- (id)_childrenForNode:(id)node
 {
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [a3 firstChild];
-  if (v5)
+  array = [MEMORY[0x1E695DF70] array];
+  firstChild = [node firstChild];
+  if (firstChild)
   {
-    v6 = v5;
+    nextSibling = firstChild;
     do
     {
-      [v4 addObject:v6];
-      v6 = [v6 nextSibling];
+      [array addObject:nextSibling];
+      nextSibling = [nextSibling nextSibling];
     }
 
-    while (v6);
+    while (nextSibling);
   }
 
-  return v4;
+  return array;
 }
 
-- (id)_computedStyleForElement:(id)a3
+- (id)_computedStyleForElement:(id)element
 {
-  v5 = [a3 ownerDocument];
+  ownerDocument = [element ownerDocument];
   if ((_computedStyleForElement__checkedSelector & 1) == 0)
   {
     v6 = objc_lookUpClass("DOMDocument");
@@ -217,7 +217,7 @@ void *__54__NSHTMLReader_allowsAttributedStringAgentForOptions___block_invoke()
     _computedStyleForElement__checkedSelector = 1;
   }
 
-  v7 = [(NSMutableDictionary *)self->_computedStylesForElements objectForKey:a3];
+  v7 = [(NSMutableDictionary *)self->_computedStylesForElements objectForKey:element];
   if (v7)
   {
     v8 = v7;
@@ -236,34 +236,34 @@ void *__54__NSHTMLReader_allowsAttributedStringAgentForOptions___block_invoke()
   {
     if (_computedStyleForElement__useNewSelector == 1)
     {
-      v10 = [v5 getComputedStyle:a3 pseudoElement:&stru_1F01AD578];
+      v10 = [ownerDocument getComputedStyle:element pseudoElement:&stru_1F01AD578];
     }
 
     else
     {
-      v10 = [v5 getComputedStyle:a3 :&stru_1F01AD578];
+      v10 = [ownerDocument getComputedStyle:element :&stru_1F01AD578];
     }
 
     v9 = v10;
     computedStylesForElements = self->_computedStylesForElements;
-    v12 = v10;
+    null = v10;
     if (!v10)
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    [(NSMutableDictionary *)computedStylesForElements setObject:v12 forKey:a3];
+    [(NSMutableDictionary *)computedStylesForElements setObject:null forKey:element];
   }
 
   return v9;
 }
 
-- (id)_specifiedStyleForElement:(id)a3
+- (id)_specifiedStyleForElement:(id)element
 {
   v5 = [(NSMutableDictionary *)self->_specifiedStylesForElements objectForKey:?];
   if (v5)
   {
-    v6 = v5;
+    style = v5;
     if ([objc_msgSend(MEMORY[0x1E695DFB0] "null")])
     {
       return 0;
@@ -272,52 +272,52 @@ void *__54__NSHTMLReader_allowsAttributedStringAgentForOptions___block_invoke()
 
   else
   {
-    v6 = [a3 style];
+    style = [element style];
     specifiedStylesForElements = self->_specifiedStylesForElements;
-    v8 = v6;
-    if (!v6)
+    null = style;
+    if (!style)
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    [(NSMutableDictionary *)specifiedStylesForElements setObject:v8 forKey:a3];
+    [(NSMutableDictionary *)specifiedStylesForElements setObject:null forKey:element];
   }
 
-  return v6;
+  return style;
 }
 
-- (id)_computedStringForNode:(id)a3 property:(id)a4
+- (id)_computedStringForNode:(id)node property:(id)property
 {
-  if (!a3 || [a3 nodeType] != 1)
+  if (!node || [node nodeType] != 1)
   {
     goto LABEL_122;
   }
 
-  v7 = [(NSHTMLReader *)self _computedStyleForElement:a3];
+  v7 = [(NSHTMLReader *)self _computedStyleForElement:node];
   if (v7)
   {
     v8 = v7;
-    v9 = [v7 getPropertyCSSValue:a4];
+    v9 = [v7 getPropertyCSSValue:property];
     if (v9)
     {
       v10 = v9;
-      v11 = [v9 cssValueType];
-      if (v11 == 2)
+      cssValueType = [v9 cssValueType];
+      if (cssValueType == 2)
       {
-        v15 = [v8 getPropertyValue:a4];
+        v15 = [v8 getPropertyValue:property];
         goto LABEL_12;
       }
 
-      if (v11 == 1)
+      if (cssValueType == 1)
       {
-        v12 = [v10 primitiveType];
-        if ((v12 - 19) <= 3)
+        primitiveType = [v10 primitiveType];
+        if ((primitiveType - 19) <= 3)
         {
-          v13 = [v10 getStringValue];
-          if (v13)
+          getStringValue = [v10 getStringValue];
+          if (getStringValue)
           {
-            v14 = v13;
-            if ([(__CFString *)v13 length])
+            v14 = getStringValue;
+            if ([(__CFString *)getStringValue length])
             {
               goto LABEL_127;
             }
@@ -326,7 +326,7 @@ void *__54__NSHTMLReader_allowsAttributedStringAgentForOptions___block_invoke()
           goto LABEL_16;
         }
 
-        if (v12 == 2)
+        if (primitiveType == 2)
         {
           [v10 getFloatValue:2];
           v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%g%%", v16];
@@ -342,95 +342,95 @@ LABEL_12:
   }
 
 LABEL_16:
-  v17 = [(NSHTMLReader *)self _specifiedStyleForElement:a3];
+  v17 = [(NSHTMLReader *)self _specifiedStyleForElement:node];
   if (!v17)
   {
     goto LABEL_25;
   }
 
   v18 = v17;
-  v19 = [v17 getPropertyCSSValue:a4];
+  v19 = [v17 getPropertyCSSValue:property];
   if (!v19)
   {
     goto LABEL_25;
   }
 
   v20 = v19;
-  v21 = [v19 cssValueType];
-  if (!v21)
+  cssValueType2 = [v19 cssValueType];
+  if (!cssValueType2)
   {
     v23 = 1;
 LABEL_26:
-    if ([@"display" isEqualToString:a4])
+    if ([@"display" isEqualToString:property])
     {
-      v24 = [a3 tagName];
-      if ([@"HEAD" isEqualToString:v24] & 1) != 0 || (objc_msgSend(@"SCRIPT", "isEqualToString:", v24) & 1) != 0 || (objc_msgSend(@"APPLET", "isEqualToString:", v24) & 1) != 0 || (objc_msgSend(@"NOFRAMES", "isEqualToString:", v24))
+      tagName = [node tagName];
+      if ([@"HEAD" isEqualToString:tagName] & 1) != 0 || (objc_msgSend(@"SCRIPT", "isEqualToString:", tagName) & 1) != 0 || (objc_msgSend(@"APPLET", "isEqualToString:", tagName) & 1) != 0 || (objc_msgSend(@"NOFRAMES", "isEqualToString:", tagName))
       {
         v14 = @"none";
         goto LABEL_127;
       }
 
-      if ([@"ADDRESS" isEqualToString:v24] & 1) != 0 || (objc_msgSend(@"BLOCKQUOTE", "isEqualToString:", v24) & 1) != 0 || (objc_msgSend(@"BODY", "isEqualToString:", v24) & 1) != 0 || (objc_msgSend(@"CENTER", "isEqualToString:", v24) & 1) != 0 || (objc_msgSend(@"DD", "isEqualToString:", v24) & 1) != 0 || (objc_msgSend(@"DIR", "isEqualToString:", v24) & 1) != 0 || (objc_msgSend(@"DIV", "isEqualToString:", v24) & 1) != 0 || (objc_msgSend(@"DL", "isEqualToString:", v24) & 1) != 0 || (objc_msgSend(@"DT", "isEqualToString:", v24) & 1) != 0 || (objc_msgSend(@"FIELDSET", "isEqualToString:", v24) & 1) != 0 || (objc_msgSend(@"FORM", "isEqualToString:", v24) & 1) != 0 || (objc_msgSend(@"FRAME", "isEqualToString:", v24) & 1) != 0 || (objc_msgSend(@"FRAMESET", "isEqualToString:", v24) & 1) != 0 || (objc_msgSend(@"HR", "isEqualToString:", v24) & 1) != 0 || (objc_msgSend(@"HTML", "isEqualToString:", v24) & 1) != 0 || (objc_msgSend(@"H1", "isEqualToString:", v24) & 1) != 0 || (objc_msgSend(@"H2", "isEqualToString:", v24) & 1) != 0 || (objc_msgSend(@"H3", "isEqualToString:", v24) & 1) != 0 || (objc_msgSend(@"H4", "isEqualToString:", v24) & 1) != 0 || (objc_msgSend(@"H5", "isEqualToString:", v24) & 1) != 0 || (objc_msgSend(@"H6", "isEqualToString:", v24) & 1) != 0 || (objc_msgSend(@"IFRAME", "isEqualToString:", v24) & 1) != 0 || (objc_msgSend(@"MENU", "isEqualToString:", v24) & 1) != 0 || (objc_msgSend(@"NOSCRIPT", "isEqualToString:", v24) & 1) != 0 || (objc_msgSend(@"OL", "isEqualToString:", v24) & 1) != 0 || (objc_msgSend(@"P", "isEqualToString:", v24) & 1) != 0 || (objc_msgSend(@"PRE", "isEqualToString:", v24) & 1) != 0 || (objc_msgSend(@"UL", "isEqualToString:", v24))
+      if ([@"ADDRESS" isEqualToString:tagName] & 1) != 0 || (objc_msgSend(@"BLOCKQUOTE", "isEqualToString:", tagName) & 1) != 0 || (objc_msgSend(@"BODY", "isEqualToString:", tagName) & 1) != 0 || (objc_msgSend(@"CENTER", "isEqualToString:", tagName) & 1) != 0 || (objc_msgSend(@"DD", "isEqualToString:", tagName) & 1) != 0 || (objc_msgSend(@"DIR", "isEqualToString:", tagName) & 1) != 0 || (objc_msgSend(@"DIV", "isEqualToString:", tagName) & 1) != 0 || (objc_msgSend(@"DL", "isEqualToString:", tagName) & 1) != 0 || (objc_msgSend(@"DT", "isEqualToString:", tagName) & 1) != 0 || (objc_msgSend(@"FIELDSET", "isEqualToString:", tagName) & 1) != 0 || (objc_msgSend(@"FORM", "isEqualToString:", tagName) & 1) != 0 || (objc_msgSend(@"FRAME", "isEqualToString:", tagName) & 1) != 0 || (objc_msgSend(@"FRAMESET", "isEqualToString:", tagName) & 1) != 0 || (objc_msgSend(@"HR", "isEqualToString:", tagName) & 1) != 0 || (objc_msgSend(@"HTML", "isEqualToString:", tagName) & 1) != 0 || (objc_msgSend(@"H1", "isEqualToString:", tagName) & 1) != 0 || (objc_msgSend(@"H2", "isEqualToString:", tagName) & 1) != 0 || (objc_msgSend(@"H3", "isEqualToString:", tagName) & 1) != 0 || (objc_msgSend(@"H4", "isEqualToString:", tagName) & 1) != 0 || (objc_msgSend(@"H5", "isEqualToString:", tagName) & 1) != 0 || (objc_msgSend(@"H6", "isEqualToString:", tagName) & 1) != 0 || (objc_msgSend(@"IFRAME", "isEqualToString:", tagName) & 1) != 0 || (objc_msgSend(@"MENU", "isEqualToString:", tagName) & 1) != 0 || (objc_msgSend(@"NOSCRIPT", "isEqualToString:", tagName) & 1) != 0 || (objc_msgSend(@"OL", "isEqualToString:", tagName) & 1) != 0 || (objc_msgSend(@"P", "isEqualToString:", tagName) & 1) != 0 || (objc_msgSend(@"PRE", "isEqualToString:", tagName) & 1) != 0 || (objc_msgSend(@"UL", "isEqualToString:", tagName))
       {
         v14 = @"block";
         goto LABEL_127;
       }
 
-      if ([@"LI" isEqualToString:v24])
+      if ([@"LI" isEqualToString:tagName])
       {
         v14 = @"list-item";
         goto LABEL_127;
       }
 
-      if ([@"TABLE" isEqualToString:v24])
+      if ([@"TABLE" isEqualToString:tagName])
       {
         v14 = @"table";
         goto LABEL_127;
       }
 
-      if ([@"TR" isEqualToString:v24])
+      if ([@"TR" isEqualToString:tagName])
       {
         v14 = @"table-row";
         goto LABEL_127;
       }
 
-      if ([@"TH" isEqualToString:v24] & 1) != 0 || (objc_msgSend(@"TD", "isEqualToString:", v24))
+      if ([@"TH" isEqualToString:tagName] & 1) != 0 || (objc_msgSend(@"TD", "isEqualToString:", tagName))
       {
         v14 = @"table-cell";
         goto LABEL_127;
       }
 
-      if ([@"THEAD" isEqualToString:v24])
+      if ([@"THEAD" isEqualToString:tagName])
       {
         v14 = @"table-header-group";
         goto LABEL_127;
       }
 
-      if ([@"TBODY" isEqualToString:v24])
+      if ([@"TBODY" isEqualToString:tagName])
       {
         v14 = @"table-row-group";
         goto LABEL_127;
       }
 
-      if ([@"TFOOT" isEqualToString:v24])
+      if ([@"TFOOT" isEqualToString:tagName])
       {
         v14 = @"table-footer-group";
         goto LABEL_127;
       }
 
-      if ([@"COL" isEqualToString:v24])
+      if ([@"COL" isEqualToString:tagName])
       {
         v14 = @"table-column";
         goto LABEL_127;
       }
 
-      if ([@"COLGROUP" isEqualToString:v24])
+      if ([@"COLGROUP" isEqualToString:tagName])
       {
         v14 = @"table-column-group";
         goto LABEL_127;
       }
 
-      v25 = [@"CAPTION" isEqualToString:v24];
+      v25 = [@"CAPTION" isEqualToString:tagName];
       v26 = @"table-caption";
 LABEL_34:
       if (v25)
@@ -451,32 +451,32 @@ LABEL_34:
       goto LABEL_123;
     }
 
-    if ([@"white-space" isEqualToString:a4])
+    if ([@"white-space" isEqualToString:property])
     {
-      v25 = [@"PRE" isEqualToString:{objc_msgSend(a3, "tagName")}];
+      v25 = [@"PRE" isEqualToString:{objc_msgSend(node, "tagName")}];
       v23 |= v25 ^ 1;
       v26 = @"pre";
       goto LABEL_34;
     }
 
-    if ([@"font-style" isEqualToString:a4])
+    if ([@"font-style" isEqualToString:property])
     {
-      v27 = [a3 tagName];
-      if ([@"I" isEqualToString:v27] & 1) != 0 || (objc_msgSend(@"CITE", "isEqualToString:", v27) & 1) != 0 || (objc_msgSend(@"EM", "isEqualToString:", v27))
+      tagName2 = [node tagName];
+      if ([@"I" isEqualToString:tagName2] & 1) != 0 || (objc_msgSend(@"CITE", "isEqualToString:", tagName2) & 1) != 0 || (objc_msgSend(@"EM", "isEqualToString:", tagName2))
       {
         v14 = @"italic";
         goto LABEL_127;
       }
 
       v14 = @"italic";
-      if ([@"VAR" isEqualToString:v27])
+      if ([@"VAR" isEqualToString:tagName2])
       {
         goto LABEL_127;
       }
 
       v28 = @"ADDRESS";
 LABEL_88:
-      v29 = [(__CFString *)v28 isEqualToString:v27];
+      v29 = [(__CFString *)v28 isEqualToString:tagName2];
       v23 |= v29 ^ 1;
       if (!v29)
       {
@@ -491,17 +491,17 @@ LABEL_88:
       goto LABEL_123;
     }
 
-    if ([@"font-weight" isEqualToString:a4])
+    if ([@"font-weight" isEqualToString:property])
     {
-      v27 = [a3 tagName];
-      if ([@"B" isEqualToString:v27])
+      tagName2 = [node tagName];
+      if ([@"B" isEqualToString:tagName2])
       {
         v14 = @"bolder";
         goto LABEL_127;
       }
 
       v14 = @"bolder";
-      if ([@"STRONG" isEqualToString:v27])
+      if ([@"STRONG" isEqualToString:tagName2])
       {
         goto LABEL_127;
       }
@@ -509,23 +509,23 @@ LABEL_88:
       goto LABEL_82;
     }
 
-    if ([@"text-decoration" isEqualToString:a4])
+    if ([@"text-decoration" isEqualToString:property])
     {
-      v27 = [a3 tagName];
-      if ([@"U" isEqualToString:v27] & 1) != 0 || (objc_msgSend(@"INS", "isEqualToString:", v27))
+      tagName2 = [node tagName];
+      if ([@"U" isEqualToString:tagName2] & 1) != 0 || (objc_msgSend(@"INS", "isEqualToString:", tagName2))
       {
         v14 = @"underline";
         goto LABEL_127;
       }
 
-      if ([@"S" isEqualToString:v27])
+      if ([@"S" isEqualToString:tagName2])
       {
         v14 = @"line-through";
         goto LABEL_127;
       }
 
       v14 = @"line-through";
-      if ([@"STRIKE" isEqualToString:v27])
+      if ([@"STRIKE" isEqualToString:tagName2])
       {
         goto LABEL_127;
       }
@@ -534,17 +534,17 @@ LABEL_88:
       goto LABEL_88;
     }
 
-    if ([@"text-align" isEqualToString:a4])
+    if ([@"text-align" isEqualToString:property])
     {
-      v27 = [a3 tagName];
-      if ([@"CENTER" isEqualToString:v27])
+      tagName2 = [node tagName];
+      if ([@"CENTER" isEqualToString:tagName2])
       {
         v14 = @"center";
         goto LABEL_127;
       }
 
       v14 = @"center";
-      if ([@"CAPTION" isEqualToString:v27])
+      if ([@"CAPTION" isEqualToString:tagName2])
       {
         goto LABEL_127;
       }
@@ -554,60 +554,60 @@ LABEL_82:
       goto LABEL_88;
     }
 
-    if ([@"vertical-align" isEqualToString:a4])
+    if ([@"vertical-align" isEqualToString:property])
     {
-      v30 = [a3 tagName];
-      if ([@"SUP" isEqualToString:v30])
+      tagName3 = [node tagName];
+      if ([@"SUP" isEqualToString:tagName3])
       {
         v14 = @"super";
         goto LABEL_127;
       }
 
-      if ([@"SUB" isEqualToString:v30])
+      if ([@"SUB" isEqualToString:tagName3])
       {
         v14 = @"sub";
         goto LABEL_127;
       }
 
-      if ([@"THEAD" isEqualToString:v30] & 1) != 0 || (objc_msgSend(@"TBODY", "isEqualToString:", v30) & 1) != 0 || (objc_msgSend(@"TFOOT", "isEqualToString:", v30))
+      if ([@"THEAD" isEqualToString:tagName3] & 1) != 0 || (objc_msgSend(@"TBODY", "isEqualToString:", tagName3) & 1) != 0 || (objc_msgSend(@"TFOOT", "isEqualToString:", tagName3))
       {
         v14 = @"middle";
         goto LABEL_127;
       }
 
-      if ([@"TR" isEqualToString:v30] & 1) != 0 || (objc_msgSend(@"TH", "isEqualToString:", v30))
+      if ([@"TR" isEqualToString:tagName3] & 1) != 0 || (objc_msgSend(@"TH", "isEqualToString:", tagName3))
       {
         goto LABEL_122;
       }
 
       v31 = @"TD";
-      v32 = v30;
+      propertyCopy = tagName3;
     }
 
     else
     {
-      if ([@"font-family" isEqualToString:a4] & 1) != 0 || (objc_msgSend(@"font-variant", "isEqualToString:", a4) & 1) != 0 || (objc_msgSend(@"font-effect", "isEqualToString:", a4) & 1) != 0 || (objc_msgSend(@"text-transform", "isEqualToString:", a4) & 1) != 0 || (objc_msgSend(@"text-shadow", "isEqualToString:", a4) & 1) != 0 || (objc_msgSend(@"visibility", "isEqualToString:", a4) & 1) != 0 || (objc_msgSend(@"border-collapse", "isEqualToString:", a4) & 1) != 0 || (objc_msgSend(@"empty-cells", "isEqualToString:", a4) & 1) != 0 || (objc_msgSend(@"word-spacing", "isEqualToString:", a4) & 1) != 0 || (objc_msgSend(@"list-style-type", "isEqualToString:", a4))
+      if ([@"font-family" isEqualToString:property] & 1) != 0 || (objc_msgSend(@"font-variant", "isEqualToString:", property) & 1) != 0 || (objc_msgSend(@"font-effect", "isEqualToString:", property) & 1) != 0 || (objc_msgSend(@"text-transform", "isEqualToString:", property) & 1) != 0 || (objc_msgSend(@"text-shadow", "isEqualToString:", property) & 1) != 0 || (objc_msgSend(@"visibility", "isEqualToString:", property) & 1) != 0 || (objc_msgSend(@"border-collapse", "isEqualToString:", property) & 1) != 0 || (objc_msgSend(@"empty-cells", "isEqualToString:", property) & 1) != 0 || (objc_msgSend(@"word-spacing", "isEqualToString:", property) & 1) != 0 || (objc_msgSend(@"list-style-type", "isEqualToString:", property))
       {
         goto LABEL_122;
       }
 
       v31 = @"direction";
-      v32 = a4;
+      propertyCopy = property;
     }
 
-    if (![(__CFString *)v31 isEqualToString:v32])
+    if (![(__CFString *)v31 isEqualToString:propertyCopy])
     {
       v14 = 0;
 LABEL_123:
       if (v23)
       {
-        v33 = [a3 parentNode];
-        if (!v33)
+        parentNode = [node parentNode];
+        if (!parentNode)
         {
           return 0;
         }
 
-        v14 = [(NSHTMLReader *)self _stringForNode:v33 property:a4];
+        v14 = [(NSHTMLReader *)self _stringForNode:parentNode property:property];
       }
 
 LABEL_126:
@@ -625,21 +625,21 @@ LABEL_122:
     goto LABEL_123;
   }
 
-  if (v21 == 2)
+  if (cssValueType2 == 2)
   {
     goto LABEL_24;
   }
 
-  if (v21 != 1 || [v20 primitiveType] - 19 > 3)
+  if (cssValueType2 != 1 || [v20 primitiveType] - 19 > 3)
   {
     goto LABEL_25;
   }
 
-  v22 = [v20 getStringValue];
-  if (!v22 || (v14 = v22, ![(__CFString *)v22 length]))
+  getStringValue2 = [v20 getStringValue];
+  if (!getStringValue2 || (v14 = getStringValue2, ![(__CFString *)getStringValue2 length]))
   {
 LABEL_24:
-    v14 = [v18 getPropertyValue:a4];
+    v14 = [v18 getPropertyValue:property];
     if (!v14)
     {
 LABEL_25:
@@ -653,16 +653,16 @@ LABEL_127:
   return [(__CFString *)v14 lowercaseString];
 }
 
-- (id)_stringForNode:(id)a3 property:(id)a4
+- (id)_stringForNode:(id)node property:(id)property
 {
   v7 = [(NSMutableDictionary *)self->_stringsForNodes objectForKey:?];
   if (!v7)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [(NSMutableDictionary *)self->_stringsForNodes setObject:v7 forKey:a3];
+    [(NSMutableDictionary *)self->_stringsForNodes setObject:v7 forKey:node];
   }
 
-  v8 = [v7 objectForKey:a4];
+  v8 = [v7 objectForKey:property];
   if (v8)
   {
     v9 = v8;
@@ -679,7 +679,7 @@ LABEL_127:
 
   else
   {
-    v11 = [(NSHTMLReader *)self _computedStringForNode:a3 property:a4];
+    v11 = [(NSHTMLReader *)self _computedStringForNode:node property:property];
     v10 = v11;
     if (v11)
     {
@@ -691,27 +691,27 @@ LABEL_127:
       v12 = &stru_1F01AD578;
     }
 
-    [v7 setObject:v12 forKey:a4];
+    [v7 setObject:v12 forKey:property];
   }
 
   return v10;
 }
 
-- (BOOL)_getComputedFloat:(double *)a3 forNode:(id)a4 property:(id)a5
+- (BOOL)_getComputedFloat:(double *)float forNode:(id)node property:(id)property
 {
   v31 = 0.0;
-  if (!a4 || [a4 nodeType] != 1)
+  if (!node || [node nodeType] != 1)
   {
     goto LABEL_30;
   }
 
-  v9 = [(NSHTMLReader *)self _computedStyleForElement:a4];
+  v9 = [(NSHTMLReader *)self _computedStyleForElement:node];
   if (!v9)
   {
     goto LABEL_14;
   }
 
-  v10 = [v9 getPropertyCSSValue:a5];
+  v10 = [v9 getPropertyCSSValue:property];
   if (!v10)
   {
     goto LABEL_14;
@@ -723,10 +723,10 @@ LABEL_127:
     goto LABEL_14;
   }
 
-  v12 = [v11 primitiveType];
-  if (v12 > 7)
+  primitiveType = [v11 primitiveType];
+  if (primitiveType > 7)
   {
-    switch(v12)
+    switch(primitiveType)
     {
       case 8:
         goto LABEL_41;
@@ -743,42 +743,42 @@ LABEL_42:
     }
 
 LABEL_14:
-    v13 = [(NSHTMLReader *)self _specifiedStyleForElement:a4];
+    v13 = [(NSHTMLReader *)self _specifiedStyleForElement:node];
     if (!v13)
     {
       goto LABEL_23;
     }
 
-    v14 = [v13 getPropertyCSSValue:a5];
+    v14 = [v13 getPropertyCSSValue:property];
     if (!v14)
     {
       goto LABEL_23;
     }
 
     v11 = v14;
-    v15 = [v14 cssValueType];
-    if (!v15)
+    cssValueType = [v14 cssValueType];
+    if (!cssValueType)
     {
       v17 = 1;
       goto LABEL_24;
     }
 
-    if (v15 != 1)
+    if (cssValueType != 1)
     {
 LABEL_23:
       v17 = 0;
       goto LABEL_24;
     }
 
-    v16 = [v11 primitiveType];
+    primitiveType2 = [v11 primitiveType];
     v17 = 0;
-    if (v16 <= 7)
+    if (primitiveType2 <= 7)
     {
-      if (v16 != 5)
+      if (primitiveType2 != 5)
       {
-        if (v16 != 6)
+        if (primitiveType2 != 6)
         {
-          if (v16 == 7)
+          if (primitiveType2 == 7)
           {
             goto LABEL_22;
           }
@@ -799,33 +799,33 @@ LABEL_40:
       goto LABEL_46;
     }
 
-    if (v16 != 8)
+    if (primitiveType2 != 8)
     {
-      if (v16 != 9)
+      if (primitiveType2 != 9)
       {
-        if (v16 == 10)
+        if (primitiveType2 == 10)
         {
           goto LABEL_39;
         }
 
 LABEL_24:
-        if (([@"text-indent" isEqualToString:a5] & 1) == 0 && (objc_msgSend(@"letter-spacing", "isEqualToString:", a5) & 1) == 0 && (objc_msgSend(@"word-spacing", "isEqualToString:", a5) & 1) == 0 && (objc_msgSend(@"line-height", "isEqualToString:", a5) & 1) == 0 && (objc_msgSend(@"widows", "isEqualToString:", a5) & 1) == 0 && (v17 | objc_msgSend(@"orphans", "isEqualToString:", a5)) != 1)
+        if (([@"text-indent" isEqualToString:property] & 1) == 0 && (objc_msgSend(@"letter-spacing", "isEqualToString:", property) & 1) == 0 && (objc_msgSend(@"word-spacing", "isEqualToString:", property) & 1) == 0 && (objc_msgSend(@"line-height", "isEqualToString:", property) & 1) == 0 && (objc_msgSend(@"widows", "isEqualToString:", property) & 1) == 0 && (v17 | objc_msgSend(@"orphans", "isEqualToString:", property)) != 1)
         {
-          LOBYTE(v21) = 0;
-          return v21;
+          LOBYTE(parentNode) = 0;
+          return parentNode;
         }
 
 LABEL_30:
-        v21 = [a4 parentNode];
-        if (!v21)
+        parentNode = [node parentNode];
+        if (!parentNode)
         {
-          return v21;
+          return parentNode;
         }
 
-        LODWORD(v21) = [(NSHTMLReader *)self _getFloat:&v31 forNode:v21 property:a5];
-        if (!a3)
+        LODWORD(parentNode) = [(NSHTMLReader *)self _getFloat:&v31 forNode:parentNode property:property];
+        if (!float)
         {
-          return v21;
+          return parentNode;
         }
 
         goto LABEL_32;
@@ -845,17 +845,17 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  if (v12 == 5)
+  if (primitiveType == 5)
   {
     goto LABEL_40;
   }
 
-  if (v12 == 6)
+  if (primitiveType == 6)
   {
     goto LABEL_43;
   }
 
-  if (v12 != 7)
+  if (primitiveType != 7)
   {
     goto LABEL_14;
   }
@@ -868,33 +868,33 @@ LABEL_45:
   v26 = v19 / v20;
 LABEL_46:
   v31 = v26;
-  LODWORD(v21) = 1;
-  if (!a3)
+  LODWORD(parentNode) = 1;
+  if (!float)
   {
-    return v21;
+    return parentNode;
   }
 
 LABEL_32:
-  if (v21)
+  if (parentNode)
   {
-    *a3 = v31;
-    LOBYTE(v21) = 1;
+    *float = v31;
+    LOBYTE(parentNode) = 1;
   }
 
-  return v21;
+  return parentNode;
 }
 
-- (BOOL)_getFloat:(double *)a3 forNode:(id)a4 property:(id)a5
+- (BOOL)_getFloat:(double *)float forNode:(id)node property:(id)property
 {
   v16 = 0.0;
-  v9 = [(NSMutableDictionary *)self->_floatsForNodes objectForKey:a4];
+  v9 = [(NSMutableDictionary *)self->_floatsForNodes objectForKey:node];
   if (!v9)
   {
     v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [(NSMutableDictionary *)self->_floatsForNodes setObject:v9 forKey:a4];
+    [(NSMutableDictionary *)self->_floatsForNodes setObject:v9 forKey:node];
   }
 
-  v10 = [v9 objectForKey:a5];
+  v10 = [v9 objectForKey:property];
   if (v10)
   {
     v11 = v10;
@@ -907,7 +907,7 @@ LABEL_32:
     [v11 doubleValue];
     v16 = v14;
     v12 = 1;
-    if (!a3)
+    if (!float)
     {
       return v12;
     }
@@ -915,24 +915,24 @@ LABEL_32:
     goto LABEL_12;
   }
 
-  v12 = [(NSHTMLReader *)self _getComputedFloat:&v16 forNode:a4 property:a5];
+  v12 = [(NSHTMLReader *)self _getComputedFloat:&v16 forNode:node property:property];
   if (v12)
   {
-    v13 = [MEMORY[0x1E696AD98] numberWithDouble:v16];
+    null = [MEMORY[0x1E696AD98] numberWithDouble:v16];
   }
 
   else
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  [v9 setObject:v13 forKey:a5];
-  if (a3)
+  [v9 setObject:null forKey:property];
+  if (float)
   {
 LABEL_12:
     if (v12)
     {
-      *a3 = v16;
+      *float = v16;
       LOBYTE(v12) = 1;
     }
   }
@@ -940,19 +940,19 @@ LABEL_12:
   return v12;
 }
 
-- (BOOL)_elementIsBlockLevel:(id)a3
+- (BOOL)_elementIsBlockLevel:(id)level
 {
   v5 = [(NSMutableDictionary *)self->_elementIsBlockLevel objectForKey:?];
   if (!v5)
   {
-    v7 = [(NSHTMLReader *)self _stringForNode:a3 property:@"display"];
-    v8 = [(NSHTMLReader *)self _stringForNode:a3 property:@"float"];
+    v7 = [(NSHTMLReader *)self _stringForNode:level property:@"display"];
+    v8 = [(NSHTMLReader *)self _stringForNode:level property:@"float"];
     if (!v8 || (v9 = v8, ([@"left" isEqualToString:v8] & 1) == 0) && (objc_msgSend(@"right", "isEqualToString:", v9) & 1) == 0)
     {
       if (!v7)
       {
 LABEL_12:
-        -[NSMutableDictionary setObject:forKey:](self->_elementIsBlockLevel, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithBool:v7], a3);
+        -[NSMutableDictionary setObject:forKey:](self->_elementIsBlockLevel, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithBool:v7], level);
         return v7;
       }
 
@@ -970,14 +970,14 @@ LABEL_12:
   return [v5 BOOLValue];
 }
 
-- (BOOL)_elementHasOwnBackgroundColor:(id)a3
+- (BOOL)_elementHasOwnBackgroundColor:(id)color
 {
   v5 = [(NSHTMLReader *)self _elementIsBlockLevel:?];
   if (v5)
   {
-    v6 = [a3 tagName];
-    v7 = [(NSHTMLReader *)self _stringForNode:a3 property:@"display"];
-    if (([@"HTML" isEqualToString:v6] & 1) != 0 || (objc_msgSend(@"BODY", "isEqualToString:", v6) & 1) != 0 || (v5 = objc_msgSend(v7, "hasPrefix:", @"table")) != 0)
+    tagName = [color tagName];
+    v7 = [(NSHTMLReader *)self _stringForNode:color property:@"display"];
+    if (([@"HTML" isEqualToString:tagName] & 1) != 0 || (objc_msgSend(@"BODY", "isEqualToString:", tagName) & 1) != 0 || (v5 = objc_msgSend(v7, "hasPrefix:", @"table")) != 0)
     {
       LOBYTE(v5) = 1;
     }
@@ -986,19 +986,19 @@ LABEL_12:
   return v5;
 }
 
-- (id)_computedColorForNode:(id)a3 property:(id)a4
+- (id)_computedColorForNode:(id)node property:(id)property
 {
-  v7 = [@"color" isEqualToString:a4];
-  v8 = [@"background-color" isEqualToString:a4];
-  if (!a3 || [a3 nodeType] != 1)
+  v7 = [@"color" isEqualToString:property];
+  v8 = [@"background-color" isEqualToString:property];
+  if (!node || [node nodeType] != 1)
   {
     goto LABEL_16;
   }
 
-  v9 = [(NSHTMLReader *)self _computedStyleForElement:a3];
+  v9 = [(NSHTMLReader *)self _computedStyleForElement:node];
   if (v9)
   {
-    v10 = [v9 getPropertyCSSValue:a4];
+    v10 = [v9 getPropertyCSSValue:property];
     if (v10)
     {
       v11 = v10;
@@ -1009,21 +1009,21 @@ LABEL_12:
     }
   }
 
-  v12 = [(NSHTMLReader *)self _specifiedStyleForElement:a3];
+  v12 = [(NSHTMLReader *)self _specifiedStyleForElement:node];
   if (!v12)
   {
     goto LABEL_14;
   }
 
-  v13 = [v12 getPropertyCSSValue:a4];
+  v13 = [v12 getPropertyCSSValue:property];
   v11 = v13;
   if (!v13)
   {
     goto LABEL_15;
   }
 
-  v14 = [v13 cssValueType];
-  if (!v14)
+  cssValueType = [v13 cssValueType];
+  if (!cssValueType)
   {
     LOBYTE(v11) = 1;
     if ((v7 & 1) == 0)
@@ -1032,7 +1032,7 @@ LABEL_12:
     }
 
 LABEL_16:
-    result = [a3 parentNode];
+    result = [node parentNode];
     if (!result)
     {
       return result;
@@ -1047,11 +1047,11 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  if (v14 == 1 && [v11 primitiveType] == 25)
+  if (cssValueType == 1 && [v11 primitiveType] == 25)
   {
 LABEL_12:
-    v15 = [v11 getRGBColorValue];
-    result = [getUIColorClass_0[0]() colorWithCGColor:{objc_msgSend(v15, "color")}];
+    getRGBColorValue = [v11 getRGBColorValue];
+    result = [getUIColorClass_0[0]() colorWithCGColor:{objc_msgSend(getRGBColorValue, "color")}];
     if (((result == 0) & v8) == 0)
     {
       return result;
@@ -1073,13 +1073,13 @@ LABEL_22:
   if (v8)
   {
 LABEL_23:
-    v18 = [(NSHTMLReader *)self _elementHasOwnBackgroundColor:a3];
+    v18 = [(NSHTMLReader *)self _elementHasOwnBackgroundColor:node];
     if ((v11 & 1) == 0 && v18)
     {
       return 0;
     }
 
-    result = [a3 parentNode];
+    result = [node parentNode];
     v17 = result;
     if (!result)
     {
@@ -1100,7 +1100,7 @@ LABEL_18:
     return 0;
   }
 
-  result = [a3 parentNode];
+  result = [node parentNode];
   v17 = result;
   if (!result)
   {
@@ -1109,29 +1109,29 @@ LABEL_18:
 
 LABEL_29:
 
-  return [(NSHTMLReader *)self _colorForNode:v17 property:a4];
+  return [(NSHTMLReader *)self _colorForNode:v17 property:property];
 }
 
-- (id)_colorForNode:(id)a3 property:(id)a4
+- (id)_colorForNode:(id)node property:(id)property
 {
   v7 = [(NSMutableDictionary *)self->_colorsForNodes objectForKey:?];
   if (!v7)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [(NSMutableDictionary *)self->_colorsForNodes setObject:v7 forKey:a3];
+    [(NSMutableDictionary *)self->_colorsForNodes setObject:v7 forKey:node];
   }
 
-  v8 = [v7 objectForKey:a4];
+  v8 = [v7 objectForKey:property];
   if (!v8)
   {
-    v8 = [(NSHTMLReader *)self _computedColorForNode:a3 property:a4];
-    v9 = v8;
+    v8 = [(NSHTMLReader *)self _computedColorForNode:node property:property];
+    clearColor = v8;
     if (!v8)
     {
-      v9 = [(objc_class *)getNSColorClass_4() clearColor];
+      clearColor = [(objc_class *)getNSColorClass_4() clearColor];
     }
 
-    [v7 setObject:v9 forKey:a4];
+    [v7 setObject:clearColor forKey:property];
   }
 
   if ([-[objc_class clearColor](getNSColorClass_4() "clearColor")])
@@ -1148,26 +1148,26 @@ LABEL_29:
   return v8;
 }
 
-- (id)_computedAttributesForElement:(id)a3
+- (id)_computedAttributesForElement:(id)element
 {
   v150[16] = *MEMORY[0x1E69E9840];
   v5 = [(NSHTMLReader *)self _blockLevelElementForNode:?];
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  v136 = [(NSHTMLReader *)self _stringForNode:a3 property:@"font-effect"];
-  v7 = [(NSHTMLReader *)self _stringForNode:a3 property:@"text-decoration"];
-  v8 = [(NSHTMLReader *)self _stringForNode:a3 property:@"vertical-align"];
-  v9 = [(NSHTMLReader *)self _stringForNode:a3 property:@"text-shadow"];
-  v135 = [(NSHTMLReader *)self _stringForNode:a3 property:@"font-variant-ligatures"];
-  *&v134 = [(NSHTMLReader *)self _stringForNode:a3 property:@"font-kerning"];
-  v10 = [(NSHTMLReader *)self _stringForNode:a3 property:@"letter-spacing"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v136 = [(NSHTMLReader *)self _stringForNode:element property:@"font-effect"];
+  v7 = [(NSHTMLReader *)self _stringForNode:element property:@"text-decoration"];
+  v8 = [(NSHTMLReader *)self _stringForNode:element property:@"vertical-align"];
+  v9 = [(NSHTMLReader *)self _stringForNode:element property:@"text-shadow"];
+  v135 = [(NSHTMLReader *)self _stringForNode:element property:@"font-variant-ligatures"];
+  *&v134 = [(NSHTMLReader *)self _stringForNode:element property:@"font-kerning"];
+  v10 = [(NSHTMLReader *)self _stringForNode:element property:@"letter-spacing"];
   v144 = 0.0;
   v145 = 0.0;
   v143 = 0.0;
-  v132 = [(NSHTMLReader *)self _colorForNode:a3 property:@"color"];
-  v137 = [(NSHTMLReader *)self _colorForNode:a3 property:@"background-color"];
-  v133 = [(NSHTMLReader *)self _colorForNode:a3 property:@"-webkit-text-stroke-color"];
-  v11 = [a3 _font];
-  if (![(NSHTMLReader *)self _getFloat:&v145 forNode:a3 property:@"font-size"]|| (defaultFontSize = v145, v145 <= 0.0))
+  v132 = [(NSHTMLReader *)self _colorForNode:element property:@"color"];
+  v137 = [(NSHTMLReader *)self _colorForNode:element property:@"background-color"];
+  v133 = [(NSHTMLReader *)self _colorForNode:element property:@"-webkit-text-stroke-color"];
+  _font = [element _font];
+  if (![(NSHTMLReader *)self _getFloat:&v145 forNode:element property:@"font-size"]|| (defaultFontSize = v145, v145 <= 0.0))
   {
     defaultFontSize = self->_defaultFontSize;
   }
@@ -1205,9 +1205,9 @@ LABEL_29:
     v13 = 12.0;
   }
 
-  if (v11)
+  if (_font)
   {
-    v17 = [v11 fontWithSize:v13];
+    v17 = [_font fontWithSize:v13];
     if (v17)
     {
       goto LABEL_81;
@@ -1215,9 +1215,9 @@ LABEL_29:
   }
 
   v131 = v7;
-  standardFontFamily = [-[NSHTMLReader _stringForNode:property:](self _stringForNode:a3 property:{@"font-family", v13), "capitalizedString"}];
-  v130 = [(NSHTMLReader *)self _stringForNode:a3 property:@"font-style"];
-  v19 = [(NSHTMLReader *)self _stringForNode:a3 property:@"font-weight"];
+  standardFontFamily = [-[NSHTMLReader _stringForNode:property:](self _stringForNode:element property:{@"font-family", v13), "capitalizedString"}];
+  v130 = [(NSHTMLReader *)self _stringForNode:element property:@"font-style"];
+  v19 = [(NSHTMLReader *)self _stringForNode:element property:@"font-weight"];
   v20 = 0x1E7264000uLL;
   if (!standardFontFamily)
   {
@@ -1249,7 +1249,7 @@ LABEL_19:
     v25 = [(NSString *)standardFontFamily rangeOfString:@" " options:4];
     v27 = v26;
     v28 = [(NSString *)standardFontFamily rangeOfString:@"-" options:4];
-    v128 = v6;
+    v128 = dictionary;
     if (v27 && v29)
     {
       if (v25 <= v28)
@@ -1413,7 +1413,7 @@ LABEL_58:
 
       v17 = v45;
       v5 = v127;
-      v6 = v128;
+      dictionary = v128;
       v9 = v124;
       v8 = v126;
       v20 = 0x1E7264000;
@@ -1430,7 +1430,7 @@ LABEL_67:
       {
         v17 = v46;
         v5 = v127;
-        v6 = v128;
+        dictionary = v128;
         v8 = v126;
 LABEL_70:
         v19 = v125;
@@ -1441,7 +1441,7 @@ LABEL_70:
 LABEL_134:
     v17 = [UIFont systemFontOfSize:v21];
     v5 = v127;
-    v6 = v128;
+    dictionary = v128;
     v19 = v125;
     v8 = v126;
 LABEL_18:
@@ -1462,11 +1462,11 @@ LABEL_72:
   {
     v47 = v19;
     v48 = *(v20 + 3848);
-    v49 = [(UIFont *)v17 familyName];
+    familyName = [(UIFont *)v17 familyName];
     [(UIFont *)v17 pointSize];
     v50 = v48;
     v19 = v47;
-    v51 = [v50 fontWithFamilyName:v49 traits:1 size:?];
+    v51 = [v50 fontWithFamilyName:familyName traits:1 size:?];
     if (v51)
     {
       v17 = v51;
@@ -1476,9 +1476,9 @@ LABEL_72:
   v7 = v131;
   if (([v19 hasPrefix:@"bold"] & 1) != 0 || objc_msgSend(v19, "integerValue") >= 700)
   {
-    v52 = [(UIFont *)v17 familyName];
+    familyName2 = [(UIFont *)v17 familyName];
     [(UIFont *)v17 pointSize];
-    v53 = [UIFont fontWithFamilyName:v52 traits:2 size:?];
+    v53 = [UIFont fontWithFamilyName:familyName2 traits:2 size:?];
     if (v53)
     {
       v17 = v53;
@@ -1488,42 +1488,42 @@ LABEL_72:
   if (v17)
   {
 LABEL_81:
-    [v6 setObject:v17 forKey:@"NSFont"];
+    [dictionary setObject:v17 forKey:@"NSFont"];
   }
 
   if (v132)
   {
-    [v6 setObject:v132 forKey:@"NSColor"];
+    [dictionary setObject:v132 forKey:@"NSColor"];
   }
 
-  if (v137 && ![(NSHTMLReader *)self _elementHasOwnBackgroundColor:a3])
+  if (v137 && ![(NSHTMLReader *)self _elementHasOwnBackgroundColor:element])
   {
-    [v6 setObject:v137 forKey:@"NSBackgroundColor"];
+    [dictionary setObject:v137 forKey:@"NSBackgroundColor"];
   }
 
-  if ([(NSHTMLReader *)self _getFloat:&v143 forNode:a3 property:@"-webkit-text-stroke-width"])
+  if ([(NSHTMLReader *)self _getFloat:&v143 forNode:element property:@"-webkit-text-stroke-width"])
   {
     v54 = v143;
     [(UIFont *)v17 pointSize];
     *&v55 = v54 / (v55 * 0.01);
-    [v6 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithDouble:", *&v55), @"NSStrokeWidth"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithDouble:", *&v55), @"NSStrokeWidth"}];
   }
 
   if (v133)
   {
-    [v6 setObject:v133 forKey:@"NSStrokeColor"];
+    [dictionary setObject:v133 forKey:@"NSStrokeColor"];
   }
 
   if (v136)
   {
     if ([v136 rangeOfString:@"outline"] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v6 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithDouble:", 3.0), @"NSStrokeWidth"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithDouble:", 3.0), @"NSStrokeWidth"}];
     }
 
     if ([v136 rangeOfString:@"emboss"] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v6 setObject:objc_alloc_init(NSShadow) forKey:@"NSShadow"];
+      [dictionary setObject:objc_alloc_init(NSShadow) forKey:@"NSShadow"];
     }
   }
 
@@ -1533,7 +1533,7 @@ LABEL_81:
     {
       v57 = &unk_1F01CC378;
 LABEL_104:
-      [v6 setObject:v57 forKey:@"NSKern"];
+      [dictionary setObject:v57 forKey:@"NSKern"];
       goto LABEL_105;
     }
 
@@ -1567,7 +1567,7 @@ LABEL_105:
     {
       v58 = &unk_1F01CC348;
 LABEL_111:
-      [v6 setObject:v58 forKey:@"NSLigature"];
+      [dictionary setObject:v58 forKey:@"NSLigature"];
     }
   }
 
@@ -1575,12 +1575,12 @@ LABEL_111:
   {
     if ([v7 rangeOfString:@"underline"] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v6 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", 1), @"NSUnderline"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", 1), @"NSUnderline"}];
     }
 
     if ([v7 rangeOfString:@"line-through"] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v6 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", 1), @"NSStrikethrough"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", 1), @"NSStrikethrough"}];
     }
   }
 
@@ -1588,18 +1588,18 @@ LABEL_111:
   {
     if ([v8 rangeOfString:@"super"] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v6 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", 1), @"NSSuperScript"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", 1), @"NSSuperScript"}];
     }
 
     if ([v8 rangeOfString:@"sub"] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v6 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", -1), @"NSSuperScript"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", -1), @"NSSuperScript"}];
     }
   }
 
-  if ([(NSHTMLReader *)self _getFloat:&v144 forNode:a3 property:@"vertical-align"])
+  if ([(NSHTMLReader *)self _getFloat:&v144 forNode:element property:@"vertical-align"])
   {
-    [v6 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithDouble:", v144), @"NSBaselineOffset"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithDouble:", v144), @"NSBaselineOffset"}];
   }
 
   if (v9)
@@ -1690,7 +1690,7 @@ LABEL_141:
                       [(NSShadow *)v103 setShadowBlurRadius:v102];
                       if (v103)
                       {
-                        [v6 setObject:v103 forKey:@"NSShadow"];
+                        [dictionary setObject:v103 forKey:@"NSShadow"];
                       }
                     }
                   }
@@ -1711,27 +1711,27 @@ LABEL_141:
   }
 
 LABEL_159:
-  if (v5 != a3 && [(NSMutableArray *)self->_writingDirectionArray count:v59])
+  if (v5 != element && [(NSMutableArray *)self->_writingDirectionArray count:v59])
   {
-    [v6 setObject:objc_msgSend(MEMORY[0x1E695DEC8] forKey:{"arrayWithArray:", self->_writingDirectionArray), @"NSWritingDirection"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E695DEC8] forKey:{"arrayWithArray:", self->_writingDirectionArray), @"NSWritingDirection"}];
   }
 
   if (v5)
   {
     v104 = [objc_msgSend(objc_opt_class() "defaultParagraphStyle")];
-    v105 = [v5 tagName];
-    if ([@"P" isEqualToString:v105] & 1) != 0 || (objc_msgSend(@"LI", "isEqualToString:", v105))
+    tagName = [v5 tagName];
+    if ([@"P" isEqualToString:tagName] & 1) != 0 || (objc_msgSend(@"LI", "isEqualToString:", tagName))
     {
       v106 = 1;
     }
 
     else
     {
-      if (![v105 hasPrefix:@"H"])
+      if (![tagName hasPrefix:@"H"])
       {
         v139 = 0;
 LABEL_167:
-        v107 = [@"BLOCKQUOTE" isEqualToString:v105];
+        v107 = [@"BLOCKQUOTE" isEqualToString:tagName];
         v108 = v5;
         v109 = [(NSHTMLReader *)self _stringForNode:v5 property:@"text-align"];
         v110 = [(NSHTMLReader *)self _stringForNode:v108 property:@"direction"];
@@ -1804,11 +1804,11 @@ LABEL_186:
           [v104 setHyphenationFactor:v116];
         }
 
-        if ([v105 hasPrefix:@"H"])
+        if ([tagName hasPrefix:@"H"])
         {
-          if ([v105 length] == 2)
+          if ([tagName length] == 2)
           {
-            v117 = [v105 characterAtIndex:1];
+            v117 = [tagName characterAtIndex:1];
             if (v117 - 49 <= 5)
             {
               [v104 setHeaderLevel:v117 - 48];
@@ -1819,7 +1819,7 @@ LABEL_186:
         if (v107)
         {
           v118 = [MEMORY[0x1E696AE28] blockQuoteIntentWithIdentity:1 nestedInsideIntent:0];
-          [v6 setObject:v118 forKey:*MEMORY[0x1E696A7D0]];
+          [dictionary setObject:v118 forKey:*MEMORY[0x1E696A7D0]];
         }
 
         if (v139)
@@ -1857,7 +1857,7 @@ LABEL_186:
         webViewTextSizeMultiplier = self->_webViewTextSizeMultiplier;
         if (webViewTextSizeMultiplier > 0.0)
         {
-          if ([(NSHTMLReader *)self _getFloat:&v140 forNode:a3 property:@"line-height"])
+          if ([(NSHTMLReader *)self _getFloat:&v140 forNode:element property:@"line-height"])
           {
             webViewTextSizeMultiplier = v140;
             if (v140 > 0.0)
@@ -1877,30 +1877,30 @@ LABEL_186:
           [v104 setTextBlocks:self->_textBlocks];
         }
 
-        [v6 setObject:v104 forKey:@"NSParagraphStyle"];
+        [dictionary setObject:v104 forKey:@"NSParagraphStyle"];
 
-        return v6;
+        return dictionary;
       }
 
-      v106 = [v105 length] == 2;
+      v106 = [tagName length] == 2;
     }
 
     v139 = v106;
     goto LABEL_167;
   }
 
-  return v6;
+  return dictionary;
 }
 
-- (id)_attributesForElement:(id)a3
+- (id)_attributesForElement:(id)element
 {
-  if (a3)
+  if (element)
   {
     v6 = [(NSMutableDictionary *)self->_attributesForElements objectForKey:?];
     if (!v6)
     {
-      v6 = [(NSHTMLReader *)self _computedAttributesForElement:a3];
-      [(NSMutableDictionary *)self->_attributesForElements setObject:v6 forKey:a3];
+      v6 = [(NSHTMLReader *)self _computedAttributesForElement:element];
+      [(NSMutableDictionary *)self->_attributesForElements setObject:v6 forKey:element];
     }
 
     return v6;
@@ -1914,14 +1914,14 @@ LABEL_186:
   }
 }
 
-- (void)_newParagraphForElement:(id)a3 tag:(id)a4 allowEmpty:(BOOL)a5 suppressTrailingSpace:(BOOL)a6 isEntering:(BOOL)a7
+- (void)_newParagraphForElement:(id)element tag:(id)tag allowEmpty:(BOOL)empty suppressTrailingSpace:(BOOL)space isEntering:(BOOL)entering
 {
-  v8 = a6;
+  spaceCopy = space;
   v13 = [(NSMutableAttributedString *)self->_attrStr length];
   if (v13)
   {
     v14 = [-[NSMutableAttributedString string](self->_attrStr "string")];
-    if (!v8)
+    if (!spaceCopy)
     {
       goto LABEL_9;
     }
@@ -1930,7 +1930,7 @@ LABEL_186:
   else
   {
     v14 = 10;
-    if (!v8)
+    if (!spaceCopy)
     {
       goto LABEL_9;
     }
@@ -1940,7 +1940,7 @@ LABEL_186:
   {
 LABEL_9:
     v15 = 0;
-    if (!a5 && v14 == 10)
+    if (!empty && v14 == 10)
     {
       return;
     }
@@ -1952,7 +1952,7 @@ LABEL_9:
   v15 = 1;
 LABEL_11:
   v16 = &stru_1F01AD578;
-  if (([@"BODY" isEqualToString:a4] & 1) == 0 && !objc_msgSend(@"HTML", "isEqualToString:", a4))
+  if (([@"BODY" isEqualToString:tag] & 1) == 0 && !objc_msgSend(@"HTML", "isEqualToString:", tag))
   {
     v16 = @"\n";
   }
@@ -1966,10 +1966,10 @@ LABEL_11:
 
   v17 = [(__CFString *)v16 length];
   flags = self->_flags;
-  if ((*&flags & 8) == 0 && !a7)
+  if ((*&flags & 8) == 0 && !entering)
   {
     v19 = v17;
-    v20 = [(NSHTMLReader *)self _attributesForElement:a3];
+    v20 = [(NSHTMLReader *)self _attributesForElement:element];
     flags = self->_flags;
     if ((*&flags & 0x10) == 0)
     {
@@ -1984,7 +1984,7 @@ LABEL_11:
   self->_flags = (*&flags | 1);
 }
 
-- (void)_newLineForElement:(id)a3
+- (void)_newLineForElement:(id)element
 {
   v11 = 8232;
   v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCharacters:&v11 length:1];
@@ -2000,7 +2000,7 @@ LABEL_11:
 
   if ((*&self->_flags & 8) == 0)
   {
-    v10 = [(NSHTMLReader *)self _attributesForElement:a3];
+    v10 = [(NSHTMLReader *)self _attributesForElement:element];
     if ((*&self->_flags & 0x10) == 0)
     {
       if (v8)
@@ -2013,7 +2013,7 @@ LABEL_11:
   *&self->_flags |= 1u;
 }
 
-- (void)_newTabForElement:(id)a3
+- (void)_newTabForElement:(id)element
 {
   v5 = [(NSMutableAttributedString *)self->_attrStr length];
   if (v5)
@@ -2040,7 +2040,7 @@ LABEL_11:
 
   if ((*p_flags & 8) == 0)
   {
-    v11 = [(NSHTMLReader *)self _attributesForElement:a3];
+    v11 = [(NSHTMLReader *)self _attributesForElement:element];
     if ((*&self->_flags & 0x10) == 0)
     {
       if (v9)
@@ -2053,11 +2053,11 @@ LABEL_11:
   *p_flags |= 1u;
 }
 
-- (BOOL)_addAttachmentForElement:(id)a3 URL:(id)a4 needsParagraph:(BOOL)a5 usePlaceholder:(BOOL)a6
+- (BOOL)_addAttachmentForElement:(id)element URL:(id)l needsParagraph:(BOOL)paragraph usePlaceholder:(BOOL)placeholder
 {
-  v6 = a6;
-  v7 = a5;
-  v11 = [objc_msgSend(objc_msgSend(a3 "ownerDocument")];
+  placeholderCopy = placeholder;
+  paragraphCopy = paragraph;
+  v11 = [objc_msgSend(objc_msgSend(element "ownerDocument")];
   if ((*&self->_flags & 8) != 0)
   {
     return 0;
@@ -2065,18 +2065,18 @@ LABEL_11:
 
   v12 = v11;
   v13 = [(NSDictionary *)self->_options objectForKey:__NSHTMLReaderDelegateDocumentOption];
-  if (!v13 || (v14 = v13, (objc_opt_respondsToSelector() & 1) == 0) || (v15 = [v14 fileWrapperForURL:a4]) == 0)
+  if (!v13 || (v14 = v13, (objc_opt_respondsToSelector() & 1) == 0) || (v15 = [v14 fileWrapperForURL:l]) == 0)
   {
-    if (![a4 isFileURL] || !objc_msgSend(objc_msgSend(a4, "path"), "stringByStandardizingPath") || (v15 = objc_msgSend(objc_alloc(MEMORY[0x1E696AC38]), "initWithURL:options:error:", a4, 0, 0)) == 0)
+    if (![l isFileURL] || !objc_msgSend(objc_msgSend(l, "path"), "stringByStandardizingPath") || (v15 = objc_msgSend(objc_alloc(MEMORY[0x1E696AC38]), "initWithURL:options:error:", l, 0, 0)) == 0)
     {
-      v18 = [v12 subresourceForURL:a4];
+      v18 = [v12 subresourceForURL:l];
       if (!v18)
       {
-        v18 = [(WebDataSource *)self->_dataSource subresourceForURL:a4];
+        v18 = [(WebDataSource *)self->_dataSource subresourceForURL:l];
       }
 
       v19 = 0;
-      if (v6 && v18)
+      if (placeholderCopy && v18)
       {
         v19 = [@"text/html" isEqual:{-[WebResource MIMEType](v18, "MIMEType")}];
       }
@@ -2085,11 +2085,11 @@ LABEL_11:
       if ((v19 & 1) == 0 && v18)
       {
         v16 = [objc_alloc(MEMORY[0x1E696AC38]) initRegularFileWithContents:{-[WebResource data](v18, "data")}];
-        [v16 setPreferredFilename:{objc_msgSend(a4, "_web_suggestedFilenameWithMIMEType:", -[WebResource MIMEType](v18, "MIMEType"))}];
+        [v16 setPreferredFilename:{objc_msgSend(l, "_web_suggestedFilenameWithMIMEType:", -[WebResource MIMEType](v18, "MIMEType"))}];
       }
 
       v17 = v16 == 0;
-      if (v16 || v6)
+      if (v16 || placeholderCopy)
       {
         goto LABEL_20;
       }
@@ -2103,24 +2103,24 @@ LABEL_11:
 LABEL_20:
   v21 = [(NSMutableAttributedString *)self->_attrStr length];
   v22 = [[NSTextAttachment alloc] initWithFileWrapper:v16];
-  v23 = [a3 getAttribute:@"aria-label"];
+  v23 = [element getAttribute:@"aria-label"];
   if ([v23 length])
   {
     [(NSTextAttachment *)v22 setAccessibilityLabel:v23];
   }
 
-  v24 = [a3 getAttribute:@"alt"];
+  v24 = [element getAttribute:@"alt"];
   if ([v24 length])
   {
     [(NSTextAttachment *)v22 setAccessibilityLabel:v24];
   }
 
-  v25 = [(NSHTMLReader *)self _stringForNode:a3 property:@"vertical-align"];
-  [-[NSHTMLReader _stringForNode:property:](self _stringForNode:a3 property:{@"horizontal-align", "floatValue"}];
-  v27 = v26 / 100.0 * [a3 clientWidth];
+  v25 = [(NSHTMLReader *)self _stringForNode:element property:@"vertical-align"];
+  [-[NSHTMLReader _stringForNode:property:](self _stringForNode:element property:{@"horizontal-align", "floatValue"}];
+  v27 = v26 / 100.0 * [element clientWidth];
   [v25 floatValue];
-  -[NSTextAttachment setBounds:](v22, "setBounds:", v27, v28 / 100.0 * [a3 clientHeight], objc_msgSend(a3, "clientWidth"), objc_msgSend(a3, "clientHeight"));
-  if (v7)
+  -[NSTextAttachment setBounds:](v22, "setBounds:", v27, v28 / 100.0 * [element clientHeight], objc_msgSend(element, "clientWidth"), objc_msgSend(element, "clientHeight"));
+  if (paragraphCopy)
   {
     v29 = @"\uFFFC\n";
   }
@@ -2132,17 +2132,17 @@ LABEL_20:
 
   if (v17)
   {
-    v30 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.WebKit"];
-    if (!v30)
+    8uLL = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.WebKit"];
+    if (!8uLL)
     {
-      v30 = [-[NSArray firstObject](NSSearchPathForDirectoriesInDomains(NSLibraryDirectory 8uLL];
-      if (v30)
+      8uLL = [-[NSArray firstObject](NSSearchPathForDirectoriesInDomains(NSLibraryDirectory 8uLL];
+      if (8uLL)
       {
-        v30 = [MEMORY[0x1E696AAE8] bundleWithPath:v30];
+        8uLL = [MEMORY[0x1E696AAE8] bundleWithPath:8uLL];
       }
     }
 
-    v31 = [v30 URLForResource:@"missing_image" withExtension:@"tiff"];
+    v31 = [8uLL URLForResource:@"missing_image" withExtension:@"tiff"];
     if (v31)
     {
       -[NSTextAttachment setFileWrapper:](v22, "setFileWrapper:", [objc_alloc(MEMORY[0x1E696AC38]) initWithURL:v31 options:0 error:0]);
@@ -2158,7 +2158,7 @@ LABEL_20:
     self->_domRangeStartIndex = domRangeStartIndex + v32;
   }
 
-  v35 = [(NSHTMLReader *)self _attributesForElement:a3];
+  v35 = [(NSHTMLReader *)self _attributesForElement:element];
   if ((*&self->_flags & 0x10) == 0)
   {
     if (v33)
@@ -2172,9 +2172,9 @@ LABEL_20:
   return 1;
 }
 
-- (void)_addQuoteForElement:(id)a3 opening:(BOOL)a4 level:(int64_t)a5
+- (void)_addQuoteForElement:(id)element opening:(BOOL)opening level:(int64_t)level
 {
-  if (a4)
+  if (opening)
   {
     v7 = 8220;
   }
@@ -2184,7 +2184,7 @@ LABEL_20:
     v7 = 8221;
   }
 
-  if (a4)
+  if (opening)
   {
     v8 = 8216;
   }
@@ -2194,7 +2194,7 @@ LABEL_20:
     v8 = 8217;
   }
 
-  if (a5)
+  if (level)
   {
     v7 = v8;
   }
@@ -2213,7 +2213,7 @@ LABEL_20:
 
   if ((*&self->_flags & 8) == 0)
   {
-    v14 = [(NSHTMLReader *)self _attributesForElement:a3];
+    v14 = [(NSHTMLReader *)self _attributesForElement:element];
     if ((*&self->_flags & 0x10) == 0)
     {
       if (v12)
@@ -2226,14 +2226,14 @@ LABEL_20:
   *&self->_flags &= ~1u;
 }
 
-- (void)_addValue:(id)a3 forElement:(id)a4
+- (void)_addValue:(id)value forElement:(id)element
 {
   v7 = [(NSMutableAttributedString *)self->_attrStr length];
-  v8 = [a3 length];
+  v8 = [value length];
   if (v8)
   {
     v9 = v8;
-    [(NSMutableAttributedString *)self->_attrStr replaceCharactersInRange:v7 withString:0, a3];
+    [(NSMutableAttributedString *)self->_attrStr replaceCharactersInRange:v7 withString:0, value];
     domRangeStartIndex = self->_domRangeStartIndex;
     if (v7 < domRangeStartIndex)
     {
@@ -2243,7 +2243,7 @@ LABEL_20:
     flags = self->_flags;
     if ((*&flags & 8) == 0)
     {
-      v12 = [(NSHTMLReader *)self _attributesForElement:a4];
+      v12 = [(NSHTMLReader *)self _attributesForElement:element];
       flags = self->_flags;
       if ((*&flags & 0x10) == 0)
       {
@@ -2256,26 +2256,26 @@ LABEL_20:
   }
 }
 
-- (void)_fillInBlock:(id)a3 forElement:(id)a4 backgroundColor:(id)a5 extraMargin:(double)a6 extraPadding:(double)a7 isTable:(BOOL)a8
+- (void)_fillInBlock:(id)block forElement:(id)element backgroundColor:(id)color extraMargin:(double)margin extraPadding:(double)padding isTable:(BOOL)table
 {
   v39 = 0.0;
   [(NSHTMLReader *)self _DOMHTMLTableCellElementClass];
   if (objc_opt_isKindOfClass())
   {
-    v15 = [a4 width];
-    v16 = [a4 height];
+    width = [element width];
+    height = [element height];
   }
 
   else
   {
-    v15 = [a4 getAttribute:@"width"];
-    v16 = [a4 getAttribute:@"height"];
+    width = [element getAttribute:@"width"];
+    height = [element getAttribute:@"height"];
   }
 
-  v17 = v16;
-  if ((v15 && [v15 length] || !a8) && -[NSHTMLReader _getFloat:forNode:property:](self, "_getFloat:forNode:property:", &v39, a4, @"width"))
+  v17 = height;
+  if ((width && [width length] || !table) && -[NSHTMLReader _getFloat:forNode:property:](self, "_getFloat:forNode:property:", &v39, element, @"width"))
   {
-    [a3 setValue:0 type:0 forDimension:v39];
+    [block setValue:0 type:0 forDimension:v39];
   }
 
   if (v17)
@@ -2283,149 +2283,149 @@ LABEL_20:
     [v17 length];
   }
 
-  if ([(NSHTMLReader *)self _getFloat:&v39 forNode:a4 property:@"min-width"])
+  if ([(NSHTMLReader *)self _getFloat:&v39 forNode:element property:@"min-width"])
   {
-    [a3 setValue:0 type:1 forDimension:v39];
+    [block setValue:0 type:1 forDimension:v39];
   }
 
-  if ([(NSHTMLReader *)self _getFloat:&v39 forNode:a4 property:@"max-width"])
+  if ([(NSHTMLReader *)self _getFloat:&v39 forNode:element property:@"max-width"])
   {
-    [a3 setValue:0 type:2 forDimension:v39];
+    [block setValue:0 type:2 forDimension:v39];
   }
 
-  if ([(NSHTMLReader *)self _getFloat:&v39 forNode:a4 property:@"min-height"])
+  if ([(NSHTMLReader *)self _getFloat:&v39 forNode:element property:@"min-height"])
   {
-    [a3 setValue:0 type:5 forDimension:v39];
+    [block setValue:0 type:5 forDimension:v39];
   }
 
-  if ([(NSHTMLReader *)self _getFloat:&v39 forNode:a4 property:@"max-height"])
+  if ([(NSHTMLReader *)self _getFloat:&v39 forNode:element property:@"max-height"])
   {
-    [a3 setValue:0 type:6 forDimension:v39];
+    [block setValue:0 type:6 forDimension:v39];
   }
 
-  v18 = [(NSHTMLReader *)self _getFloat:&v39 forNode:a4 property:@"padding-left"];
-  v19 = v39 + a7;
+  v18 = [(NSHTMLReader *)self _getFloat:&v39 forNode:element property:@"padding-left"];
+  paddingCopy = v39 + padding;
   if (!v18)
   {
-    v19 = a7;
+    paddingCopy = padding;
   }
 
-  [a3 setWidth:0 type:-1 forLayer:0 edge:v19];
-  v20 = [(NSHTMLReader *)self _getFloat:&v39 forNode:a4 property:@"padding-top"];
-  v21 = v39 + a7;
+  [block setWidth:0 type:-1 forLayer:0 edge:paddingCopy];
+  v20 = [(NSHTMLReader *)self _getFloat:&v39 forNode:element property:@"padding-top"];
+  paddingCopy2 = v39 + padding;
   if (!v20)
   {
-    v21 = a7;
+    paddingCopy2 = padding;
   }
 
-  [a3 setWidth:0 type:-1 forLayer:1 edge:v21];
-  v22 = [(NSHTMLReader *)self _getFloat:&v39 forNode:a4 property:@"padding-right"];
-  v23 = v39 + a7;
+  [block setWidth:0 type:-1 forLayer:1 edge:paddingCopy2];
+  v22 = [(NSHTMLReader *)self _getFloat:&v39 forNode:element property:@"padding-right"];
+  paddingCopy3 = v39 + padding;
   if (!v22)
   {
-    v23 = a7;
+    paddingCopy3 = padding;
   }
 
-  [a3 setWidth:0 type:-1 forLayer:2 edge:v23];
-  v24 = [(NSHTMLReader *)self _getFloat:&v39 forNode:a4 property:@"padding-bottom"];
-  v25 = v39 + a7;
+  [block setWidth:0 type:-1 forLayer:2 edge:paddingCopy3];
+  v24 = [(NSHTMLReader *)self _getFloat:&v39 forNode:element property:@"padding-bottom"];
+  paddingCopy4 = v39 + padding;
   if (!v24)
   {
-    v25 = a7;
+    paddingCopy4 = padding;
   }
 
-  [a3 setWidth:0 type:-1 forLayer:3 edge:v25];
-  if ([(NSHTMLReader *)self _getFloat:&v39 forNode:a4 property:@"border-left-width"])
+  [block setWidth:0 type:-1 forLayer:3 edge:paddingCopy4];
+  if ([(NSHTMLReader *)self _getFloat:&v39 forNode:element property:@"border-left-width"])
   {
-    [a3 setWidth:0 type:0 forLayer:0 edge:v39];
+    [block setWidth:0 type:0 forLayer:0 edge:v39];
   }
 
-  if ([(NSHTMLReader *)self _getFloat:&v39 forNode:a4 property:@"border-top-width"])
+  if ([(NSHTMLReader *)self _getFloat:&v39 forNode:element property:@"border-top-width"])
   {
-    [a3 setWidth:0 type:0 forLayer:1 edge:v39];
+    [block setWidth:0 type:0 forLayer:1 edge:v39];
   }
 
-  if ([(NSHTMLReader *)self _getFloat:&v39 forNode:a4 property:@"border-right-width"])
+  if ([(NSHTMLReader *)self _getFloat:&v39 forNode:element property:@"border-right-width"])
   {
-    [a3 setWidth:0 type:0 forLayer:2 edge:v39];
+    [block setWidth:0 type:0 forLayer:2 edge:v39];
   }
 
-  if ([(NSHTMLReader *)self _getFloat:&v39 forNode:a4 property:@"border-bottom-width"])
+  if ([(NSHTMLReader *)self _getFloat:&v39 forNode:element property:@"border-bottom-width"])
   {
-    [a3 setWidth:0 type:0 forLayer:3 edge:v39];
+    [block setWidth:0 type:0 forLayer:3 edge:v39];
   }
 
-  v26 = [(NSHTMLReader *)self _getFloat:&v39 forNode:a4 property:@"margin-left"];
-  v27 = v39 + a6;
+  v26 = [(NSHTMLReader *)self _getFloat:&v39 forNode:element property:@"margin-left"];
+  marginCopy = v39 + margin;
   if (!v26)
   {
-    v27 = a6;
+    marginCopy = margin;
   }
 
-  [a3 setWidth:0 type:1 forLayer:0 edge:v27];
-  v28 = [(NSHTMLReader *)self _getFloat:&v39 forNode:a4 property:@"margin-top"];
-  v29 = v39 + a6;
+  [block setWidth:0 type:1 forLayer:0 edge:marginCopy];
+  v28 = [(NSHTMLReader *)self _getFloat:&v39 forNode:element property:@"margin-top"];
+  marginCopy2 = v39 + margin;
   if (!v28)
   {
-    v29 = a6;
+    marginCopy2 = margin;
   }
 
-  [a3 setWidth:0 type:1 forLayer:1 edge:v29];
-  v30 = [(NSHTMLReader *)self _getFloat:&v39 forNode:a4 property:@"margin-right"];
-  v31 = v39 + a6;
+  [block setWidth:0 type:1 forLayer:1 edge:marginCopy2];
+  v30 = [(NSHTMLReader *)self _getFloat:&v39 forNode:element property:@"margin-right"];
+  marginCopy3 = v39 + margin;
   if (!v30)
   {
-    v31 = a6;
+    marginCopy3 = margin;
   }
 
-  [a3 setWidth:0 type:1 forLayer:2 edge:v31];
-  v32 = [(NSHTMLReader *)self _getFloat:&v39 forNode:a4 property:@"margin-bottom"];
-  v33 = v39 + a6;
+  [block setWidth:0 type:1 forLayer:2 edge:marginCopy3];
+  v32 = [(NSHTMLReader *)self _getFloat:&v39 forNode:element property:@"margin-bottom"];
+  marginCopy4 = v39 + margin;
   if (!v32)
   {
-    v33 = a6;
+    marginCopy4 = margin;
   }
 
-  [a3 setWidth:0 type:1 forLayer:3 edge:v33];
-  v34 = [(NSHTMLReader *)self _colorForNode:a4 property:@"background-color"];
-  if (v34 || (v34 = a5) != 0)
+  [block setWidth:0 type:1 forLayer:3 edge:marginCopy4];
+  v34 = [(NSHTMLReader *)self _colorForNode:element property:@"background-color"];
+  if (v34 || (v34 = color) != 0)
   {
-    [a3 setBackgroundColor:v34];
+    [block setBackgroundColor:v34];
   }
 
-  v35 = [(NSHTMLReader *)self _colorForNode:a4 property:@"border-left-color"];
+  v35 = [(NSHTMLReader *)self _colorForNode:element property:@"border-left-color"];
   if (v35)
   {
-    [a3 setBorderColor:v35 forEdge:0];
+    [block setBorderColor:v35 forEdge:0];
   }
 
-  v36 = [(NSHTMLReader *)self _colorForNode:a4 property:@"border-top-color"];
+  v36 = [(NSHTMLReader *)self _colorForNode:element property:@"border-top-color"];
   if (v36)
   {
-    [a3 setBorderColor:v36 forEdge:1];
+    [block setBorderColor:v36 forEdge:1];
   }
 
-  v37 = [(NSHTMLReader *)self _colorForNode:a4 property:@"border-right-color"];
+  v37 = [(NSHTMLReader *)self _colorForNode:element property:@"border-right-color"];
   if (v37)
   {
-    [a3 setBorderColor:v37 forEdge:2];
+    [block setBorderColor:v37 forEdge:2];
   }
 
-  v38 = [(NSHTMLReader *)self _colorForNode:a4 property:@"border-bottom-color"];
+  v38 = [(NSHTMLReader *)self _colorForNode:element property:@"border-bottom-color"];
   if (v38)
   {
-    [a3 setBorderColor:v38 forEdge:3];
+    [block setBorderColor:v38 forEdge:3];
   }
 }
 
-- (void)_processMetaElementWithName:(id)a3 content:(id)a4
+- (void)_processMetaElementWithName:(id)name content:(id)content
 {
-  if ([@"CocoaVersion" compare:a3 options:1])
+  if ([@"CocoaVersion" compare:name options:1])
   {
-    if (![@"Generator" compare:a3 options:1])
+    if (![@"Generator" compare:name options:1])
     {
       v14 = &NSGeneratorDocumentAttribute;
-      if (!a4)
+      if (!content)
       {
         return;
       }
@@ -2433,12 +2433,12 @@ LABEL_20:
       goto LABEL_44;
     }
 
-    if ([@"Keywords" compare:a3 options:1])
+    if ([@"Keywords" compare:name options:1])
     {
-      if (![@"Author" compare:a3 options:1])
+      if (![@"Author" compare:name options:1])
       {
         v14 = &NSAuthorDocumentAttribute;
-        if (!a4)
+        if (!content)
         {
           return;
         }
@@ -2446,10 +2446,10 @@ LABEL_20:
         goto LABEL_44;
       }
 
-      if (![@"LastAuthor" compare:a3 options:1])
+      if (![@"LastAuthor" compare:name options:1])
       {
         v14 = &NSEditorDocumentAttribute;
-        if (!a4)
+        if (!content)
         {
           return;
         }
@@ -2457,10 +2457,10 @@ LABEL_20:
         goto LABEL_44;
       }
 
-      if (![@"Company" compare:a3 options:1])
+      if (![@"Company" compare:name options:1])
       {
         v14 = &NSCompanyDocumentAttribute;
-        if (!a4)
+        if (!content)
         {
           return;
         }
@@ -2468,10 +2468,10 @@ LABEL_20:
         goto LABEL_44;
       }
 
-      if (![@"Copyright" compare:a3 options:1])
+      if (![@"Copyright" compare:name options:1])
       {
         v14 = &NSCopyrightDocumentAttribute;
-        if (!a4)
+        if (!content)
         {
           return;
         }
@@ -2479,10 +2479,10 @@ LABEL_20:
         goto LABEL_44;
       }
 
-      if (![@"Subject" compare:a3 options:1])
+      if (![@"Subject" compare:name options:1])
       {
         v14 = &NSSubjectDocumentAttribute;
-        if (!a4)
+        if (!content)
         {
           return;
         }
@@ -2490,10 +2490,10 @@ LABEL_20:
         goto LABEL_44;
       }
 
-      if (![@"Description" compare:a3 options:1] || !objc_msgSend(@"Comment", "compare:options:", a3, 1))
+      if (![@"Description" compare:name options:1] || !objc_msgSend(@"Comment", "compare:options:", name, 1))
       {
         v14 = &NSCommentDocumentAttribute;
-        if (!a4)
+        if (!content)
         {
           return;
         }
@@ -2501,88 +2501,88 @@ LABEL_20:
         goto LABEL_44;
       }
 
-      if ([@"CreationTime" compare:a3 options:1])
+      if ([@"CreationTime" compare:name options:1])
       {
-        if ([@"ModificationTime" compare:a3 options:1])
+        if ([@"ModificationTime" compare:name options:1])
         {
-          if ([@"DisplayName" compare:a3 options:1] && objc_msgSend(@"IndexTitle", "compare:options:", a3, 1))
+          if ([@"DisplayName" compare:name options:1] && objc_msgSend(@"IndexTitle", "compare:options:", name, 1))
           {
-            if ([@"robots" compare:a3 options:1])
+            if ([@"robots" compare:name options:1])
             {
               return;
             }
 
-            [a4 rangeOfString:@"noindex" options:1];
+            [content rangeOfString:@"noindex" options:1];
             if (!v7)
             {
               return;
             }
 
             documentAttrs = self->_documentAttrs;
-            v9 = [MEMORY[0x1E696AD98] numberWithInteger:1];
+            contentCopy = [MEMORY[0x1E696AD98] numberWithInteger:1];
             v10 = NSNoIndexDocumentAttribute;
             goto LABEL_20;
           }
 
           v14 = &NSDisplayNameDocumentAttribute;
-          if (!a4)
+          if (!content)
           {
             return;
           }
 
 LABEL_44:
           v21 = *v14;
-          if (!*v14 || ![a4 length])
+          if (!*v14 || ![content length])
           {
             return;
           }
 
           v13 = self->_documentAttrs;
-          v9 = a4;
+          contentCopy = content;
           v10 = v21;
           goto LABEL_47;
         }
 
-        if (!a4)
+        if (!content)
         {
           return;
         }
 
-        if (![a4 length])
+        if (![content length])
         {
           return;
         }
 
-        v23 = _dateForString(a4);
+        v23 = _dateForString(content);
         if (!v23)
         {
           return;
         }
 
-        v9 = v23;
+        contentCopy = v23;
         v13 = self->_documentAttrs;
         v20 = &NSModificationTimeDocumentAttribute;
       }
 
       else
       {
-        if (!a4)
+        if (!content)
         {
           return;
         }
 
-        if (![a4 length])
+        if (![content length])
         {
           return;
         }
 
-        v22 = _dateForString(a4);
+        v22 = _dateForString(content);
         if (!v22)
         {
           return;
         }
 
-        v9 = v22;
+        contentCopy = v22;
         v13 = self->_documentAttrs;
         v20 = &NSCreationTimeDocumentAttribute;
       }
@@ -2590,22 +2590,22 @@ LABEL_44:
 
     else
     {
-      if (!a4 || ![a4 length])
+      if (!content || ![content length])
       {
         return;
       }
 
-      [a4 rangeOfString:{@", "}];
-      if (v15 || (v17 = @",", [a4 rangeOfString:{@", "}], !v18))
+      [content rangeOfString:{@", "}];
+      if (v15 || (v17 = @",", [content rangeOfString:{@", "}], !v18))
       {
-        [a4 rangeOfString:{@", "}];
-        if (v16 || (v17 = @" ", [a4 rangeOfString:@" "], !v19))
+        [content rangeOfString:{@", "}];
+        if (v16 || (v17 = @" ", [content rangeOfString:@" "], !v19))
         {
           v17 = @", ";
         }
       }
 
-      v9 = [a4 componentsSeparatedByString:v17];
+      contentCopy = [content componentsSeparatedByString:v17];
       v13 = self->_documentAttrs;
       v20 = &NSKeywordsDocumentAttribute;
     }
@@ -2614,7 +2614,7 @@ LABEL_44:
     goto LABEL_47;
   }
 
-  [a4 doubleValue];
+  [content doubleValue];
   if (v11 <= 0.0)
   {
     return;
@@ -2623,18 +2623,18 @@ LABEL_44:
   v12 = v11;
   [(NSMutableDictionary *)self->_documentAttrs removeObjectForKey:NSConvertedDocumentAttribute];
   documentAttrs = self->_documentAttrs;
-  v9 = [MEMORY[0x1E696AD98] numberWithDouble:v12];
+  contentCopy = [MEMORY[0x1E696AD98] numberWithDouble:v12];
   v10 = @"CocoaRTFVersion";
 LABEL_20:
   v13 = documentAttrs;
 LABEL_47:
 
-  [(NSMutableDictionary *)v13 setObject:v9 forKey:v10];
+  [(NSMutableDictionary *)v13 setObject:contentCopy forKey:v10];
 }
 
-- (void)_processHeadElement:(id)a3
+- (void)_processHeadElement:(id)element
 {
-  v4 = [(NSHTMLReader *)self _childrenForNode:a3];
+  v4 = [(NSHTMLReader *)self _childrenForNode:element];
   v5 = [v4 count];
   if (v5)
   {
@@ -2648,13 +2648,13 @@ LABEL_47:
         {
           if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
           {
-            v9 = [v8 name];
-            v10 = [v8 content];
-            if (v9)
+            name = [v8 name];
+            content = [v8 content];
+            if (name)
             {
-              if (v10)
+              if (content)
               {
-                [(NSHTMLReader *)self _processMetaElementWithName:v9 content:v10];
+                [(NSHTMLReader *)self _processMetaElementWithName:name content:content];
               }
             }
           }
@@ -2664,50 +2664,50 @@ LABEL_47:
   }
 }
 
-- (BOOL)_enterElement:(id)a3 tag:(id)a4 display:(id)a5 depth:(int64_t)a6 embedded:(BOOL)a7
+- (BOOL)_enterElement:(id)element tag:(id)tag display:(id)display depth:(int64_t)depth embedded:(BOOL)embedded
 {
-  if ([@"HEAD" isEqualToString:a4] && !a7)
+  if ([@"HEAD" isEqualToString:tag] && !embedded)
   {
-    [(NSHTMLReader *)self _processHeadElement:a3];
+    [(NSHTMLReader *)self _processHeadElement:element];
     return 0;
   }
 
-  if (a5 && (([@"none" isEqualToString:a5] & 1) != 0 || (objc_msgSend(@"table-column", "isEqualToString:", a5) & 1) != 0 || (objc_msgSend(@"table-column-group", "isEqualToString:", a5) & 1) != 0))
+  if (display && (([@"none" isEqualToString:display] & 1) != 0 || (objc_msgSend(@"table-column", "isEqualToString:", display) & 1) != 0 || (objc_msgSend(@"table-column-group", "isEqualToString:", display) & 1) != 0))
   {
     return 0;
   }
 
-  if (!-[NSHTMLReader _elementIsBlockLevel:](self, "_elementIsBlockLevel:", a3) || ([@"BR" isEqualToString:a4] & 1) != 0 || objc_msgSend(@"table-cell", "isEqualToString:", a5) && !-[NSMutableArray count](self->_textTables, "count") || -[NSMutableArray count](self->_textLists, "count") && objc_msgSend(@"block", "isEqualToString:", a5) && (objc_msgSend(@"LI", "isEqualToString:", a4) & 1) == 0 && (objc_msgSend(@"UL", "isEqualToString:", a4) & 1) == 0 && !objc_msgSend(@"OL", "isEqualToString:", a4))
+  if (!-[NSHTMLReader _elementIsBlockLevel:](self, "_elementIsBlockLevel:", element) || ([@"BR" isEqualToString:tag] & 1) != 0 || objc_msgSend(@"table-cell", "isEqualToString:", display) && !-[NSMutableArray count](self->_textTables, "count") || -[NSMutableArray count](self->_textLists, "count") && objc_msgSend(@"block", "isEqualToString:", display) && (objc_msgSend(@"LI", "isEqualToString:", tag) & 1) == 0 && (objc_msgSend(@"UL", "isEqualToString:", tag) & 1) == 0 && !objc_msgSend(@"OL", "isEqualToString:", tag))
   {
     return 1;
   }
 
   v12 = 1;
-  [(NSHTMLReader *)self _newParagraphForElement:a3 tag:a4 allowEmpty:0 suppressTrailingSpace:1 isEntering:1];
+  [(NSHTMLReader *)self _newParagraphForElement:element tag:tag allowEmpty:0 suppressTrailingSpace:1 isEntering:1];
   return v12;
 }
 
-- (void)_addTableForElement:(id)a3
+- (void)_addTableForElement:(id)element
 {
   v16 = objc_alloc_init(NSTextTable);
   [(NSTextTable *)v16 setNumberOfColumns:1];
   [(NSTextTable *)v16 setLayoutAlgorithm:0];
   [(NSTextTable *)v16 setCollapsesBorders:0];
   [(NSTextTable *)v16 setHidesEmptyCells:0];
-  if (a3)
+  if (element)
   {
-    v5 = [(NSHTMLReader *)self _stringForNode:a3 property:@"border-collapse"];
-    v6 = [(NSHTMLReader *)self _stringForNode:a3 property:@"empty-cells"];
-    v7 = [(NSHTMLReader *)self _stringForNode:a3 property:@"table-layout"];
+    v5 = [(NSHTMLReader *)self _stringForNode:element property:@"border-collapse"];
+    v6 = [(NSHTMLReader *)self _stringForNode:element property:@"empty-cells"];
+    v7 = [(NSHTMLReader *)self _stringForNode:element property:@"table-layout"];
     v8 = 1.0;
     v9 = 1.0;
     if (objc_opt_respondsToSelector())
     {
-      v10 = [a3 cellSpacing];
-      if (v10)
+      cellSpacing = [element cellSpacing];
+      if (cellSpacing)
       {
-        v11 = v10;
-        if ([v10 length])
+        v11 = cellSpacing;
+        if ([cellSpacing length])
         {
           if (([v11 hasSuffix:@"%"] & 1) == 0)
           {
@@ -2720,11 +2720,11 @@ LABEL_47:
 
     if (objc_opt_respondsToSelector())
     {
-      v13 = [a3 cellPadding];
-      if (v13)
+      cellPadding = [element cellPadding];
+      if (cellPadding)
       {
-        v14 = v13;
-        if ([v13 length])
+        v14 = cellPadding;
+        if ([cellPadding length])
         {
           if (([v14 hasSuffix:@"%"] & 1) == 0)
           {
@@ -2735,7 +2735,7 @@ LABEL_47:
       }
     }
 
-    [(NSHTMLReader *)self _fillInBlock:v16 forElement:a3 backgroundColor:0 extraMargin:1 extraPadding:0.0 isTable:0.0];
+    [(NSHTMLReader *)self _fillInBlock:v16 forElement:element backgroundColor:0 extraMargin:1 extraPadding:0.0 isTable:0.0];
     if ([@"collapse" isEqualToString:v5])
     {
       [(NSTextTable *)v16 setCollapsesBorders:1];
@@ -2766,32 +2766,32 @@ LABEL_47:
   -[NSMutableArray addObject:](self->_textTableRowArrays, "addObject:", [MEMORY[0x1E695DF70] array]);
 }
 
-- (void)_addTableCellForElement:(id)a3
+- (void)_addTableCellForElement:(id)element
 {
-  v5 = [(NSMutableArray *)self->_textTables lastObject];
+  lastObject = [(NSMutableArray *)self->_textTables lastObject];
   v6 = [-[NSMutableArray lastObject](self->_textTableRows "lastObject")];
-  v7 = [(NSMutableArray *)self->_textTableRowArrays lastObject];
-  v8 = [v7 count];
+  lastObject2 = [(NSMutableArray *)self->_textTableRowArrays lastObject];
+  v8 = [lastObject2 count];
   if ([(NSMutableArray *)self->_textTableRowBackgroundColors count])
   {
-    v9 = [(NSMutableArray *)self->_textTableRowBackgroundColors lastObject];
+    lastObject3 = [(NSMutableArray *)self->_textTableRowBackgroundColors lastObject];
   }
 
   else
   {
-    v9 = 0;
+    lastObject3 = 0;
   }
 
   [-[NSMutableArray lastObject](self->_textTableSpacings "lastObject")];
   v11 = v10;
-  if ([v9 isEqual:{-[objc_class clearColor](getNSColorClass_4(), "clearColor")}])
+  if ([lastObject3 isEqual:{-[objc_class clearColor](getNSColorClass_4(), "clearColor")}])
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = v9;
+    v12 = lastObject3;
   }
 
   v26 = v12;
@@ -2800,32 +2800,32 @@ LABEL_47:
   {
     for (i = 0; i != v8; ++i)
     {
-      v15 = [v7 objectAtIndex:{i, v26}];
+      v15 = [lastObject2 objectAtIndex:{i, v26}];
       if (v13 >= [v15 startingColumn])
       {
-        v16 = [v15 startingColumn];
-        if (v13 < [v15 columnSpan] + v16)
+        startingColumn = [v15 startingColumn];
+        if (v13 < [v15 columnSpan] + startingColumn)
         {
-          v17 = [v15 startingColumn];
-          v13 = [v15 columnSpan] + v17;
+          startingColumn2 = [v15 startingColumn];
+          v13 = [v15 columnSpan] + startingColumn2;
         }
       }
     }
   }
 
-  if (a3)
+  if (element)
   {
     if (objc_opt_respondsToSelector())
     {
-      v18 = [a3 rowSpan];
-      if (v18 <= 1)
+      rowSpan = [element rowSpan];
+      if (rowSpan <= 1)
       {
         v19 = 1;
       }
 
       else
       {
-        v19 = v18;
+        v19 = rowSpan;
       }
     }
 
@@ -2836,15 +2836,15 @@ LABEL_47:
 
     if (objc_opt_respondsToSelector())
     {
-      v21 = [a3 colSpan];
-      if (v21 <= 1)
+      colSpan = [element colSpan];
+      if (colSpan <= 1)
       {
         v20 = 1;
       }
 
       else
       {
-        v20 = v21;
+        v20 = colSpan;
       }
     }
 
@@ -2860,12 +2860,12 @@ LABEL_47:
     v19 = 1;
   }
 
-  v22 = [[NSTextTableBlock alloc] initWithTable:v5 startingRow:v6 rowSpan:v19 startingColumn:v13 columnSpan:v20];
+  v22 = [[NSTextTableBlock alloc] initWithTable:lastObject startingRow:v6 rowSpan:v19 startingColumn:v13 columnSpan:v20];
   v27 = v22;
-  if (a3)
+  if (element)
   {
-    v23 = [(NSHTMLReader *)self _stringForNode:a3 property:@"vertical-align"];
-    [(NSHTMLReader *)self _fillInBlock:v27 forElement:a3 backgroundColor:v26 extraMargin:0 extraPadding:v11 * 0.5 isTable:0.0];
+    v23 = [(NSHTMLReader *)self _stringForNode:element property:@"vertical-align"];
+    [(NSHTMLReader *)self _fillInBlock:v27 forElement:element backgroundColor:v26 extraMargin:0 extraPadding:v11 * 0.5 isTable:0.0];
     if ([@"middle" isEqualToString:v23])
     {
       v24 = 1;
@@ -2900,11 +2900,11 @@ LABEL_33:
 
 LABEL_34:
   [(NSMutableArray *)self->_textBlocks addObject:v22, v26];
-  [v7 addObject:v27];
-  [v7 sortUsingFunction:_colCompare context:0];
+  [lastObject2 addObject:v27];
+  [lastObject2 sortUsingFunction:_colCompare context:0];
 }
 
-- (BOOL)_processElement:(id)a3 tag:(id)a4 display:(id)a5 depth:(int64_t)a6
+- (BOOL)_processElement:(id)element tag:(id)tag display:(id)display depth:(int64_t)depth
 {
   v11 = [(NSHTMLReader *)self _elementIsBlockLevel:?];
   if (v11)
@@ -2914,13 +2914,13 @@ LABEL_34:
 
   else
   {
-    v12 = [(NSHTMLReader *)self _stringForNode:a3 property:@"unicode-bidi"];
+    v12 = [(NSHTMLReader *)self _stringForNode:element property:@"unicode-bidi"];
     if (v12)
     {
       v13 = v12;
       if ([v12 isEqualToString:@"embed"])
       {
-        v14 = [-[NSHTMLReader _stringForNode:property:](self _stringForNode:a3 property:{@"direction", "isEqualToString:", @"rtl"}];
+        v14 = [-[NSHTMLReader _stringForNode:property:](self _stringForNode:element property:{@"direction", "isEqualToString:", @"rtl"}];
       }
 
       else
@@ -2930,7 +2930,7 @@ LABEL_34:
           goto LABEL_11;
         }
 
-        if ([-[NSHTMLReader _stringForNode:property:](self _stringForNode:a3 property:{@"direction", "isEqualToString:", @"rtl"}])
+        if ([-[NSHTMLReader _stringForNode:property:](self _stringForNode:element property:{@"direction", "isEqualToString:", @"rtl"}])
         {
           v14 = 3;
         }
@@ -2946,14 +2946,14 @@ LABEL_34:
   }
 
 LABEL_11:
-  if (([@"table" isEqualToString:a5] & 1) != 0 || !-[NSMutableArray count](self->_textTables, "count") && objc_msgSend(@"table-row-group", "isEqualToString:", a5))
+  if (([@"table" isEqualToString:display] & 1) != 0 || !-[NSMutableArray count](self->_textTables, "count") && objc_msgSend(@"table-row-group", "isEqualToString:", display))
   {
-    if ([@"table-row-group" isEqualToString:a5])
+    if ([@"table-row-group" isEqualToString:display])
     {
-      v15 = -[NSHTMLReader _blockLevelElementForNode:](self, "_blockLevelElementForNode:", [a3 parentNode]);
+      v15 = -[NSHTMLReader _blockLevelElementForNode:](self, "_blockLevelElementForNode:", [element parentNode]);
       if ([@"table" isEqualToString:{-[NSHTMLReader _stringForNode:property:](self, "_stringForNode:property:", v15, @"display"}])
       {
-        a3 = v15;
+        element = v15;
       }
     }
 
@@ -2968,31 +2968,31 @@ LABEL_11:
       [(NSHTMLReader *)self _addTableCellForElement:0];
     }
 
-    [(NSHTMLReader *)self _addTableForElement:a3];
+    [(NSHTMLReader *)self _addTableForElement:element];
     goto LABEL_19;
   }
 
-  if ([@"table-footer-group" isEqualToString:a5] && -[NSMutableArray count](self->_textTables, "count"))
+  if ([@"table-footer-group" isEqualToString:display] && -[NSMutableArray count](self->_textTables, "count"))
   {
-    -[NSMutableDictionary setObject:forKey:](self->_textTableFooters, "setObject:forKey:", a3, [MEMORY[0x1E696B098] valueWithNonretainedObject:{-[NSMutableArray lastObject](self->_textTables, "lastObject")}]);
+    -[NSMutableDictionary setObject:forKey:](self->_textTableFooters, "setObject:forKey:", element, [MEMORY[0x1E696B098] valueWithNonretainedObject:{-[NSMutableArray lastObject](self->_textTables, "lastObject")}]);
 LABEL_26:
     LOBYTE(v11) = 0;
     return v11;
   }
 
-  if ([@"table-row" isEqualToString:a5] && -[NSMutableArray count](self->_textTables, "count"))
+  if ([@"table-row" isEqualToString:display] && -[NSMutableArray count](self->_textTables, "count"))
   {
-    v18 = [(NSHTMLReader *)self _colorForNode:a3 property:@"background-color"];
-    if (!v18)
+    clearColor = [(NSHTMLReader *)self _colorForNode:element property:@"background-color"];
+    if (!clearColor)
     {
-      v18 = [(objc_class *)getNSColorClass_4() clearColor];
+      clearColor = [(objc_class *)getNSColorClass_4() clearColor];
     }
 
-    [(NSMutableArray *)self->_textTableRowBackgroundColors addObject:v18];
+    [(NSMutableArray *)self->_textTableRowBackgroundColors addObject:clearColor];
     goto LABEL_19;
   }
 
-  if ([@"table-cell" isEqualToString:a5])
+  if ([@"table-cell" isEqualToString:display])
   {
     while (1)
     {
@@ -3005,22 +3005,22 @@ LABEL_26:
       [(NSHTMLReader *)self _addTableForElement:0];
     }
 
-    [(NSHTMLReader *)self _addTableCellForElement:a3];
+    [(NSHTMLReader *)self _addTableCellForElement:element];
     goto LABEL_19;
   }
 
-  if ([@"IMG" isEqualToString:a4])
+  if ([@"IMG" isEqualToString:tag])
   {
-    v20 = [a3 getAttribute:@"src"];
+    v20 = [element getAttribute:@"src"];
     if (v20)
     {
       v21 = v20;
       if ([v20 length])
       {
-        v22 = [objc_msgSend(a3 "ownerDocument")];
+        v22 = [objc_msgSend(element "ownerDocument")];
         if (v22 || (v22 = [MEMORY[0x1E695DFF8] _web_URLWithString:objc_msgSend(v21 relativeToURL:{"stringByTrimmingCharactersInSet:", objc_msgSend(MEMORY[0x1E696AB08], "whitespaceAndNewlineCharacterSet")), self->_baseURL}]) != 0)
         {
-          [(NSHTMLReader *)self _addAttachmentForElement:a3 URL:v22 needsParagraph:v11 usePlaceholder:0];
+          [(NSHTMLReader *)self _addAttachmentForElement:element URL:v22 needsParagraph:v11 usePlaceholder:0];
         }
       }
     }
@@ -3028,19 +3028,19 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if ([@"OBJECT" isEqualToString:a4])
+  if ([@"OBJECT" isEqualToString:tag])
   {
-    v23 = [a3 getAttribute:@"codebase"];
-    v24 = [a3 getAttribute:@"data"];
-    v25 = [a3 getAttribute:@"declare"];
+    v23 = [element getAttribute:@"codebase"];
+    v24 = [element getAttribute:@"data"];
+    v25 = [element getAttribute:@"declare"];
     if (v24)
     {
       v26 = v25;
       if ([v24 length])
       {
-        if (([@"true" isEqualToString:v26] & 1) == 0 && (v23 && objc_msgSend(v23, "length") && ((v27 = objc_msgSend(objc_msgSend(a3, "ownerDocument"), "URLWithAttributeString:", v23)) != 0 || (v27 = objc_msgSend(MEMORY[0x1E695DFF8], "_web_URLWithString:relativeToURL:", objc_msgSend(v23, "stringByTrimmingCharactersInSet:", objc_msgSend(MEMORY[0x1E696AB08], "whitespaceAndNewlineCharacterSet")), self->_baseURL)) != 0) && (v28 = objc_msgSend(MEMORY[0x1E695DFF8], "_web_URLWithString:relativeToURL:", objc_msgSend(v24, "stringByTrimmingCharactersInSet:", objc_msgSend(MEMORY[0x1E696AB08], "whitespaceAndNewlineCharacterSet")), v27)) != 0 || (v28 = objc_msgSend(objc_msgSend(a3, "ownerDocument"), "URLWithAttributeString:", v24)) != 0 || (v28 = objc_msgSend(MEMORY[0x1E695DFF8], "_web_URLWithString:relativeToURL:", objc_msgSend(v24, "stringByTrimmingCharactersInSet:", objc_msgSend(MEMORY[0x1E696AB08], "whitespaceAndNewlineCharacterSet")), self->_baseURL)) != 0))
+        if (([@"true" isEqualToString:v26] & 1) == 0 && (v23 && objc_msgSend(v23, "length") && ((v27 = objc_msgSend(objc_msgSend(element, "ownerDocument"), "URLWithAttributeString:", v23)) != 0 || (v27 = objc_msgSend(MEMORY[0x1E695DFF8], "_web_URLWithString:relativeToURL:", objc_msgSend(v23, "stringByTrimmingCharactersInSet:", objc_msgSend(MEMORY[0x1E696AB08], "whitespaceAndNewlineCharacterSet")), self->_baseURL)) != 0) && (v28 = objc_msgSend(MEMORY[0x1E695DFF8], "_web_URLWithString:relativeToURL:", objc_msgSend(v24, "stringByTrimmingCharactersInSet:", objc_msgSend(MEMORY[0x1E696AB08], "whitespaceAndNewlineCharacterSet")), v27)) != 0 || (v28 = objc_msgSend(objc_msgSend(element, "ownerDocument"), "URLWithAttributeString:", v24)) != 0 || (v28 = objc_msgSend(MEMORY[0x1E695DFF8], "_web_URLWithString:relativeToURL:", objc_msgSend(v24, "stringByTrimmingCharactersInSet:", objc_msgSend(MEMORY[0x1E696AB08], "whitespaceAndNewlineCharacterSet")), self->_baseURL)) != 0))
         {
-          LODWORD(v11) = ![(NSHTMLReader *)self _addAttachmentForElement:a3 URL:v28 needsParagraph:v11 usePlaceholder:0];
+          LODWORD(v11) = ![(NSHTMLReader *)self _addAttachmentForElement:element URL:v28 needsParagraph:v11 usePlaceholder:0];
           return v11;
         }
       }
@@ -3049,15 +3049,15 @@ LABEL_26:
     goto LABEL_19;
   }
 
-  if ([@"FRAME" isEqualToString:a4])
+  if ([@"FRAME" isEqualToString:tag])
   {
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
       goto LABEL_26;
     }
 
-    v29 = [a3 contentDocument];
-    if (!v29)
+    contentDocument = [element contentDocument];
+    if (!contentDocument)
     {
       goto LABEL_26;
     }
@@ -3065,34 +3065,34 @@ LABEL_26:
     goto LABEL_61;
   }
 
-  if ([@"IFRAME" isEqualToString:a4])
+  if ([@"IFRAME" isEqualToString:tag])
   {
     if (objc_opt_respondsToSelector())
     {
-      v29 = [a3 contentDocument];
-      if (v29)
+      contentDocument = [element contentDocument];
+      if (contentDocument)
       {
 LABEL_61:
-        [(NSHTMLReader *)self _traverseNode:v29 depth:a6 + 1 embedded:1];
+        [(NSHTMLReader *)self _traverseNode:contentDocument depth:depth + 1 embedded:1];
         goto LABEL_26;
       }
     }
   }
 
-  else if ([@"BR" isEqualToString:a4])
+  else if ([@"BR" isEqualToString:tag])
   {
-    v30 = -[NSHTMLReader _blockLevelElementForNode:](self, "_blockLevelElementForNode:", [a3 parentNode]);
-    v31 = [a3 getAttribute:@"class"];
-    v32 = [v30 tagName];
+    v30 = -[NSHTMLReader _blockLevelElementForNode:](self, "_blockLevelElementForNode:", [element parentNode]);
+    v31 = [element getAttribute:@"class"];
+    tagName = [v30 tagName];
     v33 = [@"Apple-interchange-newline" isEqualToString:v31];
-    if ([@"P" isEqualToString:v32] & 1) != 0 || (objc_msgSend(@"LI", "isEqualToString:", v32))
+    if ([@"P" isEqualToString:tagName] & 1) != 0 || (objc_msgSend(@"LI", "isEqualToString:", tagName))
     {
       v34 = 0;
     }
 
-    else if ([v32 hasPrefix:@"H"])
+    else if ([tagName hasPrefix:@"H"])
     {
-      v34 = [v32 length] != 2;
+      v34 = [tagName length] != 2;
     }
 
     else
@@ -3110,17 +3110,17 @@ LABEL_61:
       if (v30 == 0 || v34)
       {
         LOBYTE(v11) = 1;
-        [(NSHTMLReader *)self _newParagraphForElement:a3 tag:a4 allowEmpty:1 suppressTrailingSpace:0 isEntering:0];
+        [(NSHTMLReader *)self _newParagraphForElement:element tag:tag allowEmpty:1 suppressTrailingSpace:0 isEntering:0];
         return v11;
       }
 
-      [(NSHTMLReader *)self _newLineForElement:a3];
+      [(NSHTMLReader *)self _newLineForElement:element];
     }
   }
 
-  else if ([@"UL" isEqualToString:a4])
+  else if ([@"UL" isEqualToString:tag])
   {
-    v35 = [(NSHTMLReader *)self _stringForNode:a3 property:@"list-style-type"];
+    v35 = [(NSHTMLReader *)self _stringForNode:element property:@"list-style-type"];
     if (!v35 || (v36 = v35, ![(__CFString *)v35 length]))
     {
       v36 = @"disc";
@@ -3131,9 +3131,9 @@ LABEL_61:
     [(NSMutableArray *)self->_textLists addObject:v38];
   }
 
-  else if ([@"OL" isEqualToString:a4])
+  else if ([@"OL" isEqualToString:tag])
   {
-    v39 = [(NSHTMLReader *)self _stringForNode:a3 property:@"list-style-type"];
+    v39 = [(NSHTMLReader *)self _stringForNode:element property:@"list-style-type"];
     if (!v39 || (v40 = v39, ![(__CFString *)v39 length]))
     {
       v40 = @"decimal";
@@ -3143,7 +3143,7 @@ LABEL_61:
     v42 = -[NSTextList initWithMarkerFormat:options:](v41, "initWithMarkerFormat:options:", [MEMORY[0x1E696AEC0] stringWithFormat:@"{%@}.", v40], 0);
     if (objc_opt_respondsToSelector())
     {
-      -[NSTextList setStartingItemNumber:](v42, "setStartingItemNumber:", [a3 start]);
+      -[NSTextList setStartingItemNumber:](v42, "setStartingItemNumber:", [element start]);
     }
 
     [(NSMutableArray *)self->_textLists addObject:v42];
@@ -3151,50 +3151,50 @@ LABEL_61:
 
   else
   {
-    if ([@"Q" isEqualToString:a4])
+    if ([@"Q" isEqualToString:tag])
     {
       ++self->_quoteLevel;
       LOBYTE(v11) = 1;
-      [(NSHTMLReader *)self _addQuoteForElement:a3 opening:1 level:?];
+      [(NSHTMLReader *)self _addQuoteForElement:element opening:1 level:?];
       return v11;
     }
 
-    if ([@"INPUT" isEqualToString:a4])
+    if ([@"INPUT" isEqualToString:tag])
     {
       if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
       {
         LOBYTE(v11) = 1;
-        if ([@"text" compare:objc_msgSend(a3 options:{"type"), 1}])
+        if ([@"text" compare:objc_msgSend(element options:{"type"), 1}])
         {
           return v11;
         }
 
-        v43 = [a3 value];
-        if (v43)
+        value = [element value];
+        if (value)
         {
-          v44 = v43;
-          if ([v43 length])
+          v44 = value;
+          if ([value length])
           {
-            [(NSHTMLReader *)self _addValue:v44 forElement:a3];
+            [(NSHTMLReader *)self _addValue:v44 forElement:element];
           }
         }
       }
     }
 
-    else if ([@"TEXTAREA" isEqualToString:a4])
+    else if ([@"TEXTAREA" isEqualToString:tag])
     {
       if (objc_opt_respondsToSelector())
       {
-        v45 = [a3 value];
-        v11 = v45;
-        if (!v45)
+        value2 = [element value];
+        v11 = value2;
+        if (!value2)
         {
           return v11;
         }
 
-        if ([v45 length])
+        if ([value2 length])
         {
-          [(NSHTMLReader *)self _addValue:v11 forElement:a3];
+          [(NSHTMLReader *)self _addValue:v11 forElement:element];
         }
       }
 
@@ -3207,7 +3207,7 @@ LABEL_19:
   return v11;
 }
 
-- (void)_addMarkersToList:(id)a3 range:(_NSRange)a4
+- (void)_addMarkersToList:(id)list range:(_NSRange)range
 {
   if (self->_includesTextListMarkers)
   {
@@ -3215,11 +3215,11 @@ LABEL_19:
     v54 = v6;
     v55 = v4;
     v56 = v5;
-    length = a4.length;
-    location = a4.location;
-    v10 = a3;
-    v12 = [a3 startingItemNumber];
-    v50 = [(NSMutableAttributedString *)self->_attrStr string];
+    length = range.length;
+    location = range.location;
+    listCopy = list;
+    startingItemNumber = [list startingItemNumber];
+    string = [(NSMutableAttributedString *)self->_attrStr string];
     v51 = 0;
     v52 = 0;
     v13 = [(NSMutableAttributedString *)self->_attrStr length];
@@ -3237,9 +3237,9 @@ LABEL_19:
             v15 = length;
           }
 
-          v17 = [v16 textLists];
-          v18 = [v17 indexOfObject:v10];
-          if (v17)
+          textLists = [v16 textLists];
+          v18 = [textLists indexOfObject:listCopy];
+          if (textLists)
           {
             v19 = v18 == 0x7FFFFFFFFFFFFFFFLL;
           }
@@ -3259,14 +3259,14 @@ LABEL_19:
             v47 = v18 + 1;
             do
             {
-              v24 = [v50 paragraphRangeForRange:{v23, 0}];
+              v24 = [string paragraphRangeForRange:{v23, 0}];
               v26 = v25;
               v27 = [(NSMutableAttributedString *)self->_attrStr attribute:@"NSParagraphStyle" atIndex:v23 effectiveRange:&v51];
               if ([objc_msgSend(v27 "textLists")] == v21)
               {
-                v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"\t%@\t", objc_msgSend(v10, "markerForItemNumber:", v12)];
+                v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"\t%@\t", objc_msgSend(listCopy, "markerForItemNumber:", startingItemNumber)];
                 v29 = [v28 length];
-                v49 = v12;
+                v49 = startingItemNumber;
                 if ((*&self->_flags & 0x18) == 0)
                 {
                   v46 = [NSTextList _standardMarkerAttributesForAttributes:[(NSMutableAttributedString *)self->_attrStr attributesAtIndex:v24 effectiveRange:0]];
@@ -3278,7 +3278,7 @@ LABEL_19:
                   [(NSMutableAttributedString *)self->_attrStr setAttributes:v46 range:v24, v29];
                 }
 
-                v30 = v10;
+                v30 = listCopy;
                 domRangeStartIndex = self->_domRangeStartIndex;
                 if (v24 < domRangeStartIndex)
                 {
@@ -3330,11 +3330,11 @@ LABEL_19:
                   [(NSMutableAttributedString *)self->_attrStr addAttribute:@"NSParagraphStyle" value:v32 range:v24, v41];
                 }
 
-                v12 = v49 + 1;
+                startingItemNumber = v49 + 1;
                 v15 += v29;
 
                 v23 = v41 + v24;
-                v10 = v30;
+                listCopy = v30;
                 v21 = v47;
                 location = v48;
               }
@@ -3353,14 +3353,14 @@ LABEL_19:
   }
 }
 
-- (void)_exitElement:(id)a3 tag:(id)a4 display:(id)a5 depth:(int64_t)a6 startIndex:(unint64_t)a7
+- (void)_exitElement:(id)element tag:(id)tag display:(id)display depth:(int64_t)depth startIndex:(unint64_t)index
 {
   v13 = [(NSMutableAttributedString *)self->_attrStr length];
-  if (v13 != a7)
+  if (v13 != index)
   {
-    if ([@"A" isEqualToString:a4])
+    if ([@"A" isEqualToString:tag])
     {
-      v14 = [a3 getAttribute:@"href"];
+      v14 = [element getAttribute:@"href"];
       v15 = [v14 stringByTrimmingCharactersInSet:{objc_msgSend(MEMORY[0x1E696AB08], "whitespaceAndNewlineCharacterSet")}];
       if (v14)
       {
@@ -3369,10 +3369,10 @@ LABEL_19:
         {
           if (v16 && [v16 length] && (objc_msgSend(v16, "hasPrefix:", @"#") & 1) == 0)
           {
-            v17 = [objc_msgSend(a3 "ownerDocument")];
+            v17 = [objc_msgSend(element "ownerDocument")];
             if (!v17)
             {
-              v17 = [objc_msgSend(a3 "ownerDocument")];
+              v17 = [objc_msgSend(element "ownerDocument")];
               if (!v17)
               {
                 v17 = [MEMORY[0x1E695DFF8] _web_URLWithString:v16 relativeToURL:self->_baseURL];
@@ -3391,7 +3391,7 @@ LABEL_19:
                 v18 = v14;
               }
 
-              [(NSMutableAttributedString *)self->_attrStr addAttribute:@"NSLink" value:v18 range:a7, v13 - a7];
+              [(NSMutableAttributedString *)self->_attrStr addAttribute:@"NSLink" value:v18 range:index, v13 - index];
             }
           }
         }
@@ -3399,11 +3399,11 @@ LABEL_19:
     }
   }
 
-  if ((*&self->_flags & 4) != 0 || ![(NSHTMLReader *)self _elementIsBlockLevel:a3])
+  if ((*&self->_flags & 4) != 0 || ![(NSHTMLReader *)self _elementIsBlockLevel:element])
   {
     if ([(NSMutableArray *)self->_writingDirectionArray count])
     {
-      v19 = [(NSHTMLReader *)self _stringForNode:a3 property:@"unicode-bidi"];
+      v19 = [(NSHTMLReader *)self _stringForNode:element property:@"unicode-bidi"];
       if (v19)
       {
         v20 = v19;
@@ -3418,24 +3418,24 @@ LABEL_19:
   else
   {
     [(NSMutableArray *)self->_writingDirectionArray removeAllObjects];
-    if ([@"table-cell" isEqualToString:a5] && !-[NSMutableArray count](self->_textBlocks, "count"))
+    if ([@"table-cell" isEqualToString:display] && !-[NSMutableArray count](self->_textBlocks, "count"))
     {
-      [(NSHTMLReader *)self _newTabForElement:a3];
+      [(NSHTMLReader *)self _newTabForElement:element];
     }
 
-    else if (!-[NSMutableArray count](self->_textLists, "count") || ![@"block" isEqualToString:a5] || (objc_msgSend(@"LI", "isEqualToString:", a4) & 1) != 0 || (objc_msgSend(@"UL", "isEqualToString:", a4) & 1) != 0 || (objc_msgSend(@"OL", "isEqualToString:", a4) & 1) != 0)
+    else if (!-[NSMutableArray count](self->_textLists, "count") || ![@"block" isEqualToString:display] || (objc_msgSend(@"LI", "isEqualToString:", tag) & 1) != 0 || (objc_msgSend(@"UL", "isEqualToString:", tag) & 1) != 0 || (objc_msgSend(@"OL", "isEqualToString:", tag) & 1) != 0)
     {
-      [(NSHTMLReader *)self _newParagraphForElement:a3 tag:a4 allowEmpty:v13 == a7 suppressTrailingSpace:0 isEntering:0];
+      [(NSHTMLReader *)self _newParagraphForElement:element tag:tag allowEmpty:v13 == index suppressTrailingSpace:0 isEntering:0];
     }
 
     else
     {
-      [(NSHTMLReader *)self _newLineForElement:a3];
+      [(NSHTMLReader *)self _newLineForElement:element];
     }
   }
 
   v21 = [(NSMutableAttributedString *)self->_attrStr length];
-  if ([@"table" isEqualToString:a5] && -[NSMutableArray count](self->_textTables, "count"))
+  if ([@"table" isEqualToString:display] && -[NSMutableArray count](self->_textTables, "count"))
   {
     v22 = [MEMORY[0x1E696B098] valueWithNonretainedObject:{-[NSMutableArray lastObject](self->_textTables, "lastObject")}];
     v23 = [(NSMutableDictionary *)self->_textTableFooters objectForKey:v22];
@@ -3452,7 +3452,7 @@ LABEL_19:
 
     if (v23)
     {
-      [(NSHTMLReader *)self _traverseFooterNode:v23 depth:a6 + 1];
+      [(NSHTMLReader *)self _traverseFooterNode:v23 depth:depth + 1];
       [(NSMutableDictionary *)self->_textTableFooters removeObjectForKey:v22];
     }
 
@@ -3464,9 +3464,9 @@ LABEL_19:
     goto LABEL_75;
   }
 
-  if (![@"table-row" isEqualToString:a5] || !-[NSMutableArray count](self->_textTables, "count"))
+  if (![@"table-row" isEqualToString:display] || !-[NSMutableArray count](self->_textTables, "count"))
   {
-    if ([@"table-cell" isEqualToString:a5] && -[NSMutableArray count](self->_textBlocks, "count"))
+    if ([@"table-cell" isEqualToString:display] && -[NSMutableArray count](self->_textBlocks, "count"))
     {
       while (1)
       {
@@ -3487,45 +3487,45 @@ LABEL_19:
       goto LABEL_75;
     }
 
-    v46 = v21 - a7;
-    if ((([@"UL" isEqualToString:a4] & 1) != 0 || objc_msgSend(@"OL", "isEqualToString:", a4)) && -[NSMutableArray count](self->_textLists, "count"))
+    v46 = v21 - index;
+    if ((([@"UL" isEqualToString:tag] & 1) != 0 || objc_msgSend(@"OL", "isEqualToString:", tag)) && -[NSMutableArray count](self->_textLists, "count"))
     {
-      [(NSHTMLReader *)self _addMarkersToList:[(NSMutableArray *)self->_textLists lastObject] range:a7, v21 - a7];
+      [(NSHTMLReader *)self _addMarkersToList:[(NSMutableArray *)self->_textLists lastObject] range:index, v21 - index];
       textTableRowArrays = self->_textLists;
       goto LABEL_75;
     }
 
-    if ([@"Q" isEqualToString:a4])
+    if ([@"Q" isEqualToString:tag])
     {
       --self->_quoteLevel;
 
-      [(NSHTMLReader *)self _addQuoteForElement:a3 opening:0 level:?];
+      [(NSHTMLReader *)self _addQuoteForElement:element opening:0 level:?];
       return;
     }
 
-    if (![@"SPAN" isEqualToString:a4])
+    if (![@"SPAN" isEqualToString:tag])
     {
       return;
     }
 
-    v47 = [a3 getAttribute:@"class"];
+    v47 = [element getAttribute:@"class"];
     if ([@"Apple-converted-space" isEqualToString:v47])
     {
-      v48 = [(NSMutableAttributedString *)self->_attrStr mutableString];
-      if (v21 > a7)
+      mutableString = [(NSMutableAttributedString *)self->_attrStr mutableString];
+      if (v21 > index)
       {
-        v49 = v48;
+        v49 = mutableString;
         do
         {
-          if ([(NSMutableString *)v49 characterAtIndex:a7]== 160)
+          if ([(NSMutableString *)v49 characterAtIndex:index]== 160)
           {
-            [(NSMutableString *)v49 replaceCharactersInRange:a7 withString:1, @" "];
+            [(NSMutableString *)v49 replaceCharactersInRange:index withString:1, @" "];
           }
 
-          ++a7;
+          ++index;
         }
 
-        while (v21 != a7);
+        while (v21 != index);
       }
 
       return;
@@ -3536,26 +3536,26 @@ LABEL_19:
       return;
     }
 
-    v50 = [(NSMutableAttributedString *)self->_attrStr mutableString];
-    if (v21 <= a7)
+    mutableString2 = [(NSMutableAttributedString *)self->_attrStr mutableString];
+    if (v21 <= index)
     {
       return;
     }
 
-    v51 = v50;
+    v51 = mutableString2;
     v52 = 0;
-    v53 = a7;
+    indexCopy = index;
     while (1)
     {
-      if (([(NSMutableString *)v51 characterAtIndex:v53]& 0xFFFFFF7F) == 0x20)
+      if (([(NSMutableString *)v51 characterAtIndex:indexCopy]& 0xFFFFFF7F) == 0x20)
       {
         v54 = v52 + 1;
-        if ((v52 + 1) <= 3 && v53 + 1 < v21)
+        if ((v52 + 1) <= 3 && indexCopy + 1 < v21)
         {
           goto LABEL_110;
         }
 
-        v55 = v53 - v52++;
+        v55 = indexCopy - v52++;
         if (!v54)
         {
           goto LABEL_110;
@@ -3576,7 +3576,7 @@ LABEL_19:
 
         if (v52)
         {
-          v55 = v53 - v52;
+          v55 = indexCopy - v52;
         }
 
         else
@@ -3597,7 +3597,7 @@ LABEL_19:
 
       [(NSMutableString *)v51 replaceCharactersInRange:v55 withString:v52, @"\t"];
       v46 -= v52 - 1;
-      v53 -= v52 - 1;
+      indexCopy -= v52 - 1;
       domRangeStartIndex = self->_domRangeStartIndex;
       if (v55 + v52 <= domRangeStartIndex)
       {
@@ -3611,10 +3611,10 @@ LABEL_19:
 
       v54 = 0;
 LABEL_110:
-      ++v53;
-      v21 = v46 + a7;
+      ++indexCopy;
+      v21 = v46 + index;
       v52 = v54;
-      if (v53 >= v46 + a7)
+      if (indexCopy >= v46 + index)
       {
         return;
       }
@@ -3627,37 +3627,37 @@ LABEL_109:
     goto LABEL_110;
   }
 
-  v25 = [(NSMutableArray *)self->_textTables lastObject];
-  v26 = [(NSMutableArray *)self->_textTableRowArrays lastObject];
-  v27 = [v25 numberOfColumns];
+  lastObject = [(NSMutableArray *)self->_textTables lastObject];
+  lastObject2 = [(NSMutableArray *)self->_textTableRowArrays lastObject];
+  numberOfColumns = [lastObject numberOfColumns];
   v28 = [-[NSMutableArray lastObject](self->_textTableRows "lastObject")];
   do
   {
     ++v28;
-    v29 = [MEMORY[0x1E695DF70] array];
-    v30 = [v26 count];
+    array = [MEMORY[0x1E695DF70] array];
+    v30 = [lastObject2 count];
     if (v30)
     {
       v31 = v30;
       for (i = 0; i != v31; ++i)
       {
-        v33 = [v26 objectAtIndex:i];
-        v34 = [v33 startingColumn];
-        if ([v33 columnSpan] + v34 > v27)
+        v33 = [lastObject2 objectAtIndex:i];
+        startingColumn = [v33 startingColumn];
+        if ([v33 columnSpan] + startingColumn > numberOfColumns)
         {
-          v35 = [v33 startingColumn];
-          v27 = [v33 columnSpan] + v35;
+          startingColumn2 = [v33 startingColumn];
+          numberOfColumns = [v33 columnSpan] + startingColumn2;
         }
 
-        v36 = [v33 startingRow];
-        if ([v33 rowSpan] + v36 > v28)
+        startingRow = [v33 startingRow];
+        if ([v33 rowSpan] + startingRow > v28)
         {
-          [v29 addObject:v33];
+          [array addObject:v33];
         }
       }
     }
 
-    v37 = [v29 count];
+    v37 = [array count];
     if (v37)
     {
       v38 = v37;
@@ -3665,14 +3665,14 @@ LABEL_109:
       v40 = 0;
       do
       {
-        v41 = [v29 objectAtIndex:v39];
+        v41 = [array objectAtIndex:v39];
         if (v40 >= [v41 startingColumn])
         {
-          v42 = [v41 startingColumn];
-          if (v40 < [v41 columnSpan] + v42)
+          startingColumn3 = [v41 startingColumn];
+          if (v40 < [v41 columnSpan] + startingColumn3)
           {
-            v43 = [v41 startingColumn];
-            v40 = [v41 columnSpan] + v43;
+            startingColumn4 = [v41 startingColumn];
+            v40 = [v41 columnSpan] + startingColumn4;
           }
         }
 
@@ -3687,19 +3687,19 @@ LABEL_109:
       v40 = 0;
     }
 
-    v26 = v29;
+    lastObject2 = array;
   }
 
-  while (v40 >= v27);
-  if (v27 > [v25 numberOfColumns])
+  while (v40 >= numberOfColumns);
+  if (numberOfColumns > [lastObject numberOfColumns])
   {
-    [v25 setNumberOfColumns:v27];
+    [lastObject setNumberOfColumns:numberOfColumns];
   }
 
   [(NSMutableArray *)self->_textTableRows removeLastObject];
   -[NSMutableArray addObject:](self->_textTableRows, "addObject:", [MEMORY[0x1E696AD98] numberWithInteger:v28]);
   [(NSMutableArray *)self->_textTableRowArrays removeLastObject];
-  [(NSMutableArray *)self->_textTableRowArrays addObject:v29];
+  [(NSMutableArray *)self->_textTableRowArrays addObject:array];
   if ([(NSMutableArray *)self->_textTableRowBackgroundColors count])
   {
     textTableRowArrays = self->_textTableRowBackgroundColors;
@@ -3709,13 +3709,13 @@ LABEL_75:
   }
 }
 
-- (void)_processText:(id)a3
+- (void)_processText:(id)text
 {
-  v3 = a3;
+  textCopy = text;
   v69 = *MEMORY[0x1E69E9840];
-  v5 = [a3 data];
+  data = [text data];
   v6 = [(NSMutableAttributedString *)self->_attrStr length];
-  v7 = [(__CFString *)v5 length];
+  endOffset = [(__CFString *)data length];
   if (v6)
   {
     v8 = [-[NSMutableAttributedString string](self->_attrStr "string")];
@@ -3738,35 +3738,35 @@ LABEL_75:
   }
 
   v52 = v10;
-  v14 = [(NSHTMLReader *)self _stringForNode:v3 property:@"white-space"];
-  v15 = [(NSHTMLReader *)self _stringForNode:v3 property:@"text-transform"];
+  v14 = [(NSHTMLReader *)self _stringForNode:textCopy property:@"white-space"];
+  v15 = [(NSHTMLReader *)self _stringForNode:textCopy property:@"text-transform"];
   domRange = self->_domRange;
   if (!domRange)
   {
     goto LABEL_31;
   }
 
-  if ([(DOMRange *)domRange startContainer]== v3)
+  if ([(DOMRange *)domRange startContainer]== textCopy)
   {
-    v17 = [(DOMRange *)self->_domRange startOffset];
+    startOffset = [(DOMRange *)self->_domRange startOffset];
     self->_domRangeStartIndex = [(NSMutableAttributedString *)self->_attrStr length];
     *&self->_flags |= 2u;
   }
 
   else
   {
-    v17 = 0;
+    startOffset = 0;
   }
 
-  if ([(DOMRange *)self->_domRange endContainer]!= v3)
+  if ([(DOMRange *)self->_domRange endContainer]!= textCopy)
   {
-    if (v17)
+    if (startOffset)
     {
       goto LABEL_29;
     }
 
 LABEL_80:
-    if (v7 >= [(__CFString *)v5 length])
+    if (endOffset >= [(__CFString *)data length])
     {
       goto LABEL_31;
     }
@@ -3774,24 +3774,24 @@ LABEL_80:
     goto LABEL_30;
   }
 
-  v7 = [(DOMRange *)self->_domRange endOffset];
+  endOffset = [(DOMRange *)self->_domRange endOffset];
   *&self->_flags |= 4u;
-  if (!v17)
+  if (!startOffset)
   {
     goto LABEL_80;
   }
 
 LABEL_29:
-  if (v7 >= v17)
+  if (endOffset >= startOffset)
   {
 LABEL_30:
-    v5 = [(__CFString *)v5 substringWithRange:v17, v7 - v17];
+    data = [(__CFString *)data substringWithRange:startOffset, endOffset - startOffset];
   }
 
 LABEL_31:
   if ([v14 hasPrefix:@"pre"])
   {
-    if (v6 && [(__CFString *)v5 length]&& (*&self->_flags & 1) != 0 && ((v49 = [(__CFString *)v5 characterAtIndex:0], v49 <= 0xD) && ((1 << v49) & 0x3400) != 0 || v49 - 8232 < 2 || v49 == 133))
+    if (v6 && [(__CFString *)data length]&& (*&self->_flags & 1) != 0 && ((v49 = [(__CFString *)data characterAtIndex:0], v49 <= 0xD) && ((1 << v49) & 0x3400) != 0 || v49 - 8232 < 2 || v49 == 133))
     {
       Mutable = 0;
       v20 = 0;
@@ -3817,17 +3817,17 @@ LABEL_31:
   v56 = 0u;
   *buffer = 0u;
   v54 = 0u;
-  v21 = [(__CFString *)v5 length];
+  v21 = [(__CFString *)data length];
   Mutable = CFStringCreateMutable(0, 0);
-  v61 = v5;
+  v61 = data;
   v64 = 0;
   v65 = v21;
-  CharactersPtr = CFStringGetCharactersPtr(v5);
+  CharactersPtr = CFStringGetCharactersPtr(data);
   CStringPtr = 0;
   v62 = CharactersPtr;
   if (!CharactersPtr)
   {
-    CStringPtr = CFStringGetCStringPtr(v5, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(data, 0x600u);
   }
 
   v66 = 0;
@@ -3839,7 +3839,7 @@ LABEL_31:
     goto LABEL_83;
   }
 
-  v51 = self;
+  selfCopy = self;
   v50 = v15;
   v24 = 0;
   v25 = 0;
@@ -3945,7 +3945,7 @@ LABEL_65:
     chars[v25++] = 32;
   }
 
-  self = v51;
+  self = selfCopy;
   v15 = v50;
   if (v25)
   {
@@ -3955,43 +3955,43 @@ LABEL_65:
 LABEL_83:
   v19 = 0;
   v20 = v27 & 1;
-  v5 = Mutable;
+  data = Mutable;
 LABEL_84:
-  if ([(__CFString *)v5 length])
+  if ([(__CFString *)data length])
   {
     if ([@"capitalize" isEqualToString:v15])
     {
-      v42 = [(__CFString *)v5 capitalizedString];
+      capitalizedString = [(__CFString *)data capitalizedString];
       goto LABEL_91;
     }
 
     if ([@"uppercase" isEqualToString:v15])
     {
-      v42 = [(__CFString *)v5 uppercaseString];
+      capitalizedString = [(__CFString *)data uppercaseString];
       goto LABEL_91;
     }
 
     if ([@"lowercase" isEqualToString:v15])
     {
-      v42 = [(__CFString *)v5 lowercaseString];
+      capitalizedString = [(__CFString *)data lowercaseString];
 LABEL_91:
-      v5 = v42;
+      data = capitalizedString;
     }
 
-    [(NSMutableAttributedString *)self->_attrStr replaceCharactersInRange:v6 withString:v19, v5];
-    v43 = [(__CFString *)v5 length];
+    [(NSMutableAttributedString *)self->_attrStr replaceCharactersInRange:v6 withString:v19, data];
+    v43 = [(__CFString *)data length];
     flags = self->_flags;
     if ((*&flags & 8) == 0)
     {
       v45 = v43;
       v46 = 0;
-      if (v3)
+      if (textCopy)
       {
         do
         {
-          if ([(DOMNode *)v3 nodeType]== 1)
+          if ([(DOMNode *)textCopy nodeType]== 1)
           {
-            v47 = [-[NSHTMLReader _attributesForElement:](self _attributesForElement:{v3), "mutableCopy"}];
+            v47 = [-[NSHTMLReader _attributesForElement:](self _attributesForElement:{textCopy), "mutableCopy"}];
             v48 = v47;
             if (v46)
             {
@@ -4001,10 +4001,10 @@ LABEL_91:
             v46 = v48;
           }
 
-          v3 = [(DOMNode *)v3 parentNode];
+          textCopy = [(DOMNode *)textCopy parentNode];
         }
 
-        while (v3);
+        while (textCopy);
         flags = self->_flags;
       }
 
@@ -4025,39 +4025,39 @@ LABEL_91:
   }
 }
 
-- (void)_traverseNode:(id)a3 depth:(int64_t)a4 embedded:(BOOL)a5
+- (void)_traverseNode:(id)node depth:(int64_t)depth embedded:(BOOL)embedded
 {
   flags = self->_flags;
   if ((*&flags & 4) == 0)
   {
-    v6 = a5;
-    if ((*&flags & 2) != 0 || !self->_domRange || (domStartAncestors = self->_domStartAncestors) == 0 || [(NSMutableArray *)domStartAncestors containsObject:a3])
+    embeddedCopy = embedded;
+    if ((*&flags & 2) != 0 || !self->_domRange || (domStartAncestors = self->_domStartAncestors) == 0 || [(NSMutableArray *)domStartAncestors containsObject:node])
     {
-      v11 = [a3 nodeType];
-      v40 = [(NSHTMLReader *)self _childrenForNode:a3];
+      nodeType = [node nodeType];
+      v40 = [(NSHTMLReader *)self _childrenForNode:node];
       v12 = [v40 count];
       domRange = self->_domRange;
       if (domRange)
       {
-        v14 = [(DOMRange *)domRange startContainer];
-        v15 = v14 == a3;
-        if (v14 == a3)
+        startContainer = [(DOMRange *)domRange startContainer];
+        v15 = startContainer == node;
+        if (startContainer == node)
         {
-          v16 = [(DOMRange *)self->_domRange startOffset];
+          startOffset = [(DOMRange *)self->_domRange startOffset];
           *&self->_flags |= 2u;
         }
 
         else
         {
-          v16 = 0;
+          startOffset = 0;
         }
 
-        if ([(DOMRange *)self->_domRange endContainer]== a3)
+        if ([(DOMRange *)self->_domRange endContainer]== node)
         {
-          v18 = [(DOMRange *)self->_domRange endOffset];
+          endOffset = [(DOMRange *)self->_domRange endOffset];
           v17 = 1;
 LABEL_15:
-          if ((v11 & 0xFFFFFFFD) == 9)
+          if ((nodeType & 0xFFFFFFFD) == 9)
           {
             v19 = 0;
             do
@@ -4067,13 +4067,13 @@ LABEL_15:
                 break;
               }
 
-              if (v16 == v19 && v15)
+              if (startOffset == v19 && v15)
               {
                 self->_domRangeStartIndex = [(NSMutableAttributedString *)self->_attrStr length];
               }
 
-              v21 = v16 > v19 && v15;
-              if (v18 <= v19)
+              v21 = startOffset > v19 && v15;
+              if (endOffset <= v19)
               {
                 v22 = v17;
               }
@@ -4085,10 +4085,10 @@ LABEL_15:
 
               if (!v21 && (v22 & 1) == 0)
               {
-                -[NSHTMLReader _traverseNode:depth:embedded:](self, "_traverseNode:depth:embedded:", [v40 objectAtIndex:v19], a4 + 1, v6);
+                -[NSHTMLReader _traverseNode:depth:embedded:](self, "_traverseNode:depth:embedded:", [v40 objectAtIndex:v19], depth + 1, embeddedCopy);
               }
 
-              if (++v19 >= v18)
+              if (++v19 >= endOffset)
               {
                 v23 = v17;
               }
@@ -4130,20 +4130,20 @@ LABEL_80:
             return;
           }
 
-          if (v11 != 1)
+          if (nodeType != 1)
           {
-            if ((v11 - 3) <= 1)
+            if ((nodeType - 3) <= 1)
             {
-              [(NSHTMLReader *)self _processText:a3];
+              [(NSHTMLReader *)self _processText:node];
             }
 
             goto LABEL_80;
           }
 
-          v39 = v6;
-          v38 = [a3 tagName];
-          v26 = [(NSHTMLReader *)self _stringForNode:a3 property:@"display"];
-          v27 = [(NSHTMLReader *)self _stringForNode:a3 property:@"float"];
+          v39 = embeddedCopy;
+          tagName = [node tagName];
+          v26 = [(NSHTMLReader *)self _stringForNode:node property:@"display"];
+          v27 = [(NSHTMLReader *)self _stringForNode:node property:@"float"];
           if (!v27 || (v28 = v27, ([@"left" isEqualToString:v27] & 1) == 0) && (objc_msgSend(@"right", "isEqualToString:", v28) & 1) == 0)
           {
             if (!v26)
@@ -4161,13 +4161,13 @@ LABEL_80:
 
           v29 = 1;
 LABEL_55:
-          -[NSMutableDictionary setObject:forKey:](self->_elementIsBlockLevel, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithBool:v29], a3);
-          if ([(NSHTMLReader *)self _enterElement:a3 tag:v38 display:v26 depth:a4 embedded:v39])
+          -[NSMutableDictionary setObject:forKey:](self->_elementIsBlockLevel, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithBool:v29], node);
+          if ([(NSHTMLReader *)self _enterElement:node tag:tagName display:v26 depth:depth embedded:v39])
           {
             v37 = [(NSMutableAttributedString *)self->_attrStr length];
-            if ([(NSHTMLReader *)self _processElement:a3 tag:v38 display:v26 depth:a4])
+            if ([(NSHTMLReader *)self _processElement:node tag:tagName display:v26 depth:depth])
             {
-              v30 = a4;
+              depthCopy = depth;
               v31 = 0;
               do
               {
@@ -4176,13 +4176,13 @@ LABEL_55:
                   break;
                 }
 
-                if (v16 == v31 && v15)
+                if (startOffset == v31 && v15)
                 {
                   self->_domRangeStartIndex = [(NSMutableAttributedString *)self->_attrStr length];
                 }
 
-                v33 = v16 > v31 && v15;
-                if (v18 <= v31)
+                v33 = startOffset > v31 && v15;
+                if (endOffset <= v31)
                 {
                   v34 = v17;
                 }
@@ -4194,10 +4194,10 @@ LABEL_55:
 
                 if (!v33 && (v34 & 1) == 0)
                 {
-                  -[NSHTMLReader _traverseNode:depth:embedded:](self, "_traverseNode:depth:embedded:", [v40 objectAtIndex:v31], v30 + 1, v39);
+                  -[NSHTMLReader _traverseNode:depth:embedded:](self, "_traverseNode:depth:embedded:", [v40 objectAtIndex:v31], depthCopy + 1, v39);
                 }
 
-                if (++v31 >= v18)
+                if (++v31 >= endOffset)
                 {
                   v35 = v17;
                 }
@@ -4216,7 +4216,7 @@ LABEL_55:
               }
 
               while ((*&v36 & 4) == 0);
-              [(NSHTMLReader *)self _exitElement:a3 tag:v38 display:v26 depth:v30 startIndex:v37];
+              [(NSHTMLReader *)self _exitElement:node tag:tagName display:v26 depth:depthCopy startIndex:v37];
             }
           }
 
@@ -4230,16 +4230,16 @@ LABEL_55:
       {
         v15 = 0;
         v17 = 0;
-        v16 = 0;
+        startOffset = 0;
       }
 
-      v18 = v12;
+      endOffset = v12;
       goto LABEL_15;
     }
   }
 }
 
-- (void)_traverseFooterNode:(id)a3 depth:(int64_t)a4
+- (void)_traverseFooterNode:(id)node depth:(int64_t)depth
 {
   v7 = [(NSHTMLReader *)self _childrenForNode:?];
   v8 = [v7 count];
@@ -4258,7 +4258,7 @@ LABEL_55:
       goto LABEL_8;
     }
 
-    if (![(NSMutableArray *)self->_domStartAncestors containsObject:a3])
+    if (![(NSMutableArray *)self->_domStartAncestors containsObject:node])
     {
       return;
     }
@@ -4268,40 +4268,40 @@ LABEL_55:
 
   if (!domRange)
   {
-    v14 = 0;
+    startOffset = 0;
     v13 = 0;
 LABEL_13:
     v15 = 0;
-    v16 = v10;
+    endOffset = v10;
     goto LABEL_15;
   }
 
 LABEL_8:
-  v12 = [(DOMRange *)domRange startContainer];
-  v13 = v12 == a3;
-  if (v12 == a3)
+  startContainer = [(DOMRange *)domRange startContainer];
+  v13 = startContainer == node;
+  if (startContainer == node)
   {
-    v14 = [(DOMRange *)self->_domRange startOffset];
+    startOffset = [(DOMRange *)self->_domRange startOffset];
     *&self->_flags |= 2u;
   }
 
   else
   {
-    v14 = 0;
+    startOffset = 0;
   }
 
-  if ([(DOMRange *)self->_domRange endContainer]!= a3)
+  if ([(DOMRange *)self->_domRange endContainer]!= node)
   {
     goto LABEL_13;
   }
 
-  v16 = [(DOMRange *)self->_domRange endOffset];
+  endOffset = [(DOMRange *)self->_domRange endOffset];
   v15 = 1;
 LABEL_15:
-  if ([(NSHTMLReader *)self _enterElement:a3 tag:@"TBODY" display:@"table-row-group" depth:a4 embedded:1])
+  if ([(NSHTMLReader *)self _enterElement:node tag:@"TBODY" display:@"table-row-group" depth:depth embedded:1])
   {
     v17 = [(NSMutableAttributedString *)self->_attrStr length];
-    if ([(NSHTMLReader *)self _processElement:a3 tag:@"TBODY" display:@"table-row-group" depth:a4])
+    if ([(NSHTMLReader *)self _processElement:node tag:@"TBODY" display:@"table-row-group" depth:depth])
     {
       v24 = v17;
       v18 = 0;
@@ -4312,13 +4312,13 @@ LABEL_15:
           break;
         }
 
-        if (v14 == v18 && v13)
+        if (startOffset == v18 && v13)
         {
           self->_domRangeStartIndex = [(NSMutableAttributedString *)self->_attrStr length];
         }
 
-        v20 = v14 > v18 && v13;
-        if (v16 <= v18)
+        v20 = startOffset > v18 && v13;
+        if (endOffset <= v18)
         {
           v21 = v15;
         }
@@ -4330,10 +4330,10 @@ LABEL_15:
 
         if (!v20 && (v21 & 1) == 0)
         {
-          -[NSHTMLReader _traverseNode:depth:embedded:](self, "_traverseNode:depth:embedded:", [v7 objectAtIndex:v18], a4 + 1, 1);
+          -[NSHTMLReader _traverseNode:depth:embedded:](self, "_traverseNode:depth:embedded:", [v7 objectAtIndex:v18], depth + 1, 1);
         }
 
-        v22 = ++v18 >= v16 ? v15 : 0;
+        v22 = ++v18 >= endOffset ? v15 : 0;
         v23 = self->_flags;
         if (v22 == 1)
         {
@@ -4343,7 +4343,7 @@ LABEL_15:
       }
 
       while ((*&v23 & 4) == 0);
-      [(NSHTMLReader *)self _exitElement:a3 tag:@"TBODY" display:@"table-row-group" depth:a4 startIndex:v24];
+      [(NSHTMLReader *)self _exitElement:node tag:@"TBODY" display:@"table-row-group" depth:depth startIndex:v24];
     }
   }
 
@@ -4367,14 +4367,14 @@ LABEL_15:
   }
 }
 
-- (BOOL)_sanitizeWebArchiveArray:(id)a3
+- (BOOL)_sanitizeWebArchiveArray:(id)array
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [array countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (!v5)
   {
     return 0;
@@ -4389,7 +4389,7 @@ LABEL_15:
     {
       if (*v13 != v8)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(array);
       }
 
       v10 = *(*(&v12 + 1) + 8 * i);
@@ -4406,29 +4406,29 @@ LABEL_15:
       v7 = 1;
     }
 
-    v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v6 = [array countByEnumeratingWithState:&v12 objects:v16 count:16];
   }
 
   while (v6);
   return v7;
 }
 
-- (BOOL)_sanitizeWebArchiveDictionary:(id)a3
+- (BOOL)_sanitizeWebArchiveDictionary:(id)dictionary
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [a3 objectForKey:@"WebResourceResponse"];
+  v5 = [dictionary objectForKey:@"WebResourceResponse"];
   v6 = v5 != 0;
   if (v5)
   {
-    [a3 removeObjectForKey:@"WebResourceResponse"];
+    [dictionary removeObjectForKey:@"WebResourceResponse"];
   }
 
-  v7 = [a3 allKeys];
+  allKeys = [dictionary allKeys];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v8 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -4440,10 +4440,10 @@ LABEL_15:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
-        v12 = [a3 objectForKey:*(*(&v14 + 1) + 8 * v11)];
+        v12 = [dictionary objectForKey:*(*(&v14 + 1) + 8 * v11)];
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 && [(NSHTMLReader *)self _sanitizeWebArchiveDictionary:v12]|| (objc_opt_class(), (objc_opt_isKindOfClass()) && [(NSHTMLReader *)self _sanitizeWebArchiveArray:v12])
         {
@@ -4454,7 +4454,7 @@ LABEL_15:
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -4463,16 +4463,16 @@ LABEL_15:
   return v6;
 }
 
-- (id)_createWebArchiveForData:(id)a3
+- (id)_createWebArchiveForData:(id)data
 {
-  v5 = [(NSHTMLReader *)self _webArchiveClass];
-  if (!a3)
+  _webArchiveClass = [(NSHTMLReader *)self _webArchiveClass];
+  if (!data)
   {
     return 0;
   }
 
-  v6 = v5;
-  v7 = [MEMORY[0x1E696AE40] propertyListWithData:a3 options:1 format:0 error:0];
+  v6 = _webArchiveClass;
+  v7 = [MEMORY[0x1E696AE40] propertyListWithData:data options:1 format:0 error:0];
   if (!v7)
   {
     return 0;
@@ -4486,19 +4486,19 @@ LABEL_15:
 
   if ([(NSHTMLReader *)self _sanitizeWebArchiveDictionary:v7])
   {
-    a3 = [MEMORY[0x1E696AE40] dataWithPropertyList:v7 format:200 options:0 error:0];
-    if (!a3)
+    data = [MEMORY[0x1E696AE40] dataWithPropertyList:v7 format:200 options:0 error:0];
+    if (!data)
     {
       return 0;
     }
 
-    return [[v6 alloc] initWithData:a3];
+    return [[v6 alloc] initWithData:data];
   }
 
   result = [v7 objectForKey:@"WebMainResource"];
   if (result)
   {
-    return [[v6 alloc] initWithData:a3];
+    return [[v6 alloc] initWithData:data];
   }
 
   return result;
@@ -4513,20 +4513,20 @@ LABEL_15:
   }
 
   softLinkWebThreadLock();
-  v4 = [(NSHTMLReader *)self _webViewClass];
+  _webViewClass = [(NSHTMLReader *)self _webViewClass];
   v5 = [(NSDictionary *)self->_options objectForKey:NSBaseURLDocumentOption];
   v49 = [(NSDictionary *)self->_options objectForKey:@"CharacterEncoding"];
   v6 = [(NSDictionary *)self->_options objectForKey:NSTextEncodingNameDocumentOption];
   v51 = [(NSDictionary *)self->_options objectForKey:NSWebResourceLoadDelegateDocumentOption];
   v50 = [(NSDictionary *)self->_options objectForKey:@"WebPolicyDelegate"];
-  v7 = [(NSDictionary *)self->_options objectForKey:NSWebPreferencesDocumentOption];
+  _webPreferences = [(NSDictionary *)self->_options objectForKey:NSWebPreferencesDocumentOption];
   v53 = [(NSDictionary *)self->_options objectForKey:NSTimeoutDocumentOption];
   v52 = [(NSDictionary *)self->_options objectForKey:NSTextSizeMultiplierDocumentOption];
   v8 = [objc_msgSend(MEMORY[0x1E695E000] "standardUserDefaults")];
   bzero(&v58, 0x201uLL);
   v9 = [(NSData *)self->_data length];
   self->_errorCode = 1;
-  if (!v4)
+  if (!_webViewClass)
   {
     return;
   }
@@ -4630,7 +4630,7 @@ LABEL_103:
   }
 
 LABEL_38:
-  v24 = [[v4 alloc] initWithFrame:{0.0, 0.0, 800.0, 600.0}];
+  v24 = [[_webViewClass alloc] initWithFrame:{0.0, 0.0, 800.0, 600.0}];
   self->_webView = v24;
   if (v8)
   {
@@ -4642,7 +4642,7 @@ LABEL_38:
     v25 = *MEMORY[0x1E695D918];
   }
 
-  v26 = [(WebView *)v24 mainFrame];
+  mainFrame = [(WebView *)v24 mainFrame];
   v27 = [[NSHTMLWebDelegate alloc] initWithBaseURL:v5];
   self->_webDelegate = v27;
   if (v51)
@@ -4668,31 +4668,31 @@ LABEL_38:
   [(WebView *)self->_webView setResourceLoadDelegate:v28];
   [(WebView *)self->_webView setFrameLoadDelegate:self->_webDelegate];
   [(WebView *)self->_webView setPolicyDelegate:v29];
-  if (!v7)
+  if (!_webPreferences)
   {
-    v7 = [(NSHTMLReader *)self _webPreferences];
+    _webPreferences = [(NSHTMLReader *)self _webPreferences];
   }
 
-  [(WebView *)self->_webView setPreferences:v7];
-  [v7 setDefaultFontSize:{objc_msgSend(v7, "defaultFontSize")}];
-  self->_standardFontFamily = [v7 standardFontFamily];
-  self->_defaultFontSize = [v7 defaultFontSize];
-  v30 = [v7 minimumFontSize];
-  self->_minimumFontSize = v30;
+  [(WebView *)self->_webView setPreferences:_webPreferences];
+  [_webPreferences setDefaultFontSize:{objc_msgSend(_webPreferences, "defaultFontSize")}];
+  self->_standardFontFamily = [_webPreferences standardFontFamily];
+  self->_defaultFontSize = [_webPreferences defaultFontSize];
+  minimumFontSize = [_webPreferences minimumFontSize];
+  self->_minimumFontSize = minimumFontSize;
   if (self->_defaultFontSize <= 0.0)
   {
     self->_defaultFontSize = 12.0;
   }
 
-  if (v30 <= 0)
+  if (minimumFontSize <= 0)
   {
     self->_minimumFontSize = 1.0;
   }
 
   if (!v23 && v49)
   {
-    v31 = [v49 unsignedIntegerValue];
-    if (!v31 || (v32 = CFStringConvertNSStringEncodingToEncoding(v31), v32 == -1))
+    unsignedIntegerValue = [v49 unsignedIntegerValue];
+    if (!unsignedIntegerValue || (v32 = CFStringConvertNSStringEncodingToEncoding(unsignedIntegerValue), v32 == -1))
     {
       v23 = 0;
     }
@@ -4748,7 +4748,7 @@ LABEL_38:
     }
 
 LABEL_73:
-    -[WebFrame loadData:MIMEType:textEncodingName:baseURL:](v26, "loadData:MIMEType:textEncodingName:baseURL:", self->_data, @"text/html", v23, [v5 absoluteURL]);
+    -[WebFrame loadData:MIMEType:textEncodingName:baseURL:](mainFrame, "loadData:MIMEType:textEncodingName:baseURL:", self->_data, @"text/html", v23, [v5 absoluteURL]);
     goto LABEL_74;
   }
 
@@ -4759,7 +4759,7 @@ LABEL_73:
   }
 
 LABEL_71:
-  [(WebFrame *)v26 loadArchive:v22];
+  [(WebFrame *)mainFrame loadArchive:v22];
 
 LABEL_74:
   v37 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:v36];
@@ -4787,25 +4787,25 @@ LABEL_74:
   }
 
   while (v38 >= v34);
-  [(WebFrame *)v26 stopLoading];
+  [(WebFrame *)mainFrame stopLoading];
   if ([self->_webDelegate loadDidSucceed])
   {
-    v39 = [(WebFrame *)v26 dataSource];
-    self->_dataSource = v39;
-    if (v39)
+    dataSource = [(WebFrame *)mainFrame dataSource];
+    self->_dataSource = dataSource;
+    if (dataSource)
     {
-      v40 = [(WebDataSource *)v39 representation];
-      if (v40)
+      representation = [(WebDataSource *)dataSource representation];
+      if (representation)
       {
-        v41 = v40;
+        v41 = representation;
         if (objc_opt_respondsToSelector())
         {
-          v42 = [v41 DOMDocument];
-          self->_document = v42;
-          if (v42)
+          dOMDocument = [v41 DOMDocument];
+          self->_document = dOMDocument;
+          if (dOMDocument)
           {
             self->_errorCode = 0;
-            [(NSHTMLReader *)self _parseNode:v42];
+            [(NSHTMLReader *)self _parseNode:dOMDocument];
             if (self->_thumbnailLimit >= 1 && [(NSMutableAttributedString *)self->_attrStr length]> self->_thumbnailLimit)
             {
               [(NSMutableAttributedString *)self->_attrStr deleteCharactersInRange:?];
@@ -4814,18 +4814,18 @@ LABEL_74:
             [(NSHTMLReader *)self _adjustTrailingNewline];
             if (objc_opt_respondsToSelector())
             {
-              v43 = [(DOMDocument *)self->_document title];
-              if (v43)
+              title = [(DOMDocument *)self->_document title];
+              if (title)
               {
-                v44 = v43;
-                if ([(NSString *)v43 length])
+                v44 = title;
+                if ([(NSString *)title length])
                 {
                   [(NSMutableDictionary *)self->_documentAttrs setObject:v44 forKey:@"NSTitleDocumentAttribute"];
                 }
               }
             }
 
-            v45 = [(objc_class *)getNSColorClass_4() _disambiguated_due_to_CIImage_colorWithCGColor:[(WebFrame *)v26 _bodyBackgroundColor]];
+            v45 = [(objc_class *)getNSColorClass_4() _disambiguated_due_to_CIImage_colorWithCGColor:[(WebFrame *)mainFrame _bodyBackgroundColor]];
             v56 = 0;
             v57 = 0;
             v54 = 0.0;
@@ -4875,35 +4875,35 @@ LABEL_74:
 {
   if (self->_errorCode == -1)
   {
-    v3 = [(DOMRange *)self->_domRange commonAncestorContainer];
-    v4 = [(DOMRange *)self->_domRange startContainer];
-    for (self->_domStartAncestors = objc_alloc_init(MEMORY[0x1E695DF70]); v4; v4 = [(DOMNode *)v4 parentNode])
+    commonAncestorContainer = [(DOMRange *)self->_domRange commonAncestorContainer];
+    startContainer = [(DOMRange *)self->_domRange startContainer];
+    for (self->_domStartAncestors = objc_alloc_init(MEMORY[0x1E695DF70]); startContainer; startContainer = [(DOMNode *)startContainer parentNode])
     {
-      [(NSMutableArray *)self->_domStartAncestors addObject:v4];
-      if (v4 == v3)
+      [(NSMutableArray *)self->_domStartAncestors addObject:startContainer];
+      if (startContainer == commonAncestorContainer)
       {
         break;
       }
     }
 
-    v5 = [(DOMNode *)v3 ownerDocument];
-    self->_document = v5;
-    v6 = [(DOMDocument *)v5 webFrame];
-    self->_dataSource = [(WebFrame *)v6 dataSource];
-    v7 = [(WebFrame *)v6 webView];
-    if (v7)
+    ownerDocument = [(DOMNode *)commonAncestorContainer ownerDocument];
+    self->_document = ownerDocument;
+    webFrame = [(DOMDocument *)ownerDocument webFrame];
+    self->_dataSource = [(WebFrame *)webFrame dataSource];
+    webView = [(WebFrame *)webFrame webView];
+    if (webView)
     {
-      v8 = v7;
-      v9 = [(WebView *)v7 preferences];
+      v8 = webView;
+      preferences = [(WebView *)webView preferences];
       [(WebView *)v8 textSizeMultiplier];
       v11 = v10;
       self->_textSizeMultiplier = v11;
       self->_webViewTextSizeMultiplier = v11;
-      if (v9)
+      if (preferences)
       {
-        self->_standardFontFamily = [(WebPreferences *)v9 standardFontFamily];
-        self->_defaultFontSize = [(WebPreferences *)v9 defaultFontSize];
-        self->_minimumFontSize = [(WebPreferences *)v9 minimumFontSize];
+        self->_standardFontFamily = [(WebPreferences *)preferences standardFontFamily];
+        self->_defaultFontSize = [(WebPreferences *)preferences defaultFontSize];
+        self->_minimumFontSize = [(WebPreferences *)preferences minimumFontSize];
       }
     }
 
@@ -4928,7 +4928,7 @@ LABEL_74:
       {
         self->_domRangeStartIndex = 0;
         self->_errorCode = 0;
-        [(NSHTMLReader *)self _parseNode:v3];
+        [(NSHTMLReader *)self _parseNode:commonAncestorContainer];
         domRangeStartIndex = self->_domRangeStartIndex;
         if (domRangeStartIndex >= 1 && domRangeStartIndex <= [(NSMutableAttributedString *)self->_attrStr length])
         {
@@ -4953,11 +4953,11 @@ LABEL_74:
 
 - (void)_load
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v4 = _NSRunWebKitOnAppKitThread;
   if (_NSRunWebKitOnAppKitThread == 254)
   {
-    if (![v3 objectForKey:@"NSRunWebKitOnAppKitThread"])
+    if (![standardUserDefaults objectForKey:@"NSRunWebKitOnAppKitThread"])
     {
       _NSRunWebKitOnAppKitThread = 1;
       if (self->_domRange)
@@ -4968,7 +4968,7 @@ LABEL_74:
       goto LABEL_11;
     }
 
-    v4 = [v3 BOOLForKey:@"NSRunWebKitOnAppKitThread"];
+    v4 = [standardUserDefaults BOOLForKey:@"NSRunWebKitOnAppKitThread"];
     _NSRunWebKitOnAppKitThread = v4;
   }
 
@@ -5017,9 +5017,9 @@ LABEL_12:
   [(NSHTMLReader *)&v3 dealloc];
 }
 
-- (NSHTMLReader)initWithData:(id)a3 options:(id)a4
+- (NSHTMLReader)initWithData:(id)data options:(id)options
 {
-  v7 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v19.receiver = self;
   v19.super_class = NSHTMLReader;
   v8 = [(NSHTMLReader *)&v19 init];
@@ -5027,8 +5027,8 @@ LABEL_12:
   {
     *(v8 + 1) = objc_alloc_init(MEMORY[0x1E696AD40]);
     *(v8 + 2) = objc_alloc_init(MEMORY[0x1E695DF90]);
-    *(v8 + 3) = a3;
-    *(v8 + 5) = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:a4];
+    *(v8 + 3) = data;
+    *(v8 + 5) = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:options];
     *(v8 + 18) = objc_alloc_init(MEMORY[0x1E695DF70]);
     *(v8 + 19) = objc_alloc_init(MEMORY[0x1E695DF70]);
     *(v8 + 20) = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -5054,33 +5054,33 @@ LABEL_12:
     *(v8 + 39) = -1;
     *(v8 + 37) = 0;
     v8[332] = 1;
-    v9 = [a4 objectForKey:@"NSIndexing"];
+    v9 = [options objectForKey:@"NSIndexing"];
     if (v9)
     {
-      v10 = [v9 integerValue];
+      integerValue = [v9 integerValue];
     }
 
     else
     {
-      if ([v7 objectForKey:@"NSHTMLIndexing"])
+      if ([standardUserDefaults objectForKey:@"NSHTMLIndexing"])
       {
         v11 = @"NSHTMLIndexing";
       }
 
       else
       {
-        if (![v7 objectForKey:@"NSTextIndexing"])
+        if (![standardUserDefaults objectForKey:@"NSTextIndexing"])
         {
-          v10 = *(v8 + 37);
+          integerValue = *(v8 + 37);
 LABEL_10:
-          *(v8 + 82) = *(v8 + 82) & 0xFFFFFFF7 | (8 * (v10 > 0));
-          v12 = [a4 objectForKey:@"NSThumbnail"];
+          *(v8 + 82) = *(v8 + 82) & 0xFFFFFFF7 | (8 * (integerValue > 0));
+          v12 = [options objectForKey:@"NSThumbnail"];
           if (v12)
           {
             *(v8 + 38) = [v12 integerValue];
           }
 
-          v13 = [a4 objectForKey:@"NSTesting"];
+          v13 = [options objectForKey:@"NSTesting"];
           if (v13)
           {
             v14 = [v13 integerValue] > 0;
@@ -5088,7 +5088,7 @@ LABEL_10:
 
           else
           {
-            if (![v7 objectForKey:@"NSHTMLTesting"])
+            if (![standardUserDefaults objectForKey:@"NSHTMLTesting"])
             {
 LABEL_20:
               [*(v8 + 2) setObject:objc_msgSend(MEMORY[0x1E696B098] forKey:{"valueWithSize:", 612.0, 792.0), @"PaperSize"}];
@@ -5103,7 +5103,7 @@ LABEL_20:
               return v8;
             }
 
-            v14 = [v7 BOOLForKey:@"NSHTMLTesting"];
+            v14 = [standardUserDefaults BOOLForKey:@"NSHTMLTesting"];
           }
 
           if (v14)
@@ -5123,29 +5123,29 @@ LABEL_20:
         v11 = @"NSTextIndexing";
       }
 
-      v10 = [v7 integerForKey:v11];
+      integerValue = [standardUserDefaults integerForKey:v11];
     }
 
-    *(v8 + 37) = v10;
+    *(v8 + 37) = integerValue;
     goto LABEL_10;
   }
 
   return v8;
 }
 
-- (NSHTMLReader)initWithPath:(id)a3 options:(id)a4
+- (NSHTMLReader)initWithPath:(id)path options:(id)options
 {
-  v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:a3];
+  v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:path];
 
-  return [(NSHTMLReader *)self initWithData:v6 options:a4];
+  return [(NSHTMLReader *)self initWithData:v6 options:options];
 }
 
-- (NSHTMLReader)initWithDOMRange:(id)a3
+- (NSHTMLReader)initWithDOMRange:(id)range
 {
   v4 = [(NSHTMLReader *)self initWithData:0 options:0];
   if (v4)
   {
-    v4->_domRange = a3;
+    v4->_domRange = range;
   }
 
   return v4;
@@ -5177,10 +5177,10 @@ LABEL_20:
   return v4;
 }
 
-- (void)setMutableAttributedString:(id)a3
+- (void)setMutableAttributedString:(id)string
 {
   attrStr = self->_attrStr;
-  if (attrStr != a3)
+  if (attrStr != string)
   {
     if (attrStr)
     {
@@ -5188,7 +5188,7 @@ LABEL_20:
       v7 = self->_attrStr;
       if (v6)
       {
-        [a3 setAttributedString:v7];
+        [string setAttributedString:v7];
         v7 = self->_attrStr;
       }
     }
@@ -5198,7 +5198,7 @@ LABEL_20:
       v7 = 0;
     }
 
-    self->_attrStr = a3;
+    self->_attrStr = string;
   }
 }
 

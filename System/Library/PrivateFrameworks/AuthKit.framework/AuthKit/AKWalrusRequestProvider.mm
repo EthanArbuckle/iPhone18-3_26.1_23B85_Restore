@@ -1,126 +1,126 @@
 @interface AKWalrusRequestProvider
-- (AKWalrusRequestProvider)initWithContext:(id)a3 urlBagKey:(id)a4;
-- (BOOL)_validateDataForVerifyEnableWalrusAllowedRequest:(id)a3 error:(id *)a4;
-- (BOOL)_validateDataForWalrusStateUpdateToServerRequest:(id)a3 error:(id *)a4;
-- (BOOL)_validateJSONResponseData:(id)a3 error:(id *)a4;
-- (BOOL)signRequest:(id)a3 error:(id *)a4;
-- (BOOL)validateResponseData:(id)a3 error:(id *)a4;
-- (id)_AKAuthContextWithUsername:(id)a3 password:(id)a4;
-- (id)parseRefreshUrl:(id)a3;
+- (AKWalrusRequestProvider)initWithContext:(id)context urlBagKey:(id)key;
+- (BOOL)_validateDataForVerifyEnableWalrusAllowedRequest:(id)request error:(id *)error;
+- (BOOL)_validateDataForWalrusStateUpdateToServerRequest:(id)request error:(id *)error;
+- (BOOL)_validateJSONResponseData:(id)data error:(id *)error;
+- (BOOL)signRequest:(id)request error:(id *)error;
+- (BOOL)validateResponseData:(id)data error:(id *)error;
+- (id)_AKAuthContextWithUsername:(id)username password:(id)password;
+- (id)parseRefreshUrl:(id)url;
 - (unint64_t)expectedResponseType;
 - (unint64_t)requestBodyType;
-- (void)getPETForUsername:(id)a3 password:(id)a4 completion:(id)a5;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
+- (void)getPETForUsername:(id)username password:(id)password completion:(id)completion;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
 @end
 
 @implementation AKWalrusRequestProvider
 
-- (AKWalrusRequestProvider)initWithContext:(id)a3 urlBagKey:(id)a4
+- (AKWalrusRequestProvider)initWithContext:(id)context urlBagKey:(id)key
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v4 = v12;
-  v12 = 0;
+  objc_storeStrong(&v10, key);
+  v4 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v4;
   v9.super_class = AKWalrusRequestProvider;
   v8 = [(AKURLRequestProviderImpl *)&v9 initWithContext:location[0] urlBagKey:v10 shouldCacheResource:0];
-  v12 = v8;
-  objc_storeStrong(&v12, v8);
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
-    objc_storeStrong(&v12->_walrusContext, location[0]);
+    objc_storeStrong(&selfCopy->_walrusContext, location[0]);
   }
 
-  v6 = _objc_retain(v12);
+  v6 = _objc_retain(selfCopy);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
 - (unint64_t)expectedResponseType
 {
-  v3 = [(AKWalrusRequestProvider *)self reqInterceptToken];
+  reqInterceptToken = [(AKWalrusRequestProvider *)self reqInterceptToken];
   v5 = 0;
   v4 = 1;
-  if (!v3)
+  if (!reqInterceptToken)
   {
-    v6 = [(AKWalrusRequestProvider *)self refreshUrl];
+    refreshUrl = [(AKWalrusRequestProvider *)self refreshUrl];
     v5 = 1;
-    v4 = v6 != 0;
+    v4 = refreshUrl != 0;
   }
 
   if (v5)
   {
-    _objc_release(v6);
+    _objc_release(refreshUrl);
   }
 
-  _objc_release(v3);
+  _objc_release(reqInterceptToken);
   return !v4;
 }
 
 - (unint64_t)requestBodyType
 {
-  v3 = [(AKWalrusRequestProvider *)self refreshUrl];
-  _objc_release(v3);
-  return v3 == 0;
+  refreshUrl = [(AKWalrusRequestProvider *)self refreshUrl];
+  _objc_release(refreshUrl);
+  return refreshUrl == 0;
 }
 
-- (BOOL)signRequest:(id)a3 error:(id *)a4
+- (BOOL)signRequest:(id)request error:(id *)error
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v22[1] = a4;
+  objc_storeStrong(location, request);
+  v22[1] = error;
   v11 = [AKDServerUIController alloc];
-  v12 = [(AKURLRequestProviderImpl *)v24 client];
+  client = [(AKURLRequestProviderImpl *)selfCopy client];
   v22[0] = [(AKDServerUIController *)v11 initWithClient:?];
-  _objc_release(v12);
+  _objc_release(client);
   v13 = [AKAppleIDAuthenticationContext alloc];
-  v14 = [(AKWalrusRequestProvider *)v24 walrusContext];
+  walrusContext = [(AKWalrusRequestProvider *)selfCopy walrusContext];
   v21 = [v13 initWithAuthenticatedServerRequestContext:?];
-  _objc_release(v14);
+  _objc_release(walrusContext);
   [v21 set_shouldSendIdentityTokenForRemoteUI:1];
   [v21 set_shouldSendGrandSlamTokensForRemoteUI:1];
   v20 = [v22[0] resourceLoadDelegateWithContext:v21];
   [v20 setShouldSendPhoneNumber:1];
   [v20 setShouldSendSigningHeaders:1];
-  v15 = [(AKURLRequestProviderImpl *)v24 urlBagKey];
+  urlBagKey = [(AKURLRequestProviderImpl *)selfCopy urlBagKey];
   [v20 setInitialURLRequestKey:?];
-  _objc_release(v15);
-  v16 = [(AKURLRequestProviderImpl *)v24 urlBagKey];
+  _objc_release(urlBagKey);
+  urlBagKey2 = [(AKURLRequestProviderImpl *)selfCopy urlBagKey];
   [v20 setBagUrlKey:?];
-  _objc_release(v16);
-  v17 = [(AKURLRequestProviderImpl *)v24 dataCenterIdentifier];
+  _objc_release(urlBagKey2);
+  dataCenterIdentifier = [(AKURLRequestProviderImpl *)selfCopy dataCenterIdentifier];
   [v20 setDataCenterIdentifier:?];
-  _objc_release(v17);
-  v18 = [(AKWalrusRequestProvider *)v24 walrusContext];
-  [v20 setCliMode:{-[AKWalrusContext cliMode](v18, "cliMode")}];
-  _objc_release(v18);
+  _objc_release(dataCenterIdentifier);
+  walrusContext2 = [(AKWalrusRequestProvider *)selfCopy walrusContext];
+  [v20 setCliMode:{-[AKWalrusContext cliMode](walrusContext2, "cliMode")}];
+  _objc_release(walrusContext2);
   [v20 signRequest:location[0]];
-  v19 = [(AKWalrusRequestProvider *)v24 secondaryToken];
-  _objc_release(v19);
-  if (v19)
+  secondaryToken = [(AKWalrusRequestProvider *)selfCopy secondaryToken];
+  _objc_release(secondaryToken);
+  if (secondaryToken)
   {
     v8 = location[0];
-    v9 = [(AKWalrusRequestProvider *)v24 secondaryToken];
+    secondaryToken2 = [(AKWalrusRequestProvider *)selfCopy secondaryToken];
     [v8 setValue:? forHTTPHeaderField:?];
-    _objc_release(v9);
+    _objc_release(secondaryToken2);
   }
 
-  v7 = [(AKWalrusRequestProvider *)v24 reqInterceptToken];
-  _objc_release(v7);
-  if (v7)
+  reqInterceptToken = [(AKWalrusRequestProvider *)selfCopy reqInterceptToken];
+  _objc_release(reqInterceptToken);
+  if (reqInterceptToken)
   {
     v5 = location[0];
-    v6 = [(AKWalrusRequestProvider *)v24 reqInterceptToken];
+    reqInterceptToken2 = [(AKWalrusRequestProvider *)selfCopy reqInterceptToken];
     [v5 setValue:? forHTTPHeaderField:?];
-    _objc_release(v6);
+    _objc_release(reqInterceptToken2);
   }
 
   else
@@ -135,16 +135,16 @@
   return 1;
 }
 
-- (BOOL)validateResponseData:(id)a3 error:(id *)a4
+- (BOOL)validateResponseData:(id)data error:(id *)error
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11 = a4;
-  v7 = [(AKWalrusRequestProvider *)v13 reqInterceptToken];
-  _objc_release(v7);
-  if (v7)
+  objc_storeStrong(location, data);
+  errorCopy = error;
+  reqInterceptToken = [(AKWalrusRequestProvider *)selfCopy reqInterceptToken];
+  _objc_release(reqInterceptToken);
+  if (reqInterceptToken)
   {
     v14 = 1;
     v10 = 1;
@@ -152,22 +152,22 @@
 
   else
   {
-    v5 = [(AKWalrusRequestProvider *)v13 secondaryToken];
-    _objc_release(v5);
-    if (v5)
+    secondaryToken = [(AKWalrusRequestProvider *)selfCopy secondaryToken];
+    _objc_release(secondaryToken);
+    if (secondaryToken)
     {
-      v14 = [(AKWalrusRequestProvider *)v13 _validateJSONResponseData:location[0] error:v11];
+      v14 = [(AKWalrusRequestProvider *)selfCopy _validateJSONResponseData:location[0] error:errorCopy];
       v10 = 1;
     }
 
     else
     {
-      v8.receiver = v13;
+      v8.receiver = selfCopy;
       v8.super_class = AKWalrusRequestProvider;
-      v9 = [(AKURLRequestProviderImpl *)&v8 validateResponseData:location[0] error:v11];
+      v9 = [(AKURLRequestProviderImpl *)&v8 validateResponseData:location[0] error:errorCopy];
       if (v9)
       {
-        v14 = [(AKWalrusRequestProvider *)v13 _validateJSONResponseData:location[0] error:v11];
+        v14 = [(AKWalrusRequestProvider *)selfCopy _validateJSONResponseData:location[0] error:errorCopy];
       }
 
       else
@@ -183,41 +183,41 @@
   return v14 & 1;
 }
 
-- (BOOL)_validateJSONResponseData:(id)a3 error:(id *)a4
+- (BOOL)_validateJSONResponseData:(id)data error:(id *)error
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = [(AKURLRequestProviderImpl *)v13 urlBagKey];
+  objc_storeStrong(location, data);
+  urlBagKey = [(AKURLRequestProviderImpl *)selfCopy urlBagKey];
   v10 = 0;
   v9 = 1;
-  if (![(NSString *)v8 isEqualToString:AKURLBagKeyCustodianDataRecoveryServiceDisableComplete])
+  if (![(NSString *)urlBagKey isEqualToString:AKURLBagKeyCustodianDataRecoveryServiceDisableComplete])
   {
-    v11 = [(AKURLRequestProviderImpl *)v13 urlBagKey];
+    urlBagKey2 = [(AKURLRequestProviderImpl *)selfCopy urlBagKey];
     v10 = 1;
-    v9 = [(NSString *)v11 isEqualToString:AKURLBagKeyCustodianDataRecoveryServiceEnableComplete];
+    v9 = [(NSString *)urlBagKey2 isEqualToString:AKURLBagKeyCustodianDataRecoveryServiceEnableComplete];
   }
 
   if (v10)
   {
-    _objc_release(v11);
+    _objc_release(urlBagKey2);
   }
 
-  _objc_release(v8);
+  _objc_release(urlBagKey);
   if (v9)
   {
-    v14 = [(AKWalrusRequestProvider *)v13 _validateDataForWalrusStateUpdateToServerRequest:location[0] error:a4];
+    v14 = [(AKWalrusRequestProvider *)selfCopy _validateDataForWalrusStateUpdateToServerRequest:location[0] error:error];
   }
 
   else
   {
-    v5 = [(AKURLRequestProviderImpl *)v13 urlBagKey];
-    v6 = [(NSString *)v5 isEqualToString:AKURLBagKeyCustodianDataRecoveryServiceDisable];
-    _objc_release(v5);
+    urlBagKey3 = [(AKURLRequestProviderImpl *)selfCopy urlBagKey];
+    v6 = [(NSString *)urlBagKey3 isEqualToString:AKURLBagKeyCustodianDataRecoveryServiceDisable];
+    _objc_release(urlBagKey3);
     if (v6)
     {
-      v14 = [(AKWalrusRequestProvider *)v13 _validateDataForVerifyEnableWalrusAllowedRequest:location[0] error:a4];
+      v14 = [(AKWalrusRequestProvider *)selfCopy _validateDataForVerifyEnableWalrusAllowedRequest:location[0] error:error];
     }
 
     else
@@ -230,13 +230,13 @@
   return v14 & 1;
 }
 
-- (BOOL)_validateDataForVerifyEnableWalrusAllowedRequest:(id)a3 error:(id *)a4
+- (BOOL)_validateDataForVerifyEnableWalrusAllowedRequest:(id)request error:(id *)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v24 = a4;
+  objc_storeStrong(location, request);
+  errorCopy = error;
   v23 = [AAFSerialization dictionaryFromObject:location[0] ofType:@"application/json"];
   v19 = [v23 objectForKeyedSubscript:@"eligibilityStatus"];
   v20 = [v19 isEqualToString:@"eligible"];
@@ -254,7 +254,7 @@
     _objc_release(v16);
     if (v17)
     {
-      if (v24)
+      if (errorCopy)
       {
         v15 = [v23 objectForKeyedSubscript:@"ineligibilityReason"];
         _objc_release(v15);
@@ -267,7 +267,7 @@
           v13 = [NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1];
           v14 = [NSError errorWithDomain:v12 code:-5001 userInfo:?];
           v4 = v14;
-          *v24 = v14;
+          *errorCopy = v14;
           _objc_release(v13);
           objc_storeStrong(&v21, 0);
         }
@@ -276,7 +276,7 @@
         {
           v11 = [NSError errorWithDomain:AKWalrusErrorDomain code:-5001 userInfo:0];
           v5 = v11;
-          *v24 = v11;
+          *errorCopy = v11;
         }
       }
 
@@ -286,7 +286,7 @@
 
     else
     {
-      if (v24)
+      if (errorCopy)
       {
         v8 = AKWalrusErrorDomain;
         v27 = NSLocalizedDescriptionKey;
@@ -294,7 +294,7 @@
         v9 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
         v10 = [NSError errorWithDomain:v8 code:-5001 userInfo:?];
         v6 = v10;
-        *v24 = v10;
+        *errorCopy = v10;
         _objc_release(v9);
       }
 
@@ -308,20 +308,20 @@
   return v26 & 1;
 }
 
-- (BOOL)_validateDataForWalrusStateUpdateToServerRequest:(id)a3 error:(id *)a4
+- (BOOL)_validateDataForWalrusStateUpdateToServerRequest:(id)request error:(id *)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v22 = a4;
+  objc_storeStrong(location, request);
+  errorCopy = error;
   v21 = [AAFSerialization dictionaryFromObject:location[0] ofType:@"application/json"];
   v17 = [v21 objectForKeyedSubscript:@"status"];
   v18 = [v17 isEqualToString:@"failure"];
   _objc_release(v17);
   if (v18)
   {
-    if (v22)
+    if (errorCopy)
     {
       v15 = [v21 objectForKeyedSubscript:@"error"];
       _objc_release(v15);
@@ -342,7 +342,7 @@
         v13 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
         v14 = [NSError errorWithDomain:v11 code:v12 userInfo:?];
         v4 = v14;
-        *v22 = v14;
+        *errorCopy = v14;
         _objc_release(v13);
         objc_storeStrong(&v19, 0);
       }
@@ -351,7 +351,7 @@
       {
         v7 = [NSError errorWithDomain:AKWalrusErrorDomain code:-5001 userInfo:0];
         v5 = v7;
-        *v22 = v7;
+        *errorCopy = v7;
       }
     }
 
@@ -368,41 +368,41 @@
   return v24 & 1;
 }
 
-- (id)parseRefreshUrl:(id)a3
+- (id)parseRefreshUrl:(id)url
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, url);
   v3 = [NSXMLParser alloc];
   v6 = [v3 initWithData:location[0]];
-  [v6 setDelegate:v8];
+  [v6 setDelegate:selfCopy];
   [v6 parse];
-  v5 = [(AKWalrusRequestProvider *)v8 refreshUrl];
+  refreshUrl = [(AKWalrusRequestProvider *)selfCopy refreshUrl];
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 
-  return v5;
+  return refreshUrl;
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, parser);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, element);
   v14 = 0;
-  objc_storeStrong(&v14, a5);
+  objc_storeStrong(&v14, i);
   v13 = 0;
-  objc_storeStrong(&v13, a6);
+  objc_storeStrong(&v13, name);
   v12 = 0;
-  objc_storeStrong(&v12, a7);
+  objc_storeStrong(&v12, attributes);
   if ([v15 isEqualToString:@"clientInfo"])
   {
     v11 = [v12 objectForKey:@"refreshUrl"];
-    [(AKWalrusRequestProvider *)v17 setRefreshUrl:v11];
+    [(AKWalrusRequestProvider *)selfCopy setRefreshUrl:v11];
     objc_storeStrong(&v11, 0);
   }
 
@@ -413,20 +413,20 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)_AKAuthContextWithUsername:(id)a3 password:(id)a4
+- (id)_AKAuthContextWithUsername:(id)username password:(id)password
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, username);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, password);
   v9 = objc_alloc_init(AKAppleIDAuthenticationContext);
-  v7 = [(AKWalrusRequestProvider *)v12 walrusContext];
-  v6 = [(AKWalrusContext *)v7 altDSID];
+  walrusContext = [(AKWalrusRequestProvider *)selfCopy walrusContext];
+  altDSID = [(AKWalrusContext *)walrusContext altDSID];
   [v9 setAltDSID:?];
-  _objc_release(v6);
-  _objc_release(v7);
+  _objc_release(altDSID);
+  _objc_release(walrusContext);
   [v9 setUsername:location[0]];
   [v9 _setPassword:v10];
   [v9 setAuthenticationType:1];
@@ -438,17 +438,17 @@
   return v8;
 }
 
-- (void)getPETForUsername:(id)a3 password:(id)a4 completion:(id)a5
+- (void)getPETForUsername:(id)username password:(id)password completion:(id)completion
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, username);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, password);
   v16 = 0;
-  objc_storeStrong(&v16, a5);
-  v15 = [(AKWalrusRequestProvider *)v19 _AKAuthContextWithUsername:location[0] password:v17];
+  objc_storeStrong(&v16, completion);
+  v15 = [(AKWalrusRequestProvider *)selfCopy _AKAuthContextWithUsername:location[0] password:v17];
   v14 = objc_alloc_init(AKAppleIDAuthenticationController);
   v8 = v14;
   v7 = v15;

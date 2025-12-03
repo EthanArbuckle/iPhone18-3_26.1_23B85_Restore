@@ -1,12 +1,12 @@
 @interface TIKeyboardTyper
 - (BOOL)asyncPredictions;
-- (BOOL)attemptToTapAutocorrectionWithString:(id)a3;
-- (BOOL)attemptToTapPredictionBarCandidateWithString:(id)a3;
-- (BOOL)attemptToTapPredictionWithString:(id)a3;
+- (BOOL)attemptToTapAutocorrectionWithString:(id)string;
+- (BOOL)attemptToTapPredictionBarCandidateWithString:(id)string;
+- (BOOL)attemptToTapPredictionWithString:(id)string;
 - (BOOL)changeToNearestAlphabeticPlane;
-- (BOOL)changeToNearestKeyplaneWithString:(id)a3;
+- (BOOL)changeToNearestKeyplaneWithString:(id)string;
 - (BOOL)hardwareKeyboardMode;
-- (BOOL)hasPrediction:(id)a3;
+- (BOOL)hasPrediction:(id)prediction;
 - (BOOL)inPartialCandidateSelection;
 - (BOOL)inlineCompletionEnabled;
 - (BOOL)insertsSpaceAfterPredictiveInput;
@@ -15,8 +15,8 @@
 - (BOOL)lastInputWasSelection;
 - (BOOL)longPredictionListEnabled;
 - (BOOL)nextKeyIsMultitap;
-- (BOOL)postTokenisString:(id)a3 i:(unint64_t)a4;
-- (BOOL)priorTokenisString:(id)a3 i:(unint64_t)a4;
+- (BOOL)postTokenisString:(id)string i:(unint64_t)i;
+- (BOOL)priorTokenisString:(id)string i:(unint64_t)i;
 - (BOOL)shouldSkipCandidateSelection;
 - (BOOL)usePartialCandidates;
 - (BOOL)usesAutocapitalization;
@@ -24,7 +24,7 @@
 - (BOOL)usesPrediction;
 - (BOOL)usesTransliteration;
 - (BOOL)wordLearningEnabled;
-- (CGPoint)pointForAttemptedTapOnKey:(id)a3 withError:(id)a4;
+- (CGPoint)pointForAttemptedTapOnKey:(id)key withError:(id)error;
 - (NSArray)inlineCompletionCandidates;
 - (NSArray)predictionBarCandidates;
 - (NSArray)predictions;
@@ -40,109 +40,109 @@
 - (TIKeyboardCandidateResultSet)candidateResultSet;
 - (TIKeyboardInputManager)inputManager;
 - (TIKeyboardInputManagerFactory)keyboardInputManagerFactory;
-- (TIKeyboardTyper)initWithInputMode:(id)a3;
+- (TIKeyboardTyper)initWithInputMode:(id)mode;
 - (TIKeyboardTyperUserModel)userModel;
 - (UIKBTree)keyboard;
 - (UIKBTree)keyplane;
 - (_NSRange)selectedRange;
-- (id)_keyplaneCloserToKeyWithString:(id)a3;
-- (id)_logStringForTouchedKey:(id)a3;
-- (id)_performGestureKeyInput:(id)a3 timestamp:(double)a4 typingLog:(id)a5;
-- (id)_performTapAtLocation:(CGPoint)a3 timestamp:(double)a4 fingerID:(int)a5 secondaryString:(BOOL)a6;
-- (id)_performTapAtLocation:(CGPoint)a3 timestamp:(double)a4 intendedKey:(id)a5 touchedKey:(id)a6 secondaryString:(BOOL)a7 touchError:(id)a8 typingLog:(id)a9;
-- (id)_performTouchEvent:(id)a3 typingLog:(id)a4;
-- (id)_performVariantKey:(id)a3 timestamp:(double)a4 typingLog:(id)a5;
+- (id)_keyplaneCloserToKeyWithString:(id)string;
+- (id)_logStringForTouchedKey:(id)key;
+- (id)_performGestureKeyInput:(id)input timestamp:(double)timestamp typingLog:(id)log;
+- (id)_performTapAtLocation:(CGPoint)location timestamp:(double)timestamp fingerID:(int)d secondaryString:(BOOL)string;
+- (id)_performTapAtLocation:(CGPoint)location timestamp:(double)timestamp intendedKey:(id)key touchedKey:(id)touchedKey secondaryString:(BOOL)string touchError:(id)error typingLog:(id)log;
+- (id)_performTouchEvent:(id)event typingLog:(id)log;
+- (id)_performVariantKey:(id)key timestamp:(double)timestamp typingLog:(id)log;
 - (id)candidateBarCandidates;
-- (id)candidatesForString:(id)a3;
-- (id)displayStringOverrideForKey:(id)a3;
-- (id)externalStringToInternal:(id)a3;
-- (id)inputSegmentsForContinuousPathString:(id)a3;
-- (id)internalStringToExternal:(id)a3;
-- (id)keyContainingPoint:(CGPoint)a3 inKeyplane:(id)a4;
-- (id)keyToAccessKeyplaneCloserToKeyString:(id)a3;
-- (id)keyWithString:(id)a3 inKeyplane:(id)a4;
-- (id)keyWithString:(id)a3 inKeyplane:(id)a4 includeSecondaryStrings:(BOOL)a5;
-- (id)mapShiftedKeyToUnShiftedKeyExcludeCapitalization:(id)a3;
-- (id)mergeHyphenatedWord:(id)a3 string:(id)a4;
-- (id)performTapAtKey:(id)a3 biasedTowards:(id)a4 biasWeight:(float)a5;
-- (id)performTapAtLocation:(CGPoint)a3;
-- (id)performTouchUpAtLocation:(CGPoint)a3 radius:(float)a4 timestamp:(double)a5 pathIndex:(unint64_t)a6 fingerID:(int)a7 secondaryString:(BOOL)a8;
+- (id)candidatesForString:(id)string;
+- (id)displayStringOverrideForKey:(id)key;
+- (id)externalStringToInternal:(id)internal;
+- (id)inputSegmentsForContinuousPathString:(id)string;
+- (id)internalStringToExternal:(id)external;
+- (id)keyContainingPoint:(CGPoint)point inKeyplane:(id)keyplane;
+- (id)keyToAccessKeyplaneCloserToKeyString:(id)string;
+- (id)keyWithString:(id)string inKeyplane:(id)keyplane;
+- (id)keyWithString:(id)string inKeyplane:(id)keyplane includeSecondaryStrings:(BOOL)strings;
+- (id)mapShiftedKeyToUnShiftedKeyExcludeCapitalization:(id)capitalization;
+- (id)mergeHyphenatedWord:(id)word string:(id)string;
+- (id)performTapAtKey:(id)key biasedTowards:(id)towards biasWeight:(float)weight;
+- (id)performTapAtLocation:(CGPoint)location;
+- (id)performTouchUpAtLocation:(CGPoint)location radius:(float)radius timestamp:(double)timestamp pathIndex:(unint64_t)index fingerID:(int)d secondaryString:(BOOL)string;
 - (id)predictationBarDebugString;
-- (id)shiftKeyToAccessKeyplaneCloserToKeyString:(id)a3;
-- (id)splitDigraphsInString:(id)a3;
-- (id)tokensForString:(id)a3;
-- (int64_t)performTouchDownAtLocation:(CGPoint)a3 radius:(float)a4 timestamp:(double)a5 pathIndex:(unint64_t)a6 fingerID:(int)a7;
-- (int64_t)performTouchDragAtLocation:(CGPoint)a3 radius:(float)a4 timestamp:(double)a5 pathIndex:(unint64_t)a6 fingerID:(int)a7;
+- (id)shiftKeyToAccessKeyplaneCloserToKeyString:(id)string;
+- (id)splitDigraphsInString:(id)string;
+- (id)tokensForString:(id)string;
+- (int64_t)performTouchDownAtLocation:(CGPoint)location radius:(float)radius timestamp:(double)timestamp pathIndex:(unint64_t)index fingerID:(int)d;
+- (int64_t)performTouchDragAtLocation:(CGPoint)location radius:(float)radius timestamp:(double)timestamp pathIndex:(unint64_t)index fingerID:(int)d;
 - (unint64_t)autocapitalizationType;
 - (unint64_t)autocorrectionType;
 - (unint64_t)cursorLocationInMarkedText;
 - (void)_bumpTouchPathID;
-- (void)_finishKeystrokeAndRecordPredictionsInTypingLog:(id)a3 touchedKey:(id)a4 insertedKey:(id)a5 typingLog:(id)a6;
-- (void)_performAcceptCandidate:(id)a3 timestamp:(double)a4 typingLog:(id)a5 predictiveCandidate:(BOOL)a6 intendedTransliteration:(id)a7;
-- (void)_performRejectCandidate:(id)a3 timestamp:(double)a4 typingLog:(id)a5;
-- (void)_skipTapTimestamp:(double)a3 intendedKey:(id)a4 typingLog:(id)a5;
+- (void)_finishKeystrokeAndRecordPredictionsInTypingLog:(id)log touchedKey:(id)key insertedKey:(id)insertedKey typingLog:(id)typingLog;
+- (void)_performAcceptCandidate:(id)candidate timestamp:(double)timestamp typingLog:(id)log predictiveCandidate:(BOOL)predictiveCandidate intendedTransliteration:(id)transliteration;
+- (void)_performRejectCandidate:(id)candidate timestamp:(double)timestamp typingLog:(id)log;
+- (void)_skipTapTimestamp:(double)timestamp intendedKey:(id)key typingLog:(id)log;
 - (void)acceptAutocorrection;
-- (void)acceptCandidate:(id)a3;
-- (void)acceptCandidateFromPredictionBar:(id)a3;
-- (void)acceptCandidateInputEvent:(id)a3 fromCandidateBar:(BOOL)a4;
-- (void)acceptCandidateViaKeyboard:(id)a3;
-- (void)acceptPredictiveCandidate:(id)a3;
-- (void)adjustCursorByOffset:(int64_t)a3;
-- (void)adjustPhraseBoundaryByOffset:(int64_t)a3 granularity:(int)a4;
-- (void)adjustPhraseBoundaryInForwardDirection:(BOOL)a3 granularity:(int)a4;
-- (void)attemptTapOnKeyWithString:(id)a3;
-- (void)attemptTapOnKeyWithString:(id)a3 withErrorGenerator:(id)a4 typingLog:(id)a5;
-- (void)attemptToDeleteWithCount:(unsigned int)a3;
-- (void)attemptToRapidDeleteCharacters:(unsigned int)a3;
-- (void)attemptToStrokeWord:(id)a3 startTime:(double)a4 duration:(double)a5 typingLog:(id)a6 callback:(id)a7;
-- (void)attemptToTapKeys:(id)a3;
-- (void)attemptToTapPredictionWithLiteral:(id)a3;
-- (void)attemptToTypeIntended:(id)a3 expected:(id)a4 typingLog:(id)a5;
-- (void)attemptToTypeText:(id)a3 typingLog:(id)a4;
-- (void)attemptToTypeWithLog:(id)a3;
-- (void)candidateRejected:(id)a3;
+- (void)acceptCandidate:(id)candidate;
+- (void)acceptCandidateFromPredictionBar:(id)bar;
+- (void)acceptCandidateInputEvent:(id)event fromCandidateBar:(BOOL)bar;
+- (void)acceptCandidateViaKeyboard:(id)keyboard;
+- (void)acceptPredictiveCandidate:(id)candidate;
+- (void)adjustCursorByOffset:(int64_t)offset;
+- (void)adjustPhraseBoundaryByOffset:(int64_t)offset granularity:(int)granularity;
+- (void)adjustPhraseBoundaryInForwardDirection:(BOOL)direction granularity:(int)granularity;
+- (void)attemptTapOnKeyWithString:(id)string;
+- (void)attemptTapOnKeyWithString:(id)string withErrorGenerator:(id)generator typingLog:(id)log;
+- (void)attemptToDeleteWithCount:(unsigned int)count;
+- (void)attemptToRapidDeleteCharacters:(unsigned int)characters;
+- (void)attemptToStrokeWord:(id)word startTime:(double)time duration:(double)duration typingLog:(id)log callback:(id)callback;
+- (void)attemptToTapKeys:(id)keys;
+- (void)attemptToTapPredictionWithLiteral:(id)literal;
+- (void)attemptToTypeIntended:(id)intended expected:(id)expected typingLog:(id)log;
+- (void)attemptToTypeText:(id)text typingLog:(id)log;
+- (void)attemptToTypeWithLog:(id)log;
+- (void)candidateRejected:(id)rejected;
 - (void)commitText;
 - (void)dealloc;
-- (void)generateAutocorrectionsWithShiftState:(int)a3;
+- (void)generateAutocorrectionsWithShiftState:(int)state;
 - (void)generateCandidates;
-- (void)insertText:(id)a3;
-- (void)learnWord:(id)a3 withCount:(unint64_t)a4;
-- (void)linkWithUserActionStream:(id)a3;
-- (void)performStrokeForPath:(id)a3 typingLog:(id)a4 callback:(id)a5;
-- (void)performTouchCancelAtLocation:(CGPoint)a3 radius:(float)a4 timestamp:(double)a5 pathIndex:(unint64_t)a6 fingerID:(int)a7;
-- (void)performTouchEndRestAtLocation:(CGPoint)a3 radius:(float)a4 timestamp:(double)a5 pathIndex:(unint64_t)a6 fingerID:(int)a7;
-- (void)performTouchRestAtLocation:(CGPoint)a3 radius:(float)a4 timestamp:(double)a5 pathIndex:(unint64_t)a6 fingerID:(int)a7;
-- (void)registerLearning:(id)a3 fullCandidate:(id)a4 mode:(id)a5;
+- (void)insertText:(id)text;
+- (void)learnWord:(id)word withCount:(unint64_t)count;
+- (void)linkWithUserActionStream:(id)stream;
+- (void)performStrokeForPath:(id)path typingLog:(id)log callback:(id)callback;
+- (void)performTouchCancelAtLocation:(CGPoint)location radius:(float)radius timestamp:(double)timestamp pathIndex:(unint64_t)index fingerID:(int)d;
+- (void)performTouchEndRestAtLocation:(CGPoint)location radius:(float)radius timestamp:(double)timestamp pathIndex:(unint64_t)index fingerID:(int)d;
+- (void)performTouchRestAtLocation:(CGPoint)location radius:(float)radius timestamp:(double)timestamp pathIndex:(unint64_t)index fingerID:(int)d;
+- (void)registerLearning:(id)learning fullCandidate:(id)candidate mode:(id)mode;
 - (void)rejectAutocorrection;
 - (void)reset;
-- (void)setAsyncPredictions:(BOOL)a3;
-- (void)setAutocapitalizationType:(unint64_t)a3;
-- (void)setAutocorrectionList:(id)a3;
-- (void)setAutocorrectionType:(unint64_t)a3;
-- (void)setClientIdentifier:(id)a3;
-- (void)setErrorGenerator:(id)a3;
-- (void)setHardwareKeyboardMode:(BOOL)a3;
-- (void)setInlineCompletionEnabled:(BOOL)a3;
-- (void)setInputContextHistory:(id)a3;
-- (void)setInputModeIdentifier:(id)a3;
-- (void)setInsertsSpaceAfterPredictiveInput:(BOOL)a3;
-- (void)setKeyboard:(id)a3;
-- (void)setKeyboardInputManagerFactory:(id)a3;
-- (void)setLastInputWasSelection:(BOOL)a3;
-- (void)setLongPredictionListEnabled:(BOOL)a3;
-- (void)setNextKeyIsMultitap:(BOOL)a3;
-- (void)setRecipientIdentifier:(id)a3;
-- (void)setSelectedRange:(_NSRange)a3;
+- (void)setAsyncPredictions:(BOOL)predictions;
+- (void)setAutocapitalizationType:(unint64_t)type;
+- (void)setAutocorrectionList:(id)list;
+- (void)setAutocorrectionType:(unint64_t)type;
+- (void)setClientIdentifier:(id)identifier;
+- (void)setErrorGenerator:(id)generator;
+- (void)setHardwareKeyboardMode:(BOOL)mode;
+- (void)setInlineCompletionEnabled:(BOOL)enabled;
+- (void)setInputContextHistory:(id)history;
+- (void)setInputModeIdentifier:(id)identifier;
+- (void)setInsertsSpaceAfterPredictiveInput:(BOOL)input;
+- (void)setKeyboard:(id)keyboard;
+- (void)setKeyboardInputManagerFactory:(id)factory;
+- (void)setLastInputWasSelection:(BOOL)selection;
+- (void)setLongPredictionListEnabled:(BOOL)enabled;
+- (void)setNextKeyIsMultitap:(BOOL)multitap;
+- (void)setRecipientIdentifier:(id)identifier;
+- (void)setSelectedRange:(_NSRange)range;
 - (void)setShiftedKeyToUnShiftedKeyExcludeCapitalizationMap;
-- (void)setShouldSkipCandidateSelection:(BOOL)a3;
-- (void)setUserModel:(id)a3;
-- (void)setUsesAutocapitalization:(BOOL)a3;
-- (void)setUsesAutocorrection:(BOOL)a3;
-- (void)setUsesPrediction:(BOOL)a3;
-- (void)setUsesTransliteration:(BOOL)a3;
-- (void)setWordLearningEnabled:(BOOL)a3;
+- (void)setShouldSkipCandidateSelection:(BOOL)selection;
+- (void)setUserModel:(id)model;
+- (void)setUsesAutocapitalization:(BOOL)autocapitalization;
+- (void)setUsesAutocorrection:(BOOL)autocorrection;
+- (void)setUsesPrediction:(BOOL)prediction;
+- (void)setUsesTransliteration:(BOOL)transliteration;
+- (void)setWordLearningEnabled:(BOOL)enabled;
 - (void)suspendAndResume;
-- (void)syncToDocumentState:(id)a3;
+- (void)syncToDocumentState:(id)state;
 - (void)syncToEmptyDocument;
 - (void)tearDown;
 @end
@@ -151,23 +151,23 @@
 
 - (BOOL)inPartialCandidateSelection
 {
-  v2 = [(TIKeyboardTyper *)self userActionStream];
-  v3 = [v2 inPartialCandidateSelection];
+  userActionStream = [(TIKeyboardTyper *)self userActionStream];
+  inPartialCandidateSelection = [userActionStream inPartialCandidateSelection];
 
-  return v3;
+  return inPartialCandidateSelection;
 }
 
 - (BOOL)usePartialCandidates
 {
-  v2 = [(TIKeyboardTyper *)self userModel];
-  v3 = [v2 usePartialCandidates];
+  userModel = [(TIKeyboardTyper *)self userModel];
+  usePartialCandidates = [userModel usePartialCandidates];
 
-  return v3;
+  return usePartialCandidates;
 }
 
-- (void)learnWord:(id)a3 withCount:(unint64_t)a4
+- (void)learnWord:(id)word withCount:(unint64_t)count
 {
-  v6 = a3;
+  wordCopy = word;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __39__TIKeyboardTyper_learnWord_withCount___block_invoke;
@@ -178,13 +178,13 @@
   [(TIKeyboardTyper *)self syncToEmptyDocument];
   [(TIKeyboardTyper *)self attemptToTypeText:@"- -  - - . "];
   [(TIKeyboardTyper *)self syncToEmptyDocument];
-  for (; a4; --a4)
+  for (; count; --count)
   {
     v8 = v7[2](v7);
     [(TIKeyboardTyper *)self attemptToTypeText:v8];
 
     [(TIKeyboardTyper *)self attemptToTypeText:@" "];
-    [(TIKeyboardTyper *)self attemptToTypeText:v6];
+    [(TIKeyboardTyper *)self attemptToTypeText:wordCopy];
     [(TIKeyboardTyper *)self rejectAutocorrection];
     [(TIKeyboardTyper *)self attemptToTypeText:@" "];
     v9 = v7[2](v7);
@@ -215,32 +215,32 @@ id __39__TIKeyboardTyper_learnWord_withCount___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)splitDigraphsInString:(id)a3
+- (id)splitDigraphsInString:(id)string
 {
-  v4 = a3;
-  v5 = [(TIKeyboardTyper *)self inputMode];
-  v6 = [v5 languageWithRegion];
-  v7 = [v6 hasPrefix:@"de_"];
+  stringCopy = string;
+  inputMode = [(TIKeyboardTyper *)self inputMode];
+  languageWithRegion = [inputMode languageWithRegion];
+  v7 = [languageWithRegion hasPrefix:@"de_"];
 
   if (v7)
   {
-    v8 = [v4 stringByReplacingOccurrencesOfString:@"ß" withString:@"ss"];
+    v8 = [stringCopy stringByReplacingOccurrencesOfString:@"ß" withString:@"ss"];
 
-    v9 = [(TIKeyboardTyper *)self keyboard];
-    v10 = [v9 subtrees];
-    v11 = [v10 objectAtIndex:0];
+    keyboard = [(TIKeyboardTyper *)self keyboard];
+    subtrees = [keyboard subtrees];
+    v11 = [subtrees objectAtIndex:0];
 
     if ([v11 isShiftKeyplane])
     {
-      v12 = [(TIKeyboardTyper *)self keyboard];
-      v13 = [v11 shiftAlternateKeyplaneName];
-      v14 = [v12 subtreeWithName:v13];
+      keyboard2 = [(TIKeyboardTyper *)self keyboard];
+      shiftAlternateKeyplaneName = [v11 shiftAlternateKeyplaneName];
+      v14 = [keyboard2 subtreeWithName:shiftAlternateKeyplaneName];
 
       v11 = v14;
     }
 
-    v15 = [(TIKeyboardTyper *)self keyboardController];
-    v16 = [v15 keyCodeWithString:@"ü" inKeyplane:v11];
+    keyboardController = [(TIKeyboardTyper *)self keyboardController];
+    v16 = [keyboardController keyCodeWithString:@"ü" inKeyplane:v11];
 
     if (v16 == -1)
     {
@@ -260,16 +260,16 @@ id __39__TIKeyboardTyper_learnWord_withCount___block_invoke(uint64_t a1)
 
   else
   {
-    v22 = [(TIKeyboardTyper *)self inputMode];
-    v23 = [v22 languageWithRegion];
-    v24 = [v23 hasPrefix:@"fr_"];
+    inputMode2 = [(TIKeyboardTyper *)self inputMode];
+    languageWithRegion2 = [inputMode2 languageWithRegion];
+    v24 = [languageWithRegion2 hasPrefix:@"fr_"];
 
     if (!v24)
     {
       goto LABEL_9;
     }
 
-    v25 = [v4 stringByReplacingOccurrencesOfString:@"æ" withString:@"ae"];
+    v25 = [stringCopy stringByReplacingOccurrencesOfString:@"æ" withString:@"ae"];
 
     v26 = [v25 stringByReplacingOccurrencesOfString:@"œ" withString:@"oe"];
 
@@ -278,36 +278,36 @@ id __39__TIKeyboardTyper_learnWord_withCount___block_invoke(uint64_t a1)
     v8 = [v11 stringByReplacingOccurrencesOfString:@"Œ" withString:@"OE"];
   }
 
-  v4 = v8;
+  stringCopy = v8;
 LABEL_9:
 
-  return v4;
+  return stringCopy;
 }
 
-- (id)internalStringToExternal:(id)a3
+- (id)internalStringToExternal:(id)external
 {
-  v4 = a3;
-  v5 = [(TIKeyboardTyper *)self keyboardController];
-  v6 = [v5 inputManager];
-  v7 = [v6 internalStringToExternal:v4];
+  externalCopy = external;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  inputManager = [keyboardController inputManager];
+  v7 = [inputManager internalStringToExternal:externalCopy];
 
   return v7;
 }
 
-- (id)externalStringToInternal:(id)a3
+- (id)externalStringToInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [(TIKeyboardTyper *)self keyboardController];
-  v6 = [v5 inputManager];
-  v7 = [v6 externalStringToInternal:v4];
+  internalCopy = internal;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  inputManager = [keyboardController inputManager];
+  v7 = [inputManager externalStringToInternal:internalCopy];
 
   return v7;
 }
 
-- (id)inputSegmentsForContinuousPathString:(id)a3
+- (id)inputSegmentsForContinuousPathString:(id)string
 {
-  v4 = TITestTyperTokensForString(a3, 0);
-  v5 = [MEMORY[0x277CBEB18] array];
+  v4 = TITestTyperTokensForString(string, 0);
+  array = [MEMORY[0x277CBEB18] array];
   if ([v4 count])
   {
     v6 = 0;
@@ -317,14 +317,14 @@ LABEL_9:
       v8 = [v4 objectAtIndex:v6];
       if (v7)
       {
-        v9 = [(TIKeyboardTyper *)self mergeHyphenatedWord:v5 string:v8];
+        v9 = [(TIKeyboardTyper *)self mergeHyphenatedWord:array string:v8];
 
         v8 = v9;
       }
 
       if ([v8 isEqualToString:@"-"] && -[TIKeyboardTyper priorTokenisString:i:](self, "priorTokenisString:i:", v4, v6) && -[TIKeyboardTyper postTokenisString:i:](self, "postTokenisString:i:", v4, v6))
       {
-        v10 = [(TIKeyboardTyper *)self mergeHyphenatedWord:v5 string:v8];
+        v10 = [(TIKeyboardTyper *)self mergeHyphenatedWord:array string:v8];
 
         v7 = 1;
         v8 = v10;
@@ -335,7 +335,7 @@ LABEL_9:
         v7 = 0;
       }
 
-      [v5 addObject:v8];
+      [array addObject:v8];
 
       ++v6;
     }
@@ -343,72 +343,72 @@ LABEL_9:
     while (v6 < [v4 count]);
   }
 
-  return v5;
+  return array;
 }
 
-- (id)mergeHyphenatedWord:(id)a3 string:(id)a4
+- (id)mergeHyphenatedWord:(id)word string:(id)string
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  wordCopy = word;
+  stringCopy = string;
+  if ([wordCopy count])
   {
-    v7 = [v5 lastObject];
-    [v5 removeLastObject];
-    v8 = [v7 stringByAppendingString:v6];
+    lastObject = [wordCopy lastObject];
+    [wordCopy removeLastObject];
+    v8 = [lastObject stringByAppendingString:stringCopy];
   }
 
   else
   {
-    v8 = v6;
+    v8 = stringCopy;
   }
 
   return v8;
 }
 
-- (BOOL)postTokenisString:(id)a3 i:(unint64_t)a4
+- (BOOL)postTokenisString:(id)string i:(unint64_t)i
 {
-  v5 = a3;
-  if ([v5 count] - 1 <= a4)
+  stringCopy = string;
+  if ([stringCopy count] - 1 <= i)
   {
     LOBYTE(v9) = 0;
   }
 
   else
   {
-    v6 = [v5 objectAtIndex:a4 + 1];
+    v6 = [stringCopy objectAtIndex:i + 1];
     v7 = [v6 characterAtIndex:0];
-    v8 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-    if ([v8 characterIsMember:v7])
+    decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+    if ([decimalDigitCharacterSet characterIsMember:v7])
     {
       LOBYTE(v9) = 0;
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCA900] punctuationCharacterSet];
-      v9 = (v7 != 32) & ~[v10 characterIsMember:v7];
+      punctuationCharacterSet = [MEMORY[0x277CCA900] punctuationCharacterSet];
+      v9 = (v7 != 32) & ~[punctuationCharacterSet characterIsMember:v7];
     }
   }
 
   return v9;
 }
 
-- (BOOL)priorTokenisString:(id)a3 i:(unint64_t)a4
+- (BOOL)priorTokenisString:(id)string i:(unint64_t)i
 {
-  if (a4)
+  if (i)
   {
-    v4 = [a3 objectAtIndex:a4 - 1];
+    v4 = [string objectAtIndex:i - 1];
     v5 = [v4 characterAtIndex:{objc_msgSend(v4, "length") - 1}];
-    v6 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-    if ([v6 characterIsMember:v5])
+    decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+    if ([decimalDigitCharacterSet characterIsMember:v5])
     {
       LOBYTE(v7) = 0;
     }
 
     else
     {
-      v8 = [MEMORY[0x277CCA900] punctuationCharacterSet];
-      v7 = (v5 != 32) & ~[v8 characterIsMember:v5];
+      punctuationCharacterSet = [MEMORY[0x277CCA900] punctuationCharacterSet];
+      v7 = (v5 != 32) & ~[punctuationCharacterSet characterIsMember:v5];
     }
   }
 
@@ -420,32 +420,32 @@ LABEL_9:
   return v7;
 }
 
-- (id)tokensForString:(id)a3
+- (id)tokensForString:(id)string
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TIKeyboardTyper *)self userModel];
-  v6 = [v5 prefersTransliteration];
+  stringCopy = string;
+  userModel = [(TIKeyboardTyper *)self userModel];
+  prefersTransliteration = [userModel prefersTransliteration];
 
-  if (v6)
+  if (prefersTransliteration)
   {
-    v12[0] = v4;
+    v12[0] = stringCopy;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
   }
 
   else
   {
-    v8 = [(TIKeyboardTyper *)self userModel];
-    v9 = [v8 prefersContinuousPath];
+    userModel2 = [(TIKeyboardTyper *)self userModel];
+    prefersContinuousPath = [userModel2 prefersContinuousPath];
 
-    if (v9)
+    if (prefersContinuousPath)
     {
-      [(TIKeyboardTyper *)self inputSegmentsForContinuousPathString:v4];
+      [(TIKeyboardTyper *)self inputSegmentsForContinuousPathString:stringCopy];
     }
 
     else
     {
-      [(TIKeyboardTyper *)self inputSegmentsForString:v4];
+      [(TIKeyboardTyper *)self inputSegmentsForString:stringCopy];
     }
     v7 = ;
   }
@@ -455,26 +455,26 @@ LABEL_9:
   return v10;
 }
 
-- (id)_logStringForTouchedKey:(id)a3
+- (id)_logStringForTouchedKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  keyCopy = key;
+  v5 = keyCopy;
+  if (keyCopy)
   {
-    v6 = [v4 interactionType];
-    if (v6 <= 0x10 && ((1 << v6) & 0x1A006) != 0)
+    interactionType = [keyCopy interactionType];
+    if (interactionType <= 0x10 && ((1 << interactionType) & 0x1A006) != 0)
     {
-      v7 = [(TIKeyboardTyper *)self keyboardController];
-      v8 = [v7 layoutUtils];
-      v9 = [(TIKeyboardTyper *)self keyplane];
-      v10 = [v8 representedStringForKey:v5 shifted:{objc_msgSend(v9, "isShiftKeyplane")}];
+      keyboardController = [(TIKeyboardTyper *)self keyboardController];
+      layoutUtils = [keyboardController layoutUtils];
+      keyplane = [(TIKeyboardTyper *)self keyplane];
+      v10 = [layoutUtils representedStringForKey:v5 shifted:{objc_msgSend(keyplane, "isShiftKeyplane")}];
     }
 
     else
     {
       v12 = MEMORY[0x277CCACA8];
-      v7 = [v5 representedString];
-      v10 = [v12 stringWithFormat:@"<%@>", v7];
+      keyboardController = [v5 representedString];
+      v10 = [v12 stringWithFormat:@"<%@>", keyboardController];
     }
   }
 
@@ -486,25 +486,25 @@ LABEL_9:
   return v10;
 }
 
-- (id)_performTapAtLocation:(CGPoint)a3 timestamp:(double)a4 fingerID:(int)a5 secondaryString:(BOOL)a6
+- (id)_performTapAtLocation:(CGPoint)location timestamp:(double)timestamp fingerID:(int)d secondaryString:(BOOL)string
 {
-  v6 = a6;
-  v7 = *&a5;
-  y = a3.y;
-  x = a3.x;
-  v12 = [(TIKeyboardTyper *)self keyboardController];
+  stringCopy = string;
+  v7 = *&d;
+  y = location.y;
+  x = location.x;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
   LODWORD(v13) = 5.0;
-  [v12 performTouchDownAtLocation:self->_touchPathID radius:v7 timestamp:x pathIndex:y fingerID:{v13, a4}];
+  [keyboardController performTouchDownAtLocation:self->_touchPathID radius:v7 timestamp:x pathIndex:y fingerID:{v13, timestamp}];
 
-  v14 = [(TIKeyboardTyper *)self keyboardController];
+  keyboardController2 = [(TIKeyboardTyper *)self keyboardController];
   LODWORD(v15) = 5.0;
-  v16 = [v14 performTouchUpAtLocation:self->_touchPathID radius:v7 timestamp:v6 pathIndex:x fingerID:y secondaryString:{v15, a4}];
+  v16 = [keyboardController2 performTouchUpAtLocation:self->_touchPathID radius:v7 timestamp:stringCopy pathIndex:x fingerID:y secondaryString:{v15, timestamp}];
 
   [(TIKeyboardTyper *)self _bumpTouchPathID];
-  v17 = [(TIKeyboardTyper *)self userPersona];
-  v18 = [(TIKeyboardTyper *)self keyboardController];
-  v19 = [v18 keyplane];
-  [v17 updateFromKeyplane:v19];
+  userPersona = [(TIKeyboardTyper *)self userPersona];
+  keyboardController3 = [(TIKeyboardTyper *)self keyboardController];
+  keyplane = [keyboardController3 keyplane];
+  [userPersona updateFromKeyplane:keyplane];
 
   return v16;
 }
@@ -525,14 +525,14 @@ LABEL_9:
   self->_touchPathID = v3;
 }
 
-- (void)performStrokeForPath:(id)a3 typingLog:(id)a4 callback:(id)a5
+- (void)performStrokeForPath:(id)path typingLog:(id)log callback:(id)callback
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  logCopy = log;
+  callbackCopy = callback;
   v39 = 0;
-  v11 = [v8 samples];
-  v12 = [v11 count];
+  samples = [pathCopy samples];
+  v12 = [samples count];
 
   if (v12 < 2)
   {
@@ -544,10 +544,10 @@ LABEL_9:
     v13 = 0;
     while (1)
     {
-      v14 = [v8 samples];
-      v15 = [v14 objectAtIndexedSubscript:v13];
+      samples2 = [pathCopy samples];
+      v15 = [samples2 objectAtIndexedSubscript:v13];
 
-      v16 = [(TIKeyboardTyper *)self keyboardController];
+      keyboardController = [(TIKeyboardTyper *)self keyboardController];
       [v15 point];
       v18 = v17;
       v20 = v19;
@@ -555,25 +555,25 @@ LABEL_9:
       LODWORD(v22) = 5.0;
       if (v13)
       {
-        [v16 performTouchDragAtLocation:0 radius:0 timestamp:v18 pathIndex:v20 fingerID:{v22, v21}];
+        [keyboardController performTouchDragAtLocation:0 radius:0 timestamp:v18 pathIndex:v20 fingerID:{v22, v21}];
       }
 
       else
       {
-        [v16 performTouchDownAtLocation:0 radius:0 timestamp:v18 pathIndex:v20 fingerID:{v22, v21}];
+        [keyboardController performTouchDownAtLocation:0 radius:0 timestamp:v18 pathIndex:v20 fingerID:{v22, v21}];
       }
 
-      if (v10)
+      if (callbackCopy)
       {
-        v10[2](v10, v15, &v39);
+        callbackCopy[2](callbackCopy, v15, &v39);
         if (v39 == 1)
         {
           break;
         }
       }
 
-      v23 = [v8 samples];
-      v24 = [v23 count];
+      samples3 = [pathCopy samples];
+      v24 = [samples3 count];
 
       v25 = v13 + 1;
       v26 = v13 + 2;
@@ -589,137 +589,137 @@ LABEL_9:
 
 LABEL_12:
   v27 = v39;
-  v28 = [v8 samples];
-  v29 = v28;
+  samples4 = [pathCopy samples];
+  v29 = samples4;
   if (v27)
   {
-    [v28 objectAtIndexedSubscript:v25];
+    [samples4 objectAtIndexedSubscript:v25];
   }
 
   else
   {
-    [v28 lastObject];
+    [samples4 lastObject];
   }
   v30 = ;
 
-  v31 = [(TIKeyboardTyper *)self keyboardController];
+  keyboardController2 = [(TIKeyboardTyper *)self keyboardController];
   [v30 point];
   v33 = v32;
   v35 = v34;
   [v30 timeStamp];
   LODWORD(v36) = 5.0;
-  v38 = [v31 performTouchUpAtLocation:0 radius:0 timestamp:0 pathIndex:v33 fingerID:v35 secondaryString:{v36, v37}];
+  v38 = [keyboardController2 performTouchUpAtLocation:0 radius:0 timestamp:0 pathIndex:v33 fingerID:v35 secondaryString:{v36, v37}];
 
-  [v9 registerPathStringAsKeyStrokes:v38 path:v8 predictionBarState:0];
+  [logCopy registerPathStringAsKeyStrokes:v38 path:pathCopy predictionBarState:0];
 }
 
-- (void)_performRejectCandidate:(id)a3 timestamp:(double)a4 typingLog:(id)a5
+- (void)_performRejectCandidate:(id)candidate timestamp:(double)timestamp typingLog:(id)log
 {
-  v8 = a3;
-  [a5 logRejectedAutocorrection];
-  v9 = [(TIKeyboardTyper *)self keyboardController];
-  [v9 rejectCandidate:v8];
+  candidateCopy = candidate;
+  [log logRejectedAutocorrection];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController rejectCandidate:candidateCopy];
 
-  [(TIKeyboardTyper *)self setLastTimestamp:a4];
+  [(TIKeyboardTyper *)self setLastTimestamp:timestamp];
 }
 
-- (void)_performAcceptCandidate:(id)a3 timestamp:(double)a4 typingLog:(id)a5 predictiveCandidate:(BOOL)a6 intendedTransliteration:(id)a7
+- (void)_performAcceptCandidate:(id)candidate timestamp:(double)timestamp typingLog:(id)log predictiveCandidate:(BOOL)predictiveCandidate intendedTransliteration:(id)transliteration
 {
-  v7 = a6;
-  v12 = a7;
-  v13 = a5;
-  v14 = a3;
-  v15 = [v14 candidate];
-  [v13 logAcceptedCandidate:v15 intendedTransliterationCandidate:v12];
+  predictiveCandidateCopy = predictiveCandidate;
+  transliterationCopy = transliteration;
+  logCopy = log;
+  candidateCopy = candidate;
+  candidate = [candidateCopy candidate];
+  [logCopy logAcceptedCandidate:candidate intendedTransliterationCandidate:transliterationCopy];
 
-  v16 = [(TIKeyboardTyper *)self keyboardController];
-  [v16 acceptCandidate:v14 predictiveCandidate:v7];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController acceptCandidate:candidateCopy predictiveCandidate:predictiveCandidateCopy];
 
-  [(TIKeyboardTyper *)self setLastTimestamp:a4];
-  v17 = [(TIKeyboardTyper *)self keyboardController];
-  [v17 generateAutocorrectionsOrCandidates];
+  [(TIKeyboardTyper *)self setLastTimestamp:timestamp];
+  keyboardController2 = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController2 generateAutocorrectionsOrCandidates];
 }
 
-- (id)_performGestureKeyInput:(id)a3 timestamp:(double)a4 typingLog:(id)a5
+- (id)_performGestureKeyInput:(id)input timestamp:(double)timestamp typingLog:(id)log
 {
-  v7 = a3;
-  v8 = a5;
-  [v8 beginKeystrokeWithIntendedKey:v7 touchEvent:0 touchError:0];
-  v9 = [(TIKeyboardTyper *)self keyboardController];
-  [v9 addStringFromGestureKeyInput:v7];
+  inputCopy = input;
+  logCopy = log;
+  [logCopy beginKeystrokeWithIntendedKey:inputCopy touchEvent:0 touchError:0];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController addStringFromGestureKeyInput:inputCopy];
 
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@>", v7];
-  [v8 finishKeystrokeWithTouchedKey:v10 touchEvent:0 insertedKey:v7];
+  inputCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@>", inputCopy];
+  [logCopy finishKeystrokeWithTouchedKey:inputCopy touchEvent:0 insertedKey:inputCopy];
 
-  return v7;
+  return inputCopy;
 }
 
-- (id)_performVariantKey:(id)a3 timestamp:(double)a4 typingLog:(id)a5
+- (id)_performVariantKey:(id)key timestamp:(double)timestamp typingLog:(id)log
 {
-  v7 = a3;
-  v8 = a5;
-  [v8 beginKeystrokeWithIntendedKey:v7 touchEvent:0 touchError:0];
-  v9 = [(TIKeyboardTyper *)self keyboardController];
-  [v9 addStringFromVariantKey:v7];
+  keyCopy = key;
+  logCopy = log;
+  [logCopy beginKeystrokeWithIntendedKey:keyCopy touchEvent:0 touchError:0];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController addStringFromVariantKey:keyCopy];
 
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@>", v7];
-  [v8 finishKeystrokeWithTouchedKey:v10 touchEvent:0 insertedKey:v7];
+  keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@>", keyCopy];
+  [logCopy finishKeystrokeWithTouchedKey:keyCopy touchEvent:0 insertedKey:keyCopy];
 
-  return v7;
+  return keyCopy;
 }
 
-- (void)_skipTapTimestamp:(double)a3 intendedKey:(id)a4 typingLog:(id)a5
+- (void)_skipTapTimestamp:(double)timestamp intendedKey:(id)key typingLog:(id)log
 {
-  v8 = a5;
-  v9 = a4;
-  [v9 frame];
+  logCopy = log;
+  keyCopy = key;
+  [keyCopy frame];
   v11 = v10;
   v13 = v12;
   v16 = [MEMORY[0x277D6F440] touchEventWithStage:0 location:0 radius:-1 timestamp:? pathIndex:? forcedKeyCode:?];
-  v14 = [MEMORY[0x277D6F440] touchEventWithStage:2 location:0 radius:-1 timestamp:v11 pathIndex:v13 forcedKeyCode:{5.0, a3}];
-  v15 = [v9 representedString];
+  v14 = [MEMORY[0x277D6F440] touchEventWithStage:2 location:0 radius:-1 timestamp:v11 pathIndex:v13 forcedKeyCode:{5.0, timestamp}];
+  representedString = [keyCopy representedString];
 
-  [v8 beginKeystrokeWithIntendedKey:v15 touchEvent:v16 touchError:0];
-  [(TIKeyboardTyper *)self setLastTimestamp:a3];
-  [v8 finishKeystrokeWithTouchedKey:@"<NoKey>" touchEvent:v14 insertedKey:&stru_287EC4808];
+  [logCopy beginKeystrokeWithIntendedKey:representedString touchEvent:v16 touchError:0];
+  [(TIKeyboardTyper *)self setLastTimestamp:timestamp];
+  [logCopy finishKeystrokeWithTouchedKey:@"<NoKey>" touchEvent:v14 insertedKey:&stru_287EC4808];
 }
 
-- (id)_performTouchEvent:(id)a3 typingLog:(id)a4
+- (id)_performTouchEvent:(id)event typingLog:(id)log
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 stage];
-  [v6 location];
+  eventCopy = event;
+  logCopy = log;
+  stage = [eventCopy stage];
+  [eventCopy location];
   v10 = v9;
   v12 = v11;
-  [v6 radius];
+  [eventCopy radius];
   v14 = v13;
-  [v6 timestamp];
+  [eventCopy timestamp];
   v16 = v15;
-  v17 = [v6 pathIndex];
-  v18 = [v6 fingerID];
-  switch(v8)
+  pathIndex = [eventCopy pathIndex];
+  fingerID = [eventCopy fingerID];
+  switch(stage)
   {
     case 2:
-      v23 = [(TIKeyboardTyper *)self keyboardController];
+      keyboardController = [(TIKeyboardTyper *)self keyboardController];
       *&v24 = v14;
-      v22 = [v23 performTouchUpAtLocation:v17 radius:v18 timestamp:0 pathIndex:v10 fingerID:v12 secondaryString:{v24, v16}];
+      v22 = [keyboardController performTouchUpAtLocation:pathIndex radius:fingerID timestamp:0 pathIndex:v10 fingerID:v12 secondaryString:{v24, v16}];
 
-      v19 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v25 = [(TIKeyboardTyper *)self predictionBarCandidates];
+      keyboardController2 = objc_alloc_init(MEMORY[0x277CBEB18]);
+      predictionBarCandidates = [(TIKeyboardTyper *)self predictionBarCandidates];
       if ([(TIKeyboardTyper *)self maxPredictionsReported]>= 1)
       {
         v26 = 0;
         do
         {
-          if ([v25 count] <= v26)
+          if ([predictionBarCandidates count] <= v26)
           {
             break;
           }
 
-          v27 = [v25 objectAtIndexedSubscript:v26];
-          v28 = [v27 candidate];
-          [v19 addObject:v28];
+          v27 = [predictionBarCandidates objectAtIndexedSubscript:v26];
+          candidate = [v27 candidate];
+          [keyboardController2 addObject:candidate];
 
           ++v26;
         }
@@ -727,18 +727,18 @@ LABEL_12:
         while (v26 < [(TIKeyboardTyper *)self maxPredictionsReported]);
       }
 
-      [v7 registerPathStringAsKeyStrokes:v22 path:0 predictionBarState:v19];
+      [logCopy registerPathStringAsKeyStrokes:v22 path:0 predictionBarState:keyboardController2];
 
       goto LABEL_12;
     case 1:
-      v19 = [(TIKeyboardTyper *)self keyboardController];
+      keyboardController2 = [(TIKeyboardTyper *)self keyboardController];
       *&v21 = v14;
-      [v19 performTouchDragAtLocation:v17 radius:v18 timestamp:v10 pathIndex:v12 fingerID:{v21, v16}];
+      [keyboardController2 performTouchDragAtLocation:pathIndex radius:fingerID timestamp:v10 pathIndex:v12 fingerID:{v21, v16}];
       goto LABEL_6;
     case 0:
-      v19 = [(TIKeyboardTyper *)self keyboardController];
+      keyboardController2 = [(TIKeyboardTyper *)self keyboardController];
       *&v20 = v14;
-      [v19 performTouchDownAtLocation:v17 radius:v18 timestamp:v10 pathIndex:v12 fingerID:{v20, v16}];
+      [keyboardController2 performTouchDownAtLocation:pathIndex radius:fingerID timestamp:v10 pathIndex:v12 fingerID:{v20, v16}];
 LABEL_6:
       v22 = &stru_287EC4808;
 LABEL_12:
@@ -748,41 +748,41 @@ LABEL_12:
 
   v22 = &stru_287EC4808;
 LABEL_14:
-  [v6 timestamp];
+  [eventCopy timestamp];
   [(TIKeyboardTyper *)self setLastTimestamp:?];
 
   return v22;
 }
 
-- (id)_performTapAtLocation:(CGPoint)a3 timestamp:(double)a4 intendedKey:(id)a5 touchedKey:(id)a6 secondaryString:(BOOL)a7 touchError:(id)a8 typingLog:(id)a9
+- (id)_performTapAtLocation:(CGPoint)location timestamp:(double)timestamp intendedKey:(id)key touchedKey:(id)touchedKey secondaryString:(BOOL)string touchError:(id)error typingLog:(id)log
 {
-  v11 = a7;
-  y = a3.y;
-  x = a3.x;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
-  v20 = a9;
-  if (v11)
+  stringCopy = string;
+  y = location.y;
+  x = location.x;
+  keyCopy = key;
+  touchedKeyCopy = touchedKey;
+  errorCopy = error;
+  logCopy = log;
+  if (stringCopy)
   {
-    v21 = [v17 secondaryRepresentedStrings];
-    v22 = [v21 firstObject];
+    secondaryRepresentedStrings = [keyCopy secondaryRepresentedStrings];
+    firstObject = [secondaryRepresentedStrings firstObject];
   }
 
   else
   {
-    v22 = [v17 representedString];
+    firstObject = [keyCopy representedString];
   }
 
-  v23 = [MEMORY[0x277D6F440] touchEventWithStage:0 location:0 radius:-1 timestamp:x pathIndex:y forcedKeyCode:{5.0, a4}];
-  v47 = [v22 isEqualToString:@"Delete"];
-  v24 = [(TIKeyboardTyper *)self text];
-  v48 = v19;
-  [v20 beginKeystrokeWithIntendedKey:v22 touchEvent:v23 touchError:v19 documentBefore:v24];
+  v23 = [MEMORY[0x277D6F440] touchEventWithStage:0 location:0 radius:-1 timestamp:x pathIndex:y forcedKeyCode:{5.0, timestamp}];
+  v47 = [firstObject isEqualToString:@"Delete"];
+  text = [(TIKeyboardTyper *)self text];
+  v48 = errorCopy;
+  [logCopy beginKeystrokeWithIntendedKey:firstObject touchEvent:v23 touchError:errorCopy documentBefore:text];
 
-  v25 = [(TIKeyboardTyper *)self keyboardController];
-  v26 = [v25 leftKeys];
-  v27 = [v26 containsObject:v17];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  leftKeys = [keyboardController leftKeys];
+  v27 = [leftKeys containsObject:keyCopy];
 
   if (v27)
   {
@@ -791,9 +791,9 @@ LABEL_14:
 
   else
   {
-    v29 = [(TIKeyboardTyper *)self keyboardController];
-    v30 = [v29 rightKeys];
-    v31 = [v30 containsObject:v17];
+    keyboardController2 = [(TIKeyboardTyper *)self keyboardController];
+    rightKeys = [keyboardController2 rightKeys];
+    v31 = [rightKeys containsObject:keyCopy];
 
     if (v31)
     {
@@ -806,64 +806,64 @@ LABEL_14:
     }
   }
 
-  if ([v18 interactionType] == 11)
+  if ([touchedKeyCopy interactionType] == 11)
   {
-    v32 = [(TIKeyboardTyper *)self keyboardController];
-    v33 = [(TIKeyboardTyper *)self keyplane];
-    v34 = [v32 keyCodeWithString:@"More" inKeyplane:v33];
+    keyboardController3 = [(TIKeyboardTyper *)self keyboardController];
+    keyplane = [(TIKeyboardTyper *)self keyplane];
+    v34 = [keyboardController3 keyCodeWithString:@"More" inKeyplane:keyplane];
 
     [(TIKeyboardTyper *)self lastTimestamp];
     v36 = v35;
     [(TIKeyboardTyper *)self interTouchTimestampInterval];
     v38 = v36 + v37;
-    v39 = [(TIKeyboardTyper *)self keyboardController];
+    keyboardController4 = [(TIKeyboardTyper *)self keyboardController];
     LODWORD(v40) = 5.0;
-    v41 = [v39 performSkipTapAtLocation:0 radius:v28 timestamp:v34 pathIndex:x fingerID:y forcedKeyCode:{v40, v38}];
+    timestamp = [keyboardController4 performSkipTapAtLocation:0 radius:v28 timestamp:v34 pathIndex:x fingerID:y forcedKeyCode:{v40, v38}];
 
-    v42 = [(TIKeyboardTyper *)self userPersona];
-    v43 = [(TIKeyboardTyper *)self keyboardController];
-    v44 = [v43 keyplane];
-    [v42 updateFromKeyplane:v44];
+    userPersona = [(TIKeyboardTyper *)self userPersona];
+    keyboardController5 = [(TIKeyboardTyper *)self keyboardController];
+    keyplane2 = [keyboardController5 keyplane];
+    [userPersona updateFromKeyplane:keyplane2];
   }
 
   else
   {
-    v41 = [(TIKeyboardTyper *)self _performTapAtLocation:v28 timestamp:v11 fingerID:x secondaryString:y, a4];
+    timestamp = [(TIKeyboardTyper *)self _performTapAtLocation:v28 timestamp:stringCopy fingerID:x secondaryString:y, timestamp];
   }
 
-  if (!v41)
+  if (!timestamp)
   {
-    v41 = &stru_287EC4808;
+    timestamp = &stru_287EC4808;
   }
 
-  if (!(v47 & 1 | (([(__CFString *)v41 isEqualToString:@"\\b"]& 1) == 0)))
+  if (!(v47 & 1 | (([(__CFString *)timestamp isEqualToString:@"\\b"]& 1) == 0)))
   {
 
-    v41 = @"\\B";
+    timestamp = @"\\B";
   }
 
-  [(TIKeyboardTyper *)self setLastTimestamp:a4];
-  v45 = [MEMORY[0x277D6F440] touchEventWithStage:2 location:0 radius:-1 timestamp:x pathIndex:y forcedKeyCode:{5.0, a4}];
-  [(TIKeyboardTyper *)self _finishKeystrokeAndRecordPredictionsInTypingLog:v45 touchedKey:v18 insertedKey:v41 typingLog:v20];
+  [(TIKeyboardTyper *)self setLastTimestamp:timestamp];
+  v45 = [MEMORY[0x277D6F440] touchEventWithStage:2 location:0 radius:-1 timestamp:x pathIndex:y forcedKeyCode:{5.0, timestamp}];
+  [(TIKeyboardTyper *)self _finishKeystrokeAndRecordPredictionsInTypingLog:v45 touchedKey:touchedKeyCopy insertedKey:timestamp typingLog:logCopy];
 
-  return v41;
+  return timestamp;
 }
 
-- (void)_finishKeystrokeAndRecordPredictionsInTypingLog:(id)a3 touchedKey:(id)a4 insertedKey:(id)a5 typingLog:(id)a6
+- (void)_finishKeystrokeAndRecordPredictionsInTypingLog:(id)log touchedKey:(id)key insertedKey:(id)insertedKey typingLog:(id)typingLog
 {
   v41 = *MEMORY[0x277D85DE8];
-  v30 = a3;
-  v10 = a4;
-  v11 = a5;
-  v29 = a6;
+  logCopy = log;
+  keyCopy = key;
+  insertedKeyCopy = insertedKey;
+  typingLogCopy = typingLog;
   v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v14 = [(TIKeyboardTyper *)self predictionBarCandidates];
-  v15 = [v14 countByEnumeratingWithState:&v35 objects:v40 count:16];
+  predictionBarCandidates = [(TIKeyboardTyper *)self predictionBarCandidates];
+  v15 = [predictionBarCandidates countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v15)
   {
     v16 = v15;
@@ -875,17 +875,17 @@ LABEL_14:
       {
         if (*v36 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(predictionBarCandidates);
         }
 
-        v19 = [*(*(&v35 + 1) + 8 * v18) candidate];
-        [v12 addObject:v19];
+        candidate = [*(*(&v35 + 1) + 8 * v18) candidate];
+        [v12 addObject:candidate];
 
         ++v18;
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v35 objects:v40 count:16];
+      v16 = [predictionBarCandidates countByEnumeratingWithState:&v35 objects:v40 count:16];
     }
 
     while (v16);
@@ -895,8 +895,8 @@ LABEL_14:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v20 = [(TIKeyboardTyper *)self inlineCompletionCandidates];
-  v21 = [v20 countByEnumeratingWithState:&v31 objects:v39 count:16];
+  inlineCompletionCandidates = [(TIKeyboardTyper *)self inlineCompletionCandidates];
+  v21 = [inlineCompletionCandidates countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v21)
   {
     v22 = v21;
@@ -908,53 +908,53 @@ LABEL_14:
       {
         if (*v32 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(inlineCompletionCandidates);
         }
 
-        v25 = [*(*(&v31 + 1) + 8 * v24) candidate];
-        [v13 addObject:v25];
+        candidate2 = [*(*(&v31 + 1) + 8 * v24) candidate];
+        [v13 addObject:candidate2];
 
         ++v24;
       }
 
       while (v22 != v24);
-      v22 = [v20 countByEnumeratingWithState:&v31 objects:v39 count:16];
+      v22 = [inlineCompletionCandidates countByEnumeratingWithState:&v31 objects:v39 count:16];
     }
 
     while (v22);
   }
 
-  if (v10)
+  if (keyCopy)
   {
-    v26 = [(TIKeyboardTyper *)self _logStringForTouchedKey:v10];
+    v26 = [(TIKeyboardTyper *)self _logStringForTouchedKey:keyCopy];
   }
 
   else
   {
-    v26 = v11;
+    v26 = insertedKeyCopy;
   }
 
   v27 = v26;
-  v28 = v29;
-  [v29 finishKeystrokeWithTouchedKey:v26 touchEvent:v30 insertedKey:v11 predictionBarState:v12 inlineCompletionBarState:{v13, v29}];
+  v28 = typingLogCopy;
+  [typingLogCopy finishKeystrokeWithTouchedKey:v26 touchEvent:logCopy insertedKey:insertedKeyCopy predictionBarState:v12 inlineCompletionBarState:{v13, typingLogCopy}];
 }
 
-- (id)keyContainingPoint:(CGPoint)a3 inKeyplane:(id)a4
+- (id)keyContainingPoint:(CGPoint)point inKeyplane:(id)keyplane
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(TIKeyboardTyper *)self keyboardController];
-  v9 = [v8 keyContainingPoint:v7 inKeyplane:{x, y}];
+  y = point.y;
+  x = point.x;
+  keyplaneCopy = keyplane;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  v9 = [keyboardController keyContainingPoint:keyplaneCopy inKeyplane:{x, y}];
 
   return v9;
 }
 
-- (CGPoint)pointForAttemptedTapOnKey:(id)a3 withError:(id)a4
+- (CGPoint)pointForAttemptedTapOnKey:(id)key withError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 paddedFrame];
+  errorCopy = error;
+  keyCopy = key;
+  [keyCopy paddedFrame];
   x = v37.origin.x;
   y = v37.origin.y;
   width = v37.size.width;
@@ -965,33 +965,33 @@ LABEL_14:
   v38.size.width = width;
   v38.size.height = height;
   MidY = CGRectGetMidY(v38);
-  v14 = [(TIKeyboardTyper *)self userPersona];
+  userPersona = [(TIKeyboardTyper *)self userPersona];
 
-  if (v14)
+  if (userPersona)
   {
-    v15 = [(TIKeyboardTyper *)self userPersona];
-    [v15 userPointForKey:v7];
+    userPersona2 = [(TIKeyboardTyper *)self userPersona];
+    [userPersona2 userPointForKey:keyCopy];
     MidX = v16;
     MidY = v17;
   }
 
   else
   {
-    v18 = [(TIKeyboardTyper *)self keyboardController];
-    v19 = [v18 layoutUtils];
-    v20 = [(TIKeyboardTyper *)self keyplane];
-    v15 = [v19 representedStringForKey:v7 shifted:{objc_msgSend(v20, "isShiftKeyplane")}];
+    keyboardController = [(TIKeyboardTyper *)self keyboardController];
+    layoutUtils = [keyboardController layoutUtils];
+    keyplane = [(TIKeyboardTyper *)self keyplane];
+    userPersona2 = [layoutUtils representedStringForKey:keyCopy shifted:{objc_msgSend(keyplane, "isShiftKeyplane")}];
 
-    if (v6 && ([v15 isEqualToString:@"\n"] & 1) == 0)
+    if (errorCopy && ([userPersona2 isEqualToString:@"\n"] & 1) == 0)
     {
-      [v6 applyToPoint:{MidX, MidY}];
+      [errorCopy applyToPoint:{MidX, MidY}];
       MidX = v21;
       MidY = v22;
     }
 
-    v23 = [(TIKeyboardTyper *)self keyboard];
-    v24 = [v23 name];
-    v25 = [v24 hasPrefix:@"Dynamic"];
+    keyboard = [(TIKeyboardTyper *)self keyboard];
+    name = [keyboard name];
+    v25 = [name hasPrefix:@"Dynamic"];
 
     if ((v25 & 1) == 0)
     {
@@ -1005,25 +1005,25 @@ LABEL_14:
         MidY = 0.0;
       }
 
-      v26 = [(TIKeyboardTyper *)self keyboard];
-      [v26 frame];
+      keyboard2 = [(TIKeyboardTyper *)self keyboard];
+      [keyboard2 frame];
       v28 = v27;
 
       if (MidX > v28)
       {
-        v29 = [(TIKeyboardTyper *)self keyboard];
-        [v29 frame];
+        keyboard3 = [(TIKeyboardTyper *)self keyboard];
+        [keyboard3 frame];
         MidX = CGRectGetMaxX(v39);
       }
 
-      v30 = [(TIKeyboardTyper *)self keyboard];
-      [v30 frame];
+      keyboard4 = [(TIKeyboardTyper *)self keyboard];
+      [keyboard4 frame];
       v32 = v31;
 
       if (MidY > v32)
       {
-        v33 = [(TIKeyboardTyper *)self keyboard];
-        [v33 frame];
+        keyboard5 = [(TIKeyboardTyper *)self keyboard];
+        [keyboard5 frame];
         MidY = CGRectGetMaxY(v40);
       }
     }
@@ -1036,23 +1036,23 @@ LABEL_14:
   return result;
 }
 
-- (id)_keyplaneCloserToKeyWithString:(id)a3
+- (id)_keyplaneCloserToKeyWithString:(id)string
 {
-  v4 = a3;
-  v5 = [(TIKeyboardTyper *)self keyplane];
-  v6 = [v5 componentName];
-  v7 = [v6 lowercaseString];
+  stringCopy = string;
+  keyplane = [(TIKeyboardTyper *)self keyplane];
+  componentName = [keyplane componentName];
+  lowercaseString = [componentName lowercaseString];
 
-  v8 = [MEMORY[0x277CBEB38] dictionaryWithObject:v7 forKey:v7];
-  v9 = [MEMORY[0x277CBEB18] arrayWithObjects:{v7, 0}];
+  v8 = [MEMORY[0x277CBEB38] dictionaryWithObject:lowercaseString forKey:lowercaseString];
+  v9 = [MEMORY[0x277CBEB18] arrayWithObjects:{lowercaseString, 0}];
   while ([v9 count])
   {
     v10 = [v9 objectAtIndex:0];
     [v9 removeObjectAtIndex:0];
-    v11 = [(TIKeyboardTyper *)self keyboard];
-    v12 = [v11 subtreeWithName:v10];
+    keyboard = [(TIKeyboardTyper *)self keyboard];
+    v12 = [keyboard subtreeWithName:v10];
 
-    v13 = [(TIKeyboardTyper *)self keyWithString:v4 inKeyplane:v12];
+    v13 = [(TIKeyboardTyper *)self keyWithString:stringCopy inKeyplane:v12];
 
     if (v13)
     {
@@ -1066,14 +1066,14 @@ LABEL_14:
         v15 = [v8 valueForKey:v14];
       }
 
-      while (![v15 isEqualToString:v7]);
-      v17 = [(TIKeyboardTyper *)self keyboard];
-      v18 = [v17 subtreeWithName:v14];
+      while (![v15 isEqualToString:lowercaseString]);
+      keyboard2 = [(TIKeyboardTyper *)self keyboard];
+      v18 = [keyboard2 subtreeWithName:v14];
     }
 
     else
     {
-      v19 = [(TIKeyboardTyper *)self keyboardController];
+      keyboardController = [(TIKeyboardTyper *)self keyboardController];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __50__TIKeyboardTyper__keyplaneCloserToKeyWithString___block_invoke;
@@ -1082,7 +1082,7 @@ LABEL_14:
       v14 = v10;
       v23 = v14;
       v24 = v9;
-      [v19 enumerateKeyplaneNamesAdjacentToKeyplane:v12 usingBlock:v21];
+      [keyboardController enumerateKeyplaneNamesAdjacentToKeyplane:v12 usingBlock:v21];
 
       v18 = 0;
       v15 = v22;
@@ -1114,15 +1114,15 @@ void __50__TIKeyboardTyper__keyplaneCloserToKeyWithString___block_invoke(uint64_
 
 - (BOOL)changeToNearestAlphabeticPlane
 {
-  v3 = [(TIKeyboardTyper *)self keyplane];
-  v4 = [v3 isAlphabeticPlane];
+  keyplane = [(TIKeyboardTyper *)self keyplane];
+  isAlphabeticPlane = [keyplane isAlphabeticPlane];
 
-  if ((v4 & 1) == 0)
+  if ((isAlphabeticPlane & 1) == 0)
   {
-    v5 = [(TIKeyboardTyper *)self keyboard];
-    v6 = [(TIKeyboardTyper *)self keyplane];
-    v7 = [v6 alternateKeyplaneName];
-    v8 = [v5 subtreeWithName:v7];
+    keyboard = [(TIKeyboardTyper *)self keyboard];
+    keyplane2 = [(TIKeyboardTyper *)self keyplane];
+    alternateKeyplaneName = [keyplane2 alternateKeyplaneName];
+    v8 = [keyboard subtreeWithName:alternateKeyplaneName];
 
     if ([v8 isAlphabeticPlane])
     {
@@ -1130,17 +1130,17 @@ void __50__TIKeyboardTyper__keyplaneCloserToKeyWithString___block_invoke(uint64_
     }
   }
 
-  v9 = [(TIKeyboardTyper *)self keyplane];
-  v10 = [v9 isAlphabeticPlane];
+  keyplane3 = [(TIKeyboardTyper *)self keyplane];
+  isAlphabeticPlane2 = [keyplane3 isAlphabeticPlane];
 
-  return v10;
+  return isAlphabeticPlane2;
 }
 
-- (BOOL)changeToNearestKeyplaneWithString:(id)a3
+- (BOOL)changeToNearestKeyplaneWithString:(id)string
 {
-  v4 = a3;
-  v5 = [(TIKeyboardTyper *)self keyplane];
-  v6 = [(TIKeyboardTyper *)self keyWithString:v4 inKeyplane:v5];
+  stringCopy = string;
+  keyplane = [(TIKeyboardTyper *)self keyplane];
+  v6 = [(TIKeyboardTyper *)self keyWithString:stringCopy inKeyplane:keyplane];
   if (v6)
   {
     v7 = v6;
@@ -1153,18 +1153,18 @@ LABEL_7:
     while (1)
     {
       v9 = v8;
-      v8 = [(TIKeyboardTyper *)self keyToAccessKeyplaneCloserToKeyString:v4];
+      v8 = [(TIKeyboardTyper *)self keyToAccessKeyplaneCloserToKeyString:stringCopy];
 
       if (!v8)
       {
         break;
       }
 
-      v10 = [v8 representedString];
-      [(TIKeyboardTyper *)self attemptTapOnKeyWithString:v10 withErrorGenerator:0 typingLog:0];
+      representedString = [v8 representedString];
+      [(TIKeyboardTyper *)self attemptTapOnKeyWithString:representedString withErrorGenerator:0 typingLog:0];
 
-      v5 = [(TIKeyboardTyper *)self keyplane];
-      v11 = [(TIKeyboardTyper *)self keyWithString:v4 inKeyplane:v5];
+      keyplane = [(TIKeyboardTyper *)self keyplane];
+      v11 = [(TIKeyboardTyper *)self keyWithString:stringCopy inKeyplane:keyplane];
       if (v11)
       {
         v7 = v11;
@@ -1174,51 +1174,51 @@ LABEL_7:
     }
   }
 
-  v12 = [(TIKeyboardTyper *)self keyplane];
-  v13 = [(TIKeyboardTyper *)self keyWithString:v4 inKeyplane:v12];
+  keyplane2 = [(TIKeyboardTyper *)self keyplane];
+  v13 = [(TIKeyboardTyper *)self keyWithString:stringCopy inKeyplane:keyplane2];
   v14 = v13 != 0;
 
   return v14;
 }
 
-- (id)keyToAccessKeyplaneCloserToKeyString:(id)a3
+- (id)keyToAccessKeyplaneCloserToKeyString:(id)string
 {
-  v4 = [(TIKeyboardTyper *)self _keyplaneCloserToKeyWithString:a3];
-  v5 = [(TIKeyboardTyper *)self keyboardController];
-  v6 = [(TIKeyboardTyper *)self keyplane];
-  v7 = [v5 keyToAccessKeyplane:v4 fromKeyplane:v6];
+  v4 = [(TIKeyboardTyper *)self _keyplaneCloserToKeyWithString:string];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  keyplane = [(TIKeyboardTyper *)self keyplane];
+  v7 = [keyboardController keyToAccessKeyplane:v4 fromKeyplane:keyplane];
 
   return v7;
 }
 
-- (id)shiftKeyToAccessKeyplaneCloserToKeyString:(id)a3
+- (id)shiftKeyToAccessKeyplaneCloserToKeyString:(id)string
 {
-  v4 = a3;
-  v5 = [(TIKeyboardTyper *)self keyplane];
-  if (![v5 isAlphabeticPlane])
+  stringCopy = string;
+  keyplane = [(TIKeyboardTyper *)self keyplane];
+  if (![keyplane isAlphabeticPlane])
   {
     goto LABEL_6;
   }
 
-  v6 = [(TIKeyboardTyper *)self keyplane];
-  v7 = [v6 isShiftKeyplane];
+  keyplane2 = [(TIKeyboardTyper *)self keyplane];
+  isShiftKeyplane = [keyplane2 isShiftKeyplane];
 
-  if (v7)
+  if (isShiftKeyplane)
   {
     v8 = 0;
     goto LABEL_8;
   }
 
-  v9 = [(TIKeyboardTyper *)self keyboardController];
-  v10 = [v9 layoutUtils];
-  v11 = [(TIKeyboardTyper *)self keyplane];
-  v5 = [v10 exactKeyForString:v4 keyplane:v11 includeSecondaryStrings:1];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  layoutUtils = [keyboardController layoutUtils];
+  keyplane3 = [(TIKeyboardTyper *)self keyplane];
+  keyplane = [layoutUtils exactKeyForString:stringCopy keyplane:keyplane3 includeSecondaryStrings:1];
 
-  if (v5)
+  if (keyplane)
   {
-    v12 = [(TIKeyboardTyper *)self keyboardController];
-    v13 = [v12 keyplane];
-    v8 = [v13 firstCachedKeyWithName:@"Shift-Key"];
+    keyboardController2 = [(TIKeyboardTyper *)self keyboardController];
+    keyplane4 = [keyboardController2 keyplane];
+    v8 = [keyplane4 firstCachedKeyWithName:@"Shift-Key"];
   }
 
   else
@@ -1232,36 +1232,36 @@ LABEL_8:
   return v8;
 }
 
-- (id)keyWithString:(id)a3 inKeyplane:(id)a4 includeSecondaryStrings:(BOOL)a5
+- (id)keyWithString:(id)string inKeyplane:(id)keyplane includeSecondaryStrings:(BOOL)strings
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(TIKeyboardTyper *)self keyboardController];
-  v11 = [v10 layoutUtils];
-  v12 = [v11 exactKeyForString:v9 keyplane:v8 includeSecondaryStrings:v5];
+  stringsCopy = strings;
+  keyplaneCopy = keyplane;
+  stringCopy = string;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  layoutUtils = [keyboardController layoutUtils];
+  v12 = [layoutUtils exactKeyForString:stringCopy keyplane:keyplaneCopy includeSecondaryStrings:stringsCopy];
 
   return v12;
 }
 
-- (id)keyWithString:(id)a3 inKeyplane:(id)a4
+- (id)keyWithString:(id)string inKeyplane:(id)keyplane
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TIKeyboardTyper *)self keyboardController];
-  v9 = [v8 layoutUtils];
-  v10 = [v9 exactKeyForString:v6 keyplane:v7 includeSecondaryStrings:0];
+  stringCopy = string;
+  keyplaneCopy = keyplane;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  layoutUtils = [keyboardController layoutUtils];
+  v10 = [layoutUtils exactKeyForString:stringCopy keyplane:keyplaneCopy includeSecondaryStrings:0];
 
-  v11 = [(TIKeyboardTyper *)self keyboardController];
-  v12 = [v11 keyboard];
-  v13 = [v12 name];
-  v14 = [v13 containsString:@"-With-"];
+  keyboardController2 = [(TIKeyboardTyper *)self keyboardController];
+  keyboard = [keyboardController2 keyboard];
+  name = [keyboard name];
+  v14 = [name containsString:@"-With-"];
 
   if (!v10 && v14)
   {
-    v15 = [(TIKeyboardTyper *)self keyboardController];
-    v16 = [v15 layoutUtils];
-    v10 = [v16 exactKeyForString:v6 keyplane:v7 includeSecondaryStrings:1];
+    keyboardController3 = [(TIKeyboardTyper *)self keyboardController];
+    layoutUtils2 = [keyboardController3 layoutUtils];
+    v10 = [layoutUtils2 exactKeyForString:stringCopy keyplane:keyplaneCopy includeSecondaryStrings:1];
   }
 
   return v10;
@@ -1269,122 +1269,122 @@ LABEL_8:
 
 - (UIKBTree)keyplane
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 keyplane];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  keyplane = [keyboardController keyplane];
 
-  return v3;
+  return keyplane;
 }
 
 - (UIKBTree)keyboard
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 keyboard];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  keyboard = [keyboardController keyboard];
 
-  return v3;
+  return keyboard;
 }
 
-- (id)performTouchUpAtLocation:(CGPoint)a3 radius:(float)a4 timestamp:(double)a5 pathIndex:(unint64_t)a6 fingerID:(int)a7 secondaryString:(BOOL)a8
+- (id)performTouchUpAtLocation:(CGPoint)location radius:(float)radius timestamp:(double)timestamp pathIndex:(unint64_t)index fingerID:(int)d secondaryString:(BOOL)string
 {
-  v8 = a8;
-  v9 = *&a7;
-  y = a3.y;
-  x = a3.x;
-  [(TIKeyboardTyper *)self setLastTimestamp:a5];
-  v16 = [(TIKeyboardTyper *)self keyboardController];
-  *&v17 = a4;
-  v18 = [v16 performTouchUpAtLocation:a6 radius:v9 timestamp:v8 pathIndex:x fingerID:y secondaryString:{v17, a5}];
+  stringCopy = string;
+  v9 = *&d;
+  y = location.y;
+  x = location.x;
+  [(TIKeyboardTyper *)self setLastTimestamp:timestamp];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  *&v17 = radius;
+  v18 = [keyboardController performTouchUpAtLocation:index radius:v9 timestamp:stringCopy pathIndex:x fingerID:y secondaryString:{v17, timestamp}];
 
   return v18;
 }
 
-- (void)performTouchEndRestAtLocation:(CGPoint)a3 radius:(float)a4 timestamp:(double)a5 pathIndex:(unint64_t)a6 fingerID:(int)a7
+- (void)performTouchEndRestAtLocation:(CGPoint)location radius:(float)radius timestamp:(double)timestamp pathIndex:(unint64_t)index fingerID:(int)d
 {
-  v7 = *&a7;
-  y = a3.y;
-  x = a3.x;
-  [(TIKeyboardTyper *)self setLastTimestamp:a5];
-  v15 = [(TIKeyboardTyper *)self keyboardController];
-  *&v14 = a4;
-  [v15 performTouchEndRestAtLocation:a6 radius:v7 timestamp:x pathIndex:y fingerID:{v14, a5}];
+  v7 = *&d;
+  y = location.y;
+  x = location.x;
+  [(TIKeyboardTyper *)self setLastTimestamp:timestamp];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  *&v14 = radius;
+  [keyboardController performTouchEndRestAtLocation:index radius:v7 timestamp:x pathIndex:y fingerID:{v14, timestamp}];
 }
 
-- (void)performTouchRestAtLocation:(CGPoint)a3 radius:(float)a4 timestamp:(double)a5 pathIndex:(unint64_t)a6 fingerID:(int)a7
+- (void)performTouchRestAtLocation:(CGPoint)location radius:(float)radius timestamp:(double)timestamp pathIndex:(unint64_t)index fingerID:(int)d
 {
-  v7 = *&a7;
-  y = a3.y;
-  x = a3.x;
-  [(TIKeyboardTyper *)self setLastTimestamp:a5];
-  v15 = [(TIKeyboardTyper *)self keyboardController];
-  *&v14 = a4;
-  [v15 performTouchRestAtLocation:a6 radius:v7 timestamp:x pathIndex:y fingerID:{v14, a5}];
+  v7 = *&d;
+  y = location.y;
+  x = location.x;
+  [(TIKeyboardTyper *)self setLastTimestamp:timestamp];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  *&v14 = radius;
+  [keyboardController performTouchRestAtLocation:index radius:v7 timestamp:x pathIndex:y fingerID:{v14, timestamp}];
 }
 
-- (void)performTouchCancelAtLocation:(CGPoint)a3 radius:(float)a4 timestamp:(double)a5 pathIndex:(unint64_t)a6 fingerID:(int)a7
+- (void)performTouchCancelAtLocation:(CGPoint)location radius:(float)radius timestamp:(double)timestamp pathIndex:(unint64_t)index fingerID:(int)d
 {
-  v7 = *&a7;
-  y = a3.y;
-  x = a3.x;
-  [(TIKeyboardTyper *)self setLastTimestamp:a5];
-  v15 = [(TIKeyboardTyper *)self keyboardController];
-  *&v14 = a4;
-  [v15 performTouchCancelAtLocation:a6 radius:v7 timestamp:x pathIndex:y fingerID:{v14, a5}];
+  v7 = *&d;
+  y = location.y;
+  x = location.x;
+  [(TIKeyboardTyper *)self setLastTimestamp:timestamp];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  *&v14 = radius;
+  [keyboardController performTouchCancelAtLocation:index radius:v7 timestamp:x pathIndex:y fingerID:{v14, timestamp}];
 }
 
-- (int64_t)performTouchDragAtLocation:(CGPoint)a3 radius:(float)a4 timestamp:(double)a5 pathIndex:(unint64_t)a6 fingerID:(int)a7
+- (int64_t)performTouchDragAtLocation:(CGPoint)location radius:(float)radius timestamp:(double)timestamp pathIndex:(unint64_t)index fingerID:(int)d
 {
-  v7 = *&a7;
-  y = a3.y;
-  x = a3.x;
-  [(TIKeyboardTyper *)self setLastTimestamp:a5];
-  v14 = [(TIKeyboardTyper *)self keyboardController];
-  *&v15 = a4;
-  v16 = [v14 performTouchDragAtLocation:a6 radius:v7 timestamp:x pathIndex:y fingerID:{v15, a5}];
+  v7 = *&d;
+  y = location.y;
+  x = location.x;
+  [(TIKeyboardTyper *)self setLastTimestamp:timestamp];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  *&v15 = radius;
+  v16 = [keyboardController performTouchDragAtLocation:index radius:v7 timestamp:x pathIndex:y fingerID:{v15, timestamp}];
 
   return v16;
 }
 
-- (int64_t)performTouchDownAtLocation:(CGPoint)a3 radius:(float)a4 timestamp:(double)a5 pathIndex:(unint64_t)a6 fingerID:(int)a7
+- (int64_t)performTouchDownAtLocation:(CGPoint)location radius:(float)radius timestamp:(double)timestamp pathIndex:(unint64_t)index fingerID:(int)d
 {
-  v7 = *&a7;
-  y = a3.y;
-  x = a3.x;
-  [(TIKeyboardTyper *)self setLastTimestamp:a5];
-  v14 = [(TIKeyboardTyper *)self keyboardController];
-  *&v15 = a4;
-  v16 = [v14 performTouchDownAtLocation:a6 radius:v7 timestamp:x pathIndex:y fingerID:{v15, a5}];
+  v7 = *&d;
+  y = location.y;
+  x = location.x;
+  [(TIKeyboardTyper *)self setLastTimestamp:timestamp];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  *&v15 = radius;
+  v16 = [keyboardController performTouchDownAtLocation:index radius:v7 timestamp:x pathIndex:y fingerID:{v15, timestamp}];
 
   return v16;
 }
 
 - (TIKeyboardCandidateResultSet)candidateResultSet
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 candidateResultSet];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  candidateResultSet = [keyboardController candidateResultSet];
 
-  return v3;
+  return candidateResultSet;
 }
 
 - (NSArray)inlineCompletionCandidates
 {
-  v2 = [(TIKeyboardTyper *)self autocorrectionList];
-  v3 = [v2 inlineCompletions];
+  autocorrectionList = [(TIKeyboardTyper *)self autocorrectionList];
+  inlineCompletions = [autocorrectionList inlineCompletions];
 
-  return v3;
+  return inlineCompletions;
 }
 
 - (id)predictationBarDebugString
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = [(TIKeyboardTyper *)self predictionBarCandidates];
-  if ([v3 count] && -[TIKeyboardTyper showsCandidateBar](self, "showsCandidateBar"))
+  predictionBarCandidates = [(TIKeyboardTyper *)self predictionBarCandidates];
+  if ([predictionBarCandidates count] && -[TIKeyboardTyper showsCandidateBar](self, "showsCandidateBar"))
   {
     v4 = objc_opt_new();
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v27 = v3;
-    obj = v3;
+    v27 = predictionBarCandidates;
+    obj = predictionBarCandidates;
     v5 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v5)
     {
@@ -1409,9 +1409,9 @@ LABEL_8:
           if (objc_opt_isKindOfClass())
           {
             v13 = v11;
-            v14 = [v13 lexiconLocale];
+            lexiconLocale = [v13 lexiconLocale];
 
-            if (v14)
+            if (lexiconLocale)
             {
               v15 = MEMORY[0x277CCACA8];
               [v13 lexiconLocale];
@@ -1435,8 +1435,8 @@ LABEL_8:
             }
           }
 
-          v22 = [v11 candidate];
-          v23 = [v22 stringByAppendingString:v12];
+          candidate = [v11 candidate];
+          v23 = [candidate stringByAppendingString:v12];
           [v4 addObject:v23];
 
           ++v10;
@@ -1452,7 +1452,7 @@ LABEL_8:
     v24 = [v4 componentsJoinedByString:@"\t"];
     v25 = [v24 stringByAppendingString:@"\n"];
 
-    v3 = v27;
+    predictionBarCandidates = v27;
   }
 
   else
@@ -1465,21 +1465,21 @@ LABEL_8:
 
 - (NSArray)predictionBarCandidates
 {
-  v3 = [(TIKeyboardTyper *)self candidateBarCandidates];
-  if (v3)
+  candidateBarCandidates = [(TIKeyboardTyper *)self candidateBarCandidates];
+  if (candidateBarCandidates)
   {
     if ([(TIKeyboardTyper *)self inPartialCandidateSelection])
     {
-      v4 = [v3 count];
+      maxPredictions = [candidateBarCandidates count];
     }
 
     else
     {
-      v4 = [(TIKeyboardTyper *)self maxPredictions];
+      maxPredictions = [(TIKeyboardTyper *)self maxPredictions];
     }
 
-    v10 = v4;
-    v11 = [v3 count];
+    v10 = maxPredictions;
+    v11 = [candidateBarCandidates count];
     if (v10 >= v11)
     {
       v12 = v11;
@@ -1490,45 +1490,45 @@ LABEL_8:
       v12 = v10;
     }
 
-    v5 = [v3 subarrayWithRange:{0, v12}];
+    v5 = [candidateBarCandidates subarrayWithRange:{0, v12}];
   }
 
   else
   {
     v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[TIKeyboardTyper maxPredictions](self, "maxPredictions")}];
-    v6 = [(TIKeyboardTyper *)self autocorrection];
-    v7 = [(TIKeyboardTyper *)self autocorrection];
-    v8 = [v7 isAutocorrection];
+    autocorrection = [(TIKeyboardTyper *)self autocorrection];
+    autocorrection2 = [(TIKeyboardTyper *)self autocorrection];
+    isAutocorrection = [autocorrection2 isAutocorrection];
 
-    if (v8)
+    if (isAutocorrection)
     {
       v9 = 1;
     }
 
     else
     {
-      v13 = [v6 input];
-      v9 = [v13 length] != 0;
+      input = [autocorrection input];
+      v9 = [input length] != 0;
     }
 
     objc_opt_class();
-    v62 = v6;
+    v62 = autocorrection;
     if (objc_opt_isKindOfClass())
     {
-      v14 = [(TIKeyboardTyper *)self locale];
-      v15 = [v14 languageCode];
-      if ([v15 isEqualToString:@"ko"])
+      locale = [(TIKeyboardTyper *)self locale];
+      languageCode = [locale languageCode];
+      if ([languageCode isEqualToString:@"ko"])
       {
         v59 = 0;
       }
 
       else
       {
-        v16 = [(TIKeyboardTyper *)self locale];
-        v17 = [v16 languageCode];
-        v59 = [v17 isEqualToString:@"th"] ^ 1;
+        locale2 = [(TIKeyboardTyper *)self locale];
+        languageCode2 = [locale2 languageCode];
+        v59 = [languageCode2 isEqualToString:@"th"] ^ 1;
 
-        v6 = v62;
+        autocorrection = v62;
       }
     }
 
@@ -1537,37 +1537,37 @@ LABEL_8:
       v59 = 0;
     }
 
-    v18 = [(TIKeyboardTyper *)self autocorrectionList];
-    v19 = [v18 predictions];
+    autocorrectionList = [(TIKeyboardTyper *)self autocorrectionList];
+    predictions = [autocorrectionList predictions];
 
-    if ([v19 count])
+    if ([predictions count])
     {
-      v20 = [v19 objectAtIndex:0];
-      v21 = [v20 isContinuousPathConversion];
-      v9 &= v21 ^ 1;
-      v8 &= v21 ^ 1;
+      v20 = [predictions objectAtIndex:0];
+      isContinuousPathConversion = [v20 isContinuousPathConversion];
+      v9 &= isContinuousPathConversion ^ 1;
+      isAutocorrection &= isContinuousPathConversion ^ 1;
     }
 
-    v22 = [(TIKeyboardTyper *)self maxPredictions];
-    v23 = v22;
-    v24 = v9 & (v22 != 0);
-    v63 = v8;
-    if (v22 == v24)
+    maxPredictions2 = [(TIKeyboardTyper *)self maxPredictions];
+    v23 = maxPredictions2;
+    v24 = v9 & (maxPredictions2 != 0);
+    v63 = isAutocorrection;
+    if (maxPredictions2 == v24)
     {
       v25 = 0;
     }
 
     else
     {
-      v25 = v8;
+      v25 = isAutocorrection;
     }
 
-    v61 = v22 - v24;
-    v26 = v22 - v24 - v25;
-    v27 = [(TIKeyboardTyper *)self autocorrectionList];
-    v28 = [v27 emojiList];
+    v61 = maxPredictions2 - v24;
+    v26 = maxPredictions2 - v24 - v25;
+    autocorrectionList2 = [(TIKeyboardTyper *)self autocorrectionList];
+    emojiList = [autocorrectionList2 emojiList];
 
-    v29 = [v28 count];
+    v29 = [emojiList count];
     if (v26 >= v29)
     {
       v30 = v29;
@@ -1594,7 +1594,7 @@ LABEL_8:
     v57 = v33;
     v58 = v29;
     v34 = v26 - v32;
-    v35 = [v19 count];
+    v35 = [predictions count];
     v36 = v9;
     v37 = v35;
     if (v34 >= v35)
@@ -1610,16 +1610,16 @@ LABEL_8:
     if (v36)
     {
       v39 = MEMORY[0x277D6F3D8];
-      v40 = [v6 input];
-      v41 = [v39 candidateWithUnchangedInput:v40];
+      input2 = [autocorrection input];
+      v41 = [v39 candidateWithUnchangedInput:input2];
 
-      v6 = v62;
+      autocorrection = v62;
       [v5 addObject:v41];
     }
 
     if ((v63 | v59))
     {
-      [v5 addObject:v6];
+      [v5 addObject:autocorrection];
     }
 
     if (v38)
@@ -1647,16 +1647,16 @@ LABEL_8:
 
       do
       {
-        v45 = [v19 objectAtIndex:v42];
+        v45 = [predictions objectAtIndex:v42];
         v46 = v45;
         if (v45 && [v45 slotID])
         {
-          v47 = [MEMORY[0x277D6FE30] sharedInstance];
-          v48 = [v47 secureCandidateRenderer];
+          mEMORY[0x277D6FE30] = [MEMORY[0x277D6FE30] sharedInstance];
+          secureCandidateRenderer = [mEMORY[0x277D6FE30] secureCandidateRenderer];
 
-          if (v48)
+          if (secureCandidateRenderer)
           {
-            v49 = [v48 cachedCandidateForSecureCandidate:v46];
+            v49 = [secureCandidateRenderer cachedCandidateForSecureCandidate:v46];
           }
 
           else
@@ -1705,7 +1705,7 @@ LABEL_8:
 
       do
       {
-        v55 = [v28 objectAtIndex:v51];
+        v55 = [emojiList objectAtIndex:v51];
         [v5 addObject:v55];
 
         ++v51;
@@ -1720,106 +1720,106 @@ LABEL_8:
 
 - (id)candidateBarCandidates
 {
-  v2 = [(TIKeyboardTyper *)self candidateResultSet];
-  v3 = [v2 candidates];
+  candidateResultSet = [(TIKeyboardTyper *)self candidateResultSet];
+  candidates = [candidateResultSet candidates];
 
-  return v3;
+  return candidates;
 }
 
 - (TIKeyboardCandidate)autocorrection
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 autocorrection];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  autocorrection = [keyboardController autocorrection];
 
-  return v3;
+  return autocorrection;
 }
 
-- (void)acceptCandidateViaKeyboard:(id)a3
+- (void)acceptCandidateViaKeyboard:(id)keyboard
 {
-  v4 = a3;
+  keyboardCopy = keyboard;
   [(TIKeyboardTyper *)self lastTimestamp];
-  [(TIKeyboardTyper *)self _performAcceptCandidate:v4 timestamp:0 typingLog:?];
+  [(TIKeyboardTyper *)self _performAcceptCandidate:keyboardCopy timestamp:0 typingLog:?];
 
   v9 = objc_alloc_init(MEMORY[0x277D6F3E8]);
   [v9 setString:@"\n"];
-  v5 = [(TIKeyboardTyper *)self keyboardController];
-  v6 = [v5 inputManager];
-  v7 = [v6 handleKeyboardInput:v9];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  inputManager = [keyboardController inputManager];
+  v7 = [inputManager handleKeyboardInput:v9];
 
-  v8 = [(TIKeyboardTyper *)self keyboardController];
-  [v8 generateAutocorrectionsOrCandidates];
+  keyboardController2 = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController2 generateAutocorrectionsOrCandidates];
 }
 
-- (void)acceptCandidate:(id)a3
+- (void)acceptCandidate:(id)candidate
 {
-  v4 = a3;
+  candidateCopy = candidate;
   [(TIKeyboardTyper *)self lastTimestamp];
-  [(TIKeyboardTyper *)self _performAcceptCandidate:v4 timestamp:0 typingLog:?];
+  [(TIKeyboardTyper *)self _performAcceptCandidate:candidateCopy timestamp:0 typingLog:?];
 }
 
-- (void)acceptPredictiveCandidate:(id)a3
+- (void)acceptPredictiveCandidate:(id)candidate
 {
-  v4 = a3;
+  candidateCopy = candidate;
   [(TIKeyboardTyper *)self lastTimestamp];
-  [(TIKeyboardTyper *)self _performAcceptPredictiveCandidate:v4 timestamp:0 typingLog:?];
+  [(TIKeyboardTyper *)self _performAcceptPredictiveCandidate:candidateCopy timestamp:0 typingLog:?];
 }
 
-- (void)registerLearning:(id)a3 fullCandidate:(id)a4 mode:(id)a5
+- (void)registerLearning:(id)learning fullCandidate:(id)candidate mode:(id)mode
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v13 = [(TIKeyboardTyper *)self inputManager];
-  v11 = [(TIKeyboardTyper *)self keyboardController];
-  v12 = [v11 keyboardState];
-  [v13 registerLearning:v10 fullCandidate:v9 keyboardState:v12 mode:v8];
+  modeCopy = mode;
+  candidateCopy = candidate;
+  learningCopy = learning;
+  inputManager = [(TIKeyboardTyper *)self inputManager];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  keyboardState = [keyboardController keyboardState];
+  [inputManager registerLearning:learningCopy fullCandidate:candidateCopy keyboardState:keyboardState mode:modeCopy];
 }
 
-- (void)candidateRejected:(id)a3
+- (void)candidateRejected:(id)rejected
 {
-  v4 = a3;
-  v5 = [(TIKeyboardTyper *)self inputManager];
-  [v5 candidateRejected:v4];
+  rejectedCopy = rejected;
+  inputManager = [(TIKeyboardTyper *)self inputManager];
+  [inputManager candidateRejected:rejectedCopy];
 }
 
 - (void)rejectAutocorrection
 {
-  v3 = [(TIKeyboardTyper *)self autocorrection];
+  autocorrection = [(TIKeyboardTyper *)self autocorrection];
   [(TIKeyboardTyper *)self lastTimestamp];
-  [(TIKeyboardTyper *)self _performRejectCandidate:v3 timestamp:0 typingLog:?];
+  [(TIKeyboardTyper *)self _performRejectCandidate:autocorrection timestamp:0 typingLog:?];
 }
 
 - (void)acceptAutocorrection
 {
-  v3 = [(TIKeyboardTyper *)self autocorrection];
+  autocorrection = [(TIKeyboardTyper *)self autocorrection];
   [(TIKeyboardTyper *)self lastTimestamp];
-  [(TIKeyboardTyper *)self _performAcceptCandidate:v3 timestamp:0 typingLog:?];
+  [(TIKeyboardTyper *)self _performAcceptCandidate:autocorrection timestamp:0 typingLog:?];
 }
 
-- (void)attemptToRapidDeleteCharacters:(unsigned int)a3
+- (void)attemptToRapidDeleteCharacters:(unsigned int)characters
 {
-  if (a3)
+  if (characters)
   {
     [(TIKeyboardTyper *)self attemptToDelete];
-    v5 = a3 - 1;
-    if (a3 != 1)
+    v5 = characters - 1;
+    if (characters != 1)
     {
       while (1)
       {
-        v6 = [(TIKeyboardTyper *)self inputManager];
-        v7 = [v6 keyboardState];
-        v13 = [v7 documentState];
+        inputManager = [(TIKeyboardTyper *)self inputManager];
+        keyboardState = [inputManager keyboardState];
+        documentState = [keyboardState documentState];
 
-        v8 = [v13 contextBeforeInput];
-        if (![v8 length])
+        contextBeforeInput = [documentState contextBeforeInput];
+        if (![contextBeforeInput length])
         {
           break;
         }
 
         v9 = MEMORY[0x277D6F350];
-        v10 = [v8 substringToIndex:{objc_msgSend(v8, "length") - 1}];
-        v11 = [v13 contextAfterInput];
-        v12 = [v9 documentStateWithContextBefore:v10 selectedText:&stru_287EC4808 contextAfter:v11];
+        v10 = [contextBeforeInput substringToIndex:{objc_msgSend(contextBeforeInput, "length") - 1}];
+        contextAfterInput = [documentState contextAfterInput];
+        v12 = [v9 documentStateWithContextBefore:v10 selectedText:&stru_287EC4808 contextAfter:contextAfterInput];
 
         [(TIKeyboardTyper *)self syncToDocumentState:v12];
         if (!--v5)
@@ -1831,45 +1831,45 @@ LABEL_8:
   }
 }
 
-- (void)attemptToDeleteWithCount:(unsigned int)a3
+- (void)attemptToDeleteWithCount:(unsigned int)count
 {
-  if (a3)
+  if (count)
   {
-    v3 = a3;
+    countCopy = count;
     do
     {
       [(TIKeyboardTyper *)self attemptTapOnKeyWithString:@"Delete" withErrorGenerator:0 typingLog:0];
-      --v3;
+      --countCopy;
     }
 
-    while (v3);
+    while (countCopy);
   }
 }
 
-- (id)performTapAtKey:(id)a3 biasedTowards:(id)a4 biasWeight:(float)a5
+- (id)performTapAtKey:(id)key biasedTowards:(id)towards biasWeight:(float)weight
 {
-  v8 = a4;
-  v9 = a3;
+  towardsCopy = towards;
+  keyCopy = key;
   [(TIKeyboardTyper *)self lastTimestamp];
   v11 = v10;
   [(TIKeyboardTyper *)self interTouchTimestampInterval];
   v13 = v12;
-  v14 = [(TIKeyboardTyper *)self keyboardController];
-  v15 = [v14 keyplane];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  keyplane = [keyboardController keyplane];
 
-  v16 = [(TIKeyboardTyper *)self keyWithString:v9 inKeyplane:v15];
+  v16 = [(TIKeyboardTyper *)self keyWithString:keyCopy inKeyplane:keyplane];
 
   [(TIKeyboardTyper *)self pointForAttemptedTapOnKey:v16 withError:0];
   v18 = v17;
   v20 = v19;
-  v21 = [(TIKeyboardTyper *)self keyWithString:v8 inKeyplane:v15];
+  v21 = [(TIKeyboardTyper *)self keyWithString:towardsCopy inKeyplane:keyplane];
 
   [(TIKeyboardTyper *)self pointForAttemptedTapOnKey:v21 withError:0];
   v23 = v22;
   v25 = v24;
-  v26 = [(TIKeyboardTyper *)self keyboardController];
-  v27 = [v26 leftKeys];
-  v28 = [v27 containsObject:v16];
+  keyboardController2 = [(TIKeyboardTyper *)self keyboardController];
+  leftKeys = [keyboardController2 leftKeys];
+  v28 = [leftKeys containsObject:v16];
 
   if (v28)
   {
@@ -1878,9 +1878,9 @@ LABEL_8:
 
   else
   {
-    v30 = [(TIKeyboardTyper *)self keyboardController];
-    v31 = [v30 rightKeys];
-    v32 = [v31 containsObject:v16];
+    keyboardController3 = [(TIKeyboardTyper *)self keyboardController];
+    rightKeys = [keyboardController3 rightKeys];
+    v32 = [rightKeys containsObject:v16];
 
     if (v32)
     {
@@ -1893,27 +1893,27 @@ LABEL_8:
     }
   }
 
-  v33 = a5;
-  v34 = v20 + a5 * (v25 - v20);
-  v35 = v18 + v33 * (v23 - v18);
+  weightCopy = weight;
+  v34 = v20 + weight * (v25 - v20);
+  v35 = v18 + weightCopy * (v23 - v18);
   v36 = v11 + v13;
-  v37 = [(TIKeyboardTyper *)self keyboardController];
+  keyboardController4 = [(TIKeyboardTyper *)self keyboardController];
   LODWORD(v38) = 5.0;
-  [v37 performTouchDownAtLocation:0 radius:v29 timestamp:v35 pathIndex:v34 fingerID:{v38, v36}];
+  [keyboardController4 performTouchDownAtLocation:0 radius:v29 timestamp:v35 pathIndex:v34 fingerID:{v38, v36}];
 
-  v39 = [(TIKeyboardTyper *)self keyboardController];
+  keyboardController5 = [(TIKeyboardTyper *)self keyboardController];
   LODWORD(v40) = 5.0;
-  v41 = [v39 performTouchUpAtLocation:0 radius:v29 timestamp:0 pathIndex:v35 fingerID:v34 secondaryString:{v40, v36}];
+  v41 = [keyboardController5 performTouchUpAtLocation:0 radius:v29 timestamp:0 pathIndex:v35 fingerID:v34 secondaryString:{v40, v36}];
 
   [(TIKeyboardTyper *)self setLastTimestamp:v36];
 
   return v41;
 }
 
-- (id)performTapAtLocation:(CGPoint)a3
+- (id)performTapAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   [(TIKeyboardTyper *)self lastTimestamp];
   v7 = v6;
   [(TIKeyboardTyper *)self interTouchTimestampInterval];
@@ -1924,12 +1924,12 @@ LABEL_8:
   return v10;
 }
 
-- (void)attemptTapOnKeyWithString:(id)a3 withErrorGenerator:(id)a4 typingLog:(id)a5
+- (void)attemptTapOnKeyWithString:(id)string withErrorGenerator:(id)generator typingLog:(id)log
 {
-  v24 = a5;
-  v7 = a3;
-  v8 = [(TIKeyboardTyper *)self keyplane];
-  v9 = [(TIKeyboardTyper *)self keyWithString:v7 inKeyplane:v8];
+  logCopy = log;
+  stringCopy = string;
+  keyplane = [(TIKeyboardTyper *)self keyplane];
+  v9 = [(TIKeyboardTyper *)self keyWithString:stringCopy inKeyplane:keyplane];
 
   if (v9)
   {
@@ -1937,66 +1937,66 @@ LABEL_8:
     v11 = v10;
     [(TIKeyboardTyper *)self interTouchTimestampInterval];
     v13 = v11 + v12;
-    v14 = [(TIKeyboardTyper *)self errorGenerator];
-    v15 = [v9 representedString];
+    errorGenerator = [(TIKeyboardTyper *)self errorGenerator];
+    representedString = [v9 representedString];
     [v9 paddedFrame];
-    v16 = [v14 errorForKeyString:v15 rect:?];
+    v16 = [errorGenerator errorForKeyString:representedString rect:?];
 
     [(TIKeyboardTyper *)self pointForAttemptedTapOnKey:v9 withError:v16];
     v18 = v17;
     v20 = v19;
-    v21 = [(TIKeyboardTyper *)self keyplane];
-    v22 = [(TIKeyboardTyper *)self keyContainingPoint:v21 inKeyplane:v18, v20];
+    keyplane2 = [(TIKeyboardTyper *)self keyplane];
+    v22 = [(TIKeyboardTyper *)self keyContainingPoint:keyplane2 inKeyplane:v18, v20];
 
     if (v22)
     {
-      v23 = [(TIKeyboardTyper *)self _performTapAtLocation:v9 timestamp:v22 intendedKey:0 touchedKey:v16 secondaryString:v24 touchError:v18 typingLog:v20, v13];
+      v23 = [(TIKeyboardTyper *)self _performTapAtLocation:v9 timestamp:v22 intendedKey:0 touchedKey:v16 secondaryString:logCopy touchError:v18 typingLog:v20, v13];
     }
 
     else
     {
-      [(TIKeyboardTyper *)self _skipTapTimestamp:v9 intendedKey:v24 typingLog:v13];
+      [(TIKeyboardTyper *)self _skipTapTimestamp:v9 intendedKey:logCopy typingLog:v13];
     }
 
     [(TIKeyboardTyper *)self setLastTimestamp:v13];
   }
 }
 
-- (void)attemptTapOnKeyWithString:(id)a3
+- (void)attemptTapOnKeyWithString:(id)string
 {
-  v4 = a3;
-  v5 = [(TIKeyboardTyper *)self errorGenerator];
-  [(TIKeyboardTyper *)self attemptTapOnKeyWithString:v4 withErrorGenerator:v5 typingLog:0];
+  stringCopy = string;
+  errorGenerator = [(TIKeyboardTyper *)self errorGenerator];
+  [(TIKeyboardTyper *)self attemptTapOnKeyWithString:stringCopy withErrorGenerator:errorGenerator typingLog:0];
 }
 
-- (void)attemptToStrokeWord:(id)a3 startTime:(double)a4 duration:(double)a5 typingLog:(id)a6 callback:(id)a7
+- (void)attemptToStrokeWord:(id)word startTime:(double)time duration:(double)duration typingLog:(id)log callback:(id)callback
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a3;
-  v15 = [v14 substringWithRange:{0, 1}];
+  callbackCopy = callback;
+  logCopy = log;
+  wordCopy = word;
+  v15 = [wordCopy substringWithRange:{0, 1}];
   [(TIKeyboardTyper *)self changeToNearestKeyplaneWithString:v15];
 
   v21 = [TTKDefaultContinuousPathGenerator pathGeneratorWithAttributes:MEMORY[0x277CBEC10]];
-  v16 = [(TIKeyboardTyper *)self keyboardController];
-  v17 = [v16 layoutUtils];
-  v18 = [(TIKeyboardTyper *)self keyplane];
-  v19 = [v17 createTTKPlane:v18];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  layoutUtils = [keyboardController layoutUtils];
+  keyplane = [(TIKeyboardTyper *)self keyplane];
+  v19 = [layoutUtils createTTKPlane:keyplane];
 
-  v20 = [v21 generatePathFromString:v14 timestamp:v19 duration:a4 layout:a5];
+  v20 = [v21 generatePathFromString:wordCopy timestamp:v19 duration:time layout:duration];
 
-  [(TIKeyboardTyper *)self performStrokeForPath:v20 typingLog:v13 callback:v12];
+  [(TIKeyboardTyper *)self performStrokeForPath:v20 typingLog:logCopy callback:callbackCopy];
 }
 
-- (void)attemptToTapKeys:(id)a3
+- (void)attemptToTapKeys:(id)keys
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keysCopy = keys;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [keysCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2008,31 +2008,31 @@ LABEL_8:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keysCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
-        v10 = [(TIKeyboardTyper *)self errorGenerator];
-        [(TIKeyboardTyper *)self attemptTapOnKeyWithString:v9 withErrorGenerator:v10 typingLog:0];
+        errorGenerator = [(TIKeyboardTyper *)self errorGenerator];
+        [(TIKeyboardTyper *)self attemptTapOnKeyWithString:v9 withErrorGenerator:errorGenerator typingLog:0];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [keysCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)attemptToTypeIntended:(id)a3 expected:(id)a4 typingLog:(id)a5
+- (void)attemptToTypeIntended:(id)intended expected:(id)expected typingLog:(id)log
 {
-  v18 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 componentsJoinedByString:&stru_287EC4808];
-  v11 = [v18 componentsJoinedByString:&stru_287EC4808];
+  expectedCopy = expected;
+  logCopy = log;
+  intendedCopy = intended;
+  v10 = [intendedCopy componentsJoinedByString:&stru_287EC4808];
+  v11 = [expectedCopy componentsJoinedByString:&stru_287EC4808];
   v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"----->> %@ -> %@", v10, v11];
   v13 = TIPrintTypingTranscriptToStdout();
   v14 = MEMORY[0x277D85E08];
@@ -2041,85 +2041,85 @@ LABEL_8:
     fprintf(*v14, "%s\n", [v12 UTF8String]);
   }
 
-  v15 = [(TIKeyboardTyper *)self userActionStream];
-  [v15 resetForIntendedSegments:v9 expectedSegments:v18];
+  userActionStream = [(TIKeyboardTyper *)self userActionStream];
+  [userActionStream resetForIntendedSegments:intendedCopy expectedSegments:expectedCopy];
 
-  [(TIKeyboardTyper *)self attemptToTypeWithLog:v8];
+  [(TIKeyboardTyper *)self attemptToTypeWithLog:logCopy];
   if ([(TIKeyboardTyper *)self printTranslitSummaries])
   {
     fprintf(*v14, "input   : %s\n", [v10 UTF8String]);
     fprintf(*v14, "expected: %s\n", [v11 UTF8String]);
     v16 = *v14;
-    v17 = [(TIKeyboardTyper *)self text];
-    fprintf(v16, "actual  : %s\n\n", [v17 UTF8String]);
+    text = [(TIKeyboardTyper *)self text];
+    fprintf(v16, "actual  : %s\n\n", [text UTF8String]);
   }
 }
 
-- (void)attemptToTypeText:(id)a3 typingLog:(id)a4
+- (void)attemptToTypeText:(id)text typingLog:(id)log
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(TIKeyboardTyper *)self userActionStream];
-  [v7 setIntendedText:v8];
+  textCopy = text;
+  logCopy = log;
+  userActionStream = [(TIKeyboardTyper *)self userActionStream];
+  [userActionStream setIntendedText:textCopy];
 
   if ((TIPrintTypingTranscriptToStdout() & 1) != 0 || [(TIKeyboardTyper *)self printTypingTranscript])
   {
-    fprintf(*MEMORY[0x277D85E08], "----->> %s\n", [v8 UTF8String]);
+    fprintf(*MEMORY[0x277D85E08], "----->> %s\n", [textCopy UTF8String]);
   }
 
-  [(TIKeyboardTyper *)self attemptToTypeWithLog:v6];
+  [(TIKeyboardTyper *)self attemptToTypeWithLog:logCopy];
 }
 
-- (void)attemptToTypeWithLog:(id)a3
+- (void)attemptToTypeWithLog:(id)log
 {
-  v34 = a3;
+  logCopy = log;
   if ((TILogProblemSentencesToStdout() & 1) != 0 || ([(TIKeyboardTyper *)self badSentenceLogFilePath], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
     v5 = [TIProgressTracker alloc];
-    v6 = [(TIKeyboardTyper *)self userActionStream];
-    v7 = [v6 intendedText];
-    v8 = [(TIKeyboardTyper *)self badSentenceLogFilePath];
-    v4 = [(TIProgressTracker *)v5 initWithIntendedString:v7 repeatLimit:4 timeout:v8 badSentencePath:1500.0];
+    userActionStream = [(TIKeyboardTyper *)self userActionStream];
+    intendedText = [userActionStream intendedText];
+    badSentenceLogFilePath = [(TIKeyboardTyper *)self badSentenceLogFilePath];
+    v4 = [(TIProgressTracker *)v5 initWithIntendedString:intendedText repeatLimit:4 timeout:badSentenceLogFilePath badSentencePath:1500.0];
   }
 
-  v9 = 0;
+  nextUserAction = 0;
   v10 = MEMORY[0x277D85E08];
   do
   {
-    v11 = v9;
-    v12 = [(TIKeyboardTyper *)self userActionStream];
-    v9 = [v12 nextUserAction];
+    v11 = nextUserAction;
+    userActionStream2 = [(TIKeyboardTyper *)self userActionStream];
+    nextUserAction = [userActionStream2 nextUserAction];
 
-    if (!v9)
+    if (!nextUserAction)
     {
       break;
     }
 
     v13 = objc_autoreleasePoolPush();
-    [v34 setTokenIndex:{objc_msgSend(v9, "inputSegment")}];
+    [logCopy setTokenIndex:{objc_msgSend(nextUserAction, "inputSegment")}];
     if ([(TIKeyboardTyper *)self warnIfSelectingPopupVariant])
     {
       NSClassFromString(&cfstr_Actselectpopup.isa);
       if (objc_opt_isKindOfClass())
       {
         v14 = *MEMORY[0x277D85DF8];
-        v15 = [v9 description];
+        v15 = [nextUserAction description];
         fprintf(v14, "WARNING! Typer is selecting a pop-up key variant: %s. This may indicate a keyboard layout mis-configuration.\n", [v15 UTF8String]);
       }
     }
 
-    v16 = [(TIKeyboardTyper *)self predictationBarDebugString];
-    if (v16 && ((TIPrintTypingTranscriptToStdout() & 1) != 0 || [(TIKeyboardTyper *)self printTypingTranscript]))
+    predictationBarDebugString = [(TIKeyboardTyper *)self predictationBarDebugString];
+    if (predictationBarDebugString && ((TIPrintTypingTranscriptToStdout() & 1) != 0 || [(TIKeyboardTyper *)self printTypingTranscript]))
     {
-      fputs([v16 UTF8String], *v10);
+      fputs([predictationBarDebugString UTF8String], *v10);
     }
 
     if ((TIPrintTypingTranscriptToStdout() & 1) != 0 || [(TIKeyboardTyper *)self printTypingTranscript])
     {
       v17 = *v10;
-      v18 = [v9 shortDescription];
-      v19 = [v9 shortDescription];
-      v20 = [v19 length] - 1;
+      shortDescription = [nextUserAction shortDescription];
+      shortDescription2 = [nextUserAction shortDescription];
+      v20 = [shortDescription2 length] - 1;
 
       if (v20 >= 0x2D)
       {
@@ -2131,32 +2131,32 @@ LABEL_8:
         v21 = v20;
       }
 
-      v22 = [v18 substringToIndex:v21];
+      v22 = [shortDescription substringToIndex:v21];
       fprintf(v17, "%-45s\t", [v22 UTF8String]);
     }
 
-    [v9 applyWithTyper:self log:v34];
+    [nextUserAction applyWithTyper:self log:logCopy];
     if ((TIPrintTypingTranscriptToStdout() & 1) != 0 || [(TIKeyboardTyper *)self printTypingTranscript])
     {
       v23 = *v10;
-      v24 = [(TIKeyboardTyper *)self text];
-      fprintf(v23, ">>> %s", [v24 UTF8String]);
+      text = [(TIKeyboardTyper *)self text];
+      fprintf(v23, ">>> %s", [text UTF8String]);
     }
 
-    v25 = [(TIKeyboardTyper *)self keyboardController];
-    v26 = [v25 justAcceptedAutocorrection];
+    keyboardController = [(TIKeyboardTyper *)self keyboardController];
+    justAcceptedAutocorrection = [keyboardController justAcceptedAutocorrection];
 
-    if (v26)
+    if (justAcceptedAutocorrection)
     {
       if ((TIPrintTypingTranscriptToStdout() & 1) != 0 || [(TIKeyboardTyper *)self printTypingTranscript])
       {
         fwrite("\t\t\t<autocorrect>", 0x10uLL, 1uLL, *v10);
       }
 
-      v27 = [(TIKeyboardTyper *)self keyboardController];
-      [v27 setJustAcceptedAutocorrection:0];
+      keyboardController2 = [(TIKeyboardTyper *)self keyboardController];
+      [keyboardController2 setJustAcceptedAutocorrection:0];
 
-      [v34 logAutocorrectionInserted];
+      [logCopy logAutocorrectionInserted];
     }
 
     if ((TIPrintTypingTranscriptToStdout() & 1) != 0 || [(TIKeyboardTyper *)self printTypingTranscript])
@@ -2165,8 +2165,8 @@ LABEL_8:
     }
 
     v28 = MEMORY[0x277CCACA8];
-    v29 = [(TIKeyboardTyper *)self text];
-    v30 = [v28 stringWithString:v29];
+    text2 = [(TIKeyboardTyper *)self text];
+    v30 = [v28 stringWithString:text2];
     v31 = [(TIProgressTracker *)v4 shouldStopAfterAddingStateString:v30];
 
     objc_autoreleasePoolPop(v13);
@@ -2181,18 +2181,18 @@ LABEL_8:
   if ((TIPrintTypingTranscriptToStdout() & 1) != 0 || [(TIKeyboardTyper *)self printTypingTranscript])
   {
     v32 = *v10;
-    v33 = [(TIKeyboardTyper *)self text];
-    fprintf(v32, "%-45s\t>>> %s。\t\t END\n\n", " ", [v33 UTF8String]);
+    text3 = [(TIKeyboardTyper *)self text];
+    fprintf(v32, "%-45s\t>>> %s。\t\t END\n\n", " ", [text3 UTF8String]);
   }
 }
 
 - (void)suspendAndResume
 {
-  v3 = [(TIKeyboardTyper *)self inputManager];
-  [v3 suspend];
+  inputManager = [(TIKeyboardTyper *)self inputManager];
+  [inputManager suspend];
 
-  v4 = [(TIKeyboardTyper *)self inputManager];
-  [v4 resume];
+  inputManager2 = [(TIKeyboardTyper *)self inputManager];
+  [inputManager2 resume];
 }
 
 - (void)syncToEmptyDocument
@@ -2201,91 +2201,91 @@ LABEL_8:
   [(TIKeyboardTyper *)self syncToDocumentState:v3];
 }
 
-- (void)syncToDocumentState:(id)a3
+- (void)syncToDocumentState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   [(TIKeyboardTyper *)self setLastTimestamp:0.0];
-  v5 = [(TIKeyboardTyper *)self keyboardController];
-  [v5 syncToDocumentState:v4];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController syncToDocumentState:stateCopy];
 }
 
 - (void)reset
 {
   v3 = objc_autoreleasePoolPush();
   [(TIKeyboardTyper *)self setLastTimestamp:0.0];
-  v4 = [(TIKeyboardTyper *)self userActionStream];
-  [v4 setIntendedText:&stru_287EC4808];
+  userActionStream = [(TIKeyboardTyper *)self userActionStream];
+  [userActionStream setIntendedText:&stru_287EC4808];
 
-  v5 = [(TIKeyboardTyper *)self keyboardController];
-  [v5 reset];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController reset];
 
-  v6 = [(TIKeyboardTyper *)self userPersona];
-  v7 = [(TIKeyboardTyper *)self keyboardController];
-  v8 = [v7 keyplane];
-  [v6 updateFromKeyplane:v8];
+  userPersona = [(TIKeyboardTyper *)self userPersona];
+  keyboardController2 = [(TIKeyboardTyper *)self keyboardController];
+  keyplane = [keyboardController2 keyplane];
+  [userPersona updateFromKeyplane:keyplane];
 
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)setLastInputWasSelection:(BOOL)a3
+- (void)setLastInputWasSelection:(BOOL)selection
 {
-  v3 = a3;
-  v4 = [(TIKeyboardTyper *)self keyboardController];
-  [v4 setLastInputWasSelection:v3];
+  selectionCopy = selection;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController setLastInputWasSelection:selectionCopy];
 }
 
 - (BOOL)lastInputWasSelection
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 lastInputWasSelection];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  lastInputWasSelection = [keyboardController lastInputWasSelection];
 
-  return v3;
+  return lastInputWasSelection;
 }
 
-- (void)setErrorGenerator:(id)a3
+- (void)setErrorGenerator:(id)generator
 {
-  v5 = a3;
-  v4 = [(TIKeyboardTyper *)self userActionStream];
-  [v4 setErrorGenerator:v5];
+  generatorCopy = generator;
+  userActionStream = [(TIKeyboardTyper *)self userActionStream];
+  [userActionStream setErrorGenerator:generatorCopy];
 
-  [v5 setKeyboardInfoDelgate:self->_keyboardController];
+  [generatorCopy setKeyboardInfoDelgate:self->_keyboardController];
 }
 
 - (TIErrorGenerator)errorGenerator
 {
-  v2 = [(TIKeyboardTyper *)self userActionStream];
-  v3 = [v2 errorGenerator];
+  userActionStream = [(TIKeyboardTyper *)self userActionStream];
+  errorGenerator = [userActionStream errorGenerator];
 
-  return v3;
+  return errorGenerator;
 }
 
-- (void)setUserModel:(id)a3
+- (void)setUserModel:(id)model
 {
-  v4 = a3;
-  v5 = [(TIKeyboardTyper *)self userActionStream];
-  [v5 setUserModel:v4];
+  modelCopy = model;
+  userActionStream = [(TIKeyboardTyper *)self userActionStream];
+  [userActionStream setUserModel:modelCopy];
 }
 
 - (TIKeyboardTyperUserModel)userModel
 {
-  v2 = [(TIKeyboardTyper *)self userActionStream];
-  v3 = [v2 userModel];
+  userActionStream = [(TIKeyboardTyper *)self userActionStream];
+  userModel = [userActionStream userModel];
 
-  return v3;
+  return userModel;
 }
 
-- (void)linkWithUserActionStream:(id)a3
+- (void)linkWithUserActionStream:(id)stream
 {
-  v5 = a3;
+  streamCopy = stream;
   userActionStream = self->_userActionStream;
-  if (userActionStream != v5)
+  if (userActionStream != streamCopy)
   {
     [(ACTUserActionStreaming *)userActionStream setDelegate:0];
-    objc_storeStrong(&self->_userActionStream, a3);
+    objc_storeStrong(&self->_userActionStream, stream);
     [(ACTUserActionStreaming *)self->_userActionStream setDelegate:self];
     keyboardController = self->_keyboardController;
-    v8 = [(ACTUserActionStreaming *)self->_userActionStream errorGenerator];
-    [v8 setKeyboardInfoDelgate:keyboardController];
+    errorGenerator = [(ACTUserActionStreaming *)self->_userActionStream errorGenerator];
+    [errorGenerator setKeyboardInfoDelgate:keyboardController];
   }
 
   MEMORY[0x2821F96F8]();
@@ -2293,8 +2293,8 @@ LABEL_8:
 
 - (void)tearDown
 {
-  v3 = [(TIKeyboardTyper *)self keyboardController];
-  [v3 tearDown];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController tearDown];
 
   keyboardController = self->_keyboardController;
   self->_keyboardController = 0;
@@ -2302,30 +2302,30 @@ LABEL_8:
 
 - (void)dealloc
 {
-  v3 = [(TIKeyboardTyper *)self inputManager];
-  [v3 suspend];
+  inputManager = [(TIKeyboardTyper *)self inputManager];
+  [inputManager suspend];
 
   v4.receiver = self;
   v4.super_class = TIKeyboardTyper;
   [(TIKeyboardTyper *)&v4 dealloc];
 }
 
-- (TIKeyboardTyper)initWithInputMode:(id)a3
+- (TIKeyboardTyper)initWithInputMode:(id)mode
 {
-  v5 = a3;
+  modeCopy = mode;
   v16.receiver = self;
   v16.super_class = TIKeyboardTyper;
   v6 = [(TIKeyboardTyper *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_inputMode, a3);
-    v8 = [[ACTKeyboardController alloc] initWithInputMode:v5];
+    objc_storeStrong(&v6->_inputMode, mode);
+    v8 = [[ACTKeyboardController alloc] initWithInputMode:modeCopy];
     keyboardController = v7->_keyboardController;
     v7->_keyboardController = v8;
 
-    v10 = [v5 locale];
-    v11 = [v10 copy];
+    locale = [modeCopy locale];
+    v11 = [locale copy];
     locale = v7->_locale;
     v7->_locale = v11;
 
@@ -2342,22 +2342,22 @@ LABEL_8:
   return v7;
 }
 
-- (void)attemptToTapPredictionWithLiteral:(id)a3
+- (void)attemptToTapPredictionWithLiteral:(id)literal
 {
-  v4 = [MEMORY[0x277D6F3D8] candidateWithUnchangedInput:a3];
+  v4 = [MEMORY[0x277D6F3D8] candidateWithUnchangedInput:literal];
   [(TIKeyboardTyper *)self acceptCandidateFromPredictionBar:v4];
 }
 
-- (BOOL)attemptToTapAutocorrectionWithString:(id)a3
+- (BOOL)attemptToTapAutocorrectionWithString:(id)string
 {
-  v4 = a3;
-  v5 = [(TIKeyboardTyper *)self autocorrection];
-  v6 = [(TIKeyboardTyper *)self autocorrection];
-  v7 = [v6 isAutocorrection];
+  stringCopy = string;
+  autocorrection = [(TIKeyboardTyper *)self autocorrection];
+  autocorrection2 = [(TIKeyboardTyper *)self autocorrection];
+  isAutocorrection = [autocorrection2 isAutocorrection];
 
-  if (v7 && ([v5 candidate], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", v4), v8, v9))
+  if (isAutocorrection && ([autocorrection candidate], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", stringCopy), v8, v9))
   {
-    [(TIKeyboardTyper *)self acceptCandidateFromPredictionBar:v5];
+    [(TIKeyboardTyper *)self acceptCandidateFromPredictionBar:autocorrection];
     v10 = 1;
   }
 
@@ -2369,16 +2369,16 @@ LABEL_8:
   return v10;
 }
 
-- (BOOL)attemptToTapPredictionBarCandidateWithString:(id)a3
+- (BOOL)attemptToTapPredictionBarCandidateWithString:(id)string
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringCopy = string;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(TIKeyboardTyper *)self predictionBarCandidates];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  predictionBarCandidates = [(TIKeyboardTyper *)self predictionBarCandidates];
+  v6 = [predictionBarCandidates countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2389,12 +2389,12 @@ LABEL_8:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(predictionBarCandidates);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 candidate];
-        v12 = [v11 isEqualToString:v4];
+        candidate = [v10 candidate];
+        v12 = [candidate isEqualToString:stringCopy];
 
         if (v12)
         {
@@ -2404,7 +2404,7 @@ LABEL_8:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [predictionBarCandidates countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -2420,16 +2420,16 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)attemptToTapPredictionWithString:(id)a3
+- (BOOL)attemptToTapPredictionWithString:(id)string
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringCopy = string;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(TIKeyboardTyper *)self predictions];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  predictions = [(TIKeyboardTyper *)self predictions];
+  v6 = [predictions countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2440,12 +2440,12 @@ LABEL_11:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(predictions);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 candidate];
-        v12 = [v11 isEqualToString:v4];
+        candidate = [v10 candidate];
+        v12 = [candidate isEqualToString:stringCopy];
 
         if (v12)
         {
@@ -2455,7 +2455,7 @@ LABEL_11:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [predictions countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -2471,184 +2471,184 @@ LABEL_11:
   return v13;
 }
 
-- (void)acceptCandidateFromPredictionBar:(id)a3
+- (void)acceptCandidateFromPredictionBar:(id)bar
 {
   v4 = MEMORY[0x277D6F3E8];
-  v5 = a3;
+  barCopy = bar;
   v6 = objc_alloc_init(v4);
   [v6 setString:@" "];
-  [v6 setAcceptedCandidate:v5];
+  [v6 setAcceptedCandidate:barCopy];
 
   [v6 setSynthesizedByAcceptingCandidate:1];
   [(TIKeyboardTyper *)self acceptCandidateInputEvent:v6 fromCandidateBar:1];
 }
 
-- (void)acceptCandidateInputEvent:(id)a3 fromCandidateBar:(BOOL)a4
+- (void)acceptCandidateInputEvent:(id)event fromCandidateBar:(BOOL)bar
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(TIKeyboardTyper *)self keyboardController];
-  [v7 acceptCandidateInputEvent:v6 fromCandidateBar:v4];
+  barCopy = bar;
+  eventCopy = event;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController acceptCandidateInputEvent:eventCopy fromCandidateBar:barCopy];
 }
 
-- (BOOL)hasPrediction:(id)a3
+- (BOOL)hasPrediction:(id)prediction
 {
-  v4 = a3;
-  v5 = [(TIKeyboardTyper *)self keyboardController];
-  v6 = [v5 hasPrediction:v4];
+  predictionCopy = prediction;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  v6 = [keyboardController hasPrediction:predictionCopy];
 
   return v6;
 }
 
-- (id)candidatesForString:(id)a3
+- (id)candidatesForString:(id)string
 {
-  v4 = a3;
-  v5 = [(TIKeyboardTyper *)self keyboardController];
-  v6 = [v5 candidatesForString:v4];
+  stringCopy = string;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  v6 = [keyboardController candidatesForString:stringCopy];
 
   return v6;
 }
 
-- (void)generateAutocorrectionsWithShiftState:(int)a3
+- (void)generateAutocorrectionsWithShiftState:(int)state
 {
-  v3 = *&a3;
-  v4 = [(TIKeyboardTyper *)self keyboardController];
-  [v4 generateAutocorrectionsWithShiftState:v3];
+  v3 = *&state;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController generateAutocorrectionsWithShiftState:v3];
 }
 
 - (void)generateCandidates
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  [v2 generateAutocorrectionsOrCandidates];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController generateAutocorrectionsOrCandidates];
 }
 
-- (void)setAutocorrectionList:(id)a3
+- (void)setAutocorrectionList:(id)list
 {
-  v4 = a3;
-  v5 = [(TIKeyboardTyper *)self keyboardController];
-  [v5 setAutocorrectionList:v4];
+  listCopy = list;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController setAutocorrectionList:listCopy];
 }
 
 - (TIAutocorrectionList)autocorrectionList
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 autocorrectionList];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  autocorrectionList = [keyboardController autocorrectionList];
 
-  return v3;
+  return autocorrectionList;
 }
 
 - (NSArray)predictions
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 predictions];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  predictions = [keyboardController predictions];
 
-  return v3;
+  return predictions;
 }
 
-- (id)displayStringOverrideForKey:(id)a3
+- (id)displayStringOverrideForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(TIKeyboardTyper *)self keyboardController];
-  v6 = [v5 displayStringOverrideForKey:v4];
+  keyCopy = key;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  v6 = [keyboardController displayStringOverrideForKey:keyCopy];
 
   return v6;
 }
 
 - (unint64_t)cursorLocationInMarkedText
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 keyboardState];
-  v4 = [v3 documentState];
-  v5 = [v4 selectedRangeInMarkedText];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  keyboardState = [keyboardController keyboardState];
+  documentState = [keyboardState documentState];
+  selectedRangeInMarkedText = [documentState selectedRangeInMarkedText];
 
-  return v5;
+  return selectedRangeInMarkedText;
 }
 
-- (void)adjustPhraseBoundaryByOffset:(int64_t)a3 granularity:(int)a4
+- (void)adjustPhraseBoundaryByOffset:(int64_t)offset granularity:(int)granularity
 {
-  if (a3)
+  if (offset)
   {
-    v4 = *&a4;
-    if (a3 >= 0)
+    v4 = *&granularity;
+    if (offset >= 0)
     {
-      v6 = a3;
+      offsetCopy = offset;
     }
 
     else
     {
-      v6 = -a3;
+      offsetCopy = -offset;
     }
 
-    v7 = a3 >> 63;
+    v7 = offset >> 63;
     do
     {
       [(TIKeyboardTyper *)self adjustPhraseBoundaryInForwardDirection:v7 ^ 1 granularity:v4];
-      --v6;
+      --offsetCopy;
     }
 
-    while (v6);
+    while (offsetCopy);
   }
 }
 
-- (void)adjustPhraseBoundaryInForwardDirection:(BOOL)a3 granularity:(int)a4
+- (void)adjustPhraseBoundaryInForwardDirection:(BOOL)direction granularity:(int)granularity
 {
-  v4 = *&a4;
-  v5 = a3;
-  v7 = [(TIKeyboardTyper *)self keyboardController];
-  [v7 adjustPhraseBoundaryInForwardDirection:v5 granularity:v4];
+  v4 = *&granularity;
+  directionCopy = direction;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController adjustPhraseBoundaryInForwardDirection:directionCopy granularity:v4];
 
-  v8 = [(TIKeyboardTyper *)self keyboardController];
-  [v8 generateAutocorrectionsOrCandidates];
+  keyboardController2 = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController2 generateAutocorrectionsOrCandidates];
 }
 
-- (void)adjustCursorByOffset:(int64_t)a3
+- (void)adjustCursorByOffset:(int64_t)offset
 {
-  v5 = [(TIKeyboardTyper *)self keyboardController];
-  [v5 adjustCursorByOffset:a3];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController adjustCursorByOffset:offset];
 
-  v6 = [(TIKeyboardTyper *)self keyboardController];
-  [v6 generateAutocorrectionsOrCandidates];
+  keyboardController2 = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController2 generateAutocorrectionsOrCandidates];
 }
 
 - (void)commitText
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  [v2 commitText];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController commitText];
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v4 = a3;
-  v5 = [(TIKeyboardTyper *)self keyboardController];
-  [v5 insertText:v4];
+  textCopy = text;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController insertText:textCopy];
 }
 
 - (NSString)markedText
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 markedText];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  markedText = [keyboardController markedText];
 
-  return v3;
+  return markedText;
 }
 
-- (void)setSelectedRange:(_NSRange)a3
+- (void)setSelectedRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(TIKeyboardTyper *)self keyboardController];
-  [v6 setSelectedRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController setSelectedRange:{location, length}];
 
-  v7 = [(TIKeyboardTyper *)self keyboardController];
-  [v7 generateAutocorrectionsOrCandidates];
+  keyboardController2 = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController2 generateAutocorrectionsOrCandidates];
 }
 
 - (_NSRange)selectedRange
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 selectedRange];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  selectedRange = [keyboardController selectedRange];
   v5 = v4;
 
-  v6 = v3;
+  v6 = selectedRange;
   v7 = v5;
   result.length = v7;
   result.location = v6;
@@ -2657,21 +2657,21 @@ LABEL_11:
 
 - (NSString)text
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 text];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  text = [keyboardController text];
 
-  return v3;
+  return text;
 }
 
-- (id)mapShiftedKeyToUnShiftedKeyExcludeCapitalization:(id)a3
+- (id)mapShiftedKeyToUnShiftedKeyExcludeCapitalization:(id)capitalization
 {
-  v4 = a3;
-  v5 = [(TIKeyboardTyper *)self shiftedKeyToUnShiftedKeyExcludeCapitalizationMap];
+  capitalizationCopy = capitalization;
+  shiftedKeyToUnShiftedKeyExcludeCapitalizationMap = [(TIKeyboardTyper *)self shiftedKeyToUnShiftedKeyExcludeCapitalizationMap];
 
-  if (v5)
+  if (shiftedKeyToUnShiftedKeyExcludeCapitalizationMap)
   {
-    v6 = [(TIKeyboardTyper *)self shiftedKeyToUnShiftedKeyExcludeCapitalizationMap];
-    v7 = [v6 objectForKey:v4];
+    shiftedKeyToUnShiftedKeyExcludeCapitalizationMap2 = [(TIKeyboardTyper *)self shiftedKeyToUnShiftedKeyExcludeCapitalizationMap];
+    v7 = [shiftedKeyToUnShiftedKeyExcludeCapitalizationMap2 objectForKey:capitalizationCopy];
   }
 
   else
@@ -2682,301 +2682,301 @@ LABEL_11:
   return v7;
 }
 
-- (void)setInsertsSpaceAfterPredictiveInput:(BOOL)a3
+- (void)setInsertsSpaceAfterPredictiveInput:(BOOL)input
 {
-  v3 = a3;
-  v4 = [(TIKeyboardTyper *)self keyboardController];
-  [v4 setInsertsSpaceAfterPredictiveInput:v3];
+  inputCopy = input;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController setInsertsSpaceAfterPredictiveInput:inputCopy];
 }
 
 - (BOOL)insertsSpaceAfterPredictiveInput
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 insertsSpaceAfterPredictiveInput];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  insertsSpaceAfterPredictiveInput = [keyboardController insertsSpaceAfterPredictiveInput];
 
-  return v3;
+  return insertsSpaceAfterPredictiveInput;
 }
 
-- (void)setUsesTransliteration:(BOOL)a3
+- (void)setUsesTransliteration:(BOOL)transliteration
 {
-  v3 = a3;
-  v4 = [(TIKeyboardTyper *)self keyboardController];
-  [v4 setUsesTransliteration:v3];
+  transliterationCopy = transliteration;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController setUsesTransliteration:transliterationCopy];
 }
 
 - (BOOL)usesTransliteration
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 usesTransliteration];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  usesTransliteration = [keyboardController usesTransliteration];
 
-  return v3;
+  return usesTransliteration;
 }
 
-- (void)setLongPredictionListEnabled:(BOOL)a3
+- (void)setLongPredictionListEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(TIKeyboardTyper *)self keyboardController];
-  [v4 setLongPredictionListEnabled:v3];
+  enabledCopy = enabled;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController setLongPredictionListEnabled:enabledCopy];
 }
 
 - (BOOL)longPredictionListEnabled
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 longPredictionListEnabled];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  longPredictionListEnabled = [keyboardController longPredictionListEnabled];
 
-  return v3;
+  return longPredictionListEnabled;
 }
 
-- (void)setShouldSkipCandidateSelection:(BOOL)a3
+- (void)setShouldSkipCandidateSelection:(BOOL)selection
 {
-  v3 = a3;
-  if (a3)
+  selectionCopy = selection;
+  if (selection)
   {
     [(TIKeyboardTyper *)self acceptAutocorrection];
   }
 
-  v5 = [(TIKeyboardTyper *)self keyboardController];
-  [v5 setShouldSkipCandidateSelection:v3];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController setShouldSkipCandidateSelection:selectionCopy];
 }
 
 - (BOOL)shouldSkipCandidateSelection
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 shouldSkipCandidateSelection];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  shouldSkipCandidateSelection = [keyboardController shouldSkipCandidateSelection];
 
-  return v3;
+  return shouldSkipCandidateSelection;
 }
 
-- (void)setHardwareKeyboardMode:(BOOL)a3
+- (void)setHardwareKeyboardMode:(BOOL)mode
 {
-  v3 = a3;
-  v4 = [(TIKeyboardTyper *)self keyboardController];
-  [v4 setHardwareKeyboardMode:v3];
+  modeCopy = mode;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController setHardwareKeyboardMode:modeCopy];
 }
 
 - (BOOL)hardwareKeyboardMode
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 hardwareKeyboardMode];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  hardwareKeyboardMode = [keyboardController hardwareKeyboardMode];
 
-  return v3;
+  return hardwareKeyboardMode;
 }
 
-- (void)setInlineCompletionEnabled:(BOOL)a3
+- (void)setInlineCompletionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(TIKeyboardTyper *)self keyboardController];
-  [v4 setInlineCompletionEnabled:v3];
+  enabledCopy = enabled;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController setInlineCompletionEnabled:enabledCopy];
 }
 
 - (BOOL)inlineCompletionEnabled
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 inlineCompletionEnabled];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  inlineCompletionEnabled = [keyboardController inlineCompletionEnabled];
 
-  return v3;
+  return inlineCompletionEnabled;
 }
 
-- (void)setWordLearningEnabled:(BOOL)a3
+- (void)setWordLearningEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(TIKeyboardTyper *)self keyboardController];
-  [v4 setWordLearningEnabled:v3];
+  enabledCopy = enabled;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController setWordLearningEnabled:enabledCopy];
 }
 
 - (BOOL)wordLearningEnabled
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 wordLearningEnabled];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  wordLearningEnabled = [keyboardController wordLearningEnabled];
 
-  return v3;
+  return wordLearningEnabled;
 }
 
-- (void)setAutocapitalizationType:(unint64_t)a3
+- (void)setAutocapitalizationType:(unint64_t)type
 {
-  v4 = [(TIKeyboardTyper *)self keyboardController];
-  [v4 setAutocapitalizationType:a3];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController setAutocapitalizationType:type];
 }
 
 - (unint64_t)autocapitalizationType
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 autocapitalizationType];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  autocapitalizationType = [keyboardController autocapitalizationType];
 
-  return v3;
+  return autocapitalizationType;
 }
 
-- (void)setUsesAutocapitalization:(BOOL)a3
+- (void)setUsesAutocapitalization:(BOOL)autocapitalization
 {
-  v3 = a3;
-  v4 = [(TIKeyboardTyper *)self keyboardController];
-  [v4 setUsesAutocapitalization:v3];
+  autocapitalizationCopy = autocapitalization;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController setUsesAutocapitalization:autocapitalizationCopy];
 }
 
 - (BOOL)usesAutocapitalization
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 usesAutocapitalization];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  usesAutocapitalization = [keyboardController usesAutocapitalization];
 
-  return v3;
+  return usesAutocapitalization;
 }
 
-- (void)setUsesPrediction:(BOOL)a3
+- (void)setUsesPrediction:(BOOL)prediction
 {
-  v3 = a3;
-  v4 = [(TIKeyboardTyper *)self keyboardController];
-  [v4 setUsesPrediction:v3];
+  predictionCopy = prediction;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController setUsesPrediction:predictionCopy];
 }
 
 - (BOOL)usesPrediction
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 usesPrediction];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  usesPrediction = [keyboardController usesPrediction];
 
-  return v3;
+  return usesPrediction;
 }
 
-- (void)setAutocorrectionType:(unint64_t)a3
+- (void)setAutocorrectionType:(unint64_t)type
 {
-  v4 = [(TIKeyboardTyper *)self keyboardController];
-  [v4 setAutocorrectionType:a3];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController setAutocorrectionType:type];
 }
 
 - (unint64_t)autocorrectionType
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 autocorrectionType];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  autocorrectionType = [keyboardController autocorrectionType];
 
-  return v3;
+  return autocorrectionType;
 }
 
-- (void)setUsesAutocorrection:(BOOL)a3
+- (void)setUsesAutocorrection:(BOOL)autocorrection
 {
-  v3 = a3;
-  v4 = [(TIKeyboardTyper *)self keyboardController];
-  [v4 setUsesAutocorrection:v3];
+  autocorrectionCopy = autocorrection;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController setUsesAutocorrection:autocorrectionCopy];
 }
 
 - (BOOL)usesAutocorrection
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 usesAutocorrection];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  usesAutocorrection = [keyboardController usesAutocorrection];
 
-  return v3;
+  return usesAutocorrection;
 }
 
 - (TIKeyboardInputManager)inputManager
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 inputManager];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  inputManager = [keyboardController inputManager];
 
-  return v3;
+  return inputManager;
 }
 
-- (void)setNextKeyIsMultitap:(BOOL)a3
+- (void)setNextKeyIsMultitap:(BOOL)multitap
 {
-  v3 = a3;
-  v4 = [(TIKeyboardTyper *)self keyboardController];
-  [v4 setNextKeyIsMultitap:v3];
+  multitapCopy = multitap;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController setNextKeyIsMultitap:multitapCopy];
 }
 
 - (BOOL)nextKeyIsMultitap
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 nextKeyIsMultitap];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  nextKeyIsMultitap = [keyboardController nextKeyIsMultitap];
 
-  return v3;
+  return nextKeyIsMultitap;
 }
 
-- (void)setInputContextHistory:(id)a3
+- (void)setInputContextHistory:(id)history
 {
-  v4 = a3;
-  v5 = [(TIKeyboardTyper *)self keyboardController];
-  [v5 setInputContextHistory:v4];
+  historyCopy = history;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController setInputContextHistory:historyCopy];
 }
 
 - (TIInputContextHistory)inputContextHistory
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 inputContextHistory];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  inputContextHistory = [keyboardController inputContextHistory];
 
-  return v3;
+  return inputContextHistory;
 }
 
-- (void)setRecipientIdentifier:(id)a3
+- (void)setRecipientIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(TIKeyboardTyper *)self keyboardController];
-  [v5 setRecipientIdentifier:v4];
+  identifierCopy = identifier;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController setRecipientIdentifier:identifierCopy];
 }
 
 - (NSString)recipientIdentifier
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 recipientIdentifier];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  recipientIdentifier = [keyboardController recipientIdentifier];
 
-  return v3;
+  return recipientIdentifier;
 }
 
-- (void)setClientIdentifier:(id)a3
+- (void)setClientIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(TIKeyboardTyper *)self keyboardController];
-  [v5 setClientIdentifier:v4];
+  identifierCopy = identifier;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController setClientIdentifier:identifierCopy];
 }
 
 - (NSString)clientIdentifier
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 clientIdentifier];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  clientIdentifier = [keyboardController clientIdentifier];
 
-  return v3;
+  return clientIdentifier;
 }
 
 - (BOOL)isAutoshifted
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 isAutoshifted];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  isAutoshifted = [keyboardController isAutoshifted];
 
-  return v3;
+  return isAutoshifted;
 }
 
 - (BOOL)isShifted
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 isShifted];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  isShifted = [keyboardController isShifted];
 
-  return v3;
+  return isShifted;
 }
 
 - (void)setShiftedKeyToUnShiftedKeyExcludeCapitalizationMap
 {
-  v3 = [(TIKeyboardTyper *)self inputMode];
-  v4 = [v3 languageWithRegion];
-  v5 = [v4 isEqualToString:@"th_TH"];
+  inputMode = [(TIKeyboardTyper *)self inputMode];
+  languageWithRegion = [inputMode languageWithRegion];
+  v5 = [languageWithRegion isEqualToString:@"th_TH"];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(TIKeyboardTyper *)self keyboard];
-    v7 = [(TIKeyboardTyper *)self keyplane];
-    v8 = [v7 shiftAlternateKeyplaneName];
-    v40 = [v6 subtreeWithName:v8];
+    keyboard = [(TIKeyboardTyper *)self keyboard];
+    keyplane = [(TIKeyboardTyper *)self keyplane];
+    shiftAlternateKeyplaneName = [keyplane shiftAlternateKeyplaneName];
+    v40 = [keyboard subtreeWithName:shiftAlternateKeyplaneName];
 
-    v9 = [v40 name];
-    v10 = [(TIKeyboardTyper *)self keyplane];
-    v11 = [v10 name];
-    v12 = [v9 isEqualToString:v11];
+    name = [v40 name];
+    keyplane2 = [(TIKeyboardTyper *)self keyplane];
+    name2 = [keyplane2 name];
+    v12 = [name isEqualToString:name2];
 
     if ((v12 & 1) == 0)
     {
       v36 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v13 = [v40 keys];
-      if ([v13 count])
+      keys = [v40 keys];
+      if ([keys count])
       {
         v14 = 0;
         while (1)
         {
-          v15 = [v13 objectAtIndex:v14];
+          v15 = [keys objectAtIndex:v14];
           [v15 paddedFrame];
           x = v42.origin.x;
           y = v42.origin.y;
@@ -2988,15 +2988,15 @@ LABEL_11:
           v43.size.width = width;
           v43.size.height = height;
           MidY = CGRectGetMidY(v43);
-          v22 = [(TIKeyboardTyper *)self keyplane];
-          v23 = [(TIKeyboardTyper *)self keyContainingPoint:v22 inKeyplane:MidX, MidY];
+          keyplane3 = [(TIKeyboardTyper *)self keyplane];
+          midY = [(TIKeyboardTyper *)self keyContainingPoint:keyplane3 inKeyplane:MidX, MidY];
 
-          if (!v23)
+          if (!midY)
           {
             goto LABEL_16;
           }
 
-          [v23 paddedFrame];
+          [midY paddedFrame];
           v24 = v44.origin.x;
           v25 = v44.origin.y;
           v26 = v44.size.width;
@@ -3012,30 +3012,30 @@ LABEL_11:
             goto LABEL_16;
           }
 
-          v31 = [v23 representedString];
-          v32 = [v15 representedString];
-          if ([v31 isEqualToString:v32])
+          representedString = [midY representedString];
+          representedString2 = [v15 representedString];
+          if ([representedString isEqualToString:representedString2])
           {
             break;
           }
 
-          v38 = [v23 representedString];
-          v39 = [(TIKeyboardTyper *)self inputMode];
-          v33 = [v39 locale];
-          v34 = [v38 uppercaseStringWithLocale:v33];
-          v35 = [v15 representedString];
-          v37 = [v34 isEqualToString:v35];
+          representedString3 = [midY representedString];
+          inputMode2 = [(TIKeyboardTyper *)self inputMode];
+          locale = [inputMode2 locale];
+          v34 = [representedString3 uppercaseStringWithLocale:locale];
+          representedString4 = [v15 representedString];
+          v37 = [v34 isEqualToString:representedString4];
 
           if ((v37 & 1) == 0)
           {
-            v31 = [v15 representedString];
-            [v36 setValue:v23 forKey:v31];
+            representedString = [v15 representedString];
+            [v36 setValue:midY forKey:representedString];
             goto LABEL_15;
           }
 
 LABEL_16:
 
-          if (++v14 >= [v13 count])
+          if (++v14 >= [keys count])
           {
             goto LABEL_17;
           }
@@ -3054,58 +3054,58 @@ LABEL_17:
   }
 }
 
-- (void)setKeyboard:(id)a3
+- (void)setKeyboard:(id)keyboard
 {
-  v4 = a3;
-  v5 = [(TIKeyboardTyper *)self keyboardController];
-  [v5 setKeyboard:v4];
+  keyboardCopy = keyboard;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController setKeyboard:keyboardCopy];
 
   [(TIKeyboardTyper *)self setShiftedKeyToUnShiftedKeyExcludeCapitalizationMap];
 }
 
-- (void)setAsyncPredictions:(BOOL)a3
+- (void)setAsyncPredictions:(BOOL)predictions
 {
-  v3 = a3;
-  v4 = [(TIKeyboardTyper *)self keyboardController];
-  [v4 setAsyncPredictions:v3];
+  predictionsCopy = predictions;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController setAsyncPredictions:predictionsCopy];
 }
 
 - (BOOL)asyncPredictions
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 asyncPredictions];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  asyncPredictions = [keyboardController asyncPredictions];
 
-  return v3;
+  return asyncPredictions;
 }
 
-- (void)setInputModeIdentifier:(id)a3
+- (void)setInputModeIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(TIKeyboardTyper *)self keyboardController];
-  [v5 setInputModeIdentifier:v4];
+  identifierCopy = identifier;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController setInputModeIdentifier:identifierCopy];
 }
 
 - (NSString)inputModeIdentifier
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 inputModeIdentifier];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  inputModeIdentifier = [keyboardController inputModeIdentifier];
 
-  return v3;
+  return inputModeIdentifier;
 }
 
-- (void)setKeyboardInputManagerFactory:(id)a3
+- (void)setKeyboardInputManagerFactory:(id)factory
 {
-  v4 = a3;
-  v5 = [(TIKeyboardTyper *)self keyboardController];
-  [v5 setKeyboardInputManagerFactory:v4];
+  factoryCopy = factory;
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  [keyboardController setKeyboardInputManagerFactory:factoryCopy];
 }
 
 - (TIKeyboardInputManagerFactory)keyboardInputManagerFactory
 {
-  v2 = [(TIKeyboardTyper *)self keyboardController];
-  v3 = [v2 keyboardInputManagerFactory];
+  keyboardController = [(TIKeyboardTyper *)self keyboardController];
+  keyboardInputManagerFactory = [keyboardController keyboardInputManagerFactory];
 
-  return v3;
+  return keyboardInputManagerFactory;
 }
 
 @end

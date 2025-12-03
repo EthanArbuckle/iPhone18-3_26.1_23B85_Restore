@@ -1,13 +1,13 @@
 @interface ForegroundOnlyDataActivationPopupAssertion
 - (ForegroundOnlyDataActivationPopupAssertion)init;
-- (void)_didEnterBackground:(id)a3;
-- (void)_willEnterForeground:(id)a3;
+- (void)_didEnterBackground:(id)background;
+- (void)_willEnterForeground:(id)foreground;
 - (void)dealloc;
 @end
 
 @implementation ForegroundOnlyDataActivationPopupAssertion
 
-- (void)_didEnterBackground:(id)a3
+- (void)_didEnterBackground:(id)background
 {
   if (self->super._active)
   {
@@ -15,7 +15,7 @@
   }
 }
 
-- (void)_willEnterForeground:(id)a3
+- (void)_willEnterForeground:(id)foreground
 {
   if (self->super._active)
   {
@@ -50,9 +50,9 @@
     [v5 addObserver:v2 selector:"_didEnterBackground:" name:MKApplicationStateDidEnterBackgroundNotification object:0];
 
     v6 = +[MKApplicationStateMonitor sharedInstance];
-    v7 = [v6 isInBackground];
+    isInBackground = [v6 isInBackground];
 
-    if ((v7 & 1) == 0)
+    if ((isInBackground & 1) == 0)
     {
       [(DataActivationPopupAssertion *)v2 _takeAssertion];
     }

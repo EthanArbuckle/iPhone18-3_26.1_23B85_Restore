@@ -2,8 +2,8 @@
 + (id)sharedMonitor;
 + (void)initialize;
 - (id)_init;
-- (void)decrementExceptionCountForEntity:(int64_t)a3;
-- (void)incrementExceptionCountForEntity:(int64_t)a3;
+- (void)decrementExceptionCountForEntity:(int64_t)entity;
+- (void)incrementExceptionCountForEntity:(int64_t)entity;
 - (void)reset;
 @end
 
@@ -11,7 +11,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -58,7 +58,7 @@ uint64_t __55__CMContinuityCaptureMSNExceptionMonitor_sharedMonitor__block_invok
   return v2;
 }
 
-- (void)incrementExceptionCountForEntity:(int64_t)a3
+- (void)incrementExceptionCountForEntity:(int64_t)entity
 {
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -67,7 +67,7 @@ uint64_t __55__CMContinuityCaptureMSNExceptionMonitor_sharedMonitor__block_invok
   block[2] = __75__CMContinuityCaptureMSNExceptionMonitor_incrementExceptionCountForEntity___block_invoke;
   block[3] = &unk_278D5D2A0;
   objc_copyWeak(v7, &location);
-  v7[1] = a3;
+  v7[1] = entity;
   dispatch_async(queue, block);
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);
@@ -171,7 +171,7 @@ void __75__CMContinuityCaptureMSNExceptionMonitor_incrementExceptionCountForEnti
   }
 }
 
-- (void)decrementExceptionCountForEntity:(int64_t)a3
+- (void)decrementExceptionCountForEntity:(int64_t)entity
 {
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -180,7 +180,7 @@ void __75__CMContinuityCaptureMSNExceptionMonitor_incrementExceptionCountForEnti
   block[2] = __75__CMContinuityCaptureMSNExceptionMonitor_decrementExceptionCountForEntity___block_invoke;
   block[3] = &unk_278D5D2A0;
   objc_copyWeak(v7, &location);
-  v7[1] = a3;
+  v7[1] = entity;
   dispatch_async(queue, block);
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);

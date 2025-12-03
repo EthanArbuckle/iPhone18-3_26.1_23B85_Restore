@@ -1,21 +1,21 @@
 @interface _UIScrollViewScrollIndicator
-+ (id)visualStyleForIdiom:(int64_t)a3;
-+ (id)visualStyleForTraitCollection:(id)a3;
++ (id)visualStyleForIdiom:(int64_t)idiom;
++ (id)visualStyleForTraitCollection:(id)collection;
 + (void)_ensureDefaultStyles;
-+ (void)registerVisualStyle:(id)a3 forIdiom:(int64_t)a4;
-- (CGRect)_offsetFillViewRectForExpandedState:(CGRect)a3;
++ (void)registerVisualStyle:(id)style forIdiom:(int64_t)idiom;
+- (CGRect)_offsetFillViewRectForExpandedState:(CGRect)state;
 - (CGSize)layoutOffset;
-- (_UIScrollViewScrollIndicator)initWithFrame:(CGRect)a3;
+- (_UIScrollViewScrollIndicator)initWithFrame:(CGRect)frame;
 - (_UIScrollViewScrollIndicatorVisualStyle)_visualStyle;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (void)_layoutFillViewAnimated:(BOOL)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (void)_layoutFillViewAnimated:(BOOL)animated;
 - (void)_updateEffectiveColor;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setEffectiveForegroundColor:(id)a3;
-- (void)setExpandedForDirectManipulation:(BOOL)a3;
-- (void)setForegroundColor:(id)a3;
+- (void)setEffectiveForegroundColor:(id)color;
+- (void)setExpandedForDirectManipulation:(BOOL)manipulation;
+- (void)setForegroundColor:(id)color;
 @end
 
 @implementation _UIScrollViewScrollIndicator
@@ -25,8 +25,8 @@
   visualStyle = self->_visualStyle;
   if (!visualStyle)
   {
-    v4 = [(UIView *)self traitCollection];
-    v5 = [_UIScrollViewScrollIndicator visualStyleForTraitCollection:v4];
+    traitCollection = [(UIView *)self traitCollection];
+    v5 = [_UIScrollViewScrollIndicator visualStyleForTraitCollection:traitCollection];
     v6 = self->_visualStyle;
     self->_visualStyle = v5;
 
@@ -58,26 +58,26 @@
 
 - (void)_updateEffectiveColor
 {
-  v3 = [(_UIScrollViewScrollIndicator *)self foregroundColor];
-  v6 = v3;
-  if (v3)
+  foregroundColor = [(_UIScrollViewScrollIndicator *)self foregroundColor];
+  v6 = foregroundColor;
+  if (foregroundColor)
   {
-    [(_UIScrollViewScrollIndicator *)self setEffectiveForegroundColor:v3];
+    [(_UIScrollViewScrollIndicator *)self setEffectiveForegroundColor:foregroundColor];
   }
 
   else
   {
-    v4 = [(_UIScrollViewScrollIndicator *)self _visualStyle];
-    v5 = [v4 colorForIndicatorStyle:-[_UIScrollViewScrollIndicator style](self expanded:{"style"), self->_expandedForDirectManipulation}];
+    _visualStyle = [(_UIScrollViewScrollIndicator *)self _visualStyle];
+    v5 = [_visualStyle colorForIndicatorStyle:-[_UIScrollViewScrollIndicator style](self expanded:{"style"), self->_expandedForDirectManipulation}];
     [(_UIScrollViewScrollIndicator *)self setEffectiveForegroundColor:v5];
   }
 }
 
 - (void)didMoveToWindow
 {
-  v3 = [(UIView *)self window];
+  window = [(UIView *)self window];
 
-  if (v3)
+  if (window)
   {
     visualStyle = self->_visualStyle;
     self->_visualStyle = 0;
@@ -92,41 +92,41 @@
   [(_UIScrollViewScrollIndicator *)self _layoutFillViewAnimated:0];
 }
 
-- (_UIScrollViewScrollIndicator)initWithFrame:(CGRect)a3
+- (_UIScrollViewScrollIndicator)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = _UIScrollViewScrollIndicator;
-  v3 = [(UIView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(_UIScrollViewScrollIndicator *)v3 _visualStyle];
-    -[UIView setClipsToBounds:](v4, "setClipsToBounds:", [v5 clipsToBounds]);
+    _visualStyle = [(_UIScrollViewScrollIndicator *)v3 _visualStyle];
+    -[UIView setClipsToBounds:](v4, "setClipsToBounds:", [_visualStyle clipsToBounds]);
 
-    v6 = [(_UIScrollViewScrollIndicator *)v4 _visualStyle];
-    v7 = [v6 fillView];
-    [(_UIScrollViewScrollIndicator *)v4 setRoundedFillView:v7];
+    _visualStyle2 = [(_UIScrollViewScrollIndicator *)v4 _visualStyle];
+    fillView = [_visualStyle2 fillView];
+    [(_UIScrollViewScrollIndicator *)v4 setRoundedFillView:fillView];
 
-    v8 = [(_UIScrollViewScrollIndicator *)v4 roundedFillView];
-    [(UIView *)v4 addSubview:v8];
+    roundedFillView = [(_UIScrollViewScrollIndicator *)v4 roundedFillView];
+    [(UIView *)v4 addSubview:roundedFillView];
 
     v9 = [[UIPointerInteraction alloc] initWithDelegate:v4];
     [(UIView *)v4 addInteraction:v9];
-    v10 = [(_UIScrollViewScrollIndicator *)v4 _visualStyle];
-    [v10 cursorHitTestingInsets];
+    _visualStyle3 = [(_UIScrollViewScrollIndicator *)v4 _visualStyle];
+    [_visualStyle3 cursorHitTestingInsets];
     [(UIView *)v4 setHitTestInsets:?];
   }
 
   return v4;
 }
 
-- (void)setEffectiveForegroundColor:(id)a3
+- (void)setEffectiveForegroundColor:(id)color
 {
-  v5 = a3;
-  v6 = self->_effectiveForegroundColor;
-  v7 = v5;
+  colorCopy = color;
+  roundedFillView = self->_effectiveForegroundColor;
+  v7 = colorCopy;
   v10 = v7;
-  if (v6 == v7)
+  if (roundedFillView == v7)
   {
 
 LABEL_9:
@@ -134,43 +134,43 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v7 || !v6)
+  if (!v7 || !roundedFillView)
   {
 
     goto LABEL_8;
   }
 
-  v8 = [(UIColor *)v6 isEqual:v7];
+  v8 = [(UIColor *)roundedFillView isEqual:v7];
 
   v9 = v10;
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_effectiveForegroundColor, a3);
-    v6 = [(_UIScrollViewScrollIndicator *)self roundedFillView];
-    [(UIColor *)v6 setBackgroundColor:v10];
+    objc_storeStrong(&self->_effectiveForegroundColor, color);
+    roundedFillView = [(_UIScrollViewScrollIndicator *)self roundedFillView];
+    [(UIColor *)roundedFillView setBackgroundColor:v10];
     goto LABEL_9;
   }
 
 LABEL_10:
 }
 
-- (void)setExpandedForDirectManipulation:(BOOL)a3
+- (void)setExpandedForDirectManipulation:(BOOL)manipulation
 {
-  if (self->_expandedForDirectManipulation != a3)
+  if (self->_expandedForDirectManipulation != manipulation)
   {
-    self->_expandedForDirectManipulation = a3;
+    self->_expandedForDirectManipulation = manipulation;
     [(_UIScrollViewScrollIndicator *)self _updateEffectiveColor];
 
     [(_UIScrollViewScrollIndicator *)self _layoutFillViewAnimated:1];
   }
 }
 
-- (void)setForegroundColor:(id)a3
+- (void)setForegroundColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v6 = self->_foregroundColor;
-  v7 = v5;
+  v7 = colorCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -189,36 +189,36 @@ LABEL_10:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_foregroundColor, a3);
+    objc_storeStrong(&self->_foregroundColor, color);
     [(_UIScrollViewScrollIndicator *)self _updateEffectiveColor];
   }
 
 LABEL_9:
 }
 
-- (CGRect)_offsetFillViewRectForExpandedState:(CGRect)a3
+- (CGRect)_offsetFillViewRectForExpandedState:(CGRect)state
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(UIView *)self effectiveUserInterfaceLayoutDirection];
-  v9 = [(_UIScrollViewScrollIndicator *)self _visualStyle];
-  [v9 staticDimensionExpandedSize];
+  height = state.size.height;
+  width = state.size.width;
+  y = state.origin.y;
+  x = state.origin.x;
+  effectiveUserInterfaceLayoutDirection = [(UIView *)self effectiveUserInterfaceLayoutDirection];
+  _visualStyle = [(_UIScrollViewScrollIndicator *)self _visualStyle];
+  [_visualStyle staticDimensionExpandedSize];
   v11 = v10;
-  v12 = [(_UIScrollViewScrollIndicator *)self _visualStyle];
-  [v12 staticDimensionSize];
+  _visualStyle2 = [(_UIScrollViewScrollIndicator *)self _visualStyle];
+  [_visualStyle2 staticDimensionSize];
   v14 = v11 - v13;
 
-  v15 = [(_UIScrollViewScrollIndicator *)self type];
-  if (v8)
+  type = [(_UIScrollViewScrollIndicator *)self type];
+  if (effectiveUserInterfaceLayoutDirection)
   {
     v16 = 0;
   }
 
   else
   {
-    v16 = v15 == 1;
+    v16 = type == 1;
   }
 
   if (v16)
@@ -246,24 +246,24 @@ LABEL_9:
   return result;
 }
 
-- (void)_layoutFillViewAnimated:(BOOL)a3
+- (void)_layoutFillViewAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __56___UIScrollViewScrollIndicator__layoutFillViewAnimated___block_invoke;
   aBlock[3] = &unk_1E70F3590;
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
-  if (v3)
+  if (animatedCopy)
   {
     v8 = 0u;
     v9 = 0u;
-    v6 = [(_UIScrollViewScrollIndicator *)self _visualStyle];
-    v7 = [(_UIScrollViewScrollIndicator *)self expandedForDirectManipulation];
-    if (v6)
+    _visualStyle = [(_UIScrollViewScrollIndicator *)self _visualStyle];
+    expandedForDirectManipulation = [(_UIScrollViewScrollIndicator *)self expandedForDirectManipulation];
+    if (_visualStyle)
     {
-      [v6 valuesForLayoutSizeAnimationWhenExpanding:v7];
+      [_visualStyle valuesForLayoutSizeAnimationWhenExpanding:expandedForDirectManipulation];
     }
 
     else
@@ -290,18 +290,18 @@ LABEL_9:
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v11.receiver = self;
   v11.super_class = _UIScrollViewScrollIndicator;
-  v8 = [(UIView *)&v11 hitTest:v7 withEvent:x, y];
+  v8 = [(UIView *)&v11 hitTest:eventCopy withEvent:x, y];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (([v7 _containsHIDPointerEvent] & 1) == 0)
+    if (([eventCopy _containsHIDPointerEvent] & 1) == 0)
     {
 LABEL_3:
       v9 = 0;
@@ -324,45 +324,45 @@ LABEL_6:
   return v9;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v6 = a5;
-  v7 = [(_UIScrollViewScrollIndicator *)self _visualStyle];
+  regionCopy = region;
+  _visualStyle = [(_UIScrollViewScrollIndicator *)self _visualStyle];
   [(UIView *)self bounds];
-  [v7 hitTestingRectForIndicatorRect:?];
+  [_visualStyle hitTestingRectForIndicatorRect:?];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = [v6 identifier];
+  identifier = [regionCopy identifier];
 
-  v17 = [UIPointerRegion regionWithRect:v16 identifier:v9, v11, v13, v15];
+  v17 = [UIPointerRegion regionWithRect:identifier identifier:v9, v11, v13, v15];
 
   return v17;
 }
 
-+ (void)registerVisualStyle:(id)a3 forIdiom:(int64_t)a4
++ (void)registerVisualStyle:(id)style forIdiom:(int64_t)idiom
 {
-  v6 = a3;
-  [a1 _ensureDefaultStyles];
+  styleCopy = style;
+  [self _ensureDefaultStyles];
   v7 = _MergedGlobals_1255;
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [v7 setObject:v6 forKeyedSubscript:v8];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:idiom];
+  [v7 setObject:styleCopy forKeyedSubscript:v8];
 }
 
-+ (id)visualStyleForTraitCollection:(id)a3
++ (id)visualStyleForTraitCollection:(id)collection
 {
-  v4 = [a3 userInterfaceIdiom];
+  userInterfaceIdiom = [collection userInterfaceIdiom];
 
-  return [a1 visualStyleForIdiom:v4];
+  return [self visualStyleForIdiom:userInterfaceIdiom];
 }
 
-+ (id)visualStyleForIdiom:(int64_t)a3
++ (id)visualStyleForIdiom:(int64_t)idiom
 {
-  [a1 _ensureDefaultStyles];
+  [self _ensureDefaultStyles];
   v4 = _MergedGlobals_1255;
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:idiom];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   if (!v6)

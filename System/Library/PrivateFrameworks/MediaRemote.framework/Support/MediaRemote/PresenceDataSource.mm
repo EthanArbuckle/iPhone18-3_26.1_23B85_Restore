@@ -1,15 +1,15 @@
 @interface PresenceDataSource
 - (_TtC12mediaremotedP33_5F812221C055B7907E48F2E367000FFE18PresenceDataSource)init;
-- (void)presentDevicesChangedForPresence:(id)a3;
+- (void)presentDevicesChangedForPresence:(id)presence;
 @end
 
 @implementation PresenceDataSource
 
-- (void)presentDevicesChangedForPresence:(id)a3
+- (void)presentDevicesChangedForPresence:(id)presence
 {
-  v4 = a3;
-  v5 = self;
-  sub_100216E90(v4);
+  presenceCopy = presence;
+  selfCopy = self;
+  sub_100216E90(presenceCopy);
 }
 
 - (_TtC12mediaremotedP33_5F812221C055B7907E48F2E367000FFE18PresenceDataSource)init

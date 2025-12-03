@@ -1,46 +1,46 @@
 @interface _EARFormatter
-+ (BOOL)useEmojiHammerWhenRecognizeEmoji:(BOOL)a3;
-+ (vector<quasar::Token,)convertStringsToQuasarTokens:(id)a2 offset:(SEL)a3;
++ (BOOL)useEmojiHammerWhenRecognizeEmoji:(BOOL)emoji;
++ (vector<quasar::Token,)convertStringsToQuasarTokens:(id)tokens offset:(SEL)offset;
 + (void)initialize;
 - (BOOL)refreshEmojiRecognizer;
-- (_EARFormatter)initWithGeneralVoc:(id)a3 withLexiconEnh:(id)a4 withItnEnh:(id)a5;
-- (_EARFormatter)initWithLanguage:(id)a3 withSdapiConfig:(id)a4 quasarConfig:(id)a5;
-- (_EARFormatter)initWithQuasarConfig:(id)a3 overrideConfigFiles:(id)a4 supportEmojiRecognition:(BOOL)a5 language:(id)a6 skipPathsExistCheck:(BOOL)a7;
+- (_EARFormatter)initWithGeneralVoc:(id)voc withLexiconEnh:(id)enh withItnEnh:(id)itnEnh;
+- (_EARFormatter)initWithLanguage:(id)language withSdapiConfig:(id)config quasarConfig:(id)quasarConfig;
+- (_EARFormatter)initWithQuasarConfig:(id)config overrideConfigFiles:(id)files supportEmojiRecognition:(BOOL)recognition language:(id)language skipPathsExistCheck:(BOOL)check;
 - (__n128)formatWords:unrepairedWordsOut:task:language:preItnLeftContext:separateAutoEndPunctuation:partialResults:timestampOffset:zeroTimestamp:continuousListeningConfig:postItnLeftContext:itnResult:itnOverrides:itnEnablingFlags:recognizeEmoji:leftContextProvidedByClient:preItnRightContext:postItnLeftContextStr:postItnRightContextStr:stripLeadingAppendedAutoPunctuation:emojiTokenIndices:persistEmoji:shouldHideTrailingPunctuation:isTrailingPunctuationHidden:isFinal:choiceIdx:itnCompletion:;
-- (id)_formattedStringWithStrings:(id)a3 task:(id)a4 leftContext:(id)a5;
-- (id)_formattedStringWithStrings:(id)a3 task:(id)a4 leftContext:(id)a5 recognizeEmoji:(BOOL)a6;
-- (id)_formattedStringWithStrings:(id)a3 task:(id)a4 leftContext:(id)a5 recognizeEmoji:(BOOL)a6 rightContext:(id)a7;
-- (id)_formattedStringWithoutEmojiModifier:(id)a3;
-- (id)_recognizeEmojiInString:(id)a3 alternativesOut:(id)a4 persistEmoji:(BOOL)a5;
-- (id)emojiAlternativesForFormattedTokens:(id)a3 stringsWithoutEmojiModifier:(id)a4 alternateNameForTokens:(id)a5;
-- (id)emojiPhraseRemoveKeyword:(id)a3;
-- (id)formatWords:(id)a3 task:(id)a4 autoPunctuate:(BOOL)a5;
-- (id)formatWords:(id)a3 task:(id)a4 autoPunctuate:(BOOL)a5 recognizeEmoji:(BOOL)a6;
-- (id)formattedRecognitionWithNBestList:(id)a3;
-- (id)formattedStringWithStrings:(id)a3;
-- (id)formattedStringWithStrings:(id)a3 preToPostItnArray:(id)a4;
-- (id)formattedStringWithStrings:(id)a3 preToPostItnArray:(id)a4 task:(id)a5;
-- (id)formattedStringWithStrings:(id)a3 task:(id)a4;
-- (id)initNcsWithModelRoot:(id)a3;
-- (id)recognizeEmojiInString:(id)a3 alternativesOut:(id)a4;
+- (id)_formattedStringWithStrings:(id)strings task:(id)task leftContext:(id)context;
+- (id)_formattedStringWithStrings:(id)strings task:(id)task leftContext:(id)context recognizeEmoji:(BOOL)emoji;
+- (id)_formattedStringWithStrings:(id)strings task:(id)task leftContext:(id)context recognizeEmoji:(BOOL)emoji rightContext:(id)rightContext;
+- (id)_formattedStringWithoutEmojiModifier:(id)modifier;
+- (id)_recognizeEmojiInString:(id)string alternativesOut:(id)out persistEmoji:(BOOL)emoji;
+- (id)emojiAlternativesForFormattedTokens:(id)tokens stringsWithoutEmojiModifier:(id)modifier alternateNameForTokens:(id)forTokens;
+- (id)emojiPhraseRemoveKeyword:(id)keyword;
+- (id)formatWords:(id)words task:(id)task autoPunctuate:(BOOL)punctuate;
+- (id)formatWords:(id)words task:(id)task autoPunctuate:(BOOL)punctuate recognizeEmoji:(BOOL)emoji;
+- (id)formattedRecognitionWithNBestList:(id)list;
+- (id)formattedStringWithStrings:(id)strings;
+- (id)formattedStringWithStrings:(id)strings preToPostItnArray:(id)array;
+- (id)formattedStringWithStrings:(id)strings preToPostItnArray:(id)array task:(id)task;
+- (id)formattedStringWithStrings:(id)strings task:(id)task;
+- (id)initNcsWithModelRoot:(id)root;
+- (id)recognizeEmojiInString:(id)string alternativesOut:(id)out;
 - (uint64_t)formatWords:unrepairedWordsOut:task:language:preItnLeftContext:separateAutoEndPunctuation:partialResults:timestampOffset:zeroTimestamp:continuousListeningConfig:postItnLeftContext:itnResult:itnOverrides:itnEnablingFlags:recognizeEmoji:leftContextProvidedByClient:preItnRightContext:postItnLeftContextStr:postItnRightContextStr:stripLeadingAppendedAutoPunctuation:emojiTokenIndices:persistEmoji:shouldHideTrailingPunctuation:isTrailingPunctuationHidden:isFinal:choiceIdx:itnCompletion:;
-- (vector<quasar::Token,)formatWords:(_EARFormatter *)self unrepairedWordsOut:(SEL)a3 task:(const void *)a4;
-- (vector<quasar::Token,)formatWords:(_EARFormatter *)self unrepairedWordsOut:(SEL)a3 task:(const void *)a4 language:(void *)a5 preItnLeftContext:(id)a6 separateAutoEndPunctuation:(id)a7 partialResults:(const void *)a8 timestampOffset:(BOOL)a9 zeroTimestamp:(void *)a10 continuousListeningConfig:(unsigned int)a11 postItnLeftContext:(BOOL)a12 itnResult:(shared_ptr<quasar:(const void *)a14 :(void *)a15 ContinuousListeningConfig>)a13 itnOverrides:(const void *)a16 itnEnablingFlags:(unsigned __int16)a17 recognizeEmoji:(BOOL)a18 leftContextProvidedByClient:(BOOL)a19 preItnRightContext:(const void *)a20 postItnLeftContextStr:(id)a21 postItnRightContextStr:(id)a22 stripLeadingAppendedAutoPunctuation:(BOOL)a23 emojiTokenIndices:(void *)a24 persistEmoji:(BOOL)a25 shouldHideTrailingPunctuation:(BOOL)a26 isTrailingPunctuationHidden:(shared_ptr<BOOL>)a27 isFinal:(BOOL)a28 choiceIdx:(int)a29 itnCompletion:(id)a30;
-- (vector<quasar::Token,)formattedTokensWithoutEmojiModifier:(_EARFormatter *)self emojiTokenIndices:(SEL)a3 recognizeEmoji:(const void *)a4;
+- (vector<quasar::Token,)formatWords:(_EARFormatter *)self unrepairedWordsOut:(SEL)out task:(const void *)task;
+- (vector<quasar::Token,)formatWords:(_EARFormatter *)self unrepairedWordsOut:(SEL)out task:(const void *)task language:(void *)language preItnLeftContext:(id)context separateAutoEndPunctuation:(id)punctuation partialResults:(const void *)results timestampOffset:(BOOL)offset zeroTimestamp:(void *)self0 continuousListeningConfig:(unsigned int)self1 postItnLeftContext:(BOOL)self2 itnResult:(shared_ptr<quasar:(const void *)self4 :(void *)self5 ContinuousListeningConfig>)self3 itnOverrides:(const void *)self6 itnEnablingFlags:(unsigned __int16)self7 recognizeEmoji:(BOOL)self8 leftContextProvidedByClient:(BOOL)self9 preItnRightContext:(const void *)rightContext postItnLeftContextStr:(id)str postItnRightContextStr:(id)contextStr stripLeadingAppendedAutoPunctuation:(BOOL)autoPunctuation emojiTokenIndices:(void *)indices persistEmoji:(BOOL)persistEmoji shouldHideTrailingPunctuation:(BOOL)trailingPunctuation isTrailingPunctuationHidden:(shared_ptr<BOOL>)hidden isFinal:(BOOL)final choiceIdx:(int)idx itnCompletion:(id)out0;
+- (vector<quasar::Token,)formattedTokensWithoutEmojiModifier:(_EARFormatter *)self emojiTokenIndices:(SEL)indices recognizeEmoji:(const void *)emoji;
 - (vector<std::string,)emojiAlternativesForEmojis:(_EARFormatter *)self;
-- (void)appendNbestListWithEmojiAlternativesForFormattedTokens:(const void *)a3 formattedTokensWithoutEmojiModifier:(const void *)a4 formattedNBestList:(void *)a5 formattedNBestListWithoutEmojiModifier:(void *)a6 emojiTokenIndices:(const void *)a7 recognizeEmoji:(BOOL)a8;
+- (void)appendNbestListWithEmojiAlternativesForFormattedTokens:(const void *)tokens formattedTokensWithoutEmojiModifier:(const void *)modifier formattedNBestList:(void *)list formattedNBestListWithoutEmojiModifier:(void *)emojiModifier emojiTokenIndices:(const void *)indices recognizeEmoji:(BOOL)emoji;
 - (void)formatWords:unrepairedWordsOut:task:language:preItnLeftContext:separateAutoEndPunctuation:partialResults:timestampOffset:zeroTimestamp:continuousListeningConfig:postItnLeftContext:itnResult:itnOverrides:itnEnablingFlags:recognizeEmoji:leftContextProvidedByClient:preItnRightContext:postItnLeftContextStr:postItnRightContextStr:stripLeadingAppendedAutoPunctuation:emojiTokenIndices:persistEmoji:shouldHideTrailingPunctuation:isTrailingPunctuationHidden:isFinal:choiceIdx:itnCompletion:;
 - (void)initializeItnMetrics;
-- (void)recognizeEmojiForTokens:(void *)a3 emojiTokenIndices:(void *)a4 persistEmoji:(BOOL)a5 choiceIdx:(int)a6;
+- (void)recognizeEmojiForTokens:(void *)tokens emojiTokenIndices:(void *)indices persistEmoji:(BOOL)emoji choiceIdx:(int)idx;
 - (void)refreshEmojiRecognizer;
-- (void)setItnMetricsWithCompletion:(id)a3;
+- (void)setItnMetricsWithCompletion:(id)completion;
 @end
 
 @implementation _EARFormatter
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     is_darwinos = os_variant_is_darwinos();
     if ((is_darwinos & 1) == 0)
@@ -53,11 +53,11 @@
   }
 }
 
-- (_EARFormatter)initWithLanguage:(id)a3 withSdapiConfig:(id)a4 quasarConfig:(id)a5
+- (_EARFormatter)initWithLanguage:(id)language withSdapiConfig:(id)config quasarConfig:(id)quasarConfig
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  languageCopy = language;
+  configCopy = config;
+  quasarConfigCopy = quasarConfig;
   v17.receiver = self;
   v17.super_class = _EARFormatter;
   v11 = [(_EARFormatter *)&v17 init];
@@ -66,28 +66,28 @@
     goto LABEL_14;
   }
 
-  v12 = [v8 copy];
+  v12 = [languageCopy copy];
   language = v11->_language;
   v11->_language = v12;
 
-  if ([v10 length])
+  if ([quasarConfigCopy length])
   {
-    if (v10)
+    if (quasarConfigCopy)
     {
-      [v10 ear_toString];
-      if (!v8)
+      [quasarConfigCopy ear_toString];
+      if (!languageCopy)
       {
         goto LABEL_11;
       }
     }
 
-    else if (!v8)
+    else if (!languageCopy)
     {
 LABEL_11:
       SpeechITN::createQuasarITN();
     }
 
-    [v8 ear_toString];
+    [languageCopy ear_toString];
     goto LABEL_11;
   }
 
@@ -99,12 +99,12 @@ LABEL_14:
 
   else
   {
-    v14 = [MEMORY[0x1E696AC08] defaultManager];
-    if ([v14 fileExistsAtPath:v9])
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    if ([defaultManager fileExistsAtPath:configCopy])
     {
-      if (v9)
+      if (configCopy)
       {
-        [v9 ear_toString];
+        [configCopy ear_toString];
       }
 
       sdapi::SdapiUtil::readConfig();
@@ -116,11 +116,11 @@ LABEL_14:
   return v15;
 }
 
-- (_EARFormatter)initWithQuasarConfig:(id)a3 overrideConfigFiles:(id)a4 supportEmojiRecognition:(BOOL)a5 language:(id)a6 skipPathsExistCheck:(BOOL)a7
+- (_EARFormatter)initWithQuasarConfig:(id)config overrideConfigFiles:(id)files supportEmojiRecognition:(BOOL)recognition language:(id)language skipPathsExistCheck:(BOOL)check
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  configCopy = config;
+  filesCopy = files;
+  languageCopy = language;
   v18.receiver = self;
   v18.super_class = _EARFormatter;
   if ([(_EARFormatter *)&v18 init])
@@ -137,7 +137,7 @@ LABEL_14:
     v16[2] = __111___EARFormatter_initWithQuasarConfig_overrideConfigFiles_supportEmojiRecognition_language_skipPathsExistCheck___block_invoke;
     v16[3] = &unk_1E7C1A410;
     v16[4] = v17;
-    [v11 enumerateObjectsUsingBlock:v16];
+    [filesCopy enumerateObjectsUsingBlock:v16];
     quasar::SystemConfig::SystemConfig(v15);
   }
 
@@ -146,9 +146,9 @@ LABEL_14:
   return v13;
 }
 
-+ (BOOL)useEmojiHammerWhenRecognizeEmoji:(BOOL)a3
++ (BOOL)useEmojiHammerWhenRecognizeEmoji:(BOOL)emoji
 {
-  if (a3)
+  if (emoji)
   {
     return !+[_EARFeatureFlags isEmojiV2Enabled];
   }
@@ -159,20 +159,20 @@ LABEL_14:
   }
 }
 
-- (_EARFormatter)initWithGeneralVoc:(id)a3 withLexiconEnh:(id)a4 withItnEnh:(id)a5
+- (_EARFormatter)initWithGeneralVoc:(id)voc withLexiconEnh:(id)enh withItnEnh:(id)itnEnh
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [_EARQuasarTokenizer extractModelRootFromNcsResourcePaths:v8 lexiconEnh:v9 tokenEnh:0 itnEnh:v10];
+  vocCopy = voc;
+  enhCopy = enh;
+  itnEnhCopy = itnEnh;
+  v11 = [_EARQuasarTokenizer extractModelRootFromNcsResourcePaths:vocCopy lexiconEnh:enhCopy tokenEnh:0 itnEnh:itnEnhCopy];
   v12 = [(_EARFormatter *)self initNcsWithModelRoot:v11];
 
   return v12;
 }
 
-- (id)initNcsWithModelRoot:(id)a3
+- (id)initNcsWithModelRoot:(id)root
 {
-  v4 = a3;
+  rootCopy = root;
   v14.receiver = self;
   v14.super_class = _EARFormatter;
   v5 = [(_EARFormatter *)&v14 init];
@@ -183,9 +183,9 @@ LABEL_14:
 
   else
   {
-    v6 = [v4 stringByAppendingPathComponent:@"ncs"];
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
-    if ([v7 fileExistsAtPath:v6])
+    v6 = [rootCopy stringByAppendingPathComponent:@"ncs"];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    if ([defaultManager fileExistsAtPath:v6])
     {
       v8 = [v6 stringByAppendingPathComponent:@"dispatch.voc"];
       v9 = [v6 stringByAppendingPathComponent:@"lexicon.enh"];
@@ -226,7 +226,7 @@ LABEL_12:
   return v11;
 }
 
-- (vector<quasar::Token,)formatWords:(_EARFormatter *)self unrepairedWordsOut:(SEL)a3 task:(const void *)a4
+- (vector<quasar::Token,)formatWords:(_EARFormatter *)self unrepairedWordsOut:(SEL)out task:(const void *)task
 {
   v10 = a6;
   language = self->_language;
@@ -253,7 +253,7 @@ LABEL_12:
 
     [(__CFString *)v12 ear_toString];
     memset(v15, 0, sizeof(v15));
-    (*(*ptr + 16))(ptr, a4, a5, v18, &__p, v15, 0xFFFFLL, 0);
+    (*(*ptr + 16))(ptr, task, a5, v18, &__p, v15, 0xFFFFLL, 0);
     v20 = v15;
     std::vector<quasar::ItnOverride>::__destroy_vector::operator()[abi:ne200100](&v20);
     if (v17 < 0)
@@ -277,19 +277,19 @@ LABEL_12:
   return result;
 }
 
-- (vector<quasar::Token,)formatWords:(_EARFormatter *)self unrepairedWordsOut:(SEL)a3 task:(const void *)a4 language:(void *)a5 preItnLeftContext:(id)a6 separateAutoEndPunctuation:(id)a7 partialResults:(const void *)a8 timestampOffset:(BOOL)a9 zeroTimestamp:(void *)a10 continuousListeningConfig:(unsigned int)a11 postItnLeftContext:(BOOL)a12 itnResult:(shared_ptr<quasar:(const void *)a14 :(void *)a15 ContinuousListeningConfig>)a13 itnOverrides:(const void *)a16 itnEnablingFlags:(unsigned __int16)a17 recognizeEmoji:(BOOL)a18 leftContextProvidedByClient:(BOOL)a19 preItnRightContext:(const void *)a20 postItnLeftContextStr:(id)a21 postItnRightContextStr:(id)a22 stripLeadingAppendedAutoPunctuation:(BOOL)a23 emojiTokenIndices:(void *)a24 persistEmoji:(BOOL)a25 shouldHideTrailingPunctuation:(BOOL)a26 isTrailingPunctuationHidden:(shared_ptr<BOOL>)a27 isFinal:(BOOL)a28 choiceIdx:(int)a29 itnCompletion:(id)a30
+- (vector<quasar::Token,)formatWords:(_EARFormatter *)self unrepairedWordsOut:(SEL)out task:(const void *)task language:(void *)language preItnLeftContext:(id)context separateAutoEndPunctuation:(id)punctuation partialResults:(const void *)results timestampOffset:(BOOL)offset zeroTimestamp:(void *)self0 continuousListeningConfig:(unsigned int)self1 postItnLeftContext:(BOOL)self2 itnResult:(shared_ptr<quasar:(const void *)self4 :(void *)self5 ContinuousListeningConfig>)self3 itnOverrides:(const void *)self6 itnEnablingFlags:(unsigned __int16)self7 recognizeEmoji:(BOOL)self8 leftContextProvidedByClient:(BOOL)self9 preItnRightContext:(const void *)rightContext postItnLeftContextStr:(id)str postItnRightContextStr:(id)contextStr stripLeadingAppendedAutoPunctuation:(BOOL)autoPunctuation emojiTokenIndices:(void *)indices persistEmoji:(BOOL)persistEmoji shouldHideTrailingPunctuation:(BOOL)trailingPunctuation isTrailingPunctuationHidden:(shared_ptr<BOOL>)hidden isFinal:(BOOL)final choiceIdx:(int)idx itnCompletion:(id)out0
 {
   v42 = *MEMORY[0x1E69E9840];
-  v40 = a6;
-  v33 = a7;
-  v37 = a20;
-  v38 = a21;
-  v39 = a27.var1;
-  v34 = [v33 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
+  contextCopy = context;
+  punctuationCopy = punctuation;
+  rightContextCopy = rightContext;
+  strCopy = str;
+  v39 = hidden.var1;
+  v34 = [punctuationCopy stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
   if (self->_itn.__ptr_)
   {
-    v35 = [MEMORY[0x1E696AE30] processInfo];
-    [v35 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
 
     [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:mach_continuous_time()];
     objc_claimAutoreleasedReturnValue();
@@ -304,9 +304,9 @@ LABEL_12:
   return result;
 }
 
-- (void)setItnMetricsWithCompletion:(id)a3
+- (void)setItnMetricsWithCompletion:(id)completion
 {
-  v10 = a3;
+  completionCopy = completion;
   emojiMetrics = self->_emojiMetrics;
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_firstCandidateItnDurationSum / self->_firstCandidateItnCount * 1000000000.0];
   [(NSMutableDictionary *)emojiMetrics setValue:v5 forKey:@"itnDurationInNs"];
@@ -319,9 +319,9 @@ LABEL_12:
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[_EAREmojiRecognition isEmojiPersonalizationUsed](self->_emojiFormatter, "isEmojiPersonalizationUsed")}];
   [(NSMutableDictionary *)v8 setValue:v9 forKey:@"isEmojiPersonalizationUsed"];
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, self->_emojiMetrics, self->_recognizedEmojis, self->_firstCandidateItnIntervalInTicks);
+    completionCopy[2](completionCopy, self->_emojiMetrics, self->_recognizedEmojis, self->_firstCandidateItnIntervalInTicks);
   }
 
   [(_EARFormatter *)self initializeItnMetrics];
@@ -368,27 +368,27 @@ LABEL_12:
   return result;
 }
 
-- (void)recognizeEmojiForTokens:(void *)a3 emojiTokenIndices:(void *)a4 persistEmoji:(BOOL)a5 choiceIdx:(int)a6
+- (void)recognizeEmojiForTokens:(void *)tokens emojiTokenIndices:(void *)indices persistEmoji:(BOOL)emoji choiceIdx:(int)idx
 {
-  v7 = a5;
+  emojiCopy = emoji;
   v152 = *MEMORY[0x1E69E9840];
   if (!+[_EARFeatureFlags isEmojiV2Enabled])
   {
-    v37 = *a3;
-    if (*(a3 + 1) == *a3)
+    v37 = *tokens;
+    if (*(tokens + 1) == *tokens)
     {
       return;
     }
 
     v38 = 0;
-    if (a6)
+    if (idx)
     {
       v39 = 0;
     }
 
     else
     {
-      v39 = v7;
+      v39 = emojiCopy;
     }
 
     v115 = v39;
@@ -440,7 +440,7 @@ LABEL_37:
             v131 = 0;
             v132 = 0;
             v130 = 0;
-            std::vector<std::pair<int,std::vector<std::string>>>::push_back[abi:ne200100](a4, &buf);
+            std::vector<std::pair<int,std::vector<std::string>>>::push_back[abi:ne200100](indices, &buf);
             v120 = &buf.__r_.__value_.__r.__words[1];
             std::vector<std::string>::__destroy_vector::operator()[abi:ne200100](&v120);
             v120 = &v130;
@@ -468,8 +468,8 @@ LABEL_37:
       }
 
       v38 = v40;
-      v37 = *a3;
-      v81 = 0x6DB6DB6DB6DB6DB7 * ((*(a3 + 1) - *a3) >> 5) > v40++;
+      v37 = *tokens;
+      v81 = 0x6DB6DB6DB6DB6DB7 * ((*(tokens + 1) - *tokens) >> 5) > v40++;
       if (!v81)
       {
         return;
@@ -477,14 +477,14 @@ LABEL_37:
     }
   }
 
-  oslog = a6;
-  type = v7;
-  v114 = [MEMORY[0x1E696AD60] string];
+  oslog = idx;
+  type = emojiCopy;
+  string = [MEMORY[0x1E696AD60] string];
   __src = 0;
   v136 = 0;
   v137 = 0;
-  v9 = *a3;
-  if (*(a3 + 1) != *a3)
+  v9 = *tokens;
+  if (*(tokens + 1) != *tokens)
   {
     v10 = 0;
     v11 = 0;
@@ -502,11 +502,11 @@ LABEL_37:
 
       v16 = [*(v13 + 3776) ear_stringWithStringView:{v14, v15}];
       v17 = [v16 length];
-      [v114 appendString:v16];
+      [string appendString:v16];
       v18 = [v16 length] + v11;
-      if (*(*a3 + 224 * v10 + 44) == 1)
+      if (*(*tokens + 224 * v10 + 44) == 1)
       {
-        [v114 appendString:@" "];
+        [string appendString:@" "];
         ++v18;
       }
 
@@ -569,16 +569,16 @@ LABEL_37:
       v136 = v20;
 
       v10 = v12;
-      v9 = *a3;
-      v81 = 0x6DB6DB6DB6DB6DB7 * ((*(a3 + 1) - *a3) >> 5) > v12++;
+      v9 = *tokens;
+      v81 = 0x6DB6DB6DB6DB6DB7 * ((*(tokens + 1) - *tokens) >> 5) > v12++;
       v11 = v18;
     }
 
     while (v81);
   }
 
-  v32 = v114;
-  v33 = [v114 length];
+  v32 = string;
+  v33 = [string length];
   if (v33)
   {
     if (quasar::gLogLevel >= 5)
@@ -588,11 +588,11 @@ LABEL_37:
       if (os_log_type_enabled(v34, v35))
       {
         LODWORD(buf.__r_.__value_.__l.__data_) = 138412290;
-        *(buf.__r_.__value_.__r.__words + 4) = v114;
+        *(buf.__r_.__value_.__r.__words + 4) = string;
         _os_log_impl(&dword_1B501D000, v34, v35, "Emoji Input: %@", &buf, 0xCu);
       }
 
-      v32 = v114;
+      v32 = string;
     }
 
     if ([(_EAREmojiRecognition *)self->_emojiFormatter isLocaleRTL])
@@ -610,7 +610,7 @@ LABEL_37:
     v131 = 0x3032000000;
     v132 = __Block_byref_object_copy__49;
     v133 = __Block_byref_object_dispose__50;
-    v134 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v53 = self->_emojiFormatter;
     v127[0] = MEMORY[0x1E69E9820];
     v127[1] = 3221225472;
@@ -647,10 +647,10 @@ LABEL_37:
         v62 = [v116 objectAtIndexedSubscript:v57];
         v63 = [v62 objectAtIndexedSubscript:1];
 
-        v64 = [v63 rangeValue];
+        rangeValue = [v63 rangeValue];
         v66 = v65;
         v67 = [v61 count];
-        if (v67 && (v68 = *a3, v69 = *(a3 + 1), 0x6DB6DB6DB6DB6DB7 * ((v69 - *a3) >> 5) > v58))
+        if (v67 && (v68 = *tokens, v69 = *(tokens + 1), 0x6DB6DB6DB6DB6DB7 * ((v69 - *tokens) >> 5) > v58))
         {
           v70 = v58;
           while (1)
@@ -658,7 +658,7 @@ LABEL_37:
             v71 = v68 + 224 * v70;
             v72 = (__src + 16 * v70);
             v73 = *v72;
-            if (v64 == *v72)
+            if (rangeValue == *v72)
             {
               v74 = v72[1];
               v26 = v66 >= v74;
@@ -669,17 +669,17 @@ LABEL_37:
               }
             }
 
-            if (v73 > v64)
+            if (v73 > rangeValue)
             {
               goto LABEL_67;
             }
 
             v67 = std::vector<quasar::Token>::push_back[abi:ne200100](&v124, (v68 + 224 * v70));
             v70 = (v58 + 1);
-            v68 = *a3;
-            v69 = *(a3 + 1);
+            v68 = *tokens;
+            v69 = *(tokens + 1);
             v58 = v70;
-            if (0x6DB6DB6DB6DB6DB7 * ((v69 - *a3) >> 5) <= v70)
+            if (0x6DB6DB6DB6DB6DB7 * ((v69 - *tokens) >> 5) <= v70)
             {
               goto LABEL_68;
             }
@@ -727,7 +727,7 @@ LABEL_83:
             *&v122.__r_.__value_.__r.__words[1] = v88;
             v123 = v87;
             memset(v121, 0, sizeof(v121));
-            std::vector<std::pair<int,std::vector<std::string>>>::push_back[abi:ne200100](a4, &v122);
+            std::vector<std::pair<int,std::vector<std::string>>>::push_back[abi:ne200100](indices, &v122);
             p_size = &v122.__r_.__value_.__l.__size_;
             std::vector<std::string>::__destroy_vector::operator()[abi:ne200100](&p_size);
             p_size = v121;
@@ -737,7 +737,7 @@ LABEL_83:
             if (v105)
             {
               v89 = self->_emojiFormatter;
-              v90 = [v114 substringWithRange:{v64, v66}];
+              v90 = [string substringWithRange:{rangeValue, v66}];
               [(_EAREmojiRecognition *)v89 didUseEmoji:osloga replacementContext:v90];
 
               [(NSMutableArray *)self->_recognizedEmojis addObject:typea];
@@ -817,10 +817,10 @@ LABEL_83:
               typeb = quasar::QuasarLogLevelToType(5);
               if (os_log_type_enabled(oslogb, typeb))
               {
-                v91 = [v114 substringWithRange:{v64, v66}];
-                v92 = [v114 substringWithRange:{*v80, v80[1]}];
+                v91 = [string substringWithRange:{rangeValue, v66}];
+                v92 = [string substringWithRange:{*v80, v80[1]}];
                 LODWORD(buf.__r_.__value_.__l.__data_) = v103;
-                *(buf.__r_.__value_.__r.__words + 4) = v114;
+                *(buf.__r_.__value_.__r.__words + 4) = string;
                 WORD2(buf.__r_.__value_.__r.__words[1]) = 2112;
                 *(&buf.__r_.__value_.__r.__words[1] + 6) = v91;
                 HIWORD(buf.__r_.__value_.__r.__words[2]) = 2112;
@@ -848,8 +848,8 @@ LABEL_68:
         v58 = v70;
       }
 
-      v93 = *a3;
-      if (0x6DB6DB6DB6DB6DB7 * ((*(a3 + 1) - *a3) >> 5) > v58)
+      v93 = *tokens;
+      if (0x6DB6DB6DB6DB6DB7 * ((*(tokens + 1) - *tokens) >> 5) > v58)
       {
         v94 = v58;
         v95 = v58 + 1;
@@ -857,16 +857,16 @@ LABEL_68:
         {
           std::vector<quasar::Token>::push_back[abi:ne200100](&v124, (v93 + 224 * v94));
           v94 = v95;
-          v93 = *a3;
-          v81 = 0x6DB6DB6DB6DB6DB7 * ((*(a3 + 1) - *a3) >> 5) > v95++;
+          v93 = *tokens;
+          v81 = 0x6DB6DB6DB6DB6DB7 * ((*(tokens + 1) - *tokens) >> 5) > v95++;
         }
 
         while (v81);
       }
 
-      if (&v124 != a3)
+      if (&v124 != tokens)
       {
-        std::vector<quasar::Token>::__assign_with_size[abi:ne200100]<quasar::Token*,quasar::Token*>(a3, v124, v125, 0x6DB6DB6DB6DB6DB7 * ((v125 - v124) >> 5));
+        std::vector<quasar::Token>::__assign_with_size[abi:ne200100]<quasar::Token*,quasar::Token*>(tokens, v124, v125, 0x6DB6DB6DB6DB6DB7 * ((v125 - v124) >> 5));
       }
 
       buf.__r_.__value_.__r.__words[0] = &v124;
@@ -883,7 +883,7 @@ LABEL_68:
       {
         v98 = MEMORY[0x1E696AEC0];
         memset(&v117, 0, sizeof(v117));
-        std::vector<quasar::Token>::__init_with_size[abi:ne200100]<quasar::Token*,quasar::Token*>(&v117, *a3, *(a3 + 1), 0x6DB6DB6DB6DB6DB7 * ((*(a3 + 1) - *a3) >> 5));
+        std::vector<quasar::Token>::__init_with_size[abi:ne200100]<quasar::Token*,quasar::Token*>(&v117, *tokens, *(tokens + 1), 0x6DB6DB6DB6DB6DB7 * ((*(tokens + 1) - *tokens) >> 5));
         EARHelpers::QuasarTokensToStdString(&v117, &v122);
         if ((v122.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
         {
@@ -941,7 +941,7 @@ LABEL_68:
     }
 
 LABEL_125:
-    v32 = v114;
+    v32 = string;
   }
 
   if (__src)
@@ -951,14 +951,14 @@ LABEL_125:
   }
 }
 
-- (vector<quasar::Token,)formattedTokensWithoutEmojiModifier:(_EARFormatter *)self emojiTokenIndices:(SEL)a3 recognizeEmoji:(const void *)a4
+- (vector<quasar::Token,)formattedTokensWithoutEmojiModifier:(_EARFormatter *)self emojiTokenIndices:(SEL)indices recognizeEmoji:(const void *)emoji
 {
   if (a6 && self->_emojiFormatter)
   {
     retstr->__begin_ = 0;
     retstr->__end_ = 0;
     retstr->__cap_ = 0;
-    result = std::vector<quasar::Token>::__init_with_size[abi:ne200100]<quasar::Token*,quasar::Token*>(retstr, *a4, *(a4 + 1), 0x6DB6DB6DB6DB6DB7 * ((*(a4 + 1) - *a4) >> 5));
+    result = std::vector<quasar::Token>::__init_with_size[abi:ne200100]<quasar::Token*,quasar::Token*>(retstr, *emoji, *(emoji + 1), 0x6DB6DB6DB6DB6DB7 * ((*(emoji + 1) - *emoji) >> 5));
     v11 = *a5;
     v12 = *(a5 + 1);
     if (*a5 != v12)
@@ -969,12 +969,12 @@ LABEL_125:
         v14 = *v11;
         if (0x6DB6DB6DB6DB6DB7 * (retstr->__end_ - begin) > v14)
         {
-          v15 = *a4 + 224 * v14;
+          v15 = *emoji + 224 * v14;
           v16 = *(v15 + 23);
           if (v16 < 0)
           {
             v15 = *v15;
-            v16 = *(*a4 + 224 * v14 + 8);
+            v16 = *(*emoji + 224 * v14 + 8);
           }
 
           v17 = [MEMORY[0x1E696AEC0] ear_stringWithStringView:{v15, v16}];
@@ -1017,9 +1017,9 @@ LABEL_125:
     retstr->__begin_ = 0;
     retstr->__end_ = 0;
     retstr->__cap_ = 0;
-    v21 = *a4;
-    v22 = *(a4 + 1);
-    v23 = 0x6DB6DB6DB6DB6DB7 * ((v22 - *a4) >> 5);
+    v21 = *emoji;
+    v22 = *(emoji + 1);
+    v23 = 0x6DB6DB6DB6DB6DB7 * ((v22 - *emoji) >> 5);
 
     return std::vector<quasar::Token>::__init_with_size[abi:ne200100]<quasar::Token*,quasar::Token*>(retstr, v21, v22, v23);
   }
@@ -1027,20 +1027,20 @@ LABEL_125:
   return result;
 }
 
-- (void)appendNbestListWithEmojiAlternativesForFormattedTokens:(const void *)a3 formattedTokensWithoutEmojiModifier:(const void *)a4 formattedNBestList:(void *)a5 formattedNBestListWithoutEmojiModifier:(void *)a6 emojiTokenIndices:(const void *)a7 recognizeEmoji:(BOOL)a8
+- (void)appendNbestListWithEmojiAlternativesForFormattedTokens:(const void *)tokens formattedTokensWithoutEmojiModifier:(const void *)modifier formattedNBestList:(void *)list formattedNBestListWithoutEmojiModifier:(void *)emojiModifier emojiTokenIndices:(const void *)indices recognizeEmoji:(BOOL)emoji
 {
   v59[1] = *MEMORY[0x1E69E9840];
-  if (a8)
+  if (emoji)
   {
-    v8 = self;
+    selfCopy = self;
     if (self->_emojiFormatter)
     {
-      v9 = *a7;
-      v43 = *(a7 + 1);
-      if (*a7 != v43)
+      v9 = *indices;
+      v43 = *(indices + 1);
+      if (*indices != v43)
       {
         v12 = 0x6DB6DB6DB6DB6DB7;
-        v42 = self;
+        selfCopy2 = self;
         do
         {
           if (+[_EARFeatureFlags isEmojiV2Enabled])
@@ -1050,13 +1050,13 @@ LABEL_125:
             while (v14 != v13)
             {
               memset(&v57, 0, sizeof(v57));
-              std::vector<quasar::Token>::__init_with_size[abi:ne200100]<quasar::Token*,quasar::Token*>(&v57, *a3, *(a3 + 1), ((*(a3 + 1) - *a3) >> 5) * v12);
+              std::vector<quasar::Token>::__init_with_size[abi:ne200100]<quasar::Token*,quasar::Token*>(&v57, *tokens, *(tokens + 1), ((*(tokens + 1) - *tokens) >> 5) * v12);
               memset(v56, 0, sizeof(v56));
-              std::vector<quasar::Token>::__init_with_size[abi:ne200100]<quasar::Token*,quasar::Token*>(v56, *a4, *(a4 + 1), ((*(a4 + 1) - *a4) >> 5) * v12);
+              std::vector<quasar::Token>::__init_with_size[abi:ne200100]<quasar::Token*,quasar::Token*>(v56, *modifier, *(modifier + 1), ((*(modifier + 1) - *modifier) >> 5) * v12);
               std::string::operator=((v57.__r_.__value_.__r.__words[0] + 224 * *v9), v14);
               std::string::operator=(&v56[0][28 * *v9], v14);
-              std::vector<std::vector<quasar::Token>>::push_back[abi:ne200100](a5, &v57);
-              std::vector<std::vector<quasar::Token>>::push_back[abi:ne200100](a6, v56);
+              std::vector<std::vector<quasar::Token>>::push_back[abi:ne200100](list, &v57);
+              std::vector<std::vector<quasar::Token>>::push_back[abi:ne200100](emojiModifier, v56);
               __p = v56;
               std::vector<quasar::Token>::__destroy_vector::operator()[abi:ne200100](&__p);
               v56[0] = &v57;
@@ -1067,7 +1067,7 @@ LABEL_125:
 
           else
           {
-            v15 = *a3 + 224 * *v9;
+            v15 = *tokens + 224 * *v9;
             if (*(v15 + 199) < 0)
             {
               std::string::__init_copy_ctor_external(&v57, *(v15 + 176), *(v15 + 184));
@@ -1080,7 +1080,7 @@ LABEL_125:
               *&v57.__r_.__value_.__l.__data_ = v16;
             }
 
-            ptr = v8->_itn.__ptr_;
+            ptr = selfCopy->_itn.__ptr_;
             v18 = objc_opt_class();
             if ((v57.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
             {
@@ -1121,9 +1121,9 @@ LABEL_125:
             v48[0] = &__p;
             std::vector<quasar::Token>::__destroy_vector::operator()[abi:ne200100](v48);
 
-            emojiFormatter = v8->_emojiFormatter;
+            emojiFormatter = selfCopy->_emojiFormatter;
             v24 = MEMORY[0x1E696AEC0];
-            [(_EARFormatter *)v8 getOrthography:v56];
+            [(_EARFormatter *)selfCopy getOrthography:v56];
             if (v55 >= 0)
             {
               p_p = &__p;
@@ -1145,12 +1145,12 @@ LABEL_125:
             }
 
             v27 = [v24 ear_stringWithStringView:{p_p, v26}];
-            v28 = *a3 + 224 * *v9;
+            v28 = *tokens + 224 * *v9;
             v29 = *(v28 + 23);
             if (v29 < 0)
             {
               v28 = *v28;
-              v29 = *(*a3 + 224 * *v9 + 8);
+              v29 = *(*tokens + 224 * *v9 + 8);
             }
 
             v30 = [MEMORY[0x1E696AEC0] ear_stringWithStringView:{v28, v29}];
@@ -1183,9 +1183,9 @@ LABEL_125:
                   __p = 0;
                   v54 = 0;
                   v55 = 0;
-                  std::vector<quasar::Token>::__init_with_size[abi:ne200100]<quasar::Token*,quasar::Token*>(&__p, *a3, *(a3 + 1), ((*(a3 + 1) - *a3) >> 5) * v12);
+                  std::vector<quasar::Token>::__init_with_size[abi:ne200100]<quasar::Token*,quasar::Token*>(&__p, *tokens, *(tokens + 1), ((*(tokens + 1) - *tokens) >> 5) * v12);
                   memset(v48, 0, sizeof(v48));
-                  std::vector<quasar::Token>::__init_with_size[abi:ne200100]<quasar::Token*,quasar::Token*>(v48, *a4, *(a4 + 1), ((*(a4 + 1) - *a4) >> 5) * v12);
+                  std::vector<quasar::Token>::__init_with_size[abi:ne200100]<quasar::Token*,quasar::Token*>(v48, *modifier, *(modifier + 1), ((*(modifier + 1) - *modifier) >> 5) * v12);
                   if (v36)
                   {
                     [v36 ear_toString];
@@ -1227,8 +1227,8 @@ LABEL_125:
                   v41 = v46;
                   v40[2] = v47;
                   *v40 = v41;
-                  std::vector<std::vector<quasar::Token>>::push_back[abi:ne200100](a5, &__p);
-                  std::vector<std::vector<quasar::Token>>::push_back[abi:ne200100](a6, v48);
+                  std::vector<std::vector<quasar::Token>>::push_back[abi:ne200100](list, &__p);
+                  std::vector<std::vector<quasar::Token>>::push_back[abi:ne200100](emojiModifier, v48);
                   *&v46 = v48;
                   std::vector<quasar::Token>::__destroy_vector::operator()[abi:ne200100](&v46);
                   v48[0] = &__p;
@@ -1242,7 +1242,7 @@ LABEL_125:
               while (v33);
             }
 
-            v8 = v42;
+            selfCopy = selfCopy2;
             __p = v56;
             std::vector<quasar::Token>::__destroy_vector::operator()[abi:ne200100](&__p);
             if (SHIBYTE(v57.__r_.__value_.__r.__words[2]) < 0)
@@ -1260,20 +1260,20 @@ LABEL_125:
   }
 }
 
-- (id)formatWords:(id)a3 task:(id)a4 autoPunctuate:(BOOL)a5
+- (id)formatWords:(id)words task:(id)task autoPunctuate:(BOOL)punctuate
 {
-  v5 = [(_EARFormatter *)self formatWords:a3 task:a4 autoPunctuate:a5 recognizeEmoji:0];
+  v5 = [(_EARFormatter *)self formatWords:words task:task autoPunctuate:punctuate recognizeEmoji:0];
 
   return v5;
 }
 
-- (id)formatWords:(id)a3 task:(id)a4 autoPunctuate:(BOOL)a5 recognizeEmoji:(BOOL)a6
+- (id)formatWords:(id)words task:(id)task autoPunctuate:(BOOL)punctuate recognizeEmoji:(BOOL)emoji
 {
-  v6 = a6;
-  v7 = a5;
+  emojiCopy = emoji;
+  punctuateCopy = punctuate;
   v67 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  wordsCopy = words;
+  taskCopy = task;
   v62 = 0;
   v63 = 0;
   v64 = 0;
@@ -1290,7 +1290,7 @@ LABEL_125:
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v13 = v10;
+  v13 = wordsCopy;
   v14 = [v13 countByEnumeratingWithState:&v56 objects:v66 count:16];
   if (v14)
   {
@@ -1362,7 +1362,7 @@ LABEL_125:
     while (v14);
   }
 
-  if (v7)
+  if (punctuateCopy)
   {
     v18 = -1;
   }
@@ -1405,9 +1405,9 @@ LABEL_125:
     }
 
     v28 = self->_itn.__ptr_;
-    if (v11)
+    if (taskCopy)
     {
-      [v11 ear_toString];
+      [taskCopy ear_toString];
     }
 
     else
@@ -1418,7 +1418,7 @@ LABEL_125:
     }
 
     [(__CFString *)v35 ear_toString];
-    (*(*v28 + 16))(&v40, v28, v45, v61, v38, &v36, v60, v18, [_EARFormatter useEmojiHammerWhenRecognizeEmoji:v6]);
+    (*(*v28 + 16))(&v40, v28, v45, v61, v38, &v36, v60, v18, [_EARFormatter useEmojiHammerWhenRecognizeEmoji:emojiCopy]);
     std::vector<quasar::Token>::__vdeallocate(&v42);
     v42 = v40;
     v43 = v41;
@@ -1562,14 +1562,14 @@ LABEL_125:
 
   self->_firstCandidateItnDurationSum = 0.0;
   self->_firstCandidateItnCount = 0;
-  v13 = [MEMORY[0x1E695DEC8] array];
+  array = [MEMORY[0x1E695DEC8] array];
   firstCandidateItnIntervalInTicks = self->_firstCandidateItnIntervalInTicks;
-  self->_firstCandidateItnIntervalInTicks = v13;
+  self->_firstCandidateItnIntervalInTicks = array;
 
   [(_EAREmojiRecognition *)self->_emojiFormatter resetEmojiMetrics];
 }
 
-+ (vector<quasar::Token,)convertStringsToQuasarTokens:(id)a2 offset:(SEL)a3
++ (vector<quasar::Token,)convertStringsToQuasarTokens:(id)tokens offset:(SEL)offset
 {
   v41 = *MEMORY[0x1E69E9840];
   v7 = a4;
@@ -1678,21 +1678,21 @@ LABEL_125:
   return result;
 }
 
-- (id)formattedStringWithStrings:(id)a3
+- (id)formattedStringWithStrings:(id)strings
 {
-  v3 = [(_EARFormatter *)self formattedStringWithStrings:a3 task:&stru_1F2D44B60];
+  v3 = [(_EARFormatter *)self formattedStringWithStrings:strings task:&stru_1F2D44B60];
 
   return v3;
 }
 
-- (id)formattedStringWithStrings:(id)a3 task:(id)a4
+- (id)formattedStringWithStrings:(id)strings task:(id)task
 {
-  v6 = a3;
-  v7 = a4;
+  stringsCopy = strings;
+  taskCopy = task;
   v8 = objc_opt_class();
   if (v8)
   {
-    [v8 convertStringsToQuasarTokens:v6];
+    [v8 convertStringsToQuasarTokens:stringsCopy];
   }
 
   else
@@ -1701,7 +1701,7 @@ LABEL_125:
   }
 
   memset(v15, 0, sizeof(v15));
-  [(_EARFormatter *)self formatWords:v16 unrepairedWordsOut:v15 task:v7];
+  [(_EARFormatter *)self formatWords:v16 unrepairedWordsOut:v15 task:taskCopy];
   [(_EARFormatter *)self getOrthography:v14];
   if (v13 >= 0)
   {
@@ -1729,24 +1729,24 @@ LABEL_125:
   return v10;
 }
 
-- (id)formattedStringWithStrings:(id)a3 preToPostItnArray:(id)a4
+- (id)formattedStringWithStrings:(id)strings preToPostItnArray:(id)array
 {
-  v4 = [(_EARFormatter *)self formattedStringWithStrings:a3 preToPostItnArray:a4 task:&stru_1F2D44B60];
+  v4 = [(_EARFormatter *)self formattedStringWithStrings:strings preToPostItnArray:array task:&stru_1F2D44B60];
 
   return v4;
 }
 
-- (id)formattedStringWithStrings:(id)a3 preToPostItnArray:(id)a4 task:(id)a5
+- (id)formattedStringWithStrings:(id)strings preToPostItnArray:(id)array task:(id)task
 {
   v33[4] = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  v8 = a4;
-  v9 = a5;
-  v23 = v9;
+  stringsCopy = strings;
+  arrayCopy = array;
+  taskCopy = task;
+  v23 = taskCopy;
   v10 = objc_opt_class();
   if (v10)
   {
-    [v10 convertStringsToQuasarTokens:v24];
+    [v10 convertStringsToQuasarTokens:stringsCopy];
   }
 
   else
@@ -1755,11 +1755,11 @@ LABEL_125:
   }
 
   memset(v31, 0, sizeof(v31));
-  [(_EARFormatter *)self formatWords:&v32 unrepairedWordsOut:v31 task:v9];
+  [(_EARFormatter *)self formatWords:&v32 unrepairedWordsOut:v31 task:taskCopy];
   v25 = 0;
   v26 = 0;
   quasar::getPreItnTokenToPostItnCharAlignment(&v32, &v30, &v25, &__p);
-  v22 = self;
+  selfCopy = self;
   v12 = __p;
   v11 = v28;
   v28 = 0;
@@ -1775,7 +1775,7 @@ LABEL_125:
     v13 = v12;
     do
     {
-      v14 = [MEMORY[0x1E696AD98] numberWithInt:{*v13, v22}];
+      v14 = [MEMORY[0x1E696AD98] numberWithInt:{*v13, selfCopy}];
       v33[0] = v14;
       v15 = [MEMORY[0x1E696AD98] numberWithInt:v13[1]];
       v33[1] = v15;
@@ -1785,14 +1785,14 @@ LABEL_125:
       v33[3] = v17;
       v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:4];
 
-      [v8 addObject:v18];
+      [arrayCopy addObject:v18];
       v13 += 4;
     }
 
     while (v13 != v11);
   }
 
-  [(_EARFormatter *)v22 getOrthography:&v30, v22];
+  [(_EARFormatter *)selfCopy getOrthography:&v30, selfCopy];
   if (v29 >= 0)
   {
     p_p = &__p;
@@ -1824,7 +1824,7 @@ LABEL_125:
   return v20;
 }
 
-- (id)formattedRecognitionWithNBestList:(id)a3
+- (id)formattedRecognitionWithNBestList:(id)list
 {
   v44 = *MEMORY[0x1E69E9840];
   memset(v40, 0, sizeof(v40));
@@ -1832,7 +1832,7 @@ LABEL_125:
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = a3;
+  obj = list;
   v4 = [obj countByEnumeratingWithState:&v36 objects:v43 count:16];
   if (v4)
   {
@@ -1961,9 +1961,9 @@ LABEL_125:
   return v15;
 }
 
-- (id)_formattedStringWithStrings:(id)a3 task:(id)a4 leftContext:(id)a5
+- (id)_formattedStringWithStrings:(id)strings task:(id)task leftContext:(id)context
 {
-  v5 = [(_EARFormatter *)self _formattedStringWithStrings:a3 task:a4 leftContext:a5 recognizeEmoji:0];
+  v5 = [(_EARFormatter *)self _formattedStringWithStrings:strings task:task leftContext:context recognizeEmoji:0];
   if ([v5 count])
   {
     v6 = [v5 objectAtIndexedSubscript:0];
@@ -1977,24 +1977,24 @@ LABEL_125:
   return v6;
 }
 
-- (id)_formattedStringWithStrings:(id)a3 task:(id)a4 leftContext:(id)a5 recognizeEmoji:(BOOL)a6
+- (id)_formattedStringWithStrings:(id)strings task:(id)task leftContext:(id)context recognizeEmoji:(BOOL)emoji
 {
-  v6 = [(_EARFormatter *)self _formattedStringWithStrings:a3 task:a4 leftContext:a5 recognizeEmoji:a6 rightContext:0];
+  v6 = [(_EARFormatter *)self _formattedStringWithStrings:strings task:task leftContext:context recognizeEmoji:emoji rightContext:0];
 
   return v6;
 }
 
-- (id)_formattedStringWithStrings:(id)a3 task:(id)a4 leftContext:(id)a5 recognizeEmoji:(BOOL)a6 rightContext:(id)a7
+- (id)_formattedStringWithStrings:(id)strings task:(id)task leftContext:(id)context recognizeEmoji:(BOOL)emoji rightContext:(id)rightContext
 {
   v55[2] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  stringsCopy = strings;
+  taskCopy = task;
+  contextCopy = context;
+  rightContextCopy = rightContext;
   v16 = objc_opt_class();
   if (v16)
   {
-    [v16 convertStringsToQuasarTokens:v14];
+    [v16 convertStringsToQuasarTokens:contextCopy];
     if (v52 == v53)
     {
       v17 = 0;
@@ -2017,7 +2017,7 @@ LABEL_125:
   v18 = objc_opt_class();
   if (v18)
   {
-    [v18 convertStringsToQuasarTokens:v15];
+    [v18 convertStringsToQuasarTokens:rightContextCopy];
   }
 
   else
@@ -2028,7 +2028,7 @@ LABEL_125:
   v19 = objc_opt_class();
   if (v19)
   {
-    [v19 convertStringsToQuasarTokens:v12 offset:v17];
+    [v19 convertStringsToQuasarTokens:stringsCopy offset:v17];
   }
 
   else
@@ -2052,12 +2052,12 @@ LABEL_125:
   LOBYTE(v33) = 0;
   LOWORD(v32) = 0;
   LOBYTE(v31) = 0;
-  BYTE3(v30) = [v14 count] != 0;
-  BYTE2(v30) = a6;
+  BYTE3(v30) = [contextCopy count] != 0;
+  BYTE2(v30) = emoji;
   LOWORD(v30) = -1;
   BYTE4(v29) = 0;
   LODWORD(v29) = 0;
-  [_EARFormatter formatWords:"formatWords:unrepairedWordsOut:task:language:preItnLeftContext:separateAutoEndPunctuation:partialResults:timestampOffset:zeroTimestamp:continuousListeningConfig:postItnLeftContext:itnResult:itnOverrides:itnEnablingFlags:recognizeEmoji:leftContextProvidedByClient:preItnRightContext:postItnLeftContextStr:postItnRightContextStr:stripLeadingAppendedAutoPunctuation:emojiTokenIndices:persistEmoji:shouldHideTrailingPunctuation:isTrailingPunctuationHidden:isFinal:choiceIdx:itnCompletion:" unrepairedWordsOut:v50 task:v49 language:v13 preItnLeftContext:@"en-US" separateAutoEndPunctuation:&v52 partialResults:0 timestampOffset:v47 zeroTimestamp:v29 continuousListeningConfig:&v40 postItnLeftContext:v38 itnResult:v46 itnOverrides:v45 itnEnablingFlags:v30 recognizeEmoji:v51 leftContextProvidedByClient:&stru_1F2D44B60 preItnRightContext:&stru_1F2D44B60 postItnLeftContextStr:v31 postItnRightContextStr:v44 stripLeadingAppendedAutoPunctuation:v32 emojiTokenIndices:&v36 persistEmoji:v33 shouldHideTrailingPunctuation:0 isTrailingPunctuationHidden:? isFinal:? choiceIdx:? itnCompletion:?];
+  [_EARFormatter formatWords:"formatWords:unrepairedWordsOut:task:language:preItnLeftContext:separateAutoEndPunctuation:partialResults:timestampOffset:zeroTimestamp:continuousListeningConfig:postItnLeftContext:itnResult:itnOverrides:itnEnablingFlags:recognizeEmoji:leftContextProvidedByClient:preItnRightContext:postItnLeftContextStr:postItnRightContextStr:stripLeadingAppendedAutoPunctuation:emojiTokenIndices:persistEmoji:shouldHideTrailingPunctuation:isTrailingPunctuationHidden:isFinal:choiceIdx:itnCompletion:" unrepairedWordsOut:v50 task:v49 language:taskCopy preItnLeftContext:@"en-US" separateAutoEndPunctuation:&v52 partialResults:0 timestampOffset:v47 zeroTimestamp:v29 continuousListeningConfig:&v40 postItnLeftContext:v38 itnResult:v46 itnOverrides:v45 itnEnablingFlags:v30 recognizeEmoji:v51 leftContextProvidedByClient:&stru_1F2D44B60 preItnRightContext:&stru_1F2D44B60 postItnLeftContextStr:v31 postItnRightContextStr:v44 stripLeadingAppendedAutoPunctuation:v32 emojiTokenIndices:&v36 persistEmoji:v33 shouldHideTrailingPunctuation:0 isTrailingPunctuationHidden:? isFinal:? choiceIdx:? itnCompletion:?];
   if (v37)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](v37);
@@ -2163,13 +2163,13 @@ LABEL_24:
   return v27;
 }
 
-- (id)_formattedStringWithoutEmojiModifier:(id)a3
+- (id)_formattedStringWithoutEmojiModifier:(id)modifier
 {
-  v4 = a3;
+  modifierCopy = modifier;
   v5 = objc_opt_class();
   if (v5)
   {
-    [v5 convertStringsToQuasarTokens:v4 offset:0];
+    [v5 convertStringsToQuasarTokens:modifierCopy offset:0];
     v6 = v24;
     v21 = 0;
     v22 = 0;
@@ -2251,13 +2251,13 @@ LABEL_24:
   return v12;
 }
 
-- (id)emojiPhraseRemoveKeyword:(id)a3
+- (id)emojiPhraseRemoveKeyword:(id)keyword
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keywordCopy = keyword;
   ptr = self->_itn.__ptr_;
   v6 = objc_opt_class();
-  v16[0] = v4;
+  v16[0] = keywordCopy;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
   if (v6)
   {
@@ -2299,17 +2299,17 @@ LABEL_24:
   return v10;
 }
 
-- (id)emojiAlternativesForFormattedTokens:(id)a3 stringsWithoutEmojiModifier:(id)a4 alternateNameForTokens:(id)a5
+- (id)emojiAlternativesForFormattedTokens:(id)tokens stringsWithoutEmojiModifier:(id)modifier alternateNameForTokens:(id)forTokens
 {
-  v8 = a3;
-  v9 = a4;
-  v34 = a5;
+  tokensCopy = tokens;
+  modifierCopy = modifier;
+  forTokensCopy = forTokens;
   v10 = objc_opt_class();
-  v32 = v9;
-  v33 = v8;
+  v32 = modifierCopy;
+  v33 = tokensCopy;
   if (v10)
   {
-    [v10 convertStringsToQuasarTokens:v8 offset:0];
+    [v10 convertStringsToQuasarTokens:tokensCopy offset:0];
     v11 = v50;
     v47 = 0;
     v48 = 0;
@@ -2350,7 +2350,7 @@ LABEL_24:
           std::vector<std::string>::__destroy_vector::operator()[abi:ne200100](__p);
         }
 
-        v17 = [v34 objectAtIndexedSubscript:v12];
+        v17 = [forTokensCopy objectAtIndexedSubscript:v12];
         v18 = v17;
         if (v17)
         {
@@ -2412,7 +2412,7 @@ LABEL_24:
   v38 = 0;
   v39 = 0;
   [(_EARFormatter *)self appendNbestListWithEmojiAlternativesForFormattedTokens:&v50 formattedTokensWithoutEmojiModifier:&v44 formattedNBestList:&v40 formattedNBestListWithoutEmojiModifier:&v37 emojiTokenIndices:&v47 recognizeEmoji:1, v32];
-  v22 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v24 = v40;
   for (i = v41; v24 != i; v24 += 3)
   {
@@ -2428,7 +2428,7 @@ LABEL_24:
     }
 
     v26 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v25];
-    [v22 addObject:v26];
+    [array addObject:v26];
 
     if (v36 < 0)
     {
@@ -2454,7 +2454,7 @@ LABEL_24:
       }
 
       v30 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v29];
-      [v22 addObject:v30];
+      [array addObject:v30];
 
       if (v36 < 0)
       {
@@ -2478,25 +2478,25 @@ LABEL_24:
   *&v44 = &v50;
   std::vector<quasar::Token>::__destroy_vector::operator()[abi:ne200100](&v44);
 
-  return v22;
+  return array;
 }
 
-- (id)recognizeEmojiInString:(id)a3 alternativesOut:(id)a4
+- (id)recognizeEmojiInString:(id)string alternativesOut:(id)out
 {
-  v4 = [(_EARFormatter *)self _recognizeEmojiInString:a3 alternativesOut:a4 persistEmoji:0];
+  v4 = [(_EARFormatter *)self _recognizeEmojiInString:string alternativesOut:out persistEmoji:0];
 
   return v4;
 }
 
-- (id)_recognizeEmojiInString:(id)a3 alternativesOut:(id)a4 persistEmoji:(BOOL)a5
+- (id)_recognizeEmojiInString:(id)string alternativesOut:(id)out persistEmoji:(BOOL)emoji
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  emojiCopy = emoji;
+  stringCopy = string;
+  outCopy = out;
   v10 = objc_opt_class();
   if (v10)
   {
-    [v10 convertStringsToQuasarTokens:v8 offset:0];
+    [v10 convertStringsToQuasarTokens:stringCopy offset:0];
   }
 
   else
@@ -2509,7 +2509,7 @@ LABEL_24:
   v21 = 0;
   v22 = 0;
   v23 = 0;
-  [(_EARFormatter *)self recognizeEmojiForTokens:&v24 emojiTokenIndices:&v21 persistEmoji:v5 choiceIdx:0];
+  [(_EARFormatter *)self recognizeEmojiForTokens:&v24 emojiTokenIndices:&v21 persistEmoji:emojiCopy choiceIdx:0];
   v11 = v21;
   if (v22 != v21)
   {
@@ -2518,7 +2518,7 @@ LABEL_24:
     do
     {
       v14 = EARHelpers::VectorToArray<std::string>(&v11[v13]);
-      [v9 addObject:v14];
+      [outCopy addObject:v14];
 
       ++v12;
       v11 = v21;
@@ -2561,10 +2561,10 @@ LABEL_24:
 - (__n128)formatWords:unrepairedWordsOut:task:language:preItnLeftContext:separateAutoEndPunctuation:partialResults:timestampOffset:zeroTimestamp:continuousListeningConfig:postItnLeftContext:itnResult:itnOverrides:itnEnablingFlags:recognizeEmoji:leftContextProvidedByClient:preItnRightContext:postItnLeftContextStr:postItnRightContextStr:stripLeadingAppendedAutoPunctuation:emojiTokenIndices:persistEmoji:shouldHideTrailingPunctuation:isTrailingPunctuationHidden:isFinal:choiceIdx:itnCompletion:
 {
   *a2 = &unk_1F2D324C8;
-  result = *(a1 + 8);
-  v3 = *(a1 + 24);
-  v4 = *(a1 + 40);
-  *(a2 + 56) = *(a1 + 56);
+  result = *(self + 8);
+  v3 = *(self + 24);
+  v4 = *(self + 40);
+  *(a2 + 56) = *(self + 56);
   *(a2 + 40) = v4;
   *(a2 + 24) = v3;
   *(a2 + 8) = result;
@@ -2573,9 +2573,9 @@ LABEL_24:
 
 - (void)formatWords:unrepairedWordsOut:task:language:preItnLeftContext:separateAutoEndPunctuation:partialResults:timestampOffset:zeroTimestamp:continuousListeningConfig:postItnLeftContext:itnResult:itnOverrides:itnEnablingFlags:recognizeEmoji:leftContextProvidedByClient:preItnRightContext:postItnLeftContextStr:postItnRightContextStr:stripLeadingAppendedAutoPunctuation:emojiTokenIndices:persistEmoji:shouldHideTrailingPunctuation:isTrailingPunctuationHidden:isFinal:choiceIdx:itnCompletion:
 {
-  v4 = *(a1 + 16);
-  v5 = *(**(a1 + 8) + 8);
-  v6 = **(a1 + 24);
+  v4 = *(self + 16);
+  v5 = *(**(self + 8) + 8);
+  v6 = **(self + 24);
   if (v6)
   {
     [v6 ear_toString];
@@ -2588,7 +2588,7 @@ LABEL_24:
     v12 = 0;
   }
 
-  v7 = **(a1 + 32);
+  v7 = **(self + 32);
   if (v7)
   {
     [v7 ear_toString];
@@ -2601,7 +2601,7 @@ LABEL_24:
     v10 = 0;
   }
 
-  (*(*v5 + 16))(v5, a2, v4, v11, &__p, *(a1 + 40), **(a1 + 48), [_EARFormatter useEmojiHammerWhenRecognizeEmoji:**(a1 + 56), __p, v9, v10]);
+  (*(*v5 + 16))(v5, a2, v4, v11, &__p, *(self + 40), **(self + 48), [_EARFormatter useEmojiHammerWhenRecognizeEmoji:**(self + 56), __p, v9, v10]);
   if (SHIBYTE(v10) < 0)
   {
     operator delete(__p);
@@ -2616,7 +2616,7 @@ LABEL_24:
 - (uint64_t)formatWords:unrepairedWordsOut:task:language:preItnLeftContext:separateAutoEndPunctuation:partialResults:timestampOffset:zeroTimestamp:continuousListeningConfig:postItnLeftContext:itnResult:itnOverrides:itnEnablingFlags:recognizeEmoji:leftContextProvidedByClient:preItnRightContext:postItnLeftContextStr:postItnRightContextStr:stripLeadingAppendedAutoPunctuation:emojiTokenIndices:persistEmoji:shouldHideTrailingPunctuation:isTrailingPunctuationHidden:isFinal:choiceIdx:itnCompletion:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -2649,7 +2649,7 @@ LABEL_24:
 - (void)refreshEmojiRecognizer
 {
   *buf = 138412546;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   *(buf + 6) = 1024;
   *(buf + 14) = a2 & 1;
   _os_log_debug_impl(&dword_1B501D000, log, OS_LOG_TYPE_DEBUG, "Emoji service is not available; Emoji Recognition is turned off %@ %d", buf, 0x12u);

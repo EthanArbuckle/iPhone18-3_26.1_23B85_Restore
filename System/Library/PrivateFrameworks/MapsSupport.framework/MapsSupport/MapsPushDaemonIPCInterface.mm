@@ -1,36 +1,36 @@
 @interface MapsPushDaemonIPCInterface
-- (void)_configureIncomingConnection:(id)a3;
+- (void)_configureIncomingConnection:(id)connection;
 - (void)establishConnection;
-- (void)handleTrafficeReroute:(id)a3 completion:(id)a4;
+- (void)handleTrafficeReroute:(id)reroute completion:(id)completion;
 @end
 
 @implementation MapsPushDaemonIPCInterface
 
-- (void)_configureIncomingConnection:(id)a3
+- (void)_configureIncomingConnection:(id)connection
 {
-  v4 = a3;
-  [v4 setExportedObject:self];
+  connectionCopy = connection;
+  [connectionCopy setExportedObject:self];
   v5 = +[NSXPCInterface _maps_mapsPushDaemonXPCClientInterface];
-  [v4 setExportedInterface:v5];
+  [connectionCopy setExportedInterface:v5];
 
   v6 = +[NSXPCInterface _maps_mapsPushDaemonXPCInterface];
-  [v4 setRemoteObjectInterface:v6];
+  [connectionCopy setRemoteObjectInterface:v6];
 }
 
-- (void)handleTrafficeReroute:(id)a3 completion:(id)a4
+- (void)handleTrafficeReroute:(id)reroute completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  rerouteCopy = reroute;
+  completionCopy = completion;
   messagingQueue = self->super._messagingQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001B320;
   block[3] = &unk_10003CB40;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = rerouteCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = rerouteCopy;
   dispatch_async(messagingQueue, block);
 }
 

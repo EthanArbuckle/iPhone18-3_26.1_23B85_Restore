@@ -1,28 +1,28 @@
 @interface PEAdjustmentPlaybackRate
-- (PEAdjustmentPlaybackRate)initWithPlaybackRate:(float)a3;
-- (void)applyToCompositionController:(id)a3 valuesCalculator:(id)a4 asset:(id)a5 livePortraitBehaviorDelegate:(id)a6 completionHandler:(id)a7;
+- (PEAdjustmentPlaybackRate)initWithPlaybackRate:(float)rate;
+- (void)applyToCompositionController:(id)controller valuesCalculator:(id)calculator asset:(id)asset livePortraitBehaviorDelegate:(id)delegate completionHandler:(id)handler;
 @end
 
 @implementation PEAdjustmentPlaybackRate
 
-- (void)applyToCompositionController:(id)a3 valuesCalculator:(id)a4 asset:(id)a5 livePortraitBehaviorDelegate:(id)a6 completionHandler:(id)a7
+- (void)applyToCompositionController:(id)controller valuesCalculator:(id)calculator asset:(id)asset livePortraitBehaviorDelegate:(id)delegate completionHandler:(id)handler
 {
   v54 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  controllerCopy = controller;
+  calculatorCopy = calculator;
+  assetCopy = asset;
+  delegateCopy = delegate;
+  handlerCopy = handler;
   if (_os_feature_enabled_impl())
   {
-    v45 = v15;
-    v17 = [v13 editSource];
+    v45 = delegateCopy;
+    editSource = [calculatorCopy editSource];
     [(PEAdjustmentPlaybackRate *)self playbackRate];
     v19 = v18;
-    v44 = v17;
-    v20 = [PEPlaybackRateOption playbackRateOptionsForEditSource:v17];
-    v21 = [v20 firstObject];
-    [v21 playbackRate];
+    v44 = editSource;
+    v20 = [PEPlaybackRateOption playbackRateOptionsForEditSource:editSource];
+    firstObject = [v20 firstObject];
+    [firstObject playbackRate];
     v23 = v22;
     v49 = 0u;
     v50 = 0u;
@@ -52,7 +52,7 @@
             v33 = v30;
 
             v27 = v32;
-            v21 = v33;
+            firstObject = v33;
           }
         }
 
@@ -62,18 +62,18 @@
       while (v26);
     }
 
-    if (v21)
+    if (firstObject)
     {
-      [v21 playbackRate];
+      [firstObject playbackRate];
       v35 = v34;
-      v36 = [v14 isMediaSubtype:0x20000];
+      v36 = [assetCopy isMediaSubtype:0x20000];
       v37 = v44;
-      v15 = v45;
+      delegateCopy = v45;
       if (v35 != 1.0 || (v36 & 1) != 0)
       {
         v39 = MEMORY[0x277CE63D8];
-        v40 = [v44 videoURL];
-        v41 = [v39 assetWithURL:v40];
+        videoURL = [v44 videoURL];
+        v41 = [v39 assetWithURL:videoURL];
 
         v42 = *MEMORY[0x277D3ABA8];
         v46[0] = MEMORY[0x277D85DD0];
@@ -83,31 +83,31 @@
         v48 = v35;
         v47 = v41;
         v43 = v41;
-        [v12 modifyAdjustmentWithKey:v42 modificationBlock:v46];
+        [controllerCopy modifyAdjustmentWithKey:v42 modificationBlock:v46];
       }
 
       else
       {
-        [v12 removeAdjustmentWithKey:*MEMORY[0x277D3ABA8]];
+        [controllerCopy removeAdjustmentWithKey:*MEMORY[0x277D3ABA8]];
       }
 
-      v16[2](v16, 1, 0);
+      handlerCopy[2](handlerCopy, 1, 0);
     }
 
     else
     {
       v38 = [MEMORY[0x277CCA9B8] errorWithDomain:@"PEAdjustmentPlaybackRateErrorDomain" code:1 userInfo:0];
-      (v16)[2](v16, 0, v38);
+      (handlerCopy)[2](handlerCopy, 0, v38);
 
       v37 = v44;
-      v15 = v45;
+      delegateCopy = v45;
     }
   }
 
   else
   {
     v37 = [MEMORY[0x277CCA9B8] errorWithDomain:@"PEAdjustmentPlaybackRateErrorDomain" code:0 userInfo:0];
-    (v16)[2](v16, 0, v37);
+    (handlerCopy)[2](handlerCopy, 0, v37);
   }
 }
 
@@ -154,14 +154,14 @@ void __127__PEAdjustmentPlaybackRate_applyToCompositionController_valuesCalculat
 LABEL_9:
 }
 
-- (PEAdjustmentPlaybackRate)initWithPlaybackRate:(float)a3
+- (PEAdjustmentPlaybackRate)initWithPlaybackRate:(float)rate
 {
   v5.receiver = self;
   v5.super_class = PEAdjustmentPlaybackRate;
   result = [(PEAdjustmentPlaybackRate *)&v5 init];
   if (result)
   {
-    result->_playbackRate = a3;
+    result->_playbackRate = rate;
   }
 
   return result;

@@ -1,20 +1,20 @@
 @interface PLSecurity
-+ (BOOL)auditToken:(id *)a3 hasEntitlement:(id)a4;
++ (BOOL)auditToken:(id *)token hasEntitlement:(id)entitlement;
 + (BOOL)clientIsAllowedToFetchCollectionShares;
-+ (BOOL)connection:(id)a3 hasEntitlement:(id)a4;
-+ (BOOL)hasXPCStoreEntitlementOptInForToken:(id *)a3;
++ (BOOL)connection:(id)connection hasEntitlement:(id)entitlement;
++ (BOOL)hasXPCStoreEntitlementOptInForToken:(id *)token;
 + (BOOL)isEntitledForPhotoKit;
-+ (BOOL)isEntitledForPhotoKitOrPrivatePhotosTCCForToken:(id *)a3;
-+ (BOOL)secTask:(__SecTask *)a3 hasEntitlement:(id)a4;
-+ (id)_secTask:(__SecTask *)a3 grantedEntitlements:(id)a4;
-+ (id)connection:(id)a3 grantedEntitlements:(id)a4;
-+ (id)connection:(id)a3 valueForEntitlement:(id)a4;
-+ (id)connection:(id)a3 valuesForEntitlements:(id)a4;
++ (BOOL)isEntitledForPhotoKitOrPrivatePhotosTCCForToken:(id *)token;
++ (BOOL)secTask:(__SecTask *)task hasEntitlement:(id)entitlement;
++ (id)_secTask:(__SecTask *)task grantedEntitlements:(id)entitlements;
++ (id)connection:(id)connection grantedEntitlements:(id)entitlements;
++ (id)connection:(id)connection valueForEntitlement:(id)entitlement;
++ (id)connection:(id)connection valuesForEntitlements:(id)entitlements;
 @end
 
 @implementation PLSecurity
 
-+ (BOOL)hasXPCStoreEntitlementOptInForToken:(id *)a3
++ (BOOL)hasXPCStoreEntitlementOptInForToken:(id *)token
 {
   [@"com.apple.private.photos.XPCStoreOptIn" UTF8String];
   v3 = xpc_copy_entitlement_for_token();
@@ -32,7 +32,7 @@
   return value;
 }
 
-+ (BOOL)isEntitledForPhotoKitOrPrivatePhotosTCCForToken:(id *)a3
++ (BOOL)isEntitledForPhotoKitOrPrivatePhotosTCCForToken:(id *)token
 {
   [@"com.apple.photos.bourgeoisie" UTF8String];
   v12 = 0uLL;
@@ -100,7 +100,7 @@ BOOL __62__PLSecurity_isEntitledForPhotoKitOrPrivatePhotosTCCForToken___block_in
   v3[1] = 3221225472;
   v3[2] = __52__PLSecurity_clientIsAllowedToFetchCollectionShares__block_invoke;
   v3[3] = &__block_descriptor_40_e5_v8__0l;
-  v3[4] = a1;
+  v3[4] = self;
   pl_dispatch_once(&clientIsAllowedToFetchCollectionShares_onceToken, v3);
   return clientIsAllowedToFetchCollectionShares_collectionShareFetchAllowed;
 }
@@ -123,7 +123,7 @@ void __52__PLSecurity_clientIsAllowedToFetchCollectionShares__block_invoke(uint6
   v3[1] = 3221225472;
   v3[2] = __35__PLSecurity_isEntitledForPhotoKit__block_invoke;
   v3[3] = &__block_descriptor_40_e5_v8__0l;
-  v3[4] = a1;
+  v3[4] = self;
   pl_dispatch_once(&isEntitledForPhotoKit_onceToken, v3);
   return isEntitledForPhotoKit_selfEntitled;
 }
@@ -140,12 +140,12 @@ void __35__PLSecurity_isEntitledForPhotoKit__block_invoke(uint64_t a1)
   }
 }
 
-+ (id)connection:(id)a3 grantedEntitlements:(id)a4
++ (id)connection:(id)connection grantedEntitlements:(id)entitlements
 {
-  v5 = a3;
-  v6 = a4;
+  connectionCopy = connection;
+  entitlementsCopy = entitlements;
   v7 = [MEMORY[0x1E695DFD8] set];
-  if (v5)
+  if (connectionCopy)
   {
     v13 = 0u;
     v14 = 0u;
@@ -155,7 +155,7 @@ void __35__PLSecurity_isEntitledForPhotoKit__block_invoke(uint64_t a1)
     if (v8)
     {
       v9 = v8;
-      v10 = [objc_opt_class() _secTask:v8 grantedEntitlements:v6];
+      v10 = [objc_opt_class() _secTask:v8 grantedEntitlements:entitlementsCopy];
 
       CFRelease(v9);
       v7 = v10;
@@ -165,13 +165,13 @@ void __35__PLSecurity_isEntitledForPhotoKit__block_invoke(uint64_t a1)
   return v7;
 }
 
-+ (BOOL)connection:(id)a3 hasEntitlement:(id)a4
++ (BOOL)connection:(id)connection hasEntitlement:(id)entitlement
 {
-  v6 = a4;
-  if (a3 && (v12 = 0u, v13 = 0u, xpc_connection_get_audit_token(), memset(&v11, 0, sizeof(v11)), (v7 = SecTaskCreateWithAuditToken(0, &v11)) != 0))
+  entitlementCopy = entitlement;
+  if (connection && (v12 = 0u, v13 = 0u, xpc_connection_get_audit_token(), memset(&v11, 0, sizeof(v11)), (v7 = SecTaskCreateWithAuditToken(0, &v11)) != 0))
   {
     v8 = v7;
-    v9 = [a1 secTask:v7 hasEntitlement:v6];
+    v9 = [self secTask:v7 hasEntitlement:entitlementCopy];
     CFRelease(v8);
   }
 
@@ -183,30 +183,30 @@ void __35__PLSecurity_isEntitledForPhotoKit__block_invoke(uint64_t a1)
   return v9;
 }
 
-+ (id)connection:(id)a3 valueForEntitlement:(id)a4
++ (id)connection:(id)connection valueForEntitlement:(id)entitlement
 {
   v15 = *MEMORY[0x1E69E9840];
-  v14 = a4;
+  entitlementCopy = entitlement;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v14 count:1];
+  entitlementCopy2 = entitlement;
+  connectionCopy = connection;
+  v9 = [v6 arrayWithObjects:&entitlementCopy count:1];
 
-  v10 = [a1 connection:v8 valuesForEntitlements:{v9, v14, v15}];
+  v10 = [self connection:connectionCopy valuesForEntitlements:{v9, entitlementCopy, v15}];
 
-  v11 = [v10 allValues];
-  v12 = [v11 firstObject];
+  allValues = [v10 allValues];
+  firstObject = [allValues firstObject];
 
-  return v12;
+  return firstObject;
 }
 
-+ (id)connection:(id)a3 valuesForEntitlements:(id)a4
++ (id)connection:(id)connection valuesForEntitlements:(id)entitlements
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  if (v5)
+  connectionCopy = connection;
+  entitlementsCopy = entitlements;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (connectionCopy)
   {
     v25 = 0u;
     v26 = 0u;
@@ -216,15 +216,15 @@ void __35__PLSecurity_isEntitledForPhotoKit__block_invoke(uint64_t a1)
     if (v8)
     {
       v9 = v8;
-      v10 = SecTaskCopyValuesForEntitlements(v8, v6, 0);
+      v10 = SecTaskCopyValuesForEntitlements(v8, entitlementsCopy, 0);
       if (v10)
       {
         v22 = 0u;
         v23 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v19 = v6;
-        v11 = v6;
+        v19 = entitlementsCopy;
+        v11 = entitlementsCopy;
         v12 = [(__CFArray *)v11 countByEnumeratingWithState:&v20 objects:v27 count:16];
         if (v12)
         {
@@ -243,7 +243,7 @@ void __35__PLSecurity_isEntitledForPhotoKit__block_invoke(uint64_t a1)
               v17 = [(__CFDictionary *)v10 objectForKey:v16];
               if (v17)
               {
-                [v7 setObject:v17 forKey:v16];
+                [dictionary setObject:v17 forKey:v16];
               }
             }
 
@@ -253,27 +253,27 @@ void __35__PLSecurity_isEntitledForPhotoKit__block_invoke(uint64_t a1)
           while (v13);
         }
 
-        v6 = v19;
+        entitlementsCopy = v19;
       }
 
       CFRelease(v9);
     }
   }
 
-  return v7;
+  return dictionary;
 }
 
-+ (BOOL)auditToken:(id *)a3 hasEntitlement:(id)a4
++ (BOOL)auditToken:(id *)token hasEntitlement:(id)entitlement
 {
-  v5 = a4;
-  v6 = *&a3->var0[4];
-  *v11.val = *a3->var0;
+  entitlementCopy = entitlement;
+  v6 = *&token->var0[4];
+  *v11.val = *token->var0;
   *&v11.val[4] = v6;
   v7 = SecTaskCreateWithAuditToken(0, &v11);
   if (v7)
   {
     v8 = v7;
-    v9 = [PLSecurity secTask:v7 hasEntitlement:v5];
+    v9 = [PLSecurity secTask:v7 hasEntitlement:entitlementCopy];
     CFRelease(v8);
   }
 
@@ -285,35 +285,35 @@ void __35__PLSecurity_isEntitledForPhotoKit__block_invoke(uint64_t a1)
   return v9;
 }
 
-+ (BOOL)secTask:(__SecTask *)a3 hasEntitlement:(id)a4
++ (BOOL)secTask:(__SecTask *)task hasEntitlement:(id)entitlement
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  entitlementCopy = entitlement;
   v6 = objc_opt_class();
-  v10[0] = v5;
+  v10[0] = entitlementCopy;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
 
-  v8 = [v6 _secTask:a3 grantedEntitlements:v7];
+  v8 = [v6 _secTask:task grantedEntitlements:v7];
 
-  LOBYTE(a3) = [v8 count] != 0;
-  return a3;
+  LOBYTE(task) = [v8 count] != 0;
+  return task;
 }
 
-+ (id)_secTask:(__SecTask *)a3 grantedEntitlements:(id)a4
++ (id)_secTask:(__SecTask *)task grantedEntitlements:(id)entitlements
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v5, "count")}];
-  if (a3)
+  entitlementsCopy = entitlements;
+  v6 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(entitlementsCopy, "count")}];
+  if (task)
   {
-    v7 = SecTaskCopyValuesForEntitlements(a3, v5, 0);
+    v7 = SecTaskCopyValuesForEntitlements(task, entitlementsCopy, 0);
     if (v7)
     {
       v19 = 0u;
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v8 = v5;
+      v8 = entitlementsCopy;
       v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v9)
       {
@@ -330,9 +330,9 @@ void __35__PLSecurity_isEntitledForPhotoKit__block_invoke(uint64_t a1)
 
             v13 = *(*(&v17 + 1) + 8 * i);
             v14 = [(__CFDictionary *)v7 objectForKeyedSubscript:v13, v17];
-            v15 = [v14 BOOLValue];
+            bOOLValue = [v14 BOOLValue];
 
-            if (v15)
+            if (bOOLValue)
             {
               [v6 addObject:v13];
             }

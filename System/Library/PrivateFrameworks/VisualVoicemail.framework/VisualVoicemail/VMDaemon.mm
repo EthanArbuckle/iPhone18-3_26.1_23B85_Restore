@@ -1,9 +1,9 @@
 @interface VMDaemon
 + (id)sharedDaemon;
 - (VMDaemon)init;
-- (id)unlock_if_needed:(BOOL *)a3;
-- (void)executeHandlerForNotificationWithName:(id)a3 info:(id)a4;
-- (void)handleVMDeviceUnlockedNotification:(id)a3;
+- (id)unlock_if_needed:(BOOL *)unlock_if_needed;
+- (void)executeHandlerForNotificationWithName:(id)name info:(id)info;
+- (void)handleVMDeviceUnlockedNotification:(id)notification;
 - (void)start;
 @end
 
@@ -32,8 +32,8 @@
     [(VMDaemon *)v2 setQueue:v3];
 
     v4 = [VMTelephonyClient alloc];
-    v5 = [(VMDaemon *)v2 queue];
-    v6 = [(VMTelephonyClient *)v4 initWithQueue:v5];
+    queue = [(VMDaemon *)v2 queue];
+    v6 = [(VMTelephonyClient *)v4 initWithQueue:queue];
     [(VMDaemon *)v2 setTelephonyClient:v6];
 
     initImapNetworkLayer();
@@ -43,11 +43,11 @@
     v8 = sub_100002784();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(VMDaemon *)v2 locked];
+      locked = [(VMDaemon *)v2 locked];
       v10 = @"NOT locked";
       *buf = 136315650;
       v32 = "";
-      if (v9)
+      if (locked)
       {
         v10 = @"locked";
       }
@@ -60,31 +60,31 @@
     }
 
     v11 = [VMVoicemailService alloc];
-    v12 = [(VMDaemon *)v2 queue];
-    v13 = [(VMDaemon *)v2 telephonyClient];
-    v14 = [(VMVoicemailService *)v11 initWithTelephonyClient:v12 telephonyClient:v13];
+    queue2 = [(VMDaemon *)v2 queue];
+    telephonyClient = [(VMDaemon *)v2 telephonyClient];
+    v14 = [(VMVoicemailService *)v11 initWithTelephonyClient:queue2 telephonyClient:telephonyClient];
     [(VMDaemon *)v2 setVoicemailService:v14];
 
     if ([(VMDaemon *)v2 locked])
     {
       v15 = [VMTelephonyService alloc];
-      v16 = [(VMDaemon *)v2 queue];
-      v17 = [(VMDaemon *)v2 telephonyClient];
-      v18 = [(VMTelephonyService *)v15 initWithTelephonyClient:v16 telephonyClient:v17];
+      queue3 = [(VMDaemon *)v2 queue];
+      telephonyClient2 = [(VMDaemon *)v2 telephonyClient];
+      v18 = [(VMTelephonyService *)v15 initWithTelephonyClient:queue3 telephonyClient:telephonyClient2];
       [(VMDaemon *)v2 setTelephonyService:v18];
     }
 
     else
     {
-      v19 = [(VMDaemon *)v2 queue];
+      queue4 = [(VMDaemon *)v2 queue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_1000410A0;
       block[3] = &unk_1000EE5B8;
       v29 = v2;
-      dispatch_async(v19, block);
+      dispatch_async(queue4, block);
 
-      v16 = v29;
+      queue3 = v29;
     }
   }
 
@@ -103,23 +103,23 @@
 
 - (void)start
 {
-  v3 = [(VMDaemon *)self queue];
+  queue = [(VMDaemon *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000412D8;
   block[3] = &unk_1000EE5B8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (id)unlock_if_needed:(BOOL *)a3
+- (id)unlock_if_needed:(BOOL *)unlock_if_needed
 {
-  v5 = [(VMDaemon *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(VMDaemon *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (a3)
+  if (unlock_if_needed)
   {
-    *a3 = [(VMDaemon *)self locked];
+    *unlock_if_needed = [(VMDaemon *)self locked];
   }
 
   if (![(VMDaemon *)self locked])
@@ -128,9 +128,9 @@
   }
 
   v6 = +[VMSharedProtectionObserver sharedProtectionObserver];
-  v7 = [v6 checkUnlockSinceBootState];
+  checkUnlockSinceBootState = [v6 checkUnlockSinceBootState];
 
-  if (v7)
+  if (checkUnlockSinceBootState)
   {
     v8 = sub_100002784();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -143,8 +143,8 @@
     }
 
     [(VMDaemon *)self setLocked:0];
-    v9 = [(VMDaemon *)self voicemailService];
-    [v9 full_start];
+    voicemailService = [(VMDaemon *)self voicemailService];
+    [voicemailService full_start];
 
 LABEL_8:
     v10 = 0;
@@ -157,26 +157,26 @@ LABEL_10:
   return v10;
 }
 
-- (void)executeHandlerForNotificationWithName:(id)a3 info:(id)a4
+- (void)executeHandlerForNotificationWithName:(id)name info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VMDaemon *)self queue];
+  nameCopy = name;
+  infoCopy = info;
+  queue = [(VMDaemon *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100041638;
   block[3] = &unk_1000ED478;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = nameCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = nameCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)handleVMDeviceUnlockedNotification:(id)a3
+- (void)handleVMDeviceUnlockedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100002784();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -187,18 +187,18 @@ LABEL_10:
     v13 = 2112;
     v14 = objc_opt_class();
     v15 = 2112;
-    v16 = v4;
+    v16 = notificationCopy;
     v6 = v14;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I %s%s%@ is handling %@", buf, 0x2Au);
   }
 
-  v7 = [(VMDaemon *)self queue];
+  queue = [(VMDaemon *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100041800;
   block[3] = &unk_1000EE5B8;
   block[4] = self;
-  dispatch_async(v7, block);
+  dispatch_async(queue, block);
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface OTFetchCKKSKeysOperation
-- (OTFetchCKKSKeysOperation)initWithDependencies:(id)a3 refetchNeeded:(BOOL)a4;
-- (OTFetchCKKSKeysOperation)initWithDependencies:(id)a3 viewsToFetch:(id)a4;
+- (OTFetchCKKSKeysOperation)initWithDependencies:(id)dependencies refetchNeeded:(BOOL)needed;
+- (OTFetchCKKSKeysOperation)initWithDependencies:(id)dependencies viewsToFetch:(id)fetch;
 - (void)groupStart;
 @end
 
@@ -9,21 +9,21 @@
 - (void)groupStart
 {
   v3 = +[NSMutableArray array];
-  v4 = [(OTFetchCKKSKeysOperation *)self ckks];
+  ckks = [(OTFetchCKKSKeysOperation *)self ckks];
 
-  if (v4)
+  if (ckks)
   {
     v5 = sub_100006274("octagon-ckks");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(OTFetchCKKSKeysOperation *)self ckks];
+      ckks2 = [(OTFetchCKKSKeysOperation *)self ckks];
       *buf = 138412290;
-      v25 = v6;
+      v25 = ckks2;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Waiting for %@", buf, 0xCu);
     }
 
-    v7 = [(OTFetchCKKSKeysOperation *)self ckks];
-    v8 = [v7 findKeySets:{-[OTFetchCKKSKeysOperation fetchBeforeGettingKeyset](self, "fetchBeforeGettingKeyset")}];
+    ckks3 = [(OTFetchCKKSKeysOperation *)self ckks];
+    v8 = [ckks3 findKeySets:{-[OTFetchCKKSKeysOperation fetchBeforeGettingKeyset](self, "fetchBeforeGettingKeyset")}];
     v9 = [v8 timeout:{-[OTFetchCKKSKeysOperation desiredTimeout](self, "desiredTimeout")}];
     [v3 addObject:v9];
   }
@@ -72,30 +72,30 @@
   objc_destroyWeak(buf);
 }
 
-- (OTFetchCKKSKeysOperation)initWithDependencies:(id)a3 viewsToFetch:(id)a4
+- (OTFetchCKKSKeysOperation)initWithDependencies:(id)dependencies viewsToFetch:(id)fetch
 {
-  v7 = a4;
-  v8 = [(OTFetchCKKSKeysOperation *)self initWithDependencies:a3 refetchNeeded:0];
+  fetchCopy = fetch;
+  v8 = [(OTFetchCKKSKeysOperation *)self initWithDependencies:dependencies refetchNeeded:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong((&v8->_ckks + 6), a4);
+    objc_storeStrong((&v8->_ckks + 6), fetch);
   }
 
   return v9;
 }
 
-- (OTFetchCKKSKeysOperation)initWithDependencies:(id)a3 refetchNeeded:(BOOL)a4
+- (OTFetchCKKSKeysOperation)initWithDependencies:(id)dependencies refetchNeeded:(BOOL)needed
 {
-  v6 = a3;
+  dependenciesCopy = dependencies;
   v17.receiver = self;
   v17.super_class = OTFetchCKKSKeysOperation;
   v7 = [(CKKSGroupOperation *)&v17 init];
   if (v7)
   {
-    v8 = [v6 ckks];
+    ckks = [dependenciesCopy ckks];
     v9 = *(v7 + 174);
-    *(v7 + 174) = v8;
+    *(v7 + 174) = ckks;
 
     v10 = *(v7 + 182);
     *(v7 + 182) = 0;
@@ -110,7 +110,7 @@
     *(v7 + 142) = &__NSArray0__struct;
 
     *(v7 + 166) = 15000000000;
-    v7[128] = a4;
+    v7[128] = needed;
     v14 = +[NSSet set];
     v15 = *(v7 + 158);
     *(v7 + 158) = v14;

@@ -1,66 +1,66 @@
 @interface VIVisualQuery
-+ (id)queryWithPixelBuffer:(__CVBuffer *)a3 depthBuffer:(__CVBuffer *)a4 orientation:(unsigned int)a5 normalizedRegionOfInterest:(CGRect)a6 textBlockAnnotation:(id)a7 queryContext:(id)a8;
-+ (id)queryWithPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4;
-+ (id)queryWithPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 normalizedRegionOfInterest:(CGRect)a5;
-+ (id)queryWithPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 normalizedRegionOfInterest:(CGRect)a5 annotation:(id)a6 queryContext:(id)a7;
-+ (id)queryWithPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 normalizedRegionOfInterest:(CGRect)a5 textBlockAnnotation:(id)a6 queryContext:(id)a7;
++ (id)queryWithPixelBuffer:(__CVBuffer *)buffer depthBuffer:(__CVBuffer *)depthBuffer orientation:(unsigned int)orientation normalizedRegionOfInterest:(CGRect)interest textBlockAnnotation:(id)annotation queryContext:(id)context;
++ (id)queryWithPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation;
++ (id)queryWithPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation normalizedRegionOfInterest:(CGRect)interest;
++ (id)queryWithPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation normalizedRegionOfInterest:(CGRect)interest annotation:(id)annotation queryContext:(id)context;
++ (id)queryWithPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation normalizedRegionOfInterest:(CGRect)interest textBlockAnnotation:(id)annotation queryContext:(id)context;
 - (CGRect)normalizedRegionOfInterest;
-- (VIVisualQuery)initWithImage:(id)a3 annotation:(id)a4 normalizedRegionOfInterest:(CGRect)a5 domainsOfInterest:(id)a6 queryContext:(id)a7;
-- (VIVisualQuery)initWithImage:(id)a3 textBlockAnnotation:(id)a4 normalizedRegionOfInterest:(CGRect)a5 domainsOfInterest:(id)a6 queryContext:(id)a7;
+- (VIVisualQuery)initWithImage:(id)image annotation:(id)annotation normalizedRegionOfInterest:(CGRect)interest domainsOfInterest:(id)ofInterest queryContext:(id)context;
+- (VIVisualQuery)initWithImage:(id)image textBlockAnnotation:(id)annotation normalizedRegionOfInterest:(CGRect)interest domainsOfInterest:(id)ofInterest queryContext:(id)context;
 @end
 
 @implementation VIVisualQuery
 
-- (VIVisualQuery)initWithImage:(id)a3 textBlockAnnotation:(id)a4 normalizedRegionOfInterest:(CGRect)a5 domainsOfInterest:(id)a6 queryContext:(id)a7
+- (VIVisualQuery)initWithImage:(id)image textBlockAnnotation:(id)annotation normalizedRegionOfInterest:(CGRect)interest domainsOfInterest:(id)ofInterest queryContext:(id)context
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
-  if (a4)
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  imageCopy = image;
+  ofInterestCopy = ofInterest;
+  contextCopy = context;
+  if (annotation)
   {
-    v18 = a4;
-    a4 = [[VIAnnotation alloc] initWithTextAnnotations:v18];
+    annotationCopy = annotation;
+    annotation = [[VIAnnotation alloc] initWithTextAnnotations:annotationCopy];
   }
 
-  v19 = [(VIVisualQuery *)self initWithImage:v15 annotation:a4 normalizedRegionOfInterest:v16 domainsOfInterest:v17 queryContext:x, y, width, height];
+  height = [(VIVisualQuery *)self initWithImage:imageCopy annotation:annotation normalizedRegionOfInterest:ofInterestCopy domainsOfInterest:contextCopy queryContext:x, y, width, height];
 
-  return v19;
+  return height;
 }
 
-- (VIVisualQuery)initWithImage:(id)a3 annotation:(id)a4 normalizedRegionOfInterest:(CGRect)a5 domainsOfInterest:(id)a6 queryContext:(id)a7
+- (VIVisualQuery)initWithImage:(id)image annotation:(id)annotation normalizedRegionOfInterest:(CGRect)interest domainsOfInterest:(id)ofInterest queryContext:(id)context
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
-  v19 = a7;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  imageCopy = image;
+  annotationCopy = annotation;
+  ofInterestCopy = ofInterest;
+  contextCopy = context;
   v29.receiver = self;
   v29.super_class = VIVisualQuery;
   v20 = [(VIVisualQuery *)&v29 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_image, a3);
+    objc_storeStrong(&v20->_image, image);
     v21->_normalizedRegionOfInterest.origin.x = x;
     v21->_normalizedRegionOfInterest.origin.y = y;
     v21->_normalizedRegionOfInterest.size.width = width;
     v21->_normalizedRegionOfInterest.size.height = height;
-    v22 = [v18 copy];
+    v22 = [ofInterestCopy copy];
     domainsOfInterest = v21->_domainsOfInterest;
     v21->_domainsOfInterest = v22;
 
-    v24 = [v19 copy];
+    v24 = [contextCopy copy];
     queryContext = v21->_queryContext;
     v21->_queryContext = v24;
 
-    v26 = [v17 copy];
+    v26 = [annotationCopy copy];
     annotation = v21->_annotation;
     v21->_annotation = v26;
   }
@@ -68,77 +68,77 @@
   return v21;
 }
 
-+ (id)queryWithPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4
++ (id)queryWithPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation
 {
-  v4 = *&a4;
+  v4 = *&orientation;
   v6 = objc_opt_class();
   v7 = *&VIIdentityRect;
   v8 = unk_1ECB50860;
   v9 = *&qword_1ECB50868;
   v10 = unk_1ECB50870;
 
-  return [v6 queryWithPixelBuffer:a3 orientation:v4 normalizedRegionOfInterest:{v7, v8, v9, v10}];
+  return [v6 queryWithPixelBuffer:buffer orientation:v4 normalizedRegionOfInterest:{v7, v8, v9, v10}];
 }
 
-+ (id)queryWithPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 normalizedRegionOfInterest:(CGRect)a5
++ (id)queryWithPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation normalizedRegionOfInterest:(CGRect)interest
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = *&a4;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  v9 = *&orientation;
   v11 = objc_opt_class();
 
-  return [v11 queryWithPixelBuffer:a3 orientation:v9 normalizedRegionOfInterest:0 textBlockAnnotation:0 queryContext:{x, y, width, height}];
+  return [v11 queryWithPixelBuffer:buffer orientation:v9 normalizedRegionOfInterest:0 textBlockAnnotation:0 queryContext:{x, y, width, height}];
 }
 
-+ (id)queryWithPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 normalizedRegionOfInterest:(CGRect)a5 textBlockAnnotation:(id)a6 queryContext:(id)a7
++ (id)queryWithPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation normalizedRegionOfInterest:(CGRect)interest textBlockAnnotation:(id)annotation queryContext:(id)context
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v12 = *&a4;
-  v14 = a7;
-  v15 = a6;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  v12 = *&orientation;
+  contextCopy = context;
+  annotationCopy = annotation;
   v16 = objc_alloc(objc_opt_class());
-  v17 = [VIImage imageWithPixelBuffer:a3 orientation:v12];
+  v17 = [VIImage imageWithPixelBuffer:buffer orientation:v12];
   v18 = VIAllVisualSearchDomains();
-  v19 = [v16 initWithImage:v17 textBlockAnnotation:v15 normalizedRegionOfInterest:v18 domainsOfInterest:v14 queryContext:{x, y, width, height}];
+  v19 = [v16 initWithImage:v17 textBlockAnnotation:annotationCopy normalizedRegionOfInterest:v18 domainsOfInterest:contextCopy queryContext:{x, y, width, height}];
 
   return v19;
 }
 
-+ (id)queryWithPixelBuffer:(__CVBuffer *)a3 depthBuffer:(__CVBuffer *)a4 orientation:(unsigned int)a5 normalizedRegionOfInterest:(CGRect)a6 textBlockAnnotation:(id)a7 queryContext:(id)a8
++ (id)queryWithPixelBuffer:(__CVBuffer *)buffer depthBuffer:(__CVBuffer *)depthBuffer orientation:(unsigned int)orientation normalizedRegionOfInterest:(CGRect)interest textBlockAnnotation:(id)annotation queryContext:(id)context
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v13 = *&a5;
-  v15 = a8;
-  v16 = a7;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  v13 = *&orientation;
+  contextCopy = context;
+  annotationCopy = annotation;
   v17 = objc_alloc(objc_opt_class());
-  v18 = [VIImage imageWithPixelBuffer:a3 orientation:v13];
+  v18 = [VIImage imageWithPixelBuffer:buffer orientation:v13];
   v19 = VIAllVisualSearchDomains();
-  v20 = [v17 initWithImage:v18 textBlockAnnotation:v16 normalizedRegionOfInterest:v19 domainsOfInterest:v15 queryContext:{x, y, width, height}];
+  v20 = [v17 initWithImage:v18 textBlockAnnotation:annotationCopy normalizedRegionOfInterest:v19 domainsOfInterest:contextCopy queryContext:{x, y, width, height}];
 
   return v20;
 }
 
-+ (id)queryWithPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 normalizedRegionOfInterest:(CGRect)a5 annotation:(id)a6 queryContext:(id)a7
++ (id)queryWithPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation normalizedRegionOfInterest:(CGRect)interest annotation:(id)annotation queryContext:(id)context
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v12 = *&a4;
-  v14 = a7;
-  v15 = a6;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  v12 = *&orientation;
+  contextCopy = context;
+  annotationCopy = annotation;
   v16 = objc_alloc(objc_opt_class());
-  v17 = [VIImage imageWithPixelBuffer:a3 orientation:v12];
+  v17 = [VIImage imageWithPixelBuffer:buffer orientation:v12];
   v18 = VIAllVisualSearchDomains();
-  v19 = [v16 initWithImage:v17 annotation:v15 normalizedRegionOfInterest:v18 domainsOfInterest:v14 queryContext:{x, y, width, height}];
+  v19 = [v16 initWithImage:v17 annotation:annotationCopy normalizedRegionOfInterest:v18 domainsOfInterest:contextCopy queryContext:{x, y, width, height}];
 
   return v19;
 }

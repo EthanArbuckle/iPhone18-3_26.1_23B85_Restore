@@ -1,9 +1,9 @@
 @interface ContentFilterController
 - (ContentFilterController)init;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation ContentFilterController
@@ -64,8 +64,8 @@
   [v7 setProperties:v10];
 
   [v5 addObject:v7];
-  v11 = [(ContentFilterController *)self perAppSpecifiers];
-  v12 = [v11 count];
+  perAppSpecifiers = [(ContentFilterController *)self perAppSpecifiers];
+  v12 = [perAppSpecifiers count];
 
   if (v12)
   {
@@ -74,12 +74,12 @@
     v15 = [PSSpecifier groupSpecifierWithName:v14];
     [v5 addObject:v15];
 
-    v16 = [(ContentFilterController *)self perAppSpecifiers];
-    [v5 addObjectsFromArray:v16];
+    perAppSpecifiers2 = [(ContentFilterController *)self perAppSpecifiers];
+    [v5 addObjectsFromArray:perAppSpecifiers2];
   }
 
-  v17 = [(ContentFilterController *)self systemSpecifiers];
-  v18 = [v17 count];
+  systemSpecifiers = [(ContentFilterController *)self systemSpecifiers];
+  v18 = [systemSpecifiers count];
 
   if (v18)
   {
@@ -88,8 +88,8 @@
     v21 = [PSSpecifier groupSpecifierWithName:v20];
     [v5 addObject:v21];
 
-    v22 = [(ContentFilterController *)self systemSpecifiers];
-    [v5 addObjectsFromArray:v22];
+    systemSpecifiers2 = [(ContentFilterController *)self systemSpecifiers];
+    [v5 addObjectsFromArray:systemSpecifiers2];
   }
 
   v23 = OBJC_IVAR___PSListController__specifiers;
@@ -103,32 +103,32 @@
   return v26;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v4.receiver = self;
   v4.super_class = ContentFilterController;
-  [(ContentFilterController *)&v4 tableView:a3 didSelectRowAtIndexPath:a4];
+  [(ContentFilterController *)&v4 tableView:view didSelectRowAtIndexPath:path];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v14.receiver = self;
   v14.super_class = ContentFilterController;
-  v6 = a4;
-  v7 = [(ContentFilterController *)&v14 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(ContentFilterController *)self indexForIndexPath:v6, v14.receiver, v14.super_class];
+  pathCopy = path;
+  v7 = [(ContentFilterController *)&v14 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(ContentFilterController *)self indexForIndexPath:pathCopy, v14.receiver, v14.super_class];
 
   v9 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
-  v10 = [v9 userInfo];
+  userInfo = [v9 userInfo];
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v10 objectForKey:@"vpn-organization"];
+    v11 = [userInfo objectForKey:@"vpn-organization"];
     [v7 setSubtitle:v11];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v12 = [v10 objectForKey:@"vpn-status"];
+    v12 = [userInfo objectForKey:@"vpn-status"];
     [v7 setVpnPrimaryTableCellStatus:v12];
   }
 

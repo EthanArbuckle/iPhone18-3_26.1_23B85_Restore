@@ -1,58 +1,58 @@
 @interface HFValveServiceItem
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)createControlItemsWithOptions:(id)a3;
-- (id)currentStateActionBuildersForHome:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)createControlItemsWithOptions:(id)options;
+- (id)currentStateActionBuildersForHome:(id)home;
 @end
 
 @implementation HFValveServiceItem
 
-- (id)createControlItemsWithOptions:(id)a3
+- (id)createControlItemsWithOptions:(id)options
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFServiceItem *)self controlItemValueSourceForPrimaryService];
+  optionsCopy = options;
+  controlItemValueSourceForPrimaryService = [(HFServiceItem *)self controlItemValueSourceForPrimaryService];
   v31 = [HFValueTransformer transformerForValueClass:objc_opt_class() transformBlock:&__block_literal_global_78 reverseTransformBlock:&__block_literal_global_6_1];
   v37 = @"controlItemPurpose";
   v38[0] = &unk_282523E50;
   v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:&v37 count:1];
   v6 = [HFPrimaryStateControlItem alloc];
-  v29 = v5;
-  v28 = [(HFPrimaryStateControlItem *)v6 initWithValueSource:v5 characteristicType:*MEMORY[0x277CCF920] valueTransformer:v31 displayResults:v30];
+  v29 = controlItemValueSourceForPrimaryService;
+  v28 = [(HFPrimaryStateControlItem *)v6 initWithValueSource:controlItemValueSourceForPrimaryService characteristicType:*MEMORY[0x277CCF920] valueTransformer:v31 displayResults:v30];
   v35[0] = @"title";
-  v7 = HFItemOptionalLocalizedString(@"HFCharacteristicGroupTitleSetDuration", v4);
+  v7 = HFItemOptionalLocalizedString(@"HFCharacteristicGroupTitleSetDuration", optionsCopy);
   v35[1] = @"controlItemPurpose";
   v36[0] = v7;
   v36[1] = &unk_282523E50;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:v35 count:2];
 
   v9 = [HFSimpleIncrementalControlItem alloc];
-  v10 = [(HFSimpleIncrementalControlItem *)v9 initWithValueSource:v5 characteristicType:*MEMORY[0x277CCFA60] displayResults:v8];
-  v11 = [MEMORY[0x277CBEB38] dictionary];
-  v12 = HFItemOptionalLocalizedString(@"HFControlTitleFaucetActive", v4);
+  v10 = [(HFSimpleIncrementalControlItem *)v9 initWithValueSource:controlItemValueSourceForPrimaryService characteristicType:*MEMORY[0x277CCFA60] displayResults:v8];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v12 = HFItemOptionalLocalizedString(@"HFControlTitleFaucetActive", optionsCopy);
 
-  [v11 setObject:v12 forKeyedSubscript:@"title"];
-  [v11 setObject:&unk_282523E68 forKeyedSubscript:@"controlItemPurpose"];
-  v13 = [(HFServiceItem *)self service];
-  v14 = [v13 hf_parentService];
+  [dictionary setObject:v12 forKeyedSubscript:@"title"];
+  [dictionary setObject:&unk_282523E68 forKeyedSubscript:@"controlItemPurpose"];
+  service = [(HFServiceItem *)self service];
+  hf_parentService = [service hf_parentService];
 
   v15 = MEMORY[0x277CBEB98];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __52__HFValveServiceItem_createControlItemsWithOptions___block_invoke_22;
   v32[3] = &unk_277DF9638;
-  v33 = v14;
-  v34 = self;
-  v16 = v14;
+  v33 = hf_parentService;
+  selfCopy = self;
+  v16 = hf_parentService;
   v17 = __52__HFValveServiceItem_createControlItemsWithOptions___block_invoke_22(v32);
   v18 = [v15 setWithArray:v17];
 
   v19 = [HFSimpleAggregatedCharacteristicValueSource alloc];
-  v20 = [(HFServiceItem *)self valueSource];
-  v21 = [(HFServiceItem *)self service];
-  v22 = [v21 hf_serviceDescriptor];
-  v23 = [(HFSimpleAggregatedCharacteristicValueSource *)v19 initWithValueSource:v20 services:v18 primaryServiceDescriptor:v22];
+  valueSource = [(HFServiceItem *)self valueSource];
+  service2 = [(HFServiceItem *)self service];
+  hf_serviceDescriptor = [service2 hf_serviceDescriptor];
+  v23 = [(HFSimpleAggregatedCharacteristicValueSource *)v19 initWithValueSource:valueSource services:v18 primaryServiceDescriptor:hf_serviceDescriptor];
 
-  v24 = [[HFValveActiveStateControlItem alloc] initWithValueSource:v23 displayResults:v11];
+  v24 = [[HFValveActiveStateControlItem alloc] initWithValueSource:v23 displayResults:dictionary];
   v25 = [MEMORY[0x277CBEB98] setWithObjects:{v24, v28, v10, 0}];
 
   v26 = *MEMORY[0x277D85DE8];
@@ -124,13 +124,13 @@ id __52__HFValveServiceItem_createControlItemsWithOptions___block_invoke_22(uint
   return v10;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v4 = MEMORY[0x277CBEB98];
   v5 = *MEMORY[0x277CCF920];
-  v6 = a3;
+  optionsCopy = options;
   v7 = [v4 setWithObject:v5];
-  v8 = [(HFServiceItem *)self performStandardUpdateWithCharacteristicTypes:v7 options:v6];
+  v8 = [(HFServiceItem *)self performStandardUpdateWithCharacteristicTypes:v7 options:optionsCopy];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -181,7 +181,7 @@ id __50__HFValveServiceItem__subclass_updateWithOptions___block_invoke(uint64_t 
   return v18;
 }
 
-- (id)currentStateActionBuildersForHome:(id)a3
+- (id)currentStateActionBuildersForHome:(id)home
 {
   v3 = MEMORY[0x277D2C900];
   v4 = [MEMORY[0x277CBEB98] set];

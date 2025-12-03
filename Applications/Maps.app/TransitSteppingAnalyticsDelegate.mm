@@ -1,16 +1,16 @@
 @interface TransitSteppingAnalyticsDelegate
 - (void)recordDetailsTapOnTray;
 - (void)recordEndSteppingTapOnTray;
-- (void)recordEnterGuidanceWithRouteDetails:(id)a3;
+- (void)recordEnterGuidanceWithRouteDetails:(id)details;
 - (void)recordOpenRouteClusterActionSheet;
 - (void)recordOverviewTapOnTray;
 - (void)recordResumeFromOverviewTapOnTray;
-- (void)recordSignAutoAdvanceWithRouteDetails:(id)a3;
-- (void)recordSwipeToNextSignWithRouteDetails:(id)a3;
-- (void)recordSwipeToPreviousSignWithRouteDetails:(id)a3;
+- (void)recordSignAutoAdvanceWithRouteDetails:(id)details;
+- (void)recordSwipeToNextSignWithRouteDetails:(id)details;
+- (void)recordSwipeToPreviousSignWithRouteDetails:(id)details;
 - (void)recordTapOnTransitStationPOI;
-- (void)recordTapToNextSignWithRouteDetails:(id)a3;
-- (void)recordTapToPreviousSignWithRouteDetails:(id)a3;
+- (void)recordTapToNextSignWithRouteDetails:(id)details;
+- (void)recordTapToPreviousSignWithRouteDetails:(id)details;
 @end
 
 @implementation TransitSteppingAnalyticsDelegate
@@ -45,18 +45,18 @@
   [v2 captureUserAction:3037 onTarget:618 eventValue:0];
 }
 
-- (void)recordSignAutoAdvanceWithRouteDetails:(id)a3
+- (void)recordSignAutoAdvanceWithRouteDetails:(id)details
 {
-  v3 = a3;
+  detailsCopy = details;
   v4 = +[MKMapService sharedService];
-  [v4 captureUserAction:3066 onTarget:618 eventValue:0 routeDetails:v3];
+  [v4 captureUserAction:3066 onTarget:618 eventValue:0 routeDetails:detailsCopy];
 }
 
-- (void)recordEnterGuidanceWithRouteDetails:(id)a3
+- (void)recordEnterGuidanceWithRouteDetails:(id)details
 {
-  v3 = a3;
+  detailsCopy = details;
   v4 = +[MKMapService sharedService];
-  [v4 captureUserAction:3065 onTarget:618 eventValue:0 routeDetails:v3];
+  [v4 captureUserAction:3065 onTarget:618 eventValue:0 routeDetails:detailsCopy];
 }
 
 - (void)recordTapOnTransitStationPOI
@@ -65,32 +65,32 @@
   [v2 captureUserAction:1011 onTarget:505 eventValue:0];
 }
 
-- (void)recordTapToPreviousSignWithRouteDetails:(id)a3
+- (void)recordTapToPreviousSignWithRouteDetails:(id)details
 {
-  v3 = a3;
+  detailsCopy = details;
   v4 = +[MKMapService sharedService];
-  [v4 captureUserAction:15 onTarget:618 eventValue:0 routeDetails:v3];
+  [v4 captureUserAction:15 onTarget:618 eventValue:0 routeDetails:detailsCopy];
 }
 
-- (void)recordTapToNextSignWithRouteDetails:(id)a3
+- (void)recordTapToNextSignWithRouteDetails:(id)details
 {
-  v3 = a3;
+  detailsCopy = details;
   v4 = +[MKMapService sharedService];
-  [v4 captureUserAction:16 onTarget:618 eventValue:0 routeDetails:v3];
+  [v4 captureUserAction:16 onTarget:618 eventValue:0 routeDetails:detailsCopy];
 }
 
-- (void)recordSwipeToPreviousSignWithRouteDetails:(id)a3
+- (void)recordSwipeToPreviousSignWithRouteDetails:(id)details
 {
-  v3 = a3;
+  detailsCopy = details;
   v4 = +[MKMapService sharedService];
-  [v4 captureUserAction:5 onTarget:618 eventValue:0 routeDetails:v3];
+  [v4 captureUserAction:5 onTarget:618 eventValue:0 routeDetails:detailsCopy];
 }
 
-- (void)recordSwipeToNextSignWithRouteDetails:(id)a3
+- (void)recordSwipeToNextSignWithRouteDetails:(id)details
 {
-  v3 = a3;
+  detailsCopy = details;
   v4 = +[MKMapService sharedService];
-  [v4 captureUserAction:6 onTarget:618 eventValue:0 routeDetails:v3];
+  [v4 captureUserAction:6 onTarget:618 eventValue:0 routeDetails:detailsCopy];
 }
 
 @end

@@ -1,52 +1,52 @@
 @interface TSTAnimation
-+ (BOOL)deliveryStyleSupportedForExport:(unint64_t)a3;
-+ (id)newAnimationWithLayout:(id)a3 andCellRange:(id)a4;
-+ (id)newAnimationWithLayout:(id)a3 andDeliveryStyle:(unint64_t)a4;
-+ (id)textureDeliveryStylesLocalized:(BOOL)a3;
-+ (unint64_t)stageCountForTextureDeliveryStyle:(unint64_t)a3 andTable:(id)a4;
-+ (unint64_t)textureDeliveryStyleFromDeliveryString:(id)a3;
-- ($AA9F29356CAB8C7531B71D0D1ACCC7CE)cellRangeAtIndex:(unint64_t)a3;
++ (BOOL)deliveryStyleSupportedForExport:(unint64_t)export;
++ (id)newAnimationWithLayout:(id)layout andCellRange:(id)range;
++ (id)newAnimationWithLayout:(id)layout andDeliveryStyle:(unint64_t)style;
++ (id)textureDeliveryStylesLocalized:(BOOL)localized;
++ (unint64_t)stageCountForTextureDeliveryStyle:(unint64_t)style andTable:(id)table;
++ (unint64_t)textureDeliveryStyleFromDeliveryString:(id)string;
+- ($AA9F29356CAB8C7531B71D0D1ACCC7CE)cellRangeAtIndex:(unint64_t)index;
 - (BOOL)clipStrokes;
 - (BOOL)drawCellBackground;
 - (BOOL)drawCellContent;
 - (BOOL)drawStrokes;
 - (BOOL)drawTableBackground;
 - (BOOL)drawTableName;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)cellRangeCount;
-- (void)addCellRange:(id)a3;
+- (void)addCellRange:(id)range;
 - (void)clearCellRanges;
 - (void)dealloc;
-- (void)setStage:(unint64_t)a3 andFinal:(BOOL)a4;
+- (void)setStage:(unint64_t)stage andFinal:(BOOL)final;
 @end
 
 @implementation TSTAnimation
 
-+ (id)newAnimationWithLayout:(id)a3 andDeliveryStyle:(unint64_t)a4
++ (id)newAnimationWithLayout:(id)layout andDeliveryStyle:(unint64_t)style
 {
   v6 = objc_alloc_init(TSTAnimation);
   v7 = v6;
-  v6->mLayout = a3;
-  if (a4 > 0xC)
+  v6->mLayout = layout;
+  if (style > 0xC)
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = dword_26CA67AA0[a4];
+    v8 = dword_26CA67AA0[style];
   }
 
   TSTAnimationSetKind(v6, v8);
   return v7;
 }
 
-+ (id)newAnimationWithLayout:(id)a3 andCellRange:(id)a4
++ (id)newAnimationWithLayout:(id)layout andCellRange:(id)range
 {
   v6 = objc_alloc_init(TSTAnimation);
-  v6->mLayout = a3;
+  v6->mLayout = layout;
   TSTAnimationSetKind(v6, 14);
-  [(TSTAnimation *)v6 addCellRange:a4];
+  [(TSTAnimation *)v6 addCellRange:range];
   return v6;
 }
 
@@ -63,7 +63,7 @@
   [(TSTAnimation *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[TSTAnimation allocWithZone:?]];
   v4->mLayout = self->mLayout;
@@ -89,10 +89,10 @@
   return v4;
 }
 
-+ (id)textureDeliveryStylesLocalized:(BOOL)a3
++ (id)textureDeliveryStylesLocalized:(BOOL)localized
 {
   v4[13] = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!localized)
   {
     return &unk_287DDD3F8;
   }
@@ -113,70 +113,70 @@
   return [MEMORY[0x277CBEA60] arrayWithObjects:v4 count:13];
 }
 
-+ (unint64_t)stageCountForTextureDeliveryStyle:(unint64_t)a3 andTable:(id)a4
++ (unint64_t)stageCountForTextureDeliveryStyle:(unint64_t)style andTable:(id)table
 {
-  if (a3 > 0xC)
+  if (style > 0xC)
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = dword_26CA67AA0[a3];
+    v4 = dword_26CA67AA0[style];
   }
 
-  return TSTAnimationGetStageCountForChunkStyle(a4, v4);
+  return TSTAnimationGetStageCountForChunkStyle(table, v4);
 }
 
-+ (unint64_t)textureDeliveryStyleFromDeliveryString:(id)a3
++ (unint64_t)textureDeliveryStyleFromDeliveryString:(id)string
 {
-  result = [objc_msgSend(objc_opt_class() textureDeliveryStylesLocalized:{0), "indexOfObject:", a3}];
+  result = [objc_msgSend(objc_opt_class() textureDeliveryStylesLocalized:{0), "indexOfObject:", string}];
   if (result == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSTAnimation textureDeliveryStyleFromDeliveryString:]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTAnimation.mm"), 682, @"bad delivery string to delivery style mapping"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTAnimation.mm"), 682, @"bad delivery string to delivery style mapping"}];
     return 0;
   }
 
   return result;
 }
 
-+ (BOOL)deliveryStyleSupportedForExport:(unint64_t)a3
++ (BOOL)deliveryStyleSupportedForExport:(unint64_t)export
 {
-  if (a3 > 0xC)
+  if (export > 0xC)
   {
     LOBYTE(v3) = 1;
   }
 
   else
   {
-    v3 = 0x5D77u >> dword_26CA67AA0[a3];
+    v3 = 0x5D77u >> dword_26CA67AA0[export];
   }
 
   return v3 & 1;
 }
 
-- (void)setStage:(unint64_t)a3 andFinal:(BOOL)a4
+- (void)setStage:(unint64_t)stage andFinal:(BOOL)final
 {
-  if (self->mStageCount > a3)
+  if (self->mStageCount > stage)
   {
-    self->mStage = a3;
+    self->mStage = stage;
   }
 
-  self->mFinal = a4;
+  self->mFinal = final;
 }
 
-- ($AA9F29356CAB8C7531B71D0D1ACCC7CE)cellRangeAtIndex:(unint64_t)a3
+- ($AA9F29356CAB8C7531B71D0D1ACCC7CE)cellRangeAtIndex:(unint64_t)index
 {
-  if (self->mCellRangeCount <= a3)
+  if (self->mCellRangeCount <= index)
   {
     return 0xFFFFFFLL;
   }
 
   else
   {
-    return self->mCellRanges[a3];
+    return self->mCellRanges[index];
   }
 }
 
@@ -217,18 +217,18 @@
       if (self->mReverse)
       {
         mStageCount = self->mStageCount;
-        v14 = [(TSTLayout *)self->mLayout tableModel];
+        tableModel = [(TSTLayout *)self->mLayout tableModel];
         v15 = mStageCount + ~mStage;
 LABEL_27:
-        v27 = self;
+        selfCopy2 = self;
 LABEL_37:
-        TSTAnimationAddCellRangesForRowIndex(v27, v14, v15);
+        TSTAnimationAddCellRangesForRowIndex(selfCopy2, tableModel, v15);
         return self->mCellRangeCount;
       }
 
 LABEL_36:
-      v14 = [(TSTLayout *)self->mLayout tableModel];
-      v27 = self;
+      tableModel = [(TSTLayout *)self->mLayout tableModel];
+      selfCopy2 = self;
       v15 = mStage;
       goto LABEL_37;
     }
@@ -237,13 +237,13 @@ LABEL_36:
     if (self->mReverse)
     {
       v29 = self->mStageCount;
-      v22 = [(TSTLayout *)self->mLayout tableModel];
+      tableModel2 = [(TSTLayout *)self->mLayout tableModel];
       v23 = v29 + ~v28;
     }
 
     else
     {
-      v22 = [(TSTLayout *)self->mLayout tableModel];
+      tableModel2 = [(TSTLayout *)self->mLayout tableModel];
       v23 = v28;
     }
 
@@ -265,12 +265,12 @@ LABEL_36:
             {
               v8 = self->mStageCount;
               v9 = ~v7;
-              v10 = [(TSTLayout *)self->mLayout tableModel];
+              tableModel3 = [(TSTLayout *)self->mLayout tableModel];
               v11 = v8 + v9;
 LABEL_20:
-              v18 = self;
+              selfCopy6 = self;
 LABEL_40:
-              TSTAnimationAddCellRangeForCellIndex(v18, v10, v11);
+              TSTAnimationAddCellRangeForCellIndex(selfCopy6, tableModel3, v11);
               return self->mCellRangeCount;
             }
 
@@ -291,7 +291,7 @@ LABEL_40:
         {
           v25 = self->mStageCount;
           v26 = ~v24;
-          v14 = [(TSTLayout *)self->mLayout tableModel];
+          tableModel = [(TSTLayout *)self->mLayout tableModel];
           v15 = v25 + v26;
           goto LABEL_27;
         }
@@ -314,20 +314,20 @@ LABEL_28:
     if (!self->mReverse)
     {
       v31 = v19 - 1;
-      v22 = [(TSTLayout *)self->mLayout tableModel];
-      v30 = self;
+      tableModel2 = [(TSTLayout *)self->mLayout tableModel];
+      selfCopy5 = self;
       v23 = v31;
       goto LABEL_33;
     }
 
     v20 = self->mStageCount;
     v21 = ~v19;
-    v22 = [(TSTLayout *)self->mLayout tableModel];
+    tableModel2 = [(TSTLayout *)self->mLayout tableModel];
     v23 = v20 + v21;
 LABEL_32:
-    v30 = self;
+    selfCopy5 = self;
 LABEL_33:
-    TSTAnimationAddCellRangesForColumnIndex(v30, v22, v23);
+    TSTAnimationAddCellRangesForColumnIndex(selfCopy5, tableModel2, v23);
     return self->mCellRangeCount;
   }
 
@@ -338,14 +338,14 @@ LABEL_17:
     if (self->mReverse)
     {
       v17 = self->mStageCount;
-      v10 = [(TSTLayout *)self->mLayout tableModel];
+      tableModel3 = [(TSTLayout *)self->mLayout tableModel];
       v11 = v17 + ~v16;
       goto LABEL_20;
     }
 
 LABEL_39:
-    v10 = [(TSTLayout *)self->mLayout tableModel];
-    v18 = self;
+    tableModel3 = [(TSTLayout *)self->mLayout tableModel];
+    selfCopy6 = self;
     v11 = v16;
     goto LABEL_40;
   }
@@ -353,9 +353,9 @@ LABEL_39:
   return self->mCellRangeCount;
 }
 
-- (void)addCellRange:(id)a3
+- (void)addCellRange:(id)range
 {
-  if (a3.var0.var0 != 0xFFFF && (*&a3 & 0xFF0000) != 0xFF0000 && a3.var1.var1 && (*&a3 & 0xFFFF00000000) != 0)
+  if (range.var0.var0 != 0xFFFF && (*&range & 0xFF0000) != 0xFF0000 && range.var1.var1 && (*&range & 0xFFFF00000000) != 0)
   {
     p_mCellRanges = &self->mCellRanges;
     mCellRanges = self->mCellRanges;
@@ -363,7 +363,7 @@ LABEL_39:
     self->mCellRangeCount = v7;
     v8 = malloc_type_realloc(mCellRanges, 8 * v7, 0x100004000313F17uLL);
     self->mCellRanges = v8;
-    v8[self->mCellRangeCount - 1] = a3;
+    v8[self->mCellRangeCount - 1] = range;
   }
 }
 
@@ -381,46 +381,46 @@ LABEL_39:
 
 - (BOOL)drawTableName
 {
-  v3 = [(TSTAnimation *)self enabled];
-  if (v3)
+  enabled = [(TSTAnimation *)self enabled];
+  if (enabled)
   {
-    LOBYTE(v3) = !self->mByCellRange && (self->mFinal || self->mStage == 0);
+    LOBYTE(enabled) = !self->mByCellRange && (self->mFinal || self->mStage == 0);
   }
 
-  return v3;
+  return enabled;
 }
 
 - (BOOL)drawTableBackground
 {
-  v3 = [(TSTAnimation *)self enabled];
-  if (v3)
+  enabled = [(TSTAnimation *)self enabled];
+  if (enabled)
   {
-    LOBYTE(v3) = ![(TSTAnimation *)self drawsBlackAndWhite]&& (self->mFinal || self->mByCellRange || !self->mByContent || self->mStage == 0);
+    LOBYTE(enabled) = ![(TSTAnimation *)self drawsBlackAndWhite]&& (self->mFinal || self->mByCellRange || !self->mByContent || self->mStage == 0);
   }
 
-  return v3;
+  return enabled;
 }
 
 - (BOOL)drawCellBackground
 {
-  v3 = [(TSTAnimation *)self enabled];
-  if (v3)
+  enabled = [(TSTAnimation *)self enabled];
+  if (enabled)
   {
-    LOBYTE(v3) = ![(TSTAnimation *)self drawsBlackAndWhite]&& (self->mByCellRange || !self->mByContent || self->mStage != 0);
+    LOBYTE(enabled) = ![(TSTAnimation *)self drawsBlackAndWhite]&& (self->mByCellRange || !self->mByContent || self->mStage != 0);
   }
 
-  return v3;
+  return enabled;
 }
 
 - (BOOL)drawCellContent
 {
-  v3 = [(TSTAnimation *)self enabled];
-  if (v3)
+  enabled = [(TSTAnimation *)self enabled];
+  if (enabled)
   {
-    LOBYTE(v3) = self->mByCellRange || !self->mByContent || self->mStage != 0;
+    LOBYTE(enabled) = self->mByCellRange || !self->mByContent || self->mStage != 0;
   }
 
-  return v3;
+  return enabled;
 }
 
 - (BOOL)clipStrokes
@@ -438,13 +438,13 @@ LABEL_39:
 
 - (BOOL)drawStrokes
 {
-  v3 = [(TSTAnimation *)self enabled];
-  if (v3)
+  enabled = [(TSTAnimation *)self enabled];
+  if (enabled)
   {
-    LOBYTE(v3) = self->mFinal || self->mByCellRange || !self->mByContent || self->mStage == 0;
+    LOBYTE(enabled) = self->mFinal || self->mByCellRange || !self->mByContent || self->mStage == 0;
   }
 
-  return v3;
+  return enabled;
 }
 
 @end

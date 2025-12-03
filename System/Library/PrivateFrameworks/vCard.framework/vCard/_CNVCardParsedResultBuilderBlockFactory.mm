@@ -1,18 +1,18 @@
 @interface _CNVCardParsedResultBuilderBlockFactory
-- (_CNVCardParsedResultBuilderBlockFactory)initWithBlock:(id)a3;
+- (_CNVCardParsedResultBuilderBlockFactory)initWithBlock:(id)block;
 @end
 
 @implementation _CNVCardParsedResultBuilderBlockFactory
 
-- (_CNVCardParsedResultBuilderBlockFactory)initWithBlock:(id)a3
+- (_CNVCardParsedResultBuilderBlockFactory)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10.receiver = self;
   v10.super_class = _CNVCardParsedResultBuilderBlockFactory;
   v5 = [(_CNVCardParsedResultBuilderBlockFactory *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     block = v5->_block;
     v5->_block = v6;
 

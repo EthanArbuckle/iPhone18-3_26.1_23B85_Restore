@@ -1,25 +1,25 @@
 @interface GKLeaderboard
-+ (BOOL)instancesRespondToSelector:(SEL)a3;
-+ (id)instanceMethodSignatureForSelector:(SEL)a3;
-+ (id)leaderboardEntriesHandlerForGroup:(id)a3 gameBundleID:(id)a4 proxy:(id)a5 done:(id)a6;
++ (BOOL)instancesRespondToSelector:(SEL)selector;
++ (id)instanceMethodSignatureForSelector:(SEL)selector;
++ (id)leaderboardEntriesHandlerForGroup:(id)group gameBundleID:(id)d proxy:(id)proxy done:(id)done;
 + (void)loadCategoriesWithCompletionHandler:(void *)completionHandler;
-+ (void)loadHighlightsWithPlayerScope:(int64_t)a3 timeScope:(int64_t)a4 game:(id)a5 handler:(id)a6;
-+ (void)loadHighlightsWithPlayerScope:(int64_t)a3 timeScope:(int64_t)a4 handler:(id)a5;
-+ (void)loadLeaderboardWithIdentifier:(id)a3 forGame:(id)a4 withPlayer:(id)a5 withCompletionHandler:(id)a6;
-+ (void)loadLeaderboardsForGame:(id)a3 forSet:(id)a4 withPlayer:(id)a5 withCompletionHandler:(id)a6;
-+ (void)loadLeaderboardsForGame:(id)a3 withCompletionHandler:(id)a4;
++ (void)loadHighlightsWithPlayerScope:(int64_t)scope timeScope:(int64_t)timeScope game:(id)game handler:(id)handler;
++ (void)loadHighlightsWithPlayerScope:(int64_t)scope timeScope:(int64_t)timeScope handler:(id)handler;
++ (void)loadLeaderboardWithIdentifier:(id)identifier forGame:(id)game withPlayer:(id)player withCompletionHandler:(id)handler;
++ (void)loadLeaderboardsForGame:(id)game forSet:(id)set withPlayer:(id)player withCompletionHandler:(id)handler;
++ (void)loadLeaderboardsForGame:(id)game withCompletionHandler:(id)handler;
 + (void)loadLeaderboardsWithCompletionHandler:(void *)completionHandler;
 + (void)loadLeaderboardsWithIDs:(NSArray *)leaderboardIDs completionHandler:(void *)completionHandler;
-+ (void)loadLeaderboardsWithIDs:(id)a3 game:(id)a4 completionHandler:(id)a5;
-+ (void)loadLeaderboardsWithIDs:(id)a3 setIdentifier:(id)a4 completionHandler:(id)a5;
-+ (void)loadLeaderboardsWithIDs:(id)a3 setIdentifier:(id)a4 game:(id)a5 completionHandler:(id)a6;
++ (void)loadLeaderboardsWithIDs:(id)ds game:(id)game completionHandler:(id)handler;
++ (void)loadLeaderboardsWithIDs:(id)ds setIdentifier:(id)identifier completionHandler:(id)handler;
++ (void)loadLeaderboardsWithIDs:(id)ds setIdentifier:(id)identifier game:(id)game completionHandler:(id)handler;
 + (void)setDefaultLeaderboard:(NSString *)leaderboardIdentifier withCompletionHandler:(void *)completionHandler;
 + (void)submitScore:(NSInteger)score context:(NSUInteger)context player:(GKPlayer *)player leaderboardIDs:(NSArray *)leaderboardIDs completionHandler:(void *)completionHandler;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isHidden;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (GKLeaderboard)init;
-- (GKLeaderboard)initWithInternalRepresentation:(id)a3;
+- (GKLeaderboard)initWithInternalRepresentation:(id)representation;
 - (GKLeaderboard)initWithPlayerIDs:(NSArray *)playerIDs;
 - (GKLeaderboard)initWithPlayers:(NSArray *)players;
 - (GKLeaderboardDelegate)delegate;
@@ -27,33 +27,33 @@
 - (NSTimeInterval)duration;
 - (id)creator;
 - (id)description;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (id)scoreRequestForGame:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (id)scoreRequestForGame:(id)game;
+- (id)valueForUndefinedKey:(id)key;
 - (unint64_t)hash;
-- (void)deleteWithHandler:(id)a3;
-- (void)endWithHandler:(id)a3;
-- (void)loadEntriesForPlayerScope:(int64_t)a3 timeScope:(int64_t)a4 range:(_NSRange)a5 locale:(id)a6 completionHandler:(id)a7;
-- (void)loadEntriesForPlayers:(id)a3 timeScope:(int64_t)a4 locale:(id)a5 completionHandler:(id)a6;
-- (void)loadEntriesWithGameDescriptor:(id)a3 fetchOptions:(unint64_t)a4 playerScope:(int64_t)a5 timeScope:(int64_t)a6 range:(_NSRange)a7 completionHandler:(id)a8;
-- (void)loadEntriesWithGameDescriptor:(id)a3 playerScope:(int64_t)a4 timeScope:(int64_t)a5 range:(_NSRange)a6 locale:(id)a7 completionHandler:(id)a8;
+- (void)deleteWithHandler:(id)handler;
+- (void)endWithHandler:(id)handler;
+- (void)loadEntriesForPlayerScope:(int64_t)scope timeScope:(int64_t)timeScope range:(_NSRange)range locale:(id)locale completionHandler:(id)handler;
+- (void)loadEntriesForPlayers:(id)players timeScope:(int64_t)scope locale:(id)locale completionHandler:(id)handler;
+- (void)loadEntriesWithGameDescriptor:(id)descriptor fetchOptions:(unint64_t)options playerScope:(int64_t)scope timeScope:(int64_t)timeScope range:(_NSRange)range completionHandler:(id)handler;
+- (void)loadEntriesWithGameDescriptor:(id)descriptor playerScope:(int64_t)scope timeScope:(int64_t)timeScope range:(_NSRange)range locale:(id)locale completionHandler:(id)handler;
 - (void)loadPreviousOccurrenceWithCompletionHandler:(void *)completionHandler;
-- (void)loadPreviousOccurrenceWithGameDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)loadScoresForGame:(id)a3 withCompletionHandler:(id)a4;
-- (void)loadScoresForRequest:(id)a3 handler:(id)a4;
+- (void)loadPreviousOccurrenceWithGameDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)loadScoresForGame:(id)game withCompletionHandler:(id)handler;
+- (void)loadScoresForRequest:(id)request handler:(id)handler;
 - (void)loadScoresWithCompletionHandler:(void *)completionHandler;
-- (void)loadSummaryWithTimeScope:(int64_t)a3 completionHandler:(id)a4;
+- (void)loadSummaryWithTimeScope:(int64_t)scope completionHandler:(id)handler;
 - (void)setRange:(NSRange)range;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
-- (void)startWithHandler:(id)a3;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
+- (void)startWithHandler:(id)handler;
 - (void)submitScore:(NSInteger)score context:(NSUInteger)context player:(GKPlayer *)player completionHandler:(void *)completionHandler;
 @end
 
 @implementation GKLeaderboard
 
-- (GKLeaderboard)initWithInternalRepresentation:(id)a3
+- (GKLeaderboard)initWithInternalRepresentation:(id)representation
 {
-  v5 = a3;
+  representationCopy = representation;
   v9.receiver = self;
   v9.super_class = GKLeaderboard;
   v6 = [(GKLeaderboard *)&v9 init];
@@ -62,7 +62,7 @@
   {
     *(v6 + 2) = xmmword_227A9FEB0;
     *(v6 + 72) = xmmword_227A9FEC0;
-    objc_storeStrong(v6 + 6, a3);
+    objc_storeStrong(v6 + 6, representation);
     v7->_lock._os_unfair_lock_opaque = 0;
   }
 
@@ -98,51 +98,51 @@
 
 - (GKLeaderboard)initWithPlayerIDs:(NSArray *)playerIDs
 {
-  v4 = [(NSArray *)playerIDs _gkIncompletePlayersFromPlayerIDs];
-  v5 = [(GKLeaderboard *)self initWithPlayers:v4];
+  _gkIncompletePlayersFromPlayerIDs = [(NSArray *)playerIDs _gkIncompletePlayersFromPlayerIDs];
+  v5 = [(GKLeaderboard *)self initWithPlayers:_gkIncompletePlayersFromPlayerIDs];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(GKLeaderboard *)self timeScope];
-    if (v6 == [v5 timeScope])
+    v5 = equalCopy;
+    timeScope = [(GKLeaderboard *)self timeScope];
+    if (timeScope == [v5 timeScope])
     {
-      v7 = [(GKLeaderboard *)self playerScope];
-      if (v7 == [v5 playerScope])
+      playerScope = [(GKLeaderboard *)self playerScope];
+      if (playerScope == [v5 playerScope])
       {
-        v8 = [(GKLeaderboard *)self range];
+        range = [(GKLeaderboard *)self range];
         v10 = v9;
         v12 = 0;
-        if (v8 != [v5 range] || v10 != v11)
+        if (range != [v5 range] || v10 != v11)
         {
           goto LABEL_11;
         }
 
-        v13 = [(GKLeaderboard *)self identifier];
-        v14 = [v5 identifier];
-        v15 = [v13 isEqual:v14];
+        identifier = [(GKLeaderboard *)self identifier];
+        identifier2 = [v5 identifier];
+        v15 = [identifier isEqual:identifier2];
 
         if (v15)
         {
-          v16 = [(GKLeaderboard *)self players];
-          v17 = [v5 players];
-          if (v16 == v17)
+          players = [(GKLeaderboard *)self players];
+          players2 = [v5 players];
+          if (players == players2)
           {
             v12 = 1;
           }
 
           else
           {
-            v18 = [(GKLeaderboard *)self players];
-            v19 = [v5 players];
-            v12 = [v18 isEqual:v19];
+            players3 = [(GKLeaderboard *)self players];
+            players4 = [v5 players];
+            v12 = [players3 isEqual:players4];
           }
 
           goto LABEL_11;
@@ -164,14 +164,14 @@ LABEL_12:
 
 - (unint64_t)hash
 {
-  v3 = [(GKLeaderboard *)self identifier];
-  v4 = [v3 hash];
+  identifier = [(GKLeaderboard *)self identifier];
+  v4 = [identifier hash];
 
-  v5 = [(GKLeaderboard *)self timeScope];
-  v6 = v5 ^ [(GKLeaderboard *)self playerScope]^ v4;
-  v7 = [(GKLeaderboard *)self range];
+  timeScope = [(GKLeaderboard *)self timeScope];
+  v6 = timeScope ^ [(GKLeaderboard *)self playerScope]^ v4;
+  range = [(GKLeaderboard *)self range];
   [(GKLeaderboard *)self range];
-  return v6 ^ v7 ^ v8;
+  return v6 ^ range ^ v8;
 }
 
 - (id)description
@@ -180,15 +180,15 @@ LABEL_12:
   v14.receiver = self;
   v14.super_class = GKLeaderboard;
   v4 = [(GKLeaderboard *)&v14 description];
-  v5 = [(GKLeaderboard *)self baseLeaderboardID];
-  v6 = [(GKLeaderboard *)self title];
+  baseLeaderboardID = [(GKLeaderboard *)self baseLeaderboardID];
+  title = [(GKLeaderboard *)self title];
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:{-[GKLeaderboard type](self, "type")}];
-  v8 = [(GKLeaderboard *)self startDate];
-  v9 = [(GKLeaderboard *)self nextStartDate];
+  startDate = [(GKLeaderboard *)self startDate];
+  nextStartDate = [(GKLeaderboard *)self nextStartDate];
   v10 = MEMORY[0x277CCABB0];
   [(GKLeaderboard *)self duration];
   v11 = [v10 numberWithDouble:?];
-  v12 = [v3 stringWithFormat:@"%@ baseLeaderboardID:%@ title:%@ type:%@ startDate:%@ nextStartDate:%@ duration:%@", v4, v5, v6, v7, v8, v9, v11];
+  v12 = [v3 stringWithFormat:@"%@ baseLeaderboardID:%@ title:%@ type:%@ startDate:%@ nextStartDate:%@ duration:%@", v4, baseLeaderboardID, title, v7, startDate, nextStartDate, v11];
 
   return v12;
 }
@@ -197,9 +197,9 @@ LABEL_12:
 {
   length = range.length;
   location = range.location;
-  v6 = [(GKLeaderboard *)self players];
+  players = [(GKLeaderboard *)self players];
 
-  if (!v6)
+  if (!players)
   {
     if (!location || length >= 0x65)
     {
@@ -229,8 +229,8 @@ LABEL_12:
 
 - (NSTimeInterval)duration
 {
-  v2 = [(GKLeaderboard *)self internal];
-  [v2 duration];
+  internal = [(GKLeaderboard *)self internal];
+  [internal duration];
   v4 = v3;
 
   v5 = GKApplicationLinkedOnOrAfter(918016, 721152);
@@ -245,9 +245,9 @@ LABEL_12:
 
 - (BOOL)isHidden
 {
-  v2 = [(GKLeaderboard *)self internal];
-  v3 = [v2 visibility];
-  v4 = [v3 isEqualToString:@"HIDE_FOR_ALL"];
+  internal = [(GKLeaderboard *)self internal];
+  visibility = [internal visibility];
+  v4 = [visibility isEqualToString:@"HIDE_FOR_ALL"];
 
   return v4;
 }
@@ -259,38 +259,38 @@ LABEL_12:
   [(GKLeaderboard *)self loadScoresForGame:v5 withCompletionHandler:v4];
 }
 
-- (id)scoreRequestForGame:(id)a3
+- (id)scoreRequestForGame:(id)game
 {
-  v4 = a3;
-  v5 = [(GKLeaderboard *)self players];
-  v6 = [v5 _gkInternalsFromPlayers];
+  gameCopy = game;
+  players = [(GKLeaderboard *)self players];
+  _gkInternalsFromPlayers = [players _gkInternalsFromPlayers];
 
-  v7 = [(GKLeaderboard *)self players];
-  if (v7)
+  players2 = [(GKLeaderboard *)self players];
+  if (players2)
   {
-    [GKLeaderboardScoreRequest requestForPlayerInternals:v6];
+    [GKLeaderboardScoreRequest requestForPlayerInternals:_gkInternalsFromPlayers];
   }
 
   else
   {
-    v8 = [(GKLeaderboard *)self range];
-    [GKLeaderboardScoreRequest requestForRankRange:v8, v9];
+    range = [(GKLeaderboard *)self range];
+    [GKLeaderboardScoreRequest requestForRankRange:range, v9];
   }
   v10 = ;
 
   v11 = +[GKLocalPlayer localPlayer];
-  v12 = [v11 internal];
-  v13 = [v12 minimalInternal];
-  [v10 setPlayerInternal:v13];
+  internal = [v11 internal];
+  minimalInternal = [internal minimalInternal];
+  [v10 setPlayerInternal:minimalInternal];
 
-  v14 = [v4 bundleIdentifier];
+  bundleIdentifier = [gameCopy bundleIdentifier];
 
-  [v10 setGameBundleID:v14];
-  v15 = [(GKLeaderboard *)self identifier];
-  [v10 setIdentifier:v15];
+  [v10 setGameBundleID:bundleIdentifier];
+  identifier = [(GKLeaderboard *)self identifier];
+  [v10 setIdentifier:identifier];
 
-  v16 = [(GKLeaderboard *)self groupIdentifier];
-  [v10 setGroupIdentifier:v16];
+  groupIdentifier = [(GKLeaderboard *)self groupIdentifier];
+  [v10 setGroupIdentifier:groupIdentifier];
 
   [v10 setTimeScope:{-[GKLeaderboard timeScope](self, "timeScope")}];
   [v10 setFriendsOnly:{-[GKLeaderboard playerScope](self, "playerScope") == GKLeaderboardPlayerScopeFriendsOnly}];
@@ -298,24 +298,24 @@ LABEL_12:
   return v10;
 }
 
-- (void)loadScoresForRequest:(id)a3 handler:(id)a4
+- (void)loadScoresForRequest:(id)request handler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  requestCopy = request;
   v8 = +[GKDaemonProxy proxyForLocalPlayer];
-  v7 = [v8 gameStatService];
-  [v7 getLeaderboardForRequest:v6 handler:v5];
+  gameStatService = [v8 gameStatService];
+  [gameStatService getLeaderboardForRequest:requestCopy handler:handlerCopy];
 }
 
-- (void)loadScoresForGame:(id)a3 withCompletionHandler:(id)a4
+- (void)loadScoresForGame:(id)game withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  gameCopy = game;
+  handlerCopy = handler;
   [(GKLeaderboard *)self incrementLoadingCountAtomically];
-  v8 = [(GKLeaderboard *)self delegate];
+  delegate = [(GKLeaderboard *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 leaderboardDidBeginLoading:self];
+    [delegate leaderboardDidBeginLoading:self];
   }
 
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKLeaderboard.m", 215, "-[GKLeaderboard loadScoresForGame:withCompletionHandler:]"];
@@ -326,20 +326,20 @@ LABEL_12:
   v18[2] = __57__GKLeaderboard_loadScoresForGame_withCompletionHandler___block_invoke;
   v18[3] = &unk_2785DD910;
   v18[4] = self;
-  v19 = v6;
+  v19 = gameCopy;
   v11 = v10;
   v20 = v11;
-  v12 = v6;
+  v12 = gameCopy;
   [v11 perform:v18];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __57__GKLeaderboard_loadScoresForGame_withCompletionHandler___block_invoke_4;
   v15[3] = &unk_2785DE478;
   v16 = v11;
-  v17 = v7;
+  v17 = handlerCopy;
   v15[4] = self;
   v13 = v11;
-  v14 = v7;
+  v14 = handlerCopy;
   [v13 notifyOnMainQueueWithBlock:v15];
 }
 
@@ -565,13 +565,13 @@ void __55__GKLeaderboard_loadLeaderboardsWithCompletionHandler___block_invoke(ui
   }
 }
 
-+ (void)loadLeaderboardsForGame:(id)a3 forSet:(id)a4 withPlayer:(id)a5 withCompletionHandler:(id)a6
++ (void)loadLeaderboardsForGame:(id)game forSet:(id)set withPlayer:(id)player withCompletionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v12)
+  gameCopy = game;
+  setCopy = set;
+  playerCopy = player;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKLeaderboard.m", 314, "+[GKLeaderboard loadLeaderboardsForGame:forSet:withPlayer:withCompletionHandler:]"];
     v14 = [GKDispatchGroup dispatchGroupWithName:v13];
@@ -580,10 +580,10 @@ void __55__GKLeaderboard_loadLeaderboardsWithCompletionHandler___block_invoke(ui
     v25[1] = 3221225472;
     v25[2] = __81__GKLeaderboard_loadLeaderboardsForGame_forSet_withPlayer_withCompletionHandler___block_invoke;
     v25[3] = &unk_2785DE4C8;
-    v26 = v9;
-    v15 = v11;
+    v26 = gameCopy;
+    v15 = playerCopy;
     v27 = v15;
-    v28 = v10;
+    v28 = setCopy;
     v16 = v14;
     v29 = v16;
     [v16 perform:v25];
@@ -604,7 +604,7 @@ void __55__GKLeaderboard_loadLeaderboardsWithCompletionHandler___block_invoke(ui
     v19[2] = __81__GKLeaderboard_loadLeaderboardsForGame_forSet_withPlayer_withCompletionHandler___block_invoke_5;
     v19[3] = &unk_2785DE540;
     v20 = v16;
-    v21 = v12;
+    v21 = handlerCopy;
     v18 = v16;
     [v18 notifyOnMainQueueWithBlock:v19];
   }
@@ -735,13 +735,13 @@ LABEL_5:
   return v6;
 }
 
-+ (void)loadLeaderboardWithIdentifier:(id)a3 forGame:(id)a4 withPlayer:(id)a5 withCompletionHandler:(id)a6
++ (void)loadLeaderboardWithIdentifier:(id)identifier forGame:(id)game withPlayer:(id)player withCompletionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v12)
+  identifierCopy = identifier;
+  gameCopy = game;
+  playerCopy = player;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKLeaderboard.m", 362, "+[GKLeaderboard loadLeaderboardWithIdentifier:forGame:withPlayer:withCompletionHandler:]"];
     v14 = [GKDispatchGroup dispatchGroupWithName:v13];
@@ -750,9 +750,9 @@ LABEL_5:
     v20[1] = 3221225472;
     v20[2] = __88__GKLeaderboard_loadLeaderboardWithIdentifier_forGame_withPlayer_withCompletionHandler___block_invoke;
     v20[3] = &unk_2785DE4C8;
-    v21 = v10;
-    v22 = v11;
-    v23 = v9;
+    v21 = gameCopy;
+    v22 = playerCopy;
+    v23 = identifierCopy;
     v15 = v14;
     v24 = v15;
     [v15 perform:v20];
@@ -761,7 +761,7 @@ LABEL_5:
     v17[2] = __88__GKLeaderboard_loadLeaderboardWithIdentifier_forGame_withPlayer_withCompletionHandler___block_invoke_3;
     v17[3] = &unk_2785DDC10;
     v18 = v15;
-    v19 = v12;
+    v19 = handlerCopy;
     v16 = v15;
     [v16 notifyOnMainQueueWithBlock:v17];
   }
@@ -857,12 +857,12 @@ void __88__GKLeaderboard_loadLeaderboardWithIdentifier_forGame_withPlayer_withCo
   (*(v2 + 16))(v2, v4, v3);
 }
 
-+ (void)loadLeaderboardsForGame:(id)a3 withCompletionHandler:(id)a4
++ (void)loadLeaderboardsForGame:(id)game withCompletionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  gameCopy = game;
   v7 = +[GKLocalPlayer localPlayer];
-  [GKLeaderboard loadLeaderboardsForGame:v6 withPlayer:v7 withCompletionHandler:v5];
+  [GKLeaderboard loadLeaderboardsForGame:gameCopy withPlayer:v7 withCompletionHandler:handlerCopy];
 }
 
 + (void)setDefaultLeaderboard:(NSString *)leaderboardIdentifier withCompletionHandler:(void *)completionHandler
@@ -878,19 +878,19 @@ void __88__GKLeaderboard_loadLeaderboardWithIdentifier_forGame_withPlayer_withCo
   v6 = completionHandler;
   v7 = leaderboardIDs;
   v8 = +[GKGame currentGame];
-  [a1 loadLeaderboardsWithIDs:v7 game:v8 completionHandler:v6];
+  [self loadLeaderboardsWithIDs:v7 game:v8 completionHandler:v6];
 }
 
-+ (void)loadLeaderboardsWithIDs:(id)a3 game:(id)a4 completionHandler:(id)a5
++ (void)loadLeaderboardsWithIDs:(id)ds game:(id)game completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__GKLeaderboard_loadLeaderboardsWithIDs_game_completionHandler___block_invoke;
   v10[3] = &unk_2785DDCB0;
-  v11 = v8;
-  v9 = v8;
-  [a1 loadLeaderboardsWithIDs:a3 setIdentifier:0 game:a4 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [self loadLeaderboardsWithIDs:ds setIdentifier:0 game:game completionHandler:v10];
 }
 
 void __64__GKLeaderboard_loadLeaderboardsWithIDs_game_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -919,19 +919,19 @@ void __64__GKLeaderboard_loadLeaderboardsWithIDs_game_completionHandler___block_
   }
 }
 
-+ (void)loadLeaderboardsWithIDs:(id)a3 setIdentifier:(id)a4 completionHandler:(id)a5
++ (void)loadLeaderboardsWithIDs:(id)ds setIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  dsCopy = ds;
   v11 = +[GKGame currentGame];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __73__GKLeaderboard_loadLeaderboardsWithIDs_setIdentifier_completionHandler___block_invoke;
   v13[3] = &unk_2785DDCB0;
-  v14 = v8;
-  v12 = v8;
-  [a1 loadLeaderboardsWithIDs:v10 setIdentifier:v9 game:v11 completionHandler:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [self loadLeaderboardsWithIDs:dsCopy setIdentifier:identifierCopy game:v11 completionHandler:v13];
 }
 
 void __73__GKLeaderboard_loadLeaderboardsWithIDs_setIdentifier_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -960,12 +960,12 @@ void __73__GKLeaderboard_loadLeaderboardsWithIDs_setIdentifier_completionHandler
   }
 }
 
-+ (void)loadLeaderboardsWithIDs:(id)a3 setIdentifier:(id)a4 game:(id)a5 completionHandler:(id)a6
++ (void)loadLeaderboardsWithIDs:(id)ds setIdentifier:(id)identifier game:(id)game completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dsCopy = ds;
+  identifierCopy = identifier;
+  gameCopy = game;
+  handlerCopy = handler;
   v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKLeaderboard.m", 451, "+[GKLeaderboard loadLeaderboardsWithIDs:setIdentifier:game:completionHandler:]"];
   v14 = [GKDispatchGroup dispatchGroupWithName:v13];
 
@@ -973,23 +973,23 @@ void __73__GKLeaderboard_loadLeaderboardsWithIDs_setIdentifier_completionHandler
   v24[1] = 3221225472;
   v24[2] = __78__GKLeaderboard_loadLeaderboardsWithIDs_setIdentifier_game_completionHandler___block_invoke;
   v24[3] = &unk_2785DE4C8;
-  v25 = v9;
-  v26 = v11;
-  v27 = v10;
+  v25 = dsCopy;
+  v26 = gameCopy;
+  v27 = identifierCopy;
   v15 = v14;
   v28 = v15;
-  v16 = v10;
-  v17 = v11;
-  v18 = v9;
+  v16 = identifierCopy;
+  v17 = gameCopy;
+  v18 = dsCopy;
   [v15 perform:v24];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __78__GKLeaderboard_loadLeaderboardsWithIDs_setIdentifier_game_completionHandler___block_invoke_4;
   v21[3] = &unk_2785DDC10;
   v22 = v15;
-  v23 = v12;
+  v23 = handlerCopy;
   v19 = v15;
-  v20 = v12;
+  v20 = handlerCopy;
   [v19 notifyOnMainQueueWithBlock:v21];
 }
 
@@ -1043,10 +1043,10 @@ void __78__GKLeaderboard_loadLeaderboardsWithIDs_setIdentifier_game_completionHa
   (*(v2 + 16))(v2, v4, v3);
 }
 
-- (void)loadPreviousOccurrenceWithGameDescriptor:(id)a3 completionHandler:(id)a4
+- (void)loadPreviousOccurrenceWithGameDescriptor:(id)descriptor completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  handlerCopy = handler;
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKLeaderboard.m", 475, "-[GKLeaderboard loadPreviousOccurrenceWithGameDescriptor:completionHandler:]"];
   v9 = [GKDispatchGroup dispatchGroupWithName:v8];
 
@@ -1055,19 +1055,19 @@ void __78__GKLeaderboard_loadLeaderboardsWithIDs_setIdentifier_game_completionHa
   v17[2] = __76__GKLeaderboard_loadPreviousOccurrenceWithGameDescriptor_completionHandler___block_invoke;
   v17[3] = &unk_2785DD910;
   v17[4] = self;
-  v18 = v6;
+  v18 = descriptorCopy;
   v10 = v9;
   v19 = v10;
-  v11 = v6;
+  v11 = descriptorCopy;
   [v10 perform:v17];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __76__GKLeaderboard_loadPreviousOccurrenceWithGameDescriptor_completionHandler___block_invoke_3;
   v14[3] = &unk_2785DDC10;
   v15 = v10;
-  v16 = v7;
+  v16 = handlerCopy;
   v12 = v10;
-  v13 = v7;
+  v13 = handlerCopy;
   [v12 notifyOnMainQueueWithBlock:v14];
 }
 
@@ -1279,9 +1279,9 @@ void __77__GKLeaderboard_submitScore_context_player_leaderboardIDs_completionHan
     v24 = context;
     v20[4] = self;
     v21 = v10;
-    v14 = v13;
-    v22 = v14;
-    [v14 perform:v20];
+    baseLeaderboardID = v13;
+    v22 = baseLeaderboardID;
+    [baseLeaderboardID perform:v20];
     if (v11)
     {
       v17[0] = MEMORY[0x277D85DD0];
@@ -1289,15 +1289,15 @@ void __77__GKLeaderboard_submitScore_context_player_leaderboardIDs_completionHan
       v17[2] = __62__GKLeaderboard_submitScore_context_player_completionHandler___block_invoke_3;
       v17[3] = &unk_2785DDC10;
       v19 = v11;
-      v18 = v14;
+      v18 = baseLeaderboardID;
       [v18 notifyOnMainQueueWithBlock:v17];
     }
   }
 
   else
   {
-    v14 = [(GKLeaderboard *)self baseLeaderboardID];
-    v25[0] = v14;
+    baseLeaderboardID = [(GKLeaderboard *)self baseLeaderboardID];
+    v25[0] = baseLeaderboardID;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
     [GKLeaderboard submitScore:score context:context player:v10 leaderboardIDs:v15 completionHandler:v11];
   }
@@ -1349,12 +1349,12 @@ void __62__GKLeaderboard_submitScore_context_player_completionHandler___block_in
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)loadEntriesForPlayerScope:(int64_t)a3 timeScope:(int64_t)a4 range:(_NSRange)a5 locale:(id)a6 completionHandler:(id)a7
+- (void)loadEntriesForPlayerScope:(int64_t)scope timeScope:(int64_t)timeScope range:(_NSRange)range locale:(id)locale completionHandler:(id)handler
 {
-  length = a5.length;
-  location = a5.location;
-  v19 = a6;
-  v13 = a7;
+  length = range.length;
+  location = range.location;
+  localeCopy = locale;
+  handlerCopy = handler;
   if (!location || length >= 0x65)
   {
     v14 = MEMORY[0x277CBEAD8];
@@ -1364,22 +1364,22 @@ void __62__GKLeaderboard_submitScore_context_player_completionHandler___block_in
   }
 
   v17 = +[GKGame currentGame];
-  v18 = [v17 gameDescriptor];
-  [(GKLeaderboard *)self loadEntriesWithGameDescriptor:v18 playerScope:a3 timeScope:a4 range:location locale:length completionHandler:v19, v13];
+  gameDescriptor = [v17 gameDescriptor];
+  [(GKLeaderboard *)self loadEntriesWithGameDescriptor:gameDescriptor playerScope:scope timeScope:timeScope range:location locale:length completionHandler:localeCopy, handlerCopy];
 }
 
-+ (id)leaderboardEntriesHandlerForGroup:(id)a3 gameBundleID:(id)a4 proxy:(id)a5 done:(id)a6
++ (id)leaderboardEntriesHandlerForGroup:(id)group gameBundleID:(id)d proxy:(id)proxy done:(id)done
 {
-  v7 = a3;
-  v8 = a6;
+  groupCopy = group;
+  doneCopy = done;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __75__GKLeaderboard_leaderboardEntriesHandlerForGroup_gameBundleID_proxy_done___block_invoke;
   v13[3] = &unk_2785DE620;
-  v14 = v7;
-  v15 = v8;
-  v9 = v8;
-  v10 = v7;
+  v14 = groupCopy;
+  v15 = doneCopy;
+  v9 = doneCopy;
+  v10 = groupCopy;
   v11 = _Block_copy(v13);
 
   return v11;
@@ -1485,13 +1485,13 @@ GKLeaderboardEntry *__75__GKLeaderboard_leaderboardEntriesHandlerForGroup_gameBu
   return v3;
 }
 
-- (void)loadEntriesWithGameDescriptor:(id)a3 playerScope:(int64_t)a4 timeScope:(int64_t)a5 range:(_NSRange)a6 locale:(id)a7 completionHandler:(id)a8
+- (void)loadEntriesWithGameDescriptor:(id)descriptor playerScope:(int64_t)scope timeScope:(int64_t)timeScope range:(_NSRange)range locale:(id)locale completionHandler:(id)handler
 {
-  length = a6.length;
-  location = a6.location;
-  v14 = a3;
-  v15 = a7;
-  v16 = a8;
+  length = range.length;
+  location = range.location;
+  descriptorCopy = descriptor;
+  localeCopy = locale;
+  handlerCopy = handler;
   v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKLeaderboard.m", 657, "-[GKLeaderboard loadEntriesWithGameDescriptor:playerScope:timeScope:range:locale:completionHandler:]"];
   v18 = [GKDispatchGroup dispatchGroupWithName:v17];
 
@@ -1500,25 +1500,25 @@ GKLeaderboardEntry *__75__GKLeaderboard_leaderboardEntriesHandlerForGroup_gameBu
   v27[2] = __100__GKLeaderboard_loadEntriesWithGameDescriptor_playerScope_timeScope_range_locale_completionHandler___block_invoke;
   v27[3] = &unk_2785DE648;
   v27[4] = self;
-  v28 = v14;
-  v32 = a5;
+  v28 = descriptorCopy;
+  timeScopeCopy = timeScope;
   v33 = location;
   v34 = length;
-  v31 = a4;
-  v29 = v15;
+  scopeCopy = scope;
+  v29 = localeCopy;
   v19 = v18;
   v30 = v19;
-  v20 = v15;
-  v21 = v14;
+  v20 = localeCopy;
+  v21 = descriptorCopy;
   [v19 perform:v27];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __100__GKLeaderboard_loadEntriesWithGameDescriptor_playerScope_timeScope_range_locale_completionHandler___block_invoke_2;
   v24[3] = &unk_2785DDC10;
   v25 = v19;
-  v26 = v16;
+  v26 = handlerCopy;
   v22 = v19;
-  v23 = v16;
+  v23 = handlerCopy;
   [v22 notifyOnMainQueueWithBlock:v24];
 }
 
@@ -1565,12 +1565,12 @@ void __100__GKLeaderboard_loadEntriesWithGameDescriptor_playerScope_timeScope_ra
   }
 }
 
-- (void)loadEntriesWithGameDescriptor:(id)a3 fetchOptions:(unint64_t)a4 playerScope:(int64_t)a5 timeScope:(int64_t)a6 range:(_NSRange)a7 completionHandler:(id)a8
+- (void)loadEntriesWithGameDescriptor:(id)descriptor fetchOptions:(unint64_t)options playerScope:(int64_t)scope timeScope:(int64_t)timeScope range:(_NSRange)range completionHandler:(id)handler
 {
-  length = a7.length;
-  location = a7.location;
-  v14 = a3;
-  v15 = a8;
+  length = range.length;
+  location = range.location;
+  descriptorCopy = descriptor;
+  handlerCopy = handler;
   v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKLeaderboard.m", 698, "-[GKLeaderboard loadEntriesWithGameDescriptor:fetchOptions:playerScope:timeScope:range:completionHandler:]"];
   v17 = [GKDispatchGroup dispatchGroupWithName:v16];
 
@@ -1579,24 +1579,24 @@ void __100__GKLeaderboard_loadEntriesWithGameDescriptor_playerScope_timeScope_ra
   v25[2] = __106__GKLeaderboard_loadEntriesWithGameDescriptor_fetchOptions_playerScope_timeScope_range_completionHandler___block_invoke;
   v25[3] = &unk_2785DE670;
   v25[4] = self;
-  v26 = v14;
-  v28 = a4;
-  v29 = a5;
-  v30 = a6;
+  v26 = descriptorCopy;
+  optionsCopy = options;
+  scopeCopy = scope;
+  timeScopeCopy = timeScope;
   v31 = location;
   v32 = length;
   v18 = v17;
   v27 = v18;
-  v19 = v14;
+  v19 = descriptorCopy;
   [v18 perform:v25];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __106__GKLeaderboard_loadEntriesWithGameDescriptor_fetchOptions_playerScope_timeScope_range_completionHandler___block_invoke_2;
   v22[3] = &unk_2785DDC10;
   v23 = v18;
-  v24 = v15;
+  v24 = handlerCopy;
   v20 = v18;
-  v21 = v15;
+  v21 = handlerCopy;
   [v20 notifyOnMainQueueWithBlock:v22];
 }
 
@@ -1643,10 +1643,10 @@ void __106__GKLeaderboard_loadEntriesWithGameDescriptor_fetchOptions_playerScope
   }
 }
 
-- (void)loadEntriesForPlayers:(id)a3 timeScope:(int64_t)a4 locale:(id)a5 completionHandler:(id)a6
+- (void)loadEntriesForPlayers:(id)players timeScope:(int64_t)scope locale:(id)locale completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a6;
+  playersCopy = players;
+  handlerCopy = handler;
   v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKLeaderboard.m", 739, "-[GKLeaderboard loadEntriesForPlayers:timeScope:locale:completionHandler:]"];
   v12 = [GKDispatchGroup dispatchGroupWithName:v11];
 
@@ -1654,21 +1654,21 @@ void __106__GKLeaderboard_loadEntriesWithGameDescriptor_fetchOptions_playerScope
   v20[1] = 3221225472;
   v20[2] = __74__GKLeaderboard_loadEntriesForPlayers_timeScope_locale_completionHandler___block_invoke;
   v20[3] = &unk_2785DDBE8;
-  v21 = v9;
-  v22 = self;
-  v24 = a4;
+  v21 = playersCopy;
+  selfCopy = self;
+  scopeCopy = scope;
   v13 = v12;
   v23 = v13;
-  v14 = v9;
+  v14 = playersCopy;
   [v13 perform:v20];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __74__GKLeaderboard_loadEntriesForPlayers_timeScope_locale_completionHandler___block_invoke_3;
   v17[3] = &unk_2785DDC10;
   v18 = v13;
-  v19 = v10;
+  v19 = handlerCopy;
   v15 = v13;
-  v16 = v10;
+  v16 = handlerCopy;
   [v15 notifyOnMainQueueWithBlock:v17];
 }
 
@@ -1719,9 +1719,9 @@ void __74__GKLeaderboard_loadEntriesForPlayers_timeScope_locale_completionHandle
   }
 }
 
-- (void)loadSummaryWithTimeScope:(int64_t)a3 completionHandler:(id)a4
+- (void)loadSummaryWithTimeScope:(int64_t)scope completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKLeaderboard.m", 772, "-[GKLeaderboard loadSummaryWithTimeScope:completionHandler:]"];
   v8 = [GKDispatchGroup dispatchGroupWithName:v7];
 
@@ -1730,7 +1730,7 @@ void __74__GKLeaderboard_loadEntriesForPlayers_timeScope_locale_completionHandle
   v15[2] = __60__GKLeaderboard_loadSummaryWithTimeScope_completionHandler___block_invoke;
   v15[3] = &unk_2785DE6E0;
   v15[4] = self;
-  v17 = a3;
+  scopeCopy = scope;
   v9 = v8;
   v16 = v9;
   [v9 perform:v15];
@@ -1739,9 +1739,9 @@ void __74__GKLeaderboard_loadEntriesForPlayers_timeScope_locale_completionHandle
   v12[2] = __60__GKLeaderboard_loadSummaryWithTimeScope_completionHandler___block_invoke_3;
   v12[3] = &unk_2785DDC10;
   v13 = v9;
-  v14 = v6;
+  v14 = handlerCopy;
   v10 = v9;
-  v11 = v6;
+  v11 = handlerCopy;
   [v10 notifyOnMainQueueWithBlock:v12];
 }
 
@@ -1794,26 +1794,26 @@ void __60__GKLeaderboard_loadSummaryWithTimeScope_completionHandler___block_invo
   (*(v2 + 16))(v2, v4, v3);
 }
 
-+ (void)loadHighlightsWithPlayerScope:(int64_t)a3 timeScope:(int64_t)a4 handler:(id)a5
++ (void)loadHighlightsWithPlayerScope:(int64_t)scope timeScope:(int64_t)timeScope handler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v9 = +[GKGame currentGame];
-  [a1 loadHighlightsWithPlayerScope:a3 timeScope:a4 game:v9 handler:v8];
+  [self loadHighlightsWithPlayerScope:scope timeScope:timeScope game:v9 handler:handlerCopy];
 }
 
-+ (void)loadHighlightsWithPlayerScope:(int64_t)a3 timeScope:(int64_t)a4 game:(id)a5 handler:(id)a6
++ (void)loadHighlightsWithPlayerScope:(int64_t)scope timeScope:(int64_t)timeScope game:(id)game handler:(id)handler
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = a6;
+  gameCopy = game;
+  handlerCopy = handler;
   v11 = +[GKLocalPlayer localPlayer];
-  v12 = [GKGameRecord gameRecordForPlayer:v11 game:v9];
+  v12 = [GKGameRecord gameRecordForPlayer:v11 game:gameCopy];
 
-  v13 = [v12 defaultLeaderboardIdentifier];
-  if (v13)
+  defaultLeaderboardIdentifier = [v12 defaultLeaderboardIdentifier];
+  if (defaultLeaderboardIdentifier)
   {
-    v14 = [v12 defaultLeaderboardIdentifier];
-    v24[0] = v14;
+    defaultLeaderboardIdentifier2 = [v12 defaultLeaderboardIdentifier];
+    v24[0] = defaultLeaderboardIdentifier2;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
   }
 
@@ -1826,12 +1826,12 @@ void __60__GKLeaderboard_loadSummaryWithTimeScope_completionHandler___block_invo
   v19[1] = 3221225472;
   v19[2] = __70__GKLeaderboard_loadHighlightsWithPlayerScope_timeScope_game_handler___block_invoke;
   v19[3] = &unk_2785DE758;
-  v22 = a3;
-  v23 = a4;
-  v20 = v9;
-  v21 = v10;
-  v16 = v10;
-  v17 = v9;
+  scopeCopy = scope;
+  timeScopeCopy = timeScope;
+  v20 = gameCopy;
+  v21 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = gameCopy;
   [GKLeaderboard loadLeaderboardsWithIDs:v15 game:v17 completionHandler:v19];
 
   v18 = *MEMORY[0x277D85DE8];
@@ -1990,16 +1990,16 @@ id __70__GKLeaderboard_loadHighlightsWithPlayerScope_timeScope_game_handler___bl
 - (id)creator
 {
   v3 = [GKPlayer alloc];
-  v4 = [(GKLeaderboard *)self internal];
-  v5 = [v4 creator];
-  v6 = [(GKPlayer *)v3 initWithInternalRepresentation:v5];
+  internal = [(GKLeaderboard *)self internal];
+  creator = [internal creator];
+  v6 = [(GKPlayer *)v3 initWithInternalRepresentation:creator];
 
   return v6;
 }
 
-- (void)startWithHandler:(id)a3
+- (void)startWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKLeaderboard.m", 859, "-[GKLeaderboard startWithHandler:]"];
   v6 = [GKDispatchGroup dispatchGroupWithName:v5];
 
@@ -2011,13 +2011,13 @@ id __70__GKLeaderboard_loadHighlightsWithPlayerScope_timeScope_game_handler___bl
   v7 = v6;
   v12 = v7;
   [v7 perform:v11];
-  if (v4)
+  if (handlerCopy)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __34__GKLeaderboard_startWithHandler___block_invoke_3;
     v8[3] = &unk_2785DDC10;
-    v10 = v4;
+    v10 = handlerCopy;
     v9 = v7;
     [v9 notifyOnMainQueueWithBlock:v8];
   }
@@ -2055,9 +2055,9 @@ void __34__GKLeaderboard_startWithHandler___block_invoke_3(uint64_t a1)
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)endWithHandler:(id)a3
+- (void)endWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKLeaderboard.m", 876, "-[GKLeaderboard endWithHandler:]"];
   v6 = [GKDispatchGroup dispatchGroupWithName:v5];
 
@@ -2069,13 +2069,13 @@ void __34__GKLeaderboard_startWithHandler___block_invoke_3(uint64_t a1)
   v7 = v6;
   v12 = v7;
   [v7 perform:v11];
-  if (v4)
+  if (handlerCopy)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __32__GKLeaderboard_endWithHandler___block_invoke_3;
     v8[3] = &unk_2785DDC10;
-    v10 = v4;
+    v10 = handlerCopy;
     v9 = v7;
     [v9 notifyOnMainQueueWithBlock:v8];
   }
@@ -2113,19 +2113,19 @@ void __32__GKLeaderboard_endWithHandler___block_invoke_3(uint64_t a1)
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)deleteWithHandler:(id)a3
+- (void)deleteWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKLeaderboard.m", 893, "-[GKLeaderboard deleteWithHandler:]"];
   v6 = [GKDispatchGroup dispatchGroupWithName:v5];
 
-  v7 = [(GKLeaderboard *)self internal];
-  v8 = [v7 creator];
-  v9 = [v8 playerID];
+  internal = [(GKLeaderboard *)self internal];
+  creator = [internal creator];
+  playerID = [creator playerID];
   v10 = +[GKLocalPlayer localPlayer];
-  v11 = [v10 internal];
-  v12 = [v11 playerID];
-  v13 = [v9 isEqualToString:v12];
+  internal2 = [v10 internal];
+  playerID2 = [internal2 playerID];
+  v13 = [playerID isEqualToString:playerID2];
 
   if (v13)
   {
@@ -2137,7 +2137,7 @@ void __32__GKLeaderboard_endWithHandler___block_invoke_3(uint64_t a1)
     v19 = v6;
     [v19 perform:v18];
 
-    if (!v4)
+    if (!handlerCopy)
     {
       goto LABEL_6;
     }
@@ -2148,14 +2148,14 @@ void __32__GKLeaderboard_endWithHandler___block_invoke_3(uint64_t a1)
   v14 = [MEMORY[0x277CCA9B8] userErrorForCode:32 underlyingError:0];
   [v6 setError:v14];
 
-  if (v4)
+  if (handlerCopy)
   {
 LABEL_5:
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __35__GKLeaderboard_deleteWithHandler___block_invoke_3;
     v15[3] = &unk_2785DDC10;
-    v17 = v4;
+    v17 = handlerCopy;
     v16 = v6;
     [v16 notifyOnMainQueueWithBlock:v15];
   }
@@ -2195,9 +2195,9 @@ void __35__GKLeaderboard_deleteWithHandler___block_invoke_3(uint64_t a1)
   (*(v1 + 16))(v1, v2);
 }
 
-+ (id)instanceMethodSignatureForSelector:(SEL)a3
++ (id)instanceMethodSignatureForSelector:(SEL)selector
 {
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___GKLeaderboard;
   v4 = objc_msgSendSuper2(&v9, sel_instanceMethodSignatureForSelector_);
   v5 = v4;
@@ -2208,7 +2208,7 @@ void __35__GKLeaderboard_deleteWithHandler___block_invoke_3(uint64_t a1)
 
   else
   {
-    v6 = [objc_opt_class() instanceMethodSignatureForSelector:a3];
+    v6 = [objc_opt_class() instanceMethodSignatureForSelector:selector];
   }
 
   v7 = v6;
@@ -2216,7 +2216,7 @@ void __35__GKLeaderboard_deleteWithHandler___block_invoke_3(uint64_t a1)
   return v7;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v10.receiver = self;
   v10.super_class = GKLeaderboard;
@@ -2229,14 +2229,14 @@ void __35__GKLeaderboard_deleteWithHandler___block_invoke_3(uint64_t a1)
 
   else
   {
-    v8 = [(GKLeaderboard *)self forwardingTargetForSelector:a3];
-    v7 = [v8 methodSignatureForSelector:a3];
+    v8 = [(GKLeaderboard *)self forwardingTargetForSelector:selector];
+    v7 = [v8 methodSignatureForSelector:selector];
   }
 
   return v7;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v8.receiver = self;
   v8.super_class = GKLeaderboard;
@@ -2247,18 +2247,18 @@ void __35__GKLeaderboard_deleteWithHandler___block_invoke_3(uint64_t a1)
 
   else
   {
-    v6 = [(GKLeaderboard *)self forwardingTargetForSelector:a3];
+    v6 = [(GKLeaderboard *)self forwardingTargetForSelector:selector];
     v5 = objc_opt_respondsToSelector();
   }
 
   return v5 & 1;
 }
 
-+ (BOOL)instancesRespondToSelector:(SEL)a3
++ (BOOL)instancesRespondToSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    if (class_respondsToSelector(a1, a3))
+    if (class_respondsToSelector(self, selector))
     {
       LOBYTE(v4) = 1;
     }
@@ -2269,7 +2269,7 @@ void __35__GKLeaderboard_deleteWithHandler___block_invoke_3(uint64_t a1)
       if (v4)
       {
 
-        LOBYTE(v4) = [GKLeaderboardInternal instancesRespondToSelector:a3];
+        LOBYTE(v4) = [GKLeaderboardInternal instancesRespondToSelector:selector];
       }
     }
   }
@@ -2282,21 +2282,21 @@ void __35__GKLeaderboard_deleteWithHandler___block_invoke_3(uint64_t a1)
   return v4;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  v5 = [(GKLeaderboard *)self internal];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  internal = [(GKLeaderboard *)self internal];
+  v6 = [internal valueForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKLeaderboard *)self internal];
-  [v8 setValue:v7 forKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  internal = [(GKLeaderboard *)self internal];
+  [internal setValue:valueCopy forKey:keyCopy];
 }
 
 - (GKLeaderboardDelegate)delegate

@@ -1,6 +1,6 @@
 @interface MTRDoorLockClusterAppleAliroLockUserChangeEvent
 - (MTRDoorLockClusterAppleAliroLockUserChangeEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -39,29 +39,29 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDoorLockClusterAppleAliroLockUserChangeEvent);
-  v5 = [(MTRDoorLockClusterAppleAliroLockUserChangeEvent *)self lockDataType];
-  [(MTRDoorLockClusterAppleAliroLockUserChangeEvent *)v4 setLockDataType:v5];
+  lockDataType = [(MTRDoorLockClusterAppleAliroLockUserChangeEvent *)self lockDataType];
+  [(MTRDoorLockClusterAppleAliroLockUserChangeEvent *)v4 setLockDataType:lockDataType];
 
-  v6 = [(MTRDoorLockClusterAppleAliroLockUserChangeEvent *)self dataOperationType];
-  [(MTRDoorLockClusterAppleAliroLockUserChangeEvent *)v4 setDataOperationType:v6];
+  dataOperationType = [(MTRDoorLockClusterAppleAliroLockUserChangeEvent *)self dataOperationType];
+  [(MTRDoorLockClusterAppleAliroLockUserChangeEvent *)v4 setDataOperationType:dataOperationType];
 
-  v7 = [(MTRDoorLockClusterAppleAliroLockUserChangeEvent *)self operationSource];
-  [(MTRDoorLockClusterAppleAliroLockUserChangeEvent *)v4 setOperationSource:v7];
+  operationSource = [(MTRDoorLockClusterAppleAliroLockUserChangeEvent *)self operationSource];
+  [(MTRDoorLockClusterAppleAliroLockUserChangeEvent *)v4 setOperationSource:operationSource];
 
-  v8 = [(MTRDoorLockClusterAppleAliroLockUserChangeEvent *)self userIndex];
-  [(MTRDoorLockClusterAppleAliroLockUserChangeEvent *)v4 setUserIndex:v8];
+  userIndex = [(MTRDoorLockClusterAppleAliroLockUserChangeEvent *)self userIndex];
+  [(MTRDoorLockClusterAppleAliroLockUserChangeEvent *)v4 setUserIndex:userIndex];
 
-  v9 = [(MTRDoorLockClusterAppleAliroLockUserChangeEvent *)self fabricIndex];
-  [(MTRDoorLockClusterAppleAliroLockUserChangeEvent *)v4 setFabricIndex:v9];
+  fabricIndex = [(MTRDoorLockClusterAppleAliroLockUserChangeEvent *)self fabricIndex];
+  [(MTRDoorLockClusterAppleAliroLockUserChangeEvent *)v4 setFabricIndex:fabricIndex];
 
-  v10 = [(MTRDoorLockClusterAppleAliroLockUserChangeEvent *)self sourceNode];
-  [(MTRDoorLockClusterAppleAliroLockUserChangeEvent *)v4 setSourceNode:v10];
+  sourceNode = [(MTRDoorLockClusterAppleAliroLockUserChangeEvent *)self sourceNode];
+  [(MTRDoorLockClusterAppleAliroLockUserChangeEvent *)v4 setSourceNode:sourceNode];
 
-  v11 = [(MTRDoorLockClusterAppleAliroLockUserChangeEvent *)self dataIndex];
-  [(MTRDoorLockClusterAppleAliroLockUserChangeEvent *)v4 setDataIndex:v11];
+  dataIndex = [(MTRDoorLockClusterAppleAliroLockUserChangeEvent *)self dataIndex];
+  [(MTRDoorLockClusterAppleAliroLockUserChangeEvent *)v4 setDataIndex:dataIndex];
 
   return v4;
 }

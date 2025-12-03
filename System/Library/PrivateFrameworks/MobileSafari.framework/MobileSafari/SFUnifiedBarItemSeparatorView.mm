@@ -1,18 +1,18 @@
 @interface SFUnifiedBarItemSeparatorView
 - (NSString)backdropGroupName;
-- (SFUnifiedBarItemSeparatorView)initWithFrame:(CGRect)a3;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)_setCornerRadius:(double)a3;
-- (void)setBackdropGroupName:(id)a3;
+- (SFUnifiedBarItemSeparatorView)initWithFrame:(CGRect)frame;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)_setCornerRadius:(double)radius;
+- (void)setBackdropGroupName:(id)name;
 @end
 
 @implementation SFUnifiedBarItemSeparatorView
 
-- (SFUnifiedBarItemSeparatorView)initWithFrame:(CGRect)a3
+- (SFUnifiedBarItemSeparatorView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = SFUnifiedBarItemSeparatorView;
-  v3 = [(SFUnifiedBarItemSeparatorView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFUnifiedBarItemSeparatorView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD838]);
@@ -37,36 +37,36 @@
   return v3;
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   v5.receiver = self;
   v5.super_class = SFUnifiedBarItemSeparatorView;
   [(SFUnifiedBarItemSeparatorView *)&v5 _setContinuousCornerRadius:?];
-  [(UIView *)self->_fillView _setContinuousCornerRadius:a3];
+  [(UIView *)self->_fillView _setContinuousCornerRadius:radius];
 }
 
-- (void)_setCornerRadius:(double)a3
+- (void)_setCornerRadius:(double)radius
 {
   v5.receiver = self;
   v5.super_class = SFUnifiedBarItemSeparatorView;
   [(SFUnifiedBarItemSeparatorView *)&v5 _setCornerRadius:?];
-  [(UIView *)self->_fillView _setCornerRadius:a3];
+  [(UIView *)self->_fillView _setCornerRadius:radius];
 }
 
 - (NSString)backdropGroupName
 {
-  v2 = [(_UIVisualEffectBackdropView *)self->_backdropView captureGroup];
-  v3 = [v2 groupName];
+  captureGroup = [(_UIVisualEffectBackdropView *)self->_backdropView captureGroup];
+  groupName = [captureGroup groupName];
 
-  return v3;
+  return groupName;
 }
 
-- (void)setBackdropGroupName:(id)a3
+- (void)setBackdropGroupName:(id)name
 {
   backdropView = self->_backdropView;
-  v4 = a3;
-  v5 = [(_UIVisualEffectBackdropView *)backdropView captureGroup];
-  [v5 setGroupName:v4];
+  nameCopy = name;
+  captureGroup = [(_UIVisualEffectBackdropView *)backdropView captureGroup];
+  [captureGroup setGroupName:nameCopy];
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface _TUIFeedSectionDebugButton
 - (_TUIFeedSectionDebug)debug;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 @end
 
 @implementation _TUIFeedSectionDebugButton
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = location.y;
+  x = location.x;
+  interactionCopy = interaction;
   WeakRetained = objc_loadWeakRetained(&self->_debug);
-  v9 = [WeakRetained contextMenuInteraction:v7 configurationForMenuAtLocation:{x, y}];
+  v9 = [WeakRetained contextMenuInteraction:interactionCopy configurationForMenuAtLocation:{x, y}];
 
   return v9;
 }

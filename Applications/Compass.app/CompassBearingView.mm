@@ -1,7 +1,7 @@
 @interface CompassBearingView
-- (CompassBearingView)initWithFrame:(CGRect)a3;
+- (CompassBearingView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setCompassHeading:(double)a3;
+- (void)setCompassHeading:(double)heading;
 - (void)updateLayer;
 @end
 
@@ -46,12 +46,12 @@
   }
 }
 
-- (CompassBearingView)initWithFrame:(CGRect)a3
+- (CompassBearingView)initWithFrame:(CGRect)frame
 {
-  width = a3.size.width;
+  width = frame.size.width;
   v13.receiver = self;
   v13.super_class = CompassBearingView;
-  v4 = [(CompassBearingView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(CompassBearingView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v4)
   {
     v5 = +[CAShapeLayer layer];
@@ -69,8 +69,8 @@
     v10 = +[UIColor redColor];
     -[CAShapeLayer setFillColor:](v9, "setFillColor:", [v10 CGColor]);
 
-    v11 = [(CompassBearingView *)v4 layer];
-    [v11 addSublayer:v4->_bearingDeviationLayer];
+    layer = [(CompassBearingView *)v4 layer];
+    [layer addSublayer:v4->_bearingDeviationLayer];
   }
 
   return v4;
@@ -91,11 +91,11 @@
   }
 }
 
-- (void)setCompassHeading:(double)a3
+- (void)setCompassHeading:(double)heading
 {
   v4.receiver = self;
   v4.super_class = CompassBearingView;
-  [(CompassBearingView *)&v4 setCompassHeading:a3];
+  [(CompassBearingView *)&v4 setCompassHeading:heading];
   [(CompassBearingView *)self updateLayer];
 }
 

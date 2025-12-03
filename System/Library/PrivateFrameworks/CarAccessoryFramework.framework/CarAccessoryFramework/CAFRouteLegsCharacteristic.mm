@@ -3,38 +3,38 @@
 + (void)load;
 - (CAFRouteLegs)routeLegsValue;
 - (id)formattedValue;
-- (void)setRouteLegsValue:(id)a3;
+- (void)setRouteLegsValue:(id)value;
 @end
 
 @implementation CAFRouteLegsCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFRouteLegsCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (CAFRouteLegs)routeLegsValue
 {
-  v2 = [(CAFArrayCharacteristic *)self arrayValue];
-  v3 = [CAFRouteLegs routeLegsWithArray:v2];
+  arrayValue = [(CAFArrayCharacteristic *)self arrayValue];
+  v3 = [CAFRouteLegs routeLegsWithArray:arrayValue];
 
   return v3;
 }
 
-- (void)setRouteLegsValue:(id)a3
+- (void)setRouteLegsValue:(id)value
 {
-  v4 = [a3 arrayRepresentation];
-  [(CAFArrayCharacteristic *)self setArrayValue:v4];
+  arrayRepresentation = [value arrayRepresentation];
+  [(CAFArrayCharacteristic *)self setArrayValue:arrayRepresentation];
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFRouteLegsCharacteristic *)self routeLegsValue];
-  v3 = [v2 formattedValue];
+  routeLegsValue = [(CAFRouteLegsCharacteristic *)self routeLegsValue];
+  formattedValue = [routeLegsValue formattedValue];
 
-  return v3;
+  return formattedValue;
 }
 
 + (id)secondaryCharacteristicFormats

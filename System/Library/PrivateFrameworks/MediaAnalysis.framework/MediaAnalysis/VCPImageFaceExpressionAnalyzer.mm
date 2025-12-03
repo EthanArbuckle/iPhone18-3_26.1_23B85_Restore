@@ -1,21 +1,21 @@
 @interface VCPImageFaceExpressionAnalyzer
-- (VCPImageFaceExpressionAnalyzer)initWithFaceResults:(id)a3;
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 flags:(unint64_t *)a4 results:(id *)a5 cancel:(id)a6;
+- (VCPImageFaceExpressionAnalyzer)initWithFaceResults:(id)results;
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer flags:(unint64_t *)flags results:(id *)results cancel:(id)cancel;
 @end
 
 @implementation VCPImageFaceExpressionAnalyzer
 
-- (VCPImageFaceExpressionAnalyzer)initWithFaceResults:(id)a3
+- (VCPImageFaceExpressionAnalyzer)initWithFaceResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v10.receiver = self;
   v10.super_class = VCPImageFaceExpressionAnalyzer;
   v5 = [(VCPImageFaceExpressionAnalyzer *)&v10 init];
   if (v5)
   {
-    if (v4)
+    if (resultsCopy)
     {
-      v6 = [v4 objectForKey:@"FaceResults"];
+      v6 = [resultsCopy objectForKey:@"FaceResults"];
       faces = v5->_faces;
       v5->_faces = v6;
     }
@@ -26,29 +26,29 @@
   return v5;
 }
 
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 flags:(unint64_t *)a4 results:(id *)a5 cancel:(id)a6
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer flags:(unint64_t *)flags results:(id *)results cancel:(id)cancel
 {
   v59 = *MEMORY[0x1E69E9840];
-  v45 = a6;
-  *a5 = 0;
+  cancelCopy = cancel;
+  *results = 0;
   faces = self->_faces;
   if (faces && [(NSArray *)faces count])
   {
-    v42 = [MEMORY[0x1E695DF70] array];
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
+    array = [MEMORY[0x1E695DF70] array];
+    Width = CVPixelBufferGetWidth(buffer);
+    Height = CVPixelBufferGetHeight(buffer);
     v53 = 0uLL;
     v13 = objc_autoreleasePoolPush();
     v44 = +[VCPCNNSmileDetector detector];
     v43 = +[VCPCNNPoseEstimator estimator];
-    v36 = a5;
+    resultsCopy = results;
     context = v13;
     v41 = objc_alloc_init(VCPCNNGazeAnalysis);
     v14 = 0;
     v15 = -18;
     if (v44 && v43 && v41)
     {
-      *a4 &= 0xFFFFFFFFFFFFFFF9;
+      *flags &= 0xFFFFFFFFFFFFFFF9;
       v49 = 0u;
       v50 = 0u;
       v51 = 0u;
@@ -72,7 +72,7 @@
             }
 
             v21 = *(*(&v49 + 1) + 8 * i);
-            if (v45[2]())
+            if (cancelCopy[2]())
             {
               v14 = 0;
               v15 = -128;
@@ -101,8 +101,8 @@
             v26 = v61.size.width;
             v27 = v61.size.height;
             v47 = 0;
-            v15 = [v44 detectSmileForFace:a3 inBuffer:&v47 smile:?];
-            if (v15 || (v48.a = 0.0, (v15 = [v43 detectPoseForFace:a3 inBuffer:&v48 yaw:{x, y, v26, v27}]) != 0) || (v46 = 0, (v15 = -[VCPCNNGazeAnalysis detectEyeOpennessForFace:inBuffer:eyeOpenness:](v41, "detectEyeOpennessForFace:inBuffer:eyeOpenness:", a3, &v46, x, y, v26, v27)) != 0))
+            v15 = [v44 detectSmileForFace:buffer inBuffer:&v47 smile:?];
+            if (v15 || (v48.a = 0.0, (v15 = [v43 detectPoseForFace:buffer inBuffer:&v48 yaw:{x, y, v26, v27}]) != 0) || (v46 = 0, (v15 = -[VCPCNNGazeAnalysis detectEyeOpennessForFace:inBuffer:eyeOpenness:](v41, "detectEyeOpennessForFace:inBuffer:eyeOpenness:", buffer, &v46, x, y, v26, v27)) != 0))
             {
 
               v14 = 0;
@@ -137,9 +137,9 @@
             v57[0] = v33;
             v57[1] = v31;
             v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v57 forKeys:v56 count:2];
-            [v42 addObject:v34];
+            [array addObject:v34];
 
-            *a4 |= v29;
+            *flags |= v29;
           }
 
           v16 = [(NSArray *)obj countByEnumeratingWithState:&v49 objects:v58 count:16];
@@ -164,12 +164,12 @@ LABEL_29:
     }
 
     objc_autoreleasePoolPop(context);
-    if (v14 && [v42 count])
+    if (v14 && [array count])
     {
-      *a4 |= 0x20uLL;
+      *flags |= 0x20uLL;
       v54 = @"FaceResults";
-      v55 = v42;
-      *v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
+      v55 = array;
+      *resultsCopy = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
     }
   }
 

@@ -3,10 +3,10 @@
 - (CGRect)currentFrame;
 - (CGRect)presentationBounds;
 - (TSCHMultiDataAnimatingFrameLayer)init;
-- (TSCHMultiDataAnimatingFrameLayer)initWithLayer:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setPosition:(CGPoint)a3;
+- (TSCHMultiDataAnimatingFrameLayer)initWithLayer:(id)layer;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setPosition:(CGPoint)position;
 @end
 
 @implementation TSCHMultiDataAnimatingFrameLayer
@@ -27,12 +27,12 @@
   return result;
 }
 
-- (TSCHMultiDataAnimatingFrameLayer)initWithLayer:(id)a3
+- (TSCHMultiDataAnimatingFrameLayer)initWithLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   v9.receiver = self;
   v9.super_class = TSCHMultiDataAnimatingFrameLayer;
-  v5 = [(TSCHMultiDataAnimatingFrameLayer *)&v9 initWithLayer:v4];
+  v5 = [(TSCHMultiDataAnimatingFrameLayer *)&v9 initWithLayer:layerCopy];
   if (v5)
   {
     objc_opt_class();
@@ -49,33 +49,33 @@
   return v5;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v20.receiver = self;
   v20.super_class = TSCHMultiDataAnimatingFrameLayer;
-  [(TSCHMultiDataAnimatingFrameLayer *)&v20 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(TSCHMultiDataAnimatingFrameLayer *)&v20 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   objc_msgSend_bounds(self, v4, v5, v6, v7);
   objc_msgSend_setPresentationBounds_(self, v8, v9, v10, v11);
   objc_msgSend_position(self, v12, v13, v14, v15);
   objc_msgSend_setPresentationPosition_(self, v16, v17, v18, v19);
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v9.receiver = self;
   v9.super_class = TSCHMultiDataAnimatingFrameLayer;
   [(TSCHMultiDataAnimatingFrameLayer *)&v9 setBounds:?];
   objc_msgSend_setPresentationBounds_(self, v8, x, y, width, height);
 }
 
-- (void)setPosition:(CGPoint)a3
+- (void)setPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   v8.receiver = self;
   v8.super_class = TSCHMultiDataAnimatingFrameLayer;
   [(TSCHMultiDataAnimatingFrameLayer *)&v8 setPosition:?];

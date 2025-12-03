@@ -2,24 +2,24 @@
 - (BOOL)canPerform;
 - (BOOL)isValid;
 - (id)modelObject;
-- (void)updateModelObjectWithLibraryIdentifiers:(id)a3;
+- (void)updateModelObjectWithLibraryIdentifiers:(id)identifiers;
 @end
 
 @implementation _MPModelLibraryPlaylistEditChangeDependentOperation
 
 - (BOOL)canPerform
 {
-  v3 = [(_MPModelLibraryPlaylistEditChangeDependentOperation *)self modelObject];
+  modelObject = [(_MPModelLibraryPlaylistEditChangeDependentOperation *)self modelObject];
 
-  if (!v3)
+  if (!modelObject)
   {
     return 1;
   }
 
-  v4 = [(_MPModelLibraryPlaylistEditChangeDependentOperation *)self modelObject];
-  v5 = [v4 identifiers];
-  v6 = [v5 library];
-  v7 = [v6 persistentID] != 0;
+  modelObject2 = [(_MPModelLibraryPlaylistEditChangeDependentOperation *)self modelObject];
+  identifiers = [modelObject2 identifiers];
+  library = [identifiers library];
+  v7 = [library persistentID] != 0;
 
   return v7;
 }
@@ -27,13 +27,13 @@
 - (BOOL)isValid
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(_MPModelLibraryPlaylistEditChangeDependentOperation *)self modelObject];
+  modelObject = [(_MPModelLibraryPlaylistEditChangeDependentOperation *)self modelObject];
 
-  if (v3)
+  if (modelObject)
   {
-    v4 = [(_MPModelLibraryImportChangeDependentOperation *)self transientStateController];
-    v5 = [(_MPModelLibraryPlaylistEditChangeDependentOperation *)self modelObject];
-    v6 = [v4 transientAddStateForModelObject:v5];
+    transientStateController = [(_MPModelLibraryImportChangeDependentOperation *)self transientStateController];
+    modelObject2 = [(_MPModelLibraryPlaylistEditChangeDependentOperation *)self modelObject];
+    v6 = [transientStateController transientAddStateForModelObject:modelObject2];
 
     if (v6 == 2)
     {
@@ -47,26 +47,26 @@
 
     else
     {
-      v7 = [(_MPModelLibraryPlaylistEditChangeDependentOperation *)self modelObject];
-      v8 = [v7 identifiers];
-      v9 = [v8 library];
-      v10 = [v9 persistentID] != 0;
+      modelObject3 = [(_MPModelLibraryPlaylistEditChangeDependentOperation *)self modelObject];
+      identifiers = [modelObject3 identifiers];
+      library = [identifiers library];
+      v10 = [library persistentID] != 0;
     }
 
     v11 = os_log_create("com.apple.amp.mediaplayer", "Default");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(_MPModelLibraryPlaylistEditChangeDependentOperation *)self modelObject];
-      v13 = [v12 identifiers];
-      v14 = [v13 library];
+      modelObject4 = [(_MPModelLibraryPlaylistEditChangeDependentOperation *)self modelObject];
+      identifiers2 = [modelObject4 identifiers];
+      library2 = [identifiers2 library];
       v16 = 138544130;
-      v17 = self;
+      selfCopy = self;
       v18 = 1024;
       v19 = v10;
       v20 = 2048;
       v21 = v6;
       v22 = 2048;
-      v23 = [v14 persistentID];
+      persistentID = [library2 persistentID];
       _os_log_impl(&dword_1A238D000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ Returning isValid=%d for playlist with transient state=%ld, persistentID=%lld", &v16, 0x26u);
     }
   }
@@ -81,39 +81,39 @@
 
 - (id)modelObject
 {
-  v2 = [(_MPModelLibraryImportChangeDependentOperation *)self underlyingLibraryOperation];
-  v3 = v2;
-  if (v2)
+  underlyingLibraryOperation = [(_MPModelLibraryImportChangeDependentOperation *)self underlyingLibraryOperation];
+  v3 = underlyingLibraryOperation;
+  if (underlyingLibraryOperation)
   {
-    v4 = [v2 request];
-    v5 = [v4 playlist];
+    request = [underlyingLibraryOperation request];
+    playlist = [request playlist];
   }
 
   else
   {
-    v5 = 0;
+    playlist = 0;
   }
 
-  return v5;
+  return playlist;
 }
 
-- (void)updateModelObjectWithLibraryIdentifiers:(id)a3
+- (void)updateModelObjectWithLibraryIdentifiers:(id)identifiers
 {
-  v12 = a3;
-  v4 = [(_MPModelLibraryPlaylistEditChangeDependentOperation *)self modelObject];
-  v5 = v4;
-  if (v4)
+  identifiersCopy = identifiers;
+  modelObject = [(_MPModelLibraryPlaylistEditChangeDependentOperation *)self modelObject];
+  v5 = modelObject;
+  if (modelObject)
   {
-    v6 = [v4 identifiers];
-    v7 = [v6 unionSet:v12];
+    identifiers = [modelObject identifiers];
+    v7 = [identifiers unionSet:identifiersCopy];
 
-    v8 = [(_MPModelLibraryImportChangeDependentOperation *)self underlyingLibraryOperation];
-    v9 = v8;
-    if (v8)
+    underlyingLibraryOperation = [(_MPModelLibraryImportChangeDependentOperation *)self underlyingLibraryOperation];
+    v9 = underlyingLibraryOperation;
+    if (underlyingLibraryOperation)
     {
-      v10 = [v8 request];
+      request = [underlyingLibraryOperation request];
       v11 = [v5 copyWithIdentifiers:v7];
-      [v10 setPlaylist:v11];
+      [request setPlaylist:v11];
     }
   }
 }

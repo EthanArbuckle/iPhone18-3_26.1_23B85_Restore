@@ -13,10 +13,10 @@
   if (v2)
   {
     v2->_useInternalExtensions = 1;
-    v4 = [MEMORY[0x1E696AFB0] UUID];
-    v5 = [v4 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v3->_identifier;
-    v3->_identifier = v5;
+    v3->_identifier = uUIDString;
 
     v3->_showOnCoverScreen = 0;
   }

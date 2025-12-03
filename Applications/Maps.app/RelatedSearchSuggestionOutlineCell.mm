@@ -1,70 +1,70 @@
 @interface RelatedSearchSuggestionOutlineCell
-- (RelatedSearchSuggestionOutlineCell)initWithFrame:(CGRect)a3;
-- (id)_createMapsThemeButtonWithTitle:(id)a3;
-- (id)_createMapsThemeLabelWithTitle:(id)a3;
-- (void)_componentButtonTapped:(id)a3;
+- (RelatedSearchSuggestionOutlineCell)initWithFrame:(CGRect)frame;
+- (id)_createMapsThemeButtonWithTitle:(id)title;
+- (id)_createMapsThemeLabelWithTitle:(id)title;
+- (void)_componentButtonTapped:(id)tapped;
 - (void)_updateFromModel;
-- (void)setCellModel:(id)a3;
+- (void)setCellModel:(id)model;
 @end
 
 @implementation RelatedSearchSuggestionOutlineCell
 
-- (void)_componentButtonTapped:(id)a3
+- (void)_componentButtonTapped:(id)tapped
 {
-  v4 = [a3 tag];
-  v5 = [(RelatedSearchSuggestionOutlineCellModel *)self->_cellModel suggestion];
-  v11 = [v5 components];
+  v4 = [tapped tag];
+  suggestion = [(RelatedSearchSuggestionOutlineCellModel *)self->_cellModel suggestion];
+  components = [suggestion components];
 
-  v6 = v4 >= [v11 count];
-  v7 = v11;
+  v6 = v4 >= [components count];
+  v7 = components;
   if (!v6)
   {
-    v8 = [v11 objectAtIndexedSubscript:v4];
+    v8 = [components objectAtIndexedSubscript:v4];
     if ([v8 isRelatedSearchSuggestion])
     {
-      v9 = [(RelatedSearchSuggestionOutlineCellModel *)self->_cellModel delegate];
-      v10 = [v8 suggestion];
-      [v9 relatedSearchSuggestionOutlineCellDidTapActionButtonWithSuggestion:v10];
+      delegate = [(RelatedSearchSuggestionOutlineCellModel *)self->_cellModel delegate];
+      suggestion2 = [v8 suggestion];
+      [delegate relatedSearchSuggestionOutlineCellDidTapActionButtonWithSuggestion:suggestion2];
     }
 
-    v7 = v11;
+    v7 = components;
   }
 }
 
-- (id)_createMapsThemeLabelWithTitle:(id)a3
+- (id)_createMapsThemeLabelWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = [[MapsThemeLabel alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(MapsThemeLabel *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
   v6 = +[UIColor secondaryLabelColor];
   [(MapsThemeLabel *)v5 setTextColor:v6];
 
-  v7 = [(RelatedSearchSuggestionOutlineCell *)self _labelFont];
-  [(MapsThemeLabel *)v5 setFont:v7];
+  _labelFont = [(RelatedSearchSuggestionOutlineCell *)self _labelFont];
+  [(MapsThemeLabel *)v5 setFont:_labelFont];
 
   LODWORD(v8) = 1148846080;
   [(MapsThemeLabel *)v5 setContentHuggingPriority:0 forAxis:v8];
   LODWORD(v9) = 1148846080;
   [(MapsThemeLabel *)v5 setContentCompressionResistancePriority:0 forAxis:v9];
-  [(MapsThemeLabel *)v5 setText:v4];
+  [(MapsThemeLabel *)v5 setText:titleCopy];
 
   return v5;
 }
 
-- (id)_createMapsThemeButtonWithTitle:(id)a3
+- (id)_createMapsThemeButtonWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = [MapsThemeButton buttonWithType:0];
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v5 _setTouchInsets:{-7.0, -7.0, -7.0, -7.0}];
   [v5 setTitleColorProvider:&stru_1016309D0];
-  v6 = [(RelatedSearchSuggestionOutlineCell *)self _labelFont];
-  v7 = [v5 titleLabel];
-  [v7 setFont:v6];
+  _labelFont = [(RelatedSearchSuggestionOutlineCell *)self _labelFont];
+  titleLabel = [v5 titleLabel];
+  [titleLabel setFont:_labelFont];
 
   [v5 addTarget:self action:"_componentButtonTapped:" forControlEvents:64];
-  v8 = [v5 titleLabel];
-  [v8 setLineBreakMode:4];
+  titleLabel2 = [v5 titleLabel];
+  [titleLabel2 setLineBreakMode:4];
 
   if (MKApplicationLayoutDirectionIsRightToLeft())
   {
@@ -77,25 +77,25 @@
   }
 
   [v5 setContentHorizontalAlignment:v9];
-  [v5 setTitle:v4 forState:0];
+  [v5 setTitle:titleCopy forState:0];
 
   return v5;
 }
 
 - (void)_updateFromModel
 {
-  v3 = [(UIStackView *)self->_suggestionStackView subviews];
-  [v3 makeObjectsPerformSelector:"removeFromSuperview"];
+  subviews = [(UIStackView *)self->_suggestionStackView subviews];
+  [subviews makeObjectsPerformSelector:"removeFromSuperview"];
 
   v15 = +[NSMutableArray array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(RelatedSearchSuggestionOutlineCellModel *)self->_cellModel suggestion];
-  v5 = [v4 components];
+  suggestion = [(RelatedSearchSuggestionOutlineCellModel *)self->_cellModel suggestion];
+  components = [suggestion components];
 
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v6 = [components countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -107,29 +107,29 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(components);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 isRelatedSearchSuggestion];
-        v13 = [v11 displayText];
-        if (v12)
+        isRelatedSearchSuggestion = [v11 isRelatedSearchSuggestion];
+        displayText = [v11 displayText];
+        if (isRelatedSearchSuggestion)
         {
-          v14 = [(RelatedSearchSuggestionOutlineCell *)self _createMapsThemeButtonWithTitle:v13];
+          v14 = [(RelatedSearchSuggestionOutlineCell *)self _createMapsThemeButtonWithTitle:displayText];
 
           [v14 setTag:v8];
         }
 
         else
         {
-          v14 = [(RelatedSearchSuggestionOutlineCell *)self _createMapsThemeLabelWithTitle:v13];
+          v14 = [(RelatedSearchSuggestionOutlineCell *)self _createMapsThemeLabelWithTitle:displayText];
         }
 
         [(UIStackView *)self->_suggestionStackView addArrangedSubview:v14];
         ++v8;
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [components countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -138,29 +138,29 @@
   [NSLayoutConstraint activateConstraints:v15];
 }
 
-- (void)setCellModel:(id)a3
+- (void)setCellModel:(id)model
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_cellModel != v5)
+  modelCopy = model;
+  v6 = modelCopy;
+  if (self->_cellModel != modelCopy)
   {
-    v8 = v5;
-    v7 = [(RelatedSearchSuggestionOutlineCellModel *)v5 isEqual:?];
+    v8 = modelCopy;
+    v7 = [(RelatedSearchSuggestionOutlineCellModel *)modelCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_cellModel, a3);
+      objc_storeStrong(&self->_cellModel, model);
       [(RelatedSearchSuggestionOutlineCell *)self _updateFromModel];
       v6 = v8;
     }
   }
 }
 
-- (RelatedSearchSuggestionOutlineCell)initWithFrame:(CGRect)a3
+- (RelatedSearchSuggestionOutlineCell)initWithFrame:(CGRect)frame
 {
   v29.receiver = self;
   v29.super_class = RelatedSearchSuggestionOutlineCell;
-  v3 = [(SidebarOutlineCell *)&v29 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SidebarOutlineCell *)&v29 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[UIStackView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
@@ -177,30 +177,30 @@
     v7 = NSStringFromClass(v6);
     [(RelatedSearchSuggestionOutlineCell *)v3 setAccessibilityIdentifier:v7];
 
-    v8 = [(RelatedSearchSuggestionOutlineCell *)v3 contentView];
-    [v8 addSubview:v3->_suggestionStackView];
+    contentView = [(RelatedSearchSuggestionOutlineCell *)v3 contentView];
+    [contentView addSubview:v3->_suggestionStackView];
 
-    v27 = [(UIStackView *)v3->_suggestionStackView topAnchor];
-    v28 = [(RelatedSearchSuggestionOutlineCell *)v3 contentView];
-    v26 = [v28 topAnchor];
-    v25 = [v27 constraintEqualToAnchor:v26];
+    topAnchor = [(UIStackView *)v3->_suggestionStackView topAnchor];
+    contentView2 = [(RelatedSearchSuggestionOutlineCell *)v3 contentView];
+    topAnchor2 = [contentView2 topAnchor];
+    v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v30[0] = v25;
-    v23 = [(UIStackView *)v3->_suggestionStackView leadingAnchor];
-    v24 = [(RelatedSearchSuggestionOutlineCell *)v3 contentView];
-    v22 = [v24 layoutMarginsGuide];
-    v21 = [v22 leadingAnchor];
-    v20 = [v23 constraintEqualToAnchor:v21];
+    leadingAnchor = [(UIStackView *)v3->_suggestionStackView leadingAnchor];
+    contentView3 = [(RelatedSearchSuggestionOutlineCell *)v3 contentView];
+    layoutMarginsGuide = [contentView3 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v30[1] = v20;
-    v19 = [(UIStackView *)v3->_suggestionStackView trailingAnchor];
-    v9 = [(RelatedSearchSuggestionOutlineCell *)v3 contentView];
-    v10 = [v9 layoutMarginsGuide];
-    v11 = [v10 trailingAnchor];
-    v12 = [v19 constraintEqualToAnchor:v11];
+    trailingAnchor = [(UIStackView *)v3->_suggestionStackView trailingAnchor];
+    contentView4 = [(RelatedSearchSuggestionOutlineCell *)v3 contentView];
+    layoutMarginsGuide2 = [contentView4 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v30[2] = v12;
-    v13 = [(UIStackView *)v3->_suggestionStackView bottomAnchor];
-    v14 = [(RelatedSearchSuggestionOutlineCell *)v3 contentView];
-    v15 = [v14 bottomAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15];
+    bottomAnchor = [(UIStackView *)v3->_suggestionStackView bottomAnchor];
+    contentView5 = [(RelatedSearchSuggestionOutlineCell *)v3 contentView];
+    bottomAnchor2 = [contentView5 bottomAnchor];
+    v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v30[3] = v16;
     v17 = [NSArray arrayWithObjects:v30 count:4];
     [NSLayoutConstraint activateConstraints:v17];

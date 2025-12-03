@@ -1,8 +1,8 @@
 @interface AWDigitizerButtonKeyboardAttentionEvent
-- (AWDigitizerButtonKeyboardAttentionEvent)initWithCoder:(id)a3;
-- (AWDigitizerButtonKeyboardAttentionEvent)initWithTimestamp:(double)a3 tagIndex:(unint64_t)a4 eventMask:(unint64_t)a5 digitizerButtonKeyboardMetadata:(AWDigitizerButtonKeyboardMetadata *)a6;
+- (AWDigitizerButtonKeyboardAttentionEvent)initWithCoder:(id)coder;
+- (AWDigitizerButtonKeyboardAttentionEvent)initWithTimestamp:(double)timestamp tagIndex:(unint64_t)index eventMask:(unint64_t)mask digitizerButtonKeyboardMetadata:(AWDigitizerButtonKeyboardMetadata *)metadata;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)validateMask;
 @end
 
@@ -25,40 +25,40 @@
   v7 = v6;
   senderID = self->_senderID;
   displayUUID = self->_displayUUID;
-  v10 = [(AWAttentionEvent *)self tagIndex];
+  tagIndex = [(AWAttentionEvent *)self tagIndex];
   v11 = [(AWAttentionEvent *)self tag];
-  v12 = tagDescription(v10, v11);
+  v12 = tagDescription(tagIndex, v11);
   v13 = [v3 stringWithFormat:@"<%@: %p> (timestamp: %13.5f sender %llu displayUUID %@ %@)", v5, self, v7, senderID, displayUUID, v12];
 
   return v13;
 }
 
-- (AWDigitizerButtonKeyboardAttentionEvent)initWithTimestamp:(double)a3 tagIndex:(unint64_t)a4 eventMask:(unint64_t)a5 digitizerButtonKeyboardMetadata:(AWDigitizerButtonKeyboardMetadata *)a6
+- (AWDigitizerButtonKeyboardAttentionEvent)initWithTimestamp:(double)timestamp tagIndex:(unint64_t)index eventMask:(unint64_t)mask digitizerButtonKeyboardMetadata:(AWDigitizerButtonKeyboardMetadata *)metadata
 {
   v11.receiver = self;
   v11.super_class = AWDigitizerButtonKeyboardAttentionEvent;
-  v7 = [(AWAttentionEvent *)&v11 initWithTimestamp:a4 tagIndex:a5 eventMask:a3];
+  v7 = [(AWAttentionEvent *)&v11 initWithTimestamp:index tagIndex:mask eventMask:timestamp];
   v8 = v7;
-  if (a6 && v7)
+  if (metadata && v7)
   {
-    var1 = a6->var1;
-    v7->_senderID = a6->var0;
+    var1 = metadata->var1;
+    v7->_senderID = metadata->var0;
     objc_storeStrong(&v7->_displayUUID, var1);
   }
 
   return v8;
 }
 
-- (AWDigitizerButtonKeyboardAttentionEvent)initWithCoder:(id)a3
+- (AWDigitizerButtonKeyboardAttentionEvent)initWithCoder:(id)coder
 {
   v20 = *MEMORY[0x1E69E9840];
   v18 = 0;
-  v4 = a3;
-  v5 = decodeDouble(v4, &v18, @"timestamp");
-  v6 = decodeUInt64(v4, &v18, @"senderID");
-  v7 = decodeString(v4, &v18, @"displayUUID");
-  v8 = decodeUInt64(v4, &v18, @"tagIndex");
-  v9 = decodeUInt64(v4, &v18, @"eventMask");
+  coderCopy = coder;
+  v5 = decodeDouble(coderCopy, &v18, @"timestamp");
+  v6 = decodeUInt64(coderCopy, &v18, @"senderID");
+  v7 = decodeString(coderCopy, &v18, @"displayUUID");
+  v8 = decodeUInt64(coderCopy, &v18, @"tagIndex");
+  v9 = decodeUInt64(coderCopy, &v18, @"eventMask");
 
   if (v18 == 1)
   {
@@ -102,21 +102,21 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedLongLong:{-[AWAttentionEvent eventMask](self, "eventMask")}];
-  [v5 encodeObject:v6 forKey:@"eventMask"];
+  [coderCopy encodeObject:v6 forKey:@"eventMask"];
 
   [(AWAttentionEvent *)self timestamp];
-  [v5 encodeDouble:@"timestamp" forKey:?];
+  [coderCopy encodeDouble:@"timestamp" forKey:?];
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_senderID];
-  [v5 encodeObject:v7 forKey:@"senderID"];
+  [coderCopy encodeObject:v7 forKey:@"senderID"];
 
-  [v5 encodeObject:self->_displayUUID forKey:@"displayUUID"];
+  [coderCopy encodeObject:self->_displayUUID forKey:@"displayUUID"];
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[AWAttentionEvent tagIndex](self, "tagIndex")}];
-  [v5 encodeObject:v8 forKey:@"tagIndex"];
+  [coderCopy encodeObject:v8 forKey:@"tagIndex"];
 }
 
 @end

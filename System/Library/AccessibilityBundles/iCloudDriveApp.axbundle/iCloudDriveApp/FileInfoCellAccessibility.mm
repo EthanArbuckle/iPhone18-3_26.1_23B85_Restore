@@ -1,6 +1,6 @@
 @interface FileInfoCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (FileInfoCellAccessibility)initWithNameAndValue:(id)a3 value:(id)a4 maxLines:(int64_t)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (FileInfoCellAccessibility)initWithNameAndValue:(id)value value:(id)a4 maxLines:(int64_t)lines;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -8,20 +8,20 @@
 
 @implementation FileInfoCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FileInfoCell" hasInstanceMethod:@"nameLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FileInfoCell" hasInstanceMethod:@"valueLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FileInfoCell" hasInstanceMethod:@"initWithNameAndValue: value: maxLines:" withFullSignature:{"@", "@", "@", "q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FileInfoCell" hasInstanceMethod:@"nameLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FileInfoCell" hasInstanceMethod:@"valueLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FileInfoCell" hasInstanceMethod:@"initWithNameAndValue: value: maxLines:" withFullSignature:{"@", "@", "@", "q", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(FileInfoCellAccessibility *)self safeValueForKey:@"nameLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
@@ -84,11 +84,11 @@
   v10 = *MEMORY[0x29EDCA608];
 }
 
-- (FileInfoCellAccessibility)initWithNameAndValue:(id)a3 value:(id)a4 maxLines:(int64_t)a5
+- (FileInfoCellAccessibility)initWithNameAndValue:(id)value value:(id)a4 maxLines:(int64_t)lines
 {
   v7.receiver = self;
   v7.super_class = FileInfoCellAccessibility;
-  v5 = [(FileInfoCellAccessibility *)&v7 initWithNameAndValue:a3 value:a4 maxLines:a5];
+  v5 = [(FileInfoCellAccessibility *)&v7 initWithNameAndValue:value value:a4 maxLines:lines];
   [(FileInfoCellAccessibility *)v5 _accessibilityLoadAccessibilityInformation];
 
   return v5;

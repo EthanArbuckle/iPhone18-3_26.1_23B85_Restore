@@ -1,17 +1,17 @@
 @interface MediaPlaybackConfigurationItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)debugDescription;
 - (_TtC11WorkoutCore30MediaPlaybackConfigurationItem)init;
 @end
 
 @implementation MediaPlaybackConfigurationItem
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   swift_getObjectType();
-  if (a3)
+  if (equal)
   {
-    v5 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -20,7 +20,7 @@
   else
   {
     memset(v12, 0, sizeof(v12));
-    v6 = self;
+    selfCopy2 = self;
   }
 
   outlined init with copy of Any?(v12, v10);
@@ -47,7 +47,7 @@ LABEL_9:
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MediaPlaybackConfigurationItem.debugDescription.getter();
   v5 = v4;
 

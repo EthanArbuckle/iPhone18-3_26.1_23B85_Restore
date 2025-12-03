@@ -1,58 +1,58 @@
 @interface SUUIVerticalLockupCollectionViewCell
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-- (SUUIVerticalLockupCollectionViewCell)initWithFrame:(CGRect)a3;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
+- (SUUIVerticalLockupCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)_reloadHighlightImageView;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setPerspectiveTargetView:(id)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setPerspectiveTargetView:(id)view;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation SUUIVerticalLockupCollectionViewCell
 
-- (SUUIVerticalLockupCollectionViewCell)initWithFrame:(CGRect)a3
+- (SUUIVerticalLockupCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = SUUIVerticalLockupCollectionViewCell;
-  v3 = [(SUUICollectionViewCell *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUICollectionViewCell *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SUUIVerticalLockupCollectionViewCell *)v3 contentView];
+    contentView = [(SUUIVerticalLockupCollectionViewCell *)v3 contentView];
     v6 = [SUUIVerticalLockupView alloc];
-    [v5 bounds];
+    [contentView bounds];
     v7 = [(SUUIVerticalLockupView *)v6 initWithFrame:?];
     lockupView = v4->_lockupView;
     v4->_lockupView = v7;
 
-    [v5 addSubview:v4->_lockupView];
+    [contentView addSubview:v4->_lockupView];
   }
 
   return v4;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   lockupView = self->_lockupView;
-  v6 = [v4 backgroundColor];
-  [(SUUIViewReuseView *)lockupView setBackgroundColor:v6];
+  backgroundColor = [attributesCopy backgroundColor];
+  [(SUUIViewReuseView *)lockupView setBackgroundColor:backgroundColor];
 
   v13.receiver = self;
   v13.super_class = SUUIVerticalLockupCollectionViewCell;
-  [(SUUICollectionViewCell *)&v13 applyLayoutAttributes:v4];
-  [v4 zoomingImageWidth];
+  [(SUUICollectionViewCell *)&v13 applyLayoutAttributes:attributesCopy];
+  [attributesCopy zoomingImageWidth];
   v8 = v7;
   v9 = 1.0;
   v10 = 1.0;
   if (v7 > 0.00000011920929)
   {
-    [v4 zoomingImageImposedAlphaOfOtherViews];
+    [attributesCopy zoomingImageImposedAlphaOfOtherViews];
     v10 = v11;
-    [v4 zoomingImageAlpha];
+    [attributesCopy zoomingImageAlpha];
     v9 = v12;
   }
 
@@ -61,24 +61,24 @@
   [(SUUIVerticalLockupView *)self->_lockupView setZoomingImageWidth:v8];
 }
 
-- (void)setPerspectiveTargetView:(id)a3
+- (void)setPerspectiveTargetView:(id)view
 {
   lockupView = self->_lockupView;
-  v4 = a3;
-  [(SUUIVerticalLockupView *)lockupView setPerspectiveTargetView:v4];
+  viewCopy = view;
+  [(SUUIVerticalLockupView *)lockupView setPerspectiveTargetView:viewCopy];
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  [SUUIVerticalLockupView preferredSizeForViewElement:a3 context:a4];
+  [SUUIVerticalLockupView preferredSizeForViewElement:element context:context];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  [SUUIVerticalLockupView sizeThatFitsWidth:a4 viewElement:a5 context:a3];
+  [SUUIVerticalLockupView sizeThatFitsWidth:element viewElement:context context:width];
   result.height = v6;
   result.width = v5;
   return result;
@@ -90,34 +90,34 @@
   v5.super_class = SUUIVerticalLockupCollectionViewCell;
   [(SUUICollectionViewCell *)&v5 layoutSubviews];
   lockupView = self->_lockupView;
-  v4 = [(SUUIVerticalLockupCollectionViewCell *)self contentView];
-  [v4 bounds];
+  contentView = [(SUUIVerticalLockupCollectionViewCell *)self contentView];
+  [contentView bounds];
   [(SUUIVerticalLockupView *)lockupView setFrame:?];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   lockupView = self->_lockupView;
-  v5 = a3;
-  [(SUUIViewReuseView *)lockupView setBackgroundColor:v5];
+  colorCopy = color;
+  [(SUUIViewReuseView *)lockupView setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SUUIVerticalLockupCollectionViewCell;
-  [(SUUICollectionViewCell *)&v6 setBackgroundColor:v5];
+  [(SUUICollectionViewCell *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = SUUIVerticalLockupCollectionViewCell;
-  [(SUUICollectionViewCell *)&v4 setHighlighted:a3];
+  [(SUUICollectionViewCell *)&v4 setHighlighted:highlighted];
   [(SUUIVerticalLockupCollectionViewCell *)self _reloadHighlightImageView];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v4.receiver = self;
   v4.super_class = SUUIVerticalLockupCollectionViewCell;
-  [(SUUICollectionViewCell *)&v4 setSelected:a3];
+  [(SUUICollectionViewCell *)&v4 setSelected:selected];
   [(SUUIVerticalLockupCollectionViewCell *)self _reloadHighlightImageView];
 }
 
@@ -150,8 +150,8 @@
 
         [(SUUIImageView *)self->_highlightImageView setAlpha:0.300000012];
         v9 = self->_highlightImageView;
-        v10 = [MEMORY[0x277D75348] clearColor];
-        [(SUUIImageView *)v9 setBackgroundColor:v10];
+        clearColor = [MEMORY[0x277D75348] clearColor];
+        [(SUUIImageView *)v9 setBackgroundColor:clearColor];
 
         highlightImageView = self->_highlightImageView;
         v4 = v29[5];
@@ -163,9 +163,9 @@
       [v29[5] center];
       [(SUUIImageView *)v11 setCenter:?];
       v12 = self->_highlightImageView;
-      v13 = [v29[5] image];
-      v14 = [MEMORY[0x277D75348] blackColor];
-      v15 = [v13 _flatImageWithColor:v14];
+      image = [v29[5] image];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      v15 = [image _flatImageWithColor:blackColor];
       [(SUUIImageView *)v12 setImage:v15];
 
       v16 = self->_highlightImageView;

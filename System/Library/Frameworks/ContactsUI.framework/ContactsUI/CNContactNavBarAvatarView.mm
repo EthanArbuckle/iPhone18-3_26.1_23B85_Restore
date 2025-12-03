@@ -1,30 +1,30 @@
 @interface CNContactNavBarAvatarView
-- (CNContactNavBarAvatarView)initWithFrame:(CGRect)a3;
-- (void)setContact:(id)a3;
-- (void)setShowing:(BOOL)a3 animated:(BOOL)a4;
+- (CNContactNavBarAvatarView)initWithFrame:(CGRect)frame;
+- (void)setContact:(id)contact;
+- (void)setShowing:(BOOL)showing animated:(BOOL)animated;
 @end
 
 @implementation CNContactNavBarAvatarView
 
-- (void)setShowing:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowing:(BOOL)showing animated:(BOOL)animated
 {
-  if (self->_showing != a3)
+  if (self->_showing != showing)
   {
     v16 = v7;
     v17 = v6;
     v18 = v4;
     v19 = v5;
-    v8 = a4;
-    self->_showing = a3;
+    animatedCopy = animated;
+    self->_showing = showing;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __49__CNContactNavBarAvatarView_setShowing_animated___block_invoke;
     aBlock[3] = &unk_1E74E4768;
     aBlock[4] = self;
-    v15 = a3;
+    showingCopy = showing;
     v9 = _Block_copy(aBlock);
     v10 = v9;
-    if (v8)
+    if (animatedCopy)
     {
       v11 = MEMORY[0x1E69DD250];
       v12[0] = MEMORY[0x1E69E9820];
@@ -58,14 +58,14 @@ void __49__CNContactNavBarAvatarView_setShowing_animated___block_invoke(uint64_t
   [v2 setAlpha:v1];
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_contact, a3);
-  if (v5)
+  contactCopy = contact;
+  objc_storeStrong(&self->_contact, contact);
+  if (contactCopy)
   {
-    v12[0] = v5;
+    v12[0] = contactCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   }
 
@@ -74,29 +74,29 @@ void __49__CNContactNavBarAvatarView_setShowing_animated___block_invoke(uint64_t
     v6 = MEMORY[0x1E695E0F0];
   }
 
-  v7 = [(CNContactNavBarAvatarView *)self avatarView];
-  v8 = [v7 contacts];
-  v9 = [v8 _cn_isIdenticalToArray:v6];
+  avatarView = [(CNContactNavBarAvatarView *)self avatarView];
+  contacts = [avatarView contacts];
+  v9 = [contacts _cn_isIdenticalToArray:v6];
 
-  v10 = [(CNContactNavBarAvatarView *)self avatarView];
-  v11 = v10;
+  avatarView2 = [(CNContactNavBarAvatarView *)self avatarView];
+  v11 = avatarView2;
   if (v9)
   {
-    [v10 contactDidChange];
+    [avatarView2 contactDidChange];
   }
 
   else
   {
-    [v10 setContacts:v6];
+    [avatarView2 setContacts:v6];
   }
 }
 
-- (CNContactNavBarAvatarView)initWithFrame:(CGRect)a3
+- (CNContactNavBarAvatarView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v12.receiver = self;
   v12.super_class = CNContactNavBarAvatarView;
   v7 = [(CNContactNavBarAvatarView *)&v12 initWithFrame:?];

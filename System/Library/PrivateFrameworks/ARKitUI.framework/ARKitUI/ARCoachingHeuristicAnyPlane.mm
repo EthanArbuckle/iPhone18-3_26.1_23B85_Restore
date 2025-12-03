@@ -1,6 +1,6 @@
 @interface ARCoachingHeuristicAnyPlane
 - (int64_t)requirements;
-- (void)updateWithFrame:(id)a3 cache:(id)a4;
+- (void)updateWithFrame:(id)frame cache:(id)cache;
 @end
 
 @implementation ARCoachingHeuristicAnyPlane
@@ -18,9 +18,9 @@
   }
 }
 
-- (void)updateWithFrame:(id)a3 cache:(id)a4
+- (void)updateWithFrame:(id)frame cache:(id)cache
 {
-  v5 = [a4 hasAnyPlane:a3];
+  v5 = [cache hasAnyPlane:frame];
 
   [(ARCoachingHeuristic *)self setSatisfied:v5];
 }

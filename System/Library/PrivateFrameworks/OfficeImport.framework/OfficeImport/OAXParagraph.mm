@@ -1,53 +1,53 @@
 @interface OAXParagraph
-+ (void)readParagraph:(_xmlNode *)a3 paragraph:(id)a4 drawingState:(id)a5;
++ (void)readParagraph:(_xmlNode *)paragraph paragraph:(id)a4 drawingState:(id)state;
 @end
 
 @implementation OAXParagraph
 
-+ (void)readParagraph:(_xmlNode *)a3 paragraph:(id)a4 drawingState:(id)a5
++ (void)readParagraph:(_xmlNode *)paragraph paragraph:(id)a4 drawingState:(id)state
 {
   v41 = a4;
-  v7 = a5;
-  v8 = [v7 OAXMainNamespace];
-  v9 = OCXFindChild(a3, v8, "pPr");
+  stateCopy = state;
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v9 = OCXFindChild(paragraph, oAXMainNamespace, "pPr");
 
   if (v9)
   {
-    v10 = [v41 properties];
-    [OAXTextParaPropertyBag readParagraphProperties:v9 paragraphProperties:v10 drawingState:v7];
+    properties = [v41 properties];
+    [OAXTextParaPropertyBag readParagraphProperties:v9 paragraphProperties:properties drawingState:stateCopy];
   }
 
-  v11 = [v7 OAXMainNamespace];
-  v12 = OCXFindChild(a3, v11, "endParaRPr");
+  oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+  v12 = OCXFindChild(paragraph, oAXMainNamespace2, "endParaRPr");
 
   p_vtable = &OBJC_METACLASS___OAXFill.vtable;
   if (v12)
   {
-    v14 = [v41 paragraphEndCharacterProperties];
-    [OAXTextCharPropertyBag readCharacterProperties:v12 characterProperties:v14 drawingState:v7];
+    paragraphEndCharacterProperties = [v41 paragraphEndCharacterProperties];
+    [OAXTextCharPropertyBag readCharacterProperties:v12 characterProperties:paragraphEndCharacterProperties drawingState:stateCopy];
   }
 
-  v15 = OCXFirstChild(a3);
+  v15 = OCXFirstChild(paragraph);
   v40 = *MEMORY[0x277CBE648];
   while (v15)
   {
     if (xmlStrEqual(v15->name, "r"))
     {
-      v16 = [v41 addRegularTextRun];
-      v17 = [v7 OAXMainNamespace];
-      v18 = OCXFindChild(v15, v17, "rPr");
+      addRegularTextRun = [v41 addRegularTextRun];
+      oAXMainNamespace3 = [stateCopy OAXMainNamespace];
+      v18 = OCXFindChild(v15, oAXMainNamespace3, "rPr");
 
-      v19 = [v16 properties];
-      [p_vtable + 222 readCharacterProperties:v18 characterProperties:v19 drawingState:v7];
+      properties2 = [addRegularTextRun properties];
+      [p_vtable + 222 readCharacterProperties:v18 characterProperties:properties2 drawingState:stateCopy];
 
-      v20 = [v7 OAXMainNamespace];
-      v21 = OCXFindChild(v15, v20, "t");
+      oAXMainNamespace4 = [stateCopy OAXMainNamespace];
+      v21 = OCXFindChild(v15, oAXMainNamespace4, "t");
 
-      v22 = [objc_alloc(MEMORY[0x277CCACA8]) tc_initWithContentOfXmlNode:v21];
-      if (v22)
+      properties3 = [objc_alloc(MEMORY[0x277CCACA8]) tc_initWithContentOfXmlNode:v21];
+      if (properties3)
       {
-        v23 = [v16 text];
-        [v23 setString:v22];
+        text = [addRegularTextRun text];
+        [text setString:properties3];
         goto LABEL_10;
       }
 
@@ -56,20 +56,20 @@
 
     if (xmlStrEqual(v15->name, "br"))
     {
-      v16 = [v41 addTextLineBreak];
-      v24 = [v7 OAXMainNamespace];
-      v25 = OCXFindChild(v15, v24, "rPr");
+      addRegularTextRun = [v41 addTextLineBreak];
+      oAXMainNamespace5 = [stateCopy OAXMainNamespace];
+      v25 = OCXFindChild(v15, oAXMainNamespace5, "rPr");
 
-      v22 = [v16 properties];
-      [p_vtable + 222 readCharacterProperties:v25 characterProperties:v22 drawingState:v7];
+      properties3 = [addRegularTextRun properties];
+      [p_vtable + 222 readCharacterProperties:v25 characterProperties:properties3 drawingState:stateCopy];
       goto LABEL_13;
     }
 
     if (xmlStrEqual(v15->name, "fld"))
     {
-      v22 = CXRequiredStringAttribute(v15, CXNoNamespace, "type");
-      v23 = CXRequiredStringAttribute(v15, CXNoNamespace, "id");
-      v26 = [OAXTextFieldIdentity identityWithGuid:v23 type:v22];
+      properties3 = CXRequiredStringAttribute(v15, CXNoNamespace, "type");
+      text = CXRequiredStringAttribute(v15, CXNoNamespace, "id");
+      v26 = [OAXTextFieldIdentity identityWithGuid:text type:properties3];
       if (OAXDateTimeIdentityToFormatMap(void)::once != -1)
       {
         +[OAXParagraph readParagraph:paragraph:drawingState:];
@@ -81,35 +81,35 @@
       if (v28)
       {
         v29 = [v41 addDateTimeFieldWithFormat:objc_msgSend(v28, "intValue")];
-        v16 = 0;
+        addRegularTextRun = 0;
       }
 
       else
       {
-        v30 = [v7 client];
-        v16 = [v30 readClientTextField:v15 identity:v26 paragraph:v41 state:v7];
+        client = [stateCopy client];
+        addRegularTextRun = [client readClientTextField:v15 identity:v26 paragraph:v41 state:stateCopy];
 
-        if (v16 || ([v41 addGenericTextFieldWithGuid:v23 type:v22], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
+        if (addRegularTextRun || ([v41 addGenericTextFieldWithGuid:text type:properties3], (addRegularTextRun = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v31 = [v7 OAXMainNamespace];
-          v32 = OCXFindChild(v15, v31, "rPr");
+          oAXMainNamespace6 = [stateCopy OAXMainNamespace];
+          v32 = OCXFindChild(v15, oAXMainNamespace6, "rPr");
 
-          v33 = [v16 properties];
-          [OAXTextCharPropertyBag readCharacterProperties:v32 characterProperties:v33 drawingState:v7];
+          properties4 = [addRegularTextRun properties];
+          [OAXTextCharPropertyBag readCharacterProperties:v32 characterProperties:properties4 drawingState:stateCopy];
 
-          v34 = [v7 OAXMainNamespace];
-          v35 = OCXFindChild(v15, v34, "pPr");
+          oAXMainNamespace7 = [stateCopy OAXMainNamespace];
+          v35 = OCXFindChild(v15, oAXMainNamespace7, "pPr");
 
-          v36 = [v16 paragraphProperties];
-          [OAXTextParaPropertyBag readParagraphProperties:v35 paragraphProperties:v36 drawingState:v7];
+          paragraphProperties = [addRegularTextRun paragraphProperties];
+          [OAXTextParaPropertyBag readParagraphProperties:v35 paragraphProperties:paragraphProperties drawingState:stateCopy];
 
-          v37 = [v7 OAXMainNamespace];
-          v38 = OCXFindChild(v15, v37, "t");
+          oAXMainNamespace8 = [stateCopy OAXMainNamespace];
+          v38 = OCXFindChild(v15, oAXMainNamespace8, "t");
 
           if (v38)
           {
             v39 = [objc_alloc(MEMORY[0x277CCACA8]) tc_initWithContentOfXmlNode:v38];
-            [v16 setText:v39];
+            [addRegularTextRun setText:v39];
             p_vtable = (&OBJC_METACLASS___OAXFill + 24);
           }
 

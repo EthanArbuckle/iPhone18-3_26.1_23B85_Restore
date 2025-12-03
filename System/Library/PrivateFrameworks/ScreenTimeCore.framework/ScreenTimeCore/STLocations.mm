@@ -10,9 +10,9 @@
 
 + (NSURL)applicationSupportDirectory
 {
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v11 = 0;
-  v5 = [v4 URLForDirectory:14 inDomain:1 appropriateForURL:0 create:0 error:&v11];
+  v5 = [defaultManager URLForDirectory:14 inDomain:1 appropriateForURL:0 create:0 error:&v11];
   v6 = v11;
 
   if (v5)
@@ -28,8 +28,8 @@
       +[(STLocations *)v6];
     }
 
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"STLocations.m" lineNumber:28 description:@"applicationSupportDirectory must not be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"STLocations.m" lineNumber:28 description:@"applicationSupportDirectory must not be nil"];
 
     v7 = 0;
   }
@@ -39,9 +39,9 @@
 
 + (NSURL)cachesDirectory
 {
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v11 = 0;
-  v5 = [v4 URLForDirectory:13 inDomain:1 appropriateForURL:0 create:0 error:&v11];
+  v5 = [defaultManager URLForDirectory:13 inDomain:1 appropriateForURL:0 create:0 error:&v11];
   v6 = v11;
 
   if (v5)
@@ -57,8 +57,8 @@
       +[(STLocations *)v6];
     }
 
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"STLocations.m" lineNumber:41 description:@"cachesDirectory must not be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"STLocations.m" lineNumber:41 description:@"cachesDirectory must not be nil"];
 
     v7 = 0;
   }
@@ -68,8 +68,8 @@
 
 + (NSURL)familyPhotosCacheDirectory
 {
-  v2 = [a1 cachesDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"FamilyPhotos" isDirectory:1];
+  cachesDirectory = [self cachesDirectory];
+  v3 = [cachesDirectory URLByAppendingPathComponent:@"FamilyPhotos" isDirectory:1];
 
   return v3;
 }
@@ -78,7 +78,7 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1B831F000, a2, OS_LOG_TYPE_ERROR, "Unable to determine data directory: %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
@@ -87,7 +87,7 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1B831F000, a2, OS_LOG_TYPE_ERROR, "Unable to determine caches directory: %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

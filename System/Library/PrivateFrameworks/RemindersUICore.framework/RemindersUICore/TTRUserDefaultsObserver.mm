@@ -11,8 +11,8 @@
   v2 = OBJC_IVAR____TtC15RemindersUICore23TTRUserDefaultsObserver_removed;
   if ((*(&self->super.isa + OBJC_IVAR____TtC15RemindersUICore23TTRUserDefaultsObserver_removed) & 1) == 0)
   {
-    v4 = self;
-    sub_21DA52394(v4);
+    selfCopy = self;
+    sub_21DA52394(selfCopy);
     *(&self->super.isa + v2) = 1;
   }
 }
@@ -23,7 +23,7 @@
   v4 = OBJC_IVAR____TtC15RemindersUICore23TTRUserDefaultsObserver_removed;
   if (*(&self->super.isa + OBJC_IVAR____TtC15RemindersUICore23TTRUserDefaultsObserver_removed) == 1)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else

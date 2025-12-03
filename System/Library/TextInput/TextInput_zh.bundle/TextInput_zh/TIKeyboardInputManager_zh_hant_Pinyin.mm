@@ -23,12 +23,12 @@
 
 - (BOOL)usesComposingInput
 {
-  v2 = [(TIKeyboardInputManagerBase *)self currentInputModeIdentifier];
+  currentInputModeIdentifier = [(TIKeyboardInputManagerBase *)self currentInputModeIdentifier];
   v3 = TIInputModeGetComponentsFromIdentifier();
   v4 = [v3 objectForKey:@"sw"];
 
-  LOBYTE(v2) = [v4 isEqualToString:@"Pinyin-Traditional"];
-  return v2;
+  LOBYTE(currentInputModeIdentifier) = [v4 isEqualToString:@"Pinyin-Traditional"];
+  return currentInputModeIdentifier;
 }
 
 @end

@@ -1,46 +1,46 @@
 @interface OrgApacheLuceneIndexLeafReader
-- (id)termDocsEnumWithOrgApacheLuceneIndexTerm:(id)a3;
-- (id)termPositionsEnumWithOrgApacheLuceneIndexTerm:(id)a3;
-- (id)termsWithNSString:(id)a3;
-- (int)docFreqWithOrgApacheLuceneIndexTerm:(id)a3;
-- (int)getDocCountWithNSString:(id)a3;
-- (int64_t)getSumDocFreqWithNSString:(id)a3;
-- (int64_t)getSumTotalTermFreqWithNSString:(id)a3;
-- (int64_t)totalTermFreqWithOrgApacheLuceneIndexTerm:(id)a3;
+- (id)termDocsEnumWithOrgApacheLuceneIndexTerm:(id)term;
+- (id)termPositionsEnumWithOrgApacheLuceneIndexTerm:(id)term;
+- (id)termsWithNSString:(id)string;
+- (int)docFreqWithOrgApacheLuceneIndexTerm:(id)term;
+- (int)getDocCountWithNSString:(id)string;
+- (int64_t)getSumDocFreqWithNSString:(id)string;
+- (int64_t)getSumTotalTermFreqWithNSString:(id)string;
+- (int64_t)totalTermFreqWithOrgApacheLuceneIndexTerm:(id)term;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneIndexLeafReader
 
-- (int)docFreqWithOrgApacheLuceneIndexTerm:(id)a3
+- (int)docFreqWithOrgApacheLuceneIndexTerm:(id)term
 {
-  if (!a3)
+  if (!term)
   {
     goto LABEL_10;
   }
 
-  v5 = [a3 field];
-  v6 = [(OrgApacheLuceneIndexLeafReader *)self fields];
-  if (!v6)
+  field = [term field];
+  fields = [(OrgApacheLuceneIndexLeafReader *)self fields];
+  if (!fields)
   {
     goto LABEL_10;
   }
 
-  v7 = [v6 termsWithNSString:v5];
+  v7 = [fields termsWithNSString:field];
   if (!v7)
   {
     return 0;
   }
 
-  v8 = [v7 iterator];
-  if (!v8)
+  iterator = [v7 iterator];
+  if (!iterator)
   {
 LABEL_10:
     JreThrowNullPointerException();
   }
 
-  v9 = v8;
-  if (![v8 seekExactWithOrgApacheLuceneUtilBytesRef:{objc_msgSend(a3, "bytes")}])
+  v9 = iterator;
+  if (![iterator seekExactWithOrgApacheLuceneUtilBytesRef:{objc_msgSend(term, "bytes")}])
   {
     return 0;
   }
@@ -48,35 +48,35 @@ LABEL_10:
   return [v9 docFreq];
 }
 
-- (int64_t)totalTermFreqWithOrgApacheLuceneIndexTerm:(id)a3
+- (int64_t)totalTermFreqWithOrgApacheLuceneIndexTerm:(id)term
 {
-  if (!a3)
+  if (!term)
   {
     goto LABEL_10;
   }
 
-  v5 = [a3 field];
-  v6 = [(OrgApacheLuceneIndexLeafReader *)self fields];
-  if (!v6)
+  field = [term field];
+  fields = [(OrgApacheLuceneIndexLeafReader *)self fields];
+  if (!fields)
   {
     goto LABEL_10;
   }
 
-  v7 = [v6 termsWithNSString:v5];
+  v7 = [fields termsWithNSString:field];
   if (!v7)
   {
     return 0;
   }
 
-  v8 = [v7 iterator];
-  if (!v8)
+  iterator = [v7 iterator];
+  if (!iterator)
   {
 LABEL_10:
     JreThrowNullPointerException();
   }
 
-  v9 = v8;
-  if (![v8 seekExactWithOrgApacheLuceneUtilBytesRef:{objc_msgSend(a3, "bytes")}])
+  v9 = iterator;
+  if (![iterator seekExactWithOrgApacheLuceneUtilBytesRef:{objc_msgSend(term, "bytes")}])
   {
     return 0;
   }
@@ -84,15 +84,15 @@ LABEL_10:
   return [v9 totalTermFreq];
 }
 
-- (int64_t)getSumDocFreqWithNSString:(id)a3
+- (int64_t)getSumDocFreqWithNSString:(id)string
 {
-  v4 = [(OrgApacheLuceneIndexLeafReader *)self fields];
-  if (!v4)
+  fields = [(OrgApacheLuceneIndexLeafReader *)self fields];
+  if (!fields)
   {
     JreThrowNullPointerException();
   }
 
-  result = [v4 termsWithNSString:a3];
+  result = [fields termsWithNSString:string];
   if (result)
   {
 
@@ -102,15 +102,15 @@ LABEL_10:
   return result;
 }
 
-- (int)getDocCountWithNSString:(id)a3
+- (int)getDocCountWithNSString:(id)string
 {
-  v4 = [(OrgApacheLuceneIndexLeafReader *)self fields];
-  if (!v4)
+  fields = [(OrgApacheLuceneIndexLeafReader *)self fields];
+  if (!fields)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = [v4 termsWithNSString:a3];
+  v5 = [fields termsWithNSString:string];
   if (v5)
   {
 
@@ -120,15 +120,15 @@ LABEL_10:
   return v5;
 }
 
-- (int64_t)getSumTotalTermFreqWithNSString:(id)a3
+- (int64_t)getSumTotalTermFreqWithNSString:(id)string
 {
-  v4 = [(OrgApacheLuceneIndexLeafReader *)self fields];
-  if (!v4)
+  fields = [(OrgApacheLuceneIndexLeafReader *)self fields];
+  if (!fields)
   {
     JreThrowNullPointerException();
   }
 
-  result = [v4 termsWithNSString:a3];
+  result = [fields termsWithNSString:string];
   if (result)
   {
 
@@ -138,81 +138,81 @@ LABEL_10:
   return result;
 }
 
-- (id)termsWithNSString:(id)a3
+- (id)termsWithNSString:(id)string
 {
-  v4 = [(OrgApacheLuceneIndexLeafReader *)self fields];
-  if (!v4)
+  fields = [(OrgApacheLuceneIndexLeafReader *)self fields];
+  if (!fields)
   {
     JreThrowNullPointerException();
   }
 
-  return [v4 termsWithNSString:a3];
+  return [fields termsWithNSString:string];
 }
 
-- (id)termDocsEnumWithOrgApacheLuceneIndexTerm:(id)a3
+- (id)termDocsEnumWithOrgApacheLuceneIndexTerm:(id)term
 {
-  v5 = [a3 field];
-  v6 = [(OrgApacheLuceneIndexLeafReader *)self fields];
-  if (!v6)
+  field = [term field];
+  fields = [(OrgApacheLuceneIndexLeafReader *)self fields];
+  if (!fields)
   {
     goto LABEL_9;
   }
 
-  v7 = [v6 termsWithNSString:v5];
+  v7 = [fields termsWithNSString:field];
   if (!v7)
   {
     return 0;
   }
 
-  v8 = [v7 iterator];
-  if (!v8)
+  iterator = [v7 iterator];
+  if (!iterator)
   {
 LABEL_9:
     JreThrowNullPointerException();
   }
 
-  v9 = v8;
-  if (![v8 seekExactWithOrgApacheLuceneUtilBytesRef:{objc_msgSend(a3, "bytes")}])
+  v9 = iterator;
+  if (![iterator seekExactWithOrgApacheLuceneUtilBytesRef:{objc_msgSend(term, "bytes")}])
   {
     return 0;
   }
 
-  v10 = [(OrgApacheLuceneIndexLeafReader *)self getLiveDocs];
+  getLiveDocs = [(OrgApacheLuceneIndexLeafReader *)self getLiveDocs];
 
-  return [v9 docsWithOrgApacheLuceneUtilBits:v10 withOrgApacheLuceneIndexDocsEnum:0];
+  return [v9 docsWithOrgApacheLuceneUtilBits:getLiveDocs withOrgApacheLuceneIndexDocsEnum:0];
 }
 
-- (id)termPositionsEnumWithOrgApacheLuceneIndexTerm:(id)a3
+- (id)termPositionsEnumWithOrgApacheLuceneIndexTerm:(id)term
 {
-  v5 = [a3 field];
-  v6 = [(OrgApacheLuceneIndexLeafReader *)self fields];
-  if (!v6)
+  field = [term field];
+  fields = [(OrgApacheLuceneIndexLeafReader *)self fields];
+  if (!fields)
   {
     goto LABEL_9;
   }
 
-  v7 = [v6 termsWithNSString:v5];
+  v7 = [fields termsWithNSString:field];
   if (!v7)
   {
     return 0;
   }
 
-  v8 = [v7 iterator];
-  if (!v8)
+  iterator = [v7 iterator];
+  if (!iterator)
   {
 LABEL_9:
     JreThrowNullPointerException();
   }
 
-  v9 = v8;
-  if (![v8 seekExactWithOrgApacheLuceneUtilBytesRef:{objc_msgSend(a3, "bytes")}])
+  v9 = iterator;
+  if (![iterator seekExactWithOrgApacheLuceneUtilBytesRef:{objc_msgSend(term, "bytes")}])
   {
     return 0;
   }
 
-  v10 = [(OrgApacheLuceneIndexLeafReader *)self getLiveDocs];
+  getLiveDocs = [(OrgApacheLuceneIndexLeafReader *)self getLiveDocs];
 
-  return [v9 docsAndPositionsWithOrgApacheLuceneUtilBits:v10 withOrgApacheLuceneIndexDocsAndPositionsEnum:0];
+  return [v9 docsAndPositionsWithOrgApacheLuceneUtilBits:getLiveDocs withOrgApacheLuceneIndexDocsAndPositionsEnum:0];
 }
 
 - (void)dealloc

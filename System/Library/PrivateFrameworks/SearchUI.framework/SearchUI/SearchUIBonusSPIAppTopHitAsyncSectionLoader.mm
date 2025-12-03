@@ -1,23 +1,23 @@
 @interface SearchUIBonusSPIAppTopHitAsyncSectionLoader
-+ (BOOL)supportsSectionModel:(id)a3;
-- (void)fetchCardSectionsWithCompletionHandler:(id)a3;
++ (BOOL)supportsSectionModel:(id)model;
+- (void)fetchCardSectionsWithCompletionHandler:(id)handler;
 @end
 
 @implementation SearchUIBonusSPIAppTopHitAsyncSectionLoader
 
-+ (BOOL)supportsSectionModel:(id)a3
++ (BOOL)supportsSectionModel:(id)model
 {
-  v4 = a3;
-  v12.receiver = a1;
+  modelCopy = model;
+  v12.receiver = self;
   v12.super_class = &OBJC_METACLASS___SearchUIBonusSPIAppTopHitAsyncSectionLoader;
-  if (objc_msgSendSuper2(&v12, sel_supportsSectionModel_, v4))
+  if (objc_msgSendSuper2(&v12, sel_supportsSectionModel_, modelCopy))
   {
     v5 = MEMORY[0x1E69D3EA8];
-    v6 = [v4 rowModels];
-    v7 = [v6 firstObject];
-    v8 = [v7 identifyingResult];
-    v9 = [v8 resultBundleId];
-    v10 = [v5 supportsBonusSPI:v9];
+    rowModels = [modelCopy rowModels];
+    firstObject = [rowModels firstObject];
+    identifyingResult = [firstObject identifyingResult];
+    resultBundleId = [identifyingResult resultBundleId];
+    v10 = [v5 supportsBonusSPI:resultBundleId];
   }
 
   else
@@ -28,29 +28,29 @@
   return v10;
 }
 
-- (void)fetchCardSectionsWithCompletionHandler:(id)a3
+- (void)fetchCardSectionsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SearchUIAsyncSectionLoader *)self delegate];
-  v6 = [v5 deviceIsAuthenticated];
+  handlerCopy = handler;
+  delegate = [(SearchUIAsyncSectionLoader *)self delegate];
+  deviceIsAuthenticated = [delegate deviceIsAuthenticated];
 
-  if ((v6 & 1) != 0 && ([(SearchUIAppTopHitAsyncSectionLoader *)self bundleIdentifier], v7 = objc_claimAutoreleasedReturnValue(), v8 = WFTopHitContextualActionTypeForBundleIdentifier(), v7, v8))
+  if ((deviceIsAuthenticated & 1) != 0 && ([(SearchUIAppTopHitAsyncSectionLoader *)self bundleIdentifier], v7 = objc_claimAutoreleasedReturnValue(), v8 = WFTopHitContextualActionTypeForBundleIdentifier(), v7, v8))
   {
     v9 = MEMORY[0x1E69E0DC0];
-    v10 = [objc_opt_class() maxNumOfTopHitEntities];
+    maxNumOfTopHitEntities = [objc_opt_class() maxNumOfTopHitEntities];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __86__SearchUIBonusSPIAppTopHitAsyncSectionLoader_fetchCardSectionsWithCompletionHandler___block_invoke;
     v12[3] = &unk_1E85B41D8;
     v12[4] = self;
-    v13 = v4;
-    [v9 getTopHitContextualActionsForType:v8 limit:v10 completion:v12];
+    v13 = handlerCopy;
+    [v9 getTopHitContextualActionsForType:v8 limit:maxNumOfTopHitEntities completion:v12];
   }
 
   else
   {
     v11 = [(SearchUIAppTopHitAsyncSectionLoader *)self responseForCardSections:MEMORY[0x1E695E0F0] animated:0];
-    (*(v4 + 2))(v4, v11);
+    (*(handlerCopy + 2))(handlerCopy, v11);
   }
 }
 

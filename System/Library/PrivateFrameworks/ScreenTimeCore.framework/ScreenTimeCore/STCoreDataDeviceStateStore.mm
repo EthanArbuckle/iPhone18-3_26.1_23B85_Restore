@@ -1,77 +1,77 @@
 @interface STCoreDataDeviceStateStore
-- (STCoreDataDeviceStateStore)initWithObserver:(id)a3 transformer:(id)a4 reverseTransformer:(id)a5;
+- (STCoreDataDeviceStateStore)initWithObserver:(id)observer transformer:(id)transformer reverseTransformer:(id)reverseTransformer;
 - (STDeviceStateChangeObserverDelegate)delegate;
 - (id)readDeviceStateChangeForLocalDevice;
-- (id)writeDeviceStateChange:(id)a3;
-- (void)observer:(id)a3 didObserveCoreDataChanges:(id)a4;
+- (id)writeDeviceStateChange:(id)change;
+- (void)observer:(id)observer didObserveCoreDataChanges:(id)changes;
 @end
 
 @implementation STCoreDataDeviceStateStore
 
-- (STCoreDataDeviceStateStore)initWithObserver:(id)a3 transformer:(id)a4 reverseTransformer:(id)a5
+- (STCoreDataDeviceStateStore)initWithObserver:(id)observer transformer:(id)transformer reverseTransformer:(id)reverseTransformer
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  observerCopy = observer;
+  transformerCopy = transformer;
+  reverseTransformerCopy = reverseTransformer;
   v21.receiver = self;
   v21.super_class = STCoreDataDeviceStateStore;
   v11 = [(STCoreDataDeviceStateStore *)&v21 init];
   transformer = v11->_transformer;
-  v11->_transformer = v9;
-  v13 = v9;
+  v11->_transformer = transformerCopy;
+  v13 = transformerCopy;
 
   reverseTransformer = v11->_reverseTransformer;
-  v11->_reverseTransformer = v10;
-  v15 = v10;
+  v11->_reverseTransformer = reverseTransformerCopy;
+  v15 = reverseTransformerCopy;
 
   observer = v11->_observer;
-  v11->_observer = v8;
-  v17 = v8;
+  v11->_observer = observerCopy;
+  v17 = observerCopy;
 
   v18 = v11->_observer;
-  v19 = [(STCoreDataDeviceStateTransformer *)v13 deviceStateObservationFiltersByTriggerPredicate];
-  [(STCoreDataObserver *)v18 addObservationFiltersByTriggerPredicate:v19 forDelegate:v11];
+  deviceStateObservationFiltersByTriggerPredicate = [(STCoreDataDeviceStateTransformer *)v13 deviceStateObservationFiltersByTriggerPredicate];
+  [(STCoreDataObserver *)v18 addObservationFiltersByTriggerPredicate:deviceStateObservationFiltersByTriggerPredicate forDelegate:v11];
 
   return v11;
 }
 
 - (id)readDeviceStateChangeForLocalDevice
 {
-  v2 = [(STCoreDataDeviceStateStore *)self transformer];
-  v3 = [v2 deviceStateChangeForLocalDevice];
+  transformer = [(STCoreDataDeviceStateStore *)self transformer];
+  deviceStateChangeForLocalDevice = [transformer deviceStateChangeForLocalDevice];
 
-  return v3;
+  return deviceStateChangeForLocalDevice;
 }
 
-- (id)writeDeviceStateChange:(id)a3
+- (id)writeDeviceStateChange:(id)change
 {
-  v4 = a3;
-  v5 = [(STCoreDataDeviceStateStore *)self reverseTransformer];
-  v6 = [v5 handleDeviceStateChange:v4];
+  changeCopy = change;
+  reverseTransformer = [(STCoreDataDeviceStateStore *)self reverseTransformer];
+  v6 = [reverseTransformer handleDeviceStateChange:changeCopy];
 
   return v6;
 }
 
-- (void)observer:(id)a3 didObserveCoreDataChanges:(id)a4
+- (void)observer:(id)observer didObserveCoreDataChanges:(id)changes
 {
-  v5 = a4;
-  v6 = [(STCoreDataDeviceStateStore *)self transformer];
+  changesCopy = changes;
+  transformer = [(STCoreDataDeviceStateStore *)self transformer];
   v10 = 0;
-  v7 = [v6 deviceStateChangeForCoreDataChanges:v5 error:&v10];
+  v7 = [transformer deviceStateChangeForCoreDataChanges:changesCopy error:&v10];
   v8 = v10;
 
   if (v7)
   {
-    v9 = [(STCoreDataDeviceStateStore *)self delegate];
-    [v9 changeObserver:self didObserveDeviceStateChange:v7];
+    delegate = [(STCoreDataDeviceStateStore *)self delegate];
+    [delegate changeObserver:self didObserveDeviceStateChange:v7];
   }
 
   else
   {
-    v9 = +[STLog coreDataConfigurationStore];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    delegate = +[STLog coreDataConfigurationStore];
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
     {
-      sub_100113BDC(v5, v8, v9);
+      sub_100113BDC(changesCopy, v8, delegate);
     }
   }
 }

@@ -1,24 +1,24 @@
 @interface PLSinopeBBHardwareMessage
 - (PLSinopeBBHardwareMessage)init;
-- (id)decodePayload:(id)a3 forMetricId:(id)a4;
-- (id)initEntryWithBBTS:(id)a3 triggerId:(id)a4 seqnum:(id)a5 payload:(id)a6 logAgent:(id)a7;
-- (void)addToListMetric:(id)a3 payload:(id)a4;
-- (void)dlTbsHistForClass:(id)a3 forEntry:(id)a4;
-- (void)gsmRabModeHistForClass:(id)a3 forEntry:(id)a4;
+- (id)decodePayload:(id)payload forMetricId:(id)id;
+- (id)initEntryWithBBTS:(id)s triggerId:(id)id seqnum:(id)seqnum payload:(id)payload logAgent:(id)agent;
+- (void)addToListMetric:(id)metric payload:(id)payload;
+- (void)dlTbsHistForClass:(id)class forEntry:(id)entry;
+- (void)gsmRabModeHistForClass:(id)class forEntry:(id)entry;
 - (void)logBBSinopeAperiodicMetrics;
 - (void)logBBSinopePeriodicMetrics;
-- (void)lteCaConfigActStatsForClass:(id)a3 forEntry:(id)a4;
-- (void)lteComponentCarrierInfoForClass:(id)a3 forEntry:(id)a4;
-- (void)lteNrRxDivForClass:(id)a3 forEntry:(id)a4;
-- (void)lteNrRxTxActForClass:(id)a3 forEntry:(id)a4;
-- (void)lteNrTxPowerForClass:(id)a3 forEntry:(id)a4;
-- (void)nrCCInfoForClass:(id)a3 forEntry:(id)a4;
-- (void)nrCaConfigActForClass:(id)a3 forEntry:(id)a4;
-- (void)plmnSearchHistForClass:(id)a3 forEntry:(id)a4;
-- (void)powerEstimatorForClass:(id)a3 forEntry:(id)a4;
-- (void)protocolStackHistForClass:(id)a3 forEntry:(id)a4;
-- (void)protocolStateForClass:(id)a3 forEntry:(id)a4;
-- (void)sleepStatesForClass:(id)a3 forEntry:(id)a4;
+- (void)lteCaConfigActStatsForClass:(id)class forEntry:(id)entry;
+- (void)lteComponentCarrierInfoForClass:(id)class forEntry:(id)entry;
+- (void)lteNrRxDivForClass:(id)class forEntry:(id)entry;
+- (void)lteNrRxTxActForClass:(id)class forEntry:(id)entry;
+- (void)lteNrTxPowerForClass:(id)class forEntry:(id)entry;
+- (void)nrCCInfoForClass:(id)class forEntry:(id)entry;
+- (void)nrCaConfigActForClass:(id)class forEntry:(id)entry;
+- (void)plmnSearchHistForClass:(id)class forEntry:(id)entry;
+- (void)powerEstimatorForClass:(id)class forEntry:(id)entry;
+- (void)protocolStackHistForClass:(id)class forEntry:(id)entry;
+- (void)protocolStateForClass:(id)class forEntry:(id)entry;
+- (void)sleepStatesForClass:(id)class forEntry:(id)entry;
 @end
 
 @implementation PLSinopeBBHardwareMessage
@@ -33,36 +33,36 @@
   return 0;
 }
 
-- (id)initEntryWithBBTS:(id)a3 triggerId:(id)a4 seqnum:(id)a5 payload:(id)a6 logAgent:(id)a7
+- (id)initEntryWithBBTS:(id)s triggerId:(id)id seqnum:(id)seqnum payload:(id)payload logAgent:(id)agent
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  sCopy = s;
+  idCopy = id;
+  seqnumCopy = seqnum;
+  payloadCopy = payload;
+  agentCopy = agent;
   v36.receiver = self;
   v36.super_class = PLSinopeBBHardwareMessage;
   v18 = [(PLSinopeBBHardwareMessage *)&v36 init];
   if (v18)
   {
-    v35 = v17;
-    v19 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSince1970:{(objc_msgSend(v13, "integerValue") / 1000)}];
-    v20 = [(NSDate *)v19 convertFromBasebandToMonotonic];
+    v35 = agentCopy;
+    v19 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSince1970:{(objc_msgSend(sCopy, "integerValue") / 1000)}];
+    convertFromBasebandToMonotonic = [(NSDate *)v19 convertFromBasebandToMonotonic];
     bbMonotonic = v18->_bbMonotonic;
-    v18->_bbMonotonic = v20;
+    v18->_bbMonotonic = convertFromBasebandToMonotonic;
 
-    obj = a7;
-    v22 = v13;
-    v23 = v15;
-    v24 = v14;
+    obj = agent;
+    v22 = sCopy;
+    v23 = seqnumCopy;
+    v24 = idCopy;
     timestampLogged = v18->_timestampLogged;
     v18->_timestampLogged = v19;
     v26 = v19;
 
-    objc_storeStrong(&v18->_triggerId, a4);
-    objc_storeStrong(&v18->_bbtimestamp, a3);
-    objc_storeStrong(&v18->_triggerCnt, a5);
-    v27 = [PLSinopeBBMetricUtility convertToStringData:v16];
+    objc_storeStrong(&v18->_triggerId, id);
+    objc_storeStrong(&v18->_bbtimestamp, s);
+    objc_storeStrong(&v18->_triggerCnt, seqnum);
+    v27 = [PLSinopeBBMetricUtility convertToStringData:payloadCopy];
     metricData = v18->_metricData;
     v18->_metricData = v27;
 
@@ -70,15 +70,15 @@
     metricIdArr = v18->_metricIdArr;
     v18->_metricIdArr = v29;
 
-    v14 = v24;
-    v15 = v23;
-    v13 = v22;
+    idCopy = v24;
+    seqnumCopy = v23;
+    sCopy = v22;
     v31 = objc_opt_new();
     metricDataArr = v18->_metricDataArr;
     v18->_metricDataArr = v31;
 
     objc_storeStrong(&v18->_logAgent, obj);
-    v17 = v35;
+    agentCopy = v35;
   }
 
   return v18;
@@ -113,9 +113,9 @@
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLSinopeBBHardwareMessage logBBSinopeAperiodicMetrics]", block, v19, v20, v21, v22];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/KSinope/PLSinopeBBHardwareMessage-SINOPE.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLSinopeBBHardwareMessage logBBSinopeAperiodicMetrics]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:113];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:113];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -129,7 +129,7 @@
 
   v11 = [(PLOperator *)PLBBAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"BBSinopeEventMetrics"];
   v12 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v11];
-  v13 = [MEMORY[0x277CBEAA8] monotonicDate];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
   if (v12)
   {
     if (([MEMORY[0x277D3F208] isBasebandClass:1003009] & 1) == 0)
@@ -138,16 +138,16 @@
     }
 
     [v12 setObject:self->_bbtimestamp forKeyedSubscript:@"bbtimestamp"];
-    [v12 setObject:v13 forKeyedSubscript:@"timestampLogged"];
+    [v12 setObject:monotonicDate forKeyedSubscript:@"timestampLogged"];
     [v12 setObject:self->_triggerCnt forKeyedSubscript:@"triggerCnt"];
     [v12 setObject:self->_triggerId forKeyedSubscript:@"mid"];
     [v12 setObject:self->_metricData forKeyedSubscript:@"data"];
     if ([MEMORY[0x277D3F208] isBasebandProto])
     {
       logAgent = self->_logAgent;
-      v15 = [v12 dictionary];
-      v16 = [v12 entryDate];
-      [(PLAgent *)logAgent logForSubsystem:@"BasebandMetrics" category:@"Events" data:v15 date:v16];
+      dictionary = [v12 dictionary];
+      entryDate = [v12 entryDate];
+      [(PLAgent *)logAgent logForSubsystem:@"BasebandMetrics" category:@"Events" data:dictionary date:entryDate];
     }
   }
 
@@ -182,9 +182,9 @@ uint64_t __56__PLSinopeBBHardwareMessage_logBBSinopeAperiodicMetrics__block_invo
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLSinopeBBHardwareMessage logBBSinopePeriodicMetrics]", block, v21, v22, v23, v24];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/KSinope/PLSinopeBBHardwareMessage-SINOPE.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLSinopeBBHardwareMessage logBBSinopePeriodicMetrics]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:140];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:140];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -209,7 +209,7 @@ uint64_t __56__PLSinopeBBHardwareMessage_logBBSinopeAperiodicMetrics__block_invo
 
   v11 = [(PLOperator *)PLBBAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"BBSinopePeriodicMetrics"];
   v12 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v11];
-  v13 = [MEMORY[0x277CBEAA8] monotonicDate];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
   if (v12)
   {
     if (([MEMORY[0x277D3F208] isBasebandClass:1003009] & 1) == 0)
@@ -219,7 +219,7 @@ uint64_t __56__PLSinopeBBHardwareMessage_logBBSinopeAperiodicMetrics__block_invo
 
     [(NSMutableArray *)v12 setObject:self->_triggerId forKeyedSubscript:@"triggerId"];
     [(NSMutableArray *)v12 setObject:self->_bbtimestamp forKeyedSubscript:@"bbtimestamp"];
-    [(NSMutableArray *)v12 setObject:v13 forKeyedSubscript:@"timestampLogged"];
+    [(NSMutableArray *)v12 setObject:monotonicDate forKeyedSubscript:@"timestampLogged"];
     [(NSMutableArray *)v12 setObject:self->_triggerCnt forKeyedSubscript:@"triggerCnt"];
     [(NSMutableArray *)v12 setObject:self->_metricIdArr forKeyedSubscript:@"mid"];
     [(NSMutableArray *)v12 setObject:self->_metricDataArr forKeyedSubscript:@"data"];
@@ -236,9 +236,9 @@ uint64_t __56__PLSinopeBBHardwareMessage_logBBSinopeAperiodicMetrics__block_invo
     if ([MEMORY[0x277D3F208] isBasebandProto])
     {
       logAgent = self->_logAgent;
-      v16 = [(NSMutableArray *)v12 dictionary];
-      v17 = [(NSMutableArray *)v12 entryDate];
-      [(PLAgent *)logAgent logForSubsystem:@"BasebandMetrics" category:@"Histogram" data:v16 date:v17];
+      dictionary = [(NSMutableArray *)v12 dictionary];
+      entryDate = [(NSMutableArray *)v12 entryDate];
+      [(PLAgent *)logAgent logForSubsystem:@"BasebandMetrics" category:@"Histogram" data:dictionary date:entryDate];
     }
   }
 
@@ -252,11 +252,11 @@ uint64_t __55__PLSinopeBBHardwareMessage_logBBSinopePeriodicMetrics__block_invok
   return result;
 }
 
-- (void)addToListMetric:(id)a3 payload:(id)a4
+- (void)addToListMetric:(id)metric payload:(id)payload
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  metricCopy = metric;
+  payloadCopy = payload;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v8 = objc_opt_class();
@@ -275,9 +275,9 @@ uint64_t __55__PLSinopeBBHardwareMessage_logBBSinopePeriodicMetrics__block_invok
       v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLSinopeBBHardwareMessage addToListMetric:payload:]", block, v20, v21, v22, v23];
       v10 = MEMORY[0x277D3F178];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/KSinope/PLSinopeBBHardwareMessage-SINOPE.m"];
-      v12 = [v11 lastPathComponent];
+      lastPathComponent = [v11 lastPathComponent];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLSinopeBBHardwareMessage addToListMetric:payload:]"];
-      [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:171];
+      [v10 logMessage:v9 fromFile:lastPathComponent fromFunction:v13 fromLineNumber:171];
 
       v14 = PLLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -295,15 +295,15 @@ uint64_t __55__PLSinopeBBHardwareMessage_logBBSinopePeriodicMetrics__block_invok
     *buf = 136315650;
     v25 = "[PLSinopeBBHardwareMessage addToListMetric:payload:]";
     v26 = 2112;
-    v27 = v6;
+    v27 = metricCopy;
     v28 = 2112;
-    v29 = v7;
+    v29 = payloadCopy;
     _os_log_debug_impl(&dword_21A4C6000, v15, OS_LOG_TYPE_DEBUG, "[BBAgent] : in @%s metricId: %@, data: %@", buf, 0x20u);
   }
 
-  [(NSMutableArray *)self->_metricIdArr addObject:v6];
+  [(NSMutableArray *)self->_metricIdArr addObject:metricCopy];
   metricDataArr = self->_metricDataArr;
-  v17 = [PLSinopeBBMetricUtility convertToStringData:v7];
+  v17 = [PLSinopeBBMetricUtility convertToStringData:payloadCopy];
   [(NSMutableArray *)metricDataArr addObject:v17];
 
   v18 = *MEMORY[0x277D85DE8];
@@ -316,39 +316,39 @@ uint64_t __53__PLSinopeBBHardwareMessage_addToListMetric_payload___block_invoke(
   return result;
 }
 
-- (id)decodePayload:(id)a3 forMetricId:(id)a4
+- (id)decodePayload:(id)payload forMetricId:(id)id
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  idCopy = id;
+  payloadCopy = payload;
   v8 = objc_opt_new();
-  [v8 setObject:v6 forKeyedSubscript:@"mid"];
-  v9 = [[AWDMETRICSMetricLogPower alloc] initWithData:v7];
+  [v8 setObject:idCopy forKeyedSubscript:@"mid"];
+  v9 = [[AWDMETRICSMetricLogPower alloc] initWithData:payloadCopy];
 
   v10 = PLLogCommon();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v15 = [(AWDMETRICSMetricLogPower *)v9 dictionaryRepresentation];
+    dictionaryRepresentation = [(AWDMETRICSMetricLogPower *)v9 dictionaryRepresentation];
     *buf = 138412290;
-    v28 = v15;
+    v28 = dictionaryRepresentation;
     _os_log_debug_impl(&dword_21A4C6000, v10, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
   }
 
-  v11 = [v6 integerValue];
-  if (v11 <= 3962429)
+  integerValue = [idCopy integerValue];
+  if (integerValue <= 3962429)
   {
-    if (v11 > 3962388)
+    if (integerValue > 3962388)
     {
-      if (v11 > 3962392)
+      if (integerValue > 3962392)
       {
-        if (v11 == 3962393)
+        if (integerValue == 3962393)
         {
           v13 = [(AWDMETRICSMetricLogPower *)v9 kCellularPowerLogPLMNSearchAtIndex:0];
           [(PLSinopeBBHardwareMessage *)self plmnSearchHistForClass:v13 forEntry:v8];
           goto LABEL_45;
         }
 
-        if (v11 != 3962396)
+        if (integerValue != 3962396)
         {
           goto LABEL_50;
         }
@@ -359,14 +359,14 @@ uint64_t __53__PLSinopeBBHardwareMessage_addToListMetric_payload___block_invoke(
 
       else
       {
-        if (v11 == 3962389)
+        if (integerValue == 3962389)
         {
           v13 = [(AWDMETRICSMetricLogPower *)v9 kCellularPowerLogPowerEstimatorAtIndex:0];
           [(PLSinopeBBHardwareMessage *)self powerEstimatorForClass:v13 forEntry:v8];
           goto LABEL_45;
         }
 
-        if (v11 != 3962392)
+        if (integerValue != 3962392)
         {
           goto LABEL_50;
         }
@@ -380,16 +380,16 @@ LABEL_45:
       goto LABEL_46;
     }
 
-    if (v11 <= 3962381)
+    if (integerValue <= 3962381)
     {
-      if (v11 == 3932163)
+      if (integerValue == 3932163)
       {
 LABEL_46:
         v16 = v8;
         goto LABEL_47;
       }
 
-      if (v11 != 3962379)
+      if (integerValue != 3962379)
       {
         goto LABEL_50;
       }
@@ -399,14 +399,14 @@ LABEL_46:
       goto LABEL_45;
     }
 
-    if (v11 == 3962382)
+    if (integerValue == 3962382)
     {
       v13 = [(AWDMETRICSMetricLogPower *)v9 kCellularPowerLogLteCarrierComponentInfoAtIndex:0];
       [(PLSinopeBBHardwareMessage *)self lteComponentCarrierInfoForClass:v13 forEntry:v8];
       goto LABEL_45;
     }
 
-    if (v11 != 3962383)
+    if (integerValue != 3962383)
     {
       goto LABEL_50;
     }
@@ -418,11 +418,11 @@ LABEL_37:
     goto LABEL_45;
   }
 
-  if (v11 <= 3962437)
+  if (integerValue <= 3962437)
   {
-    if (v11 <= 3962433)
+    if (integerValue <= 3962433)
     {
-      if (v11 == 3962430)
+      if (integerValue == 3962430)
       {
         v13 = [(AWDMETRICSMetricLogPower *)v9 kCellularPowerLogNrCaConfigActivateStatsAtIndex:0];
         [(PLSinopeBBHardwareMessage *)self nrCaConfigActForClass:v13 forEntry:v8];
@@ -430,7 +430,7 @@ LABEL_37:
 
       else
       {
-        if (v11 != 3962433)
+        if (integerValue != 3962433)
         {
           goto LABEL_50;
         }
@@ -442,9 +442,9 @@ LABEL_37:
       goto LABEL_45;
     }
 
-    if (v11 != 3962434)
+    if (integerValue != 3962434)
     {
-      if (v11 != 3962437)
+      if (integerValue != 3962437)
       {
         goto LABEL_50;
       }
@@ -458,16 +458,16 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  if (v11 <= 3962477)
+  if (integerValue <= 3962477)
   {
-    if (v11 == 3962438)
+    if (integerValue == 3962438)
     {
       v13 = [(AWDMETRICSMetricLogPower *)v9 kCellularPowerLogLteNrTxPowerHistAtIndex:0];
       [(PLSinopeBBHardwareMessage *)self lteNrTxPowerForClass:v13 forEntry:v8];
       goto LABEL_45;
     }
 
-    if (v11 != 3962439)
+    if (integerValue != 3962439)
     {
       goto LABEL_50;
     }
@@ -477,7 +477,7 @@ LABEL_37:
     goto LABEL_45;
   }
 
-  switch(v11)
+  switch(integerValue)
   {
     case 3962478:
       v13 = [(AWDMETRICSMetricLogPower *)v9 kCellularPowerLogSleepStatesAtIndex:0];
@@ -513,9 +513,9 @@ LABEL_50:
       v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: unexpected metric Id"];
       v21 = MEMORY[0x277D3F178];
       v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/KSinope/PLSinopeBBHardwareMessage-SINOPE.m"];
-      v23 = [v22 lastPathComponent];
+      lastPathComponent = [v22 lastPathComponent];
       v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLSinopeBBHardwareMessage decodePayload:forMetricId:]"];
-      [v21 logMessage:v20 fromFile:v23 fromFunction:v24 fromLineNumber:295];
+      [v21 logMessage:v20 fromFile:lastPathComponent fromFunction:v24 fromLineNumber:295];
 
       v25 = PLLogCommon();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -542,11 +542,11 @@ uint64_t __55__PLSinopeBBHardwareMessage_decodePayload_forMetricId___block_invok
   return result;
 }
 
-- (void)protocolStateForClass:(id)a3 forEntry:(id)a4
+- (void)protocolStateForClass:(id)class forEntry:(id)entry
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  classCopy = class;
+  entryCopy = entry;
   v7 = PLLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -555,87 +555,87 @@ uint64_t __55__PLSinopeBBHardwareMessage_decodePayload_forMetricId___block_invok
     _os_log_debug_impl(&dword_21A4C6000, v7, OS_LOG_TYPE_DEBUG, "[BBAgent] %s", buf, 0xCu);
   }
 
-  if ([v5 hasTimestamp])
+  if ([classCopy hasTimestamp])
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v5, "timestamp")}];
-    [v6 setObject:v8 forKeyedSubscript:@"bbtimestamp"];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(classCopy, "timestamp")}];
+    [entryCopy setObject:v8 forKeyedSubscript:@"bbtimestamp"];
   }
 
   else
   {
-    [v6 setObject:&unk_282C0C978 forKeyedSubscript:@"bbtimestamp"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"bbtimestamp"];
   }
 
-  if ([v5 hasDurationMs])
+  if ([classCopy hasDurationMs])
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v5, "durationMs")}];
-    [v6 setObject:v9 forKeyedSubscript:@"duration"];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durationMs")}];
+    [entryCopy setObject:v9 forKeyedSubscript:@"duration"];
   }
 
   else
   {
-    [v6 setObject:&unk_282C0C978 forKeyedSubscript:@"duration"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"duration"];
   }
 
-  if ([v5 hasSubsId])
+  if ([classCopy hasSubsId])
   {
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v5, "subsId")}];
-    [v6 setObject:v10 forKeyedSubscript:@"subs_id"];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "subsId")}];
+    [entryCopy setObject:v10 forKeyedSubscript:@"subs_id"];
   }
 
   else
   {
-    [v6 setObject:&unk_282C0C978 forKeyedSubscript:@"subs_id"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"subs_id"];
   }
 
-  if ([v5 binsCount])
+  if ([classCopy binsCount])
   {
     v11 = 0;
     do
     {
-      v12 = [v5 binAtIndex:v11];
+      v12 = [classCopy binAtIndex:v11];
       if ([v12 hasBinId])
       {
         v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"bin_id_%d", v11];
         v14 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v12, "binId")}];
-        [v6 setObject:v14 forKeyedSubscript:v13];
+        [entryCopy setObject:v14 forKeyedSubscript:v13];
       }
 
       if ([v12 hasDuration])
       {
         v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"duration_%d", v11];
         v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v12, "duration")}];
-        [v6 setObject:v16 forKeyedSubscript:v15];
+        [entryCopy setObject:v16 forKeyedSubscript:v15];
       }
 
       if ([v12 hasCount])
       {
         v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"count_%d", v11];
         v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v12, "count")}];
-        [v6 setObject:v18 forKeyedSubscript:v17];
+        [entryCopy setObject:v18 forKeyedSubscript:v17];
       }
 
       if ([v12 hasDurationBinIndex])
       {
         v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"durationBinIndex_%d", v11];
         v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v12, "durationBinIndex")}];
-        [v6 setObject:v20 forKeyedSubscript:v19];
+        [entryCopy setObject:v20 forKeyedSubscript:v19];
       }
 
       ++v11;
     }
 
-    while ([v5 binsCount] > v11);
+    while ([classCopy binsCount] > v11);
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dlTbsHistForClass:(id)a3 forEntry:(id)a4
+- (void)dlTbsHistForClass:(id)class forEntry:(id)entry
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  classCopy = class;
+  entryCopy = entry;
   v7 = PLLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -644,243 +644,243 @@ uint64_t __55__PLSinopeBBHardwareMessage_decodePayload_forMetricId___block_invok
     _os_log_debug_impl(&dword_21A4C6000, v7, OS_LOG_TYPE_DEBUG, "[BBAgent] %s", buf, 0xCu);
   }
 
-  if ([v5 hasTimestamp])
+  if ([classCopy hasTimestamp])
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v5, "timestamp")}];
-    [v6 setObject:v8 forKeyedSubscript:@"bbtimestamp"];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(classCopy, "timestamp")}];
+    [entryCopy setObject:v8 forKeyedSubscript:@"bbtimestamp"];
   }
 
   else
   {
-    [v6 setObject:&unk_282C0C978 forKeyedSubscript:@"bbtimestamp"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"bbtimestamp"];
   }
 
-  if ([v5 hasDurationMs])
+  if ([classCopy hasDurationMs])
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v5, "durationMs")}];
-    [v6 setObject:v9 forKeyedSubscript:@"duration"];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durationMs")}];
+    [entryCopy setObject:v9 forKeyedSubscript:@"duration"];
   }
 
   else
   {
-    [v6 setObject:&unk_282C0C978 forKeyedSubscript:@"duration"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"duration"];
   }
 
-  if ([v5 hasSubsId])
+  if ([classCopy hasSubsId])
   {
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v5, "subsId")}];
-    [v6 setObject:v10 forKeyedSubscript:@"subs_id"];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "subsId")}];
+    [entryCopy setObject:v10 forKeyedSubscript:@"subs_id"];
   }
 
   else
   {
-    [v6 setObject:&unk_282C0C978 forKeyedSubscript:@"subs_id"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"subs_id"];
   }
 
-  if ([v5 binsCount])
+  if ([classCopy binsCount])
   {
     v11 = 0;
     do
     {
       v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"dur_bin_%d", v11];
-      v13 = [v5 binAtIndex:v11];
+      v13 = [classCopy binAtIndex:v11];
       if ([v13 hasDuration])
       {
         v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v13, "duration")}];
-        [v6 setObject:v14 forKeyedSubscript:v12];
+        [entryCopy setObject:v14 forKeyedSubscript:v12];
       }
 
       else
       {
-        [v6 setObject:&unk_282C0C978 forKeyedSubscript:v12];
+        [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:v12];
       }
 
       ++v11;
     }
 
-    while ([v5 binsCount] > v11);
+    while ([classCopy binsCount] > v11);
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)gsmRabModeHistForClass:(id)a3 forEntry:(id)a4
+- (void)gsmRabModeHistForClass:(id)class forEntry:(id)entry
 {
-  v13 = a3;
-  v5 = a4;
-  if ([v13 hasTimestamp])
+  classCopy = class;
+  entryCopy = entry;
+  if ([classCopy hasTimestamp])
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v13, "timestamp")}];
-    [v5 setObject:v6 forKeyedSubscript:@"bbtimestamp"];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(classCopy, "timestamp")}];
+    [entryCopy setObject:v6 forKeyedSubscript:@"bbtimestamp"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"bbtimestamp"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"bbtimestamp"];
   }
 
-  if ([v13 hasDurationMs])
+  if ([classCopy hasDurationMs])
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v13, "durationMs")}];
-    [v5 setObject:v7 forKeyedSubscript:@"duration"];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durationMs")}];
+    [entryCopy setObject:v7 forKeyedSubscript:@"duration"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"duration"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"duration"];
   }
 
-  if ([v13 hasSubsId])
+  if ([classCopy hasSubsId])
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v13, "subsId")}];
-    [v5 setObject:v8 forKeyedSubscript:@"subs_id"];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "subsId")}];
+    [entryCopy setObject:v8 forKeyedSubscript:@"subs_id"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"subs_id"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"subs_id"];
   }
 
-  if ([v13 binsCount])
+  if ([classCopy binsCount])
   {
     v9 = 0;
     do
     {
       v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"dur_bin_%d", v9];
-      v11 = [v13 binAtIndex:v9];
+      v11 = [classCopy binAtIndex:v9];
       if ([v11 hasDuration])
       {
         v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v11, "duration")}];
-        [v5 setObject:v12 forKeyedSubscript:v10];
+        [entryCopy setObject:v12 forKeyedSubscript:v10];
       }
 
       else
       {
-        [v5 setObject:&unk_282C0C978 forKeyedSubscript:v10];
+        [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:v10];
       }
 
       ++v9;
     }
 
-    while ([v13 binsCount] > v9);
+    while ([classCopy binsCount] > v9);
   }
 }
 
-- (void)lteCaConfigActStatsForClass:(id)a3 forEntry:(id)a4
+- (void)lteCaConfigActStatsForClass:(id)class forEntry:(id)entry
 {
-  v19 = a3;
-  v5 = a4;
-  if ([v19 hasTimestamp])
+  classCopy = class;
+  entryCopy = entry;
+  if ([classCopy hasTimestamp])
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v19, "timestamp")}];
-    [v5 setObject:v6 forKeyedSubscript:@"bbtimestamp"];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(classCopy, "timestamp")}];
+    [entryCopy setObject:v6 forKeyedSubscript:@"bbtimestamp"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"bbtimestamp"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"bbtimestamp"];
   }
 
-  if ([v19 hasDurationMs])
+  if ([classCopy hasDurationMs])
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v19, "durationMs")}];
-    [v5 setObject:v7 forKeyedSubscript:@"duration"];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durationMs")}];
+    [entryCopy setObject:v7 forKeyedSubscript:@"duration"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"duration"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"duration"];
   }
 
-  if ([v19 hasSubsId])
+  if ([classCopy hasSubsId])
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v19, "subsId")}];
-    [v5 setObject:v8 forKeyedSubscript:@"subs_id"];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "subsId")}];
+    [entryCopy setObject:v8 forKeyedSubscript:@"subs_id"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"subs_id"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"subs_id"];
   }
 
-  if ([v19 binsCount])
+  if ([classCopy binsCount])
   {
     v9 = 0;
     do
     {
-      v10 = [v19 binAtIndex:v9];
+      v10 = [classCopy binAtIndex:v9];
       if ([v10 hasDuration])
       {
         v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"dur_bin_%d", v9];
         v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v10, "duration")}];
-        [v5 setObject:v12 forKeyedSubscript:v11];
+        [entryCopy setObject:v12 forKeyedSubscript:v11];
       }
 
       if ([v10 hasCcConfigured])
       {
         v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"cc_configured_%d", v9];
         v14 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "ccConfigured")}];
-        [v5 setObject:v14 forKeyedSubscript:v13];
+        [entryCopy setObject:v14 forKeyedSubscript:v13];
       }
 
       if ([v10 hasCcActivated])
       {
         v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"cc_activated_%d", v9];
         v16 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "ccActivated")}];
-        [v5 setObject:v16 forKeyedSubscript:v15];
+        [entryCopy setObject:v16 forKeyedSubscript:v15];
       }
 
       if ([v10 hasDirection])
       {
         v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"direction_%d", v9];
         v18 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "direction")}];
-        [v5 setObject:v18 forKeyedSubscript:v17];
+        [entryCopy setObject:v18 forKeyedSubscript:v17];
       }
 
       ++v9;
     }
 
-    while ([v19 binsCount] > v9);
+    while ([classCopy binsCount] > v9);
   }
 }
 
-- (void)lteComponentCarrierInfoForClass:(id)a3 forEntry:(id)a4
+- (void)lteComponentCarrierInfoForClass:(id)class forEntry:(id)entry
 {
-  v21 = a3;
-  v5 = a4;
-  if ([v21 hasTimestamp])
+  classCopy = class;
+  entryCopy = entry;
+  if ([classCopy hasTimestamp])
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v21, "timestamp")}];
-    [v5 setObject:v6 forKeyedSubscript:@"bbtimestamp"];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(classCopy, "timestamp")}];
+    [entryCopy setObject:v6 forKeyedSubscript:@"bbtimestamp"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"bbtimestamp"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"bbtimestamp"];
   }
 
-  if ([v21 hasSubsId])
+  if ([classCopy hasSubsId])
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v21, "subsId")}];
-    [v5 setObject:v7 forKeyedSubscript:@"subs_id"];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "subsId")}];
+    [entryCopy setObject:v7 forKeyedSubscript:@"subs_id"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"subs_id"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"subs_id"];
   }
 
-  if ([v21 carrierInfosCount])
+  if ([classCopy carrierInfosCount])
   {
     v8 = 0;
     do
     {
-      v9 = [v21 carrierInfoAtIndex:v8];
+      v9 = [classCopy carrierInfoAtIndex:v8];
       if ([v9 hasBand])
       {
         v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"band_%d", v8];
         v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v9, "band")}];
-        [v5 setObject:v11 forKeyedSubscript:v10];
+        [entryCopy setObject:v11 forKeyedSubscript:v10];
       }
 
       if ([v9 hasBandwidth])
@@ -889,262 +889,262 @@ uint64_t __55__PLSinopeBBHardwareMessage_decodePayload_forMetricId___block_invok
         v13 = MEMORY[0x277CCABB0];
         [v9 bandwidth];
         v14 = [v13 numberWithFloat:?];
-        [v5 setObject:v14 forKeyedSubscript:v12];
+        [entryCopy setObject:v14 forKeyedSubscript:v12];
       }
 
       if ([v9 hasEarfcn])
       {
         v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"earfcn_%d", v8];
         v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v9, "earfcn")}];
-        [v5 setObject:v16 forKeyedSubscript:v15];
+        [entryCopy setObject:v16 forKeyedSubscript:v15];
       }
 
       if ([v9 hasType])
       {
         v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"type_%d", v8];
         v18 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v9, "type")}];
-        [v5 setObject:v18 forKeyedSubscript:v17];
+        [entryCopy setObject:v18 forKeyedSubscript:v17];
       }
 
       if ([v9 hasDuplex])
       {
         v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"duplex_%d", v8];
         v20 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v9, "duplex")}];
-        [v5 setObject:v20 forKeyedSubscript:v19];
+        [entryCopy setObject:v20 forKeyedSubscript:v19];
       }
 
       ++v8;
     }
 
-    while ([v21 carrierInfosCount] > v8);
+    while ([classCopy carrierInfosCount] > v8);
   }
 }
 
-- (void)lteNrRxDivForClass:(id)a3 forEntry:(id)a4
+- (void)lteNrRxDivForClass:(id)class forEntry:(id)entry
 {
-  v23 = a3;
-  v5 = a4;
-  if ([v23 hasTimestamp])
+  classCopy = class;
+  entryCopy = entry;
+  if ([classCopy hasTimestamp])
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v23, "timestamp")}];
-    [v5 setObject:v6 forKeyedSubscript:@"bbtimestamp"];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(classCopy, "timestamp")}];
+    [entryCopy setObject:v6 forKeyedSubscript:@"bbtimestamp"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"bbtimestamp"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"bbtimestamp"];
   }
 
-  if ([v23 hasDurationMs])
+  if ([classCopy hasDurationMs])
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v23, "durationMs")}];
-    [v5 setObject:v7 forKeyedSubscript:@"duration"];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durationMs")}];
+    [entryCopy setObject:v7 forKeyedSubscript:@"duration"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"duration"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"duration"];
   }
 
-  if ([v23 hasSubsId])
+  if ([classCopy hasSubsId])
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v23, "subsId")}];
-    [v5 setObject:v8 forKeyedSubscript:@"subs_id"];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "subsId")}];
+    [entryCopy setObject:v8 forKeyedSubscript:@"subs_id"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"subs_id"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"subs_id"];
   }
 
-  if ([v23 cellsCount])
+  if ([classCopy cellsCount])
   {
     v9 = 0;
     do
     {
-      v10 = [v23 cellAtIndex:v9];
+      v10 = [classCopy cellAtIndex:v9];
       if ([v10 hasIsEndc])
       {
         v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"is_endc_%d", v9];
         v12 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v10, "isEndc")}];
-        [v5 setObject:v12 forKeyedSubscript:v11];
+        [entryCopy setObject:v12 forKeyedSubscript:v11];
       }
 
       if ([v10 hasRat])
       {
         v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"rat_%d", v9];
         v14 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "rat")}];
-        [v5 setObject:v14 forKeyedSubscript:v13];
+        [entryCopy setObject:v14 forKeyedSubscript:v13];
       }
 
       if ([v10 hasMcgCcNum])
       {
         v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"mcg_cc_num_%d", v9];
         v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v10, "mcgCcNum")}];
-        [v5 setObject:v16 forKeyedSubscript:v15];
+        [entryCopy setObject:v16 forKeyedSubscript:v15];
       }
 
       if ([v10 hasCaIndex])
       {
         v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"ca_index_%d", v9];
         v18 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "caIndex")}];
-        [v5 setObject:v18 forKeyedSubscript:v17];
+        [entryCopy setObject:v18 forKeyedSubscript:v17];
       }
 
       if ([v10 hasRxDivState])
       {
         v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"rx_div_state_%d", v9];
         v20 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "rxDivState")}];
-        [v5 setObject:v20 forKeyedSubscript:v19];
+        [entryCopy setObject:v20 forKeyedSubscript:v19];
       }
 
       if ([v10 hasDurationMs])
       {
         v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"duration_ms_%d", v9];
         v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v10, "durationMs")}];
-        [v5 setObject:v22 forKeyedSubscript:v21];
+        [entryCopy setObject:v22 forKeyedSubscript:v21];
       }
 
       ++v9;
     }
 
-    while ([v23 cellsCount] > v9);
+    while ([classCopy cellsCount] > v9);
   }
 }
 
-- (void)lteNrRxTxActForClass:(id)a3 forEntry:(id)a4
+- (void)lteNrRxTxActForClass:(id)class forEntry:(id)entry
 {
-  v19 = a3;
-  v5 = a4;
-  if ([v19 hasTimestamp])
+  classCopy = class;
+  entryCopy = entry;
+  if ([classCopy hasTimestamp])
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v19, "timestamp")}];
-    [v5 setObject:v6 forKeyedSubscript:@"bbtimestamp"];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(classCopy, "timestamp")}];
+    [entryCopy setObject:v6 forKeyedSubscript:@"bbtimestamp"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"bbtimestamp"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"bbtimestamp"];
   }
 
-  if ([v19 hasDurationMs])
+  if ([classCopy hasDurationMs])
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v19, "durationMs")}];
-    [v5 setObject:v7 forKeyedSubscript:@"duration"];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durationMs")}];
+    [entryCopy setObject:v7 forKeyedSubscript:@"duration"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"duration"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"duration"];
   }
 
-  if ([v19 hasSubsId])
+  if ([classCopy hasSubsId])
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v19, "subsId")}];
-    [v5 setObject:v8 forKeyedSubscript:@"subs_id"];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "subsId")}];
+    [entryCopy setObject:v8 forKeyedSubscript:@"subs_id"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"subs_id"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"subs_id"];
   }
 
-  if ([v19 rxTxActsCount])
+  if ([classCopy rxTxActsCount])
   {
     v9 = 0;
     do
     {
-      v10 = [v19 rxTxActAtIndex:v9];
+      v10 = [classCopy rxTxActAtIndex:v9];
       if ([v10 hasRatDpl])
       {
         v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"rat_dpl_%d", v9];
         v12 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "ratDpl")}];
-        [v5 setObject:v12 forKeyedSubscript:v11];
+        [entryCopy setObject:v12 forKeyedSubscript:v11];
       }
 
       if ([v10 hasCaState])
       {
         v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"ca_state_%d", v9];
         v14 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "caState")}];
-        [v5 setObject:v14 forKeyedSubscript:v13];
+        [entryCopy setObject:v14 forKeyedSubscript:v13];
       }
 
       if ([v10 hasActState])
       {
         v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"act_state_%d", v9];
         v16 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "actState")}];
-        [v5 setObject:v16 forKeyedSubscript:v15];
+        [entryCopy setObject:v16 forKeyedSubscript:v15];
       }
 
       if ([v10 hasCount])
       {
         v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"count_%d", v9];
         v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v10, "count")}];
-        [v5 setObject:v18 forKeyedSubscript:v17];
+        [entryCopy setObject:v18 forKeyedSubscript:v17];
       }
 
       ++v9;
     }
 
-    while ([v19 rxTxActsCount] > v9);
+    while ([classCopy rxTxActsCount] > v9);
   }
 }
 
-- (void)lteNrTxPowerForClass:(id)a3 forEntry:(id)a4
+- (void)lteNrTxPowerForClass:(id)class forEntry:(id)entry
 {
-  v18 = a3;
-  v5 = a4;
-  if ([v18 hasTimestamp])
+  classCopy = class;
+  entryCopy = entry;
+  if ([classCopy hasTimestamp])
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v18, "timestamp")}];
-    [v5 setObject:v6 forKeyedSubscript:@"bbtimestamp"];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(classCopy, "timestamp")}];
+    [entryCopy setObject:v6 forKeyedSubscript:@"bbtimestamp"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"bbtimestamp"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"bbtimestamp"];
   }
 
-  if ([v18 hasDurationMs])
+  if ([classCopy hasDurationMs])
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v18, "durationMs")}];
-    [v5 setObject:v7 forKeyedSubscript:@"duration"];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durationMs")}];
+    [entryCopy setObject:v7 forKeyedSubscript:@"duration"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"duration"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"duration"];
   }
 
-  if ([v18 hasSubsId])
+  if ([classCopy hasSubsId])
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v18, "subsId")}];
-    [v5 setObject:v8 forKeyedSubscript:@"subs_id"];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "subsId")}];
+    [entryCopy setObject:v8 forKeyedSubscript:@"subs_id"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"subs_id"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"subs_id"];
   }
 
-  if ([v18 histsCount])
+  if ([classCopy histsCount])
   {
     v9 = 0;
     do
     {
-      v10 = [v18 histAtIndex:v9];
+      v10 = [classCopy histAtIndex:v9];
       if ([v10 hasRat])
       {
         v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"rat_%d", v9];
         v12 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "rat")}];
-        [v5 setObject:v12 forKeyedSubscript:v11];
+        [entryCopy setObject:v12 forKeyedSubscript:v11];
       }
 
       if ([v10 hasChanType])
       {
         v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"chan_type_%d", v9];
         v14 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "chanType")}];
-        [v5 setObject:v14 forKeyedSubscript:v13];
+        [entryCopy setObject:v14 forKeyedSubscript:v13];
       }
 
       if ([v10 countsCount] && objc_msgSend(v10, "countsCount"))
@@ -1154,7 +1154,7 @@ uint64_t __55__PLSinopeBBHardwareMessage_decodePayload_forMetricId___block_invok
         {
           v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"count_%d_%d", v9, v15];
           v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v10, "countAtIndex:", v15)}];
-          [v5 setObject:v17 forKeyedSubscript:v16];
+          [entryCopy setObject:v17 forKeyedSubscript:v16];
 
           ++v15;
         }
@@ -1165,807 +1165,807 @@ uint64_t __55__PLSinopeBBHardwareMessage_decodePayload_forMetricId___block_invok
       ++v9;
     }
 
-    while ([v18 histsCount] > v9);
+    while ([classCopy histsCount] > v9);
   }
 }
 
-- (void)nrCaConfigActForClass:(id)a3 forEntry:(id)a4
+- (void)nrCaConfigActForClass:(id)class forEntry:(id)entry
 {
-  v23 = a3;
-  v5 = a4;
-  if ([v23 hasTimestamp])
+  classCopy = class;
+  entryCopy = entry;
+  if ([classCopy hasTimestamp])
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v23, "timestamp")}];
-    [v5 setObject:v6 forKeyedSubscript:@"bbtimestamp"];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(classCopy, "timestamp")}];
+    [entryCopy setObject:v6 forKeyedSubscript:@"bbtimestamp"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"bbtimestamp"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"bbtimestamp"];
   }
 
-  if ([v23 hasDurationMs])
+  if ([classCopy hasDurationMs])
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v23, "durationMs")}];
-    [v5 setObject:v7 forKeyedSubscript:@"duration"];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durationMs")}];
+    [entryCopy setObject:v7 forKeyedSubscript:@"duration"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"duration"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"duration"];
   }
 
-  if ([v23 hasSubsId])
+  if ([classCopy hasSubsId])
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v23, "subsId")}];
-    [v5 setObject:v8 forKeyedSubscript:@"subs_id"];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "subsId")}];
+    [entryCopy setObject:v8 forKeyedSubscript:@"subs_id"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"subs_id"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"subs_id"];
   }
 
-  if ([v23 binsCount])
+  if ([classCopy binsCount])
   {
     v9 = 0;
     do
     {
-      v10 = [v23 binAtIndex:v9];
+      v10 = [classCopy binAtIndex:v9];
       if ([v10 ccConfigured])
       {
         v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"cc_configured_%d", v9];
         v12 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "ccConfigured")}];
-        [v5 setObject:v12 forKeyedSubscript:v11];
+        [entryCopy setObject:v12 forKeyedSubscript:v11];
       }
 
       if ([v10 ccActivated])
       {
         v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"cc_activated_%d", v9];
         v14 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "ccActivated")}];
-        [v5 setObject:v14 forKeyedSubscript:v13];
+        [entryCopy setObject:v14 forKeyedSubscript:v13];
       }
 
       if ([v10 hasDuration])
       {
         v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"duration_%d", v9];
         v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v10, "duration")}];
-        [v5 setObject:v16 forKeyedSubscript:v15];
+        [entryCopy setObject:v16 forKeyedSubscript:v15];
       }
 
       if ([v10 hasDirection])
       {
         v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"direction_%d", v9];
         v18 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "direction")}];
-        [v5 setObject:v18 forKeyedSubscript:v17];
+        [entryCopy setObject:v18 forKeyedSubscript:v17];
       }
 
       if ([v10 hasIsEndc])
       {
         v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"is_endc_%d", v9];
         v20 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v10, "isEndc")}];
-        [v5 setObject:v20 forKeyedSubscript:v19];
+        [entryCopy setObject:v20 forKeyedSubscript:v19];
       }
 
       if ([v10 hasFreqRange])
       {
         v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"freq_range_%d", v9];
         v22 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "freqRange")}];
-        [v5 setObject:v22 forKeyedSubscript:v21];
+        [entryCopy setObject:v22 forKeyedSubscript:v21];
       }
 
       ++v9;
     }
 
-    while ([v23 binsCount] > v9);
+    while ([classCopy binsCount] > v9);
   }
 }
 
-- (void)nrCCInfoForClass:(id)a3 forEntry:(id)a4
+- (void)nrCCInfoForClass:(id)class forEntry:(id)entry
 {
-  v21 = a3;
-  v5 = a4;
-  if ([v21 hasTimestamp])
+  classCopy = class;
+  entryCopy = entry;
+  if ([classCopy hasTimestamp])
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v21, "timestamp")}];
-    [v5 setObject:v6 forKeyedSubscript:@"bbtimestamp"];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(classCopy, "timestamp")}];
+    [entryCopy setObject:v6 forKeyedSubscript:@"bbtimestamp"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"bbtimestamp"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"bbtimestamp"];
   }
 
-  if ([v21 hasFreqRange])
+  if ([classCopy hasFreqRange])
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v21, "freqRange")}];
-    [v5 setObject:v7 forKeyedSubscript:@"freq_range"];
+    v7 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(classCopy, "freqRange")}];
+    [entryCopy setObject:v7 forKeyedSubscript:@"freq_range"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"freq_range"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"freq_range"];
   }
 
-  if ([v21 hasSubsId])
+  if ([classCopy hasSubsId])
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v21, "subsId")}];
-    [v5 setObject:v8 forKeyedSubscript:@"subs_id"];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "subsId")}];
+    [entryCopy setObject:v8 forKeyedSubscript:@"subs_id"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"subs_id"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"subs_id"];
   }
 
-  if ([v21 carrierInfosCount])
+  if ([classCopy carrierInfosCount])
   {
     v9 = 0;
     do
     {
-      v10 = [v21 carrierInfoAtIndex:v9];
+      v10 = [classCopy carrierInfoAtIndex:v9];
       if ([v10 hasBand])
       {
         v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"band_%d", v9];
         v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v10, "band")}];
-        [v5 setObject:v12 forKeyedSubscript:v11];
+        [entryCopy setObject:v12 forKeyedSubscript:v11];
       }
 
       if ([v10 hasBandwidth])
       {
         v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"bandwidth_%d", v9];
         v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v10, "bandwidth")}];
-        [v5 setObject:v14 forKeyedSubscript:v13];
+        [entryCopy setObject:v14 forKeyedSubscript:v13];
       }
 
       if ([v10 hasNarfcn])
       {
         v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"narfcn_%d", v9];
         v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v10, "narfcn")}];
-        [v5 setObject:v16 forKeyedSubscript:v15];
+        [entryCopy setObject:v16 forKeyedSubscript:v15];
       }
 
       if ([v10 hasType])
       {
         v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"type_%d", v9];
         v18 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "type")}];
-        [v5 setObject:v18 forKeyedSubscript:v17];
+        [entryCopy setObject:v18 forKeyedSubscript:v17];
       }
 
       if ([v10 hasDuplex])
       {
         v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"duplex_%d", v9];
         v20 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "duplex")}];
-        [v5 setObject:v20 forKeyedSubscript:v19];
+        [entryCopy setObject:v20 forKeyedSubscript:v19];
       }
 
       ++v9;
     }
 
-    while ([v21 carrierInfosCount] > v9);
+    while ([classCopy carrierInfosCount] > v9);
   }
 }
 
-- (void)plmnSearchHistForClass:(id)a3 forEntry:(id)a4
+- (void)plmnSearchHistForClass:(id)class forEntry:(id)entry
 {
-  v17 = a3;
-  v5 = a4;
-  if ([v17 hasTimestamp])
+  classCopy = class;
+  entryCopy = entry;
+  if ([classCopy hasTimestamp])
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v17, "timestamp")}];
-    [v5 setObject:v6 forKeyedSubscript:@"bbtimestamp"];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(classCopy, "timestamp")}];
+    [entryCopy setObject:v6 forKeyedSubscript:@"bbtimestamp"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"bbtimestamp"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"bbtimestamp"];
   }
 
-  if ([v17 hasDurationMs])
+  if ([classCopy hasDurationMs])
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v17, "durationMs")}];
-    [v5 setObject:v7 forKeyedSubscript:@"duration"];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durationMs")}];
+    [entryCopy setObject:v7 forKeyedSubscript:@"duration"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"duration"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"duration"];
   }
 
-  if ([v17 hasSubsId])
+  if ([classCopy hasSubsId])
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v17, "subsId")}];
-    [v5 setObject:v8 forKeyedSubscript:@"subs_id"];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "subsId")}];
+    [entryCopy setObject:v8 forKeyedSubscript:@"subs_id"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"subs_id"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"subs_id"];
   }
 
-  if ([v17 binsCount])
+  if ([classCopy binsCount])
   {
     v9 = 0;
     do
     {
-      v10 = [v17 binAtIndex:v9];
+      v10 = [classCopy binAtIndex:v9];
       if ([v10 hasBinId])
       {
         v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"bin_id_%d", v9];
         v12 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "binId")}];
-        [v5 setObject:v12 forKeyedSubscript:v11];
+        [entryCopy setObject:v12 forKeyedSubscript:v11];
       }
 
       if ([v10 hasDuration])
       {
         v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"duration_%d", v9];
         v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v10, "duration")}];
-        [v5 setObject:v14 forKeyedSubscript:v13];
+        [entryCopy setObject:v14 forKeyedSubscript:v13];
       }
 
       if ([v10 hasSearchDurationBinIndex])
       {
         v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"searchDuration_%d", v9];
         v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v10, "searchDurationBinIndex")}];
-        [v5 setObject:v16 forKeyedSubscript:v15];
+        [entryCopy setObject:v16 forKeyedSubscript:v15];
       }
 
       ++v9;
     }
 
-    while ([v17 binsCount] > v9);
+    while ([classCopy binsCount] > v9);
   }
 }
 
-- (void)powerEstimatorForClass:(id)a3 forEntry:(id)a4
+- (void)powerEstimatorForClass:(id)class forEntry:(id)entry
 {
-  v22 = a3;
-  v5 = a4;
-  if ([v22 hasTimestamp])
+  classCopy = class;
+  entryCopy = entry;
+  if ([classCopy hasTimestamp])
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v22, "timestamp")}];
-    [v5 setObject:v6 forKeyedSubscript:@"bbtimestamp"];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(classCopy, "timestamp")}];
+    [entryCopy setObject:v6 forKeyedSubscript:@"bbtimestamp"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"bbtimestamp"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"bbtimestamp"];
   }
 
-  if ([v22 hasDurationMs])
+  if ([classCopy hasDurationMs])
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v22, "durationMs")}];
-    [v5 setObject:v7 forKeyedSubscript:@"duration"];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durationMs")}];
+    [entryCopy setObject:v7 forKeyedSubscript:@"duration"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"duration"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"duration"];
   }
 
-  if ([v22 powerStatsCount])
+  if ([classCopy powerStatsCount])
   {
     v8 = 0;
     do
     {
-      v9 = [v22 powerStatsAtIndex:v8];
+      v9 = [classCopy powerStatsAtIndex:v8];
       if ([v9 hasComponent])
       {
         v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"component_%d", v8];
         v11 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v9, "component")}];
-        [v5 setObject:v11 forKeyedSubscript:v10];
+        [entryCopy setObject:v11 forKeyedSubscript:v10];
       }
 
       if ([v9 hasAvgPowerMw])
       {
         v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"avgPowerMw_%d", v8];
         v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v9, "avgPowerMw")}];
-        [v5 setObject:v13 forKeyedSubscript:v12];
+        [entryCopy setObject:v13 forKeyedSubscript:v12];
       }
 
       if ([v9 hasAvgActivePowerMw])
       {
         v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"avgActivePowerMw_%d", v8];
         v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v9, "avgActivePowerMw")}];
-        [v5 setObject:v15 forKeyedSubscript:v14];
+        [entryCopy setObject:v15 forKeyedSubscript:v14];
       }
 
       if ([v9 hasPeakPowerMw])
       {
         v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"peakPowerMw_%d", v8];
         v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v9, "peakPowerMw")}];
-        [v5 setObject:v17 forKeyedSubscript:v16];
+        [entryCopy setObject:v17 forKeyedSubscript:v16];
       }
 
       if ([v9 hasCumulatedEnergyMj])
       {
         v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"cumulatedEnergyMj_%d", v8];
         v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v9, "cumulatedEnergyMj")}];
-        [v5 setObject:v19 forKeyedSubscript:v18];
+        [entryCopy setObject:v19 forKeyedSubscript:v18];
       }
 
       if ([v9 hasActiveDurationMs])
       {
         v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"activeDurationMs_%d", v8];
         v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v9, "activeDurationMs")}];
-        [v5 setObject:v21 forKeyedSubscript:v20];
+        [entryCopy setObject:v21 forKeyedSubscript:v20];
       }
 
       ++v8;
     }
 
-    while ([v22 powerStatsCount] > v8);
+    while ([classCopy powerStatsCount] > v8);
   }
 }
 
-- (void)protocolStackHistForClass:(id)a3 forEntry:(id)a4
+- (void)protocolStackHistForClass:(id)class forEntry:(id)entry
 {
-  v40 = a3;
-  v5 = a4;
-  if ([v40 hasTimestamp])
+  classCopy = class;
+  entryCopy = entry;
+  if ([classCopy hasTimestamp])
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v40, "timestamp")}];
-    [v5 setObject:v6 forKeyedSubscript:@"bbtimestamp"];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(classCopy, "timestamp")}];
+    [entryCopy setObject:v6 forKeyedSubscript:@"bbtimestamp"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"bbtimestamp"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"bbtimestamp"];
   }
 
-  if ([v40 hasDurationMs])
+  if ([classCopy hasDurationMs])
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durationMs")}];
-    [v5 setObject:v7 forKeyedSubscript:@"duration"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"duration"];
-  }
-
-  if ([v40 hasDurBin0])
-  {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin0")}];
-    [v5 setObject:v8 forKeyedSubscript:@"dur_bin_0"];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durationMs")}];
+    [entryCopy setObject:v7 forKeyedSubscript:@"duration"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_0"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"duration"];
   }
 
-  if ([v40 hasDurBin1])
+  if ([classCopy hasDurBin0])
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin1")}];
-    [v5 setObject:v9 forKeyedSubscript:@"dur_bin_1"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_1"];
-  }
-
-  if ([v40 hasDurBin2])
-  {
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin2")}];
-    [v5 setObject:v10 forKeyedSubscript:@"dur_bin_2"];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin0")}];
+    [entryCopy setObject:v8 forKeyedSubscript:@"dur_bin_0"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_2"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_0"];
   }
 
-  if ([v40 hasDurBin3])
+  if ([classCopy hasDurBin1])
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin3")}];
-    [v5 setObject:v11 forKeyedSubscript:@"dur_bin_3"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_3"];
-  }
-
-  if ([v40 hasDurBin4])
-  {
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin4")}];
-    [v5 setObject:v12 forKeyedSubscript:@"dur_bin_4"];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin1")}];
+    [entryCopy setObject:v9 forKeyedSubscript:@"dur_bin_1"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_4"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_1"];
   }
 
-  if ([v40 hasDurBin5])
+  if ([classCopy hasDurBin2])
   {
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin5")}];
-    [v5 setObject:v13 forKeyedSubscript:@"dur_bin_5"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_5"];
-  }
-
-  if ([v40 hasDurBin6])
-  {
-    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin6")}];
-    [v5 setObject:v14 forKeyedSubscript:@"dur_bin_6"];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin2")}];
+    [entryCopy setObject:v10 forKeyedSubscript:@"dur_bin_2"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_6"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_2"];
   }
 
-  if ([v40 hasDurBin7])
+  if ([classCopy hasDurBin3])
   {
-    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin7")}];
-    [v5 setObject:v15 forKeyedSubscript:@"dur_bin_7"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_7"];
-  }
-
-  if ([v40 hasDurBin8])
-  {
-    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin8")}];
-    [v5 setObject:v16 forKeyedSubscript:@"dur_bin_8"];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin3")}];
+    [entryCopy setObject:v11 forKeyedSubscript:@"dur_bin_3"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_8"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_3"];
   }
 
-  if ([v40 hasDurBin9])
+  if ([classCopy hasDurBin4])
   {
-    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin9")}];
-    [v5 setObject:v17 forKeyedSubscript:@"dur_bin_9"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_9"];
-  }
-
-  if ([v40 hasDurBin10])
-  {
-    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin10")}];
-    [v5 setObject:v18 forKeyedSubscript:@"dur_bin_10"];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin4")}];
+    [entryCopy setObject:v12 forKeyedSubscript:@"dur_bin_4"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_10"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_4"];
   }
 
-  if ([v40 hasDurBin11])
+  if ([classCopy hasDurBin5])
   {
-    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin11")}];
-    [v5 setObject:v19 forKeyedSubscript:@"dur_bin_11"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_11"];
-  }
-
-  if ([v40 hasDurBin12])
-  {
-    v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin12")}];
-    [v5 setObject:v20 forKeyedSubscript:@"dur_bin_12"];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin5")}];
+    [entryCopy setObject:v13 forKeyedSubscript:@"dur_bin_5"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_12"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_5"];
   }
 
-  if ([v40 hasDurBin13])
+  if ([classCopy hasDurBin6])
   {
-    v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin13")}];
-    [v5 setObject:v21 forKeyedSubscript:@"dur_bin_13"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_13"];
-  }
-
-  if ([v40 hasDurBin14])
-  {
-    v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin14")}];
-    [v5 setObject:v22 forKeyedSubscript:@"dur_bin_14"];
+    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin6")}];
+    [entryCopy setObject:v14 forKeyedSubscript:@"dur_bin_6"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_14"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_6"];
   }
 
-  if ([v40 hasDurBin15])
+  if ([classCopy hasDurBin7])
   {
-    v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin15")}];
-    [v5 setObject:v23 forKeyedSubscript:@"dur_bin_15"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_15"];
-  }
-
-  if ([v40 hasDurBin16])
-  {
-    v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin16")}];
-    [v5 setObject:v24 forKeyedSubscript:@"dur_bin_16"];
+    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin7")}];
+    [entryCopy setObject:v15 forKeyedSubscript:@"dur_bin_7"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_16"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_7"];
   }
 
-  if ([v40 hasDurBin17])
+  if ([classCopy hasDurBin8])
   {
-    v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin17")}];
-    [v5 setObject:v25 forKeyedSubscript:@"dur_bin_17"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_17"];
-  }
-
-  if ([v40 hasDurBin18])
-  {
-    v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin18")}];
-    [v5 setObject:v26 forKeyedSubscript:@"dur_bin_18"];
+    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin8")}];
+    [entryCopy setObject:v16 forKeyedSubscript:@"dur_bin_8"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_18"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_8"];
   }
 
-  if ([v40 hasDurBin19])
+  if ([classCopy hasDurBin9])
   {
-    v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin19")}];
-    [v5 setObject:v27 forKeyedSubscript:@"dur_bin_19"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_19"];
-  }
-
-  if ([v40 hasDurBin20])
-  {
-    v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin20")}];
-    [v5 setObject:v28 forKeyedSubscript:@"dur_bin_20"];
+    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin9")}];
+    [entryCopy setObject:v17 forKeyedSubscript:@"dur_bin_9"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_20"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_9"];
   }
 
-  if ([v40 hasDurBin21])
+  if ([classCopy hasDurBin10])
   {
-    v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin21")}];
-    [v5 setObject:v29 forKeyedSubscript:@"dur_bin_21"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_21"];
-  }
-
-  if ([v40 hasDurBin22])
-  {
-    v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin22")}];
-    [v5 setObject:v30 forKeyedSubscript:@"dur_bin_22"];
+    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin10")}];
+    [entryCopy setObject:v18 forKeyedSubscript:@"dur_bin_10"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_22"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_10"];
   }
 
-  if ([v40 hasDurBin23])
+  if ([classCopy hasDurBin11])
   {
-    v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin23")}];
-    [v5 setObject:v31 forKeyedSubscript:@"dur_bin_23"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_23"];
-  }
-
-  if ([v40 hasDurBin24])
-  {
-    v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin24")}];
-    [v5 setObject:v32 forKeyedSubscript:@"dur_bin_24"];
+    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin11")}];
+    [entryCopy setObject:v19 forKeyedSubscript:@"dur_bin_11"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_24"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_11"];
   }
 
-  if ([v40 hasDurBin25])
+  if ([classCopy hasDurBin12])
   {
-    v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin25")}];
-    [v5 setObject:v33 forKeyedSubscript:@"dur_bin_25"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_25"];
-  }
-
-  if ([v40 hasDurBin26])
-  {
-    v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin26")}];
-    [v5 setObject:v34 forKeyedSubscript:@"dur_bin_26"];
+    v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin12")}];
+    [entryCopy setObject:v20 forKeyedSubscript:@"dur_bin_12"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_26"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_12"];
   }
 
-  if ([v40 hasDurBin27])
+  if ([classCopy hasDurBin13])
   {
-    v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin27")}];
-    [v5 setObject:v35 forKeyedSubscript:@"dur_bin_27"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_27"];
-  }
-
-  if ([v40 hasDurBin28])
-  {
-    v36 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin28")}];
-    [v5 setObject:v36 forKeyedSubscript:@"dur_bin_28"];
+    v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin13")}];
+    [entryCopy setObject:v21 forKeyedSubscript:@"dur_bin_13"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_28"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_13"];
   }
 
-  if ([v40 hasDurBin29])
+  if ([classCopy hasDurBin14])
   {
-    v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin29")}];
-    [v5 setObject:v37 forKeyedSubscript:@"dur_bin_29"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_29"];
-  }
-
-  if ([v40 hasDurBin30])
-  {
-    v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin30")}];
-    [v5 setObject:v38 forKeyedSubscript:@"dur_bin_30"];
+    v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin14")}];
+    [entryCopy setObject:v22 forKeyedSubscript:@"dur_bin_14"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_30"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_14"];
   }
 
-  if ([v40 hasDurBin31])
+  if ([classCopy hasDurBin15])
   {
-    v39 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v40, "durBin31")}];
-    [v5 setObject:v39 forKeyedSubscript:@"dur_bin_31"];
+    v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin15")}];
+    [entryCopy setObject:v23 forKeyedSubscript:@"dur_bin_15"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_31"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_15"];
+  }
+
+  if ([classCopy hasDurBin16])
+  {
+    v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin16")}];
+    [entryCopy setObject:v24 forKeyedSubscript:@"dur_bin_16"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_16"];
+  }
+
+  if ([classCopy hasDurBin17])
+  {
+    v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin17")}];
+    [entryCopy setObject:v25 forKeyedSubscript:@"dur_bin_17"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_17"];
+  }
+
+  if ([classCopy hasDurBin18])
+  {
+    v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin18")}];
+    [entryCopy setObject:v26 forKeyedSubscript:@"dur_bin_18"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_18"];
+  }
+
+  if ([classCopy hasDurBin19])
+  {
+    v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin19")}];
+    [entryCopy setObject:v27 forKeyedSubscript:@"dur_bin_19"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_19"];
+  }
+
+  if ([classCopy hasDurBin20])
+  {
+    v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin20")}];
+    [entryCopy setObject:v28 forKeyedSubscript:@"dur_bin_20"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_20"];
+  }
+
+  if ([classCopy hasDurBin21])
+  {
+    v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin21")}];
+    [entryCopy setObject:v29 forKeyedSubscript:@"dur_bin_21"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_21"];
+  }
+
+  if ([classCopy hasDurBin22])
+  {
+    v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin22")}];
+    [entryCopy setObject:v30 forKeyedSubscript:@"dur_bin_22"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_22"];
+  }
+
+  if ([classCopy hasDurBin23])
+  {
+    v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin23")}];
+    [entryCopy setObject:v31 forKeyedSubscript:@"dur_bin_23"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_23"];
+  }
+
+  if ([classCopy hasDurBin24])
+  {
+    v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin24")}];
+    [entryCopy setObject:v32 forKeyedSubscript:@"dur_bin_24"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_24"];
+  }
+
+  if ([classCopy hasDurBin25])
+  {
+    v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin25")}];
+    [entryCopy setObject:v33 forKeyedSubscript:@"dur_bin_25"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_25"];
+  }
+
+  if ([classCopy hasDurBin26])
+  {
+    v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin26")}];
+    [entryCopy setObject:v34 forKeyedSubscript:@"dur_bin_26"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_26"];
+  }
+
+  if ([classCopy hasDurBin27])
+  {
+    v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin27")}];
+    [entryCopy setObject:v35 forKeyedSubscript:@"dur_bin_27"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_27"];
+  }
+
+  if ([classCopy hasDurBin28])
+  {
+    v36 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin28")}];
+    [entryCopy setObject:v36 forKeyedSubscript:@"dur_bin_28"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_28"];
+  }
+
+  if ([classCopy hasDurBin29])
+  {
+    v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin29")}];
+    [entryCopy setObject:v37 forKeyedSubscript:@"dur_bin_29"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_29"];
+  }
+
+  if ([classCopy hasDurBin30])
+  {
+    v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin30")}];
+    [entryCopy setObject:v38 forKeyedSubscript:@"dur_bin_30"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_30"];
+  }
+
+  if ([classCopy hasDurBin31])
+  {
+    v39 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin31")}];
+    [entryCopy setObject:v39 forKeyedSubscript:@"dur_bin_31"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"dur_bin_31"];
   }
 }
 
-- (void)sleepStatesForClass:(id)a3 forEntry:(id)a4
+- (void)sleepStatesForClass:(id)class forEntry:(id)entry
 {
-  v23 = a3;
-  v5 = a4;
-  if ([v23 hasTimestamp])
+  classCopy = class;
+  entryCopy = entry;
+  if ([classCopy hasTimestamp])
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v23, "timestamp")}];
-    [v5 setObject:v6 forKeyedSubscript:@"bbtimestamp"];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(classCopy, "timestamp")}];
+    [entryCopy setObject:v6 forKeyedSubscript:@"bbtimestamp"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"bbtimestamp"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"bbtimestamp"];
   }
 
-  if ([v23 hasDurationMs])
+  if ([classCopy hasDurationMs])
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v23, "durationMs")}];
-    [v5 setObject:v7 forKeyedSubscript:@"duration"];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durationMs")}];
+    [entryCopy setObject:v7 forKeyedSubscript:@"duration"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"duration"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"duration"];
   }
 
-  if ([v23 hasSubsId])
+  if ([classCopy hasSubsId])
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v23, "subsId")}];
-    [v5 setObject:v8 forKeyedSubscript:@"subs_id"];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "subsId")}];
+    [entryCopy setObject:v8 forKeyedSubscript:@"subs_id"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C0C978 forKeyedSubscript:@"subs_id"];
+    [entryCopy setObject:&unk_282C0C978 forKeyedSubscript:@"subs_id"];
   }
 
-  if ([v23 binsCount])
+  if ([classCopy binsCount])
   {
     v9 = 0;
     do
     {
-      v10 = [v23 binAtIndex:v9];
+      v10 = [classCopy binAtIndex:v9];
       if ([v10 hasRat])
       {
         v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"rat_%d", v9];
         v12 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "rat")}];
-        [v5 setObject:v12 forKeyedSubscript:v11];
+        [entryCopy setObject:v12 forKeyedSubscript:v11];
       }
 
       if ([v10 hasRrcState])
       {
         v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"rrcState_%d", v9];
         v14 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "rrcState")}];
-        [v5 setObject:v14 forKeyedSubscript:v13];
+        [entryCopy setObject:v14 forKeyedSubscript:v13];
       }
 
       if ([v10 hasDeployment])
       {
         v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"deployment_%d", v9];
         v16 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "deployment")}];
-        [v5 setObject:v16 forKeyedSubscript:v15];
+        [entryCopy setObject:v16 forKeyedSubscript:v15];
       }
 
       if ([v10 hasSocSleepState])
       {
         v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"socSleepState_%d", v9];
         v18 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "socSleepState")}];
-        [v5 setObject:v18 forKeyedSubscript:v17];
+        [entryCopy setObject:v18 forKeyedSubscript:v17];
       }
 
       if ([v10 hasDurationMs])
       {
         v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"durationMs_%d", v9];
         v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v10, "durationMs")}];
-        [v5 setObject:v20 forKeyedSubscript:v19];
+        [entryCopy setObject:v20 forKeyedSubscript:v19];
       }
 
       if ([v10 hasCount])
       {
         v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"count_%d", v9];
         v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v10, "count")}];
-        [v5 setObject:v22 forKeyedSubscript:v21];
+        [entryCopy setObject:v22 forKeyedSubscript:v21];
       }
 
       ++v9;
     }
 
-    while ([v23 binsCount] > v9);
+    while ([classCopy binsCount] > v9);
   }
 }
 

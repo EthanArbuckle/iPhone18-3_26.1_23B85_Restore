@@ -1,17 +1,17 @@
 @interface EQKitMathMLMStackGroup
 - (BOOL)isBaseFontNameUsed;
-- (EQKitMathMLMStackGroup)initWithChildren:(id)a3;
+- (EQKitMathMLMStackGroup)initWithChildren:(id)children;
 - (const)mathMLAttributes;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (id)layoutSchemata;
 - (void)dealloc;
 @end
 
 @implementation EQKitMathMLMStackGroup
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
-  v6 = objc_msgSend_parseChildrenAsArrayFromXMLNode_(a4, a2, a3, a4);
+  v6 = objc_msgSend_parseChildrenAsArrayFromXMLNode_(parser, a2, node, parser);
 
   return objc_msgSend_initWithChildren_(self, v5, v6, v7);
 }
@@ -27,7 +27,7 @@
   return qword_280A38928;
 }
 
-- (EQKitMathMLMStackGroup)initWithChildren:(id)a3
+- (EQKitMathMLMStackGroup)initWithChildren:(id)children
 {
   v40 = *MEMORY[0x277D85DE8];
   v38.receiver = self;
@@ -35,14 +35,14 @@
   v7 = [(EQKitMathMLMStackGroup *)&v38 init];
   if (v7)
   {
-    v8 = objc_msgSend_count(a3, v4, v5, v6);
+    v8 = objc_msgSend_count(children, v4, v5, v6);
     if (v8)
     {
       v11 = v8;
       v12 = 0;
       for (i = 0; i != v11; ++i)
       {
-        v14 = objc_msgSend_objectAtIndex_(a3, v9, i, v10);
+        v14 = objc_msgSend_objectAtIndex_(children, v9, i, v10);
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -57,8 +57,8 @@
               {
                 if (!v12)
                 {
-                  v12 = objc_msgSend_mutableCopy(a3, v9, v15, v10);
-                  a3 = v12;
+                  v12 = objc_msgSend_mutableCopy(children, v9, v15, v10);
+                  children = v12;
                 }
 
                 v16 = objc_alloc(MEMORY[0x277CBEA60]);
@@ -78,7 +78,7 @@
       v12 = 0;
     }
 
-    v7->mChildren = a3;
+    v7->mChildren = children;
 
     v36 = 0u;
     v37 = 0u;
@@ -170,7 +170,7 @@
 {
   *a2 = &unk_2884CB990;
   *(a2 + 8) = 13;
-  result = a1;
+  result = self;
   *(a2 + 16) = result;
   *(a2 + 24) = 0;
   return result;

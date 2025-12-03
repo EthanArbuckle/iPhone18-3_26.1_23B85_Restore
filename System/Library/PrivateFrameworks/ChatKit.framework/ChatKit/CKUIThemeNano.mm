@@ -14,7 +14,7 @@
 - (id)gray_balloonColors;
 - (id)gray_unfilledBalloonColor;
 - (id)messageAcknowledgmentBalloonBorderColor;
-- (id)messageAcknowledgmentBalloonColorForStyle:(int64_t)a3;
+- (id)messageAcknowledgmentBalloonColorForStyle:(int64_t)style;
 - (id)messageAcknowledgmentGrayColor;
 - (id)messageAcknowledgmentRedColor;
 - (id)messageAcknowledgmentWhiteColor;
@@ -282,9 +282,9 @@ void __40__CKUIThemeNano_transcriptBigEmojiColor__block_invoke()
 
   if (!v5)
   {
-    v6 = [(CKUITheme *)self grayTextColor];
+    grayTextColor = [(CKUITheme *)self grayTextColor];
     v7 = transcriptDeemphasizedTextColor_sBehavior_2187;
-    transcriptDeemphasizedTextColor_sBehavior_2187 = v6;
+    transcriptDeemphasizedTextColor_sBehavior_2187 = grayTextColor;
 
     transcriptDeemphasizedTextColor_sIsIncreaseContrastEnabled_transcriptDeemphasizedTextColor_2186 = v3;
     v4 = transcriptDeemphasizedTextColor_sBehavior_2187;
@@ -707,12 +707,12 @@ void __48__CKUIThemeNano_messageAcknowledgmentWhiteColor__block_invoke()
   messageAcknowledgmentWhiteColor_sBehavior_2270 = v0;
 }
 
-- (id)messageAcknowledgmentBalloonColorForStyle:(int64_t)a3
+- (id)messageAcknowledgmentBalloonColorForStyle:(int64_t)style
 {
-  v3 = [(CKUITheme *)self balloonColorsForColorType:[(CKUITheme *)self messageAcknowledgmentBalloonColorTypeForStyle:a3]];
-  v4 = [v3 lastObject];
+  v3 = [(CKUITheme *)self balloonColorsForColorType:[(CKUITheme *)self messageAcknowledgmentBalloonColorTypeForStyle:style]];
+  lastObject = [v3 lastObject];
 
-  return v4;
+  return lastObject;
 }
 
 - (id)browserBackgroundColor

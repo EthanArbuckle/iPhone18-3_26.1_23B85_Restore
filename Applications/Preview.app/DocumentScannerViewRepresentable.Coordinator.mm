@@ -1,13 +1,13 @@
 @interface DocumentScannerViewRepresentable.Coordinator
 - (_TtCV7PreviewP33_687298B9FF6548CEDD432C856C87EEB132DocumentScannerViewRepresentable11Coordinator)init;
-- (void)documentCameraViewController:(id)a3 didFailWithError:(id)a4;
-- (void)documentCameraViewController:(id)a3 didFinishWithScan:(id)a4;
-- (void)documentCameraViewControllerDidCancel:(id)a3;
+- (void)documentCameraViewController:(id)controller didFailWithError:(id)error;
+- (void)documentCameraViewController:(id)controller didFinishWithScan:(id)scan;
+- (void)documentCameraViewControllerDidCancel:(id)cancel;
 @end
 
 @implementation DocumentScannerViewRepresentable.Coordinator
 
-- (void)documentCameraViewController:(id)a3 didFinishWithScan:(id)a4
+- (void)documentCameraViewController:(id)controller didFinishWithScan:(id)scan
 {
   v6 = sub_100005804(&unk_100206DF0);
   __chkstk_darwin(v6 - 8);
@@ -17,25 +17,25 @@
   v10 = swift_allocObject();
   v10[2] = 0;
   v10[3] = 0;
-  v10[4] = a4;
+  v10[4] = scan;
   v10[5] = self;
-  v11 = a4;
-  v12 = self;
+  scanCopy = scan;
+  selfCopy = self;
   sub_10005DB88(0, 0, v8, &unk_10019F9C8, v10);
 }
 
-- (void)documentCameraViewControllerDidCancel:(id)a3
+- (void)documentCameraViewControllerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
+  cancelCopy = cancel;
+  selfCopy = self;
   sub_100099330(&unk_1001F2298, sub_1000996B4, &unk_1001F22B0);
 }
 
-- (void)documentCameraViewController:(id)a3 didFailWithError:(id)a4
+- (void)documentCameraViewController:(id)controller didFailWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
+  controllerCopy = controller;
+  errorCopy = error;
+  selfCopy = self;
   sub_100099330(&unk_1001F2248, sub_10009960C, &unk_1001F2260);
 }
 

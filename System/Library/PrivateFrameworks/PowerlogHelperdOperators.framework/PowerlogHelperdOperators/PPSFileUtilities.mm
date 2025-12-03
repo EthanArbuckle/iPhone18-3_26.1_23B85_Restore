@@ -1,32 +1,32 @@
 @interface PPSFileUtilities
-+ (BOOL)markAsPurgeable:(id)a3 label:(apfs_label_purgeable_request *)a4;
-+ (BOOL)markAsPurgeable:(id)a3 urgency:(unint64_t)a4 startDate:(id)a5;
++ (BOOL)markAsPurgeable:(id)purgeable label:(apfs_label_purgeable_request *)label;
++ (BOOL)markAsPurgeable:(id)purgeable urgency:(unint64_t)urgency startDate:(id)date;
 + (BOOL)supportsEnhancedAPFS;
-+ (apfs_label_purgeable_request)_purgeableLabelWithUrgency:(SEL)a3 startDate:(unint64_t)a4;
++ (apfs_label_purgeable_request)_purgeableLabelWithUrgency:(SEL)urgency startDate:(unint64_t)date;
 + (id)containerPath;
 @end
 
 @implementation PPSFileUtilities
 
-+ (BOOL)markAsPurgeable:(id)a3 label:(apfs_label_purgeable_request *)a4
++ (BOOL)markAsPurgeable:(id)purgeable label:(apfs_label_purgeable_request *)label
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5 && a4->var0)
+  purgeableCopy = purgeable;
+  v6 = purgeableCopy;
+  if (purgeableCopy && label->var0)
   {
-    a4->var0 |= 0x10005uLL;
-    v7 = open([v5 fileSystemRepresentation], 0);
+    label->var0 |= 0x10005uLL;
+    v7 = open([purgeableCopy fileSystemRepresentation], 0);
     v8 = v7;
     if (v7 < 0)
     {
       v11 = PPSLogAPFS();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v20 = *&a4->var2;
-        *v24 = *&a4->var0;
+        v20 = *&label->var2;
+        *v24 = *&label->var0;
         *&v24[16] = v20;
-        *&v24[32] = *&a4->var4;
+        *&v24[32] = *&label->var4;
         v13 = [PPSFileUtilities _debugStringForPurgeableLabel:v24];
         v21 = strerror(v8);
         *v24 = 138413058;
@@ -44,7 +44,7 @@
 
     else
     {
-      v9 = ffsctl(v7, 0xC0304A6FuLL, a4, 0);
+      v9 = ffsctl(v7, 0xC0304A6FuLL, label, 0);
       close(v8);
       v10 = PPSLogAPFS();
       v11 = v10;
@@ -52,10 +52,10 @@
       {
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
         {
-          v22 = *&a4->var2;
-          *v24 = *&a4->var0;
+          v22 = *&label->var2;
+          *v24 = *&label->var0;
           *&v24[16] = v22;
-          *&v24[32] = *&a4->var4;
+          *&v24[32] = *&label->var4;
           v23 = [PPSFileUtilities _debugStringForPurgeableLabel:v24];
           *v24 = 138412546;
           *&v24[4] = v6;
@@ -70,10 +70,10 @@
 
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        v12 = *&a4->var2;
-        *v24 = *&a4->var0;
+        v12 = *&label->var2;
+        *v24 = *&label->var0;
         *&v24[16] = v12;
-        *&v24[32] = *&a4->var4;
+        *&v24[32] = *&label->var4;
         v13 = [PPSFileUtilities _debugStringForPurgeableLabel:v24];
         v14 = __error();
         v15 = strerror(*v14);
@@ -104,19 +104,19 @@ LABEL_14:
   return v17;
 }
 
-+ (BOOL)markAsPurgeable:(id)a3 urgency:(unint64_t)a4 startDate:(id)a5
++ (BOOL)markAsPurgeable:(id)purgeable urgency:(unint64_t)urgency startDate:(id)date
 {
   v11 = 0u;
   v12 = 0u;
   v10 = 0u;
-  v7 = a3;
-  [PPSFileUtilities _purgeableLabelWithUrgency:a4 startDate:a5];
+  purgeableCopy = purgeable;
+  [PPSFileUtilities _purgeableLabelWithUrgency:urgency startDate:date];
   v9[0] = v10;
   v9[1] = v11;
   v9[2] = v12;
-  LOBYTE(a5) = [PPSFileUtilities markAsPurgeable:v7 label:v9];
+  LOBYTE(date) = [PPSFileUtilities markAsPurgeable:purgeableCopy label:v9];
 
-  return a5;
+  return date;
 }
 
 + (BOOL)supportsEnhancedAPFS
@@ -148,22 +148,22 @@ uint64_t __46__PPSFileUtilities_APFS__supportsEnhancedAPFS__block_invoke()
   return result;
 }
 
-+ (apfs_label_purgeable_request)_purgeableLabelWithUrgency:(SEL)a3 startDate:(unint64_t)a4
++ (apfs_label_purgeable_request)_purgeableLabelWithUrgency:(SEL)urgency startDate:(unint64_t)date
 {
   v10 = a5;
   *&retstr->var1 = 0u;
   *&retstr->var3 = 0u;
   retstr->var5 = 0;
-  retstr->var0 = a4;
-  v7 = +[PPSFileUtilities supportsEnhancedAPFS];
-  if (v10 && v7)
+  retstr->var0 = date;
+  timeIntervalSince1970 = +[PPSFileUtilities supportsEnhancedAPFS];
+  if (v10 && timeIntervalSince1970)
   {
     retstr->var2 = 0x80000;
-    v7 = [v10 timeIntervalSince1970];
+    timeIntervalSince1970 = [v10 timeIntervalSince1970];
     retstr->var4 = 1000000000 * v8;
   }
 
-  return MEMORY[0x2821F96F8](v7);
+  return MEMORY[0x2821F96F8](timeIntervalSince1970);
 }
 
 + (id)containerPath

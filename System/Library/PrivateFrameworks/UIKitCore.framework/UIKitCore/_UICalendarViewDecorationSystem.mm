@@ -1,8 +1,8 @@
 @interface _UICalendarViewDecorationSystem
 - (_UICalendarViewDecorationSystem)init;
-- (void)_prepareDecorationFeedForKey:(id)a3;
-- (void)configureDecoration:(id)a3;
-- (void)invalidateDecoration:(id)a3;
+- (void)_prepareDecorationFeedForKey:(id)key;
+- (void)configureDecoration:(id)decoration;
+- (void)invalidateDecoration:(id)decoration;
 @end
 
 @implementation _UICalendarViewDecorationSystem
@@ -14,69 +14,69 @@
   v2 = [(_UICalendarViewDecorationSystem *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     decorationViewFeed = v2->_decorationViewFeed;
-    v2->_decorationViewFeed = v3;
+    v2->_decorationViewFeed = dictionary;
   }
 
   return v2;
 }
 
-- (void)configureDecoration:(id)a3
+- (void)configureDecoration:(id)decoration
 {
-  v11 = a3;
-  v4 = [v11 _decorationViewReusableKey];
-  v5 = [v11 _decorationView];
-  if (!v5 && v4)
+  decorationCopy = decoration;
+  _decorationViewReusableKey = [decorationCopy _decorationViewReusableKey];
+  _decorationView = [decorationCopy _decorationView];
+  if (!_decorationView && _decorationViewReusableKey)
   {
-    v6 = [(NSMutableDictionary *)self->_decorationViewFeed objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_decorationViewFeed objectForKeyedSubscript:_decorationViewReusableKey];
     v7 = [v6 count];
 
     if (v7)
     {
-      v8 = [(NSMutableDictionary *)self->_decorationViewFeed objectForKey:v4];
-      v5 = [v8 lastObject];
+      v8 = [(NSMutableDictionary *)self->_decorationViewFeed objectForKey:_decorationViewReusableKey];
+      _decorationView = [v8 lastObject];
 
-      v9 = [(NSMutableDictionary *)self->_decorationViewFeed objectForKey:v4];
+      v9 = [(NSMutableDictionary *)self->_decorationViewFeed objectForKey:_decorationViewReusableKey];
       [v9 removeLastObject];
     }
 
     else
     {
-      v5 = 0;
+      _decorationView = 0;
     }
   }
 
-  v10 = [v11 _decorationViewForReuseView:v5];
-  [v11 _setDecorationView:v10];
+  v10 = [decorationCopy _decorationViewForReuseView:_decorationView];
+  [decorationCopy _setDecorationView:v10];
 }
 
-- (void)invalidateDecoration:(id)a3
+- (void)invalidateDecoration:(id)decoration
 {
-  v8 = a3;
-  v4 = [v8 _decorationView];
-  [v4 removeFromSuperview];
-  v5 = [v8 _decorationViewReusableKey];
-  if (v5)
+  decorationCopy = decoration;
+  _decorationView = [decorationCopy _decorationView];
+  [_decorationView removeFromSuperview];
+  _decorationViewReusableKey = [decorationCopy _decorationViewReusableKey];
+  if (_decorationViewReusableKey)
   {
-    [(_UICalendarViewDecorationSystem *)self _prepareDecorationFeedForKey:v5];
-    v6 = [(_UICalendarViewDecorationSystem *)self decorationViewFeed];
-    v7 = [v6 objectForKey:v5];
-    [v7 addObject:v4];
+    [(_UICalendarViewDecorationSystem *)self _prepareDecorationFeedForKey:_decorationViewReusableKey];
+    decorationViewFeed = [(_UICalendarViewDecorationSystem *)self decorationViewFeed];
+    v7 = [decorationViewFeed objectForKey:_decorationViewReusableKey];
+    [v7 addObject:_decorationView];
   }
 
-  [v8 _setDecorationView:0];
+  [decorationCopy _setDecorationView:0];
 }
 
-- (void)_prepareDecorationFeedForKey:(id)a3
+- (void)_prepareDecorationFeedForKey:(id)key
 {
-  v6 = a3;
+  keyCopy = key;
   v4 = [(NSMutableDictionary *)self->_decorationViewFeed objectForKeyedSubscript:?];
 
   if (!v4)
   {
-    v5 = [MEMORY[0x1E695DF70] array];
-    [(NSMutableDictionary *)self->_decorationViewFeed setObject:v5 forKeyedSubscript:v6];
+    array = [MEMORY[0x1E695DF70] array];
+    [(NSMutableDictionary *)self->_decorationViewFeed setObject:array forKeyedSubscript:keyCopy];
   }
 }
 

@@ -1,5 +1,5 @@
 @interface IMAdaptiveImageGlyphBlastDoor
-+ (id)generateEmojiImageAssetFromSourceURL:(id)a3 senderContext:(id)a4;
++ (id)generateEmojiImageAssetFromSourceURL:(id)l senderContext:(id)context;
 + (id)logger;
 @end
 
@@ -17,11 +17,11 @@
   return v3;
 }
 
-+ (id)generateEmojiImageAssetFromSourceURL:(id)a3 senderContext:(id)a4
++ (id)generateEmojiImageAssetFromSourceURL:(id)l senderContext:(id)context
 {
   v73 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  contextCopy = context;
   v7 = objc_alloc_init(MEMORY[0x1E69A6170]);
   [v7 startTimingForKey:@"IMAdaptiveImageGlyphBlastDoor_PreviewGenerationTime"];
   [v7 startTimingForKey:@"IMAdaptiveImageGlyphBlastDoor_PreviewGenerationTime_MetadataOnly"];
@@ -40,15 +40,15 @@
   v64 = &v65;
   v9 = v8;
   v63 = v9;
-  [IMAttachmentBlastdoor getMetadataForEmojiImageWithFileURL:v5 senderContext:v6 maxStrikeCount:20 withCompletionBlock:v62];
+  [IMAttachmentBlastdoor getMetadataForEmojiImageWithFileURL:lCopy senderContext:contextCopy maxStrikeCount:20 withCompletionBlock:v62];
   v10 = dispatch_time(0, 1000000000);
   v57 = v7;
   if (dispatch_group_wait(v9, v10))
   {
-    v11 = +[IMAdaptiveImageGlyphBlastDoor logger];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    contentIdentifier = +[IMAdaptiveImageGlyphBlastDoor logger];
+    if (os_log_type_enabled(contentIdentifier, OS_LOG_TYPE_ERROR))
     {
-      sub_1A88C0BC8(v11, v12, v13, v14, v15, v16, v17, v18);
+      sub_1A88C0BC8(contentIdentifier, v12, v13, v14, v15, v16, v17, v18);
     }
 
 LABEL_4:
@@ -58,40 +58,40 @@ LABEL_4:
 
   if (!v66[5])
   {
-    v11 = +[IMAdaptiveImageGlyphBlastDoor logger];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    contentIdentifier = +[IMAdaptiveImageGlyphBlastDoor logger];
+    if (os_log_type_enabled(contentIdentifier, OS_LOG_TYPE_ERROR))
     {
-      sub_1A88C0C38(v11, v33, v34, v35, v36, v37, v38, v39);
+      sub_1A88C0C38(contentIdentifier, v33, v34, v35, v36, v37, v38, v39);
     }
 
     goto LABEL_4;
   }
 
   [v7 stopTimingForKey:@"IMAdaptiveImageGlyphBlastDoor_PreviewGenerationTime_MetadataOnly"];
-  v56 = [v66[5] imageStrikeCount];
-  v11 = [v66[5] contentIdentifier];
-  v20 = [v66[5] shortDescription];
-  v21 = v20;
+  imageStrikeCount = [v66[5] imageStrikeCount];
+  contentIdentifier = [v66[5] contentIdentifier];
+  shortDescription = [v66[5] shortDescription];
+  v21 = shortDescription;
   v22 = @"Emoji";
-  if (v20)
+  if (shortDescription)
   {
-    v22 = v20;
+    v22 = shortDescription;
   }
 
   v53 = v22;
 
-  v23 = [v66[5] imageCredit];
-  v24 = [v66[5] digitalSourceType];
-  v51 = v23;
-  v52 = v24;
-  if ([v11 length])
+  imageCredit = [v66[5] imageCredit];
+  digitalSourceType = [v66[5] digitalSourceType];
+  v51 = imageCredit;
+  v52 = digitalSourceType;
+  if ([contentIdentifier length])
   {
     v54 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [v54 setObject:v23 forKeyedSubscript:*MEMORY[0x1E696DD78]];
-    [v54 setObject:v24 forKeyedSubscript:*MEMORY[0x1E696DDB0]];
+    [v54 setObject:imageCredit forKeyedSubscript:*MEMORY[0x1E696DD78]];
+    [v54 setObject:digitalSourceType forKeyedSubscript:*MEMORY[0x1E696DDB0]];
     v55 = [v54 copy];
     v25 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (v56)
+    if (imageStrikeCount)
     {
       v27 = 0;
       *&v26 = 134217984;
@@ -108,7 +108,7 @@ LABEL_4:
         v60 = v25;
         v29 = v28;
         v61 = v29;
-        [IMAttachmentBlastdoor generateEmojiImagePreview:v5 senderContext:v6 frameIndex:v27 maxPixelDimension:v58 withCompletionBlock:1025.0];
+        [IMAttachmentBlastdoor generateEmojiImagePreview:lCopy senderContext:contextCopy frameIndex:v27 maxPixelDimension:v58 withCompletionBlock:1025.0];
         v30 = dispatch_time(0, 5000000000);
         v31 = dispatch_group_wait(v29, v30);
         if (v31)
@@ -138,7 +138,7 @@ LABEL_4:
           break;
         }
 
-        if (v56 == ++v27)
+        if (imageStrikeCount == ++v27)
         {
           goto LABEL_21;
         }
@@ -151,7 +151,7 @@ LABEL_4:
     {
 LABEL_21:
       v40 = [v25 copy];
-      v19 = [objc_alloc(MEMORY[0x1E69DB7A0]) initWithContentIdentifier:v11 shortDescription:v53 strikeImages:v40];
+      v19 = [objc_alloc(MEMORY[0x1E69DB7A0]) initWithContentIdentifier:contentIdentifier shortDescription:v53 strikeImages:v40];
     }
   }
 

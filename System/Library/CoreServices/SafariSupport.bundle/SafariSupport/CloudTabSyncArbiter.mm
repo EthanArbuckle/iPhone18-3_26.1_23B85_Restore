@@ -1,25 +1,25 @@
 @interface CloudTabSyncArbiter
-- (CloudTabSyncArbiter)initWithAccountStore:(id)a3;
+- (CloudTabSyncArbiter)initWithAccountStore:(id)store;
 - (CloudTabSyncArbiterDelegate)delegate;
-- (id)_manateeErrorCode:(id)a3;
-- (void)_deleteCloudTabsZoneWithCompletionHandler:(id)a3;
-- (void)_determineCloudTabSyncCoordinatorWithCompletion:(id)a3;
+- (id)_manateeErrorCode:(id)code;
+- (void)_deleteCloudTabsZoneWithCompletionHandler:(id)handler;
+- (void)_determineCloudTabSyncCoordinatorWithCompletion:(id)completion;
 - (void)_fetchDevices;
-- (void)_handleManateeErrorIfNeeded:(id)a3 completionHandler:(id)a4;
-- (void)_pcsIdentitiesChangedNotification:(id)a3;
-- (void)_transitionCloudTabSyncCoordinatorToManateeState:(int64_t)a3 completion:(id)a4;
-- (void)clearServerChangeTokenWithCompletionHandler:(id)a3;
+- (void)_handleManateeErrorIfNeeded:(id)needed completionHandler:(id)handler;
+- (void)_pcsIdentitiesChangedNotification:(id)notification;
+- (void)_transitionCloudTabSyncCoordinatorToManateeState:(int64_t)state completion:(id)completion;
+- (void)clearServerChangeTokenWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)deleteCloudTabCloseRequestsWithUUIDStrings:(id)a3 completionHandler:(id)a4;
-- (void)deleteCloudTabsZoneWithCompletionHandler:(id)a3;
+- (void)deleteCloudTabCloseRequestsWithUUIDStrings:(id)strings completionHandler:(id)handler;
+- (void)deleteCloudTabsZoneWithCompletionHandler:(id)handler;
 - (void)deleteDatabaseAndSyncDataForAccountChange;
-- (void)deleteDatabaseWithCompletionHandler:(id)a3;
-- (void)deleteDevicesWithUUIDStrings:(id)a3 completionHandler:(id)a4;
-- (void)fetchDevicesWithCompletionHandler:(id)a3;
-- (void)getCachedDevicesWithCompletionHandler:(id)a3;
-- (void)getCloudTabRemoteStoreWithCompletionHandler:(id)a3;
-- (void)saveCloudTabCloseRequestWithDictionaryRepresentation:(id)a3 closeRequestUUIDString:(id)a4 completionHandler:(id)a5;
-- (void)saveTabsForCurrentDeviceWithDictionaryRepresentation:(id)a3 deviceUUIDString:(id)a4 completionHandler:(id)a5;
+- (void)deleteDatabaseWithCompletionHandler:(id)handler;
+- (void)deleteDevicesWithUUIDStrings:(id)strings completionHandler:(id)handler;
+- (void)fetchDevicesWithCompletionHandler:(id)handler;
+- (void)getCachedDevicesWithCompletionHandler:(id)handler;
+- (void)getCloudTabRemoteStoreWithCompletionHandler:(id)handler;
+- (void)saveCloudTabCloseRequestWithDictionaryRepresentation:(id)representation closeRequestUUIDString:(id)string completionHandler:(id)handler;
+- (void)saveTabsForCurrentDeviceWithDictionaryRepresentation:(id)representation deviceUUIDString:(id)string completionHandler:(id)handler;
 - (void)userAccountChanged;
 @end
 
@@ -36,9 +36,9 @@
   [(CloudTabSyncArbiter *)self _determineCloudTabSyncCoordinatorWithCompletion:v3];
 }
 
-- (CloudTabSyncArbiter)initWithAccountStore:(id)a3
+- (CloudTabSyncArbiter)initWithAccountStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v32.receiver = self;
   v32.super_class = CloudTabSyncArbiter;
   v6 = [(CloudTabSyncArbiter *)&v32 init];
@@ -52,7 +52,7 @@
     queue = v6->_queue;
     v6->_queue = v10;
 
-    objc_storeStrong(&v6->_accountStore, a3);
+    objc_storeStrong(&v6->_accountStore, store);
     if (qword_100154000 != -1)
     {
       sub_1000767A0();
@@ -114,32 +114,32 @@
   [(CloudTabSyncArbiter *)&v3 dealloc];
 }
 
-- (void)clearServerChangeTokenWithCompletionHandler:(id)a3
+- (void)clearServerChangeTokenWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   cloudTabLocalStore = self->_cloudTabLocalStore;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100073904;
   v7[3] = &unk_100134CA8;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(CloudKitSQLiteStore *)cloudTabLocalStore setServerChangeTokenData:0 completionHandler:v7];
 }
 
-- (void)_determineCloudTabSyncCoordinatorWithCompletion:(id)a3
+- (void)_determineCloudTabSyncCoordinatorWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_syncCoordinator && !self->_manateeStateNeedsUpdate)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
   else
   {
     syncCoordinatorDeterminationCompletionBlocks = self->_syncCoordinatorDeterminationCompletionBlocks;
-    v7 = objc_retainBlock(v4);
+    v7 = objc_retainBlock(completionCopy);
     [(NSMutableArray *)syncCoordinatorDeterminationCompletionBlocks addObject:v7];
 
     if (!self->_determiningSyncCoordinator)
@@ -156,13 +156,13 @@
   }
 }
 
-- (void)_transitionCloudTabSyncCoordinatorToManateeState:(int64_t)a3 completion:(id)a4
+- (void)_transitionCloudTabSyncCoordinatorToManateeState:(int64_t)state completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
+  completionCopy = completion;
+  v7 = completionCopy;
   currentManateeState = self->_currentManateeState;
-  self->_currentManateeState = a3;
-  v9 = (a3 != 1) ^ (currentManateeState == 1);
+  self->_currentManateeState = state;
+  v9 = (state != 1) ^ (currentManateeState == 1);
   if (self->_syncCoordinator)
   {
     v10 = v9 == 0;
@@ -180,7 +180,7 @@
     v19[2] = sub_100073E20;
     v19[3] = &unk_100134CD0;
     v19[4] = self;
-    v19[5] = a3;
+    v19[5] = state;
     v11 = objc_retainBlock(v19);
     [(CloudKitSQLiteStore *)self->_cloudTabLocalStore openDatabaseIfNecessary];
     cloudTabLocalStore = self->_cloudTabLocalStore;
@@ -188,48 +188,48 @@
     v14[1] = 3221225472;
     v14[2] = sub_100073F94;
     v14[3] = &unk_100134D98;
-    v18 = a3 != 1;
+    v18 = state != 1;
     v14[4] = self;
     v15 = v11;
     v16 = v7;
-    v17 = a3;
+    stateCopy = state;
     v13 = v11;
     [(CloudTabSQLiteStore *)cloudTabLocalStore getUseManateeContainerForSyncingWithCompletionHandler:v14];
   }
 
   else
   {
-    (*(v6 + 2))(v6);
+    (*(completionCopy + 2))(completionCopy);
   }
 }
 
-- (void)deleteDatabaseWithCompletionHandler:(id)a3
+- (void)deleteDatabaseWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10007463C;
   v7[3] = &unk_100131990;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_deleteCloudTabsZoneWithCompletionHandler:(id)a3
+- (void)_deleteCloudTabsZoneWithCompletionHandler:(id)handler
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100074814;
   v4[3] = &unk_100134DE8;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(CloudTabSyncArbiter *)v5 _determineCloudTabSyncCoordinatorWithCompletion:v4];
+  selfCopy = self;
+  handlerCopy = handler;
+  v3 = handlerCopy;
+  [(CloudTabSyncArbiter *)selfCopy _determineCloudTabSyncCoordinatorWithCompletion:v4];
 }
 
-- (void)_pcsIdentitiesChangedNotification:(id)a3
+- (void)_pcsIdentitiesChangedNotification:(id)notification
 {
   xpc_transaction_begin();
   queue = self->_queue;
@@ -241,13 +241,13 @@
   dispatch_async(queue, block);
 }
 
-- (id)_manateeErrorCode:(id)a3
+- (id)_manateeErrorCode:(id)code
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  codeCopy = code;
+  v4 = codeCopy;
+  if (codeCopy)
   {
-    if ([v3 safari_isCloudKitErrorWithCode:110])
+    if ([codeCopy safari_isCloudKitErrorWithCode:110])
     {
       v5 = &off_10013C4A0;
     }
@@ -281,10 +281,10 @@
   return v5;
 }
 
-- (void)_handleManateeErrorIfNeeded:(id)a3 completionHandler:(id)a4
+- (void)_handleManateeErrorIfNeeded:(id)needed completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(CloudTabSyncArbiter *)self _manateeErrorCode:a3];
+  handlerCopy = handler;
+  v7 = [(CloudTabSyncArbiter *)self _manateeErrorCode:needed];
   v8 = v7;
   if (v7)
   {
@@ -294,116 +294,116 @@
     block[2] = sub_100074D50;
     block[3] = &unk_100131A20;
     v11 = v7;
-    v12 = self;
-    v13 = v6;
+    selfCopy = self;
+    v13 = handlerCopy;
     dispatch_async(queue, block);
   }
 
   else
   {
-    v6[2](v6);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)saveTabsForCurrentDeviceWithDictionaryRepresentation:(id)a3 deviceUUIDString:(id)a4 completionHandler:(id)a5
+- (void)saveTabsForCurrentDeviceWithDictionaryRepresentation:(id)representation deviceUUIDString:(id)string completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  representationCopy = representation;
+  stringCopy = string;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000750A8;
   v15[3] = &unk_100131650;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = representationCopy;
+  v17 = stringCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = stringCopy;
+  v14 = representationCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)saveCloudTabCloseRequestWithDictionaryRepresentation:(id)a3 closeRequestUUIDString:(id)a4 completionHandler:(id)a5
+- (void)saveCloudTabCloseRequestWithDictionaryRepresentation:(id)representation closeRequestUUIDString:(id)string completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  representationCopy = representation;
+  stringCopy = string;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000753CC;
   v15[3] = &unk_100131650;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = representationCopy;
+  v17 = stringCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = stringCopy;
+  v14 = representationCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)deleteDevicesWithUUIDStrings:(id)a3 completionHandler:(id)a4
+- (void)deleteDevicesWithUUIDStrings:(id)strings completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  stringsCopy = strings;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000756D0;
   block[3] = &unk_100131A20;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = stringsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = stringsCopy;
   dispatch_async(queue, block);
 }
 
-- (void)deleteCloudTabCloseRequestsWithUUIDStrings:(id)a3 completionHandler:(id)a4
+- (void)deleteCloudTabCloseRequestsWithUUIDStrings:(id)strings completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  stringsCopy = strings;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100075998;
   block[3] = &unk_100131A20;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = stringsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = stringsCopy;
   dispatch_async(queue, block);
 }
 
-- (void)fetchDevicesWithCompletionHandler:(id)a3
+- (void)fetchDevicesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100075C34;
   v7[3] = &unk_100131990;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)deleteCloudTabsZoneWithCompletionHandler:(id)a3
+- (void)deleteCloudTabsZoneWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100075D84;
   v7[3] = &unk_100131990;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -429,31 +429,31 @@
   dispatch_async(queue, block);
 }
 
-- (void)getCloudTabRemoteStoreWithCompletionHandler:(id)a3
+- (void)getCloudTabRemoteStoreWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100076094;
   v7[3] = &unk_100131990;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)getCachedDevicesWithCompletionHandler:(id)a3
+- (void)getCachedDevicesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100076214;
   v7[3] = &unk_100131990;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 

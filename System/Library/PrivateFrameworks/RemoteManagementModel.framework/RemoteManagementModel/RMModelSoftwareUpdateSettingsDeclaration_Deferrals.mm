@@ -1,11 +1,11 @@
 @interface RMModelSoftwareUpdateSettingsDeclaration_Deferrals
 + (NSSet)allowedPayloadKeys;
 + (id)buildRequiredOnly;
-+ (id)buildWithCombinedPeriodInDays:(id)a3 majorPeriodInDays:(id)a4 minorPeriodInDays:(id)a5 systemPeriodInDays:(id)a6;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
-- (void)combineWithOther:(id)a3;
++ (id)buildWithCombinedPeriodInDays:(id)days majorPeriodInDays:(id)inDays minorPeriodInDays:(id)periodInDays systemPeriodInDays:(id)systemPeriodInDays;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
+- (void)combineWithOther:(id)other;
 @end
 
 @implementation RMModelSoftwareUpdateSettingsDeclaration_Deferrals
@@ -26,19 +26,19 @@
   return v4;
 }
 
-+ (id)buildWithCombinedPeriodInDays:(id)a3 majorPeriodInDays:(id)a4 minorPeriodInDays:(id)a5 systemPeriodInDays:(id)a6
++ (id)buildWithCombinedPeriodInDays:(id)days majorPeriodInDays:(id)inDays minorPeriodInDays:(id)periodInDays systemPeriodInDays:(id)systemPeriodInDays
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  systemPeriodInDaysCopy = systemPeriodInDays;
+  periodInDaysCopy = periodInDays;
+  inDaysCopy = inDays;
+  daysCopy = days;
   v13 = objc_opt_new();
-  [v13 setPayloadCombinedPeriodInDays:v12];
+  [v13 setPayloadCombinedPeriodInDays:daysCopy];
 
-  [v13 setPayloadMajorPeriodInDays:v11];
-  [v13 setPayloadMinorPeriodInDays:v10];
+  [v13 setPayloadMajorPeriodInDays:inDaysCopy];
+  [v13 setPayloadMinorPeriodInDays:periodInDaysCopy];
 
-  [v13 setPayloadSystemPeriodInDays:v9];
+  [v13 setPayloadSystemPeriodInDays:systemPeriodInDaysCopy];
 
   return v13;
 }
@@ -50,12 +50,12 @@
   return v2;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelSoftwareUpdateSettingsDeclaration_Deferrals allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -63,60 +63,60 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadIntegerFromDictionary:v7 usingKey:@"CombinedPeriodInDays" forKeyPath:@"payloadCombinedPeriodInDays" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:v7 usingKey:@"MajorPeriodInDays" forKeyPath:@"payloadMajorPeriodInDays" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:v7 usingKey:@"MinorPeriodInDays" forKeyPath:@"payloadMinorPeriodInDays" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:v7 usingKey:@"SystemPeriodInDays" forKeyPath:@"payloadSystemPeriodInDays" isRequired:0 defaultValue:0 error:a5];
+  v13 = [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"CombinedPeriodInDays" forKeyPath:@"payloadCombinedPeriodInDays" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"MajorPeriodInDays" forKeyPath:@"payloadMajorPeriodInDays" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"MinorPeriodInDays" forKeyPath:@"payloadMinorPeriodInDays" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"SystemPeriodInDays" forKeyPath:@"payloadSystemPeriodInDays" isRequired:0 defaultValue:0 error:error];
   return v13;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelSoftwareUpdateSettingsDeclaration_Deferrals *)self payloadCombinedPeriodInDays];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v4 usingKey:@"CombinedPeriodInDays" value:v5 isRequired:0 defaultValue:0];
+  payloadCombinedPeriodInDays = [(RMModelSoftwareUpdateSettingsDeclaration_Deferrals *)self payloadCombinedPeriodInDays];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v4 usingKey:@"CombinedPeriodInDays" value:payloadCombinedPeriodInDays isRequired:0 defaultValue:0];
 
-  v6 = [(RMModelSoftwareUpdateSettingsDeclaration_Deferrals *)self payloadMajorPeriodInDays];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v4 usingKey:@"MajorPeriodInDays" value:v6 isRequired:0 defaultValue:0];
+  payloadMajorPeriodInDays = [(RMModelSoftwareUpdateSettingsDeclaration_Deferrals *)self payloadMajorPeriodInDays];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v4 usingKey:@"MajorPeriodInDays" value:payloadMajorPeriodInDays isRequired:0 defaultValue:0];
 
-  v7 = [(RMModelSoftwareUpdateSettingsDeclaration_Deferrals *)self payloadMinorPeriodInDays];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v4 usingKey:@"MinorPeriodInDays" value:v7 isRequired:0 defaultValue:0];
+  payloadMinorPeriodInDays = [(RMModelSoftwareUpdateSettingsDeclaration_Deferrals *)self payloadMinorPeriodInDays];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v4 usingKey:@"MinorPeriodInDays" value:payloadMinorPeriodInDays isRequired:0 defaultValue:0];
 
-  v8 = [(RMModelSoftwareUpdateSettingsDeclaration_Deferrals *)self payloadSystemPeriodInDays];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v4 usingKey:@"SystemPeriodInDays" value:v8 isRequired:0 defaultValue:0];
+  payloadSystemPeriodInDays = [(RMModelSoftwareUpdateSettingsDeclaration_Deferrals *)self payloadSystemPeriodInDays];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v4 usingKey:@"SystemPeriodInDays" value:payloadSystemPeriodInDays isRequired:0 defaultValue:0];
 
   v9 = [v4 copy];
 
   return v9;
 }
 
-- (void)combineWithOther:(id)a3
+- (void)combineWithOther:(id)other
 {
-  v4 = a3;
-  v5 = [(RMModelSoftwareUpdateSettingsDeclaration_Deferrals *)self payloadCombinedPeriodInDays];
-  v6 = [v4 payloadCombinedPeriodInDays];
-  v7 = [RMModelConfigurationBase combineNumberMax:v5 other:v6];
+  otherCopy = other;
+  payloadCombinedPeriodInDays = [(RMModelSoftwareUpdateSettingsDeclaration_Deferrals *)self payloadCombinedPeriodInDays];
+  payloadCombinedPeriodInDays2 = [otherCopy payloadCombinedPeriodInDays];
+  v7 = [RMModelConfigurationBase combineNumberMax:payloadCombinedPeriodInDays other:payloadCombinedPeriodInDays2];
   [(RMModelSoftwareUpdateSettingsDeclaration_Deferrals *)self setPayloadCombinedPeriodInDays:v7];
 
-  v8 = [(RMModelSoftwareUpdateSettingsDeclaration_Deferrals *)self payloadMajorPeriodInDays];
-  v9 = [v4 payloadMajorPeriodInDays];
-  v10 = [RMModelConfigurationBase combineNumberMax:v8 other:v9];
+  payloadMajorPeriodInDays = [(RMModelSoftwareUpdateSettingsDeclaration_Deferrals *)self payloadMajorPeriodInDays];
+  payloadMajorPeriodInDays2 = [otherCopy payloadMajorPeriodInDays];
+  v10 = [RMModelConfigurationBase combineNumberMax:payloadMajorPeriodInDays other:payloadMajorPeriodInDays2];
   [(RMModelSoftwareUpdateSettingsDeclaration_Deferrals *)self setPayloadMajorPeriodInDays:v10];
 
-  v11 = [(RMModelSoftwareUpdateSettingsDeclaration_Deferrals *)self payloadMinorPeriodInDays];
-  v12 = [v4 payloadMinorPeriodInDays];
-  v13 = [RMModelConfigurationBase combineNumberMax:v11 other:v12];
+  payloadMinorPeriodInDays = [(RMModelSoftwareUpdateSettingsDeclaration_Deferrals *)self payloadMinorPeriodInDays];
+  payloadMinorPeriodInDays2 = [otherCopy payloadMinorPeriodInDays];
+  v13 = [RMModelConfigurationBase combineNumberMax:payloadMinorPeriodInDays other:payloadMinorPeriodInDays2];
   [(RMModelSoftwareUpdateSettingsDeclaration_Deferrals *)self setPayloadMinorPeriodInDays:v13];
 
-  v16 = [(RMModelSoftwareUpdateSettingsDeclaration_Deferrals *)self payloadSystemPeriodInDays];
-  v14 = [v4 payloadSystemPeriodInDays];
+  payloadSystemPeriodInDays = [(RMModelSoftwareUpdateSettingsDeclaration_Deferrals *)self payloadSystemPeriodInDays];
+  payloadSystemPeriodInDays2 = [otherCopy payloadSystemPeriodInDays];
 
-  v15 = [RMModelConfigurationBase combineNumberMax:v16 other:v14];
+  v15 = [RMModelConfigurationBase combineNumberMax:payloadSystemPeriodInDays other:payloadSystemPeriodInDays2];
   [(RMModelSoftwareUpdateSettingsDeclaration_Deferrals *)self setPayloadSystemPeriodInDays:v15];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v14.receiver = self;
   v14.super_class = RMModelSoftwareUpdateSettingsDeclaration_Deferrals;
-  v4 = [(RMModelPayloadBase *)&v14 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v14 copyWithZone:zone];
   v5 = [(NSNumber *)self->_payloadCombinedPeriodInDays copy];
   v6 = v4[2];
   v4[2] = v5;

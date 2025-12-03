@@ -1,99 +1,99 @@
 @interface TUConversationMediaController
-- (TUConversationMediaController)initWithConversationDataSource:(id)a3;
+- (TUConversationMediaController)initWithConversationDataSource:(id)source;
 - (TUConversationMediaControllerDelegate)delegate;
-- (void)addDelegate:(id)a3;
-- (void)mediaPrioritiesChangeForConversation:(id)a3;
-- (void)removeDelegate:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)updateConversationWithUUID:(id)a3 participantPresentationContexts:(id)a4;
+- (void)addDelegate:(id)delegate;
+- (void)mediaPrioritiesChangeForConversation:(id)conversation;
+- (void)removeDelegate:(id)delegate;
+- (void)setDelegate:(id)delegate;
+- (void)updateConversationWithUUID:(id)d participantPresentationContexts:(id)contexts;
 @end
 
 @implementation TUConversationMediaController
 
-- (TUConversationMediaController)initWithConversationDataSource:(id)a3
+- (TUConversationMediaController)initWithConversationDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v11.receiver = self;
   v11.super_class = TUConversationMediaController;
   v6 = [(TUConversationMediaController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
     [(TUConversationManagerDataSource *)v7->_dataSource setMediaDelegate:v7];
-    v8 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     delegates = v7->_delegates;
-    v7->_delegates = v8;
+    v7->_delegates = weakObjectsHashTable;
   }
 
   return v7;
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(TUConversationMediaController *)self delegates];
-  [v5 addObject:v4];
+  delegates = [(TUConversationMediaController *)self delegates];
+  [delegates addObject:delegateCopy];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(TUConversationMediaController *)self delegates];
-  [v5 removeObject:v4];
+  delegates = [(TUConversationMediaController *)self delegates];
+  [delegates removeObject:delegateCopy];
 }
 
 - (TUConversationMediaControllerDelegate)delegate
 {
-  v2 = [(TUConversationMediaController *)self delegates];
-  v3 = [v2 anyObject];
+  delegates = [(TUConversationMediaController *)self delegates];
+  anyObject = [delegates anyObject];
 
-  return v3;
+  return anyObject;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(TUConversationMediaController *)self delegates];
-  [v5 removeAllObjects];
+  delegateCopy = delegate;
+  delegates = [(TUConversationMediaController *)self delegates];
+  [delegates removeAllObjects];
 
-  v6 = [(TUConversationMediaController *)self delegates];
-  [v6 addObject:v4];
+  delegates2 = [(TUConversationMediaController *)self delegates];
+  [delegates2 addObject:delegateCopy];
 }
 
-- (void)updateConversationWithUUID:(id)a3 participantPresentationContexts:(id)a4
+- (void)updateConversationWithUUID:(id)d participantPresentationContexts:(id)contexts
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  contextsCopy = contexts;
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v7;
+    v12 = contextsCopy;
     v13 = 2112;
-    v14 = v6;
+    v14 = dCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Updating participants presentation contexts: %@ for conversation UUID: %@", &v11, 0x16u);
   }
 
-  v9 = [(TUConversationMediaController *)self dataSource];
-  [v9 updateConversationWithUUID:v6 participantPresentationContexts:v7];
+  dataSource = [(TUConversationMediaController *)self dataSource];
+  [dataSource updateConversationWithUUID:dCopy participantPresentationContexts:contextsCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)mediaPrioritiesChangeForConversation:(id)a3
+- (void)mediaPrioritiesChangeForConversation:(id)conversation
 {
-  v4 = a3;
+  conversationCopy = conversation;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __70__TUConversationMediaController_mediaPrioritiesChangeForConversation___block_invoke;
   v6[3] = &unk_1E7424898;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = conversationCopy;
+  v5 = conversationCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 

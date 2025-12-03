@@ -1,6 +1,6 @@
 @interface ICSEvent
 - (BOOL)isDefaultAlarmDeleted;
-- (BOOL)validate:(id *)a3;
+- (BOOL)validate:(id *)validate;
 - (BOOL)x_apple_dontschedule;
 - (BOOL)x_apple_needs_reply;
 - (BOOL)x_wr_itipalreadysent;
@@ -15,14 +15,14 @@
 - (int)x_apple_ews_busystatus;
 - (void)fixAttendeeComments;
 - (void)fixComponent;
-- (void)setTransp:(int)a3;
-- (void)setX_apple_dontschedule:(BOOL)a3;
-- (void)setX_apple_ews_busystatus:(int)a3;
-- (void)setX_apple_needs_reply:(BOOL)a3;
-- (void)setX_wr_itipalreadysent:(BOOL)a3;
-- (void)setX_wr_itipstatusattendeeml:(BOOL)a3;
-- (void)setX_wr_itipstatusml:(BOOL)a3;
-- (void)setX_wr_rsvpneeded:(BOOL)a3;
+- (void)setTransp:(int)transp;
+- (void)setX_apple_dontschedule:(BOOL)x_apple_dontschedule;
+- (void)setX_apple_ews_busystatus:(int)x_apple_ews_busystatus;
+- (void)setX_apple_needs_reply:(BOOL)x_apple_needs_reply;
+- (void)setX_wr_itipalreadysent:(BOOL)x_wr_itipalreadysent;
+- (void)setX_wr_itipstatusattendeeml:(BOOL)x_wr_itipstatusattendeeml;
+- (void)setX_wr_itipstatusml:(BOOL)x_wr_itipstatusml;
+- (void)setX_wr_rsvpneeded:(BOOL)x_wr_rsvpneeded;
 @end
 
 @implementation ICSEvent
@@ -39,7 +39,7 @@
 
   if (v4)
   {
-    v5 = [(ICSComponent *)self dtend];
+    dtend = [(ICSComponent *)self dtend];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -53,7 +53,7 @@
 
   if (v7)
   {
-    v8 = [(ICSComponent *)self location];
+    location = [(ICSComponent *)self location];
     objc_opt_class();
     v9 = objc_opt_isKindOfClass();
 
@@ -68,8 +68,8 @@
   if (v10)
   {
     v11 = [(ICSComponent *)self propertiesForName:@"TRANSP"];
-    v12 = [v11 lastObject];
-    v13 = [v12 value];
+    lastObject = [v11 lastObject];
+    value = [lastObject value];
     objc_opt_class();
     v14 = objc_opt_isKindOfClass();
 
@@ -84,8 +84,8 @@
   if (v15)
   {
     v16 = [(ICSComponent *)self propertiesForName:@"PRIORITY"];
-    v17 = [v16 lastObject];
-    v18 = [v17 value];
+    lastObject2 = [v16 lastObject];
+    value2 = [lastObject2 value];
     objc_opt_class();
     v19 = objc_opt_isKindOfClass();
 
@@ -95,9 +95,9 @@
     }
   }
 
-  v20 = [(ICSComponent *)self dtstart];
+  dtstart = [(ICSComponent *)self dtstart];
   objc_opt_class();
-  v21 = [(ICSComponent *)self dtend];
+  dtend2 = [(ICSComponent *)self dtend];
   objc_opt_class();
 
   v22 = [(ICSComponent *)self propertiesForName:@"DTEND"];
@@ -117,20 +117,20 @@ LABEL_14:
 
   if ([(ICSComponent *)self isAllDay])
   {
-    v24 = [(ICSComponent *)self dtstart];
-    v25 = [v24 value];
+    dtstart2 = [(ICSComponent *)self dtstart];
+    value3 = [dtstart2 value];
 
-    v26 = [(ICSComponent *)self dtend];
-    v27 = [v26 value];
+    dtend3 = [(ICSComponent *)self dtend];
+    value4 = [dtend3 value];
 
-    v28 = [v25 year];
-    if (v28 == [v27 year])
+    year = [value3 year];
+    if (year == [value4 year])
     {
-      v29 = [v25 month];
-      if (v29 == [v27 month])
+      month = [value3 month];
+      if (month == [value4 month])
       {
-        v30 = [v25 day];
-        if (v30 == [v27 day])
+        v30 = [value3 day];
+        if (v30 == [value4 day])
         {
           v31 = [[ICSDuration alloc] initWithWeeks:0 days:1 hours:0 minutes:0 seconds:0];
           [(ICSComponent *)self setDuration:v31];
@@ -151,8 +151,8 @@ LABEL_14:
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v36 = [(ICSComponent *)self exdate];
-    v37 = [v36 countByEnumeratingWithState:&v48 objects:v53 count:16];
+    exdate = [(ICSComponent *)self exdate];
+    v37 = [exdate countByEnumeratingWithState:&v48 objects:v53 count:16];
     if (v37)
     {
       v38 = v37;
@@ -163,7 +163,7 @@ LABEL_14:
         {
           if (*v49 != v39)
           {
-            objc_enumerationMutation(v36);
+            objc_enumerationMutation(exdate);
           }
 
           v41 = *(*(&v48 + 1) + 8 * i);
@@ -175,14 +175,14 @@ LABEL_14:
           }
         }
 
-        v38 = [v36 countByEnumeratingWithState:&v48 objects:v53 count:16];
+        v38 = [exdate countByEnumeratingWithState:&v48 objects:v53 count:16];
       }
 
       while (v38);
     }
 
-    v43 = [(ICSComponent *)self exdate];
-    v44 = [v43 count];
+    exdate2 = [(ICSComponent *)self exdate];
+    v44 = [exdate2 count];
     v45 = [v34 count];
 
     if (v44 != v45)
@@ -204,65 +204,65 @@ LABEL_14:
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277CBEB58]);
-    v5 = [(ICSEvent *)self x_calendarserver_attendee_comment];
-    v11 = [v4 initWithCapacity:{objc_msgSend(v5, "count")}];
+    x_calendarserver_attendee_comment = [(ICSEvent *)self x_calendarserver_attendee_comment];
+    v11 = [v4 initWithCapacity:{objc_msgSend(x_calendarserver_attendee_comment, "count")}];
 
-    v6 = [(ICSEvent *)self x_calendarserver_attendee_comment];
-    v7 = [MEMORY[0x277CCAB58] indexSet];
-    if ([v6 count])
+    x_calendarserver_attendee_comment2 = [(ICSEvent *)self x_calendarserver_attendee_comment];
+    indexSet = [MEMORY[0x277CCAB58] indexSet];
+    if ([x_calendarserver_attendee_comment2 count])
     {
       v8 = 0;
       do
       {
-        v9 = [v6 objectAtIndexedSubscript:v8];
+        v9 = [x_calendarserver_attendee_comment2 objectAtIndexedSubscript:v8];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v9 x_calendarserver_attendee_ref];
-          if (v10)
+          x_calendarserver_attendee_ref = [v9 x_calendarserver_attendee_ref];
+          if (x_calendarserver_attendee_ref)
           {
-            if ([v11 containsObject:v10])
+            if ([v11 containsObject:x_calendarserver_attendee_ref])
             {
-              [v7 addIndex:v8];
+              [indexSet addIndex:v8];
             }
 
             else
             {
-              [v11 addObject:v10];
+              [v11 addObject:x_calendarserver_attendee_ref];
             }
           }
         }
 
         else
         {
-          [v7 addIndex:v8];
+          [indexSet addIndex:v8];
         }
 
         ++v8;
       }
 
-      while (v8 < [v6 count]);
+      while (v8 < [x_calendarserver_attendee_comment2 count]);
     }
 
-    [v6 removeObjectsAtIndexes:v7];
-    if (![v6 count])
+    [x_calendarserver_attendee_comment2 removeObjectsAtIndexes:indexSet];
+    if (![x_calendarserver_attendee_comment2 count])
     {
       [(ICSComponent *)self removePropertiesForName:@"X-CALENDARSERVER-ATTENDEE-COMMENT"];
     }
   }
 }
 
-- (BOOL)validate:(id *)a3
+- (BOOL)validate:(id *)validate
 {
   v5 = [(ICSComponent *)self propertiesForName:@"DTSTART"];
 
   if (!v5)
   {
-    if (a3)
+    if (validate)
     {
       v13 = MEMORY[0x277CCA9B8];
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObject:@"DTSTART is required for VEVENT." forKey:*MEMORY[0x277CCA450]];
-      *a3 = [v13 errorWithDomain:@"com.apple.iCalendar" code:1000 userInfo:v14];
+      *validate = [v13 errorWithDomain:@"com.apple.iCalendar" code:1000 userInfo:v14];
     }
 
     return 0;
@@ -272,19 +272,19 @@ LABEL_14:
 
   if (!v6)
   {
-    v7 = [(ICSComponent *)self propertiesForName:@"DURATION"];
+    dtstart = [(ICSComponent *)self propertiesForName:@"DURATION"];
     goto LABEL_25;
   }
 
-  v7 = [(ICSComponent *)self dtstart];
-  v8 = [(ICSComponent *)self dtend];
-  v9 = [v7 tzid];
+  dtstart = [(ICSComponent *)self dtstart];
+  dtend = [(ICSComponent *)self dtend];
+  tzid = [dtstart tzid];
 
-  if (v9)
+  if (tzid)
   {
     v10 = MEMORY[0x277CBEBB0];
-    v11 = [v7 tzid];
-    v12 = [v10 timeZoneWithName:v11];
+    tzid2 = [dtstart tzid];
+    v12 = [v10 timeZoneWithName:tzid2];
   }
 
   else
@@ -292,9 +292,9 @@ LABEL_14:
     v12 = 0;
   }
 
-  v15 = [v8 tzid];
+  tzid3 = [dtend tzid];
 
-  if (!v15)
+  if (!tzid3)
   {
     v22 = v12;
     v18 = 0;
@@ -302,27 +302,27 @@ LABEL_14:
   }
 
   v16 = MEMORY[0x277CBEBB0];
-  v17 = [v8 tzid];
-  v18 = [v16 timeZoneWithName:v17];
+  tzid4 = [dtend tzid];
+  v18 = [v16 timeZoneWithName:tzid4];
 
   if (!v12 || !v18)
   {
     v22 = v12;
 LABEL_17:
-    v30 = [v8 value];
-    v31 = [v7 value];
-    v32 = [v30 compare:v31];
+    value = [dtend value];
+    value2 = [dtstart value];
+    v32 = [value compare:value2];
 
     if (v32 == -1)
     {
 LABEL_13:
-      if (a3)
+      if (validate)
       {
         v29 = @"DTEND must not be before DTSTART.";
 LABEL_21:
         v34 = MEMORY[0x277CCA9B8];
         v35 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v29 forKey:*MEMORY[0x277CCA450]];
-        *a3 = [v34 errorWithDomain:@"com.apple.iCalendar" code:1000 userInfo:v35];
+        *validate = [v34 errorWithDomain:@"com.apple.iCalendar" code:1000 userInfo:v35];
 
         goto LABEL_22;
       }
@@ -340,12 +340,12 @@ LABEL_21:
   [v21 setTimeZone:v12];
   v23 = [objc_alloc(MEMORY[0x277CBEA80]) initWithCalendarIdentifier:v20];
   [v23 setTimeZone:v18];
-  v24 = [v7 components];
-  [v21 dateFromComponents:v24];
+  components = [dtstart components];
+  [v21 dateFromComponents:components];
   v25 = v42 = v18;
 
-  v26 = [v8 components];
-  v27 = [v23 dateFromComponents:v26];
+  components2 = [dtend components];
+  v27 = [v23 dateFromComponents:components2];
 
   v28 = [v27 compare:v25];
   v18 = v42;
@@ -360,7 +360,7 @@ LABEL_18:
 
   if (v33)
   {
-    if (a3)
+    if (validate)
     {
       v29 = @"DTEND and DURATION cannot both be set for VEVENT.";
       goto LABEL_21;
@@ -376,15 +376,15 @@ LABEL_25:
 
   if (v37)
   {
-    v38 = [(ICSComponent *)self status];
-    v39 = v38;
-    if (v38 > 8 || ((1 << v38) & 0x107) == 0)
+    status = [(ICSComponent *)self status];
+    v39 = status;
+    if (status > 8 || ((1 << status) & 0x107) == 0)
     {
-      if (a3)
+      if (validate)
       {
         v40 = MEMORY[0x277CCA9B8];
         v41 = [MEMORY[0x277CBEAC0] dictionaryWithObject:@"Invalid STATUS for VEVENT." forKey:*MEMORY[0x277CCA450]];
-        *a3 = [v40 errorWithDomain:@"com.apple.iCalendar" code:1000 userInfo:v41];
+        *validate = [v40 errorWithDomain:@"com.apple.iCalendar" code:1000 userInfo:v41];
       }
 
       if (v39 != 8)
@@ -396,7 +396,7 @@ LABEL_25:
 
   v43.receiver = self;
   v43.super_class = ICSEvent;
-  return [(ICSComponent *)&v43 validate:a3];
+  return [(ICSComponent *)&v43 validate:validate];
 }
 
 - (int)transp
@@ -409,18 +409,18 @@ LABEL_25:
   }
 
   v4 = [(ICSComponent *)self propertiesForName:@"TRANSP"];
-  v5 = [v4 lastObject];
-  v6 = [v5 value];
-  v7 = [v6 longValue];
+  lastObject = [v4 lastObject];
+  value = [lastObject value];
+  longValue = [value longValue];
 
-  return v7;
+  return longValue;
 }
 
-- (void)setTransp:(int)a3
+- (void)setTransp:(int)transp
 {
-  if (a3)
+  if (transp)
   {
-    v4 = [(ICSPredefinedValue *)ICSTransparencyValue numberWithLong:a3];
+    v4 = [(ICSPredefinedValue *)ICSTransparencyValue numberWithLong:transp];
   }
 
   else
@@ -435,15 +435,15 @@ LABEL_25:
 - (NSString)x_calendarserver_private_comment
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-CALENDARSERVER-PRIVATE-COMMENT"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
-- (void)setX_apple_dontschedule:(BOOL)a3
+- (void)setX_apple_dontschedule:(BOOL)x_apple_dontschedule
 {
-  if (a3)
+  if (x_apple_dontschedule)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:1];
     [(ICSComponent *)self setPropertyValue:v4 type:5012 forName:@"X-APPLE-DONTSCHEDULE"];
@@ -459,26 +459,26 @@ LABEL_25:
 - (BOOL)x_apple_dontschedule
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-DONTSCHEDULE"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
-  v5 = [v4 BOOLValue];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
+  bOOLValue = [value BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)x_apple_needs_reply
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-NEEDS-REPLY"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
-  v5 = [v4 BOOLValue];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
+  bOOLValue = [value BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setX_apple_needs_reply:(BOOL)a3
+- (void)setX_apple_needs_reply:(BOOL)x_apple_needs_reply
 {
-  if (a3)
+  if (x_apple_needs_reply)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:1];
   }
@@ -492,9 +492,9 @@ LABEL_25:
   [(ICSComponent *)self setPropertyValue:v4 type:5012 forName:@"X-APPLE-NEEDS-REPLY"];
 }
 
-- (void)setX_wr_itipalreadysent:(BOOL)a3
+- (void)setX_wr_itipalreadysent:(BOOL)x_wr_itipalreadysent
 {
-  if (a3)
+  if (x_wr_itipalreadysent)
   {
     v3 = @"DONE";
   }
@@ -515,9 +515,9 @@ LABEL_25:
   return v3;
 }
 
-- (void)setX_wr_itipstatusattendeeml:(BOOL)a3
+- (void)setX_wr_itipstatusattendeeml:(BOOL)x_wr_itipstatusattendeeml
 {
-  if (a3)
+  if (x_wr_itipstatusattendeeml)
   {
     v3 = @"UNCLEAN";
   }
@@ -540,16 +540,16 @@ LABEL_25:
   }
 
   v4 = [(ICSComponent *)self propertiesForName:@"X-WR-ITIPSTATUSATTENDEEML"];
-  v5 = [v4 lastObject];
-  v6 = [v5 value];
-  v7 = [v6 isEqualToString:@"UNCLEAN"];
+  lastObject = [v4 lastObject];
+  value = [lastObject value];
+  v7 = [value isEqualToString:@"UNCLEAN"];
 
   return v7;
 }
 
-- (void)setX_wr_itipstatusml:(BOOL)a3
+- (void)setX_wr_itipstatusml:(BOOL)x_wr_itipstatusml
 {
-  if (a3)
+  if (x_wr_itipstatusml)
   {
     v4 = [(ICSComponent *)self propertiesForName:@"ATTENDEE"];
 
@@ -577,16 +577,16 @@ LABEL_25:
   }
 
   v4 = [(ICSComponent *)self propertiesForName:@"X-WR-ITIPSTATUSML"];
-  v5 = [v4 lastObject];
-  v6 = [v5 value];
-  v7 = [v6 isEqualToString:@"UNCLEAN"];
+  lastObject = [v4 lastObject];
+  value = [lastObject value];
+  v7 = [value isEqualToString:@"UNCLEAN"];
 
   return v7;
 }
 
-- (void)setX_wr_rsvpneeded:(BOOL)a3
+- (void)setX_wr_rsvpneeded:(BOOL)x_wr_rsvpneeded
 {
-  if (a3)
+  if (x_wr_rsvpneeded)
   {
     v3 = @"UNCLEAN";
   }
@@ -617,18 +617,18 @@ LABEL_25:
   }
 
   v4 = [(ICSComponent *)self propertiesForName:@"X-APPLE-EWS-BUSYSTATUS"];
-  v5 = [v4 lastObject];
-  v6 = [v5 value];
-  v7 = [v6 longValue];
+  lastObject = [v4 lastObject];
+  value = [lastObject value];
+  longValue = [value longValue];
 
-  return v7;
+  return longValue;
 }
 
-- (void)setX_apple_ews_busystatus:(int)a3
+- (void)setX_apple_ews_busystatus:(int)x_apple_ews_busystatus
 {
-  if (a3)
+  if (x_apple_ews_busystatus)
   {
-    v4 = [(ICSPredefinedValue *)ICSBusyStatusValue numberWithLong:a3];
+    v4 = [(ICSPredefinedValue *)ICSBusyStatusValue numberWithLong:x_apple_ews_busystatus];
   }
 
   else
@@ -643,28 +643,28 @@ LABEL_25:
 - (NSString)x_apple_special_day
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-SPECIAL-DAY"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (NSString)x_apple_creator_identity
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-CREATOR-IDENTITY"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (NSString)x_apple_creator_team_identity
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-CREATOR-TEAM-IDENTITY"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (BOOL)isDefaultAlarmDeleted
@@ -674,8 +674,8 @@ LABEL_25:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(ICSComponent *)self components];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  components = [(ICSComponent *)self components];
+  v3 = [components countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = *v12;
@@ -685,7 +685,7 @@ LABEL_25:
       {
         if (*v12 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(components);
         }
 
         v6 = *(*(&v11 + 1) + 8 * i);
@@ -700,9 +700,9 @@ LABEL_25:
             goto LABEL_15;
           }
 
-          v8 = [v7 x_apple_default_alarm];
+          x_apple_default_alarm = [v7 x_apple_default_alarm];
 
-          if (v8)
+          if (x_apple_default_alarm)
           {
             LOBYTE(v3) = 0;
             goto LABEL_15;
@@ -710,7 +710,7 @@ LABEL_25:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v3 = [components countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v3)
       {
         continue;

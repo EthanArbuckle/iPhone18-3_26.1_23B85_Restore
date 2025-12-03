@@ -1,30 +1,30 @@
 @interface RTIInputSystemServiceUISession
-+ (id)sessionWithConnection:(id)a3 remoteProcess:(id)a4;
-- (RTIInputSystemServiceUISession)initWithConnection:(id)a3 remoteProcess:(id)a4;
++ (id)sessionWithConnection:(id)connection remoteProcess:(id)process;
+- (RTIInputSystemServiceUISession)initWithConnection:(id)connection remoteProcess:(id)process;
 @end
 
 @implementation RTIInputSystemServiceUISession
 
-- (RTIInputSystemServiceUISession)initWithConnection:(id)a3 remoteProcess:(id)a4
+- (RTIInputSystemServiceUISession)initWithConnection:(id)connection remoteProcess:(id)process
 {
-  v7 = a4;
+  processCopy = process;
   v11.receiver = self;
   v11.super_class = RTIInputSystemServiceUISession;
-  v8 = [(RTIInputSystemServiceSession *)&v11 initWithConnection:a3];
+  v8 = [(RTIInputSystemServiceSession *)&v11 initWithConnection:connection];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_remoteProcess, a4);
+    objc_storeStrong(&v8->_remoteProcess, process);
   }
 
   return v9;
 }
 
-+ (id)sessionWithConnection:(id)a3 remoteProcess:(id)a4
++ (id)sessionWithConnection:(id)connection remoteProcess:(id)process
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithConnection:v7 remoteProcess:v6];
+  processCopy = process;
+  connectionCopy = connection;
+  v8 = [[self alloc] initWithConnection:connectionCopy remoteProcess:processCopy];
 
   return v8;
 }

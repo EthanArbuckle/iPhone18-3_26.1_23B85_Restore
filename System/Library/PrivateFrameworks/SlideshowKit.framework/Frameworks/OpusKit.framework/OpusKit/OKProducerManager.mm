@@ -1,65 +1,65 @@
 @interface OKProducerManager
 + (id)defaultManager;
-- (BOOL)hasContentWithIdentifier:(id)a3;
-- (BOOL)hasInstalledPluginAndContentWithIdentifier:(id)a3;
-- (BOOL)hasPluginWithIdentifier:(id)a3;
-- (BOOL)uninstallContentWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)uninstallPluginWithIdentifier:(id)a3 error:(id *)a4;
-- (Class)registeredClassFromString:(id)a3;
+- (BOOL)hasContentWithIdentifier:(id)identifier;
+- (BOOL)hasInstalledPluginAndContentWithIdentifier:(id)identifier;
+- (BOOL)hasPluginWithIdentifier:(id)identifier;
+- (BOOL)uninstallContentWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)uninstallPluginWithIdentifier:(id)identifier error:(id *)error;
+- (Class)registeredClassFromString:(id)string;
 - (OKProducerManager)init;
-- (double)versionForContentIdentifier:(id)a3;
-- (double)versionForPluginIdentifier:(id)a3;
-- (id)_allBundlesURLsWithExtention:(id)a3;
-- (id)_contentFromURL:(id)a3;
-- (id)_contentWithIdentifier:(id)a3 progressBlock:(id)a4 completionBlock:(id)a5;
-- (id)_installedURLsInDirectoryURL:(id)a3 withExtension:(id)a4;
-- (id)_pluginFromURL:(id)a3;
-- (id)addContentFromURL:(id)a3;
-- (id)addPluginFromURL:(id)a3;
+- (double)versionForContentIdentifier:(id)identifier;
+- (double)versionForPluginIdentifier:(id)identifier;
+- (id)_allBundlesURLsWithExtention:(id)extention;
+- (id)_contentFromURL:(id)l;
+- (id)_contentWithIdentifier:(id)identifier progressBlock:(id)block completionBlock:(id)completionBlock;
+- (id)_installedURLsInDirectoryURL:(id)l withExtension:(id)extension;
+- (id)_pluginFromURL:(id)l;
+- (id)addContentFromURL:(id)l;
+- (id)addPluginFromURL:(id)l;
 - (id)allContentsIdentifiers;
 - (id)allInstalledContents;
 - (id)allInstalledPlugins;
 - (id)allPluginsIdentifiers;
-- (id)audioURLsForPluginIdentifier:(id)a3;
-- (id)backgroundColorForPluginIdentifier:(id)a3;
-- (id)installContentAtURL:(id)a3 overwrite:(BOOL)a4 error:(id *)a5;
-- (id)installPluginAtURL:(id)a3 overwrite:(BOOL)a4 error:(id *)a5;
-- (id)installedContentAtURL:(id)a3;
-- (id)installedContentWithIdentifier:(id)a3;
-- (id)installedPluginAtURL:(id)a3;
-- (id)installedPluginWithIdentifier:(id)a3;
-- (id)installedPluginWithName:(id)a3;
+- (id)audioURLsForPluginIdentifier:(id)identifier;
+- (id)backgroundColorForPluginIdentifier:(id)identifier;
+- (id)installContentAtURL:(id)l overwrite:(BOOL)overwrite error:(id *)error;
+- (id)installPluginAtURL:(id)l overwrite:(BOOL)overwrite error:(id *)error;
+- (id)installedContentAtURL:(id)l;
+- (id)installedContentWithIdentifier:(id)identifier;
+- (id)installedPluginAtURL:(id)l;
+- (id)installedPluginWithIdentifier:(id)identifier;
+- (id)installedPluginWithName:(id)name;
 - (id)installedPluginsNames;
-- (id)installedPluginsWithFamily:(unint64_t)a3;
+- (id)installedPluginsWithFamily:(unint64_t)family;
 - (id)libraryPlugInsDirectoryURL;
 - (id)loadedContents;
 - (id)loadedPlugins;
-- (id)localizedNameForPluginIdentifier:(id)a3;
-- (id)pluginWithLoadedClass:(Class)a3;
+- (id)localizedNameForPluginIdentifier:(id)identifier;
+- (id)pluginWithLoadedClass:(Class)class;
 - (id)userLibraryPlugInsDirectoryURL;
-- (void)_closeAndDeleteDocument:(id)a3 fileURL:(id)a4 completionBlock:(id)a5;
-- (void)_closeDocument:(id)a3 completionBlock:(id)a4;
-- (void)_openDocument:(id)a3 completionBlock:(id)a4;
-- (void)_performAsynchronousProducerAccessUsingBlock:(id)a3;
-- (void)_reachabilityChanged:(id)a3;
-- (void)_saveDocument:(id)a3 completionBlock:(id)a4;
-- (void)_saveDocument:(id)a3 toFileURL:(id)a4 completionBlock:(id)a5;
-- (void)authorDocument:(id)a3 withPluginIdentifier:(id)a4 guidelines:(id)a5 flattenMedia:(BOOL)a6 flattenProducer:(BOOL)a7 progressBlock:(id)a8 completionBlock:(id)a9;
-- (void)contentWithIdentifier:(id)a3 progressBlock:(id)a4 completionBlock:(id)a5;
-- (void)createDocumentAtDirectoryURL:(id)a3 withPluginIdentifier:(id)a4 guidelines:(id)a5 mediaURLs:(id)a6 mediaItemLookupDelegate:(id)a7 flattenMedia:(BOOL)a8 flattenProducer:(BOOL)a9 prepareCaches:(BOOL)a10 format:(unint64_t)a11 keepOpen:(BOOL)a12 documentClass:(Class)a13 progressBlock:(id)a14 completionBlock:(id)a15;
-- (void)createDocumentAtFileURL:(id)a3 withPluginIdentifier:(id)a4 guidelines:(id)a5 mediaURLs:(id)a6 mediaItemLookupDelegate:(id)a7 flattenMedia:(BOOL)a8 flattenProducer:(BOOL)a9 prepareCaches:(BOOL)a10 format:(unint64_t)a11 keepOpen:(BOOL)a12 documentClass:(Class)a13 progressBlock:(id)a14 completionBlock:(id)a15;
-- (void)createPresentationWithPluginIdentifier:(id)a3 guidelines:(id)a4 mediaFeeder:(id)a5 mediaItemLookupDelegate:(id)a6 progressBlock:(id)a7 completionBlock:(id)a8;
-- (void)createPresentationWithPreset:(id)a3 guidelines:(id)a4 mediaFeeder:(id)a5 mediaItemLookupDelegate:(id)a6 progressBlock:(id)a7 completionBlock:(id)a8;
+- (void)_closeAndDeleteDocument:(id)document fileURL:(id)l completionBlock:(id)block;
+- (void)_closeDocument:(id)document completionBlock:(id)block;
+- (void)_openDocument:(id)document completionBlock:(id)block;
+- (void)_performAsynchronousProducerAccessUsingBlock:(id)block;
+- (void)_reachabilityChanged:(id)changed;
+- (void)_saveDocument:(id)document completionBlock:(id)block;
+- (void)_saveDocument:(id)document toFileURL:(id)l completionBlock:(id)block;
+- (void)authorDocument:(id)document withPluginIdentifier:(id)identifier guidelines:(id)guidelines flattenMedia:(BOOL)media flattenProducer:(BOOL)producer progressBlock:(id)block completionBlock:(id)completionBlock;
+- (void)contentWithIdentifier:(id)identifier progressBlock:(id)block completionBlock:(id)completionBlock;
+- (void)createDocumentAtDirectoryURL:(id)l withPluginIdentifier:(id)identifier guidelines:(id)guidelines mediaURLs:(id)ls mediaItemLookupDelegate:(id)delegate flattenMedia:(BOOL)media flattenProducer:(BOOL)producer prepareCaches:(BOOL)self0 format:(unint64_t)self1 keepOpen:(BOOL)self2 documentClass:(Class)self3 progressBlock:(id)self4 completionBlock:(id)self5;
+- (void)createDocumentAtFileURL:(id)l withPluginIdentifier:(id)identifier guidelines:(id)guidelines mediaURLs:(id)ls mediaItemLookupDelegate:(id)delegate flattenMedia:(BOOL)media flattenProducer:(BOOL)producer prepareCaches:(BOOL)self0 format:(unint64_t)self1 keepOpen:(BOOL)self2 documentClass:(Class)self3 progressBlock:(id)self4 completionBlock:(id)self5;
+- (void)createPresentationWithPluginIdentifier:(id)identifier guidelines:(id)guidelines mediaFeeder:(id)feeder mediaItemLookupDelegate:(id)delegate progressBlock:(id)block completionBlock:(id)completionBlock;
+- (void)createPresentationWithPreset:(id)preset guidelines:(id)guidelines mediaFeeder:(id)feeder mediaItemLookupDelegate:(id)delegate progressBlock:(id)block completionBlock:(id)completionBlock;
 - (void)dealloc;
-- (void)pluginWithIdentifier:(id)a3 progressBlock:(id)a4 completionBlock:(id)a5;
+- (void)pluginWithIdentifier:(id)identifier progressBlock:(id)block completionBlock:(id)completionBlock;
 - (void)prepareCloudServiceIfNeeded;
 - (void)refreshInstalledContents;
 - (void)refreshInstalledPlugins;
-- (void)registerExtensionClassName:(id)a3 forPluginIdentifier:(id)a4;
+- (void)registerExtensionClassName:(id)name forPluginIdentifier:(id)identifier;
 - (void)registerOpusKitClasses;
-- (void)setCloudServiceAutomaticUpdates:(BOOL)a3;
-- (void)unregisterExtensionClassName:(id)a3 forPluginIdentifier:(id)a4;
-- (void)waitUntilCloudServicePrepared:(double)a3;
+- (void)setCloudServiceAutomaticUpdates:(BOOL)updates;
+- (void)unregisterExtensionClassName:(id)name forPluginIdentifier:(id)identifier;
+- (void)waitUntilCloudServicePrepared:(double)prepared;
 @end
 
 @implementation OKProducerManager
@@ -98,8 +98,8 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
     v5 = objc_alloc_init(MEMORY[0x277CCABD8]);
     v2->_cloudServiceOperationQueue = v5;
     [(NSOperationQueue *)v5 setMaxConcurrentOperationCount:4];
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v2 selector:sel__reachabilityChanged_ name:*MEMORY[0x277D62810] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__reachabilityChanged_ name:*MEMORY[0x277D62810] object:0];
     v2->_minimumNetworkStatusForDownloads = 2;
     v7 = [MEMORY[0x277D627E0] reachabilityWithHostName:@"www.apple.com"];
     v2->_reachability = v7;
@@ -173,9 +173,9 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
   [(OKProducerManager *)&v9 dealloc];
 }
 
-- (void)_performAsynchronousProducerAccessUsingBlock:(id)a3
+- (void)_performAsynchronousProducerAccessUsingBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
     producerAccessQueue = self->_producerAccessQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -183,7 +183,7 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
     block[2] = __66__OKProducerManager__performAsynchronousProducerAccessUsingBlock___block_invoke;
     block[3] = &unk_279C8E670;
     block[4] = self;
-    block[5] = a3;
+    block[5] = block;
     dispatch_async(producerAccessQueue, block);
   }
 
@@ -193,77 +193,77 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
   }
 }
 
-- (void)registerExtensionClassName:(id)a3 forPluginIdentifier:(id)a4
+- (void)registerExtensionClassName:(id)name forPluginIdentifier:(id)identifier
 {
   extentionClassNames = self->_extentionClassNames;
   objc_sync_enter(extentionClassNames);
-  v8 = [(NSMutableDictionary *)self->_extentionClassNames objectForKey:a3];
+  v8 = [(NSMutableDictionary *)self->_extentionClassNames objectForKey:name];
   if (v8)
   {
     if (*MEMORY[0x277D62808] >= 2)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:203 andFormat:@"Class name %@ cannot be registered for plugin identifier %@: Already registered with %@", a3, a4, v8];
+      [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:203 andFormat:@"Class name %@ cannot be registered for plugin identifier %@: Already registered with %@", name, identifier, v8];
     }
   }
 
   else
   {
-    if (a4)
+    if (identifier)
     {
-      v9 = a4;
+      identifierCopy = identifier;
     }
 
     else
     {
-      v9 = @"OpusKit";
+      identifierCopy = @"OpusKit";
     }
 
-    [(NSMutableDictionary *)self->_extentionClassNames setObject:v9 forKey:a3];
+    [(NSMutableDictionary *)self->_extentionClassNames setObject:identifierCopy forKey:name];
   }
 
   objc_sync_exit(extentionClassNames);
 }
 
-- (void)unregisterExtensionClassName:(id)a3 forPluginIdentifier:(id)a4
+- (void)unregisterExtensionClassName:(id)name forPluginIdentifier:(id)identifier
 {
   extentionClassNames = self->_extentionClassNames;
   objc_sync_enter(extentionClassNames);
-  v8 = [(NSMutableDictionary *)self->_extentionClassNames objectForKey:a3];
+  v8 = [(NSMutableDictionary *)self->_extentionClassNames objectForKey:name];
   v9 = v8;
   if (v8)
   {
-    if ([v8 isEqualToString:a4])
+    if ([v8 isEqualToString:identifier])
     {
-      [(NSMutableDictionary *)self->_extentionClassNames removeObjectForKey:a3];
+      [(NSMutableDictionary *)self->_extentionClassNames removeObjectForKey:name];
     }
 
     else if (*MEMORY[0x277D62808] >= 2)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:226 andFormat:@"Class name %@ cannot be unregistered from %@: Alread registered with %@", a3, a4, v9];
+      [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:226 andFormat:@"Class name %@ cannot be unregistered from %@: Alread registered with %@", name, identifier, v9];
     }
   }
 
   else if (*MEMORY[0x277D62808] >= 2)
   {
-    [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:216 andFormat:@"Class name %@ cannot be unregistered: Class name does not exist", a3];
+    [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:216 andFormat:@"Class name %@ cannot be unregistered: Class name does not exist", name];
   }
 
   objc_sync_exit(extentionClassNames);
 }
 
-- (Class)registeredClassFromString:(id)a3
+- (Class)registeredClassFromString:(id)string
 {
   extentionClassNames = self->_extentionClassNames;
   objc_sync_enter(extentionClassNames);
-  v7 = [(NSMutableDictionary *)self->_extentionClassNames objectForKey:a3];
+  v7 = [(NSMutableDictionary *)self->_extentionClassNames objectForKey:string];
   if (v7)
   {
-    v3 = NSClassFromString(a3);
+    v3 = NSClassFromString(string);
   }
 
   else if (*MEMORY[0x277D62808] >= 2)
   {
-    [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:242 andFormat:@"Class name %@ is not registered", a3];
+    [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:242 andFormat:@"Class name %@ is not registered", string];
   }
 
   objc_sync_exit(extentionClassNames);
@@ -278,12 +278,12 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
   }
 }
 
-- (id)_installedURLsInDirectoryURL:(id)a3 withExtension:(id)a4
+- (id)_installedURLsInDirectoryURL:(id)l withExtension:(id)extension
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v7 = objc_alloc_init(MEMORY[0x277CCAA00]);
-  v8 = [objc_msgSend(a3 "path")];
+  v8 = [objc_msgSend(l "path")];
   v9 = [MEMORY[0x277CBEBC0] fileURLWithPath:v8];
   v10 = *MEMORY[0x277CBE8E8];
   v11 = *MEMORY[0x277CBE868];
@@ -292,7 +292,7 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
   v13 = MEMORY[0x277D62808];
   if (*MEMORY[0x277D62808] >= 5)
   {
-    [MEMORY[0x277D627B8] logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:264 andFormat:@"Locating bundles with extension %@ in %@", a4, v9];
+    [MEMORY[0x277D627B8] logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:264 andFormat:@"Locating bundles with extension %@ in %@", extension, v9];
   }
 
   v35 = 0u;
@@ -329,23 +329,23 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
               v19 = v11;
               v20 = v12;
               v21 = v10;
-              v22 = a4;
-              v23 = v6;
+              extensionCopy = extension;
+              v23 = array;
               v24 = v13;
               v25 = MEMORY[0x277D627B8];
-              v28 = [v18 lastPathComponent];
+              lastPathComponent = [v18 lastPathComponent];
               v26 = v25;
               v13 = v24;
-              v6 = v23;
-              a4 = v22;
+              array = v23;
+              extension = extensionCopy;
               v10 = v21;
               v12 = v20;
               v11 = v19;
               v16 = v30;
-              [v26 logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:280 andFormat:@"Loaded %@", v28];
+              [v26 logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:280 andFormat:@"Loaded %@", lastPathComponent];
             }
 
-            [v6 addObject:v18];
+            [array addObject:v18];
           }
         }
 
@@ -359,42 +359,42 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
     while (v15);
   }
 
-  return v6;
+  return array;
 }
 
 - (id)userLibraryPlugInsDirectoryURL
 {
   v2 = MEMORY[0x277CBEBC0];
-  v3 = [objc_msgSend(objc_msgSend(-[NSArray lastObject](NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory 1uLL];
+  1uLL = [objc_msgSend(objc_msgSend(-[NSArray lastObject](NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory 1uLL];
 
-  return [v2 fileURLWithPath:v3];
+  return [v2 fileURLWithPath:1uLL];
 }
 
 - (id)libraryPlugInsDirectoryURL
 {
   v2 = MEMORY[0x277CBEBC0];
-  v3 = [objc_msgSend(objc_msgSend(-[NSArray lastObject](NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory 2uLL];
+  2uLL = [objc_msgSend(objc_msgSend(-[NSArray lastObject](NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory 2uLL];
 
-  return [v2 fileURLWithPath:v3];
+  return [v2 fileURLWithPath:2uLL];
 }
 
-- (id)_allBundlesURLsWithExtention:(id)a3
+- (id)_allBundlesURLsWithExtention:(id)extention
 {
-  v5 = [MEMORY[0x277CBEB18] array];
-  [v5 addObjectsFromArray:{-[OKProducerManager _installedURLsInDirectoryURL:withExtension:](self, "_installedURLsInDirectoryURL:withExtension:", -[OKProducerManager userLibraryPlugInsDirectoryURL](self, "userLibraryPlugInsDirectoryURL"), a3)}];
-  [v5 addObjectsFromArray:{-[OKProducerManager _installedURLsInDirectoryURL:withExtension:](self, "_installedURLsInDirectoryURL:withExtension:", objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "mainBundle"), "builtInPlugInsURL"), a3)}];
+  array = [MEMORY[0x277CBEB18] array];
+  [array addObjectsFromArray:{-[OKProducerManager _installedURLsInDirectoryURL:withExtension:](self, "_installedURLsInDirectoryURL:withExtension:", -[OKProducerManager userLibraryPlugInsDirectoryURL](self, "userLibraryPlugInsDirectoryURL"), extention)}];
+  [array addObjectsFromArray:{-[OKProducerManager _installedURLsInDirectoryURL:withExtension:](self, "_installedURLsInDirectoryURL:withExtension:", objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "mainBundle"), "builtInPlugInsURL"), extention)}];
   v6 = NSClassFromString(&cfstr_Slideshowkit.isa);
   if (v6 && (v7 = [MEMORY[0x277CCA8D8] bundleForClass:v6]) != 0 || (v7 = objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", NSClassFromString(&cfstr_Omslideshow.isa))) != 0)
   {
-    [v5 addObjectsFromArray:{-[OKProducerManager _installedURLsInDirectoryURL:withExtension:](self, "_installedURLsInDirectoryURL:withExtension:", objc_msgSend(v7, "builtInPlugInsURL"), a3)}];
+    [array addObjectsFromArray:{-[OKProducerManager _installedURLsInDirectoryURL:withExtension:](self, "_installedURLsInDirectoryURL:withExtension:", objc_msgSend(v7, "builtInPlugInsURL"), extention)}];
   }
 
-  return v5;
+  return array;
 }
 
-- (id)_pluginFromURL:(id)a3
+- (id)_pluginFromURL:(id)l
 {
-  v4 = [[OKProducerPlugin alloc] initWithURL:a3];
+  v4 = [[OKProducerPlugin alloc] initWithURL:l];
   if (v4)
   {
 
@@ -405,16 +405,16 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
   {
     if (*MEMORY[0x277D62808] >= 4)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:360 andFormat:@"Failed to init producer plugin from %@: Incompatible plugin", a3];
+      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:360 andFormat:@"Failed to init producer plugin from %@: Incompatible plugin", l];
     }
 
     return 0;
   }
 }
 
-- (id)_contentFromURL:(id)a3
+- (id)_contentFromURL:(id)l
 {
-  v4 = [[OKProducerContent alloc] initWithURL:a3];
+  v4 = [[OKProducerContent alloc] initWithURL:l];
   if (v4)
   {
 
@@ -425,18 +425,18 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
   {
     if (*MEMORY[0x277D62808] >= 4)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:376 andFormat:@"Failed to init producer content from %@: Incompatible content", a3];
+      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:376 andFormat:@"Failed to init producer content from %@: Incompatible content", l];
     }
 
     return 0;
   }
 }
 
-- (id)addPluginFromURL:(id)a3
+- (id)addPluginFromURL:(id)l
 {
   v17 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
-  v5 = [(OKProducerManager *)self _pluginFromURL:a3];
+  v5 = [(OKProducerManager *)self _pluginFromURL:l];
   v6 = v5;
   if (v5)
   {
@@ -457,8 +457,8 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
       v15 = 0u;
       v12 = 0u;
       v13 = 0u;
-      v7 = [v6 exportedClassNames];
-      v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      exportedClassNames = [v6 exportedClassNames];
+      v8 = [exportedClassNames countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v8)
       {
         v9 = *v13;
@@ -469,14 +469,14 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
           {
             if (*v13 != v9)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(exportedClassNames);
             }
 
             -[OKProducerManager registerExtensionClassName:forPluginIdentifier:](self, "registerExtensionClassName:forPluginIdentifier:", *(*(&v12 + 1) + 8 * v10++), [v6 identifier]);
           }
 
           while (v8 != v10);
-          v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+          v8 = [exportedClassNames countByEnumeratingWithState:&v12 objects:v16 count:16];
         }
 
         while (v8);
@@ -488,10 +488,10 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
   return v6;
 }
 
-- (id)addContentFromURL:(id)a3
+- (id)addContentFromURL:(id)l
 {
   objc_sync_enter(self);
-  v5 = [(OKProducerManager *)self _contentFromURL:a3];
+  v5 = [(OKProducerManager *)self _contentFromURL:l];
   v6 = v5;
   if (v5)
   {
@@ -519,13 +519,13 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
 {
   v84 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v75 = 0u;
   v76 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v4 = [(NSMutableDictionary *)self->_installedPlugins allValues];
-  v5 = [v4 countByEnumeratingWithState:&v73 objects:v83 count:16];
+  allValues = [(NSMutableDictionary *)self->_installedPlugins allValues];
+  v5 = [allValues countByEnumeratingWithState:&v73 objects:v83 count:16];
   if (v5)
   {
     v6 = *v74;
@@ -535,17 +535,17 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
       {
         if (*v74 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v73 + 1) + 8 * i);
         if ([v8 isLoaded])
         {
-          [v3 setObject:v8 forKey:{objc_msgSend(v8, "identifier")}];
+          [dictionary setObject:v8 forKey:{objc_msgSend(v8, "identifier")}];
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v73 objects:v83 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v73 objects:v83 count:16];
     }
 
     while (v5);
@@ -555,7 +555,7 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v46 = v3;
+  v46 = dictionary;
   obj = self->_installedPlugins;
   v9 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v69 objects:v82 count:16];
   if (v9)
@@ -575,8 +575,8 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
         v66 = 0u;
         v67 = 0u;
         v68 = 0u;
-        v13 = [v12 exportedClassNames];
-        v14 = [v13 countByEnumeratingWithState:&v65 objects:v81 count:16];
+        exportedClassNames = [v12 exportedClassNames];
+        v14 = [exportedClassNames countByEnumeratingWithState:&v65 objects:v81 count:16];
         if (v14)
         {
           v15 = *v66;
@@ -586,13 +586,13 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
             {
               if (*v66 != v15)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(exportedClassNames);
               }
 
               -[OKProducerManager unregisterExtensionClassName:forPluginIdentifier:](self, "unregisterExtensionClassName:forPluginIdentifier:", *(*(&v65 + 1) + 8 * k), [v12 identifier]);
             }
 
-            v14 = [v13 countByEnumeratingWithState:&v65 objects:v81 count:16];
+            v14 = [exportedClassNames countByEnumeratingWithState:&v65 objects:v81 count:16];
           }
 
           while (v14);
@@ -629,8 +629,8 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
         v58 = 0u;
         v59 = 0u;
         v60 = 0u;
-        v21 = [v20 exportedClassNames];
-        v22 = [v21 countByEnumeratingWithState:&v57 objects:v79 count:16];
+        exportedClassNames2 = [v20 exportedClassNames];
+        v22 = [exportedClassNames2 countByEnumeratingWithState:&v57 objects:v79 count:16];
         if (v22)
         {
           v23 = *v58;
@@ -640,13 +640,13 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
             {
               if (*v58 != v23)
               {
-                objc_enumerationMutation(v21);
+                objc_enumerationMutation(exportedClassNames2);
               }
 
               -[OKProducerManager registerExtensionClassName:forPluginIdentifier:](self, "registerExtensionClassName:forPluginIdentifier:", *(*(&v57 + 1) + 8 * n), [v20 identifier]);
             }
 
-            v22 = [v21 countByEnumeratingWithState:&v57 objects:v79 count:16];
+            v22 = [exportedClassNames2 countByEnumeratingWithState:&v57 objects:v79 count:16];
           }
 
           while (v22);
@@ -690,11 +690,11 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
           if (v34 != v35 && *MEMORY[0x277D62808] >= 4)
           {
             v37 = MEMORY[0x277D627B8];
-            v38 = [v29 identifier];
+            identifier = [v29 identifier];
             [v29 version];
             v40 = v39;
             [v32 version];
-            [v37 logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:492 andFormat:@"Failed to add producer plugin %@ version %.2lf: Another version (%.2lf) already in use", v38, v40, v41];
+            [v37 logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:492 andFormat:@"Failed to add producer plugin %@ version %.2lf: Another version (%.2lf) already in use", identifier, v40, v41];
           }
         }
 
@@ -705,8 +705,8 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
           v52 = 0u;
           v49 = 0u;
           v50 = 0u;
-          v42 = [v29 exportedClassNames];
-          v43 = [v42 countByEnumeratingWithState:&v49 objects:v77 count:16];
+          exportedClassNames3 = [v29 exportedClassNames];
+          v43 = [exportedClassNames3 countByEnumeratingWithState:&v49 objects:v77 count:16];
           if (v43)
           {
             v44 = *v50;
@@ -716,13 +716,13 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
               {
                 if (*v50 != v44)
                 {
-                  objc_enumerationMutation(v42);
+                  objc_enumerationMutation(exportedClassNames3);
                 }
 
                 -[OKProducerManager registerExtensionClassName:forPluginIdentifier:](self, "registerExtensionClassName:forPluginIdentifier:", *(*(&v49 + 1) + 8 * jj), [v29 identifier]);
               }
 
-              v43 = [v42 countByEnumeratingWithState:&v49 objects:v77 count:16];
+              v43 = [exportedClassNames3 countByEnumeratingWithState:&v49 objects:v77 count:16];
             }
 
             while (v43);
@@ -743,13 +743,13 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
 {
   v37 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v4 = [(NSMutableDictionary *)self->_installedContents allValues];
-  v5 = [v4 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  allValues = [(NSMutableDictionary *)self->_installedContents allValues];
+  v5 = [allValues countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v5)
   {
     v6 = *v32;
@@ -759,24 +759,24 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
       {
         if (*v32 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v31 + 1) + 8 * i);
         if ([v8 isLoaded])
         {
-          [v3 setObject:v8 forKey:{objc_msgSend(v8, "identifier")}];
+          [dictionary setObject:v8 forKey:{objc_msgSend(v8, "identifier")}];
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v31 objects:v36 count:16];
     }
 
     while (v5);
   }
 
   [(NSMutableDictionary *)self->_installedContents removeAllObjects];
-  [(NSMutableDictionary *)self->_installedContents addEntriesFromDictionary:v3];
+  [(NSMutableDictionary *)self->_installedContents addEntriesFromDictionary:dictionary];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
@@ -808,11 +808,11 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
           if (v19 != v20 && *v11 >= 4)
           {
             v22 = MEMORY[0x277D627B8];
-            v23 = [v14 identifier];
+            identifier = [v14 identifier];
             [v14 version];
             v25 = v24;
             [v17 version];
-            [v22 logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:530 andFormat:@"Failed to add producer content %@ version %.2lf: Another version (%.2lf) already in use", v23, v25, v26];
+            [v22 logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:530 andFormat:@"Failed to add producer content %@ version %.2lf: Another version (%.2lf) already in use", identifier, v25, v26];
           }
         }
 
@@ -834,17 +834,17 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
 - (id)allInstalledPlugins
 {
   objc_sync_enter(self);
-  v3 = [(NSMutableDictionary *)self->_installedPlugins allValues];
+  allValues = [(NSMutableDictionary *)self->_installedPlugins allValues];
   objc_sync_exit(self);
-  return v3;
+  return allValues;
 }
 
 - (id)allInstalledContents
 {
   objc_sync_enter(self);
-  v3 = [(NSMutableDictionary *)self->_installedContents allValues];
+  allValues = [(NSMutableDictionary *)self->_installedContents allValues];
   objc_sync_exit(self);
-  return v3;
+  return allValues;
 }
 
 - (id)installedPluginsNames
@@ -855,17 +855,17 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
   return v3;
 }
 
-- (BOOL)hasInstalledPluginAndContentWithIdentifier:(id)a3
+- (BOOL)hasInstalledPluginAndContentWithIdentifier:(id)identifier
 {
-  v4 = [(OKProducerManager *)self installedPluginWithIdentifier:a3];
+  v4 = [(OKProducerManager *)self installedPluginWithIdentifier:identifier];
   if (v4)
   {
     v5 = v4;
     if ([v4 contentIdentifier])
     {
-      v6 = [v5 contentIdentifier];
+      contentIdentifier = [v5 contentIdentifier];
 
-      LOBYTE(v4) = [(OKProducerManager *)self hasInstalledContentWithIdentifier:v6];
+      LOBYTE(v4) = [(OKProducerManager *)self hasInstalledContentWithIdentifier:contentIdentifier];
     }
 
     else
@@ -877,23 +877,23 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
   return v4;
 }
 
-- (id)installedPluginWithIdentifier:(id)a3
+- (id)installedPluginWithIdentifier:(id)identifier
 {
   objc_sync_enter(self);
-  v5 = [(NSMutableDictionary *)self->_installedPlugins objectForKey:a3];
+  v5 = [(NSMutableDictionary *)self->_installedPlugins objectForKey:identifier];
   objc_sync_exit(self);
   return v5;
 }
 
-- (id)installedContentWithIdentifier:(id)a3
+- (id)installedContentWithIdentifier:(id)identifier
 {
   objc_sync_enter(self);
-  v5 = [(NSMutableDictionary *)self->_installedContents objectForKey:a3];
+  v5 = [(NSMutableDictionary *)self->_installedContents objectForKey:identifier];
   objc_sync_exit(self);
   return v5;
 }
 
-- (id)installedPluginAtURL:(id)a3
+- (id)installedPluginAtURL:(id)l
 {
   v17 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
@@ -901,8 +901,8 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(NSMutableDictionary *)self->_installedPlugins allValues];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [(NSMutableDictionary *)self->_installedPlugins allValues];
+  v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -912,7 +912,7 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -923,7 +923,7 @@ OKProducerManager *__35__OKProducerManager_defaultManager__block_invoke()
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -939,7 +939,7 @@ LABEL_11:
   return v10;
 }
 
-- (id)installedContentAtURL:(id)a3
+- (id)installedContentAtURL:(id)l
 {
   v17 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
@@ -947,8 +947,8 @@ LABEL_11:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(NSMutableDictionary *)self->_installedContents allValues];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [(NSMutableDictionary *)self->_installedContents allValues];
+  v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -958,7 +958,7 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -969,7 +969,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -985,7 +985,7 @@ LABEL_11:
   return v10;
 }
 
-- (id)installedPluginWithName:(id)a3
+- (id)installedPluginWithName:(id)name
 {
   v17 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
@@ -993,8 +993,8 @@ LABEL_11:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(NSMutableDictionary *)self->_installedPlugins allValues];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [(NSMutableDictionary *)self->_installedPlugins allValues];
+  v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -1004,7 +1004,7 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -1015,7 +1015,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -1031,17 +1031,17 @@ LABEL_11:
   return v10;
 }
 
-- (id)installedPluginsWithFamily:(unint64_t)a3
+- (id)installedPluginsWithFamily:(unint64_t)family
 {
   v17 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(NSMutableDictionary *)self->_installedPlugins allValues];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [(NSMutableDictionary *)self->_installedPlugins allValues];
+  v7 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = *v13;
@@ -1051,37 +1051,37 @@ LABEL_11:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        if ([v10 family] == a3)
+        if ([v10 family] == family)
         {
-          [v5 addObject:v10];
+          [array addObject:v10];
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
   objc_sync_exit(self);
-  return v5;
+  return array;
 }
 
 - (id)loadedPlugins
 {
   v15 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(NSMutableDictionary *)self->_installedPlugins allValues];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allValues = [(NSMutableDictionary *)self->_installedPlugins allValues];
+  v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -1091,37 +1091,37 @@ LABEL_11:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
         if ([v8 isLoaded])
         {
-          [v3 addObject:v8];
+          [array addObject:v8];
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 
   objc_sync_exit(self);
-  return v3;
+  return array;
 }
 
 - (id)loadedContents
 {
   v15 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(NSMutableDictionary *)self->_installedContents allValues];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allValues = [(NSMutableDictionary *)self->_installedContents allValues];
+  v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -1131,27 +1131,27 @@ LABEL_11:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
         if ([v8 isLoaded])
         {
-          [v3 addObject:v8];
+          [array addObject:v8];
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 
   objc_sync_exit(self);
-  return v3;
+  return array;
 }
 
-- (id)pluginWithLoadedClass:(Class)a3
+- (id)pluginWithLoadedClass:(Class)class
 {
   v17 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
@@ -1159,8 +1159,8 @@ LABEL_11:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(NSMutableDictionary *)self->_installedPlugins allValues];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [(NSMutableDictionary *)self->_installedPlugins allValues];
+  v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -1170,18 +1170,18 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 isLoaded] && objc_msgSend(v9, "hasLoadedClass:", a3))
+        if ([v9 isLoaded] && objc_msgSend(v9, "hasLoadedClass:", class))
         {
           v10 = v9;
           goto LABEL_12;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -1197,11 +1197,11 @@ LABEL_12:
   return v10;
 }
 
-- (void)setCloudServiceAutomaticUpdates:(BOOL)a3
+- (void)setCloudServiceAutomaticUpdates:(BOOL)updates
 {
-  if (self->_cloudServiceAutomaticUpdates != a3)
+  if (self->_cloudServiceAutomaticUpdates != updates)
   {
-    self->_cloudServiceAutomaticUpdates = a3;
+    self->_cloudServiceAutomaticUpdates = updates;
     [(OKProducerManager *)self prepareCloudServiceIfNeeded];
   }
 }
@@ -1237,7 +1237,7 @@ uint64_t __48__OKProducerManager_prepareCloudServiceIfNeeded__block_invoke(uint6
   return result;
 }
 
-- (void)waitUntilCloudServicePrepared:(double)a3
+- (void)waitUntilCloudServicePrepared:(double)prepared
 {
   if (!self->_cloudServicePrepared)
   {
@@ -1245,7 +1245,7 @@ uint64_t __48__OKProducerManager_prepareCloudServiceIfNeeded__block_invoke(uint6
     block[6] = v5;
     block[9] = v3;
     block[10] = v4;
-    if (a3 != 0.0 && self->_cloudServicePreparing)
+    if (prepared != 0.0 && self->_cloudServicePreparing)
     {
       v9 = dispatch_semaphore_create(0);
       serialCloudServicePreparationQueue = self->_serialCloudServicePreparationQueue;
@@ -1255,7 +1255,7 @@ uint64_t __48__OKProducerManager_prepareCloudServiceIfNeeded__block_invoke(uint6
       block[3] = &unk_279C8E818;
       block[4] = v9;
       dispatch_async(serialCloudServicePreparationQueue, block);
-      v11 = dispatch_time(0, (a3 * 1000000000.0));
+      v11 = dispatch_time(0, (prepared * 1000000000.0));
       dispatch_semaphore_wait(v9, v11);
       if (v9)
       {
@@ -1265,12 +1265,12 @@ uint64_t __48__OKProducerManager_prepareCloudServiceIfNeeded__block_invoke(uint6
   }
 }
 
-- (void)_reachabilityChanged:(id)a3
+- (void)_reachabilityChanged:(id)changed
 {
-  v5 = [a3 name];
-  if ([v5 isEqualToString:*MEMORY[0x277D62810]])
+  name = [changed name];
+  if ([name isEqualToString:*MEMORY[0x277D62810]])
   {
-    v6 = [objc_msgSend(a3 "object")];
+    v6 = [objc_msgSend(changed "object")];
     reachabilityStatus = self->_reachabilityStatus;
     if (v6 != reachabilityStatus && reachabilityStatus != -1)
     {
@@ -1297,78 +1297,78 @@ uint64_t __48__OKProducerManager_prepareCloudServiceIfNeeded__block_invoke(uint6
   return v3;
 }
 
-- (id)localizedNameForPluginIdentifier:(id)a3
+- (id)localizedNameForPluginIdentifier:(id)identifier
 {
   objc_sync_enter(self);
-  v5 = [-[OKProducerManager installedPluginWithIdentifier:](self installedPluginWithIdentifier:{a3), "localizedName"}];
+  v5 = [-[OKProducerManager installedPluginWithIdentifier:](self installedPluginWithIdentifier:{identifier), "localizedName"}];
   objc_sync_exit(self);
   return v5;
 }
 
-- (id)backgroundColorForPluginIdentifier:(id)a3
+- (id)backgroundColorForPluginIdentifier:(id)identifier
 {
   objc_sync_enter(self);
-  v5 = [-[OKProducerManager installedPluginWithIdentifier:](self installedPluginWithIdentifier:{a3), "backgroundColor"}];
+  v5 = [-[OKProducerManager installedPluginWithIdentifier:](self installedPluginWithIdentifier:{identifier), "backgroundColor"}];
   objc_sync_exit(self);
   return v5;
 }
 
-- (double)versionForPluginIdentifier:(id)a3
+- (double)versionForPluginIdentifier:(id)identifier
 {
   objc_sync_enter(self);
-  [-[OKProducerManager installedPluginWithIdentifier:](self installedPluginWithIdentifier:{a3), "version"}];
+  [-[OKProducerManager installedPluginWithIdentifier:](self installedPluginWithIdentifier:{identifier), "version"}];
   v6 = v5;
   objc_sync_exit(self);
   return v6;
 }
 
-- (double)versionForContentIdentifier:(id)a3
+- (double)versionForContentIdentifier:(id)identifier
 {
   objc_sync_enter(self);
-  [-[OKProducerManager installedContentWithIdentifier:](self installedContentWithIdentifier:{a3), "version"}];
+  [-[OKProducerManager installedContentWithIdentifier:](self installedContentWithIdentifier:{identifier), "version"}];
   v6 = v5;
   objc_sync_exit(self);
   return v6;
 }
 
-- (id)audioURLsForPluginIdentifier:(id)a3
+- (id)audioURLsForPluginIdentifier:(id)identifier
 {
   objc_sync_enter(self);
-  v5 = [-[OKProducerManager installedPluginWithIdentifier:](self installedPluginWithIdentifier:{a3), "audioURLs"}];
+  v5 = [-[OKProducerManager installedPluginWithIdentifier:](self installedPluginWithIdentifier:{identifier), "audioURLs"}];
   objc_sync_exit(self);
   return v5;
 }
 
-- (BOOL)hasPluginWithIdentifier:(id)a3
+- (BOOL)hasPluginWithIdentifier:(id)identifier
 {
   objc_sync_enter(self);
-  LOBYTE(a3) = [(OKProducerManager *)self hasInstalledPluginWithIdentifier:a3];
+  LOBYTE(identifier) = [(OKProducerManager *)self hasInstalledPluginWithIdentifier:identifier];
   objc_sync_exit(self);
-  return a3;
+  return identifier;
 }
 
-- (BOOL)hasContentWithIdentifier:(id)a3
+- (BOOL)hasContentWithIdentifier:(id)identifier
 {
   objc_sync_enter(self);
-  LOBYTE(a3) = [(OKProducerManager *)self hasInstalledContentWithIdentifier:a3];
+  LOBYTE(identifier) = [(OKProducerManager *)self hasInstalledContentWithIdentifier:identifier];
   objc_sync_exit(self);
-  return a3;
+  return identifier;
 }
 
-- (void)pluginWithIdentifier:(id)a3 progressBlock:(id)a4 completionBlock:(id)a5
+- (void)pluginWithIdentifier:(id)identifier progressBlock:(id)block completionBlock:(id)completionBlock
 {
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __72__OKProducerManager_pluginWithIdentifier_progressBlock_completionBlock___block_invoke;
   v11[3] = &unk_279C8FC88;
   v11[4] = self;
-  v11[5] = a3;
-  v9[4] = a5;
+  v11[5] = identifier;
+  v9[4] = completionBlock;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __72__OKProducerManager_pluginWithIdentifier_progressBlock_completionBlock___block_invoke_3;
   v10[3] = &unk_279C8E868;
-  v10[4] = a4;
+  v10[4] = block;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __72__OKProducerManager_pluginWithIdentifier_progressBlock_completionBlock___block_invoke_5;
@@ -1378,7 +1378,7 @@ uint64_t __48__OKProducerManager_prepareCloudServiceIfNeeded__block_invoke(uint6
   v8[1] = 3221225472;
   v8[2] = __72__OKProducerManager_pluginWithIdentifier_progressBlock_completionBlock___block_invoke_6;
   v8[3] = &unk_279C8E868;
-  v8[4] = a4;
+  v8[4] = block;
   [v7 setProgressBlock:v8];
   [(NSOperationQueue *)self->_cloudServiceOperationQueue addOperation:v7];
 }
@@ -1547,20 +1547,20 @@ uint64_t __72__OKProducerManager_pluginWithIdentifier_progressBlock_completionBl
   return result;
 }
 
-- (id)_contentWithIdentifier:(id)a3 progressBlock:(id)a4 completionBlock:(id)a5
+- (id)_contentWithIdentifier:(id)identifier progressBlock:(id)block completionBlock:(id)completionBlock
 {
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __74__OKProducerManager__contentWithIdentifier_progressBlock_completionBlock___block_invoke;
   v11[3] = &unk_279C8FCD8;
   v11[4] = self;
-  v11[5] = a3;
-  v9[4] = a5;
+  v11[5] = identifier;
+  v9[4] = completionBlock;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __74__OKProducerManager__contentWithIdentifier_progressBlock_completionBlock___block_invoke_2;
   v10[3] = &unk_279C8E868;
-  v10[4] = a4;
+  v10[4] = block;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __74__OKProducerManager__contentWithIdentifier_progressBlock_completionBlock___block_invoke_4;
@@ -1570,7 +1570,7 @@ uint64_t __72__OKProducerManager_pluginWithIdentifier_progressBlock_completionBl
   v8[1] = 3221225472;
   v8[2] = __74__OKProducerManager__contentWithIdentifier_progressBlock_completionBlock___block_invoke_5;
   v8[3] = &unk_279C8E868;
-  v8[4] = a4;
+  v8[4] = block;
   [v6 setProgressBlock:v8];
   return v6;
 }
@@ -1611,34 +1611,34 @@ uint64_t __74__OKProducerManager__contentWithIdentifier_progressBlock_completion
   return result;
 }
 
-- (void)contentWithIdentifier:(id)a3 progressBlock:(id)a4 completionBlock:(id)a5
+- (void)contentWithIdentifier:(id)identifier progressBlock:(id)block completionBlock:(id)completionBlock
 {
-  v6 = [(OKProducerManager *)self _contentWithIdentifier:a3 progressBlock:a4 completionBlock:a5];
+  v6 = [(OKProducerManager *)self _contentWithIdentifier:identifier progressBlock:block completionBlock:completionBlock];
   cloudServiceOperationQueue = self->_cloudServiceOperationQueue;
 
   [(NSOperationQueue *)cloudServiceOperationQueue addOperation:v6];
 }
 
-- (id)installPluginAtURL:(id)a3 overwrite:(BOOL)a4 error:(id *)a5
+- (id)installPluginAtURL:(id)l overwrite:(BOOL)overwrite error:(id *)error
 {
-  v6 = a4;
+  overwriteCopy = overwrite;
   objc_sync_enter(self);
-  v9 = [[OKProducerPlugin alloc] initWithURL:a3];
+  v9 = [[OKProducerPlugin alloc] initWithURL:l];
   v10 = v9;
   if (!v9)
   {
     if (*MEMORY[0x277D62808] >= 2)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1498 andFormat:@"Failed to install plugin %@: Invalid plugin", a3];
+      [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1498 andFormat:@"Failed to install plugin %@: Invalid plugin", l];
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_32;
     }
 
     v15 = 0;
-    *a5 = [OKError errorForCode:-1];
+    *error = [OKError errorForCode:-1];
     goto LABEL_33;
   }
 
@@ -1648,16 +1648,16 @@ uint64_t __74__OKProducerManager__contentWithIdentifier_progressBlock_completion
   v13 = [-[OKProducerManager userLibraryPlugInsDirectoryURL](self "userLibraryPlugInsDirectoryURL")];
   if (v11)
   {
-    if (v6)
+    if (overwriteCopy)
     {
       if ([v11 isLoaded])
       {
         if (*MEMORY[0x277D62808] >= 2)
         {
-          [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1520 andFormat:@"Failed to install plugin %@: Plugin already loaded %@", a3, -[OKProducerBundle identifier](v10, "identifier")];
+          [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1520 andFormat:@"Failed to install plugin %@: Plugin already loaded %@", l, -[OKProducerBundle identifier](v10, "identifier")];
         }
 
-        if (!a5)
+        if (!error)
         {
           goto LABEL_18;
         }
@@ -1674,16 +1674,16 @@ uint64_t __74__OKProducerManager__contentWithIdentifier_progressBlock_completion
 
       if (*MEMORY[0x277D62808] >= 2)
       {
-        [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1535 andFormat:@"Failed to install plugin %@: Existing plugin cannot be removed (%@)", a3, objc_msgSend(v17, "localizedDescription")];
+        [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1535 andFormat:@"Failed to install plugin %@: Existing plugin cannot be removed (%@)", l, objc_msgSend(v17, "localizedDescription")];
       }
     }
 
     else if (*MEMORY[0x277D62808] >= 2)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1552 andFormat:@"Failed to install plugin %@: Plugin already exist %@", a3, objc_msgSend(v11, "url")];
+      [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1552 andFormat:@"Failed to install plugin %@: Plugin already exist %@", l, objc_msgSend(v11, "url")];
     }
 
-    if (!a5)
+    if (!error)
     {
 LABEL_18:
 
@@ -1695,7 +1695,7 @@ LABEL_32:
 
     v14 = -1;
 LABEL_17:
-    *a5 = [OKError errorForCode:v14];
+    *error = [OKError errorForCode:v14];
     goto LABEL_18;
   }
 
@@ -1705,23 +1705,23 @@ LABEL_21:
   {
     if (*MEMORY[0x277D62808] >= 2)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1570 andFormat:@"Failed to install plugin %@: Another plugin with the same name already exist", a3];
+      [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1570 andFormat:@"Failed to install plugin %@: Another plugin with the same name already exist", l];
     }
 
 LABEL_29:
-    if (a5)
+    if (error)
     {
-      *a5 = [OKError errorForCode:-1];
+      *error = [OKError errorForCode:-1];
     }
 
     goto LABEL_31;
   }
 
-  if (([v12 moveItemAtURL:a3 toURL:v13 error:&v17] & 1) == 0)
+  if (([v12 moveItemAtURL:l toURL:v13 error:&v17] & 1) == 0)
   {
     if (*MEMORY[0x277D62808] >= 2)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1584 andFormat:@"Failed to install plugin %@: %@", a3, objc_msgSend(v17, "localizedDescription")];
+      [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1584 andFormat:@"Failed to install plugin %@: %@", l, objc_msgSend(v17, "localizedDescription")];
     }
 
     goto LABEL_29;
@@ -1731,9 +1731,9 @@ LABEL_29:
   if (!v15)
   {
     [v12 removeItemAtURL:v13 error:0];
-    if (a5)
+    if (error)
     {
-      *a5 = [OKError errorForCode:-1];
+      *error = [OKError errorForCode:-1];
     }
 
     goto LABEL_31;
@@ -1744,26 +1744,26 @@ LABEL_33:
   return v15;
 }
 
-- (id)installContentAtURL:(id)a3 overwrite:(BOOL)a4 error:(id *)a5
+- (id)installContentAtURL:(id)l overwrite:(BOOL)overwrite error:(id *)error
 {
-  v6 = a4;
+  overwriteCopy = overwrite;
   objc_sync_enter(self);
-  v9 = [[OKProducerContent alloc] initWithURL:a3];
+  v9 = [[OKProducerContent alloc] initWithURL:l];
   v10 = v9;
   if (!v9)
   {
     if (*MEMORY[0x277D62808] >= 2)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1627 andFormat:@"Failed to install content %@: Invalid content", a3];
+      [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1627 andFormat:@"Failed to install content %@: Invalid content", l];
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_32;
     }
 
     v15 = 0;
-    *a5 = [OKError errorForCode:-1];
+    *error = [OKError errorForCode:-1];
     goto LABEL_33;
   }
 
@@ -1773,16 +1773,16 @@ LABEL_33:
   v13 = [-[OKProducerManager userLibraryPlugInsDirectoryURL](self "userLibraryPlugInsDirectoryURL")];
   if (v11)
   {
-    if (v6)
+    if (overwriteCopy)
     {
       if ([v11 isLoaded])
       {
         if (*MEMORY[0x277D62808] >= 2)
         {
-          [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1649 andFormat:@"Failed to install content %@: Content already loaded %@", a3, -[OKProducerBundle identifier](v10, "identifier")];
+          [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1649 andFormat:@"Failed to install content %@: Content already loaded %@", l, -[OKProducerBundle identifier](v10, "identifier")];
         }
 
-        if (!a5)
+        if (!error)
         {
           goto LABEL_18;
         }
@@ -1799,16 +1799,16 @@ LABEL_33:
 
       if (*MEMORY[0x277D62808] >= 2)
       {
-        [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1664 andFormat:@"Failed to install content %@: Existing content cannot be removed (%@)", a3, objc_msgSend(v17, "localizedDescription")];
+        [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1664 andFormat:@"Failed to install content %@: Existing content cannot be removed (%@)", l, objc_msgSend(v17, "localizedDescription")];
       }
     }
 
     else if (*MEMORY[0x277D62808] >= 2)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1681 andFormat:@"Failed to install content %@: Content already exist %@", a3, objc_msgSend(v11, "url")];
+      [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1681 andFormat:@"Failed to install content %@: Content already exist %@", l, objc_msgSend(v11, "url")];
     }
 
-    if (!a5)
+    if (!error)
     {
 LABEL_18:
 
@@ -1820,7 +1820,7 @@ LABEL_32:
 
     v14 = -1;
 LABEL_17:
-    *a5 = [OKError errorForCode:v14];
+    *error = [OKError errorForCode:v14];
     goto LABEL_18;
   }
 
@@ -1830,23 +1830,23 @@ LABEL_21:
   {
     if (*MEMORY[0x277D62808] >= 2)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1699 andFormat:@"Failed to install content %@: Another content with the same name already exist", a3];
+      [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1699 andFormat:@"Failed to install content %@: Another content with the same name already exist", l];
     }
 
 LABEL_29:
-    if (a5)
+    if (error)
     {
-      *a5 = [OKError errorForCode:-1];
+      *error = [OKError errorForCode:-1];
     }
 
     goto LABEL_31;
   }
 
-  if (([v12 moveItemAtURL:a3 toURL:v13 error:&v17] & 1) == 0)
+  if (([v12 moveItemAtURL:l toURL:v13 error:&v17] & 1) == 0)
   {
     if (*MEMORY[0x277D62808] >= 2)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1713 andFormat:@"Failed to install content %@: %@", a3, objc_msgSend(v17, "localizedDescription")];
+      [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1713 andFormat:@"Failed to install content %@: %@", l, objc_msgSend(v17, "localizedDescription")];
     }
 
     goto LABEL_29;
@@ -1856,9 +1856,9 @@ LABEL_29:
   if (!v15)
   {
     [v12 removeItemAtURL:v13 error:0];
-    if (a5)
+    if (error)
     {
-      *a5 = [OKError errorForCode:-1];
+      *error = [OKError errorForCode:-1];
     }
 
     goto LABEL_31;
@@ -1869,19 +1869,19 @@ LABEL_33:
   return v15;
 }
 
-- (BOOL)uninstallPluginWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)uninstallPluginWithIdentifier:(id)identifier error:(id *)error
 {
   objc_sync_enter(self);
-  v7 = [(OKProducerManager *)self installedPluginWithIdentifier:a3];
+  v7 = [(OKProducerManager *)self installedPluginWithIdentifier:identifier];
   v8 = v7;
   if (!v7)
   {
     if (*MEMORY[0x277D62808] >= 2)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1755 andFormat:@"Failed to uninstall plugin %@: Cannot be found", a3];
+      [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1755 andFormat:@"Failed to uninstall plugin %@: Cannot be found", identifier];
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -1896,7 +1896,7 @@ LABEL_33:
       [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1767 andFormat:@"Failed to uninstall plugin %@: Only plugins from %@ can be uninstalled", objc_msgSend(v8, "identifier"), -[OKProducerManager userLibraryPlugInsDirectoryURL](self, "userLibraryPlugInsDirectoryURL")];
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -1913,12 +1913,12 @@ LABEL_15:
       [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1779 andFormat:@"Failed to uninstall plugin %@: Plugin already loaded", objc_msgSend(v8, "identifier")];
     }
 
-    if (a4)
+    if (error)
     {
       v9 = [OKError errorForCode:-7];
 LABEL_16:
       v10 = 0;
-      *a4 = v9;
+      *error = v9;
       goto LABEL_25;
     }
 
@@ -1944,9 +1944,9 @@ LABEL_17:
       [v12 logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1794 andFormat:@"Failed to uninstall plugin %@: Existing plugin cannot be removed (%@)", v13, objc_msgSend(v15, "localizedDescription")];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [OKError errorForCode:-1];
+      *error = [OKError errorForCode:-1];
     }
   }
 
@@ -1955,19 +1955,19 @@ LABEL_25:
   return v10;
 }
 
-- (BOOL)uninstallContentWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)uninstallContentWithIdentifier:(id)identifier error:(id *)error
 {
   objc_sync_enter(self);
-  v7 = [(OKProducerManager *)self installedContentWithIdentifier:a3];
+  v7 = [(OKProducerManager *)self installedContentWithIdentifier:identifier];
   v8 = v7;
   if (!v7)
   {
     if (*MEMORY[0x277D62808] >= 2)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1822 andFormat:@"Failed to uninstall content %@: Cannot be found", a3];
+      [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1822 andFormat:@"Failed to uninstall content %@: Cannot be found", identifier];
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -1982,7 +1982,7 @@ LABEL_25:
       [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1834 andFormat:@"Failed to uninstall content %@: Only contents from %@ can be uninstalled", objc_msgSend(v8, "identifier"), -[OKProducerManager userLibraryPlugInsDirectoryURL](self, "userLibraryPlugInsDirectoryURL")];
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -1999,12 +1999,12 @@ LABEL_15:
       [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1846 andFormat:@"Failed to uninstall content %@: Content already loaded", objc_msgSend(v8, "identifier")];
     }
 
-    if (a4)
+    if (error)
     {
       v9 = [OKError errorForCode:-7];
 LABEL_16:
       v10 = 0;
-      *a4 = v9;
+      *error = v9;
       goto LABEL_25;
     }
 
@@ -2030,9 +2030,9 @@ LABEL_17:
       [v12 logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerManager.m" line:1861 andFormat:@"Failed to uninstall content %@: Existing content cannot be removed (%@)", v13, objc_msgSend(v15, "localizedDescription")];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [OKError errorForCode:-1];
+      *error = [OKError errorForCode:-1];
     }
   }
 
@@ -2041,19 +2041,19 @@ LABEL_25:
   return v10;
 }
 
-- (void)createPresentationWithPluginIdentifier:(id)a3 guidelines:(id)a4 mediaFeeder:(id)a5 mediaItemLookupDelegate:(id)a6 progressBlock:(id)a7 completionBlock:(id)a8
+- (void)createPresentationWithPluginIdentifier:(id)identifier guidelines:(id)guidelines mediaFeeder:(id)feeder mediaItemLookupDelegate:(id)delegate progressBlock:(id)block completionBlock:(id)completionBlock
 {
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __137__OKProducerManager_createPresentationWithPluginIdentifier_guidelines_mediaFeeder_mediaItemLookupDelegate_progressBlock_completionBlock___block_invoke;
   v8[3] = &unk_279C8FDF0;
-  v8[9] = a8;
-  v8[10] = a7;
-  v8[4] = a6;
-  v8[5] = a5;
+  v8[9] = completionBlock;
+  v8[10] = block;
+  v8[4] = delegate;
+  v8[5] = feeder;
   v8[6] = self;
-  v8[7] = a3;
-  v8[8] = a4;
+  v8[7] = identifier;
+  v8[8] = guidelines;
   [(OKProducerManager *)self performAsynchronousProducerAccessUsingBlock:v8];
 }
 
@@ -2467,25 +2467,25 @@ uint64_t __137__OKProducerManager_createPresentationWithPluginIdentifier_guideli
   return result;
 }
 
-- (void)createPresentationWithPreset:(id)a3 guidelines:(id)a4 mediaFeeder:(id)a5 mediaItemLookupDelegate:(id)a6 progressBlock:(id)a7 completionBlock:(id)a8
+- (void)createPresentationWithPreset:(id)preset guidelines:(id)guidelines mediaFeeder:(id)feeder mediaItemLookupDelegate:(id)delegate progressBlock:(id)block completionBlock:(id)completionBlock
 {
-  v15 = [MEMORY[0x277CBEB18] array];
-  if ([a3 guidelines])
+  array = [MEMORY[0x277CBEB18] array];
+  if ([preset guidelines])
   {
-    [v15 addObjectsFromArray:{objc_msgSend(a3, "guidelines")}];
+    [array addObjectsFromArray:{objc_msgSend(preset, "guidelines")}];
   }
 
-  if (a4)
+  if (guidelines)
   {
-    [v15 addObjectsFromArray:a4];
+    [array addObjectsFromArray:guidelines];
   }
 
-  v16 = [a3 pluginIdentifier];
+  pluginIdentifier = [preset pluginIdentifier];
 
-  [(OKProducerManager *)self createPresentationWithPluginIdentifier:v16 guidelines:v15 mediaFeeder:a5 mediaItemLookupDelegate:a6 progressBlock:a7 completionBlock:a8];
+  [(OKProducerManager *)self createPresentationWithPluginIdentifier:pluginIdentifier guidelines:array mediaFeeder:feeder mediaItemLookupDelegate:delegate progressBlock:block completionBlock:completionBlock];
 }
 
-- (void)createDocumentAtDirectoryURL:(id)a3 withPluginIdentifier:(id)a4 guidelines:(id)a5 mediaURLs:(id)a6 mediaItemLookupDelegate:(id)a7 flattenMedia:(BOOL)a8 flattenProducer:(BOOL)a9 prepareCaches:(BOOL)a10 format:(unint64_t)a11 keepOpen:(BOOL)a12 documentClass:(Class)a13 progressBlock:(id)a14 completionBlock:(id)a15
+- (void)createDocumentAtDirectoryURL:(id)l withPluginIdentifier:(id)identifier guidelines:(id)guidelines mediaURLs:(id)ls mediaItemLookupDelegate:(id)delegate flattenMedia:(BOOL)media flattenProducer:(BOOL)producer prepareCaches:(BOOL)self0 format:(unint64_t)self1 keepOpen:(BOOL)self2 documentClass:(Class)self3 progressBlock:(id)self4 completionBlock:(id)self5
 {
   v20 = +[OKDocumentsManager defaultManager];
   v23[0] = MEMORY[0x277D85DD0];
@@ -2493,19 +2493,19 @@ uint64_t __137__OKProducerManager_createPresentationWithPluginIdentifier_guideli
   v23[2] = __219__OKProducerManager_createDocumentAtDirectoryURL_withPluginIdentifier_guidelines_mediaURLs_mediaItemLookupDelegate_flattenMedia_flattenProducer_prepareCaches_format_keepOpen_documentClass_progressBlock_completionBlock___block_invoke;
   v23[3] = &unk_279C8FE18;
   v23[4] = self;
-  v23[5] = a4;
-  v23[6] = a3;
-  v23[7] = a5;
-  v23[8] = a6;
-  v23[9] = a7;
-  v24 = a8;
-  v25 = a9;
-  v26 = a10;
-  v27 = a12;
-  v23[10] = a13;
-  v23[11] = a15;
-  v23[12] = a14;
-  v23[13] = a11;
+  v23[5] = identifier;
+  v23[6] = l;
+  v23[7] = guidelines;
+  v23[8] = ls;
+  v23[9] = delegate;
+  mediaCopy = media;
+  producerCopy = producer;
+  cachesCopy = caches;
+  openCopy = open;
+  v23[10] = class;
+  v23[11] = completionBlock;
+  v23[12] = block;
+  v23[13] = format;
   [v20 performAsynchronousFileAccessUsingBlock:v23];
 }
 
@@ -2532,22 +2532,22 @@ uint64_t __219__OKProducerManager_createDocumentAtDirectoryURL_withPluginIdentif
   return result;
 }
 
-- (void)_closeAndDeleteDocument:(id)a3 fileURL:(id)a4 completionBlock:(id)a5
+- (void)_closeAndDeleteDocument:(id)document fileURL:(id)l completionBlock:(id)block
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __69__OKProducerManager__closeAndDeleteDocument_fileURL_completionBlock___block_invoke;
   v6[3] = &unk_279C8FE40;
-  v6[4] = a4;
-  v6[5] = a5;
-  if (a3)
+  v6[4] = l;
+  v6[5] = block;
+  if (document)
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __69__OKProducerManager__closeAndDeleteDocument_fileURL_completionBlock___block_invoke_2;
     v5[3] = &unk_279C8E770;
     v5[4] = v6;
-    [a3 closeWithCompletionHandler:v5];
+    [document closeWithCompletionHandler:v5];
   }
 
   else
@@ -2575,16 +2575,16 @@ uint64_t __69__OKProducerManager__closeAndDeleteDocument_fileURL_completionBlock
   return result;
 }
 
-- (void)_saveDocument:(id)a3 toFileURL:(id)a4 completionBlock:(id)a5
+- (void)_saveDocument:(id)document toFileURL:(id)l completionBlock:(id)block
 {
   v8 = +[OKDocumentsManager defaultManager];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61__OKProducerManager__saveDocument_toFileURL_completionBlock___block_invoke;
   v9[3] = &unk_279C8FE68;
-  v9[4] = a3;
-  v9[5] = a4;
-  v9[6] = a5;
+  v9[4] = document;
+  v9[5] = l;
+  v9[6] = block;
   [v8 performAsynchronousFileAccessUsingBlock:v9];
 }
 
@@ -2611,15 +2611,15 @@ uint64_t __61__OKProducerManager__saveDocument_toFileURL_completionBlock___block
   return result;
 }
 
-- (void)_saveDocument:(id)a3 completionBlock:(id)a4
+- (void)_saveDocument:(id)document completionBlock:(id)block
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __51__OKProducerManager__saveDocument_completionBlock___block_invoke;
   v4[3] = &unk_279C8FE40;
-  v4[4] = a3;
-  v4[5] = a4;
-  [a3 performAsynchronousFileAccessUsingBlock:v4];
+  v4[4] = document;
+  v4[5] = block;
+  [document performAsynchronousFileAccessUsingBlock:v4];
 }
 
 uint64_t __51__OKProducerManager__saveDocument_completionBlock___block_invoke(uint64_t a1)
@@ -2645,14 +2645,14 @@ uint64_t __51__OKProducerManager__saveDocument_completionBlock___block_invoke_2(
   return result;
 }
 
-- (void)_openDocument:(id)a3 completionBlock:(id)a4
+- (void)_openDocument:(id)document completionBlock:(id)block
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __51__OKProducerManager__openDocument_completionBlock___block_invoke;
   v4[3] = &unk_279C8E770;
-  v4[4] = a4;
-  [a3 openWithCompletionHandler:v4];
+  v4[4] = block;
+  [document openWithCompletionHandler:v4];
 }
 
 uint64_t __51__OKProducerManager__openDocument_completionBlock___block_invoke(uint64_t a1)
@@ -2666,14 +2666,14 @@ uint64_t __51__OKProducerManager__openDocument_completionBlock___block_invoke(ui
   return result;
 }
 
-- (void)_closeDocument:(id)a3 completionBlock:(id)a4
+- (void)_closeDocument:(id)document completionBlock:(id)block
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __52__OKProducerManager__closeDocument_completionBlock___block_invoke;
   v4[3] = &unk_279C8E770;
-  v4[4] = a4;
-  [a3 closeWithCompletionHandler:v4];
+  v4[4] = block;
+  [document closeWithCompletionHandler:v4];
 }
 
 uint64_t __52__OKProducerManager__closeDocument_completionBlock___block_invoke(uint64_t a1)
@@ -2687,12 +2687,12 @@ uint64_t __52__OKProducerManager__closeDocument_completionBlock___block_invoke(u
   return result;
 }
 
-- (void)createDocumentAtFileURL:(id)a3 withPluginIdentifier:(id)a4 guidelines:(id)a5 mediaURLs:(id)a6 mediaItemLookupDelegate:(id)a7 flattenMedia:(BOOL)a8 flattenProducer:(BOOL)a9 prepareCaches:(BOOL)a10 format:(unint64_t)a11 keepOpen:(BOOL)a12 documentClass:(Class)a13 progressBlock:(id)a14 completionBlock:(id)a15
+- (void)createDocumentAtFileURL:(id)l withPluginIdentifier:(id)identifier guidelines:(id)guidelines mediaURLs:(id)ls mediaItemLookupDelegate:(id)delegate flattenMedia:(BOOL)media flattenProducer:(BOOL)producer prepareCaches:(BOOL)self0 format:(unint64_t)self1 keepOpen:(BOOL)self2 documentClass:(Class)self3 progressBlock:(id)self4 completionBlock:(id)self5
 {
-  v22 = a13;
-  if (!a13)
+  classCopy = class;
+  if (!class)
   {
-    v22 = objc_opt_class();
+    classCopy = objc_opt_class();
   }
 
   v28[0] = 0;
@@ -2707,19 +2707,19 @@ uint64_t __52__OKProducerManager__closeDocument_completionBlock___block_invoke(u
   v24[2] = __214__OKProducerManager_createDocumentAtFileURL_withPluginIdentifier_guidelines_mediaURLs_mediaItemLookupDelegate_flattenMedia_flattenProducer_prepareCaches_format_keepOpen_documentClass_progressBlock_completionBlock___block_invoke;
   v24[3] = &unk_279C8FFF8;
   v24[4] = self;
-  v24[5] = a3;
-  v24[6] = v22;
-  v24[7] = a7;
+  v24[5] = l;
+  v24[6] = classCopy;
+  v24[7] = delegate;
   v24[13] = v28;
-  v24[14] = a11;
-  v24[11] = a15;
-  v24[12] = a14;
-  v25 = a8;
-  v24[8] = a4;
-  v24[9] = a6;
-  v24[10] = a5;
-  v26 = a9;
-  v27 = a12;
+  v24[14] = format;
+  v24[11] = completionBlock;
+  v24[12] = block;
+  mediaCopy = media;
+  v24[8] = identifier;
+  v24[9] = ls;
+  v24[10] = guidelines;
+  producerCopy = producer;
+  openCopy = open;
   [v23 performAsynchronousFileAccessUsingBlock:v24];
   _Block_object_dispose(v28, 8);
 }
@@ -3276,23 +3276,23 @@ void __214__OKProducerManager_createDocumentAtFileURL_withPluginIdentifier_guide
   }
 }
 
-- (void)authorDocument:(id)a3 withPluginIdentifier:(id)a4 guidelines:(id)a5 flattenMedia:(BOOL)a6 flattenProducer:(BOOL)a7 progressBlock:(id)a8 completionBlock:(id)a9
+- (void)authorDocument:(id)document withPluginIdentifier:(id)identifier guidelines:(id)guidelines flattenMedia:(BOOL)media flattenProducer:(BOOL)producer progressBlock:(id)block completionBlock:(id)completionBlock
 {
   global_queue = dispatch_get_global_queue(0, 0);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __127__OKProducerManager_authorDocument_withPluginIdentifier_guidelines_flattenMedia_flattenProducer_progressBlock_completionBlock___block_invoke;
   v16[3] = &unk_279C90048;
-  v16[4] = a3;
+  v16[4] = document;
   v16[5] = self;
-  v16[6] = a5;
-  v16[7] = a4;
-  v16[8] = a8;
-  v17 = a7;
+  v16[6] = guidelines;
+  v16[7] = identifier;
+  v16[8] = block;
+  producerCopy = producer;
   dispatch_async(global_queue, v16);
-  if (a9)
+  if (completionBlock)
   {
-    (*(a9 + 2))(a9, a3, 0);
+    (*(completionBlock + 2))(completionBlock, document, 0);
   }
 }
 

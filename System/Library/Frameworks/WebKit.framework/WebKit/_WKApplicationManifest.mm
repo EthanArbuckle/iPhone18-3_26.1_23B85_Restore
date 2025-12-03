@@ -1,5 +1,5 @@
 @interface _WKApplicationManifest
-+ (id)applicationManifestFromJSON:(id)a3 manifestURL:(id)a4 documentURL:(id)a5;
++ (id)applicationManifestFromJSON:(id)n manifestURL:(id)l documentURL:(id)rL;
 - (NSArray)categories;
 - (NSArray)icons;
 - (NSArray)shortcuts;
@@ -13,31 +13,31 @@
 - (NSURL)startURL;
 - (UIColor)backgroundColor;
 - (UIColor)themeColor;
-- (_WKApplicationManifest)initWithCoder:(id)a3;
-- (_WKApplicationManifest)initWithJSONData:(id)a3 manifestURL:(id)a4 documentURL:(id)a5;
+- (_WKApplicationManifest)initWithCoder:(id)coder;
+- (_WKApplicationManifest)initWithJSONData:(id)data manifestURL:(id)l documentURL:(id)rL;
 - (int64_t)direction;
 - (int64_t)displayMode;
 - (optional<_WKApplicationManifestOrientation>)orientation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _WKApplicationManifest
 
-- (_WKApplicationManifest)initWithJSONData:(id)a3 manifestURL:(id)a4 documentURL:(id)a5
+- (_WKApplicationManifest)initWithJSONData:(id)data manifestURL:(id)l documentURL:(id)rL
 {
   v24.receiver = self;
   v24.super_class = _WKApplicationManifest;
   v8 = [(_WKApplicationManifest *)&v24 init];
   if (v8)
   {
-    v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:a3 encoding:4];
+    v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:data encoding:4];
     if (v9)
     {
       v10 = v9;
       MEMORY[0x19EB02040](&v25, v9);
-      MEMORY[0x19EB01DE0](v21, a4);
-      MEMORY[0x19EB01DE0](v20, a5);
+      MEMORY[0x19EB01DE0](v21, l);
+      MEMORY[0x19EB01DE0](v20, rL);
       WebCore::ApplicationManifestParser::parseWithValidation(v22, &v25, v21, v20, v11);
       v13 = v20[0];
       v20[0] = 0;
@@ -90,51 +90,51 @@
   return v8;
 }
 
-- (_WKApplicationManifest)initWithCoder:(id)a3
+- (_WKApplicationManifest)initWithCoder:(id)coder
 {
   v131[2] = *MEMORY[0x1E69E9840];
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"raw_json"];
+  v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"raw_json"];
   MEMORY[0x19EB02040](&v115, v5);
-  v6 = [a3 decodeIntegerForKey:@"dir"];
+  v6 = [coder decodeIntegerForKey:@"dir"];
   if (v6 >= 3)
   {
     __break(0xC471u);
     goto LABEL_53;
   }
 
-  v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"name"];
   MEMORY[0x19EB02040](&v114, v7);
-  v8 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"short_name"];
+  v8 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"short_name"];
   MEMORY[0x19EB02040](&v113, v8);
-  v9 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"description"];
+  v9 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"description"];
   MEMORY[0x19EB02040](&v112, v9);
-  v10 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"scope"];
+  v10 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"scope"];
   MEMORY[0x19EB01DE0](&v109, v10);
-  v11 = [a3 decodeBoolForKey:@"is_default_scope"];
-  v12 = [a3 decodeIntegerForKey:@"display"];
-  v13 = [a3 decodeIntegerForKey:@"orientation"];
-  v14 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"manifest_url"];
+  v11 = [coder decodeBoolForKey:@"is_default_scope"];
+  v12 = [coder decodeIntegerForKey:@"display"];
+  v13 = [coder decodeIntegerForKey:@"orientation"];
+  v14 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"manifest_url"];
   MEMORY[0x19EB01DE0](&v106, v14);
-  v15 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"start_url"];
+  v15 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"start_url"];
   MEMORY[0x19EB01DE0](&v103, v15);
-  v16 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"manifestId"];
+  v16 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"manifestId"];
   MEMORY[0x19EB01DE0](&v100, v16);
-  v73 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"background_color"];
-  v71 = self;
-  v72 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"theme_color"];
+  v73 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"background_color"];
+  selfCopy = self;
+  v72 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"theme_color"];
   v17 = MEMORY[0x1E695DFD8];
   v131[0] = objc_opt_class();
   v131[1] = objc_opt_class();
-  v18 = [a3 decodeObjectOfClasses:objc_msgSend(v17 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v131, 2)), @"categories"}];
+  v18 = [coder decodeObjectOfClasses:objc_msgSend(v17 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v131, 2)), @"categories"}];
   v19 = MEMORY[0x1E695DFD8];
   v130[0] = objc_opt_class();
   v130[1] = objc_opt_class();
-  v20 = [a3 decodeObjectOfClasses:objc_msgSend(v19 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v130, 2)), @"icons"}];
+  v20 = [coder decodeObjectOfClasses:objc_msgSend(v19 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v130, 2)), @"icons"}];
   v21 = MEMORY[0x1E695DFD8];
   v129[0] = objc_opt_class();
   v129[1] = objc_opt_class();
   v129[2] = objc_opt_class();
-  v22 = [a3 decodeObjectOfClasses:objc_msgSend(v21 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v129, 3)), @"shortcuts"}];
+  v22 = [coder decodeObjectOfClasses:objc_msgSend(v21 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v129, 3)), @"shortcuts"}];
   v74 = v115;
   v75 = v6;
   v23 = v114;
@@ -179,11 +179,11 @@
   v92 = v101;
   v93 = v102;
   LODWORD(v101) = v101 & 0xFFFFFFFE;
-  v30 = [v73 CGColor];
-  v32 = WebCore::roundAndClampToSRGBALossy(v30, v31);
+  cGColor = [v73 CGColor];
+  v32 = WebCore::roundAndClampToSRGBALossy(cGColor, v31);
   v94 = (bswap32(v32) | 0x1104000000000000) & (v32 << 31 >> 63);
-  v33 = [v72 CGColor];
-  v35 = WebCore::roundAndClampToSRGBALossy(v33, v34);
+  cGColor2 = [v72 CGColor];
+  v35 = WebCore::roundAndClampToSRGBALossy(cGColor2, v34);
   v95 = (bswap32(v35) | 0x1104000000000000) & (v35 << 31 >> 63);
   v116[0] = v18;
   v36 = [(WTF::StringImpl *)v18 count];
@@ -224,9 +224,9 @@ LABEL_53:
       {
         MEMORY[0x19EB02040](&v122, [v42 name]);
         MEMORY[0x19EB01DE0](&v122 + 8, [v42 url]);
-        v128 = [v42 icons];
-        v43 = [(_WKApplicationManifest *)v128 count];
-        v127 = &v128;
+        icons = [v42 icons];
+        v43 = [(_WKApplicationManifest *)icons count];
+        v127 = &icons;
         WTF::Vector<WebCore::ApplicationManifest::Icon,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WebCore::ApplicationManifest::Icon,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WebCore::ApplicationManifest::Icon>(NSArray *)::{lambda(unsigned long)#1}>(&v125, v43, &v127);
         v44 = v122;
         v122 = 0uLL;
@@ -303,10 +303,10 @@ LABEL_53:
 LABEL_26:
   v57 = WTF::Vector<WebCore::ApplicationManifest::Shortcut,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::shrinkCapacity(&v98, v56);
   v58 = API::Object::apiObjectsUnderConstruction(v57);
-  *&v122 = [(_WKApplicationManifest *)v71 _apiObject];
-  v128 = v71;
-  WTF::HashMap<API::Object *,void const*,WTF::DefaultHash<API::Object *>,WTF::HashTraits<API::Object *>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::add<void const*>(v58, &v122, &v128, v116);
-  v59 = API::Object::Object([(_WKApplicationManifest *)v71 _apiObject]);
+  *&v122 = [(_WKApplicationManifest *)selfCopy _apiObject];
+  icons = selfCopy;
+  WTF::HashMap<API::Object *,void const*,WTF::DefaultHash<API::Object *>,WTF::HashTraits<API::Object *>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::add<void const*>(v58, &v122, &icons, v116);
+  v59 = API::Object::Object([(_WKApplicationManifest *)selfCopy _apiObject]);
   *v59 = &unk_1F10FAA30;
   WebCore::ApplicationManifest::ApplicationManifest(v59 + 16, &v74);
   WebCore::ApplicationManifest::~ApplicationManifest(&v74, v60);
@@ -366,7 +366,7 @@ LABEL_26:
     WTF::StringImpl::destroy(v69, v61);
   }
 
-  return v71;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -381,16 +381,16 @@ LABEL_26:
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:-[_WKApplicationManifest rawJSON](self forKey:{"rawJSON"), @"raw_json"}];
-  [a3 encodeInteger:self->_applicationManifest.m_storage.data[24] forKey:@"dir"];
-  [a3 encodeObject:-[_WKApplicationManifest name](self forKey:{"name"), @"name"}];
-  [a3 encodeObject:-[_WKApplicationManifest shortName](self forKey:{"shortName"), @"short_name"}];
-  [a3 encodeObject:-[_WKApplicationManifest applicationDescription](self forKey:{"applicationDescription"), @"description"}];
-  [a3 encodeObject:-[_WKApplicationManifest scope](self forKey:{"scope"), @"scope"}];
-  [a3 encodeBool:-[_WKApplicationManifest isDefaultScope](self forKey:{"isDefaultScope"), @"is_default_scope"}];
-  [a3 encodeInteger:self->_anon_38[49] forKey:@"display"];
+  [coder encodeObject:-[_WKApplicationManifest rawJSON](self forKey:{"rawJSON"), @"raw_json"}];
+  [coder encodeInteger:self->_applicationManifest.m_storage.data[24] forKey:@"dir"];
+  [coder encodeObject:-[_WKApplicationManifest name](self forKey:{"name"), @"name"}];
+  [coder encodeObject:-[_WKApplicationManifest shortName](self forKey:{"shortName"), @"short_name"}];
+  [coder encodeObject:-[_WKApplicationManifest applicationDescription](self forKey:{"applicationDescription"), @"description"}];
+  [coder encodeObject:-[_WKApplicationManifest scope](self forKey:{"scope"), @"scope"}];
+  [coder encodeBool:-[_WKApplicationManifest isDefaultScope](self forKey:{"isDefaultScope"), @"is_default_scope"}];
+  [coder encodeInteger:self->_anon_38[49] forKey:@"display"];
   if (self->_anon_38[51] == 1)
   {
     v5 = self->_anon_38[50];
@@ -401,24 +401,24 @@ LABEL_26:
     v5 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  [a3 encodeInteger:v5 forKey:@"orientation"];
-  [a3 encodeObject:-[_WKApplicationManifest manifestURL](self forKey:{"manifestURL"), @"manifest_url"}];
-  [a3 encodeObject:-[_WKApplicationManifest startURL](self forKey:{"startURL"), @"start_url"}];
-  [a3 encodeObject:-[_WKApplicationManifest manifestId](self forKey:{"manifestId"), @"manifestId"}];
-  [a3 encodeObject:-[_WKApplicationManifest backgroundColor](self forKey:{"backgroundColor"), @"background_color"}];
-  [a3 encodeObject:-[_WKApplicationManifest themeColor](self forKey:{"themeColor"), @"theme_color"}];
-  [a3 encodeObject:-[_WKApplicationManifest categories](self forKey:{"categories"), @"categories"}];
-  [a3 encodeObject:-[_WKApplicationManifest icons](self forKey:{"icons"), @"icons"}];
-  v6 = [(_WKApplicationManifest *)self shortcuts];
+  [coder encodeInteger:v5 forKey:@"orientation"];
+  [coder encodeObject:-[_WKApplicationManifest manifestURL](self forKey:{"manifestURL"), @"manifest_url"}];
+  [coder encodeObject:-[_WKApplicationManifest startURL](self forKey:{"startURL"), @"start_url"}];
+  [coder encodeObject:-[_WKApplicationManifest manifestId](self forKey:{"manifestId"), @"manifestId"}];
+  [coder encodeObject:-[_WKApplicationManifest backgroundColor](self forKey:{"backgroundColor"), @"background_color"}];
+  [coder encodeObject:-[_WKApplicationManifest themeColor](self forKey:{"themeColor"), @"theme_color"}];
+  [coder encodeObject:-[_WKApplicationManifest categories](self forKey:{"categories"), @"categories"}];
+  [coder encodeObject:-[_WKApplicationManifest icons](self forKey:{"icons"), @"icons"}];
+  shortcuts = [(_WKApplicationManifest *)self shortcuts];
 
-  [a3 encodeObject:v6 forKey:@"shortcuts"];
+  [coder encodeObject:shortcuts forKey:@"shortcuts"];
 }
 
-+ (id)applicationManifestFromJSON:(id)a3 manifestURL:(id)a4 documentURL:(id)a5
++ (id)applicationManifestFromJSON:(id)n manifestURL:(id)l documentURL:(id)rL
 {
-  MEMORY[0x19EB02040](&v21, a3);
-  MEMORY[0x19EB01DE0](v20, a4);
-  MEMORY[0x19EB01DE0](v19, a5);
+  MEMORY[0x19EB02040](&v21, n);
+  MEMORY[0x19EB01DE0](v20, l);
+  MEMORY[0x19EB01DE0](v19, rL);
   WebCore::ApplicationManifestParser::parse(v22, &v21, v20, v19, v7);
   v9 = v19[0];
   v19[0] = 0;

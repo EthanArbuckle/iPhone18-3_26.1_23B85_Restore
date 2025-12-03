@@ -1,11 +1,11 @@
 @interface WebIndicateLayer
-- (WebIndicateLayer)initWithWebView:(id)a3;
+- (WebIndicateLayer)initWithWebView:(id)view;
 - (void)layoutSublayers;
 @end
 
 @implementation WebIndicateLayer
 
-- (WebIndicateLayer)initWithWebView:(id)a3
+- (WebIndicateLayer)initWithWebView:(id)view
 {
   v8.receiver = self;
   v8.super_class = WebIndicateLayer;
@@ -13,7 +13,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_webView = a3;
+    v4->_webView = view;
     [(WebIndicateLayer *)v4 setCanDrawConcurrently:0];
     [-[WebView window](v5->_webView "window")];
     [(WebIndicateLayer *)v5 setContentsScale:?];

@@ -1,10 +1,10 @@
 @interface KeychainWrapper
 - (KeychainWrapper)init;
-- (id)dictionaryToSecItemFormat:(id)a3;
-- (id)secItemFormatToDictionary:(id)a3;
-- (void)mySetObject:(id)a3 forKey:(id)a4;
+- (id)dictionaryToSecItemFormat:(id)format;
+- (id)secItemFormatToDictionary:(id)dictionary;
+- (void)mySetObject:(id)object forKey:(id)key;
 - (void)resetKeychainItem;
-- (void)setPersonId:(id)a3;
+- (void)setPersonId:(id)id;
 - (void)writeToKeychain;
 @end
 
@@ -55,24 +55,24 @@ LABEL_8:
   return v2;
 }
 
-- (void)mySetObject:(id)a3 forKey:(id)a4
+- (void)mySetObject:(id)object forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  if (v8)
+  objectCopy = object;
+  keyCopy = key;
+  if (objectCopy)
   {
-    v7 = [(NSMutableDictionary *)self->keychainData objectForKey:v6];
-    if (([v7 isEqual:v8] & 1) == 0)
+    v7 = [(NSMutableDictionary *)self->keychainData objectForKey:keyCopy];
+    if (([v7 isEqual:objectCopy] & 1) == 0)
     {
-      [(NSMutableDictionary *)self->keychainData setObject:v8 forKey:v6];
+      [(NSMutableDictionary *)self->keychainData setObject:objectCopy forKey:keyCopy];
       [(KeychainWrapper *)self writeToKeychain];
     }
   }
 }
 
-- (void)setPersonId:(id)a3
+- (void)setPersonId:(id)id
 {
-  if (a3)
+  if (id)
   {
 
     [KeychainWrapper mySetObject:"mySetObject:forKey:" forKey:?];
@@ -116,14 +116,14 @@ LABEL_8:
   [(NSMutableDictionary *)self->keychainData setObject:kCFBooleanTrue forKey:kSecAttrIsInvisible];
 }
 
-- (id)dictionaryToSecItemFormat:(id)a3
+- (id)dictionaryToSecItemFormat:(id)format
 {
-  v3 = a3;
-  v4 = [NSMutableDictionary dictionaryWithDictionary:v3];
+  formatCopy = format;
+  v4 = [NSMutableDictionary dictionaryWithDictionary:formatCopy];
   v5 = [NSData dataWithBytes:"com.apple.podcasts.accountId" length:28];
   [v4 setObject:v5 forKey:kSecAttrGeneric];
   [v4 setObject:kSecClassGenericPassword forKey:kSecClass];
-  v6 = [v3 objectForKey:kSecValueData];
+  v6 = [formatCopy objectForKey:kSecValueData];
 
   v7 = &stru_1004F3018;
   if (v6)
@@ -140,9 +140,9 @@ LABEL_8:
   return v4;
 }
 
-- (id)secItemFormatToDictionary:(id)a3
+- (id)secItemFormatToDictionary:(id)dictionary
 {
-  v3 = [NSMutableDictionary dictionaryWithDictionary:a3];
+  v3 = [NSMutableDictionary dictionaryWithDictionary:dictionary];
   [v3 setObject:kCFBooleanTrue forKey:kSecReturnData];
   [v3 setObject:kSecClassGenericPassword forKey:kSecClass];
   result = 0;
@@ -159,8 +159,8 @@ LABEL_8:
     [v3 removeObjectForKey:kSecReturnData];
     v4 = [NSString alloc];
     v5 = result;
-    v6 = [result bytes];
-    v7 = [v4 initWithBytes:v6 length:objc_msgSend(result encoding:{"length"), 4}];
+    bytes = [result bytes];
+    v7 = [v4 initWithBytes:bytes length:objc_msgSend(result encoding:{"length"), 4}];
 
     [v3 setObject:v7 forKey:kSecValueData];
   }

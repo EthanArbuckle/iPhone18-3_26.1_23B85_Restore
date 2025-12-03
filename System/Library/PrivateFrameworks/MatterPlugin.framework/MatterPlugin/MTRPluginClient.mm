@@ -1,52 +1,52 @@
 @interface MTRPluginClient
 - (BOOL)isInRemoteMode;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (MTRPluginClient)initWithXPCConnection:(id)a3 sessionID:(id)a4 queue:(id)a5;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (MTRPluginClient)initWithXPCConnection:(id)connection sessionID:(id)d queue:(id)queue;
 - (NSString)description;
 - (id)_currentTarget;
-- (id)forwardingTargetForSelector:(SEL)a3;
+- (id)forwardingTargetForSelector:(SEL)selector;
 - (id)xpcClientConnectionQueue;
 - (void)dealloc;
-- (void)deviceController:(id)a3 deleteNodeID:(id)a4;
-- (void)deviceController:(id)a3 getNodesWithStoredDataWithReply:(id)a4;
-- (void)deviceController:(id)a3 nodeID:(id)a4 downloadLogOfType:(int64_t)a5 timeout:(double)a6 completion:(id)a7;
-- (void)deviceController:(id)a3 nodeID:(id)a4 getDeviceCachePrimedWithReply:(id)a5;
-- (void)deviceController:(id)a3 nodeID:(id)a4 getEstimatedStartTimeWithReply:(id)a5;
-- (void)deviceController:(id)a3 nodeID:(id)a4 getEstimatedSubscriptionLatencyWithReply:(id)a5;
-- (void)deviceController:(id)a3 nodeID:(id)a4 getStateWithReply:(id)a5;
-- (void)deviceController:(id)a3 nodeID:(id)a4 invokeCommandWithEndpointID:(id)a5 clusterID:(id)a6 commandID:(id)a7 commandFields:(id)a8 expectedValues:(id)a9 expectedValueInterval:(id)a10 timedInvokeTimeout:(id)a11 serverSideProcessingTimeout:(id)a12 completion:(id)a13;
-- (void)deviceController:(id)a3 nodeID:(id)a4 invokeCommands:(id)a5 completion:(id)a6;
-- (void)deviceController:(id)a3 nodeID:(id)a4 readAttributePaths:(id)a5 withReply:(id)a6;
-- (void)deviceController:(id)a3 nodeID:(id)a4 readAttributeWithEndpointID:(id)a5 clusterID:(id)a6 attributeID:(id)a7 params:(id)a8 withReply:(id)a9;
-- (void)deviceController:(id)a3 nodeID:(id)a4 writeAttributeWithEndpointID:(id)a5 clusterID:(id)a6 attributeID:(id)a7 value:(id)a8 expectedValueInterval:(id)a9 timedWriteTimeout:(id)a10;
-- (void)deviceController:(id)a3 updateControllerConfiguration:(id)a4;
+- (void)deviceController:(id)controller deleteNodeID:(id)d;
+- (void)deviceController:(id)controller getNodesWithStoredDataWithReply:(id)reply;
+- (void)deviceController:(id)controller nodeID:(id)d downloadLogOfType:(int64_t)type timeout:(double)timeout completion:(id)completion;
+- (void)deviceController:(id)controller nodeID:(id)d getDeviceCachePrimedWithReply:(id)reply;
+- (void)deviceController:(id)controller nodeID:(id)d getEstimatedStartTimeWithReply:(id)reply;
+- (void)deviceController:(id)controller nodeID:(id)d getEstimatedSubscriptionLatencyWithReply:(id)reply;
+- (void)deviceController:(id)controller nodeID:(id)d getStateWithReply:(id)reply;
+- (void)deviceController:(id)controller nodeID:(id)d invokeCommandWithEndpointID:(id)iD clusterID:(id)clusterID commandID:(id)commandID commandFields:(id)fields expectedValues:(id)values expectedValueInterval:(id)self0 timedInvokeTimeout:(id)self1 serverSideProcessingTimeout:(id)self2 completion:(id)self3;
+- (void)deviceController:(id)controller nodeID:(id)d invokeCommands:(id)commands completion:(id)completion;
+- (void)deviceController:(id)controller nodeID:(id)d readAttributePaths:(id)paths withReply:(id)reply;
+- (void)deviceController:(id)controller nodeID:(id)d readAttributeWithEndpointID:(id)iD clusterID:(id)clusterID attributeID:(id)attributeID params:(id)params withReply:(id)reply;
+- (void)deviceController:(id)controller nodeID:(id)d writeAttributeWithEndpointID:(id)iD clusterID:(id)clusterID attributeID:(id)attributeID value:(id)value expectedValueInterval:(id)interval timedWriteTimeout:(id)self0;
+- (void)deviceController:(id)controller updateControllerConfiguration:(id)configuration;
 - (void)invalidate;
-- (void)runningModeChanged:(int64_t)a3;
+- (void)runningModeChanged:(int64_t)changed;
 @end
 
 @implementation MTRPluginClient
 
-- (MTRPluginClient)initWithXPCConnection:(id)a3 sessionID:(id)a4 queue:(id)a5
+- (MTRPluginClient)initWithXPCConnection:(id)connection sessionID:(id)d queue:(id)queue
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  connectionCopy = connection;
+  dCopy = d;
+  queueCopy = queue;
   v22.receiver = self;
   v22.super_class = MTRPluginClient;
   v11 = [(MTRPluginClient *)&v22 init];
   v12 = v11;
   if (v11)
   {
-    [(MTRPluginClient *)v11 setWorkQueue:v10];
-    [(MTRPluginClient *)v12 setSessionID:v9];
-    v13 = [MEMORY[0x277CBEB38] dictionary];
-    [(MTRPluginClient *)v12 setContext:v13];
+    [(MTRPluginClient *)v11 setWorkQueue:queueCopy];
+    [(MTRPluginClient *)v12 setSessionID:dCopy];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(MTRPluginClient *)v12 setContext:dictionary];
 
-    [(MTRPluginClient *)v12 setXpcConnection:v8];
-    [(MTRPluginClient *)v12 setClientType:MTRGetClientTypeForXPCConnection(v8)];
-    v14 = [MEMORY[0x277CBEB38] dictionary];
-    [(MTRPluginClient *)v12 setDelegateProxies:v14];
+    [(MTRPluginClient *)v12 setXpcConnection:connectionCopy];
+    [(MTRPluginClient *)v12 setClientType:MTRGetClientTypeForXPCConnection(connectionCopy)];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    [(MTRPluginClient *)v12 setDelegateProxies:dictionary2];
 
     v15 = [[MTRPluginClientXPCProxy alloc] initWithClient:v12];
     [(MTRPluginClient *)v12 setClientProxy:v15];
@@ -54,7 +54,7 @@
     v16 = [[MTRPluginLocalClient alloc] initWithPluginClient:v12];
     [(MTRPluginClient *)v12 setLocalClient:v16];
 
-    v17 = [[MTRPluginRemoteClient alloc] initWithClient:v12 queue:v10];
+    v17 = [[MTRPluginRemoteClient alloc] initWithClient:v12 queue:queueCopy];
     [(MTRPluginClient *)v12 setRemoteClient:v17];
 
     v18 = matterPluginLog_default;
@@ -63,9 +63,9 @@
       *buf = 138412802;
       v24 = v12;
       v25 = 2112;
-      v26 = v8;
+      v26 = connectionCopy;
       v27 = 2112;
-      v28 = v10;
+      v28 = queueCopy;
       _os_log_impl(&dword_25830F000, v18, OS_LOG_TYPE_DEFAULT, "%@ initialized with xpcConnection %@ queue: %@", buf, 0x20u);
     }
 
@@ -79,8 +79,8 @@
 - (void)dealloc
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4 = matterPluginLog_default;
   if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
@@ -91,7 +91,7 @@
     *buf = 138412546;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25830F000, v5, OS_LOG_TYPE_DEFAULT, "%@ dealloc: %p", buf, 0x16u);
   }
 
@@ -107,23 +107,23 @@
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [(MTRPluginClient *)self xpcConnection];
-  v8 = [(MTRPluginClient *)self xpcConnection];
-  v9 = [v8 processIdentifier];
-  v10 = [(MTRPluginClient *)self clientType];
-  if (v10 >= 0xA)
+  xpcConnection = [(MTRPluginClient *)self xpcConnection];
+  xpcConnection2 = [(MTRPluginClient *)self xpcConnection];
+  processIdentifier = [xpcConnection2 processIdentifier];
+  clientType = [(MTRPluginClient *)self clientType];
+  if (clientType >= 0xA)
   {
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", v10];
+    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", clientType];
   }
 
   else
   {
-    v11 = off_279894368[v10];
+    v11 = off_279894368[clientType];
   }
 
-  v12 = [(MTRPluginClient *)self localClient];
-  v13 = [v12 registeredNodeIDs];
-  v14 = [v4 stringWithFormat:@"<%@: %p xpc %p pid: %d, clientType: %@ registeredNodeIDs: %@>", v6, self, v7, v9, v11, v13];
+  localClient = [(MTRPluginClient *)self localClient];
+  registeredNodeIDs = [localClient registeredNodeIDs];
+  v14 = [v4 stringWithFormat:@"<%@: %p xpc %p pid: %d, clientType: %@ registeredNodeIDs: %@>", v6, self, xpcConnection, processIdentifier, v11, registeredNodeIDs];
 
   objc_autoreleasePoolPop(v3);
 
@@ -137,27 +137,27 @@
   if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25830F000, v3, OS_LOG_TYPE_DEFAULT, "%@ invalidate", &v10, 0xCu);
   }
 
-  v4 = [(MTRPluginClient *)self localClient];
-  [v4 invalidate];
+  localClient = [(MTRPluginClient *)self localClient];
+  [localClient invalidate];
 
   [(MTRPluginClient *)self setLocalClient:0];
-  v5 = [(MTRPluginClient *)self remoteClient];
-  [v5 invalidate];
+  remoteClient = [(MTRPluginClient *)self remoteClient];
+  [remoteClient invalidate];
 
   [(MTRPluginClient *)self setRemoteClient:0];
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  [(MTRPluginClient *)self setContext:v6];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(MTRPluginClient *)self setContext:dictionary];
 
-  v7 = [(MTRPluginClient *)self updateControllerConfigurationTimer];
+  updateControllerConfigurationTimer = [(MTRPluginClient *)self updateControllerConfigurationTimer];
 
-  if (v7)
+  if (updateControllerConfigurationTimer)
   {
-    v8 = [(MTRPluginClient *)self updateControllerConfigurationTimer];
-    dispatch_source_cancel(v8);
+    updateControllerConfigurationTimer2 = [(MTRPluginClient *)self updateControllerConfigurationTimer];
+    dispatch_source_cancel(updateControllerConfigurationTimer2);
 
     [(MTRPluginClient *)self setUpdateControllerConfigurationTimer:0];
   }
@@ -174,7 +174,7 @@
     if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = self;
+      selfCopy = self;
       _os_log_impl(&dword_25830F000, v3, OS_LOG_TYPE_DEFAULT, "%@ MatterPlugin is overridden to be in remote mode, forcing YES for isInRemoteMode", &v9, 0xCu);
     }
 
@@ -184,8 +184,8 @@
   else
   {
     v5 = +[MTRPluginDeviceControllerRegistry sharedInstance];
-    v6 = [(MTRPluginClient *)self homeUUID];
-    v7 = [v5 _runningModeForUUID:v6];
+    homeUUID = [(MTRPluginClient *)self homeUUID];
+    v7 = [v5 _runningModeForUUID:homeUUID];
 
     result = (v7 == 1) & ~MTRIsPotentiallyPairing();
   }
@@ -212,113 +212,113 @@
 
 - (id)xpcClientConnectionQueue
 {
-  v2 = [(MTRPluginClient *)self xpcConnection];
-  v3 = [v2 _queue];
+  xpcConnection = [(MTRPluginClient *)self xpcConnection];
+  _queue = [xpcConnection _queue];
 
-  return v3;
+  return _queue;
 }
 
-- (void)deviceController:(id)a3 deleteNodeID:(id)a4
+- (void)deviceController:(id)controller deleteNodeID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTRPluginClient *)self controllerUUID];
+  controllerCopy = controller;
+  dCopy = d;
+  controllerUUID = [(MTRPluginClient *)self controllerUUID];
 
-  if (!v8)
+  if (!controllerUUID)
   {
-    [(MTRPluginClient *)self setControllerUUID:v6];
+    [(MTRPluginClient *)self setControllerUUID:controllerCopy];
   }
 
   v9 = matterPluginLog_default;
   if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412802;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v6;
+    v15 = controllerCopy;
     v16 = 2112;
-    v17 = v7;
+    v17 = dCopy;
     _os_log_impl(&dword_25830F000, v9, OS_LOG_TYPE_DEFAULT, "%@ deviceController %@ deleteNodeID %@", &v12, 0x20u);
   }
 
-  v10 = [(MTRPluginClient *)self _localTarget];
-  [v10 deviceController:v6 deleteNodeID:v7];
+  _localTarget = [(MTRPluginClient *)self _localTarget];
+  [_localTarget deviceController:controllerCopy deleteNodeID:dCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deviceController:(id)a3 getNodesWithStoredDataWithReply:(id)a4
+- (void)deviceController:(id)controller getNodesWithStoredDataWithReply:(id)reply
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTRPluginClient *)self controllerUUID];
+  controllerCopy = controller;
+  replyCopy = reply;
+  controllerUUID = [(MTRPluginClient *)self controllerUUID];
 
-  if (!v8)
+  if (!controllerUUID)
   {
-    [(MTRPluginClient *)self setControllerUUID:v6];
+    [(MTRPluginClient *)self setControllerUUID:controllerCopy];
   }
 
   v9 = matterPluginLog_default;
   if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v6;
+    v15 = controllerCopy;
     _os_log_impl(&dword_25830F000, v9, OS_LOG_TYPE_DEFAULT, "%@ deviceController %@ getNodesWithStoredDataWithReply", &v12, 0x16u);
   }
 
-  v10 = [(MTRPluginClient *)self _localTarget];
-  [v10 deviceController:v6 getNodesWithStoredDataWithReply:v7];
+  _localTarget = [(MTRPluginClient *)self _localTarget];
+  [_localTarget deviceController:controllerCopy getNodesWithStoredDataWithReply:replyCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deviceController:(id)a3 updateControllerConfiguration:(id)a4
+- (void)deviceController:(id)controller updateControllerConfiguration:(id)configuration
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTRPluginClient *)self controllerUUID];
+  controllerCopy = controller;
+  configurationCopy = configuration;
+  controllerUUID = [(MTRPluginClient *)self controllerUUID];
 
-  if (!v8)
+  if (!controllerUUID)
   {
-    [(MTRPluginClient *)self setControllerUUID:v6];
+    [(MTRPluginClient *)self setControllerUUID:controllerCopy];
   }
 
-  [(MTRPluginClient *)self setControllerConfiguration:v7];
+  [(MTRPluginClient *)self setControllerConfiguration:configurationCopy];
   v9 = matterPluginLog_default;
   if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [(MTRPluginClient *)self controllerConfiguration];
+    controllerConfiguration = [(MTRPluginClient *)self controllerConfiguration];
     *buf = 138412802;
-    v25 = self;
+    selfCopy = self;
     v26 = 2112;
-    v27 = v6;
+    v27 = controllerCopy;
     v28 = 2112;
-    v29 = v11;
+    v29 = controllerConfiguration;
     _os_log_impl(&dword_25830F000, v10, OS_LOG_TYPE_DEFAULT, "%@ deviceController %@ updateControllerConfiguration %@", buf, 0x20u);
   }
 
-  v12 = [(MTRPluginClient *)self _localTarget];
-  v13 = [(MTRPluginClient *)self controllerConfiguration];
-  [v12 deviceController:v6 updateControllerConfiguration:v13];
+  _localTarget = [(MTRPluginClient *)self _localTarget];
+  controllerConfiguration2 = [(MTRPluginClient *)self controllerConfiguration];
+  [_localTarget deviceController:controllerCopy updateControllerConfiguration:controllerConfiguration2];
 
   if ([(MTRPluginClient *)self isInRemoteMode])
   {
-    v14 = [(MTRPluginClient *)self updateControllerConfigurationTimer];
-    v15 = [(MTRPluginClient *)self xpcClientConnectionQueue];
+    updateControllerConfigurationTimer = [(MTRPluginClient *)self updateControllerConfigurationTimer];
+    xpcClientConnectionQueue = [(MTRPluginClient *)self xpcClientConnectionQueue];
     v18 = MEMORY[0x277D85DD0];
     v19 = 3221225472;
     v20 = __66__MTRPluginClient_deviceController_updateControllerConfiguration___block_invoke;
     v21 = &unk_279893AC8;
-    v22 = self;
-    v23 = v6;
-    v16 = MTRBufferedExecutionBlock(v14, v15, &v18, 0.5);
-    [(MTRPluginClient *)self setUpdateControllerConfigurationTimer:v16, v18, v19, v20, v21, v22];
+    selfCopy2 = self;
+    v23 = controllerCopy;
+    v16 = MTRBufferedExecutionBlock(updateControllerConfigurationTimer, xpcClientConnectionQueue, &v18, 0.5);
+    [(MTRPluginClient *)self setUpdateControllerConfigurationTimer:v16, v18, v19, v20, v21, selfCopy2];
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -351,25 +351,25 @@ void __66__MTRPluginClient_deviceController_updateControllerConfiguration___bloc
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deviceController:(id)a3 nodeID:(id)a4 readAttributeWithEndpointID:(id)a5 clusterID:(id)a6 attributeID:(id)a7 params:(id)a8 withReply:(id)a9
+- (void)deviceController:(id)controller nodeID:(id)d readAttributeWithEndpointID:(id)iD clusterID:(id)clusterID attributeID:(id)attributeID params:(id)params withReply:(id)reply
 {
   v34 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = [(MTRPluginClient *)self controllerUUID];
+  controllerCopy = controller;
+  dCopy = d;
+  iDCopy = iD;
+  clusterIDCopy = clusterID;
+  attributeIDCopy = attributeID;
+  paramsCopy = params;
+  replyCopy = reply;
+  controllerUUID = [(MTRPluginClient *)self controllerUUID];
 
-  if (!v22)
+  if (!controllerUUID)
   {
-    [(MTRPluginClient *)self setControllerUUID:v15];
+    [(MTRPluginClient *)self setControllerUUID:controllerCopy];
   }
 
-  v23 = [(MTRPluginClient *)self xpcConnection];
-  v24 = [MTRPluginThirdPartyExclusions attributeReadDisallowedOverXPCWithEndpointID:v17 clusterID:v18 attribute:v19 isPrivatelyEntitled:[MTRPluginThirdPartyExclusions connectionIsPrivatelyEntitled:v23]];
+  xpcConnection = [(MTRPluginClient *)self xpcConnection];
+  v24 = [MTRPluginThirdPartyExclusions attributeReadDisallowedOverXPCWithEndpointID:iDCopy clusterID:clusterIDCopy attribute:attributeIDCopy isPrivatelyEntitled:[MTRPluginThirdPartyExclusions connectionIsPrivatelyEntitled:xpcConnection]];
 
   if (v24)
   {
@@ -377,47 +377,47 @@ void __66__MTRPluginClient_deviceController_updateControllerConfiguration___bloc
     if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v29 = v17;
+      v29 = iDCopy;
       v30 = 2112;
-      v31 = v18;
+      v31 = clusterIDCopy;
       v32 = 2112;
-      v33 = v19;
+      v33 = attributeIDCopy;
       _os_log_impl(&dword_25830F000, v25, OS_LOG_TYPE_DEFAULT, "ERROR: Attribute read disallowed over XPC: EP %@, Cluster %@, Attribute %@", buf, 0x20u);
     }
 
-    v21[2](v21, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
   {
-    v26 = [(MTRPluginClient *)self _localTarget];
-    [v26 deviceController:v15 nodeID:v16 readAttributeWithEndpointID:v17 clusterID:v18 attributeID:v19 params:v20 withReply:v21];
+    _localTarget = [(MTRPluginClient *)self _localTarget];
+    [_localTarget deviceController:controllerCopy nodeID:dCopy readAttributeWithEndpointID:iDCopy clusterID:clusterIDCopy attributeID:attributeIDCopy params:paramsCopy withReply:replyCopy];
   }
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deviceController:(id)a3 nodeID:(id)a4 readAttributePaths:(id)a5 withReply:(id)a6
+- (void)deviceController:(id)controller nodeID:(id)d readAttributePaths:(id)paths withReply:(id)reply
 {
   v50 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v35 = a4;
-  v11 = a5;
-  v34 = a6;
-  v38 = self;
-  v12 = [(MTRPluginClient *)self controllerUUID];
+  controllerCopy = controller;
+  dCopy = d;
+  pathsCopy = paths;
+  replyCopy = reply;
+  selfCopy = self;
+  controllerUUID = [(MTRPluginClient *)self controllerUUID];
 
-  if (!v12)
+  if (!controllerUUID)
   {
-    [(MTRPluginClient *)self setControllerUUID:v10];
+    [(MTRPluginClient *)self setControllerUUID:controllerCopy];
   }
 
-  v36 = v10;
+  v36 = controllerCopy;
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v11;
+  obj = pathsCopy;
   v13 = [obj countByEnumeratingWithState:&v39 objects:v49 count:16];
   if (v13)
   {
@@ -433,11 +433,11 @@ void __66__MTRPluginClient_deviceController_updateControllerConfiguration___bloc
         }
 
         v17 = *(*(&v39 + 1) + 8 * i);
-        v18 = [v17 endpoint];
-        v19 = [v17 cluster];
-        v20 = [v17 attribute];
-        v21 = [(MTRPluginClient *)v38 xpcConnection];
-        v22 = [MTRPluginThirdPartyExclusions attributeReadDisallowedOverXPCWithEndpointID:v18 clusterID:v19 attribute:v20 isPrivatelyEntitled:[MTRPluginThirdPartyExclusions connectionIsPrivatelyEntitled:v21]];
+        endpoint = [v17 endpoint];
+        cluster = [v17 cluster];
+        attribute = [v17 attribute];
+        xpcConnection = [(MTRPluginClient *)selfCopy xpcConnection];
+        v22 = [MTRPluginThirdPartyExclusions attributeReadDisallowedOverXPCWithEndpointID:endpoint clusterID:cluster attribute:attribute isPrivatelyEntitled:[MTRPluginThirdPartyExclusions connectionIsPrivatelyEntitled:xpcConnection]];
 
         if (v22)
         {
@@ -445,24 +445,24 @@ void __66__MTRPluginClient_deviceController_updateControllerConfiguration___bloc
           if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
           {
             v29 = v28;
-            v30 = [v17 endpoint];
-            v31 = [v17 cluster];
-            v32 = [v17 attribute];
+            endpoint2 = [v17 endpoint];
+            cluster2 = [v17 cluster];
+            attribute2 = [v17 attribute];
             *buf = 138412802;
-            v44 = v30;
+            v44 = endpoint2;
             v45 = 2112;
-            v46 = v31;
+            v46 = cluster2;
             v47 = 2112;
-            v48 = v32;
+            v48 = attribute2;
             _os_log_impl(&dword_25830F000, v29, OS_LOG_TYPE_DEFAULT, "ERROR: Attribute read disallowed over XPC: EP %@, Cluster %@, Attribute %@", buf, 0x20u);
           }
 
-          v27 = v34;
-          (*(v34 + 2))(v34, 0);
+          v27 = replyCopy;
+          (*(replyCopy + 2))(replyCopy, 0);
           v25 = v36;
           v23 = obj;
-          v24 = obj;
-          v26 = v35;
+          _localTarget = obj;
+          v26 = dCopy;
           goto LABEL_15;
         }
       }
@@ -479,101 +479,101 @@ void __66__MTRPluginClient_deviceController_updateControllerConfiguration___bloc
 
   v23 = obj;
 
-  v24 = [(MTRPluginClient *)v38 _localTarget];
-  v26 = v35;
+  _localTarget = [(MTRPluginClient *)selfCopy _localTarget];
+  v26 = dCopy;
   v25 = v36;
-  v27 = v34;
-  [v24 deviceController:v36 nodeID:v35 readAttributePaths:obj withReply:v34];
+  v27 = replyCopy;
+  [_localTarget deviceController:v36 nodeID:dCopy readAttributePaths:obj withReply:replyCopy];
 LABEL_15:
 
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deviceController:(id)a3 nodeID:(id)a4 getStateWithReply:(id)a5
+- (void)deviceController:(id)controller nodeID:(id)d getStateWithReply:(id)reply
 {
-  v12 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [(MTRPluginClient *)self controllerUUID];
+  controllerCopy = controller;
+  replyCopy = reply;
+  dCopy = d;
+  controllerUUID = [(MTRPluginClient *)self controllerUUID];
 
-  if (!v10)
+  if (!controllerUUID)
   {
-    [(MTRPluginClient *)self setControllerUUID:v12];
+    [(MTRPluginClient *)self setControllerUUID:controllerCopy];
   }
 
-  v11 = [(MTRPluginClient *)self _currentTarget];
-  [v11 deviceController:v12 nodeID:v9 getStateWithReply:v8];
+  _currentTarget = [(MTRPluginClient *)self _currentTarget];
+  [_currentTarget deviceController:controllerCopy nodeID:dCopy getStateWithReply:replyCopy];
 }
 
-- (void)deviceController:(id)a3 nodeID:(id)a4 getDeviceCachePrimedWithReply:(id)a5
+- (void)deviceController:(id)controller nodeID:(id)d getDeviceCachePrimedWithReply:(id)reply
 {
-  v12 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [(MTRPluginClient *)self controllerUUID];
+  controllerCopy = controller;
+  replyCopy = reply;
+  dCopy = d;
+  controllerUUID = [(MTRPluginClient *)self controllerUUID];
 
-  if (!v10)
+  if (!controllerUUID)
   {
-    [(MTRPluginClient *)self setControllerUUID:v12];
+    [(MTRPluginClient *)self setControllerUUID:controllerCopy];
   }
 
-  v11 = [(MTRPluginClient *)self _currentTarget];
-  [v11 deviceController:v12 nodeID:v9 getDeviceCachePrimedWithReply:v8];
+  _currentTarget = [(MTRPluginClient *)self _currentTarget];
+  [_currentTarget deviceController:controllerCopy nodeID:dCopy getDeviceCachePrimedWithReply:replyCopy];
 }
 
-- (void)deviceController:(id)a3 nodeID:(id)a4 getEstimatedStartTimeWithReply:(id)a5
+- (void)deviceController:(id)controller nodeID:(id)d getEstimatedStartTimeWithReply:(id)reply
 {
-  v12 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [(MTRPluginClient *)self controllerUUID];
+  controllerCopy = controller;
+  replyCopy = reply;
+  dCopy = d;
+  controllerUUID = [(MTRPluginClient *)self controllerUUID];
 
-  if (!v10)
+  if (!controllerUUID)
   {
-    [(MTRPluginClient *)self setControllerUUID:v12];
+    [(MTRPluginClient *)self setControllerUUID:controllerCopy];
   }
 
-  v11 = [(MTRPluginClient *)self _currentTarget];
-  [v11 deviceController:v12 nodeID:v9 getEstimatedStartTimeWithReply:v8];
+  _currentTarget = [(MTRPluginClient *)self _currentTarget];
+  [_currentTarget deviceController:controllerCopy nodeID:dCopy getEstimatedStartTimeWithReply:replyCopy];
 }
 
-- (void)deviceController:(id)a3 nodeID:(id)a4 getEstimatedSubscriptionLatencyWithReply:(id)a5
+- (void)deviceController:(id)controller nodeID:(id)d getEstimatedSubscriptionLatencyWithReply:(id)reply
 {
-  v12 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [(MTRPluginClient *)self controllerUUID];
+  controllerCopy = controller;
+  replyCopy = reply;
+  dCopy = d;
+  controllerUUID = [(MTRPluginClient *)self controllerUUID];
 
-  if (!v10)
+  if (!controllerUUID)
   {
-    [(MTRPluginClient *)self setControllerUUID:v12];
+    [(MTRPluginClient *)self setControllerUUID:controllerCopy];
   }
 
-  v11 = [(MTRPluginClient *)self _currentTarget];
-  [v11 deviceController:v12 nodeID:v9 getEstimatedSubscriptionLatencyWithReply:v8];
+  _currentTarget = [(MTRPluginClient *)self _currentTarget];
+  [_currentTarget deviceController:controllerCopy nodeID:dCopy getEstimatedSubscriptionLatencyWithReply:replyCopy];
 }
 
-- (void)deviceController:(id)a3 nodeID:(id)a4 downloadLogOfType:(int64_t)a5 timeout:(double)a6 completion:(id)a7
+- (void)deviceController:(id)controller nodeID:(id)d downloadLogOfType:(int64_t)type timeout:(double)timeout completion:(id)completion
 {
-  v12 = a3;
-  v13 = a7;
-  v14 = a4;
-  v15 = [(MTRPluginClient *)self controllerUUID];
+  controllerCopy = controller;
+  completionCopy = completion;
+  dCopy = d;
+  controllerUUID = [(MTRPluginClient *)self controllerUUID];
 
-  if (!v15)
+  if (!controllerUUID)
   {
-    [(MTRPluginClient *)self setControllerUUID:v12];
+    [(MTRPluginClient *)self setControllerUUID:controllerCopy];
   }
 
-  v16 = [(MTRPluginClient *)self _currentTarget];
+  _currentTarget = [(MTRPluginClient *)self _currentTarget];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __80__MTRPluginClient_deviceController_nodeID_downloadLogOfType_timeout_completion___block_invoke;
   v18[3] = &unk_279893CF8;
   v18[4] = self;
-  v19 = v13;
-  v17 = v13;
-  [v16 deviceController:v12 nodeID:v14 downloadLogOfType:a5 timeout:v18 completion:a6];
+  v19 = completionCopy;
+  v17 = completionCopy;
+  [_currentTarget deviceController:controllerCopy nodeID:dCopy downloadLogOfType:type timeout:v18 completion:timeout];
 }
 
 void __80__MTRPluginClient_deviceController_nodeID_downloadLogOfType_timeout_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -706,16 +706,16 @@ void __80__MTRPluginClient_deviceController_nodeID_downloadLogOfType_timeout_com
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runningModeChanged:(int64_t)a3
+- (void)runningModeChanged:(int64_t)changed
 {
-  v5 = [(MTRPluginClient *)self xpcClientConnectionQueue];
+  xpcClientConnectionQueue = [(MTRPluginClient *)self xpcClientConnectionQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__MTRPluginClient_runningModeChanged___block_invoke;
   v6[3] = &unk_279893DC8;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = changed;
+  dispatch_async(xpcClientConnectionQueue, v6);
 }
 
 void __38__MTRPluginClient_runningModeChanged___block_invoke(uint64_t a1)
@@ -789,184 +789,184 @@ void __38__MTRPluginClient_runningModeChanged___block_invoke(uint64_t a1)
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  if (MTRPluginCheckProtocolContainsSelector(&unk_28697F080, a3))
+  if (MTRPluginCheckProtocolContainsSelector(&unk_28697F080, selector))
   {
     return 1;
   }
 
   v6.receiver = self;
   v6.super_class = MTRPluginClient;
-  return [(MTRPluginClient *)&v6 respondsToSelector:a3];
+  return [(MTRPluginClient *)&v6 respondsToSelector:selector];
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   v20 = *MEMORY[0x277D85DE8];
   v13.receiver = self;
   v13.super_class = MTRPluginClient;
   if ([(MTRPluginClient *)&v13 respondsToSelector:?])
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  else if (MTRPluginCheckProtocolContainsSelector(&unk_28697F080, a3))
+  else if (MTRPluginCheckProtocolContainsSelector(&unk_28697F080, selector))
   {
     v6 = matterPluginLog_default;
     if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
     {
       v7 = v6;
-      v8 = NSStringFromSelector(a3);
-      v9 = [(MTRPluginClient *)self localClient];
+      v8 = NSStringFromSelector(selector);
+      localClient = [(MTRPluginClient *)self localClient];
       *buf = 138412802;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2112;
       v17 = v8;
       v18 = 2112;
-      v19 = v9;
+      v19 = localClient;
       _os_log_impl(&dword_25830F000, v7, OS_LOG_TYPE_DEFAULT, "%@ forwardingTargetForSelector %@ to: %@", buf, 0x20u);
     }
 
-    v5 = [(MTRPluginClient *)self _currentTarget];
+    selfCopy = [(MTRPluginClient *)self _currentTarget];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = MTRPluginClient;
-    v5 = [(MTRPluginClient *)&v12 forwardingTargetForSelector:a3];
+    selfCopy = [(MTRPluginClient *)&v12 forwardingTargetForSelector:selector];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)deviceController:(id)a3 nodeID:(id)a4 writeAttributeWithEndpointID:(id)a5 clusterID:(id)a6 attributeID:(id)a7 value:(id)a8 expectedValueInterval:(id)a9 timedWriteTimeout:(id)a10
+- (void)deviceController:(id)controller nodeID:(id)d writeAttributeWithEndpointID:(id)iD clusterID:(id)clusterID attributeID:(id)attributeID value:(id)value expectedValueInterval:(id)interval timedWriteTimeout:(id)self0
 {
   v37 = *MEMORY[0x277D85DE8];
-  v30 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = [(MTRPluginClient *)self controllerUUID];
+  controllerCopy = controller;
+  dCopy = d;
+  iDCopy = iD;
+  clusterIDCopy = clusterID;
+  attributeIDCopy = attributeID;
+  valueCopy = value;
+  intervalCopy = interval;
+  timeoutCopy = timeout;
+  controllerUUID = [(MTRPluginClient *)self controllerUUID];
 
-  if (!v23)
+  if (!controllerUUID)
   {
-    [(MTRPluginClient *)self setControllerUUID:v30];
+    [(MTRPluginClient *)self setControllerUUID:controllerCopy];
   }
 
-  v24 = [(MTRPluginClient *)self xpcConnection];
-  v25 = [MTRPluginThirdPartyExclusions attributeWriteDisallowedOverXPCWithEndpointID:v17 clusterID:v18 attribute:v19 isPrivatelyEntitled:[MTRPluginThirdPartyExclusions connectionIsPrivatelyEntitled:v24]];
+  xpcConnection = [(MTRPluginClient *)self xpcConnection];
+  v25 = [MTRPluginThirdPartyExclusions attributeWriteDisallowedOverXPCWithEndpointID:iDCopy clusterID:clusterIDCopy attribute:attributeIDCopy isPrivatelyEntitled:[MTRPluginThirdPartyExclusions connectionIsPrivatelyEntitled:xpcConnection]];
 
   if (v25)
   {
     v26 = matterPluginLog_default;
-    v27 = v30;
+    v27 = controllerCopy;
     if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v32 = v17;
+      v32 = iDCopy;
       v33 = 2112;
-      v34 = v18;
+      v34 = clusterIDCopy;
       v35 = 2112;
-      v36 = v19;
+      v36 = attributeIDCopy;
       _os_log_impl(&dword_25830F000, v26, OS_LOG_TYPE_DEFAULT, "ERROR: Attribute write disallowed over XPC: EP %@, Cluster %@, Attribute %@", buf, 0x20u);
     }
   }
 
   else
   {
-    v28 = [(MTRPluginClient *)self _currentTarget];
-    v27 = v30;
-    [v28 deviceController:v30 nodeID:v16 writeAttributeWithEndpointID:v17 clusterID:v18 attributeID:v19 value:v20 expectedValueInterval:v21 timedWriteTimeout:v22];
+    _currentTarget = [(MTRPluginClient *)self _currentTarget];
+    v27 = controllerCopy;
+    [_currentTarget deviceController:controllerCopy nodeID:dCopy writeAttributeWithEndpointID:iDCopy clusterID:clusterIDCopy attributeID:attributeIDCopy value:valueCopy expectedValueInterval:intervalCopy timedWriteTimeout:timeoutCopy];
   }
 
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deviceController:(id)a3 nodeID:(id)a4 invokeCommandWithEndpointID:(id)a5 clusterID:(id)a6 commandID:(id)a7 commandFields:(id)a8 expectedValues:(id)a9 expectedValueInterval:(id)a10 timedInvokeTimeout:(id)a11 serverSideProcessingTimeout:(id)a12 completion:(id)a13
+- (void)deviceController:(id)controller nodeID:(id)d invokeCommandWithEndpointID:(id)iD clusterID:(id)clusterID commandID:(id)commandID commandFields:(id)fields expectedValues:(id)values expectedValueInterval:(id)self0 timedInvokeTimeout:(id)self1 serverSideProcessingTimeout:(id)self2 completion:(id)self3
 {
   v44 = *MEMORY[0x277D85DE8];
-  v35 = a3;
-  v34 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v37 = a8;
-  v36 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = a12;
-  v25 = a13;
-  v26 = [(MTRPluginClient *)self controllerUUID];
+  controllerCopy = controller;
+  dCopy = d;
+  iDCopy = iD;
+  clusterIDCopy = clusterID;
+  commandIDCopy = commandID;
+  fieldsCopy = fields;
+  valuesCopy = values;
+  intervalCopy = interval;
+  timeoutCopy = timeout;
+  processingTimeoutCopy = processingTimeout;
+  completionCopy = completion;
+  controllerUUID = [(MTRPluginClient *)self controllerUUID];
 
-  if (!v26)
+  if (!controllerUUID)
   {
-    [(MTRPluginClient *)self setControllerUUID:v35];
+    [(MTRPluginClient *)self setControllerUUID:controllerCopy];
   }
 
-  v27 = [(MTRPluginClient *)self xpcConnection];
-  v28 = [MTRPluginThirdPartyExclusions commandDisallowedOverXPCWithEndpointID:v19 clusterID:v20 commandID:v21 isPrivatelyEntitled:[MTRPluginThirdPartyExclusions connectionIsPrivatelyEntitled:v27]];
+  xpcConnection = [(MTRPluginClient *)self xpcConnection];
+  v28 = [MTRPluginThirdPartyExclusions commandDisallowedOverXPCWithEndpointID:iDCopy clusterID:clusterIDCopy commandID:commandIDCopy isPrivatelyEntitled:[MTRPluginThirdPartyExclusions connectionIsPrivatelyEntitled:xpcConnection]];
 
   if (!v28)
   {
-    v32 = [(MTRPluginClient *)self _currentTarget];
-    v31 = v35;
-    v30 = v34;
-    [v32 deviceController:v35 nodeID:v34 invokeCommandWithEndpointID:v19 clusterID:v20 commandID:v21 commandFields:v37 expectedValues:v36 expectedValueInterval:v22 timedInvokeTimeout:v23 serverSideProcessingTimeout:v24 completion:v25];
+    _currentTarget = [(MTRPluginClient *)self _currentTarget];
+    v31 = controllerCopy;
+    v30 = dCopy;
+    [_currentTarget deviceController:controllerCopy nodeID:dCopy invokeCommandWithEndpointID:iDCopy clusterID:clusterIDCopy commandID:commandIDCopy commandFields:fieldsCopy expectedValues:valuesCopy expectedValueInterval:intervalCopy timedInvokeTimeout:timeoutCopy serverSideProcessingTimeout:processingTimeoutCopy completion:completionCopy];
     goto LABEL_9;
   }
 
   v29 = matterPluginLog_default;
-  v30 = v34;
+  v30 = dCopy;
   if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v39 = v19;
+    v39 = iDCopy;
     v40 = 2112;
-    v41 = v20;
+    v41 = clusterIDCopy;
     v42 = 2112;
-    v43 = v21;
+    v43 = commandIDCopy;
     _os_log_impl(&dword_25830F000, v29, OS_LOG_TYPE_DEFAULT, "ERROR: Command disallowed over XPC: EP %@, Cluster %@, Command %@", buf, 0x20u);
   }
 
-  v31 = v35;
-  if (v25)
+  v31 = controllerCopy;
+  if (completionCopy)
   {
-    v32 = [MEMORY[0x277CCA9B8] errorWithDomain:@"kMTRPluginErrorDomain" code:-1009 userInfo:0];
-    v25[2](v25, 0, v32);
+    _currentTarget = [MEMORY[0x277CCA9B8] errorWithDomain:@"kMTRPluginErrorDomain" code:-1009 userInfo:0];
+    completionCopy[2](completionCopy, 0, _currentTarget);
 LABEL_9:
   }
 
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deviceController:(id)a3 nodeID:(id)a4 invokeCommands:(id)a5 completion:(id)a6
+- (void)deviceController:(id)controller nodeID:(id)d invokeCommands:(id)commands completion:(id)completion
 {
   v57 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v40 = a4;
-  v11 = a5;
-  v39 = a6;
-  v12 = [(MTRPluginClient *)self controllerUUID];
+  controllerCopy = controller;
+  dCopy = d;
+  commandsCopy = commands;
+  completionCopy = completion;
+  controllerUUID = [(MTRPluginClient *)self controllerUUID];
 
-  if (!v12)
+  if (!controllerUUID)
   {
-    [(MTRPluginClient *)self setControllerUUID:v10];
+    [(MTRPluginClient *)self setControllerUUID:controllerCopy];
   }
 
-  v41 = v10;
+  v41 = controllerCopy;
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v13 = v11;
+  v13 = commandsCopy;
   v44 = [v13 countByEnumeratingWithState:&v46 objects:v56 count:16];
   if (v44)
   {
@@ -994,14 +994,14 @@ LABEL_9:
         }
 
         v17 = v16;
-        v45 = [v17 path];
-        v18 = [v45 endpoint];
-        v19 = [v17 path];
-        v20 = [v19 cluster];
-        v21 = [v17 path];
-        v22 = [v21 command];
-        v23 = [(MTRPluginClient *)self xpcConnection];
-        v24 = [MTRPluginThirdPartyExclusions commandDisallowedOverXPCWithEndpointID:v18 clusterID:v20 commandID:v22 isPrivatelyEntitled:[MTRPluginThirdPartyExclusions connectionIsPrivatelyEntitled:v23]];
+        path = [v17 path];
+        endpoint = [path endpoint];
+        path2 = [v17 path];
+        cluster = [path2 cluster];
+        path3 = [v17 path];
+        command = [path3 command];
+        xpcConnection = [(MTRPluginClient *)self xpcConnection];
+        v24 = [MTRPluginThirdPartyExclusions commandDisallowedOverXPCWithEndpointID:endpoint clusterID:cluster commandID:command isPrivatelyEntitled:[MTRPluginThirdPartyExclusions connectionIsPrivatelyEntitled:xpcConnection]];
 
         if (v24)
         {
@@ -1009,32 +1009,32 @@ LABEL_9:
           if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
           {
             v30 = v29;
-            v31 = [v17 path];
-            v32 = [v31 endpoint];
-            v33 = [v17 path];
-            v34 = [v33 cluster];
-            v35 = [v17 path];
-            v36 = [v35 command];
+            path4 = [v17 path];
+            endpoint2 = [path4 endpoint];
+            path5 = [v17 path];
+            cluster2 = [path5 cluster];
+            path6 = [v17 path];
+            command2 = [path6 command];
             *buf = 138412802;
-            v51 = v32;
+            v51 = endpoint2;
             v52 = 2112;
-            v53 = v34;
+            v53 = cluster2;
             v54 = 2112;
-            v55 = v36;
+            v55 = command2;
             _os_log_impl(&dword_25830F000, v30, OS_LOG_TYPE_DEFAULT, "ERROR: Command disallowed over XPC: EP %@, Cluster %@, Command %@", buf, 0x20u);
           }
 
-          v28 = v39;
-          if (v39)
+          v28 = completionCopy;
+          if (completionCopy)
           {
             v37 = [MEMORY[0x277CCA9B8] errorWithDomain:@"kMTRPluginErrorDomain" code:-1009 userInfo:0];
-            (*(v39 + 2))(v39, 0, v37);
+            (*(completionCopy + 2))(completionCopy, 0, v37);
           }
 
           v26 = v41;
           v13 = obj;
-          v25 = obj;
-          v27 = v40;
+          _currentTarget = obj;
+          v27 = dCopy;
           goto LABEL_20;
         }
       }
@@ -1050,11 +1050,11 @@ LABEL_9:
     }
   }
 
-  v25 = [(MTRPluginClient *)self _currentTarget];
-  v27 = v40;
+  _currentTarget = [(MTRPluginClient *)self _currentTarget];
+  v27 = dCopy;
   v26 = v41;
-  v28 = v39;
-  [v25 deviceController:v41 nodeID:v40 invokeCommands:v13 completion:v39];
+  v28 = completionCopy;
+  [_currentTarget deviceController:v41 nodeID:dCopy invokeCommands:v13 completion:completionCopy];
 LABEL_20:
 
   v38 = *MEMORY[0x277D85DE8];

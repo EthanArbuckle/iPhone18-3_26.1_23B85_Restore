@@ -1,14 +1,14 @@
 @interface CMContinuityCapturePongSoundManager
 + (id)sharedInstance;
 - (CMContinuityCapturePongSoundManager)init;
-- (void)_playPongSoundForIdentifier:(id)a3;
-- (void)_pongIfNeededWithShouldConsiderPongHistory:(BOOL)a3 forIdentifier:(id)a4;
+- (void)_playPongSoundForIdentifier:(id)identifier;
+- (void)_pongIfNeededWithShouldConsiderPongHistory:(BOOL)history forIdentifier:(id)identifier;
 - (void)acquireSystemPongAssertion;
 - (void)clearPongHistory;
-- (void)device:(id)a3 isNearby:(BOOL)a4;
-- (void)pongIfNeededWithShouldConsiderPongHistory:(BOOL)a3 forIdentifier:(id)a4;
+- (void)device:(id)device isNearby:(BOOL)nearby;
+- (void)pongIfNeededWithShouldConsiderPongHistory:(BOOL)history forIdentifier:(id)identifier;
 - (void)releaseSystemPongAssertion;
-- (void)waitForPongCompletion:(id)a3;
+- (void)waitForPongCompletion:(id)completion;
 @end
 
 @implementation CMContinuityCapturePongSoundManager
@@ -130,15 +130,15 @@ void __55__CMContinuityCapturePongSoundManager_clearPongHistory__block_invoke(ui
   }
 }
 
-- (void)waitForPongCompletion:(id)a3
+- (void)waitForPongCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v5 = CMContinuityCaptureLog(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v12 = self;
+    selfCopy = self;
     v13 = 2080;
     v14 = "[CMContinuityCapturePongSoundManager waitForPongCompletion:]";
     _os_log_impl(&dword_242545000, v5, OS_LOG_TYPE_DEFAULT, "<%p> [pong-check] %s start", buf, 0x16u);
@@ -151,8 +151,8 @@ void __55__CMContinuityCapturePongSoundManager_clearPongHistory__block_invoke(ui
   v8[2] = __61__CMContinuityCapturePongSoundManager_waitForPongCompletion___block_invoke;
   v8[3] = &unk_278D5C688;
   objc_copyWeak(&v10, &location);
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async_and_wait(internalQueue, v8);
 
   objc_destroyWeak(&v10);
@@ -181,42 +181,42 @@ uint64_t __61__CMContinuityCapturePongSoundManager_waitForPongCompletion___block
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v11 = self;
+    selfCopy = self;
     v12 = 2080;
     v13 = "[CMContinuityCapturePongSoundManager acquireSystemPongAssertion]";
     _os_log_impl(&dword_242545000, v3, OS_LOG_TYPE_DEFAULT, "<%p> [pong-check] %s", buf, 0x16u);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_pongAssertSemaphore)
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  if (selfCopy2->_pongAssertSemaphore)
   {
     v5 = CMContinuityCaptureLog(0);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v11 = v4;
+      selfCopy = selfCopy2;
       v12 = 2080;
       v13 = "[CMContinuityCapturePongSoundManager acquireSystemPongAssertion]";
       _os_log_impl(&dword_242545000, v5, OS_LOG_TYPE_DEFAULT, "<%p> [pong-check] %s The pong assertion is already held so we return immediately.", buf, 0x16u);
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy2);
   }
 
   else
   {
     v6 = dispatch_semaphore_create(0);
-    pongAssertSemaphore = v4->_pongAssertSemaphore;
-    v4->_pongAssertSemaphore = v6;
+    pongAssertSemaphore = selfCopy2->_pongAssertSemaphore;
+    selfCopy2->_pongAssertSemaphore = v6;
 
-    objc_sync_exit(v4);
-    internalQueue = v4->_internalQueue;
+    objc_sync_exit(selfCopy2);
+    internalQueue = selfCopy2->_internalQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __65__CMContinuityCapturePongSoundManager_acquireSystemPongAssertion__block_invoke;
     block[3] = &unk_278D5C0D0;
-    block[4] = v4;
+    block[4] = selfCopy2;
     dispatch_async(internalQueue, block);
   }
 }
@@ -241,68 +241,68 @@ void __65__CMContinuityCapturePongSoundManager_acquireSystemPongAssertion__block
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134218242;
-    v8 = self;
+    selfCopy = self;
     v9 = 2080;
     v10 = "[CMContinuityCapturePongSoundManager releaseSystemPongAssertion]";
     _os_log_impl(&dword_242545000, v3, OS_LOG_TYPE_DEFAULT, "<%p> [pong-check] %s", &v7, 0x16u);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  pongAssertSemaphore = v4->_pongAssertSemaphore;
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  pongAssertSemaphore = selfCopy2->_pongAssertSemaphore;
   if (pongAssertSemaphore)
   {
     dispatch_semaphore_signal(pongAssertSemaphore);
-    v6 = v4->_pongAssertSemaphore;
-    v4->_pongAssertSemaphore = 0;
+    v6 = selfCopy2->_pongAssertSemaphore;
+    selfCopy2->_pongAssertSemaphore = 0;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy2);
 }
 
-- (void)pongIfNeededWithShouldConsiderPongHistory:(BOOL)a3 forIdentifier:(id)a4
+- (void)pongIfNeededWithShouldConsiderPongHistory:(BOOL)history forIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __95__CMContinuityCapturePongSoundManager_pongIfNeededWithShouldConsiderPongHistory_forIdentifier___block_invoke;
   block[3] = &unk_278D5C198;
-  v11 = a3;
+  historyCopy = history;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = identifierCopy;
+  v8 = identifierCopy;
   dispatch_async(internalQueue, block);
 }
 
-- (void)_pongIfNeededWithShouldConsiderPongHistory:(BOOL)a3 forIdentifier:(id)a4
+- (void)_pongIfNeededWithShouldConsiderPongHistory:(BOOL)history forIdentifier:(id)identifier
 {
-  v4 = a3;
-  v6 = a4;
+  historyCopy = history;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_internalQueue);
   v7 = CMContinuityCaptureLog(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v23 = self;
+    selfCopy4 = self;
     v24 = 2112;
-    v25 = v6;
+    v25 = identifierCopy;
     v26 = 1024;
-    LODWORD(v27) = v4;
+    LODWORD(v27) = historyCopy;
     _os_log_impl(&dword_242545000, v7, OS_LOG_TYPE_DEFAULT, "<%p> [pong-check] checking whether need to play pong for Identifier %@, should consider pong history: %d", buf, 0x1Cu);
   }
 
-  if (v4 && [(NSString *)self->_playedPongForIdentifier isEqualToString:v6])
+  if (historyCopy && [(NSString *)self->_playedPongForIdentifier isEqualToString:identifierCopy])
   {
     v8 = CMContinuityCaptureLog(0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v23 = self;
+      selfCopy4 = self;
       v24 = 2080;
       v25 = "[CMContinuityCapturePongSoundManager _pongIfNeededWithShouldConsiderPongHistory:forIdentifier:]";
       v26 = 2112;
-      v27 = v6;
+      v27 = identifierCopy;
       _os_log_impl(&dword_242545000, v8, OS_LOG_TYPE_DEFAULT, "%@ %s [pong-check] Already ponged for %@, do not pong again", buf, 0x20u);
     }
   }
@@ -315,7 +315,7 @@ void __65__CMContinuityCapturePongSoundManager_acquireSystemPongAssertion__block
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v23 = self;
+        selfCopy4 = self;
         _os_log_impl(&dword_242545000, v9, OS_LOG_TYPE_DEFAULT, "<%p> [pong-check] restarting proximity monitor", buf, 0xCu);
       }
 
@@ -341,7 +341,7 @@ void __65__CMContinuityCapturePongSoundManager_acquireSystemPongAssertion__block
       handler[2] = __96__CMContinuityCapturePongSoundManager__pongIfNeededWithShouldConsiderPongHistory_forIdentifier___block_invoke;
       handler[3] = &unk_278D5CA78;
       handler[4] = self;
-      v20 = v6;
+      v20 = identifierCopy;
       objc_copyWeak(&v21, buf);
       dispatch_source_set_event_handler(v17, handler);
       dispatch_resume(self->_proximityTimer);
@@ -350,7 +350,7 @@ void __65__CMContinuityCapturePongSoundManager_acquireSystemPongAssertion__block
       objc_destroyWeak(buf);
     }
 
-    [(CMContinuityCaptureProximityMonitor *)self->_proximityMonitor beginTracking:v6];
+    [(CMContinuityCaptureProximityMonitor *)self->_proximityMonitor beginTracking:identifierCopy];
   }
 
   else
@@ -359,11 +359,11 @@ void __65__CMContinuityCapturePongSoundManager_acquireSystemPongAssertion__block
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v23 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_242545000, v18, OS_LOG_TYPE_DEFAULT, "<%p> [pong-check] Not using NearbyInteraction to determine whether pong sound is played. Go ahead and play it.", buf, 0xCu);
     }
 
-    [(CMContinuityCapturePongSoundManager *)self _playPongSoundForIdentifier:v6];
+    [(CMContinuityCapturePongSoundManager *)self _playPongSoundForIdentifier:identifierCopy];
   }
 }
 
@@ -385,18 +385,18 @@ void __96__CMContinuityCapturePongSoundManager__pongIfNeededWithShouldConsiderPo
   [WeakRetained device:*(a1 + 40) isNearby:0];
 }
 
-- (void)_playPongSoundForIdentifier:(id)a3
+- (void)_playPongSoundForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_internalQueue);
   objc_initWeak(&location, self);
   v5 = CMContinuityCaptureLog(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
-    v20 = v4;
+    v20 = identifierCopy;
     _os_log_impl(&dword_242545000, v5, OS_LOG_TYPE_DEFAULT, "<%p> [pong-check] playing pong sound for %@", buf, 0x16u);
   }
 
@@ -406,7 +406,7 @@ void __96__CMContinuityCapturePongSoundManager__pongIfNeededWithShouldConsiderPo
   inCompletionBlock[2] = __67__CMContinuityCapturePongSoundManager__playPongSoundForIdentifier___block_invoke;
   inCompletionBlock[3] = &unk_278D5C120;
   objc_copyWeak(&v16, &location);
-  v7 = v4;
+  v7 = identifierCopy;
   v14 = v7;
   v8 = v6;
   v15 = v8;
@@ -441,10 +441,10 @@ intptr_t __67__CMContinuityCapturePongSoundManager__playPongSoundForIdentifier__
   return dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (void)device:(id)a3 isNearby:(BOOL)a4
+- (void)device:(id)device isNearby:(BOOL)nearby
 {
-  v4 = a4;
-  v6 = a3;
+  nearbyCopy = nearby;
+  deviceCopy = device;
   objc_initWeak(&location, self);
   v7 = MEMORY[0x277D85CD0];
   v8 = MEMORY[0x277D85CD0];
@@ -454,11 +454,11 @@ intptr_t __67__CMContinuityCapturePongSoundManager__playPongSoundForIdentifier__
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
-    v20 = v6;
+    v20 = deviceCopy;
     v21 = 1024;
-    v22 = v4;
+    v22 = nearbyCopy;
     _os_log_impl(&dword_242545000, v9, OS_LOG_TYPE_DEFAULT, "<%p> [pong-check] %@ got proximity update: nearby %d", buf, 0x1Cu);
   }
 
@@ -470,11 +470,11 @@ intptr_t __67__CMContinuityCapturePongSoundManager__playPongSoundForIdentifier__
     self->_proximityTimer = 0;
   }
 
-  [(CMContinuityCaptureProximityMonitor *)self->_proximityMonitor endTracking:v6];
+  [(CMContinuityCaptureProximityMonitor *)self->_proximityMonitor endTracking:deviceCopy];
   proximityMonitor = self->_proximityMonitor;
   self->_proximityMonitor = 0;
 
-  if (!v4)
+  if (!nearbyCopy)
   {
     internalQueue = self->_internalQueue;
     v14[0] = MEMORY[0x277D85DD0];
@@ -482,7 +482,7 @@ intptr_t __67__CMContinuityCapturePongSoundManager__playPongSoundForIdentifier__
     v14[2] = __55__CMContinuityCapturePongSoundManager_device_isNearby___block_invoke;
     v14[3] = &unk_278D5C0A8;
     objc_copyWeak(&v16, &location);
-    v15 = v6;
+    v15 = deviceCopy;
     dispatch_async(internalQueue, v14);
 
     objc_destroyWeak(&v16);

@@ -1,6 +1,6 @@
 @interface APVersionTestData
 - (APVersionTestData)init;
-- (id)subdirectoriesAtURL:(id)a3;
+- (id)subdirectoriesAtURL:(id)l;
 @end
 
 @implementation APVersionTestData
@@ -24,11 +24,11 @@
   return v4;
 }
 
-- (id)subdirectoriesAtURL:(id)a3
+- (id)subdirectoriesAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v7 = objc_msgSend_directoryURLs(self, v5, v6);
-  if (v7 && (v10 = v7, objc_msgSend_lastPathComponent(v4, v8, v9), v11 = objc_claimAutoreleasedReturnValue(), isEqualToString = objc_msgSend_isEqualToString_(v11, v12, @"APCS"), v11, v10, isEqualToString))
+  if (v7 && (v10 = v7, objc_msgSend_lastPathComponent(lCopy, v8, v9), v11 = objc_claimAutoreleasedReturnValue(), isEqualToString = objc_msgSend_isEqualToString_(v11, v12, @"APCS"), v11, v10, isEqualToString))
   {
     v14 = objc_msgSend_directoryURLs(self, v8, v9);
   }

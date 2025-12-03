@@ -1,11 +1,11 @@
 @interface _MPCMediaRemoteDetective
-- (_MPCMediaRemoteDetective)initWithPublisher:(id)a3;
-- (void)investigateTimeoutForEvent:(MPRemoteCommandEvent *)a3 completion:(id)a4;
+- (_MPCMediaRemoteDetective)initWithPublisher:(id)publisher;
+- (void)investigateTimeoutForEvent:(MPRemoteCommandEvent *)event completion:(id)completion;
 @end
 
 @implementation _MPCMediaRemoteDetective
 
-- (_MPCMediaRemoteDetective)initWithPublisher:(id)a3
+- (_MPCMediaRemoteDetective)initWithPublisher:(id)publisher
 {
   swift_unknownObjectRetain();
   sub_1C6017390();
@@ -14,15 +14,15 @@
   return result;
 }
 
-- (void)investigateTimeoutForEvent:(MPRemoteCommandEvent *)a3 completion:(id)a4
+- (void)investigateTimeoutForEvent:(MPRemoteCommandEvent *)event completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = event;
   v7[3] = v6;
   v7[4] = self;
-  v8 = a3;
-  v9 = self;
+  eventCopy = event;
+  selfCopy = self;
 
   sub_1C5E3A9D0(&unk_1C60445D8, v7);
 }

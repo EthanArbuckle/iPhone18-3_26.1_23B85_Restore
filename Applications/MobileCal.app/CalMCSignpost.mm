@@ -1,7 +1,7 @@
 @interface CalMCSignpost
 + (id)calendarSignpostHandle;
-+ (void)beginLaunch:(BOOL)a3;
-+ (void)endLaunchToView:(int64_t)a3 extended:(BOOL)a4;
++ (void)beginLaunch:(BOOL)launch;
++ (void)endLaunchToView:(int64_t)view extended:(BOOL)extended;
 @end
 
 @implementation CalMCSignpost
@@ -18,12 +18,12 @@
   return v3;
 }
 
-+ (void)beginLaunch:(BOOL)a3
++ (void)beginLaunch:(BOOL)launch
 {
-  v3 = a3;
-  v4 = [a1 calendarSignpostHandle];
-  v5 = os_signpost_enabled(v4);
-  if (v3)
+  launchCopy = launch;
+  calendarSignpostHandle = [self calendarSignpostHandle];
+  v5 = os_signpost_enabled(calendarSignpostHandle);
+  if (launchCopy)
   {
     if (v5)
     {
@@ -31,7 +31,7 @@
       v6 = "ExtendedLaunch";
       v7 = &v9;
 LABEL_6:
-      _os_signpost_emit_with_name_impl(&_mh_execute_header, v4, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, v6, " enableTelemetry=YES ", v7, 2u);
+      _os_signpost_emit_with_name_impl(&_mh_execute_header, calendarSignpostHandle, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, v6, " enableTelemetry=YES ", v7, 2u);
     }
   }
 
@@ -44,22 +44,22 @@ LABEL_6:
   }
 }
 
-+ (void)endLaunchToView:(int64_t)a3 extended:(BOOL)a4
++ (void)endLaunchToView:(int64_t)view extended:(BOOL)extended
 {
-  v4 = a4;
-  if (a3 > 4)
+  extendedCopy = extended;
+  if (view > 4)
   {
     v5 = "unknown";
   }
 
   else
   {
-    v5 = off_1002118E0[a3];
+    v5 = off_1002118E0[view];
   }
 
-  v6 = [a1 calendarSignpostHandle];
-  v7 = os_signpost_enabled(v6);
-  if (v4)
+  calendarSignpostHandle = [self calendarSignpostHandle];
+  v7 = os_signpost_enabled(calendarSignpostHandle);
+  if (extendedCopy)
   {
     if (v7)
     {
@@ -67,7 +67,7 @@ LABEL_6:
       v10 = v5;
       v8 = "ExtendedLaunch";
 LABEL_9:
-      _os_signpost_emit_with_name_impl(&_mh_execute_header, v6, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, v8, " enableTelemetry=YES LaunchedView=%{public, signpost.telemetry:string1, Name=LaunchedView}s", &v9, 0xCu);
+      _os_signpost_emit_with_name_impl(&_mh_execute_header, calendarSignpostHandle, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, v8, " enableTelemetry=YES LaunchedView=%{public, signpost.telemetry:string1, Name=LaunchedView}s", &v9, 0xCu);
     }
   }
 

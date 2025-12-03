@@ -1,10 +1,10 @@
 @interface SDEventMonitor
 + (id)sharedInstance;
 - (id)_init;
-- (void)_startMonitoringEventsForStream:(unint64_t)a3;
-- (void)registerHandler:(id)a3 forEventName:(id)a4;
+- (void)_startMonitoringEventsForStream:(unint64_t)stream;
+- (void)registerHandler:(id)handler forEventName:(id)name;
 - (void)startMonitoringEvents;
-- (void)unregisterHandler:(id)a3 forEventName:(id)a4;
+- (void)unregisterHandler:(id)handler forEventName:(id)name;
 @end
 
 @implementation SDEventMonitor
@@ -35,7 +35,7 @@
   block[1] = 3221225472;
   block[2] = __32__SDEventMonitor_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_2 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_2, block);
@@ -63,15 +63,15 @@ uint64_t __32__SDEventMonitor_sharedInstance__block_invoke(uint64_t a1)
   [(SDEventMonitor *)self _startMonitoringEventsForStream:0];
 }
 
-- (void)_startMonitoringEventsForStream:(unint64_t)a3
+- (void)_startMonitoringEventsForStream:(unint64_t)stream
 {
   v5 = "com.apple.distnoted.matching";
-  if (a3 != 1)
+  if (stream != 1)
   {
     v5 = 0;
   }
 
-  if (a3)
+  if (stream)
   {
     v6 = v5;
   }
@@ -87,15 +87,15 @@ uint64_t __32__SDEventMonitor_sharedInstance__block_invoke(uint64_t a1)
     [(SDEventMonitor *)v6 _startMonitoringEventsForStream:v7];
   }
 
-  v8 = [(SDEventMonitor *)self queue];
+  queue = [(SDEventMonitor *)self queue];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __50__SDEventMonitor__startMonitoringEventsForStream___block_invoke;
   handler[3] = &unk_278937488;
   handler[4] = self;
   handler[5] = v6;
-  handler[6] = a3;
-  xpc_set_event_stream_handler(v6, v8, handler);
+  handler[6] = stream;
+  xpc_set_event_stream_handler(v6, queue, handler);
 }
 
 void __50__SDEventMonitor__startMonitoringEventsForStream___block_invoke(uint64_t a1, void *a2)
@@ -244,27 +244,27 @@ void __50__SDEventMonitor__startMonitoringEventsForStream___block_invoke_2(void 
   SDTransactionDone(v6);
 }
 
-- (void)registerHandler:(id)a3 forEventName:(id)a4
+- (void)registerHandler:(id)handler forEventName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  nameCopy = name;
   v8 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [SDEventMonitor registerHandler:v7 forEventName:v8];
+    [SDEventMonitor registerHandler:nameCopy forEventName:v8];
   }
 
-  v9 = [(SDEventMonitor *)self queue];
+  queue = [(SDEventMonitor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__SDEventMonitor_registerHandler_forEventName___block_invoke;
   block[3] = &unk_278934F08;
   block[4] = self;
-  v13 = v7;
-  v14 = v6;
-  v10 = v6;
-  v11 = v7;
-  dispatch_sync(v9, block);
+  v13 = nameCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = nameCopy;
+  dispatch_sync(queue, block);
 }
 
 void __47__SDEventMonitor_registerHandler_forEventName___block_invoke(uint64_t a1)
@@ -283,21 +283,21 @@ void __47__SDEventMonitor_registerHandler_forEventName___block_invoke(uint64_t a
   [v5 addObject:v4];
 }
 
-- (void)unregisterHandler:(id)a3 forEventName:(id)a4
+- (void)unregisterHandler:(id)handler forEventName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SDEventMonitor *)self queue];
+  handlerCopy = handler;
+  nameCopy = name;
+  queue = [(SDEventMonitor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__SDEventMonitor_unregisterHandler_forEventName___block_invoke;
   block[3] = &unk_278934F08;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_sync(v8, block);
+  v12 = nameCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = nameCopy;
+  dispatch_sync(queue, block);
 }
 
 void __49__SDEventMonitor_unregisterHandler_forEventName___block_invoke(uint64_t a1)

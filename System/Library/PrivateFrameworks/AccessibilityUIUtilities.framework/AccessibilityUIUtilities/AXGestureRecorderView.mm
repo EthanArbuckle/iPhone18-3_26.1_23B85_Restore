@@ -1,28 +1,28 @@
 @interface AXGestureRecorderView
-- (AXGestureRecorderView)initWithCoder:(id)a3;
-- (AXGestureRecorderView)initWithFrame:(CGRect)a3;
+- (AXGestureRecorderView)initWithCoder:(id)coder;
+- (AXGestureRecorderView)initWithFrame:(CGRect)frame;
 - (AXGestureRecorderViewDelegate)dataSource;
 - (CGRect)accessibilityFrame;
 - (CGRect)constrainedBoundsForDrawing;
 - (UIColor)dynamicFingerPathBackgroundGradientPatternColor;
-- (id)_dynamicFingerPathAtIndex:(unint64_t)a3;
+- (id)_dynamicFingerPathAtIndex:(unint64_t)index;
 - (id)accessibilityCustomActions;
 - (void)_commonInit;
 - (void)_hideControls;
-- (void)_performTransitionToStaticFingers:(id)a3 transitionLayers:(id)a4 hasExistingStaticFingers:(BOOL)a5;
+- (void)_performTransitionToStaticFingers:(id)fingers transitionLayers:(id)layers hasExistingStaticFingers:(BOOL)staticFingers;
 - (void)_showControls;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)clearInstantReplayFingerPaths;
 - (void)deleteAllFingerPaths;
 - (void)didMoveToWindow;
-- (void)drawRect:(CGRect)a3;
-- (void)fingerPathDidChange:(unint64_t)a3;
-- (void)finishInstantReplayAtIndex:(unint64_t)a3;
-- (void)freezeAllDynamicFingerPathsWithInstantReplayOffset:(unint64_t)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)fingerPathDidChange:(unint64_t)change;
+- (void)finishInstantReplayAtIndex:(unint64_t)index;
+- (void)freezeAllDynamicFingerPathsWithInstantReplayOffset:(unint64_t)offset;
 - (void)hideStaticView;
-- (void)setDataSource:(id)a3;
-- (void)setStyleProvider:(id)a3;
-- (void)updateInstantReplayAtIndex:(unint64_t)a3 withPartialPath:(id)a4;
+- (void)setDataSource:(id)source;
+- (void)setStyleProvider:(id)provider;
+- (void)updateInstantReplayAtIndex:(unint64_t)index withPartialPath:(id)path;
 @end
 
 @implementation AXGestureRecorderView
@@ -51,11 +51,11 @@
   [(AXGestureRecorderView *)self setNeedsDisplay];
 }
 
-- (AXGestureRecorderView)initWithFrame:(CGRect)a3
+- (AXGestureRecorderView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AXGestureRecorderView;
-  v3 = [(AXGestureRecorderView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AXGestureRecorderView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -65,11 +65,11 @@
   return v4;
 }
 
-- (AXGestureRecorderView)initWithCoder:(id)a3
+- (AXGestureRecorderView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AXGestureRecorderView;
-  v3 = [(AXGestureRecorderView *)&v6 initWithCoder:a3];
+  v3 = [(AXGestureRecorderView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -79,16 +79,16 @@
   return v4;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   CurrentContext = UIGraphicsGetCurrentContext();
-  v9 = [(AXGestureRecorderView *)self styleProvider];
-  v10 = [v9 gestureRecorderViewBackgroundColor];
-  CGContextSetFillColorWithColor(CurrentContext, [v10 CGColor]);
+  styleProvider = [(AXGestureRecorderView *)self styleProvider];
+  gestureRecorderViewBackgroundColor = [styleProvider gestureRecorderViewBackgroundColor];
+  CGContextSetFillColorWithColor(CurrentContext, [gestureRecorderViewBackgroundColor CGColor]);
 
   v11 = x;
   v12 = y;
@@ -98,9 +98,9 @@
   CGContextFillRect(CurrentContext, *&v11);
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   if (WeakRetained != obj)
@@ -119,26 +119,26 @@
   }
 }
 
-- (void)setStyleProvider:(id)a3
+- (void)setStyleProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_styleProvider != v5)
+  providerCopy = provider;
+  if (self->_styleProvider != providerCopy)
   {
-    v13 = v5;
-    objc_storeStrong(&self->_styleProvider, a3);
-    v5 = v13;
+    v13 = providerCopy;
+    objc_storeStrong(&self->_styleProvider, provider);
+    providerCopy = v13;
     if (v13)
     {
-      v6 = [(AXGestureRecorderStyleProvider *)v13 fingerLineGradientTopColor];
-      v7 = [(AXGestureRecorderStyleProvider *)v13 fingerLineGradientBottomColor];
+      fingerLineGradientTopColor = [(AXGestureRecorderStyleProvider *)v13 fingerLineGradientTopColor];
+      fingerLineGradientBottomColor = [(AXGestureRecorderStyleProvider *)v13 fingerLineGradientBottomColor];
       [(AXGestureRecorderStyleProvider *)v13 fingerLineGradientTopColorLocation];
       v9 = v8;
       [(AXGestureRecorderStyleProvider *)v13 fingerLineGradientBottomColorLocation];
       LODWORD(v11) = v10;
       LODWORD(v12) = v9;
-      [(AXGestureRecorderGradientView *)self configureGradientWithTopColor:v6 bottomColor:v7 topColorLocation:v12 bottomColorLocation:v11];
+      [(AXGestureRecorderGradientView *)self configureGradientWithTopColor:fingerLineGradientTopColor bottomColor:fingerLineGradientBottomColor topColorLocation:v12 bottomColorLocation:v11];
 
-      v5 = v13;
+      providerCopy = v13;
     }
   }
 }
@@ -149,8 +149,8 @@
   dynamicFingerPathBackgroundGradientPatternColor = self->_dynamicFingerPathBackgroundGradientPatternColor;
   if (!dynamicFingerPathBackgroundGradientPatternColor)
   {
-    v4 = [(AXGestureRecorderView *)self styleProvider];
-    v5 = [(AXGestureRecorderView *)self window];
+    styleProvider = [(AXGestureRecorderView *)self styleProvider];
+    window = [(AXGestureRecorderView *)self window];
     [(AXGestureRecorderView *)self bounds];
     x = v35.origin.x;
     y = v35.origin.y;
@@ -162,17 +162,17 @@
     v36.size.width = width;
     v36.size.height = height;
     v11 = CGRectGetHeight(v36);
-    if (v4)
+    if (styleProvider)
     {
-      if (v5)
+      if (window)
       {
         if (v10 > 0.0)
         {
           v12 = v11;
           if (v11 > 0.0)
           {
-            v13 = [v5 screen];
-            [v13 scale];
+            screen = [window screen];
+            [screen scale];
             v15 = v14;
 
             v32.width = width;
@@ -181,14 +181,14 @@
             CurrentContext = UIGraphicsGetCurrentContext();
             CGContextSaveGState(CurrentContext);
             v17 = objc_alloc(MEMORY[0x1E695DEC8]);
-            v18 = [v4 dynamicFingerLineGradientTopColor];
-            v19 = [v18 CGColor];
-            v20 = [v4 dynamicFingerLineGradientBottomColor];
-            v21 = [v17 initWithObjects:{v19, objc_msgSend(v20, "CGColor"), 0}];
+            dynamicFingerLineGradientTopColor = [styleProvider dynamicFingerLineGradientTopColor];
+            cGColor = [dynamicFingerLineGradientTopColor CGColor];
+            dynamicFingerLineGradientBottomColor = [styleProvider dynamicFingerLineGradientBottomColor];
+            v21 = [v17 initWithObjects:{cGColor, objc_msgSend(dynamicFingerLineGradientBottomColor, "CGColor"), 0}];
 
-            [v4 dynamicFingerLineGradientTopColorLocation];
+            [styleProvider dynamicFingerLineGradientTopColorLocation];
             locations[0] = v22;
-            [v4 dynamicFingerLineGradientBottomColorLocation];
+            [styleProvider dynamicFingerLineGradientBottomColorLocation];
             locations[1] = v23;
             DeviceRGB = CGColorSpaceCreateDeviceRGB();
             v25 = CGGradientCreateWithColors(DeviceRGB, v21, locations);
@@ -219,8 +219,8 @@
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(AXGestureRecorderView *)self safeAreaLayoutGuide];
-  [v3 layoutFrame];
+  safeAreaLayoutGuide = [(AXGestureRecorderView *)self safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
   v13 = UIAccessibilityConvertFrameToScreenCoordinates(v12, &self->super.super);
   x = v13.origin.x;
   y = v13.origin.y;
@@ -240,32 +240,32 @@
 
 - (void)_hideControls
 {
-  v3 = [(AXGestureRecorderView *)self dataSource];
-  [v3 gestureRecorderView:self setChromeVisible:0];
+  dataSource = [(AXGestureRecorderView *)self dataSource];
+  [dataSource gestureRecorderView:self setChromeVisible:0];
 }
 
 - (void)_showControls
 {
-  v3 = [(AXGestureRecorderView *)self dataSource];
-  [v3 gestureRecorderView:self setChromeVisible:1];
+  dataSource = [(AXGestureRecorderView *)self dataSource];
+  [dataSource gestureRecorderView:self setChromeVisible:1];
 }
 
 - (id)accessibilityCustomActions
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v3 = [(AXGestureRecorderView *)self dataSource];
-  v4 = [v3 canToggleChromeForGestureRecorderView:self];
+  dataSource = [(AXGestureRecorderView *)self dataSource];
+  v4 = [dataSource canToggleChromeForGestureRecorderView:self];
 
   if (v4)
   {
-    v5 = [(AXGestureRecorderView *)self dataSource];
-    v6 = [v5 isChromeVisibleForGestureRecorderView:self];
+    dataSource2 = [(AXGestureRecorderView *)self dataSource];
+    v6 = [dataSource2 isChromeVisibleForGestureRecorderView:self];
 
     if (v6)
     {
-      v7 = [(AXGestureRecorderView *)self hideControlsAction];
+      hideControlsAction = [(AXGestureRecorderView *)self hideControlsAction];
 
-      if (!v7)
+      if (!hideControlsAction)
       {
         v8 = objc_alloc(MEMORY[0x1E69DC5E8]);
         v9 = AXUILocalizedStringForKey(@"CustomGesturesHideControls");
@@ -274,16 +274,16 @@
         [(AXGestureRecorderView *)self setHideControlsAction:v10];
       }
 
-      v11 = [(AXGestureRecorderView *)self hideControlsAction];
-      v20[0] = v11;
+      hideControlsAction2 = [(AXGestureRecorderView *)self hideControlsAction];
+      v20[0] = hideControlsAction2;
       v12 = v20;
     }
 
     else
     {
-      v14 = [(AXGestureRecorderView *)self showControlsAction];
+      showControlsAction = [(AXGestureRecorderView *)self showControlsAction];
 
-      if (!v14)
+      if (!showControlsAction)
       {
         v15 = objc_alloc(MEMORY[0x1E69DC5E8]);
         v16 = AXUILocalizedStringForKey(@"CustomGesturesShowControls");
@@ -292,8 +292,8 @@
         [(AXGestureRecorderView *)self setShowControlsAction:v17];
       }
 
-      v11 = [(AXGestureRecorderView *)self showControlsAction];
-      v19 = v11;
+      hideControlsAction2 = [(AXGestureRecorderView *)self showControlsAction];
+      v19 = hideControlsAction2;
       v12 = &v19;
     }
 
@@ -316,128 +316,128 @@
   [(AXGestureRecorderView *)self setNeedsDisplay];
 }
 
-- (void)fingerPathDidChange:(unint64_t)a3
+- (void)fingerPathDidChange:(unint64_t)change
 {
   v16 = [(AXGestureRecorderView *)self _dynamicFingerPathAtIndex:?];
   activeLayers = self->_activeLayers;
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v7 = [(NSMutableDictionary *)activeLayers objectForKey:v6];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:change];
+  layer = [(NSMutableDictionary *)activeLayers objectForKey:v6];
 
-  if (!v7)
+  if (!layer)
   {
-    v7 = [MEMORY[0x1E69794A0] layer];
-    v8 = [(AXGestureRecorderView *)self replayMode];
-    v9 = [(AXGestureRecorderView *)self styleProvider];
-    v10 = v9;
-    if (v8)
+    layer = [MEMORY[0x1E69794A0] layer];
+    replayMode = [(AXGestureRecorderView *)self replayMode];
+    styleProvider = [(AXGestureRecorderView *)self styleProvider];
+    v10 = styleProvider;
+    if (replayMode)
     {
-      [v9 finalDynamicFingerColor];
+      [styleProvider finalDynamicFingerColor];
     }
 
     else
     {
-      [v9 tracingDynamicFingerColor];
+      [styleProvider tracingDynamicFingerColor];
     }
     v11 = ;
-    [v7 setFillColor:{objc_msgSend(v11, "CGColor")}];
+    [layer setFillColor:{objc_msgSend(v11, "CGColor")}];
 
-    v12 = [(AXGestureRecorderView *)self layer];
-    [v12 addSublayer:v7];
+    layer2 = [(AXGestureRecorderView *)self layer];
+    [layer2 addSublayer:layer];
 
     v13 = self->_activeLayers;
-    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-    [(NSMutableDictionary *)v13 setObject:v7 forKey:v14];
+    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:change];
+    [(NSMutableDictionary *)v13 setObject:layer forKey:v14];
   }
 
   v15 = v16;
-  [v7 setPath:{objc_msgSend(v16, "CGPath")}];
+  [layer setPath:{objc_msgSend(v16, "CGPath")}];
 }
 
-- (id)_dynamicFingerPathAtIndex:(unint64_t)a3
+- (id)_dynamicFingerPathAtIndex:(unint64_t)index
 {
   if ([(NSMutableArray *)self->_freezedDynamicPaths count])
   {
-    v5 = [(NSMutableArray *)self->_freezedDynamicPaths objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->_freezedDynamicPaths objectAtIndex:index];
   }
 
   else
   {
-    v6 = [(AXGestureRecorderView *)self dataSource];
-    if ([v6 numberOfDynamicFingerPathsInGestureRecorderView:self] <= a3)
+    dataSource = [(AXGestureRecorderView *)self dataSource];
+    if ([dataSource numberOfDynamicFingerPathsInGestureRecorderView:self] <= index)
     {
       v5 = 0;
     }
 
     else
     {
-      v5 = [v6 gestureRecorderView:self dynamicFingerPathAtIndex:a3];
+      v5 = [dataSource gestureRecorderView:self dynamicFingerPathAtIndex:index];
     }
   }
 
   return v5;
 }
 
-- (void)updateInstantReplayAtIndex:(unint64_t)a3 withPartialPath:(id)a4
+- (void)updateInstantReplayAtIndex:(unint64_t)index withPartialPath:(id)path
 {
-  v15 = a4;
+  pathCopy = path;
   instantReplayViews = self->_instantReplayViews;
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v8 = [(NSMutableDictionary *)instantReplayViews objectForKey:v7];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
+  layer = [(NSMutableDictionary *)instantReplayViews objectForKey:v7];
 
-  if (!v8)
+  if (!layer)
   {
-    v8 = [MEMORY[0x1E69794A0] layer];
-    v9 = [(AXGestureRecorderView *)self styleProvider];
-    v10 = [v9 finalDynamicFingerColor];
-    [v8 setFillColor:{objc_msgSend(v10, "CGColor")}];
+    layer = [MEMORY[0x1E69794A0] layer];
+    styleProvider = [(AXGestureRecorderView *)self styleProvider];
+    finalDynamicFingerColor = [styleProvider finalDynamicFingerColor];
+    [layer setFillColor:{objc_msgSend(finalDynamicFingerColor, "CGColor")}];
 
-    v11 = [(AXGestureRecorderView *)self layer];
-    [v11 addSublayer:v8];
+    layer2 = [(AXGestureRecorderView *)self layer];
+    [layer2 addSublayer:layer];
 
     v12 = self->_instantReplayViews;
-    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-    [(NSMutableDictionary *)v12 setObject:v8 forKey:v13];
+    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
+    [(NSMutableDictionary *)v12 setObject:layer forKey:v13];
   }
 
-  v14 = v15;
-  [v8 setPath:{objc_msgSend(v15, "CGPath")}];
+  v14 = pathCopy;
+  [layer setPath:{objc_msgSend(pathCopy, "CGPath")}];
 }
 
-- (void)finishInstantReplayAtIndex:(unint64_t)a3
+- (void)finishInstantReplayAtIndex:(unint64_t)index
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v5 = [(AXGestureRecorderView *)self previouslyActiveLayersByInstantReplayFingerIndex];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  previouslyActiveLayersByInstantReplayFingerIndex = [(AXGestureRecorderView *)self previouslyActiveLayersByInstantReplayFingerIndex];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
+  v7 = [previouslyActiveLayersByInstantReplayFingerIndex objectForKeyedSubscript:v6];
 
-  v8 = [(AXGestureRecorderView *)self styleProvider];
-  v9 = [v8 finalDynamicFingerColor];
-  [v7 setFillColor:{objc_msgSend(v9, "CGColor")}];
+  styleProvider = [(AXGestureRecorderView *)self styleProvider];
+  finalDynamicFingerColor = [styleProvider finalDynamicFingerColor];
+  [v7 setFillColor:{objc_msgSend(finalDynamicFingerColor, "CGColor")}];
 
   v10 = [(NSMutableArray *)self->_staticLayers count];
   if (v10)
   {
     v11 = v10;
     [v7 removeFromSuperlayer];
-    v12 = [(AXGestureRecorderView *)self layer];
-    [v12 insertSublayer:v7 atIndex:v11];
+    layer = [(AXGestureRecorderView *)self layer];
+    [layer insertSublayer:v7 atIndex:v11];
   }
 
   v21[0] = v7;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
   [(AXGestureRecorderView *)self _performTransitionToStaticFingers:v13 transitionLayers:0 hasExistingStaticFingers:0];
 
-  v14 = [(AXGestureRecorderView *)self previouslyActiveLayersByInstantReplayFingerIndex];
-  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v14 removeObjectForKey:v15];
+  previouslyActiveLayersByInstantReplayFingerIndex2 = [(AXGestureRecorderView *)self previouslyActiveLayersByInstantReplayFingerIndex];
+  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
+  [previouslyActiveLayersByInstantReplayFingerIndex2 removeObjectForKey:v15];
 
   instantReplayViews = self->_instantReplayViews;
-  v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   v18 = [(NSMutableDictionary *)instantReplayViews objectForKeyedSubscript:v17];
   [v18 removeFromSuperlayer];
 
   v19 = self->_instantReplayViews;
-  v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   [(NSMutableDictionary *)v19 removeObjectForKey:v20];
 }
 
@@ -448,8 +448,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMutableDictionary *)self->_instantReplayViews allValues];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [(NSMutableDictionary *)self->_instantReplayViews allValues];
+  v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -461,14 +461,14 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) removeFromSuperlayer];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -477,17 +477,17 @@
   [(NSMutableDictionary *)self->_instantReplayViews removeAllObjects];
 }
 
-- (void)_performTransitionToStaticFingers:(id)a3 transitionLayers:(id)a4 hasExistingStaticFingers:(BOOL)a5
+- (void)_performTransitionToStaticFingers:(id)fingers transitionLayers:(id)layers hasExistingStaticFingers:(BOOL)staticFingers
 {
-  v22 = a5;
+  staticFingersCopy = staticFingers;
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  fingersCopy = fingers;
+  layersCopy = layers;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v9 = [fingersCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
     v10 = v9;
@@ -499,51 +499,51 @@
       {
         if (*v24 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(fingersCopy);
         }
 
         v13 = *(*(&v23 + 1) + 8 * v12);
         v14 = [MEMORY[0x1E6979318] animationWithKeyPath:@"fillColor"];
         [v14 setDuration:0.53];
-        v15 = [(AXGestureRecorderView *)self styleProvider];
-        v16 = [v15 finalDynamicFingerColor];
-        [v14 setFromValue:{objc_msgSend(v16, "CGColor")}];
+        styleProvider = [(AXGestureRecorderView *)self styleProvider];
+        finalDynamicFingerColor = [styleProvider finalDynamicFingerColor];
+        [v14 setFromValue:{objc_msgSend(finalDynamicFingerColor, "CGColor")}];
 
-        v17 = [(AXGestureRecorderView *)self styleProvider];
-        v18 = [v17 staticFingerColor];
-        [v14 setToValue:{objc_msgSend(v18, "CGColor")}];
+        styleProvider2 = [(AXGestureRecorderView *)self styleProvider];
+        staticFingerColor = [styleProvider2 staticFingerColor];
+        [v14 setToValue:{objc_msgSend(staticFingerColor, "CGColor")}];
 
         [v14 setValue:@"GrayTransition" forKey:@"AnimationName"];
-        v19 = [MEMORY[0x1E696AD98] numberWithBool:v22];
+        v19 = [MEMORY[0x1E696AD98] numberWithBool:staticFingersCopy];
         [v14 setValue:v19 forKey:@"HasExistingStaticFingers"];
 
         [v14 setDelegate:self];
-        [v14 setValue:v7 forKey:@"AnimatingLayers"];
-        [v14 setValue:v8 forKey:@"TransitionLayers"];
-        v20 = [(AXGestureRecorderView *)self styleProvider];
-        v21 = [v20 staticFingerColor];
-        [v13 setFillColor:{objc_msgSend(v21, "CGColor")}];
+        [v14 setValue:fingersCopy forKey:@"AnimatingLayers"];
+        [v14 setValue:layersCopy forKey:@"TransitionLayers"];
+        styleProvider3 = [(AXGestureRecorderView *)self styleProvider];
+        staticFingerColor2 = [styleProvider3 staticFingerColor];
+        [v13 setFillColor:{objc_msgSend(staticFingerColor2, "CGColor")}];
 
         [v13 addAnimation:v14 forKey:@"Change"];
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v10 = [fingersCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = a4;
+  finishedCopy = finished;
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 valueForKey:@"AnimatingLayers"];
-  v8 = [v6 valueForKey:@"TransitionLayers"];
-  v9 = [v6 valueForKey:@"AnimationName"];
+  stopCopy = stop;
+  v7 = [stopCopy valueForKey:@"AnimatingLayers"];
+  v8 = [stopCopy valueForKey:@"TransitionLayers"];
+  v9 = [stopCopy valueForKey:@"AnimationName"];
   v10 = [v9 isEqualToString:@"GrayTransition"];
 
   if (!v10)
@@ -551,10 +551,10 @@
     goto LABEL_28;
   }
 
-  v11 = [v6 valueForKey:@"HasExistingStaticFingers"];
-  v12 = [v11 BOOLValue];
+  v11 = [stopCopy valueForKey:@"HasExistingStaticFingers"];
+  bOOLValue = [v11 BOOLValue];
 
-  if (v12)
+  if (bOOLValue)
   {
     v31 = v8;
     v32 = v7;
@@ -593,7 +593,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (v4)
+  if (finishedCopy)
   {
     v31 = v8;
     v32 = v7;
@@ -617,9 +617,9 @@ LABEL_19:
           }
 
           v23 = *(*(&v37 + 1) + 8 * j);
-          v24 = [(AXGestureRecorderView *)self styleProvider];
-          v25 = [v24 staticFingerColor];
-          [v23 setFillColor:{objc_msgSend(v25, "CGColor")}];
+          styleProvider = [(AXGestureRecorderView *)self styleProvider];
+          staticFingerColor = [styleProvider staticFingerColor];
+          [v23 setFillColor:{objc_msgSend(staticFingerColor, "CGColor")}];
 
           [(NSMutableArray *)self->_staticLayers addObject:v23];
         }
@@ -665,31 +665,31 @@ LABEL_20:
 LABEL_28:
 }
 
-- (void)freezeAllDynamicFingerPathsWithInstantReplayOffset:(unint64_t)a3
+- (void)freezeAllDynamicFingerPathsWithInstantReplayOffset:(unint64_t)offset
 {
   v26 = *MEMORY[0x1E69E9840];
   v5 = [(NSMutableDictionary *)self->_activeLayers copy];
-  v6 = [(NSMutableDictionary *)self->_activeLayers allValues];
+  allValues = [(NSMutableDictionary *)self->_activeLayers allValues];
   [(NSMutableDictionary *)self->_activeLayers removeAllObjects];
   if ([(AXGestureRecorderView *)self replayMode])
   {
-    [(AXGestureRecorderView *)self _performTransitionToStaticFingers:v6 transitionLayers:0 hasExistingStaticFingers:1];
+    [(AXGestureRecorderView *)self _performTransitionToStaticFingers:allValues transitionLayers:0 hasExistingStaticFingers:1];
   }
 
-  else if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  else if (offset == 0x7FFFFFFFFFFFFFFFLL)
   {
     _AXAssert();
   }
 
   else
   {
-    v19 = v6;
-    v7 = [(AXGestureRecorderView *)self previouslyActiveLayersByInstantReplayFingerIndex];
+    v19 = allValues;
+    previouslyActiveLayersByInstantReplayFingerIndex = [(AXGestureRecorderView *)self previouslyActiveLayersByInstantReplayFingerIndex];
 
-    if (!v7)
+    if (!previouslyActiveLayersByInstantReplayFingerIndex)
     {
-      v8 = [MEMORY[0x1E695DF90] dictionary];
-      [(AXGestureRecorderView *)self setPreviouslyActiveLayersByInstantReplayFingerIndex:v8];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [(AXGestureRecorderView *)self setPreviouslyActiveLayersByInstantReplayFingerIndex:dictionary];
     }
 
     v23 = 0u;
@@ -713,11 +713,11 @@ LABEL_28:
           }
 
           v14 = *(*(&v21 + 1) + 8 * i);
-          v15 = [v14 unsignedIntegerValue];
+          unsignedIntegerValue = [v14 unsignedIntegerValue];
           v16 = [v9 objectForKeyedSubscript:v14];
-          v17 = [(AXGestureRecorderView *)self previouslyActiveLayersByInstantReplayFingerIndex];
-          v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v15 + a3];
-          [v17 setObject:v16 forKeyedSubscript:v18];
+          previouslyActiveLayersByInstantReplayFingerIndex2 = [(AXGestureRecorderView *)self previouslyActiveLayersByInstantReplayFingerIndex];
+          offset = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue + offset];
+          [previouslyActiveLayersByInstantReplayFingerIndex2 setObject:v16 forKeyedSubscript:offset];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -726,7 +726,7 @@ LABEL_28:
       while (v11);
     }
 
-    v6 = v19;
+    allValues = v19;
     v5 = v20;
   }
 }
@@ -734,12 +734,12 @@ LABEL_28:
 - (void)deleteAllFingerPaths
 {
   [(AXGestureRecorderView *)self setNeedsDisplay];
-  v3 = [(AXGestureRecorderView *)self layer];
-  [v3 removeAllAnimations];
+  layer = [(AXGestureRecorderView *)self layer];
+  [layer removeAllAnimations];
 
-  v4 = [(AXGestureRecorderView *)self layer];
-  v5 = [v4 sublayers];
-  v6 = [v5 copy];
+  layer2 = [(AXGestureRecorderView *)self layer];
+  sublayers = [layer2 sublayers];
+  v6 = [sublayers copy];
 
   [v6 enumerateObjectsUsingBlock:&__block_literal_global_7];
   [(NSMutableDictionary *)self->_activeLayers removeAllObjects];

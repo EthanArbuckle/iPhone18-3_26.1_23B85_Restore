@@ -26,18 +26,18 @@
 
 - (void)completedCurrentTarget
 {
-  v3 = [(KTOptInStateHolder *)self targetOptInStates];
-  v4 = [(KTOptInStateHolder *)self currentTarget];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  targetOptInStates = [(KTOptInStateHolder *)self targetOptInStates];
+  currentTarget = [(KTOptInStateHolder *)self currentTarget];
+  v5 = [targetOptInStates objectForKeyedSubscript:currentTarget];
 
   if (v5)
   {
-    v6 = [v5 targetResolved];
-    [v6 fulfill];
+    targetResolved = [v5 targetResolved];
+    [targetResolved fulfill];
 
-    v7 = [(KTOptInStateHolder *)self targetOptInStates];
-    v8 = [(KTOptInStateHolder *)self currentTarget];
-    [v7 setObject:0 forKeyedSubscript:v8];
+    targetOptInStates2 = [(KTOptInStateHolder *)self targetOptInStates];
+    currentTarget2 = [(KTOptInStateHolder *)self currentTarget];
+    [targetOptInStates2 setObject:0 forKeyedSubscript:currentTarget2];
 
     [(KTOptInStateHolder *)self setCurrentTarget:0];
   }

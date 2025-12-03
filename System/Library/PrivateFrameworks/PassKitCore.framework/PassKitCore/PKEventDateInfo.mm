@@ -1,27 +1,27 @@
 @interface PKEventDateInfo
-- (PKEventDateInfo)initWithCoder:(id)a3;
-- (PKEventDateInfo)initWithDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKEventDateInfo)initWithCoder:(id)coder;
+- (PKEventDateInfo)initWithDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKEventDateInfo
 
-- (PKEventDateInfo)initWithDictionary:(id)a3
+- (PKEventDateInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = PKEventDateInfo;
   v5 = [(PKEventDateInfo *)&v12 init];
   if (v5)
   {
-    v6 = [v4 PKDateForKey:@"date"];
+    v6 = [dictionaryCopy PKDateForKey:@"date"];
     date = v5->_date;
     v5->_date = v6;
 
-    v5->_ignoreTimeComponents = [v4 PKBoolForKey:@"ignoreTimeComponents"];
-    v5->_unannounced = [v4 PKBoolForKey:@"unannounced"];
-    v5->_undetermined = [v4 PKBoolForKey:@"undetermined"];
-    v8 = [v4 PKStringForKey:@"timeZone"];
+    v5->_ignoreTimeComponents = [dictionaryCopy PKBoolForKey:@"ignoreTimeComponents"];
+    v5->_unannounced = [dictionaryCopy PKBoolForKey:@"unannounced"];
+    v5->_undetermined = [dictionaryCopy PKBoolForKey:@"undetermined"];
+    v8 = [dictionaryCopy PKStringForKey:@"timeZone"];
     v9 = PKTimeZoneFromString(v8);
     timeZone = v5->_timeZone;
     v5->_timeZone = v9;
@@ -30,37 +30,37 @@
   return v5;
 }
 
-- (PKEventDateInfo)initWithCoder:(id)a3
+- (PKEventDateInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKEventDateInfo *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
     date = v5->_date;
     v5->_date = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
     timeZone = v5->_timeZone;
     v5->_timeZone = v8;
 
-    v5->_ignoreTimeComponents = [v4 decodeBoolForKey:@"ignoreTimeComponents"];
-    v5->_unannounced = [v4 decodeBoolForKey:@"unannounced"];
-    v5->_undetermined = [v4 decodeBoolForKey:@"undetermined"];
+    v5->_ignoreTimeComponents = [coderCopy decodeBoolForKey:@"ignoreTimeComponents"];
+    v5->_unannounced = [coderCopy decodeBoolForKey:@"unannounced"];
+    v5->_undetermined = [coderCopy decodeBoolForKey:@"undetermined"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   date = self->_date;
-  v5 = a3;
-  [v5 encodeObject:date forKey:@"date"];
-  [v5 encodeObject:self->_timeZone forKey:@"timeZone"];
-  [v5 encodeBool:self->_ignoreTimeComponents forKey:@"ignoreTimeComponents"];
-  [v5 encodeBool:self->_unannounced forKey:@"unannounced"];
-  [v5 encodeBool:self->_undetermined forKey:@"undetermined"];
+  coderCopy = coder;
+  [coderCopy encodeObject:date forKey:@"date"];
+  [coderCopy encodeObject:self->_timeZone forKey:@"timeZone"];
+  [coderCopy encodeBool:self->_ignoreTimeComponents forKey:@"ignoreTimeComponents"];
+  [coderCopy encodeBool:self->_unannounced forKey:@"unannounced"];
+  [coderCopy encodeBool:self->_undetermined forKey:@"undetermined"];
 }
 
 @end

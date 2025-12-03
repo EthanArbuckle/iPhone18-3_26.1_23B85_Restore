@@ -1,25 +1,25 @@
 @interface MTSleepModeStateMachine
-- (BOOL)isSleepModeEnabled:(BOOL *)a3;
+- (BOOL)isSleepModeEnabled:(BOOL *)enabled;
 - (BOOL)isUserAsleep;
-- (MTSleepModeStateMachine)initWithDelegate:(id)a3 infoProvider:(id)a4;
+- (MTSleepModeStateMachine)initWithDelegate:(id)delegate infoProvider:(id)provider;
 - (id)currentDate;
 - (id)keepOffUntilDate;
-- (id)onStateWithSleepModeEndDate:(id)a3;
+- (id)onStateWithSleepModeEndDate:(id)date;
 - (id)sleepAlarm;
-- (id)userRequestedOffStateWithKeepOffUntilDate:(id)a3;
-- (void)stateMachine:(id)a3 keepSleepModeOffUntilDate:(id)a4;
-- (void)stateMachine:(id)a3 scheduleUpdateForSecondsFromNow:(double)a4;
-- (void)stateMachineClearKeepSleepModeOff:(id)a3;
+- (id)userRequestedOffStateWithKeepOffUntilDate:(id)date;
+- (void)stateMachine:(id)machine keepSleepModeOffUntilDate:(id)date;
+- (void)stateMachine:(id)machine scheduleUpdateForSecondsFromNow:(double)now;
+- (void)stateMachineClearKeepSleepModeOff:(id)off;
 - (void)userWokeUp;
 @end
 
 @implementation MTSleepModeStateMachine
 
-- (MTSleepModeStateMachine)initWithDelegate:(id)a3 infoProvider:(id)a4
+- (MTSleepModeStateMachine)initWithDelegate:(id)delegate infoProvider:(id)provider
 {
   v12.receiver = self;
   v12.super_class = MTSleepModeStateMachine;
-  v4 = [(MTStateMachine *)&v12 initWithDelegate:a3 infoProvider:a4];
+  v4 = [(MTStateMachine *)&v12 initWithDelegate:delegate infoProvider:provider];
   if (v4)
   {
     v5 = [(MTStateMachineState *)[MTSleepModeStateMachineInitialState alloc] initWithStateMachine:v4];
@@ -40,88 +40,88 @@
   return v4;
 }
 
-- (id)onStateWithSleepModeEndDate:(id)a3
+- (id)onStateWithSleepModeEndDate:(id)date
 {
-  v4 = a3;
-  v5 = [[MTSleepModeStateMachineOnState alloc] initWithSleepModeEndDate:v4 stateMachine:self];
+  dateCopy = date;
+  v5 = [[MTSleepModeStateMachineOnState alloc] initWithSleepModeEndDate:dateCopy stateMachine:self];
 
   return v5;
 }
 
-- (id)userRequestedOffStateWithKeepOffUntilDate:(id)a3
+- (id)userRequestedOffStateWithKeepOffUntilDate:(id)date
 {
-  v4 = a3;
-  v5 = [[MTSleepModeStateMachineUserRequestedOffState alloc] initWithKeepOffUntilDate:v4 stateMachine:self];
+  dateCopy = date;
+  v5 = [[MTSleepModeStateMachineUserRequestedOffState alloc] initWithKeepOffUntilDate:dateCopy stateMachine:self];
 
   return v5;
 }
 
 - (void)userWokeUp
 {
-  v2 = [(MTStateMachine *)self currentState];
-  [v2 userWokeUp];
+  currentState = [(MTStateMachine *)self currentState];
+  [currentState userWokeUp];
 }
 
 - (id)sleepAlarm
 {
-  v2 = [(MTStateMachine *)self infoProvider];
-  v3 = [v2 sleepAlarm];
+  infoProvider = [(MTStateMachine *)self infoProvider];
+  sleepAlarm = [infoProvider sleepAlarm];
 
-  return v3;
+  return sleepAlarm;
 }
 
 - (id)currentDate
 {
-  v2 = [(MTStateMachine *)self infoProvider];
-  v3 = [v2 currentDate];
+  infoProvider = [(MTStateMachine *)self infoProvider];
+  currentDate = [infoProvider currentDate];
 
-  return v3;
+  return currentDate;
 }
 
-- (BOOL)isSleepModeEnabled:(BOOL *)a3
+- (BOOL)isSleepModeEnabled:(BOOL *)enabled
 {
-  v4 = [(MTStateMachine *)self infoProvider];
-  LOBYTE(a3) = [v4 isSleepModeEnabled:a3];
+  infoProvider = [(MTStateMachine *)self infoProvider];
+  LOBYTE(enabled) = [infoProvider isSleepModeEnabled:enabled];
 
-  return a3;
+  return enabled;
 }
 
 - (id)keepOffUntilDate
 {
-  v2 = [(MTStateMachine *)self infoProvider];
-  v3 = [v2 keepOffUntilDate];
+  infoProvider = [(MTStateMachine *)self infoProvider];
+  keepOffUntilDate = [infoProvider keepOffUntilDate];
 
-  return v3;
+  return keepOffUntilDate;
 }
 
 - (BOOL)isUserAsleep
 {
-  v2 = [(MTStateMachine *)self infoProvider];
-  v3 = [v2 isUserAsleep];
+  infoProvider = [(MTStateMachine *)self infoProvider];
+  isUserAsleep = [infoProvider isUserAsleep];
 
-  return v3;
+  return isUserAsleep;
 }
 
-- (void)stateMachine:(id)a3 keepSleepModeOffUntilDate:(id)a4
+- (void)stateMachine:(id)machine keepSleepModeOffUntilDate:(id)date
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MTStateMachine *)self delegate];
-  [v8 stateMachine:v7 keepSleepModeOffUntilDate:v6];
+  dateCopy = date;
+  machineCopy = machine;
+  delegate = [(MTStateMachine *)self delegate];
+  [delegate stateMachine:machineCopy keepSleepModeOffUntilDate:dateCopy];
 }
 
-- (void)stateMachineClearKeepSleepModeOff:(id)a3
+- (void)stateMachineClearKeepSleepModeOff:(id)off
 {
-  v4 = a3;
-  v5 = [(MTStateMachine *)self delegate];
-  [v5 stateMachineClearKeepSleepModeOff:v4];
+  offCopy = off;
+  delegate = [(MTStateMachine *)self delegate];
+  [delegate stateMachineClearKeepSleepModeOff:offCopy];
 }
 
-- (void)stateMachine:(id)a3 scheduleUpdateForSecondsFromNow:(double)a4
+- (void)stateMachine:(id)machine scheduleUpdateForSecondsFromNow:(double)now
 {
-  v6 = a3;
-  v7 = [(MTStateMachine *)self delegate];
-  [v7 stateMachine:v6 scheduleUpdateForSecondsFromNow:a4];
+  machineCopy = machine;
+  delegate = [(MTStateMachine *)self delegate];
+  [delegate stateMachine:machineCopy scheduleUpdateForSecondsFromNow:now];
 }
 
 @end

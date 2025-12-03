@@ -1,22 +1,22 @@
 @interface NURuleSystem
 - (NURuleSystem)init;
-- (NURuleSystem)initWithCoder:(id)a3;
-- (double)gradeForFact:(id)a3;
-- (double)maximumGradeForFacts:(id)a3;
-- (double)minimumGradeForFacts:(id)a3;
+- (NURuleSystem)initWithCoder:(id)coder;
+- (double)gradeForFact:(id)fact;
+- (double)maximumGradeForFacts:(id)facts;
+- (double)minimumGradeForFacts:(id)facts;
 - (id)debugDescription;
 - (id)debugQuickLookObject;
-- (void)_addRuleToAgenda:(id)a3;
-- (void)addRule:(id)a3;
-- (void)addRulesFromArray:(id)a3;
-- (void)assertFact:(id)a3 grade:(double)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_addRuleToAgenda:(id)agenda;
+- (void)addRule:(id)rule;
+- (void)addRulesFromArray:(id)array;
+- (void)assertFact:(id)fact grade:(double)grade;
+- (void)encodeWithCoder:(id)coder;
 - (void)evaluate;
 - (void)removeAllRules;
 - (void)reset;
-- (void)resetAndEvaluateWithInitialState:(id)a3;
-- (void)retractFact:(id)a3 grade:(double)a4;
-- (void)setStateObject:(id)a3 forKey:(id)a4;
+- (void)resetAndEvaluateWithInitialState:(id)state;
+- (void)retractFact:(id)fact grade:(double)grade;
+- (void)setStateObject:(id)object forKey:(id)key;
 @end
 
 @implementation NURuleSystem
@@ -311,8 +311,8 @@
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v6 = [(NSMutableDictionary *)self->_constants allKeys];
-  v7 = [v6 sortedArrayUsingComparator:&__block_literal_global_28345];
+  allKeys = [(NSMutableDictionary *)self->_constants allKeys];
+  v7 = [allKeys sortedArrayUsingComparator:&__block_literal_global_28345];
 
   v8 = [v7 countByEnumeratingWithState:&v70 objects:v79 count:16];
   if (v8)
@@ -345,8 +345,8 @@
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v14 = [(NSMutableDictionary *)self->_state allKeys];
-  v15 = [v14 sortedArrayUsingComparator:&__block_literal_global_28345];
+  allKeys2 = [(NSMutableDictionary *)self->_state allKeys];
+  v15 = [allKeys2 sortedArrayUsingComparator:&__block_literal_global_28345];
 
   v16 = [v15 countByEnumeratingWithState:&v66 objects:v78 count:16];
   if (v16)
@@ -418,9 +418,9 @@
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v30 = [(NSMapTable *)self->_gradeByFact keyEnumerator];
-  v31 = [v30 allObjects];
-  v32 = [v31 sortedArrayUsingComparator:&__block_literal_global_28345];
+  keyEnumerator = [(NSMapTable *)self->_gradeByFact keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
+  v32 = [allObjects sortedArrayUsingComparator:&__block_literal_global_28345];
 
   v33 = [v32 countByEnumeratingWithState:&v58 objects:v76 count:16];
   if (v33)
@@ -554,45 +554,45 @@
   [(NSMutableString *)self->_runLog deleteCharactersInRange:0, [(NSMutableString *)self->_runLog length]];
 }
 
-- (void)retractFact:(id)a3 grade:(double)a4
+- (void)retractFact:(id)fact grade:(double)grade
 {
-  v13 = a3;
-  v6 = [(NSMapTable *)self->_gradeByFact objectForKey:v13];
+  factCopy = fact;
+  v6 = [(NSMapTable *)self->_gradeByFact objectForKey:factCopy];
   [v6 doubleValue];
   v8 = v7;
 
-  v9 = v13;
+  v9 = factCopy;
   if (v8 != 0.0)
   {
-    v10 = fmax(v8 - a4, 0.0);
+    v10 = fmax(v8 - grade, 0.0);
     if (self->_enableLogging)
     {
-      [(NSMutableString *)self->_runLog appendFormat:@"retracted '%@' by -%.2f to %.2f\n", v13, *&a4, *&v10];
+      [(NSMutableString *)self->_runLog appendFormat:@"retracted '%@' by -%.2f to %.2f\n", factCopy, *&grade, *&v10];
     }
 
-    v9 = v13;
+    v9 = factCopy;
     if (v10 != v8)
     {
       gradeByFact = self->_gradeByFact;
       v12 = [MEMORY[0x1E696AD98] numberWithDouble:v10];
-      [(NSMapTable *)gradeByFact setObject:v12 forKey:v13];
+      [(NSMapTable *)gradeByFact setObject:v12 forKey:factCopy];
 
       [(NURuleSystem *)self evaluate];
-      v9 = v13;
+      v9 = factCopy;
     }
   }
 }
 
-- (void)assertFact:(id)a3 grade:(double)a4
+- (void)assertFact:(id)fact grade:(double)grade
 {
-  v14 = a3;
+  factCopy = fact;
   v6 = [(NSMapTable *)self->_gradeByFact objectForKey:?];
   [v6 doubleValue];
   v8 = v7;
 
-  if (v8 + a4 <= 1.0)
+  if (v8 + grade <= 1.0)
   {
-    v10 = v8 + a4;
+    v10 = v8 + grade;
   }
 
   else
@@ -602,32 +602,32 @@
 
   if (self->_enableLogging)
   {
-    v9 = [(NSMutableString *)self->_runLog appendFormat:@"asserted '%@' by +%.2f to %.2f\n", v14, *&a4, *&v10];
+    evaluate = [(NSMutableString *)self->_runLog appendFormat:@"asserted '%@' by +%.2f to %.2f\n", factCopy, *&grade, *&v10];
   }
 
-  v11 = v14;
+  v11 = factCopy;
   if (v10 != v8)
   {
     gradeByFact = self->_gradeByFact;
     v13 = [MEMORY[0x1E696AD98] numberWithDouble:v10];
-    [(NSMapTable *)gradeByFact setObject:v13 forKey:v14];
+    [(NSMapTable *)gradeByFact setObject:v13 forKey:factCopy];
 
-    v9 = [(NURuleSystem *)self evaluate];
-    v11 = v14;
+    evaluate = [(NURuleSystem *)self evaluate];
+    v11 = factCopy;
   }
 
-  MEMORY[0x1EEE66BB8](v9, v11);
+  MEMORY[0x1EEE66BB8](evaluate, v11);
 }
 
-- (double)maximumGradeForFacts:(id)a3
+- (double)maximumGradeForFacts:(id)facts
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  factsCopy = facts;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [factsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -639,7 +639,7 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(factsCopy);
         }
 
         v10 = [(NSMapTable *)self->_gradeByFact objectForKey:*(*(&v14 + 1) + 8 * i)];
@@ -652,7 +652,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [factsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -666,15 +666,15 @@
   return v8;
 }
 
-- (double)minimumGradeForFacts:(id)a3
+- (double)minimumGradeForFacts:(id)facts
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  factsCopy = facts;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [factsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -686,7 +686,7 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(factsCopy);
         }
 
         v10 = [(NSMapTable *)self->_gradeByFact objectForKey:*(*(&v14 + 1) + 8 * i)];
@@ -699,7 +699,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [factsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -713,9 +713,9 @@
   return v8;
 }
 
-- (double)gradeForFact:(id)a3
+- (double)gradeForFact:(id)fact
 {
-  v3 = [(NSMapTable *)self->_gradeByFact objectForKey:a3];
+  v3 = [(NSMapTable *)self->_gradeByFact objectForKey:fact];
   [v3 doubleValue];
   v5 = v4;
 
@@ -731,16 +731,16 @@
   [(NSMutableArray *)executed removeAllObjects];
 }
 
-- (void)addRulesFromArray:(id)a3
+- (void)addRulesFromArray:(id)array
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(NSMutableArray *)self->_rules addObjectsFromArray:v4];
+  arrayCopy = array;
+  [(NSMutableArray *)self->_rules addObjectsFromArray:arrayCopy];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = v4;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -767,18 +767,18 @@
   }
 }
 
-- (void)addRule:(id)a3
+- (void)addRule:(id)rule
 {
   rules = self->_rules;
-  v5 = a3;
-  [(NSMutableArray *)rules addObject:v5];
-  [(NURuleSystem *)self _addRuleToAgenda:v5];
+  ruleCopy = rule;
+  [(NSMutableArray *)rules addObject:ruleCopy];
+  [(NURuleSystem *)self _addRuleToAgenda:ruleCopy];
 }
 
-- (void)_addRuleToAgenda:(id)a3
+- (void)_addRuleToAgenda:(id)agenda
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  agendaCopy = agenda;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -802,8 +802,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v12 = [*(*(&v13 + 1) + 8 * v10) salience];
-        if (v12 < [v4 salience])
+        salience = [*(*(&v13 + 1) + 8 * v10) salience];
+        if (salience < [agendaCopy salience])
         {
           v8 = v11;
           goto LABEL_12;
@@ -831,36 +831,36 @@
 
 LABEL_12:
 
-  [(NSMutableArray *)self->_agenda insertObject:v4 atIndex:v8];
+  [(NSMutableArray *)self->_agenda insertObject:agendaCopy atIndex:v8];
 }
 
-- (void)setStateObject:(id)a3 forKey:(id)a4
+- (void)setStateObject:(id)object forKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
+  objectCopy = object;
+  keyCopy = key;
   if (self->_enableLogging)
   {
-    v7 = [(NSMutableDictionary *)self->_state valueForKey:v6];
+    v7 = [(NSMutableDictionary *)self->_state valueForKey:keyCopy];
     runLog = self->_runLog;
     if (v7)
     {
-      [(NSMutableString *)runLog appendFormat:@"replacing state for key '%@' of value '%@' to new value '%@'\n", v6, v7, v10];
+      [(NSMutableString *)runLog appendFormat:@"replacing state for key '%@' of value '%@' to new value '%@'\n", keyCopy, v7, objectCopy];
     }
 
     else
     {
-      [(NSMutableString *)runLog appendFormat:@"setting state for key '%@' to value '%@'\n", v6, v10, v9];
+      [(NSMutableString *)runLog appendFormat:@"setting state for key '%@' to value '%@'\n", keyCopy, objectCopy, v9];
     }
   }
 
-  [(NSMutableDictionary *)self->_state setObject:v10 forKey:v6];
+  [(NSMutableDictionary *)self->_state setObject:objectCopy forKey:keyCopy];
 }
 
-- (void)resetAndEvaluateWithInitialState:(id)a3
+- (void)resetAndEvaluateWithInitialState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   [(NURuleSystem *)self reset];
-  [(NSMutableDictionary *)self->_state setDictionary:v4];
+  [(NSMutableDictionary *)self->_state setDictionary:stateCopy];
 
   [(NURuleSystem *)self evaluate];
 }
@@ -939,25 +939,25 @@ LABEL_4:
 LABEL_16:
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   constants = self->_constants;
-  v6 = a3;
-  [v6 encodeObject:constants forKey:@"constants"];
-  [v6 encodeObject:self->_state forKey:@"state"];
-  [v6 encodeObject:self->_rules forKey:@"rules"];
-  [v6 encodeObject:self->_agenda forKey:@"agenda"];
-  [v6 encodeObject:self->_executed forKey:@"executed"];
-  v5 = [(NSMapTable *)self->_gradeByFact dictionaryRepresentation];
-  [v6 encodeObject:v5 forKey:@"facts"];
+  coderCopy = coder;
+  [coderCopy encodeObject:constants forKey:@"constants"];
+  [coderCopy encodeObject:self->_state forKey:@"state"];
+  [coderCopy encodeObject:self->_rules forKey:@"rules"];
+  [coderCopy encodeObject:self->_agenda forKey:@"agenda"];
+  [coderCopy encodeObject:self->_executed forKey:@"executed"];
+  dictionaryRepresentation = [(NSMapTable *)self->_gradeByFact dictionaryRepresentation];
+  [coderCopy encodeObject:dictionaryRepresentation forKey:@"facts"];
 
-  [v6 encodeObject:self->_runLog forKey:@"runlog"];
+  [coderCopy encodeObject:self->_runLog forKey:@"runlog"];
 }
 
-- (NURuleSystem)initWithCoder:(id)a3
+- (NURuleSystem)initWithCoder:(id)coder
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(NURuleSystem *)self init];
   if (NUIsAppleInternal_onceToken != -1)
   {
@@ -976,7 +976,7 @@ LABEL_16:
       v11 = objc_opt_class();
       v12 = objc_opt_class();
       v13 = [v6 setWithObjects:{v7, v8, v9, v10, v11, v12, objc_opt_class(), 0}];
-      v14 = [v4 decodeObjectOfClasses:v13 forKey:@"constants"];
+      v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"constants"];
       if (v14)
       {
         [(NSMutableDictionary *)v5->_constants setDictionary:v14];
@@ -996,31 +996,31 @@ LABEL_16:
         [v21 addObject:v22];
       }
 
-      v23 = [v4 decodeObjectOfClasses:v21 forKey:@"state"];
+      v23 = [coderCopy decodeObjectOfClasses:v21 forKey:@"state"];
       if (v23)
       {
         [(NSMutableDictionary *)v5->_state setDictionary:v23];
       }
 
-      v24 = [v4 decodeObjectOfClasses:v13 forKey:@"rules"];
+      v24 = [coderCopy decodeObjectOfClasses:v13 forKey:@"rules"];
       if (v24)
       {
         [(NSMutableArray *)v5->_rules setArray:v24];
       }
 
-      v25 = [v4 decodeObjectOfClasses:v13 forKey:@"agenda"];
+      v25 = [coderCopy decodeObjectOfClasses:v13 forKey:@"agenda"];
       if (v25)
       {
         [(NSMutableArray *)v5->_agenda setArray:v25];
       }
 
-      v26 = [v4 decodeObjectOfClasses:v13 forKey:@"executed"];
+      v26 = [coderCopy decodeObjectOfClasses:v13 forKey:@"executed"];
       if (v26)
       {
         [(NSMutableArray *)v5->_executed setArray:v26];
       }
 
-      v27 = [v4 decodeObjectOfClasses:v13 forKey:@"facts"];
+      v27 = [coderCopy decodeObjectOfClasses:v13 forKey:@"facts"];
       v28 = v27;
       if (v27)
       {
@@ -1033,8 +1033,8 @@ LABEL_16:
         v47 = 0u;
         v44 = 0u;
         v45 = 0u;
-        v29 = [v27 allKeys];
-        v30 = [v29 countByEnumeratingWithState:&v44 objects:v48 count:16];
+        allKeys = [v27 allKeys];
+        v30 = [allKeys countByEnumeratingWithState:&v44 objects:v48 count:16];
         if (v30)
         {
           v31 = v30;
@@ -1045,7 +1045,7 @@ LABEL_16:
             {
               if (*v45 != v32)
               {
-                objc_enumerationMutation(v29);
+                objc_enumerationMutation(allKeys);
               }
 
               v34 = *(*(&v44 + 1) + 8 * i);
@@ -1053,7 +1053,7 @@ LABEL_16:
               [(NSMapTable *)v5->_gradeByFact setObject:v35 forKey:v34];
             }
 
-            v31 = [v29 countByEnumeratingWithState:&v44 objects:v48 count:16];
+            v31 = [allKeys countByEnumeratingWithState:&v44 objects:v48 count:16];
           }
 
           while (v31);
@@ -1066,7 +1066,7 @@ LABEL_16:
         v26 = v38;
       }
 
-      v36 = [v4 decodeObjectOfClasses:v13 forKey:@"runlog"];
+      v36 = [coderCopy decodeObjectOfClasses:v13 forKey:@"runlog"];
       if (v36)
       {
         [(NSMutableString *)v5->_runLog setString:v36];

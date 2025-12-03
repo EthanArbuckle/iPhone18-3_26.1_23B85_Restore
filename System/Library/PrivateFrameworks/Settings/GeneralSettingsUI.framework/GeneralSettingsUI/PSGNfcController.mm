@@ -3,14 +3,14 @@
 - (id)specifiers;
 - (void)_disableNfcRadio;
 - (void)_enableNfcRadio;
-- (void)_refreshFooterForSpecifier:(id)a3;
+- (void)_refreshFooterForSpecifier:(id)specifier;
 - (void)_refreshNfcRadioStateSetting;
 - (void)_updateHwStateChange;
 - (void)dealloc;
-- (void)didChangeRadioState:(BOOL)a3;
+- (void)didChangeRadioState:(BOOL)state;
 - (void)hardwareStateDidChange;
 - (void)nfcEnable;
-- (void)setNfcEnable:(id)a3 specifier:(id)a4;
+- (void)setNfcEnable:(id)enable specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -18,8 +18,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D2C840] sharedHardwareManager];
-  [v3 unregisterEventListener:self];
+  mEMORY[0x277D2C840] = [MEMORY[0x277D2C840] sharedHardwareManager];
+  [mEMORY[0x277D2C840] unregisterEventListener:self];
 
   v4.receiver = self;
   v4.super_class = PSGNfcController;
@@ -28,9 +28,9 @@
 
 - (void)viewDidLoad
 {
-  v3 = [MEMORY[0x277D2C840] sharedHardwareManager];
-  [v3 registerEventListener:self];
-  -[PSGNfcController setHwState:](self, "setHwState:", [v3 getHwSupport]);
+  mEMORY[0x277D2C840] = [MEMORY[0x277D2C840] sharedHardwareManager];
+  [mEMORY[0x277D2C840] registerEventListener:self];
+  -[PSGNfcController setHwState:](self, "setHwState:", [mEMORY[0x277D2C840] getHwSupport]);
   v4.receiver = self;
   v4.super_class = PSGNfcController;
   [(PSGNfcController *)&v4 viewDidLoad];
@@ -39,13 +39,13 @@
 - (id)specifiers
 {
   [(PSGNfcController *)self _updateHwStateChange];
-  v3 = [(PSGNfcController *)self hwState];
+  hwState = [(PSGNfcController *)self hwState];
   v4 = *MEMORY[0x277D3FC48];
   v5 = *(&self->super.super.super.super.super.isa + v4);
   if (v5)
   {
     v6 = [v5 specifierForID:@"NFC"];
-    if (v3 == 2)
+    if (hwState == 2)
     {
       if (![(PSGNfcController *)self restrictedFeature])
       {
@@ -84,7 +84,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v10 = v3 == 2;
+  v10 = hwState == 2;
   v11 = [(PSGNfcController *)self loadSpecifiersFromPlistName:@"Nfc" target:self];
   v12 = *(&self->super.super.super.super.super.isa + v4);
   *(&self->super.super.super.super.super.isa + v4) = v11;
@@ -94,8 +94,8 @@ LABEL_12:
   self->_groupSpecifier = v13;
 
   v6 = [*(&self->super.super.super.super.super.isa + v4) specifierForID:@"NFC"];
-  v15 = [MEMORY[0x277D262A0] sharedConnection];
-  -[PSGNfcController setRestrictedFeature:](self, "setRestrictedFeature:", [v15 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25FB0]]);
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  -[PSGNfcController setRestrictedFeature:](self, "setRestrictedFeature:", [mEMORY[0x277D262A0] isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25FB0]]);
 
   v16 = [MEMORY[0x277CCABB0] numberWithInt:{v10 & ~-[PSGNfcController restrictedFeature](self, "restrictedFeature")}];
   [v6 setObject:v16 forKeyedSubscript:*MEMORY[0x277D3FF38]];
@@ -112,9 +112,9 @@ LABEL_13:
 {
   if ([(PSGNfcController *)self hwState]== 2)
   {
-    v2 = [MEMORY[0x277D2C840] sharedHardwareManager];
+    mEMORY[0x277D2C840] = [MEMORY[0x277D2C840] sharedHardwareManager];
     v9 = 0;
-    v3 = [v2 getRadioEnabledState:&v9];
+    v3 = [mEMORY[0x277D2C840] getRadioEnabledState:&v9];
     if (v3)
     {
       v4 = _PSGLoggingFacility();
@@ -164,22 +164,22 @@ LABEL_13:
   [(PSGNfcController *)self _refreshNfcRadioStateSetting];
 }
 
-- (void)setNfcEnable:(id)a3 specifier:(id)a4
+- (void)setNfcEnable:(id)enable specifier:(id)specifier
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 BOOLValue];
+  specifierCopy = specifier;
+  bOOLValue = [enable BOOLValue];
   v8 = _PSGLoggingFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v24 = v6;
+    v24 = specifierCopy;
     v25 = 1024;
-    v26 = v7;
+    v26 = bOOLValue;
     _os_log_impl(&dword_21CF20000, v8, OS_LOG_TYPE_DEFAULT, "Specifier=%{public}@, Enable=%d", buf, 0x12u);
   }
 
-  if (v7)
+  if (bOOLValue)
   {
     [(PSGNfcController *)self _enableNfcRadio];
   }
@@ -224,27 +224,27 @@ LABEL_13:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_refreshFooterForSpecifier:(id)a3
+- (void)_refreshFooterForSpecifier:(id)specifier
 {
   v4 = MEMORY[0x277CCAB68];
-  v5 = a3;
+  specifierCopy = specifier;
   v7 = [v4 stringWithString:@"NFC_FOOTER_BASE"];
   v6 = PSG_LocalizedStringForNFC(v7);
-  [v5 setProperty:v6 forKey:*MEMORY[0x277D3FF88]];
+  [specifierCopy setProperty:v6 forKey:*MEMORY[0x277D3FF88]];
 
-  [(PSGNfcController *)self reloadSpecifier:v5];
+  [(PSGNfcController *)self reloadSpecifier:specifierCopy];
 }
 
 - (void)_updateHwStateChange
 {
   if ([(PSGNfcController *)self hwState]!= 4 && [(PSGNfcController *)self hwState]!= 2)
   {
-    v3 = [MEMORY[0x277D2C840] sharedHardwareManager];
-    -[PSGNfcController setHwState:](self, "setHwState:", [v3 getHwSupport]);
+    mEMORY[0x277D2C840] = [MEMORY[0x277D2C840] sharedHardwareManager];
+    -[PSGNfcController setHwState:](self, "setHwState:", [mEMORY[0x277D2C840] getHwSupport]);
   }
 }
 
-- (void)didChangeRadioState:(BOOL)a3
+- (void)didChangeRadioState:(BOOL)state
 {
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
@@ -252,7 +252,7 @@ LABEL_13:
   block[2] = __40__PSGNfcController_didChangeRadioState___block_invoke;
   block[3] = &unk_278325570;
   objc_copyWeak(&v5, &location);
-  v6 = a3;
+  stateCopy = state;
   dispatch_async(MEMORY[0x277D85CD0], block);
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -299,9 +299,9 @@ void __40__PSGNfcController_didChangeRadioState___block_invoke(uint64_t a1)
 
 - (void)hardwareStateDidChange
 {
-  v3 = [(PSGNfcController *)self hwState];
+  hwState = [(PSGNfcController *)self hwState];
   [(PSGNfcController *)self _updateHwStateChange];
-  if (v3 != 4 && v3 != [(PSGNfcController *)self hwState])
+  if (hwState != 4 && hwState != [(PSGNfcController *)self hwState])
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -326,7 +326,7 @@ void __42__PSGNfcController_hardwareStateDidChange__block_invoke(uint64_t a1)
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_21CF20000, a2, OS_LOG_TYPE_ERROR, "Fetch NFC status error: %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

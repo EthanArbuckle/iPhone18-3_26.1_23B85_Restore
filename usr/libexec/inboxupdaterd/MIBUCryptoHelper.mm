@@ -1,17 +1,17 @@
 @interface MIBUCryptoHelper
-+ (id)_deriveDeviceIDsForUseCase:(id)a3 outError:(id *)a4;
-+ (id)_deriveDeviceKeyWithLabel:(id)a3 andContext:(id)a4 outError:(id *)a5;
-+ (id)deriveDeviceIDsForBTAdvertisement:(id *)a3;
-+ (id)deriveDeviceIDsForBTConnection:(id *)a3;
-+ (id)deriveDeviceIDsForBTWake:(id *)a3;
-+ (id)deriveDeviceIDsFromDeviceKey:(id)a3 forUseCase:(id)a4 withTimestamp:(unint64_t)a5 outError:(id *)a6;
-+ (id)deriveDeviceKeyForSeaship:(id *)a3;
-+ (void)createSignatureUsingSUCertForData:(id)a3 withCompletion:(id)a4;
++ (id)_deriveDeviceIDsForUseCase:(id)case outError:(id *)error;
++ (id)_deriveDeviceKeyWithLabel:(id)label andContext:(id)context outError:(id *)error;
++ (id)deriveDeviceIDsForBTAdvertisement:(id *)advertisement;
++ (id)deriveDeviceIDsForBTConnection:(id *)connection;
++ (id)deriveDeviceIDsForBTWake:(id *)wake;
++ (id)deriveDeviceIDsFromDeviceKey:(id)key forUseCase:(id)case withTimestamp:(unint64_t)timestamp outError:(id *)error;
++ (id)deriveDeviceKeyForSeaship:(id *)seaship;
++ (void)createSignatureUsingSUCertForData:(id)data withCompletion:(id)completion;
 @end
 
 @implementation MIBUCryptoHelper
 
-+ (id)deriveDeviceKeyForSeaship:(id *)a3
++ (id)deriveDeviceKeyForSeaship:(id *)seaship
 {
   v4 = MGCopyAnswer();
   if (qword_1000B84A8[0] != -1)
@@ -26,12 +26,12 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Deriving Device Key for Seaship...", v8, 2u);
   }
 
-  v6 = [MIBUCryptoHelper _deriveDeviceKeyWithLabel:v4 andContext:@"seaship" outError:a3];
+  v6 = [MIBUCryptoHelper _deriveDeviceKeyWithLabel:v4 andContext:@"seaship" outError:seaship];
 
   return v6;
 }
 
-+ (id)deriveDeviceIDsForBTWake:(id *)a3
++ (id)deriveDeviceIDsForBTWake:(id *)wake
 {
   if (qword_1000B84A8[0] != -1)
   {
@@ -45,12 +45,12 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Deriving Device IDs for BT wake...", v7, 2u);
   }
 
-  v5 = [MIBUCryptoHelper _deriveDeviceIDsForUseCase:@"Adv" outError:a3];
+  v5 = [MIBUCryptoHelper _deriveDeviceIDsForUseCase:@"Adv" outError:wake];
 
   return v5;
 }
 
-+ (id)deriveDeviceIDsForBTAdvertisement:(id *)a3
++ (id)deriveDeviceIDsForBTAdvertisement:(id *)advertisement
 {
   if (qword_1000B84A8[0] != -1)
   {
@@ -64,12 +64,12 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Deriving Device IDs for BT advertisement...", v7, 2u);
   }
 
-  v5 = [MIBUCryptoHelper _deriveDeviceIDsForUseCase:@"Resp" outError:a3];
+  v5 = [MIBUCryptoHelper _deriveDeviceIDsForUseCase:@"Resp" outError:advertisement];
 
   return v5;
 }
 
-+ (id)deriveDeviceIDsForBTConnection:(id *)a3
++ (id)deriveDeviceIDsForBTConnection:(id *)connection
 {
   if (qword_1000B84A8[0] != -1)
   {
@@ -83,15 +83,15 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Deriving Device IDs for BT connection...", v7, 2u);
   }
 
-  v5 = [MIBUCryptoHelper _deriveDeviceIDsForUseCase:@"LTK" outError:a3];
+  v5 = [MIBUCryptoHelper _deriveDeviceIDsForUseCase:@"LTK" outError:connection];
 
   return v5;
 }
 
-+ (void)createSignatureUsingSUCertForData:(id)a3 withCompletion:(id)a4
++ (void)createSignatureUsingSUCertForData:(id)data withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   v52 = 0;
   v53 = &v52;
   v54 = 0x3032000000;
@@ -122,7 +122,7 @@
     if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v59 = v5;
+      v59 = dataCopy;
       v8 = "Creating data signature using SU cert for blob: %{public}@";
       v9 = v7;
       v10 = 12;
@@ -184,7 +184,7 @@ LABEL_10:
 
     else
     {
-      v29 = SecKeyCreateSignature(v19, kSecKeyAlgorithmECDSASignatureDigestX962SHA256, v5, &error);
+      v29 = SecKeyCreateSignature(v19, kSecKeyAlgorithmECDSASignatureDigestX962SHA256, dataCopy, &error);
       v30 = error;
       if (error)
       {
@@ -204,9 +204,9 @@ LABEL_10:
           v31 = qword_1000B84A0;
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
           {
-            v32 = [(__CFData *)v29 hexStringRepresentation];
+            hexStringRepresentation = [(__CFData *)v29 hexStringRepresentation];
             *buf = 138543362;
-            v59 = v32;
+            v59 = hexStringRepresentation;
             _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Data signature created: %{public}@", buf, 0xCu);
           }
         }
@@ -221,7 +221,7 @@ LABEL_10:
     }
   }
 
-  v6[2](v6, v53[5], v29, v33);
+  completionCopy[2](completionCopy, v53[5], v29, v33);
 
   _Block_object_dispose(&v40, 8);
   _Block_object_dispose(&v46, 8);
@@ -229,9 +229,9 @@ LABEL_10:
   _Block_object_dispose(&v52, 8);
 }
 
-+ (id)_deriveDeviceIDsForUseCase:(id)a3 outError:(id *)a4
++ (id)_deriveDeviceIDsForUseCase:(id)case outError:(id *)error
 {
-  v5 = a3;
+  caseCopy = case;
   v6 = +[NSDate date];
   [v6 timeIntervalSinceReferenceDate];
   v8 = v7;
@@ -241,29 +241,29 @@ LABEL_10:
   v14 = v18;
   if (v9)
   {
-    v15 = [MIBUCryptoHelper deriveDeviceIDsFromDeviceKey:v9 forUseCase:v5 withTimestamp:v8 outError:a4];
+    v15 = [MIBUCryptoHelper deriveDeviceIDsFromDeviceKey:v9 forUseCase:caseCopy withTimestamp:v8 outError:error];
   }
 
   else
   {
-    sub_100016130(a4, 50331653, v14, @"Failed to derive Seaship Device Key", v10, v11, v12, v13, v17);
+    sub_100016130(error, 50331653, v14, @"Failed to derive Seaship Device Key", v10, v11, v12, v13, v17);
     v15 = 0;
   }
 
   return v15;
 }
 
-+ (id)deriveDeviceIDsFromDeviceKey:(id)a3 forUseCase:(id)a4 withTimestamp:(unint64_t)a5 outError:(id *)a6
++ (id)deriveDeviceIDsFromDeviceKey:(id)key forUseCase:(id)case withTimestamp:(unint64_t)timestamp outError:(id *)error
 {
-  v6 = a5;
-  v35 = a3;
-  v32 = a4;
-  v34 = [v32 dataUsingEncoding:4];
+  timestampCopy = timestamp;
+  keyCopy = key;
+  caseCopy = case;
+  v34 = [caseCopy dataUsingEncoding:4];
   v8 = objc_alloc_init(NSMutableArray);
   v9 = 0;
-  v44[0] = v6 - 0x2000;
-  v44[1] = v6;
-  v44[2] = v6 + 0x2000;
+  v44[0] = timestampCopy - 0x2000;
+  v44[1] = timestampCopy;
+  v44[2] = timestampCopy + 0x2000;
   v10.i32[1] = 0;
   v33 = v8;
   while (1)
@@ -278,14 +278,14 @@ LABEL_10:
 
     [v14 appendBytes:&v37 length:4];
     ccsha256_di();
-    [v35 length];
-    [v35 bytes];
+    [keyCopy length];
+    [keyCopy bytes];
     [v14 length];
     [v14 bytes];
     [v34 length];
     [v34 bytes];
     [v12 length];
-    v30 = [v12 mutableBytes];
+    mutableBytes = [v12 mutableBytes];
     v15 = cchkdf();
     if (v15)
     {
@@ -307,11 +307,11 @@ LABEL_10:
       if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
       {
         v23 = v22;
-        v24 = [v12 hexStringRepresentation];
+        hexStringRepresentation = [v12 hexStringRepresentation];
         *buf = 138543874;
-        v39 = v24;
+        v39 = hexStringRepresentation;
         v40 = 2114;
-        v41 = v32;
+        v41 = caseCopy;
         v42 = 1024;
         v43 = v37;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Device ID derived: %{public}@ use case: %{public}@ timestamp: %u", buf, 0x1Cu);
@@ -321,8 +321,8 @@ LABEL_10:
     if (++v9 == 3)
     {
       v25 = 0;
-      v26 = a6;
-      if (!a6)
+      errorCopy2 = error;
+      if (!error)
       {
         goto LABEL_11;
       }
@@ -335,13 +335,13 @@ LABEL_10:
   sub_100016130(&v36, 50331653, 0, @"Failed to derive Device ID: %d", v16, v17, v18, v19, v15);
   v25 = v36;
 
-  v26 = a6;
+  errorCopy2 = error;
   v21 = v33;
-  if (a6)
+  if (error)
   {
 LABEL_10:
     v27 = v25;
-    *v26 = v25;
+    *errorCopy2 = v25;
   }
 
 LABEL_11:
@@ -358,11 +358,11 @@ LABEL_11:
   return v28;
 }
 
-+ (id)_deriveDeviceKeyWithLabel:(id)a3 andContext:(id)a4 outError:(id *)a5
++ (id)_deriveDeviceKeyWithLabel:(id)label andContext:(id)context outError:(id *)error
 {
-  v7 = a4;
-  v8 = [a3 dataUsingEncoding:4];
-  v9 = [v7 dataUsingEncoding:4];
+  contextCopy = context;
+  v8 = [label dataUsingEncoding:4];
+  v9 = [contextCopy dataUsingEncoding:4];
 
   v10 = [[NSMutableData alloc] initWithLength:32];
   v49 = 0;
@@ -375,9 +375,9 @@ LABEL_11:
     goto LABEL_25;
   }
 
-  v13 = [v11 bytes];
+  bytes = [v11 bytes];
   v14 = [v11 length];
-  v15 = sub_100069AB8(15, 1, 0, 0, v13, v14, &v50, &v49, v37, v39, v41, v43, v45, v46, v47, v48, v49, v50, buf, *(&buf + 1), v52, v53, v54, v55, v56, v57);
+  v15 = sub_100069AB8(15, 1, 0, 0, bytes, v14, &v50, &v49, v37, v39, v41, v43, v45, v46, v47, v48, v49, v50, buf, *(&buf + 1), v52, v53, v54, v55, v56, v57);
   if (v15)
   {
     v47 = 0;
@@ -403,9 +403,9 @@ LABEL_25:
     if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
     {
       v23 = v22;
-      v24 = [v21 hexStringRepresentation];
+      hexStringRepresentation = [v21 hexStringRepresentation];
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v24;
+      *(&buf + 4) = hexStringRepresentation;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Shared secret computed: %{public}@", &buf, 0xCu);
     }
   }
@@ -419,7 +419,7 @@ LABEL_25:
   [v9 bytes];
   v10 = v44;
   [v44 length];
-  v38 = [v44 mutableBytes];
+  mutableBytes = [v44 mutableBytes];
   v25 = ccnistkdf_ctr_hmac();
   if (v25)
   {
@@ -443,9 +443,9 @@ LABEL_25:
       if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
       {
         v32 = v31;
-        v33 = [v30 hexStringRepresentation];
+        hexStringRepresentation2 = [v30 hexStringRepresentation];
         LODWORD(buf) = 138543362;
-        *(&buf + 4) = v33;
+        *(&buf + 4) = hexStringRepresentation2;
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Device key derived: %{public}@", &buf, 0xCu);
       }
 
@@ -466,10 +466,10 @@ LABEL_17:
     free(v50);
   }
 
-  if (a5)
+  if (error)
   {
     v35 = v34;
-    *a5 = v34;
+    *error = v34;
   }
 
   return v30;

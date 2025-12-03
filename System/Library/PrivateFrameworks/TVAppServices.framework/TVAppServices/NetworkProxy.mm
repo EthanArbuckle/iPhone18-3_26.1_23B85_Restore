@@ -1,7 +1,7 @@
 @interface NetworkProxy
-+ (BOOL)canInitWithRequest:(id)a3;
-+ (id)canonicalRequestForRequest:(id)a3;
-- (_TtC13TVAppServices12NetworkProxy)initWithRequest:(id)a3 cachedResponse:(id)a4 client:(id)a5;
++ (BOOL)canInitWithRequest:(id)request;
++ (id)canonicalRequestForRequest:(id)request;
+- (_TtC13TVAppServices12NetworkProxy)initWithRequest:(id)request cachedResponse:(id)response client:(id)client;
 - (uint64_t)stopLoading;
 - (void)startLoading;
 @end
@@ -10,11 +10,11 @@
 
 - (void)startLoading
 {
-  v2 = self;
+  selfCopy = self;
   sub_26CCF5D6C();
 }
 
-+ (BOOL)canInitWithRequest:(id)a3
++ (BOOL)canInitWithRequest:(id)request
 {
   v3 = sub_26CD39D0C();
   v4 = *(v3 - 8);
@@ -28,7 +28,7 @@
   return v8 & 1;
 }
 
-+ (id)canonicalRequestForRequest:(id)a3
++ (id)canonicalRequestForRequest:(id)request
 {
   v3 = sub_26CD39D0C();
   v4 = *(v3 - 8);
@@ -42,7 +42,7 @@
   return v8;
 }
 
-- (_TtC13TVAppServices12NetworkProxy)initWithRequest:(id)a3 cachedResponse:(id)a4 client:(id)a5
+- (_TtC13TVAppServices12NetworkProxy)initWithRequest:(id)request cachedResponse:(id)response client:(id)client
 {
   v8 = sub_26CD39D0C();
   v9 = *(v8 - 8);
@@ -50,13 +50,13 @@
   MEMORY[0x28223BE20](v8);
   v12 = &v18 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_26CD39C6C();
-  v13 = a4;
+  responseCopy = response;
   swift_unknownObjectRetain();
   v14 = sub_26CD39C4C();
   v15 = type metadata accessor for NetworkProxy();
   v18.receiver = self;
   v18.super_class = v15;
-  v16 = [(NSURLProtocol *)&v18 initWithRequest:v14 cachedResponse:v13 client:a5];
+  v16 = [(NSURLProtocol *)&v18 initWithRequest:v14 cachedResponse:responseCopy client:client];
 
   swift_unknownObjectRelease();
   (*(v9 + 8))(v12, v8);

@@ -1,19 +1,19 @@
 @interface MessageListCollectionHelper
 + (OS_os_log)log;
 + (id)signpostLog;
-- (MessageListCollectionHelper)initWithLog:(id)a3 updateQueueName:(id)a4 section:(id)a5;
-- (MessageListCollectionHelper)initWithLoggableClient:(id)a3 updateQueueName:(id)a4 section:(id)a5;
-- (id)_filterExistingItemIDFromItemIDs:(void *)a3 validExistingItemID:;
-- (id)changeItemIDs:(id)a3 snapshot:(id)a4;
-- (int64_t)addItemIDs:(id)a3 after:(id)a4 snapshot:(id)a5 section:(id)a6 validateOtherSections:(BOOL)a7;
-- (int64_t)addItemIDs:(id)a3 before:(id)a4 snapshot:(id)a5 section:(id)a6 validateOtherSections:(BOOL)a7;
-- (int64_t)moveItemID:(id)a3 after:(id)a4 snapshot:(id)a5 section:(id)a6;
-- (int64_t)moveItemID:(id)a3 before:(id)a4 snapshot:(id)a5 section:(id)a6;
-- (void)_insertItemIDs:(void *)a3 beforeFirstItemOfSnapshot:(void *)a4 section:(void *)a5 errorString:;
-- (void)_removeItemsIDsFromOtherSections:(void *)a3 currentSection:(void *)a4 snapshot:;
-- (void)_reportChangedItemIDs:(void *)a1;
-- (void)didScheduleReadInteractionForItemID:(id)a3;
-- (void)removePendingReadCancelablesForItemID:(id)a3;
+- (MessageListCollectionHelper)initWithLog:(id)log updateQueueName:(id)name section:(id)section;
+- (MessageListCollectionHelper)initWithLoggableClient:(id)client updateQueueName:(id)name section:(id)section;
+- (id)_filterExistingItemIDFromItemIDs:(void *)ds validExistingItemID:;
+- (id)changeItemIDs:(id)ds snapshot:(id)snapshot;
+- (int64_t)addItemIDs:(id)ds after:(id)after snapshot:(id)snapshot section:(id)section validateOtherSections:(BOOL)sections;
+- (int64_t)addItemIDs:(id)ds before:(id)before snapshot:(id)snapshot section:(id)section validateOtherSections:(BOOL)sections;
+- (int64_t)moveItemID:(id)d after:(id)after snapshot:(id)snapshot section:(id)section;
+- (int64_t)moveItemID:(id)d before:(id)before snapshot:(id)snapshot section:(id)section;
+- (void)_insertItemIDs:(void *)ds beforeFirstItemOfSnapshot:(void *)snapshot section:(void *)section errorString:;
+- (void)_removeItemsIDsFromOtherSections:(void *)sections currentSection:(void *)section snapshot:;
+- (void)_reportChangedItemIDs:(void *)ds;
+- (void)didScheduleReadInteractionForItemID:(id)d;
+- (void)removePendingReadCancelablesForItemID:(id)d;
 @end
 
 @implementation MessageListCollectionHelper
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = __34__MessageListCollectionHelper_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_2 != -1)
   {
     dispatch_once(&log_onceToken_2, block);
@@ -73,39 +73,39 @@ void __42__MessageListCollectionHelper_signpostLog__block_invoke(uint64_t a1)
   signpostLog_log = v2;
 }
 
-- (MessageListCollectionHelper)initWithLoggableClient:(id)a3 updateQueueName:(id)a4 section:(id)a5
+- (MessageListCollectionHelper)initWithLoggableClient:(id)client updateQueueName:(id)name section:(id)section
 {
-  v7 = a5;
-  v8 = a4;
+  sectionCopy = section;
+  nameCopy = name;
   v9 = [objc_opt_class() log];
-  v10 = [(MessageListCollectionHelper *)self initWithLog:v9 updateQueueName:v8 section:v7];
+  v10 = [(MessageListCollectionHelper *)self initWithLog:v9 updateQueueName:nameCopy section:sectionCopy];
 
   return v10;
 }
 
-- (MessageListCollectionHelper)initWithLog:(id)a3 updateQueueName:(id)a4 section:(id)a5
+- (MessageListCollectionHelper)initWithLog:(id)log updateQueueName:(id)name section:(id)section
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  logCopy = log;
+  nameCopy = name;
+  sectionCopy = section;
   v26.receiver = self;
   v26.super_class = MessageListCollectionHelper;
   v12 = [(MessageListCollectionHelper *)&v26 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_clientLog, a3);
-    if ([v10 length])
+    objc_storeStrong(&v12->_clientLog, log);
+    if ([nameCopy length])
     {
-      v14 = [v10 UTF8String];
+      uTF8String = [nameCopy UTF8String];
       v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v16 = dispatch_queue_attr_make_with_qos_class(v15, QOS_CLASS_USER_INTERACTIVE, 0);
-      v17 = dispatch_queue_create(v14, v16);
+      v17 = dispatch_queue_create(uTF8String, v16);
       updateQueue = v13->_updateQueue;
       v13->_updateQueue = v17;
     }
 
-    v19 = [v11 copy];
+    v19 = [sectionCopy copy];
     v20 = v19;
     if (v19)
     {
@@ -117,67 +117,67 @@ void __42__MessageListCollectionHelper_signpostLog__block_invoke(uint64_t a1)
     else
     {
       section = [MEMORY[0x277CCAD78] UUID];
-      v23 = [section UUIDString];
+      uUIDString = [section UUIDString];
       v24 = v13->_section;
-      v13->_section = v23;
+      v13->_section = uUIDString;
     }
   }
 
   return v13;
 }
 
-- (int64_t)addItemIDs:(id)a3 before:(id)a4 snapshot:(id)a5 section:(id)a6 validateOtherSections:(BOOL)a7
+- (int64_t)addItemIDs:(id)ds before:(id)before snapshot:(id)snapshot section:(id)section validateOtherSections:(BOOL)sections
 {
-  v7 = a7;
+  sectionsCopy = sections;
   v29 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [v12 count];
-  if (v7)
+  dsCopy = ds;
+  beforeCopy = before;
+  snapshotCopy = snapshot;
+  sectionCopy = section;
+  v16 = [dsCopy count];
+  if (sectionsCopy)
   {
-    [(MessageListCollectionHelper *)self _removeItemsIDsFromOtherSections:v12 currentSection:v15 snapshot:v14];
-    if (v13)
+    [(MessageListCollectionHelper *)self _removeItemsIDsFromOtherSections:dsCopy currentSection:sectionCopy snapshot:snapshotCopy];
+    if (beforeCopy)
     {
       goto LABEL_3;
     }
   }
 
-  else if (v13)
+  else if (beforeCopy)
   {
 LABEL_3:
-    v17 = [v14 mui_validItemIDFromExistingItemID:v13 updateReason:@"Adding items before existing item"];
+    v17 = [snapshotCopy mui_validItemIDFromExistingItemID:beforeCopy updateReason:@"Adding items before existing item"];
     if (v17)
     {
-      v22 = [(MessageListCollectionHelper *)self _filterExistingItemIDFromItemIDs:v12 validExistingItemID:v17];
+      v22 = [(MessageListCollectionHelper *)self _filterExistingItemIDFromItemIDs:dsCopy validExistingItemID:v17];
 
-      v23 = [(MessageListCollectionHelper *)self clientLog];
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+      clientLog = [(MessageListCollectionHelper *)self clientLog];
+      if (os_log_type_enabled(clientLog, OS_LOG_TYPE_DEFAULT))
       {
         v25 = 134349314;
         v26 = [v22 count];
         v27 = 2114;
         v28 = v17;
-        _os_log_impl(&dword_214A5E000, v23, OS_LOG_TYPE_DEFAULT, "Inserting %{public}ld identifiers before %{public}@", &v25, 0x16u);
+        _os_log_impl(&dword_214A5E000, clientLog, OS_LOG_TYPE_DEFAULT, "Inserting %{public}ld identifiers before %{public}@", &v25, 0x16u);
       }
 
-      v24 = [(MessageListCollectionHelper *)self clientLog];
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
+      clientLog2 = [(MessageListCollectionHelper *)self clientLog];
+      if (os_log_type_enabled(clientLog2, OS_LOG_TYPE_DEBUG))
       {
         [MessageListCollectionHelper addItemIDs:before:snapshot:section:validateOtherSections:];
       }
 
-      [v14 insertItemsWithIdentifiers:v22 beforeItemWithIdentifier:v17];
-      v12 = v22;
+      [snapshotCopy insertItemsWithIdentifiers:v22 beforeItemWithIdentifier:v17];
+      dsCopy = v22;
     }
 
     else
     {
-      v18 = [(MessageListCollectionHelper *)self clientLog];
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+      clientLog3 = [(MessageListCollectionHelper *)self clientLog];
+      if (os_log_type_enabled(clientLog3, OS_LOG_TYPE_ERROR))
       {
-        [MessageListCollectionHelper addItemIDs:v12 before:? snapshot:? section:? validateOtherSections:?];
+        [MessageListCollectionHelper addItemIDs:dsCopy before:? snapshot:? section:? validateOtherSections:?];
       }
 
       v16 = 0x7FFFFFFFFFFFFFFFLL;
@@ -186,85 +186,85 @@ LABEL_3:
     goto LABEL_14;
   }
 
-  v19 = [(MessageListCollectionHelper *)self clientLog];
-  if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+  clientLog4 = [(MessageListCollectionHelper *)self clientLog];
+  if (os_log_type_enabled(clientLog4, OS_LOG_TYPE_DEFAULT))
   {
     v25 = 134349056;
-    v26 = [v12 count];
-    _os_log_impl(&dword_214A5E000, v19, OS_LOG_TYPE_DEFAULT, "Appending %{public}ld identifiers", &v25, 0xCu);
+    v26 = [dsCopy count];
+    _os_log_impl(&dword_214A5E000, clientLog4, OS_LOG_TYPE_DEFAULT, "Appending %{public}ld identifiers", &v25, 0xCu);
   }
 
-  v20 = [(MessageListCollectionHelper *)self clientLog];
-  if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
+  clientLog5 = [(MessageListCollectionHelper *)self clientLog];
+  if (os_log_type_enabled(clientLog5, OS_LOG_TYPE_DEBUG))
   {
     [MessageListCollectionHelper addItemIDs:before:snapshot:section:validateOtherSections:];
   }
 
-  [v14 appendItemsWithIdentifiers:v12 intoSectionWithIdentifier:v15];
+  [snapshotCopy appendItemsWithIdentifiers:dsCopy intoSectionWithIdentifier:sectionCopy];
 LABEL_14:
 
   return v16;
 }
 
-- (int64_t)addItemIDs:(id)a3 after:(id)a4 snapshot:(id)a5 section:(id)a6 validateOtherSections:(BOOL)a7
+- (int64_t)addItemIDs:(id)ds after:(id)after snapshot:(id)snapshot section:(id)section validateOtherSections:(BOOL)sections
 {
-  v7 = a7;
+  sectionsCopy = sections;
   v27 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [v12 count];
-  if (v7)
+  dsCopy = ds;
+  afterCopy = after;
+  snapshotCopy = snapshot;
+  sectionCopy = section;
+  v16 = [dsCopy count];
+  if (sectionsCopy)
   {
-    [(MessageListCollectionHelper *)self _removeItemsIDsFromOtherSections:v12 currentSection:v15 snapshot:v14];
-    if (v13)
+    [(MessageListCollectionHelper *)self _removeItemsIDsFromOtherSections:dsCopy currentSection:sectionCopy snapshot:snapshotCopy];
+    if (afterCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
-    [(MessageListCollectionHelper *)self _insertItemIDs:v12 beforeFirstItemOfSnapshot:v14 section:v15 errorString:0];
+    [(MessageListCollectionHelper *)self _insertItemIDs:dsCopy beforeFirstItemOfSnapshot:snapshotCopy section:sectionCopy errorString:0];
     goto LABEL_8;
   }
 
-  if (!v13)
+  if (!afterCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  v17 = [v14 mui_validItemIDFromExistingItemID:v13 updateReason:@"Adding items after existing item"];
+  v17 = [snapshotCopy mui_validItemIDFromExistingItemID:afterCopy updateReason:@"Adding items after existing item"];
   if (v17)
   {
-    v20 = [(MessageListCollectionHelper *)self _filterExistingItemIDFromItemIDs:v12 validExistingItemID:v17];
+    v20 = [(MessageListCollectionHelper *)self _filterExistingItemIDFromItemIDs:dsCopy validExistingItemID:v17];
 
-    v21 = [(MessageListCollectionHelper *)self clientLog];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    clientLog = [(MessageListCollectionHelper *)self clientLog];
+    if (os_log_type_enabled(clientLog, OS_LOG_TYPE_DEFAULT))
     {
       v23 = 134349314;
       v24 = [v20 count];
       v25 = 2114;
       v26 = v17;
-      _os_log_impl(&dword_214A5E000, v21, OS_LOG_TYPE_DEFAULT, "Inserting %{public}ld identifiers after %{public}@", &v23, 0x16u);
+      _os_log_impl(&dword_214A5E000, clientLog, OS_LOG_TYPE_DEFAULT, "Inserting %{public}ld identifiers after %{public}@", &v23, 0x16u);
     }
 
-    v22 = [(MessageListCollectionHelper *)self clientLog];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
+    clientLog2 = [(MessageListCollectionHelper *)self clientLog];
+    if (os_log_type_enabled(clientLog2, OS_LOG_TYPE_DEBUG))
     {
       [MessageListCollectionHelper addItemIDs:before:snapshot:section:validateOtherSections:];
     }
 
-    [v14 insertItemsWithIdentifiers:v20 afterItemWithIdentifier:v17];
-    v12 = v20;
+    [snapshotCopy insertItemsWithIdentifiers:v20 afterItemWithIdentifier:v17];
+    dsCopy = v20;
   }
 
   else
   {
-    v18 = [(MessageListCollectionHelper *)self clientLog];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    clientLog3 = [(MessageListCollectionHelper *)self clientLog];
+    if (os_log_type_enabled(clientLog3, OS_LOG_TYPE_ERROR))
     {
-      [MessageListCollectionHelper addItemIDs:v12 after:? snapshot:? section:? validateOtherSections:?];
+      [MessageListCollectionHelper addItemIDs:dsCopy after:? snapshot:? section:? validateOtherSections:?];
     }
 
     v16 = 0x7FFFFFFFFFFFFFFFLL;
@@ -274,15 +274,15 @@ LABEL_8:
   return v16;
 }
 
-- (int64_t)moveItemID:(id)a3 before:(id)a4 snapshot:(id)a5 section:(id)a6
+- (int64_t)moveItemID:(id)d before:(id)before snapshot:(id)snapshot section:(id)section
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
-  v14 = [v11 mui_validItemIDFromExistingItemID:v10 updateReason:@"Moving item before - itemID"];
-  v15 = [v11 mui_validItemIDFromExistingItemID:v13 updateReason:@"Moving item before - existingItemID"];
+  dCopy = d;
+  snapshotCopy = snapshot;
+  sectionCopy = section;
+  beforeCopy = before;
+  v14 = [snapshotCopy mui_validItemIDFromExistingItemID:dCopy updateReason:@"Moving item before - itemID"];
+  v15 = [snapshotCopy mui_validItemIDFromExistingItemID:beforeCopy updateReason:@"Moving item before - existingItemID"];
 
   if (!v14)
   {
@@ -293,29 +293,29 @@ LABEL_8:
   {
     if (v15)
     {
-      v18 = [(MessageListCollectionHelper *)self clientLog];
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+      clientLog = [(MessageListCollectionHelper *)self clientLog];
+      if (os_log_type_enabled(clientLog, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(__b[0]) = 138543618;
         *(__b + 4) = v14;
         WORD2(__b[1]) = 2114;
         *(&__b[1] + 6) = v15;
-        _os_log_impl(&dword_214A5E000, v18, OS_LOG_TYPE_DEFAULT, "Moving identifier %{public}@ before %{public}@", __b, 0x16u);
+        _os_log_impl(&dword_214A5E000, clientLog, OS_LOG_TYPE_DEFAULT, "Moving identifier %{public}@ before %{public}@", __b, 0x16u);
       }
 
-      [v11 moveItemWithIdentifier:v14 beforeItemWithIdentifier:v15];
+      [snapshotCopy moveItemWithIdentifier:v14 beforeItemWithIdentifier:v15];
       v17 = 1;
       goto LABEL_26;
     }
 
-    v19 = [v11 itemIdentifiersInSectionWithIdentifier:v12];
-    v20 = [v19 lastObject];
+    v19 = [snapshotCopy itemIdentifiersInSectionWithIdentifier:sectionCopy];
+    lastObject = [v19 lastObject];
 
-    if (v20)
+    if (lastObject)
     {
-      v21 = [v20 isEqual:v14];
-      v22 = [(MessageListCollectionHelper *)self clientLog];
-      v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
+      v21 = [lastObject isEqual:v14];
+      clientLog2 = [(MessageListCollectionHelper *)self clientLog];
+      v23 = os_log_type_enabled(clientLog2, OS_LOG_TYPE_DEFAULT);
       if (v21)
       {
         if (v23)
@@ -323,8 +323,8 @@ LABEL_8:
           LODWORD(__b[0]) = 138543618;
           *(__b + 4) = v14;
           WORD2(__b[1]) = 2114;
-          *(&__b[1] + 6) = v12;
-          _os_log_impl(&dword_214A5E000, v22, OS_LOG_TYPE_DEFAULT, "Identifier %{public}@ is already last item in section:%{public}@", __b, 0x16u);
+          *(&__b[1] + 6) = sectionCopy;
+          _os_log_impl(&dword_214A5E000, clientLog2, OS_LOG_TYPE_DEFAULT, "Identifier %{public}@ is already last item in section:%{public}@", __b, 0x16u);
         }
 
         v17 = 0;
@@ -336,35 +336,35 @@ LABEL_8:
         LODWORD(__b[0]) = 138543874;
         *(__b + 4) = v14;
         WORD2(__b[1]) = 2114;
-        *(&__b[1] + 6) = v20;
+        *(&__b[1] + 6) = lastObject;
         HIWORD(__b[2]) = 2114;
-        __b[3] = v12;
-        _os_log_impl(&dword_214A5E000, v22, OS_LOG_TYPE_DEFAULT, "Moving identifier %{public}@ after last item %{public}@ in section:%{public}@", __b, 0x20u);
+        __b[3] = sectionCopy;
+        _os_log_impl(&dword_214A5E000, clientLog2, OS_LOG_TYPE_DEFAULT, "Moving identifier %{public}@ after last item %{public}@ in section:%{public}@", __b, 0x20u);
       }
 
-      [v11 moveItemWithIdentifier:v14 afterItemWithIdentifier:v20];
+      [snapshotCopy moveItemWithIdentifier:v14 afterItemWithIdentifier:lastObject];
     }
 
     else
     {
       v30 = v14;
       v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v30 count:1];
-      [v11 deleteItemsWithIdentifiers:v24];
+      [snapshotCopy deleteItemsWithIdentifiers:v24];
 
       v29 = v14;
       v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v29 count:1];
-      [v11 appendItemsWithIdentifiers:v25 intoSectionWithIdentifier:v12];
+      [snapshotCopy appendItemsWithIdentifiers:v25 intoSectionWithIdentifier:sectionCopy];
 
-      v26 = [(MessageListCollectionHelper *)self clientLog];
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
+      clientLog3 = [(MessageListCollectionHelper *)self clientLog];
+      if (os_log_type_enabled(clientLog3, OS_LOG_TYPE_INFO))
       {
         LODWORD(__b[0]) = 138543874;
         *(__b + 4) = v14;
         WORD2(__b[1]) = 2114;
-        *(&__b[1] + 6) = v12;
+        *(&__b[1] + 6) = sectionCopy;
         HIWORD(__b[2]) = 2114;
-        __b[3] = v11;
-        _os_log_impl(&dword_214A5E000, v26, OS_LOG_TYPE_INFO, "Moving identifier %{public}@ as first item into section:%{public}@ snapshot:%{public}@", __b, 0x20u);
+        __b[3] = snapshotCopy;
+        _os_log_impl(&dword_214A5E000, clientLog3, OS_LOG_TYPE_INFO, "Moving identifier %{public}@ as first item into section:%{public}@ snapshot:%{public}@", __b, 0x20u);
       }
     }
 
@@ -374,10 +374,10 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v16 = [(MessageListCollectionHelper *)self clientLog];
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+  clientLog4 = [(MessageListCollectionHelper *)self clientLog];
+  if (os_log_type_enabled(clientLog4, OS_LOG_TYPE_ERROR))
   {
-    [MessageListCollectionHelper moveItemID:v10 before:v11 snapshot:? section:?];
+    [MessageListCollectionHelper moveItemID:dCopy before:snapshotCopy snapshot:? section:?];
   }
 
   memset(__b, 170, sizeof(__b));
@@ -399,15 +399,15 @@ LABEL_26:
   return v17;
 }
 
-- (int64_t)moveItemID:(id)a3 after:(id)a4 snapshot:(id)a5 section:(id)a6
+- (int64_t)moveItemID:(id)d after:(id)after snapshot:(id)snapshot section:(id)section
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
-  v14 = [v11 mui_validItemIDFromExistingItemID:v10 updateReason:@"Moving item after - itemID"];
-  v15 = [v11 mui_validItemIDFromExistingItemID:v13 updateReason:@"Moving item after - existingItemID"];
+  dCopy = d;
+  snapshotCopy = snapshot;
+  sectionCopy = section;
+  afterCopy = after;
+  v14 = [snapshotCopy mui_validItemIDFromExistingItemID:dCopy updateReason:@"Moving item after - itemID"];
+  v15 = [snapshotCopy mui_validItemIDFromExistingItemID:afterCopy updateReason:@"Moving item after - existingItemID"];
 
   if (!v14)
   {
@@ -418,29 +418,29 @@ LABEL_26:
   {
     if (v15)
     {
-      v18 = [(MessageListCollectionHelper *)self clientLog];
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+      clientLog = [(MessageListCollectionHelper *)self clientLog];
+      if (os_log_type_enabled(clientLog, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(__b[0]) = 138543618;
         *(__b + 4) = v14;
         WORD2(__b[1]) = 2114;
         *(&__b[1] + 6) = v15;
-        _os_log_impl(&dword_214A5E000, v18, OS_LOG_TYPE_DEFAULT, "Moving identifier %{public}@ after %{public}@", __b, 0x16u);
+        _os_log_impl(&dword_214A5E000, clientLog, OS_LOG_TYPE_DEFAULT, "Moving identifier %{public}@ after %{public}@", __b, 0x16u);
       }
 
-      [v11 moveItemWithIdentifier:v14 afterItemWithIdentifier:v15];
+      [snapshotCopy moveItemWithIdentifier:v14 afterItemWithIdentifier:v15];
       v17 = 1;
       goto LABEL_26;
     }
 
-    v19 = [v11 itemIdentifiersInSectionWithIdentifier:v12];
-    v20 = [v19 firstObject];
+    v19 = [snapshotCopy itemIdentifiersInSectionWithIdentifier:sectionCopy];
+    firstObject = [v19 firstObject];
 
-    if (v20)
+    if (firstObject)
     {
-      v21 = [v20 isEqual:v14];
-      v22 = [(MessageListCollectionHelper *)self clientLog];
-      v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
+      v21 = [firstObject isEqual:v14];
+      clientLog2 = [(MessageListCollectionHelper *)self clientLog];
+      v23 = os_log_type_enabled(clientLog2, OS_LOG_TYPE_DEFAULT);
       if (v21)
       {
         if (v23)
@@ -448,8 +448,8 @@ LABEL_26:
           LODWORD(__b[0]) = 138543618;
           *(__b + 4) = v14;
           WORD2(__b[1]) = 2114;
-          *(&__b[1] + 6) = v12;
-          _os_log_impl(&dword_214A5E000, v22, OS_LOG_TYPE_DEFAULT, "Identifier %{public}@ is already first item in section:%{public}@", __b, 0x16u);
+          *(&__b[1] + 6) = sectionCopy;
+          _os_log_impl(&dword_214A5E000, clientLog2, OS_LOG_TYPE_DEFAULT, "Identifier %{public}@ is already first item in section:%{public}@", __b, 0x16u);
         }
 
         v17 = 0;
@@ -461,35 +461,35 @@ LABEL_26:
         LODWORD(__b[0]) = 138543874;
         *(__b + 4) = v14;
         WORD2(__b[1]) = 2114;
-        *(&__b[1] + 6) = v20;
+        *(&__b[1] + 6) = firstObject;
         HIWORD(__b[2]) = 2114;
-        __b[3] = v12;
-        _os_log_impl(&dword_214A5E000, v22, OS_LOG_TYPE_DEFAULT, "Moving identifier %{public}@ before first item %{public}@ in section:%{public}@", __b, 0x20u);
+        __b[3] = sectionCopy;
+        _os_log_impl(&dword_214A5E000, clientLog2, OS_LOG_TYPE_DEFAULT, "Moving identifier %{public}@ before first item %{public}@ in section:%{public}@", __b, 0x20u);
       }
 
-      [v11 moveItemWithIdentifier:v14 beforeItemWithIdentifier:v20];
+      [snapshotCopy moveItemWithIdentifier:v14 beforeItemWithIdentifier:firstObject];
     }
 
     else
     {
       v30 = v14;
       v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v30 count:1];
-      [v11 deleteItemsWithIdentifiers:v24];
+      [snapshotCopy deleteItemsWithIdentifiers:v24];
 
       v29 = v14;
       v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v29 count:1];
-      [v11 appendItemsWithIdentifiers:v25 intoSectionWithIdentifier:v12];
+      [snapshotCopy appendItemsWithIdentifiers:v25 intoSectionWithIdentifier:sectionCopy];
 
-      v26 = [(MessageListCollectionHelper *)self clientLog];
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
+      clientLog3 = [(MessageListCollectionHelper *)self clientLog];
+      if (os_log_type_enabled(clientLog3, OS_LOG_TYPE_INFO))
       {
         LODWORD(__b[0]) = 138543874;
         *(__b + 4) = v14;
         WORD2(__b[1]) = 2114;
-        *(&__b[1] + 6) = v12;
+        *(&__b[1] + 6) = sectionCopy;
         HIWORD(__b[2]) = 2114;
-        __b[3] = v11;
-        _os_log_impl(&dword_214A5E000, v26, OS_LOG_TYPE_INFO, "Moving identifier %{public}@ as first item into section:%{public}@ snapshot:%{public}@", __b, 0x20u);
+        __b[3] = snapshotCopy;
+        _os_log_impl(&dword_214A5E000, clientLog3, OS_LOG_TYPE_INFO, "Moving identifier %{public}@ as first item into section:%{public}@ snapshot:%{public}@", __b, 0x20u);
       }
     }
 
@@ -499,10 +499,10 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v16 = [(MessageListCollectionHelper *)self clientLog];
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+  clientLog4 = [(MessageListCollectionHelper *)self clientLog];
+  if (os_log_type_enabled(clientLog4, OS_LOG_TYPE_ERROR))
   {
-    [MessageListCollectionHelper moveItemID:v10 before:v11 snapshot:? section:?];
+    [MessageListCollectionHelper moveItemID:dCopy before:snapshotCopy snapshot:? section:?];
   }
 
   memset(__b, 170, sizeof(__b));
@@ -524,30 +524,30 @@ LABEL_26:
   return v17;
 }
 
-- (id)changeItemIDs:(id)a3 snapshot:(id)a4
+- (id)changeItemIDs:(id)ds snapshot:(id)snapshot
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MessageListCollectionHelper *)self clientLog];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  dsCopy = ds;
+  snapshotCopy = snapshot;
+  clientLog = [(MessageListCollectionHelper *)self clientLog];
+  if (os_log_type_enabled(clientLog, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
-    _os_log_impl(&dword_214A5E000, v8, OS_LOG_TYPE_DEFAULT, "changedItemIDs: %@", &v11, 0xCu);
+    v12 = dsCopy;
+    _os_log_impl(&dword_214A5E000, clientLog, OS_LOG_TYPE_DEFAULT, "changedItemIDs: %@", &v11, 0xCu);
   }
 
-  [(MessageListCollectionHelper *)self _reportChangedItemIDs:v6];
-  v9 = [v7 mui_validItemIDsFromExistingItemIDs:v6 updateReason:@"Changing itemIDs"];
+  [(MessageListCollectionHelper *)self _reportChangedItemIDs:dsCopy];
+  v9 = [snapshotCopy mui_validItemIDsFromExistingItemIDs:dsCopy updateReason:@"Changing itemIDs"];
 
   return v9;
 }
 
-- (void)didScheduleReadInteractionForItemID:(id)a3
+- (void)didScheduleReadInteractionForItemID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[MessageListCollectionHelper signpostLog];
-  v6 = os_signpost_id_make_with_pointer(v5, v4);
+  v6 = os_signpost_id_make_with_pointer(v5, dCopy);
 
   v7 = +[MessageListCollectionHelper signpostLog];
   v8 = v7;
@@ -557,19 +557,19 @@ LABEL_26:
     _os_signpost_emit_with_name_impl(&dword_214A5E000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "EMMessageListItemReadUnread", "", buf, 2u);
   }
 
-  v9 = [MEMORY[0x277D071B8] globalAsyncScheduler];
+  globalAsyncScheduler = [MEMORY[0x277D071B8] globalAsyncScheduler];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __67__MessageListCollectionHelper_didScheduleReadInteractionForItemID___block_invoke;
   v16[3] = &unk_278188D70;
   v18 = v6;
   v16[4] = self;
-  v10 = v4;
+  v10 = dCopy;
   v17 = v10;
-  v11 = [v9 afterDelay:v16 performBlock:2.0];
+  v11 = [globalAsyncScheduler afterDelay:v16 performBlock:2.0];
 
-  v12 = [(MessageListCollectionHelper *)self pendingReadTimeoutCancelables];
-  v13 = [v12 objectForKeyedSubscript:v10];
+  pendingReadTimeoutCancelables = [(MessageListCollectionHelper *)self pendingReadTimeoutCancelables];
+  v13 = [pendingReadTimeoutCancelables objectForKeyedSubscript:v10];
 
   if (!v13)
   {
@@ -579,8 +579,8 @@ LABEL_26:
   v14 = [v13 setByAddingObject:v11];
 
   os_unfair_lock_lock(&self->pendingReadCancelableLock);
-  v15 = [(MessageListCollectionHelper *)self pendingReadTimeoutCancelables];
-  [v15 setObject:v14 forKeyedSubscript:v10];
+  pendingReadTimeoutCancelables2 = [(MessageListCollectionHelper *)self pendingReadTimeoutCancelables];
+  [pendingReadTimeoutCancelables2 setObject:v14 forKeyedSubscript:v10];
 
   os_unfair_lock_unlock(&self->pendingReadCancelableLock);
 }
@@ -601,39 +601,39 @@ uint64_t __67__MessageListCollectionHelper_didScheduleReadInteractionForItemID__
   return [*(a1 + 32) removePendingReadCancelablesForItemID:*(a1 + 40)];
 }
 
-- (void)removePendingReadCancelablesForItemID:(id)a3
+- (void)removePendingReadCancelablesForItemID:(id)d
 {
-  v7 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->pendingReadCancelableLock);
-  v4 = [(MessageListCollectionHelper *)self pendingReadTimeoutCancelables];
-  v5 = [v4 objectForKeyedSubscript:v7];
+  pendingReadTimeoutCancelables = [(MessageListCollectionHelper *)self pendingReadTimeoutCancelables];
+  v5 = [pendingReadTimeoutCancelables objectForKeyedSubscript:dCopy];
 
   [v5 makeObjectsPerformSelector:sel_cancel];
-  v6 = [(MessageListCollectionHelper *)self pendingReadTimeoutCancelables];
-  [v6 removeObjectForKey:v7];
+  pendingReadTimeoutCancelables2 = [(MessageListCollectionHelper *)self pendingReadTimeoutCancelables];
+  [pendingReadTimeoutCancelables2 removeObjectForKey:dCopy];
 
   os_unfair_lock_unlock(&self->pendingReadCancelableLock);
 }
 
-- (void)_removeItemsIDsFromOtherSections:(void *)a3 currentSection:(void *)a4 snapshot:
+- (void)_removeItemsIDsFromOtherSections:(void *)sections currentSection:(void *)section snapshot:
 {
   v40 = *MEMORY[0x277D85DE8];
   v26 = a2;
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  v25 = a1;
-  if (a1)
+  sectionsCopy = sections;
+  sectionCopy = section;
+  v9 = sectionCopy;
+  selfCopy = self;
+  if (self)
   {
-    v10 = [v8 mui_validSectionIdentifiers];
-    if ([v10 count] >= 2 && objc_msgSend(v26, "count"))
+    mui_validSectionIdentifiers = [sectionCopy mui_validSectionIdentifiers];
+    if ([mui_validSectionIdentifiers count] >= 2 && objc_msgSend(v26, "count"))
     {
       v31 = 0u;
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v24 = v10;
-      v11 = v10;
+      v24 = mui_validSectionIdentifiers;
+      v11 = mui_validSectionIdentifiers;
       v12 = [v11 countByEnumeratingWithState:&v29 objects:v39 count:16];
       if (v12)
       {
@@ -649,7 +649,7 @@ uint64_t __67__MessageListCollectionHelper_didScheduleReadInteractionForItemID__
             }
 
             v16 = *(*(&v29 + 1) + 8 * i);
-            if (([v16 isEqual:v7] & 1) == 0)
+            if (([v16 isEqual:sectionsCopy] & 1) == 0)
             {
               v17 = MEMORY[0x277CBEB98];
               v18 = [v9 itemIdentifiersInSectionWithIdentifier:v16];
@@ -664,8 +664,8 @@ uint64_t __67__MessageListCollectionHelper_didScheduleReadInteractionForItemID__
               v21 = [v26 ef_filter:v27];
               if ([v21 count])
               {
-                v22 = [v25 clientLog];
-                if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+                clientLog = [selfCopy clientLog];
+                if (os_log_type_enabled(clientLog, OS_LOG_TYPE_DEFAULT))
                 {
                   v23 = [v21 count];
                   *buf = 134218498;
@@ -674,7 +674,7 @@ uint64_t __67__MessageListCollectionHelper_didScheduleReadInteractionForItemID__
                   v36 = v16;
                   v37 = 2114;
                   v38 = v21;
-                  _os_log_impl(&dword_214A5E000, v22, OS_LOG_TYPE_DEFAULT, "Remove %ld item ids from other section (%p): %{public}@", buf, 0x20u);
+                  _os_log_impl(&dword_214A5E000, clientLog, OS_LOG_TYPE_DEFAULT, "Remove %ld item ids from other section (%p): %{public}@", buf, 0x20u);
                 }
 
                 [v9 deleteItemsWithIdentifiers:v21];
@@ -688,19 +688,19 @@ uint64_t __67__MessageListCollectionHelper_didScheduleReadInteractionForItemID__
         while (v13);
       }
 
-      v10 = v24;
+      mui_validSectionIdentifiers = v24;
     }
   }
 }
 
-- (id)_filterExistingItemIDFromItemIDs:(void *)a3 validExistingItemID:
+- (id)_filterExistingItemIDFromItemIDs:(void *)ds validExistingItemID:
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  dsCopy = ds;
+  if (self)
   {
-    if ([v5 indexOfObject:v6] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([v5 indexOfObject:dsCopy] == 0x7FFFFFFFFFFFFFFFLL)
     {
       v7 = v5;
     }
@@ -708,17 +708,17 @@ uint64_t __67__MessageListCollectionHelper_didScheduleReadInteractionForItemID__
     else
     {
       v7 = [MEMORY[0x277CBEB18] arrayWithArray:v5];
-      [v7 removeObject:v6];
-      v8 = [a1 clientLog];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      [v7 removeObject:dsCopy];
+      clientLog = [self clientLog];
+      if (os_log_type_enabled(clientLog, OS_LOG_TYPE_ERROR))
       {
         LODWORD(__b[0]) = 134349570;
         *(__b + 4) = [v5 count];
         WORD2(__b[1]) = 2112;
         *(&__b[1] + 6) = v5;
         HIWORD(__b[2]) = 2114;
-        __b[3] = v6;
-        _os_log_error_impl(&dword_214A5E000, v8, OS_LOG_TYPE_ERROR, "Inserting existing identifiers (%{public}ld) %@ before or after %{public}@", __b, 0x20u);
+        __b[3] = dsCopy;
+        _os_log_error_impl(&dword_214A5E000, clientLog, OS_LOG_TYPE_ERROR, "Inserting existing identifiers (%{public}ld) %@ before or after %{public}@", __b, 0x20u);
       }
 
       memset(__b, 170, sizeof(__b));
@@ -742,24 +742,24 @@ uint64_t __67__MessageListCollectionHelper_didScheduleReadInteractionForItemID__
   return v7;
 }
 
-- (void)_insertItemIDs:(void *)a3 beforeFirstItemOfSnapshot:(void *)a4 section:(void *)a5 errorString:
+- (void)_insertItemIDs:(void *)ds beforeFirstItemOfSnapshot:(void *)snapshot section:(void *)section errorString:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a1)
+  dsCopy = ds;
+  snapshotCopy = snapshot;
+  sectionCopy = section;
+  if (self)
   {
-    v13 = [v10 itemIdentifiersInSectionWithIdentifier:v11];
-    v14 = [v13 firstObject];
+    v13 = [dsCopy itemIdentifiersInSectionWithIdentifier:snapshotCopy];
+    firstObject = [v13 firstObject];
 
-    v15 = [a1 clientLog];
-    v16 = v15;
-    if (v14)
+    clientLog = [self clientLog];
+    v16 = clientLog;
+    if (firstObject)
     {
-      if (v12)
+      if (sectionCopy)
       {
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(clientLog, OS_LOG_TYPE_ERROR))
         {
           [v9 count];
           OUTLINED_FUNCTION_0_2();
@@ -768,7 +768,7 @@ uint64_t __67__MessageListCollectionHelper_didScheduleReadInteractionForItemID__
         }
       }
 
-      else if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      else if (os_log_type_enabled(clientLog, OS_LOG_TYPE_DEFAULT))
       {
         [v9 count];
         OUTLINED_FUNCTION_0_2();
@@ -776,14 +776,14 @@ uint64_t __67__MessageListCollectionHelper_didScheduleReadInteractionForItemID__
         _os_log_impl(v25, v26, OS_LOG_TYPE_DEFAULT, v27, v28, 0x20u);
       }
 
-      [v10 insertItemsWithIdentifiers:v9 beforeItemWithIdentifier:v14];
+      [dsCopy insertItemsWithIdentifiers:v9 beforeItemWithIdentifier:firstObject];
     }
 
     else
     {
-      if (v12)
+      if (sectionCopy)
       {
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(clientLog, OS_LOG_TYPE_ERROR))
         {
           [v9 count];
           OUTLINED_FUNCTION_0_2();
@@ -792,7 +792,7 @@ uint64_t __67__MessageListCollectionHelper_didScheduleReadInteractionForItemID__
         }
       }
 
-      else if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      else if (os_log_type_enabled(clientLog, OS_LOG_TYPE_DEFAULT))
       {
         [v9 count];
         OUTLINED_FUNCTION_0_2();
@@ -800,17 +800,17 @@ uint64_t __67__MessageListCollectionHelper_didScheduleReadInteractionForItemID__
         _os_log_impl(v29, v30, OS_LOG_TYPE_DEFAULT, v31, v32, 0x16u);
       }
 
-      [v10 appendItemsWithIdentifiers:v9 intoSectionWithIdentifier:v11];
+      [dsCopy appendItemsWithIdentifiers:v9 intoSectionWithIdentifier:snapshotCopy];
     }
   }
 }
 
-- (void)_reportChangedItemIDs:(void *)a1
+- (void)_reportChangedItemIDs:(void *)ds
 {
   v23 = *MEMORY[0x277D85DE8];
   v3 = a2;
   v5 = v3;
-  if (a1)
+  if (ds)
   {
     v6 = OUTLINED_FUNCTION_6(v3, v4);
     if (v6)
@@ -829,12 +829,12 @@ uint64_t __67__MessageListCollectionHelper_didScheduleReadInteractionForItemID__
           }
 
           v11 = *(8 * i);
-          v12 = [a1 pendingReadTimeoutCancelables];
-          v13 = [v12 objectForKeyedSubscript:v11];
+          pendingReadTimeoutCancelables = [ds pendingReadTimeoutCancelables];
+          v13 = [pendingReadTimeoutCancelables objectForKeyedSubscript:v11];
 
           if (v13)
           {
-            [a1 removePendingReadCancelablesForItemID:v11];
+            [ds removePendingReadCancelablesForItemID:v11];
             v16 = +[MessageListCollectionHelper signpostLog];
             v17 = os_signpost_id_make_with_pointer(v16, v11);
 

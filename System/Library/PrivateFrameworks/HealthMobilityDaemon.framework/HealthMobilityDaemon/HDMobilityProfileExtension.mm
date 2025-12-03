@@ -1,68 +1,68 @@
 @interface HDMobilityProfileExtension
-- (HDMobilityProfileExtension)initWithProfile:(id)a3;
-- (id)featureAvailabilityExtensionForFeatureIdentifier:(id)a3;
-- (void)_triggerImmediateSyncWithReason:(id)a3;
-- (void)onboardingAcknowledgementMigrationManager:(id)a3 didCompleteMigrationWithDidUpdate:(BOOL)a4;
-- (void)settingsMigrationManagerDidCompleteMigration:(id)a3 didRunMigrationSteps:(BOOL)a4;
+- (HDMobilityProfileExtension)initWithProfile:(id)profile;
+- (id)featureAvailabilityExtensionForFeatureIdentifier:(id)identifier;
+- (void)_triggerImmediateSyncWithReason:(id)reason;
+- (void)onboardingAcknowledgementMigrationManager:(id)manager didCompleteMigrationWithDidUpdate:(BOOL)update;
+- (void)settingsMigrationManagerDidCompleteMigration:(id)migration didRunMigrationSteps:(BOOL)steps;
 @end
 
 @implementation HDMobilityProfileExtension
 
-- (HDMobilityProfileExtension)initWithProfile:(id)a3
+- (HDMobilityProfileExtension)initWithProfile:(id)profile
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  profileCopy = profile;
   v38.receiver = self;
   v38.super_class = HDMobilityProfileExtension;
   v5 = [(HDMobilityProfileExtension *)&v38 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
-    v7 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v8 = [v7 isAppleWatch];
+    objc_storeWeak(&v5->_profile, profileCopy);
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    isAppleWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
     v9 = MEMORY[0x277CCC2F8];
-    if ((v8 & 1) == 0)
+    if ((isAppleWatch & 1) == 0)
     {
       v10 = objc_alloc_init(MEMORY[0x277D106E8]);
-      v11 = [MEMORY[0x277D10828] anyCountryAvailability];
+      anyCountryAvailability = [MEMORY[0x277D10828] anyCountryAvailability];
       v12 = objc_alloc(MEMORY[0x277D106D8]);
       v13 = *MEMORY[0x277CCC110];
-      v14 = [MEMORY[0x277D11AC0] requirementSet];
-      v15 = [v12 initWithProfile:v4 featureIdentifier:v13 availabilityRequirements:v14 currentOnboardingVersion:1 pairedDeviceCapability:0 regionAvailabilityProvider:v11 disableAndExpiryProvider:v10 loggingCategory:*v9];
+      requirementSet = [MEMORY[0x277D11AC0] requirementSet];
+      v15 = [v12 initWithProfile:profileCopy featureIdentifier:v13 availabilityRequirements:requirementSet currentOnboardingVersion:1 pairedDeviceCapability:0 regionAvailabilityProvider:anyCountryAvailability disableAndExpiryProvider:v10 loggingCategory:*v9];
       walkingSteadinessClassificationsAvailabilityManager = v6->_walkingSteadinessClassificationsAvailabilityManager;
       v6->_walkingSteadinessClassificationsAvailabilityManager = v15;
 
-      v17 = [[HDMobilityNotificationManager alloc] initWithProfile:v4 walkingSteadinessAvailabilityManager:v6->_walkingSteadinessClassificationsAvailabilityManager];
+      v17 = [[HDMobilityNotificationManager alloc] initWithProfile:profileCopy walkingSteadinessAvailabilityManager:v6->_walkingSteadinessClassificationsAvailabilityManager];
       notificationManager = v6->_notificationManager;
       v6->_notificationManager = v17;
 
-      v19 = [v4 daemon];
-      v20 = [v19 behavior];
-      LODWORD(v14) = [v20 isCompanionCapable];
+      daemon = [profileCopy daemon];
+      behavior = [daemon behavior];
+      LODWORD(requirementSet) = [behavior isCompanionCapable];
 
-      if (v14)
+      if (requirementSet)
       {
-        v21 = [objc_alloc(MEMORY[0x277D105D8]) initWithProfile:v4 featureAvailabilityExtension:v6->_walkingSteadinessClassificationsAvailabilityManager loggingCategory:*v9];
+        v21 = [objc_alloc(MEMORY[0x277D105D8]) initWithProfile:profileCopy featureAvailabilityExtension:v6->_walkingSteadinessClassificationsAvailabilityManager loggingCategory:*v9];
         walkingSteadinessClassificationsBackgroundFeatureDeliveryManager = v6->_walkingSteadinessClassificationsBackgroundFeatureDeliveryManager;
         v6->_walkingSteadinessClassificationsBackgroundFeatureDeliveryManager = v21;
 
-        if ([v4 profileType] == 1)
+        if ([profileCopy profileType] == 1)
         {
-          v23 = [objc_alloc(MEMORY[0x277D10858]) initForWalkingSteadinessWithProfile:v4 delegate:v6];
+          v23 = [objc_alloc(MEMORY[0x277D10858]) initForWalkingSteadinessWithProfile:profileCopy delegate:v6];
           settingsMigrationManager = v6->_settingsMigrationManager;
           v6->_settingsMigrationManager = v23;
         }
       }
 
-      v25 = [[HDMobilityWalkingSteadinessFeatureAvailabilityManager alloc] initWithProfile:v4 regionAvailabilityProvider:v11];
+      v25 = [[HDMobilityWalkingSteadinessFeatureAvailabilityManager alloc] initWithProfile:profileCopy regionAvailabilityProvider:anyCountryAvailability];
       walkingSteadinessNotificationsAvailabilityManager = v6->_walkingSteadinessNotificationsAvailabilityManager;
       v6->_walkingSteadinessNotificationsAvailabilityManager = v25;
 
       v27 = objc_alloc(MEMORY[0x277D105B0]);
-      v28 = [objc_alloc(MEMORY[0x277CCCFE8]) initWithLoggingCategory:*v9 healthDataSource:v4];
-      v29 = [v27 initWithProfile:v4 eventSubmissionManager:v28 logCategory:*v9 eventConstructor:&__block_literal_global];
+      v28 = [objc_alloc(MEMORY[0x277CCCFE8]) initWithLoggingCategory:*v9 healthDataSource:profileCopy];
+      v29 = [v27 initWithProfile:profileCopy eventSubmissionManager:v28 logCategory:*v9 eventConstructor:&__block_literal_global];
       walkingSteadinessDailyAnalyticsEventManager = v6->_walkingSteadinessDailyAnalyticsEventManager;
       v6->_walkingSteadinessDailyAnalyticsEventManager = v29;
     }
@@ -73,11 +73,11 @@
     {
       v32 = v31;
       v33 = objc_opt_class();
-      v34 = [v4 profileType];
+      profileType = [profileCopy profileType];
       *buf = 138543618;
       v40 = v33;
       v41 = 2048;
-      v42 = v34;
+      v42 = profileType;
       _os_log_impl(&dword_251962000, v32, OS_LOG_TYPE_DEFAULT, "%{public}@ Plugin loaded for profileType %ld", buf, 0x16u);
     }
 
@@ -98,10 +98,10 @@ id __46__HDMobilityProfileExtension_initWithProfile___block_invoke(uint64_t a1, 
   return v4;
 }
 
-- (id)featureAvailabilityExtensionForFeatureIdentifier:(id)a3
+- (id)featureAvailabilityExtensionForFeatureIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 isEqualToString:*MEMORY[0x277CCC118]])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:*MEMORY[0x277CCC118]])
   {
     v5 = 40;
 LABEL_5:
@@ -109,7 +109,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x277CCC110]])
+  if ([identifierCopy isEqualToString:*MEMORY[0x277CCC110]])
   {
     v5 = 24;
     goto LABEL_5;
@@ -121,9 +121,9 @@ LABEL_7:
   return v6;
 }
 
-- (void)settingsMigrationManagerDidCompleteMigration:(id)a3 didRunMigrationSteps:(BOOL)a4
+- (void)settingsMigrationManagerDidCompleteMigration:(id)migration didRunMigrationSteps:(BOOL)steps
 {
-  v4 = a4;
+  stepsCopy = steps;
   v17 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
   v6 = *MEMORY[0x277CCC2F8];
@@ -145,7 +145,7 @@ LABEL_7:
   walkingSteadinessOnboardingAcknowledgementMigrationManager = self->_walkingSteadinessOnboardingAcknowledgementMigrationManager;
   self->_walkingSteadinessOnboardingAcknowledgementMigrationManager = v12;
 
-  if (v4)
+  if (stepsCopy)
   {
     [(HDMobilityProfileExtension *)self _triggerImmediateSyncWithReason:@"HDMobilityProfileExtension.settingsMigrationManagerDidRunMigrationSteps"];
   }
@@ -153,9 +153,9 @@ LABEL_7:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)onboardingAcknowledgementMigrationManager:(id)a3 didCompleteMigrationWithDidUpdate:(BOOL)a4
+- (void)onboardingAcknowledgementMigrationManager:(id)manager didCompleteMigrationWithDidUpdate:(BOOL)update
 {
-  v4 = a4;
+  updateCopy = update;
   v12 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
   v6 = *MEMORY[0x277CCC2F8];
@@ -168,7 +168,7 @@ LABEL_7:
     _os_log_impl(&dword_251962000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Onboarding acknowledgement migration completed", &v10, 0xCu);
   }
 
-  if (v4)
+  if (updateCopy)
   {
     [(HDMobilityProfileExtension *)self _triggerImmediateSyncWithReason:@"HDMobilityProfileExtension.onboardingAcknowledgementMigrationManagerDidRunMigrationSteps"];
   }
@@ -176,11 +176,11 @@ LABEL_7:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_triggerImmediateSyncWithReason:(id)a3
+- (void)_triggerImmediateSyncWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained cloudSyncManager];
+  cloudSyncManager = [WeakRetained cloudSyncManager];
   v7 = objc_alloc(MEMORY[0x277CCD140]);
   v8 = [objc_alloc(MEMORY[0x277CCD0C8]) initWithPush:1 pull:0 lite:1];
   v9 = [v7 initWithChangesSyncRequest:v8];
@@ -189,9 +189,9 @@ LABEL_7:
   v11[2] = __62__HDMobilityProfileExtension__triggerImmediateSyncWithReason___block_invoke;
   v11[3] = &unk_2796D9570;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
-  [v6 syncWithRequest:v9 reason:v10 completion:v11];
+  v12 = reasonCopy;
+  v10 = reasonCopy;
+  [cloudSyncManager syncWithRequest:v9 reason:v10 completion:v11];
 }
 
 void __62__HDMobilityProfileExtension__triggerImmediateSyncWithReason___block_invoke(uint64_t a1, int a2, void *a3)

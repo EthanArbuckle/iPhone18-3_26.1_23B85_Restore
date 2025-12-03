@@ -1,31 +1,31 @@
 @interface PFCKAccountMonitor
-+ (BOOL)canEnableSyncWithAccountInfo:(id)a3 requireDeviceToDeviceEncryption:(BOOL)a4;
-- (PFCKAccountMonitor)initWithOptions:(id)a3 forStoreWithIdentifier:(id)a4;
-- (void)_assertContainer:(uint64_t)a1;
-- (void)accountOrIdentityChanged:(id)a3;
++ (BOOL)canEnableSyncWithAccountInfo:(id)info requireDeviceToDeviceEncryption:(BOOL)encryption;
+- (PFCKAccountMonitor)initWithOptions:(id)options forStoreWithIdentifier:(id)identifier;
+- (void)_assertContainer:(uint64_t)container;
+- (void)accountOrIdentityChanged:(id)changed;
 - (void)beginMonitoringNotifications;
 - (void)clearEstablishedAccountInfoAndUserRecordID;
 - (void)dealloc;
-- (void)establishCurrentAccountInfoWithCompletionHandler:(id)a3;
-- (void)establishCurrentUserRecordIDWithCompletionHandler:(id)a3;
-- (void)performBlockAtPreferredQoS:(uint64_t)a1;
-- (void)setContainer:(id)a3;
+- (void)establishCurrentAccountInfoWithCompletionHandler:(id)handler;
+- (void)establishCurrentUserRecordIDWithCompletionHandler:(id)handler;
+- (void)performBlockAtPreferredQoS:(uint64_t)s;
+- (void)setContainer:(id)container;
 - (void)stopMonitoringNotifications;
 @end
 
 @implementation PFCKAccountMonitor
 
-- (PFCKAccountMonitor)initWithOptions:(id)a3 forStoreWithIdentifier:(id)a4
+- (PFCKAccountMonitor)initWithOptions:(id)options forStoreWithIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = PFCKAccountMonitor;
   v6 = [(PFCKAccountMonitor *)&v8 init];
   if (v6)
   {
-    v6->_options = a3;
+    v6->_options = options;
     v6->_currentAccountInfo = 0;
     v6->_currentUserRecordID = 0;
-    v6->_storeIdentifier = a4;
+    v6->_storeIdentifier = identifier;
   }
 
   return v6;
@@ -44,40 +44,40 @@
   [(PFCKAccountMonitor *)&v3 dealloc];
 }
 
-- (void)setContainer:(id)a3
+- (void)setContainer:(id)container
 {
   container = self->_container;
-  if (container != a3)
+  if (container != container)
   {
     if (self->_registeredForIdentityUpdateNotifications)
     {
-      v6 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v6 removeObserver:self name:getCloudKitCKIdentityUpdateNotification[0]() object:self->_container];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter removeObserver:self name:getCloudKitCKIdentityUpdateNotification[0]() object:self->_container];
       self->_registeredForIdentityUpdateNotifications = 0;
       container = self->_container;
     }
 
-    v7 = a3;
-    self->_container = v7;
-    if (self->_observingNotifications && v7 != 0)
+    containerCopy = container;
+    self->_container = containerCopy;
+    if (self->_observingNotifications && containerCopy != 0)
     {
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v9 addObserver:self selector:sel_accountOrIdentityChanged_ name:getCloudKitCKIdentityUpdateNotification[0]() object:self->_container];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel_accountOrIdentityChanged_ name:getCloudKitCKIdentityUpdateNotification[0]() object:self->_container];
       self->_registeredForIdentityUpdateNotifications = 1;
     }
   }
 }
 
-- (void)_assertContainer:(uint64_t)a1
+- (void)_assertContainer:(uint64_t)container
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a1 && !*(a1 + 40))
+  if (container && !*(container + 40))
   {
     LogStream = _PFLogGetLogStream(17);
     if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
     {
       v8 = 138412546;
-      v9 = a1;
+      containerCopy2 = container;
       v10 = 2112;
       v11 = NSStringFromSelector(a2);
       _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: %@ can't execute '%@' without a container.\n", &v8, 0x16u);
@@ -88,7 +88,7 @@
     {
       v7 = NSStringFromSelector(a2);
       v8 = 138412546;
-      v9 = a1;
+      containerCopy2 = container;
       v10 = 2112;
       v11 = v7;
       _os_log_fault_impl(&dword_18565F000, v5, OS_LOG_TYPE_FAULT, "CoreData: %@ can't execute '%@' without a container.", &v8, 0x16u);
@@ -98,14 +98,14 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performBlockAtPreferredQoS:(uint64_t)a1
+- (void)performBlockAtPreferredQoS:(uint64_t)s
 {
-  if (a1)
+  if (s)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 32));
+    WeakRetained = objc_loadWeakRetained((s + 32));
     if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v5 = [WeakRetained qosClassForAccountMonitor:a1];
+      v5 = [WeakRetained qosClassForAccountMonitor:s];
 
       if (v5)
       {
@@ -132,7 +132,7 @@
   }
 }
 
-- (void)establishCurrentAccountInfoWithCompletionHandler:(id)a3
+- (void)establishCurrentAccountInfoWithCompletionHandler:(id)handler
 {
   [(PFCKAccountMonitor *)self _assertContainer:a2];
   v5[0] = MEMORY[0x1E69E9820];
@@ -140,7 +140,7 @@
   v5[2] = __71__PFCKAccountMonitor_establishCurrentAccountInfoWithCompletionHandler___block_invoke;
   v5[3] = &unk_1E6EC1B28;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = handler;
   [(PFCKAccountMonitor *)self performBlockAtPreferredQoS:v5];
 }
 
@@ -241,7 +241,7 @@ void __71__PFCKAccountMonitor_establishCurrentAccountInfoWithCompletionHandler__
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)establishCurrentUserRecordIDWithCompletionHandler:(id)a3
+- (void)establishCurrentUserRecordIDWithCompletionHandler:(id)handler
 {
   [(PFCKAccountMonitor *)self _assertContainer:a2];
   v5[0] = MEMORY[0x1E69E9820];
@@ -249,7 +249,7 @@ void __71__PFCKAccountMonitor_establishCurrentAccountInfoWithCompletionHandler__
   v5[2] = __72__PFCKAccountMonitor_establishCurrentUserRecordIDWithCompletionHandler___block_invoke;
   v5[3] = &unk_1E6EC1B28;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = handler;
   [(PFCKAccountMonitor *)self performBlockAtPreferredQoS:v5];
 }
 
@@ -407,7 +407,7 @@ void __72__PFCKAccountMonitor_establishCurrentUserRecordIDWithCompletionHandler_
     v15 = 1024;
     v16 = 175;
     v17 = 2112;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
     v20 = storeIdentifier;
     v21 = 2112;
@@ -520,8 +520,8 @@ LABEL_14:
   {
     if (!self->_registeredForAccountChangeNotifications)
     {
-      v3 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v3 addObserver:self selector:sel_accountOrIdentityChanged_ name:getCloudKitCKAccountChangedNotification() object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel_accountOrIdentityChanged_ name:getCloudKitCKAccountChangedNotification() object:0];
       self->_registeredForAccountChangeNotifications = 1;
     }
 
@@ -529,8 +529,8 @@ LABEL_14:
     {
       if (!self->_registeredForIdentityUpdateNotifications)
       {
-        v4 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v4 addObserver:self selector:sel_accountOrIdentityChanged_ name:getCloudKitCKIdentityUpdateNotification[0]() object:self->_container];
+        defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter2 addObserver:self selector:sel_accountOrIdentityChanged_ name:getCloudKitCKIdentityUpdateNotification[0]() object:self->_container];
         self->_registeredForIdentityUpdateNotifications = 1;
       }
     }
@@ -546,7 +546,7 @@ LABEL_14:
   self->_registeredForIdentityUpdateNotifications = 0;
 }
 
-- (void)accountOrIdentityChanged:(id)a3
+- (void)accountOrIdentityChanged:(id)changed
 {
   v23 = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
@@ -586,11 +586,11 @@ LABEL_14:
     v15 = 1024;
     v16 = 239;
     v17 = 2112;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
     v20 = storeIdentifier;
     v21 = 2112;
-    v22 = [a3 name];
+    name = [changed name];
     _os_log_impl(&dword_18565F000, v7, v9, "CoreData+CloudKit: %s(%d): %@ for store %@ observed '%@'.", buf, 0x30u);
   }
 
@@ -600,7 +600,7 @@ LABEL_14:
   v12[2] = __47__PFCKAccountMonitor_accountOrIdentityChanged___block_invoke;
   v12[3] = &unk_1E6EC1BA0;
   v12[4] = self;
-  v12[5] = a3;
+  v12[5] = changed;
   [(PFCKAccountMonitor *)self performBlockAtPreferredQoS:v12];
   objc_sync_exit(self);
   v11 = *MEMORY[0x1E69E9840];
@@ -860,31 +860,31 @@ void __75__PFCKAccountMonitor_finishedAccountInfoFetchWith_error_completionHandl
   v13 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)canEnableSyncWithAccountInfo:(id)a3 requireDeviceToDeviceEncryption:(BOOL)a4
++ (BOOL)canEnableSyncWithAccountInfo:(id)info requireDeviceToDeviceEncryption:(BOOL)encryption
 {
-  v4 = a4;
-  v6 = [a3 hasValidCredentials];
-  if (v6)
+  encryptionCopy = encryption;
+  hasValidCredentials = [info hasValidCredentials];
+  if (hasValidCredentials)
   {
-    LOBYTE(v6) = [a3 accountStatus] == 1;
-    if (v6)
+    LOBYTE(hasValidCredentials) = [info accountStatus] == 1;
+    if (hasValidCredentials)
     {
-      if (v4)
+      if (encryptionCopy)
       {
-        if (([a3 deviceToDeviceEncryptionAvailability] & 2) != 0)
+        if (([info deviceToDeviceEncryptionAvailability] & 2) != 0)
         {
-          LOBYTE(v6) = [a3 deviceToDeviceEncryptionAvailability] & 1;
+          LOBYTE(hasValidCredentials) = [info deviceToDeviceEncryptionAvailability] & 1;
         }
 
         else
         {
-          LOBYTE(v6) = 0;
+          LOBYTE(hasValidCredentials) = 0;
         }
       }
     }
   }
 
-  return v6;
+  return hasValidCredentials;
 }
 
 @end

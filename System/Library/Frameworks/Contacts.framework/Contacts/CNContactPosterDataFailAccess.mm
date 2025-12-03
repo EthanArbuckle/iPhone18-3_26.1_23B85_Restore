@@ -1,68 +1,68 @@
 @interface CNContactPosterDataFailAccess
-- (BOOL)executeCreateRequest:(id)a3 error:(id *)a4;
-- (BOOL)executeDeleteRequest:(id)a3 error:(id *)a4;
-- (BOOL)executeUpdateRequest:(id)a3 error:(id *)a4;
-- (id)executeFetchRequest:(id)a3 error:(id *)a4;
-- (int64_t)countForFetchRequest:(id)a3 error:(id *)a4;
+- (BOOL)executeCreateRequest:(id)request error:(id *)error;
+- (BOOL)executeDeleteRequest:(id)request error:(id *)error;
+- (BOOL)executeUpdateRequest:(id)request error:(id *)error;
+- (id)executeFetchRequest:(id)request error:(id *)error;
+- (int64_t)countForFetchRequest:(id)request error:(id *)error;
 @end
 
 @implementation CNContactPosterDataFailAccess
 
-- (id)executeFetchRequest:(id)a3 error:(id *)a4
+- (id)executeFetchRequest:(id)request error:(id *)error
 {
   v5 = [CNErrorFactory errorWithCode:1017];
-  if (a4)
+  if (error)
   {
     v5 = v5;
-    *a4 = v5;
+    *error = v5;
   }
 
   return 0;
 }
 
-- (int64_t)countForFetchRequest:(id)a3 error:(id *)a4
+- (int64_t)countForFetchRequest:(id)request error:(id *)error
 {
   v5 = [CNErrorFactory errorWithCode:1017];
-  if (a4)
+  if (error)
   {
     v5 = v5;
-    *a4 = v5;
+    *error = v5;
   }
 
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (BOOL)executeCreateRequest:(id)a3 error:(id *)a4
+- (BOOL)executeCreateRequest:(id)request error:(id *)error
 {
   v5 = [CNErrorFactory errorWithCode:1017];
-  if (a4)
+  if (error)
   {
     v5 = v5;
-    *a4 = v5;
+    *error = v5;
   }
 
   return 0;
 }
 
-- (BOOL)executeDeleteRequest:(id)a3 error:(id *)a4
+- (BOOL)executeDeleteRequest:(id)request error:(id *)error
 {
   v5 = [CNErrorFactory errorWithCode:1017];
-  if (a4)
+  if (error)
   {
     v5 = v5;
-    *a4 = v5;
+    *error = v5;
   }
 
   return 0;
 }
 
-- (BOOL)executeUpdateRequest:(id)a3 error:(id *)a4
+- (BOOL)executeUpdateRequest:(id)request error:(id *)error
 {
   v5 = [CNErrorFactory errorWithCode:1017];
-  if (a4)
+  if (error)
   {
     v5 = v5;
-    *a4 = v5;
+    *error = v5;
   }
 
   return 0;

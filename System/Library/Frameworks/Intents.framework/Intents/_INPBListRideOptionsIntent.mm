@@ -1,31 +1,31 @@
 @interface _INPBListRideOptionsIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBListRideOptionsIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBListRideOptionsIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBListRideOptionsIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBListRideOptionsIntent *)self dropOffLocation];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"dropOffLocation"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dropOffLocation = [(_INPBListRideOptionsIntent *)self dropOffLocation];
+  dictionaryRepresentation = [dropOffLocation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"dropOffLocation"];
 
-  v6 = [(_INPBListRideOptionsIntent *)self intentMetadata];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBListRideOptionsIntent *)self intentMetadata];
+  dictionaryRepresentation2 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"intentMetadata"];
 
-  v8 = [(_INPBListRideOptionsIntent *)self pickupLocation];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"pickupLocation"];
+  pickupLocation = [(_INPBListRideOptionsIntent *)self pickupLocation];
+  dictionaryRepresentation3 = [pickupLocation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"pickupLocation"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -35,28 +35,28 @@
   return v4 ^ [(_INPBLocation *)self->_pickupLocation hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_INPBListRideOptionsIntent *)self dropOffLocation];
-  v6 = [v4 dropOffLocation];
-  if ((v5 != 0) == (v6 == 0))
+  dropOffLocation = [(_INPBListRideOptionsIntent *)self dropOffLocation];
+  dropOffLocation2 = [equalCopy dropOffLocation];
+  if ((dropOffLocation != 0) == (dropOffLocation2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_INPBListRideOptionsIntent *)self dropOffLocation];
-  if (v7)
+  dropOffLocation3 = [(_INPBListRideOptionsIntent *)self dropOffLocation];
+  if (dropOffLocation3)
   {
-    v8 = v7;
-    v9 = [(_INPBListRideOptionsIntent *)self dropOffLocation];
-    v10 = [v4 dropOffLocation];
-    v11 = [v9 isEqual:v10];
+    v8 = dropOffLocation3;
+    dropOffLocation4 = [(_INPBListRideOptionsIntent *)self dropOffLocation];
+    dropOffLocation5 = [equalCopy dropOffLocation];
+    v11 = [dropOffLocation4 isEqual:dropOffLocation5];
 
     if (!v11)
     {
@@ -68,20 +68,20 @@
   {
   }
 
-  v5 = [(_INPBListRideOptionsIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  dropOffLocation = [(_INPBListRideOptionsIntent *)self intentMetadata];
+  dropOffLocation2 = [equalCopy intentMetadata];
+  if ((dropOffLocation != 0) == (dropOffLocation2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_INPBListRideOptionsIntent *)self intentMetadata];
-  if (v12)
+  intentMetadata = [(_INPBListRideOptionsIntent *)self intentMetadata];
+  if (intentMetadata)
   {
-    v13 = v12;
-    v14 = [(_INPBListRideOptionsIntent *)self intentMetadata];
-    v15 = [v4 intentMetadata];
-    v16 = [v14 isEqual:v15];
+    v13 = intentMetadata;
+    intentMetadata2 = [(_INPBListRideOptionsIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v16 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (!v16)
     {
@@ -93,12 +93,12 @@
   {
   }
 
-  v5 = [(_INPBListRideOptionsIntent *)self pickupLocation];
-  v6 = [v4 pickupLocation];
-  if ((v5 != 0) != (v6 == 0))
+  dropOffLocation = [(_INPBListRideOptionsIntent *)self pickupLocation];
+  dropOffLocation2 = [equalCopy pickupLocation];
+  if ((dropOffLocation != 0) != (dropOffLocation2 == 0))
   {
-    v17 = [(_INPBListRideOptionsIntent *)self pickupLocation];
-    if (!v17)
+    pickupLocation = [(_INPBListRideOptionsIntent *)self pickupLocation];
+    if (!pickupLocation)
     {
 
 LABEL_20:
@@ -106,10 +106,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_INPBListRideOptionsIntent *)self pickupLocation];
-    v20 = [v4 pickupLocation];
-    v21 = [v19 isEqual:v20];
+    v18 = pickupLocation;
+    pickupLocation2 = [(_INPBListRideOptionsIntent *)self pickupLocation];
+    pickupLocation3 = [equalCopy pickupLocation];
+    v21 = [pickupLocation2 isEqual:pickupLocation3];
 
     if (v21)
     {
@@ -129,73 +129,73 @@ LABEL_18:
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBListRideOptionsIntent allocWithZone:](_INPBListRideOptionsIntent init];
-  v6 = [(_INPBLocation *)self->_dropOffLocation copyWithZone:a3];
+  v6 = [(_INPBLocation *)self->_dropOffLocation copyWithZone:zone];
   [(_INPBListRideOptionsIntent *)v5 setDropOffLocation:v6];
 
-  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBListRideOptionsIntent *)v5 setIntentMetadata:v7];
 
-  v8 = [(_INPBLocation *)self->_pickupLocation copyWithZone:a3];
+  v8 = [(_INPBLocation *)self->_pickupLocation copyWithZone:zone];
   [(_INPBListRideOptionsIntent *)v5 setPickupLocation:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBListRideOptionsIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBListRideOptionsIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBListRideOptionsIntent)initWithCoder:(id)a3
+- (_INPBListRideOptionsIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBListRideOptionsIntent *)self initWithData:v6];
+    self = [(_INPBListRideOptionsIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(_INPBListRideOptionsIntent *)self dropOffLocation];
+  toCopy = to;
+  dropOffLocation = [(_INPBListRideOptionsIntent *)self dropOffLocation];
 
-  if (v4)
+  if (dropOffLocation)
   {
-    v5 = [(_INPBListRideOptionsIntent *)self dropOffLocation];
+    dropOffLocation2 = [(_INPBListRideOptionsIntent *)self dropOffLocation];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBListRideOptionsIntent *)self intentMetadata];
+  intentMetadata = [(_INPBListRideOptionsIntent *)self intentMetadata];
 
-  if (v6)
+  if (intentMetadata)
   {
-    v7 = [(_INPBListRideOptionsIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBListRideOptionsIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBListRideOptionsIntent *)self pickupLocation];
+  pickupLocation = [(_INPBListRideOptionsIntent *)self pickupLocation];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (pickupLocation)
   {
-    v10 = [(_INPBListRideOptionsIntent *)self pickupLocation];
+    pickupLocation2 = [(_INPBListRideOptionsIntent *)self pickupLocation];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 

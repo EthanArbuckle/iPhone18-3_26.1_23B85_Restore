@@ -10,21 +10,21 @@
   [v2 maximumAllowedDuration];
   v4 = v3;
 
-  [a1 duration];
+  [self duration];
   if (v5 <= v4)
   {
-    v8 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = [a1 endDate];
-    v7 = [v6 dateByAddingTimeInterval:-v4];
+    endDate = [self endDate];
+    v7 = [endDate dateByAddingTimeInterval:-v4];
 
-    v8 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v7 duration:v4];
+    selfCopy = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v7 duration:v4];
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

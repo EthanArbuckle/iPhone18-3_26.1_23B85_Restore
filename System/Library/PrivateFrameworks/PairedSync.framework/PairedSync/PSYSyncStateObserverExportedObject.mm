@@ -1,15 +1,15 @@
 @interface PSYSyncStateObserverExportedObject
 - (PSYSyncStateObserverInterface)delegate;
-- (void)didUpdateSyncForPairingID:(id)a3;
+- (void)didUpdateSyncForPairingID:(id)d;
 @end
 
 @implementation PSYSyncStateObserverExportedObject
 
-- (void)didUpdateSyncForPairingID:(id)a3
+- (void)didUpdateSyncForPairingID:(id)d
 {
-  v4 = a3;
-  v5 = [(PSYSyncStateObserverExportedObject *)self delegate];
-  [v5 didUpdateSyncForPairingID:v4];
+  dCopy = d;
+  delegate = [(PSYSyncStateObserverExportedObject *)self delegate];
+  [delegate didUpdateSyncForPairingID:dCopy];
 }
 
 - (PSYSyncStateObserverInterface)delegate

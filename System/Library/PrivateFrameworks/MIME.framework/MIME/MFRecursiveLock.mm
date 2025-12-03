@@ -1,7 +1,7 @@
 @interface MFRecursiveLock
-- (BOOL)lockBeforeDate:(id)a3;
+- (BOOL)lockBeforeDate:(id)date;
 - (BOOL)tryLock;
-- (MFRecursiveLock)initWithName:(id)a3 andDelegate:(id)a4;
+- (MFRecursiveLock)initWithName:(id)name andDelegate:(id)delegate;
 - (id)description;
 - (void)dealloc;
 - (void)lock;
@@ -32,15 +32,15 @@
   [(MFRecursiveLock *)&v3 unlock];
 }
 
-- (MFRecursiveLock)initWithName:(id)a3 andDelegate:(id)a4
+- (MFRecursiveLock)initWithName:(id)name andDelegate:(id)delegate
 {
   v8.receiver = self;
   v8.super_class = MFRecursiveLock;
   v6 = [(MFRecursiveLock *)&v8 init];
   if (v6)
   {
-    v6->_name = [a3 copy];
-    v6->_delegate = a4;
+    v6->_name = [name copy];
+    v6->_delegate = delegate;
   }
 
   return v6;
@@ -56,16 +56,16 @@
 
   v6.receiver = self;
   v6.super_class = MFRecursiveLock;
-  v4 = [(MFRecursiveLock *)&v6 tryLock];
-  if (v4)
+  tryLock = [(MFRecursiveLock *)&v6 tryLock];
+  if (tryLock)
   {
     _mfRegisterLockOnThisThread(self);
   }
 
-  return v4;
+  return tryLock;
 }
 
-- (BOOL)lockBeforeDate:(id)a3
+- (BOOL)lockBeforeDate:(id)date
 {
   delegate = self->_delegate;
   if (delegate)
@@ -75,7 +75,7 @@
 
   v8.receiver = self;
   v8.super_class = MFRecursiveLock;
-  v6 = [(MFRecursiveLock *)&v8 lockBeforeDate:a3];
+  v6 = [(MFRecursiveLock *)&v8 lockBeforeDate:date];
   if (v6)
   {
     _mfRegisterLockOnThisThread(self);

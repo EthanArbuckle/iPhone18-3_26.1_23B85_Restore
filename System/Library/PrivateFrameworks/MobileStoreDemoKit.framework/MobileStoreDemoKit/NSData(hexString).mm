@@ -60,12 +60,12 @@ LABEL_8:
 
 - (id)hexStringRepresentation
 {
-  v2 = [a1 length];
+  v2 = [self length];
   v3 = [MEMORY[0x277CCAB68] stringWithCapacity:2 * v2];
-  v4 = [a1 bytes];
+  bytes = [self bytes];
   if (v2)
   {
-    v5 = v4;
+    v5 = bytes;
     do
     {
       v6 = *v5++;

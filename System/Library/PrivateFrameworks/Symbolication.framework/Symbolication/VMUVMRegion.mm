@@ -1,9 +1,9 @@
 @interface VMUVMRegion
-+ (id)columnHeadersWithOptions:(unint64_t)a3 maximumLength:(unint64_t)a4 memorySizeDivisor:(unsigned int)a5 hasFractionalPageSizes:(BOOL)a6;
++ (id)columnHeadersWithOptions:(unint64_t)options maximumLength:(unint64_t)length memorySizeDivisor:(unsigned int)divisor hasFractionalPageSizes:(BOOL)sizes;
 + (void)initialize;
-- (BOOL)hasSameInfoAsRegion:(id)a3;
+- (BOOL)hasSameInfoAsRegion:(id)region;
 - (BOOL)ignoreRegionDuringScanning;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isMallocHeapRelated;
 - (BOOL)isReadonlyAndClean;
 - (BOOL)isSpecialPhysFootprintRegion;
@@ -11,17 +11,17 @@
 - (BOOL)isUntaggedRegion;
 - (BOOL)willNotHoldPointers;
 - (VMUVMRegion)init;
-- (VMUVMRegion)initWithVMRegionData:(_VMUVMRegionData *)a3 encodedVersion:(int64_t)a4 simpleSerializer:(id)a5 error:(id *)a6;
+- (VMUVMRegion)initWithVMRegionData:(_VMUVMRegionData *)data encodedVersion:(int64_t)version simpleSerializer:(id)serializer error:(id *)error;
 - (_VMURange)range;
-- (id)breakAtLength:(unint64_t)a3;
-- (id)descriptionWithOptions:(unint64_t)a3 maximumLength:(unint64_t)a4 memorySizeDivisor:(unsigned int)a5 hasFractionalPageSizes:(BOOL)a6;
-- (id)splitOutRange:(_VMURange)a3 fromRegionIndex:(unint64_t)a4 regions:(id)a5 newZoneName:(id)a6 reason:(id)a7;
+- (id)breakAtLength:(unint64_t)length;
+- (id)descriptionWithOptions:(unint64_t)options maximumLength:(unint64_t)length memorySizeDivisor:(unsigned int)divisor hasFractionalPageSizes:(BOOL)sizes;
+- (id)splitOutRange:(_VMURange)range fromRegionIndex:(unint64_t)index regions:(id)regions newZoneName:(id)name reason:(id)reason;
 - (unint64_t)dirtyLength;
-- (void)addInfoFromRegion:(id)a3;
+- (void)addInfoFromRegion:(id)region;
 - (void)fixNonEmptyMallocRegionType;
-- (void)getVMRegionAttributeStatusData:(_VMUVMRegionAttributeStatusData *)a3;
-- (void)getVMRegionData:(_VMUVMRegionData *)a3 withSimpleSerializer:(id)a4;
-- (void)setVMRegionAttributeStatusData:(_VMUVMRegionAttributeStatusData *)a3;
+- (void)getVMRegionAttributeStatusData:(_VMUVMRegionAttributeStatusData *)data;
+- (void)getVMRegionData:(_VMUVMRegionData *)data withSimpleSerializer:(id)serializer;
+- (void)setVMRegionAttributeStatusData:(_VMUVMRegionAttributeStatusData *)data;
 @end
 
 @implementation VMUVMRegion
@@ -76,17 +76,17 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    [a1 setVersion:2];
+    [self setVersion:2];
   }
 }
 
-- (VMUVMRegion)initWithVMRegionData:(_VMUVMRegionData *)a3 encodedVersion:(int64_t)a4 simpleSerializer:(id)a5 error:(id *)a6
+- (VMUVMRegion)initWithVMRegionData:(_VMUVMRegionData *)data encodedVersion:(int64_t)version simpleSerializer:(id)serializer error:(id *)error
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v10 = a5;
+  serializerCopy = serializer;
   v34.receiver = self;
   v34.super_class = VMUVMRegion;
   v11 = [(VMUVMRegion *)&v34 init];
@@ -96,23 +96,23 @@
   }
 
   v33 = 0;
-  if (!a6)
+  if (!error)
   {
-    a6 = &v33;
+    error = &v33;
   }
 
-  if (a4 == 1)
+  if (version == 1)
   {
     fwrite("Memory graph file content is obsolete development version, no longer supported\n", 0x4FuLL, 1uLL, *MEMORY[0x1E69E9848]);
     exit(1);
   }
 
-  if ([objc_opt_class() version] < a4)
+  if ([objc_opt_class() version] < version)
   {
     goto LABEL_6;
   }
 
-  if (!a3)
+  if (!data)
   {
     v26 = MEMORY[0x1E696ABC0];
     v37 = *MEMORY[0x1E696A578];
@@ -122,17 +122,17 @@
     v29 = &v37;
 LABEL_14:
     v30 = [v27 dictionaryWithObjects:v28 forKeys:v29 count:1];
-    *a6 = [v26 errorWithDomain:@"VMUVMRegionDomain" code:1 userInfo:v30];
+    *error = [v26 errorWithDomain:@"VMUVMRegionDomain" code:1 userInfo:v30];
 
 LABEL_15:
     v12 = 0;
     goto LABEL_16;
   }
 
-  *(v11 + 8) = *&a3->var0;
-  *(v11 + 6) = a3->var3;
-  *(v11 + 7) = a3->var4;
-  if (!v10)
+  *(v11 + 8) = *&data->var0;
+  *(v11 + 6) = data->var3;
+  *(v11 + 7) = data->var4;
+  if (!serializerCopy)
   {
     v26 = MEMORY[0x1E696ABC0];
     v35 = *MEMORY[0x1E696A578];
@@ -143,58 +143,58 @@ LABEL_15:
     goto LABEL_14;
   }
 
-  v13 = [v10 copyDeserializedStringWithID:a3->var5 error:a6];
+  v13 = [serializerCopy copyDeserializedStringWithID:data->var5 error:error];
   v14 = *(v11 + 4);
   *(v11 + 4) = v13;
 
-  if (*a6)
+  if (*error)
   {
     goto LABEL_15;
   }
 
-  v15 = [v10 copyDeserializedStringWithID:a3->var6 error:a6];
+  v15 = [serializerCopy copyDeserializedStringWithID:data->var6 error:error];
   v16 = *(v11 + 5);
   *(v11 + 5) = v15;
 
-  if (*a6)
+  if (*error)
   {
     goto LABEL_15;
   }
 
-  *(v11 + 26) = a3->var7;
-  *(v11 + 32) = a3->var8;
-  var10 = a3->var10;
-  *(v11 + 12) = a3->var9;
+  *(v11 + 26) = data->var7;
+  *(v11 + 32) = data->var8;
+  var10 = data->var10;
+  *(v11 + 12) = data->var9;
   *(v11 + 13) = var10;
-  *(v11 + 14) = a3->var11;
-  v11[49] = a3->var12;
-  v11[50] = a3->var13;
-  var16 = a3->var16;
-  *(v11 + 17) = a3->var15;
+  *(v11 + 14) = data->var11;
+  v11[49] = data->var12;
+  v11[50] = data->var13;
+  var16 = data->var16;
+  *(v11 + 17) = data->var15;
   *(v11 + 36) = var16;
-  *(v11 + 37) = a3->var2;
-  v19 = v11[132] & 0xFE | *(a3 + 68) & 1;
+  *(v11 + 37) = data->var2;
+  v19 = v11[132] & 0xFE | *(data + 68) & 1;
   v11[132] = v19;
-  v20 = v19 & 0xFFFFFFFD | (2 * ((*(a3 + 68) >> 1) & 1));
+  v20 = v19 & 0xFFFFFFFD | (2 * ((*(data + 68) >> 1) & 1));
   v11[132] = v20;
-  v21 = v20 & 0xFFFFFFFB | (4 * ((*(a3 + 68) >> 2) & 1));
+  v21 = v20 & 0xFFFFFFFB | (4 * ((*(data + 68) >> 2) & 1));
   v11[132] = v21;
-  v22 = v21 & 0xFFFFFFF7 | (8 * ((*(a3 + 68) >> 3) & 1));
+  v22 = v21 & 0xFFFFFFF7 | (8 * ((*(data + 68) >> 3) & 1));
   v11[132] = v22;
-  v23 = v22 & 0xFFFFFFEF | (16 * ((*(a3 + 68) >> 4) & 1));
+  v23 = v22 & 0xFFFFFFEF | (16 * ((*(data + 68) >> 4) & 1));
   v11[132] = v23;
-  v24 = v23 & 0xFFFFFFDF | (32 * ((*(a3 + 68) >> 5) & 1));
+  v24 = v23 & 0xFFFFFFDF | (32 * ((*(data + 68) >> 5) & 1));
   v11[132] = v24;
-  v25 = v24 & 0xFFFFFFBF | (((*(a3 + 68) >> 6) & 1) << 6);
+  v25 = v24 & 0xFFFFFFBF | (((*(data + 68) >> 6) & 1) << 6);
   v11[132] = v25;
-  v11[132] = *(a3 + 68) & 0x80 | v25 & 0x7F;
-  *(v11 + 20) = a3->var26;
-  *(v11 + 21) = a3->var27;
-  *(v11 + 22) = a3->var28;
-  *(v11 + 23) = a3->var29;
-  *(v11 + 24) = a3->var30;
-  *(v11 + 25) = a3->var31;
-  *(v11 + 26) = a3->var32;
+  v11[132] = *(data + 68) & 0x80 | v25 & 0x7F;
+  *(v11 + 20) = data->var26;
+  *(v11 + 21) = data->var27;
+  *(v11 + 22) = data->var28;
+  *(v11 + 23) = data->var29;
+  *(v11 + 24) = data->var30;
+  *(v11 + 25) = data->var31;
+  *(v11 + 26) = data->var32;
   *(v11 + 38) = 1;
 LABEL_6:
   v12 = v11;
@@ -204,80 +204,80 @@ LABEL_16:
   return v12;
 }
 
-- (void)setVMRegionAttributeStatusData:(_VMUVMRegionAttributeStatusData *)a3
+- (void)setVMRegionAttributeStatusData:(_VMUVMRegionAttributeStatusData *)data
 {
-  v3 = *(self + 132) & 0x7F | (*a3 >> 2 << 7);
+  v3 = *(self + 132) & 0x7F | (*data >> 2 << 7);
   *(self + 132) = v3;
-  LOBYTE(v3) = v3 & 0xDF | (32 * (*a3 & 1));
+  LOBYTE(v3) = v3 & 0xDF | (32 * (*data & 1));
   *(self + 132) = v3;
-  *(self + 132) = v3 & 0xBF | (32 * *a3) & 0x40;
+  *(self + 132) = v3 & 0xBF | (32 * *data) & 0x40;
 }
 
-- (void)getVMRegionData:(_VMUVMRegionData *)a3 withSimpleSerializer:(id)a4
+- (void)getVMRegionData:(_VMUVMRegionData *)data withSimpleSerializer:(id)serializer
 {
-  *&a3->var0 = self->range;
-  a3->var3 = self->prot;
-  a3->var4 = self->maxProt;
+  *&data->var0 = self->range;
+  data->var3 = self->prot;
+  data->var4 = self->maxProt;
   type = self->type;
-  v7 = a4;
-  a3->var5 = [v7 serializeString:type];
-  LODWORD(type) = [v7 serializeString:self->path];
+  serializerCopy = serializer;
+  data->var5 = [serializerCopy serializeString:type];
+  LODWORD(type) = [serializerCopy serializeString:self->path];
 
-  a3->var6 = type;
-  a3->var7 = self->user_tag;
+  data->var6 = type;
+  data->var7 = self->user_tag;
   ref_count = self->ref_count;
-  a3->var8 = self->nesting_depth;
-  a3->var9 = ref_count;
+  data->var8 = self->nesting_depth;
+  data->var9 = ref_count;
   object_id = self->object_id;
-  a3->var10 = self->purgeable;
-  a3->var11 = object_id;
-  a3->var12 = self->external_pager;
-  a3->var13 = self->share_mode;
-  a3->var15 = self->mallocBlockCount;
-  a3->var16 = self->mallocTypeFlag;
-  a3->var2 = self->zone_index;
-  LODWORD(object_id) = *(a3 + 17) & 0xFFFFFFFE | *(self + 132) & 1;
-  *(a3 + 17) = object_id;
+  data->var10 = self->purgeable;
+  data->var11 = object_id;
+  data->var12 = self->external_pager;
+  data->var13 = self->share_mode;
+  data->var15 = self->mallocBlockCount;
+  data->var16 = self->mallocTypeFlag;
+  data->var2 = self->zone_index;
+  LODWORD(object_id) = *(data + 17) & 0xFFFFFFFE | *(self + 132) & 1;
+  *(data + 17) = object_id;
   LODWORD(object_id) = object_id & 0xFFFFFFFD | (2 * ((*(self + 132) >> 1) & 1));
-  *(a3 + 17) = object_id;
+  *(data + 17) = object_id;
   LODWORD(object_id) = object_id & 0xFFFFFFFB | (4 * ((*(self + 132) >> 2) & 1));
-  *(a3 + 17) = object_id;
+  *(data + 17) = object_id;
   LODWORD(object_id) = object_id & 0xFFFFFFF7 | (8 * ((*(self + 132) >> 3) & 1));
-  *(a3 + 17) = object_id;
+  *(data + 17) = object_id;
   v10 = object_id & 0xEF | *(self + 132) & 0x10;
-  *(a3 + 17) = v10;
+  *(data + 17) = v10;
   v11 = v10 & 0xFFFFFFDF | *(self + 132) & 0x20;
-  *(a3 + 17) = v11;
+  *(data + 17) = v11;
   v12 = v11 & 0xFFFFFFBF | *(self + 132) & 0x40;
-  *(a3 + 17) = v12;
-  *(a3 + 17) = *(self + 132) & 0x80 | v12 & 0x7F;
-  a3->var26 = self->resident_size;
-  a3->var27 = self->shared_now_private_size;
-  a3->var28 = self->swapped_out_size;
-  a3->var29 = self->dirty_size;
-  a3->var30 = self->purgable_vol_size;
-  a3->var31 = self->purgable_non_vol_size;
-  a3->var32 = self->purgable_empty_size;
+  *(data + 17) = v12;
+  *(data + 17) = *(self + 132) & 0x80 | v12 & 0x7F;
+  data->var26 = self->resident_size;
+  data->var27 = self->shared_now_private_size;
+  data->var28 = self->swapped_out_size;
+  data->var29 = self->dirty_size;
+  data->var30 = self->purgable_vol_size;
+  data->var31 = self->purgable_non_vol_size;
+  data->var32 = self->purgable_empty_size;
 }
 
-- (void)getVMRegionAttributeStatusData:(_VMUVMRegionAttributeStatusData *)a3
+- (void)getVMRegionAttributeStatusData:(_VMUVMRegionAttributeStatusData *)data
 {
-  v3 = *a3 & 0xFFFB | (4 * ((*(self + 132) >> 7) & 1));
-  *a3 = v3;
+  v3 = *data & 0xFFFB | (4 * ((*(self + 132) >> 7) & 1));
+  *data = v3;
   v4 = v3 & 0xFFFFFFFE | (*(self + 132) >> 5) & 1;
-  *a3 = v4;
-  *a3 = v4 & 5 | (*(self + 132) >> 5) & 2;
+  *data = v4;
+  *data = v4 & 5 | (*(self + 132) >> 5) & 2;
 }
 
-+ (id)columnHeadersWithOptions:(unint64_t)a3 maximumLength:(unint64_t)a4 memorySizeDivisor:(unsigned int)a5 hasFractionalPageSizes:(BOOL)a6
++ (id)columnHeadersWithOptions:(unint64_t)options maximumLength:(unint64_t)length memorySizeDivisor:(unsigned int)divisor hasFractionalPageSizes:(BOOL)sizes
 {
-  v6 = a6;
-  v7 = a3;
-  v8 = a5 > 1;
+  sizesCopy = sizes;
+  optionsCopy = options;
+  v8 = divisor > 1;
   v9 = objc_alloc(MEMORY[0x1E696AD60]);
-  v10 = !v8 || !v6;
+  v10 = !v8 || !sizesCopy;
   v11 = 6;
-  if (v8 && v6)
+  if (v8 && sizesCopy)
   {
     v12 = 8;
   }
@@ -294,13 +294,13 @@ LABEL_16:
 
   v13 = [v9 initWithFormat:@"%*s", v11, "VSIZE"];
   v14 = v13;
-  if ((v7 & 4) != 0)
+  if ((optionsCopy & 4) != 0)
   {
     [v13 appendFormat:@" %*s", v12, "RSDNT"];
-    if ((v7 & 8) == 0)
+    if ((optionsCopy & 8) == 0)
     {
 LABEL_8:
-      if ((v7 & 0x800) == 0)
+      if ((optionsCopy & 0x800) == 0)
       {
         goto LABEL_10;
       }
@@ -309,13 +309,13 @@ LABEL_8:
     }
   }
 
-  else if ((v7 & 8) == 0)
+  else if ((optionsCopy & 8) == 0)
   {
     goto LABEL_8;
   }
 
   [v14 appendFormat:@" %*s", v12, "DIRTY"];
-  if ((v7 & 0x800) != 0)
+  if ((optionsCopy & 0x800) != 0)
   {
 LABEL_9:
     [v14 appendFormat:@" %*s", v12, "SWAP"];
@@ -336,7 +336,7 @@ LABEL_10:
     maxVMAddressWidth_addressWidth = v17 >> 2;
   }
 
-  if ((v7 & 0x2000000) != 0)
+  if ((optionsCopy & 0x2000000) != 0)
   {
     if (maxAttributesWidth_onceToken != -1)
     {
@@ -353,7 +353,7 @@ LABEL_10:
     v19 = "";
   }
 
-  if ((v7 & 0x10) != 0)
+  if ((optionsCopy & 0x10) != 0)
   {
     v20 = " PURGE  ";
   }
@@ -422,7 +422,7 @@ LABEL_10:
   return v2;
 }
 
-- (id)descriptionWithOptions:(unint64_t)a3 maximumLength:(unint64_t)a4 memorySizeDivisor:(unsigned int)a5 hasFractionalPageSizes:(BOOL)a6
+- (id)descriptionWithOptions:(unint64_t)options maximumLength:(unint64_t)length memorySizeDivisor:(unsigned int)divisor hasFractionalPageSizes:(BOOL)sizes
 {
   v11 = objc_autoreleasePoolPush();
   path = self->path;
@@ -432,19 +432,19 @@ LABEL_10:
     goto LABEL_23;
   }
 
-  if ((a3 & 2) != 0)
+  if ((options & 2) != 0)
   {
-    v13 = [(NSString *)path lastPathComponent];
+    lastPathComponent = [(NSString *)path lastPathComponent];
   }
 
   else
   {
-    v13 = path;
+    lastPathComponent = path;
   }
 
-  v14 = v13;
-  v15 = [(VMUVMRegion *)self isIOSurface];
-  if ((a3 & 1) == 0 && v15)
+  v14 = lastPathComponent;
+  isIOSurface = [(VMUVMRegion *)self isIOSurface];
+  if ((options & 1) == 0 && isIOSurface)
   {
     v16 = getPathWidth_nonPathLength;
     if (!getPathWidth_nonPathLength)
@@ -453,15 +453,15 @@ LABEL_10:
       type = v17->type;
       v17->type = &stru_1F461F9C8;
 
-      v19 = [(VMUVMRegion *)v17 descriptionWithOptions:a3 maximumLength:0];
+      v19 = [(VMUVMRegion *)v17 descriptionWithOptions:options maximumLength:0];
       getPathWidth_nonPathLength = [v19 length];
 
       v16 = getPathWidth_nonPathLength;
     }
 
     v20 = v16 + 16;
-    v21 = a4 - v16;
-    if (v20 <= a4)
+    v21 = length - v16;
+    if (v20 <= length)
     {
       v22 = v21;
     }
@@ -482,7 +482,7 @@ LABEL_10:
     }
   }
 
-  if ((a3 & 0x80000) != 0)
+  if ((options & 0x80000) != 0)
   {
     v27 = [(__CFString *)v14 hasPrefix:@"/System/Library/Frameworks/"];
     v28 = v27;
@@ -580,7 +580,7 @@ LABEL_19:
   }
 
 LABEL_23:
-  if (a5 > 1 && a6)
+  if (divisor > 1 && sizes)
   {
     v38 = 8;
   }
@@ -590,7 +590,7 @@ LABEL_23:
     v38 = 6;
   }
 
-  if ((a3 & 0x200) != 0)
+  if ((options & 0x200) != 0)
   {
     v39 = 0;
   }
@@ -602,15 +602,15 @@ LABEL_23:
 
   v40 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v41 = v40;
-  if ((a3 & 0x200) != 0)
+  if ((options & 0x200) != 0)
   {
     [v40 appendString:@"V="];
   }
 
-  [v41 appendFormat:@"%*s", v39, pageCountString(self->range.length, a5, a6)];
-  if ((a3 & 4) != 0)
+  [v41 appendFormat:@"%*s", v39, pageCountString(self->range.length, divisor, sizes)];
+  if ((options & 4) != 0)
   {
-    if ((a3 & 0x200) != 0)
+    if ((options & 0x200) != 0)
     {
       v44 = @" R=";
     }
@@ -621,17 +621,17 @@ LABEL_23:
     }
 
     [v41 appendString:v44];
-    [v41 appendFormat:@"%*s", v39, pageCountString(self->resident_size, a5, a6)];
-    if ((a3 & 8) == 0)
+    [v41 appendFormat:@"%*s", v39, pageCountString(self->resident_size, divisor, sizes)];
+    if ((options & 8) == 0)
     {
 LABEL_33:
-      if ((a3 & 0x800) == 0)
+      if ((options & 0x800) == 0)
       {
         goto LABEL_34;
       }
 
 LABEL_44:
-      if ((a3 & 0x200) != 0)
+      if ((options & 0x200) != 0)
       {
         v46 = @" S=";
       }
@@ -642,8 +642,8 @@ LABEL_44:
       }
 
       [v41 appendString:v46];
-      [v41 appendFormat:@"%*s", v39, pageCountString(self->swapped_out_size, a5, a6)];
-      if ((a3 & 0x2000000) == 0)
+      [v41 appendFormat:@"%*s", v39, pageCountString(self->swapped_out_size, divisor, sizes)];
+      if ((options & 0x2000000) == 0)
       {
         goto LABEL_35;
       }
@@ -652,12 +652,12 @@ LABEL_44:
     }
   }
 
-  else if ((a3 & 8) == 0)
+  else if ((options & 8) == 0)
   {
     goto LABEL_33;
   }
 
-  if ((a3 & 0x200) != 0)
+  if ((options & 0x200) != 0)
   {
     v45 = @" D=";
   }
@@ -668,14 +668,14 @@ LABEL_44:
   }
 
   [v41 appendString:v45];
-  [v41 appendFormat:@"%*s", v39, pageCountString(self->dirty_size, a5, a6)];
-  if ((a3 & 0x800) != 0)
+  [v41 appendFormat:@"%*s", v39, pageCountString(self->dirty_size, divisor, sizes)];
+  if ((options & 0x800) != 0)
   {
     goto LABEL_44;
   }
 
 LABEL_34:
-  if ((a3 & 0x2000000) == 0)
+  if ((options & 0x2000000) == 0)
   {
 LABEL_35:
     v42 = 0;
@@ -691,13 +691,13 @@ LABEL_48:
 
   v42 = maxAttributesWidth_maxAttributesWidthVar;
   v47 = [(NSString *)self->path length];
-  v49 = (a3 & 0x80000) == 0 && v47 != 0;
-  v50 = [MEMORY[0x1E695DF70] array];
-  v51 = v50;
+  v49 = (options & 0x80000) == 0 && v47 != 0;
+  array = [MEMORY[0x1E695DF70] array];
+  v51 = array;
   v52 = *(self + 132);
   if (v52 < 0)
   {
-    [v50 addObject:@"MTE"];
+    [array addObject:@"MTE"];
     v52 = *(self + 132);
     if ((v52 & 0x20) == 0)
     {
@@ -750,13 +750,13 @@ LABEL_63:
 
 LABEL_64:
   v55 = &stru_1F461F9C8;
-  if ((a3 & 0x10) != 0)
+  if ((options & 0x10) != 0)
   {
     if (self->purgeable == 3)
     {
       if ([(NSString *)self->path length])
       {
-        v56 = (a3 & 0x80000) == 0;
+        v56 = (options & 0x80000) == 0;
       }
 
       else
@@ -809,9 +809,9 @@ LABEL_64:
     v63 = v64;
   }
 
-  if ((a3 & 0x2000) == 0)
+  if ((options & 0x2000) == 0)
   {
-    if ((a3 & 0x200) == 0)
+    if ((options & 0x200) == 0)
     {
       v65 = maxVMAddressWidth_addressWidth;
       if (!maxVMAddressWidth_addressWidth)
@@ -865,7 +865,7 @@ LABEL_64:
             v65 = v99;
           }
 
-          v102 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%*llx", v65, location];
+          location = [MEMORY[0x1E696AEC0] stringWithFormat:@"%*llx", v65, location];
           v75 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%-*llx", v65, self->range.length + self->range.location];
           goto LABEL_125;
         }
@@ -874,13 +874,13 @@ LABEL_64:
         v69 = "kernel";
       }
 
-      v102 = [v68 stringWithFormat:@"%*s", v65, v69];
+      location = [v68 stringWithFormat:@"%*s", v65, v69];
       v75 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%-*s", v65, v69];
       v76 = 24;
 LABEL_125:
       v101 = v76;
       v55 = v103;
-      v71 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%-*s %@-%@ [%@] %s/%s SM=%s%@%@  %@", v101, -[__CFString UTF8String](v63, "UTF8String"), v102, v75, v41, off_1E827A168[self->prot & 7], off_1E827A168[self->maxProt & 7], VMUVMRegionShareModeName(self->share_mode), v43, v103, v14];
+      v71 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%-*s %@-%@ [%@] %s/%s SM=%s%@%@  %@", v101, -[__CFString UTF8String](v63, "UTF8String"), location, v75, v41, off_1E827A168[self->prot & 7], off_1E827A168[self->maxProt & 7], VMUVMRegionShareModeName(self->share_mode), v43, v103, v14];
 
       v11 = v104;
       goto LABEL_126;
@@ -917,9 +917,9 @@ LABEL_122:
 
   if ([(__CFString *)v63 isEqualToString:@"__DATA"])
   {
-    v70 = [(__CFString *)v14 lastPathComponent];
+    lastPathComponent2 = [(__CFString *)v14 lastPathComponent];
 
-    v14 = v70;
+    v14 = lastPathComponent2;
   }
 
   v71 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ %@", v63, v14];
@@ -972,53 +972,53 @@ LABEL_126:
   return [(VMUVMRegion *)self isKernelPageTableMemory];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *&self->range == *(v4 + 8) && sameString(self->type, *(v4 + 4)) && sameString(self->path, v5[5]) && [(VMUVMRegion *)self hasSameInfoAsRegion:v5];
+  equalCopy = equal;
+  v5 = equalCopy;
+  v6 = *&self->range == *(equalCopy + 8) && sameString(self->type, *(equalCopy + 4)) && sameString(self->path, v5[5]) && [(VMUVMRegion *)self hasSameInfoAsRegion:v5];
 
   return v6;
 }
 
-- (BOOL)hasSameInfoAsRegion:(id)a3
+- (BOOL)hasSameInfoAsRegion:(id)region
 {
-  v4 = a3;
-  v5 = *&self->prot == v4[3] && self->share_mode == *(v4 + 50) && self->user_tag == *(v4 + 26) && self->purgeable == *(v4 + 13) && self->object_id == v4[14];
+  regionCopy = region;
+  v5 = *&self->prot == regionCopy[3] && self->share_mode == *(regionCopy + 50) && self->user_tag == *(regionCopy + 26) && self->purgeable == *(regionCopy + 13) && self->object_id == regionCopy[14];
 
   return v5;
 }
 
-- (void)addInfoFromRegion:(id)a3
+- (void)addInfoFromRegion:(id)region
 {
-  self->range.length += *(a3 + 2);
+  self->range.length += *(region + 2);
   shared_now_private_size = self->shared_now_private_size;
-  self->resident_size += *(a3 + 20);
-  self->shared_now_private_size = shared_now_private_size + *(a3 + 21);
+  self->resident_size += *(region + 20);
+  self->shared_now_private_size = shared_now_private_size + *(region + 21);
   dirty_size = self->dirty_size;
-  self->swapped_out_size += *(a3 + 22);
-  self->dirty_size = dirty_size + *(a3 + 23);
+  self->swapped_out_size += *(region + 22);
+  self->dirty_size = dirty_size + *(region + 23);
   purgable_non_vol_size = self->purgable_non_vol_size;
-  self->purgable_vol_size += *(a3 + 24);
-  self->purgable_non_vol_size = purgable_non_vol_size + *(a3 + 25);
-  self->purgable_empty_size += *(a3 + 26);
+  self->purgable_vol_size += *(region + 24);
+  self->purgable_non_vol_size = purgable_non_vol_size + *(region + 25);
+  self->purgable_empty_size += *(region + 26);
   pages_resident = self->pages_resident;
-  self->virtual_pages += *(a3 + 7);
-  self->pages_resident = pages_resident + *(a3 + 8);
+  self->virtual_pages += *(region + 7);
+  self->pages_resident = pages_resident + *(region + 8);
   pages_swapped_out = self->pages_swapped_out;
-  self->pages_shared_now_private += *(a3 + 9);
-  self->pages_swapped_out = pages_swapped_out + *(a3 + 10);
-  self->pages_dirtied += *(a3 + 11);
+  self->pages_shared_now_private += *(region + 9);
+  self->pages_swapped_out = pages_swapped_out + *(region + 10);
+  self->pages_dirtied += *(region + 11);
   ++self->coalesced_region_count;
 }
 
-- (id)breakAtLength:(unint64_t)a3
+- (id)breakAtLength:(unint64_t)length
 {
-  if (self->range.length <= a3)
+  if (self->range.length <= length)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      [(VMUVMRegion *)a3 breakAtLength:?];
+      [(VMUVMRegion *)length breakAtLength:?];
     }
 
     v5 = 0;
@@ -1027,10 +1027,10 @@ LABEL_126:
   else
   {
     v5 = objc_opt_new();
-    v6 = self->range.length - a3;
-    *(v5 + 8) = self->range.location + a3;
+    v6 = self->range.length - length;
+    *(v5 + 8) = self->range.location + length;
     *(v5 + 16) = v6;
-    self->range.length = a3;
+    self->range.length = length;
     *(v5 + 24) = self->prot;
     *(v5 + 28) = self->maxProt;
     objc_storeStrong((v5 + 32), self->type);
@@ -1073,14 +1073,14 @@ LABEL_126:
   return v5;
 }
 
-- (id)splitOutRange:(_VMURange)a3 fromRegionIndex:(unint64_t)a4 regions:(id)a5 newZoneName:(id)a6 reason:(id)a7
+- (id)splitOutRange:(_VMURange)range fromRegionIndex:(unint64_t)index regions:(id)regions newZoneName:(id)name reason:(id)reason
 {
-  length = a3.length;
-  location = a3.location;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v13 objectAtIndexedSubscript:a4];
+  length = range.length;
+  location = range.location;
+  regionsCopy = regions;
+  nameCopy = name;
+  reasonCopy = reason;
+  v16 = [regionsCopy objectAtIndexedSubscript:index];
   if (v16 != self)
   {
     [VMUVMRegion splitOutRange:fromRegionIndex:regions:newZoneName:reason:];
@@ -1102,7 +1102,7 @@ LABEL_126:
   v21 = self->range.length;
   if (v19 == v20 && v21 == length)
   {
-    v24 = self;
+    selfCopy2 = self;
   }
 
   else
@@ -1112,10 +1112,10 @@ LABEL_126:
       v23 = [(VMUVMRegion *)self breakAtLength:length];
       if (v23)
       {
-        [v13 insertObject:v23 atIndex:a4 + 1];
+        [regionsCopy insertObject:v23 atIndex:index + 1];
       }
 
-      v24 = self;
+      selfCopy2 = self;
 LABEL_13:
 
       goto LABEL_15;
@@ -1123,29 +1123,29 @@ LABEL_13:
 
     if (v21 + v20 == v19 + length)
     {
-      v24 = [(VMUVMRegion *)self breakAtLength:v21 - length];
-      if (v24)
+      selfCopy2 = [(VMUVMRegion *)self breakAtLength:v21 - length];
+      if (selfCopy2)
       {
-        [v13 insertObject:v24 atIndex:a4 + 1];
+        [regionsCopy insertObject:selfCopy2 atIndex:index + 1];
       }
     }
 
     else if (v19 <= v20 || v19 + length >= v21 + v20)
     {
-      v24 = 0;
+      selfCopy2 = 0;
     }
 
     else
     {
       v27 = [(VMUVMRegion *)self breakAtLength:v19 - v20];
-      v24 = v27;
+      selfCopy2 = v27;
       if (v27)
       {
-        [v13 insertObject:v27 atIndex:a4 + 1];
-        v23 = [(VMUVMRegion *)v24 breakAtLength:length];
+        [regionsCopy insertObject:v27 atIndex:index + 1];
+        v23 = [(VMUVMRegion *)selfCopy2 breakAtLength:length];
         if (v23)
         {
-          [v13 insertObject:v23 atIndex:a4 + 2];
+          [regionsCopy insertObject:v23 atIndex:index + 2];
         }
 
         goto LABEL_13;
@@ -1155,7 +1155,7 @@ LABEL_13:
 
 LABEL_15:
 
-  return v24;
+  return selfCopy2;
 }
 
 - (void)fixNonEmptyMallocRegionType

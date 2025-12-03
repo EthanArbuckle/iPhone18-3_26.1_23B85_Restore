@@ -1,39 +1,39 @@
 @interface SWPersonIdentity
-+ (SWPersonIdentity)allocWithZone:(_NSZone *)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPersonIdentity:(id)a3;
-- (SWPersonIdentity)initWithCoder:(id)a3;
-- (SWPersonIdentity)initWithRootHash:(id)a3 publicKeys:(id)a4 trackingPreventionSalt:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (SWPersonIdentity)allocWithZone:(_NSZone *)zone;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPersonIdentity:(id)identity;
+- (SWPersonIdentity)initWithCoder:(id)coder;
+- (SWPersonIdentity)initWithRootHash:(id)hash publicKeys:(id)keys trackingPreventionSalt:(id)salt;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SWPersonIdentity
 
-+ (SWPersonIdentity)allocWithZone:(_NSZone *)a3
++ (SWPersonIdentity)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [_SWPersonIdentity allocWithZone:a3];
+    return [_SWPersonIdentity allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SWPersonIdentity;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 
-- (SWPersonIdentity)initWithRootHash:(id)a3 publicKeys:(id)a4 trackingPreventionSalt:(id)a5
+- (SWPersonIdentity)initWithRootHash:(id)hash publicKeys:(id)keys trackingPreventionSalt:(id)salt
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v9 length] == 32)
+  hashCopy = hash;
+  keysCopy = keys;
+  saltCopy = salt;
+  if ([hashCopy length] == 32)
   {
     v17.receiver = self;
     v17.super_class = SWPersonIdentity;
@@ -41,13 +41,13 @@
     p_isa = &v12->super.isa;
     if (v12)
     {
-      objc_storeStrong(&v12->_rootHash, a3);
-      objc_storeStrong(p_isa + 2, a4);
-      objc_storeStrong(p_isa + 3, a5);
+      objc_storeStrong(&v12->_rootHash, hash);
+      objc_storeStrong(p_isa + 2, keys);
+      objc_storeStrong(p_isa + 3, salt);
     }
 
     self = p_isa;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
@@ -59,23 +59,23 @@
       _os_log_impl(&dword_1D2C1D000, v15, OS_LOG_TYPE_DEFAULT, "SWPersonIdentity's rootHash must be a SHA-256 digest. Return nil from [SWPersonIdentity initWithRootHash:publicKeys:]", buf, 2u);
     }
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(SWPersonIdentity *)self rootHash];
-  [v3 appendFormat:@" rootHash=%@", v4];
+  rootHash = [(SWPersonIdentity *)self rootHash];
+  [v3 appendFormat:@" rootHash=%@", rootHash];
 
-  v5 = [(SWPersonIdentity *)self publicKeys];
-  [v3 appendFormat:@" publicKeys=%lu", objc_msgSend(v5, "count")];
+  publicKeys = [(SWPersonIdentity *)self publicKeys];
+  [v3 appendFormat:@" publicKeys=%lu", objc_msgSend(publicKeys, "count")];
 
-  v6 = [(SWPersonIdentity *)self trackingPreventionSalt];
-  [v3 appendFormat:@" trackingPreventionSalt=%@", v6];
+  trackingPreventionSalt = [(SWPersonIdentity *)self trackingPreventionSalt];
+  [v3 appendFormat:@" trackingPreventionSalt=%@", trackingPreventionSalt];
 
   [v3 appendString:@">"];
   v7 = [v3 copy];
@@ -83,24 +83,24 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SWPersonIdentity *)self isEqualToPersonIdentity:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SWPersonIdentity *)self isEqualToPersonIdentity:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToPersonIdentity:(id)a3
+- (BOOL)isEqualToPersonIdentity:(id)identity
 {
-  v9 = a3;
-  v10 = [(SWPersonIdentity *)self rootHash];
-  if (v10 || ([v9 rootHash], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  identityCopy = identity;
+  rootHash = [(SWPersonIdentity *)self rootHash];
+  if (rootHash || ([identityCopy rootHash], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v5 = [(SWPersonIdentity *)self rootHash];
-    v4 = [v9 rootHash];
-    if (([v5 isEqual:v4] & 1) == 0)
+    rootHash2 = [(SWPersonIdentity *)self rootHash];
+    rootHash3 = [identityCopy rootHash];
+    if (([rootHash2 isEqual:rootHash3] & 1) == 0)
     {
 
       v12 = 0;
@@ -115,15 +115,15 @@
     v11 = 0;
   }
 
-  v13 = [(SWPersonIdentity *)self publicKeys];
-  if (v13 || ([v9 publicKeys], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
+  publicKeys = [(SWPersonIdentity *)self publicKeys];
+  if (publicKeys || ([identityCopy publicKeys], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v6 = [(SWPersonIdentity *)self publicKeys];
-    v7 = [v9 publicKeys];
-    if (([v6 isEqual:v7] & 1) == 0)
+    publicKeys2 = [(SWPersonIdentity *)self publicKeys];
+    publicKeys3 = [identityCopy publicKeys];
+    if (([publicKeys2 isEqual:publicKeys3] & 1) == 0)
     {
 
-      if (v13)
+      if (publicKeys)
       {
       }
 
@@ -151,19 +151,19 @@
     v21 = 0;
   }
 
-  v14 = [(SWPersonIdentity *)self trackingPreventionSalt];
-  if (v14 || ([v9 trackingPreventionSalt], (v20 = objc_claimAutoreleasedReturnValue()) != 0))
+  trackingPreventionSalt = [(SWPersonIdentity *)self trackingPreventionSalt];
+  if (trackingPreventionSalt || ([identityCopy trackingPreventionSalt], (v20 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v22 = v5;
+    v22 = rootHash2;
     v23 = v3;
-    v15 = [(SWPersonIdentity *)self trackingPreventionSalt];
-    v16 = [v9 trackingPreventionSalt];
-    v12 = [v15 isEqual:v16];
+    trackingPreventionSalt2 = [(SWPersonIdentity *)self trackingPreventionSalt];
+    trackingPreventionSalt3 = [identityCopy trackingPreventionSalt];
+    v12 = [trackingPreventionSalt2 isEqual:trackingPreventionSalt3];
 
-    if (v14)
+    if (trackingPreventionSalt)
     {
 
-      v5 = v22;
+      rootHash2 = v22;
       v3 = v23;
       v17 = v25;
       if (!v24)
@@ -174,7 +174,7 @@
       goto LABEL_21;
     }
 
-    v5 = v22;
+    rootHash2 = v22;
     v3 = v23;
     v17 = v25;
     v19 = v20;
@@ -193,7 +193,7 @@ LABEL_21:
   }
 
 LABEL_22:
-  if (!v13)
+  if (!publicKeys)
   {
   }
 
@@ -203,7 +203,7 @@ LABEL_25:
   }
 
 LABEL_26:
-  if (!v10)
+  if (!rootHash)
   {
   }
 
@@ -212,36 +212,36 @@ LABEL_26:
 
 - (unint64_t)hash
 {
-  v3 = [(SWPersonIdentity *)self rootHash];
-  v4 = [v3 hash];
-  v5 = [(SWPersonIdentity *)self publicKeys];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(SWPersonIdentity *)self trackingPreventionSalt];
-  v8 = [v7 hash];
+  rootHash = [(SWPersonIdentity *)self rootHash];
+  v4 = [rootHash hash];
+  publicKeys = [(SWPersonIdentity *)self publicKeys];
+  v6 = [publicKeys hash] ^ v4;
+  trackingPreventionSalt = [(SWPersonIdentity *)self trackingPreventionSalt];
+  v8 = [trackingPreventionSalt hash];
 
   return v6 ^ v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SWPersonIdentity *)self rootHash];
+  coderCopy = coder;
+  rootHash = [(SWPersonIdentity *)self rootHash];
   v6 = NSStringFromSelector(sel_rootHash);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:rootHash forKey:v6];
 
-  v7 = [(SWPersonIdentity *)self publicKeys];
+  publicKeys = [(SWPersonIdentity *)self publicKeys];
   v8 = NSStringFromSelector(sel_publicKeys);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:publicKeys forKey:v8];
 
-  v10 = [(SWPersonIdentity *)self trackingPreventionSalt];
+  trackingPreventionSalt = [(SWPersonIdentity *)self trackingPreventionSalt];
   v9 = NSStringFromSelector(sel_trackingPreventionSalt);
-  [v4 encodeObject:v10 forKey:v9];
+  [coderCopy encodeObject:trackingPreventionSalt forKey:v9];
 }
 
-- (SWPersonIdentity)initWithCoder:(id)a3
+- (SWPersonIdentity)initWithCoder:(id)coder
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = SWPersonIdentity;
   v5 = [(SWPersonIdentity *)&v22 init];
@@ -249,7 +249,7 @@ LABEL_26:
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_rootHash);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     rootHash = v5->_rootHash;
     v5->_rootHash = v8;
 
@@ -259,13 +259,13 @@ LABEL_26:
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
     v12 = [v10 setWithArray:v11];
     v13 = NSStringFromSelector(sel_publicKeys);
-    v14 = [v4 decodeObjectOfClasses:v12 forKey:v13];
+    v14 = [coderCopy decodeObjectOfClasses:v12 forKey:v13];
     publicKeys = v5->_publicKeys;
     v5->_publicKeys = v14;
 
     v16 = objc_opt_class();
     v17 = NSStringFromSelector(sel_trackingPreventionSalt);
-    v18 = [v4 decodeObjectOfClass:v16 forKey:v17];
+    v18 = [coderCopy decodeObjectOfClass:v16 forKey:v17];
     trackingPreventionSalt = v5->_trackingPreventionSalt;
     v5->_trackingPreventionSalt = v18;
   }
@@ -274,13 +274,13 @@ LABEL_26:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(SWPersonIdentity *)self rootHash];
-  v6 = [(SWPersonIdentity *)self publicKeys];
-  v7 = [(SWPersonIdentity *)self trackingPreventionSalt];
-  v8 = [v4 initWithRootHash:v5 publicKeys:v6 trackingPreventionSalt:v7];
+  rootHash = [(SWPersonIdentity *)self rootHash];
+  publicKeys = [(SWPersonIdentity *)self publicKeys];
+  trackingPreventionSalt = [(SWPersonIdentity *)self trackingPreventionSalt];
+  v8 = [v4 initWithRootHash:rootHash publicKeys:publicKeys trackingPreventionSalt:trackingPreventionSalt];
 
   return v8;
 }

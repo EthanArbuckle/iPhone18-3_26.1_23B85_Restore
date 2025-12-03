@@ -1,15 +1,15 @@
 @interface CESRSamplingDimension
-- (BOOL)matches:(id)a3;
-- (CESRSamplingDimension)initWithAsrLocale:(id)a3;
+- (BOOL)matches:(id)matches;
+- (CESRSamplingDimension)initWithAsrLocale:(id)locale;
 - (id)description;
 @end
 
 @implementation CESRSamplingDimension
 
-- (BOOL)matches:(id)a3
+- (BOOL)matches:(id)matches
 {
-  v4 = a3;
-  if (self == v4)
+  matchesCopy = matches;
+  if (self == matchesCopy)
   {
     goto LABEL_5;
   }
@@ -30,8 +30,8 @@ LABEL_5:
 
   else
   {
-    v6 = [(CESRSamplingDimension *)v4 asrLocale];
-    v7 = [(NSString *)asrLocale isEqual:v6];
+    asrLocale = [(CESRSamplingDimension *)matchesCopy asrLocale];
+    v7 = [(NSString *)asrLocale isEqual:asrLocale];
   }
 
 LABEL_7:
@@ -42,22 +42,22 @@ LABEL_7:
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(CESRSamplingDimension *)self asrLocale];
-  v4 = [v2 stringWithFormat:@"< asrLocale=%@ >", v3];
+  asrLocale = [(CESRSamplingDimension *)self asrLocale];
+  v4 = [v2 stringWithFormat:@"< asrLocale=%@ >", asrLocale];
 
   return v4;
 }
 
-- (CESRSamplingDimension)initWithAsrLocale:(id)a3
+- (CESRSamplingDimension)initWithAsrLocale:(id)locale
 {
-  v5 = a3;
+  localeCopy = locale;
   v9.receiver = self;
   v9.super_class = CESRSamplingDimension;
   v6 = [(CESRSamplingDimension *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_asrLocale, a3);
+    objc_storeStrong(&v6->_asrLocale, locale);
   }
 
   return v7;

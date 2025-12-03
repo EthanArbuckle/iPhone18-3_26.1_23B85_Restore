@@ -1,33 +1,33 @@
 @interface HDFHIRCredential
-+ (BOOL)_validateCodableCredential:(id)a3 forSync:(BOOL)a4 error:(id *)a5;
-+ (id)credentialFromCodable:(id)a3 accountSyncIdentifier:(id *)a4 ifValidWithError:(id *)a5;
++ (BOOL)_validateCodableCredential:(id)credential forSync:(BOOL)sync error:(id *)error;
++ (id)credentialFromCodable:(id)codable accountSyncIdentifier:(id *)identifier ifValidWithError:(id *)error;
 + (id)newCompatibleCodableCredential;
-- (BOOL)deleteTokensWithError:(id *)a3;
-- (BOOL)hasRefreshTokenWithError:(id *)a3;
-- (BOOL)isEqualToCredential:(id)a3 epsilonExpiration:(double)a4;
-- (BOOL)makeRefreshTokenSynchronizableIfNeededWithError:(id *)a3;
-- (BOOL)storeAccessToken:(id)a3 error:(id *)a4;
-- (BOOL)storeRefreshToken:(id)a3 error:(id *)a4;
-- (HDFHIRCredential)credentialWithPopulatedAccessTokenWithError:(id *)a3;
-- (HDFHIRCredential)initWithCodableCredential:(id)a3;
-- (HDFHIRCredential)initWithCoder:(id)a3;
-- (HDFHIRCredential)initWithIdentifier:(id)a3 requestedScopeString:(id)a4 expiration:(id)a5 scopeString:(id)a6 patientID:(id)a7;
+- (BOOL)deleteTokensWithError:(id *)error;
+- (BOOL)hasRefreshTokenWithError:(id *)error;
+- (BOOL)isEqualToCredential:(id)credential epsilonExpiration:(double)expiration;
+- (BOOL)makeRefreshTokenSynchronizableIfNeededWithError:(id *)error;
+- (BOOL)storeAccessToken:(id)token error:(id *)error;
+- (BOOL)storeRefreshToken:(id)token error:(id *)error;
+- (HDFHIRCredential)credentialWithPopulatedAccessTokenWithError:(id *)error;
+- (HDFHIRCredential)initWithCodableCredential:(id)credential;
+- (HDFHIRCredential)initWithCoder:(id)coder;
+- (HDFHIRCredential)initWithIdentifier:(id)identifier requestedScopeString:(id)string expiration:(id)expiration scopeString:(id)scopeString patientID:(id)d;
 - (id)_accessTokenIdentifier;
-- (id)_keychainItemWithName:(id)a3;
+- (id)_keychainItemWithName:(id)name;
 - (id)_refreshTokenIdentifier;
 - (id)accessToken;
-- (id)asNewCodableForAccountSyncIdentifier:(id)a3 receivedDate:(id)a4;
-- (id)fetchAccessTokenWithError:(id *)a3;
-- (id)fetchRefreshTokenWithError:(id *)a3;
+- (id)asNewCodableForAccountSyncIdentifier:(id)identifier receivedDate:(id)date;
+- (id)fetchAccessTokenWithError:(id *)error;
+- (id)fetchRefreshTokenWithError:(id *)error;
 - (id)refreshToken;
 - (unint64_t)hash;
-- (void)_commonInitWithIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_commonInitWithIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDFHIRCredential
 
-- (HDFHIRCredential)credentialWithPopulatedAccessTokenWithError:(id *)a3
+- (HDFHIRCredential)credentialWithPopulatedAccessTokenWithError:(id *)error
 {
   v36 = 0;
   v5 = [(HDFHIRCredential *)self fetchAccessTokenWithError:&v36];
@@ -61,11 +61,11 @@
     else if (v6)
     {
 LABEL_4:
-      v11 = [v6 userInfo];
-      if (v11)
+      userInfo = [v6 userInfo];
+      if (userInfo)
       {
-        v12 = [v6 userInfo];
-        v13 = [v12 mutableCopy];
+        userInfo2 = [v6 userInfo];
+        v13 = [userInfo2 mutableCopy];
       }
 
       else
@@ -74,16 +74,16 @@ LABEL_4:
       }
 
       [v13 setObject:v9 forKeyedSubscript:NSUnderlyingErrorKey];
-      v25 = [v6 domain];
-      v26 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", v25, [v6 code], v13);
+      domain = [v6 domain];
+      v26 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", domain, [v6 code], v13);
 
       v27 = v26;
       if (v27)
       {
-        if (a3)
+        if (error)
         {
           v28 = v27;
-          *a3 = v27;
+          *error = v27;
         }
 
         else
@@ -101,10 +101,10 @@ LABEL_28:
     v13 = v9;
     if (v13)
     {
-      if (a3)
+      if (error)
       {
         v34 = v13;
-        *a3 = v13;
+        *error = v13;
       }
 
       else
@@ -127,11 +127,11 @@ LABEL_28:
         sub_9F8EC(v14, self);
       }
 
-      if (a3)
+      if (error)
       {
         v15 = v6;
         v16 = 0;
-        *a3 = v6;
+        *error = v6;
         goto LABEL_29;
       }
 
@@ -140,11 +140,11 @@ LABEL_28:
 
 LABEL_20:
     v20 = [HKFHIRCredential alloc];
-    v21 = [(HDFHIRCredential *)self patientID];
-    v22 = [(HDFHIRCredential *)self expiration];
-    v23 = [(HDFHIRCredential *)self requestedScopeString];
-    v24 = [(HDFHIRCredential *)self scopes];
-    v16 = [v20 initWithAccessToken:v5 refreshToken:v7 patientID:v21 expiration:v22 requestedScopeString:v23 scopes:v24];
+    patientID = [(HDFHIRCredential *)self patientID];
+    expiration = [(HDFHIRCredential *)self expiration];
+    requestedScopeString = [(HDFHIRCredential *)self requestedScopeString];
+    scopes = [(HDFHIRCredential *)self scopes];
+    v16 = [v20 initWithAccessToken:v5 refreshToken:v7 patientID:patientID expiration:expiration requestedScopeString:requestedScopeString scopes:scopes];
 
     goto LABEL_29;
   }
@@ -177,7 +177,7 @@ LABEL_20:
     sub_9F98C(v30, self);
   }
 
-  if (!a3)
+  if (!error)
   {
 LABEL_36:
     _HKLogDroppedError();
@@ -186,35 +186,35 @@ LABEL_36:
 
   v31 = v9;
   v16 = 0;
-  *a3 = v9;
+  *error = v9;
 LABEL_29:
 
   return v16;
 }
 
-- (HDFHIRCredential)initWithIdentifier:(id)a3 requestedScopeString:(id)a4 expiration:(id)a5 scopeString:(id)a6 patientID:(id)a7
+- (HDFHIRCredential)initWithIdentifier:(id)identifier requestedScopeString:(id)string expiration:(id)expiration scopeString:(id)scopeString patientID:(id)d
 {
-  v12 = a3;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = HDFHIRCredential;
-  v13 = [(HDFHIRCredential *)&v16 initWithAccessToken:0 refreshToken:0 patientID:a7 expiration:a5 requestedScopeString:a4 scopeString:a6];
+  v13 = [(HDFHIRCredential *)&v16 initWithAccessToken:0 refreshToken:0 patientID:d expiration:expiration requestedScopeString:string scopeString:scopeString];
   v14 = v13;
   if (v13)
   {
-    [(HDFHIRCredential *)v13 _commonInitWithIdentifier:v12];
+    [(HDFHIRCredential *)v13 _commonInitWithIdentifier:identifierCopy];
   }
 
   return v14;
 }
 
-- (HDFHIRCredential)initWithCodableCredential:(id)a3
+- (HDFHIRCredential)initWithCodableCredential:(id)credential
 {
-  v4 = a3;
-  v5 = [v4 patientID];
-  v6 = [v4 hasExpirationDate];
-  if (v6)
+  credentialCopy = credential;
+  patientID = [credentialCopy patientID];
+  hasExpirationDate = [credentialCopy hasExpirationDate];
+  if (hasExpirationDate)
   {
-    [v4 expirationDate];
+    [credentialCopy expirationDate];
     v7 = HDDecodeDateForValue();
   }
 
@@ -223,42 +223,42 @@ LABEL_29:
     v7 = 0;
   }
 
-  v8 = [v4 requestedScopeString];
-  v9 = [v4 hasScopeString];
-  if (v9)
+  requestedScopeString = [credentialCopy requestedScopeString];
+  hasScopeString = [credentialCopy hasScopeString];
+  if (hasScopeString)
   {
-    v10 = [v4 scopeString];
+    scopeString = [credentialCopy scopeString];
   }
 
   else
   {
-    v10 = 0;
+    scopeString = 0;
   }
 
   v15.receiver = self;
   v15.super_class = HDFHIRCredential;
-  v11 = [(HDFHIRCredential *)&v15 initWithAccessToken:0 refreshToken:0 patientID:v5 expiration:v7 requestedScopeString:v8 scopeString:v10];
-  if (v9)
+  v11 = [(HDFHIRCredential *)&v15 initWithAccessToken:0 refreshToken:0 patientID:patientID expiration:v7 requestedScopeString:requestedScopeString scopeString:scopeString];
+  if (hasScopeString)
   {
   }
 
-  if (v6)
+  if (hasExpirationDate)
   {
   }
 
   if (v11)
   {
-    v12 = [v4 identifier];
-    v13 = [NSUUID hk_UUIDWithData:v12];
+    identifier = [credentialCopy identifier];
+    v13 = [NSUUID hk_UUIDWithData:identifier];
     [(HDFHIRCredential *)v11 _commonInitWithIdentifier:v13];
   }
 
   return v11;
 }
 
-- (void)_commonInitWithIdentifier:(id)a3
+- (void)_commonInitWithIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   identifier = self->_identifier;
   self->_identifier = v4;
 
@@ -270,17 +270,17 @@ LABEL_29:
   localAccessToken = self->_localAccessToken;
   if (localAccessToken)
   {
-    v3 = localAccessToken;
+    accessToken = localAccessToken;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = HDFHIRCredential;
-    v3 = [(HDFHIRCredential *)&v5 accessToken];
+    accessToken = [(HDFHIRCredential *)&v5 accessToken];
   }
 
-  return v3;
+  return accessToken;
 }
 
 - (id)refreshToken
@@ -288,29 +288,29 @@ LABEL_29:
   localRefreshToken = self->_localRefreshToken;
   if (localRefreshToken)
   {
-    v3 = localRefreshToken;
+    refreshToken = localRefreshToken;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = HDFHIRCredential;
-    v3 = [(HDFHIRCredential *)&v5 refreshToken];
+    refreshToken = [(HDFHIRCredential *)&v5 refreshToken];
   }
 
-  return v3;
+  return refreshToken;
 }
 
-- (id)fetchAccessTokenWithError:(id *)a3
+- (id)fetchAccessTokenWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_tokenLock);
   localAccessToken = self->_localAccessToken;
   if (!localAccessToken)
   {
-    v6 = [(HDFHIRCredential *)self _accessTokenIdentifier];
-    v7 = [(HDFHIRCredential *)self _keychainItemWithName:v6];
+    _accessTokenIdentifier = [(HDFHIRCredential *)self _accessTokenIdentifier];
+    v7 = [(HDFHIRCredential *)self _keychainItemWithName:_accessTokenIdentifier];
 
-    v8 = [v7 fetchWithError:a3];
+    v8 = [v7 fetchWithError:error];
     v9 = self->_localAccessToken;
     self->_localAccessToken = v8;
 
@@ -323,30 +323,30 @@ LABEL_29:
   return v10;
 }
 
-- (BOOL)storeAccessToken:(id)a3 error:(id *)a4
+- (BOOL)storeAccessToken:(id)token error:(id *)error
 {
-  v6 = a3;
+  tokenCopy = token;
   os_unfair_lock_lock(&self->_tokenLock);
   localAccessToken = self->_localAccessToken;
   self->_localAccessToken = 0;
 
-  v8 = [(HDFHIRCredential *)self _accessTokenIdentifier];
-  v9 = [(HDFHIRCredential *)self _keychainItemWithName:v8];
+  _accessTokenIdentifier = [(HDFHIRCredential *)self _accessTokenIdentifier];
+  v9 = [(HDFHIRCredential *)self _keychainItemWithName:_accessTokenIdentifier];
 
-  if (v6)
+  if (tokenCopy)
   {
-    v10 = [v9 storeLocalToken:v6 error:a4];
+    v10 = [v9 storeLocalToken:tokenCopy error:error];
   }
 
   else
   {
-    v10 = [v9 deleteWithError:a4];
+    v10 = [v9 deleteWithError:error];
   }
 
   v11 = v10;
   if (v10)
   {
-    v12 = [v6 copy];
+    v12 = [tokenCopy copy];
     v13 = self->_localAccessToken;
     self->_localAccessToken = v12;
   }
@@ -355,34 +355,34 @@ LABEL_29:
   return v11;
 }
 
-- (BOOL)hasRefreshTokenWithError:(id *)a3
+- (BOOL)hasRefreshTokenWithError:(id *)error
 {
-  v5 = [(HDFHIRCredential *)self _refreshTokenIdentifier];
-  v6 = [(HDFHIRCredential *)self _keychainItemWithName:v5];
+  _refreshTokenIdentifier = [(HDFHIRCredential *)self _refreshTokenIdentifier];
+  v6 = [(HDFHIRCredential *)self _keychainItemWithName:_refreshTokenIdentifier];
 
-  LOBYTE(a3) = [v6 isPresentWithError:a3];
-  return a3;
+  LOBYTE(error) = [v6 isPresentWithError:error];
+  return error;
 }
 
-- (BOOL)makeRefreshTokenSynchronizableIfNeededWithError:(id *)a3
+- (BOOL)makeRefreshTokenSynchronizableIfNeededWithError:(id *)error
 {
-  v5 = [(HDFHIRCredential *)self _refreshTokenIdentifier];
-  v6 = [(HDFHIRCredential *)self _keychainItemWithName:v5];
+  _refreshTokenIdentifier = [(HDFHIRCredential *)self _refreshTokenIdentifier];
+  v6 = [(HDFHIRCredential *)self _keychainItemWithName:_refreshTokenIdentifier];
 
-  LOBYTE(a3) = [v6 makeTokenSynchronizableIfNeededWithError:a3];
-  return a3;
+  LOBYTE(error) = [v6 makeTokenSynchronizableIfNeededWithError:error];
+  return error;
 }
 
-- (id)fetchRefreshTokenWithError:(id *)a3
+- (id)fetchRefreshTokenWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_tokenLock);
   localRefreshToken = self->_localRefreshToken;
   if (!localRefreshToken)
   {
-    v6 = [(HDFHIRCredential *)self _refreshTokenIdentifier];
-    v7 = [(HDFHIRCredential *)self _keychainItemWithName:v6];
+    _refreshTokenIdentifier = [(HDFHIRCredential *)self _refreshTokenIdentifier];
+    v7 = [(HDFHIRCredential *)self _keychainItemWithName:_refreshTokenIdentifier];
 
-    v8 = [v7 fetchWithError:a3];
+    v8 = [v7 fetchWithError:error];
     v9 = self->_localRefreshToken;
     self->_localRefreshToken = v8;
 
@@ -395,30 +395,30 @@ LABEL_29:
   return v10;
 }
 
-- (BOOL)storeRefreshToken:(id)a3 error:(id *)a4
+- (BOOL)storeRefreshToken:(id)token error:(id *)error
 {
-  v6 = a3;
+  tokenCopy = token;
   os_unfair_lock_lock(&self->_tokenLock);
   localRefreshToken = self->_localRefreshToken;
   self->_localRefreshToken = 0;
 
-  v8 = [(HDFHIRCredential *)self _refreshTokenIdentifier];
-  v9 = [(HDFHIRCredential *)self _keychainItemWithName:v8];
+  _refreshTokenIdentifier = [(HDFHIRCredential *)self _refreshTokenIdentifier];
+  v9 = [(HDFHIRCredential *)self _keychainItemWithName:_refreshTokenIdentifier];
 
-  if (v6)
+  if (tokenCopy)
   {
-    v10 = [v9 storeSynchronizableToken:v6 error:a4];
+    v10 = [v9 storeSynchronizableToken:tokenCopy error:error];
   }
 
   else
   {
-    v10 = [v9 deleteWithError:a4];
+    v10 = [v9 deleteWithError:error];
   }
 
   v11 = v10;
   if (v10)
   {
-    v12 = [v6 copy];
+    v12 = [tokenCopy copy];
     v13 = self->_localRefreshToken;
     self->_localRefreshToken = v12;
   }
@@ -427,13 +427,13 @@ LABEL_29:
   return v11;
 }
 
-- (BOOL)deleteTokensWithError:(id *)a3
+- (BOOL)deleteTokensWithError:(id *)error
 {
-  v5 = [(HDFHIRCredential *)self storeAccessToken:0 error:a3];
+  v5 = [(HDFHIRCredential *)self storeAccessToken:0 error:error];
   if (v5)
   {
 
-    LOBYTE(v5) = [(HDFHIRCredential *)self storeRefreshToken:0 error:a3];
+    LOBYTE(v5) = [(HDFHIRCredential *)self storeRefreshToken:0 error:error];
   }
 
   return v5;
@@ -441,46 +441,46 @@ LABEL_29:
 
 - (id)_accessTokenIdentifier
 {
-  v2 = [(NSUUID *)self->_identifier UUIDString];
-  v3 = [NSString stringWithFormat:@"health-app:chr/auth/%@#access", v2];
+  uUIDString = [(NSUUID *)self->_identifier UUIDString];
+  v3 = [NSString stringWithFormat:@"health-app:chr/auth/%@#access", uUIDString];
 
   return v3;
 }
 
 - (id)_refreshTokenIdentifier
 {
-  v2 = [(NSUUID *)self->_identifier UUIDString];
-  v3 = [NSString stringWithFormat:@"health-app:chr/auth/%@#refresh", v2];
+  uUIDString = [(NSUUID *)self->_identifier UUIDString];
+  v3 = [NSString stringWithFormat:@"health-app:chr/auth/%@#refresh", uUIDString];
 
   return v3;
 }
 
-- (id)_keychainItemWithName:(id)a3
+- (id)_keychainItemWithName:(id)name
 {
-  v3 = a3;
-  v4 = [[HKTokenKeychainItem alloc] initWithName:v3];
+  nameCopy = name;
+  v4 = [[HKTokenKeychainItem alloc] initWithName:nameCopy];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HDFHIRCredential;
-  v4 = a3;
-  [(HDFHIRCredential *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_identifier forKey:{@"identifier", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(HDFHIRCredential *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_identifier forKey:{@"identifier", v5.receiver, v5.super_class}];
 }
 
-- (HDFHIRCredential)initWithCoder:(id)a3
+- (HDFHIRCredential)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   if (v5)
   {
     v9.receiver = self;
     v9.super_class = HDFHIRCredential;
-    v6 = [(HDFHIRCredential *)&v9 initWithCoder:v4];
+    v6 = [(HDFHIRCredential *)&v9 initWithCoder:coderCopy];
 
     if (v6)
     {
@@ -488,31 +488,31 @@ LABEL_29:
     }
 
     self = v6;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-+ (id)credentialFromCodable:(id)a3 accountSyncIdentifier:(id *)a4 ifValidWithError:(id *)a5
++ (id)credentialFromCodable:(id)codable accountSyncIdentifier:(id *)identifier ifValidWithError:(id *)error
 {
-  v8 = a3;
-  if ([a1 validateSyncableCodableCredential:v8 error:a5])
+  codableCopy = codable;
+  if ([self validateSyncableCodableCredential:codableCopy error:error])
   {
-    if (a4)
+    if (identifier)
     {
-      v9 = [v8 accountSyncIdentifier];
-      *a4 = [NSUUID hk_UUIDWithData:v9];
+      accountSyncIdentifier = [codableCopy accountSyncIdentifier];
+      *identifier = [NSUUID hk_UUIDWithData:accountSyncIdentifier];
     }
 
-    v10 = [[HDFHIRCredential alloc] initWithCodableCredential:v8];
+    v10 = [[HDFHIRCredential alloc] initWithCodableCredential:codableCopy];
   }
 
   else
@@ -529,84 +529,84 @@ LABEL_29:
   v3 = objc_alloc_init(HDCodableMessageVersion);
   [v2 setMessageVersion:v3];
 
-  v4 = [v2 messageVersion];
-  [v4 setEntityVersion:1];
+  messageVersion = [v2 messageVersion];
+  [messageVersion setEntityVersion:1];
 
-  v5 = [v2 messageVersion];
-  [v5 setCompatibilityVersion:1];
+  messageVersion2 = [v2 messageVersion];
+  [messageVersion2 setCompatibilityVersion:1];
 
   return v2;
 }
 
-- (id)asNewCodableForAccountSyncIdentifier:(id)a3 receivedDate:(id)a4
+- (id)asNewCodableForAccountSyncIdentifier:(id)identifier receivedDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  identifierCopy = identifier;
+  dateCopy = date;
+  if (!dateCopy)
   {
     sub_A1564(a2, self);
   }
 
-  v9 = [objc_opt_class() newCompatibleCodableCredential];
-  v10 = [(HDFHIRCredential *)self identifier];
-  v11 = [v10 hk_dataForUUIDBytes];
-  [v9 setIdentifier:v11];
+  newCompatibleCodableCredential = [objc_opt_class() newCompatibleCodableCredential];
+  identifier = [(HDFHIRCredential *)self identifier];
+  hk_dataForUUIDBytes = [identifier hk_dataForUUIDBytes];
+  [newCompatibleCodableCredential setIdentifier:hk_dataForUUIDBytes];
 
-  if (v7)
+  if (identifierCopy)
   {
-    v12 = [v7 hk_dataForUUIDBytes];
-    [v9 setAccountSyncIdentifier:v12];
+    hk_dataForUUIDBytes2 = [identifierCopy hk_dataForUUIDBytes];
+    [newCompatibleCodableCredential setAccountSyncIdentifier:hk_dataForUUIDBytes2];
   }
 
-  v13 = [(HDFHIRCredential *)self requestedScopeString];
-  [v9 setRequestedScopeString:v13];
+  requestedScopeString = [(HDFHIRCredential *)self requestedScopeString];
+  [newCompatibleCodableCredential setRequestedScopeString:requestedScopeString];
 
   HDEncodeValueForDate();
-  [v9 setReceivedDate:?];
-  v14 = [(HDFHIRCredential *)self expiration];
+  [newCompatibleCodableCredential setReceivedDate:?];
+  expiration = [(HDFHIRCredential *)self expiration];
 
-  if (v14)
+  if (expiration)
   {
-    v15 = [(HDFHIRCredential *)self expiration];
+    expiration2 = [(HDFHIRCredential *)self expiration];
     HDEncodeValueForDate();
-    [v9 setExpirationDate:?];
+    [newCompatibleCodableCredential setExpirationDate:?];
   }
 
-  v16 = [(HDFHIRCredential *)self scopeString];
-  v17 = [v16 length];
+  scopeString = [(HDFHIRCredential *)self scopeString];
+  v17 = [scopeString length];
 
   if (v17)
   {
-    v18 = [(HDFHIRCredential *)self scopeString];
-    [v9 setScopeString:v18];
+    scopeString2 = [(HDFHIRCredential *)self scopeString];
+    [newCompatibleCodableCredential setScopeString:scopeString2];
   }
 
-  v19 = [(HDFHIRCredential *)self patientID];
-  v20 = [v19 length];
+  patientID = [(HDFHIRCredential *)self patientID];
+  v20 = [patientID length];
 
   if (v20)
   {
-    v21 = [(HDFHIRCredential *)self patientID];
-    [v9 setPatientID:v21];
+    patientID2 = [(HDFHIRCredential *)self patientID];
+    [newCompatibleCodableCredential setPatientID:patientID2];
   }
 
-  return v9;
+  return newCompatibleCodableCredential;
 }
 
-+ (BOOL)_validateCodableCredential:(id)a3 forSync:(BOOL)a4 error:(id *)a5
++ (BOOL)_validateCodableCredential:(id)credential forSync:(BOOL)sync error:(id *)error
 {
-  v6 = a4;
-  v7 = a3;
+  syncCopy = sync;
+  credentialCopy = credential;
   v8 = objc_alloc_init(NSMutableArray);
-  if ([v7 hasMessageVersion])
+  if ([credentialCopy hasMessageVersion])
   {
-    v9 = [v7 messageVersion];
-    v10 = [v9 compatibilityVersion];
+    messageVersion = [credentialCopy messageVersion];
+    compatibilityVersion = [messageVersion compatibilityVersion];
 
-    if (v10 >= 2)
+    if (compatibilityVersion >= 2)
     {
-      v11 = [v7 messageVersion];
-      v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"compatibility version is higher (%lu) than what we support (%lu)", [v11 compatibilityVersion], 1);
+      messageVersion2 = [credentialCopy messageVersion];
+      v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"compatibility version is higher (%lu) than what we support (%lu)", [messageVersion2 compatibilityVersion], 1);
       [v8 addObject:v12];
     }
   }
@@ -616,13 +616,13 @@ LABEL_29:
     [v8 addObject:@"no compatibility version"];
   }
 
-  v13 = [v7 identifier];
-  v14 = [v13 length];
+  identifier = [credentialCopy identifier];
+  v14 = [identifier length];
 
   if (v14)
   {
-    v15 = [v7 identifier];
-    v16 = [NSUUID hk_UUIDWithData:v15];
+    identifier2 = [credentialCopy identifier];
+    v16 = [NSUUID hk_UUIDWithData:identifier2];
 
     if (v16)
     {
@@ -639,18 +639,18 @@ LABEL_29:
 
   [v8 addObject:v17];
 LABEL_10:
-  if (!v6)
+  if (!syncCopy)
   {
     goto LABEL_16;
   }
 
-  v18 = [v7 accountSyncIdentifier];
-  v19 = [v18 length];
+  accountSyncIdentifier = [credentialCopy accountSyncIdentifier];
+  v19 = [accountSyncIdentifier length];
 
   if (v19)
   {
-    v20 = [v7 accountSyncIdentifier];
-    v21 = [NSUUID hk_UUIDWithData:v20];
+    accountSyncIdentifier2 = [credentialCopy accountSyncIdentifier];
+    v21 = [NSUUID hk_UUIDWithData:accountSyncIdentifier2];
 
     if (v21)
     {
@@ -667,23 +667,23 @@ LABEL_10:
 
   [v8 addObject:v22];
 LABEL_16:
-  v23 = [v7 patientID];
-  v24 = [v23 length];
+  patientID = [credentialCopy patientID];
+  v24 = [patientID length];
 
   if (!v24)
   {
     [v8 addObject:@"no patient id"];
   }
 
-  v25 = [v7 requestedScopeString];
-  v26 = [v25 length];
+  requestedScopeString = [credentialCopy requestedScopeString];
+  v26 = [requestedScopeString length];
 
   if (!v26)
   {
     [v8 addObject:@"no requested scope string"];
   }
 
-  if (([v7 hasReceivedDate] & 1) == 0)
+  if (([credentialCopy hasReceivedDate] & 1) == 0)
   {
     [v8 addObject:@"no received date"];
   }
@@ -692,36 +692,36 @@ LABEL_16:
   if (v27)
   {
     v28 = [v8 componentsJoinedByString:@" "];;
-    [NSError hk_assignError:a5 code:3 format:@"codable FHIR credential is invalid: %@", v28];
+    [NSError hk_assignError:error code:3 format:@"codable FHIR credential is invalid: %@", v28];
   }
 
   return v27 == 0;
 }
 
-- (BOOL)isEqualToCredential:(id)a3 epsilonExpiration:(double)a4
+- (BOOL)isEqualToCredential:(id)credential epsilonExpiration:(double)expiration
 {
-  v8 = a3;
-  v9 = [(HDFHIRCredential *)self expiration];
-  v10 = [v8 expiration];
-  [v9 timeIntervalSinceDate:v10];
+  credentialCopy = credential;
+  expiration = [(HDFHIRCredential *)self expiration];
+  expiration2 = [credentialCopy expiration];
+  [expiration timeIntervalSinceDate:expiration2];
   v12 = v11;
 
   v13 = &stru_20;
   identifier = self->_identifier;
-  v15 = [v8 identifier];
-  if (identifier != v15)
+  identifier = [credentialCopy identifier];
+  if (identifier != identifier)
   {
-    v16 = [v8 identifier];
-    if (!v16)
+    identifier2 = [credentialCopy identifier];
+    if (!identifier2)
     {
       v23 = 0;
       goto LABEL_39;
     }
 
-    v17 = v16;
+    v17 = identifier2;
     v13 = self->_identifier;
-    v4 = [v8 identifier];
-    if (![(NSUUID *)v13 isEqual:v4])
+    identifier3 = [credentialCopy identifier];
+    if (![(NSUUID *)v13 isEqual:identifier3])
     {
       v23 = 0;
 LABEL_38:
@@ -733,11 +733,11 @@ LABEL_38:
   }
 
   v18 = fabs(v12);
-  v19 = [(HDFHIRCredential *)self patientID];
-  v20 = [v8 patientID];
-  if (v19 == v20)
+  patientID = [(HDFHIRCredential *)self patientID];
+  patientID2 = [credentialCopy patientID];
+  if (patientID == patientID2)
   {
-    if (v18 <= a4)
+    if (v18 <= expiration)
     {
       goto LABEL_14;
     }
@@ -747,26 +747,26 @@ LABEL_12:
     goto LABEL_36;
   }
 
-  v21 = [v8 patientID];
-  if (!v21)
+  patientID3 = [credentialCopy patientID];
+  if (!patientID3)
   {
     goto LABEL_12;
   }
 
-  v13 = v21;
-  v5 = [(HDFHIRCredential *)self patientID];
-  v22 = [v8 patientID];
-  if (([v5 isEqualToString:v22] & 1) == 0)
+  v13 = patientID3;
+  patientID4 = [(HDFHIRCredential *)self patientID];
+  patientID5 = [credentialCopy patientID];
+  if (([patientID4 isEqualToString:patientID5] & 1) == 0)
   {
 
     v23 = 0;
     goto LABEL_37;
   }
 
-  v44 = v22;
-  if (v18 > a4)
+  v44 = patientID5;
+  if (v18 > expiration)
   {
-    v47 = v5;
+    v47 = patientID4;
     v23 = 0;
 LABEL_34:
 
@@ -774,37 +774,37 @@ LABEL_34:
   }
 
 LABEL_14:
-  v24 = v19;
-  v25 = [(HDFHIRCredential *)self requestedScopeString];
-  v45 = [v8 requestedScopeString];
-  v46 = v25;
-  v47 = v5;
-  if (v25 == v45)
+  v24 = patientID;
+  requestedScopeString = [(HDFHIRCredential *)self requestedScopeString];
+  requestedScopeString2 = [credentialCopy requestedScopeString];
+  v46 = requestedScopeString;
+  v47 = patientID4;
+  if (requestedScopeString == requestedScopeString2)
   {
     v42 = v13;
-    v43 = v4;
-    v19 = v24;
+    v43 = identifier3;
+    patientID = v24;
 LABEL_20:
-    v29 = [(HDFHIRCredential *)self scopes];
-    v30 = [v8 scopes];
-    v23 = v29 == v30;
-    if (v29 != v30)
+    scopes = [(HDFHIRCredential *)self scopes];
+    scopes2 = [credentialCopy scopes];
+    v23 = scopes == scopes2;
+    if (scopes != scopes2)
     {
-      v31 = [v8 scopes];
-      if (v31)
+      scopes3 = [credentialCopy scopes];
+      if (scopes3)
       {
-        v32 = v31;
-        v38 = [(HDFHIRCredential *)self scopes];
-        v33 = [v8 scopes];
-        v23 = [v38 isEqual:v33];
+        v32 = scopes3;
+        scopes4 = [(HDFHIRCredential *)self scopes];
+        scopes5 = [credentialCopy scopes];
+        v23 = [scopes4 isEqual:scopes5];
 
-        if (v46 != v45)
+        if (v46 != requestedScopeString2)
         {
         }
 
         v13 = v42;
-        v4 = v43;
-        if (v19 == v20)
+        identifier3 = v43;
+        if (patientID == patientID2)
         {
           goto LABEL_36;
         }
@@ -813,16 +813,16 @@ LABEL_20:
       }
     }
 
-    v35 = v45;
+    v35 = requestedScopeString2;
     v34 = v46;
-    if (v46 == v45)
+    if (v46 == requestedScopeString2)
     {
 
-      v36 = v19 == v20;
+      v36 = patientID == patientID2;
       v13 = v42;
-      v4 = v43;
+      identifier3 = v43;
 LABEL_33:
-      v22 = v44;
+      patientID5 = v44;
       if (!v36)
       {
         goto LABEL_34;
@@ -832,38 +832,38 @@ LABEL_33:
     }
 
     v13 = v42;
-    v4 = v43;
+    identifier3 = v43;
 LABEL_29:
 
-    v36 = v19 == v20;
+    v36 = patientID == patientID2;
     goto LABEL_33;
   }
 
-  v26 = [v8 requestedScopeString];
-  v19 = v24;
-  if (!v26)
+  requestedScopeString3 = [credentialCopy requestedScopeString];
+  patientID = v24;
+  if (!requestedScopeString3)
   {
     v23 = 0;
-    v35 = v45;
+    v35 = requestedScopeString2;
     v34 = v46;
     goto LABEL_29;
   }
 
-  v43 = v4;
-  v41 = v26;
-  v27 = [(HDFHIRCredential *)self requestedScopeString];
-  v28 = [v8 requestedScopeString];
-  v40 = v27;
-  if ([v27 isEqualToString:v28])
+  v43 = identifier3;
+  v41 = requestedScopeString3;
+  requestedScopeString4 = [(HDFHIRCredential *)self requestedScopeString];
+  requestedScopeString5 = [credentialCopy requestedScopeString];
+  v40 = requestedScopeString4;
+  if ([requestedScopeString4 isEqualToString:requestedScopeString5])
   {
-    v39 = v28;
+    v39 = requestedScopeString5;
     v42 = v13;
     goto LABEL_20;
   }
 
   v23 = 0;
-  v4 = v43;
-  if (v19 != v20)
+  identifier3 = v43;
+  if (patientID != patientID2)
   {
 LABEL_31:
 
@@ -874,7 +874,7 @@ LABEL_36:
 
 LABEL_37:
   v17 = v48;
-  if (identifier != v15)
+  if (identifier != identifier)
   {
     goto LABEL_38;
   }
@@ -887,14 +887,14 @@ LABEL_39:
 - (unint64_t)hash
 {
   v3 = [(NSUUID *)self->_identifier hash];
-  v4 = [(HDFHIRCredential *)self patientID];
-  v5 = [v4 hash];
-  v6 = [(HDFHIRCredential *)self expiration];
-  v7 = v5 ^ [v6 hash];
-  v8 = [(HDFHIRCredential *)self requestedScopeString];
-  v9 = v7 ^ [v8 hash];
-  v10 = [(HDFHIRCredential *)self scopes];
-  v11 = v9 ^ [v10 hash];
+  patientID = [(HDFHIRCredential *)self patientID];
+  v5 = [patientID hash];
+  expiration = [(HDFHIRCredential *)self expiration];
+  v7 = v5 ^ [expiration hash];
+  requestedScopeString = [(HDFHIRCredential *)self requestedScopeString];
+  v9 = v7 ^ [requestedScopeString hash];
+  scopes = [(HDFHIRCredential *)self scopes];
+  v11 = v9 ^ [scopes hash];
 
   return v11 ^ v3;
 }

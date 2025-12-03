@@ -3,15 +3,15 @@
 - (void)_clearIvars;
 - (void)_incrementMessagePartNumber;
 - (void)_initIvars;
-- (void)_popValueFromStack:(id)a3 attributeName:(id)a4;
-- (void)_pushValue:(id)a3 ontoStack:(id)a4 attributeName:(id)a5;
+- (void)_popValueFromStack:(id)stack attributeName:(id)name;
+- (void)_pushValue:(id)value ontoStack:(id)stack attributeName:(id)name;
 - (void)_updateFontFamily;
 - (void)_updateFontSize;
-- (void)appendBreadcrumbText:(id)a3 withOptions:(unsigned int)a4;
-- (void)appendChipList:(id)a3;
-- (void)appendInlineImageWithGUID:(id)a3 filename:(id)a4 width:(int64_t)a5 height:(int64_t)a6 isAnimoji:(int64_t)a7 isAdaptiveImageGlyph:(BOOL)a8;
-- (void)appendRichCards:(id)a3 transferGuids:(id)a4;
-- (void)appendString:(id)a3;
+- (void)appendBreadcrumbText:(id)text withOptions:(unsigned int)options;
+- (void)appendChipList:(id)list;
+- (void)appendInlineImageWithGUID:(id)d filename:(id)filename width:(int64_t)width height:(int64_t)height isAnimoji:(int64_t)animoji isAdaptiveImageGlyph:(BOOL)glyph;
+- (void)appendRichCards:(id)cards transferGuids:(id)guids;
+- (void)appendString:(id)string;
 - (void)dealloc;
 - (void)decrementBoldCount;
 - (void)decrementItalicCount;
@@ -23,8 +23,8 @@
 - (void)incrementUnderlineCount;
 - (void)popFontFamily;
 - (void)popFontSize;
-- (void)pushFontFamily:(id)a3;
-- (void)pushFontSize:(id)a3;
+- (void)pushFontFamily:(id)family;
+- (void)pushFontSize:(id)size;
 - (void)reset;
 @end
 
@@ -75,14 +75,14 @@
 
 - (void)_updateFontFamily
 {
-  v3 = [(NSMutableArray *)self->_fontFamilyStack lastObject];
-  v4 = [v3 length];
+  lastObject = [(NSMutableArray *)self->_fontFamilyStack lastObject];
+  v4 = [lastObject length];
   currentAttributes = self->_currentAttributes;
   v6 = *MEMORY[0x1E69A5F78];
   if (v4)
   {
 
-    [(NSMutableDictionary *)currentAttributes setObject:v3 forKey:v6];
+    [(NSMutableDictionary *)currentAttributes setObject:lastObject forKey:v6];
   }
 
   else
@@ -95,11 +95,11 @@
 
 - (void)_updateFontSize
 {
-  v3 = [(NSMutableArray *)self->_fontSizeStack lastObject];
-  v4 = [v3 integerValue];
+  lastObject = [(NSMutableArray *)self->_fontSizeStack lastObject];
+  integerValue = [lastObject integerValue];
   currentAttributes = self->_currentAttributes;
   v6 = *MEMORY[0x1E69A5F80];
-  if (v4 < 1)
+  if (integerValue < 1)
   {
     v7 = *MEMORY[0x1E69A5F80];
 
@@ -109,7 +109,7 @@
   else
   {
 
-    [(NSMutableDictionary *)currentAttributes setObject:v3 forKey:v6];
+    [(NSMutableDictionary *)currentAttributes setObject:lastObject forKey:v6];
   }
 }
 
@@ -209,23 +209,23 @@
   }
 }
 
-- (void)_pushValue:(id)a3 ontoStack:(id)a4 attributeName:(id)a5
+- (void)_pushValue:(id)value ontoStack:(id)stack attributeName:(id)name
 {
-  if (a3)
+  if (value)
   {
-    [a4 addObject:?];
+    [stack addObject:?];
     currentAttributes = self->_currentAttributes;
 
-    [(NSMutableDictionary *)currentAttributes setObject:a3 forKey:a5];
+    [(NSMutableDictionary *)currentAttributes setObject:value forKey:name];
   }
 }
 
-- (void)_popValueFromStack:(id)a3 attributeName:(id)a4
+- (void)_popValueFromStack:(id)stack attributeName:(id)name
 {
-  [a3 removeLastObject];
-  v7 = [a3 lastObject];
+  [stack removeLastObject];
+  lastObject = [stack lastObject];
   currentAttributes = self->_currentAttributes;
-  if (v7)
+  if (lastObject)
   {
 
     [NSMutableDictionary setObject:"setObject:forKey:" forKey:?];
@@ -234,13 +234,13 @@
   else
   {
 
-    [(NSMutableDictionary *)currentAttributes removeObjectForKey:a4];
+    [(NSMutableDictionary *)currentAttributes removeObjectForKey:name];
   }
 }
 
-- (void)pushFontFamily:(id)a3
+- (void)pushFontFamily:(id)family
 {
-  if (a3)
+  if (family)
   {
     [(NSMutableArray *)self->_fontFamilyStack addObject:?];
 
@@ -255,9 +255,9 @@
   MEMORY[0x1EEE66B58](self, sel__updateFontFamily);
 }
 
-- (void)pushFontSize:(id)a3
+- (void)pushFontSize:(id)size
 {
-  if (a3)
+  if (size)
   {
     [(NSMutableArray *)self->_fontSizeStack addObject:?];
 
@@ -282,38 +282,38 @@
   [(NSMutableDictionary *)currentAttributes setObject:v3 forKey:v4];
 }
 
-- (void)appendString:(id)a3
+- (void)appendString:(id)string
 {
-  if ([a3 length])
+  if ([string length])
   {
-    v5 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:a3 attributes:self->_currentAttributes];
+    v5 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:string attributes:self->_currentAttributes];
     [(NSMutableAttributedString *)self->_body appendAttributedString:v5];
   }
 }
 
-- (void)appendInlineImageWithGUID:(id)a3 filename:(id)a4 width:(int64_t)a5 height:(int64_t)a6 isAnimoji:(int64_t)a7 isAdaptiveImageGlyph:(BOOL)a8
+- (void)appendInlineImageWithGUID:(id)d filename:(id)filename width:(int64_t)width height:(int64_t)height isAnimoji:(int64_t)animoji isAdaptiveImageGlyph:(BOOL)glyph
 {
   v15 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:6];
-  if (!a8)
+  if (!glyph)
   {
     [(IMToSuperParserContext *)self _incrementMessagePartNumber];
   }
 
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_messagePartNumber];
   [v15 setObject:v16 forKey:*MEMORY[0x1E69A5FD8]];
-  [v15 setObject:a3 forKey:*MEMORY[0x1E69A5F68]];
-  if (a4 && a5 >= 1 && a6 >= 1)
+  [v15 setObject:d forKey:*MEMORY[0x1E69A5F68]];
+  if (filename && width >= 1 && height >= 1)
   {
-    v17 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:a5];
-    v18 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:a6];
+    v17 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:width];
+    v18 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:height];
     [v15 setObject:v17 forKey:*MEMORY[0x1E69A5FA0]];
     [v15 setObject:v18 forKey:*MEMORY[0x1E69A5F98]];
-    [v15 setObject:a4 forKey:*MEMORY[0x1E69A5F70]];
+    [v15 setObject:filename forKey:*MEMORY[0x1E69A5F70]];
   }
 
-  if (a7 >= 1)
+  if (animoji >= 1)
   {
-    v19 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:a7];
+    v19 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:animoji];
     [v15 setObject:v19 forKey:*MEMORY[0x1E69A5EF8]];
   }
 
@@ -321,39 +321,39 @@
   v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCharacters:&v22 length:1];
   v21 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v20 attributes:v15];
   [(NSMutableAttributedString *)self->_body appendAttributedString:v21];
-  [(NSMutableArray *)self->_fileTransferGUIDs addObject:a3];
-  if (!a8)
+  [(NSMutableArray *)self->_fileTransferGUIDs addObject:d];
+  if (!glyph)
   {
     [(IMToSuperParserContext *)self _incrementMessagePartNumber];
   }
 }
 
-- (void)appendBreadcrumbText:(id)a3 withOptions:(unsigned int)a4
+- (void)appendBreadcrumbText:(id)text withOptions:(unsigned int)options
 {
   v10[2] = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E69A5F30];
   v9[0] = *MEMORY[0x1E69A5F28];
   v9[1] = v5;
-  v10[0] = a3;
-  v10[1] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a4];
+  v10[0] = text;
+  v10[1] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&options];
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
   v7 = objc_alloc(MEMORY[0x1E696AAB0]);
   v8 = [v7 initWithString:*MEMORY[0x1E69A5F20] attributes:v6];
   [(NSMutableAttributedString *)self->_body appendAttributedString:v8];
 }
 
-- (void)appendRichCards:(id)a3 transferGuids:(id)a4
+- (void)appendRichCards:(id)cards transferGuids:(id)guids
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (cards)
   {
-    v6 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"\uFFFE" attributes:a3];
+    v6 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"\uFFFE" attributes:cards];
     [(NSMutableAttributedString *)self->_body appendAttributedString:v6];
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v7 = [a4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v7 = [guids countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -365,14 +365,14 @@
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(guids);
           }
 
           [(NSMutableArray *)self->_fileTransferGUIDs addObject:*(*(&v11 + 1) + 8 * v10++)];
         }
 
         while (v8 != v10);
-        v8 = [a4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v8 = [guids countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v8);
@@ -380,11 +380,11 @@
   }
 }
 
-- (void)appendChipList:(id)a3
+- (void)appendChipList:(id)list
 {
-  if (a3)
+  if (list)
   {
-    v4 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"\uFFFF" attributes:a3];
+    v4 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"\uFFFF" attributes:list];
     [(NSMutableAttributedString *)self->_body appendAttributedString:v4];
   }
 }

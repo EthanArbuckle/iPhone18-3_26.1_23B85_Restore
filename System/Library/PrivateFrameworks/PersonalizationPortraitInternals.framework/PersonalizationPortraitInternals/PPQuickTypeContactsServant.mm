@@ -1,20 +1,20 @@
 @interface PPQuickTypeContactsServant
-- (PPQuickTypeContactsServant)initWithOptions:(unsigned __int8)a3;
-- (id)_mePredictionCacheKeyForQuery:(void *)a1;
-- (id)_scoredMeContactWithMeContact:(uint64_t)a1;
-- (id)quickTypeItemsWithQuery:(id)a3 limit:(unint64_t)a4 explanationSet:(id)a5;
+- (PPQuickTypeContactsServant)initWithOptions:(unsigned __int8)options;
+- (id)_mePredictionCacheKeyForQuery:(void *)query;
+- (id)_scoredMeContactWithMeContact:(uint64_t)contact;
+- (id)quickTypeItemsWithQuery:(id)query limit:(unint64_t)limit explanationSet:(id)set;
 - (uint64_t)_isSemanticTagEligible:(uint64_t)result;
 @end
 
 @implementation PPQuickTypeContactsServant
 
-- (id)quickTypeItemsWithQuery:(id)a3 limit:(unint64_t)a4 explanationSet:(id)a5
+- (id)quickTypeItemsWithQuery:(id)query limit:(unint64_t)limit explanationSet:(id)set
 {
   v150 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = -[PPQuickTypeContactsServant _isSemanticTagEligible:](self, [v8 semanticTag]);
-  if ([v8 type] != 1 && !v10)
+  queryCopy = query;
+  setCopy = set;
+  v10 = -[PPQuickTypeContactsServant _isSemanticTagEligible:](self, [queryCopy semanticTag]);
+  if ([queryCopy type] != 1 && !v10)
   {
     v11 = MEMORY[0x277CBEBF8];
     goto LABEL_131;
@@ -27,7 +27,7 @@
     _os_log_impl(&dword_23224A000, v12, OS_LOG_TYPE_DEFAULT, "prediction request to PPQuickTypeContactsServant-quickTypeItemsForQuery", buf, 2u);
   }
 
-  if (([v8 fields] & 0x200000) == 0 && !+[PPQuickTypeSettings servantShouldRespondToQuery:](PPQuickTypeSettings, "servantShouldRespondToQuery:", self))
+  if (([queryCopy fields] & 0x200000) == 0 && !+[PPQuickTypeSettings servantShouldRespondToQuery:](PPQuickTypeSettings, "servantShouldRespondToQuery:", self))
   {
     v21 = pp_quicktype_log_handle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -36,15 +36,15 @@
       _os_log_impl(&dword_23224A000, v21, OS_LOG_TYPE_DEFAULT, "ignoring prediction request for Contacts due to settings", buf, 2u);
     }
 
-    [v9 push:47];
+    [setCopy push:47];
     v22 = 0;
     v23 = MEMORY[0x277CBEBF8];
     goto LABEL_132;
   }
 
-  v13 = v8;
-  v129 = v9;
-  v123 = v9;
+  v13 = queryCopy;
+  v129 = setCopy;
+  v123 = setCopy;
   if (!self)
   {
     v11 = 0;
@@ -53,8 +53,8 @@
 
   v121 = v13;
   v14 = v13;
-  v122 = v8;
-  v124 = a4;
+  v122 = queryCopy;
+  limitCopy = limit;
   if ([v14 subtype] == 1)
   {
 
@@ -66,10 +66,10 @@
   if (v15)
   {
 LABEL_12:
-    v16 = [v14 subtype];
+    subtype = [v14 subtype];
     v17 = v14;
     v18 = v17;
-    if (v16 != 1)
+    if (subtype != 1)
     {
       v19 = [v17 semanticTag] - 1;
       if (v19 > 0x10)
@@ -113,8 +113,8 @@ LABEL_12:
         _os_log_debug_impl(&dword_23224A000, v83, OS_LOG_TYPE_DEBUG, "Me card prediction cache MISS", buf, 2u);
       }
 
-      v85 = [(PPLocalContactStore *)self->_localContactStore meCard];
-      if (!v85)
+      meCard = [(PPLocalContactStore *)self->_localContactStore meCard];
+      if (!meCard)
       {
         v100 = pp_quicktype_log_handle();
         if (os_log_type_enabled(v100, OS_LOG_TYPE_DEFAULT))
@@ -128,15 +128,15 @@ LABEL_12:
         goto LABEL_116;
       }
 
-      v83 = v85;
-      [(PPQuickTypeContactsServant *)self _scoredMeContactWithMeContact:v85];
+      v83 = meCard;
+      [(PPQuickTypeContactsServant *)self _scoredMeContactWithMeContact:meCard];
       v86 = v133 = self;
       *&v139 = v86;
       v87 = [MEMORY[0x277CBEA60] arrayWithObjects:&v139 count:1];
-      v88 = [v66 label];
-      v89 = [v66 fields];
+      label = [v66 label];
+      fields = [v66 fields];
       v90 = [PPQuickTypeFormatter formatterWithQuery:v66];
-      v11 = PPQuickTypeItemsForContacts(v87, v88, v89, v90, 0x14uLL, 1, v81);
+      v11 = PPQuickTypeItemsForContacts(v87, label, fields, v90, 0x14uLL, 1, v81);
 
       [(NSCache *)v133->_meQuickTypeItemCache setObject:v11 forKey:v82];
     }
@@ -179,7 +179,7 @@ LABEL_12:
       v11 = [v91 copy];
     }
 
-    if ([v11 count] > v124)
+    if ([v11 count] > limitCopy)
     {
       v98 = pp_quicktype_log_handle();
       if (os_log_type_enabled(v98, OS_LOG_TYPE_DEBUG))
@@ -188,11 +188,11 @@ LABEL_12:
         *v147 = 134218240;
         *&v147[4] = v120;
         *&v147[12] = 2048;
-        *&v147[14] = v124;
+        *&v147[14] = limitCopy;
         _os_log_debug_impl(&dword_23224A000, v98, OS_LOG_TYPE_DEBUG, "Trimming down Me card prediction result from %lu to %lu", v147, 0x16u);
       }
 
-      v99 = [v11 subarrayWithRange:{0, v124}];
+      v99 = [v11 subarrayWithRange:{0, limitCopy}];
 
       v11 = v99;
     }
@@ -202,8 +202,8 @@ LABEL_116:
     goto LABEL_129;
   }
 
-  v24 = [v14 people];
-  v25 = [v24 count];
+  people = [v14 people];
+  v25 = [people count];
 
   if (!v25)
   {
@@ -214,10 +214,10 @@ LABEL_116:
     v103 = v135;
     if (v102)
     {
-      v104 = [v14 label];
-      v105 = [v14 fields];
+      label2 = [v14 label];
+      fields2 = [v14 fields];
       v106 = [PPQuickTypeFormatter formatterWithQuery:v14];
-      v11 = PPQuickTypeItemsForContacts(v102, v104, v105, v106, v124, 0, v129);
+      v11 = PPQuickTypeItemsForContacts(v102, label2, fields2, v106, limitCopy, 0, v129);
     }
 
     else
@@ -243,8 +243,8 @@ LABEL_116:
   v141 = 0u;
   v142 = 0u;
   v26 = objc_alloc(MEMORY[0x277CBEB98]);
-  v27 = [v14 people];
-  v28 = [v26 initWithArray:v27];
+  people2 = [v14 people];
+  v28 = [v26 initWithArray:people2];
 
   obj = v28;
   v29 = [v28 countByEnumeratingWithState:&v139 objects:&v135 count:16];
@@ -255,7 +255,7 @@ LABEL_116:
 
   v30 = v29;
   v130 = *v140;
-  v132 = self;
+  selfCopy = self;
   v125 = v14;
   do
   {
@@ -271,8 +271,8 @@ LABEL_116:
       v32 = *(*(&v139 + 1) + 8 * v31);
       if ([v32 length])
       {
-        v33 = [v14 fields];
-        if (!v33)
+        fields3 = [v14 fields];
+        if (!fields3)
         {
           v34 = pp_quicktype_log_handle();
           if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -282,11 +282,11 @@ LABEL_116:
           }
         }
 
-        v35 = [v14 subtype];
-        v36 = [v14 timeoutSeconds];
+        subtype2 = [v14 subtype];
+        timeoutSeconds = [v14 timeoutSeconds];
         v37 = v32;
         v38 = v129;
-        v39 = v36;
+        v39 = timeoutSeconds;
         v40 = pp_quicktype_log_handle();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
         {
@@ -295,7 +295,7 @@ LABEL_116:
         }
 
         v134 = v38;
-        if (v35 != 12)
+        if (subtype2 != 12)
         {
           v41 = objc_opt_new();
           [v41 setOnlyQueryMostRelevantContacts:1];
@@ -306,7 +306,7 @@ LABEL_116:
           v44 = *v147;
           if (v43)
           {
-            if (!v33)
+            if (!fields3)
             {
               goto LABEL_42;
             }
@@ -329,7 +329,7 @@ LABEL_38:
 LABEL_66:
             [v128 addObjectsFromArray:v43];
 
-            self = v132;
+            self = selfCopy;
             goto LABEL_67;
           }
 
@@ -341,14 +341,14 @@ LABEL_66:
             _os_log_error_impl(&dword_23224A000, v45, OS_LOG_TYPE_ERROR, "error during most relevant contact lookup: %@", buf, 0xCu);
           }
 
-          if (v33)
+          if (fields3)
           {
             goto LABEL_38;
           }
 
 LABEL_42:
 
-          self = v132;
+          self = selfCopy;
           v38 = v134;
         }
 
@@ -394,12 +394,12 @@ LABEL_42:
             objc_storeStrong(v54 + 1, v55);
           }
 
-          [(NSCache *)v132->_cachedNameLookups setObject:v54 forKey:v48];
+          [(NSCache *)selfCopy->_cachedNameLookups setObject:v54 forKey:v48];
           v56 = objc_opt_new();
           [v56 setMatchingName:v48];
-          v57 = v132->_localContactStore;
+          v57 = selfCopy->_localContactStore;
           *buf = 0;
-          if (v33)
+          if (fields3)
           {
             [(PPLocalContactStore *)v57 contactsWithQuery:v56 explanationSet:v49 timeoutSeconds:v50 error:buf];
           }
@@ -442,7 +442,7 @@ LABEL_42:
 
           v41 = v61;
 
-          self = v132;
+          self = selfCopy;
         }
 
         v43 = [(PPLocalContactStore *)self->_localContactStore scoredContactsWithContacts:v41];
@@ -503,10 +503,10 @@ LABEL_72:
       }
 
       v75 = *(*&v147[8] + 8 * j);
-      v76 = [v75 contact];
-      v77 = [v76 source];
+      contact = [v75 contact];
+      source = [contact source];
 
-      if (v77 == 1)
+      if (source == 1)
       {
         ++v71;
         [v75 score];
@@ -553,7 +553,7 @@ LABEL_72:
   }
 
   v69 = v66;
-  if (v71 > 2 * v124)
+  if (v71 > 2 * limitCopy)
   {
     v79 = pp_quicktype_log_handle();
     if (os_log_type_enabled(v79, OS_LOG_TYPE_DEBUG))
@@ -570,19 +570,19 @@ LABEL_122:
 
   v103 = v69;
 
-  v114 = [v14 label];
-  v115 = [v14 fields];
+  label3 = [v14 label];
+  fields4 = [v14 fields];
   v116 = [PPQuickTypeFormatter formatterWithQuery:v14];
-  v11 = PPQuickTypeItemsForContacts(v103, v114, v115, v116, v124, 0, v65);
+  v11 = PPQuickTypeItemsForContacts(v103, label3, fields4, v116, limitCopy, 0, v65);
 
 LABEL_128:
 LABEL_129:
 
   v13 = v121;
-  v8 = v122;
+  queryCopy = v122;
 LABEL_130:
 
-  v9 = v123;
+  setCopy = v123;
 LABEL_131:
   v23 = v11;
   v22 = v23;
@@ -625,35 +625,35 @@ uint64_t __89__PPQuickTypeContactsServant__applySmartLimitingToCandidates_client
   return [v4 compareDouble:v7 withDouble:v9];
 }
 
-- (id)_mePredictionCacheKeyForQuery:(void *)a1
+- (id)_mePredictionCacheKeyForQuery:(void *)query
 {
   v1 = MEMORY[0x277CCACA8];
-  v2 = a1;
+  queryCopy = query;
   v3 = [v1 alloc];
-  v4 = [v2 fields];
-  v5 = [v2 label];
-  v6 = [v2 localeIdentifier];
+  fields = [queryCopy fields];
+  label = [queryCopy label];
+  localeIdentifier = [queryCopy localeIdentifier];
 
-  v7 = [v3 initWithFormat:@"%lu:%@:%@", v4, v5, v6];
+  v7 = [v3 initWithFormat:@"%lu:%@:%@", fields, label, localeIdentifier];
 
   return v7;
 }
 
-- (id)_scoredMeContactWithMeContact:(uint64_t)a1
+- (id)_scoredMeContactWithMeContact:(uint64_t)contact
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = *(a1 + 8);
+  v2 = *(contact + 8);
   v10 = a2;
   v3 = MEMORY[0x277CBEA60];
   v4 = a2;
   v5 = [v3 arrayWithObjects:&v10 count:1];
   v6 = [v2 scoredContactsWithContacts:{v5, v10, v11}];
 
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return firstObject;
 }
 
 void __59__PPQuickTypeContactsServant__supportedPeopleSemanticTypes__block_invoke()
@@ -665,7 +665,7 @@ void __59__PPQuickTypeContactsServant__supportedPeopleSemanticTypes__block_invok
   _supportedPeopleSemanticTypes_supportedPeopleSemanticTypes = v1;
 }
 
-- (PPQuickTypeContactsServant)initWithOptions:(unsigned __int8)a3
+- (PPQuickTypeContactsServant)initWithOptions:(unsigned __int8)options
 {
   v67[4] = *MEMORY[0x277D85DE8];
   v56.receiver = self;
@@ -689,7 +689,7 @@ void __59__PPQuickTypeContactsServant__supportedPeopleSemanticTypes__block_invok
     v4->_meQuickTypeItemCache = v8;
 
     [(NSCache *)v4->_meQuickTypeItemCache setCountLimit:6];
-    if ((a3 & 1) == 0)
+    if ((options & 1) == 0)
     {
       objc_initWeak(&location, v4->_cachedNameLookups);
       objc_initWeak(&from, v4->_meQuickTypeItemCache);
@@ -725,16 +725,16 @@ void __59__PPQuickTypeContactsServant__supportedPeopleSemanticTypes__block_invok
 
       v15 = +[PPLabelMatcher sharedInstance];
       v16 = MEMORY[0x277D3A480];
-      v17 = [MEMORY[0x277CBEAF8] currentLocale];
-      v18 = [v17 localeIdentifier];
-      v19 = [v16 quickTypeQueryWithType:0 subtype:0 semanticTag:0 fields:0 time:0 options:0 subFields:0 label:0 people:0 localeIdentifier:v18 bundleIdentifier:0 recipients:0];
+      currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+      localeIdentifier = [currentLocale localeIdentifier];
+      v19 = [v16 quickTypeQueryWithType:0 subtype:0 semanticTag:0 fields:0 time:0 options:0 subFields:0 label:0 people:0 localeIdentifier:localeIdentifier bundleIdentifier:0 recipients:0];
       v20 = [PPQuickTypeFormatter formatterWithQuery:v19];
 
-      v21 = [v20 makeBirthdayFormatter];
+      makeBirthdayFormatter = [v20 makeBirthdayFormatter];
       if ([(PPLocalContactStore *)v4->_localContactStore chineseBirthdayFound])
       {
-        v22 = [v20 makeChineseBirthdayFormatter];
-        v23 = [v20 makeYearlessChineseBirthdayFormatter];
+        makeChineseBirthdayFormatter = [v20 makeChineseBirthdayFormatter];
+        makeYearlessChineseBirthdayFormatter = [v20 makeYearlessChineseBirthdayFormatter];
       }
 
       v24 = *MEMORY[0x277CBD940];
@@ -750,25 +750,25 @@ void __59__PPQuickTypeContactsServant__supportedPeopleSemanticTypes__block_invok
       v27 = [MEMORY[0x277CBEA60] arrayWithObjects:buf count:7];
       v28 = [v20 formattedStringsForLabels:v27];
 
-      v29 = [(PPLocalContactStore *)v4->_localContactStore meCard];
-      if (v29)
+      meCard = [(PPLocalContactStore *)v4->_localContactStore meCard];
+      if (meCard)
       {
-        v55 = [(PPQuickTypeContactsServant *)v4 _scoredMeContactWithMeContact:v29];
+        v55 = [(PPQuickTypeContactsServant *)v4 _scoredMeContactWithMeContact:meCard];
         v30 = pp_quicktype_log_handle();
-        v31 = v30;
+        localeIdentifier2 = v30;
         if (v55)
         {
           if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 0;
-            _os_log_impl(&dword_23224A000, v31, OS_LOG_TYPE_DEFAULT, "Precalculating basic Me card predictions", buf, 2u);
+            _os_log_impl(&dword_23224A000, localeIdentifier2, OS_LOG_TYPE_DEFAULT, "Precalculating basic Me card predictions", buf, 2u);
           }
 
-          v32 = [MEMORY[0x277CBEAF8] currentLocale];
-          v31 = [v32 localeIdentifier];
+          currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+          localeIdentifier2 = [currentLocale2 localeIdentifier];
 
           [(NSCache *)v4->_meQuickTypeItemCache removeAllObjects];
-          v54 = [MEMORY[0x277D3A480] quickTypeQueryWithType:1 subtype:1 semanticTag:0 fields:1 time:0 options:0 subFields:0 label:0 people:0 localeIdentifier:v31 bundleIdentifier:0 recipients:0];
+          v54 = [MEMORY[0x277D3A480] quickTypeQueryWithType:1 subtype:1 semanticTag:0 fields:1 time:0 options:0 subFields:0 label:0 people:0 localeIdentifier:localeIdentifier2 bundleIdentifier:0 recipients:0];
           v33 = v4->_meQuickTypeItemCache;
           *buf = v55;
           v34 = [MEMORY[0x277CBEA60] arrayWithObjects:buf count:1];
@@ -777,7 +777,7 @@ void __59__PPQuickTypeContactsServant__supportedPeopleSemanticTypes__block_invok
           v37 = [PPQuickTypeContactsServant _mePredictionCacheKeyForQuery:v54];
           [(NSCache *)v33 setObject:v36 forKey:v37];
 
-          v53 = [MEMORY[0x277D3A480] quickTypeQueryWithType:1 subtype:1 semanticTag:0 fields:2 time:0 options:0 subFields:0 label:0 people:0 localeIdentifier:v31 bundleIdentifier:0 recipients:0];
+          v53 = [MEMORY[0x277D3A480] quickTypeQueryWithType:1 subtype:1 semanticTag:0 fields:2 time:0 options:0 subFields:0 label:0 people:0 localeIdentifier:localeIdentifier2 bundleIdentifier:0 recipients:0];
           v38 = v4->_meQuickTypeItemCache;
           v61[0] = v55;
           v39 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:1];
@@ -786,7 +786,7 @@ void __59__PPQuickTypeContactsServant__supportedPeopleSemanticTypes__block_invok
           v42 = [PPQuickTypeContactsServant _mePredictionCacheKeyForQuery:v53];
           [(NSCache *)v38 setObject:v41 forKey:v42];
 
-          v43 = [MEMORY[0x277D3A480] quickTypeQueryWithType:1 subtype:1 semanticTag:0 fields:4 time:0 options:0 subFields:0 label:0 people:0 localeIdentifier:v31 bundleIdentifier:0 recipients:0];
+          v43 = [MEMORY[0x277D3A480] quickTypeQueryWithType:1 subtype:1 semanticTag:0 fields:4 time:0 options:0 subFields:0 label:0 people:0 localeIdentifier:localeIdentifier2 bundleIdentifier:0 recipients:0];
           v44 = v4->_meQuickTypeItemCache;
           v59[0] = v55;
           v45 = [MEMORY[0x277CBEA60] arrayWithObjects:v59 count:1];
@@ -799,7 +799,7 @@ void __59__PPQuickTypeContactsServant__supportedPeopleSemanticTypes__block_invok
         else if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
         {
           *buf = 0;
-          _os_log_error_impl(&dword_23224A000, v31, OS_LOG_TYPE_ERROR, "failed to score me card so cannot preload me card item cache", buf, 2u);
+          _os_log_error_impl(&dword_23224A000, localeIdentifier2, OS_LOG_TYPE_ERROR, "failed to score me card so cannot preload me card item cache", buf, 2u);
         }
 
         v49 = v55;

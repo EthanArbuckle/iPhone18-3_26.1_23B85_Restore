@@ -10,7 +10,7 @@
   ObjectType = swift_getObjectType();
   if (*(&self->super.isa + OBJC_IVAR____TtCC24SensitiveContentAnalysis19VideoStreamAnalyzer7Sampler_task))
   {
-    v4 = self;
+    selfCopy = self;
 
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB5E8F70);
     sub_1AEAF985C();
@@ -18,7 +18,7 @@
 
   else
   {
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6.receiver = self;

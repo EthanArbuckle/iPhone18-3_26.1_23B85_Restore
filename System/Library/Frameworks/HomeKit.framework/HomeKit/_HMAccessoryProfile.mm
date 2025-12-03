@@ -1,14 +1,14 @@
 @interface _HMAccessoryProfile
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMAccessory)accessory;
 - (HMHome)home;
 - (NSString)description;
 - (NSUUID)uniqueIdentifier;
-- (_HMAccessoryProfile)initWithCoder:(id)a3;
-- (_HMAccessoryProfile)initWithUUID:(id)a3 services:(id)a4;
+- (_HMAccessoryProfile)initWithCoder:(id)coder;
+- (_HMAccessoryProfile)initWithUUID:(id)d services:(id)services;
 - (id)assistantIdentifier;
 - (unint64_t)hash;
-- (void)__configureWithContext:(id)a3 accessory:(id)a4;
+- (void)__configureWithContext:(id)context accessory:(id)accessory;
 - (void)_unconfigureContext;
 @end
 
@@ -28,36 +28,36 @@
   return WeakRetained;
 }
 
-- (_HMAccessoryProfile)initWithCoder:(id)a3
+- (_HMAccessoryProfile)initWithCoder:(id)coder
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.accessoryProfileUUID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.accessoryProfileUUID"];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v5];
   v7 = MEMORY[0x1E695DFD8];
   v26[0] = objc_opt_class();
   v26[1] = objc_opt_class();
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
   v9 = [v7 setWithArray:v8];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"services"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"services"];
 
   if (v6 && v10)
   {
     v11 = [(_HMAccessoryProfile *)self initWithUUID:v6 services:v10];
     if (v11)
     {
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessory"];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessory"];
       objc_storeWeak(&v11->_accessory, v12);
     }
 
-    v13 = v11;
-    v14 = v13;
+    selfCopy = v11;
+    v14 = selfCopy;
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -81,16 +81,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(_HMAccessoryProfile *)self profileUniqueIdentifier];
-  v3 = [v2 hash];
+  profileUniqueIdentifier = [(_HMAccessoryProfile *)self profileUniqueIdentifier];
+  v3 = [profileUniqueIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -100,11 +100,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(_HMAccessoryProfile *)self profileUniqueIdentifier];
-      v7 = [(_HMAccessoryProfile *)v5 profileUniqueIdentifier];
+      v5 = equalCopy;
+      profileUniqueIdentifier = [(_HMAccessoryProfile *)self profileUniqueIdentifier];
+      profileUniqueIdentifier2 = [(_HMAccessoryProfile *)v5 profileUniqueIdentifier];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [profileUniqueIdentifier isEqual:profileUniqueIdentifier2];
     }
 
     else
@@ -140,8 +140,8 @@
         }
 
         v9 = MEMORY[0x1E696AEC0];
-        v10 = [*(*(&v16 + 1) + 8 * i) instanceID];
-        v11 = [v9 stringWithFormat:@"%@", v10];
+        instanceID = [*(*(&v16 + 1) + 8 * i) instanceID];
+        v11 = [v9 stringWithFormat:@"%@", instanceID];
         [v3 addObject:v11];
       }
 
@@ -151,8 +151,8 @@
     while (v6);
   }
 
-  v12 = [(_HMAccessoryProfile *)self profileUniqueIdentifier];
-  v13 = hm_assistantIdentifierWithSalts(@"SV", v12, v3);
+  profileUniqueIdentifier = [(_HMAccessoryProfile *)self profileUniqueIdentifier];
+  v13 = hm_assistantIdentifierWithSalts(@"SV", profileUniqueIdentifier, v3);
 
   v14 = *MEMORY[0x1E69E9840];
 
@@ -180,24 +180,24 @@
 
 - (void)_unconfigureContext
 {
-  v3 = [(_HMContext *)self->_context messageDispatcher];
-  [v3 deregisterReceiver:self];
+  messageDispatcher = [(_HMContext *)self->_context messageDispatcher];
+  [messageDispatcher deregisterReceiver:self];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   context = self->_context;
   self->_context = 0;
 }
 
-- (void)__configureWithContext:(id)a3 accessory:(id)a4
+- (void)__configureWithContext:(id)context accessory:(id)accessory
 {
-  objc_storeStrong(&self->_context, a3);
-  v6 = a4;
-  objc_storeWeak(&self->_accessory, v6);
-  v7 = [v6 home];
+  objc_storeStrong(&self->_context, context);
+  accessoryCopy = accessory;
+  objc_storeWeak(&self->_accessory, accessoryCopy);
+  home = [accessoryCopy home];
 
-  objc_storeWeak(&self->_home, v7);
+  objc_storeWeak(&self->_home, home);
 
   [(_HMAccessoryProfile *)self _registerNotificationHandlers];
 }
@@ -205,28 +205,28 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(_HMAccessoryProfile *)self accessory];
-  v5 = [(_HMAccessoryProfile *)self profileUniqueIdentifier];
-  v6 = [v5 UUIDString];
-  v7 = [v3 stringWithFormat:@"_HMAccessoryProfile %@: %@", v4, v6];
+  accessory = [(_HMAccessoryProfile *)self accessory];
+  profileUniqueIdentifier = [(_HMAccessoryProfile *)self profileUniqueIdentifier];
+  uUIDString = [profileUniqueIdentifier UUIDString];
+  v7 = [v3 stringWithFormat:@"_HMAccessoryProfile %@: %@", accessory, uUIDString];
 
   return v7;
 }
 
-- (_HMAccessoryProfile)initWithUUID:(id)a3 services:(id)a4
+- (_HMAccessoryProfile)initWithUUID:(id)d services:(id)services
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  servicesCopy = services;
   v12.receiver = self;
   v12.super_class = _HMAccessoryProfile;
   v8 = [(_HMAccessoryProfile *)&v12 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E69A2A28] hmf_cachedInstanceForNSUUID:v6];
+    v9 = [MEMORY[0x1E69A2A28] hmf_cachedInstanceForNSUUID:dCopy];
     profileUniqueIdentifier = v8->_profileUniqueIdentifier;
     v8->_profileUniqueIdentifier = v9;
 
-    objc_storeStrong(&v8->_services, a4);
+    objc_storeStrong(&v8->_services, services);
   }
 
   return v8;

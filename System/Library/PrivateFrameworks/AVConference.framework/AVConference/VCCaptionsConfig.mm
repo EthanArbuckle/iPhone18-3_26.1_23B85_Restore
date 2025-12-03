@@ -1,23 +1,23 @@
 @interface VCCaptionsConfig
-+ (id)deserializeConfiguration:(id)a3;
-+ (id)serializeConfiguration:(id)a3;
-+ (unsigned)callTypeFromClientCallType:(unsigned __int8)a3;
-+ (unsigned)taskHintFromClientTaskHint:(unsigned __int8)a3;
-+ (unsigned)usageFromClientUsage:(unsigned __int8)a3;
-- (BOOL)isEqualToCaptionsConfig:(id)a3;
-- (VCCaptionsConfig)initWithClientConfig:(id)a3;
-- (VCCaptionsConfig)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)deserializeConfiguration:(id)configuration;
++ (id)serializeConfiguration:(id)configuration;
++ (unsigned)callTypeFromClientCallType:(unsigned __int8)type;
++ (unsigned)taskHintFromClientTaskHint:(unsigned __int8)hint;
++ (unsigned)usageFromClientUsage:(unsigned __int8)usage;
+- (BOOL)isEqualToCaptionsConfig:(id)config;
+- (VCCaptionsConfig)initWithClientConfig:(id)config;
+- (VCCaptionsConfig)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VCCaptionsConfig
 
-- (VCCaptionsConfig)initWithClientConfig:(id)a3
+- (VCCaptionsConfig)initWithClientConfig:(id)config
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!config)
   {
     [(VCCaptionsConfig *)self initWithClientConfig:v7];
 LABEL_7:
@@ -33,14 +33,14 @@ LABEL_7:
   }
 
   v5 = v4;
-  v4->_locale = [objc_msgSend(a3 "locale")];
-  v5->_taskHint = +[VCCaptionsConfig taskHintFromClientTaskHint:](VCCaptionsConfig, "taskHintFromClientTaskHint:", [a3 taskHint]);
-  v5->_usage = +[VCCaptionsConfig usageFromClientUsage:](VCCaptionsConfig, "usageFromClientUsage:", [a3 usage]);
-  v5->_languageDetectorEnabled = [a3 languageDetectorEnabled];
-  v5->_languageDetectorReportingFrequency = [a3 languageDetectorReportingFrequency];
-  v5->_explicitLanguageFilterEnabled = [a3 isExplicitLanguageFilterEnabled];
-  v5->_callType = +[VCCaptionsConfig callTypeFromClientCallType:](VCCaptionsConfig, "callTypeFromClientCallType:", [a3 callType]);
-  v5->_formatForNewLinesEnabled = [a3 isFormatForNewLinesEnabled];
+  v4->_locale = [objc_msgSend(config "locale")];
+  v5->_taskHint = +[VCCaptionsConfig taskHintFromClientTaskHint:](VCCaptionsConfig, "taskHintFromClientTaskHint:", [config taskHint]);
+  v5->_usage = +[VCCaptionsConfig usageFromClientUsage:](VCCaptionsConfig, "usageFromClientUsage:", [config usage]);
+  v5->_languageDetectorEnabled = [config languageDetectorEnabled];
+  v5->_languageDetectorReportingFrequency = [config languageDetectorReportingFrequency];
+  v5->_explicitLanguageFilterEnabled = [config isExplicitLanguageFilterEnabled];
+  v5->_callType = +[VCCaptionsConfig callTypeFromClientCallType:](VCCaptionsConfig, "callTypeFromClientCallType:", [config callType]);
+  v5->_formatForNewLinesEnabled = [config isFormatForNewLinesEnabled];
   return v5;
 }
 
@@ -53,33 +53,33 @@ LABEL_7:
   [(VCCaptionsConfig *)&v3 dealloc];
 }
 
-- (BOOL)isEqualToCaptionsConfig:(id)a3
+- (BOOL)isEqualToCaptionsConfig:(id)config
 {
   result = 0;
-  if (a3)
+  if (config)
   {
-    if (-[NSString isEqualToString:](-[NSLocale localeIdentifier](self->_locale, "localeIdentifier"), "isEqualToString:", [objc_msgSend(a3 "locale")]))
+    if (-[NSString isEqualToString:](-[NSLocale localeIdentifier](self->_locale, "localeIdentifier"), "isEqualToString:", [objc_msgSend(config "locale")]))
     {
       taskHint = self->_taskHint;
-      if (taskHint == [a3 taskHint])
+      if (taskHint == [config taskHint])
       {
         usage = self->_usage;
-        if (usage == [a3 usage])
+        if (usage == [config usage])
         {
           languageDetectorEnabled = self->_languageDetectorEnabled;
-          if (languageDetectorEnabled == [a3 languageDetectorEnabled])
+          if (languageDetectorEnabled == [config languageDetectorEnabled])
           {
             languageDetectorReportingFrequency = self->_languageDetectorReportingFrequency;
-            if (languageDetectorReportingFrequency == [a3 languageDetectorReportingFrequency])
+            if (languageDetectorReportingFrequency == [config languageDetectorReportingFrequency])
             {
               explicitLanguageFilterEnabled = self->_explicitLanguageFilterEnabled;
-              if (explicitLanguageFilterEnabled == [a3 isExplicitLanguageFilterEnabled])
+              if (explicitLanguageFilterEnabled == [config isExplicitLanguageFilterEnabled])
               {
                 callType = self->_callType;
-                if (callType == [a3 callType])
+                if (callType == [config callType])
                 {
                   formatForNewLinesEnabled = self->_formatForNewLinesEnabled;
-                  if (formatForNewLinesEnabled == [a3 isFormatForNewLinesEnabled])
+                  if (formatForNewLinesEnabled == [config isFormatForNewLinesEnabled])
                   {
                     return 1;
                   }
@@ -95,10 +95,10 @@ LABEL_7:
   return result;
 }
 
-+ (unsigned)usageFromClientUsage:(unsigned __int8)a3
++ (unsigned)usageFromClientUsage:(unsigned __int8)usage
 {
-  v3 = 0x6050403020101uLL >> (8 * a3);
-  if (a3 >= 7u)
+  v3 = 0x6050403020101uLL >> (8 * usage);
+  if (usage >= 7u)
   {
     LOBYTE(v3) = 1;
   }
@@ -106,9 +106,9 @@ LABEL_7:
   return v3 & 7;
 }
 
-+ (unsigned)taskHintFromClientTaskHint:(unsigned __int8)a3
++ (unsigned)taskHintFromClientTaskHint:(unsigned __int8)hint
 {
-  if (a3 == 2)
+  if (hint == 2)
   {
     return 2;
   }
@@ -119,11 +119,11 @@ LABEL_7:
   }
 }
 
-+ (unsigned)callTypeFromClientCallType:(unsigned __int8)a3
++ (unsigned)callTypeFromClientCallType:(unsigned __int8)type
 {
-  v3 = a3;
+  typeCopy = type;
   v15 = *MEMORY[0x1E69E9840];
-  if ((a3 - 1) >= 4)
+  if ((type - 1) >= 4)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 5)
     {
@@ -138,18 +138,18 @@ LABEL_7:
         v11 = 1024;
         v12 = 111;
         v13 = 1024;
-        v14 = v3;
+        v14 = typeCopy;
         _os_log_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Client call type is not one of supported types, callType=%d", &v7, 0x22u);
       }
     }
 
-    LOBYTE(v3) = 1;
+    LOBYTE(typeCopy) = 1;
   }
 
-  return v3;
+  return typeCopy;
 }
 
-+ (id)serializeConfiguration:(id)a3
++ (id)serializeConfiguration:(id)configuration
 {
   v6 = *MEMORY[0x1E69E9840];
   v5 = 0;
@@ -162,11 +162,11 @@ LABEL_7:
   return v3;
 }
 
-+ (id)deserializeConfiguration:(id)a3
++ (id)deserializeConfiguration:(id)configuration
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v5[0] = 0;
-  v3 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:a3 error:v5];
+  v3 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:configuration error:v5];
   if (v5[0])
   {
     +[VCCaptionsConfig deserializeConfiguration:];
@@ -175,22 +175,22 @@ LABEL_7:
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (self->_locale)
   {
     if ([VCCaptionsConfig isValidUsage:self->_usage])
     {
-      [a3 encodeObject:self->_locale forKey:@"vcCaptionsLocale"];
-      [a3 encodeInt32:self->_usage forKey:@"vcCaptionUsage"];
-      [a3 encodeInt32:self->_taskHint forKey:@"vcCaptionsTaskHint"];
-      [a3 encodeBool:self->_languageDetectorEnabled forKey:@"vcCaptionsLanguageDetectorEnabled"];
-      [a3 encodeInteger:self->_languageDetectorReportingFrequency forKey:@"vcCaptionsLanguageDetectorReportingFrequency"];
-      [a3 encodeBool:self->_explicitLanguageFilterEnabled forKey:@"vcCaptionsExplicitLanguageFilterEnabled"];
-      [a3 encodeInt32:self->_callType forKey:@"vcCaptionsCallType"];
+      [coder encodeObject:self->_locale forKey:@"vcCaptionsLocale"];
+      [coder encodeInt32:self->_usage forKey:@"vcCaptionUsage"];
+      [coder encodeInt32:self->_taskHint forKey:@"vcCaptionsTaskHint"];
+      [coder encodeBool:self->_languageDetectorEnabled forKey:@"vcCaptionsLanguageDetectorEnabled"];
+      [coder encodeInteger:self->_languageDetectorReportingFrequency forKey:@"vcCaptionsLanguageDetectorReportingFrequency"];
+      [coder encodeBool:self->_explicitLanguageFilterEnabled forKey:@"vcCaptionsExplicitLanguageFilterEnabled"];
+      [coder encodeInt32:self->_callType forKey:@"vcCaptionsCallType"];
       formatForNewLinesEnabled = self->_formatForNewLinesEnabled;
 
-      [a3 encodeBool:formatForNewLinesEnabled forKey:@"vcCaptionsFormatForNewLinesEnabled"];
+      [coder encodeBool:formatForNewLinesEnabled forKey:@"vcCaptionsFormatForNewLinesEnabled"];
     }
 
     else
@@ -205,80 +205,80 @@ LABEL_7:
   }
 }
 
-- (VCCaptionsConfig)initWithCoder:(id)a3
+- (VCCaptionsConfig)initWithCoder:(id)coder
 {
   v4 = [(VCCaptionsConfig *)self init];
   if (!v4)
   {
     [VCCaptionsConfig initWithCoder:];
 LABEL_21:
-    [a3 failWithError:{+[VCSessionErrorUtils VCSessionCaptionsErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionCaptionsErrorEvent:errorPath:returnCode:", 10, objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCCaptionsConfig.m", 199), 18)}];
+    [coder failWithError:{+[VCSessionErrorUtils VCSessionCaptionsErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionCaptionsErrorEvent:errorPath:returnCode:", 10, objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCCaptionsConfig.m", 199), 18)}];
 
     return 0;
   }
 
-  if (([a3 containsValueForKey:@"vcCaptionsLocale"] & 1) == 0)
+  if (([coder containsValueForKey:@"vcCaptionsLocale"] & 1) == 0)
   {
     [VCCaptionsConfig initWithCoder:v4];
     goto LABEL_21;
   }
 
-  if (([a3 containsValueForKey:@"vcCaptionsTaskHint"] & 1) == 0)
+  if (([coder containsValueForKey:@"vcCaptionsTaskHint"] & 1) == 0)
   {
     [VCCaptionsConfig initWithCoder:v4];
     goto LABEL_21;
   }
 
-  if (([a3 containsValueForKey:@"vcCaptionUsage"] & 1) == 0)
+  if (([coder containsValueForKey:@"vcCaptionUsage"] & 1) == 0)
   {
     [VCCaptionsConfig initWithCoder:v4];
     goto LABEL_21;
   }
 
-  if (([a3 containsValueForKey:@"vcCaptionsLanguageDetectorEnabled"] & 1) == 0)
+  if (([coder containsValueForKey:@"vcCaptionsLanguageDetectorEnabled"] & 1) == 0)
   {
     [VCCaptionsConfig initWithCoder:v4];
     goto LABEL_21;
   }
 
-  if (([a3 containsValueForKey:@"vcCaptionsLanguageDetectorReportingFrequency"] & 1) == 0)
+  if (([coder containsValueForKey:@"vcCaptionsLanguageDetectorReportingFrequency"] & 1) == 0)
   {
     [VCCaptionsConfig initWithCoder:v4];
     goto LABEL_21;
   }
 
-  if (([a3 containsValueForKey:@"vcCaptionsExplicitLanguageFilterEnabled"] & 1) == 0)
+  if (([coder containsValueForKey:@"vcCaptionsExplicitLanguageFilterEnabled"] & 1) == 0)
   {
     [VCCaptionsConfig initWithCoder:v4];
     goto LABEL_21;
   }
 
-  if (([a3 containsValueForKey:@"vcCaptionsCallType"] & 1) == 0)
+  if (([coder containsValueForKey:@"vcCaptionsCallType"] & 1) == 0)
   {
     [VCCaptionsConfig initWithCoder:v4];
     goto LABEL_21;
   }
 
-  if (([a3 containsValueForKey:@"vcCaptionsFormatForNewLinesEnabled"] & 1) == 0)
+  if (([coder containsValueForKey:@"vcCaptionsFormatForNewLinesEnabled"] & 1) == 0)
   {
     [VCCaptionsConfig initWithCoder:v4];
     goto LABEL_21;
   }
 
-  v4->_locale = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"vcCaptionsLocale"];
-  v4->_taskHint = [a3 decodeInt32ForKey:@"vcCaptionsTaskHint"];
-  v4->_usage = [a3 decodeInt32ForKey:@"vcCaptionUsage"];
-  v4->_languageDetectorEnabled = [a3 decodeBoolForKey:@"vcCaptionsLanguageDetectorEnabled"];
-  v4->_languageDetectorReportingFrequency = [a3 decodeIntegerForKey:@"vcCaptionsLanguageDetectorReportingFrequency"];
-  v4->_explicitLanguageFilterEnabled = [a3 decodeBoolForKey:@"vcCaptionsExplicitLanguageFilterEnabled"];
-  v4->_callType = [a3 decodeInt32ForKey:@"vcCaptionsCallType"];
-  v4->_formatForNewLinesEnabled = [a3 decodeBoolForKey:@"vcCaptionsFormatForNewLinesEnabled"];
+  v4->_locale = [coder decodeObjectOfClass:objc_opt_class() forKey:@"vcCaptionsLocale"];
+  v4->_taskHint = [coder decodeInt32ForKey:@"vcCaptionsTaskHint"];
+  v4->_usage = [coder decodeInt32ForKey:@"vcCaptionUsage"];
+  v4->_languageDetectorEnabled = [coder decodeBoolForKey:@"vcCaptionsLanguageDetectorEnabled"];
+  v4->_languageDetectorReportingFrequency = [coder decodeIntegerForKey:@"vcCaptionsLanguageDetectorReportingFrequency"];
+  v4->_explicitLanguageFilterEnabled = [coder decodeBoolForKey:@"vcCaptionsExplicitLanguageFilterEnabled"];
+  v4->_callType = [coder decodeInt32ForKey:@"vcCaptionsCallType"];
+  v4->_formatForNewLinesEnabled = [coder decodeBoolForKey:@"vcCaptionsFormatForNewLinesEnabled"];
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setLocale:{-[VCCaptionsConfig locale](self, "locale")}];
   [v4 setTaskHint:{-[VCCaptionsConfig taskHint](self, "taskHint")}];
   [v4 setUsage:{-[VCCaptionsConfig usage](self, "usage")}];

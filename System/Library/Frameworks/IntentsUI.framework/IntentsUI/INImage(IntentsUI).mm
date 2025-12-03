@@ -14,121 +14,121 @@
     goto LABEL_24;
   }
 
-  v5 = [a1 _imageData];
+  _imageData = [self _imageData];
 
-  if (v5)
+  if (_imageData)
   {
     v6 = MEMORY[0x277D755B8];
-    v7 = [a1 _imageData];
-    v8 = [v6 imageWithData:v7];
+    _imageData2 = [self _imageData];
+    v8 = [v6 imageWithData:_imageData2];
     v4[2](v4, v8);
 
 LABEL_4:
     goto LABEL_24;
   }
 
-  v9 = [a1 _name];
+  _name = [self _name];
 
-  if (!v9)
+  if (!_name)
   {
-    v14 = [a1 _uri];
+    _uri = [self _uri];
 
-    if (!v14)
+    if (!_uri)
     {
       goto LABEL_24;
     }
 
-    v15 = [a1 _uri];
-    v16 = [v15 isFileURL];
+    _uri2 = [self _uri];
+    isFileURL = [_uri2 isFileURL];
 
-    if (!v16)
+    if (!isFileURL)
     {
-      v36 = [MEMORY[0x277CCAD30] sharedSession];
-      v37 = [a1 _uri];
+      mEMORY[0x277CCAD30] = [MEMORY[0x277CCAD30] sharedSession];
+      _uri3 = [self _uri];
       v39[0] = MEMORY[0x277D85DD0];
       v39[1] = 3221225472;
       v39[2] = __49__INImage_IntentsUI__fetchUIImageWithCompletion___block_invoke;
       v39[3] = &unk_27872BEB8;
       v40 = v4;
-      v38 = [v36 dataTaskWithURL:v37 completionHandler:v39];
+      v38 = [mEMORY[0x277CCAD30] dataTaskWithURL:_uri3 completionHandler:v39];
 
       [v38 resume];
       goto LABEL_24;
     }
 
     v17 = MEMORY[0x277D755B8];
-    v7 = [a1 _uri];
-    v18 = [v7 absoluteString];
-    v19 = [v17 imageWithContentsOfFile:v18];
+    _imageData2 = [self _uri];
+    absoluteString = [_imageData2 absoluteString];
+    v19 = [v17 imageWithContentsOfFile:absoluteString];
     v4[2](v4, v19);
 
     goto LABEL_4;
   }
 
-  v10 = [a1 _bundleIdentifier];
-  if (v10)
+  _bundleIdentifier = [self _bundleIdentifier];
+  if (_bundleIdentifier)
   {
-    v11 = [a1 _bundleIdentifier];
-    v12 = [0 bundleIdentifier];
-    v13 = [v11 isEqualToString:v12];
+    _bundleIdentifier2 = [self _bundleIdentifier];
+    bundleIdentifier = [0 bundleIdentifier];
+    v13 = [_bundleIdentifier2 isEqualToString:bundleIdentifier];
 
     if (v13)
     {
-      v10 = 0;
+      _bundleIdentifier = 0;
     }
 
     else
     {
       v20 = MEMORY[0x277CC1E88];
-      v21 = [a1 _bundleIdentifier];
-      v22 = [v20 bundleProxyForIdentifier:v21];
+      _bundleIdentifier3 = [self _bundleIdentifier];
+      v22 = [v20 bundleProxyForIdentifier:_bundleIdentifier3];
 
       v23 = MEMORY[0x277CCA8D8];
-      v24 = [v22 bundleURL];
-      v25 = [v24 path];
-      v10 = [v23 bundleWithPath:v25];
+      bundleURL = [v22 bundleURL];
+      path = [bundleURL path];
+      _bundleIdentifier = [v23 bundleWithPath:path];
 
-      if (!v10)
+      if (!_bundleIdentifier)
       {
         v26 = MEMORY[0x277CCA8D8];
-        v27 = [a1 _bundleIdentifier];
-        v10 = [v26 bundleWithIdentifier:v27];
+        _bundleIdentifier4 = [self _bundleIdentifier];
+        _bundleIdentifier = [v26 bundleWithIdentifier:_bundleIdentifier4];
       }
     }
   }
 
-  v28 = [a1 _bundleIdentifier];
-  if (v28)
+  _bundleIdentifier5 = [self _bundleIdentifier];
+  if (_bundleIdentifier5)
   {
-    v29 = v28;
+    _bundlePath2 = _bundleIdentifier5;
 LABEL_19:
 
     goto LABEL_20;
   }
 
-  v30 = [a1 _bundlePath];
+  _bundlePath = [self _bundlePath];
 
-  if (v30)
+  if (_bundlePath)
   {
     v31 = MEMORY[0x277CCA8D8];
-    v29 = [a1 _bundlePath];
-    v32 = [v31 bundleWithPath:v29];
+    _bundlePath2 = [self _bundlePath];
+    v32 = [v31 bundleWithPath:_bundlePath2];
 
-    v10 = v32;
+    _bundleIdentifier = v32;
     goto LABEL_19;
   }
 
 LABEL_20:
   v33 = MEMORY[0x277D755B8];
-  v34 = [a1 _name];
-  if (v10)
+  _name2 = [self _name];
+  if (_bundleIdentifier)
   {
-    [v33 imageNamed:v34 inBundle:v10 compatibleWithTraitCollection:0];
+    [v33 imageNamed:_name2 inBundle:_bundleIdentifier compatibleWithTraitCollection:0];
   }
 
   else
   {
-    [v33 systemImageNamed:v34];
+    [v33 systemImageNamed:_name2];
   }
   v35 = ;
 
@@ -145,11 +145,11 @@ LABEL_24:
   v7 = v6;
   [(UIImage *)v3 size];
   [v5 _setImageSize:v7];
-  v8 = [(UIImage *)v3 renderingMode];
+  renderingMode = [(UIImage *)v3 renderingMode];
 
-  if (v8 <= 2)
+  if (renderingMode <= 2)
   {
-    [v5 _setRenderingMode:v8];
+    [v5 _setRenderingMode:renderingMode];
   }
 
   return v5;

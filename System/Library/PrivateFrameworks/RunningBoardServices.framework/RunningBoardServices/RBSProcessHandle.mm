@@ -1,18 +1,18 @@
 @interface RBSProcessHandle
-+ (id)_cachedHandleForKey:(uint64_t)a1;
++ (id)_cachedHandleForKey:(uint64_t)key;
 + (id)currentProcess;
-+ (id)handleForAuditToken:(id *)a3 error:(id *)a4;
-+ (id)handleForKey:(unint64_t)a3 fetchIfNeeded:(BOOL)a4;
-+ (id)handleForLegacyHandle:(id)a3 error:(id *)a4;
-+ (id)handleForPredicate:(id)a3 error:(id *)a4;
-+ (id)observeForImminentAssertionsExpiration:(id)a3;
-+ (void)_cacheHandle:(uint64_t)a1;
-+ (void)_handleForIdentifier:(int)a3 pidVersion:(int)a4 ignoreCache:(void *)a5 error:;
++ (id)handleForAuditToken:(id *)token error:(id *)error;
++ (id)handleForKey:(unint64_t)key fetchIfNeeded:(BOOL)needed;
++ (id)handleForLegacyHandle:(id)handle error:(id *)error;
++ (id)handleForPredicate:(id)predicate error:(id *)error;
++ (id)observeForImminentAssertionsExpiration:(id)expiration;
++ (void)_cacheHandle:(uint64_t)handle;
++ (void)_handleForIdentifier:(int)identifier pidVersion:(int)version ignoreCache:(void *)cache error:;
 + (void)clearAllHandles;
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
-- (BOOL)matchesProcess:(id)a3;
+- (BOOL)matchesProcess:(id)process;
 - (NSString)daemonJobLabel;
 - (NSString)debugDescription;
 - (NSString)description;
@@ -20,25 +20,25 @@
 - (RBSProcessExitContext)lastExitContext;
 - (RBSProcessHandle)hostProcess;
 - (RBSProcessHandle)init;
-- (RBSProcessHandle)initWithInstance:(id)a3 auditToken:(id)a4 bundleData:(id)a5 manageFlags:(unsigned __int8)a6 beforeTranslocationBundlePath:(id)a7 executablePath:(id)a8 cache:(BOOL)a9;
-- (RBSProcessHandle)initWithLaunchContext:(id)a3;
-- (RBSProcessHandle)initWithRBSXPCCoder:(id)a3;
+- (RBSProcessHandle)initWithInstance:(id)instance auditToken:(id)token bundleData:(id)data manageFlags:(unsigned __int8)flags beforeTranslocationBundlePath:(id)path executablePath:(id)executablePath cache:(BOOL)cache;
+- (RBSProcessHandle)initWithLaunchContext:(id)context;
+- (RBSProcessHandle)initWithRBSXPCCoder:(id)coder;
 - (RBSProcessInstance)instance;
 - (RBSProcessLimitations)activeLimitations;
 - (RBSProcessState)currentState;
-- (_DWORD)_initWithIdentity:(void *)a3 beforeTranslocationBundlePath:(void *)a4 executablePath:;
+- (_DWORD)_initWithIdentity:(void *)identity beforeTranslocationBundlePath:(void *)path executablePath:;
 - (double)elapsedCPUTimeForFrontBoard;
-- (id)currentStateMatchingDescriptor:(id)a3;
+- (id)currentStateMatchingDescriptor:(id)descriptor;
 - (id)endowmentInfoForHandle;
 - (id)legacyHandle;
-- (void)_fullEncode:(uint64_t)a1;
+- (void)_fullEncode:(uint64_t)encode;
 - (void)_keepAlive;
 - (void)dealloc;
 - (void)elapsedCPUTimeForFrontBoard;
-- (void)encodeWithRBSXPCCoder:(id)a3;
-- (void)fullEncode:(id)a3 forKey:(id)a4;
-- (void)intendToExitWith:(id)a3;
-- (void)monitorForDeath:(id)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
+- (void)fullEncode:(id)encode forKey:(id)key;
+- (void)intendToExitWith:(id)with;
+- (void)monitorForDeath:(id)death;
 @end
 
 @implementation RBSProcessHandle
@@ -85,17 +85,17 @@
 
 - (void)_keepAlive
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1;
+    selfCopy = self;
     v2 = dispatch_time(0, 1000000000);
     v3 = +[RBSWorkloop sharedBackgroundWorkloop];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __30__RBSProcessHandle__keepAlive__block_invoke;
     block[3] = &unk_1E7276440;
-    v6 = v1;
-    v4 = v1;
+    v6 = selfCopy;
+    v4 = selfCopy;
     dispatch_after(v2, v3, block);
   }
 }
@@ -116,9 +116,9 @@
 + (id)currentProcess
 {
   v2 = +[RBSConnection sharedInstance];
-  v3 = [(RBSConnection *)v2 handle];
+  handle = [(RBSConnection *)v2 handle];
 
-  return v3;
+  return handle;
 }
 
 - (RBSProcessState)currentState
@@ -205,8 +205,8 @@ LABEL_15:
     }
   }
 
-  v11 = [(RBSMachPortTaskNameRight *)taskPort port];
-  if (v11 - 1 > 0xFFFFFFFD)
+  port = [(RBSMachPortTaskNameRight *)taskPort port];
+  if (port - 1 > 0xFFFFFFFD)
   {
     v2 = rbs_process_log();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_ERROR))
@@ -217,11 +217,11 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v12 = v11;
+  v12 = port;
   *task_info_out = 0u;
   memset(v30, 0, 24);
   task_info_outCnt = 10;
-  if (task_info(v11, 0x12u, task_info_out, &task_info_outCnt))
+  if (task_info(port, 0x12u, task_info_out, &task_info_outCnt))
   {
     v13 = 0.0;
     if (RBSPIDExists(self->_pid))
@@ -281,18 +281,18 @@ LABEL_15:
   v3 = MEMORY[0x1E696AEC0];
   if ((self->_data & 0x4000000000000000) != 0)
   {
-    v5 = [(RBSProcessIdentity *)self->_identity shortDescription];
-    v6 = [v3 stringWithFormat:@"[%@:%d]", v5, self->_pid];
+    shortDescription = [(RBSProcessIdentity *)self->_identity shortDescription];
+    0xFFFFFFFFLL = [v3 stringWithFormat:@"[%@:%d]", shortDescription, self->_pid];
   }
 
   else
   {
     v4 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v5 = [(RBSProcessIdentity *)self->_identity shortDescription];
-    v6 = [v4 initWithFormat:@"<inert:[%@:%d]*>", v5, 0xFFFFFFFFLL];
+    shortDescription = [(RBSProcessIdentity *)self->_identity shortDescription];
+    0xFFFFFFFFLL = [v4 initWithFormat:@"<inert:[%@:%d]*>", shortDescription, 0xFFFFFFFFLL];
   }
 
-  v7 = v6;
+  v7 = 0xFFFFFFFFLL;
 
   return v7;
 }
@@ -317,8 +317,8 @@ LABEL_15:
   if ((self->_data & 0x4000000000000000) != 0)
   {
     v4 = +[RBSConnection sharedInstance];
-    v5 = [(RBSProcessHandle *)self instance];
-    v2 = [v4 limitationsForInstance:v5 error:0];
+    instance = [(RBSProcessHandle *)self instance];
+    v2 = [v4 limitationsForInstance:instance error:0];
   }
 
   else
@@ -366,8 +366,8 @@ LABEL_5:
   if ((self->_data & 0x4000000000000000) != 0)
   {
     v4 = +[RBSConnection sharedInstance];
-    v5 = [(RBSProcessHandle *)self instance];
-    v2 = [v4 hostProcessForInstance:v5 error:0];
+    instance = [(RBSProcessHandle *)self instance];
+    v2 = [v4 hostProcessForInstance:instance error:0];
   }
 
   else
@@ -382,15 +382,15 @@ LABEL_5:
 {
   if ([(RBSProcessHandle *)self isDaemon])
   {
-    v3 = [(RBSProcessIdentity *)self->_identity consistentLaunchdJobLabel];
+    consistentLaunchdJobLabel = [(RBSProcessIdentity *)self->_identity consistentLaunchdJobLabel];
   }
 
   else
   {
-    v3 = 0;
+    consistentLaunchdJobLabel = 0;
   }
 
-  return v3;
+  return consistentLaunchdJobLabel;
 }
 
 - (RBSProcessExitContext)lastExitContext
@@ -398,8 +398,8 @@ LABEL_5:
   if ((self->_data & 0x4000000000000000) != 0)
   {
     v4 = +[RBSConnection sharedInstance];
-    v5 = [(RBSProcessHandle *)self instance];
-    v2 = [v4 lastExitContextForInstance:v5 error:0];
+    instance = [(RBSProcessHandle *)self instance];
+    v2 = [v4 lastExitContextForInstance:instance error:0];
   }
 
   else
@@ -410,36 +410,36 @@ LABEL_5:
   return v2;
 }
 
-+ (void)_handleForIdentifier:(int)a3 pidVersion:(int)a4 ignoreCache:(void *)a5 error:
++ (void)_handleForIdentifier:(int)identifier pidVersion:(int)version ignoreCache:(void *)cache error:
 {
   v29[1] = *MEMORY[0x1E69E9840];
   v8 = a2;
   v9 = objc_opt_self();
-  v10 = [v8 rbs_pid];
-  if (v10 > 0)
+  rbs_pid = [v8 rbs_pid];
+  if (rbs_pid > 0)
   {
-    v11 = v10;
+    v11 = rbs_pid;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = v8;
+      currentProcess = v8;
 LABEL_8:
-      a5 = v12;
+      cache = currentProcess;
       goto LABEL_17;
     }
 
     if (v11 == getpid())
     {
-      v12 = [v9 currentProcess];
+      currentProcess = [v9 currentProcess];
       goto LABEL_8;
     }
 
-    if (a4)
+    if (version)
     {
-      v15 = a3 != -1;
+      v15 = identifier != -1;
 LABEL_11:
       v16 = [RBSProcessPredicate predicateMatchingIdentifier:v8];
-      v17 = [v9 handleForPredicate:v16 error:a5];
+      v17 = [v9 handleForPredicate:v16 error:cache];
 
       goto LABEL_12;
     }
@@ -447,8 +447,8 @@ LABEL_11:
     v20 = [MEMORY[0x1E696AD98] numberWithInt:v11];
     v17 = [RBSProcessHandle _cachedHandleForKey:v20];
 
-    v15 = a3 != -1;
-    if (a3 == -1 || !v17)
+    v15 = identifier != -1;
+    if (identifier == -1 || !v17)
     {
       if (!v17)
       {
@@ -459,7 +459,7 @@ LABEL_11:
     else
     {
       [v17 auditToken];
-      if (audit_token_to_pidversion(&atoken) != a3)
+      if (audit_token_to_pidversion(&atoken) != identifier)
       {
         v24 = rbs_process_log();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -477,7 +477,7 @@ LABEL_11:
     }
 
 LABEL_12:
-    if (v15 && v17 && ([v17 auditToken], audit_token_to_pidversion(&atoken) != a3))
+    if (v15 && v17 && ([v17 auditToken], audit_token_to_pidversion(&atoken) != identifier))
     {
       v21 = rbs_process_log();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -487,58 +487,58 @@ LABEL_12:
         _os_log_impl(&dword_18E8AD000, v21, OS_LOG_TYPE_DEFAULT, "handle %@ has mismatched pid version", &atoken, 0xCu);
       }
 
-      if (a5)
+      if (cache)
       {
         v22 = MEMORY[0x1E696ABC0];
         v25 = *MEMORY[0x1E696A588];
         v26 = @" process has mismatched pid version";
         v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-        *a5 = [v22 errorWithDomain:@"RBSRequestErrorDomain" code:3 userInfo:v23];
+        *cache = [v22 errorWithDomain:@"RBSRequestErrorDomain" code:3 userInfo:v23];
 
-        a5 = 0;
+        cache = 0;
       }
     }
 
     else
     {
-      a5 = v17;
+      cache = v17;
     }
 
     goto LABEL_17;
   }
 
-  if (a5)
+  if (cache)
   {
     v13 = MEMORY[0x1E696ABC0];
     v28 = *MEMORY[0x1E696A588];
     v29[0] = @"Invalid process identifier";
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
-    *a5 = [v13 errorWithDomain:@"RBSRequestErrorDomain" code:1 userInfo:v14];
+    *cache = [v13 errorWithDomain:@"RBSRequestErrorDomain" code:1 userInfo:v14];
 
-    a5 = 0;
+    cache = 0;
   }
 
 LABEL_17:
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return a5;
+  return cache;
 }
 
-+ (id)handleForAuditToken:(id *)a3 error:(id *)a4
++ (id)handleForAuditToken:(id *)token error:(id *)error
 {
-  v6 = *&a3->var0[4];
-  v12[0] = *a3->var0;
+  v6 = *&token->var0[4];
+  v12[0] = *token->var0;
   v12[1] = v6;
   v7 = [RBSAuditToken tokenFromAuditToken:v12];
-  v8 = [v7 pidversion];
+  pidversion = [v7 pidversion];
   v9 = +[RBSProcessIdentifier identifierWithPid:](RBSProcessIdentifier, "identifierWithPid:", [v7 pid]);
-  v10 = [(RBSProcessHandle *)a1 _handleForIdentifier:v9 pidVersion:v8 ignoreCache:0 error:a4];
+  v10 = [(RBSProcessHandle *)self _handleForIdentifier:v9 pidVersion:pidversion ignoreCache:0 error:error];
 
   return v10;
 }
 
-+ (id)_cachedHandleForKey:(uint64_t)a1
++ (id)_cachedHandleForKey:(uint64_t)key
 {
   v2 = a2;
   objc_opt_self();
@@ -551,11 +551,11 @@ LABEL_17:
   return v3;
 }
 
-+ (id)handleForPredicate:(id)a3 error:(id *)a4
++ (id)handleForPredicate:(id)predicate error:(id *)error
 {
-  v5 = a3;
+  predicateCopy = predicate;
   v6 = +[RBSConnection sharedInstance];
-  v7 = [v6 handleForPredicate:v5 error:a4];
+  v7 = [v6 handleForPredicate:predicateCopy error:error];
 
   if (v7)
   {
@@ -570,7 +570,7 @@ LABEL_17:
   return v8;
 }
 
-+ (void)_cacheHandle:(uint64_t)a1
++ (void)_cacheHandle:(uint64_t)handle
 {
   v2 = a2;
   objc_opt_self();
@@ -603,9 +603,9 @@ LABEL_17:
     os_unfair_lock_lock(&__Lock_0);
     if (!__ProcessHandles)
     {
-      v10 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+      strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
       v11 = __ProcessHandles;
-      __ProcessHandles = v10;
+      __ProcessHandles = strongToWeakObjectsMapTable;
     }
 
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v3];
@@ -635,23 +635,23 @@ LABEL_17:
 
 - (RBSProcessHandle)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"RBSProcessHandle.m" lineNumber:212 description:@"-init is not allowed on RBSProcessHandle"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"RBSProcessHandle.m" lineNumber:212 description:@"-init is not allowed on RBSProcessHandle"];
 
   return 0;
 }
 
-- (void)monitorForDeath:(id)a3
+- (void)monitorForDeath:(id)death
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  deathCopy = death;
   if ((self->_data & 0x4000000000000000) != 0)
   {
     v5 = rbs_process_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_18E8AD000, v5, OS_LOG_TYPE_DEFAULT, "Starting death monitoring for handle %@", buf, 0xCu);
     }
 
@@ -662,7 +662,7 @@ LABEL_17:
     v9[2] = __36__RBSProcessHandle_monitorForDeath___block_invoke;
     v9[3] = &unk_1E7276968;
     v9[4] = self;
-    v10 = v4;
+    v10 = deathCopy;
     [v6 subscribeToProcessDeath:v7 handler:v9];
   }
 
@@ -699,14 +699,14 @@ void __36__RBSProcessHandle_monitorForDeath___block_invoke(uint64_t a1, void *a2
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)intendToExitWith:(id)a3
+- (void)intendToExitWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   if ((self->_data & 0x4000000000000000) != 0)
   {
     v6 = +[RBSConnection sharedInstance];
-    v7 = [(RBSProcessHandle *)self instance];
-    [v6 intendToExit:v7 withStatus:v4];
+    instance = [(RBSProcessHandle *)self instance];
+    [v6 intendToExit:instance withStatus:withCopy];
   }
 
   else
@@ -721,10 +721,10 @@ void __36__RBSProcessHandle_monitorForDeath___block_invoke(uint64_t a1, void *a2
 
 - (BOOL)isValid
 {
-  v2 = [(RBSProcessHandle *)self currentState];
-  v3 = [v2 isRunning];
+  currentState = [(RBSProcessHandle *)self currentState];
+  isRunning = [currentState isRunning];
 
-  return v3;
+  return isRunning;
 }
 
 - (id)endowmentInfoForHandle
@@ -735,22 +735,22 @@ void __36__RBSProcessHandle_monitorForDeath___block_invoke(uint64_t a1, void *a2
   v5 = [RBSProcessHandle handleForPredicate:v4 error:0];
   v6 = [v5 currentStateMatchingDescriptor:v3];
 
-  v7 = [v6 endowmentInfos];
+  endowmentInfos = [v6 endowmentInfos];
 
-  return v7;
+  return endowmentInfos;
 }
 
-- (RBSProcessHandle)initWithInstance:(id)a3 auditToken:(id)a4 bundleData:(id)a5 manageFlags:(unsigned __int8)a6 beforeTranslocationBundlePath:(id)a7 executablePath:(id)a8 cache:(BOOL)a9
+- (RBSProcessHandle)initWithInstance:(id)instance auditToken:(id)token bundleData:(id)data manageFlags:(unsigned __int8)flags beforeTranslocationBundlePath:(id)path executablePath:(id)executablePath cache:(BOOL)cache
 {
-  v11 = a6;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  if (v15)
+  flagsCopy = flags;
+  instanceCopy = instance;
+  tokenCopy = token;
+  dataCopy = data;
+  pathCopy = path;
+  executablePathCopy = executablePath;
+  if (instanceCopy)
   {
-    if (v16)
+    if (tokenCopy)
     {
       goto LABEL_3;
     }
@@ -759,7 +759,7 @@ void __36__RBSProcessHandle_monitorForDeath___block_invoke(uint64_t a1, void *a2
   else
   {
     [RBSProcessHandle initWithInstance:auditToken:bundleData:manageFlags:beforeTranslocationBundlePath:executablePath:cache:];
-    if (v16)
+    if (tokenCopy)
     {
       goto LABEL_3;
     }
@@ -772,11 +772,11 @@ LABEL_3:
   v20 = [(RBSProcessHandle *)&v37 init];
   if (v20)
   {
-    v22 = [v15 rbs_pid];
+    rbs_pid = [instanceCopy rbs_pid];
     v23 = arc4random();
-    if (v23 <= v22)
+    if (v23 <= rbs_pid)
     {
-      v24 = v22;
+      v24 = rbs_pid;
     }
 
     else
@@ -784,15 +784,15 @@ LABEL_3:
       v24 = v23;
     }
 
-    v20->_data = ((v11 != 0) << 63) | ((v11 & 1) << 61) | (v22 | (v24 << 32)) & 0x1FFFFFFFFFFFFFFFLL | 0x4000000000000000;
-    v25 = [v15 identity];
+    v20->_data = ((flagsCopy != 0) << 63) | ((flagsCopy & 1) << 61) | (rbs_pid | (v24 << 32)) & 0x1FFFFFFFFFFFFFFFLL | 0x4000000000000000;
+    identity = [instanceCopy identity];
     identity = v20->_identity;
-    v20->_identity = v25;
+    v20->_identity = identity;
 
-    v20->_pid = [v15 rbs_pid];
-    if (v16)
+    v20->_pid = [instanceCopy rbs_pid];
+    if (tokenCopy)
     {
-      [v16 realToken];
+      [tokenCopy realToken];
     }
 
     else
@@ -804,9 +804,9 @@ LABEL_3:
     if (objc_opt_class())
     {
       v27 = MEMORY[0x1E698E628];
-      if (v16)
+      if (tokenCopy)
       {
-        [v16 realToken];
+        [tokenCopy realToken];
       }
 
       else
@@ -819,48 +819,48 @@ LABEL_3:
       v20->_bsAuditToken = v28;
     }
 
-    v30 = [RBSProcessBundle bundleWithDataSource:v17, *v36.val, *&v36.val[4]];
+    v30 = [RBSProcessBundle bundleWithDataSource:dataCopy, *v36.val, *&v36.val[4]];
     bundle = v20->_bundle;
     v20->_bundle = v30;
 
-    if (a9)
+    if (cache)
     {
       v32 = [RBSProcessHandle _cacheHandle:v20];
     }
 
     v33 = objc_alloc_init(RBSXPCCoder);
     [(RBSProcessHandle *)v20 _fullEncode:v33];
-    v34 = [(RBSXPCCoder *)v33 createMessage];
+    createMessage = [(RBSXPCCoder *)v33 createMessage];
     codedHandle = v20->_codedHandle;
-    v20->_codedHandle = v34;
+    v20->_codedHandle = createMessage;
   }
 
   return v20;
 }
 
-- (id)currentStateMatchingDescriptor:(id)a3
+- (id)currentStateMatchingDescriptor:(id)descriptor
 {
   if ((self->_data & 0x4000000000000000) != 0)
   {
-    v5 = a3;
+    descriptorCopy = descriptor;
     v6 = +[RBSConnection sharedInstance];
-    v7 = [(RBSProcessHandle *)self processPredicate];
-    v8 = [v6 statesForPredicate:v7 withDescriptor:v5 error:0];
+    processPredicate = [(RBSProcessHandle *)self processPredicate];
+    v8 = [v6 statesForPredicate:processPredicate withDescriptor:descriptorCopy error:0];
 
-    v3 = [v8 firstObject];
+    firstObject = [v8 firstObject];
   }
 
   else
   {
-    v3 = 0;
+    firstObject = 0;
   }
 
-  return v3;
+  return firstObject;
 }
 
-+ (id)handleForKey:(unint64_t)a3 fetchIfNeeded:(BOOL)a4
++ (id)handleForKey:(unint64_t)key fetchIfNeeded:(BOOL)needed
 {
-  v4 = a4;
+  neededCopy = needed;
   v18 = *MEMORY[0x1E69E9840];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
   v7 = [RBSProcessHandle _cachedHandleForKey:v6];
@@ -871,7 +871,7 @@ LABEL_3:
 
   else
   {
-    v8 = !v4;
+    v8 = !neededCopy;
   }
 
   if (!v8)
@@ -883,7 +883,7 @@ LABEL_3:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 134218242;
-      v15 = a3;
+      keyCopy = key;
       v16 = 2114;
       v17 = v10;
       _os_log_impl(&dword_18E8AD000, v11, OS_LOG_TYPE_DEFAULT, "Hit the server for a process handle %llx that resolved to: %{public}@", &v14, 0x16u);
@@ -911,31 +911,31 @@ LABEL_3:
   return v7;
 }
 
-- (void)fullEncode:(id)a3 forKey:(id)a4
+- (void)fullEncode:(id)encode forKey:(id)key
 {
   v6 = MEMORY[0x1E696AF00];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 currentThread];
-  v10 = [v9 threadDictionary];
+  keyCopy = key;
+  encodeCopy = encode;
+  currentThread = [v6 currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  [v10 setObject:MEMORY[0x1E695E118] forKey:@"RBSProcessHandleFullEncode"];
-  [v8 encodeObject:self forKey:v7];
+  [threadDictionary setObject:MEMORY[0x1E695E118] forKey:@"RBSProcessHandleFullEncode"];
+  [encodeCopy encodeObject:self forKey:keyCopy];
 
-  [v10 removeObjectForKey:@"RBSProcessHandleFullEncode"];
+  [threadDictionary removeObjectForKey:@"RBSProcessHandleFullEncode"];
 }
 
-+ (id)handleForLegacyHandle:(id)a3 error:(id *)a4
++ (id)handleForLegacyHandle:(id)handle error:(id *)error
 {
-  v6 = a3;
+  handleCopy = handle;
   if (objc_opt_class())
   {
-    v7 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v6, "pid")}];
-    v8 = [RBSProcessHandle handleForIdentifier:v7 error:a4];
+    v7 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(handleCopy, "pid")}];
+    v8 = [RBSProcessHandle handleForIdentifier:v7 error:error];
 
     if (v8)
     {
-      objc_storeStrong(v8 + 3, a3);
+      objc_storeStrong(v8 + 3, handle);
     }
   }
 
@@ -951,20 +951,20 @@ LABEL_3:
 {
   if (objc_opt_class())
   {
-    v3 = self;
-    objc_sync_enter(v3);
-    legacyHandle = v3->_legacyHandle;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    legacyHandle = selfCopy->_legacyHandle;
     if (!legacyHandle)
     {
-      v5 = [MEMORY[0x1E698E748] processHandleForAuditToken:v3->_bsAuditToken];
-      v6 = v3->_legacyHandle;
-      v3->_legacyHandle = v5;
+      v5 = [MEMORY[0x1E698E748] processHandleForAuditToken:selfCopy->_bsAuditToken];
+      v6 = selfCopy->_legacyHandle;
+      selfCopy->_legacyHandle = v5;
 
-      legacyHandle = v3->_legacyHandle;
+      legacyHandle = selfCopy->_legacyHandle;
     }
 
     v7 = legacyHandle;
-    objc_sync_exit(v3);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -975,34 +975,34 @@ LABEL_3:
   return v7;
 }
 
-+ (id)observeForImminentAssertionsExpiration:(id)a3
++ (id)observeForImminentAssertionsExpiration:(id)expiration
 {
-  v3 = a3;
-  if (!v3)
+  expirationCopy = expiration;
+  if (!expirationCopy)
   {
     +[RBSProcessHandle observeForImminentAssertionsExpiration:];
   }
 
   v4 = +[RBSConnection sharedInstance];
-  v5 = [(RBSConnection *)v4 observeProcessAssertionsExpirationWarningWithBlock:v3];
+  v5 = [(RBSConnection *)v4 observeProcessAssertionsExpirationWarningWithBlock:expirationCopy];
 
   return v5;
 }
 
-- (BOOL)matchesProcess:(id)a3
+- (BOOL)matchesProcess:(id)process
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  processCopy = process;
+  v5 = processCopy;
+  if (self == processCopy)
   {
     v7 = 1;
   }
 
-  else if ([(RBSProcessHandle *)v4 rbs_pid]== -1)
+  else if ([(RBSProcessHandle *)processCopy rbs_pid]== -1)
   {
     identity = self->_identity;
-    v9 = [(RBSProcessHandle *)v5 identity];
-    v7 = [(RBSProcessIdentity *)identity isEqual:v9];
+    identity = [(RBSProcessHandle *)v5 identity];
+    v7 = [(RBSProcessIdentity *)identity isEqual:identity];
   }
 
   else
@@ -1014,10 +1014,10 @@ LABEL_3:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -1025,7 +1025,7 @@ LABEL_3:
   else
   {
     v5 = objc_opt_class();
-    v6 = v5 == objc_opt_class() && [(RBSProcessHandle *)self matchesProcess:v4];
+    v6 = v5 == objc_opt_class() && [(RBSProcessHandle *)self matchesProcess:equalCopy];
   }
 
   return v6;
@@ -1035,31 +1035,31 @@ LABEL_3:
 {
   if ((self->_data & 0x4000000000000000) != 0)
   {
-    v7 = [(RBSProcessHandle *)self identity];
-    v8 = [v7 auid];
+    identity = [(RBSProcessHandle *)self identity];
+    auid = [identity auid];
 
     v9 = objc_alloc(MEMORY[0x1E696AEC0]);
     v4 = [objc_opt_class() description];
-    v10 = [(RBSProcessIdentity *)self->_identity shortDescription];
-    v5 = v10;
+    shortDescription = [(RBSProcessIdentity *)self->_identity shortDescription];
+    shortDescription2 = shortDescription;
     pid = self->_pid;
-    if (v8)
+    if (auid)
     {
-      v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v8];
-      v13 = [v9 initWithFormat:@"<%@| %@:%d%@%@%@>", v4, v5, pid, @"(", v12, @")"];
+      v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:auid];
+      v13 = [v9 initWithFormat:@"<%@| %@:%d%@%@%@>", v4, shortDescription2, pid, @"(", v12, @")"];
 
       goto LABEL_7;
     }
 
-    v6 = [v9 initWithFormat:@"<%@| %@:%d%@%@%@>", v4, v10, pid, &stru_1F01CD8F0, &stru_1F01CD8F0, &stru_1F01CD8F0];
+    v6 = [v9 initWithFormat:@"<%@| %@:%d%@%@%@>", v4, shortDescription, pid, &stru_1F01CD8F0, &stru_1F01CD8F0, &stru_1F01CD8F0];
   }
 
   else
   {
     v3 = objc_alloc(MEMORY[0x1E696AEC0]);
     v4 = [objc_opt_class() description];
-    v5 = [(RBSProcessIdentity *)self->_identity shortDescription];
-    v6 = [v3 initWithFormat:@"<%@| inert %@>", v4, v5, v15, v16, v17, v18];
+    shortDescription2 = [(RBSProcessIdentity *)self->_identity shortDescription];
+    v6 = [v3 initWithFormat:@"<%@| inert %@>", v4, shortDescription2, v15, v16, v17, v18];
   }
 
   v13 = v6;
@@ -1068,16 +1068,16 @@ LABEL_7:
   return v13;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AF00] currentThread];
-  v6 = [v5 threadDictionary];
-  v7 = [v6 objectForKey:@"RBSProcessHandleFullEncode"];
+  coderCopy = coder;
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v7 = [threadDictionary objectForKey:@"RBSProcessHandleFullEncode"];
 
   if (v7 || (self->_data & 0x4000000000000000) == 0)
   {
-    [(RBSProcessHandle *)self _fullEncode:v4];
+    [(RBSProcessHandle *)self _fullEncode:coderCopy];
   }
 
   else
@@ -1088,14 +1088,14 @@ LABEL_7:
       [(RBSProcessHandle *)&self->_data encodeWithRBSXPCCoder:v8];
     }
 
-    [v4 encodeUInt64:self->_data & 0x1FFFFFFFFFFFFFFFLL forKey:@"&"];
+    [coderCopy encodeUInt64:self->_data & 0x1FFFFFFFFFFFFFFFLL forKey:@"&"];
   }
 }
 
-- (RBSProcessHandle)initWithRBSXPCCoder:(id)a3
+- (RBSProcessHandle)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeUInt64ForKey:@"&"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeUInt64ForKey:@"&"];
   if (v5)
   {
     v6 = v5;
@@ -1105,17 +1105,17 @@ LABEL_7:
       [(RBSProcessHandle *)v6 initWithRBSXPCCoder:v7];
     }
 
-    v8 = [RBSProcessHandle handleForKey:v6 fetchIfNeeded:1];
+    selfCopy = [RBSProcessHandle handleForKey:v6 fetchIfNeeded:1];
   }
 
   else
   {
-    v9 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"_codedHandle"];
+    v9 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"_codedHandle"];
     if (v9)
     {
       v10 = [RBSXPCCoder coderWithMessage:v9];
 
-      v4 = v10;
+      coderCopy = v10;
     }
 
     v22.receiver = self;
@@ -1123,8 +1123,8 @@ LABEL_7:
     v11 = [(RBSProcessHandle *)&v22 init];
     if (v11)
     {
-      v11->_data = [v4 decodeUInt64ForKey:@"_data"];
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_identity"];
+      v11->_data = [coderCopy decodeUInt64ForKey:@"_data"];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_identity"];
       identity = v11->_identity;
       v11->_identity = v12;
 
@@ -1133,15 +1133,15 @@ LABEL_7:
         [RBSProcessHandle initWithRBSXPCCoder:];
       }
 
-      v11->_pid = [v4 decodeUInt64ForKey:@"_pid"];
+      v11->_pid = [coderCopy decodeUInt64ForKey:@"_pid"];
       if (objc_opt_class())
       {
-        v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_bsAuditToken"];
+        v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_bsAuditToken"];
         bsAuditToken = v11->_bsAuditToken;
         v11->_bsAuditToken = v14;
       }
 
-      v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_bundle"];
+      v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_bundle"];
       bundle = v11->_bundle;
       v11->_bundle = v16;
 
@@ -1156,20 +1156,20 @@ LABEL_7:
 
     self = v11;
 
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)_fullEncode:(uint64_t)a1
+- (void)_fullEncode:(uint64_t)encode
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (encode)
   {
-    v5 = *(a1 + 32);
+    v5 = *(encode + 32);
     if (v5)
     {
       [v3 encodeObject:v5 forKey:@"_codedHandle"];
@@ -1180,10 +1180,10 @@ LABEL_7:
       v6 = rbs_general_log();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = *(a1 + 48);
-        v8 = *(a1 + 64);
+        v7 = *(encode + 48);
+        v8 = *(encode + 64);
         v11 = 138412802;
-        v12 = a1;
+        encodeCopy = encode;
         v13 = 2048;
         v14 = v7;
         v15 = 1024;
@@ -1191,15 +1191,15 @@ LABEL_7:
         _os_log_impl(&dword_18E8AD000, v6, OS_LOG_TYPE_DEFAULT, "Full encoding handle %@, with data %llx, and pid %d", &v11, 0x1Cu);
       }
 
-      [v4 encodeObject:*(a1 + 72) forKey:@"_identity"];
-      [v4 encodeUInt64:*(a1 + 64) forKey:@"_pid"];
+      [v4 encodeObject:*(encode + 72) forKey:@"_identity"];
+      [v4 encodeUInt64:*(encode + 64) forKey:@"_pid"];
       if (objc_opt_class())
       {
-        [v4 encodeObject:*(a1 + 40) forKey:@"_bsAuditToken"];
+        [v4 encodeObject:*(encode + 40) forKey:@"_bsAuditToken"];
       }
 
-      [v4 encodeObject:*(a1 + 80) forKey:@"_bundle"];
-      v9 = *(a1 + 48);
+      [v4 encodeObject:*(encode + 80) forKey:@"_bundle"];
+      v9 = *(encode + 48);
       if (v9)
       {
         [v4 encodeUInt64:v9 forKey:@"_data"];
@@ -1210,42 +1210,42 @@ LABEL_7:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (_DWORD)_initWithIdentity:(void *)a3 beforeTranslocationBundlePath:(void *)a4 executablePath:
+- (_DWORD)_initWithIdentity:(void *)identity beforeTranslocationBundlePath:(void *)path executablePath:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  if (a1)
+  identityCopy = identity;
+  pathCopy = path;
+  if (self)
   {
     if (!v8)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:sel__initWithIdentity_beforeTranslocationBundlePath_executablePath_ object:a1 file:@"RBSProcessHandle.m" lineNumber:392 description:{@"Invalid parameter not satisfying: %@", @"identity"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__initWithIdentity_beforeTranslocationBundlePath_executablePath_ object:self file:@"RBSProcessHandle.m" lineNumber:392 description:{@"Invalid parameter not satisfying: %@", @"identity"}];
     }
 
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = RBSProcessHandle;
     v11 = objc_msgSendSuper2(&v14, sel_init);
-    a1 = v11;
+    self = v11;
     if (v11)
     {
       *(v11 + 6) = 0;
       objc_storeStrong(v11 + 9, a2);
-      a1[16] = -1;
+      self[16] = -1;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (RBSProcessHandle)initWithLaunchContext:(id)a3
+- (RBSProcessHandle)initWithLaunchContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 identity];
-  v6 = [v4 beforeTranslocationBundlePath];
-  v7 = [v4 _overrideExecutablePath];
+  contextCopy = context;
+  identity = [contextCopy identity];
+  beforeTranslocationBundlePath = [contextCopy beforeTranslocationBundlePath];
+  _overrideExecutablePath = [contextCopy _overrideExecutablePath];
 
-  v8 = [(RBSProcessHandle *)self _initWithIdentity:v5 beforeTranslocationBundlePath:v6 executablePath:v7];
+  v8 = [(RBSProcessHandle *)self _initWithIdentity:identity beforeTranslocationBundlePath:beforeTranslocationBundlePath executablePath:_overrideExecutablePath];
   return v8;
 }
 

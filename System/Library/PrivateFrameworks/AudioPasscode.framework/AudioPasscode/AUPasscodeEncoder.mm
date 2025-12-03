@@ -1,7 +1,7 @@
 @interface AUPasscodeEncoder
 + (AudioComponentDescription)getAUDesc;
 + (void)registerAU;
-- (BOOL)allocateRenderResourcesAndReturnError:(id *)a3;
+- (BOOL)allocateRenderResourcesAndReturnError:(id *)error;
 - (id).cxx_construct;
 - (id)internalRenderBlock;
 - (void)dealloc;
@@ -46,8 +46,8 @@ uint64_t __31__AUPasscodeEncoder_registerAU__block_invoke()
 {
   if (self->_assetEndedAndSilencedHandler)
   {
-    v3 = [(AUPasscodeEncoder *)self dispatchQueue];
-    if (v3)
+    dispatchQueue = [(AUPasscodeEncoder *)self dispatchQueue];
+    if (dispatchQueue)
     {
       [(AUPasscodeEncoder *)self dispatchQueue];
     }
@@ -67,53 +67,53 @@ uint64_t __31__AUPasscodeEncoder_registerAU__block_invoke()
   }
 }
 
-- (BOOL)allocateRenderResourcesAndReturnError:(id *)a3
+- (BOOL)allocateRenderResourcesAndReturnError:(id *)error
 {
   v78 = *MEMORY[0x277D85DE8];
-  v5 = [(AUPasscodeEncoder *)self codecConfig];
-  if (!v5)
+  codecConfig = [(AUPasscodeEncoder *)self codecConfig];
+  if (!codecConfig)
   {
     goto LABEL_12;
   }
 
-  v6 = [(AUPasscodeEncoder *)self payload];
-  if (!v6)
+  payload = [(AUPasscodeEncoder *)self payload];
+  if (!payload)
   {
 
     goto LABEL_12;
   }
 
-  v7 = [(AUPasscodeEncoder *)self assetLength];
+  assetLength = [(AUPasscodeEncoder *)self assetLength];
 
-  if (!v7)
+  if (!assetLength)
   {
     goto LABEL_12;
   }
 
-  v8 = [(AUPasscodeEncoder *)self codecConfig];
-  v9 = [v8 numChannels];
+  codecConfig2 = [(AUPasscodeEncoder *)self codecConfig];
+  numChannels = [codecConfig2 numChannels];
 
-  if (v9 > 1)
+  if (numChannels > 1)
   {
     goto LABEL_12;
   }
 
-  v10 = [(AUAudioUnitBus *)self->_inputBus.bus format];
-  v11 = [v10 isInterleaved];
-  if (v11)
+  format = [(AUAudioUnitBus *)self->_inputBus.bus format];
+  isInterleaved = [format isInterleaved];
+  if (isInterleaved)
   {
-    v66 = [(AUAudioUnitBus *)self->_inputBus.bus format];
-    if ([v66 channelCount] > 1)
+    format2 = [(AUAudioUnitBus *)self->_inputBus.bus format];
+    if ([format2 channelCount] > 1)
     {
       goto LABEL_15;
     }
   }
 
-  v12 = [(AUAudioUnitBus *)self->_inputBus.bus format];
-  if (![v12 isStandard])
+  format3 = [(AUAudioUnitBus *)self->_inputBus.bus format];
+  if (![format3 isStandard])
   {
 
-    if (!v11)
+    if (!isInterleaved)
     {
 LABEL_16:
 
@@ -125,13 +125,13 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v13 = [(AUAudioUnitBus *)self->_outputBus format];
-  v14 = [v13 isInterleaved];
-  v15 = v14;
-  if (v14)
+  format4 = [(AUAudioUnitBus *)self->_outputBus format];
+  isInterleaved2 = [format4 isInterleaved];
+  v15 = isInterleaved2;
+  if (isInterleaved2)
   {
-    v63 = [(AUAudioUnitBus *)self->_outputBus format];
-    if ([v63 channelCount] > 1)
+    format5 = [(AUAudioUnitBus *)self->_outputBus format];
+    if ([format5 channelCount] > 1)
     {
       v16 = 1;
 LABEL_19:
@@ -140,47 +140,47 @@ LABEL_19:
     }
   }
 
-  obj = v13;
-  v19 = [(AUAudioUnitBus *)self->_outputBus format];
-  v16 = [v19 isStandard] ^ 1;
+  obj = format4;
+  format6 = [(AUAudioUnitBus *)self->_outputBus format];
+  v16 = [format6 isStandard] ^ 1;
 
   if (v15)
   {
-    v13 = obj;
+    format4 = obj;
     goto LABEL_19;
   }
 
 LABEL_21:
-  if (v11)
+  if (isInterleaved)
   {
   }
 
   if ((v16 & 1) == 0)
   {
-    v21 = [(AUAudioUnitBus *)self->_outputBus format];
-    v22 = [v21 channelCount];
-    v23 = [(AUPasscodeEncoder *)self codecConfig];
-    v24 = [v23 numChannels];
+    format7 = [(AUAudioUnitBus *)self->_outputBus format];
+    channelCount = [format7 channelCount];
+    codecConfig3 = [(AUPasscodeEncoder *)self codecConfig];
+    numChannels2 = [codecConfig3 numChannels];
 
-    if (v24 <= v22)
+    if (numChannels2 <= channelCount)
     {
       v72.receiver = self;
       v72.super_class = AUPasscodeEncoder;
-      LODWORD(v17) = [(AUAudioUnit *)&v72 allocateRenderResourcesAndReturnError:a3];
+      LODWORD(v17) = [(AUAudioUnit *)&v72 allocateRenderResourcesAndReturnError:error];
       if (!v17)
       {
         goto LABEL_13;
       }
 
       BufferedAudioBus::allocateRenderResources(&self->_inputBus, [(AUAudioUnit *)self maximumFramesToRender]);
-      v25 = [(AUPasscodeEncoder *)self inputBusses];
-      v26 = [v25 objectAtIndexedSubscript:0];
-      v27 = [v26 format];
-      [v27 sampleRate];
+      inputBusses = [(AUPasscodeEncoder *)self inputBusses];
+      v26 = [inputBusses objectAtIndexedSubscript:0];
+      format8 = [v26 format];
+      [format8 sampleRate];
       v29 = v28;
-      v71 = 0;
-      v76 = &v71;
-      v30 = std::__tree<std::__value_type<unsigned int,std::any>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,std::any>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,std::any>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int &&>,std::tuple<>>(&self->_apcEncoderConfig, &v71);
+      integerValue = 0;
+      v76 = &integerValue;
+      v30 = std::__tree<std::__value_type<unsigned int,std::any>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,std::any>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,std::any>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int &&>,std::tuple<>>(&self->_apcEncoderConfig, &integerValue);
       v31 = (v30 + 5);
       HIDWORD(v75) = 0;
       LODWORD(v75) = (v29 + 0.5);
@@ -208,15 +208,15 @@ LABEL_21:
 
       std::any::reset[abi:ne200100](&v74);
 
-      v33 = [(AUPasscodeEncoder *)self inputBusses];
-      v34 = [v33 objectAtIndexedSubscript:0];
-      v35 = [v34 format];
-      v36 = [v35 channelCount];
-      v71 = 1;
-      v76 = &v71;
-      v37 = std::__tree<std::__value_type<unsigned int,std::any>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,std::any>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,std::any>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int &&>,std::tuple<>>(&self->_apcEncoderConfig, &v71);
+      inputBusses2 = [(AUPasscodeEncoder *)self inputBusses];
+      v34 = [inputBusses2 objectAtIndexedSubscript:0];
+      format9 = [v34 format];
+      channelCount2 = [format9 channelCount];
+      integerValue = 1;
+      v76 = &integerValue;
+      v37 = std::__tree<std::__value_type<unsigned int,std::any>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,std::any>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,std::any>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int &&>,std::tuple<>>(&self->_apcEncoderConfig, &integerValue);
       v38 = (v37 + 5);
-      v75 = v36;
+      v75 = channelCount2;
       v74 = std::__any_imp::_SmallHandler<unsigned int>::__handle[abi:ne200100];
       if (&v74 != (v37 + 5))
       {
@@ -233,7 +233,7 @@ LABEL_21:
 
         else
         {
-          *(v37 + 12) = v36;
+          *(v37 + 12) = channelCount2;
           v37[5] = std::__any_imp::_SmallHandler<unsigned int>::__handle[abi:ne200100];
           v74 = 0;
         }
@@ -241,15 +241,15 @@ LABEL_21:
 
       std::any::reset[abi:ne200100](&v74);
 
-      v40 = [(AUPasscodeEncoder *)self inputBusses];
-      v41 = [v40 objectAtIndexedSubscript:0];
-      v42 = [v41 format];
-      v43 = [v42 isInterleaved];
-      v71 = 2;
-      v76 = &v71;
-      v44 = std::__tree<std::__value_type<unsigned int,std::any>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,std::any>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,std::any>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int &&>,std::tuple<>>(&self->_apcEncoderConfig, &v71);
+      inputBusses3 = [(AUPasscodeEncoder *)self inputBusses];
+      v41 = [inputBusses3 objectAtIndexedSubscript:0];
+      format10 = [v41 format];
+      isInterleaved3 = [format10 isInterleaved];
+      integerValue = 2;
+      v76 = &integerValue;
+      v44 = std::__tree<std::__value_type<unsigned int,std::any>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,std::any>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,std::any>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int &&>,std::tuple<>>(&self->_apcEncoderConfig, &integerValue);
       v45 = (v44 + 5);
-      v75 = v43;
+      v75 = isInterleaved3;
       v74 = std::__any_imp::_SmallHandler<BOOL>::__handle[abi:ne200100];
       if (&v74 != (v44 + 5))
       {
@@ -266,7 +266,7 @@ LABEL_21:
 
         else
         {
-          *(v44 + 48) = v43;
+          *(v44 + 48) = isInterleaved3;
           v44[5] = std::__any_imp::_SmallHandler<BOOL>::__handle[abi:ne200100];
           v74 = 0;
         }
@@ -297,12 +297,12 @@ LABEL_21:
 
               v51 = *(*(&v67 + 1) + 8 * i);
               v52 = [(NSMutableDictionary *)self->_passcodeEmbedInfo objectForKeyedSubscript:v51];
-              v53 = [v52 unsignedLongValue];
-              v71 = [v51 integerValue];
-              v76 = &v71;
-              v54 = std::__tree<std::__value_type<unsigned int,std::any>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,std::any>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,std::any>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int &&>,std::tuple<>>(&self->_apcEncoderConfig, &v71);
+              unsignedLongValue = [v52 unsignedLongValue];
+              integerValue = [v51 integerValue];
+              v76 = &integerValue;
+              v54 = std::__tree<std::__value_type<unsigned int,std::any>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,std::any>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,std::any>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int &&>,std::tuple<>>(&self->_apcEncoderConfig, &integerValue);
               v55 = (v54 + 5);
-              v75 = v53;
+              v75 = unsignedLongValue;
               v74 = std::__any_imp::_SmallHandler<unsigned int>::__handle[abi:ne200100];
               if (&v74 != (v54 + 5))
               {
@@ -319,7 +319,7 @@ LABEL_21:
 
                 else
                 {
-                  *(v54 + 12) = v53;
+                  *(v54 + 12) = unsignedLongValue;
                   v54[5] = std::__any_imp::_SmallHandler<unsigned int>::__handle[abi:ne200100];
                   v74 = 0;
                 }
@@ -335,9 +335,9 @@ LABEL_21:
         }
       }
 
-      v57 = [(AUPasscodeEncoder *)self codecConfig];
-      v58 = [(AUPasscodeEncoder *)self payload];
-      [APCCodecFactory createEncoderWithConfig:v57 apcConfig:&self->_apcEncoderConfig payloadData:v58];
+      codecConfig4 = [(AUPasscodeEncoder *)self codecConfig];
+      payload2 = [(AUPasscodeEncoder *)self payload];
+      [APCCodecFactory createEncoderWithConfig:codecConfig4 apcConfig:&self->_apcEncoderConfig payloadData:payload2];
       v59 = v76;
       v76 = 0;
       ptr = self->_kernel.__ptr_;
@@ -369,7 +369,7 @@ LABEL_21:
       [(AUAudioUnit *)self setRenderResourcesAllocated:0];
     }
 
-    else if (a3)
+    else if (error)
     {
       goto LABEL_25;
     }
@@ -378,13 +378,13 @@ LABEL_21:
   }
 
 LABEL_24:
-  if (a3)
+  if (error)
   {
 LABEL_25:
     v20 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-10875 userInfo:0];
     v17 = v20;
     LOBYTE(v17) = 0;
-    *a3 = v20;
+    *error = v20;
     goto LABEL_13;
   }
 
@@ -426,8 +426,8 @@ LABEL_13:
 - (id)internalRenderBlock
 {
   p_inputBus = &self->_inputBus;
-  v4 = [(AUAudioUnitBus *)self->_inputBus.bus format];
-  [v4 sampleRate];
+  format = [(AUAudioUnitBus *)self->_inputBus.bus format];
+  [format sampleRate];
   v6 = v5;
 
   v10[0] = 0;

@@ -1,7 +1,7 @@
 @interface SBIconPLKLegibilityView
-- (SBIconPLKLegibilityView)initWithSettings:(id)a3;
+- (SBIconPLKLegibilityView)initWithSettings:(id)settings;
 - (SBIconView)iconView;
-- (void)updateIconLabelWithSettings:(id)a3 imageParameters:(id)a4;
+- (void)updateIconLabelWithSettings:(id)settings imageParameters:(id)parameters;
 @end
 
 @implementation SBIconPLKLegibilityView
@@ -13,19 +13,19 @@
   return WeakRetained;
 }
 
-- (SBIconPLKLegibilityView)initWithSettings:(id)a3
+- (SBIconPLKLegibilityView)initWithSettings:(id)settings
 {
   v4.receiver = self;
   v4.super_class = SBIconPLKLegibilityView;
   return [(PLKLegibilityView *)&v4 init];
 }
 
-- (void)updateIconLabelWithSettings:(id)a3 imageParameters:(id)a4
+- (void)updateIconLabelWithSettings:(id)settings imageParameters:(id)parameters
 {
-  v6 = a3;
-  v14 = a4;
-  v7 = [(SBIconPLKLegibilityView *)self iconView];
-  v8 = [v7 labelContentWithParameters:v14];
+  settingsCopy = settings;
+  parametersCopy = parameters;
+  iconView = [(SBIconPLKLegibilityView *)self iconView];
+  v8 = [iconView labelContentWithParameters:parametersCopy];
   if (([v8 sbh_isPLKLegibilityContent] & 1) == 0)
   {
     if (SBHFeatureEnabled(0))
@@ -35,24 +35,24 @@
         [SBIconPLKLegibilityView updateIconLabelWithSettings:imageParameters:];
       }
 
-      v9 = [updateIconLabelWithSettings_imageParameters__fallbackIconLabelCache labelContentWithParameters:v14 legibilitySettings:v6];
+      v9 = [updateIconLabelWithSettings_imageParameters__fallbackIconLabelCache labelContentWithParameters:parametersCopy legibilitySettings:settingsCopy];
 
       v8 = v9;
     }
 
     if (!v8)
     {
-      v10 = [v7 labelImageWithParameters:v14];
+      v10 = [iconView labelImageWithParameters:parametersCopy];
       v11 = MEMORY[0x1E69C5420];
-      v12 = [(SBHLegibilitySettings *)v6 legibilityDescriptor];
-      v8 = [v11 legibilityContentForImage:v10 legibilityDescriptor:v12];
+      legibilityDescriptor = [(SBHLegibilitySettings *)settingsCopy legibilityDescriptor];
+      v8 = [v11 legibilityContentForImage:v10 legibilityDescriptor:legibilityDescriptor];
     }
   }
 
   [(PLKLegibilityView *)self setContent:v8];
-  [(SBIconPLKLegibilityView *)self setImageParameters:v14];
+  [(SBIconPLKLegibilityView *)self setImageParameters:parametersCopy];
   settings = self->_settings;
-  self->_settings = v6;
+  self->_settings = settingsCopy;
 }
 
 uint64_t __71__SBIconPLKLegibilityView_updateIconLabelWithSettings_imageParameters___block_invoke()

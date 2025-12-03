@@ -1,25 +1,25 @@
 @interface StoreDownload
-- (BOOL)_patchPackageDictionary:(id)a3 matchesInstallApplication:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)writeToFile:(id)a3 options:(unint64_t)a4 error:(id *)a5;
+- (BOOL)_patchPackageDictionary:(id)dictionary matchesInstallApplication:(id)application;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)writeToFile:(id)file options:(unint64_t)options error:(id *)error;
 - (NSArray)assets;
 - (NSNumber)downloaderAccountIdentifier;
 - (NSNumber)familyAccountIdentifier;
 - (NSNumber)matchedStatus;
 - (NSNumber)purchaserAccountIdentifier;
 - (NSNumber)redownloadedStatus;
-- (StoreDownload)initWithContentsOfFile:(id)a3;
-- (StoreDownload)initWithDownload:(id)a3;
-- (id)_copyPinfValueWithField:(int64_t)a3;
-- (id)_copySinfValueFromEpubRightsDataWithField:(int64_t)a3;
-- (id)_copySinfValueWithField:(int64_t)a3;
+- (StoreDownload)initWithContentsOfFile:(id)file;
+- (StoreDownload)initWithDownload:(id)download;
+- (id)_copyPinfValueWithField:(int64_t)field;
+- (id)_copySinfValueFromEpubRightsDataWithField:(int64_t)field;
+- (id)_copySinfValueWithField:(int64_t)field;
 - (id)_epubRightsSinfData;
-- (id)_newAssetArrayWithDownloadAssets:(id)a3;
-- (id)_newAssetPropertiesWithStoreDictionary:(id)a3 assetType:(id)a4;
-- (id)_newAssetWithURL:(id)a3 assetType:(id)a4;
+- (id)_newAssetArrayWithDownloadAssets:(id)assets;
+- (id)_newAssetPropertiesWithStoreDictionary:(id)dictionary assetType:(id)type;
+- (id)_newAssetWithURL:(id)l assetType:(id)type;
 - (id)_newDateFormatter;
-- (id)_newDeltaPackageAssetsWithAssetDictionary:(id)a3;
-- (id)_newPrimaryAssetsWithAssetDictionary:(id)a3 assetType:(id)a4;
+- (id)_newDeltaPackageAssetsWithAssetDictionary:(id)dictionary;
+- (id)_newPrimaryAssetsWithAssetDictionary:(id)dictionary assetType:(id)type;
 - (id)copyJobActivity;
 - (id)description;
 - (id)newDownloadProperties;
@@ -28,9 +28,9 @@
 
 @implementation StoreDownload
 
-- (StoreDownload)initWithContentsOfFile:(id)a3
+- (StoreDownload)initWithContentsOfFile:(id)file
 {
-  v4 = [[NSMutableDictionary alloc] initWithContentsOfFile:a3];
+  v4 = [[NSMutableDictionary alloc] initWithContentsOfFile:file];
   if (v4)
   {
     v5 = v4;
@@ -46,7 +46,7 @@
   }
 }
 
-- (StoreDownload)initWithDownload:(id)a3
+- (StoreDownload)initWithDownload:(id)download
 {
   v15.receiver = self;
   v15.super_class = StoreDownload;
@@ -206,7 +206,7 @@
     v47[72] = @"has_4k";
     v47[73] = @"has_dolby_vision";
     v47[74] = @"hls_playlist_url";
-    [a3 getValues:v16 forProperties:v47 count:75];
+    [download getValues:v16 forProperties:v47 count:75];
     if (SSDownloadKindIsPodcastKind())
     {
       [(StoreDownload *)v4 setKeyStyle:1];
@@ -342,11 +342,11 @@
 - (NSArray)assets
 {
   v3 = +[NSMutableArray array];
-  v4 = [(StoreDownload *)self primaryAssetDictionary];
-  if (v4 || (v4 = [(StoreDownload *)self dictionary]) != 0)
+  primaryAssetDictionary = [(StoreDownload *)self primaryAssetDictionary];
+  if (primaryAssetDictionary || (primaryAssetDictionary = [(StoreDownload *)self dictionary]) != 0)
   {
-    v5 = v4;
-    v6 = [(StoreDownload *)self _newDeltaPackageAssetsWithAssetDictionary:v4];
+    v5 = primaryAssetDictionary;
+    v6 = [(StoreDownload *)self _newDeltaPackageAssetsWithAssetDictionary:primaryAssetDictionary];
     [(NSArray *)v3 addObjectsFromArray:v6];
 
     v7 = [(StoreDownload *)self _newPrimaryAssetsWithAssetDictionary:v5 assetType:SSDownloadAssetTypeMedia];
@@ -363,29 +363,29 @@
     }
   }
 
-  v11 = [(StoreDownload *)self fullSizeImageURL];
-  if ([objc_msgSend(v11 "host")])
+  fullSizeImageURL = [(StoreDownload *)self fullSizeImageURL];
+  if ([objc_msgSend(fullSizeImageURL "host")])
   {
-    v12 = [(StoreDownload *)self _newAssetWithURL:v11 assetType:SSDownloadAssetTypeArtwork];
+    v12 = [(StoreDownload *)self _newAssetWithURL:fullSizeImageURL assetType:SSDownloadAssetTypeArtwork];
     [(NSArray *)v3 addObject:v12];
   }
 
-  v13 = [(StoreDownload *)self podcastFeedURL];
-  if ([objc_msgSend(v13 "host")])
+  podcastFeedURL = [(StoreDownload *)self podcastFeedURL];
+  if ([objc_msgSend(podcastFeedURL "host")])
   {
-    v14 = [(StoreDownload *)self _newAssetWithURL:v13 assetType:SSDownloadAssetTypeXMLFeed];
+    v14 = [(StoreDownload *)self _newAssetWithURL:podcastFeedURL assetType:SSDownloadAssetTypeXMLFeed];
     [(NSArray *)v3 addObject:v14];
   }
 
-  v15 = [(StoreDownload *)self transitMapDataURL];
-  if ([objc_msgSend(v15 "host")])
+  transitMapDataURL = [(StoreDownload *)self transitMapDataURL];
+  if ([objc_msgSend(transitMapDataURL "host")])
   {
-    v16 = [(StoreDownload *)self _newAssetWithURL:v15 assetType:SSDownloadAssetTypeTransitMapsData];
+    v16 = [(StoreDownload *)self _newAssetWithURL:transitMapDataURL assetType:SSDownloadAssetTypeTransitMapsData];
     [(NSArray *)v3 addObject:v16];
   }
 
-  v17 = [(StoreDownload *)self thumbnailImageCollection];
-  v18 = [v17 imagesForKind:SSItemArtworkKindNewsstandIcon];
+  thumbnailImageCollection = [(StoreDownload *)self thumbnailImageCollection];
+  v18 = [thumbnailImageCollection imagesForKind:SSItemArtworkKindNewsstandIcon];
   if ([v18 count])
   {
     v19 = [objc_msgSend(v18 "lastObject")];
@@ -466,13 +466,13 @@
   return result;
 }
 
-- (BOOL)writeToFile:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)writeToFile:(id)file options:(unint64_t)options error:(id *)error
 {
-  v8 = [NSPropertyListSerialization dataWithPropertyList:[(StoreDownload *)self dictionary] format:200 options:0 error:a5];
+  v8 = [NSPropertyListSerialization dataWithPropertyList:[(StoreDownload *)self dictionary] format:200 options:0 error:error];
   if (v8)
   {
 
-    LOBYTE(v8) = [(NSData *)v8 writeToFile:a3 options:a4 error:a5];
+    LOBYTE(v8) = [(NSData *)v8 writeToFile:file options:options error:error];
   }
 
   return v8;
@@ -485,7 +485,7 @@
   return [NSString stringWithFormat:@"%@: %llu / %@", [(StoreDownload *)&v3 description], [(StoreDownload *)self itemIdentifier], [(StoreDownload *)self transactionIdentifier]];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = objc_opt_class();
   if (v5 != objc_opt_class())
@@ -493,57 +493,57 @@
     return 0;
   }
 
-  v6 = [(StoreDownload *)self itemIdentifier];
-  if (v6 != [a3 itemIdentifier])
+  itemIdentifier = [(StoreDownload *)self itemIdentifier];
+  if (itemIdentifier != [equal itemIdentifier])
   {
     return 0;
   }
 
-  v7 = [(StoreDownload *)self transactionIdentifier];
-  if (v7 == [a3 transactionIdentifier])
+  transactionIdentifier = [(StoreDownload *)self transactionIdentifier];
+  if (transactionIdentifier == [equal transactionIdentifier])
   {
     return 1;
   }
 
-  v8 = [(StoreDownload *)self transactionIdentifier];
-  v9 = [a3 transactionIdentifier];
+  transactionIdentifier2 = [(StoreDownload *)self transactionIdentifier];
+  transactionIdentifier3 = [equal transactionIdentifier];
 
-  return [v8 isEqual:v9];
+  return [transactionIdentifier2 isEqual:transactionIdentifier3];
 }
 
 - (id)newDownloadProperties
 {
   v7.receiver = self;
   v7.super_class = StoreDownload;
-  v3 = [(StoreDownload *)&v7 newDownloadProperties];
-  v4 = [(StoreDownload *)self matchedStatus];
-  if (v4)
+  newDownloadProperties = [(StoreDownload *)&v7 newDownloadProperties];
+  matchedStatus = [(StoreDownload *)self matchedStatus];
+  if (matchedStatus)
   {
-    [v3 setObject:v4 forKey:SSDownloadPropertyStoreMatchStatus];
+    [newDownloadProperties setObject:matchedStatus forKey:SSDownloadPropertyStoreMatchStatus];
   }
 
-  v5 = [(StoreDownload *)self redownloadedStatus];
-  if (v5)
+  redownloadedStatus = [(StoreDownload *)self redownloadedStatus];
+  if (redownloadedStatus)
   {
-    [v3 setObject:v5 forKey:SSDownloadPropertyStoreRedownloadStatus];
+    [newDownloadProperties setObject:redownloadedStatus forKey:SSDownloadPropertyStoreRedownloadStatus];
   }
 
-  return v3;
+  return newDownloadProperties;
 }
 
-- (id)_copyPinfValueWithField:(int64_t)a3
+- (id)_copyPinfValueWithField:(int64_t)field
 {
-  v4 = [(StoreDownload *)self sinfs];
-  if (![v4 count])
+  sinfs = [(StoreDownload *)self sinfs];
+  if (![sinfs count])
   {
     return 0;
   }
 
-  v5 = [[DownloadDRM alloc] initWithSinfArray:v4];
-  v6 = [(DownloadDRM *)v5 pinfsArray];
-  if (v6)
+  v5 = [[DownloadDRM alloc] initWithSinfArray:sinfs];
+  pinfsArray = [(DownloadDRM *)v5 pinfsArray];
+  if (pinfsArray)
   {
-    v7 = [(SinfsArray *)v6 copyValueForField:a3 error:0];
+    v7 = [(SinfsArray *)pinfsArray copyValueForField:field error:0];
   }
 
   else
@@ -554,19 +554,19 @@
   return v7;
 }
 
-- (id)_copySinfValueWithField:(int64_t)a3
+- (id)_copySinfValueWithField:(int64_t)field
 {
-  v4 = [(StoreDownload *)self sinfs];
-  if (![v4 count])
+  sinfs = [(StoreDownload *)self sinfs];
+  if (![sinfs count])
   {
     return 0;
   }
 
-  v5 = [[DownloadDRM alloc] initWithSinfArray:v4];
-  v6 = [(DownloadDRM *)v5 sinfsArray];
-  if (v6)
+  v5 = [[DownloadDRM alloc] initWithSinfArray:sinfs];
+  sinfsArray = [(DownloadDRM *)v5 sinfsArray];
+  if (sinfsArray)
   {
-    v7 = [(SinfsArray *)v6 copyValueForField:a3 error:0];
+    v7 = [(SinfsArray *)sinfsArray copyValueForField:field error:0];
   }
 
   else
@@ -577,17 +577,17 @@
   return v7;
 }
 
-- (id)_copySinfValueFromEpubRightsDataWithField:(int64_t)a3
+- (id)_copySinfValueFromEpubRightsDataWithField:(int64_t)field
 {
-  v4 = [(StoreDownload *)self _epubRightsSinfData];
-  if (!v4)
+  _epubRightsSinfData = [(StoreDownload *)self _epubRightsSinfData];
+  if (!_epubRightsSinfData)
   {
     return 0;
   }
 
-  v8 = v4;
+  v8 = _epubRightsSinfData;
   v5 = [[SinfsArray alloc] initWithSINFs:[NSArray arrayWithObjects:&v8 count:1]];
-  v6 = [(SinfsArray *)v5 copyValueForField:a3 error:0];
+  v6 = [(SinfsArray *)v5 copyValueForField:field error:0];
 
   return v6;
 }
@@ -608,12 +608,12 @@
   return v5;
 }
 
-- (id)_newAssetPropertiesWithStoreDictionary:(id)a3 assetType:(id)a4
+- (id)_newAssetPropertiesWithStoreDictionary:(id)dictionary assetType:(id)type
 {
-  v7 = [a3 objectForKey:SSDownloadMetadataKeyURL];
+  v7 = [dictionary objectForKey:SSDownloadMetadataKeyURL];
   if (!v7)
   {
-    v7 = [a3 objectForKey:SSDownloadMetadataKeyURL2];
+    v7 = [dictionary objectForKey:SSDownloadMetadataKeyURL2];
   }
 
   objc_opt_class();
@@ -623,9 +623,9 @@
   }
 
   v8 = objc_alloc_init(NSMutableDictionary);
-  [v8 setObject:a4 forKey:@"asset_type"];
+  [v8 setObject:type forKey:@"asset_type"];
   [v8 setObject:v7 forKey:@"url"];
-  v9 = [a3 objectForKey:SSDownloadMetadataKeyDownloadKey];
+  v9 = [dictionary objectForKey:SSDownloadMetadataKeyDownloadKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -633,15 +633,15 @@
   }
 
   v10 = SSDownloadMetadataKeyFileExtension;
-  v11 = [a3 objectForKey:SSDownloadMetadataKeyFileExtension];
+  v11 = [dictionary objectForKey:SSDownloadMetadataKeyFileExtension];
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || [a4 isEqualToString:SSDownloadAssetTypeMedia] && (v11 = objc_msgSend(objc_msgSend(a3, "objectForKey:", @"metadata"), "objectForKey:", v10), objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 || [type isEqualToString:SSDownloadAssetTypeMedia] && (v11 = objc_msgSend(objc_msgSend(dictionary, "objectForKey:", @"metadata"), "objectForKey:", v10), objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     [v8 setObject:v11 forKey:@"path_extension"];
   }
 
   v12 = SSDownloadMetadataKeyIsZipStreamable;
-  v13 = [a3 objectForKey:SSDownloadMetadataKeyIsZipStreamable];
+  v13 = [dictionary objectForKey:SSDownloadMetadataKeyIsZipStreamable];
   if (!v13)
   {
     v13 = [(StoreDownload *)self valueForFirstAvailableKey:v12, 0];
@@ -654,7 +654,7 @@
   }
 
   v14 = SSDownloadMetadataKeyUncompressedSize;
-  v15 = [a3 objectForKey:SSDownloadMetadataKeyUncompressedSize];
+  v15 = [dictionary objectForKey:SSDownloadMetadataKeyUncompressedSize];
   if (!v15)
   {
     v15 = [(StoreDownload *)self valueForFirstAvailableKey:v14, 0];
@@ -665,21 +665,21 @@
     [v8 setObject:+[NSNumber numberWithLongLong:](NSNumber forKey:{"numberWithLongLong:", objc_msgSend(v15, "unsignedLongLongValue")), @"uncompressed_size"}];
   }
 
-  v16 = [a3 objectForKey:SSDownloadMetadataKeyAssetInfo];
+  v16 = [dictionary objectForKey:SSDownloadMetadataKeyAssetInfo];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = v16;
+    dictionaryCopy = v16;
   }
 
   else
   {
-    v17 = a3;
+    dictionaryCopy = dictionary;
   }
 
-  if (v17)
+  if (dictionaryCopy)
   {
-    v18 = [v17 objectForKey:SSDownloadMetadataKeyAssetFileSize];
+    v18 = [dictionaryCopy objectForKey:SSDownloadMetadataKeyAssetFileSize];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -691,7 +691,7 @@
       v18 = 0;
     }
 
-    v19 = [v17 objectForKey:SSDownloadMetadataKeyAssetFlavor];
+    v19 = [dictionaryCopy objectForKey:SSDownloadMetadataKeyAssetFlavor];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -704,14 +704,14 @@
     v18 = 0;
   }
 
-  v20 = [a3 objectForKey:SSDownloadMetadataKeyVariantIdentifier];
+  v20 = [dictionary objectForKey:SSDownloadMetadataKeyVariantIdentifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v8 setObject:v20 forKey:@"variant_id"];
   }
 
-  v21 = [a3 objectForKey:SSDownloadMetadataKeyHashChunks];
+  v21 = [dictionary objectForKey:SSDownloadMetadataKeyHashChunks];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -721,7 +721,7 @@
 
   else
   {
-    v23 = [a3 objectForKey:SSDownloadMetadataKeyMD5];
+    v23 = [dictionary objectForKey:SSDownloadMetadataKeyMD5];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -750,7 +750,7 @@
     }
   }
 
-  v25 = [a3 objectForKey:SSDownloadMetadataKeySINFs];
+  v25 = [dictionary objectForKey:SSDownloadMetadataKeySINFs];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v25 count])
   {
@@ -767,21 +767,21 @@
     }
   }
 
-  v28 = [a3 objectForKey:SSDownloadMetadataKeyIsHLS];
+  v28 = [dictionary objectForKey:SSDownloadMetadataKeyIsHLS];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v28 BOOLValue])
   {
     [v8 setObject:v28 forKey:@"is_hls"];
   }
 
-  v29 = [a3 objectForKey:v10];
+  v29 = [dictionary objectForKey:v10];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v8 setObject:v29 forKey:@"path_extension"];
   }
 
-  v30 = [a3 objectForKey:SSDownloadMetadataKeyInitialODRSize];
+  v30 = [dictionary objectForKey:SSDownloadMetadataKeyInitialODRSize];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -792,20 +792,20 @@
   return v8;
 }
 
-- (id)_newAssetWithURL:(id)a3 assetType:(id)a4
+- (id)_newAssetWithURL:(id)l assetType:(id)type
 {
-  v5 = [[SSMutableURLRequestProperties alloc] initWithURL:a3];
+  v5 = [[SSMutableURLRequestProperties alloc] initWithURL:l];
   [v5 setITunesStoreRequest:1];
   v6 = [[DownloadAsset alloc] initWithURLRequestProperties:v5];
-  [(DownloadAsset *)v6 setValue:a4 forProperty:@"asset_type"];
+  [(DownloadAsset *)v6 setValue:type forProperty:@"asset_type"];
 
   return v6;
 }
 
-- (id)_newDeltaPackageAssetsWithAssetDictionary:(id)a3
+- (id)_newDeltaPackageAssetsWithAssetDictionary:(id)dictionary
 {
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [a3 objectForKey:SSDownloadMetadataKeyDeltaPackages];
+  v6 = [dictionary objectForKey:SSDownloadMetadataKeyDeltaPackages];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -819,15 +819,15 @@
         v9 = +[SSLogConfig sharedConfig];
       }
 
-      v10 = [v9 shouldLog];
+      shouldLog = [v9 shouldLog];
       if ([v9 shouldLogToDisk])
       {
-        v11 = v10 | 2;
+        v11 = shouldLog | 2;
       }
 
       else
       {
-        v11 = v10;
+        v11 = shouldLog;
       }
 
       if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_INFO))
@@ -840,7 +840,7 @@
         v46 = 138412546;
         v47 = objc_opt_class();
         v48 = 2112;
-        v49 = [(StoreDownload *)self bundleIdentifier];
+        bundleIdentifier = [(StoreDownload *)self bundleIdentifier];
         LODWORD(v40) = 22;
         v38 = &v46;
         v12 = _os_log_send_and_compose_impl();
@@ -882,15 +882,15 @@
                 v20 = +[SSLogConfig sharedConfig];
               }
 
-              v21 = [v20 shouldLog];
+              shouldLog2 = [v20 shouldLog];
               if ([v20 shouldLogToDisk])
               {
-                v22 = v21 | 2;
+                v22 = shouldLog2 | 2;
               }
 
               else
               {
-                v22 = v21;
+                v22 = shouldLog2;
               }
 
               if (!os_log_type_enabled([v20 OSLogObject], OS_LOG_TYPE_INFO))
@@ -901,11 +901,11 @@
               if (v22)
               {
                 v23 = objc_opt_class();
-                v24 = [(StoreDownload *)self bundleIdentifier];
+                bundleIdentifier2 = [(StoreDownload *)self bundleIdentifier];
                 v46 = 138412546;
                 v47 = v23;
                 v48 = 2112;
-                v49 = v24;
+                bundleIdentifier = bundleIdentifier2;
                 LODWORD(v40) = 22;
                 v39 = &v46;
                 v25 = _os_log_send_and_compose_impl();
@@ -934,15 +934,15 @@
                   v31 = +[SSLogConfig sharedConfig];
                 }
 
-                v32 = [v31 shouldLog];
+                shouldLog3 = [v31 shouldLog];
                 if ([v31 shouldLogToDisk])
                 {
-                  v33 = v32 | 2;
+                  v33 = shouldLog3 | 2;
                 }
 
                 else
                 {
-                  v33 = v32;
+                  v33 = shouldLog3;
                 }
 
                 if (!os_log_type_enabled([v31 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -953,11 +953,11 @@
                 if (v33)
                 {
                   v34 = objc_opt_class();
-                  v35 = [(StoreDownload *)self bundleIdentifier];
+                  bundleIdentifier3 = [(StoreDownload *)self bundleIdentifier];
                   v46 = 138412546;
                   v47 = v34;
                   v48 = 2112;
-                  v49 = v35;
+                  bundleIdentifier = bundleIdentifier3;
                   LODWORD(v40) = 22;
                   v36 = _os_log_send_and_compose_impl();
                   if (v36)
@@ -992,14 +992,14 @@ LABEL_35:
   return v5;
 }
 
-- (id)_newPrimaryAssetsWithAssetDictionary:(id)a3 assetType:(id)a4
+- (id)_newPrimaryAssetsWithAssetDictionary:(id)dictionary assetType:(id)type
 {
   v7 = objc_alloc_init(NSMutableArray);
-  v8 = [(StoreDownload *)self _newAssetPropertiesWithStoreDictionary:a3 assetType:a4];
+  v8 = [(StoreDownload *)self _newAssetPropertiesWithStoreDictionary:dictionary assetType:type];
   if (v8)
   {
     v9 = v8;
-    [a3 objectForKey:@"local-server-info"];
+    [dictionary objectForKey:@"local-server-info"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1008,10 +1008,10 @@ LABEL_35:
 
     if (![v9 objectForKey:@"path_extension"])
     {
-      v10 = [(StoreDownload *)self fileExtension];
-      if (v10)
+      fileExtension = [(StoreDownload *)self fileExtension];
+      if (fileExtension)
       {
-        [v9 setObject:v10 forKey:@"path_extension"];
+        [v9 setObject:fileExtension forKey:@"path_extension"];
       }
     }
 
@@ -1023,11 +1023,11 @@ LABEL_35:
   return v7;
 }
 
-- (BOOL)_patchPackageDictionary:(id)a3 matchesInstallApplication:(id)a4
+- (BOOL)_patchPackageDictionary:(id)dictionary matchesInstallApplication:(id)application
 {
-  v6 = [a4 externalVersionIdentifier];
-  v7 = [a3 objectForKey:SSDownloadMetadataKeyPriorVersionExternalIdentifier];
-  v8 = [v6 isEqual:v7];
+  externalVersionIdentifier = [application externalVersionIdentifier];
+  v7 = [dictionary objectForKey:SSDownloadMetadataKeyPriorVersionExternalIdentifier];
+  v8 = [externalVersionIdentifier isEqual:v7];
   if (v8)
   {
     v9 = +[SSLogConfig sharedDaemonConfig];
@@ -1036,15 +1036,15 @@ LABEL_35:
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v10 = [v9 shouldLog];
+    shouldLog = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
     if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -1057,9 +1057,9 @@ LABEL_35:
       v27 = 138413058;
       v28 = objc_opt_class();
       v29 = 2112;
-      v30 = [a4 bundleIdentifier];
+      bundleIdentifier = [application bundleIdentifier];
       v31 = 2112;
-      v32 = v6;
+      v32 = externalVersionIdentifier;
       v33 = 2112;
       v34 = v7;
       LODWORD(v26) = 42;
@@ -1075,9 +1075,9 @@ LABEL_35:
       }
     }
 
-    v15 = [a4 applicationVariant];
-    v16 = [a3 objectForKey:SSDownloadMetadataKeyVariantIdentifier];
-    if (v15 == v16 || (v8 = [v15 isEqual:v16]) != 0)
+    applicationVariant = [application applicationVariant];
+    v16 = [dictionary objectForKey:SSDownloadMetadataKeyVariantIdentifier];
+    if (applicationVariant == v16 || (v8 = [applicationVariant isEqual:v16]) != 0)
     {
       v17 = +[SSLogConfig sharedDaemonConfig];
       if (!v17)
@@ -1085,15 +1085,15 @@ LABEL_35:
         v17 = +[SSLogConfig sharedConfig];
       }
 
-      v18 = [v17 shouldLog];
+      shouldLog2 = [v17 shouldLog];
       if ([v17 shouldLogToDisk])
       {
-        v19 = v18 | 2;
+        v19 = shouldLog2 | 2;
       }
 
       else
       {
-        v19 = v18;
+        v19 = shouldLog2;
       }
 
       if (!os_log_type_enabled([v17 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -1104,13 +1104,13 @@ LABEL_35:
       if (v19)
       {
         v20 = objc_opt_class();
-        v21 = [a4 bundleIdentifier];
+        bundleIdentifier2 = [application bundleIdentifier];
         v27 = 138413058;
         v28 = v20;
         v29 = 2112;
-        v30 = v21;
+        bundleIdentifier = bundleIdentifier2;
         v31 = 2112;
-        v32 = v15;
+        v32 = applicationVariant;
         v33 = 2112;
         v34 = v16;
         LODWORD(v26) = 42;
@@ -1137,28 +1137,28 @@ LABEL_35:
   v4 = [NSNumber numberWithLongLong:[(StoreDownload *)self artistIdentifier]];
   [v3 setArtistID:v4];
 
-  v5 = [(StoreDownload *)self artistName];
-  [v3 setArtistName:v5];
+  artistName = [(StoreDownload *)self artistName];
+  [v3 setArtistName:artistName];
 
-  v6 = [(StoreDownload *)self bundleIdentifier];
-  [v3 setBundleID:v6];
+  bundleIdentifier = [(StoreDownload *)self bundleIdentifier];
+  [v3 setBundleID:bundleIdentifier];
 
-  v7 = [(StoreDownload *)self redownloadActionParameters];
-  [v3 setBuyParams:v7];
+  redownloadActionParameters = [(StoreDownload *)self redownloadActionParameters];
+  [v3 setBuyParams:redownloadActionParameters];
 
-  v8 = [(StoreDownload *)self cancelDownloadURL];
-  v9 = [v8 absoluteString];
-  [v3 setCancelDownloadURL:v9];
+  cancelDownloadURL = [(StoreDownload *)self cancelDownloadURL];
+  absoluteString = [cancelDownloadURL absoluteString];
+  [v3 setCancelDownloadURL:absoluteString];
 
-  v10 = [(StoreDownload *)self collectionName];
-  [v3 setCollectionName:v10];
+  collectionName = [(StoreDownload *)self collectionName];
+  [v3 setCollectionName:collectionName];
 
-  v11 = [(StoreDownload *)self enableExtensions];
-  [v3 setEnableExtensions:v11];
+  enableExtensions = [(StoreDownload *)self enableExtensions];
+  [v3 setEnableExtensions:enableExtensions];
 
   [v3 setExplicitContent:{-[StoreDownload isExplicitContent](self, "isExplicitContent")}];
-  v12 = [(StoreDownload *)self genre];
-  [v3 setGenre:v12];
+  genre = [(StoreDownload *)self genre];
+  [v3 setGenre:genre];
 
   v13 = [NSNumber numberWithLongLong:[(StoreDownload *)self genreIdentifier]];
   [v3 setGenreID:v13];
@@ -1166,34 +1166,34 @@ LABEL_35:
   v14 = [NSNumber numberWithLongLong:[(StoreDownload *)self itemIdentifier]];
   [v3 setItemID:v14];
 
-  v15 = [(StoreDownload *)self kind];
-  [v3 setKind:v15];
+  kind = [(StoreDownload *)self kind];
+  [v3 setKind:kind];
 
   [v3 setHasMessagesExtension:{-[StoreDownload hasMessagesExtension](self, "hasMessagesExtension")}];
   [v3 setLaunchProhibited:{-[StoreDownload launchProhibited](self, "launchProhibited")}];
-  v16 = [(StoreDownload *)self messagesArtworkURL];
-  v17 = [v16 absoluteString];
-  [v3 setMessagesArtworkURL:v17];
+  messagesArtworkURL = [(StoreDownload *)self messagesArtworkURL];
+  absoluteString2 = [messagesArtworkURL absoluteString];
+  [v3 setMessagesArtworkURL:absoluteString2];
 
-  v18 = [(StoreDownload *)self purchaseDate];
-  [v3 setPurchaseDate:v18];
+  purchaseDate = [(StoreDownload *)self purchaseDate];
+  [v3 setPurchaseDate:purchaseDate];
 
-  v19 = [(StoreDownload *)self releaseDate];
-  [v3 setReleaseDate:v19];
+  releaseDate = [(StoreDownload *)self releaseDate];
+  [v3 setReleaseDate:releaseDate];
 
-  v20 = [(StoreDownload *)self downloadKey];
-  [v3 setStoreDownloadKey:v20];
+  downloadKey = [(StoreDownload *)self downloadKey];
+  [v3 setStoreDownloadKey:downloadKey];
 
-  v21 = [(StoreDownload *)self transactionIdentifier];
-  [v3 setStoreTransactionID:v21];
+  transactionIdentifier = [(StoreDownload *)self transactionIdentifier];
+  [v3 setStoreTransactionID:transactionIdentifier];
 
   [v3 setSoftwareIconNeedsShine:{-[StoreDownload artworkIsPrerendered](self, "artworkIsPrerendered")}];
-  v22 = [(StoreDownload *)self thumbnailImageURL];
-  v23 = [v22 absoluteString];
-  [v3 setThumbnailURL:v23];
+  thumbnailImageURL = [(StoreDownload *)self thumbnailImageURL];
+  absoluteString3 = [thumbnailImageURL absoluteString];
+  [v3 setThumbnailURL:absoluteString3];
 
-  v24 = [(StoreDownload *)self title];
-  [v3 setTitle:v24];
+  title = [(StoreDownload *)self title];
+  [v3 setTitle:title];
 
   v25 = [(StoreDownload *)self valueForMetadataKey:SSDownloadMetadataKeyAppReceiptData];
   objc_opt_class();
@@ -1245,8 +1245,8 @@ LABEL_35:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v32 = [(StoreDownload *)self _newDateFormatter];
-    v33 = [v32 dateFromString:v31];
+    _newDateFormatter = [(StoreDownload *)self _newDateFormatter];
+    v33 = [_newDateFormatter dateFromString:v31];
     if (v33)
     {
       [v3 setIAdConversionDate:v33];
@@ -1258,8 +1258,8 @@ LABEL_35:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v35 = [(StoreDownload *)self _newDateFormatter];
-    v36 = [v35 dateFromString:v34];
+    _newDateFormatter2 = [(StoreDownload *)self _newDateFormatter];
+    v36 = [_newDateFormatter2 dateFromString:v34];
     if (v36)
     {
       [v3 setIAdImpressionDate:v36];
@@ -1277,8 +1277,8 @@ LABEL_35:
 
   if (objc_opt_respondsToSelector())
   {
-    v39 = [v38 stringValue];
-    [v3 setStorefront:v39];
+    stringValue = [v38 stringValue];
+    [v3 setStorefront:stringValue];
   }
 
   v40 = [(StoreDownload *)self valueForMetadataKey:SSDownloadMetadataKeyRating];
@@ -1326,22 +1326,22 @@ LABEL_35:
     [v3 setVariantID:v46];
   }
 
-  v47 = [(StoreDownload *)self assets];
-  v48 = [(StoreDownload *)self _newAssetArrayWithDownloadAssets:v47];
+  assets = [(StoreDownload *)self assets];
+  v48 = [(StoreDownload *)self _newAssetArrayWithDownloadAssets:assets];
 
   [v3 setAssets:v48];
   return v3;
 }
 
-- (id)_newAssetArrayWithDownloadAssets:(id)a3
+- (id)_newAssetArrayWithDownloadAssets:(id)assets
 {
-  v3 = a3;
+  assetsCopy = assets;
   v4 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = assetsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -1357,8 +1357,8 @@ LABEL_35:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * v9) copyJobAsset];
-        [v4 addObject:v10];
+        copyJobAsset = [*(*(&v13 + 1) + 8 * v9) copyJobAsset];
+        [v4 addObject:copyJobAsset];
 
         v9 = v9 + 1;
       }

@@ -1,18 +1,18 @@
 @interface CARSetupProgressView
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setObservedProgress:(id)a3 animated:(BOOL)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setObservedProgress:(id)progress animated:(BOOL)animated;
 @end
 
 @implementation CARSetupProgressView
 
 - (void)dealloc
 {
-  v3 = [(CARSetupProgressView *)self animatedObservedProgress];
-  if (v3)
+  animatedObservedProgress = [(CARSetupProgressView *)self animatedObservedProgress];
+  if (animatedObservedProgress)
   {
     v4 = NSStringFromSelector(sel_fractionCompleted);
-    [v3 removeObserver:self forKeyPath:v4 context:0];
+    [animatedObservedProgress removeObserver:self forKeyPath:v4 context:0];
   }
 
   v5.receiver = self;
@@ -20,33 +20,33 @@
   [(CARSetupProgressView *)&v5 dealloc];
 }
 
-- (void)setObservedProgress:(id)a3 animated:(BOOL)a4
+- (void)setObservedProgress:(id)progress animated:(BOOL)animated
 {
-  if (a4)
+  if (animated)
   {
-    v5 = a3;
+    progressCopy = progress;
     v6 = NSStringFromSelector(sel_fractionCompleted);
-    [v5 addObserver:self forKeyPath:v6 options:0 context:0];
+    [progressCopy addObserver:self forKeyPath:v6 options:0 context:0];
 
-    [(CARSetupProgressView *)self setAnimatedObservedProgress:v5];
+    [(CARSetupProgressView *)self setAnimatedObservedProgress:progressCopy];
   }
 
   else
   {
-    [(CARSetupProgressView *)self setObservedProgress:a3];
+    [(CARSetupProgressView *)self setObservedProgress:progress];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = a4;
+  objectCopy = object;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __71__CARSetupProgressView_observeValueForKeyPath_ofObject_change_context___block_invoke;
   v9[3] = &unk_278D8F530;
   v9[4] = self;
-  v10 = v7;
-  v8 = v7;
+  v10 = objectCopy;
+  v8 = objectCopy;
   dispatch_async(MEMORY[0x277D85CD0], v9);
 }
 

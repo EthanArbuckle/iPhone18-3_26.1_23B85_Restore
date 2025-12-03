@@ -1,26 +1,26 @@
 @interface INShowHomeIntent
 - (INDateComponentsRange)time;
-- (INShowHomeIntent)initWithFilters:(id)a3 time:(id)a4;
+- (INShowHomeIntent)initWithFilters:(id)filters time:(id)time;
 - (NSArray)filters;
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setFilters:(id)a3;
-- (void)setTime:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setFilters:(id)filters;
+- (void)setTime:(id)time;
 @end
 
 @implementation INShowHomeIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = a4;
-  v7 = [(INShowHomeIntent *)self _typedBackingStore];
-  v11 = v6;
-  v8 = [v7 copy];
-  v9 = [v7 time];
-  v10 = INIntentSlotValueRedactedDateTimeRangeFromDateTimeRange(v9, a3);
+  idCopy = id;
+  _typedBackingStore = [(INShowHomeIntent *)self _typedBackingStore];
+  v11 = idCopy;
+  v8 = [_typedBackingStore copy];
+  time = [_typedBackingStore time];
+  v10 = INIntentSlotValueRedactedDateTimeRangeFromDateTimeRange(time, options);
 
   [v8 setTime:v10];
   [(INIntent *)self setBackingStore:v8];
@@ -30,29 +30,29 @@
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"filters";
-  v3 = [(INShowHomeIntent *)self filters];
-  v4 = v3;
-  if (!v3)
+  filters = [(INShowHomeIntent *)self filters];
+  null = filters;
+  if (!filters)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"time";
-  v11[0] = v4;
-  v5 = [(INShowHomeIntent *)self time];
-  v6 = v5;
-  if (!v5)
+  v11[0] = null;
+  time = [(INShowHomeIntent *)self time];
+  null2 = time;
+  if (!time)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  if (!v5)
+  if (!time)
   {
   }
 
-  if (!v3)
+  if (!filters)
   {
   }
 
@@ -61,81 +61,81 @@
   return v7;
 }
 
-- (void)setTime:(id)a3
+- (void)setTime:(id)time
 {
-  v4 = a3;
-  v6 = [(INShowHomeIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDateTimeRange(v4);
+  timeCopy = time;
+  _typedBackingStore = [(INShowHomeIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDateTimeRange(timeCopy);
 
-  [v6 setTime:v5];
+  [_typedBackingStore setTime:v5];
 }
 
 - (INDateComponentsRange)time
 {
-  v2 = [(INShowHomeIntent *)self _typedBackingStore];
-  v3 = [v2 time];
-  v4 = INIntentSlotValueTransformFromDateTimeRange(v3);
+  _typedBackingStore = [(INShowHomeIntent *)self _typedBackingStore];
+  time = [_typedBackingStore time];
+  v4 = INIntentSlotValueTransformFromDateTimeRange(time);
 
   return v4;
 }
 
-- (void)setFilters:(id)a3
+- (void)setFilters:(id)filters
 {
-  v4 = a3;
-  v6 = [(INShowHomeIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToHomeFilters(v4);
+  filtersCopy = filters;
+  _typedBackingStore = [(INShowHomeIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToHomeFilters(filtersCopy);
 
-  [v6 setFilters:v5];
+  [_typedBackingStore setFilters:v5];
 }
 
 - (NSArray)filters
 {
-  v2 = [(INShowHomeIntent *)self _typedBackingStore];
-  v3 = [v2 filters];
-  v4 = INIntentSlotValueTransformFromHomeFilters(v3);
+  _typedBackingStore = [(INShowHomeIntent *)self _typedBackingStore];
+  filters = [_typedBackingStore filters];
+  v4 = INIntentSlotValueTransformFromHomeFilters(filters);
 
   return v4;
 }
 
-- (INShowHomeIntent)initWithFilters:(id)a3 time:(id)a4
+- (INShowHomeIntent)initWithFilters:(id)filters time:(id)time
 {
-  v6 = a3;
-  v7 = a4;
+  filtersCopy = filters;
+  timeCopy = time;
   v11.receiver = self;
   v11.super_class = INShowHomeIntent;
   v8 = [(INIntent *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(INShowHomeIntent *)v8 setFilters:v6];
-    [(INShowHomeIntent *)v9 setTime:v7];
+    [(INShowHomeIntent *)v8 setFilters:filtersCopy];
+    [(INShowHomeIntent *)v9 setTime:timeCopy];
   }
 
   return v9;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INShowHomeIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INShowHomeIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INShowHomeIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INShowHomeIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

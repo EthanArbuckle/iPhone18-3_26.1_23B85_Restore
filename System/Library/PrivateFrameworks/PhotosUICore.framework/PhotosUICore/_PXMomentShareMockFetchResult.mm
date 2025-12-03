@@ -1,8 +1,8 @@
 @interface _PXMomentShareMockFetchResult
-+ (id)momentShareMockFetchResultWithPhotosCount:(unint64_t)a3 videosCount:(unint64_t)a4;
++ (id)momentShareMockFetchResultWithPhotosCount:(unint64_t)count videosCount:(unint64_t)videosCount;
 - (PXDisplayAsset)firstObject;
 - (PXDisplayAsset)lastObject;
-- (_PXMomentShareMockFetchResult)initWithAssets:(id)a3;
+- (_PXMomentShareMockFetchResult)initWithAssets:(id)assets;
 @end
 
 @implementation _PXMomentShareMockFetchResult
@@ -37,31 +37,31 @@
   return v3;
 }
 
-- (_PXMomentShareMockFetchResult)initWithAssets:(id)a3
+- (_PXMomentShareMockFetchResult)initWithAssets:(id)assets
 {
-  v5 = a3;
+  assetsCopy = assets;
   v9.receiver = self;
   v9.super_class = _PXMomentShareMockFetchResult;
   v6 = [(_PXMomentShareMockFetchResult *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_assets, a3);
+    objc_storeStrong(&v6->_assets, assets);
   }
 
   return v7;
 }
 
-+ (id)momentShareMockFetchResultWithPhotosCount:(unint64_t)a3 videosCount:(unint64_t)a4
++ (id)momentShareMockFetchResultWithPhotosCount:(unint64_t)count videosCount:(unint64_t)videosCount
 {
-  for (i = objc_alloc_init(MEMORY[0x1E695DF70]); a3; --a3)
+  for (i = objc_alloc_init(MEMORY[0x1E695DF70]); count; --count)
   {
     v7 = objc_alloc_init(_PXMomentShareMockDisplayAsset);
     [(_PXMomentShareMockDisplayAsset *)v7 setMediaType:1];
     [i addObject:v7];
   }
 
-  for (; a4; --a4)
+  for (; videosCount; --videosCount)
   {
     v8 = objc_alloc_init(_PXMomentShareMockDisplayAsset);
     [(_PXMomentShareMockDisplayAsset *)v8 setMediaType:2];

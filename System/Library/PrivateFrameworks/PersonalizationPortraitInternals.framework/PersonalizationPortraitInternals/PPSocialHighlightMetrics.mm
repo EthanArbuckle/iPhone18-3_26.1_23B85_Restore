@@ -1,23 +1,23 @@
 @interface PPSocialHighlightMetrics
-+ (BOOL)_queryLinksWithFetchAttributes:(id)a3 interval:(double)a4 handler:(id)a5;
-+ (id)SMSBucketDescriptionWithShouldContinueBlock:(id)a3;
-+ (id)_countSentMessagesInLastWeekMatchingChatType:(id)a3 shouldContinueBlock:(id)a4;
-+ (id)_loggableToggleStatus:(unsigned __int8)a3;
-+ (id)allHighlightIdentifiersReceivedWithShouldContinueBlock:(id)a3;
-+ (id)countIMessagesSentInPastWeekWithShouldContinueBlock:(id)a3;
-+ (id)countSMSSentInPastWeekWithShouldContinueBlock:(id)a3;
-+ (id)hasSentIMessageWithShouldContinueBlock:(id)a3;
-+ (id)hasSentSMSWithShouldContinueBlock:(id)a3;
-+ (id)highlightsReceivedInInterval:(double)a3 shouldContinueBlock:(id)a4;
-+ (id)iMessageBucketDescriptionWithShouldContinueBlock:(id)a3;
-+ (id)logExpiredLinkStatsWithHighlights:(id)a3 shouldContinueBlock:(id)a4;
-+ (id)sendLinkExpiredMessagesForFeedbackCountsByHighlightId:(id)a3 tvFeedbackCountsByHighlightId:(id)a4 highlights:(id)a5;
-+ (id)unsupportedClientsFromPastDayWithShouldContinueBlock:(id)a3;
++ (BOOL)_queryLinksWithFetchAttributes:(id)attributes interval:(double)interval handler:(id)handler;
++ (id)SMSBucketDescriptionWithShouldContinueBlock:(id)block;
++ (id)_countSentMessagesInLastWeekMatchingChatType:(id)type shouldContinueBlock:(id)block;
++ (id)_loggableToggleStatus:(unsigned __int8)status;
++ (id)allHighlightIdentifiersReceivedWithShouldContinueBlock:(id)block;
++ (id)countIMessagesSentInPastWeekWithShouldContinueBlock:(id)block;
++ (id)countSMSSentInPastWeekWithShouldContinueBlock:(id)block;
++ (id)hasSentIMessageWithShouldContinueBlock:(id)block;
++ (id)hasSentSMSWithShouldContinueBlock:(id)block;
++ (id)highlightsReceivedInInterval:(double)interval shouldContinueBlock:(id)block;
++ (id)iMessageBucketDescriptionWithShouldContinueBlock:(id)block;
++ (id)logExpiredLinkStatsWithHighlights:(id)highlights shouldContinueBlock:(id)block;
++ (id)sendLinkExpiredMessagesForFeedbackCountsByHighlightId:(id)id tvFeedbackCountsByHighlightId:(id)highlightId highlights:(id)highlights;
++ (id)unsupportedClientsFromPastDayWithShouldContinueBlock:(id)block;
 + (unint64_t)countAllLinksReceivedInMessages;
-+ (void)_recordTipsContentEvent:(id)a3;
-+ (void)logConsumptionByClientWithShouldContinueBlock:(id)a3;
-+ (void)logFeedbackForAttribution:(id)a3 type:(unint64_t)a4 client:(id)a5;
-+ (void)logFeedbackForHighlight:(id)a3 type:(unint64_t)a4 client:(id)a5;
++ (void)_recordTipsContentEvent:(id)event;
++ (void)logConsumptionByClientWithShouldContinueBlock:(id)block;
++ (void)logFeedbackForAttribution:(id)attribution type:(unint64_t)type client:(id)client;
++ (void)logFeedbackForHighlight:(id)highlight type:(unint64_t)type client:(id)client;
 + (void)registerCTSDataCollection;
 + (void)registerClientLinkStatus;
 + (void)registerCountLinks;
@@ -29,9 +29,9 @@
 
 @implementation PPSocialHighlightMetrics
 
-+ (id)hasSentSMSWithShouldContinueBlock:(id)a3
++ (id)hasSentSMSWithShouldContinueBlock:(id)block
 {
-  v3 = [a1 countSMSSentInPastWeekWithShouldContinueBlock:a3];
+  v3 = [self countSMSSentInPastWeekWithShouldContinueBlock:block];
   v4 = v3;
   if (v3)
   {
@@ -46,9 +46,9 @@
   return v5;
 }
 
-+ (id)hasSentIMessageWithShouldContinueBlock:(id)a3
++ (id)hasSentIMessageWithShouldContinueBlock:(id)block
 {
-  v3 = [a1 countIMessagesSentInPastWeekWithShouldContinueBlock:a3];
+  v3 = [self countIMessagesSentInPastWeekWithShouldContinueBlock:block];
   v4 = v3;
   if (v3)
   {
@@ -63,26 +63,26 @@
   return v5;
 }
 
-+ (id)SMSBucketDescriptionWithShouldContinueBlock:(id)a3
++ (id)SMSBucketDescriptionWithShouldContinueBlock:(id)block
 {
-  v3 = [a1 countSMSSentInPastWeekWithShouldContinueBlock:a3];
+  v3 = [self countSMSSentInPastWeekWithShouldContinueBlock:block];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
     v6 = @"1-3";
     v7 = @"11+";
-    if (v5 < 0xB)
+    if (unsignedIntegerValue < 0xB)
     {
       v7 = @"4-10";
     }
 
-    if (v5 >= 4)
+    if (unsignedIntegerValue >= 4)
     {
       v6 = v7;
     }
 
-    if (v5)
+    if (unsignedIntegerValue)
     {
       v8 = v6;
     }
@@ -101,26 +101,26 @@
   return v8;
 }
 
-+ (id)iMessageBucketDescriptionWithShouldContinueBlock:(id)a3
++ (id)iMessageBucketDescriptionWithShouldContinueBlock:(id)block
 {
-  v3 = [a1 countIMessagesSentInPastWeekWithShouldContinueBlock:a3];
+  v3 = [self countIMessagesSentInPastWeekWithShouldContinueBlock:block];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
     v6 = @"1-3";
     v7 = @"11+";
-    if (v5 < 0xB)
+    if (unsignedIntegerValue < 0xB)
     {
       v7 = @"4-10";
     }
 
-    if (v5 >= 4)
+    if (unsignedIntegerValue >= 4)
     {
       v6 = v7;
     }
 
-    if (v5)
+    if (unsignedIntegerValue)
     {
       v8 = v6;
     }
@@ -139,14 +139,14 @@
   return v8;
 }
 
-+ (id)countSMSSentInPastWeekWithShouldContinueBlock:(id)a3
++ (id)countSMSSentInPastWeekWithShouldContinueBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&kPPSentSMSLock);
   v5 = kPPSentSMSCount;
   if (!kPPSentSMSCount)
   {
-    v6 = [a1 _countSentMessagesInLastWeekMatchingChatType:@"SMS" shouldContinueBlock:v4];
+    v6 = [self _countSentMessagesInLastWeekMatchingChatType:@"SMS" shouldContinueBlock:blockCopy];
     v7 = kPPSentSMSCount;
     kPPSentSMSCount = v6;
 
@@ -159,14 +159,14 @@
   return v8;
 }
 
-+ (id)countIMessagesSentInPastWeekWithShouldContinueBlock:(id)a3
++ (id)countIMessagesSentInPastWeekWithShouldContinueBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&kPPSentIMessagesLock);
   v5 = kPPSentIMessagesCount;
   if (!kPPSentIMessagesCount)
   {
-    v6 = [a1 _countSentMessagesInLastWeekMatchingChatType:@"iMessage" shouldContinueBlock:v4];
+    v6 = [self _countSentMessagesInLastWeekMatchingChatType:@"iMessage" shouldContinueBlock:blockCopy];
     v7 = kPPSentIMessagesCount;
     kPPSentIMessagesCount = v6;
 
@@ -192,7 +192,7 @@
   v5[1] = 3221225472;
   v5[2] = __60__PPSocialHighlightMetrics_registerDeviceSettingsCollection__block_invoke;
   v5[3] = &__block_descriptor_48_e33_v16__0__NSObject_OS_xpc_object__8l;
-  v5[4] = a1;
+  v5[4] = self;
   v5[5] = a2;
   xpc_activity_register("com.apple.proactive.PersonalizationPortrait.SocialHighlightSettingsCollection", v4, v5);
 }
@@ -429,27 +429,27 @@ void __60__PPSocialHighlightMetrics_registerDeviceSettingsCollection__block_invo
   }
 }
 
-+ (id)_loggableToggleStatus:(unsigned __int8)a3
++ (id)_loggableToggleStatus:(unsigned __int8)status
 {
-  if (a3)
+  if (status)
   {
-    if (a3 == 1)
+    if (status == 1)
     {
-      v5 = MEMORY[0x277CBEC28];
+      null = MEMORY[0x277CBEC28];
     }
 
     else
     {
-      v5 = MEMORY[0x277CBEC38];
+      null = MEMORY[0x277CBEC38];
     }
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  return v5;
+  return null;
 }
 
 + (void)registerExpiredLinkReview
@@ -466,7 +466,7 @@ void __60__PPSocialHighlightMetrics_registerDeviceSettingsCollection__block_invo
   v5[2] = __53__PPSocialHighlightMetrics_registerExpiredLinkReview__block_invoke;
   v5[3] = &__block_descriptor_48_e33_v16__0__NSObject_OS_xpc_object__8l;
   v5[4] = a2;
-  v5[5] = a1;
+  v5[5] = self;
   xpc_activity_register("com.apple.proactive.PersonalizationPortrait.ExpiredLinkReview", v4, v5);
 }
 
@@ -733,23 +733,23 @@ BOOL __53__PPSocialHighlightMetrics_registerExpiredLinkReview__block_invoke_319(
   return [v3 compareDouble:v5 withDouble:v6] == -1;
 }
 
-+ (id)logExpiredLinkStatsWithHighlights:(id)a3 shouldContinueBlock:(id)a4
++ (id)logExpiredLinkStatsWithHighlights:(id)highlights shouldContinueBlock:(id)block
 {
-  v6 = a4;
-  v7 = [a3 sortedArrayUsingComparator:&__block_literal_global_310];
+  blockCopy = block;
+  v7 = [highlights sortedArrayUsingComparator:&__block_literal_global_310];
   v8 = +[PPConfiguration sharedInstance];
   [v8 socialHighlightFeedbackDeletionInterval];
   v9 = [PPSocialHighlightMetrics feedbackTypeCountsByHighlightIdentifierInInterval:0 forTVOS:?];
 
-  if (v6[2](v6))
+  if (blockCopy[2](blockCopy))
   {
     v10 = +[PPConfiguration sharedInstance];
     [v10 socialHighlightFeedbackDeletionInterval];
     v11 = [PPSocialHighlightMetrics feedbackTypeCountsByHighlightIdentifierInInterval:1 forTVOS:?];
 
-    if (v6[2](v6))
+    if (blockCopy[2](blockCopy))
     {
-      v12 = [a1 sendLinkExpiredMessagesForFeedbackCountsByHighlightId:v9 tvFeedbackCountsByHighlightId:v11 highlights:v7];
+      v12 = [self sendLinkExpiredMessagesForFeedbackCountsByHighlightId:v9 tvFeedbackCountsByHighlightId:v11 highlights:v7];
       goto LABEL_10;
     }
 
@@ -789,30 +789,30 @@ uint64_t __82__PPSocialHighlightMetrics_logExpiredLinkStatsWithHighlights_should
   return [v4 compareDouble:v7 withDouble:v9];
 }
 
-+ (id)sendLinkExpiredMessagesForFeedbackCountsByHighlightId:(id)a3 tvFeedbackCountsByHighlightId:(id)a4 highlights:(id)a5
++ (id)sendLinkExpiredMessagesForFeedbackCountsByHighlightId:(id)id tvFeedbackCountsByHighlightId:(id)highlightId highlights:(id)highlights
 {
   v42 = *MEMORY[0x277D85DE8];
-  v35 = a3;
-  v34 = a4;
-  v9 = a5;
-  if (![v9 count])
+  idCopy = id;
+  highlightIdCopy = highlightId;
+  highlightsCopy = highlights;
+  if (![highlightsCopy count])
   {
-    v31 = [MEMORY[0x277CCA890] currentHandler];
-    [v31 handleFailureInMethod:a2 object:a1 file:@"PPSocialHighlightMetrics.m" lineNumber:903 description:{@"Invalid parameter not satisfying: %@", @"highlights.count > 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPSocialHighlightMetrics.m" lineNumber:903 description:{@"Invalid parameter not satisfying: %@", @"highlights.count > 0"}];
   }
 
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v10 = v9;
+  v10 = highlightsCopy;
   v11 = [v10 countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (!v11)
   {
 
 LABEL_16:
-    v28 = [MEMORY[0x277CCA890] currentHandler];
-    [v28 handleFailureInMethod:a2 object:a1 file:@"PPSocialHighlightMetrics.m" lineNumber:913 description:{@"This value must not be nil, as the highlight array has contents."}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PPSocialHighlightMetrics.m" lineNumber:913 description:{@"This value must not be nil, as the highlight array has contents."}];
 
     v13 = 0;
     goto LABEL_17;
@@ -820,7 +820,7 @@ LABEL_16:
 
   v12 = v11;
   v32 = a2;
-  v33 = a1;
+  selfCopy = self;
   v13 = 0;
   v14 = *v38;
   do
@@ -836,22 +836,22 @@ LABEL_16:
 
       v16 = *(*(&v37 + 1) + 8 * v15);
       v17 = objc_autoreleasePoolPush();
-      v18 = [v16 highlightIdentifier];
-      if (v18)
+      highlightIdentifier = [v16 highlightIdentifier];
+      if (highlightIdentifier)
       {
-        v19 = v18;
-        v20 = [v16 hasContentCreationSecondsSinceReferenceDate];
+        v19 = highlightIdentifier;
+        hasContentCreationSecondsSinceReferenceDate = [v16 hasContentCreationSecondsSinceReferenceDate];
 
-        if (v20)
+        if (hasContentCreationSecondsSinceReferenceDate)
         {
           v21 = v14;
           v22 = v13;
-          v23 = [v16 highlightIdentifier];
-          v24 = [v34 objectForKeyedSubscript:v23];
+          highlightIdentifier2 = [v16 highlightIdentifier];
+          v24 = [highlightIdCopy objectForKeyedSubscript:highlightIdentifier2];
           [PPSocialHighlightMetrics logLinkExpiredMetricsForHighlight:v16 feedbackCountsByClient:v24 forTVOS:1];
 
-          v25 = [v16 highlightIdentifier];
-          v26 = [v35 objectForKeyedSubscript:v25];
+          highlightIdentifier3 = [v16 highlightIdentifier];
+          v26 = [idCopy objectForKeyedSubscript:highlightIdentifier3];
           [PPSocialHighlightMetrics logLinkExpiredMetricsForHighlight:v16 feedbackCountsByClient:v26 forTVOS:0];
 
           v27 = MEMORY[0x277CCABB0];
@@ -874,7 +874,7 @@ LABEL_16:
   while (v12);
 
   a2 = v32;
-  a1 = v33;
+  self = selfCopy;
   if (!v13)
   {
     goto LABEL_16;
@@ -1061,7 +1061,7 @@ void __86__PPSocialHighlightMetrics_feedbackTypeCountsByHighlightIdentifierInInt
   v5[1] = 3221225472;
   v5[2] = __46__PPSocialHighlightMetrics_registerCountLinks__block_invoke;
   v5[3] = &__block_descriptor_48_e33_v16__0__NSObject_OS_xpc_object__8l;
-  v5[4] = a1;
+  v5[4] = self;
   v5[5] = a2;
   xpc_activity_register("com.apple.proactive.PersonalizationPortrait.LinkStatusGeneration", v4, v5);
 }
@@ -1649,7 +1649,7 @@ LABEL_97:
   v5[2] = __55__PPSocialHighlightMetrics_registerLogConsumedByClient__block_invoke;
   v5[3] = &__block_descriptor_48_e33_v16__0__NSObject_OS_xpc_object__8l;
   v5[4] = a2;
-  v5[5] = a1;
+  v5[5] = self;
   xpc_activity_register("com.apple.proactive.PersonalizationPortrait.FeedbackStreamReviewed", v4, v5);
 }
 
@@ -1750,12 +1750,12 @@ LABEL_4:
   return 1;
 }
 
-+ (void)logConsumptionByClientWithShouldContinueBlock:(id)a3
++ (void)logConsumptionByClientWithShouldContinueBlock:(id)block
 {
   v81 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v5 = +[PPSettings sharedInstance];
-  v6 = [v5 hasWrittenSharedWithYouContentConsumed];
+  hasWrittenSharedWithYouContentConsumed = [v5 hasWrittenSharedWithYouContentConsumed];
 
   v7 = objc_alloc(MEMORY[0x277CBEAA8]);
   v8 = +[PPConfiguration sharedInstance];
@@ -1780,40 +1780,40 @@ LABEL_4:
   v71[3] = &unk_278973EE8;
   v58 = v14;
   v72 = v58;
-  v74 = v6;
-  v17 = v4;
+  v74 = hasWrittenSharedWithYouContentConsumed;
+  v17 = blockCopy;
   v73 = v17;
   v18 = [v16 sinkWithCompletion:&__block_literal_global_212 shouldContinue:v71];
 
   if (v17[2](v17))
   {
-    v19 = [a1 iMessageBucketDescriptionWithShouldContinueBlock:v17];
+    v19 = [self iMessageBucketDescriptionWithShouldContinueBlock:v17];
     if (v17[2](v17))
     {
-      v20 = [a1 SMSBucketDescriptionWithShouldContinueBlock:v17];
+      v20 = [self SMSBucketDescriptionWithShouldContinueBlock:v17];
       if (v17[2](v17))
       {
         v44 = v15;
         v45 = v13;
-        v61 = [a1 hasSentIMessageWithShouldContinueBlock:v17];
+        v61 = [self hasSentIMessageWithShouldContinueBlock:v17];
         if (v17[2](v17))
         {
-          v21 = [a1 hasSentSMSWithShouldContinueBlock:v17];
+          v21 = [self hasSentSMSWithShouldContinueBlock:v17];
           if (v17[2](v17))
           {
             v68 = 0u;
             v69 = 0u;
             v66 = 0u;
             v67 = 0u;
-            v22 = [v58 keyEnumerator];
-            v48 = [v22 countByEnumeratingWithState:&v66 objects:v80 count:16];
+            keyEnumerator = [v58 keyEnumerator];
+            v48 = [keyEnumerator countByEnumeratingWithState:&v66 objects:v80 count:16];
             if (!v48)
             {
 
               goto LABEL_56;
             }
 
-            obj = v22;
+            obj = keyEnumerator;
             v23 = 0;
             v47 = *v67;
             v57 = v21;
@@ -1880,8 +1880,8 @@ LABEL_13:
               v30 = v25;
               if (!v25)
               {
-                v55 = [MEMORY[0x277CBEB68] null];
-                v30 = v55;
+                null = [MEMORY[0x277CBEB68] null];
+                v30 = null;
               }
 
               v78[0] = v30;
@@ -1897,8 +1897,8 @@ LABEL_13:
               v35 = v28;
               if (!v28)
               {
-                v54 = [MEMORY[0x277CBEB68] null];
-                v35 = v54;
+                null2 = [MEMORY[0x277CBEB68] null];
+                v35 = null2;
               }
 
               v78[3] = v35;
@@ -1906,8 +1906,8 @@ LABEL_13:
               v36 = v27;
               if (!v27)
               {
-                v53 = [MEMORY[0x277CBEB68] null];
-                v36 = v53;
+                null3 = [MEMORY[0x277CBEB68] null];
+                v36 = null3;
               }
 
               v78[4] = v36;
@@ -1915,8 +1915,8 @@ LABEL_13:
               v37 = v61;
               if (!v61)
               {
-                v52 = [MEMORY[0x277CBEB68] null];
-                v37 = v52;
+                null4 = [MEMORY[0x277CBEB68] null];
+                v37 = null4;
               }
 
               v78[5] = v37;
@@ -1924,8 +1924,8 @@ LABEL_13:
               v38 = v57;
               if (!v57)
               {
-                v51 = [MEMORY[0x277CBEB68] null];
-                v38 = v51;
+                null5 = [MEMORY[0x277CBEB68] null];
+                v38 = null5;
               }
 
               v78[6] = v38;
@@ -2170,7 +2170,7 @@ void __74__PPSocialHighlightMetrics_logConsumptionByClientWithShouldContinueBloc
   v5[2] = __52__PPSocialHighlightMetrics_registerClientLinkStatus__block_invoke;
   v5[3] = &__block_descriptor_48_e33_v16__0__NSObject_OS_xpc_object__8l;
   v5[4] = a2;
-  v5[5] = a1;
+  v5[5] = self;
   xpc_activity_register("com.apple.proactive.PersonalizationPortrait.ClientLinkStatus", v4, v5);
 }
 
@@ -2576,16 +2576,16 @@ id __52__PPSocialHighlightMetrics_registerClientLinkStatus__block_invoke_182(voi
   return v10;
 }
 
-+ (void)_recordTipsContentEvent:(id)a3
++ (void)_recordTipsContentEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = [MEMORY[0x277D425A0] autoreleasingSerialQueueWithLabel:"PPSocialHighlight-tipsContent" qosClass:5];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__PPSocialHighlightMetrics__recordTipsContentEvent___block_invoke;
   block[3] = &unk_2789790A8;
-  v7 = v3;
-  v5 = v3;
+  v7 = eventCopy;
+  v5 = eventCopy;
   dispatch_async(v4, block);
 }
 
@@ -2624,7 +2624,7 @@ void __52__PPSocialHighlightMetrics__recordTipsContentEvent___block_invoke(uint6
   v5[1] = 3221225472;
   v5[2] = __67__PPSocialHighlightMetrics_registerSampledUnsupportedClientLogging__block_invoke;
   v5[3] = &__block_descriptor_48_e33_v16__0__NSObject_OS_xpc_object__8l;
-  v5[4] = a1;
+  v5[4] = self;
   v5[5] = a2;
   xpc_activity_register("com.apple.proactive.PersonalizationPortrait.UnsupportedClient", v4, v5);
 }
@@ -2801,19 +2801,19 @@ LABEL_4:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)unsupportedClientsFromPastDayWithShouldContinueBlock:(id)a3
++ (id)unsupportedClientsFromPastDayWithShouldContinueBlock:(id)block
 {
   v58 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_autoreleasePoolPush();
   v5 = objc_alloc(MEMORY[0x277CBEB98]);
   v6 = *MEMORY[0x277D3A5C8];
   v41 = [v5 initWithObjects:{*MEMORY[0x277D3A5B8], *MEMORY[0x277D3A5C8], *MEMORY[0x277D3A5B0], *MEMORY[0x277D3A5E0], 0}];
   objc_autoreleasePoolPop(v4);
-  v7 = [PPSocialHighlightMetrics highlightsReceivedInInterval:v3 shouldContinueBlock:86400.0];
+  v7 = [PPSocialHighlightMetrics highlightsReceivedInInterval:blockCopy shouldContinueBlock:86400.0];
   if (v7)
   {
-    v39 = v3;
+    v39 = blockCopy;
     v40 = objc_opt_new();
     v50 = 0u;
     v51 = 0u;
@@ -2841,22 +2841,22 @@ LABEL_4:
           }
 
           v14 = *(*(&v50 + 1) + 8 * v13);
-          v15 = [v14 resourceUrl];
+          resourceUrl = [v14 resourceUrl];
 
-          if (v15)
+          if (resourceUrl)
           {
             v16 = objc_alloc(*(v12 + 3008));
-            v17 = [v14 resourceUrl];
-            v18 = [v16 initWithString:v17];
+            resourceUrl2 = [v14 resourceUrl];
+            v18 = [v16 initWithString:resourceUrl2];
 
             if (v18)
             {
-              v19 = [v14 resolvedUrl];
-              if (v19)
+              resolvedUrl = [v14 resolvedUrl];
+              if (resolvedUrl)
               {
                 v20 = objc_alloc(*(v12 + 3008));
-                v21 = [v14 resolvedUrl];
-                v22 = [v20 initWithString:v21];
+                resolvedUrl2 = [v14 resolvedUrl];
+                v22 = [v20 initWithString:resolvedUrl2];
               }
 
               else
@@ -2891,12 +2891,12 @@ LABEL_4:
                       v31 = *(*(&v46 + 1) + 8 * i);
                       if ([v31 isEnabled])
                       {
-                        v32 = [v31 targetApplicationRecord];
-                        v33 = [v32 applicationIdentifier];
+                        targetApplicationRecord = [v31 targetApplicationRecord];
+                        applicationIdentifier = [targetApplicationRecord applicationIdentifier];
 
-                        if (v33)
+                        if (applicationIdentifier)
                         {
-                          [v25 addObject:v33];
+                          [v25 addObject:applicationIdentifier];
                         }
                       }
                     }
@@ -2932,9 +2932,9 @@ LABEL_4:
             v18 = pp_social_highlights_log_handle();
             if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
             {
-              v23 = [v14 attributionIdentifier];
+              attributionIdentifier = [v14 attributionIdentifier];
               *buf = 138412290;
-              v56 = v23;
+              v56 = attributionIdentifier;
               _os_log_error_impl(&dword_23224A000, v18, OS_LOG_TYPE_ERROR, "PPSocialHighlightMetrics: encountered highlight (attribution ID: %@) without a valid resource URL", buf, 0xCu);
             }
           }
@@ -2950,7 +2950,7 @@ LABEL_4:
     }
 
     v7 = v38;
-    v3 = v39;
+    blockCopy = v39;
   }
 
   else
@@ -2996,13 +2996,13 @@ uint64_t __59__PPSocialHighlightMetrics_countAllLinksReceivedInMessages__block_i
   return result;
 }
 
-+ (id)allHighlightIdentifiersReceivedWithShouldContinueBlock:(id)a3
++ (id)allHighlightIdentifiersReceivedWithShouldContinueBlock:(id)block
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  blockCopy = block;
   v4 = +[PPConfiguration sharedInstance];
   [v4 socialHighlightMetricReportingInterval];
-  v5 = [PPSocialHighlightMetrics highlightsReceivedInInterval:v3 shouldContinueBlock:?];
+  v5 = [PPSocialHighlightMetrics highlightsReceivedInInterval:blockCopy shouldContinueBlock:?];
 
   if (v5)
   {
@@ -3027,12 +3027,12 @@ uint64_t __59__PPSocialHighlightMetrics_countAllLinksReceivedInMessages__block_i
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
-          v13 = [v12 highlightIdentifier];
+          highlightIdentifier = [v12 highlightIdentifier];
 
-          if (v13)
+          if (highlightIdentifier)
           {
-            v14 = [v12 highlightIdentifier];
-            [v6 addObject:v14];
+            highlightIdentifier2 = [v12 highlightIdentifier];
+            [v6 addObject:highlightIdentifier2];
           }
         }
 
@@ -3053,13 +3053,13 @@ uint64_t __59__PPSocialHighlightMetrics_countAllLinksReceivedInMessages__block_i
   return v6;
 }
 
-+ (id)highlightsReceivedInInterval:(double)a3 shouldContinueBlock:(id)a4
++ (id)highlightsReceivedInInterval:(double)interval shouldContinueBlock:(id)block
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  blockCopy = block;
   v6 = objc_opt_new();
   v21 = 0;
-  v7 = [v6 autoDonatingChatsWithShouldContinueBlock:v5 error:&v21];
+  v7 = [v6 autoDonatingChatsWithShouldContinueBlock:blockCopy error:&v21];
   v8 = v21;
   location = v8;
   if (!v7)
@@ -3076,7 +3076,7 @@ uint64_t __59__PPSocialHighlightMetrics_countAllLinksReceivedInMessages__block_i
     goto LABEL_10;
   }
 
-  if ((v5[2](v5) & 1) == 0)
+  if ((blockCopy[2](blockCopy) & 1) == 0)
   {
     v10 = pp_social_highlights_log_handle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -3090,7 +3090,7 @@ LABEL_10:
     goto LABEL_19;
   }
 
-  v9 = [v6 sharedContentFromChats:v7 dateRange:0 applicationIdentifiers:&location error:a3];
+  v9 = [v6 sharedContentFromChats:v7 dateRange:0 applicationIdentifiers:&location error:interval];
   v10 = v9;
   if (v9)
   {
@@ -3167,16 +3167,16 @@ id __77__PPSocialHighlightMetrics_highlightsReceivedInInterval_shouldContinueBlo
   return v11;
 }
 
-+ (BOOL)_queryLinksWithFetchAttributes:(id)a3 interval:(double)a4 handler:(id)a5
++ (BOOL)_queryLinksWithFetchAttributes:(id)attributes interval:(double)interval handler:(id)handler
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  attributesCopy = attributes;
+  handlerCopy = handler;
   v9 = objc_opt_new();
   [v9 setReason:@"SHMetrics"];
   [v9 setDisableBlockingOnIndex:1];
   [v9 setMaxCount:500];
-  [v9 setFetchAttributes:v7];
+  [v9 setFetchAttributes:attributesCopy];
   [v9 setLowPriority:1];
   [v9 setReason:@"reason:PPSocialHighlightMetrics-1 code:1"];
   v39[0] = *MEMORY[0x277CCA1A0];
@@ -3185,7 +3185,7 @@ id __77__PPSocialHighlightMetrics_highlightsReceivedInInterval_shouldContinueBlo
 
   v11 = objc_alloc(MEMORY[0x277CCACA8]);
   v12 = [v11 initWithFormat:@"%@=%@", *MEMORY[0x277CC2DB8], @"lnk"];
-  v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"kMDItemContentCreationDate>=$time.now(-%.f)", *&a4];
+  v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"kMDItemContentCreationDate>=$time.now(-%.f)", *&interval];
   v38[0] = v12;
   v38[1] = v13;
   v38[2] = @"URL=*";
@@ -3205,7 +3205,7 @@ id __77__PPSocialHighlightMetrics_highlightsReceivedInInterval_shouldContinueBlo
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v37 count:1];
   [v17 setBundleIDs:v18];
 
-  [v17 setFoundItemsHandler:v8];
+  [v17 setFoundItemsHandler:handlerCopy];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v33 = 0x3032000000;
@@ -3249,11 +3249,11 @@ void __76__PPSocialHighlightMetrics__queryLinksWithFetchAttributes_interval_hand
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (id)_countSentMessagesInLastWeekMatchingChatType:(id)a3 shouldContinueBlock:(id)a4
++ (id)_countSentMessagesInLastWeekMatchingChatType:(id)type shouldContinueBlock:(id)block
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  typeCopy = type;
+  blockCopy = block;
   v7 = objc_opt_new();
   [v7 setReason:@"SHMetrics"];
   [v7 setDisableBlockingOnIndex:1];
@@ -3268,8 +3268,8 @@ void __76__PPSocialHighlightMetrics__queryLinksWithFetchAttributes_interval_hand
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v41 count:1];
   [v7 setProtectionClasses:v9];
 
-  v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"com_apple_mobilesms_service=%@", v5];
-  v40[0] = v10;
+  typeCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"com_apple_mobilesms_service=%@", typeCopy];
+  v40[0] = typeCopy;
   v40[1] = @"kMDItemContentCreationDate>=$time.now(-7d)";
   v40[2] = @"com_apple_mobilesms_fromMe=1";
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:3];
@@ -3328,7 +3328,7 @@ void __76__PPSocialHighlightMetrics__queryLinksWithFetchAttributes_interval_hand
     }
   }
 
-  while ((v6[2](v6) & 1) != 0);
+  while ((blockCopy[2](blockCopy) & 1) != 0);
   v18 = pp_default_log_handle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
@@ -3379,12 +3379,12 @@ void __93__PPSocialHighlightMetrics__countSentMessagesInLastWeekMatchingChatType
   +[PPSocialHighlightMetrics registerExpiredLinkReview];
 }
 
-+ (void)logFeedbackForAttribution:(id)a3 type:(unint64_t)a4 client:(id)a5
++ (void)logFeedbackForAttribution:(id)attribution type:(unint64_t)type client:(id)client
 {
   v18[3] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [PPSocialHighlightStorage attributionFeedbackTypeForAttributionFeedbackType:a4];
+  attributionCopy = attribution;
+  clientCopy = client;
+  v9 = [PPSocialHighlightStorage attributionFeedbackTypeForAttributionFeedbackType:type];
   if (v9 >= 0xC)
   {
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", v9];
@@ -3404,19 +3404,19 @@ void __93__PPSocialHighlightMetrics__countSentMessagesInLastWeekMatchingChatType
 
   v12 = objc_autoreleasePoolPush();
   v17[0] = @"clientIdentifier";
-  v13 = v8;
-  if (!v8)
+  null = clientCopy;
+  if (!clientCopy)
   {
-    v13 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v18[0] = v13;
+  v18[0] = null;
   v18[1] = @"attributionFeedbackDomain";
   v17[1] = @"feedbackDomain";
   v17[2] = @"feedbackType";
   v18[2] = v10;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:3];
-  if (!v8)
+  if (!clientCopy)
   {
   }
 
@@ -3426,12 +3426,12 @@ void __93__PPSocialHighlightMetrics__countSentMessagesInLastWeekMatchingChatType
   v15 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)logFeedbackForHighlight:(id)a3 type:(unint64_t)a4 client:(id)a5
++ (void)logFeedbackForHighlight:(id)highlight type:(unint64_t)type client:(id)client
 {
   v18[3] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [PPSocialHighlightStorage unifiedFeedbackTypeForHighlightFeedbackType:a4];
+  highlightCopy = highlight;
+  clientCopy = client;
+  v9 = [PPSocialHighlightStorage unifiedFeedbackTypeForHighlightFeedbackType:type];
   if (v9 >= 0xC)
   {
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", v9];
@@ -3451,19 +3451,19 @@ void __93__PPSocialHighlightMetrics__countSentMessagesInLastWeekMatchingChatType
 
   v12 = objc_autoreleasePoolPush();
   v17[0] = @"clientIdentifier";
-  v13 = v8;
-  if (!v8)
+  null = clientCopy;
+  if (!clientCopy)
   {
-    v13 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v18[0] = v13;
+  v18[0] = null;
   v18[1] = @"engagementFeedbackDomain";
   v17[1] = @"feedbackDomain";
   v17[2] = @"feedbackType";
   v18[2] = v10;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:3];
-  if (!v8)
+  if (!clientCopy)
   {
   }
 

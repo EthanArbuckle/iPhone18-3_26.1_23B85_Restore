@@ -1,5 +1,5 @@
 @interface HMBLocalSQLContextRowBlock
-- (HMBLocalSQLContextRowBlock)initWithBlockRow:(unint64_t)a3 type:(unint64_t)a4 options:(id)a5;
+- (HMBLocalSQLContextRowBlock)initWithBlockRow:(unint64_t)row type:(unint64_t)type options:(id)options;
 - (id)attributeDescriptions;
 @end
 
@@ -16,8 +16,8 @@
   v8 = [v6 initWithName:@"Type" value:v7];
   v16[1] = v8;
   v9 = objc_alloc(MEMORY[0x277D0F778]);
-  v10 = [(HMBLocalSQLContextRowBlock *)self optionsData];
-  if (v10)
+  optionsData = [(HMBLocalSQLContextRowBlock *)self optionsData];
+  if (optionsData)
   {
     v11 = @"<not nil>";
   }
@@ -36,18 +36,18 @@
   return v13;
 }
 
-- (HMBLocalSQLContextRowBlock)initWithBlockRow:(unint64_t)a3 type:(unint64_t)a4 options:(id)a5
+- (HMBLocalSQLContextRowBlock)initWithBlockRow:(unint64_t)row type:(unint64_t)type options:(id)options
 {
-  v9 = a5;
+  optionsCopy = options;
   v13.receiver = self;
   v13.super_class = HMBLocalSQLContextRowBlock;
   v10 = [(HMBLocalSQLContextRowBlock *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_blockRow = a3;
-    v10->_type = a4;
-    objc_storeStrong(&v10->_optionsData, a5);
+    v10->_blockRow = row;
+    v10->_type = type;
+    objc_storeStrong(&v10->_optionsData, options);
   }
 
   return v11;

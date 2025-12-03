@@ -1,16 +1,16 @@
 @interface VCCaptionsTranscriptionBlob
-- (BOOL)isEqual:(id)a3;
-- (VCCaptionsTranscriptionBlob)initWithSFTranscription:(id)a3 final:(BOOL)a4 isLocal:(BOOL)a5 utteranceNumber:(unsigned int)a6 updateNumber:(unsigned int)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (VCCaptionsTranscriptionBlob)initWithSFTranscription:(id)transcription final:(BOOL)final isLocal:(BOOL)local utteranceNumber:(unsigned int)number updateNumber:(unsigned int)updateNumber;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addSegments:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addSegments:(id)segments;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsLocal:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsLocal:(BOOL)local;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCCaptionsTranscriptionBlob
@@ -24,9 +24,9 @@
   [(VCCaptionsTranscriptionBlob *)&v3 dealloc];
 }
 
-- (void)setHasIsLocal:(BOOL)a3
+- (void)setHasIsLocal:(BOOL)local
 {
-  if (a3)
+  if (local)
   {
     v3 = 2;
   }
@@ -39,7 +39,7 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addSegments:(id)a3
+- (void)addSegments:(id)segments
 {
   segments = self->_segments;
   if (!segments)
@@ -48,7 +48,7 @@
     self->_segments = segments;
   }
 
-  [(NSMutableArray *)segments addObject:a3];
+  [(NSMutableArray *)segments addObject:segments];
 }
 
 - (id)description
@@ -62,19 +62,19 @@
 - (id)dictionaryRepresentation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_utteranceNumber), @"utteranceNumber"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_updateNumber), @"updateNumber"}];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_utteranceNumber), @"utteranceNumber"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_updateNumber), @"updateNumber"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_isLocal), @"isLocal"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_isLocal), @"isLocal"}];
     has = self->_has;
   }
 
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_isFinal), @"isFinal"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_isFinal), @"isFinal"}];
   }
 
   if ([(NSMutableArray *)self->_segments count])
@@ -108,13 +108,13 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"segments"];
+    [dictionary setObject:v5 forKey:@"segments"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
   PBDataWriterWriteUint32Field();
@@ -160,43 +160,43 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 5) = self->_utteranceNumber;
-  *(a3 + 4) = self->_updateNumber;
+  *(to + 5) = self->_utteranceNumber;
+  *(to + 4) = self->_updateNumber;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 25) = self->_isLocal;
-    *(a3 + 28) |= 2u;
+    *(to + 25) = self->_isLocal;
+    *(to + 28) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(a3 + 24) = self->_isFinal;
-    *(a3 + 28) |= 1u;
+    *(to + 24) = self->_isFinal;
+    *(to + 28) |= 1u;
   }
 
   if ([(VCCaptionsTranscriptionBlob *)self segmentsCount])
   {
-    [a3 clearSegments];
-    v6 = [(VCCaptionsTranscriptionBlob *)self segmentsCount];
-    if (v6)
+    [to clearSegments];
+    segmentsCount = [(VCCaptionsTranscriptionBlob *)self segmentsCount];
+    if (segmentsCount)
     {
-      v7 = v6;
+      v7 = segmentsCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addSegments:{-[VCCaptionsTranscriptionBlob segmentsAtIndex:](self, "segmentsAtIndex:", i)}];
+        [to addSegments:{-[VCCaptionsTranscriptionBlob segmentsAtIndex:](self, "segmentsAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   *(v5 + 20) = self->_utteranceNumber;
   *(v5 + 16) = self->_updateNumber;
@@ -233,7 +233,7 @@
           objc_enumerationMutation(segments);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:zone];
         [v6 addSegments:v13];
       }
 
@@ -246,42 +246,42 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
-  if (self->_utteranceNumber != *(a3 + 5) || self->_updateNumber != *(a3 + 4))
+  if (self->_utteranceNumber != *(equal + 5) || self->_updateNumber != *(equal + 4))
   {
     goto LABEL_19;
   }
 
-  v6 = *(a3 + 28);
+  v6 = *(equal + 28);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(a3 + 28) & 2) == 0)
+    if ((*(equal + 28) & 2) == 0)
     {
       goto LABEL_19;
     }
 
     if (self->_isLocal)
     {
-      if ((*(a3 + 25) & 1) == 0)
+      if ((*(equal + 25) & 1) == 0)
       {
         goto LABEL_19;
       }
     }
 
-    else if (*(a3 + 25))
+    else if (*(equal + 25))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(a3 + 28) & 2) != 0)
+  else if ((*(equal + 28) & 2) != 0)
   {
     goto LABEL_19;
   }
@@ -291,12 +291,12 @@
     goto LABEL_7;
   }
 
-  if ((*(a3 + 28) & 1) == 0)
+  if ((*(equal + 28) & 1) == 0)
   {
     goto LABEL_19;
   }
 
-  v6 = *(a3 + 24);
+  v6 = *(equal + 24);
   if (!self->_isFinal)
   {
 LABEL_7:
@@ -310,14 +310,14 @@ LABEL_19:
     return v5;
   }
 
-  if ((*(a3 + 24) & 1) == 0)
+  if ((*(equal + 24) & 1) == 0)
   {
     goto LABEL_19;
   }
 
 LABEL_8:
   segments = self->_segments;
-  if (segments | *(a3 + 1))
+  if (segments | *(equal + 1))
   {
 
     LOBYTE(v5) = [(NSMutableArray *)segments isEqual:?];
@@ -360,22 +360,22 @@ LABEL_6:
   return (2654435761 * updateNumber) ^ (2654435761 * utteranceNumber) ^ v8 ^ v9 ^ [(NSMutableArray *)self->_segments hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v15 = *MEMORY[0x1E69E9840];
-  self->_utteranceNumber = *(a3 + 5);
-  self->_updateNumber = *(a3 + 4);
-  v4 = *(a3 + 28);
+  self->_utteranceNumber = *(from + 5);
+  self->_updateNumber = *(from + 4);
+  v4 = *(from + 28);
   if ((v4 & 2) != 0)
   {
-    self->_isLocal = *(a3 + 25);
+    self->_isLocal = *(from + 25);
     *&self->_has |= 2u;
-    v4 = *(a3 + 28);
+    v4 = *(from + 28);
   }
 
   if (v4)
   {
-    self->_isFinal = *(a3 + 24);
+    self->_isFinal = *(from + 24);
     *&self->_has |= 1u;
   }
 
@@ -383,7 +383,7 @@ LABEL_6:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(a3 + 1);
+  v5 = *(from + 1);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v6)
   {
@@ -408,15 +408,15 @@ LABEL_6:
   }
 }
 
-- (VCCaptionsTranscriptionBlob)initWithSFTranscription:(id)a3 final:(BOOL)a4 isLocal:(BOOL)a5 utteranceNumber:(unsigned int)a6 updateNumber:(unsigned int)a7
+- (VCCaptionsTranscriptionBlob)initWithSFTranscription:(id)transcription final:(BOOL)final isLocal:(BOOL)local utteranceNumber:(unsigned int)number updateNumber:(unsigned int)updateNumber
 {
   v28 = *MEMORY[0x1E69E9840];
   v22.receiver = self;
   v22.super_class = VCCaptionsTranscriptionBlob;
-  v10 = [(VCCaptionsTranscriptionBlob *)&v22 init:a3];
+  v10 = [(VCCaptionsTranscriptionBlob *)&v22 init:transcription];
   if (v10)
   {
-    v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(objc_msgSend(a3, "segments"), "count")}];
+    v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(objc_msgSend(transcription, "segments"), "count")}];
     v10->_segments = v11;
     if (!v11)
     {
@@ -425,14 +425,14 @@ LABEL_12:
       return 0;
     }
 
-    v21 = a5;
-    v12 = [objc_msgSend(a3 "segments")];
+    localCopy = local;
+    v12 = [objc_msgSend(transcription "segments")];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v13 = [a3 segments];
-    v14 = [v13 countByEnumeratingWithState:&v24 objects:v23 count:16];
+    segments = [transcription segments];
+    v14 = [segments countByEnumeratingWithState:&v24 objects:v23 count:16];
     if (v14)
     {
       v15 = v14;
@@ -443,7 +443,7 @@ LABEL_5:
       {
         if (*v25 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(segments);
         }
 
         v18 = [[VCCaptionsSegmentBlob alloc] initWithSFTranscriptionSegment:*(*(&v24 + 1) + 8 * v17) isLast:*(*(&v24 + 1) + 8 * v17) == v12];
@@ -457,7 +457,7 @@ LABEL_5:
 
         if (v15 == ++v17)
         {
-          v15 = [v13 countByEnumeratingWithState:&v24 objects:v23 count:16];
+          v15 = [segments countByEnumeratingWithState:&v24 objects:v23 count:16];
           if (v15)
           {
             goto LABEL_5;
@@ -468,9 +468,9 @@ LABEL_5:
       }
     }
 
-    v10->_isFinal = a4;
+    v10->_isFinal = final;
     *&v10->_has |= 1u;
-    v10->_isLocal = v21;
+    v10->_isLocal = localCopy;
     *&v10->_has |= 2u;
   }
 

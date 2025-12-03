@@ -1,31 +1,31 @@
 @interface TSWPStorageStyler
-- (TSWPStorageStyler)initWithStorage:(id)a3 attributeArrayKind:(unint64_t)a4;
-- (id)replacementStyleForStyle:(id)a3 range:(_NSRange)a4;
-- (void)applyStyle:(id)a3 range:(_NSRange)a4 undoTransaction:(TSWPStorageTransaction *)a5;
-- (void)performStylingInRange:(_NSRange)a3 undoTransaction:(TSWPStorageTransaction *)a4;
+- (TSWPStorageStyler)initWithStorage:(id)storage attributeArrayKind:(unint64_t)kind;
+- (id)replacementStyleForStyle:(id)style range:(_NSRange)range;
+- (void)applyStyle:(id)style range:(_NSRange)range undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)performStylingInRange:(_NSRange)range undoTransaction:(TSWPStorageTransaction *)transaction;
 @end
 
 @implementation TSWPStorageStyler
 
-- (TSWPStorageStyler)initWithStorage:(id)a3 attributeArrayKind:(unint64_t)a4
+- (TSWPStorageStyler)initWithStorage:(id)storage attributeArrayKind:(unint64_t)kind
 {
-  v7 = a3;
+  storageCopy = storage;
   v11.receiver = self;
   v11.super_class = TSWPStorageStyler;
   v8 = [(TSWPStorageStyler *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_storage, a3);
-    v9->_attributeArrayKind = a4;
+    objc_storeStrong(&v8->_storage, storage);
+    v9->_attributeArrayKind = kind;
   }
 
   return v9;
 }
 
-- (id)replacementStyleForStyle:(id)a3 range:(_NSRange)a4
+- (id)replacementStyleForStyle:(id)style range:(_NSRange)range
 {
-  v4 = a3;
+  styleCopy = style;
   v5 = MEMORY[0x277D81150];
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSWPStorageStyler replacementStyleForStyle:range:]");
   v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPStorageStyler.mm");
@@ -45,9 +45,9 @@
   objc_exception_throw(v22);
 }
 
-- (void)applyStyle:(id)a3 range:(_NSRange)a4 undoTransaction:(TSWPStorageTransaction *)a5
+- (void)applyStyle:(id)style range:(_NSRange)range undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  v5 = a3;
+  styleCopy = style;
   v6 = MEMORY[0x277D81150];
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSWPStorageStyler applyStyle:range:undoTransaction:]");
   v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPStorageStyler.mm");
@@ -67,15 +67,15 @@
   objc_exception_throw(v23);
 }
 
-- (void)performStylingInRange:(_NSRange)a3 undoTransaction:(TSWPStorageTransaction *)a4
+- (void)performStylingInRange:(_NSRange)range undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  if (a3.length)
+  if (range.length)
   {
-    length = a3.length;
-    location = a3.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = objc_msgSend_storage(self, a2, a3.location, v19.location, v19.length);
+      v8 = objc_msgSend_storage(self, a2, range.location, v19.location, v19.length);
       v11 = objc_msgSend_attributeArrayKind(self, v9, v10);
       TSWPAttributeEnumerator::TSWPAttributeEnumerator(&v20, v8, location, length, v11, 0);
 
@@ -104,7 +104,7 @@
         }
       }
 
-      objc_msgSend_applyStyle_range_undoTransaction_(self, v17.length, v16, v17.location, v17.length, a4);
+      objc_msgSend_applyStyle_range_undoTransaction_(self, v17.length, v16, v17.location, v17.length, transaction);
       if (v17.location + v17.length <= length + location)
       {
         v18 = length + location;

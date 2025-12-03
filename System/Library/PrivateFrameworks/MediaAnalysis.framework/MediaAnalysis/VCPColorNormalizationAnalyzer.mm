@@ -1,6 +1,6 @@
 @interface VCPColorNormalizationAnalyzer
 - (VCPColorNormalizationAnalyzer)init;
-- (int)analyzeCGImage:(CGImage *)a3 results:(id *)a4;
+- (int)analyzeCGImage:(CGImage *)image results:(id *)results;
 @end
 
 @implementation VCPColorNormalizationAnalyzer
@@ -27,14 +27,14 @@ id __37__VCPColorNormalizationAnalyzer_init__block_invoke()
   return v0;
 }
 
-- (int)analyzeCGImage:(CGImage *)a3 results:(id *)a4
+- (int)analyzeCGImage:(CGImage *)image results:(id *)results
 {
   v52 = *MEMORY[0x1E69E9840];
-  *a4 = 0;
-  v34 = [(VCPObjectPool *)self->_sessionPool getObject];
+  *results = 0;
+  getObject = [(VCPObjectPool *)self->_sessionPool getObject];
   v6 = objc_alloc(MEMORY[0x1E69845B8]);
-  v7 = [v34 object];
-  v8 = [v6 initWithCGImage:a3 options:MEMORY[0x1E695E0F8] session:v7];
+  object = [getObject object];
+  v8 = [v6 initWithCGImage:image options:MEMORY[0x1E695E0F8] session:object];
 
   v33 = v8;
   if (v8)
@@ -53,8 +53,8 @@ id __37__VCPColorNormalizationAnalyzer_init__block_invoke()
         v32 = v10;
         if (DeviceHasANE())
         {
-          v13 = [MEMORY[0x1E6984608] defaultANEDevice];
-          [v10 setProcessingDevice:v13];
+          defaultANEDevice = [MEMORY[0x1E6984608] defaultANEDevice];
+          [v10 setProcessingDevice:defaultANEDevice];
         }
 
         v47 = v10;
@@ -65,18 +65,18 @@ id __37__VCPColorNormalizationAnalyzer_init__block_invoke()
 
         if (v15)
         {
-          v16 = [v10 results];
-          if ([v16 count])
+          results = [v10 results];
+          if ([results count])
           {
-            v17 = [MEMORY[0x1E695DF90] dictionary];
+            dictionary = [MEMORY[0x1E695DF90] dictionary];
             v37 = 0u;
             v38 = 0u;
             v35 = 0u;
             v36 = 0u;
-            v18 = [v16 objectAtIndexedSubscript:0];
-            v19 = [v18 adjustmentKeys];
+            v18 = [results objectAtIndexedSubscript:0];
+            adjustmentKeys = [v18 adjustmentKeys];
 
-            v20 = [v19 countByEnumeratingWithState:&v35 objects:v46 count:16];
+            v20 = [adjustmentKeys countByEnumeratingWithState:&v35 objects:v46 count:16];
             if (v20)
             {
               v21 = *v36;
@@ -86,22 +86,22 @@ id __37__VCPColorNormalizationAnalyzer_init__block_invoke()
                 {
                   if (*v36 != v21)
                   {
-                    objc_enumerationMutation(v19);
+                    objc_enumerationMutation(adjustmentKeys);
                   }
 
                   v23 = *(*(&v35 + 1) + 8 * i);
-                  v24 = [v16 objectAtIndexedSubscript:{0, v31}];
+                  v24 = [results objectAtIndexedSubscript:{0, v31}];
                   v25 = [v24 adjustmentValuesForKey:v23];
-                  [v17 setObject:v25 forKeyedSubscript:v23];
+                  [dictionary setObject:v25 forKeyedSubscript:v23];
                 }
 
-                v20 = [v19 countByEnumeratingWithState:&v35 objects:v46 count:16];
+                v20 = [adjustmentKeys countByEnumeratingWithState:&v35 objects:v46 count:16];
               }
 
               while (v20);
             }
 
-            v26 = MEMORY[0x1CCA954E0](v17, 0);
+            v26 = MEMORY[0x1CCA954E0](dictionary, 0);
             v44 = @"ColorNormalizationResults";
             v41 = @"colorNormalizationData";
             v42 = v26;
@@ -109,7 +109,7 @@ id __37__VCPColorNormalizationAnalyzer_init__block_invoke()
             v43 = v27;
             v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v43 count:1];
             v45 = v28;
-            *a4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
+            *results = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
 
             v29 = 0;
           }

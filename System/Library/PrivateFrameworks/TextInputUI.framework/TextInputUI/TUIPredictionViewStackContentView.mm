@@ -1,13 +1,13 @@
 @interface TUIPredictionViewStackContentView
-- (void)willRemoveSubview:(id)a3;
+- (void)willRemoveSubview:(id)subview;
 @end
 
 @implementation TUIPredictionViewStackContentView
 
-- (void)willRemoveSubview:(id)a3
+- (void)willRemoveSubview:(id)subview
 {
-  v3 = [(TUIPredictionViewStackContentView *)self superview];
-  [v3 setNeedsLayout];
+  superview = [(TUIPredictionViewStackContentView *)self superview];
+  [superview setNeedsLayout];
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface SignpostReporterAggregationKey
-- (BOOL)isEqual:(id)a3;
-- (SignpostReporterAggregationKey)initWithSubsystem:(id)a3 category:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (SignpostReporterAggregationKey)initWithSubsystem:(id)subsystem category:(id)category;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation SignpostReporterAggregationKey
 
-- (SignpostReporterAggregationKey)initWithSubsystem:(id)a3 category:(id)a4
+- (SignpostReporterAggregationKey)initWithSubsystem:(id)subsystem category:(id)category
 {
-  v7 = a3;
-  v8 = a4;
+  subsystemCopy = subsystem;
+  categoryCopy = category;
   v12.receiver = self;
   v12.super_class = SignpostReporterAggregationKey;
   v9 = [(SignpostReporterAggregationKey *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_subsystem, a3);
-    objc_storeStrong(&v10->_category, a4);
+    objc_storeStrong(&v9->_subsystem, subsystem);
+    objc_storeStrong(&v10->_category, category);
   }
 
   return v10;
@@ -27,21 +27,21 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SignpostReporterAggregationKey *)self subsystem];
-  v4 = [v3 hash];
-  v5 = [(SignpostReporterAggregationKey *)self category];
-  v6 = [v5 hash];
+  subsystem = [(SignpostReporterAggregationKey *)self subsystem];
+  v4 = [subsystem hash];
+  category = [(SignpostReporterAggregationKey *)self category];
+  v6 = [category hash];
 
   return v6 ^ v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [SignpostReporterAggregationKey allocWithZone:a3];
-  v5 = [(SignpostReporterAggregationKey *)self subsystem];
-  v6 = [v5 copy];
-  v7 = [(SignpostReporterAggregationKey *)self category];
-  v8 = [v7 copy];
+  v4 = [SignpostReporterAggregationKey allocWithZone:zone];
+  subsystem = [(SignpostReporterAggregationKey *)self subsystem];
+  v6 = [subsystem copy];
+  category = [(SignpostReporterAggregationKey *)self category];
+  v8 = [category copy];
   v9 = [(SignpostReporterAggregationKey *)v4 initWithSubsystem:v6 category:v8];
 
   return v9;
@@ -49,17 +49,17 @@
 
 - (id)description
 {
-  v3 = [(SignpostReporterAggregationKey *)self subsystem];
-  v4 = [(SignpostReporterAggregationKey *)self category];
-  v5 = [NSString stringWithFormat:@"%@/%@", v3, v4];
+  subsystem = [(SignpostReporterAggregationKey *)self subsystem];
+  category = [(SignpostReporterAggregationKey *)self category];
+  v5 = [NSString stringWithFormat:@"%@/%@", subsystem, category];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -69,14 +69,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SignpostReporterAggregationKey *)v5 subsystem];
-      v7 = [(SignpostReporterAggregationKey *)self subsystem];
-      if ([v6 isEqualToString:v7])
+      v5 = equalCopy;
+      subsystem = [(SignpostReporterAggregationKey *)v5 subsystem];
+      subsystem2 = [(SignpostReporterAggregationKey *)self subsystem];
+      if ([subsystem isEqualToString:subsystem2])
       {
-        v8 = [(SignpostReporterAggregationKey *)v5 category];
-        v9 = [(SignpostReporterAggregationKey *)self category];
-        v10 = [v8 isEqualToString:v9];
+        category = [(SignpostReporterAggregationKey *)v5 category];
+        category2 = [(SignpostReporterAggregationKey *)self category];
+        v10 = [category isEqualToString:category2];
       }
 
       else

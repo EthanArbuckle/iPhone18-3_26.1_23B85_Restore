@@ -1,40 +1,40 @@
 @interface PUOneUpCommentsInfoProvider
-+ (BOOL)_canHandleDisplayAsset:(id)a3;
-+ (BOOL)hasUserLikedDisplayAsset:(id)a3;
-+ (unint64_t)commentCountForDisplayAsset:(id)a3;
-+ (unint64_t)likeCountForDisplayAsset:(id)a3;
-+ (void)toggleLike:(BOOL)a3 forDisplayAsset:(id)a4;
++ (BOOL)_canHandleDisplayAsset:(id)asset;
++ (BOOL)hasUserLikedDisplayAsset:(id)asset;
++ (unint64_t)commentCountForDisplayAsset:(id)asset;
++ (unint64_t)likeCountForDisplayAsset:(id)asset;
++ (void)toggleLike:(BOOL)like forDisplayAsset:(id)asset;
 @end
 
 @implementation PUOneUpCommentsInfoProvider
 
-+ (BOOL)_canHandleDisplayAsset:(id)a3
++ (BOOL)_canHandleDisplayAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 px_isSharedAlbumAsset];
+    px_isSharedAlbumAsset = [assetCopy px_isSharedAlbumAsset];
   }
 
   else
   {
-    v4 = 0;
+    px_isSharedAlbumAsset = 0;
   }
 
-  return v4;
+  return px_isSharedAlbumAsset;
 }
 
-+ (void)toggleLike:(BOOL)a3 forDisplayAsset:(id)a4
++ (void)toggleLike:(BOOL)like forDisplayAsset:(id)asset
 {
-  v4 = a3;
+  likeCopy = like;
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if ([a1 _canHandleDisplayAsset:v6])
+  assetCopy = asset;
+  if ([self _canHandleDisplayAsset:assetCopy])
   {
-    v7 = v6;
+    v7 = assetCopy;
     v8 = v7;
-    if (v4)
+    if (likeCopy)
     {
       [v7 px_addLikeWithCompletionHandler:0];
       v9 = @"com.apple.photos.CPAnalytics.oneUpSharedAssetLiked";
@@ -54,55 +54,55 @@
   }
 }
 
-+ (BOOL)hasUserLikedDisplayAsset:(id)a3
++ (BOOL)hasUserLikedDisplayAsset:(id)asset
 {
-  v4 = a3;
-  if ([a1 _canHandleDisplayAsset:v4])
+  assetCopy = asset;
+  if ([self _canHandleDisplayAsset:assetCopy])
   {
-    v5 = [v4 commentProperties];
-    v6 = [v5 hasUserLiked];
+    commentProperties = [assetCopy commentProperties];
+    hasUserLiked = [commentProperties hasUserLiked];
   }
 
   else
   {
-    v6 = 0;
+    hasUserLiked = 0;
   }
 
-  return v6;
+  return hasUserLiked;
 }
 
-+ (unint64_t)likeCountForDisplayAsset:(id)a3
++ (unint64_t)likeCountForDisplayAsset:(id)asset
 {
-  v4 = a3;
-  if ([a1 _canHandleDisplayAsset:v4])
+  assetCopy = asset;
+  if ([self _canHandleDisplayAsset:assetCopy])
   {
-    v5 = [v4 commentProperties];
-    v6 = [v5 likeCount];
+    commentProperties = [assetCopy commentProperties];
+    likeCount = [commentProperties likeCount];
   }
 
   else
   {
-    v6 = 0;
+    likeCount = 0;
   }
 
-  return v6;
+  return likeCount;
 }
 
-+ (unint64_t)commentCountForDisplayAsset:(id)a3
++ (unint64_t)commentCountForDisplayAsset:(id)asset
 {
-  v4 = a3;
-  if ([a1 _canHandleDisplayAsset:v4])
+  assetCopy = asset;
+  if ([self _canHandleDisplayAsset:assetCopy])
   {
-    v5 = [v4 commentProperties];
-    v6 = [v5 commentCount];
+    commentProperties = [assetCopy commentProperties];
+    commentCount = [commentProperties commentCount];
   }
 
   else
   {
-    v6 = 0;
+    commentCount = 0;
   }
 
-  return v6;
+  return commentCount;
 }
 
 @end

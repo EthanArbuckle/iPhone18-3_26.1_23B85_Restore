@@ -1,20 +1,20 @@
 @interface SKUIGiftResultViewController
-- (SKUIGiftResultViewController)initWithGift:(id)a3 configuration:(id)a4;
+- (SKUIGiftResultViewController)initWithGift:(id)gift configuration:(id)configuration;
 - (id)_itemImage;
 - (id)_itemView;
-- (void)_giftAgainAction:(id)a3;
-- (void)_setItemImage:(id)a3 error:(id)a4;
+- (void)_giftAgainAction:(id)action;
+- (void)_setItemImage:(id)image error:(id)error;
 - (void)dealloc;
 - (void)loadView;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SKUIGiftResultViewController
 
-- (SKUIGiftResultViewController)initWithGift:(id)a3 configuration:(id)a4
+- (SKUIGiftResultViewController)initWithGift:(id)gift configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  giftCopy = gift;
+  configurationCopy = configuration;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIGiftResultViewController initWithGift:configuration:];
@@ -22,14 +22,14 @@
 
   v13.receiver = self;
   v13.super_class = SKUIGiftResultViewController;
-  v8 = [(SKUIGiftStepViewController *)&v13 initWithGift:v6 configuration:v7];
+  v8 = [(SKUIGiftStepViewController *)&v13 initWithGift:giftCopy configuration:configurationCopy];
   if (v8)
   {
-    v9 = [v7 clientContext];
-    v10 = v9;
-    if (v9)
+    clientContext = [configurationCopy clientContext];
+    v10 = clientContext;
+    if (clientContext)
     {
-      [v9 localizedStringForKey:@"GIFTING_RESULT_TITLE" inTable:@"Gifting"];
+      [clientContext localizedStringForKey:@"GIFTING_RESULT_TITLE" inTable:@"Gifting"];
     }
 
     else
@@ -54,24 +54,24 @@
 - (void)loadView
 {
   v21 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v3 = [(SKUIGiftStepViewController *)self giftConfiguration];
-  v4 = [v3 clientContext];
+  giftConfiguration = [(SKUIGiftStepViewController *)self giftConfiguration];
+  clientContext = [giftConfiguration clientContext];
 
   v5 = objc_alloc_init(SKUIGiftResultView);
-  v6 = [MEMORY[0x277D75348] _systemBackgroundColor];
-  [(SKUIGiftResultView *)v5 setBackgroundColor:v6];
+  _systemBackgroundColor = [MEMORY[0x277D75348] _systemBackgroundColor];
+  [(SKUIGiftResultView *)v5 setBackgroundColor:_systemBackgroundColor];
 
-  v7 = [(SKUIGiftStepViewController *)self gift];
-  v8 = [v7 item];
+  gift = [(SKUIGiftStepViewController *)self gift];
+  item = [gift item];
 
-  if (v8)
+  if (item)
   {
-    v9 = [(SKUIGiftResultViewController *)self _itemView];
-    [(SKUIGiftResultView *)v5 setItemView:v9];
+    _itemView = [(SKUIGiftResultViewController *)self _itemView];
+    [(SKUIGiftResultView *)v5 setItemView:_itemView];
 
-    if (v4)
+    if (clientContext)
     {
-      [v4 localizedStringForKey:@"GIFTING_RESULT_ITEM_MESSAGE" inTable:@"Gifting"];
+      [clientContext localizedStringForKey:@"GIFTING_RESULT_ITEM_MESSAGE" inTable:@"Gifting"];
     }
 
     else
@@ -87,9 +87,9 @@
     v10 = [MEMORY[0x277D755B8] imageNamed:@"RedemptionCardStack" inBundle:v21];
     [(SKUIGiftResultView *)v5 setImage:v10];
 
-    if (v4)
+    if (clientContext)
     {
-      [v4 localizedStringForKey:@"GIFTING_RESULT_AMOUNT_MESSAGE" inTable:@"Gifting"];
+      [clientContext localizedStringForKey:@"GIFTING_RESULT_AMOUNT_MESSAGE" inTable:@"Gifting"];
     }
 
     else
@@ -98,17 +98,17 @@
     }
     v11 = ;
     v12 = MEMORY[0x277CCACA8];
-    v13 = [(SKUIGiftStepViewController *)self gift];
-    v14 = [v13 totalGiftAmountString];
-    v15 = [v12 stringWithValidatedFormat:v11 validFormatSpecifiers:@"%@" error:0, v14];
+    gift2 = [(SKUIGiftStepViewController *)self gift];
+    totalGiftAmountString = [gift2 totalGiftAmountString];
+    v15 = [v12 stringWithValidatedFormat:v11 validFormatSpecifiers:@"%@" error:0, totalGiftAmountString];
     [(SKUIGiftResultView *)v5 setTitle:v15];
   }
 
-  v16 = [(SKUIGiftResultView *)v5 giftAgainButton];
-  [v16 addTarget:self action:sel__giftAgainAction_ forControlEvents:64];
-  if (v4)
+  giftAgainButton = [(SKUIGiftResultView *)v5 giftAgainButton];
+  [giftAgainButton addTarget:self action:sel__giftAgainAction_ forControlEvents:64];
+  if (clientContext)
   {
-    [v4 localizedStringForKey:@"GIFTING_RESULT_SEND_ANOTHER_BUTTON" inTable:@"Gifting"];
+    [clientContext localizedStringForKey:@"GIFTING_RESULT_SEND_ANOTHER_BUTTON" inTable:@"Gifting"];
   }
 
   else
@@ -116,19 +116,19 @@
     [SKUIClientContext localizedStringForKey:@"GIFTING_RESULT_SEND_ANOTHER_BUTTON" inBundles:0 inTable:@"Gifting"];
   }
   v17 = ;
-  [v16 setTitle:v17 forState:0];
+  [giftAgainButton setTitle:v17 forState:0];
 
-  [v16 sizeToFit];
+  [giftAgainButton sizeToFit];
   [(SKUIGiftResultViewController *)self setView:v5];
-  v18 = [(SKUIGiftResultViewController *)self navigationItem];
-  [v18 setHidesBackButton:1];
+  navigationItem = [(SKUIGiftResultViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
   v19 = objc_alloc_init(MEMORY[0x277D751E0]);
   [v19 setAction:sel__doneButtonAction_];
   [v19 setStyle:2];
   [v19 setTarget:self];
-  if (v4)
+  if (clientContext)
   {
-    [v4 localizedStringForKey:@"GIFTING_DONE_BUTTON" inTable:@"Gifting"];
+    [clientContext localizedStringForKey:@"GIFTING_DONE_BUTTON" inTable:@"Gifting"];
   }
 
   else
@@ -138,16 +138,16 @@
   v20 = ;
   [v19 setTitle:v20];
 
-  [v18 setRightBarButtonItem:v19];
+  [navigationItem setRightBarButtonItem:v19];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(SKUIGiftResultViewController *)self _itemView];
-  v6 = [v5 artworkContext];
+  appearCopy = appear;
+  _itemView = [(SKUIGiftResultViewController *)self _itemView];
+  artworkContext = [_itemView artworkContext];
 
-  if (v6 && !self->_itemImage)
+  if (artworkContext && !self->_itemImage)
   {
     objc_initWeak(&location, self);
     v8[0] = MEMORY[0x277D85DD0];
@@ -155,14 +155,14 @@
     v8[2] = __47__SKUIGiftResultViewController_viewWillAppear___block_invoke;
     v8[3] = &unk_2781FA1F8;
     objc_copyWeak(&v9, &location);
-    [(SKUIGiftStepViewController *)self loadItemArtworkWithArtworkContext:v6 completionBlock:v8];
+    [(SKUIGiftStepViewController *)self loadItemArtworkWithArtworkContext:artworkContext completionBlock:v8];
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
   }
 
   v7.receiver = self;
   v7.super_class = SKUIGiftResultViewController;
-  [(SKUIGiftResultViewController *)&v7 viewWillAppear:v3];
+  [(SKUIGiftResultViewController *)&v7 viewWillAppear:appearCopy];
 }
 
 void __47__SKUIGiftResultViewController_viewWillAppear___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -173,24 +173,24 @@ void __47__SKUIGiftResultViewController_viewWillAppear___block_invoke(uint64_t a
   [WeakRetained _setItemImage:v6 error:v5];
 }
 
-- (void)_giftAgainAction:(id)a3
+- (void)_giftAgainAction:(id)action
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = [(SKUIGiftStepViewController *)self gift];
-  v5 = [v4 copy];
+  gift = [(SKUIGiftStepViewController *)self gift];
+  v5 = [gift copy];
 
   [v5 reset];
   v6 = [SKUIGiftComposeViewController alloc];
-  v7 = [(SKUIGiftStepViewController *)self giftConfiguration];
-  v8 = [(SKUIGiftComposeViewController *)v6 initWithGift:v5 configuration:v7];
+  giftConfiguration = [(SKUIGiftStepViewController *)self giftConfiguration];
+  v8 = [(SKUIGiftComposeViewController *)v6 initWithGift:v5 configuration:giftConfiguration];
 
-  v9 = [(SKUIGiftStepViewController *)self operationQueue];
-  [(SKUIGiftStepViewController *)v8 setOperationQueue:v9];
+  operationQueue = [(SKUIGiftStepViewController *)self operationQueue];
+  [(SKUIGiftStepViewController *)v8 setOperationQueue:operationQueue];
 
-  v10 = [(SKUIGiftResultViewController *)self navigationController];
+  navigationController = [(SKUIGiftResultViewController *)self navigationController];
   v12[0] = v8;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-  [v10 setViewControllers:v11 animated:1];
+  [navigationController setViewControllers:v11 animated:1];
 }
 
 - (id)_itemImage
@@ -198,10 +198,10 @@ void __47__SKUIGiftResultViewController_viewWillAppear___block_invoke(uint64_t a
   v3 = self->_itemImage;
   if (!v3)
   {
-    v4 = [(SKUIGiftItemView *)self->_itemView artworkContext];
-    v5 = [(SKUIGiftStepViewController *)self gift];
-    v6 = [v5 item];
-    v3 = [v4 placeholderImageForItem:v6];
+    artworkContext = [(SKUIGiftItemView *)self->_itemView artworkContext];
+    gift = [(SKUIGiftStepViewController *)self gift];
+    item = [gift item];
+    v3 = [artworkContext placeholderImageForItem:item];
   }
 
   return v3;
@@ -209,42 +209,42 @@ void __47__SKUIGiftResultViewController_viewWillAppear___block_invoke(uint64_t a
 
 - (id)_itemView
 {
-  v3 = [(SKUIGiftStepViewController *)self gift];
-  v4 = [v3 item];
+  gift = [(SKUIGiftStepViewController *)self gift];
+  item = [gift item];
 
-  if (v4 && !self->_itemView)
+  if (item && !self->_itemView)
   {
     v5 = [SKUIGiftItemView alloc];
-    v6 = [(SKUIGiftStepViewController *)self giftConfiguration];
-    v7 = [v6 clientContext];
-    v8 = [(SKUIGiftItemView *)v5 initWithStyle:2 item:v4 clientContext:v7];
+    giftConfiguration = [(SKUIGiftStepViewController *)self giftConfiguration];
+    clientContext = [giftConfiguration clientContext];
+    v8 = [(SKUIGiftItemView *)v5 initWithStyle:2 item:item clientContext:clientContext];
     itemView = self->_itemView;
     self->_itemView = v8;
 
     v10 = self->_itemView;
-    v11 = [v4 artistName];
-    [(SKUIGiftItemView *)v10 setArtistName:v11];
+    artistName = [item artistName];
+    [(SKUIGiftItemView *)v10 setArtistName:artistName];
 
     v12 = self->_itemView;
-    v13 = [v4 categoryName];
-    [(SKUIGiftItemView *)v12 setCategoryName:v13];
+    categoryName = [item categoryName];
+    [(SKUIGiftItemView *)v12 setCategoryName:categoryName];
 
     v14 = self->_itemView;
-    v15 = [(SKUIGiftResultViewController *)self _itemImage];
-    [(SKUIGiftItemView *)v14 setItemImage:v15];
+    _itemImage = [(SKUIGiftResultViewController *)self _itemImage];
+    [(SKUIGiftItemView *)v14 setItemImage:_itemImage];
 
-    -[SKUIGiftItemView setNumberOfUserRatings:](self->_itemView, "setNumberOfUserRatings:", [v4 numberOfUserRatings]);
+    -[SKUIGiftItemView setNumberOfUserRatings:](self->_itemView, "setNumberOfUserRatings:", [item numberOfUserRatings]);
     v16 = self->_itemView;
-    v17 = [v4 primaryItemOffer];
-    v18 = [v17 buttonText];
-    [(SKUIGiftItemView *)v16 setPrice:v18];
+    primaryItemOffer = [item primaryItemOffer];
+    buttonText = [primaryItemOffer buttonText];
+    [(SKUIGiftItemView *)v16 setPrice:buttonText];
 
     v19 = self->_itemView;
-    v20 = [v4 title];
-    [(SKUIGiftItemView *)v19 setTitle:v20];
+    title = [item title];
+    [(SKUIGiftItemView *)v19 setTitle:title];
 
     v21 = self->_itemView;
-    [v4 userRating];
+    [item userRating];
     *&v23 = v22 / 5.0;
     [(SKUIGiftItemView *)v21 setUserRating:v23];
     [(SKUIGiftItemView *)self->_itemView sizeToFit];
@@ -256,15 +256,15 @@ void __47__SKUIGiftResultViewController_viewWillAppear___block_invoke(uint64_t a
   return v24;
 }
 
-- (void)_setItemImage:(id)a3 error:(id)a4
+- (void)_setItemImage:(id)image error:(id)error
 {
-  v6 = a3;
-  if (v6)
+  imageCopy = image;
+  if (imageCopy)
   {
-    v7 = v6;
-    objc_storeStrong(&self->_itemImage, a3);
+    v7 = imageCopy;
+    objc_storeStrong(&self->_itemImage, image);
     [(SKUIGiftItemView *)self->_itemView setItemImage:self->_itemImage];
-    v6 = v7;
+    imageCopy = v7;
   }
 }
 

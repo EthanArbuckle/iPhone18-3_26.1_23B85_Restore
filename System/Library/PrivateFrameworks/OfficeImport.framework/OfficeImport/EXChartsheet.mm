@@ -1,37 +1,37 @@
 @interface EXChartsheet
-+ (id)edSheetWithState:(id)a3;
-+ (void)setupProcessors:(id)a3;
++ (id)edSheetWithState:(id)state;
++ (void)setupProcessors:(id)processors;
 @end
 
 @implementation EXChartsheet
 
-+ (id)edSheetWithState:(id)a3
++ (id)edSheetWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = [EDChartSheet alloc];
-  v6 = [v4 workbook];
-  v7 = [(EDSheet *)v5 initWithWorkbook:v6];
+  workbook = [stateCopy workbook];
+  v7 = [(EDSheet *)v5 initWithWorkbook:workbook];
 
-  v8 = [(EDSheet *)v7 processors];
-  [a1 setupProcessors:v8];
+  processors = [(EDSheet *)v7 processors];
+  [self setupProcessors:processors];
 
   return v7;
 }
 
-+ (void)setupProcessors:(id)a3
++ (void)setupProcessors:(id)processors
 {
-  v3 = a3;
-  [v3 removeAllObjects];
-  [v3 addProcessorClass:objc_opt_class()];
-  [v3 addProcessorClass:objc_opt_class()];
-  [v3 addProcessorClass:objc_opt_class()];
-  [v3 addProcessorClass:objc_opt_class()];
-  [v3 addProcessorClass:objc_opt_class()];
-  [v3 addProcessorClass:objc_opt_class()];
-  [v3 addProcessorClass:objc_opt_class()];
-  [v3 addProcessorClass:objc_opt_class()];
-  [v3 addProcessorClass:objc_opt_class()];
-  [v3 addProcessorClass:objc_opt_class()];
+  processorsCopy = processors;
+  [processorsCopy removeAllObjects];
+  [processorsCopy addProcessorClass:objc_opt_class()];
+  [processorsCopy addProcessorClass:objc_opt_class()];
+  [processorsCopy addProcessorClass:objc_opt_class()];
+  [processorsCopy addProcessorClass:objc_opt_class()];
+  [processorsCopy addProcessorClass:objc_opt_class()];
+  [processorsCopy addProcessorClass:objc_opt_class()];
+  [processorsCopy addProcessorClass:objc_opt_class()];
+  [processorsCopy addProcessorClass:objc_opt_class()];
+  [processorsCopy addProcessorClass:objc_opt_class()];
+  [processorsCopy addProcessorClass:objc_opt_class()];
 }
 
 @end

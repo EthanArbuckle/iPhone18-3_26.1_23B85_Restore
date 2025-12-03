@@ -1,11 +1,11 @@
 @interface IMDCoreRecentsController
 + (id)sharedController;
-- (id)_dataDetectedMessageGUIDsFromGUIDs:(id)a3;
-- (id)createRecentFromMessageDictionary:(id)a3 participantHandleID:(id)a4;
-- (id)createRecentsFromVCFWithPath:(id)a3 messageGUID:(id)a4 senderID:(id)a5 messageDate:(id)a6 outAddress:(id *)a7;
-- (void)deleteMessageGUIDs:(id)a3 reason:(int64_t)a4 completionHandler:(id)a5;
-- (void)deleteRecentsForMessageGUIDs:(id)a3 completionBlock:(id)a4;
-- (void)deleteRecentsWithHandleIDs:(id)a3;
+- (id)_dataDetectedMessageGUIDsFromGUIDs:(id)ds;
+- (id)createRecentFromMessageDictionary:(id)dictionary participantHandleID:(id)d;
+- (id)createRecentsFromVCFWithPath:(id)path messageGUID:(id)d senderID:(id)iD messageDate:(id)date outAddress:(id *)address;
+- (void)deleteMessageGUIDs:(id)ds reason:(int64_t)reason completionHandler:(id)handler;
+- (void)deleteRecentsForMessageGUIDs:(id)ds completionBlock:(id)block;
+- (void)deleteRecentsWithHandleIDs:(id)ds;
 @end
 
 @implementation IMDCoreRecentsController
@@ -22,31 +22,31 @@
   return v3;
 }
 
-- (id)_dataDetectedMessageGUIDsFromGUIDs:(id)a3
+- (id)_dataDetectedMessageGUIDsFromGUIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v6 = objc_msgSend_array(MEMORY[0x1E695DF70], v4, v5);
-  if (objc_msgSend_count(v3, v7, v8))
+  if (objc_msgSend_count(dsCopy, v7, v8))
   {
     v11 = 0;
     v12 = 0;
     do
     {
-      if ((objc_msgSend_count(v3, v9, v10) + v11) >> 4 > 0x270)
+      if ((objc_msgSend_count(dsCopy, v9, v10) + v11) >> 4 > 0x270)
       {
         v15 = 10000;
       }
 
       else
       {
-        v15 = objc_msgSend_count(v3, v13, v14) + v11;
+        v15 = objc_msgSend_count(dsCopy, v13, v14) + v11;
       }
 
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = sub_1B7B83318;
       v22[3] = &unk_1E7CBB2B0;
-      v16 = v3;
+      v16 = dsCopy;
       v23 = v16;
       v25 = v12;
       v26 = v15;
@@ -65,10 +65,10 @@
   return v20;
 }
 
-- (void)deleteRecentsWithHandleIDs:(id)a3
+- (void)deleteRecentsWithHandleIDs:(id)ds
 {
-  v6 = a3;
-  if (!v6 && IMOSLoggingEnabled())
+  dsCopy = ds;
+  if (!dsCopy && IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -78,13 +78,13 @@
     }
   }
 
-  if (objc_msgSend_count(v6, v4, v5) < 2)
+  if (objc_msgSend_count(dsCopy, v4, v5) < 2)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = sub_1B7B83648;
     v10[3] = &unk_1E7CB6AE0;
-    v11 = v6;
+    v11 = dsCopy;
     objc_msgSend__performClientRequest_(self, v9, v10);
   }
 
@@ -99,63 +99,63 @@
   }
 }
 
-- (void)deleteRecentsForMessageGUIDs:(id)a3 completionBlock:(id)a4
+- (void)deleteRecentsForMessageGUIDs:(id)ds completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  blockCopy = block;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_1B7B83B6C;
   v11[3] = &unk_1E7CB7260;
-  v12 = v6;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v12 = dsCopy;
+  v13 = blockCopy;
+  v8 = blockCopy;
+  v9 = dsCopy;
   objc_msgSend__performClientRequest_(self, v10, v11);
 }
 
-- (id)createRecentFromMessageDictionary:(id)a3 participantHandleID:(id)a4
+- (id)createRecentFromMessageDictionary:(id)dictionary participantHandleID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = _IMDCoreSpotlightCNContactForAddress(v5);
-  v9 = objc_msgSend_objectForKey_(v6, v8, @"time");
-  v11 = objc_msgSend_objectForKey_(v6, v10, @"service");
+  dCopy = d;
+  dictionaryCopy = dictionary;
+  v7 = _IMDCoreSpotlightCNContactForAddress(dCopy);
+  v9 = objc_msgSend_objectForKey_(dictionaryCopy, v8, @"time");
+  v11 = objc_msgSend_objectForKey_(dictionaryCopy, v10, @"service");
 
-  v12 = _IMDCoreRecentsKindForHandleID(v5, v11);
+  v12 = _IMDCoreRecentsKindForHandleID(dCopy, v11);
   v15 = objc_msgSend_sharedInstance(IMDContactCache, v13, v14);
   v17 = objc_msgSend_fullNameForContact_(v15, v16, v7);
 
   if (!v17)
   {
-    v17 = objc_msgSend_im_stripCategoryLabel(v5, v18, v19);
+    v17 = objc_msgSend_im_stripCategoryLabel(dCopy, v18, v19);
   }
 
   if (v17)
   {
-    objc_msgSend_recentEventForAddress_displayName_kind_date_weight_metadata_options_(MEMORY[0x1E6998FC8], v18, v5, v17, v12, v9, 0, 0, 1);
+    objc_msgSend_recentEventForAddress_displayName_kind_date_weight_metadata_options_(MEMORY[0x1E6998FC8], v18, dCopy, v17, v12, v9, 0, 0, 1);
   }
 
   else
   {
-    objc_msgSend_recentEventForAddress_displayName_kind_date_weight_metadata_options_(MEMORY[0x1E6998FC8], v18, v5, &stru_1F2FA9728, v12, v9, 0, 0, 1);
+    objc_msgSend_recentEventForAddress_displayName_kind_date_weight_metadata_options_(MEMORY[0x1E6998FC8], v18, dCopy, &stru_1F2FA9728, v12, v9, 0, 0, 1);
   }
   v20 = ;
 
   return v20;
 }
 
-- (id)createRecentsFromVCFWithPath:(id)a3 messageGUID:(id)a4 senderID:(id)a5 messageDate:(id)a6 outAddress:(id *)a7
+- (id)createRecentsFromVCFWithPath:(id)path messageGUID:(id)d senderID:(id)iD messageDate:(id)date outAddress:(id *)address
 {
   v123 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v89 = a4;
-  v90 = a5;
-  v101 = a6;
-  v87 = v10;
-  if (v10)
+  pathCopy = path;
+  dCopy = d;
+  iDCopy = iD;
+  dateCopy = date;
+  v87 = pathCopy;
+  if (pathCopy)
   {
-    v88 = objc_msgSend_contactsForVCardAtPath_(IMDContactCache, v11, v10);
+    v88 = objc_msgSend_contactsForVCardAtPath_(IMDContactCache, v11, pathCopy);
     if (objc_msgSend_count(v88, v12, v13))
     {
       v99 = objc_msgSend_array(MEMORY[0x1E695DF70], v14, v15);
@@ -187,7 +187,7 @@
             v21 = MEMORY[0x1E696AD98];
             v22 = MEMORY[0x1B8CAFAD0]("CRRecentWeightMessagesReceivedAddress", @"CoreRecents");
             v100 = objc_msgSend_numberWithDouble_(v21, v23, v24, *v22);
-            v26 = objc_msgSend_metadataDictionaryForMessageID_senderID_date_(MEMORY[0x1E69A7FE8], v25, v89, v90, v101);
+            v26 = objc_msgSend_metadataDictionaryForMessageID_senderID_date_(MEMORY[0x1E69A7FE8], v25, dCopy, iDCopy, dateCopy);
             v112 = 0u;
             v113 = 0u;
             v110 = 0u;
@@ -210,12 +210,12 @@
                   v37 = objc_msgSend_value(*(*(&v110 + 1) + 8 * i), v31, v32);
                   v39 = objc_msgSend_singleLineStringFromPostalAddress_addCountryName_(v36, v38, v37, 0);
 
-                  v41 = objc_msgSend_recentEventForAddress_displayName_kind_date_weight_metadata_options_(MEMORY[0x1E6998FC8], v40, v39, 0, v98, v101, v100, v26, 0);
+                  v41 = objc_msgSend_recentEventForAddress_displayName_kind_date_weight_metadata_options_(MEMORY[0x1E6998FC8], v40, v39, 0, v98, dateCopy, v100, v26, 0);
                   objc_msgSend_addObject_(v99, v42, v41);
 
-                  if (a7)
+                  if (address)
                   {
-                    *a7 = objc_msgSend_copy(v39, v43, v44);
+                    *address = objc_msgSend_copy(v39, v43, v44);
                   }
                 }
 
@@ -280,7 +280,7 @@
                           v71 = objc_msgSend_objectAtIndex_(v67, v70, 1);
                           if (objc_msgSend_isEqualToString_(v69, v72, v17))
                           {
-                            v74 = objc_msgSend_recentEventForAddress_displayName_kind_date_weight_metadata_options_(MEMORY[0x1E6998FC8], v73, v71, 0, v98, v101, v100, v26, 0);
+                            v74 = objc_msgSend_recentEventForAddress_displayName_kind_date_weight_metadata_options_(MEMORY[0x1E6998FC8], v73, v71, 0, v98, dateCopy, v100, v26, 0);
                             objc_msgSend_addObject_(v99, v75, v74);
                           }
                         }
@@ -341,23 +341,23 @@
   return v79;
 }
 
-- (void)deleteMessageGUIDs:(id)a3 reason:(int64_t)a4 completionHandler:(id)a5
+- (void)deleteMessageGUIDs:(id)ds reason:(int64_t)reason completionHandler:(id)handler
 {
-  v7 = a5;
-  v9 = objc_msgSend__dataDetectedMessageGUIDsFromGUIDs_(self, v8, a3);
+  handlerCopy = handler;
+  v9 = objc_msgSend__dataDetectedMessageGUIDsFromGUIDs_(self, v8, ds);
   if (objc_msgSend_count(v9, v10, v11))
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = sub_1B7B84A10;
     v13[3] = &unk_1E7CBB328;
-    v14 = v7;
+    v14 = handlerCopy;
     objc_msgSend_deleteRecentsForMessageGUIDs_completionBlock_(self, v12, v9, v13);
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 

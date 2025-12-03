@@ -8,17 +8,17 @@
 - (HDCodableUserDomainConceptLocalizedStringProperty)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableUserDomainConceptLocalizedStringProperty);
-  -[HDCodableUserDomainConceptLocalizedStringProperty setType:](v2, "setType:", [a1 type]);
-  -[HDCodableUserDomainConceptLocalizedStringProperty setVersion:](v2, "setVersion:", [a1 version]);
-  [a1 timestamp];
+  -[HDCodableUserDomainConceptLocalizedStringProperty setType:](v2, "setType:", [self type]);
+  -[HDCodableUserDomainConceptLocalizedStringProperty setVersion:](v2, "setVersion:", [self version]);
+  [self timestamp];
   [(HDCodableUserDomainConceptLocalizedStringProperty *)v2 setTimestamp:?];
-  v3 = [a1 stringValue];
-  [(HDCodableUserDomainConceptLocalizedStringProperty *)v2 setStringValue:v3];
+  stringValue = [self stringValue];
+  [(HDCodableUserDomainConceptLocalizedStringProperty *)v2 setStringValue:stringValue];
 
-  v4 = [a1 locale];
-  [(HDCodableUserDomainConceptLocalizedStringProperty *)v2 setLocale:v4];
+  locale = [self locale];
+  [(HDCodableUserDomainConceptLocalizedStringProperty *)v2 setLocale:locale];
 
-  -[HDCodableUserDomainConceptLocalizedStringProperty setDeleted:](v2, "setDeleted:", [a1 isDeleted]);
+  -[HDCodableUserDomainConceptLocalizedStringProperty setDeleted:](v2, "setDeleted:", [self isDeleted]);
 
   return v2;
 }
@@ -29,16 +29,16 @@
   v3 = a3;
   if ([v3 isMemberOfClass:objc_opt_class()])
   {
-    v4 = [v3 type];
-    v5 = [v3 version];
+    type = [v3 type];
+    version = [v3 version];
     [v3 timestamp];
     v7 = v6;
-    v8 = [v3 stringValue];
-    v9 = [v3 locale];
-    v10 = [v3 deleted];
-    if (v8 && v9)
+    stringValue = [v3 stringValue];
+    locale = [v3 locale];
+    deleted = [v3 deleted];
+    if (stringValue && locale)
     {
-      v11 = [objc_alloc(MEMORY[0x277CCDB10]) initWithType:v4 stringValue:v8 locale:v9 version:v5 timestamp:v10 deleted:v7];
+      v11 = [objc_alloc(MEMORY[0x277CCDB10]) initWithType:type stringValue:stringValue locale:locale version:version timestamp:deleted deleted:v7];
     }
 
     else
@@ -55,9 +55,9 @@
           v17 = 138543874;
           v18 = objc_opt_class();
           v19 = 2114;
-          v20 = v8;
+          v20 = stringValue;
           v21 = 2114;
-          v22 = v9;
+          v22 = locale;
           _os_log_impl(&dword_228986000, v14, OS_LOG_TYPE_INFO, "Decoded invalid %{public}@ with stringValue = %{public}@, locale = %{public}@", &v17, 0x20u);
         }
       }

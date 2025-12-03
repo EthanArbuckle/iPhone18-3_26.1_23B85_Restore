@@ -1,37 +1,37 @@
 @interface LAUIAuthenticationView
 + (CGRect)defaultRect;
-- (BOOL)disableMechanism:(unint64_t)a3 error:(id *)a4;
-- (BOOL)enableMechanism:(unint64_t)a3 error:(id *)a4;
-- (BOOL)isMechanismActive:(unint64_t)a3;
-- (BOOL)isMechanismAvailable:(unint64_t)a3 error:(id *)a4;
-- (BOOL)isMechanismEnabled:(unint64_t)a3;
+- (BOOL)disableMechanism:(unint64_t)mechanism error:(id *)error;
+- (BOOL)enableMechanism:(unint64_t)mechanism error:(id *)error;
+- (BOOL)isMechanismActive:(unint64_t)active;
+- (BOOL)isMechanismAvailable:(unint64_t)available error:(id *)error;
+- (BOOL)isMechanismEnabled:(unint64_t)enabled;
 - (LAUIAuthenticationDelegate)delegate;
-- (LAUIAuthenticationView)initWithCoder:(id)a3;
-- (LAUIAuthenticationView)initWithFrame:(CGRect)a3 mechanisms:(unint64_t)a4 context:(id)a5;
-- (LAUIAuthenticationView)initWithMechanisms:(unint64_t)a3 context:(id)a4;
+- (LAUIAuthenticationView)initWithCoder:(id)coder;
+- (LAUIAuthenticationView)initWithFrame:(CGRect)frame mechanisms:(unint64_t)mechanisms context:(id)context;
+- (LAUIAuthenticationView)initWithMechanisms:(unint64_t)mechanisms context:(id)context;
 - (id)callerIconBundlePath;
 - (id)callerIconPath;
 - (id)localizedCallerName;
 - (int64_t)_stateOfSuccess;
 - (void)_biometryIdle;
-- (void)_setupMechanisms:(unint64_t)a3 context:(id)a4;
+- (void)_setupMechanisms:(unint64_t)mechanisms context:(id)context;
 - (void)_setupView;
-- (void)authenticationResult:(id)a3 error:(id)a4 context:(id)a5;
+- (void)authenticationResult:(id)result error:(id)error context:(id)context;
 - (void)biometricNoMatch;
-- (void)biometryState:(int64_t)a3 completionHandler:(id)a4;
+- (void)biometryState:(int64_t)state completionHandler:(id)handler;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
-- (void)setFastAnimations:(BOOL)a3;
-- (void)willMoveToSuperview:(id)a3;
+- (void)setFastAnimations:(BOOL)animations;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation LAUIAuthenticationView
 
-- (LAUIAuthenticationView)initWithCoder:(id)a3
+- (LAUIAuthenticationView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = LAUIAuthenticationView;
-  v3 = [(LAUIAuthenticationView *)&v6 initWithCoder:a3];
+  v3 = [(LAUIAuthenticationView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -41,38 +41,38 @@
   return v4;
 }
 
-- (LAUIAuthenticationView)initWithMechanisms:(unint64_t)a3 context:(id)a4
+- (LAUIAuthenticationView)initWithMechanisms:(unint64_t)mechanisms context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   +[LAUIAuthenticationView defaultRect];
-  v7 = [(LAUIAuthenticationView *)self initWithFrame:a3 mechanisms:v6 context:?];
+  v7 = [(LAUIAuthenticationView *)self initWithFrame:mechanisms mechanisms:contextCopy context:?];
 
   return v7;
 }
 
-- (LAUIAuthenticationView)initWithFrame:(CGRect)a3 mechanisms:(unint64_t)a4 context:(id)a5
+- (LAUIAuthenticationView)initWithFrame:(CGRect)frame mechanisms:(unint64_t)mechanisms context:(id)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = LAUIAuthenticationView;
-  v12 = [(LAUIAuthenticationView *)&v15 initWithFrame:x, y, width, height];
-  v13 = v12;
-  if (v12)
+  height = [(LAUIAuthenticationView *)&v15 initWithFrame:x, y, width, height];
+  v13 = height;
+  if (height)
   {
-    [(LAUIAuthenticationView *)v12 _setupMechanisms:a4 context:v11];
+    [(LAUIAuthenticationView *)height _setupMechanisms:mechanisms context:contextCopy];
   }
 
   return v13;
 }
 
-- (void)_setupMechanisms:(unint64_t)a3 context:(id)a4
+- (void)_setupMechanisms:(unint64_t)mechanisms context:(id)context
 {
-  v6 = a4;
-  v7 = [[LAUIAuthenticationCore alloc] initWithMechanisms:a3 context:v6];
+  contextCopy = context;
+  v7 = [[LAUIAuthenticationCore alloc] initWithMechanisms:mechanisms context:contextCopy];
 
   authenticationCore = self->_authenticationCore;
   self->_authenticationCore = v7;
@@ -83,44 +83,44 @@
   [(LAUIAuthenticationCore *)v9 setDelegate:self];
 }
 
-- (BOOL)isMechanismAvailable:(unint64_t)a3 error:(id *)a4
+- (BOOL)isMechanismAvailable:(unint64_t)available error:(id *)error
 {
-  v6 = [(LAUIAuthenticationView *)self authenticationCore];
-  LOBYTE(a4) = [v6 isMechanismAvailable:a3 error:a4];
+  authenticationCore = [(LAUIAuthenticationView *)self authenticationCore];
+  LOBYTE(error) = [authenticationCore isMechanismAvailable:available error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)isMechanismEnabled:(unint64_t)a3
+- (BOOL)isMechanismEnabled:(unint64_t)enabled
 {
-  v4 = [(LAUIAuthenticationView *)self authenticationCore];
-  LOBYTE(a3) = [v4 isMechanismEnabled:a3];
+  authenticationCore = [(LAUIAuthenticationView *)self authenticationCore];
+  LOBYTE(enabled) = [authenticationCore isMechanismEnabled:enabled];
 
-  return a3;
+  return enabled;
 }
 
-- (BOOL)isMechanismActive:(unint64_t)a3
+- (BOOL)isMechanismActive:(unint64_t)active
 {
-  v4 = [(LAUIAuthenticationView *)self authenticationCore];
-  LOBYTE(a3) = [v4 isMechanismActive:a3];
+  authenticationCore = [(LAUIAuthenticationView *)self authenticationCore];
+  LOBYTE(active) = [authenticationCore isMechanismActive:active];
 
-  return a3;
+  return active;
 }
 
-- (BOOL)enableMechanism:(unint64_t)a3 error:(id *)a4
+- (BOOL)enableMechanism:(unint64_t)mechanism error:(id *)error
 {
-  v6 = [(LAUIAuthenticationView *)self authenticationCore];
-  LOBYTE(a4) = [v6 enableMechanism:a3 error:a4];
+  authenticationCore = [(LAUIAuthenticationView *)self authenticationCore];
+  LOBYTE(error) = [authenticationCore enableMechanism:mechanism error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)disableMechanism:(unint64_t)a3 error:(id *)a4
+- (BOOL)disableMechanism:(unint64_t)mechanism error:(id *)error
 {
-  v6 = [(LAUIAuthenticationView *)self authenticationCore];
-  LOBYTE(a4) = [v6 disableMechanism:a3 error:a4];
+  authenticationCore = [(LAUIAuthenticationView *)self authenticationCore];
+  LOBYTE(error) = [authenticationCore disableMechanism:mechanism error:error];
 
-  return a4;
+  return error;
 }
 
 + (CGRect)defaultRect
@@ -136,9 +136,9 @@
   return result;
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  if (a3)
+  if (superview)
   {
     [(LAUIAuthenticationView *)self _setupView];
   }
@@ -146,14 +146,14 @@
 
 - (void)didMoveToSuperview
 {
-  v2 = [(LAUIAuthenticationView *)self authenticationCore];
-  [v2 checkView];
+  authenticationCore = [(LAUIAuthenticationView *)self authenticationCore];
+  [authenticationCore checkView];
 }
 
 - (void)didMoveToWindow
 {
-  v2 = [(LAUIAuthenticationView *)self authenticationCore];
-  [v2 checkView];
+  authenticationCore = [(LAUIAuthenticationView *)self authenticationCore];
+  [authenticationCore checkView];
 }
 
 - (void)_setupView
@@ -165,99 +165,99 @@
     v12 = 136315394;
     v13 = "[LAUIAuthenticationView _setupView]";
     v14 = 2112;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2560E6000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v12, 0x16u);
   }
 
-  v4 = [(LAUIAuthenticationView *)self style];
+  style = [(LAUIAuthenticationView *)self style];
   [(LAUIAuthenticationView *)self frame];
-  v5 = [LAUIPKGlyphWrapper glyphWithStyle:v4 frame:?];
+  v5 = [LAUIPKGlyphWrapper glyphWithStyle:style frame:?];
   glyphWrapper = self->_glyphWrapper;
   self->_glyphWrapper = v5;
 
   [(LAUIPKGlyphWrapper *)self->_glyphWrapper setFastAnimations:[(LAUIAuthenticationView *)self fastAnimations]];
-  v7 = [(LAUIAuthenticationView *)self glyphWrapper];
-  v8 = [v7 view];
+  glyphWrapper = [(LAUIAuthenticationView *)self glyphWrapper];
+  view = [glyphWrapper view];
 
-  if (v8)
+  if (view)
   {
-    [(LAUIAuthenticationView *)self addSubview:v8];
-    v9 = [(LAUIAuthenticationView *)self authenticationCore];
-    v10 = [v9 biometryType];
+    [(LAUIAuthenticationView *)self addSubview:view];
+    authenticationCore = [(LAUIAuthenticationView *)self authenticationCore];
+    biometryType = [authenticationCore biometryType];
 
-    if (v10 == 2)
+    if (biometryType == 2)
     {
       v11 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_tappedFaceID_];
-      [v8 addGestureRecognizer:v11];
+      [view addGestureRecognizer:v11];
     }
   }
 }
 
-- (void)biometryState:(int64_t)a3 completionHandler:(id)a4
+- (void)biometryState:(int64_t)state completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = LA_LOG_LAUIAuthenticationView();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [(LAUIAuthenticationView *)a3 biometryState:v7 completionHandler:?];
+    [(LAUIAuthenticationView *)state biometryState:v7 completionHandler:?];
   }
 
-  v8 = [(LAUIAuthenticationView *)self authenticationCore];
-  v9 = [v8 biometryType];
+  authenticationCore = [(LAUIAuthenticationView *)self authenticationCore];
+  biometryType = [authenticationCore biometryType];
 
-  if (a3 > 2)
+  if (state > 2)
   {
-    if (a3 == 3)
+    if (state == 3)
     {
-      v11 = 7;
+      _stateOfSuccess = 7;
     }
 
-    else if (a3 == 4)
+    else if (state == 4)
     {
-      v11 = [(LAUIAuthenticationView *)self _stateOfSuccess];
+      _stateOfSuccess = [(LAUIAuthenticationView *)self _stateOfSuccess];
     }
 
     else
     {
       v12 = 3;
-      if (v9 != 2)
+      if (biometryType != 2)
       {
         v12 = 0;
       }
 
-      if (a3 == 5)
+      if (state == 5)
       {
-        v11 = v12;
+        _stateOfSuccess = v12;
       }
 
       else
       {
-        v11 = 0;
+        _stateOfSuccess = 0;
       }
     }
   }
 
-  else if (a3)
+  else if (state)
   {
     v10 = 5;
-    if (v9 != 2)
+    if (biometryType != 2)
     {
       v10 = 1;
     }
 
-    if (a3 != 2)
+    if (state != 2)
     {
       v10 = 0;
     }
 
-    if (a3 == 1)
+    if (state == 1)
     {
-      v11 = 4 * (v9 == 2);
+      _stateOfSuccess = 4 * (biometryType == 2);
     }
 
     else
     {
-      v11 = v10;
+      _stateOfSuccess = v10;
     }
   }
 
@@ -268,29 +268,29 @@
       [(LAUIAuthenticationView *)self _biometryIdle];
     }
 
-    v11 = 0;
+    _stateOfSuccess = 0;
   }
 
-  if (a3)
+  if (state)
   {
     v13 = 1;
   }
 
   else
   {
-    v13 = v9 == 2;
+    v13 = biometryType == 2;
   }
 
   v14 = !v13;
-  self->_lastState = a3;
-  v15 = [(LAUIAuthenticationView *)self glyphWrapper];
+  self->_lastState = state;
+  glyphWrapper = [(LAUIAuthenticationView *)self glyphWrapper];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __58__LAUIAuthenticationView_biometryState_completionHandler___block_invoke;
   v17[3] = &unk_279821610;
-  v18 = v6;
-  v16 = v6;
-  [v15 setState:v11 idleTouchID:v14 animated:1 completionHandler:v17];
+  v18 = handlerCopy;
+  v16 = handlerCopy;
+  [glyphWrapper setState:_stateOfSuccess idleTouchID:v14 animated:1 completionHandler:v17];
 }
 
 - (int64_t)_stateOfSuccess
@@ -313,26 +313,26 @@
   objc_copyWeak(v12, &location);
   v12[1] = v3;
   v4 = MEMORY[0x259C5AE60](v11);
-  v5 = [(LAUIAuthenticationView *)self delegate];
+  delegate = [(LAUIAuthenticationView *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(LAUIAuthenticationView *)self delegate];
-    [v7 processAuthenticationSuccessWithCompletionHandler:v4];
+    delegate2 = [(LAUIAuthenticationView *)self delegate];
+    [delegate2 processAuthenticationSuccessWithCompletionHandler:v4];
 LABEL_8:
 
     v3 = 7;
     goto LABEL_9;
   }
 
-  v8 = [(LAUIAuthenticationView *)self delegate];
+  delegate3 = [(LAUIAuthenticationView *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v7 = [(LAUIAuthenticationView *)self delegate];
-    [v7 processBiometricMatchWithCompletionHandler:v4];
+    delegate2 = [(LAUIAuthenticationView *)self delegate];
+    [delegate2 processBiometricMatchWithCompletionHandler:v4];
     goto LABEL_8;
   }
 
@@ -362,13 +362,13 @@ void __41__LAUIAuthenticationView__stateOfSuccess__block_invoke_2(uint64_t a1)
   [v2 setState:*(a1 + 40) idleTouchID:0 animated:1 completionHandler:&__block_literal_global_1];
 }
 
-- (void)authenticationResult:(id)a3 error:(id)a4 context:(id)a5
+- (void)authenticationResult:(id)result error:(id)error context:(id)context
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(LAUIAuthenticationView *)self delegate];
+  resultCopy = result;
+  errorCopy = error;
+  contextCopy = context;
+  delegate = [(LAUIAuthenticationView *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
@@ -376,14 +376,14 @@ void __41__LAUIAuthenticationView__stateOfSuccess__block_invoke_2(uint64_t a1)
     v13 = LA_LOG_LAUIAuthenticationView();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      if (v8)
+      if (resultCopy)
       {
-        v14 = v8;
+        v14 = resultCopy;
       }
 
       else
       {
-        v14 = v9;
+        v14 = errorCopy;
       }
 
       v16 = 136315906;
@@ -391,21 +391,21 @@ void __41__LAUIAuthenticationView__stateOfSuccess__block_invoke_2(uint64_t a1)
       v18 = 2114;
       v19 = v14;
       v20 = 2114;
-      v21 = v10;
+      v21 = contextCopy;
       v22 = 2112;
-      v23 = self;
+      selfCopy = self;
       _os_log_impl(&dword_2560E6000, v13, OS_LOG_TYPE_DEFAULT, "%s %{public}@, %{public}@ on %@", &v16, 0x2Au);
     }
 
-    v15 = [(LAUIAuthenticationView *)self delegate];
-    [v15 authenticationResult:v8 error:v9 context:v10];
+    delegate2 = [(LAUIAuthenticationView *)self delegate];
+    [delegate2 authenticationResult:resultCopy error:errorCopy context:contextCopy];
   }
 }
 
 - (void)biometricNoMatch
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(LAUIAuthenticationView *)self delegate];
+  delegate = [(LAUIAuthenticationView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
@@ -416,19 +416,19 @@ void __41__LAUIAuthenticationView__stateOfSuccess__block_invoke_2(uint64_t a1)
       v7 = 136315394;
       v8 = "[LAUIAuthenticationView biometricNoMatch]";
       v9 = 2112;
-      v10 = self;
+      selfCopy = self;
       _os_log_impl(&dword_2560E6000, v5, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v7, 0x16u);
     }
 
-    v6 = [(LAUIAuthenticationView *)self delegate];
-    [v6 biometricNoMatch];
+    delegate2 = [(LAUIAuthenticationView *)self delegate];
+    [delegate2 biometricNoMatch];
   }
 }
 
 - (void)_biometryIdle
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(LAUIAuthenticationView *)self delegate];
+  delegate = [(LAUIAuthenticationView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
@@ -439,72 +439,72 @@ void __41__LAUIAuthenticationView__stateOfSuccess__block_invoke_2(uint64_t a1)
       v7 = 136315394;
       v8 = "[LAUIAuthenticationView _biometryIdle]";
       v9 = 2112;
-      v10 = self;
+      selfCopy = self;
       _os_log_impl(&dword_2560E6000, v5, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v7, 0x16u);
     }
 
-    v6 = [(LAUIAuthenticationView *)self delegate];
-    [v6 biometryDidBecomeIdle];
+    delegate2 = [(LAUIAuthenticationView *)self delegate];
+    [delegate2 biometryDidBecomeIdle];
   }
 }
 
 - (id)callerIconPath
 {
-  v3 = [(LAUIAuthenticationView *)self delegate];
+  delegate = [(LAUIAuthenticationView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(LAUIAuthenticationView *)self delegate];
-    v5 = [v4 callerIconPath];
+    delegate2 = [(LAUIAuthenticationView *)self delegate];
+    callerIconPath = [delegate2 callerIconPath];
   }
 
   else
   {
-    v5 = 0;
+    callerIconPath = 0;
   }
 
-  return v5;
+  return callerIconPath;
 }
 
 - (id)callerIconBundlePath
 {
-  v3 = [(LAUIAuthenticationView *)self delegate];
+  delegate = [(LAUIAuthenticationView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(LAUIAuthenticationView *)self delegate];
-    v5 = [v4 callerIconBundlePath];
+    delegate2 = [(LAUIAuthenticationView *)self delegate];
+    callerIconBundlePath = [delegate2 callerIconBundlePath];
   }
 
   else
   {
-    v5 = 0;
+    callerIconBundlePath = 0;
   }
 
-  return v5;
+  return callerIconBundlePath;
 }
 
 - (id)localizedCallerName
 {
-  v3 = [(LAUIAuthenticationView *)self delegate];
+  delegate = [(LAUIAuthenticationView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(LAUIAuthenticationView *)self delegate];
-    v5 = [v4 localizedCallerName];
+    delegate2 = [(LAUIAuthenticationView *)self delegate];
+    localizedCallerName = [delegate2 localizedCallerName];
   }
 
   else
   {
-    v5 = 0;
+    localizedCallerName = 0;
   }
 
-  return v5;
+  return localizedCallerName;
 }
 
-- (void)setFastAnimations:(BOOL)a3
+- (void)setFastAnimations:(BOOL)animations
 {
-  v3 = a3;
-  self->_fastAnimations = a3;
-  v4 = [(LAUIAuthenticationView *)self glyphWrapper];
-  [v4 setFastAnimations:v3];
+  animationsCopy = animations;
+  self->_fastAnimations = animations;
+  glyphWrapper = [(LAUIAuthenticationView *)self glyphWrapper];
+  [glyphWrapper setFastAnimations:animationsCopy];
 }
 
 - (LAUIAuthenticationDelegate)delegate

@@ -1,16 +1,16 @@
 @interface _DPPrioAlgorithm
-+ (id)prioWithEpsilon:(double)a3 dimensionality:(unint64_t)a4;
-- (_DPPrioAlgorithm)initWithEpsilon:(double)a3 dimensionality:(unint64_t)a4;
-- (id)privatizeDataWithLocalDP:(BOOL)a3 withBlock:(id)a4;
++ (id)prioWithEpsilon:(double)epsilon dimensionality:(unint64_t)dimensionality;
+- (_DPPrioAlgorithm)initWithEpsilon:(double)epsilon dimensionality:(unint64_t)dimensionality;
+- (id)privatizeDataWithLocalDP:(BOOL)p withBlock:(id)block;
 - (void)dealloc;
 @end
 
 @implementation _DPPrioAlgorithm
 
-- (_DPPrioAlgorithm)initWithEpsilon:(double)a3 dimensionality:(unint64_t)a4
+- (_DPPrioAlgorithm)initWithEpsilon:(double)epsilon dimensionality:(unint64_t)dimensionality
 {
-  v5 = self;
-  if (a3 < 0.0 || a3 > 16.0)
+  selfCopy = self;
+  if (epsilon < 0.0 || epsilon > 16.0)
   {
     goto LABEL_15;
   }
@@ -18,16 +18,16 @@
   v15.receiver = self;
   v15.super_class = _DPPrioAlgorithm;
   v8 = [(_DPPrioAlgorithm *)&v15 init];
-  v5 = v8;
+  selfCopy = v8;
   if (v8)
   {
-    v8->_dimension = a4;
-    v8->_epsilon = a3;
-    v9 = [_DPBiasedCoin coinWithBias:(1.0 / (exp(a3) + 1.0))];
-    coin = v5->_coin;
-    v5->_coin = v9;
+    v8->_dimension = dimensionality;
+    v8->_epsilon = epsilon;
+    v9 = [_DPBiasedCoin coinWithBias:(1.0 / (exp(epsilon) + 1.0))];
+    coin = selfCopy->_coin;
+    selfCopy->_coin = v9;
 
-    if ((2 * nextPowerOfTwo(a4 + 1)) > 0x100000)
+    if ((2 * nextPowerOfTwo(dimensionality + 1)) > 0x100000)
     {
       v11 = +[_DPLog framework];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -42,8 +42,8 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v12 = prio_memory_alloc(v5->_dimension);
-    v5->_prioMemory = v12;
+    v12 = prio_memory_alloc(selfCopy->_dimension);
+    selfCopy->_prioMemory = v12;
     if (!v12)
     {
       v11 = +[_DPLog framework];
@@ -56,8 +56,8 @@ LABEL_15:
     }
   }
 
-  v5 = v5;
-  v13 = v5;
+  selfCopy = selfCopy;
+  v13 = selfCopy;
 LABEL_16:
 
   return v13;
@@ -71,27 +71,27 @@ LABEL_16:
   [(_DPPrioAlgorithm *)&v3 dealloc];
 }
 
-+ (id)prioWithEpsilon:(double)a3 dimensionality:(unint64_t)a4
++ (id)prioWithEpsilon:(double)epsilon dimensionality:(unint64_t)dimensionality
 {
-  v4 = [[a1 alloc] initWithEpsilon:a4 dimensionality:a3];
+  v4 = [[self alloc] initWithEpsilon:dimensionality dimensionality:epsilon];
 
   return v4;
 }
 
-- (id)privatizeDataWithLocalDP:(BOOL)a3 withBlock:(id)a4
+- (id)privatizeDataWithLocalDP:(BOOL)p withBlock:(id)block
 {
-  v4 = a3;
+  pCopy = p;
   v25[3] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(_DPPrioAlgorithm *)self dimension];
-  v8 = prio_share_length(v7);
+  blockCopy = block;
+  dimension = [(_DPPrioAlgorithm *)self dimension];
+  v8 = prio_share_length(dimension);
   v9 = +[_DPPrioSeedablePRNG seedLength];
   v10 = [MEMORY[0x277CBEB28] dataWithLength:4 * v8];
   if (v10)
   {
-    v23 = v6;
+    v23 = blockCopy;
     v11 = [MEMORY[0x277CBEB28] dataWithLength:v9];
-    v12 = [v10 mutableBytes];
+    mutableBytes = [v10 mutableBytes];
     if (SecRandomCopyBytes(*MEMORY[0x277CDC540], v9, [v11 mutableBytes]))
     {
       v13 = +[_DPLog framework];
@@ -103,18 +103,18 @@ LABEL_16:
 
     else
     {
-      if (v6[2](v6, v12, v7))
+      if (blockCopy[2](blockCopy, mutableBytes, dimension))
       {
-        if (v7 && v4)
+        if (dimension && pCopy)
         {
-          v15 = v12;
-          v16 = v7;
+          v15 = mutableBytes;
+          v16 = dimension;
           do
           {
-            v17 = [(_DPPrioAlgorithm *)self coin];
-            v18 = [v17 flip];
+            coin = [(_DPPrioAlgorithm *)self coin];
+            flip = [coin flip];
 
-            if (v18)
+            if (flip)
             {
               *v15 = *v15 == 0;
             }
@@ -126,18 +126,18 @@ LABEL_16:
           while (v16);
         }
 
-        prio_encode(v7, v12, v8, [(_DPPrioAlgorithm *)self prioMemory]);
+        prio_encode(dimension, mutableBytes, v8, [(_DPPrioAlgorithm *)self prioMemory]);
         v19 = [_DPPrioSeedablePRNG randomDataFromSeed:v11 length:v8];
         v13 = v19;
         if (v19)
         {
-          share_array_prng(v12, [v19 bytes], v8);
+          share_array_prng(mutableBytes, [v19 bytes], v8);
           v24[0] = @"share1";
           v24[1] = @"share2";
           v25[0] = v10;
           v25[1] = v11;
           v24[2] = @"dimensionality";
-          v20 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v7];
+          v20 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:dimension];
           v25[2] = v20;
           v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:3];
         }
@@ -153,7 +153,7 @@ LABEL_16:
           v14 = 0;
         }
 
-        v6 = v23;
+        blockCopy = v23;
 
         goto LABEL_20;
       }

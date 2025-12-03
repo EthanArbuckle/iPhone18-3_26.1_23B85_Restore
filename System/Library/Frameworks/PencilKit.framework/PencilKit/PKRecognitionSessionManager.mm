@@ -1,74 +1,74 @@
 @interface PKRecognitionSessionManager
 + (BOOL)hasAutoRefineLocaleEnabled;
 + (id)enabledLocales;
-- (CGAffineTransform)_affineTransformFromBounds:(double)a3 targetHeight:(double)a4 targetPoint:(double)a5;
+- (CGAffineTransform)_affineTransformFromBounds:(double)bounds targetHeight:(double)height targetPoint:(double)point;
 - (PKRecognitionSessionManager)init;
-- (id)_firstStrokesInSelectedStrokes:(uint64_t)a3 isRTL:;
-- (id)_lastStrokesInSelectedStrokes:(uint64_t)a3 isRTL:;
+- (id)_firstStrokesInSelectedStrokes:(uint64_t)strokes isRTL:;
+- (id)_lastStrokesInSelectedStrokes:(uint64_t)strokes isRTL:;
 - (id)calculateDocumentProviderSnapshot;
 - (id)canvasAttachmentProviderSnapshot;
 - (id)directStrokeProviderSnapshot;
 - (id)drawing;
-- (id)fetchTranscriptionForStrokes:(char)a3 callCompletionOnMainThread:(void *)a4 cancelBlock:(void *)a5 withCompletion:;
-- (id)fetchTranscriptionForStrokes:(void *)a3 cancelBlock:(void *)a4 withCompletion:;
+- (id)fetchTranscriptionForStrokes:(char)strokes callCompletionOnMainThread:(void *)thread cancelBlock:(void *)block withCompletion:;
+- (id)fetchTranscriptionForStrokes:(void *)strokes cancelBlock:(void *)block withCompletion:;
 - (id)groupQuery;
-- (id)initWithConfiguration:(id *)a1;
+- (id)initWithConfiguration:(id *)configuration;
 - (id)listeners;
 - (id)q_groupQuery;
 - (id)session;
 - (id)strokeProviderSnapshot;
-- (uint64_t)canSynthesizeDrawingForText:(uint64_t)a1;
-- (uint64_t)contentTypeForIntersectedStrokes:(uint64_t)a1;
-- (uint64_t)didHitHandwritingStroke:(uint64_t)a1;
+- (uint64_t)canSynthesizeDrawingForText:(uint64_t)text;
+- (uint64_t)contentTypeForIntersectedStrokes:(uint64_t)strokes;
+- (uint64_t)didHitHandwritingStroke:(uint64_t)stroke;
 - (uint64_t)q_createRecognitionSessionIfNecessary;
-- (void)_dispatchSyncToRecognitionThreadIfNecessary:(uint64_t)a1;
-- (void)addListener:(uint64_t)a1;
-- (void)autoRefineQuery:(id)a3 didUpdateWithQueryItem:(id)a4 validProviderVersion:(id)a5;
-- (void)cacheTranscription:(void *)a3 strokeGroup:;
+- (void)_dispatchSyncToRecognitionThreadIfNecessary:(uint64_t)necessary;
+- (void)addListener:(uint64_t)listener;
+- (void)autoRefineQuery:(id)query didUpdateWithQueryItem:(id)item validProviderVersion:(id)version;
+- (void)cacheTranscription:(void *)transcription strokeGroup:;
 - (void)cleanupSessionIfNecessary;
-- (void)completeTextSynthesisForText:(id *)a1 bounds:(void *)a2 ink:(void *)a3 inputScale:(void *)a4 suggestedHeight:(void *)a5 contextDrawing:(void *)a6 sourceStrokes:(void *)a7 tokenStringRanges:(int)a8 tokens:(double)a9 isProofreadingReplacement:(double)a10 completion:(void *)a11;
-- (void)dataDetectorQuery:(id)a3 foundItems:(id)a4;
+- (void)completeTextSynthesisForText:(id *)text bounds:(void *)bounds ink:(void *)ink inputScale:(void *)scale suggestedHeight:(void *)height contextDrawing:(void *)drawing sourceStrokes:(void *)strokes tokenStringRanges:(int)ranges tokens:(double)tokens isProofreadingReplacement:(double)text0 completion:(void *)text1;
+- (void)dataDetectorQuery:(id)query foundItems:(id)items;
 - (void)dealloc;
-- (void)fetchCurrentStrokeGroupItems:(uint64_t)a1;
-- (void)fetchIndexableContentWithCompletion:(uint64_t)a1;
-- (void)fetchIntersectedStrokesAtPoint:(uint64_t)a3 selectionType:(void *)a4 inputType:(void *)a5 visibleOnscreenStrokes:(double)a6 completion:(double)a7;
-- (void)fetchIntersectedStrokesBetweenTopPoint:(void *)a3 bottomPoint:(double)a4 liveScrollOffset:(double)a5 isRTL:(double)a6 completion:(double)a7;
-- (void)fetchStrokesAmbiguouslyBelowAndAboveInsertSpaceHandleWithStrokes:(void *)a3 completion:;
-- (void)groupQuery:(id)a3 foundItems:(id)a4;
-- (void)hashtagQuery:(id)a3 foundItems:(id)a4;
-- (void)mentionQuery:(id)a3 foundItems:(id)a4;
-- (void)proofreadingQuery:(id)a3 foundItems:(id)a4;
+- (void)fetchCurrentStrokeGroupItems:(uint64_t)items;
+- (void)fetchIndexableContentWithCompletion:(uint64_t)completion;
+- (void)fetchIntersectedStrokesAtPoint:(uint64_t)point selectionType:(void *)type inputType:(void *)inputType visibleOnscreenStrokes:(double)strokes completion:(double)completion;
+- (void)fetchIntersectedStrokesBetweenTopPoint:(void *)point bottomPoint:(double)bottomPoint liveScrollOffset:(double)offset isRTL:(double)l completion:(double)completion;
+- (void)fetchStrokesAmbiguouslyBelowAndAboveInsertSpaceHandleWithStrokes:(void *)strokes completion:;
+- (void)groupQuery:(id)query foundItems:(id)items;
+- (void)hashtagQuery:(id)query foundItems:(id)items;
+- (void)mentionQuery:(id)query foundItems:(id)items;
+- (void)proofreadingQuery:(id)query foundItems:(id)items;
 - (void)q_needRecognitionUpdateWithCancel:(void *)result;
 - (void)q_saveRecognitionSessionIfNecessary;
 - (void)q_teardownSession;
-- (void)q_updateRecognitionStateWithFinishedResult:(uint64_t)a1;
-- (void)recognitionSessionDidUpdateRecognitionResult:(id)a3;
-- (void)removeListener:(uint64_t)a1;
+- (void)q_updateRecognitionStateWithFinishedResult:(uint64_t)result;
+- (void)recognitionSessionDidUpdateRecognitionResult:(id)result;
+- (void)removeListener:(uint64_t)listener;
 - (void)saveRecognitionSessionIfNecessary;
 - (void)scheduleSaveRecognitionSession;
-- (void)setAutoRefineViewDelegate:(uint64_t)a1;
-- (void)setCalculateDocumentProvider:(uint64_t)a1;
-- (void)setCanvasAttachmentProvider:(uint64_t)a1;
-- (void)setDelegate:(uint64_t)a1;
-- (void)setDrawing:(void *)a1;
-- (void)setDrawing:(void *)a3 withVisibleOnscreenStrokes:;
-- (void)setMathPreferredUpdatesInterval:(uint64_t)a1;
-- (void)setMentionSuffixes:(uint64_t)a1;
-- (void)setVisibleOnscreenStrokes:(uint64_t)a1;
-- (void)setWantsAutoRefine:(uint64_t)a1;
-- (void)setWantsDataDetection:(uint64_t)a1;
-- (void)setWantsHashtagDetection:(uint64_t)a1;
-- (void)setWantsMentionDetection:(uint64_t)a1;
-- (void)setWantsProofreadingDetection:(uint64_t)a1;
-- (void)synthesizeDrawingForMathResultBlock:(void *)a3 fallbackText:(void *)a4 drawing:(void *)a5 mathItem:(void *)a6 inkColor:(void *)a7 inputScale:(double)a8 completion:;
-- (void)synthesizeDrawingForReplacementText:(void *)a3 drawing:(void *)a4 strokes:(void *)a5 bounds:(CGFloat)a6 inputScale:(CGFloat)a7 completion:(CGFloat)a8;
-- (void)synthesizeDrawingForText:(void *)a3 drawing:(double)a4 inkColor:(double)a5 inputScale:(double)a6 suggestedHeight:(double)a7 bounds:(double)a8 progress:(double)a9 completion:(uint64_t)a10 shouldCancel:(void *)a11;
-- (void)synthesizeDrawingForText:(void *)a3 sourceDrawing:(void *)a4 originalBounds:(double)a5 fitInBounds:(double)a6 inputScale:(double)a7 completion:(double)a8;
+- (void)setAutoRefineViewDelegate:(uint64_t)delegate;
+- (void)setCalculateDocumentProvider:(uint64_t)provider;
+- (void)setCanvasAttachmentProvider:(uint64_t)provider;
+- (void)setDelegate:(uint64_t)delegate;
+- (void)setDrawing:(void *)drawing;
+- (void)setDrawing:(void *)drawing withVisibleOnscreenStrokes:;
+- (void)setMathPreferredUpdatesInterval:(uint64_t)interval;
+- (void)setMentionSuffixes:(uint64_t)suffixes;
+- (void)setVisibleOnscreenStrokes:(uint64_t)strokes;
+- (void)setWantsAutoRefine:(uint64_t)refine;
+- (void)setWantsDataDetection:(uint64_t)detection;
+- (void)setWantsHashtagDetection:(uint64_t)detection;
+- (void)setWantsMentionDetection:(uint64_t)detection;
+- (void)setWantsProofreadingDetection:(uint64_t)detection;
+- (void)synthesizeDrawingForMathResultBlock:(void *)block fallbackText:(void *)text drawing:(void *)drawing mathItem:(void *)item inkColor:(void *)color inputScale:(double)scale completion:;
+- (void)synthesizeDrawingForReplacementText:(void *)text drawing:(void *)drawing strokes:(void *)strokes bounds:(CGFloat)bounds inputScale:(CGFloat)scale completion:(CGFloat)completion;
+- (void)synthesizeDrawingForText:(void *)text drawing:(double)drawing inkColor:(double)color inputScale:(double)scale suggestedHeight:(double)height bounds:(double)bounds progress:(double)progress completion:(uint64_t)self0 shouldCancel:(void *)self1;
+- (void)synthesizeDrawingForText:(void *)text sourceDrawing:(void *)drawing originalBounds:(double)bounds fitInBounds:(double)inBounds inputScale:(double)scale completion:(double)completion;
 - (void)tagAsActive;
 - (void)tagAsIdle;
-- (void)textInputDidChange:(id)a3;
-- (void)textStrokesCoveredByStroke:(void *)a3 completion:;
-- (void)updateWithRefinableStroke:(uint64_t)a1;
+- (void)textInputDidChange:(id)change;
+- (void)textStrokesCoveredByStroke:(void *)stroke completion:;
+- (void)updateWithRefinableStroke:(uint64_t)stroke;
 @end
 
 @implementation PKRecognitionSessionManager
@@ -82,15 +82,15 @@
   return v4;
 }
 
-- (id)initWithConfiguration:(id *)a1
+- (id)initWithConfiguration:(id *)configuration
 {
   v3 = a2;
-  if (a1)
+  if (configuration)
   {
-    v25.receiver = a1;
+    v25.receiver = configuration;
     v25.super_class = PKRecognitionSessionManager;
     v4 = objc_msgSendSuper2(&v25, sel_init);
-    a1 = v4;
+    configuration = v4;
     if (v4)
     {
       if (v3)
@@ -121,40 +121,40 @@
         v7 = 0;
       }
 
-      *(a1 + 8) = v7 & 1;
-      [a1 setState:0];
-      *(a1 + 120) = 1;
-      *(a1 + 121) = 0;
-      *(a1 + 125) = 0;
-      v8 = a1[18];
-      a1[18] = 0;
+      *(configuration + 8) = v7 & 1;
+      [configuration setState:0];
+      *(configuration + 120) = 1;
+      *(configuration + 121) = 0;
+      *(configuration + 125) = 0;
+      v8 = configuration[18];
+      configuration[18] = 0;
 
-      v9 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-      v10 = a1[20];
-      a1[20] = v9;
+      weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      v10 = configuration[20];
+      configuration[20] = weakObjectsHashTable;
 
       v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v12 = dispatch_queue_create("com.apple.PencilKit.RecognitionManager", v11);
-      v13 = a1[3];
-      a1[3] = v12;
+      v13 = configuration[3];
+      configuration[3] = v12;
 
       v14 = objc_alloc_init(PKHandwritingTranscriptionCache);
-      v15 = a1[12];
-      a1[12] = v14;
+      v15 = configuration[12];
+      configuration[12] = v14;
 
       v16 = objc_alloc_init(PKHandwritingTranscriptionCache);
-      v17 = a1[13];
-      a1[13] = v16;
+      v17 = configuration[13];
+      configuration[13] = v16;
 
-      v18 = [[PKRecognitionQueryController alloc] initWithRecognitionSessionManager:a1];
-      v19 = a1[16];
-      a1[16] = v18;
+      v18 = [[PKRecognitionQueryController alloc] initWithRecognitionSessionManager:configuration];
+      v19 = configuration[16];
+      configuration[16] = v18;
 
       if (v3)
       {
         if (*(v3 + 9) == 1)
         {
-          v20 = a1[16];
+          v20 = configuration[16];
           v21 = objc_opt_class();
           if (v20)
           {
@@ -163,12 +163,12 @@
         }
       }
 
-      v22 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v22 addObserver:a1 selector:sel_textInputDidChange_ name:@"TIPreferencesControllerChangedNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:configuration selector:sel_textInputDidChange_ name:@"TIPreferencesControllerChangedNotification" object:0];
     }
   }
 
-  return a1;
+  return configuration;
 }
 
 - (void)dealloc
@@ -187,8 +187,8 @@
     atomic_store(1u, &observerWrapper->_deactivated);
   }
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   if (dispatch_queue_get_label(0) == "com.apple.PencilKit.RecognitionManager")
   {
@@ -202,7 +202,7 @@
     v9 = 3221225472;
     v10 = __47__PKRecognitionSessionManager__teardownSession__block_invoke;
     v11 = &unk_1E82D6388;
-    v12 = self;
+    selfCopy = self;
     dispatch_sync(recognitionSessionQueue, buf);
   }
 
@@ -211,20 +211,20 @@
   [(PKRecognitionSessionManager *)&v7 dealloc];
 }
 
-- (void)textStrokesCoveredByStroke:(void *)a3 completion:
+- (void)textStrokesCoveredByStroke:(void *)stroke completion:
 {
   v7 = a2;
-  v5 = a3;
-  if (a1)
+  strokeCopy = stroke;
+  if (self)
   {
-    v6 = [(PKRecognitionSessionManager *)a1 groupQuery];
-    [v6 textStrokesCoveredByStroke:v7 completion:v5];
+    groupQuery = [(PKRecognitionSessionManager *)self groupQuery];
+    [groupQuery textStrokesCoveredByStroke:v7 completion:strokeCopy];
   }
 }
 
 - (id)groupQuery
 {
-  if (a1)
+  if (self)
   {
     v4 = 0;
     v5 = &v4;
@@ -236,9 +236,9 @@
     v3[1] = 3221225472;
     v3[2] = __41__PKRecognitionSessionManager_groupQuery__block_invoke;
     v3[3] = &unk_1E82D6868;
-    v3[4] = a1;
+    v3[4] = self;
     v3[5] = &v4;
-    [(PKRecognitionSessionManager *)a1 _dispatchSyncToRecognitionThreadIfNecessary:v3];
+    [(PKRecognitionSessionManager *)self _dispatchSyncToRecognitionThreadIfNecessary:v3];
     v1 = v5[5];
     _Block_object_dispose(&v4, 8);
   }
@@ -251,13 +251,13 @@
   return v1;
 }
 
-- (void)setDelegate:(uint64_t)a1
+- (void)setDelegate:(uint64_t)delegate
 {
   v3 = a2;
-  if (a1)
+  if (delegate)
   {
     v8 = v3;
-    objc_storeWeak((a1 + 200), v3);
+    objc_storeWeak((delegate + 200), v3);
     if (objc_opt_respondsToSelector())
     {
       v4 = 2;
@@ -268,7 +268,7 @@
       v4 = 0;
     }
 
-    *(a1 + 184) = *(a1 + 184) & 0xFD | v4;
+    *(delegate + 184) = *(delegate + 184) & 0xFD | v4;
     if (objc_opt_respondsToSelector())
     {
       v5 = 4;
@@ -279,7 +279,7 @@
       v5 = 0;
     }
 
-    *(a1 + 184) = *(a1 + 184) & 0xFB | v5;
+    *(delegate + 184) = *(delegate + 184) & 0xFB | v5;
     if (objc_opt_respondsToSelector())
     {
       v6 = 8;
@@ -290,8 +290,8 @@
       v6 = 0;
     }
 
-    *(a1 + 184) = *(a1 + 184) & 0xF7 | v6;
-    *(a1 + 184) = *(a1 + 184) & 0xFE | objc_opt_respondsToSelector() & 1;
+    *(delegate + 184) = *(delegate + 184) & 0xF7 | v6;
+    *(delegate + 184) = *(delegate + 184) & 0xFE | objc_opt_respondsToSelector() & 1;
     if (objc_opt_respondsToSelector())
     {
       v7 = 16;
@@ -302,40 +302,40 @@
       v7 = 0;
     }
 
-    *(a1 + 184) = *(a1 + 184) & 0xEF | v7;
+    *(delegate + 184) = *(delegate + 184) & 0xEF | v7;
     v3 = v8;
   }
 }
 
-- (void)addListener:(uint64_t)a1
+- (void)addListener:(uint64_t)listener
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (listener)
   {
-    v5 = *(a1 + 24);
+    v5 = *(listener + 24);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __43__PKRecognitionSessionManager_addListener___block_invoke;
     v6[3] = &unk_1E82D6890;
-    v6[4] = a1;
+    v6[4] = listener;
     v7 = v3;
     dispatch_async(v5, v6);
   }
 }
 
-- (void)removeListener:(uint64_t)a1
+- (void)removeListener:(uint64_t)listener
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (listener)
   {
-    v5 = *(a1 + 24);
+    v5 = *(listener + 24);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __46__PKRecognitionSessionManager_removeListener___block_invoke;
     v6[3] = &unk_1E82D6890;
-    v6[4] = a1;
+    v6[4] = listener;
     v7 = v3;
     dispatch_async(v5, v6);
   }
@@ -354,42 +354,42 @@ void __46__PKRecognitionSessionManager_removeListener___block_invoke(uint64_t a1
 
 - (void)q_teardownSession
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 136);
+    v2 = *(self + 136);
     v3 = v2;
     if (v2)
     {
       atomic_store(1u, v2 + 16);
     }
 
-    v4 = *(a1 + 136);
-    *(a1 + 136) = 0;
+    v4 = *(self + 136);
+    *(self + 136) = 0;
 
-    v5 = *(a1 + 128);
+    v5 = *(self + 128);
     if (v5)
     {
-      [(PKRecognitionQueryController *)*(a1 + 128) clearVisibleStrokesQueries];
+      [(PKRecognitionQueryController *)*(self + 128) clearVisibleStrokesQueries];
       [(PKRecognitionQueryController *)v5 clearDrawingQueries];
     }
 
-    [(PKRecognitionSessionManager *)a1 q_saveRecognitionSessionIfNecessary];
-    v6 = *(a1 + 152);
+    [(PKRecognitionSessionManager *)self q_saveRecognitionSessionIfNecessary];
+    v6 = *(self + 152);
     if (v6)
     {
       [(PKAutoRefineTaskManager *)v6 cancelAllTasks];
-      v7 = *(a1 + 152);
-      *(a1 + 152) = 0;
+      v7 = *(self + 152);
+      *(self + 152) = 0;
     }
 
-    [*(a1 + 48) cancelOngoingRequests];
-    [*(a1 + 48) setDataSource:0];
-    v8 = *(a1 + 64);
-    *(a1 + 64) = 0;
+    [*(self + 48) cancelOngoingRequests];
+    [*(self + 48) setDataSource:0];
+    v8 = *(self + 64);
+    *(self + 64) = 0;
 
-    v9 = *(a1 + 48);
-    v10 = *(a1 + 48);
-    *(a1 + 48) = 0;
+    v9 = *(self + 48);
+    v10 = *(self + 48);
+    *(self + 48) = 0;
 
     if (v3)
     {
@@ -429,10 +429,10 @@ void __46__PKRecognitionSessionManager_removeListener___block_invoke(uint64_t a1
   return v2;
 }
 
-- (void)_dispatchSyncToRecognitionThreadIfNecessary:(uint64_t)a1
+- (void)_dispatchSyncToRecognitionThreadIfNecessary:(uint64_t)necessary
 {
   v3 = a2;
-  if (a1)
+  if (necessary)
   {
     if (dispatch_queue_get_label(0) == "com.apple.PencilKit.RecognitionManager")
     {
@@ -441,7 +441,7 @@ void __46__PKRecognitionSessionManager_removeListener___block_invoke(uint64_t a1
 
     else
     {
-      v4 = *(a1 + 24);
+      v4 = *(necessary + 24);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __75__PKRecognitionSessionManager__dispatchSyncToRecognitionThreadIfNecessary___block_invoke;
@@ -454,42 +454,42 @@ void __46__PKRecognitionSessionManager_removeListener___block_invoke(uint64_t a1
 
 - (void)tagAsActive
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 24);
+    v1 = *(self + 24);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __42__PKRecognitionSessionManager_tagAsActive__block_invoke;
     block[3] = &unk_1E82D6388;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(v1, block);
   }
 }
 
 - (void)tagAsIdle
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 24);
+    v1 = *(self + 24);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __40__PKRecognitionSessionManager_tagAsIdle__block_invoke;
     block[3] = &unk_1E82D6388;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(v1, block);
   }
 }
 
 - (void)cleanupSessionIfNecessary
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 24);
+    v1 = *(self + 24);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __56__PKRecognitionSessionManager_cleanupSessionIfNecessary__block_invoke;
     block[3] = &unk_1E82D6388;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(v1, block);
   }
 }
@@ -506,8 +506,8 @@ void __56__PKRecognitionSessionManager_cleanupSessionIfNecessary__block_invoke(u
 
 - (id)session
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
@@ -517,36 +517,36 @@ void __56__PKRecognitionSessionManager_cleanupSessionIfNecessary__block_invoke(u
     v10 = 0;
     if (dispatch_queue_get_label(0) == "com.apple.PencilKit.RecognitionManager")
     {
-      v10 = *(v1 + 6);
+      v10 = *(selfCopy + 6);
     }
 
     else
     {
-      v2 = *(v1 + 3);
+      v2 = *(selfCopy + 3);
       v4[0] = MEMORY[0x1E69E9820];
       v4[1] = 3221225472;
       v4[2] = __38__PKRecognitionSessionManager_session__block_invoke;
       v4[3] = &unk_1E82D6868;
-      v4[4] = v1;
+      v4[4] = selfCopy;
       v4[5] = &v5;
       dispatch_sync(v2, v4);
     }
 
-    v1 = v6[5];
+    selfCopy = v6[5];
     _Block_object_dispose(&v5, 8);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)drawing
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    objc_sync_enter(v1);
-    v2 = v1[4];
-    objc_sync_exit(v1);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v2 = selfCopy[4];
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -557,43 +557,43 @@ void __56__PKRecognitionSessionManager_cleanupSessionIfNecessary__block_invoke(u
   return v2;
 }
 
-- (void)setDrawing:(void *)a1
+- (void)setDrawing:(void *)drawing
 {
   v16 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (drawing)
   {
-    v4 = a1;
-    objc_sync_enter(v4);
-    if ([v3 isEqual:v4[4]])
+    drawingCopy = drawing;
+    objc_sync_enter(drawingCopy);
+    if ([v3 isEqual:drawingCopy[4]])
     {
-      objc_sync_exit(v4);
+      objc_sync_exit(drawingCopy);
     }
 
     else
     {
       v5 = [v3 copy];
-      v6 = v4[4];
-      v4[4] = v5;
+      v6 = drawingCopy[4];
+      drawingCopy[4] = v5;
 
-      objc_sync_exit(v4);
+      objc_sync_exit(drawingCopy);
       v7 = os_log_create("com.apple.pencilkit", "RecognitionManager");
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [v3 uuid];
+        uuid = [v3 uuid];
         *buf = 138412290;
-        v15 = v8;
+        v15 = uuid;
         _os_log_impl(&dword_1C7CCA000, v7, OS_LOG_TYPE_DEFAULT, "Drawing did change: %@", buf, 0xCu);
       }
 
-      [(PKRecognitionSessionManager *)v4 scheduleSaveRecognitionSession];
+      [(PKRecognitionSessionManager *)drawingCopy scheduleSaveRecognitionSession];
       v9 = [v3 copy];
-      v10 = v4[3];
+      v10 = drawingCopy[3];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __42__PKRecognitionSessionManager_setDrawing___block_invoke;
       v12[3] = &unk_1E82D6890;
-      v12[4] = v4;
+      v12[4] = drawingCopy;
       v13 = v9;
       v11 = v9;
       dispatch_async(v10, v12);
@@ -603,13 +603,13 @@ void __56__PKRecognitionSessionManager_cleanupSessionIfNecessary__block_invoke(u
 
 - (void)scheduleSaveRecognitionSession
 {
-  if (a1 && *(a1 + 8) == 1)
+  if (self && *(self + 8) == 1)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __61__PKRecognitionSessionManager_scheduleSaveRecognitionSession__block_invoke;
     aBlock[3] = &unk_1E82D6388;
-    aBlock[4] = a1;
+    aBlock[4] = self;
     v1 = _Block_copy(aBlock);
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
@@ -684,26 +684,26 @@ void __42__PKRecognitionSessionManager_setDrawing___block_invoke(uint64_t a1)
     return result;
   }
 
-  v2 = [*(result + 40) uuid];
-  if (v2)
+  uuid = [*(result + 40) uuid];
+  if (uuid)
   {
     v3 = *(v1 + 8);
 
     if (v3 == 1)
     {
-      v4 = [*(v1 + 40) uuid];
-      v5 = PKLoadRecognitionSession(v4, *(v1 + 192));
+      uuid2 = [*(v1 + 40) uuid];
+      v5 = PKLoadRecognitionSession(uuid2, *(v1 + 192));
       v6 = *(v1 + 48);
       *(v1 + 48) = v5;
 
       v7 = os_log_create("com.apple.pencilkit", "RecognitionManager");
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [*(v1 + 40) uuid];
-        v9 = [v8 uniqueCacheFilePath];
+        uuid3 = [*(v1 + 40) uuid];
+        uniqueCacheFilePath = [uuid3 uniqueCacheFilePath];
         v10 = *(v1 + 48) != 0;
         *buf = 138412546;
-        *&buf[4] = v9;
+        *&buf[4] = uniqueCacheFilePath;
         *&buf[12] = 1024;
         *&buf[14] = v10;
         _os_log_impl(&dword_1C7CCA000, v7, OS_LOG_TYPE_DEFAULT, "Loading session cache for: %@, success: %{BOOL}d", buf, 0x12u);
@@ -735,18 +735,18 @@ LABEL_10:
     }
   }
 
-  v15 = [*(v1 + 48) textSynthesizer];
+  textSynthesizer = [*(v1 + 48) textSynthesizer];
   v16 = *(v1 + 64);
-  *(v1 + 64) = v15;
+  *(v1 + 64) = textSynthesizer;
 
-  v17 = [objc_opt_class() enabledLocales];
-  [*(v1 + 48) setPreferredLocales:v17];
+  enabledLocales = [objc_opt_class() enabledLocales];
+  [*(v1 + 48) setPreferredLocales:enabledLocales];
 
   if ((objc_opt_respondsToSelector() & 1) != 0 && [*(v1 + 48) textSynthesizerWithLocaleFallbackIsSupported])
   {
-    v18 = [*(v1 + 48) textSynthesizerWithLocaleFallback];
+    textSynthesizerWithLocaleFallback = [*(v1 + 48) textSynthesizerWithLocaleFallback];
     v19 = *(v1 + 56);
-    *(v1 + 56) = v18;
+    *(v1 + 56) = textSynthesizerWithLocaleFallback;
   }
 
   [*(v1 + 48) setDataSource:v1];
@@ -809,18 +809,18 @@ LABEL_10:
   return result;
 }
 
-- (void)setCalculateDocumentProvider:(uint64_t)a1
+- (void)setCalculateDocumentProvider:(uint64_t)provider
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (provider)
   {
-    v5 = *(a1 + 24);
+    v5 = *(provider + 24);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __60__PKRecognitionSessionManager_setCalculateDocumentProvider___block_invoke;
     v6[3] = &unk_1E82D6890;
-    v6[4] = a1;
+    v6[4] = provider;
     v7 = v3;
     dispatch_async(v5, v6);
   }
@@ -883,18 +883,18 @@ void __60__PKRecognitionSessionManager_setCalculateDocumentProvider___block_invo
   }
 }
 
-- (void)setCanvasAttachmentProvider:(uint64_t)a1
+- (void)setCanvasAttachmentProvider:(uint64_t)provider
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (provider)
   {
-    v5 = *(a1 + 24);
+    v5 = *(provider + 24);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __59__PKRecognitionSessionManager_setCanvasAttachmentProvider___block_invoke;
     v6[3] = &unk_1E82D6890;
-    v6[4] = a1;
+    v6[4] = provider;
     v7 = v3;
     dispatch_async(v5, v6);
   }
@@ -948,34 +948,34 @@ void __59__PKRecognitionSessionManager_setCanvasAttachmentProvider___block_invok
   }
 }
 
-- (void)setDrawing:(void *)a3 withVisibleOnscreenStrokes:
+- (void)setDrawing:(void *)drawing withVisibleOnscreenStrokes:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  drawingCopy = drawing;
+  v7 = drawingCopy;
+  if (self)
   {
-    v8 = [v6 copy];
-    v9 = a1;
-    objc_sync_enter(v9);
-    v10 = [v5 isEqual:v9[4]];
+    v8 = [drawingCopy copy];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v10 = [v5 isEqual:selfCopy[4]];
     if ((v10 & 1) == 0)
     {
       v11 = [v5 copy];
-      v12 = v9[4];
-      v9[4] = v11;
+      v12 = selfCopy[4];
+      selfCopy[4] = v11;
     }
 
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
 
     v13 = [v5 copy];
     v14 = v10 ^ 1;
-    v15 = v9[3];
+    v15 = selfCopy[3];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __69__PKRecognitionSessionManager_setDrawing_withVisibleOnscreenStrokes___block_invoke;
     v18[3] = &unk_1E82D6DD0;
-    v18[4] = v9;
+    v18[4] = selfCopy;
     v19 = v13;
     v20 = v8;
     v21 = v14;
@@ -1056,19 +1056,19 @@ void __69__PKRecognitionSessionManager_setDrawing_withVisibleOnscreenStrokes___b
   }
 }
 
-- (void)setVisibleOnscreenStrokes:(uint64_t)a1
+- (void)setVisibleOnscreenStrokes:(uint64_t)strokes
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (strokes)
   {
     v5 = [v3 copy];
-    v6 = *(a1 + 24);
+    v6 = *(strokes + 24);
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __57__PKRecognitionSessionManager_setVisibleOnscreenStrokes___block_invoke;
     v8[3] = &unk_1E82D6890;
-    v8[4] = a1;
+    v8[4] = strokes;
     v9 = v5;
     v7 = v5;
     dispatch_async(v6, v8);
@@ -1133,16 +1133,16 @@ void __53__PKRecognitionSessionManager_setWantsTranscription___block_invoke(uint
   }
 }
 
-- (void)setWantsAutoRefine:(uint64_t)a1
+- (void)setWantsAutoRefine:(uint64_t)refine
 {
-  if (a1)
+  if (refine)
   {
-    v2 = *(a1 + 24);
+    v2 = *(refine + 24);
     v3[0] = MEMORY[0x1E69E9820];
     v3[1] = 3221225472;
     v3[2] = __50__PKRecognitionSessionManager_setWantsAutoRefine___block_invoke;
     v3[3] = &unk_1E82D75A0;
-    v3[4] = a1;
+    v3[4] = refine;
     v4 = a2;
     dispatch_async(v2, v3);
   }
@@ -1201,16 +1201,16 @@ void __50__PKRecognitionSessionManager_setWantsAutoRefine___block_invoke(uint64_
   }
 }
 
-- (void)setWantsDataDetection:(uint64_t)a1
+- (void)setWantsDataDetection:(uint64_t)detection
 {
-  if (a1)
+  if (detection)
   {
-    v2 = *(a1 + 24);
+    v2 = *(detection + 24);
     v3[0] = MEMORY[0x1E69E9820];
     v3[1] = 3221225472;
     v3[2] = __53__PKRecognitionSessionManager_setWantsDataDetection___block_invoke;
     v3[3] = &unk_1E82D75A0;
-    v3[4] = a1;
+    v3[4] = detection;
     v4 = a2;
     dispatch_async(v2, v3);
   }
@@ -1251,16 +1251,16 @@ void __53__PKRecognitionSessionManager_setWantsDataDetection___block_invoke(uint
   }
 }
 
-- (void)setWantsHashtagDetection:(uint64_t)a1
+- (void)setWantsHashtagDetection:(uint64_t)detection
 {
-  if (a1)
+  if (detection)
   {
-    v2 = *(a1 + 24);
+    v2 = *(detection + 24);
     v3[0] = MEMORY[0x1E69E9820];
     v3[1] = 3221225472;
     v3[2] = __56__PKRecognitionSessionManager_setWantsHashtagDetection___block_invoke;
     v3[3] = &unk_1E82D75A0;
-    v3[4] = a1;
+    v3[4] = detection;
     v4 = a2;
     dispatch_async(v2, v3);
   }
@@ -1301,16 +1301,16 @@ void __56__PKRecognitionSessionManager_setWantsHashtagDetection___block_invoke(u
   }
 }
 
-- (void)setWantsMentionDetection:(uint64_t)a1
+- (void)setWantsMentionDetection:(uint64_t)detection
 {
-  if (a1)
+  if (detection)
   {
-    v2 = *(a1 + 24);
+    v2 = *(detection + 24);
     v3[0] = MEMORY[0x1E69E9820];
     v3[1] = 3221225472;
     v3[2] = __56__PKRecognitionSessionManager_setWantsMentionDetection___block_invoke;
     v3[3] = &unk_1E82D75A0;
-    v3[4] = a1;
+    v3[4] = detection;
     v4 = a2;
     dispatch_async(v2, v3);
   }
@@ -1352,9 +1352,9 @@ void __56__PKRecognitionSessionManager_setWantsMentionDetection___block_invoke(u
   }
 }
 
-- (void)setWantsProofreadingDetection:(uint64_t)a1
+- (void)setWantsProofreadingDetection:(uint64_t)detection
 {
-  if (a1)
+  if (detection)
   {
     if (a2)
     {
@@ -1370,12 +1370,12 @@ void __56__PKRecognitionSessionManager_setWantsMentionDetection___block_invoke(u
       LOBYTE(v3) = 0;
     }
 
-    v4 = *(a1 + 24);
+    v4 = *(detection + 24);
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __61__PKRecognitionSessionManager_setWantsProofreadingDetection___block_invoke;
     v5[3] = &unk_1E82D75A0;
-    v5[4] = a1;
+    v5[4] = detection;
     v6 = v3;
     dispatch_async(v4, v5);
   }
@@ -1467,23 +1467,23 @@ uint64_t __61__PKRecognitionSessionManager_scheduleSaveRecognitionSession__block
 - (void)q_saveRecognitionSessionIfNecessary
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if ([a1 state] == 3 && *(a1 + 8) == 1)
+    if ([self state] == 3 && *(self + 8) == 1)
     {
-      v2 = *(a1 + 48);
+      v2 = *(self + 48);
       if (v2)
       {
-        v3 = [*(a1 + 40) uuid];
-        v4 = PKSaveRecognitionSession(v2, v3, *(a1 + 192));
+        uuid = [*(self + 40) uuid];
+        v4 = PKSaveRecognitionSession(v2, uuid, *(self + 192));
 
         v5 = os_log_create("com.apple.pencilkit", "RecognitionManager");
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
         {
-          v6 = [*(a1 + 40) uuid];
-          v7 = [v6 uniqueCacheFilePath];
+          uuid2 = [*(self + 40) uuid];
+          uniqueCacheFilePath = [uuid2 uniqueCacheFilePath];
           v8 = 138412546;
-          v9 = v7;
+          v9 = uniqueCacheFilePath;
           v10 = 1024;
           v11 = v4;
           _os_log_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_DEFAULT, "Save session cache for: %@, success: %{BOOL}d", &v8, 0x12u);
@@ -1534,10 +1534,10 @@ uint64_t __48__PKRecognitionSessionManager_q_teardownSession__block_invoke(uint6
   v4 = os_log_create("com.apple.pencilkit", "RecognitionManager");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v13[5] recognizedExpressions];
-    v6 = [v5 count];
-    v7 = [v13[5] declaredVariables];
-    v8 = [v7 count];
+    recognizedExpressions = [v13[5] recognizedExpressions];
+    v6 = [recognizedExpressions count];
+    declaredVariables = [v13[5] declaredVariables];
+    v8 = [declaredVariables count];
     *buf = 134218240;
     v19 = v6;
     v20 = 2048;
@@ -1580,8 +1580,8 @@ uint64_t __48__PKRecognitionSessionManager_q_teardownSession__block_invoke(uint6
   v4 = os_log_create("com.apple.pencilkit", "RecognitionManager");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v11[5] attachments];
-    v6 = [v5 count];
+    attachments = [v11[5] attachments];
+    v6 = [attachments count];
     *buf = 134217984;
     v17 = v6;
     _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "Providing a canvas attachment provider with %lu attachments.", buf, 0xCu);
@@ -1595,13 +1595,13 @@ uint64_t __48__PKRecognitionSessionManager_q_teardownSession__block_invoke(uint6
 
 - (id)directStrokeProviderSnapshot
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1 strokeProviderSnapshot];
+    self = [self strokeProviderSnapshot];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)strokeProviderSnapshot
@@ -1785,37 +1785,37 @@ void __53__PKRecognitionSessionManager_strokeProviderSnapshot__block_invoke(uint
   }
 }
 
-- (void)q_updateRecognitionStateWithFinishedResult:(uint64_t)a1
+- (void)q_updateRecognitionStateWithFinishedResult:(uint64_t)result
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!result)
   {
     return;
   }
 
-  if ([a1 state] == 3)
+  if ([result state] == 3)
   {
     goto LABEL_3;
   }
 
-  if ([a1 state] || !*(a1 + 112))
+  if ([result state] || !*(result + 112))
   {
-    if ([a1 state] == 1 || !*(a1 + 112))
+    if ([result state] == 1 || !*(result + 112))
     {
-      if ([a1 state] != 1 || (v12 = *(a1 + 112), objc_msgSend(*(a1 + 40), "strokes"), v13 = objc_claimAutoreleasedReturnValue(), LODWORD(v12) = objc_msgSend(v12, "isEqualToArray:", v13), v13, !v12))
+      if ([result state] != 1 || (v12 = *(result + 112), objc_msgSend(*(result + 40), "strokes"), v13 = objc_claimAutoreleasedReturnValue(), LODWORD(v12) = objc_msgSend(v12, "isEqualToArray:", v13), v13, !v12))
       {
-        [a1 setState:2];
+        [result setState:2];
         v15 = os_log_create("com.apple.pencilkit", "RecognitionManager");
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = *(a1 + 40);
-          v17 = [v16 strokes];
+          v16 = *(result + 40);
+          strokes = [v16 strokes];
           *buf = 138412802;
           v29 = v16;
           v30 = 2048;
-          v31 = [v17 count];
+          resultCopy4 = [strokes count];
           v32 = 2112;
-          v33 = a1;
+          resultCopy2 = result;
           _os_log_impl(&dword_1C7CCA000, v15, OS_LOG_TYPE_DEFAULT, "State Update: Starting to process a stroke provider with the full drawing %@ with %lu strokes with manager %@", buf, 0x20u);
         }
 
@@ -1830,112 +1830,112 @@ void __53__PKRecognitionSessionManager_strokeProviderSnapshot__block_invoke(uint
       }
     }
 
-    else if ([a1 state] != 2 || (a2 & 1) == 0)
+    else if ([result state] != 2 || (a2 & 1) == 0)
     {
-      [a1 setState:0];
+      [result setState:0];
       goto LABEL_25;
     }
 
 LABEL_3:
-    [a1 setState:3];
-    [*(a1 + 72) timeIntervalSinceNow];
+    [result setState:3];
+    [*(result + 72) timeIntervalSinceNow];
     v5 = v4;
-    v6 = [MEMORY[0x1E695DF00] date];
-    v7 = *(a1 + 72);
-    *(a1 + 72) = v6;
+    date = [MEMORY[0x1E695DF00] date];
+    v7 = *(result + 72);
+    *(result + 72) = date;
 
     v8 = os_log_create("com.apple.pencilkit", "RecognitionManager");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = *(a1 + 40);
-      v10 = [v9 strokes];
-      v11 = [v10 count];
+      v9 = *(result + 40);
+      strokes2 = [v9 strokes];
+      v11 = [strokes2 count];
       *buf = 138413058;
       v29 = v9;
       v30 = 2048;
-      v31 = v11;
+      resultCopy4 = v11;
       v32 = 2112;
-      v33 = a1;
+      resultCopy2 = result;
       v34 = 2048;
       v35 = v5;
       _os_log_impl(&dword_1C7CCA000, v8, OS_LOG_TYPE_DEFAULT, "State Update: Finished processing drawing %@ with %lu strokes with manager %@ in %.2fs", buf, 0x2Au);
     }
 
-    [(PKRecognitionQueryController *)*(a1 + 128) setupDrawingQueriesIfNecessary];
-    [(PKRecognitionQueryController *)*(a1 + 128) clearVisibleStrokesQueries];
+    [(PKRecognitionQueryController *)*(result + 128) setupDrawingQueriesIfNecessary];
+    [(PKRecognitionQueryController *)*(result + 128) clearVisibleStrokesQueries];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __74__PKRecognitionSessionManager_q_updateRecognitionStateWithFinishedResult___block_invoke;
     block[3] = &unk_1E82D6388;
-    block[4] = a1;
+    block[4] = result;
     dispatch_async(MEMORY[0x1E69E96A0], block);
     return;
   }
 
-  [a1 setState:a2];
+  [result setState:a2];
   if ((a2 & 1) == 0)
   {
 LABEL_25:
     v15 = os_log_create("com.apple.pencilkit", "RecognitionManager");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [*(a1 + 112) count];
+      v24 = [*(result + 112) count];
       *buf = 134218242;
       v29 = v24;
       v30 = 2112;
-      v31 = a1;
+      resultCopy4 = result;
       _os_log_impl(&dword_1C7CCA000, v15, OS_LOG_TYPE_DEFAULT, "State Update: Starting to process a stroke provider with just %lu visible strokes with manager: %@", buf, 0x16u);
     }
 
 LABEL_27:
 
-    v25 = [MEMORY[0x1E695DF00] date];
-    v26 = *(a1 + 72);
-    *(a1 + 72) = v25;
+    date2 = [MEMORY[0x1E695DF00] date];
+    v26 = *(result + 72);
+    *(result + 72) = date2;
 
     return;
   }
 
-  [*(a1 + 72) timeIntervalSinceNow];
+  [*(result + 72) timeIntervalSinceNow];
   v19 = v18;
-  v20 = [MEMORY[0x1E695DF00] date];
-  v21 = *(a1 + 72);
-  *(a1 + 72) = v20;
+  date3 = [MEMORY[0x1E695DF00] date];
+  v21 = *(result + 72);
+  *(result + 72) = date3;
 
   v22 = os_log_create("com.apple.pencilkit", "RecognitionManager");
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [*(a1 + 112) count];
+    v23 = [*(result + 112) count];
     *buf = 134218498;
     v29 = v23;
     v30 = 2112;
-    v31 = a1;
+    resultCopy4 = result;
     v32 = 2048;
-    v33 = v19;
+    resultCopy2 = v19;
     _os_log_impl(&dword_1C7CCA000, v22, OS_LOG_TYPE_DEFAULT, "State Update: Finished processing %lu visible strokes with manager: %@ in %.2fs", buf, 0x20u);
   }
 
-  [*(a1 + 48) setNeedsRecognitionUpdate];
+  [*(result + 48) setNeedsRecognitionUpdate];
 }
 
-- (void)textInputDidChange:(id)a3
+- (void)textInputDidChange:(id)change
 {
-  v4 = [(PKRecognitionSessionManager *)self session];
-  v3 = [objc_opt_class() enabledLocales];
-  [v4 setPreferredLocales:v3];
+  session = [(PKRecognitionSessionManager *)self session];
+  enabledLocales = [objc_opt_class() enabledLocales];
+  [session setPreferredLocales:enabledLocales];
 }
 
-- (void)setAutoRefineViewDelegate:(uint64_t)a1
+- (void)setAutoRefineViewDelegate:(uint64_t)delegate
 {
   obj = a2;
-  if (a1)
+  if (delegate)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 208));
+    WeakRetained = objc_loadWeakRetained((delegate + 208));
 
     if (WeakRetained != obj)
     {
-      objc_storeWeak((a1 + 208), obj);
-      v4 = *(a1 + 152);
+      objc_storeWeak((delegate + 208), obj);
+      v4 = *(delegate + 152);
       if (v4)
       {
         objc_storeWeak((v4 + 32), obj);
@@ -1944,52 +1944,52 @@ LABEL_27:
   }
 }
 
-- (void)setMentionSuffixes:(uint64_t)a1
+- (void)setMentionSuffixes:(uint64_t)suffixes
 {
   v3 = a2;
-  if (a1 && ([*(a1 + 216) isEqual:v3] & 1) == 0)
+  if (suffixes && ([*(suffixes + 216) isEqual:v3] & 1) == 0)
   {
     v4 = [v3 copy];
-    objc_storeStrong((a1 + 216), v4);
-    v5 = *(a1 + 24);
+    objc_storeStrong((suffixes + 216), v4);
+    v5 = *(suffixes + 24);
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __50__PKRecognitionSessionManager_setMentionSuffixes___block_invoke;
     v7[3] = &unk_1E82D6890;
-    v7[4] = a1;
+    v7[4] = suffixes;
     v8 = v4;
     v6 = v4;
     dispatch_async(v5, v7);
   }
 }
 
-- (void)setMathPreferredUpdatesInterval:(uint64_t)a1
+- (void)setMathPreferredUpdatesInterval:(uint64_t)interval
 {
-  if (a1)
+  if (interval)
   {
-    v2 = *(a1 + 24);
+    v2 = *(interval + 24);
     v3[0] = MEMORY[0x1E69E9820];
     v3[1] = 3221225472;
     v3[2] = __63__PKRecognitionSessionManager_setMathPreferredUpdatesInterval___block_invoke;
     v3[3] = &unk_1E82D83D0;
-    v3[4] = a1;
+    v3[4] = interval;
     *&v3[5] = a2;
     dispatch_async(v2, v3);
   }
 }
 
-- (void)fetchCurrentStrokeGroupItems:(uint64_t)a1
+- (void)fetchCurrentStrokeGroupItems:(uint64_t)items
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (items)
   {
-    v5 = *(a1 + 24);
+    v5 = *(items + 24);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __60__PKRecognitionSessionManager_fetchCurrentStrokeGroupItems___block_invoke;
     v6[3] = &unk_1E82D6D58;
-    v6[4] = a1;
+    v6[4] = items;
     v7 = v3;
     dispatch_async(v5, v6);
   }
@@ -2003,12 +2003,12 @@ void __60__PKRecognitionSessionManager_fetchCurrentStrokeGroupItems___block_invo
 
 - (id)q_groupQuery
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = [a1 state];
-    v4 = *(v2 + 16);
-    if (v3 == 3)
+    selfCopy = self;
+    state = [self state];
+    v4 = *(selfCopy + 16);
+    if (state == 3)
     {
       [(PKRecognitionQueryController *)v4 drawingQueryWithIdentifier:?];
     }
@@ -2017,16 +2017,16 @@ void __60__PKRecognitionSessionManager_fetchCurrentStrokeGroupItems___block_invo
     {
       [(PKRecognitionQueryController *)v4 visibleStrokesQueryWithIdentifier:?];
     }
-    a1 = ;
+    self = ;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)recognitionSessionDidUpdateRecognitionResult:(id)a3
+- (void)recognitionSessionDidUpdateRecognitionResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   if (!self->_isTearingDown)
   {
     v5 = os_log_create("com.apple.pencilkit", "RecognitionManager");
@@ -2041,8 +2041,8 @@ void __60__PKRecognitionSessionManager_fetchCurrentStrokeGroupItems___block_invo
     v7[1] = 3221225472;
     v7[2] = __76__PKRecognitionSessionManager_recognitionSessionDidUpdateRecognitionResult___block_invoke;
     v7[3] = &unk_1E82D6890;
-    v8 = v4;
-    v9 = self;
+    v8 = resultCopy;
+    selfCopy = self;
     dispatch_async(recognitionSessionQueue, v7);
   }
 }
@@ -2065,24 +2065,24 @@ void __41__PKRecognitionSessionManager_groupQuery__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)fetchIntersectedStrokesAtPoint:(uint64_t)a3 selectionType:(void *)a4 inputType:(void *)a5 visibleOnscreenStrokes:(double)a6 completion:(double)a7
+- (void)fetchIntersectedStrokesAtPoint:(uint64_t)point selectionType:(void *)type inputType:(void *)inputType visibleOnscreenStrokes:(double)strokes completion:(double)completion
 {
-  v13 = a4;
-  v14 = a5;
-  if (a1)
+  typeCopy = type;
+  inputTypeCopy = inputType;
+  if (self)
   {
-    v15 = *(a1 + 24);
+    v15 = *(self + 24);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __120__PKRecognitionSessionManager_fetchIntersectedStrokesAtPoint_selectionType_inputType_visibleOnscreenStrokes_completion___block_invoke;
     block[3] = &unk_1E82DBD60;
-    block[4] = a1;
-    v19 = a6;
-    v20 = a7;
+    block[4] = self;
+    strokesCopy = strokes;
+    completionCopy = completion;
     v21 = a2;
-    v22 = a3;
-    v17 = v13;
-    v18 = v14;
+    pointCopy = point;
+    v17 = typeCopy;
+    v18 = inputTypeCopy;
     dispatch_async(v15, block);
   }
 }
@@ -2108,31 +2108,31 @@ void __120__PKRecognitionSessionManager_fetchIntersectedStrokesAtPoint_selection
   }
 }
 
-- (void)fetchIntersectedStrokesBetweenTopPoint:(void *)a3 bottomPoint:(double)a4 liveScrollOffset:(double)a5 isRTL:(double)a6 completion:(double)a7
+- (void)fetchIntersectedStrokesBetweenTopPoint:(void *)point bottomPoint:(double)bottomPoint liveScrollOffset:(double)offset isRTL:(double)l completion:(double)completion
 {
-  v17 = a3;
-  if (a1)
+  pointCopy = point;
+  if (self)
   {
-    if ((a8 == 0.0 && a9 == 0.0 || [a1 state] == 3) && objc_msgSend(a1, "state") > 1)
+    if ((a8 == 0.0 && a9 == 0.0 || [self state] == 3) && objc_msgSend(self, "state") > 1)
     {
-      v18 = a1[3];
+      v18 = self[3];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __116__PKRecognitionSessionManager_fetchIntersectedStrokesBetweenTopPoint_bottomPoint_liveScrollOffset_isRTL_completion___block_invoke;
       block[3] = &unk_1E82DBD88;
-      block[4] = a1;
-      v21 = a4;
-      v22 = a5;
-      v23 = a6;
-      v24 = a7;
+      block[4] = self;
+      bottomPointCopy = bottomPoint;
+      offsetCopy = offset;
+      lCopy = l;
+      completionCopy = completion;
       v25 = a2;
-      v20 = v17;
+      v20 = pointCopy;
       dispatch_async(v18, block);
     }
 
     else
     {
-      (*(v17 + 2))(v17, 0);
+      (*(pointCopy + 2))(pointCopy, 0);
     }
   }
 }
@@ -2158,13 +2158,13 @@ void __116__PKRecognitionSessionManager_fetchIntersectedStrokesBetweenTopPoint_b
   }
 }
 
-- (id)_firstStrokesInSelectedStrokes:(uint64_t)a3 isRTL:
+- (id)_firstStrokesInSelectedStrokes:(uint64_t)strokes isRTL:
 {
   v5 = a2;
-  if (a1 && [a1 state] == 3)
+  if (self && [self state] == 3)
   {
-    v6 = [(PKRecognitionSessionManager *)a1 groupQuery];
-    v7 = [v6 firstStrokesInStrokes:v5 isRTL:a3];
+    groupQuery = [(PKRecognitionSessionManager *)self groupQuery];
+    v7 = [groupQuery firstStrokesInStrokes:v5 isRTL:strokes];
   }
 
   else
@@ -2175,13 +2175,13 @@ void __116__PKRecognitionSessionManager_fetchIntersectedStrokesBetweenTopPoint_b
   return v7;
 }
 
-- (id)_lastStrokesInSelectedStrokes:(uint64_t)a3 isRTL:
+- (id)_lastStrokesInSelectedStrokes:(uint64_t)strokes isRTL:
 {
   v5 = a2;
-  if (a1 && [a1 state] == 3)
+  if (self && [self state] == 3)
   {
-    v6 = [(PKRecognitionSessionManager *)a1 groupQuery];
-    v7 = [v6 lastStrokesInStrokes:v5 isRTL:a3];
+    groupQuery = [(PKRecognitionSessionManager *)self groupQuery];
+    v7 = [groupQuery lastStrokesInStrokes:v5 isRTL:strokes];
   }
 
   else
@@ -2192,28 +2192,28 @@ void __116__PKRecognitionSessionManager_fetchIntersectedStrokesBetweenTopPoint_b
   return v7;
 }
 
-- (void)fetchStrokesAmbiguouslyBelowAndAboveInsertSpaceHandleWithStrokes:(void *)a3 completion:
+- (void)fetchStrokesAmbiguouslyBelowAndAboveInsertSpaceHandleWithStrokes:(void *)strokes completion:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  strokesCopy = strokes;
+  if (self)
   {
-    if ([a1 state] == 3)
+    if ([self state] == 3)
     {
-      v7 = a1[3];
+      v7 = self[3];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __107__PKRecognitionSessionManager_fetchStrokesAmbiguouslyBelowAndAboveInsertSpaceHandleWithStrokes_completion___block_invoke;
       block[3] = &unk_1E82D6840;
-      block[4] = a1;
+      block[4] = self;
       v9 = v5;
-      v10 = v6;
+      v10 = strokesCopy;
       dispatch_async(v7, block);
     }
 
     else
     {
-      (*(v6 + 2))(v6, 0, 0);
+      (*(strokesCopy + 2))(strokesCopy, 0, 0);
     }
   }
 }
@@ -2264,13 +2264,13 @@ void __107__PKRecognitionSessionManager_fetchStrokesAmbiguouslyBelowAndAboveInse
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (uint64_t)contentTypeForIntersectedStrokes:(uint64_t)a1
+- (uint64_t)contentTypeForIntersectedStrokes:(uint64_t)strokes
 {
   v3 = a2;
-  if (a1)
+  if (strokes)
   {
-    v4 = [(PKRecognitionSessionManager *)a1 groupQuery];
-    v5 = [v4 contentTypeForIntersectedStrokes:v3];
+    groupQuery = [(PKRecognitionSessionManager *)strokes groupQuery];
+    v5 = [groupQuery contentTypeForIntersectedStrokes:v3];
   }
 
   else
@@ -2281,12 +2281,12 @@ void __107__PKRecognitionSessionManager_fetchStrokesAmbiguouslyBelowAndAboveInse
   return v5;
 }
 
-- (void)updateWithRefinableStroke:(uint64_t)a1
+- (void)updateWithRefinableStroke:(uint64_t)stroke
 {
   v4 = a2;
-  if (a1)
+  if (stroke)
   {
-    v3 = *(a1 + 152);
+    v3 = *(stroke + 152);
     if (v3)
     {
       [(PKAutoRefineTaskManager *)v3 cancelTasksGivenRefinableStroke:v4];
@@ -2294,14 +2294,14 @@ void __107__PKRecognitionSessionManager_fetchStrokesAmbiguouslyBelowAndAboveInse
   }
 }
 
-- (uint64_t)didHitHandwritingStroke:(uint64_t)a1
+- (uint64_t)didHitHandwritingStroke:(uint64_t)stroke
 {
   v3 = a2;
-  if (a1)
+  if (stroke)
   {
-    v4 = [(PKRecognitionSessionManager *)a1 groupQuery];
-    v5 = [v4 fetchCurrentHandwritingStrokeUUIDs];
-    v6 = [v5 containsObject:v3];
+    groupQuery = [(PKRecognitionSessionManager *)stroke groupQuery];
+    fetchCurrentHandwritingStrokeUUIDs = [groupQuery fetchCurrentHandwritingStrokeUUIDs];
+    v6 = [fetchCurrentHandwritingStrokeUUIDs containsObject:v3];
   }
 
   else
@@ -2312,71 +2312,71 @@ void __107__PKRecognitionSessionManager_fetchStrokesAmbiguouslyBelowAndAboveInse
   return v6;
 }
 
-- (CGAffineTransform)_affineTransformFromBounds:(double)a3 targetHeight:(double)a4 targetPoint:(double)a5
+- (CGAffineTransform)_affineTransformFromBounds:(double)bounds targetHeight:(double)height targetPoint:(double)point
 {
   result = CGRectIsEmpty(*&a2);
   if (result)
   {
     v16 = MEMORY[0x1E695EFD0];
     v17 = *(MEMORY[0x1E695EFD0] + 16);
-    *a1 = *MEMORY[0x1E695EFD0];
-    *(a1 + 16) = v17;
+    *self = *MEMORY[0x1E695EFD0];
+    *(self + 16) = v17;
     v18 = *(v16 + 32);
   }
 
   else
   {
-    *(a1 + 16) = 0u;
-    *(a1 + 32) = 0u;
-    *a1 = 0u;
-    CGAffineTransformMakeTranslation(a1, a7, a8);
+    *(self + 16) = 0u;
+    *(self + 32) = 0u;
+    *self = 0u;
+    CGAffineTransformMakeTranslation(self, a7, a8);
     memset(&v24, 0, sizeof(v24));
-    CGAffineTransformMakeTranslation(&v24, -a2, -a3);
+    CGAffineTransformMakeTranslation(&v24, -a2, -bounds);
     t1 = v24;
-    CGAffineTransformMakeScale(&v21, a6 / a5, a6 / a5);
+    CGAffineTransformMakeScale(&v21, a6 / point, a6 / point);
     CGAffineTransformConcat(&v23, &t1, &v21);
     v24 = v23;
     t1 = v23;
-    v19 = *(a1 + 16);
-    *&v21.a = *a1;
+    v19 = *(self + 16);
+    *&v21.a = *self;
     *&v21.c = v19;
-    *&v21.tx = *(a1 + 32);
+    *&v21.tx = *(self + 32);
     result = CGAffineTransformConcat(&v23, &t1, &v21);
     v20 = *&v23.c;
-    *a1 = *&v23.a;
-    *(a1 + 16) = v20;
+    *self = *&v23.a;
+    *(self + 16) = v20;
     v18 = *&v23.tx;
   }
 
-  *(a1 + 32) = v18;
+  *(self + 32) = v18;
   return result;
 }
 
-- (void)synthesizeDrawingForText:(void *)a3 sourceDrawing:(void *)a4 originalBounds:(double)a5 fitInBounds:(double)a6 inputScale:(double)a7 completion:(double)a8
+- (void)synthesizeDrawingForText:(void *)text sourceDrawing:(void *)drawing originalBounds:(double)bounds fitInBounds:(double)inBounds inputScale:(double)scale completion:(double)completion
 {
   v27 = a2;
-  v28 = a3;
-  v29 = a4;
-  if (a1)
+  textCopy = text;
+  drawingCopy = drawing;
+  if (self)
   {
-    v30 = *(a1 + 24);
+    v30 = *(self + 24);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __119__PKRecognitionSessionManager_synthesizeDrawingForText_sourceDrawing_originalBounds_fitInBounds_inputScale_completion___block_invoke;
     block[3] = &unk_1E82DBDD8;
-    v36 = a5;
-    v37 = a6;
-    v38 = a7;
-    v39 = a8;
-    block[4] = a1;
+    boundsCopy = bounds;
+    inBoundsCopy = inBounds;
+    scaleCopy = scale;
+    completionCopy = completion;
+    block[4] = self;
     v33 = v27;
-    v34 = v28;
+    v34 = textCopy;
     v40 = a9;
     v41 = a10;
     v42 = a11;
     v43 = a12;
     v44 = a17;
-    v35 = v29;
+    v35 = drawingCopy;
     dispatch_async(v30, block);
   }
 }
@@ -2552,22 +2552,22 @@ void __119__PKRecognitionSessionManager_synthesizeDrawingForText_sourceDrawing_o
   (*(v3 + 16))(v3, v2, v5, v4);
 }
 
-- (void)synthesizeDrawingForMathResultBlock:(void *)a3 fallbackText:(void *)a4 drawing:(void *)a5 mathItem:(void *)a6 inkColor:(void *)a7 inputScale:(double)a8 completion:
+- (void)synthesizeDrawingForMathResultBlock:(void *)block fallbackText:(void *)text drawing:(void *)drawing mathItem:(void *)item inkColor:(void *)color inputScale:(double)scale completion:
 {
   v71 = *MEMORY[0x1E69E9840];
   v49 = a2;
-  v50 = a3;
-  v15 = a4;
-  v16 = a5;
-  v48 = a6;
-  v51 = a7;
-  if (a1)
+  blockCopy = block;
+  textCopy = text;
+  drawingCopy = drawing;
+  itemCopy = item;
+  colorCopy = color;
+  if (self)
   {
-    v17 = [v15 copy];
+    v17 = [textCopy copy];
 
     v18 = [MEMORY[0x1E695DF70] arrayWithCapacity:4];
-    v47 = [v16 symbolStrokes];
-    [v16 boundsForTriggerStrokes];
+    symbolStrokes = [drawingCopy symbolStrokes];
+    [drawingCopy boundsForTriggerStrokes];
     x = v72.origin.x;
     y = v72.origin.y;
     width = v72.size.width;
@@ -2592,7 +2592,7 @@ void __119__PKRecognitionSessionManager_synthesizeDrawingForText_sourceDrawing_o
     v68 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v28 = v47;
+    v28 = symbolStrokes;
     v29 = [v28 countByEnumeratingWithState:&v65 objects:v70 count:16];
     if (v29)
     {
@@ -2610,8 +2610,8 @@ void __119__PKRecognitionSessionManager_synthesizeDrawingForText_sourceDrawing_o
           v33 = *(*(&v65 + 1) + 8 * i);
           [v18 addObject:v33];
           v34 = [v33 ink];
-          v35 = [v34 color];
-          [v35 alphaComponent];
+          color = [v34 color];
+          [color alphaComponent];
           v37 = v36;
 
           v31 = v31 + v37;
@@ -2631,9 +2631,9 @@ void __119__PKRecognitionSessionManager_synthesizeDrawingForText_sourceDrawing_o
     if ([v18 count])
     {
       v38 = [v18 count];
-      v39 = [v18 firstObject];
-      v40 = [v48 colorWithAlphaComponent:v31 / v38];
-      v41 = [v39 ink];
+      firstObject = [v18 firstObject];
+      v40 = [itemCopy colorWithAlphaComponent:v31 / v38];
+      v41 = [firstObject ink];
       v42 = [PKInk inkFromInk:v41 color:v40];
     }
 
@@ -2643,23 +2643,23 @@ void __119__PKRecognitionSessionManager_synthesizeDrawingForText_sourceDrawing_o
     }
 
     v43 = [objc_alloc(objc_opt_class()) initWithStrokes:v18 fromDrawing:v17];
-    v44 = *(a1 + 24);
+    v44 = *(self + 24);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __128__PKRecognitionSessionManager_synthesizeDrawingForMathResultBlock_fallbackText_drawing_mathItem_inkColor_inputScale_completion___block_invoke;
     block[3] = &unk_1E82DBE00;
-    v53 = v16;
-    v54 = a1;
+    v53 = drawingCopy;
+    selfCopy = self;
     v58 = v49;
-    v55 = v50;
+    v55 = blockCopy;
     v56 = v43;
     v60 = x;
     v61 = y;
     v62 = width;
     v63 = height;
     v57 = v42;
-    v64 = a8;
-    v59 = v51;
+    scaleCopy = scale;
+    v59 = colorCopy;
     v45 = v42;
     v46 = v43;
     dispatch_async(v44, block);
@@ -2667,7 +2667,7 @@ void __119__PKRecognitionSessionManager_synthesizeDrawingForText_sourceDrawing_o
 
   else
   {
-    v17 = v15;
+    v17 = textCopy;
   }
 }
 
@@ -2899,69 +2899,69 @@ void __128__PKRecognitionSessionManager_synthesizeDrawingForMathResultBlock_fall
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (uint64_t)canSynthesizeDrawingForText:(uint64_t)a1
+- (uint64_t)canSynthesizeDrawingForText:(uint64_t)text
 {
   v3 = a2;
-  if (a1)
+  if (text)
   {
     if (objc_opt_respondsToSelector())
     {
-      v4 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-      v5 = [v3 componentsSeparatedByCharactersInSet:v4];
+      whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      v5 = [v3 componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
       v6 = [v5 componentsJoinedByString:&stru_1F476BD20];
 
       if ([v6 length])
       {
-        v7 = [*(a1 + 64) supportedCharacterIndexesForString:v6 options:0];
+        v7 = [*(text + 64) supportedCharacterIndexesForString:v6 options:0];
         v8 = [v6 length];
         v9 = [v7 count];
-        a1 = 1.0 - (v8 - v9) / [v6 length] >= 0.65;
+        text = 1.0 - (v8 - v9) / [v6 length] >= 0.65;
       }
 
       else
       {
-        a1 = 0;
+        text = 0;
       }
     }
 
     else
     {
-      a1 = 0;
+      text = 0;
     }
   }
 
-  return a1;
+  return text;
 }
 
-- (void)synthesizeDrawingForText:(void *)a3 drawing:(double)a4 inkColor:(double)a5 inputScale:(double)a6 suggestedHeight:(double)a7 bounds:(double)a8 progress:(double)a9 completion:(uint64_t)a10 shouldCancel:(void *)a11
+- (void)synthesizeDrawingForText:(void *)text drawing:(double)drawing inkColor:(double)color inputScale:(double)scale suggestedHeight:(double)height bounds:(double)bounds progress:(double)progress completion:(uint64_t)self0 shouldCancel:(void *)self1
 {
   v24 = a2;
-  v25 = a3;
-  v26 = a11;
+  textCopy = text;
+  cancelCopy = cancel;
   v27 = a12;
   v28 = a13;
-  if (a1)
+  if (self)
   {
-    v29 = [v25 copy];
-    objc_initWeak(&location, a1);
-    v30 = a1[3];
+    v29 = [textCopy copy];
+    objc_initWeak(&location, self);
+    v30 = self[3];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __140__PKRecognitionSessionManager_synthesizeDrawingForText_drawing_inkColor_inputScale_suggestedHeight_bounds_progress_completion_shouldCancel___block_invoke;
     block[3] = &unk_1E82DBE50;
     objc_copyWeak(v39, &location);
     v31 = v24;
-    v39[1] = *&a6;
-    v39[2] = *&a7;
-    v39[3] = *&a8;
-    v39[4] = *&a9;
-    v39[5] = *&a4;
-    v39[6] = *&a5;
+    v39[1] = *&scale;
+    v39[2] = *&height;
+    v39[3] = *&bounds;
+    v39[4] = *&progress;
+    v39[5] = *&drawing;
+    v39[6] = *&color;
     v34 = v31;
     v35 = v29;
     v36 = v27;
     v37 = v28;
-    v38 = v26;
+    v38 = cancelCopy;
     v32 = v29;
     dispatch_async(v30, block);
 
@@ -3029,24 +3029,24 @@ void __140__PKRecognitionSessionManager_synthesizeDrawingForText_drawing_inkColo
   }
 }
 
-- (void)completeTextSynthesisForText:(id *)a1 bounds:(void *)a2 ink:(void *)a3 inputScale:(void *)a4 suggestedHeight:(void *)a5 contextDrawing:(void *)a6 sourceStrokes:(void *)a7 tokenStringRanges:(int)a8 tokens:(double)a9 isProofreadingReplacement:(double)a10 completion:(void *)a11
+- (void)completeTextSynthesisForText:(id *)text bounds:(void *)bounds ink:(void *)ink inputScale:(void *)scale suggestedHeight:(void *)height contextDrawing:(void *)drawing sourceStrokes:(void *)strokes tokenStringRanges:(int)ranges tokens:(double)tokens isProofreadingReplacement:(double)text0 completion:(void *)text1
 {
   v74 = *MEMORY[0x1E69E9840];
-  v52 = a2;
-  v60 = a3;
-  v18 = a4;
-  v61 = a5;
-  v53 = a6;
-  v19 = a7;
-  v54 = a11;
-  v59 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v19, "count", v19)}];
-  v62 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v19, "count")}];
-  v55 = [a1 strokeProviderSnapshot];
+  boundsCopy = bounds;
+  inkCopy = ink;
+  scaleCopy = scale;
+  heightCopy = height;
+  drawingCopy = drawing;
+  strokesCopy = strokes;
+  completionCopy = completion;
+  v59 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(strokesCopy, "count", strokesCopy)}];
+  v62 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(strokesCopy, "count")}];
+  strokeProviderSnapshot = [text strokeProviderSnapshot];
   v71 = 0u;
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v20 = v19;
+  v20 = strokesCopy;
   v21 = [v20 countByEnumeratingWithState:&v69 objects:v73 count:16];
   if (v21)
   {
@@ -3063,14 +3063,14 @@ void __140__PKRecognitionSessionManager_synthesizeDrawingForText_drawing_inkColo
           objc_enumerationMutation(v20);
         }
 
-        v26 = [*(*(&v69 + 1) + 8 * v25) drawing];
+        drawing = [*(*(&v69 + 1) + 8 * v25) drawing];
         v27 = v23[1];
         v68[0] = *v23;
         v68[1] = v27;
         v68[2] = v23[2];
-        v28 = +[PKStroke _createStrokesFromCHDrawing:transform:inputScale:sourceStrokes:strokeClass:newInk:suggestedHeight:shouldSetSynthesizedFlag:](PKStroke, "_createStrokesFromCHDrawing:transform:inputScale:sourceStrokes:strokeClass:newInk:suggestedHeight:shouldSetSynthesizedFlag:", v26, v68, v61, [v18 strokeClass], v60, 1, a9, a10);
+        v28 = +[PKStroke _createStrokesFromCHDrawing:transform:inputScale:sourceStrokes:strokeClass:newInk:suggestedHeight:shouldSetSynthesizedFlag:](PKStroke, "_createStrokesFromCHDrawing:transform:inputScale:sourceStrokes:strokeClass:newInk:suggestedHeight:shouldSetSynthesizedFlag:", drawing, v68, heightCopy, [scaleCopy strokeClass], inkCopy, 1, tokens, replacement);
 
-        v29 = [objc_alloc(objc_opt_class()) initWithStrokes:v28 fromDrawing:v18];
+        v29 = [objc_alloc(objc_opt_class()) initWithStrokes:v28 fromDrawing:scaleCopy];
         [v29 set_canvasBounds:{*v24, v24[1], v24[2], v24[3]}];
         [v59 addObject:v29];
         [v62 addObject:v28];
@@ -3085,21 +3085,21 @@ void __140__PKRecognitionSessionManager_synthesizeDrawingForText_drawing_inkColo
     while (v21);
   }
 
-  if (a8)
+  if (ranges)
   {
     v30 = [PKHandwritingSynthesisProofreadingLogEntry alloc];
-    v31 = [v62 valueForKeyPath:@"@unionOfArrays.self"];
-    v32 = [v20 firstObject];
-    v33 = [v32 debugInfo];
-    v34 = [(PKHandwritingSynthesisProofreadingLogEntry *)v30 initWithSynthesizedStrokes:v31 originalStrokes:v61 debugInfo:v33];
+    firstObject2 = [v62 valueForKeyPath:@"@unionOfArrays.self"];
+    firstObject = [v20 firstObject];
+    debugInfo = [firstObject debugInfo];
+    v34 = [(PKHandwritingSynthesisProofreadingLogEntry *)v30 initWithSynthesizedStrokes:firstObject2 originalStrokes:heightCopy debugInfo:debugInfo];
   }
 
   else
   {
     v36 = [PKHandwritingSynthesisGenerationLogEntry alloc];
-    v31 = [v20 firstObject];
-    v37 = [v31 debugInfo];
-    v34 = [(PKHandwritingSynthesisGenerationLogEntry *)v36 initWithSynthesizedStrokeGroups:v62 debugInfo:v37];
+    firstObject2 = [v20 firstObject];
+    debugInfo2 = [firstObject2 debugInfo];
+    v34 = [(PKHandwritingSynthesisGenerationLogEntry *)v36 initWithSynthesizedStrokeGroups:v62 debugInfo:debugInfo2];
   }
 
   v35 = +[PKHandwritingSynthesisLogger sharedHandwritingSynthesisLogger];
@@ -3109,9 +3109,9 @@ void __140__PKRecognitionSessionManager_synthesizeDrawingForText_drawing_inkColo
   block[1] = 3221225472;
   block[2] = __189__PKRecognitionSessionManager_completeTextSynthesisForText_bounds_ink_inputScale_suggestedHeight_contextDrawing_sourceStrokes_tokenStringRanges_tokens_isProofreadingReplacement_completion___block_invoke;
   block[3] = &unk_1E82DBEC8;
-  v38 = v54;
+  v38 = completionCopy;
   v67 = v38;
-  v50 = v53;
+  v50 = drawingCopy;
   v64 = v50;
   v39 = v20;
   v65 = v39;
@@ -3132,53 +3132,53 @@ void __140__PKRecognitionSessionManager_synthesizeDrawingForText_drawing_inkColo
     }
 
     v44 = [PKStrokeProvider _identifiersForStrokes:v58];
-    v45 = [v41 asFullTextResultWithStrokeIdentifiers:v44 strokeProvider:v55];
+    v45 = [v41 asFullTextResultWithStrokeIdentifiers:v44 strokeProvider:strokeProviderSnapshot];
     v46 = v58;
     v47 = MEMORY[0x1E695DFD8];
     v48 = [PKStrokeProvider _identifiersForStrokes:v46];
     v49 = [v47 setWithArray:v48];
 
-    [a1[13] addCachedTranscription:v45 forStrokeGroup:v49];
+    [text[13] addCachedTranscription:v45 forStrokeGroup:v49];
   }
 }
 
-- (void)synthesizeDrawingForReplacementText:(void *)a3 drawing:(void *)a4 strokes:(void *)a5 bounds:(CGFloat)a6 inputScale:(CGFloat)a7 completion:(CGFloat)a8
+- (void)synthesizeDrawingForReplacementText:(void *)text drawing:(void *)drawing strokes:(void *)strokes bounds:(CGFloat)bounds inputScale:(CGFloat)scale completion:(CGFloat)completion
 {
   v48 = *MEMORY[0x1E69E9840];
   v19 = a2;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  if (a1)
+  textCopy = text;
+  drawingCopy = drawing;
+  strokesCopy = strokes;
+  if (self)
   {
-    v23 = [v20 copy];
+    v23 = [textCopy copy];
 
-    if ([v21 count])
+    if ([drawingCopy count])
     {
-      v24 = [v21 lastObject];
-      v25 = [v24 ink];
+      lastObject = [drawingCopy lastObject];
+      v25 = [lastObject ink];
     }
 
     else
     {
-      v24 = [v21 lastObject];
-      v26 = [v24 ink];
-      v27 = [v26 color];
-      v25 = [PKInk inkWithIdentifier:@"com.apple.ink.monoline" color:v27 weight:1.0];
+      lastObject = [drawingCopy lastObject];
+      v26 = [lastObject ink];
+      color = [v26 color];
+      v25 = [PKInk inkWithIdentifier:@"com.apple.ink.monoline" color:color weight:1.0];
     }
 
-    v28 = [objc_alloc(objc_opt_class()) initWithStrokes:v21 fromDrawing:v23];
+    v28 = [objc_alloc(objc_opt_class()) initWithStrokes:drawingCopy fromDrawing:v23];
     v29 = os_log_create("com.apple.pencilkit", "Proofreading");
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
     {
-      v33 = [v23 uuid];
-      v49.origin.x = a6;
-      v49.origin.y = a7;
-      v49.size.width = a8;
+      uuid = [v23 uuid];
+      v49.origin.x = bounds;
+      v49.origin.y = scale;
+      v49.size.width = completion;
       v49.size.height = a9;
       v34 = NSStringFromCGRect(v49);
       *location = 138412803;
-      *&location[4] = v33;
+      *&location[4] = uuid;
       v44 = 2112;
       v45 = v34;
       v46 = 2117;
@@ -3186,25 +3186,25 @@ void __140__PKRecognitionSessionManager_synthesizeDrawingForText_drawing_inkColo
       _os_log_debug_impl(&dword_1C7CCA000, v29, OS_LOG_TYPE_DEBUG, "Requested to synthesize drawing: %@ in bounds: %@ for replacement text: %{sensitive}@", location, 0x20u);
     }
 
-    objc_initWeak(location, a1);
-    v30 = a1[3];
+    objc_initWeak(location, self);
+    v30 = self[3];
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __112__PKRecognitionSessionManager_synthesizeDrawingForReplacementText_drawing_strokes_bounds_inputScale_completion___block_invoke;
     v35[3] = &unk_1E82DBEA0;
     objc_copyWeak(v42, location);
-    v36 = v21;
+    v36 = drawingCopy;
     v37 = v19;
-    v20 = v23;
-    v42[1] = *&a6;
-    v42[2] = *&a7;
-    v42[3] = *&a8;
+    textCopy = v23;
+    v42[1] = *&bounds;
+    v42[2] = *&scale;
+    v42[3] = *&completion;
     v42[4] = *&a9;
-    v38 = v20;
+    v38 = textCopy;
     v39 = v25;
     v42[5] = *&a10;
     v40 = v28;
-    v41 = v22;
+    v41 = strokesCopy;
     v31 = v28;
     v32 = v25;
     dispatch_async(v30, v35);
@@ -3358,30 +3358,30 @@ void __112__PKRecognitionSessionManager_synthesizeDrawingForReplacementText_draw
   }
 }
 
-- (void)cacheTranscription:(void *)a3 strokeGroup:
+- (void)cacheTranscription:(void *)transcription strokeGroup:
 {
   v9 = a2;
-  v5 = a3;
-  if (a1)
+  transcriptionCopy = transcription;
+  if (self)
   {
     v6 = MEMORY[0x1E695DFD8];
-    v7 = [PKStrokeProvider _identifiersForStrokes:v5];
+    v7 = [PKStrokeProvider _identifiersForStrokes:transcriptionCopy];
     v8 = [v6 setWithArray:v7];
 
-    [*(a1 + 96) addCachedTranscription:v9 forStrokeGroup:v8];
+    [*(self + 96) addCachedTranscription:v9 forStrokeGroup:v8];
   }
 }
 
-- (void)dataDetectorQuery:(id)a3 foundItems:(id)a4
+- (void)dataDetectorQuery:(id)query foundItems:(id)items
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [MEMORY[0x1E695DF70] array];
+  itemsCopy = items;
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v5;
+  v7 = itemsCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -3399,7 +3399,7 @@ void __112__PKRecognitionSessionManager_synthesizeDrawingForReplacementText_draw
         v11 = [PKDataDetectorItem dataDetectorItemWithQueryItem:*(*(&v14 + 1) + 8 * v10) sessionManager:self, v14];
         if (v11)
         {
-          [v6 addObject:v11];
+          [array addObject:v11];
         }
 
         ++v10;
@@ -3415,21 +3415,21 @@ void __112__PKRecognitionSessionManager_synthesizeDrawingForReplacementText_draw
   if (*&self->_delegateFlags)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v13 = [v6 copy];
+    v13 = [array copy];
     [WeakRetained recognitionSessionManager:self foundDataDetectorItems:v13];
   }
 }
 
-- (void)hashtagQuery:(id)a3 foundItems:(id)a4
+- (void)hashtagQuery:(id)query foundItems:(id)items
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [MEMORY[0x1E695DF70] array];
+  itemsCopy = items;
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v5;
+  v7 = itemsCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -3447,7 +3447,7 @@ void __112__PKRecognitionSessionManager_synthesizeDrawingForReplacementText_draw
         v11 = [PKHashtagItem hashtagItemWithQueryItem:*(*(&v14 + 1) + 8 * v10) sessionManager:self, v14];
         if (v11)
         {
-          [v6 addObject:v11];
+          [array addObject:v11];
         }
 
         ++v10;
@@ -3463,21 +3463,21 @@ void __112__PKRecognitionSessionManager_synthesizeDrawingForReplacementText_draw
   if ((*&self->_delegateFlags & 2) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v13 = [v6 copy];
+    v13 = [array copy];
     [WeakRetained recognitionSessionManager:self foundHashtagItems:v13];
   }
 }
 
-- (void)mentionQuery:(id)a3 foundItems:(id)a4
+- (void)mentionQuery:(id)query foundItems:(id)items
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [MEMORY[0x1E695DF70] array];
+  itemsCopy = items;
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v5;
+  v7 = itemsCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -3495,7 +3495,7 @@ void __112__PKRecognitionSessionManager_synthesizeDrawingForReplacementText_draw
         v11 = [PKMentionItem mentionItemWithQueryItem:*(*(&v14 + 1) + 8 * v10) sessionManager:self, v14];
         if (v11)
         {
-          [v6 addObject:v11];
+          [array addObject:v11];
         }
 
         ++v10;
@@ -3511,22 +3511,22 @@ void __112__PKRecognitionSessionManager_synthesizeDrawingForReplacementText_draw
   if ((*&self->_delegateFlags & 2) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v13 = [v6 copy];
+    v13 = [array copy];
     [WeakRetained recognitionSessionManager:self foundMentionItems:v13];
   }
 }
 
-- (void)proofreadingQuery:(id)a3 foundItems:(id)a4
+- (void)proofreadingQuery:(id)query foundItems:(id)items
 {
   v44 = *MEMORY[0x1E69E9840];
-  v24 = a4;
+  itemsCopy = items;
   [(NSTimer *)self->_proofreadingTimer invalidate];
-  v27 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v24;
+  obj = itemsCopy;
   v5 = [obj countByEnumeratingWithState:&v35 objects:v43 count:16];
   if (v5)
   {
@@ -3543,7 +3543,7 @@ void __112__PKRecognitionSessionManager_synthesizeDrawingForReplacementText_draw
         v8 = [PKProofreadingItem proofreadingItemWithQueryItem:*(*(&v35 + 1) + 8 * i) sessionManager:self];
         if (v8)
         {
-          [v27 addObject:v8];
+          [array addObject:v8];
         }
       }
 
@@ -3553,12 +3553,12 @@ void __112__PKRecognitionSessionManager_synthesizeDrawingForReplacementText_draw
     while (v5);
   }
 
-  v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v27, "count")}];
+  v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(array, "count")}];
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v25 = v27;
+  v25 = array;
   v10 = [v25 countByEnumeratingWithState:&v31 objects:v42 count:16];
   if (v10)
   {
@@ -3574,9 +3574,9 @@ void __112__PKRecognitionSessionManager_synthesizeDrawingForReplacementText_draw
 
         v13 = *(*(&v31 + 1) + 8 * j);
         v14 = MEMORY[0x1E696AEC0];
-        v15 = [v13 identifier];
-        v16 = [v13 replacementStrings];
-        v17 = [v14 stringWithFormat:@"{identifer:%@, replacementStrings:%@}", v15, v16];
+        identifier = [v13 identifier];
+        replacementStrings = [v13 replacementStrings];
+        v17 = [v14 stringWithFormat:@"{identifer:%@, replacementStrings:%@}", identifier, replacementStrings];
         [v9 addObject:v17];
       }
 
@@ -3644,16 +3644,16 @@ void __60__PKRecognitionSessionManager_proofreadingQuery_foundItems___block_invo
   [v3 recognitionSessionManager:v5 foundProofreadingItems:v4];
 }
 
-- (void)groupQuery:(id)a3 foundItems:(id)a4
+- (void)groupQuery:(id)query foundItems:(id)items
 {
-  v5 = a4;
+  itemsCopy = items;
   if ((*&self->_delegateFlags & 0x10) != 0)
   {
-    v7 = v5;
+    v7 = itemsCopy;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained recognitionSessionManager:self foundStrokeGroupItems:v7];
 
-    v5 = v7;
+    itemsCopy = v7;
   }
 }
 
@@ -3676,32 +3676,32 @@ void __49__PKRecognitionSessionManager_transcriptionQuery__block_invoke(uint64_t
   *(v5 + 40) = v4;
 }
 
-- (id)fetchTranscriptionForStrokes:(void *)a3 cancelBlock:(void *)a4 withCompletion:
+- (id)fetchTranscriptionForStrokes:(void *)strokes cancelBlock:(void *)block withCompletion:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  strokesCopy = strokes;
+  blockCopy = block;
+  if (self)
   {
-    a1 = [(PKRecognitionSessionManager *)a1 fetchTranscriptionForStrokes:v7 callCompletionOnMainThread:1 cancelBlock:v8 withCompletion:v9];
+    self = [(PKRecognitionSessionManager *)self fetchTranscriptionForStrokes:v7 callCompletionOnMainThread:1 cancelBlock:strokesCopy withCompletion:blockCopy];
   }
 
-  return a1;
+  return self;
 }
 
-- (id)fetchTranscriptionForStrokes:(char)a3 callCompletionOnMainThread:(void *)a4 cancelBlock:(void *)a5 withCompletion:
+- (id)fetchTranscriptionForStrokes:(char)strokes callCompletionOnMainThread:(void *)thread cancelBlock:(void *)block withCompletion:
 {
   v9 = a2;
-  v10 = a4;
-  v11 = a5;
-  if (a1)
+  threadCopy = thread;
+  blockCopy = block;
+  if (self)
   {
-    v12 = *(a1 + 24);
+    v12 = *(self + 24);
     block = MEMORY[0x1E69E9820];
     p_block = 3221225472;
     v25 = __53__PKRecognitionSessionManager_setWantsTranscription___block_invoke;
     v26 = &unk_1E82D75A0;
-    v27 = a1;
+    selfCopy = self;
     LOBYTE(v28) = 1;
     dispatch_async(v12, &block);
     v13 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v9];
@@ -3710,14 +3710,14 @@ void __49__PKRecognitionSessionManager_transcriptionQuery__block_invoke(uint64_t
     p_block = &block;
     v25 = 0x3032000000;
     v26 = __Block_byref_object_copy__31;
-    v27 = __Block_byref_object_dispose__31;
+    selfCopy = __Block_byref_object_dispose__31;
     v28 = 0;
-    v15 = *(a1 + 24);
+    v15 = *(self + 24);
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __49__PKRecognitionSessionManager_transcriptionQuery__block_invoke;
     v22[3] = &unk_1E82D8600;
-    v22[4] = a1;
+    v22[4] = self;
     v22[5] = &block;
     dispatch_sync(v15, v22);
     v16 = *(p_block + 40);
@@ -3727,9 +3727,9 @@ void __49__PKRecognitionSessionManager_transcriptionQuery__block_invoke(uint64_t
     v19[1] = 3221225472;
     v19[2] = __114__PKRecognitionSessionManager_fetchTranscriptionForStrokes_callCompletionOnMainThread_cancelBlock_withCompletion___block_invoke;
     v19[3] = &unk_1E82DBF18;
-    v21 = a3;
-    v20 = v11;
-    v17 = [v16 contextualTextResultsForContextStrokes:v14 completion:v19 shouldCancel:v10];
+    strokesCopy = strokes;
+    v20 = blockCopy;
+    v17 = [v16 contextualTextResultsForContextStrokes:v14 completion:v19 shouldCancel:threadCopy];
   }
 
   else
@@ -3770,18 +3770,18 @@ void __114__PKRecognitionSessionManager_fetchTranscriptionForStrokes_callComplet
   }
 }
 
-- (void)fetchIndexableContentWithCompletion:(uint64_t)a1
+- (void)fetchIndexableContentWithCompletion:(uint64_t)completion
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (completion)
   {
-    v5 = *(a1 + 24);
+    v5 = *(completion + 24);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __67__PKRecognitionSessionManager_fetchIndexableContentWithCompletion___block_invoke;
     v6[3] = &unk_1E82D6D58;
-    v6[4] = a1;
+    v6[4] = completion;
     v7 = v3;
     dispatch_async(v5, v6);
   }
@@ -3818,7 +3818,7 @@ void __67__PKRecognitionSessionManager_fetchIndexableContentWithCompletion___blo
 + (id)enabledLocales
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   [MEMORY[0x1E695DF58] preferredLanguages];
   v12 = 0u;
   v13 = 0u;
@@ -3840,7 +3840,7 @@ void __67__PKRecognitionSessionManager_fetchIndexableContentWithCompletion___blo
         v7 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:{*(*(&v10 + 1) + 8 * i), v10}];
         if (v7)
         {
-          [v2 addObject:v7];
+          [array addObject:v7];
         }
       }
 
@@ -3850,7 +3850,7 @@ void __67__PKRecognitionSessionManager_fetchIndexableContentWithCompletion___blo
     while (v4);
   }
 
-  v8 = [MEMORY[0x1E695DEC8] arrayWithArray:v2];
+  v8 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
 
   return v8;
 }
@@ -3861,8 +3861,8 @@ void __67__PKRecognitionSessionManager_fetchIndexableContentWithCompletion___blo
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [objc_opt_class() enabledLocales];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  enabledLocales = [objc_opt_class() enabledLocales];
+  v3 = [enabledLocales countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -3872,7 +3872,7 @@ void __67__PKRecognitionSessionManager_fetchIndexableContentWithCompletion___blo
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(enabledLocales);
         }
 
         if (CHHasPersonalizedSynthesisSupportForLocale())
@@ -3882,7 +3882,7 @@ void __67__PKRecognitionSessionManager_fetchIndexableContentWithCompletion___blo
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [enabledLocales countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -3897,29 +3897,29 @@ LABEL_11:
   return v3;
 }
 
-- (void)autoRefineQuery:(id)a3 didUpdateWithQueryItem:(id)a4 validProviderVersion:(id)a5
+- (void)autoRefineQuery:(id)query didUpdateWithQueryItem:(id)item validProviderVersion:(id)version
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  itemCopy = item;
+  versionCopy = version;
   recognitionSessionQueue = self->_recognitionSessionQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __91__PKRecognitionSessionManager_autoRefineQuery_didUpdateWithQueryItem_validProviderVersion___block_invoke;
   block[3] = &unk_1E82D6400;
   block[4] = self;
-  v10 = v7;
+  v10 = itemCopy;
   v16 = v10;
-  v11 = v8;
+  v11 = versionCopy;
   v17 = v11;
   dispatch_sync(recognitionSessionQueue, block);
   v12 = os_log_create("com.apple.pencilkit", "AutoRefine");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v10 textResult];
-    v14 = [v13 refinableTranscription];
+    textResult = [v10 textResult];
+    refinableTranscription = [textResult refinableTranscription];
     *buf = 138739971;
-    v19 = v14;
+    v19 = refinableTranscription;
     _os_log_impl(&dword_1C7CCA000, v12, OS_LOG_TYPE_DEFAULT, "AutoRefine query item with transcription %{sensitive}@ handled.", buf, 0xCu);
   }
 }

@@ -1,39 +1,39 @@
 @interface SBIdleTimerDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)shouldExpireAfterWarn;
 - (BOOL)shouldWarn;
 - (SBIdleTimerDescriptor)_copyWithoutAuditEntries;
-- (SBIdleTimerDescriptor)initWithTimerMode:(int64_t)a3 warnInterval:(double)a4 totalInterval:(double)a5;
+- (SBIdleTimerDescriptor)initWithTimerMode:(int64_t)mode warnInterval:(double)interval totalInterval:(double)totalInterval;
 - (id)auditReasonsForStateCapture;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)hash;
-- (void)addAuditReason:(id)a3;
-- (void)appendDescriptionSansProemToFormatter:(double *)a1;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)auditAllReasons:(uint64_t)a1;
-- (void)auditValueChangesOnly:(uint64_t)a1;
-- (void)logAuditReasons:(id)a3;
+- (void)addAuditReason:(id)reason;
+- (void)appendDescriptionSansProemToFormatter:(double *)formatter;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)auditAllReasons:(uint64_t)reasons;
+- (void)auditValueChangesOnly:(uint64_t)only;
+- (void)logAuditReasons:(id)reasons;
 @end
 
 @implementation SBIdleTimerDescriptor
 
 - (SBIdleTimerDescriptor)_copyWithoutAuditEntries
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v2 = objc_alloc_init(SBIdleTimerDescriptor);
-  [(SBIdleTimerDescriptor *)v2 setTimerMode:*(a1 + 8)];
-  [(SBIdleTimerDescriptor *)v2 setWarnInterval:*(a1 + 24)];
-  [(SBIdleTimerDescriptor *)v2 setQuickUnwarnInterval:*(a1 + 40)];
-  [(SBIdleTimerDescriptor *)v2 setSampleInterval:*(a1 + 16)];
-  [(SBIdleTimerDescriptor *)v2 setSamplingStartBeforeFirstTimeout:*(a1 + 64)];
-  [(SBIdleTimerDescriptor *)v2 setTotalInterval:*(a1 + 32)];
+  [(SBIdleTimerDescriptor *)v2 setTimerMode:*(self + 8)];
+  [(SBIdleTimerDescriptor *)v2 setWarnInterval:*(self + 24)];
+  [(SBIdleTimerDescriptor *)v2 setQuickUnwarnInterval:*(self + 40)];
+  [(SBIdleTimerDescriptor *)v2 setSampleInterval:*(self + 16)];
+  [(SBIdleTimerDescriptor *)v2 setSamplingStartBeforeFirstTimeout:*(self + 64)];
+  [(SBIdleTimerDescriptor *)v2 setTotalInterval:*(self + 32)];
   return v2;
 }
 
@@ -57,7 +57,7 @@
   v8 = 3221225472;
   v9 = __44__SBIdleTimerDescriptor_succinctDescription__block_invoke;
   v10 = &unk_2783A92D8;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:0 block:&v7];
@@ -66,31 +66,31 @@
   return v5;
 }
 
-- (SBIdleTimerDescriptor)initWithTimerMode:(int64_t)a3 warnInterval:(double)a4 totalInterval:(double)a5
+- (SBIdleTimerDescriptor)initWithTimerMode:(int64_t)mode warnInterval:(double)interval totalInterval:(double)totalInterval
 {
   v9.receiver = self;
   v9.super_class = SBIdleTimerDescriptor;
   result = [(SBIdleTimerDescriptor *)&v9 init];
   if (result)
   {
-    result->_timerMode = a3;
+    result->_timerMode = mode;
     result->_sampleInterval = 1.79769313e308;
     result->_samplingStartBeforeFirstTimeout = 16.0;
-    result->_warnInterval = a4;
-    result->_totalInterval = a5;
+    result->_warnInterval = interval;
+    result->_totalInterval = totalInterval;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(SBIdleTimerDescriptor *)self _copyWithoutAuditEntries];
+  _copyWithoutAuditEntries = [(SBIdleTimerDescriptor *)self _copyWithoutAuditEntries];
   v5 = [(NSMutableArray *)self->_auditEntries copy];
-  [(SBIdleTimerDescriptor *)v4 setAuditEntries:v5];
+  [(SBIdleTimerDescriptor *)_copyWithoutAuditEntries setAuditEntries:v5];
 
-  [(SBIdleTimerDescriptor *)v4 setFinalAuditChangeEntry:self->_finalAuditChangeEntry];
-  return v4;
+  [(SBIdleTimerDescriptor *)_copyWithoutAuditEntries setFinalAuditChangeEntry:self->_finalAuditChangeEntry];
+  return _copyWithoutAuditEntries;
 }
 
 - (BOOL)shouldExpireAfterWarn
@@ -106,13 +106,13 @@
   }
 }
 
-- (void)addAuditReason:(id)a3
+- (void)addAuditReason:(id)reason
 {
   v15[3] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCAB68];
-  v5 = a3;
+  reasonCopy = reason;
   v6 = objc_alloc_init(v4);
-  CFStringAppendFormatAndArguments(v6, 0, v5, &v16);
+  CFStringAppendFormatAndArguments(v6, 0, reasonCopy, &v16);
 
   if (!self->_auditEntries)
   {
@@ -123,8 +123,8 @@
 
   v9 = [(SBIdleTimerDescriptor *)self copy];
   [v9 setAuditEntries:0];
-  v10 = [(NSMutableArray *)self->_auditEntries lastObject];
-  v11 = [v10 objectAtIndexedSubscript:1];
+  lastObject = [(NSMutableArray *)self->_auditEntries lastObject];
+  v11 = [lastObject objectAtIndexedSubscript:1];
   v12 = [v11 isEqual:v9];
 
   v15[0] = v6;
@@ -141,10 +141,10 @@
   [(NSMutableArray *)self->_auditEntries addObject:v14];
 }
 
-- (void)logAuditReasons:(id)a3
+- (void)logAuditReasons:(id)reasons
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonsCopy = reasons;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -153,9 +153,9 @@
   v8[1] = 3221225472;
   v8[2] = __41__SBIdleTimerDescriptor_logAuditReasons___block_invoke;
   v8[3] = &unk_2783BC850;
-  v5 = v4;
+  v5 = reasonsCopy;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
   [(SBIdleTimerDescriptor *)self auditValueChangesOnly:v8];
   if ((v13[3] & 1) == 0)
@@ -163,11 +163,11 @@
     v6 = v5;
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(SBIdleTimerDescriptor *)self succinctDescription];
+      succinctDescription = [(SBIdleTimerDescriptor *)self succinctDescription];
       *buf = 134218242;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2114;
-      v19 = v7;
+      v19 = succinctDescription;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "-> dsc:%p %{public}@ final", buf, 0x16u);
     }
   }
@@ -221,7 +221,7 @@ LABEL_6:
 
 - (id)auditReasonsForStateCapture
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -230,15 +230,15 @@ LABEL_6:
   v9[1] = 3221225472;
   v9[2] = __52__SBIdleTimerDescriptor_auditReasonsForStateCapture__block_invoke;
   v9[3] = &unk_2783BC878;
-  v4 = v3;
+  v4 = array;
   v10 = v4;
   v11 = &v12;
   [(SBIdleTimerDescriptor *)self auditValueChangesOnly:v9];
   if ((v13[3] & 1) == 0)
   {
     v5 = MEMORY[0x277CCACA8];
-    v6 = [(SBIdleTimerDescriptor *)self succinctDescription];
-    v7 = [v5 stringWithFormat:@"-> %@ final", v6];
+    succinctDescription = [(SBIdleTimerDescriptor *)self succinctDescription];
+    v7 = [v5 stringWithFormat:@"-> %@ final", succinctDescription];
     [v4 addObject:v7];
   }
 
@@ -270,11 +270,11 @@ void __52__SBIdleTimerDescriptor_auditReasonsForStateCapture__block_invoke(uint6
   *(*(*(a1 + 40) + 8) + 24) = 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = v4;
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  v6 = equalCopy;
   timerMode = self->_timerMode;
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
@@ -340,38 +340,38 @@ void __52__SBIdleTimerDescriptor_auditReasonsForStateCapture__block_invoke(uint6
   return v6 ^ v8;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBIdleTimerDescriptor *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBIdleTimerDescriptor *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__SBIdleTimerDescriptor_appendDescriptionToFormatter___block_invoke;
   v6[3] = &unk_2783A92D8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = formatterCopy;
+  v5 = formatterCopy;
   [v5 appendProem:self block:v6];
 }
 
-- (void)auditAllReasons:(uint64_t)a1
+- (void)auditAllReasons:(uint64_t)reasons
 {
   v17 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (reasons)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = *(a1 + 48);
+    v4 = *(reasons + 48);
     v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
@@ -400,22 +400,22 @@ void __52__SBIdleTimerDescriptor_auditReasonsForStateCapture__block_invoke(uint6
   }
 }
 
-- (void)auditValueChangesOnly:(uint64_t)a1
+- (void)auditValueChangesOnly:(uint64_t)only
 {
   v21 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (only)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    obj = *(a1 + 48);
+    obj = *(only + 48);
     v4 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v4)
     {
       v5 = v4;
-      v14 = a1;
+      onlyCopy = only;
       v6 = 0;
       v7 = *v17;
       do
@@ -430,14 +430,14 @@ void __52__SBIdleTimerDescriptor_auditReasonsForStateCapture__block_invoke(uint6
           }
 
           v10 = *(*(&v16 + 1) + 8 * v8);
-          v6 = [v10 objectAtIndex:{1, v14}];
+          v6 = [v10 objectAtIndex:{1, onlyCopy}];
           v11 = [v10 objectAtIndexedSubscript:2];
-          v12 = [v11 BOOLValue];
+          bOOLValue = [v11 BOOLValue];
 
-          if (v12)
+          if (bOOLValue)
           {
             v13 = [v10 objectAtIndex:0];
-            v3[2](v3, v13, v6, v10 == *(v14 + 56));
+            v3[2](v3, v13, v6, v10 == *(onlyCopy + 56));
           }
 
           ++v8;
@@ -453,20 +453,20 @@ void __52__SBIdleTimerDescriptor_auditReasonsForStateCapture__block_invoke(uint6
   }
 }
 
-- (void)appendDescriptionSansProemToFormatter:(double *)a1
+- (void)appendDescriptionSansProemToFormatter:(double *)formatter
 {
-  if (a1)
+  if (formatter)
   {
     v4 = a2;
-    [a1 timerMode];
+    [formatter timerMode];
     v3 = NSStringFromSBFIdleTimerMode();
     [v4 appendString:v3 withName:@"mode"];
 
-    _SBAppendTimeIntervalToFormatter(v4, @"sample", a1[2]);
-    _SBAppendTimeIntervalToFormatter(v4, @"samplingStartBeforeFirstTimeout", a1[8]);
-    _SBAppendTimeIntervalToFormatter(v4, @"quickUnwarn", a1[5]);
-    _SBAppendTimeIntervalToFormatter(v4, @"warn", a1[3]);
-    _SBAppendTimeIntervalToFormatter(v4, @"total", a1[4]);
+    _SBAppendTimeIntervalToFormatter(v4, @"sample", formatter[2]);
+    _SBAppendTimeIntervalToFormatter(v4, @"samplingStartBeforeFirstTimeout", formatter[8]);
+    _SBAppendTimeIntervalToFormatter(v4, @"quickUnwarn", formatter[5]);
+    _SBAppendTimeIntervalToFormatter(v4, @"warn", formatter[3]);
+    _SBAppendTimeIntervalToFormatter(v4, @"total", formatter[4]);
   }
 }
 

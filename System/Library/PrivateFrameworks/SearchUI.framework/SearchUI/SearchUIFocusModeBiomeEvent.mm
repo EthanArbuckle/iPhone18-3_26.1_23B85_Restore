@@ -1,64 +1,64 @@
 @interface SearchUIFocusModeBiomeEvent
-+ (BOOL)supportsEvent:(id)a3 contextualAction:(id)a4;
-- (SearchUIFocusModeBiomeEvent)initWithEvent:(id)a3 contextualAction:(id)a4;
-- (void)getEnabledStatusWithCompletion:(id)a3;
++ (BOOL)supportsEvent:(id)event contextualAction:(id)action;
+- (SearchUIFocusModeBiomeEvent)initWithEvent:(id)event contextualAction:(id)action;
+- (void)getEnabledStatusWithCompletion:(id)completion;
 @end
 
 @implementation SearchUIFocusModeBiomeEvent
 
-+ (BOOL)supportsEvent:(id)a3 contextualAction:(id)a4
++ (BOOL)supportsEvent:(id)event contextualAction:(id)action
 {
-  v4 = a4;
+  actionCopy = action;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (SearchUIFocusModeBiomeEvent)initWithEvent:(id)a3 contextualAction:(id)a4
+- (SearchUIFocusModeBiomeEvent)initWithEvent:(id)event contextualAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  actionCopy = action;
   v12.receiver = self;
   v12.super_class = SearchUIFocusModeBiomeEvent;
   v8 = [(BMEventBase *)&v12 init];
   if (v8)
   {
-    v9 = [v7 focusMode];
-    v10 = [v9 identifier];
-    [(SearchUIFocusModeBiomeEvent *)v8 setObservedFocusModeIdentifier:v10];
+    focusMode = [actionCopy focusMode];
+    identifier = [focusMode identifier];
+    [(SearchUIFocusModeBiomeEvent *)v8 setObservedFocusModeIdentifier:identifier];
 
-    [(SearchUIBiomeEvent *)v8 setBiomeEvent:v6];
+    [(SearchUIBiomeEvent *)v8 setBiomeEvent:eventCopy];
   }
 
   return v8;
 }
 
-- (void)getEnabledStatusWithCompletion:(id)a3
+- (void)getEnabledStatusWithCompletion:(id)completion
 {
-  v9 = a3;
-  v4 = [(SearchUIBiomeEvent *)self biomeEvent];
+  completionCopy = completion;
+  biomeEvent = [(SearchUIBiomeEvent *)self biomeEvent];
 
-  if (v4)
+  if (biomeEvent)
   {
-    v5 = [(SearchUIBiomeEvent *)self biomeEvent];
-    v6 = [v5 semanticModeIdentifier];
-    v7 = [(SearchUIFocusModeBiomeEvent *)self observedFocusModeIdentifier];
-    if ([v6 isEqualToString:v7])
+    biomeEvent2 = [(SearchUIBiomeEvent *)self biomeEvent];
+    semanticModeIdentifier = [biomeEvent2 semanticModeIdentifier];
+    observedFocusModeIdentifier = [(SearchUIFocusModeBiomeEvent *)self observedFocusModeIdentifier];
+    if ([semanticModeIdentifier isEqualToString:observedFocusModeIdentifier])
     {
-      v8 = [(SearchUIBiomeEvent *)self biomeEvent];
-      v9[2](v9, [v8 starting]);
+      biomeEvent3 = [(SearchUIBiomeEvent *)self biomeEvent];
+      completionCopy[2](completionCopy, [biomeEvent3 starting]);
     }
 
     else
     {
-      v9[2](v9, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
   else
   {
-    (v9[2])();
+    (completionCopy[2])();
   }
 }
 

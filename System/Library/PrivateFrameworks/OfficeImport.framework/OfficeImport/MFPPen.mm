@@ -1,13 +1,13 @@
 @interface MFPPen
 - (CGAffineTransform)transform;
 - (MFPPen)init;
-- (void)applyDashCapToPath:(id)a3;
-- (void)applyDashPatternToPath:(id)a3;
-- (void)applyLineCapToPath:(id)a3;
-- (void)applyLineJoinToPath:(id)a3;
+- (void)applyDashCapToPath:(id)path;
+- (void)applyDashPatternToPath:(id)path;
+- (void)applyLineCapToPath:(id)path;
+- (void)applyLineJoinToPath:(id)path;
 - (void)dealloc;
-- (void)setTransform:(CGAffineTransform *)a3;
-- (void)strokePath:(id)a3;
+- (void)setTransform:(CGAffineTransform *)transform;
+- (void)strokePath:(id)path;
 @end
 
 @implementation MFPPen
@@ -62,18 +62,18 @@
   return self;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->mTransform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->mTransform.tx = *&transform->tx;
   *&self->mTransform.c = v4;
   *&self->mTransform.a = v3;
 }
 
-- (void)applyDashPatternToPath:(id)a3
+- (void)applyDashPatternToPath:(id)path
 {
-  v9 = a3;
+  pathCopy = path;
   v4 = 0;
   v5 = 0;
   mDashStyle = self->mDashStyle;
@@ -88,7 +88,7 @@
         v5 = &[MFPPen applyDashPatternToPath:]::dashDotDotPattern;
         break;
       case 5:
-        [(MFPPen *)self setDashPattern:self->mDashPattern count:self->mDashPatternCount toPath:v9];
+        [(MFPPen *)self setDashPattern:self->mDashPattern count:self->mDashPatternCount toPath:pathCopy];
         goto LABEL_18;
       default:
         goto LABEL_15;
@@ -125,13 +125,13 @@ LABEL_15:
     operator new[]();
   }
 
-  [(MFPPen *)self setDashPattern:v5 count:v4 toPath:v9];
+  [(MFPPen *)self setDashPattern:v5 count:v4 toPath:pathCopy];
 LABEL_18:
 }
 
-- (void)applyLineJoinToPath:(id)a3
+- (void)applyLineJoinToPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   mLineJoin = self->mLineJoin;
   if (mLineJoin == 2)
   {
@@ -143,14 +143,14 @@ LABEL_18:
     v6 = 2 * (mLineJoin == 1);
   }
 
-  v7 = v4;
-  [v4 setLineJoinStyle:v6];
+  v7 = pathCopy;
+  [pathCopy setLineJoinStyle:v6];
   [v7 setMiterLimit:self->mMiterLimit];
 }
 
-- (void)applyLineCapToPath:(id)a3
+- (void)applyLineCapToPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   mStartCap = self->mStartCap;
   v6 = 1;
   if (mStartCap <= 16)
@@ -188,13 +188,13 @@ LABEL_12:
   }
 
 LABEL_13:
-  v7 = v4;
-  [v4 setLineCapStyle:v6];
+  v7 = pathCopy;
+  [pathCopy setLineCapStyle:v6];
 }
 
-- (void)applyDashCapToPath:(id)a3
+- (void)applyDashCapToPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   mDashCap = self->mDashCap;
   if (mDashCap > 3)
   {
@@ -206,29 +206,29 @@ LABEL_13:
     v6 = qword_25D6FDB60[mDashCap];
   }
 
-  v7 = v4;
-  [v4 setLineCapStyle:v6];
+  v7 = pathCopy;
+  [pathCopy setLineCapStyle:v6];
 }
 
-- (void)strokePath:(id)a3
+- (void)strokePath:(id)path
 {
-  v4 = a3;
-  v8 = v4;
+  pathCopy = path;
+  v8 = pathCopy;
   if (self->mDashStyle)
   {
-    [(MFPPen *)self applyDashCapToPath:v4];
+    [(MFPPen *)self applyDashCapToPath:pathCopy];
   }
 
   else
   {
-    [(MFPPen *)self applyLineCapToPath:v4];
+    [(MFPPen *)self applyLineCapToPath:pathCopy];
   }
 
   [(MFPPen *)self applyLineJoinToPath:v8];
   [(MFPPen *)self applyDashPatternToPath:v8];
-  v5 = [(MFPPen *)self brush];
-  v6 = [v5 color];
-  [v6 set];
+  brush = [(MFPPen *)self brush];
+  color = [brush color];
+  [color set];
   [(MFPPen *)self width];
   [v8 setLineWidth:v7];
   [v8 stroke];

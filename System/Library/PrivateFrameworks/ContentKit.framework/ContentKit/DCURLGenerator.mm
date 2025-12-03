@@ -6,15 +6,15 @@
 
 - (id)URL
 {
-  v3 = [(DCURLGenerator *)self query];
+  query = [(DCURLGenerator *)self query];
   v4 = MEMORY[0x277CBEBC0];
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(DCURLGenerator *)self scheme];
-  v7 = [(DCURLGenerator *)self host];
-  v8 = v7;
-  if (v7)
+  scheme = [(DCURLGenerator *)self scheme];
+  host = [(DCURLGenerator *)self host];
+  v8 = host;
+  if (host)
   {
-    v9 = v7;
+    v9 = host;
   }
 
   else
@@ -22,11 +22,11 @@
     v9 = &stru_282F53518;
   }
 
-  v10 = [(DCURLGenerator *)self path];
-  v11 = v10;
-  if (v10)
+  path = [(DCURLGenerator *)self path];
+  v11 = path;
+  if (path)
   {
-    v12 = v10;
+    v12 = path;
   }
 
   else
@@ -35,9 +35,9 @@
   }
 
   v13 = @"?";
-  if (v3)
+  if (query)
   {
-    v14 = v3;
+    v14 = query;
   }
 
   else
@@ -46,7 +46,7 @@
     v14 = &stru_282F53518;
   }
 
-  v15 = [v5 stringWithFormat:@"%@://%@%@%@%@", v6, v9, v12, v13, v14];
+  v15 = [v5 stringWithFormat:@"%@://%@%@%@%@", scheme, v9, v12, v13, v14];
   v16 = [v4 URLWithString:v15];
 
   return v16;

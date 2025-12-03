@@ -1,10 +1,10 @@
 @interface TISupplementalPersonItem
 - (NSPersonNameComponents)personNameComponents;
-- (TISupplementalPersonItem)initWithCoder:(id)a3;
-- (TISupplementalPersonItem)initWithContact:(id)a3;
-- (TISupplementalPersonItem)initWithPersonNameComponents:(id)a3;
+- (TISupplementalPersonItem)initWithCoder:(id)coder;
+- (TISupplementalPersonItem)initWithContact:(id)contact;
+- (TISupplementalPersonItem)initWithPersonNameComponents:(id)components;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TISupplementalPersonItem
@@ -62,69 +62,69 @@
   return v21;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = TISupplementalPersonItem;
-  v4 = a3;
-  [(TISupplementalItem *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_givenName forKey:{@"givenName", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_phoneticGivenName forKey:@"phoneticGivenName"];
-  [v4 encodeObject:self->_middleName forKey:@"middleName"];
-  [v4 encodeObject:self->_phoneticMiddleName forKey:@"phoneticMiddleName"];
-  [v4 encodeObject:self->_familyName forKey:@"familyName"];
-  [v4 encodeObject:self->_phoneticFamilyName forKey:@"phoneticFamilyName"];
-  [v4 encodeObject:self->_organizationName forKey:@"organizationName"];
-  [v4 encodeObject:self->_phoneticOrganizationName forKey:@"phoneticOrganizationName"];
-  [v4 encodeObject:self->_nickname forKey:@"nickname"];
-  [v4 encodeObject:self->_previousFamilyName forKey:@"previousFamilyName"];
+  coderCopy = coder;
+  [(TISupplementalItem *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_givenName forKey:{@"givenName", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_phoneticGivenName forKey:@"phoneticGivenName"];
+  [coderCopy encodeObject:self->_middleName forKey:@"middleName"];
+  [coderCopy encodeObject:self->_phoneticMiddleName forKey:@"phoneticMiddleName"];
+  [coderCopy encodeObject:self->_familyName forKey:@"familyName"];
+  [coderCopy encodeObject:self->_phoneticFamilyName forKey:@"phoneticFamilyName"];
+  [coderCopy encodeObject:self->_organizationName forKey:@"organizationName"];
+  [coderCopy encodeObject:self->_phoneticOrganizationName forKey:@"phoneticOrganizationName"];
+  [coderCopy encodeObject:self->_nickname forKey:@"nickname"];
+  [coderCopy encodeObject:self->_previousFamilyName forKey:@"previousFamilyName"];
 }
 
-- (TISupplementalPersonItem)initWithCoder:(id)a3
+- (TISupplementalPersonItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = TISupplementalPersonItem;
-  v5 = [(TISupplementalItem *)&v28 initWithCoder:v4];
+  v5 = [(TISupplementalItem *)&v28 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"givenName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"givenName"];
     givenName = v5->_givenName;
     v5->_givenName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneticGivenName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneticGivenName"];
     phoneticGivenName = v5->_phoneticGivenName;
     v5->_phoneticGivenName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneticMiddleName"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneticMiddleName"];
     middleName = v5->_middleName;
     v5->_middleName = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneticMiddleName"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneticMiddleName"];
     phoneticMiddleName = v5->_phoneticMiddleName;
     v5->_phoneticMiddleName = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"familyName"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"familyName"];
     familyName = v5->_familyName;
     v5->_familyName = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneticFamilyName"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneticFamilyName"];
     phoneticFamilyName = v5->_phoneticFamilyName;
     v5->_phoneticFamilyName = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"organizationName"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"organizationName"];
     organizationName = v5->_organizationName;
     v5->_organizationName = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneticOrganizationName"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneticOrganizationName"];
     phoneticOrganizationName = v5->_phoneticOrganizationName;
     v5->_phoneticOrganizationName = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nickname"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nickname"];
     nickname = v5->_nickname;
     v5->_nickname = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"previousFamilyName"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"previousFamilyName"];
     previousFamilyName = v5->_previousFamilyName;
     v5->_previousFamilyName = v24;
 
@@ -159,16 +159,16 @@
       [v4 setPhoneticRepresentation:v5];
 
       phoneticGivenName = self->_phoneticGivenName;
-      v7 = [v4 phoneticRepresentation];
-      [v7 setGivenName:phoneticGivenName];
+      phoneticRepresentation = [v4 phoneticRepresentation];
+      [phoneticRepresentation setGivenName:phoneticGivenName];
 
       phoneticMiddleName = self->_phoneticMiddleName;
-      v9 = [v4 phoneticRepresentation];
-      [v9 setMiddleName:phoneticMiddleName];
+      phoneticRepresentation2 = [v4 phoneticRepresentation];
+      [phoneticRepresentation2 setMiddleName:phoneticMiddleName];
 
       phoneticFamilyName = self->_phoneticFamilyName;
-      v11 = [v4 phoneticRepresentation];
-      [v11 setFamilyName:phoneticFamilyName];
+      phoneticRepresentation3 = [v4 phoneticRepresentation];
+      [phoneticRepresentation3 setFamilyName:phoneticFamilyName];
     }
   }
 
@@ -180,50 +180,50 @@
   return v4;
 }
 
-- (TISupplementalPersonItem)initWithPersonNameComponents:(id)a3
+- (TISupplementalPersonItem)initWithPersonNameComponents:(id)components
 {
-  v4 = a3;
+  componentsCopy = components;
   v31.receiver = self;
   v31.super_class = TISupplementalPersonItem;
   v5 = [(TISupplementalItem *)&v31 init];
   if (v5)
   {
-    v6 = [v4 givenName];
-    v7 = [v6 copy];
+    givenName = [componentsCopy givenName];
+    v7 = [givenName copy];
     givenName = v5->_givenName;
     v5->_givenName = v7;
 
-    v9 = [v4 middleName];
-    v10 = [v9 copy];
+    middleName = [componentsCopy middleName];
+    v10 = [middleName copy];
     middleName = v5->_middleName;
     v5->_middleName = v10;
 
-    v12 = [v4 familyName];
-    v13 = [v12 copy];
+    familyName = [componentsCopy familyName];
+    v13 = [familyName copy];
     familyName = v5->_familyName;
     v5->_familyName = v13;
 
-    v15 = [v4 nickname];
-    v16 = [v15 copy];
+    nickname = [componentsCopy nickname];
+    v16 = [nickname copy];
     nickname = v5->_nickname;
     v5->_nickname = v16;
 
-    v18 = [v4 phoneticRepresentation];
-    v19 = v18;
-    if (v18)
+    phoneticRepresentation = [componentsCopy phoneticRepresentation];
+    v19 = phoneticRepresentation;
+    if (phoneticRepresentation)
     {
-      v20 = [v18 givenName];
-      v21 = [v20 copy];
+      givenName2 = [phoneticRepresentation givenName];
+      v21 = [givenName2 copy];
       phoneticGivenName = v5->_phoneticGivenName;
       v5->_phoneticGivenName = v21;
 
-      v23 = [v19 middleName];
-      v24 = [v23 copy];
+      middleName2 = [v19 middleName];
+      v24 = [middleName2 copy];
       phoneticMiddleName = v5->_phoneticMiddleName;
       v5->_phoneticMiddleName = v24;
 
-      v26 = [v19 familyName];
-      v27 = [v26 copy];
+      familyName2 = [v19 familyName];
+      v27 = [familyName2 copy];
       phoneticFamilyName = v5->_phoneticFamilyName;
       v5->_phoneticFamilyName = v27;
     }
@@ -234,9 +234,9 @@
   return v5;
 }
 
-- (TISupplementalPersonItem)initWithContact:(id)a3
+- (TISupplementalPersonItem)initWithContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v69.receiver = self;
   v69.super_class = TISupplementalPersonItem;
   v5 = [(TISupplementalItem *)&v69 init];
@@ -269,10 +269,10 @@ LABEL_53:
   _Block_object_dispose(&v75, 8);
   if (v6)
   {
-    if ([v4 isKeyAvailable:*v6])
+    if ([contactCopy isKeyAvailable:*v6])
     {
-      v9 = [v4 givenName];
-      v10 = [v9 copy];
+      givenName = [contactCopy givenName];
+      v10 = [givenName copy];
       givenName = v5->_givenName;
       v5->_givenName = v10;
     }
@@ -299,10 +299,10 @@ LABEL_53:
     _Block_object_dispose(&v75, 8);
     if (v12)
     {
-      if ([v4 isKeyAvailable:*v12])
+      if ([contactCopy isKeyAvailable:*v12])
       {
-        v15 = [v4 phoneticGivenName];
-        v16 = [v15 copy];
+        phoneticGivenName = [contactCopy phoneticGivenName];
+        v16 = [phoneticGivenName copy];
         phoneticGivenName = v5->_phoneticGivenName;
         v5->_phoneticGivenName = v16;
       }
@@ -329,10 +329,10 @@ LABEL_53:
       _Block_object_dispose(&v75, 8);
       if (v18)
       {
-        if ([v4 isKeyAvailable:*v18])
+        if ([contactCopy isKeyAvailable:*v18])
         {
-          v21 = [v4 middleName];
-          v22 = [v21 copy];
+          middleName = [contactCopy middleName];
+          v22 = [middleName copy];
           middleName = v5->_middleName;
           v5->_middleName = v22;
         }
@@ -359,10 +359,10 @@ LABEL_53:
         _Block_object_dispose(&v75, 8);
         if (v24)
         {
-          if ([v4 isKeyAvailable:*v24])
+          if ([contactCopy isKeyAvailable:*v24])
           {
-            v27 = [v4 phoneticMiddleName];
-            v28 = [v27 copy];
+            phoneticMiddleName = [contactCopy phoneticMiddleName];
+            v28 = [phoneticMiddleName copy];
             phoneticMiddleName = v5->_phoneticMiddleName;
             v5->_phoneticMiddleName = v28;
           }
@@ -389,10 +389,10 @@ LABEL_53:
           _Block_object_dispose(&v75, 8);
           if (v30)
           {
-            if ([v4 isKeyAvailable:*v30])
+            if ([contactCopy isKeyAvailable:*v30])
             {
-              v33 = [v4 familyName];
-              v34 = [v33 copy];
+              familyName = [contactCopy familyName];
+              v34 = [familyName copy];
               familyName = v5->_familyName;
               v5->_familyName = v34;
             }
@@ -419,10 +419,10 @@ LABEL_53:
             _Block_object_dispose(&v75, 8);
             if (v36)
             {
-              if ([v4 isKeyAvailable:*v36])
+              if ([contactCopy isKeyAvailable:*v36])
               {
-                v39 = [v4 phoneticFamilyName];
-                v40 = [v39 copy];
+                phoneticFamilyName = [contactCopy phoneticFamilyName];
+                v40 = [phoneticFamilyName copy];
                 phoneticFamilyName = v5->_phoneticFamilyName;
                 v5->_phoneticFamilyName = v40;
               }
@@ -449,10 +449,10 @@ LABEL_53:
               _Block_object_dispose(&v75, 8);
               if (v42)
               {
-                if ([v4 isKeyAvailable:*v42])
+                if ([contactCopy isKeyAvailable:*v42])
                 {
-                  v45 = [v4 previousFamilyName];
-                  v46 = [v45 copy];
+                  previousFamilyName = [contactCopy previousFamilyName];
+                  v46 = [previousFamilyName copy];
                   previousFamilyName = v5->_previousFamilyName;
                   v5->_previousFamilyName = v46;
                 }
@@ -479,10 +479,10 @@ LABEL_53:
                 _Block_object_dispose(&v75, 8);
                 if (v48)
                 {
-                  if ([v4 isKeyAvailable:*v48])
+                  if ([contactCopy isKeyAvailable:*v48])
                   {
-                    v51 = [v4 organizationName];
-                    v52 = [v51 copy];
+                    organizationName = [contactCopy organizationName];
+                    v52 = [organizationName copy];
                     organizationName = v5->_organizationName;
                     v5->_organizationName = v52;
                   }
@@ -509,10 +509,10 @@ LABEL_53:
                   _Block_object_dispose(&v75, 8);
                   if (v54)
                   {
-                    if ([v4 isKeyAvailable:*v54])
+                    if ([contactCopy isKeyAvailable:*v54])
                     {
-                      v57 = [v4 phoneticOrganizationName];
-                      v58 = [v57 copy];
+                      phoneticOrganizationName = [contactCopy phoneticOrganizationName];
+                      v58 = [phoneticOrganizationName copy];
                       phoneticOrganizationName = v5->_phoneticOrganizationName;
                       v5->_phoneticOrganizationName = v58;
                     }
@@ -539,10 +539,10 @@ LABEL_53:
                     _Block_object_dispose(&v75, 8);
                     if (v60)
                     {
-                      if ([v4 isKeyAvailable:*v60])
+                      if ([contactCopy isKeyAvailable:*v60])
                       {
-                        v63 = [v4 nickname];
-                        v64 = [v63 copy];
+                        nickname = [contactCopy nickname];
+                        v64 = [nickname copy];
                         nickname = v5->_nickname;
                         v5->_nickname = v64;
                       }

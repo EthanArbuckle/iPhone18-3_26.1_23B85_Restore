@@ -1,22 +1,22 @@
 @interface HKDataMetadataSimpleSection
-- (HKDataMetadataSimpleSection)initWithTitle:(id)a3;
-- (id)_valueForRowWithTitle:(id)a3;
-- (id)cellForIndex:(unint64_t)a3 tableView:(id)a4;
-- (void)addText:(id)a3 detail:(id)a4 baseIdentifier:(id)a5;
+- (HKDataMetadataSimpleSection)initWithTitle:(id)title;
+- (id)_valueForRowWithTitle:(id)title;
+- (id)cellForIndex:(unint64_t)index tableView:(id)view;
+- (void)addText:(id)text detail:(id)detail baseIdentifier:(id)identifier;
 @end
 
 @implementation HKDataMetadataSimpleSection
 
-- (HKDataMetadataSimpleSection)initWithTitle:(id)a3
+- (HKDataMetadataSimpleSection)initWithTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   v11.receiver = self;
   v11.super_class = HKDataMetadataSimpleSection;
   v6 = [(HKDataMetadataSimpleSection *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_title, a3);
+    objc_storeStrong(&v6->_title, title);
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     rows = v7->_rows;
     v7->_rows = v8;
@@ -25,35 +25,35 @@
   return v7;
 }
 
-- (void)addText:(id)a3 detail:(id)a4 baseIdentifier:(id)a5
+- (void)addText:(id)text detail:(id)detail baseIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  identifierCopy = identifier;
+  detailCopy = detail;
+  textCopy = text;
   v11 = objc_alloc_init(_HKDataMetadataSimpleRow);
-  [(_HKDataMetadataSimpleRow *)v11 setText:v10];
+  [(_HKDataMetadataSimpleRow *)v11 setText:textCopy];
 
-  [(_HKDataMetadataSimpleRow *)v11 setDetail:v9];
-  [(_HKDataMetadataSimpleRow *)v11 setBaseIdentifier:v8];
+  [(_HKDataMetadataSimpleRow *)v11 setDetail:detailCopy];
+  [(_HKDataMetadataSimpleRow *)v11 setBaseIdentifier:identifierCopy];
 
   [(NSMutableArray *)self->_rows addObject:v11];
 }
 
-- (id)_valueForRowWithTitle:(id)a3
+- (id)_valueForRowWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   rows = self->_rows;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __53__HKDataMetadataSimpleSection__valueForRowWithTitle___block_invoke;
   v11[3] = &unk_1E81B8EB0;
-  v12 = v4;
-  v6 = v4;
+  v12 = titleCopy;
+  v6 = titleCopy;
   v7 = [(NSMutableArray *)rows hk_filter:v11];
-  v8 = [v7 firstObject];
-  v9 = [v8 text];
+  firstObject = [v7 firstObject];
+  text = [firstObject text];
 
-  return v9;
+  return text;
 }
 
 uint64_t __53__HKDataMetadataSimpleSection__valueForRowWithTitle___block_invoke(uint64_t a1, void *a2)
@@ -64,30 +64,30 @@ uint64_t __53__HKDataMetadataSimpleSection__valueForRowWithTitle___block_invoke(
   return v4;
 }
 
-- (id)cellForIndex:(unint64_t)a3 tableView:(id)a4
+- (id)cellForIndex:(unint64_t)index tableView:(id)view
 {
-  v6 = [a4 dequeueReusableCellWithIdentifier:@"SimpleCellReuseIdentifier"];
+  v6 = [view dequeueReusableCellWithIdentifier:@"SimpleCellReuseIdentifier"];
   if (!v6)
   {
     v6 = [[HKDataMetadataSimpleTableViewCell alloc] initWithReuseIdentifier:@"SimpleCellReuseIdentifier"];
   }
 
-  v7 = [(NSMutableArray *)self->_rows objectAtIndexedSubscript:a3];
-  v8 = [v7 text];
-  v9 = [(HKDataMetadataSimpleTableViewCell *)v6 titleTextLabel];
-  [v9 setText:v8];
+  v7 = [(NSMutableArray *)self->_rows objectAtIndexedSubscript:index];
+  text = [v7 text];
+  titleTextLabel = [(HKDataMetadataSimpleTableViewCell *)v6 titleTextLabel];
+  [titleTextLabel setText:text];
 
-  v10 = [v7 detail];
+  detail = [v7 detail];
 
-  if (v10)
+  if (detail)
   {
-    v11 = [v7 detail];
-    v12 = [(HKDataMetadataSimpleTableViewCell *)v6 subtitleTextLabel];
-    [v12 setText:v11];
+    detail2 = [v7 detail];
+    subtitleTextLabel = [(HKDataMetadataSimpleTableViewCell *)v6 subtitleTextLabel];
+    [subtitleTextLabel setText:detail2];
   }
 
-  v13 = [v7 baseIdentifier];
-  [(HKDataMetadataSimpleTableViewCell *)v6 updateAutomationIdentifiersWith:v13];
+  baseIdentifier = [v7 baseIdentifier];
+  [(HKDataMetadataSimpleTableViewCell *)v6 updateAutomationIdentifiersWith:baseIdentifier];
 
   return v6;
 }

@@ -1,25 +1,25 @@
 @interface MTLToolsObject
-- (MTLToolsObject)initWithBaseObject:(id)a3 parent:(id)a4;
+- (MTLToolsObject)initWithBaseObject:(id)object parent:(id)parent;
 - (id)description;
 - (id)originalObject;
 - (void)dealloc;
-- (void)setOriginalObject:(id)a3;
+- (void)setOriginalObject:(id)object;
 @end
 
 @implementation MTLToolsObject
 
-- (MTLToolsObject)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTLToolsObject)initWithBaseObject:(id)object parent:(id)parent
 {
   v9.receiver = self;
   v9.super_class = MTLToolsObject;
   v6 = [(MTLToolsObject *)&v9 init];
   if (v6)
   {
-    v6->_baseObject = a3;
-    v6->_parent = a4;
-    if (a4)
+    v6->_baseObject = object;
+    v6->_parent = parent;
+    if (parent)
     {
-      v7 = *(a4 + 3);
+      v7 = *(parent + 3);
     }
 
     else
@@ -66,9 +66,9 @@
   return i;
 }
 
-- (void)setOriginalObject:(id)a3
+- (void)setOriginalObject:(id)object
 {
-  v4 = self;
+  selfCopy = self;
   [(MTLToolsObject *)self baseObject];
   while (1)
   {
@@ -78,11 +78,11 @@
       break;
     }
 
-    v4 = [(MTLToolsObject *)v4 baseObject];
-    [(MTLToolsObject *)v4 baseObject];
+    selfCopy = [(MTLToolsObject *)selfCopy baseObject];
+    [(MTLToolsObject *)selfCopy baseObject];
   }
 
-  v4->_baseObject = a3;
+  selfCopy->_baseObject = object;
 }
 
 @end

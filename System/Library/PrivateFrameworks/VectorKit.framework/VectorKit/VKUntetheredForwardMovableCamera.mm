@@ -11,8 +11,8 @@
 - (double)pitchRadian;
 - (double)yawRadian;
 - (optional<gm::Matrix<double,)groundPointFromScreenPoint:(1>> *__return_ptr)retstr;
-- (void)setOrientation:(const void *)a3;
-- (void)setPosition:(const void *)a3;
+- (void)setOrientation:(const void *)orientation;
+- (void)setPosition:(const void *)position;
 @end
 
 @implementation VKUntetheredForwardMovableCamera
@@ -23,15 +23,15 @@
   v3 = WeakRetained;
   if (WeakRetained)
   {
-    v4 = [WeakRetained regionRestriction];
+    regionRestriction = [WeakRetained regionRestriction];
   }
 
   else
   {
-    v4 = 0;
+    regionRestriction = 0;
   }
 
-  return v4;
+  return regionRestriction;
 }
 
 - (VKCameraState)cameraState
@@ -214,16 +214,16 @@
   v3 = WeakRetained;
   if (WeakRetained)
   {
-    v4 = [WeakRetained orientation];
+    orientation = [WeakRetained orientation];
   }
 
   {
-    v4 = &[VKUntetheredForwardMovableCamera orientation]::identity;
+    orientation = &[VKUntetheredForwardMovableCamera orientation]::identity;
   }
 
   else
   {
-    v4 = &[VKUntetheredForwardMovableCamera orientation]::identity;
+    orientation = &[VKUntetheredForwardMovableCamera orientation]::identity;
     {
       [VKUntetheredForwardMovableCamera orientation]::identity = 0;
       *algn_1EB844C38 = 0;
@@ -232,15 +232,15 @@
     }
   }
 
-  return v4;
+  return orientation;
 }
 
-- (void)setOrientation:(const void *)a3
+- (void)setOrientation:(const void *)orientation
 {
   WeakRetained = objc_loadWeakRetained(&self->_forwardMoveableCamera);
   if (WeakRetained)
   {
-    [WeakRetained setOrientation:a3];
+    [WeakRetained setOrientation:orientation];
   }
 }
 
@@ -250,16 +250,16 @@
   v3 = WeakRetained;
   if (WeakRetained)
   {
-    v4 = [WeakRetained position];
+    position = [WeakRetained position];
   }
 
   {
-    v4 = &[VKUntetheredForwardMovableCamera position]::zero;
+    position = &[VKUntetheredForwardMovableCamera position]::zero;
   }
 
   else
   {
-    v4 = &[VKUntetheredForwardMovableCamera position]::zero;
+    position = &[VKUntetheredForwardMovableCamera position]::zero;
     {
       [VKUntetheredForwardMovableCamera position]::zero = 0;
       *algn_1EB844C18 = 0;
@@ -267,15 +267,15 @@
     }
   }
 
-  return v4;
+  return position;
 }
 
-- (void)setPosition:(const void *)a3
+- (void)setPosition:(const void *)position
 {
   WeakRetained = objc_loadWeakRetained(&self->_forwardMoveableCamera);
   if (WeakRetained)
   {
-    [WeakRetained setPosition:a3];
+    [WeakRetained setPosition:position];
   }
 }
 

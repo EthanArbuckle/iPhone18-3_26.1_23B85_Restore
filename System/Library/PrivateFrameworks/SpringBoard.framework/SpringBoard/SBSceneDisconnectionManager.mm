@@ -1,11 +1,11 @@
 @interface SBSceneDisconnectionManager
 + (id)sharedManager;
-- (BOOL)shouldDisconnectScene:(id)a3 inSwitcher:(id)a4;
+- (BOOL)shouldDisconnectScene:(id)scene inSwitcher:(id)switcher;
 - (SBSceneDisconnectionManager)init;
-- (id)liveScenesForApplication:(id)a3;
-- (unint64_t)positionOf:(id)a3 inSwitcher:(id)a4;
-- (void)_beginSceneCleanupWithBackgroundedSceneEntities:(id)a3;
-- (void)disconnectScenes:(id)a3 completion:(id)a4;
+- (id)liveScenesForApplication:(id)application;
+- (unint64_t)positionOf:(id)of inSwitcher:(id)switcher;
+- (void)_beginSceneCleanupWithBackgroundedSceneEntities:(id)entities;
+- (void)disconnectScenes:(id)scenes completion:(id)completion;
 @end
 
 @implementation SBSceneDisconnectionManager
@@ -36,33 +36,33 @@ void __44__SBSceneDisconnectionManager_sharedManager__block_invoke()
   v2 = [(SBSceneDisconnectionManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAC38] processInfo];
-    v4 = [v3 physicalMemory];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    physicalMemory = [processInfo physicalMemory];
 
-    v2->_numberOfRecentScenesExcludedFromDisconnection = vcvtps_u32_f32((v4 / 1000000000.0) * 2.5);
+    v2->_numberOfRecentScenesExcludedFromDisconnection = vcvtps_u32_f32((physicalMemory / 1000000000.0) * 2.5);
   }
 
   return v2;
 }
 
-- (void)_beginSceneCleanupWithBackgroundedSceneEntities:(id)a3
+- (void)_beginSceneCleanupWithBackgroundedSceneEntities:(id)entities
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entitiesCopy = entities;
   if (!self->_isExecuting)
   {
     self->_isExecuting = 1;
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v7 = +[SBMainSwitcherControllerCoordinator sharedInstanceIfExists];
       v8 = v7;
       if (v7)
       {
-        v9 = [v7 recentAppLayouts];
-        v10 = [v9 count];
+        recentAppLayouts = [v7 recentAppLayouts];
+        v10 = [recentAppLayouts count];
         numberOfRecentScenesExcludedFromDisconnection = self->_numberOfRecentScenesExcludedFromDisconnection;
 
         if (v10 <= numberOfRecentScenesExcludedFromDisconnection)
@@ -72,14 +72,14 @@ void __44__SBSceneDisconnectionManager_sharedManager__block_invoke()
 
         else
         {
-          v28 = [v4 bs_map:&__block_literal_global_4_2];
+          v28 = [entitiesCopy bs_map:&__block_literal_global_4_2];
           v12 = +[SBApplicationController sharedInstanceIfExists];
           if (v12)
           {
             v25 = v12;
-            v26 = v4;
-            v13 = [v12 runningApplications];
-            v14 = [v13 bs_filter:&__block_literal_global_8_3];
+            v26 = entitiesCopy;
+            runningApplications = [v12 runningApplications];
+            v14 = [runningApplications bs_filter:&__block_literal_global_8_3];
 
             v27 = objc_alloc_init(MEMORY[0x277CBEB58]);
             v35 = 0u;
@@ -109,7 +109,7 @@ void __44__SBSceneDisconnectionManager_sharedManager__block_invoke()
                     v31[2] = __79__SBSceneDisconnectionManager__beginSceneCleanupWithBackgroundedSceneEntities___block_invoke_3;
                     v31[3] = &unk_2783BECF0;
                     v32 = v28;
-                    v33 = self;
+                    selfCopy = self;
                     v21 = v8;
                     v34 = v8;
                     v22 = [v20 bs_filter:v31];
@@ -128,7 +128,7 @@ void __44__SBSceneDisconnectionManager_sharedManager__block_invoke()
               while (v17);
             }
 
-            v4 = v26;
+            entitiesCopy = v26;
             if ([v27 count])
             {
               block[0] = MEMORY[0x277D85DD0];
@@ -239,27 +239,27 @@ void __79__SBSceneDisconnectionManager__beginSceneCleanupWithBackgroundedSceneEn
   *(*(a1 + 32) + 8) = 0;
 }
 
-- (BOOL)shouldDisconnectScene:(id)a3 inSwitcher:(id)a4
+- (BOOL)shouldDisconnectScene:(id)scene inSwitcher:(id)switcher
 {
-  v6 = a4;
-  v7 = [a3 sceneIfExists];
-  v11 = [v7 isValid] && (objc_msgSend(v7, "settings"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isForeground"), v8, (v9 & 1) == 0) && (v10 = -[SBSceneDisconnectionManager positionOf:inSwitcher:](self, "positionOf:inSwitcher:", v7, v6), v10 != 0x7FFFFFFFFFFFFFFFLL) && v10 >= self->_numberOfRecentScenesExcludedFromDisconnection;
+  switcherCopy = switcher;
+  sceneIfExists = [scene sceneIfExists];
+  v11 = [sceneIfExists isValid] && (objc_msgSend(sceneIfExists, "settings"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isForeground"), v8, (v9 & 1) == 0) && (v10 = -[SBSceneDisconnectionManager positionOf:inSwitcher:](self, "positionOf:inSwitcher:", sceneIfExists, switcherCopy), v10 != 0x7FFFFFFFFFFFFFFFLL) && v10 >= self->_numberOfRecentScenesExcludedFromDisconnection;
 
   return v11;
 }
 
-- (void)disconnectScenes:(id)a3 completion:(id)a4
+- (void)disconnectScenes:(id)scenes completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  scenesCopy = scenes;
   v7 = SBApplicationSceneEntityDestructionMakeIntent(1, 0);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__SBSceneDisconnectionManager_disconnectScenes_completion___block_invoke;
   v9[3] = &unk_2783B7568;
-  v10 = v5;
-  v8 = v5;
-  SBWorkspaceDestroyApplicationSceneHandlesWithIntent(v6, v7, v9);
+  v10 = completionCopy;
+  v8 = completionCopy;
+  SBWorkspaceDestroyApplicationSceneHandlesWithIntent(scenesCopy, v7, v9);
 }
 
 uint64_t __59__SBSceneDisconnectionManager_disconnectScenes_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -274,18 +274,18 @@ uint64_t __59__SBSceneDisconnectionManager_disconnectScenes_completion___block_i
   return MEMORY[0x2821F9730](v4);
 }
 
-- (id)liveScenesForApplication:(id)a3
+- (id)liveScenesForApplication:(id)application
 {
-  v4 = a3;
-  v5 = [(SBSceneDisconnectionManager *)self sceneManager];
-  v6 = [v5 externalApplicationSceneHandles];
+  applicationCopy = application;
+  sceneManager = [(SBSceneDisconnectionManager *)self sceneManager];
+  externalApplicationSceneHandles = [sceneManager externalApplicationSceneHandles];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__SBSceneDisconnectionManager_liveScenesForApplication___block_invoke;
   v10[3] = &unk_2783BED18;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v6 bs_filter:v10];
+  v11 = applicationCopy;
+  v7 = applicationCopy;
+  v8 = [externalApplicationSceneHandles bs_filter:v10];
 
   return v8;
 }
@@ -308,12 +308,12 @@ uint64_t __56__SBSceneDisconnectionManager_liveScenesForApplication___block_invo
   return v6;
 }
 
-- (unint64_t)positionOf:(id)a3 inSwitcher:(id)a4
+- (unint64_t)positionOf:(id)of inSwitcher:(id)switcher
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 recentAppLayouts];
-  v9 = [v8 count];
+  ofCopy = of;
+  switcherCopy = switcher;
+  recentAppLayouts = [switcherCopy recentAppLayouts];
+  v9 = [recentAppLayouts count];
 
   numberOfRecentScenesExcludedFromDisconnection = self->_numberOfRecentScenesExcludedFromDisconnection;
   if (v9 >= numberOfRecentScenesExcludedFromDisconnection)
@@ -331,11 +331,11 @@ uint64_t __56__SBSceneDisconnectionManager_liveScenesForApplication___block_invo
     v12 = 0;
     while (1)
     {
-      v13 = [v7 recentAppLayouts];
-      v14 = [v13 objectAtIndexedSubscript:v12];
+      recentAppLayouts2 = [switcherCopy recentAppLayouts];
+      v14 = [recentAppLayouts2 objectAtIndexedSubscript:v12];
 
-      v15 = [v6 identifier];
-      v16 = [v14 containsItemWithUniqueIdentifier:v15];
+      identifier = [ofCopy identifier];
+      v16 = [v14 containsItemWithUniqueIdentifier:identifier];
 
       if (v16)
       {

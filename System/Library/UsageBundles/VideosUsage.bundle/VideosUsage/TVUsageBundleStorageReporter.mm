@@ -1,13 +1,13 @@
 @interface TVUsageBundleStorageReporter
 - (TVUsageBundleStorageReporter)init;
-- (float)sizeForCategory:(id)a3;
-- (id)dataSourceForCategory:(id)a3 indexPath:(id)a4;
+- (float)sizeForCategory:(id)category;
+- (id)dataSourceForCategory:(id)category indexPath:(id)path;
 - (id)usageBundleApps;
-- (unint64_t)_sizeForCategoryIdentifier:(id)a3;
+- (unint64_t)_sizeForCategoryIdentifier:(id)identifier;
 - (unint64_t)_totalSizeForAllDownloads;
 - (unint64_t)totalSize;
 - (void)dealloc;
-- (void)usageBundleApp:(id)a3 willDisplaySpecifier:(id *)a4;
+- (void)usageBundleApp:(id)app willDisplaySpecifier:(id *)specifier;
 @end
 
 @implementation TVUsageBundleStorageReporter
@@ -21,8 +21,8 @@
   {
     [MPMediaQuery setFilteringDisabled:1];
     v3 = +[MPMediaLibrary deviceMediaLibrary];
-    v4 = [v3 libraryDataProvider];
-    [MPMediaLibrary reloadDynamicPropertiesForLibraryDataProvider:v4];
+    libraryDataProvider = [v3 libraryDataProvider];
+    [MPMediaLibrary reloadDynamicPropertiesForLibraryDataProvider:libraryDataProvider];
 
     v2->_shouldShowVideosiTunesU = PSIsBundleIDInstalled() ^ 1;
     v2->_preferencesNotifyToken = -1;
@@ -63,15 +63,15 @@
 {
   *&v3 = [(TVUsageBundleStorageReporter *)self _totalSizeForAllDownloads];
   v4 = [PSUsageBundleApp usageBundleAppForBundleWithIdentifier:@"com.apple.VideosUsage" withTotalSize:v3];
-  v5 = self;
-  objc_sync_enter(v5);
-  objc_storeStrong(&v5->_usageBundleApp, v4);
-  objc_sync_exit(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_usageBundleApp, v4);
+  objc_sync_exit(selfCopy);
 
-  LODWORD(v5) = WLKIsRegulatedSKU();
+  LODWORD(selfCopy) = WLKIsRegulatedSKU();
   v6 = [NSBundle bundleWithIdentifier:@"com.apple.VideosUsage"];
   v7 = v6;
-  if (v5)
+  if (selfCopy)
   {
     v8 = @"BUNDLE_NAME_VIDEOS";
   }
@@ -109,22 +109,22 @@
   return v19;
 }
 
-- (float)sizeForCategory:(id)a3
+- (float)sizeForCategory:(id)category
 {
-  v4 = [a3 identifier];
-  v5 = [(TVUsageBundleStorageReporter *)self _sizeForCategoryIdentifier:v4];
+  identifier = [category identifier];
+  v5 = [(TVUsageBundleStorageReporter *)self _sizeForCategoryIdentifier:identifier];
 
   return v5;
 }
 
-- (void)usageBundleApp:(id)a3 willDisplaySpecifier:(id *)a4
+- (void)usageBundleApp:(id)app willDisplaySpecifier:(id *)specifier
 {
-  v5 = [a3 bundleIdentifier];
-  v6 = [v5 isEqualToString:@"com.apple.VideosUsage"];
+  bundleIdentifier = [app bundleIdentifier];
+  v6 = [bundleIdentifier isEqualToString:@"com.apple.VideosUsage"];
 
   if (v6)
   {
-    v7 = *a4;
+    v7 = *specifier;
     v8 = PSLazyIconLoading;
     v10 = v7;
     [v10 setProperty:&__kCFBooleanTrue forKey:v8];
@@ -142,25 +142,25 @@
   }
 }
 
-- (id)dataSourceForCategory:(id)a3 indexPath:(id)a4
+- (id)dataSourceForCategory:(id)category indexPath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
+  categoryCopy = category;
+  pathCopy = path;
   v7 = MPMediaItemPropertyTitle;
-  v8 = [v6 length];
+  v8 = [pathCopy length];
   v9 = [MPMediaPropertyPredicate predicateWithValue:&__kCFBooleanTrue forProperty:MPMediaItemPropertyHasNonPurgeableAsset];
-  if ([v5 isEqualToString:@"CATEGORY_MOVIES"])
+  if ([categoryCopy isEqualToString:@"CATEGORY_MOVIES"])
   {
     v10 = +[MPMediaQuery moviesQuery];
 LABEL_3:
-    v11 = v10;
+    itemsQuery = v10;
     if (v8 > 1)
     {
 LABEL_4:
 
       v12 = 0;
       v13 = 0;
-      v11 = 0;
+      itemsQuery = 0;
 LABEL_31:
       v32 = 1;
       goto LABEL_32;
@@ -172,10 +172,10 @@ LABEL_31:
     goto LABEL_26;
   }
 
-  if ([v5 isEqualToString:@"CATEGORY_TV_SHOWS"])
+  if ([categoryCopy isEqualToString:@"CATEGORY_TV_SHOWS"])
   {
-    v11 = +[MPMediaQuery tvShowsQuery];
-    [v11 setGroupingType:8];
+    itemsQuery = +[MPMediaQuery tvShowsQuery];
+    [itemsQuery setGroupingType:8];
     v14 = MPMediaItemPropertySeriesName;
 
     if (v8 < 2)
@@ -188,20 +188,20 @@ LABEL_31:
 
     else
     {
-      [v11 addFilterPredicate:v9];
+      [itemsQuery addFilterPredicate:v9];
       v13 = 1;
-      [v11 setIgnoreRestrictionsPredicates:1];
-      v15 = [v6 indexAtPosition:1];
-      v16 = [v11 collections];
-      [v16 objectAtIndex:v15];
+      [itemsQuery setIgnoreRestrictionsPredicates:1];
+      v15 = [pathCopy indexAtPosition:1];
+      collections = [itemsQuery collections];
+      [collections objectAtIndex:v15];
       v17 = v35 = v9;
-      v18 = [v17 representativeItem];
+      representativeItem = [v17 representativeItem];
 
-      v19 = v18;
-      v20 = [v18 objectForKeyedSubscript:MPMediaItemPropertyArtistPersistentID];
+      v19 = representativeItem;
+      v20 = [representativeItem objectForKeyedSubscript:MPMediaItemPropertyArtistPersistentID];
       v21 = [MPMediaPropertyPredicate predicateWithValue:v20 forProperty:MPMediaItemPropertyArtistPersistentID];
 
-      v22 = [v11 copy];
+      v22 = [itemsQuery copy];
       [v22 addFilterPredicate:v21];
       [v22 setGroupingType:9];
       v23 = MPMediaItemPropertySeasonName;
@@ -210,7 +210,7 @@ LABEL_31:
       {
         v24 = 0;
         v14 = v23;
-        v11 = v22;
+        itemsQuery = v22;
         v12 = &stru_C4D0;
         v9 = v35;
       }
@@ -219,11 +219,11 @@ LABEL_31:
       {
         v14 = v23;
         [v22 addFilterPredicate:v35];
-        v30 = [v22 collections];
-        v31 = [v30 objectAtIndex:{objc_msgSend(v6, "indexAtPosition:", 2)}];
-        v11 = [v31 itemsQuery];
+        collections2 = [v22 collections];
+        v31 = [collections2 objectAtIndex:{objc_msgSend(pathCopy, "indexAtPosition:", 2)}];
+        itemsQuery = [v31 itemsQuery];
 
-        [v11 addFilterPredicate:v35];
+        [itemsQuery addFilterPredicate:v35];
         v9 = v35;
         if (v8 < 4)
         {
@@ -234,7 +234,7 @@ LABEL_31:
         {
 
           v13 = 0;
-          v11 = 0;
+          itemsQuery = 0;
         }
 
         v12 = &stru_C4F0;
@@ -245,12 +245,12 @@ LABEL_31:
     goto LABEL_25;
   }
 
-  if (![v5 isEqualToString:@"CATEGORY_ITUNESU_VIDEOS"])
+  if (![categoryCopy isEqualToString:@"CATEGORY_ITUNESU_VIDEOS"])
   {
-    if (![v5 isEqualToString:@"CATEGORY_HOME_VIDEOS"])
+    if (![categoryCopy isEqualToString:@"CATEGORY_HOME_VIDEOS"])
     {
       v12 = 0;
-      v11 = 0;
+      itemsQuery = 0;
       v13 = 1;
       goto LABEL_31;
     }
@@ -259,10 +259,10 @@ LABEL_31:
     goto LABEL_3;
   }
 
-  v11 = +[MPMediaQuery ITunesUQuery];
-  [v11 addFilterPredicate:v9];
+  itemsQuery = +[MPMediaQuery ITunesUQuery];
+  [itemsQuery addFilterPredicate:v9];
   v13 = 1;
-  [v11 setGroupingType:1];
+  [itemsQuery setGroupingType:1];
   v14 = MPMediaItemPropertyAlbumTitle;
 
   if (v8 < 2)
@@ -275,14 +275,14 @@ LABEL_25:
   }
 
   v25 = v9;
-  v26 = [v11 collections];
-  v27 = [v26 objectAtIndex:{objc_msgSend(v6, "indexAtPosition:", 1)}];
-  v28 = [v27 itemsQuery];
+  collections3 = [itemsQuery collections];
+  v27 = [collections3 objectAtIndex:{objc_msgSend(pathCopy, "indexAtPosition:", 1)}];
+  itemsQuery2 = [v27 itemsQuery];
 
   v29 = v7;
   if (v8 != &dword_0 + 2)
   {
-    v11 = v28;
+    itemsQuery = itemsQuery2;
     v9 = v25;
     goto LABEL_4;
   }
@@ -291,10 +291,10 @@ LABEL_25:
   v24 = 0;
   v13 = 0;
   v7 = v29;
-  v11 = v28;
+  itemsQuery = itemsQuery2;
   v9 = v25;
 LABEL_26:
-  if (!v11)
+  if (!itemsQuery)
   {
     if (v24)
     {
@@ -305,9 +305,9 @@ LABEL_26:
     goto LABEL_31;
   }
 
-  [v11 setIgnoreSystemFilterPredicates:1];
-  [v11 setIgnoreRestrictionsPredicates:1];
-  [v11 addFilterPredicate:v9];
+  [itemsQuery setIgnoreSystemFilterPredicates:1];
+  [itemsQuery setIgnoreRestrictionsPredicates:1];
+  [itemsQuery addFilterPredicate:v9];
   if (v24)
   {
     goto LABEL_34;
@@ -331,7 +331,7 @@ LABEL_32:
   }
 
 LABEL_34:
-  v33 = [[TVUsageDataSource alloc] initWithQuery:v11 entityType:v13 categoryIdentifier:v5 usageItemBlock:v24 usageHeaderBlock:v12];
+  v33 = [[TVUsageDataSource alloc] initWithQuery:itemsQuery entityType:v13 categoryIdentifier:categoryCopy usageItemBlock:v24 usageHeaderBlock:v12];
 LABEL_35:
 
   return v33;
@@ -380,20 +380,20 @@ LABEL_35:
   return v6;
 }
 
-- (unint64_t)_sizeForCategoryIdentifier:(id)a3
+- (unint64_t)_sizeForCategoryIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"CATEGORY_MOVIES"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"CATEGORY_MOVIES"])
   {
     v5 = +[MPMediaQuery moviesQuery];
   }
 
-  else if ([v4 isEqualToString:@"CATEGORY_TV_SHOWS"])
+  else if ([identifierCopy isEqualToString:@"CATEGORY_TV_SHOWS"])
   {
     v5 = +[MPMediaQuery tvShowsQuery];
   }
 
-  else if ([v4 isEqualToString:@"CATEGORY_ITUNESU_VIDEOS"])
+  else if ([identifierCopy isEqualToString:@"CATEGORY_ITUNESU_VIDEOS"])
   {
     if (!self->_shouldShowVideosiTunesU)
     {
@@ -405,7 +405,7 @@ LABEL_35:
 
   else
   {
-    if (![v4 isEqualToString:@"CATEGORY_HOME_VIDEOS"])
+    if (![identifierCopy isEqualToString:@"CATEGORY_HOME_VIDEOS"])
     {
       goto LABEL_12;
     }
@@ -417,7 +417,7 @@ LABEL_35:
   if (!v5)
   {
 LABEL_12:
-    v9 = 0;
+    unsignedLongLongValue = 0;
     goto LABEL_13;
   }
 
@@ -426,10 +426,10 @@ LABEL_12:
   v7 = [MPMediaPropertyPredicate predicateWithValue:&__kCFBooleanTrue forProperty:MPMediaItemPropertyHasNonPurgeableAsset];
   [v6 addFilterPredicate:v7];
   v8 = [v6 valueForAggregateFunction:MPMediaQueryAggregateFunctionTotal onItemsForProperty:MPMediaItemPropertyFileSize];
-  v9 = [v8 unsignedLongLongValue];
+  unsignedLongLongValue = [v8 unsignedLongLongValue];
 
 LABEL_13:
-  return v9;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)_totalSizeForAllDownloads
@@ -448,7 +448,7 @@ LABEL_13:
   v6 = MPMediaQueryAggregateFunctionTotal;
   v7 = MPMediaItemPropertyFileSize;
   v18 = [v4 valueForAggregateFunction:MPMediaQueryAggregateFunctionTotal onItemsForProperty:MPMediaItemPropertyFileSize];
-  v8 = [v18 unsignedLongLongValue];
+  unsignedLongLongValue = [v18 unsignedLongLongValue];
   v9 = +[MPMediaQuery tvShowsQuery];
   [v9 setIgnoreSystemFilterPredicates:1];
   [v9 setIgnoreRestrictionsPredicates:1];
@@ -457,7 +457,7 @@ LABEL_13:
   [v9 addFilterPredicate:v3];
   [v9 setGroupingType:8];
   v10 = [v9 valueForAggregateFunction:v6 onItemsForProperty:v7];
-  v11 = &v8[[v10 unsignedLongLongValue]];
+  v11 = &unsignedLongLongValue[[v10 unsignedLongLongValue]];
   v12 = +[MPMediaQuery homeVideosQuery];
   [v12 setIgnoreSystemFilterPredicates:1];
   [v12 setIgnoreRestrictionsPredicates:1];

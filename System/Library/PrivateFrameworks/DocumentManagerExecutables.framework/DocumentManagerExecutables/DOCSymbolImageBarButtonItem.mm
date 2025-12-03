@@ -1,23 +1,23 @@
 @interface DOCSymbolImageBarButtonItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TtC26DocumentManagerExecutables27DOCSymbolImageBarButtonItem)init;
-- (_TtC26DocumentManagerExecutables27DOCSymbolImageBarButtonItem)initWithCoder:(id)a3;
+- (_TtC26DocumentManagerExecutables27DOCSymbolImageBarButtonItem)initWithCoder:(id)coder;
 @end
 
 @implementation DOCSymbolImageBarButtonItem
 
-- (_TtC26DocumentManagerExecutables27DOCSymbolImageBarButtonItem)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutables27DOCSymbolImageBarButtonItem)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -26,7 +26,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = DOCSymbolImageBarButtonItem.isEqual(_:)(v8);

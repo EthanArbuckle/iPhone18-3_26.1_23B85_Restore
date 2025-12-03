@@ -8,63 +8,63 @@
 - (id)verboseDescriptionWithIndentation:()AEAdditions
 {
   v5 = [&stru_284EF2600 stringByPaddingToLength:a3 withString:@" " startingAtIndex:0];
-  v6 = [a1 userInfo];
-  v7 = [v6 mutableCopy];
+  userInfo = [self userInfo];
+  v7 = [userInfo mutableCopy];
 
-  v8 = [MEMORY[0x277CCAB68] stringWithFormat:@"%@%@: %@\n", v5, objc_opt_class(), a1];
-  v9 = [a1 localizedDescription];
+  v8 = [MEMORY[0x277CCAB68] stringWithFormat:@"%@%@: %@\n", v5, objc_opt_class(), self];
+  localizedDescription = [self localizedDescription];
 
-  if (v9)
+  if (localizedDescription)
   {
-    v10 = [a1 localizedDescription];
-    [v8 appendFormat:@"%@Desc   : %@\n", v5, v10];
+    localizedDescription2 = [self localizedDescription];
+    [v8 appendFormat:@"%@Desc   : %@\n", v5, localizedDescription2];
 
     [v7 removeObjectForKey:*MEMORY[0x277CCA450]];
   }
 
-  v11 = [a1 localizedRecoverySuggestion];
+  localizedRecoverySuggestion = [self localizedRecoverySuggestion];
 
-  if (v11)
+  if (localizedRecoverySuggestion)
   {
-    v12 = [a1 localizedRecoverySuggestion];
-    [v8 appendFormat:@"%@Sugg   : %@\n", v5, v12];
+    localizedRecoverySuggestion2 = [self localizedRecoverySuggestion];
+    [v8 appendFormat:@"%@Sugg   : %@\n", v5, localizedRecoverySuggestion2];
 
     [v7 removeObjectForKey:*MEMORY[0x277CCA498]];
   }
 
-  v13 = [a1 userInfo];
-  v14 = [v13 objectForKeyedSubscript:@"NSDescription"];
+  userInfo2 = [self userInfo];
+  v14 = [userInfo2 objectForKeyedSubscript:@"NSDescription"];
 
   if (v14)
   {
-    v15 = [a1 userInfo];
-    v16 = [v15 objectForKeyedSubscript:@"NSDescription"];
+    userInfo3 = [self userInfo];
+    v16 = [userInfo3 objectForKeyedSubscript:@"NSDescription"];
     [v8 appendFormat:@"%@US Desc: %@\n", v5, v16];
 
     [v7 removeObjectForKey:@"NSDescription"];
   }
 
-  v17 = [a1 userInfo];
-  v18 = [v17 objectForKeyedSubscript:@"NSRecoverySuggestion"];
+  userInfo4 = [self userInfo];
+  v18 = [userInfo4 objectForKeyedSubscript:@"NSRecoverySuggestion"];
 
   if (v18)
   {
-    v19 = [a1 userInfo];
-    v20 = [v19 objectForKeyedSubscript:@"NSRecoverySuggestion"];
+    userInfo5 = [self userInfo];
+    v20 = [userInfo5 objectForKeyedSubscript:@"NSRecoverySuggestion"];
     [v8 appendFormat:@"%@US Sugg: %@\n", v5, v20];
 
     [v7 removeObjectForKey:@"NSRecoverySuggestion"];
   }
 
-  v21 = [a1 domain];
-  [v8 appendFormat:@"%@Domain : %@\n", v5, v21];
+  domain = [self domain];
+  [v8 appendFormat:@"%@Domain : %@\n", v5, domain];
 
-  v22 = [objc_opt_class() formattedCode:{objc_msgSend(a1, "code")}];
+  v22 = [objc_opt_class() formattedCode:{objc_msgSend(self, "code")}];
   [v8 appendFormat:@"%@Code   : %@\n", v5, v22];
 
-  v23 = [a1 userInfo];
+  userInfo6 = [self userInfo];
   v24 = *MEMORY[0x277CCA7E8];
-  v25 = [v23 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+  v25 = [userInfo6 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
   if (v25)
   {
@@ -89,9 +89,9 @@
   v6 = v5;
   if (v4)
   {
-    v7 = [v5 stringByAppendingFormat:@" [sys = 0x%1$lX, sub = 0x%2$lX, code = 0x%3$lX (%3$ld)]", v4, (a3 >> 14) & 0xFFF, a3 & 0x3FFF];
+    0x3FFF = [v5 stringByAppendingFormat:@" [sys = 0x%1$lX, sub = 0x%2$lX, code = 0x%3$lX (%3$ld)]", v4, (a3 >> 14) & 0xFFF, a3 & 0x3FFF];
 
-    v6 = v7;
+    v6 = 0x3FFF;
   }
 
   return v6;

@@ -1,20 +1,20 @@
 @interface PMiOSScrubberCollectionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 @end
 
 @implementation PMiOSScrubberCollectionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PMiOSScrubberCollectionView" hasInstanceMethod:@"collectionViewDelegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PMiOSScrubberViewController"];
-  [v3 validateClass:@"PMiOSScrubberViewController" hasInstanceMethod:@"provider" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PMScrubberProvider"];
-  [v3 validateClass:@"PMScrubberProvider" hasInstanceMethod:@"currentDuration" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"PMScrubberProvider" hasInstanceMethod:@"currentProgress" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"PMScrubberProvider" hasInstanceMethod:@"isPlayingCurrent" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PMiOSScrubberCollectionView" hasInstanceMethod:@"collectionViewDelegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PMiOSScrubberViewController"];
+  [validationsCopy validateClass:@"PMiOSScrubberViewController" hasInstanceMethod:@"provider" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PMScrubberProvider"];
+  [validationsCopy validateClass:@"PMScrubberProvider" hasInstanceMethod:@"currentDuration" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"PMScrubberProvider" hasInstanceMethod:@"currentProgress" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"PMScrubberProvider" hasInstanceMethod:@"isPlayingCurrent" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityValue
@@ -45,7 +45,7 @@
       v9 = MEMORY[0x29EDBA0F8];
       v10 = accessibilityMemoriesLocalizedString(@"scrubber.value");
       v13 = [v9 stringWithFormat:v10, v6, v5];
-      v11 = __UIAXStringForVariables();
+      accessibilityValue = __UIAXStringForVariables();
 
       goto LABEL_9;
     }
@@ -53,10 +53,10 @@
 
   v14.receiver = self;
   v14.super_class = PMiOSScrubberCollectionViewAccessibility;
-  v11 = [(PMiOSScrubberCollectionViewAccessibility *)&v14 accessibilityValue];
+  accessibilityValue = [(PMiOSScrubberCollectionViewAccessibility *)&v14 accessibilityValue];
 LABEL_9:
 
-  return v11;
+  return accessibilityValue;
 }
 
 @end

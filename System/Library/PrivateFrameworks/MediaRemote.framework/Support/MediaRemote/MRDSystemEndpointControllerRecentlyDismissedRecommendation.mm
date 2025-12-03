@@ -1,19 +1,19 @@
 @interface MRDSystemEndpointControllerRecentlyDismissedRecommendation
-- (BOOL)isEqual:(id)a3;
-- (MRDSystemEndpointControllerRecentlyDismissedRecommendation)initWithDictionaryRepresentation:(id)a3;
-- (MRDSystemEndpointControllerRecentlyDismissedRecommendation)initWithOutputDevice:(id)a3 date:(id)a4 disableDuration:(double)a5 devicePlaybackSessionID:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (MRDSystemEndpointControllerRecentlyDismissedRecommendation)initWithDictionaryRepresentation:(id)representation;
+- (MRDSystemEndpointControllerRecentlyDismissedRecommendation)initWithOutputDevice:(id)device date:(id)date disableDuration:(double)duration devicePlaybackSessionID:(id)d;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
 @implementation MRDSystemEndpointControllerRecentlyDismissedRecommendation
 
-- (MRDSystemEndpointControllerRecentlyDismissedRecommendation)initWithOutputDevice:(id)a3 date:(id)a4 disableDuration:(double)a5 devicePlaybackSessionID:(id)a6
+- (MRDSystemEndpointControllerRecentlyDismissedRecommendation)initWithOutputDevice:(id)device date:(id)date disableDuration:(double)duration devicePlaybackSessionID:(id)d
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = 0;
-  if (v11 && v12)
+  deviceCopy = device;
+  dateCopy = date;
+  dCopy = d;
+  selfCopy = 0;
+  if (deviceCopy && dateCopy)
   {
     v18.receiver = self;
     v18.super_class = MRDSystemEndpointControllerRecentlyDismissedRecommendation;
@@ -21,29 +21,29 @@
     v16 = v15;
     if (v15)
     {
-      objc_storeStrong(&v15->_outputDeviceUID, a3);
-      objc_storeStrong(&v16->_date, a4);
-      v16->_disableDuration = a5;
-      objc_storeStrong(&v16->_devicePlaybackSessionID, a6);
+      objc_storeStrong(&v15->_outputDeviceUID, device);
+      objc_storeStrong(&v16->_date, date);
+      v16->_disableDuration = duration;
+      objc_storeStrong(&v16->_devicePlaybackSessionID, d);
     }
 
     self = v16;
-    v14 = self;
+    selfCopy = self;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (MRDSystemEndpointControllerRecentlyDismissedRecommendation)initWithDictionaryRepresentation:(id)a3
+- (MRDSystemEndpointControllerRecentlyDismissedRecommendation)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = [MRDSystemEndpointControllerRecentlyDismissedRecommendation alloc];
-  v6 = [v4 objectForKeyedSubscript:@"outputDeviceUID"];
-  v7 = [v4 objectForKeyedSubscript:@"date"];
-  v8 = [v4 objectForKeyedSubscript:@"disableDuration"];
+  v6 = [representationCopy objectForKeyedSubscript:@"outputDeviceUID"];
+  v7 = [representationCopy objectForKeyedSubscript:@"date"];
+  v8 = [representationCopy objectForKeyedSubscript:@"disableDuration"];
   [v8 doubleValue];
   v10 = v9;
-  v11 = [v4 objectForKeyedSubscript:@"devicePlaybackSessionID"];
+  v11 = [representationCopy objectForKeyedSubscript:@"devicePlaybackSessionID"];
 
   v12 = [(MRDSystemEndpointControllerRecentlyDismissedRecommendation *)v5 initWithOutputDevice:v6 date:v7 disableDuration:v11 devicePlaybackSessionID:v10];
   return v12;
@@ -52,33 +52,33 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(MRDSystemEndpointControllerRecentlyDismissedRecommendation *)self outputDeviceUID];
-  [v3 setObject:v4 forKeyedSubscript:@"outputDeviceUID"];
+  outputDeviceUID = [(MRDSystemEndpointControllerRecentlyDismissedRecommendation *)self outputDeviceUID];
+  [v3 setObject:outputDeviceUID forKeyedSubscript:@"outputDeviceUID"];
 
-  v5 = [(MRDSystemEndpointControllerRecentlyDismissedRecommendation *)self date];
-  [v3 setObject:v5 forKeyedSubscript:@"date"];
+  date = [(MRDSystemEndpointControllerRecentlyDismissedRecommendation *)self date];
+  [v3 setObject:date forKeyedSubscript:@"date"];
 
   [(MRDSystemEndpointControllerRecentlyDismissedRecommendation *)self disableDuration];
   v6 = [NSNumber numberWithDouble:?];
   [v3 setObject:v6 forKeyedSubscript:@"disableDuration"];
 
-  v7 = [(MRDSystemEndpointControllerRecentlyDismissedRecommendation *)self date];
+  date2 = [(MRDSystemEndpointControllerRecentlyDismissedRecommendation *)self date];
   [(MRDSystemEndpointControllerRecentlyDismissedRecommendation *)self disableDuration];
-  v8 = [v7 dateByAddingTimeInterval:?];
+  v8 = [date2 dateByAddingTimeInterval:?];
   [v8 timeIntervalSinceNow];
   v9 = [NSNumber numberWithDouble:?];
   [v3 setObject:v9 forKeyedSubscript:@"timeRemaining"];
 
-  v10 = [(MRDSystemEndpointControllerRecentlyDismissedRecommendation *)self devicePlaybackSessionID];
-  [v3 setObject:v10 forKeyedSubscript:@"devicePlaybackSessionID"];
+  devicePlaybackSessionID = [(MRDSystemEndpointControllerRecentlyDismissedRecommendation *)self devicePlaybackSessionID];
+  [v3 setObject:devicePlaybackSessionID forKeyedSubscript:@"devicePlaybackSessionID"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -88,17 +88,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MRDSystemEndpointControllerRecentlyDismissedRecommendation *)self outputDeviceUID];
-      v7 = [(MRDSystemEndpointControllerRecentlyDismissedRecommendation *)v5 outputDeviceUID];
-      if (v6 == v7)
+      v5 = equalCopy;
+      outputDeviceUID = [(MRDSystemEndpointControllerRecentlyDismissedRecommendation *)self outputDeviceUID];
+      outputDeviceUID2 = [(MRDSystemEndpointControllerRecentlyDismissedRecommendation *)v5 outputDeviceUID];
+      if (outputDeviceUID == outputDeviceUID2)
       {
         v8 = 1;
       }
 
       else
       {
-        v8 = [v6 isEqual:v7];
+        v8 = [outputDeviceUID isEqual:outputDeviceUID2];
       }
     }
 

@@ -12,7 +12,7 @@
   {
     v12.receiver = self;
     v12.super_class = AXListItemController;
-    v5 = [(AXListItemController *)&v12 specifiers];
+    specifiers = [(AXListItemController *)&v12 specifiers];
     if (!*&self->PSListItemsController_opaque[v3])
     {
       _AXAssert();
@@ -26,7 +26,7 @@
     if ([v8 length])
     {
       objc_opt_class();
-      v9 = [*&self->PSListItemsController_opaque[v3] firstObject];
+      firstObject = [*&self->PSListItemsController_opaque[v3] firstObject];
       v10 = __UIAccessibilityCastAsClass();
 
       [v10 setProperty:v8 forKey:v6];

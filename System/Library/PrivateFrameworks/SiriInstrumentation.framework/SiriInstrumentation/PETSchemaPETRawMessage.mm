@@ -1,32 +1,32 @@
 @interface PETSchemaPETRawMessage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PETSchemaPETRawMessage)initWithDictionary:(id)a3;
-- (PETSchemaPETRawMessage)initWithJSON:(id)a3;
+- (PETSchemaPETRawMessage)initWithDictionary:(id)dictionary;
+- (PETSchemaPETRawMessage)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PETSchemaPETRawMessage
 
-- (PETSchemaPETRawMessage)initWithDictionary:(id)a3
+- (PETSchemaPETRawMessage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = PETSchemaPETRawMessage;
   v5 = [(PETSchemaPETRawMessage *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"typeId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"typeId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PETSchemaPETRawMessage setType_id:](v5, "setType_id:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"rawBytes"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"rawBytes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -34,7 +34,7 @@
       [(PETSchemaPETRawMessage *)v5 setRaw_bytes:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"name"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"name"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (PETSchemaPETRawMessage)initWithJSON:(id)a3
+- (PETSchemaPETRawMessage)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PETSchemaPETRawMessage *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PETSchemaPETRawMessage *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PETSchemaPETRawMessage *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,39 +84,39 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_name)
   {
-    v4 = [(PETSchemaPETRawMessage *)self name];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"name"];
+    name = [(PETSchemaPETRawMessage *)self name];
+    v5 = [name copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"name"];
   }
 
   if (self->_raw_bytes)
   {
-    v6 = [(PETSchemaPETRawMessage *)self raw_bytes];
-    v7 = [v6 base64EncodedStringWithOptions:0];
+    raw_bytes = [(PETSchemaPETRawMessage *)self raw_bytes];
+    v7 = [raw_bytes base64EncodedStringWithOptions:0];
     if (v7)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"rawBytes"];
+      [dictionary setObject:v7 forKeyedSubscript:@"rawBytes"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"rawBytes"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"rawBytes"];
     }
   }
 
   if (*&self->_has)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PETSchemaPETRawMessage type_id](self, "type_id")}];
-    [v3 setObject:v9 forKeyedSubscript:@"typeId"];
+    [dictionary setObject:v9 forKeyedSubscript:@"typeId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -135,15 +135,15 @@
   return v4 ^ [(NSString *)self->_name hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -151,26 +151,26 @@
   if (*&self->_has)
   {
     type_id = self->_type_id;
-    if (type_id != [v4 type_id])
+    if (type_id != [equalCopy type_id])
     {
       goto LABEL_15;
     }
   }
 
-  v6 = [(PETSchemaPETRawMessage *)self raw_bytes];
-  v7 = [v4 raw_bytes];
-  if ((v6 != 0) == (v7 == 0))
+  raw_bytes = [(PETSchemaPETRawMessage *)self raw_bytes];
+  raw_bytes2 = [equalCopy raw_bytes];
+  if ((raw_bytes != 0) == (raw_bytes2 == 0))
   {
     goto LABEL_14;
   }
 
-  v8 = [(PETSchemaPETRawMessage *)self raw_bytes];
-  if (v8)
+  raw_bytes3 = [(PETSchemaPETRawMessage *)self raw_bytes];
+  if (raw_bytes3)
   {
-    v9 = v8;
-    v10 = [(PETSchemaPETRawMessage *)self raw_bytes];
-    v11 = [v4 raw_bytes];
-    v12 = [v10 isEqual:v11];
+    v9 = raw_bytes3;
+    raw_bytes4 = [(PETSchemaPETRawMessage *)self raw_bytes];
+    raw_bytes5 = [equalCopy raw_bytes];
+    v12 = [raw_bytes4 isEqual:raw_bytes5];
 
     if (!v12)
     {
@@ -182,12 +182,12 @@
   {
   }
 
-  v6 = [(PETSchemaPETRawMessage *)self name];
-  v7 = [v4 name];
-  if ((v6 != 0) != (v7 == 0))
+  raw_bytes = [(PETSchemaPETRawMessage *)self name];
+  raw_bytes2 = [equalCopy name];
+  if ((raw_bytes != 0) != (raw_bytes2 == 0))
   {
-    v13 = [(PETSchemaPETRawMessage *)self name];
-    if (!v13)
+    name = [(PETSchemaPETRawMessage *)self name];
+    if (!name)
     {
 
 LABEL_18:
@@ -195,10 +195,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v14 = v13;
-    v15 = [(PETSchemaPETRawMessage *)self name];
-    v16 = [v4 name];
-    v17 = [v15 isEqual:v16];
+    v14 = name;
+    name2 = [(PETSchemaPETRawMessage *)self name];
+    name3 = [equalCopy name];
+    v17 = [name2 isEqual:name3];
 
     if (v17)
     {
@@ -218,28 +218,28 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteUint32Field();
   }
 
-  v4 = [(PETSchemaPETRawMessage *)self raw_bytes];
+  raw_bytes = [(PETSchemaPETRawMessage *)self raw_bytes];
 
-  if (v4)
+  if (raw_bytes)
   {
     PBDataWriterWriteDataField();
   }
 
-  v5 = [(PETSchemaPETRawMessage *)self name];
+  name = [(PETSchemaPETRawMessage *)self name];
 
-  v6 = v7;
-  if (v5)
+  v6 = toCopy;
+  if (name)
   {
     PBDataWriterWriteStringField();
-    v6 = v7;
+    v6 = toCopy;
   }
 }
 

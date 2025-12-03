@@ -1,28 +1,28 @@
 @interface TPSyncingPolicy
-- (BOOL)isSyncingEnabledForView:(id)a3;
-- (TPSyncingPolicy)initWithCoder:(id)a3;
-- (TPSyncingPolicy)initWithModel:(id)a3 version:(id)a4 viewList:(id)a5 priorityViews:(id)a6 userControllableViews:(id)a7 syncUserControllableViews:(int)a8 viewsToPiggybackTLKs:(id)a9 keyViewMapping:(id)a10 isInheritedAccount:(BOOL)a11;
+- (BOOL)isSyncingEnabledForView:(id)view;
+- (TPSyncingPolicy)initWithCoder:(id)coder;
+- (TPSyncingPolicy)initWithModel:(id)model version:(id)version viewList:(id)list priorityViews:(id)views userControllableViews:(id)controllableViews syncUserControllableViews:(int)userControllableViews viewsToPiggybackTLKs:(id)ks keyViewMapping:(id)self0 isInheritedAccount:(BOOL)self1;
 - (id)description;
-- (id)mapDictionaryToView:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)mapDictionaryToView:(id)view;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TPSyncingPolicy
 
-- (TPSyncingPolicy)initWithCoder:(id)a3
+- (TPSyncingPolicy)initWithCoder:(id)coder
 {
   v32[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v30.receiver = self;
   v30.super_class = TPSyncingPolicy;
   v5 = [(TPSyncingPolicy *)&v30 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"version"];
     version = v5->_version;
     v5->_version = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"model"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"model"];
     model = v5->_model;
     v5->_model = v8;
 
@@ -31,7 +31,7 @@
     v32[1] = objc_opt_class();
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:2];
     v12 = [v10 setWithArray:v11];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"keyViewMapping"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"keyViewMapping"];
     keyViewMapping = v5->_keyViewMapping;
     v5->_keyViewMapping = v13;
 
@@ -41,19 +41,19 @@
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:2];
     v17 = [v15 setWithArray:v16];
 
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"viewList"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"viewList"];
     viewList = v5->_viewList;
     v5->_viewList = v18;
 
-    v20 = [v4 decodeObjectOfClasses:v17 forKey:@"priorityViews"];
+    v20 = [coderCopy decodeObjectOfClasses:v17 forKey:@"priorityViews"];
     priorityViews = v5->_priorityViews;
     v5->_priorityViews = v20;
 
-    v22 = [v4 decodeObjectOfClasses:v17 forKey:@"userControllableViews"];
+    v22 = [coderCopy decodeObjectOfClasses:v17 forKey:@"userControllableViews"];
     userControllableViews = v5->_userControllableViews;
     v5->_userControllableViews = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ucvShouldSync"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ucvShouldSync"];
     if ([v24 isEqualToString:@"UNKNOWN"])
     {
       v25 = 0;
@@ -80,62 +80,62 @@
     }
 
     v5->_syncUserControllableViews = v25;
-    v26 = [v4 decodeObjectOfClasses:v17 forKey:@"viewsToPiggybackTLKs"];
+    v26 = [coderCopy decodeObjectOfClasses:v17 forKey:@"viewsToPiggybackTLKs"];
     viewsToPiggybackTLKs = v5->_viewsToPiggybackTLKs;
     v5->_viewsToPiggybackTLKs = v26;
 
-    v5->_isInheritedAccount = [v4 decodeBoolForKey:@"isInheritedAccount"];
+    v5->_isInheritedAccount = [coderCopy decodeBoolForKey:@"isInheritedAccount"];
   }
 
   v28 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
-  v4 = [(TPSyncingPolicy *)self version];
-  [v13 encodeObject:v4 forKey:@"version"];
+  coderCopy = coder;
+  version = [(TPSyncingPolicy *)self version];
+  [coderCopy encodeObject:version forKey:@"version"];
 
-  v5 = [(TPSyncingPolicy *)self model];
-  [v13 encodeObject:v5 forKey:@"model"];
+  model = [(TPSyncingPolicy *)self model];
+  [coderCopy encodeObject:model forKey:@"model"];
 
-  v6 = [(TPSyncingPolicy *)self keyViewMapping];
-  [v13 encodeObject:v6 forKey:@"keyViewMapping"];
+  keyViewMapping = [(TPSyncingPolicy *)self keyViewMapping];
+  [coderCopy encodeObject:keyViewMapping forKey:@"keyViewMapping"];
 
-  v7 = [(TPSyncingPolicy *)self viewList];
-  [v13 encodeObject:v7 forKey:@"viewList"];
+  viewList = [(TPSyncingPolicy *)self viewList];
+  [coderCopy encodeObject:viewList forKey:@"viewList"];
 
-  v8 = [(TPSyncingPolicy *)self priorityViews];
-  [v13 encodeObject:v8 forKey:@"priorityViews"];
+  priorityViews = [(TPSyncingPolicy *)self priorityViews];
+  [coderCopy encodeObject:priorityViews forKey:@"priorityViews"];
 
-  v9 = [(TPSyncingPolicy *)self userControllableViews];
-  [v13 encodeObject:v9 forKey:@"userControllableViews"];
+  userControllableViews = [(TPSyncingPolicy *)self userControllableViews];
+  [coderCopy encodeObject:userControllableViews forKey:@"userControllableViews"];
 
-  v10 = [(TPSyncingPolicy *)self syncUserControllableViews];
-  if (v10 >= 4)
+  syncUserControllableViews = [(TPSyncingPolicy *)self syncUserControllableViews];
+  if (syncUserControllableViews >= 4)
   {
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", v10];
+    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", syncUserControllableViews];
   }
 
   else
   {
-    v11 = off_279DEDD68[v10];
+    v11 = off_279DEDD68[syncUserControllableViews];
   }
 
-  [v13 encodeObject:v11 forKey:@"ucvShouldSync"];
+  [coderCopy encodeObject:v11 forKey:@"ucvShouldSync"];
 
-  v12 = [(TPSyncingPolicy *)self viewsToPiggybackTLKs];
-  [v13 encodeObject:v12 forKey:@"viewsToPiggybackTLKs"];
+  viewsToPiggybackTLKs = [(TPSyncingPolicy *)self viewsToPiggybackTLKs];
+  [coderCopy encodeObject:viewsToPiggybackTLKs forKey:@"viewsToPiggybackTLKs"];
 
-  [v13 encodeBool:-[TPSyncingPolicy isInheritedAccount](self forKey:{"isInheritedAccount"), @"isInheritedAccount"}];
+  [coderCopy encodeBool:-[TPSyncingPolicy isInheritedAccount](self forKey:{"isInheritedAccount"), @"isInheritedAccount"}];
 }
 
-- (BOOL)isSyncingEnabledForView:(id)a3
+- (BOOL)isSyncingEnabledForView:(id)view
 {
-  v4 = a3;
-  v5 = [(TPSyncingPolicy *)self viewList];
-  v6 = [v5 containsObject:v4];
+  viewCopy = view;
+  viewList = [(TPSyncingPolicy *)self viewList];
+  v6 = [viewList containsObject:viewCopy];
 
   if (v6)
   {
@@ -146,8 +146,8 @@
 
     else
     {
-      v8 = [(TPSyncingPolicy *)self userControllableViews];
-      v7 = [v8 containsObject:v4] ^ 1;
+      userControllableViews = [(TPSyncingPolicy *)self userControllableViews];
+      v7 = [userControllableViews containsObject:viewCopy] ^ 1;
     }
   }
 
@@ -159,24 +159,24 @@
   return v7;
 }
 
-- (id)mapDictionaryToView:(id)a3
+- (id)mapDictionaryToView:(id)view
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   [(TPSyncingPolicy *)self keyViewMapping];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v5 = v23 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v28 count:16];
-  if (v6)
+  view2 = [v5 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  if (view2)
   {
     v8 = *v21;
     *&v7 = 138543618;
     v18 = v7;
     do
     {
-      for (i = 0; i != v6; i = i + 1)
+      for (i = 0; i != view2; i = i + 1)
       {
         if (*v21 != v8)
         {
@@ -184,19 +184,19 @@
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [v10 view];
-        if (v11)
+        view = [v10 view];
+        if (view)
         {
-          v12 = [v10 matchingRule];
+          matchingRule = [v10 matchingRule];
 
-          if (v12)
+          if (matchingRule)
           {
-            v13 = [v10 matchingRule];
+            matchingRule2 = [v10 matchingRule];
             v19 = 0;
-            v14 = [v13 matches:v4 error:&v19];
-            v11 = v19;
+            v14 = [matchingRule2 matches:viewCopy error:&v19];
+            view = v19;
 
-            if (v11)
+            if (view)
             {
               v15 = TPClassificationLog();
               if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -204,14 +204,14 @@
                 *buf = v18;
                 v25 = v10;
                 v26 = 2114;
-                v27 = v11;
+                v27 = view;
                 _os_log_impl(&dword_26F78B000, v15, OS_LOG_TYPE_DEFAULT, "Error matching with rule %{public}@: %{public}@", buf, 0x16u);
               }
             }
 
             if (v14)
             {
-              v6 = [v10 view];
+              view2 = [v10 view];
 
               goto LABEL_17;
             }
@@ -219,69 +219,69 @@
 
           else
           {
-            v11 = 0;
+            view = 0;
           }
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      view2 = [v5 countByEnumeratingWithState:&v20 objects:v28 count:16];
     }
 
-    while (v6);
+    while (view2);
   }
 
 LABEL_17:
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return view2;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(TPSyncingPolicy *)self version];
-  v5 = [(TPSyncingPolicy *)self model];
-  v6 = [(TPSyncingPolicy *)self syncUserControllableViews];
-  if (v6 >= 4)
+  version = [(TPSyncingPolicy *)self version];
+  model = [(TPSyncingPolicy *)self model];
+  syncUserControllableViews = [(TPSyncingPolicy *)self syncUserControllableViews];
+  if (syncUserControllableViews >= 4)
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", v6];
+    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", syncUserControllableViews];
   }
 
   else
   {
-    v7 = off_279DEDD68[v6];
+    v7 = off_279DEDD68[syncUserControllableViews];
   }
 
-  v8 = [v3 stringWithFormat:@"<TPSyncingPolicy: %@, %@, userViews: %@>", v4, v5, v7];
+  v8 = [v3 stringWithFormat:@"<TPSyncingPolicy: %@, %@, userViews: %@>", version, model, v7];
 
   return v8;
 }
 
-- (TPSyncingPolicy)initWithModel:(id)a3 version:(id)a4 viewList:(id)a5 priorityViews:(id)a6 userControllableViews:(id)a7 syncUserControllableViews:(int)a8 viewsToPiggybackTLKs:(id)a9 keyViewMapping:(id)a10 isInheritedAccount:(BOOL)a11
+- (TPSyncingPolicy)initWithModel:(id)model version:(id)version viewList:(id)list priorityViews:(id)views userControllableViews:(id)controllableViews syncUserControllableViews:(int)userControllableViews viewsToPiggybackTLKs:(id)ks keyViewMapping:(id)self0 isInheritedAccount:(BOOL)self1
 {
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v24 = a6;
-  v23 = a7;
-  v17 = a9;
-  v18 = a10;
+  modelCopy = model;
+  versionCopy = version;
+  listCopy = list;
+  viewsCopy = views;
+  controllableViewsCopy = controllableViews;
+  ksCopy = ks;
+  mappingCopy = mapping;
   v28.receiver = self;
   v28.super_class = TPSyncingPolicy;
   v19 = [(TPSyncingPolicy *)&v28 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_model, a3);
-    objc_storeStrong(&v20->_version, a4);
-    objc_storeStrong(&v20->_viewList, a5);
-    objc_storeStrong(&v20->_priorityViews, a6);
-    objc_storeStrong(&v20->_userControllableViews, a7);
-    v20->_syncUserControllableViews = a8;
-    objc_storeStrong(&v20->_viewsToPiggybackTLKs, a9);
-    objc_storeStrong(&v20->_keyViewMapping, a10);
-    v20->_isInheritedAccount = a11;
+    objc_storeStrong(&v19->_model, model);
+    objc_storeStrong(&v20->_version, version);
+    objc_storeStrong(&v20->_viewList, list);
+    objc_storeStrong(&v20->_priorityViews, views);
+    objc_storeStrong(&v20->_userControllableViews, controllableViews);
+    v20->_syncUserControllableViews = userControllableViews;
+    objc_storeStrong(&v20->_viewsToPiggybackTLKs, ks);
+    objc_storeStrong(&v20->_keyViewMapping, mapping);
+    v20->_isInheritedAccount = account;
   }
 
   return v20;

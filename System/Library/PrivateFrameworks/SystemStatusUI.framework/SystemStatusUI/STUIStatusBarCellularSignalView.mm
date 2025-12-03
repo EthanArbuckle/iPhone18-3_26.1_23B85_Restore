@@ -1,12 +1,12 @@
 @interface STUIStatusBarCellularSignalView
-+ (CGSize)_intrinsicContentSizeForNumberOfBars:(int64_t)a3 iconSize:(int64_t)a4;
-+ (double)_barCornerRadiusForIconSize:(int64_t)a3;
-+ (double)_barWidthForIconSize:(int64_t)a3;
-+ (double)_heightForNormalBarAtIndex:(int64_t)a3 iconSize:(int64_t)a4;
-+ (double)_interspaceForIconSize:(int64_t)a3;
++ (CGSize)_intrinsicContentSizeForNumberOfBars:(int64_t)bars iconSize:(int64_t)size;
++ (double)_barCornerRadiusForIconSize:(int64_t)size;
++ (double)_barWidthForIconSize:(int64_t)size;
++ (double)_heightForNormalBarAtIndex:(int64_t)index iconSize:(int64_t)size;
++ (double)_interspaceForIconSize:(int64_t)size;
 - (CGSize)intrinsicContentSize;
-- (double)_heightForBarAtIndex:(int64_t)a3;
-- (double)_heightForBarAtIndex:(int64_t)a3 mode:(int64_t)a4;
+- (double)_heightForBarAtIndex:(int64_t)index;
+- (double)_heightForBarAtIndex:(int64_t)index mode:(int64_t)mode;
 - (id)accessibilityHUDRepresentation;
 - (void)_colorsDidChange;
 - (void)_iconSizeDidChange;
@@ -15,11 +15,11 @@
 - (void)_updateBars;
 - (void)_updateCycleAnimationIfNeeded;
 - (void)_updateCycleAnimationNow;
-- (void)_updateFromMode:(int64_t)a3;
-- (void)applyStyleAttributes:(id)a3;
+- (void)_updateFromMode:(int64_t)mode;
+- (void)applyStyleAttributes:(id)attributes;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setCycleAnimation:(id)a3;
+- (void)setCycleAnimation:(id)animation;
 @end
 
 @implementation STUIStatusBarCellularSignalView
@@ -31,18 +31,18 @@
     v14.receiver = self;
     v14.super_class = STUIStatusBarCellularSignalView;
     [(STUIStatusBarSignalView *)&v14 _updateBars];
-    v3 = [(STUIStatusBarSignalView *)self rounded];
+    rounded = [(STUIStatusBarSignalView *)self rounded];
     v4 = objc_opt_class();
-    v5 = [(STUIStatusBarSignalView *)self iconSize];
-    if (v3)
+    iconSize = [(STUIStatusBarSignalView *)self iconSize];
+    if (rounded)
     {
-      [v4 _barWidthForIconSize:v5];
+      [v4 _barWidthForIconSize:iconSize];
       v7 = v6 * 0.5;
     }
 
     else
     {
-      [v4 _barCornerRadiusForIconSize:v5];
+      [v4 _barCornerRadiusForIconSize:iconSize];
       v7 = v8;
     }
 
@@ -53,19 +53,19 @@
       v11 = *MEMORY[0x277CDA630];
       do
       {
-        v12 = [MEMORY[0x277CD9ED0] layer];
-        [v12 setAnchorPoint:{0.5, 1.0}];
-        [v12 setCornerCurve:v10];
-        [v12 setCornerRadius:v7];
+        layer = [MEMORY[0x277CD9ED0] layer];
+        [layer setAnchorPoint:{0.5, 1.0}];
+        [layer setCornerCurve:v10];
+        [layer setCornerRadius:v7];
         if ([(STUIStatusBarCellularSignalView *)self needsLargerScale])
         {
-          [v12 setMinificationFilter:v11];
-          [v12 setRasterizationScale:5.0];
-          [v12 setShouldRasterize:1];
+          [layer setMinificationFilter:v11];
+          [layer setRasterizationScale:5.0];
+          [layer setShouldRasterize:1];
         }
 
-        v13 = [(STUIStatusBarCellularSignalView *)self layer];
-        [v13 addSublayer:v12];
+        layer2 = [(STUIStatusBarCellularSignalView *)self layer];
+        [layer2 addSublayer:layer];
 
         ++v9;
       }
@@ -93,24 +93,24 @@
   cycleAnimation = self->_cycleAnimation;
   if (!cycleAnimation || ![(STUIStatusBarCycleAnimation *)cycleAnimation state])
   {
-    v4 = [(STUIStatusBarSignalView *)self activeColor];
-    v5 = [(STUIStatusBarSignalView *)self inactiveColor];
-    v6 = [(STUIStatusBarCellularSignalView *)self layer];
-    v7 = [v6 sublayers];
+    activeColor = [(STUIStatusBarSignalView *)self activeColor];
+    inactiveColor = [(STUIStatusBarSignalView *)self inactiveColor];
+    layer = [(STUIStatusBarCellularSignalView *)self layer];
+    sublayers = [layer sublayers];
 
     if ([(STUIStatusBarSignalView *)self numberOfBars]>= 1)
     {
       v8 = 0;
       do
       {
-        if ([(STUIStatusBarSignalView *)self signalMode]!= 2 || (v9 = [(STUIStatusBarSignalView *)self numberOfActiveBars], v10 = v4, v8 >= v9))
+        if ([(STUIStatusBarSignalView *)self signalMode]!= 2 || (v9 = [(STUIStatusBarSignalView *)self numberOfActiveBars], v10 = activeColor, v8 >= v9))
         {
-          v10 = v5;
+          v10 = inactiveColor;
         }
 
-        v11 = [v10 CGColor];
-        v12 = [v7 objectAtIndexedSubscript:v8];
-        [v12 setBackgroundColor:v11];
+        cGColor = [v10 CGColor];
+        v12 = [sublayers objectAtIndexedSubscript:v8];
+        [v12 setBackgroundColor:cGColor];
 
         ++v8;
       }
@@ -148,10 +148,10 @@
 - (CGSize)intrinsicContentSize
 {
   v3 = objc_opt_class();
-  v4 = [(STUIStatusBarSignalView *)self numberOfBars];
-  v5 = [(STUIStatusBarSignalView *)self iconSize];
+  numberOfBars = [(STUIStatusBarSignalView *)self numberOfBars];
+  iconSize = [(STUIStatusBarSignalView *)self iconSize];
 
-  [v3 _intrinsicContentSizeForNumberOfBars:v4 iconSize:v5];
+  [v3 _intrinsicContentSizeForNumberOfBars:numberOfBars iconSize:iconSize];
   result.height = v7;
   result.width = v6;
   return result;
@@ -162,9 +162,9 @@
   v4.receiver = self;
   v4.super_class = STUIStatusBarCellularSignalView;
   [(STUIStatusBarCellularSignalView *)&v4 didMoveToWindow];
-  v3 = [(STUIStatusBarCellularSignalView *)self window];
+  window = [(STUIStatusBarCellularSignalView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(STUIStatusBarCellularSignalView *)self _updateActiveBars];
   }
@@ -172,8 +172,8 @@
 
 - (void)layoutSubviews
 {
-  v22 = [(STUIStatusBarCellularSignalView *)self layer];
-  v3 = [v22 sublayers];
+  layer = [(STUIStatusBarCellularSignalView *)self layer];
+  sublayers = [layer sublayers];
   [(STUIStatusBarCellularSignalView *)self bounds];
   v5 = v4;
   v7 = v6;
@@ -189,7 +189,7 @@
     v17 = v13 + v15;
     do
     {
-      v18 = [v3 objectAtIndexedSubscript:v16];
+      v18 = [sublayers objectAtIndexedSubscript:v16];
       [(STUIStatusBarCellularSignalView *)self _heightForBarAtIndex:v16];
       v20 = v19;
       if ([(STUIStatusBarCellularSignalView *)self _shouldReverseLayoutDirection])
@@ -226,10 +226,10 @@
   }
 }
 
-+ (double)_barWidthForIconSize:(int64_t)a3
++ (double)_barWidthForIconSize:(int64_t)size
 {
   result = 3.0;
-  switch(a3)
+  switch(size)
   {
     case 0:
       result = 0.0;
@@ -273,42 +273,42 @@
   return result;
 }
 
-- (double)_heightForBarAtIndex:(int64_t)a3
+- (double)_heightForBarAtIndex:(int64_t)index
 {
-  v5 = [(STUIStatusBarSignalView *)self signalMode];
+  signalMode = [(STUIStatusBarSignalView *)self signalMode];
 
-  [(STUIStatusBarCellularSignalView *)self _heightForBarAtIndex:a3 mode:v5];
+  [(STUIStatusBarCellularSignalView *)self _heightForBarAtIndex:index mode:signalMode];
   return result;
 }
 
-- (double)_heightForBarAtIndex:(int64_t)a3 mode:(int64_t)a4
+- (double)_heightForBarAtIndex:(int64_t)index mode:(int64_t)mode
 {
-  if (a4 >= 2)
+  if (mode >= 2)
   {
-    if (a4 == 2)
+    if (mode == 2)
     {
       v9 = objc_opt_class();
-      v10 = [(STUIStatusBarSignalView *)self iconSize];
+      iconSize = [(STUIStatusBarSignalView *)self iconSize];
 
-      [v9 _heightForNormalBarAtIndex:a3 iconSize:v10];
+      [v9 _heightForNormalBarAtIndex:index iconSize:iconSize];
     }
   }
 
   else
   {
     v5 = objc_opt_class();
-    v6 = [(STUIStatusBarSignalView *)self iconSize];
+    iconSize2 = [(STUIStatusBarSignalView *)self iconSize];
 
-    [v5 _barWidthForIconSize:v6];
+    [v5 _barWidthForIconSize:iconSize2];
   }
 
   return result;
 }
 
-+ (double)_heightForNormalBarAtIndex:(int64_t)a3 iconSize:(int64_t)a4
++ (double)_heightForNormalBarAtIndex:(int64_t)index iconSize:(int64_t)size
 {
   v13 = *MEMORY[0x277D85DE8];
-  switch(a4)
+  switch(size)
   {
     case 1:
       v10 = xmmword_26C581A30;
@@ -400,7 +400,7 @@ LABEL_15:
       v5 = 0x4035000000000000;
 LABEL_23:
       v12 = v5;
-      result = *(&v10 + a3) * 0.5;
+      result = *(&v10 + index) * 0.5;
       break;
     case 17:
       v10 = xmmword_26C581860;
@@ -408,7 +408,7 @@ LABEL_23:
       v6 = 0x4040000000000000;
 LABEL_21:
       v12 = v6;
-      result = *(&v10 + a3) / 3.0;
+      result = *(&v10 + index) / 3.0;
       break;
     default:
       result = 0.0;
@@ -418,23 +418,23 @@ LABEL_21:
   return result;
 }
 
-+ (double)_barCornerRadiusForIconSize:(int64_t)a3
++ (double)_barCornerRadiusForIconSize:(int64_t)size
 {
   result = 1.0;
-  if (a3 <= 0xF)
+  if (size <= 0xF)
   {
-    return dbl_26C581B00[a3];
+    return dbl_26C581B00[size];
   }
 
   return result;
 }
 
-+ (double)_interspaceForIconSize:(int64_t)a3
++ (double)_interspaceForIconSize:(int64_t)size
 {
   result = 1.5;
-  if (a3 <= 0x11)
+  if (size <= 0x11)
   {
-    return dbl_26C581B80[a3];
+    return dbl_26C581B80[size];
   }
 
   return result;
@@ -450,47 +450,47 @@ LABEL_21:
 
 - (void)_updateCycleAnimationNow
 {
-  v2 = self;
+  selfCopy = self;
   v55[4] = *MEMORY[0x277D85DE8];
-  v3 = [(STUIStatusBarSignalView *)self activeColor];
-  v46 = [v3 colorWithAlphaComponent:0.6];
+  activeColor = [(STUIStatusBarSignalView *)self activeColor];
+  v46 = [activeColor colorWithAlphaComponent:0.6];
 
-  v4 = [(STUIStatusBarSignalView *)v2 inactiveColor];
-  if ([(STUIStatusBarSignalView *)v2 iconSize])
+  inactiveColor = [(STUIStatusBarSignalView *)selfCopy inactiveColor];
+  if ([(STUIStatusBarSignalView *)selfCopy iconSize])
   {
-    v5 = !v46 || v4 == 0;
-    if (!v5 && [(STUIStatusBarSignalView *)v2 numberOfBars])
+    v5 = !v46 || inactiveColor == 0;
+    if (!v5 && [(STUIStatusBarSignalView *)selfCopy numberOfBars])
     {
-      v2->_needsCycleAnimationUpdate = 0;
-      v6 = [(STUIStatusBarSignalView *)v2 numberOfBars];
-      v7 = [(STUIStatusBarCellularSignalView *)v2 layer];
-      v8 = [v7 sublayers];
+      selfCopy->_needsCycleAnimationUpdate = 0;
+      numberOfBars = [(STUIStatusBarSignalView *)selfCopy numberOfBars];
+      layer = [(STUIStatusBarCellularSignalView *)selfCopy layer];
+      sublayers = [layer sublayers];
 
-      v9 = [MEMORY[0x277CBEB18] array];
-      if ([(STUIStatusBarSignalView *)v2 numberOfBars]>= 1)
+      array = [MEMORY[0x277CBEB18] array];
+      if ([(STUIStatusBarSignalView *)selfCopy numberOfBars]>= 1)
       {
         v10 = 0;
-        v11 = (v6 + 3);
+        v11 = (numberOfBars + 3);
         v12 = v11 * 0.175;
         v13 = v11 + 0.5;
         v14 = 1.0 / v11;
         v15 = 3.0 / v11;
         v43 = *MEMORY[0x277CDA058];
         v44 = *MEMORY[0x277CDA080];
-        v45 = v9;
-        v42 = v8;
+        v45 = array;
+        v42 = sublayers;
         do
         {
           v49 = v10;
-          v48 = [v8 objectAtIndexedSubscript:v10];
-          v47 = [MEMORY[0x277CD9E00] animation];
-          [v47 setDuration:v12];
+          v48 = [sublayers objectAtIndexedSubscript:v10];
+          animation = [MEMORY[0x277CD9E00] animation];
+          [animation setDuration:v12];
           LODWORD(v16) = 2139095040;
-          [v47 setRepeatCount:v16];
-          [v47 setAutoreverses:0];
-          [v47 setBeginTimeMode:v44];
-          [v47 duration];
-          [v47 setBeginTime:v49 / v13 * v17];
+          [animation setRepeatCount:v16];
+          [animation setAutoreverses:0];
+          [animation setBeginTimeMode:v44];
+          [animation duration];
+          [animation setBeginTime:v49 / v13 * v17];
           v55[0] = &unk_287D1B2F0;
           v18 = [MEMORY[0x277CCABB0] numberWithDouble:v14];
           v55[1] = v18;
@@ -503,17 +503,17 @@ LABEL_21:
           [v21 setKeyTimes:v20];
           [v21 setCalculationMode:v43];
           [v21 setTensionValues:&unk_287D1AF18];
-          v54[0] = [v4 CGColor];
+          v54[0] = [inactiveColor CGColor];
           v54[1] = [v46 CGColor];
-          v54[2] = [v4 CGColor];
-          v54[3] = [v4 CGColor];
+          v54[2] = [inactiveColor CGColor];
+          v54[3] = [inactiveColor CGColor];
           v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v54 count:4];
           [v21 setValues:v22];
 
           v23 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"bounds.size.height"];
-          [(STUIStatusBarCellularSignalView *)v2 _heightForBarAtIndex:0 mode:0];
+          [(STUIStatusBarCellularSignalView *)selfCopy _heightForBarAtIndex:0 mode:0];
           v25 = v24;
-          [(STUIStatusBarCellularSignalView *)v2 _heightForBarAtIndex:1 mode:2];
+          [(STUIStatusBarCellularSignalView *)selfCopy _heightForBarAtIndex:1 mode:2];
           v27 = v26;
           [v23 setKeyTimes:v20];
           [v23 setCalculationMode:v43];
@@ -523,61 +523,61 @@ LABEL_21:
           v29 = [MEMORY[0x277CCABB0] numberWithDouble:v27];
           v53[1] = v29;
           [MEMORY[0x277CCABB0] numberWithDouble:v25];
-          v31 = v30 = v4;
+          v31 = v30 = inactiveColor;
           v53[2] = v31;
           v32 = [MEMORY[0x277CCABB0] numberWithDouble:v25];
           v53[3] = v32;
           [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:4];
-          v34 = v33 = v2;
+          v34 = v33 = selfCopy;
           [v23 setValues:v34];
 
-          v2 = v33;
-          v9 = v45;
+          selfCopy = v33;
+          array = v45;
 
-          v4 = v30;
-          v8 = v42;
+          inactiveColor = v30;
+          sublayers = v42;
 
           v52[0] = v21;
           v52[1] = v23;
           v35 = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:2];
-          [v47 setAnimations:v35];
+          [animation setAnimations:v35];
 
-          v36 = [STUIStatusBarCycleLayerAnimation cycleAnimationWithLayer:v48 animation:v47 key:@"searching"];
+          v36 = [STUIStatusBarCycleLayerAnimation cycleAnimationWithLayer:v48 animation:animation key:@"searching"];
           [v45 addObject:v36];
 
-          v37 = [(STUIStatusBarSignalView *)v2 numberOfBars];
+          numberOfBars2 = [(STUIStatusBarSignalView *)selfCopy numberOfBars];
           v10 = v49 + 1;
         }
 
-        while ((v49 + 1) < v37);
+        while ((v49 + 1) < numberOfBars2);
       }
 
-      v38 = [[STUIStatusBarCycleAnimation alloc] initWithLayerAnimations:v9];
-      cycleAnimation = v2->_cycleAnimation;
+      v38 = [[STUIStatusBarCycleAnimation alloc] initWithLayerAnimations:array];
+      cycleAnimation = selfCopy->_cycleAnimation;
       if (!cycleAnimation)
       {
         goto LABEL_13;
       }
 
-      v40 = [(STUIStatusBarCycleAnimation *)cycleAnimation state];
-      if (v40 == 1)
+      state = [(STUIStatusBarCycleAnimation *)cycleAnimation state];
+      if (state == 1)
       {
-        v41 = v2->_cycleAnimation;
+        v41 = selfCopy->_cycleAnimation;
         v50[0] = MEMORY[0x277D85DD0];
         v50[1] = 3221225472;
         v50[2] = __59__STUIStatusBarCellularSignalView__updateCycleAnimationNow__block_invoke;
         v50[3] = &unk_279D38940;
-        v50[4] = v2;
+        v50[4] = selfCopy;
         v51 = v38;
         [(STUIStatusBarCycleAnimation *)v41 stopWithCompletionHandler:v50];
 
         goto LABEL_15;
       }
 
-      if (!v40)
+      if (!state)
       {
 LABEL_13:
-        [(STUIStatusBarCellularSignalView *)v2 setCycleAnimation:v38];
+        [(STUIStatusBarCellularSignalView *)selfCopy setCycleAnimation:v38];
       }
 
 LABEL_15:
@@ -599,16 +599,16 @@ uint64_t __59__STUIStatusBarCellularSignalView__updateCycleAnimationNow__block_i
   return result;
 }
 
-- (void)setCycleAnimation:(id)a3
+- (void)setCycleAnimation:(id)animation
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_cycleAnimation != v5)
+  animationCopy = animation;
+  if (self->_cycleAnimation != animationCopy)
   {
-    objc_storeStrong(&self->_cycleAnimation, a3);
-    if (v5)
+    objc_storeStrong(&self->_cycleAnimation, animation);
+    if (animationCopy)
     {
-      v7[0] = v5;
+      v7[0] = animationCopy;
       v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
       [(STUIStatusBarPersistentAnimationView *)self setPersistentAnimations:v6];
     }
@@ -620,7 +620,7 @@ uint64_t __59__STUIStatusBarCellularSignalView__updateCycleAnimationNow__block_i
   }
 }
 
-- (void)_updateFromMode:(int64_t)a3
+- (void)_updateFromMode:(int64_t)mode
 {
   cycleAnimation = self->_cycleAnimation;
   if (!cycleAnimation || ![(STUIStatusBarCycleAnimation *)cycleAnimation state])
@@ -628,7 +628,7 @@ uint64_t __59__STUIStatusBarCellularSignalView__updateCycleAnimationNow__block_i
     [(STUIStatusBarCellularSignalView *)self setNeedsLayout];
   }
 
-  if (a3 == 1 && [(STUIStatusBarSignalView *)self signalMode]!= 1)
+  if (mode == 1 && [(STUIStatusBarSignalView *)self signalMode]!= 1)
   {
     v6 = self->_cycleAnimation;
     v7[0] = MEMORY[0x277D85DD0];
@@ -653,13 +653,13 @@ uint64_t __51__STUIStatusBarCellularSignalView__updateFromMode___block_invoke(ui
   return result;
 }
 
-+ (CGSize)_intrinsicContentSizeForNumberOfBars:(int64_t)a3 iconSize:(int64_t)a4
++ (CGSize)_intrinsicContentSizeForNumberOfBars:(int64_t)bars iconSize:(int64_t)size
 {
-  [a1 _barWidthForIconSize:a4];
+  [self _barWidthForIconSize:size];
   v8 = v7;
-  [a1 _interspaceForIconSize:a4];
-  v10 = v9 * (a3 - 1) + a3 * v8;
-  [a1 _heightForNormalBarAtIndex:? iconSize:?];
+  [self _interspaceForIconSize:size];
+  v10 = v9 * (bars - 1) + bars * v8;
+  [self _heightForNormalBarAtIndex:? iconSize:?];
   v12 = v11;
   v13 = v10;
   result.height = v12;
@@ -672,15 +672,15 @@ uint64_t __51__STUIStatusBarCellularSignalView__updateFromMode___block_invoke(ui
   v3 = MEMORY[0x277CCACA8];
   if ([(STUIStatusBarSignalView *)self signalMode]== 2)
   {
-    v4 = [(STUIStatusBarSignalView *)self numberOfActiveBars];
+    numberOfActiveBars = [(STUIStatusBarSignalView *)self numberOfActiveBars];
   }
 
   else
   {
-    v4 = 0;
+    numberOfActiveBars = 0;
   }
 
-  v5 = [v3 stringWithFormat:@"AXHUD_Cellular_%d", v4];
+  v5 = [v3 stringWithFormat:@"AXHUD_Cellular_%d", numberOfActiveBars];
   v6 = [MEMORY[0x277D755B8] kitImageNamed:v5];
   v7 = objc_alloc(MEMORY[0x277D750B0]);
   v8 = [v7 initWithTitle:0 image:v6 imageInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
@@ -689,13 +689,13 @@ uint64_t __51__STUIStatusBarCellularSignalView__updateFromMode___block_invoke(ui
   return v8;
 }
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
-  v4 = a3;
-  -[STUIStatusBarCellularSignalView setNeedsLargerScale:](self, "setNeedsLargerScale:", [v4 isScaledFixedWidthBar]);
+  attributesCopy = attributes;
+  -[STUIStatusBarCellularSignalView setNeedsLargerScale:](self, "setNeedsLargerScale:", [attributesCopy isScaledFixedWidthBar]);
   v5.receiver = self;
   v5.super_class = STUIStatusBarCellularSignalView;
-  [(STUIStatusBarSignalView *)&v5 applyStyleAttributes:v4];
+  [(STUIStatusBarSignalView *)&v5 applyStyleAttributes:attributesCopy];
 }
 
 @end

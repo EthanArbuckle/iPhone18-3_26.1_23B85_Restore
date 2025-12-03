@@ -1,31 +1,31 @@
 @interface ATXPredictionContextBuilder
-+ (id)loadContextOverrideFromJSONFile:(id)a3;
++ (id)loadContextOverrideFromJSONFile:(id)file;
 + (id)sharedInstance;
-- (BOOL)tryInitBiomeStreamsAndReturnSuccess:(id)a3;
-- (BOOL)tryInitContextSourcesAndReturnSuccess:(id)a3;
+- (BOOL)tryInitBiomeStreamsAndReturnSuccess:(id)success;
+- (BOOL)tryInitContextSourcesAndReturnSuccess:(id)success;
 - (NSDate)now;
-- (id)_getContextForOverrideKey:(id)a3 fromContextOverride:(id)a4 withDefaultContext:(id)a5 allowNilValues:(BOOL)a6;
-- (id)ambientLightContextForContextOverride:(id)a3 guardedData:(id)a4;
-- (id)ambientLightContextForCurrentContext:(id)a3;
-- (id)deviceStateContextForContextOverride:(id)a3 guardedData:(id)a4;
-- (id)deviceStateContextForCurrentContext:(id)a3;
-- (id)locationMotionContextForContextOverride:(id)a3 guardedData:(id)a4;
-- (id)locationMotionContextForCurrentContext:(id)a3;
-- (id)predictionContextForContextOverride:(id)a3;
+- (id)_getContextForOverrideKey:(id)key fromContextOverride:(id)override withDefaultContext:(id)context allowNilValues:(BOOL)values;
+- (id)ambientLightContextForContextOverride:(id)override guardedData:(id)data;
+- (id)ambientLightContextForCurrentContext:(id)context;
+- (id)deviceStateContextForContextOverride:(id)override guardedData:(id)data;
+- (id)deviceStateContextForCurrentContext:(id)context;
+- (id)locationMotionContextForContextOverride:(id)override guardedData:(id)data;
+- (id)locationMotionContextForCurrentContext:(id)context;
+- (id)predictionContextForContextOverride:(id)override;
 - (id)predictionContextForCurrentContext;
-- (id)predictionContextForCurrentContextAndCandidatePublisher:(id)a3 contextOverride:(id)a4;
-- (id)timeContextForContextOverride:(id)a3 guardedData:(id)a4;
-- (id)timeContextForCurrentContext:(id)a3;
+- (id)predictionContextForCurrentContextAndCandidatePublisher:(id)publisher contextOverride:(id)override;
+- (id)timeContextForContextOverride:(id)override guardedData:(id)data;
+- (id)timeContextForCurrentContext:(id)context;
 - (id)updateContextStreamAndReturnPredictionContextForCurrentContext;
-- (id)userContextForContextOverride:(id)a3 guardedData:(id)a4;
-- (id)userContextForCurrentContext:(id)a3;
+- (id)userContextForContextOverride:(id)override guardedData:(id)data;
+- (id)userContextForCurrentContext:(id)context;
 @end
 
 @implementation ATXPredictionContextBuilder
 
 - (id)updateContextStreamAndReturnPredictionContextForCurrentContext
 {
-  v3 = [(ATXPredictionContextBuilder *)self predictionContextForCurrentContext];
+  predictionContextForCurrentContext = [(ATXPredictionContextBuilder *)self predictionContextForCurrentContext];
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3032000000;
@@ -45,7 +45,7 @@
   v10[2] = __93__ATXPredictionContextBuilder_updateContextStreamAndReturnPredictionContextForCurrentContext__block_invoke_2;
   v10[3] = &unk_278599290;
   v10[4] = self;
-  v6 = v3;
+  v6 = predictionContextForCurrentContext;
   v11 = v6;
   [(_PASLock *)v5 runWithLockAcquired:v10];
   v7 = v11;
@@ -84,7 +84,7 @@
   block[1] = 3221225472;
   block[2] = __45__ATXPredictionContextBuilder_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken7_6 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken7_6, block);
@@ -107,51 +107,51 @@ void __45__ATXPredictionContextBuilder_sharedInstance__block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)tryInitContextSourcesAndReturnSuccess:(id)a3
+- (BOOL)tryInitContextSourcesAndReturnSuccess:(id)success
 {
-  v3 = a3;
-  if (([v3 contextSourcesInitialized] & 1) == 0 && (objc_msgSend(MEMORY[0x277D42598], "isClassCLocked") & 1) == 0)
+  successCopy = success;
+  if (([successCopy contextSourcesInitialized] & 1) == 0 && (objc_msgSend(MEMORY[0x277D42598], "isClassCLocked") & 1) == 0)
   {
     v4 = +[_ATXAppInfoManager sharedInstance];
-    v5 = [MEMORY[0x277D41BF8] sharedInstance];
-    v6 = [MEMORY[0x277D41C38] sharedInstance];
+    mEMORY[0x277D41BF8] = [MEMORY[0x277D41BF8] sharedInstance];
+    mEMORY[0x277D41C38] = [MEMORY[0x277D41C38] sharedInstance];
     v7 = +[ATXAmbientLightMonitor sharedInstance];
-    [v3 updateAppInfoManager:v4 locationManager:v5 motionManagerWrapper:v6 ambientLightMonitor:v7 deviceStateMonitorClass:objc_opt_class() contextSourcesInitialized:1];
+    [successCopy updateAppInfoManager:v4 locationManager:mEMORY[0x277D41BF8] motionManagerWrapper:mEMORY[0x277D41C38] ambientLightMonitor:v7 deviceStateMonitorClass:objc_opt_class() contextSourcesInitialized:1];
   }
 
-  v8 = [v3 contextSourcesInitialized];
+  contextSourcesInitialized = [successCopy contextSourcesInitialized];
 
-  return v8;
+  return contextSourcesInitialized;
 }
 
-- (BOOL)tryInitBiomeStreamsAndReturnSuccess:(id)a3
+- (BOOL)tryInitBiomeStreamsAndReturnSuccess:(id)success
 {
-  v3 = a3;
-  if (([v3 biomeStreamsInitialized] & 1) == 0)
+  successCopy = success;
+  if (([successCopy biomeStreamsInitialized] & 1) == 0)
   {
     v4 = objc_opt_new();
-    [v3 updatePredictionContextStream:v4 biomeStreamsInitialized:1];
+    [successCopy updatePredictionContextStream:v4 biomeStreamsInitialized:1];
   }
 
-  v5 = [v3 biomeStreamsInitialized];
+  biomeStreamsInitialized = [successCopy biomeStreamsInitialized];
 
-  return v5;
+  return biomeStreamsInitialized;
 }
 
-- (id)deviceStateContextForCurrentContext:(id)a3
+- (id)deviceStateContextForCurrentContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = [ATXPredictionDeviceStateContext alloc];
-  v5 = [objc_msgSend(v3 "deviceStateMonitorClass")];
-  v6 = [objc_msgSend(v3 "deviceStateMonitorClass")];
-  v7 = [v3 deviceStateMonitorClass];
+  v5 = [objc_msgSend(contextCopy "deviceStateMonitorClass")];
+  v6 = [objc_msgSend(contextCopy "deviceStateMonitorClass")];
+  deviceStateMonitorClass = [contextCopy deviceStateMonitorClass];
 
-  v8 = -[ATXPredictionDeviceStateContext initWithWifiSSID:onWifi:inAirplaneMode:](v4, "initWithWifiSSID:onWifi:inAirplaneMode:", v5, v6, [v7 airplaneMode]);
+  v8 = -[ATXPredictionDeviceStateContext initWithWifiSSID:onWifi:inAirplaneMode:](v4, "initWithWifiSSID:onWifi:inAirplaneMode:", v5, v6, [deviceStateMonitorClass airplaneMode]);
 
   return v8;
 }
 
-- (id)timeContextForCurrentContext:(id)a3
+- (id)timeContextForCurrentContext:(id)context
 {
   v4 = [ATXPredictionTimeContext alloc];
   v5 = [(ATXPredictionContextBuilder *)self now];
@@ -160,68 +160,68 @@ void __45__ATXPredictionContextBuilder_sharedInstance__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (id)locationMotionContextForCurrentContext:(id)a3
+- (id)locationMotionContextForCurrentContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 locationManager];
-  v5 = [v4 previousLOIAndCurrentLOI];
+  contextCopy = context;
+  locationManager = [contextCopy locationManager];
+  previousLOIAndCurrentLOI = [locationManager previousLOIAndCurrentLOI];
 
-  v6 = [v3 motionManagerWrapper];
-  v7 = [v6 getCurrentActivity];
+  motionManagerWrapper = [contextCopy motionManagerWrapper];
+  getCurrentActivity = [motionManagerWrapper getCurrentActivity];
 
   v8 = [ATXPredictionLocationMotionContext alloc];
-  v29 = v5;
-  v27 = [v5 second];
-  v26 = [v5 first];
-  v25 = [v7 motiontype];
-  v28 = [v3 locationManager];
-  v9 = [v28 getCurrentLocation];
-  v10 = [v3 locationManager];
-  v11 = [v10 locationEnabled];
-  v12 = [v3 locationManager];
-  [v12 distanceFromHomeOfCurrentLocationInMeters];
+  v29 = previousLOIAndCurrentLOI;
+  second = [previousLOIAndCurrentLOI second];
+  first = [previousLOIAndCurrentLOI first];
+  motiontype = [getCurrentActivity motiontype];
+  locationManager2 = [contextCopy locationManager];
+  getCurrentLocation = [locationManager2 getCurrentLocation];
+  locationManager3 = [contextCopy locationManager];
+  locationEnabled = [locationManager3 locationEnabled];
+  locationManager4 = [contextCopy locationManager];
+  [locationManager4 distanceFromHomeOfCurrentLocationInMeters];
   v14 = v13;
-  v15 = [v3 locationManager];
-  [v15 distanceFromWorkOfCurrentLocationInMeters];
+  locationManager5 = [contextCopy locationManager];
+  [locationManager5 distanceFromWorkOfCurrentLocationInMeters];
   v17 = v16;
-  v18 = [v3 locationManager];
-  [v18 distanceFromSchoolOfCurrentLocationInMeters];
+  locationManager6 = [contextCopy locationManager];
+  [locationManager6 distanceFromSchoolOfCurrentLocationInMeters];
   v20 = v19;
-  v21 = [v3 locationManager];
+  locationManager7 = [contextCopy locationManager];
 
-  [v21 distanceFromGymOfCurrentLocationInMeters];
-  v23 = -[ATXPredictionLocationMotionContext initWithCurrentLOI:previousLOI:motionType:currentLocation:locationEnabled:distanceFromHome:distanceFromWork:distanceFromSchool:distanceFromGym:canPredictClipsGivenRecentMotion:](v8, "initWithCurrentLOI:previousLOI:motionType:currentLocation:locationEnabled:distanceFromHome:distanceFromWork:distanceFromSchool:distanceFromGym:canPredictClipsGivenRecentMotion:", v27, v26, v25, v9, v11, [v7 canPredictClipsGivenRecentMotion], v14, v17, v20, v22);
+  [locationManager7 distanceFromGymOfCurrentLocationInMeters];
+  v23 = -[ATXPredictionLocationMotionContext initWithCurrentLOI:previousLOI:motionType:currentLocation:locationEnabled:distanceFromHome:distanceFromWork:distanceFromSchool:distanceFromGym:canPredictClipsGivenRecentMotion:](v8, "initWithCurrentLOI:previousLOI:motionType:currentLocation:locationEnabled:distanceFromHome:distanceFromWork:distanceFromSchool:distanceFromGym:canPredictClipsGivenRecentMotion:", second, first, motiontype, getCurrentLocation, locationEnabled, [getCurrentActivity canPredictClipsGivenRecentMotion], v14, v17, v20, v22);
 
   return v23;
 }
 
-- (id)ambientLightContextForCurrentContext:(id)a3
+- (id)ambientLightContextForCurrentContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = [ATXPredictionAmbientLightContext alloc];
-  v5 = [v3 ambientLightMonitor];
+  ambientLightMonitor = [contextCopy ambientLightMonitor];
 
-  v6 = -[ATXPredictionAmbientLightContext initWithAmbientLightType:](v4, "initWithAmbientLightType:", [v5 getCurrentAmbientLightType]);
+  v6 = -[ATXPredictionAmbientLightContext initWithAmbientLightType:](v4, "initWithAmbientLightType:", [ambientLightMonitor getCurrentAmbientLightType]);
 
   return v6;
 }
 
-- (id)userContextForCurrentContext:(id)a3
+- (id)userContextForCurrentContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = [ATXPredictionUserContext alloc];
-  v16 = [v3 appInfoManager];
-  v5 = [v16 lastUnlockDate];
-  v6 = [v3 appInfoManager];
-  v7 = [v6 lastAppLaunch];
-  v8 = [v3 appInfoManager];
-  v9 = [v8 lastAppLaunchDate];
-  v10 = [v3 appInfoManager];
-  v11 = [v10 secondMostRecentAppLaunch];
-  v12 = [v3 appInfoManager];
+  appInfoManager = [contextCopy appInfoManager];
+  lastUnlockDate = [appInfoManager lastUnlockDate];
+  appInfoManager2 = [contextCopy appInfoManager];
+  lastAppLaunch = [appInfoManager2 lastAppLaunch];
+  appInfoManager3 = [contextCopy appInfoManager];
+  lastAppLaunchDate = [appInfoManager3 lastAppLaunchDate];
+  appInfoManager4 = [contextCopy appInfoManager];
+  secondMostRecentAppLaunch = [appInfoManager4 secondMostRecentAppLaunch];
+  appInfoManager5 = [contextCopy appInfoManager];
 
-  v13 = [v12 lastAppActionLaunch];
-  v14 = [(ATXPredictionUserContext *)v4 initWithLastUnlockDate:v5 lastAppLaunch:v7 lastAppLaunchDate:v9 secondMostRecentAppLaunch:v11 lastAppActionLaunch:v13];
+  lastAppActionLaunch = [appInfoManager5 lastAppActionLaunch];
+  v14 = [(ATXPredictionUserContext *)v4 initWithLastUnlockDate:lastUnlockDate lastAppLaunch:lastAppLaunch lastAppLaunchDate:lastAppLaunchDate secondMostRecentAppLaunch:secondMostRecentAppLaunch lastAppActionLaunch:lastAppActionLaunch];
 
   return v14;
 }
@@ -303,13 +303,13 @@ void __93__ATXPredictionContextBuilder_updateContextStreamAndReturnPredictionCon
   return v3;
 }
 
-- (id)_getContextForOverrideKey:(id)a3 fromContextOverride:(id)a4 withDefaultContext:(id)a5 allowNilValues:(BOOL)a6
+- (id)_getContextForOverrideKey:(id)key fromContextOverride:(id)override withDefaultContext:(id)context allowNilValues:(BOOL)values
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11 && !v6)
+  valuesCopy = values;
+  keyCopy = key;
+  overrideCopy = override;
+  contextCopy = context;
+  if (!contextCopy && !valuesCopy)
   {
     v12 = __atxlog_handle_default();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -318,18 +318,18 @@ void __93__ATXPredictionContextBuilder_updateContextStreamAndReturnPredictionCon
     }
   }
 
-  v13 = [v10 objectForKey:v9];
-  v14 = [MEMORY[0x277CBEB68] null];
-  v15 = [v13 isEqual:v14];
+  v13 = [overrideCopy objectForKey:keyCopy];
+  null = [MEMORY[0x277CBEB68] null];
+  v15 = [v13 isEqual:null];
 
-  if (v6)
+  if (valuesCopy)
   {
     v16 = 0;
   }
 
   else
   {
-    v16 = v11;
+    v16 = contextCopy;
   }
 
   if (v13)
@@ -339,7 +339,7 @@ void __93__ATXPredictionContextBuilder_updateContextStreamAndReturnPredictionCon
 
   else
   {
-    v17 = v11;
+    v17 = contextCopy;
   }
 
   if (!v15)
@@ -352,47 +352,47 @@ void __93__ATXPredictionContextBuilder_updateContextStreamAndReturnPredictionCon
   return v18;
 }
 
-- (id)deviceStateContextForContextOverride:(id)a3 guardedData:(id)a4
+- (id)deviceStateContextForContextOverride:(id)override guardedData:(id)data
 {
-  v6 = a3;
-  v7 = [(ATXPredictionContextBuilder *)self deviceStateContextForCurrentContext:a4];
-  v8 = [v7 wifiSSID];
-  v9 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideWifiSSID" fromContextOverride:v6 withDefaultContext:v8 allowNilValues:0];
+  overrideCopy = override;
+  v7 = [(ATXPredictionContextBuilder *)self deviceStateContextForCurrentContext:data];
+  wifiSSID = [v7 wifiSSID];
+  v9 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideWifiSSID" fromContextOverride:overrideCopy withDefaultContext:wifiSSID allowNilValues:0];
 
   v10 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "onWifi")}];
-  v11 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideOnWifi" fromContextOverride:v6 withDefaultContext:v10 allowNilValues:0];
+  v11 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideOnWifi" fromContextOverride:overrideCopy withDefaultContext:v10 allowNilValues:0];
 
   v12 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "inAirplaneMode")}];
-  v13 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideInAirplaneMode" fromContextOverride:v6 withDefaultContext:v12 allowNilValues:0];
+  v13 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideInAirplaneMode" fromContextOverride:overrideCopy withDefaultContext:v12 allowNilValues:0];
 
   v14 = -[ATXPredictionDeviceStateContext initWithWifiSSID:onWifi:inAirplaneMode:]([ATXPredictionDeviceStateContext alloc], "initWithWifiSSID:onWifi:inAirplaneMode:", v9, [v11 BOOLValue], objc_msgSend(v13, "BOOLValue"));
 
   return v14;
 }
 
-- (id)timeContextForContextOverride:(id)a3 guardedData:(id)a4
+- (id)timeContextForContextOverride:(id)override guardedData:(id)data
 {
-  v6 = a3;
-  v7 = [(ATXPredictionContextBuilder *)self timeContextForCurrentContext:a4];
-  v8 = [v7 date];
-  v9 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideDate" fromContextOverride:v6 withDefaultContext:v8 allowNilValues:0];
+  overrideCopy = override;
+  v7 = [(ATXPredictionContextBuilder *)self timeContextForCurrentContext:data];
+  date = [v7 date];
+  v9 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideDate" fromContextOverride:overrideCopy withDefaultContext:date allowNilValues:0];
 
   v10 = [[ATXPredictionTimeContext alloc] initWithDate:v9];
 
   return v10;
 }
 
-- (id)locationMotionContextForContextOverride:(id)a3 guardedData:(id)a4
+- (id)locationMotionContextForContextOverride:(id)override guardedData:(id)data
 {
   v93 = *MEMORY[0x277D85DE8];
-  v75 = a3;
-  v73 = a4;
+  overrideCopy = override;
+  dataCopy = data;
   v74 = [(ATXPredictionContextBuilder *)self locationMotionContextForCurrentContext:?];
   v6 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v74, "locationEnabled")}];
-  v69 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideLocationEnabled" fromContextOverride:v75 withDefaultContext:v6 allowNilValues:0];
+  v69 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideLocationEnabled" fromContextOverride:overrideCopy withDefaultContext:v6 allowNilValues:0];
 
   v7 = [MEMORY[0x277D41C40] stringForMotionType:{objc_msgSend(v74, "motionType")}];
-  v71 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideMotionType" fromContextOverride:v75 withDefaultContext:v7 allowNilValues:0];
+  v71 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideMotionType" fromContextOverride:overrideCopy withDefaultContext:v7 allowNilValues:0];
 
   v91 = 0;
   v67 = [MEMORY[0x277D41C40] motionTypeForString:v71 found:&v91];
@@ -408,29 +408,29 @@ void __93__ATXPredictionContextBuilder_updateContextStreamAndReturnPredictionCon
   }
 
   v9 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v74, "canPredictClipsGivenRecentMotion")}];
-  v68 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverridecanPredictClipsGivenRecentMotion" fromContextOverride:v75 withDefaultContext:v9 allowNilValues:0];
+  v68 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverridecanPredictClipsGivenRecentMotion" fromContextOverride:overrideCopy withDefaultContext:v9 allowNilValues:0];
 
-  v10 = [v73 locationManager];
-  v11 = [v10 getCurrentLocation];
-  v12 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideCurrentLocation" fromContextOverride:v75 withDefaultContext:v11 allowNilValues:1];
+  locationManager = [dataCopy locationManager];
+  getCurrentLocation = [locationManager getCurrentLocation];
+  v12 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideCurrentLocation" fromContextOverride:overrideCopy withDefaultContext:getCurrentLocation allowNilValues:1];
 
-  v13 = [v73 locationManager];
-  v14 = [v13 previousLOIAndCurrentLOI];
-  v72 = [v14 first];
+  locationManager2 = [dataCopy locationManager];
+  previousLOIAndCurrentLOI = [locationManager2 previousLOIAndCurrentLOI];
+  first = [previousLOIAndCurrentLOI first];
 
-  if (v72)
+  if (first)
   {
     v15 = objc_alloc(MEMORY[0x277CE41F8]);
-    [v72 coordinate];
+    [first coordinate];
     v17 = v16;
-    [v72 coordinate];
+    [first coordinate];
     v19 = [v15 initWithLatitude:v17 longitude:v18];
-    v20 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverridePreviousLocation" fromContextOverride:v75 withDefaultContext:v19 allowNilValues:1];
+    v20 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverridePreviousLocation" fromContextOverride:overrideCopy withDefaultContext:v19 allowNilValues:1];
   }
 
   else
   {
-    v20 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverridePreviousLocation" fromContextOverride:v75 withDefaultContext:0 allowNilValues:1];
+    v20 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverridePreviousLocation" fromContextOverride:overrideCopy withDefaultContext:0 allowNilValues:1];
   }
 
   v85 = 0;
@@ -440,7 +440,7 @@ void __93__ATXPredictionContextBuilder_updateContextStreamAndReturnPredictionCon
   v89 = __Block_byref_object_dispose__23;
   v90 = 0;
   v21 = dispatch_semaphore_create(0);
-  v22 = [v73 locationManager];
+  locationManager3 = [dataCopy locationManager];
   v82[0] = MEMORY[0x277D85DD0];
   v82[1] = 3221225472;
   v82[2] = __83__ATXPredictionContextBuilder_locationMotionContextForContextOverride_guardedData___block_invoke;
@@ -448,7 +448,7 @@ void __93__ATXPredictionContextBuilder_updateContextStreamAndReturnPredictionCon
   v84 = &v85;
   v70 = v21;
   v83 = v70;
-  [v22 fetchAllLocationsOfInterest:v82];
+  [locationManager3 fetchAllLocationsOfInterest:v82];
 
   if ([MEMORY[0x277D425A0] waitForSemaphore:v70 timeoutSeconds:5.0] == 1)
   {
@@ -459,7 +459,7 @@ void __93__ATXPredictionContextBuilder_updateContextStreamAndReturnPredictionCon
     }
   }
 
-  [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideLocationsOfInterest" fromContextOverride:v75 withDefaultContext:v86[5] allowNilValues:1];
+  [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideLocationsOfInterest" fromContextOverride:overrideCopy withDefaultContext:v86[5] allowNilValues:1];
   v80 = 0u;
   v81 = 0u;
   v78 = 0u;
@@ -560,7 +560,7 @@ void __93__ATXPredictionContextBuilder_updateContextStreamAndReturnPredictionCon
   }
 
   v51 = [ATXPredictionLocationMotionContext alloc];
-  v52 = [v69 BOOLValue];
+  bOOLValue = [v69 BOOLValue];
   v53 = [MEMORY[0x277CCABB0] numberWithDouble:v25];
   [v53 doubleValue];
   v55 = v54;
@@ -572,7 +572,7 @@ void __93__ATXPredictionContextBuilder_updateContextStreamAndReturnPredictionCon
   v61 = v60;
   v62 = [MEMORY[0x277CCABB0] numberWithDouble:v31];
   [v62 doubleValue];
-  v64 = -[ATXPredictionLocationMotionContext initWithCurrentLOI:previousLOI:motionType:currentLocation:locationEnabled:distanceFromHome:distanceFromWork:distanceFromSchool:distanceFromGym:canPredictClipsGivenRecentMotion:](v51, "initWithCurrentLOI:previousLOI:motionType:currentLocation:locationEnabled:distanceFromHome:distanceFromWork:distanceFromSchool:distanceFromGym:canPredictClipsGivenRecentMotion:", v77, v26, v67, v12, v52, [v68 BOOLValue], v55, v58, v61, v63);
+  v64 = -[ATXPredictionLocationMotionContext initWithCurrentLOI:previousLOI:motionType:currentLocation:locationEnabled:distanceFromHome:distanceFromWork:distanceFromSchool:distanceFromGym:canPredictClipsGivenRecentMotion:](v51, "initWithCurrentLOI:previousLOI:motionType:currentLocation:locationEnabled:distanceFromHome:distanceFromWork:distanceFromSchool:distanceFromGym:canPredictClipsGivenRecentMotion:", v77, v26, v67, v12, bOOLValue, [v68 BOOLValue], v55, v58, v61, v63);
 
   _Block_object_dispose(&v85, 8);
   v65 = *MEMORY[0x277D85DE8];
@@ -587,22 +587,22 @@ void __83__ATXPredictionContextBuilder_locationMotionContextForContextOverride_g
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)ambientLightContextForContextOverride:(id)a3 guardedData:(id)a4
+- (id)ambientLightContextForContextOverride:(id)override guardedData:(id)data
 {
-  v6 = a3;
-  v7 = [(ATXPredictionContextBuilder *)self ambientLightContextForCurrentContext:a4];
-  v8 = [v7 ambientLightType];
-  if (v8 >= 8)
+  overrideCopy = override;
+  v7 = [(ATXPredictionContextBuilder *)self ambientLightContextForCurrentContext:data];
+  ambientLightType = [v7 ambientLightType];
+  if (ambientLightType >= 8)
   {
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", v8];
+    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", ambientLightType];
   }
 
   else
   {
-    v9 = off_2785992D8[v8];
+    v9 = off_2785992D8[ambientLightType];
   }
 
-  v10 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideAmbientLightType" fromContextOverride:v6 withDefaultContext:v9 allowNilValues:0];
+  v10 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideAmbientLightType" fromContextOverride:overrideCopy withDefaultContext:v9 allowNilValues:0];
 
   v11 = v10;
   v12 = 0;
@@ -654,34 +654,34 @@ void __83__ATXPredictionContextBuilder_locationMotionContextForContextOverride_g
   return v13;
 }
 
-- (id)userContextForContextOverride:(id)a3 guardedData:(id)a4
+- (id)userContextForContextOverride:(id)override guardedData:(id)data
 {
-  v6 = a3;
-  v7 = [(ATXPredictionContextBuilder *)self userContextForCurrentContext:a4];
-  v8 = [v7 lastUnlockDate];
-  v9 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideLastUnlockDate" fromContextOverride:v6 withDefaultContext:v8 allowNilValues:1];
+  overrideCopy = override;
+  v7 = [(ATXPredictionContextBuilder *)self userContextForCurrentContext:data];
+  lastUnlockDate = [v7 lastUnlockDate];
+  v9 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideLastUnlockDate" fromContextOverride:overrideCopy withDefaultContext:lastUnlockDate allowNilValues:1];
 
-  v10 = [v7 lastAppLaunch];
-  v11 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideLastAppLaunch" fromContextOverride:v6 withDefaultContext:v10 allowNilValues:1];
+  lastAppLaunch = [v7 lastAppLaunch];
+  v11 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideLastAppLaunch" fromContextOverride:overrideCopy withDefaultContext:lastAppLaunch allowNilValues:1];
 
-  v12 = [v7 lastAppLaunchDate];
-  v13 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideLastAppLaunchDate" fromContextOverride:v6 withDefaultContext:v12 allowNilValues:1];
+  lastAppLaunchDate = [v7 lastAppLaunchDate];
+  v13 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideLastAppLaunchDate" fromContextOverride:overrideCopy withDefaultContext:lastAppLaunchDate allowNilValues:1];
 
-  v14 = [v7 secondMostRecentAppLaunch];
-  v15 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideSecondMostRecentAppLaunch" fromContextOverride:v6 withDefaultContext:v14 allowNilValues:1];
+  secondMostRecentAppLaunch = [v7 secondMostRecentAppLaunch];
+  v15 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideSecondMostRecentAppLaunch" fromContextOverride:overrideCopy withDefaultContext:secondMostRecentAppLaunch allowNilValues:1];
 
-  v16 = [v7 lastAppActionLaunch];
-  v17 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideLastAppActionLaunch" fromContextOverride:v6 withDefaultContext:v16 allowNilValues:1];
+  lastAppActionLaunch = [v7 lastAppActionLaunch];
+  v17 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideLastAppActionLaunch" fromContextOverride:overrideCopy withDefaultContext:lastAppActionLaunch allowNilValues:1];
 
   v18 = [[ATXPredictionUserContext alloc] initWithLastUnlockDate:v9 lastAppLaunch:v11 lastAppLaunchDate:v13 secondMostRecentAppLaunch:v15 lastAppActionLaunch:v17];
 
   return v18;
 }
 
-- (id)predictionContextForContextOverride:(id)a3
+- (id)predictionContextForContextOverride:(id)override
 {
-  v4 = a3;
-  if ([v4 count])
+  overrideCopy = override;
+  if ([overrideCopy count])
   {
     v11 = 0;
     v12 = &v11;
@@ -695,20 +695,20 @@ void __83__ATXPredictionContextBuilder_locationMotionContextForContextOverride_g
     v8[2] = __67__ATXPredictionContextBuilder_predictionContextForContextOverride___block_invoke;
     v8[3] = &unk_2785992B8;
     v8[4] = self;
-    v9 = v4;
+    v9 = overrideCopy;
     v10 = &v11;
     [(_PASLock *)lock runWithLockAcquired:v8];
-    v6 = v12[5];
+    predictionContextForCurrentContext = v12[5];
 
     _Block_object_dispose(&v11, 8);
   }
 
   else
   {
-    v6 = [(ATXPredictionContextBuilder *)self predictionContextForCurrentContext];
+    predictionContextForCurrentContext = [(ATXPredictionContextBuilder *)self predictionContextForCurrentContext];
   }
 
-  return v6;
+  return predictionContextForCurrentContext;
 }
 
 void __67__ATXPredictionContextBuilder_predictionContextForContextOverride___block_invoke(uint64_t a1, void *a2)
@@ -728,13 +728,13 @@ void __67__ATXPredictionContextBuilder_predictionContextForContextOverride___blo
   }
 }
 
-+ (id)loadContextOverrideFromJSONFile:(id)a3
++ (id)loadContextOverrideFromJSONFile:(id)file
 {
   v87 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CEBCB0] appPredictionDirectory];
-  v81 = v3;
-  v5 = [v4 stringByAppendingPathComponent:v3];
+  fileCopy = file;
+  appPredictionDirectory = [MEMORY[0x277CEBCB0] appPredictionDirectory];
+  v81 = fileCopy;
+  v5 = [appPredictionDirectory stringByAppendingPathComponent:fileCopy];
   v6 = [v5 stringByAppendingPathExtension:@"json"];
 
   v80 = v6;
@@ -797,9 +797,9 @@ void __67__ATXPredictionContextBuilder_predictionContextForContextOverride___blo
     v33 = objc_alloc(MEMORY[0x277CF16E8]);
     v34 = objc_opt_new();
     v35 = objc_opt_new();
-    v36 = [v35 UUIDString];
+    uUIDString = [v35 UUIDString];
     LODWORD(v78) = BMUserFocusInferredModeTypeFromString();
-    v37 = [v33 initWithAbsoluteTimestamp:v34 modeIdentifier:0 origin:1 originBundleID:0 isAutomationEnabled:v36 isStart:0 uuid:&unk_283A55730 originAnchorType:&unk_283A55748 uiLocation:MEMORY[0x277CBEBF8] confidenceScore:v78 serializedTriggers:MEMORY[0x277CBEC28] modeType:0 shouldSuggestTriggers:? userModeName:?];
+    v37 = [v33 initWithAbsoluteTimestamp:v34 modeIdentifier:0 origin:1 originBundleID:0 isAutomationEnabled:uUIDString isStart:0 uuid:&unk_283A55730 originAnchorType:&unk_283A55748 uiLocation:MEMORY[0x277CBEBF8] confidenceScore:v78 serializedTriggers:MEMORY[0x277CBEC28] modeType:0 shouldSuggestTriggers:? userModeName:?];
     [v9 setObject:v37 forKeyedSubscript:@"ATXContextOverrideInferredModeEvent"];
   }
 
@@ -903,11 +903,11 @@ void __67__ATXPredictionContextBuilder_predictionContextForContextOverride___blo
   return v9;
 }
 
-- (id)predictionContextForCurrentContextAndCandidatePublisher:(id)a3 contextOverride:(id)a4
+- (id)predictionContextForCurrentContextAndCandidatePublisher:(id)publisher contextOverride:(id)override
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ATXPredictionContextBuilder *)self predictionContextForContextOverride:v7];
+  publisherCopy = publisher;
+  overrideCopy = override;
+  v8 = [(ATXPredictionContextBuilder *)self predictionContextForContextOverride:overrideCopy];
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -925,32 +925,32 @@ void __67__ATXPredictionContextBuilder_predictionContextForContextOverride___blo
   v23[2] = __121__ATXPredictionContextBuilder_CandidateContext__predictionContextForCurrentContextAndCandidatePublisher_contextOverride___block_invoke_11;
   v23[3] = &unk_27859F628;
   v23[4] = &v25;
-  v9 = [v6 sinkWithCompletion:v24 receiveInput:v23];
-  v10 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideCandidateIdentifiersLaunchAge" fromContextOverride:v7 withDefaultContext:v26[5] allowNilValues:1];
+  v9 = [publisherCopy sinkWithCompletion:v24 receiveInput:v23];
+  v10 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideCandidateIdentifiersLaunchAge" fromContextOverride:overrideCopy withDefaultContext:v26[5] allowNilValues:1];
   [v8 setCandidateIdentifiersLaunchAge:v10];
 
-  v11 = [MEMORY[0x277D41C68] currentMode];
-  v12 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideInferredModeEvent" fromContextOverride:v7 withDefaultContext:v11 allowNilValues:1];
+  currentMode = [MEMORY[0x277D41C68] currentMode];
+  v12 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideInferredModeEvent" fromContextOverride:overrideCopy withDefaultContext:currentMode allowNilValues:1];
   [v8 setInferredModeEvent:v12];
 
-  v13 = [MEMORY[0x277D41C60] currentMode];
-  v14 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideUserFocusComputedModeEvent" fromContextOverride:v7 withDefaultContext:v13 allowNilValues:1];
+  currentMode2 = [MEMORY[0x277D41C60] currentMode];
+  v14 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideUserFocusComputedModeEvent" fromContextOverride:overrideCopy withDefaultContext:currentMode2 allowNilValues:1];
   [v8 setUserFocusComputedModeEvent:v14];
 
   v15 = objc_opt_new();
-  v16 = [v15 currentPoiCategory];
-  v17 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverridePoiCategory" fromContextOverride:v7 withDefaultContext:v16 allowNilValues:1];
+  currentPoiCategory = [v15 currentPoiCategory];
+  v17 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverridePoiCategory" fromContextOverride:overrideCopy withDefaultContext:currentPoiCategory allowNilValues:1];
   [v8 setPoiCategory:v17];
 
   v18 = +[ATXBluetoothDuetEvent mostRecentOrActiveBluetoothConnectedEventFromCurrentContextStoreValues];
-  v19 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideBluetoothEvent" fromContextOverride:v7 withDefaultContext:v18 allowNilValues:1];
+  v19 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideBluetoothEvent" fromContextOverride:overrideCopy withDefaultContext:v18 allowNilValues:1];
   [v8 setBluetoothEvent:v19];
 
   v20 = [objc_alloc(+[ATXMicrolocationVisitDuetDataProvider supportedDuetEventClass](ATXMicrolocationVisitDuetDataProvider "supportedDuetEventClass"))];
-  v21 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideMicrolocationVisitEvent" fromContextOverride:v7 withDefaultContext:v20 allowNilValues:1];
+  v21 = [(ATXPredictionContextBuilder *)self _getContextForOverrideKey:@"ATXContextOverrideMicrolocationVisitEvent" fromContextOverride:overrideCopy withDefaultContext:v20 allowNilValues:1];
   [v8 setMicrolocationVisitEvent:v21];
 
-  if ([v7 count])
+  if ([overrideCopy count])
   {
     [v8 setIsOverridden:1];
   }

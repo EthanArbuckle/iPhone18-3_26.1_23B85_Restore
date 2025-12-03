@@ -1,33 +1,33 @@
 @interface VNSceneprint
 + (id)codingTypesToCodingKeys;
-+ (unint64_t)confidenceTypeForOriginatingRequestSpecifier:(id)a3;
-- (VNSceneprint)initWithCoder:(id)a3;
-- (VNSceneprint)initWithData:(const void *)a3 elementCount:(unint64_t)a4 elementType:(unint64_t)a5 lengthInBytes:(unint64_t)a6 labelsAndConfidence:(id)a7 requestRevision:(unint64_t)a8;
-- (VNSceneprint)initWithState:(id)a3 byteOffset:(unint64_t *)a4 error:(id *)a5;
-- (unint64_t)serializeStateIntoData:(id)a3 startingAtByteOffset:(unint64_t)a4 error:(id *)a5;
++ (unint64_t)confidenceTypeForOriginatingRequestSpecifier:(id)specifier;
+- (VNSceneprint)initWithCoder:(id)coder;
+- (VNSceneprint)initWithData:(const void *)data elementCount:(unint64_t)count elementType:(unint64_t)type lengthInBytes:(unint64_t)bytes labelsAndConfidence:(id)confidence requestRevision:(unint64_t)revision;
+- (VNSceneprint)initWithState:(id)state byteOffset:(unint64_t *)offset error:(id *)error;
+- (unint64_t)serializeStateIntoData:(id)data startingAtByteOffset:(unint64_t)offset error:(id *)error;
 - (unint64_t)serializedLength;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNSceneprint
 
-- (VNSceneprint)initWithState:(id)a3 byteOffset:(unint64_t *)a4 error:(id *)a5
+- (VNSceneprint)initWithState:(id)state byteOffset:(unint64_t *)offset error:(id *)error
 {
-  v8 = a3;
+  stateCopy = state;
   v18.receiver = self;
   v18.super_class = VNSceneprint;
-  v9 = [(VNEspressoModelImageprint *)&v18 initWithState:v8 byteOffset:a4 error:a5];
+  v9 = [(VNEspressoModelImageprint *)&v18 initWithState:stateCopy byteOffset:offset error:error];
   if (v9)
   {
-    v10 = [v8 bytes];
-    v11 = *(v10 + *a4);
-    *a4 += 4;
+    bytes = [stateCopy bytes];
+    v11 = *(bytes + *offset);
+    *offset += 4;
     if (v11)
     {
       v12 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:v11];
-      memcpy([v12 mutableBytes], (v10 + *a4), v11);
-      *a4 += v11;
-      v13 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v12 error:a5];
+      memcpy([v12 mutableBytes], (bytes + *offset), v11);
+      *offset += v11;
+      v13 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v12 error:error];
       labelsAndConfidence = v9->_labelsAndConfidence;
       v9->_labelsAndConfidence = v13;
 
@@ -51,19 +51,19 @@ LABEL_7:
   return v15;
 }
 
-- (unint64_t)serializeStateIntoData:(id)a3 startingAtByteOffset:(unint64_t)a4 error:(id *)a5
+- (unint64_t)serializeStateIntoData:(id)data startingAtByteOffset:(unint64_t)offset error:(id *)error
 {
-  v8 = a3;
+  dataCopy = data;
   v21.receiver = self;
   v21.super_class = VNSceneprint;
-  v9 = [(VNEspressoModelImageprint *)&v21 serializeStateIntoData:v8 startingAtByteOffset:a4 error:a5];
+  v9 = [(VNEspressoModelImageprint *)&v21 serializeStateIntoData:dataCopy startingAtByteOffset:offset error:error];
   if (v9)
   {
-    v10 = [v8 mutableBytes];
-    v11 = &v9[a4];
+    mutableBytes = [dataCopy mutableBytes];
+    v11 = &v9[offset];
     if ([(NSDictionary *)self->_labelsAndConfidence count])
     {
-      v12 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self->_labelsAndConfidence requiringSecureCoding:1 error:a5];
+      v12 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self->_labelsAndConfidence requiringSecureCoding:1 error:error];
       v13 = v12;
       if (!v12)
       {
@@ -71,13 +71,13 @@ LABEL_7:
       }
 
       v14 = [v12 length];
-      *&v11[v10] = v14;
+      *&v11[mutableBytes] = v14;
       v15 = v11 + 4;
       if (v14)
       {
-        v16 = [v13 bytes];
+        bytes = [v13 bytes];
         v17 = [v13 length];
-        memcpy(&v15[v10], v16, v17);
+        memcpy(&v15[mutableBytes], bytes, v17);
         v15 += v17;
       }
     }
@@ -85,23 +85,23 @@ LABEL_7:
     else
     {
       v13 = 0;
-      *&v11[v10] = 0;
+      *&v11[mutableBytes] = 0;
       v15 = v11 + 4;
     }
 
-    v18 = &v15[-a4];
-    if (&v15[-a4] == [(VNSceneprint *)self serializedLength])
+    v18 = &v15[-offset];
+    if (&v15[-offset] == [(VNSceneprint *)self serializedLength])
     {
-      calculateChecksumMD5((v10 + a4 + 28), v18 - 28, (v10 + a4 + 12));
+      calculateChecksumMD5((mutableBytes + offset + 28), v18 - 28, (mutableBytes + offset + 12));
 LABEL_13:
 
       goto LABEL_14;
     }
 
-    if (a5)
+    if (error)
     {
       v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected size of serialized state of the object of type %@", objc_opt_class()];
-      *a5 = [VNError errorForInternalErrorWithLocalizedDescription:v19];
+      *error = [VNError errorForInternalErrorWithLocalizedDescription:v19];
     }
 
 LABEL_12:
@@ -129,21 +129,21 @@ LABEL_14:
   return v3;
 }
 
-- (VNSceneprint)initWithCoder:(id)a3
+- (VNSceneprint)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = VNSceneprint;
-  v5 = [(VNEspressoModelImageprint *)&v14 initWithCoder:v4];
+  v5 = [(VNEspressoModelImageprint *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"labelsConfidences"])
+    if ([coderCopy containsValueForKey:@"labelsConfidences"])
     {
       v6 = objc_alloc(MEMORY[0x1E695DFD8]);
       v7 = objc_opt_class();
       v8 = objc_opt_class();
       v9 = [v6 initWithObjects:{v7, v8, objc_opt_class(), 0}];
-      v10 = [v4 decodeObjectOfClasses:v9 forKey:@"labelsConfidences"];
+      v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"labelsConfidences"];
       labelsAndConfidence = v5->_labelsAndConfidence;
       v5->_labelsAndConfidence = v10;
     }
@@ -160,17 +160,17 @@ LABEL_14:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = VNSceneprint;
-  [(VNEspressoModelImageprint *)&v7 encodeWithCoder:v4];
+  [(VNEspressoModelImageprint *)&v7 encodeWithCoder:coderCopy];
   v5 = [(NSDictionary *)self->_labelsAndConfidence count];
   labelsAndConfidence = self->_labelsAndConfidence;
   if (v5)
   {
-    [v4 encodeObject:labelsAndConfidence forKey:@"labelsConfidences"];
+    [coderCopy encodeObject:labelsAndConfidence forKey:@"labelsConfidences"];
   }
 
   else
@@ -179,17 +179,17 @@ LABEL_14:
   }
 }
 
-- (VNSceneprint)initWithData:(const void *)a3 elementCount:(unint64_t)a4 elementType:(unint64_t)a5 lengthInBytes:(unint64_t)a6 labelsAndConfidence:(id)a7 requestRevision:(unint64_t)a8
+- (VNSceneprint)initWithData:(const void *)data elementCount:(unint64_t)count elementType:(unint64_t)type lengthInBytes:(unint64_t)bytes labelsAndConfidence:(id)confidence requestRevision:(unint64_t)revision
 {
-  v14 = a7;
+  confidenceCopy = confidence;
   v19.receiver = self;
   v19.super_class = VNSceneprint;
-  v15 = [(VNEspressoModelImageprint *)&v19 initWithData:a3 elementCount:a4 elementType:a5 lengthInBytes:a6 requestRevision:a8];
+  v15 = [(VNEspressoModelImageprint *)&v19 initWithData:data elementCount:count elementType:type lengthInBytes:bytes requestRevision:revision];
   if (v15)
   {
-    if (v14)
+    if (confidenceCopy)
     {
-      v16 = [v14 copy];
+      v16 = [confidenceCopy copy];
     }
 
     else
@@ -198,7 +198,7 @@ LABEL_14:
     }
 
     objc_storeStrong(&v15->_labelsAndConfidence, v16);
-    if (v14)
+    if (confidenceCopy)
     {
     }
 
@@ -208,10 +208,10 @@ LABEL_14:
   return v15;
 }
 
-+ (unint64_t)confidenceTypeForOriginatingRequestSpecifier:(id)a3
++ (unint64_t)confidenceTypeForOriginatingRequestSpecifier:(id)specifier
 {
-  v3 = a3;
-  v4 = [v3 specifiesRequestClass:objc_opt_class()] && objc_msgSend(v3, "requestRevision") == 1;
+  specifierCopy = specifier;
+  v4 = [specifierCopy specifiesRequestClass:objc_opt_class()] && objc_msgSend(specifierCopy, "requestRevision") == 1;
 
   return v4;
 }

@@ -1,14 +1,14 @@
 @interface FIAppleConnectWrapper
-+ (void)authenticateWithEnvironment:(int64_t)a3 completionHandler:(id)a4;
++ (void)authenticateWithEnvironment:(int64_t)environment completionHandler:(id)handler;
 @end
 
 @implementation FIAppleConnectWrapper
 
-+ (void)authenticateWithEnvironment:(int64_t)a3 completionHandler:(id)a4
++ (void)authenticateWithEnvironment:(int64_t)environment completionHandler:(id)handler
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if ([a1 isAppleConnectAvailable])
+  handlerCopy = handler;
+  if ([self isAppleConnectAvailable])
   {
     v23 = 0;
     v24 = &v23;
@@ -30,9 +30,9 @@
     _Block_object_dispose(&v23, 8);
     v9 = objc_alloc_init(v7);
     v10 = v9;
-    if (a3 <= 1)
+    if (environment <= 1)
     {
-      [v9 setEnvironment:a3];
+      [v9 setEnvironment:environment];
     }
 
     v23 = 0;
@@ -61,7 +61,7 @@
     v16[1] = 3221225472;
     v16[2] = __71__FIAppleConnectWrapper_authenticateWithEnvironment_completionHandler___block_invoke;
     v16[3] = &unk_27900CC88;
-    v17 = v6;
+    v17 = handlerCopy;
     [v10 authenticateWithRequest:v13 completion:v16];
   }
 
@@ -72,7 +72,7 @@
     v28[0] = @"AppleConnectClient.framework is unavailable";
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
     v13 = [v14 errorWithDomain:@"com.apple.FitnessIntelligenceFeedback" code:-100 userInfo:v10];
-    (*(v6 + 2))(v6, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
   }
 
   v15 = *MEMORY[0x277D85DE8];

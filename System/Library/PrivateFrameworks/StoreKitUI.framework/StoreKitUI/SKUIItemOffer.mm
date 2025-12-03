@@ -2,23 +2,23 @@
 - (NSDictionary)lookupDictionary;
 - (NSMutableDictionary)cacheRepresentation;
 - (NSString)fileSizeText;
-- (SKUIItemOffer)initWithButtonText:(id)a3;
-- (SKUIItemOffer)initWithCacheRepresentation:(id)a3;
-- (SKUIItemOffer)initWithLookupDictionary:(id)a3;
-- (SKUIItemOffer)initWithOfferDictionary:(id)a3;
-- (SKUIItemOffer)initWithRedownloadToken:(id)a3;
+- (SKUIItemOffer)initWithButtonText:(id)text;
+- (SKUIItemOffer)initWithCacheRepresentation:(id)representation;
+- (SKUIItemOffer)initWithLookupDictionary:(id)dictionary;
+- (SKUIItemOffer)initWithOfferDictionary:(id)dictionary;
+- (SKUIItemOffer)initWithRedownloadToken:(id)token;
 - (int64_t)offerType;
-- (void)_addActionParameterWithName:(id)a3 value:(id)a4;
-- (void)_setFileSizeWithAssets:(id)a3;
-- (void)_setFileSizeWithDeviceSizes:(id)a3;
-- (void)_setFileSizeWithFlavors:(id)a3;
+- (void)_addActionParameterWithName:(id)name value:(id)value;
+- (void)_setFileSizeWithAssets:(id)assets;
+- (void)_setFileSizeWithDeviceSizes:(id)sizes;
+- (void)_setFileSizeWithFlavors:(id)flavors;
 @end
 
 @implementation SKUIItemOffer
 
-- (SKUIItemOffer)initWithButtonText:(id)a3
+- (SKUIItemOffer)initWithButtonText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -36,7 +36,7 @@
   v13 = [(SKUIItemOffer *)&v18 init];
   if (v13)
   {
-    v14 = [v4 copy];
+    v14 = [textCopy copy];
     buttonText = v13->_buttonText;
     v13->_buttonText = v14;
 
@@ -47,9 +47,9 @@
   return v13;
 }
 
-- (SKUIItemOffer)initWithLookupDictionary:(id)a3
+- (SKUIItemOffer)initWithLookupDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -67,10 +67,10 @@
   v13 = [(SKUIItemOffer *)&v39 init];
   if (v13)
   {
-    v14 = [v4 objectForKey:@"buyParams"];
+    v14 = [dictionaryCopy objectForKey:@"buyParams"];
     if (!v14)
     {
-      v14 = [v4 objectForKey:@"action-params"];
+      v14 = [dictionaryCopy objectForKey:@"action-params"];
     }
 
     objc_opt_class();
@@ -79,7 +79,7 @@
       objc_storeStrong(&v13->_actionParameters, v14);
     }
 
-    v15 = [v4 objectForKey:@"actionText"];
+    v15 = [dictionaryCopy objectForKey:@"actionText"];
     objc_opt_class();
     v38 = v15;
     if (objc_opt_isKindOfClass())
@@ -89,12 +89,12 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v17 = [v16 uppercaseString];
+        uppercaseString = [v16 uppercaseString];
       }
 
       else
       {
-        v17 = 0;
+        uppercaseString = 0;
       }
 
       v14 = v16;
@@ -102,14 +102,14 @@
 
     else
     {
-      v17 = 0;
+      uppercaseString = 0;
     }
 
-    v18 = [v4 objectForKey:@"priceFormatted"];
+    v18 = [dictionaryCopy objectForKey:@"priceFormatted"];
 
     if (!v18)
     {
-      v18 = [v4 objectForKey:@"button_text"];
+      v18 = [dictionaryCopy objectForKey:@"button_text"];
     }
 
     objc_opt_class();
@@ -123,7 +123,7 @@
       v19 = 0;
     }
 
-    v20 = [v4 objectForKey:@"price"];
+    v20 = [dictionaryCopy objectForKey:@"price"];
     if (objc_opt_respondsToSelector())
     {
       [v20 floatValue];
@@ -135,12 +135,12 @@
       price = v13->_price;
     }
 
-    v36 = v17;
+    v36 = uppercaseString;
     if (price == 0.0)
     {
-      if (v17)
+      if (uppercaseString)
       {
-        v22 = v17;
+        v22 = uppercaseString;
       }
 
       else
@@ -156,13 +156,13 @@
     else
     {
       objc_storeStrong(&v13->_buttonText, v19);
-      v25 = v17;
+      v25 = uppercaseString;
       buttonText = v13->_confirmationText;
       v13->_confirmationText = v25;
     }
 
-    v26 = [v4 objectForKey:@"assets"];
-    v27 = [v4 objectForKey:@"assetFlavors"];
+    v26 = [dictionaryCopy objectForKey:@"assets"];
+    v27 = [dictionaryCopy objectForKey:@"assetFlavors"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -178,7 +178,7 @@
       }
     }
 
-    v28 = [v4 objectForKey:{@"type", v36}];
+    v28 = [dictionaryCopy objectForKey:{@"type", v36}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -187,7 +187,7 @@
       v13->_offerTypeString = v29;
     }
 
-    v31 = [v4 objectForKey:@"variant"];
+    v31 = [dictionaryCopy objectForKey:@"variant"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -196,7 +196,7 @@
       v13->_variantIdentifier = v32;
     }
 
-    v34 = [v4 objectForKey:@"shouldEnableMessagesExtension"];
+    v34 = [dictionaryCopy objectForKey:@"shouldEnableMessagesExtension"];
     if (v34)
     {
       objc_opt_class();
@@ -210,9 +210,9 @@
   return v13;
 }
 
-- (SKUIItemOffer)initWithOfferDictionary:(id)a3
+- (SKUIItemOffer)initWithOfferDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -230,7 +230,7 @@
   v13 = [(SKUIItemOffer *)&v25 init];
   if (v13)
   {
-    v14 = [v4 objectForKey:@"action-params"];
+    v14 = [dictionaryCopy objectForKey:@"action-params"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -239,7 +239,7 @@
       v13->_actionParameters = v15;
     }
 
-    v17 = [v4 objectForKey:@"button_text"];
+    v17 = [dictionaryCopy objectForKey:@"button_text"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -251,7 +251,7 @@
       v13->_price = ([(NSString *)v13->_buttonText isEqualToString:@"FREE"]^ 1);
     }
 
-    v20 = [v4 objectForKey:@"confirm-text"];
+    v20 = [dictionaryCopy objectForKey:@"confirm-text"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -261,7 +261,7 @@
       v13->_confirmationText = v21;
     }
 
-    v23 = [v4 objectForKey:@"assetFlavors"];
+    v23 = [dictionaryCopy objectForKey:@"assetFlavors"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -272,9 +272,9 @@
   return v13;
 }
 
-- (SKUIItemOffer)initWithRedownloadToken:(id)a3
+- (SKUIItemOffer)initWithRedownloadToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -287,7 +287,7 @@
     }
   }
 
-  if (![v4 length])
+  if (![tokenCopy length])
   {
     v13 = 0;
     goto LABEL_9;
@@ -296,7 +296,7 @@
   v13 = [(SKUIItemOffer *)self init];
   if (v13)
   {
-    v14 = [v4 copy];
+    v14 = [tokenCopy copy];
     actionParameters = v13->_actionParameters;
     v13->_actionParameters = v14;
 
@@ -328,12 +328,12 @@ LABEL_9:
 
 - (NSDictionary)lookupDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   actionParameters = self->_actionParameters;
   if (actionParameters)
   {
-    [v3 setObject:actionParameters forKey:@"buyParams"];
+    [dictionary setObject:actionParameters forKey:@"buyParams"];
   }
 
   if (self->_price > 0.00000011921)
@@ -400,37 +400,37 @@ LABEL_9:
   return 0;
 }
 
-- (void)_addActionParameterWithName:(id)a3 value:(id)a4
+- (void)_addActionParameterWithName:(id)name value:(id)value
 {
   actionParameters = self->_actionParameters;
   if (actionParameters)
   {
-    v7 = a4;
-    v8 = a3;
-    v9 = [(NSString *)actionParameters stringByAppendingFormat:@"&%@=%@", v8, v7];
+    valueCopy2 = value;
+    nameCopy2 = name;
+    valueCopy2 = [(NSString *)actionParameters stringByAppendingFormat:@"&%@=%@", nameCopy2, valueCopy2];
   }
 
   else
   {
     v10 = MEMORY[0x277CCACA8];
-    v7 = a4;
-    v8 = a3;
-    v9 = [[v10 alloc] initWithFormat:@"%@=%@", v8, v7];
+    valueCopy2 = value;
+    nameCopy2 = name;
+    valueCopy2 = [[v10 alloc] initWithFormat:@"%@=%@", nameCopy2, valueCopy2];
   }
 
-  v11 = v9;
+  v11 = valueCopy2;
 
   v12 = self->_actionParameters;
   self->_actionParameters = v11;
 }
 
-- (void)_setFileSizeWithDeviceSizes:(id)a3
+- (void)_setFileSizeWithDeviceSizes:(id)sizes
 {
   v11[3] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v4 = [MEMORY[0x277D69A80] currentDevice];
-  v11[0] = [v4 thinnedApplicationVariantIdentifier];
-  [v4 compatibleProductType];
+  sizesCopy = sizes;
+  currentDevice = [MEMORY[0x277D69A80] currentDevice];
+  v11[0] = [currentDevice thinnedApplicationVariantIdentifier];
+  [currentDevice compatibleProductType];
   v11[1] = v5 = 0;
   v11[2] = @"universal";
   while (1)
@@ -449,24 +449,24 @@ LABEL_5:
     }
   }
 
-  v7 = [v10 objectForKey:v6];
+  v7 = [sizesCopy objectForKey:v6];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
     goto LABEL_5;
   }
 
-  v8 = [v7 longLongValue];
+  longLongValue = [v7 longLongValue];
   fileSizeText = self->_fileSizeText;
-  self->_fileSize = v8;
+  self->_fileSize = longLongValue;
   self->_fileSizeText = 0;
 
 LABEL_8:
 }
 
-- (SKUIItemOffer)initWithCacheRepresentation:(id)a3
+- (SKUIItemOffer)initWithCacheRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -475,7 +475,7 @@ LABEL_8:
     v5 = [(SKUIItemOffer *)&v22 init];
     if (v5)
     {
-      v6 = [v4 objectForKey:@"action-params"];
+      v6 = [representationCopy objectForKey:@"action-params"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -484,7 +484,7 @@ LABEL_8:
         v5->_actionParameters = v7;
       }
 
-      v9 = [v4 objectForKey:@"button_text"];
+      v9 = [representationCopy objectForKey:@"button_text"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -494,7 +494,7 @@ LABEL_8:
         v5->_buttonText = v10;
       }
 
-      v12 = [v4 objectForKey:@"confirm-text"];
+      v12 = [representationCopy objectForKey:@"confirm-text"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -504,14 +504,14 @@ LABEL_8:
         v5->_confirmationText = v13;
       }
 
-      v15 = [v4 objectForKey:@"fileSize"];
+      v15 = [representationCopy objectForKey:@"fileSize"];
 
       if (objc_opt_respondsToSelector())
       {
         v5->_fileSize = [v15 longLongValue];
       }
 
-      v16 = [v4 objectForKey:@"fileSizeText"];
+      v16 = [representationCopy objectForKey:@"fileSizeText"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -521,7 +521,7 @@ LABEL_8:
         v5->_fileSizeText = v17;
       }
 
-      v19 = [v4 objectForKey:@"price"];
+      v19 = [representationCopy objectForKey:@"price"];
 
       if (objc_opt_respondsToSelector())
       {
@@ -542,49 +542,49 @@ LABEL_8:
 
 - (NSMutableDictionary)cacheRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_fileSize];
-  [v3 setObject:v4 forKey:@"fileSize"];
+  [dictionary setObject:v4 forKey:@"fileSize"];
 
   *&v5 = self->_price;
   v6 = [MEMORY[0x277CCABB0] numberWithFloat:v5];
-  [v3 setObject:v6 forKey:@"price"];
+  [dictionary setObject:v6 forKey:@"price"];
 
   actionParameters = self->_actionParameters;
   if (actionParameters)
   {
-    [v3 setObject:actionParameters forKey:@"action-params"];
+    [dictionary setObject:actionParameters forKey:@"action-params"];
   }
 
   buttonText = self->_buttonText;
   if (buttonText)
   {
-    [v3 setObject:buttonText forKey:@"button_text"];
+    [dictionary setObject:buttonText forKey:@"button_text"];
   }
 
   confirmationText = self->_confirmationText;
   if (confirmationText)
   {
-    [v3 setObject:confirmationText forKey:@"confirm-text"];
+    [dictionary setObject:confirmationText forKey:@"confirm-text"];
   }
 
   fileSizeText = self->_fileSizeText;
   if (fileSizeText)
   {
-    [v3 setObject:fileSizeText forKey:@"fileSizeText"];
+    [dictionary setObject:fileSizeText forKey:@"fileSizeText"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)_setFileSizeWithAssets:(id)a3
+- (void)_setFileSizeWithAssets:(id)assets
 {
-  v8 = a3;
-  v4 = [v8 count];
-  v5 = v8;
+  assetsCopy = assets;
+  v4 = [assetsCopy count];
+  v5 = assetsCopy;
   if (v4)
   {
-    v6 = [v8 objectAtIndex:0];
+    v6 = [assetsCopy objectAtIndex:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -595,20 +595,20 @@ LABEL_8:
       }
     }
 
-    v5 = v8;
+    v5 = assetsCopy;
   }
 
   MEMORY[0x2821F96F8](v4, v5);
 }
 
-- (void)_setFileSizeWithFlavors:(id)a3
+- (void)_setFileSizeWithFlavors:(id)flavors
 {
-  v11 = a3;
-  v4 = [v11 count];
-  v5 = v11;
+  flavorsCopy = flavors;
+  v4 = [flavorsCopy count];
+  v5 = flavorsCopy;
   if (v4)
   {
-    v6 = [v11 objectAtIndex:0];
+    v6 = [flavorsCopy objectAtIndex:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -629,7 +629,7 @@ LABEL_8:
       }
     }
 
-    v5 = v11;
+    v5 = flavorsCopy;
   }
 
   MEMORY[0x2821F96F8](v4, v5);

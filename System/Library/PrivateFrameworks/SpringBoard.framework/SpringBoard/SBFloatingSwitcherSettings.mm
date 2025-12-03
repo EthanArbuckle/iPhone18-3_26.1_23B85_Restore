@@ -1,6 +1,6 @@
 @interface SBFloatingSwitcherSettings
 + (id)settingsControllerModule;
-- (id)archiveValueForKey:(id)a3;
+- (id)archiveValueForKey:(id)key;
 - (void)setDefaultValues;
 @end
 
@@ -28,79 +28,79 @@
   [(SBFloatingSwitcherSettings *)self setOvershootPullbackDelayOnscreen:0.12];
   [(SBFloatingSwitcherSettings *)self setRightEdgePeekDelay:0.3];
   [(SBFloatingSwitcherSettings *)self setRightEdgePeekTimeout:1.7];
-  v3 = [(SBFloatingSwitcherSettings *)self tongueContainerPositionAnimationSettings];
-  [v3 setDefaultCriticallyDampedValues];
+  tongueContainerPositionAnimationSettings = [(SBFloatingSwitcherSettings *)self tongueContainerPositionAnimationSettings];
+  [tongueContainerPositionAnimationSettings setDefaultCriticallyDampedValues];
 
-  v4 = [(SBFloatingSwitcherSettings *)self tongueContainerPositionAnimationSettings];
-  [v4 setResponse:0.25];
+  tongueContainerPositionAnimationSettings2 = [(SBFloatingSwitcherSettings *)self tongueContainerPositionAnimationSettings];
+  [tongueContainerPositionAnimationSettings2 setResponse:0.25];
 
-  v5 = [(SBFloatingSwitcherSettings *)self tongueContainerPositionAnimationSettings];
+  tongueContainerPositionAnimationSettings3 = [(SBFloatingSwitcherSettings *)self tongueContainerPositionAnimationSettings];
   v30 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v5 setFrameRateRange:1114113 highFrameRateReason:{*&v30.minimum, *&v30.maximum, *&v30.preferred}];
+  [tongueContainerPositionAnimationSettings3 setFrameRateRange:1114113 highFrameRateReason:{*&v30.minimum, *&v30.maximum, *&v30.preferred}];
 
-  v6 = [(SBFloatingSwitcherSettings *)self tongueContainerTransformAnimationSettings];
-  [v6 setDefaultValues];
+  tongueContainerTransformAnimationSettings = [(SBFloatingSwitcherSettings *)self tongueContainerTransformAnimationSettings];
+  [tongueContainerTransformAnimationSettings setDefaultValues];
 
-  v7 = [(SBFloatingSwitcherSettings *)self tongueContainerTransformAnimationSettings];
-  [v7 setDampingRatio:0.7];
+  tongueContainerTransformAnimationSettings2 = [(SBFloatingSwitcherSettings *)self tongueContainerTransformAnimationSettings];
+  [tongueContainerTransformAnimationSettings2 setDampingRatio:0.7];
 
-  v8 = [(SBFloatingSwitcherSettings *)self tongueContainerTransformAnimationSettings];
-  [v8 setResponse:0.725];
+  tongueContainerTransformAnimationSettings3 = [(SBFloatingSwitcherSettings *)self tongueContainerTransformAnimationSettings];
+  [tongueContainerTransformAnimationSettings3 setResponse:0.725];
 
-  v9 = [(SBFloatingSwitcherSettings *)self tongueContainerTransformAnimationSettings];
+  tongueContainerTransformAnimationSettings4 = [(SBFloatingSwitcherSettings *)self tongueContainerTransformAnimationSettings];
   v31 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v9 setFrameRateRange:1114113 highFrameRateReason:{*&v31.minimum, *&v31.maximum, *&v31.preferred}];
+  [tongueContainerTransformAnimationSettings4 setFrameRateRange:1114113 highFrameRateReason:{*&v31.minimum, *&v31.maximum, *&v31.preferred}];
 
-  v10 = [(SBFloatingSwitcherSettings *)self tongueCollapsedToExpandedAnimationSettings];
-  [v10 setDefaultValues];
+  tongueCollapsedToExpandedAnimationSettings = [(SBFloatingSwitcherSettings *)self tongueCollapsedToExpandedAnimationSettings];
+  [tongueCollapsedToExpandedAnimationSettings setDefaultValues];
 
-  v11 = [(SBFloatingSwitcherSettings *)self tongueCollapsedToExpandedAnimationSettings];
-  [v11 setDampingRatio:1.0];
+  tongueCollapsedToExpandedAnimationSettings2 = [(SBFloatingSwitcherSettings *)self tongueCollapsedToExpandedAnimationSettings];
+  [tongueCollapsedToExpandedAnimationSettings2 setDampingRatio:1.0];
 
-  v12 = [(SBFloatingSwitcherSettings *)self tongueCollapsedToExpandedAnimationSettings];
-  [v12 setResponse:0.6];
+  tongueCollapsedToExpandedAnimationSettings3 = [(SBFloatingSwitcherSettings *)self tongueCollapsedToExpandedAnimationSettings];
+  [tongueCollapsedToExpandedAnimationSettings3 setResponse:0.6];
 
-  v13 = [(SBFloatingSwitcherSettings *)self tongueCollapsedToExpandedAnimationSettings];
+  tongueCollapsedToExpandedAnimationSettings4 = [(SBFloatingSwitcherSettings *)self tongueCollapsedToExpandedAnimationSettings];
   v32 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v13 setFrameRateRange:1114113 highFrameRateReason:{*&v32.minimum, *&v32.maximum, *&v32.preferred}];
+  [tongueCollapsedToExpandedAnimationSettings4 setFrameRateRange:1114113 highFrameRateReason:{*&v32.minimum, *&v32.maximum, *&v32.preferred}];
 
-  v14 = [(SBFloatingSwitcherSettings *)self tongueExpandedToCollapsedAnimationSettings];
-  [v14 setDefaultValues];
+  tongueExpandedToCollapsedAnimationSettings = [(SBFloatingSwitcherSettings *)self tongueExpandedToCollapsedAnimationSettings];
+  [tongueExpandedToCollapsedAnimationSettings setDefaultValues];
 
-  v15 = [(SBFloatingSwitcherSettings *)self tongueExpandedToCollapsedAnimationSettings];
-  [v15 setDampingRatio:0.88];
+  tongueExpandedToCollapsedAnimationSettings2 = [(SBFloatingSwitcherSettings *)self tongueExpandedToCollapsedAnimationSettings];
+  [tongueExpandedToCollapsedAnimationSettings2 setDampingRatio:0.88];
 
-  v16 = [(SBFloatingSwitcherSettings *)self tongueExpandedToCollapsedAnimationSettings];
-  [v16 setResponse:0.45];
+  tongueExpandedToCollapsedAnimationSettings3 = [(SBFloatingSwitcherSettings *)self tongueExpandedToCollapsedAnimationSettings];
+  [tongueExpandedToCollapsedAnimationSettings3 setResponse:0.45];
 
-  v17 = [(SBFloatingSwitcherSettings *)self tongueExpandedToCollapsedAnimationSettings];
+  tongueExpandedToCollapsedAnimationSettings4 = [(SBFloatingSwitcherSettings *)self tongueExpandedToCollapsedAnimationSettings];
   v33 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v17 setFrameRateRange:1114113 highFrameRateReason:{*&v33.minimum, *&v33.maximum, *&v33.preferred}];
+  [tongueExpandedToCollapsedAnimationSettings4 setFrameRateRange:1114113 highFrameRateReason:{*&v33.minimum, *&v33.maximum, *&v33.preferred}];
 
-  v18 = [(SBFloatingSwitcherSettings *)self homeAffordanceSettings];
-  [v18 setDefaultValues];
+  homeAffordanceSettings = [(SBFloatingSwitcherSettings *)self homeAffordanceSettings];
+  [homeAffordanceSettings setDefaultValues];
 
   SBLayoutDefaultSideLayoutElementWidth();
   v20 = v19;
   SBLayoutDefaultSideLayoutElementWidth();
   v22 = v21;
-  v23 = [(SBFloatingSwitcherSettings *)self homeAffordanceSettings];
-  [v23 setMinWidth:round(v20 * 0.3574)];
+  homeAffordanceSettings2 = [(SBFloatingSwitcherSettings *)self homeAffordanceSettings];
+  [homeAffordanceSettings2 setMinWidth:round(v20 * 0.3574)];
 
-  v24 = [(SBFloatingSwitcherSettings *)self homeAffordanceSettings];
-  [v24 setMaxWidth:round(v22 * 0.3574)];
+  homeAffordanceSettings3 = [(SBFloatingSwitcherSettings *)self homeAffordanceSettings];
+  [homeAffordanceSettings3 setMaxWidth:round(v22 * 0.3574)];
 
-  v25 = [(SBFloatingSwitcherSettings *)self homeAffordanceSettings];
-  [v25 setHeight:4.5];
+  homeAffordanceSettings4 = [(SBFloatingSwitcherSettings *)self homeAffordanceSettings];
+  [homeAffordanceSettings4 setHeight:4.5];
 
-  v26 = [(SBFloatingSwitcherSettings *)self homeAffordanceSettings];
-  [v26 setEdgeSpacing:7.0];
+  homeAffordanceSettings5 = [(SBFloatingSwitcherSettings *)self homeAffordanceSettings];
+  [homeAffordanceSettings5 setEdgeSpacing:7.0];
 
-  v27 = [(SBFloatingSwitcherSettings *)self homeAffordanceSettings];
-  [v27 setCornerRadius:3.0];
+  homeAffordanceSettings6 = [(SBFloatingSwitcherSettings *)self homeAffordanceSettings];
+  [homeAffordanceSettings6 setCornerRadius:3.0];
 
-  v28 = [(SBFloatingSwitcherSettings *)self homeAffordanceSettings];
-  [v28 setCornerMask:1];
+  homeAffordanceSettings7 = [(SBFloatingSwitcherSettings *)self homeAffordanceSettings];
+  [homeAffordanceSettings7 setCornerMask:1];
 }
 
 + (id)settingsControllerModule
@@ -194,10 +194,10 @@ void __54__SBFloatingSwitcherSettings_settingsControllerModule__block_invoke(uin
   [*(a1 + 48) addObject:v14];
 }
 
-- (id)archiveValueForKey:(id)a3
+- (id)archiveValueForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"showFloats"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"showFloats"])
   {
     v5 = 0;
   }
@@ -206,7 +206,7 @@ void __54__SBFloatingSwitcherSettings_settingsControllerModule__block_invoke(uin
   {
     v7.receiver = self;
     v7.super_class = SBFloatingSwitcherSettings;
-    v5 = [(PTSettings *)&v7 archiveValueForKey:v4];
+    v5 = [(PTSettings *)&v7 archiveValueForKey:keyCopy];
   }
 
   return v5;

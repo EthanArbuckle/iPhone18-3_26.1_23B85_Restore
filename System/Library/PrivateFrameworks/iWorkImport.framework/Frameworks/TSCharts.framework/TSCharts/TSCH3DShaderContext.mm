@@ -1,25 +1,25 @@
 @interface TSCH3DShaderContext
-- (BOOL)isEqual:(id)a3;
-- (TSCH3DShaderContext)initWithObjectState:(const void *)a3 version:(id)a4;
-- (TextureAttributes)textureAttributesForVariable:(SEL)a3;
+- (BOOL)isEqual:(id)equal;
+- (TSCH3DShaderContext)initWithObjectState:(const void *)state version:(id)version;
+- (TextureAttributes)textureAttributesForVariable:(SEL)variable;
 - (id).cxx_construct;
-- (id)diffEffects:(id)a3;
+- (id)diffEffects:(id)effects;
 - (id)discardStatement;
-- (id)textureFunctionNameForVariable:(id)a3 projective:(BOOL)a4;
+- (id)textureFunctionNameForVariable:(id)variable projective:(BOOL)projective;
 - (unint64_t)hash;
 @end
 
 @implementation TSCH3DShaderContext
 
-- (TSCH3DShaderContext)initWithObjectState:(const void *)a3 version:(id)a4
+- (TSCH3DShaderContext)initWithObjectState:(const void *)state version:(id)version
 {
-  v7 = a4;
+  versionCopy = version;
   v22.receiver = self;
   v22.super_class = TSCH3DShaderContext;
   v8 = [(TSCH3DShaderContext *)&v22 init];
   if (v8)
   {
-    sub_2761CB09C(&v17, a3);
+    sub_2761CB09C(&v17, state);
     sub_276161210(&v8->_state._effects.mValue, v17);
     sub_2761CB63C(&v8->_state._attributes.__begin_);
     *&v8->_state._attributes.__begin_ = v18;
@@ -36,9 +36,9 @@
     v23 = &v18;
     sub_2761CB388(&v23);
 
-    objc_storeStrong(&v8->_version, a4);
+    objc_storeStrong(&v8->_version, version);
     v9 = [TSCH3DShaderResource alloc];
-    v14 = objc_msgSend_initWithCaching_version_(v9, v10, v11, v12, v13, 0, v7);
+    v14 = objc_msgSend_initWithCaching_version_(v9, v10, v11, v12, v13, 0, versionCopy);
     shader = v8->_shader;
     v8->_shader = v14;
   }
@@ -54,9 +54,9 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v6 = TSUSpecificCast();
   if (v6 && (objc_msgSend_version(self, v5, v7, v8, v9), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend_version(v6, v11, v12, v13, v14), v15 = objc_claimAutoreleasedReturnValue(), isEqual = objc_msgSend_isEqual_(v10, v16, v17, v18, v19, v15), v15, v10, isEqual))
@@ -73,7 +73,7 @@
   return isShaderGenerationFromContext_equalToContext;
 }
 
-- (TextureAttributes)textureAttributesForVariable:(SEL)a3
+- (TextureAttributes)textureAttributesForVariable:(SEL)variable
 {
   v6 = a4;
   sub_2761CAC8C(&self->_state, v6, &v28);
@@ -98,12 +98,12 @@
   return result;
 }
 
-- (id)textureFunctionNameForVariable:(id)a3 projective:(BOOL)a4
+- (id)textureFunctionNameForVariable:(id)variable projective:(BOOL)projective
 {
-  v4 = a4;
-  v6 = a3;
+  projectiveCopy = projective;
+  variableCopy = variable;
   v11 = objc_msgSend_version(self, v7, v8, v9, v10);
-  v16 = objc_msgSend_textureFunctionNameForVariable_projective_context_(v11, v12, v13, v14, v15, v6, v4, self);
+  v16 = objc_msgSend_textureFunctionNameForVariable_projective_context_(v11, v12, v13, v14, v15, variableCopy, projectiveCopy, self);
 
   return v16;
 }
@@ -116,13 +116,13 @@
   return v10;
 }
 
-- (id)diffEffects:(id)a3
+- (id)diffEffects:(id)effects
 {
-  v4 = a3;
+  effectsCopy = effects;
   v9 = objc_msgSend_debugEffects(self, v5, v6, v7, v8);
   v14 = objc_msgSend_mutableCopy(v9, v10, v11, v12, v13);
 
-  v19 = objc_msgSend_debugEffects(v4, v15, v16, v17, v18);
+  v19 = objc_msgSend_debugEffects(effectsCopy, v15, v16, v17, v18);
   objc_msgSend_minusSet_(v14, v20, v21, v22, v23, v19);
 
   v28 = objc_msgSend_copy(v14, v24, v25, v26, v27);

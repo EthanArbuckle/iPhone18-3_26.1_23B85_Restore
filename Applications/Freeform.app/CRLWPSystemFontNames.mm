@@ -10,8 +10,8 @@
 + (NSString)semibold;
 + (NSString)thin;
 + (NSString)ultraLight;
-+ (double)weightForName:(id)a3;
-+ (id)nameForWeight:(double)a3;
++ (double)weightForName:(id)name;
++ (id)nameForWeight:(double)weight;
 - (_TtC8Freeform20CRLWPSystemFontNames)init;
 @end
 
@@ -94,15 +94,15 @@
   return v2.super.isa;
 }
 
-+ (id)nameForWeight:(double)a3
++ (id)nameForWeight:(double)weight
 {
-  sub_100CB269C(a3);
+  sub_100CB269C(weight);
   v3 = String._bridgeToObjectiveC()();
 
   return v3;
 }
 
-+ (double)weightForName:(id)a3
++ (double)weightForName:(id)name
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = v4;

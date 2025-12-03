@@ -1,15 +1,15 @@
 @interface MapsSuggestionsHomeWorkImprover
-- (BOOL)improveEntry:(id)a3;
+- (BOOL)improveEntry:(id)entry;
 @end
 
 @implementation MapsSuggestionsHomeWorkImprover
 
-- (BOOL)improveEntry:(id)a3
+- (BOOL)improveEntry:(id)entry
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  entryCopy = entry;
+  v5 = entryCopy;
+  if (!entryCopy)
   {
     v8 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -28,8 +28,8 @@
     goto LABEL_32;
   }
 
-  v6 = [v4 type];
-  switch(v6)
+  type = [entryCopy type];
+  switch(type)
   {
     case 19:
       v7 = MapsSuggestionsLocalizedSchoolString();
@@ -78,36 +78,36 @@ LABEL_32:
     [(MapsSuggestionsBaseImprover *)self improveMyUndecoratedTitle:v8 forEntry:v5];
   }
 
-  v13 = [v5 geoMapItem];
+  geoMapItem = [v5 geoMapItem];
 
-  if (v13)
+  if (geoMapItem)
   {
-    v14 = [v5 geoMapItem];
-    v15 = MapsSuggestionsMapItemCityName(v14);
+    geoMapItem2 = [v5 geoMapItem];
+    v15 = MapsSuggestionsMapItemCityName(geoMapItem2);
 
     if (v15)
     {
-      v16 = [v5 undecoratedSubtitle];
-      v17 = [v15 isEqualToString:v16];
+      undecoratedSubtitle = [v5 undecoratedSubtitle];
+      v17 = [v15 isEqualToString:undecoratedSubtitle];
 
       if ((v17 & 1) == 0)
       {
         v18 = v5;
-        v19 = [v18 subtitle];
+        subtitle = [v18 subtitle];
 
-        if (v19)
+        if (subtitle)
         {
-          v20 = [v18 subtitle];
-          v21 = [v18 undecoratedSubtitle];
-          v22 = [v20 isEqualToString:v21];
+          subtitle2 = [v18 subtitle];
+          undecoratedSubtitle2 = [v18 undecoratedSubtitle];
+          v22 = [subtitle2 isEqualToString:undecoratedSubtitle2];
 
           if (!v22)
           {
-            v23 = [v18 subtitle];
+            subtitle3 = [v18 subtitle];
             [(MapsSuggestionsBaseImprover *)self improveMyUndecoratedSubtitle:v15 forEntry:v18];
-            if (v23)
+            if (subtitle3)
             {
-              [v18 setSubtitle:v23];
+              [v18 setSubtitle:subtitle3];
             }
 
             goto LABEL_29;
@@ -130,8 +130,8 @@ LABEL_29:
     goto LABEL_32;
   }
 
-  v25 = [v5 subtitle];
-  v26 = [v25 length];
+  subtitle4 = [v5 subtitle];
+  v26 = [subtitle4 length];
 
   if (!v26)
   {

@@ -1,20 +1,20 @@
 @interface CFXEffectComposition
-- (BOOL)hasEffectOfType:(id)a3;
+- (BOOL)hasEffectOfType:(id)type;
 - (BOOL)hasFaceTrackedOverlays;
 - (BOOL)requiresFaceTracking;
 - (CFXEffectComposition)init;
 - (NSArray)effects;
 - (NSArray)jtEffects;
-- (id)CFX_effectsForJettyType:(int)a3;
-- (id)jtEffectsForType:(int)a3;
+- (id)CFX_effectsForJettyType:(int)type;
+- (id)jtEffectsForType:(int)type;
 - (unint64_t)count;
-- (unint64_t)indexOfEffect:(id)a3;
-- (void)addEffect:(id)a3 completion:(id)a4;
-- (void)insertEffectAtIndex:(id)a3 atIndex:(unint64_t)a4;
-- (void)removeAllEffects:(id)a3;
-- (void)removeAllEffectsOfType:(id)a3 completion:(id)a4;
-- (void)removeAllOverlayEffects:(id)a3;
-- (void)removeEffect:(id)a3 completion:(id)a4;
+- (unint64_t)indexOfEffect:(id)effect;
+- (void)addEffect:(id)effect completion:(id)completion;
+- (void)insertEffectAtIndex:(id)index atIndex:(unint64_t)atIndex;
+- (void)removeAllEffects:(id)effects;
+- (void)removeAllEffectsOfType:(id)type completion:(id)completion;
+- (void)removeAllOverlayEffects:(id)effects;
+- (void)removeEffect:(id)effect completion:(id)completion;
 @end
 
 @implementation CFXEffectComposition
@@ -29,8 +29,8 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"com.apple.%@", v5];
 
-  v7 = [v6 UTF8String];
-  v8 = dispatch_queue_create(v7, MEMORY[0x277D85CD8]);
+  uTF8String = [v6 UTF8String];
+  v8 = dispatch_queue_create(uTF8String, MEMORY[0x277D85CD8]);
   [(CFXEffectComposition *)v2 setConcurrentQueue:v8];
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -54,14 +54,14 @@
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(CFXEffectComposition *)self concurrentQueue];
+  concurrentQueue = [(CFXEffectComposition *)self concurrentQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __29__CFXEffectComposition_count__block_invoke;
   v6[3] = &unk_278D79C60;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(concurrentQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -78,27 +78,27 @@ void __29__CFXEffectComposition_count__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = v4 + [v5 count];
 }
 
-- (BOOL)hasEffectOfType:(id)a3
+- (BOOL)hasEffectOfType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(CFXEffectComposition *)self concurrentQueue];
+  concurrentQueue = [(CFXEffectComposition *)self concurrentQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__CFXEffectComposition_hasEffectOfType___block_invoke;
   block[3] = &unk_278D7A230;
-  v9 = v4;
+  v9 = typeCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = typeCopy;
+  dispatch_sync(concurrentQueue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(typeCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return typeCopy;
 }
 
 void __40__CFXEffectComposition_hasEffectOfType___block_invoke(uint64_t a1)
@@ -109,23 +109,23 @@ void __40__CFXEffectComposition_hasEffectOfType___block_invoke(uint64_t a1)
 
 - (BOOL)hasFaceTrackedOverlays
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CFXEffectComposition *)self concurrentQueue];
+  concurrentQueue = [(CFXEffectComposition *)self concurrentQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __46__CFXEffectComposition_hasFaceTrackedOverlays__block_invoke;
   v5[3] = &unk_278D7A3E0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(concurrentQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __46__CFXEffectComposition_hasFaceTrackedOverlays__block_invoke(uint64_t a1)
@@ -177,54 +177,54 @@ LABEL_11:
 
 - (BOOL)requiresFaceTracking
 {
-  v3 = [(CFXEffectComposition *)self overlays];
-  if ([v3 count])
+  overlays = [(CFXEffectComposition *)self overlays];
+  if ([overlays count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(CFXEffectComposition *)self animojis];
-    v4 = [v5 count] != 0;
+    animojis = [(CFXEffectComposition *)self animojis];
+    v4 = [animojis count] != 0;
   }
 
   return v4;
 }
 
-- (id)CFX_effectsForJettyType:(int)a3
+- (id)CFX_effectsForJettyType:(int)type
 {
-  switch(a3)
+  switch(type)
   {
     case 7:
-      v3 = [(CFXEffectComposition *)self animojis];
+      animojis = [(CFXEffectComposition *)self animojis];
       break;
     case 2:
-      v3 = [(CFXEffectComposition *)self overlays];
+      animojis = [(CFXEffectComposition *)self overlays];
       break;
     case 1:
-      v3 = [(CFXEffectComposition *)self filters];
+      animojis = [(CFXEffectComposition *)self filters];
       break;
     default:
-      v3 = 0;
+      animojis = 0;
       break;
   }
 
-  return v3;
+  return animojis;
 }
 
 - (NSArray)effects
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(CFXEffectComposition *)self concurrentQueue];
+  concurrentQueue = [(CFXEffectComposition *)self concurrentQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __31__CFXEffectComposition_effects__block_invoke;
   v8[3] = &unk_278D79C88;
   v5 = v3;
   v9 = v5;
-  v10 = self;
-  dispatch_sync(v4, v8);
+  selfCopy = self;
+  dispatch_sync(concurrentQueue, v8);
 
   v6 = v5;
   return v5;
@@ -245,21 +245,21 @@ void __31__CFXEffectComposition_effects__block_invoke(uint64_t a1)
   [v6 addObjectsFromArray:v7];
 }
 
-- (void)addEffect:(id)a3 completion:(id)a4
+- (void)addEffect:(id)effect completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CFXEffectComposition *)self concurrentQueue];
+  effectCopy = effect;
+  completionCopy = completion;
+  concurrentQueue = [(CFXEffectComposition *)self concurrentQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__CFXEffectComposition_addEffect_completion___block_invoke;
   block[3] = &unk_278D7A190;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_barrier_async(v8, block);
+  v12 = effectCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = effectCopy;
+  dispatch_barrier_async(concurrentQueue, block);
 }
 
 void __45__CFXEffectComposition_addEffect_completion___block_invoke(uint64_t a1)
@@ -321,21 +321,21 @@ void __45__CFXEffectComposition_addEffect_completion___block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeEffect:(id)a3 completion:(id)a4
+- (void)removeEffect:(id)effect completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CFXEffectComposition *)self concurrentQueue];
+  effectCopy = effect;
+  completionCopy = completion;
+  concurrentQueue = [(CFXEffectComposition *)self concurrentQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__CFXEffectComposition_removeEffect_completion___block_invoke;
   block[3] = &unk_278D7A190;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_barrier_async(v8, block);
+  v12 = effectCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = effectCopy;
+  dispatch_barrier_async(concurrentQueue, block);
 }
 
 void __48__CFXEffectComposition_removeEffect_completion___block_invoke(uint64_t a1)
@@ -370,18 +370,18 @@ void __48__CFXEffectComposition_removeEffect_completion___block_invoke(uint64_t 
   }
 }
 
-- (void)removeAllEffects:(id)a3
+- (void)removeAllEffects:(id)effects
 {
-  v4 = a3;
-  v5 = [(CFXEffectComposition *)self concurrentQueue];
+  effectsCopy = effects;
+  concurrentQueue = [(CFXEffectComposition *)self concurrentQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__CFXEffectComposition_removeAllEffects___block_invoke;
   v7[3] = &unk_278D7A140;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_barrier_async(v5, v7);
+  v8 = effectsCopy;
+  v6 = effectsCopy;
+  dispatch_barrier_async(concurrentQueue, v7);
 }
 
 void __41__CFXEffectComposition_removeAllEffects___block_invoke(uint64_t a1)
@@ -410,23 +410,23 @@ void __41__CFXEffectComposition_removeAllEffects___block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeAllEffectsOfType:(id)a3 completion:(id)a4
+- (void)removeAllEffectsOfType:(id)type completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 jtEffectType];
-  v9 = [(CFXEffectComposition *)self concurrentQueue];
+  typeCopy = type;
+  completionCopy = completion;
+  jtEffectType = [typeCopy jtEffectType];
+  concurrentQueue = [(CFXEffectComposition *)self concurrentQueue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __58__CFXEffectComposition_removeAllEffectsOfType_completion___block_invoke;
   v12[3] = &unk_278D7A408;
-  v15 = v8;
+  v15 = jtEffectType;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_barrier_async(v9, v12);
+  v13 = typeCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = typeCopy;
+  dispatch_barrier_async(concurrentQueue, v12);
 }
 
 void __58__CFXEffectComposition_removeAllEffectsOfType_completion___block_invoke(uint64_t a1)
@@ -452,18 +452,18 @@ void __58__CFXEffectComposition_removeAllEffectsOfType_completion___block_invoke
   }
 }
 
-- (void)removeAllOverlayEffects:(id)a3
+- (void)removeAllOverlayEffects:(id)effects
 {
-  v4 = a3;
-  v5 = [(CFXEffectComposition *)self concurrentQueue];
+  effectsCopy = effects;
+  concurrentQueue = [(CFXEffectComposition *)self concurrentQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__CFXEffectComposition_removeAllOverlayEffects___block_invoke;
   v7[3] = &unk_278D7A140;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_barrier_async(v5, v7);
+  v8 = effectsCopy;
+  v6 = effectsCopy;
+  dispatch_barrier_async(concurrentQueue, v7);
 }
 
 void __48__CFXEffectComposition_removeAllOverlayEffects___block_invoke(uint64_t a1)
@@ -489,23 +489,23 @@ void __48__CFXEffectComposition_removeAllOverlayEffects___block_invoke(uint64_t 
   }
 }
 
-- (unint64_t)indexOfEffect:(id)a3
+- (unint64_t)indexOfEffect:(id)effect
 {
-  v4 = a3;
+  effectCopy = effect;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0x7FFFFFFFFFFFFFFFLL;
-  v5 = [(CFXEffectComposition *)self concurrentQueue];
+  concurrentQueue = [(CFXEffectComposition *)self concurrentQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__CFXEffectComposition_indexOfEffect___block_invoke;
   block[3] = &unk_278D7A430;
-  v10 = v4;
-  v11 = self;
+  v10 = effectCopy;
+  selfCopy = self;
   v12 = &v13;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = effectCopy;
+  dispatch_sync(concurrentQueue, block);
 
   v7 = v14[3];
   _Block_object_dispose(&v13, 8);
@@ -526,19 +526,19 @@ void __38__CFXEffectComposition_indexOfEffect___block_invoke(uint64_t a1)
   }
 }
 
-- (void)insertEffectAtIndex:(id)a3 atIndex:(unint64_t)a4
+- (void)insertEffectAtIndex:(id)index atIndex:(unint64_t)atIndex
 {
-  v6 = a3;
-  v7 = [(CFXEffectComposition *)self concurrentQueue];
+  indexCopy = index;
+  concurrentQueue = [(CFXEffectComposition *)self concurrentQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__CFXEffectComposition_insertEffectAtIndex_atIndex___block_invoke;
   block[3] = &unk_278D7A458;
-  v10 = v6;
-  v11 = self;
-  v12 = a4;
-  v8 = v6;
-  dispatch_barrier_async(v7, block);
+  v10 = indexCopy;
+  selfCopy = self;
+  atIndexCopy = atIndex;
+  v8 = indexCopy;
+  dispatch_barrier_async(concurrentQueue, block);
 }
 
 void __52__CFXEffectComposition_insertEffectAtIndex_atIndex___block_invoke(uint64_t a1)
@@ -557,15 +557,15 @@ void __52__CFXEffectComposition_insertEffectAtIndex_atIndex___block_invoke(uint6
 
 - (NSArray)jtEffects
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(CFXEffectComposition *)self effects];
+  array = [MEMORY[0x277CBEB18] array];
+  effects = [(CFXEffectComposition *)self effects];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__CFXEffectComposition_jtEffects__block_invoke;
   v7[3] = &unk_278D7A480;
-  v5 = v3;
+  v5 = array;
   v8 = v5;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [effects enumerateObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -577,26 +577,26 @@ void __33__CFXEffectComposition_jtEffects__block_invoke(uint64_t a1, void *a2)
   [v2 addObject:v3];
 }
 
-- (id)jtEffectsForType:(int)a3
+- (id)jtEffectsForType:(int)type
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(CFXEffectComposition *)self concurrentQueue];
+  concurrentQueue = [(CFXEffectComposition *)self concurrentQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__CFXEffectComposition_jtEffectsForType___block_invoke;
   block[3] = &unk_278D7A4A8;
   v14 = v5;
-  v15 = self;
-  v16 = a3;
+  selfCopy = self;
+  typeCopy = type;
   v7 = v5;
-  dispatch_sync(v6, block);
+  dispatch_sync(concurrentQueue, block);
 
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __41__CFXEffectComposition_jtEffectsForType___block_invoke_2;
   v11[3] = &unk_278D7A480;
-  v9 = v8;
+  v9 = array;
   v12 = v9;
   [v7 enumerateObjectsUsingBlock:v11];
 

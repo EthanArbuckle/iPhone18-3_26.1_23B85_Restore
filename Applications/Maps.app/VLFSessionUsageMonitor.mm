@@ -1,41 +1,41 @@
 @interface VLFSessionUsageMonitor
 + (BOOL)affectsBannerVisibility;
 + (BOOL)affectsPuckVisibility;
-- (VLFSessionUsageMonitor)initWithObserver:(id)a3;
+- (VLFSessionUsageMonitor)initWithObserver:(id)observer;
 - (id)debugDescription;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)updateState;
 - (void)updateTimer;
 @end
 
 @implementation VLFSessionUsageMonitor
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   v13 = +[VLFSessionUsageTracker sharedInstance];
   v14 = v13;
-  if (v13 != v11)
+  if (v13 != objectCopy)
   {
 
 LABEL_3:
     v20.receiver = self;
     v20.super_class = VLFSessionUsageMonitor;
-    [(VLFSessionUsageMonitor *)&v20 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(VLFSessionUsageMonitor *)&v20 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
     goto LABEL_11;
   }
 
   v15 = NSStringFromSelector("hasVLFEverLocalized");
-  if ([v10 isEqualToString:v15])
+  if ([pathCopy isEqualToString:v15])
   {
     goto LABEL_7;
   }
 
   v16 = NSStringFromSelector("numberOfCalloutInteractions");
-  if ([v10 isEqualToString:v16])
+  if ([pathCopy isEqualToString:v16])
   {
 
 LABEL_7:
@@ -43,7 +43,7 @@ LABEL_7:
   }
 
   v18 = NSStringFromSelector("hasUserEnteredVLF");
-  v19 = [v10 isEqualToString:v18];
+  v19 = [pathCopy isEqualToString:v18];
 
   if ((v19 & 1) == 0)
   {
@@ -55,7 +55,7 @@ LABEL_8:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v22 = v10;
+    v22 = pathCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Detected keypath changed (%@); updating state", buf, 0xCu);
   }
 
@@ -100,14 +100,14 @@ LABEL_11:
   }
 
   v25 = v5;
-  v6 = [(VLFSessionMonitor *)self state];
+  state = [(VLFSessionMonitor *)self state];
   v7 = @"Hide";
-  if (v6 == 1)
+  if (state == 1)
   {
     v7 = @"EnablePuck";
   }
 
-  if (v6 == 2)
+  if (state == 2)
   {
     v7 = @"EnablePuckAndBanner";
   }
@@ -127,21 +127,21 @@ LABEL_11:
   v10 = v9;
   UInteger = GEOConfigGetUInteger();
   v12 = +[VLFSessionUsageTracker sharedInstance];
-  v13 = [v12 numberOfCalloutDismissals];
+  numberOfCalloutDismissals = [v12 numberOfCalloutDismissals];
   v14 = +[VLFSessionUsageTracker sharedInstance];
-  v15 = [v14 numberOfCalloutTaps];
+  numberOfCalloutTaps = [v14 numberOfCalloutTaps];
   v16 = +[VLFSessionUsageTracker sharedInstance];
   [v16 timeSinceLastVLFInteraction];
   v18 = v17;
   v19 = +[VLFSessionUsageTracker sharedInstance];
-  v20 = [v19 hasUserSeenVLFCallout];
+  hasUserSeenVLFCallout = [v19 hasUserSeenVLFCallout];
   v21 = @"NO";
-  if (v20)
+  if (hasUserSeenVLFCallout)
   {
     v21 = @"YES";
   }
 
-  v22 = [NSString stringWithFormat:@"<%@: isEnabled: %@, affectsPuckVisibility: %@, affectsBannerVisibility: %@, currentState: %@, hasVLFEverLocalized: %@, maxCalloutDismissals: %lu, numberOfCalloutDismissals: %lu, numberOfCalloutTaps: %lu, timeSinceLastVLFInteraction: %f, hasUserSeenVLFCallout: %@>", v28, v27, v26, v25, v24, v10, UInteger, v13, v15, v18, v21];
+  v22 = [NSString stringWithFormat:@"<%@: isEnabled: %@, affectsPuckVisibility: %@, affectsBannerVisibility: %@, currentState: %@, hasVLFEverLocalized: %@, maxCalloutDismissals: %lu, numberOfCalloutDismissals: %lu, numberOfCalloutTaps: %lu, timeSinceLastVLFInteraction: %f, hasUserSeenVLFCallout: %@>", v28, v27, v26, v25, v24, v10, UInteger, numberOfCalloutDismissals, numberOfCalloutTaps, v18, v21];
 
   return v22;
 }
@@ -149,9 +149,9 @@ LABEL_11:
 - (void)updateTimer
 {
   v3 = +[VLFSessionUsageTracker sharedInstance];
-  v4 = [v3 numberOfCalloutInteractions];
+  numberOfCalloutInteractions = [v3 numberOfCalloutInteractions];
 
-  if (v4 == 1)
+  if (numberOfCalloutInteractions == 1)
   {
     GEOConfigGetDouble();
     v6 = v5;
@@ -182,9 +182,9 @@ LABEL_7:
   else
   {
     v13 = +[VLFSessionUsageTracker sharedInstance];
-    v14 = [v13 numberOfCalloutInteractions];
+    numberOfCalloutInteractions2 = [v13 numberOfCalloutInteractions];
 
-    if (v14 >= 2)
+    if (numberOfCalloutInteractions2 >= 2)
     {
       GEOConfigGetDouble();
       v16 = v15;
@@ -215,9 +215,9 @@ LABEL_7:
 - (void)updateState
 {
   v3 = +[VLFSessionUsageTracker sharedInstance];
-  v4 = [v3 hasVLFEverLocalized];
+  hasVLFEverLocalized = [v3 hasVLFEverLocalized];
 
-  if (v4)
+  if (hasVLFEverLocalized)
   {
     v5 = sub_10068B408();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -237,10 +237,10 @@ LABEL_13:
   }
 
   v9 = +[VLFSessionUsageTracker sharedInstance];
-  v10 = [v9 numberOfCalloutDismissals];
+  numberOfCalloutDismissals = [v9 numberOfCalloutDismissals];
   UInteger = GEOConfigGetUInteger();
 
-  if (v10 >= UInteger)
+  if (numberOfCalloutDismissals >= UInteger)
   {
     v5 = sub_10068B408();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -337,11 +337,11 @@ LABEL_11:
   [(VLFSessionUsageMonitor *)&v9 dealloc];
 }
 
-- (VLFSessionUsageMonitor)initWithObserver:(id)a3
+- (VLFSessionUsageMonitor)initWithObserver:(id)observer
 {
   v11.receiver = self;
   v11.super_class = VLFSessionUsageMonitor;
-  v3 = [(VLFSessionMonitor *)&v11 initWithObserver:a3];
+  v3 = [(VLFSessionMonitor *)&v11 initWithObserver:observer];
   if (v3)
   {
     v4 = +[VLFSessionUsageTracker sharedInstance];

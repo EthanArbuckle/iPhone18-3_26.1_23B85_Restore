@@ -1,40 +1,40 @@
 @interface WFSmartPromptDialogRequest
-- (WFSmartPromptDialogRequest)initWithCoder:(id)a3;
-- (WFSmartPromptDialogRequest)initWithConfiguration:(id)a3 attribution:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)getContentCollectionWithCompletionHandler:(id)a3;
+- (WFSmartPromptDialogRequest)initWithCoder:(id)coder;
+- (WFSmartPromptDialogRequest)initWithConfiguration:(id)configuration attribution:(id)attribution;
+- (void)encodeWithCoder:(id)coder;
+- (void)getContentCollectionWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFSmartPromptDialogRequest
 
-- (void)getContentCollectionWithCompletionHandler:(id)a3
+- (void)getContentCollectionWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFSmartPromptDialogRequest.m" lineNumber:113 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSmartPromptDialogRequest.m" lineNumber:113 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __72__WFSmartPromptDialogRequest_getContentCollectionWithCompletionHandler___block_invoke;
   aBlock[3] = &unk_1E837BEF8;
-  v6 = v5;
+  v6 = handlerCopy;
   v17 = v6;
   v7 = _Block_copy(aBlock);
-  v8 = [(WFSmartPromptDialogRequest *)self cachedSourceContentCollection];
+  cachedSourceContentCollection = [(WFSmartPromptDialogRequest *)self cachedSourceContentCollection];
 
-  if (v8)
+  if (cachedSourceContentCollection)
   {
-    v9 = [(WFSmartPromptDialogRequest *)self cachedSourceContentCollection];
-    v7[2](v7, v9);
+    cachedSourceContentCollection2 = [(WFSmartPromptDialogRequest *)self cachedSourceContentCollection];
+    v7[2](v7, cachedSourceContentCollection2);
   }
 
   else
   {
     v10 = MEMORY[0x1E696ACD0];
-    v11 = [(WFSmartPromptDialogRequest *)self archivedSourceContentCollection];
+    archivedSourceContentCollection = [(WFSmartPromptDialogRequest *)self archivedSourceContentCollection];
     v12 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
@@ -42,7 +42,7 @@
     v15[3] = &unk_1E837BF20;
     v15[4] = self;
     v15[5] = v7;
-    v13 = [v10 wf_securelyUnarchiveObjectWithData:v11 allowedClasses:v12 completionHandler:v15];
+    v13 = [v10 wf_securelyUnarchiveObjectWithData:archivedSourceContentCollection allowedClasses:v12 completionHandler:v15];
   }
 }
 
@@ -89,67 +89,67 @@ void __72__WFSmartPromptDialogRequest_getContentCollectionWithCompletionHandler_
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = WFSmartPromptDialogRequest;
-  v4 = a3;
-  [(WFDialogRequest *)&v12 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFDialogRequest *)&v12 encodeWithCoder:coderCopy];
   v5 = [(WFSmartPromptDialogRequest *)self configuration:v12.receiver];
-  [v4 encodeObject:v5 forKey:@"configuration"];
+  [coderCopy encodeObject:v5 forKey:@"configuration"];
 
-  v6 = [(WFSmartPromptDialogRequest *)self secondaryText];
-  [v4 encodeObject:v6 forKey:@"secondaryText"];
+  secondaryText = [(WFSmartPromptDialogRequest *)self secondaryText];
+  [coderCopy encodeObject:secondaryText forKey:@"secondaryText"];
 
-  v7 = [(WFSmartPromptDialogRequest *)self archivedSourceContentCollection];
-  [v4 encodeObject:v7 forKey:@"archivedSourceContentCollection"];
+  archivedSourceContentCollection = [(WFSmartPromptDialogRequest *)self archivedSourceContentCollection];
+  [coderCopy encodeObject:archivedSourceContentCollection forKey:@"archivedSourceContentCollection"];
 
-  v8 = [(WFSmartPromptDialogRequest *)self previewButton];
-  [v4 encodeObject:v8 forKey:@"previewButton"];
+  previewButton = [(WFSmartPromptDialogRequest *)self previewButton];
+  [coderCopy encodeObject:previewButton forKey:@"previewButton"];
 
-  v9 = [(WFSmartPromptDialogRequest *)self allowOnceButton];
-  [v4 encodeObject:v9 forKey:@"allowOnceButton"];
+  allowOnceButton = [(WFSmartPromptDialogRequest *)self allowOnceButton];
+  [coderCopy encodeObject:allowOnceButton forKey:@"allowOnceButton"];
 
-  v10 = [(WFSmartPromptDialogRequest *)self allowAlwaysButton];
-  [v4 encodeObject:v10 forKey:@"allowAlwaysButton"];
+  allowAlwaysButton = [(WFSmartPromptDialogRequest *)self allowAlwaysButton];
+  [coderCopy encodeObject:allowAlwaysButton forKey:@"allowAlwaysButton"];
 
-  v11 = [(WFSmartPromptDialogRequest *)self denyButton];
-  [v4 encodeObject:v11 forKey:@"denyButton"];
+  denyButton = [(WFSmartPromptDialogRequest *)self denyButton];
+  [coderCopy encodeObject:denyButton forKey:@"denyButton"];
 }
 
-- (WFSmartPromptDialogRequest)initWithCoder:(id)a3
+- (WFSmartPromptDialogRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = WFSmartPromptDialogRequest;
-  v5 = [(WFDialogRequest *)&v22 initWithCoder:v4];
+  v5 = [(WFDialogRequest *)&v22 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
     configuration = v5->_configuration;
     v5->_configuration = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondaryText"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondaryText"];
     secondaryText = v5->_secondaryText;
     v5->_secondaryText = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"archivedSourceContentCollection"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"archivedSourceContentCollection"];
     archivedSourceContentCollection = v5->_archivedSourceContentCollection;
     v5->_archivedSourceContentCollection = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"previewButton"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"previewButton"];
     previewButton = v5->_previewButton;
     v5->_previewButton = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowOnceButton"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowOnceButton"];
     allowOnceButton = v5->_allowOnceButton;
     v5->_allowOnceButton = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowAlwaysButton"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowAlwaysButton"];
     allowAlwaysButton = v5->_allowAlwaysButton;
     v5->_allowAlwaysButton = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"denyButton"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"denyButton"];
     denyButton = v5->_denyButton;
     v5->_denyButton = v18;
 
@@ -159,37 +159,37 @@ void __72__WFSmartPromptDialogRequest_getContentCollectionWithCompletionHandler_
   return v5;
 }
 
-- (WFSmartPromptDialogRequest)initWithConfiguration:(id)a3 attribution:(id)a4
+- (WFSmartPromptDialogRequest)initWithConfiguration:(id)configuration attribution:(id)attribution
 {
   v59 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 localizedPrompt];
+  configurationCopy = configuration;
+  attributionCopy = attribution;
+  localizedPrompt = [configurationCopy localizedPrompt];
   v56.receiver = self;
   v56.super_class = WFSmartPromptDialogRequest;
-  v10 = [(WFDialogRequest *)&v56 initWithAttribution:v8 prompt:v9];
+  v10 = [(WFDialogRequest *)&v56 initWithAttribution:attributionCopy prompt:localizedPrompt];
 
   if (v10)
   {
-    objc_storeStrong(&v10->_configuration, a3);
-    v11 = [v7 localizedSubtitle];
+    objc_storeStrong(&v10->_configuration, configuration);
+    localizedSubtitle = [configurationCopy localizedSubtitle];
     secondaryText = v10->_secondaryText;
-    v10->_secondaryText = v11;
+    v10->_secondaryText = localizedSubtitle;
 
-    v13 = [v7 archivedSourceContentCollection];
+    archivedSourceContentCollection = [configurationCopy archivedSourceContentCollection];
     archivedSourceContentCollection = v10->_archivedSourceContentCollection;
-    v10->_archivedSourceContentCollection = v13;
+    v10->_archivedSourceContentCollection = archivedSourceContentCollection;
 
     if (v10->_archivedSourceContentCollection)
     {
-      v15 = [v7 cachedSourceContentCollection];
-      v16 = [v15 copy];
+      cachedSourceContentCollection = [configurationCopy cachedSourceContentCollection];
+      v16 = [cachedSourceContentCollection copy];
       cachedSourceContentCollection = v10->_cachedSourceContentCollection;
       v10->_cachedSourceContentCollection = v16;
 
-      v18 = [(WFContentCollection *)v10->_cachedSourceContentCollection numberOfItems];
-      v19 = v18;
-      if (v18 > 1 || v18 == 1 && ([v7 requestSource], v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v27, "isEqualToString:", @"Siri"), v27, v28))
+      numberOfItems = [(WFContentCollection *)v10->_cachedSourceContentCollection numberOfItems];
+      v19 = numberOfItems;
+      if (numberOfItems > 1 || numberOfItems == 1 && ([configurationCopy requestSource], v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v27, "isEqualToString:", @"Siri"), v27, v28))
       {
         v20 = MEMORY[0x1E696AEC0];
         v21 = WFLocalizedString(@"Show All %d");
@@ -206,11 +206,11 @@ void __72__WFSmartPromptDialogRequest_getContentCollectionWithCompletionHandler_
         v10->_previewButton = 0;
       }
 
-      v29 = [v7 requestType];
+      requestType = [configurationCopy requestType];
 
-      if (v29 == @"SmartPrompt")
+      if (requestType == @"SmartPrompt")
       {
-        if ([v7 isSpecialRequest])
+        if ([configurationCopy isSpecialRequest])
         {
           allowOnceButton = v10->_allowOnceButton;
           v10->_allowOnceButton = 0;
@@ -225,9 +225,9 @@ void __72__WFSmartPromptDialogRequest_getContentCollectionWithCompletionHandler_
           v10->_allowOnceButton = v41;
         }
 
-        v43 = [v7 isSpecialRequest];
+        isSpecialRequest = [configurationCopy isSpecialRequest];
         v44 = objc_alloc(MEMORY[0x1E69E0AA0]);
-        if (v43)
+        if (isSpecialRequest)
         {
           v45 = @"Allow";
         }
@@ -248,9 +248,9 @@ void __72__WFSmartPromptDialogRequest_getContentCollectionWithCompletionHandler_
 
       else
       {
-        v30 = [v7 requestType];
+        requestType2 = [configurationCopy requestType];
 
-        if (v30 != @"DeletionAuthorization")
+        if (requestType2 != @"DeletionAuthorization")
         {
 LABEL_26:
           v26 = v10;

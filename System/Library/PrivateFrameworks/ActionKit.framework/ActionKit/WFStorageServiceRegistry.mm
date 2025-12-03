@@ -1,26 +1,26 @@
 @interface WFStorageServiceRegistry
 + (id)sharedRegistry;
-+ (void)registerStorageServiceClass:(Class)a3;
++ (void)registerStorageServiceClass:(Class)class;
 - (NSArray)storageServices;
 - (NSSet)objectRepresentationClasses;
 - (WFStorageServiceRegistry)init;
-- (id)storageServiceWithName:(id)a3;
+- (id)storageServiceWithName:(id)name;
 @end
 
 @implementation WFStorageServiceRegistry
 
-- (id)storageServiceWithName:(id)a3
+- (id)storageServiceWithName:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [(WFStorageServiceRegistry *)self registeredServices];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    registeredServices = [(WFStorageServiceRegistry *)self registeredServices];
+    v6 = [registeredServices countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = *v15;
@@ -30,12 +30,12 @@
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(registeredServices);
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
-          v10 = [objc_opt_class() serviceName];
-          v11 = [v10 isEqualToString:v4];
+          serviceName = [objc_opt_class() serviceName];
+          v11 = [serviceName isEqualToString:nameCopy];
 
           if (v11)
           {
@@ -44,7 +44,7 @@
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v6 = [registeredServices countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v6)
         {
           continue;
@@ -69,8 +69,8 @@ LABEL_12:
 
 - (NSSet)objectRepresentationClasses
 {
-  v2 = [(WFStorageServiceRegistry *)self storageServices];
-  v3 = [v2 if_compactMap:&__block_literal_global_190_22396];
+  storageServices = [(WFStorageServiceRegistry *)self storageServices];
+  v3 = [storageServices if_compactMap:&__block_literal_global_190_22396];
 
   v4 = [MEMORY[0x277CBEB98] setWithArray:v3];
 
@@ -80,8 +80,8 @@ LABEL_12:
 - (NSArray)storageServices
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEBD0] workflowUserDefaults];
-  v4 = [v3 objectForKey:@"WFStorageServicesAllowedServices"];
+  workflowUserDefaults = [MEMORY[0x277CBEBD0] workflowUserDefaults];
+  v4 = [workflowUserDefaults objectForKey:@"WFStorageServicesAllowedServices"];
   v5 = objc_opt_class();
   v6 = v4;
   if (v6 && (objc_opt_isKindOfClass() & 1) == 0)
@@ -116,14 +116,14 @@ LABEL_12:
     v7 = v10;
   }
 
-  v11 = [(WFStorageServiceRegistry *)self registeredServices];
+  registeredServices = [(WFStorageServiceRegistry *)self registeredServices];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __43__WFStorageServiceRegistry_storageServices__block_invoke;
   v16[3] = &unk_278C1E058;
   v17 = v7;
   v12 = v7;
-  v13 = [v11 if_objectsPassingTest:v16];
+  v13 = [registeredServices if_objectsPassingTest:v16];
 
   v14 = *MEMORY[0x277D85DE8];
 
@@ -148,7 +148,7 @@ uint64_t __43__WFStorageServiceRegistry_storageServices__block_invoke(uint64_t a
   v2 = [(WFStorageServiceRegistry *)&v15 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEBD0] workflowUserDefaults];
+    workflowUserDefaults = [MEMORY[0x277CBEBD0] workflowUserDefaults];
     v17 = @"WFStorageServicesAllowedServices";
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
@@ -159,7 +159,7 @@ uint64_t __43__WFStorageServiceRegistry_storageServices__block_invoke(uint64_t a
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
     v18[0] = v8;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
-    [v3 registerDefaults:v9];
+    [workflowUserDefaults registerDefaults:v9];
 
     v10 = [registeredStorageServiceClasses if_map:&__block_literal_global_180];
     registeredServices = v2->_registeredServices;
@@ -185,7 +185,7 @@ id __32__WFStorageServiceRegistry_init__block_invoke()
   block[1] = 3221225472;
   block[2] = __42__WFStorageServiceRegistry_sharedRegistry__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedRegistry_onceToken != -1)
   {
     dispatch_once(&sharedRegistry_onceToken, block);
@@ -205,25 +205,25 @@ void __42__WFStorageServiceRegistry_sharedRegistry__block_invoke(uint64_t a1)
   sharedRegistry_sharedRegistry = v3;
 }
 
-+ (void)registerStorageServiceClass:(Class)a3
++ (void)registerStorageServiceClass:(Class)class
 {
   if (registerStorageServiceClass__onceToken != -1)
   {
     dispatch_once(&registerStorageServiceClass__onceToken, &__block_literal_global_22420);
   }
 
-  v4 = [(objc_class *)a3 isSubclassOfClass:objc_opt_class()];
+  v4 = [(objc_class *)class isSubclassOfClass:objc_opt_class()];
   v5 = registeredStorageServiceClasses;
   if (v4)
   {
 
-    [v5 insertObject:a3 atIndex:0];
+    [v5 insertObject:class atIndex:0];
   }
 
   else
   {
 
-    [v5 addObject:a3];
+    [v5 addObject:class];
   }
 }
 

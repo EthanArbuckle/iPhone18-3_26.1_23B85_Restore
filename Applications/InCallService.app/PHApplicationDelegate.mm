@@ -1,6 +1,6 @@
 @interface PHApplicationDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)application:(id)application openURL:(id)l options:(id)options;
 - (PHApplicationDelegate)init;
 @end
 
@@ -25,17 +25,17 @@
   return v2;
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v5 = a3;
-  v6 = a4;
+  applicationCopy = application;
+  optionsCopy = options;
   v7 = sub_100004F84();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = v5;
+    v10 = applicationCopy;
     v11 = 2112;
-    v12 = v6;
+    v12 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%@, %@", &v9, 0x16u);
   }
 
@@ -43,20 +43,20 @@
   return 1;
 }
 
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5
+- (BOOL)application:(id)application openURL:(id)l options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  applicationCopy = application;
+  lCopy = l;
+  optionsCopy = options;
   v10 = sub_100004F84();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412802;
-    v14 = v7;
+    v14 = applicationCopy;
     v15 = 2112;
-    v16 = v8;
+    v16 = lCopy;
     v17 = 2112;
-    v18 = v9;
+    v18 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@, %@ %@", &v13, 0x20u);
   }
 

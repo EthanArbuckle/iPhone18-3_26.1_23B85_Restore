@@ -1,25 +1,25 @@
 @interface MRUCoordinatedUpdate
-- (MRUCoordinatedUpdate)initWithUpdate:(id)a3 completion:(id)a4;
+- (MRUCoordinatedUpdate)initWithUpdate:(id)update completion:(id)completion;
 - (void)complete;
 - (void)process;
 @end
 
 @implementation MRUCoordinatedUpdate
 
-- (MRUCoordinatedUpdate)initWithUpdate:(id)a3 completion:(id)a4
+- (MRUCoordinatedUpdate)initWithUpdate:(id)update completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  completionCopy = completion;
   v14.receiver = self;
   v14.super_class = MRUCoordinatedUpdate;
   v8 = [(MRUCoordinatedUpdate *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [updateCopy copy];
     update = v8->_update;
     v8->_update = v9;
 
-    v11 = [v7 copy];
+    v11 = [completionCopy copy];
     completion = v8->_completion;
     v8->_completion = v11;
   }

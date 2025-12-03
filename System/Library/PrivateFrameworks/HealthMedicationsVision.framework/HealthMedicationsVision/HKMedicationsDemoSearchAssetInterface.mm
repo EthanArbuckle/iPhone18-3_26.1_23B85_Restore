@@ -1,24 +1,24 @@
 @interface HKMedicationsDemoSearchAssetInterface
-- (HKMedicationsDemoSearchAssetInterface)initWithAssetPath:(id)a3;
-- (id)expandedGenericMedicationSearchResult:(id)a3 error:(id *)a4;
-- (id)genericMedicationsFromTokens:(id)a3 error:(id *)a4;
-- (id)medicationFromNDCCode:(id)a3 error:(id *)a4;
+- (HKMedicationsDemoSearchAssetInterface)initWithAssetPath:(id)path;
+- (id)expandedGenericMedicationSearchResult:(id)result error:(id *)error;
+- (id)genericMedicationsFromTokens:(id)tokens error:(id *)error;
+- (id)medicationFromNDCCode:(id)code error:(id *)error;
 - (int)openAsset;
 - (void)close;
 @end
 
 @implementation HKMedicationsDemoSearchAssetInterface
 
-- (HKMedicationsDemoSearchAssetInterface)initWithAssetPath:(id)a3
+- (HKMedicationsDemoSearchAssetInterface)initWithAssetPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = HKMedicationsDemoSearchAssetInterface;
   v5 = [(HKMedicationsDemoSearchAssetInterface *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(HKMedicationsDemoSearchAssetInterface *)v5 setAssetPath:v4];
+    [(HKMedicationsDemoSearchAssetInterface *)v5 setAssetPath:pathCopy];
     v7 = dispatch_queue_create("HKMedicationsDemoSearchAssetInterface", 0);
     [(HKMedicationsDemoSearchAssetInterface *)v6 setQueue:v7];
 
@@ -55,9 +55,9 @@
   os_unfair_lock_unlock(&self->_interruptionLock);
 }
 
-- (id)medicationFromNDCCode:(id)a3 error:(id *)a4
+- (id)medicationFromNDCCode:(id)code error:(id *)error
 {
-  v6 = a3;
+  codeCopy = code;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -72,7 +72,7 @@
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v7 = [(HKMedicationsDemoSearchAssetInterface *)self queue];
+  queue = [(HKMedicationsDemoSearchAssetInterface *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__HKMedicationsDemoSearchAssetInterface_medicationFromNDCCode_error___block_invoke;
@@ -80,17 +80,17 @@
   v17 = v24;
   v18 = &v20;
   block[4] = self;
-  v8 = v6;
+  v8 = codeCopy;
   v16 = v8;
   v19 = &v26;
-  dispatch_sync(v7, block);
+  dispatch_sync(queue, block);
 
   if (v21[3])
   {
     v9 = MEMORY[0x277CCA9B8];
     v10 = objc_alloc(MEMORY[0x277CCACA8]);
     v11 = [v10 initWithUTF8String:v21[3]];
-    [v9 hk_assignError:a4 code:100 description:v11];
+    [v9 hk_assignError:error code:100 description:v11];
 
 LABEL_3:
     v12 = 0;
@@ -100,7 +100,7 @@ LABEL_3:
   v13 = v27[5];
   if (!v13)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:11 description:@"No medication matching NDC was found"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:11 description:@"No medication matching NDC was found"];
     goto LABEL_3;
   }
 
@@ -153,9 +153,9 @@ LABEL_7:
   return result;
 }
 
-- (id)genericMedicationsFromTokens:(id)a3 error:(id *)a4
+- (id)genericMedicationsFromTokens:(id)tokens error:(id *)error
 {
-  v6 = a3;
+  tokensCopy = tokens;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -170,39 +170,39 @@ LABEL_7:
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v7 = [(HKMedicationsDemoSearchAssetInterface *)self queue];
+  queue = [(HKMedicationsDemoSearchAssetInterface *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__HKMedicationsDemoSearchAssetInterface_genericMedicationsFromTokens_error___block_invoke;
   block[3] = &unk_2796D2818;
-  v8 = v6;
+  v8 = tokensCopy;
   v15 = v8;
-  v16 = self;
+  selfCopy = self;
   v17 = v24;
   v18 = &v20;
   v19 = &v26;
-  dispatch_sync(v7, block);
+  dispatch_sync(queue, block);
 
   if (v21[3])
   {
     v9 = MEMORY[0x277CCA9B8];
     v10 = objc_alloc(MEMORY[0x277CCACA8]);
     v11 = [v10 initWithUTF8String:v21[3]];
-    [v9 hk_assignError:a4 code:100 description:v11];
+    [v9 hk_assignError:error code:100 description:v11];
 
-    v12 = 0;
+    allObjects = 0;
   }
 
   else
   {
-    v12 = [v27[5] allObjects];
+    allObjects = [v27[5] allObjects];
   }
 
   _Block_object_dispose(&v20, 8);
   _Block_object_dispose(v24, 8);
   _Block_object_dispose(&v26, 8);
 
-  return v12;
+  return allObjects;
 }
 
 void __76__HKMedicationsDemoSearchAssetInterface_genericMedicationsFromTokens_error___block_invoke(uint64_t a1)
@@ -271,18 +271,18 @@ LABEL_16:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)expandedGenericMedicationSearchResult:(id)a3 error:(id *)a4
+- (id)expandedGenericMedicationSearchResult:(id)result error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 genericMedicationId];
-  if (v7 && (v8 = v7, [v6 ingredients], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count"), v9, v8, !v10))
+  resultCopy = result;
+  genericMedicationId = [resultCopy genericMedicationId];
+  if (genericMedicationId && (v8 = genericMedicationId, [resultCopy ingredients], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count"), v9, v8, !v10))
   {
     v24 = 0;
     v25 = &v24;
     v26 = 0x3032000000;
     v27 = __Block_byref_object_copy_;
     v28 = __Block_byref_object_dispose_;
-    v29 = v6;
+    v29 = resultCopy;
     v22[0] = 0;
     v22[1] = v22;
     v22[2] = 0x2020000000;
@@ -291,7 +291,7 @@ LABEL_16:
     v19 = &v18;
     v20 = 0x2020000000;
     v21 = 0;
-    v12 = [(HKMedicationsDemoSearchAssetInterface *)self queue];
+    queue = [(HKMedicationsDemoSearchAssetInterface *)self queue];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __85__HKMedicationsDemoSearchAssetInterface_expandedGenericMedicationSearchResult_error___block_invoke;
@@ -300,14 +300,14 @@ LABEL_16:
     v17[5] = v22;
     v17[6] = &v18;
     v17[7] = &v24;
-    dispatch_sync(v12, v17);
+    dispatch_sync(queue, v17);
 
     if (v19[3])
     {
       v13 = MEMORY[0x277CCA9B8];
       v14 = objc_alloc(MEMORY[0x277CCACA8]);
       v15 = [v14 initWithUTF8String:v19[3]];
-      [v13 hk_assignError:a4 code:100 description:v15];
+      [v13 hk_assignError:error code:100 description:v15];
 
       v11 = 0;
     }
@@ -324,7 +324,7 @@ LABEL_16:
 
   else
   {
-    v11 = v6;
+    v11 = resultCopy;
   }
 
   return v11;

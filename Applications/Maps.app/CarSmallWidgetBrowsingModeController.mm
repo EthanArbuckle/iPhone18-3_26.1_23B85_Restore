@@ -4,18 +4,18 @@
 - (void)_addNoContentView;
 - (void)_addSearchCategoriesView;
 - (void)_addShortcutsView;
-- (void)_applicationDidEnterBackground:(id)a3;
-- (void)_applicationWillEnterForeground:(id)a3;
+- (void)_applicationDidEnterBackground:(id)background;
+- (void)_applicationWillEnterForeground:(id)foreground;
 - (void)_clearFocusableItems;
 - (void)_updateWidgetContents;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
 - (void)dealloc;
-- (void)homeDataProvidingObjectDidUpdate:(id)a3;
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)setBrowsingState:(int64_t)a3;
-- (void)setSearchCategories:(id)a3;
-- (void)shortcutsProviderUpdated:(id)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)homeDataProvidingObjectDidUpdate:(id)update;
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)setBrowsingState:(int64_t)state;
+- (void)setSearchCategories:(id)categories;
+- (void)shortcutsProviderUpdated:(id)updated;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CarSmallWidgetBrowsingModeController
@@ -27,7 +27,7 @@
   return WeakRetained;
 }
 
-- (void)_applicationDidEnterBackground:(id)a3
+- (void)_applicationDidEnterBackground:(id)background
 {
   if (+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
   {
@@ -43,7 +43,7 @@
   }
 }
 
-- (void)_applicationWillEnterForeground:(id)a3
+- (void)_applicationWillEnterForeground:(id)foreground
 {
   if (+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
   {
@@ -59,7 +59,7 @@
   }
 }
 
-- (void)homeDataProvidingObjectDidUpdate:(id)a3
+- (void)homeDataProvidingObjectDidUpdate:(id)update
 {
   v4 = sub_100799D40();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -71,7 +71,7 @@
   [(CarSmallWidgetBrowsingModeController *)self _updateWidgetContents];
 }
 
-- (void)shortcutsProviderUpdated:(id)a3
+- (void)shortcutsProviderUpdated:(id)updated
 {
   v4 = sub_100799D40();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -85,41 +85,41 @@
 
 - (void)_clearFocusableItems
 {
-  v3 = [(CarSmallWidgetBrowsingModeController *)self view];
-  v4 = [v3 window];
+  view = [(CarSmallWidgetBrowsingModeController *)self view];
+  window = [view window];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(CarSmallWidgetBrowsingModeController *)self view];
-    v7 = [v6 window];
+    view2 = [(CarSmallWidgetBrowsingModeController *)self view];
+    window2 = [view2 window];
 
-    [v7 _maps_safeSetFocusableViews:&__NSArray0__struct];
+    [window2 _maps_safeSetFocusableViews:&__NSArray0__struct];
   }
 }
 
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v5 = a3;
+  controllerCopy = controller;
   [(CarSmallWidgetBrowsingModeController *)self _clearFocusableItems];
-  v6 = [v5 nextTopContext];
+  nextTopContext = [controllerCopy nextTopContext];
 
   objc_opt_class();
-  LOBYTE(v5) = objc_opt_isKindOfClass();
+  LOBYTE(controllerCopy) = objc_opt_isKindOfClass();
 
-  if ((v5 & 1) == 0)
+  if ((controllerCopy & 1) == 0)
   {
     v8 = +[CarDisplayController sharedInstance];
-    v7 = [v8 routeGeniusManager];
-    [v7 deactivateForAllChromes];
+    routeGeniusManager = [v8 routeGeniusManager];
+    [routeGeniusManager deactivateForAllChromes];
   }
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  animationCopy = animation;
   [(CarSmallWidgetBrowsingModeController *)self _updateWidgetContents];
   objc_initWeak(&location, self);
   browseManager = self->_browseManager;
@@ -133,11 +133,11 @@
   objc_destroyWeak(&location);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CarSmallWidgetBrowsingModeController;
-  [(CarSmallWidgetBrowsingModeController *)&v4 viewWillDisappear:a3];
+  [(CarSmallWidgetBrowsingModeController *)&v4 viewWillDisappear:disappear];
   [(CarSmallWidgetBrowsingModeController *)self _clearFocusableItems];
 }
 
@@ -152,16 +152,16 @@
     [(CarSmallWidgetNoContentView *)self->_noContentView setTranslatesAutoresizingMaskIntoConstraints:0];
   }
 
-  v5 = [(CarSmallWidgetBrowsingModeController *)self view];
-  [v5 addSubview:self->_noContentView];
+  view = [(CarSmallWidgetBrowsingModeController *)self view];
+  [view addSubview:self->_noContentView];
 
   v6 = self->_noContentView;
-  v11 = [(CarSmallWidgetBrowsingModeController *)self view];
-  v7 = [v11 safeAreaLayoutGuide];
+  view2 = [(CarSmallWidgetBrowsingModeController *)self view];
+  safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
   LODWORD(v8) = 1148846080;
-  v9 = [(CarSmallWidgetNoContentView *)v6 _maps_constraintsEqualToEdgesOfLayoutGuide:v7 insets:UIEdgeInsetsZero.top priority:UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right, v8];
-  v10 = [v9 allConstraints];
-  [NSLayoutConstraint activateConstraints:v10];
+  v9 = [(CarSmallWidgetNoContentView *)v6 _maps_constraintsEqualToEdgesOfLayoutGuide:safeAreaLayoutGuide insets:UIEdgeInsetsZero.top priority:UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right, v8];
+  allConstraints = [v9 allConstraints];
+  [NSLayoutConstraint activateConstraints:allConstraints];
 }
 
 - (void)_addSearchCategoriesView
@@ -175,16 +175,16 @@
     [(CarSmallWidgetSearchCategoriesView *)self->_searchCategoriesView setTranslatesAutoresizingMaskIntoConstraints:0];
   }
 
-  v5 = [(CarSmallWidgetBrowsingModeController *)self view];
-  [v5 addSubview:self->_searchCategoriesView];
+  view = [(CarSmallWidgetBrowsingModeController *)self view];
+  [view addSubview:self->_searchCategoriesView];
 
   v6 = self->_searchCategoriesView;
-  v11 = [(CarSmallWidgetBrowsingModeController *)self view];
-  v7 = [v11 safeAreaLayoutGuide];
+  view2 = [(CarSmallWidgetBrowsingModeController *)self view];
+  safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
   LODWORD(v8) = 1148846080;
-  v9 = [(CarSmallWidgetSearchCategoriesView *)v6 _maps_constraintsEqualToEdgesOfLayoutGuide:v7 insets:UIEdgeInsetsZero.top priority:UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right, v8];
-  v10 = [v9 allConstraints];
-  [NSLayoutConstraint activateConstraints:v10];
+  v9 = [(CarSmallWidgetSearchCategoriesView *)v6 _maps_constraintsEqualToEdgesOfLayoutGuide:safeAreaLayoutGuide insets:UIEdgeInsetsZero.top priority:UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right, v8];
+  allConstraints = [v9 allConstraints];
+  [NSLayoutConstraint activateConstraints:allConstraints];
 }
 
 - (void)_addShortcutsView
@@ -198,31 +198,31 @@
     [(CarSmallWidgetShortcutsView *)self->_shortcutsView setTranslatesAutoresizingMaskIntoConstraints:0];
   }
 
-  v5 = [(CarSmallWidgetBrowsingModeController *)self view];
-  [v5 addSubview:self->_shortcutsView];
+  view = [(CarSmallWidgetBrowsingModeController *)self view];
+  [view addSubview:self->_shortcutsView];
 
   v6 = self->_shortcutsView;
-  v11 = [(CarSmallWidgetBrowsingModeController *)self view];
-  v7 = [v11 safeAreaLayoutGuide];
+  view2 = [(CarSmallWidgetBrowsingModeController *)self view];
+  safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
   LODWORD(v8) = 1148846080;
-  v9 = [(CarSmallWidgetShortcutsView *)v6 _maps_constraintsEqualToEdgesOfLayoutGuide:v7 insets:UIEdgeInsetsZero.top priority:UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right, v8];
-  v10 = [v9 allConstraints];
-  [NSLayoutConstraint activateConstraints:v10];
+  v9 = [(CarSmallWidgetShortcutsView *)v6 _maps_constraintsEqualToEdgesOfLayoutGuide:safeAreaLayoutGuide insets:UIEdgeInsetsZero.top priority:UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right, v8];
+  allConstraints = [v9 allConstraints];
+  [NSLayoutConstraint activateConstraints:allConstraints];
 }
 
-- (void)setSearchCategories:(id)a3
+- (void)setSearchCategories:(id)categories
 {
-  v5 = a3;
+  categoriesCopy = categories;
   if (![(NSArray *)self->_searchCategories isEqualToArray:?])
   {
-    objc_storeStrong(&self->_searchCategories, a3);
+    objc_storeStrong(&self->_searchCategories, categories);
     [(CarSmallWidgetBrowsingModeController *)self _updateWidgetContents];
   }
 }
 
-- (void)setBrowsingState:(int64_t)a3
+- (void)setBrowsingState:(int64_t)state
 {
-  if (self->_browsingState != a3)
+  if (self->_browsingState != state)
   {
     v5 = sub_100799D40();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -238,14 +238,14 @@
         v7 = *(&off_10164DE20 + v6);
       }
 
-      if ((a3 - 1) > 2)
+      if ((state - 1) > 2)
       {
         v8 = @"Unknown";
       }
 
       else
       {
-        v8 = *(&off_10164DE20 + a3 - 1);
+        v8 = *(&off_10164DE20 + state - 1);
       }
 
       *buf = 138412546;
@@ -255,15 +255,15 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Set CarSmallWidgetBrowsingState from %@ to %@", buf, 0x16u);
     }
 
-    self->_browsingState = a3;
+    self->_browsingState = state;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = [(CarSmallWidgetBrowsingModeController *)self view];
-    v10 = [v9 subviews];
+    view = [(CarSmallWidgetBrowsingModeController *)self view];
+    subviews = [view subviews];
 
-    v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v11 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v11)
     {
       v12 = v11;
@@ -274,13 +274,13 @@
         {
           if (*v17 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(subviews);
           }
 
           [*(*(&v16 + 1) + 8 * i) removeFromSuperview];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v12 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v12);
@@ -307,8 +307,8 @@
 
 - (void)_updateWidgetContents
 {
-  v3 = [(CarShortcutsProvider *)self->_shortcutsProvider shortcuts];
-  if ([v3 count])
+  shortcuts = [(CarShortcutsProvider *)self->_shortcutsProvider shortcuts];
+  if ([shortcuts count])
   {
     v4 = +[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled];
 
@@ -323,8 +323,8 @@
   }
 
   v5 = +[_TtC4Maps20MapsFavoritesManager sharedManager];
-  v6 = [v5 shortcutsForCarplay];
-  if ([v6 count])
+  shortcutsForCarplay = [v5 shortcutsForCarplay];
+  if ([shortcutsForCarplay count])
   {
     v7 = +[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled];
 
@@ -343,14 +343,14 @@ LABEL_7:
   {
   }
 
-  v9 = [(CarSmallWidgetBrowsingModeController *)self searchCategories];
-  v10 = [v9 count];
+  searchCategories = [(CarSmallWidgetBrowsingModeController *)self searchCategories];
+  v10 = [searchCategories count];
 
   if (v10)
   {
     [(CarSmallWidgetBrowsingModeController *)self setBrowsingState:2];
-    v11 = [(CarSmallWidgetBrowsingModeController *)self searchCategories];
-    [(CarSmallWidgetSearchCategoriesView *)self->_searchCategoriesView setCategories:v11];
+    searchCategories2 = [(CarSmallWidgetBrowsingModeController *)self searchCategories];
+    [(CarSmallWidgetSearchCategoriesView *)self->_searchCategoriesView setCategories:searchCategories2];
   }
 
   else
@@ -405,12 +405,12 @@ LABEL_7:
     browseManager = v2->_browseManager;
     v2->_browseManager = v6;
 
-    v8 = [(BrowseManager *)v2->_browseManager imageManager];
-    [v8 setDesiredImageSize:{29.0, 29.0}];
+    imageManager = [(BrowseManager *)v2->_browseManager imageManager];
+    [imageManager setDesiredImageSize:{29.0, 29.0}];
 
     [(BrowseManager *)v2->_browseManager readCategoriesFromDiskIfNeeded];
-    v9 = [(BrowseManager *)v2->_browseManager cachedCategories];
-    [(CarSmallWidgetBrowsingModeController *)v2 setSearchCategories:v9];
+    cachedCategories = [(BrowseManager *)v2->_browseManager cachedCategories];
+    [(CarSmallWidgetBrowsingModeController *)v2 setSearchCategories:cachedCategories];
 
     v10 = +[NSNotificationCenter defaultCenter];
     [v10 addObserver:v2 selector:"_applicationWillEnterForeground:" name:UIApplicationWillEnterForegroundNotification object:0];

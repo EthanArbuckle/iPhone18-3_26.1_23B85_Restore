@@ -8,26 +8,26 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(SBUITableViewAccessibility *)self accessibilityIdentification];
-  if (([v3 isEqualToString:@"GuideSectionList"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"GuideDomainList")) && (-[SBUITableViewAccessibility accessibilityElementsHidden](self, "accessibilityElementsHidden"))
+  accessibilityIdentification = [(SBUITableViewAccessibility *)self accessibilityIdentification];
+  if (([accessibilityIdentification isEqualToString:@"GuideSectionList"] & 1) != 0 || objc_msgSend(accessibilityIdentification, "isEqualToString:", @"GuideDomainList")) && (-[SBUITableViewAccessibility accessibilityElementsHidden](self, "accessibilityElementsHidden"))
   {
-    v4 = 0;
+    isAccessibilityElement = 0;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = SBUITableViewAccessibility;
-    v4 = [(SBUITableViewAccessibility *)&v6 isAccessibilityElement];
+    isAccessibilityElement = [(SBUITableViewAccessibility *)&v6 isAccessibilityElement];
   }
 
-  return v4;
+  return isAccessibilityElement;
 }
 
 - (BOOL)isAccessibilityOpaqueElementProvider
 {
-  v3 = [(SBUITableViewAccessibility *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"NCTodayTableView"];
+  accessibilityIdentification = [(SBUITableViewAccessibility *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"NCTodayTableView"];
 
   if (v4)
   {
@@ -41,26 +41,26 @@
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v3 = [(SBUITableViewAccessibility *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"NCTodayTableView"];
+  accessibilityIdentification = [(SBUITableViewAccessibility *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"NCTodayTableView"];
 
   if (v4)
   {
-    v5 = [(SBUITableViewAccessibility *)self tableFooterView];
-    v6 = [MEMORY[0x29EDC7328] options];
-    [v6 setShouldUseAllSubviews:1];
-    [v6 setSorted:0];
-    v7 = [v5 _accessibilityLeafDescendantsWithOptions:v6];
+    tableFooterView = [(SBUITableViewAccessibility *)self tableFooterView];
+    options = [MEMORY[0x29EDC7328] options];
+    [options setShouldUseAllSubviews:1];
+    [options setSorted:0];
+    _accessibilitySupplementaryFooterViews = [tableFooterView _accessibilityLeafDescendantsWithOptions:options];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = SBUITableViewAccessibility;
-    v7 = [(SBUITableViewAccessibility *)&v9 _accessibilitySupplementaryFooterViews];
+    _accessibilitySupplementaryFooterViews = [(SBUITableViewAccessibility *)&v9 _accessibilitySupplementaryFooterViews];
   }
 
-  return v7;
+  return _accessibilitySupplementaryFooterViews;
 }
 
 @end

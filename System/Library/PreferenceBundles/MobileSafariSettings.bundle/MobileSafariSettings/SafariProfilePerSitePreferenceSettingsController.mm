@@ -25,10 +25,10 @@
 
 - (id)preference
 {
-  v2 = [(SafariProfilePerSitePreferenceSettingsController *)self preferenceManager];
-  v3 = [v2 profilePreference];
+  preferenceManager = [(SafariProfilePerSitePreferenceSettingsController *)self preferenceManager];
+  profilePreference = [preferenceManager profilePreference];
 
-  return v3;
+  return profilePreference;
 }
 
 @end

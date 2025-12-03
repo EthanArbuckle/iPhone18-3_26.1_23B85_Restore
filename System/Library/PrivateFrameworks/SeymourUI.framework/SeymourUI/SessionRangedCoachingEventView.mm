@@ -1,6 +1,6 @@
 @interface SessionRangedCoachingEventView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
@@ -8,13 +8,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B831A6C();
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_20B831D90();
   v5 = v4;
 
@@ -25,9 +25,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(SessionRangedCoachingEventView *)self intrinsicContentSize:a3.width];
+  [(SessionRangedCoachingEventView *)self intrinsicContentSize:fits.width];
   result.height = v4;
   result.width = v3;
   return result;

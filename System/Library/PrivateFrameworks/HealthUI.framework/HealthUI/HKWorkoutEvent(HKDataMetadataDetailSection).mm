@@ -9,17 +9,17 @@
 {
   v4 = a3;
   v32 = HKDateFormatterFromTemplate(32);
-  v5 = [a1 dateInterval];
-  v6 = [v5 startDate];
-  v7 = [a1 dateInterval];
-  v8 = [v7 endDate];
-  v9 = [v6 isEqualToDate:v8];
+  dateInterval = [self dateInterval];
+  startDate = [dateInterval startDate];
+  dateInterval2 = [self dateInterval];
+  endDate = [dateInterval2 endDate];
+  v9 = [startDate isEqualToDate:endDate];
 
   if (v9)
   {
-    v10 = [a1 dateInterval];
-    v11 = [v10 startDate];
-    v12 = [v32 stringFromDate:v11];
+    dateInterval3 = [self dateInterval];
+    startDate2 = [dateInterval3 startDate];
+    v12 = [v32 stringFromDate:startDate2];
 
     v13 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v14 = [v13 localizedStringForKey:@"DATE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
@@ -32,8 +32,8 @@
     v12 = objc_alloc_init(HKWorkoutDurationNumberFormatter);
     [(HKTimePeriodWithSecondsNumberFormatter *)v12 setAllowMillisecondPrecision:1];
     v16 = MEMORY[0x1E696AD98];
-    v17 = [a1 dateInterval];
-    [v17 duration];
+    dateInterval4 = [self dateInterval];
+    [dateInterval4 duration];
     v18 = [v16 numberWithDouble:?];
     v13 = [(HKTimePeriodWithSecondsNumberFormatter *)v12 stringFromNumber:v18 displayType:0 unitController:0];
 
@@ -42,13 +42,13 @@
     v21 = HKUIJoinStringsForAutomationIdentifier(&unk_1F4381BE8);
     [v4 addText:v13 detail:v20 baseIdentifier:v21];
 
-    v22 = [a1 dateInterval];
-    v23 = [v22 startDate];
-    v14 = [v32 stringFromDate:v23];
+    dateInterval5 = [self dateInterval];
+    startDate3 = [dateInterval5 startDate];
+    v14 = [v32 stringFromDate:startDate3];
 
-    v24 = [a1 dateInterval];
-    v25 = [v24 endDate];
-    v15 = [v32 stringFromDate:v25];
+    dateInterval6 = [self dateInterval];
+    endDate2 = [dateInterval6 endDate];
+    v15 = [v32 stringFromDate:endDate2];
 
     v26 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v27 = [v26 localizedStringForKey:@"START_TIME" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
@@ -66,10 +66,10 @@
 
 - (id)startDate
 {
-  v1 = [a1 dateInterval];
-  v2 = [v1 startDate];
+  dateInterval = [self dateInterval];
+  startDate = [dateInterval startDate];
 
-  return v2;
+  return startDate;
 }
 
 @end

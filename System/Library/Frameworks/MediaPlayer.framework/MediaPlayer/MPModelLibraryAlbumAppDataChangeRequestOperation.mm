@@ -13,25 +13,25 @@
   aBlock[3] = &unk_1E767B220;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(MPModelLibraryAlbumAppDataChangeRequestOperation *)self request];
-  v5 = [v4 albumAppData];
-  v6 = [v5 createAppDataDictionary];
+  request = [(MPModelLibraryAlbumAppDataChangeRequestOperation *)self request];
+  albumAppData = [request albumAppData];
+  createAppDataDictionary = [albumAppData createAppDataDictionary];
 
   v22 = 0;
-  v7 = [MEMORY[0x1E696AE40] dataWithPropertyList:v6 format:200 options:0 error:&v22];
+  v7 = [MEMORY[0x1E696AE40] dataWithPropertyList:createAppDataDictionary format:200 options:0 error:&v22];
   v8 = v22;
   if (v7)
   {
-    v9 = [(MPModelLibraryAlbumAppDataChangeRequestOperation *)self request];
-    v10 = [v9 modelObject];
-    v11 = [v10 identifiers];
-    v12 = [v11 library];
-    v13 = [v12 persistentID];
+    request2 = [(MPModelLibraryAlbumAppDataChangeRequestOperation *)self request];
+    modelObject = [request2 modelObject];
+    identifiers = [modelObject identifiers];
+    library = [identifiers library];
+    persistentID = [library persistentID];
 
-    v14 = [MEMORY[0x1E69B3488] predicateWithProperty:*MEMORY[0x1E69B2CD8] equalToInt64:v13];
+    v14 = [MEMORY[0x1E69B3488] predicateWithProperty:*MEMORY[0x1E69B2CD8] equalToInt64:persistentID];
     v15 = MEMORY[0x1E69B3418];
-    v16 = [MEMORY[0x1E69B34E0] autoupdatingSharedLibrary];
-    v17 = [v15 anyInLibrary:v16 predicate:v14];
+    autoupdatingSharedLibrary = [MEMORY[0x1E69B34E0] autoupdatingSharedLibrary];
+    v17 = [v15 anyInLibrary:autoupdatingSharedLibrary predicate:v14];
 
     if (v17)
     {

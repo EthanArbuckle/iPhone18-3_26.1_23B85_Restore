@@ -1,6 +1,6 @@
 @interface UARPMetaDataTLV32BackDeploy
 - (UARPMetaDataTLV32BackDeploy)init;
-- (id)tlvValue:(unsigned int)a3;
+- (id)tlvValue:(unsigned int)value;
 @end
 
 @implementation UARPMetaDataTLV32BackDeploy
@@ -12,9 +12,9 @@
   return [(UARPMetaDataTLVBackDeploy *)&v3 init];
 }
 
-- (id)tlvValue:(unsigned int)a3
+- (id)tlvValue:(unsigned int)value
 {
-  v5 = uarpHtonl(a3);
+  v5 = uarpHtonl(value);
   v3 = [[NSData alloc] initWithBytes:&v5 length:4];
 
   return v3;

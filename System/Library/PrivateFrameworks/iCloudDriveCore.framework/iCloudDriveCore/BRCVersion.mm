@@ -1,23 +1,23 @@
 @interface BRCVersion
-- (BOOL)isEtagEqual:(id)a3;
+- (BOOL)isEtagEqual:(id)equal;
 - (BOOL)isPackage;
 - (BOOL)isSmallAndMostRecentClientsGenerateThumbnails;
 - (BRCUserRowID)lastEditorRowID;
-- (BRCVersion)initWithVersion:(id)a3;
+- (BRCVersion)initWithVersion:(id)version;
 - (NSNumber)lastEditorDeviceRowID;
-- (id)additionNameForItemID:(id)a3 zoneID:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithContext:(id)a3;
-- (id)lastEditorDeviceDisplayNameWithDBFacade:(id)a3;
-- (id)lastEditorDisplayNameWithDBFacade:(id)a3;
-- (id)lastEditorUserIdentityWithDBFacade:(id)a3;
-- (id)lazyXattrWithXattrStager:(id)a3;
+- (id)additionNameForItemID:(id)d zoneID:(id)iD;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithContext:(id)context;
+- (id)lastEditorDeviceDisplayNameWithDBFacade:(id)facade;
+- (id)lastEditorDisplayNameWithDBFacade:(id)facade;
+- (id)lastEditorUserIdentityWithDBFacade:(id)facade;
+- (id)lazyXattrWithXattrStager:(id)stager;
 - (id)uti;
-- (unint64_t)diffAgainst:(id)a3;
+- (unint64_t)diffAgainst:(id)against;
 - (void)isPackage;
 - (void)isSmallAndMostRecentClientsGenerateThumbnails;
-- (void)setLastEditorDeviceRowID:(id)a3;
-- (void)setLastEditorRowID:(id)a3;
+- (void)setLastEditorDeviceRowID:(id)d;
+- (void)setLastEditorRowID:(id)d;
 @end
 
 @implementation BRCVersion
@@ -51,45 +51,45 @@
   return v3;
 }
 
-- (void)setLastEditorDeviceRowID:(id)a3
+- (void)setLastEditorDeviceRowID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if ([(BRCVersion *)self _hasLastEditorRowID])
   {
     [BRCVersion setLastEditorDeviceRowID:];
-    if (!v4)
+    if (!dCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (!v4)
+  else if (!dCopy)
   {
 LABEL_6:
     [BRCVersion setLastEditorDeviceRowID:];
     goto LABEL_4;
   }
 
-  if ([(NSNumber *)v4 longLongValue]<= 0)
+  if ([(NSNumber *)dCopy longLongValue]<= 0)
   {
     goto LABEL_6;
   }
 
 LABEL_4:
   lastEditorDeviceOrUserRowID = self->_lastEditorDeviceOrUserRowID;
-  self->_lastEditorDeviceOrUserRowID = v4;
+  self->_lastEditorDeviceOrUserRowID = dCopy;
 }
 
-- (void)setLastEditorRowID:(id)a3
+- (void)setLastEditorRowID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (self->_lastEditorDeviceOrUserRowID && [(BRCVersion *)self _hasLastEditorDeviceRowID])
   {
     [BRCVersion setLastEditorRowID:];
   }
 
-  v5 = [v4 longLongValue];
-  v6 = [MEMORY[0x277CCABB0] numberWithLongLong:-v5];
+  longLongValue = [dCopy longLongValue];
+  v6 = [MEMORY[0x277CCABB0] numberWithLongLong:-longLongValue];
   lastEditorDeviceOrUserRowID = self->_lastEditorDeviceOrUserRowID;
   self->_lastEditorDeviceOrUserRowID = v6;
 }
@@ -109,12 +109,12 @@ LABEL_4:
   return v3;
 }
 
-- (id)lastEditorDeviceDisplayNameWithDBFacade:(id)a3
+- (id)lastEditorDeviceDisplayNameWithDBFacade:(id)facade
 {
-  v4 = a3;
-  v5 = [(BRCVersion *)self lastEditorDeviceRowID];
-  v6 = v5;
-  if (v5)
+  facadeCopy = facade;
+  lastEditorDeviceRowID = [(BRCVersion *)self lastEditorDeviceRowID];
+  v6 = lastEditorDeviceRowID;
+  if (lastEditorDeviceRowID)
   {
     lastEditorDeviceName = self->_lastEditorDeviceName;
     if (lastEditorDeviceName)
@@ -124,7 +124,7 @@ LABEL_4:
 
     else
     {
-      v8 = [v4 deviceNameForDeviceID:{objc_msgSend(v5, "longLongValue")}];
+      v8 = [facadeCopy deviceNameForDeviceID:{objc_msgSend(lastEditorDeviceRowID, "longLongValue")}];
     }
 
     v9 = v8;
@@ -138,13 +138,13 @@ LABEL_4:
   return v9;
 }
 
-- (id)lastEditorUserIdentityWithDBFacade:(id)a3
+- (id)lastEditorUserIdentityWithDBFacade:(id)facade
 {
-  v4 = a3;
-  v5 = [(BRCVersion *)self lastEditorRowID];
-  if (v5)
+  facadeCopy = facade;
+  lastEditorRowID = [(BRCVersion *)self lastEditorRowID];
+  if (lastEditorRowID)
   {
-    v6 = [v4 userIdentityForKey:v5];
+    v6 = [facadeCopy userIdentityForKey:lastEditorRowID];
   }
 
   else
@@ -155,46 +155,46 @@ LABEL_4:
   return v6;
 }
 
-- (id)lastEditorDisplayNameWithDBFacade:(id)a3
+- (id)lastEditorDisplayNameWithDBFacade:(id)facade
 {
-  v3 = [(BRCVersion *)self lastEditorUserIdentityWithDBFacade:a3];
-  v4 = [v3 nameComponents];
-  v5 = [v4 br_formattedName];
+  v3 = [(BRCVersion *)self lastEditorUserIdentityWithDBFacade:facade];
+  nameComponents = [v3 nameComponents];
+  br_formattedName = [nameComponents br_formattedName];
 
-  return v5;
+  return br_formattedName;
 }
 
-- (id)descriptionWithContext:(id)a3
+- (id)descriptionWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:64];
   ckInfo = self->_ckInfo;
   if (ckInfo)
   {
-    v7 = [(BRFieldCKInfo *)ckInfo etag];
-    [v5 appendFormat:@"etag:%@ ", v7];
+    etag = [(BRFieldCKInfo *)ckInfo etag];
+    [v5 appendFormat:@"etag:%@ ", etag];
 
-    v8 = [(BRFieldCKInfo *)self->_ckInfo etagBeforeCrossZoneMove];
+    etagBeforeCrossZoneMove = [(BRFieldCKInfo *)self->_ckInfo etagBeforeCrossZoneMove];
 
-    if (v8)
+    if (etagBeforeCrossZoneMove)
     {
-      v9 = [(BRFieldCKInfo *)self->_ckInfo etagBeforeCrossZoneMove];
-      [v5 appendFormat:@"prev-etag:%@ ", v9];
+      etagBeforeCrossZoneMove2 = [(BRFieldCKInfo *)self->_ckInfo etagBeforeCrossZoneMove];
+      [v5 appendFormat:@"prev-etag:%@ ", etagBeforeCrossZoneMove2];
     }
 
     if ([(BRFieldCKInfo *)self->_ckInfo hasDeletionChangeToken])
     {
       v10 = objc_alloc(MEMORY[0x277CBC670]);
-      v11 = [(BRFieldCKInfo *)self->_ckInfo deletionChangeToken];
-      v12 = [v10 initWithData:v11];
+      deletionChangeToken = [(BRFieldCKInfo *)self->_ckInfo deletionChangeToken];
+      v12 = [v10 initWithData:deletionChangeToken];
 
-      v13 = [v12 descriptionWithContext:v4];
+      v13 = [v12 descriptionWithContext:contextCopy];
       [v5 appendFormat:@"deletion-token:%@ ", v13];
     }
   }
 
   [v5 appendFormat:@"mt:%lld ", self->_mtime];
-  v14 = [BRCDumpContext stringFromByteCount:self->_size context:v4];
+  v14 = [BRCDumpContext stringFromByteCount:self->_size context:contextCopy];
   [v5 appendFormat:@"sz:%@ ", v14];
 
   if (self->_thumbnailSize >= 1)
@@ -206,8 +206,8 @@ LABEL_4:
   originalPOSIXName = self->_originalPOSIXName;
   if (originalPOSIXName)
   {
-    v17 = [(NSString *)originalPOSIXName fp_obfuscatedFilename];
-    [v5 appendFormat:@"n:%@ ", v17];
+    fp_obfuscatedFilename = [(NSString *)originalPOSIXName fp_obfuscatedFilename];
+    [v5 appendFormat:@"n:%@ ", fp_obfuscatedFilename];
   }
 
   contentSignature = self->_contentSignature;
@@ -217,21 +217,21 @@ LABEL_4:
     {
       if ([(BRCVersion *)self isPackage])
       {
-        v19 = @"<pkg-pending>";
+        brc_hexadecimalString = @"<pkg-pending>";
       }
 
       else
       {
-        v19 = @"<file-pending>";
+        brc_hexadecimalString = @"<file-pending>";
       }
     }
 
     else
     {
-      v19 = [(NSData *)self->_contentSignature brc_hexadecimalString];
+      brc_hexadecimalString = [(NSData *)self->_contentSignature brc_hexadecimalString];
     }
 
-    v20 = [BRCDumpContext highlightedString:v19 type:2 context:v4];
+    v20 = [BRCDumpContext highlightedString:brc_hexadecimalString type:2 context:contextCopy];
     [v5 appendFormat:@"sig:%@ ", v20];
   }
 
@@ -240,22 +240,22 @@ LABEL_4:
   {
     if ([(NSData *)thumbnailSignature brc_signatureIsPendingPlaceHolder])
     {
-      v22 = @"<pending>";
+      brc_hexadecimalString2 = @"<pending>";
     }
 
     else
     {
-      v22 = [(NSData *)self->_thumbnailSignature brc_hexadecimalString];
+      brc_hexadecimalString2 = [(NSData *)self->_thumbnailSignature brc_hexadecimalString];
     }
 
-    v23 = [BRCDumpContext highlightedString:v22 type:2 context:v4];
+    v23 = [BRCDumpContext highlightedString:brc_hexadecimalString2 type:2 context:contextCopy];
     [v5 appendFormat:@"tsig:%@ ", v23];
   }
 
   if ([(NSSet *)self->_conflictLoserEtags count])
   {
-    v24 = [(NSSet *)self->_conflictLoserEtags allObjects];
-    v25 = [v24 componentsJoinedByString:{@", "}];
+    allObjects = [(NSSet *)self->_conflictLoserEtags allObjects];
+    v25 = [allObjects componentsJoinedByString:{@", "}];
     [v5 appendFormat:@"losers:{%@} ", v25];
   }
 
@@ -267,12 +267,12 @@ LABEL_4:
 
   if ([(BRCVersion *)self _hasLastEditorDeviceRowID])
   {
-    v27 = [(BRCVersion *)self lastEditorDeviceRowID];
-    v28 = v27;
+    lastEditorDeviceRowID = [(BRCVersion *)self lastEditorDeviceRowID];
+    lastEditorRowID = lastEditorDeviceRowID;
     v29 = &unk_2837B00D0;
-    if (v27)
+    if (lastEditorDeviceRowID)
     {
-      v29 = v27;
+      v29 = lastEditorDeviceRowID;
     }
 
     [v5 appendFormat:@"device:%@ ", v29];
@@ -285,16 +285,16 @@ LABEL_4:
       goto LABEL_33;
     }
 
-    v28 = [(BRCVersion *)self lastEditorRowID];
-    [v5 appendFormat:@"last-editor:%@ ", v28];
+    lastEditorRowID = [(BRCVersion *)self lastEditorRowID];
+    [v5 appendFormat:@"last-editor:%@ ", lastEditorRowID];
   }
 
 LABEL_33:
   xattrSignature = self->_xattrSignature;
   if (xattrSignature)
   {
-    v31 = [(NSData *)xattrSignature brc_hexadecimalString];
-    [v5 appendFormat:@"ea:%@ ", v31];
+    brc_hexadecimalString3 = [(NSData *)xattrSignature brc_hexadecimalString];
+    [v5 appendFormat:@"ea:%@ ", brc_hexadecimalString3];
   }
 
   quarantineInfo = self->_quarantineInfo;
@@ -308,51 +308,51 @@ LABEL_33:
   return v5;
 }
 
-- (BRCVersion)initWithVersion:(id)a3
+- (BRCVersion)initWithVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   v25.receiver = self;
   v25.super_class = BRCVersion;
   v5 = [(BRCVersion *)&v25 init];
   if (v5)
   {
-    v6 = [*(v4 + 1) copy];
+    v6 = [*(versionCopy + 1) copy];
     ckInfo = v5->_ckInfo;
     v5->_ckInfo = v6;
 
-    v5->_mtime = *(v4 + 2);
-    v8 = [*(v4 + 3) copy];
+    v5->_mtime = *(versionCopy + 2);
+    v8 = [*(versionCopy + 3) copy];
     originalPOSIXName = v5->_originalPOSIXName;
     v5->_originalPOSIXName = v8;
 
-    v5->_size = *(v4 + 4);
-    v5->_thumbnailSize = *(v4 + 5);
-    v10 = [*(v4 + 6) copy];
+    v5->_size = *(versionCopy + 4);
+    v5->_thumbnailSize = *(versionCopy + 5);
+    v10 = [*(versionCopy + 6) copy];
     thumbnailSignature = v5->_thumbnailSignature;
     v5->_thumbnailSignature = v10;
 
-    v12 = [*(v4 + 7) copy];
+    v12 = [*(versionCopy + 7) copy];
     contentSignature = v5->_contentSignature;
     v5->_contentSignature = v12;
 
-    objc_storeStrong(&v5->_editedSinceShared, *(v4 + 12));
-    v14 = [*(v4 + 13) copy];
+    objc_storeStrong(&v5->_editedSinceShared, *(versionCopy + 12));
+    v14 = [*(versionCopy + 13) copy];
     lastEditorDeviceOrUserRowID = v5->_lastEditorDeviceOrUserRowID;
     v5->_lastEditorDeviceOrUserRowID = v14;
 
-    v16 = [*(v4 + 14) copy];
+    v16 = [*(versionCopy + 14) copy];
     lastEditorDeviceName = v5->_lastEditorDeviceName;
     v5->_lastEditorDeviceName = v16;
 
-    v18 = [*(v4 + 11) mutableCopy];
+    v18 = [*(versionCopy + 11) mutableCopy];
     conflictLoserEtags = v5->_conflictLoserEtags;
     v5->_conflictLoserEtags = v18;
 
-    v20 = [*(v4 + 8) copy];
+    v20 = [*(versionCopy + 8) copy];
     xattrSignature = v5->_xattrSignature;
     v5->_xattrSignature = v20;
 
-    v22 = [*(v4 + 10) copy];
+    v22 = [*(versionCopy + 10) copy];
     quarantineInfo = v5->_quarantineInfo;
     v5->_quarantineInfo = v22;
   }
@@ -360,17 +360,17 @@ LABEL_33:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithVersion:self];
 }
 
-- (unint64_t)diffAgainst:(id)a3
+- (unint64_t)diffAgainst:(id)against
 {
-  v4 = a3;
-  v5 = *(v4 + 1);
+  againstCopy = against;
+  v5 = *(againstCopy + 1);
   v6 = self->_ckInfo;
   v7 = v5;
   v8 = v7;
@@ -393,7 +393,7 @@ LABEL_33:
     }
   }
 
-  v10 = *(v4 + 13);
+  v10 = *(againstCopy + 13);
   v6 = self->_lastEditorDeviceOrUserRowID;
   v11 = v10;
   v12 = v11;
@@ -421,7 +421,7 @@ LABEL_10:
 LABEL_13:
   v14 = 0;
 LABEL_14:
-  v15 = *(v4 + 12);
+  v15 = *(againstCopy + 12);
   v16 = self->_editedSinceShared;
   v17 = v15;
   v18 = v17;
@@ -446,7 +446,7 @@ LABEL_20:
   }
 
 LABEL_21:
-  if (self->_mtime == *(v4 + 2))
+  if (self->_mtime == *(againstCopy + 2))
   {
     v20 = v14;
   }
@@ -458,7 +458,7 @@ LABEL_21:
 
   if ((v20 & 0x40000) == 0)
   {
-    v21 = *(v4 + 3);
+    v21 = *(againstCopy + 3);
     v22 = self->_originalPOSIXName;
     v23 = v21;
     v24 = v23;
@@ -496,7 +496,7 @@ LABEL_46:
   }
 
 LABEL_31:
-  if (self->_size != *(v4 + 4))
+  if (self->_size != *(againstCopy + 4))
   {
     v20 |= 0x80000uLL;
   }
@@ -507,7 +507,7 @@ LABEL_33:
     goto LABEL_39;
   }
 
-  v26 = *(v4 + 7);
+  v26 = *(againstCopy + 7);
   v27 = self->_contentSignature;
   v28 = v26;
   v29 = v28;
@@ -534,7 +534,7 @@ LABEL_39:
     }
 
 LABEL_40:
-    v31 = *(v4 + 6);
+    v31 = *(againstCopy + 6);
     v32 = self->_thumbnailSignature;
     v33 = v31;
     v34 = v33;
@@ -575,7 +575,7 @@ LABEL_53:
     goto LABEL_59;
   }
 
-  v36 = *(v4 + 11);
+  v36 = *(againstCopy + 11);
   v37 = self->_conflictLoserEtags;
   v38 = v36;
   v39 = v38;
@@ -612,7 +612,7 @@ LABEL_66:
   }
 
 LABEL_60:
-  v41 = *(v4 + 8);
+  v41 = *(againstCopy + 8);
   v42 = self->_xattrSignature;
   v43 = v41;
   v44 = v43;
@@ -640,7 +640,7 @@ LABEL_60:
   }
 
 LABEL_70:
-  if ((v20 & 0x1000000) == 0 && !BRCQuarantineInfoIsEqual(self->_quarantineInfo, *(v4 + 10)))
+  if ((v20 & 0x1000000) == 0 && !BRCQuarantineInfoIsEqual(self->_quarantineInfo, *(againstCopy + 10)))
   {
     v20 |= 0x1000000uLL;
   }
@@ -648,20 +648,20 @@ LABEL_70:
   return v20;
 }
 
-- (BOOL)isEtagEqual:(id)a3
+- (BOOL)isEtagEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v4 = [a3 ckInfo];
-  v5 = [v4 hasEtag];
-  if (v5 == [(BRFieldCKInfo *)self->_ckInfo hasEtag])
+  ckInfo = [equal ckInfo];
+  hasEtag = [ckInfo hasEtag];
+  if (hasEtag == [(BRFieldCKInfo *)self->_ckInfo hasEtag])
   {
-    v7 = [v4 etag];
-    v8 = [(BRFieldCKInfo *)self->_ckInfo etag];
-    v6 = [v7 isEqualToString:v8];
+    etag = [ckInfo etag];
+    etag2 = [(BRFieldCKInfo *)self->_ckInfo etag];
+    v6 = [etag isEqualToString:etag2];
   }
 
   else
@@ -672,37 +672,37 @@ LABEL_70:
   return v6;
 }
 
-- (id)additionNameForItemID:(id)a3 zoneID:(id)a4
+- (id)additionNameForItemID:(id)d zoneID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSString *)self->_originalPOSIXName br_pathExtension];
+  dCopy = d;
+  iDCopy = iD;
+  br_pathExtension = [(NSString *)self->_originalPOSIXName br_pathExtension];
   v9 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v10 = [v7 zoneName];
-  [v9 appendString:v10];
+  zoneName = [iDCopy zoneName];
+  [v9 appendString:zoneName];
 
   [v9 replaceOccurrencesOfString:@"." withString:@"~" options:0 range:{0, objc_msgSend(v9, "length")}];
-  v11 = [v7 ownerName];
-  v12 = [v11 isEqualToString:*MEMORY[0x277CBBF28]];
+  ownerName = [iDCopy ownerName];
+  v12 = [ownerName isEqualToString:*MEMORY[0x277CBBF28]];
 
   if ((v12 & 1) == 0)
   {
-    v13 = [v7 ownerName];
-    [v9 appendFormat:@":%@", v13];
+    ownerName2 = [iDCopy ownerName];
+    [v9 appendFormat:@":%@", ownerName2];
   }
 
-  v14 = [v8 length];
-  v15 = [v6 itemIDString];
-  v16 = [(BRFieldCKInfo *)self->_ckInfo etag];
-  v17 = v16;
+  v14 = [br_pathExtension length];
+  itemIDString = [dCopy itemIDString];
+  etag = [(BRFieldCKInfo *)self->_ckInfo etag];
+  v17 = etag;
   if (v14)
   {
-    [v9 appendFormat:@"_%@_%@.%@", v15, v16, v8];
+    [v9 appendFormat:@"_%@_%@.%@", itemIDString, etag, br_pathExtension];
   }
 
   else
   {
-    [v9 appendFormat:@"_%@_%@", v15, v16, v19];
+    [v9 appendFormat:@"_%@_%@", itemIDString, etag, v19];
   }
 
   return v9;
@@ -710,14 +710,14 @@ LABEL_70:
 
 - (id)uti
 {
-  v2 = [(BRCVersion *)self originalPOSIXName];
-  v3 = [v2 br_pathExtension];
+  originalPOSIXName = [(BRCVersion *)self originalPOSIXName];
+  br_pathExtension = [originalPOSIXName br_pathExtension];
 
   v4 = *MEMORY[0x277CC2050];
-  if ([v3 length])
+  if ([br_pathExtension length])
   {
     v5 = +[BRCUTITypeCache defaultCache];
-    v6 = [v5 UTIForExtension:v3];
+    v6 = [v5 UTIForExtension:br_pathExtension];
     v7 = v6;
     if (v6)
     {
@@ -753,9 +753,9 @@ LABEL_70:
   }
 
   v3 = [BRCUserDefaults defaultsForMangledID:0];
-  v4 = [v3 minFileSizeForThumbnailTransfer];
+  minFileSizeForThumbnailTransfer = [v3 minFileSizeForThumbnailTransfer];
 
-  if ([(BRCVersion *)self size]<= v4)
+  if ([(BRCVersion *)self size]<= minFileSizeForThumbnailTransfer)
   {
     v5 = [(BRCVersion *)self uti];
     v9 = [MEMORY[0x277CDAB08] canMostRecentClientsGenerateThumbnailsForUTI:v5];
@@ -804,7 +804,7 @@ LABEL_15:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v7 = [BRCDumpContext stringFromByteCount:[(BRCVersion *)self size] context:0];
-    v8 = [BRCDumpContext stringFromByteCount:v4 context:0];
+    v8 = [BRCDumpContext stringFromByteCount:minFileSizeForThumbnailTransfer context:0];
     v15 = 138412802;
     v16 = v7;
     v17 = 2112;
@@ -822,11 +822,11 @@ LABEL_13:
   return v9;
 }
 
-- (id)lazyXattrWithXattrStager:(id)a3
+- (id)lazyXattrWithXattrStager:(id)stager
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  stagerCopy = stager;
+  v5 = stagerCopy;
   if (self->_xattrSignature)
   {
     lazyXattr = self->_lazyXattr;
@@ -837,7 +837,7 @@ LABEL_13:
 
     else
     {
-      v8 = [v4 loadXattrBlobForSignature:? error:?];
+      v8 = [stagerCopy loadXattrBlobForSignature:? error:?];
       v9 = self->_lazyXattr;
       self->_lazyXattr = v8;
 
@@ -935,7 +935,7 @@ LABEL_13:
     _os_log_fault_impl(&dword_223E7A000, v5, OS_LOG_TYPE_FAULT, "[CRIT] Assertion failed: _contentSignature%@", &v7, 0xCu);
   }
 
-  *a2 = *a1;
+  *a2 = *self;
   v6 = *MEMORY[0x277D85DE8];
 }
 
@@ -943,7 +943,7 @@ LABEL_13:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_223E7A000, a2, OS_LOG_TYPE_DEBUG, "[DEBUG] Not being greedy because current version size is 0%@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

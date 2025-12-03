@@ -1,25 +1,25 @@
 @interface ASRSchemaASRAlternativeSelectionTextCategorized
-- (ASRSchemaASRAlternativeSelectionTextCategorized)initWithDictionary:(id)a3;
-- (ASRSchemaASRAlternativeSelectionTextCategorized)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASRSchemaASRAlternativeSelectionTextCategorized)initWithDictionary:(id)dictionary;
+- (ASRSchemaASRAlternativeSelectionTextCategorized)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSchemaASRAlternativeSelectionTextCategorized
 
-- (ASRSchemaASRAlternativeSelectionTextCategorized)initWithDictionary:(id)a3
+- (ASRSchemaASRAlternativeSelectionTextCategorized)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = ASRSchemaASRAlternativeSelectionTextCategorized;
   v5 = [(ASRSchemaASRAlternativeSelectionTextCategorized *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"originalAsrId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"originalAsrId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(ASRSchemaASRAlternativeSelectionTextCategorized *)v5 setOriginalAsrId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"fullCorrectedText"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"fullCorrectedText"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (ASRSchemaASRAlternativeSelectionTextCategorized)initWithJSON:(id)a3
+- (ASRSchemaASRAlternativeSelectionTextCategorized)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSchemaASRAlternativeSelectionTextCategorized *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSchemaASRAlternativeSelectionTextCategorized *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSchemaASRAlternativeSelectionTextCategorized *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,57 +77,57 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_fullCorrectedText)
   {
-    v4 = [(ASRSchemaASRAlternativeSelectionTextCategorized *)self fullCorrectedText];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"fullCorrectedText"];
+    fullCorrectedText = [(ASRSchemaASRAlternativeSelectionTextCategorized *)self fullCorrectedText];
+    v5 = [fullCorrectedText copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"fullCorrectedText"];
   }
 
   if (self->_originalAsrId)
   {
-    v6 = [(ASRSchemaASRAlternativeSelectionTextCategorized *)self originalAsrId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    originalAsrId = [(ASRSchemaASRAlternativeSelectionTextCategorized *)self originalAsrId];
+    dictionaryRepresentation = [originalAsrId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"originalAsrId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"originalAsrId"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"originalAsrId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"originalAsrId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(ASRSchemaASRAlternativeSelectionTextCategorized *)self originalAsrId];
-  v6 = [v4 originalAsrId];
-  if ((v5 != 0) == (v6 == 0))
+  originalAsrId = [(ASRSchemaASRAlternativeSelectionTextCategorized *)self originalAsrId];
+  originalAsrId2 = [equalCopy originalAsrId];
+  if ((originalAsrId != 0) == (originalAsrId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(ASRSchemaASRAlternativeSelectionTextCategorized *)self originalAsrId];
-  if (v7)
+  originalAsrId3 = [(ASRSchemaASRAlternativeSelectionTextCategorized *)self originalAsrId];
+  if (originalAsrId3)
   {
-    v8 = v7;
-    v9 = [(ASRSchemaASRAlternativeSelectionTextCategorized *)self originalAsrId];
-    v10 = [v4 originalAsrId];
-    v11 = [v9 isEqual:v10];
+    v8 = originalAsrId3;
+    originalAsrId4 = [(ASRSchemaASRAlternativeSelectionTextCategorized *)self originalAsrId];
+    originalAsrId5 = [equalCopy originalAsrId];
+    v11 = [originalAsrId4 isEqual:originalAsrId5];
 
     if (!v11)
     {
@@ -139,12 +139,12 @@
   {
   }
 
-  v5 = [(ASRSchemaASRAlternativeSelectionTextCategorized *)self fullCorrectedText];
-  v6 = [v4 fullCorrectedText];
-  if ((v5 != 0) != (v6 == 0))
+  originalAsrId = [(ASRSchemaASRAlternativeSelectionTextCategorized *)self fullCorrectedText];
+  originalAsrId2 = [equalCopy fullCorrectedText];
+  if ((originalAsrId != 0) != (originalAsrId2 == 0))
   {
-    v12 = [(ASRSchemaASRAlternativeSelectionTextCategorized *)self fullCorrectedText];
-    if (!v12)
+    fullCorrectedText = [(ASRSchemaASRAlternativeSelectionTextCategorized *)self fullCorrectedText];
+    if (!fullCorrectedText)
     {
 
 LABEL_15:
@@ -152,10 +152,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(ASRSchemaASRAlternativeSelectionTextCategorized *)self fullCorrectedText];
-    v15 = [v4 fullCorrectedText];
-    v16 = [v14 isEqual:v15];
+    v13 = fullCorrectedText;
+    fullCorrectedText2 = [(ASRSchemaASRAlternativeSelectionTextCategorized *)self fullCorrectedText];
+    fullCorrectedText3 = [equalCopy fullCorrectedText];
+    v16 = [fullCorrectedText2 isEqual:fullCorrectedText3];
 
     if (v16)
     {
@@ -175,61 +175,61 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(ASRSchemaASRAlternativeSelectionTextCategorized *)self originalAsrId];
+  toCopy = to;
+  originalAsrId = [(ASRSchemaASRAlternativeSelectionTextCategorized *)self originalAsrId];
 
-  if (v4)
+  if (originalAsrId)
   {
-    v5 = [(ASRSchemaASRAlternativeSelectionTextCategorized *)self originalAsrId];
+    originalAsrId2 = [(ASRSchemaASRAlternativeSelectionTextCategorized *)self originalAsrId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(ASRSchemaASRAlternativeSelectionTextCategorized *)self fullCorrectedText];
+  fullCorrectedText = [(ASRSchemaASRAlternativeSelectionTextCategorized *)self fullCorrectedText];
 
-  if (v6)
+  if (fullCorrectedText)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v10.receiver = self;
   v10.super_class = ASRSchemaASRAlternativeSelectionTextCategorized;
-  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(ASRSchemaASRAlternativeSelectionTextCategorized *)self deleteFullCorrectedText];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(ASRSchemaASRAlternativeSelectionTextCategorized *)self deleteFullCorrectedText];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(ASRSchemaASRAlternativeSelectionTextCategorized *)self deleteFullCorrectedText];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(ASRSchemaASRAlternativeSelectionTextCategorized *)self deleteFullCorrectedText];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(ASRSchemaASRAlternativeSelectionTextCategorized *)self deleteFullCorrectedText];
   }
 
-  v6 = [(ASRSchemaASRAlternativeSelectionTextCategorized *)self originalAsrId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  originalAsrId = [(ASRSchemaASRAlternativeSelectionTextCategorized *)self originalAsrId];
+  v7 = [originalAsrId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ASRSchemaASRAlternativeSelectionTextCategorized *)self deleteOriginalAsrId];
   }

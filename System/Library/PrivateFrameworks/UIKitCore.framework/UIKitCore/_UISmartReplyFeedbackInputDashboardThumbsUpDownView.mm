@@ -26,31 +26,31 @@
     [(_UISmartReplyFeedbackInputDashboardView *)v2 setFeedbackLabel:v8];
 
     v9 = +[UIColor secondaryLabelColor];
-    v10 = [(_UISmartReplyFeedbackInputDashboardView *)v2 feedbackLabel];
-    [v10 setTextColor:v9];
+    feedbackLabel = [(_UISmartReplyFeedbackInputDashboardView *)v2 feedbackLabel];
+    [feedbackLabel setTextColor:v9];
 
-    v11 = [(_UISmartReplyFeedbackInputDashboardThumbsUpDownView *)v2 thumbsDownButton];
-    [(UIView *)v2 addSubview:v11];
+    thumbsDownButton = [(_UISmartReplyFeedbackInputDashboardThumbsUpDownView *)v2 thumbsDownButton];
+    [(UIView *)v2 addSubview:thumbsDownButton];
 
-    v12 = [(_UISmartReplyFeedbackInputDashboardView *)v2 feedbackLabel];
-    [(UIView *)v2 addSubview:v12];
+    feedbackLabel2 = [(_UISmartReplyFeedbackInputDashboardView *)v2 feedbackLabel];
+    [(UIView *)v2 addSubview:feedbackLabel2];
 
-    v13 = [(_UISmartReplyFeedbackInputDashboardThumbsUpDownView *)v2 thumbsUpButton];
-    [(UIView *)v2 addSubview:v13];
+    thumbsUpButton = [(_UISmartReplyFeedbackInputDashboardThumbsUpDownView *)v2 thumbsUpButton];
+    [(UIView *)v2 addSubview:thumbsUpButton];
 
-    v14 = [(_UISmartReplyFeedbackInputDashboardThumbsUpDownView *)v2 thumbsDownButton];
-    [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+    thumbsDownButton2 = [(_UISmartReplyFeedbackInputDashboardThumbsUpDownView *)v2 thumbsDownButton];
+    [thumbsDownButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v15 = [(_UISmartReplyFeedbackInputDashboardView *)v2 feedbackLabel];
-    [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+    feedbackLabel3 = [(_UISmartReplyFeedbackInputDashboardView *)v2 feedbackLabel];
+    [feedbackLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v16 = [(_UISmartReplyFeedbackInputDashboardThumbsUpDownView *)v2 thumbsUpButton];
-    [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+    thumbsUpButton2 = [(_UISmartReplyFeedbackInputDashboardThumbsUpDownView *)v2 thumbsUpButton];
+    [thumbsUpButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v17 = +[UIDevice currentDevice];
-    LODWORD(v10) = [v17 userInterfaceIdiom] == 6;
+    LODWORD(feedbackLabel) = [v17 userInterfaceIdiom] == 6;
 
-    if (v10)
+    if (feedbackLabel)
     {
       v18 = 8.0;
     }
@@ -60,39 +60,39 @@
       v18 = 0.0;
     }
 
-    v59 = [(_UISmartReplyFeedbackInputDashboardView *)v2 feedbackLabel];
-    v58 = [v59 centerYAnchor];
-    v57 = [(UIView *)v2 centerYAnchor];
-    v56 = [v58 constraintEqualToAnchor:v57];
+    feedbackLabel4 = [(_UISmartReplyFeedbackInputDashboardView *)v2 feedbackLabel];
+    centerYAnchor = [feedbackLabel4 centerYAnchor];
+    centerYAnchor2 = [(UIView *)v2 centerYAnchor];
+    v56 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v64[0] = v56;
-    v55 = [(_UISmartReplyFeedbackInputDashboardView *)v2 feedbackLabel];
-    v54 = [v55 centerXAnchor];
-    v53 = [(UIView *)v2 centerXAnchor];
-    v52 = [v54 constraintEqualToAnchor:v53];
+    feedbackLabel5 = [(_UISmartReplyFeedbackInputDashboardView *)v2 feedbackLabel];
+    centerXAnchor = [feedbackLabel5 centerXAnchor];
+    centerXAnchor2 = [(UIView *)v2 centerXAnchor];
+    v52 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v64[1] = v52;
-    v51 = [(_UISmartReplyFeedbackInputDashboardThumbsUpDownView *)v2 thumbsUpButton];
-    v49 = [v51 trailingAnchor];
-    v50 = [(_UISmartReplyFeedbackInputDashboardView *)v2 feedbackLabel];
-    v48 = [v50 leadingAnchor];
-    v47 = [v49 constraintEqualToAnchor:v48 constant:-v18];
+    thumbsUpButton3 = [(_UISmartReplyFeedbackInputDashboardThumbsUpDownView *)v2 thumbsUpButton];
+    trailingAnchor = [thumbsUpButton3 trailingAnchor];
+    feedbackLabel6 = [(_UISmartReplyFeedbackInputDashboardView *)v2 feedbackLabel];
+    leadingAnchor = [feedbackLabel6 leadingAnchor];
+    v47 = [trailingAnchor constraintEqualToAnchor:leadingAnchor constant:-v18];
     v64[2] = v47;
-    v46 = [(_UISmartReplyFeedbackInputDashboardThumbsUpDownView *)v2 thumbsUpButton];
-    v44 = [v46 centerYAnchor];
-    v45 = [(_UISmartReplyFeedbackInputDashboardView *)v2 feedbackLabel];
-    v43 = [v45 centerYAnchor];
-    v42 = [v44 constraintEqualToAnchor:v43];
+    thumbsUpButton4 = [(_UISmartReplyFeedbackInputDashboardThumbsUpDownView *)v2 thumbsUpButton];
+    centerYAnchor3 = [thumbsUpButton4 centerYAnchor];
+    feedbackLabel7 = [(_UISmartReplyFeedbackInputDashboardView *)v2 feedbackLabel];
+    centerYAnchor4 = [feedbackLabel7 centerYAnchor];
+    v42 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v64[3] = v42;
-    v41 = [(_UISmartReplyFeedbackInputDashboardThumbsUpDownView *)v2 thumbsDownButton];
-    v40 = [v41 leadingAnchor];
-    v19 = [(_UISmartReplyFeedbackInputDashboardView *)v2 feedbackLabel];
-    v20 = [v19 trailingAnchor];
-    v21 = [v40 constraintEqualToAnchor:v20 constant:v18];
+    thumbsDownButton3 = [(_UISmartReplyFeedbackInputDashboardThumbsUpDownView *)v2 thumbsDownButton];
+    leadingAnchor2 = [thumbsDownButton3 leadingAnchor];
+    feedbackLabel8 = [(_UISmartReplyFeedbackInputDashboardView *)v2 feedbackLabel];
+    trailingAnchor2 = [feedbackLabel8 trailingAnchor];
+    v21 = [leadingAnchor2 constraintEqualToAnchor:trailingAnchor2 constant:v18];
     v64[4] = v21;
-    v22 = [(_UISmartReplyFeedbackInputDashboardThumbsUpDownView *)v2 thumbsDownButton];
-    v23 = [v22 centerYAnchor];
-    v24 = [(_UISmartReplyFeedbackInputDashboardView *)v2 feedbackLabel];
-    v25 = [v24 centerYAnchor];
-    v26 = [v23 constraintEqualToAnchor:v25];
+    thumbsDownButton4 = [(_UISmartReplyFeedbackInputDashboardThumbsUpDownView *)v2 thumbsDownButton];
+    centerYAnchor5 = [thumbsDownButton4 centerYAnchor];
+    feedbackLabel9 = [(_UISmartReplyFeedbackInputDashboardView *)v2 feedbackLabel];
+    centerYAnchor6 = [feedbackLabel9 centerYAnchor];
+    v26 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v64[5] = v26;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v64 count:6];
     [v39 activateConstraints:v27];
@@ -103,15 +103,15 @@
     if ((v27 & 1) == 0)
     {
       v29 = MEMORY[0x1E69977A0];
-      v60 = [(_UISmartReplyFeedbackInputDashboardThumbsUpDownView *)v2 thumbsUpButton];
-      v30 = [v60 heightAnchor];
-      v31 = [(UIView *)v2 heightAnchor];
-      v32 = [v30 constraintEqualToAnchor:v31];
+      thumbsUpButton5 = [(_UISmartReplyFeedbackInputDashboardThumbsUpDownView *)v2 thumbsUpButton];
+      heightAnchor = [thumbsUpButton5 heightAnchor];
+      heightAnchor2 = [(UIView *)v2 heightAnchor];
+      v32 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
       v63[0] = v32;
-      v33 = [(_UISmartReplyFeedbackInputDashboardThumbsUpDownView *)v2 thumbsDownButton];
-      v34 = [v33 heightAnchor];
-      v35 = [(UIView *)v2 heightAnchor];
-      v36 = [v34 constraintEqualToAnchor:v35];
+      thumbsDownButton5 = [(_UISmartReplyFeedbackInputDashboardThumbsUpDownView *)v2 thumbsDownButton];
+      heightAnchor3 = [thumbsDownButton5 heightAnchor];
+      heightAnchor4 = [(UIView *)v2 heightAnchor];
+      v36 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4];
       v63[1] = v36;
       v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v63 count:2];
       [v29 activateConstraints:v37];

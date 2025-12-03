@@ -1,29 +1,29 @@
 @interface LTSchemaBatchTranslationEvent
-- (BOOL)isEqual:(id)a3;
-- (LTSchemaBatchTranslationEvent)initWithDictionary:(id)a3;
-- (LTSchemaBatchTranslationEvent)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LTSchemaBatchTranslationEvent)initWithDictionary:(id)dictionary;
+- (LTSchemaBatchTranslationEvent)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasNumParagraphFailures:(BOOL)a3;
-- (void)setHasNumberOfParagraphs:(BOOL)a3;
-- (void)setHasResponseTimeMs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasNumParagraphFailures:(BOOL)failures;
+- (void)setHasNumberOfParagraphs:(BOOL)paragraphs;
+- (void)setHasResponseTimeMs:(BOOL)ms;
+- (void)writeTo:(id)to;
 @end
 
 @implementation LTSchemaBatchTranslationEvent
 
-- (LTSchemaBatchTranslationEvent)initWithDictionary:(id)a3
+- (LTSchemaBatchTranslationEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = LTSchemaBatchTranslationEvent;
   v5 = [(LTSchemaBatchTranslationEvent *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"task"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"task"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,7 +32,7 @@
     }
 
     v23 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"sessionID"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"sessionID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,7 +40,7 @@
       [(LTSchemaBatchTranslationEvent *)v5 setSessionID:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:{@"requestID", v8}];
+    v10 = [dictionaryCopy objectForKeyedSubscript:{@"requestID", v8}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,7 +48,7 @@
       [(LTSchemaBatchTranslationEvent *)v5 setRequestID:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"systemLocale"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"systemLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,35 +56,35 @@
       [(LTSchemaBatchTranslationEvent *)v5 setSystemLocale:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"batchSeqNo"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"batchSeqNo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[LTSchemaBatchTranslationEvent setBatchSeqNo:](v5, "setBatchSeqNo:", [v14 unsignedIntValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"numberOfParagraphs"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"numberOfParagraphs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[LTSchemaBatchTranslationEvent setNumberOfParagraphs:](v5, "setNumberOfParagraphs:", [v15 unsignedIntValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"responseTimeMs"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"responseTimeMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[LTSchemaBatchTranslationEvent setResponseTimeMs:](v5, "setResponseTimeMs:", [v16 unsignedIntValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"numParagraphFailures"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"numParagraphFailures"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[LTSchemaBatchTranslationEvent setNumParagraphFailures:](v5, "setNumParagraphFailures:", [v17 unsignedIntValue]);
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"error"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"error"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -98,30 +98,30 @@
   return v5;
 }
 
-- (LTSchemaBatchTranslationEvent)initWithJSON:(id)a3
+- (LTSchemaBatchTranslationEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LTSchemaBatchTranslationEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(LTSchemaBatchTranslationEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(LTSchemaBatchTranslationEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -134,26 +134,26 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[LTSchemaBatchTranslationEvent batchSeqNo](self, "batchSeqNo")}];
-    [v3 setObject:v4 forKeyedSubscript:@"batchSeqNo"];
+    [dictionary setObject:v4 forKeyedSubscript:@"batchSeqNo"];
   }
 
   if (self->_error)
   {
-    v5 = [(LTSchemaBatchTranslationEvent *)self error];
-    v6 = [v5 dictionaryRepresentation];
-    if (v6)
+    error = [(LTSchemaBatchTranslationEvent *)self error];
+    dictionaryRepresentation = [error dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"error"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"error"];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v7 forKeyedSubscript:@"error"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"error"];
     }
   }
 
@@ -161,7 +161,7 @@
   if ((has & 8) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[LTSchemaBatchTranslationEvent numParagraphFailures](self, "numParagraphFailures")}];
-    [v3 setObject:v9 forKeyedSubscript:@"numParagraphFailures"];
+    [dictionary setObject:v9 forKeyedSubscript:@"numParagraphFailures"];
 
     has = self->_has;
   }
@@ -169,55 +169,55 @@
   if ((has & 2) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[LTSchemaBatchTranslationEvent numberOfParagraphs](self, "numberOfParagraphs")}];
-    [v3 setObject:v10 forKeyedSubscript:@"numberOfParagraphs"];
+    [dictionary setObject:v10 forKeyedSubscript:@"numberOfParagraphs"];
   }
 
   if (self->_requestID)
   {
-    v11 = [(LTSchemaBatchTranslationEvent *)self requestID];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"requestID"];
+    requestID = [(LTSchemaBatchTranslationEvent *)self requestID];
+    v12 = [requestID copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"requestID"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[LTSchemaBatchTranslationEvent responseTimeMs](self, "responseTimeMs")}];
-    [v3 setObject:v13 forKeyedSubscript:@"responseTimeMs"];
+    [dictionary setObject:v13 forKeyedSubscript:@"responseTimeMs"];
   }
 
   if (self->_sessionID)
   {
-    v14 = [(LTSchemaBatchTranslationEvent *)self sessionID];
-    v15 = [v14 copy];
-    [v3 setObject:v15 forKeyedSubscript:@"sessionID"];
+    sessionID = [(LTSchemaBatchTranslationEvent *)self sessionID];
+    v15 = [sessionID copy];
+    [dictionary setObject:v15 forKeyedSubscript:@"sessionID"];
   }
 
   if (self->_systemLocale)
   {
-    v16 = [(LTSchemaBatchTranslationEvent *)self systemLocale];
-    v17 = [v16 copy];
-    [v3 setObject:v17 forKeyedSubscript:@"systemLocale"];
+    systemLocale = [(LTSchemaBatchTranslationEvent *)self systemLocale];
+    v17 = [systemLocale copy];
+    [dictionary setObject:v17 forKeyedSubscript:@"systemLocale"];
   }
 
   if (self->_task)
   {
-    v18 = [(LTSchemaBatchTranslationEvent *)self task];
-    v19 = [v18 dictionaryRepresentation];
-    if (v19)
+    task = [(LTSchemaBatchTranslationEvent *)self task];
+    dictionaryRepresentation2 = [task dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v19 forKeyedSubscript:@"task"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"task"];
     }
 
     else
     {
-      v20 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v20 forKeyedSubscript:@"task"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"task"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -278,28 +278,28 @@ LABEL_5:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ [(LTSchemaError *)self->_error hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_42;
   }
 
-  v5 = [(LTSchemaBatchTranslationEvent *)self task];
-  v6 = [v4 task];
-  if ((v5 != 0) == (v6 == 0))
+  task = [(LTSchemaBatchTranslationEvent *)self task];
+  task2 = [equalCopy task];
+  if ((task != 0) == (task2 == 0))
   {
     goto LABEL_41;
   }
 
-  v7 = [(LTSchemaBatchTranslationEvent *)self task];
-  if (v7)
+  task3 = [(LTSchemaBatchTranslationEvent *)self task];
+  if (task3)
   {
-    v8 = v7;
-    v9 = [(LTSchemaBatchTranslationEvent *)self task];
-    v10 = [v4 task];
-    v11 = [v9 isEqual:v10];
+    v8 = task3;
+    task4 = [(LTSchemaBatchTranslationEvent *)self task];
+    task5 = [equalCopy task];
+    v11 = [task4 isEqual:task5];
 
     if (!v11)
     {
@@ -311,20 +311,20 @@ LABEL_5:
   {
   }
 
-  v5 = [(LTSchemaBatchTranslationEvent *)self sessionID];
-  v6 = [v4 sessionID];
-  if ((v5 != 0) == (v6 == 0))
+  task = [(LTSchemaBatchTranslationEvent *)self sessionID];
+  task2 = [equalCopy sessionID];
+  if ((task != 0) == (task2 == 0))
   {
     goto LABEL_41;
   }
 
-  v12 = [(LTSchemaBatchTranslationEvent *)self sessionID];
-  if (v12)
+  sessionID = [(LTSchemaBatchTranslationEvent *)self sessionID];
+  if (sessionID)
   {
-    v13 = v12;
-    v14 = [(LTSchemaBatchTranslationEvent *)self sessionID];
-    v15 = [v4 sessionID];
-    v16 = [v14 isEqual:v15];
+    v13 = sessionID;
+    sessionID2 = [(LTSchemaBatchTranslationEvent *)self sessionID];
+    sessionID3 = [equalCopy sessionID];
+    v16 = [sessionID2 isEqual:sessionID3];
 
     if (!v16)
     {
@@ -336,20 +336,20 @@ LABEL_5:
   {
   }
 
-  v5 = [(LTSchemaBatchTranslationEvent *)self requestID];
-  v6 = [v4 requestID];
-  if ((v5 != 0) == (v6 == 0))
+  task = [(LTSchemaBatchTranslationEvent *)self requestID];
+  task2 = [equalCopy requestID];
+  if ((task != 0) == (task2 == 0))
   {
     goto LABEL_41;
   }
 
-  v17 = [(LTSchemaBatchTranslationEvent *)self requestID];
-  if (v17)
+  requestID = [(LTSchemaBatchTranslationEvent *)self requestID];
+  if (requestID)
   {
-    v18 = v17;
-    v19 = [(LTSchemaBatchTranslationEvent *)self requestID];
-    v20 = [v4 requestID];
-    v21 = [v19 isEqual:v20];
+    v18 = requestID;
+    requestID2 = [(LTSchemaBatchTranslationEvent *)self requestID];
+    requestID3 = [equalCopy requestID];
+    v21 = [requestID2 isEqual:requestID3];
 
     if (!v21)
     {
@@ -361,20 +361,20 @@ LABEL_5:
   {
   }
 
-  v5 = [(LTSchemaBatchTranslationEvent *)self systemLocale];
-  v6 = [v4 systemLocale];
-  if ((v5 != 0) == (v6 == 0))
+  task = [(LTSchemaBatchTranslationEvent *)self systemLocale];
+  task2 = [equalCopy systemLocale];
+  if ((task != 0) == (task2 == 0))
   {
     goto LABEL_41;
   }
 
-  v22 = [(LTSchemaBatchTranslationEvent *)self systemLocale];
-  if (v22)
+  systemLocale = [(LTSchemaBatchTranslationEvent *)self systemLocale];
+  if (systemLocale)
   {
-    v23 = v22;
-    v24 = [(LTSchemaBatchTranslationEvent *)self systemLocale];
-    v25 = [v4 systemLocale];
-    v26 = [v24 isEqual:v25];
+    v23 = systemLocale;
+    systemLocale2 = [(LTSchemaBatchTranslationEvent *)self systemLocale];
+    systemLocale3 = [equalCopy systemLocale];
+    v26 = [systemLocale2 isEqual:systemLocale3];
 
     if (!v26)
     {
@@ -387,7 +387,7 @@ LABEL_5:
   }
 
   has = self->_has;
-  v28 = v4[64];
+  v28 = equalCopy[64];
   if ((*&has & 1) != (v28 & 1))
   {
     goto LABEL_42;
@@ -396,13 +396,13 @@ LABEL_5:
   if (*&has)
   {
     batchSeqNo = self->_batchSeqNo;
-    if (batchSeqNo != [v4 batchSeqNo])
+    if (batchSeqNo != [equalCopy batchSeqNo])
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v28 = v4[64];
+    v28 = equalCopy[64];
   }
 
   v30 = (*&has >> 1) & 1;
@@ -414,13 +414,13 @@ LABEL_5:
   if (v30)
   {
     numberOfParagraphs = self->_numberOfParagraphs;
-    if (numberOfParagraphs != [v4 numberOfParagraphs])
+    if (numberOfParagraphs != [equalCopy numberOfParagraphs])
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v28 = v4[64];
+    v28 = equalCopy[64];
   }
 
   v32 = (*&has >> 2) & 1;
@@ -432,13 +432,13 @@ LABEL_5:
   if (v32)
   {
     responseTimeMs = self->_responseTimeMs;
-    if (responseTimeMs != [v4 responseTimeMs])
+    if (responseTimeMs != [equalCopy responseTimeMs])
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v28 = v4[64];
+    v28 = equalCopy[64];
   }
 
   v34 = (*&has >> 3) & 1;
@@ -450,23 +450,23 @@ LABEL_5:
   if (v34)
   {
     numParagraphFailures = self->_numParagraphFailures;
-    if (numParagraphFailures != [v4 numParagraphFailures])
+    if (numParagraphFailures != [equalCopy numParagraphFailures])
     {
       goto LABEL_42;
     }
   }
 
-  v5 = [(LTSchemaBatchTranslationEvent *)self error];
-  v6 = [v4 error];
-  if ((v5 != 0) == (v6 == 0))
+  task = [(LTSchemaBatchTranslationEvent *)self error];
+  task2 = [equalCopy error];
+  if ((task != 0) == (task2 == 0))
   {
 LABEL_41:
 
     goto LABEL_42;
   }
 
-  v36 = [(LTSchemaBatchTranslationEvent *)self error];
-  if (!v36)
+  error = [(LTSchemaBatchTranslationEvent *)self error];
+  if (!error)
   {
 
 LABEL_45:
@@ -474,10 +474,10 @@ LABEL_45:
     goto LABEL_43;
   }
 
-  v37 = v36;
-  v38 = [(LTSchemaBatchTranslationEvent *)self error];
-  v39 = [v4 error];
-  v40 = [v38 isEqual:v39];
+  v37 = error;
+  error2 = [(LTSchemaBatchTranslationEvent *)self error];
+  error3 = [equalCopy error];
+  v40 = [error2 isEqual:error3];
 
   if (v40)
   {
@@ -491,34 +491,34 @@ LABEL_43:
   return v41;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(LTSchemaBatchTranslationEvent *)self task];
+  toCopy = to;
+  task = [(LTSchemaBatchTranslationEvent *)self task];
 
-  if (v4)
+  if (task)
   {
-    v5 = [(LTSchemaBatchTranslationEvent *)self task];
+    task2 = [(LTSchemaBatchTranslationEvent *)self task];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(LTSchemaBatchTranslationEvent *)self sessionID];
+  sessionID = [(LTSchemaBatchTranslationEvent *)self sessionID];
 
-  if (v6)
+  if (sessionID)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(LTSchemaBatchTranslationEvent *)self requestID];
+  requestID = [(LTSchemaBatchTranslationEvent *)self requestID];
 
-  if (v7)
+  if (requestID)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(LTSchemaBatchTranslationEvent *)self systemLocale];
+  systemLocale = [(LTSchemaBatchTranslationEvent *)self systemLocale];
 
-  if (v8)
+  if (systemLocale)
   {
     PBDataWriterWriteStringField();
   }
@@ -567,21 +567,21 @@ LABEL_13:
   }
 
 LABEL_14:
-  v10 = [(LTSchemaBatchTranslationEvent *)self error];
+  error = [(LTSchemaBatchTranslationEvent *)self error];
 
-  v11 = v13;
-  if (v10)
+  v11 = toCopy;
+  if (error)
   {
-    v12 = [(LTSchemaBatchTranslationEvent *)self error];
+    error2 = [(LTSchemaBatchTranslationEvent *)self error];
     PBDataWriterWriteSubmessage();
 
-    v11 = v13;
+    v11 = toCopy;
   }
 }
 
-- (void)setHasNumParagraphFailures:(BOOL)a3
+- (void)setHasNumParagraphFailures:(BOOL)failures
 {
-  if (a3)
+  if (failures)
   {
     v3 = 8;
   }
@@ -594,9 +594,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasResponseTimeMs:(BOOL)a3
+- (void)setHasResponseTimeMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 4;
   }
@@ -609,9 +609,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasNumberOfParagraphs:(BOOL)a3
+- (void)setHasNumberOfParagraphs:(BOOL)paragraphs
 {
-  if (a3)
+  if (paragraphs)
   {
     v3 = 2;
   }
@@ -624,26 +624,26 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = LTSchemaBatchTranslationEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(LTSchemaBatchTranslationEvent *)self task];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  task = [(LTSchemaBatchTranslationEvent *)self task];
+  v7 = [task applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(LTSchemaBatchTranslationEvent *)self deleteTask];
   }
 
-  v9 = [(LTSchemaBatchTranslationEvent *)self error];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  error = [(LTSchemaBatchTranslationEvent *)self error];
+  v10 = [error applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(LTSchemaBatchTranslationEvent *)self deleteError];
   }

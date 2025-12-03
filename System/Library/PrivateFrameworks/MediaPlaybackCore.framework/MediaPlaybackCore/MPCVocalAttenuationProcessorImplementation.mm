@@ -1,28 +1,28 @@
 @interface MPCVocalAttenuationProcessorImplementation
-- (BOOL)_createAudioUnit:(id *)a3;
-- (BOOL)_initializeAudioUnit:(id *)a3;
-- (BOOL)_setupAudioUnitWithModel:(id)a3 error:(id *)a4;
-- (BOOL)isCompatibleWithAudioFormat:(AudioStreamBasicDescription *)a3 maxFrames:(unsigned int)a4;
-- (BOOL)processAudioBuffer:(AudioBufferList *)a3 sampleIndex:(int64_t)a4 numberFrames:(unsigned int)a5 error:(id *)a6;
+- (BOOL)_createAudioUnit:(id *)unit;
+- (BOOL)_initializeAudioUnit:(id *)unit;
+- (BOOL)_setupAudioUnitWithModel:(id)model error:(id *)error;
+- (BOOL)isCompatibleWithAudioFormat:(AudioStreamBasicDescription *)format maxFrames:(unsigned int)frames;
+- (BOOL)processAudioBuffer:(AudioBufferList *)buffer sampleIndex:(int64_t)index numberFrames:(unsigned int)frames error:(id *)error;
 - (MPCVocalAttenuationProcessorImplementation)init;
-- (MPCVocalAttenuationProcessorImplementation)initWithMaxAttenuationLevel:(float)a3 audioFormat:(AudioStreamBasicDescription *)a4 maxFrames:(unsigned int)a5;
+- (MPCVocalAttenuationProcessorImplementation)initWithMaxAttenuationLevel:(float)level audioFormat:(AudioStreamBasicDescription *)format maxFrames:(unsigned int)frames;
 - (double)renderingLimit;
 - (void)_applyAttenuationLevelToAudioUnit;
-- (void)_prepareWithModel:(id)a3 completion:(id)a4;
+- (void)_prepareWithModel:(id)model completion:(id)completion;
 - (void)dealloc;
-- (void)prepareWithModel:(id)a3 completion:(id)a4;
+- (void)prepareWithModel:(id)model completion:(id)completion;
 - (void)resetAudioUnit;
-- (void)setEnabled:(BOOL)a3;
-- (void)setLevel:(float)a3;
-- (void)tearDownWithCompletion:(id)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setLevel:(float)level;
+- (void)tearDownWithCompletion:(id)completion;
 @end
 
 @implementation MPCVocalAttenuationProcessorImplementation
 
 - (double)renderingLimit
 {
-  v3 = [MEMORY[0x1E69708A8] standardUserDefaults];
-  [v3 audioTapTimeOutRatioForFailureDetection];
+  standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+  [standardUserDefaults audioTapTimeOutRatioForFailureDetection];
   v5 = v4;
   [(MPCVocalAttenuationProcessorImplementation *)self sampleTime];
   v7 = v6 * v5;
@@ -46,10 +46,10 @@
 - (MPCVocalAttenuationProcessorImplementation)init
 {
   v3 = [objc_alloc(MEMORY[0x1E6958418]) initWithCommonFormat:1 sampleRate:2 channels:0 interleaved:44100.0];
-  v4 = [v3 streamDescription];
-  v5 = *v4;
-  v6 = *(v4 + 16);
-  v10 = *(v4 + 32);
+  streamDescription = [v3 streamDescription];
+  v5 = *streamDescription;
+  v6 = *(streamDescription + 16);
+  v10 = *(streamDescription + 32);
   v9[0] = v5;
   v9[1] = v6;
   LODWORD(v5) = 1119748096;
@@ -182,7 +182,7 @@ LABEL_20:
   }
 }
 
-- (BOOL)_initializeAudioUnit:(id *)a3
+- (BOOL)_initializeAudioUnit:(id *)unit
 {
   v27[1] = *MEMORY[0x1E69E9840];
   v5 = AudioUnitInitialize(self->_processingAU);
@@ -273,16 +273,16 @@ LABEL_20:
   v11 = v20;
   if (v20)
   {
-    if (a3)
+    if (unit)
     {
       v21 = v20;
-      *a3 = v11;
+      *unit = v11;
     }
 
     v22 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
-      v23 = *a3;
+      v23 = *unit;
       *buf = 138543618;
       *&buf[4] = self;
       *&buf[12] = 2114;
@@ -298,10 +298,10 @@ LABEL_26:
   return v12;
 }
 
-- (BOOL)_setupAudioUnitWithModel:(id)a3 error:(id *)a4
+- (BOOL)_setupAudioUnitWithModel:(id)model error:(id *)error
 {
   v169[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  modelCopy = model;
   inData[0] = inputRenderCallback;
   inData[1] = self;
   v7 = AudioUnitSetProperty(self->_processingAU, 0x17u, 1u, 0, inData, 0x10u);
@@ -388,10 +388,10 @@ LABEL_20:
   if (v18)
   {
     v19 = v18;
-    if (a4)
+    if (error)
     {
       v20 = v18;
-      *a4 = v19;
+      *error = v19;
     }
 
     v21 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
@@ -400,7 +400,7 @@ LABEL_20:
       goto LABEL_165;
     }
 
-    v22 = *a4;
+    v22 = *error;
     v167[0] = 138543618;
     *&v167[1] = self;
     LOWORD(v167[3]) = 2114;
@@ -508,10 +508,10 @@ LABEL_46:
   if (v35)
   {
     v19 = v35;
-    if (a4)
+    if (error)
     {
       v36 = v35;
-      *a4 = v19;
+      *error = v19;
     }
 
     v21 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
@@ -520,7 +520,7 @@ LABEL_46:
       goto LABEL_165;
     }
 
-    v37 = *a4;
+    v37 = *error;
     v167[0] = 138543618;
     *&v167[1] = self;
     LOWORD(v167[3]) = 2114;
@@ -622,10 +622,10 @@ LABEL_72:
   if (v49)
   {
     v19 = v49;
-    if (a4)
+    if (error)
     {
       v50 = v49;
-      *a4 = v19;
+      *error = v19;
     }
 
     v21 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
@@ -634,7 +634,7 @@ LABEL_72:
       goto LABEL_165;
     }
 
-    v51 = *a4;
+    v51 = *error;
     v167[0] = 138543618;
     *&v167[1] = self;
     LOWORD(v167[3]) = 2114;
@@ -726,10 +726,10 @@ LABEL_97:
   if (v62)
   {
     v19 = v62;
-    if (a4)
+    if (error)
     {
       v63 = v62;
-      *a4 = v19;
+      *error = v19;
     }
 
     v21 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
@@ -738,7 +738,7 @@ LABEL_97:
       goto LABEL_165;
     }
 
-    v64 = *a4;
+    v64 = *error;
     v167[0] = 138543618;
     *&v167[1] = self;
     LOWORD(v167[3]) = 2114;
@@ -751,9 +751,9 @@ LABEL_102:
   v65 = _MPCLogCategoryPlayback();
   if (os_log_type_enabled(v65, OS_LOG_TYPE_INFO))
   {
-    if (v6)
+    if (modelCopy)
     {
-      v66 = v6[4];
+      v66 = modelCopy[4];
     }
 
     else
@@ -769,9 +769,9 @@ LABEL_102:
     _os_log_impl(&dword_1C5C61000, v65, OS_LOG_TYPE_INFO, "[AP] - %{public}@ - Setting up plist path to %{public}@", v167, 0x16u);
   }
 
-  if (v6)
+  if (modelCopy)
   {
-    v68 = v6[4];
+    v68 = modelCopy[4];
   }
 
   else
@@ -854,10 +854,10 @@ LABEL_128:
   if (v81)
   {
     v19 = v81;
-    if (a4)
+    if (error)
     {
       v82 = v81;
-      *a4 = v19;
+      *error = v19;
     }
 
     v21 = _MPCLogCategoryPlayback();
@@ -866,7 +866,7 @@ LABEL_128:
       goto LABEL_165;
     }
 
-    v83 = *a4;
+    v83 = *error;
     v167[0] = 138543618;
     *&v167[1] = self;
     LOWORD(v167[3]) = 2114;
@@ -879,9 +879,9 @@ LABEL_133:
   v84 = _MPCLogCategoryPlayback();
   if (os_log_type_enabled(v84, OS_LOG_TYPE_INFO))
   {
-    if (v6)
+    if (modelCopy)
     {
-      v85 = v6[3];
+      v85 = modelCopy[3];
     }
 
     else
@@ -897,9 +897,9 @@ LABEL_133:
     _os_log_impl(&dword_1C5C61000, v84, OS_LOG_TYPE_INFO, "[AP] - %{public}@ - Setting up model base path to %{public}@", v167, 0x16u);
   }
 
-  if (v6)
+  if (modelCopy)
   {
-    v87 = v6[3];
+    v87 = modelCopy[3];
   }
 
   else
@@ -942,10 +942,10 @@ LABEL_133:
     if (v102)
     {
       v19 = v102;
-      if (a4)
+      if (error)
       {
         v103 = v102;
-        *a4 = v19;
+        *error = v19;
       }
 
       v21 = _MPCLogCategoryPlayback();
@@ -954,7 +954,7 @@ LABEL_133:
         goto LABEL_165;
       }
 
-      v104 = *a4;
+      v104 = *error;
       v167[0] = 138543618;
       *&v167[1] = self;
       LOWORD(v167[3]) = 2114;
@@ -1005,10 +1005,10 @@ LABEL_133:
     if (v121)
     {
       v19 = v121;
-      if (a4)
+      if (error)
       {
         v122 = v121;
-        *a4 = v19;
+        *error = v19;
       }
 
       v123 = _MPCLogCategoryPlayback();
@@ -1017,7 +1017,7 @@ LABEL_133:
         goto LABEL_251;
       }
 
-      v124 = *a4;
+      v124 = *error;
       v167[0] = 138543618;
       *&v167[1] = self;
       LOWORD(v167[3]) = 2114;
@@ -1033,12 +1033,12 @@ LABEL_252:
     }
   }
 
-  v126 = [MEMORY[0x1E69708A8] standardUserDefaults];
-  v127 = [v126 shouldBypassVocalAttenuationDenoising];
+  standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+  shouldBypassVocalAttenuationDenoising = [standardUserDefaults shouldBypassVocalAttenuationDenoising];
 
   v123 = _MPCLogCategoryPlayback();
   v128 = os_log_type_enabled(v123, OS_LOG_TYPE_INFO);
-  if (!v127)
+  if (!shouldBypassVocalAttenuationDenoising)
   {
     if (v128)
     {
@@ -1097,10 +1097,10 @@ LABEL_252:
     if (v142)
     {
       v19 = v142;
-      if (a4)
+      if (error)
       {
         v143 = v142;
-        *a4 = v19;
+        *error = v19;
       }
 
       v123 = _MPCLogCategoryPlayback();
@@ -1109,7 +1109,7 @@ LABEL_252:
         goto LABEL_251;
       }
 
-      v144 = *a4;
+      v144 = *error;
       v167[0] = 138543618;
       *&v167[1] = self;
       LOWORD(v167[3]) = 2114;
@@ -1167,10 +1167,10 @@ LABEL_252:
   v19 = v160;
   if (v160)
   {
-    if (a4)
+    if (error)
     {
       v161 = v160;
-      *a4 = v19;
+      *error = v19;
     }
 
     v123 = _MPCLogCategoryPlayback();
@@ -1179,7 +1179,7 @@ LABEL_252:
       goto LABEL_251;
     }
 
-    v162 = *a4;
+    v162 = *error;
     v167[0] = 138543618;
     *&v167[1] = self;
     LOWORD(v167[3]) = 2114;
@@ -1193,7 +1193,7 @@ LABEL_166:
   return v105;
 }
 
-- (BOOL)_createAudioUnit:(id *)a3
+- (BOOL)_createAudioUnit:(id *)unit
 {
   v29[1] = *MEMORY[0x1E69E9840];
   *&inDesc.componentType = *"xfuasiovlppa";
@@ -1296,16 +1296,16 @@ LABEL_22:
   v14 = v21;
   if (v21)
   {
-    if (a3)
+    if (unit)
     {
       v22 = v21;
-      *a3 = v14;
+      *unit = v14;
     }
 
     v23 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v24 = *a3;
+      v24 = *unit;
       *buf = 138543618;
       *&buf[4] = self;
       *&buf[12] = 2114;
@@ -1321,11 +1321,11 @@ LABEL_28:
   return v15;
 }
 
-- (void)_prepareWithModel:(id)a3 completion:(id)a4
+- (void)_prepareWithModel:(id)model completion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  completionCopy = completion;
   v22 = 0;
   v8 = [(MPCVocalAttenuationProcessorImplementation *)self _createAudioUnit:&v22];
   v9 = v22;
@@ -1337,19 +1337,19 @@ LABEL_28:
     v17 = 201;
 LABEL_8:
     v18 = [v15 msv_errorWithDomain:@"MPCSuntoryError" code:v17 underlyingError:v10 debugDescription:v16];
-    v7[2](v7, 5, v18);
+    completionCopy[2](completionCopy, 5, v18);
 
     goto LABEL_10;
   }
 
   v21 = v9;
-  v11 = [(MPCVocalAttenuationProcessorImplementation *)self _setupAudioUnitWithModel:v6 error:&v21];
+  v11 = [(MPCVocalAttenuationProcessorImplementation *)self _setupAudioUnitWithModel:modelCopy error:&v21];
   v12 = v21;
 
   if (!v11)
   {
     v19 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCSuntoryError" code:202 underlyingError:v12 debugDescription:@"Unable to setup audio unit"];
-    v7[2](v7, 5, v19);
+    completionCopy[2](completionCopy, 5, v19);
 
     v10 = v12;
     goto LABEL_10;
@@ -1371,11 +1371,11 @@ LABEL_8:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v24 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C5C61000, v14, OS_LOG_TYPE_DEFAULT, "[AP] - %{public}@ - Audio Unit created", buf, 0xCu);
   }
 
-  v7[2](v7, 2, 0);
+  completionCopy[2](completionCopy, 2, 0);
 LABEL_10:
 }
 
@@ -1389,17 +1389,17 @@ LABEL_10:
   self->_nextContiguousSampleIndex = -1;
 }
 
-- (BOOL)processAudioBuffer:(AudioBufferList *)a3 sampleIndex:(int64_t)a4 numberFrames:(unsigned int)a5 error:(id *)a6
+- (BOOL)processAudioBuffer:(AudioBufferList *)buffer sampleIndex:(int64_t)index numberFrames:(unsigned int)frames error:(id *)error
 {
   v89[1] = *MEMORY[0x1E69E9840];
   if (![(MPCVocalAttenuationProcessorImplementation *)self isAvailable])
   {
-    if (a6)
+    if (error)
     {
       v30 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCSuntoryError" code:211 debugDescription:@"Attempting to process data while processor is unavailable"];
       v31 = v30;
       result = 0;
-      *a6 = v30;
+      *error = v30;
       return result;
     }
 
@@ -1411,14 +1411,14 @@ LABEL_10:
     return 0;
   }
 
-  if (self->_maxFrames < a5 && self->_nextContiguousSampleIndex - self->_previousContiguousSampleIndex != a5)
+  if (self->_maxFrames < frames && self->_nextContiguousSampleIndex - self->_previousContiguousSampleIndex != frames)
   {
     v11 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       maxFrames = self->_maxFrames;
       *buf = 134218240;
-      *&buf[4] = a5;
+      *&buf[4] = frames;
       *&buf[12] = 2048;
       *&buf[14] = maxFrames;
       _os_log_impl(&dword_1C5C61000, v11, OS_LOG_TYPE_ERROR, "[AP] - Request to render %ld frames [more than expected max %ld frames]", buf, 0x16u);
@@ -1426,12 +1426,12 @@ LABEL_10:
   }
 
   mSampleTime = self->_timestamp.mSampleTime;
-  v14 = a5;
-  v15 = mSampleTime / a5;
-  v16 = [MEMORY[0x1E69708A8] standardUserDefaults];
-  v17 = [v16 vocalAttenuationLogInputAndOuputRMSValues];
+  framesCopy = frames;
+  v15 = mSampleTime / frames;
+  standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+  vocalAttenuationLogInputAndOuputRMSValues = [standardUserDefaults vocalAttenuationLogInputAndOuputRMSValues];
 
-  if (v17)
+  if (vocalAttenuationLogInputAndOuputRMSValues)
   {
     v18 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -1442,7 +1442,7 @@ LABEL_10:
       *buf = 134218752;
       *&buf[4] = v19;
       *&buf[12] = 2048;
-      *&buf[14] = a4;
+      *&buf[14] = index;
       v85 = 2048;
       v86 = nextContiguousSampleIndex;
       v87 = 2048;
@@ -1450,17 +1450,17 @@ LABEL_10:
       _os_log_impl(&dword_1C5C61000, v18, OS_LOG_TYPE_DEFAULT, "[AP][DEBUG] - INPUT  - sampleTime: %f - sampleIndex: %lld - nextContiguous: %lld - previousContiguous: %lld", buf, 0x2Au);
     }
 
-    mNumberBuffers = a3->mNumberBuffers;
+    mNumberBuffers = buffer->mNumberBuffers;
     if (mNumberBuffers)
     {
       v23 = 0;
       v24 = 0.0;
       do
       {
-        mData = a3->mBuffers[v23].mData;
+        mData = buffer->mBuffers[v23].mData;
         if (mData)
         {
-          v26 = a5 == 0;
+          v26 = frames == 0;
         }
 
         else
@@ -1470,15 +1470,15 @@ LABEL_10:
 
         if (!v26)
         {
-          v27 = a5;
+          framesCopy2 = frames;
           do
           {
             v28 = *mData++;
-            v24 = v24 + ((v28 * v28) / v14);
-            --v27;
+            v24 = v24 + ((v28 * v28) / framesCopy);
+            --framesCopy2;
           }
 
-          while (v27);
+          while (framesCopy2);
         }
 
         ++v23;
@@ -1504,7 +1504,7 @@ LABEL_10:
     }
   }
 
-  if (a4 == -1 || self->_nextContiguousSampleIndex != a4 && self->_previousContiguousSampleIndex != a4)
+  if (index == -1 || self->_nextContiguousSampleIndex != index && self->_previousContiguousSampleIndex != index)
   {
     v41 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
@@ -1515,7 +1515,7 @@ LABEL_10:
       *buf = 134218752;
       *&buf[4] = v42;
       *&buf[12] = 2048;
-      *&buf[14] = a4;
+      *&buf[14] = index;
       v85 = 2048;
       v86 = v43;
       v87 = 2048;
@@ -1523,7 +1523,7 @@ LABEL_10:
       _os_log_impl(&dword_1C5C61000, v41, OS_LOG_TYPE_DEFAULT, "[AP] - Resetting audio unit for time discontinuity [no audio] - sampleTime: %f - sampleIndex: %lld - nextContiguous: %lld - previousContiguous: %lld", buf, 0x2Au);
     }
 
-    if (v17)
+    if (vocalAttenuationLogInputAndOuputRMSValues)
     {
       v45 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
@@ -1535,21 +1535,21 @@ LABEL_10:
     }
 
     self->_timestamp.mSampleTime = 0.0;
-    v46 = a4 & ~(a4 >> 63);
+    v46 = index & ~(index >> 63);
     self->_previousContiguousSampleIndex = v46;
-    self->_nextContiguousSampleIndex = v46 + a5;
-    v47 = a3->mNumberBuffers;
+    self->_nextContiguousSampleIndex = v46 + frames;
+    v47 = buffer->mNumberBuffers;
     if (v47)
     {
       v48 = 0;
       v49 = 16;
       do
       {
-        v50 = *(&a3->mNumberBuffers + v49);
+        v50 = *(&buffer->mNumberBuffers + v49);
         if (v50)
         {
-          vDSP_vclr(v50, 1, a5);
-          v47 = a3->mNumberBuffers;
+          vDSP_vclr(v50, 1, frames);
+          v47 = buffer->mNumberBuffers;
         }
 
         ++v48;
@@ -1566,9 +1566,9 @@ LABEL_10:
 LABEL_82:
       v68 = v57;
       v69 = v68;
-      if (a6 && v68)
+      if (error && v68)
       {
-        *a6 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCSuntoryError" code:213 underlyingError:v68 debugDescription:@"Audio unit reset failed"];
+        *error = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCSuntoryError" code:213 underlyingError:v68 debugDescription:@"Audio unit reset failed"];
       }
 
       goto LABEL_94;
@@ -1631,21 +1631,21 @@ LABEL_80:
     goto LABEL_81;
   }
 
-  if (a3->mNumberBuffers)
+  if (buffer->mNumberBuffers)
   {
     v34 = 0;
     v35 = 8;
     do
     {
-      *(&self->_ioBuffer->mNumberBuffers + v35) = *(&a3->mNumberBuffers + v35);
+      *(&self->_ioBuffer->mNumberBuffers + v35) = *(&buffer->mNumberBuffers + v35);
       ++v34;
       v35 += 16;
     }
 
-    while (v34 < a3->mNumberBuffers);
+    while (v34 < buffer->mNumberBuffers);
   }
 
-  v36 = AudioUnitRender(self->_processingAU, 0, &self->_timestamp, 0, a5, a3);
+  v36 = AudioUnitRender(self->_processingAU, 0, &self->_timestamp, 0, frames, buffer);
   if (!v36)
   {
     v58 = 0;
@@ -1723,29 +1723,29 @@ LABEL_89:
 LABEL_90:
   v73 = v58;
   v69 = v73;
-  if (a6 && v73)
+  if (error && v73)
   {
-    *a6 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCSuntoryError" code:210 underlyingError:v73 debugDescription:@"Data processing failure"];
+    *error = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCSuntoryError" code:210 underlyingError:v73 debugDescription:@"Data processing failure"];
   }
 
-  self->_timestamp.mSampleTime = self->_timestamp.mSampleTime + a5;
-  self->_previousContiguousSampleIndex = a4;
-  self->_nextContiguousSampleIndex = a4 + a5;
+  self->_timestamp.mSampleTime = self->_timestamp.mSampleTime + frames;
+  self->_previousContiguousSampleIndex = index;
+  self->_nextContiguousSampleIndex = index + frames;
 LABEL_94:
 
-  if (v17)
+  if (vocalAttenuationLogInputAndOuputRMSValues)
   {
-    v74 = a3->mNumberBuffers;
+    v74 = buffer->mNumberBuffers;
     if (v74)
     {
       v75 = 0;
       v76 = 0.0;
       do
       {
-        v77 = a3->mBuffers[v75].mData;
+        v77 = buffer->mBuffers[v75].mData;
         if (v77)
         {
-          v78 = a5 == 0;
+          v78 = frames == 0;
         }
 
         else
@@ -1755,15 +1755,15 @@ LABEL_94:
 
         if (!v78)
         {
-          v79 = a5;
+          framesCopy3 = frames;
           do
           {
             v80 = *v77++;
-            v76 = v76 + ((v80 * v80) / v14);
-            --v79;
+            v76 = v76 + ((v80 * v80) / framesCopy);
+            --framesCopy3;
           }
 
-          while (v79);
+          while (framesCopy3);
         }
 
         ++v75;
@@ -1792,37 +1792,37 @@ LABEL_94:
   return 1;
 }
 
-- (BOOL)isCompatibleWithAudioFormat:(AudioStreamBasicDescription *)a3 maxFrames:(unsigned int)a4
+- (BOOL)isCompatibleWithAudioFormat:(AudioStreamBasicDescription *)format maxFrames:(unsigned int)frames
 {
   v27 = *MEMORY[0x1E69E9840];
   v7 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Format ID: %u - Sample Rate: %1.0fHz - Bytes/Packet: %u - Frames/Packet: %u - Bytes/Frame: %u - Channels/Frame: %u - Bits/Channel: %u", a3->mFormatID, *&a3->mSampleRate, a3->mBytesPerPacket, a3->mFramesPerPacket, a3->mBytesPerFrame, a3->mChannelsPerFrame, a3->mBitsPerChannel];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Format ID: %u - Sample Rate: %1.0fHz - Bytes/Packet: %u - Frames/Packet: %u - Bytes/Frame: %u - Channels/Frame: %u - Bits/Channel: %u", format->mFormatID, *&format->mSampleRate, format->mBytesPerPacket, format->mFramesPerPacket, format->mBytesPerFrame, format->mChannelsPerFrame, format->mBitsPerChannel];
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Format ID: %u - Sample Rate: %1.0fHz - Bytes/Packet: %u - Frames/Packet: %u - Bytes/Frame: %u - Channels/Frame: %u - Bits/Channel: %u", self->_audioFormat.mFormatID, *&self->_audioFormat.mSampleRate, self->_audioFormat.mBytesPerPacket, self->_audioFormat.mFramesPerPacket, self->_audioFormat.mBytesPerFrame, self->_audioFormat.mChannelsPerFrame, self->_audioFormat.mBitsPerChannel];
     maxFrames = self->_maxFrames;
     *buf = 138544386;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
     v20 = v8;
     v21 = 2114;
     v22 = v9;
     v23 = 1024;
-    v24 = a4;
+    framesCopy = frames;
     v25 = 1024;
     v26 = maxFrames;
     _os_log_impl(&dword_1C5C61000, v7, OS_LOG_TYPE_INFO, "[AP] - %{public}@ - isCompatibleWithAudioFormat - format: %{public}@ vs %{public}@ - frames: %u vs %u", buf, 0x2Cu);
   }
 
-  v11 = ~vaddvq_s32(vandq_s8(vceqq_s32(*&self->_audioFormat.mFormatID, *&a3->mFormatID), xmmword_1C60451E0)) & 0xF;
-  return self->_audioFormat.mSampleRate == a3->mSampleRate && v11 == 0 && self->_audioFormat.mBytesPerFrame == a3->mBytesPerFrame && self->_audioFormat.mChannelsPerFrame == a3->mChannelsPerFrame && self->_audioFormat.mBitsPerChannel == a3->mBitsPerChannel && self->_maxFrames >= a4;
+  v11 = ~vaddvq_s32(vandq_s8(vceqq_s32(*&self->_audioFormat.mFormatID, *&format->mFormatID), xmmword_1C60451E0)) & 0xF;
+  return self->_audioFormat.mSampleRate == format->mSampleRate && v11 == 0 && self->_audioFormat.mBytesPerFrame == format->mBytesPerFrame && self->_audioFormat.mChannelsPerFrame == format->mChannelsPerFrame && self->_audioFormat.mBitsPerChannel == format->mBitsPerChannel && self->_maxFrames >= frames;
 }
 
-- (void)setLevel:(float)a3
+- (void)setLevel:(float)level
 {
   if ([(MPCVocalAttenuationProcessorImplementation *)self isAvailable])
   {
-    v5 = fminf(fmaxf(self->_minLevel, a3), self->_maxLevel);
+    v5 = fminf(fmaxf(self->_minLevel, level), self->_maxLevel);
     if (v5 != self->_level)
     {
       self->_level = v5;
@@ -1832,14 +1832,14 @@ LABEL_94:
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(MPCVocalAttenuationProcessorImplementation *)self isAvailable]&& self->_enabled != v3)
+  enabledCopy = enabled;
+  if ([(MPCVocalAttenuationProcessorImplementation *)self isAvailable]&& self->_enabled != enabledCopy)
   {
-    self->_enabled = v3;
+    self->_enabled = enabledCopy;
     v5 = 3;
-    if (!v3)
+    if (!enabledCopy)
     {
       v5 = 4;
     }
@@ -1850,21 +1850,21 @@ LABEL_94:
   }
 }
 
-- (void)tearDownWithCompletion:(id)a3
+- (void)tearDownWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   if (![(MPCVocalAttenuationProcessorImplementation *)self isAvailable])
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    v9 = [(MPCVocalAttenuationProcessorImplementation *)self state];
-    if (v9 >= 6)
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    state = [(MPCVocalAttenuationProcessorImplementation *)self state];
+    if (state >= 6)
     {
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", v9];
+      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", state];
     }
 
     else
     {
-      v10 = off_1E8231890[v9];
+      v10 = off_1E8231890[state];
     }
   }
 
@@ -1874,8 +1874,8 @@ LABEL_94:
   block[2] = __69__MPCVocalAttenuationProcessorImplementation_tearDownWithCompletion___block_invoke;
   block[3] = &unk_1E8239170;
   block[4] = self;
-  v12 = v5;
-  v7 = v5;
+  v12 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(creationQueue, block);
 }
 
@@ -1893,26 +1893,26 @@ void __69__MPCVocalAttenuationProcessorImplementation_tearDownWithCompletion___b
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
-- (void)prepareWithModel:(id)a3 completion:(id)a4
+- (void)prepareWithModel:(id)model completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  modelCopy = model;
+  completionCopy = completion;
   if ([(MPCVocalAttenuationProcessorImplementation *)self state])
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    v14 = [(MPCVocalAttenuationProcessorImplementation *)self state];
-    if (v14 >= 6)
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    state = [(MPCVocalAttenuationProcessorImplementation *)self state];
+    if (state >= 6)
     {
-      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", v14];
+      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", state];
     }
 
     else
     {
-      v15 = off_1E8231890[v14];
+      v15 = off_1E8231890[state];
     }
   }
 
-  objc_storeStrong(&self->_model, a3);
+  objc_storeStrong(&self->_model, model);
   self->_state = 1;
   creationQueue = self->_creationQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -1920,10 +1920,10 @@ void __69__MPCVocalAttenuationProcessorImplementation_tearDownWithCompletion___b
   block[2] = __74__MPCVocalAttenuationProcessorImplementation_prepareWithModel_completion___block_invoke;
   block[3] = &unk_1E8239198;
   block[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v11 = v9;
-  v12 = v8;
+  v17 = modelCopy;
+  v18 = completionCopy;
+  v11 = completionCopy;
+  v12 = modelCopy;
   dispatch_async(creationQueue, block);
 }
 
@@ -1956,7 +1956,7 @@ void __74__MPCVocalAttenuationProcessorImplementation_prepareWithModel_completio
   dispatch_async(MEMORY[0x1E69E96A0], v8);
 }
 
-- (MPCVocalAttenuationProcessorImplementation)initWithMaxAttenuationLevel:(float)a3 audioFormat:(AudioStreamBasicDescription *)a4 maxFrames:(unsigned int)a5
+- (MPCVocalAttenuationProcessorImplementation)initWithMaxAttenuationLevel:(float)level audioFormat:(AudioStreamBasicDescription *)format maxFrames:(unsigned int)frames
 {
   v15.receiver = self;
   v15.super_class = MPCVocalAttenuationProcessorImplementation;
@@ -1964,18 +1964,18 @@ void __74__MPCVocalAttenuationProcessorImplementation_prepareWithModel_completio
   v9 = v8;
   if (v8)
   {
-    v10 = *&a4->mSampleRate;
-    v11 = *&a4->mBytesPerPacket;
-    *(v8 + 16) = *&a4->mBitsPerChannel;
+    v10 = *&format->mSampleRate;
+    v11 = *&format->mBytesPerPacket;
+    *(v8 + 16) = *&format->mBitsPerChannel;
     *(v8 + 6) = v10;
     *(v8 + 7) = v11;
-    *(v8 + 34) = a5;
+    *(v8 + 34) = frames;
     *(v8 + 8) = 0u;
     *(v8 + 24) = 0u;
     *(v8 + 40) = 0u;
     *(v8 + 56) = 0u;
     *(v8 + 42) = 0;
-    *(v8 + 43) = a3;
+    *(v8 + 43) = level;
     *(v8 + 22) = 0;
     v12 = dispatch_queue_create("com.apple.MediaPlaybackCore.VAProcessorCreationQueue", 0);
     creationQueue = v9->_creationQueue;

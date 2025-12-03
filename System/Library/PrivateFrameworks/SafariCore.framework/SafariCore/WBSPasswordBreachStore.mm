@@ -1,18 +1,18 @@
 @interface WBSPasswordBreachStore
-+ (BOOL)_readAndValidatePersistentIdentifierCanaryWithPersistentIdentifier:(id)a3 expectedValue:(id)a4;
++ (BOOL)_readAndValidatePersistentIdentifierCanaryWithPersistentIdentifier:(id)identifier expectedValue:(id)value;
 + (id)_createPersistentIdentifierCanary;
 + (void)_createPersistentIdentifierCanary;
-- (WBSPasswordBreachStore)initWithBackingStoreURL:(id)a3;
+- (WBSPasswordBreachStore)initWithBackingStoreURL:(id)l;
 - (unint64_t)rampIdentifier;
-- (void)setRampIdentifier:(unint64_t)a3;
+- (void)setRampIdentifier:(unint64_t)identifier;
 @end
 
 @implementation WBSPasswordBreachStore
 
-- (WBSPasswordBreachStore)initWithBackingStoreURL:(id)a3
+- (WBSPasswordBreachStore)initWithBackingStoreURL:(id)l
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v18.receiver = self;
   v18.super_class = WBSPasswordBreachStore;
   v5 = [(WBSPasswordBreachStore *)&v18 init];
@@ -22,7 +22,7 @@
     v19 = *MEMORY[0x1E695DB80];
     v20[0] = MEMORY[0x1E695E118];
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-    v8 = [(WBSPersistentPropertyListStore *)v6 initWithBackingStoreURL:v4 fileResourceValues:v7];
+    v8 = [(WBSPersistentPropertyListStore *)v6 initWithBackingStoreURL:lCopy fileResourceValues:v7];
     store = v5->_store;
     v5->_store = v8;
 
@@ -30,7 +30,7 @@
     v14 = 3221225472;
     v15 = __50__WBSPasswordBreachStore_initWithBackingStoreURL___block_invoke;
     v16 = &unk_1E7CF3408;
-    v17 = v4;
+    v17 = lCopy;
     [(WBSPersistentPropertyListStore *)v5->_store setCreateEmptyStoreHandler:&v13];
     [(WBSPersistentPropertyListStore *)v5->_store setValidateLoadedStoreHandler:&__block_literal_global_44, v13, v14, v15, v16];
     v10 = v5;
@@ -151,15 +151,15 @@ LABEL_21:
 - (unint64_t)rampIdentifier
 {
   v2 = [(WBSPersistentPropertyListStore *)self->_store numberForKey:@"RampIdentifier"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (void)setRampIdentifier:(unint64_t)a3
+- (void)setRampIdentifier:(unint64_t)identifier
 {
   store = self->_store;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:identifier];
   [(WBSPersistentPropertyListStore *)store setObject:v4 forKey:@"RampIdentifier"];
 }
 
@@ -171,8 +171,8 @@ LABEL_21:
   if (v2)
   {
     v3 = v2;
-    v4 = [MEMORY[0x1E696AFB0] UUID];
-    v5 = [v4 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
     v6 = *MEMORY[0x1E697AFF8];
     v7 = *MEMORY[0x1E697B008];
@@ -183,8 +183,8 @@ LABEL_21:
     v42[1] = @"KeychainPersistentIdentifierCanaryPersistentIdentifier";
     v9 = *MEMORY[0x1E697B3C0];
     v41[2] = *MEMORY[0x1E697B3C0];
-    v34 = v5;
-    v10 = [(__CFError *)v5 dataUsingEncoding:4];
+    v34 = uUIDString;
+    v10 = [(__CFError *)uUIDString dataUsingEncoding:4];
     v11 = *MEMORY[0x1E697B320];
     v12 = *MEMORY[0x1E695E4D0];
     v42[2] = v10;
@@ -302,16 +302,16 @@ LABEL_26:
   return v24;
 }
 
-+ (BOOL)_readAndValidatePersistentIdentifierCanaryWithPersistentIdentifier:(id)a3 expectedValue:(id)a4
++ (BOOL)_readAndValidatePersistentIdentifierCanaryWithPersistentIdentifier:(id)identifier expectedValue:(id)value
 {
   v23[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  valueCopy = value;
   v7 = *MEMORY[0x1E697B3C8];
   v22[0] = *MEMORY[0x1E697AFF8];
   v22[1] = v7;
   v23[0] = *MEMORY[0x1E697B008];
-  v23[1] = v5;
+  v23[1] = identifierCopy;
   v22[2] = *MEMORY[0x1E697B318];
   v23[2] = MEMORY[0x1E695E118];
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:3];
@@ -352,7 +352,7 @@ LABEL_11:
 
   v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v12 encoding:4];
 
-  if (([v13 isEqualToString:v6] & 1) == 0)
+  if (([v13 isEqualToString:valueCopy] & 1) == 0)
   {
     v18 = WBS_LOG_CHANNEL_PREFIXPasswordBreachAwareness();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -383,11 +383,11 @@ void __50__WBSPasswordBreachStore_initWithBackingStoreURL___block_invoke_32_cold
 + (void)_createPersistentIdentifierCanary
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a1;
-  v4 = [a2 safari_privacyPreservingDescription];
+  selfCopy = self;
+  safari_privacyPreservingDescription = [a2 safari_privacyPreservingDescription];
   v6 = 138543362;
-  v7 = v4;
-  _os_log_error_impl(&dword_1B8447000, v3, OS_LOG_TYPE_ERROR, "Could not create same device access ref: %{public}@", &v6, 0xCu);
+  v7 = safari_privacyPreservingDescription;
+  _os_log_error_impl(&dword_1B8447000, selfCopy, OS_LOG_TYPE_ERROR, "Could not create same device access ref: %{public}@", &v6, 0xCu);
 
   v5 = *MEMORY[0x1E69E9840];
 }

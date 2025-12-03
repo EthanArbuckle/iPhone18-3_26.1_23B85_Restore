@@ -1,68 +1,68 @@
 @interface CKAttachmentBalloonView
-+ (id)_linkViewThumbnailFromMediaObject:(id)a3;
-+ (id)linkMetadataFromMediaObject:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
++ (id)_linkViewThumbnailFromMediaObject:(id)object;
++ (id)linkMetadataFromMediaObject:(id)object;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (CGRect)uncroppedSourceFrame;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5;
-- (CKAttachmentBalloonView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets;
+- (CKAttachmentBalloonView)initWithFrame:(CGRect)frame;
 - (CKBalloonDescriptor_t)balloonDescriptor;
 - (NSString)description;
-- (UIEdgeInsets)alignmentRectInsetsForBoundsSize:(CGSize)a3;
+- (UIEdgeInsets)alignmentRectInsetsForBoundsSize:(CGSize)size;
 - (UIEdgeInsets)pluginInsets;
 - (UIView)uncroppedSourceView;
 - (id)highlightOverlayColor;
 - (id)imageForInvisibleInkEffectView;
 - (id)traitMutationsForSnapshotRendering;
-- (void)_setProgressWithMediaObject:(id)a3;
+- (void)_setProgressWithMediaObject:(id)object;
 - (void)attachInvisibleInkEffectView;
-- (void)configureForComposition:(id)a3;
-- (void)configureForMediaObject:(id)a3 previewWidth:(double)a4 orientation:(char)a5;
-- (void)configureForMessagePart:(id)a3;
+- (void)configureForComposition:(id)composition;
+- (void)configureForMediaObject:(id)object previewWidth:(double)width orientation:(char)orientation;
+- (void)configureForMessagePart:(id)part;
 - (void)detachInvisibleInkEffectView;
-- (void)insertHighlightOverlayLayer:(id)a3;
+- (void)insertHighlightOverlayLayer:(id)layer;
 - (void)layoutSubviews;
 - (void)prepareForDisplay;
 - (void)prepareForReuse;
-- (void)richIconDidChange:(id)a3;
-- (void)setMediaObject:(id)a3;
-- (void)setOverrideBackgroundColor:(id)a3;
-- (void)setProgressForTransfer:(id)a3 indicator:(int64_t)a4;
-- (void)transferUpdated:(id)a3;
+- (void)richIconDidChange:(id)change;
+- (void)setMediaObject:(id)object;
+- (void)setOverrideBackgroundColor:(id)color;
+- (void)setProgressForTransfer:(id)transfer indicator:(int64_t)indicator;
+- (void)transferUpdated:(id)updated;
 @end
 
 @implementation CKAttachmentBalloonView
 
-- (void)configureForMediaObject:(id)a3 previewWidth:(double)a4 orientation:(char)a5
+- (void)configureForMediaObject:(id)object previewWidth:(double)width orientation:(char)orientation
 {
-  v5 = a5;
+  orientationCopy = orientation;
   v9.receiver = self;
   v9.super_class = CKAttachmentBalloonView;
-  v8 = a3;
-  [(CKImageBalloonView *)&v9 configureForMediaObject:v8 previewWidth:v5 orientation:a4];
-  [(CKAttachmentBalloonView *)self setMediaObject:v8, v9.receiver, v9.super_class];
+  objectCopy = object;
+  [(CKImageBalloonView *)&v9 configureForMediaObject:objectCopy previewWidth:orientationCopy orientation:width];
+  [(CKAttachmentBalloonView *)self setMediaObject:objectCopy, v9.receiver, v9.super_class];
 }
 
-- (void)configureForComposition:(id)a3
+- (void)configureForComposition:(id)composition
 {
   v8.receiver = self;
   v8.super_class = CKAttachmentBalloonView;
-  v4 = a3;
-  [(CKImageBalloonView *)&v8 configureForComposition:v4];
+  compositionCopy = composition;
+  [(CKImageBalloonView *)&v8 configureForComposition:compositionCopy];
   [(CKBalloonView *)self setColor:0xFFFFFFFFLL, v8.receiver, v8.super_class];
-  v5 = [v4 mediaObjects];
+  mediaObjects = [compositionCopy mediaObjects];
 
-  v6 = [v5 lastObject];
+  lastObject = [mediaObjects lastObject];
   v7 = +[CKUIBehavior sharedBehaviors];
   [v7 previewMaxWidth];
-  [(CKAttachmentBalloonView *)self configureForMediaObject:v6 previewWidth:1 orientation:?];
+  [(CKAttachmentBalloonView *)self configureForMediaObject:lastObject previewWidth:1 orientation:?];
 }
 
-- (CKAttachmentBalloonView)initWithFrame:(CGRect)a3
+- (CKAttachmentBalloonView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = CKAttachmentBalloonView;
-  v3 = [(CKImageBalloonView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKImageBalloonView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -76,12 +76,12 @@
     [v6 setDelegate:v5];
 
     [v6 setUserInteractionEnabled:0];
-    v7 = [MEMORY[0x1E69DC888] clearColor];
-    [v6 _setOverrideBackgroundColor:v7];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [v6 _setOverrideBackgroundColor:clearColor];
 
     [v6 setOpaque:0];
-    v8 = [MEMORY[0x1E69DC888] clearColor];
-    [v6 setBackgroundColor:v8];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [v6 setBackgroundColor:clearColor2];
 
     v9 = v5[112];
     v5[112] = v6;
@@ -97,24 +97,24 @@
   return v4;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(LPLinkView *)self->_attachmentView sizeThatFits:a3.width, a3.height];
+  [(LPLinkView *)self->_attachmentView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets
 {
-  if (a4)
+  if (insets)
   {
     v6 = *(MEMORY[0x1E69DDCE0] + 16);
-    *&a4->top = *MEMORY[0x1E69DDCE0];
-    *&a4->bottom = v6;
+    *&insets->top = *MEMORY[0x1E69DDCE0];
+    *&insets->bottom = v6;
   }
 
-  [(LPLinkView *)self->_attachmentView sizeThatFits:a3.width, a3.height];
+  [(LPLinkView *)self->_attachmentView sizeThatFits:fits.width, fits.height];
   v8 = v7;
   v10 = v9;
   if ([(CKBalloonView *)self hasSuggestedActionsMenu])
@@ -136,11 +136,11 @@
   v25.receiver = self;
   v25.super_class = CKAttachmentBalloonView;
   [(CKImageBalloonView *)&v25 layoutSubviews];
-  v3 = [(CKBalloonView *)self hasSuggestedActionsMenu];
+  hasSuggestedActionsMenu = [(CKBalloonView *)self hasSuggestedActionsMenu];
   [(CKAttachmentBalloonView *)self bounds];
   v7 = v6;
   v9 = v8;
-  if (v3)
+  if (hasSuggestedActionsMenu)
   {
     [(CKBalloonView *)self suggestedActionsMenuAdditionalHeight];
     v10 = v7 + 0.0;
@@ -163,9 +163,9 @@
   }
 
   [(LPLinkView *)self->_attachmentView setFrame:v14, v15, v10, v12];
-  v23 = [(CKImageBalloonView *)self isScheduled];
+  isScheduled = [(CKImageBalloonView *)self isScheduled];
   v24 = 1.0;
-  if (v23)
+  if (isScheduled)
   {
     v24 = 0.5;
   }
@@ -173,9 +173,9 @@
   [(LPLinkView *)self->_attachmentView setAlpha:v24];
 }
 
-- (UIEdgeInsets)alignmentRectInsetsForBoundsSize:(CGSize)a3
+- (UIEdgeInsets)alignmentRectInsetsForBoundsSize:(CGSize)size
 {
-  v4 = [(CKBalloonView *)self orientation:a3.width];
+  v4 = [(CKBalloonView *)self orientation:size.width];
   v5 = +[CKUIBehavior sharedBehaviors];
   [(CKAttachmentBalloonView *)self balloonDescriptor];
   [v5 attachmentBalloonAlignmentRectInsetsWithTailShape:v18];
@@ -238,18 +238,18 @@
   v5 = +[CKUIBehavior sharedBehaviors];
   -[CKBalloonView setColor:](self, "setColor:", [v5 attachmentBalloonFillColor]);
 
-  v6 = [(CKAttachmentBalloonView *)self attachmentView];
-  v7 = [v6 _dominantBackgroundColor];
+  attachmentView = [(CKAttachmentBalloonView *)self attachmentView];
+  _dominantBackgroundColor = [attachmentView _dominantBackgroundColor];
 
-  v8 = [(CKAttachmentBalloonView *)self attachmentView];
-  if (v7)
+  attachmentView2 = [(CKAttachmentBalloonView *)self attachmentView];
+  if (_dominantBackgroundColor)
   {
-    [v8 _dominantBackgroundColor];
+    [attachmentView2 _dominantBackgroundColor];
   }
 
   else
   {
-    [CKMessagesCarouselView resolvedBackgroundColorFor:v8];
+    [CKMessagesCarouselView resolvedBackgroundColorFor:attachmentView2];
   }
   v9 = ;
   [(CKAttachmentBalloonView *)self setBackgroundColor:v9];
@@ -282,13 +282,13 @@
 {
   v9.receiver = self;
   v9.super_class = CKAttachmentBalloonView;
-  v2 = [(CKBalloonView *)&v9 traitMutationsForSnapshotRendering];
+  traitMutationsForSnapshotRendering = [(CKBalloonView *)&v9 traitMutationsForSnapshotRendering];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __61__CKAttachmentBalloonView_traitMutationsForSnapshotRendering__block_invoke;
   aBlock[3] = &unk_1E72F0828;
-  v8 = v2;
-  v3 = v2;
+  v8 = traitMutationsForSnapshotRendering;
+  v3 = traitMutationsForSnapshotRendering;
   v4 = _Block_copy(aBlock);
   v5 = _Block_copy(v4);
 
@@ -312,9 +312,9 @@ void __61__CKAttachmentBalloonView_traitMutationsForSnapshotRendering__block_inv
   [(LPLinkView *)self->_attachmentView setHidden:1];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v4 = [a4 view];
+  view = [touch view];
   v5 = objc_opt_class();
   LOBYTE(v5) = v5 != objc_opt_class();
 
@@ -323,8 +323,8 @@ void __61__CKAttachmentBalloonView_traitMutationsForSnapshotRendering__block_inv
 
 - (CGRect)uncroppedSourceFrame
 {
-  v2 = [(CKAttachmentBalloonView *)self uncroppedSourceView];
-  [v2 frame];
+  uncroppedSourceView = [(CKAttachmentBalloonView *)self uncroppedSourceView];
+  [uncroppedSourceView frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -346,7 +346,7 @@ void __61__CKAttachmentBalloonView_traitMutationsForSnapshotRendering__block_inv
   v32 = *MEMORY[0x1E69E9840];
   if (!self->_attachmentView)
   {
-    v10 = self;
+    selfCopy4 = self;
     goto LABEL_29;
   }
 
@@ -358,7 +358,7 @@ void __61__CKAttachmentBalloonView_traitMutationsForSnapshotRendering__block_inv
     v5 = _CKFirstSubviewOfType(v3);
     if (!v5)
     {
-      v10 = self;
+      selfCopy4 = self;
 LABEL_27:
 
       goto LABEL_28;
@@ -373,14 +373,14 @@ LABEL_27:
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v7 = [v6 subviews];
-      v8 = [v7 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      subviews = [v6 subviews];
+      v8 = [subviews countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v8)
       {
         v9 = v8;
         v25 = v6;
         v26 = v4;
-        v10 = 0;
+        selfCopy4 = 0;
         v11 = *v28;
         do
         {
@@ -388,7 +388,7 @@ LABEL_27:
           {
             if (*v28 != v11)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(subviews);
             }
 
             v13 = *(*(&v27 + 1) + 8 * i);
@@ -399,11 +399,11 @@ LABEL_27:
               v15 = v14;
               if (v14)
               {
-                if (v10)
+                if (selfCopy4)
                 {
-                  [(CKAttachmentBalloonView *)v10 frame];
+                  [(CKAttachmentBalloonView *)selfCopy4 frame];
                   v17 = v16;
-                  [(CKAttachmentBalloonView *)v10 frame];
+                  [(CKAttachmentBalloonView *)selfCopy4 frame];
                   v19 = v17 * v18;
                   [v15 frame];
                   v21 = v20;
@@ -412,26 +412,26 @@ LABEL_27:
                   {
                     v23 = v15;
 
-                    v10 = v23;
+                    selfCopy4 = v23;
                   }
                 }
 
                 else
                 {
-                  v10 = v14;
+                  selfCopy4 = v14;
                 }
               }
             }
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v27 objects:v31 count:16];
+          v9 = [subviews countByEnumeratingWithState:&v27 objects:v31 count:16];
         }
 
         while (v9);
 
         v4 = v26;
         v6 = v25;
-        if (v10)
+        if (selfCopy4)
         {
           goto LABEL_26;
         }
@@ -442,35 +442,35 @@ LABEL_27:
       }
     }
 
-    v10 = self;
+    selfCopy4 = self;
 LABEL_26:
 
     goto LABEL_27;
   }
 
-  v10 = self;
+  selfCopy4 = self;
 LABEL_28:
 
 LABEL_29:
 
-  return v10;
+  return selfCopy4;
 }
 
-- (void)setMediaObject:(id)a3
+- (void)setMediaObject:(id)object
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_mediaObject == v5)
+  objectCopy = object;
+  if (self->_mediaObject == objectCopy)
   {
     goto LABEL_16;
   }
 
-  objc_storeStrong(&self->_mediaObject, a3);
+  objc_storeStrong(&self->_mediaObject, object);
   [(LPLinkView *)self->_attachmentView resetDownloadState];
   v6 = [objc_opt_class() linkMetadataFromMediaObject:self->_mediaObject];
   [(LPLinkView *)self->_attachmentView setMetadata:v6];
-  v7 = [(CKMediaObject *)v5 transfer];
-  if ([v7 isDownloadable])
+  transfer = [(CKMediaObject *)objectCopy transfer];
+  if ([transfer isDownloadable])
   {
     goto LABEL_5;
   }
@@ -479,18 +479,18 @@ LABEL_29:
 
   if (!v8)
   {
-    v7 = [(CKMediaObject *)v5 transfer];
-    [(CKAttachmentBalloonView *)self setProgressForTransfer:v7 indicator:0];
+    transfer = [(CKMediaObject *)objectCopy transfer];
+    [(CKAttachmentBalloonView *)self setProgressForTransfer:transfer indicator:0];
 LABEL_5:
   }
 
   [(CKBalloonView *)self setNeedsPrepareForDisplay];
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v9 removeObserver:self name:@"CKFileTransferUpdatedNotification" object:0];
-  if (v5)
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"CKFileTransferUpdatedNotification" object:0];
+  if (objectCopy)
   {
-    v10 = [(CKMediaObject *)v5 transfer];
-    if (([v10 isDownloadable] & 1) != 0 || objc_msgSend(v10, "isDownloading"))
+    transfer2 = [(CKMediaObject *)objectCopy transfer];
+    if (([transfer2 isDownloadable] & 1) != 0 || objc_msgSend(transfer2, "isDownloading"))
     {
       if (IMOSLoggingEnabled())
       {
@@ -498,31 +498,31 @@ LABEL_5:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
           v12 = 138412290;
-          v13 = self;
+          selfCopy = self;
           _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "Media object not available, listen for updated notifications on %@", &v12, 0xCu);
         }
       }
 
-      [v9 addObserver:self selector:sel_transferUpdated_ name:@"CKFileTransferUpdatedNotification" object:v10];
+      [defaultCenter addObserver:self selector:sel_transferUpdated_ name:@"CKFileTransferUpdatedNotification" object:transfer2];
     }
 
-    [v9 addObserver:self selector:sel_richIconDidChange_ name:@"CKRichIconDidChangeNotification" object:v5];
+    [defaultCenter addObserver:self selector:sel_richIconDidChange_ name:@"CKRichIconDidChangeNotification" object:objectCopy];
   }
 
 LABEL_16:
 }
 
-- (void)_setProgressWithMediaObject:(id)a3
+- (void)_setProgressWithMediaObject:(id)object
 {
-  v11 = a3;
+  objectCopy = object;
   v4 = objc_opt_respondsToSelector();
-  v5 = v11;
+  v5 = objectCopy;
   if (v4)
   {
-    v6 = [v11 transfer];
-    if ([v6 isDownloadable])
+    transfer = [objectCopy transfer];
+    if ([transfer isDownloadable])
     {
-      if ([v6 isDownloading])
+      if ([transfer isDownloading])
       {
         v7 = 1;
       }
@@ -532,7 +532,7 @@ LABEL_16:
         v7 = 2;
       }
 
-      if ([v6 isReset])
+      if ([transfer isReset])
       {
         v8 = 2;
       }
@@ -542,9 +542,9 @@ LABEL_16:
         v8 = v7;
       }
 
-      v9 = [v6 error];
+      error = [transfer error];
 
-      if (v9)
+      if (error)
       {
         v10 = 2;
       }
@@ -560,60 +560,60 @@ LABEL_16:
       v10 = 0;
     }
 
-    [(CKAttachmentBalloonView *)self setProgressForTransfer:v6 indicator:v10];
+    [(CKAttachmentBalloonView *)self setProgressForTransfer:transfer indicator:v10];
 
-    v5 = v11;
+    v5 = objectCopy;
   }
 }
 
 - (void)attachInvisibleInkEffectView
 {
-  v3 = [(CKBalloonView *)self invisibleInkEffectController];
-  v5 = [v3 effectView];
+  invisibleInkEffectController = [(CKBalloonView *)self invisibleInkEffectController];
+  effectView = [invisibleInkEffectController effectView];
 
-  v4 = [(LPLinkView *)self->_attachmentView superview];
+  superview = [(LPLinkView *)self->_attachmentView superview];
 
-  if (v4)
+  if (superview)
   {
-    [(CKAttachmentBalloonView *)self insertSubview:v5 aboveSubview:self->_attachmentView];
+    [(CKAttachmentBalloonView *)self insertSubview:effectView aboveSubview:self->_attachmentView];
   }
 
   else
   {
-    [(CKAttachmentBalloonView *)self insertSubview:v5 atIndex:0];
+    [(CKAttachmentBalloonView *)self insertSubview:effectView atIndex:0];
   }
 }
 
 - (void)detachInvisibleInkEffectView
 {
-  v2 = [(CKBalloonView *)self invisibleInkEffectController];
-  v3 = [v2 effectView];
+  invisibleInkEffectController = [(CKBalloonView *)self invisibleInkEffectController];
+  effectView = [invisibleInkEffectController effectView];
 
-  [v3 removeFromSuperview];
+  [effectView removeFromSuperview];
 }
 
 - (id)imageForInvisibleInkEffectView
 {
-  v3 = [(CKAttachmentBalloonView *)self attachmentView];
-  v4 = v3;
-  if (v3)
+  attachmentView = [(CKAttachmentBalloonView *)self attachmentView];
+  v4 = attachmentView;
+  if (attachmentView)
   {
-    [v3 layoutSubviews];
+    [attachmentView layoutSubviews];
     [(CKAttachmentBalloonView *)self bounds];
     v16.width = v5;
     v16.height = v6;
     UIGraphicsBeginImageContextWithOptions(v16, 1, 0.0);
     CurrentContext = UIGraphicsGetCurrentContext();
     v8 = +[CKUIBehavior sharedBehaviors];
-    v9 = [v8 theme];
-    v10 = [v9 balloonColorsForColorType:0xFFFFFFFFLL];
-    v11 = [v10 firstObject];
+    theme = [v8 theme];
+    v10 = [theme balloonColorsForColorType:0xFFFFFFFFLL];
+    firstObject = [v10 firstObject];
 
-    CGContextSetFillColorWithColor(CurrentContext, [v11 CGColor]);
+    CGContextSetFillColorWithColor(CurrentContext, [firstObject CGColor]);
     [(CKAttachmentBalloonView *)self bounds];
     CGContextFillRect(CurrentContext, v17);
-    v12 = [v4 layer];
-    [v12 renderInContext:CurrentContext];
+    layer = [v4 layer];
+    [layer renderInContext:CurrentContext];
 
     v13 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
@@ -627,14 +627,14 @@ LABEL_16:
   return v13;
 }
 
-- (void)transferUpdated:(id)a3
+- (void)transferUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [(CKMediaObject *)self->_mediaObject transfer];
-  v7 = [v6 guid];
-  v8 = [v5 guid];
-  v9 = [v7 isEqualToString:v8];
+  updatedCopy = updated;
+  object = [updatedCopy object];
+  transfer = [(CKMediaObject *)self->_mediaObject transfer];
+  guid = [transfer guid];
+  guid2 = [object guid];
+  v9 = [guid isEqualToString:guid2];
 
   if (v9)
   {
@@ -653,55 +653,55 @@ LABEL_16:
   }
 }
 
-- (void)setProgressForTransfer:(id)a3 indicator:(int64_t)a4
+- (void)setProgressForTransfer:(id)transfer indicator:(int64_t)indicator
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  transferCopy = transfer;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [v6 currentBytes];
-      v9 = [v6 totalBytes];
-      v10 = [v6 error];
+      currentBytes = [transferCopy currentBytes];
+      totalBytes = [transferCopy totalBytes];
+      error = [transferCopy error];
       v11 = 134218754;
-      v12 = a4;
+      indicatorCopy = indicator;
       v13 = 2048;
-      v14 = v8;
+      v14 = currentBytes;
       v15 = 2048;
-      v16 = v9;
+      v16 = totalBytes;
       v17 = 2112;
-      v18 = v10;
+      v18 = error;
       _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "indicator: %lu, currentBytes: %llu, totalBytes: %llu, error: %@", &v11, 0x2Au);
     }
   }
 
-  switch(a4)
+  switch(indicator)
   {
     case 2:
       [(LPLinkView *)self->_attachmentView resetDownloadState];
       break;
     case 1:
-      -[LPLinkView _setBytesLoaded:](self->_attachmentView, "_setBytesLoaded:", [v6 currentBytes]);
+      -[LPLinkView _setBytesLoaded:](self->_attachmentView, "_setBytesLoaded:", [transferCopy currentBytes]);
       break;
     case 0:
-      -[LPLinkView _setBytesLoaded:](self->_attachmentView, "_setBytesLoaded:", [v6 totalBytes]);
+      -[LPLinkView _setBytesLoaded:](self->_attachmentView, "_setBytesLoaded:", [transferCopy totalBytes]);
       break;
   }
 }
 
-- (void)richIconDidChange:(id)a3
+- (void)richIconDidChange:(id)change
 {
-  v7 = a3;
-  v5 = [v7 object];
+  changeCopy = change;
+  object = [changeCopy object];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [(CKAttachmentBalloonView *)v7 richIconDidChange:a2, self, v5];
+    [(CKAttachmentBalloonView *)changeCopy richIconDidChange:a2, self, object];
   }
 
-  if (self->_mediaObject == v5)
+  if (self->_mediaObject == object)
   {
     v6 = [objc_opt_class() linkMetadataFromMediaObject:self->_mediaObject];
     [(LPLinkView *)self->_attachmentView setMetadata:v6];
@@ -710,65 +710,65 @@ LABEL_16:
 
 - (id)highlightOverlayColor
 {
-  v2 = [MEMORY[0x1E69DC888] blackColor];
-  v3 = [v2 colorWithAlphaComponent:0.2];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v3 = [blackColor colorWithAlphaComponent:0.2];
 
   return v3;
 }
 
-- (void)insertHighlightOverlayLayer:(id)a3
+- (void)insertHighlightOverlayLayer:(id)layer
 {
-  v4 = a3;
-  v6 = [(CKAttachmentBalloonView *)self layer];
-  v5 = [(LPLinkView *)self->_attachmentView layer];
-  [v6 insertSublayer:v4 below:v5];
+  layerCopy = layer;
+  layer = [(CKAttachmentBalloonView *)self layer];
+  layer2 = [(LPLinkView *)self->_attachmentView layer];
+  [layer insertSublayer:layerCopy below:layer2];
 }
 
-+ (id)linkMetadataFromMediaObject:(id)a3
++ (id)linkMetadataFromMediaObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = objc_alloc_init(MEMORY[0x1E696ECA0]);
-  v6 = [v4 filename];
-  v7 = [v4 fileURL];
+  filename = [objectCopy filename];
+  fileURL = [objectCopy fileURL];
 
-  if (v7)
+  if (fileURL)
   {
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    v9 = [v4 fileURL];
-    v10 = [v9 path];
-    v11 = [v8 displayNameAtPath:v10];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    fileURL2 = [objectCopy fileURL];
+    path = [fileURL2 path];
+    v11 = [defaultManager displayNameAtPath:path];
 
-    v6 = v11;
+    filename = v11;
   }
 
   v12 = objc_alloc_init(MEMORY[0x1E696ECF8]);
   v13 = objc_alloc_init(MEMORY[0x1E696EC58]);
-  v14 = [v4 transfer];
-  v15 = [v14 isThumbnail];
+  transfer = [objectCopy transfer];
+  isThumbnail = [transfer isThumbnail];
 
-  if (v15)
+  if (isThumbnail)
   {
-    v16 = [v4 transfer];
-    v17 = [v16 originalFilename];
-    [v13 setName:v17];
+    transfer2 = [objectCopy transfer];
+    originalFilename = [transfer2 originalFilename];
+    [v13 setName:originalFilename];
 
     v18 = *MEMORY[0x1E6963710];
-    v19 = [v13 name];
-    PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(v18, [v19 pathExtension], 0);
+    name = [v13 name];
+    PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(v18, [name pathExtension], 0);
   }
 
   else
   {
-    [v13 setName:v6];
-    PreferredIdentifierForTag = [v4 UTIType];
+    [v13 setName:filename];
+    PreferredIdentifierForTag = [objectCopy UTIType];
   }
 
   [v13 setType:PreferredIdentifierForTag];
 
-  v21 = [v4 transfer];
-  [v13 setSize:{objc_msgSend(v21, "totalBytes")}];
+  transfer3 = [objectCopy transfer];
+  [v13 setSize:{objc_msgSend(transfer3, "totalBytes")}];
 
-  v22 = [a1 _linkViewThumbnailFromMediaObject:v4];
+  v22 = [self _linkViewThumbnailFromMediaObject:objectCopy];
   [v13 setThumbnail:v22];
   [v12 setSpecialization:v13];
   [v5 setSpecialization:v12];
@@ -776,63 +776,63 @@ LABEL_16:
   return v5;
 }
 
-+ (id)_linkViewThumbnailFromMediaObject:(id)a3
++ (id)_linkViewThumbnailFromMediaObject:(id)object
 {
-  v3 = a3;
-  v4 = [v3 transfer];
-  v5 = [v4 error];
+  objectCopy = object;
+  transfer = [objectCopy transfer];
+  error = [transfer error];
 
-  if (v5)
+  if (error)
   {
     v6 = +[CKUIBehavior sharedBehaviors];
-    v7 = [v6 genericDocumentIcon];
+    genericDocumentIcon = [v6 genericDocumentIcon];
   }
 
-  else if (([v4 isDownloadable] & 1) != 0 && !objc_msgSend(v4, "isThumbnail"))
+  else if (([transfer isDownloadable] & 1) != 0 && !objc_msgSend(transfer, "isThumbnail"))
   {
-    v7 = 0;
+    genericDocumentIcon = 0;
   }
 
   else
   {
-    v7 = [v3 richIcon];
+    genericDocumentIcon = [objectCopy richIcon];
   }
 
-  v8 = [objc_opt_class() canLazilyLoadImagesUsingLinkPresentation];
-  if (v7)
+  canLazilyLoadImagesUsingLinkPresentation = [objc_opt_class() canLazilyLoadImagesUsingLinkPresentation];
+  if (genericDocumentIcon)
   {
     goto LABEL_8;
   }
 
-  if (!v8)
+  if (!canLazilyLoadImagesUsingLinkPresentation)
   {
-    v7 = [v3 icon];
-    if (!v7)
+    genericDocumentIcon = [objectCopy icon];
+    if (!genericDocumentIcon)
     {
       v22 = +[CKUIBehavior sharedBehaviors];
-      v7 = [v22 genericDocumentIcon];
+      genericDocumentIcon = [v22 genericDocumentIcon];
     }
 
     goto LABEL_8;
   }
 
-  v7 = [v3 cachedIcon];
-  if (v7)
+  genericDocumentIcon = [objectCopy cachedIcon];
+  if (genericDocumentIcon)
   {
 LABEL_8:
-    v9 = [objc_alloc(MEMORY[0x1E696EC68]) initWithPlatformImage:v7];
+    v9 = [objc_alloc(MEMORY[0x1E696EC68]) initWithPlatformImage:genericDocumentIcon];
     goto LABEL_9;
   }
 
   v11 = +[CKUIBehavior sharedBehaviors];
-  v7 = [v11 genericDocumentIcon];
+  genericDocumentIcon = [v11 genericDocumentIcon];
 
   v12 = objc_alloc_init(MEMORY[0x1E696ACA0]);
-  v13 = [v3 UTIType];
-  v14 = [v13 copy];
+  uTIType = [objectCopy UTIType];
+  v14 = [uTIType copy];
 
-  v15 = [v3 fileURL];
-  v16 = [v15 copy];
+  fileURL = [objectCopy fileURL];
+  v16 = [fileURL copy];
 
   v17 = objc_opt_class();
   v23 = MEMORY[0x1E69E9820];
@@ -845,7 +845,7 @@ LABEL_8:
   v19 = v14;
   [v12 registerObjectOfClass:v17 visibility:3 loadHandler:&v23];
   v20 = objc_alloc(MEMORY[0x1E696EC68]);
-  v21 = [v20 initWithPlatformImage:{v7, v23, v24, v25, v26}];
+  v21 = [v20 initWithPlatformImage:{genericDocumentIcon, v23, v24, v25, v26}];
   v9 = [objc_alloc(MEMORY[0x1E696EC68]) initWithItemProvider:v12 properties:0 placeholderImage:v21];
 
 LABEL_9:
@@ -872,13 +872,13 @@ id __61__CKAttachmentBalloonView__linkViewThumbnailFromMediaObject___block_invok
   return v4;
 }
 
-- (void)setOverrideBackgroundColor:(id)a3
+- (void)setOverrideBackgroundColor:(id)color
 {
-  v5 = a3;
-  v4 = [(CKAttachmentBalloonView *)self attachmentView];
-  [v4 _setOverrideBackgroundColor:v5];
+  colorCopy = color;
+  attachmentView = [(CKAttachmentBalloonView *)self attachmentView];
+  [attachmentView _setOverrideBackgroundColor:colorCopy];
 
-  [(CKAttachmentBalloonView *)self setBackgroundColor:v5];
+  [(CKAttachmentBalloonView *)self setBackgroundColor:colorCopy];
 }
 
 - (CKBalloonDescriptor_t)balloonDescriptor
@@ -910,13 +910,13 @@ id __61__CKAttachmentBalloonView__linkViewThumbnailFromMediaObject___block_invok
   return result;
 }
 
-- (void)configureForMessagePart:(id)a3
+- (void)configureForMessagePart:(id)part
 {
-  v4 = a3;
+  partCopy = part;
   v19.receiver = self;
   v19.super_class = CKAttachmentBalloonView;
-  [(CKImageBalloonView *)&v19 configureForMessagePart:v4];
-  [v4 strokeColor];
+  [(CKImageBalloonView *)&v19 configureForMessagePart:partCopy];
+  [partCopy strokeColor];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -924,8 +924,8 @@ id __61__CKAttachmentBalloonView__linkViewThumbnailFromMediaObject___block_invok
   if (IMColorComponentsIsZero())
   {
     v13 = +[CKUIBehavior sharedBehaviors];
-    v14 = [v13 theme];
-    v15 = [v14 unfilledBalloonColorForColorType:8];
+    theme = [v13 theme];
+    v15 = [theme unfilledBalloonColorForColorType:8];
     [v15 ck_imColorComponents];
     [(CKBalloonView *)self setStrokeColor:?];
   }
@@ -936,10 +936,10 @@ id __61__CKAttachmentBalloonView__linkViewThumbnailFromMediaObject___block_invok
   }
 
   [(CKBalloonView *)self setColor:8];
-  v16 = [v4 mediaObject];
+  mediaObject = [partCopy mediaObject];
   v17 = +[CKUIBehavior sharedBehaviors];
   [v17 previewMaxWidth];
-  -[CKAttachmentBalloonView configureForMediaObject:previewWidth:orientation:](self, "configureForMediaObject:previewWidth:orientation:", v16, [v4 balloonOrientation], v18);
+  -[CKAttachmentBalloonView configureForMediaObject:previewWidth:orientation:](self, "configureForMediaObject:previewWidth:orientation:", mediaObject, [partCopy balloonOrientation], v18);
 }
 
 - (void)richIconDidChange:(uint64_t)a3 .cold.1(void *a1, uint64_t a2, uint64_t a3, uint64_t a4)

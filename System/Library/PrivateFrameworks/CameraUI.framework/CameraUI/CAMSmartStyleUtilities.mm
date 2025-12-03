@@ -1,19 +1,19 @@
 @interface CAMSmartStyleUtilities
-+ (CGPoint)colorAndToneBiasForSlider2DValue:(CGPoint)a3 limitRangeForSystemStyles:(BOOL)a4;
-+ (CGPoint)slider2DValueForColorBias:(double)a3 toneBias:(double)a4 limitRangeForSystemStyles:(BOOL)a5;
-+ (CGPoint)slider2DValueForStyle:(id)a3 limitRangeForSystemStyles:(BOOL)a4;
-+ (double)colorOrToneBiasForSlider2DValue:(double)result limitRangeForSystemStyles:(BOOL)a4;
-+ (double)slider2DValueForColorOrToneBias:(double)result limitRangeForSystemStyles:(BOOL)a4;
-+ (id)_validatedSystemStyleForStyle:(id)a3;
-+ (id)readAVCaptureSystemStyleBypassXPC:(BOOL)a3 allowNil:(BOOL)a4;
-+ (void)writeAVCaptureSystemStyle:(id)a3;
++ (CGPoint)colorAndToneBiasForSlider2DValue:(CGPoint)value limitRangeForSystemStyles:(BOOL)styles;
++ (CGPoint)slider2DValueForColorBias:(double)bias toneBias:(double)toneBias limitRangeForSystemStyles:(BOOL)styles;
++ (CGPoint)slider2DValueForStyle:(id)style limitRangeForSystemStyles:(BOOL)styles;
++ (double)colorOrToneBiasForSlider2DValue:(double)result limitRangeForSystemStyles:(BOOL)styles;
++ (double)slider2DValueForColorOrToneBias:(double)result limitRangeForSystemStyles:(BOOL)styles;
++ (id)_validatedSystemStyleForStyle:(id)style;
++ (id)readAVCaptureSystemStyleBypassXPC:(BOOL)c allowNil:(BOOL)nil;
++ (void)writeAVCaptureSystemStyle:(id)style;
 @end
 
 @implementation CAMSmartStyleUtilities
 
-+ (id)readAVCaptureSystemStyleBypassXPC:(BOOL)a3 allowNil:(BOOL)a4
++ (id)readAVCaptureSystemStyleBypassXPC:(BOOL)c allowNil:(BOOL)nil
 {
-  if (a3)
+  if (c)
   {
     AVSmartStyleSettingsGetSystemStyleFast();
   }
@@ -22,31 +22,31 @@
   {
     AVSmartStyleSettingsGetSystemStyle();
   }
-  v6 = ;
-  if (!v6 && !a4)
+  identityStyle = ;
+  if (!identityStyle && !nil)
   {
-    v6 = [MEMORY[0x1E6987120] identityStyle];
+    identityStyle = [MEMORY[0x1E6987120] identityStyle];
   }
 
-  v7 = [a1 _validatedSystemStyleForStyle:v6];
+  v7 = [self _validatedSystemStyleForStyle:identityStyle];
 
   return v7;
 }
 
-+ (void)writeAVCaptureSystemStyle:(id)a3
++ (void)writeAVCaptureSystemStyle:(id)style
 {
-  v3 = [a1 _validatedSystemStyleForStyle:a3];
+  v3 = [self _validatedSystemStyleForStyle:style];
   AVSmartStyleSettingsSetSystemStyle();
 }
 
-+ (id)_validatedSystemStyleForStyle:(id)a3
++ (id)_validatedSystemStyleForStyle:(id)style
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  styleCopy = style;
+  v4 = styleCopy;
+  if (styleCopy)
   {
-    v5 = v3;
+    v5 = styleCopy;
     [v5 toneBias];
     v7 = fmaxf(fminf(v6, 0.5), -0.5);
     [v5 colorBias];
@@ -60,9 +60,9 @@
     else
     {
       v12 = MEMORY[0x1E6987120];
-      v13 = [v5 cast];
+      cast = [v5 cast];
       [v5 intensity];
-      v14 = [v12 styleWithCast:v13 intensity:? toneBias:? colorBias:?];
+      v14 = [v12 styleWithCast:cast intensity:? toneBias:? colorBias:?];
 
       v15 = os_log_create("com.apple.camera", "SmartStyle");
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -84,9 +84,9 @@
   return v14;
 }
 
-+ (double)slider2DValueForColorOrToneBias:(double)result limitRangeForSystemStyles:(BOOL)a4
++ (double)slider2DValueForColorOrToneBias:(double)result limitRangeForSystemStyles:(BOOL)styles
 {
-  if (a4)
+  if (styles)
   {
     return result + result;
   }
@@ -94,9 +94,9 @@
   return result;
 }
 
-+ (double)colorOrToneBiasForSlider2DValue:(double)result limitRangeForSystemStyles:(BOOL)a4
++ (double)colorOrToneBiasForSlider2DValue:(double)result limitRangeForSystemStyles:(BOOL)styles
 {
-  if (a4)
+  if (styles)
   {
     return result * 0.5;
   }
@@ -104,17 +104,17 @@
   return result;
 }
 
-+ (CGPoint)slider2DValueForStyle:(id)a3 limitRangeForSystemStyles:(BOOL)a4
++ (CGPoint)slider2DValueForStyle:(id)style limitRangeForSystemStyles:(BOOL)styles
 {
-  v4 = a4;
-  v6 = a3;
-  [v6 colorBias];
-  [a1 slider2DValueForColorOrToneBias:v4 limitRangeForSystemStyles:?];
+  stylesCopy = styles;
+  styleCopy = style;
+  [styleCopy colorBias];
+  [self slider2DValueForColorOrToneBias:stylesCopy limitRangeForSystemStyles:?];
   v8 = v7;
-  [v6 toneBias];
+  [styleCopy toneBias];
   v10 = v9;
 
-  [a1 slider2DValueForColorOrToneBias:v4 limitRangeForSystemStyles:v10];
+  [self slider2DValueForColorOrToneBias:stylesCopy limitRangeForSystemStyles:v10];
   v12 = v11;
   v13 = v8;
   result.y = v12;
@@ -122,12 +122,12 @@
   return result;
 }
 
-+ (CGPoint)slider2DValueForColorBias:(double)a3 toneBias:(double)a4 limitRangeForSystemStyles:(BOOL)a5
++ (CGPoint)slider2DValueForColorBias:(double)bias toneBias:(double)toneBias limitRangeForSystemStyles:(BOOL)styles
 {
-  v5 = a5;
-  [a1 slider2DValueForColorOrToneBias:a3 limitRangeForSystemStyles:?];
+  stylesCopy = styles;
+  [self slider2DValueForColorOrToneBias:bias limitRangeForSystemStyles:?];
   v9 = v8;
-  [a1 slider2DValueForColorOrToneBias:v5 limitRangeForSystemStyles:a4];
+  [self slider2DValueForColorOrToneBias:stylesCopy limitRangeForSystemStyles:toneBias];
   v11 = v10;
   v12 = v9;
   result.y = v11;
@@ -135,13 +135,13 @@
   return result;
 }
 
-+ (CGPoint)colorAndToneBiasForSlider2DValue:(CGPoint)a3 limitRangeForSystemStyles:(BOOL)a4
++ (CGPoint)colorAndToneBiasForSlider2DValue:(CGPoint)value limitRangeForSystemStyles:(BOOL)styles
 {
-  v4 = a4;
-  y = a3.y;
-  [a1 colorOrToneBiasForSlider2DValue:a3.x limitRangeForSystemStyles:?];
+  stylesCopy = styles;
+  y = value.y;
+  [self colorOrToneBiasForSlider2DValue:value.x limitRangeForSystemStyles:?];
   v8 = v7;
-  [a1 colorOrToneBiasForSlider2DValue:v4 limitRangeForSystemStyles:y];
+  [self colorOrToneBiasForSlider2DValue:stylesCopy limitRangeForSystemStyles:y];
   v10 = v9;
   v11 = v8;
   result.y = v10;

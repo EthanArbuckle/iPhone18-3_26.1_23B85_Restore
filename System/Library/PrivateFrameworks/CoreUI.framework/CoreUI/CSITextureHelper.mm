@@ -1,5 +1,5 @@
 @interface CSITextureHelper
-- (BOOL)expandIntoBuffer:(uint64_t)a1 error:(void *)a2;
+- (BOOL)expandIntoBuffer:(uint64_t)buffer error:(void *)error;
 - (void)dealloc;
 @end
 
@@ -13,14 +13,14 @@
   [(CSITextureHelper *)&v3 dealloc];
 }
 
-- (BOOL)expandIntoBuffer:(uint64_t)a1 error:(void *)a2
+- (BOOL)expandIntoBuffer:(uint64_t)buffer error:(void *)error
 {
-  if (a1)
+  if (buffer)
   {
-    v4 = *(a1 + 32);
+    v4 = *(buffer + 32);
     v5 = [_CSIRenditionBlockData alloc];
-    v6 = [objc_msgSend(a2 "map")];
-    v7 = *(a1 + 44);
+    v6 = [objc_msgSend(error "map")];
+    v7 = *(buffer + 44);
     if (v7 == 1095911234)
     {
       v8 = 1;
@@ -71,7 +71,7 @@
       v12 = v11;
     }
 
-    v13 = [(_CSIRenditionBlockData *)v5 initWithBytes:v6 pixelWidth:*(a1 + 32) pixelHeight:*(a1 + 36) sourceRowbytes:*(a1 + 24) pixelFormat:v12];
+    v13 = [(_CSIRenditionBlockData *)v5 initWithBytes:v6 pixelWidth:*(buffer + 32) pixelHeight:*(buffer + 36) sourceRowbytes:*(buffer + 24) pixelFormat:v12];
     [(_CSIRenditionBlockData *)v13 setRowBytes:?];
     [(_CSIRenditionBlockData *)v13 expandCSIBitmapData:0 fromSlice:v4 makeReadOnly:0, v14, v15, v16];
     if (v13)
@@ -84,10 +84,10 @@
       v17 = 0;
     }
 
-    *(a1 + 40) = v17;
+    *(buffer + 40) = v17;
   }
 
-  return a1 != 0;
+  return buffer != 0;
 }
 
 @end

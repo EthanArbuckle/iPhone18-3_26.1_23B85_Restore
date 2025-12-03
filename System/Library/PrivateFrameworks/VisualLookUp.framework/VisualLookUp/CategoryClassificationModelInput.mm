@@ -1,6 +1,6 @@
 @interface CategoryClassificationModelInput
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation CategoryClassificationModelInput
@@ -14,7 +14,7 @@
   return v2;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   if (sub_1D9C7DC7C() == 120 && v4 == 0xE100000000000000)
   {
@@ -23,7 +23,7 @@ LABEL_5:
     v6 = *self->x;
     v7 = objc_opt_self();
     v8 = v6;
-    v9 = [v7 featureValueWithMultiArray_];
+    featureValueWithMultiArray_ = [v7 featureValueWithMultiArray_];
 
     goto LABEL_7;
   }
@@ -35,10 +35,10 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v9 = 0;
+  featureValueWithMultiArray_ = 0;
 LABEL_7:
 
-  return v9;
+  return featureValueWithMultiArray_;
 }
 
 @end

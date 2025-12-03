@@ -1,41 +1,41 @@
 @interface _FBSDisplayLayoutEndpointServices
-+ (id)_checkoutServiceWithEndpoint:(id)a3 qos:(char)a4;
-+ (void)_checkinService:(id)a3;
++ (id)_checkoutServiceWithEndpoint:(id)endpoint qos:(char)qos;
++ (void)_checkinService:(id)service;
 @end
 
 @implementation _FBSDisplayLayoutEndpointServices
 
-+ (id)_checkoutServiceWithEndpoint:(id)a3 qos:(char)a4
++ (id)_checkoutServiceWithEndpoint:(id)endpoint qos:(char)qos
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  qosCopy = qos;
+  endpointCopy = endpoint;
+  if (!endpointCopy)
   {
     [_FBSDisplayLayoutEndpointServices _checkoutServiceWithEndpoint:a2 qos:?];
   }
 
-  v7 = v6;
+  v7 = endpointCopy;
   v8 = +[FBSDisplayLayoutMonitor serviceIdentifier];
-  v9 = [v7 service];
-  v10 = [v8 isEqualToString:v9];
+  service = [v7 service];
+  v10 = [v8 isEqualToString:service];
 
   if ((v10 & 1) == 0)
   {
     [_FBSDisplayLayoutEndpointServices _checkoutServiceWithEndpoint:v7 qos:a2];
   }
 
-  if (v4 >= 3)
+  if (qosCopy >= 3)
   {
-    [_FBSDisplayLayoutEndpointServices _checkoutServiceWithEndpoint:v4 qos:a2];
+    [_FBSDisplayLayoutEndpointServices _checkoutServiceWithEndpoint:qosCopy qos:a2];
   }
 
   os_unfair_lock_lock(&__sharedEndpointServicesLock);
   v11 = __sharedEndpointServices;
   if (!__sharedEndpointServices)
   {
-    v12 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v13 = __sharedEndpointServices;
-    __sharedEndpointServices = v12;
+    __sharedEndpointServices = dictionary;
 
     v11 = __sharedEndpointServices;
   }
@@ -47,14 +47,14 @@
     [__sharedEndpointServices setObject:v14 forKey:v7];
   }
 
-  ++*&v14[8 * v4 + 32];
+  ++*&v14[8 * qosCopy + 32];
   v15 = v14 + 8;
-  v16 = *&v14[8 * v4 + 8];
+  v16 = *&v14[8 * qosCopy + 8];
   if (!v16)
   {
-    v16 = [[_FBSDisplayLayoutService alloc] _initWithEndpoint:v7 qos:v4];
-    v17 = *&v15[8 * v4];
-    *&v15[8 * v4] = v16;
+    v16 = [[_FBSDisplayLayoutService alloc] _initWithEndpoint:v7 qos:qosCopy];
+    v17 = *&v15[8 * qosCopy];
+    *&v15[8 * qosCopy] = v16;
   }
 
   os_unfair_lock_unlock(&__sharedEndpointServicesLock);
@@ -62,18 +62,18 @@
   return v16;
 }
 
-+ (void)_checkinService:(id)a3
++ (void)_checkinService:(id)service
 {
-  v4 = a3;
-  if (!v4)
+  serviceCopy = service;
+  if (!serviceCopy)
   {
     [_FBSDisplayLayoutEndpointServices _checkinService:a2];
   }
 
-  v18 = v4;
-  v5 = [v4 endpoint];
+  v18 = serviceCopy;
+  endpoint = [serviceCopy endpoint];
   os_unfair_lock_lock(&__sharedEndpointServicesLock);
-  v6 = [__sharedEndpointServices objectForKey:v5];
+  v6 = [__sharedEndpointServices objectForKey:endpoint];
   v7 = v18;
   v8 = v6;
   if (v6)
@@ -98,7 +98,7 @@ LABEL_6:
         {
           if (v12)
           {
-            [__sharedEndpointServices removeObjectForKey:v5];
+            [__sharedEndpointServices removeObjectForKey:endpoint];
             if (![__sharedEndpointServices count])
             {
               v16 = __sharedEndpointServices;
@@ -112,7 +112,7 @@ LABEL_6:
 
       if (!v13)
       {
-        v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid refcnt for qos=%i endpoint=%@", v9, v5];
+        v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid refcnt for qos=%i endpoint=%@", v9, endpoint];
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
           [_FBSDisplayLayoutEndpointServices _checkinService:a2];

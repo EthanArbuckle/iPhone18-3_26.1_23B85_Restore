@@ -4,39 +4,39 @@
 - (BOOL)shouldResetSearchResultsWhenEnded;
 - (BOOL)useSemanticQuery;
 - (CKQueryControllerDelegate)delegate;
-- (id)_queryContextWithText:(id)a3;
-- (id)_queryStringWithText:(id)a3;
+- (id)_queryContextWithText:(id)text;
+- (id)_queryStringWithText:(id)text;
 - (id)tokenFilterQueries;
 - (void)cancelCurrentSearch;
-- (void)hasDetailsResultsForChatGUIDs:(id)a3 completion:(id)a4;
+- (void)hasDetailsResultsForChatGUIDs:(id)ds completion:(id)completion;
 - (void)searchEnded;
-- (void)searchWithText:(id)a3;
-- (void)setQuery:(id)a3;
+- (void)searchWithText:(id)text;
+- (void)setQuery:(id)query;
 @end
 
 @implementation CKQueryController
 
-- (void)searchWithText:(id)a3
+- (void)searchWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   [(CKQueryController *)self cancelCurrentSearch];
   if ([(CKQueryController *)self useSemanticQuery])
   {
     v5 = objc_alloc(MEMORY[0x1E6964EC8]);
-    v6 = [(CKQueryController *)self _queryContextWithText:v4];
-    v7 = [v5 initWithUserQueryString:v4 userQueryContext:v6];
+    v6 = [(CKQueryController *)self _queryContextWithText:textCopy];
+    v7 = [v5 initWithUserQueryString:textCopy userQueryContext:v6];
   }
 
   else
   {
     v8 = objc_alloc(MEMORY[0x1E6964E68]);
-    v6 = [(CKQueryController *)self _queryStringWithText:v4];
-    v9 = [(CKQueryController *)self _queryContextWithText:v4];
+    v6 = [(CKQueryController *)self _queryStringWithText:textCopy];
+    v9 = [(CKQueryController *)self _queryContextWithText:textCopy];
     v7 = [v8 initWithQueryString:v6 context:v9];
   }
 
-  v10 = [(CKQueryController *)self queryFoundItemHandler];
-  [v7 setFoundItemsHandler:v10];
+  queryFoundItemHandler = [(CKQueryController *)self queryFoundItemHandler];
+  [v7 setFoundItemsHandler:queryFoundItemHandler];
 
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x1E69E9820];
@@ -47,7 +47,7 @@
   v11[4] = self;
   [v7 setCompletionHandler:v11];
   [(CKQueryController *)self setQuery:v7];
-  [(CKQueryController *)self setCurrentSearchText:v4];
+  [(CKQueryController *)self setCurrentSearchText:textCopy];
   [(CKQueryController *)self setQueryRunning:1];
   [v7 start];
   objc_destroyWeak(&v12);
@@ -102,16 +102,16 @@ void __36__CKQueryController_searchWithText___block_invoke_2(uint64_t a1)
 
 - (BOOL)useSemanticQuery
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isSemanticSearchEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isSemanticSearchEnabled = [mEMORY[0x1E69A8070] isSemanticSearchEnabled];
 
-  return v4 && ![(CKQueryController *)self _currentModeIsDetails]&& [(CKQueryController *)self mode]!= 1;
+  return isSemanticSearchEnabled && ![(CKQueryController *)self _currentModeIsDetails]&& [(CKQueryController *)self mode]!= 1;
 }
 
 - (BOOL)hasMoreResults
 {
-  v2 = [(CKQueryController *)self results];
-  v3 = [v2 count] != 0;
+  results = [(CKQueryController *)self results];
+  v3 = [results count] != 0;
 
   return v3;
 }
@@ -119,13 +119,13 @@ void __36__CKQueryController_searchWithText___block_invoke_2(uint64_t a1)
 - (BOOL)shouldIncludeResultsIfFiltered
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isSearchTokensEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isSearchTokensEnabled = [mEMORY[0x1E69A8070] isSearchTokensEnabled];
 
-  if (v4)
+  if (isSearchTokensEnabled)
   {
-    v5 = [(CKQueryController *)self delegate];
-    v6 = [v5 searchTokenFiltersForQueryController:self];
+    delegate = [(CKQueryController *)self delegate];
+    v6 = [delegate searchTokenFiltersForQueryController:self];
 
     if ([v6 count])
     {
@@ -151,8 +151,8 @@ void __36__CKQueryController_searchWithText___block_invoke_2(uint64_t a1)
             }
 
             v14 = *(*(&v18 + 1) + 8 * i);
-            v15 = [v14 contentType];
-            v16 = v15 == [(CKQueryController *)self searchTokenContentType];
+            contentType = [v14 contentType];
+            v16 = contentType == [(CKQueryController *)self searchTokenContentType];
             if ([v14 contentType])
             {
               v12 &= [v14 contentType] == 8;
@@ -211,14 +211,14 @@ void __36__CKQueryController_searchWithText___block_invoke_2(uint64_t a1)
     }
   }
 
-  v6 = [(CKQueryController *)self query];
-  [v6 cancel];
+  query = [(CKQueryController *)self query];
+  [query cancel];
 
-  v7 = [(CKQueryController *)self query];
-  [v7 setFoundItemHandler:0];
+  query2 = [(CKQueryController *)self query];
+  [query2 setFoundItemHandler:0];
 
-  v8 = [(CKQueryController *)self query];
-  [v8 setCompletionHandler:0];
+  query3 = [(CKQueryController *)self query];
+  [query3 setCompletionHandler:0];
 
   [(CKQueryController *)self setQuery:0];
   [(CKQueryController *)self setQueryRunning:0];
@@ -249,73 +249,73 @@ void __36__CKQueryController_searchWithText___block_invoke_2(uint64_t a1)
     return 1;
   }
 
-  v4 = [(CKQueryController *)self mode];
-  v5 = [(CKQueryController *)self mode];
-  return v4 == 1 || v5 == 0;
+  mode = [(CKQueryController *)self mode];
+  mode2 = [(CKQueryController *)self mode];
+  return mode == 1 || mode2 == 0;
 }
 
-- (void)setQuery:(id)a3
+- (void)setQuery:(id)query
 {
-  v8 = a3;
-  v5 = [(CKQueryController *)self query];
+  queryCopy = query;
+  query = [(CKQueryController *)self query];
 
-  if (v5 != v8)
+  if (query != queryCopy)
   {
-    objc_storeStrong(&self->_query, a3);
+    objc_storeStrong(&self->_query, query);
     if (self->_query)
     {
-      v6 = [MEMORY[0x1E696AEC0] stringGUID];
+      stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
     }
 
     else
     {
-      v6 = 0;
+      stringGUID = 0;
     }
 
     currentQueryIdentifier = self->_currentQueryIdentifier;
-    self->_currentQueryIdentifier = v6;
+    self->_currentQueryIdentifier = stringGUID;
   }
 }
 
-- (id)_queryStringWithText:(id)a3
+- (id)_queryStringWithText:(id)text
 {
-  v4 = a3;
-  v5 = [(CKQueryController *)self queryAttributesForText:v4];
-  v6 = [CKSpotlightQueryUtilities queryStringForSearchString:v4 attributes:v5 matchType:0];
+  textCopy = text;
+  v5 = [(CKQueryController *)self queryAttributesForText:textCopy];
+  v6 = [CKSpotlightQueryUtilities queryStringForSearchString:textCopy attributes:v5 matchType:0];
 
   return v6;
 }
 
-- (id)_queryContextWithText:(id)a3
+- (id)_queryContextWithText:(id)text
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  textCopy = text;
   if ([(CKQueryController *)self useSemanticQuery])
   {
-    v5 = [MEMORY[0x1E6964ED0] userQueryContext];
+    userQueryContext = [MEMORY[0x1E6964ED0] userQueryContext];
     v20[0] = *MEMORY[0x1E696A388];
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
-    [v5 setProtectionClasses:v6];
+    [userQueryContext setProtectionClasses:v6];
   }
 
   else
   {
-    v5 = objc_opt_new();
+    userQueryContext = objc_opt_new();
   }
 
-  v7 = [(CKQueryController *)self fetchAttributes];
-  [v5 setFetchAttributes:v7];
+  fetchAttributes = [(CKQueryController *)self fetchAttributes];
+  [userQueryContext setFetchAttributes:fetchAttributes];
 
-  v8 = [(CKQueryController *)self filterQueries];
+  filterQueries = [(CKQueryController *)self filterQueries];
   if ([(CKQueryController *)self mode]== 1)
   {
-    if (!v8)
+    if (!filterQueries)
     {
-      v8 = [MEMORY[0x1E695DEC8] array];
+      filterQueries = [MEMORY[0x1E695DEC8] array];
     }
 
-    v9 = [(CKQueryController *)self zkwFilterQueries];
-    v10 = [v8 arrayByAddingObjectsFromArray:v9];
+    zkwFilterQueries = [(CKQueryController *)self zkwFilterQueries];
+    v10 = [filterQueries arrayByAddingObjectsFromArray:zkwFilterQueries];
   }
 
   else
@@ -325,79 +325,79 @@ void __36__CKQueryController_searchWithText___block_invoke_2(uint64_t a1)
       goto LABEL_13;
     }
 
-    if (!v8)
+    if (!filterQueries)
     {
-      v8 = [MEMORY[0x1E695DEC8] array];
+      filterQueries = [MEMORY[0x1E695DEC8] array];
     }
 
-    v11 = [(CKQueryController *)self delegate];
-    v9 = [v11 queryControllerChatGUIDsForDetailsSearch:self];
+    delegate = [(CKQueryController *)self delegate];
+    zkwFilterQueries = [delegate queryControllerChatGUIDsForDetailsSearch:self];
 
-    v12 = [(CKQueryController *)self detailsFilterQueriesForChatGUIDs:v9];
-    v10 = [v8 arrayByAddingObjectsFromArray:v12];
+    v12 = [(CKQueryController *)self detailsFilterQueriesForChatGUIDs:zkwFilterQueries];
+    v10 = [filterQueries arrayByAddingObjectsFromArray:v12];
 
-    v8 = v12;
+    filterQueries = v12;
   }
 
-  v8 = v10;
+  filterQueries = v10;
 LABEL_13:
   if (![(CKQueryController *)self isTokenizationQueryController])
   {
-    v13 = [(CKQueryController *)self tokenFilterQueries];
-    v14 = [v13 length];
-    if (v8)
+    tokenFilterQueries = [(CKQueryController *)self tokenFilterQueries];
+    v14 = [tokenFilterQueries length];
+    if (filterQueries)
     {
       if (v14)
       {
-        v15 = [v8 arrayByAddingObject:v13];
+        v15 = [filterQueries arrayByAddingObject:tokenFilterQueries];
 
-        v8 = v15;
+        filterQueries = v15;
       }
     }
 
     else if (v14)
     {
-      v8 = [MEMORY[0x1E695DEC8] arrayWithObject:v13];
+      filterQueries = [MEMORY[0x1E695DEC8] arrayWithObject:tokenFilterQueries];
     }
 
     else
     {
-      v8 = 0;
+      filterQueries = 0;
     }
   }
 
   if (-[CKQueryController useSemanticQuery](self, "useSemanticQuery") && ([MEMORY[0x1E69A8070] sharedFeatureFlags], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isSemanticSearchRankingEnabled"), v16, v17))
   {
-    [v5 setEnableRankedResults:1];
+    [userQueryContext setEnableRankedResults:1];
   }
 
   else
   {
-    v18 = [(CKQueryController *)self rankingQueriesWithText:v4];
-    [v5 setRankingQueries:v18];
+    v18 = [(CKQueryController *)self rankingQueriesWithText:textCopy];
+    [userQueryContext setRankingQueries:v18];
   }
 
-  [v5 setFilterQueries:v8];
+  [userQueryContext setFilterQueries:filterQueries];
   if ([objc_opt_class() useRecencyRankedSearchForMode:{-[CKQueryController mode](self, "mode")}])
   {
-    [v5 setMaxCount:{objc_msgSend(objc_opt_class(), "recencyRankedTargetResultCountForMode:", -[CKQueryController mode](self, "mode"))}];
+    [userQueryContext setMaxCount:{objc_msgSend(objc_opt_class(), "recencyRankedTargetResultCountForMode:", -[CKQueryController mode](self, "mode"))}];
     if ([(CKQueryController *)self useSemanticQuery])
     {
-      [v5 setMaxRankedResultCount:{objc_msgSend(objc_opt_class(), "recencyRankedTargetResultCountForMode:", -[CKQueryController mode](self, "mode"))}];
+      [userQueryContext setMaxRankedResultCount:{objc_msgSend(objc_opt_class(), "recencyRankedTargetResultCountForMode:", -[CKQueryController mode](self, "mode"))}];
     }
   }
 
-  [v5 setDisableBlockingOnIndex:1];
-  [v5 setBundleIDs:&unk_1F04E6918];
+  [userQueryContext setDisableBlockingOnIndex:1];
+  [userQueryContext setBundleIDs:&unk_1F04E6918];
 
-  return v5;
+  return userQueryContext;
 }
 
 - (id)tokenFilterQueries
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(CKQueryController *)self delegate];
-  v4 = [v3 searchTokenFiltersForQueryController:self];
+  delegate = [(CKQueryController *)self delegate];
+  v4 = [delegate searchTokenFiltersForQueryController:self];
 
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if ([v4 count])
@@ -432,16 +432,16 @@ LABEL_13:
             continue;
           }
 
-          v12 = [v11 queryStringForDateTypeSearch];
+          queryStringForDateTypeSearch = [v11 queryStringForDateTypeSearch];
         }
 
         else
         {
-          v12 = [v11 queryStringForConversationSearch];
+          queryStringForDateTypeSearch = [v11 queryStringForConversationSearch];
         }
 
-        v13 = v12;
-        [v5 addObject:v12];
+        v13 = queryStringForDateTypeSearch;
+        [v5 addObject:queryStringForDateTypeSearch];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -459,15 +459,15 @@ LABEL_14:
   return v14;
 }
 
-- (void)hasDetailsResultsForChatGUIDs:(id)a3 completion:(id)a4
+- (void)hasDetailsResultsForChatGUIDs:(id)ds completion:(id)completion
 {
   v55 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v20 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   v7 = CACurrentMediaTime();
   v8 = dispatch_group_create();
-  v19 = v6;
-  v9 = [(CKQueryController *)self detailsResultsValidationQueriesForChatGUIDs:v6];
+  v19 = dsCopy;
+  v9 = [(CKQueryController *)self detailsResultsValidationQueriesForChatGUIDs:dsCopy];
   v52[0] = 0;
   v52[1] = v52;
   v52[2] = 0x2020000000;
@@ -576,8 +576,8 @@ LABEL_11:
   v25 = v50;
   v26 = v7;
   v22[4] = self;
-  v23 = v20;
-  v18 = v20;
+  v23 = completionCopy;
+  v18 = completionCopy;
   dispatch_group_notify(v8, v17, v22);
 
   _Block_object_dispose(v46, 8);

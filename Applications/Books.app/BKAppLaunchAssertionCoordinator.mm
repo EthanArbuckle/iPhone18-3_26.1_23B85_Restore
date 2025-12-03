@@ -1,5 +1,5 @@
 @interface BKAppLaunchAssertionCoordinator
-- (BKAppLaunchAssertionCoordinator)initWithCondition:(unint64_t)a3;
+- (BKAppLaunchAssertionCoordinator)initWithCondition:(unint64_t)condition;
 - (BOOL)leave;
 @end
 
@@ -18,14 +18,14 @@
   return v3 == 0;
 }
 
-- (BKAppLaunchAssertionCoordinator)initWithCondition:(unint64_t)a3
+- (BKAppLaunchAssertionCoordinator)initWithCondition:(unint64_t)condition
 {
   v5.receiver = self;
   v5.super_class = BKAppLaunchAssertionCoordinator;
   result = [(BKAppLaunchAssertionCoordinator *)&v5 init];
   if (result)
   {
-    result->_condition = a3;
+    result->_condition = condition;
   }
 
   return result;

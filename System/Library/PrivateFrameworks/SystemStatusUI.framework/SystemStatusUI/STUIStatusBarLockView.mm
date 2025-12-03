@@ -1,20 +1,20 @@
 @interface STUIStatusBarLockView
 - (CGSize)intrinsicContentSize;
-- (STUIStatusBarLockView)initWithFrame:(CGRect)a3;
-- (void)animateUnlockWithCompletionBlock:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)applyStyleAttributes:(id)a3;
-- (void)jiggleWithCompletionBlock:(id)a3;
+- (STUIStatusBarLockView)initWithFrame:(CGRect)frame;
+- (void)animateUnlockWithCompletionBlock:(id)block;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)applyStyleAttributes:(id)attributes;
+- (void)jiggleWithCompletionBlock:(id)block;
 - (void)resetLock;
 @end
 
 @implementation STUIStatusBarLockView
 
-- (STUIStatusBarLockView)initWithFrame:(CGRect)a3
+- (STUIStatusBarLockView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = STUIStatusBarLockView;
-  v3 = [(STUIStatusBarLockView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(STUIStatusBarLockView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[STUIStatusBarImageView alloc] initWithFrame:1.0, 2.0, 6.0, 7.0];
@@ -32,42 +32,42 @@
   return v3;
 }
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
-  v12 = a3;
-  v4 = [(STUIStatusBarImageView *)self->_shackleView image];
+  attributesCopy = attributes;
+  image = [(STUIStatusBarImageView *)self->_shackleView image];
 
-  if (!v4)
+  if (!image)
   {
     v5 = +[STUIStatusBarImageProvider sharedProvider];
-    v6 = [v5 imageNamed:@"LockShackle" styleAttributes:v12];
+    v6 = [v5 imageNamed:@"LockShackle" styleAttributes:attributesCopy];
     v7 = [v6 imageWithRenderingMode:2];
 
     [(STUIStatusBarImageView *)self->_shackleView setImage:v7];
   }
 
-  [(STUIStatusBarImageView *)self->_shackleView applyStyleAttributes:v12];
-  v8 = [(STUIStatusBarImageView *)self->_bodyView image];
+  [(STUIStatusBarImageView *)self->_shackleView applyStyleAttributes:attributesCopy];
+  image2 = [(STUIStatusBarImageView *)self->_bodyView image];
 
-  if (!v8)
+  if (!image2)
   {
     v9 = +[STUIStatusBarImageProvider sharedProvider];
-    v10 = [v9 imageNamed:@"LockBody" styleAttributes:v12];
+    v10 = [v9 imageNamed:@"LockBody" styleAttributes:attributesCopy];
     v11 = [v10 imageWithRenderingMode:2];
 
     [(STUIStatusBarImageView *)self->_bodyView setImage:v11];
   }
 
-  [(STUIStatusBarImageView *)self->_bodyView applyStyleAttributes:v12];
+  [(STUIStatusBarImageView *)self->_bodyView applyStyleAttributes:attributesCopy];
 }
 
 - (void)resetLock
 {
-  v3 = [(STUIStatusBarImageView *)self->_shackleView layer];
-  [v3 removeAllAnimations];
+  layer = [(STUIStatusBarImageView *)self->_shackleView layer];
+  [layer removeAllAnimations];
 
-  v4 = [(STUIStatusBarLockView *)self layer];
-  [v4 removeAllAnimations];
+  layer2 = [(STUIStatusBarLockView *)self layer];
+  [layer2 removeAllAnimations];
 
   shackleView = self->_shackleView;
 
@@ -83,24 +83,24 @@
   return result;
 }
 
-- (void)animateUnlockWithCompletionBlock:(id)a3
+- (void)animateUnlockWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (self->_completionBlock)
   {
-    if (!v4)
+    if (!blockCopy)
     {
       goto LABEL_6;
     }
 
-    v18 = v4;
-    (*(v4 + 2))(v4, 1);
+    v18 = blockCopy;
+    (*(blockCopy + 2))(blockCopy, 1);
   }
 
   else
   {
-    v18 = v4;
-    v5 = _Block_copy(v4);
+    v18 = blockCopy;
+    v5 = _Block_copy(blockCopy);
     completionBlock = self->_completionBlock;
     self->_completionBlock = v5;
 
@@ -129,24 +129,24 @@
     [v7 setFillMode:*MEMORY[0x277CDA230]];
     [v7 setDelegate:self];
     [(STUIStatusBarImageView *)self->_shackleView setFrame:1.0, 0.0, 6.0, 7.0];
-    v17 = [(STUIStatusBarImageView *)self->_shackleView layer];
-    [v17 addAnimation:v7 forKey:@"unlock"];
+    layer = [(STUIStatusBarImageView *)self->_shackleView layer];
+    [layer addAnimation:v7 forKey:@"unlock"];
   }
 
-  v4 = v18;
+  blockCopy = v18;
 LABEL_6:
 }
 
-- (void)jiggleWithCompletionBlock:(id)a3
+- (void)jiggleWithCompletionBlock:(id)block
 {
   v31[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(STUIStatusBarLockView *)self layer];
+  blockCopy = block;
+  layer = [(STUIStatusBarLockView *)self layer];
   if (self->_completionBlock)
   {
-    if (v4)
+    if (blockCopy)
     {
-      v4[2](v4, 1);
+      blockCopy[2](blockCopy, 1);
     }
   }
 
@@ -154,14 +154,14 @@ LABEL_6:
   {
     v6 = [MEMORY[0x277CD9FA0] animationWithKeyPath:@"position"];
     v7 = MEMORY[0x277CCAE60];
-    [v5 position];
+    [layer position];
     v8 = [v7 valueWithCGPoint:?];
     [v6 setFromValue:v8];
 
     v9 = MEMORY[0x277CCAE60];
-    [v5 position];
+    [layer position];
     v11 = v10 + -20.0;
-    [v5 position];
+    [layer position];
     v12 = [v9 valueWithCGPoint:v11];
     [v6 setToValue:v12];
 
@@ -201,23 +201,23 @@ LABEL_6:
     [v18 setTimingFunction:v26];
 
     [v18 setFillMode:*MEMORY[0x277CDA238]];
-    v27 = [MEMORY[0x277CD9E00] animation];
-    [v27 setDuration:0.6679];
+    animation = [MEMORY[0x277CD9E00] animation];
+    [animation setDuration:0.6679];
     v31[0] = v6;
     v31[1] = v18;
     v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:2];
-    [v27 setAnimations:v28];
+    [animation setAnimations:v28];
 
-    [v27 setDelegate:self];
-    [(STUIStatusBarLockView *)self setCompletionBlock:v4];
-    v29 = [(STUIStatusBarLockView *)self layer];
-    [v29 addAnimation:v27 forKey:@"jiggle"];
+    [animation setDelegate:self];
+    [(STUIStatusBarLockView *)self setCompletionBlock:blockCopy];
+    layer2 = [(STUIStatusBarLockView *)self layer];
+    [layer2 addAnimation:animation forKey:@"jiggle"];
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = a4;
+  finishedCopy = finished;
   v8 = _Block_copy(self->_completionBlock);
   completionBlock = self->_completionBlock;
   self->_completionBlock = 0;
@@ -225,7 +225,7 @@ LABEL_6:
   v7 = v8;
   if (v8)
   {
-    (*(v8 + 2))(v8, v4);
+    (*(v8 + 2))(v8, finishedCopy);
     v7 = v8;
   }
 }

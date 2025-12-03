@@ -1,39 +1,39 @@
 @interface WFWalletTransaction
 - (NSString)wfName;
-- (WFWalletTransaction)initWithCoder:(id)a3;
-- (WFWalletTransaction)initWithIdentifier:(id)a3 transactionDescription:(id)a4 merchant:(id)a5 currencyAmount:(id)a6 paymentMethod:(id)a7;
-- (void)encodeWithCoder:(id)a3;
+- (WFWalletTransaction)initWithCoder:(id)coder;
+- (WFWalletTransaction)initWithIdentifier:(id)identifier transactionDescription:(id)description merchant:(id)merchant currencyAmount:(id)amount paymentMethod:(id)method;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFWalletTransaction
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFWalletTransaction *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(WFWalletTransaction *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(WFWalletTransaction *)self transactionDescription];
-  [v4 encodeObject:v6 forKey:@"transactionDescription"];
+  transactionDescription = [(WFWalletTransaction *)self transactionDescription];
+  [coderCopy encodeObject:transactionDescription forKey:@"transactionDescription"];
 
-  v7 = [(WFWalletTransaction *)self merchant];
-  [v4 encodeObject:v7 forKey:@"merchant"];
+  merchant = [(WFWalletTransaction *)self merchant];
+  [coderCopy encodeObject:merchant forKey:@"merchant"];
 
-  v8 = [(WFWalletTransaction *)self currencyAmount];
-  [v4 encodeObject:v8 forKey:@"currencyAmount"];
+  currencyAmount = [(WFWalletTransaction *)self currencyAmount];
+  [coderCopy encodeObject:currencyAmount forKey:@"currencyAmount"];
 
-  v9 = [(WFWalletTransaction *)self paymentMethod];
-  [v4 encodeObject:v9 forKey:@"paymentMethod"];
+  paymentMethod = [(WFWalletTransaction *)self paymentMethod];
+  [coderCopy encodeObject:paymentMethod forKey:@"paymentMethod"];
 }
 
-- (WFWalletTransaction)initWithCoder:(id)a3
+- (WFWalletTransaction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionDescription"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchant"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyAmount"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentMethod"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionDescription"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchant"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyAmount"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentMethod"];
 
   v10 = [(WFWalletTransaction *)self initWithIdentifier:v5 transactionDescription:v6 merchant:v7 currencyAmount:v8 paymentMethod:v9];
   return v10;
@@ -41,48 +41,48 @@
 
 - (NSString)wfName
 {
-  v3 = [(WFWalletTransaction *)self transactionDescription];
-  v4 = v3;
-  if (v3)
+  transactionDescription = [(WFWalletTransaction *)self transactionDescription];
+  v4 = transactionDescription;
+  if (transactionDescription)
   {
-    v5 = v3;
+    displayName = transactionDescription;
   }
 
   else
   {
-    v6 = [(WFWalletTransaction *)self merchant];
-    v5 = [v6 displayName];
+    merchant = [(WFWalletTransaction *)self merchant];
+    displayName = [merchant displayName];
   }
 
-  return v5;
+  return displayName;
 }
 
-- (WFWalletTransaction)initWithIdentifier:(id)a3 transactionDescription:(id)a4 merchant:(id)a5 currencyAmount:(id)a6 paymentMethod:(id)a7
+- (WFWalletTransaction)initWithIdentifier:(id)identifier transactionDescription:(id)description merchant:(id)merchant currencyAmount:(id)amount paymentMethod:(id)method
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  descriptionCopy = description;
+  merchantCopy = merchant;
+  amountCopy = amount;
+  methodCopy = method;
   v26.receiver = self;
   v26.super_class = WFWalletTransaction;
   v17 = [(WFWalletTransaction *)&v26 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [identifierCopy copy];
     identifier = v17->_identifier;
     v17->_identifier = v18;
 
-    v20 = [v13 copy];
+    v20 = [descriptionCopy copy];
     transactionDescription = v17->_transactionDescription;
     v17->_transactionDescription = v20;
 
-    objc_storeStrong(&v17->_merchant, a5);
-    v22 = [v15 copy];
+    objc_storeStrong(&v17->_merchant, merchant);
+    v22 = [amountCopy copy];
     currencyAmount = v17->_currencyAmount;
     v17->_currencyAmount = v22;
 
-    objc_storeStrong(&v17->_paymentMethod, a7);
+    objc_storeStrong(&v17->_paymentMethod, method);
     v24 = v17;
   }
 

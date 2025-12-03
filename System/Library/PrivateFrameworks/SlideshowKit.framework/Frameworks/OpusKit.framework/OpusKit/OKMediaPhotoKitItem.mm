@@ -1,24 +1,24 @@
 @interface OKMediaPhotoKitItem
 + (id)_resultHandlingQueue;
-+ (id)cloudIdentifierForAsset:(id)a3;
-+ (id)urlForMediaObject:(id)a3;
-+ (id)urlForPHAsset:(id)a3;
++ (id)cloudIdentifierForAsset:(id)asset;
++ (id)urlForMediaObject:(id)object;
++ (id)urlForPHAsset:(id)asset;
 - (CGRect)_faceAreaRect;
 - (OKMediaPhotoKitItem)init;
-- (OKMediaPhotoKitItem)initWithPHAsset:(id)a3;
-- (id)_fetchAssetsWithCloudIdentifiers:(id)a3 options:(id)a4;
-- (id)avAssetWithCompletionHandler:(id)a3;
-- (id)createMetadataWithCompletionHandler:(id)a3;
-- (id)createThumbnailImageForResolution:(unint64_t)a3 withMetadata:(id)a4 completionHandler:(id)a5;
-- (id)importMediaToDirectoryURL:(id)a3 completionHandler:(id)a4;
+- (OKMediaPhotoKitItem)initWithPHAsset:(id)asset;
+- (id)_fetchAssetsWithCloudIdentifiers:(id)identifiers options:(id)options;
+- (id)avAssetWithCompletionHandler:(id)handler;
+- (id)createMetadataWithCompletionHandler:(id)handler;
+- (id)createThumbnailImageForResolution:(unint64_t)resolution withMetadata:(id)metadata completionHandler:(id)handler;
+- (id)importMediaToDirectoryURL:(id)l completionHandler:(id)handler;
 - (void)_resolveAssetIfNeeded;
 - (void)dealloc;
-- (void)setMediaObject:(id)a3;
+- (void)setMediaObject:(id)object;
 @end
 
 @implementation OKMediaPhotoKitItem
 
-+ (id)urlForMediaObject:(id)a3
++ (id)urlForMediaObject:(id)object
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -26,41 +26,41 @@
     return 0;
   }
 
-  return [a1 urlForPHAsset:a3];
+  return [self urlForPHAsset:object];
 }
 
-+ (id)urlForPHAsset:(id)a3
++ (id)urlForPHAsset:(id)asset
 {
-  v4 = [a1 cloudIdentifierForAsset:?];
+  v4 = [self cloudIdentifierForAsset:?];
   v5 = MEMORY[0x277CBEBC0];
   v6 = MEMORY[0x277CCACA8];
-  v7 = [objc_opt_class() scheme];
+  scheme = [objc_opt_class() scheme];
   if (v4)
   {
-    v8 = [v6 stringWithFormat:@"%@://cloud/%@", v7, objc_msgSend(v4, "stringByAddingPercentEscapesForURLPath")];
+    v8 = [v6 stringWithFormat:@"%@://cloud/%@", scheme, objc_msgSend(v4, "stringByAddingPercentEscapesForURLPath")];
   }
 
   else
   {
-    v8 = [v6 stringWithFormat:@"%@://local/%@", v7, objc_msgSend(objc_msgSend(a3, "localIdentifier"), "stringByAddingPercentEscapesForURLPath")];
+    v8 = [v6 stringWithFormat:@"%@://local/%@", scheme, objc_msgSend(objc_msgSend(asset, "localIdentifier"), "stringByAddingPercentEscapesForURLPath")];
   }
 
   return [v5 URLWithString:v8];
 }
 
-+ (id)cloudIdentifierForAsset:(id)a3
++ (id)cloudIdentifierForAsset:(id)asset
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v4 = gPhotoLibrary;
-  v8[0] = [a3 localIdentifier];
-  v5 = [objc_msgSend(v4 cloudIdentifierMappingsForLocalIdentifiers:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v8, 1)), "objectForKeyedSubscript:", objc_msgSend(a3, "localIdentifier")}];
-  v6 = [v5 cloudIdentifier];
-  if (v6)
+  v8[0] = [asset localIdentifier];
+  v5 = [objc_msgSend(v4 cloudIdentifierMappingsForLocalIdentifiers:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v8, 1)), "objectForKeyedSubscript:", objc_msgSend(asset, "localIdentifier")}];
+  cloudIdentifier = [v5 cloudIdentifier];
+  if (cloudIdentifier)
   {
-    return [v6 stringValue];
+    return [cloudIdentifier stringValue];
   }
 
-  NSLog(&cfstr_FailedToGetClo.isa, [a3 localIdentifier], objc_msgSend(v5, "error"));
+  NSLog(&cfstr_FailedToGetClo.isa, [asset localIdentifier], objc_msgSend(v5, "error"));
   return 0;
 }
 
@@ -98,9 +98,9 @@ uint64_t __27__OKMediaPhotoKitItem_init__block_invoke()
   return result;
 }
 
-- (OKMediaPhotoKitItem)initWithPHAsset:(id)a3
+- (OKMediaPhotoKitItem)initWithPHAsset:(id)asset
 {
-  v5 = [objc_opt_class() urlForPHAsset:a3];
+  v5 = [objc_opt_class() urlForPHAsset:asset];
   v10.receiver = self;
   v10.super_class = OKMediaPhotoKitItem;
   v6 = [(OKMediaItem *)&v10 initWithUniqueURL:v5];
@@ -109,7 +109,7 @@ uint64_t __27__OKMediaPhotoKitItem_init__block_invoke()
   {
     if ([(OKMediaItem *)v6 uniqueURL])
     {
-      v7->_asset = a3;
+      v7->_asset = asset;
     }
 
     else
@@ -136,13 +136,13 @@ uint64_t __27__OKMediaPhotoKitItem_init__block_invoke()
   [(OKMediaItem *)&v4 dealloc];
 }
 
-- (void)setMediaObject:(id)a3
+- (void)setMediaObject:(id)object
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [objc_msgSend(objc_opt_class() urlForPHAsset:{a3), "isEqual:", -[OKMediaItem uniqueURL](self, "uniqueURL")}])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [objc_msgSend(objc_opt_class() urlForPHAsset:{object), "isEqual:", -[OKMediaItem uniqueURL](self, "uniqueURL")}])
   {
 
-    [(OKMediaPhotoKitItem *)self setAsset:a3];
+    [(OKMediaPhotoKitItem *)self setAsset:object];
   }
 }
 
@@ -161,11 +161,11 @@ uint64_t __27__OKMediaPhotoKitItem_init__block_invoke()
   }
 
   v3 = [(NSString *)[(NSURL *)[(OKMediaItem *)self uniqueURL] path] substringFromIndex:1];
-  v4 = [gPhotoLibrary librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [gPhotoLibrary librarySpecificFetchOptions];
   if ([(NSString *)[(NSURL *)[(OKMediaItem *)self uniqueURL] host] isEqualToString:@"cloud"])
   {
     v8[0] = v3;
-    v5 = -[OKMediaPhotoKitItem _fetchAssetsWithCloudIdentifiers:options:](self, "_fetchAssetsWithCloudIdentifiers:options:", [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1], v4);
+    v5 = -[OKMediaPhotoKitItem _fetchAssetsWithCloudIdentifiers:options:](self, "_fetchAssetsWithCloudIdentifiers:options:", [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1], librarySpecificFetchOptions);
   }
 
   else
@@ -177,7 +177,7 @@ uint64_t __27__OKMediaPhotoKitItem_init__block_invoke()
     }
 
     v7 = v3;
-    v5 = [MEMORY[0x277CD97A8] fetchAssetsWithLocalIdentifiers:objc_msgSend(MEMORY[0x277CBEA60] options:{"arrayWithObjects:count:", &v7, 1), v4}];
+    v5 = [MEMORY[0x277CD97A8] fetchAssetsWithLocalIdentifiers:objc_msgSend(MEMORY[0x277CBEA60] options:{"arrayWithObjects:count:", &v7, 1), librarySpecificFetchOptions}];
   }
 
   v6 = v5;
@@ -191,7 +191,7 @@ LABEL_13:
   objc_sync_exit(self);
 }
 
-- (id)_fetchAssetsWithCloudIdentifiers:(id)a3 options:(id)a4
+- (id)_fetchAssetsWithCloudIdentifiers:(id)identifiers options:(id)options
 {
   v20 = *MEMORY[0x277D85DE8];
   v6 = objc_opt_new();
@@ -199,7 +199,7 @@ LABEL_13:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [identifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -211,14 +211,14 @@ LABEL_13:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(identifiers);
         }
 
         [v6 addObject:{objc_msgSend(objc_alloc(MEMORY[0x277CD9838]), "initWithStringValue:", *(*(&v15 + 1) + 8 * v10++))}];
       }
 
       while (v8 != v10);
-      v8 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [identifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -232,7 +232,7 @@ LABEL_13:
   v14[3] = &unk_279C90F20;
   v14[4] = v12;
   [v11 enumerateKeysAndObjectsUsingBlock:v14];
-  return [MEMORY[0x277CD97A8] fetchAssetsWithLocalIdentifiers:v12 options:a4];
+  return [MEMORY[0x277CD97A8] fetchAssetsWithLocalIdentifiers:v12 options:options];
 }
 
 void __64__OKMediaPhotoKitItem__fetchAssetsWithCloudIdentifiers_options___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -292,14 +292,14 @@ void __64__OKMediaPhotoKitItem__fetchAssetsWithCloudIdentifiers_options___block_
   return result;
 }
 
-- (id)createMetadataWithCompletionHandler:(id)a3
+- (id)createMetadataWithCompletionHandler:(id)handler
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __59__OKMediaPhotoKitItem_createMetadataWithCompletionHandler___block_invoke;
   v4[3] = &unk_279C8F720;
   v4[4] = self;
-  return [(OKMediaItem *)self operationWithBlock:v4 completionHandlerWithObject:a3];
+  return [(OKMediaItem *)self operationWithBlock:v4 completionHandlerWithObject:handler];
 }
 
 uint64_t __59__OKMediaPhotoKitItem_createMetadataWithCompletionHandler___block_invoke(uint64_t a1, void *a2, OKMediaItemMetadata **a3)
@@ -410,7 +410,7 @@ intptr_t __59__OKMediaPhotoKitItem_createMetadataWithCompletionHandler___block_i
   return dispatch_semaphore_signal(*(a1 + 48));
 }
 
-- (id)createThumbnailImageForResolution:(unint64_t)a3 withMetadata:(id)a4 completionHandler:(id)a5
+- (id)createThumbnailImageForResolution:(unint64_t)resolution withMetadata:(id)metadata completionHandler:(id)handler
 {
   v13[0] = 0;
   v13[1] = v13;
@@ -422,16 +422,16 @@ intptr_t __59__OKMediaPhotoKitItem_createMetadataWithCompletionHandler___block_i
   v12[2] = __88__OKMediaPhotoKitItem_createThumbnailImageForResolution_withMetadata_completionHandler___block_invoke;
   v12[3] = &unk_279C90FC0;
   v12[6] = v13;
-  v12[7] = a3;
+  v12[7] = resolution;
   v12[4] = self;
   v12[5] = v8;
-  v9 = [(OKMediaItem *)self operationWithBlock:v12 completionHandlerWithObject:a5];
+  v9 = [(OKMediaItem *)self operationWithBlock:v12 completionHandlerWithObject:handler];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __88__OKMediaPhotoKitItem_createThumbnailImageForResolution_withMetadata_completionHandler___block_invoke_6;
   v11[3] = &unk_279C90FE8;
   v11[5] = v13;
-  v11[6] = a3;
+  v11[6] = resolution;
   v11[4] = self;
   [v9 setCancelBlock:v11];
   _Block_object_dispose(v13, 8);
@@ -703,7 +703,7 @@ uint64_t __88__OKMediaPhotoKitItem_createThumbnailImageForResolution_withMetadat
   return result;
 }
 
-- (id)importMediaToDirectoryURL:(id)a3 completionHandler:(id)a4
+- (id)importMediaToDirectoryURL:(id)l completionHandler:(id)handler
 {
   v8[0] = 0;
   v8[1] = v8;
@@ -714,9 +714,9 @@ uint64_t __88__OKMediaPhotoKitItem_createThumbnailImageForResolution_withMetadat
   v7[2] = __67__OKMediaPhotoKitItem_importMediaToDirectoryURL_completionHandler___block_invoke;
   v7[3] = &unk_279C91060;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = l;
   v7[6] = v8;
-  v4 = [(OKMediaItem *)self operationWithBlock:v7 completionHandlerWithObject:a4];
+  v4 = [(OKMediaItem *)self operationWithBlock:v7 completionHandlerWithObject:handler];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67__OKMediaPhotoKitItem_importMediaToDirectoryURL_completionHandler___block_invoke_4;
@@ -828,7 +828,7 @@ uint64_t __67__OKMediaPhotoKitItem_importMediaToDirectoryURL_completionHandler__
   return [v2 cancelImageRequest:v3];
 }
 
-- (id)avAssetWithCompletionHandler:(id)a3
+- (id)avAssetWithCompletionHandler:(id)handler
 {
   v10[0] = 0;
   v10[1] = v10;
@@ -847,7 +847,7 @@ uint64_t __67__OKMediaPhotoKitItem_importMediaToDirectoryURL_completionHandler__
   v8[4] = self;
   v8[5] = v10;
   v8[6] = v9;
-  v5 = [(OKMediaItem *)self operationWithBlock:v8 completionHandlerWithObject:a3];
+  v5 = [(OKMediaItem *)self operationWithBlock:v8 completionHandlerWithObject:handler];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__OKMediaPhotoKitItem_avAssetWithCompletionHandler___block_invoke_4;

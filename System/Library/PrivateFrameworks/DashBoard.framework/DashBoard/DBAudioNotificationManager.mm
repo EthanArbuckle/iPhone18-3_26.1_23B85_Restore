@@ -1,85 +1,85 @@
 @interface DBAudioNotificationManager
-- (BOOL)_shouldShowNotificationForService:(id)a3;
-- (DBAudioNotificationManager)initWithWindow:(id)a3 viewController:(id)a4 car:(id)a5;
-- (void)_handleServiceUpdate:(id)a3;
-- (void)setShouldSuspendNotification:(BOOL)a3;
-- (void)updateObserversForCar:(id)a3;
-- (void)volumeService:(id)a3 didUpdateMute:(BOOL)a4;
-- (void)volumeService:(id)a3 didUpdateVolume:(unsigned __int8)a4;
+- (BOOL)_shouldShowNotificationForService:(id)service;
+- (DBAudioNotificationManager)initWithWindow:(id)window viewController:(id)controller car:(id)car;
+- (void)_handleServiceUpdate:(id)update;
+- (void)setShouldSuspendNotification:(BOOL)notification;
+- (void)updateObserversForCar:(id)car;
+- (void)volumeService:(id)service didUpdateMute:(BOOL)mute;
+- (void)volumeService:(id)service didUpdateVolume:(unsigned __int8)volume;
 @end
 
 @implementation DBAudioNotificationManager
 
-- (DBAudioNotificationManager)initWithWindow:(id)a3 viewController:(id)a4 car:(id)a5
+- (DBAudioNotificationManager)initWithWindow:(id)window viewController:(id)controller car:(id)car
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  windowCopy = window;
+  controllerCopy = controller;
+  carCopy = car;
   v15.receiver = self;
   v15.super_class = DBAudioNotificationManager;
   v12 = [(DBAudioNotificationManager *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_audioWindow, a3);
-    objc_storeStrong(&v13->_audioViewController, a4);
-    [(DBAudioNotificationManager *)v13 updateObserversForCar:v11];
+    objc_storeStrong(&v12->_audioWindow, window);
+    objc_storeStrong(&v13->_audioViewController, controller);
+    [(DBAudioNotificationManager *)v13 updateObserversForCar:carCopy];
   }
 
   return v13;
 }
 
-- (void)updateObserversForCar:(id)a3
+- (void)updateObserversForCar:(id)car
 {
-  v4 = [a3 audioSettings];
-  v5 = [v4 volumes];
+  audioSettings = [car audioSettings];
+  volumes = [audioSettings volumes];
 
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__DBAudioNotificationManager_updateObserversForCar___block_invoke;
   v6[3] = &unk_278F01708;
   v6[4] = self;
-  [v5 enumerateObjectsUsingBlock:v6];
+  [volumes enumerateObjectsUsingBlock:v6];
 }
 
-- (void)setShouldSuspendNotification:(BOOL)a3
+- (void)setShouldSuspendNotification:(BOOL)notification
 {
-  self->_shouldSuspendNotification = a3;
-  if (a3)
+  self->_shouldSuspendNotification = notification;
+  if (notification)
   {
-    v3 = [(DBAudioNotificationManager *)self audioViewController];
-    [v3 hideNotification];
+    audioViewController = [(DBAudioNotificationManager *)self audioViewController];
+    [audioViewController hideNotification];
   }
 }
 
-- (void)volumeService:(id)a3 didUpdateVolume:(unsigned __int8)a4
+- (void)volumeService:(id)service didUpdateVolume:(unsigned __int8)volume
 {
-  v4 = a4;
+  volumeCopy = volume;
   v11 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  serviceCopy = service;
   v7 = DBLogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8[0] = 67109378;
-    v8[1] = v4;
+    v8[1] = volumeCopy;
     v9 = 2112;
-    v10 = v6;
+    v10 = serviceCopy;
     _os_log_impl(&dword_248146000, v7, OS_LOG_TYPE_DEFAULT, "Volume updated to: %hhu, for service: %@", v8, 0x12u);
   }
 
-  [(DBAudioNotificationManager *)self _handleServiceUpdate:v6];
+  [(DBAudioNotificationManager *)self _handleServiceUpdate:serviceCopy];
 }
 
-- (void)volumeService:(id)a3 didUpdateMute:(BOOL)a4
+- (void)volumeService:(id)service didUpdateMute:(BOOL)mute
 {
-  v4 = a4;
+  muteCopy = mute;
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  serviceCopy = service;
   v7 = DBLogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"unmuted";
-    if (v4)
+    if (muteCopy)
     {
       v8 = @"muted";
     }
@@ -87,21 +87,21 @@
     v9 = 138412546;
     v10 = v8;
     v11 = 2112;
-    v12 = v6;
+    v12 = serviceCopy;
     _os_log_impl(&dword_248146000, v7, OS_LOG_TYPE_DEFAULT, "Mute state updated to: %@, for service: %@", &v9, 0x16u);
   }
 
-  [(DBAudioNotificationManager *)self _handleServiceUpdate:v6];
+  [(DBAudioNotificationManager *)self _handleServiceUpdate:serviceCopy];
 }
 
-- (void)_handleServiceUpdate:(id)a3
+- (void)_handleServiceUpdate:(id)update
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(DBAudioNotificationManager *)self _shouldShowNotificationForService:v4])
+  updateCopy = update;
+  if ([(DBAudioNotificationManager *)self _shouldShowNotificationForService:updateCopy])
   {
     [(DBAudioWindow *)self->_audioWindow setHidden:0];
-    [(DBAudioNotificationViewController *)self->_audioViewController updateForService:v4];
+    [(DBAudioNotificationViewController *)self->_audioViewController updateForService:updateCopy];
   }
 
   else
@@ -110,19 +110,19 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = updateCopy;
       _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_DEFAULT, "Can't show audio notification for service: %@", &v6, 0xCu);
     }
   }
 }
 
-- (BOOL)_shouldShowNotificationForService:(id)a3
+- (BOOL)_shouldShowNotificationForService:(id)service
 {
-  v4 = [a3 car];
-  v5 = [v4 audioSettings];
-  v6 = [v5 receivedAllValues];
+  v4 = [service car];
+  audioSettings = [v4 audioSettings];
+  receivedAllValues = [audioSettings receivedAllValues];
 
-  if ((v6 & 1) == 0)
+  if ((receivedAllValues & 1) == 0)
   {
     v7 = DBLogForCategory(0);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))

@@ -1,12 +1,12 @@
 @interface RMModelLegacyProfileDeclaration
 + (NSSet)allowedPayloadKeys;
 + (id)assetTypes;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 profileURL:(id)a4;
-+ (id)buildWithIdentifier:(id)a3 profileURL:(id)a4;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier profileURL:(id)l;
++ (id)buildWithIdentifier:(id)identifier profileURL:(id)l;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelLegacyProfileDeclaration
@@ -31,50 +31,50 @@
   return v2;
 }
 
-+ (id)buildWithIdentifier:(id)a3 profileURL:(id)a4
++ (id)buildWithIdentifier:(id)identifier profileURL:(id)l
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  lCopy = l;
   v7 = objc_opt_new();
   [v7 setDeclarationType:@"com.apple.configuration.legacy"];
-  if (v5)
+  if (identifierCopy)
   {
-    [v7 setDeclarationIdentifier:v5];
+    [v7 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v8 UUIDString];
-    [v7 setDeclarationIdentifier:v9];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v7 setDeclarationIdentifier:uUIDString];
   }
 
-  [v7 setPayloadProfileURL:v6];
+  [v7 setPayloadProfileURL:lCopy];
 
   [v7 updateServerToken];
 
   return v7;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 profileURL:(id)a4
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier profileURL:(id)l
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  lCopy = l;
   v7 = objc_opt_new();
   [v7 setDeclarationType:@"com.apple.configuration.legacy"];
-  if (v5)
+  if (identifierCopy)
   {
-    [v7 setDeclarationIdentifier:v5];
+    [v7 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v8 UUIDString];
-    [v7 setDeclarationIdentifier:v9];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v7 setDeclarationIdentifier:uUIDString];
   }
 
-  [v7 setPayloadProfileURL:v6];
+  [v7 setPayloadProfileURL:lCopy];
 
   [v7 updateServerToken];
 
@@ -133,12 +133,12 @@
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
   v7 = MEMORY[0x277CBEB58];
-  v8 = a3;
-  v9 = [v8 allKeys];
-  v10 = [v7 setWithArray:v9];
+  dictionaryCopy = dictionary;
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v7 setWithArray:allKeys];
 
   v11 = +[RMModelLegacyProfileDeclaration allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -146,26 +146,26 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  LOBYTE(a5) = [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"ProfileURL" forKeyPath:@"payloadProfileURL" isRequired:1 defaultValue:0 error:a5];
-  return a5;
+  LOBYTE(error) = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"ProfileURL" forKeyPath:@"payloadProfileURL" isRequired:1 defaultValue:0 error:error];
+  return error;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelLegacyProfileDeclaration *)self payloadProfileURL];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"ProfileURL" value:v5 isRequired:1 defaultValue:0];
+  payloadProfileURL = [(RMModelLegacyProfileDeclaration *)self payloadProfileURL];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"ProfileURL" value:payloadProfileURL isRequired:1 defaultValue:0];
 
   v6 = [v4 copy];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = RMModelLegacyProfileDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v8 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v8 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadProfileURL copy];
   v6 = v4[6];
   v4[6] = v5;

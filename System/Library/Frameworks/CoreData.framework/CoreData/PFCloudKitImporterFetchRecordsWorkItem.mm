@@ -1,18 +1,18 @@
 @interface PFCloudKitImporterFetchRecordsWorkItem
-- (PFCloudKitImporterFetchRecordsWorkItem)initWithOptions:(id)a3 request:(id)a4;
+- (PFCloudKitImporterFetchRecordsWorkItem)initWithOptions:(id)options request:(id)request;
 - (id)description;
 - (id)entityNameToAttributesToUpdate;
 - (void)dealloc;
-- (void)executeImportOperationsAndAccumulateRecordsWithManagedObjectContext:(id)a3 completion:(id)a4;
+- (void)executeImportOperationsAndAccumulateRecordsWithManagedObjectContext:(id)context completion:(id)completion;
 @end
 
 @implementation PFCloudKitImporterFetchRecordsWorkItem
 
-- (PFCloudKitImporterFetchRecordsWorkItem)initWithOptions:(id)a3 request:(id)a4
+- (PFCloudKitImporterFetchRecordsWorkItem)initWithOptions:(id)options request:(id)request
 {
   v6.receiver = self;
   v6.super_class = PFCloudKitImporterFetchRecordsWorkItem;
-  v4 = [(PFCloudKitImportRecordsWorkItem *)&v6 initWithOptions:a3 request:a4];
+  v4 = [(PFCloudKitImportRecordsWorkItem *)&v6 initWithOptions:options request:request];
   if (v4)
   {
     v4->_updatedObjectIDs = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -53,15 +53,15 @@
     request = 0;
   }
 
-  v8 = [v4 initWithFormat:@"<%@: %p - %@>", v6, self, request];
+  request = [v4 initWithFormat:@"<%@: %p - %@>", v6, self, request];
   recordIDToObjectID = self->_recordIDToObjectID;
-  [v8 appendFormat:@" { %@ %@ %@ %@ }", self->_updatedObjectIDs, self->_failedObjectIDsToError, recordIDToObjectID, self->_operationsToExecute];
+  [request appendFormat:@" { %@ %@ %@ %@ }", self->_updatedObjectIDs, self->_failedObjectIDsToError, recordIDToObjectID, self->_operationsToExecute];
   objc_autoreleasePoolPop(v3);
 
-  return v8;
+  return request;
 }
 
-- (void)executeImportOperationsAndAccumulateRecordsWithManagedObjectContext:(id)a3 completion:(id)a4
+- (void)executeImportOperationsAndAccumulateRecordsWithManagedObjectContext:(id)context completion:(id)completion
 {
   v76 = *MEMORY[0x1E69E9840];
   if (self)
@@ -124,7 +124,7 @@
   v57[5] = request;
   v46 = v11;
   v57[6] = v11;
-  v57[7] = a3;
+  v57[7] = context;
   v57[8] = self;
   v57[9] = v43;
   v57[10] = &v58;
@@ -136,7 +136,7 @@
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v12 = self;
+    selfCopy = self;
     if (self)
     {
       v13 = self->super.super._request;
@@ -207,7 +207,7 @@
 
           v27 = *(*(&v53 + 1) + 8 * v26);
           v28 = objc_alloc_init(getCloudKitCKFetchRecordsOperationClass());
-          v29 = [v28 operationID];
+          operationID = [v28 operationID];
           if ([(NSCloudKitMirroringRequest *)request options])
           {
             [(NSCloudKitMirroringRequestOptions *)[(NSCloudKitMirroringRequest *)request options] applyToOperation:v28];
@@ -221,7 +221,7 @@
           v52[3] = &unk_1E6EC41A0;
           v52[4] = request;
           [v28 setPerRecordProgressBlock:v52];
-          objc_initWeak(location, v12);
+          objc_initWeak(location, selfCopy);
           v50[0] = MEMORY[0x1E69E9820];
           v50[1] = 3221225472;
           v50[2] = __121__PFCloudKitImporterFetchRecordsWorkItem_executeImportOperationsAndAccumulateRecordsWithManagedObjectContext_completion___block_invoke_26;
@@ -233,10 +233,10 @@
           v48[2] = __121__PFCloudKitImporterFetchRecordsWorkItem_executeImportOperationsAndAccumulateRecordsWithManagedObjectContext_completion___block_invoke_2_28;
           v48[3] = &unk_1E6EC41F0;
           objc_copyWeak(&v49, location);
-          v48[4] = v29;
-          v48[5] = a4;
+          v48[4] = operationID;
+          v48[5] = completion;
           [v28 setFetchRecordsCompletionBlock:v48];
-          [(NSMutableDictionary *)v12->_operationsToExecute setObject:v28 forKey:v29];
+          [(NSMutableDictionary *)selfCopy->_operationsToExecute setObject:v28 forKey:operationID];
 
           objc_destroyWeak(&v49);
           objc_destroyWeak(&v51);
@@ -251,7 +251,7 @@
       while (v25);
     }
 
-    if ([(NSMutableDictionary *)v12->_operationsToExecute count])
+    if ([(NSMutableDictionary *)selfCopy->_operationsToExecute count])
     {
       if (v41)
       {
@@ -263,11 +263,11 @@
         v30 = 0;
       }
 
-      -[CKDatabase addOperation:](v30, "addOperation:", [-[NSMutableDictionary allValues](v12->_operationsToExecute "allValues")]);
+      -[CKDatabase addOperation:](v30, "addOperation:", [-[NSMutableDictionary allValues](selfCopy->_operationsToExecute "allValues")]);
       goto LABEL_52;
     }
 
-    if (!a4)
+    if (!completion)
     {
       goto LABEL_52;
     }
@@ -293,7 +293,7 @@
 LABEL_47:
     if (os_log_type_enabled(Stream, v34))
     {
-      v35 = [(NSCloudKitMirroringImportRequest *)request objectIDsToFetch];
+      objectIDsToFetch = [(NSCloudKitMirroringImportRequest *)request objectIDsToFetch];
       *location = 136315906;
       *&location[4] = "[PFCloudKitImporterFetchRecordsWorkItem executeImportOperationsAndAccumulateRecordsWithManagedObjectContext:completion:]";
       v69 = 1024;
@@ -301,7 +301,7 @@ LABEL_47:
       v71 = 2112;
       v72 = request;
       v73 = 2112;
-      v74 = v35;
+      v74 = objectIDsToFetch;
       _os_log_impl(&dword_18565F000, v33, v34, "CoreData+CloudKit: %s(%d): Fetch records request did not match any records in the store: %@\n%@", location, 0x26u);
     }
 
@@ -316,13 +316,13 @@ LABEL_47:
       isa = 0;
     }
 
-    v37 = [(PFCloudKitImporterFetchRecordsWorkItem *)v12 createMirroringResultForRequest:v12->super.super._request storeIdentifier:isa success:1 madeChanges:0 error:0];
-    (*(a4 + 2))(a4, v37);
+    v37 = [(PFCloudKitImporterFetchRecordsWorkItem *)selfCopy createMirroringResultForRequest:selfCopy->super.super._request storeIdentifier:isa success:1 madeChanges:0 error:0];
+    (*(completion + 2))(completion, v37);
 
     goto LABEL_52;
   }
 
-  if (a4)
+  if (completion)
   {
     if (self)
     {
@@ -345,7 +345,7 @@ LABEL_47:
     }
 
     v23 = [(PFCloudKitImporterFetchRecordsWorkItem *)self createMirroringResultForRequest:v21 storeIdentifier:v22 success:0 madeChanges:0 error:v59[5], v39];
-    (*(a4 + 2))(a4, v23);
+    (*(completion + 2))(completion, v23);
   }
 
 LABEL_52:
@@ -792,7 +792,7 @@ void __121__PFCloudKitImporterFetchRecordsWorkItem_executeImportOperationsAndAcc
 
 - (id)entityNameToAttributesToUpdate
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->super.super._request;
@@ -801,9 +801,9 @@ void __121__PFCloudKitImporterFetchRecordsWorkItem_executeImportOperationsAndAcc
   result = [-[PFCloudKitImporterFetchRecordsWorkItem entityNameToAttributesToFetch](self "entityNameToAttributesToFetch")];
   if (result)
   {
-    if (v2)
+    if (selfCopy)
     {
-      request = v2->super.super._request;
+      request = selfCopy->super.super._request;
     }
 
     else

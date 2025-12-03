@@ -1,32 +1,32 @@
 @interface MRUMetadataController
 - (BOOL)appSupportsHaptics;
-- (MRUMetadataController)initWithDataSource:(id)a3;
+- (MRUMetadataController)initWithDataSource:(id)source;
 - (NSString)bundleID;
 - (NSString)bundleName;
-- (void)metadataDataSource:(id)a3 didChangeArtwork:(id)a4;
-- (void)metadataDataSource:(id)a3 didChangeBundleID:(id)a4;
-- (void)metadataDataSource:(id)a3 didChangeNowPlayingInfo:(id)a4;
-- (void)metadataDataSource:(id)a3 didChangeTimeControls:(id)a4;
-- (void)metadataDataSource:(id)a3 didChangeTransportControls:(id)a4;
-- (void)representsLongFormVideoContentWithCompletion:(id)a3;
-- (void)setDataSource:(id)a3;
+- (void)metadataDataSource:(id)source didChangeArtwork:(id)artwork;
+- (void)metadataDataSource:(id)source didChangeBundleID:(id)d;
+- (void)metadataDataSource:(id)source didChangeNowPlayingInfo:(id)info;
+- (void)metadataDataSource:(id)source didChangeTimeControls:(id)controls;
+- (void)metadataDataSource:(id)source didChangeTransportControls:(id)controls;
+- (void)representsLongFormVideoContentWithCompletion:(id)completion;
+- (void)setDataSource:(id)source;
 @end
 
 @implementation MRUMetadataController
 
-- (MRUMetadataController)initWithDataSource:(id)a3
+- (MRUMetadataController)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v10.receiver = self;
   v10.super_class = MRUMetadataController;
   v6 = [(MRUMetadataController *)&v10 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v6->_observers;
-    v6->_observers = v7;
+    v6->_observers = weakObjectsHashTable;
 
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
     [(MRUMetadataDataSource *)v6->_dataSource setDelegate:v6];
   }
 
@@ -36,23 +36,23 @@
 - (BOOL)appSupportsHaptics
 {
   v3 = objc_alloc(MEMORY[0x1E69635F8]);
-  v4 = [(MRUMetadataDataSource *)self->_dataSource bundleID];
+  bundleID = [(MRUMetadataDataSource *)self->_dataSource bundleID];
   v7 = 0;
-  v5 = [v3 initWithBundleIdentifier:v4 allowPlaceholder:0 error:&v7];
+  v5 = [v3 initWithBundleIdentifier:bundleID allowPlaceholder:0 error:&v7];
 
-  LOBYTE(v4) = AXApplicationSupportsHapticMusic();
-  return v4;
+  LOBYTE(bundleID) = AXApplicationSupportsHapticMusic();
+  return bundleID;
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  sourceCopy = source;
   dataSource = self->_dataSource;
-  if (dataSource != v5)
+  if (dataSource != sourceCopy)
   {
     [(MRUMetadataDataSource *)dataSource setDelegate:0];
-    objc_storeStrong(&self->_dataSource, a3);
+    objc_storeStrong(&self->_dataSource, source);
     [(MRUMetadataDataSource *)self->_dataSource setDelegate:self];
     v19 = 0u;
     v20 = 0u;
@@ -76,32 +76,32 @@
           v8 = *(*(&v17 + 1) + 8 * v7);
           if (objc_opt_respondsToSelector())
           {
-            v9 = [(MRUMetadataDataSource *)v5 bundleID];
-            [v8 metadataController:self didChangeBundleID:v9];
+            bundleID = [(MRUMetadataDataSource *)sourceCopy bundleID];
+            [v8 metadataController:self didChangeBundleID:bundleID];
           }
 
           if (objc_opt_respondsToSelector())
           {
-            v10 = [(MRUMetadataDataSource *)v5 artwork];
-            [v8 metadataController:self didChangeArtwork:v10];
+            artwork = [(MRUMetadataDataSource *)sourceCopy artwork];
+            [v8 metadataController:self didChangeArtwork:artwork];
           }
 
           if (objc_opt_respondsToSelector())
           {
-            v11 = [(MRUMetadataDataSource *)v5 nowPlayingInfo];
-            [v8 metadataController:self didChangeNowPlayingInfo:v11];
+            nowPlayingInfo = [(MRUMetadataDataSource *)sourceCopy nowPlayingInfo];
+            [v8 metadataController:self didChangeNowPlayingInfo:nowPlayingInfo];
           }
 
           if (objc_opt_respondsToSelector())
           {
-            v12 = [(MRUMetadataDataSource *)v5 timeControls];
-            [v8 metadataController:self didChangeTimeControls:v12];
+            timeControls = [(MRUMetadataDataSource *)sourceCopy timeControls];
+            [v8 metadataController:self didChangeTimeControls:timeControls];
           }
 
           if (objc_opt_respondsToSelector())
           {
-            v13 = [(MRUMetadataDataSource *)v5 transportControls];
-            [v8 metadataController:self didChangeTransportControls:v13];
+            transportControls = [(MRUMetadataDataSource *)sourceCopy transportControls];
+            [v8 metadataController:self didChangeTransportControls:transportControls];
           }
 
           ++v7;
@@ -118,8 +118,8 @@
 
 - (NSString)bundleID
 {
-  v2 = [(MRUMetadataDataSource *)self->_dataSource bundleID];
-  v3 = [v2 copy];
+  bundleID = [(MRUMetadataDataSource *)self->_dataSource bundleID];
+  v3 = [bundleID copy];
 
   return v3;
 }
@@ -132,8 +132,8 @@
     goto LABEL_10;
   }
 
-  v4 = [(MRUMetadataController *)self bundleID];
-  if (![v4 length])
+  bundleID = [(MRUMetadataController *)self bundleID];
+  if (![bundleID length])
   {
 
     v6 = 0;
@@ -146,7 +146,7 @@
 LABEL_8:
     v7 = v5;
 
-    v4 = v7;
+    bundleID = v7;
     goto LABEL_9;
   }
 
@@ -157,7 +157,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  v8 = [MRUStringsProvider localizedNameForBundleIdentifier:v4];
+  v8 = [MRUStringsProvider localizedNameForBundleIdentifier:bundleID];
   v9 = self->_bundleName;
   self->_bundleName = v8;
 
@@ -169,17 +169,17 @@ LABEL_11:
   return v6;
 }
 
-- (void)representsLongFormVideoContentWithCompletion:(id)a3
+- (void)representsLongFormVideoContentWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_get_global_queue(2, 0);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__MRUMetadataController_representsLongFormVideoContentWithCompletion___block_invoke;
   v7[3] = &unk_1E7664490;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, v7);
 }
 
@@ -198,10 +198,10 @@ void __70__MRUMetadataController_representsLongFormVideoContentWithCompletion___
   dispatch_async(MEMORY[0x1E69E96A0], v4);
 }
 
-- (void)metadataDataSource:(id)a3 didChangeBundleID:(id)a4
+- (void)metadataDataSource:(id)source didChangeBundleID:(id)d
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  dCopy = d;
   bundleName = self->_bundleName;
   self->_bundleName = 0;
 
@@ -228,7 +228,7 @@ void __70__MRUMetadataController_representsLongFormVideoContentWithCompletion___
         v12 = *(*(&v13 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 metadataController:self didChangeBundleID:v5];
+          [v12 metadataController:self didChangeBundleID:dCopy];
         }
 
         ++v11;
@@ -242,10 +242,10 @@ void __70__MRUMetadataController_representsLongFormVideoContentWithCompletion___
   }
 }
 
-- (void)metadataDataSource:(id)a3 didChangeArtwork:(id)a4
+- (void)metadataDataSource:(id)source didChangeArtwork:(id)artwork
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  artworkCopy = artwork;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -269,7 +269,7 @@ void __70__MRUMetadataController_representsLongFormVideoContentWithCompletion___
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 metadataController:self didChangeArtwork:v5];
+          [v11 metadataController:self didChangeArtwork:artworkCopy];
         }
 
         ++v10;
@@ -283,10 +283,10 @@ void __70__MRUMetadataController_representsLongFormVideoContentWithCompletion___
   }
 }
 
-- (void)metadataDataSource:(id)a3 didChangeNowPlayingInfo:(id)a4
+- (void)metadataDataSource:(id)source didChangeNowPlayingInfo:(id)info
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  infoCopy = info;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -310,7 +310,7 @@ void __70__MRUMetadataController_representsLongFormVideoContentWithCompletion___
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 metadataController:self didChangeNowPlayingInfo:v5];
+          [v11 metadataController:self didChangeNowPlayingInfo:infoCopy];
         }
 
         ++v10;
@@ -324,10 +324,10 @@ void __70__MRUMetadataController_representsLongFormVideoContentWithCompletion___
   }
 }
 
-- (void)metadataDataSource:(id)a3 didChangeTimeControls:(id)a4
+- (void)metadataDataSource:(id)source didChangeTimeControls:(id)controls
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  controlsCopy = controls;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -351,7 +351,7 @@ void __70__MRUMetadataController_representsLongFormVideoContentWithCompletion___
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 metadataController:self didChangeTimeControls:v5];
+          [v11 metadataController:self didChangeTimeControls:controlsCopy];
         }
 
         ++v10;
@@ -365,10 +365,10 @@ void __70__MRUMetadataController_representsLongFormVideoContentWithCompletion___
   }
 }
 
-- (void)metadataDataSource:(id)a3 didChangeTransportControls:(id)a4
+- (void)metadataDataSource:(id)source didChangeTransportControls:(id)controls
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  controlsCopy = controls;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -392,7 +392,7 @@ void __70__MRUMetadataController_representsLongFormVideoContentWithCompletion___
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 metadataController:self didChangeTransportControls:v5];
+          [v11 metadataController:self didChangeTransportControls:controlsCopy];
         }
 
         ++v10;

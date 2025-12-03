@@ -1,16 +1,16 @@
 @interface THDocumentLinkResolver
 - (NSDictionary)pathToNodeIndex;
-- (THDocumentLinkResolver)initWithDocumentRoot:(id)a3;
-- (id)absoluteLink:(id)a3 withContentNode:(id)a4;
-- (id)anchorFromAbsoluteLink:(id)a3 presentationType:(id)a4;
-- (id)anchorFromCustomLink:(id)a3 presentationType:(id)a4;
-- (id)contentNodeFromLink:(id)a3;
-- (id)nodeFromLink:(id)a3;
-- (id)p_anchorFromChapterLink:(id)a3 presentationType:(id)a4;
-- (id)p_anchorFromPageLink:(id)a3 presentationType:(id)a4;
+- (THDocumentLinkResolver)initWithDocumentRoot:(id)root;
+- (id)absoluteLink:(id)link withContentNode:(id)node;
+- (id)anchorFromAbsoluteLink:(id)link presentationType:(id)type;
+- (id)anchorFromCustomLink:(id)link presentationType:(id)type;
+- (id)contentNodeFromLink:(id)link;
+- (id)nodeFromLink:(id)link;
+- (id)p_anchorFromChapterLink:(id)link presentationType:(id)type;
+- (id)p_anchorFromPageLink:(id)link presentationType:(id)type;
 - (id)p_buildPathToNodeIndex;
-- (id)p_modelLinkFromChapterLink:(id)a3;
-- (unint64_t)absolutePageNumberFromCustomLink:(id)a3 presentationType:(id)a4;
+- (id)p_modelLinkFromChapterLink:(id)link;
+- (unint64_t)absolutePageNumberFromCustomLink:(id)link presentationType:(id)type;
 - (void)dealloc;
 - (void)invalidatePaginationResults;
 - (void)updatePaginationResults;
@@ -18,7 +18,7 @@
 
 @implementation THDocumentLinkResolver
 
-- (THDocumentLinkResolver)initWithDocumentRoot:(id)a3
+- (THDocumentLinkResolver)initWithDocumentRoot:(id)root
 {
   v7.receiver = self;
   v7.super_class = THDocumentLinkResolver;
@@ -26,7 +26,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->mDocumentRoot = a3;
+    v4->mDocumentRoot = root;
     v4->_displayPageNumberMap = objc_alloc_init(THDisplayPageNumberMap);
   }
 
@@ -45,18 +45,18 @@
 
 - (void)updatePaginationResults
 {
-  v3 = [(THDocumentLinkResolver *)self displayPageNumberMap];
+  displayPageNumberMap = [(THDocumentLinkResolver *)self displayPageNumberMap];
   mDocumentRoot = self->mDocumentRoot;
 
-  [(THDisplayPageNumberMap *)v3 buildDisplayPageMapsWithDocumentRoot:mDocumentRoot];
+  [(THDisplayPageNumberMap *)displayPageNumberMap buildDisplayPageMapsWithDocumentRoot:mDocumentRoot];
 }
 
 - (void)invalidatePaginationResults
 {
-  v3 = [(THDocumentLinkResolver *)self displayPageNumberMap];
+  displayPageNumberMap = [(THDocumentLinkResolver *)self displayPageNumberMap];
   mDocumentRoot = self->mDocumentRoot;
 
-  [(THDisplayPageNumberMap *)v3 clearDisplayPageMapsWithDocumentRoot:mDocumentRoot];
+  [(THDisplayPageNumberMap *)displayPageNumberMap clearDisplayPageMapsWithDocumentRoot:mDocumentRoot];
 }
 
 - (NSDictionary)pathToNodeIndex
@@ -71,17 +71,17 @@
   return result;
 }
 
-- (id)nodeFromLink:(id)a3
+- (id)nodeFromLink:(id)link
 {
-  v4 = [a3 docRelativePath];
-  v5 = [(THDocumentLinkResolver *)self pathToNodeIndex];
+  docRelativePath = [link docRelativePath];
+  pathToNodeIndex = [(THDocumentLinkResolver *)self pathToNodeIndex];
 
-  return [(NSDictionary *)v5 objectForKey:v4];
+  return [(NSDictionary *)pathToNodeIndex objectForKey:docRelativePath];
 }
 
-- (id)contentNodeFromLink:(id)a3
+- (id)contentNodeFromLink:(id)link
 {
-  [(THDocumentLinkResolver *)self nodeFromLink:a3];
+  [(THDocumentLinkResolver *)self nodeFromLink:link];
   objc_opt_class();
   result = TSUDynamicCast();
   if (!result)
@@ -125,78 +125,78 @@
   return result;
 }
 
-- (id)absoluteLink:(id)a3 withContentNode:(id)a4
+- (id)absoluteLink:(id)link withContentNode:(id)node
 {
-  v7 = [a3 docRelativePath];
-  if (v7 && [v7 length])
+  docRelativePath = [link docRelativePath];
+  if (docRelativePath && [docRelativePath length])
   {
-    a4 = [(THDocumentLinkResolver *)self contentNodeFromLink:a3];
-    if (!a4)
+    node = [(THDocumentLinkResolver *)self contentNodeFromLink:link];
+    if (!node)
     {
       return 0;
     }
   }
 
-  else if (!a4)
+  else if (!node)
   {
     return 0;
   }
 
-  v9 = [a3 fragment];
+  fragment = [link fragment];
 
-  return [a4 modelLinkWithFragment:v9];
+  return [node modelLinkWithFragment:fragment];
 }
 
-- (id)anchorFromAbsoluteLink:(id)a3 presentationType:(id)a4
+- (id)anchorFromAbsoluteLink:(id)link presentationType:(id)type
 {
-  if ([a3 isPageLink])
+  if ([link isPageLink])
   {
 
-    return [(THDocumentLinkResolver *)self p_anchorFromPageLink:a3 presentationType:?];
+    return [(THDocumentLinkResolver *)self p_anchorFromPageLink:link presentationType:?];
   }
 
-  else if (([a3 isChapterLink] & 1) != 0 || objc_msgSend(a3, "isChapterGuidLink"))
+  else if (([link isChapterLink] & 1) != 0 || objc_msgSend(link, "isChapterGuidLink"))
   {
 
-    return [(THDocumentLinkResolver *)self p_anchorFromChapterLink:a3 presentationType:?];
+    return [(THDocumentLinkResolver *)self p_anchorFromChapterLink:link presentationType:?];
   }
 
   else
   {
-    result = [(THDocumentLinkResolver *)self contentNodeFromLink:a3];
+    result = [(THDocumentLinkResolver *)self contentNodeFromLink:link];
     if (result)
     {
-      v7 = [THContentLinkResolver contentLinkResolverWithContentNode:result presentationType:a4];
+      v7 = [THContentLinkResolver contentLinkResolverWithContentNode:result presentationType:type];
 
-      return [(THContentLinkResolver *)v7 navigableAnchorFromLink:a3];
+      return [(THContentLinkResolver *)v7 navigableAnchorFromLink:link];
     }
   }
 
   return result;
 }
 
-- (id)p_anchorFromPageLink:(id)a3 presentationType:(id)a4
+- (id)p_anchorFromPageLink:(id)link presentationType:(id)type
 {
-  v6 = -[THDisplayPageNumberMap absolutePageIndexForDisplayPageNumber:](-[THDocumentLinkResolver displayPageNumberMap](self, "displayPageNumberMap"), "absolutePageIndexForDisplayPageNumber:", [a3 pageNumberString]);
+  v6 = -[THDisplayPageNumberMap absolutePageIndexForDisplayPageNumber:](-[THDocumentLinkResolver displayPageNumberMap](self, "displayPageNumberMap"), "absolutePageIndexForDisplayPageNumber:", [link pageNumberString]);
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
   v8 = v6;
-  v9 = [(THModelNode *)[(THDocumentRoot *)self->mDocumentRoot rootNode] contentNodeForRelativePageIndex:0 forPresentationType:a4];
-  v10 = -[THModelPageAnchor initWithContentNode:relativePageIndex:presentationType:]([THModelPageAnchor alloc], "initWithContentNode:relativePageIndex:presentationType:", v9, [v9 relativePageIndexForAbsolutePageIndex:v8 forPresentationType:a4], a4);
+  v9 = [(THModelNode *)[(THDocumentRoot *)self->mDocumentRoot rootNode] contentNodeForRelativePageIndex:0 forPresentationType:type];
+  v10 = -[THModelPageAnchor initWithContentNode:relativePageIndex:presentationType:]([THModelPageAnchor alloc], "initWithContentNode:relativePageIndex:presentationType:", v9, [v9 relativePageIndexForAbsolutePageIndex:v8 forPresentationType:type], type);
 
   return v10;
 }
 
-- (id)p_anchorFromChapterLink:(id)a3 presentationType:(id)a4
+- (id)p_anchorFromChapterLink:(id)link presentationType:(id)type
 {
-  v6 = [(THDocumentLinkResolver *)self p_modelLinkFromChapterLink:a3];
+  v6 = [(THDocumentLinkResolver *)self p_modelLinkFromChapterLink:link];
   result = [(THDocumentLinkResolver *)self contentNodeFromLink:v6];
   if (result)
   {
-    v8 = [THContentLinkResolver contentLinkResolverWithContentNode:result presentationType:a4];
+    v8 = [THContentLinkResolver contentLinkResolverWithContentNode:result presentationType:type];
 
     return [(THContentLinkResolver *)v8 navigableAnchorFromLink:v6];
   }
@@ -204,26 +204,26 @@
   return result;
 }
 
-- (id)anchorFromCustomLink:(id)a3 presentationType:(id)a4
+- (id)anchorFromCustomLink:(id)link presentationType:(id)type
 {
-  if (![a3 targetIsiBooks])
+  if (![link targetIsiBooks])
   {
     return 0;
   }
 
-  if ([a3 isPageLink])
+  if ([link isPageLink])
   {
 
-    return [(THDocumentLinkResolver *)self p_anchorFromPageLink:a3 presentationType:a4];
+    return [(THDocumentLinkResolver *)self p_anchorFromPageLink:link presentationType:type];
   }
 
-  if (([a3 isChapterLink] & 1) != 0 || objc_msgSend(a3, "isChapterGuidLink"))
+  if (([link isChapterLink] & 1) != 0 || objc_msgSend(link, "isChapterGuidLink"))
   {
 
-    return [(THDocumentLinkResolver *)self p_anchorFromChapterLink:a3 presentationType:a4];
+    return [(THDocumentLinkResolver *)self p_anchorFromChapterLink:link presentationType:type];
   }
 
-  v7 = [objc_msgSend(a3 "fragment")];
+  v7 = [objc_msgSend(link "fragment")];
   if (![v7 length] || !-[NSDictionary objectForKey:](-[THTOCModel figureReference](-[THDocumentRoot tocModel](self->mDocumentRoot, "tocModel"), "figureReference"), "objectForKey:", v7))
   {
     return 0;
@@ -231,24 +231,24 @@
 
   v8 = -[THModelLink initWithTarget:context:]([THModelLink alloc], "initWithTarget:context:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"apub:///0/0/0%@", [@"/OPS/" stringByAppendingString:{-[NSDictionary objectForKey:](-[THTOCModel figureReference](-[THDocumentRoot tocModel](self->mDocumentRoot, "tocModel"), "figureReference"), "objectForKey:", v7)}]), -[THDocumentRoot context](self->mDocumentRoot, "context"));
 
-  return [(THDocumentLinkResolver *)self anchorFromAbsoluteLink:v8 presentationType:a4];
+  return [(THDocumentLinkResolver *)self anchorFromAbsoluteLink:v8 presentationType:type];
 }
 
-- (id)p_modelLinkFromChapterLink:(id)a3
+- (id)p_modelLinkFromChapterLink:(id)link
 {
-  v5 = [a3 isChapterGuidLink];
-  v6 = v5;
-  if (v5)
+  isChapterGuidLink = [link isChapterGuidLink];
+  v6 = isChapterGuidLink;
+  if (isChapterGuidLink)
   {
-    v7 = [a3 chapterGuidString];
+    chapterGuidString = [link chapterGuidString];
   }
 
   else
   {
-    v7 = [a3 chapterString];
+    chapterGuidString = [link chapterString];
   }
 
-  v8 = v7;
+  v8 = chapterGuidString;
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
@@ -274,8 +274,8 @@
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v14 = [v13 portraitEntries];
-        v15 = [v14 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        portraitEntries = [v13 portraitEntries];
+        v15 = [portraitEntries countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v15)
         {
           v16 = v15;
@@ -286,7 +286,7 @@ LABEL_11:
           {
             if (*v23 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(portraitEntries);
             }
 
             v19 = *(*(&v22 + 1) + 8 * v18);
@@ -298,7 +298,7 @@ LABEL_11:
 
             if (v16 == ++v18)
             {
-              v16 = [v14 countByEnumeratingWithState:&v22 objects:v30 count:16];
+              v16 = [portraitEntries countByEnumeratingWithState:&v22 objects:v30 count:16];
               if (v16)
               {
                 goto LABEL_11;
@@ -330,22 +330,22 @@ LABEL_22:
   return result;
 }
 
-- (unint64_t)absolutePageNumberFromCustomLink:(id)a3 presentationType:(id)a4
+- (unint64_t)absolutePageNumberFromCustomLink:(id)link presentationType:(id)type
 {
-  if ([a3 isPageLink])
+  if ([link isPageLink])
   {
-    v7 = [(THDocumentLinkResolver *)self displayPageNumberMap];
-    v8 = [a3 pageNumberString];
+    displayPageNumberMap = [(THDocumentLinkResolver *)self displayPageNumberMap];
+    pageNumberString = [link pageNumberString];
 
-    return [(THDisplayPageNumberMap *)v7 absolutePageIndexForDisplayPageNumber:v8];
+    return [(THDisplayPageNumberMap *)displayPageNumberMap absolutePageIndexForDisplayPageNumber:pageNumberString];
   }
 
-  else if ((([a3 isChapterLink] & 1) != 0 || objc_msgSend(a3, "isChapterGuidLink")) && (v10 = -[THDocumentLinkResolver p_modelLinkFromChapterLink:](self, "p_modelLinkFromChapterLink:", a3)) != 0)
+  else if ((([link isChapterLink] & 1) != 0 || objc_msgSend(link, "isChapterGuidLink")) && (v10 = -[THDocumentLinkResolver p_modelLinkFromChapterLink:](self, "p_modelLinkFromChapterLink:", link)) != 0)
   {
     v11 = [(THDocumentLinkResolver *)self contentNodeFromLink:v10];
-    v12 = [(THDocumentRoot *)self->mDocumentRoot navigationModel];
+    navigationModel = [(THDocumentRoot *)self->mDocumentRoot navigationModel];
 
-    return [(THDocumentNavigationModel *)v12 absolutePageIndexForContentNodeRelativePageIndex:0 inContentNode:v11 forPresentationType:a4];
+    return [(THDocumentNavigationModel *)navigationModel absolutePageIndexForContentNodeRelativePageIndex:0 inContentNode:v11 forPresentationType:type];
   }
 
   else

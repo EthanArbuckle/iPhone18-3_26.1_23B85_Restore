@@ -1,8 +1,8 @@
 @interface CRLPKDrawingProvider
-+ (id)allDrawingItemsDescendedFromContainer:(id)a3;
-+ (void)p_recursivelyAddFreehandDrawingItemsFromGroup:(id)a3 drawingItems:(id)a4;
++ (id)allDrawingItemsDescendedFromContainer:(id)container;
++ (void)p_recursivelyAddFreehandDrawingItemsFromGroup:(id)group drawingItems:(id)items;
 - (CRLBidirectionalMap)drawingShapeItemUUIDToStrokeUUIDBidirectionalMap;
-- (CRLPKDrawingProvider)initWithICC:(id)a3;
+- (CRLPKDrawingProvider)initWithICC:(id)c;
 - (NSArray)pkStrokesContainingAllDrawingsForEntireCanvas;
 - (NSDictionary)strokeUUIDsToDrawingItems;
 - (NSDictionary)strokeUUIDsToDrawingShapeItems;
@@ -10,20 +10,20 @@
 - (NSSet)strokeDataUUIDsForNonInteractiveDrawings;
 - (NSSet)strokeUUIDsForNonInteractiveDrawings;
 - (PKDrawing)unifiedDrawing;
-- (id)p_createUUIDFromHashingStrokeTransformForShapeItem:(id)a3;
+- (id)p_createUUIDFromHashingStrokeTransformForShapeItem:(id)item;
 - (id)p_fetchAllDrawingItemsFromCanvas;
-- (id)p_fetchAllShapeItemsFromDrawingItem:(id)a3;
+- (id)p_fetchAllShapeItemsFromDrawingItem:(id)item;
 - (id)p_observersWithChangedDrawings;
-- (id)pkStrokesForDrawingShapeItemUUID:(id)a3;
-- (id)pkStrokesForFreehandDrawingItemUUID:(id)a3;
-- (id)strokeDataUUIDForDrawingShapeItemUUID:(id)a3;
+- (id)pkStrokesForDrawingShapeItemUUID:(id)d;
+- (id)pkStrokesForFreehandDrawingItemUUID:(id)d;
+- (id)strokeDataUUIDForDrawingShapeItemUUID:(id)d;
 - (void)activeDrawingDidBegin;
 - (void)activeDrawingWillEndAfterInsertingFinalizedDrawingItem;
-- (void)addConsolidatedPKDrawingObserver:(id)a3;
-- (void)addPKDrawingsObserver:(id)a3;
+- (void)addConsolidatedPKDrawingObserver:(id)observer;
+- (void)addPKDrawingsObserver:(id)observer;
 - (void)dealloc;
 - (void)p_addSubscriptionsForDrawingItemChanges;
-- (void)p_checkIfNeededAndRegisterRecentlyCreatedLocalStroke:(id)a3 drawingShapeItemUUID:(id)a4 updatedDrawingItemUUID:(id)a5;
+- (void)p_checkIfNeededAndRegisterRecentlyCreatedLocalStroke:(id)stroke drawingShapeItemUUID:(id)d updatedDrawingItemUUID:(id)iD;
 - (void)p_cleanPKStrokeCachesIfNecessary;
 - (void)p_runStrokeUpdateIfNeeded;
 - (void)p_setUp;
@@ -31,24 +31,24 @@
 - (void)p_updateConsolidatedObserversIfNeeded;
 - (void)p_updateObservers;
 - (void)p_updateObserversWithNewPKStrokesIfNeeded;
-- (void)p_updateObserversWithUpdatedPKStrokesSynchronously:(BOOL)a3;
-- (void)p_updatePKStrokesForShapeItemsIfNeeded:(id)a3 boardIdentifier:(id)a4;
-- (void)processChanges:(id)a3 forChangeSource:(id)a4;
+- (void)p_updateObserversWithUpdatedPKStrokesSynchronously:(BOOL)synchronously;
+- (void)p_updatePKStrokesForShapeItemsIfNeeded:(id)needed boardIdentifier:(id)identifier;
+- (void)processChanges:(id)changes forChangeSource:(id)source;
 - (void)teardown;
 @end
 
 @implementation CRLPKDrawingProvider
 
-- (CRLPKDrawingProvider)initWithICC:(id)a3
+- (CRLPKDrawingProvider)initWithICC:(id)c
 {
-  v4 = a3;
+  cCopy = c;
   v44.receiver = self;
   v44.super_class = CRLPKDrawingProvider;
   v5 = [(CRLPKDrawingProvider *)&v44 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_icc, v4);
+    objc_storeWeak(&v5->_icc, cCopy);
     v6->_isTornDown = 0;
     v7 = objc_alloc_init(NSMutableSet);
     observers = v6->_observers;
@@ -250,9 +250,9 @@
 - (void)p_setUp
 {
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v4 = [WeakRetained changeNotifier];
+  changeNotifier = [WeakRetained changeNotifier];
 
-  if (!v4)
+  if (!changeNotifier)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -281,9 +281,9 @@
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:256 isFatal:0 description:"invalid nil value for '%{public}s'", "changeNotifier"];
   }
 
-  [v4 addObserver:self forChangeSourceOfClass:objc_opt_class()];
-  [v4 addObserver:self forChangeSourceOfClass:objc_opt_class()];
-  [v4 addObserver:self forChangeSourceOfClass:objc_opt_class()];
+  [changeNotifier addObserver:self forChangeSourceOfClass:objc_opt_class()];
+  [changeNotifier addObserver:self forChangeSourceOfClass:objc_opt_class()];
+  [changeNotifier addObserver:self forChangeSourceOfClass:objc_opt_class()];
   [(CRLPKDrawingProvider *)self p_addSubscriptionsForDrawingItemChanges];
   [(CRLPKDrawingProvider *)self p_updateObserversWithUpdatedPKStrokesSynchronously:1];
   [(CRLPKDrawingProvider *)self p_setUpUpdateLink];
@@ -292,11 +292,11 @@
 - (void)p_setUpUpdateLink
 {
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v4 = [WeakRetained canvasView];
+  canvasView = [WeakRetained canvasView];
 
-  if (v4)
+  if (canvasView)
   {
-    v5 = [UIUpdateLink updateLinkForView:v4];
+    v5 = [UIUpdateLink updateLinkForView:canvasView];
     updateLink = self->_updateLink;
     self->_updateLink = v5;
 
@@ -346,9 +346,9 @@
   }
 }
 
-- (void)addPKDrawingsObserver:(id)a3
+- (void)addPKDrawingsObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     observers = self->_observers;
 
@@ -385,9 +385,9 @@
   }
 }
 
-- (void)addConsolidatedPKDrawingObserver:(id)a3
+- (void)addConsolidatedPKDrawingObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     observersWantingConsolidatedPKDrawing = self->_observersWantingConsolidatedPKDrawing;
 
@@ -427,11 +427,11 @@
 - (void)activeDrawingDidBegin
 {
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v4 = [WeakRetained freehandDrawingToolkit];
-  v5 = [v4 currentTool];
-  v6 = [v5 type];
+  freehandDrawingToolkit = [WeakRetained freehandDrawingToolkit];
+  currentTool = [freehandDrawingToolkit currentTool];
+  type = [currentTool type];
 
-  if (v6 != 10)
+  if (type != 10)
   {
     self->_shouldUpdateObservers = 0;
   }
@@ -446,17 +446,17 @@
   self->_completionTimeOfLastLocalStroke = v3;
 }
 
-+ (id)allDrawingItemsDescendedFromContainer:(id)a3
++ (id)allDrawingItemsDescendedFromContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v5 = +[NSMutableArray array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v18 = v4;
-  v6 = [v4 childInfos];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v18 = containerCopy;
+  childInfos = [containerCopy childInfos];
+  v7 = [childInfos countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -467,7 +467,7 @@
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(childInfos);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
@@ -483,11 +483,11 @@
 
         else if (v15)
         {
-          [a1 p_recursivelyAddFreehandDrawingItemsFromGroup:v15 drawingItems:v5];
+          [self p_recursivelyAddFreehandDrawingItemsFromGroup:v15 drawingItems:v5];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [childInfos countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v8);
@@ -496,15 +496,15 @@
   return v5;
 }
 
-- (void)processChanges:(id)a3 forChangeSource:(id)a4
+- (void)processChanges:(id)changes forChangeSource:(id)source
 {
-  v5 = a4;
+  sourceCopy = source;
   v6 = objc_opt_class();
-  v7 = sub_100014370(v6, v5);
+  v7 = sub_100014370(v6, sourceCopy);
   v8 = objc_opt_class();
-  v9 = sub_100014370(v8, v5);
+  v9 = sub_100014370(v8, sourceCopy);
   v10 = objc_opt_class();
-  v11 = sub_100014370(v10, v5);
+  v11 = sub_100014370(v10, sourceCopy);
   if (v7 && ([v7 prohibitsClustering] & 1) == 0)
   {
     v91 = v11;
@@ -514,8 +514,8 @@
       v100 = 0u;
       v97 = 0u;
       v98 = 0u;
-      v71 = [v7 childItems];
-      v72 = [v71 countByEnumeratingWithState:&v97 objects:v114 count:16];
+      childItems = [v7 childItems];
+      v72 = [childItems countByEnumeratingWithState:&v97 objects:v114 count:16];
       if (v72)
       {
         v73 = v72;
@@ -526,7 +526,7 @@
           {
             if (*v98 != v74)
             {
-              objc_enumerationMutation(v71);
+              objc_enumerationMutation(childItems);
             }
 
             shapeItemIdToParentItemId = self->_shapeItemIdToParentItemId;
@@ -534,7 +534,7 @@
             [(NSMutableDictionary *)shapeItemIdToParentItemId setObject:0 forKeyedSubscript:v77];
           }
 
-          v73 = [v71 countByEnumeratingWithState:&v97 objects:v114 count:16];
+          v73 = [childItems countByEnumeratingWithState:&v97 objects:v114 count:16];
         }
 
         while (v73);
@@ -559,9 +559,9 @@
 
     if (!v25)
     {
-      v90 = v5;
-      v26 = [v7 childItems];
-      v27 = [NSMutableSet setWithArray:v26];
+      v90 = sourceCopy;
+      childItems2 = [v7 childItems];
+      v27 = [NSMutableSet setWithArray:childItems2];
       v28 = self->_drawingParentIdsToShapeItemsBeingListenedTo;
       v29 = [v7 id];
       [(NSMutableDictionary *)v28 setObject:v27 forKeyedSubscript:v29];
@@ -570,8 +570,8 @@
       v112 = 0u;
       v109 = 0u;
       v110 = 0u;
-      v30 = [v7 childItems];
-      v31 = [v30 countByEnumeratingWithState:&v109 objects:v117 count:16];
+      childItems3 = [v7 childItems];
+      v31 = [childItems3 countByEnumeratingWithState:&v109 objects:v117 count:16];
       if (v31)
       {
         v32 = v31;
@@ -582,7 +582,7 @@
           {
             if (*v110 != v33)
             {
-              objc_enumerationMutation(v30);
+              objc_enumerationMutation(childItems3);
             }
 
             v35 = *(*(&v109 + 1) + 8 * j);
@@ -592,13 +592,13 @@
             [(NSMutableDictionary *)v37 setObject:v36 forKeyedSubscript:v38];
           }
 
-          v32 = [v30 countByEnumeratingWithState:&v109 objects:v117 count:16];
+          v32 = [childItems3 countByEnumeratingWithState:&v109 objects:v117 count:16];
         }
 
         while (v32);
       }
 
-      v5 = v90;
+      sourceCopy = v90;
       v11 = v91;
     }
 
@@ -612,8 +612,8 @@
       v108 = 0uLL;
       v105 = 0uLL;
       v106 = 0uLL;
-      v41 = [v7 childItems];
-      v42 = [v41 countByEnumeratingWithState:&v105 objects:v116 count:16];
+      childItems4 = [v7 childItems];
+      v42 = [childItems4 countByEnumeratingWithState:&v105 objects:v116 count:16];
       if (v42)
       {
         v43 = v42;
@@ -624,7 +624,7 @@
           {
             if (*v106 != v44)
             {
-              objc_enumerationMutation(v41);
+              objc_enumerationMutation(childItems4);
             }
 
             uuidsForDrawingShapeItemsFromLockedParentItems = self->_uuidsForDrawingShapeItemsFromLockedParentItems;
@@ -632,7 +632,7 @@
             [(NSMutableSet *)uuidsForDrawingShapeItemsFromLockedParentItems crl_addNonNilObject:v47];
           }
 
-          v43 = [v41 countByEnumeratingWithState:&v105 objects:v116 count:16];
+          v43 = [childItems4 countByEnumeratingWithState:&v105 objects:v116 count:16];
         }
 
         while (v43);
@@ -647,8 +647,8 @@ LABEL_65:
       v104 = 0uLL;
       v101 = 0uLL;
       v102 = 0uLL;
-      v41 = [v7 childItems];
-      v82 = [v41 countByEnumeratingWithState:&v101 objects:v115 count:16];
+      childItems4 = [v7 childItems];
+      v82 = [childItems4 countByEnumeratingWithState:&v101 objects:v115 count:16];
       if (v82)
       {
         v83 = v82;
@@ -659,7 +659,7 @@ LABEL_65:
           {
             if (*v102 != v84)
             {
-              objc_enumerationMutation(v41);
+              objc_enumerationMutation(childItems4);
             }
 
             v86 = self->_uuidsForDrawingShapeItemsFromLockedParentItems;
@@ -667,7 +667,7 @@ LABEL_65:
             [(NSMutableSet *)v86 removeObject:v87];
           }
 
-          v83 = [v41 countByEnumeratingWithState:&v101 objects:v115 count:16];
+          v83 = [childItems4 countByEnumeratingWithState:&v101 objects:v115 count:16];
         }
 
         while (v83);
@@ -684,8 +684,8 @@ LABEL_65:
   if (v9)
   {
     v12 = objc_opt_class();
-    v13 = [v9 parentItem];
-    v14 = sub_100014370(v12, v13);
+    parentItem = [v9 parentItem];
+    v14 = sub_100014370(v12, parentItem);
 
     if (!v14)
     {
@@ -795,16 +795,16 @@ LABEL_71:
     }
 
     v15 = v11;
-    v16 = [v9 parentUUID];
+    parentUUID = [v9 parentUUID];
     v17 = self->_shapeItemIdToParentItemId;
     v18 = [v9 id];
-    [(NSMutableDictionary *)v17 setObject:v16 forKeyedSubscript:v18];
+    [(NSMutableDictionary *)v17 setObject:parentUUID forKeyedSubscript:v18];
 
-    v19 = [(NSMutableDictionary *)self->_drawingParentIdsToShapeItemsBeingListenedTo objectForKeyedSubscript:v16];
+    v19 = [(NSMutableDictionary *)self->_drawingParentIdsToShapeItemsBeingListenedTo objectForKeyedSubscript:parentUUID];
 
     if (v19)
     {
-      v20 = [(NSMutableDictionary *)self->_drawingParentIdsToShapeItemsBeingListenedTo objectForKeyedSubscript:v16];
+      v20 = [(NSMutableDictionary *)self->_drawingParentIdsToShapeItemsBeingListenedTo objectForKeyedSubscript:parentUUID];
       v21 = [v20 containsObject:v9];
 
       if (v21)
@@ -815,14 +815,14 @@ LABEL_70:
         goto LABEL_71;
       }
 
-      v22 = [(NSMutableDictionary *)self->_drawingParentIdsToShapeItemsBeingListenedTo objectForKeyedSubscript:v16];
+      v22 = [(NSMutableDictionary *)self->_drawingParentIdsToShapeItemsBeingListenedTo objectForKeyedSubscript:parentUUID];
       [v22 addObject:v9];
     }
 
     else
     {
       v22 = [NSMutableSet setWithObject:v9];
-      [(NSMutableDictionary *)self->_drawingParentIdsToShapeItemsBeingListenedTo setObject:v22 forKeyedSubscript:v16];
+      [(NSMutableDictionary *)self->_drawingParentIdsToShapeItemsBeingListenedTo setObject:v22 forKeyedSubscript:parentUUID];
     }
 
     goto LABEL_70;
@@ -889,9 +889,9 @@ LABEL_67:
       sub_10130DA10(v2);
     }
 
-    v3 = [NSString stringWithUTF8String:"[CRLPKDrawingProvider teardown]"];
+    changeNotifier = [NSString stringWithUTF8String:"[CRLPKDrawingProvider teardown]"];
     v4 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLPKDrawingProvider.m"];
-    [CRLAssertionHandler handleFailureInFunction:v3 file:v4 lineNumber:530 isFatal:0 description:"attempting to call teardown on an instance of CRLPKDrawingProvider that has already been torn down"];
+    [CRLAssertionHandler handleFailureInFunction:changeNotifier file:v4 lineNumber:530 isFatal:0 description:"attempting to call teardown on an instance of CRLPKDrawingProvider that has already been torn down"];
   }
 
   else
@@ -899,9 +899,9 @@ LABEL_67:
     self->_isTornDown = 1;
     [(UIUpdateLink *)self->_updateLink setEnabled:0];
     WeakRetained = objc_loadWeakRetained(&self->_icc);
-    v3 = [WeakRetained changeNotifier];
+    changeNotifier = [WeakRetained changeNotifier];
 
-    if (!v3)
+    if (!changeNotifier)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -930,9 +930,9 @@ LABEL_67:
       [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:517 isFatal:0 description:"invalid nil value for '%{public}s'", "changeNotifier"];
     }
 
-    [v3 removeObserver:self forChangeSourceOfClass:objc_opt_class()];
-    [v3 removeObserver:self forChangeSourceOfClass:objc_opt_class()];
-    [v3 removeObserver:self forChangeSourceOfClass:objc_opt_class()];
+    [changeNotifier removeObserver:self forChangeSourceOfClass:objc_opt_class()];
+    [changeNotifier removeObserver:self forChangeSourceOfClass:objc_opt_class()];
+    [changeNotifier removeObserver:self forChangeSourceOfClass:objc_opt_class()];
     [(NSMutableSet *)self->_observers removeAllObjects];
     [(NSMutableSet *)self->_observersWantingConsolidatedPKDrawing removeAllObjects];
     [(NSMutableDictionary *)self->_drawingParentIdsToShapeItemsBeingListenedTo removeAllObjects];
@@ -978,12 +978,12 @@ LABEL_67:
   [(CRLPKDrawingProvider *)&v6 dealloc];
 }
 
-- (id)pkStrokesForFreehandDrawingItemUUID:(id)a3
+- (id)pkStrokesForFreehandDrawingItemUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_alloc_init(NSArray);
   os_unfair_lock_lock(&self->_updatePKStrokesLock);
-  v6 = [(NSMutableDictionary *)self->_cachedPKStrokesForDrawingItems objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->_cachedPKStrokesForDrawingItems objectForKeyedSubscript:dCopy];
 
   if (v6)
   {
@@ -997,12 +997,12 @@ LABEL_67:
   return v5;
 }
 
-- (id)pkStrokesForDrawingShapeItemUUID:(id)a3
+- (id)pkStrokesForDrawingShapeItemUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_alloc_init(NSArray);
   os_unfair_lock_lock(&self->_updatePKStrokesLock);
-  v6 = [(CRLBidirectionalMap *)self->_cachedDrawingShapeItemUUIDToStrokeUUIDDict objectForKeyedSubscript:v4];
+  v6 = [(CRLBidirectionalMap *)self->_cachedDrawingShapeItemUUIDToStrokeUUIDDict objectForKeyedSubscript:dCopy];
 
   if (v6)
   {
@@ -1126,8 +1126,8 @@ LABEL_67:
     self->_cachedUnifiedDrawing = v3;
 
     WeakRetained = objc_loadWeakRetained(&self->_icc);
-    v6 = [WeakRetained board];
-    v7 = [v6 id];
+    board = [WeakRetained board];
+    v7 = [board id];
 
     if (v7)
     {
@@ -1164,8 +1164,8 @@ LABEL_67:
     }
   }
 
-  v11 = [(CRLPKDrawingProvider *)self pkStrokesContainingAllDrawingsForEntireCanvas];
-  if (![v11 count])
+  pkStrokesContainingAllDrawingsForEntireCanvas = [(CRLPKDrawingProvider *)self pkStrokesContainingAllDrawingsForEntireCanvas];
+  if (![pkStrokesContainingAllDrawingsForEntireCanvas count])
   {
     v12 = +[UIColor blackColor];
     v13 = [[PKInk alloc] initWithInkType:PKInkTypePen color:v12];
@@ -1190,26 +1190,26 @@ LABEL_67:
   [(PKDrawing *)v23 _setAllStrokes:v24];
 
   [(PKDrawing *)self->_cachedUnifiedDrawing invalidateVisibleStrokes];
-  v25 = [(PKDrawing *)self->_cachedUnifiedDrawing undoableAddNewStrokes:v11];
+  v25 = [(PKDrawing *)self->_cachedUnifiedDrawing undoableAddNewStrokes:pkStrokesContainingAllDrawingsForEntireCanvas];
   v26 = [(PKDrawing *)self->_cachedUnifiedDrawing copy];
 
   return v26;
 }
 
-- (id)strokeDataUUIDForDrawingShapeItemUUID:(id)a3
+- (id)strokeDataUUIDForDrawingShapeItemUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_updatePKStrokesLock);
-  v5 = [(CRLBidirectionalMap *)self->_cachedDrawingShapeItemUUIDToStrokeDataUUIDDict objectForKeyedSubscript:v4];
+  v5 = [(CRLBidirectionalMap *)self->_cachedDrawingShapeItemUUIDToStrokeDataUUIDDict objectForKeyedSubscript:dCopy];
 
   os_unfair_lock_unlock(&self->_updatePKStrokesLock);
 
   return v5;
 }
 
-- (void)p_updateObserversWithUpdatedPKStrokesSynchronously:(BOOL)a3
+- (void)p_updateObserversWithUpdatedPKStrokesSynchronously:(BOOL)synchronously
 {
-  v30 = a3;
+  synchronouslyCopy = synchronously;
   if (qword_101AD5C88 != -1)
   {
     sub_10134A1C4();
@@ -1219,14 +1219,14 @@ LABEL_67:
   if (os_log_type_enabled(off_1019EF208, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67240192;
-    *&buf[4] = v30;
+    *&buf[4] = synchronouslyCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "About to update PKStrokes (synchronously: %{public}d)", buf, 8u);
   }
 
   self->_isStrokeUpdatePending = 0;
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v5 = [WeakRetained board];
-  v36 = [v5 id];
+  board = [WeakRetained board];
+  v36 = [board id];
 
   v33 = +[NSMutableArray array];
   v52 = 0u;
@@ -1252,20 +1252,20 @@ LABEL_67:
 
         v35 = v6;
         v37 = *(*(&v50 + 1) + 8 * v6);
-        v8 = [v37 childItems];
-        v9 = [v8 count];
+        childItems = [v37 childItems];
+        v9 = [childItems count];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_1002C10A4;
         block[3] = &unk_1018520D8;
-        block[4] = v8;
+        block[4] = childItems;
         dispatch_apply(v9, 0, block);
         v38 = +[NSMutableArray array];
         v47 = 0u;
         v48 = 0u;
         v45 = 0u;
         v46 = 0u;
-        v10 = v8;
+        v10 = childItems;
         v11 = [v10 countByEnumeratingWithState:&v45 objects:v55 count:16];
         if (v11)
         {
@@ -1289,13 +1289,13 @@ LABEL_67:
                 v19 = [CRLShapeItemNeedingPKStrokeUpdate alloc];
                 v20 = [v14 id];
                 [v17 transformInRoot];
-                v21 = [v17 pencilKitStrokesInRootSpace];
-                v22 = [(CRLShapeItemNeedingPKStrokeUpdate *)v19 initWithID:v20 strokeTransformInfoUUID:v18 transformInRoot:buf pencilKitStrokesInRootSpace:v21];
+                pencilKitStrokesInRootSpace = [v17 pencilKitStrokesInRootSpace];
+                v22 = [(CRLShapeItemNeedingPKStrokeUpdate *)v19 initWithID:v20 strokeTransformInfoUUID:v18 transformInRoot:buf pencilKitStrokesInRootSpace:pencilKitStrokesInRootSpace];
 
                 [v38 addObject:v22];
                 v23 = [v17 id];
                 v24 = [v23 combineUUIDWithUUID:v18];
-                v25 = [v17 pencilKitStrokes];
+                pencilKitStrokes = [v17 pencilKitStrokes];
                 v44[0] = _NSConcreteStackBlock;
                 v44[1] = 3221225472;
                 v44[2] = sub_1002C127C;
@@ -1305,7 +1305,7 @@ LABEL_67:
                 v44[6] = self;
                 v44[7] = v17;
                 v44[8] = v37;
-                [v25 enumerateObjectsUsingBlock:v44];
+                [pencilKitStrokes enumerateObjectsUsingBlock:v44];
               }
             }
 
@@ -1330,7 +1330,7 @@ LABEL_67:
     while (v34);
   }
 
-  if (v30)
+  if (synchronouslyCopy)
   {
     [(CRLPKDrawingProvider *)self p_updatePKStrokesForShapeItemsIfNeeded:v33 boardIdentifier:v36];
     [(CRLPKDrawingProvider *)self p_updateObservers];
@@ -1395,7 +1395,7 @@ LABEL_67:
 {
   if ([(NSMutableSet *)self->_observersWantingConsolidatedPKDrawing count])
   {
-    v3 = [(CRLPKDrawingProvider *)self pkStrokesContainingAllDrawingsForEntireCanvas];
+    pkStrokesContainingAllDrawingsForEntireCanvas = [(CRLPKDrawingProvider *)self pkStrokesContainingAllDrawingsForEntireCanvas];
     if (qword_101AD5C88 != -1)
     {
       sub_10134A200();
@@ -1409,7 +1409,7 @@ LABEL_67:
       *buf = 134218240;
       v18 = [(NSMutableSet *)observersWantingConsolidatedPKDrawing count];
       v19 = 2048;
-      v20 = [v3 count];
+      v20 = [pkStrokesContainingAllDrawingsForEntireCanvas count];
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Updating %zu consolidated observers with %zu strokes.", buf, 0x16u);
     }
 
@@ -1432,7 +1432,7 @@ LABEL_67:
             objc_enumerationMutation(v7);
           }
 
-          [*(*(&v12 + 1) + 8 * i) pkStrokesContainingAllDrawingsForEntireCanvasDidChange:{v3, v12}];
+          [*(*(&v12 + 1) + 8 * i) pkStrokesContainingAllDrawingsForEntireCanvasDidChange:{pkStrokesContainingAllDrawingsForEntireCanvas, v12}];
         }
 
         v9 = [(NSMutableSet *)v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -1445,9 +1445,9 @@ LABEL_67:
 
 - (void)p_updateObserversWithNewPKStrokesIfNeeded
 {
-  v3 = [(CRLPKDrawingProvider *)self p_observersWithChangedDrawings];
-  v4 = [v3 keyEnumerator];
-  v5 = [v4 allObjects];
+  p_observersWithChangedDrawings = [(CRLPKDrawingProvider *)self p_observersWithChangedDrawings];
+  keyEnumerator = [p_observersWithChangedDrawings keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
   if (qword_101AD5C88 != -1)
   {
@@ -1459,7 +1459,7 @@ LABEL_67:
   {
     v7 = v6;
     *buf = 134217984;
-    *v76 = [v5 count];
+    *v76 = [allObjects count];
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Updating %zu observers.", buf, 0xCu);
   }
 
@@ -1467,16 +1467,16 @@ LABEL_67:
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  obj = v5;
+  obj = allObjects;
   v8 = [obj countByEnumeratingWithState:&v71 objects:v84 count:16];
-  v10 = v3;
+  v10 = p_observersWithChangedDrawings;
   if (v8)
   {
     v11 = v8;
     v55 = *v72;
     *&v9 = 67109378;
     v49 = v9;
-    v50 = v3;
+    v50 = p_observersWithChangedDrawings;
     do
     {
       v12 = 0;
@@ -1611,8 +1611,8 @@ LABEL_67:
             if (os_log_type_enabled(off_1019EF208, OS_LOG_TYPE_DEFAULT))
             {
               v39 = v38;
-              v40 = [(CRLBidirectionalMap *)v24 forwardKeys];
-              v41 = [v40 count];
+              forwardKeys = [(CRLBidirectionalMap *)v24 forwardKeys];
+              v41 = [forwardKeys count];
               *buf = 134217984;
               *v76 = v41;
               _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "Updating observer with %zu strokes.", buf, 0xCu);
@@ -1767,14 +1767,14 @@ LABEL_67:
         }
 
         v7 = *(*(&v17 + 1) + 8 * i);
-        v8 = [v7 subscribedFreehandDrawingIDs];
+        subscribedFreehandDrawingIDs = [v7 subscribedFreehandDrawingIDs];
         os_unfair_lock_lock(&self->_updatePKStrokesLock);
         changedPKStrokesForDrawingItemIds = self->_changedPKStrokesForDrawingItemIds;
         v15[0] = _NSConcreteStackBlock;
         v15[1] = 3221225472;
         v15[2] = sub_1002C23A8;
         v15[3] = &unk_101852208;
-        v10 = v8;
+        v10 = subscribedFreehandDrawingIDs;
         v16 = v10;
         v11 = [(NSMutableDictionary *)changedPKStrokesForDrawingItemIds keysOfEntriesPassingTest:v15];
         os_unfair_lock_unlock(&self->_updatePKStrokesLock);
@@ -1793,16 +1793,16 @@ LABEL_67:
   return v13;
 }
 
-- (void)p_updatePKStrokesForShapeItemsIfNeeded:(id)a3 boardIdentifier:(id)a4
+- (void)p_updatePKStrokesForShapeItemsIfNeeded:(id)needed boardIdentifier:(id)identifier
 {
-  v6 = a3;
-  v62 = a4;
+  neededCopy = needed;
+  identifierCopy = identifier;
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
   v85 = 0u;
-  obj = v6;
-  v55 = [v6 countByEnumeratingWithState:&v82 objects:v89 count:16];
+  obj = neededCopy;
+  v55 = [neededCopy countByEnumeratingWithState:&v82 objects:v89 count:16];
   if (v55)
   {
     v54 = *v83;
@@ -1823,8 +1823,8 @@ LABEL_67:
         v79 = 0u;
         v80 = 0u;
         v81 = 0u;
-        v57 = [v8 shapeItems];
-        v59 = [v57 countByEnumeratingWithState:&v78 objects:v88 count:16];
+        shapeItems = [v8 shapeItems];
+        v59 = [shapeItems countByEnumeratingWithState:&v78 objects:v88 count:16];
         if (v59)
         {
           v58 = *v79;
@@ -1835,22 +1835,22 @@ LABEL_67:
             {
               if (*v79 != v58)
               {
-                objc_enumerationMutation(v57);
+                objc_enumerationMutation(shapeItems);
               }
 
               v60 = v9;
               v10 = *(*(&v78 + 1) + 8 * v9);
               v11 = [v10 id];
-              v12 = [v10 strokeTransformInfoUUID];
-              v65 = [v11 combineUUIDWithUUID:v12];
+              strokeTransformInfoUUID = [v10 strokeTransformInfoUUID];
+              v65 = [v11 combineUUIDWithUUID:strokeTransformInfoUUID];
 
               v76 = 0u;
               v77 = 0u;
               v74 = 0u;
               v75 = 0u;
               v69 = v10;
-              v61 = [v10 pencilKitStrokesInRootSpace];
-              v67 = [v61 countByEnumeratingWithState:&v74 objects:v87 count:16];
+              pencilKitStrokesInRootSpace = [v10 pencilKitStrokesInRootSpace];
+              v67 = [pencilKitStrokesInRootSpace countByEnumeratingWithState:&v74 objects:v87 count:16];
               if (v67)
               {
                 v13 = 0;
@@ -1861,14 +1861,14 @@ LABEL_67:
                   {
                     if (*v75 != v64)
                     {
-                      objc_enumerationMutation(v61);
+                      objc_enumerationMutation(pencilKitStrokesInRootSpace);
                     }
 
                     v15 = *(*(&v74 + 1) + 8 * i);
-                    v16 = [v65 combineUUIDWithUUID:v62 mixValue:v13];
+                    v16 = [v65 combineUUIDWithUUID:identifierCopy mixValue:v13];
                     v66 = v13;
                     v68 = v13 + 500;
-                    v17 = [v65 combineUUIDWithUUID:v62 mixValue:?];
+                    v17 = [v65 combineUUIDWithUUID:identifierCopy mixValue:?];
                     v18 = [v15 _strokeWithUUID:v17 dataUUID:v16];
                     os_unfair_lock_lock(&self->_updatePKStrokesLock);
                     [(NSMutableDictionary *)self->_strokeUUIDsToStrokes setObject:v18 forKeyedSubscript:v17];
@@ -1891,7 +1891,7 @@ LABEL_67:
                       v28 = v26;
                       v29 = v69;
                       [(NSMutableDictionary *)v28 objectForKeyedSubscript:v27];
-                      v31 = v30 = self;
+                      v31 = selfCopy = self;
                       v32 = [v69 id];
                       [v31 addObject:v32];
                     }
@@ -1900,27 +1900,27 @@ LABEL_67:
                     {
                       v33 = [NSMutableSet alloc];
                       v27 = [v69 id];
-                      v30 = self;
+                      selfCopy = self;
                       v31 = [v33 initWithObjects:{v27, 0}];
-                      v34 = v30->_updatedParentUUIDToDrawingShapeItemUUIDsDict;
+                      v34 = selfCopy->_updatedParentUUIDToDrawingShapeItemUUIDsDict;
                       v32 = [v8 id];
                       v35 = v34;
                       v29 = v69;
                       [(NSMutableDictionary *)v35 setObject:v31 forKeyedSubscript:v32];
                     }
 
-                    os_unfair_lock_unlock(&v30->_updatePKStrokesLock);
+                    os_unfair_lock_unlock(&selfCopy->_updatePKStrokesLock);
                     v36 = [v29 id];
                     v37 = [v8 id];
-                    [(CRLPKDrawingProvider *)v30 p_checkIfNeededAndRegisterRecentlyCreatedLocalStroke:v18 drawingShapeItemUUID:v36 updatedDrawingItemUUID:v37];
+                    [(CRLPKDrawingProvider *)selfCopy p_checkIfNeededAndRegisterRecentlyCreatedLocalStroke:v18 drawingShapeItemUUID:v36 updatedDrawingItemUUID:v37];
 
                     [v63 addObject:v18];
                     v13 = (v68 - 499);
-                    self = v30;
+                    self = selfCopy;
                   }
 
                   v13 = (v66 + 1);
-                  v67 = [v61 countByEnumeratingWithState:&v74 objects:v87 count:16];
+                  v67 = [pencilKitStrokesInRootSpace countByEnumeratingWithState:&v74 objects:v87 count:16];
                 }
 
                 while (v67);
@@ -1930,7 +1930,7 @@ LABEL_67:
             }
 
             while ((v60 + 1) != v59);
-            v59 = [v57 countByEnumeratingWithState:&v78 objects:v88 count:16];
+            v59 = [shapeItems countByEnumeratingWithState:&v78 objects:v88 count:16];
           }
 
           while (v59);
@@ -2002,44 +2002,44 @@ LABEL_67:
   os_unfair_lock_unlock(&self->_updatePKStrokesLock);
 }
 
-- (void)p_checkIfNeededAndRegisterRecentlyCreatedLocalStroke:(id)a3 drawingShapeItemUUID:(id)a4 updatedDrawingItemUUID:(id)a5
+- (void)p_checkIfNeededAndRegisterRecentlyCreatedLocalStroke:(id)stroke drawingShapeItemUUID:(id)d updatedDrawingItemUUID:(id)iD
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  strokeCopy = stroke;
+  iDCopy = iD;
+  dCopy = d;
   v11 = +[CRLFreehandDrawingLocalShapeRegistry sharedInstance];
-  v12 = [v11 consumeLocallyDrawnShapeItemUUID:v10];
+  v12 = [v11 consumeLocallyDrawnShapeItemUUID:dCopy];
 
   if (v12)
   {
     WeakRetained = objc_loadWeakRetained(&self->_icc);
-    v14 = [WeakRetained drawingIntelligenceProvider];
-    [v14 registerRecentlyCreatedLocalStroke:v8 completionHandler:&stru_101852228];
+    drawingIntelligenceProvider = [WeakRetained drawingIntelligenceProvider];
+    [drawingIntelligenceProvider registerRecentlyCreatedLocalStroke:strokeCopy completionHandler:&stru_101852228];
 
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1002C2B54;
     block[3] = &unk_10183AE00;
     block[4] = self;
-    v16 = v9;
-    v17 = v8;
+    v16 = iDCopy;
+    v17 = strokeCopy;
     dispatch_async(&_dispatch_main_q, block);
   }
 }
 
-- (id)p_fetchAllShapeItemsFromDrawingItem:(id)a3
+- (id)p_fetchAllShapeItemsFromDrawingItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = [NSMutableArray alloc];
-  v5 = [v3 childInfos];
-  v6 = [v4 initWithCapacity:{objc_msgSend(v5, "count")}];
+  childInfos = [itemCopy childInfos];
+  v6 = [v4 initWithCapacity:{objc_msgSend(childInfos, "count")}];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [v3 childInfos];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  childInfos2 = [itemCopy childInfos];
+  v8 = [childInfos2 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2050,7 +2050,7 @@ LABEL_67:
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(childInfos2);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
@@ -2062,7 +2062,7 @@ LABEL_67:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [childInfos2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
@@ -2074,23 +2074,23 @@ LABEL_67:
 - (id)p_fetchAllDrawingItemsFromCanvas
 {
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v3 = [WeakRetained board];
-  v4 = [v3 rootContainer];
-  v5 = [CRLPKDrawingProvider allDrawingItemsDescendedFromContainer:v4];
+  board = [WeakRetained board];
+  rootContainer = [board rootContainer];
+  v5 = [CRLPKDrawingProvider allDrawingItemsDescendedFromContainer:rootContainer];
   v6 = [NSSet setWithArray:v5];
 
   return v6;
 }
 
-+ (void)p_recursivelyAddFreehandDrawingItemsFromGroup:(id)a3 drawingItems:(id)a4
++ (void)p_recursivelyAddFreehandDrawingItemsFromGroup:(id)group drawingItems:(id)items
 {
-  v6 = a4;
+  itemsCopy = items;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [a3 childItems];
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  childItems = [group childItems];
+  v8 = [childItems countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2101,7 +2101,7 @@ LABEL_67:
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(childItems);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
@@ -2112,16 +2112,16 @@ LABEL_67:
         v17 = v16;
         if (v14)
         {
-          [v6 addObject:v14];
+          [itemsCopy addObject:v14];
         }
 
         else if (v16)
         {
-          [a1 p_recursivelyAddFreehandDrawingItemsFromGroup:v16 drawingItems:v6];
+          [self p_recursivelyAddFreehandDrawingItemsFromGroup:v16 drawingItems:itemsCopy];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [childItems countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);
@@ -2150,8 +2150,8 @@ LABEL_67:
         }
 
         v6 = *(*(&v36 + 1) + 8 * i);
-        v7 = [v6 childItems];
-        v8 = [NSMutableSet setWithArray:v7];
+        childItems = [v6 childItems];
+        v8 = [NSMutableSet setWithArray:childItems];
         drawingParentIdsToShapeItemsBeingListenedTo = self->_drawingParentIdsToShapeItemsBeingListenedTo;
         v10 = [v6 id];
         [(NSMutableDictionary *)drawingParentIdsToShapeItemsBeingListenedTo setObject:v8 forKeyedSubscript:v10];
@@ -2166,8 +2166,8 @@ LABEL_67:
           v35 = 0uLL;
           v32 = 0uLL;
           v33 = 0uLL;
-          v13 = [v6 childItems];
-          v14 = [v13 countByEnumeratingWithState:&v32 objects:v41 count:16];
+          childItems2 = [v6 childItems];
+          v14 = [childItems2 countByEnumeratingWithState:&v32 objects:v41 count:16];
           if (v14)
           {
             v15 = v14;
@@ -2178,7 +2178,7 @@ LABEL_67:
               {
                 if (*v33 != v16)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(childItems2);
                 }
 
                 uuidsForDrawingShapeItemsFromLockedParentItems = self->_uuidsForDrawingShapeItemsFromLockedParentItems;
@@ -2186,7 +2186,7 @@ LABEL_67:
                 [(NSMutableSet *)uuidsForDrawingShapeItemsFromLockedParentItems crl_addNonNilObject:v19];
               }
 
-              v15 = [v13 countByEnumeratingWithState:&v32 objects:v41 count:16];
+              v15 = [childItems2 countByEnumeratingWithState:&v32 objects:v41 count:16];
             }
 
             while (v15);
@@ -2199,8 +2199,8 @@ LABEL_67:
           v31 = 0uLL;
           v28 = 0uLL;
           v29 = 0uLL;
-          v13 = [v6 childItems];
-          v20 = [v13 countByEnumeratingWithState:&v28 objects:v40 count:16];
+          childItems2 = [v6 childItems];
+          v20 = [childItems2 countByEnumeratingWithState:&v28 objects:v40 count:16];
           if (v20)
           {
             v21 = v20;
@@ -2211,7 +2211,7 @@ LABEL_67:
               {
                 if (*v29 != v22)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(childItems2);
                 }
 
                 v24 = self->_uuidsForDrawingShapeItemsFromLockedParentItems;
@@ -2219,7 +2219,7 @@ LABEL_67:
                 [(NSMutableSet *)v24 removeObject:v25];
               }
 
-              v21 = [v13 countByEnumeratingWithState:&v28 objects:v40 count:16];
+              v21 = [childItems2 countByEnumeratingWithState:&v28 objects:v40 count:16];
             }
 
             while (v21);
@@ -2238,17 +2238,17 @@ LABEL_67:
   }
 }
 
-- (id)p_createUUIDFromHashingStrokeTransformForShapeItem:(id)a3
+- (id)p_createUUIDFromHashingStrokeTransformForShapeItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   memset(&c, 0, sizeof(c));
   CC_SHA256_Init(&c);
   v10 = 0u;
   v11 = 0u;
   v9 = 0u;
-  if (v3)
+  if (itemCopy)
   {
-    [v3 transformInRoot];
+    [itemCopy transformInRoot];
   }
 
   *md = v9;

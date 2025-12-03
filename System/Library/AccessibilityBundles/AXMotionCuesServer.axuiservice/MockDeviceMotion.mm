@@ -3,7 +3,7 @@
 - ($1AB5FA073B851C12C2339EC22442E995)rotationRate;
 - ($1AB5FA073B851C12C2339EC22442E995)userAcceleration;
 - (_TtC18AXMotionCuesServer16MockDeviceMotion)init;
-- (_TtC18AXMotionCuesServer16MockDeviceMotion)initWithCoder:(id)a3;
+- (_TtC18AXMotionCuesServer16MockDeviceMotion)initWithCoder:(id)coder;
 @end
 
 @implementation MockDeviceMotion
@@ -41,7 +41,7 @@
   return result;
 }
 
-- (_TtC18AXMotionCuesServer16MockDeviceMotion)initWithCoder:(id)a3
+- (_TtC18AXMotionCuesServer16MockDeviceMotion)initWithCoder:(id)coder
 {
   result = sub_32E48();
   __break(1u);

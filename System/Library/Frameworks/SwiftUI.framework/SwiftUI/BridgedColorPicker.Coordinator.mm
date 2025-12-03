@@ -1,15 +1,15 @@
 @interface BridgedColorPicker.Coordinator
 - (_TtCV7SwiftUIP33_0B012DB3D42FBF9295A4AA29478C936C18BridgedColorPicker11Coordinator)init;
-- (void)colorChanged:(id)a3;
+- (void)colorChanged:(id)changed;
 @end
 
 @implementation BridgedColorPicker.Coordinator
 
-- (void)colorChanged:(id)a3
+- (void)colorChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  BridgedColorPicker.Coordinator.colorChanged(_:)(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  BridgedColorPicker.Coordinator.colorChanged(_:)(changedCopy);
 }
 
 - (_TtCV7SwiftUIP33_0B012DB3D42FBF9295A4AA29478C936C18BridgedColorPicker11Coordinator)init

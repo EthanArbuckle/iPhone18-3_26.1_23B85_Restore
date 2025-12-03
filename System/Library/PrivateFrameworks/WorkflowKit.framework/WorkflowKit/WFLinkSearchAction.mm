@@ -1,5 +1,5 @@
 @interface WFLinkSearchAction
-- (id)localizedNameWithContext:(id)a3;
+- (id)localizedNameWithContext:(id)context;
 - (id)overrideLabelsByParameter;
 - (id)parameterOverrides;
 - (id)parameterSummary;
@@ -12,8 +12,8 @@
   v13[1] = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = WFLinkSearchAction;
-  v2 = [(WFOverridableLinkAction *)&v11 parameterOverrides];
-  v3 = [v2 mutableCopy];
+  parameterOverrides = [(WFOverridableLinkAction *)&v11 parameterOverrides];
+  v3 = [parameterOverrides mutableCopy];
   v4 = v3;
   if (v3)
   {
@@ -55,23 +55,23 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = WFLocalizedString(@"Search ${searchPhrase} in %@");
-  v5 = [(WFOverridableLinkAction *)self appName];
-  v6 = [v3 localizedStringWithFormat:v4, v5];
+  appName = [(WFOverridableLinkAction *)self appName];
+  v6 = [v3 localizedStringWithFormat:v4, appName];
 
   v7 = [[WFActionParameterSummary alloc] initWithLocalizedString:v6];
 
   return v7;
 }
 
-- (id)localizedNameWithContext:(id)a3
+- (id)localizedNameWithContext:(id)context
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
+  contextCopy = context;
   v6 = WFLocalizedStringResourceWithKey(@"WFLinkSearchAction - Action Name", @"Search in %@");
-  v7 = [v5 localize:v6];
+  v7 = [contextCopy localize:v6];
 
-  v8 = [(WFOverridableLinkAction *)self appName];
-  v9 = [v4 localizedStringWithFormat:v7, v8];
+  appName = [(WFOverridableLinkAction *)self appName];
+  v9 = [v4 localizedStringWithFormat:v7, appName];
 
   return v9;
 }

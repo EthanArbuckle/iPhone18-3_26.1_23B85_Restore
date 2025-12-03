@@ -1,16 +1,16 @@
 @interface MDMRequestUserListCommand
 + (id)request;
 + (unint64_t)requiredAccessRights;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
-- (void)processRequest:(id)a3 completionHandler:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
+- (void)processRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation MDMRequestUserListCommand
 
 + (unint64_t)requiredAccessRights
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___MDMRequestUserListCommand;
   return objc_msgSendSuper2(&v3, sel_requiredAccessRights);
 }
@@ -22,7 +22,7 @@
   return v2;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v3 = objc_opt_new();
   v4 = [v3 copy];
@@ -30,27 +30,27 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = MDMRequestUserListCommand;
-  return [(RMModelPayloadBase *)&v4 copyWithZone:a3];
+  return [(RMModelPayloadBase *)&v4 copyWithZone:zone];
 }
 
-- (void)processRequest:(id)a3 completionHandler:(id)a4
+- (void)processRequest:(id)request completionHandler:(id)handler
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  handlerCopy = handler;
   v5 = [(MDMAbstractTunnelParser *)MDMParser responseWithStatus:@"Acknowledged"];
-  v6 = [MEMORY[0x277D77BF8] sharedManager];
-  v7 = [v6 allUsers];
-  v8 = v7;
-  if (v7)
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  allUsers = [mEMORY[0x277D77BF8] allUsers];
+  v8 = allUsers;
+  if (allUsers)
   {
     v32 = v5;
-    v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
-    v31 = v6;
-    v35 = [v6 currentUser];
+    v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(allUsers, "count")}];
+    v31 = mEMORY[0x277D77BF8];
+    currentUser = [mEMORY[0x277D77BF8] currentUser];
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
@@ -74,28 +74,28 @@
 
           v14 = *(*(&v36 + 1) + 8 * i);
           v40[0] = @"UserName";
-          v15 = [v14 username];
-          v41[0] = v15;
+          username = [v14 username];
+          v41[0] = username;
           v40[1] = @"HasDataToSync";
           v16 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v14, "hasDataToSync")}];
           v41[1] = v16;
           v40[2] = @"IsLoggedIn";
-          v17 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v14, "isEqualToUser:", v35)}];
+          v17 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v14, "isEqualToUser:", currentUser)}];
           v41[2] = v17;
           v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:v40 count:3];
           v19 = [v18 mutableCopy];
 
-          v20 = [v14 dataQuota];
-          v21 = [v14 dataUsed];
-          if (v20)
+          dataQuota = [v14 dataQuota];
+          dataUsed = [v14 dataUsed];
+          if (dataQuota)
           {
-            v22 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v20];
+            v22 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:dataQuota];
             [v19 setObject:v22 forKeyedSubscript:@"DataQuota"];
           }
 
-          if (v21)
+          if (dataUsed)
           {
-            v23 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v21];
+            v23 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:dataUsed];
             [v19 setObject:v23 forKeyedSubscript:@"DataUsed"];
           }
 
@@ -111,10 +111,10 @@
 
     v24 = v32;
     [v32 setObject:v9 forKey:@"Users"];
-    v4[2](v4, v32);
+    handlerCopy[2](handlerCopy, v32);
 
     v8 = v30;
-    v6 = v31;
+    mEMORY[0x277D77BF8] = v31;
   }
 
   else
@@ -134,7 +134,7 @@
 
     v24 = [(MDMAbstractTunnelParser *)MDMParser responseWithError:v9];
 
-    v4[2](v4, v24);
+    handlerCopy[2](handlerCopy, v24);
   }
 
   v29 = *MEMORY[0x277D85DE8];

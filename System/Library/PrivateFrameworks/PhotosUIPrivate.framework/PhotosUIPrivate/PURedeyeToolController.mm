@@ -1,35 +1,35 @@
 @interface PURedeyeToolController
-- (BOOL)_removeCorrectionAtPoint:(CGPoint)a3;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGPoint)_extractRedEyePointFromCorrectionDictionary:(id)a3;
-- (PURedeyeToolController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)_removeCorrectionAtPoint:(CGPoint)point;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGPoint)_extractRedEyePointFromCorrectionDictionary:(id)dictionary;
+- (PURedeyeToolController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)centerToolbarView;
 - (void)_animateFailureAppearance;
 - (void)_animateInstructionAppearance;
-- (void)_correctRedEyeAtPoint:(CGPoint)a3;
-- (void)_handleRedeyeButton:(id)a3;
-- (void)_handleTapGesture:(id)a3;
-- (void)_loadCorrectionsFromModelAnimated:(BOOL)a3;
-- (void)_showChangeIndicatorAtPoint:(CGPoint)a3 isFailure:(BOOL)a4;
-- (void)compositionControllerDidChangeForAdjustments:(id)a3;
+- (void)_correctRedEyeAtPoint:(CGPoint)point;
+- (void)_handleRedeyeButton:(id)button;
+- (void)_handleTapGesture:(id)gesture;
+- (void)_loadCorrectionsFromModelAnimated:(BOOL)animated;
+- (void)_showChangeIndicatorAtPoint:(CGPoint)point isFailure:(BOOL)failure;
+- (void)compositionControllerDidChangeForAdjustments:(id)adjustments;
 - (void)dealloc;
 - (void)didBecomeActiveTool;
 - (void)didResignActiveTool;
 - (void)flashAutoRedEyeCorrections;
-- (void)setLayoutOrientation:(int64_t)a3 withTransitionCoordinator:(id)a4;
+- (void)setLayoutOrientation:(int64_t)orientation withTransitionCoordinator:(id)coordinator;
 - (void)updateViewConstraints;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PURedeyeToolController
 
-- (void)_correctRedEyeAtPoint:(CGPoint)a3
+- (void)_correctRedEyeAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -37,20 +37,20 @@
   v32 = __Block_byref_object_dispose__71393;
   v33 = 0;
   v6 = dispatch_semaphore_create(0);
-  v7 = [(PUPhotoEditToolController *)self delegate];
-  [v7 toolControllerOriginalImageSize:self];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  [delegate toolControllerOriginalImageSize:self];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(PUPhotoEditToolController *)self delegate];
-  v13 = [v12 toolControllerMainRenderer:self];
-  v14 = [v13 composition];
+  delegate2 = [(PUPhotoEditToolController *)self delegate];
+  v13 = [delegate2 toolControllerMainRenderer:self];
+  composition = [v13 composition];
 
-  [v14 setObject:0 forKeyedSubscript:@"orientation"];
+  [composition setObject:0 forKeyedSubscript:@"orientation"];
   PLPhysicalScreenScale();
   v15 = x / v9;
   v17 = y / v11;
-  v18 = [objc_alloc(MEMORY[0x1E69BDE58]) initWithComposition:v14 location:v15 touchDiameter:{v17, v16 * 42.0}];
+  v18 = [objc_alloc(MEMORY[0x1E69BDE58]) initWithComposition:composition location:v15 touchDiameter:{v17, v16 * 42.0}];
   [v18 setName:@"PU-PIManualRedEyeAutoCalculator"];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
@@ -64,16 +64,16 @@
   if ([v29[5] count])
   {
     self->_isModelChangeLocal = 1;
-    v20 = [(PUPhotoEditToolController *)self compositionController];
-    v21 = [(PUPhotoEditToolController *)self compositionController];
-    v22 = [v21 adjustmentConstants];
-    v23 = [v22 PIRedEyeAdjustmentKey];
+    compositionController = [(PUPhotoEditToolController *)self compositionController];
+    compositionController2 = [(PUPhotoEditToolController *)self compositionController];
+    adjustmentConstants = [compositionController2 adjustmentConstants];
+    pIRedEyeAdjustmentKey = [adjustmentConstants PIRedEyeAdjustmentKey];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __48__PURedeyeToolController__correctRedEyeAtPoint___block_invoke_2;
     v24[3] = &unk_1E7B7D5E0;
     v24[4] = &v28;
-    [v20 modifyAdjustmentWithKey:v23 modificationBlock:v24];
+    [compositionController modifyAdjustmentWithKey:pIRedEyeAdjustmentKey modificationBlock:v24];
 
     self->_isModelChangeLocal = 0;
   }
@@ -122,10 +122,10 @@ void __48__PURedeyeToolController__correctRedEyeAtPoint___block_invoke_2(uint64_
   [v8 setInputCorrectionInfo:v7];
 }
 
-- (BOOL)_removeCorrectionAtPoint:(CGPoint)a3
+- (BOOL)_removeCorrectionAtPoint:(CGPoint)point
 {
-  v4 = [(PUPhotoEditToolController *)self delegate];
-  [v4 toolControllerOriginalImageSize:self];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  [delegate toolControllerOriginalImageSize:self];
   v6 = v5;
 
   v7 = self->_knownCorrections;
@@ -185,17 +185,17 @@ void __48__PURedeyeToolController__correctRedEyeAtPoint___block_invoke_2(uint64_
   {
     self->_isModelChangeLocal = 1;
     v20 = [(NSMutableArray *)v7 subarrayWithRange:v12, 1];
-    v21 = [(PUPhotoEditToolController *)self compositionController];
-    v22 = [(PUPhotoEditToolController *)self compositionController];
-    v23 = [v22 adjustmentConstants];
-    v24 = [v23 PIRedEyeAdjustmentKey];
+    compositionController = [(PUPhotoEditToolController *)self compositionController];
+    compositionController2 = [(PUPhotoEditToolController *)self compositionController];
+    adjustmentConstants = [compositionController2 adjustmentConstants];
+    pIRedEyeAdjustmentKey = [adjustmentConstants PIRedEyeAdjustmentKey];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __51__PURedeyeToolController__removeCorrectionAtPoint___block_invoke;
     v27[3] = &unk_1E7B7D590;
     v28 = v20;
     v25 = v20;
-    [v21 modifyAdjustmentWithKey:v24 modificationBlock:v27];
+    [compositionController modifyAdjustmentWithKey:pIRedEyeAdjustmentKey modificationBlock:v27];
 
     self->_isModelChangeLocal = 0;
   }
@@ -214,10 +214,10 @@ void __51__PURedeyeToolController__removeCorrectionAtPoint___block_invoke(uint64
   [v3 setInputCorrectionInfo:v5];
 }
 
-- (void)_handleRedeyeButton:(id)a3
+- (void)_handleRedeyeButton:(id)button
 {
-  v4 = [(PUPhotoEditToolController *)self delegate];
-  [v4 toolControllerDidFinish:self];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  [delegate toolControllerDidFinish:self];
 }
 
 - (void)_animateInstructionAppearance
@@ -293,21 +293,21 @@ uint64_t __51__PURedeyeToolController__animateFailureAppearance__block_invoke_2(
   return result;
 }
 
-- (void)_showChangeIndicatorAtPoint:(CGPoint)a3 isFailure:(BOOL)a4
+- (void)_showChangeIndicatorAtPoint:(CGPoint)point isFailure:(BOOL)failure
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v8 = [(PUPhotoEditToolController *)self delegate];
-  v9 = [v8 toolControllerPreviewView:self];
+  failureCopy = failure;
+  y = point.y;
+  x = point.x;
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  v9 = [delegate toolControllerPreviewView:self];
 
-  v10 = [(PUPhotoEditToolController *)self delegate];
-  [v10 toolControllerOriginalImageSize:self];
+  delegate2 = [(PUPhotoEditToolController *)self delegate];
+  [delegate2 toolControllerOriginalImageSize:self];
   v12 = v11;
   v14 = v13;
 
-  v15 = [(PUPhotoEditToolController *)self delegate];
-  [v15 toolController:self viewPointFromOriginalPoint:v9 view:{x * v12, y * v14}];
+  delegate3 = [(PUPhotoEditToolController *)self delegate];
+  [delegate3 toolController:self viewPointFromOriginalPoint:v9 view:{x * v12, y * v14}];
   v17 = v16;
   v19 = v18;
 
@@ -316,8 +316,8 @@ uint64_t __51__PURedeyeToolController__animateFailureAppearance__block_invoke_2(
   v26.y = v19;
   if (CGRectContainsPoint(v27, v26))
   {
-    v20 = v4;
-    if (v4)
+    v20 = failureCopy;
+    if (failureCopy)
     {
       v21 = 0.0;
     }
@@ -341,21 +341,21 @@ uint64_t __51__PURedeyeToolController__animateFailureAppearance__block_invoke_2(
   }
 }
 
-- (void)_loadCorrectionsFromModelAnimated:(BOOL)a3
+- (void)_loadCorrectionsFromModelAnimated:(BOOL)animated
 {
-  v29 = a3;
+  animatedCopy = animated;
   v46 = *MEMORY[0x1E69E9840];
-  v5 = [(PUPhotoEditToolController *)self compositionController];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
 
-  if (!v5)
+  if (!compositionController)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"PURedeyeToolController.m" lineNumber:326 description:@"Need a composition to perform this operation"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PURedeyeToolController.m" lineNumber:326 description:@"Need a composition to perform this operation"];
   }
 
-  v30 = [(PUPhotoEditToolController *)self compositionController];
-  v6 = [v30 redEyeAdjustmentController];
-  v7 = [v6 inputCorrectionInfo];
+  compositionController2 = [(PUPhotoEditToolController *)self compositionController];
+  redEyeAdjustmentController = [compositionController2 redEyeAdjustmentController];
+  inputCorrectionInfo = [redEyeAdjustmentController inputCorrectionInfo];
   v8 = [MEMORY[0x1E695DFA8] set];
   v39 = 0u;
   v40 = 0u;
@@ -377,7 +377,7 @@ uint64_t __51__PURedeyeToolController__animateFailureAppearance__block_invoke_2(
         }
 
         v14 = *(*(&v39 + 1) + 8 * i);
-        if (([v7 containsObject:v14] & 1) == 0)
+        if (([inputCorrectionInfo containsObject:v14] & 1) == 0)
         {
           [v8 addObject:v14];
         }
@@ -390,14 +390,14 @@ uint64_t __51__PURedeyeToolController__animateFailureAppearance__block_invoke_2(
   }
 
   knownCorrections = self->_knownCorrections;
-  v16 = [v8 allObjects];
-  [(NSMutableArray *)knownCorrections removeObjectsInArray:v16];
+  allObjects = [v8 allObjects];
+  [(NSMutableArray *)knownCorrections removeObjectsInArray:allObjects];
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v17 = v7;
+  v17 = inputCorrectionInfo;
   v18 = [v17 countByEnumeratingWithState:&v35 objects:v44 count:16];
   if (v18)
   {
@@ -426,7 +426,7 @@ uint64_t __51__PURedeyeToolController__animateFailureAppearance__block_invoke_2(
     while (v19);
   }
 
-  if (v29)
+  if (animatedCopy)
   {
     v33 = 0u;
     v34 = 0u;
@@ -462,14 +462,14 @@ uint64_t __51__PURedeyeToolController__animateFailureAppearance__block_invoke_2(
 - (void)flashAutoRedEyeCorrections
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(PUPhotoEditToolController *)self compositionController];
-  v4 = [v3 redEyeAdjustmentController];
-  v5 = [v4 inputCorrectionInfo];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  redEyeAdjustmentController = [compositionController redEyeAdjustmentController];
+  inputCorrectionInfo = [redEyeAdjustmentController inputCorrectionInfo];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [inputCorrectionInfo countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -481,7 +481,7 @@ uint64_t __51__PURedeyeToolController__animateFailureAppearance__block_invoke_2(
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(inputCorrectionInfo);
         }
 
         [(PURedeyeToolController *)self _extractRedEyePointFromCorrectionDictionary:*(*(&v10 + 1) + 8 * v9)];
@@ -490,46 +490,46 @@ uint64_t __51__PURedeyeToolController__animateFailureAppearance__block_invoke_2(
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [inputCorrectionInfo countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (CGPoint)_extractRedEyePointFromCorrectionDictionary:(id)a3
+- (CGPoint)_extractRedEyePointFromCorrectionDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"repairRectangleMinimumX"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"repairRectangleMinimumX"];
 
   if (v4)
   {
-    v5 = [v3 objectForKey:@"repairRectangleMinimumX"];
+    v5 = [dictionaryCopy objectForKey:@"repairRectangleMinimumX"];
     [v5 doubleValue];
     v7 = v6;
-    v8 = [v3 objectForKey:@"repairRectangleMaximumX"];
+    v8 = [dictionaryCopy objectForKey:@"repairRectangleMaximumX"];
     [v8 doubleValue];
     v10 = (v7 + v9) * 0.5;
 
-    v11 = [v3 objectForKey:@"repairRectangleMinimumY"];
+    v11 = [dictionaryCopy objectForKey:@"repairRectangleMinimumY"];
     [v11 doubleValue];
     v13 = v12;
-    v14 = [v3 objectForKey:@"repairRectangleMaximumY"];
+    v14 = [dictionaryCopy objectForKey:@"repairRectangleMaximumY"];
     [v14 doubleValue];
     v16 = (v13 + v15) * 0.5;
 
     goto LABEL_8;
   }
 
-  v17 = [v3 objectForKeyedSubscript:@"pointX"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"pointX"];
 
   if (v17)
   {
-    v18 = [v3 objectForKey:@"pointX"];
+    v18 = [dictionaryCopy objectForKey:@"pointX"];
     [v18 doubleValue];
     v10 = v19;
 
-    v20 = [v3 objectForKey:@"pointY"];
+    v20 = [dictionaryCopy objectForKey:@"pointY"];
 LABEL_7:
     v11 = v20;
     [v20 doubleValue];
@@ -537,15 +537,15 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v21 = [v3 objectForKeyedSubscript:@"px"];
+  v21 = [dictionaryCopy objectForKeyedSubscript:@"px"];
 
   if (v21)
   {
-    v22 = [v3 objectForKeyedSubscript:@"px"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"px"];
     [v22 doubleValue];
     v10 = v23;
 
-    v20 = [v3 objectForKeyedSubscript:@"py"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"py"];
     goto LABEL_7;
   }
 
@@ -568,18 +568,18 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  if (self->_tapGestureRecognizer == v4)
+  beginCopy = begin;
+  if (self->_tapGestureRecognizer == beginCopy)
   {
-    v6 = [(PUPhotoEditToolController *)self delegate];
-    v7 = [v6 toolControllerPreviewView:self];
+    delegate = [(PUPhotoEditToolController *)self delegate];
+    v7 = [delegate toolControllerPreviewView:self];
 
     if (v7)
     {
-      v8 = [v7 superview];
-      [(UITapGestureRecognizer *)v4 locationInView:v8];
+      superview = [v7 superview];
+      [(UITapGestureRecognizer *)beginCopy locationInView:superview];
       v10 = v9;
       v12 = v11;
 
@@ -603,17 +603,17 @@ LABEL_8:
   return v5;
 }
 
-- (void)_handleTapGesture:(id)a3
+- (void)_handleTapGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(PURedeyeToolController *)self view];
-  [v4 locationInView:v5];
+  gestureCopy = gesture;
+  view = [(PURedeyeToolController *)self view];
+  [gestureCopy locationInView:view];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(PUPhotoEditToolController *)self delegate];
-  v11 = [(PURedeyeToolController *)self view];
-  [v10 toolController:self originalPointFromViewPoint:v11 view:{v7, v9}];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  view2 = [(PURedeyeToolController *)self view];
+  [delegate toolController:self originalPointFromViewPoint:view2 view:{v7, v9}];
   v13 = v12;
   v15 = v14;
 
@@ -624,11 +624,11 @@ LABEL_8:
   }
 }
 
-- (void)setLayoutOrientation:(int64_t)a3 withTransitionCoordinator:(id)a4
+- (void)setLayoutOrientation:(int64_t)orientation withTransitionCoordinator:(id)coordinator
 {
   v8.receiver = self;
   v8.super_class = PURedeyeToolController;
-  [(PUPhotoEditToolController *)&v8 setLayoutOrientation:a3 withTransitionCoordinator:a4];
+  [(PUPhotoEditToolController *)&v8 setLayoutOrientation:orientation withTransitionCoordinator:coordinator];
   [MEMORY[0x1E696ACD8] deactivateConstraints:self->_instructionLabelConstraints];
   [MEMORY[0x1E696ACD8] deactivateConstraints:self->_failureLabelConstraints];
   instructionLabelConstraints = self->_instructionLabelConstraints;
@@ -637,15 +637,15 @@ LABEL_8:
   failureLabelConstraints = self->_failureLabelConstraints;
   self->_failureLabelConstraints = 0;
 
-  v7 = [(PURedeyeToolController *)self view];
-  [v7 setNeedsUpdateConstraints];
+  view = [(PURedeyeToolController *)self view];
+  [view setNeedsUpdateConstraints];
 }
 
-- (void)compositionControllerDidChangeForAdjustments:(id)a3
+- (void)compositionControllerDidChangeForAdjustments:(id)adjustments
 {
   v4.receiver = self;
   v4.super_class = PURedeyeToolController;
-  [(PUPhotoEditToolController *)&v4 compositionControllerDidChangeForAdjustments:a3];
+  [(PUPhotoEditToolController *)&v4 compositionControllerDidChangeForAdjustments:adjustments];
   [(PURedeyeToolController *)self _loadCorrectionsFromModelAnimated:self->_isModelChangeLocal];
 }
 
@@ -653,15 +653,15 @@ LABEL_8:
 {
   v2 = +[PUInterfaceManager currentTheme];
   v3 = PULocalizedString(@"PHOTOEDIT_REDEYE_TOP_LABEL");
-  v4 = [v3 localizedUppercaseString];
+  localizedUppercaseString = [v3 localizedUppercaseString];
 
-  v5 = [v2 photoEditingTopToolbarToolLabelButtonColor];
+  photoEditingTopToolbarToolLabelButtonColor = [v2 photoEditingTopToolbarToolLabelButtonColor];
   v6 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v6 setText:v4];
-  [v6 setTextColor:v5];
-  v7 = [v2 topToolbarToolLabelFont];
-  [v6 setFont:v7];
+  [v6 setText:localizedUppercaseString];
+  [v6 setTextColor:photoEditingTopToolbarToolLabelButtonColor];
+  topToolbarToolLabelFont = [v2 topToolbarToolLabelFont];
+  [v6 setFont:topToolbarToolLabelFont];
 
   return v6;
 }
@@ -677,48 +677,48 @@ LABEL_8:
 - (void)updateViewConstraints
 {
   v47[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PUPhotoEditToolController *)self delegate];
-  v4 = [v3 toolControllerMainContainerView:self];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  v4 = [delegate toolControllerMainContainerView:self];
 
   v45 = v4;
   if (v4)
   {
-    v5 = v4;
+    view = v4;
   }
 
   else
   {
-    v5 = [(PURedeyeToolController *)self view];
+    view = [(PURedeyeToolController *)self view];
   }
 
-  v6 = v5;
-  v7 = [(PUPhotoEditToolController *)self toolContainerView];
-  v8 = v7;
+  v6 = view;
+  toolContainerView = [(PUPhotoEditToolController *)self toolContainerView];
+  v8 = toolContainerView;
   if (!self->_instructionLabelConstraints)
   {
-    v44 = v7;
-    v9 = [MEMORY[0x1E695DF70] array];
+    v44 = toolContainerView;
+    array = [MEMORY[0x1E695DF70] array];
     [(CEKBadgeTextView *)self->_instructionLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v10 = [(PUPhotoEditToolController *)self photoEditSpec];
-    v11 = [v10 currentLayoutStyle];
+    photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+    currentLayoutStyle = [photoEditSpec currentLayoutStyle];
 
-    v12 = [(CEKBadgeTextView *)self->_instructionLabel widthAnchor];
-    v13 = [(PURedeyeToolController *)self view];
-    v14 = [v13 widthAnchor];
-    v15 = [v12 constraintLessThanOrEqualToAnchor:v14];
-    v43 = v9;
-    [(NSArray *)v9 addObject:v15];
+    widthAnchor = [(CEKBadgeTextView *)self->_instructionLabel widthAnchor];
+    view2 = [(PURedeyeToolController *)self view];
+    widthAnchor2 = [view2 widthAnchor];
+    v15 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2];
+    v43 = array;
+    [(NSArray *)array addObject:v15];
 
-    v16 = [(CEKBadgeTextView *)self->_instructionLabel centerXAnchor];
-    v17 = [v6 centerXAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
-    v19 = v18;
-    if (v11 == 4)
+    centerXAnchor = [(CEKBadgeTextView *)self->_instructionLabel centerXAnchor];
+    centerXAnchor2 = [v6 centerXAnchor];
+    v18 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+    safeAreaLayoutGuide = v18;
+    if (currentLayoutStyle == 4)
     {
       v47[0] = v18;
-      v20 = [(CEKBadgeTextView *)self->_instructionLabel bottomAnchor];
-      v21 = [v6 bottomAnchor];
-      [v20 constraintEqualToAnchor:v21 constant:-27.0];
+      bottomAnchor = [(CEKBadgeTextView *)self->_instructionLabel bottomAnchor];
+      bottomAnchor2 = [v6 bottomAnchor];
+      [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-27.0];
       v22 = v42 = v6;
       v47[1] = v22;
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:2];
@@ -730,32 +730,32 @@ LABEL_8:
 
     else
     {
-      v24 = v9;
-      [(NSArray *)v9 addObject:v18];
+      v24 = array;
+      [(NSArray *)array addObject:v18];
 
-      v25 = [(PUPhotoEditToolController *)self layoutOrientation];
-      if ((v25 - 2) >= 2)
+      layoutOrientation = [(PUPhotoEditToolController *)self layoutOrientation];
+      if ((layoutOrientation - 2) >= 2)
       {
         v8 = v44;
-        if (v25 == 1)
+        if (layoutOrientation == 1)
         {
-          v39 = [(CEKBadgeTextView *)self->_instructionLabel centerYAnchor];
-          v40 = [v44 bottomAnchor];
-          v41 = [v39 constraintEqualToAnchor:v40 constant:-33.0];
-          [(NSArray *)v9 addObject:v41];
+          centerYAnchor = [(CEKBadgeTextView *)self->_instructionLabel centerYAnchor];
+          bottomAnchor3 = [v44 bottomAnchor];
+          v41 = [centerYAnchor constraintEqualToAnchor:bottomAnchor3 constant:-33.0];
+          [(NSArray *)array addObject:v41];
         }
 
         goto LABEL_10;
       }
 
-      v16 = [(CEKBadgeTextView *)self->_instructionLabel bottomAnchor];
-      v17 = [(PURedeyeToolController *)self view];
-      v19 = [v17 safeAreaLayoutGuide];
-      v26 = [v19 bottomAnchor];
-      v27 = [v16 constraintEqualToAnchor:v26 constant:-6.0];
-      [(NSArray *)v9 addObject:v27];
+      centerXAnchor = [(CEKBadgeTextView *)self->_instructionLabel bottomAnchor];
+      centerXAnchor2 = [(PURedeyeToolController *)self view];
+      safeAreaLayoutGuide = [centerXAnchor2 safeAreaLayoutGuide];
+      bottomAnchor4 = [safeAreaLayoutGuide bottomAnchor];
+      v27 = [centerXAnchor constraintEqualToAnchor:bottomAnchor4 constant:-6.0];
+      [(NSArray *)array addObject:v27];
 
-      v24 = v9;
+      v24 = array;
     }
 
     v8 = v44;
@@ -767,26 +767,26 @@ LABEL_10:
 
   if (!self->_failureLabelConstraints)
   {
-    v29 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v30 = v6;
     [(CEKBadgeTextView *)self->_failureLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     v31 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_failureLabel attribute:9 relatedBy:0 toItem:self->_instructionLabel attribute:9 multiplier:1.0 constant:0.0];
-    [(NSArray *)v29 addObject:v31];
+    [(NSArray *)array2 addObject:v31];
 
     v32 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_failureLabel attribute:10 relatedBy:0 toItem:self->_instructionLabel attribute:10 multiplier:1.0 constant:0.0];
-    [(NSArray *)v29 addObject:v32];
+    [(NSArray *)array2 addObject:v32];
 
     v33 = MEMORY[0x1E696ACD8];
     failureLabel = self->_failureLabel;
-    v35 = [(PURedeyeToolController *)self view];
+    view3 = [(PURedeyeToolController *)self view];
     v36 = failureLabel;
     v6 = v30;
-    v37 = [v33 constraintWithItem:v36 attribute:7 relatedBy:-1 toItem:v35 attribute:7 multiplier:1.0 constant:0.0];
-    [(NSArray *)v29 addObject:v37];
+    v37 = [v33 constraintWithItem:v36 attribute:7 relatedBy:-1 toItem:view3 attribute:7 multiplier:1.0 constant:0.0];
+    [(NSArray *)array2 addObject:v37];
 
-    [MEMORY[0x1E696ACD8] activateConstraints:v29];
+    [MEMORY[0x1E696ACD8] activateConstraints:array2];
     failureLabelConstraints = self->_failureLabelConstraints;
-    self->_failureLabelConstraints = v29;
+    self->_failureLabelConstraints = array2;
   }
 
   v46.receiver = self;
@@ -802,11 +802,11 @@ LABEL_10:
   [(PUPhotoEditToolController *)&v3 dealloc];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = PURedeyeToolController;
-  [(PUPhotoEditToolController *)&v6 viewDidDisappear:a3];
+  [(PUPhotoEditToolController *)&v6 viewDidDisappear:disappear];
   [MEMORY[0x1E696ACD8] deactivateConstraints:self->_instructionLabelConstraints];
   [MEMORY[0x1E696ACD8] deactivateConstraints:self->_failureLabelConstraints];
   instructionLabelConstraints = self->_instructionLabelConstraints;
@@ -816,22 +816,22 @@ LABEL_10:
   self->_failureLabelConstraints = 0;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PURedeyeToolController;
-  [(PURedeyeToolController *)&v5 viewWillDisappear:a3];
-  v4 = [(UITapGestureRecognizer *)self->_tapGestureRecognizer view];
-  [v4 removeGestureRecognizer:self->_tapGestureRecognizer];
+  [(PURedeyeToolController *)&v5 viewWillDisappear:disappear];
+  view = [(UITapGestureRecognizer *)self->_tapGestureRecognizer view];
+  [view removeGestureRecognizer:self->_tapGestureRecognizer];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = PURedeyeToolController;
-  [(PUPhotoEditToolController *)&v9 viewWillAppear:a3];
-  v4 = [(PUPhotoEditToolController *)self delegate];
-  v5 = [v4 toolControllerHitEventForwardView:self];
+  [(PUPhotoEditToolController *)&v9 viewWillAppear:appear];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  v5 = [delegate toolControllerHitEventForwardView:self];
 
   v6 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleTapGesture_];
   tapGestureRecognizer = self->_tapGestureRecognizer;
@@ -839,8 +839,8 @@ LABEL_10:
 
   [(UITapGestureRecognizer *)self->_tapGestureRecognizer setDelegate:self];
   [v5 addGestureRecognizer:self->_tapGestureRecognizer];
-  v8 = [(PURedeyeToolController *)self view];
-  [v8 setNeedsUpdateConstraints];
+  view = [(PURedeyeToolController *)self view];
+  [view setNeedsUpdateConstraints];
 }
 
 - (void)viewDidLoad
@@ -873,8 +873,8 @@ LABEL_10:
   v19 = v18 + 1.0;
   v21 = v20 + 1.0;
   [(CEKBadgeTextView *)self->_instructionLabel _setTextInsets:v20 + 1.0, v14 + 3.0, v18 + 1.0, v16 + 3.0];
-  v22 = [(PURedeyeToolController *)self view];
-  [v22 addSubview:self->_instructionLabel];
+  view = [(PURedeyeToolController *)self view];
+  [view addSubview:self->_instructionLabel];
 
   v23 = [objc_alloc(MEMORY[0x1E6993830]) initWithFrame:{v4, v5, v6, v7}];
   failureLabel = self->_failureLabel;
@@ -887,14 +887,14 @@ LABEL_10:
   [(CEKBadgeTextView *)self->_failureLabel setHidden:1];
   [(CEKBadgeTextView *)self->_failureLabel setAlpha:0.0];
   [(CEKBadgeTextView *)self->_failureLabel _setTextInsets:v21, v15, v19, v17];
-  v27 = [(CEKBadgeTextView *)self->_instructionLabel _contentColor];
-  [(CEKBadgeTextView *)self->_failureLabel _setContentColor:v27];
+  _contentColor = [(CEKBadgeTextView *)self->_instructionLabel _contentColor];
+  [(CEKBadgeTextView *)self->_failureLabel _setContentColor:_contentColor];
 
-  v28 = [(CEKBadgeTextView *)self->_instructionLabel _fillColor];
-  [(CEKBadgeTextView *)self->_failureLabel _setFillColor:v28];
+  _fillColor = [(CEKBadgeTextView *)self->_instructionLabel _fillColor];
+  [(CEKBadgeTextView *)self->_failureLabel _setFillColor:_fillColor];
 
-  v29 = [(PURedeyeToolController *)self view];
-  [v29 addSubview:self->_failureLabel];
+  view2 = [(PURedeyeToolController *)self view];
+  [view2 addSubview:self->_failureLabel];
 
   self->_failureAnimationIsInProgress = 0;
 }
@@ -907,16 +907,16 @@ LABEL_10:
   [(PUPhotoEditToolController *)&v3 didBecomeActiveTool];
 }
 
-- (PURedeyeToolController)initWithNibName:(id)a3 bundle:(id)a4
+- (PURedeyeToolController)initWithNibName:(id)name bundle:(id)bundle
 {
   v9.receiver = self;
   v9.super_class = PURedeyeToolController;
-  v4 = [(PUPhotoEditToolController *)&v9 initWithNibName:a3 bundle:a4];
+  v4 = [(PUPhotoEditToolController *)&v9 initWithNibName:name bundle:bundle];
   if (v4)
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     knownCorrections = v4->_knownCorrections;
-    v4->_knownCorrections = v5;
+    v4->_knownCorrections = array;
 
     v7 = objc_alloc_init(PURedeyeToolControllerSpec);
     [(PUPhotoEditToolController *)v4 setToolControllerSpec:v7];

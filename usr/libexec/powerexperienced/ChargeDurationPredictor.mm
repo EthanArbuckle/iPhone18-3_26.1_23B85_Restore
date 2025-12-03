@@ -2,11 +2,11 @@
 + (id)sharedInstance;
 - (BOOL)inTypicalUsageEnvironment;
 - (BOOL)longChargeExpected;
-- (BOOL)predictionAvailableForScheme:(unint64_t)a3;
+- (BOOL)predictionAvailableForScheme:(unint64_t)scheme;
 - (BOOL)shortChargeExpected;
 - (ChargeDurationPredictor)init;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)queryModelForScheme:(unint64_t)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)queryModelForScheme:(unint64_t)scheme;
 @end
 
 @implementation ChargeDurationPredictor
@@ -43,8 +43,8 @@
     return 0;
   }
 
-  v3 = [(ChargeDurationPredictor *)self predictorOutput];
-  v4 = [v3 objectForKeyedSubscript:&off_10002E1D8];
+  predictorOutput = [(ChargeDurationPredictor *)self predictorOutput];
+  v4 = [predictorOutput objectForKeyedSubscript:&off_10002E1D8];
 
   if (!v4)
   {
@@ -54,9 +54,9 @@
   v5 = [(ChargeDurationPredictor *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ChargeDurationPredictor *)self predictorOutput];
+    predictorOutput2 = [(ChargeDurationPredictor *)self predictorOutput];
     v10 = 138412290;
-    v11 = v6;
+    v11 = predictorOutput2;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "inTypicalUsageEnvironment: %@", &v10, 0xCu);
   }
 
@@ -121,24 +121,24 @@ LABEL_12:
   return v2;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = [(ChargeDurationPredictor *)self deviceContext:a3];
-  v8 = [v7 currentContext];
-  v9 = [v8 objectForKeyedSubscript:@"kPluggedInContext"];
-  v10 = [v9 BOOLValue];
+  v7 = [(ChargeDurationPredictor *)self deviceContext:path];
+  currentContext = [v7 currentContext];
+  v9 = [currentContext objectForKeyedSubscript:@"kPluggedInContext"];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10 != [(ChargeDurationPredictor *)self lastPluggedInState])
+  if (bOOLValue != [(ChargeDurationPredictor *)self lastPluggedInState])
   {
     v11 = [(ChargeDurationPredictor *)self log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v14[0] = 67109120;
-      v14[1] = v10;
+      v14[1] = bOOLValue;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "plugin state changed to %d", v14, 8u);
     }
 
-    [(ChargeDurationPredictor *)self setLastPluggedInState:v10];
+    [(ChargeDurationPredictor *)self setLastPluggedInState:bOOLValue];
     if (![(ChargeDurationPredictor *)self lastPluggedInState])
     {
       v12 = [(ChargeDurationPredictor *)self log];
@@ -148,35 +148,35 @@ LABEL_12:
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Clearing cached predictor output", v14, 2u);
       }
 
-      v13 = [(ChargeDurationPredictor *)self predictorOutput];
-      [v13 removeAllObjects];
+      predictorOutput = [(ChargeDurationPredictor *)self predictorOutput];
+      [predictorOutput removeAllObjects];
     }
   }
 }
 
-- (BOOL)predictionAvailableForScheme:(unint64_t)a3
+- (BOOL)predictionAvailableForScheme:(unint64_t)scheme
 {
-  v4 = [(ChargeDurationPredictor *)self predictorOutput];
-  v5 = [NSNumber numberWithUnsignedInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  predictorOutput = [(ChargeDurationPredictor *)self predictorOutput];
+  v5 = [NSNumber numberWithUnsignedInteger:scheme];
+  v6 = [predictorOutput objectForKeyedSubscript:v5];
 
   return v6 != 0;
 }
 
-- (void)queryModelForScheme:(unint64_t)a3
+- (void)queryModelForScheme:(unint64_t)scheme
 {
   if (![(ChargeDurationPredictor *)self predictionAvailableForScheme:?])
   {
     if (self->_predictor)
     {
-      v5 = [(ChargeDurationPredictor *)self predictionQueryQueue];
+      predictionQueryQueue = [(ChargeDurationPredictor *)self predictionQueryQueue];
       v6[0] = _NSConcreteStackBlock;
       v6[1] = 3221225472;
       v6[2] = sub_1000035B0;
       v6[3] = &unk_10002C558;
       v6[4] = self;
-      v6[5] = a3;
-      dispatch_async(v5, v6);
+      v6[5] = scheme;
+      dispatch_async(predictionQueryQueue, v6);
     }
   }
 }
@@ -201,11 +201,11 @@ LABEL_12:
     return 0;
   }
 
-  v3 = [(ChargeDurationPredictor *)self predictorOutput];
-  v4 = [v3 objectForKeyedSubscript:&off_10002E1A8];
+  predictorOutput = [(ChargeDurationPredictor *)self predictorOutput];
+  v4 = [predictorOutput objectForKeyedSubscript:&off_10002E1A8];
 
-  v5 = [(ChargeDurationPredictor *)self predictorOutput];
-  v6 = [v5 objectForKeyedSubscript:&off_10002E1C0];
+  predictorOutput2 = [(ChargeDurationPredictor *)self predictorOutput];
+  v6 = [predictorOutput2 objectForKeyedSubscript:&off_10002E1C0];
 
   if (v6 && ([v6 meetsSystemConfidenceThreshold] & 1) != 0 || !v4)
   {
@@ -215,9 +215,9 @@ LABEL_12:
   v7 = [(ChargeDurationPredictor *)self log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(ChargeDurationPredictor *)self predictorOutput];
+    predictorOutput3 = [(ChargeDurationPredictor *)self predictorOutput];
     v12 = 138412290;
-    v13 = v8;
+    v13 = predictorOutput3;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "LongChargeExpected: %@", &v12, 0xCu);
   }
 
@@ -255,8 +255,8 @@ LABEL_14:
     return 0;
   }
 
-  v3 = [(ChargeDurationPredictor *)self predictorOutput];
-  v4 = [v3 objectForKeyedSubscript:&off_10002E1C0];
+  predictorOutput = [(ChargeDurationPredictor *)self predictorOutput];
+  v4 = [predictorOutput objectForKeyedSubscript:&off_10002E1C0];
 
   if (!v4)
   {
@@ -266,9 +266,9 @@ LABEL_14:
   v5 = [(ChargeDurationPredictor *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ChargeDurationPredictor *)self predictorOutput];
+    predictorOutput2 = [(ChargeDurationPredictor *)self predictorOutput];
     v10 = 138412290;
-    v11 = v6;
+    v11 = predictorOutput2;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "shortChargeExpected: %@", &v10, 0xCu);
   }
 

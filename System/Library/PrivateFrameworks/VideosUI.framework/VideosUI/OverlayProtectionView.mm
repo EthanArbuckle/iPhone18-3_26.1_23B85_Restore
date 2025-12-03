@@ -1,16 +1,16 @@
 @interface OverlayProtectionView
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
+- (id)actionForLayer:(id)layer forKey:(id)key;
 @end
 
 @implementation OverlayProtectionView
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = self;
-  v8 = sub_1E4097158(a4, width, height);
+  height = subviews.height;
+  width = subviews.width;
+  selfCopy = self;
+  v8 = sub_1E4097158(only, width, height);
   v10 = v9;
 
   v11 = v8;
@@ -20,13 +20,13 @@
   return result;
 }
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
   v6 = sub_1E4205F14();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
-  v11 = sub_1E409737C(v9, v6, v8);
+  layerCopy = layer;
+  selfCopy = self;
+  v11 = sub_1E409737C(layerCopy, v6, v8);
 
   return v11;
 }

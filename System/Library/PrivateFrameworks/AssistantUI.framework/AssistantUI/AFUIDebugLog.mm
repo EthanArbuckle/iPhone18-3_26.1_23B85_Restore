@@ -1,37 +1,37 @@
 @interface AFUIDebugLog
-+ (id)logWithData:(id)a3 mimeType:(id)a4 name:(id)a5 attemptCompression:(BOOL)a6;
-- (AFUIDebugLog)initWithData:(id)a3 mimeType:(id)a4 name:(id)a5 attemptCompression:(BOOL)a6;
++ (id)logWithData:(id)data mimeType:(id)type name:(id)name attemptCompression:(BOOL)compression;
+- (AFUIDebugLog)initWithData:(id)data mimeType:(id)type name:(id)name attemptCompression:(BOOL)compression;
 @end
 
 @implementation AFUIDebugLog
 
-+ (id)logWithData:(id)a3 mimeType:(id)a4 name:(id)a5 attemptCompression:(BOOL)a6
++ (id)logWithData:(id)data mimeType:(id)type name:(id)name attemptCompression:(BOOL)compression
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[a1 alloc] initWithData:v12 mimeType:v11 name:v10 attemptCompression:v6];
+  compressionCopy = compression;
+  nameCopy = name;
+  typeCopy = type;
+  dataCopy = data;
+  v13 = [[self alloc] initWithData:dataCopy mimeType:typeCopy name:nameCopy attemptCompression:compressionCopy];
 
   return v13;
 }
 
-- (AFUIDebugLog)initWithData:(id)a3 mimeType:(id)a4 name:(id)a5 attemptCompression:(BOOL)a6
+- (AFUIDebugLog)initWithData:(id)data mimeType:(id)type name:(id)name attemptCompression:(BOOL)compression
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  compressionCopy = compression;
+  dataCopy = data;
+  typeCopy = type;
+  nameCopy = name;
   v24.receiver = self;
   v24.super_class = AFUIDebugLog;
   v13 = [(AFUIDebugLog *)&v24 init];
   if (v13)
   {
-    if (v6)
+    if (compressionCopy)
     {
-      v14 = [v10 sruif_dataByCompressingWithGzip];
+      sruif_dataByCompressingWithGzip = [dataCopy sruif_dataByCompressingWithGzip];
       data = v13->_data;
-      v13->_data = v14;
+      v13->_data = sruif_dataByCompressingWithGzip;
     }
 
     if (v13->_data)
@@ -39,20 +39,20 @@
       mimeType = v13->_mimeType;
       v13->_mimeType = @"application/x-gzip";
 
-      v17 = [v12 stringByAppendingPathExtension:@"gz"];
+      v17 = [nameCopy stringByAppendingPathExtension:@"gz"];
     }
 
     else
     {
-      v18 = [v10 copy];
+      v18 = [dataCopy copy];
       v19 = v13->_data;
       v13->_data = v18;
 
-      v20 = [v11 copy];
+      v20 = [typeCopy copy];
       v21 = v13->_mimeType;
       v13->_mimeType = v20;
 
-      v17 = [v12 copy];
+      v17 = [nameCopy copy];
     }
 
     name = v13->_name;

@@ -21,17 +21,17 @@ BOOL __74__SFSearchResult_CompletionItem__completionCellBackgroundModeInTopSecti
 
 - (uint64_t)safari_willShowNewsHeader
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v2 = [a1 sectionBundleIdentifier];
-  if ([v2 isEqualToString:@"com.apple.parsec.news"])
+  sectionBundleIdentifier = [self sectionBundleIdentifier];
+  if ([sectionBundleIdentifier isEqualToString:@"com.apple.parsec.news"])
   {
-    v5 = [(SFSearchResult *)a1 safari_punchoutURL];
-    v6 = [v5 scheme];
-    if (([v6 isEqualToString:@"applenewss"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"applenews"))
+    safari_punchoutURL = [(SFSearchResult *)self safari_punchoutURL];
+    scheme = [safari_punchoutURL scheme];
+    if (([scheme isEqualToString:@"applenewss"] & 1) != 0 || objc_msgSend(scheme, "isEqualToString:", @"applenews"))
     {
       v7 = safari_newsProxy_newsProxy;
       if (!safari_newsProxy_newsProxy)
@@ -43,42 +43,42 @@ BOOL __74__SFSearchResult_CompletionItem__completionCellBackgroundModeInTopSecti
         v7 = safari_newsProxy_newsProxy;
       }
 
-      v10 = [v7 appState];
-      v3 = [v10 isInstalled];
+      appState = [v7 appState];
+      isInstalled = [appState isInstalled];
     }
 
     else
     {
-      v3 = 0;
+      isInstalled = 0;
     }
   }
 
   else
   {
-    v3 = 0;
+    isInstalled = 0;
   }
 
-  return v3;
+  return isInstalled;
 }
 
 - (id)safari_punchoutURL
 {
-  if (a1)
+  if (self)
   {
-    v1 = [a1 inlineCard];
-    v2 = [v1 cardSections];
-    v3 = [v2 firstObject];
-    v4 = [v3 punchoutOptions];
-    v5 = [v4 firstObject];
-    v6 = [v5 preferredOpenableURL];
+    inlineCard = [self inlineCard];
+    cardSections = [inlineCard cardSections];
+    firstObject = [cardSections firstObject];
+    punchoutOptions = [firstObject punchoutOptions];
+    firstObject2 = [punchoutOptions firstObject];
+    preferredOpenableURL = [firstObject2 preferredOpenableURL];
   }
 
   else
   {
-    v6 = 0;
+    preferredOpenableURL = 0;
   }
 
-  return v6;
+  return preferredOpenableURL;
 }
 
 @end

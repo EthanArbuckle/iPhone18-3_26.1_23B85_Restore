@@ -5,16 +5,16 @@
 + (id)postLaunchQueue;
 + (void)boostBackgroundDownloads;
 + (void)enableBackgroundDownloadsInSpiteOfHighPriorityTasks;
-+ (void)executeOptionalPrefetchBlock:(id)a3;
++ (void)executeOptionalPrefetchBlock:(id)block;
 + (void)popHighPriorityTaskInFlight;
 + (void)pushHighPriorityTaskInFlight;
-+ (void)scheduleBackgroundDownloadOperation:(id)a3;
-+ (void)scheduleLowPriorityAsyncBlock:(id)a3;
-+ (void)scheduleLowPriorityBlock:(id)a3;
-+ (void)scheduleLowPriorityBlockForMainThread:(id)a3;
-+ (void)scheduleLowPriorityOperation:(id)a3;
-+ (void)scheduleOptionalPrefetchBlock:(id)a3;
-+ (void)schedulePostLaunchBlockForMainThread:(id)a3;
++ (void)scheduleBackgroundDownloadOperation:(id)operation;
++ (void)scheduleLowPriorityAsyncBlock:(id)block;
++ (void)scheduleLowPriorityBlock:(id)block;
++ (void)scheduleLowPriorityBlockForMainThread:(id)thread;
++ (void)scheduleLowPriorityOperation:(id)operation;
++ (void)scheduleOptionalPrefetchBlock:(id)block;
++ (void)schedulePostLaunchBlockForMainThread:(id)thread;
 @end
 
 @implementation FCTaskScheduler
@@ -42,18 +42,18 @@
       _os_log_impl(&dword_1B63EF000, v5, OS_LOG_TYPE_DEFAULT, "TaskScheduler: suspending low-priority queues", &v11, 2u);
     }
 
-    v6 = [a1 postLaunchQueue];
-    dispatch_suspend(v6);
+    postLaunchQueue = [self postLaunchQueue];
+    dispatch_suspend(postLaunchQueue);
 
-    v7 = [a1 lowPriorityQueue];
-    dispatch_suspend(v7);
+    lowPriorityQueue = [self lowPriorityQueue];
+    dispatch_suspend(lowPriorityQueue);
 
-    v8 = [a1 lowPriorityOperationQueue];
-    [v8 setSuspended:1];
+    lowPriorityOperationQueue = [self lowPriorityOperationQueue];
+    [lowPriorityOperationQueue setSuspended:1];
 
-    LOBYTE(v8) = _MergedGlobals_138;
-    v9 = [a1 backgroundDownloadOperationQueue];
-    [v9 setSuspended:(v8 & 1) == 0];
+    LOBYTE(lowPriorityOperationQueue) = _MergedGlobals_138;
+    backgroundDownloadOperationQueue = [self backgroundDownloadOperationQueue];
+    [backgroundDownloadOperationQueue setSuspended:(lowPriorityOperationQueue & 1) == 0];
   }
 
   os_unfair_lock_unlock(&stru_1EDB26F34);
@@ -108,7 +108,7 @@ void __35__FCTaskScheduler_lowPriorityQueue__block_invoke()
   block[1] = 3221225472;
   block[2] = __44__FCTaskScheduler_lowPriorityOperationQueue__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1EDB26F50 != -1)
   {
     dispatch_once(&qword_1EDB26F50, block);
@@ -187,47 +187,47 @@ uint64_t __51__FCTaskScheduler_backgroundDownloadOperationQueue__block_invoke()
       _os_log_impl(&dword_1B63EF000, v5, OS_LOG_TYPE_DEFAULT, "TaskScheduler: resuming low-priority queues", &v11, 2u);
     }
 
-    v6 = [a1 postLaunchQueue];
-    dispatch_resume(v6);
+    postLaunchQueue = [self postLaunchQueue];
+    dispatch_resume(postLaunchQueue);
 
-    v7 = [a1 lowPriorityQueue];
-    dispatch_resume(v7);
+    lowPriorityQueue = [self lowPriorityQueue];
+    dispatch_resume(lowPriorityQueue);
 
-    v8 = [a1 lowPriorityOperationQueue];
-    [v8 setSuspended:0];
+    lowPriorityOperationQueue = [self lowPriorityOperationQueue];
+    [lowPriorityOperationQueue setSuspended:0];
 
-    v9 = [a1 backgroundDownloadOperationQueue];
-    [v9 setSuspended:0];
+    backgroundDownloadOperationQueue = [self backgroundDownloadOperationQueue];
+    [backgroundDownloadOperationQueue setSuspended:0];
   }
 
   os_unfair_lock_unlock(&stru_1EDB26F34);
   v10 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)scheduleLowPriorityBlock:(id)a3
++ (void)scheduleLowPriorityBlock:(id)block
 {
-  v4 = a3;
-  v5 = [a1 lowPriorityQueue];
-  dispatch_async(v5, v4);
+  blockCopy = block;
+  lowPriorityQueue = [self lowPriorityQueue];
+  dispatch_async(lowPriorityQueue, blockCopy);
 }
 
-+ (void)scheduleLowPriorityAsyncBlock:(id)a3
++ (void)scheduleLowPriorityAsyncBlock:(id)block
 {
-  v4 = [FCAsyncBlockOperation asyncBlockOperationWithBlock:a3];
-  [a1 scheduleLowPriorityOperation:v4];
+  v4 = [FCAsyncBlockOperation asyncBlockOperationWithBlock:block];
+  [self scheduleLowPriorityOperation:v4];
 }
 
-+ (void)scheduleLowPriorityBlockForMainThread:(id)a3
++ (void)scheduleLowPriorityBlockForMainThread:(id)thread
 {
-  v4 = a3;
-  v5 = [a1 lowPriorityOperationQueue];
+  threadCopy = thread;
+  lowPriorityOperationQueue = [self lowPriorityOperationQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__FCTaskScheduler_scheduleLowPriorityBlockForMainThread___block_invoke;
   v7[3] = &unk_1E7C3A148;
-  v8 = v4;
-  v6 = v4;
-  [v5 fc_addAsyncOperationWithBlock:v7];
+  v8 = threadCopy;
+  v6 = threadCopy;
+  [lowPriorityOperationQueue fc_addAsyncOperationWithBlock:v7];
 }
 
 void __57__FCTaskScheduler_scheduleLowPriorityBlockForMainThread___block_invoke(uint64_t a1, void *a2)
@@ -251,21 +251,21 @@ uint64_t __57__FCTaskScheduler_scheduleLowPriorityBlockForMainThread___block_inv
   return v2();
 }
 
-+ (void)scheduleLowPriorityOperation:(id)a3
++ (void)scheduleLowPriorityOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [a1 lowPriorityOperationQueue];
-  [v5 addOperation:v4];
+  operationCopy = operation;
+  lowPriorityOperationQueue = [self lowPriorityOperationQueue];
+  [lowPriorityOperationQueue addOperation:operationCopy];
 }
 
-+ (void)scheduleBackgroundDownloadOperation:(id)a3
++ (void)scheduleBackgroundDownloadOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [a1 backgroundDownloadOperationQueue];
-  [v4 setQualityOfService:{objc_msgSend(v5, "qualityOfService")}];
+  operationCopy = operation;
+  backgroundDownloadOperationQueue = [self backgroundDownloadOperationQueue];
+  [operationCopy setQualityOfService:{objc_msgSend(backgroundDownloadOperationQueue, "qualityOfService")}];
 
-  v6 = [a1 backgroundDownloadOperationQueue];
-  [v6 addOperation:v4];
+  backgroundDownloadOperationQueue2 = [self backgroundDownloadOperationQueue];
+  [backgroundDownloadOperationQueue2 addOperation:operationCopy];
 }
 
 + (void)enableBackgroundDownloadsInSpiteOfHighPriorityTasks
@@ -281,8 +281,8 @@ uint64_t __57__FCTaskScheduler_scheduleLowPriorityBlockForMainThread___block_inv
     }
 
     _MergedGlobals_138 = 1;
-    v4 = [a1 backgroundDownloadOperationQueue];
-    [v4 setSuspended:0];
+    backgroundDownloadOperationQueue = [self backgroundDownloadOperationQueue];
+    [backgroundDownloadOperationQueue setSuspended:0];
   }
 
   os_unfair_lock_unlock(&stru_1EDB26F34);
@@ -297,43 +297,43 @@ uint64_t __57__FCTaskScheduler_scheduleLowPriorityBlockForMainThread___block_inv
     _os_log_impl(&dword_1B63EF000, v3, OS_LOG_TYPE_DEFAULT, "TaskScheduler: boosting priority of background downloads", v7, 2u);
   }
 
-  [a1 enableBackgroundDownloadsInSpiteOfHighPriorityTasks];
-  v4 = [a1 backgroundDownloadOperationQueue];
-  [v4 setQualityOfService:25];
-  v5 = [v4 operations];
-  [v5 enumerateObjectsUsingBlock:&__block_literal_global_13];
+  [self enableBackgroundDownloadsInSpiteOfHighPriorityTasks];
+  backgroundDownloadOperationQueue = [self backgroundDownloadOperationQueue];
+  [backgroundDownloadOperationQueue setQualityOfService:25];
+  operations = [backgroundDownloadOperationQueue operations];
+  [operations enumerateObjectsUsingBlock:&__block_literal_global_13];
 
-  v6 = [v4 underlyingQueue];
-  FCDispatchAsyncWithQualityOfService(v6, 25, &__block_literal_global_15);
+  underlyingQueue = [backgroundDownloadOperationQueue underlyingQueue];
+  FCDispatchAsyncWithQualityOfService(underlyingQueue, 25, &__block_literal_global_15);
 }
 
-+ (void)scheduleOptionalPrefetchBlock:(id)a3
++ (void)scheduleOptionalPrefetchBlock:(id)block
 {
   if ((s_disableOptionalPrefetching & 1) == 0)
   {
-    [a1 scheduleLowPriorityBlock:a3];
+    [self scheduleLowPriorityBlock:block];
   }
 }
 
-+ (void)executeOptionalPrefetchBlock:(id)a3
++ (void)executeOptionalPrefetchBlock:(id)block
 {
   if ((s_disableOptionalPrefetching & 1) == 0)
   {
-    (*(a3 + 2))(a3);
+    (*(block + 2))(block);
   }
 }
 
-+ (void)schedulePostLaunchBlockForMainThread:(id)a3
++ (void)schedulePostLaunchBlockForMainThread:(id)thread
 {
-  v4 = a3;
-  v5 = [a1 postLaunchQueue];
+  threadCopy = thread;
+  postLaunchQueue = [self postLaunchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__FCTaskScheduler_schedulePostLaunchBlockForMainThread___block_invoke;
   block[3] = &unk_1E7C379C8;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = threadCopy;
+  v6 = threadCopy;
+  dispatch_async(postLaunchQueue, block);
 }
 
 @end

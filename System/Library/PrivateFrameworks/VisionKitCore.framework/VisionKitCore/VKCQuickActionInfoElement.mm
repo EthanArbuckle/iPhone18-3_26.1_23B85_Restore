@@ -1,8 +1,8 @@
 @interface VKCQuickActionInfoElement
-+ (id)elementFromElement:(id)a3;
-+ (id)elementFromUIAction:(id)a3;
-+ (id)elementFromUIMenu:(id)a3;
-+ (id)elementFromUIMenuElement:(id)a3;
++ (id)elementFromElement:(id)element;
++ (id)elementFromUIAction:(id)action;
++ (id)elementFromUIMenu:(id)menu;
++ (id)elementFromUIMenuElement:(id)element;
 - (id)linearizeElements;
 - (void)performAction;
 @end
@@ -11,8 +11,8 @@
 
 - (void)performAction
 {
-  v2 = [(VKCQuickActionInfoElement *)self representedMenuElement];
-  v3 = VKProtocolCast(&unk_1F2C7AE00, v2);
+  representedMenuElement = [(VKCQuickActionInfoElement *)self representedMenuElement];
+  v3 = VKProtocolCast(&unk_1F2C7AE00, representedMenuElement);
 
   [v3 performWithSender:0 target:0];
 }
@@ -21,14 +21,14 @@
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [v3 addObject:self];
-  v4 = [(VKCQuickActionInfoElement *)self children];
+  children = [(VKCQuickActionInfoElement *)self children];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__VKCQuickActionInfoElement_linearizeElements__block_invoke;
   v7[3] = &unk_1E7BE5FD0;
   v5 = v3;
   v8 = v5;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [children enumerateObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -40,13 +40,13 @@ void __46__VKCQuickActionInfoElement_linearizeElements__block_invoke(uint64_t a1
   [v2 addObjectsFromArray:v3];
 }
 
-+ (id)elementFromElement:(id)a3
++ (id)elementFromElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a1 elementFromUIMenu:v4];
+    v5 = [self elementFromUIMenu:elementCopy];
 LABEL_7:
     v6 = v5;
     goto LABEL_8;
@@ -55,14 +55,14 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a1 elementFromUIAction:v4];
+    v5 = [self elementFromUIAction:elementCopy];
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a1 elementFromUIMenuElement:v4];
+    v5 = [self elementFromUIMenuElement:elementCopy];
     goto LABEL_7;
   }
 
@@ -73,57 +73,57 @@ LABEL_8:
   return v6;
 }
 
-+ (id)elementFromUIMenu:(id)a3
++ (id)elementFromUIMenu:(id)menu
 {
-  v4 = a3;
+  menuCopy = menu;
   v5 = objc_alloc_init(VKCQuickActionInfoElement);
-  [(VKCQuickActionInfoElement *)v5 setRepresentedMenuElement:v4];
-  v6 = [v4 title];
-  [(VKCQuickActionInfoElement *)v5 setText:v6];
+  [(VKCQuickActionInfoElement *)v5 setRepresentedMenuElement:menuCopy];
+  title = [menuCopy title];
+  [(VKCQuickActionInfoElement *)v5 setText:title];
 
-  v7 = [v4 image];
-  [(VKCQuickActionInfoElement *)v5 setImage:v7];
+  image = [menuCopy image];
+  [(VKCQuickActionInfoElement *)v5 setImage:image];
 
-  v8 = [v4 children];
+  children = [menuCopy children];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __47__VKCQuickActionInfoElement_elementFromUIMenu___block_invoke;
   v11[3] = &__block_descriptor_40_e29__32__0__UIMenuElement_8q16q24l;
-  v11[4] = a1;
-  v9 = [v8 vk_compactMap:v11];
+  v11[4] = self;
+  v9 = [children vk_compactMap:v11];
   [(VKCQuickActionInfoElement *)v5 setChildren:v9];
 
   return v5;
 }
 
-+ (id)elementFromUIAction:(id)a3
++ (id)elementFromUIAction:(id)action
 {
-  v3 = a3;
+  actionCopy = action;
   v4 = objc_alloc_init(VKCQuickActionInfoElement);
-  [(VKCQuickActionInfoElement *)v4 setRepresentedMenuElement:v3];
-  v5 = [v3 title];
-  [(VKCQuickActionInfoElement *)v4 setText:v5];
+  [(VKCQuickActionInfoElement *)v4 setRepresentedMenuElement:actionCopy];
+  title = [actionCopy title];
+  [(VKCQuickActionInfoElement *)v4 setText:title];
 
-  v6 = [v3 image];
+  image = [actionCopy image];
 
-  [(VKCQuickActionInfoElement *)v4 setImage:v6];
+  [(VKCQuickActionInfoElement *)v4 setImage:image];
   [(VKCQuickActionInfoElement *)v4 setIsLeaf:1];
 
   return v4;
 }
 
-+ (id)elementFromUIMenuElement:(id)a3
++ (id)elementFromUIMenuElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   v4 = objc_alloc_init(VKCQuickActionInfoElement);
-  [(VKCQuickActionInfoElement *)v4 setRepresentedMenuElement:v3];
-  v5 = [v3 title];
-  [(VKCQuickActionInfoElement *)v4 setText:v5];
+  [(VKCQuickActionInfoElement *)v4 setRepresentedMenuElement:elementCopy];
+  title = [elementCopy title];
+  [(VKCQuickActionInfoElement *)v4 setText:title];
 
-  v6 = [v3 image];
+  image = [elementCopy image];
 
-  [(VKCQuickActionInfoElement *)v4 setImage:v6];
+  [(VKCQuickActionInfoElement *)v4 setImage:image];
   [(VKCQuickActionInfoElement *)v4 setIsLeaf:1];
 
   return v4;

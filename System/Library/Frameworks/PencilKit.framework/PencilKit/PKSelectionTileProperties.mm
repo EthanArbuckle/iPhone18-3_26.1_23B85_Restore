@@ -1,19 +1,19 @@
 @interface PKSelectionTileProperties
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)frame;
-- (PKSelectionTileProperties)initWithFrame:(CGRect)a3 strokes:(id)a4;
+- (PKSelectionTileProperties)initWithFrame:(CGRect)frame strokes:(id)strokes;
 - (id)description;
 @end
 
 @implementation PKSelectionTileProperties
 
-- (PKSelectionTileProperties)initWithFrame:(CGRect)a3 strokes:(id)a4
+- (PKSelectionTileProperties)initWithFrame:(CGRect)frame strokes:(id)strokes
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  strokesCopy = strokes;
   v15.receiver = self;
   v15.super_class = PKSelectionTileProperties;
   v10 = [(PKSelectionTileProperties *)&v15 init];
@@ -24,7 +24,7 @@
     v10->_frame.origin.y = y;
     v10->_frame.size.width = width;
     v10->_frame.size.height = height;
-    v12 = [v9 copy];
+    v12 = [strokesCopy copy];
     strokes = v11->_strokes;
     v11->_strokes = v12;
   }
@@ -32,10 +32,10 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -45,7 +45,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (CGRectEqualToRect(self->_frame, v5->_frame))
       {
         v6 = [(NSArray *)self->_strokes isEqual:v5->_strokes];
@@ -73,8 +73,8 @@
   v3 = [(PKSelectionTileProperties *)&v8 description];
   [(PKSelectionTileProperties *)self frame];
   v4 = NSStringFromCGRect(v10);
-  v5 = [(PKSelectionTileProperties *)self strokes];
-  v6 = [v3 stringByAppendingFormat:@" %@, numStrokes: %lu", v4, objc_msgSend(v5, "count")];
+  strokes = [(PKSelectionTileProperties *)self strokes];
+  v6 = [v3 stringByAppendingFormat:@" %@, numStrokes: %lu", v4, objc_msgSend(strokes, "count")];
 
   return v6;
 }

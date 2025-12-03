@@ -1,7 +1,7 @@
 @interface NSAutoContentAccessingProxy
-+ (id)proxyWithTarget:(id)a3;
++ (id)proxyWithTarget:(id)target;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation NSAutoContentAccessingProxy
@@ -16,24 +16,24 @@
   [(NSProxy *)&v3 dealloc];
 }
 
-+ (id)proxyWithTarget:(id)a3
++ (id)proxyWithTarget:(id)target
 {
-  if (![a3 conformsToProtocol:&unk_1EEF6EE48] || !objc_msgSend(a3, "beginContentAccess"))
+  if (![target conformsToProtocol:&unk_1EEF6EE48] || !objc_msgSend(target, "beginContentAccess"))
   {
     return 0;
   }
 
   v4 = [NSAutoContentAccessingProxy alloc];
-  v4->_target = a3;
+  v4->_target = target;
 
   return v4;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  [a3 setTarget:self->_target];
+  [invocation setTarget:self->_target];
 
-  [a3 invoke];
+  [invocation invoke];
 }
 
 @end

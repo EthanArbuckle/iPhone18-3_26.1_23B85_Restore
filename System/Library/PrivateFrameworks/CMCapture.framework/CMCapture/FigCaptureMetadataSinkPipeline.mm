@@ -1,28 +1,28 @@
 @interface FigCaptureMetadataSinkPipeline
-- (id)_buildMetadataDetectorSinkPipeline:(void *)a3 graph:(void *)a4 mrcSourceOutput:(void *)a5 captureDevice:(void *)a6 mrcOutputsOut:(uint64_t)a7 inferenceScheduler:;
-- (id)_buildSceneClassificationPipeline:(uint64_t)a3 graph:(void *)a4 upstreamOutput:(uint64_t)a5 metadataGatingNode:(uint64_t)a6 captureDevice:(uint64_t)a7 inferenceScheduler:(void *)a8 outputOut:;
-- (uint64_t)_buildFaceTrackingPipeline:(uint64_t)a3 graph:(void *)a4 videoCaptureOutput:(void *)a5 pipelineStage:;
-- (uint64_t)_buildMetadataSinkPipeline:(uint64_t)result graph:(uint64_t)a2 videoPreviewOutput:(uint64_t)a3 offlineVISMotionDataSourceOutput:(id)a4 metadataSourceOutputsByCategory:(void *)a5 captureDevice:(void *)a6 faceTrackingPipelineStage:(void *)a7 clientAuditToken:(uint64_t)a8 inferenceScheduler:(__int128 *)a9 delegate:(uint64_t)a10;
+- (id)_buildMetadataDetectorSinkPipeline:(void *)pipeline graph:(void *)graph mrcSourceOutput:(void *)output captureDevice:(void *)device mrcOutputsOut:(uint64_t)out inferenceScheduler:;
+- (id)_buildSceneClassificationPipeline:(uint64_t)pipeline graph:(void *)graph upstreamOutput:(uint64_t)output metadataGatingNode:(uint64_t)node captureDevice:(uint64_t)device inferenceScheduler:(void *)scheduler outputOut:;
+- (uint64_t)_buildFaceTrackingPipeline:(uint64_t)pipeline graph:(void *)graph videoCaptureOutput:(void *)output pipelineStage:;
+- (uint64_t)_buildMetadataSinkPipeline:(uint64_t)result graph:(uint64_t)graph videoPreviewOutput:(uint64_t)output offlineVISMotionDataSourceOutput:(id)sourceOutput metadataSourceOutputsByCategory:(void *)category captureDevice:(void *)device faceTrackingPipelineStage:(void *)stage clientAuditToken:(uint64_t)token inferenceScheduler:(__int128 *)scheduler delegate:(uint64_t)self0;
 - (uint64_t)detectedObjectBoxedMetadataOutputs;
-- (uint64_t)extendForNodeOutputs:(void *)a3 withConnectionConfiguration:;
+- (uint64_t)extendForNodeOutputs:(void *)outputs withConnectionConfiguration:;
 - (uint64_t)mrcLowPowerModeEnabled;
 - (uint64_t)mrcSceneObserver;
-- (uint64_t)removeNodeOutputs:(void *)a3 withConnectionConfiguration:;
+- (uint64_t)removeNodeOutputs:(void *)outputs withConnectionConfiguration:;
 - (uint64_t)setDiscardsFaceDetectionSampleData:(uint64_t)result;
 - (uint64_t)setDiscardsFaceTrackingSampleData:(uint64_t)result;
 - (uint64_t)setDiscardsMRCSampleData:(uint64_t)result;
 - (uint64_t)setFaceTrackingSuspended:(uint64_t)result;
 - (uint64_t)setMrcSuspended:(uint64_t)result;
-- (uint64_t)setRectOfInterest:(double)a3;
+- (uint64_t)setRectOfInterest:(double)interest;
 - (uint64_t)setSceneClassifierSuspended:(uint64_t)result;
 - (uint64_t)setSemanticStyleSceneObserver:(uint64_t)result;
 - (uint64_t)smartCameraInferenceOutput;
 - (uint64_t)sourceDeviceType;
 - (uint64_t)sourceID;
-- (void)_buildMetadataObjectRemoteQueueSinkPipeline:(void *)a3 graph:(void *)a4 metadataNodeOutputs:(uint64_t)a5 videoPreviewEnabled:(uint64_t)a6 delegate:(_OWORD *)a7 clientAuditToken:;
-- (void)_buildPreviewHistogramSinkPipeline:(void *)a3 graph:(void *)a4 videoPreviewHistogramOutput:;
+- (void)_buildMetadataObjectRemoteQueueSinkPipeline:(void *)pipeline graph:(void *)graph metadataNodeOutputs:(uint64_t)outputs videoPreviewEnabled:(uint64_t)enabled delegate:(_OWORD *)delegate clientAuditToken:;
+- (void)_buildPreviewHistogramSinkPipeline:(void *)pipeline graph:(void *)graph videoPreviewHistogramOutput:;
 - (void)dealloc;
-- (void)initWithConfiguration:(void *)a1 graph:(uint64_t)a2 name:(uint64_t)a3 videoPreviewOutput:(uint64_t)a4 offlineVISMotionDataSourceOutput:(void *)a5 metadataSourceOutputsByCategory:(void *)a6 captureDevice:(void *)a7 faceTrackingPipelineStage:(void *)a8 clientAuditToken:(uint64_t)a9 inferenceScheduler:(__int128 *)a10 delegate:(uint64_t)a11;
+- (void)initWithConfiguration:(void *)configuration graph:(uint64_t)graph name:(uint64_t)name videoPreviewOutput:(uint64_t)output offlineVISMotionDataSourceOutput:(void *)sourceOutput metadataSourceOutputsByCategory:(void *)category captureDevice:(void *)device faceTrackingPipelineStage:(void *)stage clientAuditToken:(uint64_t)token inferenceScheduler:(__int128 *)configuration0 delegate:(uint64_t)configuration1;
 @end
 
 @implementation FigCaptureMetadataSinkPipeline
@@ -82,7 +82,7 @@
   [(FigCaptureRemoteQueueSinkPipeline *)&v3 dealloc];
 }
 
-- (id)_buildMetadataDetectorSinkPipeline:(void *)a3 graph:(void *)a4 mrcSourceOutput:(void *)a5 captureDevice:(void *)a6 mrcOutputsOut:(uint64_t)a7 inferenceScheduler:
+- (id)_buildMetadataDetectorSinkPipeline:(void *)pipeline graph:(void *)graph mrcSourceOutput:(void *)output captureDevice:(void *)device mrcOutputsOut:(uint64_t)out inferenceScheduler:
 {
   if (result)
   {
@@ -99,9 +99,9 @@
     }
 
     v38 = +[BWPipelineStage pipelineStageWithName:priority:discardsLateSampleData:](BWPipelineStage, "pipelineStageWithName:priority:discardsLateSampleData:", FigCaptureBuildPipelineStageName(@"com.apple.coremedia.capture.mrc", [v10 sourceConfiguration]), 0, 1);
-    [a4 setName:@"MRC"];
+    [graph setName:@"MRC"];
     LODWORD(v11) = 30.0;
-    [a4 setMaxSampleDataOutputRate:v11];
+    [graph setMaxSampleDataOutputRate:v11];
     if (a2)
     {
       v12 = FigCaptureMetadataObjectConfigurationRequiresMRCNode(*(a2 + 8));
@@ -140,7 +140,7 @@ LABEL_9:
       goto LABEL_25;
     }
 
-    if (([a3 connectOutput:a4 toInput:-[BWNode input](v20 pipelineStage:{"input"), v38}] & 1) == 0)
+    if (([pipeline connectOutput:graph toInput:-[BWNode input](v20 pipelineStage:{"input"), v38}] & 1) == 0)
     {
       [FigCaptureMetadataSinkPipeline _buildMetadataDetectorSinkPipeline:graph:mrcSourceOutput:captureDevice:mrcOutputsOut:inferenceScheduler:];
       goto LABEL_25;
@@ -179,7 +179,7 @@ LABEL_9:
       }
 
       v9[8] = v23;
-      if (([a3 connectOutput:-[BWMetadataDetectorGatingNode mrcOutput](v20 toInput:"mrcOutput") pipelineStage:{objc_msgSend(v9[8], "input"), +[BWPipelineStage pipelineStageWithName:priority:discardsLateSampleData:](BWPipelineStage, "pipelineStageWithName:priority:discardsLateSampleData:", @"com.apple.coremedia.capture.mrc.barcode", 0, 0)}] & 1) == 0)
+      if (([pipeline connectOutput:-[BWMetadataDetectorGatingNode mrcOutput](v20 toInput:"mrcOutput") pipelineStage:{objc_msgSend(v9[8], "input"), +[BWPipelineStage pipelineStageWithName:priority:discardsLateSampleData:](BWPipelineStage, "pipelineStageWithName:priority:discardsLateSampleData:", @"com.apple.coremedia.capture.mrc.barcode", 0, 0)}] & 1) == 0)
       {
         [FigCaptureMetadataSinkPipeline _buildMetadataDetectorSinkPipeline:graph:mrcSourceOutput:captureDevice:mrcOutputsOut:inferenceScheduler:];
         goto LABEL_25;
@@ -201,7 +201,7 @@ LABEL_9:
         goto LABEL_25;
       }
 
-      if (([a3 connectOutput:-[BWMetadataDetectorGatingNode appClipCodeOutput](v20 toInput:"appClipCodeOutput") pipelineStage:{-[BWNode input](v26, "input"), +[BWPipelineStage pipelineStageWithName:priority:discardsLateSampleData:](BWPipelineStage, "pipelineStageWithName:priority:discardsLateSampleData:", @"com.apple.coremedia.capture.mrc.app-clip-code", 0, 0)}] & 1) == 0)
+      if (([pipeline connectOutput:-[BWMetadataDetectorGatingNode appClipCodeOutput](v20 toInput:"appClipCodeOutput") pipelineStage:{-[BWNode input](v26, "input"), +[BWPipelineStage pipelineStageWithName:priority:discardsLateSampleData:](BWPipelineStage, "pipelineStageWithName:priority:discardsLateSampleData:", @"com.apple.coremedia.capture.mrc.app-clip-code", 0, 0)}] & 1) == 0)
       {
         [FigCaptureMetadataSinkPipeline _buildMetadataDetectorSinkPipeline:graph:mrcSourceOutput:captureDevice:mrcOutputsOut:inferenceScheduler:];
         goto LABEL_25;
@@ -213,16 +213,16 @@ LABEL_9:
     if (!v14)
     {
 LABEL_22:
-      if (a6)
+      if (device)
       {
-        *a6 = v22;
+        *device = v22;
       }
 
-      [a5 registerForAEMatrixMetadata];
+      [output registerForAEMatrixMetadata];
       goto LABEL_25;
     }
 
-    v27 = [[BWInferenceNode alloc] initWithConvEngineSupportWithCaptureDevice:a5 scheduler:a7 priority:6];
+    v27 = [[BWInferenceNode alloc] initWithConvEngineSupportWithCaptureDevice:output scheduler:out priority:6];
     [(BWNode *)v27 setName:@"Text Localization"];
     if (a2)
     {
@@ -258,10 +258,10 @@ LABEL_22:
 
     v31 = v28 == 270;
 LABEL_47:
-    v32 = [(BWMetadataDetectorGatingNode *)v20 textLocalizationResultsObserver];
+    textLocalizationResultsObserver = [(BWMetadataDetectorGatingNode *)v20 textLocalizationResultsObserver];
     [(BWInferenceNode *)v27 setPassthroughInputSampleBuffer:0];
     objc_initWeak(location, v27);
-    objc_initWeak(&from, v32);
+    objc_initWeak(&from, textLocalizationResultsObserver);
     v48[0] = 0;
     v48[1] = v48;
     v48[2] = 0x2020000000;
@@ -287,7 +287,7 @@ LABEL_47:
     v40.super_class = FigCaptureMetadataSinkPipeline;
     if (objc_msgSendSuper2(&v40, sel_addNode_error_, v27, &v44))
     {
-      if ([a3 connectOutput:-[BWMetadataDetectorGatingNode textLocalizationOutput](v20 toInput:"textLocalizationOutput") pipelineStage:{-[BWNode input](v27, "input"), +[BWPipelineStage pipelineStageWithName:priority:discardsLateSampleData:](BWPipelineStage, "pipelineStageWithName:priority:discardsLateSampleData:", @"com.apple.coremedia.capture.mrc.text-localization", 0, 0)}])
+      if ([pipeline connectOutput:-[BWMetadataDetectorGatingNode textLocalizationOutput](v20 toInput:"textLocalizationOutput") pipelineStage:{-[BWNode input](v27, "input"), +[BWPipelineStage pipelineStageWithName:priority:discardsLateSampleData:](BWPipelineStage, "pipelineStageWithName:priority:discardsLateSampleData:", @"com.apple.coremedia.capture.mrc.text-localization", 0, 0)}])
       {
         v22 = v30;
         [FigCaptureMetadataSinkPipeline _buildMetadataDetectorSinkPipeline:v27 graph:v30 mrcSourceOutput:? captureDevice:? mrcOutputsOut:? inferenceScheduler:?];
@@ -313,16 +313,16 @@ LABEL_25:
   return result;
 }
 
-- (void)initWithConfiguration:(void *)a1 graph:(uint64_t)a2 name:(uint64_t)a3 videoPreviewOutput:(uint64_t)a4 offlineVISMotionDataSourceOutput:(void *)a5 metadataSourceOutputsByCategory:(void *)a6 captureDevice:(void *)a7 faceTrackingPipelineStage:(void *)a8 clientAuditToken:(uint64_t)a9 inferenceScheduler:(__int128 *)a10 delegate:(uint64_t)a11
+- (void)initWithConfiguration:(void *)configuration graph:(uint64_t)graph name:(uint64_t)name videoPreviewOutput:(uint64_t)output offlineVISMotionDataSourceOutput:(void *)sourceOutput metadataSourceOutputsByCategory:(void *)category captureDevice:(void *)device faceTrackingPipelineStage:(void *)stage clientAuditToken:(uint64_t)token inferenceScheduler:(__int128 *)configuration0 delegate:(uint64_t)configuration1
 {
-  if (!a1)
+  if (!configuration)
   {
     return 0;
   }
 
-  if (a2)
+  if (graph)
   {
-    v18 = *(a2 + 8);
+    v18 = *(graph + 8);
   }
 
   else
@@ -330,15 +330,15 @@ LABEL_25:
     v18 = 0;
   }
 
-  v25.receiver = a1;
+  v25.receiver = configuration;
   v25.super_class = FigCaptureMetadataSinkPipeline;
-  v19 = objc_msgSendSuper2(&v25, sel_initWithGraph_name_sinkID_, a3, a4, [objc_msgSend(v18 "sinkConfiguration")]);
+  v19 = objc_msgSendSuper2(&v25, sel_initWithGraph_name_sinkID_, name, output, [objc_msgSend(v18 "sinkConfiguration")]);
   if (v19)
   {
-    if (a2)
+    if (graph)
     {
-      v19[16] = [objc_msgSend(*(a2 + 8) "sourceConfiguration")];
-      v21 = *(a2 + 8);
+      v19[16] = [objc_msgSend(*(graph + 8) "sourceConfiguration")];
+      v21 = *(graph + 8);
     }
 
     else
@@ -349,10 +349,10 @@ LABEL_25:
     }
 
     *(v19 + 34) = [v21 underlyingDeviceType];
-    v22 = a10[1];
-    v24[0] = *a10;
+    v22 = scheduler[1];
+    v24[0] = *scheduler;
     v24[1] = v22;
-    if ([FigCaptureMetadataSinkPipeline _buildMetadataSinkPipeline:v19 graph:a2 videoPreviewOutput:a3 offlineVISMotionDataSourceOutput:a5 metadataSourceOutputsByCategory:a6 captureDevice:a7 faceTrackingPipelineStage:a8 clientAuditToken:a9 inferenceScheduler:v24 delegate:a11])
+    if ([FigCaptureMetadataSinkPipeline _buildMetadataSinkPipeline:v19 graph:graph videoPreviewOutput:name offlineVISMotionDataSourceOutput:sourceOutput metadataSourceOutputsByCategory:category captureDevice:device faceTrackingPipelineStage:stage clientAuditToken:token inferenceScheduler:v24 delegate:delegate])
     {
       fig_log_get_emitter();
       FigDebugAssert3();
@@ -364,11 +364,11 @@ LABEL_25:
   return v19;
 }
 
-- (uint64_t)_buildMetadataSinkPipeline:(uint64_t)result graph:(uint64_t)a2 videoPreviewOutput:(uint64_t)a3 offlineVISMotionDataSourceOutput:(id)a4 metadataSourceOutputsByCategory:(void *)a5 captureDevice:(void *)a6 faceTrackingPipelineStage:(void *)a7 clientAuditToken:(uint64_t)a8 inferenceScheduler:(__int128 *)a9 delegate:(uint64_t)a10
+- (uint64_t)_buildMetadataSinkPipeline:(uint64_t)result graph:(uint64_t)graph videoPreviewOutput:(uint64_t)output offlineVISMotionDataSourceOutput:(id)sourceOutput metadataSourceOutputsByCategory:(void *)category captureDevice:(void *)device faceTrackingPipelineStage:(void *)stage clientAuditToken:(uint64_t)token inferenceScheduler:(__int128 *)scheduler delegate:(uint64_t)self0
 {
-  v111 = a7;
-  v118 = a8;
-  v112 = a5;
+  stageCopy = stage;
+  tokenCopy = token;
+  categoryCopy = category;
   if (!result)
   {
     return result;
@@ -377,19 +377,19 @@ LABEL_25:
   v14 = result;
   v166[0] = 0;
   v165 = 0;
-  v15 = [MEMORY[0x1E695DF70] array];
-  v122 = [MEMORY[0x1E695DF70] array];
-  v115 = a6;
-  v116 = v15;
-  if (!a4)
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  deviceCopy = device;
+  v116 = array;
+  if (!sourceOutput)
   {
     goto LABEL_37;
   }
 
-  if (a2)
+  if (graph)
   {
-    v16 = FigCaptureMetadataObjectConfigurationRequiresMetadataDetectorPipeline(*(a2 + 8));
-    v17 = *(a2 + 8);
+    v16 = FigCaptureMetadataObjectConfigurationRequiresMetadataDetectorPipeline(*(graph + 8));
+    v17 = *(graph + 8);
   }
 
   else
@@ -398,7 +398,7 @@ LABEL_25:
     v17 = 0;
   }
 
-  v18 = a10;
+  delegateCopy2 = delegate;
   v19 = FigCaptureMetadataObjectConfigurationRequiresSceneClassification(v17);
   v20 = v19;
   if (v16)
@@ -421,9 +421,9 @@ LABEL_25:
     v22 = v16;
   }
 
-  if (a2)
+  if (graph)
   {
-    v23 = *(a2 + 8);
+    v23 = *(graph + 8);
   }
 
   else
@@ -436,9 +436,9 @@ LABEL_25:
   v27 = (v22 + v24);
   if (v27 >= 2)
   {
-    if (a2)
+    if (graph)
     {
-      v28 = *(a2 + 8);
+      v28 = *(graph + 8);
     }
 
     else
@@ -457,22 +457,22 @@ LABEL_25:
     }
 
     [(BWNode *)v29 input];
-    if (([OUTLINED_FUNCTION_40_9() connectOutput:a4 toInput:? pipelineStage:?] & 1) == 0)
+    if (([OUTLINED_FUNCTION_40_9() connectOutput:sourceOutput toInput:? pipelineStage:?] & 1) == 0)
     {
       goto LABEL_116;
     }
 
     if (v16)
     {
-      a4 = [(NSArray *)[(BWNode *)v29 outputs] objectAtIndexedSubscript:0];
+      sourceOutput = [(NSArray *)[(BWNode *)v29 outputs] objectAtIndexedSubscript:0];
     }
 
     else
     {
-      a4 = 0;
+      sourceOutput = 0;
     }
 
-    v18 = a10;
+    delegateCopy2 = delegate;
     if (v20)
     {
       v30 = [(NSArray *)[(BWNode *)v29 outputs] objectAtIndexedSubscript:v16];
@@ -483,7 +483,7 @@ LABEL_25:
       v30 = 0;
     }
 
-    v15 = v116;
+    array = v116;
     if (v26)
     {
       v31 = [(NSArray *)[(BWNode *)v29 outputs] objectAtIndexedSubscript:v22];
@@ -494,11 +494,11 @@ LABEL_25:
       v31 = 0;
     }
 
-    a6 = v115;
-    if (!a4)
+    device = deviceCopy;
+    if (!sourceOutput)
     {
 LABEL_35:
-      a4 = v30;
+      sourceOutput = v30;
       if (!v30)
       {
         goto LABEL_36;
@@ -510,7 +510,7 @@ LABEL_35:
 LABEL_33:
     *&v123 = 0;
     v32 = OUTLINED_FUNCTION_7_76();
-    v166[0] = [(FigCaptureMetadataSinkPipeline *)v32 _buildMetadataDetectorSinkPipeline:v33 graph:v34 mrcSourceOutput:a4 captureDevice:v111 mrcOutputsOut:v35 inferenceScheduler:v18];
+    v166[0] = [(FigCaptureMetadataSinkPipeline *)v32 _buildMetadataDetectorSinkPipeline:v33 graph:v34 mrcSourceOutput:sourceOutput captureDevice:stageCopy mrcOutputsOut:v35 inferenceScheduler:delegateCopy2];
     if (!v166[0])
     {
       v25 = v123;
@@ -527,19 +527,19 @@ LABEL_116:
   {
     v30 = 0;
     v31 = 0;
-    a6 = v115;
-    v15 = v116;
+    device = deviceCopy;
+    array = v116;
     goto LABEL_33;
   }
 
-  a6 = v115;
+  device = deviceCopy;
   if (v20)
   {
     v31 = 0;
-    v15 = v116;
+    array = v116;
 LABEL_110:
     *&v123 = 0;
-    v166[0] = [(FigCaptureMetadataSinkPipeline *)v14 _buildSceneClassificationPipeline:a2 graph:v25 upstreamOutput:a4 metadataGatingNode:*(v14 + 56) captureDevice:v111 inferenceScheduler:v18 outputOut:&v123];
+    v166[0] = [(FigCaptureMetadataSinkPipeline *)v14 _buildSceneClassificationPipeline:graph graph:v25 upstreamOutput:sourceOutput metadataGatingNode:*(v14 + 56) captureDevice:stageCopy inferenceScheduler:delegateCopy2 outputOut:&v123];
     if (v166[0])
     {
       goto LABEL_100;
@@ -547,11 +547,11 @@ LABEL_110:
 
     if (v123)
     {
-      [v122 addObject:?];
+      [array2 addObject:?];
     }
 
 LABEL_36:
-    a4 = v31;
+    sourceOutput = v31;
     if (!v31)
     {
       goto LABEL_37;
@@ -559,7 +559,7 @@ LABEL_36:
 
 LABEL_106:
     v103 = OUTLINED_FUNCTION_7_76();
-    v166[0] = [(FigCaptureMetadataSinkPipeline *)v103 _buildPreviewHistogramSinkPipeline:v104 graph:v105 videoPreviewHistogramOutput:a4];
+    v166[0] = [(FigCaptureMetadataSinkPipeline *)v103 _buildPreviewHistogramSinkPipeline:v104 graph:v105 videoPreviewHistogramOutput:sourceOutput];
     if (v166[0])
     {
       goto LABEL_100;
@@ -570,21 +570,21 @@ LABEL_106:
     goto LABEL_37;
   }
 
-  v15 = v116;
+  array = v116;
   if (v24)
   {
     goto LABEL_106;
   }
 
 LABEL_37:
-  v117 = a3;
+  outputCopy = output;
   v162 = 0u;
   v163 = 0u;
   v160 = 0u;
   v161 = 0u;
-  obj = [a6 allKeys];
+  obj = [device allKeys];
   v36 = [obj countByEnumeratingWithState:&v160 objects:v159 count:16];
-  v114 = a2;
+  graphCopy = graph;
   if (!v36)
   {
     goto LABEL_81;
@@ -614,17 +614,17 @@ LABEL_37:
             goto LABEL_76;
           }
 
-          v42 = v15;
+          v42 = array;
           v43 = v41;
           goto LABEL_75;
         }
 
-        v79 = v118;
-        if (!v118)
+        v79 = tokenCopy;
+        if (!tokenCopy)
         {
-          if (a2)
+          if (graph)
           {
-            v80 = *(a2 + 8);
+            v80 = *(graph + 8);
           }
 
           else
@@ -635,8 +635,8 @@ LABEL_37:
           v79 = +[BWPipelineStage pipelineStageWithName:priority:](BWPipelineStage, "pipelineStageWithName:priority:", FigCaptureBuildPipelineStageName(@"com.apple.coremedia.capture.facetracking", [v80 sourceConfiguration]), 13);
         }
 
-        v118 = v79;
-        v166[0] = [(FigCaptureMetadataSinkPipeline *)v14 _buildFaceTrackingPipeline:a2 graph:v117 videoCaptureOutput:v41 pipelineStage:v79];
+        tokenCopy = v79;
+        v166[0] = [(FigCaptureMetadataSinkPipeline *)v14 _buildFaceTrackingPipeline:graph graph:outputCopy videoCaptureOutput:v41 pipelineStage:v79];
         if (v166[0])
         {
           goto LABEL_100;
@@ -662,18 +662,18 @@ LABEL_75:
       if (v44 && !*(v14 + 120))
       {
         v45 = v44;
-        if (a2)
+        if (graph)
         {
-          v119 = [*(a2 + 8) metadataIdentifiers];
-          if ([*(a2 + 56) count] && *(a2 + 48) == 1)
+          metadataIdentifiers = [*(graph + 8) metadataIdentifiers];
+          if ([*(graph + 56) count] && *(graph + 48) == 1)
           {
-            v46 = [MEMORY[0x1E695DF70] array];
+            array3 = [MEMORY[0x1E695DF70] array];
             v155 = 0u;
             v156 = 0u;
             v157 = 0u;
             v158 = 0u;
-            v47 = *(a2 + 56);
-            v55 = OUTLINED_FUNCTION_11_51(v46, v48, v49, v50, v51, v52, v53, v54, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v119, obj, v122, v123, *(&v123 + 1), v124, *(&v124 + 1), v125, v126, v127, v128, v129, v130, v131, v132, v133, v134, v135, v136, v137, v138, v139, v140, v141, *(&v141 + 1), v142, *(&v142 + 1), v143, *(&v143 + 1), v144, *(&v144 + 1), v145.receiver, v145.super_class, v146, v147, v148, v149, v150, v151, v152, v153, v154);
+            v47 = *(graph + 56);
+            v55 = OUTLINED_FUNCTION_11_51(array3, v48, v49, v50, v51, v52, v53, v54, v106, v107, v108, v109, v110, stageCopy, categoryCopy, v113, graphCopy, deviceCopy, v116, outputCopy, tokenCopy, metadataIdentifiers, obj, array2, v123, *(&v123 + 1), v124, *(&v124 + 1), v125, v126, v127, v128, v129, v130, v131, v132, v133, v134, v135, v136, v137, v138, v139, v140, v141, *(&v141 + 1), v142, *(&v142 + 1), v143, *(&v143 + 1), v144, *(&v144 + 1), v145.receiver, v145.super_class, v146, v147, v148, v149, v150, v151, v152, v153, v154);
             if (v55)
             {
               v56 = v55;
@@ -687,24 +687,24 @@ LABEL_75:
                     objc_enumerationMutation(v47);
                   }
 
-                  v59 = [v46 addObject:{CMMetadataFormatDescriptionGetIdentifiers(objc_msgSend(*(*(&v155 + 1) + 8 * i), "formatDescription"))}];
+                  v59 = [array3 addObject:{CMMetadataFormatDescriptionGetIdentifiers(objc_msgSend(*(*(&v155 + 1) + 8 * i), "formatDescription"))}];
                 }
 
-                v56 = OUTLINED_FUNCTION_11_51(v59, v60, v61, v62, v63, v64, v65, v66, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v120, obj, v122, v123, *(&v123 + 1), v124, *(&v124 + 1), v125, v126, v127, v128, v129, v130, v131, v132, v133, v134, v135, v136, v137, v138, v139, v140, v141, *(&v141 + 1), v142, *(&v142 + 1), v143, *(&v143 + 1), v144, *(&v144 + 1), v145.receiver, v145.super_class, v146, v147, v148, v149, v150, v151, v152, v153, v154);
+                v56 = OUTLINED_FUNCTION_11_51(v59, v60, v61, v62, v63, v64, v65, v66, v106, v107, v108, v109, v110, stageCopy, categoryCopy, v113, graphCopy, deviceCopy, v116, outputCopy, tokenCopy, v120, obj, array2, v123, *(&v123 + 1), v124, *(&v124 + 1), v125, v126, v127, v128, v129, v130, v131, v132, v133, v134, v135, v136, v137, v138, v139, v140, v141, *(&v141 + 1), v142, *(&v142 + 1), v143, *(&v143 + 1), v144, *(&v144 + 1), v145.receiver, v145.super_class, v146, v147, v148, v149, v150, v151, v152, v153, v154);
               }
 
               while (v56);
               v14 = v113;
-              a2 = v114;
+              graph = graphCopy;
             }
 
-            v15 = v116;
+            array = v116;
           }
 
           *&v123 = 0;
-          [*(a2 + 8) metadataRectOfInterest];
+          [*(graph + 8) metadataRectOfInterest];
           OUTLINED_FUNCTION_2_3();
-          v67 = *(a2 + 8);
+          v67 = *(graph + 8);
         }
 
         else
@@ -745,15 +745,15 @@ LABEL_76:
 
   while (v81);
 LABEL_81:
-  if (!v112)
+  if (!categoryCopy)
   {
     goto LABEL_88;
   }
 
-  [v112 setName:@"OfflineVISMotionData"];
-  if (a2)
+  [categoryCopy setName:@"OfflineVISMotionData"];
+  if (graph)
   {
-    v82 = *(a2 + 16);
+    v82 = *(graph + 16);
   }
 
   else
@@ -764,12 +764,12 @@ LABEL_81:
   v83 = [objc_msgSend(v82 "sourceConfiguration")];
   v84 = [objc_msgSend(v82 "sourceConfiguration")];
   FigCapturePixelFormatIsPackedBayerRaw([v83 format]);
-  v85 = [v83 horizontalSensorBinningFactor];
-  v86 = [v83 verticalSensorBinningFactor];
+  horizontalSensorBinningFactor = [v83 horizontalSensorBinningFactor];
+  verticalSensorBinningFactor = [v83 verticalSensorBinningFactor];
   [v83 maxSupportedFrameRate];
-  if (a2)
+  if (graph)
   {
-    v88 = *(a2 + 44);
+    v88 = *(graph + 44);
   }
 
   else
@@ -777,7 +777,7 @@ LABEL_81:
     v88 = 0;
   }
 
-  v89 = FigCaptureBuildMotionAttachmentsNode(v14, v112, v85, v86, 0, v88, [v111 sensorIDDictionaryByPortType], objc_msgSend(v111, "cameraInfoByPortType"), v87, objc_msgSend(v111, "activePortTypes"), v84 == 4, 0, objc_msgSend(objc_msgSend(v82, "irisSinkConfiguration"), "optimizesImagesForOfflineVideoStabilization"), 0, 1, v166);
+  v89 = FigCaptureBuildMotionAttachmentsNode(v14, categoryCopy, horizontalSensorBinningFactor, verticalSensorBinningFactor, 0, v88, [stageCopy sensorIDDictionaryByPortType], objc_msgSend(stageCopy, "cameraInfoByPortType"), v87, objc_msgSend(stageCopy, "activePortTypes"), v84 == 4, 0, objc_msgSend(objc_msgSend(v82, "irisSinkConfiguration"), "optimizesImagesForOfflineVideoStabilization"), 0, 1, v166);
   if (v166[0])
   {
 LABEL_100:
@@ -788,12 +788,12 @@ LABEL_101:
     goto LABEL_102;
   }
 
-  v15 = v116;
+  array = v116;
   [v116 addObject:v89];
 LABEL_88:
-  if ([v122 count])
+  if ([array2 count])
   {
-    v90 = -[BWFunnelNode initWithNumberOfInputs:mediaType:]([BWMetadataPropagatorNode alloc], "initWithNumberOfInputs:mediaType:", [v122 count], 1836016234);
+    v90 = -[BWFunnelNode initWithNumberOfInputs:mediaType:]([BWMetadataPropagatorNode alloc], "initWithNumberOfInputs:mediaType:", [array2 count], 1836016234);
     v145.receiver = v14;
     v145.super_class = FigCaptureMetadataSinkPipeline;
     if ((objc_msgSendSuper2(&v145, sel_addNode_error_, v90, &v165) & 1) == 0)
@@ -805,7 +805,7 @@ LABEL_88:
     v144 = 0u;
     v141 = 0u;
     v142 = 0u;
-    v91 = [v122 countByEnumeratingWithState:&v141 objects:&v125 count:16];
+    v91 = [array2 countByEnumeratingWithState:&v141 objects:&v125 count:16];
     if (v91)
     {
       v92 = v91;
@@ -818,7 +818,7 @@ LABEL_92:
       {
         if (*v142 != v94)
         {
-          objc_enumerationMutation(v122);
+          objc_enumerationMutation(array2);
         }
 
         v96 = *(*(&v141 + 1) + 8 * v95);
@@ -831,7 +831,7 @@ LABEL_92:
         ++v93;
         if (v92 == ++v95)
         {
-          v92 = [v122 countByEnumeratingWithState:&v141 objects:&v125 count:16];
+          v92 = [array2 countByEnumeratingWithState:&v141 objects:&v125 count:16];
           if (v92)
           {
             goto LABEL_92;
@@ -846,11 +846,11 @@ LABEL_92:
     [OUTLINED_FUNCTION_47() addObject:?];
   }
 
-  v97 = a9[1];
-  v123 = *a9;
+  v97 = scheduler[1];
+  v123 = *scheduler;
   v124 = v97;
   v98 = OUTLINED_FUNCTION_7_76();
-  v166[0] = [(FigCaptureMetadataSinkPipeline *)v98 _buildMetadataObjectRemoteQueueSinkPipeline:v99 graph:v100 metadataNodeOutputs:v15 videoPreviewEnabled:0 delegate:v101 clientAuditToken:v102];
+  v166[0] = [(FigCaptureMetadataSinkPipeline *)v98 _buildMetadataObjectRemoteQueueSinkPipeline:v99 graph:v100 metadataNodeOutputs:array videoPreviewEnabled:0 delegate:v101 clientAuditToken:v102];
 LABEL_102:
   result = v166[0];
   if (!v166[0])
@@ -933,9 +933,9 @@ LABEL_102:
 {
   if (result)
   {
-    v3 = [*(result + 120) metadataObjectOutput];
+    metadataObjectOutput = [*(result + 120) metadataObjectOutput];
 
-    return [v3 setDiscardsSampleData:a2];
+    return [metadataObjectOutput setDiscardsSampleData:a2];
   }
 
   return result;
@@ -953,7 +953,7 @@ LABEL_102:
   return result;
 }
 
-- (uint64_t)setRectOfInterest:(double)a3
+- (uint64_t)setRectOfInterest:(double)interest
 {
   if (result)
   {
@@ -961,7 +961,7 @@ LABEL_102:
     [*(result + 64) setRectOfInterest:?];
     v10 = *(v9 + 120);
 
-    return [v10 setRectOfInterest:{a2, a3, a4, a5}];
+    return [v10 setRectOfInterest:{a2, interest, a4, a5}];
   }
 
   return result;
@@ -977,7 +977,7 @@ LABEL_102:
   return result;
 }
 
-- (uint64_t)extendForNodeOutputs:(void *)a3 withConnectionConfiguration:
+- (uint64_t)extendForNodeOutputs:(void *)outputs withConnectionConfiguration:
 {
   if (!result)
   {
@@ -989,8 +989,8 @@ LABEL_102:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = [a2 allKeys];
-  result = [v5 countByEnumeratingWithState:&v28 objects:v27 count:16];
+  allKeys = [a2 allKeys];
+  result = [allKeys countByEnumeratingWithState:&v28 objects:v27 count:16];
   if (!result)
   {
     return result;
@@ -1005,7 +1005,7 @@ LABEL_102:
     {
       if (*v29 != v7)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(allKeys);
       }
 
       v9 = *(*(&v28 + 1) + 8 * v8);
@@ -1013,49 +1013,49 @@ LABEL_102:
       {
         if (v4[15])
         {
-          [a3 metadataIdentifiers];
-          [a3 metadataRectOfInterest];
+          [outputs metadataIdentifiers];
+          [outputs metadataRectOfInterest];
           OUTLINED_FUNCTION_2_3();
-          [a3 emitsEmptyObjectDetectionMetadata];
+          [outputs emitsEmptyObjectDetectionMetadata];
           v10 = OUTLINED_FUNCTION_3();
           [v11 updateMetadataIdentifiers:v10 rectOfInterest:? emitsEmptyObjectDetectionMetadata:?];
           goto LABEL_15;
         }
 
-        [a3 metadataIdentifiers];
-        [a3 metadataRectOfInterest];
+        [outputs metadataIdentifiers];
+        [outputs metadataRectOfInterest];
         OUTLINED_FUNCTION_2_3();
-        v12 = [a3 emitsEmptyObjectDetectionMetadata];
+        emitsEmptyObjectDetectionMetadata = [outputs emitsEmptyObjectDetectionMetadata];
         [a2 objectForKeyedSubscript:v9];
         v13 = OUTLINED_FUNCTION_3();
-        if (FigCaptureBuildObjectDetectionPipeline(v14, v15, v16, v12, v17, v18, v13, v19, v20, v21))
+        if (FigCaptureBuildObjectDetectionPipeline(v14, v15, v16, emitsEmptyObjectDetectionMetadata, v17, v18, v13, v19, v20, v21))
         {
           fig_log_get_emitter();
           return FigDebugAssert3();
         }
 
         v4[15] = 0;
-        v22 = [v4[18] addExtendedInput];
-        v23 = [v4 graph];
-        v24 = [v4[15] output];
-        v25 = v23;
+        addExtendedInput = [v4[18] addExtendedInput];
+        graph = [v4 graph];
+        output = [v4[15] output];
+        v25 = graph;
       }
 
       else
       {
-        v22 = [v4[18] addExtendedInput];
+        addExtendedInput = [v4[18] addExtendedInput];
         [v4 graph];
         [a2 objectForKeyedSubscript:v9];
         v25 = OUTLINED_FUNCTION_47();
       }
 
-      [v25 connectOutput:v24 toInput:v22 pipelineStage:0];
+      [v25 connectOutput:output toInput:addExtendedInput pipelineStage:0];
 LABEL_15:
       ++v8;
     }
 
     while (v6 != v8);
-    result = [v5 countByEnumeratingWithState:&v28 objects:v27 count:16];
+    result = [allKeys countByEnumeratingWithState:&v28 objects:v27 count:16];
     v6 = result;
     if (result)
     {
@@ -1066,7 +1066,7 @@ LABEL_15:
   }
 }
 
-- (uint64_t)removeNodeOutputs:(void *)a3 withConnectionConfiguration:
+- (uint64_t)removeNodeOutputs:(void *)outputs withConnectionConfiguration:
 {
   if (result)
   {
@@ -1075,8 +1075,8 @@ LABEL_15:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v4 = [a2 allKeys];
-    result = [v4 countByEnumeratingWithState:&v20 objects:v19 count:16];
+    allKeys = [a2 allKeys];
+    result = [allKeys countByEnumeratingWithState:&v20 objects:v19 count:16];
     if (result)
     {
       v5 = result;
@@ -1090,7 +1090,7 @@ LABEL_15:
         {
           if (*v21 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allKeys);
           }
 
           v9 = *(*(&v20 + 1) + 8 * v8);
@@ -1111,11 +1111,11 @@ LABEL_15:
           {
             if (v3[15])
             {
-              [a3 metadataIdentifiers];
-              [a3 metadataRectOfInterest];
+              [outputs metadataIdentifiers];
+              [outputs metadataRectOfInterest];
               OUTLINED_FUNCTION_2_3();
               v5 = v16;
-              [a3 emitsEmptyObjectDetectionMetadata];
+              [outputs emitsEmptyObjectDetectionMetadata];
               v13 = OUTLINED_FUNCTION_3();
               [v14 updateMetadataIdentifiers:v13 rectOfInterest:? emitsEmptyObjectDetectionMetadata:?];
             }
@@ -1128,7 +1128,7 @@ LABEL_15:
         }
 
         while (v5 != v8);
-        result = [v4 countByEnumeratingWithState:&v20 objects:v19 count:16];
+        result = [allKeys countByEnumeratingWithState:&v20 objects:v19 count:16];
         v5 = result;
       }
 
@@ -1139,9 +1139,9 @@ LABEL_15:
   return result;
 }
 
-- (id)_buildSceneClassificationPipeline:(uint64_t)a3 graph:(void *)a4 upstreamOutput:(uint64_t)a5 metadataGatingNode:(uint64_t)a6 captureDevice:(uint64_t)a7 inferenceScheduler:(void *)a8 outputOut:
+- (id)_buildSceneClassificationPipeline:(uint64_t)pipeline graph:(void *)graph upstreamOutput:(uint64_t)output metadataGatingNode:(uint64_t)node captureDevice:(uint64_t)device inferenceScheduler:(void *)scheduler outputOut:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -1185,7 +1185,7 @@ LABEL_15:
 
   v23 = 0;
   v24 = 0;
-  v20 = FigCaptureBuildSceneClassifierPipeline(a1, a4, v19, 13, v16, v18, v22, a6, a7, 0, &v24, &v23);
+  v20 = FigCaptureBuildSceneClassifierPipeline(self, graph, v19, 13, v16, v18, v22, node, device, 0, &v24, &v23);
   if (v20)
   {
     fig_log_get_emitter();
@@ -1194,28 +1194,28 @@ LABEL_15:
 
   else
   {
-    a1[10] = v23;
-    a1[11] = a4;
+    self[10] = v23;
+    self[11] = graph;
     if (v17)
     {
-      a1[12] = [v24 lastObject];
+      self[12] = [v24 lastObject];
     }
 
     if (a2 && *(a2 + 33) == 1)
     {
-      [(BWSceneClassifierSinkNode *)v23 setMrcSceneObserver:a5];
+      [(BWSceneClassifierSinkNode *)v23 setMrcSceneObserver:output];
     }
 
-    if (a8)
+    if (scheduler)
     {
-      *a8 = [v24 firstObject];
+      *scheduler = [v24 firstObject];
     }
   }
 
   return v20;
 }
 
-- (void)_buildPreviewHistogramSinkPipeline:(void *)a3 graph:(void *)a4 videoPreviewHistogramOutput:
+- (void)_buildPreviewHistogramSinkPipeline:(void *)pipeline graph:(void *)graph videoPreviewHistogramOutput:
 {
   if (result)
   {
@@ -1232,7 +1232,7 @@ LABEL_15:
     }
 
     v8 = +[BWPipelineStage pipelineStageWithName:priority:discardsLateSampleData:](BWPipelineStage, "pipelineStageWithName:priority:discardsLateSampleData:", FigCaptureBuildPipelineStageName(@"com.apple.coremedia.capture.video-preview-histogram", [v7 sourceConfiguration]), 0, 1);
-    [a4 setName:@"Preview Histogram"];
+    [graph setName:@"Preview Histogram"];
     v9 = objc_alloc_init(BWPreviewHistogramNode);
     FigCaptureSessionIsLaunchPrewarmingEnabled();
     [OUTLINED_FUNCTION_37_0() setMsrHistogramsEnabled:?];
@@ -1240,7 +1240,7 @@ LABEL_15:
     [OUTLINED_FUNCTION_37_0() setIspHistogramsEnabled:?];
     v11.receiver = v6;
     v11.super_class = FigCaptureMetadataSinkPipeline;
-    if ((objc_msgSendSuper2(&v11, sel_addNode_error_, v9, &v12) & 1) == 0 || (v10 = v9, v6[13] = v10, ([a3 connectOutput:a4 toInput:-[BWNode input](v10 pipelineStage:{"input"), v8}] & 1) == 0))
+    if ((objc_msgSendSuper2(&v11, sel_addNode_error_, v9, &v12) & 1) == 0 || (v10 = v9, v6[13] = v10, ([pipeline connectOutput:graph toInput:-[BWNode input](v10 pipelineStage:{"input"), v8}] & 1) == 0))
     {
       fig_log_get_emitter();
       OUTLINED_FUNCTION_1_11();
@@ -1257,15 +1257,15 @@ LABEL_15:
   return result;
 }
 
-- (uint64_t)_buildFaceTrackingPipeline:(uint64_t)a3 graph:(void *)a4 videoCaptureOutput:(void *)a5 pipelineStage:
+- (uint64_t)_buildFaceTrackingPipeline:(uint64_t)pipeline graph:(void *)graph videoCaptureOutput:(void *)output pipelineStage:
 {
   if (result)
   {
     v7 = result;
     v15 = 0;
-    [a4 setName:@"FaceTracking"];
+    [graph setName:@"FaceTracking"];
     v8 = [BWFaceTrackingNode alloc];
-    v9 = [a5 priority];
+    priority = [output priority];
     if (a2)
     {
       v10 = *(a2 + 52);
@@ -1276,7 +1276,7 @@ LABEL_15:
       v10 = 0;
     }
 
-    v11 = [(BWFaceTrackingNode *)v8 initWithFigThreadPriority:v9 pearlModuleType:v10 useUnfilteredDepth:1 queueDepth:2 passthroughInputs:0 allowPixelTransfer:0];
+    v11 = [(BWFaceTrackingNode *)v8 initWithFigThreadPriority:priority pearlModuleType:v10 useUnfilteredDepth:1 queueDepth:2 passthroughInputs:0 allowPixelTransfer:0];
     if (v11)
     {
       v12 = v11;
@@ -1340,13 +1340,13 @@ LABEL_15:
   return result;
 }
 
-- (void)_buildMetadataObjectRemoteQueueSinkPipeline:(void *)a3 graph:(void *)a4 metadataNodeOutputs:(uint64_t)a5 videoPreviewEnabled:(uint64_t)a6 delegate:(_OWORD *)a7 clientAuditToken:
+- (void)_buildMetadataObjectRemoteQueueSinkPipeline:(void *)pipeline graph:(void *)graph metadataNodeOutputs:(uint64_t)outputs videoPreviewEnabled:(uint64_t)enabled delegate:(_OWORD *)delegate clientAuditToken:
 {
   if (result)
   {
     v12 = result;
     v65[0] = 0;
-    v13 = [a4 count];
+    v13 = [graph count];
     v14 = &classRef_BWStillImageSmartStyleAttachmentTransferNode;
     if (v13)
     {
@@ -1368,7 +1368,7 @@ LABEL_27:
       v63 = 0u;
       v60 = 0u;
       v61 = 0u;
-      v24 = OUTLINED_FUNCTION_12_50(v16, v17, v18, v19, v20, v21, v22, v23, v48, v50, sel_addNode_error_, a6, a2, v55);
+      v24 = OUTLINED_FUNCTION_12_50(v16, v17, v18, v19, v20, v21, v22, v23, v48, v50, sel_addNode_error_, enabled, a2, v55);
       if (v24)
       {
         v25 = v24;
@@ -1381,7 +1381,7 @@ LABEL_6:
         {
           if (*v61 != v27)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(graph);
           }
 
           v29 = *(*(&v60 + 1) + 8 * v28);
@@ -1406,8 +1406,8 @@ LABEL_6:
         }
       }
 
-      v38 = [(BWNode *)v15 output];
-      a6 = v53;
+      output = [(BWNode *)v15 output];
+      enabled = v53;
       a2 = v54;
       v14 = &classRef_BWStillImageSmartStyleAttachmentTransferNode;
       v39 = v52;
@@ -1415,18 +1415,18 @@ LABEL_6:
 
     else
     {
-      v38 = 0;
+      output = 0;
       v39 = sel_addNode_error_;
     }
 
     v40 = [BWRemoteQueueSinkNode alloc];
-    v41 = [v12 sinkID];
-    v42 = a7[1];
-    v59[0] = *a7;
+    sinkID = [v12 sinkID];
+    v42 = delegate[1];
+    v59[0] = *delegate;
     v59[1] = v42;
-    v43 = [(BWRemoteQueueSinkNode *)v40 initWithMediaType:1836016234 clientAuditToken:v59 sinkID:v41 cameraInfoByPortType:0];
+    v43 = [(BWRemoteQueueSinkNode *)v40 initWithMediaType:1836016234 clientAuditToken:v59 sinkID:sinkID cameraInfoByPortType:0];
     [(BWNode *)v43 setName:@"Metadata Remote Queue Sink"];
-    [(BWRemoteQueueSinkNode *)v43 setDelegate:a6];
+    [(BWRemoteQueueSinkNode *)v43 setDelegate:enabled];
     v44 = v14[112];
     v58.receiver = v12;
     v58.super_class = v44;
@@ -1436,7 +1436,7 @@ LABEL_6:
       v57.receiver = v12;
       v57.super_class = v45;
       objc_msgSendSuper2(&v57, sel_setSinkNode_, v43);
-      if ([a3 deferredNodePrepareSupported])
+      if ([pipeline deferredNodePrepareSupported])
       {
         if (a2)
         {
@@ -1461,16 +1461,16 @@ LABEL_6:
 
         if (([objc_msgSend(v47 "sinkConfiguration")] & 1) == 0)
         {
-          [a3 enableDeferredPrepareForNodesNotInPathOfSinkNode:v43];
+          [pipeline enableDeferredPrepareForNodesNotInPathOfSinkNode:v43];
           if (v12[10])
           {
-            [a3 enableDeferredPrepareForNodesNotInPathOfSinkNode:?];
+            [pipeline enableDeferredPrepareForNodesNotInPathOfSinkNode:?];
           }
         }
       }
 
       [(BWNode *)v43 input];
-      if ([OUTLINED_FUNCTION_40_9() connectOutput:v38 toInput:? pipelineStage:?])
+      if ([OUTLINED_FUNCTION_40_9() connectOutput:output toInput:? pipelineStage:?])
       {
         goto LABEL_24;
       }

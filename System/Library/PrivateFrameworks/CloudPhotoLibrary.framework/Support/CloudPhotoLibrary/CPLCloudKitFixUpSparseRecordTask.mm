@@ -1,37 +1,37 @@
 @interface CPLCloudKitFixUpSparseRecordTask
-- (CPLCloudKitFixUpSparseRecordTask)initWithController:(id)a3 tasks:(id)a4 transportScopeMapping:(id)a5 completionHandler:(id)a6;
-- (void)_fetchSparseRecordsWithCompletionHandler:(id)a3;
-- (void)_updateSparseRecords:(id)a3 currentUserRecordID:(id)a4 completionHandler:(id)a5;
+- (CPLCloudKitFixUpSparseRecordTask)initWithController:(id)controller tasks:(id)tasks transportScopeMapping:(id)mapping completionHandler:(id)handler;
+- (void)_fetchSparseRecordsWithCompletionHandler:(id)handler;
+- (void)_updateSparseRecords:(id)records currentUserRecordID:(id)d completionHandler:(id)handler;
 - (void)runOperations;
 @end
 
 @implementation CPLCloudKitFixUpSparseRecordTask
 
-- (CPLCloudKitFixUpSparseRecordTask)initWithController:(id)a3 tasks:(id)a4 transportScopeMapping:(id)a5 completionHandler:(id)a6
+- (CPLCloudKitFixUpSparseRecordTask)initWithController:(id)controller tasks:(id)tasks transportScopeMapping:(id)mapping completionHandler:(id)handler
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  tasksCopy = tasks;
+  mappingCopy = mapping;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = CPLCloudKitFixUpSparseRecordTask;
-  v14 = [(CPLCloudKitTransportTask *)&v19 initWithController:a3];
+  v14 = [(CPLCloudKitTransportTask *)&v19 initWithController:controller];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_tasks, a4);
-    v16 = [v13 copy];
+    objc_storeStrong(&v14->_tasks, tasks);
+    v16 = [handlerCopy copy];
     completionHandler = v15->_completionHandler;
     v15->_completionHandler = v16;
 
-    [(CPLCloudKitTransportTask *)v15 setTransportScopeMapping:v12];
+    [(CPLCloudKitTransportTask *)v15 setTransportScopeMapping:mappingCopy];
   }
 
   return v15;
 }
 
-- (void)_fetchSparseRecordsWithCompletionHandler:(id)a3
+- (void)_fetchSparseRecordsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [[NSMutableArray alloc] initWithCapacity:{-[NSArray count](self->_tasks, "count")}];
   v15 = 0u;
   v16 = 0u;
@@ -53,8 +53,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * v10) privateCloudScopedIdentifier];
-        [v5 addObject:v11];
+        privateCloudScopedIdentifier = [*(*(&v15 + 1) + 8 * v10) privateCloudScopedIdentifier];
+        [v5 addObject:privateCloudScopedIdentifier];
 
         v10 = v10 + 1;
       }
@@ -70,29 +70,29 @@
   v13[1] = 3221225472;
   v13[2] = sub_100074464;
   v13[3] = &unk_100275698;
-  v14 = v4;
-  v12 = v4;
+  v14 = handlerCopy;
+  v12 = handlerCopy;
   [(CPLCloudKitTransportTask *)self fetchRecordWithScopedIdentifiers:v5 completionHandler:v13];
 }
 
-- (void)_updateSparseRecords:(id)a3 currentUserRecordID:(id)a4 completionHandler:(id)a5
+- (void)_updateSparseRecords:(id)records currentUserRecordID:(id)d completionHandler:(id)handler
 {
-  v9 = a3;
-  v65 = a4;
-  v10 = a5;
+  recordsCopy = records;
+  dCopy = d;
+  handlerCopy = handler;
   v76 = 0;
-  LOBYTE(a5) = [(CPLCloudKitTransportTask *)self shouldRunOperationsWithError:&v76];
+  LOBYTE(handler) = [(CPLCloudKitTransportTask *)self shouldRunOperationsWithError:&v76];
   v11 = v76;
   v12 = v11;
-  if ((a5 & 1) == 0)
+  if ((handler & 1) == 0)
   {
-    v10[2](v10, v11);
+    handlerCopy[2](handlerCopy, v11);
     goto LABEL_48;
   }
 
   v59 = a2;
   v60 = v11;
-  v61 = v10;
+  v61 = handlerCopy;
   v63 = [[NSMutableArray alloc] initWithCapacity:{-[NSArray count](self->_tasks, "count")}];
   v72 = 0u;
   v73 = 0u;
@@ -101,7 +101,7 @@
   v58 = 272;
   obj = self->_tasks;
   v13 = [(NSArray *)obj countByEnumeratingWithState:&v72 objects:v85 count:16];
-  v14 = self;
+  selfCopy = self;
   if (!v13)
   {
     goto LABEL_41;
@@ -109,8 +109,8 @@
 
   v15 = v13;
   v16 = *v73;
-  v62 = v9;
-  v64 = self;
+  v62 = recordsCopy;
+  selfCopy2 = self;
   do
   {
     for (i = 0; i != v15; i = i + 1)
@@ -121,8 +121,8 @@
       }
 
       v18 = *(*(&v72 + 1) + 8 * i);
-      v19 = [v18 privateCloudScopedIdentifier];
-      v20 = [v9 objectForKeyedSubscript:v19];
+      privateCloudScopedIdentifier = [v18 privateCloudScopedIdentifier];
+      v20 = [recordsCopy objectForKeyedSubscript:privateCloudScopedIdentifier];
 
       if (!v20)
       {
@@ -134,15 +134,15 @@
         v21 = sub_1000038DC();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          v22 = [v18 privateCloudScopedIdentifier];
-          v23 = [v18 sharedCloudScopedIdentifier];
-          v24 = [v18 realCloudScopedIdentifier];
+          privateCloudScopedIdentifier2 = [v18 privateCloudScopedIdentifier];
+          sharedCloudScopedIdentifier = [v18 sharedCloudScopedIdentifier];
+          realCloudScopedIdentifier = [v18 realCloudScopedIdentifier];
           *buf = 138412802;
-          v78 = v22;
+          v78 = privateCloudScopedIdentifier2;
           v79 = 2112;
-          v80 = v23;
+          v80 = sharedCloudScopedIdentifier;
           v81 = 2112;
-          v82 = v24;
+          v82 = realCloudScopedIdentifier;
           v25 = v21;
           v26 = "Sparse record %@ can't be found anymore. No need to fix-up its sharing record scoped identifier (%@ -> %@)";
 LABEL_15:
@@ -164,15 +164,15 @@ LABEL_16:
         v21 = sub_1000038DC();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          v22 = [v18 privateCloudScopedIdentifier];
-          v23 = [v18 sharedCloudScopedIdentifier];
-          v24 = [v18 realCloudScopedIdentifier];
+          privateCloudScopedIdentifier2 = [v18 privateCloudScopedIdentifier];
+          sharedCloudScopedIdentifier = [v18 sharedCloudScopedIdentifier];
+          realCloudScopedIdentifier = [v18 realCloudScopedIdentifier];
           *buf = 138412802;
-          v78 = v22;
+          v78 = privateCloudScopedIdentifier2;
           v79 = 2112;
-          v80 = v23;
+          v80 = sharedCloudScopedIdentifier;
           v81 = 2112;
-          v82 = v24;
+          v82 = realCloudScopedIdentifier;
           v25 = v21;
           v26 = "Sparse record %@ is expunged. No need to fix-up its sharing record scoped identifier (%@ -> %@)";
           goto LABEL_15;
@@ -182,14 +182,14 @@ LABEL_16:
       }
 
       v71 = 0;
-      v27 = [v20 cpl_sharingRecordScopedIdentifierWithScopeProvider:v14 currentUserRecordID:v65 isSparseRecord:&v71];
+      v27 = [v20 cpl_sharingRecordScopedIdentifierWithScopeProvider:selfCopy currentUserRecordID:dCopy isSparseRecord:&v71];
       v28 = v27;
       if (v71)
       {
         if (v27)
         {
-          v29 = [v18 sharedCloudScopedIdentifier];
-          v30 = [v28 isEqual:v29];
+          sharedCloudScopedIdentifier2 = [v18 sharedCloudScopedIdentifier];
+          v30 = [v28 isEqual:sharedCloudScopedIdentifier2];
 
           if (v30)
           {
@@ -198,56 +198,56 @@ LABEL_16:
               v31 = sub_1000038DC();
               if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
               {
-                v32 = [v18 privateCloudScopedIdentifier];
-                v33 = [v18 sharedCloudScopedIdentifier];
-                v34 = [v18 realCloudScopedIdentifier];
+                privateCloudScopedIdentifier3 = [v18 privateCloudScopedIdentifier];
+                sharedCloudScopedIdentifier3 = [v18 sharedCloudScopedIdentifier];
+                realCloudScopedIdentifier2 = [v18 realCloudScopedIdentifier];
                 *buf = 138412802;
-                v78 = v32;
+                v78 = privateCloudScopedIdentifier3;
                 v79 = 2112;
-                v80 = v33;
+                v80 = sharedCloudScopedIdentifier3;
                 v81 = 2112;
-                v82 = v34;
+                v82 = realCloudScopedIdentifier2;
                 _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Will fix sparse record %@'s sharing record scoped identifier (%@ -> %@)", buf, 0x20u);
               }
             }
 
-            v35 = [v18 realCloudScopedIdentifier];
-            v36 = [v35 scopeIdentifier];
-            v37 = [(CPLCloudKitTransportTask *)v64 cloudKitScopeForScopeIdentifier:v36];
+            realCloudScopedIdentifier3 = [v18 realCloudScopedIdentifier];
+            scopeIdentifier = [realCloudScopedIdentifier3 scopeIdentifier];
+            v37 = [(CPLCloudKitTransportTask *)selfCopy2 cloudKitScopeForScopeIdentifier:scopeIdentifier];
 
             if (!v37)
             {
-              sub_1001A4958(v18, v59, v64);
+              sub_1001A4958(v18, v59, selfCopy2);
             }
 
-            v38 = [v18 realCloudScopedIdentifier];
-            v39 = [v38 identifier];
-            v40 = [v37 recordIDWithRecordName:v39];
+            realCloudScopedIdentifier4 = [v18 realCloudScopedIdentifier];
+            identifier = [realCloudScopedIdentifier4 identifier];
+            v40 = [v37 recordIDWithRecordName:identifier];
 
-            [v20 cpl_updatePrivateRecordSharedToRecordWithID:v40 currentUserRecordID:v65 setSparseRecordFlag:0 force:0];
+            [v20 cpl_updatePrivateRecordSharedToRecordWithID:v40 currentUserRecordID:dCopy setSparseRecordFlag:0 force:0];
             [v63 addObject:v20];
 
-            v9 = v62;
+            recordsCopy = v62;
             goto LABEL_36;
           }
 
-          v14 = v64;
+          selfCopy = selfCopy2;
           if ((_CPLSilentLogging & 1) == 0)
           {
             v37 = sub_1000038DC();
             if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
             {
-              v44 = [v18 privateCloudScopedIdentifier];
-              v45 = [v18 sharedCloudScopedIdentifier];
-              v46 = [v18 realCloudScopedIdentifier];
+              privateCloudScopedIdentifier4 = [v18 privateCloudScopedIdentifier];
+              sharedCloudScopedIdentifier4 = [v18 sharedCloudScopedIdentifier];
+              realCloudScopedIdentifier5 = [v18 realCloudScopedIdentifier];
               *buf = 138413058;
-              v78 = v44;
+              v78 = privateCloudScopedIdentifier4;
               v79 = 2112;
               v80 = v28;
               v81 = 2112;
-              v82 = v45;
+              v82 = sharedCloudScopedIdentifier4;
               v83 = 2112;
-              v84 = v46;
+              v84 = realCloudScopedIdentifier5;
               v47 = v37;
               v48 = "Record %@ is sparse but has already been fixed to point to %@. No need to fix-up its sharing record scoped identifier (%@ -> %@)";
               v49 = 42;
@@ -263,15 +263,15 @@ LABEL_16:
           v37 = sub_1000038DC();
           if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
           {
-            v44 = [v18 privateCloudScopedIdentifier];
-            v45 = [v18 sharedCloudScopedIdentifier];
-            v46 = [v18 realCloudScopedIdentifier];
+            privateCloudScopedIdentifier4 = [v18 privateCloudScopedIdentifier];
+            sharedCloudScopedIdentifier4 = [v18 sharedCloudScopedIdentifier];
+            realCloudScopedIdentifier5 = [v18 realCloudScopedIdentifier];
             *buf = 138412802;
-            v78 = v44;
+            v78 = privateCloudScopedIdentifier4;
             v79 = 2112;
-            v80 = v45;
+            v80 = sharedCloudScopedIdentifier4;
             v81 = 2112;
-            v82 = v46;
+            v82 = realCloudScopedIdentifier5;
             v47 = v37;
             v48 = "Record %@ is sparse but pointing to an unknown sharing zone. No need to fix-up its sharing record scoped identifier (%@ -> %@)";
             v49 = 32;
@@ -279,7 +279,7 @@ LABEL_35:
             _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, v48, buf, v49);
 
 LABEL_36:
-            v14 = v64;
+            selfCopy = selfCopy2;
           }
 
 LABEL_37:
@@ -291,18 +291,18 @@ LABEL_37:
         v37 = sub_1000038DC();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
         {
-          v41 = [v18 privateCloudScopedIdentifier];
-          v42 = [v18 sharedCloudScopedIdentifier];
-          v43 = [v18 realCloudScopedIdentifier];
+          privateCloudScopedIdentifier5 = [v18 privateCloudScopedIdentifier];
+          sharedCloudScopedIdentifier5 = [v18 sharedCloudScopedIdentifier];
+          realCloudScopedIdentifier6 = [v18 realCloudScopedIdentifier];
           *buf = 138412802;
-          v78 = v41;
+          v78 = privateCloudScopedIdentifier5;
           v79 = 2112;
-          v80 = v42;
+          v80 = sharedCloudScopedIdentifier5;
           v81 = 2112;
-          v82 = v43;
+          v82 = realCloudScopedIdentifier6;
           _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "Record %@ is not sparse anymore. No need to fix-up its sharing record scoped identifier (%@ -> %@)", buf, 0x20u);
 
-          v14 = v64;
+          selfCopy = selfCopy2;
         }
 
         goto LABEL_37;
@@ -319,18 +319,18 @@ LABEL_41:
 
   if ([v63 count])
   {
-    [*(&v14->super.super.isa + v58) firstObject];
-    v51 = v50 = v14;
-    v52 = [v51 privateCloudScopedIdentifier];
-    v53 = [v52 scopeIdentifier];
+    [*(&selfCopy->super.super.isa + v58) firstObject];
+    v51 = v50 = selfCopy;
+    privateCloudScopedIdentifier6 = [v51 privateCloudScopedIdentifier];
+    scopeIdentifier2 = [privateCloudScopedIdentifier6 scopeIdentifier];
 
-    v10 = v61;
-    if (!v53)
+    handlerCopy = v61;
+    if (!scopeIdentifier2)
     {
       sub_1001A4B64(v59, v50);
     }
 
-    v54 = [(CPLCloudKitTransportTask *)v50 cloudKitScopeForScopeIdentifier:v53];
+    v54 = [(CPLCloudKitTransportTask *)v50 cloudKitScopeForScopeIdentifier:scopeIdentifier2];
     v55 = v50;
     if (!v54)
     {
@@ -354,7 +354,7 @@ LABEL_41:
 
   else
   {
-    v10 = v61;
+    handlerCopy = v61;
     v61[2](v61, 0);
   }
 

@@ -1,18 +1,18 @@
 @interface WFUserJoinEvent
-- (id)_eventTypeStringForType:(int64_t)a3;
-- (id)_sectionCountsToJSONString:(id)a3;
+- (id)_eventTypeStringForType:(int64_t)type;
+- (id)_sectionCountsToJSONString:(id)string;
 @end
 
 @implementation WFUserJoinEvent
 
-- (id)_sectionCountsToJSONString:(id)a3
+- (id)_sectionCountsToJSONString:(id)string
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  stringCopy = string;
+  if (stringCopy)
   {
     v12 = 0;
-    v4 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v3 options:0 error:&v12];
+    v4 = [MEMORY[0x277CCAAA0] dataWithJSONObject:stringCopy options:0 error:&v12];
     v5 = v12;
     if (v4)
     {
@@ -28,7 +28,7 @@
         *buf = 136315394;
         v14 = "[WFUserJoinEvent _sectionCountsToJSONString:]";
         v15 = 2112;
-        v16 = v3;
+        v16 = stringCopy;
         _os_log_impl(&dword_273ECD000, v8, v9, "%s: failed to create json from dictionary %@", buf, 0x16u);
       }
 
@@ -48,16 +48,16 @@
   return v7;
 }
 
-- (id)_eventTypeStringForType:(int64_t)a3
+- (id)_eventTypeStringForType:(int64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_279EBE680[a3];
+    return off_279EBE680[type];
   }
 }
 

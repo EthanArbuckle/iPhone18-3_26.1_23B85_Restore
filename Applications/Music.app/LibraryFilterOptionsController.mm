@@ -1,12 +1,12 @@
 @interface LibraryFilterOptionsController
-+ (BOOL)isFilteringToFavoritesWithStorageKey:(id)a3 legacyStorageKey:(id)a4;
-+ (void)updateFavoriteFilter:(BOOL)a3 storageKey:(id)a4;
++ (BOOL)isFilteringToFavoritesWithStorageKey:(id)key legacyStorageKey:(id)storageKey;
++ (void)updateFavoriteFilter:(BOOL)filter storageKey:(id)key;
 - (_TtC5Music30LibraryFilterOptionsController)init;
 @end
 
 @implementation LibraryFilterOptionsController
 
-+ (BOOL)isFilteringToFavoritesWithStorageKey:(id)a3 legacyStorageKey:(id)a4
++ (BOOL)isFilteringToFavoritesWithStorageKey:(id)key legacyStorageKey:(id)storageKey
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   static String._unconditionallyBridgeFromObjectiveC(_:)();
@@ -15,10 +15,10 @@
   return v4 & 1;
 }
 
-+ (void)updateFavoriteFilter:(BOOL)a3 storageKey:(id)a4
++ (void)updateFavoriteFilter:(BOOL)filter storageKey:(id)key
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-  sub_100482D8C(a3, v5, v6);
+  sub_100482D8C(filter, v5, v6);
 }
 
 - (_TtC5Music30LibraryFilterOptionsController)init

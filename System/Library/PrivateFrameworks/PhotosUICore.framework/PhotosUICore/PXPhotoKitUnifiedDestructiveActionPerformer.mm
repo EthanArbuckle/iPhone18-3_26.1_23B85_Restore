@@ -1,14 +1,14 @@
 @interface PXPhotoKitUnifiedDestructiveActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group;
 + (BOOL)canPerformOnSubsetOfSelection;
 + (id)_containedPerformerClasses;
-+ (id)_localizedTitleForAsset:(id)a3 titleUseCase:(unint64_t)a4 key:(id)a5;
-+ (id)_localizedTitleForAssets:(id)a3 titleUseCase:(unint64_t)a4 key:(id)a5;
-+ (id)createBarButtonItemWithTarget:(id)a3 action:(SEL)a4 actionManager:(id)a5;
++ (id)_localizedTitleForAsset:(id)asset titleUseCase:(unint64_t)case key:(id)key;
++ (id)_localizedTitleForAssets:(id)assets titleUseCase:(unint64_t)case key:(id)key;
++ (id)createBarButtonItemWithTarget:(id)target action:(SEL)action actionManager:(id)manager;
 - (NSArray)performerClasses;
 - (id)createContainedPerformers;
-- (void)_handleActionPickForPerformerClass:(Class)a3;
-- (void)completeUserInteractionTaskWithSuccess:(BOOL)a3 error:(id)a4;
+- (void)_handleActionPickForPerformerClass:(Class)class;
+- (void)completeUserInteractionTaskWithSuccess:(BOOL)success error:(id)error;
 - (void)performUserInteractionTask;
 @end
 
@@ -31,12 +31,12 @@ id __72__PXPhotoKitUnifiedDestructiveActionPerformer_createContainedPerformers__
   return v5;
 }
 
-- (void)_handleActionPickForPerformerClass:(Class)a3
+- (void)_handleActionPickForPerformerClass:(Class)class
 {
-  v5 = [(PXActionPerformer *)self actionType];
-  v6 = [(PXPhotoKitAssetActionPerformer *)self createPerformerWithClass:a3 actionType:v5];
+  actionType = [(PXActionPerformer *)self actionType];
+  v6 = [(PXPhotoKitAssetActionPerformer *)self createPerformerWithClass:class actionType:actionType];
 
-  [v6 setShouldSkipUserConfirmation:{-[objc_class isActionDestructive](a3, "isActionDestructive") ^ 1}];
+  [v6 setShouldSkipUserConfirmation:{-[objc_class isActionDestructive](class, "isActionDestructive") ^ 1}];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __82__PXPhotoKitUnifiedDestructiveActionPerformer__handleActionPickForPerformerClass___block_invoke;
@@ -45,11 +45,11 @@ id __72__PXPhotoKitUnifiedDestructiveActionPerformer_createContainedPerformers__
   [v6 performActionWithCompletionHandler:v7];
 }
 
-- (void)completeUserInteractionTaskWithSuccess:(BOOL)a3 error:(id)a4
+- (void)completeUserInteractionTaskWithSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
+  successCopy = success;
   v8 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  errorCopy = error;
   if ([(PXActionPerformer *)self state]!= 10)
   {
     PXAssertGetLog();
@@ -57,7 +57,7 @@ id __72__PXPhotoKitUnifiedDestructiveActionPerformer_createContainedPerformers__
 
   v7.receiver = self;
   v7.super_class = PXPhotoKitUnifiedDestructiveActionPerformer;
-  [(PXActionPerformer *)&v7 completeUserInteractionTaskWithSuccess:v4 error:v6];
+  [(PXActionPerformer *)&v7 completeUserInteractionTaskWithSuccess:successCopy error:errorCopy];
 }
 
 - (NSArray)performerClasses
@@ -73,16 +73,16 @@ id __72__PXPhotoKitUnifiedDestructiveActionPerformer_createContainedPerformers__
   {
     v20 = 192;
     v4 = objc_alloc(MEMORY[0x1E695DF70]);
-    v23 = self;
-    v5 = [objc_opt_class() _containedPerformerClasses];
-    v21 = [v4 initWithCapacity:{objc_msgSend(v5, "count")}];
+    selfCopy = self;
+    _containedPerformerClasses = [objc_opt_class() _containedPerformerClasses];
+    v21 = [v4 initWithCapacity:{objc_msgSend(_containedPerformerClasses, "count")}];
 
-    v6 = [(PXAssetActionPerformer *)v23 selectionSnapshot];
-    v7 = [v6 selectedIndexPaths];
+    selectionSnapshot = [(PXAssetActionPerformer *)selfCopy selectionSnapshot];
+    selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
 
-    v25 = [(PXPhotoKitAssetActionPerformer *)v23 person];
-    v24 = [(PXPhotoKitAssetActionPerformer *)v23 socialGroup];
-    v8 = [(PXPhotoKitAssetActionPerformer *)v23 photosDataSourceSnapshot];
+    person = [(PXPhotoKitAssetActionPerformer *)selfCopy person];
+    socialGroup = [(PXPhotoKitAssetActionPerformer *)selfCopy socialGroup];
+    photosDataSourceSnapshot = [(PXPhotoKitAssetActionPerformer *)selfCopy photosDataSourceSnapshot];
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
@@ -105,35 +105,35 @@ id __72__PXPhotoKitUnifiedDestructiveActionPerformer_createContainedPerformers__
           v32 = 0;
           v33 = &v32;
           v34 = 0x2020000000;
-          v35 = [v7 count] > 0;
+          v35 = [selectedIndexPaths count] > 0;
           v26[0] = MEMORY[0x1E69E9820];
           v26[1] = 3221225472;
           v26[2] = __63__PXPhotoKitUnifiedDestructiveActionPerformer_performerClasses__block_invoke;
           v26[3] = &unk_1E772E1D8;
-          v27 = v8;
+          v27 = photosDataSourceSnapshot;
           v30 = &v32;
           v31 = v12;
-          v28 = v25;
-          v29 = v24;
-          [v7 enumerateItemIndexSetsUsingBlock:v26];
+          v28 = person;
+          v29 = socialGroup;
+          [selectedIndexPaths enumerateItemIndexSetsUsingBlock:v26];
           if (*(v33 + 24) == 1)
           {
             if ([v12 isEqual:objc_opt_class()])
             {
-              v13 = [(PXActionPerformer *)v23 delegate];
+              delegate = [(PXActionPerformer *)selfCopy delegate];
               v14 = objc_opt_respondsToSelector();
 
               if (v14)
               {
-                v15 = [(PXActionPerformer *)v23 delegate];
-                v16 = [v15 hostViewControllerForActionPerformer:v23];
+                delegate2 = [(PXActionPerformer *)selfCopy delegate];
+                v16 = [delegate2 hostViewControllerForActionPerformer:selfCopy];
 
                 if ([v16 conformsToProtocol:&unk_1F1B45960])
                 {
                   *(v33 + 24) = 0;
                 }
 
-                v17 = [(PXActionPerformer *)v23 sender];
+                sender = [(PXActionPerformer *)selfCopy sender];
                 objc_opt_class();
                 isKindOfClass = objc_opt_isKindOfClass();
 
@@ -159,7 +159,7 @@ id __72__PXPhotoKitUnifiedDestructiveActionPerformer_createContainedPerformers__
       while (v9);
     }
 
-    objc_storeStrong((&v23->super.super.super.super.isa + v20), v21);
+    objc_storeStrong((&selfCopy->super.super.super.super.isa + v20), v21);
   }
 
   return v21;
@@ -197,8 +197,8 @@ void __63__PXPhotoKitUnifiedDestructiveActionPerformer_performerClasses__block_i
 
 - (void)performUserInteractionTask
 {
-  v4 = [(PXActionPerformer *)self presentationEnvironment];
-  v5 = [v4 presentingViewController];
+  presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
+  presentingViewController = [presentationEnvironment presentingViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -210,12 +210,12 @@ void __63__PXPhotoKitUnifiedDestructiveActionPerformer_performerClasses__block_i
 
   else
   {
-    v7 = [(PXPhotoKitUnifiedDestructiveActionPerformer *)self performerClasses];
-    if ([v7 count] == 1)
+    performerClasses = [(PXPhotoKitUnifiedDestructiveActionPerformer *)self performerClasses];
+    if ([performerClasses count] == 1)
     {
-      v8 = [v7 lastObject];
-      v9 = [(PXActionPerformer *)self actionType];
-      v10 = [(PXPhotoKitAssetActionPerformer *)self createPerformerWithClass:v8 actionType:v9];
+      lastObject = [performerClasses lastObject];
+      actionType = [(PXActionPerformer *)self actionType];
+      v10 = [(PXPhotoKitAssetActionPerformer *)self createPerformerWithClass:lastObject actionType:actionType];
 
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
@@ -227,18 +227,18 @@ void __63__PXPhotoKitUnifiedDestructiveActionPerformer_performerClasses__block_i
 
     else
     {
-      v11 = [(PXPhotoKitAssetActionPerformer *)self assets];
-      v12 = [(PXActionPerformer *)self presentationEnvironment];
+      assets = [(PXPhotoKitAssetActionPerformer *)self assets];
+      presentationEnvironment2 = [(PXActionPerformer *)self presentationEnvironment];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __73__PXPhotoKitUnifiedDestructiveActionPerformer_performUserInteractionTask__block_invoke_2;
       v16[3] = &unk_1E772E188;
-      v17 = v11;
-      v18 = self;
-      v19 = v7;
+      v17 = assets;
+      selfCopy = self;
+      v19 = performerClasses;
       v20 = a2;
-      v10 = v11;
-      v13 = [v12 presentAlertWithConfigurationHandler:v16];
+      v10 = assets;
+      v13 = [presentationEnvironment2 presentAlertWithConfigurationHandler:v16];
 
       if (!v13)
       {
@@ -335,16 +335,16 @@ void __73__PXPhotoKitUnifiedDestructiveActionPerformer_performUserInteractionTas
   [WeakRetained _handleActionPickForPerformerClass:*(a1 + 40)];
 }
 
-+ (id)_localizedTitleForAssets:(id)a3 titleUseCase:(unint64_t)a4 key:(id)a5
++ (id)_localizedTitleForAssets:(id)assets titleUseCase:(unint64_t)case key:(id)key
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 count] <= 1)
+  assetsCopy = assets;
+  keyCopy = key;
+  if ([assetsCopy count] <= 1)
   {
-    v11 = [v8 firstObject];
+    firstObject = [assetsCopy firstObject];
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v12 = v11;
+      v12 = firstObject;
     }
 
     else
@@ -352,35 +352,35 @@ void __73__PXPhotoKitUnifiedDestructiveActionPerformer_performUserInteractionTas
       v12 = 0;
     }
 
-    v10 = [a1 _localizedTitleForAsset:v12 titleUseCase:a4 key:v9];
+    v10 = [self _localizedTitleForAsset:v12 titleUseCase:case key:keyCopy];
   }
 
   else
   {
-    v10 = v9;
+    v10 = keyCopy;
   }
 
   return v10;
 }
 
-+ (id)_localizedTitleForAsset:(id)a3 titleUseCase:(unint64_t)a4 key:(id)a5
++ (id)_localizedTitleForAsset:(id)asset titleUseCase:(unint64_t)case key:(id)key
 {
-  v6 = a3;
-  v7 = a5;
-  if ([v6 px_isSharedAlbumAsset])
+  assetCopy = asset;
+  keyCopy = key;
+  if ([assetCopy px_isSharedAlbumAsset])
   {
     v8 = @"SharedAlbum";
   }
 
-  else if ([v6 px_isUnsavedSyndicatedAsset])
+  else if ([assetCopy px_isUnsavedSyndicatedAsset])
   {
-    v9 = [v6 mediaType];
-    if (v9 > 3)
+    mediaType = [assetCopy mediaType];
+    if (mediaType > 3)
     {
       goto LABEL_8;
     }
 
-    v8 = off_1E772E220[v9];
+    v8 = off_1E772E220[mediaType];
   }
 
   else
@@ -388,19 +388,19 @@ void __73__PXPhotoKitUnifiedDestructiveActionPerformer_performUserInteractionTas
     v8 = @"Library";
   }
 
-  v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", v7, v8];
+  v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", keyCopy, v8];
 
-  v7 = v10;
+  keyCopy = v10;
 LABEL_8:
 
-  return v7;
+  return keyCopy;
 }
 
-+ (id)createBarButtonItemWithTarget:(id)a3 action:(SEL)a4 actionManager:(id)a5
++ (id)createBarButtonItemWithTarget:(id)target action:(SEL)action actionManager:(id)manager
 {
   v6 = MEMORY[0x1E69DC708];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithBarButtonSystemItem:16 target:v7 action:a4];
+  targetCopy = target;
+  v8 = [[v6 alloc] initWithBarButtonSystemItem:16 target:targetCopy action:action];
 
   return v8;
 }
@@ -412,8 +412,8 @@ LABEL_8:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [a1 _containedPerformerClasses];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  _containedPerformerClasses = [self _containedPerformerClasses];
+  v3 = [_containedPerformerClasses countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -423,7 +423,7 @@ LABEL_8:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_containedPerformerClasses);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) canPerformOnSubsetOfSelection])
@@ -433,7 +433,7 @@ LABEL_8:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [_containedPerformerClasses countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -448,19 +448,19 @@ LABEL_11:
   return v3;
 }
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group
 {
   v26 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  assetCopy = asset;
+  collectionCopy = collection;
+  personCopy = person;
+  groupCopy = group;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v14 = [a1 _containedPerformerClasses];
-  v15 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  _containedPerformerClasses = [self _containedPerformerClasses];
+  v15 = [_containedPerformerClasses countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v15)
   {
     v16 = v15;
@@ -472,7 +472,7 @@ LABEL_11:
       {
         if (*v22 != v18)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(_containedPerformerClasses);
         }
 
         if (v17)
@@ -482,11 +482,11 @@ LABEL_11:
 
         else
         {
-          v17 = [*(*(&v21 + 1) + 8 * i) canPerformOnAsset:v10 inAssetCollection:v11 person:v12 socialGroup:v13];
+          v17 = [*(*(&v21 + 1) + 8 * i) canPerformOnAsset:assetCopy inAssetCollection:collectionCopy person:personCopy socialGroup:groupCopy];
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v16 = [_containedPerformerClasses countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v16);

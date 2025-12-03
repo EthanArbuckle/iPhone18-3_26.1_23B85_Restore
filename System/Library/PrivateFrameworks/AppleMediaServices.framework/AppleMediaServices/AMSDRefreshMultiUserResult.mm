@@ -1,23 +1,23 @@
 @interface AMSDRefreshMultiUserResult
-- (AMSDRefreshMultiUserResult)initWithHomes:(id)a3 options:(id)a4;
+- (AMSDRefreshMultiUserResult)initWithHomes:(id)homes options:(id)options;
 - (BOOL)enabledThrottling;
 - (NSString)hashedDescription;
 @end
 
 @implementation AMSDRefreshMultiUserResult
 
-- (AMSDRefreshMultiUserResult)initWithHomes:(id)a3 options:(id)a4
+- (AMSDRefreshMultiUserResult)initWithHomes:(id)homes options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  homesCopy = homes;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = AMSDRefreshMultiUserResult;
   v9 = [(AMSDRefreshMultiUserResult *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_homes, a3);
-    objc_storeStrong(&v10->_options, a4);
+    objc_storeStrong(&v9->_homes, homes);
+    objc_storeStrong(&v10->_options, options);
   }
 
   return v10;
@@ -63,7 +63,7 @@
   }
 
   [v3 appendFormat:@"\n  enabledThrottling = %@", v4];
-  v5 = [(AMSDRefreshMultiUserResult *)self errors];
+  errors = [(AMSDRefreshMultiUserResult *)self errors];
   v6 = AMSHashIfNeeded();
   [v3 appendFormat:@"\n  errors = %@", v6];
 
@@ -78,11 +78,11 @@
   }
 
   [v3 appendFormat:@"\n  scheduled = %@", v7];
-  v8 = [(AMSDRefreshMultiUserResult *)self homes];
+  homes = [(AMSDRefreshMultiUserResult *)self homes];
   v9 = AMSHashIfNeeded();
   [v3 appendFormat:@"\n  homes = %@", v9];
 
-  v10 = [(AMSDRefreshMultiUserResult *)self options];
+  options = [(AMSDRefreshMultiUserResult *)self options];
   v11 = AMSHashIfNeeded();
   [v3 appendFormat:@"\n  options = %@", v11];
 

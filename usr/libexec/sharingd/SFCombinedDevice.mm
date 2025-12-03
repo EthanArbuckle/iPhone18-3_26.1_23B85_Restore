@@ -1,41 +1,41 @@
 @interface SFCombinedDevice
-- (BOOL)_canTransition:(int)a3;
-- (BOOL)canTransition:(int)a3;
+- (BOOL)_canTransition:(int)transition;
+- (BOOL)canTransition:(int)transition;
 - (BOOL)isReady;
 - (NSString)effectiveID;
 - (NSString)name;
 - (id)description;
 - (void)resetTicks;
-- (void)setNextState:(int)a3;
-- (void)setState:(int)a3;
+- (void)setNextState:(int)state;
+- (void)setState:(int)state;
 @end
 
 @implementation SFCombinedDevice
 
 - (NSString)name
 {
-  v3 = [(SFDevice *)self->_bleDevice name];
-  v4 = v3;
-  if (v3)
+  name = [(SFDevice *)self->_bleDevice name];
+  v4 = name;
+  if (name)
   {
-    v5 = v3;
+    v5 = name;
   }
 
   else
   {
-    v6 = [(RPCompanionLinkDevice *)self->_clinkDevice name];
-    v7 = v6;
-    if (v6)
+    name2 = [(RPCompanionLinkDevice *)self->_clinkDevice name];
+    v7 = name2;
+    if (name2)
     {
-      v8 = v6;
+      name3 = name2;
     }
 
     else
     {
-      v8 = [(TURoute *)self->_route name];
+      name3 = [(TURoute *)self->_route name];
     }
 
-    v5 = v8;
+    v5 = name3;
   }
 
   return v5;
@@ -50,9 +50,9 @@
 
   else
   {
-    v3 = [(RPCompanionLinkDevice *)self->_clinkDevice mediaRouteIdentifier];
-    v2 = v3;
-    if (!v3 || ![(NSString *)v3 length])
+    mediaRouteIdentifier = [(RPCompanionLinkDevice *)self->_clinkDevice mediaRouteIdentifier];
+    v2 = mediaRouteIdentifier;
+    if (!mediaRouteIdentifier || ![(NSString *)mediaRouteIdentifier length])
     {
 
       v2 = 0;
@@ -65,28 +65,28 @@
 - (id)description
 {
   v3 = objc_alloc_init(NSMutableString);
-  v4 = [(SFCombinedDevice *)self name];
-  [v3 appendFormat:@"SFCombinedDevice %@: ", v4];
+  name = [(SFCombinedDevice *)self name];
+  [v3 appendFormat:@"SFCombinedDevice %@: ", name];
 
   bleDevice = self->_bleDevice;
   if (bleDevice)
   {
-    v6 = [(SFDevice *)bleDevice identifier];
-    [v3 appendFormat:@", BLE %@", v6];
+    identifier = [(SFDevice *)bleDevice identifier];
+    [v3 appendFormat:@", BLE %@", identifier];
   }
 
   clinkDevice = self->_clinkDevice;
   if (clinkDevice)
   {
-    v8 = [(RPCompanionLinkDevice *)clinkDevice effectiveIdentifier];
-    [v3 appendFormat:@", CL %@", v8];
+    effectiveIdentifier = [(RPCompanionLinkDevice *)clinkDevice effectiveIdentifier];
+    [v3 appendFormat:@", CL %@", effectiveIdentifier];
   }
 
-  v9 = [(RPCompanionLinkDevice *)self->_clinkDevice mediaRouteIdentifier];
-  v10 = v9;
-  if (v9)
+  mediaRouteIdentifier = [(RPCompanionLinkDevice *)self->_clinkDevice mediaRouteIdentifier];
+  v10 = mediaRouteIdentifier;
+  if (mediaRouteIdentifier)
   {
-    [v3 appendFormat:@", CL.MR %@", v9];
+    [v3 appendFormat:@", CL.MR %@", mediaRouteIdentifier];
   }
 
   if (self->_notificationInfo)
@@ -184,32 +184,32 @@ LABEL_29:
   return v3;
 }
 
-- (BOOL)canTransition:(int)a3
+- (BOOL)canTransition:(int)transition
 {
   v5 = [(SFCombinedDevice *)self _canTransition:?];
   if (!v5 && dword_1009708B0 <= 10 && (dword_1009708B0 != -1 || _LogCategory_Initialize()))
   {
-    sub_1000F5BD8(self, a3);
+    sub_1000F5BD8(self, transition);
   }
 
   return v5;
 }
 
-- (BOOL)_canTransition:(int)a3
+- (BOOL)_canTransition:(int)transition
 {
   LOBYTE(v4) = 0;
-  if (a3 <= 14)
+  if (transition <= 14)
   {
-    if (a3 <= 11)
+    if (transition <= 11)
     {
-      if (a3 == 10)
+      if (transition == 10)
       {
         v5 = ((self->_state - 11) & 0xFFFFFFFB) == 0;
       }
 
       else
       {
-        if (a3 != 11)
+        if (transition != 11)
         {
           return v4 & 1;
         }
@@ -220,9 +220,9 @@ LABEL_29:
       goto LABEL_32;
     }
 
-    if (a3 != 12)
+    if (transition != 12)
     {
-      if (a3 == 13)
+      if (transition == 13)
       {
         if ([(SFCombinedDevice *)self isReady])
         {
@@ -249,16 +249,16 @@ LABEL_32:
     return v4 & 1;
   }
 
-  if (a3 <= 17)
+  if (transition <= 17)
   {
-    if (a3 == 15)
+    if (transition == 15)
     {
       state = self->_state;
       v5 = state == 14 || state == 20;
       goto LABEL_32;
     }
 
-    if (a3 != 16)
+    if (transition != 16)
     {
       v5 = self->_state == 16;
       goto LABEL_32;
@@ -268,16 +268,16 @@ LABEL_32:
     goto LABEL_23;
   }
 
-  if (a3 != 18)
+  if (transition != 18)
   {
-    if (a3 == 19)
+    if (transition == 19)
     {
       v6 = self->_state;
     }
 
     else
     {
-      if (a3 != 20)
+      if (transition != 20)
       {
         return v4 & 1;
       }
@@ -310,9 +310,9 @@ LABEL_32:
       return 1;
     }
 
-    v9 = [(RPCompanionLinkDevice *)self->_clinkDevice mediaRouteIdentifier];
+    mediaRouteIdentifier = [(RPCompanionLinkDevice *)self->_clinkDevice mediaRouteIdentifier];
 
-    if (v9)
+    if (mediaRouteIdentifier)
     {
       if (self->_bleDevice)
       {
@@ -376,31 +376,31 @@ LABEL_32:
   [(SFCombinedDevice *)self setTransferDoneTicks:-1];
   [(SFCombinedDevice *)self setTransferPendingDurationSecs:-1.0];
   [(SFCombinedDevice *)self setTransferPendingStartTicks:-1];
-  v3 = [(SFCombinedDevice *)self notificationBubble];
-  [v3 reset];
+  notificationBubble = [(SFCombinedDevice *)self notificationBubble];
+  [notificationBubble reset];
 
-  v4 = [(SFCombinedDevice *)self transferBubble];
-  [v4 reset];
+  transferBubble = [(SFCombinedDevice *)self transferBubble];
+  [transferBubble reset];
 }
 
-- (void)setNextState:(int)a3
+- (void)setNextState:(int)state
 {
   if (dword_1009708B0 <= 30 && (dword_1009708B0 != -1 || _LogCategory_Initialize()))
   {
-    sub_1000F5D40(self, a3);
+    sub_1000F5D40(self, state);
   }
 
-  self->_nextState = a3;
+  self->_nextState = state;
 }
 
-- (void)setState:(int)a3
+- (void)setState:(int)state
 {
   if (dword_1009708B0 <= 30 && (dword_1009708B0 != -1 || _LogCategory_Initialize()))
   {
-    sub_1000F5DC4(self, a3);
+    sub_1000F5DC4(self, state);
   }
 
-  self->_state = a3;
+  self->_state = state;
 }
 
 @end

@@ -8,14 +8,14 @@
 
 - (void)loadView
 {
-  v3 = self;
+  selfCopy = self;
   v2 = sub_10001D7F8();
-  [(GroupSessionBannerViewController *)v3 setView:v2];
+  [(GroupSessionBannerViewController *)selfCopy setView:v2];
 }
 
 - (UIEdgeInsets)bannerContentOutsets
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10001D7F8();
   [v3 shadowOutsets];
   v5 = v4;

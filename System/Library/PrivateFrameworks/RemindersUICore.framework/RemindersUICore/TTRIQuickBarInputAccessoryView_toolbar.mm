@@ -2,15 +2,15 @@
 - (CGRect)bounds;
 - (CGSize)intrinsicContentSize;
 - (NSString)accessibilityLabel;
-- (_TtC15RemindersUICore38TTRIQuickBarInputAccessoryView_toolbar)initWithCoder:(id)a3;
-- (_TtC15RemindersUICore38TTRIQuickBarInputAccessoryView_toolbar)initWithFrame:(CGRect)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)willMoveToWindow:(id)a3;
+- (_TtC15RemindersUICore38TTRIQuickBarInputAccessoryView_toolbar)initWithCoder:(id)coder;
+- (_TtC15RemindersUICore38TTRIQuickBarInputAccessoryView_toolbar)initWithFrame:(CGRect)frame;
+- (void)setBounds:(CGRect)bounds;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation TTRIQuickBarInputAccessoryView_toolbar
 
-- (_TtC15RemindersUICore38TTRIQuickBarInputAccessoryView_toolbar)initWithCoder:(id)a3
+- (_TtC15RemindersUICore38TTRIQuickBarInputAccessoryView_toolbar)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC15RemindersUICore38TTRIQuickBarInputAccessoryView_toolbar_cachedQuickBarFittingSize;
   *v3 = 0;
@@ -21,13 +21,13 @@
   return result;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
+  windowCopy = window;
   v5 = v7.receiver;
-  [(TTRIQuickBarInputAccessoryView_toolbar *)&v7 willMoveToWindow:v4];
+  [(TTRIQuickBarInputAccessoryView_toolbar *)&v7 willMoveToWindow:windowCopy];
   v6 = &v5[OBJC_IVAR____TtC15RemindersUICore38TTRIQuickBarInputAccessoryView_toolbar_cachedQuickBarFittingSize];
   *v6 = 0;
   *(v6 + 1) = 0;
@@ -37,7 +37,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21D371CC8();
   v5 = v4;
 
@@ -60,33 +60,33 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   ObjectType = swift_getObjectType();
-  v9 = self;
+  selfCopy = self;
   v15.origin.x = x;
   v15.origin.y = y;
   v15.size.width = width;
   v15.size.height = height;
   v10 = CGRectGetWidth(v15);
-  v14.receiver = v9;
+  v14.receiver = selfCopy;
   v14.super_class = ObjectType;
   [(TTRIQuickBarInputAccessoryView_toolbar *)&v14 bounds];
   v11 = CGRectGetWidth(v16);
-  v13.receiver = v9;
+  v13.receiver = selfCopy;
   v13.super_class = ObjectType;
   [(TTRIQuickBarInputAccessoryView_toolbar *)&v13 setBounds:x, y, width, height];
   if (v10 != v11)
   {
-    v12 = v9 + OBJC_IVAR____TtC15RemindersUICore38TTRIQuickBarInputAccessoryView_toolbar_cachedQuickBarFittingSize;
+    v12 = selfCopy + OBJC_IVAR____TtC15RemindersUICore38TTRIQuickBarInputAccessoryView_toolbar_cachedQuickBarFittingSize;
     *v12 = 0;
     *(v12 + 1) = 0;
     v12[16] = 1;
-    [(TTRIQuickBarInputAccessoryView_toolbar *)v9 invalidateIntrinsicContentSize];
+    [(TTRIQuickBarInputAccessoryView_toolbar *)selfCopy invalidateIntrinsicContentSize];
   }
 }
 
@@ -103,7 +103,7 @@
   return v2;
 }
 
-- (_TtC15RemindersUICore38TTRIQuickBarInputAccessoryView_toolbar)initWithFrame:(CGRect)a3
+- (_TtC15RemindersUICore38TTRIQuickBarInputAccessoryView_toolbar)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

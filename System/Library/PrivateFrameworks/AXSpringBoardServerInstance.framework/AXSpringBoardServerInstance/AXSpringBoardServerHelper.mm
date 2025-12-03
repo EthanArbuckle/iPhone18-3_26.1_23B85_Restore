@@ -15,137 +15,137 @@
 - (AXUIClient)guestPassClient;
 - (BOOL)_accessibilityHandleHomeOrLockButtonPress;
 - (BOOL)_accessibilityIsUILocked;
-- (BOOL)_accessibilityShowCoverSheet:(BOOL)a3 serverInstance:(id)a4 completion:(id)a5;
-- (BOOL)_accessibilityShowNotificationCenter:(BOOL)a3 serverInstance:(id)a4;
+- (BOOL)_accessibilityShowCoverSheet:(BOOL)sheet serverInstance:(id)instance completion:(id)completion;
+- (BOOL)_accessibilityShowNotificationCenter:(BOOL)center serverInstance:(id)instance;
 - (BOOL)_isDisplayingAlertController;
 - (BOOL)accessibilityIsBannerVisible;
 - (BOOL)accessibilityIsNotificationVisible;
 - (BOOL)accessibilityIsRemoteTransientOverlayVisible;
-- (BOOL)accessibilityShowControlCenter:(BOOL)a3;
-- (BOOL)areSystemGesturesDisabledByAccessibilityWithServerInstance:(id)a3;
-- (BOOL)areSystemGesturesDisabledNativelyWithServerInstance:(id)a3;
-- (BOOL)canLaunchAsFloatingApplicationForIconView:(id)a3;
-- (BOOL)canLaunchAsPinnedApplicationForIconView:(id)a3;
-- (BOOL)canSetDockIconActivationModeForServerInstance:(id)a3;
+- (BOOL)accessibilityShowControlCenter:(BOOL)center;
+- (BOOL)areSystemGesturesDisabledByAccessibilityWithServerInstance:(id)instance;
+- (BOOL)areSystemGesturesDisabledNativelyWithServerInstance:(id)instance;
+- (BOOL)canLaunchAsFloatingApplicationForIconView:(id)view;
+- (BOOL)canLaunchAsPinnedApplicationForIconView:(id)view;
+- (BOOL)canSetDockIconActivationModeForServerInstance:(id)instance;
 - (BOOL)connectedDevicesRequireAssistiveTouch;
 - (BOOL)currentDevicesHaveAssistiveTouchCustomActions;
-- (BOOL)dismissSiriWithServerInstance:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)hasActiveCallWithServerInstance:(id)a3;
-- (BOOL)hasActiveEndpointCallWithServerInstance:(id)a3;
-- (BOOL)hasActiveOrPendingCallOrFaceTimeWithServerInstance:(id)a3;
-- (BOOL)hasActiveOrPendingCallWithServerInstance:(id)a3;
-- (BOOL)isAppSwitcherPeekingWithServerInstance:(id)a3;
-- (BOOL)isAppSwitcherVisibleWithServerInstance:(id)a3;
-- (BOOL)isBannerVisibleWithServerInstance:(id)a3;
+- (BOOL)dismissSiriWithServerInstance:(id)instance;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)hasActiveCallWithServerInstance:(id)instance;
+- (BOOL)hasActiveEndpointCallWithServerInstance:(id)instance;
+- (BOOL)hasActiveOrPendingCallOrFaceTimeWithServerInstance:(id)instance;
+- (BOOL)hasActiveOrPendingCallWithServerInstance:(id)instance;
+- (BOOL)isAppSwitcherPeekingWithServerInstance:(id)instance;
+- (BOOL)isAppSwitcherVisibleWithServerInstance:(id)instance;
+- (BOOL)isBannerVisibleWithServerInstance:(id)instance;
 - (BOOL)isBuddyRunning;
 - (BOOL)isCarPlayConnected;
-- (BOOL)isChamoisOrFlexibleWindowingEnabledWithServerInstance:(id)a3;
-- (BOOL)isContinuitySessionActiveWithServerInstance:(id)a3;
-- (BOOL)isControlCenterVisibleWithServerInstance:(id)a3;
-- (BOOL)isCoverSheetVisibleWithServerInstance:(id)a3;
-- (BOOL)isDockVisibleWithServerInstance:(id)a3;
-- (BOOL)isGuidedAccessActiveWithServerInstance:(id)a3;
+- (BOOL)isChamoisOrFlexibleWindowingEnabledWithServerInstance:(id)instance;
+- (BOOL)isContinuitySessionActiveWithServerInstance:(id)instance;
+- (BOOL)isControlCenterVisibleWithServerInstance:(id)instance;
+- (BOOL)isCoverSheetVisibleWithServerInstance:(id)instance;
+- (BOOL)isDockVisibleWithServerInstance:(id)instance;
+- (BOOL)isGuidedAccessActiveWithServerInstance:(id)instance;
 - (BOOL)isInCallServiceFrontmost;
 - (BOOL)isLockScreenVisible;
-- (BOOL)isLockScreenVisibleWithServerInstance:(id)a3;
-- (BOOL)isLongLookNotificationVisibleWithServerInstance:(id)a3;
-- (BOOL)isMagnifierVisibleWithServerInstance:(id)a3;
-- (BOOL)isMakingEmergencyCallWithServerInstance:(id)a3;
-- (BOOL)isMenuBarModalWithServerInstance:(id)a3;
-- (BOOL)isMenuBarVisibleWithServerInstance:(id)a3;
-- (BOOL)isNotificationCenterVisibleWithServerInstance:(id)a3;
-- (BOOL)isNotificationVisibleWithServerInstance:(id)a3;
-- (BOOL)isOrientationLockedWithServerInstance:(id)a3;
-- (BOOL)isPIPWindowVisibleWithServerInstance:(id)a3;
+- (BOOL)isLockScreenVisibleWithServerInstance:(id)instance;
+- (BOOL)isLongLookNotificationVisibleWithServerInstance:(id)instance;
+- (BOOL)isMagnifierVisibleWithServerInstance:(id)instance;
+- (BOOL)isMakingEmergencyCallWithServerInstance:(id)instance;
+- (BOOL)isMenuBarModalWithServerInstance:(id)instance;
+- (BOOL)isMenuBarVisibleWithServerInstance:(id)instance;
+- (BOOL)isNotificationCenterVisibleWithServerInstance:(id)instance;
+- (BOOL)isNotificationVisibleWithServerInstance:(id)instance;
+- (BOOL)isOrientationLockedWithServerInstance:(id)instance;
+- (BOOL)isPIPWindowVisibleWithServerInstance:(id)instance;
 - (BOOL)isPasscodeLockVisible;
-- (BOOL)isPasscodeLockVisibleWithServerInstance:(id)a3;
-- (BOOL)isPasscodeRequiredOnLockWithServerInstance:(id)a3;
+- (BOOL)isPasscodeLockVisibleWithServerInstance:(id)instance;
+- (BOOL)isPasscodeRequiredOnLockWithServerInstance:(id)instance;
 - (BOOL)isPreferencesFrontmost;
-- (BOOL)isPurpleBuddyAppFrontmostWithServerInstance:(id)a3;
+- (BOOL)isPurpleBuddyAppFrontmostWithServerInstance:(id)instance;
 - (BOOL)isReachabilityActive;
-- (BOOL)isRemoteTransientOverlayVisibleWithServerInstance:(id)a3;
-- (BOOL)isRingerMutedWithServerInstance:(id)a3;
-- (BOOL)isScreenLockedWithServerInstance:(id)a3;
-- (BOOL)isScreenshotWindowVisibleWithServerInstance:(id)a3;
-- (BOOL)isSettingsAppFrontmostWithServerInstance:(id)a3;
-- (BOOL)isShelfSwitcherVisibleWithServerInstance:(id)a3;
-- (BOOL)isShowingHomescreenWithServerInstance:(id)a3;
-- (BOOL)isShowingNonSystemAppWithServerInstance:(id)a3;
-- (BOOL)isSiriVisibleWithServerInstance:(id)a3;
-- (BOOL)isSpeakThisTemporarilyDisabledWithServerInstance:(id)a3;
-- (BOOL)isSpotlightVisibleWithServerInstance:(id)a3;
-- (BOOL)isStageManagerSwitcherVisibleWithServerInstance:(id)a3;
-- (BOOL)isStatusBarNativeFocusableWithServerInstance:(id)a3 includingNonDismissableElements:(BOOL)a4;
-- (BOOL)isSyncingRestoringResettingOrUpdatingWithServerInstance:(id)a3;
-- (BOOL)isSystemAppFrontmostExcludingSiri:(BOOL)a3 withServerInstance:(id)a4;
-- (BOOL)isSystemAppShowingAnAlertWithServerInstance:(id)a3;
-- (BOOL)isSystemGestureActiveWithServerInstance:(id)a3;
-- (BOOL)isSystemSleepingWithServerInstance:(id)a3;
-- (BOOL)isTodayViewOrAppLibraryVisibleWithServerInstance:(id)a3;
-- (BOOL)isTypeToSiriVisibleWithServerInstance:(id)a3;
-- (BOOL)isVoiceControlRunningWithServerInstance:(id)a3;
-- (BOOL)serverInstance:(id)a3 isShowingRemoteViewType:(int64_t)a4;
-- (BOOL)serverInstance:(id)a3 performMedusaGesture:(unint64_t)a4;
-- (BOOL)serverInstance:(id)a3 showControlCenter:(BOOL)a4;
-- (BOOL)serverInstance:(id)a3 showNotificationCenter:(BOOL)a4;
-- (BOOL)toggleDarkModeWithServerInstance:(id)a3;
-- (double)reachabilityOffsetWithServerInstance:(id)a3;
-- (double)volumeLevelWithServerInstance:(id)a3;
+- (BOOL)isRemoteTransientOverlayVisibleWithServerInstance:(id)instance;
+- (BOOL)isRingerMutedWithServerInstance:(id)instance;
+- (BOOL)isScreenLockedWithServerInstance:(id)instance;
+- (BOOL)isScreenshotWindowVisibleWithServerInstance:(id)instance;
+- (BOOL)isSettingsAppFrontmostWithServerInstance:(id)instance;
+- (BOOL)isShelfSwitcherVisibleWithServerInstance:(id)instance;
+- (BOOL)isShowingHomescreenWithServerInstance:(id)instance;
+- (BOOL)isShowingNonSystemAppWithServerInstance:(id)instance;
+- (BOOL)isSiriVisibleWithServerInstance:(id)instance;
+- (BOOL)isSpeakThisTemporarilyDisabledWithServerInstance:(id)instance;
+- (BOOL)isSpotlightVisibleWithServerInstance:(id)instance;
+- (BOOL)isStageManagerSwitcherVisibleWithServerInstance:(id)instance;
+- (BOOL)isStatusBarNativeFocusableWithServerInstance:(id)instance includingNonDismissableElements:(BOOL)elements;
+- (BOOL)isSyncingRestoringResettingOrUpdatingWithServerInstance:(id)instance;
+- (BOOL)isSystemAppFrontmostExcludingSiri:(BOOL)siri withServerInstance:(id)instance;
+- (BOOL)isSystemAppShowingAnAlertWithServerInstance:(id)instance;
+- (BOOL)isSystemGestureActiveWithServerInstance:(id)instance;
+- (BOOL)isSystemSleepingWithServerInstance:(id)instance;
+- (BOOL)isTodayViewOrAppLibraryVisibleWithServerInstance:(id)instance;
+- (BOOL)isTypeToSiriVisibleWithServerInstance:(id)instance;
+- (BOOL)isVoiceControlRunningWithServerInstance:(id)instance;
+- (BOOL)serverInstance:(id)instance isShowingRemoteViewType:(int64_t)type;
+- (BOOL)serverInstance:(id)instance performMedusaGesture:(unint64_t)gesture;
+- (BOOL)serverInstance:(id)instance showControlCenter:(BOOL)center;
+- (BOOL)serverInstance:(id)instance showNotificationCenter:(BOOL)center;
+- (BOOL)toggleDarkModeWithServerInstance:(id)instance;
+- (double)reachabilityOffsetWithServerInstance:(id)instance;
+- (double)volumeLevelWithServerInstance:(id)instance;
 - (id)_accessibilityCoverSheetPresentationManagerSharedInstance;
-- (id)_accessibilityNotificationSummary:(unint64_t)a3;
+- (id)_accessibilityNotificationSummary:(unint64_t)summary;
 - (id)_axFloatingDockController;
-- (id)_handleConfirmationDialogWithMessage:(id)a3 confirmTitle:(id)a4;
-- (id)_handleUsageConfirmationDialogWithMessage:(id)a3;
-- (id)_handleVOConfirmationDialogWithMessage:(id)a3 confirmTitle:(id)a4;
-- (id)_handleVOUsageConfirmationDialogWithMessage:(id)a3;
-- (id)_serviceForRemoteViewType:(int64_t)a3;
+- (id)_handleConfirmationDialogWithMessage:(id)message confirmTitle:(id)title;
+- (id)_handleUsageConfirmationDialogWithMessage:(id)message;
+- (id)_handleVOConfirmationDialogWithMessage:(id)message confirmTitle:(id)title;
+- (id)_handleVOUsageConfirmationDialogWithMessage:(id)message;
+- (id)_serviceForRemoteViewType:(int64_t)type;
 - (id)_visibleTripleClickItems;
-- (id)allowedMedusaGesturesWithServerInstance:(id)a3;
-- (id)appForLayoutRole:(int64_t)a3;
+- (id)allowedMedusaGesturesWithServerInstance:(id)instance;
+- (id)appForLayoutRole:(int64_t)role;
 - (id)coverSheetViewController;
-- (id)displayIdentifierForSceneIdentifier:(id)a3 serverInstance:(id)a4;
-- (id)focusedAppPIDWithServerInstance:(id)a3;
-- (id)focusedAppProcessWithServerInstance:(id)a3;
-- (id)focusedAppsWithServerInstance:(id)a3;
-- (id)focusedOccludedAppScenesWithServerInstance:(id)a3;
-- (id)frontmostAppProcessWithServerInstance:(id)a3;
-- (id)installedAppsWithServerInstance:(id)a3;
-- (id)internalAppsWithServerInstance:(id)a3;
-- (id)jindoAppBundleIndentifiersWithServerInstance:(id)a3;
-- (id)medusaAppsWithServerInstance:(id)a3;
+- (id)displayIdentifierForSceneIdentifier:(id)identifier serverInstance:(id)instance;
+- (id)focusedAppPIDWithServerInstance:(id)instance;
+- (id)focusedAppProcessWithServerInstance:(id)instance;
+- (id)focusedAppsWithServerInstance:(id)instance;
+- (id)focusedOccludedAppScenesWithServerInstance:(id)instance;
+- (id)frontmostAppProcessWithServerInstance:(id)instance;
+- (id)installedAppsWithServerInstance:(id)instance;
+- (id)internalAppsWithServerInstance:(id)instance;
+- (id)jindoAppBundleIndentifiersWithServerInstance:(id)instance;
+- (id)medusaAppsWithServerInstance:(id)instance;
 - (id)medusaBundleIDsToLayoutRoles;
-- (id)runningAppPIDsWithServerInstance:(id)a3;
-- (id)runningAppProcessesWithServerInstance:(id)a3;
+- (id)runningAppPIDsWithServerInstance:(id)instance;
+- (id)runningAppProcessesWithServerInstance:(id)instance;
 - (id)sceneLayoutState;
-- (id)serverInstance:(id)a3 splashImageForAppWithBundleIdentifier:(id)a4;
-- (id)serverInstance:(id)a3 springBoardSystemInfoQuery:(unint64_t)a4;
+- (id)serverInstance:(id)instance splashImageForAppWithBundleIdentifier:(id)identifier;
+- (id)serverInstance:(id)instance springBoardSystemInfoQuery:(unint64_t)query;
 - (int)nativeFocusedApplication;
-- (int)purpleBuddyPIDWithServerInstance:(id)a3;
+- (int)purpleBuddyPIDWithServerInstance:(id)instance;
 - (unint64_t)_accessibilityNotificationCount;
 - (void)_cleanupAlertController;
 - (void)_cleanupPresentationWindow;
 - (void)_createAlertWindowSubclass;
-- (void)_dismissAlertControllerWithCompletion:(id)a3;
-- (void)_dismissViewControllerWithCompletion:(id)a3;
-- (void)_displayAlertController:(id)a3;
-- (void)_displayViewController:(id)a3 withCompletion:(id)a4;
-- (void)_guestPassAcceptDialog:(id)a3;
-- (void)_guestPassShowPIN:(id)a3;
-- (void)_guestPassSpeakPIN:(id)a3;
-- (void)_handleASTMenuCustomizeAddDwell:(BOOL)a3 addScroll:(BOOL)a4;
-- (void)_handleASTMenuFullForInstance:(id)a3;
-- (void)_handleAlertActionPress:(id)a3;
+- (void)_dismissAlertControllerWithCompletion:(id)completion;
+- (void)_dismissViewControllerWithCompletion:(id)completion;
+- (void)_displayAlertController:(id)controller;
+- (void)_displayViewController:(id)controller withCompletion:(id)completion;
+- (void)_guestPassAcceptDialog:(id)dialog;
+- (void)_guestPassShowPIN:(id)n;
+- (void)_guestPassSpeakPIN:(id)n;
+- (void)_handleASTMenuCustomizeAddDwell:(BOOL)dwell addScroll:(BOOL)scroll;
+- (void)_handleASTMenuFullForInstance:(id)instance;
+- (void)_handleAlertActionPress:(id)press;
 - (void)_handleAlwaysOnBluetoothModeForVoiceOver;
 - (void)_handleConfirmRebootDevice;
 - (void)_handleConnectedDevicesHaveAssistiveTouchCustomActions;
 - (void)_handleDisableAssistiveTouchConfirmation;
-- (void)_handleDisableBrightnessFiltersAlert:(id)a3;
+- (void)_handleDisableBrightnessFiltersAlert:(id)alert;
 - (void)_handleDisableFKAConfirmation;
 - (void)_handleDisableOnDeviceEyeTrackingConfirmation;
 - (void)_handleDisableSwitchControlConfirmation;
-- (void)_handleDisallowUSBRestrictedModeSCInformativeOnly:(BOOL)a3;
-- (void)_handleDisallowUSBRestrictedModeVOInformativeOnly:(BOOL)a3;
+- (void)_handleDisallowUSBRestrictedModeSCInformativeOnly:(BOOL)only;
+- (void)_handleDisallowUSBRestrictedModeVOInformativeOnly:(BOOL)only;
 - (void)_handleLiveTranscriptionConfirmation;
 - (void)_handleSecureItentAlertForSwitchAST;
 - (void)_handleSwitchUsageConfirmed;
@@ -153,67 +153,67 @@
 - (void)_handleTripleClickAskAlert;
 - (void)_handleVONoHomeButtonGestureAlert;
 - (void)_handleVoiceOverUsageConfirmation;
-- (void)_handleZoomConflictAlert:(id)a3;
+- (void)_handleZoomConflictAlert:(id)alert;
 - (void)_handleZoomInBuddyAlert;
 - (void)_handleZoomTripleClickAfterConflict;
 - (void)_monitorContinuityDisplayChanges;
 - (void)_performValidation;
-- (void)_restoreAccessibilityFeatureFromSecurePayCache:(id)a3;
+- (void)_restoreAccessibilityFeatureFromSecurePayCache:(id)cache;
 - (void)_restoreSecurePayFeaturesIfNeeded;
 - (void)_sortVisibleItems;
 - (void)_toggleTripleClickDisplay;
 - (void)_updateVisibleTripleClickItems;
-- (void)activateSOSModeWithServerInstance:(id)a3;
-- (void)activeInterfaceOrientationDidChangeToOrientation:(int64_t)a3 willAnimateWithDuration:(double)a4 fromOrientation:(int64_t)a5;
-- (void)askQuestionInMagnifierWithServerInstance:(id)a3;
-- (void)cancelSiriDismissalForAssistiveTouchWithServerInstance:(id)a3;
+- (void)activateSOSModeWithServerInstance:(id)instance;
+- (void)activeInterfaceOrientationDidChangeToOrientation:(int64_t)orientation willAnimateWithDuration:(double)duration fromOrientation:(int64_t)fromOrientation;
+- (void)askQuestionInMagnifierWithServerInstance:(id)instance;
+- (void)cancelSiriDismissalForAssistiveTouchWithServerInstance:(id)instance;
 - (void)dealloc;
-- (void)didFailToFloatAppForSideAppManager:(id)a3;
-- (void)didFailToPinAppForSideAppManager:(id)a3;
-- (void)diminishJindoWithServerInstance:(id)a3;
+- (void)didFailToFloatAppForSideAppManager:(id)manager;
+- (void)didFailToPinAppForSideAppManager:(id)manager;
+- (void)diminishJindoWithServerInstance:(id)instance;
 - (void)dismissAlertWithCancel;
-- (void)forceLoadGAXBundleWithServerInstance:(id)a3;
-- (void)freezeClarityUILoadingScreenWithServerInstance:(id)a3;
+- (void)forceLoadGAXBundleWithServerInstance:(id)instance;
+- (void)freezeClarityUILoadingScreenWithServerInstance:(id)instance;
 - (void)handleBrokenHomeButtonAlert;
-- (void)hideAlertWithServerInstance:(id)a3;
+- (void)hideAlertWithServerInstance:(id)instance;
 - (void)installGuestPassAcceptDialogGesture;
 - (void)installGuestPassPINGesture;
-- (void)isMediaPlayingWithServerInstance:(id)a3 forBundleId:(id)a4 completion:(id)a5;
-- (void)launchAccessibilityReaderWithServerInstance:(id)a3;
-- (void)launchApplication:(id)a3;
-- (void)launchApplicationWithFullConfiguration:(id)a3;
-- (void)launchFloatingApplication:(id)a3;
-- (void)launchMagnifierAppWithServerInstance:(id)a3;
-- (void)launchVoiceOverImageExplorerViewServiceWithServerInstance:(id)a3 forData:(id)a4;
+- (void)isMediaPlayingWithServerInstance:(id)instance forBundleId:(id)id completion:(id)completion;
+- (void)launchAccessibilityReaderWithServerInstance:(id)instance;
+- (void)launchApplication:(id)application;
+- (void)launchApplicationWithFullConfiguration:(id)configuration;
+- (void)launchFloatingApplication:(id)application;
+- (void)launchMagnifierAppWithServerInstance:(id)instance;
+- (void)launchVoiceOverImageExplorerViewServiceWithServerInstance:(id)instance forData:(id)data;
 - (void)nativeFocusedApplication;
-- (void)openAppSwitcherWithServerInstance:(id)a3;
-- (void)openCommandAndControlCommandsWithServerInstance:(id)a3;
-- (void)openCommandAndControlSettingsWithServerInstance:(id)a3;
-- (void)openCommandAndControlVocabularyWithServerInstance:(id)a3;
-- (void)openCustomGestureCreationForASTWithServerInstance:(id)a3;
-- (void)openCustomGestureCreationForSCATWithServerInstance:(id)a3;
-- (void)openMenuCustomizationForASTWithServerInstance:(id)a3;
-- (void)openTypeToSiriWithServerInstance:(id)a3;
-- (void)openVoiceControlWithServerInstance:(id)a3;
-- (void)reactivateInCallServiceWithServerInstance:(id)a3;
-- (void)rebootDeviceWithServerInstance:(id)a3;
+- (void)openAppSwitcherWithServerInstance:(id)instance;
+- (void)openCommandAndControlCommandsWithServerInstance:(id)instance;
+- (void)openCommandAndControlSettingsWithServerInstance:(id)instance;
+- (void)openCommandAndControlVocabularyWithServerInstance:(id)instance;
+- (void)openCustomGestureCreationForASTWithServerInstance:(id)instance;
+- (void)openCustomGestureCreationForSCATWithServerInstance:(id)instance;
+- (void)openMenuCustomizationForASTWithServerInstance:(id)instance;
+- (void)openTypeToSiriWithServerInstance:(id)instance;
+- (void)openVoiceControlWithServerInstance:(id)instance;
+- (void)reactivateInCallServiceWithServerInstance:(id)instance;
+- (void)rebootDeviceWithServerInstance:(id)instance;
 - (void)removeGuestPassAcceptDialogGesture;
-- (void)revealSpotlightWithServerInstance:(id)a3;
-- (void)serverInstance:(id)a3 hideRemoteViewType:(int64_t)a4;
-- (void)serverInstance:(id)a3 pauseMedia:(BOOL)a4 forBundleId:(id)a5;
-- (void)serverInstance:(id)a3 setDockIconActivationMode:(unint64_t)a4;
-- (void)serverInstance:(id)a3 showAlertType:(int)a4 withHandler:(id)a5 withData:(id)a6;
-- (void)setReachabilityActive:(BOOL)a3;
-- (void)setSecurePayAccessibilityFeaturesDisabled:(BOOL)a3 withServerInstance:(id)a4;
-- (void)toggleBackgroundSoundsWithServerInstance:(id)a3;
-- (void)toggleConversationBoostWithServerInstance:(id)a3;
-- (void)toggleDetectionModeWithServerInstance:(id)a3;
-- (void)toggleDockWithServerInstance:(id)a3;
-- (void)toggleLiveTranscriptionWithServerInstance:(id)a3;
-- (void)toggleNotificationCenterWithServerInstance:(id)a3;
-- (void)toggleSpotlightWithServerInstance:(id)a3;
-- (void)toggleTorchWithServerInstance:(id)a3;
-- (void)updateFrontMostApplicationWithServerInstance:(id)a3;
+- (void)revealSpotlightWithServerInstance:(id)instance;
+- (void)serverInstance:(id)instance hideRemoteViewType:(int64_t)type;
+- (void)serverInstance:(id)instance pauseMedia:(BOOL)media forBundleId:(id)id;
+- (void)serverInstance:(id)instance setDockIconActivationMode:(unint64_t)mode;
+- (void)serverInstance:(id)instance showAlertType:(int)type withHandler:(id)handler withData:(id)data;
+- (void)setReachabilityActive:(BOOL)active;
+- (void)setSecurePayAccessibilityFeaturesDisabled:(BOOL)disabled withServerInstance:(id)instance;
+- (void)toggleBackgroundSoundsWithServerInstance:(id)instance;
+- (void)toggleConversationBoostWithServerInstance:(id)instance;
+- (void)toggleDetectionModeWithServerInstance:(id)instance;
+- (void)toggleDockWithServerInstance:(id)instance;
+- (void)toggleLiveTranscriptionWithServerInstance:(id)instance;
+- (void)toggleNotificationCenterWithServerInstance:(id)instance;
+- (void)toggleSpotlightWithServerInstance:(id)instance;
+- (void)toggleTorchWithServerInstance:(id)instance;
+- (void)updateFrontMostApplicationWithServerInstance:(id)instance;
 @end
 
 @implementation AXSpringBoardServerHelper
@@ -245,8 +245,8 @@ void __39__AXSpringBoardServerHelper_initialize__block_invoke()
 
 - (void)_performValidation
 {
-  v2 = [MEMORY[0x277CE69B0] sharedInstance];
-  [v2 performValidations:&__block_literal_global_805 withPreValidationHandler:&__block_literal_global_1713 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_1719];
+  mEMORY[0x277CE69B0] = [MEMORY[0x277CE69B0] sharedInstance];
+  [mEMORY[0x277CE69B0] performValidations:&__block_literal_global_805 withPreValidationHandler:&__block_literal_global_1713 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_1719];
 }
 
 uint64_t __47__AXSpringBoardServerHelper__performValidation__block_invoke(uint64_t a1, void *a2)
@@ -614,12 +614,12 @@ void __47__AXSpringBoardServerHelper__performValidation__block_invoke_3(uint64_t
     v2->_visibleTripleClickItems = v3;
 
     [(AXSpringBoardServerHelper *)v2 _performValidation];
-    v5 = [MEMORY[0x277D75128] sharedApplication];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
     location[1] = MEMORY[0x277D85DD0];
     location[2] = 3221225472;
     location[3] = __33__AXSpringBoardServerHelper_init__block_invoke;
     location[4] = &unk_27842BBF8;
-    v6 = v5;
+    v6 = mEMORY[0x277D75128];
     v54 = v6;
     v7 = v2;
     v55 = v7;
@@ -630,54 +630,54 @@ void __47__AXSpringBoardServerHelper__performValidation__block_invoke_3(uint64_t
     notificationObservers = v7->_notificationObservers;
     v7->_notificationObservers = v9;
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    v12 = [MEMORY[0x277CCABD8] currentQueue];
-    v13 = [v11 addObserverForName:@"SBOrientationLockChangedNotification" object:0 queue:v12 usingBlock:&__block_literal_global_1794];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    currentQueue = [MEMORY[0x277CCABD8] currentQueue];
+    v13 = [defaultCenter addObserverForName:@"SBOrientationLockChangedNotification" object:0 queue:currentQueue usingBlock:&__block_literal_global_1794];
 
     [(NSMutableArray *)v7->_notificationObservers addObject:v13];
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    v15 = [MEMORY[0x277CCABD8] currentQueue];
-    v16 = [v14 addObserverForName:@"SBMediaNowPlayingChangedNotification" object:0 queue:v15 usingBlock:&__block_literal_global_1796];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    currentQueue2 = [MEMORY[0x277CCABD8] currentQueue];
+    v16 = [defaultCenter2 addObserverForName:@"SBMediaNowPlayingChangedNotification" object:0 queue:currentQueue2 usingBlock:&__block_literal_global_1796];
 
     [(NSMutableArray *)v7->_notificationObservers addObject:v16];
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
     v18 = *MEMORY[0x277D67AA8];
-    v19 = [MEMORY[0x277CCABD8] currentQueue];
-    v20 = [v17 addObserverForName:v18 object:0 queue:v19 usingBlock:&__block_literal_global_1798];
+    currentQueue3 = [MEMORY[0x277CCABD8] currentQueue];
+    v20 = [defaultCenter3 addObserverForName:v18 object:0 queue:currentQueue3 usingBlock:&__block_literal_global_1798];
 
     [(NSMutableArray *)v7->_notificationObservers addObject:v20];
-    v21 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
     v22 = *MEMORY[0x277D67AF0];
-    v23 = [MEMORY[0x277CCABD8] currentQueue];
-    v24 = [v21 addObserverForName:v22 object:0 queue:v23 usingBlock:&__block_literal_global_1800];
+    currentQueue4 = [MEMORY[0x277CCABD8] currentQueue];
+    v24 = [defaultCenter4 addObserverForName:v22 object:0 queue:currentQueue4 usingBlock:&__block_literal_global_1800];
 
     [(NSMutableArray *)v7->_notificationObservers addObject:v24];
-    v25 = [MEMORY[0x277CCAB98] defaultCenter];
-    v26 = [MEMORY[0x277CCABD8] currentQueue];
-    v27 = [v25 addObserverForName:@"AXVisualAlertEvent" object:0 queue:v26 usingBlock:&__block_literal_global_1805];
+    defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+    currentQueue5 = [MEMORY[0x277CCABD8] currentQueue];
+    v27 = [defaultCenter5 addObserverForName:@"AXVisualAlertEvent" object:0 queue:currentQueue5 usingBlock:&__block_literal_global_1805];
 
     [(NSMutableArray *)v7->_notificationObservers addObject:v27];
-    v28 = [MEMORY[0x277CCAB98] defaultCenter];
-    v29 = [MEMORY[0x277CCABD8] currentQueue];
-    v30 = [v28 addObserverForName:@"AXVisualAlertEventEnded" object:0 queue:v29 usingBlock:&__block_literal_global_1820];
+    defaultCenter6 = [MEMORY[0x277CCAB98] defaultCenter];
+    currentQueue6 = [MEMORY[0x277CCABD8] currentQueue];
+    v30 = [defaultCenter6 addObserverForName:@"AXVisualAlertEventEnded" object:0 queue:currentQueue6 usingBlock:&__block_literal_global_1820];
 
     [(NSMutableArray *)v7->_notificationObservers addObject:v30];
-    v31 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter7 = [MEMORY[0x277CCAB98] defaultCenter];
     v32 = *MEMORY[0x277D67A80];
-    v33 = [MEMORY[0x277CCABD8] currentQueue];
-    v34 = [v31 addObserverForName:v32 object:0 queue:v33 usingBlock:&__block_literal_global_1823];
+    currentQueue7 = [MEMORY[0x277CCABD8] currentQueue];
+    v34 = [defaultCenter7 addObserverForName:v32 object:0 queue:currentQueue7 usingBlock:&__block_literal_global_1823];
 
     [(NSMutableArray *)v7->_notificationObservers addObject:v34];
     objc_initWeak(location, v7);
-    v35 = [MEMORY[0x277CCAB98] defaultCenter];
-    v36 = [MEMORY[0x277CCABD8] currentQueue];
+    defaultCenter8 = [MEMORY[0x277CCAB98] defaultCenter];
+    currentQueue8 = [MEMORY[0x277CCABD8] currentQueue];
     v37 = *MEMORY[0x277D67A88];
     v51[0] = MEMORY[0x277D85DD0];
     v51[1] = 3221225472;
     v51[2] = __33__AXSpringBoardServerHelper_init__block_invoke_3_1824;
     v51[3] = &unk_27842BCE8;
     objc_copyWeak(&v52, location);
-    v38 = [v35 addObserverForName:v37 object:0 queue:v36 usingBlock:v51];
+    v38 = [defaultCenter8 addObserverForName:v37 object:0 queue:currentQueue8 usingBlock:v51];
 
     [(NSMutableArray *)v7->_notificationObservers addObject:v38];
     v39 = objc_alloc_init(AXSpringBoardServerAlertManager);
@@ -692,11 +692,11 @@ void __47__AXSpringBoardServerHelper__performValidation__block_invoke_3(uint64_t
     motionTrackingInputManager = v7->_motionTrackingInputManager;
     v7->_motionTrackingInputManager = v43;
 
-    v45 = [(AXSpringBoardServerHelper *)v7 motionTrackingInputManager];
-    [v45 setDelegate:v7];
+    motionTrackingInputManager = [(AXSpringBoardServerHelper *)v7 motionTrackingInputManager];
+    [motionTrackingInputManager setDelegate:v7];
 
-    v46 = [(AXSpringBoardServerHelper *)v7 motionTrackingInputManager];
-    [v46 startMonitoring];
+    motionTrackingInputManager2 = [(AXSpringBoardServerHelper *)v7 motionTrackingInputManager];
+    [motionTrackingInputManager2 startMonitoring];
 
     [(AXSpringBoardServerHelper *)v7 _monitorContinuityDisplayChanges];
     v50 = v7;
@@ -798,14 +798,14 @@ void __33__AXSpringBoardServerHelper_init__block_invoke_3_1824(uint64_t a1)
 - (void)dealloc
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __36__AXSpringBoardServerHelper_dealloc__block_invoke;
   v22 = &unk_27842BBF8;
-  v4 = v3;
+  v4 = mEMORY[0x277D75128];
   v23 = v4;
-  v24 = self;
+  selfCopy = self;
   AXPerformSafeBlock();
   v17 = 0u;
   v18 = 0u;
@@ -828,8 +828,8 @@ void __33__AXSpringBoardServerHelper_init__block_invoke_3_1824(uint64_t a1)
         }
 
         v10 = *(*(&v15 + 1) + 8 * v9);
-        v11 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v11 removeObserver:v10];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter removeObserver:v10];
 
         ++v9;
       }
@@ -841,8 +841,8 @@ void __33__AXSpringBoardServerHelper_init__block_invoke_3_1824(uint64_t a1)
     while (v7);
   }
 
-  v12 = [(AXSpringBoardServerHelper *)self motionTrackingInputManager];
-  [v12 stopMonitoring];
+  motionTrackingInputManager = [(AXSpringBoardServerHelper *)self motionTrackingInputManager];
+  [motionTrackingInputManager stopMonitoring];
 
   v14.receiver = self;
   v14.super_class = AXSpringBoardServerHelper;
@@ -1021,29 +1021,29 @@ void __33__AXSpringBoardServerHelper_init__block_invoke_3_1824(uint64_t a1)
   return v3;
 }
 
-- (void)serverInstance:(id)a3 showAlertType:(int)a4 withHandler:(id)a5 withData:(id)a6
+- (void)serverInstance:(id)instance showAlertType:(int)type withHandler:(id)handler withData:(id)data
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
+  instanceCopy = instance;
+  dataCopy = data;
+  handlerCopy = handler;
   [(AXSpringBoardServerHelper *)self dismissAlertWithCancel];
-  v13 = [v12 copy];
+  v13 = [handlerCopy copy];
 
   alertHandler = self->_alertHandler;
   self->_alertHandler = v13;
 
-  v15 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __79__AXSpringBoardServerHelper_serverInstance_showAlertType_withHandler_withData___block_invoke;
   v18[3] = &unk_27842BD10;
-  v21 = a4;
+  typeCopy = type;
   v18[4] = self;
-  v19 = v11;
-  v20 = v10;
-  v16 = v10;
-  v17 = v11;
-  [v15 performAsynchronousWritingBlock:v18];
+  v19 = dataCopy;
+  v20 = instanceCopy;
+  v16 = instanceCopy;
+  v17 = dataCopy;
+  [mainAccessQueue performAsynchronousWritingBlock:v18];
 }
 
 uint64_t __79__AXSpringBoardServerHelper_serverInstance_showAlertType_withHandler_withData___block_invoke(uint64_t result)
@@ -1134,52 +1134,52 @@ LABEL_20:
   return result;
 }
 
-- (void)hideAlertWithServerInstance:(id)a3
+- (void)hideAlertWithServerInstance:(id)instance
 {
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __57__AXSpringBoardServerHelper_hideAlertWithServerInstance___block_invoke;
   v5[3] = &unk_27842BB18;
   v5[4] = self;
-  [v4 performAsynchronousWritingBlock:v5];
+  [mainAccessQueue performAsynchronousWritingBlock:v5];
 }
 
-- (id)_serviceForRemoteViewType:(int64_t)a3
+- (id)_serviceForRemoteViewType:(int64_t)type
 {
-  if (a3 > 6)
+  if (type > 6)
   {
-    v5 = 0;
+    sharedInstance = 0;
   }
 
   else
   {
-    v5 = [**(&unk_27842C338 + a3) sharedInstance];
+    sharedInstance = [**(&unk_27842C338 + type) sharedInstance];
   }
 
-  return v5;
+  return sharedInstance;
 }
 
-- (void)serverInstance:(id)a3 hideRemoteViewType:(int64_t)a4
+- (void)serverInstance:(id)instance hideRemoteViewType:(int64_t)type
 {
-  v5 = [(AXSpringBoardServerHelper *)self _serviceForRemoteViewType:a4];
+  v5 = [(AXSpringBoardServerHelper *)self _serviceForRemoteViewType:type];
   if (v5)
   {
     v7 = v5;
-    v6 = [(AXSpringBoardServerHelper *)self alertManager];
-    [v6 hideAXUIViewService:v7];
+    alertManager = [(AXSpringBoardServerHelper *)self alertManager];
+    [alertManager hideAXUIViewService:v7];
 
     v5 = v7;
   }
 }
 
-- (BOOL)serverInstance:(id)a3 isShowingRemoteViewType:(int64_t)a4
+- (BOOL)serverInstance:(id)instance isShowingRemoteViewType:(int64_t)type
 {
-  v5 = [(AXSpringBoardServerHelper *)self _serviceForRemoteViewType:a4];
+  v5 = [(AXSpringBoardServerHelper *)self _serviceForRemoteViewType:type];
   if (v5)
   {
-    v6 = [(AXSpringBoardServerHelper *)self alertManager];
-    v7 = [v6 isShowingAXUIViewService:v5];
+    alertManager = [(AXSpringBoardServerHelper *)self alertManager];
+    v7 = [alertManager isShowingAXUIViewService:v5];
   }
 
   else
@@ -1190,25 +1190,25 @@ LABEL_20:
   return v7;
 }
 
-- (BOOL)isVoiceControlRunningWithServerInstance:(id)a3
+- (BOOL)isVoiceControlRunningWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __69__AXSpringBoardServerHelper_isVoiceControlRunningWithServerInstance___block_invoke;
   v6[3] = &unk_27842BD38;
   v6[4] = &v7;
-  [v4 performSynchronousReadingBlock:v6];
+  [mainAccessQueue performSynchronousReadingBlock:v6];
 
-  LOBYTE(v4) = *(v8 + 24);
+  LOBYTE(mainAccessQueue) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return mainAccessQueue;
 }
 
 void __69__AXSpringBoardServerHelper_isVoiceControlRunningWithServerInstance___block_invoke(uint64_t a1)
@@ -1232,20 +1232,20 @@ void __69__AXSpringBoardServerHelper_isVoiceControlRunningWithServerInstance___b
   }
 }
 
-- (double)volumeLevelWithServerInstance:(id)a3
+- (double)volumeLevelWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__AXSpringBoardServerHelper_volumeLevelWithServerInstance___block_invoke;
   v7[3] = &unk_27842BD38;
   v7[4] = &v8;
-  [v4 performSynchronousReadingBlock:v7];
+  [mainAccessQueue performSynchronousReadingBlock:v7];
 
   v5 = v9[3];
   _Block_object_dispose(&v8, 8);
@@ -1279,11 +1279,11 @@ void __59__AXSpringBoardServerHelper_volumeLevelWithServerInstance___block_invok
   return v3;
 }
 
-- (void)setReachabilityActive:(BOOL)a3
+- (void)setReachabilityActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v4 = [NSClassFromString(&cfstr_Sbreachability.isa) safeValueForKey:@"sharedInstance"];
-  if ([v4 safeBoolForKey:@"_reachabilityModeActive"] == v3)
+  if ([v4 safeBoolForKey:@"_reachabilityModeActive"] == activeCopy)
   {
     v5 = AXLogSpringboardServer();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -1301,25 +1301,25 @@ void __59__AXSpringBoardServerHelper_volumeLevelWithServerInstance___block_invok
   }
 }
 
-- (BOOL)isRingerMutedWithServerInstance:(id)a3
+- (BOOL)isRingerMutedWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __61__AXSpringBoardServerHelper_isRingerMutedWithServerInstance___block_invoke;
   v6[3] = &unk_27842BD38;
   v6[4] = &v7;
-  [v4 performSynchronousReadingBlock:v6];
+  [mainAccessQueue performSynchronousReadingBlock:v6];
 
-  LOBYTE(v4) = *(v8 + 24);
+  LOBYTE(mainAccessQueue) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return mainAccessQueue;
 }
 
 void __61__AXSpringBoardServerHelper_isRingerMutedWithServerInstance___block_invoke(uint64_t a1)
@@ -1330,25 +1330,25 @@ void __61__AXSpringBoardServerHelper_isRingerMutedWithServerInstance___block_inv
   *(*(*(a1 + 32) + 8) + 24) = [v3 safeBoolForKey:@"_accessibilityIsRingerMuted"];
 }
 
-- (BOOL)isOrientationLockedWithServerInstance:(id)a3
+- (BOOL)isOrientationLockedWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67__AXSpringBoardServerHelper_isOrientationLockedWithServerInstance___block_invoke;
   v6[3] = &unk_27842BD38;
   v6[4] = &v7;
-  [v4 performSynchronousReadingBlock:v6];
+  [mainAccessQueue performSynchronousReadingBlock:v6];
 
-  LOBYTE(v4) = *(v8 + 24);
+  LOBYTE(mainAccessQueue) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return mainAccessQueue;
 }
 
 void __67__AXSpringBoardServerHelper_isOrientationLockedWithServerInstance___block_invoke(uint64_t a1)
@@ -1369,10 +1369,10 @@ void __65__AXSpringBoardServerHelper_serverInstance_setOrientationLocked___block
   [v0 unlock];
 }
 
-- (void)openCustomGestureCreationForASTWithServerInstance:(id)a3
+- (void)openCustomGestureCreationForASTWithServerInstance:(id)instance
 {
-  v4 = a3;
-  v3 = v4;
+  instanceCopy = instance;
+  v3 = instanceCopy;
   AXPerformBlockOnMainThreadAfterDelay();
 }
 
@@ -1385,10 +1385,10 @@ void __79__AXSpringBoardServerHelper_openCustomGestureCreationForASTWithServerIn
   }
 }
 
-- (void)openMenuCustomizationForASTWithServerInstance:(id)a3
+- (void)openMenuCustomizationForASTWithServerInstance:(id)instance
 {
-  v4 = a3;
-  v3 = v4;
+  instanceCopy = instance;
+  v3 = instanceCopy;
   AXPerformBlockOnMainThread();
 }
 
@@ -1401,10 +1401,10 @@ void __75__AXSpringBoardServerHelper_openMenuCustomizationForASTWithServerInstan
   }
 }
 
-- (void)openCustomGestureCreationForSCATWithServerInstance:(id)a3
+- (void)openCustomGestureCreationForSCATWithServerInstance:(id)instance
 {
-  v4 = a3;
-  v3 = v4;
+  instanceCopy = instance;
+  v3 = instanceCopy;
   AXPerformBlockOnMainThread();
 }
 
@@ -1417,10 +1417,10 @@ void __80__AXSpringBoardServerHelper_openCustomGestureCreationForSCATWithServerI
   }
 }
 
-- (void)openCommandAndControlSettingsWithServerInstance:(id)a3
+- (void)openCommandAndControlSettingsWithServerInstance:(id)instance
 {
-  v4 = a3;
-  v3 = v4;
+  instanceCopy = instance;
+  v3 = instanceCopy;
   AXPerformBlockOnMainThread();
 }
 
@@ -1433,10 +1433,10 @@ void __77__AXSpringBoardServerHelper_openCommandAndControlSettingsWithServerInst
   }
 }
 
-- (void)openCommandAndControlCommandsWithServerInstance:(id)a3
+- (void)openCommandAndControlCommandsWithServerInstance:(id)instance
 {
-  v4 = a3;
-  v3 = v4;
+  instanceCopy = instance;
+  v3 = instanceCopy;
   AXPerformBlockOnMainThread();
 }
 
@@ -1449,10 +1449,10 @@ void __77__AXSpringBoardServerHelper_openCommandAndControlCommandsWithServerInst
   }
 }
 
-- (void)openCommandAndControlVocabularyWithServerInstance:(id)a3
+- (void)openCommandAndControlVocabularyWithServerInstance:(id)instance
 {
-  v4 = a3;
-  v3 = v4;
+  instanceCopy = instance;
+  v3 = instanceCopy;
   AXPerformBlockOnMainThread();
 }
 
@@ -1465,10 +1465,10 @@ void __79__AXSpringBoardServerHelper_openCommandAndControlVocabularyWithServerIn
   }
 }
 
-- (BOOL)isScreenLockedWithServerInstance:(id)a3
+- (BOOL)isScreenLockedWithServerInstance:(id)instance
 {
-  v3 = [MEMORY[0x277CE7E40] server];
-  v4 = [v3 isScreenLockedWithPasscode:0];
+  server = [MEMORY[0x277CE7E40] server];
+  v4 = [server isScreenLockedWithPasscode:0];
 
   return v4;
 }
@@ -1485,27 +1485,27 @@ void __79__AXSpringBoardServerHelper_openCommandAndControlVocabularyWithServerIn
     carSessionStatus = self->_carSessionStatus;
   }
 
-  v6 = [(CARSessionStatus *)carSessionStatus currentSession];
-  v7 = v6 != 0;
+  currentSession = [(CARSessionStatus *)carSessionStatus currentSession];
+  v7 = currentSession != 0;
 
   return v7;
 }
 
-- (BOOL)isSystemSleepingWithServerInstance:(id)a3
+- (BOOL)isSystemSleepingWithServerInstance:(id)instance
 {
-  v4 = a3;
+  instanceCopy = instance;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__AXSpringBoardServerHelper_isSystemSleepingWithServerInstance___block_invoke;
   v7[3] = &unk_27842BBA8;
   v7[4] = self;
   v7[5] = &v8;
-  [v5 performSynchronousReadingBlock:v7];
+  [mainAccessQueue performSynchronousReadingBlock:v7];
 
   LOBYTE(self) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -1529,25 +1529,25 @@ void __64__AXSpringBoardServerHelper_isSystemSleepingWithServerInstance___block_
   *(*(*(a1 + 40) + 8) + 24) = v2;
 }
 
-- (BOOL)isMakingEmergencyCallWithServerInstance:(id)a3
+- (BOOL)isMakingEmergencyCallWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __69__AXSpringBoardServerHelper_isMakingEmergencyCallWithServerInstance___block_invoke;
   v6[3] = &unk_27842BD38;
   v6[4] = &v7;
-  [v4 performSynchronousReadingBlock:v6];
+  [mainAccessQueue performSynchronousReadingBlock:v6];
 
-  LOBYTE(v4) = *(v8 + 24);
+  LOBYTE(mainAccessQueue) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return mainAccessQueue;
 }
 
 void __69__AXSpringBoardServerHelper_isMakingEmergencyCallWithServerInstance___block_invoke(uint64_t a1)
@@ -1557,29 +1557,29 @@ void __69__AXSpringBoardServerHelper_isMakingEmergencyCallWithServerInstance___b
   *(*(*(a1 + 32) + 8) + 24) = [v2 safeBoolForKey:@"isMakingEmergencyCall"];
 }
 
-- (BOOL)isPasscodeRequiredOnLockWithServerInstance:(id)a3
+- (BOOL)isPasscodeRequiredOnLockWithServerInstance:(id)instance
 {
   v5 = 0;
-  v3 = [MEMORY[0x277CE7E40] server];
-  [v3 isScreenLockedWithPasscode:&v5];
+  server = [MEMORY[0x277CE7E40] server];
+  [server isScreenLockedWithPasscode:&v5];
 
   return v5;
 }
 
-- (void)isMediaPlayingWithServerInstance:(id)a3 forBundleId:(id)a4 completion:(id)a5
+- (void)isMediaPlayingWithServerInstance:(id)instance forBundleId:(id)id completion:(id)completion
 {
-  v6 = a4;
-  v7 = a5;
+  idCopy = id;
+  completionCopy = completion;
   if (isMediaPlayingWithServerInstance_forBundleId_completion__onceToken != -1)
   {
     [AXSpringBoardServerHelper isMediaPlayingWithServerInstance:forBundleId:completion:];
   }
 
   MRMediaRemoteGetLocalOrigin();
-  v10 = v6;
-  v11 = v7;
-  v8 = v7;
-  v9 = v6;
+  v10 = idCopy;
+  v11 = completionCopy;
+  v8 = completionCopy;
+  v9 = idCopy;
   MRMediaRemoteGetNowPlayingClientForOrigin();
 }
 
@@ -1616,10 +1616,10 @@ void __61__AXSpringBoardServerHelper_resetDimTimerWithServerInstance___block_inv
   [v2 resetIdleTimerForReason:@"AccessibilityTimerReset"];
 }
 
-- (void)openAppSwitcherWithServerInstance:(id)a3
+- (void)openAppSwitcherWithServerInstance:(id)instance
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  instanceCopy = instance;
   v4 = AXLogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1655,15 +1655,15 @@ void __61__AXSpringBoardServerHelper_resetDimTimerWithServerInstance___block_inv
     v8 = 0;
   }
 
-  v9 = [MEMORY[0x277CE7D30] server];
-  v10 = [v9 isGuidedAccessActive];
+  server = [MEMORY[0x277CE7D30] server];
+  isGuidedAccessActive = [server isGuidedAccessActive];
 
-  if (v10 & 1 | ((v8 & 1) == 0))
+  if (isGuidedAccessActive & 1 | ((v8 & 1) == 0))
   {
     v11 = AXLogCommon();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [MEMORY[0x277CCABB0] numberWithBool:v10];
+      v12 = [MEMORY[0x277CCABB0] numberWithBool:isGuidedAccessActive];
       v13 = [MEMORY[0x277CCABB0] numberWithBool:v8 & 1];
       *buf = 138412546;
       *&buf[4] = v12;
@@ -1675,7 +1675,7 @@ void __61__AXSpringBoardServerHelper_resetDimTimerWithServerInstance___block_inv
 
   else
   {
-    v15 = v3;
+    v15 = instanceCopy;
     AXPerformBlockOnMainThread();
   }
 
@@ -1759,9 +1759,9 @@ void __64__AXSpringBoardServerHelper_toggleAppLibraryWithServerInstance___block_
   }
 }
 
-- (BOOL)dismissSiriWithServerInstance:(id)a3
+- (BOOL)dismissSiriWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
@@ -1782,7 +1782,7 @@ void __59__AXSpringBoardServerHelper_dismissSiriWithServerInstance___block_invok
   *(*(*(a1 + 32) + 8) + 24) = 1;
 }
 
-- (void)openVoiceControlWithServerInstance:(id)a3
+- (void)openVoiceControlWithServerInstance:(id)instance
 {
   v4 = [NSClassFromString(&cfstr_Sbvoicecontrol.isa) safeValueForKey:@"sharedInstance"];
   if (([NSClassFromString(&cfstr_Sbvoicecontrol.isa) safeBoolForKey:@"isVisible"]& 1) == 0)
@@ -1791,9 +1791,9 @@ void __59__AXSpringBoardServerHelper_dismissSiriWithServerInstance___block_invok
   }
 }
 
-- (void)openTypeToSiriWithServerInstance:(id)a3
+- (void)openTypeToSiriWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2050000000;
@@ -1840,9 +1840,9 @@ void __59__AXSpringBoardServerHelper_armApplePayWithServerInstance___block_invok
   [v2 presentContactlessInterfaceForDefaultPassFromSource:0 completion:0];
 }
 
-- (BOOL)isScreenshotWindowVisibleWithServerInstance:(id)a3
+- (BOOL)isScreenshotWindowVisibleWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
@@ -1866,9 +1866,9 @@ void __73__AXSpringBoardServerHelper_isScreenshotWindowVisibleWithServerInstance
   *(*(*(a1 + 32) + 8) + 24) = _SBAXIsViewVisible(v6);
 }
 
-- (BOOL)isNotificationVisibleWithServerInstance:(id)a3
+- (BOOL)isNotificationVisibleWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
@@ -1887,9 +1887,9 @@ uint64_t __69__AXSpringBoardServerHelper_isNotificationVisibleWithServerInstance
   return result;
 }
 
-- (BOOL)isBannerVisibleWithServerInstance:(id)a3
+- (BOOL)isBannerVisibleWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
@@ -1908,7 +1908,7 @@ uint64_t __63__AXSpringBoardServerHelper_isBannerVisibleWithServerInstance___blo
   return result;
 }
 
-- (BOOL)isLongLookNotificationVisibleWithServerInstance:(id)a3
+- (BOOL)isLongLookNotificationVisibleWithServerInstance:(id)instance
 {
   v3 = [*MEMORY[0x277D76620] safeValueForKey:@"notificationDispatcher"];
   v4 = [v3 safeValueForKey:@"bannerDestination"];
@@ -1926,9 +1926,9 @@ uint64_t __63__AXSpringBoardServerHelper_isBannerVisibleWithServerInstance___blo
   return v5;
 }
 
-- (BOOL)isRemoteTransientOverlayVisibleWithServerInstance:(id)a3
+- (BOOL)isRemoteTransientOverlayVisibleWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
@@ -1947,10 +1947,10 @@ uint64_t __79__AXSpringBoardServerHelper_isRemoteTransientOverlayVisibleWithServ
   return result;
 }
 
-- (void)toggleNotificationCenterWithServerInstance:(id)a3
+- (void)toggleNotificationCenterWithServerInstance:(id)instance
 {
-  v4 = a3;
-  v3 = v4;
+  instanceCopy = instance;
+  v3 = instanceCopy;
   AXPerformBlockOnMainThread();
 }
 
@@ -1971,24 +1971,24 @@ uint64_t __72__AXSpringBoardServerHelper_toggleNotificationCenterWithServerInsta
   return result;
 }
 
-- (BOOL)isNotificationCenterVisibleWithServerInstance:(id)a3
+- (BOOL)isNotificationCenterVisibleWithServerInstance:(id)instance
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  instanceCopy = instance;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v5 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __75__AXSpringBoardServerHelper_isNotificationCenterVisibleWithServerInstance___block_invoke;
   v12[3] = &unk_27842BDB0;
   v12[4] = self;
   v14 = &v15;
-  v6 = v4;
+  v6 = instanceCopy;
   v13 = v6;
-  [v5 performSynchronousReadingBlock:v12];
+  [mainAccessQueue performSynchronousReadingBlock:v12];
 
   v7 = AXLogSpringboardServer();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -2029,22 +2029,22 @@ void __75__AXSpringBoardServerHelper_isNotificationCenterVisibleWithServerInstan
   }
 }
 
-- (BOOL)isCoverSheetVisibleWithServerInstance:(id)a3
+- (BOOL)isCoverSheetVisibleWithServerInstance:(id)instance
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  instanceCopy = instance;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __67__AXSpringBoardServerHelper_isCoverSheetVisibleWithServerInstance___block_invoke;
   v11[3] = &unk_27842BDD8;
   v11[4] = self;
   v11[5] = &v12;
-  [v5 performSynchronousReadingBlock:v11];
+  [mainAccessQueue performSynchronousReadingBlock:v11];
 
   v6 = AXLogSpringboardServer();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -2074,15 +2074,15 @@ void __67__AXSpringBoardServerHelper_isCoverSheetVisibleWithServerInstance___blo
   }
 }
 
-- (BOOL)serverInstance:(id)a3 showNotificationCenter:(BOOL)a4
+- (BOOL)serverInstance:(id)instance showNotificationCenter:(BOOL)center
 {
-  v4 = a3;
+  instanceCopy = instance;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
   v5 = dispatch_semaphore_create(0);
-  v8 = v4;
+  v8 = instanceCopy;
   v9 = v5;
   AXPerformBlockOnMainThread();
   dispatch_semaphore_wait(v9, 5uLL);
@@ -2107,9 +2107,9 @@ void __67__AXSpringBoardServerHelper_serverInstance_setReachabilityEnabled___blo
   [v2 setReachabilityEnabled:*(a1 + 32)];
 }
 
-- (BOOL)serverInstance:(id)a3 showControlCenter:(BOOL)a4
+- (BOOL)serverInstance:(id)instance showControlCenter:(BOOL)center
 {
-  v4 = a3;
+  instanceCopy = instance;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -2132,25 +2132,25 @@ intptr_t __62__AXSpringBoardServerHelper_serverInstance_showControlCenter___bloc
   return dispatch_semaphore_signal(v2);
 }
 
-- (BOOL)isControlCenterVisibleWithServerInstance:(id)a3
+- (BOOL)isControlCenterVisibleWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __70__AXSpringBoardServerHelper_isControlCenterVisibleWithServerInstance___block_invoke;
   v6[3] = &unk_27842BD38;
   v6[4] = &v7;
-  [v4 performSynchronousReadingBlock:v6];
+  [mainAccessQueue performSynchronousReadingBlock:v6];
 
-  LOBYTE(v4) = *(v8 + 24);
+  LOBYTE(mainAccessQueue) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return mainAccessQueue;
 }
 
 void __70__AXSpringBoardServerHelper_isControlCenterVisibleWithServerInstance___block_invoke(uint64_t a1)
@@ -2159,15 +2159,15 @@ void __70__AXSpringBoardServerHelper_isControlCenterVisibleWithServerInstance___
   *(*(*(a1 + 32) + 8) + 24) = [v2 safeBoolForKey:@"isPresented"];
 }
 
-- (void)toggleDockWithServerInstance:(id)a3
+- (void)toggleDockWithServerInstance:(id)instance
 {
-  v4 = a3;
-  if (![(AXSpringBoardServerHelper *)self isScreenLockedWithServerInstance:v4])
+  instanceCopy = instance;
+  if (![(AXSpringBoardServerHelper *)self isScreenLockedWithServerInstance:instanceCopy])
   {
-    v5 = [MEMORY[0x277CE7D30] server];
-    v6 = [v5 isGuidedAccessActive];
+    server = [MEMORY[0x277CE7D30] server];
+    isGuidedAccessActive = [server isGuidedAccessActive];
 
-    if (v6)
+    if (isGuidedAccessActive)
     {
       v7 = GAXLogCommon();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -2179,7 +2179,7 @@ void __70__AXSpringBoardServerHelper_isControlCenterVisibleWithServerInstance___
 
     else
     {
-      v8 = v4;
+      v8 = instanceCopy;
       AXPerformBlockOnMainThread();
     }
   }
@@ -2209,7 +2209,7 @@ void __58__AXSpringBoardServerHelper_toggleDockWithServerInstance___block_invoke
   }
 }
 
-- (BOOL)isStatusBarNativeFocusableWithServerInstance:(id)a3 includingNonDismissableElements:(BOOL)a4
+- (BOOL)isStatusBarNativeFocusableWithServerInstance:(id)instance includingNonDismissableElements:(BOOL)elements
 {
   if (!_AXSApplicationAccessibilityEnabled())
   {
@@ -2218,7 +2218,7 @@ void __58__AXSpringBoardServerHelper_toggleDockWithServerInstance___block_invoke
 
   if ((isStatusBarNativeFocusableWithServerInstance_includingNonDismissableElements__HasLoadedUIAccessibility & 1) == 0)
   {
-    v5 = [MEMORY[0x277D75128] sharedApplication];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
     isStatusBarNativeFocusableWithServerInstance_includingNonDismissableElements__HasLoadedUIAccessibility = objc_opt_respondsToSelector() & 1;
 
     if (isStatusBarNativeFocusableWithServerInstance_includingNonDismissableElements__HasLoadedUIAccessibility != 1)
@@ -2227,13 +2227,13 @@ void __58__AXSpringBoardServerHelper_toggleDockWithServerInstance___block_invoke
     }
   }
 
-  v6 = [MEMORY[0x277D75128] sharedApplication];
-  v7 = [v6 _accessibilityStatusBarElements:0 sorted:0];
+  mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+  v7 = [mEMORY[0x277D75128]2 _accessibilityStatusBarElements:0 sorted:0];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __106__AXSpringBoardServerHelper_isStatusBarNativeFocusableWithServerInstance_includingNonDismissableElements___block_invoke;
   v11[3] = &__block_descriptor_33_e11_B24__0_8Q16l;
-  v12 = a4;
+  elementsCopy = elements;
   v8 = [v7 axFilterObjectsUsingBlock:v11];
 
   v9 = [v8 count] != 0;
@@ -2254,25 +2254,25 @@ uint64_t __106__AXSpringBoardServerHelper_isStatusBarNativeFocusableWithServerIn
   return v5 & 1;
 }
 
-- (BOOL)isSiriVisibleWithServerInstance:(id)a3
+- (BOOL)isSiriVisibleWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __61__AXSpringBoardServerHelper_isSiriVisibleWithServerInstance___block_invoke;
   v6[3] = &unk_27842BD38;
   v6[4] = &v7;
-  [v4 performSynchronousReadingBlock:v6];
+  [mainAccessQueue performSynchronousReadingBlock:v6];
 
-  LOBYTE(v4) = *(v8 + 24);
+  LOBYTE(mainAccessQueue) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return mainAccessQueue;
 }
 
 uint64_t __61__AXSpringBoardServerHelper_isSiriVisibleWithServerInstance___block_invoke(uint64_t a1)
@@ -2290,9 +2290,9 @@ uint64_t __61__AXSpringBoardServerHelper_isSiriVisibleWithServerInstance___block
   return v3;
 }
 
-- (BOOL)isDockVisibleWithServerInstance:(id)a3
+- (BOOL)isDockVisibleWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v5 = 0;
   AXSessionIsLoginSession();
 
@@ -2315,28 +2315,28 @@ void __61__AXSpringBoardServerHelper_isDockVisibleWithServerInstance___block_inv
   *(*(*(a1 + 40) + 8) + 24) = v2;
 }
 
-- (BOOL)isShowingNonSystemAppWithServerInstance:(id)a3
+- (BOOL)isShowingNonSystemAppWithServerInstance:(id)instance
 {
-  v4 = a3;
+  instanceCopy = instance;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __69__AXSpringBoardServerHelper_isShowingNonSystemAppWithServerInstance___block_invoke;
   v8[3] = &unk_27842BE90;
   v10 = &v11;
   v8[4] = self;
-  v6 = v4;
+  v6 = instanceCopy;
   v9 = v6;
-  [v5 performSynchronousReadingBlock:v8];
+  [mainAccessQueue performSynchronousReadingBlock:v8];
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(instanceCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
 
-  return v4;
+  return instanceCopy;
 }
 
 uint64_t __69__AXSpringBoardServerHelper_isShowingNonSystemAppWithServerInstance___block_invoke(uint64_t a1)
@@ -2357,21 +2357,21 @@ uint64_t __69__AXSpringBoardServerHelper_isShowingNonSystemAppWithServerInstance
   return result;
 }
 
-- (BOOL)isPasscodeLockVisibleWithServerInstance:(id)a3
+- (BOOL)isPasscodeLockVisibleWithServerInstance:(id)instance
 {
-  v4 = a3;
+  instanceCopy = instance;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__AXSpringBoardServerHelper_isPasscodeLockVisibleWithServerInstance___block_invoke;
   v7[3] = &unk_27842BBA8;
   v7[4] = self;
   v7[5] = &v8;
-  [v5 performSynchronousReadingBlock:v7];
+  [mainAccessQueue performSynchronousReadingBlock:v7];
 
   LOBYTE(self) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -2386,21 +2386,21 @@ uint64_t __69__AXSpringBoardServerHelper_isPasscodeLockVisibleWithServerInstance
   return result;
 }
 
-- (BOOL)isLockScreenVisibleWithServerInstance:(id)a3
+- (BOOL)isLockScreenVisibleWithServerInstance:(id)instance
 {
-  v4 = a3;
+  instanceCopy = instance;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__AXSpringBoardServerHelper_isLockScreenVisibleWithServerInstance___block_invoke;
   v7[3] = &unk_27842BBA8;
   v7[4] = self;
   v7[5] = &v8;
-  [v5 performSynchronousReadingBlock:v7];
+  [mainAccessQueue performSynchronousReadingBlock:v7];
 
   LOBYTE(self) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -2415,10 +2415,10 @@ uint64_t __67__AXSpringBoardServerHelper_isLockScreenVisibleWithServerInstance__
   return result;
 }
 
-- (BOOL)isShowingHomescreenWithServerInstance:(id)a3
+- (BOOL)isShowingHomescreenWithServerInstance:(id)instance
 {
-  v4 = a3;
-  if ([(AXSpringBoardServerHelper *)self isSystemAppShowingAnAlertWithServerInstance:v4])
+  instanceCopy = instance;
+  if ([(AXSpringBoardServerHelper *)self isSystemAppShowingAnAlertWithServerInstance:instanceCopy])
   {
     v5 = AXFrontBoardSystemAppAlertWindow();
     NSClassFromString(&cfstr_Sbhomescreenwi.isa);
@@ -2430,27 +2430,27 @@ uint64_t __67__AXSpringBoardServerHelper_isLockScreenVisibleWithServerInstance__
     isKindOfClass = 1;
   }
 
-  v7 = [(AXSpringBoardServerHelper *)self isAppSwitcherPeekingWithServerInstance:v4];
+  v7 = [(AXSpringBoardServerHelper *)self isAppSwitcherPeekingWithServerInstance:instanceCopy];
   v8 = [*MEMORY[0x277D76620] safeBoolForKey:@"isShowingHomescreen"] & isKindOfClass | v7;
 
   return v8 & 1;
 }
 
-- (BOOL)isContinuitySessionActiveWithServerInstance:(id)a3
+- (BOOL)isContinuitySessionActiveWithServerInstance:(id)instance
 {
-  v4 = a3;
+  instanceCopy = instance;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__AXSpringBoardServerHelper_isContinuitySessionActiveWithServerInstance___block_invoke;
   v7[3] = &unk_27842BBA8;
   v7[4] = self;
   v7[5] = &v8;
-  [v5 performSynchronousReadingBlock:v7];
+  [mainAccessQueue performSynchronousReadingBlock:v7];
 
   LOBYTE(self) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -2467,15 +2467,15 @@ uint64_t __73__AXSpringBoardServerHelper_isContinuitySessionActiveWithServerInst
 
 - (void)_monitorContinuityDisplayChanges
 {
-  v3 = [MEMORY[0x277D0AD20] configurationForContinuityDisplay];
-  [v3 setNeedsUserInteractivePriority:1];
+  configurationForContinuityDisplay = [MEMORY[0x277D0AD20] configurationForContinuityDisplay];
+  [configurationForContinuityDisplay setNeedsUserInteractivePriority:1];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __61__AXSpringBoardServerHelper__monitorContinuityDisplayChanges__block_invoke;
   v5[3] = &unk_27842BEB8;
   v5[4] = self;
-  [v3 setTransitionHandler:v5];
-  v4 = [MEMORY[0x277D0AD08] monitorWithConfiguration:v3];
+  [configurationForContinuityDisplay setTransitionHandler:v5];
+  v4 = [MEMORY[0x277D0AD08] monitorWithConfiguration:configurationForContinuityDisplay];
   [(AXSpringBoardServerHelper *)self setContinuityDisplayMonitor:v4];
 }
 
@@ -2509,25 +2509,25 @@ void __61__AXSpringBoardServerHelper__monitorContinuityDisplayChanges__block_inv
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isTypeToSiriVisibleWithServerInstance:(id)a3
+- (BOOL)isTypeToSiriVisibleWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67__AXSpringBoardServerHelper_isTypeToSiriVisibleWithServerInstance___block_invoke;
   v6[3] = &unk_27842BD38;
   v6[4] = &v7;
-  [v4 performSynchronousReadingBlock:v6];
+  [mainAccessQueue performSynchronousReadingBlock:v6];
 
-  LOBYTE(v4) = *(v8 + 24);
+  LOBYTE(mainAccessQueue) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return mainAccessQueue;
 }
 
 void __67__AXSpringBoardServerHelper_isTypeToSiriVisibleWithServerInstance___block_invoke(uint64_t a1)
@@ -2553,25 +2553,25 @@ void __67__AXSpringBoardServerHelper_isTypeToSiriVisibleWithServerInstance___blo
   *(*(*(a1 + 32) + 8) + 24) = v7;
 }
 
-- (BOOL)isAppSwitcherVisibleWithServerInstance:(id)a3
+- (BOOL)isAppSwitcherVisibleWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __68__AXSpringBoardServerHelper_isAppSwitcherVisibleWithServerInstance___block_invoke;
   v6[3] = &unk_27842BD38;
   v6[4] = &v7;
-  [v4 performSynchronousReadingBlock:v6];
+  [mainAccessQueue performSynchronousReadingBlock:v6];
 
-  LOBYTE(v4) = *(v8 + 24);
+  LOBYTE(mainAccessQueue) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return mainAccessQueue;
 }
 
 void __68__AXSpringBoardServerHelper_isAppSwitcherVisibleWithServerInstance___block_invoke(uint64_t a1)
@@ -2580,25 +2580,25 @@ void __68__AXSpringBoardServerHelper_isAppSwitcherVisibleWithServerInstance___bl
   *(*(*(a1 + 32) + 8) + 24) = [v2 safeBoolForKey:@"isAnySwitcherVisible"];
 }
 
-- (BOOL)isAppSwitcherPeekingWithServerInstance:(id)a3
+- (BOOL)isAppSwitcherPeekingWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __68__AXSpringBoardServerHelper_isAppSwitcherPeekingWithServerInstance___block_invoke;
   v6[3] = &unk_27842BD38;
   v6[4] = &v7;
-  [v4 performSynchronousReadingBlock:v6];
+  [mainAccessQueue performSynchronousReadingBlock:v6];
 
-  LOBYTE(v4) = *(v8 + 24);
+  LOBYTE(mainAccessQueue) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return mainAccessQueue;
 }
 
 void __68__AXSpringBoardServerHelper_isAppSwitcherPeekingWithServerInstance___block_invoke(uint64_t a1)
@@ -2611,25 +2611,25 @@ void __68__AXSpringBoardServerHelper_isAppSwitcherPeekingWithServerInstance___bl
   }
 }
 
-- (BOOL)isShelfSwitcherVisibleWithServerInstance:(id)a3
+- (BOOL)isShelfSwitcherVisibleWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __70__AXSpringBoardServerHelper_isShelfSwitcherVisibleWithServerInstance___block_invoke;
   v6[3] = &unk_27842BD38;
   v6[4] = &v7;
-  [v4 performSynchronousReadingBlock:v6];
+  [mainAccessQueue performSynchronousReadingBlock:v6];
 
-  LOBYTE(v4) = *(v8 + 24);
+  LOBYTE(mainAccessQueue) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return mainAccessQueue;
 }
 
 void __70__AXSpringBoardServerHelper_isShelfSwitcherVisibleWithServerInstance___block_invoke(uint64_t a1)
@@ -2640,25 +2640,25 @@ void __70__AXSpringBoardServerHelper_isShelfSwitcherVisibleWithServerInstance___
   *(*(*(a1 + 32) + 8) + 24) = [v3 count] != 0;
 }
 
-- (BOOL)isStageManagerSwitcherVisibleWithServerInstance:(id)a3
+- (BOOL)isStageManagerSwitcherVisibleWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __77__AXSpringBoardServerHelper_isStageManagerSwitcherVisibleWithServerInstance___block_invoke;
   v6[3] = &unk_27842BD38;
   v6[4] = &v7;
-  [v4 performSynchronousReadingBlock:v6];
+  [mainAccessQueue performSynchronousReadingBlock:v6];
 
-  LOBYTE(v4) = *(v8 + 24);
+  LOBYTE(mainAccessQueue) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return mainAccessQueue;
 }
 
 void __77__AXSpringBoardServerHelper_isStageManagerSwitcherVisibleWithServerInstance___block_invoke(uint64_t a1)
@@ -2828,25 +2828,25 @@ void __68__AXSpringBoardServerHelper_dismissShelfSwitcherWithServerInstance___bl
   }
 }
 
-- (BOOL)isSyncingRestoringResettingOrUpdatingWithServerInstance:(id)a3
+- (BOOL)isSyncingRestoringResettingOrUpdatingWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __85__AXSpringBoardServerHelper_isSyncingRestoringResettingOrUpdatingWithServerInstance___block_invoke;
   v6[3] = &unk_27842BD38;
   v6[4] = &v7;
-  [v4 performSynchronousReadingBlock:v6];
+  [mainAccessQueue performSynchronousReadingBlock:v6];
 
-  LOBYTE(v4) = *(v8 + 24);
+  LOBYTE(mainAccessQueue) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return mainAccessQueue;
 }
 
 void __85__AXSpringBoardServerHelper_isSyncingRestoringResettingOrUpdatingWithServerInstance___block_invoke(uint64_t a1)
@@ -2856,10 +2856,10 @@ void __85__AXSpringBoardServerHelper_isSyncingRestoringResettingOrUpdatingWithSe
   *(*(*(a1 + 32) + 8) + 24) = [v2 BOOLValue];
 }
 
-- (BOOL)isSystemGestureActiveWithServerInstance:(id)a3
+- (BOOL)isSystemGestureActiveWithServerInstance:(id)instance
 {
-  v3 = [objc_opt_class() _iconController];
-  v4 = [v3 safeValueForKey:@"iconManager"];
+  _iconController = [objc_opt_class() _iconController];
+  v4 = [_iconController safeValueForKey:@"iconManager"];
   if ([v4 safeBoolForKey:@"isIconDragging"])
   {
     v5 = 1;
@@ -2874,25 +2874,25 @@ void __85__AXSpringBoardServerHelper_isSyncingRestoringResettingOrUpdatingWithSe
   return v5;
 }
 
-- (BOOL)isSpeakThisTemporarilyDisabledWithServerInstance:(id)a3
+- (BOOL)isSpeakThisTemporarilyDisabledWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __78__AXSpringBoardServerHelper_isSpeakThisTemporarilyDisabledWithServerInstance___block_invoke;
   v6[3] = &unk_27842BD38;
   v6[4] = &v7;
-  [v4 performSynchronousReadingBlock:v6];
+  [mainAccessQueue performSynchronousReadingBlock:v6];
 
-  LOBYTE(v4) = *(v8 + 24);
+  LOBYTE(mainAccessQueue) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return mainAccessQueue;
 }
 
 void __78__AXSpringBoardServerHelper_isSpeakThisTemporarilyDisabledWithServerInstance___block_invoke(uint64_t a1)
@@ -2901,25 +2901,25 @@ void __78__AXSpringBoardServerHelper_isSpeakThisTemporarilyDisabledWithServerIns
   *(*(*(a1 + 32) + 8) + 24) = [v2 _accessibilityIsSpeakThisTemporarilyDisabled];
 }
 
-- (BOOL)areSystemGesturesDisabledNativelyWithServerInstance:(id)a3
+- (BOOL)areSystemGesturesDisabledNativelyWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __81__AXSpringBoardServerHelper_areSystemGesturesDisabledNativelyWithServerInstance___block_invoke;
   v6[3] = &unk_27842BD38;
   v6[4] = &v7;
-  [v4 performSynchronousReadingBlock:v6];
+  [mainAccessQueue performSynchronousReadingBlock:v6];
 
-  LOBYTE(v4) = *(v8 + 24);
+  LOBYTE(mainAccessQueue) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return mainAccessQueue;
 }
 
 void __81__AXSpringBoardServerHelper_areSystemGesturesDisabledNativelyWithServerInstance___block_invoke(uint64_t a1)
@@ -2931,25 +2931,25 @@ void __81__AXSpringBoardServerHelper_areSystemGesturesDisabledNativelyWithServer
   }
 }
 
-- (BOOL)areSystemGesturesDisabledByAccessibilityWithServerInstance:(id)a3
+- (BOOL)areSystemGesturesDisabledByAccessibilityWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __88__AXSpringBoardServerHelper_areSystemGesturesDisabledByAccessibilityWithServerInstance___block_invoke;
   v6[3] = &unk_27842BD38;
   v6[4] = &v7;
-  [v4 performSynchronousReadingBlock:v6];
+  [mainAccessQueue performSynchronousReadingBlock:v6];
 
-  LOBYTE(v4) = *(v8 + 24);
+  LOBYTE(mainAccessQueue) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return mainAccessQueue;
 }
 
 void __88__AXSpringBoardServerHelper_areSystemGesturesDisabledByAccessibilityWithServerInstance___block_invoke(uint64_t a1)
@@ -2961,22 +2961,22 @@ void __88__AXSpringBoardServerHelper_areSystemGesturesDisabledByAccessibilityWit
   }
 }
 
-- (id)serverInstance:(id)a3 springBoardSystemInfoQuery:(unint64_t)a4
+- (id)serverInstance:(id)instance springBoardSystemInfoQuery:(unint64_t)query
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  v8 = [MEMORY[0x277CE6948] mainAccessQueue];
+  instanceCopy = instance;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __71__AXSpringBoardServerHelper_serverInstance_springBoardSystemInfoQuery___block_invoke;
   v14[3] = &unk_27842BF20;
-  v18 = a4;
-  v9 = v7;
+  queryCopy = query;
+  v9 = dictionary;
   v15 = v9;
-  v16 = self;
-  v17 = v6;
-  v10 = v6;
-  [v8 performSynchronousReadingBlock:v14];
+  selfCopy = self;
+  v17 = instanceCopy;
+  v10 = instanceCopy;
+  [mainAccessQueue performSynchronousReadingBlock:v14];
 
   v11 = v17;
   v12 = v9;
@@ -3247,17 +3247,17 @@ LABEL_35:
   [*(a1 + 32) setObject:v19 forKeyedSubscript:&unk_2833B1420];
 }
 
-- (id)installedAppsWithServerInstance:(id)a3
+- (id)installedAppsWithServerInstance:(id)instance
 {
   v30 = *MEMORY[0x277D85DE8];
-  v17 = a3;
+  instanceCopy = instance;
   v3 = +[AXSpringBoardServerHelper _iconController];
   v4 = [v3 safeValueForKey:@"iconModel"];
 
   v5 = +[AXSpringBoardServerHelper _applicationController];
   v6 = [v5 safeValueForKey:@"allApplications"];
 
-  v18 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
@@ -3291,7 +3291,7 @@ LABEL_35:
         AXPerformSafeBlock();
         if ((v10 & 1) == 0 && *(v22 + 24) == 1 && v14 && v12)
         {
-          [v18 setObject:v12 forKey:v14];
+          [dictionary setObject:v12 forKey:v14];
         }
 
         _Block_object_dispose(&v21, 8);
@@ -3305,7 +3305,7 @@ LABEL_35:
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v18;
+  return dictionary;
 }
 
 void __61__AXSpringBoardServerHelper_installedAppsWithServerInstance___block_invoke(void *a1)
@@ -3315,17 +3315,17 @@ void __61__AXSpringBoardServerHelper_installedAppsWithServerInstance___block_inv
   *(*(a1[6] + 8) + 24) = [v2 isIconVisible:v3];
 }
 
-- (id)internalAppsWithServerInstance:(id)a3
+- (id)internalAppsWithServerInstance:(id)instance
 {
   v30 = *MEMORY[0x277D85DE8];
-  v17 = a3;
+  instanceCopy = instance;
   v3 = +[AXSpringBoardServerHelper _iconController];
   v4 = [v3 safeValueForKey:@"iconModel"];
 
   v5 = +[AXSpringBoardServerHelper _applicationController];
   v6 = [v5 safeValueForKey:@"allApplications"];
 
-  v18 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
@@ -3359,7 +3359,7 @@ void __61__AXSpringBoardServerHelper_installedAppsWithServerInstance___block_inv
         AXPerformSafeBlock();
         if (v10 && *(v22 + 24) == 1 && v14 && v12)
         {
-          [v18 setObject:v12 forKey:v14];
+          [dictionary setObject:v12 forKey:v14];
         }
 
         _Block_object_dispose(&v21, 8);
@@ -3373,7 +3373,7 @@ void __61__AXSpringBoardServerHelper_installedAppsWithServerInstance___block_inv
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v18;
+  return dictionary;
 }
 
 void __60__AXSpringBoardServerHelper_internalAppsWithServerInstance___block_invoke(void *a1)
@@ -3458,10 +3458,10 @@ void __47__AXSpringBoardServerHelper__unlockWithIntent___block_invoke_2036(uint6
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)serverInstance:(id)a3 pauseMedia:(BOOL)a4 forBundleId:(id)a5
+- (void)serverInstance:(id)instance pauseMedia:(BOOL)media forBundleId:(id)id
 {
-  v6 = a5;
-  v5 = v6;
+  idCopy = id;
+  v5 = idCopy;
   AXPerformBlockOnMainThread();
 }
 
@@ -3562,25 +3562,25 @@ uint64_t __67__AXSpringBoardServerHelper_serverInstance_pauseMedia_forBundleId__
   return result;
 }
 
-- (BOOL)hasActiveCallWithServerInstance:(id)a3
+- (BOOL)hasActiveCallWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __61__AXSpringBoardServerHelper_hasActiveCallWithServerInstance___block_invoke;
   v6[3] = &unk_27842BD38;
   v6[4] = &v7;
-  [v4 performSynchronousReadingBlock:v6];
+  [mainAccessQueue performSynchronousReadingBlock:v6];
 
-  LOBYTE(v4) = *(v8 + 24);
+  LOBYTE(mainAccessQueue) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return mainAccessQueue;
 }
 
 void __61__AXSpringBoardServerHelper_hasActiveCallWithServerInstance___block_invoke(uint64_t a1)
@@ -3608,25 +3608,25 @@ uint64_t __61__AXSpringBoardServerHelper_hasActiveCallWithServerInstance___block
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)hasActiveEndpointCallWithServerInstance:(id)a3
+- (BOOL)hasActiveEndpointCallWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __69__AXSpringBoardServerHelper_hasActiveEndpointCallWithServerInstance___block_invoke;
   v6[3] = &unk_27842BD38;
   v6[4] = &v7;
-  [v4 performSynchronousReadingBlock:v6];
+  [mainAccessQueue performSynchronousReadingBlock:v6];
 
-  LOBYTE(v4) = *(v8 + 24);
+  LOBYTE(mainAccessQueue) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return mainAccessQueue;
 }
 
 void __69__AXSpringBoardServerHelper_hasActiveEndpointCallWithServerInstance___block_invoke(uint64_t a1)
@@ -3660,25 +3660,25 @@ uint64_t __69__AXSpringBoardServerHelper_hasActiveEndpointCallWithServerInstance
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)hasActiveOrPendingCallWithServerInstance:(id)a3
+- (BOOL)hasActiveOrPendingCallWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __70__AXSpringBoardServerHelper_hasActiveOrPendingCallWithServerInstance___block_invoke;
   v6[3] = &unk_27842BD38;
   v6[4] = &v7;
-  [v4 performSynchronousReadingBlock:v6];
+  [mainAccessQueue performSynchronousReadingBlock:v6];
 
-  LOBYTE(v4) = *(v8 + 24);
+  LOBYTE(mainAccessQueue) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return mainAccessQueue;
 }
 
 void __70__AXSpringBoardServerHelper_hasActiveOrPendingCallWithServerInstance___block_invoke(uint64_t a1)
@@ -3708,25 +3708,25 @@ uint64_t __70__AXSpringBoardServerHelper_hasActiveOrPendingCallWithServerInstanc
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)hasActiveOrPendingCallOrFaceTimeWithServerInstance:(id)a3
+- (BOOL)hasActiveOrPendingCallOrFaceTimeWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __80__AXSpringBoardServerHelper_hasActiveOrPendingCallOrFaceTimeWithServerInstance___block_invoke;
   v6[3] = &unk_27842BD38;
   v6[4] = &v7;
-  [v4 performSynchronousReadingBlock:v6];
+  [mainAccessQueue performSynchronousReadingBlock:v6];
 
-  LOBYTE(v4) = *(v8 + 24);
+  LOBYTE(mainAccessQueue) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return mainAccessQueue;
 }
 
 void __80__AXSpringBoardServerHelper_hasActiveOrPendingCallOrFaceTimeWithServerInstance___block_invoke(uint64_t a1)
@@ -3760,21 +3760,21 @@ uint64_t __80__AXSpringBoardServerHelper_hasActiveOrPendingCallOrFaceTimeWithSer
   return MEMORY[0x2821F96F8]();
 }
 
-- (double)reachabilityOffsetWithServerInstance:(id)a3
+- (double)reachabilityOffsetWithServerInstance:(id)instance
 {
-  v4 = a3;
+  instanceCopy = instance;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __66__AXSpringBoardServerHelper_reachabilityOffsetWithServerInstance___block_invoke;
   v8[3] = &unk_27842BDD8;
   v8[4] = self;
   v8[5] = &v9;
-  [v5 performSynchronousReadingBlock:v8];
+  [mainAccessQueue performSynchronousReadingBlock:v8];
 
   v6 = v10[3];
   _Block_object_dispose(&v9, 8);
@@ -3795,38 +3795,38 @@ void __66__AXSpringBoardServerHelper_reachabilityOffsetWithServerInstance___bloc
   }
 }
 
-- (id)allowedMedusaGesturesWithServerInstance:(id)a3
+- (id)allowedMedusaGesturesWithServerInstance:(id)instance
 {
-  v3 = [(AXSpringBoardServerHelper *)self sideAppManager];
-  v4 = [v3 allowedMedusaGestures];
+  sideAppManager = [(AXSpringBoardServerHelper *)self sideAppManager];
+  allowedMedusaGestures = [sideAppManager allowedMedusaGestures];
 
-  return v4;
+  return allowedMedusaGestures;
 }
 
-- (void)toggleBackgroundSoundsWithServerInstance:(id)a3
+- (void)toggleBackgroundSoundsWithServerInstance:(id)instance
 {
-  v4 = [getHUComfortSoundsSettingsClass() sharedInstance];
-  v3 = [getHUComfortSoundsSettingsClass() sharedInstance];
-  [v4 setComfortSoundsEnabled:{objc_msgSend(v3, "comfortSoundsEnabled") ^ 1}];
+  sharedInstance = [getHUComfortSoundsSettingsClass() sharedInstance];
+  sharedInstance2 = [getHUComfortSoundsSettingsClass() sharedInstance];
+  [sharedInstance setComfortSoundsEnabled:{objc_msgSend(sharedInstance2, "comfortSoundsEnabled") ^ 1}];
 }
 
-- (BOOL)serverInstance:(id)a3 performMedusaGesture:(unint64_t)a4
+- (BOOL)serverInstance:(id)instance performMedusaGesture:(unint64_t)gesture
 {
-  v5 = [(AXSpringBoardServerHelper *)self sideAppManager];
-  LOBYTE(a4) = [v5 performMedusaGesture:a4];
+  sideAppManager = [(AXSpringBoardServerHelper *)self sideAppManager];
+  LOBYTE(gesture) = [sideAppManager performMedusaGesture:gesture];
 
-  return a4;
+  return gesture;
 }
 
-- (id)medusaAppsWithServerInstance:(id)a3
+- (id)medusaAppsWithServerInstance:(id)instance
 {
-  v3 = [(AXSpringBoardServerHelper *)self sideAppManager];
-  v4 = [v3 medusaApps];
+  sideAppManager = [(AXSpringBoardServerHelper *)self sideAppManager];
+  medusaApps = [sideAppManager medusaApps];
 
-  return v4;
+  return medusaApps;
 }
 
-- (BOOL)isMenuBarVisibleWithServerInstance:(id)a3
+- (BOOL)isMenuBarVisibleWithServerInstance:(id)instance
 {
   v3 = +[AXSpringBoardServerHelper _axMenuBarManager];
   v4 = [v3 safeBoolForKey:@"isMenuBarVisible"];
@@ -3834,7 +3834,7 @@ void __66__AXSpringBoardServerHelper_reachabilityOffsetWithServerInstance___bloc
   return v4;
 }
 
-- (BOOL)isMenuBarModalWithServerInstance:(id)a3
+- (BOOL)isMenuBarModalWithServerInstance:(id)instance
 {
   v3 = +[AXSpringBoardServerHelper _axMenuBarManager];
   v4 = [v3 safeValueForKey:@"menuBarViewController"];
@@ -3843,32 +3843,32 @@ void __66__AXSpringBoardServerHelper_reachabilityOffsetWithServerInstance___bloc
   return v5;
 }
 
-- (void)serverInstance:(id)a3 setDockIconActivationMode:(unint64_t)a4
+- (void)serverInstance:(id)instance setDockIconActivationMode:(unint64_t)mode
 {
-  v5 = [(AXSpringBoardServerHelper *)self sideAppManager];
-  [v5 setDockIconActivationMode:a4];
+  sideAppManager = [(AXSpringBoardServerHelper *)self sideAppManager];
+  [sideAppManager setDockIconActivationMode:mode];
 }
 
-- (BOOL)canSetDockIconActivationModeForServerInstance:(id)a3
+- (BOOL)canSetDockIconActivationModeForServerInstance:(id)instance
 {
-  v3 = [(AXSpringBoardServerHelper *)self sideAppManager];
-  v4 = [v3 canActivateMedusaForDock];
+  sideAppManager = [(AXSpringBoardServerHelper *)self sideAppManager];
+  canActivateMedusaForDock = [sideAppManager canActivateMedusaForDock];
 
-  return v4;
+  return canActivateMedusaForDock;
 }
 
 - (id)medusaBundleIDsToLayoutRoles
 {
-  v2 = [(AXSpringBoardServerHelper *)self sideAppManager];
-  v3 = [v2 medusaAppBundleIdsToLayoutRoles];
+  sideAppManager = [(AXSpringBoardServerHelper *)self sideAppManager];
+  medusaAppBundleIdsToLayoutRoles = [sideAppManager medusaAppBundleIdsToLayoutRoles];
 
-  return v3;
+  return medusaAppBundleIdsToLayoutRoles;
 }
 
-- (void)toggleSpotlightWithServerInstance:(id)a3
+- (void)toggleSpotlightWithServerInstance:(id)instance
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D75128] sharedApplication];
+  instanceCopy = instance;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   if (AXDeviceIsPad())
   {
     v6 = v10;
@@ -3879,9 +3879,9 @@ void __66__AXSpringBoardServerHelper_reachabilityOffsetWithServerInstance___bloc
 
   else
   {
-    if ([(AXSpringBoardServerHelper *)self isAppSwitcherVisibleWithServerInstance:v4])
+    if ([(AXSpringBoardServerHelper *)self isAppSwitcherVisibleWithServerInstance:instanceCopy])
     {
-      [(AXSpringBoardServerHelper *)self dismissAppSwitcherWithServerInstance:v4];
+      [(AXSpringBoardServerHelper *)self dismissAppSwitcherWithServerInstance:instanceCopy];
     }
 
     v6 = v9;
@@ -3892,21 +3892,21 @@ void __66__AXSpringBoardServerHelper_reachabilityOffsetWithServerInstance___bloc
 
   v6[2] = v7;
   v6[3] = &unk_27842BB18;
-  v6[4] = v5;
-  v8 = v5;
+  v6[4] = mEMORY[0x277D75128];
+  v8 = mEMORY[0x277D75128];
   AXPerformSafeBlock();
 }
 
-- (void)revealSpotlightWithServerInstance:(id)a3
+- (void)revealSpotlightWithServerInstance:(id)instance
 {
-  v4 = a3;
+  instanceCopy = instance;
   if (![(AXSpringBoardServerHelper *)self isSpotlightVisibleWithServerInstance:?])
   {
-    [(AXSpringBoardServerHelper *)self toggleSpotlightWithServerInstance:v4];
+    [(AXSpringBoardServerHelper *)self toggleSpotlightWithServerInstance:instanceCopy];
   }
 }
 
-- (BOOL)isGuidedAccessActiveWithServerInstance:(id)a3
+- (BOOL)isGuidedAccessActiveWithServerInstance:(id)instance
 {
   v3 = [NSClassFromString(&cfstr_Gaxspringboard.isa) safeValueForKey:@"sharedInstanceIfExists"];
   v4 = [v3 safeBoolForKey:@"isActive"];
@@ -3914,35 +3914,35 @@ void __66__AXSpringBoardServerHelper_reachabilityOffsetWithServerInstance___bloc
   return v4;
 }
 
-- (BOOL)toggleDarkModeWithServerInstance:(id)a3
+- (BOOL)toggleDarkModeWithServerInstance:(id)instance
 {
-  v3 = [MEMORY[0x277D75CF0] sharedInstance];
-  [v3 toggleCurrentStyle];
+  mEMORY[0x277D75CF0] = [MEMORY[0x277D75CF0] sharedInstance];
+  [mEMORY[0x277D75CF0] toggleCurrentStyle];
 
   return 1;
 }
 
-- (BOOL)isSpotlightVisibleWithServerInstance:(id)a3
+- (BOOL)isSpotlightVisibleWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v4 = [NSClassFromString(&cfstr_Sbspotlightmul.isa) safeValueForKey:@"sharedRemoteSearchViewController"];
   objc_opt_class();
   v5 = __UIAccessibilityCastAsClass();
-  v6 = [v5 _appearState];
+  _appearState = [v5 _appearState];
 
-  return (v6 - 1) < 2;
+  return (_appearState - 1) < 2;
 }
 
-- (BOOL)isTodayViewOrAppLibraryVisibleWithServerInstance:(id)a3
+- (BOOL)isTodayViewOrAppLibraryVisibleWithServerInstance:(id)instance
 {
-  v3 = [objc_opt_class() _iconController];
-  v4 = [v3 safeValueForKey:@"iconManager"];
+  _iconController = [objc_opt_class() _iconController];
+  v4 = [_iconController safeValueForKey:@"iconManager"];
   v5 = [v4 safeBoolForKey:@"isOverlayTodayOrLibraryViewVisible"];
 
   return v5;
 }
 
-- (BOOL)isPIPWindowVisibleWithServerInstance:(id)a3
+- (BOOL)isPIPWindowVisibleWithServerInstance:(id)instance
 {
   v3 = [NSClassFromString(&cfstr_Sbworkspace.isa) safeValueForKey:@"mainWorkspace"];
   v4 = [v3 safeValueForKey:@"pipCoordinator"];
@@ -3951,31 +3951,31 @@ void __66__AXSpringBoardServerHelper_reachabilityOffsetWithServerInstance___bloc
   return v5;
 }
 
-- (void)forceLoadGAXBundleWithServerInstance:(id)a3
+- (void)forceLoadGAXBundleWithServerInstance:(id)instance
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:*MEMORY[0x277D81CD8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x277D81CD8] object:0];
 }
 
-- (void)reactivateInCallServiceWithServerInstance:(id)a3
+- (void)reactivateInCallServiceWithServerInstance:(id)instance
 {
   v5 = [NSClassFromString(&cfstr_Sbmainworkspac.isa) safeValueForKey:@"_instanceIfExists"];
   v3 = [v5 safeValueForKey:@"inCallTransientOverlayManager"];
   v4 = [v3 safeValueForKey:@"presentTransientOverlay"];
 }
 
-- (void)launchMagnifierAppWithServerInstance:(id)a3
+- (void)launchMagnifierAppWithServerInstance:(id)instance
 {
-  v4 = a3;
-  v5 = [(AXSpringBoardServerHelper *)self serverInstance:v4 appWithIdentifier:*MEMORY[0x277D81C00]];
+  instanceCopy = instance;
+  v5 = [(AXSpringBoardServerHelper *)self serverInstance:instanceCopy appWithIdentifier:*MEMORY[0x277D81C00]];
   v6 = __UIAccessibilitySafeClass();
 
   if (v6 && ![(AXSpringBoardServerHelper *)self isPasscodeLockVisible])
   {
-    v7 = [objc_opt_class() _uiController];
+    _uiController = [objc_opt_class() _uiController];
     if (objc_opt_respondsToSelector())
     {
-      v8 = v7;
+      v8 = _uiController;
       v9 = v6;
       AXPerformSafeBlock();
     }
@@ -3987,10 +3987,10 @@ void __66__AXSpringBoardServerHelper_reachabilityOffsetWithServerInstance___bloc
   }
 }
 
-- (BOOL)isMagnifierVisibleWithServerInstance:(id)a3
+- (BOOL)isMagnifierVisibleWithServerInstance:(id)instance
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  instanceCopy = instance;
   AXFrontBoardRunningAppProcesses();
   v19 = 0u;
   v20 = 0u;
@@ -4012,23 +4012,23 @@ void __66__AXSpringBoardServerHelper_reachabilityOffsetWithServerInstance___bloc
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v11 bundleIdentifier];
-        v13 = [v12 isEqualToString:*v9];
+        bundleIdentifier = [v11 bundleIdentifier];
+        v13 = [bundleIdentifier isEqualToString:*v9];
 
         if (v13)
         {
-          v14 = [v11 state];
-          v15 = [v14 visibility];
+          state = [v11 state];
+          visibility = [state visibility];
 
-          if (v15 == 2)
+          if (visibility == 2)
           {
             LOBYTE(v16) = 1;
             goto LABEL_14;
           }
 
-          if (v15 == 3)
+          if (visibility == 3)
           {
-            v16 = ![(AXSpringBoardServerHelper *)self isScreenLockedWithServerInstance:v4];
+            v16 = ![(AXSpringBoardServerHelper *)self isScreenLockedWithServerInstance:instanceCopy];
             goto LABEL_14;
           }
         }
@@ -4051,9 +4051,9 @@ LABEL_14:
   return v16;
 }
 
-- (void)updateFrontMostApplicationWithServerInstance:(id)a3
+- (void)updateFrontMostApplicationWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -4085,11 +4085,11 @@ void __74__AXSpringBoardServerHelper_updateFrontMostApplicationWithServerInstanc
   [v2 requestArbitrationForSBWindowScene:0 forReason:*(a1 + 32)];
 }
 
-- (void)diminishJindoWithServerInstance:(id)a3
+- (void)diminishJindoWithServerInstance:(id)instance
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D75128] sharedApplication];
-  v5 = [v4 safeValueForKey:@"systemApertureControllerForMainDisplay"];
+  instanceCopy = instance;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  v5 = [mEMORY[0x277D75128] safeValueForKey:@"systemApertureControllerForMainDisplay"];
   v6 = [v5 safeValueForKey:@"_systemApertureViewController"];
   v7 = [v6 safeValueForKey:@"_systemApertureManager"];
   v8 = [v7 safeValueForKey:@"_elementsToElementViewControllers"];
@@ -4097,11 +4097,11 @@ void __74__AXSpringBoardServerHelper_updateFrontMostApplicationWithServerInstanc
 
   if ([v9 count])
   {
-    v10 = [v9 objectEnumerator];
-    v11 = [v10 nextObject];
-    if (v11)
+    objectEnumerator = [v9 objectEnumerator];
+    nextObject = [objectEnumerator nextObject];
+    if (nextObject)
     {
-      v12 = v11;
+      v12 = nextObject;
       do
       {
         if (objc_opt_respondsToSelector())
@@ -4109,23 +4109,23 @@ void __74__AXSpringBoardServerHelper_updateFrontMostApplicationWithServerInstanc
           [v12 _axCollapseIfExpandedByUserInteraction];
         }
 
-        v13 = [v10 nextObject];
+        nextObject2 = [objectEnumerator nextObject];
 
-        v12 = v13;
+        v12 = nextObject2;
       }
 
-      while (v13);
+      while (nextObject2);
     }
   }
 }
 
-- (id)jindoAppBundleIndentifiersWithServerInstance:(id)a3
+- (id)jindoAppBundleIndentifiersWithServerInstance:(id)instance
 {
   v33 = *MEMORY[0x277D85DE8];
-  v12 = a3;
+  instanceCopy = instance;
   v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v15 = [MEMORY[0x277D75128] sharedApplication];
-  v14 = [v15 safeValueForKey:@"systemApertureControllerForMainDisplay"];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  v14 = [mEMORY[0x277D75128] safeValueForKey:@"systemApertureControllerForMainDisplay"];
   v3 = [v14 safeValueForKey:@"_systemApertureViewController"];
   [v3 safeArrayForKey:@"_orderedContainerViews"];
   v30 = 0u;
@@ -4162,7 +4162,7 @@ void __74__AXSpringBoardServerHelper_updateFrontMostApplicationWithServerInstanc
         _Block_object_dispose(&v22, 8);
         if (v8)
         {
-          v9 = [v8 safeStringForKey:{@"clientIdentifier", v12}];
+          v9 = [v8 safeStringForKey:{@"clientIdentifier", instanceCopy}];
           if (([v9 isEqualToString:v20] & 1) == 0 && (objc_msgSend(v9, "isEqualToString:", @"com.apple.chronod") & 1) == 0 && (objc_msgSend(v9, "isEqualToString:", @"com.apple.CoreAuthUI") & 1) == 0 && (objc_msgSend(v9, "isEqualToString:", @"com.apple.LocalAuthenticationUIService") & 1) == 0 && (objc_msgSend(v9, "isEqualToString:", v18) & 1) == 0 && (objc_msgSend(v9, "isEqualToString:", @"com.apple.accessibility.MagnifierAngel") & 1) == 0 && (objc_msgSend(v9, "isEqualToString:", @"com.apple.ShortcutsUI") & 1) == 0 && (!objc_msgSend(v9, "isEqualToString:", v16) || !-[AXSpringBoardServerHelper isInCallServiceFrontmost](self, "isInCallServiceFrontmost")))
           {
             [v17 axSafelyAddObject:v9];
@@ -4191,13 +4191,13 @@ uint64_t __74__AXSpringBoardServerHelper_jindoAppBundleIndentifiersWithServerIns
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)launchVoiceOverImageExplorerViewServiceWithServerInstance:(id)a3 forData:(id)a4
+- (void)launchVoiceOverImageExplorerViewServiceWithServerInstance:(id)instance forData:(id)data
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  instanceCopy = instance;
+  dataCopy = data;
   v8 = *MEMORY[0x277CE7CE8];
-  v9 = [v7 objectForKeyedSubscript:*MEMORY[0x277CE7CE8]];
+  v9 = [dataCopy objectForKeyedSubscript:*MEMORY[0x277CE7CE8]];
   v25 = 0;
   v10 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v9 error:&v25];
   v11 = v25;
@@ -4234,11 +4234,11 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v12 = [v10 hostAppBundleID];
-  v13 = v12;
-  if (v12)
+  hostAppBundleID = [v10 hostAppBundleID];
+  v13 = hostAppBundleID;
+  if (hostAppBundleID)
   {
-    v14 = AXSBApplicationWithIdentifier(v12);
+    v14 = AXSBApplicationWithIdentifier(hostAppBundleID);
     NSClassFromString(&cfstr_Sbapplication.isa);
     if (objc_opt_isKindOfClass())
     {
@@ -4266,9 +4266,9 @@ LABEL_20:
     }
   }
 
-  v20 = [v7 mutableCopy];
+  v20 = [dataCopy mutableCopy];
   [v20 setObject:v17 forKeyedSubscript:v8];
-  [(AXSpringBoardServerHelper *)self serverInstance:v6 showRemoteViewType:2 withData:v20 withPreviousViewDismissal:1];
+  [(AXSpringBoardServerHelper *)self serverInstance:instanceCopy showRemoteViewType:2 withData:v20 withPreviousViewDismissal:1];
 
 LABEL_21:
   v23 = *MEMORY[0x277D85DE8];
@@ -4283,16 +4283,16 @@ LABEL_21:
   return v4;
 }
 
-- (void)setSecurePayAccessibilityFeaturesDisabled:(BOOL)a3 withServerInstance:(id)a4
+- (void)setSecurePayAccessibilityFeaturesDisabled:(BOOL)disabled withServerInstance:(id)instance
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CE7E20] sharedInstance];
-  v8 = [v7 securePayAssertionActive];
+  disabledCopy = disabled;
+  instanceCopy = instance;
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  securePayAssertionActive = [mEMORY[0x277CE7E20] securePayAssertionActive];
 
-  if (v4)
+  if (disabledCopy)
   {
-    if ((v8 & 1) == 0)
+    if ((securePayAssertionActive & 1) == 0)
     {
       v9 = objc_opt_new();
       axFeatureCache = self->_axFeatureCache;
@@ -4308,8 +4308,8 @@ LABEL_21:
       v11 = _AXSTripleClickCopyOptions();
       [(AccessibilityFeatureCache *)self->_axFeatureCache setTripleClickOptions:v11];
 
-      v12 = [MEMORY[0x277CE7E20] sharedInstance];
-      [v12 setSecurePayAssertionActive:1];
+      mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
+      [mEMORY[0x277CE7E20]2 setSecurePayAssertionActive:1];
 
       _AXSSetTripleClickOptions();
       _AXSBackTapSetEnabled();
@@ -4334,8 +4334,8 @@ LABEL_21:
 
       if (v14)
       {
-        v17 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-        [v17 setObject:v14 forKey:@"AXSecurePayFeatureCache"];
+        standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+        [standardUserDefaults setObject:v14 forKey:@"AXSecurePayFeatureCache"];
       }
 
       v18 = AXLogAssertions();
@@ -4349,14 +4349,14 @@ LABEL_15:
     }
   }
 
-  else if (v8)
+  else if (securePayAssertionActive)
   {
     [(AXSpringBoardServerHelper *)self _restoreAccessibilityFeatureFromSecurePayCache:self->_axFeatureCache];
-    v19 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v19 removeObjectForKey:@"AXSecurePayFeatureCache"];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults2 removeObjectForKey:@"AXSecurePayFeatureCache"];
 
-    v20 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v20 setSecurePayAssertionActive:0];
+    mEMORY[0x277CE7E20]3 = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20]3 setSecurePayAssertionActive:0];
 
     v15 = AXLogAssertions();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -4369,32 +4369,32 @@ LABEL_15:
   }
 }
 
-- (void)_restoreAccessibilityFeatureFromSecurePayCache:(id)a3
+- (void)_restoreAccessibilityFeatureFromSecurePayCache:(id)cache
 {
-  if (a3)
+  if (cache)
   {
-    v3 = a3;
-    [v3 assistiveTouch];
+    cacheCopy = cache;
+    [cacheCopy assistiveTouch];
     _AXSAssistiveTouchSetEnabled();
-    [v3 liveCaptions];
+    [cacheCopy liveCaptions];
     _AXSLiveTranscriptionSetEnabled();
-    [v3 liveSpeech];
+    [cacheCopy liveSpeech];
     _AXSLiveSpeechSetEnabled();
-    [v3 speakScreen];
+    [cacheCopy speakScreen];
     _AXSSetSpeakThisEnabled();
-    [v3 zoom];
+    [cacheCopy zoom];
     _AXSZoomTouchSetEnabled();
-    [v3 voiceControl];
+    [cacheCopy voiceControl];
     _AXSCommandAndControlSetEnabled();
-    [v3 backTap];
+    [cacheCopy backTap];
     _AXSBackTapSetEnabled();
-    v4 = [v3 tripleClickOptions];
+    tripleClickOptions = [cacheCopy tripleClickOptions];
 
     _AXSSetTripleClickOptions();
   }
 }
 
-- (void)activateSOSModeWithServerInstance:(id)a3
+- (void)activateSOSModeWithServerInstance:(id)instance
 {
   v3 = dispatch_get_global_queue(21, 0);
   dispatch_async(v3, &__block_literal_global_2097);
@@ -4432,10 +4432,10 @@ uint64_t __63__AXSpringBoardServerHelper_activateSOSModeWithServerInstance___blo
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(AXSpringBoardServerHelper *)self motionTrackingInputManager];
-  v3 = [v2 compatibleInputs];
+  motionTrackingInputManager = [(AXSpringBoardServerHelper *)self motionTrackingInputManager];
+  compatibleInputs = [motionTrackingInputManager compatibleInputs];
 
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [compatibleInputs countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -4445,7 +4445,7 @@ uint64_t __63__AXSpringBoardServerHelper_activateSOSModeWithServerInstance___blo
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(compatibleInputs);
         }
 
         if ([*(*(&v9 + 1) + 8 * i) isHIDDevice])
@@ -4455,7 +4455,7 @@ uint64_t __63__AXSpringBoardServerHelper_activateSOSModeWithServerInstance___blo
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [compatibleInputs countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -4473,15 +4473,15 @@ LABEL_11:
 
 - (BOOL)currentDevicesHaveAssistiveTouchCustomActions
 {
-  v2 = [MEMORY[0x277CE7DB8] sharedInstance];
-  v3 = [v2 currentDevicesHaveAssistiveTouchCustomActions];
+  mEMORY[0x277CE7DB8] = [MEMORY[0x277CE7DB8] sharedInstance];
+  currentDevicesHaveAssistiveTouchCustomActions = [mEMORY[0x277CE7DB8] currentDevicesHaveAssistiveTouchCustomActions];
 
-  return v3;
+  return currentDevicesHaveAssistiveTouchCustomActions;
 }
 
-- (void)cancelSiriDismissalForAssistiveTouchWithServerInstance:(id)a3
+- (void)cancelSiriDismissalForAssistiveTouchWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v4 = ASTLogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -4490,13 +4490,13 @@ LABEL_11:
   }
 
   objc_opt_class();
-  v5 = [objc_opt_class() _assistantController];
+  _assistantController = [objc_opt_class() _assistantController];
   v6 = __UIAccessibilityCastAsSafeCategory();
 
   [v6 _axCancelDismissSiriForAssistiveTouch];
 }
 
-- (void)toggleLiveTranscriptionWithServerInstance:(id)a3
+- (void)toggleLiveTranscriptionWithServerInstance:(id)instance
 {
   v4 = _AXSLiveTranscriptionEnabled();
   v5 = v4 == 0;
@@ -4509,14 +4509,14 @@ LABEL_11:
 
   else
   {
-    v6 = [MEMORY[0x277CE7E40] server];
+    server = [MEMORY[0x277CE7E40] server];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __71__AXSpringBoardServerHelper_toggleLiveTranscriptionWithServerInstance___block_invoke;
     v7[3] = &unk_27842C030;
     v8 = v5;
     v7[4] = self;
-    [v6 showAlert:25 withHandler:v7];
+    [server showAlert:25 withHandler:v7];
   }
 }
 
@@ -4549,11 +4549,11 @@ id __60__AXSpringBoardServerHelper__sendLiveCaptionsCoreAnalytics___block_invoke
   return v2;
 }
 
-- (void)freezeClarityUILoadingScreenWithServerInstance:(id)a3
+- (void)freezeClarityUILoadingScreenWithServerInstance:(id)instance
 {
   v3 = objc_alloc(MEMORY[0x277CF05F0]);
-  v4 = [MEMORY[0x277CD9E40] mainDisplay];
-  v6 = [v3 initWithName:@"ClarityUI" display:v4];
+  mainDisplay = [MEMORY[0x277CD9E40] mainDisplay];
+  v6 = [v3 initWithName:@"ClarityUI" display:mainDisplay];
 
   v5 = [objc_alloc(MEMORY[0x277CF05E8]) initWithDescriptor:v6];
   [v5 present];
@@ -4595,51 +4595,51 @@ void __80__AXSpringBoardServerHelper_presentNearbyDeviceControlPickerWithServerI
   }
 }
 
-- (void)toggleDetectionModeWithServerInstance:(id)a3
+- (void)toggleDetectionModeWithServerInstance:(id)instance
 {
   if (AccessibilityPhysicalInteractionLibraryCore())
   {
-    v3 = [getAXPISystemActionHelperClass() sharedInstance];
-    [v3 activateDetectionMode];
+    sharedInstance = [getAXPISystemActionHelperClass() sharedInstance];
+    [sharedInstance activateDetectionMode];
   }
 }
 
-- (void)askQuestionInMagnifierWithServerInstance:(id)a3
+- (void)askQuestionInMagnifierWithServerInstance:(id)instance
 {
   if (AccessibilityPhysicalInteractionLibraryCore())
   {
-    v3 = [getAXPISystemActionHelperClass() sharedInstance];
-    [v3 activateMagnifierAskQuestion];
+    sharedInstance = [getAXPISystemActionHelperClass() sharedInstance];
+    [sharedInstance activateMagnifierAskQuestion];
   }
 }
 
-- (void)launchAccessibilityReaderWithServerInstance:(id)a3
+- (void)launchAccessibilityReaderWithServerInstance:(id)instance
 {
   if (AccessibilityPhysicalInteractionLibraryCore())
   {
-    v3 = [getAXPISystemActionHelperClass() sharedInstance];
-    [v3 launchAccessibilityReader];
+    sharedInstance = [getAXPISystemActionHelperClass() sharedInstance];
+    [sharedInstance launchAccessibilityReader];
   }
 }
 
-- (void)toggleConversationBoostWithServerInstance:(id)a3
+- (void)toggleConversationBoostWithServerInstance:(id)instance
 {
   v14 = paCurrentBluetoothDeviceSupportingTransparencyAccommodations();
-  v3 = [v14 address];
-  if ([v3 length] && paCurrentRouteSupportsTransparencyAccommodations() && paBluetoothDeviceSupportsSSL())
+  address = [v14 address];
+  if ([address length] && paCurrentRouteSupportsTransparencyAccommodations() && paBluetoothDeviceSupportsSSL())
   {
-    v4 = [MEMORY[0x277D3A1D0] sharedInstance];
-    if ([v4 personalMediaEnabled])
+    mEMORY[0x277D3A1D0] = [MEMORY[0x277D3A1D0] sharedInstance];
+    if ([mEMORY[0x277D3A1D0] personalMediaEnabled])
     {
-      v5 = [v14 listeningMode];
+      listeningMode = [v14 listeningMode];
 
-      if (v5 == 3)
+      if (listeningMode == 3)
       {
-        v6 = [MEMORY[0x277D3A1D0] sharedInstance];
-        v7 = [v6 transparencyCustomizedForAddress:v3];
+        mEMORY[0x277D3A1D0]2 = [MEMORY[0x277D3A1D0] sharedInstance];
+        v7 = [mEMORY[0x277D3A1D0]2 transparencyCustomizedForAddress:address];
 
-        v8 = [MEMORY[0x277D3A1D0] sharedInstance];
-        [v8 setTransparencyCustomized:v7 ^ 1u forAddress:v3];
+        mEMORY[0x277D3A1D0]3 = [MEMORY[0x277D3A1D0] sharedInstance];
+        [mEMORY[0x277D3A1D0]3 setTransparencyCustomized:v7 ^ 1u forAddress:address];
 LABEL_18:
 
         goto LABEL_19;
@@ -4650,13 +4650,13 @@ LABEL_18:
     {
     }
 
-    v9 = [MEMORY[0x277D3A1D0] sharedInstance];
-    v10 = [v9 sslEnabledForAddress:v3];
+    mEMORY[0x277D3A1D0]4 = [MEMORY[0x277D3A1D0] sharedInstance];
+    v10 = [mEMORY[0x277D3A1D0]4 sslEnabledForAddress:address];
 
-    v11 = [v14 listeningMode];
-    if ((v10 & 1) != 0 || v11 == 3)
+    listeningMode2 = [v14 listeningMode];
+    if ((v10 & 1) != 0 || listeningMode2 == 3)
     {
-      if (v11 == 3)
+      if (listeningMode2 == 3)
       {
         v13 = v10;
       }
@@ -4681,43 +4681,43 @@ LABEL_18:
 
     [v14 setListeningMode:v12];
 LABEL_17:
-    v8 = [MEMORY[0x277D3A1D0] sharedInstance];
-    [v8 setSslEnabled:v10 ^ 1u forAddress:v3];
+    mEMORY[0x277D3A1D0]3 = [MEMORY[0x277D3A1D0] sharedInstance];
+    [mEMORY[0x277D3A1D0]3 setSslEnabled:v10 ^ 1u forAddress:address];
     goto LABEL_18;
   }
 
 LABEL_19:
 }
 
-- (void)toggleTorchWithServerInstance:(id)a3
+- (void)toggleTorchWithServerInstance:(id)instance
 {
-  v3 = [MEMORY[0x277D679B8] sharedInstance];
-  v4 = [v3 level];
+  mEMORY[0x277D679B8] = [MEMORY[0x277D679B8] sharedInstance];
+  level = [mEMORY[0x277D679B8] level];
 
-  v5 = [MEMORY[0x277D679B8] sharedInstance];
-  v6 = v5;
-  if (v4)
+  mEMORY[0x277D679B8]2 = [MEMORY[0x277D679B8] sharedInstance];
+  v6 = mEMORY[0x277D679B8]2;
+  if (level)
   {
-    [v5 turnFlashlightOffForReason:@"Accessibility"];
+    [mEMORY[0x277D679B8]2 turnFlashlightOffForReason:@"Accessibility"];
   }
 
   else
   {
-    [v5 turnFlashlightOnForReason:@"Accessibility"];
+    [mEMORY[0x277D679B8]2 turnFlashlightOnForReason:@"Accessibility"];
   }
 }
 
-- (id)serverInstance:(id)a3 splashImageForAppWithBundleIdentifier:(id)a4
+- (id)serverInstance:(id)instance splashImageForAppWithBundleIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
+  instanceCopy = instance;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__0;
   v15 = __Block_byref_object_dispose__0;
   v16 = 0;
-  v7 = AXSBApplicationWithIdentifier(v6);
+  v7 = AXSBApplicationWithIdentifier(identifierCopy);
   NSClassFromString(&cfstr_Sbapplication.isa);
   if (objc_opt_isKindOfClass())
   {
@@ -4816,10 +4816,10 @@ uint64_t __82__AXSpringBoardServerHelper_serverInstance_splashImageForAppWithBun
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)rebootDeviceWithServerInstance:(id)a3
+- (void)rebootDeviceWithServerInstance:(id)instance
 {
-  v3 = [MEMORY[0x277CE7E40] server];
-  [v3 showAlert:11 withHandler:&__block_literal_global_2127];
+  server = [MEMORY[0x277CE7E40] server];
+  [server showAlert:11 withHandler:&__block_literal_global_2127];
 }
 
 uint64_t __60__AXSpringBoardServerHelper_rebootDeviceWithServerInstance___block_invoke(uint64_t a1, uint64_t a2)
@@ -4832,81 +4832,81 @@ uint64_t __60__AXSpringBoardServerHelper_rebootDeviceWithServerInstance___block_
   return result;
 }
 
-- (void)launchApplication:(id)a3
+- (void)launchApplication:(id)application
 {
-  v4 = a3;
-  v5 = [(AXSpringBoardServerHelper *)self sideAppManager];
-  [v5 launchApplication:v4];
+  applicationCopy = application;
+  sideAppManager = [(AXSpringBoardServerHelper *)self sideAppManager];
+  [sideAppManager launchApplication:applicationCopy];
 }
 
-- (void)launchApplicationWithFullConfiguration:(id)a3
+- (void)launchApplicationWithFullConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(AXSpringBoardServerHelper *)self sideAppManager];
-  [v5 launchApplicationWithFullConfiguration:v4];
+  configurationCopy = configuration;
+  sideAppManager = [(AXSpringBoardServerHelper *)self sideAppManager];
+  [sideAppManager launchApplicationWithFullConfiguration:configurationCopy];
 }
 
-- (void)launchFloatingApplication:(id)a3
+- (void)launchFloatingApplication:(id)application
 {
-  v4 = a3;
-  v5 = [(AXSpringBoardServerHelper *)self sideAppManager];
-  [v5 launchFloatingApplication:v4];
+  applicationCopy = application;
+  sideAppManager = [(AXSpringBoardServerHelper *)self sideAppManager];
+  [sideAppManager launchFloatingApplication:applicationCopy];
 }
 
-- (BOOL)canLaunchAsPinnedApplicationForIconView:(id)a3
+- (BOOL)canLaunchAsPinnedApplicationForIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(AXSpringBoardServerHelper *)self sideAppManager];
-  v6 = [v5 canLaunchAsPinnedApplicationForIconView:v4];
+  viewCopy = view;
+  sideAppManager = [(AXSpringBoardServerHelper *)self sideAppManager];
+  v6 = [sideAppManager canLaunchAsPinnedApplicationForIconView:viewCopy];
 
   return v6;
 }
 
-- (BOOL)canLaunchAsFloatingApplicationForIconView:(id)a3
+- (BOOL)canLaunchAsFloatingApplicationForIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(AXSpringBoardServerHelper *)self sideAppManager];
-  v6 = [v5 canLaunchAsFloatingApplicationForIconView:v4];
+  viewCopy = view;
+  sideAppManager = [(AXSpringBoardServerHelper *)self sideAppManager];
+  v6 = [sideAppManager canLaunchAsFloatingApplicationForIconView:viewCopy];
 
   return v6;
 }
 
 - (id)sceneLayoutState
 {
-  v2 = [(AXSpringBoardServerHelper *)self sideAppManager];
-  v3 = [v2 sceneLayoutState];
+  sideAppManager = [(AXSpringBoardServerHelper *)self sideAppManager];
+  sceneLayoutState = [sideAppManager sceneLayoutState];
 
-  return v3;
+  return sceneLayoutState;
 }
 
-- (id)appForLayoutRole:(int64_t)a3
+- (id)appForLayoutRole:(int64_t)role
 {
-  v4 = [(AXSpringBoardServerHelper *)self sideAppManager];
-  v5 = [v4 appForLayoutRole:a3];
+  sideAppManager = [(AXSpringBoardServerHelper *)self sideAppManager];
+  v5 = [sideAppManager appForLayoutRole:role];
 
   return v5;
 }
 
-- (id)_accessibilityNotificationSummary:(unint64_t)a3
+- (id)_accessibilityNotificationSummary:(unint64_t)summary
 {
-  v4 = [(AXSpringBoardServerHelper *)self coverSheetViewController];
-  v5 = [v4 safeValueForKey:@"mainPageContentViewController"];
+  coverSheetViewController = [(AXSpringBoardServerHelper *)self coverSheetViewController];
+  v5 = [coverSheetViewController safeValueForKey:@"mainPageContentViewController"];
   v6 = [v5 safeValueForKey:@"combinedListViewController"];
   v7 = [v6 safeValueForKey:@"_structuredListViewController"];
-  v8 = [v7 _accessibilityNotificationSummary:a3];
+  v8 = [v7 _accessibilityNotificationSummary:summary];
 
   return v8;
 }
 
 - (unint64_t)_accessibilityNotificationCount
 {
-  v2 = [(AXSpringBoardServerHelper *)self coverSheetViewController];
-  v3 = [v2 safeValueForKey:@"mainPageContentViewController"];
+  coverSheetViewController = [(AXSpringBoardServerHelper *)self coverSheetViewController];
+  v3 = [coverSheetViewController safeValueForKey:@"mainPageContentViewController"];
   v4 = [v3 safeValueForKey:@"combinedListViewController"];
   v5 = [v4 safeValueForKey:@"_structuredListViewController"];
-  v6 = [v5 _accessibilityNotificationCount];
+  _accessibilityNotificationCount = [v5 _accessibilityNotificationCount];
 
-  return v6;
+  return _accessibilityNotificationCount;
 }
 
 - (int)nativeFocusedApplication
@@ -4926,8 +4926,8 @@ uint64_t __60__AXSpringBoardServerHelper_rebootDeviceWithServerInstance___block_
 
     if ([v8 accessibilitySceneIsDeactivatedBySidebar])
     {
-      v9 = AXLogCommon();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      processIdentity = AXLogCommon();
+      if (os_log_type_enabled(processIdentity, OS_LOG_TYPE_ERROR))
       {
         [AXSpringBoardServerHelper nativeFocusedApplication];
       }
@@ -4937,14 +4937,14 @@ uint64_t __60__AXSpringBoardServerHelper_rebootDeviceWithServerInstance___block_
 
     else
     {
-      v10 = [v8 definition];
-      v11 = [v10 clientIdentity];
-      v9 = [v11 processIdentity];
+      definition = [v8 definition];
+      clientIdentity = [definition clientIdentity];
+      processIdentity = [clientIdentity processIdentity];
 
-      if (v9)
+      if (processIdentity)
       {
         v12 = MEMORY[0x277D46F48];
-        v13 = [MEMORY[0x277D46FA0] predicateMatchingIdentity:v9];
+        v13 = [MEMORY[0x277D46FA0] predicateMatchingIdentity:processIdentity];
         v18 = 0;
         v14 = [v12 handleForPredicate:v13 error:&v18];
         v15 = v18;
@@ -4984,8 +4984,8 @@ uint64_t __60__AXSpringBoardServerHelper_rebootDeviceWithServerInstance___block_
 
 - (BOOL)_accessibilityIsUILocked
 {
-  v2 = [MEMORY[0x277CE7E40] server];
-  v3 = [v2 isScreenLockedWithPasscode:0];
+  server = [MEMORY[0x277CE7E40] server];
+  v3 = [server isScreenLockedWithPasscode:0];
 
   return v3;
 }
@@ -5005,8 +5005,8 @@ uint64_t __60__AXSpringBoardServerHelper_rebootDeviceWithServerInstance___block_
   v8 = __UIAccessibilityCastAsClass();
   if ([v5 safeBoolForKey:@"isPresentingBanner"])
   {
-    v9 = [v8 view];
-    v10 = _SBAXIsViewVisible(v9);
+    view = [v8 view];
+    v10 = _SBAXIsViewVisible(view);
   }
 
   else
@@ -5092,20 +5092,20 @@ uint64_t __73__AXSpringBoardServerHelper_accessibilityIsRemoteTransientOverlayVi
   return isKindOfClass & 1;
 }
 
-- (BOOL)_accessibilityShowCoverSheet:(BOOL)a3 serverInstance:(id)a4 completion:(id)a5
+- (BOOL)_accessibilityShowCoverSheet:(BOOL)sheet serverInstance:(id)instance completion:(id)completion
 {
-  v6 = a3;
+  sheetCopy = sheet;
   v55 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  instanceCopy = instance;
+  completionCopy = completion;
   [(AXSpringBoardServerHelper *)self setReachabilityActive:0];
-  v10 = [(AXSpringBoardServerHelper *)self _accessibilityCoverSheetPresentationManagerSharedInstance];
-  v11 = [v10 safeValueForKey:@"_coverSheetSlidingViewController"];
+  _accessibilityCoverSheetPresentationManagerSharedInstance = [(AXSpringBoardServerHelper *)self _accessibilityCoverSheetPresentationManagerSharedInstance];
+  v11 = [_accessibilityCoverSheetPresentationManagerSharedInstance safeValueForKey:@"_coverSheetSlidingViewController"];
   v12 = [v11 safeValueForKey:@"systemGesturesDelegate"];
   v13 = v12;
-  if (v6)
+  if (sheetCopy)
   {
-    if (![(AXSpringBoardServerHelper *)self isCoverSheetVisibleWithServerInstance:v8])
+    if (![(AXSpringBoardServerHelper *)self isCoverSheetVisibleWithServerInstance:instanceCopy])
     {
       objc_opt_class();
       v26 = [v13 safeValueForKey:@"presentGestureRecognizer"];
@@ -5156,8 +5156,8 @@ uint64_t __73__AXSpringBoardServerHelper_accessibilityIsRemoteTransientOverlayVi
         v38[1] = 3221225472;
         v38[2] = __84__AXSpringBoardServerHelper__accessibilityShowCoverSheet_serverInstance_completion___block_invoke_2152;
         v38[3] = &unk_27842C0B8;
-        v39 = v9;
-        [v10 setCoverSheetPresented:1 animated:1 withCompletion:v38];
+        v39 = completionCopy;
+        [_accessibilityCoverSheetPresentationManagerSharedInstance setCoverSheetPresented:1 animated:1 withCompletion:v38];
         v32 = v39;
       }
 
@@ -5171,8 +5171,8 @@ uint64_t __73__AXSpringBoardServerHelper_accessibilityIsRemoteTransientOverlayVi
       goto LABEL_27;
     }
 
-    v14 = [(AXSpringBoardServerHelper *)self coverSheetViewController];
-    v15 = [v14 safeValueForKey:@"mainPageContentViewController"];
+    coverSheetViewController = [(AXSpringBoardServerHelper *)self coverSheetViewController];
+    v15 = [coverSheetViewController safeValueForKey:@"mainPageContentViewController"];
     v17 = [v15 safeValueForKey:@"combinedListViewController"];
 
     *&buf = 0;
@@ -5228,8 +5228,8 @@ LABEL_27:
       _os_log_impl(&dword_21FE6B000, v25, OS_LOG_TYPE_INFO, "Hiding CS with completion", &buf, 2u);
     }
 
-    v36 = v10;
-    v37 = v9;
+    v36 = _accessibilityCoverSheetPresentationManagerSharedInstance;
+    v37 = completionCopy;
     AXPerformSafeBlock();
 
     v16 = v36;
@@ -5244,7 +5244,7 @@ LABEL_27:
     _os_log_impl(&dword_21FE6B000, v25, OS_LOG_TYPE_DEFAULT, "Not hiding CS because system gesture delegate said no: %@", &buf, 0xCu);
   }
 
-  if ([(AXSpringBoardServerHelper *)self isCoverSheetVisibleWithServerInstance:v8])
+  if ([(AXSpringBoardServerHelper *)self isCoverSheetVisibleWithServerInstance:instanceCopy])
   {
     v16 = AXLogSpringboardServer();
     LOBYTE(v17) = 1;
@@ -5321,12 +5321,12 @@ void __84__AXSpringBoardServerHelper__accessibilityShowCoverSheet_serverInstance
   UIAccessibilityPostNotification(v3, 0);
 }
 
-- (BOOL)_accessibilityShowNotificationCenter:(BOOL)a3 serverInstance:(id)a4
+- (BOOL)_accessibilityShowNotificationCenter:(BOOL)center serverInstance:(id)instance
 {
-  v4 = a3;
+  centerCopy = center;
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if ([(AXSpringBoardServerHelper *)self isControlCenterVisibleWithServerInstance:v6])
+  instanceCopy = instance;
+  if ([(AXSpringBoardServerHelper *)self isControlCenterVisibleWithServerInstance:instanceCopy])
   {
     [(AXSpringBoardServerHelper *)self accessibilityShowControlCenter:0];
   }
@@ -5347,27 +5347,27 @@ void __84__AXSpringBoardServerHelper__accessibilityShowCoverSheet_serverInstance
   v9 = v48[24];
 
   _Block_object_dispose(buf, 8);
-  v10 = [MEMORY[0x277CE7D30] server];
-  v11 = [v10 isGuidedAccessActive];
+  server = [MEMORY[0x277CE7D30] server];
+  isGuidedAccessActive = [server isGuidedAccessActive];
 
-  if (((v11 | v9 ^ 1) & 1) == 0)
+  if (((isGuidedAccessActive | v9 ^ 1) & 1) == 0)
   {
     v12 = [NSClassFromString(&cfstr_Sbbulletinwind.isa) safeValueForKey:@"sharedInstance"];
     if (objc_opt_respondsToSelector())
     {
       v13 = [v12 safeValueForKey:@"_accessibilityAllowsShowNotificationsGestureFromThreeFingerSwipe"];
-      v14 = [v13 BOOLValue];
+      bOOLValue = [v13 BOOLValue];
 
       v15 = AXLogSpringboardServer();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
         *buf = 67109120;
-        *&buf[4] = v14;
+        *&buf[4] = bOOLValue;
         _os_log_impl(&dword_21FE6B000, v15, OS_LOG_TYPE_INFO, "BB window allows: %d", buf, 8u);
       }
 
-      v16 = !v4;
-      if (((!v4 | v14) & 1) == 0)
+      v16 = !centerCopy;
+      if (((!centerCopy | bOOLValue) & 1) == 0)
       {
         goto LABEL_10;
       }
@@ -5375,12 +5375,12 @@ void __84__AXSpringBoardServerHelper__accessibilityShowCoverSheet_serverInstance
 
     else
     {
-      v16 = !v4;
+      v16 = !centerCopy;
     }
 
-    v29 = [(AXSpringBoardServerHelper *)self isCoverSheetVisibleWithServerInstance:v6];
-    v18 = [(AXSpringBoardServerHelper *)self coverSheetViewController];
-    v19 = [v18 safeValueForKey:@"mainPageContentViewController"];
+    v29 = [(AXSpringBoardServerHelper *)self isCoverSheetVisibleWithServerInstance:instanceCopy];
+    coverSheetViewController = [(AXSpringBoardServerHelper *)self coverSheetViewController];
+    v19 = [coverSheetViewController safeValueForKey:@"mainPageContentViewController"];
     v20 = [v19 safeValueForKey:@"combinedListViewController"];
 
     if ([v20 safeBoolForKey:@"_allowNotificationsRevealPolicy"] && ((v16 | objc_msgSend(v20, "safeBoolForKey:", @"_shouldPreventNotificationHistoryRevealForActiveDNDState")) & 1) == 0)
@@ -5390,7 +5390,7 @@ void __84__AXSpringBoardServerHelper__accessibilityShowCoverSheet_serverInstance
       v35 = __81__AXSpringBoardServerHelper__accessibilityShowNotificationCenter_serverInstance___block_invoke_2165;
       v36 = &unk_27842C008;
       v37 = v20;
-      v38 = v4;
+      v38 = centerCopy;
       AXPerformSafeBlock();
       v22 = objc_alloc(MEMORY[0x277CCA898]);
       v23 = SBAXLocalizedString(@"notification.center.showing");
@@ -5405,7 +5405,7 @@ void __84__AXSpringBoardServerHelper__accessibilityShowCoverSheet_serverInstance
       aBlock[2] = __81__AXSpringBoardServerHelper__accessibilityShowNotificationCenter_serverInstance___block_invoke_2172;
       aBlock[3] = &unk_27842BBF8;
       v31 = v37;
-      v32 = self;
+      selfCopy = self;
       v21 = _Block_copy(aBlock);
     }
 
@@ -5414,7 +5414,7 @@ void __84__AXSpringBoardServerHelper__accessibilityShowCoverSheet_serverInstance
       v21 = 0;
     }
 
-    if (v4)
+    if (centerCopy)
     {
       if (v29)
       {
@@ -5427,12 +5427,12 @@ void __84__AXSpringBoardServerHelper__accessibilityShowCoverSheet_serverInstance
         goto LABEL_24;
       }
 
-      v26 = [(AXSpringBoardServerHelper *)self _accessibilityShowCoverSheet:1 serverInstance:v6 completion:v21];
+      v26 = [(AXSpringBoardServerHelper *)self _accessibilityShowCoverSheet:1 serverInstance:instanceCopy completion:v21];
     }
 
     else
     {
-      v26 = [(AXSpringBoardServerHelper *)self _accessibilityShowCoverSheet:0 serverInstance:v6 completion:v21];
+      v26 = [(AXSpringBoardServerHelper *)self _accessibilityShowCoverSheet:0 serverInstance:instanceCopy completion:v21];
     }
 
     v17 = v26;
@@ -5536,15 +5536,15 @@ Class __86__AXSpringBoardServerHelper__accessibilityCoverSheetPresentationManage
   return result;
 }
 
-- (BOOL)accessibilityShowControlCenter:(BOOL)a3
+- (BOOL)accessibilityShowControlCenter:(BOOL)center
 {
-  v3 = a3;
+  centerCopy = center;
   v30 = *MEMORY[0x277D85DE8];
   v5 = ASTLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    *&buf[4] = v3;
+    *&buf[4] = centerCopy;
     _os_log_impl(&dword_21FE6B000, v5, OS_LOG_TYPE_INFO, "Show CC: %d", buf, 8u);
   }
 
@@ -5564,14 +5564,14 @@ Class __86__AXSpringBoardServerHelper__accessibilityCoverSheetPresentationManage
   v8 = *(v28 + 24);
 
   _Block_object_dispose(buf, 8);
-  if ((!v3 | v8))
+  if ((!centerCopy | v8))
   {
-    if (v3)
+    if (centerCopy)
     {
-      v9 = [MEMORY[0x277CE7D30] server];
-      v10 = [v9 isGuidedAccessActive];
+      server = [MEMORY[0x277CE7D30] server];
+      isGuidedAccessActive = [server isGuidedAccessActive];
 
-      if (v10)
+      if (isGuidedAccessActive)
       {
         v11 = ASTLogCommon();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -5591,7 +5591,7 @@ LABEL_10:
     [(AXSpringBoardServerHelper *)self _accessibilitySetAllowShowNotificationGestureOverride:1];
     if ([(AXSpringBoardServerHelper *)self _accessibilityIsUILocked])
     {
-      if (!v3)
+      if (!centerCopy)
       {
         v15 = 1;
         goto LABEL_23;
@@ -5614,7 +5614,7 @@ LABEL_10:
 
     else
     {
-      if (v3)
+      if (centerCopy)
       {
         v15 = [v11 safeBoolForKey:@"canBePresented"];
       }
@@ -5645,10 +5645,10 @@ LABEL_23:
     }
 
     v18 = v15 ^ 1;
-    if ((!v3 | v18))
+    if ((!centerCopy | v18))
     {
       [(AXSpringBoardServerHelper *)self _accessibilitySetAllowShowNotificationGestureOverride:0];
-      if ((v3 | v18))
+      if ((centerCopy | v18))
       {
         goto LABEL_27;
       }
@@ -5714,25 +5714,25 @@ uint64_t __60__AXSpringBoardServerHelper_accessibilityShowControlCenter___block_
   return result;
 }
 
-- (BOOL)isSystemAppShowingAnAlertWithServerInstance:(id)a3
+- (BOOL)isSystemAppShowingAnAlertWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __73__AXSpringBoardServerHelper_isSystemAppShowingAnAlertWithServerInstance___block_invoke;
   v6[3] = &unk_27842BD38;
   v6[4] = &v7;
-  [v4 performSynchronousReadingBlock:v6];
+  [mainAccessQueue performSynchronousReadingBlock:v6];
 
-  LOBYTE(v4) = *(v8 + 24);
+  LOBYTE(mainAccessQueue) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return mainAccessQueue;
 }
 
 uint64_t __73__AXSpringBoardServerHelper_isSystemAppShowingAnAlertWithServerInstance___block_invoke(uint64_t a1)
@@ -5742,22 +5742,22 @@ uint64_t __73__AXSpringBoardServerHelper_isSystemAppShowingAnAlertWithServerInst
   return result;
 }
 
-- (id)focusedAppPIDWithServerInstance:(id)a3
+- (id)focusedAppPIDWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
   v11 = __Block_byref_object_copy__0;
   v12 = __Block_byref_object_dispose__0;
   v13 = 0;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__AXSpringBoardServerHelper_focusedAppPIDWithServerInstance___block_invoke;
   v7[3] = &unk_27842BD38;
   v7[4] = &v8;
-  [v4 performSynchronousReadingBlock:v7];
+  [mainAccessQueue performSynchronousReadingBlock:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -5775,25 +5775,25 @@ uint64_t __61__AXSpringBoardServerHelper_focusedAppPIDWithServerInstance___block
   return MEMORY[0x2821F96F8]();
 }
 
-- (int)purpleBuddyPIDWithServerInstance:(id)a3
+- (int)purpleBuddyPIDWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = -1;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__AXSpringBoardServerHelper_purpleBuddyPIDWithServerInstance___block_invoke;
   v6[3] = &unk_27842BD38;
   v6[4] = &v7;
-  [v4 performSynchronousReadingBlock:v6];
+  [mainAccessQueue performSynchronousReadingBlock:v6];
 
-  LODWORD(v4) = *(v8 + 6);
+  LODWORD(mainAccessQueue) = *(v8 + 6);
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return mainAccessQueue;
 }
 
 uint64_t __62__AXSpringBoardServerHelper_purpleBuddyPIDWithServerInstance___block_invoke(uint64_t a1)
@@ -5803,22 +5803,22 @@ uint64_t __62__AXSpringBoardServerHelper_purpleBuddyPIDWithServerInstance___bloc
   return result;
 }
 
-- (id)runningAppPIDsWithServerInstance:(id)a3
+- (id)runningAppPIDsWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
   v11 = __Block_byref_object_copy__0;
   v12 = __Block_byref_object_dispose__0;
   v13 = 0;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__AXSpringBoardServerHelper_runningAppPIDsWithServerInstance___block_invoke;
   v7[3] = &unk_27842BD38;
   v7[4] = &v8;
-  [v4 performSynchronousReadingBlock:v7];
+  [mainAccessQueue performSynchronousReadingBlock:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -5836,24 +5836,24 @@ uint64_t __62__AXSpringBoardServerHelper_runningAppPIDsWithServerInstance___bloc
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)isSystemAppFrontmostExcludingSiri:(BOOL)a3 withServerInstance:(id)a4
+- (BOOL)isSystemAppFrontmostExcludingSiri:(BOOL)siri withServerInstance:(id)instance
 {
-  v6 = a4;
+  instanceCopy = instance;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v7 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __82__AXSpringBoardServerHelper_isSystemAppFrontmostExcludingSiri_withServerInstance___block_invoke;
   v11[3] = &unk_27842C108;
-  v14 = a3;
+  siriCopy = siri;
   v11[4] = self;
-  v8 = v6;
+  v8 = instanceCopy;
   v12 = v8;
   v13 = &v15;
-  [v7 performSynchronousReadingBlock:v11];
+  [mainAccessQueue performSynchronousReadingBlock:v11];
 
   v9 = *(v16 + 24);
   _Block_object_dispose(&v15, 8);
@@ -5874,28 +5874,28 @@ void __82__AXSpringBoardServerHelper_isSystemAppFrontmostExcludingSiri_withServe
   }
 }
 
-- (BOOL)isSettingsAppFrontmostWithServerInstance:(id)a3
+- (BOOL)isSettingsAppFrontmostWithServerInstance:(id)instance
 {
-  v4 = a3;
+  instanceCopy = instance;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __70__AXSpringBoardServerHelper_isSettingsAppFrontmostWithServerInstance___block_invoke;
   v8[3] = &unk_27842C130;
   v8[4] = self;
-  v6 = v4;
+  v6 = instanceCopy;
   v9 = v6;
   v10 = &v11;
-  [v5 performSynchronousReadingBlock:v8];
+  [mainAccessQueue performSynchronousReadingBlock:v8];
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(instanceCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
 
-  return v4;
+  return instanceCopy;
 }
 
 void __70__AXSpringBoardServerHelper_isSettingsAppFrontmostWithServerInstance___block_invoke(uint64_t a1)
@@ -5908,22 +5908,22 @@ void __70__AXSpringBoardServerHelper_isSettingsAppFrontmostWithServerInstance___
   }
 }
 
-- (id)focusedAppsWithServerInstance:(id)a3
+- (id)focusedAppsWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
   v11 = __Block_byref_object_copy__0;
   v12 = __Block_byref_object_dispose__0;
   v13 = 0;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__AXSpringBoardServerHelper_focusedAppsWithServerInstance___block_invoke;
   v7[3] = &unk_27842BD38;
   v7[4] = &v8;
-  [v4 performSynchronousReadingBlock:v7];
+  [mainAccessQueue performSynchronousReadingBlock:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -5941,11 +5941,11 @@ uint64_t __59__AXSpringBoardServerHelper_focusedAppsWithServerInstance___block_i
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)displayIdentifierForSceneIdentifier:(id)a3 serverInstance:(id)a4
+- (id)displayIdentifierForSceneIdentifier:(id)identifier serverInstance:(id)instance
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  instanceCopy = instance;
   v7 = +[AXSpringBoardServerHelper _axActiveWindowScene];
   v8 = [v7 safeValueForKey:@"sceneManager"];
 
@@ -5969,7 +5969,7 @@ uint64_t __59__AXSpringBoardServerHelper_focusedAppsWithServerInstance___block_i
         }
 
         v14 = [*(*(&v21 + 1) + 8 * i) safeValueForKey:@"identifier"];
-        v15 = [v14 isEqualToString:v5];
+        v15 = [v14 isEqualToString:identifierCopy];
 
         if (v15)
         {
@@ -6001,10 +6001,10 @@ LABEL_11:
   return v16;
 }
 
-- (id)focusedOccludedAppScenesWithServerInstance:(id)a3
+- (id)focusedOccludedAppScenesWithServerInstance:(id)instance
 {
   v59 = *MEMORY[0x277D85DE8];
-  v16 = a3;
+  instanceCopy = instance;
   v3 = [MEMORY[0x277CBEBF8] mutableCopy];
   LOBYTE(v42) = 0;
   v4 = [*MEMORY[0x277D76620] safeValueForKey:@"windowSceneManager"];
@@ -6134,9 +6134,9 @@ uint64_t __72__AXSpringBoardServerHelper_focusedOccludedAppScenesWithServerInsta
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)isChamoisOrFlexibleWindowingEnabledWithServerInstance:(id)a3
+- (BOOL)isChamoisOrFlexibleWindowingEnabledWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v4 = [*MEMORY[0x277D76620] safeValueForKey:@"windowSceneManager"];
   v5 = __UIAccessibilitySafeClass();
 
@@ -6148,25 +6148,25 @@ uint64_t __72__AXSpringBoardServerHelper_focusedOccludedAppScenesWithServerInsta
   return v6;
 }
 
-- (BOOL)isPurpleBuddyAppFrontmostWithServerInstance:(id)a3
+- (BOOL)isPurpleBuddyAppFrontmostWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __73__AXSpringBoardServerHelper_isPurpleBuddyAppFrontmostWithServerInstance___block_invoke;
   v6[3] = &unk_27842BD38;
   v6[4] = &v7;
-  [v4 performSynchronousReadingBlock:v6];
+  [mainAccessQueue performSynchronousReadingBlock:v6];
 
-  LOBYTE(v4) = *(v8 + 24);
+  LOBYTE(mainAccessQueue) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return mainAccessQueue;
 }
 
 uint64_t __73__AXSpringBoardServerHelper_isPurpleBuddyAppFrontmostWithServerInstance___block_invoke(uint64_t a1)
@@ -6176,22 +6176,22 @@ uint64_t __73__AXSpringBoardServerHelper_isPurpleBuddyAppFrontmostWithServerInst
   return result;
 }
 
-- (id)frontmostAppProcessWithServerInstance:(id)a3
+- (id)frontmostAppProcessWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
   v11 = __Block_byref_object_copy__0;
   v12 = __Block_byref_object_dispose__0;
   v13 = 0;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__AXSpringBoardServerHelper_frontmostAppProcessWithServerInstance___block_invoke;
   v7[3] = &unk_27842BD38;
   v7[4] = &v8;
-  [v4 performSynchronousReadingBlock:v7];
+  [mainAccessQueue performSynchronousReadingBlock:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -6209,22 +6209,22 @@ uint64_t __67__AXSpringBoardServerHelper_frontmostAppProcessWithServerInstance__
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)focusedAppProcessWithServerInstance:(id)a3
+- (id)focusedAppProcessWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
   v11 = __Block_byref_object_copy__0;
   v12 = __Block_byref_object_dispose__0;
   v13 = 0;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__AXSpringBoardServerHelper_focusedAppProcessWithServerInstance___block_invoke;
   v7[3] = &unk_27842BD38;
   v7[4] = &v8;
-  [v4 performSynchronousReadingBlock:v7];
+  [mainAccessQueue performSynchronousReadingBlock:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -6242,22 +6242,22 @@ uint64_t __65__AXSpringBoardServerHelper_focusedAppProcessWithServerInstance___b
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)runningAppProcessesWithServerInstance:(id)a3
+- (id)runningAppProcessesWithServerInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
   v11 = __Block_byref_object_copy__0;
   v12 = __Block_byref_object_dispose__0;
   v13 = 0;
-  v4 = [MEMORY[0x277CE6948] mainAccessQueue];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__AXSpringBoardServerHelper_runningAppProcessesWithServerInstance___block_invoke;
   v7[3] = &unk_27842BD38;
   v7[4] = &v8;
-  [v4 performSynchronousReadingBlock:v7];
+  [mainAccessQueue performSynchronousReadingBlock:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -6394,24 +6394,24 @@ void __43__AXSpringBoardServerHelper_isBuddyRunning__block_invoke(uint64_t a1, v
 - (void)_sortVisibleItems
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CE7E20] sharedInstance];
-  v4 = [v3 tripleClickOrderedOptions];
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  tripleClickOrderedOptions = [mEMORY[0x277CE7E20] tripleClickOrderedOptions];
 
   visibleTripleClickItems = self->_visibleTripleClickItems;
-  if (v4)
+  if (tripleClickOrderedOptions)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __46__AXSpringBoardServerHelper__sortVisibleItems__block_invoke;
     v14[3] = &unk_27842C180;
-    v15 = v4;
+    v15 = tripleClickOrderedOptions;
     [(NSMutableArray *)visibleTripleClickItems sortUsingComparator:v14];
-    v6 = [MEMORY[0x277CE6960] sharedInstance];
-    v7 = [v6 ignoreLogging];
+    mEMORY[0x277CE6960] = [MEMORY[0x277CE6960] sharedInstance];
+    ignoreLogging = [mEMORY[0x277CE6960] ignoreLogging];
 
-    if ((v7 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
-      v8 = [MEMORY[0x277CE6960] identifier];
+      identifier = [MEMORY[0x277CE6960] identifier];
       v9 = AXLoggerForFacility();
 
       v10 = AXOSLogLevelFromAXLogLevel();
@@ -6476,12 +6476,12 @@ uint64_t __46__AXSpringBoardServerHelper__sortVisibleItems__block_invoke_2198(ui
   return v6;
 }
 
-- (void)_handleAlertActionPress:(id)a3
+- (void)_handleAlertActionPress:(id)press
 {
   alertHandler = self->_alertHandler;
   if (alertHandler)
   {
-    alertHandler[2](alertHandler, [a3 buttonIndex]);
+    alertHandler[2](alertHandler, [press buttonIndex]);
     v5 = self->_alertHandler;
   }
 
@@ -6497,16 +6497,16 @@ uint64_t __46__AXSpringBoardServerHelper__sortVisibleItems__block_invoke_2198(ui
 
 - (void)_toggleTripleClickDisplay
 {
-  v2 = self;
+  selfCopy = self;
   v45 = *MEMORY[0x277D85DE8];
-  v3 = [(UIWindow *)self->_presentationWindow rootViewController];
-  v4 = [v3 presentedViewController];
+  rootViewController = [(UIWindow *)self->_presentationWindow rootViewController];
+  presentedViewController = [rootViewController presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    [(AXSpringBoardServerHelper *)v2 _dismissAlertController];
+    [(AXSpringBoardServerHelper *)selfCopy _dismissAlertController];
     v6 = AXLogSpringboardServer();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -6526,12 +6526,12 @@ uint64_t __46__AXSpringBoardServerHelper__sortVisibleItems__block_invoke_2198(ui
     v6 = [AXTripleClickAlertController alertControllerWithTitle:v7 message:0 preferredStyle:AXDeviceIsPad()];
 
     [v6 _accessibilitySetBoolValue:1 forKey:@"IsTripleClick"];
-    [(AXSpringBoardServerHelper *)v2 _updateVisibleTripleClickItems];
+    [(AXSpringBoardServerHelper *)selfCopy _updateVisibleTripleClickItems];
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    obj = v2->_visibleTripleClickItems;
+    obj = selfCopy->_visibleTripleClickItems;
     v8 = [(NSMutableArray *)obj countByEnumeratingWithState:&v37 objects:v44 count:16];
     if (v8)
     {
@@ -6547,8 +6547,8 @@ uint64_t __46__AXSpringBoardServerHelper__sortVisibleItems__block_invoke_2198(ui
           }
 
           v11 = *(*(&v37 + 1) + 8 * i);
-          v12 = [v11 intValue];
-          v13 = [MEMORY[0x277CE7E70] titleForTripleClickOption:v12];
+          intValue = [v11 intValue];
+          v13 = [MEMORY[0x277CE7E70] titleForTripleClickOption:intValue];
           v14 = &stru_2833AA238;
           if (v13)
           {
@@ -6560,16 +6560,16 @@ uint64_t __46__AXSpringBoardServerHelper__sortVisibleItems__block_invoke_2198(ui
           v34[2] = __54__AXSpringBoardServerHelper__toggleTripleClickDisplay__block_invoke;
           v34[3] = &unk_27842C1C8;
           v35 = v14;
-          v36 = v2;
+          v36 = selfCopy;
           v15 = v14;
           v16 = [AXAlertAction actionWithTitle:v15 style:0 handler:v34];
           [v16 setButtonIndex:{objc_msgSend(v11, "integerValue")}];
-          v17 = v2;
+          v17 = selfCopy;
           v18 = MEMORY[0x277CE7E70];
-          v19 = [v11 intValue];
+          intValue2 = [v11 intValue];
           v20 = v18;
-          v2 = v17;
-          [v16 _setChecked:{objc_msgSend(v20, "valueForTripleClickOption:", v19)}];
+          selfCopy = v17;
+          [v16 _setChecked:{objc_msgSend(v20, "valueForTripleClickOption:", intValue2)}];
           [v6 addAction:v16];
         }
 
@@ -6584,23 +6584,23 @@ uint64_t __46__AXSpringBoardServerHelper__sortVisibleItems__block_invoke_2198(ui
     v33[1] = 3221225472;
     v33[2] = __54__AXSpringBoardServerHelper__toggleTripleClickDisplay__block_invoke_2210;
     v33[3] = &unk_27842C1F0;
-    v33[4] = v2;
+    v33[4] = selfCopy;
     v22 = [AXAlertAction actionWithTitle:v21 style:1 handler:v33];
 
     [v6 addAction:v22];
-    if ([(NSMutableArray *)v2->_visibleTripleClickItems count])
+    if ([(NSMutableArray *)selfCopy->_visibleTripleClickItems count])
     {
-      if ([(NSMutableArray *)v2->_visibleTripleClickItems count]== 1)
+      if ([(NSMutableArray *)selfCopy->_visibleTripleClickItems count]== 1)
       {
-        v23 = [v6 actions];
-        v24 = [v23 firstObject];
-        [(AXSpringBoardServerHelper *)v2 _handleAlertActionPress:v24];
+        actions = [v6 actions];
+        firstObject = [actions firstObject];
+        [(AXSpringBoardServerHelper *)selfCopy _handleAlertActionPress:firstObject];
       }
 
       else
       {
-        v2->_shouldOverrideInterfaceOrientation = 1;
-        [(AXSpringBoardServerHelper *)v2 _displayAlertController:v6];
+        selfCopy->_shouldOverrideInterfaceOrientation = 1;
+        [(AXSpringBoardServerHelper *)selfCopy _displayAlertController:v6];
         v25 = AXLogSpringboardServer();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
@@ -6608,13 +6608,13 @@ uint64_t __46__AXSpringBoardServerHelper__sortVisibleItems__block_invoke_2198(ui
           _os_log_impl(&dword_21FE6B000, v25, OS_LOG_TYPE_DEFAULT, "Triple click: presented.", buf, 2u);
         }
 
-        v26 = [MEMORY[0x277CCAB98] defaultCenter];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
         v27 = *MEMORY[0x277CE7C58];
         v42 = @"windowContextID";
-        v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[UIWindow _contextId](v2->_presentationWindow, "_contextId")}];
+        v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[UIWindow _contextId](selfCopy->_presentationWindow, "_contextId")}];
         v43 = v28;
         v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
-        [v26 postNotificationName:v27 object:0 userInfo:v29];
+        [defaultCenter postNotificationName:v27 object:0 userInfo:v29];
 
         AXPerformBlockOnMainThreadAfterDelay();
       }
@@ -6622,7 +6622,7 @@ uint64_t __46__AXSpringBoardServerHelper__sortVisibleItems__block_invoke_2198(ui
 
     else
     {
-      [(AXSpringBoardServerHelper *)v2 _handleAlertActionPress:v22];
+      [(AXSpringBoardServerHelper *)selfCopy _handleAlertActionPress:v22];
     }
   }
 
@@ -6659,17 +6659,17 @@ void __54__AXSpringBoardServerHelper__toggleTripleClickDisplay__block_invoke_221
   [*(a1 + 32) _handleAlertActionPress:v3];
 }
 
-- (void)_displayAlertController:(id)a3
+- (void)_displayAlertController:(id)controller
 {
-  [(AXSpringBoardServerHelper *)self _displayViewController:a3 withCompletion:0];
+  [(AXSpringBoardServerHelper *)self _displayViewController:controller withCompletion:0];
   v4 = [MEMORY[0x277CE7D18] assertionWithType:*MEMORY[0x277CE79F0] identifier:@"AXSpringBoardServerHelper"];
   [(AXSpringBoardServerHelper *)self setDisableSystemGesturesAssertionForAlert:v4];
 }
 
-- (void)_displayViewController:(id)a3 withCompletion:(id)a4
+- (void)_displayViewController:(id)controller withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   if (![(AXSpringBoardServerHelper *)self _isDisplayingAlertController])
   {
     presentationWindow = self->_presentationWindow;
@@ -6699,8 +6699,8 @@ void __54__AXSpringBoardServerHelper__toggleTripleClickDisplay__block_invoke_221
       else
       {
         v14 = [v9 alloc];
-        v15 = [MEMORY[0x277D759A0] mainScreen];
-        [v15 bounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen bounds];
         v16 = [v14 initWithFrame:?];
         v17 = self->_presentationWindow;
         self->_presentationWindow = v16;
@@ -6718,9 +6718,9 @@ void __54__AXSpringBoardServerHelper__toggleTripleClickDisplay__block_invoke_221
       }
 
       [(UIWindow *)self->_presentationWindow setWindowLevel:10000009.0];
-      v18 = [(AXSpringBoardServerHelper *)self presentationWindowFocusAssertion];
+      presentationWindowFocusAssertion = [(AXSpringBoardServerHelper *)self presentationWindowFocusAssertion];
 
-      if (v18)
+      if (presentationWindowFocusAssertion)
       {
         v19 = AXLogCommon();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
@@ -6735,9 +6735,9 @@ void __54__AXSpringBoardServerHelper__toggleTripleClickDisplay__block_invoke_221
       {
         objc_opt_class();
         v20 = [(UIWindow *)self->_presentationWindow safeValueForKey:@"contentViewController"];
-        v21 = __UIAccessibilityCastAsClass();
+        rootViewController = __UIAccessibilityCastAsClass();
 
-        if (!v21)
+        if (!rootViewController)
         {
 LABEL_20:
 
@@ -6745,15 +6745,15 @@ LABEL_20:
         }
 
 LABEL_19:
-        [v21 presentViewController:v6 animated:1 completion:&__block_literal_global_2229];
+        [rootViewController presentViewController:controllerCopy animated:1 completion:&__block_literal_global_2229];
         goto LABEL_20;
       }
 
       presentationWindow = self->_presentationWindow;
     }
 
-    v21 = [(UIWindow *)presentationWindow rootViewController];
-    if (!v21)
+    rootViewController = [(UIWindow *)presentationWindow rootViewController];
+    if (!rootViewController)
     {
       goto LABEL_20;
     }
@@ -6766,8 +6766,8 @@ LABEL_19:
   v23[2] = __67__AXSpringBoardServerHelper__displayViewController_withCompletion___block_invoke;
   v23[3] = &unk_27842C218;
   v23[4] = self;
-  v24 = v6;
-  v25 = v7;
+  v24 = controllerCopy;
+  v25 = completionCopy;
   [(AXSpringBoardServerHelper *)self _dismissAlertControllerWithCompletion:v23];
 
 LABEL_21:
@@ -6794,25 +6794,25 @@ void __67__AXSpringBoardServerHelper__displayViewController_withCompletion___blo
 
 - (BOOL)_isDisplayingAlertController
 {
-  v2 = [(UIWindow *)self->_presentationWindow rootViewController];
-  v3 = [v2 presentedViewController];
-  v4 = v3 != 0;
+  rootViewController = [(UIWindow *)self->_presentationWindow rootViewController];
+  presentedViewController = [rootViewController presentedViewController];
+  v4 = presentedViewController != 0;
 
   return v4;
 }
 
-- (void)_dismissAlertControllerWithCompletion:(id)a3
+- (void)_dismissAlertControllerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7 = MEMORY[0x277D85DD0];
   v8 = 3221225472;
   v9 = __67__AXSpringBoardServerHelper__dismissAlertControllerWithCompletion___block_invoke;
   v10 = &unk_27842C0E0;
-  v11 = self;
-  v12 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v12 = completionCopy;
+  v5 = completionCopy;
   v6 = _Block_copy(&v7);
-  [(AXSpringBoardServerHelper *)self _dismissViewControllerWithCompletion:v6, v7, v8, v9, v10, v11];
+  [(AXSpringBoardServerHelper *)self _dismissViewControllerWithCompletion:v6, v7, v8, v9, v10, selfCopy];
 }
 
 uint64_t __67__AXSpringBoardServerHelper__dismissAlertControllerWithCompletion___block_invoke(uint64_t a1)
@@ -6830,19 +6830,19 @@ uint64_t __67__AXSpringBoardServerHelper__dismissAlertControllerWithCompletion__
   return result;
 }
 
-- (void)_dismissViewControllerWithCompletion:(id)a3
+- (void)_dismissViewControllerWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(UIWindow *)self->_presentationWindow rootViewController];
-  v6 = [v5 presentedViewController];
+  completionCopy = completion;
+  rootViewController = [(UIWindow *)self->_presentationWindow rootViewController];
+  presentedViewController = [rootViewController presentedViewController];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __66__AXSpringBoardServerHelper__dismissViewControllerWithCompletion___block_invoke;
   v8[3] = &unk_27842C0E0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 dismissViewControllerAnimated:1 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [presentedViewController dismissViewControllerAnimated:1 completion:v8];
 }
 
 uint64_t __66__AXSpringBoardServerHelper__dismissViewControllerWithCompletion___block_invoke(uint64_t a1)
@@ -6872,8 +6872,8 @@ uint64_t __66__AXSpringBoardServerHelper__dismissViewControllerWithCompletion___
   presentationWindow = self->_presentationWindow;
   self->_presentationWindow = 0;
 
-  v4 = [(AXSpringBoardServerHelper *)self presentationWindowFocusAssertion];
-  [v4 invalidate];
+  presentationWindowFocusAssertion = [(AXSpringBoardServerHelper *)self presentationWindowFocusAssertion];
+  [presentationWindowFocusAssertion invalidate];
 
   [(AXSpringBoardServerHelper *)self setPresentationWindowFocusAssertion:0];
 }
@@ -6892,12 +6892,12 @@ uint64_t __66__AXSpringBoardServerHelper__dismissViewControllerWithCompletion___
 
 - (void)_handleTripleClickAskAlert
 {
-  v6 = [MEMORY[0x277D75128] sharedApplication];
-  v3 = [v6 safeValueForKey:@"_accessibilityObjectWithinProximity"];
-  v4 = [v3 BOOLValue];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  v3 = [mEMORY[0x277D75128] safeValueForKey:@"_accessibilityObjectWithinProximity"];
+  bOOLValue = [v3 BOOLValue];
 
   v5 = [(AXSpringBoardServerHelper *)self isSystemSleepingWithServerInstance:0];
-  if ((v4 & 1) != 0 || v5)
+  if ((bOOLValue & 1) != 0 || v5)
   {
     [(AXSpringBoardServerHelper *)self dismissAlertWithCancel];
   }
@@ -6908,16 +6908,16 @@ uint64_t __66__AXSpringBoardServerHelper__dismissViewControllerWithCompletion___
   }
 }
 
-- (void)_handleZoomConflictAlert:(id)a3
+- (void)_handleZoomConflictAlert:(id)alert
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
+  alertCopy = alert;
   v6 = SBAXLocalizedString(@"ZoomConflictMessage");
-  v7 = [v4 stringWithFormat:v6, v5, v5];
+  alertCopy = [v4 stringWithFormat:v6, alertCopy, alertCopy];
 
   v8 = MEMORY[0x277D75110];
   v9 = SBAXLocalizedString(@"ZoomConflictTitle");
-  v10 = [v8 alertControllerWithTitle:v9 message:v7 preferredStyle:1];
+  v10 = [v8 alertControllerWithTitle:v9 message:alertCopy preferredStyle:1];
 
   v11 = SBAXLocalizedString(@"No");
   v16[0] = MEMORY[0x277D85DD0];
@@ -6973,18 +6973,18 @@ uint64_t __66__AXSpringBoardServerHelper__dismissViewControllerWithCompletion___
   [(AXSpringBoardServerHelper *)self _displayAlertController:v7];
 }
 
-- (void)_handleDisableBrightnessFiltersAlert:(id)a3
+- (void)_handleDisableBrightnessFiltersAlert:(id)alert
 {
   v4 = *MEMORY[0x277D81CA8];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:v4];
-  v7 = [v5 objectForKeyedSubscript:*MEMORY[0x277D81CB0]];
+  alertCopy = alert;
+  v6 = [alertCopy objectForKeyedSubscript:v4];
+  v7 = [alertCopy objectForKeyedSubscript:*MEMORY[0x277D81CB0]];
   v8 = v7;
   if (v6)
   {
     v9 = SBAXLocalizedStringWithTable(v7, v6);
 
-    v10 = [v5 objectForKeyedSubscript:*MEMORY[0x277D81CA0]];
+    v10 = [alertCopy objectForKeyedSubscript:*MEMORY[0x277D81CA0]];
 
     SBAXLocalizedStringWithTable(v10, v6);
   }
@@ -6993,7 +6993,7 @@ uint64_t __66__AXSpringBoardServerHelper__dismissViewControllerWithCompletion___
   {
     v9 = SBAXLocalizedString(v7);
 
-    v10 = [v5 objectForKeyedSubscript:*MEMORY[0x277D81CA0]];
+    v10 = [alertCopy objectForKeyedSubscript:*MEMORY[0x277D81CA0]];
 
     SBAXLocalizedString(v10);
   }
@@ -7023,13 +7023,13 @@ uint64_t __66__AXSpringBoardServerHelper__dismissViewControllerWithCompletion___
   [(AXSpringBoardServerHelper *)self _displayAlertController:v12];
 }
 
-- (id)_handleConfirmationDialogWithMessage:(id)a3 confirmTitle:(id)a4
+- (id)_handleConfirmationDialogWithMessage:(id)message confirmTitle:(id)title
 {
   v6 = MEMORY[0x277D75110];
-  v7 = a4;
-  v8 = a3;
+  titleCopy = title;
+  messageCopy = message;
   v9 = SBAXLocalizedString(@"USAGE_CONFIRMED_TITLE");
-  v10 = [v6 alertControllerWithTitle:v9 message:v8 preferredStyle:1];
+  v10 = [v6 alertControllerWithTitle:v9 message:messageCopy preferredStyle:1];
 
   v11 = SBAXLocalizedString(@"cancel");
   v16[0] = MEMORY[0x277D85DD0];
@@ -7045,7 +7045,7 @@ uint64_t __66__AXSpringBoardServerHelper__dismissViewControllerWithCompletion___
   v15[2] = __79__AXSpringBoardServerHelper__handleConfirmationDialogWithMessage_confirmTitle___block_invoke_2;
   v15[3] = &unk_27842C1F0;
   v15[4] = self;
-  v13 = [AXAlertAction actionWithTitle:v7 style:0 handler:v15];
+  v13 = [AXAlertAction actionWithTitle:titleCopy style:0 handler:v15];
 
   [v13 setButtonIndex:0];
   [v10 addAction:v13];
@@ -7054,11 +7054,11 @@ uint64_t __66__AXSpringBoardServerHelper__dismissViewControllerWithCompletion___
   return v10;
 }
 
-- (id)_handleVOConfirmationDialogWithMessage:(id)a3 confirmTitle:(id)a4
+- (id)_handleVOConfirmationDialogWithMessage:(id)message confirmTitle:(id)title
 {
-  v5 = [MEMORY[0x277D75110] alertControllerWithTitle:a3 message:0 preferredStyle:0];
-  v6 = [v5 view];
-  [v6 setAccessibilityIdentifier:@"VO_USAGE_CONFIRMED_ALERT"];
+  v5 = [MEMORY[0x277D75110] alertControllerWithTitle:message message:0 preferredStyle:0];
+  view = [v5 view];
+  [view setAccessibilityIdentifier:@"VO_USAGE_CONFIRMED_ALERT"];
 
   v7 = SBAXLocalizedString(@"VoiceOver.confirmation.launchTutorial");
   v16[0] = MEMORY[0x277D85DD0];
@@ -7101,20 +7101,20 @@ void __81__AXSpringBoardServerHelper__handleVOConfirmationDialogWithMessage_conf
   [v2 launchOnboardingViewService:@"voiceover"];
 }
 
-- (id)_handleUsageConfirmationDialogWithMessage:(id)a3
+- (id)_handleUsageConfirmationDialogWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = SBAXLocalizedString(@"OK");
-  v6 = [(AXSpringBoardServerHelper *)self _handleConfirmationDialogWithMessage:v4 confirmTitle:v5];
+  v6 = [(AXSpringBoardServerHelper *)self _handleConfirmationDialogWithMessage:messageCopy confirmTitle:v5];
 
   return v6;
 }
 
-- (id)_handleVOUsageConfirmationDialogWithMessage:(id)a3
+- (id)_handleVOUsageConfirmationDialogWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = SBAXLocalizedString(@"OK");
-  v6 = [(AXSpringBoardServerHelper *)self _handleVOConfirmationDialogWithMessage:v4 confirmTitle:v5];
+  v6 = [(AXSpringBoardServerHelper *)self _handleVOConfirmationDialogWithMessage:messageCopy confirmTitle:v5];
 
   return v6;
 }
@@ -7178,13 +7178,13 @@ void __81__AXSpringBoardServerHelper__handleVOConfirmationDialogWithMessage_conf
   [(AXSpringBoardServerHelper *)self _displayAlertController:v6];
 }
 
-- (void)_handleDisallowUSBRestrictedModeVOInformativeOnly:(BOOL)a3
+- (void)_handleDisallowUSBRestrictedModeVOInformativeOnly:(BOOL)only
 {
-  v3 = a3;
+  onlyCopy = only;
   if (AXDeviceIsPod())
   {
     v5 = @"vo.disallow.usb.restricted.mode.alert.message_IPOD";
-    if (!v3)
+    if (!onlyCopy)
     {
       goto LABEL_9;
     }
@@ -7202,7 +7202,7 @@ void __81__AXSpringBoardServerHelper__handleVOConfirmationDialogWithMessage_conf
     v5 = @"vo.disallow.usb.restricted.mode.alert.message_IPHONE";
   }
 
-  if (v3)
+  if (onlyCopy)
   {
 LABEL_8:
     v5 = [(__CFString *)v5 stringByAppendingString:@".informativeOnly"];
@@ -7226,15 +7226,15 @@ LABEL_9:
   [(AXSpringBoardServerHelper *)self _displayAlertController:v9];
 }
 
-- (void)_handleDisallowUSBRestrictedModeSCInformativeOnly:(BOOL)a3
+- (void)_handleDisallowUSBRestrictedModeSCInformativeOnly:(BOOL)only
 {
-  v3 = a3;
+  onlyCopy = only;
   if (AXDeviceIsUnlocked())
   {
     if (AXDeviceIsPod())
     {
       v5 = @"sc.disallow.usb.restricted.mode.alert.message_IPOD";
-      if (!v3)
+      if (!onlyCopy)
       {
         goto LABEL_12;
       }
@@ -7252,7 +7252,7 @@ LABEL_9:
         v5 = @"sc.disallow.usb.restricted.mode.alert.message_IPHONE";
       }
 
-      if (!v3)
+      if (!onlyCopy)
       {
         goto LABEL_12;
       }
@@ -7289,9 +7289,9 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)_handleASTMenuFullForInstance:(id)a3
+- (void)_handleASTMenuFullForInstance:(id)instance
 {
-  v4 = a3;
+  instanceCopy = instance;
   v5 = MEMORY[0x277D75110];
   v6 = SBAXLocalizedString(@"DWELL_CONTROL_CUSTOMIZE_MENU");
   v7 = SBAXLocalizedString(@"DWELL_CONTROL_ADD_DWELL_SCROLL");
@@ -7313,8 +7313,8 @@ LABEL_13:
   v14[2] = __59__AXSpringBoardServerHelper__handleASTMenuFullForInstance___block_invoke_2;
   v14[3] = &unk_27842C1C8;
   v14[4] = self;
-  v15 = v4;
-  v12 = v4;
+  v15 = instanceCopy;
+  v12 = instanceCopy;
   v13 = [AXAlertAction actionWithTitle:v11 style:0 handler:v14];
 
   [v13 setButtonIndex:1];
@@ -7331,15 +7331,15 @@ uint64_t __59__AXSpringBoardServerHelper__handleASTMenuFullForInstance___block_i
   return [v3 openMenuCustomizationForASTWithServerInstance:v4];
 }
 
-- (void)_handleASTMenuCustomizeAddDwell:(BOOL)a3 addScroll:(BOOL)a4
+- (void)_handleASTMenuCustomizeAddDwell:(BOOL)dwell addScroll:(BOOL)scroll
 {
   v5 = @"DWELL_CONTROL_ADD_DWELL";
-  if (a4)
+  if (scroll)
   {
     v5 = @"DWELL_CONTROL_ADD_DWELL_SCROLL";
   }
 
-  if (!a3)
+  if (!dwell)
   {
     v5 = @"DWELL_CONTROL_ADD_SCROLL";
   }
@@ -7490,8 +7490,8 @@ uint64_t __59__AXSpringBoardServerHelper__handleASTMenuFullForInstance___block_i
   v4 = [AXAlertAction actionWithTitle:v3 style:0 handler:v15];
 
   [v4 setButtonIndex:1];
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v6 = [v5 objectForKey:@"kAXLiveTranscriptionConfirmationAlertDefaultsKey"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v6 = [standardUserDefaults objectForKey:@"kAXLiveTranscriptionConfirmationAlertDefaultsKey"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 isEqualToString:@"AXLiveTranscriptionAlertShowed"])
@@ -7690,12 +7690,12 @@ void __74__AXSpringBoardServerHelper__handleDisableOnDeviceEyeTrackingConfirmati
 {
   if (!UIAccessibilityIsGuidedAccessEnabled())
   {
-    v2 = [MEMORY[0x277D7EA38] sharedInstance];
-    [v2 notifyZoomHomeButtonWasPressed];
+    mEMORY[0x277D7EA38] = [MEMORY[0x277D7EA38] sharedInstance];
+    [mEMORY[0x277D7EA38] notifyZoomHomeButtonWasPressed];
   }
 
-  v3 = [SBServerHelper _isDisplayingAlertController];
-  if (v3)
+  _isDisplayingAlertController = [SBServerHelper _isDisplayingAlertController];
+  if (_isDisplayingAlertController)
   {
     [SBServerHelper _dismissAlertController];
   }
@@ -7703,60 +7703,60 @@ void __74__AXSpringBoardServerHelper__handleDisableOnDeviceEyeTrackingConfirmati
   else
   {
     v4 = +[AXSBHearingAidDeviceController sharedController];
-    v5 = [v4 isShowingHearingAidControl];
+    isShowingHearingAidControl = [v4 isShowingHearingAidControl];
 
-    if (v5)
+    if (isShowingHearingAidControl)
     {
       v6 = +[AXSBHearingAidDeviceController sharedController];
       [v6 showHearingAidControl:0];
     }
   }
 
-  return v3;
+  return _isDisplayingAlertController;
 }
 
-- (void)didFailToFloatAppForSideAppManager:(id)a3
+- (void)didFailToFloatAppForSideAppManager:(id)manager
 {
   v3 = +[_AXSpringBoardServerInstance springBoardServerInstance];
   [v3 springBoardActionOccurred:12];
 }
 
-- (void)didFailToPinAppForSideAppManager:(id)a3
+- (void)didFailToPinAppForSideAppManager:(id)manager
 {
   v3 = +[_AXSpringBoardServerInstance springBoardServerInstance];
   [v3 springBoardActionOccurred:11];
 }
 
-- (void)activeInterfaceOrientationDidChangeToOrientation:(int64_t)a3 willAnimateWithDuration:(double)a4 fromOrientation:(int64_t)a5
+- (void)activeInterfaceOrientationDidChangeToOrientation:(int64_t)orientation willAnimateWithDuration:(double)duration fromOrientation:(int64_t)fromOrientation
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277D75128] sharedApplication];
-  v8 = [v7 safeValueForKey:@"_frontMostAppOrientation"];
-  v9 = [v8 integerValue];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  v8 = [mEMORY[0x277D75128] safeValueForKey:@"_frontMostAppOrientation"];
+  integerValue = [v8 integerValue];
 
-  if (v9)
+  if (integerValue)
   {
-    v10 = a3;
+    orientationCopy = orientation;
   }
 
   else
   {
-    v10 = 0;
+    orientationCopy = 0;
   }
 
   v17[0] = *MEMORY[0x277CE7C88];
-  v11 = [MEMORY[0x277CCABB0] numberWithInteger:v10];
+  v11 = [MEMORY[0x277CCABB0] numberWithInteger:orientationCopy];
   v18[0] = v11;
   v17[1] = *MEMORY[0x277CE7C90];
-  v12 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+  v12 = [MEMORY[0x277CCABB0] numberWithDouble:duration];
   v18[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
 
   v14 = +[_AXSpringBoardServerInstance springBoardServerInstance];
   [v14 springBoardActionOccurred:4 withPayload:v13];
 
-  v15 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v15 postNotificationName:@"AXSBServerOrientationChange" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"AXSBServerOrientationChange" object:0];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -7770,9 +7770,9 @@ void __74__AXSpringBoardServerHelper__handleDisableOnDeviceEyeTrackingConfirmati
     [v3 setMinimumPressDuration:3.0];
     [v3 setName:@"AXGuestPassShowPIN"];
     [v3 setDelegate:self];
-    v4 = [MEMORY[0x277D76330] sharedInstance];
-    v5 = [MEMORY[0x277D0AA90] mainIdentity];
-    [v4 addGestureRecognizer:v3 toDisplayWithIdentity:v5];
+    mEMORY[0x277D76330] = [MEMORY[0x277D76330] sharedInstance];
+    mainIdentity = [MEMORY[0x277D0AA90] mainIdentity];
+    [mEMORY[0x277D76330] addGestureRecognizer:v3 toDisplayWithIdentity:mainIdentity];
 
     [(AXSpringBoardServerHelper *)self setGuestPassShowPINRecognizerIsInstalled:1];
   }
@@ -7784,9 +7784,9 @@ void __74__AXSpringBoardServerHelper__handleDisableOnDeviceEyeTrackingConfirmati
     [v8 setMinimumPressDuration:5.0];
     [v8 setName:@"AXGuestPassSpeakPIN"];
     [v8 setDelegate:self];
-    v6 = [MEMORY[0x277D76330] sharedInstance];
-    v7 = [MEMORY[0x277D0AA90] mainIdentity];
-    [v6 addGestureRecognizer:v8 toDisplayWithIdentity:v7];
+    mEMORY[0x277D76330]2 = [MEMORY[0x277D76330] sharedInstance];
+    mainIdentity2 = [MEMORY[0x277D0AA90] mainIdentity];
+    [mEMORY[0x277D76330]2 addGestureRecognizer:v8 toDisplayWithIdentity:mainIdentity2];
 
     [(AXSpringBoardServerHelper *)self setGuestPassSpeakPINRecognizerIsInstalled:1];
   }
@@ -7794,18 +7794,18 @@ void __74__AXSpringBoardServerHelper__handleDisableOnDeviceEyeTrackingConfirmati
 
 - (void)installGuestPassAcceptDialogGesture
 {
-  v3 = [(AXSpringBoardServerHelper *)self guestPassAcceptDialogRecognizer];
+  guestPassAcceptDialogRecognizer = [(AXSpringBoardServerHelper *)self guestPassAcceptDialogRecognizer];
 
-  if (!v3)
+  if (!guestPassAcceptDialogRecognizer)
   {
     v6 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:self action:sel__guestPassAcceptDialog_];
     [v6 setNumberOfTouchesRequired:3];
     [v6 setMinimumPressDuration:3.0];
     [v6 setName:@"AXGuestPassAcceptDialog"];
     [v6 setDelegate:self];
-    v4 = [MEMORY[0x277D76330] sharedInstance];
-    v5 = [MEMORY[0x277D0AA90] mainIdentity];
-    [v4 addGestureRecognizer:v6 toDisplayWithIdentity:v5];
+    mEMORY[0x277D76330] = [MEMORY[0x277D76330] sharedInstance];
+    mainIdentity = [MEMORY[0x277D0AA90] mainIdentity];
+    [mEMORY[0x277D76330] addGestureRecognizer:v6 toDisplayWithIdentity:mainIdentity];
 
     [(AXSpringBoardServerHelper *)self setGuestPassAcceptDialogRecognizer:v6];
   }
@@ -7813,26 +7813,26 @@ void __74__AXSpringBoardServerHelper__handleDisableOnDeviceEyeTrackingConfirmati
 
 - (void)removeGuestPassAcceptDialogGesture
 {
-  v3 = [(AXSpringBoardServerHelper *)self guestPassAcceptDialogRecognizer];
+  guestPassAcceptDialogRecognizer = [(AXSpringBoardServerHelper *)self guestPassAcceptDialogRecognizer];
 
-  if (v3)
+  if (guestPassAcceptDialogRecognizer)
   {
-    v4 = [MEMORY[0x277D76330] sharedInstance];
-    v5 = [(AXSpringBoardServerHelper *)self guestPassAcceptDialogRecognizer];
-    v6 = [MEMORY[0x277D0AA90] mainIdentity];
-    [v4 removeGestureRecognizer:v5 fromDisplayWithIdentity:v6];
+    mEMORY[0x277D76330] = [MEMORY[0x277D76330] sharedInstance];
+    guestPassAcceptDialogRecognizer2 = [(AXSpringBoardServerHelper *)self guestPassAcceptDialogRecognizer];
+    mainIdentity = [MEMORY[0x277D0AA90] mainIdentity];
+    [mEMORY[0x277D76330] removeGestureRecognizer:guestPassAcceptDialogRecognizer2 fromDisplayWithIdentity:mainIdentity];
 
     [(AXSpringBoardServerHelper *)self setGuestPassAcceptDialogRecognizer:0];
   }
 }
 
-- (void)_guestPassShowPIN:(id)a3
+- (void)_guestPassShowPIN:(id)n
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  nCopy = n;
+  if ([nCopy state] == 1)
   {
-    v5 = [(AXSpringBoardServerHelper *)self feedbackGenerator];
-    [v5 impactOccurred];
+    feedbackGenerator = [(AXSpringBoardServerHelper *)self feedbackGenerator];
+    [feedbackGenerator impactOccurred];
 
     v6 = AXLogGuestPass();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -7841,25 +7841,25 @@ void __74__AXSpringBoardServerHelper__handleDisableOnDeviceEyeTrackingConfirmati
       _os_log_impl(&dword_21FE6B000, v6, OS_LOG_TYPE_INFO, "Asking UIServer to show pin", v11, 2u);
     }
 
-    v7 = [(AXSpringBoardServerHelper *)self guestPassClient];
-    v8 = [MEMORY[0x277CE6948] mainAccessQueue];
-    [v7 sendAsynchronousMessage:0 withIdentifier:11 targetAccessQueue:v8 completion:0];
+    guestPassClient = [(AXSpringBoardServerHelper *)self guestPassClient];
+    mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
+    [guestPassClient sendAsynchronousMessage:0 withIdentifier:11 targetAccessQueue:mainAccessQueue completion:0];
   }
 
-  else if ([v4 state] == 3)
+  else if ([nCopy state] == 3)
   {
-    v9 = [MEMORY[0x277D76330] sharedInstance];
-    v10 = [MEMORY[0x277D0AA90] mainIdentity];
-    [v9 removeGestureRecognizer:v4 fromDisplayWithIdentity:v10];
+    mEMORY[0x277D76330] = [MEMORY[0x277D76330] sharedInstance];
+    mainIdentity = [MEMORY[0x277D0AA90] mainIdentity];
+    [mEMORY[0x277D76330] removeGestureRecognizer:nCopy fromDisplayWithIdentity:mainIdentity];
 
     [(AXSpringBoardServerHelper *)self setGuestPassShowPINRecognizerIsInstalled:0];
   }
 }
 
-- (void)_guestPassSpeakPIN:(id)a3
+- (void)_guestPassSpeakPIN:(id)n
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  nCopy = n;
+  if ([nCopy state] == 1)
   {
     v5 = AXLogGuestPass();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -7868,25 +7868,25 @@ void __74__AXSpringBoardServerHelper__handleDisableOnDeviceEyeTrackingConfirmati
       _os_log_impl(&dword_21FE6B000, v5, OS_LOG_TYPE_INFO, "Asking UIServer to speak pin", v10, 2u);
     }
 
-    v6 = [(AXSpringBoardServerHelper *)self guestPassClient];
-    v7 = [MEMORY[0x277CE6948] mainAccessQueue];
-    [v6 sendAsynchronousMessage:0 withIdentifier:12 targetAccessQueue:v7 completion:0];
+    guestPassClient = [(AXSpringBoardServerHelper *)self guestPassClient];
+    mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
+    [guestPassClient sendAsynchronousMessage:0 withIdentifier:12 targetAccessQueue:mainAccessQueue completion:0];
   }
 
-  else if ([v4 state] == 3)
+  else if ([nCopy state] == 3)
   {
-    v8 = [MEMORY[0x277D76330] sharedInstance];
-    v9 = [MEMORY[0x277D0AA90] mainIdentity];
-    [v8 removeGestureRecognizer:v4 fromDisplayWithIdentity:v9];
+    mEMORY[0x277D76330] = [MEMORY[0x277D76330] sharedInstance];
+    mainIdentity = [MEMORY[0x277D0AA90] mainIdentity];
+    [mEMORY[0x277D76330] removeGestureRecognizer:nCopy fromDisplayWithIdentity:mainIdentity];
 
     [(AXSpringBoardServerHelper *)self setGuestPassSpeakPINRecognizerIsInstalled:0];
   }
 }
 
-- (void)_guestPassAcceptDialog:(id)a3
+- (void)_guestPassAcceptDialog:(id)dialog
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  dialogCopy = dialog;
+  if ([dialogCopy state] == 1)
   {
     v5 = AXLogGuestPass();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -7895,37 +7895,37 @@ void __74__AXSpringBoardServerHelper__handleDisableOnDeviceEyeTrackingConfirmati
       _os_log_impl(&dword_21FE6B000, v5, OS_LOG_TYPE_INFO, "Asking UIServer to accept confirmation dialog", v11, 2u);
     }
 
-    v6 = [(AXSpringBoardServerHelper *)self guestPassClient];
-    v7 = [MEMORY[0x277CE6948] mainAccessQueue];
-    [v6 sendAsynchronousMessage:0 withIdentifier:13 targetAccessQueue:v7 completion:0];
+    guestPassClient = [(AXSpringBoardServerHelper *)self guestPassClient];
+    mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
+    [guestPassClient sendAsynchronousMessage:0 withIdentifier:13 targetAccessQueue:mainAccessQueue completion:0];
 
-    v8 = [(AXSpringBoardServerHelper *)self feedbackGenerator];
-    [v8 impactOccurred];
+    feedbackGenerator = [(AXSpringBoardServerHelper *)self feedbackGenerator];
+    [feedbackGenerator impactOccurred];
   }
 
-  else if ([v4 state] == 3)
+  else if ([dialogCopy state] == 3)
   {
-    v9 = [MEMORY[0x277D76330] sharedInstance];
-    v10 = [MEMORY[0x277D0AA90] mainIdentity];
-    [v9 removeGestureRecognizer:v4 fromDisplayWithIdentity:v10];
+    mEMORY[0x277D76330] = [MEMORY[0x277D76330] sharedInstance];
+    mainIdentity = [MEMORY[0x277D0AA90] mainIdentity];
+    [mEMORY[0x277D76330] removeGestureRecognizer:dialogCopy fromDisplayWithIdentity:mainIdentity];
 
     [(AXSpringBoardServerHelper *)self setGuestPassAcceptDialogRecognizer:0];
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a4;
-  v6 = [a3 name];
-  if ([v6 containsString:@"AXGuestPass"])
+  gestureRecognizerCopy = gestureRecognizer;
+  name = [recognizer name];
+  if ([name containsString:@"AXGuestPass"])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [v5 name];
-    v7 = [v8 containsString:@"AXGuestPass"];
+    name2 = [gestureRecognizerCopy name];
+    v7 = [name2 containsString:@"AXGuestPass"];
   }
 
   return v7;
@@ -7938,8 +7938,8 @@ void __74__AXSpringBoardServerHelper__handleDisableOnDeviceEyeTrackingConfirmati
   {
     v4 = objc_alloc(MEMORY[0x277CE7740]);
     v5 = MEMORY[0x277CCACA8];
-    v6 = [MEMORY[0x277CCAC38] processInfo];
-    v7 = [v5 stringWithFormat:@"GuestPassClient-%d", objc_msgSend(v6, "processIdentifier")];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    v7 = [v5 stringWithFormat:@"GuestPassClient-%d", objc_msgSend(processInfo, "processIdentifier")];
     v8 = [v4 initWithIdentifier:v7 serviceBundleName:*MEMORY[0x277CE7BF8]];
     v9 = self->_guestPassClient;
     self->_guestPassClient = v8;

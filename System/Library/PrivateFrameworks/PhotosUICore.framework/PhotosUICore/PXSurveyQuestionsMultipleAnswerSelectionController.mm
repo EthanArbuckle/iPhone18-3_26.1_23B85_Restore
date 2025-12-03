@@ -1,17 +1,17 @@
 @interface PXSurveyQuestionsMultipleAnswerSelectionController
-- (PXSurveyQuestionsMultipleAnswerSelectionController)initWithTitle:(id)a3 message:(id)a4 reasons:(id)a5 currentlySelectedReasons:(id)a6 completion:(id)a7;
+- (PXSurveyQuestionsMultipleAnswerSelectionController)initWithTitle:(id)title message:(id)message reasons:(id)reasons currentlySelectedReasons:(id)selectedReasons completion:(id)completion;
 @end
 
 @implementation PXSurveyQuestionsMultipleAnswerSelectionController
 
-- (PXSurveyQuestionsMultipleAnswerSelectionController)initWithTitle:(id)a3 message:(id)a4 reasons:(id)a5 currentlySelectedReasons:(id)a6 completion:(id)a7
+- (PXSurveyQuestionsMultipleAnswerSelectionController)initWithTitle:(id)title message:(id)message reasons:(id)reasons currentlySelectedReasons:(id)selectedReasons completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[PXSurveyQuestionsMultipleAnswerSelectionTableViewController alloc] initWithTitle:v16 message:v15 reasons:v14 currentlySelectedReasons:v13 completion:v12];
+  completionCopy = completion;
+  selectedReasonsCopy = selectedReasons;
+  reasonsCopy = reasons;
+  messageCopy = message;
+  titleCopy = title;
+  v17 = [[PXSurveyQuestionsMultipleAnswerSelectionTableViewController alloc] initWithTitle:titleCopy message:messageCopy reasons:reasonsCopy currentlySelectedReasons:selectedReasonsCopy completion:completionCopy];
 
   v20.receiver = self;
   v20.super_class = PXSurveyQuestionsMultipleAnswerSelectionController;

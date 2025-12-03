@@ -1,23 +1,23 @@
 @interface HKObjectPickerNoDataTableViewCell
-- (HKObjectPickerNoDataTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HKObjectPickerNoDataTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_setupSubviews;
 - (void)prepareForReuse;
-- (void)setShowLearnMoreButton:(BOOL)a3;
+- (void)setShowLearnMoreButton:(BOOL)button;
 @end
 
 @implementation HKObjectPickerNoDataTableViewCell
 
-- (HKObjectPickerNoDataTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HKObjectPickerNoDataTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = HKObjectPickerNoDataTableViewCell;
-  v4 = [(HKObjectPickerNoDataTableViewCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HKObjectPickerNoDataTableViewCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(HKObjectPickerNoDataTableViewCell *)v4 _setupSubviews];
-    v6 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [(HKObjectPickerNoDataTableViewCell *)v5 setBackgroundColor:v6];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [(HKObjectPickerNoDataTableViewCell *)v5 setBackgroundColor:secondarySystemBackgroundColor];
 
     [(HKObjectPickerNoDataTableViewCell *)v5 setShowLearnMoreButton:1];
   }
@@ -28,8 +28,8 @@
 - (void)_setupSubviews
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-  [(HKObjectPickerNoDataTableViewCell *)self setBackgroundColor:v3];
+  secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+  [(HKObjectPickerNoDataTableViewCell *)self setBackgroundColor:secondarySystemBackgroundColor];
 
   [(HKObjectPickerNoDataTableViewCell *)self _setContinuousCornerRadius:10.0];
   [(HKObjectPickerNoDataTableViewCell *)self setSelectionStyle:0];
@@ -48,8 +48,8 @@
   [(UILabel *)self->_label setFont:v12];
 
   [(UILabel *)self->_label setNumberOfLines:0];
-  v13 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)self->_label setTextColor:v13];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)self->_label setTextColor:secondaryLabelColor];
 
   [(UILabel *)self->_label setTextAlignment:0];
   [(UILabel *)self->_label setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -63,12 +63,12 @@
   [(UIButton *)v16 setTitle:v18 forState:0];
 
   v19 = self->_learnMoreButton;
-  v20 = [MEMORY[0x1E69DC888] systemBlueColor];
-  [(UIButton *)v19 setTitleColor:v20 forState:0];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  [(UIButton *)v19 setTitleColor:systemBlueColor forState:0];
 
   v21 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v11];
-  v22 = [(UIButton *)self->_learnMoreButton titleLabel];
-  [v22 setFont:v21];
+  titleLabel = [(UIButton *)self->_learnMoreButton titleLabel];
+  [titleLabel setFont:v21];
 
   [(UIButton *)self->_learnMoreButton setTranslatesAutoresizingMaskIntoConstraints:0];
   v23 = objc_alloc(MEMORY[0x1E69DCF90]);
@@ -85,16 +85,16 @@
   [(UIStackView *)self->_stackView setDistribution:0];
   [(UIStackView *)self->_stackView setSpacing:4.0];
   [(UIStackView *)self->_stackView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v28 = [(HKObjectPickerNoDataTableViewCell *)self contentView];
-  [v28 addSubview:self->_stackView];
+  contentView = [(HKObjectPickerNoDataTableViewCell *)self contentView];
+  [contentView addSubview:self->_stackView];
 
   v29 = self->_stackView;
-  v30 = [(HKObjectPickerNoDataTableViewCell *)self contentView];
-  [(UIStackView *)v29 hk_alignVerticalConstraintsWithView:v30 margin:16.0];
+  contentView2 = [(HKObjectPickerNoDataTableViewCell *)self contentView];
+  [(UIStackView *)v29 hk_alignVerticalConstraintsWithView:contentView2 margin:16.0];
 
   v31 = self->_stackView;
-  v32 = [(HKObjectPickerNoDataTableViewCell *)self contentView];
-  [(UIStackView *)v31 hk_alignHorizontalConstraintsWithView:v32 margin:16.0];
+  contentView3 = [(HKObjectPickerNoDataTableViewCell *)self contentView];
+  [(UIStackView *)v31 hk_alignHorizontalConstraintsWithView:contentView3 margin:16.0];
 }
 
 - (void)prepareForReuse
@@ -105,11 +105,11 @@
   [(UILabel *)self->_label setText:0];
 }
 
-- (void)setShowLearnMoreButton:(BOOL)a3
+- (void)setShowLearnMoreButton:(BOOL)button
 {
-  if (self->_showLearnMoreButton != a3)
+  if (self->_showLearnMoreButton != button)
   {
-    if (a3)
+    if (button)
     {
       [(UIStackView *)self->_stackView addArrangedSubview:self->_learnMoreButton];
     }
@@ -119,7 +119,7 @@
       [(UIButton *)self->_learnMoreButton removeFromSuperview];
     }
 
-    self->_showLearnMoreButton = a3;
+    self->_showLearnMoreButton = button;
   }
 }
 

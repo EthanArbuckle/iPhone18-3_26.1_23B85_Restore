@@ -1,59 +1,59 @@
 @interface Upsampler
-- (BOOL)fillImage:(__CVBuffer *)a3 withValue:(float)a4;
+- (BOOL)fillImage:(__CVBuffer *)image withValue:(float)value;
 - (BOOL)setupKernels;
-- (BOOL)upsampleRBGPackedBuffer:(__CVBuffer *)a3 to:(__CVBuffer *)a4 scaleFactor:(float)a5;
-- (BOOL)upscaleFlow:(__CVBuffer *)a3 upscaleRatio:(float)a4 destination:(__CVBuffer *)a5;
+- (BOOL)upsampleRBGPackedBuffer:(__CVBuffer *)buffer to:(__CVBuffer *)to scaleFactor:(float)factor;
+- (BOOL)upscaleFlow:(__CVBuffer *)flow upscaleRatio:(float)ratio destination:(__CVBuffer *)destination;
 - (Upsampler)init;
-- (void)encodeFillTextureToCommandBuffer:(id)a3 destination:(id)a4 withValue:(float)a5;
-- (void)encodeUpsampleRBGPackedToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5 scaleFactor:(float)a6;
+- (void)encodeFillTextureToCommandBuffer:(id)buffer destination:(id)destination withValue:(float)value;
+- (void)encodeUpsampleRBGPackedToCommandBuffer:(id)buffer source:(id)source destination:(id)destination scaleFactor:(float)factor;
 @end
 
 @implementation Upsampler
 
-- (void)encodeUpsampleRBGPackedToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5 scaleFactor:(float)a6
+- (void)encodeUpsampleRBGPackedToCommandBuffer:(id)buffer source:(id)source destination:(id)destination scaleFactor:(float)factor
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = ([v10 width] + 15) >> 4;
-  v14 = ([v10 height] + 15) >> 4;
-  v15 = [v12 computeCommandEncoder];
+  destinationCopy = destination;
+  sourceCopy = source;
+  bufferCopy = buffer;
+  v13 = ([destinationCopy width] + 15) >> 4;
+  v14 = ([destinationCopy height] + 15) >> 4;
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
 
-  [v15 setComputePipelineState:self->_imageUpsampleRGBPackedKernel];
-  [v15 setTexture:v11 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:self->_imageUpsampleRGBPackedKernel];
+  [computeCommandEncoder setTexture:sourceCopy atIndex:0];
 
-  [v15 setTexture:v10 atIndex:1];
-  v19 = 1.0 / a6;
-  [v15 setBytes:&v19 length:4 atIndex:0];
+  [computeCommandEncoder setTexture:destinationCopy atIndex:1];
+  v19 = 1.0 / factor;
+  [computeCommandEncoder setBytes:&v19 length:4 atIndex:0];
   v18[0] = v13;
   v18[1] = v14;
   v18[2] = 1;
   v16 = vdupq_n_s64(0x10uLL);
   v17 = 1;
-  [v15 dispatchThreadgroups:v18 threadsPerThreadgroup:&v16];
-  [v15 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v18 threadsPerThreadgroup:&v16];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeFillTextureToCommandBuffer:(id)a3 destination:(id)a4 withValue:(float)a5
+- (void)encodeFillTextureToCommandBuffer:(id)buffer destination:(id)destination withValue:(float)value
 {
-  v15 = a5;
-  v7 = a4;
-  v8 = a3;
-  v9 = ([v7 width] + 15) >> 4;
-  v10 = ([v7 height] + 15) >> 4;
-  v11 = [v8 computeCommandEncoder];
+  valueCopy = value;
+  destinationCopy = destination;
+  bufferCopy = buffer;
+  v9 = ([destinationCopy width] + 15) >> 4;
+  v10 = ([destinationCopy height] + 15) >> 4;
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
 
-  [v11 setComputePipelineState:self->_fillKernel];
-  [v11 setTexture:v7 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:self->_fillKernel];
+  [computeCommandEncoder setTexture:destinationCopy atIndex:0];
 
-  [v11 setBytes:&v15 length:4 atIndex:0];
+  [computeCommandEncoder setBytes:&valueCopy length:4 atIndex:0];
   v14[0] = v9;
   v14[1] = v10;
   v14[2] = 1;
   v12 = vdupq_n_s64(0x10uLL);
   v13 = 1;
-  [v11 dispatchThreadgroups:v14 threadsPerThreadgroup:&v12];
-  [v11 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v14 threadsPerThreadgroup:&v12];
+  [computeCommandEncoder endEncoding];
 }
 
 - (Upsampler)init
@@ -105,13 +105,13 @@
   return v12;
 }
 
-- (BOOL)upsampleRBGPackedBuffer:(__CVBuffer *)a3 to:(__CVBuffer *)a4 scaleFactor:(float)a5
+- (BOOL)upsampleRBGPackedBuffer:(__CVBuffer *)buffer to:(__CVBuffer *)to scaleFactor:(float)factor
 {
-  v9 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
-  v10 = createRGBATextureFromCVPixelBuffer(a3, self->super._device);
-  v11 = createRGBATextureFromCVPixelBuffer(a4, self->super._device);
+  commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+  v10 = createRGBATextureFromCVPixelBuffer(buffer, self->super._device);
+  v11 = createRGBATextureFromCVPixelBuffer(to, self->super._device);
   v13 = v11;
-  if (v9)
+  if (commandBuffer)
   {
     v14 = v10 == 0;
   }
@@ -125,30 +125,30 @@
   v16 = !v15;
   if (!v15)
   {
-    *&v12 = a5;
-    [(Upsampler *)self encodeUpsampleRBGPackedToCommandBuffer:v9 source:v10 destination:v11 scaleFactor:v12];
-    [v9 commit];
-    [v9 waitUntilCompleted];
+    *&v12 = factor;
+    [(Upsampler *)self encodeUpsampleRBGPackedToCommandBuffer:commandBuffer source:v10 destination:v11 scaleFactor:v12];
+    [commandBuffer commit];
+    [commandBuffer waitUntilCompleted];
   }
 
   return v16;
 }
 
-- (BOOL)fillImage:(__CVBuffer *)a3 withValue:(float)a4
+- (BOOL)fillImage:(__CVBuffer *)image withValue:(float)value
 {
-  v7 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
-  if (!v7)
+  commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+  if (!commandBuffer)
   {
     v17 = 0;
     v10 = 0;
     goto LABEL_13;
   }
 
-  PlaneCount = CVPixelBufferGetPlaneCount(a3);
+  PlaneCount = CVPixelBufferGetPlaneCount(image);
   device = self->super._device;
   if (PlaneCount != 2)
   {
-    v10 = createTexturesFromCVPixelBuffer(a3, device, 1, 1uLL);
+    v10 = createTexturesFromCVPixelBuffer(image, device, 1, 1uLL);
     if (v10)
     {
       *&v15 = OUTLINED_FUNCTION_0_24();
@@ -165,7 +165,7 @@ LABEL_13:
 
   v19 = 0;
   v20 = 0;
-  createYUVTextureFromCVPixelBuffer(a3, device, &v20, &v19);
+  createYUVTextureFromCVPixelBuffer(image, device, &v20, &v19);
   v10 = v20;
   v11 = v19;
   if (!v10)
@@ -178,27 +178,27 @@ LABEL_13:
   [v13 encodeFillTextureToCommandBuffer:v12 destination:? withValue:?];
   if (v11)
   {
-    *&v14 = a4;
-    [(Upsampler *)self encodeFillTextureToCommandBuffer:v7 destination:v11 withValue:v14];
+    *&v14 = value;
+    [(Upsampler *)self encodeFillTextureToCommandBuffer:commandBuffer destination:v11 withValue:v14];
   }
 
 LABEL_8:
-  [v7 commit];
-  [v7 waitUntilCompleted];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
   v17 = 1;
 LABEL_9:
 
   return v17;
 }
 
-- (BOOL)upscaleFlow:(__CVBuffer *)a3 upscaleRatio:(float)a4 destination:(__CVBuffer *)a5
+- (BOOL)upscaleFlow:(__CVBuffer *)flow upscaleRatio:(float)ratio destination:(__CVBuffer *)destination
 {
-  v8 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
-  v9 = createTexturesFromCVPixelBuffer(a3, self->super._device, 2, 1uLL);
-  v10 = createTexturesFromCVPixelBuffer(a5, self->super._device, 2, 1uLL);
+  commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+  v9 = createTexturesFromCVPixelBuffer(flow, self->super._device, 2, 1uLL);
+  v10 = createTexturesFromCVPixelBuffer(destination, self->super._device, 2, 1uLL);
   v11 = v10;
   v12 = 0;
-  if (v8 && v9 && v10)
+  if (commandBuffer && v9 && v10)
   {
     *&v13 = OUTLINED_FUNCTION_0_24();
     if ([v14 encodeUpscaleFlowToCommandBuffer:v13 source:? upscaleRatio:? destination:?])
@@ -208,8 +208,8 @@ LABEL_9:
 
     else
     {
-      [v8 commit];
-      [v8 waitUntilCompleted];
+      [commandBuffer commit];
+      [commandBuffer waitUntilCompleted];
       v12 = 1;
     }
   }

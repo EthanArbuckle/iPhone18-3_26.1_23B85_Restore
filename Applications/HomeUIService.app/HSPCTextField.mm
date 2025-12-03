@@ -1,13 +1,13 @@
 @interface HSPCTextField
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 @end
 
 @implementation HSPCTextField
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if (sel_isEqual(a3, "captureTextFromCamera:"))
+  senderCopy = sender;
+  if (sel_isEqual(action, "captureTextFromCamera:"))
   {
     v7 = 0;
   }
@@ -16,7 +16,7 @@
   {
     v9.receiver = self;
     v9.super_class = HSPCTextField;
-    v7 = [(HSPCTextField *)&v9 canPerformAction:a3 withSender:v6];
+    v7 = [(HSPCTextField *)&v9 canPerformAction:action withSender:senderCopy];
   }
 
   return v7;

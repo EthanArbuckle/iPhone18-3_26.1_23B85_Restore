@@ -1,14 +1,14 @@
 @interface _LTOfflineSpeechSynthesizer
-- (_LTOfflineSpeechSynthesizer)initWithCompletion:(id)a3;
+- (_LTOfflineSpeechSynthesizer)initWithCompletion:(id)completion;
 - (void)cancel;
-- (void)speak:(id)a3 withContext:(id)a4;
+- (void)speak:(id)speak withContext:(id)context;
 @end
 
 @implementation _LTOfflineSpeechSynthesizer
 
-- (_LTOfflineSpeechSynthesizer)initWithCompletion:(id)a3
+- (_LTOfflineSpeechSynthesizer)initWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v14.receiver = self;
   v14.super_class = _LTOfflineSpeechSynthesizer;
   v5 = [(_LTOfflineSpeechSynthesizer *)&v14 init];
@@ -18,7 +18,7 @@
     session = v5->_session;
     v5->_session = v6;
 
-    v8 = [v4 copy];
+    v8 = [completionCopy copy];
     completion = v5->_completion;
     v5->_completion = v8;
 
@@ -32,11 +32,11 @@
   return v5;
 }
 
-- (void)speak:(id)a3 withContext:(id)a4
+- (void)speak:(id)speak withContext:(id)context
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  speakCopy = speak;
+  contextCopy = context;
   currentRequest = self->_currentRequest;
   self->_currentRequest = 0;
 
@@ -48,18 +48,18 @@
   currentWordTimingInfo = self->_currentWordTimingInfo;
   self->_currentWordTimingInfo = v11;
 
-  v13 = [v7 localePair];
-  v14 = [v13 targetLocale];
+  localePair = [contextCopy localePair];
+  targetLocale = [localePair targetLocale];
   v15 = _LTLocaleMappedForTTS();
 
-  if ([v6 length] <= 0x14)
+  if ([speakCopy length] <= 0x14)
   {
-    v17 = v6;
+    v17 = speakCopy;
   }
 
   else
   {
-    v16 = [v6 substringToIndex:20];
+    v16 = [speakCopy substringToIndex:20];
     v17 = [v16 stringByAppendingString:@"..."];
   }
 
@@ -67,26 +67,26 @@
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     v19 = v18;
-    v20 = [v15 localeIdentifier];
+    localeIdentifier = [v15 localeIdentifier];
     *buf = 138740227;
     v39 = v17;
     v40 = 2114;
-    v41 = v20;
+    v41 = localeIdentifier;
     _os_log_impl(&dword_232E53000, v19, OS_LOG_TYPE_INFO, "Speaking: %{sensitive}@ language code %{public}@", buf, 0x16u);
   }
 
-  if ([v6 length])
+  if ([speakCopy length])
   {
-    v21 = [v15 localeIdentifier];
-    v22 = [_LTDTTSAssetService voiceForLocaleIdentifier:v21];
+    localeIdentifier2 = [v15 localeIdentifier];
+    v22 = [_LTDTTSAssetService voiceForLocaleIdentifier:localeIdentifier2];
 
     if (v22)
     {
-      v23 = [objc_alloc(MEMORY[0x277D61468]) initWithText:v6 voice:v22];
-      v24 = [v7 outputFileURL];
-      [v23 setOutputPath:v24];
+      v23 = [objc_alloc(MEMORY[0x277D61468]) initWithText:speakCopy voice:v22];
+      outputFileURL = [contextCopy outputFileURL];
+      [v23 setOutputPath:outputFileURL];
 
-      [v7 ttsPlaybackRate];
+      [contextCopy ttsPlaybackRate];
       *&v25 = v25;
       [v23 setRate:v25];
       [v23 setPrivacySensitive:1];
@@ -112,7 +112,7 @@
       v31[2] = __49___LTOfflineSpeechSynthesizer_speak_withContext___block_invoke_2;
       v31[3] = &unk_2789B6FF0;
       objc_copyWeak(&v33, buf);
-      v32 = v6;
+      v32 = speakCopy;
       [(SiriTTSDaemonSession *)session synthesizeWithRequest:v26 didFinish:v31];
 
       objc_destroyWeak(&v33);

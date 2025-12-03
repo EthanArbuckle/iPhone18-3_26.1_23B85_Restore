@@ -3,8 +3,8 @@
 - (BOOL)isDebugEnabled;
 - (OS_xpc_object)relayConnection;
 - (PLXPCRelay)init;
-- (void)handleCrashMoverConnection:(id)a3;
-- (void)handlePeer:(id)a3 forEvent:(id)a4;
+- (void)handleCrashMoverConnection:(id)connection;
+- (void)handlePeer:(id)peer forEvent:(id)event;
 - (void)movePowerlogs;
 - (void)resetRelayConnection;
 - (void)startRelay;
@@ -88,9 +88,9 @@ LABEL_4:
     {
       v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Relay: Bad processname, no xpc relay for you"];
       v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogCore/PLXPCRelay.m"];
-      v14 = [v13 lastPathComponent];
+      lastPathComponent = [v13 lastPathComponent];
       v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLXPCRelay init]"];
-      [PLCoreStorage logMessage:v12 fromFile:v14 fromFunction:v15 fromLineNumber:46];
+      [PLCoreStorage logMessage:v12 fromFile:lastPathComponent fromFunction:v15 fromLineNumber:46];
 
       v16 = PLLogCommon();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -141,9 +141,9 @@ void __18__PLXPCRelay_init__block_invoke_20(uint64_t a1, void *a2)
     {
       v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Relay: Relay running in aggd with service %s to %s", "com.apple.powerlog.plxpclogger.xpc", "com.apple.powerlogd.XPCService.xpc"];
       v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogCore/PLXPCRelay.m"];
-      v6 = [v5 lastPathComponent];
+      lastPathComponent = [v5 lastPathComponent];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLXPCRelay startRelay]"];
-      [PLCoreStorage logMessage:v4 fromFile:v6 fromFunction:v7 fromLineNumber:71];
+      [PLCoreStorage logMessage:v4 fromFile:lastPathComponent fromFunction:v7 fromLineNumber:71];
 
       v8 = PLLogCommon();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -158,23 +158,23 @@ void __18__PLXPCRelay_init__block_invoke_20(uint64_t a1, void *a2)
   mach_service = xpc_connection_create_mach_service("com.apple.powerlog.plxpclogger.xpc", v9, 1uLL);
   [(PLXPCRelay *)self setXpcConnection:mach_service];
 
-  v11 = [(PLXPCRelay *)self xpcConnection];
-  xpc_connection_set_context(v11, self);
+  xpcConnection = [(PLXPCRelay *)self xpcConnection];
+  xpc_connection_set_context(xpcConnection, self);
 
-  v12 = [(PLXPCRelay *)self xpcConnection];
+  xpcConnection2 = [(PLXPCRelay *)self xpcConnection];
   v13 = dispatch_get_global_queue(2, 0);
-  xpc_connection_set_target_queue(v12, v13);
+  xpc_connection_set_target_queue(xpcConnection2, v13);
 
-  v14 = [(PLXPCRelay *)self xpcConnection];
+  xpcConnection3 = [(PLXPCRelay *)self xpcConnection];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __24__PLXPCRelay_startRelay__block_invoke_30;
   handler[3] = &unk_1E8519FA8;
   handler[4] = self;
-  xpc_connection_set_event_handler(v14, handler);
+  xpc_connection_set_event_handler(xpcConnection3, handler);
 
-  v15 = [(PLXPCRelay *)self xpcConnection];
-  xpc_connection_activate(v15);
+  xpcConnection4 = [(PLXPCRelay *)self xpcConnection];
+  xpc_connection_activate(xpcConnection4);
 }
 
 BOOL __24__PLXPCRelay_startRelay__block_invoke(uint64_t a1)
@@ -358,9 +358,9 @@ BOOL __24__PLXPCRelay_startRelay__block_invoke_2_42(uint64_t a1)
     {
       v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Relay: closing relay in aggd with service %s to %s", "com.apple.powerlog.plxpclogger.xpc", "com.apple.powerlogd.XPCService.xpc"];
       v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogCore/PLXPCRelay.m"];
-      v6 = [v5 lastPathComponent];
+      lastPathComponent = [v5 lastPathComponent];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLXPCRelay stopRelay]"];
-      [PLCoreStorage logMessage:v4 fromFile:v6 fromFunction:v7 fromLineNumber:106];
+      [PLCoreStorage logMessage:v4 fromFile:lastPathComponent fromFunction:v7 fromLineNumber:106];
 
       v8 = PLLogCommon();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -371,8 +371,8 @@ BOOL __24__PLXPCRelay_startRelay__block_invoke_2_42(uint64_t a1)
   }
 
   [(PLXPCRelay *)self setRelayActive:0];
-  v9 = [(PLXPCRelay *)self xpcConnection];
-  xpc_connection_cancel(v9);
+  xpcConnection = [(PLXPCRelay *)self xpcConnection];
+  xpc_connection_cancel(xpcConnection);
 
   [(PLXPCRelay *)self setXpcConnection:0];
   [(PLXPCRelay *)self resetRelayConnection];
@@ -385,17 +385,17 @@ BOOL __23__PLXPCRelay_stopRelay__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)handleCrashMoverConnection:(id)a3
+- (void)handleCrashMoverConnection:(id)connection
 {
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __41__PLXPCRelay_handleCrashMoverConnection___block_invoke;
   handler[3] = &unk_1E8519FA8;
   handler[4] = self;
-  v4 = a3;
-  xpc_connection_set_event_handler(v4, handler);
-  xpc_connection_set_target_queue(v4, self->_crashMoverQueue);
-  xpc_connection_activate(v4);
+  connectionCopy = connection;
+  xpc_connection_set_event_handler(connectionCopy, handler);
+  xpc_connection_set_target_queue(connectionCopy, self->_crashMoverQueue);
+  xpc_connection_activate(connectionCopy);
 }
 
 uint64_t __41__PLXPCRelay_handleCrashMoverConnection___block_invoke(uint64_t a1, uint64_t a2)
@@ -443,14 +443,14 @@ BOOL __28__PLXPCRelay_isDebugEnabled__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)handlePeer:(id)a3 forEvent:(id)a4
+- (void)handlePeer:(id)peer forEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  peerCopy = peer;
+  eventCopy = event;
   v8 = MEMORY[0x1DA71B8B0]();
   if (v8 == MEMORY[0x1E69E9E98])
   {
-    if (v7 == MEMORY[0x1E69E9E20])
+    if (eventCopy == MEMORY[0x1E69E9E20])
     {
       if (!+[PLDefaults debugEnabled])
       {
@@ -473,11 +473,11 @@ BOOL __28__PLXPCRelay_isDebugEnabled__block_invoke(uint64_t a1)
         goto LABEL_47;
       }
 
-      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Relay: peer(%d) received XPC_ERROR_CONNECTION_INVALID", xpc_connection_get_pid(v6)];
+      eventCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Relay: peer(%d) received XPC_ERROR_CONNECTION_INVALID", xpc_connection_get_pid(peerCopy)];
       v31 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogCore/PLXPCRelay.m"];
-      v32 = [v31 lastPathComponent];
+      lastPathComponent = [v31 lastPathComponent];
       v33 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLXPCRelay handlePeer:forEvent:]"];
-      [PLCoreStorage logMessage:v18 fromFile:v32 fromFunction:v33 fromLineNumber:146];
+      [PLCoreStorage logMessage:eventCopy fromFile:lastPathComponent fromFunction:v33 fromLineNumber:146];
 
       v22 = PLLogCommon();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -486,7 +486,7 @@ BOOL __28__PLXPCRelay_isDebugEnabled__block_invoke(uint64_t a1)
       }
     }
 
-    else if (v7 == MEMORY[0x1E69E9E18])
+    else if (eventCopy == MEMORY[0x1E69E9E18])
     {
       if (!+[PLDefaults debugEnabled])
       {
@@ -509,11 +509,11 @@ BOOL __28__PLXPCRelay_isDebugEnabled__block_invoke(uint64_t a1)
         goto LABEL_47;
       }
 
-      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Relay: peer(%d) received XPC_ERROR_CONNECTION_INTERRUPTED", xpc_connection_get_pid(v6)];
+      eventCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Relay: peer(%d) received XPC_ERROR_CONNECTION_INTERRUPTED", xpc_connection_get_pid(peerCopy)];
       v35 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogCore/PLXPCRelay.m"];
-      v36 = [v35 lastPathComponent];
+      lastPathComponent2 = [v35 lastPathComponent];
       v37 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLXPCRelay handlePeer:forEvent:]"];
-      [PLCoreStorage logMessage:v18 fromFile:v36 fromFunction:v37 fromLineNumber:150];
+      [PLCoreStorage logMessage:eventCopy fromFile:lastPathComponent2 fromFunction:v37 fromLineNumber:150];
 
       v22 = PLLogCommon();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -526,7 +526,7 @@ BOOL __28__PLXPCRelay_isDebugEnabled__block_invoke(uint64_t a1)
     {
       v15 = MEMORY[0x1E69E9E38];
       v16 = +[PLDefaults debugEnabled];
-      if (v7 == v15)
+      if (eventCopy == v15)
       {
         if (!v16)
         {
@@ -549,11 +549,11 @@ BOOL __28__PLXPCRelay_isDebugEnabled__block_invoke(uint64_t a1)
           goto LABEL_47;
         }
 
-        v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Relay: peer(%d) received XPC_ERROR_TERMINATION_IMMINENT", xpc_connection_get_pid(v6)];
+        eventCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Relay: peer(%d) received XPC_ERROR_TERMINATION_IMMINENT", xpc_connection_get_pid(peerCopy)];
         v39 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogCore/PLXPCRelay.m"];
-        v40 = [v39 lastPathComponent];
+        lastPathComponent3 = [v39 lastPathComponent];
         v41 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLXPCRelay handlePeer:forEvent:]"];
-        [PLCoreStorage logMessage:v18 fromFile:v40 fromFunction:v41 fromLineNumber:154];
+        [PLCoreStorage logMessage:eventCopy fromFile:lastPathComponent3 fromFunction:v41 fromLineNumber:154];
 
         v22 = PLLogCommon();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -585,11 +585,11 @@ BOOL __28__PLXPCRelay_isDebugEnabled__block_invoke(uint64_t a1)
           goto LABEL_47;
         }
 
-        v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Relay: peer(%d) received Unidentified error:%@", xpc_connection_get_pid(v6), v7];
+        eventCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Relay: peer(%d) received Unidentified error:%@", xpc_connection_get_pid(peerCopy), eventCopy];
         v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogCore/PLXPCRelay.m"];
-        v20 = [v19 lastPathComponent];
+        lastPathComponent4 = [v19 lastPathComponent];
         v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLXPCRelay handlePeer:forEvent:]"];
-        [PLCoreStorage logMessage:v18 fromFile:v20 fromFunction:v21 fromLineNumber:159];
+        [PLCoreStorage logMessage:eventCopy fromFile:lastPathComponent4 fromFunction:v21 fromLineNumber:159];
 
         v22 = PLLogCommon();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -600,7 +600,7 @@ BOOL __28__PLXPCRelay_isDebugEnabled__block_invoke(uint64_t a1)
     }
 
 LABEL_47:
-    xpc_connection_cancel(v6);
+    xpc_connection_cancel(peerCopy);
     goto LABEL_117;
   }
 
@@ -624,9 +624,9 @@ LABEL_47:
       {
         v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Relay: message = %@", v10];
         v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogCore/PLXPCRelay.m"];
-        v26 = [v25 lastPathComponent];
+        lastPathComponent5 = [v25 lastPathComponent];
         v27 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLXPCRelay handlePeer:forEvent:]"];
-        [PLCoreStorage logMessage:v24 fromFile:v26 fromFunction:v27 fromLineNumber:165];
+        [PLCoreStorage logMessage:v24 fromFile:lastPathComponent5 fromFunction:v27 fromLineNumber:165];
 
         v28 = PLLogCommon();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -669,7 +669,7 @@ LABEL_47:
           }
 
           v14 = v83;
-          v84 = [(PLXPCRelay *)self relayConnection];
+          relayConnection = [(PLXPCRelay *)self relayConnection];
           xpc_connection_send_notification();
         }
 
@@ -698,12 +698,12 @@ LABEL_47:
 
           v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Message with no direction: %@", v10];
           v87 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogCore/PLXPCRelay.m"];
-          v88 = [v87 lastPathComponent];
+          lastPathComponent6 = [v87 lastPathComponent];
           v89 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLXPCRelay handlePeer:forEvent:]"];
-          [PLCoreStorage logMessage:v14 fromFile:v88 fromFunction:v89 fromLineNumber:260];
+          [PLCoreStorage logMessage:v14 fromFile:lastPathComponent6 fromFunction:v89 fromLineNumber:260];
 
-          v84 = PLLogCommon();
-          if (os_log_type_enabled(v84, OS_LOG_TYPE_DEBUG))
+          relayConnection = PLLogCommon();
+          if (os_log_type_enabled(relayConnection, OS_LOG_TYPE_DEBUG))
           {
             [PLSubmissionFile logSubmissionResultToCAWithErrorType:withFileType:withOverrideKeys:];
           }
@@ -717,7 +717,7 @@ LABEL_47:
     if (v43)
     {
       v44 = v43;
-      v45 = [PLUtilities allowQueryFromPeer:v6];
+      v45 = [PLUtilities allowQueryFromPeer:peerCopy];
 
       if (!v45)
       {
@@ -738,8 +738,8 @@ LABEL_47:
     }
 
     v14 = v46;
-    v47 = [(PLXPCRelay *)self relayConnection];
-    v48 = xpc_connection_send_message_with_reply_sync(v47, v14);
+    relayConnection2 = [(PLXPCRelay *)self relayConnection];
+    v48 = xpc_connection_send_message_with_reply_sync(relayConnection2, v14);
 
     if (v48)
     {
@@ -761,9 +761,9 @@ LABEL_47:
           v100 = v48;
           v50 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Relay: xpc_response=%@", v48];
           v51 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogCore/PLXPCRelay.m"];
-          v52 = [v51 lastPathComponent];
+          lastPathComponent7 = [v51 lastPathComponent];
           v53 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLXPCRelay handlePeer:forEvent:]"];
-          [PLCoreStorage logMessage:v50 fromFile:v52 fromFunction:v53 fromLineNumber:190];
+          [PLCoreStorage logMessage:v50 fromFile:lastPathComponent7 fromFunction:v53 fromLineNumber:190];
 
           v54 = v50;
           v55 = PLLogCommon();
@@ -798,9 +798,9 @@ LABEL_47:
             v101 = v48;
             v94 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Relay: xpc_return_dict=%@", v56];
             v58 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogCore/PLXPCRelay.m"];
-            v59 = [v58 lastPathComponent];
+            lastPathComponent8 = [v58 lastPathComponent];
             v60 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLXPCRelay handlePeer:forEvent:]"];
-            [PLCoreStorage logMessage:v94 fromFile:v59 fromFunction:v60 fromLineNumber:201];
+            [PLCoreStorage logMessage:v94 fromFile:lastPathComponent8 fromFunction:v60 fromLineNumber:201];
 
             v61 = PLLogCommon();
             if (os_log_type_enabled(v61, OS_LOG_TYPE_DEBUG))
@@ -837,9 +837,9 @@ LABEL_47:
               v95 = v63;
               v65 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Relay: response=%@", v63];
               v66 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogCore/PLXPCRelay.m"];
-              v67 = [v66 lastPathComponent];
+              lastPathComponent9 = [v66 lastPathComponent];
               v68 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLXPCRelay handlePeer:forEvent:]"];
-              [PLCoreStorage logMessage:v65 fromFile:v67 fromFunction:v68 fromLineNumber:213];
+              [PLCoreStorage logMessage:v65 fromFile:lastPathComponent9 fromFunction:v68 fromLineNumber:213];
 
               v69 = v65;
               v70 = PLLogCommon();
@@ -854,7 +854,7 @@ LABEL_47:
             }
           }
 
-          v71 = xpc_dictionary_get_remote_connection(v7);
+          v71 = xpc_dictionary_get_remote_connection(eventCopy);
           if (v71)
           {
             v72 = v71;
@@ -877,9 +877,9 @@ LABEL_47:
                 v103 = v48;
                 v74 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Relay: have remoteConnection"];
                 v75 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogCore/PLXPCRelay.m"];
-                v76 = [v75 lastPathComponent];
+                lastPathComponent10 = [v75 lastPathComponent];
                 v77 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLXPCRelay handlePeer:forEvent:]"];
-                [PLCoreStorage logMessage:v74 fromFile:v76 fromFunction:v77 fromLineNumber:224];
+                [PLCoreStorage logMessage:v74 fromFile:lastPathComponent10 fromFunction:v77 fromLineNumber:224];
 
                 v78 = PLLogCommon();
                 if (os_log_type_enabled(v78, OS_LOG_TYPE_DEBUG))
@@ -892,7 +892,7 @@ LABEL_47:
               }
             }
 
-            reply = xpc_dictionary_create_reply(v7);
+            reply = xpc_dictionary_create_reply(eventCopy);
             if (reply)
             {
               v80 = reply;
@@ -962,8 +962,8 @@ LABEL_116:
       goto LABEL_117;
     }
 
-    v84 = PLLogCommon();
-    if (os_log_type_enabled(v84, OS_LOG_TYPE_ERROR))
+    relayConnection = PLLogCommon();
+    if (os_log_type_enabled(relayConnection, OS_LOG_TYPE_ERROR))
     {
       [PLXPCRelay handlePeer:forEvent:];
     }
@@ -990,9 +990,9 @@ LABEL_94:
     {
       v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Relay: unknown type"];
       v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogCore/PLXPCRelay.m"];
-      v12 = [v11 lastPathComponent];
+      lastPathComponent11 = [v11 lastPathComponent];
       v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLXPCRelay handlePeer:forEvent:]"];
-      [PLCoreStorage logMessage:v10 fromFile:v12 fromFunction:v13 fromLineNumber:264];
+      [PLCoreStorage logMessage:v10 fromFile:lastPathComponent11 fromFunction:v13 fromLineNumber:264];
 
       v14 = PLLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -1106,9 +1106,9 @@ BOOL __34__PLXPCRelay_handlePeer_forEvent___block_invoke_123(uint64_t a1)
       {
         v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Relay: Reusing connection!", v25, v26, v27, v28, v29];
         v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogCore/PLXPCRelay.m"];
-        v6 = [v5 lastPathComponent];
+        lastPathComponent = [v5 lastPathComponent];
         v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLXPCRelay relayConnection]"];
-        [PLCoreStorage logMessage:v4 fromFile:v6 fromFunction:v7 fromLineNumber:296];
+        [PLCoreStorage logMessage:v4 fromFile:lastPathComponent fromFunction:v7 fromLineNumber:296];
 
         v8 = PLLogCommon();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -1140,9 +1140,9 @@ LABEL_21:
       {
         v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Relay: creating connection!"];
         v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogCore/PLXPCRelay.m"];
-        v12 = [v11 lastPathComponent];
+        lastPathComponent2 = [v11 lastPathComponent];
         v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLXPCRelay relayConnection]"];
-        [PLCoreStorage logMessage:v10 fromFile:v12 fromFunction:v13 fromLineNumber:277];
+        [PLCoreStorage logMessage:v10 fromFile:lastPathComponent2 fromFunction:v13 fromLineNumber:277];
 
         v14 = PLLogCommon();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -1182,9 +1182,9 @@ LABEL_21:
       {
         v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Relay: connection created!"];
         v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogCore/PLXPCRelay.m"];
-        v21 = [v20 lastPathComponent];
+        lastPathComponent3 = [v20 lastPathComponent];
         v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLXPCRelay relayConnection]"];
-        [PLCoreStorage logMessage:v4 fromFile:v21 fromFunction:v22 fromLineNumber:294];
+        [PLCoreStorage logMessage:v4 fromFile:lastPathComponent3 fromFunction:v22 fromLineNumber:294];
 
         v8 = PLLogCommon();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))

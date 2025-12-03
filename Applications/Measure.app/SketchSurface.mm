@@ -1,5 +1,5 @@
 @interface SketchSurface
-- (_TtC7Measure13SketchSurface)initWithFrame:(CGRect)a3;
+- (_TtC7Measure13SketchSurface)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -7,16 +7,16 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100047E1C();
 }
 
-- (_TtC7Measure13SketchSurface)initWithFrame:(CGRect)a3
+- (_TtC7Measure13SketchSurface)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR____TtC7Measure13SketchSurface_surfaceView;
   *(&self->super.super.super.isa + v8) = [objc_allocWithZone(UIView) init];
   *(&self->super.super.super.isa + OBJC_IVAR____TtC7Measure13SketchSurface_rectSublayer) = 0;

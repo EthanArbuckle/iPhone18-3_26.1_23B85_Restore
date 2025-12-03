@@ -1,32 +1,32 @@
 @interface HealthAppAuthorizationManagementLinkBuilder
-+ (BOOL)canOpenAuthorizationManagementWithValidIdentifier:(id)a3;
-+ (BOOL)canOpenLinkWithSourceIdentifier:(id)a3 destinationIdentifier:(id)a4;
-- (id)_URLForAuthorizationManagementFromLocation:(int64_t)a3 bundleIdentifier:(id)a4;
-- (id)_URLForAuthorizationManagementLocationHealthProfileWithBundleIdentifier:(id)a3;
-- (id)_URLForAuthorizationManagementLocationHealthSharingWithBundleIdentifier:(id)a3;
-- (id)_URLForAuthorizationManagementLocationSettingsWithBundleIdentifier:(id)a3;
-- (id)appendBundleIdentifierIfNecessary:(id)a3 toPath:(id)a4;
++ (BOOL)canOpenAuthorizationManagementWithValidIdentifier:(id)identifier;
++ (BOOL)canOpenLinkWithSourceIdentifier:(id)identifier destinationIdentifier:(id)destinationIdentifier;
+- (id)_URLForAuthorizationManagementFromLocation:(int64_t)location bundleIdentifier:(id)identifier;
+- (id)_URLForAuthorizationManagementLocationHealthProfileWithBundleIdentifier:(id)identifier;
+- (id)_URLForAuthorizationManagementLocationHealthSharingWithBundleIdentifier:(id)identifier;
+- (id)_URLForAuthorizationManagementLocationSettingsWithBundleIdentifier:(id)identifier;
+- (id)appendBundleIdentifierIfNecessary:(id)necessary toPath:(id)path;
 @end
 
 @implementation HealthAppAuthorizationManagementLinkBuilder
 
-+ (BOOL)canOpenLinkWithSourceIdentifier:(id)a3 destinationIdentifier:(id)a4
++ (BOOL)canOpenLinkWithSourceIdentifier:(id)identifier destinationIdentifier:(id)destinationIdentifier
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  destinationIdentifierCopy = destinationIdentifier;
   v8 = objc_alloc(MEMORY[0x277CBEBD0]);
   v9 = [v8 initWithSuiteName:*MEMORY[0x277CCE378]];
   v10 = [v9 stringForKey:@"SourceApplicationBundleIdentifierOverride"];
   v11 = v10;
-  if (v6)
+  if (identifierCopy)
   {
-    v12 = v6;
+    v12 = identifierCopy;
   }
 
   else
   {
-    v12 = v7;
+    v12 = destinationIdentifierCopy;
   }
 
   if (v10)
@@ -35,7 +35,7 @@
   }
 
   v13 = v12;
-  v14 = [a1 canOpenAuthorizationManagementWithValidIdentifier:v13];
+  v14 = [self canOpenAuthorizationManagementWithValidIdentifier:v13];
   _HKInitializeLogging();
   v15 = *MEMORY[0x277CCC2B0];
   if (os_log_type_enabled(*MEMORY[0x277CCC2B0], OS_LOG_TYPE_DEFAULT))
@@ -45,9 +45,9 @@
     v18 = @"nil";
     v24 = 138544386;
     v25 = v17;
-    if (v7)
+    if (destinationIdentifierCopy)
     {
-      v19 = v7;
+      v19 = destinationIdentifierCopy;
     }
 
     else
@@ -57,9 +57,9 @@
 
     v26 = 2048;
     v27 = v14;
-    if (v6)
+    if (identifierCopy)
     {
-      v20 = v6;
+      v20 = identifierCopy;
     }
 
     else
@@ -86,13 +86,13 @@
   return v14;
 }
 
-+ (BOOL)canOpenAuthorizationManagementWithValidIdentifier:(id)a3
++ (BOOL)canOpenAuthorizationManagementWithValidIdentifier:(id)identifier
 {
   v11[4] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (identifier)
   {
     v3 = MEMORY[0x277CBEB18];
-    v4 = a3;
+    identifierCopy = identifier;
     v5 = [v3 alloc];
     v11[0] = @"com.apple.installcoordinationd";
     v11[1] = @"com.hip.PistoPilot";
@@ -101,7 +101,7 @@
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:4];
     v7 = [v5 initWithArray:v6];
 
-    v8 = [v7 containsObject:v4];
+    v8 = [v7 containsObject:identifierCopy];
   }
 
   else
@@ -113,30 +113,30 @@
   return v8;
 }
 
-- (id)_URLForAuthorizationManagementFromLocation:(int64_t)a3 bundleIdentifier:(id)a4
+- (id)_URLForAuthorizationManagementFromLocation:(int64_t)location bundleIdentifier:(id)identifier
 {
-  v7 = a4;
-  if (a3)
+  identifierCopy = identifier;
+  if (location)
   {
-    if (a3 == 1)
+    if (location == 1)
     {
-      v8 = [(HealthAppAuthorizationManagementLinkBuilder *)self _URLForAuthorizationManagementLocationHealthSharingWithBundleIdentifier:v7];
+      v8 = [(HealthAppAuthorizationManagementLinkBuilder *)self _URLForAuthorizationManagementLocationHealthSharingWithBundleIdentifier:identifierCopy];
     }
 
     else
     {
-      if (a3 != 2)
+      if (location != 2)
       {
         goto LABEL_8;
       }
 
-      v8 = [(HealthAppAuthorizationManagementLinkBuilder *)self _URLForAuthorizationManagementLocationSettingsWithBundleIdentifier:v7];
+      v8 = [(HealthAppAuthorizationManagementLinkBuilder *)self _URLForAuthorizationManagementLocationSettingsWithBundleIdentifier:identifierCopy];
     }
   }
 
   else
   {
-    v8 = [(HealthAppAuthorizationManagementLinkBuilder *)self _URLForAuthorizationManagementLocationHealthProfileWithBundleIdentifier:v7];
+    v8 = [(HealthAppAuthorizationManagementLinkBuilder *)self _URLForAuthorizationManagementLocationHealthProfileWithBundleIdentifier:identifierCopy];
   }
 
   v4 = v8;
@@ -145,15 +145,15 @@ LABEL_8:
   return v4;
 }
 
-- (id)_URLForAuthorizationManagementLocationSettingsWithBundleIdentifier:(id)a3
+- (id)_URLForAuthorizationManagementLocationSettingsWithBundleIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277CCACE0];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(v4);
-  v7 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v8 = [v7 isAppleWatch];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isAppleWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
-  if (v8)
+  if (isAppleWatch)
   {
     v9 = +[HAServicesDefines nanoInternalSettingsAppURLScheme];
     [v6 setScheme:v9];
@@ -180,7 +180,7 @@ LABEL_8:
     v13 = [v16 stringWithFormat:@"/%@/%@", v12, v17];
   }
 
-  v18 = [(HealthAppAuthorizationManagementLinkBuilder *)self appendBundleIdentifierIfNecessary:v5 toPath:v13];
+  v18 = [(HealthAppAuthorizationManagementLinkBuilder *)self appendBundleIdentifierIfNecessary:identifierCopy toPath:v13];
 
   [v6 setPath:v18];
   v19 = [v6 URL];
@@ -188,10 +188,10 @@ LABEL_8:
   return v19;
 }
 
-- (id)_URLForAuthorizationManagementLocationHealthProfileWithBundleIdentifier:(id)a3
+- (id)_URLForAuthorizationManagementLocationHealthProfileWithBundleIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277CCACE0];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(v4);
   v7 = +[HAServicesDefines internalHealthAppURLScheme];
   [v6 setScheme:v7];
@@ -199,7 +199,7 @@ LABEL_8:
   v8 = +[HAServicesDefines authorizationManagementHostName];
   [v6 setHost:v8];
 
-  v9 = [(HealthAppAuthorizationManagementLinkBuilder *)self appendBundleIdentifierIfNecessary:v5];
+  v9 = [(HealthAppAuthorizationManagementLinkBuilder *)self appendBundleIdentifierIfNecessary:identifierCopy];
 
   [v6 setPath:v9];
   v10 = [v6 URL];
@@ -207,10 +207,10 @@ LABEL_8:
   return v10;
 }
 
-- (id)_URLForAuthorizationManagementLocationHealthSharingWithBundleIdentifier:(id)a3
+- (id)_URLForAuthorizationManagementLocationHealthSharingWithBundleIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277CCACE0];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(v4);
   v7 = +[HAServicesDefines internalHealthAppURLScheme];
   [v6 setScheme:v7];
@@ -222,7 +222,7 @@ LABEL_8:
   v10 = +[HAServicesDefines authorizationManagementHostName];
   v11 = [v9 stringWithFormat:@"/%@", v10];
 
-  v12 = [(HealthAppAuthorizationManagementLinkBuilder *)self appendBundleIdentifierIfNecessary:v5 toPath:v11];
+  v12 = [(HealthAppAuthorizationManagementLinkBuilder *)self appendBundleIdentifierIfNecessary:identifierCopy toPath:v11];
 
   [v6 setPath:v12];
   v13 = [v6 URL];
@@ -230,21 +230,21 @@ LABEL_8:
   return v13;
 }
 
-- (id)appendBundleIdentifierIfNecessary:(id)a3 toPath:(id)a4
+- (id)appendBundleIdentifierIfNecessary:(id)necessary toPath:(id)path
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = v5;
-  if (a3)
+  pathCopy = path;
+  v6 = pathCopy;
+  if (necessary)
   {
     v13[0] = @"/";
-    v13[1] = a3;
+    v13[1] = necessary;
     v7 = MEMORY[0x277CBEA60];
-    v8 = a3;
+    necessaryCopy = necessary;
     v9 = [v7 arrayWithObjects:v13 count:2];
 
     v10 = [v9 componentsJoinedByString:&stru_28635B3F0];
-    v6 = [v5 stringByAppendingString:v10];
+    v6 = [pathCopy stringByAppendingString:v10];
   }
 
   v11 = *MEMORY[0x277D85DE8];

@@ -1,31 +1,31 @@
 @interface GTCaptureArchiveHeapRestoreTextureSliceOverrideKey
-- (BOOL)isEqual:(id)a3;
-- (GTCaptureArchiveHeapRestoreTextureSliceOverrideKey)initWithCoder:(id)a3;
-- (GTCaptureArchiveHeapRestoreTextureSliceOverrideKey)initWithSlice:(int64_t)a3 mipLevel:(int64_t)a4 depthPlane:(int64_t)a5 plane:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (GTCaptureArchiveHeapRestoreTextureSliceOverrideKey)initWithCoder:(id)coder;
+- (GTCaptureArchiveHeapRestoreTextureSliceOverrideKey)initWithSlice:(int64_t)slice mipLevel:(int64_t)level depthPlane:(int64_t)plane plane:(id)a6;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTCaptureArchiveHeapRestoreTextureSliceOverrideKey
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   slice = self->_slice;
-  v9 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:slice];
-  [v9 encodeObject:v6 forKey:@"slice"];
+  [coderCopy encodeObject:v6 forKey:@"slice"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_mipLevel];
-  [v9 encodeObject:v7 forKey:@"mipLevel"];
+  [coderCopy encodeObject:v7 forKey:@"mipLevel"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_depthPlane];
-  [v9 encodeObject:v8 forKey:@"depthPlane"];
+  [coderCopy encodeObject:v8 forKey:@"depthPlane"];
 
-  [v9 encodeObject:self->_plane forKey:@"plane"];
+  [coderCopy encodeObject:self->_plane forKey:@"plane"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(GTCaptureArchiveHeapRestoreTextureSliceOverrideKey);
   [(GTCaptureArchiveHeapRestoreTextureSliceOverrideKey *)v4 setSlice:self->_slice];
@@ -35,25 +35,25 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if ([v5 slice] == self->_slice && objc_msgSend(v5, "mipLevel") == self->_mipLevel && objc_msgSend(v5, "depthPlane") == self->_depthPlane)
     {
-      v6 = [v5 plane];
-      if (v6 == self->_plane)
+      plane = [v5 plane];
+      if (plane == self->_plane)
       {
         v8 = 1;
       }
 
       else
       {
-        v7 = [v5 plane];
-        v8 = [v7 isEqualToNumber:self->_plane];
+        plane2 = [v5 plane];
+        v8 = [plane2 isEqualToNumber:self->_plane];
       }
     }
 
@@ -71,24 +71,24 @@
   return v8;
 }
 
-- (GTCaptureArchiveHeapRestoreTextureSliceOverrideKey)initWithCoder:(id)a3
+- (GTCaptureArchiveHeapRestoreTextureSliceOverrideKey)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = GTCaptureArchiveHeapRestoreTextureSliceOverrideKey;
   v5 = [(GTCaptureArchiveHeapRestoreTextureSliceOverrideKey *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"slice"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"slice"];
     v5->_slice = [v6 unsignedIntegerValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mipLevel"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mipLevel"];
     v5->_mipLevel = [v7 unsignedIntegerValue];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"depthPlane"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"depthPlane"];
     v5->_depthPlane = [v8 unsignedIntegerValue];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"plane"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"plane"];
     plane = v5->_plane;
     v5->_plane = v9;
   }
@@ -96,7 +96,7 @@
   return v5;
 }
 
-- (GTCaptureArchiveHeapRestoreTextureSliceOverrideKey)initWithSlice:(int64_t)a3 mipLevel:(int64_t)a4 depthPlane:(int64_t)a5 plane:(id)a6
+- (GTCaptureArchiveHeapRestoreTextureSliceOverrideKey)initWithSlice:(int64_t)slice mipLevel:(int64_t)level depthPlane:(int64_t)plane plane:(id)a6
 {
   v11 = a6;
   v15.receiver = self;
@@ -105,9 +105,9 @@
   v13 = v12;
   if (v12)
   {
-    v12->_slice = a3;
-    v12->_mipLevel = a4;
-    v12->_depthPlane = a5;
+    v12->_slice = slice;
+    v12->_mipLevel = level;
+    v12->_depthPlane = plane;
     objc_storeStrong(&v12->_plane, a6);
   }
 

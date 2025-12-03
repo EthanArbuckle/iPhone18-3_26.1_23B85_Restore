@@ -3,18 +3,18 @@
 - (NSString)description;
 - (NSURL)presentedItemURL;
 - (TSUURLTrackerFilePresenter)init;
-- (TSUURLTrackerFilePresenter)initWithURL:(id)a3 bookmarkData:(id)a4 delegate:(id)a5;
-- (id)URLAndReturnError:(id *)a3;
-- (id)_URLAndReturnError:(id *)a3;
+- (TSUURLTrackerFilePresenter)initWithURL:(id)l bookmarkData:(id)data delegate:(id)delegate;
+- (id)URLAndReturnError:(id *)error;
+- (id)_URLAndReturnError:(id *)error;
 - (id)_bookmarkData;
-- (id)_bookmarkDataAndReturnError:(id *)a3;
+- (id)_bookmarkDataAndReturnError:(id *)error;
 - (id)_description;
-- (id)bookmarkDataAndReturnError:(id *)a3;
-- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)a3;
+- (id)bookmarkDataAndReturnError:(id *)error;
+- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)handler;
 - (void)pause;
-- (void)presentedItemDidChangeUbiquityAttributes:(id)a3;
-- (void)presentedItemDidMoveToURL:(id)a3;
-- (void)relinquishPresentedItemToWriter:(id)a3;
+- (void)presentedItemDidChangeUbiquityAttributes:(id)attributes;
+- (void)presentedItemDidMoveToURL:(id)l;
+- (void)relinquishPresentedItemToWriter:(id)writer;
 - (void)startOrResume;
 - (void)stop;
 @end
@@ -37,11 +37,11 @@
   objc_exception_throw(v7);
 }
 
-- (TSUURLTrackerFilePresenter)initWithURL:(id)a3 bookmarkData:(id)a4 delegate:(id)a5
+- (TSUURLTrackerFilePresenter)initWithURL:(id)l bookmarkData:(id)data delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  dataCopy = data;
+  delegateCopy = delegate;
   v23.receiver = self;
   v23.super_class = TSUURLTrackerFilePresenter;
   v11 = [(TSUURLTrackerFilePresenter *)&v23 init];
@@ -51,11 +51,11 @@
     accessQueue = v11->_accessQueue;
     v11->_accessQueue = v12;
 
-    v14 = [v8 copy];
+    v14 = [lCopy copy];
     URLIfAvailable = v11->_URLIfAvailable;
     v11->_URLIfAvailable = v14;
 
-    v16 = [v9 copy];
+    v16 = [dataCopy copy];
     bookmarkDataIfAvailable = v11->_bookmarkDataIfAvailable;
     v11->_bookmarkDataIfAvailable = v16;
 
@@ -65,13 +65,13 @@
     presentedItemOperationQueue = v11->_presentedItemOperationQueue;
     v11->_presentedItemOperationQueue = v20;
 
-    objc_storeWeak(&v11->_delegate, v10);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
   }
 
   return v11;
 }
 
-- (id)URLAndReturnError:(id *)a3
+- (id)URLAndReturnError:(id *)error
 {
   v15 = 0;
   v16 = &v15;
@@ -95,9 +95,9 @@
   block[6] = &v15;
   dispatch_sync(accessQueue, block);
   v5 = v10[5];
-  if (a3 && !v5)
+  if (error && !v5)
   {
-    *a3 = v16[5];
+    *error = v16[5];
     v5 = v10[5];
   }
 
@@ -121,7 +121,7 @@ void __48__TSUURLTrackerFilePresenter_URLAndReturnError___block_invoke(void *a1)
   *(v5 + 40) = v4;
 }
 
-- (id)_URLAndReturnError:(id *)a3
+- (id)_URLAndReturnError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -174,7 +174,7 @@ void __48__TSUURLTrackerFilePresenter_URLAndReturnError___block_invoke(void *a1)
 
     v13 = v12;
     v5 = v13;
-    if (!a3 || v13)
+    if (!error || v13)
     {
       if (v13)
       {
@@ -184,7 +184,7 @@ void __48__TSUURLTrackerFilePresenter_URLAndReturnError___block_invoke(void *a1)
 
     else
     {
-      *a3 = self->_latestError;
+      *error = self->_latestError;
     }
 
     if (self->_bookmarkDataIfAvailable)
@@ -419,7 +419,7 @@ uint64_t __34__TSUURLTrackerFilePresenter_stop__block_invoke(uint64_t result)
   return result;
 }
 
-- (id)bookmarkDataAndReturnError:(id *)a3
+- (id)bookmarkDataAndReturnError:(id *)error
 {
   v15 = 0;
   v16 = &v15;
@@ -443,9 +443,9 @@ uint64_t __34__TSUURLTrackerFilePresenter_stop__block_invoke(uint64_t result)
   block[6] = &v15;
   dispatch_sync(accessQueue, block);
   v5 = v10[5];
-  if (a3 && !v5)
+  if (error && !v5)
   {
-    *a3 = v16[5];
+    *error = v16[5];
     v5 = v10[5];
   }
 
@@ -469,7 +469,7 @@ void __57__TSUURLTrackerFilePresenter_bookmarkDataAndReturnError___block_invoke(
   *(v5 + 40) = v4;
 }
 
-- (id)_bookmarkDataAndReturnError:(id *)a3
+- (id)_bookmarkDataAndReturnError:(id *)error
 {
   bookmarkDataIfAvailable = self->_bookmarkDataIfAvailable;
   if (!bookmarkDataIfAvailable)
@@ -509,9 +509,9 @@ LABEL_8:
   }
 
   v7 = self->_bookmarkDataIfAvailable;
-  if (a3 && !v7)
+  if (error && !v7)
   {
-    *a3 = self->_latestError;
+    *error = self->_latestError;
     v7 = self->_bookmarkDataIfAvailable;
   }
 
@@ -555,68 +555,68 @@ void __58__TSUURLTrackerFilePresenter__bookmarkDataAndReturnError___block_invoke
   return v3;
 }
 
-- (void)relinquishPresentedItemToWriter:(id)a3
+- (void)relinquishPresentedItemToWriter:(id)writer
 {
-  v5 = a3;
+  writerCopy = writer;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained relinquishPresentedItemToWriter:v5];
+    [WeakRetained relinquishPresentedItemToWriter:writerCopy];
   }
 
-  else if (v5)
+  else if (writerCopy)
   {
-    v5[2](v5, 0);
+    writerCopy[2](writerCopy, 0);
   }
 }
 
-- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)a3
+- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   [(TSUURLTrackerFilePresenter *)self stop];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained accommodatePresentedItemDeletionWithCompletionHandler:v5];
+    [WeakRetained accommodatePresentedItemDeletionWithCompletionHandler:handlerCopy];
   }
 
-  else if (v5)
+  else if (handlerCopy)
   {
-    v5[2](v5, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)presentedItemDidMoveToURL:(id)a3
+- (void)presentedItemDidMoveToURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  lCopy = l;
+  v5 = [lCopy copy];
   accessQueue = self->_accessQueue;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __56__TSUURLTrackerFilePresenter_presentedItemDidMoveToURL___block_invoke;
   v12 = &unk_2799C68A8;
-  v13 = self;
+  selfCopy = self;
   v7 = v5;
   v14 = v7;
   dispatch_async(accessQueue, &v9);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained presentedItemDidMoveToURL:{v4, v9, v10, v11, v12, v13}];
+    [WeakRetained presentedItemDidMoveToURL:{lCopy, v9, v10, v11, v12, selfCopy}];
   }
 }
 
-- (void)presentedItemDidChangeUbiquityAttributes:(id)a3
+- (void)presentedItemDidChangeUbiquityAttributes:(id)attributes
 {
-  v7 = a3;
+  attributesCopy = attributes;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(TSUURLTrackerFilePresenter *)self presentedItemURL];
-    v6 = [v7 allObjects];
-    [v5 tsu_removeCachedResourceValueForKeys:v6];
+    presentedItemURL = [(TSUURLTrackerFilePresenter *)self presentedItemURL];
+    allObjects = [attributesCopy allObjects];
+    [presentedItemURL tsu_removeCachedResourceValueForKeys:allObjects];
 
-    [WeakRetained presentedItemDidChangeUbiquityAttributes:v7];
+    [WeakRetained presentedItemDidChangeUbiquityAttributes:attributesCopy];
   }
 }
 

@@ -1,14 +1,14 @@
 @interface CNLibraryImageDiscovery
 + (id)extensions;
-+ (id)imageDataForEmailAddresses:(id)a3;
++ (id)imageDataForEmailAddresses:(id)addresses;
 @end
 
 @implementation CNLibraryImageDiscovery
 
-+ (id)imageDataForEmailAddresses:(id)a3
++ (id)imageDataForEmailAddresses:(id)addresses
 {
   v52 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  addressesCopy = addresses;
   [CNLibraryFolderDiscovery discoverFoldersWithPathComponents:&unk_1F0987678];
   v45 = 0u;
   v46 = 0u;
@@ -19,9 +19,9 @@
   {
     v7 = *v46;
     v34 = v5;
-    v35 = v4;
+    v35 = addressesCopy;
     v28 = *v46;
-    v29 = a1;
+    selfCopy = self;
     do
     {
       v8 = 0;
@@ -39,7 +39,7 @@
         v42 = 0u;
         v43 = 0u;
         v44 = 0u;
-        v10 = v4;
+        v10 = addressesCopy;
         v32 = [v10 countByEnumeratingWithState:&v41 objects:v50 count:16];
         if (v32)
         {
@@ -62,8 +62,8 @@
               v38 = 0u;
               v39 = 0u;
               v40 = 0u;
-              v14 = [a1 extensions];
-              v15 = [v14 countByEnumeratingWithState:&v37 objects:v49 count:16];
+              extensions = [self extensions];
+              v15 = [extensions countByEnumeratingWithState:&v37 objects:v49 count:16];
               if (v15)
               {
                 v16 = v15;
@@ -74,7 +74,7 @@
                   {
                     if (*v38 != v17)
                     {
-                      objc_enumerationMutation(v14);
+                      objc_enumerationMutation(extensions);
                     }
 
                     v19 = *(*(&v37 + 1) + 8 * i);
@@ -83,22 +83,22 @@
 
                     if (v21)
                     {
-                      v22 = [MEMORY[0x1E69966E8] currentEnvironment];
-                      v23 = [v22 fileManager];
-                      v24 = [v23 dataWithContentsOfURL:v21];
+                      currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+                      fileManager = [currentEnvironment fileManager];
+                      v24 = [fileManager dataWithContentsOfURL:v21];
 
                       if ([v24 isSuccess])
                       {
-                        v25 = [v24 value];
+                        value = [v24 value];
 
                         v5 = v34;
-                        v4 = v35;
+                        addressesCopy = v35;
                         goto LABEL_28;
                       }
                     }
                   }
 
-                  v16 = [v14 countByEnumeratingWithState:&v37 objects:v49 count:16];
+                  v16 = [extensions countByEnumeratingWithState:&v37 objects:v49 count:16];
                   if (v16)
                   {
                     continue;
@@ -110,8 +110,8 @@
 
               v12 = v33 + 1;
               v5 = v34;
-              v4 = v35;
-              a1 = v29;
+              addressesCopy = v35;
+              self = selfCopy;
               v11 = v30;
               v10 = v36;
             }
@@ -130,7 +130,7 @@
       while (v31 + 1 != v27);
       v6 = [v5 countByEnumeratingWithState:&v45 objects:v51 count:16];
       v7 = v28;
-      v25 = 0;
+      value = 0;
     }
 
     while (v6);
@@ -138,12 +138,12 @@
 
   else
   {
-    v25 = 0;
+    value = 0;
   }
 
 LABEL_28:
 
-  return v25;
+  return value;
 }
 
 + (id)extensions

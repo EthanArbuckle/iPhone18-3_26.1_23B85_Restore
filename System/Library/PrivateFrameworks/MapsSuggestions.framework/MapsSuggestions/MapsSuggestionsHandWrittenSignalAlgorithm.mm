@@ -1,5 +1,5 @@
 @interface MapsSuggestionsHandWrittenSignalAlgorithm
-- (BOOL)transportModesForSignalPack:(id)a3 handler:(id)a4;
+- (BOOL)transportModesForSignalPack:(id)pack handler:(id)handler;
 - (NSString)uniqueName;
 @end
 
@@ -12,13 +12,13 @@
   return [v2 description];
 }
 
-- (BOOL)transportModesForSignalPack:(id)a3 handler:(id)a4
+- (BOOL)transportModesForSignalPack:(id)pack handler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  packCopy = pack;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v7 = [[MapsSuggestionsSignalPackEvaluator alloc] initWithSignalPack:v5];
+    v7 = [[MapsSuggestionsSignalPackEvaluator alloc] initWithSignalPack:packCopy];
     if ([v7 hasUserTransportTypePreferenceInfo]&& ([v7 isUserPreferenceDriving]& 1) == 0)
     {
       if (([v7 isUserPreferenceWalking]& 1) != 0)
@@ -56,9 +56,9 @@ LABEL_5:
       {
         if (([v9 hasDistanceFromHereToDestinationInfo]& 1) != 0)
         {
-          v11 = [v10 isEasilyWalkable];
+          isEasilyWalkable = [v10 isEasilyWalkable];
 
-          if ((v11 & 1) == 0)
+          if ((isEasilyWalkable & 1) == 0)
           {
             goto LABEL_32;
           }
@@ -69,7 +69,7 @@ LABEL_59:
           v22 = [NSNumber numberWithInt:v8];
           v25 = v22;
           v23 = [NSArray arrayWithObjects:&v25 count:1];
-          v6[2](v6, v23, 0);
+          handlerCopy[2](handlerCopy, v23, 0);
 
           goto LABEL_60;
         }
@@ -111,9 +111,9 @@ LABEL_32:
       {
         if (([v16 hasDistanceFromHereToDestinationInfo]& 1) != 0)
         {
-          v17 = [v13 isWalkable];
+          isWalkable = [v13 isWalkable];
 
-          if (v17)
+          if (isWalkable)
           {
             v8 = 2;
           }
@@ -192,9 +192,9 @@ LABEL_58:
 
     if ([v12 hasDistanceFromHereToDestinationInfo])
     {
-      v14 = [v13 isEasilyWalkable];
+      isEasilyWalkable2 = [v13 isEasilyWalkable];
 
-      if (v14)
+      if (isEasilyWalkable2)
       {
         goto LABEL_23;
       }
@@ -207,9 +207,9 @@ LABEL_58:
     v20 = v13;
     if (([v20 hasDistanceFromHereToDestinationInfo]& 1) != 0)
     {
-      v21 = [v20 isWalkable];
+      isWalkable2 = [v20 isWalkable];
 
-      if (v21)
+      if (isWalkable2)
       {
         v8 = v8;
       }
@@ -241,7 +241,7 @@ LABEL_58:
 
 LABEL_60:
 
-  return v6 != 0;
+  return handlerCopy != 0;
 }
 
 @end

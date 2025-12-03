@@ -1,16 +1,16 @@
 @interface RCPlatterCheckmarkView
-- (RCPlatterCheckmarkView)initWithFrame:(CGRect)a3;
+- (RCPlatterCheckmarkView)initWithFrame:(CGRect)frame;
 - (void)_setupViews;
 - (void)layoutSubviews;
 @end
 
 @implementation RCPlatterCheckmarkView
 
-- (RCPlatterCheckmarkView)initWithFrame:(CGRect)a3
+- (RCPlatterCheckmarkView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = RCPlatterCheckmarkView;
-  v3 = [(RCPlatterCheckmarkView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RCPlatterCheckmarkView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -28,21 +28,21 @@
 
   [(RCPlatterCheckmarkView *)self addSubview:self->_stopButton];
   [(RCPlatterStopButton *)self->_stopButton setTranslatesAutoresizingMaskIntoConstraints:0];
-  v17 = [(RCPlatterStopButton *)self->_stopButton centerYAnchor];
-  v16 = [(RCPlatterCheckmarkView *)self centerYAnchor];
-  v15 = [v17 constraintEqualToAnchor:v16];
+  centerYAnchor = [(RCPlatterStopButton *)self->_stopButton centerYAnchor];
+  centerYAnchor2 = [(RCPlatterCheckmarkView *)self centerYAnchor];
+  v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v18[0] = v15;
-  v5 = [(RCPlatterStopButton *)self->_stopButton centerXAnchor];
-  v6 = [(RCPlatterCheckmarkView *)self centerXAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  centerXAnchor = [(RCPlatterStopButton *)self->_stopButton centerXAnchor];
+  centerXAnchor2 = [(RCPlatterCheckmarkView *)self centerXAnchor];
+  v7 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v18[1] = v7;
-  v8 = [(RCPlatterStopButton *)self->_stopButton heightAnchor];
-  v9 = [(RCPlatterCheckmarkView *)self heightAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  heightAnchor = [(RCPlatterStopButton *)self->_stopButton heightAnchor];
+  heightAnchor2 = [(RCPlatterCheckmarkView *)self heightAnchor];
+  v10 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   v18[2] = v10;
-  v11 = [(RCPlatterStopButton *)self->_stopButton widthAnchor];
-  v12 = [(RCPlatterCheckmarkView *)self heightAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  widthAnchor = [(RCPlatterStopButton *)self->_stopButton widthAnchor];
+  heightAnchor3 = [(RCPlatterCheckmarkView *)self heightAnchor];
+  v13 = [widthAnchor constraintEqualToAnchor:heightAnchor3];
   v18[3] = v13;
   v14 = [NSArray arrayWithObjects:v18 count:4];
   [NSLayoutConstraint activateConstraints:v14];
@@ -63,8 +63,8 @@
       [v5 platterEmptyViewToCheckmarkTransitionDuration];
       v7 = v6;
 
-      v8 = [(RCPlatterCheckmarkView *)self stopButton];
-      [v8 transitionToState:2 viaState:0 transitionDuration:v7];
+      stopButton = [(RCPlatterCheckmarkView *)self stopButton];
+      [stopButton transitionToState:2 viaState:0 transitionDuration:v7];
     }
   }
 }

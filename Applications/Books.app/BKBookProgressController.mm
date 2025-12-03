@@ -1,33 +1,33 @@
 @interface BKBookProgressController
-+ (void)preWarmWithAnnotationProvider:(id)a3;
-+ (void)progressStringForLibraryAsset:(id)a3 completion:(id)a4;
++ (void)preWarmWithAnnotationProvider:(id)provider;
++ (void)progressStringForLibraryAsset:(id)asset completion:(id)completion;
 - (AEAnnotationProvider)annotationProvider;
-- (double)_progressForAssetID:(id)a3 moc:(id)a4;
-- (void)_progressStringForLibraryAsset:(id)a3 annotationMOC:(id)a4 completion:(id)a5;
+- (double)_progressForAssetID:(id)d moc:(id)moc;
+- (void)_progressStringForLibraryAsset:(id)asset annotationMOC:(id)c completion:(id)completion;
 @end
 
 @implementation BKBookProgressController
 
-+ (void)preWarmWithAnnotationProvider:(id)a3
++ (void)preWarmWithAnnotationProvider:(id)provider
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000E9BD4;
   block[3] = &unk_100A033C8;
-  v6 = a3;
+  providerCopy = provider;
   v3 = qword_100AF75A8;
-  v4 = v6;
+  v4 = providerCopy;
   if (v3 != -1)
   {
     dispatch_once(&qword_100AF75A8, block);
   }
 }
 
-- (double)_progressForAssetID:(id)a3 moc:(id)a4
+- (double)_progressForAssetID:(id)d moc:(id)moc
 {
-  v5 = a4;
-  v6 = [AEAnnotation predicateForGlobalAnnotationWithAssetID:a3];
-  v7 = [NSEntityDescription entityForName:@"AEAnnotation" inManagedObjectContext:v5];
+  mocCopy = moc;
+  v6 = [AEAnnotation predicateForGlobalAnnotationWithAssetID:d];
+  v7 = [NSEntityDescription entityForName:@"AEAnnotation" inManagedObjectContext:mocCopy];
   v8 = objc_alloc_init(NSFetchRequest);
   [v8 setEntity:v7];
   v9 = kAEAnnotationReadingProgressHighWaterMark;
@@ -40,7 +40,7 @@
   [v8 setResultType:2];
   [v8 setPredicate:v6];
   v25 = 0;
-  v12 = [v5 executeFetchRequest:v8 error:&v25];
+  v12 = [mocCopy executeFetchRequest:v8 error:&v25];
 
   v13 = v25;
   v14 = v13;
@@ -82,15 +82,15 @@
   return v15;
 }
 
-- (void)_progressStringForLibraryAsset:(id)a3 annotationMOC:(id)a4 completion:(id)a5
+- (void)_progressStringForLibraryAsset:(id)asset annotationMOC:(id)c completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 isNew];
-  if ([v8 isSample])
+  assetCopy = asset;
+  cCopy = c;
+  completionCopy = completion;
+  isNew = [assetCopy isNew];
+  if ([assetCopy isSample])
   {
-    v12 = objc_retainBlock(v10);
+    v12 = objc_retainBlock(completionCopy);
     if (v12)
     {
       v13 = +[NSBundle mainBundle];
@@ -101,20 +101,20 @@
     goto LABEL_19;
   }
 
-  if ([v8 isAudiobook])
+  if ([assetCopy isAudiobook])
   {
-    v15 = [v8 isCloud];
+    isCloud = [assetCopy isCloud];
     v16 = +[BKMediaLibraryCache sharedCache];
-    v17 = [v8 assetID];
-    v35 = v17;
+    assetID = [assetCopy assetID];
+    v35 = assetID;
     v18 = [NSArray arrayWithObjects:&v35 count:1];
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
     v32[2] = sub_1000EA2B4;
     v32[3] = &unk_100A07018;
-    v34 = v11;
-    v33 = v10;
-    [v16 fetchAssetsWithIDs:v18 type:v15 completion:v32];
+    v34 = isNew;
+    v33 = completionCopy;
+    [v16 fetchAssetsWithIDs:v18 type:isCloud completion:v32];
 
     goto LABEL_19;
   }
@@ -122,11 +122,11 @@
   v19 = objc_opt_new();
   [v19 setNumberStyle:3];
   [v19 setMaximumFractionDigits:0];
-  v20 = [v8 assetID];
-  [(BKBookProgressController *)self _progressForAssetID:v20 moc:v9];
+  assetID2 = [assetCopy assetID];
+  [(BKBookProgressController *)self _progressForAssetID:assetID2 moc:cCopy];
   v22 = v21;
 
-  if (v11)
+  if (isNew)
   {
     v23 = +[NSBundle mainBundle];
     v24 = v23;
@@ -172,7 +172,7 @@
 LABEL_15:
 
 LABEL_16:
-  v27 = objc_retainBlock(v10);
+  v27 = objc_retainBlock(completionCopy);
   v28 = v27;
   if (v27)
   {
@@ -182,15 +182,15 @@ LABEL_16:
 LABEL_19:
 }
 
-+ (void)progressStringForLibraryAsset:(id)a3 completion:(id)a4
++ (void)progressStringForLibraryAsset:(id)asset completion:(id)completion
 {
   v5 = qword_100AF75A0;
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 annotationProvider];
-  v9 = [v8 newManagedObjectContext];
+  completionCopy = completion;
+  assetCopy = asset;
+  annotationProvider = [v5 annotationProvider];
+  newManagedObjectContext = [annotationProvider newManagedObjectContext];
 
-  [qword_100AF75A0 _progressStringForLibraryAsset:v7 annotationMOC:v9 completion:v6];
+  [qword_100AF75A0 _progressStringForLibraryAsset:assetCopy annotationMOC:newManagedObjectContext completion:completionCopy];
 }
 
 - (AEAnnotationProvider)annotationProvider

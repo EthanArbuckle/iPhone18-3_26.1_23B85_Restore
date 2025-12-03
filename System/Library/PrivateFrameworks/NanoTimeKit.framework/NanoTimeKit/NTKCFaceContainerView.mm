@@ -1,43 +1,43 @@
 @interface NTKCFaceContainerView
-+ (CGSize)faceSizeForSize:(CGSize)a3 style:(int64_t)a4;
-+ (CGSize)sizeForFaceSize:(CGSize)a3 style:(int64_t)a4;
-+ (double)_insetPaddingForStyle:(int64_t)a3;
++ (CGSize)faceSizeForSize:(CGSize)size style:(int64_t)style;
++ (CGSize)sizeForFaceSize:(CGSize)size style:(int64_t)style;
++ (double)_insetPaddingForStyle:(int64_t)style;
 - (CGAffineTransform)_transformForFaceView;
 - (CGSize)faceSize;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NTKCFaceContainerView)initWithFaceSize:(CGSize)a3 style:(int64_t)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NTKCFaceContainerView)initWithFaceSize:(CGSize)size style:(int64_t)style;
 - (double)_outlineLineWidth;
 - (void)_updateOutlineColor;
 - (void)layoutSubviews;
-- (void)setActive:(BOOL)a3;
-- (void)setFaceSize:(CGSize)a3;
-- (void)setFaceView:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setActive:(BOOL)active;
+- (void)setFaceSize:(CGSize)size;
+- (void)setFaceView:(id)view;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation NTKCFaceContainerView
 
-- (NTKCFaceContainerView)initWithFaceSize:(CGSize)a3 style:(int64_t)a4
+- (NTKCFaceContainerView)initWithFaceSize:(CGSize)size style:(int64_t)style
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v32[1] = *MEMORY[0x277D85DE8];
-  [objc_opt_class() sizeForFaceSize:a4 style:{a3.width, a3.height}];
+  [objc_opt_class() sizeForFaceSize:style style:{size.width, size.height}];
   v30.receiver = self;
   v30.super_class = NTKCFaceContainerView;
   v10 = [(NTKCFaceContainerView *)&v30 initWithFrame:0.0, 0.0, v8, v9];
   v11 = v10;
   if (v10)
   {
-    [(NTKCFaceContainerView *)v10 setStyle:a4];
+    [(NTKCFaceContainerView *)v10 setStyle:style];
     v11->_faceSize.width = width;
     v11->_faceSize.height = height;
     v12 = objc_opt_new();
     [(NTKCFaceContainerView *)v11 setBackgroundView:v12];
 
-    v13 = [MEMORY[0x277D75348] blackColor];
-    [(UIView *)v11->_backgroundView setBackgroundColor:v13];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UIView *)v11->_backgroundView setBackgroundColor:blackColor];
 
     [(NTKCFaceContainerView *)v11 addSubview:v11->_backgroundView];
     v14 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{0.0, 0.0, v11->_faceSize.width, v11->_faceSize.height}];
@@ -46,28 +46,28 @@
     [(NTKCFaceContainerView *)v11 addSubview:v11->_faceContainer];
     [(NTKCFaceContainerView *)v11 _outlineLineWidth];
     v16 = v15;
-    v17 = [MEMORY[0x277CD9F90] layer];
-    [(NTKCFaceContainerView *)v11 setOutline:v17];
+    layer = [MEMORY[0x277CD9F90] layer];
+    [(NTKCFaceContainerView *)v11 setOutline:layer];
 
     v31 = @"strokeColor";
-    v18 = [MEMORY[0x277CBEB68] null];
-    v32[0] = v18;
+    null = [MEMORY[0x277CBEB68] null];
+    v32[0] = null;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
     [(CAShapeLayer *)v11->_outline setActions:v19];
 
-    v20 = [MEMORY[0x277D75348] clearColor];
-    -[CAShapeLayer setFillColor:](v11->_outline, "setFillColor:", [v20 CGColor]);
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    -[CAShapeLayer setFillColor:](v11->_outline, "setFillColor:", [clearColor CGColor]);
 
     [(CAShapeLayer *)v11->_outline setLineWidth:v16];
-    v21 = [(NTKCFaceContainerView *)v11 layer];
-    [v21 addSublayer:v11->_outline];
+    layer2 = [(NTKCFaceContainerView *)v11 layer];
+    [layer2 addSublayer:v11->_outline];
 
     [(NTKCFaceContainerView *)v11 _updateOutlineColor];
     v22 = objc_opt_new();
     [(NTKCFaceContainerView *)v11 setHighlightView:v22];
 
-    v23 = [MEMORY[0x277D75348] labelColor];
-    v24 = [v23 colorWithAlphaComponent:0.23];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    v24 = [labelColor colorWithAlphaComponent:0.23];
     [(UIView *)v11->_highlightView setBackgroundColor:v24];
 
     [(UIView *)v11->_highlightView setAlpha:0.0];
@@ -86,11 +86,11 @@
   return v11;
 }
 
-- (void)setFaceView:(id)a3
+- (void)setFaceView:(id)view
 {
-  v5 = a3;
-  v6 = [(UIView *)self->_faceView superview];
-  v7 = [v6 isEqual:self->_faceContainer];
+  viewCopy = view;
+  superview = [(UIView *)self->_faceView superview];
+  v7 = [superview isEqual:self->_faceContainer];
 
   if (v7)
   {
@@ -103,7 +103,7 @@
     [(UIView *)faceView setTransform:&v14];
   }
 
-  objc_storeStrong(&self->_faceView, a3);
+  objc_storeStrong(&self->_faceView, view);
   if (self->_faceView)
   {
     [(NTKCFaceContainerView *)self _transformForFaceView];
@@ -117,13 +117,13 @@
   }
 }
 
-- (void)setFaceSize:(CGSize)a3
+- (void)setFaceSize:(CGSize)size
 {
-  if (a3.width != self->_faceSize.width || a3.height != self->_faceSize.height)
+  if (size.width != self->_faceSize.width || size.height != self->_faceSize.height)
   {
     v9 = v3;
     v10 = v4;
-    self->_faceSize = a3;
+    self->_faceSize = size;
     [(UIView *)self->_faceContainer setBounds:0.0, 0.0];
     [(NTKCFaceContainerView *)self _transformForFaceView];
     faceView = self->_faceView;
@@ -193,20 +193,20 @@
   return result;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
-    v6 = NTKCOutlineColor(a3);
+    self->_active = active;
+    v6 = NTKCOutlineColor(active);
     v5 = v6;
     -[CAShapeLayer setStrokeColor:](self->_outline, "setStrokeColor:", [v6 CGColor]);
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v8.receiver = self;
   v8.super_class = NTKCFaceContainerView;
   [(NTKCFaceContainerView *)&v8 setHighlighted:?];
@@ -215,13 +215,13 @@
   v6[0] = MEMORY[0x277D85DD0];
   v6[2] = __40__NTKCFaceContainerView_setHighlighted___block_invoke;
   v6[3] = &unk_27877F7E8;
-  if (v3)
+  if (highlightedCopy)
   {
     v5 = 0.0;
   }
 
   v6[4] = self;
-  v7 = v3;
+  v7 = highlightedCopy;
   [MEMORY[0x277D75D18] animateWithDuration:327684 delay:v6 options:0 animations:v5 completion:?];
 }
 
@@ -236,7 +236,7 @@ uint64_t __40__NTKCFaceContainerView_setHighlighted___block_invoke(uint64_t a1)
   return [*(*(a1 + 32) + 504) setAlpha:v1];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v4 = objc_opt_class();
   style = self->_style;
@@ -267,12 +267,12 @@ uint64_t __40__NTKCFaceContainerView_setHighlighted___block_invoke(uint64_t a1)
   _LayoutConstants_12(v44);
   v11 = v45;
   height = self->_faceSize.height;
-  v13 = [MEMORY[0x277CBBAE8] currentDevice];
-  [v13 screenBounds];
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  [currentDevice screenBounds];
   v14 = v11 * (height / CGRectGetHeight(v47));
 
-  v15 = [MEMORY[0x277CBBAE8] currentDevice];
-  [v15 screenBounds];
+  currentDevice2 = [MEMORY[0x277CBBAE8] currentDevice];
+  [currentDevice2 screenBounds];
   v39 = v11 / CGRectGetHeight(v48);
 
   [(NTKCFaceContainerView *)self _outlineLineWidth];
@@ -289,13 +289,13 @@ uint64_t __40__NTKCFaceContainerView_setHighlighted___block_invoke(uint64_t a1)
   y = v50.origin.y;
   width = v50.size.width;
   v22 = v50.size.height;
-  v23 = [MEMORY[0x277CBBAE8] currentDevice];
-  v24 = [v23 deviceCategory];
+  currentDevice3 = [MEMORY[0x277CBBAE8] currentDevice];
+  deviceCategory = [currentDevice3 deviceCategory];
 
   v40 = v14;
-  if ((v24 - 3) >= 4)
+  if ((deviceCategory - 3) >= 4)
   {
-    if (v24 == 2)
+    if (deviceCategory == 2)
     {
       v52.origin.x = x;
       v52.origin.y = y;
@@ -359,13 +359,13 @@ uint64_t __40__NTKCFaceContainerView_setHighlighted___block_invoke(uint64_t a1)
 
   [(UIView *)faceView setFrame:v31, v32, v33, v38];
   [(UIView *)self->_highlightView setFrame:v18, v42, v26, v25];
-  v34 = [MEMORY[0x277CBBAE8] currentDevice];
-  v35 = [v34 deviceCategory];
+  currentDevice4 = [MEMORY[0x277CBBAE8] currentDevice];
+  deviceCategory2 = [currentDevice4 deviceCategory];
 
-  if ((v35 - 3) >= 4)
+  if ((deviceCategory2 - 3) >= 4)
   {
     v36 = v41;
-    if (v35 == 2)
+    if (deviceCategory2 == 2)
     {
       [(UIView *)self->_highlightView frame];
       v36 = v39 * CGRectGetHeight(v55) * 1.25;
@@ -426,11 +426,11 @@ LABEL_7:
   -[CAShapeLayer setStrokeColor:](self->_outline, "setStrokeColor:", [v4 CGColor]);
 }
 
-+ (CGSize)sizeForFaceSize:(CGSize)a3 style:(int64_t)a4
++ (CGSize)sizeForFaceSize:(CGSize)size style:(int64_t)style
 {
-  height = a3.height;
-  width = a3.width;
-  [a1 _insetPaddingForStyle:a4];
+  height = size.height;
+  width = size.width;
+  [self _insetPaddingForStyle:style];
   v7 = -v6;
   v11.origin.x = 0.0;
   v11.origin.y = 0.0;
@@ -444,11 +444,11 @@ LABEL_7:
   return result;
 }
 
-+ (CGSize)faceSizeForSize:(CGSize)a3 style:(int64_t)a4
++ (CGSize)faceSizeForSize:(CGSize)size style:(int64_t)style
 {
-  height = a3.height;
-  width = a3.width;
-  [a1 _insetPaddingForStyle:a4];
+  height = size.height;
+  width = size.width;
+  [self _insetPaddingForStyle:style];
   v7 = v6;
   v11.origin.x = 0.0;
   v11.origin.y = 0.0;
@@ -462,19 +462,19 @@ LABEL_7:
   return result;
 }
 
-+ (double)_insetPaddingForStyle:(int64_t)a3
++ (double)_insetPaddingForStyle:(int64_t)style
 {
   v3 = 0uLL;
-  if (a3 <= 1)
+  if (style <= 1)
   {
-    if (!a3)
+    if (!style)
     {
       _LayoutConstants_12(v8);
       v3 = v9;
       return vaddvq_f64(v3);
     }
 
-    if (a3 != 1)
+    if (style != 1)
     {
       return vaddvq_f64(v3);
     }
@@ -482,14 +482,14 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if (a3 == 2)
+  if (style == 2)
   {
     _LayoutConstants_12(v5);
     v3 = v5[0];
     return vaddvq_f64(v3);
   }
 
-  if (a3 == 3)
+  if (style == 3)
   {
 LABEL_7:
     _LayoutConstants_12(v6);

@@ -3,32 +3,32 @@
 - (BOOL)isDebugModeEnabled;
 - (BOOL)isPreferredLanguageEnglish;
 - (BOOL)isiPad;
-- (HPCUIFitTestController)initWithDevice:(id)a3 provider:(id)a4;
+- (HPCUIFitTestController)initWithDevice:(id)device provider:(id)provider;
 - (HPCUIFitTestControllerDepedencyProvider)provider;
 - (float)getConfidenceThreshold;
 - (float)getSealThreshold;
 - (id)getResultsTitle;
 - (id)getSubTitle;
 - (id)getTitle;
-- (void)applyFilters:(id)a3 imageView:(id)a4 deviceColor:(unsigned int)a5;
+- (void)applyFilters:(id)filters imageView:(id)view deviceColor:(unsigned int)color;
 - (void)callCompletionHandler;
 - (void)cleanupAudio;
 - (void)copyToClipboard;
 - (void)dealloc;
-- (void)deviceDisconnectedHandler:(id)a3;
+- (void)deviceDisconnectedHandler:(id)handler;
 - (void)dismissFitTest;
 - (void)fitTestStopped;
-- (void)handleAudioSessionInterruption:(id)a3;
-- (void)handleCallIsActiveDidChangeNotification:(id)a3;
-- (void)handleMediaServerConnectionDied:(id)a3;
-- (void)inEarStatusChanged:(id)a3;
+- (void)handleAudioSessionInterruption:(id)interruption;
+- (void)handleCallIsActiveDidChangeNotification:(id)notification;
+- (void)handleMediaServerConnectionDied:(id)died;
+- (void)inEarStatusChanged:(id)changed;
 - (void)loadView;
-- (void)powerChangedHandler:(id)a3;
+- (void)powerChangedHandler:(id)handler;
 - (void)removeDoneButton;
 - (void)resetVolume;
-- (void)sealValueChanged:(id)a3;
+- (void)sealValueChanged:(id)changed;
 - (void)setCancelAction;
-- (void)setCompletionHandler:(id)a3;
+- (void)setCompletionHandler:(id)handler;
 - (void)setupConstraints;
 - (void)setupFitTestContentView;
 - (void)startFitTest;
@@ -39,19 +39,19 @@
 
 @implementation HPCUIFitTestController
 
-- (HPCUIFitTestController)initWithDevice:(id)a3 provider:(id)a4
+- (HPCUIFitTestController)initWithDevice:(id)device provider:(id)provider
 {
   v94[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  deviceCopy = device;
   if (self)
   {
-    v90 = v7;
+    v90 = deviceCopy;
     v93.receiver = self;
     v93.super_class = HPCUIFitTestController;
-    v8 = a4;
+    providerCopy = provider;
     v9 = [(HPCUIFitTestController *)&v93 init];
-    objc_storeStrong(&v9->currentDevice, a3);
-    objc_storeWeak(&v9->_provider, v8);
+    objc_storeStrong(&v9->currentDevice, device);
+    objc_storeWeak(&v9->_provider, providerCopy);
 
     v10 = objc_alloc_init(MEMORY[0x1E69DD250]);
     fitTestContentView = v9->_fitTestContentView;
@@ -68,10 +68,10 @@
     v9->_testActive = 0;
     v9->_initialVolume = 0.0;
     v9->_volumeModified = 0;
-    v16 = [MEMORY[0x1E69AED10] sharedAVSystemController];
-    LOBYTE(v8) = [v16 getVolume:&v9->_initialVolume forCategory:@"Audio/Video"];
+    mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
+    LOBYTE(providerCopy) = [mEMORY[0x1E69AED10] getVolume:&v9->_initialVolume forCategory:@"Audio/Video"];
 
-    if ((v8 & 1) == 0)
+    if ((providerCopy & 1) == 0)
     {
       NSLog(&cfstr_FitTestUnableT.isa);
     }
@@ -92,29 +92,29 @@
 
     v26 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v27 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"left.circle.fill"];
-    v28 = [MEMORY[0x1E69DC888] systemGrayColor];
-    v29 = [v27 imageWithTintColor:v28 renderingMode:1];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    v29 = [v27 imageWithTintColor:systemGrayColor renderingMode:1];
     v30 = [v26 initWithImage:v29];
     leftBudLabelImageView = v9->_leftBudLabelImageView;
     v9->_leftBudLabelImageView = v30;
 
     v32 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v33 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"right.circle.fill"];
-    v34 = [MEMORY[0x1E69DC888] systemGrayColor];
-    v35 = [v33 imageWithTintColor:v34 renderingMode:1];
+    systemGrayColor2 = [MEMORY[0x1E69DC888] systemGrayColor];
+    v35 = [v33 imageWithTintColor:systemGrayColor2 renderingMode:1];
     v36 = [v32 initWithImage:v35];
     rightBudLabelImageView = v9->_rightBudLabelImageView;
     v9->_rightBudLabelImageView = v36;
 
     [(UIView *)v9->_leftBudLabel setSize:18.0, 18.0];
     [(UIView *)v9->_leftBudLabel _setContinuousCornerRadius:9.0];
-    v38 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIView *)v9->_leftBudLabel setBackgroundColor:v38];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIView *)v9->_leftBudLabel setBackgroundColor:clearColor];
 
     [(UIView *)v9->_rightBudLabel setSize:18.0, 18.0];
     [(UIView *)v9->_rightBudLabel _setContinuousCornerRadius:9.0];
-    v39 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIView *)v9->_rightBudLabel setBackgroundColor:v39];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(UIView *)v9->_rightBudLabel setBackgroundColor:clearColor2];
 
     [(UIView *)v9->_leftBudLabel addSubview:v9->_leftBudLabelImageView];
     [(UIView *)v9->_rightBudLabel addSubview:v9->_rightBudLabelImageView];
@@ -131,8 +131,8 @@
     v9->_resultDetailLabel = v44;
 
     [(UILabel *)v9->_leftBudResultLabel setText:&stru_1F210A6C0];
-    v46 = [MEMORY[0x1E69DC888] systemBlackColor];
-    [(UILabel *)v9->_leftBudResultLabel setTextColor:v46];
+    systemBlackColor = [MEMORY[0x1E69DC888] systemBlackColor];
+    [(UILabel *)v9->_leftBudResultLabel setTextColor:systemBlackColor];
 
     [(UILabel *)v9->_leftBudResultLabel setTextAlignment:1];
     [(UILabel *)v9->_leftBudResultLabel setNumberOfLines:0];
@@ -143,8 +143,8 @@
 
     [(UILabel *)v9->_leftBudResultLabel setAlpha:1.0];
     [(UILabel *)v9->_rightBudResultLabel setText:&stru_1F210A6C0];
-    v49 = [MEMORY[0x1E69DC888] systemBlackColor];
-    [(UILabel *)v9->_rightBudResultLabel setTextColor:v49];
+    systemBlackColor2 = [MEMORY[0x1E69DC888] systemBlackColor];
+    [(UILabel *)v9->_rightBudResultLabel setTextColor:systemBlackColor2];
 
     [(UILabel *)v9->_rightBudResultLabel setTextAlignment:1];
     [(UILabel *)v9->_rightBudResultLabel setNumberOfLines:0];
@@ -154,8 +154,8 @@
 
     [(UILabel *)v9->_rightBudResultLabel setAlpha:1.0];
     [(UILabel *)v9->_resultDetailLabel setText:&stru_1F210A6C0];
-    v51 = [MEMORY[0x1E69DC888] systemBlackColor];
-    [(UILabel *)v9->_resultDetailLabel setTextColor:v51];
+    systemBlackColor3 = [MEMORY[0x1E69DC888] systemBlackColor];
+    [(UILabel *)v9->_resultDetailLabel setTextColor:systemBlackColor3];
 
     [(UILabel *)v9->_resultDetailLabel setTextAlignment:1];
     [(UILabel *)v9->_resultDetailLabel setNumberOfLines:0];
@@ -167,18 +167,18 @@
     completionHandler = v9->_completionHandler;
     v9->_completionHandler = 0;
 
-    v54 = [(HPCUIFitTestController *)v9 traitCollection];
-    v9->_darkMode = [v54 userInterfaceStyle] == 2;
+    traitCollection = [(HPCUIFitTestController *)v9 traitCollection];
+    v9->_darkMode = [traitCollection userInterfaceStyle] == 2;
 
-    v55 = [(HPCUIFitTestController *)v9 provider];
-    v56 = [v55 leftImage:v9->_darkMode];
+    provider = [(HPCUIFitTestController *)v9 provider];
+    v56 = [provider leftImage:v9->_darkMode];
 
     v57 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v56];
     leftImView = v9->_leftImView;
     v9->_leftImView = v57;
 
-    v59 = [(HPCUIFitTestController *)v9 provider];
-    v60 = [v59 rightImage:v9->_darkMode];
+    provider2 = [(HPCUIFitTestController *)v9 provider];
+    v60 = [provider2 rightImage:v9->_darkMode];
 
     v61 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v60];
     rightImView = v9->_rightImView;
@@ -186,60 +186,60 @@
 
     v92 = 0;
     [(BluetoothDevice *)v9->currentDevice getDeviceColor:&v92];
-    v63 = [(HPCUIFitTestController *)v9 provider];
-    v64 = [v63 getAssetsDictionary];
+    provider3 = [(HPCUIFitTestController *)v9 provider];
+    getAssetsDictionary = [provider3 getAssetsDictionary];
     v65 = v9->_leftImView;
-    v66 = [(HPCUIFitTestController *)v9 provider];
-    -[HPCUIFitTestController applyFilters:imageView:deviceColor:](v9, "applyFilters:imageView:deviceColor:", v64, v65, [v66 deviceColor]);
+    provider4 = [(HPCUIFitTestController *)v9 provider];
+    -[HPCUIFitTestController applyFilters:imageView:deviceColor:](v9, "applyFilters:imageView:deviceColor:", getAssetsDictionary, v65, [provider4 deviceColor]);
 
-    v67 = [(HPCUIFitTestController *)v9 provider];
-    v68 = [v67 getAssetsDictionary];
+    provider5 = [(HPCUIFitTestController *)v9 provider];
+    getAssetsDictionary2 = [provider5 getAssetsDictionary];
     v69 = v9->_rightImView;
-    v70 = [(HPCUIFitTestController *)v9 provider];
-    -[HPCUIFitTestController applyFilters:imageView:deviceColor:](v9, "applyFilters:imageView:deviceColor:", v68, v69, [v70 deviceColor]);
+    provider6 = [(HPCUIFitTestController *)v9 provider];
+    -[HPCUIFitTestController applyFilters:imageView:deviceColor:](v9, "applyFilters:imageView:deviceColor:", getAssetsDictionary2, v69, [provider6 deviceColor]);
 
-    v71 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v71 addObserver:v9 selector:sel_inEarStatusChanged_ name:*MEMORY[0x1E698F438] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel_inEarStatusChanged_ name:*MEMORY[0x1E698F438] object:0];
 
-    v72 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v72 addObserver:v9 selector:sel_sealValueChanged_ name:*MEMORY[0x1E698F440] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v9 selector:sel_sealValueChanged_ name:*MEMORY[0x1E698F440] object:0];
 
-    v73 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v73 addObserver:v9 selector:sel_deviceDisconnectedHandler_ name:*MEMORY[0x1E698F450] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v9 selector:sel_deviceDisconnectedHandler_ name:*MEMORY[0x1E698F450] object:0];
 
-    v74 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v74 addObserver:v9 selector:sel_powerChangedHandler_ name:*MEMORY[0x1E698F448] object:0];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 addObserver:v9 selector:sel_powerChangedHandler_ name:*MEMORY[0x1E698F448] object:0];
 
-    v75 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v75 addObserver:v9 selector:sel_applicationDidBecomeActive_ name:*MEMORY[0x1E69DDAB0] object:0];
+    defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter5 addObserver:v9 selector:sel_applicationDidBecomeActive_ name:*MEMORY[0x1E69DDAB0] object:0];
 
-    v76 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v76 addObserver:v9 selector:sel_applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
+    defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter6 addObserver:v9 selector:sel_applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
 
-    v77 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter7 = [MEMORY[0x1E696AD88] defaultCenter];
     v78 = *MEMORY[0x1E69580D8];
-    v79 = [MEMORY[0x1E6958460] sharedInstance];
-    [v77 addObserver:v9 selector:sel_handleAudioSessionInterruption_ name:v78 object:v79];
+    mEMORY[0x1E6958460] = [MEMORY[0x1E6958460] sharedInstance];
+    [defaultCenter7 addObserver:v9 selector:sel_handleAudioSessionInterruption_ name:v78 object:mEMORY[0x1E6958460]];
 
-    v80 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter8 = [MEMORY[0x1E696AD88] defaultCenter];
     v81 = *MEMORY[0x1E69AECB8];
-    v82 = [MEMORY[0x1E6958460] sharedInstance];
-    [v80 addObserver:v9 selector:sel_handleMediaServerConnectionDied_ name:v81 object:v82];
+    mEMORY[0x1E6958460]2 = [MEMORY[0x1E6958460] sharedInstance];
+    [defaultCenter8 addObserver:v9 selector:sel_handleMediaServerConnectionDied_ name:v81 object:mEMORY[0x1E6958460]2];
 
-    v83 = [MEMORY[0x1E69AED10] sharedAVSystemController];
+    mEMORY[0x1E69AED10]2 = [MEMORY[0x1E69AED10] sharedAVSystemController];
     v84 = MEMORY[0x1E69AEA40];
     v94[0] = *MEMORY[0x1E69AEA40];
     v85 = [MEMORY[0x1E695DEC8] arrayWithObjects:v94 count:1];
     v86 = *MEMORY[0x1E69AECD8];
     v91 = 0;
-    LOBYTE(v82) = [v83 setAttribute:v85 forKey:v86 error:&v91];
+    LOBYTE(mEMORY[0x1E6958460]2) = [mEMORY[0x1E69AED10]2 setAttribute:v85 forKey:v86 error:&v91];
     v87 = v91;
 
-    if (v82)
+    if (mEMORY[0x1E6958460]2)
     {
       NSLog(&cfstr_FitTestSuccess.isa);
-      v88 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v88 addObserver:v9 selector:sel_handleCallIsActiveDidChangeNotification_ name:*v84 object:0];
+      defaultCenter9 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter9 addObserver:v9 selector:sel_handleCallIsActiveDidChangeNotification_ name:*v84 object:0];
     }
 
     else
@@ -247,7 +247,7 @@
       NSLog(&cfstr_FitTestFailedT.isa, v87);
     }
 
-    v7 = v90;
+    deviceCopy = v90;
   }
 
   else
@@ -267,8 +267,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   fitTestController = self->_fitTestController;
   self->_fitTestController = 0;
@@ -319,12 +319,12 @@
   v6.receiver = self;
   v6.super_class = HPCUIFitTestController;
   [(HPCUIFitTestController *)&v6 viewDidLoad];
-  v3 = [(HPCUIFitTestController *)self navigationItem];
-  [v3 setHidesBackButton:1];
+  navigationItem = [(HPCUIFitTestController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 
-  v4 = [(HPCUIFitTestController *)self view];
-  v5 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v4 setBackgroundColor:v5];
+  view = [(HPCUIFitTestController *)self view];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor];
 
   [(UIView *)self->_fitTestContentView sizeToFit];
 }
@@ -335,8 +335,8 @@
   v4.super_class = HPCUIFitTestController;
   [(HPCUIFitTestController *)&v4 viewWillLayoutSubviews];
   [(HPCUIFitTestController *)self setupConstraints];
-  v3 = [(HPCUIFitTestController *)self view];
-  [v3 layoutIfNeeded];
+  view = [(HPCUIFitTestController *)self view];
+  [view layoutIfNeeded];
 }
 
 - (id)getTitle
@@ -351,13 +351,13 @@
 
 - (id)getSubTitle
 {
-  v2 = [(HPCUIFitTestController *)self provider];
-  v3 = [v2 platformName];
-  v4 = v3;
+  provider = [(HPCUIFitTestController *)self provider];
+  platformName = [provider platformName];
+  v4 = platformName;
   v5 = @"AirPods";
-  if (v3)
+  if (platformName)
   {
-    v5 = v3;
+    v5 = platformName;
   }
 
   v6 = v5;
@@ -393,28 +393,28 @@
   v6 = [v5 localizedStringForKey:@"Ear Tip Fit Test" value:&stru_1F210A6C0 table:0];
 
   v7 = objc_alloc(MEMORY[0x1E69B7D70]);
-  v8 = [(HPCUIFitTestController *)self getTitle];
-  v9 = [(HPCUIFitTestController *)self getSubTitle];
-  v10 = [v7 initWithTitle:v8 detailText:v9 icon:0 contentLayout:2];
+  getTitle = [(HPCUIFitTestController *)self getTitle];
+  getSubTitle = [(HPCUIFitTestController *)self getSubTitle];
+  v10 = [v7 initWithTitle:getTitle detailText:getSubTitle icon:0 contentLayout:2];
   fitTestController = self->_fitTestController;
   self->_fitTestController = v10;
 
-  v12 = [(HPCUIFitTestController *)self view];
-  [v12 bounds];
+  view = [(HPCUIFitTestController *)self view];
+  [view bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(OBWelcomeController *)self->_fitTestController view];
-  [v21 setFrame:{v14, v16, v18, v20}];
+  view2 = [(OBWelcomeController *)self->_fitTestController view];
+  [view2 setFrame:{v14, v16, v18, v20}];
 
-  v22 = [(OBWelcomeController *)self->_fitTestController view];
-  [v22 setAutoresizingMask:18];
+  view3 = [(OBWelcomeController *)self->_fitTestController view];
+  [view3 setAutoresizingMask:18];
 
   [(HPCUIFitTestController *)self setupFitTestContentView];
-  v23 = [MEMORY[0x1E69B7D00] boldButton];
+  boldButton = [MEMORY[0x1E69B7D00] boldButton];
   playButton = self->_playButton;
-  self->_playButton = v23;
+  self->_playButton = boldButton;
 
   [(OBTrayButton *)self->_playButton addTarget:self action:sel_startFitTest forControlEvents:64];
   v25 = self->_playButton;
@@ -422,35 +422,35 @@
   [(OBTrayButton *)v25 setImage:v26 forState:0];
 
   [(HPCUIFitTestController *)self updateFitTestActiveState];
-  v27 = [(OBWelcomeController *)self->_fitTestController buttonTray];
-  [v27 addButton:self->_playButton];
+  buttonTray = [(OBWelcomeController *)self->_fitTestController buttonTray];
+  [buttonTray addButton:self->_playButton];
 
   if ([(HPCUIFitTestController *)self isDebugModeEnabled])
   {
-    v28 = [MEMORY[0x1E69B7D38] linkButton];
+    linkButton = [MEMORY[0x1E69B7D38] linkButton];
     debugCopyResultsButton = self->_debugCopyResultsButton;
-    self->_debugCopyResultsButton = v28;
+    self->_debugCopyResultsButton = linkButton;
 
     [(OBLinkTrayButton *)self->_debugCopyResultsButton setTitle:@"Copy Results" forState:0];
     [(OBLinkTrayButton *)self->_debugCopyResultsButton setClipsToBounds:1];
-    v30 = [(OBLinkTrayButton *)self->_debugCopyResultsButton layer];
-    [v30 setMasksToBounds:1];
+    layer = [(OBLinkTrayButton *)self->_debugCopyResultsButton layer];
+    [layer setMasksToBounds:1];
 
     [(OBLinkTrayButton *)self->_debugCopyResultsButton addTarget:self action:sel_copyToClipboard forControlEvents:64];
     [(OBLinkTrayButton *)self->_debugCopyResultsButton setUserInteractionEnabled:1];
   }
 
   [(HPCUIFitTestController *)self addChildViewController:self->_fitTestController];
-  v31 = [(HPCUIFitTestController *)self view];
-  v32 = [(OBWelcomeController *)self->_fitTestController view];
-  [v31 addSubview:v32];
+  view4 = [(HPCUIFitTestController *)self view];
+  view5 = [(OBWelcomeController *)self->_fitTestController view];
+  [view4 addSubview:view5];
 }
 
 - (void)copyToClipboard
 {
-  v4 = [MEMORY[0x1E69DCD50] generalPasteboard];
-  v3 = [(UILabel *)self->_resultDetailLabel text];
-  [v4 setString:v3];
+  generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+  text = [(UILabel *)self->_resultDetailLabel text];
+  [generalPasteboard setString:text];
 }
 
 - (void)setupFitTestContentView
@@ -480,8 +480,8 @@
   LODWORD(v6) = 1148846080;
   [(UILabel *)self->_rightBudResultLabel setContentHuggingPriority:1 forAxis:v6];
   v10 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v7 = [v10 widthAnchor];
-  v8 = [v7 constraintEqualToConstant:40.0];
+  widthAnchor = [v10 widthAnchor];
+  v8 = [widthAnchor constraintEqualToConstant:40.0];
   [v8 setActive:1];
 
   [(UIStackView *)self->_stackViewImages addArrangedSubview:self->_leftImView];
@@ -495,8 +495,8 @@
   [(UIView *)self->_fitTestContentView addSubview:self->_stackViewImages];
   [(UIView *)self->_fitTestContentView bringSubviewToFront:self->_leftBudLabel];
   [(UIView *)self->_fitTestContentView bringSubviewToFront:self->_rightBudLabel];
-  v9 = [(OBWelcomeController *)self->_fitTestController contentView];
-  [v9 addSubview:self->_fitTestContentView];
+  contentView = [(OBWelcomeController *)self->_fitTestController contentView];
+  [contentView addSubview:self->_fitTestContentView];
 }
 
 - (BOOL)isiPad
@@ -510,25 +510,25 @@
 - (void)setupConstraints
 {
   v102 = objc_opt_new();
-  v3 = [(UIView *)self->_fitTestContentView topAnchor];
-  v4 = [(OBWelcomeController *)self->_fitTestController contentView];
-  v5 = [v4 topAnchor];
-  v6 = [v3 constraintEqualToAnchor:v5];
+  topAnchor = [(UIView *)self->_fitTestContentView topAnchor];
+  contentView = [(OBWelcomeController *)self->_fitTestController contentView];
+  topAnchor2 = [contentView topAnchor];
+  v6 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v102 addObject:v6];
 
-  v7 = [MEMORY[0x1E69DC668] sharedApplication];
-  v8 = [v7 preferredContentSizeCategory];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
 
-  v101 = v8;
-  v9 = ([v8 isEqualToString:*MEMORY[0x1E69DDC88]] & 1) == 0 && (objc_msgSend(v8, "isEqualToString:", *MEMORY[0x1E69DDC78]) & 1) == 0 && !objc_msgSend(v8, "isEqualToString:", *MEMORY[0x1E69DDC70]);
-  v10 = [(HPCUIFitTestController *)self view];
-  [v10 bounds];
+  v101 = preferredContentSizeCategory;
+  v9 = ([preferredContentSizeCategory isEqualToString:*MEMORY[0x1E69DDC88]] & 1) == 0 && (objc_msgSend(preferredContentSizeCategory, "isEqualToString:", *MEMORY[0x1E69DDC78]) & 1) == 0 && !objc_msgSend(preferredContentSizeCategory, "isEqualToString:", *MEMORY[0x1E69DDC70]);
+  view = [(HPCUIFitTestController *)self view];
+  [view bounds];
   v12 = v11;
 
   if ([(HPCUIFitTestController *)self isSmallScreenDevice])
   {
-    v13 = [(HPCUIFitTestController *)self view];
-    [v13 bounds];
+    view2 = [(HPCUIFitTestController *)self view];
+    [view2 bounds];
     v15 = v14 * 0.35;
   }
 
@@ -539,36 +539,36 @@
 
   if ([(HPCUIFitTestController *)self isiPad])
   {
-    v16 = [(UIStackView *)self->_stackViewImages topAnchor];
-    v17 = [(OBWelcomeController *)self->_fitTestController headerView];
-    v18 = [v17 bottomAnchor];
-    v19 = [v16 constraintEqualToAnchor:v18 constant:35.0];
+    topAnchor3 = [(UIStackView *)self->_stackViewImages topAnchor];
+    headerView = [(OBWelcomeController *)self->_fitTestController headerView];
+    bottomAnchor = [headerView bottomAnchor];
+    v19 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:35.0];
   }
 
   else
   {
-    v20 = [(HPCUIFitTestController *)self view];
-    [v20 size];
+    view3 = [(HPCUIFitTestController *)self view];
+    [view3 size];
     v22 = v21;
-    v23 = [(HPCUIFitTestController *)self view];
-    [v23 size];
+    view4 = [(HPCUIFitTestController *)self view];
+    [view4 size];
     v25 = v24;
 
-    v16 = [(UIStackView *)self->_stackViewImages topAnchor];
+    topAnchor3 = [(UIStackView *)self->_stackViewImages topAnchor];
     fitTestController = self->_fitTestController;
     if (v22 <= v25)
     {
-      v17 = [(OBWelcomeController *)fitTestController headerView];
-      v18 = [v17 topAnchor];
+      headerView = [(OBWelcomeController *)fitTestController headerView];
+      bottomAnchor = [headerView topAnchor];
       v27 = v15;
-      [v16 constraintEqualToAnchor:v18 constant:v27];
+      [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:v27];
     }
 
     else
     {
-      v17 = [(OBWelcomeController *)fitTestController contentView];
-      v18 = [v17 topAnchor];
-      [v16 constraintEqualToAnchor:v18];
+      headerView = [(OBWelcomeController *)fitTestController contentView];
+      bottomAnchor = [headerView topAnchor];
+      [topAnchor3 constraintEqualToAnchor:bottomAnchor];
     }
     v19 = ;
   }
@@ -576,21 +576,21 @@
   topSpacerConstraint = self->_topSpacerConstraint;
   self->_topSpacerConstraint = v19;
 
-  v29 = [(HPCUIFitTestController *)self traitCollection];
-  v30 = [v29 preferredContentSizeCategory];
-  if ((v9 | UIContentSizeCategoryIsAccessibilityCategory(v30)))
+  traitCollection = [(HPCUIFitTestController *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
+  if ((v9 | UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory2)))
   {
   }
 
   else
   {
-    v31 = [(HPCUIFitTestController *)self isPreferredLanguageEnglish];
+    isPreferredLanguageEnglish = [(HPCUIFitTestController *)self isPreferredLanguageEnglish];
 
-    if (v31)
+    if (isPreferredLanguageEnglish)
     {
-      v32 = [(OBWelcomeController *)self->_fitTestController contentView];
-      v33 = [v32 heightAnchor];
-      v34 = [v33 constraintGreaterThanOrEqualToConstant:403.0];
+      contentView2 = [(OBWelcomeController *)self->_fitTestController contentView];
+      heightAnchor = [contentView2 heightAnchor];
+      v34 = [heightAnchor constraintGreaterThanOrEqualToConstant:403.0];
       [v102 addObject:v34];
 
       [v102 addObject:self->_topSpacerConstraint];
@@ -598,124 +598,124 @@
     }
   }
 
-  v35 = [(OBWelcomeController *)self->_fitTestController contentView];
-  v36 = [v35 heightAnchor];
-  v37 = [v36 constraintGreaterThanOrEqualToConstant:403.0];
+  contentView3 = [(OBWelcomeController *)self->_fitTestController contentView];
+  heightAnchor2 = [contentView3 heightAnchor];
+  v37 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:403.0];
   [v102 addObject:v37];
 
-  v38 = [(UIStackView *)self->_stackViewImages topAnchor];
-  v39 = [(OBWelcomeController *)self->_fitTestController headerView];
-  v40 = [v39 bottomAnchor];
-  v41 = [v38 constraintEqualToAnchor:v40 constant:100.0];
+  topAnchor4 = [(UIStackView *)self->_stackViewImages topAnchor];
+  headerView2 = [(OBWelcomeController *)self->_fitTestController headerView];
+  bottomAnchor2 = [headerView2 bottomAnchor];
+  v41 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:100.0];
   [v102 addObject:v41];
 
 LABEL_19:
-  v42 = [(UIStackView *)self->_stackViewImages centerXAnchor];
-  v43 = [(OBWelcomeController *)self->_fitTestController contentView];
-  v44 = [v43 centerXAnchor];
-  v45 = [v42 constraintEqualToAnchor:v44];
+  centerXAnchor = [(UIStackView *)self->_stackViewImages centerXAnchor];
+  contentView4 = [(OBWelcomeController *)self->_fitTestController contentView];
+  centerXAnchor2 = [contentView4 centerXAnchor];
+  v45 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v102 addObject:v45];
 
-  v46 = [(UILabel *)self->_leftBudResultLabel topAnchor];
-  v47 = [(UIView *)self->_leftBudLabel bottomAnchor];
-  v48 = [v46 constraintEqualToAnchor:v47 constant:1.0];
+  topAnchor5 = [(UILabel *)self->_leftBudResultLabel topAnchor];
+  bottomAnchor3 = [(UIView *)self->_leftBudLabel bottomAnchor];
+  v48 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3 constant:1.0];
   [v102 addObject:v48];
 
-  v49 = [(UILabel *)self->_rightBudResultLabel topAnchor];
-  v50 = [(UIView *)self->_rightBudLabel bottomAnchor];
-  v51 = [v49 constraintEqualToAnchor:v50 constant:1.0];
+  topAnchor6 = [(UILabel *)self->_rightBudResultLabel topAnchor];
+  bottomAnchor4 = [(UIView *)self->_rightBudLabel bottomAnchor];
+  v51 = [topAnchor6 constraintEqualToAnchor:bottomAnchor4 constant:1.0];
   [v102 addObject:v51];
 
-  v52 = [(UILabel *)self->_leftBudResultLabel centerXAnchor];
-  v53 = [(UIView *)self->_leftBudLabel centerXAnchor];
-  v54 = [v52 constraintEqualToAnchor:v53];
+  centerXAnchor3 = [(UILabel *)self->_leftBudResultLabel centerXAnchor];
+  centerXAnchor4 = [(UIView *)self->_leftBudLabel centerXAnchor];
+  v54 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   [v102 addObject:v54];
 
-  v55 = [(UILabel *)self->_rightBudResultLabel centerXAnchor];
-  v56 = [(UIView *)self->_rightBudLabel centerXAnchor];
-  v57 = [v55 constraintEqualToAnchor:v56];
+  centerXAnchor5 = [(UILabel *)self->_rightBudResultLabel centerXAnchor];
+  centerXAnchor6 = [(UIView *)self->_rightBudLabel centerXAnchor];
+  v57 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   [v102 addObject:v57];
 
-  v58 = [(UIView *)self->_leftBudLabel widthAnchor];
-  v59 = [v58 constraintEqualToConstant:18.0];
+  widthAnchor = [(UIView *)self->_leftBudLabel widthAnchor];
+  v59 = [widthAnchor constraintEqualToConstant:18.0];
   [v102 addObject:v59];
 
-  v60 = [(UIView *)self->_leftBudLabel heightAnchor];
-  v61 = [v60 constraintEqualToConstant:18.0];
+  heightAnchor3 = [(UIView *)self->_leftBudLabel heightAnchor];
+  v61 = [heightAnchor3 constraintEqualToConstant:18.0];
   [v102 addObject:v61];
 
-  v62 = [(UIView *)self->_rightBudLabel widthAnchor];
-  v63 = [v62 constraintEqualToConstant:18.0];
+  widthAnchor2 = [(UIView *)self->_rightBudLabel widthAnchor];
+  v63 = [widthAnchor2 constraintEqualToConstant:18.0];
   [v102 addObject:v63];
 
-  v64 = [(UIView *)self->_rightBudLabel heightAnchor];
-  v65 = [v64 constraintEqualToConstant:18.0];
+  heightAnchor4 = [(UIView *)self->_rightBudLabel heightAnchor];
+  v65 = [heightAnchor4 constraintEqualToConstant:18.0];
   [v102 addObject:v65];
 
-  v66 = [(UILabel *)self->_leftBudResultLabel widthAnchor];
-  v67 = [v66 constraintLessThanOrEqualToConstant:113.0];
+  widthAnchor3 = [(UILabel *)self->_leftBudResultLabel widthAnchor];
+  v67 = [widthAnchor3 constraintLessThanOrEqualToConstant:113.0];
   [v102 addObject:v67];
 
-  v68 = [(UILabel *)self->_rightBudResultLabel widthAnchor];
-  v69 = [v68 constraintLessThanOrEqualToConstant:113.0];
+  widthAnchor4 = [(UILabel *)self->_rightBudResultLabel widthAnchor];
+  v69 = [widthAnchor4 constraintLessThanOrEqualToConstant:113.0];
   [v102 addObject:v69];
 
-  v70 = [(UILabel *)self->_resultDetailLabel topAnchor];
-  v71 = [(UILabel *)self->_leftBudResultLabel bottomAnchor];
-  v72 = [v70 constraintGreaterThanOrEqualToAnchor:v71 constant:1.0];
+  topAnchor7 = [(UILabel *)self->_resultDetailLabel topAnchor];
+  bottomAnchor5 = [(UILabel *)self->_leftBudResultLabel bottomAnchor];
+  v72 = [topAnchor7 constraintGreaterThanOrEqualToAnchor:bottomAnchor5 constant:1.0];
   [v102 addObject:v72];
 
-  v73 = [(UILabel *)self->_resultDetailLabel topAnchor];
-  v74 = [(UILabel *)self->_rightBudResultLabel bottomAnchor];
-  v75 = [v73 constraintGreaterThanOrEqualToAnchor:v74 constant:1.0];
+  topAnchor8 = [(UILabel *)self->_resultDetailLabel topAnchor];
+  bottomAnchor6 = [(UILabel *)self->_rightBudResultLabel bottomAnchor];
+  v75 = [topAnchor8 constraintGreaterThanOrEqualToAnchor:bottomAnchor6 constant:1.0];
   [v102 addObject:v75];
 
-  v76 = [(UILabel *)self->_resultDetailLabel leadingAnchor];
-  v77 = [(OBWelcomeController *)self->_fitTestController headerView];
-  v78 = [v77 leadingAnchor];
-  v79 = [v76 constraintEqualToAnchor:v78];
+  leadingAnchor = [(UILabel *)self->_resultDetailLabel leadingAnchor];
+  headerView3 = [(OBWelcomeController *)self->_fitTestController headerView];
+  leadingAnchor2 = [headerView3 leadingAnchor];
+  v79 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v102 addObject:v79];
 
-  v80 = [(UILabel *)self->_resultDetailLabel trailingAnchor];
-  v81 = [(OBWelcomeController *)self->_fitTestController headerView];
-  v82 = [v81 trailingAnchor];
-  v83 = [v80 constraintEqualToAnchor:v82];
+  trailingAnchor = [(UILabel *)self->_resultDetailLabel trailingAnchor];
+  headerView4 = [(OBWelcomeController *)self->_fitTestController headerView];
+  trailingAnchor2 = [headerView4 trailingAnchor];
+  v83 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v102 addObject:v83];
 
-  v84 = [(UIView *)self->_leftBudLabel topAnchor];
-  v85 = [(UIImageView *)self->_leftImView bottomAnchor];
-  v86 = [v84 constraintEqualToAnchor:v85 constant:20.0];
+  topAnchor9 = [(UIView *)self->_leftBudLabel topAnchor];
+  bottomAnchor7 = [(UIImageView *)self->_leftImView bottomAnchor];
+  v86 = [topAnchor9 constraintEqualToAnchor:bottomAnchor7 constant:20.0];
   [v102 addObject:v86];
 
-  v87 = [(UIView *)self->_rightBudLabel topAnchor];
-  v88 = [(UIImageView *)self->_rightImView bottomAnchor];
-  v89 = [v87 constraintEqualToAnchor:v88 constant:20.0];
+  topAnchor10 = [(UIView *)self->_rightBudLabel topAnchor];
+  bottomAnchor8 = [(UIImageView *)self->_rightImView bottomAnchor];
+  v89 = [topAnchor10 constraintEqualToAnchor:bottomAnchor8 constant:20.0];
   [v102 addObject:v89];
 
-  v90 = [(BluetoothDevice *)self->currentDevice productId];
+  productId = [(BluetoothDevice *)self->currentDevice productId];
   leftBudLabel = self->_leftBudLabel;
-  if (v90 == 8231)
+  if (productId == 8231)
   {
-    v92 = [(UIView *)leftBudLabel centerXAnchor];
-    v93 = [(UIImageView *)self->_leftImView centerXAnchor];
-    v94 = [v92 constraintEqualToAnchor:v93];
+    centerXAnchor7 = [(UIView *)leftBudLabel centerXAnchor];
+    centerXAnchor8 = [(UIImageView *)self->_leftImView centerXAnchor];
+    v94 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
     [v102 addObject:v94];
 
-    v95 = [(UIView *)self->_rightBudLabel centerXAnchor];
-    v96 = [(UIImageView *)self->_rightImView centerXAnchor];
-    [v95 constraintEqualToAnchor:v96];
+    centerXAnchor9 = [(UIView *)self->_rightBudLabel centerXAnchor];
+    centerXAnchor10 = [(UIImageView *)self->_rightImView centerXAnchor];
+    [centerXAnchor9 constraintEqualToAnchor:centerXAnchor10];
   }
 
   else
   {
-    v97 = [(UIView *)leftBudLabel leftAnchor];
-    v98 = [(UIStackView *)self->_stackViewImages leftAnchor];
-    v99 = [v97 constraintEqualToAnchor:v98 constant:62.0];
+    leftAnchor = [(UIView *)leftBudLabel leftAnchor];
+    leftAnchor2 = [(UIStackView *)self->_stackViewImages leftAnchor];
+    v99 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:62.0];
     [v102 addObject:v99];
 
-    v95 = [(UIView *)self->_rightBudLabel rightAnchor];
-    v96 = [(UIStackView *)self->_stackViewImages rightAnchor];
-    [v95 constraintEqualToAnchor:v96 constant:-62.0];
+    centerXAnchor9 = [(UIView *)self->_rightBudLabel rightAnchor];
+    centerXAnchor10 = [(UIStackView *)self->_stackViewImages rightAnchor];
+    [centerXAnchor9 constraintEqualToAnchor:centerXAnchor10 constant:-62.0];
   }
   v100 = ;
   [v102 addObject:v100];
@@ -725,13 +725,13 @@ LABEL_19:
 
 - (void)startFitTest
 {
-  v3 = [(HPCUIFitTestController *)self provider];
-  v4 = [v3 platformName];
-  v5 = v4;
+  provider = [(HPCUIFitTestController *)self provider];
+  platformName = [provider platformName];
+  v5 = platformName;
   v6 = @"AirPods Pro";
-  if (v4)
+  if (platformName)
   {
-    v6 = v4;
+    v6 = platformName;
   }
 
   v7 = v6;
@@ -742,12 +742,12 @@ LABEL_19:
     [(HPCUIFitTestController *)self setCancelAction];
     [(HPCUIFitTestController *)self removeDoneButton];
     NSLog(&cfstr_FitTestStartFi.isa);
-    v25 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     startFitTestTimestamp = self->_startFitTestTimestamp;
-    self->_startFitTestTimestamp = v25;
+    self->_startFitTestTimestamp = date;
 
     [(BluetoothDevice *)self->currentDevice SendSetupCommand:1];
-    v14 = [(OBWelcomeController *)self->_fitTestController headerView];
+    headerView = [(OBWelcomeController *)self->_fitTestController headerView];
     v27 = MEMORY[0x1E696AEC0];
     v28 = MEMORY[0x1E696AAE8];
     v29 = objc_opt_self();
@@ -755,10 +755,10 @@ LABEL_19:
     v31 = [v30 localizedStringForKey:@"Do Not Remove %@" value:&stru_1F210A6C0 table:0];
     v32 = [v27 localizedStringWithFormat:v31, v7];
 
-    [v14 setTitle:v32];
-    [v14 setDetailText:&stru_1F210A6C0];
-    v33 = [(HPCUIFitTestController *)self view];
-    [v33 setNeedsLayout];
+    [headerView setTitle:v32];
+    [headerView setDetailText:&stru_1F210A6C0];
+    view = [(HPCUIFitTestController *)self view];
+    [view setNeedsLayout];
 
     [(UILabel *)self->_leftBudResultLabel setText:&stru_1F210A6C0];
     [(UILabel *)self->_rightBudResultLabel setText:&stru_1F210A6C0];
@@ -783,7 +783,7 @@ LABEL_19:
       v11 = objc_opt_self();
       v12 = [v9 bundleForClass:v11];
       v13 = [v12 localizedStringForKey:@"End Call To Continue Test" value:&stru_1F210A6C0 table:0];
-      v14 = [v10 alertControllerWithTitle:v13 message:&stru_1F210A6C0 preferredStyle:1];
+      headerView = [v10 alertControllerWithTitle:v13 message:&stru_1F210A6C0 preferredStyle:1];
     }
 
     else
@@ -794,7 +794,7 @@ LABEL_19:
       v18 = [v17 localizedStringForKey:@"Place %@ In Both Ears" value:&stru_1F210A6C0 table:0];
       v11 = [v15 localizedStringWithFormat:v18, v7];
 
-      v14 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v11 message:&stru_1F210A6C0 preferredStyle:1];
+      headerView = [MEMORY[0x1E69DC650] alertControllerWithTitle:v11 message:&stru_1F210A6C0 preferredStyle:1];
     }
 
     v19 = MEMORY[0x1E69DC648];
@@ -803,9 +803,9 @@ LABEL_19:
     v22 = [v20 bundleForClass:v21];
     v23 = [v22 localizedStringForKey:@"OK" value:&stru_1F210A6C0 table:0];
     v24 = [v19 actionWithTitle:v23 style:0 handler:&__block_literal_global_0];
-    [v14 addAction:v24];
+    [headerView addAction:v24];
 
-    [(HPCUIFitTestController *)self presentViewController:v14 animated:1 completion:0];
+    [(HPCUIFitTestController *)self presentViewController:headerView animated:1 completion:0];
   }
 }
 
@@ -881,18 +881,18 @@ void __38__HPCUIFitTestController_startFitTest__block_invoke_2(uint64_t a1)
 
 - (void)setCancelAction
 {
-  v3 = [(HPCUIFitTestController *)self navigationItem];
-  [v3 setLeftBarButtonItems:0 animated:1];
+  navigationItem = [(HPCUIFitTestController *)self navigationItem];
+  [navigationItem setLeftBarButtonItems:0 animated:1];
 
   v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_dismissFitTest];
-  v4 = [(HPCUIFitTestController *)self navigationItem];
-  [v4 setLeftBarButtonItem:v5];
+  navigationItem2 = [(HPCUIFitTestController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:v5];
 }
 
 - (void)removeDoneButton
 {
-  v2 = [(HPCUIFitTestController *)self navigationItem];
-  [v2 setRightBarButtonItem:0 animated:1];
+  navigationItem = [(HPCUIFitTestController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:0 animated:1];
 }
 
 - (void)dismissFitTest
@@ -906,19 +906,19 @@ void __38__HPCUIFitTestController_startFitTest__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)inEarStatusChanged:(id)a3
+- (void)inEarStatusChanged:(id)changed
 {
-  v13 = [a3 object];
-  v4 = [v13 objectForKeyedSubscript:@"primaryInEarStatus"];
-  v5 = [v13 objectForKeyedSubscript:@"secondaryInEarStatus"];
-  v6 = [v13 objectForKeyedSubscript:@"device"];
-  v7 = [v6 address];
-  v8 = [(BluetoothDevice *)self->currentDevice address];
+  object = [changed object];
+  v4 = [object objectForKeyedSubscript:@"primaryInEarStatus"];
+  v5 = [object objectForKeyedSubscript:@"secondaryInEarStatus"];
+  v6 = [object objectForKeyedSubscript:@"device"];
+  address = [v6 address];
+  address2 = [(BluetoothDevice *)self->currentDevice address];
 
-  if (v7 == v8)
+  if (address == address2)
   {
-    v9 = [v4 BOOLValue];
-    v10 = (v9 | [v5 BOOLValue]) ^ 1;
+    bOOLValue = [v4 BOOLValue];
+    v10 = (bOOLValue | [v5 BOOLValue]) ^ 1;
     v11 = v10 & 1;
     NSLog(&cfstr_FitTestPrimary.isa, v4, v5, v10 & 1);
     budsInEar = self->_budsInEar;
@@ -939,9 +939,9 @@ void __38__HPCUIFitTestController_startFitTest__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)sealValueChanged:(id)a3
+- (void)sealValueChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if (!self->_testActive)
   {
     NSLog(&cfstr_FitTestDiscard.isa);
@@ -949,16 +949,16 @@ void __38__HPCUIFitTestController_startFitTest__block_invoke_2(uint64_t a1)
   }
 
   v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel_dismissFitTest];
-  v6 = [(HPCUIFitTestController *)self navigationItem];
-  [v6 setLeftBarButtonItems:0 animated:1];
+  navigationItem = [(HPCUIFitTestController *)self navigationItem];
+  [navigationItem setLeftBarButtonItems:0 animated:1];
 
-  v7 = [(HPCUIFitTestController *)self navigationItem];
+  navigationItem2 = [(HPCUIFitTestController *)self navigationItem];
   v80 = v5;
-  [v7 setRightBarButtonItem:v5];
+  [navigationItem2 setRightBarButtonItem:v5];
 
-  v8 = [v4 object];
-  v9 = [v8 objectForKeyedSubscript:@"sealLeft"];
-  v10 = [v8 objectForKeyedSubscript:@"sealRight"];
+  object = [changedCopy object];
+  v9 = [object objectForKeyedSubscript:@"sealLeft"];
+  v10 = [object objectForKeyedSubscript:@"sealRight"];
   v79 = v9;
   [v9 floatValue];
   v12 = v11;
@@ -967,8 +967,8 @@ void __38__HPCUIFitTestController_startFitTest__block_invoke_2(uint64_t a1)
   v14 = v13;
   NSLog(&cfstr_FitTestLeftsea.isa, v12);
   NSLog(&cfstr_FitTestRightse.isa, v14);
-  v15 = [v8 objectForKeyedSubscript:@"confidenceLeft"];
-  v16 = [v8 objectForKeyedSubscript:@"confidenceRight"];
+  v15 = [object objectForKeyedSubscript:@"confidenceLeft"];
+  v16 = [object objectForKeyedSubscript:@"confidenceRight"];
   v77 = v15;
   [v15 floatValue];
   v18 = v17;
@@ -978,7 +978,7 @@ void __38__HPCUIFitTestController_startFitTest__block_invoke_2(uint64_t a1)
   NSLog(&cfstr_FitTestConfide.isa, v18);
   NSLog(&cfstr_FitTestConfide_0.isa, v20);
   [(HPCUIFitTestController *)self fitTestStopped];
-  v21 = [(OBWelcomeController *)self->_fitTestController headerView];
+  headerView = [(OBWelcomeController *)self->_fitTestController headerView];
   [(HPCUIFitTestController *)self getConfidenceThreshold];
   if (v18 >= v22 && v20 >= v22)
   {
@@ -1027,30 +1027,30 @@ void __38__HPCUIFitTestController_startFitTest__block_invoke_2(uint64_t a1)
     v40[3] = &unk_1E7973C60;
     v40[4] = self;
     [v39 animateWithDuration:0.5 animations:?];
-    v42 = [(HPCUIFitTestController *)self provider];
-    v43 = [v42 platformName];
-    v44 = v43;
+    provider = [(HPCUIFitTestController *)self provider];
+    platformName = [provider platformName];
+    v44 = platformName;
     v45 = @"AirPods";
-    if (v43)
+    if (platformName)
     {
-      v45 = v43;
+      v45 = platformName;
     }
 
     v46 = v45;
 
-    v47 = [(HPCUIFitTestController *)self provider];
-    v48 = [v47 singularName];
-    v49 = v48;
+    provider2 = [(HPCUIFitTestController *)self provider];
+    singularName = [provider2 singularName];
+    v49 = singularName;
     v50 = @"AirPod";
-    if (v48)
+    if (singularName)
     {
-      v50 = v48;
+      v50 = singularName;
     }
 
     v51 = v50;
 
-    v52 = [(HPCUIFitTestController *)self getResultsTitle];
-    [v21 setTitle:v52];
+    getResultsTitle = [(HPCUIFitTestController *)self getResultsTitle];
+    [headerView setTitle:getResultsTitle];
 
     if (v12 >= v24 && v14 >= v24)
     {
@@ -1058,7 +1058,7 @@ void __38__HPCUIFitTestController_startFitTest__block_invoke_2(uint64_t a1)
       v54 = objc_opt_self();
       v55 = [v53 bundleForClass:v54];
       v56 = [v55 localizedStringForKey:@"The ear tips you’re using are a good fit for both ears." value:&stru_1F210A6C0 table:0];
-      [v21 setDetailText:v56];
+      [headerView setDetailText:v56];
 
       if (self->_completionHandler)
       {
@@ -1069,8 +1069,8 @@ void __38__HPCUIFitTestController_startFitTest__block_invoke_2(uint64_t a1)
         v61 = [v60 localizedStringForKey:@"Continue" value:&stru_1F210A6C0 table:0];
         [(OBTrayButton *)playButton setTitle:v61 forState:0];
 
-        v62 = [(OBTrayButton *)self->_playButton imageView];
-        [v62 setHidden:1];
+        imageView = [(OBTrayButton *)self->_playButton imageView];
+        [imageView setHidden:1];
 
         [(OBTrayButton *)self->_playButton removeTarget:self action:sel_startFitTest forControlEvents:64];
         [(OBTrayButton *)self->_playButton addTarget:self action:sel_callCompletionHandler forControlEvents:64];
@@ -1125,7 +1125,7 @@ LABEL_35:
     }
     v75 = ;
 
-    [v21 setDetailText:v75];
+    [headerView setDetailText:v75];
     goto LABEL_35;
   }
 
@@ -1134,20 +1134,20 @@ LABEL_35:
   v29 = objc_opt_self();
   v30 = [v28 bundleForClass:v29];
   v31 = [v30 localizedStringForKey:@"Unable to Complete Ear Tip Fit Test" value:&stru_1F210A6C0 table:0];
-  [v21 setTitle:v31];
+  [headerView setTitle:v31];
 
   v32 = MEMORY[0x1E696AAE8];
   v33 = objc_opt_self();
   v34 = [v32 bundleForClass:v33];
   v35 = [v34 localizedStringForKey:@"Make sure to find a quiet location and remain still during ear tip fit test." value:&stru_1F210A6C0 table:0];
-  [v21 setDetailText:v35];
+  [headerView setDetailText:v35];
 
   [(HPCUIFitTestController *)self setupConstraints];
-  v36 = [(HPCUIFitTestController *)self view];
-  [v36 setNeedsLayout];
+  view = [(HPCUIFitTestController *)self view];
+  [view setNeedsLayout];
 
-  v37 = [(HPCUIFitTestController *)self view];
-  [v37 layoutIfNeeded];
+  view2 = [(HPCUIFitTestController *)self view];
+  [view2 layoutIfNeeded];
 
 LABEL_36:
   if ([(HPCUIFitTestController *)self isDebugModeEnabled])
@@ -1259,12 +1259,12 @@ void __43__HPCUIFitTestController_sealValueChanged___block_invoke_5(uint64_t a1)
   dispatch_async(v3, block);
 
   [(OBTrayButton *)self->_playButton hidesBusyIndicator];
-  v4 = [(OBWelcomeController *)self->_fitTestController headerView];
-  v5 = [(HPCUIFitTestController *)self getTitle];
-  [v4 setTitle:v5];
+  headerView = [(OBWelcomeController *)self->_fitTestController headerView];
+  getTitle = [(HPCUIFitTestController *)self getTitle];
+  [headerView setTitle:getTitle];
 
-  v6 = [(HPCUIFitTestController *)self getSubTitle];
-  [v4 setDetailText:v6];
+  getSubTitle = [(HPCUIFitTestController *)self getSubTitle];
+  [headerView setDetailText:getSubTitle];
 }
 
 uint64_t __40__HPCUIFitTestController_fitTestStopped__block_invoke(uint64_t a1)
@@ -1275,44 +1275,44 @@ uint64_t __40__HPCUIFitTestController_fitTestStopped__block_invoke(uint64_t a1)
   return [v2 cleanupAudio];
 }
 
-- (void)deviceDisconnectedHandler:(id)a3
+- (void)deviceDisconnectedHandler:(id)handler
 {
-  v6 = [a3 object];
-  v4 = [v6 address];
-  v5 = [(BluetoothDevice *)self->currentDevice address];
+  object = [handler object];
+  address = [object address];
+  address2 = [(BluetoothDevice *)self->currentDevice address];
 
-  if (v4 == v5)
+  if (address == address2)
   {
     [(HPCUIFitTestController *)self dismissFitTest];
   }
 }
 
-- (void)powerChangedHandler:(id)a3
+- (void)powerChangedHandler:(id)handler
 {
   v4 = MEMORY[0x1E698F468];
-  v5 = a3;
-  v6 = [v4 sharedInstance];
-  v7 = [v6 enabled];
+  handlerCopy = handler;
+  sharedInstance = [v4 sharedInstance];
+  enabled = [sharedInstance enabled];
 
-  v8 = [v5 name];
+  name = [handlerCopy name];
 
   v9 = "off";
-  if (v7)
+  if (enabled)
   {
     v9 = "on";
   }
 
-  NSLog(&cfstr_FitTestReceive.isa, v8, v9);
+  NSLog(&cfstr_FitTestReceive.isa, name, v9);
 
   [(HPCUIFitTestController *)self dismissFitTest];
 }
 
-- (void)handleCallIsActiveDidChangeNotification:(id)a3
+- (void)handleCallIsActiveDidChangeNotification:(id)notification
 {
   callActive = self->_callActive;
-  v5 = [(HPCUIFitTestController *)self isCallActive];
+  isCallActive = [(HPCUIFitTestController *)self isCallActive];
   self->_callActive = [(HPCUIFitTestController *)self isCallActive];
-  if (callActive == v5)
+  if (callActive == isCallActive)
   {
     NSLog(&cfstr_FitTestNoChang_0.isa);
   }
@@ -1323,13 +1323,13 @@ uint64_t __40__HPCUIFitTestController_fitTestStopped__block_invoke(uint64_t a1)
   }
 }
 
-- (void)handleAudioSessionInterruption:(id)a3
+- (void)handleAudioSessionInterruption:(id)interruption
 {
-  v6 = [a3 userInfo];
-  v4 = [v6 objectForKey:*MEMORY[0x1E6958100]];
-  v5 = [v4 unsignedIntegerValue];
+  userInfo = [interruption userInfo];
+  v4 = [userInfo objectForKey:*MEMORY[0x1E6958100]];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  if (v5 == 1)
+  if (unsignedIntegerValue == 1)
   {
     NSLog(&cfstr_FitTestAudioSe.isa, self->_testActive);
     if (self->_testActive)
@@ -1339,9 +1339,9 @@ uint64_t __40__HPCUIFitTestController_fitTestStopped__block_invoke(uint64_t a1)
   }
 }
 
-- (void)handleMediaServerConnectionDied:(id)a3
+- (void)handleMediaServerConnectionDied:(id)died
 {
-  NSLog(&cfstr_FitTestAudioSe_0.isa, a2, a3);
+  NSLog(&cfstr_FitTestAudioSe_0.isa, a2, died);
   avSystemController = self->_avSystemController;
   self->_avSystemController = 0;
 }
@@ -1362,9 +1362,9 @@ uint64_t __40__HPCUIFitTestController_fitTestStopped__block_invoke(uint64_t a1)
     if (initialVolume <= 0.5)
     {
       NSLog(&cfstr_FitTestCleanup.isa, a2, initialVolume);
-      v4 = [MEMORY[0x1E69AED10] sharedAVSystemController];
+      mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
       *&v5 = self->_initialVolume;
-      [v4 setVolumeTo:@"Audio/Video" forCategory:v5];
+      [mEMORY[0x1E69AED10] setVolumeTo:@"Audio/Video" forCategory:v5];
 
       self->_volumeModified = 0;
     }
@@ -1375,9 +1375,9 @@ uint64_t __40__HPCUIFitTestController_fitTestStopped__block_invoke(uint64_t a1)
 {
   NSLog(&cfstr_FitTestCleanUp.isa, a2);
   [(AVAudioPlayer *)self->_player setVolume:0.0 fadeDuration:1.0];
-  v3 = [MEMORY[0x1E6958460] sharedInstance];
+  mEMORY[0x1E6958460] = [MEMORY[0x1E6958460] sharedInstance];
   v5 = 0;
-  [v3 setActive:0 withOptions:1 error:&v5];
+  [mEMORY[0x1E6958460] setActive:0 withOptions:1 error:&v5];
   v4 = v5;
 
   if (v4)
@@ -1388,28 +1388,28 @@ uint64_t __40__HPCUIFitTestController_fitTestStopped__block_invoke(uint64_t a1)
 
 - (BOOL)isCallActive
 {
-  v2 = [MEMORY[0x1E69AED10] sharedAVSystemController];
-  v3 = [v2 attributeForKey:*MEMORY[0x1E69AEA38]];
+  mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
+  v3 = [mEMORY[0x1E69AED10] attributeForKey:*MEMORY[0x1E69AEA38]];
 
-  v4 = [v3 BOOLValue];
-  LOBYTE(v2) = v4;
-  NSLog(&cfstr_FitTestCallIsA.isa, v4);
+  bOOLValue = [v3 BOOLValue];
+  LOBYTE(mEMORY[0x1E69AED10]) = bOOLValue;
+  NSLog(&cfstr_FitTestCallIsA.isa, bOOLValue);
 
-  return v2;
+  return mEMORY[0x1E69AED10];
 }
 
 - (BOOL)isPreferredLanguageEnglish
 {
-  v2 = [MEMORY[0x1E695DF58] preferredLanguages];
-  v3 = [v2 firstObject];
-  if ([v3 isEqualToString:@"en"])
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  firstObject = [preferredLanguages firstObject];
+  if ([firstObject isEqualToString:@"en"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 hasPrefix:@"en-"];
+    v4 = [firstObject hasPrefix:@"en-"];
   }
 
   return v4;
@@ -1434,13 +1434,13 @@ uint64_t __40__HPCUIFitTestController_fitTestStopped__block_invoke(uint64_t a1)
 
 - (float)getSealThreshold
 {
-  v2 = [(BluetoothDevice *)self->currentDevice productId];
+  productId = [(BluetoothDevice *)self->currentDevice productId];
   v3 = 0.0;
-  if (v2 > 8230)
+  if (productId > 8230)
   {
-    if (v2 != 8231)
+    if (productId != 8231)
     {
-      if (v2 != 8239)
+      if (productId != 8239)
       {
 LABEL_10:
         v3 = -5.0;
@@ -1451,25 +1451,25 @@ LABEL_10:
     }
   }
 
-  else if (v2 != 8212 && v2 != 8228)
+  else if (productId != 8212 && productId != 8228)
   {
     goto LABEL_10;
   }
 
 LABEL_11:
-  NSLog(&cfstr_FitTestGetseal.isa, v2, v3);
+  NSLog(&cfstr_FitTestGetseal.isa, productId, v3);
   return v3;
 }
 
 - (float)getConfidenceThreshold
 {
-  v2 = [(BluetoothDevice *)self->currentDevice productId];
+  productId = [(BluetoothDevice *)self->currentDevice productId];
   v3 = -3.0;
-  if (v2 > 8230)
+  if (productId > 8230)
   {
-    if (v2 != 8231)
+    if (productId != 8231)
     {
-      if (v2 != 8239)
+      if (productId != 8239)
       {
 LABEL_10:
         v3 = 10.0;
@@ -1480,21 +1480,21 @@ LABEL_10:
     }
   }
 
-  else if (v2 != 8212 && v2 != 8228)
+  else if (productId != 8212 && productId != 8228)
   {
     goto LABEL_10;
   }
 
 LABEL_11:
-  NSLog(&cfstr_FitTestGetconf.isa, v2, v3);
+  NSLog(&cfstr_FitTestGetconf.isa, productId, v3);
   return v3;
 }
 
-- (void)setCompletionHandler:(id)a3
+- (void)setCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   NSLog(&cfstr_FitTestSetting.isa);
-  v5 = _Block_copy(v4);
+  v5 = _Block_copy(handlerCopy);
 
   completionHandler = self->_completionHandler;
   self->_completionHandler = v5;
@@ -1508,15 +1508,15 @@ LABEL_11:
   v3();
 }
 
-- (void)applyFilters:(id)a3 imageView:(id)a4 deviceColor:(unsigned int)a5
+- (void)applyFilters:(id)filters imageView:(id)view deviceColor:(unsigned int)color
 {
-  v5 = *&a5;
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  v5 = *&color;
+  filtersCopy = filters;
+  viewCopy = view;
+  if (filtersCopy)
   {
-    v10 = [v8 allKeys];
-    v11 = [v10 count];
+    allKeys = [filtersCopy allKeys];
+    v11 = [allKeys count];
 
     if (v11)
     {
@@ -1532,11 +1532,11 @@ LABEL_11:
       v63[0] = *(MEMORY[0x1E6979280] + 52);
       *(v63 + 12) = *(MEMORY[0x1E6979280] + 64);
       darkMode = self->_darkMode;
-      v18 = [(HPCUIFitTestController *)self provider];
-      v19 = [v18 isProductOfDifferentColors];
+      provider = [(HPCUIFitTestController *)self provider];
+      isProductOfDifferentColors = [provider isProductOfDifferentColors];
       if (darkMode)
       {
-        if (v19)
+        if (isProductOfDifferentColors)
         {
           v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DarkMatrixValue-%d", v5];
         }
@@ -1546,8 +1546,8 @@ LABEL_11:
           v20 = @"DarkMatrixValue";
         }
 
-        v21 = [(HPCUIFitTestController *)self provider];
-        if ([v21 isProductOfDifferentColors])
+        provider2 = [(HPCUIFitTestController *)self provider];
+        if ([provider2 isProductOfDifferentColors])
         {
           v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DarkBiasValue-%d", v5];
         }
@@ -1557,11 +1557,11 @@ LABEL_11:
           v22 = @"DarkBiasValue";
         }
 
-        v24 = [v8 objectForKey:v20];
+        v24 = [filtersCopy objectForKey:v20];
         [v24 floatValue];
         v26 = v25;
 
-        v27 = [v8 objectForKey:v22];
+        v27 = [filtersCopy objectForKey:v22];
         [v27 floatValue];
         v29 = v28;
 
@@ -1571,10 +1571,10 @@ LABEL_11:
         }
 
         v54 = v13;
-        v30 = [(HPCUIFitTestController *)self provider];
-        v31 = [v30 isProductOfDifferentColors];
+        provider3 = [(HPCUIFitTestController *)self provider];
+        isProductOfDifferentColors2 = [provider3 isProductOfDifferentColors];
 
-        if ((v31 & 1) == 0)
+        if ((isProductOfDifferentColors2 & 1) == 0)
         {
 LABEL_25:
           v13 = v54;
@@ -1597,8 +1597,8 @@ LABEL_26:
 
           [v16 addObject:v13];
           [v16 addObject:v15];
-          v52 = [v9 layer];
-          [v52 setFilters:v16];
+          layer = [viewCopy layer];
+          [layer setFilters:v16];
 
           goto LABEL_27;
         }
@@ -1609,7 +1609,7 @@ LABEL_26:
 
       else
       {
-        if (v19)
+        if (isProductOfDifferentColors)
         {
           v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"LightMatrixValue-%d", v5];
         }
@@ -1619,8 +1619,8 @@ LABEL_26:
           v20 = @"LightMatrixValue";
         }
 
-        v23 = [(HPCUIFitTestController *)self provider];
-        if ([v23 isProductOfDifferentColors])
+        provider4 = [(HPCUIFitTestController *)self provider];
+        if ([provider4 isProductOfDifferentColors])
         {
           v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"LightBiasValue-%d", v5];
         }
@@ -1630,11 +1630,11 @@ LABEL_26:
           v22 = @"LightBiasValue";
         }
 
-        v33 = [v8 objectForKey:v20];
+        v33 = [filtersCopy objectForKey:v20];
         [v33 floatValue];
         v26 = v34;
 
-        v35 = [v8 objectForKey:v22];
+        v35 = [filtersCopy objectForKey:v22];
         [v35 floatValue];
         v29 = v36;
 
@@ -1644,10 +1644,10 @@ LABEL_26:
         }
 
         v54 = v13;
-        v37 = [(HPCUIFitTestController *)self provider];
-        v38 = [v37 isProductOfDifferentColors];
+        provider5 = [(HPCUIFitTestController *)self provider];
+        isProductOfDifferentColors3 = [provider5 isProductOfDifferentColors];
 
-        if (!v38)
+        if (!isProductOfDifferentColors3)
         {
           goto LABEL_25;
         }
@@ -1657,18 +1657,18 @@ LABEL_26:
       }
 
       v39 = MEMORY[0x1E696AEC0];
-      v40 = [(HPCUIFitTestController *)self provider];
-      v41 = [v39 stringWithFormat:v32, objc_msgSend(v40, "defaultFiltersID")];
+      provider6 = [(HPCUIFitTestController *)self provider];
+      v41 = [v39 stringWithFormat:v32, objc_msgSend(provider6, "defaultFiltersID")];
 
       v42 = MEMORY[0x1E696AEC0];
-      v43 = [(HPCUIFitTestController *)self provider];
-      v44 = [v42 stringWithFormat:v53, objc_msgSend(v43, "defaultFiltersID")];
+      provider7 = [(HPCUIFitTestController *)self provider];
+      v44 = [v42 stringWithFormat:v53, objc_msgSend(provider7, "defaultFiltersID")];
 
-      v45 = [v8 objectForKey:v41];
+      v45 = [filtersCopy objectForKey:v41];
       [v45 floatValue];
       v26 = v46;
 
-      v47 = [v8 objectForKey:v44];
+      v47 = [filtersCopy objectForKey:v44];
       [v47 floatValue];
       v29 = v48;
 

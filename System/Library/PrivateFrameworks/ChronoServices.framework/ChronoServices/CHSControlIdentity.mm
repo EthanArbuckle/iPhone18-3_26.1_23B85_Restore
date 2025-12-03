@@ -1,40 +1,40 @@
 @interface CHSControlIdentity
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matches:(id)a3;
-- (CHSControlIdentity)initWithCoder:(id)a3;
-- (CHSControlIdentity)initWithExtensionIdentity:(id)a3 kind:(id)a4 intent:(id)a5;
-- (CHSControlIdentity)initWithExtensionIdentity:(id)a3 kind:(id)a4 intentReference:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matches:(id)matches;
+- (CHSControlIdentity)initWithCoder:(id)coder;
+- (CHSControlIdentity)initWithExtensionIdentity:(id)identity kind:(id)kind intent:(id)intent;
+- (CHSControlIdentity)initWithExtensionIdentity:(id)identity kind:(id)kind intentReference:(id)reference;
 - (id)_loggingIdentifier;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHSControlIdentity
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(CHSControlIdentity *)self extensionIdentity];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  extensionIdentity = [(CHSControlIdentity *)self extensionIdentity];
+  v5 = [builder appendObject:extensionIdentity];
 
-  v6 = [(CHSControlIdentity *)self kind];
-  v7 = [v3 appendString:v6];
+  kind = [(CHSControlIdentity *)self kind];
+  v7 = [builder appendString:kind];
 
-  v8 = [v3 appendInt64:{-[CHSIntentReference stableHash](self->_intentReference, "stableHash")}];
-  v9 = [v3 hash];
+  v8 = [builder appendInt64:{-[CHSIntentReference stableHash](self->_intentReference, "stableHash")}];
+  v9 = [builder hash];
 
   return v9;
 }
 
-- (CHSControlIdentity)initWithExtensionIdentity:(id)a3 kind:(id)a4 intent:(id)a5
+- (CHSControlIdentity)initWithExtensionIdentity:(id)identity kind:(id)kind intent:(id)intent
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  identityCopy = identity;
+  kindCopy = kind;
+  intentCopy = intent;
+  if (intentCopy)
   {
-    v11 = [[CHSIntentReference alloc] initWithIntent:v10];
+    v11 = [[CHSIntentReference alloc] initWithIntent:intentCopy];
   }
 
   else
@@ -42,30 +42,30 @@
     v11 = 0;
   }
 
-  v12 = [(CHSControlIdentity *)self initWithExtensionIdentity:v8 kind:v9 intentReference:v11];
+  v12 = [(CHSControlIdentity *)self initWithExtensionIdentity:identityCopy kind:kindCopy intentReference:v11];
 
   return v12;
 }
 
-- (CHSControlIdentity)initWithExtensionIdentity:(id)a3 kind:(id)a4 intentReference:(id)a5
+- (CHSControlIdentity)initWithExtensionIdentity:(id)identity kind:(id)kind intentReference:(id)reference
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identityCopy = identity;
+  kindCopy = kind;
+  referenceCopy = reference;
   v19.receiver = self;
   v19.super_class = CHSControlIdentity;
   v11 = [(CHSControlIdentity *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identityCopy copy];
     extensionIdentity = v11->_extensionIdentity;
     v11->_extensionIdentity = v12;
 
-    v14 = [v9 copy];
+    v14 = [kindCopy copy];
     kind = v11->_kind;
     v11->_kind = v14;
 
-    v16 = [v10 copy];
+    v16 = [referenceCopy copy];
     intentReference = v11->_intentReference;
     v11->_intentReference = v16;
   }
@@ -73,15 +73,15 @@
   return v11;
 }
 
-- (BOOL)matches:(id)a3
+- (BOOL)matches:(id)matches
 {
-  v4 = a3;
-  v5 = [(CHSControlIdentity *)self extensionIdentity];
-  v6 = [v4 extensionIdentity];
+  matchesCopy = matches;
+  extensionIdentity = [(CHSControlIdentity *)self extensionIdentity];
+  extensionIdentity2 = [matchesCopy extensionIdentity];
   if (BSEqualObjects())
   {
-    v7 = [(CHSControlIdentity *)self kind];
-    v8 = [v4 kind];
+    kind = [(CHSControlIdentity *)self kind];
+    kind2 = [matchesCopy kind];
     v9 = BSEqualStrings();
   }
 
@@ -93,10 +93,10 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -106,11 +106,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(CHSExtensionIdentity *)self->_extensionIdentity isEqual:v5->_extensionIdentity]&& [(NSString *)self->_kind isEqualToString:v5->_kind])
       {
-        v6 = [(CHSIntentReference *)self->_intentReference stableHash];
-        v7 = v6 == [(CHSIntentReference *)v5->_intentReference stableHash];
+        stableHash = [(CHSIntentReference *)self->_intentReference stableHash];
+        v7 = stableHash == [(CHSIntentReference *)v5->_intentReference stableHash];
       }
 
       else
@@ -128,16 +128,16 @@
   return v7;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__CHSControlIdentity_appendDescriptionToFormatter___block_invoke;
   v6[3] = &unk_1E7453000;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = formatterCopy;
+  selfCopy = self;
+  v5 = formatterCopy;
   [v5 appendProem:0 block:v6];
 }
 
@@ -160,37 +160,37 @@ id __51__CHSControlIdentity_appendDescriptionToFormatter___block_invoke(uint64_t
   if (intentReference)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[CHSIntentReference stableHash](intentReference, "stableHash")}];
-    v5 = [v4 stringValue];
+    stringValue = [v4 stringValue];
   }
 
   else
   {
-    v5 = @"-";
+    stringValue = @"-";
   }
 
   v6 = MEMORY[0x1E696AEC0];
   v7 = [(CHSExtensionIdentity *)self->_extensionIdentity description];
-  v8 = [v6 stringWithFormat:@"[%@:%@:%@]", v7, self->_kind, v5];
+  v8 = [v6 stringWithFormat:@"[%@:%@:%@]", v7, self->_kind, stringValue];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_extensionIdentity forKey:@"extId"];
-  [v4 encodeObject:self->_kind forKey:@"kind"];
-  [v4 encodeObject:self->_intentReference forKey:@"intentRef"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_extensionIdentity forKey:@"extId"];
+  [coderCopy encodeObject:self->_kind forKey:@"kind"];
+  [coderCopy encodeObject:self->_intentReference forKey:@"intentRef"];
 }
 
-- (CHSControlIdentity)initWithCoder:(id)a3
+- (CHSControlIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extId"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
-  if ([v4 containsValueForKey:@"intentRef"])
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extId"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
+  if ([coderCopy containsValueForKey:@"intentRef"])
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"intentRef"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intentRef"];
   }
 
   else

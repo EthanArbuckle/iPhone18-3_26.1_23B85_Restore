@@ -1,15 +1,15 @@
 @interface CCDDeviceIdentitySupport
-+ (id)_signPayloadData:(id)a3 withPrivateKey:(id)a4 outError:(id *)a5;
-+ (id)requestWithPayload:(id)a3 URL:(id)a4 privateKey:(id)a5 clientCertificates:(id)a6 outError:(id *)a7;
-+ (void)retrieveClientCertificateWithNameSuffix:(id)a3 completion:(id)a4;
++ (id)_signPayloadData:(id)data withPrivateKey:(id)key outError:(id *)error;
++ (id)requestWithPayload:(id)payload URL:(id)l privateKey:(id)key clientCertificates:(id)certificates outError:(id *)error;
++ (void)retrieveClientCertificateWithNameSuffix:(id)suffix completion:(id)completion;
 @end
 
 @implementation CCDDeviceIdentitySupport
 
-+ (void)retrieveClientCertificateWithNameSuffix:(id)a3 completion:(id)a4
++ (void)retrieveClientCertificateWithNameSuffix:(id)suffix completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  suffixCopy = suffix;
+  completionCopy = completion;
   v7 = *(DEPLogObjects() + 8);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -18,11 +18,11 @@
   }
 
   v8 = @"DEP-client-cert";
-  if ([v5 length])
+  if ([suffixCopy length])
   {
-    v9 = [(__CFString *)v8 stringByAppendingFormat:@"-%@", v5];
+    suffixCopy = [(__CFString *)v8 stringByAppendingFormat:@"-%@", suffixCopy];
 
-    v8 = v9;
+    v8 = suffixCopy;
   }
 
   v10 = kMAOptionsBAAOIDSToInclude;
@@ -52,26 +52,26 @@
     [v14 setObject:v15 forKeyedSubscript:kMAOptionsBAAAccessControls];
   }
 
-  [v14 setObject:v5 forKeyedSubscript:kMAOptionsBAAClientNameSuffix];
+  [v14 setObject:suffixCopy forKeyedSubscript:kMAOptionsBAAClientNameSuffix];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100001F18;
   v20[3] = &unk_10001C938;
   v21 = v14;
-  v22 = v6;
-  v17 = v6;
+  v22 = completionCopy;
+  v17 = completionCopy;
   v18 = v14;
   v19 = objc_retainBlock(v20);
   (v19[2])();
 }
 
-+ (id)_signPayloadData:(id)a3 withPrivateKey:(id)a4 outError:(id *)a5
++ (id)_signPayloadData:(id)data withPrivateKey:(id)key outError:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  keyCopy = key;
   v9 = DEPLogObjects();
   v10 = *(v9 + 8);
-  if (v7 && v8)
+  if (dataCopy && keyCopy)
   {
     if (os_log_type_enabled(*(v9 + 8), OS_LOG_TYPE_DEFAULT))
     {
@@ -80,24 +80,24 @@
     }
 
     error = 0;
-    v11 = SecKeyCreateSignature(v8, kSecKeyAlgorithmECDSASignatureMessageX962SHA256, v7, &error);
+    v11 = SecKeyCreateSignature(keyCopy, kSecKeyAlgorithmECDSASignatureMessageX962SHA256, dataCopy, &error);
     if (!v11)
     {
-      v12 = error;
+      errorCopy = error;
       v13 = *(DEPLogObjects() + 8);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         v14 = v13;
-        v15 = [(__CFError *)v12 description];
-        v16 = [v15 UTF8String];
+        v15 = [(__CFError *)errorCopy description];
+        uTF8String = [v15 UTF8String];
         *buf = 136446210;
-        v20 = v16;
+        v20 = uTF8String;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Failed to create signature: %{public}s\n", buf, 0xCu);
       }
 
-      if (a5)
+      if (error)
       {
-        *a5 = [CCDError internalErrorWithCode:33010];
+        *error = [CCDError internalErrorWithCode:33010];
       }
     }
   }
@@ -110,10 +110,10 @@
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "No private key, can't sign the payload", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       [CCDError internalErrorWithCode:33011];
-      *a5 = v11 = 0;
+      *error = v11 = 0;
     }
 
     else
@@ -125,25 +125,25 @@
   return v11;
 }
 
-+ (id)requestWithPayload:(id)a3 URL:(id)a4 privateKey:(id)a5 clientCertificates:(id)a6 outError:(id *)a7
++ (id)requestWithPayload:(id)payload URL:(id)l privateKey:(id)key clientCertificates:(id)certificates outError:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = v15;
-  if (v15 && [v15 count] == 2)
+  payloadCopy = payload;
+  lCopy = l;
+  keyCopy = key;
+  certificatesCopy = certificates;
+  v16 = certificatesCopy;
+  if (certificatesCopy && [certificatesCopy count] == 2)
   {
-    v17 = [v12 dictionary];
+    dictionary = [payloadCopy dictionary];
     v60 = 0;
-    v18 = [NSJSONSerialization dataWithJSONObject:v17 options:0 error:&v60];
+    v18 = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:&v60];
     v19 = v60;
     if (!v18)
     {
-      if (a7)
+      if (error)
       {
         [CCDError internalErrorWithCode:33009];
-        *a7 = v34 = 0;
+        *error = v34 = 0;
       }
 
       else
@@ -155,7 +155,7 @@
     }
 
     v59 = 0;
-    v20 = [a1 _signPayloadData:v18 withPrivateKey:v14 outError:&v59];
+    v20 = [self _signPayloadData:v18 withPrivateKey:keyCopy outError:&v59];
     v21 = v59;
     v58 = v21;
     if (!v20 || v21)
@@ -168,18 +168,18 @@
       }
 
       v34 = 0;
-      if (a7)
+      if (error)
       {
-        *a7 = v58;
+        *error = v58;
       }
 
       goto LABEL_41;
     }
 
-    v50 = v14;
-    v52 = v13;
+    v50 = keyCopy;
+    v52 = lCopy;
     v56 = v20;
-    v57 = v17;
+    v57 = dictionary;
     v55 = [v20 base64EncodedDataWithOptions:0];
     v22 = [[NSString alloc] initWithData:v55 encoding:4];
     v23 = [v16 objectAtIndexedSubscript:0];
@@ -211,12 +211,12 @@
     {
       v32 = *(DEPLogObjects() + 8);
       v33 = os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT);
-      v13 = v52;
+      lCopy = v52;
       if (v52)
       {
-        v17 = v57;
+        dictionary = v57;
         v18 = v53;
-        v14 = v50;
+        keyCopy = v50;
         if (v33)
         {
           *buf = 0;
@@ -238,9 +238,9 @@
         goto LABEL_40;
       }
 
-      v17 = v57;
+      dictionary = v57;
       v18 = v53;
-      v14 = v50;
+      keyCopy = v50;
       if (v33)
       {
         v42 = v32;
@@ -250,10 +250,10 @@
         _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "Couldn't build up the URL from string: %{public}@", buf, 0xCu);
       }
 
-      if (a7)
+      if (error)
       {
         [CCDError internalErrorWithCode:33012];
-        *a7 = v34 = 0;
+        *error = v34 = 0;
       }
 
       else
@@ -267,18 +267,18 @@
     else
     {
       v40 = *(DEPLogObjects() + 8);
-      v13 = v52;
+      lCopy = v52;
       if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
         _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_ERROR, "No serial request data", buf, 2u);
       }
 
-      v17 = v57;
+      dictionary = v57;
       v18 = v53;
-      v14 = v50;
+      keyCopy = v50;
       v19 = v47;
-      if (a7 && v47)
+      if (error && v47)
       {
         goto LABEL_31;
       }
@@ -290,11 +290,11 @@
         _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_ERROR, "Unknown error while serializing the request dictionary", buf, 2u);
       }
 
-      if (a7)
+      if (error)
       {
 LABEL_31:
         [CCDError internalErrorWithCode:33009];
-        *a7 = v34 = 0;
+        *error = v34 = 0;
       }
 
       else
@@ -320,10 +320,10 @@ LABEL_42:
     _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_INFO, "No certificate, can't do the request", buf, 2u);
   }
 
-  if (a7)
+  if (error)
   {
     [CCDError internalErrorWithCode:33013];
-    *a7 = v34 = 0;
+    *error = v34 = 0;
   }
 
   else

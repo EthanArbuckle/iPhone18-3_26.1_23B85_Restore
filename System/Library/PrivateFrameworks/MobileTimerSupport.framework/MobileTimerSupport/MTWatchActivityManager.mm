@@ -1,9 +1,9 @@
 @interface MTWatchActivityManager
 + (_TtC18MobileTimerSupport22MTWatchActivityManager)shared;
-+ (void)setShared:(id)a3;
++ (void)setShared:(id)shared;
 - (_TtC18MobileTimerSupport22MTWatchActivityManager)init;
-- (void)endActivityWithAlarmID:(id)a3;
-- (void)startActivityWithAlarmID:(id)a3 firingDate:(id)a4;
+- (void)endActivityWithAlarmID:(id)d;
+- (void)startActivityWithAlarmID:(id)d firingDate:(id)date;
 @end
 
 @implementation MTWatchActivityManager
@@ -19,10 +19,10 @@
   return qword_27DA035B8;
 }
 
-+ (void)setShared:(id)a3
++ (void)setShared:(id)shared
 {
   v3 = qword_27DA01A20;
-  v4 = a3;
+  sharedCopy = shared;
   if (v3 != -1)
   {
     swift_once();
@@ -30,10 +30,10 @@
 
   swift_beginAccess();
   v5 = qword_27DA035B8;
-  qword_27DA035B8 = v4;
+  qword_27DA035B8 = sharedCopy;
 }
 
-- (void)startActivityWithAlarmID:(id)a3 firingDate:(id)a4
+- (void)startActivityWithAlarmID:(id)d firingDate:(id)date
 {
   v4 = sub_22D81A8C8();
   v5 = *(v4 - 8);
@@ -51,7 +51,7 @@
   (*(v10 + 8))(v13, v9);
 }
 
-- (void)endActivityWithAlarmID:(id)a3
+- (void)endActivityWithAlarmID:(id)d
 {
   v3 = sub_22D81A918();
   v4 = *(v3 - 8);

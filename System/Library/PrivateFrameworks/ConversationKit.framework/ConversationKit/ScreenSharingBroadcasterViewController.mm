@@ -1,5 +1,5 @@
 @interface ScreenSharingBroadcasterViewController
-- (_TtC15ConversationKit38ScreenSharingBroadcasterViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15ConversationKit38ScreenSharingBroadcasterViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 @end
 
@@ -7,18 +7,18 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   ScreenSharingBroadcasterViewController.loadView()();
 }
 
-- (_TtC15ConversationKit38ScreenSharingBroadcasterViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit38ScreenSharingBroadcasterViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   ScreenSharingBroadcasterViewController.init(nibName:bundle:)();
 }
 

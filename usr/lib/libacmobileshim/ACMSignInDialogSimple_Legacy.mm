@@ -1,5 +1,5 @@
 @interface ACMSignInDialogSimple_Legacy
-- (ACMSignInDialogSimple_Legacy)initWithNibName:(id)a3 bundle:(id)a4;
+- (ACMSignInDialogSimple_Legacy)initWithNibName:(id)name bundle:(id)bundle;
 - (id)accountNameField;
 - (id)cancelButton;
 - (id)loginButton;
@@ -11,18 +11,18 @@
 
 @implementation ACMSignInDialogSimple_Legacy
 
-- (ACMSignInDialogSimple_Legacy)initWithNibName:(id)a3 bundle:(id)a4
+- (ACMSignInDialogSimple_Legacy)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = ACMSignInDialogSimple_Legacy;
-  return [(ACMSignInDialogSimple_Legacy *)&v5 initWithNibName:a3 bundle:a4];
+  return [(ACMSignInDialogSimple_Legacy *)&v5 initWithNibName:name bundle:bundle];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
   v4 = *MEMORY[0x29EDC8250];
-  [v3 removeObserver:self name:*MEMORY[0x29EDC8250] object:{-[ACMSignInDialogSimple_Legacy passwordField](self, "passwordField")}];
+  [defaultCenter removeObserver:self name:*MEMORY[0x29EDC8250] object:{-[ACMSignInDialogSimple_Legacy passwordField](self, "passwordField")}];
   [objc_msgSend(MEMORY[0x29EDBA068] "defaultCenter")];
   v5.receiver = self;
   v5.super_class = ACMSignInDialogSimple_Legacy;
@@ -48,12 +48,12 @@
   [(ACMSignInDialogSimple *)&v61 loadView];
   if ([(ACMSignInDialogSimple *)self backgroundColor])
   {
-    v3 = [(ACMSignInDialogSimple *)self backgroundColor];
+    backgroundColor = [(ACMSignInDialogSimple *)self backgroundColor];
   }
 
   else
   {
-    v3 = [MEMORY[0x29EDC7A00] whiteColor];
+    backgroundColor = [MEMORY[0x29EDC7A00] whiteColor];
   }
 
   [-[ACMSignInDialogSimple_Legacy view](self "view")];
@@ -232,9 +232,9 @@
   [v48 addSubview:{-[ACMSignInDialogSimple_Legacy loginButton](self, "loginButton")}];
   [-[ACMSignInDialogSimple_Legacy view](self "view")];
   [-[ACMSignInDialogSimple_Legacy accountNameField](self "accountNameField")];
-  v59 = [MEMORY[0x29EDBA068] defaultCenter];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
   v60 = *MEMORY[0x29EDC8250];
-  [v59 addObserver:self selector:sel_checkFields name:*MEMORY[0x29EDC8250] object:{-[ACMSignInDialogSimple_Legacy passwordField](self, "passwordField")}];
+  [defaultCenter addObserver:self selector:sel_checkFields name:*MEMORY[0x29EDC8250] object:{-[ACMSignInDialogSimple_Legacy passwordField](self, "passwordField")}];
   [objc_msgSend(MEMORY[0x29EDBA068] "defaultCenter")];
 }
 
@@ -296,15 +296,15 @@
     self->super.super._accountNameField = [(ACMSimpleTextField *)v4 initWithFrame:v12, v9, v11, v13];
     if ([(ACMSignInDialogSimple *)self accountNameFieldPlaceholder])
     {
-      v14 = [(ACMSignInDialogSimple *)self accountNameFieldPlaceholder];
+      accountNameFieldPlaceholder = [(ACMSignInDialogSimple *)self accountNameFieldPlaceholder];
     }
 
     else
     {
-      v14 = [ACMBaseLocale localizedString:@"Apple ID"];
+      accountNameFieldPlaceholder = [ACMBaseLocale localizedString:@"Apple ID"];
     }
 
-    [(UITextField *)self->super.super._accountNameField setPlaceholder:v14];
+    [(UITextField *)self->super.super._accountNameField setPlaceholder:accountNameFieldPlaceholder];
     if ([objc_msgSend(+[ACMAppleConnectImplComponents components](ACMAppleConnectImplComponents "components")])
     {
       [(UITextField *)self->super.super._accountNameField setPlaceholder:[(NSString *)[(UITextField *)self->super.super._accountNameField placeholder] stringByAppendingString:@" (PRE-RELEASE)"]];

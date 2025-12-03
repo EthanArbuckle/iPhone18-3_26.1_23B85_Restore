@@ -8,14 +8,14 @@
 
 - (id)defaultTraitCollection
 {
-  v1 = [a1 type];
-  if (!v1)
+  type = [self type];
+  if (!type)
   {
     v2 = 1;
     goto LABEL_5;
   }
 
-  if (v1 == 1)
+  if (type == 1)
   {
     v2 = 2;
 LABEL_5:
@@ -25,8 +25,8 @@ LABEL_5:
 
   v3 = 0;
 LABEL_7:
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v4 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v6 = v5;
 
   v7 = 2.0;
@@ -43,17 +43,17 @@ LABEL_7:
 
 + (id)currentInfo
 {
-  v0 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-  v1 = [v0 ic_appearanceInfo];
+  currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+  ic_appearanceInfo = [currentTraitCollection ic_appearanceInfo];
 
-  return v1;
+  return ic_appearanceInfo;
 }
 
 - (void)performAsDefaultAppearance:()UI
 {
   v4 = a3;
-  v5 = [a1 defaultTraitCollection];
-  [v5 ic_performAsCurrent:v4];
+  defaultTraitCollection = [self defaultTraitCollection];
+  [defaultTraitCollection ic_performAsCurrent:v4];
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface PurchaseHistoryItemsDAAPRequestEncoder
-- (id)dataForRequestWithError:(id *)a3;
+- (id)dataForRequestWithError:(id *)error;
 @end
 
 @implementation PurchaseHistoryItemsDAAPRequestEncoder
 
-- (id)dataForRequestWithError:(id *)a3
+- (id)dataForRequestWithError:(id *)error
 {
   revision = self->_revision;
   if (revision)
   {
-    v5 = [(NSNumber *)revision intValue];
+    intValue = [(NSNumber *)revision intValue];
   }
 
   else
   {
-    v5 = 0;
+    intValue = 0;
   }
 
   knownApps = self->_knownApps;
@@ -22,14 +22,14 @@
   v8 = knownApps;
   v9 = currentPaginationToken;
   objc_opt_self();
-  v10 = [[NSOutputStream alloc] initToMemory];
-  v11 = [[DKDAAPWriter alloc] initWithStream:v10];
+  initToMemory = [[NSOutputStream alloc] initToMemory];
+  v11 = [[DKDAAPWriter alloc] initWithStream:initToMemory];
   [v11 startContainerWithCode:1633973106];
   objc_opt_self();
   v12 = [&off_100549308 componentsJoinedByString:{@", "}];
   [v11 writeString:v12 withCode:1835365473];
 
-  [v11 writeUInt32:v5 withCode:1836413810];
+  [v11 writeUInt32:intValue withCode:1836413810];
   [v11 writeUInt8:1 withCode:1835559268];
   [v11 writeUInt8:1 withCode:1634355568];
   if ([(NSString *)v9 length])
@@ -77,7 +77,7 @@
   [v11 endContainerWithCode:1634038892];
   [v11 endContainerWithCode:1633973106];
   [v11 close];
-  v21 = [v10 propertyForKey:NSStreamDataWrittenToMemoryStreamKey];
+  v21 = [initToMemory propertyForKey:NSStreamDataWrittenToMemoryStreamKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

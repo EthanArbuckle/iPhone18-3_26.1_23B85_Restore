@@ -1,61 +1,61 @@
 @interface PXStoryDefaultDisplayAssetCroppingContext
 - (NSSet)featuredPersonLocalIdentifiers;
-- (PXStoryDefaultDisplayAssetCroppingContext)initWithAssetCollection:(id)a3 detailedSaliency:(id)a4;
-- (id)adjustOrderedFaces:(id)a3 featuredFaceCount:(int64_t *)a4;
-- (id)adjustOrderedFaces:(id)a3 featuredFaceCount:(int64_t *)a4 forFeaturedPersonWithLocalIdentifiers:(id)a5;
-- (id)cropContentRectsForMultipartPanoramaAsset:(id)a3 axis:(int64_t)a4 cropContentsRectsApectRatio:(double)a5;
-- (id)orderFaces:(id)a3;
+- (PXStoryDefaultDisplayAssetCroppingContext)initWithAssetCollection:(id)collection detailedSaliency:(id)saliency;
+- (id)adjustOrderedFaces:(id)faces featuredFaceCount:(int64_t *)count;
+- (id)adjustOrderedFaces:(id)faces featuredFaceCount:(int64_t *)count forFeaturedPersonWithLocalIdentifiers:(id)identifiers;
+- (id)cropContentRectsForMultipartPanoramaAsset:(id)asset axis:(int64_t)axis cropContentsRectsApectRatio:(double)ratio;
+- (id)orderFaces:(id)faces;
 @end
 
 @implementation PXStoryDefaultDisplayAssetCroppingContext
 
-- (id)cropContentRectsForMultipartPanoramaAsset:(id)a3 axis:(int64_t)a4 cropContentsRectsApectRatio:(double)a5
+- (id)cropContentRectsForMultipartPanoramaAsset:(id)asset axis:(int64_t)axis cropContentsRectsApectRatio:(double)ratio
 {
-  v8 = a3;
-  v9 = [(PXStoryDefaultDisplayAssetCroppingContext *)self detailedSaliency];
-  v10 = [v9 saliencyAreasForDisplayAsset:v8];
+  assetCopy = asset;
+  detailedSaliency = [(PXStoryDefaultDisplayAssetCroppingContext *)self detailedSaliency];
+  v10 = [detailedSaliency saliencyAreasForDisplayAsset:assetCopy];
 
   v11 = [[PXStoryMultipartPanoramaCropFinder alloc] initWithSaliencyAreas:v10];
-  v12 = [(PXStoryMultipartPanoramaCropFinder *)v11 bestCropContentsRectsWithAspectRatio:a4 axis:a5];
+  v12 = [(PXStoryMultipartPanoramaCropFinder *)v11 bestCropContentsRectsWithAspectRatio:axis axis:ratio];
 
   return v12;
 }
 
-- (id)adjustOrderedFaces:(id)a3 featuredFaceCount:(int64_t *)a4
+- (id)adjustOrderedFaces:(id)faces featuredFaceCount:(int64_t *)count
 {
   v11.receiver = self;
   v11.super_class = PXStoryDefaultDisplayAssetCroppingContext;
   v12 = 0;
-  v6 = [(PXStoryBaseDisplayAssetCroppingContext *)&v11 adjustOrderedFaces:a3 featuredFaceCount:&v12];
+  v6 = [(PXStoryBaseDisplayAssetCroppingContext *)&v11 adjustOrderedFaces:faces featuredFaceCount:&v12];
   v7 = [(PXStoryDefaultDisplayAssetCroppingContext *)self orderFaces:v6];
 
-  v8 = [(PXStoryDefaultDisplayAssetCroppingContext *)self featuredPersonLocalIdentifiers];
-  v9 = [(PXStoryDefaultDisplayAssetCroppingContext *)self adjustOrderedFaces:v7 featuredFaceCount:&v12 forFeaturedPersonWithLocalIdentifiers:v8];
+  featuredPersonLocalIdentifiers = [(PXStoryDefaultDisplayAssetCroppingContext *)self featuredPersonLocalIdentifiers];
+  v9 = [(PXStoryDefaultDisplayAssetCroppingContext *)self adjustOrderedFaces:v7 featuredFaceCount:&v12 forFeaturedPersonWithLocalIdentifiers:featuredPersonLocalIdentifiers];
 
   if (!v12)
   {
     v12 = [v9 count] != 0;
   }
 
-  if (a4)
+  if (count)
   {
-    *a4 = v12;
+    *count = v12;
   }
 
   return v9;
 }
 
-- (id)adjustOrderedFaces:(id)a3 featuredFaceCount:(int64_t *)a4 forFeaturedPersonWithLocalIdentifiers:(id)a5
+- (id)adjustOrderedFaces:(id)faces featuredFaceCount:(int64_t *)count forFeaturedPersonWithLocalIdentifiers:(id)identifiers
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = v7;
+  facesCopy = faces;
+  identifiersCopy = identifiers;
+  v9 = facesCopy;
   v10 = [v9 count];
-  if (v10 < 1 || (v11 = v10, ![v8 count]))
+  if (v10 < 1 || (v11 = v10, ![identifiersCopy count]))
   {
     v13 = 0;
     v21 = v9;
-    if (!a4)
+    if (!count)
     {
       goto LABEL_16;
     }
@@ -63,14 +63,14 @@
     goto LABEL_15;
   }
 
-  v23 = a4;
+  countCopy = count;
   v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v11];
   v13 = 0;
   for (i = 0; i != v11; ++i)
   {
     v15 = [v9 objectAtIndexedSubscript:i];
-    v16 = [v15 personLocalIdentifier];
-    v17 = [MEMORY[0x1E6978980] uuidFromLocalIdentifier:v16];
+    personLocalIdentifier = [v15 personLocalIdentifier];
+    v17 = [MEMORY[0x1E6978980] uuidFromLocalIdentifier:personLocalIdentifier];
     v18 = v17;
     if (v17)
     {
@@ -79,12 +79,12 @@
 
     else
     {
-      v19 = v16;
+      v19 = personLocalIdentifier;
     }
 
     v20 = v19;
 
-    if (v20 && [v8 containsObject:v20])
+    if (v20 && [identifiersCopy containsObject:v20])
     {
       [v12 insertObject:v15 atIndex:v13++];
     }
@@ -97,11 +97,11 @@
 
   v21 = [v12 copy];
 
-  a4 = v23;
-  if (v23)
+  count = countCopy;
+  if (countCopy)
   {
 LABEL_15:
-    *a4 = v13;
+    *count = v13;
   }
 
 LABEL_16:
@@ -109,13 +109,13 @@ LABEL_16:
   return v21;
 }
 
-- (id)orderFaces:(id)a3
+- (id)orderFaces:(id)faces
 {
-  v3 = a3;
-  v4 = [v3 count];
+  facesCopy = faces;
+  v4 = [facesCopy count];
   if (v4 < 1)
   {
-    v18 = v3;
+    v18 = facesCopy;
   }
 
   else
@@ -125,7 +125,7 @@ LABEL_16:
     v7 = -1.79769313e308;
     do
     {
-      v8 = [v3 objectAtIndexedSubscript:v6];
+      v8 = [facesCopy objectAtIndexedSubscript:v6];
       [v8 size];
       v10 = v9;
 
@@ -144,7 +144,7 @@ LABEL_16:
     v14 = -1.79769313e308;
     do
     {
-      v15 = [v3 objectAtIndexedSubscript:v11];
+      v15 = [facesCopy objectAtIndexedSubscript:v11];
       [v15 size];
       if (v16 >= v12)
       {
@@ -160,7 +160,7 @@ LABEL_16:
     }
 
     while (v5 != v11);
-    v18 = v3;
+    v18 = facesCopy;
     if (v13 && v13 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v19 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v5];
@@ -189,47 +189,47 @@ LABEL_16:
 
 - (NSSet)featuredPersonLocalIdentifiers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_featuredPersonLocalIdentifiers)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_featuredPersonLocalIdentifiers)
   {
-    v3 = [(PXStoryDefaultDisplayAssetCroppingContext *)v2 assetCollection];
+    assetCollection = [(PXStoryDefaultDisplayAssetCroppingContext *)selfCopy assetCollection];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v3 featuredPersonLocalIdentifiers];
+      [assetCollection featuredPersonLocalIdentifiers];
       objc_claimAutoreleasedReturnValue();
       v4 = objc_alloc(MEMORY[0x1E695DFD8]);
       PXMap();
     }
 
-    if (!v2->_featuredPersonLocalIdentifiers)
+    if (!selfCopy->_featuredPersonLocalIdentifiers)
     {
       v5 = objc_alloc_init(MEMORY[0x1E695DFD8]);
-      featuredPersonLocalIdentifiers = v2->_featuredPersonLocalIdentifiers;
-      v2->_featuredPersonLocalIdentifiers = v5;
+      featuredPersonLocalIdentifiers = selfCopy->_featuredPersonLocalIdentifiers;
+      selfCopy->_featuredPersonLocalIdentifiers = v5;
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v7 = v2->_featuredPersonLocalIdentifiers;
+  v7 = selfCopy->_featuredPersonLocalIdentifiers;
 
   return v7;
 }
 
-- (PXStoryDefaultDisplayAssetCroppingContext)initWithAssetCollection:(id)a3 detailedSaliency:(id)a4
+- (PXStoryDefaultDisplayAssetCroppingContext)initWithAssetCollection:(id)collection detailedSaliency:(id)saliency
 {
-  v7 = a3;
-  v8 = a4;
+  collectionCopy = collection;
+  saliencyCopy = saliency;
   v12.receiver = self;
   v12.super_class = PXStoryDefaultDisplayAssetCroppingContext;
   v9 = [(PXStoryBaseDisplayAssetCroppingContext *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_assetCollection, a3);
-    objc_storeStrong(&v10->_detailedSaliency, a4);
+    objc_storeStrong(&v9->_assetCollection, collection);
+    objc_storeStrong(&v10->_detailedSaliency, saliency);
   }
 
   return v10;

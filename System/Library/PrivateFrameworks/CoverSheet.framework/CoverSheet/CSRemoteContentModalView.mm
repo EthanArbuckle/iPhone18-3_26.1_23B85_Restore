@@ -1,17 +1,17 @@
 @interface CSRemoteContentModalView
-- (CSRemoteContentModalView)initWithFrame:(CGRect)a3;
+- (CSRemoteContentModalView)initWithFrame:(CGRect)frame;
 - (CSRemoteModalContentViewTouchDelegate)touchDelegate;
-- (void)setTouchDelegate:(id)a3;
+- (void)setTouchDelegate:(id)delegate;
 @end
 
 @implementation CSRemoteContentModalView
 
-- (CSRemoteContentModalView)initWithFrame:(CGRect)a3
+- (CSRemoteContentModalView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v11.receiver = self;
   v11.super_class = CSRemoteContentModalView;
   v7 = [(CSModalView *)&v11 initWithFrame:?];
@@ -28,9 +28,9 @@
   return v7;
 }
 
-- (void)setTouchDelegate:(id)a3
+- (void)setTouchDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_touchDelegate);
   if (WeakRetained != obj)
   {

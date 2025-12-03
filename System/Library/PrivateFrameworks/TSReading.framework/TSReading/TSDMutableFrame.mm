@@ -1,10 +1,10 @@
 @interface TSDMutableFrame
-- (void)setAssetScale:(double)a3;
+- (void)setAssetScale:(double)scale;
 @end
 
 @implementation TSDMutableFrame
 
-- (void)setAssetScale:(double)a3
+- (void)setAssetScale:(double)scale
 {
   [(TSDFrameSpec *)[(TSDFrame *)self frameSpec] i_minimumAssetScale];
   TSUClamp();

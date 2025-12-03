@@ -1,13 +1,13 @@
 @interface HSBrowser
-+ (id)homeSharingBrowserWithGroupID:(id)a3;
-- (HSBrowser)initWithBrowserType:(int64_t)a3 groupID:(id)a4;
++ (id)homeSharingBrowserWithGroupID:(id)d;
+- (HSBrowser)initWithBrowserType:(int64_t)type groupID:(id)d;
 - (HSBrowserDelegate)delegate;
-- (void)_removalTimerFired:(id)a3;
-- (void)netService:(id)a3 didNotResolve:(id)a4;
-- (void)netServiceBrowser:(id)a3 didFindService:(id)a4 moreComing:(BOOL)a5;
-- (void)netServiceBrowser:(id)a3 didNotSearch:(id)a4;
-- (void)netServiceBrowser:(id)a3 didRemoveService:(id)a4 moreComing:(BOOL)a5;
-- (void)netServiceDidResolveAddress:(id)a3;
+- (void)_removalTimerFired:(id)fired;
+- (void)netService:(id)service didNotResolve:(id)resolve;
+- (void)netServiceBrowser:(id)browser didFindService:(id)service moreComing:(BOOL)coming;
+- (void)netServiceBrowser:(id)browser didNotSearch:(id)search;
+- (void)netServiceBrowser:(id)browser didRemoveService:(id)service moreComing:(BOOL)coming;
+- (void)netServiceDidResolveAddress:(id)address;
 - (void)start;
 - (void)stop;
 @end
@@ -21,55 +21,55 @@
   return WeakRetained;
 }
 
-- (void)netService:(id)a3 didNotResolve:(id)a4
+- (void)netService:(id)service didNotResolve:(id)resolve
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  resolveCopy = resolve;
   v8 = os_log_create("com.apple.amp.HomeSharing", "Browsing");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    v9 = [(HSBrowser *)self serviceBrowser];
-    v10 = [v6 name];
-    v11 = [v7 objectForKeyedSubscript:*MEMORY[0x277CCA588]];
+    serviceBrowser = [(HSBrowser *)self serviceBrowser];
+    name = [serviceCopy name];
+    v11 = [resolveCopy objectForKeyedSubscript:*MEMORY[0x277CCA588]];
     v14 = 134218498;
-    v15 = v9;
+    v15 = serviceBrowser;
     v16 = 2114;
-    v17 = v10;
+    v17 = name;
     v18 = 2048;
-    v19 = [v11 longLongValue];
+    longLongValue = [v11 longLongValue];
     _os_log_impl(&dword_254418000, v8, OS_LOG_TYPE_ERROR, "Service browser: %p failed to resolve service '%{public}@' with error code: %lld", &v14, 0x20u);
   }
 
-  v12 = [(HSBrowser *)self resolvingServices];
-  [v12 removeObject:v6];
+  resolvingServices = [(HSBrowser *)self resolvingServices];
+  [resolvingServices removeObject:serviceCopy];
 
-  v13 = [MEMORY[0x277CBEB88] mainRunLoop];
-  [v6 removeFromRunLoop:v13 forMode:*MEMORY[0x277CBE738]];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  [serviceCopy removeFromRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
 }
 
-- (void)netServiceDidResolveAddress:(id)a3
+- (void)netServiceDidResolveAddress:(id)address
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HSBrowser *)self resolvingServices];
-  [v5 removeObject:v4];
+  addressCopy = address;
+  resolvingServices = [(HSBrowser *)self resolvingServices];
+  [resolvingServices removeObject:addressCopy];
 
-  v6 = [MEMORY[0x277CBEB88] mainRunLoop];
-  [v4 removeFromRunLoop:v6 forMode:*MEMORY[0x277CBE738]];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  [addressCopy removeFromRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
 
-  v7 = [v4 name];
+  name = [addressCopy name];
   v8 = MEMORY[0x277CCACE0];
-  v9 = v4;
+  v9 = addressCopy;
   v10 = objc_alloc_init(v8);
   [v10 setScheme:@"http"];
-  v11 = [v9 hostName];
-  [v10 setHost:v11];
+  hostName = [v9 hostName];
+  [v10 setHost:hostName];
 
   v12 = MEMORY[0x277CCABB0];
-  v13 = [v9 port];
+  port = [v9 port];
 
-  v14 = [v12 numberWithInteger:v13];
+  v14 = [v12 numberWithInteger:port];
   [v10 setPort:v14];
 
   v15 = [v10 URL];
@@ -77,11 +77,11 @@
   v16 = os_log_create("com.apple.amp.HomeSharing", "Browsing");
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [(HSBrowser *)self serviceBrowser];
+    serviceBrowser = [(HSBrowser *)self serviceBrowser];
     *buf = 134218498;
-    v59 = v17;
+    v59 = serviceBrowser;
     v60 = 2114;
-    v61 = v7;
+    v61 = name;
     v62 = 2112;
     v63 = v15;
     _os_log_impl(&dword_254418000, v16, OS_LOG_TYPE_INFO, "Service browser: %p resolved service '%{public}@' base URL: %@", buf, 0x20u);
@@ -90,29 +90,29 @@
   if (v15)
   {
     v18 = MEMORY[0x277CCAB78];
-    v19 = [v9 TXTRecordData];
-    v20 = [v18 dictionaryFromTXTRecordData:v19];
+    tXTRecordData = [v9 TXTRecordData];
+    v20 = [v18 dictionaryFromTXTRecordData:tXTRecordData];
 
     if (![(HSBrowser *)self browserType])
     {
-      v53 = v7;
+      v53 = name;
       v52 = v15;
       v21 = v20;
       v22 = objc_alloc(MEMORY[0x277CCACA8]);
       v23 = [v21 objectForKey:@"iTSh Version"];
       v24 = [v22 initWithData:v23 encoding:4];
 
-      v25 = [v24 intValue];
+      intValue = [v24 intValue];
       v26 = os_log_create("com.apple.amp.HomeSharing", "Browsing");
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
         *buf = 67109120;
-        LODWORD(v59) = v25;
+        LODWORD(v59) = intValue;
         _os_log_impl(&dword_254418000, v26, OS_LOG_TYPE_INFO, "iTunes sharing version: %i", buf, 8u);
       }
 
       v51 = v21;
-      if (v25 <= 196611)
+      if (intValue <= 196611)
       {
         v38 = os_log_create("com.apple.amp.HomeSharing", "Browsing");
         v40 = v52;
@@ -168,13 +168,13 @@
       if (v41)
       {
         [(HSHomeSharingLibrary *)v41 setService:v9];
-        v42 = [(HSBrowser *)self availableLibraries];
-        [v42 addObject:v41];
+        availableLibraries = [(HSBrowser *)self availableLibraries];
+        [availableLibraries addObject:v41];
 
-        v43 = [(HSBrowser *)self librariesPendingRemoval];
-        [v43 removeObject:v41];
+        librariesPendingRemoval = [(HSBrowser *)self librariesPendingRemoval];
+        [librariesPendingRemoval removeObject:v41];
 
-        v44 = [(HSBrowser *)self delegate];
+        delegate = [(HSBrowser *)self delegate];
         if (objc_opt_respondsToSelector())
         {
           v45 = dispatch_get_global_queue(0, 0);
@@ -182,8 +182,8 @@
           block[1] = 3221225472;
           block[2] = __41__HSBrowser_netServiceDidResolveAddress___block_invoke;
           block[3] = &unk_279779D78;
-          v55 = v44;
-          v56 = self;
+          v55 = delegate;
+          selfCopy = self;
           v57 = v41;
           dispatch_async(v45, block);
         }
@@ -192,21 +192,21 @@
   }
 }
 
-- (void)_removalTimerFired:(id)a3
+- (void)_removalTimerFired:(id)fired
 {
-  v4 = [a3 userInfo];
-  v5 = [(HSBrowser *)self librariesPendingRemoval];
-  v6 = [v5 containsObject:v4];
+  userInfo = [fired userInfo];
+  librariesPendingRemoval = [(HSBrowser *)self librariesPendingRemoval];
+  v6 = [librariesPendingRemoval containsObject:userInfo];
 
   if (v6)
   {
-    v7 = [(HSBrowser *)self librariesPendingRemoval];
-    [v7 removeObject:v4];
+    librariesPendingRemoval2 = [(HSBrowser *)self librariesPendingRemoval];
+    [librariesPendingRemoval2 removeObject:userInfo];
 
-    v8 = [(HSBrowser *)self availableLibraries];
-    [v8 removeObject:v4];
+    availableLibraries = [(HSBrowser *)self availableLibraries];
+    [availableLibraries removeObject:userInfo];
 
-    v9 = [(HSBrowser *)self delegate];
+    delegate = [(HSBrowser *)self delegate];
     if (objc_opt_respondsToSelector())
     {
       v10 = dispatch_get_global_queue(0, 0);
@@ -214,35 +214,35 @@
       block[1] = 3221225472;
       block[2] = __32__HSBrowser__removalTimerFired___block_invoke;
       block[3] = &unk_279779D78;
-      v12 = v9;
-      v13 = self;
-      v14 = v4;
+      v12 = delegate;
+      selfCopy = self;
+      v14 = userInfo;
       dispatch_async(v10, block);
     }
   }
 }
 
-- (void)netServiceBrowser:(id)a3 didRemoveService:(id)a4 moreComing:(BOOL)a5
+- (void)netServiceBrowser:(id)browser didRemoveService:(id)service moreComing:(BOOL)coming
 {
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  browserCopy = browser;
+  serviceCopy = service;
   v9 = os_log_create("com.apple.amp.HomeSharing", "Browsing");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 name];
+    name = [serviceCopy name];
     *buf = 134218242;
-    v31 = v7;
+    v31 = browserCopy;
     v32 = 2114;
-    v33 = v10;
+    v33 = name;
     _os_log_impl(&dword_254418000, v9, OS_LOG_TYPE_DEFAULT, "Service browser: %p removed service with name: '%{public}@'", buf, 0x16u);
   }
 
-  v23 = v7;
+  v23 = browserCopy;
 
-  v11 = [MEMORY[0x277CBEB88] mainRunLoop];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
   v24 = *MEMORY[0x277CBE738];
-  [v8 removeFromRunLoop:v11 forMode:?];
+  [serviceCopy removeFromRunLoop:mainRunLoop forMode:?];
 
   v27 = 0u;
   v28 = 0u;
@@ -264,17 +264,17 @@
         }
 
         v17 = *(*(&v25 + 1) + 8 * i);
-        v18 = [v17 service];
-        v19 = [v18 isEqual:v8];
+        service = [v17 service];
+        v19 = [service isEqual:serviceCopy];
 
         if (v19)
         {
-          v20 = [(HSBrowser *)self librariesPendingRemoval];
-          [v20 addObject:v17];
+          librariesPendingRemoval = [(HSBrowser *)self librariesPendingRemoval];
+          [librariesPendingRemoval addObject:v17];
 
           v21 = [MEMORY[0x277CBEBB8] timerWithTimeInterval:self target:sel__removalTimerFired_ selector:v17 userInfo:0 repeats:2.0];
-          v22 = [MEMORY[0x277CBEB88] mainRunLoop];
-          [v22 addTimer:v21 forMode:v24];
+          mainRunLoop2 = [MEMORY[0x277CBEB88] mainRunLoop];
+          [mainRunLoop2 addTimer:v21 forMode:v24];
         }
       }
 
@@ -285,58 +285,58 @@
   }
 }
 
-- (void)netServiceBrowser:(id)a3 didFindService:(id)a4 moreComing:(BOOL)a5
+- (void)netServiceBrowser:(id)browser didFindService:(id)service moreComing:(BOOL)coming
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  browserCopy = browser;
+  serviceCopy = service;
   v9 = os_log_create("com.apple.amp.HomeSharing", "Browsing");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 name];
+    name = [serviceCopy name];
     v13 = 134218242;
-    v14 = v7;
+    v14 = browserCopy;
     v15 = 2114;
-    v16 = v10;
+    v16 = name;
     _os_log_impl(&dword_254418000, v9, OS_LOG_TYPE_DEFAULT, "Service browser: %p found service with name: '%{public}@'", &v13, 0x16u);
   }
 
-  v11 = [(HSBrowser *)self resolvingServices];
-  [v11 addObject:v8];
+  resolvingServices = [(HSBrowser *)self resolvingServices];
+  [resolvingServices addObject:serviceCopy];
 
-  [v8 setDelegate:self];
-  v12 = [MEMORY[0x277CBEB88] mainRunLoop];
-  [v8 scheduleInRunLoop:v12 forMode:*MEMORY[0x277CBE738]];
+  [serviceCopy setDelegate:self];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  [serviceCopy scheduleInRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
 
-  [v8 resolveWithTimeout:10.0];
+  [serviceCopy resolveWithTimeout:10.0];
 }
 
-- (void)netServiceBrowser:(id)a3 didNotSearch:(id)a4
+- (void)netServiceBrowser:(id)browser didNotSearch:(id)search
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  browserCopy = browser;
+  searchCopy = search;
   v7 = os_log_create("com.apple.amp.HomeSharing", "Browsing");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    v8 = [v6 objectForKeyedSubscript:*MEMORY[0x277CCA588]];
+    v8 = [searchCopy objectForKeyedSubscript:*MEMORY[0x277CCA588]];
     v9 = 134218240;
-    v10 = v5;
+    v10 = browserCopy;
     v11 = 2048;
-    v12 = [v8 longLongValue];
+    longLongValue = [v8 longLongValue];
     _os_log_impl(&dword_254418000, v7, OS_LOG_TYPE_ERROR, "Service browser: %p failed to search with error code: %lld", &v9, 0x16u);
   }
 }
 
 - (void)stop
 {
-  v3 = [(HSBrowser *)self serviceBrowserQueue];
+  serviceBrowserQueue = [(HSBrowser *)self serviceBrowserQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __17__HSBrowser_stop__block_invoke;
   block[3] = &unk_27977A350;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(serviceBrowserQueue, block);
 }
 
 void __17__HSBrowser_stop__block_invoke(uint64_t a1)
@@ -432,13 +432,13 @@ void __17__HSBrowser_stop__block_invoke(uint64_t a1)
 
 - (void)start
 {
-  v3 = [(HSBrowser *)self serviceBrowserQueue];
+  serviceBrowserQueue = [(HSBrowser *)self serviceBrowserQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __18__HSBrowser_start__block_invoke;
   block[3] = &unk_27977A350;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(serviceBrowserQueue, block);
 }
 
 void __18__HSBrowser_start__block_invoke(uint64_t a1)
@@ -487,14 +487,14 @@ void __18__HSBrowser_start__block_invoke(uint64_t a1)
   }
 }
 
-- (HSBrowser)initWithBrowserType:(int64_t)a3 groupID:(id)a4
+- (HSBrowser)initWithBrowserType:(int64_t)type groupID:(id)d
 {
-  v7 = a4;
-  v8 = v7;
-  if (!a3 && ![v7 length])
+  dCopy = d;
+  v8 = dCopy;
+  if (!type && ![dCopy length])
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"HSBrowser.m" lineNumber:36 description:@"Home Sharing group ID is required for browser type HSBrowserTypeHomeSharing."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HSBrowser.m" lineNumber:36 description:@"Home Sharing group ID is required for browser type HSBrowserTypeHomeSharing."];
   }
 
   v23.receiver = self;
@@ -503,24 +503,24 @@ void __18__HSBrowser_start__block_invoke(uint64_t a1)
   v10 = v9;
   if (v9)
   {
-    v9->_browserType = a3;
-    v11 = [MEMORY[0x277CBEB18] array];
+    v9->_browserType = type;
+    array = [MEMORY[0x277CBEB18] array];
     availableLibraries = v10->_availableLibraries;
-    v10->_availableLibraries = v11;
+    v10->_availableLibraries = array;
 
-    v13 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     resolvingServices = v10->_resolvingServices;
-    v10->_resolvingServices = v13;
+    v10->_resolvingServices = array2;
 
-    v15 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     librariesPendingRemoval = v10->_librariesPendingRemoval;
-    v10->_librariesPendingRemoval = v15;
+    v10->_librariesPendingRemoval = array3;
 
     v17 = dispatch_queue_create("com.apple.HomeSharing.HSBrowser.serviceBrowserQueue", 0);
     serviceBrowserQueue = v10->_serviceBrowserQueue;
     v10->_serviceBrowserQueue = v17;
 
-    if (a3)
+    if (type)
     {
       v19 = @"_daap._tcp";
     }
@@ -537,10 +537,10 @@ void __18__HSBrowser_start__block_invoke(uint64_t a1)
   return v10;
 }
 
-+ (id)homeSharingBrowserWithGroupID:(id)a3
++ (id)homeSharingBrowserWithGroupID:(id)d
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBrowserType:0 groupID:v3];
+  dCopy = d;
+  v4 = [objc_alloc(objc_opt_class()) initWithBrowserType:0 groupID:dCopy];
 
   return v4;
 }

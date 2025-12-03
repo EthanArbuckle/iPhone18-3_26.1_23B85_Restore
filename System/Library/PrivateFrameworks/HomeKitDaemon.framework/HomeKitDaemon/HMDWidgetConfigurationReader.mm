@@ -1,44 +1,44 @@
 @interface HMDWidgetConfigurationReader
 + (id)logCategory;
 - (HMDWidgetConfigurationReader)init;
-- (HMDWidgetConfigurationReader)initWithWidgetInterface:(id)a3 controlsInterface:(id)a4 bundleIdentifier:(id)a5 lockScreenWidgetKinds:(id)a6;
-- (__CFString)identifierForKind:(void *)a3 intent:(int)a4 requiresRecommendationsParameter:;
+- (HMDWidgetConfigurationReader)initWithWidgetInterface:(id)interface controlsInterface:(id)controlsInterface bundleIdentifier:(id)identifier lockScreenWidgetKinds:(id)kinds;
+- (__CFString)identifierForKind:(void *)kind intent:(int)intent requiresRecommendationsParameter:;
 - (id)fetchedHomeWidgets;
 - (int64_t)homeWidgetsEnabledCount;
-- (void)fetchAutoBahnWidgetsWithCompletion:(id)a3;
-- (void)fetchHomeControlsWithCompletion:(id)a3;
-- (void)fetchHomeWidgetsWithCompletion:(id)a3;
+- (void)fetchAutoBahnWidgetsWithCompletion:(id)completion;
+- (void)fetchHomeControlsWithCompletion:(id)completion;
+- (void)fetchHomeWidgetsWithCompletion:(id)completion;
 @end
 
 @implementation HMDWidgetConfigurationReader
 
 - (int64_t)homeWidgetsEnabledCount
 {
-  v2 = [(HMDWidgetConfigurationReader *)self fetchedHomeWidgets];
-  v3 = [v2 count];
+  fetchedHomeWidgets = [(HMDWidgetConfigurationReader *)self fetchedHomeWidgets];
+  v3 = [fetchedHomeWidgets count];
 
   return v3;
 }
 
-- (void)fetchHomeControlsWithCompletion:(id)a3
+- (void)fetchHomeControlsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self)
   {
-    v5 = [(HMDWidgetConfigurationReader *)self controlsInterface];
+    controlsInterface = [(HMDWidgetConfigurationReader *)self controlsInterface];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __64__HMDWidgetConfigurationReader_fetchHomeControlsWithCompletion___block_invoke;
     v7[3] = &unk_278687158;
     v7[4] = self;
-    v8 = v4;
-    [v5 allConfiguredControlsWithCompletion:v7];
+    v8 = completionCopy;
+    [controlsInterface allConfiguredControlsWithCompletion:v7];
   }
 
   else
   {
     v6 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
-    (*(v4 + 2))(v4, 0, v6);
+    (*(completionCopy + 2))(completionCopy, 0, v6);
   }
 }
 
@@ -210,13 +210,13 @@ LABEL_14:
   return v25;
 }
 
-- (__CFString)identifierForKind:(void *)a3 intent:(int)a4 requiresRecommendationsParameter:
+- (__CFString)identifierForKind:(void *)kind intent:(int)intent requiresRecommendationsParameter:
 {
   v86[1] = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = [a1 lockScreenWidgetKinds];
-  v10 = [v9 containsObject:v7];
+  kindCopy = kind;
+  lockScreenWidgetKinds = [self lockScreenWidgetKinds];
+  v10 = [lockScreenWidgetKinds containsObject:v7];
 
   if (v10)
   {
@@ -226,24 +226,24 @@ LABEL_7:
   }
 
   v78 = 0;
-  v11 = [v8 serializedParameters];
-  v12 = [v11 hmf_BOOLForKey:@"useHomeKitRecommendations" isPresent:&v78];
+  serializedParameters = [kindCopy serializedParameters];
+  v12 = [serializedParameters hmf_BOOLForKey:@"useHomeKitRecommendations" isPresent:&v78];
 
-  if (a4 && (v78 & 1) == 0)
+  if (intent && (v78 & 1) == 0)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = a1;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [v8 serializedParameters];
+      serializedParameters2 = [kindCopy serializedParameters];
       *buf = 138543874;
       v80 = v16;
       v81 = 2112;
       v82 = @"useHomeKitRecommendations";
       v83 = 2112;
-      v84[0] = v17;
+      v84[0] = serializedParameters2;
       _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_ERROR, "%{public}@Ignoring widget configuration because %@ key is missing from serialized parameters: %@", buf, 0x20u);
     }
 
@@ -251,9 +251,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v19 = v12 & a4;
-  v20 = [v8 serializedParameters];
-  v21 = [v20 objectForKeyedSubscript:@"accessoriesAndScenes"];
+  v19 = v12 & intent;
+  serializedParameters3 = [kindCopy serializedParameters];
+  v21 = [serializedParameters3 objectForKeyedSubscript:@"accessoriesAndScenes"];
 
   if (v21)
   {
@@ -277,7 +277,7 @@ LABEL_7:
     else
     {
       v72 = v23;
-      v71 = a1;
+      selfCopy2 = self;
       v31 = v21;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -308,7 +308,7 @@ LABEL_7:
       }
 
       v56 = objc_autoreleasePoolPush();
-      v57 = a1;
+      selfCopy3 = self;
       v58 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v58, OS_LOG_TYPE_DEBUG))
       {
@@ -328,7 +328,7 @@ LABEL_7:
       {
 LABEL_21:
         v68 = v21;
-        v69 = v8;
+        v69 = kindCopy;
         v70 = v7;
         v76 = 0u;
         v77 = 0u;
@@ -376,7 +376,7 @@ LABEL_21:
                 else
                 {
                   v49 = objc_autoreleasePoolPush();
-                  v50 = a1;
+                  selfCopy4 = self;
                   v51 = HMFGetOSLogHandle();
                   if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
                   {
@@ -387,7 +387,7 @@ LABEL_21:
                     v82 = v40;
                     _os_log_impl(&dword_229538000, v51, OS_LOG_TYPE_ERROR, "%{public}@Unexpectedly missing the identifier in %@", buf, 0x16u);
 
-                    a1 = v71;
+                    self = selfCopy2;
                   }
 
                   objc_autoreleasePoolPop(v49);
@@ -398,7 +398,7 @@ LABEL_21:
               else
               {
                 v45 = objc_autoreleasePoolPush();
-                v46 = a1;
+                selfCopy5 = self;
                 v47 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
                 {
@@ -422,7 +422,7 @@ LABEL_21:
           while (v35);
         }
 
-        v8 = v69;
+        kindCopy = v69;
         v7 = v70;
         v21 = v68;
         v24 = v72;
@@ -441,7 +441,7 @@ LABEL_49:
     v61 = [v24 finalize];
     v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", v61];
     v62 = objc_autoreleasePoolPush();
-    v63 = a1;
+    selfCopy6 = self;
     v64 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v64, OS_LOG_TYPE_DEBUG))
     {
@@ -463,18 +463,18 @@ LABEL_49:
   else
   {
     v26 = objc_autoreleasePoolPush();
-    v27 = a1;
+    selfCopy7 = self;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
       v29 = HMFGetLogIdentifier();
-      v30 = [v8 serializedParameters];
+      serializedParameters4 = [kindCopy serializedParameters];
       *buf = 138543874;
       v80 = v29;
       v81 = 2112;
       v82 = @"accessoriesAndScenes";
       v83 = 2112;
-      v84[0] = v30;
+      v84[0] = serializedParameters4;
       _os_log_impl(&dword_229538000, v28, OS_LOG_TYPE_DEFAULT, "%{public}@Ignoring widget configuration because %@ key is missing from serialized parameters: %@", buf, 0x20u);
     }
 
@@ -488,25 +488,25 @@ LABEL_55:
   return v18;
 }
 
-- (void)fetchHomeWidgetsWithCompletion:(id)a3
+- (void)fetchHomeWidgetsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self)
   {
-    v5 = [(HMDWidgetConfigurationReader *)self widgetInterface];
+    widgetInterface = [(HMDWidgetConfigurationReader *)self widgetInterface];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __63__HMDWidgetConfigurationReader_fetchHomeWidgetsWithCompletion___block_invoke;
     v7[3] = &unk_278687158;
     v7[4] = self;
-    v8 = v4;
-    [v5 allConfiguredWidgetsWithCompletion:v7];
+    v8 = completionCopy;
+    [widgetInterface allConfiguredWidgetsWithCompletion:v7];
   }
 
   else
   {
     v6 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
-    (*(v4 + 2))(v4, 0, v6);
+    (*(completionCopy + 2))(completionCopy, 0, v6);
   }
 }
 
@@ -722,25 +722,25 @@ void __63__HMDWidgetConfigurationReader_fetchHomeWidgetsWithCompletion___block_i
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchAutoBahnWidgetsWithCompletion:(id)a3
+- (void)fetchAutoBahnWidgetsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self)
   {
-    v5 = [(HMDWidgetConfigurationReader *)self widgetInterface];
+    widgetInterface = [(HMDWidgetConfigurationReader *)self widgetInterface];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __67__HMDWidgetConfigurationReader_fetchAutoBahnWidgetsWithCompletion___block_invoke;
     v7[3] = &unk_278687158;
     v7[4] = self;
-    v8 = v4;
-    [v5 allConfiguredWidgetsWithCompletion:v7];
+    v8 = completionCopy;
+    [widgetInterface allConfiguredWidgetsWithCompletion:v7];
   }
 
   else
   {
     v6 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
-    (*(v4 + 2))(v4, 0, v6);
+    (*(completionCopy + 2))(completionCopy, 0, v6);
   }
 }
 
@@ -838,9 +838,9 @@ HMDWidget *__67__HMDWidgetConfigurationReader_fetchAutoBahnWidgetsWithCompletion
     v14 = 0x3032000000;
     v15 = __Block_byref_object_copy__140286;
     v16 = __Block_byref_object_dispose__140287;
-    v17 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v3 = dispatch_semaphore_create(0);
-    v4 = [(HMDWidgetConfigurationReader *)self widgetInterface];
+    widgetInterface = [(HMDWidgetConfigurationReader *)self widgetInterface];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __50__HMDWidgetConfigurationReader_fetchedHomeWidgets__block_invoke;
@@ -849,7 +849,7 @@ HMDWidget *__67__HMDWidgetConfigurationReader_fetchAutoBahnWidgetsWithCompletion
     v11 = &v12;
     v5 = v3;
     v10 = v5;
-    [v4 allConfiguredWidgetsWithCompletion:v9];
+    [widgetInterface allConfiguredWidgetsWithCompletion:v9];
 
     v6 = dispatch_time(0, 2000000000);
     dispatch_semaphore_wait(v5, v6);
@@ -913,22 +913,22 @@ void __50__HMDWidgetConfigurationReader_fetchedHomeWidgets__block_invoke(uint64_
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDWidgetConfigurationReader)initWithWidgetInterface:(id)a3 controlsInterface:(id)a4 bundleIdentifier:(id)a5 lockScreenWidgetKinds:(id)a6
+- (HMDWidgetConfigurationReader)initWithWidgetInterface:(id)interface controlsInterface:(id)controlsInterface bundleIdentifier:(id)identifier lockScreenWidgetKinds:(id)kinds
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  interfaceCopy = interface;
+  controlsInterfaceCopy = controlsInterface;
+  identifierCopy = identifier;
+  kindsCopy = kinds;
   v18.receiver = self;
   v18.super_class = HMDWidgetConfigurationReader;
   v15 = [(HMDWidgetConfigurationReader *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_widgetInterface, a3);
-    objc_storeStrong(&v16->_controlsInterface, a4);
-    objc_storeStrong(&v16->_bundleIdentifier, a5);
-    objc_storeStrong(&v16->_lockScreenWidgetKinds, a6);
+    objc_storeStrong(&v15->_widgetInterface, interface);
+    objc_storeStrong(&v16->_controlsInterface, controlsInterface);
+    objc_storeStrong(&v16->_bundleIdentifier, identifier);
+    objc_storeStrong(&v16->_lockScreenWidgetKinds, kinds);
   }
 
   return v16;

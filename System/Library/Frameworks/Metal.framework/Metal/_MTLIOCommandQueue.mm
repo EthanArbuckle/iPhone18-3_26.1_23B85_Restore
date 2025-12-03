@@ -1,10 +1,10 @@
 @interface _MTLIOCommandQueue
-- (_MTLIOCommandQueue)initWithDevice:(id)a3 descriptor:(id)a4;
+- (_MTLIOCommandQueue)initWithDevice:(id)device descriptor:(id)descriptor;
 - (id)commandBuffer;
 - (id)commandBufferWithUnretainedReferences;
-- (void)commit:(id)a3;
+- (void)commit:(id)commit;
 - (void)dealloc;
-- (void)didComplete:(id)a3 withStatus:(int64_t)a4;
+- (void)didComplete:(id)complete withStatus:(int64_t)status;
 - (void)enqueueBarrier;
 - (void)kickAllocatorCleanupQueue;
 - (void)launchIOWorkerThreads;
@@ -13,16 +13,16 @@
 
 @implementation _MTLIOCommandQueue
 
-- (_MTLIOCommandQueue)initWithDevice:(id)a3 descriptor:(id)a4
+- (_MTLIOCommandQueue)initWithDevice:(id)device descriptor:(id)descriptor
 {
   v24 = 0;
   memset(v23, 0, sizeof(v23));
-  _MTLMessageContextBegin_(v23, "[_MTLIOCommandQueue initWithDevice:descriptor:]", 1335, a3, 33, "IO Command Queue Creation Validation");
-  if (a3)
+  _MTLMessageContextBegin_(v23, "[_MTLIOCommandQueue initWithDevice:descriptor:]", 1335, device, 33, "IO Command Queue Creation Validation");
+  if (device)
   {
     if (MTLFailureTypeGetEnabled(1uLL))
     {
-      [_MTLIOCommandQueue initWithDevice:a3 descriptor:v23];
+      [_MTLIOCommandQueue initWithDevice:device descriptor:v23];
     }
   }
 
@@ -31,9 +31,9 @@
     _MTLMessageContextPush_(v23, 4, @"device must not be nil.", v7, v8, v9, v10, v11, v22.receiver);
   }
 
-  if (![a4 maxCommandBufferCount])
+  if (![descriptor maxCommandBufferCount])
   {
-    [_MTLIOCommandQueue initWithDevice:a4 descriptor:v23];
+    [_MTLIOCommandQueue initWithDevice:descriptor descriptor:v23];
   }
 
   v22.receiver = self;
@@ -41,12 +41,12 @@
   v12 = [(_MTLObjectWithLabel *)&v22 init];
   if (v12)
   {
-    v12->_device = a3;
-    v12->_gpuEvent = [a3 newSharedEvent];
-    v12->_gpuQueue = [a3 newCommandQueueWithMaxCommandBufferCount:0x7FFFFFFFFFFFFF80];
+    v12->_device = device;
+    v12->_gpuEvent = [device newSharedEvent];
+    v12->_gpuQueue = [device newCommandQueueWithMaxCommandBufferCount:0x7FFFFFFFFFFFFF80];
     v12->_eventSignalListener = objc_opt_new();
-    v13 = [a4 priority];
-    if (v13 == 1)
+    priority = [descriptor priority];
+    if (priority == 1)
     {
       v14 = 17;
     }
@@ -56,7 +56,7 @@
       v14 = 33;
     }
 
-    if (v13 == 2)
+    if (priority == 2)
     {
       v15 = QOS_CLASS_BACKGROUND;
     }
@@ -72,25 +72,25 @@
     v12->_followonQueue = dispatch_queue_create("com.Metal.IOCommandQueueFollowon", v17);
     dispatch_release(v16);
     dispatch_release(v17);
-    v12->_commandBufferSemaphore = dispatch_semaphore_create([a4 maxCommandBufferCount]);
+    v12->_commandBufferSemaphore = dispatch_semaphore_create([descriptor maxCommandBufferCount]);
     v12->_completeQueueMutex.__sig = 850045863;
     *v12->_completeQueueMutex.__opaque = 0u;
     *&v12->_completeQueueMutex.__opaque[16] = 0u;
     *&v12->_completeQueueMutex.__opaque[32] = 0u;
     *&v12->_completeQueueMutex.__opaque[48] = 0;
     v12->_completeQueue = objc_opt_new();
-    if ([a4 scratchBufferAllocator])
+    if ([descriptor scratchBufferAllocator])
     {
-      v18 = [a4 scratchBufferAllocator];
+      scratchBufferAllocator = [descriptor scratchBufferAllocator];
     }
 
     else
     {
-      v18 = [[_MTLIOScratchBufferAllocator alloc] initWithDevice:v12->_device];
+      scratchBufferAllocator = [[_MTLIOScratchBufferAllocator alloc] initWithDevice:v12->_device];
     }
 
-    v12->_scratchBufferAllocator = v18;
-    v12->_usesPooledScratchBufferAllocator = [a4 scratchBufferAllocator] == 0;
+    v12->_scratchBufferAllocator = scratchBufferAllocator;
+    v12->_usesPooledScratchBufferAllocator = [descriptor scratchBufferAllocator] == 0;
     v12->cmdCvar.__sig = 1018212795;
     *v12->cmdCvar.__opaque = 0u;
     *&v12->cmdCvar.__opaque[16] = 0u;
@@ -100,29 +100,29 @@
     *&v12->cmdMutex.__opaque[16] = 0u;
     *&v12->cmdMutex.__opaque[32] = 0u;
     *&v12->cmdMutex.__opaque[48] = 0;
-    v12->_type = [a4 type];
-    if ([a4 maxCommandsInFlight])
+    v12->_type = [descriptor type];
+    if ([descriptor maxCommandsInFlight])
     {
-      v19 = [a4 maxCommandsInFlight];
-      if (v19 >= [a3 maxIOCommandsInFlight])
+      maxCommandsInFlight = [descriptor maxCommandsInFlight];
+      if (maxCommandsInFlight >= [device maxIOCommandsInFlight])
       {
-        v20 = [a3 maxIOCommandsInFlight];
+        maxIOCommandsInFlight = [device maxIOCommandsInFlight];
       }
 
       else
       {
-        v20 = [a4 maxCommandsInFlight];
+        maxIOCommandsInFlight = [descriptor maxCommandsInFlight];
       }
     }
 
     else
     {
-      v20 = [a3 maxIOCommandsInFlight] >> 1;
+      maxIOCommandsInFlight = [device maxIOCommandsInFlight] >> 1;
     }
 
-    v12->_maxWorkerThreads = v20;
-    v12->_resourceListPool = [a3 akIOResourceListPool];
-    v12->_priority = [a4 priority];
+    v12->_maxWorkerThreads = maxIOCommandsInFlight;
+    v12->_resourceListPool = [device akIOResourceListPool];
+    v12->_priority = [descriptor priority];
     v12->_commandList.activeq.tqh_first = 0;
     v12->_commandList.activeq.tqh_last = &v12->_commandList.activeq.tqh_first;
     v12->_commandList.cond = &v12->cmdCvar;
@@ -157,11 +157,11 @@
   }
 }
 
-- (void)didComplete:(id)a3 withStatus:(int64_t)a4
+- (void)didComplete:(id)complete withStatus:(int64_t)status
 {
-  [a3 didCompleteWithStatus:a4];
+  [complete didCompleteWithStatus:status];
   pthread_mutex_lock(&self->_completeQueueMutex);
-  [(NSMutableArray *)self->_completeQueue removeObject:a3];
+  [(NSMutableArray *)self->_completeQueue removeObject:complete];
 
   pthread_mutex_unlock(&self->_completeQueueMutex);
 }
@@ -180,13 +180,13 @@
   return v2;
 }
 
-- (void)commit:(id)a3
+- (void)commit:(id)commit
 {
   pthread_mutex_lock(&self->_completeQueueMutex);
-  [(NSMutableArray *)self->_completeQueue addObject:a3];
+  [(NSMutableArray *)self->_completeQueue addObject:commit];
   pthread_mutex_unlock(&self->_completeQueueMutex);
   v5 = malloc_type_malloc(0x20uLL, 0x10A00406D7A97B0uLL);
-  *(v5 + 1) = a3;
+  *(v5 + 1) = commit;
   *v5 = 0;
   MTLIOCommandQueueCommandListEnqueueCommand(&self->_commandList, v5);
   if (self->_type == 1)

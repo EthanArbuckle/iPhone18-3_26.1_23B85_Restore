@@ -19,206 +19,206 @@
 - (id)_fetchFirstAssetSortedByCreationDateAscending:()Clouseau
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v5 = [a1 photoLibrary];
-  v6 = [v5 librarySpecificFetchOptions];
+  photoLibrary = [self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v7 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:a3];
   v12[0] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-  [v6 setSortDescriptors:v8];
+  [librarySpecificFetchOptions setSortDescriptors:v8];
 
-  [v6 setFetchLimit:1];
-  [v6 setIncludeGuestAssets:1];
-  v9 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:a1 options:v6];
-  v10 = [v9 firstObject];
+  [librarySpecificFetchOptions setFetchLimit:1];
+  [librarySpecificFetchOptions setIncludeGuestAssets:1];
+  v9 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:self options:librarySpecificFetchOptions];
+  firstObject = [v9 firstObject];
 
-  return v10;
+  return firstObject;
 }
 
 - (id)_legacyLocalEndDate
 {
   v2 = objc_autoreleasePoolPush();
-  v3 = [a1 _fetchFirstAssetSortedByCreationDateAscending:0];
-  v4 = [v3 cls_localDate];
+  v3 = [self _fetchFirstAssetSortedByCreationDateAscending:0];
+  cls_localDate = [v3 cls_localDate];
 
   objc_autoreleasePoolPop(v2);
 
-  return v4;
+  return cls_localDate;
 }
 
 - (id)_legacyLocalStartDate
 {
   v2 = objc_autoreleasePoolPush();
-  v3 = [a1 _fetchFirstAssetSortedByCreationDateAscending:1];
-  v4 = [v3 cls_localDate];
+  v3 = [self _fetchFirstAssetSortedByCreationDateAscending:1];
+  cls_localDate = [v3 cls_localDate];
 
   objc_autoreleasePoolPop(v2);
 
-  return v4;
+  return cls_localDate;
 }
 
 - (id)_legacyUniversalEndDate
 {
-  v4 = objc_getAssociatedObject(a1, a2);
-  if (!v4)
+  endDate = objc_getAssociatedObject(self, a2);
+  if (!endDate)
   {
-    v4 = [a1 endDate];
-    if (!v4)
+    endDate = [self endDate];
+    if (!endDate)
     {
       v5 = objc_autoreleasePoolPush();
-      v6 = [a1 _fetchFirstAssetSortedByCreationDateAscending:0];
-      v4 = [v6 cls_universalDate];
+      v6 = [self _fetchFirstAssetSortedByCreationDateAscending:0];
+      endDate = [v6 cls_universalDate];
 
       objc_autoreleasePoolPop(v5);
     }
 
-    objc_setAssociatedObject(a1, a2, v4, 0x301);
+    objc_setAssociatedObject(self, a2, endDate, 0x301);
   }
 
-  return v4;
+  return endDate;
 }
 
 - (id)_legacyUniversalStartDate
 {
-  v4 = objc_getAssociatedObject(a1, a2);
-  if (!v4)
+  startDate = objc_getAssociatedObject(self, a2);
+  if (!startDate)
   {
-    v4 = [a1 startDate];
-    if (!v4)
+    startDate = [self startDate];
+    if (!startDate)
     {
       v5 = objc_autoreleasePoolPush();
-      v6 = [a1 _fetchFirstAssetSortedByCreationDateAscending:1];
-      v4 = [v6 cls_universalDate];
+      v6 = [self _fetchFirstAssetSortedByCreationDateAscending:1];
+      startDate = [v6 cls_universalDate];
 
       objc_autoreleasePoolPop(v5);
     }
 
-    objc_setAssociatedObject(a1, a2, v4, 0x301);
+    objc_setAssociatedObject(self, a2, startDate, 0x301);
   }
 
-  return v4;
+  return startDate;
 }
 
 - (id)_legacyLocalEndDateComponents
 {
   v2 = objc_autoreleasePoolPush();
-  v3 = [a1 _fetchFirstAssetSortedByCreationDateAscending:0];
-  v4 = [v3 cls_localDateComponents];
+  v3 = [self _fetchFirstAssetSortedByCreationDateAscending:0];
+  cls_localDateComponents = [v3 cls_localDateComponents];
 
   objc_autoreleasePoolPop(v2);
 
-  return v4;
+  return cls_localDateComponents;
 }
 
 - (id)_legacyLocalStartDateComponents
 {
   v2 = objc_autoreleasePoolPush();
-  v3 = [a1 _fetchFirstAssetSortedByCreationDateAscending:1];
-  v4 = [v3 cls_localDateComponents];
+  v3 = [self _fetchFirstAssetSortedByCreationDateAscending:1];
+  cls_localDateComponents = [v3 cls_localDateComponents];
 
   objc_autoreleasePoolPop(v2);
 
-  return v4;
+  return cls_localDateComponents;
 }
 
 - (id)cls_localEndDate
 {
-  v2 = [a1 assetCollectionType];
-  if (v2 == 6 || v2 == 3)
+  assetCollectionType = [self assetCollectionType];
+  if (assetCollectionType == 6 || assetCollectionType == 3)
   {
-    v3 = [a1 localEndDate];
+    localEndDate = [self localEndDate];
   }
 
   else
   {
-    v3 = [a1 _legacyLocalEndDate];
+    localEndDate = [self _legacyLocalEndDate];
   }
 
-  return v3;
+  return localEndDate;
 }
 
 - (id)cls_localStartDate
 {
-  v2 = [a1 assetCollectionType];
-  if (v2 == 6 || v2 == 3)
+  assetCollectionType = [self assetCollectionType];
+  if (assetCollectionType == 6 || assetCollectionType == 3)
   {
-    v3 = [a1 localStartDate];
+    localStartDate = [self localStartDate];
   }
 
   else
   {
-    v3 = [a1 _legacyLocalStartDate];
+    localStartDate = [self _legacyLocalStartDate];
   }
 
-  return v3;
+  return localStartDate;
 }
 
 - (id)cls_universalEndDate
 {
-  v2 = [a1 assetCollectionType];
-  if (v2 == 6 || v2 == 3)
+  assetCollectionType = [self assetCollectionType];
+  if (assetCollectionType == 6 || assetCollectionType == 3)
   {
-    v3 = [a1 endDate];
+    endDate = [self endDate];
   }
 
   else
   {
-    v3 = [a1 _legacyUniversalEndDate];
+    endDate = [self _legacyUniversalEndDate];
   }
 
-  return v3;
+  return endDate;
 }
 
 - (id)cls_universalStartDate
 {
-  v2 = [a1 assetCollectionType];
-  if (v2 == 6 || v2 == 3)
+  assetCollectionType = [self assetCollectionType];
+  if (assetCollectionType == 6 || assetCollectionType == 3)
   {
-    v3 = [a1 startDate];
+    startDate = [self startDate];
   }
 
   else
   {
-    v3 = [a1 _legacyUniversalStartDate];
+    startDate = [self _legacyUniversalStartDate];
   }
 
-  return v3;
+  return startDate;
 }
 
 - (id)cls_localEndDateComponents
 {
-  v2 = [a1 assetCollectionType];
-  if (v2 == 6 || v2 == 3)
+  assetCollectionType = [self assetCollectionType];
+  if (assetCollectionType == 6 || assetCollectionType == 3)
   {
-    v3 = [a1 cls_universalEndDate];
-    v4 = [a1 cls_localEndDate];
-    v5 = [CLSCalendar dateComponentsWithUTCDate:v3 localDate:v4];
+    cls_universalEndDate = [self cls_universalEndDate];
+    cls_localEndDate = [self cls_localEndDate];
+    _legacyLocalEndDateComponents = [CLSCalendar dateComponentsWithUTCDate:cls_universalEndDate localDate:cls_localEndDate];
   }
 
   else
   {
-    v5 = [a1 _legacyLocalEndDateComponents];
+    _legacyLocalEndDateComponents = [self _legacyLocalEndDateComponents];
   }
 
-  return v5;
+  return _legacyLocalEndDateComponents;
 }
 
 - (id)cls_localStartDateComponents
 {
-  v2 = [a1 assetCollectionType];
-  if (v2 == 6 || v2 == 3)
+  assetCollectionType = [self assetCollectionType];
+  if (assetCollectionType == 6 || assetCollectionType == 3)
   {
-    v3 = [a1 cls_universalStartDate];
-    v4 = [a1 cls_localStartDate];
-    v5 = [CLSCalendar dateComponentsWithUTCDate:v3 localDate:v4];
+    cls_universalStartDate = [self cls_universalStartDate];
+    cls_localStartDate = [self cls_localStartDate];
+    _legacyLocalStartDateComponents = [CLSCalendar dateComponentsWithUTCDate:cls_universalStartDate localDate:cls_localStartDate];
   }
 
   else
   {
-    v5 = [a1 _legacyLocalStartDateComponents];
+    _legacyLocalStartDateComponents = [self _legacyLocalStartDateComponents];
   }
 
-  return v5;
+  return _legacyLocalStartDateComponents;
 }
 
 @end

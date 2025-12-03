@@ -1,28 +1,28 @@
 @interface GroupConvergenceContext
-- (GroupConvergenceContext)initWithChat:(id)a3;
-- (id)_messageIDForUpdateType:(unint64_t)a3 participant:(id)a4;
-- (id)chatStatusChangeContextForUpdateType:(unint64_t)a3 participant:(id)a4;
-- (id)memberStatusChangeContextForUpdateType:(unint64_t)a3 participant:(id)a4;
+- (GroupConvergenceContext)initWithChat:(id)chat;
+- (id)_messageIDForUpdateType:(unint64_t)type participant:(id)participant;
+- (id)chatStatusChangeContextForUpdateType:(unint64_t)type participant:(id)participant;
+- (id)memberStatusChangeContextForUpdateType:(unint64_t)type participant:(id)participant;
 @end
 
 @implementation GroupConvergenceContext
 
-- (GroupConvergenceContext)initWithChat:(id)a3
+- (GroupConvergenceContext)initWithChat:(id)chat
 {
-  v4 = a3;
+  chatCopy = chat;
   v12.receiver = self;
   v12.super_class = GroupConvergenceContext;
   v5 = [(GroupConvergenceContext *)&v12 init];
   if (v5)
   {
-    v6 = [v4 chatIdentifier];
+    chatIdentifier = [chatCopy chatIdentifier];
     chatIdentifier = v5->_chatIdentifier;
-    v5->_chatIdentifier = v6;
+    v5->_chatIdentifier = chatIdentifier;
 
-    v5->_chatStyle = [v4 style];
-    v5->_isBlackholed = [v4 isBlackholed];
-    v8 = [v4 participants];
-    v9 = [v8 arrayByApplyingSelector:"ID"];
+    v5->_chatStyle = [chatCopy style];
+    v5->_isBlackholed = [chatCopy isBlackholed];
+    participants = [chatCopy participants];
+    v9 = [participants arrayByApplyingSelector:"ID"];
     currentParticipants = v5->_currentParticipants;
     v5->_currentParticipants = v9;
   }
@@ -30,119 +30,119 @@
   return v5;
 }
 
-- (id)_messageIDForUpdateType:(unint64_t)a3 participant:(id)a4
+- (id)_messageIDForUpdateType:(unint64_t)type participant:(id)participant
 {
-  v6 = a4;
-  v7 = [(GroupConvergenceContext *)self participantChangeGUIDs];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  participantCopy = participant;
+  participantChangeGUIDs = [(GroupConvergenceContext *)self participantChangeGUIDs];
+  messageID = [participantChangeGUIDs objectForKeyedSubscript:participantCopy];
 
-  if (!v8)
+  if (!messageID)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
-      v21 = v6;
+      v21 = participantCopy;
       v13 = [NSArray arrayWithObjects:&v21 count:1];
-      v14 = [(GroupConvergenceContext *)self participantsToRemove];
-      v15 = [v13 isEqualToArray:v14];
+      participantsToRemove = [(GroupConvergenceContext *)self participantsToRemove];
+      v15 = [v13 isEqualToArray:participantsToRemove];
 
       if (!v15)
       {
 LABEL_9:
-        v8 = 0;
+        messageID = 0;
         goto LABEL_10;
       }
 
-      v12 = [(GroupConvergenceContext *)self participantsToAdd];
+      participantsToAdd = [(GroupConvergenceContext *)self participantsToAdd];
     }
 
     else
     {
-      if (a3)
+      if (type)
       {
         goto LABEL_9;
       }
 
-      v22 = v6;
+      v22 = participantCopy;
       v9 = [NSArray arrayWithObjects:&v22 count:1];
-      v10 = [(GroupConvergenceContext *)self participantsToAdd];
-      v11 = [v9 isEqualToArray:v10];
+      participantsToAdd2 = [(GroupConvergenceContext *)self participantsToAdd];
+      v11 = [v9 isEqualToArray:participantsToAdd2];
 
       if (!v11)
       {
         goto LABEL_9;
       }
 
-      v12 = [(GroupConvergenceContext *)self participantsToRemove];
+      participantsToAdd = [(GroupConvergenceContext *)self participantsToRemove];
     }
 
-    v16 = v12;
-    v17 = [v12 count];
+    v16 = participantsToAdd;
+    v17 = [participantsToAdd count];
 
     if (v17)
     {
       goto LABEL_9;
     }
 
-    v8 = [(GroupConvergenceContext *)self messageID];
+    messageID = [(GroupConvergenceContext *)self messageID];
   }
 
 LABEL_10:
-  v18 = [[NSUUID alloc] initWithUUIDString:v8];
-  v19 = [v18 UUIDString];
+  v18 = [[NSUUID alloc] initWithUUIDString:messageID];
+  uUIDString = [v18 UUIDString];
 
-  return v19;
+  return uUIDString;
 }
 
-- (id)memberStatusChangeContextForUpdateType:(unint64_t)a3 participant:(id)a4
+- (id)memberStatusChangeContextForUpdateType:(unint64_t)type participant:(id)participant
 {
-  v6 = a4;
+  participantCopy = participant;
   v7 = objc_alloc_init(IMDChatMemberStatusChangeContext);
-  [v7 setHandleID:v6];
-  if (a3 == 2)
+  [v7 setHandleID:participantCopy];
+  if (type == 2)
   {
     [v7 setUnattributed:1];
   }
 
   if (![(GroupConvergenceContext *)self isReflection])
   {
-    v8 = [(GroupConvergenceContext *)self fromIdentifier];
-    v9 = [v8 _stripFZIDPrefix];
-    [v7 setFromHandleID:v9];
+    fromIdentifier = [(GroupConvergenceContext *)self fromIdentifier];
+    _stripFZIDPrefix = [fromIdentifier _stripFZIDPrefix];
+    [v7 setFromHandleID:_stripFZIDPrefix];
   }
 
-  v10 = [(GroupConvergenceContext *)self chatIdentifier];
-  [v7 setChatIdentifier:v10];
+  chatIdentifier = [(GroupConvergenceContext *)self chatIdentifier];
+  [v7 setChatIdentifier:chatIdentifier];
 
   [v7 setStyle:{-[GroupConvergenceContext chatStyle](self, "chatStyle")}];
-  v11 = [(GroupConvergenceContext *)self account];
-  [v7 setAccount:v11];
+  account = [(GroupConvergenceContext *)self account];
+  [v7 setAccount:account];
 
-  v12 = [(GroupConvergenceContext *)self toIdentifier];
-  v13 = [v12 _stripFZIDPrefix];
-  [v7 setDestinationCallerID:v13];
+  toIdentifier = [(GroupConvergenceContext *)self toIdentifier];
+  _stripFZIDPrefix2 = [toIdentifier _stripFZIDPrefix];
+  [v7 setDestinationCallerID:_stripFZIDPrefix2];
 
-  v14 = [(GroupConvergenceContext *)self _messageIDForUpdateType:a3 participant:v6];
+  v14 = [(GroupConvergenceContext *)self _messageIDForUpdateType:type participant:participantCopy];
   [v7 setMessageID:v14];
 
   return v7;
 }
 
-- (id)chatStatusChangeContextForUpdateType:(unint64_t)a3 participant:(id)a4
+- (id)chatStatusChangeContextForUpdateType:(unint64_t)type participant:(id)participant
 {
-  v6 = a4;
+  participantCopy = participant;
   v7 = objc_alloc_init(IMDChatStatusChangeContext);
-  v8 = [(GroupConvergenceContext *)self chatIdentifier];
-  [v7 setChatIdentifier:v8];
+  chatIdentifier = [(GroupConvergenceContext *)self chatIdentifier];
+  [v7 setChatIdentifier:chatIdentifier];
 
   [v7 setChatStyle:{-[GroupConvergenceContext chatStyle](self, "chatStyle")}];
-  v9 = [(GroupConvergenceContext *)self groupID];
-  [v7 setGroupID:v9];
+  groupID = [(GroupConvergenceContext *)self groupID];
+  [v7 setGroupID:groupID];
 
-  v10 = [(GroupConvergenceContext *)self account];
-  [v7 setAccount:v10];
+  account = [(GroupConvergenceContext *)self account];
+  [v7 setAccount:account];
 
   [v7 setIsBlackholed:{-[GroupConvergenceContext isBlackholed](self, "isBlackholed")}];
-  v11 = [(GroupConvergenceContext *)self _messageIDForUpdateType:a3 participant:v6];
+  v11 = [(GroupConvergenceContext *)self _messageIDForUpdateType:type participant:participantCopy];
 
   [v7 setMessageID:v11];
 

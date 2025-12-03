@@ -1,21 +1,21 @@
 @interface BWIOSurfacePoller
 + (uint64_t)defaultPoller;
-+ (void)trackSurface:(__IOSurface *)a3 useCountIsZeroHandler:(id)a4;
++ (void)trackSurface:(__IOSurface *)surface useCountIsZeroHandler:(id)handler;
 - (BWIOSurfacePoller)init;
 - (os_unfair_lock_s)_pollingTimerFired;
 - (void)_startPolling;
 - (void)_stopPolling;
 - (void)dealloc;
-- (void)trackSurface:(uint64_t)a3 useCountIsZeroHandler:;
+- (void)trackSurface:(uint64_t)surface useCountIsZeroHandler:;
 @end
 
 @implementation BWIOSurfacePoller
 
-+ (void)trackSurface:(__IOSurface *)a3 useCountIsZeroHandler:(id)a4
++ (void)trackSurface:(__IOSurface *)surface useCountIsZeroHandler:(id)handler
 {
   v6 = +[BWIOSurfacePoller defaultPoller];
 
-  [(BWIOSurfacePoller *)v6 trackSurface:a3 useCountIsZeroHandler:a4];
+  [(BWIOSurfacePoller *)v6 trackSurface:surface useCountIsZeroHandler:handler];
 }
 
 + (uint64_t)defaultPoller
@@ -58,28 +58,28 @@ BWIOSurfacePoller *__34__BWIOSurfacePoller_defaultPoller__block_invoke()
   [(BWIOSurfacePoller *)&v3 dealloc];
 }
 
-- (void)trackSurface:(uint64_t)a3 useCountIsZeroHandler:
+- (void)trackSurface:(uint64_t)surface useCountIsZeroHandler:
 {
-  if (a1)
+  if (self)
   {
-    v5 = [[BWTrackedSurface alloc] initWithSurface:a2 handler:a3];
-    os_unfair_lock_lock((a1 + 16));
-    v4 = [*(a1 + 24) count];
-    [*(a1 + 24) addObject:v5];
+    v5 = [[BWTrackedSurface alloc] initWithSurface:a2 handler:surface];
+    os_unfair_lock_lock((self + 16));
+    v4 = [*(self + 24) count];
+    [*(self + 24) addObject:v5];
     if (!v4)
     {
-      [(BWIOSurfacePoller *)a1 _startPolling];
+      [(BWIOSurfacePoller *)self _startPolling];
     }
 
-    os_unfair_lock_unlock((a1 + 16));
+    os_unfair_lock_unlock((self + 16));
   }
 }
 
 - (void)_startPolling
 {
-  if (a1)
+  if (self)
   {
-    if (!*(a1 + 8))
+    if (!*(self + 8))
     {
       v2 = FigDispatchQueueCreateWithPriority();
       v3 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 1uLL, v2);
@@ -90,9 +90,9 @@ BWIOSurfacePoller *__34__BWIOSurfacePoller_defaultPoller__block_invoke()
       handler[1] = 3221225472;
       handler[2] = __34__BWIOSurfacePoller__startPolling__block_invoke;
       handler[3] = &unk_1E798F870;
-      handler[4] = a1;
+      handler[4] = self;
       dispatch_source_set_event_handler(v3, handler);
-      *(a1 + 8) = v3;
+      *(self + 8) = v3;
       dispatch_activate(v3);
     }
   }
@@ -113,7 +113,7 @@ BWIOSurfacePoller *__34__BWIOSurfacePoller_defaultPoller__block_invoke()
 
     v12 = v11;
     v13 = 0;
-    v14 = 0;
+    indexSet = 0;
     v15 = MEMORY[0];
     do
     {
@@ -127,12 +127,12 @@ BWIOSurfacePoller *__34__BWIOSurfacePoller_defaultPoller__block_invoke()
         v17 = IOSurfaceIsInUse([*(8 * i) surface]);
         if (!v17)
         {
-          if (!v14)
+          if (!indexSet)
           {
-            v14 = [MEMORY[0x1E696AD50] indexSet];
+            indexSet = [MEMORY[0x1E696AD50] indexSet];
           }
 
-          v17 = [v14 addIndex:v13];
+          v17 = [indexSet addIndex:v13];
         }
 
         ++v13;
@@ -142,10 +142,10 @@ BWIOSurfacePoller *__34__BWIOSurfacePoller_defaultPoller__block_invoke()
     }
 
     while (v12);
-    if (v14)
+    if (indexSet)
     {
-      v25 = [*(v1 + 24) objectsAtIndexes:v14];
-      [*(v1 + 24) removeObjectsAtIndexes:v14];
+      v25 = [*(v1 + 24) objectsAtIndexes:indexSet];
+      [*(v1 + 24) removeObjectsAtIndexes:indexSet];
       if (![*(v1 + 24) count])
       {
         [(BWIOSurfacePoller *)v1 _stopPolling];
@@ -193,14 +193,14 @@ LABEL_16:
 
 - (void)_stopPolling
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 8);
+    v2 = *(self + 8);
     if (v2)
     {
       dispatch_source_cancel(v2);
 
-      *(a1 + 8) = 0;
+      *(self + 8) = 0;
     }
   }
 }

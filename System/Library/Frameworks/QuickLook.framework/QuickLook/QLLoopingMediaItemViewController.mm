@@ -3,28 +3,28 @@
 - (BOOL)play;
 - (id)player;
 - (void)dealloc;
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setupPlayerWithMediaAsset:(id)a3;
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setupPlayerWithMediaAsset:(id)asset;
 - (void)startObservingItem;
 - (void)stopObservingItem;
 @end
 
 @implementation QLLoopingMediaItemViewController
 
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __96__QLLoopingMediaItemViewController_loadPreviewControllerWithContents_context_completionHandler___block_invoke;
   v11[3] = &unk_278B57B90;
   v11[4] = self;
-  v12 = v8;
+  v12 = handlerCopy;
   v10.receiver = self;
   v10.super_class = QLLoopingMediaItemViewController;
-  v9 = v8;
-  [(QLMediaItemBaseViewController *)&v10 loadPreviewControllerWithContents:a3 context:a4 completionHandler:v11];
+  v9 = handlerCopy;
+  [(QLMediaItemBaseViewController *)&v10 loadPreviewControllerWithContents:contents context:context completionHandler:v11];
 }
 
 void __96__QLLoopingMediaItemViewController_loadPreviewControllerWithContents_context_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -40,18 +40,18 @@ void __96__QLLoopingMediaItemViewController_loadPreviewControllerWithContents_co
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (a6 == &AVLoopPlayerCurrentItemObservationContext)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v13 = changeCopy;
+  if (context == &AVLoopPlayerCurrentItemObservationContext)
   {
-    v14 = v11;
-    v15 = [v14 items];
-    v16 = [v15 count];
+    v14 = objectCopy;
+    items = [v14 items];
+    v16 = [items count];
 
     if (!v16)
     {
@@ -88,17 +88,17 @@ void __96__QLLoopingMediaItemViewController_loadPreviewControllerWithContents_co
     goto LABEL_14;
   }
 
-  if (a6 == &AVLoopPlayerCurrentItemStatusObservationContext)
+  if (context == &AVLoopPlayerCurrentItemStatusObservationContext)
   {
-    v14 = [v12 objectForKey:*MEMORY[0x277CCA2F0]];
-    v18 = [MEMORY[0x277CBEB68] null];
+    v14 = [changeCopy objectForKey:*MEMORY[0x277CCA2F0]];
+    null = [MEMORY[0x277CBEB68] null];
 
-    if (v14 == v18 || [v14 unsignedIntegerValue] != 2)
+    if (v14 == null || [v14 unsignedIntegerValue] != 2)
     {
       goto LABEL_20;
     }
 
-    v17 = v11;
+    v17 = objectCopy;
     v19 = MEMORY[0x277D43EF8];
     v20 = *MEMORY[0x277D43EF8];
     if (!*MEMORY[0x277D43EF8])
@@ -110,10 +110,10 @@ void __96__QLLoopingMediaItemViewController_loadPreviewControllerWithContents_co
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       v21 = v20;
-      v22 = [v17 currentItem];
-      v23 = [v22 error];
+      currentItem = [v17 currentItem];
+      error = [currentItem error];
       *buf = 138412290;
-      *&buf[4] = v23;
+      *&buf[4] = error;
       _os_log_impl(&dword_23A714000, v21, OS_LOG_TYPE_ERROR, "End looping since player item has failed with error %@ #Media", buf, 0xCu);
     }
 
@@ -126,7 +126,7 @@ LABEL_20:
 
   v27.receiver = self;
   v27.super_class = QLLoopingMediaItemViewController;
-  [(QLMediaItemBaseViewController *)&v27 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+  [(QLMediaItemBaseViewController *)&v27 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
 LABEL_21:
 
   v26 = *MEMORY[0x277D85DE8];
@@ -145,34 +145,34 @@ LABEL_21:
   [(QLLoopingMediaItemViewController *)self startObservingItem];
   v6.receiver = self;
   v6.super_class = QLLoopingMediaItemViewController;
-  v3 = [(QLMediaItemBaseViewController *)&v6 play];
-  if (v3)
+  play = [(QLMediaItemBaseViewController *)&v6 play];
+  if (play)
   {
-    v4 = [(QLItemViewController *)self delegate];
-    [v4 previewItemViewController:self wantsFullScreen:1];
+    delegate = [(QLItemViewController *)self delegate];
+    [delegate previewItemViewController:self wantsFullScreen:1];
   }
 
-  return v3;
+  return play;
 }
 
 - (BOOL)pause
 {
   v5.receiver = self;
   v5.super_class = QLLoopingMediaItemViewController;
-  v3 = [(QLMediaItemBaseViewController *)&v5 pause];
+  pause = [(QLMediaItemBaseViewController *)&v5 pause];
   [(QLLoopingMediaItemViewController *)self stopObservingItem];
-  return v3;
+  return pause;
 }
 
-- (void)setupPlayerWithMediaAsset:(id)a3
+- (void)setupPlayerWithMediaAsset:(id)asset
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  assetCopy = asset;
+  v5 = assetCopy;
   memset(&v16[1], 0, sizeof(CMTime));
-  if (v4)
+  if (assetCopy)
   {
-    [v4 duration];
+    [assetCopy duration];
   }
 
   CMTimeMake(&time2, 1, 100);
@@ -192,9 +192,9 @@ LABEL_21:
       time2 = v16[1];
       v11 = v10;
       Seconds = CMTimeGetSeconds(&time2);
-      v13 = [(QLMediaItemBaseViewController *)self playable];
+      playable = [(QLMediaItemBaseViewController *)self playable];
       v14 = "NO";
-      if (v13)
+      if (playable)
       {
         v14 = "YES";
       }
@@ -215,8 +215,8 @@ LABEL_21:
       v7 = [MEMORY[0x277CE65B0] playerItemWithAsset:v5];
       if (v7)
       {
-        v8 = [(QLLoopingMediaItemViewController *)self player];
-        [v8 insertItem:v7 afterItem:0];
+        player = [(QLLoopingMediaItemViewController *)self player];
+        [player insertItem:v7 afterItem:0];
       }
     }
 

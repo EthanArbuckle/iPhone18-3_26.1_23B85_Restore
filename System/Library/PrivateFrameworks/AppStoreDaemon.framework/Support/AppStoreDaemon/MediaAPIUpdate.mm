@@ -9,25 +9,25 @@
 - (NSNumber)evid;
 - (NSString)bundleID;
 - (NSString)description;
-- (_TtC9appstored14MediaAPIUpdate)initWithDatabaseID:(int64_t)a3 propertyValues:(id)a4 externalPropertyValues:(id)a5;
-- (id)purchaseInfoForUpdateUserInitiated:(BOOL)a3 bag:(id)a4;
+- (_TtC9appstored14MediaAPIUpdate)initWithDatabaseID:(int64_t)d propertyValues:(id)values externalPropertyValues:(id)propertyValues;
+- (id)purchaseInfoForUpdateUserInitiated:(BOOL)initiated bag:(id)bag;
 - (int64_t)parentalControlsRank;
 - (int64_t)updateState;
 - (unint64_t)itemID;
 - (unint64_t)itemIdentifier;
-- (void)setBundleID:(id)a3;
-- (void)setEvid:(id)a3;
-- (void)setItemID:(unint64_t)a3;
-- (void)setUpdateState:(int64_t)a3;
+- (void)setBundleID:(id)d;
+- (void)setEvid:(id)evid;
+- (void)setItemID:(unint64_t)d;
+- (void)setUpdateState:(int64_t)state;
 @end
 
 @implementation MediaAPIUpdate
 
-- (_TtC9appstored14MediaAPIUpdate)initWithDatabaseID:(int64_t)a3 propertyValues:(id)a4 externalPropertyValues:(id)a5
+- (_TtC9appstored14MediaAPIUpdate)initWithDatabaseID:(int64_t)d propertyValues:(id)values externalPropertyValues:(id)propertyValues
 {
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  return sub_10017A848(a3);
+  return sub_10017A848(d);
 }
 
 + (Class)databaseEntityClass
@@ -46,7 +46,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_10017AB10();
 
   v3 = String._bridgeToObjectiveC()();
@@ -56,7 +56,7 @@
 
 - (NSString)bundleID
 {
-  v2 = self;
+  selfCopy = self;
   sub_10017A6C0();
 
   v3 = String._bridgeToObjectiveC()();
@@ -64,7 +64,7 @@
   return v3;
 }
 
-- (void)setBundleID:(id)a3
+- (void)setBundleID:(id)d
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = (self + OBJC_IVAR____TtC9appstored14MediaAPIUpdate____lazy_storage___bundleID);
@@ -77,7 +77,7 @@
   v3 = sub_100085D40(&qword_10059CB40);
   __chkstk_darwin(v3 - 8);
   v5 = &v13 - v4;
-  v6 = self;
+  selfCopy = self;
   sub_10017ADD0(v5);
 
   v7 = type metadata accessor for Date();
@@ -96,73 +96,73 @@
 
 - (NSNumber)evid
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10017A78C();
 
   return v3;
 }
 
-- (void)setEvid:(id)a3
+- (void)setEvid:(id)evid
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC9appstored14MediaAPIUpdate____lazy_storage___evid);
-  *(&self->super.super.isa + OBJC_IVAR____TtC9appstored14MediaAPIUpdate____lazy_storage___evid) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC9appstored14MediaAPIUpdate____lazy_storage___evid) = evid;
+  evidCopy = evid;
 }
 
 - (BOOL)isManagedAccount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = String._bridgeToObjectiveC()();
-  v4 = sub_10023E604(v2, v3);
+  v4 = sub_10023E604(selfCopy, v3);
 
   return (v4 >> 4) & 1;
 }
 
 - (BOOL)isOffloaded
 {
-  v2 = self;
+  selfCopy = self;
   v3 = String._bridgeToObjectiveC()();
-  v4 = sub_10023E604(v2, v3);
+  v4 = sub_10023E604(selfCopy, v3);
 
   return (v4 >> 2) & 1;
 }
 
 - (BOOL)isPerDevice
 {
-  v2 = self;
+  selfCopy = self;
   v3 = String._bridgeToObjectiveC()();
-  v4 = sub_10023E604(v2, v3);
+  v4 = sub_10023E604(selfCopy, v3);
 
   return (v4 >> 3) & 1;
 }
 
 - (unint64_t)itemID
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10017A580();
 
   return v3;
 }
 
-- (void)setItemID:(unint64_t)a3
+- (void)setItemID:(unint64_t)d
 {
   v3 = self + OBJC_IVAR____TtC9appstored14MediaAPIUpdate____lazy_storage___itemID;
-  *v3 = a3;
+  *v3 = d;
   v3[8] = 0;
 }
 
 - (int64_t)updateState
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10017A4F8();
 
   return v3;
 }
 
-- (void)setUpdateState:(int64_t)a3
+- (void)setUpdateState:(int64_t)state
 {
   v3 = self + OBJC_IVAR____TtC9appstored14MediaAPIUpdate____lazy_storage___updateState;
-  *v3 = a3;
+  *v3 = state;
   v3[8] = 0;
 }
 
@@ -173,9 +173,9 @@
   v6 = &v18 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v4);
   v8 = &v18 - v7;
-  v9 = self;
+  selfCopy = self;
   v10 = String._bridgeToObjectiveC()();
-  v11 = sub_10023E590(v9, v10);
+  v11 = sub_10023E590(selfCopy, v10);
 
   if (v11)
   {
@@ -209,7 +209,7 @@
 
 - (int64_t)parentalControlsRank
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10017D77C();
 
   return v3;
@@ -217,18 +217,18 @@
 
 - (unint64_t)itemIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10017A580();
 
   return v3;
 }
 
-- (id)purchaseInfoForUpdateUserInitiated:(BOOL)a3 bag:(id)a4
+- (id)purchaseInfoForUpdateUserInitiated:(BOOL)initiated bag:(id)bag
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = self;
-  v8 = sub_10017D888(v4, v6);
+  initiatedCopy = initiated;
+  bagCopy = bag;
+  selfCopy = self;
+  v8 = sub_10017D888(initiatedCopy, bagCopy);
 
   return v8;
 }

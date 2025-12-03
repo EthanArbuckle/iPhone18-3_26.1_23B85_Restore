@@ -1,22 +1,22 @@
 @interface WLQRCodeProvider
-- (WLQRCodeProvider)initWithScale:(double)a3;
+- (WLQRCodeProvider)initWithScale:(double)scale;
 - (WLQRCodeProviderDelegate)delegate;
 - (void)complete;
 - (void)drainQueue;
 - (void)request;
-- (void)requestDidFinish:(BOOL)a3;
+- (void)requestDidFinish:(BOOL)finish;
 @end
 
 @implementation WLQRCodeProvider
 
-- (WLQRCodeProvider)initWithScale:(double)a3
+- (WLQRCodeProvider)initWithScale:(double)scale
 {
   v5.receiver = self;
   v5.super_class = WLQRCodeProvider;
   result = [(WLQRCodeProvider *)&v5 init];
   if (result)
   {
-    result->_scale = a3;
+    result->_scale = scale;
   }
 
   return result;
@@ -66,13 +66,13 @@
 {
   if ([(NSMutableArray *)self->_urls count])
   {
-    v5 = [(NSMutableArray *)self->_urls firstObject];
+    firstObject = [(NSMutableArray *)self->_urls firstObject];
     v3 = objc_alloc_init(WLRequest);
     request = self->_request;
     self->_request = v3;
 
     [(WLRequest *)self->_request setDelegate:self];
-    [(WLRequest *)self->_request request:v5 redirect:0];
+    [(WLRequest *)self->_request request:firstObject redirect:0];
   }
 
   else
@@ -82,14 +82,14 @@
   }
 }
 
-- (void)requestDidFinish:(BOOL)a3
+- (void)requestDidFinish:(BOOL)finish
 {
-  v3 = a3;
-  v13 = [(NSMutableArray *)self->_urls firstObject];
+  finishCopy = finish;
+  firstObject = [(NSMutableArray *)self->_urls firstObject];
   [(NSMutableArray *)self->_urls removeObjectAtIndex:0];
-  if (v3)
+  if (finishCopy)
   {
-    v5 = v13;
+    v5 = firstObject;
     if ([(WLQRCode *)v5 isEqualToString:@"https://a.app.qq.com/o/simple.jsp?pkgname=com.apple.movetoios"])
     {
       v6 = [WLQRCode alloc];

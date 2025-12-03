@@ -1,35 +1,35 @@
 @interface WFDeferredLocalizedString
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)length;
-- (unsigned)characterAtIndex:(unint64_t)a3;
+- (unsigned)characterAtIndex:(unint64_t)index;
 @end
 
 @implementation WFDeferredLocalizedString
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[WFDeferredLocalizedString alloc] initWithString:self];
-  v5 = [(WFDeferredLocalizedString *)self localizedValue];
-  [(WFDeferredLocalizedString *)v4 setLocalizedValue:v5];
+  localizedValue = [(WFDeferredLocalizedString *)self localizedValue];
+  [(WFDeferredLocalizedString *)v4 setLocalizedValue:localizedValue];
 
-  v6 = [(WFDeferredLocalizedString *)self stringResource];
-  [(WFDeferredLocalizedString *)v4 setStringResource:v6];
+  stringResource = [(WFDeferredLocalizedString *)self stringResource];
+  [(WFDeferredLocalizedString *)v4 setStringResource:stringResource];
 
   return v4;
 }
 
-- (unsigned)characterAtIndex:(unint64_t)a3
+- (unsigned)characterAtIndex:(unint64_t)index
 {
-  v4 = [(WFDeferredLocalizedString *)self backingStore];
-  LOWORD(a3) = [v4 characterAtIndex:a3];
+  backingStore = [(WFDeferredLocalizedString *)self backingStore];
+  LOWORD(index) = [backingStore characterAtIndex:index];
 
-  return a3;
+  return index;
 }
 
 - (unint64_t)length
 {
-  v2 = [(WFDeferredLocalizedString *)self backingStore];
-  v3 = [v2 length];
+  backingStore = [(WFDeferredLocalizedString *)self backingStore];
+  v3 = [backingStore length];
 
   return v3;
 }

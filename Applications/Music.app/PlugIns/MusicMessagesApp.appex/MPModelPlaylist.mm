@@ -6,7 +6,7 @@
 
 - (NSString)sortStorageKeyDomain
 {
-  v2 = self;
+  selfCopy = self;
   MPModelPlaylist.sortStorageKeyDomain.getter();
   v4 = v3;
 

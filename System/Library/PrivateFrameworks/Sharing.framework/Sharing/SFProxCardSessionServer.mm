@@ -1,13 +1,13 @@
 @interface SFProxCardSessionServer
 - (SFProxCardSessionServer)init;
-- (void)_activateWithCompletion:(id)a3;
+- (void)_activateWithCompletion:(id)completion;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)_reportError:(id)a3;
-- (void)activateWithCompletion:(id)a3;
+- (void)_reportError:(id)error;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 @end
 
 @implementation SFProxCardSessionServer
@@ -45,26 +45,26 @@
   [(SFProxCardSessionServer *)&v4 dealloc];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v5 = a3;
-  v4 = v5;
-  [v5 UTF8String];
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
+  v4 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF();
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__SFProxCardSessionServer_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E788B210;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -97,9 +97,9 @@ LABEL_5:
   return [v2 _activateWithCompletion:v5];
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = self->_xpcEndpoint;
   if (v5)
   {
@@ -108,7 +108,7 @@ LABEL_5:
     v21[2] = 0x3032000000;
     v21[3] = __Block_byref_object_copy__13;
     v21[4] = __Block_byref_object_dispose__13;
-    v22 = _Block_copy(v4);
+    v22 = _Block_copy(completionCopy);
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __51__SFProxCardSessionServer__activateWithCompletion___block_invoke;
@@ -180,7 +180,7 @@ LABEL_7:
   }
 
   v12 = SFErrorF();
-  (*(v4 + 2))(v4, v12);
+  (*(completionCopy + 2))(completionCopy, v12);
   [(SFProxCardSessionServer *)self _reportError:v12];
 
 LABEL_8:
@@ -358,9 +358,9 @@ LABEL_6:
   }
 }
 
-- (void)_reportError:(id)a3
+- (void)_reportError:(id)error
 {
-  v8 = a3;
+  errorCopy = error;
   var0 = self->_ucat->var0;
   if (var0 <= 90)
   {
@@ -383,7 +383,7 @@ LABEL_5:
   v6 = v5;
   if (v5)
   {
-    (*(v5 + 2))(v5, v8);
+    (*(v5 + 2))(v5, errorCopy);
   }
 }
 

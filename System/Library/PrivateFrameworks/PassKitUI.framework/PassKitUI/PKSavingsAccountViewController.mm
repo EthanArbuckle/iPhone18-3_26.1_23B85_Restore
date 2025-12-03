@@ -1,27 +1,27 @@
 @interface PKSavingsAccountViewController
-- (PKSavingsAccountViewController)initWithConfiguration:(id)a3 showInterstitial:(BOOL)a4;
+- (PKSavingsAccountViewController)initWithConfiguration:(id)configuration showInterstitial:(BOOL)interstitial;
 - (void)_addInterstitialViewController;
 - (void)_addSavingsViewController;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKSavingsAccountViewController
 
-- (PKSavingsAccountViewController)initWithConfiguration:(id)a3 showInterstitial:(BOOL)a4
+- (PKSavingsAccountViewController)initWithConfiguration:(id)configuration showInterstitial:(BOOL)interstitial
 {
-  v4 = a4;
-  v7 = a3;
+  interstitialCopy = interstitial;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = PKSavingsAccountViewController;
   v8 = [(PKSavingsAccountViewController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_configuration, a3);
-    if (v4)
+    objc_storeStrong(&v8->_configuration, configuration);
+    if (interstitialCopy)
     {
       [(PKSavingsAccountViewController *)v9 _addInterstitialViewController];
     }
@@ -47,13 +47,13 @@
   }
 
   v4 = savingsViewController;
-  v5 = [v4 view];
-  v6 = [v5 superview];
+  view = [v4 view];
+  superview = [view superview];
 
-  if (!v6)
+  if (!superview)
   {
-    v7 = [(PKSavingsAccountViewController *)self view];
-    [v7 addSubview:v5];
+    view2 = [(PKSavingsAccountViewController *)self view];
+    [view2 addSubview:view];
 
     [v4 didMoveToParentViewController:self];
   }
@@ -71,31 +71,31 @@
   }
 
   v4 = savingsViewController;
-  v5 = [v4 view];
-  v6 = [(PKSavingsAccountViewController *)self view];
+  view = [v4 view];
+  view2 = [(PKSavingsAccountViewController *)self view];
 
-  [v6 bounds];
-  [v5 setFrame:?];
+  [view2 bounds];
+  [view setFrame:?];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = PKSavingsAccountViewController;
-  [(PKSavingsAccountViewController *)&v7 viewWillAppear:a3];
-  v4 = [(PKSavingsAccountViewController *)self navigationController];
-  v5 = [v4 navigationBar];
-  [v5 setPrefersLargeTitles:1];
+  [(PKSavingsAccountViewController *)&v7 viewWillAppear:appear];
+  navigationController = [(PKSavingsAccountViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setPrefersLargeTitles:1];
 
-  v6 = [(PKSavingsAccountViewController *)self navigationItem];
-  [v6 setBackButtonDisplayMode:2];
+  navigationItem = [(PKSavingsAccountViewController *)self navigationItem];
+  [navigationItem setBackButtonDisplayMode:2];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = PKSavingsAccountViewController;
-  [(PKSavingsAccountViewController *)&v8 viewDidAppear:a3];
+  [(PKSavingsAccountViewController *)&v8 viewDidAppear:appear];
   if (self->_interstitialViewController)
   {
     objc_initWeak(&location, self);
@@ -161,15 +161,15 @@ void __48__PKSavingsAccountViewController_viewDidAppear___block_invoke_2(uint64_
     self->_interstitialViewController = v3;
 
     [(PKSavingsAccountViewController *)self addChildViewController:self->_interstitialViewController];
-    v5 = [(PKSavingsAccountViewController *)self viewIfLoaded];
-    if (v5)
+    viewIfLoaded = [(PKSavingsAccountViewController *)self viewIfLoaded];
+    if (viewIfLoaded)
     {
-      v7 = v5;
-      v6 = [(PKSavingsInterstitialViewController *)self->_interstitialViewController view];
-      [v7 addSubview:v6];
+      v7 = viewIfLoaded;
+      view = [(PKSavingsInterstitialViewController *)self->_interstitialViewController view];
+      [v7 addSubview:view];
 
       [(PKSavingsInterstitialViewController *)self->_interstitialViewController didMoveToParentViewController:self];
-      v5 = v7;
+      viewIfLoaded = v7;
     }
   }
 }
@@ -183,11 +183,11 @@ void __48__PKSavingsAccountViewController_viewDidAppear___block_invoke_2(uint64_
     self->_savingsViewController = v3;
 
     [(PKSavingsAccountViewController *)self addChildViewController:self->_savingsViewController];
-    v21 = [(PKSavingsAccountViewController *)self viewIfLoaded];
-    if (v21)
+    viewIfLoaded = [(PKSavingsAccountViewController *)self viewIfLoaded];
+    if (viewIfLoaded)
     {
-      v5 = [(_PKAccountSavingsViewController *)self->_savingsViewController view];
-      [v21 addSubview:v5];
+      view = [(_PKAccountSavingsViewController *)self->_savingsViewController view];
+      [viewIfLoaded addSubview:view];
 
       [(_PKAccountSavingsViewController *)self->_savingsViewController didMoveToParentViewController:self];
     }
@@ -195,8 +195,8 @@ void __48__PKSavingsAccountViewController_viewDidAppear___block_invoke_2(uint64_
     interstitialViewController = self->_interstitialViewController;
     if (interstitialViewController)
     {
-      v7 = [(PKSavingsInterstitialViewController *)interstitialViewController view];
-      [v7 removeFromSuperview];
+      view2 = [(PKSavingsInterstitialViewController *)interstitialViewController view];
+      [view2 removeFromSuperview];
 
       [(PKSavingsInterstitialViewController *)self->_interstitialViewController removeFromParentViewController];
       [(PKSavingsInterstitialViewController *)self->_interstitialViewController didMoveToParentViewController:0];
@@ -204,33 +204,33 @@ void __48__PKSavingsAccountViewController_viewDidAppear___block_invoke_2(uint64_
       self->_interstitialViewController = 0;
     }
 
-    v9 = [(PKSavingsAccountViewController *)self navigationItem];
+    navigationItem = [(PKSavingsAccountViewController *)self navigationItem];
     v10 = PKLocalizedFeatureString();
-    [v9 setTitle:v10];
+    [navigationItem setTitle:v10];
 
-    [v9 setLargeTitleDisplayMode:1];
-    [v9 setBackButtonDisplayMode:2];
+    [navigationItem setLargeTitleDisplayMode:1];
+    [navigationItem setBackButtonDisplayMode:2];
     v11 = PKUIInfoButtonImageWithDefaultConfiguration();
     v12 = objc_alloc_init(PKDashboardMoreMenuFactory);
     moreMenuFactory = self->_moreMenuFactory;
     self->_moreMenuFactory = v12;
 
     v14 = self->_moreMenuFactory;
-    v15 = [(PKAccountViewInterfaceConfiguration *)self->_configuration account];
-    [(PKDashboardMoreMenuFactory *)v14 setAccount:v15];
+    account = [(PKAccountViewInterfaceConfiguration *)self->_configuration account];
+    [(PKDashboardMoreMenuFactory *)v14 setAccount:account];
 
     [(PKDashboardMoreMenuFactory *)self->_moreMenuFactory setViewController:self];
     v16 = objc_alloc(MEMORY[0x1E69DC708]);
     v17 = PKLocalizedString(&cfstr_More.isa);
-    v18 = [(PKDashboardMoreMenuFactory *)self->_moreMenuFactory moreMenu];
-    v19 = [v16 initWithTitle:v17 image:v11 target:0 action:0 menu:v18];
+    moreMenu = [(PKDashboardMoreMenuFactory *)self->_moreMenuFactory moreMenu];
+    v19 = [v16 initWithTitle:v17 image:v11 target:0 action:0 menu:moreMenu];
 
     [v19 setAccessibilityIdentifier:*MEMORY[0x1E69B9970]];
-    v20 = [MEMORY[0x1E69DC888] labelColor];
-    [v19 setTintColor:v20];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [v19 setTintColor:labelColor];
 
-    [v9 setRightBarButtonItem:v19];
-    [v21 setNeedsLayout];
+    [navigationItem setRightBarButtonItem:v19];
+    [viewIfLoaded setNeedsLayout];
   }
 }
 

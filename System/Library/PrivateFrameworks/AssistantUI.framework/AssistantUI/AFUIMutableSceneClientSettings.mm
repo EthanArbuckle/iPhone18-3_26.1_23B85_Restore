@@ -1,29 +1,29 @@
 @interface AFUIMutableSceneClientSettings
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unsigned)clientWindowContextID;
-- (void)setClientWindowContextID:(unsigned int)a3;
+- (void)setClientWindowContextID:(unsigned int)d;
 @end
 
 @implementation AFUIMutableSceneClientSettings
 
-- (void)setClientWindowContextID:(unsigned int)a3
+- (void)setClientWindowContextID:(unsigned int)d
 {
-  v3 = *&a3;
-  v5 = [(FBSSettings *)self otherSettings];
+  v3 = *&d;
+  otherSettings = [(FBSSettings *)self otherSettings];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v3];
-  [v5 setObject:v4 forSetting:2000];
+  [otherSettings setObject:v4 forSetting:2000];
 }
 
 - (unsigned)clientWindowContextID
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2000];
-  v4 = [v3 intValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2000];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [AFUISceneClientSettings alloc];
 

@@ -1,16 +1,16 @@
 @interface SBSystemGestureWorkspaceTransaction
-- (SBSystemGestureWorkspaceTransaction)initWithTransitionRequest:(id)a3;
+- (SBSystemGestureWorkspaceTransaction)initWithTransitionRequest:(id)request;
 - (void)_begin;
 - (void)_didComplete;
 @end
 
 @implementation SBSystemGestureWorkspaceTransaction
 
-- (SBSystemGestureWorkspaceTransaction)initWithTransitionRequest:(id)a3
+- (SBSystemGestureWorkspaceTransaction)initWithTransitionRequest:(id)request
 {
   v11.receiver = self;
   v11.super_class = SBSystemGestureWorkspaceTransaction;
-  v3 = [(SBMainWorkspaceTransaction *)&v11 initWithTransitionRequest:a3];
+  v3 = [(SBMainWorkspaceTransaction *)&v11 initWithTransitionRequest:request];
   v4 = v3;
   if (v3)
   {
@@ -28,8 +28,8 @@
 
 - (void)_begin
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBSystemGestureWorkspaceTransaction.m" lineNumber:53 description:@"Trying to _begin but I'm not tracking a system gesture"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBSystemGestureWorkspaceTransaction.m" lineNumber:53 description:@"Trying to _begin but I'm not tracking a system gesture"];
 }
 
 - (void)_didComplete

@@ -1,20 +1,20 @@
 @interface HDCloudSyncCodableDeviceKeyValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasProtectionCategory:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasProtectionCategory:(BOOL)category;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCloudSyncCodableDeviceKeyValue
 
-- (void)setHasProtectionCategory:(BOOL)a3
+- (void)setHasProtectionCategory:(BOOL)category
 {
-  if (a3)
+  if (category)
   {
     v3 = 2;
   }
@@ -33,45 +33,45 @@
   v8.receiver = self;
   v8.super_class = HDCloudSyncCodableDeviceKeyValue;
   v4 = [(HDCloudSyncCodableDeviceKeyValue *)&v8 description];
-  v5 = [(HDCloudSyncCodableDeviceKeyValue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCloudSyncCodableDeviceKeyValue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   syncIdentity = self->_syncIdentity;
   if (syncIdentity)
   {
-    v5 = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"syncIdentity"];
+    dictionaryRepresentation = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"syncIdentity"];
   }
 
   domain = self->_domain;
   if (domain)
   {
-    [v3 setObject:domain forKey:@"domain"];
+    [dictionary setObject:domain forKey:@"domain"];
   }
 
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   value = self->_value;
   if (value)
   {
-    [v3 setObject:value forKey:@"value"];
+    [dictionary setObject:value forKey:@"value"];
   }
 
   has = self->_has;
   if (has)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithDouble:self->_modificationDate];
-    [v3 setObject:v10 forKey:@"modificationDate"];
+    [dictionary setObject:v10 forKey:@"modificationDate"];
 
     has = self->_has;
   }
@@ -79,38 +79,38 @@
   if ((has & 2) != 0)
   {
     v11 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_protectionCategory];
-    [v3 setObject:v11 forKey:@"protectionCategory"];
+    [dictionary setObject:v11 forKey:@"protectionCategory"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_syncIdentity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_domain)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_value)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -118,7 +118,7 @@
   {
     modificationDate = self->_modificationDate;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -126,69 +126,69 @@
   {
     protectionCategory = self->_protectionCategory;
     PBDataWriterWriteInt64Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_syncIdentity)
   {
-    [v4 setSyncIdentity:?];
-    v4 = v6;
+    [toCopy setSyncIdentity:?];
+    toCopy = v6;
   }
 
   if (self->_domain)
   {
     [v6 setDomain:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_key)
   {
     [v6 setKey:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_value)
   {
     [v6 setValue:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = *&self->_modificationDate;
-    *(v4 + 56) |= 1u;
+    *(toCopy + 1) = *&self->_modificationDate;
+    *(toCopy + 56) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = self->_protectionCategory;
-    *(v4 + 56) |= 2u;
+    *(toCopy + 2) = self->_protectionCategory;
+    *(toCopy + 56) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
-  v8 = [(NSString *)self->_domain copyWithZone:a3];
+  v8 = [(NSString *)self->_domain copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSString *)self->_key copyWithZone:a3];
+  v10 = [(NSString *)self->_key copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
-  v12 = [(NSData *)self->_value copyWithZone:a3];
+  v12 = [(NSData *)self->_value copyWithZone:zone];
   v13 = *(v5 + 48);
   *(v5 + 48) = v12;
 
@@ -209,16 +209,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   syncIdentity = self->_syncIdentity;
-  if (syncIdentity | *(v4 + 5))
+  if (syncIdentity | *(equalCopy + 5))
   {
     if (![(HDCodableSyncIdentity *)syncIdentity isEqual:?])
     {
@@ -227,7 +227,7 @@
   }
 
   domain = self->_domain;
-  if (domain | *(v4 + 3))
+  if (domain | *(equalCopy + 3))
   {
     if (![(NSString *)domain isEqual:?])
     {
@@ -236,7 +236,7 @@
   }
 
   key = self->_key;
-  if (key | *(v4 + 4))
+  if (key | *(equalCopy + 4))
   {
     if (![(NSString *)key isEqual:?])
     {
@@ -245,7 +245,7 @@
   }
 
   value = self->_value;
-  if (value | *(v4 + 6))
+  if (value | *(equalCopy + 6))
   {
     if (![(NSData *)value isEqual:?])
     {
@@ -255,23 +255,23 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_modificationDate != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_modificationDate != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
 LABEL_19:
     v9 = 0;
     goto LABEL_20;
   }
 
-  v9 = (*(v4 + 56) & 2) == 0;
+  v9 = (*(equalCopy + 56) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_protectionCategory != *(v4 + 2))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_protectionCategory != *(equalCopy + 2))
     {
       goto LABEL_19;
     }
@@ -336,12 +336,12 @@ LABEL_20:
   return v4 ^ v3 ^ v5 ^ v6 ^ v9 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   syncIdentity = self->_syncIdentity;
-  v6 = *(v4 + 5);
-  v8 = v4;
+  v6 = *(fromCopy + 5);
+  v8 = fromCopy;
   if (syncIdentity)
   {
     if (!v6)
@@ -362,37 +362,37 @@ LABEL_20:
     [(HDCloudSyncCodableDeviceKeyValue *)self setSyncIdentity:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_7:
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(HDCloudSyncCodableDeviceKeyValue *)self setDomain:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(HDCloudSyncCodableDeviceKeyValue *)self setKey:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(HDCloudSyncCodableDeviceKeyValue *)self setValue:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v7 = *(v4 + 56);
+  v7 = *(fromCopy + 56);
   if (v7)
   {
-    self->_modificationDate = *(v4 + 1);
+    self->_modificationDate = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v7 = *(v4 + 56);
+    v7 = *(fromCopy + 56);
   }
 
   if ((v7 & 2) != 0)
   {
-    self->_protectionCategory = *(v4 + 2);
+    self->_protectionCategory = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 

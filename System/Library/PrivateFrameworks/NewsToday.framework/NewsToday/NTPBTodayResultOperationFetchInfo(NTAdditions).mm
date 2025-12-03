@@ -11,16 +11,16 @@
 
 - (uint64_t)setAppConfigTreatmentID:()NTAdditions
 {
-  v4 = [a3 integerValue];
+  integerValue = [a3 integerValue];
 
-  return [a1 setAppConfigTreatmentIDInteger:v4];
+  return [self setAppConfigTreatmentIDInteger:integerValue];
 }
 
 - (id)appConfigTreatmentID
 {
-  if ([a1 hasAppConfigTreatmentIDInteger])
+  if ([self hasAppConfigTreatmentIDInteger])
   {
-    v2 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(a1, "appConfigTreatmentIDInteger")}];
+    v2 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(self, "appConfigTreatmentIDInteger")}];
   }
 
   else
@@ -33,16 +33,16 @@
 
 - (void)setLocale:()NTAdditions
 {
-  v4 = [a3 localeIdentifier];
-  [a1 setLocaleIdentifier:v4];
+  localeIdentifier = [a3 localeIdentifier];
+  [self setLocaleIdentifier:localeIdentifier];
 }
 
 - (id)locale
 {
-  v1 = [a1 localeIdentifier];
-  if (v1)
+  localeIdentifier = [self localeIdentifier];
+  if (localeIdentifier)
   {
-    v2 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:v1];
+    v2 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:localeIdentifier];
   }
 
   else
@@ -59,7 +59,7 @@
   v4[1] = 3221225472;
   v4[2] = __83__NTPBTodayResultOperationFetchInfo_NTAdditions__setUserSegmentationSegmentSetIDs___block_invoke;
   v4[3] = &unk_279983BD0;
-  v4[4] = a1;
+  v4[4] = self;
   return [a3 enumerateObjectsUsingBlock:v4];
 }
 
@@ -69,7 +69,7 @@
   v4[1] = 3221225472;
   v4[2] = __82__NTPBTodayResultOperationFetchInfo_NTAdditions__setUserSegmentationTreatmentIDs___block_invoke;
   v4[3] = &unk_279983BD0;
-  v4[4] = a1;
+  v4[4] = self;
   return [a3 enumerateObjectsUsingBlock:v4];
 }
 

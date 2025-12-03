@@ -1,22 +1,22 @@
 @interface DNDSApplicationIdentifierMapper
-- (id)_iOSBundleIDForMacOSBundleID:(id)a3;
-- (id)_macOSBundleIDForiOSBundleID:(id)a3;
-- (id)applicationIdentifierForFileWithSourceApplicationIdentifier:(id)a3;
-- (id)applicationIdentifierForTargetPlatform:(unint64_t)a3 withSourceApplicationIdentifier:(id)a4;
+- (id)_iOSBundleIDForMacOSBundleID:(id)d;
+- (id)_macOSBundleIDForiOSBundleID:(id)d;
+- (id)applicationIdentifierForFileWithSourceApplicationIdentifier:(id)identifier;
+- (id)applicationIdentifierForTargetPlatform:(unint64_t)platform withSourceApplicationIdentifier:(id)identifier;
 @end
 
 @implementation DNDSApplicationIdentifierMapper
 
-- (id)applicationIdentifierForTargetPlatform:(unint64_t)a3 withSourceApplicationIdentifier:(id)a4
+- (id)applicationIdentifierForTargetPlatform:(unint64_t)platform withSourceApplicationIdentifier:(id)identifier
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 platform];
-  v8 = [v6 bundleID];
+  identifierCopy = identifier;
+  platformCopy = [identifierCopy platform];
+  bundleID = [identifierCopy bundleID];
 
-  v9 = v8;
+  v9 = bundleID;
   v10 = v9;
-  if (a3 == 2 && v7 == 1)
+  if (platform == 2 && platformCopy == 1)
   {
     v11 = [(DNDSApplicationIdentifierMapper *)self _macOSBundleIDForiOSBundleID:v9];
     v12 = v11;
@@ -24,17 +24,17 @@
     {
       v13 = v11;
 
-      v7 = 2;
+      platformCopy = 2;
 LABEL_17:
 
       goto LABEL_18;
     }
 
-    v7 = 1;
+    platformCopy = 1;
     goto LABEL_16;
   }
 
-  if (a3 == 1 && v7 == 2)
+  if (platform == 1 && platformCopy == 2)
   {
     v14 = [(DNDSApplicationIdentifierMapper *)self _iOSBundleIDForMacOSBundleID:v9];
     v12 = v14;
@@ -42,20 +42,20 @@ LABEL_17:
     {
       v13 = v14;
 
-      v7 = 1;
+      platformCopy = 1;
       goto LABEL_17;
     }
 
-    v7 = 2;
+    platformCopy = 2;
 LABEL_16:
     v13 = v10;
     goto LABEL_17;
   }
 
-  if (v7 == a3)
+  if (platformCopy == platform)
   {
     v13 = v9;
-    v7 = a3;
+    platformCopy = platform;
   }
 
   else
@@ -79,37 +79,37 @@ LABEL_16:
   }
 
 LABEL_18:
-  v19 = [objc_alloc(MEMORY[0x277D058C8]) initWithBundleID:v13 platform:v7];
+  v19 = [objc_alloc(MEMORY[0x277D058C8]) initWithBundleID:v13 platform:platformCopy];
 
   v20 = *MEMORY[0x277D85DE8];
 
   return v19;
 }
 
-- (id)applicationIdentifierForFileWithSourceApplicationIdentifier:(id)a3
+- (id)applicationIdentifierForFileWithSourceApplicationIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DNDSApplicationIdentifierMapper *)self applicationIdentifierForTargetPlatform:DNDPlatformForCurrentDevice() withSourceApplicationIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(DNDSApplicationIdentifierMapper *)self applicationIdentifierForTargetPlatform:DNDPlatformForCurrentDevice() withSourceApplicationIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (id)_iOSBundleIDForMacOSBundleID:(id)a3
+- (id)_iOSBundleIDForMacOSBundleID:(id)d
 {
   v3 = MEMORY[0x277CF9650];
-  v4 = a3;
-  v5 = [v3 sharedCategories];
-  v6 = [v5 bundleIDForPlatform:*MEMORY[0x277CF9640] fromBundleID:v4 platform:*MEMORY[0x277CF9648]];
+  dCopy = d;
+  sharedCategories = [v3 sharedCategories];
+  v6 = [sharedCategories bundleIDForPlatform:*MEMORY[0x277CF9640] fromBundleID:dCopy platform:*MEMORY[0x277CF9648]];
 
   return v6;
 }
 
-- (id)_macOSBundleIDForiOSBundleID:(id)a3
+- (id)_macOSBundleIDForiOSBundleID:(id)d
 {
   v3 = MEMORY[0x277CF9650];
-  v4 = a3;
-  v5 = [v3 sharedCategories];
-  v6 = [v5 bundleIDForPlatform:*MEMORY[0x277CF9648] fromBundleID:v4 platform:*MEMORY[0x277CF9640]];
+  dCopy = d;
+  sharedCategories = [v3 sharedCategories];
+  v6 = [sharedCategories bundleIDForPlatform:*MEMORY[0x277CF9648] fromBundleID:dCopy platform:*MEMORY[0x277CF9640]];
 
   return v6;
 }

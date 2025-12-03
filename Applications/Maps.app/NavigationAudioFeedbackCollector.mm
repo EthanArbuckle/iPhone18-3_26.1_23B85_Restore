@@ -1,14 +1,14 @@
 @interface NavigationAudioFeedbackCollector
 - (void)dealloc;
 - (void)endSession;
-- (void)navigationService:(id)a3 didStartSpeakingPrompt:(id)a4;
+- (void)navigationService:(id)service didStartSpeakingPrompt:(id)prompt;
 - (void)startSession;
-- (void)updateViewingAudioSettings:(BOOL)a3;
+- (void)updateViewingAudioSettings:(BOOL)settings;
 @end
 
 @implementation NavigationAudioFeedbackCollector
 
-- (void)navigationService:(id)a3 didStartSpeakingPrompt:(id)a4
+- (void)navigationService:(id)service didStartSpeakingPrompt:(id)prompt
 {
   audioFeedback = self->_audioFeedback;
   v5 = audioFeedback->var13 + 1;
@@ -16,10 +16,10 @@
   audioFeedback->var13 = v5;
 }
 
-- (void)updateViewingAudioSettings:(BOOL)a3
+- (void)updateViewingAudioSettings:(BOOL)settings
 {
-  self->_viewingAudioSettings = a3;
-  if (a3)
+  self->_viewingAudioSettings = settings;
+  if (settings)
   {
     audioFeedback = self->_audioFeedback;
     *&audioFeedback->var18 |= 0x4000u;

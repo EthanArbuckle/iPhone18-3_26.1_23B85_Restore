@@ -1,21 +1,21 @@
 @interface IneligibleForSyncOnboardingViewController
-- (_TtC9MomentsUI41IneligibleForSyncOnboardingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9MomentsUI41IneligibleForSyncOnboardingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)cancelSheet;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation IneligibleForSyncOnboardingViewController
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  IneligibleForSyncOnboardingViewController.viewWillDisappear(_:)(a3);
+  selfCopy = self;
+  IneligibleForSyncOnboardingViewController.viewWillDisappear(_:)(disappear);
 }
 
 - (void)cancelSheet
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.super.super.isa) + 0x70);
-  v3 = self;
+  selfCopy = self;
   v2(v9);
   if (v9[3])
   {
@@ -36,7 +36,7 @@
   }
 }
 
-- (_TtC9MomentsUI41IneligibleForSyncOnboardingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9MomentsUI41IneligibleForSyncOnboardingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

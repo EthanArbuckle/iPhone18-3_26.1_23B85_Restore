@@ -6,14 +6,14 @@
 
 - (_PFRoleManifest)pf_roleManifest
 {
-  v2 = objc_getAssociatedObject(a1, "roleManifest");
+  v2 = objc_getAssociatedObject(self, "roleManifest");
   if (!v2)
   {
     v3 = [_PFRoleManifest alloc];
-    v4 = [a1 infoDictionary];
-    v2 = [(_PFRoleManifest *)v3 initWithInfoDictionary:v4];
+    infoDictionary = [self infoDictionary];
+    v2 = [(_PFRoleManifest *)v3 initWithInfoDictionary:infoDictionary];
 
-    objc_setAssociatedObject(a1, "roleManifest", v2, 1);
+    objc_setAssociatedObject(self, "roleManifest", v2, 1);
   }
 
   return v2;

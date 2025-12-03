@@ -1,21 +1,21 @@
 @interface PXPhotoKitThumbnailCache
 - (NSString)description;
 - (PXPhotoKitThumbnailCache)init;
-- (PXPhotoKitThumbnailCache)initWithSizeLimit:(unint64_t)a3 photoLibrary:(id)a4;
-- (id)prepareForPhotoLibraryChange:(id)a3;
-- (id)tableThumbnailDataForAsset:(id)a3 dataSpecification:(PHAssetResourceTableDataSpecification *)a4;
-- (void)cache:(id)a3 willEvictObject:(id)a4;
-- (void)cacheThumbnailData:(id)a3 specification:(const PHAssetResourceTableDataSpecification *)a4 forAsset:(id)a5;
+- (PXPhotoKitThumbnailCache)initWithSizeLimit:(unint64_t)limit photoLibrary:(id)library;
+- (id)prepareForPhotoLibraryChange:(id)change;
+- (id)tableThumbnailDataForAsset:(id)asset dataSpecification:(PHAssetResourceTableDataSpecification *)specification;
+- (void)cache:(id)cache willEvictObject:(id)object;
+- (void)cacheThumbnailData:(id)data specification:(const PHAssetResourceTableDataSpecification *)specification forAsset:(id)asset;
 - (void)dealloc;
 @end
 
 @implementation PXPhotoKitThumbnailCache
 
-- (id)prepareForPhotoLibraryChange:(id)a3
+- (id)prepareForPhotoLibraryChange:(id)change
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 hasIncrementalChanges])
+  changeCopy = change;
+  if ([changeCopy hasIncrementalChanges])
   {
     os_unfair_lock_lock(&self->_lock);
     v25 = 0u;
@@ -39,7 +39,7 @@
           }
 
           v11 = *(*(&v23 + 1) + 8 * i);
-          if ([v4 contentOrThumbnailChangedForPHAssetOID:v11])
+          if ([changeCopy contentOrThumbnailChangedForPHAssetOID:v11])
           {
             if (!v8)
             {
@@ -103,43 +103,43 @@
   return 0;
 }
 
-- (void)cache:(id)a3 willEvictObject:(id)a4
+- (void)cache:(id)cache willEvictObject:(id)object
 {
-  v5 = a4;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_lock);
   lock_cachedThumbnailIndexByObjectID = self->_lock_cachedThumbnailIndexByObjectID;
-  v7 = [v5 objectID];
+  objectID = [objectCopy objectID];
 
-  [(NSMutableDictionary *)lock_cachedThumbnailIndexByObjectID removeObjectForKey:v7];
+  [(NSMutableDictionary *)lock_cachedThumbnailIndexByObjectID removeObjectForKey:objectID];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)cacheThumbnailData:(id)a3 specification:(const PHAssetResourceTableDataSpecification *)a4 forAsset:(id)a5
+- (void)cacheThumbnailData:(id)data specification:(const PHAssetResourceTableDataSpecification *)specification forAsset:(id)asset
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v9 photoLibrary];
+  dataCopy = data;
+  assetCopy = asset;
+  photoLibrary = [assetCopy photoLibrary];
   photoLibrary = self->_photoLibrary;
 
-  if (v10 == photoLibrary)
+  if (photoLibrary == photoLibrary)
   {
-    v12 = [v9 objectID];
-    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v9, "thumbnailIndex")}];
-    v14 = a4->dataHeight * a4->bytesPerRow;
+    objectID = [assetCopy objectID];
+    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(assetCopy, "thumbnailIndex")}];
+    v14 = specification->dataHeight * specification->bytesPerRow;
     v15 = v14;
-    if ([v8 length] >= v14)
+    if ([dataCopy length] >= v14)
     {
-      v16 = [off_1E7721920 sharedInstance];
-      v17 = [v16 colorCachedThumbnails];
+      sharedInstance = [off_1E7721920 sharedInstance];
+      colorCachedThumbnails = [sharedInstance colorCachedThumbnails];
 
-      if (v17)
+      if (colorCachedThumbnails)
       {
-        v18 = [objc_alloc(MEMORY[0x1E695DF88]) initWithBytes:objc_msgSend(v8 length:{"bytes"), v15}];
-        bytesPerRow = a4->bytesPerRow;
-        dataWidth = a4->dataWidth;
-        v21 = [v18 mutableBytes];
+        v18 = [objc_alloc(MEMORY[0x1E695DF88]) initWithBytes:objc_msgSend(dataCopy length:{"bytes"), v15}];
+        bytesPerRow = specification->bytesPerRow;
+        dataWidth = specification->dataWidth;
+        mutableBytes = [v18 mutableBytes];
         if (v15 >= 2)
         {
           v22 = 0;
@@ -176,7 +176,7 @@
           }
 
           v28 = vdupq_n_s64(v27);
-          v29 = (v21 + 1);
+          v29 = (mutableBytes + 1);
           do
           {
             v30 = vdupq_n_s64(v22);
@@ -258,61 +258,61 @@
 
       else
       {
-        v18 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:objc_msgSend(v8 length:{"bytes"), v15}];
+        v18 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:objc_msgSend(dataCopy length:{"bytes"), v15}];
       }
 
-      v35 = [[PXThumbnailCacheEntry alloc] initWithObjectID:v12 dataSpec:a4 data:v18];
+      v35 = [[PXThumbnailCacheEntry alloc] initWithObjectID:objectID dataSpec:specification data:v18];
       [(NSCache *)self->_cache setObject:v35 forKey:v13 cost:v15];
       v36 = [(NSCache *)self->_cache objectForKey:v13];
       os_unfair_lock_lock(&self->_lock);
-      [(NSMutableDictionary *)self->_lock_cachedThumbnailIndexByObjectID setObject:v13 forKeyedSubscript:v12];
+      [(NSMutableDictionary *)self->_lock_cachedThumbnailIndexByObjectID setObject:v13 forKeyedSubscript:objectID];
       os_unfair_lock_unlock(&self->_lock);
     }
 
-    else if ([v8 length] >= v14)
+    else if ([dataCopy length] >= v14)
     {
       PXAssertGetLog();
     }
   }
 }
 
-- (id)tableThumbnailDataForAsset:(id)a3 dataSpecification:(PHAssetResourceTableDataSpecification *)a4
+- (id)tableThumbnailDataForAsset:(id)asset dataSpecification:(PHAssetResourceTableDataSpecification *)specification
 {
-  v6 = a3;
-  v7 = [v6 photoLibrary];
+  assetCopy = asset;
+  photoLibrary = [assetCopy photoLibrary];
   photoLibrary = self->_photoLibrary;
 
-  if (v7 == photoLibrary)
+  if (photoLibrary == photoLibrary)
   {
     cache = self->_cache;
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v6, "thumbnailIndex")}];
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(assetCopy, "thumbnailIndex")}];
     v12 = [(NSCache *)cache objectForKey:v11];
 
-    if (a4 && v12)
+    if (specification && v12)
     {
       [v12 dataSpec];
-      *&a4->width = v14;
-      *&a4->dataHeight = v15;
+      *&specification->width = v14;
+      *&specification->dataHeight = v15;
     }
 
-    v9 = [v12 data];
+    data = [v12 data];
   }
 
   else
   {
-    v9 = 0;
+    data = 0;
   }
 
-  return v9;
+  return data;
 }
 
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PXPhotoKitThumbnailCache *)self label];
+  label = [(PXPhotoKitThumbnailCache *)self label];
   v5 = [(NSMutableDictionary *)self->_lock_cachedThumbnailIndexByObjectID count];
   v6 = [MEMORY[0x1E696AAF0] stringFromByteCount:-[PXPhotoKitThumbnailCache sizeLimit](self countStyle:{"sizeLimit"), 1}];
-  v7 = [v3 stringWithFormat:@"<%@:%p label:%@ count:%lu sizeLimit:%@>", self, self, v4, v5, v6];
+  v7 = [v3 stringWithFormat:@"<%@:%p label:%@ count:%lu sizeLimit:%@>", self, self, label, v5, v6];
 
   return v7;
 }
@@ -327,15 +327,15 @@
 
 - (PXPhotoKitThumbnailCache)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPhotoKitThumbnailCache.m" lineNumber:64 description:{@"%s is not available as initializer", "-[PXPhotoKitThumbnailCache init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitThumbnailCache.m" lineNumber:64 description:{@"%s is not available as initializer", "-[PXPhotoKitThumbnailCache init]"}];
 
   abort();
 }
 
-- (PXPhotoKitThumbnailCache)initWithSizeLimit:(unint64_t)a3 photoLibrary:(id)a4
+- (PXPhotoKitThumbnailCache)initWithSizeLimit:(unint64_t)limit photoLibrary:(id)library
 {
-  v7 = a4;
+  libraryCopy = library;
   v15.receiver = self;
   v15.super_class = PXPhotoKitThumbnailCache;
   v8 = [(PXPhotoKitThumbnailCache *)&v15 init];
@@ -343,7 +343,7 @@
   if (v8)
   {
     v8->_lock._os_unfair_lock_opaque = 0;
-    v8->_sizeLimit = a3;
+    v8->_sizeLimit = limit;
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
     lock_cachedThumbnailIndexByObjectID = v9->_lock_cachedThumbnailIndexByObjectID;
     v9->_lock_cachedThumbnailIndexByObjectID = v10;
@@ -352,10 +352,10 @@
     cache = v9->_cache;
     v9->_cache = v12;
 
-    [(NSCache *)v9->_cache setTotalCostLimit:a3];
+    [(NSCache *)v9->_cache setTotalCostLimit:limit];
     [(NSCache *)v9->_cache setDelegate:v9];
-    objc_storeStrong(&v9->_photoLibrary, a4);
-    [v7 px_registerChangeObserver:v9];
+    objc_storeStrong(&v9->_photoLibrary, library);
+    [libraryCopy px_registerChangeObserver:v9];
   }
 
   return v9;

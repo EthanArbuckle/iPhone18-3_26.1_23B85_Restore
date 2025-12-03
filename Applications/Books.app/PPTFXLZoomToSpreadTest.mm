@@ -8,11 +8,11 @@
 {
   [(PPTBasicTest *)self setRunning:1];
   objc_opt_class();
-  v3 = [(PPTBasicTest *)self bookController];
+  bookController = [(PPTBasicTest *)self bookController];
   v4 = BUDynamicCast();
 
   objc_opt_class();
-  v5 = [v4 pageNavigationViewController];
+  pageNavigationViewController = [v4 pageNavigationViewController];
   v6 = BUDynamicCast();
 
   if (v6)
@@ -24,7 +24,7 @@
       goto LABEL_9;
     }
 
-    v7 = self;
+    selfCopy2 = self;
     v8 = 0;
   }
 
@@ -37,11 +37,11 @@
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "pictureBookNavController not found", v10, 2u);
     }
 
-    v7 = self;
+    selfCopy2 = self;
     v8 = 1;
   }
 
-  [(PPTBasicTest *)v7 finishPPTTestWithResult:v8];
+  [(PPTBasicTest *)selfCopy2 finishPPTTestWithResult:v8];
 LABEL_9:
 }
 

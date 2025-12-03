@@ -1,28 +1,28 @@
 @interface QDSchemaQDRetrievedTool
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (QDSchemaQDRetrievedTool)initWithDictionary:(id)a3;
-- (QDSchemaQDRetrievedTool)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (QDSchemaQDRetrievedTool)initWithDictionary:(id)dictionary;
+- (QDSchemaQDRetrievedTool)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasSelectionCriteria:(BOOL)a3;
-- (void)setHasSimilarityScore:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasSelectionCriteria:(BOOL)criteria;
+- (void)setHasSimilarityScore:(BOOL)score;
+- (void)writeTo:(id)to;
 @end
 
 @implementation QDSchemaQDRetrievedTool
 
-- (QDSchemaQDRetrievedTool)initWithDictionary:(id)a3
+- (QDSchemaQDRetrievedTool)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = QDSchemaQDRetrievedTool;
   v5 = [(QDSchemaQDRetrievedTool *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"sessionScopedUniqueId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"sessionScopedUniqueId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,7 +30,7 @@
       [(QDSchemaQDRetrievedTool *)v5 setSessionScopedUniqueId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"toolId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"toolId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,14 +38,14 @@
       [(QDSchemaQDRetrievedTool *)v5 setToolId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"subType"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"subType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[QDSchemaQDRetrievedTool setSubType:](v5, "setSubType:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"similarityScore"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"similarityScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,14 +53,14 @@
       [(QDSchemaQDRetrievedTool *)v5 setSimilarityScore:?];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"selectionCriteria"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"selectionCriteria"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[QDSchemaQDRetrievedTool setSelectionCriteria:](v5, "setSelectionCriteria:", [v12 intValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"toolSource"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"toolSource"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -68,7 +68,7 @@
       [(QDSchemaQDRetrievedTool *)v5 setToolSource:v14];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"toolDefinition"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"toolDefinition"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,30 +82,30 @@
   return v5;
 }
 
-- (QDSchemaQDRetrievedTool)initWithJSON:(id)a3
+- (QDSchemaQDRetrievedTool)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(QDSchemaQDRetrievedTool *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(QDSchemaQDRetrievedTool *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(QDSchemaQDRetrievedTool *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -118,7 +118,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 4) != 0)
   {
     v4 = [(QDSchemaQDRetrievedTool *)self selectionCriteria]- 1;
@@ -132,22 +132,22 @@
       v5 = off_1E78E17D0[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"selectionCriteria"];
+    [dictionary setObject:v5 forKeyedSubscript:@"selectionCriteria"];
   }
 
   if (self->_sessionScopedUniqueId)
   {
-    v6 = [(QDSchemaQDRetrievedTool *)self sessionScopedUniqueId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    sessionScopedUniqueId = [(QDSchemaQDRetrievedTool *)self sessionScopedUniqueId];
+    dictionaryRepresentation = [sessionScopedUniqueId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"sessionScopedUniqueId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"sessionScopedUniqueId"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"sessionScopedUniqueId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"sessionScopedUniqueId"];
     }
   }
 
@@ -157,7 +157,7 @@
     v10 = MEMORY[0x1E696AD98];
     [(QDSchemaQDRetrievedTool *)self similarityScore];
     v11 = [v10 numberWithFloat:?];
-    [v3 setObject:v11 forKeyedSubscript:@"similarityScore"];
+    [dictionary setObject:v11 forKeyedSubscript:@"similarityScore"];
 
     has = self->_has;
   }
@@ -175,51 +175,51 @@
       v13 = off_1E78E17F8[v12];
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"subType"];
+    [dictionary setObject:v13 forKeyedSubscript:@"subType"];
   }
 
   if (self->_toolDefinition)
   {
-    v14 = [(QDSchemaQDRetrievedTool *)self toolDefinition];
-    v15 = [v14 dictionaryRepresentation];
-    if (v15)
+    toolDefinition = [(QDSchemaQDRetrievedTool *)self toolDefinition];
+    dictionaryRepresentation2 = [toolDefinition dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v15 forKeyedSubscript:@"toolDefinition"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"toolDefinition"];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v16 forKeyedSubscript:@"toolDefinition"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"toolDefinition"];
     }
   }
 
   if (self->_toolId)
   {
-    v17 = [(QDSchemaQDRetrievedTool *)self toolId];
-    v18 = [v17 copy];
-    [v3 setObject:v18 forKeyedSubscript:@"toolId"];
+    toolId = [(QDSchemaQDRetrievedTool *)self toolId];
+    v18 = [toolId copy];
+    [dictionary setObject:v18 forKeyedSubscript:@"toolId"];
   }
 
   if (self->_toolSource)
   {
-    v19 = [(QDSchemaQDRetrievedTool *)self toolSource];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    toolSource = [(QDSchemaQDRetrievedTool *)self toolSource];
+    dictionaryRepresentation3 = [toolSource dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"toolSource"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"toolSource"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"toolSource"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"toolSource"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -291,28 +291,28 @@ LABEL_10:
   return v14 ^ [(QDSchemaQDToolDefinition *)self->_toolDefinition hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_33;
   }
 
-  v5 = [(QDSchemaQDRetrievedTool *)self sessionScopedUniqueId];
-  v6 = [v4 sessionScopedUniqueId];
-  if ((v5 != 0) == (v6 == 0))
+  sessionScopedUniqueId = [(QDSchemaQDRetrievedTool *)self sessionScopedUniqueId];
+  sessionScopedUniqueId2 = [equalCopy sessionScopedUniqueId];
+  if ((sessionScopedUniqueId != 0) == (sessionScopedUniqueId2 == 0))
   {
     goto LABEL_32;
   }
 
-  v7 = [(QDSchemaQDRetrievedTool *)self sessionScopedUniqueId];
-  if (v7)
+  sessionScopedUniqueId3 = [(QDSchemaQDRetrievedTool *)self sessionScopedUniqueId];
+  if (sessionScopedUniqueId3)
   {
-    v8 = v7;
-    v9 = [(QDSchemaQDRetrievedTool *)self sessionScopedUniqueId];
-    v10 = [v4 sessionScopedUniqueId];
-    v11 = [v9 isEqual:v10];
+    v8 = sessionScopedUniqueId3;
+    sessionScopedUniqueId4 = [(QDSchemaQDRetrievedTool *)self sessionScopedUniqueId];
+    sessionScopedUniqueId5 = [equalCopy sessionScopedUniqueId];
+    v11 = [sessionScopedUniqueId4 isEqual:sessionScopedUniqueId5];
 
     if (!v11)
     {
@@ -324,20 +324,20 @@ LABEL_10:
   {
   }
 
-  v5 = [(QDSchemaQDRetrievedTool *)self toolId];
-  v6 = [v4 toolId];
-  if ((v5 != 0) == (v6 == 0))
+  sessionScopedUniqueId = [(QDSchemaQDRetrievedTool *)self toolId];
+  sessionScopedUniqueId2 = [equalCopy toolId];
+  if ((sessionScopedUniqueId != 0) == (sessionScopedUniqueId2 == 0))
   {
     goto LABEL_32;
   }
 
-  v12 = [(QDSchemaQDRetrievedTool *)self toolId];
-  if (v12)
+  toolId = [(QDSchemaQDRetrievedTool *)self toolId];
+  if (toolId)
   {
-    v13 = v12;
-    v14 = [(QDSchemaQDRetrievedTool *)self toolId];
-    v15 = [v4 toolId];
-    v16 = [v14 isEqual:v15];
+    v13 = toolId;
+    toolId2 = [(QDSchemaQDRetrievedTool *)self toolId];
+    toolId3 = [equalCopy toolId];
+    v16 = [toolId2 isEqual:toolId3];
 
     if (!v16)
     {
@@ -350,7 +350,7 @@ LABEL_10:
   }
 
   has = self->_has;
-  v18 = v4[56];
+  v18 = equalCopy[56];
   if ((*&has & 1) != (v18 & 1))
   {
     goto LABEL_33;
@@ -359,13 +359,13 @@ LABEL_10:
   if (*&has)
   {
     subType = self->_subType;
-    if (subType != [v4 subType])
+    if (subType != [equalCopy subType])
     {
       goto LABEL_33;
     }
 
     has = self->_has;
-    v18 = v4[56];
+    v18 = equalCopy[56];
   }
 
   v20 = (*&has >> 1) & 1;
@@ -377,14 +377,14 @@ LABEL_10:
   if (v20)
   {
     similarityScore = self->_similarityScore;
-    [v4 similarityScore];
+    [equalCopy similarityScore];
     if (similarityScore != v22)
     {
       goto LABEL_33;
     }
 
     has = self->_has;
-    v18 = v4[56];
+    v18 = equalCopy[56];
   }
 
   v23 = (*&has >> 2) & 1;
@@ -396,26 +396,26 @@ LABEL_10:
   if (v23)
   {
     selectionCriteria = self->_selectionCriteria;
-    if (selectionCriteria != [v4 selectionCriteria])
+    if (selectionCriteria != [equalCopy selectionCriteria])
     {
       goto LABEL_33;
     }
   }
 
-  v5 = [(QDSchemaQDRetrievedTool *)self toolSource];
-  v6 = [v4 toolSource];
-  if ((v5 != 0) == (v6 == 0))
+  sessionScopedUniqueId = [(QDSchemaQDRetrievedTool *)self toolSource];
+  sessionScopedUniqueId2 = [equalCopy toolSource];
+  if ((sessionScopedUniqueId != 0) == (sessionScopedUniqueId2 == 0))
   {
     goto LABEL_32;
   }
 
-  v25 = [(QDSchemaQDRetrievedTool *)self toolSource];
-  if (v25)
+  toolSource = [(QDSchemaQDRetrievedTool *)self toolSource];
+  if (toolSource)
   {
-    v26 = v25;
-    v27 = [(QDSchemaQDRetrievedTool *)self toolSource];
-    v28 = [v4 toolSource];
-    v29 = [v27 isEqual:v28];
+    v26 = toolSource;
+    toolSource2 = [(QDSchemaQDRetrievedTool *)self toolSource];
+    toolSource3 = [equalCopy toolSource];
+    v29 = [toolSource2 isEqual:toolSource3];
 
     if (!v29)
     {
@@ -427,17 +427,17 @@ LABEL_10:
   {
   }
 
-  v5 = [(QDSchemaQDRetrievedTool *)self toolDefinition];
-  v6 = [v4 toolDefinition];
-  if ((v5 != 0) == (v6 == 0))
+  sessionScopedUniqueId = [(QDSchemaQDRetrievedTool *)self toolDefinition];
+  sessionScopedUniqueId2 = [equalCopy toolDefinition];
+  if ((sessionScopedUniqueId != 0) == (sessionScopedUniqueId2 == 0))
   {
 LABEL_32:
 
     goto LABEL_33;
   }
 
-  v30 = [(QDSchemaQDRetrievedTool *)self toolDefinition];
-  if (!v30)
+  toolDefinition = [(QDSchemaQDRetrievedTool *)self toolDefinition];
+  if (!toolDefinition)
   {
 
 LABEL_36:
@@ -445,10 +445,10 @@ LABEL_36:
     goto LABEL_34;
   }
 
-  v31 = v30;
-  v32 = [(QDSchemaQDRetrievedTool *)self toolDefinition];
-  v33 = [v4 toolDefinition];
-  v34 = [v32 isEqual:v33];
+  v31 = toolDefinition;
+  toolDefinition2 = [(QDSchemaQDRetrievedTool *)self toolDefinition];
+  toolDefinition3 = [equalCopy toolDefinition];
+  v34 = [toolDefinition2 isEqual:toolDefinition3];
 
   if (v34)
   {
@@ -462,20 +462,20 @@ LABEL_34:
   return v35;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(QDSchemaQDRetrievedTool *)self sessionScopedUniqueId];
+  toCopy = to;
+  sessionScopedUniqueId = [(QDSchemaQDRetrievedTool *)self sessionScopedUniqueId];
 
-  if (v4)
+  if (sessionScopedUniqueId)
   {
-    v5 = [(QDSchemaQDRetrievedTool *)self sessionScopedUniqueId];
+    sessionScopedUniqueId2 = [(QDSchemaQDRetrievedTool *)self sessionScopedUniqueId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(QDSchemaQDRetrievedTool *)self toolId];
+  toolId = [(QDSchemaQDRetrievedTool *)self toolId];
 
-  if (v6)
+  if (toolId)
   {
     PBDataWriterWriteStringField();
   }
@@ -510,29 +510,29 @@ LABEL_8:
   }
 
 LABEL_9:
-  v8 = [(QDSchemaQDRetrievedTool *)self toolSource];
+  toolSource = [(QDSchemaQDRetrievedTool *)self toolSource];
 
-  if (v8)
+  if (toolSource)
   {
-    v9 = [(QDSchemaQDRetrievedTool *)self toolSource];
+    toolSource2 = [(QDSchemaQDRetrievedTool *)self toolSource];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(QDSchemaQDRetrievedTool *)self toolDefinition];
+  toolDefinition = [(QDSchemaQDRetrievedTool *)self toolDefinition];
 
-  v11 = v13;
-  if (v10)
+  v11 = toCopy;
+  if (toolDefinition)
   {
-    v12 = [(QDSchemaQDRetrievedTool *)self toolDefinition];
+    toolDefinition2 = [(QDSchemaQDRetrievedTool *)self toolDefinition];
     PBDataWriterWriteSubmessage();
 
-    v11 = v13;
+    v11 = toCopy;
   }
 }
 
-- (void)setHasSelectionCriteria:(BOOL)a3
+- (void)setHasSelectionCriteria:(BOOL)criteria
 {
-  if (a3)
+  if (criteria)
   {
     v3 = 4;
   }
@@ -545,9 +545,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSimilarityScore:(BOOL)a3
+- (void)setHasSimilarityScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2;
   }
@@ -560,40 +560,40 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = QDSchemaQDRetrievedTool;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:4])
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:4])
   {
     [(QDSchemaQDRetrievedTool *)self deleteToolId];
   }
 
-  v6 = [(QDSchemaQDRetrievedTool *)self sessionScopedUniqueId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  sessionScopedUniqueId = [(QDSchemaQDRetrievedTool *)self sessionScopedUniqueId];
+  v7 = [sessionScopedUniqueId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(QDSchemaQDRetrievedTool *)self deleteSessionScopedUniqueId];
   }
 
-  v9 = [(QDSchemaQDRetrievedTool *)self toolSource];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  toolSource = [(QDSchemaQDRetrievedTool *)self toolSource];
+  v10 = [toolSource applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(QDSchemaQDRetrievedTool *)self deleteToolSource];
   }
 
-  v12 = [(QDSchemaQDRetrievedTool *)self toolDefinition];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  toolDefinition = [(QDSchemaQDRetrievedTool *)self toolDefinition];
+  v13 = [toolDefinition applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(QDSchemaQDRetrievedTool *)self deleteToolDefinition];
   }

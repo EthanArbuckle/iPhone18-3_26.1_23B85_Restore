@@ -1,6 +1,6 @@
 @interface NSUndoManagerProxy
 - (BOOL)_tryRetain;
-- (BOOL)isKindOfClass:(Class)a3;
+- (BOOL)isKindOfClass:(Class)class;
 - (NSUndoManagerProxy)retain;
 - (void)release;
 - (void)superRelease;
@@ -22,13 +22,13 @@
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = NSUndoManagerProxy;
-  v3 = [(NSProxy *)&v6 _tryRetain];
-  if (v3)
+  _tryRetain = [(NSProxy *)&v6 _tryRetain];
+  if (_tryRetain)
   {
     v4 = self->_manager;
   }
 
-  return v3;
+  return _tryRetain;
 }
 
 - (void)release
@@ -48,11 +48,11 @@
   [(NSProxy *)&v2 release];
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   targetClass = self->_targetClass;
   v4 = targetClass != 0;
-  if (targetClass != a3 && targetClass != 0)
+  if (targetClass != class && targetClass != 0)
   {
     do
     {
@@ -60,7 +60,7 @@
       v4 = targetClass != 0;
     }
 
-    while (targetClass != a3 && targetClass);
+    while (targetClass != class && targetClass);
   }
 
   return v4;

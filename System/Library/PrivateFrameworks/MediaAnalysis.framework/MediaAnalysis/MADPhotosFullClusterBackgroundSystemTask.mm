@@ -1,7 +1,7 @@
 @interface MADPhotosFullClusterBackgroundSystemTask
 + (id)sharedTask;
-+ (id)taskWithPhotoLibraries:(id)a3 cancelBlock:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6;
-+ (void)updateTaskSpecificBGSystemTaskRequest:(id)a3;
++ (id)taskWithPhotoLibraries:(id)libraries cancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
++ (void)updateTaskSpecificBGSystemTaskRequest:(id)request;
 @end
 
 @implementation MADPhotosFullClusterBackgroundSystemTask
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_100123160;
   block[3] = &unk_100282998;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002B8430 != -1)
   {
     dispatch_once(&qword_1002B8430, block);
@@ -23,39 +23,39 @@
   return v2;
 }
 
-+ (void)updateTaskSpecificBGSystemTaskRequest:(id)a3
++ (void)updateTaskSpecificBGSystemTaskRequest:(id)request
 {
-  v4 = a3;
-  [v4 setResources:1];
+  requestCopy = request;
+  [requestCopy setResources:1];
   if (MediaAnalysisLogLevel() >= 6)
   {
     v5 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v5))
     {
-      v6 = [a1 identifier];
+      identifier = [self identifier];
       v7 = 138412546;
-      v8 = v6;
+      v8 = identifier;
       v9 = 2048;
-      v10 = [v4 resources];
+      resources = [requestCopy resources];
       _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "[%@] Updated BGSystemTaskRequest properties to %lu", &v7, 0x16u);
     }
   }
 }
 
-+ (id)taskWithPhotoLibraries:(id)a3 cancelBlock:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6
++ (id)taskWithPhotoLibraries:(id)libraries cancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  librariesCopy = libraries;
+  blockCopy = block;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v14 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v14))
     {
-      v15 = [a1 identifier];
+      identifier = [self identifier];
       *buf = 138412290;
-      v22 = v15;
+      v22 = identifier;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v14, "%@ - Creating task", buf, 0xCu);
     }
   }
@@ -64,9 +64,9 @@
   v19[1] = 3221225472;
   v19[2] = sub_1001234CC;
   v19[3] = &unk_1002848F8;
-  v16 = v12;
+  v16 = handlerCopy;
   v20 = v16;
-  v17 = [MADPhotosRequestFullClusterProcessingTask taskWithPhotoLibraries:v10 cancelBlock:v11 progressHandler:v19 completionHandler:v13];
+  v17 = [MADPhotosRequestFullClusterProcessingTask taskWithPhotoLibraries:librariesCopy cancelBlock:blockCopy progressHandler:v19 completionHandler:completionHandlerCopy];
 
   return v17;
 }

@@ -1,27 +1,27 @@
 @interface SBSATimerDescription
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SBSATimerDescription)initWithTimeInterval:(double)a3;
-- (id)_equalsBuilder:(id)a3;
+- (SBSATimerDescription)initWithTimeInterval:(double)interval;
+- (id)_equalsBuilder:(id)builder;
 - (id)_hashBuilder;
-- (id)_initWithIdentifier:(id)a3 timeInterval:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithIdentifier:(id)identifier timeInterval:(double)interval;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation SBSATimerDescription
 
-- (SBSATimerDescription)initWithTimeInterval:(double)a3
+- (SBSATimerDescription)initWithTimeInterval:(double)interval
 {
   v5 = objc_alloc_init(MEMORY[0x277CCAD78]);
-  v6 = [(SBSATimerDescription *)self _initWithIdentifier:v5 timeInterval:a3];
+  v6 = [(SBSATimerDescription *)self _initWithIdentifier:v5 timeInterval:interval];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = [(SBSATimerDescription *)self _equalsBuilder:a3];
+  v3 = [(SBSATimerDescription *)self _equalsBuilder:equal];
   v4 = [v3 isEqual];
 
   return v4;
@@ -29,21 +29,21 @@
 
 - (unint64_t)hash
 {
-  v2 = [(SBSATimerDescription *)self _hashBuilder];
-  v3 = [v2 hash];
+  _hashBuilder = [(SBSATimerDescription *)self _hashBuilder];
+  v3 = [_hashBuilder hash];
 
   return v3;
 }
 
 - (NSString)description
 {
-  v2 = [(SBSATimerDescription *)self _mutableDescriptionMissingClosingAngleBracket];
-  [v2 appendString:@">"];
+  _mutableDescriptionMissingClosingAngleBracket = [(SBSATimerDescription *)self _mutableDescriptionMissingClosingAngleBracket];
+  [_mutableDescriptionMissingClosingAngleBracket appendString:@">"];
 
-  return v2;
+  return _mutableDescriptionMissingClosingAngleBracket;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   timerDescriptionIdentifier = self->_timerDescriptionIdentifier;
@@ -52,10 +52,10 @@
   return [v4 _initWithIdentifier:timerDescriptionIdentifier timeInterval:timeInterval];
 }
 
-- (id)_initWithIdentifier:(id)a3 timeInterval:(double)a4
+- (id)_initWithIdentifier:(id)identifier timeInterval:(double)interval
 {
-  v8 = a3;
-  if (!v8)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [SBSATimerDescription _initWithIdentifier:a2 timeInterval:self];
   }
@@ -66,23 +66,23 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_timerDescriptionIdentifier, a3);
-    v10[2] = a4;
+    objc_storeStrong(&v9->_timerDescriptionIdentifier, identifier);
+    v10[2] = interval;
   }
 
   return v10;
 }
 
-- (id)_equalsBuilder:(id)a3
+- (id)_equalsBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v5 = [MEMORY[0x277CF0C20] builderWithObject:self ofExpectedClass:objc_opt_class()];
   timerDescriptionIdentifier = self->_timerDescriptionIdentifier;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __39__SBSATimerDescription__equalsBuilder___block_invoke;
   v15[3] = &unk_2783ACDB8;
-  v7 = v4;
+  v7 = builderCopy;
   v16 = v7;
   v8 = [v5 appendObject:timerDescriptionIdentifier counterpart:v15];
   timeInterval = self->_timeInterval;
@@ -99,8 +99,8 @@
 
 - (id)_hashBuilder
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_timerDescriptionIdentifier];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_timerDescriptionIdentifier];
   v5 = [v4 appendDouble:self->_timeInterval];
 
   return v5;

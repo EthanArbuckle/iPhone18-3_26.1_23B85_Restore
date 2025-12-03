@@ -1,13 +1,13 @@
 @interface MCMResultBase
-- (BOOL)encodeResultOntoReply:(id)a3;
+- (BOOL)encodeResultOntoReply:(id)reply;
 - (BOOL)isCacheable;
 - (MCMError)error;
 - (MCMResultBase)init;
-- (MCMResultBase)initWithError:(id)a3;
+- (MCMResultBase)initWithError:(id)error;
 - (NSArray)warnings;
-- (id)_encodeError:(id)a3;
-- (void)_attachWarnings:(id)a3;
-- (void)setCacheable:(BOOL)a3;
+- (id)_encodeError:(id)error;
+- (void)_attachWarnings:(id)warnings;
+- (void)setCacheable:(BOOL)cacheable;
 @end
 
 @implementation MCMResultBase
@@ -55,35 +55,35 @@
   return result;
 }
 
-- (void)setCacheable:(BOOL)a3
+- (void)setCacheable:(BOOL)cacheable
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_cacheable = a3;
+  self->_cacheable = cacheable;
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_attachWarnings:(id)a3
+- (void)_attachWarnings:(id)warnings
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
   p_warnings = &self->_warnings;
 
-  objc_storeStrong(p_warnings, a3);
+  objc_storeStrong(p_warnings, warnings);
 }
 
-- (id)_encodeError:(id)a3
+- (id)_encodeError:(id)error
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  errorCopy = error;
   v4 = xpc_dictionary_create(0, 0, 0);
-  [v3 category];
-  [v3 type];
-  v5 = [v3 path];
-  [v5 fileSystemRepresentation];
-  [v3 POSIXerrno];
-  v6 = [v3 message];
+  [errorCopy category];
+  [errorCopy type];
+  path = [errorCopy path];
+  [path fileSystemRepresentation];
+  [errorCopy POSIXerrno];
+  message = [errorCopy message];
 
-  [v6 UTF8String];
+  [message UTF8String];
   container_error_create_with_message();
 
   container_xpc_encode_error();
@@ -93,26 +93,26 @@
   return v4;
 }
 
-- (BOOL)encodeResultOntoReply:(id)a3
+- (BOOL)encodeResultOntoReply:(id)reply
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MCMResultBase *)self error];
+  replyCopy = reply;
+  error = [(MCMResultBase *)self error];
 
-  if (v5)
+  if (error)
   {
-    v6 = [(MCMResultBase *)self error];
-    v7 = [(MCMResultBase *)self _encodeError:v6];
+    error2 = [(MCMResultBase *)self error];
+    v7 = [(MCMResultBase *)self _encodeError:error2];
 
-    xpc_dictionary_set_value(v4, "ReplyErrorExtended", v7);
+    xpc_dictionary_set_value(replyCopy, "ReplyErrorExtended", v7);
   }
 
-  v8 = [(MCMResultBase *)self warnings];
-  if (v8)
+  warnings = [(MCMResultBase *)self warnings];
+  if (warnings)
   {
-    v9 = v8;
-    v10 = [(MCMResultBase *)self warnings];
-    v11 = [v10 count];
+    v9 = warnings;
+    warnings2 = [(MCMResultBase *)self warnings];
+    v11 = [warnings2 count];
 
     if (v11)
     {
@@ -121,8 +121,8 @@
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v13 = [(MCMResultBase *)self warnings];
-      v14 = [v13 countByEnumeratingWithState:&v22 objects:v21 count:16];
+      warnings3 = [(MCMResultBase *)self warnings];
+      v14 = [warnings3 countByEnumeratingWithState:&v22 objects:v21 count:16];
       if (v14)
       {
         v15 = v14;
@@ -134,7 +134,7 @@
           {
             if (*v23 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(warnings3);
             }
 
             v18 = [(MCMResultBase *)self _encodeError:*(*(&v22 + 1) + 8 * v17)];
@@ -144,26 +144,26 @@
           }
 
           while (v15 != v17);
-          v15 = [v13 countByEnumeratingWithState:&v22 objects:v21 count:16];
+          v15 = [warnings3 countByEnumeratingWithState:&v22 objects:v21 count:16];
         }
 
         while (v15);
       }
 
-      xpc_dictionary_set_value(v4, "ReplyWarnings", v12);
+      xpc_dictionary_set_value(replyCopy, "ReplyWarnings", v12);
     }
   }
 
-  xpc_dictionary_set_BOOL(v4, "ReplyCacheable", [(MCMResultBase *)self isCacheable]);
+  xpc_dictionary_set_BOOL(replyCopy, "ReplyCacheable", [(MCMResultBase *)self isCacheable]);
 
   v19 = *MEMORY[0x1E69E9840];
   return 1;
 }
 
-- (MCMResultBase)initWithError:(id)a3
+- (MCMResultBase)initWithError:(id)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  errorCopy = error;
   v14.receiver = self;
   v14.super_class = MCMResultBase;
   v6 = [(MCMResultBase *)&v14 init];
@@ -173,9 +173,9 @@
     goto LABEL_4;
   }
 
-  if (v5)
+  if (errorCopy)
   {
-    objc_storeStrong(&v6->_error, a3);
+    objc_storeStrong(&v6->_error, error);
     warnings = v7->_warnings;
     v7->_warnings = 0;
 
@@ -194,9 +194,9 @@ LABEL_4:
   os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR);
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
-  v13 = [v12 UTF8String];
+  uTF8String = [v12 UTF8String];
   v15 = 136315138;
-  v16 = v13;
+  v16 = uTF8String;
   _os_log_send_and_compose_impl();
 
   result = _os_crash_msg();

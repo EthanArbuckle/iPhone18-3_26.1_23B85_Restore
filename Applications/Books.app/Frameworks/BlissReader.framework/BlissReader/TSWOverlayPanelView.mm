@@ -1,37 +1,37 @@
 @interface TSWOverlayPanelView
-- (BOOL)p_addBackdropWithSettings:(id)a3;
-- (BOOL)p_addBackgroundViewWithColor:(id)a3;
+- (BOOL)p_addBackdropWithSettings:(id)settings;
+- (BOOL)p_addBackgroundViewWithColor:(id)color;
 - (CGRect)p_shadowFrame;
 - (NSString)backdropGroupName;
-- (TSWOverlayPanelView)initWithFrame:(CGRect)a3;
+- (TSWOverlayPanelView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)additionalBackgroundInset;
 - (UIEdgeInsets)additionalShadowInset;
 - (double)p_contentsScale;
-- (id)p_hairlineColorForAppearance:(int)a3;
+- (id)p_hairlineColorForAppearance:(int)appearance;
 - (void)alphaAnimationDidEnd;
 - (void)alphaAnimationWillBegin;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)p_layoutSublayers;
 - (void)p_resetAppearance;
-- (void)setAdditionalBackgroundInset:(UIEdgeInsets)a3;
-- (void)setAdditionalShadowInset:(UIEdgeInsets)a3;
-- (void)setAppearance:(int)a3;
-- (void)setBackdropGroupName:(id)a3;
-- (void)setBottomHairlineColor:(id)a3;
-- (void)setBottomHairlineEnabled:(BOOL)a3;
-- (void)setShadowOpacity:(double)a3;
-- (void)setTopHairlineColor:(id)a3;
-- (void)setTopHairlineEnabled:(BOOL)a3;
+- (void)setAdditionalBackgroundInset:(UIEdgeInsets)inset;
+- (void)setAdditionalShadowInset:(UIEdgeInsets)inset;
+- (void)setAppearance:(int)appearance;
+- (void)setBackdropGroupName:(id)name;
+- (void)setBottomHairlineColor:(id)color;
+- (void)setBottomHairlineEnabled:(BOOL)enabled;
+- (void)setShadowOpacity:(double)opacity;
+- (void)setTopHairlineColor:(id)color;
+- (void)setTopHairlineEnabled:(BOOL)enabled;
 @end
 
 @implementation TSWOverlayPanelView
 
-- (TSWOverlayPanelView)initWithFrame:(CGRect)a3
+- (TSWOverlayPanelView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = TSWOverlayPanelView;
-  v3 = [(TSWOverlayPanelView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TSWOverlayPanelView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -96,39 +96,39 @@
   }
 }
 
-- (void)setAdditionalShadowInset:(UIEdgeInsets)a3
+- (void)setAdditionalShadowInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_additionalShadowInset.top, v3), vceqq_f64(*&self->_additionalShadowInset.bottom, v4)))) & 1) == 0)
   {
-    self->_additionalShadowInset = a3;
+    self->_additionalShadowInset = inset;
     [(TSWOverlayPanelView *)self p_layoutSublayers];
   }
 }
 
-- (void)setAdditionalBackgroundInset:(UIEdgeInsets)a3
+- (void)setAdditionalBackgroundInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_additionalBackgroundInset.top, v3), vceqq_f64(*&self->_additionalBackgroundInset.bottom, v4)))) & 1) == 0)
   {
-    self->_additionalBackgroundInset = a3;
+    self->_additionalBackgroundInset = inset;
     [(TSWOverlayPanelView *)self layoutSubviews];
   }
 }
 
-- (void)setShadowOpacity:(double)a3
+- (void)setShadowOpacity:(double)opacity
 {
-  v3 = a3;
-  v4 = [(TSWOverlayPanelView *)self bakedShadowLayer];
-  *&v5 = v3;
+  opacityCopy = opacity;
+  bakedShadowLayer = [(TSWOverlayPanelView *)self bakedShadowLayer];
+  *&v5 = opacityCopy;
 
-  [(CALayer *)v4 setOpacity:v5];
+  [(CALayer *)bakedShadowLayer setOpacity:v5];
 }
 
 - (double)p_contentsScale
@@ -139,12 +139,12 @@
   return result;
 }
 
-- (void)setTopHairlineColor:(id)a3
+- (void)setTopHairlineColor:(id)color
 {
-  if (self->_topHairlineColor != a3 && ([a3 isEqual:?] & 1) == 0)
+  if (self->_topHairlineColor != color && ([color isEqual:?] & 1) == 0)
   {
 
-    topHairlineColor = a3;
+    topHairlineColor = color;
     self->_topHairlineColor = topHairlineColor;
     topHairlineLayer = self->_topHairlineLayer;
     if (topHairlineColor)
@@ -180,12 +180,12 @@ LABEL_10:
   }
 }
 
-- (void)setBottomHairlineColor:(id)a3
+- (void)setBottomHairlineColor:(id)color
 {
-  if (self->_bottomHairlineColor != a3 && ([a3 isEqual:?] & 1) == 0)
+  if (self->_bottomHairlineColor != color && ([color isEqual:?] & 1) == 0)
   {
 
-    bottomHairlineColor = a3;
+    bottomHairlineColor = color;
     self->_bottomHairlineColor = bottomHairlineColor;
     bottomHairlineLayer = self->_bottomHairlineLayer;
     if (bottomHairlineColor)
@@ -221,9 +221,9 @@ LABEL_10:
   }
 }
 
-- (id)p_hairlineColorForAppearance:(int)a3
+- (id)p_hairlineColorForAppearance:(int)appearance
 {
-  if (!a3)
+  if (!appearance)
   {
     v3 = 0.15;
     v4 = 1.0;
@@ -232,7 +232,7 @@ LABEL_10:
     return [TSUColor colorWithRed:v4 green:v5 blue:v6 alpha:v3];
   }
 
-  if (a3 == 1)
+  if (appearance == 1)
   {
     v3 = 0.3;
     v4 = 0.0;
@@ -244,11 +244,11 @@ LABEL_10:
   return 0;
 }
 
-- (void)setTopHairlineEnabled:(BOOL)a3
+- (void)setTopHairlineEnabled:(BOOL)enabled
 {
-  if (self->_topHairlineEnabled != a3)
+  if (self->_topHairlineEnabled != enabled)
   {
-    if (a3)
+    if (enabled)
     {
       v5 = [(TSWOverlayPanelView *)self p_topHairlineColorForAppearance:[(TSWOverlayPanelView *)self appearance]];
     }
@@ -262,11 +262,11 @@ LABEL_10:
   }
 }
 
-- (void)setBottomHairlineEnabled:(BOOL)a3
+- (void)setBottomHairlineEnabled:(BOOL)enabled
 {
-  if (self->_bottomHairlineEnabled != a3)
+  if (self->_bottomHairlineEnabled != enabled)
   {
-    if (a3)
+    if (enabled)
     {
       v5 = [(TSWOverlayPanelView *)self p_bottomHairlineColorForAppearance:[(TSWOverlayPanelView *)self appearance]];
     }
@@ -303,12 +303,12 @@ LABEL_10:
   return [v2 groupName];
 }
 
-- (void)setBackdropGroupName:(id)a3
+- (void)setBackdropGroupName:(id)name
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
 
-  [v4 setGroupName:a3];
+  [v4 setGroupName:name];
 }
 
 - (void)dealloc
@@ -336,15 +336,15 @@ LABEL_10:
   [(CAGradientLayer *)[(TSWOverlayPanelView *)self gradientLayer] setBackgroundColor:0];
   [(CAGradientLayer *)[(TSWOverlayPanelView *)self gradientLayer] setBorderColor:0];
   [(CAGradientLayer *)[(TSWOverlayPanelView *)self gradientLayer] setBorderWidth:0.0];
-  v3 = [(TSWOverlayPanelView *)self bakedShadowLayer];
+  bakedShadowLayer = [(TSWOverlayPanelView *)self bakedShadowLayer];
   LODWORD(v4) = 1.0;
-  [(CALayer *)v3 setOpacity:v4];
+  [(CALayer *)bakedShadowLayer setOpacity:v4];
   backgroundView = self->_backgroundView;
 
   [(UIView *)backgroundView removeFromSuperview];
 }
 
-- (BOOL)p_addBackgroundViewWithColor:(id)a3
+- (BOOL)p_addBackgroundViewWithColor:(id)color
 {
   if (!self->_backgroundView)
   {
@@ -356,7 +356,7 @@ LABEL_10:
     [(UIView *)v6 setAutoresizingMask:18];
   }
 
-  -[UIView setBackgroundColor:](self->_backgroundView, "setBackgroundColor:", [a3 UIColor]);
+  -[UIView setBackgroundColor:](self->_backgroundView, "setBackgroundColor:", [color UIColor]);
   if (![(UIView *)self->_backgroundView superview])
   {
     [(TSWOverlayPanelView *)self addSubview:self->_backgroundView];
@@ -366,11 +366,11 @@ LABEL_10:
   return 1;
 }
 
-- (BOOL)p_addBackdropWithSettings:(id)a3
+- (BOOL)p_addBackdropWithSettings:(id)settings
 {
   if (!self->_backgroundView)
   {
-    v5 = [[_UIBackdropView alloc] initWithSettings:a3];
+    v5 = [[_UIBackdropView alloc] initWithSettings:settings];
     if ([(UIView *)v5 effectView])
     {
       self->_backgroundView = v5;
@@ -386,7 +386,7 @@ LABEL_10:
   v7 = v6;
   if (v6)
   {
-    [v6 transitionToSettings:a3];
+    [v6 transitionToSettings:settings];
     if (![v7 superview])
     {
       [(TSWOverlayPanelView *)self addSubview:self->_backgroundView];
@@ -399,21 +399,21 @@ LABEL_10:
 
 - (void)alphaAnimationWillBegin
 {
-  v2 = [(TSWOverlayPanelView *)self layer];
+  layer = [(TSWOverlayPanelView *)self layer];
 
-  [v2 setAllowsGroupOpacity:0];
+  [layer setAllowsGroupOpacity:0];
 }
 
 - (void)alphaAnimationDidEnd
 {
-  v2 = [(TSWOverlayPanelView *)self layer];
+  layer = [(TSWOverlayPanelView *)self layer];
 
-  [v2 setAllowsGroupOpacity:1];
+  [layer setAllowsGroupOpacity:1];
 }
 
-- (void)setAppearance:(int)a3
+- (void)setAppearance:(int)appearance
 {
-  v3 = *&a3;
+  v3 = *&appearance;
   [(TSWOverlayPanelView *)self p_resetAppearance];
   if (v3 == 2)
   {

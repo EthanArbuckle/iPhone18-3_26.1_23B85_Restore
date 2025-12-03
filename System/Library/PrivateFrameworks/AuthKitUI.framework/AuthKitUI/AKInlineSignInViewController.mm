@@ -1,70 +1,70 @@
 @interface AKInlineSignInViewController
 - (AKInlineSignInViewController)init;
-- (AKInlineSignInViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (id)_userFriendlyUsername:(id)a3;
-- (void)_appleIDTextFieldDidChange:(id)a3;
-- (void)_applyStyleForButton:(id)a3;
-- (void)_applyStyleForCreateOrForgot:(id)a3;
-- (void)_beginAuthenticationIfPossibleWithOption:(unint64_t)a3;
+- (AKInlineSignInViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (id)_userFriendlyUsername:(id)username;
+- (void)_appleIDTextFieldDidChange:(id)change;
+- (void)_applyStyleForButton:(id)button;
+- (void)_applyStyleForCreateOrForgot:(id)forgot;
+- (void)_beginAuthenticationIfPossibleWithOption:(unint64_t)option;
 - (void)_passwordFieldTapped;
-- (void)_passwordTextFieldDidChange:(id)a3;
+- (void)_passwordTextFieldDidChange:(id)change;
 - (void)_prefillAuthFields;
-- (void)_presentShieldUIIfNeededWithViewController:(id)a3;
-- (void)_presentShieldUIWithViewController:(id)a3;
+- (void)_presentShieldUIIfNeededWithViewController:(id)controller;
+- (void)_presentShieldUIWithViewController:(id)controller;
 - (void)_setButtonTitles;
-- (void)_setCreateButtonEnabled:(BOOL)a3;
-- (void)_setCreateButtonHidden:(BOOL)a3;
-- (void)_setForgotButtonHidden:(BOOL)a3;
-- (void)_setPasswordFieldHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)_updateFonts:(id)a3;
+- (void)_setCreateButtonEnabled:(BOOL)enabled;
+- (void)_setCreateButtonHidden:(BOOL)hidden;
+- (void)_setForgotButtonHidden:(BOOL)hidden;
+- (void)_setPasswordFieldHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)_updateFonts:(id)fonts;
 - (void)_updateSignInButtonState;
 - (void)_updateSignInFieldStatuses;
 - (void)_updateVibrancyAndBlurInTextFields;
 - (void)_usernameFieldTapped;
-- (void)context:(id)a3 needsPasswordWithCompletion:(id)a4;
-- (void)createAppleIDButtonWasTapped:(id)a3;
+- (void)context:(id)context needsPasswordWithCompletion:(id)completion;
+- (void)createAppleIDButtonWasTapped:(id)tapped;
 - (void)dealloc;
-- (void)iForgotButtonWasTapped:(id)a3;
+- (void)iForgotButtonWasTapped:(id)tapped;
 - (void)refreshCreateAppleIDButton;
-- (void)setBlurEffectStyle:(int64_t)a3;
-- (void)setContext:(id)a3;
-- (void)setFieldBackgroundColor:(id)a3;
-- (void)setSecondaryButtonTarget:(id)a3 action:(SEL)a4;
-- (void)setSecondaryButtonTitle:(id)a3;
-- (void)setTertiaryButtonTarget:(id)a3 action:(SEL)a4;
-- (void)setTertiaryButtonTitle:(id)a3;
-- (void)setUsesDarkMode:(BOOL)a3;
-- (void)setUsesVibrancy:(BOOL)a3;
-- (void)signInButtonWasTapped:(id)a3;
+- (void)setBlurEffectStyle:(int64_t)style;
+- (void)setContext:(id)context;
+- (void)setFieldBackgroundColor:(id)color;
+- (void)setSecondaryButtonTarget:(id)target action:(SEL)action;
+- (void)setSecondaryButtonTitle:(id)title;
+- (void)setTertiaryButtonTarget:(id)target action:(SEL)action;
+- (void)setTertiaryButtonTitle:(id)title;
+- (void)setUsesDarkMode:(BOOL)mode;
+- (void)setUsesVibrancy:(BOOL)vibrancy;
+- (void)signInButtonWasTapped:(id)tapped;
 - (void)startAnimating;
 - (void)stopAnimating;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AKInlineSignInViewController
 
 - (AKInlineSignInViewController)init
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, @"AKInlineSignInViewController_iOS");
-  v7 = v18;
+  v7 = selfCopy;
   v6 = location[0];
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v18 = 0;
+  selfCopy = 0;
   v9 = [(AKBaseSignInViewController *)v7 _initWithNibName:v6 bundle:?];
-  v18 = v9;
-  objc_storeStrong(&v18, v9);
+  selfCopy = v9;
+  objc_storeStrong(&selfCopy, v9);
   MEMORY[0x277D82BD8](v8);
   if (v9)
   {
-    objc_initWeak(&v16, v18);
+    objc_initWeak(&v16, selfCopy);
     queue = dispatch_get_global_queue(33, 0);
     v10 = MEMORY[0x277D85DD0];
     v11 = -1073741824;
@@ -74,14 +74,14 @@
     objc_copyWeak(&v15, &v16);
     dispatch_async(queue, &v10);
     *&v2 = MEMORY[0x277D82BD8](queue).n128_u64[0];
-    [(AKInlineSignInViewController *)v18 _setButtonTitles];
+    [(AKInlineSignInViewController *)selfCopy _setButtonTitles];
     objc_destroyWeak(&v15);
     objc_destroyWeak(&v16);
   }
 
-  v4 = MEMORY[0x277D82BE0](v18);
+  v4 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v4;
 }
 
@@ -141,83 +141,83 @@ void __36__AKInlineSignInViewController_init__block_invoke_3(uint64_t a1)
 
 - (void)dealloc
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:v6 name:*MEMORY[0x277D76810] object:0];
-  *&v2 = MEMORY[0x277D82BD8](v3).n128_u64[0];
-  v4.receiver = v6;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:selfCopy name:*MEMORY[0x277D76810] object:0];
+  *&v2 = MEMORY[0x277D82BD8](defaultCenter).n128_u64[0];
+  v4.receiver = selfCopy;
   v4.super_class = AKInlineSignInViewController;
   [(AKBaseSignInViewController *)&v4 dealloc];
 }
 
-- (AKInlineSignInViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (AKInlineSignInViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, bundle);
   [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"Call -init instead of -initWithNibName:bundle:"];
-  v4 = v11;
-  v11 = 0;
+  v4 = selfCopy;
+  selfCopy = 0;
   v8.receiver = v4;
   v8.super_class = AKInlineSignInViewController;
-  v11 = [(AKBaseSignInViewController *)&v8 _initWithNibName:0 bundle:?];
-  v7 = MEMORY[0x277D82BE0](v11);
+  selfCopy = [(AKBaseSignInViewController *)&v8 _initWithNibName:0 bundle:?];
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (void)setSecondaryButtonTitle:(id)a3
+- (void)setSecondaryButtonTitle:(id)title
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (![(NSString *)v10->_secondaryButtonTitle isEqualToString:location[0]])
+  objc_storeStrong(location, title);
+  if (![(NSString *)selfCopy->_secondaryButtonTitle isEqualToString:location[0]])
   {
     v3 = [location[0] copy];
-    secondaryButtonTitle = v10->_secondaryButtonTitle;
-    v10->_secondaryButtonTitle = v3;
+    secondaryButtonTitle = selfCopy->_secondaryButtonTitle;
+    selfCopy->_secondaryButtonTitle = v3;
     *&v5 = MEMORY[0x277D82BD8](secondaryButtonTitle).n128_u64[0];
-    v8 = [(AKInlineSignInViewController *)v10 iforgotButton];
-    [(UIButton *)v8 setTitle:v10->_secondaryButtonTitle forState:0];
-    *&v6 = MEMORY[0x277D82BD8](v8).n128_u64[0];
-    if ([(NSString *)v10->_secondaryButtonTitle length])
+    iforgotButton = [(AKInlineSignInViewController *)selfCopy iforgotButton];
+    [(UIButton *)iforgotButton setTitle:selfCopy->_secondaryButtonTitle forState:0];
+    *&v6 = MEMORY[0x277D82BD8](iforgotButton).n128_u64[0];
+    if ([(NSString *)selfCopy->_secondaryButtonTitle length])
     {
-      v7 = [(AKInlineSignInViewController *)v10 iforgotButton];
-      [(UIButton *)v7 setHidden:0];
-      MEMORY[0x277D82BD8](v7);
+      iforgotButton2 = [(AKInlineSignInViewController *)selfCopy iforgotButton];
+      [(UIButton *)iforgotButton2 setHidden:0];
+      MEMORY[0x277D82BD8](iforgotButton2);
     }
 
     else
     {
-      [(AKInlineSignInViewController *)v10 _setForgotButtonHidden:1];
+      [(AKInlineSignInViewController *)selfCopy _setForgotButtonHidden:1];
     }
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setTertiaryButtonTitle:(id)a3
+- (void)setTertiaryButtonTitle:(id)title
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (![(NSString *)v6->_tertiaryButtonTitle isEqualToString:location[0]])
+  objc_storeStrong(location, title);
+  if (![(NSString *)selfCopy->_tertiaryButtonTitle isEqualToString:location[0]])
   {
     v3 = [location[0] copy];
-    tertiaryButtonTitle = v6->_tertiaryButtonTitle;
-    v6->_tertiaryButtonTitle = v3;
+    tertiaryButtonTitle = selfCopy->_tertiaryButtonTitle;
+    selfCopy->_tertiaryButtonTitle = v3;
     MEMORY[0x277D82BD8](tertiaryButtonTitle);
   }
 
-  [(AKInlineSignInViewController *)v6 refreshCreateAppleIDButton];
+  [(AKInlineSignInViewController *)selfCopy refreshCreateAppleIDButton];
   objc_storeStrong(location, 0);
 }
 
@@ -226,9 +226,9 @@ void __36__AKInlineSignInViewController_init__block_invoke_3(uint64_t a1)
   if (self->_createAppleIDAllowed && (v3 = [(AKInlineSignInViewController *)self createAppleIDButton], [(UIButton *)v3 setTitle:self->_tertiaryButtonTitle forState:0], [(NSString *)self->_tertiaryButtonTitle length]))
   {
     [(AKInlineSignInViewController *)self _setCreateButtonHidden:0];
-    v2 = [(AKInlineSignInViewController *)self createAppleIDButton];
+    createAppleIDButton = [(AKInlineSignInViewController *)self createAppleIDButton];
     [(AKInlineSignInViewController *)self _applyStyleForCreateOrForgot:?];
-    MEMORY[0x277D82BD8](v2);
+    MEMORY[0x277D82BD8](createAppleIDButton);
   }
 
   else
@@ -237,153 +237,153 @@ void __36__AKInlineSignInViewController_init__block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)_setCreateButtonHidden:(BOOL)a3
+- (void)_setCreateButtonHidden:(BOOL)hidden
 {
-  v3 = [(AKInlineSignInViewController *)self createAppleIDButton];
-  [(UIButton *)v3 setHidden:a3];
-  MEMORY[0x277D82BD8](v3);
+  createAppleIDButton = [(AKInlineSignInViewController *)self createAppleIDButton];
+  [(UIButton *)createAppleIDButton setHidden:hidden];
+  MEMORY[0x277D82BD8](createAppleIDButton);
 }
 
-- (void)_setForgotButtonHidden:(BOOL)a3
+- (void)_setForgotButtonHidden:(BOOL)hidden
 {
-  v3 = [(AKInlineSignInViewController *)self iforgotButton];
-  [(UIButton *)v3 setHidden:a3];
-  MEMORY[0x277D82BD8](v3);
+  iforgotButton = [(AKInlineSignInViewController *)self iforgotButton];
+  [(UIButton *)iforgotButton setHidden:hidden];
+  MEMORY[0x277D82BD8](iforgotButton);
 }
 
-- (void)_setCreateButtonEnabled:(BOOL)a3
+- (void)_setCreateButtonEnabled:(BOOL)enabled
 {
-  v3 = [(AKInlineSignInViewController *)self createAppleIDButton];
-  [(UIButton *)v3 setEnabled:a3];
-  MEMORY[0x277D82BD8](v3);
+  createAppleIDButton = [(AKInlineSignInViewController *)self createAppleIDButton];
+  [(UIButton *)createAppleIDButton setEnabled:enabled];
+  MEMORY[0x277D82BD8](createAppleIDButton);
 }
 
-- (void)setSecondaryButtonTarget:(id)a3 action:(SEL)a4
+- (void)setSecondaryButtonTarget:(id)target action:(SEL)action
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = [(AKInlineSignInViewController *)v11 view];
-  *&v4 = MEMORY[0x277D82BD8](v9).n128_u64[0];
-  if (v9)
+  objc_storeStrong(location, target);
+  view = [(AKInlineSignInViewController *)selfCopy view];
+  *&v4 = MEMORY[0x277D82BD8](view).n128_u64[0];
+  if (view)
   {
-    v6 = [(AKInlineSignInViewController *)v11 iforgotButton];
-    [(UIButton *)v6 removeTarget:v11 action:sel_iForgotButtonWasTapped_ forControlEvents:?];
-    *&v5 = MEMORY[0x277D82BD8](v6).n128_u64[0];
-    v7 = [(AKInlineSignInViewController *)v11 iforgotButton];
-    [(UIButton *)v7 addTarget:location[0] action:a4 forControlEvents:64];
-    MEMORY[0x277D82BD8](v7);
+    iforgotButton = [(AKInlineSignInViewController *)selfCopy iforgotButton];
+    [(UIButton *)iforgotButton removeTarget:selfCopy action:sel_iForgotButtonWasTapped_ forControlEvents:?];
+    *&v5 = MEMORY[0x277D82BD8](iforgotButton).n128_u64[0];
+    iforgotButton2 = [(AKInlineSignInViewController *)selfCopy iforgotButton];
+    [(UIButton *)iforgotButton2 addTarget:location[0] action:action forControlEvents:64];
+    MEMORY[0x277D82BD8](iforgotButton2);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setTertiaryButtonTarget:(id)a3 action:(SEL)a4
+- (void)setTertiaryButtonTarget:(id)target action:(SEL)action
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = [(AKInlineSignInViewController *)v11 view];
-  *&v4 = MEMORY[0x277D82BD8](v9).n128_u64[0];
-  if (v9)
+  objc_storeStrong(location, target);
+  view = [(AKInlineSignInViewController *)selfCopy view];
+  *&v4 = MEMORY[0x277D82BD8](view).n128_u64[0];
+  if (view)
   {
-    v6 = [(AKInlineSignInViewController *)v11 createAppleIDButton];
-    [(UIButton *)v6 removeTarget:v11 action:sel_createAppleIDButtonWasTapped_ forControlEvents:?];
-    *&v5 = MEMORY[0x277D82BD8](v6).n128_u64[0];
-    v7 = [(AKInlineSignInViewController *)v11 createAppleIDButton];
-    [(UIButton *)v7 addTarget:location[0] action:a4 forControlEvents:64];
-    MEMORY[0x277D82BD8](v7);
+    createAppleIDButton = [(AKInlineSignInViewController *)selfCopy createAppleIDButton];
+    [(UIButton *)createAppleIDButton removeTarget:selfCopy action:sel_createAppleIDButtonWasTapped_ forControlEvents:?];
+    *&v5 = MEMORY[0x277D82BD8](createAppleIDButton).n128_u64[0];
+    createAppleIDButton2 = [(AKInlineSignInViewController *)selfCopy createAppleIDButton];
+    [(UIButton *)createAppleIDButton2 addTarget:location[0] action:action forControlEvents:64];
+    MEMORY[0x277D82BD8](createAppleIDButton2);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v6->_context, location[0]);
-  v4 = [(AKAppleIDAuthenticationInAppContext *)v6->_context _passwordDelegate];
-  *&v3 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  if (!v4)
+  objc_storeStrong(location, context);
+  objc_storeStrong(&selfCopy->_context, location[0]);
+  _passwordDelegate = [(AKAppleIDAuthenticationInAppContext *)selfCopy->_context _passwordDelegate];
+  *&v3 = MEMORY[0x277D82BD8](_passwordDelegate).n128_u64[0];
+  if (!_passwordDelegate)
   {
-    [(AKAppleIDAuthenticationInAppContext *)v6->_context _setPasswordDelegate:v6, v3];
+    [(AKAppleIDAuthenticationInAppContext *)selfCopy->_context _setPasswordDelegate:selfCopy, v3];
   }
 
-  [(AKInlineSignInViewController *)v6 _prefillAuthFields:v3];
-  [(AKInlineSignInViewController *)v6 _updateSignInFieldStatuses];
+  [(AKInlineSignInViewController *)selfCopy _prefillAuthFields:v3];
+  [(AKInlineSignInViewController *)selfCopy _updateSignInFieldStatuses];
   objc_storeStrong(location, 0);
 }
 
 - (void)viewDidLoad
 {
-  v136 = self;
+  selfCopy = self;
   v135 = a2;
   v134.receiver = self;
   v134.super_class = AKInlineSignInViewController;
   [(AKInlineSignInViewController *)&v134 viewDidLoad];
-  v123 = [(AKInlineSignInViewController *)v136 view];
-  [v123 setTranslatesAutoresizingMaskIntoConstraints:0];
-  *&v2 = MEMORY[0x277D82BD8](v123).n128_u64[0];
-  v124 = [(AKInlineSignInViewController *)v136 iforgotButton];
-  [(UIButton *)v124 setTitle:v136->_secondaryButtonTitle forState:0];
-  *&v3 = MEMORY[0x277D82BD8](v124).n128_u64[0];
-  v125 = v136;
-  v126 = [(AKInlineSignInViewController *)v136 iforgotButton];
+  view = [(AKInlineSignInViewController *)selfCopy view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  *&v2 = MEMORY[0x277D82BD8](view).n128_u64[0];
+  iforgotButton = [(AKInlineSignInViewController *)selfCopy iforgotButton];
+  [(UIButton *)iforgotButton setTitle:selfCopy->_secondaryButtonTitle forState:0];
+  *&v3 = MEMORY[0x277D82BD8](iforgotButton).n128_u64[0];
+  v125 = selfCopy;
+  iforgotButton2 = [(AKInlineSignInViewController *)selfCopy iforgotButton];
   [(AKInlineSignInViewController *)v125 _applyStyleForCreateOrForgot:?];
-  *&v4 = MEMORY[0x277D82BD8](v126).n128_u64[0];
-  v128 = [(AKInlineSignInViewController *)v136 iforgotButton];
-  v127 = [(UIButton *)v128 allTargets];
-  v129 = [v127 count];
-  MEMORY[0x277D82BD8](v127);
-  v5 = MEMORY[0x277D82BD8](v128).n128_u64[0];
+  *&v4 = MEMORY[0x277D82BD8](iforgotButton2).n128_u64[0];
+  iforgotButton3 = [(AKInlineSignInViewController *)selfCopy iforgotButton];
+  allTargets = [(UIButton *)iforgotButton3 allTargets];
+  v129 = [allTargets count];
+  MEMORY[0x277D82BD8](allTargets);
+  v5 = MEMORY[0x277D82BD8](iforgotButton3).n128_u64[0];
   if (!v129)
   {
-    v122 = [(AKInlineSignInViewController *)v136 iforgotButton];
-    [(UIButton *)v122 addTarget:v136 action:sel_iForgotButtonWasTapped_ forControlEvents:64];
-    v5 = MEMORY[0x277D82BD8](v122).n128_u64[0];
+    iforgotButton4 = [(AKInlineSignInViewController *)selfCopy iforgotButton];
+    [(UIButton *)iforgotButton4 addTarget:selfCopy action:sel_iForgotButtonWasTapped_ forControlEvents:64];
+    v5 = MEMORY[0x277D82BD8](iforgotButton4).n128_u64[0];
   }
 
-  if (![(NSString *)v136->_secondaryButtonTitle length])
+  if (![(NSString *)selfCopy->_secondaryButtonTitle length])
   {
-    [(AKInlineSignInViewController *)v136 _setForgotButtonHidden:1];
+    [(AKInlineSignInViewController *)selfCopy _setForgotButtonHidden:1];
   }
 
-  [(AKInlineSignInViewController *)v136 refreshCreateAppleIDButton];
-  v120 = [(AKInlineSignInViewController *)v136 createAppleIDButton];
-  v119 = [(UIButton *)v120 allTargets];
-  v121 = [v119 count];
-  MEMORY[0x277D82BD8](v119);
-  v6 = MEMORY[0x277D82BD8](v120).n128_u64[0];
+  [(AKInlineSignInViewController *)selfCopy refreshCreateAppleIDButton];
+  createAppleIDButton = [(AKInlineSignInViewController *)selfCopy createAppleIDButton];
+  allTargets2 = [(UIButton *)createAppleIDButton allTargets];
+  v121 = [allTargets2 count];
+  MEMORY[0x277D82BD8](allTargets2);
+  v6 = MEMORY[0x277D82BD8](createAppleIDButton).n128_u64[0];
   if (!v121)
   {
-    v118 = [(AKInlineSignInViewController *)v136 createAppleIDButton];
-    [(UIButton *)v118 addTarget:v136 action:sel_createAppleIDButtonWasTapped_ forControlEvents:64];
-    v6 = MEMORY[0x277D82BD8](v118).n128_u64[0];
+    createAppleIDButton2 = [(AKInlineSignInViewController *)selfCopy createAppleIDButton];
+    [(UIButton *)createAppleIDButton2 addTarget:selfCopy action:sel_createAppleIDButtonWasTapped_ forControlEvents:64];
+    v6 = MEMORY[0x277D82BD8](createAppleIDButton2).n128_u64[0];
   }
 
-  v64 = [(AKInlineSignInViewController *)v136 signInButton];
-  [(UIButton *)v64 setTitle:v136->_primaryButtonTitle forState:?];
-  *&v7 = MEMORY[0x277D82BD8](v64).n128_u64[0];
-  v65 = [(AKInlineSignInViewController *)v136 signInButton];
-  [(UIButton *)v65 addTarget:v136 action:sel_signInButtonWasTapped_ forControlEvents:64];
-  *&v8 = MEMORY[0x277D82BD8](v65).n128_u64[0];
-  v66 = [(AKInlineSignInViewController *)v136 signInButton];
-  [(UIButton *)v66 setHidden:[(AKInlineSignInViewController *)v136 isPrimaryButtonHidden]];
-  *&v9 = MEMORY[0x277D82BD8](v66).n128_u64[0];
-  v67 = v136;
-  v68 = [(AKInlineSignInViewController *)v136 signInButton];
+  signInButton = [(AKInlineSignInViewController *)selfCopy signInButton];
+  [(UIButton *)signInButton setTitle:selfCopy->_primaryButtonTitle forState:?];
+  *&v7 = MEMORY[0x277D82BD8](signInButton).n128_u64[0];
+  signInButton2 = [(AKInlineSignInViewController *)selfCopy signInButton];
+  [(UIButton *)signInButton2 addTarget:selfCopy action:sel_signInButtonWasTapped_ forControlEvents:64];
+  *&v8 = MEMORY[0x277D82BD8](signInButton2).n128_u64[0];
+  signInButton3 = [(AKInlineSignInViewController *)selfCopy signInButton];
+  [(UIButton *)signInButton3 setHidden:[(AKInlineSignInViewController *)selfCopy isPrimaryButtonHidden]];
+  *&v9 = MEMORY[0x277D82BD8](signInButton3).n128_u64[0];
+  v67 = selfCopy;
+  signInButton4 = [(AKInlineSignInViewController *)selfCopy signInButton];
   [(AKInlineSignInViewController *)v67 _applyStyleForButton:?];
-  *&v10 = MEMORY[0x277D82BD8](v68).n128_u64[0];
-  v69 = [(AKInlineSignInViewController *)v136 appleIDField];
-  [(AKTextField *)v69 setRowIdentifier:?];
-  *&v11 = MEMORY[0x277D82BD8](v69).n128_u64[0];
-  v70 = [(AKInlineSignInViewController *)v136 passwordField];
-  if ([(AKInlineSignInViewController *)v136 shouldPromptForPasswordOnly])
+  *&v10 = MEMORY[0x277D82BD8](signInButton4).n128_u64[0];
+  appleIDField = [(AKInlineSignInViewController *)selfCopy appleIDField];
+  [(AKTextField *)appleIDField setRowIdentifier:?];
+  *&v11 = MEMORY[0x277D82BD8](appleIDField).n128_u64[0];
+  passwordField = [(AKInlineSignInViewController *)selfCopy passwordField];
+  if ([(AKInlineSignInViewController *)selfCopy shouldPromptForPasswordOnly])
   {
     v12 = 3;
   }
@@ -393,181 +393,181 @@ void __36__AKInlineSignInViewController_init__block_invoke_3(uint64_t a1)
     v12 = 1;
   }
 
-  [(AKTextField *)v70 setRowIdentifier:v12];
-  *&v13 = MEMORY[0x277D82BD8](v70).n128_u64[0];
-  v74 = [(AKInlineSignInViewController *)v136 appleIDField];
-  v73 = [(AKTextField *)v74 entryField];
+  [(AKTextField *)passwordField setRowIdentifier:v12];
+  *&v13 = MEMORY[0x277D82BD8](passwordField).n128_u64[0];
+  appleIDField2 = [(AKInlineSignInViewController *)selfCopy appleIDField];
+  entryField = [(AKTextField *)appleIDField2 entryField];
   v72 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v71 = [v72 localizedStringForKey:@"EMAIL_OR_PHONE_PLACEHOLDER" value:? table:?];
-  [(UITextField *)v73 setPlaceholder:?];
+  [(UITextField *)entryField setPlaceholder:?];
   MEMORY[0x277D82BD8](v71);
   MEMORY[0x277D82BD8](v72);
-  MEMORY[0x277D82BD8](v73);
-  *&v14 = MEMORY[0x277D82BD8](v74).n128_u64[0];
-  v76 = [(AKInlineSignInViewController *)v136 appleIDField];
-  v75 = [(AKTextField *)v76 entryField];
-  [(UITextField *)v75 setKeyboardType:7];
-  MEMORY[0x277D82BD8](v75);
-  *&v15 = MEMORY[0x277D82BD8](v76).n128_u64[0];
-  v78 = [(AKInlineSignInViewController *)v136 appleIDField];
-  v77 = [(AKTextField *)v78 entryField];
-  [(UITextField *)v77 setAutocapitalizationType:0];
-  MEMORY[0x277D82BD8](v77);
-  *&v16 = MEMORY[0x277D82BD8](v78).n128_u64[0];
-  v80 = [(AKInlineSignInViewController *)v136 appleIDField];
-  v79 = [(AKTextField *)v80 entryField];
-  [(UITextField *)v79 setAutocorrectionType:1];
-  MEMORY[0x277D82BD8](v79);
-  *&v17 = MEMORY[0x277D82BD8](v80).n128_u64[0];
-  v82 = [(AKInlineSignInViewController *)v136 appleIDField];
-  v81 = [(AKTextField *)v82 entryField];
-  [(UITextField *)v81 setAdjustsFontSizeToFitWidth:1];
-  MEMORY[0x277D82BD8](v81);
-  *&v18 = MEMORY[0x277D82BD8](v82).n128_u64[0];
-  v84 = [(AKInlineSignInViewController *)v136 appleIDField];
-  v83 = [(AKTextField *)v84 entryField];
-  [(UITextField *)v83 setReturnKeyType:11];
-  MEMORY[0x277D82BD8](v83);
-  *&v19 = MEMORY[0x277D82BD8](v84).n128_u64[0];
-  v86 = [(AKInlineSignInViewController *)v136 appleIDField];
+  MEMORY[0x277D82BD8](entryField);
+  *&v14 = MEMORY[0x277D82BD8](appleIDField2).n128_u64[0];
+  appleIDField3 = [(AKInlineSignInViewController *)selfCopy appleIDField];
+  entryField2 = [(AKTextField *)appleIDField3 entryField];
+  [(UITextField *)entryField2 setKeyboardType:7];
+  MEMORY[0x277D82BD8](entryField2);
+  *&v15 = MEMORY[0x277D82BD8](appleIDField3).n128_u64[0];
+  appleIDField4 = [(AKInlineSignInViewController *)selfCopy appleIDField];
+  entryField3 = [(AKTextField *)appleIDField4 entryField];
+  [(UITextField *)entryField3 setAutocapitalizationType:0];
+  MEMORY[0x277D82BD8](entryField3);
+  *&v16 = MEMORY[0x277D82BD8](appleIDField4).n128_u64[0];
+  appleIDField5 = [(AKInlineSignInViewController *)selfCopy appleIDField];
+  entryField4 = [(AKTextField *)appleIDField5 entryField];
+  [(UITextField *)entryField4 setAutocorrectionType:1];
+  MEMORY[0x277D82BD8](entryField4);
+  *&v17 = MEMORY[0x277D82BD8](appleIDField5).n128_u64[0];
+  appleIDField6 = [(AKInlineSignInViewController *)selfCopy appleIDField];
+  entryField5 = [(AKTextField *)appleIDField6 entryField];
+  [(UITextField *)entryField5 setAdjustsFontSizeToFitWidth:1];
+  MEMORY[0x277D82BD8](entryField5);
+  *&v18 = MEMORY[0x277D82BD8](appleIDField6).n128_u64[0];
+  appleIDField7 = [(AKInlineSignInViewController *)selfCopy appleIDField];
+  entryField6 = [(AKTextField *)appleIDField7 entryField];
+  [(UITextField *)entryField6 setReturnKeyType:11];
+  MEMORY[0x277D82BD8](entryField6);
+  *&v19 = MEMORY[0x277D82BD8](appleIDField7).n128_u64[0];
+  appleIDField8 = [(AKInlineSignInViewController *)selfCopy appleIDField];
   v20 = objc_alloc(MEMORY[0x277D75B80]);
-  v85 = [v20 initWithTarget:v136 action:sel__usernameFieldTapped];
-  [(AKTextField *)v86 addGestureRecognizer:?];
+  v85 = [v20 initWithTarget:selfCopy action:sel__usernameFieldTapped];
+  [(AKTextField *)appleIDField8 addGestureRecognizer:?];
   MEMORY[0x277D82BD8](v85);
-  *&v21 = MEMORY[0x277D82BD8](v86).n128_u64[0];
-  v88 = [(AKInlineSignInViewController *)v136 appleIDField];
-  v87 = [(AKTextField *)v88 entryField];
-  [(UITextField *)v87 addTarget:v136 action:sel__appleIDTextFieldDidChange_ forControlEvents:?];
-  MEMORY[0x277D82BD8](v87);
-  *&v22 = MEMORY[0x277D82BD8](v88).n128_u64[0];
-  v90 = [(AKInlineSignInViewController *)v136 appleIDField];
-  v89 = [(AKTextField *)v90 entryField];
-  [(UITextField *)v89 setDelegate:v136];
-  MEMORY[0x277D82BD8](v89);
-  *&v23 = MEMORY[0x277D82BD8](v90).n128_u64[0];
-  v92 = [(AKInlineSignInViewController *)v136 appleIDField];
-  v91 = [(AKTextField *)v92 entryField];
-  [(UITextField *)v91 setTextContentType:*MEMORY[0x277D77090]];
-  MEMORY[0x277D82BD8](v91);
-  *&v24 = MEMORY[0x277D82BD8](v92).n128_u64[0];
-  [(AKInlineSignInViewController *)v136 _updateFonts:0, v24];
-  [(AKInlineSignInViewController *)v136 _prefillAuthFields];
-  v96 = [(AKInlineSignInViewController *)v136 passwordField];
-  v95 = [(AKTextField *)v96 entryField];
+  *&v21 = MEMORY[0x277D82BD8](appleIDField8).n128_u64[0];
+  appleIDField9 = [(AKInlineSignInViewController *)selfCopy appleIDField];
+  entryField7 = [(AKTextField *)appleIDField9 entryField];
+  [(UITextField *)entryField7 addTarget:selfCopy action:sel__appleIDTextFieldDidChange_ forControlEvents:?];
+  MEMORY[0x277D82BD8](entryField7);
+  *&v22 = MEMORY[0x277D82BD8](appleIDField9).n128_u64[0];
+  appleIDField10 = [(AKInlineSignInViewController *)selfCopy appleIDField];
+  entryField8 = [(AKTextField *)appleIDField10 entryField];
+  [(UITextField *)entryField8 setDelegate:selfCopy];
+  MEMORY[0x277D82BD8](entryField8);
+  *&v23 = MEMORY[0x277D82BD8](appleIDField10).n128_u64[0];
+  appleIDField11 = [(AKInlineSignInViewController *)selfCopy appleIDField];
+  entryField9 = [(AKTextField *)appleIDField11 entryField];
+  [(UITextField *)entryField9 setTextContentType:*MEMORY[0x277D77090]];
+  MEMORY[0x277D82BD8](entryField9);
+  *&v24 = MEMORY[0x277D82BD8](appleIDField11).n128_u64[0];
+  [(AKInlineSignInViewController *)selfCopy _updateFonts:0, v24];
+  [(AKInlineSignInViewController *)selfCopy _prefillAuthFields];
+  passwordField2 = [(AKInlineSignInViewController *)selfCopy passwordField];
+  entryField10 = [(AKTextField *)passwordField2 entryField];
   v94 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v93 = [v94 localizedStringForKey:@"PASSWORD_PLACEHOLDER" value:&stru_28358EF68 table:@"Localizable"];
-  [(UITextField *)v95 setPlaceholder:?];
+  [(UITextField *)entryField10 setPlaceholder:?];
   MEMORY[0x277D82BD8](v93);
   MEMORY[0x277D82BD8](v94);
-  MEMORY[0x277D82BD8](v95);
-  *&v25 = MEMORY[0x277D82BD8](v96).n128_u64[0];
-  v98 = [(AKInlineSignInViewController *)v136 passwordField];
-  v97 = [(AKTextField *)v98 entryField];
-  [(UITextField *)v97 setSecureTextEntry:1];
-  MEMORY[0x277D82BD8](v97);
-  *&v26 = MEMORY[0x277D82BD8](v98).n128_u64[0];
-  v100 = [(AKInlineSignInViewController *)v136 passwordField];
-  v99 = [(AKTextField *)v100 entryField];
-  [(UITextField *)v99 setAdjustsFontSizeToFitWidth:1];
-  MEMORY[0x277D82BD8](v99);
-  *&v27 = MEMORY[0x277D82BD8](v100).n128_u64[0];
-  v102 = [(AKInlineSignInViewController *)v136 passwordField];
-  v101 = [(AKTextField *)v102 entryField];
-  [(UITextField *)v101 setAutocapitalizationType:0];
-  MEMORY[0x277D82BD8](v101);
-  *&v28 = MEMORY[0x277D82BD8](v102).n128_u64[0];
-  v104 = [(AKInlineSignInViewController *)v136 passwordField];
-  v103 = [(AKTextField *)v104 entryField];
-  [(UITextField *)v103 setAutocorrectionType:1];
-  MEMORY[0x277D82BD8](v103);
-  *&v29 = MEMORY[0x277D82BD8](v104).n128_u64[0];
-  v106 = [(AKInlineSignInViewController *)v136 passwordField];
-  v105 = [(AKTextField *)v106 entryField];
-  [(UITextField *)v105 setReturnKeyType:9];
-  MEMORY[0x277D82BD8](v105);
-  *&v30 = MEMORY[0x277D82BD8](v106).n128_u64[0];
-  v108 = [(AKInlineSignInViewController *)v136 passwordField];
-  v107 = [(AKTextField *)v108 entryField];
-  [(UITextField *)v107 setEnablesReturnKeyAutomatically:1];
-  MEMORY[0x277D82BD8](v107);
-  *&v31 = MEMORY[0x277D82BD8](v108).n128_u64[0];
-  v110 = [(AKInlineSignInViewController *)v136 passwordField];
+  MEMORY[0x277D82BD8](entryField10);
+  *&v25 = MEMORY[0x277D82BD8](passwordField2).n128_u64[0];
+  passwordField3 = [(AKInlineSignInViewController *)selfCopy passwordField];
+  entryField11 = [(AKTextField *)passwordField3 entryField];
+  [(UITextField *)entryField11 setSecureTextEntry:1];
+  MEMORY[0x277D82BD8](entryField11);
+  *&v26 = MEMORY[0x277D82BD8](passwordField3).n128_u64[0];
+  passwordField4 = [(AKInlineSignInViewController *)selfCopy passwordField];
+  entryField12 = [(AKTextField *)passwordField4 entryField];
+  [(UITextField *)entryField12 setAdjustsFontSizeToFitWidth:1];
+  MEMORY[0x277D82BD8](entryField12);
+  *&v27 = MEMORY[0x277D82BD8](passwordField4).n128_u64[0];
+  passwordField5 = [(AKInlineSignInViewController *)selfCopy passwordField];
+  entryField13 = [(AKTextField *)passwordField5 entryField];
+  [(UITextField *)entryField13 setAutocapitalizationType:0];
+  MEMORY[0x277D82BD8](entryField13);
+  *&v28 = MEMORY[0x277D82BD8](passwordField5).n128_u64[0];
+  passwordField6 = [(AKInlineSignInViewController *)selfCopy passwordField];
+  entryField14 = [(AKTextField *)passwordField6 entryField];
+  [(UITextField *)entryField14 setAutocorrectionType:1];
+  MEMORY[0x277D82BD8](entryField14);
+  *&v29 = MEMORY[0x277D82BD8](passwordField6).n128_u64[0];
+  passwordField7 = [(AKInlineSignInViewController *)selfCopy passwordField];
+  entryField15 = [(AKTextField *)passwordField7 entryField];
+  [(UITextField *)entryField15 setReturnKeyType:9];
+  MEMORY[0x277D82BD8](entryField15);
+  *&v30 = MEMORY[0x277D82BD8](passwordField7).n128_u64[0];
+  passwordField8 = [(AKInlineSignInViewController *)selfCopy passwordField];
+  entryField16 = [(AKTextField *)passwordField8 entryField];
+  [(UITextField *)entryField16 setEnablesReturnKeyAutomatically:1];
+  MEMORY[0x277D82BD8](entryField16);
+  *&v31 = MEMORY[0x277D82BD8](passwordField8).n128_u64[0];
+  passwordField9 = [(AKInlineSignInViewController *)selfCopy passwordField];
   v32 = objc_alloc(MEMORY[0x277D75B80]);
-  v109 = [v32 initWithTarget:v136 action:sel__passwordFieldTapped];
-  [(AKTextField *)v110 addGestureRecognizer:?];
+  v109 = [v32 initWithTarget:selfCopy action:sel__passwordFieldTapped];
+  [(AKTextField *)passwordField9 addGestureRecognizer:?];
   MEMORY[0x277D82BD8](v109);
-  *&v33 = MEMORY[0x277D82BD8](v110).n128_u64[0];
-  v112 = [(AKInlineSignInViewController *)v136 passwordField];
-  v111 = [(AKTextField *)v112 entryField];
-  [(UITextField *)v111 addTarget:v136 action:sel__passwordTextFieldDidChange_ forControlEvents:983040];
-  MEMORY[0x277D82BD8](v111);
-  *&v34 = MEMORY[0x277D82BD8](v112).n128_u64[0];
-  v114 = [(AKInlineSignInViewController *)v136 passwordField];
-  v113 = [(AKTextField *)v114 entryField];
-  [(UITextField *)v113 setDelegate:v136];
-  MEMORY[0x277D82BD8](v113);
-  *&v35 = MEMORY[0x277D82BD8](v114).n128_u64[0];
-  v116 = [(AKInlineSignInViewController *)v136 passwordField];
-  v115 = [(AKTextField *)v116 entryField];
-  [(UITextField *)v115 setTextContentType:*MEMORY[0x277D77030]];
-  MEMORY[0x277D82BD8](v115);
-  *&v36 = MEMORY[0x277D82BD8](v116).n128_u64[0];
-  v117 = [(AKInlineSignInViewController *)v136 entryDescriptionTextColor];
-  v37 = MEMORY[0x277D82BD8](v117).n128_u64[0];
-  if (v117)
+  *&v33 = MEMORY[0x277D82BD8](passwordField9).n128_u64[0];
+  passwordField10 = [(AKInlineSignInViewController *)selfCopy passwordField];
+  entryField17 = [(AKTextField *)passwordField10 entryField];
+  [(UITextField *)entryField17 addTarget:selfCopy action:sel__passwordTextFieldDidChange_ forControlEvents:983040];
+  MEMORY[0x277D82BD8](entryField17);
+  *&v34 = MEMORY[0x277D82BD8](passwordField10).n128_u64[0];
+  passwordField11 = [(AKInlineSignInViewController *)selfCopy passwordField];
+  entryField18 = [(AKTextField *)passwordField11 entryField];
+  [(UITextField *)entryField18 setDelegate:selfCopy];
+  MEMORY[0x277D82BD8](entryField18);
+  *&v35 = MEMORY[0x277D82BD8](passwordField11).n128_u64[0];
+  passwordField12 = [(AKInlineSignInViewController *)selfCopy passwordField];
+  entryField19 = [(AKTextField *)passwordField12 entryField];
+  [(UITextField *)entryField19 setTextContentType:*MEMORY[0x277D77030]];
+  MEMORY[0x277D82BD8](entryField19);
+  *&v36 = MEMORY[0x277D82BD8](passwordField12).n128_u64[0];
+  entryDescriptionTextColor = [(AKInlineSignInViewController *)selfCopy entryDescriptionTextColor];
+  v37 = MEMORY[0x277D82BD8](entryDescriptionTextColor).n128_u64[0];
+  if (entryDescriptionTextColor)
   {
-    v61 = [(AKInlineSignInViewController *)v136 appleIDField];
-    v60 = [(AKInlineSignInViewController *)v136 entryDescriptionTextColor];
-    [(AKTextField *)v61 setEntryDescriptionTextColor:?];
-    MEMORY[0x277D82BD8](v60);
-    *&v38 = MEMORY[0x277D82BD8](v61).n128_u64[0];
-    v63 = [(AKInlineSignInViewController *)v136 passwordField];
-    v62 = [(AKInlineSignInViewController *)v136 entryDescriptionTextColor];
-    [(AKTextField *)v63 setEntryDescriptionTextColor:?];
-    MEMORY[0x277D82BD8](v62);
-    v37 = MEMORY[0x277D82BD8](v63).n128_u64[0];
+    appleIDField12 = [(AKInlineSignInViewController *)selfCopy appleIDField];
+    entryDescriptionTextColor2 = [(AKInlineSignInViewController *)selfCopy entryDescriptionTextColor];
+    [(AKTextField *)appleIDField12 setEntryDescriptionTextColor:?];
+    MEMORY[0x277D82BD8](entryDescriptionTextColor2);
+    *&v38 = MEMORY[0x277D82BD8](appleIDField12).n128_u64[0];
+    passwordField13 = [(AKInlineSignInViewController *)selfCopy passwordField];
+    entryDescriptionTextColor3 = [(AKInlineSignInViewController *)selfCopy entryDescriptionTextColor];
+    [(AKTextField *)passwordField13 setEntryDescriptionTextColor:?];
+    MEMORY[0x277D82BD8](entryDescriptionTextColor3);
+    v37 = MEMORY[0x277D82BD8](passwordField13).n128_u64[0];
   }
 
-  v59 = [(AKInlineSignInViewController *)v136 entryFieldTextColor];
-  v39 = MEMORY[0x277D82BD8](v59).n128_u64[0];
-  if (v59)
+  entryFieldTextColor = [(AKInlineSignInViewController *)selfCopy entryFieldTextColor];
+  v39 = MEMORY[0x277D82BD8](entryFieldTextColor).n128_u64[0];
+  if (entryFieldTextColor)
   {
-    v56 = [(AKInlineSignInViewController *)v136 appleIDField];
-    v55 = [(AKInlineSignInViewController *)v136 entryFieldTextColor];
-    [(AKTextField *)v56 setEntryFieldTextColor:?];
-    MEMORY[0x277D82BD8](v55);
-    *&v40 = MEMORY[0x277D82BD8](v56).n128_u64[0];
-    v58 = [(AKInlineSignInViewController *)v136 passwordField];
-    v57 = [(AKInlineSignInViewController *)v136 entryFieldTextColor];
-    [(AKTextField *)v58 setEntryFieldTextColor:?];
-    MEMORY[0x277D82BD8](v57);
-    v39 = MEMORY[0x277D82BD8](v58).n128_u64[0];
+    appleIDField13 = [(AKInlineSignInViewController *)selfCopy appleIDField];
+    entryFieldTextColor2 = [(AKInlineSignInViewController *)selfCopy entryFieldTextColor];
+    [(AKTextField *)appleIDField13 setEntryFieldTextColor:?];
+    MEMORY[0x277D82BD8](entryFieldTextColor2);
+    *&v40 = MEMORY[0x277D82BD8](appleIDField13).n128_u64[0];
+    passwordField14 = [(AKInlineSignInViewController *)selfCopy passwordField];
+    entryFieldTextColor3 = [(AKInlineSignInViewController *)selfCopy entryFieldTextColor];
+    [(AKTextField *)passwordField14 setEntryFieldTextColor:?];
+    MEMORY[0x277D82BD8](entryFieldTextColor3);
+    v39 = MEMORY[0x277D82BD8](passwordField14).n128_u64[0];
   }
 
-  v133 = [(AKInlineSignInViewController *)v136 shouldPromptForPasswordOnly];
-  v53 = [(AKInlineSignInViewController *)v136 passwordField];
-  [(AKTextField *)v53 setHidden:![(AKInlineSignInViewController *)v136 shouldPromptForPasswordOnly]];
-  *&v41 = MEMORY[0x277D82BD8](v53).n128_u64[0];
-  v54 = [(AKInlineSignInViewController *)v136 appleIDField];
-  [(AKTextField *)v54 setHidden:v133];
-  v42 = MEMORY[0x277D82BD8](v54).n128_u64[0];
-  if (v133)
+  shouldPromptForPasswordOnly = [(AKInlineSignInViewController *)selfCopy shouldPromptForPasswordOnly];
+  passwordField15 = [(AKInlineSignInViewController *)selfCopy passwordField];
+  [(AKTextField *)passwordField15 setHidden:![(AKInlineSignInViewController *)selfCopy shouldPromptForPasswordOnly]];
+  *&v41 = MEMORY[0x277D82BD8](passwordField15).n128_u64[0];
+  appleIDField14 = [(AKInlineSignInViewController *)selfCopy appleIDField];
+  [(AKTextField *)appleIDField14 setHidden:shouldPromptForPasswordOnly];
+  v42 = MEMORY[0x277D82BD8](appleIDField14).n128_u64[0];
+  if (shouldPromptForPasswordOnly)
   {
-    v52 = [(AKInlineSignInViewController *)v136 passwordField];
-    v51 = [(AKTextField *)v52 entryField];
-    [(UITextField *)v51 becomeFirstResponder];
-    MEMORY[0x277D82BD8](v51);
-    v42 = MEMORY[0x277D82BD8](v52).n128_u64[0];
+    passwordField16 = [(AKInlineSignInViewController *)selfCopy passwordField];
+    entryField20 = [(AKTextField *)passwordField16 entryField];
+    [(UITextField *)entryField20 becomeFirstResponder];
+    MEMORY[0x277D82BD8](entryField20);
+    v42 = MEMORY[0x277D82BD8](passwordField16).n128_u64[0];
   }
 
-  v49 = [(AKInlineSignInViewController *)v136 context];
-  [v49 _setPasswordDelegate:v136];
-  *&v43 = MEMORY[0x277D82BD8](v49).n128_u64[0];
-  [(AKInlineSignInViewController *)v136 _updateVibrancyAndBlurInTextFields];
-  v50 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v50 addObserver:v136 selector:sel__updateFonts_ name:*MEMORY[0x277D76810] object:0];
-  *&v44 = MEMORY[0x277D82BD8](v50).n128_u64[0];
-  if ([(AKBaseSignInViewController *)v136 _isAccountModificationRestricted])
+  context = [(AKInlineSignInViewController *)selfCopy context];
+  [context _setPasswordDelegate:selfCopy];
+  *&v43 = MEMORY[0x277D82BD8](context).n128_u64[0];
+  [(AKInlineSignInViewController *)selfCopy _updateVibrancyAndBlurInTextFields];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:selfCopy selector:sel__updateFonts_ name:*MEMORY[0x277D76810] object:0];
+  *&v44 = MEMORY[0x277D82BD8](defaultCenter).n128_u64[0];
+  if ([(AKBaseSignInViewController *)selfCopy _isAccountModificationRestricted])
   {
     location = _AKLogSystem();
     v131 = OS_LOG_TYPE_DEFAULT;
@@ -580,58 +580,58 @@ void __36__AKInlineSignInViewController_init__block_invoke_3(uint64_t a1)
     }
 
     objc_storeStrong(&location, 0);
-    v46 = [(AKInlineSignInViewController *)v136 iforgotButton];
-    [(UIButton *)v46 setEnabled:0];
-    *&v45 = MEMORY[0x277D82BD8](v46).n128_u64[0];
-    [(AKInlineSignInViewController *)v136 _setCreateButtonEnabled:0, v45];
-    [(AKInlineSignInViewController *)v136 _updateSignInFieldStatuses];
+    iforgotButton5 = [(AKInlineSignInViewController *)selfCopy iforgotButton];
+    [(UIButton *)iforgotButton5 setEnabled:0];
+    *&v45 = MEMORY[0x277D82BD8](iforgotButton5).n128_u64[0];
+    [(AKInlineSignInViewController *)selfCopy _setCreateButtonEnabled:0, v45];
+    [(AKInlineSignInViewController *)selfCopy _updateSignInFieldStatuses];
   }
 
-  [(AKInlineSignInViewController *)v136 _updateFonts:0];
+  [(AKInlineSignInViewController *)selfCopy _updateFonts:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  appearCopy = appear;
   v3.receiver = self;
   v3.super_class = AKInlineSignInViewController;
-  [(AKInlineSignInViewController *)&v3 viewWillAppear:a3];
-  [(AKInlineSignInViewController *)v6 _updateSignInButtonState];
+  [(AKInlineSignInViewController *)&v3 viewWillAppear:appear];
+  [(AKInlineSignInViewController *)selfCopy _updateSignInButtonState];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = AKInlineSignInViewController;
-  [(AKBaseSignInViewController *)&v6 viewDidAppear:a3];
-  v4 = v9;
-  v5 = [(AKInlineSignInViewController *)v9 navigationController];
-  if (v5)
+  [(AKBaseSignInViewController *)&v6 viewDidAppear:appear];
+  v4 = selfCopy;
+  navigationController = [(AKInlineSignInViewController *)selfCopy navigationController];
+  if (navigationController)
   {
-    v3 = v5;
+    v3 = navigationController;
   }
 
   else
   {
-    v3 = v9;
+    v3 = selfCopy;
   }
 
   [(AKInlineSignInViewController *)v4 _presentShieldUIIfNeededWithViewController:v3];
-  MEMORY[0x277D82BD8](v5);
+  MEMORY[0x277D82BD8](navigationController);
 }
 
-- (void)_presentShieldUIIfNeededWithViewController:(id)a3
+- (void)_presentShieldUIIfNeededWithViewController:(id)controller
 {
   v15 = *MEMORY[0x277D85DE8];
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v9 = _AKLogSystem();
   v8 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -641,21 +641,21 @@ void __36__AKInlineSignInViewController_init__block_invoke_3(uint64_t a1)
   }
 
   objc_storeStrong(&v9, 0);
-  v3 = [MEMORY[0x277CF0130] sharedInstance];
-  v4 = [v3 shieldSignInOrCreateFlows];
-  MEMORY[0x277D82BD8](v3);
-  if (v4)
+  mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+  shieldSignInOrCreateFlows = [mEMORY[0x277CF0130] shieldSignInOrCreateFlows];
+  MEMORY[0x277D82BD8](mEMORY[0x277CF0130]);
+  if (shieldSignInOrCreateFlows)
   {
     oslog = _AKLogSystem();
     v6 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_2_8_64_8_64(v13, v11, location[0]);
+      __os_log_helper_16_2_2_8_64_8_64(v13, selfCopy, location[0]);
       _os_log_impl(&dword_222379000, oslog, v6, "%@: Shielding sign in / create flows by presenting shield UI with view controller: %@", v13, 0x16u);
     }
 
     objc_storeStrong(&oslog, 0);
-    [(AKInlineSignInViewController *)v11 _presentShieldUIWithViewController:location[0]];
+    [(AKInlineSignInViewController *)selfCopy _presentShieldUIWithViewController:location[0]];
   }
 
   else
@@ -663,7 +663,7 @@ void __36__AKInlineSignInViewController_init__block_invoke_3(uint64_t a1)
     v5 = _AKLogSystem();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      __os_log_helper_16_2_1_8_64(v12, v11);
+      __os_log_helper_16_2_1_8_64(v12, selfCopy);
       _os_log_debug_impl(&dword_222379000, v5, OS_LOG_TYPE_DEBUG, "%@: Not presenting shield UI, not needed", v12, 0xCu);
     }
 
@@ -674,13 +674,13 @@ void __36__AKInlineSignInViewController_init__block_invoke_3(uint64_t a1)
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_presentShieldUIWithViewController:(id)a3
+- (void)_presentShieldUIWithViewController:(id)controller
 {
   v7 = *MEMORY[0x277D85DE8];
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
@@ -689,7 +689,7 @@ void __36__AKInlineSignInViewController_init__block_invoke_3(uint64_t a1)
   }
 
   objc_storeStrong(&oslog, 0);
-  [(AKInlineSignInViewController *)v5 _beginAuthenticationIfPossibleWithOption:1];
+  [(AKInlineSignInViewController *)selfCopy _beginAuthenticationIfPossibleWithOption:1];
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
@@ -718,47 +718,47 @@ void __36__AKInlineSignInViewController_init__block_invoke_3(uint64_t a1)
 
 - (void)_updateSignInFieldStatuses
 {
-  v5 = [(AKBaseSignInViewController *)self _isSignInAllowed];
-  v2 = [(AKInlineSignInViewController *)self appleIDField];
-  [(AKTextField *)v2 setEnabled:v5];
-  v3 = [(AKInlineSignInViewController *)self passwordField];
-  [(AKTextField *)v3 setEnabled:v5];
-  v4 = [(AKInlineSignInViewController *)self signInButton];
-  [(UIButton *)v4 setEnabled:v5];
-  MEMORY[0x277D82BD8](v4);
+  _isSignInAllowed = [(AKBaseSignInViewController *)self _isSignInAllowed];
+  appleIDField = [(AKInlineSignInViewController *)self appleIDField];
+  [(AKTextField *)appleIDField setEnabled:_isSignInAllowed];
+  passwordField = [(AKInlineSignInViewController *)self passwordField];
+  [(AKTextField *)passwordField setEnabled:_isSignInAllowed];
+  signInButton = [(AKInlineSignInViewController *)self signInButton];
+  [(UIButton *)signInButton setEnabled:_isSignInAllowed];
+  MEMORY[0x277D82BD8](signInButton);
 }
 
 - (void)_prefillAuthFields
 {
-  v8 = [(AKInlineSignInViewController *)self appleIDField];
-  v7 = [(AKTextField *)v8 entryField];
-  v6 = [(AKInlineSignInViewController *)self context];
-  v5 = [v6 username];
-  [(UITextField *)v7 setText:?];
-  MEMORY[0x277D82BD8](v5);
-  MEMORY[0x277D82BD8](v6);
-  MEMORY[0x277D82BD8](v7);
-  v9 = [(AKInlineSignInViewController *)self context];
-  v10 = [v9 username];
-  MEMORY[0x277D82BD8](v10);
-  *&v2 = MEMORY[0x277D82BD8](v9).n128_u64[0];
-  if (v10)
+  appleIDField = [(AKInlineSignInViewController *)self appleIDField];
+  entryField = [(AKTextField *)appleIDField entryField];
+  context = [(AKInlineSignInViewController *)self context];
+  username = [context username];
+  [(UITextField *)entryField setText:?];
+  MEMORY[0x277D82BD8](username);
+  MEMORY[0x277D82BD8](context);
+  MEMORY[0x277D82BD8](entryField);
+  context2 = [(AKInlineSignInViewController *)self context];
+  username2 = [context2 username];
+  MEMORY[0x277D82BD8](username2);
+  *&v2 = MEMORY[0x277D82BD8](context2).n128_u64[0];
+  if (username2)
   {
-    v4 = [(AKInlineSignInViewController *)self appleIDField];
-    v3 = [(AKInlineSignInViewController *)self context];
-    -[AKTextField setEnabled:](v4, "setEnabled:", [v3 isUsernameEditable]);
-    MEMORY[0x277D82BD8](v3);
-    MEMORY[0x277D82BD8](v4);
+    appleIDField2 = [(AKInlineSignInViewController *)self appleIDField];
+    context3 = [(AKInlineSignInViewController *)self context];
+    -[AKTextField setEnabled:](appleIDField2, "setEnabled:", [context3 isUsernameEditable]);
+    MEMORY[0x277D82BD8](context3);
+    MEMORY[0x277D82BD8](appleIDField2);
   }
 }
 
 - (void)_updateVibrancyAndBlurInTextFields
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
-  v20 = [(AKInlineSignInViewController *)self fieldBackgroundColor];
-  *&v2 = MEMORY[0x277D82BD8](v20).n128_u64[0];
-  if (v20)
+  fieldBackgroundColor = [(AKInlineSignInViewController *)self fieldBackgroundColor];
+  *&v2 = MEMORY[0x277D82BD8](fieldBackgroundColor).n128_u64[0];
+  if (fieldBackgroundColor)
   {
     location[0] = _AKLogSystem();
     v22 = OS_LOG_TYPE_DEFAULT;
@@ -771,132 +771,132 @@ void __36__AKInlineSignInViewController_init__block_invoke_3(uint64_t a1)
     }
 
     objc_storeStrong(location, 0);
-    v12 = [(AKInlineSignInViewController *)v24 appleIDField];
-    [(AKTextField *)v12 setUsesVibrancy:0];
-    *&v3 = MEMORY[0x277D82BD8](v12).n128_u64[0];
-    v13 = [(AKInlineSignInViewController *)v24 passwordField];
-    [(AKTextField *)v13 setUsesVibrancy:0];
-    *&v4 = MEMORY[0x277D82BD8](v13).n128_u64[0];
-    v14 = [(AKInlineSignInViewController *)v24 appleIDField];
-    [(AKTextField *)v14 setBlurEffectStyle:?];
-    *&v5 = MEMORY[0x277D82BD8](v14).n128_u64[0];
-    v15 = [(AKInlineSignInViewController *)v24 passwordField];
-    [(AKTextField *)v15 setBlurEffectStyle:4];
-    *&v6 = MEMORY[0x277D82BD8](v15).n128_u64[0];
-    v16 = [(AKInlineSignInViewController *)v24 appleIDField];
-    [(AKTextField *)v16 setFieldBackgroundColor:v24->_fieldBackgroundColor];
-    *&v7 = MEMORY[0x277D82BD8](v16).n128_u64[0];
-    v17 = [(AKInlineSignInViewController *)v24 passwordField];
-    [(AKTextField *)v17 setFieldBackgroundColor:v24->_fieldBackgroundColor];
-    MEMORY[0x277D82BD8](v17);
+    appleIDField = [(AKInlineSignInViewController *)selfCopy appleIDField];
+    [(AKTextField *)appleIDField setUsesVibrancy:0];
+    *&v3 = MEMORY[0x277D82BD8](appleIDField).n128_u64[0];
+    passwordField = [(AKInlineSignInViewController *)selfCopy passwordField];
+    [(AKTextField *)passwordField setUsesVibrancy:0];
+    *&v4 = MEMORY[0x277D82BD8](passwordField).n128_u64[0];
+    appleIDField2 = [(AKInlineSignInViewController *)selfCopy appleIDField];
+    [(AKTextField *)appleIDField2 setBlurEffectStyle:?];
+    *&v5 = MEMORY[0x277D82BD8](appleIDField2).n128_u64[0];
+    passwordField2 = [(AKInlineSignInViewController *)selfCopy passwordField];
+    [(AKTextField *)passwordField2 setBlurEffectStyle:4];
+    *&v6 = MEMORY[0x277D82BD8](passwordField2).n128_u64[0];
+    appleIDField3 = [(AKInlineSignInViewController *)selfCopy appleIDField];
+    [(AKTextField *)appleIDField3 setFieldBackgroundColor:selfCopy->_fieldBackgroundColor];
+    *&v7 = MEMORY[0x277D82BD8](appleIDField3).n128_u64[0];
+    passwordField3 = [(AKInlineSignInViewController *)selfCopy passwordField];
+    [(AKTextField *)passwordField3 setFieldBackgroundColor:selfCopy->_fieldBackgroundColor];
+    MEMORY[0x277D82BD8](passwordField3);
   }
 
   else
   {
-    v8 = [(AKInlineSignInViewController *)v24 appleIDField];
-    [(AKTextField *)v8 setUsesVibrancy:v24->_usesVibrancy];
-    v9 = [(AKInlineSignInViewController *)v24 passwordField];
-    [(AKTextField *)v9 setUsesVibrancy:v24->_usesVibrancy];
-    v10 = [(AKInlineSignInViewController *)v24 appleIDField];
-    [(AKTextField *)v10 setBlurEffectStyle:v24->_blurEffectStyle];
-    v11 = [(AKInlineSignInViewController *)v24 passwordField];
-    [(AKTextField *)v11 setBlurEffectStyle:v24->_blurEffectStyle];
-    MEMORY[0x277D82BD8](v11);
+    appleIDField4 = [(AKInlineSignInViewController *)selfCopy appleIDField];
+    [(AKTextField *)appleIDField4 setUsesVibrancy:selfCopy->_usesVibrancy];
+    passwordField4 = [(AKInlineSignInViewController *)selfCopy passwordField];
+    [(AKTextField *)passwordField4 setUsesVibrancy:selfCopy->_usesVibrancy];
+    appleIDField5 = [(AKInlineSignInViewController *)selfCopy appleIDField];
+    [(AKTextField *)appleIDField5 setBlurEffectStyle:selfCopy->_blurEffectStyle];
+    passwordField5 = [(AKInlineSignInViewController *)selfCopy passwordField];
+    [(AKTextField *)passwordField5 setBlurEffectStyle:selfCopy->_blurEffectStyle];
+    MEMORY[0x277D82BD8](passwordField5);
   }
 }
 
-- (void)_applyStyleForButton:(id)a3
+- (void)_applyStyleForButton:(id)button
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, button);
   objc_storeStrong(location, 0);
 }
 
-- (void)_applyStyleForCreateOrForgot:(id)a3
+- (void)_applyStyleForCreateOrForgot:(id)forgot
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, forgot);
   objc_storeStrong(location, 0);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AKInlineSignInViewController *)v8 traitCollection];
-  v6 = [v4 userInterfaceStyle];
-  v5 = [location[0] userInterfaceStyle];
-  *&v3 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  if (v6 != v5)
+  objc_storeStrong(location, change);
+  traitCollection = [(AKInlineSignInViewController *)selfCopy traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  userInterfaceStyle2 = [location[0] userInterfaceStyle];
+  *&v3 = MEMORY[0x277D82BD8](traitCollection).n128_u64[0];
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
-    [(AKInlineSignInViewController *)v8 _updateVibrancyAndBlurInTextFields];
+    [(AKInlineSignInViewController *)selfCopy _updateVibrancyAndBlurInTextFields];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)signInButtonWasTapped:(id)a3
+- (void)signInButtonWasTapped:(id)tapped
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AKInlineSignInViewController *)v4 _beginAuthenticationIfPossibleWithOption:1];
+  objc_storeStrong(location, tapped);
+  [(AKInlineSignInViewController *)selfCopy _beginAuthenticationIfPossibleWithOption:1];
   objc_storeStrong(location, 0);
 }
 
-- (void)iForgotButtonWasTapped:(id)a3
+- (void)iForgotButtonWasTapped:(id)tapped
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AKInlineSignInViewController *)v7 iforgotButton];
-  v5 = [(UIButton *)v4 isHidden];
-  *&v3 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  if (!v5)
+  objc_storeStrong(location, tapped);
+  iforgotButton = [(AKInlineSignInViewController *)selfCopy iforgotButton];
+  isHidden = [(UIButton *)iforgotButton isHidden];
+  *&v3 = MEMORY[0x277D82BD8](iforgotButton).n128_u64[0];
+  if (!isHidden)
   {
-    [(AKInlineSignInViewController *)v7 _beginAuthenticationIfPossibleWithOption:2, v3];
+    [(AKInlineSignInViewController *)selfCopy _beginAuthenticationIfPossibleWithOption:2, v3];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)createAppleIDButtonWasTapped:(id)a3
+- (void)createAppleIDButtonWasTapped:(id)tapped
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AKInlineSignInViewController *)v7 createAppleIDButton];
-  v5 = [(UIButton *)v4 isHidden];
-  *&v3 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  if (!v5)
+  objc_storeStrong(location, tapped);
+  createAppleIDButton = [(AKInlineSignInViewController *)selfCopy createAppleIDButton];
+  isHidden = [(UIButton *)createAppleIDButton isHidden];
+  *&v3 = MEMORY[0x277D82BD8](createAppleIDButton).n128_u64[0];
+  if (!isHidden)
   {
-    [(AKInlineSignInViewController *)v7 _beginAuthenticationIfPossibleWithOption:3, v3];
+    [(AKInlineSignInViewController *)selfCopy _beginAuthenticationIfPossibleWithOption:3, v3];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_beginAuthenticationIfPossibleWithOption:(unint64_t)a3
+- (void)_beginAuthenticationIfPossibleWithOption:(unint64_t)option
 {
-  v23 = self;
+  selfCopy = self;
   v22 = a2;
-  v21 = a3;
+  optionCopy = option;
   if (self->_passwordRequiredCompletion)
   {
-    [(AKInlineSignInViewController *)v23 startAnimating];
+    [(AKInlineSignInViewController *)selfCopy startAnimating];
     v20 = 0;
-    if (v21 > 1)
+    if (optionCopy > 1)
     {
-      if (v21 == 2)
+      if (optionCopy == 2)
       {
         v3 = [MEMORY[0x277CCA9B8] ak_errorWithCode:-7017];
         v4 = v20;
@@ -904,7 +904,7 @@ void __36__AKInlineSignInViewController_init__block_invoke_3(uint64_t a1)
         MEMORY[0x277D82BD8](v4);
       }
 
-      else if (v21 == 3)
+      else if (optionCopy == 3)
       {
         v5 = [MEMORY[0x277CCA9B8] ak_errorWithCode:-7016];
         v6 = v20;
@@ -913,39 +913,39 @@ void __36__AKInlineSignInViewController_init__block_invoke_3(uint64_t a1)
       }
     }
 
-    v16 = (v23->_passwordRequiredCompletion + 16);
-    v19 = [(AKInlineSignInViewController *)v23 passwordField];
-    v18 = [(AKTextField *)v19 entryField];
-    v17 = [(UITextField *)v18 text];
+    v16 = (selfCopy->_passwordRequiredCompletion + 16);
+    passwordField = [(AKInlineSignInViewController *)selfCopy passwordField];
+    entryField = [(AKTextField *)passwordField entryField];
+    text = [(UITextField *)entryField text];
     (*v16)();
-    MEMORY[0x277D82BD8](v17);
-    MEMORY[0x277D82BD8](v18);
-    MEMORY[0x277D82BD8](v19);
-    passwordRequiredCompletion = v23->_passwordRequiredCompletion;
-    v23->_passwordRequiredCompletion = 0;
+    MEMORY[0x277D82BD8](text);
+    MEMORY[0x277D82BD8](entryField);
+    MEMORY[0x277D82BD8](passwordField);
+    passwordRequiredCompletion = selfCopy->_passwordRequiredCompletion;
+    selfCopy->_passwordRequiredCompletion = 0;
     MEMORY[0x277D82BD8](passwordRequiredCompletion);
     objc_storeStrong(&v20, 0);
   }
 
   else
   {
-    v15 = [(AKInlineSignInViewController *)v23 appleIDField];
-    v14 = [(AKTextField *)v15 entryField];
-    v13 = [(UITextField *)v14 text];
-    v12 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v11 = [(NSString *)v13 stringByTrimmingCharactersInSet:?];
-    v10 = [(AKInlineSignInViewController *)v23 passwordField];
-    v9 = [(AKTextField *)v10 entryField];
-    v8 = [(UITextField *)v9 text];
-    [(AKBaseSignInViewController *)v23 _beginAuthenticationIfPossibleWithOption:v21 withUsername:v11 password:?];
-    MEMORY[0x277D82BD8](v8);
-    MEMORY[0x277D82BD8](v9);
-    MEMORY[0x277D82BD8](v10);
+    appleIDField = [(AKInlineSignInViewController *)selfCopy appleIDField];
+    entryField2 = [(AKTextField *)appleIDField entryField];
+    text2 = [(UITextField *)entryField2 text];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v11 = [(NSString *)text2 stringByTrimmingCharactersInSet:?];
+    passwordField2 = [(AKInlineSignInViewController *)selfCopy passwordField];
+    entryField3 = [(AKTextField *)passwordField2 entryField];
+    text3 = [(UITextField *)entryField3 text];
+    [(AKBaseSignInViewController *)selfCopy _beginAuthenticationIfPossibleWithOption:optionCopy withUsername:v11 password:?];
+    MEMORY[0x277D82BD8](text3);
+    MEMORY[0x277D82BD8](entryField3);
+    MEMORY[0x277D82BD8](passwordField2);
     MEMORY[0x277D82BD8](v11);
-    MEMORY[0x277D82BD8](v12);
-    MEMORY[0x277D82BD8](v13);
-    MEMORY[0x277D82BD8](v14);
-    MEMORY[0x277D82BD8](v15);
+    MEMORY[0x277D82BD8](whitespaceAndNewlineCharacterSet);
+    MEMORY[0x277D82BD8](text2);
+    MEMORY[0x277D82BD8](entryField2);
+    MEMORY[0x277D82BD8](appleIDField);
   }
 }
 
@@ -953,44 +953,44 @@ void __36__AKInlineSignInViewController_init__block_invoke_3(uint64_t a1)
 {
   if ([(AKInlineSignInViewController *)self wantsAuthenticationProgress])
   {
-    v7 = [(AKInlineSignInViewController *)self spinner];
-    [(UIActivityIndicatorView *)v7 startAnimating];
-    v8 = [(AKInlineSignInViewController *)self signInButton];
-    [(UIButton *)v8 setHidden:1];
-    [(AKInlineSignInViewController *)self _setCreateButtonHidden:1, MEMORY[0x277D82BD8](v8).n128_f64[0]];
-    v9 = [(AKInlineSignInViewController *)self iforgotButton];
-    [(UIButton *)v9 setHidden:1];
-    v2 = MEMORY[0x277D82BD8](v9).n128_u64[0];
+    spinner = [(AKInlineSignInViewController *)self spinner];
+    [(UIActivityIndicatorView *)spinner startAnimating];
+    signInButton = [(AKInlineSignInViewController *)self signInButton];
+    [(UIButton *)signInButton setHidden:1];
+    [(AKInlineSignInViewController *)self _setCreateButtonHidden:1, MEMORY[0x277D82BD8](signInButton).n128_f64[0]];
+    iforgotButton = [(AKInlineSignInViewController *)self iforgotButton];
+    [(UIButton *)iforgotButton setHidden:1];
+    v2 = MEMORY[0x277D82BD8](iforgotButton).n128_u64[0];
   }
 
   else
   {
-    v5 = [(AKInlineSignInViewController *)self signInButton];
-    [(UIButton *)v5 setEnabled:0];
-    [(AKInlineSignInViewController *)self _setCreateButtonEnabled:0, MEMORY[0x277D82BD8](v5).n128_f64[0]];
-    v6 = [(AKInlineSignInViewController *)self iforgotButton];
-    [(UIButton *)v6 setEnabled:0];
-    v2 = MEMORY[0x277D82BD8](v6).n128_u64[0];
+    signInButton2 = [(AKInlineSignInViewController *)self signInButton];
+    [(UIButton *)signInButton2 setEnabled:0];
+    [(AKInlineSignInViewController *)self _setCreateButtonEnabled:0, MEMORY[0x277D82BD8](signInButton2).n128_f64[0]];
+    iforgotButton2 = [(AKInlineSignInViewController *)self iforgotButton];
+    [(UIButton *)iforgotButton2 setEnabled:0];
+    v2 = MEMORY[0x277D82BD8](iforgotButton2).n128_u64[0];
   }
 
-  v3 = [(AKInlineSignInViewController *)self appleIDField];
-  [(AKTextField *)v3 setEnabled:0];
-  v4 = [(AKInlineSignInViewController *)self passwordField];
-  [(AKTextField *)v4 setEnabled:0];
-  MEMORY[0x277D82BD8](v4);
+  appleIDField = [(AKInlineSignInViewController *)self appleIDField];
+  [(AKTextField *)appleIDField setEnabled:0];
+  passwordField = [(AKInlineSignInViewController *)self passwordField];
+  [(AKTextField *)passwordField setEnabled:0];
+  MEMORY[0x277D82BD8](passwordField);
 }
 
 - (void)stopAnimating
 {
   if ([(AKInlineSignInViewController *)self wantsAuthenticationProgress])
   {
-    v7 = [(AKInlineSignInViewController *)self spinner];
-    [(UIActivityIndicatorView *)v7 stopAnimating];
-    v8 = [(AKInlineSignInViewController *)self signInButton];
-    [(UIButton *)v8 setHidden:[(AKInlineSignInViewController *)self isPrimaryButtonHidden]];
-    v9 = [(AKInlineSignInViewController *)self iforgotButton];
-    [(UIButton *)v9 setHidden:0];
-    v2 = MEMORY[0x277D82BD8](v9).n128_u64[0];
+    spinner = [(AKInlineSignInViewController *)self spinner];
+    [(UIActivityIndicatorView *)spinner stopAnimating];
+    signInButton = [(AKInlineSignInViewController *)self signInButton];
+    [(UIButton *)signInButton setHidden:[(AKInlineSignInViewController *)self isPrimaryButtonHidden]];
+    iforgotButton = [(AKInlineSignInViewController *)self iforgotButton];
+    [(UIButton *)iforgotButton setHidden:0];
+    v2 = MEMORY[0x277D82BD8](iforgotButton).n128_u64[0];
     if (self->_createAppleIDAllowed)
     {
       [(AKInlineSignInViewController *)self _setCreateButtonHidden:0, *&v2];
@@ -1001,29 +1001,29 @@ void __36__AKInlineSignInViewController_init__block_invoke_3(uint64_t a1)
   {
     [(AKInlineSignInViewController *)self _updateSignInButtonState];
     [(AKInlineSignInViewController *)self _setCreateButtonEnabled:1];
-    v6 = [(AKInlineSignInViewController *)self iforgotButton];
-    [(UIButton *)v6 setEnabled:1];
-    v2 = MEMORY[0x277D82BD8](v6).n128_u64[0];
+    iforgotButton2 = [(AKInlineSignInViewController *)self iforgotButton];
+    [(UIButton *)iforgotButton2 setEnabled:1];
+    v2 = MEMORY[0x277D82BD8](iforgotButton2).n128_u64[0];
   }
 
-  v4 = [(AKInlineSignInViewController *)self appleIDField];
-  v3 = [(AKInlineSignInViewController *)self context];
-  -[AKTextField setEnabled:](v4, "setEnabled:", [v3 isUsernameEditable]);
-  MEMORY[0x277D82BD8](v3);
-  v5 = [(AKInlineSignInViewController *)self passwordField];
-  [(AKTextField *)v5 setEnabled:1];
-  MEMORY[0x277D82BD8](v5);
+  appleIDField = [(AKInlineSignInViewController *)self appleIDField];
+  context = [(AKInlineSignInViewController *)self context];
+  -[AKTextField setEnabled:](appleIDField, "setEnabled:", [context isUsernameEditable]);
+  MEMORY[0x277D82BD8](context);
+  passwordField = [(AKInlineSignInViewController *)self passwordField];
+  [(AKTextField *)passwordField setEnabled:1];
+  MEMORY[0x277D82BD8](passwordField);
 }
 
-- (void)_setPasswordFieldHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)_setPasswordFieldHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v19 = self;
+  selfCopy = self;
   v18 = a2;
-  v17 = a3;
-  v16 = a4;
+  hiddenCopy = hidden;
+  animatedCopy = animated;
   v6 = MEMORY[0x277D75D18];
   v4 = 0.7;
-  if (!a4)
+  if (!animated)
   {
     v4 = 0.0;
   }
@@ -1034,10 +1034,10 @@ void __36__AKInlineSignInViewController_init__block_invoke_3(uint64_t a1)
   v11 = 0;
   v12 = __65__AKInlineSignInViewController__setPasswordFieldHidden_animated___block_invoke;
   v13 = &unk_2784A5EC8;
-  v14 = MEMORY[0x277D82BE0](v19);
-  v15 = v17;
-  v8 = v17;
-  v7 = MEMORY[0x277D82BE0](v19);
+  v14 = MEMORY[0x277D82BE0](selfCopy);
+  v15 = hiddenCopy;
+  v8 = hiddenCopy;
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   [v6 animateWithDuration:&v9 animations:v5 completion:?];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v14, 0);
@@ -1090,136 +1090,136 @@ double __65__AKInlineSignInViewController__setPasswordFieldHidden_animated___blo
   return result;
 }
 
-- (void)_appleIDTextFieldDidChange:(id)a3
+- (void)_appleIDTextFieldDidChange:(id)change
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AKInlineSignInViewController *)v4 _updateSignInButtonState];
+  objc_storeStrong(location, change);
+  [(AKInlineSignInViewController *)selfCopy _updateSignInButtonState];
   objc_storeStrong(location, 0);
 }
 
-- (void)_passwordTextFieldDidChange:(id)a3
+- (void)_passwordTextFieldDidChange:(id)change
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AKInlineSignInViewController *)v4 _updateSignInButtonState];
+  objc_storeStrong(location, change);
+  [(AKInlineSignInViewController *)selfCopy _updateSignInButtonState];
   objc_storeStrong(location, 0);
 }
 
 - (void)_passwordFieldTapped
 {
-  v3 = [(AKInlineSignInViewController *)self passwordField];
-  v2 = [(AKTextField *)v3 entryField];
-  [(UITextField *)v2 becomeFirstResponder];
-  MEMORY[0x277D82BD8](v2);
-  MEMORY[0x277D82BD8](v3);
+  passwordField = [(AKInlineSignInViewController *)self passwordField];
+  entryField = [(AKTextField *)passwordField entryField];
+  [(UITextField *)entryField becomeFirstResponder];
+  MEMORY[0x277D82BD8](entryField);
+  MEMORY[0x277D82BD8](passwordField);
 }
 
 - (void)_usernameFieldTapped
 {
-  v3 = [(AKInlineSignInViewController *)self appleIDField];
-  v2 = [(AKTextField *)v3 entryField];
-  [(UITextField *)v2 becomeFirstResponder];
-  MEMORY[0x277D82BD8](v2);
-  MEMORY[0x277D82BD8](v3);
+  appleIDField = [(AKInlineSignInViewController *)self appleIDField];
+  entryField = [(AKTextField *)appleIDField entryField];
+  [(UITextField *)entryField becomeFirstResponder];
+  MEMORY[0x277D82BD8](entryField);
+  MEMORY[0x277D82BD8](appleIDField);
 }
 
 - (void)_updateSignInButtonState
 {
   if ([(AKBaseSignInViewController *)self _isSignInAllowed])
   {
-    v9 = [(AKInlineSignInViewController *)self appleIDField];
-    v8 = [(AKTextField *)v9 entryField];
-    v7 = [(UITextField *)v8 text];
-    v6 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v5 = [(NSString *)v7 stringByTrimmingCharactersInSet:?];
+    appleIDField = [(AKInlineSignInViewController *)self appleIDField];
+    entryField = [(AKTextField *)appleIDField entryField];
+    text = [(UITextField *)entryField text];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v5 = [(NSString *)text stringByTrimmingCharactersInSet:?];
     v10 = [(NSString *)v5 length]!= 0;
     MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v6);
-    MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v8);
-    v11 = [(AKInlineSignInViewController *)self passwordField];
+    MEMORY[0x277D82BD8](whitespaceAndNewlineCharacterSet);
+    MEMORY[0x277D82BD8](text);
+    MEMORY[0x277D82BD8](entryField);
+    passwordField = [(AKInlineSignInViewController *)self passwordField];
     v18 = 0;
     v16 = 0;
     v14 = 0;
     v12 = 1;
-    if (([(AKTextField *)v11 isHidden]& 1) == 0)
+    if (([(AKTextField *)passwordField isHidden]& 1) == 0)
     {
-      v19 = [(AKInlineSignInViewController *)self passwordField];
+      passwordField2 = [(AKInlineSignInViewController *)self passwordField];
       v18 = 1;
-      v17 = [(AKTextField *)v19 entryField];
+      entryField2 = [(AKTextField *)passwordField2 entryField];
       v16 = 1;
-      v15 = [(UITextField *)v17 text];
+      text2 = [(UITextField *)entryField2 text];
       v14 = 1;
-      v12 = [(NSString *)v15 length]!= 0;
+      v12 = [(NSString *)text2 length]!= 0;
     }
 
     if (v14)
     {
-      MEMORY[0x277D82BD8](v15);
+      MEMORY[0x277D82BD8](text2);
     }
 
     if (v16)
     {
-      MEMORY[0x277D82BD8](v17);
+      MEMORY[0x277D82BD8](entryField2);
     }
 
     if (v18)
     {
-      MEMORY[0x277D82BD8](v19);
+      MEMORY[0x277D82BD8](passwordField2);
     }
 
-    v2 = [(AKInlineSignInViewController *)self signInButton];
+    signInButton = [(AKInlineSignInViewController *)self signInButton];
     v4 = 0;
     if (v10)
     {
       v4 = v12;
     }
 
-    [(UIButton *)v2 setEnabled:v4, v2];
+    [(UIButton *)signInButton setEnabled:v4, signInButton];
     MEMORY[0x277D82BD8](v3);
   }
 
   else
   {
-    v13 = [(AKInlineSignInViewController *)self signInButton];
-    [(UIButton *)v13 setEnabled:0];
-    MEMORY[0x277D82BD8](v13);
+    signInButton2 = [(AKInlineSignInViewController *)self signInButton];
+    [(UIButton *)signInButton2 setEnabled:0];
+    MEMORY[0x277D82BD8](signInButton2);
   }
 }
 
-- (void)_updateFonts:(id)a3
+- (void)_updateFonts:(id)fonts
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, fonts);
   v16 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D76968] addingSymbolicTraits:? options:?];
   v15 = [MEMORY[0x277D74300] fontWithDescriptor:v16 size:?];
   v14 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D76A20] addingSymbolicTraits:0 options:2];
   v13 = [MEMORY[0x277D74300] fontWithDescriptor:v14 size:0.0];
-  v7 = [(AKInlineSignInViewController *)v18 createAppleIDButton];
-  v6 = [(UIButton *)v7 titleLabel];
-  [(UILabel *)v6 setFont:v15];
-  MEMORY[0x277D82BD8](v6);
-  *&v3 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-  v9 = [(AKInlineSignInViewController *)v18 iforgotButton];
-  v8 = [(UIButton *)v9 titleLabel];
-  [(UILabel *)v8 setFont:v15];
-  MEMORY[0x277D82BD8](v8);
-  *&v4 = MEMORY[0x277D82BD8](v9).n128_u64[0];
-  v11 = [(AKInlineSignInViewController *)v18 signInButton];
-  v10 = [(UIButton *)v11 titleLabel];
-  [(UILabel *)v10 setFont:v13];
-  MEMORY[0x277D82BD8](v10);
-  *&v5 = MEMORY[0x277D82BD8](v11).n128_u64[0];
-  v12 = [(AKInlineSignInViewController *)v18 view];
-  [v12 setNeedsUpdateConstraints];
-  MEMORY[0x277D82BD8](v12);
+  createAppleIDButton = [(AKInlineSignInViewController *)selfCopy createAppleIDButton];
+  titleLabel = [(UIButton *)createAppleIDButton titleLabel];
+  [(UILabel *)titleLabel setFont:v15];
+  MEMORY[0x277D82BD8](titleLabel);
+  *&v3 = MEMORY[0x277D82BD8](createAppleIDButton).n128_u64[0];
+  iforgotButton = [(AKInlineSignInViewController *)selfCopy iforgotButton];
+  titleLabel2 = [(UIButton *)iforgotButton titleLabel];
+  [(UILabel *)titleLabel2 setFont:v15];
+  MEMORY[0x277D82BD8](titleLabel2);
+  *&v4 = MEMORY[0x277D82BD8](iforgotButton).n128_u64[0];
+  signInButton = [(AKInlineSignInViewController *)selfCopy signInButton];
+  titleLabel3 = [(UIButton *)signInButton titleLabel];
+  [(UILabel *)titleLabel3 setFont:v13];
+  MEMORY[0x277D82BD8](titleLabel3);
+  *&v5 = MEMORY[0x277D82BD8](signInButton).n128_u64[0];
+  view = [(AKInlineSignInViewController *)selfCopy view];
+  [view setNeedsUpdateConstraints];
+  MEMORY[0x277D82BD8](view);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
@@ -1227,63 +1227,63 @@ double __65__AKInlineSignInViewController__setPasswordFieldHidden_animated___blo
   objc_storeStrong(location, 0);
 }
 
-- (void)setUsesVibrancy:(BOOL)a3
+- (void)setUsesVibrancy:(BOOL)vibrancy
 {
   v8 = *MEMORY[0x277D85DE8];
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
-  self->_usesVibrancy = a3;
+  vibrancyCopy = vibrancy;
+  self->_usesVibrancy = vibrancy;
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_0_1_4_0(v7, v4);
+    __os_log_helper_16_0_1_4_0(v7, vibrancyCopy);
     _os_log_impl(&dword_222379000, oslog, OS_LOG_TYPE_DEFAULT, "AKInlineSignInViewController - setUsesVibrancy %d", v7, 8u);
   }
 
   objc_storeStrong(&oslog, 0);
-  [(AKInlineSignInViewController *)v6 _updateVibrancyAndBlurInTextFields];
+  [(AKInlineSignInViewController *)selfCopy _updateVibrancyAndBlurInTextFields];
   *MEMORY[0x277D85DE8];
 }
 
-- (void)setBlurEffectStyle:(int64_t)a3
+- (void)setBlurEffectStyle:(int64_t)style
 {
   v9 = *MEMORY[0x277D85DE8];
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
-  self->_blurEffectStyle = a3;
+  styleCopy = style;
+  self->_blurEffectStyle = style;
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v3 = [MEMORY[0x277CCABB0] numberWithInteger:v5];
+    v3 = [MEMORY[0x277CCABB0] numberWithInteger:styleCopy];
     __os_log_helper_16_2_1_8_64(v8, v3);
     _os_log_impl(&dword_222379000, oslog, OS_LOG_TYPE_DEFAULT, "AKInlineSignInViewController - setBlurEffectStyle %@", v8, 0xCu);
     MEMORY[0x277D82BD8](v3);
   }
 
   objc_storeStrong(&oslog, 0);
-  [(AKInlineSignInViewController *)v7 _updateVibrancyAndBlurInTextFields];
+  [(AKInlineSignInViewController *)selfCopy _updateVibrancyAndBlurInTextFields];
   *MEMORY[0x277D85DE8];
 }
 
-- (void)setFieldBackgroundColor:(id)a3
+- (void)setFieldBackgroundColor:(id)color
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v4->_fieldBackgroundColor, location[0]);
-  [(AKInlineSignInViewController *)v4 _updateVibrancyAndBlurInTextFields];
+  objc_storeStrong(location, color);
+  objc_storeStrong(&selfCopy->_fieldBackgroundColor, location[0]);
+  [(AKInlineSignInViewController *)selfCopy _updateVibrancyAndBlurInTextFields];
   objc_storeStrong(location, 0);
 }
 
-- (id)_userFriendlyUsername:(id)a3
+- (id)_userFriendlyUsername:(id)username
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, username);
   if ([location[0] containsString:@"@"])
   {
     v7 = MEMORY[0x277D82BE0](location[0]);
@@ -1302,59 +1302,59 @@ double __65__AKInlineSignInViewController__setPasswordFieldHidden_animated___blo
   return v3;
 }
 
-- (void)context:(id)a3 needsPasswordWithCompletion:(id)a4
+- (void)context:(id)context needsPasswordWithCompletion:(id)completion
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, completion);
   v4 = MEMORY[0x223DB6C90](v8);
-  passwordRequiredCompletion = v10->_passwordRequiredCompletion;
-  v10->_passwordRequiredCompletion = v4;
+  passwordRequiredCompletion = selfCopy->_passwordRequiredCompletion;
+  selfCopy->_passwordRequiredCompletion = v4;
   *&v6 = MEMORY[0x277D82BD8](passwordRequiredCompletion).n128_u64[0];
-  [(AKInlineSignInViewController *)v10 stopAnimating];
-  [(AKInlineSignInViewController *)v10 _setPasswordFieldHidden:0 animated:1];
+  [(AKInlineSignInViewController *)selfCopy stopAnimating];
+  [(AKInlineSignInViewController *)selfCopy _setPasswordFieldHidden:0 animated:1];
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v65 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, return);
   v63 = 1;
   v43 = location[0];
-  v45 = [(AKInlineSignInViewController *)v65 appleIDField];
-  v44 = [(AKTextField *)v45 entryField];
+  appleIDField = [(AKInlineSignInViewController *)selfCopy appleIDField];
+  entryField = [(AKTextField *)appleIDField entryField];
   v46 = [v43 isEqual:?];
-  MEMORY[0x277D82BD8](v44);
-  *&v3 = MEMORY[0x277D82BD8](v45).n128_u64[0];
+  MEMORY[0x277D82BD8](entryField);
+  *&v3 = MEMORY[0x277D82BD8](appleIDField).n128_u64[0];
   if (v46)
   {
-    v36 = [(AKInlineSignInViewController *)v65 appleIDField];
-    v35 = [(AKTextField *)v36 entryField];
-    v62 = [(UITextField *)v35 text];
-    MEMORY[0x277D82BD8](v35);
-    *&v4 = MEMORY[0x277D82BD8](v36).n128_u64[0];
-    v61 = [(AKInlineSignInViewController *)v65 _userFriendlyUsername:v62, v4];
-    v38 = [(AKInlineSignInViewController *)v65 appleIDField];
-    v37 = [(AKTextField *)v38 entryField];
-    [(UITextField *)v37 setText:v61];
-    MEMORY[0x277D82BD8](v37);
-    *&v5 = MEMORY[0x277D82BD8](v38).n128_u64[0];
-    v40 = [(AKInlineSignInViewController *)v65 appleIDField];
-    v39 = [(AKTextField *)v40 entryField];
-    [(UITextField *)v39 resignFirstResponder];
-    MEMORY[0x277D82BD8](v39);
-    *&v6 = MEMORY[0x277D82BD8](v40).n128_u64[0];
-    v41 = [(AKInlineSignInViewController *)v65 passwordField];
-    v42 = [(AKTextField *)v41 isHidden];
-    *&v7 = MEMORY[0x277D82BD8](v41).n128_u64[0];
-    if (v42)
+    appleIDField2 = [(AKInlineSignInViewController *)selfCopy appleIDField];
+    entryField2 = [(AKTextField *)appleIDField2 entryField];
+    text = [(UITextField *)entryField2 text];
+    MEMORY[0x277D82BD8](entryField2);
+    *&v4 = MEMORY[0x277D82BD8](appleIDField2).n128_u64[0];
+    v61 = [(AKInlineSignInViewController *)selfCopy _userFriendlyUsername:text, v4];
+    appleIDField3 = [(AKInlineSignInViewController *)selfCopy appleIDField];
+    entryField3 = [(AKTextField *)appleIDField3 entryField];
+    [(UITextField *)entryField3 setText:v61];
+    MEMORY[0x277D82BD8](entryField3);
+    *&v5 = MEMORY[0x277D82BD8](appleIDField3).n128_u64[0];
+    appleIDField4 = [(AKInlineSignInViewController *)selfCopy appleIDField];
+    entryField4 = [(AKTextField *)appleIDField4 entryField];
+    [(UITextField *)entryField4 resignFirstResponder];
+    MEMORY[0x277D82BD8](entryField4);
+    *&v6 = MEMORY[0x277D82BD8](appleIDField4).n128_u64[0];
+    passwordField = [(AKInlineSignInViewController *)selfCopy passwordField];
+    isHidden = [(AKTextField *)passwordField isHidden];
+    *&v7 = MEMORY[0x277D82BD8](passwordField).n128_u64[0];
+    if (isHidden)
     {
       when = dispatch_time(0, 500000000);
       v30 = MEMORY[0x277D85CD0];
@@ -1365,7 +1365,7 @@ double __65__AKInlineSignInViewController__setPasswordFieldHidden_animated___blo
       v57 = 0;
       v58 = __54__AKInlineSignInViewController_textFieldShouldReturn___block_invoke;
       v59 = &unk_2784A5C90;
-      v60 = MEMORY[0x277D82BE0](v65);
+      v60 = MEMORY[0x277D82BE0](selfCopy);
       dispatch_after(when, queue, &v55);
       MEMORY[0x277D82BD8](queue);
       objc_storeStrong(&v60, 0);
@@ -1373,60 +1373,60 @@ double __65__AKInlineSignInViewController__setPasswordFieldHidden_animated___blo
 
     else
     {
-      v34 = [(AKInlineSignInViewController *)v65 passwordField];
-      v33 = [(AKTextField *)v34 entryField];
-      [(UITextField *)v33 becomeFirstResponder];
-      MEMORY[0x277D82BD8](v33);
-      MEMORY[0x277D82BD8](v34);
+      passwordField2 = [(AKInlineSignInViewController *)selfCopy passwordField];
+      entryField5 = [(AKTextField *)passwordField2 entryField];
+      [(UITextField *)entryField5 becomeFirstResponder];
+      MEMORY[0x277D82BD8](entryField5);
+      MEMORY[0x277D82BD8](passwordField2);
     }
 
     v63 = 0;
     objc_storeStrong(&v61, 0);
-    objc_storeStrong(&v62, 0);
+    objc_storeStrong(&text, 0);
   }
 
   else
   {
     v26 = location[0];
-    v28 = [(AKInlineSignInViewController *)v65 passwordField];
-    v27 = [(AKTextField *)v28 entryField];
+    passwordField3 = [(AKInlineSignInViewController *)selfCopy passwordField];
+    entryField6 = [(AKTextField *)passwordField3 entryField];
     v29 = [v26 isEqual:?];
-    MEMORY[0x277D82BD8](v27);
-    *&v9 = MEMORY[0x277D82BD8](v28).n128_u64[0];
+    MEMORY[0x277D82BD8](entryField6);
+    *&v9 = MEMORY[0x277D82BD8](passwordField3).n128_u64[0];
     if (v29)
     {
-      v22 = [(AKInlineSignInViewController *)v65 appleIDField];
-      v23 = [(AKTextField *)v22 entryField];
-      v24 = [(UITextField *)v23 text];
+      appleIDField5 = [(AKInlineSignInViewController *)selfCopy appleIDField];
+      entryField7 = [(AKTextField *)appleIDField5 entryField];
+      text2 = [(UITextField *)entryField7 text];
       v53 = 0;
       v25 = 0;
-      if (![(NSString *)v24 length])
+      if (![(NSString *)text2 length])
       {
-        v54 = [(AKInlineSignInViewController *)v65 appleIDField];
+        appleIDField6 = [(AKInlineSignInViewController *)selfCopy appleIDField];
         v53 = 1;
-        v25 = [(AKTextField *)v54 isHidden]== 0;
+        v25 = [(AKTextField *)appleIDField6 isHidden]== 0;
       }
 
       if (v53)
       {
-        MEMORY[0x277D82BD8](v54);
+        MEMORY[0x277D82BD8](appleIDField6);
       }
 
-      MEMORY[0x277D82BD8](v24);
-      MEMORY[0x277D82BD8](v23);
-      *&v10 = MEMORY[0x277D82BD8](v22).n128_u64[0];
+      MEMORY[0x277D82BD8](text2);
+      MEMORY[0x277D82BD8](entryField7);
+      *&v10 = MEMORY[0x277D82BD8](appleIDField5).n128_u64[0];
       if (v25)
       {
-        v19 = [(AKInlineSignInViewController *)v65 passwordField];
-        v18 = [(AKTextField *)v19 entryField];
-        [(UITextField *)v18 resignFirstResponder];
-        MEMORY[0x277D82BD8](v18);
-        *&v11 = MEMORY[0x277D82BD8](v19).n128_u64[0];
-        v21 = [(AKInlineSignInViewController *)v65 appleIDField];
-        v20 = [(AKTextField *)v21 entryField];
-        [(UITextField *)v20 becomeFirstResponder];
-        MEMORY[0x277D82BD8](v20);
-        MEMORY[0x277D82BD8](v21);
+        passwordField4 = [(AKInlineSignInViewController *)selfCopy passwordField];
+        entryField8 = [(AKTextField *)passwordField4 entryField];
+        [(UITextField *)entryField8 resignFirstResponder];
+        MEMORY[0x277D82BD8](entryField8);
+        *&v11 = MEMORY[0x277D82BD8](passwordField4).n128_u64[0];
+        appleIDField7 = [(AKInlineSignInViewController *)selfCopy appleIDField];
+        entryField9 = [(AKTextField *)appleIDField7 entryField];
+        [(UITextField *)entryField9 becomeFirstResponder];
+        MEMORY[0x277D82BD8](entryField9);
+        MEMORY[0x277D82BD8](appleIDField7);
         v63 = 0;
       }
 
@@ -1441,7 +1441,7 @@ double __65__AKInlineSignInViewController__setPasswordFieldHidden_animated___blo
         v49 = 0;
         v50 = __54__AKInlineSignInViewController_textFieldShouldReturn___block_invoke_2;
         v51 = &unk_2784A5C90;
-        v52 = MEMORY[0x277D82BE0](v65);
+        v52 = MEMORY[0x277D82BE0](selfCopy);
         dispatch_after(v16, v17, &v47);
         MEMORY[0x277D82BD8](v17);
         objc_storeStrong(&v52, 0);
@@ -1472,42 +1472,42 @@ double __54__AKInlineSignInViewController_textFieldShouldReturn___block_invoke_2
   return result;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  v23 = a4;
-  v22 = self;
+  rangeCopy = range;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, field);
   v20 = 0;
-  objc_storeStrong(&v20, a5);
+  objc_storeStrong(&v20, string);
   v13 = location[0];
-  v12 = [(AKInlineSignInViewController *)v22 appleIDField];
-  v14 = [(AKTextField *)v12 entryField];
+  appleIDField = [(AKInlineSignInViewController *)selfCopy appleIDField];
+  entryField = [(AKTextField *)appleIDField entryField];
   v18 = 0;
   v16 = 0;
   v15 = 0;
   if ([v13 isEqual:?])
   {
-    v19 = [(AKInlineSignInViewController *)v22 passwordField];
+    passwordField = [(AKInlineSignInViewController *)selfCopy passwordField];
     v18 = 1;
     v15 = 0;
-    if (![(AKTextField *)v19 isHidden])
+    if (![(AKTextField *)passwordField isHidden])
     {
-      v17 = [location[0] text];
+      text = [location[0] text];
       v16 = 1;
       v15 = 0;
-      if (![v17 isEqualToString:v20])
+      if (![text isEqualToString:v20])
       {
         v28 = 0;
         v27 = 0;
         v29 = 0;
         v30 = 0;
-        v26 = v23;
+        v26 = rangeCopy;
         v24 = 0;
         v25 = 0;
         v10 = 0;
-        if (!v23.location)
+        if (!rangeCopy.location)
         {
           v10 = v26.length == v25;
         }
@@ -1519,27 +1519,27 @@ double __54__AKInlineSignInViewController_textFieldShouldReturn___block_invoke_2
 
   if (v16)
   {
-    MEMORY[0x277D82BD8](v17);
+    MEMORY[0x277D82BD8](text);
   }
 
   if (v18)
   {
-    MEMORY[0x277D82BD8](v19);
+    MEMORY[0x277D82BD8](passwordField);
   }
 
-  MEMORY[0x277D82BD8](v14);
-  *&v5 = MEMORY[0x277D82BD8](v12).n128_u64[0];
+  MEMORY[0x277D82BD8](entryField);
+  *&v5 = MEMORY[0x277D82BD8](appleIDField).n128_u64[0];
   if (v15)
   {
-    [(AKInlineSignInViewController *)v22 _setPasswordFieldHidden:1 animated:0, v5];
-    if (v22->_passwordRequiredCompletion)
+    [(AKInlineSignInViewController *)selfCopy _setPasswordFieldHidden:1 animated:0, v5];
+    if (selfCopy->_passwordRequiredCompletion)
     {
-      passwordRequiredCompletion = v22->_passwordRequiredCompletion;
+      passwordRequiredCompletion = selfCopy->_passwordRequiredCompletion;
       v9 = [MEMORY[0x277CCA9B8] ak_errorWithCode:-7003];
       passwordRequiredCompletion[2](passwordRequiredCompletion, 0);
       MEMORY[0x277D82BD8](v9);
-      v6 = v22->_passwordRequiredCompletion;
-      v22->_passwordRequiredCompletion = 0;
+      v6 = selfCopy->_passwordRequiredCompletion;
+      selfCopy->_passwordRequiredCompletion = 0;
       MEMORY[0x277D82BD8](v6);
     }
   }
@@ -1549,11 +1549,11 @@ double __54__AKInlineSignInViewController_textFieldShouldReturn___block_invoke_2
   return 1;
 }
 
-- (void)setUsesDarkMode:(BOOL)a3
+- (void)setUsesDarkMode:(BOOL)mode
 {
-  if (a3 != self->_usesDarkMode)
+  if (mode != self->_usesDarkMode)
   {
-    self->_usesDarkMode = a3;
+    self->_usesDarkMode = mode;
     if (self->_usesDarkMode)
     {
       self->_usesVibrancy = 1;

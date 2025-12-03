@@ -1,19 +1,19 @@
 @interface MPSGraphDepthwiseConvolution3DDataGradientOp
-- (id)partialDerivativeForInputTensor:(id)a3 incomingGradient:(id)a4 inputIndex:(unint64_t)a5 name:(id)a6;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (id)partialDerivativeForInputTensor:(id)tensor incomingGradient:(id)gradient inputIndex:(unint64_t)index name:(id)name;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphDepthwiseConvolution3DDataGradientOp
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
   v36 = *MEMORY[0x1E69E9840];
-  v27 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphDepthwiseConvolution3DDataGradientOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphDepthwiseConvolutionOps.mm", v29);
-  v11 = v27;
+  v11 = nameCopy;
   v35 = 260;
   v34[0] = v29;
-  StringAttr = mlir::Builder::getStringAttr(a3, v34);
+  StringAttr = mlir::Builder::getStringAttr(builder, v34);
   v13 = mlir::FileLineColLoc::get(StringAttr, 0x1FFu, 0);
   if (!v11)
   {
@@ -22,8 +22,8 @@
 
   v14 = v11;
   v15 = v11;
-  v16 = [v11 UTF8String];
-  v17 = strlen(v16);
+  uTF8String = [v11 UTF8String];
+  v17 = strlen(uTF8String);
   if (v17 >= 0x7FFFFFFFFFFFFFF8)
   {
     std::string::__throw_length_error[abi:ne200100]();
@@ -38,11 +38,11 @@
   HIBYTE(v33) = v17;
   if (v17)
   {
-    memmove(&__dst, v16, v17);
+    memmove(&__dst, uTF8String, v17);
   }
 
   *(&__dst + v19) = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, &__dst, v18, &__p);
+  MPSSymbolTable::insertOpInSymbolTable(table, &__dst, v18, &__p);
   p_p = __p.__r_.__value_.__r.__words[0];
   if ((__p.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -58,7 +58,7 @@
   }
 
   LOBYTE(v35) = v21;
-  v22 = mlir::Builder::getStringAttr(a3, v34);
+  v22 = mlir::Builder::getStringAttr(builder, v34);
   mlir::NameLoc::get(v22, v13);
   if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -80,9 +80,9 @@ LABEL_15:
   if (v30 < 0)
   {
     operator delete(v29[0]);
-    v24 = *a5;
-    v23 = *(a5 + 1);
-    v25 = v23 - *a5;
+    v24 = *values;
+    v23 = *(values + 1);
+    v25 = v23 - *values;
     if (v25 == 24)
     {
       goto LABEL_23;
@@ -91,9 +91,9 @@ LABEL_15:
 
   else
   {
-    v24 = *a5;
-    v23 = *(a5 + 1);
-    v25 = v23 - *a5;
+    v24 = *values;
+    v23 = *(values + 1);
+    v25 = v23 - *values;
     if (v25 == 24)
     {
       goto LABEL_23;
@@ -106,44 +106,44 @@ LABEL_15:
   }
 
 LABEL_23:
-  v28 = [(MPSGraphDepthwiseConvolution3DOpDescriptor *)self->super._desc strides];
-  nsArrayToAttr(v28, a3);
+  strides = [(MPSGraphDepthwiseConvolution3DOpDescriptor *)self->super._desc strides];
+  nsArrayToAttr(strides, builder);
 }
 
-- (id)partialDerivativeForInputTensor:(id)a3 incomingGradient:(id)a4 inputIndex:(unint64_t)a5 name:(id)a6
+- (id)partialDerivativeForInputTensor:(id)tensor incomingGradient:(id)gradient inputIndex:(unint64_t)index name:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v30 = v9;
-  v12 = [(MPSGraphOperation *)self inputTensors];
-  v13 = [v12 objectAtIndexedSubscript:0];
+  tensorCopy = tensor;
+  gradientCopy = gradient;
+  nameCopy = name;
+  v30 = tensorCopy;
+  inputTensors = [(MPSGraphOperation *)self inputTensors];
+  v13 = [inputTensors objectAtIndexedSubscript:0];
 
   WeakRetained = objc_loadWeakRetained(&self->super.super._graph);
   [(NSArray *)self->super.super._inputTensors objectAtIndexedSubscript:1];
-  if (v13 == v9)
+  if (v13 == tensorCopy)
     v20 = {;
     desc = self->super._desc;
     v28 = MEMORY[0x1E696AEC0];
-    v21 = [(MPSGraphOperation *)self name];
-    v24 = [v28 stringWithFormat:@"%@/%@/depthwiseConvolution3DDataGradient", v11, v21];
-    v26 = [WeakRetained depthwiseConvolution3DWithSourceTensor:v10 weightsTensor:v20 descriptor:desc name:v24];
+    name = [(MPSGraphOperation *)self name];
+    name3 = [v28 stringWithFormat:@"%@/%@/depthwiseConvolution3DDataGradient", nameCopy, name];
+    v26 = [WeakRetained depthwiseConvolution3DWithSourceTensor:gradientCopy weightsTensor:v20 descriptor:desc name:name3];
   }
 
   else
     v15 = {;
     v16 = MEMORY[0x1E696AEC0];
-    v17 = [(MPSGraphOperation *)self name];
-    v18 = [v16 stringWithFormat:@"%@/%@/depthwiseConvolution3DDataGradient/shapeOp", v11, v17];
+    name2 = [(MPSGraphOperation *)self name];
+    v18 = [v16 stringWithFormat:@"%@/%@/depthwiseConvolution3DDataGradient/shapeOp", nameCopy, name2];
     v19 = [WeakRetained shapeOfTensor:v15 name:v18];
 
     v20 = objc_loadWeakRetained(&self->super.super._graph);
-    v21 = [(NSArray *)self->super.super._inputTensors objectAtIndexedSubscript:0];
+    name = [(NSArray *)self->super.super._inputTensors objectAtIndexedSubscript:0];
     v22 = self->super._desc;
     v23 = MEMORY[0x1E696AEC0];
-    v24 = [(MPSGraphOperation *)self name];
-    v25 = [v23 stringWithFormat:@"%@/%@/depthwiseConvolution3DWeightsGradient", v11, v24];
-    v26 = [v20 depthwiseConvolution3DWeightsGradientWithIncomingGradientTensor:v21 sourceTensor:v10 outputShapeTensor:v19 descriptor:v22 name:v25];
+    name3 = [(MPSGraphOperation *)self name];
+    v25 = [v23 stringWithFormat:@"%@/%@/depthwiseConvolution3DWeightsGradient", nameCopy, name3];
+    v26 = [v20 depthwiseConvolution3DWeightsGradientWithIncomingGradientTensor:name sourceTensor:gradientCopy outputShapeTensor:v19 descriptor:v22 name:v25];
 
     WeakRetained = v19;
   }

@@ -1,16 +1,16 @@
 @interface ObservableRecentsController
 - (_TtC11MobilePhone27ObservableRecentsController)init;
-- (void)recentsController:(id)a3 didChangeCalls:(id)a4;
+- (void)recentsController:(id)controller didChangeCalls:(id)calls;
 @end
 
 @implementation ObservableRecentsController
 
-- (void)recentsController:(id)a3 didChangeCalls:(id)a4
+- (void)recentsController:(id)controller didChangeCalls:(id)calls
 {
   type metadata accessor for NSMutableArray(0, &lazy cache variable for type metadata for CHRecentCall);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   specialized ObservableRecentsController.recentsController(_:didChange:)(v6);
 }
 

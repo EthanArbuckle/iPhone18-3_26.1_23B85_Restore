@@ -1,15 +1,15 @@
 @interface ATXMPBFeedbackRecordedTracker
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)engagementTypeAsString:(int)a3;
-- (int)StringAsEngagementType:(id)a3;
+- (id)engagementTypeAsString:(int)string;
+- (int)StringAsEngagementType:(id)type;
 - (int)engagementType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXMPBFeedbackRecordedTracker
@@ -27,18 +27,18 @@
   }
 }
 
-- (id)engagementTypeAsString:(int)a3
+- (id)engagementTypeAsString:(int)string
 {
-  if (a3)
+  if (string)
   {
-    if (a3 == 1)
+    if (string == 1)
     {
       v4 = @"Rejection";
     }
 
     else
     {
-      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
     }
   }
 
@@ -50,17 +50,17 @@
   return v4;
 }
 
-- (int)StringAsEngagementType:(id)a3
+- (int)StringAsEngagementType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Engagement"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Engagement"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Rejection"];
+    v4 = [typeCopy isEqualToString:@"Rejection"];
   }
 
   return v4;
@@ -72,15 +72,15 @@
   v8.receiver = self;
   v8.super_class = ATXMPBFeedbackRecordedTracker;
   v4 = [(ATXMPBFeedbackRecordedTracker *)&v8 description];
-  v5 = [(ATXMPBFeedbackRecordedTracker *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXMPBFeedbackRecordedTracker *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     engagementType = self->_engagementType;
@@ -102,55 +102,55 @@
       v5 = @"Engagement";
     }
 
-    [v3 setObject:v5 forKey:@"engagementType"];
+    [dictionary setObject:v5 forKey:@"engagementType"];
   }
 
   consumerSubType = self->_consumerSubType;
   if (consumerSubType)
   {
-    [v3 setObject:consumerSubType forKey:@"consumerSubType"];
+    [dictionary setObject:consumerSubType forKey:@"consumerSubType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_consumerSubType)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_engagementType;
-    *(v4 + 20) |= 1u;
+    toCopy[4] = self->_engagementType;
+    *(toCopy + 20) |= 1u;
   }
 
   if (self->_consumerSubType)
   {
-    v5 = v4;
-    [v4 setConsumerSubType:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setConsumerSubType:?];
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -158,30 +158,30 @@
     *(v5 + 20) |= 1u;
   }
 
-  v7 = [(NSString *)self->_consumerSubType copyWithZone:a3];
+  v7 = [(NSString *)self->_consumerSubType copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_engagementType != *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_engagementType != *(equalCopy + 4))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
 LABEL_9:
     v6 = 0;
@@ -189,7 +189,7 @@ LABEL_9:
   }
 
   consumerSubType = self->_consumerSubType;
-  if (consumerSubType | *(v4 + 1))
+  if (consumerSubType | *(equalCopy + 1))
   {
     v6 = [(NSString *)consumerSubType isEqual:?];
   }
@@ -219,20 +219,20 @@ LABEL_10:
   return [(NSString *)self->_consumerSubType hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[5])
+  fromCopy = from;
+  if (fromCopy[5])
   {
-    self->_engagementType = v4[4];
+    self->_engagementType = fromCopy[4];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(ATXMPBFeedbackRecordedTracker *)self setConsumerSubType:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

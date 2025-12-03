@@ -1,8 +1,8 @@
 @interface SRUIFLatencyStateManager
 - (_TtC16SiriUIFoundation24SRUIFLatencyStateManager)init;
 - (id)getLatestLatencyInformation;
-- (void)processLatencyProgressUpdate:(id)a3;
-- (void)processTaskReceivedWithIdentifier:(id)a3;
+- (void)processLatencyProgressUpdate:(id)update;
+- (void)processTaskReceivedWithIdentifier:(id)identifier;
 @end
 
 @implementation SRUIFLatencyStateManager
@@ -24,25 +24,25 @@
 
 - (id)getLatestLatencyInformation
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2695542F4();
 
   return v3;
 }
 
-- (void)processTaskReceivedWithIdentifier:(id)a3
+- (void)processTaskReceivedWithIdentifier:(id)identifier
 {
   v4 = sub_269562BB0();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_26955443C(v4, v6);
 }
 
-- (void)processLatencyProgressUpdate:(id)a3
+- (void)processLatencyProgressUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
-  sub_26955455C(v4);
+  updateCopy = update;
+  selfCopy = self;
+  sub_26955455C(updateCopy);
 }
 
 @end

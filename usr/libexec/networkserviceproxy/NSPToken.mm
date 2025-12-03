@@ -1,8 +1,8 @@
 @interface NSPToken
-- (NSPToken)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NSPToken)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSPToken
@@ -26,15 +26,15 @@
   return v3;
 }
 
-- (NSPToken)initWithCoder:(id)a3
+- (NSPToken)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = NSPToken;
   v5 = [(NSPToken *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"tokenArray"];
+    v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"tokenArray"];
     if (v6)
     {
       v7 = [NSMutableArray arrayWithArray:v6];
@@ -42,7 +42,7 @@
       v5->_tokens = v7;
     }
 
-    v9 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"saltsArray"];
+    v9 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"saltsArray"];
     if (v9)
     {
       v10 = [NSMutableArray arrayWithArray:v9];
@@ -50,11 +50,11 @@
       v5->_salts = v10;
     }
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tokenExpirationDate"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tokenExpirationDate"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pairedTokenAccount"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pairedTokenAccount"];
     pairedTokenAccount = v5->_pairedTokenAccount;
     v5->_pairedTokenAccount = v14;
   }
@@ -62,29 +62,29 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   if (self)
   {
-    [v5 encodeObject:self->_tokens forKey:@"tokenArray"];
-    [v5 encodeObject:self->_salts forKey:@"saltsArray"];
-    [v5 encodeObject:self->_expirationDate forKey:@"tokenExpirationDate"];
+    [coderCopy encodeObject:self->_tokens forKey:@"tokenArray"];
+    [coderCopy encodeObject:self->_salts forKey:@"saltsArray"];
+    [coderCopy encodeObject:self->_expirationDate forKey:@"tokenExpirationDate"];
     pairedTokenAccount = self->_pairedTokenAccount;
   }
 
   else
   {
-    [v5 encodeObject:0 forKey:@"tokenArray"];
-    [v5 encodeObject:0 forKey:@"saltsArray"];
-    [v5 encodeObject:0 forKey:@"tokenExpirationDate"];
+    [coderCopy encodeObject:0 forKey:@"tokenArray"];
+    [coderCopy encodeObject:0 forKey:@"saltsArray"];
+    [coderCopy encodeObject:0 forKey:@"tokenExpirationDate"];
     pairedTokenAccount = 0;
   }
 
-  [v5 encodeObject:pairedTokenAccount forKey:@"pairedTokenAccount"];
+  [coderCopy encodeObject:pairedTokenAccount forKey:@"pairedTokenAccount"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NSPToken allocWithZone:?]];
   v5 = v4;

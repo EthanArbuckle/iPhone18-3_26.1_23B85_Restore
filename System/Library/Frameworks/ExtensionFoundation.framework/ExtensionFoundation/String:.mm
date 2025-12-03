@@ -9,12 +9,12 @@
 
 - (uint64_t)String
 {
-  result = *a1;
+  result = *self;
   if (!result)
   {
     __swift_instantiateConcreteTypeFromMangledNameAbstractV2(&_sSDyS2SGMd, &_sSDyS2SGMR);
     result = swift_getWitnessTable();
-    atomic_store(result, a1);
+    atomic_store(result, self);
   }
 
   return result;
@@ -35,8 +35,8 @@
 - (uint64_t)Any
 {
   v3 = a3;
-  v6 = *(a1 + 32);
-  v5 = *(a1 + 40);
+  v6 = *(self + 32);
+  v5 = *(self + 40);
   if (!a2)
   {
     memset(v11, 0, sizeof(v11));

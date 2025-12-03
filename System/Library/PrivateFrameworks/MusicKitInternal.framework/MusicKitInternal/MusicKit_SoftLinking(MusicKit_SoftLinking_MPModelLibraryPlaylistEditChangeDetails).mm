@@ -21,9 +21,9 @@
   [v15 setReferenceItemPositionIdentifier:v12];
 
   [v15 setIsLastItem:a6];
-  v16 = [v11 _underlyingModelObject];
+  _underlyingModelObject = [v11 _underlyingModelObject];
 
-  [v15 setItem:v16];
+  [v15 setItem:_underlyingModelObject];
 
   return v15;
 }

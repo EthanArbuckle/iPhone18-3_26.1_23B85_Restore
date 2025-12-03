@@ -1,38 +1,38 @@
 @interface RCProgressOverlay
 - (RCEditingProgressIndicator)progressIndicator;
-- (RCProgressOverlay)initWithCoder:(id)a3;
-- (RCProgressOverlay)initWithFrame:(CGRect)a3;
+- (RCProgressOverlay)initWithCoder:(id)coder;
+- (RCProgressOverlay)initWithFrame:(CGRect)frame;
 - (UIColor)dimmingBackgroundColor;
 - (void)_commonInit;
 - (void)_setupProgressIndicator;
 - (void)_setupTextIfNeeded;
 - (void)dismiss;
 - (void)layoutSubviews;
-- (void)presentInView:(id)a3;
+- (void)presentInView:(id)view;
 - (void)restyle;
-- (void)setDimmingBackgroundColor:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setProgress:(float)a3;
-- (void)setProgressIndicatorColor:(id)a3;
-- (void)setStyle:(int64_t)a3;
+- (void)setDimmingBackgroundColor:(id)color;
+- (void)setFrame:(CGRect)frame;
+- (void)setProgress:(float)progress;
+- (void)setProgressIndicatorColor:(id)color;
+- (void)setStyle:(int64_t)style;
 @end
 
 @implementation RCProgressOverlay
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = RCProgressOverlay;
-  [(RCProgressOverlay *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(RCProgressOverlay *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(RCProgressOverlay *)self setNeedsLayout];
 }
 
-- (void)setProgress:(float)a3
+- (void)setProgress:(float)progress
 {
-  self->_progress = a3;
-  v5 = [(RCProgressOverlay *)self progressIndicator];
-  *&v4 = a3;
-  [v5 setProgress:v4];
+  self->_progress = progress;
+  progressIndicator = [(RCProgressOverlay *)self progressIndicator];
+  *&v4 = progress;
+  [progressIndicator setProgress:v4];
 }
 
 - (RCEditingProgressIndicator)progressIndicator
@@ -44,12 +44,12 @@
     v5 = self->_progressIndicator;
     self->_progressIndicator = v4;
 
-    v6 = [(RCProgressOverlay *)self progressIndicatorColor];
+    progressIndicatorColor = [(RCProgressOverlay *)self progressIndicatorColor];
 
-    if (v6)
+    if (progressIndicatorColor)
     {
-      v7 = [(RCProgressOverlay *)self progressIndicatorColor];
-      [(RCEditingProgressIndicator *)self->_progressIndicator setProgressColor:v7];
+      progressIndicatorColor2 = [(RCProgressOverlay *)self progressIndicatorColor];
+      [(RCEditingProgressIndicator *)self->_progressIndicator setProgressColor:progressIndicatorColor2];
     }
 
     [(RCProgressOverlay *)self progress];
@@ -60,65 +60,65 @@
   return progressIndicator;
 }
 
-- (void)setProgressIndicatorColor:(id)a3
+- (void)setProgressIndicatorColor:(id)color
 {
-  self->_progressIndicatorColor = a3;
-  v4 = a3;
-  v5 = [(RCProgressOverlay *)self progressIndicator];
-  [v5 setProgressColor:v4];
+  self->_progressIndicatorColor = color;
+  colorCopy = color;
+  progressIndicator = [(RCProgressOverlay *)self progressIndicator];
+  [progressIndicator setProgressColor:colorCopy];
 
-  v6 = [(RCProgressOverlay *)self textLabel];
-  [v6 setTextColor:v4];
+  textLabel = [(RCProgressOverlay *)self textLabel];
+  [textLabel setTextColor:colorCopy];
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  self->_style = a3;
-  v7 = [(RCProgressOverlay *)self progressIndicator];
+  self->_style = style;
+  progressIndicator = [(RCProgressOverlay *)self progressIndicator];
   v5 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v6 = [(RCProgressOverlay *)self dimmingView];
-  if (a3 == 1)
+  dimmingView = [(RCProgressOverlay *)self dimmingView];
+  if (style == 1)
   {
     [(RCProgressOverlay *)self _setupTextIfNeeded];
     [v5 editingProgressIndicatorDiameterPlayback];
-    [v7 setDiameter:?];
+    [progressIndicator setDiameter:?];
     [v5 editingProgressOuterRingThicknessPlayback];
-    [v7 setOuterRingThickness:?];
-    [(RCProgressOverlay *)self addSubviewAndPinToEdges:v6];
-    [(RCProgressOverlay *)self sendSubviewToBack:v6];
+    [progressIndicator setOuterRingThickness:?];
+    [(RCProgressOverlay *)self addSubviewAndPinToEdges:dimmingView];
+    [(RCProgressOverlay *)self sendSubviewToBack:dimmingView];
   }
 
-  else if (!a3)
+  else if (!style)
   {
     [v5 editingProgressIndicatorDiameterCell];
-    [v7 setDiameter:?];
+    [progressIndicator setDiameter:?];
     [v5 editingProgressOuterRingThicknessCell];
-    [v7 setOuterRingThickness:?];
+    [progressIndicator setOuterRingThickness:?];
   }
 
   [(RCProgressOverlay *)self _setupProgressIndicator];
 }
 
-- (void)setDimmingBackgroundColor:(id)a3
+- (void)setDimmingBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = [(RCProgressOverlay *)self dimmingView];
-  [v5 setBackgroundColor:v4];
+  colorCopy = color;
+  dimmingView = [(RCProgressOverlay *)self dimmingView];
+  [dimmingView setBackgroundColor:colorCopy];
 }
 
 - (UIColor)dimmingBackgroundColor
 {
-  v2 = [(RCProgressOverlay *)self dimmingView];
-  v3 = [v2 backgroundColor];
+  dimmingView = [(RCProgressOverlay *)self dimmingView];
+  backgroundColor = [dimmingView backgroundColor];
 
-  return v3;
+  return backgroundColor;
 }
 
-- (RCProgressOverlay)initWithCoder:(id)a3
+- (RCProgressOverlay)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = RCProgressOverlay;
-  v3 = [(RCProgressOverlay *)&v6 initWithCoder:a3];
+  v3 = [(RCProgressOverlay *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -128,11 +128,11 @@
   return v4;
 }
 
-- (RCProgressOverlay)initWithFrame:(CGRect)a3
+- (RCProgressOverlay)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = RCProgressOverlay;
-  v3 = [(RCProgressOverlay *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RCProgressOverlay *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -149,26 +149,26 @@
   [(RCProgressOverlay *)self setDimmingView:v3];
 }
 
-- (void)presentInView:(id)a3
+- (void)presentInView:(id)view
 {
-  v6 = a3;
+  viewCopy = view;
   [(RCProgressOverlay *)self setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [(RCProgressOverlay *)self superview];
+  superview = [(RCProgressOverlay *)self superview];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = viewCopy;
+  if (superview != viewCopy)
   {
-    [v6 addSubviewAndPinToEdges:self];
+    [viewCopy addSubviewAndPinToEdges:self];
     [(RCProgressOverlay *)self setAlpha:1.0];
-    v5 = v6;
+    v5 = viewCopy;
   }
 }
 
 - (void)dismiss
 {
-  v3 = [(RCProgressOverlay *)self superview];
+  superview = [(RCProgressOverlay *)self superview];
 
-  if (v3)
+  if (superview)
   {
     v4 = +[RCRecorderStyleProvider sharedStyleProvider];
     [v4 progressViewDisplayDismissTime];
@@ -188,52 +188,52 @@
 
 - (void)_setupProgressIndicator
 {
-  v4 = [(RCProgressOverlay *)self progressIndicator];
+  progressIndicator = [(RCProgressOverlay *)self progressIndicator];
   [(RCProgressOverlay *)self progress];
-  [v4 setProgress:?];
-  v3 = [(RCProgressOverlay *)self style];
-  if (v3 == 1)
+  [progressIndicator setProgress:?];
+  style = [(RCProgressOverlay *)self style];
+  if (style == 1)
   {
-    [(RCProgressOverlay *)self addSubviewAndCenter:v4];
+    [(RCProgressOverlay *)self addSubviewAndCenter:progressIndicator];
   }
 
-  else if (!v3)
+  else if (!style)
   {
-    [(RCProgressOverlay *)self addSubview:v4];
+    [(RCProgressOverlay *)self addSubview:progressIndicator];
   }
 
-  [(RCProgressOverlay *)self bringSubviewToFront:v4];
+  [(RCProgressOverlay *)self bringSubviewToFront:progressIndicator];
 }
 
 - (void)_setupTextIfNeeded
 {
-  v3 = [(RCProgressOverlay *)self textLabel];
-  if (!v3)
+  textLabel = [(RCProgressOverlay *)self textLabel];
+  if (!textLabel)
   {
-    v3 = objc_opt_new();
-    [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(RCProgressOverlay *)self setTextLabel:v3];
+    textLabel = objc_opt_new();
+    [textLabel setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(RCProgressOverlay *)self setTextLabel:textLabel];
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:@"SAVING_CHANGES" value:&stru_100295BB8 table:0];
-    [v3 setText:v5];
+    [textLabel setText:v5];
 
-    [v3 setTextAlignment:1];
+    [textLabel setTextAlignment:1];
     v6 = +[RCRecorderStyleProvider sharedStyleProvider];
     [v6 progressTextFontSize];
     v7 = [UIFont systemFontOfSize:?];
-    [v3 setFont:v7];
+    [textLabel setFont:v7];
 
-    v8 = [(RCProgressOverlay *)self progressIndicator];
-    v9 = [v8 progressColor];
-    [v3 setTextColor:v9];
+    progressIndicator = [(RCProgressOverlay *)self progressIndicator];
+    progressColor = [progressIndicator progressColor];
+    [textLabel setTextColor:progressColor];
 
-    [(RCProgressOverlay *)self addSubview:v3];
-    v10 = [(RCProgressOverlay *)self progressIndicator];
+    [(RCProgressOverlay *)self addSubview:textLabel];
+    progressIndicator2 = [(RCProgressOverlay *)self progressIndicator];
     [v6 progressTextYSpacing];
-    v12 = [NSLayoutConstraint constraintWithItem:v3 attribute:3 relatedBy:0 toItem:v10 attribute:4 multiplier:1.0 constant:v11];
+    v12 = [NSLayoutConstraint constraintWithItem:textLabel attribute:3 relatedBy:0 toItem:progressIndicator2 attribute:4 multiplier:1.0 constant:v11];
 
-    v13 = [(RCProgressOverlay *)self progressIndicator];
-    v14 = [NSLayoutConstraint constraintWithItem:v3 attribute:9 relatedBy:0 toItem:v13 attribute:9 multiplier:1.0 constant:0.0];
+    progressIndicator3 = [(RCProgressOverlay *)self progressIndicator];
+    v14 = [NSLayoutConstraint constraintWithItem:textLabel attribute:9 relatedBy:0 toItem:progressIndicator3 attribute:9 multiplier:1.0 constant:0.0];
 
     v16[0] = v12;
     v16[1] = v14;
@@ -252,26 +252,26 @@
     [(RCProgressOverlay *)self frame];
     v4 = v3;
     v6 = v5;
-    v7 = [(RCProgressOverlay *)self progressIndicator];
-    [v7 frame];
+    progressIndicator = [(RCProgressOverlay *)self progressIndicator];
+    [progressIndicator frame];
     v9 = v8;
     v11 = v10;
 
-    v12 = [(RCProgressOverlay *)self progressIndicator];
-    [v12 diameter];
+    progressIndicator2 = [(RCProgressOverlay *)self progressIndicator];
+    [progressIndicator2 diameter];
     v14 = v13;
 
     v15 = (v6 - v11) * 0.5;
     v16 = roundf(v15);
-    v17 = [(RCProgressOverlay *)self progressIndicator];
-    [v17 setFrame:{v4 - v9, v16, v14, v14}];
+    progressIndicator3 = [(RCProgressOverlay *)self progressIndicator];
+    [progressIndicator3 setFrame:{v4 - v9, v16, v14, v14}];
   }
 }
 
 - (void)restyle
 {
-  v2 = [(RCProgressOverlay *)self progressIndicator];
-  [v2 restyle];
+  progressIndicator = [(RCProgressOverlay *)self progressIndicator];
+  [progressIndicator restyle];
 }
 
 @end

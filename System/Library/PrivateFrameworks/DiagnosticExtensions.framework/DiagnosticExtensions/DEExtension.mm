@@ -2,51 +2,51 @@
 - (BOOL)checkAndTeardown;
 - (BOOL)isLoggingEnabled;
 - (BOOL)requiresDataClassBAccessToRun;
-- (DEExtension)initWithNSExtension:(id)a3;
+- (DEExtension)initWithNSExtension:(id)extension;
 - (OS_dispatch_queue)serialQueue;
-- (id)_fileContentsFromPlistWithKey:(id)a3 localization:(id)a4;
-- (id)_localizedStringFromPlistWithKey:(id)a3 localization:(id)a4;
-- (id)_localizedTextFromLocalizedStringKey:(id)a3 fallbackFileContentsKey:(id)a4 localization:(id)a5;
-- (id)localizedCustomerConsentTextWithLocalization:(id)a3;
+- (id)_fileContentsFromPlistWithKey:(id)key localization:(id)localization;
+- (id)_localizedStringFromPlistWithKey:(id)key localization:(id)localization;
+- (id)_localizedTextFromLocalizedStringKey:(id)key fallbackFileContentsKey:(id)contentsKey localization:(id)localization;
+- (id)localizedCustomerConsentTextWithLocalization:(id)localization;
 - (id)loggingProfileURLsFromExtension;
-- (void)accessBundleWithSynchronousHandler:(id)a3;
-- (void)annotatedAttachmentsForParameters:(id)a3 andHandler:(id)a4;
-- (void)attachmentListWithHandler:(id)a3;
-- (void)attachmentsForParameters:(id)a3 withProgressHandler:(id)a4 andHandler:(id)a5;
-- (void)createExtensionHostContextCompletion:(id)a3;
+- (void)accessBundleWithSynchronousHandler:(id)handler;
+- (void)annotatedAttachmentsForParameters:(id)parameters andHandler:(id)handler;
+- (void)attachmentListWithHandler:(id)handler;
+- (void)attachmentsForParameters:(id)parameters withProgressHandler:(id)handler andHandler:(id)andHandler;
+- (void)createExtensionHostContextCompletion:(id)completion;
 - (void)dealloc;
 - (void)endUsingExtension;
-- (void)installLoggingProfileWithSessionID:(id)a3;
+- (void)installLoggingProfileWithSessionID:(id)d;
 - (void)loggingProfileURLsFromExtension;
-- (void)performWithHostContext:(id)a3;
-- (void)removeLoggingProfileWithSessionID:(id)a3;
-- (void)setupWithParameters:(id)a3 session:(id)a4;
-- (void)setupWithParameters:(id)a3 session:(id)a4 expirationDate:(id)a5;
-- (void)teardownWithParameters:(id)a3 session:(id)a4;
+- (void)performWithHostContext:(id)context;
+- (void)removeLoggingProfileWithSessionID:(id)d;
+- (void)setupWithParameters:(id)parameters session:(id)session;
+- (void)setupWithParameters:(id)parameters session:(id)session expirationDate:(id)date;
+- (void)teardownWithParameters:(id)parameters session:(id)session;
 @end
 
 @implementation DEExtension
 
-- (DEExtension)initWithNSExtension:(id)a3
+- (DEExtension)initWithNSExtension:(id)extension
 {
-  v5 = a3;
+  extensionCopy = extension;
   v19.receiver = self;
   v19.super_class = DEExtension;
   v6 = [(DEExtension *)&v19 init];
   if (v6)
   {
-    v7 = [v5 attributes];
-    v8 = [v7 objectForKeyedSubscript:@"DEAttachmentsName"];
+    attributes = [extensionCopy attributes];
+    v8 = [attributes objectForKeyedSubscript:@"DEAttachmentsName"];
     v9 = *(v6 + 3);
     *(v6 + 3) = v8;
 
-    objc_storeStrong(v6 + 7, a3);
-    v10 = [v5 identifier];
+    objc_storeStrong(v6 + 7, extension);
+    identifier = [extensionCopy identifier];
     v11 = *(v6 + 4);
-    *(v6 + 4) = v10;
+    *(v6 + 4) = identifier;
 
-    v12 = [v5 attributes];
-    v13 = [v12 objectForKeyedSubscript:@"DEAttachmentsAllowUserSelection"];
+    attributes2 = [extensionCopy attributes];
+    v13 = [attributes2 objectForKeyedSubscript:@"DEAttachmentsAllowUserSelection"];
 
     v6[8] = [v13 BOOLValue];
     v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:3];
@@ -60,13 +60,13 @@
     v16 = Log_0();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      [DEExtension initWithNSExtension:v5];
+      [DEExtension initWithNSExtension:extensionCopy];
     }
 
     v17 = Log_0();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      [DEExtension initWithNSExtension:v5];
+      [DEExtension initWithNSExtension:extensionCopy];
     }
   }
 
@@ -113,9 +113,9 @@ void __35__DEExtension_initWithNSExtension___block_invoke_80(uint64_t a1, void *
 - (BOOL)isLoggingEnabled
 {
   v52 = *MEMORY[0x277D85DE8];
-  v2 = [(DEExtension *)self extension];
-  v3 = [v2 attributes];
-  v4 = [v3 objectForKeyedSubscript:@"DEAttachmentsLoggingEnabled"];
+  extension = [(DEExtension *)self extension];
+  attributes = [extension attributes];
+  v4 = [attributes objectForKeyedSubscript:@"DEAttachmentsLoggingEnabled"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -143,19 +143,19 @@ void __35__DEExtension_initWithNSExtension___block_invoke_80(uint64_t a1, void *
     {
       if (MGGetBoolAnswer())
       {
-        v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-        v7 = [v6 valueForKey:@"RCInternalMode"];
+        standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+        v7 = [standardUserDefaults valueForKey:@"RCInternalMode"];
         if (![v7 integerValue])
         {
 
           goto LABEL_3;
         }
 
-        v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-        v9 = [v8 valueForKey:@"RCInternalMode"];
-        v10 = [v9 integerValue];
+        standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+        v9 = [standardUserDefaults2 valueForKey:@"RCInternalMode"];
+        integerValue = [v9 integerValue];
 
-        if (v10 == 2)
+        if (integerValue == 2)
         {
 LABEL_3:
           v5 = 1;
@@ -205,10 +205,10 @@ LABEL_37:
   }
 
   v13 = v4;
-  v14 = [v13 allKeys];
-  v15 = [v14 firstObject];
+  allKeys = [v13 allKeys];
+  firstObject = [allKeys firstObject];
 
-  v16 = v15;
+  v16 = firstObject;
   CFPreferencesAppSynchronize(v16);
   v41 = v16;
   v17 = [v13 objectForKeyedSubscript:v16];
@@ -216,8 +216,8 @@ LABEL_37:
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v18 = [v17 allKeys];
-  v19 = [v18 countByEnumeratingWithState:&v43 objects:v51 count:16];
+  allKeys2 = [v17 allKeys];
+  v19 = [allKeys2 countByEnumeratingWithState:&v43 objects:v51 count:16];
   if (v19)
   {
     v20 = v19;
@@ -232,7 +232,7 @@ LABEL_37:
       {
         if (*v44 != v22)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(allKeys2);
         }
 
         v24 = *(*(&v43 + 1) + 8 * i);
@@ -240,13 +240,13 @@ LABEL_37:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v26 = v18;
+          v26 = allKeys2;
           keyExistsAndHasValidFormat = 0;
           v27 = v24;
           v28 = v41;
           AppBooleanValue = CFPreferencesGetAppBooleanValue(v27, v28, &keyExistsAndHasValidFormat);
           v30 = keyExistsAndHasValidFormat;
-          v31 = [v25 BOOLValue];
+          bOOLValue = [v25 BOOLValue];
           if (v30)
           {
             v32 = AppBooleanValue == 0;
@@ -258,7 +258,7 @@ LABEL_37:
           }
 
           v33 = v32;
-          if (v31 == v33)
+          if (bOOLValue == v33)
           {
             v36 = Log_0();
             v37 = v26;
@@ -278,12 +278,12 @@ LABEL_37:
           }
 
           v21 = 1;
-          v18 = v26;
+          allKeys2 = v26;
           v17 = v40;
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v43 objects:v51 count:16];
+      v20 = [allKeys2 countByEnumeratingWithState:&v43 objects:v51 count:16];
       if (v20)
       {
         continue;
@@ -325,13 +325,13 @@ LABEL_38:
 - (void)endUsingExtension
 {
   objc_initWeak(&location, self);
-  v3 = [(DEExtension *)self serialQueue];
+  serialQueue = [(DEExtension *)self serialQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __32__DEExtension_endUsingExtension__block_invoke;
   v4[3] = &unk_278F634E0;
   objc_copyWeak(&v5, &location);
-  dispatch_sync(v3, v4);
+  dispatch_sync(serialQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -432,19 +432,19 @@ LABEL_6:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createExtensionHostContextCompletion:(id)a3
+- (void)createExtensionHostContextCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(DEExtension *)self extension];
+  extension = [(DEExtension *)self extension];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__DEExtension_createExtensionHostContextCompletion___block_invoke;
   v7[3] = &unk_278F63790;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
-  [v5 beginExtensionRequestWithInputItems:MEMORY[0x277CBEBF8] completion:v7];
+  [extension beginExtensionRequestWithInputItems:MEMORY[0x277CBEBF8] completion:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -578,30 +578,30 @@ void __52__DEExtension_createExtensionHostContextCompletion___block_invoke_97(ui
 
 - (OS_dispatch_queue)serialQueue
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_serialQueue)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_serialQueue)
   {
-    v3 = [(DEExtension *)v2 identifier];
-    v4 = [v3 stringByAppendingString:@".serialQueue"];
+    identifier = [(DEExtension *)selfCopy identifier];
+    v4 = [identifier stringByAppendingString:@".serialQueue"];
     v5 = dispatch_queue_create([v4 UTF8String], 0);
-    serialQueue = v2->_serialQueue;
-    v2->_serialQueue = v5;
+    serialQueue = selfCopy->_serialQueue;
+    selfCopy->_serialQueue = v5;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v7 = v2->_serialQueue;
+  v7 = selfCopy->_serialQueue;
 
   return v7;
 }
 
-- (void)performWithHostContext:(id)a3
+- (void)performWithHostContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = dispatch_get_global_queue(25, 0);
   objc_initWeak(&location, self);
-  v6 = [(DEExtension *)self serialQueue];
+  serialQueue = [(DEExtension *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__DEExtension_performWithHostContext___block_invoke;
@@ -609,10 +609,10 @@ void __52__DEExtension_createExtensionHostContextCompletion___block_invoke_97(ui
   objc_copyWeak(&v12, &location);
   block[4] = self;
   v10 = v5;
-  v11 = v4;
-  v7 = v4;
+  v11 = contextCopy;
+  v7 = contextCopy;
   v8 = v5;
-  dispatch_async(v6, block);
+  dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -834,16 +834,16 @@ void __38__DEExtension_performWithHostContext___block_invoke_104(uint64_t a1)
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)attachmentListWithHandler:(id)a3
+- (void)attachmentListWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__DEExtension_attachmentListWithHandler___block_invoke;
   v6[3] = &unk_278F63880;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(DEExtension *)self performWithHostContext:v6];
 }
 
@@ -881,19 +881,19 @@ uint64_t __41__DEExtension_attachmentListWithHandler___block_invoke_2(uint64_t a
   return result;
 }
 
-- (void)annotatedAttachmentsForParameters:(id)a3 andHandler:(id)a4
+- (void)annotatedAttachmentsForParameters:(id)parameters andHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __60__DEExtension_annotatedAttachmentsForParameters_andHandler___block_invoke;
   v10[3] = &unk_278F638A8;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = parametersCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = parametersCopy;
   [(DEExtension *)self performWithHostContext:v10];
 }
 
@@ -932,20 +932,20 @@ uint64_t __60__DEExtension_annotatedAttachmentsForParameters_andHandler___block_
   return result;
 }
 
-- (void)attachmentsForParameters:(id)a3 withProgressHandler:(id)a4 andHandler:(id)a5
+- (void)attachmentsForParameters:(id)parameters withProgressHandler:(id)handler andHandler:(id)andHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  parametersCopy = parameters;
+  handlerCopy = handler;
+  andHandlerCopy = andHandler;
   if (![(DEExtension *)self adoptsExtensionTrackerFlow])
   {
-    v11 = [(DEExtension *)self serialQueue];
+    serialQueue = [(DEExtension *)self serialQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __71__DEExtension_attachmentsForParameters_withProgressHandler_andHandler___block_invoke;
     block[3] = &unk_278F63768;
     block[4] = self;
-    dispatch_sync(v11, block);
+    dispatch_sync(serialQueue, block);
   }
 
   v15[0] = MEMORY[0x277D85DD0];
@@ -953,12 +953,12 @@ uint64_t __60__DEExtension_annotatedAttachmentsForParameters_andHandler___block_
   v15[2] = __71__DEExtension_attachmentsForParameters_withProgressHandler_andHandler___block_invoke_108;
   v15[3] = &unk_278F638F8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = parametersCopy;
+  v17 = handlerCopy;
+  v18 = andHandlerCopy;
+  v12 = andHandlerCopy;
+  v13 = handlerCopy;
+  v14 = parametersCopy;
   [(DEExtension *)self performWithHostContext:v15];
 }
 
@@ -1030,44 +1030,44 @@ void __71__DEExtension_attachmentsForParameters_withProgressHandler_andHandler__
   }
 }
 
-- (void)setupWithParameters:(id)a3 session:(id)a4
+- (void)setupWithParameters:(id)parameters session:(id)session
 {
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 date];
-  v10 = [v9 dateByAddingTimeInterval:7200.0];
+  sessionCopy = session;
+  parametersCopy = parameters;
+  date = [v6 date];
+  v10 = [date dateByAddingTimeInterval:7200.0];
 
-  [(DEExtension *)self setupWithParameters:v8 session:v7 expirationDate:v10];
+  [(DEExtension *)self setupWithParameters:parametersCopy session:sessionCopy expirationDate:v10];
 }
 
-- (void)setupWithParameters:(id)a3 session:(id)a4 expirationDate:(id)a5
+- (void)setupWithParameters:(id)parameters session:(id)session expirationDate:(id)date
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  parametersCopy = parameters;
+  sessionCopy = session;
+  dateCopy = date;
   v11 = Log_0();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(DEExtension *)self identifier];
+    identifier = [(DEExtension *)self identifier];
     *buf = 136316162;
     v23 = "[DEExtension setupWithParameters:session:expirationDate:]";
     v24 = 2112;
-    v25 = v8;
+    v25 = parametersCopy;
     v26 = 2112;
-    v27 = v12;
+    v27 = identifier;
     v28 = 2114;
-    v29 = v9;
+    v29 = sessionCopy;
     v30 = 2112;
-    v31 = v10;
+    v31 = dateCopy;
     _os_log_impl(&dword_248AB3000, v11, OS_LOG_TYPE_DEFAULT, "%s, parameters:%@, identifier:%@, sessionID:%{public}@, date:%@", buf, 0x34u);
   }
 
   [(DEExtension *)self setAdoptsExtensionTrackerFlow:1];
-  v13 = [(DEExtension *)self extensionTrackerClass];
-  v14 = [(DEExtension *)self identifier];
-  v15 = [(objc_class *)v13 shouldSetupWithIdentifier:v14 session:v9 expirationDate:v10];
+  extensionTrackerClass = [(DEExtension *)self extensionTrackerClass];
+  identifier2 = [(DEExtension *)self identifier];
+  v15 = [(objc_class *)extensionTrackerClass shouldSetupWithIdentifier:identifier2 session:sessionCopy expirationDate:dateCopy];
 
   v16 = Log_0();
   v17 = v16;
@@ -1079,23 +1079,23 @@ void __71__DEExtension_attachmentsForParameters_withProgressHandler_andHandler__
       _os_log_impl(&dword_248AB3000, v17, OS_LOG_TYPE_DEFAULT, "DEExtension: Start setupForParameters:", buf, 2u);
     }
 
-    [(DEExtension *)self installLoggingProfileWithSessionID:v9];
+    [(DEExtension *)self installLoggingProfileWithSessionID:sessionCopy];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __58__DEExtension_setupWithParameters_session_expirationDate___block_invoke;
     v20[3] = &unk_278F63920;
-    v21 = v8;
+    v21 = parametersCopy;
     [(DEExtension *)self performWithHostContext:v20];
     v17 = v21;
   }
 
   else if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v18 = [(DEExtension *)self identifier];
+    identifier3 = [(DEExtension *)self identifier];
     *buf = 138412546;
-    v23 = v18;
+    v23 = identifier3;
     v24 = 2112;
-    v25 = v9;
+    v25 = sessionCopy;
     _os_log_impl(&dword_248AB3000, v17, OS_LOG_TYPE_INFO, "DEExtension: already called setup method for %@, %@", buf, 0x16u);
   }
 
@@ -1122,29 +1122,29 @@ void __58__DEExtension_setupWithParameters_session_expirationDate___block_invoke
   }
 }
 
-- (void)teardownWithParameters:(id)a3 session:(id)a4
+- (void)teardownWithParameters:(id)parameters session:(id)session
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  sessionCopy = session;
   v8 = Log_0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(DEExtension *)self identifier];
+    identifier = [(DEExtension *)self identifier];
     *buf = 136315906;
     v21 = "[DEExtension teardownWithParameters:session:]";
     v22 = 2112;
-    v23 = v6;
+    v23 = parametersCopy;
     v24 = 2112;
-    v25 = v9;
+    v25 = identifier;
     v26 = 2114;
-    v27 = v7;
+    v27 = sessionCopy;
     _os_log_impl(&dword_248AB3000, v8, OS_LOG_TYPE_DEFAULT, "%s parameters:%@, identifier:%@, sessionID:%{public}@", buf, 0x2Au);
   }
 
-  v10 = [(DEExtension *)self extensionTrackerClass];
-  v11 = [(DEExtension *)self identifier];
-  v12 = [(objc_class *)v10 shouldTeardownWithIdentifier:v11 session:v7];
+  extensionTrackerClass = [(DEExtension *)self extensionTrackerClass];
+  identifier2 = [(DEExtension *)self identifier];
+  v12 = [(objc_class *)extensionTrackerClass shouldTeardownWithIdentifier:identifier2 session:sessionCopy];
 
   v13 = Log_0();
   v14 = v13;
@@ -1156,24 +1156,24 @@ void __58__DEExtension_setupWithParameters_session_expirationDate___block_invoke
       _os_log_impl(&dword_248AB3000, v14, OS_LOG_TYPE_DEFAULT, "DEExtension: Start teardownWithParameters:", buf, 2u);
     }
 
-    [(DEExtension *)self removeLoggingProfileWithSessionID:v7];
+    [(DEExtension *)self removeLoggingProfileWithSessionID:sessionCopy];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __46__DEExtension_teardownWithParameters_session___block_invoke;
     v17[3] = &unk_278F63948;
-    v18 = v6;
-    v19 = self;
+    v18 = parametersCopy;
+    selfCopy = self;
     [(DEExtension *)self performWithHostContext:v17];
     v14 = v18;
   }
 
   else if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v15 = [(DEExtension *)self identifier];
+    identifier3 = [(DEExtension *)self identifier];
     *buf = 138412546;
-    v21 = v15;
+    v21 = identifier3;
     v22 = 2112;
-    v23 = v7;
+    v23 = sessionCopy;
     _os_log_impl(&dword_248AB3000, v14, OS_LOG_TYPE_INFO, "DEExtension is still needed. Teardown method is not called for %@, %@", buf, 0x16u);
   }
 
@@ -1353,9 +1353,9 @@ intptr_t __31__DEExtension_checkAndTeardown__block_invoke_2_113(uint64_t a1, int
 
 - (void)dealloc
 {
-  v3 = [(DEExtension *)self context];
+  context = [(DEExtension *)self context];
 
-  if (v3)
+  if (context)
   {
     [(DEExtension *)self setCallCount:1];
     [(DEExtension *)self endUsingExtension];
@@ -1368,14 +1368,14 @@ intptr_t __31__DEExtension_checkAndTeardown__block_invoke_2_113(uint64_t a1, int
 
 - (BOOL)requiresDataClassBAccessToRun
 {
-  v3 = [(DEExtension *)self cachedRequiresDataClassBAccessToRun];
+  cachedRequiresDataClassBAccessToRun = [(DEExtension *)self cachedRequiresDataClassBAccessToRun];
 
-  if (v3)
+  if (cachedRequiresDataClassBAccessToRun)
   {
-    v4 = [(DEExtension *)self cachedRequiresDataClassBAccessToRun];
-    v5 = [v4 BOOLValue];
+    cachedRequiresDataClassBAccessToRun2 = [(DEExtension *)self cachedRequiresDataClassBAccessToRun];
+    bOOLValue = [cachedRequiresDataClassBAccessToRun2 BOOLValue];
 
-    return v5;
+    return bOOLValue;
   }
 
   else
@@ -1411,12 +1411,12 @@ void __44__DEExtension_requiresDataClassBAccessToRun__block_invoke(uint64_t a1, 
   }
 }
 
-- (void)accessBundleWithSynchronousHandler:(id)a3
+- (void)accessBundleWithSynchronousHandler:(id)handler
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DEExtension *)self extension];
-  v6 = [v5 _plugIn];
+  handlerCopy = handler;
+  extension = [(DEExtension *)self extension];
+  _plugIn = [extension _plugIn];
 
   v18 = 0;
   v19 = &v18;
@@ -1424,8 +1424,8 @@ void __44__DEExtension_requiresDataClassBAccessToRun__block_invoke(uint64_t a1, 
   v21 = __Block_byref_object_copy__0;
   v22 = __Block_byref_object_dispose__0;
   v23 = 0;
-  v7 = [MEMORY[0x277D3D348] defaultHost];
-  v24[0] = v6;
+  defaultHost = [MEMORY[0x277D3D348] defaultHost];
+  v24[0] = _plugIn;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -1433,7 +1433,7 @@ void __44__DEExtension_requiresDataClassBAccessToRun__block_invoke(uint64_t a1, 
   v17[3] = &unk_278F63A38;
   v17[4] = self;
   v17[5] = &v18;
-  [v7 accessPlugIns:v8 synchronously:1 flags:0 extensions:v17];
+  [defaultHost accessPlugIns:v8 synchronously:1 flags:0 extensions:v17];
 
   if (v19[5])
   {
@@ -1454,14 +1454,14 @@ void __44__DEExtension_requiresDataClassBAccessToRun__block_invoke(uint64_t a1, 
 
       else
       {
-        v9 = v6;
+        v9 = _plugIn;
         v10 = MEMORY[0x277CCA8D8];
         v11 = [v9 url];
         v12 = [v10 bundleWithURL:v11];
 
         if (v12)
         {
-          v4[2](v4, v12);
+          handlerCopy[2](handlerCopy, v12);
         }
 
         else
@@ -1528,11 +1528,11 @@ void __50__DEExtension_accessBundleWithSynchronousHandler___block_invoke(uint64_
   *(v7 + 40) = v6;
 }
 
-- (id)localizedCustomerConsentTextWithLocalization:(id)a3
+- (id)localizedCustomerConsentTextWithLocalization:(id)localization
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (MGGetBoolAnswer() && ([(DEExtension *)self _localizedStringFromPlistWithKey:@"WLAN_DELocalizedCustomerConsentText" localization:v4], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  localizationCopy = localization;
+  if (MGGetBoolAnswer() && ([(DEExtension *)self _localizedStringFromPlistWithKey:@"WLAN_DELocalizedCustomerConsentText" localization:localizationCopy], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
     v7 = Log_0();
@@ -1546,7 +1546,7 @@ void __50__DEExtension_accessBundleWithSynchronousHandler___block_invoke(uint64_
 
   else
   {
-    v6 = [(DEExtension *)self _localizedStringFromPlistWithKey:@"DELocalizedCustomerConsentText" localization:v4];
+    v6 = [(DEExtension *)self _localizedStringFromPlistWithKey:@"DELocalizedCustomerConsentText" localization:localizationCopy];
     if (!v6)
     {
       goto LABEL_9;
@@ -1567,12 +1567,12 @@ LABEL_9:
   return v8;
 }
 
-- (id)_localizedTextFromLocalizedStringKey:(id)a3 fallbackFileContentsKey:(id)a4 localization:(id)a5
+- (id)_localizedTextFromLocalizedStringKey:(id)key fallbackFileContentsKey:(id)contentsKey localization:(id)localization
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(DEExtension *)self _localizedStringFromPlistWithKey:v8 localization:v10];
+  keyCopy = key;
+  contentsKeyCopy = contentsKey;
+  localizationCopy = localization;
+  v11 = [(DEExtension *)self _localizedStringFromPlistWithKey:keyCopy localization:localizationCopy];
   v12 = v11;
   if (v11)
   {
@@ -1582,7 +1582,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v9)
+  if (contentsKeyCopy)
   {
     v14 = Log_0();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -1590,7 +1590,7 @@ LABEL_7:
       [DEExtension _localizedTextFromLocalizedStringKey:fallbackFileContentsKey:localization:];
     }
 
-    v13 = [(DEExtension *)self _fileContentsFromPlistWithKey:v9 localization:v10];
+    v13 = [(DEExtension *)self _fileContentsFromPlistWithKey:contentsKeyCopy localization:localizationCopy];
     goto LABEL_7;
   }
 
@@ -1600,10 +1600,10 @@ LABEL_8:
   return v15;
 }
 
-- (id)_fileContentsFromPlistWithKey:(id)a3 localization:(id)a4
+- (id)_fileContentsFromPlistWithKey:(id)key localization:(id)localization
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  localizationCopy = localization;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -1614,9 +1614,9 @@ LABEL_8:
   v12[1] = 3221225472;
   v12[2] = __58__DEExtension__fileContentsFromPlistWithKey_localization___block_invoke;
   v12[3] = &unk_278F63A60;
-  v8 = v6;
+  v8 = keyCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = localizationCopy;
   v14 = v9;
   v15 = &v16;
   [(DEExtension *)self accessBundleWithSynchronousHandler:v12];
@@ -1697,10 +1697,10 @@ void __58__DEExtension__fileContentsFromPlistWithKey_localization___block_invoke
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_localizedStringFromPlistWithKey:(id)a3 localization:(id)a4
+- (id)_localizedStringFromPlistWithKey:(id)key localization:(id)localization
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  localizationCopy = localization;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -1711,9 +1711,9 @@ void __58__DEExtension__fileContentsFromPlistWithKey_localization___block_invoke
   v12[1] = 3221225472;
   v12[2] = __61__DEExtension__localizedStringFromPlistWithKey_localization___block_invoke;
   v12[3] = &unk_278F63A60;
-  v8 = v7;
+  v8 = localizationCopy;
   v13 = v8;
-  v9 = v6;
+  v9 = keyCopy;
   v14 = v9;
   v15 = &v16;
   [(DEExtension *)self accessBundleWithSynchronousHandler:v12];
@@ -1768,15 +1768,15 @@ void __61__DEExtension__localizedStringFromPlistWithKey_localization___block_inv
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)installLoggingProfileWithSessionID:(id)a3
+- (void)installLoggingProfileWithSessionID:(id)d
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DEExtension *)self loggingProfileURLsFromExtension];
-  if (v5)
+  dCopy = d;
+  loggingProfileURLsFromExtension = [(DEExtension *)self loggingProfileURLsFromExtension];
+  if (loggingProfileURLsFromExtension)
   {
     v16 = 0;
-    v6 = [DELoggingPreferences combinedLoggingPayloadForURLs:v5 error:&v16];
+    v6 = [DELoggingPreferences combinedLoggingPayloadForURLs:loggingProfileURLsFromExtension error:&v16];
     v7 = v16;
     if (v7)
     {
@@ -1784,11 +1784,11 @@ void __61__DEExtension__localizedStringFromPlistWithKey_localization___block_inv
       v9 = Log_0();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = [(DEExtension *)self identifier];
+        identifier = [(DEExtension *)self identifier];
         *buf = 138543874;
-        v18 = v4;
+        v18 = dCopy;
         v19 = 2114;
-        v20 = v10;
+        v20 = identifier;
         v21 = 2114;
         v22 = v8;
         v11 = "Error loading logging preference for sessionID [%{public}@] extension [%{public}@] : [%{public}@]";
@@ -1799,9 +1799,9 @@ LABEL_8:
 
     else
     {
-      v12 = [(DEExtension *)self identifier];
+      identifier2 = [(DEExtension *)self identifier];
       v15 = 0;
-      [DELoggingPreferences installLoggingProfile:v6 sessionIdentifier:v4 extensionIdentifier:v12 error:&v15];
+      [DELoggingPreferences installLoggingProfile:v6 sessionIdentifier:dCopy extensionIdentifier:identifier2 error:&v15];
       v8 = v15;
 
       v13 = Log_0();
@@ -1821,11 +1821,11 @@ LABEL_8:
 
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v10 = [(DEExtension *)self identifier];
+        identifier = [(DEExtension *)self identifier];
         *buf = 138543874;
-        v18 = v4;
+        v18 = dCopy;
         v19 = 2114;
-        v20 = v10;
+        v20 = identifier;
         v21 = 2114;
         v22 = v8;
         v11 = "Error installing logging preference for sessionID [%{public}@] extension [%{public}@] : [%{public}@]";
@@ -1839,13 +1839,13 @@ LABEL_12:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeLoggingProfileWithSessionID:(id)a3
+- (void)removeLoggingProfileWithSessionID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DEExtension *)self identifier];
+  dCopy = d;
+  identifier = [(DEExtension *)self identifier];
   v11 = 0;
-  v6 = [DELoggingPreferences removeLoggingProfileForSessionIdentifier:v4 extensionIdentifier:v5 error:&v11];
+  v6 = [DELoggingPreferences removeLoggingProfileForSessionIdentifier:dCopy extensionIdentifier:identifier error:&v11];
   v7 = v11;
 
   if (v7)
@@ -1853,11 +1853,11 @@ LABEL_12:
     v8 = Log_0();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(DEExtension *)self identifier];
+      identifier2 = [(DEExtension *)self identifier];
       *buf = 138543874;
-      v13 = v4;
+      v13 = dCopy;
       v14 = 2114;
-      v15 = v10;
+      v15 = identifier2;
       v16 = 2114;
       v17 = v7;
       _os_log_error_impl(&dword_248AB3000, v8, OS_LOG_TYPE_ERROR, "Error removing logging preference for sessionID [%{public}@] extension [%{public}@] : [%{public}@]", buf, 0x20u);
@@ -1887,15 +1887,15 @@ LABEL_5:
 - (id)loggingProfileURLsFromExtension
 {
   v33 = *MEMORY[0x277D85DE8];
-  v2 = [(DEExtension *)self extension];
-  v3 = [v2 _plugIn];
+  extension = [(DEExtension *)self extension];
+  _plugIn = [extension _plugIn];
 
   v4 = MEMORY[0x277CCA8D8];
-  v5 = [v3 url];
+  v5 = [_plugIn url];
   v6 = [v4 bundleWithURL:v5];
 
-  v7 = [v6 infoDictionary];
-  v8 = [v7 valueForKey:@"DELoggingPreferenceSubsystems"];
+  infoDictionary = [v6 infoDictionary];
+  v8 = [infoDictionary valueForKey:@"DELoggingPreferenceSubsystems"];
 
   if (!v8)
   {
@@ -1935,7 +1935,7 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v24 = v3;
+  v24 = _plugIn;
   v9 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v8, "count")}];
   v25 = 0u;
   v26 = 0u;
@@ -2016,7 +2016,7 @@ LABEL_33:
     v19 = 0;
   }
 
-  v3 = v24;
+  _plugIn = v24;
 LABEL_25:
 
   v22 = *MEMORY[0x277D85DE8];

@@ -23,7 +23,7 @@
   v14 = v2;
   v3 = objc_retainBlock(v13);
   WeakRetained = objc_loadWeakRetained(&qword_1002BD2D0);
-  v5 = [WeakRetained rfExposureMarkup];
+  rfExposureMarkup = [WeakRetained rfExposureMarkup];
 
   v6 = objc_loadWeakRetained(&qword_1002BD2D0);
   LOBYTE(WeakRetained) = [v6 sarURLAdded];
@@ -31,21 +31,21 @@
   if ((WeakRetained & 1) == 0)
   {
     v7 = (v3[2])(v3);
-    v8 = [v5 stringByAppendingString:v7];
+    v8 = [rfExposureMarkup stringByAppendingString:v7];
 
-    v5 = v8;
+    rfExposureMarkup = v8;
   }
 
   if (BPSDeviceHasCellularDataCapability())
   {
     v9 = +[NSBundle mainBundle];
     v10 = [v9 localizedStringForKey:@"CELLULAR_INFO" value:&stru_10026E598 table:@"About"];
-    v11 = [v5 stringByAppendingString:v10];
+    v11 = [rfExposureMarkup stringByAppendingString:v10];
 
-    v5 = v11;
+    rfExposureMarkup = v11;
   }
 
-  return v5;
+  return rfExposureMarkup;
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface BackgroundSoundsCCContentModule
-- (id)contentViewControllerForContext:(id)a3;
+- (id)contentViewControllerForContext:(id)context;
 @end
 
 @implementation BackgroundSoundsCCContentModule
 
-- (id)contentViewControllerForContext:(id)a3
+- (id)contentViewControllerForContext:(id)context
 {
   moduleViewController = self->_moduleViewController;
   if (!moduleViewController)
@@ -16,8 +16,8 @@
     moduleViewController = self->_moduleViewController;
   }
 
-  v7 = [(BackgroundSoundsCCContentModule *)self contentModuleContext];
-  [(BackgroundSoundsCCModuleViewController *)moduleViewController setContentModuleContext:v7];
+  contentModuleContext = [(BackgroundSoundsCCContentModule *)self contentModuleContext];
+  [(BackgroundSoundsCCModuleViewController *)moduleViewController setContentModuleContext:contentModuleContext];
 
   v8 = self->_moduleViewController;
 

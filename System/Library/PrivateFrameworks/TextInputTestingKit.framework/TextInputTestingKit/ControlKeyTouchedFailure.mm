@@ -1,18 +1,18 @@
 @interface ControlKeyTouchedFailure
-- (BOOL)doesMatchResult:(id)a3;
+- (BOOL)doesMatchResult:(id)result;
 @end
 
 @implementation ControlKeyTouchedFailure
 
-- (BOOL)doesMatchResult:(id)a3
+- (BOOL)doesMatchResult:(id)result
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 corrected];
-  v5 = [v4 componentsJoinedByString:&stru_287EC4808];
+  resultCopy = result;
+  corrected = [resultCopy corrected];
+  v5 = [corrected componentsJoinedByString:&stru_287EC4808];
 
-  v6 = [v3 intended];
-  v7 = [v6 componentsJoinedByString:&stru_287EC4808];
+  intended = [resultCopy intended];
+  v7 = [intended componentsJoinedByString:&stru_287EC4808];
 
   if ([v5 isEqualToString:v7])
   {
@@ -21,13 +21,13 @@
 
   else
   {
-    v9 = [MEMORY[0x277CCAB68] string];
+    string = [MEMORY[0x277CCAB68] string];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = [v3 touched];
-    v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    touched = [resultCopy touched];
+    v11 = [touched countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v11)
     {
       v12 = v11;
@@ -38,20 +38,20 @@
         {
           if (*v18 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(touched);
           }
 
           v15 = [*(*(&v17 + 1) + 8 * i) componentsJoinedByString:&stru_287EC4808];
-          [v9 appendString:v15];
+          [string appendString:v15];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v12 = [touched countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v12);
     }
 
-    v8 = [v9 rangeOfString:@"<Shift>"] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v9, "rangeOfString:", @"<Delete>") != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v9, "rangeOfString:", @"\n") != 0x7FFFFFFFFFFFFFFFLL;
+    v8 = [string rangeOfString:@"<Shift>"] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(string, "rangeOfString:", @"<Delete>") != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(string, "rangeOfString:", @"\n") != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   return v8;

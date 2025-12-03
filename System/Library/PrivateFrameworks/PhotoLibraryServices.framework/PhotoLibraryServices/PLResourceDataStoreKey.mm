@@ -1,31 +1,31 @@
 @interface PLResourceDataStoreKey
-+ (BOOL)refreshSandboxExtensionForURL:(id)a3 assetID:(id)a4 error:(id *)a5;
-+ (BOOL)refreshSandboxExtensionForURL:(id)a3 libraryID:(id)a4 assetUUID:(id)a5 error:(id *)a6;
-- (BOOL)isEqualToKey:(id)a3;
-- (PLResourceDataStoreKey)initWithKeyStruct:(const void *)a3;
-- (id)descriptionForAssetID:(id)a3;
-- (id)fileURLForAssetID:(id)a3;
++ (BOOL)refreshSandboxExtensionForURL:(id)l assetID:(id)d error:(id *)error;
++ (BOOL)refreshSandboxExtensionForURL:(id)l libraryID:(id)d assetUUID:(id)iD error:(id *)error;
+- (BOOL)isEqualToKey:(id)key;
+- (PLResourceDataStoreKey)initWithKeyStruct:(const void *)struct;
+- (id)descriptionForAssetID:(id)d;
+- (id)fileURLForAssetID:(id)d;
 - (id)keyData;
 - (id)uniformTypeIdentifier;
-- (id)validateForAssetID:(id)a3 resourceIdentity:(id)a4;
+- (id)validateForAssetID:(id)d resourceIdentity:(id)identity;
 @end
 
 @implementation PLResourceDataStoreKey
 
-+ (BOOL)refreshSandboxExtensionForURL:(id)a3 libraryID:(id)a4 assetUUID:(id)a5 error:(id *)a6
++ (BOOL)refreshSandboxExtensionForURL:(id)l libraryID:(id)d assetUUID:(id)iD error:(id *)error
 {
   v61[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ((PLIsAssetsd() & 1) != 0 || !PLIsLimitedLibraryClient() || ![v9 isFileURL])
+  lCopy = l;
+  dCopy = d;
+  iDCopy = iD;
+  if ((PLIsAssetsd() & 1) != 0 || !PLIsLimitedLibraryClient() || ![lCopy isFileURL])
   {
     v21 = 1;
     goto LABEL_8;
   }
 
   v12 = MEMORY[0x1E695DFF8];
-  v13 = MEMORY[0x19EAEE560](v10);
+  v13 = MEMORY[0x19EAEE560](dCopy);
   v14 = [v12 fileURLWithPath:v13 isDirectory:1];
 
   if (!v14)
@@ -44,21 +44,21 @@
   v15 = +[PLPhotoLibraryBundleController sharedBundleController];
   v16 = [v15 bundleForLibraryURL:v14];
 
-  v17 = [v16 clientSandboxExtensionCache];
-  v18 = [v17 containsURL:v9];
+  clientSandboxExtensionCache = [v16 clientSandboxExtensionCache];
+  v18 = [clientSandboxExtensionCache containsURL:lCopy];
 
   if ((v18 & 1) == 0)
   {
-    v25 = [v16 assetsdClient];
-    v26 = [v25 resourceClient];
+    assetsdClient = [v16 assetsdClient];
+    resourceClient = [assetsdClient resourceClient];
 
-    v47 = v26;
-    if (v26)
+    v47 = resourceClient;
+    if (resourceClient)
     {
-      v27 = [v9 path];
+      path = [lCopy path];
       v52 = 0;
       v53 = 0;
-      v28 = [v26 sandboxExtensionsForAssetWithUUID:v11 sandboxExtensionTokens:&v53 error:&v52];
+      v28 = [resourceClient sandboxExtensionsForAssetWithUUID:iDCopy sandboxExtensionTokens:&v53 error:&v52];
       v20 = v53;
       v29 = v52;
       v19 = v29;
@@ -69,14 +69,14 @@
         v48[2] = __82__PLResourceDataStoreKey_refreshSandboxExtensionForURL_libraryID_assetUUID_error___block_invoke;
         v48[3] = &unk_1E756BCE8;
         v51 = 0;
-        v46 = v27;
-        v43 = v27;
+        v46 = path;
+        v43 = path;
         v49 = v43;
         v30 = v16;
         v50 = v30;
         [v20 enumerateKeysAndObjectsUsingBlock:v48];
-        v31 = [v30 clientSandboxExtensionCache];
-        v21 = [v31 containsURL:v9];
+        clientSandboxExtensionCache2 = [v30 clientSandboxExtensionCache];
+        v21 = [clientSandboxExtensionCache2 containsURL:lCopy];
 
         if ((v21 & 1) == 0)
         {
@@ -100,8 +100,8 @@
         v45 = MEMORY[0x1E696ABC0];
         v37 = *MEMORY[0x1E69BFF48];
         v58 = *MEMORY[0x1E696A278];
-        v46 = v27;
-        v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown error getting sandbox extension for path: %@", v27];
+        v46 = path;
+        v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown error getting sandbox extension for path: %@", path];
         v59 = v33;
         v38 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v59 forKeys:&v58 count:1];
         v19 = [v45 errorWithDomain:v37 code:44001 userInfo:v38];
@@ -113,7 +113,7 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      v36 = v27;
+      v36 = path;
     }
 
     else
@@ -138,10 +138,10 @@ LABEL_21:
   v21 = 1;
 LABEL_22:
 
-  if (a6)
+  if (error)
   {
     v39 = v19;
-    *a6 = v19;
+    *error = v19;
   }
 
 LABEL_8:
@@ -175,15 +175,15 @@ void __82__PLResourceDataStoreKey_refreshSandboxExtensionForURL_libraryID_assetU
   }
 }
 
-+ (BOOL)refreshSandboxExtensionForURL:(id)a3 assetID:(id)a4 error:(id *)a5
++ (BOOL)refreshSandboxExtensionForURL:(id)l assetID:(id)d error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [v8 libraryID];
-  v11 = [v8 uuid];
+  dCopy = d;
+  lCopy = l;
+  libraryID = [dCopy libraryID];
+  uuid = [dCopy uuid];
 
-  LOBYTE(a5) = [a1 refreshSandboxExtensionForURL:v9 libraryID:v10 assetUUID:v11 error:a5];
-  return a5;
+  LOBYTE(error) = [self refreshSandboxExtensionForURL:lCopy libraryID:libraryID assetUUID:uuid error:error];
+  return error;
 }
 
 - (id)uniformTypeIdentifier
@@ -206,7 +206,7 @@ void __82__PLResourceDataStoreKey_refreshSandboxExtensionForURL_libraryID_assetU
   return 0;
 }
 
-- (BOOL)isEqualToKey:(id)a3
+- (BOOL)isEqualToKey:(id)key
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D930];
@@ -216,7 +216,7 @@ void __82__PLResourceDataStoreKey_refreshSandboxExtensionForURL_libraryID_assetU
   return 0;
 }
 
-- (PLResourceDataStoreKey)initWithKeyStruct:(const void *)a3
+- (PLResourceDataStoreKey)initWithKeyStruct:(const void *)struct
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D930];
@@ -226,7 +226,7 @@ void __82__PLResourceDataStoreKey_refreshSandboxExtensionForURL_libraryID_assetU
   return 0;
 }
 
-- (id)fileURLForAssetID:(id)a3
+- (id)fileURLForAssetID:(id)d
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D930];
@@ -236,7 +236,7 @@ void __82__PLResourceDataStoreKey_refreshSandboxExtensionForURL_libraryID_assetU
   return 0;
 }
 
-- (id)descriptionForAssetID:(id)a3
+- (id)descriptionForAssetID:(id)d
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D930];
@@ -246,7 +246,7 @@ void __82__PLResourceDataStoreKey_refreshSandboxExtensionForURL_libraryID_assetU
   return 0;
 }
 
-- (id)validateForAssetID:(id)a3 resourceIdentity:(id)a4
+- (id)validateForAssetID:(id)d resourceIdentity:(id)identity
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D930];

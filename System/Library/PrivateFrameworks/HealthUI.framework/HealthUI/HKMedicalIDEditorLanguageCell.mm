@@ -1,6 +1,6 @@
 @interface HKMedicalIDEditorLanguageCell
 - (void)beginEditing;
-- (void)setValueLanguageText:(id)a3;
+- (void)setValueLanguageText:(id)text;
 @end
 
 @implementation HKMedicalIDEditorLanguageCell
@@ -10,28 +10,28 @@
   v5.receiver = self;
   v5.super_class = HKMedicalIDEditorLanguageCell;
   [(HKMedicalIDEditorCell *)&v5 beginEditing];
-  v3 = [(HKMedicalIDEditorLanguageCell *)self editAction];
+  editAction = [(HKMedicalIDEditorLanguageCell *)self editAction];
 
-  if (v3)
+  if (editAction)
   {
-    v4 = [(HKMedicalIDEditorLanguageCell *)self editAction];
-    v4[2]();
+    editAction2 = [(HKMedicalIDEditorLanguageCell *)self editAction];
+    editAction2[2]();
   }
 }
 
-- (void)setValueLanguageText:(id)a3
+- (void)setValueLanguageText:(id)text
 {
-  v8 = a3;
-  v4 = [v8 identifier];
+  textCopy = text;
+  identifier = [textCopy identifier];
 
-  if (v4)
+  if (identifier)
   {
-    v5 = [v8 localizedStringForDisplay];
-    v6 = [(HKMedicalIDEditorCell *)self inputTextField];
-    [v6 setText:v5];
+    localizedStringForDisplay = [textCopy localizedStringForDisplay];
+    inputTextField = [(HKMedicalIDEditorCell *)self inputTextField];
+    [inputTextField setText:localizedStringForDisplay];
 
-    v7 = [(HKMedicalIDEditorCell *)self editDelegate];
-    [v7 medicalIDEditorCellDidChangeValue:self];
+    editDelegate = [(HKMedicalIDEditorCell *)self editDelegate];
+    [editDelegate medicalIDEditorCellDidChangeValue:self];
   }
 }
 

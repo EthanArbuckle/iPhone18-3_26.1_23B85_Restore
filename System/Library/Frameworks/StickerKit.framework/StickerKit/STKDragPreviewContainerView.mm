@@ -1,7 +1,7 @@
 @interface STKDragPreviewContainerView
-+ (id)meshTransformWithContentScale:(double)a3;
++ (id)meshTransformWithContentScale:(double)scale;
 + (id)shadowPropertiesForDrag;
-+ (id)springAnimationWithKeyPath:(id)a3 speed:(float)a4;
++ (id)springAnimationWithKeyPath:(id)path speed:(float)speed;
 - (CGPoint)dropShadowLayerStartPosition;
 - (CGPoint)meshLayerStartPosition;
 - (CGPoint)originalCenter;
@@ -10,23 +10,23 @@
 - (CGPoint)shineLayerStartPosition;
 - (CGSize)initialSize;
 - (CGSize)rasterizedImageSize;
-- (STKDragPreviewContainerView)initWithIsDropAnimation:(BOOL)a3;
+- (STKDragPreviewContainerView)initWithIsDropAnimation:(BOOL)animation;
 - (double)dragViewScaleUp;
-- (id)peelMaskImageFromImage:(id)a3;
-- (void)_animateDropAlongsideAnimator:(id)a3 completion:(id)a4;
-- (void)_animateLiftAlongsideAnimator:(id)a3 completion:(id)a4;
-- (void)_animateLiftCancellationAlongsideAnimator:(id)a3 completion:(id)a4;
-- (void)_preparePreviewContainerWithPreview:(id)a3 source:(id)a4 initialTransform:(CGAffineTransform *)a5;
+- (id)peelMaskImageFromImage:(id)image;
+- (void)_animateDropAlongsideAnimator:(id)animator completion:(id)completion;
+- (void)_animateLiftAlongsideAnimator:(id)animator completion:(id)completion;
+- (void)_animateLiftCancellationAlongsideAnimator:(id)animator completion:(id)completion;
+- (void)_preparePreviewContainerWithPreview:(id)preview source:(id)source initialTransform:(CGAffineTransform *)transform;
 - (void)finalizeDropIfNecessary;
-- (void)performAfterDropAnimation:(id)a3;
-- (void)reversePeelAnimationToPoint:(CGPoint)a3 forPlacement:(BOOL)a4 shouldShrink:(BOOL)a5 completionBlock:(id)a6;
-- (void)setDefersFinalDropAnimationCompletion:(BOOL)a3;
-- (void)setDropAnimationIsComplete:(BOOL)a3;
+- (void)performAfterDropAnimation:(id)animation;
+- (void)reversePeelAnimationToPoint:(CGPoint)point forPlacement:(BOOL)placement shouldShrink:(BOOL)shrink completionBlock:(id)block;
+- (void)setDefersFinalDropAnimationCompletion:(BOOL)completion;
+- (void)setDropAnimationIsComplete:(BOOL)complete;
 @end
 
 @implementation STKDragPreviewContainerView
 
-- (STKDragPreviewContainerView)initWithIsDropAnimation:(BOOL)a3
+- (STKDragPreviewContainerView)initWithIsDropAnimation:(BOOL)animation
 {
   v7.receiver = self;
   v7.super_class = STKDragPreviewContainerView;
@@ -34,20 +34,20 @@
   v5 = v4;
   if (v4)
   {
-    v4->_isDropAnimation = a3;
+    v4->_isDropAnimation = animation;
     [(STKDragPreviewContainerView *)v4 setClipsToBounds:0];
   }
 
   return v5;
 }
 
-+ (id)meshTransformWithContentScale:(double)a3
++ (id)meshTransformWithContentScale:(double)scale
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__STKDragPreviewContainerView_meshTransformWithContentScale___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  *&block[4] = a3;
+  *&block[4] = scale;
   if (meshTransformWithContentScale__onceToken != -1)
   {
     dispatch_once(&meshTransformWithContentScale__onceToken, block);
@@ -164,13 +164,13 @@ void __61__STKDragPreviewContainerView_meshTransformWithContentScale___block_inv
   meshTransformWithContentScale____mesh = v2;
 }
 
-+ (id)springAnimationWithKeyPath:(id)a3 speed:(float)a4
++ (id)springAnimationWithKeyPath:(id)path speed:(float)speed
 {
-  v5 = [MEMORY[0x1E69794A8] animationWithKeyPath:a3];
+  v5 = [MEMORY[0x1E69794A8] animationWithKeyPath:path];
   [v5 setMass:2.0];
   [v5 setStiffness:300.0];
   [v5 setDamping:400.0];
-  *&v6 = a4;
+  *&v6 = speed;
   [v5 setSpeed:v6];
   [v5 setDuration:0.91];
   v7 = objc_alloc(MEMORY[0x1E69793D0]);
@@ -242,30 +242,30 @@ void __61__STKDragPreviewContainerView_meshTransformWithContentScale___block_inv
   return result;
 }
 
-- (id)peelMaskImageFromImage:(id)a3
+- (id)peelMaskImageFromImage:(id)image
 {
   v3 = *MEMORY[0x1E695EFF8];
   v4 = *(MEMORY[0x1E695EFF8] + 8);
-  v5 = a3;
-  [v5 size];
+  imageCopy = image;
+  [imageCopy size];
   v7 = v6;
   v9 = v8;
-  v10 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v10 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v12 = v11;
   v17.width = v7;
   v17.height = v9;
   UIGraphicsBeginImageContextWithOptions(v17, 0, v12);
 
-  v13 = [MEMORY[0x1E69DC888] blackColor];
-  [v13 setFill];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [blackColor setFill];
 
   v18.origin.x = v3;
   v18.origin.y = v4;
   v18.size.width = v7;
   v18.size.height = v9;
   UIRectFillUsingBlendMode(v18, kCGBlendModeCopy);
-  [v5 drawInRect:22 blendMode:v3 alpha:{v4, v7, v9, 1.0}];
+  [imageCopy drawInRect:22 blendMode:v3 alpha:{v4, v7, v9, 1.0}];
 
   v14 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -307,8 +307,8 @@ void __61__STKDragPreviewContainerView_meshTransformWithContentScale___block_inv
   v32 = *MEMORY[0x1E69E9840];
   if ([(STKDragPreviewContainerView *)self dropAnimationIsComplete])
   {
-    v3 = [(STKDragPreviewContainerView *)self clientDropCompletion];
-    if (v3)
+    clientDropCompletion = [(STKDragPreviewContainerView *)self clientDropCompletion];
+    if (clientDropCompletion)
     {
 
 LABEL_14:
@@ -325,8 +325,8 @@ LABEL_14:
           v12 = @"NO";
         }
 
-        v13 = [(STKDragPreviewContainerView *)self clientDropCompletion];
-        v14 = _Block_copy(v13);
+        clientDropCompletion2 = [(STKDragPreviewContainerView *)self clientDropCompletion];
+        v14 = _Block_copy(clientDropCompletion2);
         if ([(STKDragPreviewContainerView *)self defersFinalDropAnimationCompletion])
         {
           v15 = @"YES";
@@ -337,10 +337,10 @@ LABEL_14:
           v15 = @"NO";
         }
 
-        v16 = [(STKDragPreviewContainerView *)self finalUIKitDropCompletion];
-        v17 = _Block_copy(v16);
+        finalUIKitDropCompletion = [(STKDragPreviewContainerView *)self finalUIKitDropCompletion];
+        v17 = _Block_copy(finalUIKitDropCompletion);
         v22 = 134219010;
-        v23 = self;
+        selfCopy2 = self;
         v24 = 2112;
         v25 = v12;
         v26 = 2112;
@@ -352,22 +352,22 @@ LABEL_14:
         _os_log_impl(&dword_19A5EE000, v11, OS_LOG_TYPE_DEFAULT, "<STKDragPreviewContainerView: %p> finalizeDropIfNecessary finalizing drop. dropAnimationIsComplete: %@, clientDropCompletion: %@, defersFinalDropAnimationCompletion: %@, finalUIKitDropCompletion: %@", &v22, 0x34u);
       }
 
-      v18 = [(STKDragPreviewContainerView *)self clientDropCompletion];
+      clientDropCompletion3 = [(STKDragPreviewContainerView *)self clientDropCompletion];
 
-      if (v18)
+      if (clientDropCompletion3)
       {
-        v19 = [(STKDragPreviewContainerView *)self clientDropCompletion];
-        v19[2]();
+        clientDropCompletion4 = [(STKDragPreviewContainerView *)self clientDropCompletion];
+        clientDropCompletion4[2]();
 
         [(STKDragPreviewContainerView *)self setClientDropCompletion:0];
       }
 
-      v20 = [(STKDragPreviewContainerView *)self finalUIKitDropCompletion];
+      finalUIKitDropCompletion2 = [(STKDragPreviewContainerView *)self finalUIKitDropCompletion];
 
-      if (v20)
+      if (finalUIKitDropCompletion2)
       {
-        v21 = [(STKDragPreviewContainerView *)self finalUIKitDropCompletion];
-        v21[2]();
+        finalUIKitDropCompletion3 = [(STKDragPreviewContainerView *)self finalUIKitDropCompletion];
+        finalUIKitDropCompletion3[2]();
 
         [(STKDragPreviewContainerView *)self setFinalUIKitDropCompletion:0];
       }
@@ -394,8 +394,8 @@ LABEL_14:
       v5 = @"NO";
     }
 
-    v6 = [(STKDragPreviewContainerView *)self clientDropCompletion];
-    v7 = _Block_copy(v6);
+    clientDropCompletion5 = [(STKDragPreviewContainerView *)self clientDropCompletion];
+    v7 = _Block_copy(clientDropCompletion5);
     if ([(STKDragPreviewContainerView *)self defersFinalDropAnimationCompletion])
     {
       v8 = @"YES";
@@ -406,10 +406,10 @@ LABEL_14:
       v8 = @"NO";
     }
 
-    v9 = [(STKDragPreviewContainerView *)self finalUIKitDropCompletion];
-    v10 = _Block_copy(v9);
+    finalUIKitDropCompletion4 = [(STKDragPreviewContainerView *)self finalUIKitDropCompletion];
+    v10 = _Block_copy(finalUIKitDropCompletion4);
     v22 = 134219010;
-    v23 = self;
+    selfCopy2 = self;
     v24 = 2112;
     v25 = v5;
     v26 = 2112;
@@ -422,63 +422,63 @@ LABEL_14:
   }
 }
 
-- (void)performAfterDropAnimation:(id)a3
+- (void)performAfterDropAnimation:(id)animation
 {
-  [(STKDragPreviewContainerView *)self setClientDropCompletion:a3];
+  [(STKDragPreviewContainerView *)self setClientDropCompletion:animation];
 
   [(STKDragPreviewContainerView *)self finalizeDropIfNecessary];
 }
 
-- (void)setDefersFinalDropAnimationCompletion:(BOOL)a3
+- (void)setDefersFinalDropAnimationCompletion:(BOOL)completion
 {
-  if (self->_defersFinalDropAnimationCompletion != a3)
+  if (self->_defersFinalDropAnimationCompletion != completion)
   {
-    self->_defersFinalDropAnimationCompletion = a3;
+    self->_defersFinalDropAnimationCompletion = completion;
     [(STKDragPreviewContainerView *)self finalizeDropIfNecessary];
   }
 }
 
-- (void)setDropAnimationIsComplete:(BOOL)a3
+- (void)setDropAnimationIsComplete:(BOOL)complete
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (self->_dropAnimationIsComplete != a3)
+  if (self->_dropAnimationIsComplete != complete)
   {
-    v3 = a3;
+    completeCopy = complete;
     v5 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"NO";
-      if (v3)
+      if (completeCopy)
       {
         v6 = @"YES";
       }
 
       v7 = 134218242;
-      v8 = self;
+      selfCopy = self;
       v9 = 2112;
       v10 = v6;
       _os_log_impl(&dword_19A5EE000, v5, OS_LOG_TYPE_DEFAULT, "<STKDragPreviewContainerView: %p> setDropAnimationIsComplete: %@", &v7, 0x16u);
     }
 
-    self->_dropAnimationIsComplete = v3;
+    self->_dropAnimationIsComplete = completeCopy;
     [(STKDragPreviewContainerView *)self finalizeDropIfNecessary];
   }
 }
 
-- (void)reversePeelAnimationToPoint:(CGPoint)a3 forPlacement:(BOOL)a4 shouldShrink:(BOOL)a5 completionBlock:(id)a6
+- (void)reversePeelAnimationToPoint:(CGPoint)point forPlacement:(BOOL)placement shouldShrink:(BOOL)shrink completionBlock:(id)block
 {
-  v6 = a5;
-  v7 = a4;
-  y = a3.y;
-  x = a3.x;
-  v11 = a6;
+  shrinkCopy = shrink;
+  placementCopy = placement;
+  y = point.y;
+  x = point.x;
+  blockCopy = block;
   v12 = objc_opt_class();
   LODWORD(v13) = 1061997773;
   v14 = [v12 springAnimationWithKeyPath:@"transform.scale.xy" speed:v13];
   v15 = v14;
   v100 = v14;
-  v99 = v7;
-  if (v6)
+  v99 = placementCopy;
+  if (shrinkCopy)
   {
     [v14 setToValue:&unk_1F0DFA330];
   }
@@ -486,7 +486,7 @@ LABEL_14:
   else
   {
     v16 = MEMORY[0x1E696AD98];
-    if (v7)
+    if (placementCopy)
     {
       [(STKDragPreviewContainerView *)self dragViewScale];
     }
@@ -500,9 +500,9 @@ LABEL_14:
     [v15 setToValue:v17];
   }
 
-  v18 = [(STKDragPreviewContainerView *)self meshLayer];
-  v19 = [v18 presentationLayer];
-  [v19 position];
+  meshLayer = [(STKDragPreviewContainerView *)self meshLayer];
+  presentationLayer = [meshLayer presentationLayer];
+  [presentationLayer position];
   v21 = v20;
   v23 = v22;
 
@@ -517,9 +517,9 @@ LABEL_14:
   v29 = [v28 valueWithCGPoint:?];
   [v26 setToValue:v29];
 
-  v30 = [(STKDragPreviewContainerView *)self peelLayer];
-  v31 = [v30 presentationLayer];
-  [v31 position];
+  peelLayer = [(STKDragPreviewContainerView *)self peelLayer];
+  presentationLayer2 = [peelLayer presentationLayer];
+  [presentationLayer2 position];
   v33 = v32;
   v35 = v34;
 
@@ -534,9 +534,9 @@ LABEL_14:
   v41 = [v40 valueWithCGPoint:?];
   [v38 setToValue:v41];
 
-  v42 = [(STKDragPreviewContainerView *)self shineLayer];
-  v43 = [v42 presentationLayer];
-  [v43 position];
+  shineLayer = [(STKDragPreviewContainerView *)self shineLayer];
+  presentationLayer3 = [shineLayer presentationLayer];
+  [presentationLayer3 position];
   v45 = v44;
   v47 = v46;
 
@@ -551,9 +551,9 @@ LABEL_14:
   v53 = [v52 valueWithCGPoint:?];
   [v50 setToValue:v53];
 
-  v54 = [(STKDragPreviewContainerView *)self shadowLayer];
-  v55 = [v54 presentationLayer];
-  [v55 position];
+  shadowLayer = [(STKDragPreviewContainerView *)self shadowLayer];
+  presentationLayer4 = [shadowLayer presentationLayer];
+  [presentationLayer4 position];
   v57 = v56;
   v59 = v58;
 
@@ -569,10 +569,10 @@ LABEL_14:
   [v62 setToValue:v65];
 
   [v62 setBeginTime:CACurrentMediaTime() + 0.18];
-  if (v6)
+  if (shrinkCopy)
   {
-    v66 = [(STKDragPreviewContainerView *)self layer];
-    [v66 position];
+    layer = [(STKDragPreviewContainerView *)self layer];
+    [layer position];
     v68 = v67;
     v70 = v69;
 
@@ -600,31 +600,31 @@ LABEL_14:
 
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setAnimationDuration:0.310000002];
-  v79 = [(STKDragPreviewContainerView *)self layer];
-  [v79 addAnimation:v100 forKey:@"scaleUpAnimation"];
+  layer2 = [(STKDragPreviewContainerView *)self layer];
+  [layer2 addAnimation:v100 forKey:@"scaleUpAnimation"];
 
-  v80 = [(STKDragPreviewContainerView *)self meshLayer];
-  [v80 addAnimation:v26 forKey:@"meshAnimation"];
+  meshLayer2 = [(STKDragPreviewContainerView *)self meshLayer];
+  [meshLayer2 addAnimation:v26 forKey:@"meshAnimation"];
 
-  v81 = [(STKDragPreviewContainerView *)self peelLayer];
-  [v81 addAnimation:v38 forKey:@"peelAnimation"];
+  peelLayer2 = [(STKDragPreviewContainerView *)self peelLayer];
+  [peelLayer2 addAnimation:v38 forKey:@"peelAnimation"];
 
-  v82 = [(STKDragPreviewContainerView *)self shineLayer];
-  [v82 addAnimation:v50 forKey:@"shineAnimation"];
+  shineLayer2 = [(STKDragPreviewContainerView *)self shineLayer];
+  [shineLayer2 addAnimation:v50 forKey:@"shineAnimation"];
 
-  v83 = [(STKDragPreviewContainerView *)self shadowLayer];
-  [v83 addAnimation:v62 forKey:@"shadowAnimation"];
+  shadowLayer2 = [(STKDragPreviewContainerView *)self shadowLayer];
+  [shadowLayer2 addAnimation:v62 forKey:@"shadowAnimation"];
 
   if (v73)
   {
-    v84 = [(STKDragPreviewContainerView *)self layer];
-    [v84 addAnimation:v73 forKey:@"moveAnimation"];
+    layer3 = [(STKDragPreviewContainerView *)self layer];
+    [layer3 addAnimation:v73 forKey:@"moveAnimation"];
   }
 
   if (v78)
   {
-    v85 = [(STKDragPreviewContainerView *)self layer];
-    [v85 addAnimation:v78 forKey:@"opacityAnimation"];
+    layer4 = [(STKDragPreviewContainerView *)self layer];
+    [layer4 addAnimation:v78 forKey:@"opacityAnimation"];
   }
 
   [MEMORY[0x1E6979518] commit];
@@ -635,8 +635,8 @@ LABEL_14:
     block[1] = 3221225472;
     block[2] = __101__STKDragPreviewContainerView_reversePeelAnimationToPoint_forPlacement_shouldShrink_completionBlock___block_invoke;
     block[3] = &unk_1E751A390;
-    v105 = v11;
-    v87 = v11;
+    v105 = blockCopy;
+    v87 = blockCopy;
     dispatch_after(v86, MEMORY[0x1E69E96A0], block);
     v88 = v105;
   }
@@ -672,8 +672,8 @@ LABEL_14:
     v101[1] = 3221225472;
     v101[2] = __101__STKDragPreviewContainerView_reversePeelAnimationToPoint_forPlacement_shouldShrink_completionBlock___block_invoke_3;
     v101[3] = &unk_1E751A3E0;
-    v102 = v11;
-    v98 = v11;
+    v102 = blockCopy;
+    v98 = blockCopy;
     [v97 animateWithDuration:0 delay:v103 usingSpringWithDamping:v101 initialSpringVelocity:0.75 options:0.0 animations:0.6 completion:0.0];
     v88 = v102;
   }
@@ -713,16 +713,16 @@ uint64_t __101__STKDragPreviewContainerView_reversePeelAnimationToPoint_forPlace
   return result;
 }
 
-- (void)_preparePreviewContainerWithPreview:(id)a3 source:(id)a4 initialTransform:(CGAffineTransform *)a5
+- (void)_preparePreviewContainerWithPreview:(id)preview source:(id)source initialTransform:(CGAffineTransform *)transform
 {
   v134[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v123 = a4;
+  previewCopy = preview;
+  sourceCopy = source;
   [(STKDragPreviewContainerView *)self bounds];
   width = v8;
   height = v10;
-  v12 = [(STKDragPreviewContainerView *)self layer];
-  [v12 anchorPoint];
+  layer = [(STKDragPreviewContainerView *)self layer];
+  [layer anchorPoint];
   v14 = v13;
   v16 = v15;
 
@@ -737,10 +737,10 @@ uint64_t __101__STKDragPreviewContainerView_reversePeelAnimationToPoint_forPlace
   CGAffineTransformInvert(&v131, &m);
   if ([(STKDragPreviewContainerView *)self isDropAnimation])
   {
-    [v7 convertSize:self fromView:{width, height}];
+    [previewCopy convertSize:self fromView:{width, height}];
     v19 = v18;
     v21 = v20;
-    [v7 convertPoint:self fromView:{v14, v16}];
+    [previewCopy convertPoint:self fromView:{v14, v16}];
     v14 = v22;
     m = v131;
     v135.origin.x = 0.0;
@@ -752,13 +752,13 @@ uint64_t __101__STKDragPreviewContainerView_reversePeelAnimationToPoint_forPlace
     height = v136.size.height;
   }
 
-  v23 = [(STKDragPreviewContainerView *)self isDropAnimation];
+  isDropAnimation = [(STKDragPreviewContainerView *)self isDropAnimation];
   [(STKDragPreviewContainerView *)self bounds];
   x = v24;
   y = v25;
   v30 = v26;
   v31 = v27;
-  if (v23)
+  if (isDropAnimation)
   {
     v137 = CGRectInset(*&v24, width * 0.125, height * 0.125);
     x = v137.origin.x;
@@ -767,7 +767,7 @@ uint64_t __101__STKDragPreviewContainerView_reversePeelAnimationToPoint_forPlace
     v31 = v137.size.height;
   }
 
-  v32 = [MEMORY[0x1E6979530] layer];
+  layer2 = [MEMORY[0x1E6979530] layer];
   v33 = *(MEMORY[0x1E69792E8] + 48);
   *&m.tx = *(MEMORY[0x1E69792E8] + 32);
   v126 = v33;
@@ -781,17 +781,17 @@ uint64_t __101__STKDragPreviewContainerView_reversePeelAnimationToPoint_forPlace
   v130 = v36;
   *&v128 = v34;
   *(&v128 + 1) = 0xBF6B4E81C0000000;
-  [v32 setSublayerTransform:&m];
-  [v32 setFrame:{x, y, v30, v31}];
-  v37 = [(STKDragPreviewContainerView *)self layer];
-  [v37 addSublayer:v32];
+  [layer2 setSublayerTransform:&m];
+  [layer2 setFrame:{x, y, v30, v31}];
+  layer3 = [(STKDragPreviewContainerView *)self layer];
+  [layer3 addSublayer:layer2];
 
-  [(STKDragPreviewContainerView *)self setPerspectiveLayer:v32];
+  [(STKDragPreviewContainerView *)self setPerspectiveLayer:layer2];
   v38 = height * 1.1;
   v39 = width * 1.25;
   v121 = width;
   v40 = v14 * width;
-  v41 = [MEMORY[0x1E6979398] layer];
+  layer4 = [MEMORY[0x1E6979398] layer];
   if ([(STKDragPreviewContainerView *)self isDropAnimation])
   {
     v42 = 1.2;
@@ -803,103 +803,103 @@ uint64_t __101__STKDragPreviewContainerView_reversePeelAnimationToPoint_forPlace
   }
 
   v43 = [objc_opt_class() meshTransformWithContentScale:v42];
-  [v41 setMeshTransform:v43];
+  [layer4 setMeshTransform:v43];
 
-  [v41 setPosition:{v40, -(height * 1.1 - height * v14)}];
-  [v41 setBounds:{0.0, 0.0, v39, v38 + v38 + height * 1.25}];
-  [v41 setRasterizationScale:2.8];
-  v120 = v32;
-  [v32 addSublayer:v41];
-  [(STKDragPreviewContainerView *)self setMeshLayer:v41];
-  [v41 position];
+  [layer4 setPosition:{v40, -(height * 1.1 - height * v14)}];
+  [layer4 setBounds:{0.0, 0.0, v39, v38 + v38 + height * 1.25}];
+  [layer4 setRasterizationScale:2.8];
+  v120 = layer2;
+  [layer2 addSublayer:layer4];
+  [(STKDragPreviewContainerView *)self setMeshLayer:layer4];
+  [layer4 position];
   [(STKDragPreviewContainerView *)self setMeshLayerStartPosition:?];
-  v44 = [MEMORY[0x1E6979398] layer];
-  [v44 setPosition:{v14 * v39, v38 + (v38 + v38 + height * 1.25) * 0.5}];
-  [v44 setBounds:{0.0, 0.0, v121, height}];
-  [v41 addSublayer:v44];
-  [(STKDragPreviewContainerView *)self setPeelLayer:v44];
-  [v44 position];
+  layer5 = [MEMORY[0x1E6979398] layer];
+  [layer5 setPosition:{v14 * v39, v38 + (v38 + v38 + height * 1.25) * 0.5}];
+  [layer5 setBounds:{0.0, 0.0, v121, height}];
+  [layer4 addSublayer:layer5];
+  [(STKDragPreviewContainerView *)self setPeelLayer:layer5];
+  [layer5 position];
   [(STKDragPreviewContainerView *)self setPeelLayerStartPosition:?];
-  [(STKDragPreviewContainerView *)self addSubview:v7];
-  [(STKDragPreviewContainerView *)self setPreviewView:v7];
-  v45 = [v7 layer];
+  [(STKDragPreviewContainerView *)self addSubview:previewCopy];
+  [(STKDragPreviewContainerView *)self setPreviewView:previewCopy];
+  layer6 = [previewCopy layer];
   v46 = *MEMORY[0x1E6979DE8];
-  [v45 setContentsGravity:*MEMORY[0x1E6979DE8]];
-  [v44 bounds];
+  [layer6 setContentsGravity:*MEMORY[0x1E6979DE8]];
+  [layer5 bounds];
   MidX = CGRectGetMidX(v138);
-  [v44 bounds];
-  [v45 setPosition:{MidX, CGRectGetMidY(v139)}];
+  [layer5 bounds];
+  [layer6 setPosition:{MidX, CGRectGetMidY(v139)}];
   v133 = @"contents";
-  v48 = [MEMORY[0x1E695DFB0] null];
-  v134[0] = v48;
+  null = [MEMORY[0x1E695DFB0] null];
+  v134[0] = null;
   v49 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v134 forKeys:&v133 count:1];
-  [v45 setActions:v49];
+  [layer6 setActions:v49];
 
-  [(STKDragPreviewContainerView *)self setPeelImageLayer:v45];
-  [v44 addSublayer:v45];
-  v50 = [(STKDragPreviewContainerView *)self image];
+  [(STKDragPreviewContainerView *)self setPeelImageLayer:layer6];
+  [layer5 addSublayer:layer6];
+  image = [(STKDragPreviewContainerView *)self image];
 
-  if (v50)
+  if (image)
   {
-    v51 = [(STKDragPreviewContainerView *)self image];
-    v52 = [(STKDragPreviewContainerView *)self peelMaskImageFromImage:v51];
+    image2 = [(STKDragPreviewContainerView *)self image];
+    currentDropPreviewSnapshot2 = [(STKDragPreviewContainerView *)self peelMaskImageFromImage:image2];
 
-    v53 = [v52 CGImage];
+    cGImage = [currentDropPreviewSnapshot2 CGImage];
   }
 
   else
   {
-    v54 = [v123 layer];
-    v55 = [v54 contents];
+    layer7 = [sourceCopy layer];
+    contents = [layer7 contents];
 
-    if (v55)
+    if (contents)
     {
-      v56 = [v123 layer];
-      v53 = [v56 contents];
+      layer8 = [sourceCopy layer];
+      cGImage = [layer8 contents];
 
       v57 = objc_alloc_init(MEMORY[0x1E69DD250]);
       [(STKDragPreviewContainerView *)self setCurrentDropPreviewSnapshot:v57];
 
-      [v123 frame];
+      [sourceCopy frame];
       v59 = v58;
       v61 = v60;
       v63 = v62;
       v65 = v64;
-      v66 = [(STKDragPreviewContainerView *)self currentDropPreviewSnapshot];
-      [v66 setFrame:{v59, v61, v63, v65}];
+      currentDropPreviewSnapshot = [(STKDragPreviewContainerView *)self currentDropPreviewSnapshot];
+      [currentDropPreviewSnapshot setFrame:{v59, v61, v63, v65}];
 
-      v52 = [(STKDragPreviewContainerView *)self currentDropPreviewSnapshot];
-      v67 = [v52 layer];
-      [v67 setContents:v53];
+      currentDropPreviewSnapshot2 = [(STKDragPreviewContainerView *)self currentDropPreviewSnapshot];
+      layer9 = [currentDropPreviewSnapshot2 layer];
+      [layer9 setContents:cGImage];
     }
 
     else
     {
-      v52 = [v123 snapshotViewAfterScreenUpdates:1];
-      v68 = [v52 layer];
-      v53 = [v68 contents];
+      currentDropPreviewSnapshot2 = [sourceCopy snapshotViewAfterScreenUpdates:1];
+      layer10 = [currentDropPreviewSnapshot2 layer];
+      cGImage = [layer10 contents];
 
-      [(STKDragPreviewContainerView *)self setCurrentDropPreviewSnapshot:v52];
+      [(STKDragPreviewContainerView *)self setCurrentDropPreviewSnapshot:currentDropPreviewSnapshot2];
     }
   }
 
-  v122 = v53;
-  if (v53)
+  v122 = cGImage;
+  if (cGImage)
   {
-    v69 = [MEMORY[0x1E6979398] layer];
-    [v69 setContents:v53];
-    [v7 bounds];
-    [v69 setFrame:?];
-    [v69 setContentsGravity:v46];
-    [(STKDragPreviewContainerView *)self setPeelMaskLayer:v69];
+    layer11 = [MEMORY[0x1E6979398] layer];
+    [layer11 setContents:cGImage];
+    [previewCopy bounds];
+    [layer11 setFrame:?];
+    [layer11 setContentsGravity:v46];
+    [(STKDragPreviewContainerView *)self setPeelMaskLayer:layer11];
     v70 = objc_alloc_init(MEMORY[0x1E6979398]);
-    [v7 frame];
+    [previewCopy frame];
     [v70 setFrame:?];
-    [v70 setMask:v69];
-    [v44 addSublayer:v70];
+    [v70 setMask:layer11];
+    [layer5 addSublayer:v70];
     v71 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     [MEMORY[0x1E69DCAB8] imageNamed:@"StickerShine" inBundle:? compatibleWithTraitCollection:?];
-    v72 = v119 = v7;
+    v72 = v119 = previewCopy;
     [v72 size];
     v74 = v73;
     [v70 bounds];
@@ -910,23 +910,23 @@ uint64_t __101__STKDragPreviewContainerView_reversePeelAnimationToPoint_forPlace
       v74 = v76;
     }
 
-    v77 = [MEMORY[0x1E6979398] layer];
-    [v77 setContents:{objc_msgSend(v72, "CGImage")}];
+    layer12 = [MEMORY[0x1E6979398] layer];
+    [layer12 setContents:{objc_msgSend(v72, "CGImage")}];
     [v70 bounds];
     v78 = round(CGRectGetWidth(v141) - v74) * 0.5;
     [v72 size];
     v80 = -v79;
     [v72 size];
-    [v77 setFrame:{v78, v80, v74, v81}];
+    [layer12 setFrame:{v78, v80, v74, v81}];
     LODWORD(v82) = 1035489772;
-    [v77 setOpacity:v82];
+    [layer12 setOpacity:v82];
     [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CF8]];
-    v83 = v118 = v45;
-    [v77 setCompositingFilter:v83];
+    v83 = v118 = layer6;
+    [layer12 setCompositingFilter:v83];
 
-    [v70 addSublayer:v77];
-    [(STKDragPreviewContainerView *)self setShineLayer:v77];
-    [v77 position];
+    [v70 addSublayer:layer12];
+    [(STKDragPreviewContainerView *)self setShineLayer:layer12];
+    [layer12 position];
     [(STKDragPreviewContainerView *)self setShineLayerStartPosition:?];
     v84 = v71;
     v85 = [MEMORY[0x1E69DCAB8] imageNamed:@"StickerShadow" inBundle:v71 compatibleWithTraitCollection:0];
@@ -940,54 +940,54 @@ uint64_t __101__STKDragPreviewContainerView_reversePeelAnimationToPoint_forPlace
       v87 = v89;
     }
 
-    v90 = [MEMORY[0x1E6979398] layer];
-    [v90 setContents:{objc_msgSend(v85, "CGImage")}];
+    layer13 = [MEMORY[0x1E6979398] layer];
+    [layer13 setContents:{objc_msgSend(v85, "CGImage")}];
     [v70 bounds];
     v91 = round(CGRectGetWidth(v143) - v87) * 0.5;
     [v85 size];
     v93 = -10.0 - v92;
     [v85 size];
-    [v90 setFrame:{v91, v93, v87, v94}];
+    [layer13 setFrame:{v91, v93, v87, v94}];
     LODWORD(v95) = 1043542835;
-    [v90 setOpacity:v95];
-    [v70 addSublayer:v90];
-    [(STKDragPreviewContainerView *)self setShadowLayer:v90];
-    [v90 position];
+    [layer13 setOpacity:v95];
+    [v70 addSublayer:layer13];
+    [(STKDragPreviewContainerView *)self setShadowLayer:layer13];
+    [layer13 position];
     [(STKDragPreviewContainerView *)self setShadowLayerStartPosition:?];
 
-    v53 = v122;
-    v45 = v118;
+    cGImage = v122;
+    layer6 = v118;
 
-    v7 = v119;
+    previewCopy = v119;
   }
 
   if ([(STKDragPreviewContainerView *)self showDebugBorders])
   {
-    v96 = [MEMORY[0x1E69DC888] blueColor];
-    [v41 setBorderColor:{objc_msgSend(v96, "CGColor")}];
+    blueColor = [MEMORY[0x1E69DC888] blueColor];
+    [layer4 setBorderColor:{objc_msgSend(blueColor, "CGColor")}];
 
-    [v41 setBorderWidth:1.0];
-    v97 = [MEMORY[0x1E69DC888] redColor];
-    v98 = [v97 CGColor];
+    [layer4 setBorderWidth:1.0];
+    redColor = [MEMORY[0x1E69DC888] redColor];
+    cGColor = [redColor CGColor];
     [(STKDragPreviewContainerView *)self layer];
-    v100 = v99 = v45;
-    [v100 setBorderColor:v98];
+    v100 = v99 = layer6;
+    [v100 setBorderColor:cGColor];
 
-    v45 = v99;
-    v101 = [(STKDragPreviewContainerView *)self layer];
-    [v101 setBorderWidth:1.0];
+    layer6 = v99;
+    layer14 = [(STKDragPreviewContainerView *)self layer];
+    [layer14 setBorderWidth:1.0];
 
-    v102 = [MEMORY[0x1E69DC888] greenColor];
-    [v44 setBorderColor:{objc_msgSend(v102, "CGColor")}];
+    greenColor = [MEMORY[0x1E69DC888] greenColor];
+    [layer5 setBorderColor:{objc_msgSend(greenColor, "CGColor")}];
 
-    [v44 setBorderWidth:1.0];
-    v103 = [MEMORY[0x1E69DC888] yellowColor];
-    [v120 setBorderColor:{objc_msgSend(v103, "CGColor")}];
+    [layer5 setBorderWidth:1.0];
+    yellowColor = [MEMORY[0x1E69DC888] yellowColor];
+    [v120 setBorderColor:{objc_msgSend(yellowColor, "CGColor")}];
 
     [v120 setBorderWidth:1.0];
-    v53 = v122;
-    v104 = [MEMORY[0x1E69DC888] systemPurpleColor];
-    [v99 setBorderColor:{objc_msgSend(v104, "CGColor")}];
+    cGImage = v122;
+    systemPurpleColor = [MEMORY[0x1E69DC888] systemPurpleColor];
+    [v99 setBorderColor:{objc_msgSend(systemPurpleColor, "CGColor")}];
 
     [v99 setBorderWidth:1.0];
   }
@@ -1006,14 +1006,14 @@ uint64_t __101__STKDragPreviewContainerView_reversePeelAnimationToPoint_forPlace
     *&m.tx = *&v124.m21;
     v126 = *&v124.m23;
     [v120 setTransform:&m];
-    [v41 position];
+    [layer4 position];
     v107 = v106;
-    [v41 position];
-    [v41 setPosition:{v107, v108 + v38 * 2.0}];
-    [v44 position];
+    [layer4 position];
+    [layer4 setPosition:{v107, v108 + v38 * 2.0}];
+    [layer5 position];
     v110 = v109;
-    [v44 position];
-    [v44 setPosition:{v110, v111 + v105 * 2.0}];
+    [layer5 position];
+    [layer5 setPosition:{v110, v111 + v105 * 2.0}];
     [(CALayer *)self->_shineLayer position];
     v113 = v112;
     [(CALayer *)self->_shineLayer position];
@@ -1025,17 +1025,17 @@ uint64_t __101__STKDragPreviewContainerView_reversePeelAnimationToPoint_forPlace
   }
 }
 
-- (void)_animateLiftAlongsideAnimator:(id)a3 completion:(id)a4
+- (void)_animateLiftAlongsideAnimator:(id)animator completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __72__STKDragPreviewContainerView__animateLiftAlongsideAnimator_completion___block_invoke;
   v8[3] = &unk_1E751A408;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [a3 addAnimations:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [animator addAnimations:v8];
 }
 
 void __72__STKDragPreviewContainerView__animateLiftAlongsideAnimator_completion___block_invoke(uint64_t a1)
@@ -1107,19 +1107,19 @@ uint64_t __72__STKDragPreviewContainerView__animateLiftAlongsideAnimator_complet
   return result;
 }
 
-- (void)_animateLiftCancellationAlongsideAnimator:(id)a3 completion:(id)a4
+- (void)_animateLiftCancellationAlongsideAnimator:(id)animator completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3)
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (animator)
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __84__STKDragPreviewContainerView__animateLiftCancellationAlongsideAnimator_completion___block_invoke;
     v15[3] = &unk_1E751A408;
     v15[4] = self;
-    v16 = v6;
-    [a3 addAnimations:v15];
+    v16 = completionCopy;
+    [animator addAnimations:v15];
     v8 = v16;
   }
 
@@ -1174,28 +1174,28 @@ uint64_t __84__STKDragPreviewContainerView__animateLiftCancellationAlongsideAnim
   return result;
 }
 
-- (void)_animateDropAlongsideAnimator:(id)a3 completion:(id)a4
+- (void)_animateDropAlongsideAnimator:(id)animator completion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  animatorCopy = animator;
+  completionCopy = completion;
   v8 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v6;
+    v13 = animatorCopy;
     _os_log_impl(&dword_19A5EE000, v8, OS_LOG_TYPE_DEFAULT, "<STKDragPreviewContainerView: %p> _animateDropAlongsideAnimator animator: %@", buf, 0x16u);
   }
 
-  [(STKDragPreviewContainerView *)self setFinalUIKitDropCompletion:v7];
+  [(STKDragPreviewContainerView *)self setFinalUIKitDropCompletion:completionCopy];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __72__STKDragPreviewContainerView__animateDropAlongsideAnimator_completion___block_invoke;
   v9[3] = &unk_1E751A430;
   v9[4] = self;
-  [v6 addAnimations:v9];
+  [animatorCopy addAnimations:v9];
 }
 
 uint64_t __72__STKDragPreviewContainerView__animateDropAlongsideAnimator_completion___block_invoke(uint64_t a1)

@@ -1,14 +1,14 @@
 @interface MedicalRecordTimelineHeaderItemCell
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MedicalRecordTimelineHeaderItemCell
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D12E7C20(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1D12E7C20(change);
 }
 
 @end

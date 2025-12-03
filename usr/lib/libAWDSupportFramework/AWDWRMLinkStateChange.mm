@@ -1,26 +1,26 @@
 @interface AWDWRMLinkStateChange
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBtRssi:(BOOL)a3;
-- (void)setHasCcAssertion:(BOOL)a3;
-- (void)setHasEnableCMAS:(BOOL)a3;
-- (void)setHasEnableTelephony:(BOOL)a3;
-- (void)setHasIsTriggeredByProximityChange:(BOOL)a3;
-- (void)setHasMModeState:(BOOL)a3;
-- (void)setHasNewLinkState:(BOOL)a3;
-- (void)setHasOldLinkState:(BOOL)a3;
-- (void)setHasPrevMModeState:(BOOL)a3;
-- (void)setHasSiriApp:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasWifiProximity:(BOOL)a3;
-- (void)setHasWifiRssi:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasBtRssi:(BOOL)rssi;
+- (void)setHasCcAssertion:(BOOL)assertion;
+- (void)setHasEnableCMAS:(BOOL)s;
+- (void)setHasEnableTelephony:(BOOL)telephony;
+- (void)setHasIsTriggeredByProximityChange:(BOOL)change;
+- (void)setHasMModeState:(BOOL)state;
+- (void)setHasNewLinkState:(BOOL)state;
+- (void)setHasOldLinkState:(BOOL)state;
+- (void)setHasPrevMModeState:(BOOL)state;
+- (void)setHasSiriApp:(BOOL)app;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasWifiProximity:(BOOL)proximity;
+- (void)setHasWifiRssi:(BOOL)rssi;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWRMLinkStateChange
@@ -34,9 +34,9 @@
   [(AWDWRMLinkStateChange *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -49,9 +49,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasSiriApp:(BOOL)a3
+- (void)setHasSiriApp:(BOOL)app
 {
-  if (a3)
+  if (app)
   {
     v3 = 2048;
   }
@@ -64,9 +64,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasIsTriggeredByProximityChange:(BOOL)a3
+- (void)setHasIsTriggeredByProximityChange:(BOOL)change
 {
-  if (a3)
+  if (change)
   {
     v3 = 64;
   }
@@ -79,9 +79,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasOldLinkState:(BOOL)a3
+- (void)setHasOldLinkState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 512;
   }
@@ -94,9 +94,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasNewLinkState:(BOOL)a3
+- (void)setHasNewLinkState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 256;
   }
@@ -109,9 +109,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasWifiProximity:(BOOL)a3
+- (void)setHasWifiProximity:(BOOL)proximity
 {
-  if (a3)
+  if (proximity)
   {
     v3 = 4096;
   }
@@ -124,9 +124,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasCcAssertion:(BOOL)a3
+- (void)setHasCcAssertion:(BOOL)assertion
 {
-  if (a3)
+  if (assertion)
   {
     v3 = 8;
   }
@@ -139,9 +139,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasEnableCMAS:(BOOL)a3
+- (void)setHasEnableCMAS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 16;
   }
@@ -154,9 +154,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasEnableTelephony:(BOOL)a3
+- (void)setHasEnableTelephony:(BOOL)telephony
 {
-  if (a3)
+  if (telephony)
   {
     v3 = 32;
   }
@@ -169,9 +169,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasWifiRssi:(BOOL)a3
+- (void)setHasWifiRssi:(BOOL)rssi
 {
-  if (a3)
+  if (rssi)
   {
     v3 = 0x2000;
   }
@@ -184,9 +184,9 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasBtRssi:(BOOL)a3
+- (void)setHasBtRssi:(BOOL)rssi
 {
-  if (a3)
+  if (rssi)
   {
     v3 = 4;
   }
@@ -199,9 +199,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasMModeState:(BOOL)a3
+- (void)setHasMModeState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 128;
   }
@@ -214,9 +214,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasPrevMModeState:(BOOL)a3
+- (void)setHasPrevMModeState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 1024;
   }
@@ -238,22 +238,22 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if ((*&self->_has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   bundleID = self->_bundleID;
   if (bundleID)
   {
-    [v3 setObject:bundleID forKey:@"bundleID"];
+    [dictionary setObject:bundleID forKey:@"bundleID"];
   }
 
   has = self->_has;
   if ((has & 0x800) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_siriApp), @"siriApp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_siriApp), @"siriApp"}];
     has = self->_has;
     if ((has & 0x40) == 0)
     {
@@ -272,7 +272,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isTriggeredByProximityChange), @"isTriggeredByProximityChange"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isTriggeredByProximityChange), @"isTriggeredByProximityChange"}];
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -286,7 +286,7 @@ LABEL_8:
   }
 
 LABEL_24:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_oldLinkState), @"oldLinkState"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_oldLinkState), @"oldLinkState"}];
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -300,7 +300,7 @@ LABEL_9:
   }
 
 LABEL_25:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_newLinkState), @"newLinkState"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_newLinkState), @"newLinkState"}];
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -314,7 +314,7 @@ LABEL_10:
   }
 
 LABEL_26:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiProximity), @"wifiProximity"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiProximity), @"wifiProximity"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -328,7 +328,7 @@ LABEL_11:
   }
 
 LABEL_27:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_ccAssertion), @"ccAssertion"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_ccAssertion), @"ccAssertion"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -342,7 +342,7 @@ LABEL_12:
   }
 
 LABEL_28:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_enableCMAS), @"enableCMAS"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_enableCMAS), @"enableCMAS"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -356,7 +356,7 @@ LABEL_13:
   }
 
 LABEL_29:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_enableTelephony), @"enableTelephony"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_enableTelephony), @"enableTelephony"}];
   has = self->_has;
   if ((has & 0x2000) == 0)
   {
@@ -370,7 +370,7 @@ LABEL_14:
   }
 
 LABEL_30:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_wifiRssi), @"wifiRssi"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_wifiRssi), @"wifiRssi"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -384,7 +384,7 @@ LABEL_15:
   }
 
 LABEL_31:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_btRssi), @"btRssi"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_btRssi), @"btRssi"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -398,7 +398,7 @@ LABEL_16:
   }
 
 LABEL_32:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_mModeState), @"MModeState"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_mModeState), @"MModeState"}];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -412,24 +412,24 @@ LABEL_17:
   }
 
 LABEL_33:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mModeStateDuration), @"MModeStateDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mModeStateDuration), @"MModeStateDuration"}];
   if ((*&self->_has & 0x400) != 0)
   {
 LABEL_18:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_prevMModeState), @"prevMModeState"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_prevMModeState), @"prevMModeState"}];
   }
 
 LABEL_19:
   triggerType = self->_triggerType;
   if (triggerType)
   {
-    [v3 setObject:triggerType forKey:@"triggerType"];
+    [dictionary setObject:triggerType forKey:@"triggerType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if ((*&self->_has & 2) != 0)
   {
@@ -632,24 +632,24 @@ LABEL_19:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ((*&self->_has & 2) != 0)
   {
-    *(a3 + 2) = self->_timestamp;
-    *(a3 + 48) |= 2u;
+    *(to + 2) = self->_timestamp;
+    *(to + 48) |= 2u;
   }
 
   if (self->_bundleID)
   {
-    [a3 setBundleID:?];
+    [to setBundleID:?];
   }
 
   has = self->_has;
   if ((has & 0x800) != 0)
   {
-    *(a3 + 18) = self->_siriApp;
-    *(a3 + 48) |= 0x800u;
+    *(to + 18) = self->_siriApp;
+    *(to + 48) |= 0x800u;
     has = self->_has;
     if ((has & 0x40) == 0)
     {
@@ -668,8 +668,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(a3 + 13) = self->_isTriggeredByProximityChange;
-  *(a3 + 48) |= 0x40u;
+  *(to + 13) = self->_isTriggeredByProximityChange;
+  *(to + 48) |= 0x40u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -683,8 +683,8 @@ LABEL_8:
   }
 
 LABEL_25:
-  *(a3 + 16) = self->_oldLinkState;
-  *(a3 + 48) |= 0x200u;
+  *(to + 16) = self->_oldLinkState;
+  *(to + 48) |= 0x200u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -698,8 +698,8 @@ LABEL_9:
   }
 
 LABEL_26:
-  *(a3 + 15) = self->_newLinkState;
-  *(a3 + 48) |= 0x100u;
+  *(to + 15) = self->_newLinkState;
+  *(to + 48) |= 0x100u;
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -713,8 +713,8 @@ LABEL_10:
   }
 
 LABEL_27:
-  *(a3 + 22) = self->_wifiProximity;
-  *(a3 + 48) |= 0x1000u;
+  *(to + 22) = self->_wifiProximity;
+  *(to + 48) |= 0x1000u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -728,8 +728,8 @@ LABEL_11:
   }
 
 LABEL_28:
-  *(a3 + 10) = self->_ccAssertion;
-  *(a3 + 48) |= 8u;
+  *(to + 10) = self->_ccAssertion;
+  *(to + 48) |= 8u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -743,8 +743,8 @@ LABEL_12:
   }
 
 LABEL_29:
-  *(a3 + 11) = self->_enableCMAS;
-  *(a3 + 48) |= 0x10u;
+  *(to + 11) = self->_enableCMAS;
+  *(to + 48) |= 0x10u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -758,8 +758,8 @@ LABEL_13:
   }
 
 LABEL_30:
-  *(a3 + 12) = self->_enableTelephony;
-  *(a3 + 48) |= 0x20u;
+  *(to + 12) = self->_enableTelephony;
+  *(to + 48) |= 0x20u;
   has = self->_has;
   if ((has & 0x2000) == 0)
   {
@@ -773,8 +773,8 @@ LABEL_14:
   }
 
 LABEL_31:
-  *(a3 + 23) = self->_wifiRssi;
-  *(a3 + 48) |= 0x2000u;
+  *(to + 23) = self->_wifiRssi;
+  *(to + 48) |= 0x2000u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -788,8 +788,8 @@ LABEL_15:
   }
 
 LABEL_32:
-  *(a3 + 6) = self->_btRssi;
-  *(a3 + 48) |= 4u;
+  *(to + 6) = self->_btRssi;
+  *(to + 48) |= 4u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -803,8 +803,8 @@ LABEL_16:
   }
 
 LABEL_33:
-  *(a3 + 14) = self->_mModeState;
-  *(a3 + 48) |= 0x80u;
+  *(to + 14) = self->_mModeState;
+  *(to + 48) |= 0x80u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -818,26 +818,26 @@ LABEL_17:
   }
 
 LABEL_34:
-  *(a3 + 1) = self->_mModeStateDuration;
-  *(a3 + 48) |= 1u;
+  *(to + 1) = self->_mModeStateDuration;
+  *(to + 48) |= 1u;
   if ((*&self->_has & 0x400) != 0)
   {
 LABEL_18:
-    *(a3 + 17) = self->_prevMModeState;
-    *(a3 + 48) |= 0x400u;
+    *(to + 17) = self->_prevMModeState;
+    *(to + 48) |= 0x400u;
   }
 
 LABEL_19:
   if (self->_triggerType)
   {
 
-    [a3 setTriggerType:?];
+    [to setTriggerType:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -845,7 +845,7 @@ LABEL_19:
     *(v5 + 96) |= 2u;
   }
 
-  *(v6 + 32) = [(NSString *)self->_bundleID copyWithZone:a3];
+  *(v6 + 32) = [(NSString *)self->_bundleID copyWithZone:zone];
   has = self->_has;
   if ((has & 0x800) != 0)
   {
@@ -1030,20 +1030,20 @@ LABEL_16:
 
 LABEL_17:
 
-  *(v6 + 80) = [(NSString *)self->_triggerType copyWithZone:a3];
+  *(v6 + 80) = [(NSString *)self->_triggerType copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 48);
+    v7 = *(equal + 48);
     if ((has & 2) != 0)
     {
-      if ((v7 & 2) == 0 || self->_timestamp != *(a3 + 2))
+      if ((v7 & 2) == 0 || self->_timestamp != *(equal + 2))
       {
         goto LABEL_77;
       }
@@ -1057,7 +1057,7 @@ LABEL_77:
     }
 
     bundleID = self->_bundleID;
-    if (bundleID | *(a3 + 4))
+    if (bundleID | *(equal + 4))
     {
       v5 = [(NSString *)bundleID isEqual:?];
       if (!v5)
@@ -1068,23 +1068,23 @@ LABEL_77:
       has = self->_has;
     }
 
-    v9 = *(a3 + 48);
+    v9 = *(equal + 48);
     if ((has & 0x800) != 0)
     {
-      if ((*(a3 + 48) & 0x800) == 0 || self->_siriApp != *(a3 + 18))
+      if ((*(equal + 48) & 0x800) == 0 || self->_siriApp != *(equal + 18))
       {
         goto LABEL_77;
       }
     }
 
-    else if ((*(a3 + 48) & 0x800) != 0)
+    else if ((*(equal + 48) & 0x800) != 0)
     {
       goto LABEL_77;
     }
 
     if ((has & 0x40) != 0)
     {
-      if ((v9 & 0x40) == 0 || self->_isTriggeredByProximityChange != *(a3 + 13))
+      if ((v9 & 0x40) == 0 || self->_isTriggeredByProximityChange != *(equal + 13))
       {
         goto LABEL_77;
       }
@@ -1097,46 +1097,46 @@ LABEL_77:
 
     if ((has & 0x200) != 0)
     {
-      if ((*(a3 + 48) & 0x200) == 0 || self->_oldLinkState != *(a3 + 16))
+      if ((*(equal + 48) & 0x200) == 0 || self->_oldLinkState != *(equal + 16))
       {
         goto LABEL_77;
       }
     }
 
-    else if ((*(a3 + 48) & 0x200) != 0)
+    else if ((*(equal + 48) & 0x200) != 0)
     {
       goto LABEL_77;
     }
 
     if ((has & 0x100) != 0)
     {
-      if ((*(a3 + 48) & 0x100) == 0 || self->_newLinkState != *(a3 + 15))
+      if ((*(equal + 48) & 0x100) == 0 || self->_newLinkState != *(equal + 15))
       {
         goto LABEL_77;
       }
     }
 
-    else if ((*(a3 + 48) & 0x100) != 0)
+    else if ((*(equal + 48) & 0x100) != 0)
     {
       goto LABEL_77;
     }
 
     if ((has & 0x1000) != 0)
     {
-      if ((*(a3 + 48) & 0x1000) == 0 || self->_wifiProximity != *(a3 + 22))
+      if ((*(equal + 48) & 0x1000) == 0 || self->_wifiProximity != *(equal + 22))
       {
         goto LABEL_77;
       }
     }
 
-    else if ((*(a3 + 48) & 0x1000) != 0)
+    else if ((*(equal + 48) & 0x1000) != 0)
     {
       goto LABEL_77;
     }
 
     if ((has & 8) != 0)
     {
-      if ((v9 & 8) == 0 || self->_ccAssertion != *(a3 + 10))
+      if ((v9 & 8) == 0 || self->_ccAssertion != *(equal + 10))
       {
         goto LABEL_77;
       }
@@ -1149,7 +1149,7 @@ LABEL_77:
 
     if ((has & 0x10) != 0)
     {
-      if ((v9 & 0x10) == 0 || self->_enableCMAS != *(a3 + 11))
+      if ((v9 & 0x10) == 0 || self->_enableCMAS != *(equal + 11))
       {
         goto LABEL_77;
       }
@@ -1162,7 +1162,7 @@ LABEL_77:
 
     if ((has & 0x20) != 0)
     {
-      if ((v9 & 0x20) == 0 || self->_enableTelephony != *(a3 + 12))
+      if ((v9 & 0x20) == 0 || self->_enableTelephony != *(equal + 12))
       {
         goto LABEL_77;
       }
@@ -1175,20 +1175,20 @@ LABEL_77:
 
     if ((has & 0x2000) != 0)
     {
-      if ((*(a3 + 48) & 0x2000) == 0 || self->_wifiRssi != *(a3 + 23))
+      if ((*(equal + 48) & 0x2000) == 0 || self->_wifiRssi != *(equal + 23))
       {
         goto LABEL_77;
       }
     }
 
-    else if ((*(a3 + 48) & 0x2000) != 0)
+    else if ((*(equal + 48) & 0x2000) != 0)
     {
       goto LABEL_77;
     }
 
     if ((has & 4) != 0)
     {
-      if ((v9 & 4) == 0 || self->_btRssi != *(a3 + 6))
+      if ((v9 & 4) == 0 || self->_btRssi != *(equal + 6))
       {
         goto LABEL_77;
       }
@@ -1201,7 +1201,7 @@ LABEL_77:
 
     if ((has & 0x80) != 0)
     {
-      if ((v9 & 0x80) == 0 || self->_mModeState != *(a3 + 14))
+      if ((v9 & 0x80) == 0 || self->_mModeState != *(equal + 14))
       {
         goto LABEL_77;
       }
@@ -1214,7 +1214,7 @@ LABEL_77:
 
     if (has)
     {
-      if ((v9 & 1) == 0 || self->_mModeStateDuration != *(a3 + 1))
+      if ((v9 & 1) == 0 || self->_mModeStateDuration != *(equal + 1))
       {
         goto LABEL_77;
       }
@@ -1227,19 +1227,19 @@ LABEL_77:
 
     if ((has & 0x400) != 0)
     {
-      if ((*(a3 + 48) & 0x400) == 0 || self->_prevMModeState != *(a3 + 17))
+      if ((*(equal + 48) & 0x400) == 0 || self->_prevMModeState != *(equal + 17))
       {
         goto LABEL_77;
       }
     }
 
-    else if ((*(a3 + 48) & 0x400) != 0)
+    else if ((*(equal + 48) & 0x400) != 0)
     {
       goto LABEL_77;
     }
 
     triggerType = self->_triggerType;
-    if (triggerType | *(a3 + 10))
+    if (triggerType | *(equal + 10))
     {
 
       LOBYTE(v5) = [(NSString *)triggerType isEqual:?];
@@ -1446,25 +1446,25 @@ LABEL_17:
   return v4 ^ v3 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ [(NSString *)self->_triggerType hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if ((*(a3 + 48) & 2) != 0)
+  if ((*(from + 48) & 2) != 0)
   {
-    self->_timestamp = *(a3 + 2);
+    self->_timestamp = *(from + 2);
     *&self->_has |= 2u;
   }
 
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
     [(AWDWRMLinkStateChange *)self setBundleID:?];
   }
 
-  v5 = *(a3 + 48);
+  v5 = *(from + 48);
   if ((v5 & 0x800) != 0)
   {
-    self->_siriApp = *(a3 + 18);
+    self->_siriApp = *(from + 18);
     *&self->_has |= 0x800u;
-    v5 = *(a3 + 48);
+    v5 = *(from + 48);
     if ((v5 & 0x40) == 0)
     {
 LABEL_7:
@@ -1482,9 +1482,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  self->_isTriggeredByProximityChange = *(a3 + 13);
+  self->_isTriggeredByProximityChange = *(from + 13);
   *&self->_has |= 0x40u;
-  v5 = *(a3 + 48);
+  v5 = *(from + 48);
   if ((v5 & 0x200) == 0)
   {
 LABEL_8:
@@ -1497,9 +1497,9 @@ LABEL_8:
   }
 
 LABEL_25:
-  self->_oldLinkState = *(a3 + 16);
+  self->_oldLinkState = *(from + 16);
   *&self->_has |= 0x200u;
-  v5 = *(a3 + 48);
+  v5 = *(from + 48);
   if ((v5 & 0x100) == 0)
   {
 LABEL_9:
@@ -1512,9 +1512,9 @@ LABEL_9:
   }
 
 LABEL_26:
-  self->_newLinkState = *(a3 + 15);
+  self->_newLinkState = *(from + 15);
   *&self->_has |= 0x100u;
-  v5 = *(a3 + 48);
+  v5 = *(from + 48);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_10:
@@ -1527,9 +1527,9 @@ LABEL_10:
   }
 
 LABEL_27:
-  self->_wifiProximity = *(a3 + 22);
+  self->_wifiProximity = *(from + 22);
   *&self->_has |= 0x1000u;
-  v5 = *(a3 + 48);
+  v5 = *(from + 48);
   if ((v5 & 8) == 0)
   {
 LABEL_11:
@@ -1542,9 +1542,9 @@ LABEL_11:
   }
 
 LABEL_28:
-  self->_ccAssertion = *(a3 + 10);
+  self->_ccAssertion = *(from + 10);
   *&self->_has |= 8u;
-  v5 = *(a3 + 48);
+  v5 = *(from + 48);
   if ((v5 & 0x10) == 0)
   {
 LABEL_12:
@@ -1557,9 +1557,9 @@ LABEL_12:
   }
 
 LABEL_29:
-  self->_enableCMAS = *(a3 + 11);
+  self->_enableCMAS = *(from + 11);
   *&self->_has |= 0x10u;
-  v5 = *(a3 + 48);
+  v5 = *(from + 48);
   if ((v5 & 0x20) == 0)
   {
 LABEL_13:
@@ -1572,9 +1572,9 @@ LABEL_13:
   }
 
 LABEL_30:
-  self->_enableTelephony = *(a3 + 12);
+  self->_enableTelephony = *(from + 12);
   *&self->_has |= 0x20u;
-  v5 = *(a3 + 48);
+  v5 = *(from + 48);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_14:
@@ -1587,9 +1587,9 @@ LABEL_14:
   }
 
 LABEL_31:
-  self->_wifiRssi = *(a3 + 23);
+  self->_wifiRssi = *(from + 23);
   *&self->_has |= 0x2000u;
-  v5 = *(a3 + 48);
+  v5 = *(from + 48);
   if ((v5 & 4) == 0)
   {
 LABEL_15:
@@ -1602,9 +1602,9 @@ LABEL_15:
   }
 
 LABEL_32:
-  self->_btRssi = *(a3 + 6);
+  self->_btRssi = *(from + 6);
   *&self->_has |= 4u;
-  v5 = *(a3 + 48);
+  v5 = *(from + 48);
   if ((v5 & 0x80) == 0)
   {
 LABEL_16:
@@ -1617,9 +1617,9 @@ LABEL_16:
   }
 
 LABEL_33:
-  self->_mModeState = *(a3 + 14);
+  self->_mModeState = *(from + 14);
   *&self->_has |= 0x80u;
-  v5 = *(a3 + 48);
+  v5 = *(from + 48);
   if ((v5 & 1) == 0)
   {
 LABEL_17:
@@ -1632,17 +1632,17 @@ LABEL_17:
   }
 
 LABEL_34:
-  self->_mModeStateDuration = *(a3 + 1);
+  self->_mModeStateDuration = *(from + 1);
   *&self->_has |= 1u;
-  if ((*(a3 + 48) & 0x400) != 0)
+  if ((*(from + 48) & 0x400) != 0)
   {
 LABEL_18:
-    self->_prevMModeState = *(a3 + 17);
+    self->_prevMModeState = *(from + 17);
     *&self->_has |= 0x400u;
   }
 
 LABEL_19:
-  if (*(a3 + 10))
+  if (*(from + 10))
   {
 
     [(AWDWRMLinkStateChange *)self setTriggerType:?];

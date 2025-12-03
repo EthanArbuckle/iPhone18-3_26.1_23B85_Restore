@@ -1,41 +1,41 @@
 @interface EPFormulaCleaner
-- (BOOL)checkCustomFunction:(unsigned int)a3;
-- (BOOL)cleanArea3D:(unsigned int)a3;
-- (BOOL)cleanArea:(unsigned int)a3 updateSheet:(BOOL)a4;
-- (BOOL)cleanArray:(unsigned int)a3;
-- (BOOL)cleanName:(unsigned int)a3 nameIndex:(unsigned int)a4 sheetIndex:(unint64_t)a5 tokenOffset:(int *)a6;
-- (BOOL)cleanName:(unsigned int)a3 tokenOffset:(int *)a4;
-- (BOOL)cleanNameX:(unsigned int)a3 tokenOffset:(int *)a4;
-- (BOOL)cleanRange:(unsigned int)a3 tokenOffset:(int *)a4;
-- (BOOL)cleanRef3D:(unsigned int)a3;
-- (BOOL)cleanRef:(unsigned int)a3 updateSheet:(BOOL)a4;
-- (BOOL)cleanTokenAtIndex:(unsigned int)a3 tokenOffset:(int *)a4;
-- (BOOL)cleanUnion:(unsigned int)a3;
-- (BOOL)combineCellReferences:(unsigned int)a3 tokenOffset:(int *)a4;
-- (BOOL)doesNameIndexContainCircularReferences:(unsigned int)a3 sheetIndex:(unint64_t)a4 previousNameIndexes:(void *)a5;
-- (BOOL)isArrayedFormulaSupported:(id)a3 allowSimpleRanges:(BOOL)a4 formulasBeingEvaluated:(id)a5;
-- (BOOL)isLinkReferenceIndexSupported:(unsigned int)a3 allowExternal:(BOOL)a4;
-- (BOOL)isObjectSupported:(id)a3;
-- (BOOL)isReferenceValidInLassoForRow:(int)a3 rowRelative:(BOOL)a4 column:(int)a5 columnRelative:(BOOL)a6;
-- (BOOL)isReferenceValidInLassoForSheet:(id)a3 rowMin:(int)a4 rowMinRelative:(BOOL)a5 rowMax:(int)a6 rowMaxRelative:(BOOL)a7 columnMin:(int)a8 columnMinRelative:(BOOL)a9 columnMax:(int)a10 columnMaxRelative:(BOOL)a11;
-- (BOOL)useEvaluationStackToCheckFunctionId:(int)a3 functionName:(id)a4 tokenIndex:(unsigned int)a5;
-- (id)newFormulaToCleanFromSharedFormula:(id)a3;
-- (id)useEvaluationStackToGetParameter:(unsigned int)a3 tokenIndex:(unsigned int)a4 allReferencesAllowed:(BOOL)a5 success:(BOOL *)a6;
-- (id)worksheetFromLinkReferenceIndex:(unsigned int)a3;
-- (id)worksheetsFromLinkReferenceIndex:(unsigned int)a3;
-- (int)useEvaluationStackToGetParameterTokenType:(unsigned int)a3 tokenIndex:(unsigned int)a4 success:(BOOL *)a5;
-- (unsigned)useEvaluationStackToGetParameter:(unsigned int)a3 tokenIndex:(unsigned int)a4;
-- (void)addOffsetsToRow:(int *)a3 rowRelative:(BOOL)a4 column:(int *)a5 columnRelative:(BOOL)a6;
-- (void)applyMaxCellsInName:(id)a3;
-- (void)cleanFormula:(id)a3 name:(id)a4;
-- (void)cleanFormula:(id)a3 sheet:(id)a4;
-- (void)cleanFormula:(id)a3 sheet:(id)a4 name:(id)a5;
-- (void)prepareToProcessFormula:(id)a3 sheet:(id)a4 name:(id)a5;
-- (void)reportWarning:(int)a3 parameter:(id)a4;
+- (BOOL)checkCustomFunction:(unsigned int)function;
+- (BOOL)cleanArea3D:(unsigned int)d;
+- (BOOL)cleanArea:(unsigned int)area updateSheet:(BOOL)sheet;
+- (BOOL)cleanArray:(unsigned int)array;
+- (BOOL)cleanName:(unsigned int)name nameIndex:(unsigned int)index sheetIndex:(unint64_t)sheetIndex tokenOffset:(int *)offset;
+- (BOOL)cleanName:(unsigned int)name tokenOffset:(int *)offset;
+- (BOOL)cleanNameX:(unsigned int)x tokenOffset:(int *)offset;
+- (BOOL)cleanRange:(unsigned int)range tokenOffset:(int *)offset;
+- (BOOL)cleanRef3D:(unsigned int)d;
+- (BOOL)cleanRef:(unsigned int)ref updateSheet:(BOOL)sheet;
+- (BOOL)cleanTokenAtIndex:(unsigned int)index tokenOffset:(int *)offset;
+- (BOOL)cleanUnion:(unsigned int)union;
+- (BOOL)combineCellReferences:(unsigned int)references tokenOffset:(int *)offset;
+- (BOOL)doesNameIndexContainCircularReferences:(unsigned int)references sheetIndex:(unint64_t)index previousNameIndexes:(void *)indexes;
+- (BOOL)isArrayedFormulaSupported:(id)supported allowSimpleRanges:(BOOL)ranges formulasBeingEvaluated:(id)evaluated;
+- (BOOL)isLinkReferenceIndexSupported:(unsigned int)supported allowExternal:(BOOL)external;
+- (BOOL)isObjectSupported:(id)supported;
+- (BOOL)isReferenceValidInLassoForRow:(int)row rowRelative:(BOOL)relative column:(int)column columnRelative:(BOOL)columnRelative;
+- (BOOL)isReferenceValidInLassoForSheet:(id)sheet rowMin:(int)min rowMinRelative:(BOOL)relative rowMax:(int)max rowMaxRelative:(BOOL)maxRelative columnMin:(int)columnMin columnMinRelative:(BOOL)minRelative columnMax:(int)self0 columnMaxRelative:(BOOL)self1;
+- (BOOL)useEvaluationStackToCheckFunctionId:(int)id functionName:(id)name tokenIndex:(unsigned int)index;
+- (id)newFormulaToCleanFromSharedFormula:(id)formula;
+- (id)useEvaluationStackToGetParameter:(unsigned int)parameter tokenIndex:(unsigned int)index allReferencesAllowed:(BOOL)allowed success:(BOOL *)success;
+- (id)worksheetFromLinkReferenceIndex:(unsigned int)index;
+- (id)worksheetsFromLinkReferenceIndex:(unsigned int)index;
+- (int)useEvaluationStackToGetParameterTokenType:(unsigned int)type tokenIndex:(unsigned int)index success:(BOOL *)success;
+- (unsigned)useEvaluationStackToGetParameter:(unsigned int)parameter tokenIndex:(unsigned int)index;
+- (void)addOffsetsToRow:(int *)row rowRelative:(BOOL)relative column:(int *)column columnRelative:(BOOL)columnRelative;
+- (void)applyMaxCellsInName:(id)name;
+- (void)cleanFormula:(id)formula name:(id)name;
+- (void)cleanFormula:(id)formula sheet:(id)sheet;
+- (void)cleanFormula:(id)formula sheet:(id)sheet name:(id)name;
+- (void)prepareToProcessFormula:(id)formula sheet:(id)sheet name:(id)name;
+- (void)reportWarning:(int)warning parameter:(id)parameter;
 - (void)reset;
-- (void)updateSheet:(id)a3 row:(int)a4 rowRelative:(BOOL)a5 column:(int)a6 columnRelative:(BOOL)a7;
-- (void)updateSheet:(id)a3 rowMin:(int)a4 rowMinRelative:(BOOL)a5 rowMax:(int)a6 rowMaxRelative:(BOOL)a7 columnMin:(int)a8 columnMinRelative:(BOOL)a9 columnMax:(int)a10 columnMaxRelative:(BOOL)a11;
-- (void)updateWorksheet:(id)a3 row:(int)a4 column:(int)a5 inDictionary:(id)a6;
+- (void)updateSheet:(id)sheet row:(int)row rowRelative:(BOOL)relative column:(int)column columnRelative:(BOOL)columnRelative;
+- (void)updateSheet:(id)sheet rowMin:(int)min rowMinRelative:(BOOL)relative rowMax:(int)max rowMaxRelative:(BOOL)maxRelative columnMin:(int)columnMin columnMinRelative:(BOOL)minRelative columnMax:(int)self0 columnMaxRelative:(BOOL)self1;
+- (void)updateWorksheet:(id)worksheet row:(int)row column:(int)column inDictionary:(id)dictionary;
 @end
 
 @implementation EPFormulaCleaner
@@ -61,13 +61,13 @@
   self->mBaseFormulaRowBlocks = 0;
 }
 
-- (BOOL)isObjectSupported:(id)a3
+- (BOOL)isObjectSupported:(id)supported
 {
-  v3 = a3;
+  supportedCopy = supported;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = supportedCopy;
     if ([v4 isSupportedFormula])
     {
       v5 = [v4 isCleaned] ^ 1;
@@ -87,42 +87,42 @@
   return v5;
 }
 
-- (void)cleanFormula:(id)a3 sheet:(id)a4
+- (void)cleanFormula:(id)formula sheet:(id)sheet
 {
-  v7 = a3;
-  v6 = a4;
-  if (v6)
+  formulaCopy = formula;
+  sheetCopy = sheet;
+  if (sheetCopy)
   {
-    [(EPFormulaCleaner *)self cleanFormula:v7 sheet:v6 name:0];
+    [(EPFormulaCleaner *)self cleanFormula:formulaCopy sheet:sheetCopy name:0];
   }
 }
 
-- (void)cleanFormula:(id)a3 name:(id)a4
+- (void)cleanFormula:(id)formula name:(id)name
 {
-  v7 = a3;
-  v6 = a4;
-  if (v6)
+  formulaCopy = formula;
+  nameCopy = name;
+  if (nameCopy)
   {
-    [(EPFormulaCleaner *)self cleanFormula:v7 sheet:0 name:v6];
+    [(EPFormulaCleaner *)self cleanFormula:formulaCopy sheet:0 name:nameCopy];
   }
 }
 
-- (void)prepareToProcessFormula:(id)a3 sheet:(id)a4 name:(id)a5
+- (void)prepareToProcessFormula:(id)formula sheet:(id)sheet name:(id)name
 {
-  v13 = a3;
-  v9 = a4;
-  v10 = a5;
+  formulaCopy = formula;
+  sheetCopy = sheet;
+  nameCopy = name;
   [(EPFormulaCleaner *)self reset];
-  objc_storeStrong(&self->mFormula, a3);
+  objc_storeStrong(&self->mFormula, formula);
   mTokensToClean = self->mTokensToClean;
   self->mTokensToClean = 0;
 
-  objc_storeStrong(&self->mCurrentSheet, a4);
-  objc_storeStrong(&self->mParentName, a5);
+  objc_storeStrong(&self->mCurrentSheet, sheet);
+  objc_storeStrong(&self->mParentName, name);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v13;
+    v12 = formulaCopy;
     if (([v12 isBaseFormula] & 1) == 0)
     {
       self->mRowOffset = [v12 rowBaseOrOffset];
@@ -131,16 +131,16 @@
   }
 }
 
-- (void)cleanFormula:(id)a3 sheet:(id)a4 name:(id)a5
+- (void)cleanFormula:(id)formula sheet:(id)sheet name:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  [(EPFormulaCleaner *)self prepareToProcessFormula:v9 sheet:v10 name:v11];
+  formulaCopy = formula;
+  sheetCopy = sheet;
+  nameCopy = name;
+  [(EPFormulaCleaner *)self prepareToProcessFormula:formulaCopy sheet:sheetCopy name:nameCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [(EPFormulaCleaner *)self newFormulaToCleanFromSharedFormula:v9];
+    v12 = [(EPFormulaCleaner *)self newFormulaToCleanFromSharedFormula:formulaCopy];
     mTokensToClean = self->mTokensToClean;
     self->mTokensToClean = v12;
 
@@ -153,11 +153,11 @@
 
   else
   {
-    objc_storeStrong(&self->mTokensToClean, a3);
+    objc_storeStrong(&self->mTokensToClean, formula);
     v14 = self->mTokensToClean;
   }
 
-  if (-[EDFormula tokenCount](v14, "tokenCount") || [v11 isInternalFunction])
+  if (-[EDFormula tokenCount](v14, "tokenCount") || [nameCopy isInternalFunction])
   {
     for (i = 0; i < [(EDFormula *)self->mTokensToClean tokenCount]; i = (i + v16 + 1))
     {
@@ -168,17 +168,17 @@
       }
     }
 
-    [v9 setCleaned:1];
+    [formulaCopy setCleaned:1];
     [(EPFormulaCleaner *)self reset];
   }
 
 LABEL_12:
 }
 
-- (BOOL)cleanTokenAtIndex:(unsigned int)a3 tokenOffset:(int *)a4
+- (BOOL)cleanTokenAtIndex:(unsigned int)index tokenOffset:(int *)offset
 {
-  v5 = *&a3;
-  *a4 = 0;
+  v5 = *&index;
+  *offset = 0;
   v7 = [(EDFormula *)self->mTokensToClean tokenTypeAtIndex:?]- 1;
   result = 1;
   switch(v7)
@@ -191,7 +191,7 @@ LABEL_12:
     case 78:
     case 109:
     case 110:
-      v9 = self;
+      selfCopy8 = self;
       v10 = 2;
       goto LABEL_4;
     case 2:
@@ -237,9 +237,9 @@ LABEL_12:
       return [(EPFormulaCleaner *)self cleanUnion:v5];
     case 16:
 
-      return [(EPFormulaCleaner *)self cleanRange:v5 tokenOffset:a4];
+      return [(EPFormulaCleaner *)self cleanRange:v5 tokenOffset:offset];
     case 23:
-      v9 = self;
+      selfCopy8 = self;
       v10 = 3;
       goto LABEL_4;
     case 27:
@@ -255,7 +255,7 @@ LABEL_12:
     case 106:
     case 123:
     case 124:
-      v9 = self;
+      selfCopy8 = self;
       v10 = 6;
       goto LABEL_4;
     case 31:
@@ -277,46 +277,46 @@ LABEL_12:
     case 66:
     case 98:
 
-      return [(EPFormulaCleaner *)self cleanName:v5 tokenOffset:a4];
+      return [(EPFormulaCleaner *)self cleanName:v5 tokenOffset:offset];
     case 35:
     case 67:
     case 99:
-      v14 = self;
+      selfCopy6 = self;
       v15 = v5;
       v16 = 1;
       goto LABEL_33;
     case 36:
     case 68:
     case 100:
-      v11 = self;
+      selfCopy7 = self;
       v12 = v5;
       v13 = 1;
       goto LABEL_29;
     case 43:
     case 75:
     case 107:
-      v14 = self;
+      selfCopy6 = self;
       v15 = v5;
       v16 = 0;
 LABEL_33:
 
-      result = [(EPFormulaCleaner *)v14 cleanRef:v15 updateSheet:v16];
+      result = [(EPFormulaCleaner *)selfCopy6 cleanRef:v15 updateSheet:v16];
       break;
     case 44:
     case 76:
     case 108:
-      v11 = self;
+      selfCopy7 = self;
       v12 = v5;
       v13 = 0;
 LABEL_29:
 
-      result = [(EPFormulaCleaner *)v11 cleanArea:v12 updateSheet:v13];
+      result = [(EPFormulaCleaner *)selfCopy7 cleanArea:v12 updateSheet:v13];
       break;
     case 56:
     case 88:
     case 120:
 
-      result = [(EPFormulaCleaner *)self cleanNameX:v5 tokenOffset:a4];
+      result = [(EPFormulaCleaner *)self cleanNameX:v5 tokenOffset:offset];
       break;
     case 57:
     case 89:
@@ -331,10 +331,10 @@ LABEL_29:
       result = [(EPFormulaCleaner *)self cleanArea3D:v5];
       break;
     default:
-      v9 = self;
+      selfCopy8 = self;
       v10 = 1;
 LABEL_4:
-      [(EPFormulaCleaner *)v9 reportWarning:v10];
+      [(EPFormulaCleaner *)selfCopy8 reportWarning:v10];
       result = 0;
       break;
   }
@@ -342,33 +342,33 @@ LABEL_4:
   return result;
 }
 
-- (void)addOffsetsToRow:(int *)a3 rowRelative:(BOOL)a4 column:(int *)a5 columnRelative:(BOOL)a6
+- (void)addOffsetsToRow:(int *)row rowRelative:(BOOL)relative column:(int *)column columnRelative:(BOOL)columnRelative
 {
-  if (!a4)
+  if (!relative)
   {
-    if (!a6)
+    if (!columnRelative)
     {
       return;
     }
 
 LABEL_5:
-    *a5 += self->mColumnOffset;
+    *column += self->mColumnOffset;
     return;
   }
 
-  *a3 += self->mRowOffset;
-  if (a6)
+  *row += self->mRowOffset;
+  if (columnRelative)
   {
     goto LABEL_5;
   }
 }
 
-- (BOOL)isReferenceValidInLassoForRow:(int)a3 rowRelative:(BOOL)a4 column:(int)a5 columnRelative:(BOOL)a6
+- (BOOL)isReferenceValidInLassoForRow:(int)row rowRelative:(BOOL)relative column:(int)column columnRelative:(BOOL)columnRelative
 {
-  v10 = a5;
-  v11 = a3;
-  [(EPFormulaCleaner *)self addOffsetsToRow:&v11 rowRelative:a4 column:&v10 columnRelative:a6];
-  v7 = v11 < 500001 && v10 < 500001;
+  columnCopy = column;
+  rowCopy = row;
+  [(EPFormulaCleaner *)self addOffsetsToRow:&rowCopy rowRelative:relative column:&columnCopy columnRelative:columnRelative];
+  v7 = rowCopy < 500001 && columnCopy < 500001;
   v8 = v7;
   if (!v7)
   {
@@ -378,23 +378,23 @@ LABEL_5:
   return v8;
 }
 
-- (BOOL)isReferenceValidInLassoForSheet:(id)a3 rowMin:(int)a4 rowMinRelative:(BOOL)a5 rowMax:(int)a6 rowMaxRelative:(BOOL)a7 columnMin:(int)a8 columnMinRelative:(BOOL)a9 columnMax:(int)a10 columnMaxRelative:(BOOL)a11
+- (BOOL)isReferenceValidInLassoForSheet:(id)sheet rowMin:(int)min rowMinRelative:(BOOL)relative rowMax:(int)max rowMaxRelative:(BOOL)maxRelative columnMin:(int)columnMin columnMinRelative:(BOOL)minRelative columnMax:(int)self0 columnMaxRelative:(BOOL)self1
 {
-  v12 = a7;
-  v13 = *&a6;
-  v14 = a5;
-  v17 = a10;
-  v18 = a3;
+  maxRelativeCopy = maxRelative;
+  v13 = *&max;
+  relativeCopy = relative;
+  columnMaxCopy = columnMax;
+  sheetCopy = sheet;
   v24 = v13;
-  v25 = a4;
-  v23 = a8;
-  v19 = isRowReference(a8, v17);
-  v20 = a11;
-  if (v19 || isColumnReference(a4, v13))
+  minCopy = min;
+  columnMinCopy = columnMin;
+  v19 = isRowReference(columnMin, columnMaxCopy);
+  columnMaxRelativeCopy = columnMaxRelative;
+  if (v19 || isColumnReference(min, v13))
   {
-    [(EPFormulaCleaner *)self addOffsetsToRow:&v25 rowRelative:v14 column:&v23 columnRelative:a9];
-    [(EPFormulaCleaner *)self addOffsetsToRow:&v24 rowRelative:v12 column:&a10 columnRelative:v20];
-    if (v25 >= 500001 && v23 >= 500001 || [EPFormulaCleaner isThereContentOutsideOfLassoBoundsForSheet:"isThereContentOutsideOfLassoBoundsForSheet:rowMin:rowMax:columnMin:columnMax:" rowMin:v18 rowMax:? columnMin:? columnMax:?])
+    [(EPFormulaCleaner *)self addOffsetsToRow:&minCopy rowRelative:relativeCopy column:&columnMinCopy columnRelative:minRelative];
+    [(EPFormulaCleaner *)self addOffsetsToRow:&v24 rowRelative:maxRelativeCopy column:&columnMax columnRelative:columnMaxRelativeCopy];
+    if (minCopy >= 500001 && columnMinCopy >= 500001 || [EPFormulaCleaner isThereContentOutsideOfLassoBoundsForSheet:"isThereContentOutsideOfLassoBoundsForSheet:rowMin:rowMax:columnMin:columnMax:" rowMin:sheetCopy rowMax:? columnMin:? columnMax:?])
     {
       [(EPFormulaCleaner *)self reportWarning:10];
       v21 = 0;
@@ -408,104 +408,104 @@ LABEL_5:
 
   else
   {
-    v21 = [(EPFormulaCleaner *)self isReferenceValidInLassoForRow:v13 rowRelative:v12 column:v17 columnRelative:v20];
+    v21 = [(EPFormulaCleaner *)self isReferenceValidInLassoForRow:v13 rowRelative:maxRelativeCopy column:columnMaxCopy columnRelative:columnMaxRelativeCopy];
   }
 
   return v21;
 }
 
-- (void)updateSheet:(id)a3 row:(int)a4 rowRelative:(BOOL)a5 column:(int)a6 columnRelative:(BOOL)a7
+- (void)updateSheet:(id)sheet row:(int)row rowRelative:(BOOL)relative column:(int)column columnRelative:(BOOL)columnRelative
 {
-  v7 = a7;
-  v8 = a5;
-  v15 = a6;
-  v16 = a4;
-  v10 = a3;
-  if (v10)
+  columnRelativeCopy = columnRelative;
+  relativeCopy = relative;
+  columnCopy = column;
+  rowCopy = row;
+  sheetCopy = sheet;
+  if (sheetCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(EPFormulaCleaner *)self addOffsetsToRow:&v16 rowRelative:v8 column:&v15 columnRelative:v7];
-      [(EDFormula *)self->mFormula updateContainsRelativeReferences:v8 | v7];
+      [(EPFormulaCleaner *)self addOffsetsToRow:&rowCopy rowRelative:relativeCopy column:&columnCopy columnRelative:columnRelativeCopy];
+      [(EDFormula *)self->mFormula updateContainsRelativeReferences:relativeCopy | columnRelativeCopy];
       mParentName = self->mParentName;
       if (mParentName)
       {
-        v13 = v15;
-        v12 = v16;
-        v14 = [(EDName *)mParentName maxWorksheetReferences];
-        [(EPFormulaCleaner *)self updateWorksheet:v10 row:v12 column:v13 inDictionary:v14];
+        v13 = columnCopy;
+        v12 = rowCopy;
+        maxWorksheetReferences = [(EDName *)mParentName maxWorksheetReferences];
+        [(EPFormulaCleaner *)self updateWorksheet:sheetCopy row:v12 column:v13 inDictionary:maxWorksheetReferences];
       }
 
       else
       {
-        v14 = [v10 maxCellReferencedInFormulas];
-        [v14 unionWithRow:v16 column:v15];
+        maxWorksheetReferences = [sheetCopy maxCellReferencedInFormulas];
+        [maxWorksheetReferences unionWithRow:rowCopy column:columnCopy];
       }
     }
   }
 }
 
-- (void)updateSheet:(id)a3 rowMin:(int)a4 rowMinRelative:(BOOL)a5 rowMax:(int)a6 rowMaxRelative:(BOOL)a7 columnMin:(int)a8 columnMinRelative:(BOOL)a9 columnMax:(int)a10 columnMaxRelative:(BOOL)a11
+- (void)updateSheet:(id)sheet rowMin:(int)min rowMinRelative:(BOOL)relative rowMax:(int)max rowMaxRelative:(BOOL)maxRelative columnMin:(int)columnMin columnMinRelative:(BOOL)minRelative columnMax:(int)self0 columnMaxRelative:(BOOL)self1
 {
-  v12 = a7;
-  v24 = a3;
-  v16 = isRowReference(a8, a10);
-  v17 = isColumnReference(a4, a6);
-  if (a10 >= 500000)
+  maxRelativeCopy = maxRelative;
+  sheetCopy = sheet;
+  v16 = isRowReference(columnMin, columnMax);
+  v17 = isColumnReference(min, max);
+  if (columnMax >= 500000)
   {
-    v18 = 500000;
+    columnMaxCopy = 500000;
   }
 
   else
   {
-    v18 = a10;
+    columnMaxCopy = columnMax;
   }
 
   if (v16)
   {
-    v19 = a6;
+    maxCopy2 = max;
   }
 
   else
   {
-    v19 = 0;
+    maxCopy2 = 0;
   }
 
   if (v17)
   {
-    v20 = v18;
+    columnMaxCopy2 = columnMaxCopy;
   }
 
   else
   {
-    v20 = a10;
+    columnMaxCopy2 = columnMax;
   }
 
   if (!v17)
   {
-    v19 = a6;
-    v18 = 0;
+    maxCopy2 = max;
+    columnMaxCopy = 0;
   }
 
-  if (v19 >= 500000)
+  if (maxCopy2 >= 500000)
   {
     v21 = 500000;
   }
 
   else
   {
-    v21 = v19;
+    v21 = maxCopy2;
   }
 
   if (v16)
   {
-    v22 = v18;
+    v22 = columnMaxCopy;
   }
 
   else
   {
-    v22 = v20;
+    v22 = columnMaxCopy2;
   }
 
   if (v16)
@@ -515,17 +515,17 @@ LABEL_5:
 
   else
   {
-    v23 = v19;
+    v23 = maxCopy2;
   }
 
-  [(EPFormulaCleaner *)self updateSheet:v24 row:v23 rowRelative:v12 column:v22 columnRelative:a11];
+  [(EPFormulaCleaner *)self updateSheet:sheetCopy row:v23 rowRelative:maxRelativeCopy column:v22 columnRelative:columnMaxRelative];
 }
 
-- (BOOL)cleanArray:(unsigned int)a3
+- (BOOL)cleanArray:(unsigned int)array
 {
-  v3 = *&a3;
+  v3 = *&array;
   v10 = 0;
-  v5 = [(EDFormula *)self->mFormula extendedDataForTokenAtIndex:*&a3 extendedDataIndex:0 length:&v10];
+  v5 = [(EDFormula *)self->mFormula extendedDataForTokenAtIndex:*&array extendedDataIndex:0 length:&v10];
   if (!v5)
   {
     return 1;
@@ -560,15 +560,15 @@ LABEL_5:
   return 0;
 }
 
-- (BOOL)cleanRef:(unsigned int)a3 updateSheet:(BOOL)a4
+- (BOOL)cleanRef:(unsigned int)ref updateSheet:(BOOL)sheet
 {
-  v4 = a4;
+  sheetCopy = sheet;
   *v10 = 0;
   *v9 = 0;
   v8 = 0;
-  extractDataFromPtgRefBuffer([(EDFormula *)self->mTokensToClean lastExtendedDataForTokenAtIndex:*&a3 length:&v8], &v10[1], &v9[1], v10, v9);
+  extractDataFromPtgRefBuffer([(EDFormula *)self->mTokensToClean lastExtendedDataForTokenAtIndex:*&ref length:&v8], &v10[1], &v9[1], v10, v9);
   v6 = [(EPFormulaCleaner *)self isReferenceValidInLassoForRow:v10[1] rowRelative:v9[1] column:v10[0] columnRelative:v9[0]];
-  if (v6 && v4)
+  if (v6 && sheetCopy)
   {
     [(EPFormulaCleaner *)self updateSheet:self->mCurrentSheet row:v10[1] rowRelative:v9[1] column:v10[0] columnRelative:v9[0]];
   }
@@ -576,21 +576,21 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)cleanArea:(unsigned int)a3 updateSheet:(BOOL)a4
+- (BOOL)cleanArea:(unsigned int)area updateSheet:(BOOL)sheet
 {
-  v4 = a4;
+  sheetCopy = sheet;
   v17 = 0;
   v16 = 0;
   *v15 = 0;
   *v14 = 0;
   *v13 = 0;
   v12 = 0;
-  extractDataFromPtgAreaBuffer([(EDFormula *)self->mTokensToClean lastExtendedDataForTokenAtIndex:*&a3 length:&v12], &v17, &v14[1], &v16, v14, &v15[1], &v13[1], v15, v13);
+  extractDataFromPtgAreaBuffer([(EDFormula *)self->mTokensToClean lastExtendedDataForTokenAtIndex:*&area length:&v12], &v17, &v14[1], &v16, v14, &v15[1], &v13[1], v15, v13);
   LOBYTE(v10) = v13[0];
   HIDWORD(v8) = v15[0];
   LOBYTE(v8) = v13[1];
   v6 = [(EPFormulaCleaner *)self isReferenceValidInLassoForSheet:self->mCurrentSheet rowMin:v17 rowMinRelative:v14[1] rowMax:v16 rowMaxRelative:v14[0] columnMin:v15[1] columnMinRelative:v8 columnMax:v10 columnMaxRelative:?];
-  if (v6 && v4)
+  if (v6 && sheetCopy)
   {
     LOBYTE(v11) = v13[0];
     HIDWORD(v9) = v15[0];
@@ -601,13 +601,13 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)cleanRef3D:(unsigned int)a3
+- (BOOL)cleanRef3D:(unsigned int)d
 {
   *v14 = 0;
   v13 = 0;
   *v12 = 0;
   v11 = 0;
-  extractDataFromPtgRef3DBuffer([(EDFormula *)self->mTokensToClean lastExtendedDataForTokenAtIndex:*&a3 length:&v11], &v14[1], v14, &v12[1], &v13, v12);
+  extractDataFromPtgRef3DBuffer([(EDFormula *)self->mTokensToClean lastExtendedDataForTokenAtIndex:*&d length:&v11], &v14[1], v14, &v12[1], &v13, v12);
   v4 = [(EPFormulaCleaner *)self isLinkReferenceIndexSupported:v14[1] allowExternal:0];
   if (v4)
   {
@@ -644,7 +644,7 @@ LABEL_5:
   return v4;
 }
 
-- (BOOL)cleanArea3D:(unsigned int)a3
+- (BOOL)cleanArea3D:(unsigned int)d
 {
   *v19 = 0;
   *v20 = 0;
@@ -652,7 +652,7 @@ LABEL_5:
   *v17 = 0;
   *v16 = 0;
   v15 = 0;
-  extractDataFromPtgArea3DBuffer([(EDFormula *)self->mTokensToClean lastExtendedDataForTokenAtIndex:*&a3 length:&v15], &v20[1], v20, &v17[1], &v19[1], v17, v19, &v16[1], &v18, v16);
+  extractDataFromPtgArea3DBuffer([(EDFormula *)self->mTokensToClean lastExtendedDataForTokenAtIndex:*&d length:&v15], &v20[1], v20, &v17[1], &v19[1], v17, v19, &v16[1], &v18, v16);
   v4 = 0;
   if ([(EPFormulaCleaner *)self isLinkReferenceIndexSupported:v20[1] allowExternal:0])
   {
@@ -701,43 +701,43 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)cleanName:(unsigned int)a3 tokenOffset:(int *)a4
+- (BOOL)cleanName:(unsigned int)name tokenOffset:(int *)offset
 {
-  v5 = *&a3;
+  v5 = *&name;
   v11 = 0;
-  v7 = *[(EDFormula *)self->mTokensToClean lastExtendedDataForTokenAtIndex:*&a3 length:&v11];
+  v7 = *[(EDFormula *)self->mTokensToClean lastExtendedDataForTokenAtIndex:*&name length:&v11];
   WeakRetained = objc_loadWeakRetained(&self->super.mWorkbook);
   v9 = [WeakRetained indexOfSheet:self->mCurrentSheet];
 
-  return [(EPFormulaCleaner *)self cleanName:v5 nameIndex:v7 sheetIndex:v9 tokenOffset:a4];
+  return [(EPFormulaCleaner *)self cleanName:v5 nameIndex:v7 sheetIndex:v9 tokenOffset:offset];
 }
 
-- (BOOL)cleanNameX:(unsigned int)a3 tokenOffset:(int *)a4
+- (BOOL)cleanNameX:(unsigned int)x tokenOffset:(int *)offset
 {
-  v5 = *&a3;
+  v5 = *&x;
   v21 = 0;
-  v7 = [(EDFormula *)self->mTokensToClean lastExtendedDataForTokenAtIndex:*&a3 length:&v21];
+  v7 = [(EDFormula *)self->mTokensToClean lastExtendedDataForTokenAtIndex:*&x length:&v21];
   v8 = *v7;
   v9 = *(v7 + 1);
   v10 = 0;
   if ([(EPFormulaCleaner *)self isLinkReferenceIndexSupported:v8 allowExternal:1])
   {
     WeakRetained = objc_loadWeakRetained(&self->super.mResources);
-    v12 = [WeakRetained links];
+    links = [WeakRetained links];
 
-    v13 = [v12 referenceAtIndex:v8];
-    v14 = [v12 linkAtIndex:{objc_msgSend(v13, "linkIndex")}];
-    v15 = [v14 type];
-    v16 = v15;
-    if (v15 == 1)
+    v13 = [links referenceAtIndex:v8];
+    v14 = [links linkAtIndex:{objc_msgSend(v13, "linkIndex")}];
+    type = [v14 type];
+    v16 = type;
+    if (type == 1)
     {
-      v10 = -[EPFormulaCleaner cleanName:nameIndex:sheetIndex:tokenOffset:](self, "cleanName:nameIndex:sheetIndex:tokenOffset:", v5, v9, [v13 firstSheetIndex], a4);
+      v10 = -[EPFormulaCleaner cleanName:nameIndex:sheetIndex:tokenOffset:](self, "cleanName:nameIndex:sheetIndex:tokenOffset:", v5, v9, [v13 firstSheetIndex], offset);
     }
 
-    else if ((v15 & 0xFFFFFFFE) == 2)
+    else if ((type & 0xFFFFFFFE) == 2)
     {
-      v17 = [v14 externalNames];
-      if ([v17 count] <= v9)
+      externalNames = [v14 externalNames];
+      if ([externalNames count] <= v9)
       {
         [(EPFormulaCleaner *)self reportWarning:5];
         v10 = 0;
@@ -745,9 +745,9 @@ LABEL_11:
 
       else
       {
-        v18 = [v17 objectAtIndex:v9];
-        v19 = [v18 string];
-        v10 = [(EPFormulaCleaner *)self checkSupportedAddInName:v19 externalLink:v16 == 2];
+        v18 = [externalNames objectAtIndex:v9];
+        string = [v18 string];
+        v10 = [(EPFormulaCleaner *)self checkSupportedAddInName:string externalLink:v16 == 2];
       }
     }
 
@@ -761,11 +761,11 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)cleanUnion:(unsigned int)a3
+- (BOOL)cleanUnion:(unsigned int)union
 {
-  if (a3 >= 2)
+  if (union >= 2)
   {
-    v6 = *&a3;
+    v6 = *&union;
     v7 = 0;
     v8 = 0;
     v4 = 0;
@@ -881,12 +881,12 @@ LABEL_2:
   return v4;
 }
 
-- (BOOL)cleanRange:(unsigned int)a3 tokenOffset:(int *)a4
+- (BOOL)cleanRange:(unsigned int)range tokenOffset:(int *)offset
 {
-  *a4 = 0;
-  if (a3 >= 2)
+  *offset = 0;
+  if (range >= 2)
   {
-    v8 = *&a3;
+    v8 = *&range;
     v5 = 0;
 LABEL_6:
     for (i = v5; ; i = 1)
@@ -942,7 +942,7 @@ LABEL_19:
           goto LABEL_16;
         }
 
-        if (![(EPFormulaCleaner *)self combineCellReferences:v12 tokenOffset:a4])
+        if (![(EPFormulaCleaner *)self combineCellReferences:v12 tokenOffset:offset])
         {
           goto LABEL_3;
         }
@@ -957,9 +957,9 @@ LABEL_16:
           return v5;
         }
 
-        v16 = (*a4 + v8);
+        v16 = (*offset + v8);
 
-        return [(EPFormulaCleaner *)self combineCellReferences:v16 tokenOffset:a4];
+        return [(EPFormulaCleaner *)self combineCellReferences:v16 tokenOffset:offset];
       }
     }
   }
@@ -970,15 +970,15 @@ LABEL_3:
   return v5;
 }
 
-- (BOOL)combineCellReferences:(unsigned int)a3 tokenOffset:(int *)a4
+- (BOOL)combineCellReferences:(unsigned int)references tokenOffset:(int *)offset
 {
-  if (a3 < 2)
+  if (references < 2)
   {
     goto LABEL_37;
   }
 
-  v6 = *&a3;
-  if ([(EDFormula *)self->mTokensToClean tokenCount]<= a3)
+  v6 = *&references;
+  if ([(EDFormula *)self->mTokensToClean tokenCount]<= references)
   {
     goto LABEL_37;
   }
@@ -1203,7 +1203,7 @@ LABEL_52:
           }
 
           [(EDFormula *)self->mTokensToClean removeTokenAtIndex:v32];
-          *a4 -= 2;
+          *offset -= 2;
           v23 = 1;
           goto LABEL_59;
         }
@@ -1256,24 +1256,24 @@ LABEL_37:
   return 0;
 }
 
-- (BOOL)isLinkReferenceIndexSupported:(unsigned int)a3 allowExternal:(BOOL)a4
+- (BOOL)isLinkReferenceIndexSupported:(unsigned int)supported allowExternal:(BOOL)external
 {
   WeakRetained = objc_loadWeakRetained(&self->super.mResources);
-  v8 = [WeakRetained links];
+  links = [WeakRetained links];
 
-  v9 = [v8 referenceAtIndex:a3];
+  v9 = [links referenceAtIndex:supported];
   v10 = v9;
   if (v9)
   {
-    v11 = [v8 linkAtIndex:{objc_msgSend(v9, "linkIndex")}];
-    v12 = [v11 type];
-    v13 = v12 == 2 && a4;
-    if ((v12 & 0xFFFFFFFD) == 1 || v13)
+    v11 = [links linkAtIndex:{objc_msgSend(v9, "linkIndex")}];
+    type = [v11 type];
+    v13 = type == 2 && external;
+    if ((type & 0xFFFFFFFD) == 1 || v13)
     {
-      v15 = [v10 firstSheetIndex];
-      v16 = [v10 lastSheetIndex];
-      v17 = v16;
-      if (v15 != -1 && v16 != -1)
+      firstSheetIndex = [v10 firstSheetIndex];
+      lastSheetIndex = [v10 lastSheetIndex];
+      v17 = lastSheetIndex;
+      if (firstSheetIndex != -1 && lastSheetIndex != -1)
       {
         if ([v10 isWorkbookLevelReference])
         {
@@ -1284,13 +1284,13 @@ LABEL_24:
         }
 
         v19 = objc_loadWeakRetained(&self->super.mWorkbook);
-        v20 = [v19 mappingContext];
-        v21 = [v20 mappingInfoCount];
+        mappingContext = [v19 mappingContext];
+        mappingInfoCount = [mappingContext mappingInfoCount];
 
-        if (v12 != 1 || v15 <= v21)
+        if (type != 1 || firstSheetIndex <= mappingInfoCount)
         {
           v14 = 1;
-          if (v12 != 1 || v15 == v17 || v17 <= v21)
+          if (type != 1 || firstSheetIndex == v17 || v17 <= mappingInfoCount)
           {
             goto LABEL_24;
           }
@@ -1316,12 +1316,12 @@ LABEL_25:
   return v14;
 }
 
-- (id)worksheetFromLinkReferenceIndex:(unsigned int)a3
+- (id)worksheetFromLinkReferenceIndex:(unsigned int)index
 {
   v12 = -1;
   WeakRetained = objc_loadWeakRetained(&self->super.mResources);
-  v6 = [WeakRetained links];
-  [v6 convertLinkReferenceIndex:a3 firstSheetIndex:&v12 lastSheetIndex:&v11];
+  links = [WeakRetained links];
+  [links convertLinkReferenceIndex:index firstSheetIndex:&v12 lastSheetIndex:&v11];
 
   v7 = objc_loadWeakRetained(&self->super.mWorkbook);
   v8 = [v7 sheetAtIndex:v12 loadIfNeeded:1];
@@ -1340,20 +1340,20 @@ LABEL_25:
   return v9;
 }
 
-- (id)worksheetsFromLinkReferenceIndex:(unsigned int)a3
+- (id)worksheetsFromLinkReferenceIndex:(unsigned int)index
 {
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v13 = -1;
   v14 = -1;
   WeakRetained = objc_loadWeakRetained(&self->super.mResources);
-  v7 = [WeakRetained links];
-  [v7 convertLinkReferenceIndex:a3 firstSheetIndex:&v14 lastSheetIndex:&v13];
+  links = [WeakRetained links];
+  [links convertLinkReferenceIndex:index firstSheetIndex:&v14 lastSheetIndex:&v13];
 
   v8 = v14;
   if (v14 > v13)
   {
 LABEL_4:
-    v11 = v5;
+    v11 = array;
   }
 
   else
@@ -1369,7 +1369,7 @@ LABEL_4:
         break;
       }
 
-      [v5 addObject:v10];
+      [array addObject:v10];
 
       if (++v8 > v13)
       {
@@ -1383,27 +1383,27 @@ LABEL_4:
   return v11;
 }
 
-- (BOOL)cleanName:(unsigned int)a3 nameIndex:(unsigned int)a4 sheetIndex:(unint64_t)a5 tokenOffset:(int *)a6
+- (BOOL)cleanName:(unsigned int)name nameIndex:(unsigned int)index sheetIndex:(unint64_t)sheetIndex tokenOffset:(int *)offset
 {
-  v7 = *&a4;
-  v8 = *&a3;
+  v7 = *&index;
+  v8 = *&name;
   WeakRetained = objc_loadWeakRetained(&self->super.mResources);
-  v11 = [WeakRetained names];
-  v12 = [v11 objectAtIndex:v7];
+  names = [WeakRetained names];
+  v12 = [names objectAtIndex:v7];
 
-  v13 = [v12 sheetIndex];
-  if (v13 != a5 && v13 != 0)
+  sheetIndex = [v12 sheetIndex];
+  if (sheetIndex != sheetIndex && sheetIndex != 0)
   {
-    v23 = [v12 nameString];
-    v24 = [v23 string];
-    [(EPFormulaCleaner *)self reportWarning:8 parameter:v24];
+    nameString = [v12 nameString];
+    string = [nameString string];
+    [(EPFormulaCleaner *)self reportWarning:8 parameter:string];
 LABEL_29:
 
     goto LABEL_30;
   }
 
-  v23 = [v12 formula];
-  if ([v12 isInternalFunction] && !objc_msgSend(v23, "tokenCount"))
+  nameString = [v12 formula];
+  if ([v12 isInternalFunction] && !objc_msgSend(nameString, "tokenCount"))
   {
 LABEL_35:
     v30 = 1;
@@ -1422,17 +1422,17 @@ LABEL_35:
 
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:(v7 + 1)];
   v19 = [(NSMutableDictionary *)mNameArrayedTestCache objectForKey:v18];
-  v20 = [v19 unsignedLongValue];
+  unsignedLongValue = [v19 unsignedLongValue];
 
-  if (v20)
+  if (unsignedLongValue)
   {
-    v21 = (v20 - 1);
-    if (v20 != 1)
+    v21 = (unsignedLongValue - 1);
+    if (unsignedLongValue != 1)
     {
 LABEL_12:
-      v24 = [v12 nameString];
-      v22 = [v24 string];
-      [(EPFormulaCleaner *)self reportWarning:v21 parameter:v22];
+      string = [v12 nameString];
+      v24String = [string string];
+      [(EPFormulaCleaner *)self reportWarning:v21 parameter:v24String];
 LABEL_28:
 
       goto LABEL_29;
@@ -1441,9 +1441,9 @@ LABEL_28:
 
   else
   {
-    if (v23 && [v23 isSupportedFormula] && (objc_msgSend(v23, "isContainsRelativeReferences") & 1) == 0 && objc_msgSend(v23, "tokenTypeAtIndex:", 0))
+    if (nameString && [nameString isSupportedFormula] && (objc_msgSend(nameString, "isContainsRelativeReferences") & 1) == 0 && objc_msgSend(nameString, "tokenTypeAtIndex:", 0))
     {
-      if ([v23 tokenCount] < 2)
+      if ([nameString tokenCount] < 2)
       {
         v21 = 0;
       }
@@ -1451,7 +1451,7 @@ LABEL_28:
       else
       {
         v25 = [MEMORY[0x277CBEB58] set];
-        v26 = [(EPFormulaCleaner *)self isArrayedFormulaSupported:v23 allowSimpleRanges:1 formulasBeingEvaluated:v25];
+        v26 = [(EPFormulaCleaner *)self isArrayedFormulaSupported:nameString allowSimpleRanges:1 formulasBeingEvaluated:v25];
 
         if (v26)
         {
@@ -1481,24 +1481,24 @@ LABEL_28:
     }
   }
 
-  if ([(EPFormulaCleaner *)self doesNameIndexContainCircularReferences:v7 sheetIndex:a5 previousNameIndexes:0]|| ![(EDFormula *)self->mTokensToClean replaceTokenAtIndex:v8 withFormula:v23])
+  if ([(EPFormulaCleaner *)self doesNameIndexContainCircularReferences:v7 sheetIndex:sheetIndex previousNameIndexes:0]|| ![(EDFormula *)self->mTokensToClean replaceTokenAtIndex:v8 withFormula:nameString])
   {
-    v24 = [v12 nameString];
-    v22 = [v24 string];
-    [(EPFormulaCleaner *)self reportWarning:9 parameter:v22];
+    string = [v12 nameString];
+    v24String = [string string];
+    [(EPFormulaCleaner *)self reportWarning:9 parameter:v24String];
     goto LABEL_28;
   }
 
   if ([(EDFormula *)self->mTokensToClean tokenCount]< 0x7D1)
   {
-    if (*a6 >= 1)
+    if (*offset >= 1)
     {
-      --*a6;
+      --*offset;
     }
 
     [(EPFormulaCleaner *)self applyMaxCellsInName:v12];
-    -[EDFormula updateContainsRelativeReferences:](self->mFormula, "updateContainsRelativeReferences:", [v23 isContainsRelativeReferences]);
-    -[EDFormula updateCleanedWithEvaluationStack:](self->mFormula, "updateCleanedWithEvaluationStack:", [v23 isCleanedWithEvaluationStack]);
+    -[EDFormula updateContainsRelativeReferences:](self->mFormula, "updateContainsRelativeReferences:", [nameString isContainsRelativeReferences]);
+    -[EDFormula updateCleanedWithEvaluationStack:](self->mFormula, "updateCleanedWithEvaluationStack:", [nameString isCleanedWithEvaluationStack]);
     goto LABEL_35;
   }
 
@@ -1510,10 +1510,10 @@ LABEL_31:
   return v30;
 }
 
-- (BOOL)checkCustomFunction:(unsigned int)a3
+- (BOOL)checkCustomFunction:(unsigned int)function
 {
-  v3 = *&a3;
-  v5 = [(EPFormulaCleaner *)self useEvaluationStackToGetParameter:0 tokenIndex:*&a3];
+  v3 = *&function;
+  v5 = [(EPFormulaCleaner *)self useEvaluationStackToGetParameter:0 tokenIndex:*&function];
   if (v5 == -1)
   {
     return 1;
@@ -1531,28 +1531,28 @@ LABEL_31:
   v9 = *v8;
   v10 = *(v8 + 1);
   WeakRetained = objc_loadWeakRetained(&self->super.mResources);
-  v12 = [WeakRetained links];
+  links = [WeakRetained links];
 
-  v13 = [v12 referenceAtIndex:v9];
-  v14 = [v12 linkAtIndex:{objc_msgSend(v13, "linkIndex")}];
+  v13 = [links referenceAtIndex:v9];
+  v14 = [links linkAtIndex:{objc_msgSend(v13, "linkIndex")}];
   v15 = v14;
   if (v14 && ([v14 type] == 3 || objc_msgSend(v15, "type") == 2))
   {
-    v16 = [v15 externalNames];
-    if ([v16 count] <= v10)
+    externalNames = [v15 externalNames];
+    if ([externalNames count] <= v10)
     {
       v20 = 1;
     }
 
     else
     {
-      v17 = [v16 objectAtIndex:v10];
-      v18 = [v17 string];
-      v19 = [v18 uppercaseString];
+      v17 = [externalNames objectAtIndex:v10];
+      string = [v17 string];
+      uppercaseString = [string uppercaseString];
 
-      if ([v19 isEqualToString:@"CONVERT"] && (-[EDFormula updateCleanedWithEvaluationStack:](self->mTokensToClean, "updateCleanedWithEvaluationStack:", 1), !-[EPFormulaCleaner useEvaluationStackToCheckFunctionId:functionName:tokenIndex:](self, "useEvaluationStackToCheckFunctionId:functionName:tokenIndex:", 255, v19, v3)))
+      if ([uppercaseString isEqualToString:@"CONVERT"] && (-[EDFormula updateCleanedWithEvaluationStack:](self->mTokensToClean, "updateCleanedWithEvaluationStack:", 1), !-[EPFormulaCleaner useEvaluationStackToCheckFunctionId:functionName:tokenIndex:](self, "useEvaluationStackToCheckFunctionId:functionName:tokenIndex:", 255, uppercaseString, v3)))
       {
-        [(EPFormulaCleaner *)self reportWarning:11 parameter:v19];
+        [(EPFormulaCleaner *)self reportWarning:11 parameter:uppercaseString];
         v20 = 0;
       }
 
@@ -1571,58 +1571,58 @@ LABEL_31:
   return v20;
 }
 
-- (void)updateWorksheet:(id)a3 row:(int)a4 column:(int)a5 inDictionary:(id)a6
+- (void)updateWorksheet:(id)worksheet row:(int)row column:(int)column inDictionary:(id)dictionary
 {
-  v7 = *&a5;
-  v8 = *&a4;
-  v11 = a3;
-  v9 = a6;
-  v10 = [v9 objectForKey:v11];
+  v7 = *&column;
+  v8 = *&row;
+  worksheetCopy = worksheet;
+  dictionaryCopy = dictionary;
+  v10 = [dictionaryCopy objectForKey:worksheetCopy];
   if (!v10)
   {
     v10 = +[EDReference reference];
-    [v9 setObject:v10 forUncopiedKey:v11];
+    [dictionaryCopy setObject:v10 forUncopiedKey:worksheetCopy];
   }
 
   [v10 unionWithRow:v8 column:v7];
 }
 
-- (void)applyMaxCellsInName:(id)a3
+- (void)applyMaxCellsInName:(id)name
 {
-  v10 = [a3 maxWorksheetReferences];
-  v3 = [v10 allKeys];
-  v4 = [v3 count];
+  maxWorksheetReferences = [name maxWorksheetReferences];
+  allKeys = [maxWorksheetReferences allKeys];
+  v4 = [allKeys count];
   if (v4)
   {
     for (i = 0; i != v4; ++i)
     {
-      v6 = [v3 objectAtIndex:i];
+      v6 = [allKeys objectAtIndex:i];
       v7 = v6;
       if (v6)
       {
-        v8 = [v6 maxCellReferencedInFormulas];
-        v9 = [v10 objectForKey:v7];
-        [v8 unionWithReference:v9];
+        maxCellReferencedInFormulas = [v6 maxCellReferencedInFormulas];
+        v9 = [maxWorksheetReferences objectForKey:v7];
+        [maxCellReferencedInFormulas unionWithReference:v9];
       }
     }
   }
 
-  [v10 removeAllObjects];
+  [maxWorksheetReferences removeAllObjects];
 }
 
-- (BOOL)useEvaluationStackToCheckFunctionId:(int)a3 functionName:(id)a4 tokenIndex:(unsigned int)a5
+- (BOOL)useEvaluationStackToCheckFunctionId:(int)id functionName:(id)name tokenIndex:(unsigned int)index
 {
-  v5 = *&a5;
-  v8 = a4;
-  v9 = v8;
+  v5 = *&index;
+  nameCopy = name;
+  v9 = nameCopy;
   v10 = 0;
   v11 = 1;
   v26 = 1;
-  if (a3 <= 147)
+  if (id <= 147)
   {
-    if ((a3 - 76) >= 2)
+    if ((id - 76) >= 2)
     {
-      if (a3 == 111)
+      if (id == 111)
       {
         v10 = [(EPFormulaCleaner *)self useEvaluationStackToGetParameter:0 tokenIndex:v5 allReferencesAllowed:0 success:&v26];
         objc_opt_class();
@@ -1635,7 +1635,7 @@ LABEL_31:
 
       else
       {
-        if (a3 != 121)
+        if (id != 121)
         {
           goto LABEL_58;
         }
@@ -1676,11 +1676,11 @@ LABEL_57:
     goto LABEL_21;
   }
 
-  if (a3 > 254)
+  if (id > 254)
   {
-    if (a3 != 255)
+    if (id != 255)
     {
-      if (a3 != 347)
+      if (id != 347)
       {
         goto LABEL_58;
       }
@@ -1710,7 +1710,7 @@ LABEL_44:
       goto LABEL_58;
     }
 
-    if (![v8 isEqualToString:@"CONVERT"])
+    if (![nameCopy isEqualToString:@"CONVERT"])
     {
       v10 = 0;
       goto LABEL_57;
@@ -1754,9 +1754,9 @@ LABEL_43:
     goto LABEL_44;
   }
 
-  if (a3 != 148)
+  if (id != 148)
   {
-    if (a3 != 219)
+    if (id != 219)
     {
       goto LABEL_58;
     }
@@ -1830,13 +1830,13 @@ LABEL_58:
   return v11;
 }
 
-- (int)useEvaluationStackToGetParameterTokenType:(unsigned int)a3 tokenIndex:(unsigned int)a4 success:(BOOL *)a5
+- (int)useEvaluationStackToGetParameterTokenType:(unsigned int)type tokenIndex:(unsigned int)index success:(BOOL *)success
 {
-  *a5 = 1;
-  v7 = [(EPFormulaCleaner *)self useEvaluationStackToGetParameter:*&a3 tokenIndex:*&a4];
+  *success = 1;
+  v7 = [(EPFormulaCleaner *)self useEvaluationStackToGetParameter:*&type tokenIndex:*&index];
   if (v7 == -1)
   {
-    *a5 = 0;
+    *success = 0;
     return 0;
   }
 
@@ -1849,53 +1849,53 @@ LABEL_58:
   }
 }
 
-- (unsigned)useEvaluationStackToGetParameter:(unsigned int)a3 tokenIndex:(unsigned int)a4
+- (unsigned)useEvaluationStackToGetParameter:(unsigned int)parameter tokenIndex:(unsigned int)index
 {
-  v5 = [EDTokenTree buildSubtree:*&a4 formula:self->mTokensToClean];
-  v6 = [v5 firstChild];
+  v5 = [EDTokenTree buildSubtree:*&index formula:self->mTokensToClean];
+  firstChild = [v5 firstChild];
 
-  if (v6)
+  if (firstChild)
   {
-    v7 = a3 + 1;
-    v8 = v6;
+    v7 = parameter + 1;
+    v8 = firstChild;
     while (--v7)
     {
-      v9 = [v8 sibling];
+      sibling = [v8 sibling];
 
-      v8 = v9;
-      if (!v9)
+      v8 = sibling;
+      if (!sibling)
       {
         goto LABEL_7;
       }
     }
 
-    v10 = [v8 tokenIndex];
+    tokenIndex = [v8 tokenIndex];
   }
 
   else
   {
     v8 = 0;
 LABEL_7:
-    v10 = -1;
+    tokenIndex = -1;
   }
 
-  return v10;
+  return tokenIndex;
 }
 
-- (id)useEvaluationStackToGetParameter:(unsigned int)a3 tokenIndex:(unsigned int)a4 allReferencesAllowed:(BOOL)a5 success:(BOOL *)a6
+- (id)useEvaluationStackToGetParameter:(unsigned int)parameter tokenIndex:(unsigned int)index allReferencesAllowed:(BOOL)allowed success:(BOOL *)success
 {
-  *a6 = 1;
-  v9 = [(EPFormulaCleaner *)self useEvaluationStackToGetParameter:*&a3 tokenIndex:*&a4];
+  *success = 1;
+  v9 = [(EPFormulaCleaner *)self useEvaluationStackToGetParameter:*&parameter tokenIndex:*&index];
   if (v9 == -1 || (v10 = v9, [(EDFormula *)self->mTokensToClean tokenTypeAtIndex:v9]== 22))
   {
 LABEL_3:
-    v11 = 0;
+    string = 0;
     goto LABEL_6;
   }
 
   v35 = 0;
   v12 = [(EDFormula *)self->mTokensToClean tokenTypeAtIndex:v10];
-  v11 = 0;
+  string = 0;
   switch(v12)
   {
     case 3:
@@ -1986,7 +1986,7 @@ LABEL_3:
       goto LABEL_6;
     case 23:
       OcTextFromPtgStrBuffer = extractOcTextFromPtgStrBuffer([(EDFormula *)self->mTokensToClean lastExtendedDataForTokenAtIndex:v10 length:&v35]);
-      v11 = [MEMORY[0x277CCACA8] stringWithOcText:OcTextFromPtgStrBuffer];
+      string = [MEMORY[0x277CCACA8] stringWithOcText:OcTextFromPtgStrBuffer];
       if (OcTextFromPtgStrBuffer)
       {
         (*(*OcTextFromPtgStrBuffer + 8))(OcTextFromPtgStrBuffer);
@@ -2025,13 +2025,13 @@ LABEL_3:
       v32[0] = 0;
       extractDataFromPtgRefBuffer([(EDFormula *)self->mTokensToClean lastExtendedDataForTokenAtIndex:v10 length:&v35], &v34, v33, &v33[4], v32);
       [(EPFormulaCleaner *)self addOffsetsToRow:&v34 rowRelative:v33[0] column:&v33[4] columnRelative:v32[0]];
-      v18 = [(EDSheet *)self->mCurrentSheet rowBlocks];
-      v19 = [v18 cellWithRowNumber:v34 columnNumber:*&v33[4]];
+      rowBlocks = [(EDSheet *)self->mCurrentSheet rowBlocks];
+      v19 = [rowBlocks cellWithRowNumber:v34 columnNumber:*&v33[4]];
       goto LABEL_19;
     case 37:
     case 69:
     case 101:
-      if (!a5)
+      if (!allowed)
       {
         goto LABEL_5;
       }
@@ -2067,12 +2067,12 @@ LABEL_18:
         extractDataFromPtgRef3DBuffer([(EDFormula *)self->mTokensToClean lastExtendedDataForTokenAtIndex:v10 length:&v35], &v34, &v33[4], v32, v33, v29);
         [(EPFormulaCleaner *)self addOffsetsToRow:&v33[4] rowRelative:v32[0] column:v33 columnRelative:v29[0]];
         v21 = [(EPFormulaCleaner *)self worksheetFromLinkReferenceIndex:v34];
-        v18 = [v21 rowBlocks];
-        v19 = [v18 cellWithRowNumber:*&v33[4] columnNumber:*v33];
+        rowBlocks = [v21 rowBlocks];
+        v19 = [rowBlocks cellWithRowNumber:*&v33[4] columnNumber:*v33];
 
 LABEL_19:
-        v11 = 0;
-        if (!v19 || a5)
+        string = 0;
+        if (!v19 || allowed)
         {
           goto LABEL_38;
         }
@@ -2088,7 +2088,7 @@ LABEL_19:
           case 3u:
             WeakRetained = objc_loadWeakRetained(&self->super.mResources);
             v27 = stringValueForEDCell(v19, WeakRetained);
-            v11 = [v27 string];
+            string = [v27 string];
 
             goto LABEL_38;
           case 2u:
@@ -2099,22 +2099,22 @@ LABEL_19:
             break;
           default:
 LABEL_22:
-            v11 = 0;
-            *a6 = 0;
+            string = 0;
+            *success = 0;
 LABEL_38:
-            [v18 unlock];
+            [rowBlocks unlock];
 
             goto LABEL_6;
         }
 
-        v11 = v25;
+        string = v25;
         goto LABEL_38;
       }
 
       if (v12 == 123)
       {
 LABEL_15:
-        if (a5)
+        if (allowed)
         {
           v34 = 0;
           *v33 = 0;
@@ -2133,53 +2133,53 @@ LABEL_15:
 LABEL_17:
           v20 = [EDReference referenceWithFirstRow:v14 lastRow:v15 firstColumn:v16 lastColumn:v17];
 LABEL_30:
-          v11 = v20;
+          string = v20;
         }
 
         else
         {
 LABEL_5:
-          v11 = 0;
-          *a6 = 0;
+          string = 0;
+          *success = 0;
         }
       }
 
 LABEL_6:
 
-      return v11;
+      return string;
   }
 }
 
-- (BOOL)isArrayedFormulaSupported:(id)a3 allowSimpleRanges:(BOOL)a4 formulasBeingEvaluated:(id)a5
+- (BOOL)isArrayedFormulaSupported:(id)supported allowSimpleRanges:(BOOL)ranges formulasBeingEvaluated:(id)evaluated
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (([v9 containsObject:v8] & 1) == 0)
+  rangesCopy = ranges;
+  supportedCopy = supported;
+  evaluatedCopy = evaluated;
+  if (([evaluatedCopy containsObject:supportedCopy] & 1) == 0)
   {
-    if (!v8)
+    if (!supportedCopy)
     {
       v10 = 1;
       goto LABEL_46;
     }
 
-    [v9 addObject:v8];
-    v32 = v9;
+    [evaluatedCopy addObject:supportedCopy];
+    v32 = evaluatedCopy;
     v11 = 0;
     v12 = 0;
     v13 = 0;
     while (1)
     {
-      v14 = [v8 tokenCount];
-      if (v11 >= v14)
+      tokenCount = [supportedCopy tokenCount];
+      if (v11 >= tokenCount)
       {
 LABEL_45:
-        v10 = (v11 >= v14) & (v12 & v13 ^ 1);
-        v9 = v32;
+        v10 = (v11 >= tokenCount) & (v12 & v13 ^ 1);
+        evaluatedCopy = v32;
         goto LABEL_46;
       }
 
-      v15 = [v8 tokenTypeAtIndex:v11];
+      v15 = [supportedCopy tokenTypeAtIndex:v11];
       v16 = v15;
       v17 = 0;
       if (v15 <= 96)
@@ -2258,7 +2258,7 @@ LABEL_45:
             goto LABEL_42;
           case 16:
           case 17:
-            if (!v6)
+            if (!rangesCopy)
             {
               goto LABEL_45;
             }
@@ -2308,7 +2308,7 @@ LABEL_11:
           *v36 = 0;
           *v35 = 0;
           v34 = 0;
-          v19 = [v8 lastExtendedDataForTokenAtIndex:v11 length:&v34];
+          v19 = [supportedCopy lastExtendedDataForTokenAtIndex:v11 length:&v34];
           if (v16 == 59 || v16 == 123 || v16 == 91)
           {
             v33 = 0;
@@ -2323,7 +2323,7 @@ LABEL_11:
           if (v38[1] == v38[0] && v37[1] == v37[0] && v36[1] == v36[0])
           {
             v20 = (v35[1] != v35[0]) | v13;
-            if (v35[1] != v35[0] && !v6)
+            if (v35[1] != v35[0] && !rangesCopy)
             {
               goto LABEL_45;
             }
@@ -2331,7 +2331,7 @@ LABEL_11:
 
           else
           {
-            if (!v6)
+            if (!rangesCopy)
             {
               goto LABEL_45;
             }
@@ -2347,28 +2347,28 @@ LABEL_11:
         {
 LABEL_28:
           v21 = v12;
-          v22 = v6;
+          v22 = rangesCopy;
           v23 = v13;
           v38[1] = 0;
-          v24 = *[v8 lastExtendedDataForTokenAtIndex:v11 length:&v38[1]];
-          v25 = self;
+          v24 = *[supportedCopy lastExtendedDataForTokenAtIndex:v11 length:&v38[1]];
+          selfCopy = self;
           WeakRetained = objc_loadWeakRetained(&self->super.mResources);
-          v27 = [WeakRetained names];
-          v28 = [v27 objectAtIndex:v24];
+          names = [WeakRetained names];
+          v28 = [names objectAtIndex:v24];
 
-          v29 = [v28 formula];
-          LOBYTE(v27) = [(EPFormulaCleaner *)v25 isArrayedFormulaSupported:v29 allowSimpleRanges:0 formulasBeingEvaluated:v32];
+          formula = [v28 formula];
+          LOBYTE(names) = [(EPFormulaCleaner *)selfCopy isArrayedFormulaSupported:formula allowSimpleRanges:0 formulasBeingEvaluated:v32];
 
-          if ((v27 & 1) == 0)
+          if ((names & 1) == 0)
           {
             LOBYTE(v13) = v23;
             LOBYTE(v12) = v21;
             goto LABEL_45;
           }
 
-          self = v25;
+          self = selfCopy;
           v13 = v23;
-          v6 = v22;
+          rangesCopy = v22;
           v12 = v21;
           goto LABEL_42;
         }
@@ -2392,7 +2392,7 @@ LABEL_36:
 
 LABEL_37:
       v38[1] = 0;
-      v30 = *([v8 lastExtendedDataForTokenAtIndex:v11 length:&v38[1]] + 2 * v17);
+      v30 = *([supportedCopy lastExtendedDataForTokenAtIndex:v11 length:&v38[1]] + 2 * v17);
       if (v30 != 78 && v30 != 148)
       {
         v12 = 1;
@@ -2414,7 +2414,7 @@ LABEL_46:
   return v10;
 }
 
-- (BOOL)doesNameIndexContainCircularReferences:(unsigned int)a3 sheetIndex:(unint64_t)a4 previousNameIndexes:(void *)a5
+- (BOOL)doesNameIndexContainCircularReferences:(unsigned int)references sheetIndex:(unint64_t)index previousNameIndexes:(void *)indexes
 {
   mNameCircularReferenceTestCache = self->mNameCircularReferenceTestCache;
   if (!mNameCircularReferenceTestCache)
@@ -2426,21 +2426,21 @@ LABEL_46:
     mNameCircularReferenceTestCache = self->mNameCircularReferenceTestCache;
   }
 
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a3 + 1];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:references + 1];
   v13 = [(NSMutableDictionary *)mNameCircularReferenceTestCache objectForKey:v12];
-  v14 = [v13 unsignedLongValue];
+  unsignedLongValue = [v13 unsignedLongValue];
 
-  if (v14)
+  if (unsignedLongValue)
   {
-    return v14 == 2;
+    return unsignedLongValue == 2;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->super.mResources);
-  v17 = [WeakRetained names];
-  v18 = [v17 objectAtIndex:a3];
+  names = [WeakRetained names];
+  v18 = [names objectAtIndex:references];
 
-  v19 = [v18 sheetIndex];
-  if (v19 != a4 && v19 != 0)
+  sheetIndex = [v18 sheetIndex];
+  if (sheetIndex != index && sheetIndex != 0)
   {
     v15 = 0;
     v27 = self->mNameCircularReferenceTestCache;
@@ -2450,10 +2450,10 @@ LABEL_23:
     goto LABEL_25;
   }
 
-  v21 = [v18 formula];
+  formula = [v18 formula];
   for (i = 0; ; i = (i + 1))
   {
-    if (i >= [v21 tokenCount])
+    if (i >= [formula tokenCount])
     {
 
       v27 = self->mNameCircularReferenceTestCache;
@@ -2462,7 +2462,7 @@ LABEL_23:
       goto LABEL_23;
     }
 
-    v23 = [v21 tokenTypeAtIndex:i];
+    v23 = [formula tokenTypeAtIndex:i];
     if (v23 == 35 || v23 == 67 || v23 == 99)
     {
       break;
@@ -2470,8 +2470,8 @@ LABEL_23:
   }
 
   v33 = 0;
-  v24 = *[v21 lastExtendedDataForTokenAtIndex:i length:&v33];
-  if (!a5 || (v25 = *(a5 + 1)) == 0)
+  v24 = *[formula lastExtendedDataForTokenAtIndex:i length:&v33];
+  if (!indexes || (v25 = *(indexes + 1)) == 0)
   {
 LABEL_21:
     operator new();
@@ -2507,36 +2507,36 @@ LABEL_20:
   v15 = 1;
 LABEL_25:
   v30 = [v28 numberWithInt:v29];
-  v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a3 + 1];
+  v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:references + 1];
   [(NSMutableDictionary *)v27 setObject:v30 forKey:v31];
 
   return v15;
 }
 
-- (id)newFormulaToCleanFromSharedFormula:(id)a3
+- (id)newFormulaToCleanFromSharedFormula:(id)formula
 {
-  v4 = a3;
-  v5 = [(EDSheet *)self->mCurrentSheet rowBlocks];
-  v6 = [v4 warningWithRowBlocks:v5];
+  formulaCopy = formula;
+  rowBlocks = [(EDSheet *)self->mCurrentSheet rowBlocks];
+  v6 = [formulaCopy warningWithRowBlocks:rowBlocks];
 
-  [v5 unlock];
+  [rowBlocks unlock];
   if (v6)
   {
     v7 = 0;
   }
 
-  else if ([v4 isBaseFormula])
+  else if ([formulaCopy isBaseFormula])
   {
-    v7 = v4;
+    v7 = formulaCopy;
   }
 
   else
   {
-    v8 = [(EDSheet *)self->mCurrentSheet rowBlocks];
-    v9 = [v4 baseFormulaWithRowBlocks:v8];
+    rowBlocks2 = [(EDSheet *)self->mCurrentSheet rowBlocks];
+    v9 = [formulaCopy baseFormulaWithRowBlocks:rowBlocks2];
     if (([v9 isContainsRelativeReferences] & 1) != 0 || objc_msgSend(v9, "isCleanedWithEvaluationStack"))
     {
-      objc_storeStrong(&self->mBaseFormulaRowBlocks, v8);
+      objc_storeStrong(&self->mBaseFormulaRowBlocks, rowBlocks2);
       v10 = [[EDFormula alloc] initWithFormula:v9];
 
       v7 = v10;
@@ -2545,7 +2545,7 @@ LABEL_25:
 
     else
     {
-      [v8 unlock];
+      [rowBlocks2 unlock];
       v7 = 0;
     }
   }
@@ -2553,14 +2553,14 @@ LABEL_25:
   return v7;
 }
 
-- (void)reportWarning:(int)a3 parameter:(id)a4
+- (void)reportWarning:(int)warning parameter:(id)parameter
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&warning;
+  parameterCopy = parameter;
   [(EDFormula *)self->mFormula setWarning:v4];
-  if (v6)
+  if (parameterCopy)
   {
-    [(EDFormula *)self->mFormula setWarningParameter:v6];
+    [(EDFormula *)self->mFormula setWarningParameter:parameterCopy];
   }
 }
 

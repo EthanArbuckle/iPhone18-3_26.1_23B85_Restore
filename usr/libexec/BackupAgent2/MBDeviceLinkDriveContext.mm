@@ -1,21 +1,21 @@
 @interface MBDeviceLinkDriveContext
-- (MBDeviceLinkDriveContext)initWithFileHandleFactory:(id)a3;
-- (id)_fileForFD:(int)a3;
-- (int)_addFile:(id)a3;
-- (void)_removeFileWithFD:(int)a3;
+- (MBDeviceLinkDriveContext)initWithFileHandleFactory:(id)factory;
+- (id)_fileForFD:(int)d;
+- (int)_addFile:(id)file;
+- (void)_removeFileWithFD:(int)d;
 - (void)dealloc;
 @end
 
 @implementation MBDeviceLinkDriveContext
 
-- (MBDeviceLinkDriveContext)initWithFileHandleFactory:(id)a3
+- (MBDeviceLinkDriveContext)initWithFileHandleFactory:(id)factory
 {
   v6.receiver = self;
   v6.super_class = MBDeviceLinkDriveContext;
   v4 = [(MBDeviceLinkDriveContext *)&v6 init];
   if (v4)
   {
-    v4->_fileHandleFactory = a3;
+    v4->_fileHandleFactory = factory;
     v4->_fileHandlesByFD = [[NSMutableArray alloc] initWithCapacity:0];
   }
 
@@ -29,14 +29,14 @@
   [(MBDeviceLinkDriveContext *)&v3 dealloc];
 }
 
-- (id)_fileForFD:(int)a3
+- (id)_fileForFD:(int)d
 {
-  if ([(NSMutableArray *)self->_fileHandlesByFD count]<= a3)
+  if ([(NSMutableArray *)self->_fileHandlesByFD count]<= d)
   {
     return 0;
   }
 
-  v5 = [(NSMutableArray *)self->_fileHandlesByFD objectAtIndexedSubscript:a3];
+  v5 = [(NSMutableArray *)self->_fileHandlesByFD objectAtIndexedSubscript:d];
   if (v5 == objc_opt_class())
   {
     return 0;
@@ -48,24 +48,24 @@
   }
 }
 
-- (int)_addFile:(id)a3
+- (int)_addFile:(id)file
 {
-  v5 = [a3 fd];
+  v5 = [file fd];
   while ([(NSMutableArray *)self->_fileHandlesByFD count]<= v5)
   {
     [(NSMutableArray *)self->_fileHandlesByFD addObject:+[NSNull null]];
   }
 
-  [(NSMutableArray *)self->_fileHandlesByFD setObject:a3 atIndexedSubscript:v5];
+  [(NSMutableArray *)self->_fileHandlesByFD setObject:file atIndexedSubscript:v5];
   return v5;
 }
 
-- (void)_removeFileWithFD:(int)a3
+- (void)_removeFileWithFD:(int)d
 {
   v5 = +[NSNull null];
   fileHandlesByFD = self->_fileHandlesByFD;
 
-  [(NSMutableArray *)fileHandlesByFD setObject:v5 atIndexedSubscript:a3];
+  [(NSMutableArray *)fileHandlesByFD setObject:v5 atIndexedSubscript:d];
 }
 
 @end

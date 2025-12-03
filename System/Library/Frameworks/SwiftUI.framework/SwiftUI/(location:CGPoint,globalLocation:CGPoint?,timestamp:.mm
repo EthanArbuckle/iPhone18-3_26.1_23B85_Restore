@@ -25,7 +25,7 @@
     type metadata accessor for CGPoint?(255, &lazy cache variable for type metadata for [(location: CGPoint, globalLocation: CGPoint?, timestamp: Date)], type metadata accessor for (location: CGPoint, globalLocation: CGPoint?, timestamp: Date), MEMORY[0x1E69E62F8]);
     v7 = v6;
     v8 = lazy protocol witness table accessor for type [(location: CGPoint, globalLocation: CGPoint?, timestamp: Date)] and conformance [A]();
-    v9 = a3(a1, v7, v8);
+    v9 = a3(self, v7, v8);
     if (!v10)
     {
       atomic_store(v9, a2);

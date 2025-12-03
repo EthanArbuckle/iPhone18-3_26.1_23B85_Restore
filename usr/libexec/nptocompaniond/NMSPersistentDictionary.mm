@@ -1,61 +1,61 @@
 @interface NMSPersistentDictionary
-- (NMSPersistentDictionary)initWithPath:(id)a3 objectClass:(Class)a4;
-- (id)_dataFromObj:(id)a3;
-- (id)_objectFromData:(id)a3;
-- (id)objectForKey:(id)a3;
-- (void)_GENERIC_ERROR:(id)a3;
-- (void)_SQLITE_ABORT:(id)a3;
-- (void)_SQLITE_AUTH:(id)a3;
-- (void)_SQLITE_BUSY:(id)a3;
-- (void)_SQLITE_CANTOPEN:(id)a3;
-- (void)_SQLITE_CONSTRAINT:(id)a3;
-- (void)_SQLITE_CORRUPT:(id)a3;
-- (void)_SQLITE_DONE:(id)a3;
-- (void)_SQLITE_EMPTY:(id)a3;
-- (void)_SQLITE_ERROR:(id)a3;
-- (void)_SQLITE_FORMAT:(id)a3;
-- (void)_SQLITE_FULL:(id)a3;
-- (void)_SQLITE_INTERNAL:(id)a3;
-- (void)_SQLITE_INTERRUPT:(id)a3;
-- (void)_SQLITE_IOERR:(id)a3;
-- (void)_SQLITE_LOCKED:(id)a3;
-- (void)_SQLITE_MISMATCH:(id)a3;
-- (void)_SQLITE_MISUSE:(id)a3;
-- (void)_SQLITE_NOLFS:(id)a3;
-- (void)_SQLITE_NOMEM:(id)a3;
-- (void)_SQLITE_NOTADB:(id)a3;
-- (void)_SQLITE_NOTFOUND:(id)a3;
-- (void)_SQLITE_NOTICE:(id)a3;
-- (void)_SQLITE_PERM:(id)a3;
-- (void)_SQLITE_PROTOCOL:(id)a3;
-- (void)_SQLITE_RANGE:(id)a3;
-- (void)_SQLITE_READONLY:(id)a3;
-- (void)_SQLITE_ROW:(id)a3;
-- (void)_SQLITE_SCHEMA:(id)a3;
-- (void)_SQLITE_TOOBIG:(id)a3;
-- (void)_SQLITE_WARNING:(id)a3;
-- (void)_openDBForceRecreate:(BOOL)a3;
-- (void)_raiseExceptionWithError:(id)a3;
+- (NMSPersistentDictionary)initWithPath:(id)path objectClass:(Class)class;
+- (id)_dataFromObj:(id)obj;
+- (id)_objectFromData:(id)data;
+- (id)objectForKey:(id)key;
+- (void)_GENERIC_ERROR:(id)r;
+- (void)_SQLITE_ABORT:(id)t;
+- (void)_SQLITE_AUTH:(id)h;
+- (void)_SQLITE_BUSY:(id)y;
+- (void)_SQLITE_CANTOPEN:(id)n;
+- (void)_SQLITE_CONSTRAINT:(id)t;
+- (void)_SQLITE_CORRUPT:(id)t;
+- (void)_SQLITE_DONE:(id)e;
+- (void)_SQLITE_EMPTY:(id)y;
+- (void)_SQLITE_ERROR:(id)r;
+- (void)_SQLITE_FORMAT:(id)t;
+- (void)_SQLITE_FULL:(id)l;
+- (void)_SQLITE_INTERNAL:(id)l;
+- (void)_SQLITE_INTERRUPT:(id)t;
+- (void)_SQLITE_IOERR:(id)r;
+- (void)_SQLITE_LOCKED:(id)d;
+- (void)_SQLITE_MISMATCH:(id)h;
+- (void)_SQLITE_MISUSE:(id)e;
+- (void)_SQLITE_NOLFS:(id)s;
+- (void)_SQLITE_NOMEM:(id)m;
+- (void)_SQLITE_NOTADB:(id)b;
+- (void)_SQLITE_NOTFOUND:(id)d;
+- (void)_SQLITE_NOTICE:(id)e;
+- (void)_SQLITE_PERM:(id)m;
+- (void)_SQLITE_PROTOCOL:(id)l;
+- (void)_SQLITE_RANGE:(id)e;
+- (void)_SQLITE_READONLY:(id)y;
+- (void)_SQLITE_ROW:(id)w;
+- (void)_SQLITE_SCHEMA:(id)a;
+- (void)_SQLITE_TOOBIG:(id)g;
+- (void)_SQLITE_WARNING:(id)g;
+- (void)_openDBForceRecreate:(BOOL)recreate;
+- (void)_raiseExceptionWithError:(id)error;
 - (void)dealloc;
-- (void)enumerateObjectsSortedByExpirationDate:(id)a3;
+- (void)enumerateObjectsSortedByExpirationDate:(id)date;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4 expires:(id)a5;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key expires:(id)expires;
 @end
 
 @implementation NMSPersistentDictionary
 
-- (NMSPersistentDictionary)initWithPath:(id)a3 objectClass:(Class)a4
+- (NMSPersistentDictionary)initWithPath:(id)path objectClass:(Class)class
 {
-  v7 = a3;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = NMSPersistentDictionary;
   v8 = [(NMSPersistentDictionary *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_path, a3);
-    v9->_objectClass = a4;
+    objc_storeStrong(&v8->_path, path);
+    v9->_objectClass = class;
     [(NMSPersistentDictionary *)v9 _openDBForceRecreate:0];
   }
 
@@ -79,16 +79,16 @@
   [(NMSPersistentDictionary *)&v3 dealloc];
 }
 
-- (void)_openDBForceRecreate:(BOOL)a3
+- (void)_openDBForceRecreate:(BOOL)recreate
 {
   v5 = self->_path;
   v6 = +[NSFileManager defaultManager];
-  v7 = [(NSString *)v5 stringByDeletingLastPathComponent];
+  stringByDeletingLastPathComponent = [(NSString *)v5 stringByDeletingLastPathComponent];
   v8 = [v6 fileExistsAtPath:v5];
   if ((v8 & 1) == 0)
   {
     v49 = 0;
-    v9 = [v6 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v49];
+    v9 = [v6 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v49];
     v10 = v49;
     if ((v9 & 1) == 0)
     {
@@ -96,7 +96,7 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        *v53 = v7;
+        *v53 = stringByDeletingLastPathComponent;
         *&v53[8] = 2112;
         *&v53[10] = v10;
         _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Could not create directory %@: %@", buf, 0x16u);
@@ -110,9 +110,9 @@
   db = self->_db;
   if (v12)
   {
-    v47 = a3;
+    recreateCopy2 = recreate;
     v14 = v6;
-    v15 = v7;
+    v15 = stringByDeletingLastPathComponent;
     v16 = v12;
     v50 = NSLocalizedDescriptionKey;
     if (db)
@@ -139,7 +139,7 @@ LABEL_34:
       }
 
       v37 = self->_db;
-      v7 = v15;
+      stringByDeletingLastPathComponent = v15;
       if (v37)
       {
         sqlite3_close(v37);
@@ -147,7 +147,7 @@ LABEL_34:
 
       self->_db = 0;
       v6 = v14;
-      if (v47)
+      if (recreateCopy2)
       {
         v38 = sub_10000268C();
         if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -211,9 +211,9 @@ LABEL_33:
 
   if (!db)
   {
-    v47 = a3;
+    recreateCopy2 = recreate;
     v14 = v6;
-    v15 = v7;
+    v15 = stringByDeletingLastPathComponent;
     v16 = 0;
     v50 = NSLocalizedDescriptionKey;
     goto LABEL_33;
@@ -312,18 +312,18 @@ LABEL_33:
 LABEL_54:
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4 expires:(id)a5
+- (void)setObject:(id)object forKey:(id)key expires:(id)expires
 {
   insert = self->_insert;
-  v9 = a5;
-  v10 = a3;
-  sub_10005B708(insert, a4);
+  expiresCopy = expires;
+  objectCopy = object;
+  sub_10005B708(insert, key);
   v11 = self->_insert;
-  [v9 timeIntervalSinceReferenceDate];
+  [expiresCopy timeIntervalSinceReferenceDate];
   v13 = v12;
 
   sqlite3_bind_double(v11, 2, v13);
-  v14 = [(NMSPersistentDictionary *)self _dataFromObj:v10];
+  v14 = [(NMSPersistentDictionary *)self _dataFromObj:objectCopy];
 
   sqlite3_bind_blob(self->_insert, 3, [v14 bytes], objc_msgSend(v14, "length"), 0xFFFFFFFFFFFFFFFFLL);
   v15 = sqlite3_step(self->_insert);
@@ -349,13 +349,13 @@ LABEL_54:
   sqlite3_clear_bindings(self->_insert);
 }
 
-- (id)_objectFromData:(id)a3
+- (id)_objectFromData:(id)data
 {
-  if (a3)
+  if (data)
   {
     objectClass = self->_objectClass;
     v9 = 0;
-    v5 = [NSKeyedUnarchiver unarchivedObjectOfClass:objectClass fromData:a3 error:&v9];
+    v5 = [NSKeyedUnarchiver unarchivedObjectOfClass:objectClass fromData:data error:&v9];
     v6 = v9;
     if (v6)
     {
@@ -377,10 +377,10 @@ LABEL_54:
   return v5;
 }
 
-- (id)_dataFromObj:(id)a3
+- (id)_dataFromObj:(id)obj
 {
   v7 = 0;
-  v3 = [NSKeyedArchiver archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v7];
+  v3 = [NSKeyedArchiver archivedDataWithRootObject:obj requiringSecureCoding:1 error:&v7];
   v4 = v7;
   if (v4)
   {
@@ -396,9 +396,9 @@ LABEL_54:
   return v3;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  sub_10005B708(self->_fetch, a3);
+  sub_10005B708(self->_fetch, key);
   v4 = sqlite3_step(self->_fetch);
   if (v4 != 101)
   {
@@ -430,9 +430,9 @@ LABEL_8:
   return v8;
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  sub_10005B708(self->_remove, a3);
+  sub_10005B708(self->_remove, key);
   v4 = sqlite3_step(self->_remove);
   if (v4 != 101)
   {
@@ -474,9 +474,9 @@ LABEL_8:
   sqlite3_reset(self->_removeAll);
 }
 
-- (void)enumerateObjectsSortedByExpirationDate:(id)a3
+- (void)enumerateObjectsSortedByExpirationDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = +[NSMutableSet set];
   while (1)
   {
@@ -493,7 +493,7 @@ LABEL_8:
     if (v10)
     {
       buf[0] = 0;
-      v4[2](v4, v7, v10, v8, buf);
+      dateCopy[2](dateCopy, v7, v10, v8, buf);
       if (buf[0])
       {
 
@@ -556,418 +556,418 @@ LABEL_13:
   }
 }
 
-- (void)_SQLITE_ERROR:(id)a3
+- (void)_SQLITE_ERROR:(id)r
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [r localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_INTERNAL:(id)a3
+- (void)_SQLITE_INTERNAL:(id)l
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [l localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_PERM:(id)a3
+- (void)_SQLITE_PERM:(id)m
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [m localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_ABORT:(id)a3
+- (void)_SQLITE_ABORT:(id)t
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [t localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_BUSY:(id)a3
+- (void)_SQLITE_BUSY:(id)y
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [y localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_LOCKED:(id)a3
+- (void)_SQLITE_LOCKED:(id)d
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [d localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_NOMEM:(id)a3
+- (void)_SQLITE_NOMEM:(id)m
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [m localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_READONLY:(id)a3
+- (void)_SQLITE_READONLY:(id)y
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [y localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_INTERRUPT:(id)a3
+- (void)_SQLITE_INTERRUPT:(id)t
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [t localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_IOERR:(id)a3
+- (void)_SQLITE_IOERR:(id)r
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [r localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_CORRUPT:(id)a3
+- (void)_SQLITE_CORRUPT:(id)t
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [t localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_NOTFOUND:(id)a3
+- (void)_SQLITE_NOTFOUND:(id)d
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [d localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_FULL:(id)a3
+- (void)_SQLITE_FULL:(id)l
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [l localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_CANTOPEN:(id)a3
+- (void)_SQLITE_CANTOPEN:(id)n
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [n localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_PROTOCOL:(id)a3
+- (void)_SQLITE_PROTOCOL:(id)l
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [l localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_EMPTY:(id)a3
+- (void)_SQLITE_EMPTY:(id)y
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [y localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_SCHEMA:(id)a3
+- (void)_SQLITE_SCHEMA:(id)a
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [a localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_TOOBIG:(id)a3
+- (void)_SQLITE_TOOBIG:(id)g
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [g localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_CONSTRAINT:(id)a3
+- (void)_SQLITE_CONSTRAINT:(id)t
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [t localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_MISMATCH:(id)a3
+- (void)_SQLITE_MISMATCH:(id)h
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [h localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_MISUSE:(id)a3
+- (void)_SQLITE_MISUSE:(id)e
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [e localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_NOLFS:(id)a3
+- (void)_SQLITE_NOLFS:(id)s
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [s localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_AUTH:(id)a3
+- (void)_SQLITE_AUTH:(id)h
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [h localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_FORMAT:(id)a3
+- (void)_SQLITE_FORMAT:(id)t
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [t localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_RANGE:(id)a3
+- (void)_SQLITE_RANGE:(id)e
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [e localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_NOTADB:(id)a3
+- (void)_SQLITE_NOTADB:(id)b
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [b localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_NOTICE:(id)a3
+- (void)_SQLITE_NOTICE:(id)e
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [e localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_WARNING:(id)a3
+- (void)_SQLITE_WARNING:(id)g
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [g localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_ROW:(id)a3
+- (void)_SQLITE_ROW:(id)w
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [w localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_SQLITE_DONE:(id)a3
+- (void)_SQLITE_DONE:(id)e
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [e localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_GENERIC_ERROR:(id)a3
+- (void)_GENERIC_ERROR:(id)r
 {
-  v4 = [a3 localizedDescription];
-  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
+  localizedDescription = [r localizedDescription];
+  v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:localizedDescription userInfo:0];
   [v3 raise];
 }
 
-- (void)_raiseExceptionWithError:(id)a3
+- (void)_raiseExceptionWithError:(id)error
 {
-  v6 = a3;
+  errorCopy = error;
   +[NPTOTransaction _deleteKeepAliveFile];
-  v4 = [v6 domain];
-  v5 = [v4 isEqualToString:@"SQLITE"];
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:@"SQLITE"];
 
   if (!v5)
   {
     goto LABEL_62;
   }
 
-  if ([v6 code] == 1)
+  if ([errorCopy code] == 1)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_ERROR:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_ERROR:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 2)
+  if ([errorCopy code] == 2)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_INTERNAL:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_INTERNAL:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 3)
+  if ([errorCopy code] == 3)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_PERM:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_PERM:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 4)
+  if ([errorCopy code] == 4)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_ABORT:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_ABORT:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 5)
+  if ([errorCopy code] == 5)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_BUSY:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_BUSY:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 6)
+  if ([errorCopy code] == 6)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_LOCKED:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_LOCKED:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 7)
+  if ([errorCopy code] == 7)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_NOMEM:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_NOMEM:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 8)
+  if ([errorCopy code] == 8)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_READONLY:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_READONLY:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 9)
+  if ([errorCopy code] == 9)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_INTERRUPT:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_INTERRUPT:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 10)
+  if ([errorCopy code] == 10)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_IOERR:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_IOERR:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 11)
+  if ([errorCopy code] == 11)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_CORRUPT:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_CORRUPT:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 12)
+  if ([errorCopy code] == 12)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_NOTFOUND:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_NOTFOUND:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 13)
+  if ([errorCopy code] == 13)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_FULL:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_FULL:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 14)
+  if ([errorCopy code] == 14)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_CANTOPEN:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_CANTOPEN:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 15)
+  if ([errorCopy code] == 15)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_PROTOCOL:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_PROTOCOL:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 16)
+  if ([errorCopy code] == 16)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_EMPTY:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_EMPTY:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 17)
+  if ([errorCopy code] == 17)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_SCHEMA:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_SCHEMA:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 18)
+  if ([errorCopy code] == 18)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_TOOBIG:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_TOOBIG:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 19)
+  if ([errorCopy code] == 19)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_CONSTRAINT:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_CONSTRAINT:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 20)
+  if ([errorCopy code] == 20)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_MISMATCH:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_MISMATCH:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 21)
+  if ([errorCopy code] == 21)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_MISUSE:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_MISUSE:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 22)
+  if ([errorCopy code] == 22)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_NOLFS:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_NOLFS:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 23)
+  if ([errorCopy code] == 23)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_AUTH:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_AUTH:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 24)
+  if ([errorCopy code] == 24)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_FORMAT:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_FORMAT:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 25)
+  if ([errorCopy code] == 25)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_RANGE:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_RANGE:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 26)
+  if ([errorCopy code] == 26)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_NOTADB:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_NOTADB:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 27)
+  if ([errorCopy code] == 27)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_NOTICE:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_NOTICE:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 28)
+  if ([errorCopy code] == 28)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_WARNING:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_WARNING:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 100)
+  if ([errorCopy code] == 100)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_ROW:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_ROW:errorCopy];
     goto LABEL_63;
   }
 
-  if ([v6 code] == 101)
+  if ([errorCopy code] == 101)
   {
-    [(NMSPersistentDictionary *)self _SQLITE_DONE:v6];
+    [(NMSPersistentDictionary *)self _SQLITE_DONE:errorCopy];
   }
 
   else
   {
 LABEL_62:
-    [(NMSPersistentDictionary *)self _GENERIC_ERROR:v6];
+    [(NMSPersistentDictionary *)self _GENERIC_ERROR:errorCopy];
   }
 
 LABEL_63:

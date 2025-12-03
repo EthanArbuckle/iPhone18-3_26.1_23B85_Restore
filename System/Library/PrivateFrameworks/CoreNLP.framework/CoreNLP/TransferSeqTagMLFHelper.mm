@@ -1,43 +1,43 @@
 @interface TransferSeqTagMLFHelper
-- (BOOL)loadModelLayersFromWeights:(id)a3 labelSize:(unint64_t)a4 embeddingDimension:(int64_t)a5 modelLayers:(void *)a6;
-- (TransferSeqTagMLFHelper)initWithTraininingParameters:(id)a3;
-- (__CFDictionary)doSeqTagTrainingAndEvalFromData:(void *)a3 batchedLabels:(void *)a4 batchedPaddedLabelDatasets:(void *)a5 labelArray:(void *)a6 embeddingRef:(void *)a7 modeLayerList:(void *)a8 trainingGraph:(id)a9 inferenceGraph:(id)a10 scalarParams:(void *)a11 inputPlaceholders:(void *)a12 targetLabelPlaceholders:(id)a13 targetLabelWeightsPlaceholders:(id)a14 trainingLogger:(id)a15;
-- (float)evaluateMontrealModelOnData:(void *)a3 evalLabels:(void *)a4 evalEmbeddingsCache:(void *)a5 embeddingRef:(void *)a6 montrealModel:(void *)a7 labelArray:(void *)a8 trainingLogger:(id)a9 dataTypeString:()basic_string<char predictedLabels:()std:(std::allocator<char>> *)a10 :char_traits<char>;
-- (float)showF1ResultsMatrix:(void *)a3 labelCounts:()map<int perLabelResults:()int trainingLogger:()std:(std:(int>>> *)a4 :(void *)a5 allocator<std:(id)a6 :()basic_string<char pair<const)int :()std:(std::allocator<char>> *)a7 :char_traits<char> less<int> dataTypeString:;
-- (id)createConvLayerFromData:(unint64_t)a3 width:(unint64_t)a4 inputChannels:(unint64_t)a5 outputChannels:(unint64_t)a6 strideInX:(unint64_t)a7 strideInY:(unint64_t)a8 kernelWeight:(id)a9 kernelBias:(id)a10;
-- (id)createConvLayerWithKernelHeight:(unint64_t)a3 width:(unint64_t)a4 inputChannels:(unint64_t)a5 outputChannels:(unint64_t)a6 strideInX:(unint64_t)a7 strideInY:(unint64_t)a8;
-- (id)createDataWithFloatValue:(float)a3 count:(unint64_t)a4;
-- (id)createGraphObjectFromLayers:(void *)a3 graphObject:(id)a4 inputPlaceholders:(void *)a5;
-- (id)createInferenceGraphFromGraphObject:(id)a3 inputPlaceholders:(void *)a4 scalarWeights:(void *)a5 finalLayerTensor:(id)a6 device:(id)a7;
-- (id)createLSTM:(unint64_t)a3 outputSize:(unint64_t)a4;
-- (id)createLSTMFromWeights:(unint64_t)a3 outputSize:(unint64_t)a4 inputWeights:(id)a5 hiddenWeights:(id)a6 biasTerms:(id)a7;
-- (id)createNSDataWithFloatValue:(float)a3 count:(unint64_t)a4;
-- (id)createTrainingGraphFromGraphObject:(id)a3 inputPlaceholders:(void *)a4 scalarWeights:(void *)a5 targetLabels:(id)a6 targeLabelWeights:(id)a7 device:(id)a8;
-- (id)findMaxIndexWithData:(id)a3 batchSize:(unint64_t)a4 sequenceLength:(unint64_t)a5 numClasses:(unint64_t)a6;
+- (BOOL)loadModelLayersFromWeights:(id)weights labelSize:(unint64_t)size embeddingDimension:(int64_t)dimension modelLayers:(void *)layers;
+- (TransferSeqTagMLFHelper)initWithTraininingParameters:(id)parameters;
+- (__CFDictionary)doSeqTagTrainingAndEvalFromData:(void *)data batchedLabels:(void *)labels batchedPaddedLabelDatasets:(void *)datasets labelArray:(void *)array embeddingRef:(void *)ref modeLayerList:(void *)list trainingGraph:(id)graph inferenceGraph:(id)self0 scalarParams:(void *)self1 inputPlaceholders:(void *)self2 targetLabelPlaceholders:(id)self3 targetLabelWeightsPlaceholders:(id)self4 trainingLogger:(id)self5;
+- (float)evaluateMontrealModelOnData:(void *)data evalLabels:(void *)labels evalEmbeddingsCache:(void *)cache embeddingRef:(void *)ref montrealModel:(void *)model labelArray:(void *)array trainingLogger:(id)logger dataTypeString:()basic_string<char predictedLabels:()std:(std::allocator<char>> *)self0 :char_traits<char>;
+- (float)showF1ResultsMatrix:(void *)matrix labelCounts:()map<int perLabelResults:()int trainingLogger:()std:(std:(int>>> *)std :(void *)a5 allocator<std:(id)a6 :()basic_string<char pair<const)int :()std:(std::allocator<char>> *)a7 :char_traits<char> less<int> dataTypeString:;
+- (id)createConvLayerFromData:(unint64_t)data width:(unint64_t)width inputChannels:(unint64_t)channels outputChannels:(unint64_t)outputChannels strideInX:(unint64_t)x strideInY:(unint64_t)y kernelWeight:(id)weight kernelBias:(id)self0;
+- (id)createConvLayerWithKernelHeight:(unint64_t)height width:(unint64_t)width inputChannels:(unint64_t)channels outputChannels:(unint64_t)outputChannels strideInX:(unint64_t)x strideInY:(unint64_t)y;
+- (id)createDataWithFloatValue:(float)value count:(unint64_t)count;
+- (id)createGraphObjectFromLayers:(void *)layers graphObject:(id)object inputPlaceholders:(void *)placeholders;
+- (id)createInferenceGraphFromGraphObject:(id)object inputPlaceholders:(void *)placeholders scalarWeights:(void *)weights finalLayerTensor:(id)tensor device:(id)device;
+- (id)createLSTM:(unint64_t)m outputSize:(unint64_t)size;
+- (id)createLSTMFromWeights:(unint64_t)weights outputSize:(unint64_t)size inputWeights:(id)inputWeights hiddenWeights:(id)hiddenWeights biasTerms:(id)terms;
+- (id)createNSDataWithFloatValue:(float)value count:(unint64_t)count;
+- (id)createTrainingGraphFromGraphObject:(id)object inputPlaceholders:(void *)placeholders scalarWeights:(void *)weights targetLabels:(id)labels targeLabelWeights:(id)labelWeights device:(id)device;
+- (id)findMaxIndexWithData:(id)data batchSize:(unint64_t)size sequenceLength:(unint64_t)length numClasses:(unint64_t)classes;
 - (id)getModelLayerWeights:(vector<void *);
-- (void)createGraphObjectAndLayersFromInputPlaceholders:(void *)a3 scalarWeights:(void *)a4 labelSize:(unint64_t)a5 embeddingDimension:(int64_t)a6 graphObject:(id)a7 graphLayerList:(void *)a8;
+- (void)createGraphObjectAndLayersFromInputPlaceholders:(void *)placeholders scalarWeights:(void *)weights labelSize:(unint64_t)size embeddingDimension:(int64_t)dimension graphObject:(id)object graphLayerList:(void *)list;
 - (void)dealloc;
-- (void)evaluateInferenceGraphWithInputTensorData:(void *)a3 batchedInputSentences:(void *)a4 batchedLabels:(void *)a5 inferenceGraph:(id)a6 inputPlaceholders:(void *)a7 scalarParams:(void *)a8 labelArray:(void *)a9 dataTypeString:()basic_string<char trainingLogger:()std:(std::allocator<char>> *)a10 :char_traits<char> predictedLabels:;
-- (void)executeInferenceGraph:(id)a3 inputsDictionary:(id)a4 batchSize:(int)a5 maxLength:(int)a6 labelSize:(int)a7 predictedLabels:(void *)a8;
-- (void)flattenBatchOfOneHotSequences:(void *)a3 flattenedBatch:(void *)a4;
-- (void)getMaxIndicesFromOneHotVectors:(void *)a3 maxIndicesBatch:(void *)a4;
-- (void)getNSSequenceFromStdSequence:(void *)a3 nsSentences:(id)a4 nsSeqLengths:(id)a5 maxLength:(int)a6;
-- (void)labelIdsToString:(void *)a3 labelArray:(void *)a4 labelStrings:(void *)a5;
-- (void)printLstmWeights:(id)a3;
-- (void)removeBatchingFromDataAndLabels:(void *)a3 batchedLabels:(void *)a4 inputSentences:(void *)a5 inputLabels:(void *)a6 maxLength:(int)a7;
-- (void)trainAndSaveSeqTagModelFromData:(void *)a3 batchedLabels:(void *)a4 labelArray:(void *)a5 embeddingRef:(void *)a6 trainedModelDict:(__CFDictionary *)a7 trainingLogger:(id)a8;
+- (void)evaluateInferenceGraphWithInputTensorData:(void *)data batchedInputSentences:(void *)sentences batchedLabels:(void *)labels inferenceGraph:(id)graph inputPlaceholders:(void *)placeholders scalarParams:(void *)params labelArray:(void *)array dataTypeString:()basic_string<char trainingLogger:()std:(std::allocator<char>> *)self0 :char_traits<char> predictedLabels:;
+- (void)executeInferenceGraph:(id)graph inputsDictionary:(id)dictionary batchSize:(int)size maxLength:(int)length labelSize:(int)labelSize predictedLabels:(void *)labels;
+- (void)flattenBatchOfOneHotSequences:(void *)sequences flattenedBatch:(void *)batch;
+- (void)getMaxIndicesFromOneHotVectors:(void *)vectors maxIndicesBatch:(void *)batch;
+- (void)getNSSequenceFromStdSequence:(void *)sequence nsSentences:(id)sentences nsSeqLengths:(id)lengths maxLength:(int)length;
+- (void)labelIdsToString:(void *)string labelArray:(void *)array labelStrings:(void *)strings;
+- (void)printLstmWeights:(id)weights;
+- (void)removeBatchingFromDataAndLabels:(void *)labels batchedLabels:(void *)batchedLabels inputSentences:(void *)sentences inputLabels:(void *)inputLabels maxLength:(int)length;
+- (void)trainAndSaveSeqTagModelFromData:(void *)data batchedLabels:(void *)labels labelArray:(void *)array embeddingRef:(void *)ref trainedModelDict:(__CFDictionary *)dict trainingLogger:(id)logger;
 @end
 
 @implementation TransferSeqTagMLFHelper
 
-- (TransferSeqTagMLFHelper)initWithTraininingParameters:(id)a3
+- (TransferSeqTagMLFHelper)initWithTraininingParameters:(id)parameters
 {
   v6.receiver = self;
   v6.super_class = TransferSeqTagMLFHelper;
   v4 = [(TransferSeqTagMLFHelper *)&v6 init];
   if (v4)
   {
-    v4->_trainingParameters = [a3 copy];
+    v4->_trainingParameters = [parameters copy];
   }
 
   return v4;
@@ -50,47 +50,47 @@
   [(TransferSeqTagMLFHelper *)&v3 dealloc];
 }
 
-- (id)createDataWithFloatValue:(float)a3 count:(unint64_t)a4
+- (id)createDataWithFloatValue:(float)value count:(unint64_t)count
 {
-  v6 = 4 * a4;
-  v7 = malloc_type_malloc(4 * a4, 0x100004052888210uLL);
-  if (a4)
+  v6 = 4 * count;
+  v7 = malloc_type_malloc(4 * count, 0x100004052888210uLL);
+  if (count)
   {
     v8 = 1;
     v9 = v7;
     do
     {
-      *v9++ = a3;
+      *v9++ = value;
       v10 = v8++;
     }
 
-    while (v10 < a4);
+    while (v10 < count);
   }
 
   v11 = [MEMORY[0x1E695DF88] dataWithBytesNoCopy:v7 length:v6 freeWhenDone:1];
   MLCTensorDataClass = getMLCTensorDataClass();
-  v13 = [v11 mutableBytes];
+  mutableBytes = [v11 mutableBytes];
   v14 = [v11 length];
 
-  return [MLCTensorDataClass dataWithBytesNoCopy:v13 length:v14];
+  return [MLCTensorDataClass dataWithBytesNoCopy:mutableBytes length:v14];
 }
 
-- (id)createNSDataWithFloatValue:(float)a3 count:(unint64_t)a4
+- (id)createNSDataWithFloatValue:(float)value count:(unint64_t)count
 {
-  v6 = 4 * a4;
-  v7 = malloc_type_malloc(4 * a4, 0x100004052888210uLL);
+  v6 = 4 * count;
+  v7 = malloc_type_malloc(4 * count, 0x100004052888210uLL);
   v8 = v7;
-  if (a4)
+  if (count)
   {
     v9 = 1;
     v10 = v7;
     do
     {
-      *v10++ = a3;
+      *v10++ = value;
       v11 = v9++;
     }
 
-    while (v11 < a4);
+    while (v11 < count);
   }
 
   v12 = MEMORY[0x1E695DEF0];
@@ -98,7 +98,7 @@
   return [v12 dataWithBytesNoCopy:v8 length:v6 freeWhenDone:1];
 }
 
-- (id)createLSTMFromWeights:(unint64_t)a3 outputSize:(unint64_t)a4 inputWeights:(id)a5 hiddenWeights:(id)a6 biasTerms:(id)a7
+- (id)createLSTMFromWeights:(unint64_t)weights outputSize:(unint64_t)size inputWeights:(id)inputWeights hiddenWeights:(id)hiddenWeights biasTerms:(id)terms
 {
   v30[4] = *MEMORY[0x1E69E9840];
   v24 = 0;
@@ -120,7 +120,7 @@
   }
 
   _Block_object_dispose(&v24, 8);
-  v13 = [v12 descriptorWithInputSize:a3 hiddenSize:a4 layerCount:1 usesBiases:1 isBidirectional:1 dropout:0.0];
+  v13 = [v12 descriptorWithInputSize:weights hiddenSize:size layerCount:1 usesBiases:1 isBidirectional:1 dropout:0.0];
   v14 = [getMLCActivationDescriptorClass() descriptorWithType:3];
   v15 = [getMLCActivationDescriptorClass() descriptorWithType:5];
   v24 = 0;
@@ -146,20 +146,20 @@
   v30[1] = v14;
   v30[2] = v15;
   v30[3] = v14;
-  result = [v16 layerWithDescriptor:v13 inputWeights:a5 hiddenWeights:a6 peepholeWeights:0 biases:a7 gateActivations:objc_msgSend(MEMORY[0x1E695DEC8] outputResultActivation:{"arrayWithObjects:count:", v30, 4), v15}];
+  result = [v16 layerWithDescriptor:v13 inputWeights:inputWeights hiddenWeights:hiddenWeights peepholeWeights:0 biases:terms gateActivations:objc_msgSend(MEMORY[0x1E695DEC8] outputResultActivation:{"arrayWithObjects:count:", v30, 4), v15}];
   v18 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (id)createLSTM:(unint64_t)a3 outputSize:(unint64_t)a4
+- (id)createLSTM:(unint64_t)m outputSize:(unint64_t)size
 {
   v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:8];
   v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:8];
   v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:8];
   for (i = 0; i != 8; ++i)
   {
-    [v7 setObject:objc_msgSend(getMLCTensorClass() atIndexedSubscript:{"tensorWithWidth:height:featureChannelCount:batchSize:randomInitializerType:", 1, 1, a4 * a3, 1, 2), i}];
-    [v8 setObject:objc_msgSend(getMLCTensorClass() atIndexedSubscript:{"tensorWithWidth:height:featureChannelCount:batchSize:randomInitializerType:", 1, 1, a4 * a4, 1, 2), i}];
+    [v7 setObject:objc_msgSend(getMLCTensorClass() atIndexedSubscript:{"tensorWithWidth:height:featureChannelCount:batchSize:randomInitializerType:", 1, 1, size * m, 1, 2), i}];
+    [v8 setObject:objc_msgSend(getMLCTensorClass() atIndexedSubscript:{"tensorWithWidth:height:featureChannelCount:batchSize:randomInitializerType:", 1, 1, size * size, 1, 2), i}];
     if ((i & 3) == 1)
     {
       *&v11 = 1.0;
@@ -170,55 +170,55 @@
       *&v11 = 0.0;
     }
 
-    [v9 setObject:objc_msgSend(getMLCTensorClass() atIndexedSubscript:{"tensorWithWidth:height:featureChannelCount:batchSize:data:", 1, 1, a4, 1, -[TransferSeqTagMLFHelper createDataWithFloatValue:count:](self, "createDataWithFloatValue:count:", a4, v11)), i}];
+    [v9 setObject:objc_msgSend(getMLCTensorClass() atIndexedSubscript:{"tensorWithWidth:height:featureChannelCount:batchSize:data:", 1, 1, size, 1, -[TransferSeqTagMLFHelper createDataWithFloatValue:count:](self, "createDataWithFloatValue:count:", size, v11)), i}];
   }
 
-  return [(TransferSeqTagMLFHelper *)self createLSTMFromWeights:a3 outputSize:a4 inputWeights:v7 hiddenWeights:v8 biasTerms:v9];
+  return [(TransferSeqTagMLFHelper *)self createLSTMFromWeights:m outputSize:size inputWeights:v7 hiddenWeights:v8 biasTerms:v9];
 }
 
-- (id)createConvLayerFromData:(unint64_t)a3 width:(unint64_t)a4 inputChannels:(unint64_t)a5 outputChannels:(unint64_t)a6 strideInX:(unint64_t)a7 strideInY:(unint64_t)a8 kernelWeight:(id)a9 kernelBias:(id)a10
+- (id)createConvLayerFromData:(unint64_t)data width:(unint64_t)width inputChannels:(unint64_t)channels outputChannels:(unint64_t)outputChannels strideInX:(unint64_t)x strideInY:(unint64_t)y kernelWeight:(id)weight kernelBias:(id)self0
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v14 = [getMLCTensorDescriptorClass() convolutionWeightsDescriptorWithWidth:a4 height:a3 inputFeatureChannelCount:a5 outputFeatureChannelCount:a6 dataType:1];
+  v14 = [getMLCTensorDescriptorClass() convolutionWeightsDescriptorWithWidth:width height:data inputFeatureChannelCount:channels outputFeatureChannelCount:outputChannels dataType:1];
   MLCTensorClass = getMLCTensorClass();
-  v16 = [MLCTensorClass tensorWithDescriptor:v14 data:{objc_msgSend(getMLCTensorDataClass(), "dataWithBytesNoCopy:length:", objc_msgSend(a9, "mutableBytes"), objc_msgSend(a9, "length"))}];
+  v16 = [MLCTensorClass tensorWithDescriptor:v14 data:{objc_msgSend(getMLCTensorDataClass(), "dataWithBytesNoCopy:length:", objc_msgSend(weight, "mutableBytes"), objc_msgSend(weight, "length"))}];
   v17 = getMLCTensorClass();
-  v18 = [v17 tensorWithWidth:1 height:1 featureChannelCount:a6 batchSize:1 data:{objc_msgSend(getMLCTensorDataClass(), "dataWithBytesNoCopy:length:", objc_msgSend(a10, "mutableBytes"), objc_msgSend(a10, "length"))}];
+  v18 = [v17 tensorWithWidth:1 height:1 featureChannelCount:outputChannels batchSize:1 data:{objc_msgSend(getMLCTensorDataClass(), "dataWithBytesNoCopy:length:", objc_msgSend(bias, "mutableBytes"), objc_msgSend(bias, "length"))}];
   MLCConvolutionDescriptorClass = getMLCConvolutionDescriptorClass();
-  v27[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v27[1] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v27[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:data];
+  v27[1] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:width];
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
-  v26[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a8];
-  v26[1] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a7];
+  v26[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:y];
+  v26[1] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:x];
   LODWORD(v23) = 0;
-  result = [getMLCConvolutionLayerClass() layerWithWeights:v16 biases:v18 descriptor:{objc_msgSend(MLCConvolutionDescriptorClass, "descriptorWithKernelSizes:inputFeatureChannelCount:outputFeatureChannelCount:groupCount:strides:dilationRates:paddingPolicy:paddingSizes:", v20, a5, a6, 1, objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v26, 2), &unk_1F10B4E30, v23, &unk_1F10B4E48)}];
+  result = [getMLCConvolutionLayerClass() layerWithWeights:v16 biases:v18 descriptor:{objc_msgSend(MLCConvolutionDescriptorClass, "descriptorWithKernelSizes:inputFeatureChannelCount:outputFeatureChannelCount:groupCount:strides:dilationRates:paddingPolicy:paddingSizes:", v20, channels, outputChannels, 1, objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v26, 2), &unk_1F10B4E30, v23, &unk_1F10B4E48)}];
   v22 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (id)createConvLayerWithKernelHeight:(unint64_t)a3 width:(unint64_t)a4 inputChannels:(unint64_t)a5 outputChannels:(unint64_t)a6 strideInX:(unint64_t)a7 strideInY:(unint64_t)a8
+- (id)createConvLayerWithKernelHeight:(unint64_t)height width:(unint64_t)width inputChannels:(unint64_t)channels outputChannels:(unint64_t)outputChannels strideInX:(unint64_t)x strideInY:(unint64_t)y
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v15 = [getMLCTensorDescriptorClass() convolutionWeightsDescriptorWithWidth:a4 height:a3 inputFeatureChannelCount:a5 outputFeatureChannelCount:a6 dataType:1];
+  v15 = [getMLCTensorDescriptorClass() convolutionWeightsDescriptorWithWidth:width height:height inputFeatureChannelCount:channels outputFeatureChannelCount:outputChannels dataType:1];
   v16 = [getMLCTensorClass() tensorWithDescriptor:v15 randomInitializerType:2];
-  v17 = [getMLCTensorClass() tensorWithWidth:1 height:1 featureChannelCount:a6 batchSize:1 data:{-[TransferSeqTagMLFHelper createDataWithFloatValue:count:](self, "createDataWithFloatValue:count:", a6, 0.0)}];
+  v17 = [getMLCTensorClass() tensorWithWidth:1 height:1 featureChannelCount:outputChannels batchSize:1 data:{-[TransferSeqTagMLFHelper createDataWithFloatValue:count:](self, "createDataWithFloatValue:count:", outputChannels, 0.0)}];
   MLCConvolutionDescriptorClass = getMLCConvolutionDescriptorClass();
-  v24[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v24[1] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v24[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:height];
+  v24[1] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:width];
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
-  v23[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a8];
-  v23[1] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a7];
+  v23[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:y];
+  v23[1] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:x];
   LODWORD(v22) = 0;
-  result = [getMLCConvolutionLayerClass() layerWithWeights:v16 biases:v17 descriptor:{objc_msgSend(MLCConvolutionDescriptorClass, "descriptorWithKernelSizes:inputFeatureChannelCount:outputFeatureChannelCount:groupCount:strides:dilationRates:paddingPolicy:paddingSizes:", v19, a5, a6, 1, objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v23, 2), &unk_1F10B4E60, v22, &unk_1F10B4E78)}];
+  result = [getMLCConvolutionLayerClass() layerWithWeights:v16 biases:v17 descriptor:{objc_msgSend(MLCConvolutionDescriptorClass, "descriptorWithKernelSizes:inputFeatureChannelCount:outputFeatureChannelCount:groupCount:strides:dilationRates:paddingPolicy:paddingSizes:", v19, channels, outputChannels, 1, objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v23, 2), &unk_1F10B4E60, v22, &unk_1F10B4E78)}];
   v21 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (void)removeBatchingFromDataAndLabels:(void *)a3 batchedLabels:(void *)a4 inputSentences:(void *)a5 inputLabels:(void *)a6 maxLength:(int)a7
+- (void)removeBatchingFromDataAndLabels:(void *)labels batchedLabels:(void *)batchedLabels inputSentences:(void *)sentences inputLabels:(void *)inputLabels maxLength:(int)length
 {
-  v7 = *a3;
-  v8 = *(a3 + 1);
-  if (v8 != *a3)
+  v7 = *labels;
+  v8 = *(labels + 1);
+  if (v8 != *labels)
   {
     v12 = 0;
     do
@@ -231,38 +231,38 @@
         do
         {
           v16 = *(v13 + v14);
-          v17 = -1431655765 * ((*(v13 + v14 + 8) - v16) >> 3);
-          if (v17 >= a7)
+          lengthCopy = -1431655765 * ((*(v13 + v14 + 8) - v16) >> 3);
+          if (lengthCopy >= length)
           {
-            v17 = a7;
+            lengthCopy = length;
           }
 
-          v18 = v17;
-          v19 = 3 * v17;
+          v18 = lengthCopy;
+          v19 = 3 * lengthCopy;
           v24 = 0;
           v25 = 0;
           v26 = 0;
-          std::vector<std::string>::__init_with_size[abi:ne200100]<std::__wrap_iter<std::string*>,std::__wrap_iter<std::string*>>(&v24, v16, v16 + 24 * v17, v17);
-          std::vector<std::vector<std::string>>::push_back[abi:ne200100](a5, &v24);
+          std::vector<std::string>::__init_with_size[abi:ne200100]<std::__wrap_iter<std::string*>,std::__wrap_iter<std::string*>>(&v24, v16, v16 + 24 * lengthCopy, lengthCopy);
+          std::vector<std::vector<std::string>>::push_back[abi:ne200100](sentences, &v24);
           v27 = &v24;
           std::vector<std::string>::__destroy_vector::operator()[abi:ne200100](&v27);
-          v20 = *(*(*a4 + 24 * v12) + v14);
+          v20 = *(*(*batchedLabels + 24 * v12) + v14);
           v25 = 0;
           v26 = 0;
           v24 = 0;
           std::vector<std::vector<int>>::__init_with_size[abi:ne200100]<std::__wrap_iter<std::vector<int>*>,std::__wrap_iter<std::vector<int>*>>(&v24, v20, 8 * v19 + v20, v18);
-          std::vector<std::vector<std::vector<int>>>::push_back[abi:ne200100](a6, &v24);
+          std::vector<std::vector<std::vector<int>>>::push_back[abi:ne200100](inputLabels, &v24);
           v27 = &v24;
           std::vector<std::vector<int>>::__destroy_vector::operator()[abi:ne200100](&v27);
           ++v15;
-          v7 = *a3;
-          v21 = (*a3 + 24 * v12);
+          v7 = *labels;
+          v21 = (*labels + 24 * v12);
           v13 = *v21;
           v14 += 24;
         }
 
         while (0xAAAAAAAAAAAAAAABLL * ((v21[1] - *v21) >> 3) > v15);
-        v8 = *(a3 + 1);
+        v8 = *(labels + 1);
       }
 
       ++v12;
@@ -272,18 +272,18 @@
   }
 }
 
-- (void)getNSSequenceFromStdSequence:(void *)a3 nsSentences:(id)a4 nsSeqLengths:(id)a5 maxLength:(int)a6
+- (void)getNSSequenceFromStdSequence:(void *)sequence nsSentences:(id)sentences nsSeqLengths:(id)lengths maxLength:(int)length
 {
-  v17 = a4;
-  if (*(a3 + 1) != *a3)
+  sentencesCopy = sentences;
+  if (*(sequence + 1) != *sequence)
   {
     v8 = 0;
-    v9 = a6;
+    lengthCopy = length;
     do
     {
-      v10 = [MEMORY[0x1E695DF70] array];
-      v11 = *(*a3 + 24 * v8);
-      if (*(*a3 + 24 * v8 + 8) != v11)
+      array = [MEMORY[0x1E695DF70] array];
+      v11 = *(*sequence + 24 * v8);
+      if (*(*sequence + 24 * v8 + 8) != v11)
       {
         v12 = 0;
         v13 = 0;
@@ -294,41 +294,41 @@
             v14 = *(v11 + v12);
           }
 
-          [v10 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:")}];
+          [array addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:")}];
           ++v13;
-          v11 = *(*a3 + 24 * v8);
+          v11 = *(*sequence + 24 * v8);
           v12 += 24;
         }
 
-        while (0xAAAAAAAAAAAAAAABLL * ((*(*a3 + 24 * v8 + 8) - v11) >> 3) > v13);
+        while (0xAAAAAAAAAAAAAAABLL * ((*(*sequence + 24 * v8 + 8) - v11) >> 3) > v13);
       }
 
-      [v17 addObject:v10];
-      v15 = 0xAAAAAAAAAAAAAAABLL * ((*(*a3 + 24 * v8 + 8) - *(*a3 + 24 * v8)) >> 3);
-      if (v15 <= v9)
+      [sentencesCopy addObject:array];
+      v15 = 0xAAAAAAAAAAAAAAABLL * ((*(*sequence + 24 * v8 + 8) - *(*sequence + 24 * v8)) >> 3);
+      if (v15 <= lengthCopy)
       {
-        v16 = v15;
+        lengthCopy2 = v15;
       }
 
       else
       {
-        v16 = a6;
+        lengthCopy2 = length;
       }
 
-      [a5 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v16)}];
+      [lengths addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", lengthCopy2)}];
       ++v8;
     }
 
-    while (0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 3) > v8);
+    while (0xAAAAAAAAAAAAAAABLL * ((*(sequence + 1) - *sequence) >> 3) > v8);
   }
 }
 
-- (void)flattenBatchOfOneHotSequences:(void *)a3 flattenedBatch:(void *)a4
+- (void)flattenBatchOfOneHotSequences:(void *)sequences flattenedBatch:(void *)batch
 {
-  *(a4 + 1) = *a4;
-  v5 = *a3;
-  v4 = *(a3 + 1);
-  if (v4 != *a3)
+  *(batch + 1) = *batch;
+  v5 = *sequences;
+  v4 = *(sequences + 1);
+  if (v4 != *sequences)
   {
     v8 = 0;
     v9 = (*(*v5 + 8) - **v5) >> 2;
@@ -342,8 +342,8 @@
           v16 = 0;
           v11 = 0uLL;
           *__p = 0u;
-          v12 = *(*a3 + 24 * v8);
-          if (*(*a3 + 24 * v8 + 8) != v12)
+          v12 = *(*sequences + 24 * v8);
+          if (*(*sequences + 24 * v8 + 8) != v12)
           {
             v13 = 0;
             v14 = 0;
@@ -351,15 +351,15 @@
             {
               std::vector<int>::push_back[abi:ne200100](__p, (*(v12 + v13) + 4 * v10));
               ++v14;
-              v12 = *(*a3 + 24 * v8);
+              v12 = *(*sequences + 24 * v8);
               v13 += 24;
             }
 
-            while (0xAAAAAAAAAAAAAAABLL * ((*(*a3 + 24 * v8 + 8) - v12) >> 3) > v14);
+            while (0xAAAAAAAAAAAAAAABLL * ((*(*sequences + 24 * v8 + 8) - v12) >> 3) > v14);
             v11 = *__p;
           }
 
-          std::vector<float>::__insert_with_size[abi:ne200100]<std::__wrap_iter<int *>,std::__wrap_iter<int *>>(a4, *(a4 + 1), v11, *(&v11 + 1), (*(&v11 + 1) - v11) >> 2);
+          std::vector<float>::__insert_with_size[abi:ne200100]<std::__wrap_iter<int *>,std::__wrap_iter<int *>>(batch, *(batch + 1), v11, *(&v11 + 1), (*(&v11 + 1) - v11) >> 2);
           if (__p[0])
           {
             __p[1] = __p[0];
@@ -370,8 +370,8 @@
         }
 
         while (v10 != (v9 & 0x7FFFFFFF));
-        v5 = *a3;
-        v4 = *(a3 + 1);
+        v5 = *sequences;
+        v4 = *(sequences + 1);
       }
 
       ++v8;
@@ -381,28 +381,28 @@
   }
 }
 
-- (id)findMaxIndexWithData:(id)a3 batchSize:(unint64_t)a4 sequenceLength:(unint64_t)a5 numClasses:(unint64_t)a6
+- (id)findMaxIndexWithData:(id)data batchSize:(unint64_t)size sequenceLength:(unint64_t)length numClasses:(unint64_t)classes
 {
   v29 = *MEMORY[0x1E69E9840];
-  v26 = 8 * a4 * a5;
+  v26 = 8 * size * length;
   v27 = malloc_type_malloc(v26, 0x100004000313F17uLL);
-  v10 = [a3 bytes];
-  v28 = a4;
-  if (a4)
+  bytes = [data bytes];
+  sizeCopy = size;
+  if (size)
   {
-    v11 = v10;
+    v11 = bytes;
     v12 = 0;
-    v13 = 8 * a5;
-    v14 = 4 * a5;
+    v13 = 8 * length;
+    v14 = 4 * length;
     do
     {
-      if (a5)
+      if (length)
       {
-        bzero(&v26 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * a5);
-        memset_pattern16(&v26 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0), &unk_19D27F010, 4 * a5);
+        bzero(&v26 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
+        memset_pattern16(&v26 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0), &unk_19D27F010, 4 * length);
       }
 
-      if (a6)
+      if (classes)
       {
         v15 = 0;
         v16 = v11;
@@ -411,7 +411,7 @@
           v17 = v16;
           v18 = (&v26 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0));
           v19 = (&v26 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0));
-          for (i = a5; i; --i)
+          for (i = length; i; --i)
           {
             if (*v17 > *v18)
             {
@@ -428,19 +428,19 @@
           v16 = (v16 + v14);
         }
 
-        while (v15 != a6);
+        while (v15 != classes);
       }
 
-      if (a5)
+      if (length)
       {
-        memcpy(&v27[v13 * v12], &v26 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * a5);
+        memcpy(&v27[v13 * v12], &v26 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
       }
 
       ++v12;
-      v11 += 4 * a6 * a5;
+      v11 += 4 * classes * length;
     }
 
-    while (v12 != v28);
+    while (v12 != sizeCopy);
   }
 
   v21 = MEMORY[0x1E695DEF0];
@@ -451,10 +451,10 @@
   return [v21 dataWithBytesNoCopy:v23 length:v24 freeWhenDone:1];
 }
 
-- (void)getMaxIndicesFromOneHotVectors:(void *)a3 maxIndicesBatch:(void *)a4
+- (void)getMaxIndicesFromOneHotVectors:(void *)vectors maxIndicesBatch:(void *)batch
 {
-  v4 = *a3;
-  if (*(a3 + 1) != *a3)
+  v4 = *vectors;
+  if (*(vectors + 1) != *vectors)
   {
     v7 = 0;
     do
@@ -512,13 +512,13 @@
           }
 
           ++v10;
-          v8 = *(*a3 + 24 * v7);
+          v8 = *(*vectors + 24 * v7);
         }
 
-        while (0xAAAAAAAAAAAAAAABLL * ((*(*a3 + 24 * v7 + 8) - v8) >> 3) > v10);
+        while (0xAAAAAAAAAAAAAAABLL * ((*(*vectors + 24 * v7 + 8) - v8) >> 3) > v10);
       }
 
-      std::vector<std::vector<int>>::push_back[abi:ne200100](a4, &v23);
+      std::vector<std::vector<int>>::push_back[abi:ne200100](batch, &v23);
       if (v23)
       {
         v24 = v23;
@@ -526,14 +526,14 @@
       }
 
       ++v7;
-      v4 = *a3;
+      v4 = *vectors;
     }
 
-    while (0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 3) > v7);
+    while (0xAAAAAAAAAAAAAAABLL * ((*(vectors + 1) - *vectors) >> 3) > v7);
   }
 }
 
-- (void)printLstmWeights:(id)a3
+- (void)printLstmWeights:(id)weights
 {
   v36[3] = *MEMORY[0x1E69E9840];
   v4 = os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG);
@@ -542,15 +542,15 @@
     [(TransferSeqTagMLFHelper *)v4 printLstmWeights:v5, v6, v7, v8, v9, v10, v11];
   }
 
-  if ([objc_msgSend(a3 "inputWeights")])
+  if ([objc_msgSend(weights "inputWeights")])
   {
     v12 = 0;
     v13 = MEMORY[0x1E69E9C10];
     do
     {
-      v36[0] = [objc_msgSend(objc_msgSend(a3 "inputWeights")];
-      v36[1] = [objc_msgSend(objc_msgSend(a3 "hiddenWeights")];
-      v36[2] = [objc_msgSend(objc_msgSend(a3 "biases")];
+      v36[0] = [objc_msgSend(objc_msgSend(weights "inputWeights")];
+      v36[1] = [objc_msgSend(objc_msgSend(weights "hiddenWeights")];
+      v36[2] = [objc_msgSend(objc_msgSend(weights "biases")];
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:3];
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
@@ -578,10 +578,10 @@
             v17 = 0;
             do
             {
-              v18 = [v16 bytes];
+              bytes = [v16 bytes];
               if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
               {
-                [(TransferSeqTagMLFHelper *)v18 printLstmWeights:v17, v30, &v31];
+                [(TransferSeqTagMLFHelper *)bytes printLstmWeights:v17, v30, &v31];
               }
 
               ++v17;
@@ -599,7 +599,7 @@
       ++v12;
     }
 
-    while (v12 < [objc_msgSend(a3 "inputWeights")]);
+    while (v12 < [objc_msgSend(weights "inputWeights")]);
   }
 
   v19 = os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG);
@@ -614,23 +614,23 @@
 - (id)getModelLayerWeights:(vector<void *)
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v6 = *a3->var0;
   v5 = *(a3->var0 + 1);
-  v7 = [MEMORY[0x1E695DF88] data];
-  v8 = [MEMORY[0x1E695DF88] data];
-  v9 = [MEMORY[0x1E695DF88] data];
-  v10 = [MEMORY[0x1E695DF88] data];
-  v11 = [MEMORY[0x1E695DF88] data];
-  v12 = [MEMORY[0x1E695DF88] data];
+  data = [MEMORY[0x1E695DF88] data];
+  data2 = [MEMORY[0x1E695DF88] data];
+  data3 = [MEMORY[0x1E695DF88] data];
+  data4 = [MEMORY[0x1E695DF88] data];
+  data5 = [MEMORY[0x1E695DF88] data];
+  data6 = [MEMORY[0x1E695DF88] data];
   for (i = 0; i != 4; ++i)
   {
-    [v7 appendData:{objc_msgSend(objc_msgSend(objc_msgSend(v6, "biases"), "objectAtIndexedSubscript:", i), "data")}];
-    [v8 appendData:{objc_msgSend(objc_msgSend(objc_msgSend(v6, "inputWeights"), "objectAtIndexedSubscript:", i), "data")}];
-    [v9 appendData:{objc_msgSend(objc_msgSend(objc_msgSend(v6, "hiddenWeights"), "objectAtIndexedSubscript:", i), "data")}];
-    [v10 appendData:{objc_msgSend(objc_msgSend(objc_msgSend(v6, "biases"), "objectAtIndexedSubscript:", i + 4), "data")}];
-    [v11 appendData:{objc_msgSend(objc_msgSend(objc_msgSend(v6, "inputWeights"), "objectAtIndexedSubscript:", i + 4), "data")}];
-    [v12 appendData:{objc_msgSend(objc_msgSend(objc_msgSend(v6, "hiddenWeights"), "objectAtIndexedSubscript:", i + 4), "data")}];
+    [data appendData:{objc_msgSend(objc_msgSend(objc_msgSend(v6, "biases"), "objectAtIndexedSubscript:", i), "data")}];
+    [data2 appendData:{objc_msgSend(objc_msgSend(objc_msgSend(v6, "inputWeights"), "objectAtIndexedSubscript:", i), "data")}];
+    [data3 appendData:{objc_msgSend(objc_msgSend(objc_msgSend(v6, "hiddenWeights"), "objectAtIndexedSubscript:", i), "data")}];
+    [data4 appendData:{objc_msgSend(objc_msgSend(objc_msgSend(v6, "biases"), "objectAtIndexedSubscript:", i + 4), "data")}];
+    [data5 appendData:{objc_msgSend(objc_msgSend(objc_msgSend(v6, "inputWeights"), "objectAtIndexedSubscript:", i + 4), "data")}];
+    [data6 appendData:{objc_msgSend(objc_msgSend(objc_msgSend(v6, "hiddenWeights"), "objectAtIndexedSubscript:", i + 4), "data")}];
   }
 
   v14 = [objc_msgSend(objc_msgSend(objc_msgSend(v6 "biases")] >> 1;
@@ -640,12 +640,12 @@
   __src[15] |= 0x80uLL;
   LODWORD(__src[16]) = v14;
   LODWORD(__src[32]) = v14 / 2;
-  __src[56] = [v8 bytes];
-  __src[57] = [v9 bytes];
-  __src[72] = [v7 bytes];
-  __src[58] = [v11 bytes];
-  __src[59] = [v12 bytes];
-  __src[74] = [v10 bytes];
+  __src[56] = [data2 bytes];
+  __src[57] = [data3 bytes];
+  __src[72] = [data bytes];
+  __src[58] = [data5 bytes];
+  __src[59] = [data6 bytes];
+  __src[74] = [data4 bytes];
   std::string::basic_string[abi:ne200100]<0>(&v18, "lstm");
   memcpy(v20, __src, sizeof(v20));
   std::vector<std::pair<std::string,MRLNeuralNetworkNodeParameter>>::push_back[abi:ne200100](v17, &v18);
@@ -672,65 +672,65 @@
   operator new();
 }
 
-- (BOOL)loadModelLayersFromWeights:(id)a3 labelSize:(unint64_t)a4 embeddingDimension:(int64_t)a5 modelLayers:(void *)a6
+- (BOOL)loadModelLayersFromWeights:(id)weights labelSize:(unint64_t)size embeddingDimension:(int64_t)dimension modelLayers:(void *)layers
 {
   v33 = [MEMORY[0x1E695DF70] arrayWithCapacity:8];
   v32 = [MEMORY[0x1E695DF70] arrayWithCapacity:8];
   v31 = [MEMORY[0x1E695DF70] arrayWithCapacity:8];
   v8 = 0;
   v9 = 0;
-  v10 = a5 + (a5 >> 31);
-  v11 = a5 / 2;
-  v27 = a5;
-  v12 = a5 / 2 * a5;
+  v10 = dimension + (dimension >> 31);
+  v11 = dimension / 2;
+  dimensionCopy = dimension;
+  v12 = dimension / 2 * dimension;
   v13 = (v11 * v11);
   v14 = v10 >> 1;
   do
   {
-    v15 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 3;
     v17 = v8;
     do
     {
-      [v15 addObject:{objc_msgSend(a3, "objectAtIndexedSubscript:", v17++)}];
+      [array addObject:{objc_msgSend(weights, "objectAtIndexedSubscript:", v17++)}];
       --v16;
     }
 
     while (v16);
     MLCTensorClass = getMLCTensorClass();
-    [v33 setObject:objc_msgSend(MLCTensorClass atIndexedSubscript:{"tensorWithWidth:height:featureChannelCount:batchSize:data:", 1, 1, v12, 1, objc_msgSend(getMLCTensorDataClass(), "dataWithBytesNoCopy:length:", objc_msgSend(objc_msgSend(v15, "objectAtIndexedSubscript:", 0), "mutableBytes"), objc_msgSend(objc_msgSend(v15, "objectAtIndexedSubscript:", 0), "length"))), v9}];
+    [v33 setObject:objc_msgSend(MLCTensorClass atIndexedSubscript:{"tensorWithWidth:height:featureChannelCount:batchSize:data:", 1, 1, v12, 1, objc_msgSend(getMLCTensorDataClass(), "dataWithBytesNoCopy:length:", objc_msgSend(objc_msgSend(array, "objectAtIndexedSubscript:", 0), "mutableBytes"), objc_msgSend(objc_msgSend(array, "objectAtIndexedSubscript:", 0), "length"))), v9}];
     v19 = getMLCTensorClass();
-    [v32 setObject:objc_msgSend(v19 atIndexedSubscript:{"tensorWithWidth:height:featureChannelCount:batchSize:data:", 1, 1, v13, 1, objc_msgSend(getMLCTensorDataClass(), "dataWithBytesNoCopy:length:", objc_msgSend(objc_msgSend(v15, "objectAtIndexedSubscript:", 1), "mutableBytes"), objc_msgSend(objc_msgSend(v15, "objectAtIndexedSubscript:", 1), "length"))), v9}];
+    [v32 setObject:objc_msgSend(v19 atIndexedSubscript:{"tensorWithWidth:height:featureChannelCount:batchSize:data:", 1, 1, v13, 1, objc_msgSend(getMLCTensorDataClass(), "dataWithBytesNoCopy:length:", objc_msgSend(objc_msgSend(array, "objectAtIndexedSubscript:", 1), "mutableBytes"), objc_msgSend(objc_msgSend(array, "objectAtIndexedSubscript:", 1), "length"))), v9}];
     v20 = getMLCTensorClass();
-    [v31 setObject:objc_msgSend(v20 atIndexedSubscript:{"tensorWithWidth:height:featureChannelCount:batchSize:data:", 1, 1, v14, 1, objc_msgSend(getMLCTensorDataClass(), "dataWithBytesNoCopy:length:", objc_msgSend(objc_msgSend(v15, "objectAtIndexedSubscript:", 2), "mutableBytes"), objc_msgSend(objc_msgSend(v15, "objectAtIndexedSubscript:", 2), "length"))), v9++}];
+    [v31 setObject:objc_msgSend(v20 atIndexedSubscript:{"tensorWithWidth:height:featureChannelCount:batchSize:data:", 1, 1, v14, 1, objc_msgSend(getMLCTensorDataClass(), "dataWithBytesNoCopy:length:", objc_msgSend(objc_msgSend(array, "objectAtIndexedSubscript:", 2), "mutableBytes"), objc_msgSend(objc_msgSend(array, "objectAtIndexedSubscript:", 2), "length"))), v9++}];
     v8 += 3;
   }
 
   while (v9 != 8);
-  v21 = [(TransferSeqTagMLFHelper *)self createLSTMFromWeights:v27 outputSize:v14 inputWeights:v33 hiddenWeights:v32 biasTerms:v31];
-  v22 = [v21 descriptor];
-  v23 = v22 != 0;
-  if (v22)
+  v21 = [(TransferSeqTagMLFHelper *)self createLSTMFromWeights:dimensionCopy outputSize:v14 inputWeights:v33 hiddenWeights:v32 biasTerms:v31];
+  descriptor = [v21 descriptor];
+  v23 = descriptor != 0;
+  if (descriptor)
   {
     v34 = v21;
-    std::vector<void *>::push_back[abi:ne200100](a6, &v34);
+    std::vector<void *>::push_back[abi:ne200100](layers, &v34);
   }
 
-  v24 = [MEMORY[0x1E695DF70] array];
-  [v24 addObject:{objc_msgSend(a3, "objectAtIndexedSubscript:", 24)}];
-  [v24 addObject:{objc_msgSend(a3, "objectAtIndexedSubscript:", 25)}];
-  v25 = -[TransferSeqTagMLFHelper createFullyConnectedLayerFromData:outputSize:weightData:biasData:](self, "createFullyConnectedLayerFromData:outputSize:weightData:biasData:", 2 * v14, a4, [v24 objectAtIndexedSubscript:0], objc_msgSend(v24, "objectAtIndexedSubscript:", 1));
+  array2 = [MEMORY[0x1E695DF70] array];
+  [array2 addObject:{objc_msgSend(weights, "objectAtIndexedSubscript:", 24)}];
+  [array2 addObject:{objc_msgSend(weights, "objectAtIndexedSubscript:", 25)}];
+  v25 = -[TransferSeqTagMLFHelper createFullyConnectedLayerFromData:outputSize:weightData:biasData:](self, "createFullyConnectedLayerFromData:outputSize:weightData:biasData:", 2 * v14, size, [array2 objectAtIndexedSubscript:0], objc_msgSend(array2, "objectAtIndexedSubscript:", 1));
   if (![v25 descriptor])
   {
     return 0;
   }
 
   v34 = v25;
-  std::vector<void *>::push_back[abi:ne200100](a6, &v34);
+  std::vector<void *>::push_back[abi:ne200100](layers, &v34);
   return v23;
 }
 
-- (id)createGraphObjectFromLayers:(void *)a3 graphObject:(id)a4 inputPlaceholders:(void *)a5
+- (id)createGraphObjectFromLayers:(void *)layers graphObject:(id)object inputPlaceholders:(void *)placeholders
 {
   __p = 0;
   v28 = 0;
@@ -814,8 +814,8 @@
   }
 
   while (v5);
-  v16 = **a5;
-  v17 = **a3;
+  v16 = **placeholders;
+  v17 = **layers;
   v18 = time(0);
   srand(v18);
   v19 = rand();
@@ -839,7 +839,7 @@
 
   _Block_object_dispose(&v35, 8);
   LODWORD(v21) = 1045220557;
-  v22 = [a4 nodeWithLayer:*(*a3 + 8) source:{objc_msgSend(a4, "nodeWithLayer:source:", objc_msgSend(v20, "layerWithRate:seed:", v19, v21), objc_msgSend(a4, "nodeWithLayer:source:", v17, v16))}];
+  v22 = [object nodeWithLayer:*(*layers + 8) source:{objc_msgSend(object, "nodeWithLayer:source:", objc_msgSend(v20, "layerWithRate:seed:", v19, v21), objc_msgSend(object, "nodeWithLayer:source:", v17, v16))}];
   if (__p)
   {
     v28 = __p;
@@ -849,35 +849,35 @@
   return v22;
 }
 
-- (void)createGraphObjectAndLayersFromInputPlaceholders:(void *)a3 scalarWeights:(void *)a4 labelSize:(unint64_t)a5 embeddingDimension:(int64_t)a6 graphObject:(id)a7 graphLayerList:(void *)a8
+- (void)createGraphObjectAndLayersFromInputPlaceholders:(void *)placeholders scalarWeights:(void *)weights labelSize:(unint64_t)size embeddingDimension:(int64_t)dimension graphObject:(id)object graphLayerList:(void *)list
 {
-  v10 = a6;
-  v14 = *a4;
-  if (*(a4 + 1) != *a4)
+  dimensionCopy = dimension;
+  v14 = *weights;
+  if (*(weights + 1) != *weights)
   {
     v16 = 0;
     do
     {
       v19 = *(v14 + 8 * v16);
-      std::vector<void *>::push_back[abi:ne200100](a8, &v19);
+      std::vector<void *>::push_back[abi:ne200100](list, &v19);
       ++v16;
-      v14 = *a4;
+      v14 = *weights;
     }
 
-    while (v16 < (*(a4 + 1) - *a4) >> 3);
+    while (v16 < (*(weights + 1) - *weights) >> 3);
   }
 
-  v17 = v10 + (v10 >> 31);
+  v17 = dimensionCopy + (dimensionCopy >> 31);
   v18 = v17 & 0xFFFFFFFE;
-  v19 = [(TransferSeqTagMLFHelper *)self createLSTM:v10 outputSize:v17 >> 1];
-  std::vector<void *>::push_back[abi:ne200100](a8, &v19);
-  v19 = [(TransferSeqTagMLFHelper *)self createFullyConnectedLayer:v18 outputSize:a5];
-  std::vector<void *>::push_back[abi:ne200100](a8, &v19);
-  v19 = [(TransferSeqTagMLFHelper *)self createGraphObjectFromLayers:a8 graphObject:a7 inputPlaceholders:a3];
-  std::vector<void *>::push_back[abi:ne200100](a8, &v19);
+  v19 = [(TransferSeqTagMLFHelper *)self createLSTM:dimensionCopy outputSize:v17 >> 1];
+  std::vector<void *>::push_back[abi:ne200100](list, &v19);
+  v19 = [(TransferSeqTagMLFHelper *)self createFullyConnectedLayer:v18 outputSize:size];
+  std::vector<void *>::push_back[abi:ne200100](list, &v19);
+  v19 = [(TransferSeqTagMLFHelper *)self createGraphObjectFromLayers:list graphObject:object inputPlaceholders:placeholders];
+  std::vector<void *>::push_back[abi:ne200100](list, &v19);
 }
 
-- (id)createTrainingGraphFromGraphObject:(id)a3 inputPlaceholders:(void *)a4 scalarWeights:(void *)a5 targetLabels:(id)a6 targeLabelWeights:(id)a7 device:(id)a8
+- (id)createTrainingGraphFromGraphObject:(id)object inputPlaceholders:(void *)placeholders scalarWeights:(void *)weights targetLabels:(id)labels targeLabelWeights:(id)labelWeights device:(id)device
 {
   v57[1] = *MEMORY[0x1E69E9840];
   v47 = 0;
@@ -898,7 +898,7 @@
     v12 = v48[5];
   }
 
-  v37 = a8;
+  deviceCopy = device;
   _Block_object_dispose(&v47, 8);
   v13 = [v12 descriptorWithType:2 reductionType:2];
   v47 = 0;
@@ -986,31 +986,31 @@
   }
 
   _Block_object_dispose(&v47, 8);
-  v57[0] = a3;
+  v57[0] = object;
   v41 = [v26 graphWithGraphObjects:objc_msgSend(MEMORY[0x1E695DEC8] lossLayer:"arrayWithObjects:count:" optimizer:{v57, 1), v15, v25}];
-  v27 = [MEMORY[0x1E695DF90] dictionary];
-  v28 = *a4;
-  if (*(a4 + 1) != *a4)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v28 = *placeholders;
+  if (*(placeholders + 1) != *placeholders)
   {
     v29 = 0;
     do
     {
-      [v27 setObject:*(v28 + 8 * v29) forKey:{objc_msgSend(*(v28 + 8 * v29), "label", v37)}];
+      [dictionary setObject:*(v28 + 8 * v29) forKey:{objc_msgSend(*(v28 + 8 * v29), "label", deviceCopy)}];
       ++v29;
-      v28 = *a4;
+      v28 = *placeholders;
     }
 
-    while (v29 < (*(a4 + 1) - *a4) >> 3);
+    while (v29 < (*(placeholders + 1) - *placeholders) >> 3);
   }
 
-  v30 = [MEMORY[0x1E695DF70] arrayWithCapacity:{3, v37}];
-  v31 = *a5;
-  if (*(a5 + 1) != *a5)
+  v30 = [MEMORY[0x1E695DF70] arrayWithCapacity:{3, deviceCopy}];
+  v31 = *weights;
+  if (*(weights + 1) != *weights)
   {
     v32 = 0;
     do
     {
-      [v27 setObject:*(v31 + 8 * v32) forKey:{objc_msgSend(*(v31 + 8 * v32), "label")}];
+      [dictionary setObject:*(v31 + 8 * v32) forKey:{objc_msgSend(*(v31 + 8 * v32), "label")}];
       v47 = 0;
       v48 = &v47;
       v49 = 0x3052000000;
@@ -1030,20 +1030,20 @@
       }
 
       _Block_object_dispose(&v47, 8);
-      [v30 addObject:{objc_msgSend(v33, "parameterWithTensor:optimizerData:", *(*a5 + 8 * v32++), 0)}];
-      v31 = *a5;
+      [v30 addObject:{objc_msgSend(v33, "parameterWithTensor:optimizerData:", *(*weights + 8 * v32++), 0)}];
+      v31 = *weights;
     }
 
-    while (v32 < (*(a5 + 1) - *a5) >> 3);
+    while (v32 < (*(weights + 1) - *weights) >> 3);
   }
 
-  v55 = [a6 label];
-  v56 = a6;
-  v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v56 forKeys:&v55 count:1];
-  v53 = [a7 label];
-  v54 = a7;
-  [v41 addInputs:v27 lossLabels:v34 lossLabelWeights:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v54, &v53, 1)}];
-  if (*(a5 + 1) != *a5)
+  label = [labels label];
+  labelsCopy = labels;
+  v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&labelsCopy forKeys:&label count:1];
+  label2 = [labelWeights label];
+  labelWeightsCopy = labelWeights;
+  [v41 addInputs:dictionary lossLabels:v34 lossLabelWeights:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &labelWeightsCopy, &label2, 1)}];
+  if (*(weights + 1) != *weights)
   {
     [v41 setTrainingTensorParameters:v30];
   }
@@ -1053,7 +1053,7 @@
   return v41;
 }
 
-- (id)createInferenceGraphFromGraphObject:(id)a3 inputPlaceholders:(void *)a4 scalarWeights:(void *)a5 finalLayerTensor:(id)a6 device:(id)a7
+- (id)createInferenceGraphFromGraphObject:(id)object inputPlaceholders:(void *)placeholders scalarWeights:(void *)weights finalLayerTensor:(id)tensor device:(id)device
 {
   v35[1] = *MEMORY[0x1E69E9840];
   v29 = 0;
@@ -1095,54 +1095,54 @@
   }
 
   _Block_object_dispose(&v29, 8);
-  v35[0] = a3;
+  v35[0] = object;
   v15 = [v14 graphWithGraphObjects:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v35, 1)}];
-  if (![v15 nodeWithLayer:v13 source:a6])
+  if (![v15 nodeWithLayer:v13 source:tensor])
   {
     v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error creating inference graph"];
     [objc_msgSend(MEMORY[0x1E695DF30] exceptionWithName:@"Infrastructure Error" reason:v16 userInfo:{0), "raise"}];
   }
 
-  v17 = [MEMORY[0x1E695DF90] dictionary];
-  v18 = *a4;
-  if (*(a4 + 1) != *a4)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v18 = *placeholders;
+  if (*(placeholders + 1) != *placeholders)
   {
     v19 = 0;
     do
     {
-      [v17 setObject:*(v18 + 8 * v19) forKey:{objc_msgSend(*(v18 + 8 * v19), "label")}];
+      [dictionary setObject:*(v18 + 8 * v19) forKey:{objc_msgSend(*(v18 + 8 * v19), "label")}];
       ++v19;
-      v18 = *a4;
+      v18 = *placeholders;
     }
 
-    while (v19 < (*(a4 + 1) - *a4) >> 3);
+    while (v19 < (*(placeholders + 1) - *placeholders) >> 3);
   }
 
-  v20 = *a5;
-  if (*(a5 + 1) != *a5)
+  v20 = *weights;
+  if (*(weights + 1) != *weights)
   {
     v21 = 0;
     do
     {
-      [v17 setObject:*(v20 + 8 * v21) forKey:{objc_msgSend(*(v20 + 8 * v21), "label")}];
+      [dictionary setObject:*(v20 + 8 * v21) forKey:{objc_msgSend(*(v20 + 8 * v21), "label")}];
       ++v21;
-      v20 = *a5;
+      v20 = *weights;
     }
 
-    while (v21 < (*(a5 + 1) - *a5) >> 3);
+    while (v21 < (*(weights + 1) - *weights) >> 3);
   }
 
-  [v15 addInputs:v17];
-  [v15 compileWithOptions:0 device:a7];
+  [v15 addInputs:dictionary];
+  [v15 compileWithOptions:0 device:device];
   v22 = *MEMORY[0x1E69E9840];
   return v15;
 }
 
-- (void)trainAndSaveSeqTagModelFromData:(void *)a3 batchedLabels:(void *)a4 labelArray:(void *)a5 embeddingRef:(void *)a6 trainedModelDict:(__CFDictionary *)a7 trainingLogger:(id)a8
+- (void)trainAndSaveSeqTagModelFromData:(void *)data batchedLabels:(void *)labels labelArray:(void *)array embeddingRef:(void *)ref trainedModelDict:(__CFDictionary *)dict trainingLogger:(id)logger
 {
   v118[4] = *MEMORY[0x1E69E9840];
-  v13 = *a5;
-  v12 = *(a5 + 1);
+  v13 = *array;
+  v12 = *(array + 1);
   v104 = 0;
   __p = 0;
   v102 = 0;
@@ -1158,38 +1158,38 @@
   v94 = 0;
   v90 = 0;
   v91 = 0;
-  Dimension = NLStringEmbeddingGetDimension(a6, a2);
+  Dimension = NLStringEmbeddingGetDimension(ref, a2);
   v15 = [(NSDictionary *)self->_trainingParameters objectForKeyedSubscript:@"maxLength"];
   if (v15)
   {
-    v85 = [v15 intValue];
+    intValue = [v15 intValue];
   }
 
   else
   {
-    v85 = 50;
+    intValue = 50;
   }
 
   v16 = [(NSDictionary *)self->_trainingParameters objectForKeyedSubscript:@"batchSize"];
   if (v16)
   {
-    v86 = [v16 intValue];
+    intValue2 = [v16 intValue];
   }
 
   else
   {
-    v86 = 32;
+    intValue2 = 32;
   }
 
   v17 = [(NSDictionary *)self->_trainingParameters objectForKeyedSubscript:kNLModelTrainerModelDeviceTypeKey];
   if (v17)
   {
-    v18 = [v17 intValue];
+    intValue3 = [v17 intValue];
   }
 
   else
   {
-    v18 = 2;
+    intValue3 = 2;
   }
 
   v111 = 0;
@@ -1211,9 +1211,9 @@
   }
 
   _Block_object_dispose(&v111, 8);
-  if (v18 <= 3)
+  if (intValue3 <= 3)
   {
-    v20 = v18;
+    v20 = intValue3;
   }
 
   else
@@ -1223,15 +1223,15 @@
 
   v78 = [v19 deviceWithType:v20];
   v79 = v12;
-  v84 = self;
-  v76 = a7;
-  v77 = a5;
+  selfCopy = self;
+  dictCopy = dict;
+  arrayCopy = array;
   memset(v89, 0, sizeof(v89));
-  v21 = 0xAAAAAAAAAAAAAAABLL * ((*(a5 + 1) - *a5) >> 3);
+  v21 = 0xAAAAAAAAAAAAAAABLL * ((*(array + 1) - *array) >> 3);
   LODWORD(v111) = 0;
   std::vector<int>::vector[abi:ne200100](v88, v21);
-  v22 = *a4;
-  if (*(a4 + 1) != *a4)
+  v22 = *labels;
+  if (*(labels + 1) != *labels)
   {
     v23 = 0;
     do
@@ -1257,52 +1257,52 @@
             {
               memset(v87, 0, sizeof(v87));
               std::vector<std::vector<int>>::__init_with_size[abi:ne200100]<std::vector<int>*,std::vector<int>*>(v87, *(v25 + v27), *(v25 + v27 + 8), 0xAAAAAAAAAAAAAAABLL * ((*(v25 + v27 + 8) - *(v25 + v27)) >> 3));
-              std::vector<std::vector<int>>::resize(v87, v85, v88);
+              std::vector<std::vector<int>>::resize(v87, intValue, v88);
               std::vector<std::vector<std::vector<int>>>::push_back[abi:ne200100](&v106, v87);
               theArray = v87;
               std::vector<std::vector<int>>::__destroy_vector::operator()[abi:ne200100](&theArray);
               ++v28;
-              v25 = *(*(*a4 + 24 * v23) + 24 * v24);
+              v25 = *(*(*labels + 24 * v23) + 24 * v24);
               v27 += 24;
             }
 
-            while (0xAAAAAAAAAAAAAAABLL * ((*(*(*a4 + 24 * v23) + 24 * v24 + 8) - v25) >> 3) > v28);
+            while (0xAAAAAAAAAAAAAAABLL * ((*(*(*labels + 24 * v23) + 24 * v24 + 8) - v25) >> 3) > v28);
           }
 
           std::vector<std::vector<std::vector<std::vector<int>>>>::push_back[abi:ne200100](&v111, &v106);
           v87[0] = &v106;
           std::vector<std::vector<std::vector<int>>>::__destroy_vector::operator()[abi:ne200100](v87);
           ++v24;
-          v22 = *a4;
+          v22 = *labels;
         }
 
-        while (0xAAAAAAAAAAAAAAABLL * ((*(*a4 + 24 * v23 + 8) - *(*a4 + 24 * v23)) >> 3) > v24);
+        while (0xAAAAAAAAAAAAAAABLL * ((*(*labels + 24 * v23 + 8) - *(*labels + 24 * v23)) >> 3) > v24);
       }
 
       std::vector<std::vector<std::vector<std::vector<std::vector<int>>>>>::push_back[abi:ne200100](v89, &v111);
       v106 = &v111;
       std::vector<std::vector<std::vector<std::vector<int>>>>::__destroy_vector::operator()[abi:ne200100](&v106);
       ++v23;
-      v22 = *a4;
+      v22 = *labels;
     }
 
-    while (0xAAAAAAAAAAAAAAABLL * ((*(a4 + 1) - *a4) >> 3) > v23);
+    while (0xAAAAAAAAAAAAAAABLL * ((*(labels + 1) - *labels) >> 3) > v23);
   }
 
   v87[0] = 0;
   std::vector<void *>::push_back[abi:ne200100](&v95, v87);
-  v29 = v85;
+  v29 = intValue;
   v30 = *v89[0];
-  v31 = -1431655765 * ((*(**a3 + 8) - ***a3) >> 3);
+  v31 = -1431655765 * ((*(**data + 8) - ***data) >> 3);
   v80 = 0xAAAAAAAAAAAAAAABLL * ((v79 - v13) >> 3);
-  [TransferSeqTagMLFHelper getInputEmbeddingsAndTargetTensorsForSequenceData:v84 seqLabels:"getInputEmbeddingsAndTargetTensorsForSequenceData:seqLabels:batchSize:maxLength:numClasses:embeddingRef:inputTensorDataItems:targetTensorData:targetWeightTensorData:" batchSize:&v95 maxLength:&v91 numClasses:&v90 embeddingRef:? inputTensorDataItems:? targetTensorData:? targetWeightTensorData:?];
-  v32 = [MEMORY[0x1E695DF70] array];
-  if (v86 >= 1)
+  [TransferSeqTagMLFHelper getInputEmbeddingsAndTargetTensorsForSequenceData:selfCopy seqLabels:"getInputEmbeddingsAndTargetTensorsForSequenceData:seqLabels:batchSize:maxLength:numClasses:embeddingRef:inputTensorDataItems:targetTensorData:targetWeightTensorData:" batchSize:&v95 maxLength:&v91 numClasses:&v90 embeddingRef:? inputTensorDataItems:? targetTensorData:? targetWeightTensorData:?];
+  array = [MEMORY[0x1E695DF70] array];
+  if (intValue2 >= 1)
   {
-    v33 = v86;
+    v33 = intValue2;
     do
     {
-      [v32 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v85)}];
+      [array addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", intValue)}];
       --v33;
     }
 
@@ -1315,11 +1315,11 @@
     do
     {
       MLCTensorDescriptorClass = getMLCTensorDescriptorClass();
-      v118[0] = [MEMORY[0x1E696AD98] numberWithInt:v86];
+      v118[0] = [MEMORY[0x1E696AD98] numberWithInt:intValue2];
       v118[1] = [MEMORY[0x1E696AD98] numberWithLong:Dimension];
       v118[2] = &unk_1F10B4E18;
       v118[3] = [MEMORY[0x1E696AD98] numberWithInt:v29];
-      v36 = [MLCTensorDescriptorClass descriptorWithShape:objc_msgSend(MEMORY[0x1E695DEC8] sequenceLengths:"arrayWithObjects:count:" sortedSequences:v118 dataType:{4), v32, 1, 1}];
+      v36 = [MLCTensorDescriptorClass descriptorWithShape:objc_msgSend(MEMORY[0x1E695DEC8] sequenceLengths:"arrayWithObjects:count:" sortedSequences:v118 dataType:{4), array, 1, 1}];
       v37 = [getMLCTensorClass() tensorWithDescriptor:v36 data:*(v95 + v34)];
       v38 = v102;
       if (v102 >= v103)
@@ -1365,7 +1365,7 @@
           operator delete(v45);
         }
 
-        v29 = v85;
+        v29 = intValue;
       }
 
       else
@@ -1382,11 +1382,11 @@
   }
 
   v46 = getMLCTensorDescriptorClass();
-  v117[0] = [MEMORY[0x1E696AD98] numberWithInt:v86];
+  v117[0] = [MEMORY[0x1E696AD98] numberWithInt:intValue2];
   v117[1] = [MEMORY[0x1E696AD98] numberWithInt:v80];
   v117[2] = &unk_1F10B4E18;
   v117[3] = [MEMORY[0x1E696AD98] numberWithInt:v29];
-  v47 = [v46 descriptorWithShape:objc_msgSend(MEMORY[0x1E695DEC8] sequenceLengths:"arrayWithObjects:count:" sortedSequences:v117 dataType:{4), v32, 1, 1}];
+  v47 = [v46 descriptorWithShape:objc_msgSend(MEMORY[0x1E695DEC8] sequenceLengths:"arrayWithObjects:count:" sortedSequences:v117 dataType:{4), array, 1, 1}];
   v48 = [getMLCTensorClass() tensorWithDescriptor:v47 data:v91];
   v49 = [getMLCTensorClass() tensorWithDescriptor:v47 data:v90];
   v111 = 0;
@@ -1408,38 +1408,38 @@
 
   _Block_object_dispose(&v111, 8);
   v51 = objc_opt_new();
-  [(TransferSeqTagMLFHelper *)v84 createGraphObjectAndLayersFromInputPlaceholders:&__p scalarWeights:&v98 labelSize:v80 embeddingDimension:Dimension graphObject:v51 graphLayerList:&v92];
+  [(TransferSeqTagMLFHelper *)selfCopy createGraphObjectAndLayersFromInputPlaceholders:&__p scalarWeights:&v98 labelSize:v80 embeddingDimension:Dimension graphObject:v51 graphLayerList:&v92];
   v52 = *(v93 - 1);
   v53 = v78;
-  v54 = [(TransferSeqTagMLFHelper *)v84 createTrainingGraphFromGraphObject:v51 inputPlaceholders:&__p scalarWeights:&v98 targetLabels:v48 targeLabelWeights:v49 device:v78];
+  v54 = [(TransferSeqTagMLFHelper *)selfCopy createTrainingGraphFromGraphObject:v51 inputPlaceholders:&__p scalarWeights:&v98 targetLabels:v48 targeLabelWeights:v49 device:v78];
   if (!v54)
   {
     v55 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unsupported Hardware: Training graph creation failed."];
-    (*(a8 + 2))(a8, v55, &v104);
+    (*(logger + 2))(logger, v55, &v104);
     v53 = v78;
     [objc_msgSend(MEMORY[0x1E695DF30] exceptionWithName:@"Infrastructure Error" reason:v55 userInfo:{0), "raise"}];
   }
 
-  v56 = [(TransferSeqTagMLFHelper *)v84 createInferenceGraphFromGraphObject:v51 inputPlaceholders:&__p scalarWeights:&v98 finalLayerTensor:v52 device:v53];
+  v56 = [(TransferSeqTagMLFHelper *)selfCopy createInferenceGraphFromGraphObject:v51 inputPlaceholders:&__p scalarWeights:&v98 finalLayerTensor:v52 device:v53];
   if (!v56)
   {
     v57 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unsupported Hardware: Inference graph creation failed."];
-    (*(a8 + 2))(a8, v57, &v104);
+    (*(logger + 2))(logger, v57, &v104);
     [objc_msgSend(MEMORY[0x1E695DF30] exceptionWithName:@"Infrastructure Error" reason:v57 userInfo:{0), "raise"}];
   }
 
-  (*(a8 + 2))(a8, [MEMORY[0x1E696AEC0] stringWithFormat:@"Training graph initialization complete."], &v104);
+  (*(logger + 2))(logger, [MEMORY[0x1E696AEC0] stringWithFormat:@"Training graph initialization complete."], &v104);
   v111 = 0;
-  v111 = [(TransferSeqTagMLFHelper *)v84 doSeqTagTrainingAndEvalFromData:a3 batchedLabels:a4 batchedPaddedLabelDatasets:v89 labelArray:v77 embeddingRef:a6 modeLayerList:&v92 trainingGraph:v54 inferenceGraph:v56 scalarParams:&v98 inputPlaceholders:&__p targetLabelPlaceholders:v48 targetLabelWeightsPlaceholders:v49 trainingLogger:a8];
+  v111 = [(TransferSeqTagMLFHelper *)selfCopy doSeqTagTrainingAndEvalFromData:data batchedLabels:labels batchedPaddedLabelDatasets:v89 labelArray:arrayCopy embeddingRef:ref modeLayerList:&v92 trainingGraph:v54 inferenceGraph:v56 scalarParams:&v98 inputPlaceholders:&__p targetLabelPlaceholders:v48 targetLabelWeightsPlaceholders:v49 trainingLogger:logger];
   if (v111)
   {
-    (*(a8 + 2))(a8, [MEMORY[0x1E696AEC0] stringWithFormat:@"Saving Trained Model Weights"], &v104);
+    (*(logger + 2))(logger, [MEMORY[0x1E696AEC0] stringWithFormat:@"Saving Trained Model Weights"], &v104);
     Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
     v106 = Mutable;
     v59 = CFArrayCreateMutable(0, 0, MEMORY[0x1E695E9C0]);
     theArray = v59;
-    v60 = *v77;
-    if (v77[1] != *v77)
+    v60 = *arrayCopy;
+    if (arrayCopy[1] != *arrayCopy)
     {
       v61 = 0;
       v62 = 0;
@@ -1456,22 +1456,22 @@
         CFArrayAppendValue(theArray, v64);
         CFRelease(v64);
         ++v62;
-        v60 = *v77;
+        v60 = *arrayCopy;
         v61 += 24;
       }
 
-      while (0xAAAAAAAAAAAAAAABLL * ((v77[1] - *v77) >> 3) > v62);
+      while (0xAAAAAAAAAAAAAAABLL * ((arrayCopy[1] - *arrayCopy) >> 3) > v62);
       Mutable = v106;
     }
 
     CFDictionaryAddValue(Mutable, kNLModelSampleDataLabelTypesArrayKey, v59);
-    v65 = [(NSDictionary *)v84->_trainingParameters objectForKeyedSubscript:kNLModelTrainerEmbeddingArchitectureKey];
-    v66 = [(NSDictionary *)v84->_trainingParameters objectForKeyedSubscript:kNLModelTrainerLanguageKey];
+    v65 = [(NSDictionary *)selfCopy->_trainingParameters objectForKeyedSubscript:kNLModelTrainerEmbeddingArchitectureKey];
+    v66 = [(NSDictionary *)selfCopy->_trainingParameters objectForKeyedSubscript:kNLModelTrainerLanguageKey];
     CFDictionaryAddValue(Mutable, kNLModelTrainerEmbeddingArchitectureKey, v65);
     CFDictionaryAddValue(Mutable, kNLModelTrainerLanguageKey, v66);
-    if ([(NSDictionary *)v84->_trainingParameters objectForKeyedSubscript:kNLModelTrainerMultilingualEmbeddingLocaleIdentifierKey])
+    if ([(NSDictionary *)selfCopy->_trainingParameters objectForKeyedSubscript:kNLModelTrainerMultilingualEmbeddingLocaleIdentifierKey])
     {
-      CFDictionaryAddValue(Mutable, kNLModelTrainerMultilingualEmbeddingLocaleIdentifierKey, [(NSDictionary *)v84->_trainingParameters objectForKeyedSubscript:kNLModelTrainerMultilingualEmbeddingLocaleIdentifierKey]);
+      CFDictionaryAddValue(Mutable, kNLModelTrainerMultilingualEmbeddingLocaleIdentifierKey, [(NSDictionary *)selfCopy->_trainingParameters objectForKeyedSubscript:kNLModelTrainerMultilingualEmbeddingLocaleIdentifierKey]);
     }
 
     v67 = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
@@ -1498,7 +1498,7 @@
       CFDictionaryAddValue(v67, v73, v74);
     }
 
-    *v76 = v67;
+    *dictCopy = v67;
     if (v59)
     {
       CFRelease(v59);
@@ -1550,52 +1550,52 @@
   v75 = *MEMORY[0x1E69E9840];
 }
 
-- (__CFDictionary)doSeqTagTrainingAndEvalFromData:(void *)a3 batchedLabels:(void *)a4 batchedPaddedLabelDatasets:(void *)a5 labelArray:(void *)a6 embeddingRef:(void *)a7 modeLayerList:(void *)a8 trainingGraph:(id)a9 inferenceGraph:(id)a10 scalarParams:(void *)a11 inputPlaceholders:(void *)a12 targetLabelPlaceholders:(id)a13 targetLabelWeightsPlaceholders:(id)a14 trainingLogger:(id)a15
+- (__CFDictionary)doSeqTagTrainingAndEvalFromData:(void *)data batchedLabels:(void *)labels batchedPaddedLabelDatasets:(void *)datasets labelArray:(void *)array embeddingRef:(void *)ref modeLayerList:(void *)list trainingGraph:(id)graph inferenceGraph:(id)self0 scalarParams:(void *)self1 inputPlaceholders:(void *)self2 targetLabelPlaceholders:(id)self3 targetLabelWeightsPlaceholders:(id)self4 trainingLogger:(id)self5
 {
   v166 = *MEMORY[0x1E69E9840];
   theDict = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
-  v104 = a6;
-  v21 = *a6;
-  v20 = *(a6 + 1);
-  v109 = a7;
-  Dimension = NLStringEmbeddingGetDimension(a7, v22);
+  arrayCopy = array;
+  v21 = *array;
+  v20 = *(array + 1);
+  refCopy = ref;
+  Dimension = NLStringEmbeddingGetDimension(ref, v22);
   v159 = 0;
   v24 = [(NSDictionary *)self->_trainingParameters objectForKeyedSubscript:kNLModelTrainerMaxIterationNumberKey];
   if (v24)
   {
-    v25 = [v24 unsignedIntValue];
+    unsignedIntValue = [v24 unsignedIntValue];
   }
 
   else
   {
-    v25 = 20;
+    unsignedIntValue = 20;
   }
 
-  v102 = v25;
+  v102 = unsignedIntValue;
   v26 = [(NSDictionary *)self->_trainingParameters objectForKeyedSubscript:@"maxLength"];
-  v113 = self;
+  selfCopy = self;
   if (v26)
   {
-    v27 = [v26 intValue];
+    intValue = [v26 intValue];
   }
 
   else
   {
-    v27 = 50;
+    intValue = 50;
   }
 
-  v28 = *a3 + 24;
-  v29 = **a3;
+  v28 = *data + 24;
+  v29 = **data;
   v31 = *v29;
   v30 = v29[1];
   v156 = 0;
   v157 = 0;
   v158 = 0;
   memset(v155, 0, sizeof(v155));
-  v107 = v27;
-  [(TransferSeqTagMLFHelper *)v113 removeBatchingFromDataAndLabels:v28 batchedLabels:*a4 + 24 inputSentences:&v156 inputLabels:v155 maxLength:?];
+  v107 = intValue;
+  [(TransferSeqTagMLFHelper *)selfCopy removeBatchingFromDataAndLabels:v28 batchedLabels:*labels + 24 inputSentences:&v156 inputLabels:v155 maxLength:?];
   memset(v154, 0, sizeof(v154));
-  [(TransferSeqTagMLFHelper *)v113 getMaxIndicesFromOneHotVectors:v155 maxIndicesBatch:v154];
+  [(TransferSeqTagMLFHelper *)selfCopy getMaxIndicesFromOneHotVectors:v155 maxIndicesBatch:v154];
   v152 = 0;
   v151 = 0;
   v153 = 0;
@@ -1631,7 +1631,7 @@
       std::vector<std::vector<std::string>>::push_back[abi:ne200100](&v133, (v156 + v41));
       v44 = applesauce::CF::details::make_CFArrayRef<std::vector<std::string>>(&v133);
       v130 = v44;
-      NLStringEmbeddingFillWordVectorsWithShape(v109, v44, 1, v43, v141, 0, __p, 2);
+      NLStringEmbeddingFillWordVectorsWithShape(refCopy, v44, 1, v43, v141, 0, __p, 2);
       std::vector<std::vector<float>>::push_back[abi:ne200100](&v145, &v141);
       if (v44)
       {
@@ -1668,22 +1668,22 @@
   p_p = &__p;
   v139 = 0x2020000000;
   v140 = 0;
-  v45 = [MEMORY[0x1E695DF90] dictionary];
-  v46 = *a11;
-  if (*(a11 + 1) != *a11)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v46 = *params;
+  if (*(params + 1) != *params)
   {
     v47 = 0;
     do
     {
       v48 = [MEMORY[0x1E695DF88] dataWithData:{objc_msgSend(*(v46 + 8 * v47), "data")}];
-      [v45 setObject:objc_msgSend(getMLCTensorDataClass() forKey:{"dataWithBytesNoCopy:length:", objc_msgSend(v48, "mutableBytes"), objc_msgSend(v48, "length")), objc_msgSend(*(*a11 + 8 * v47++), "label")}];
-      v46 = *a11;
+      [dictionary setObject:objc_msgSend(getMLCTensorDataClass() forKey:{"dataWithBytesNoCopy:length:", objc_msgSend(v48, "mutableBytes"), objc_msgSend(v48, "length")), objc_msgSend(*(*params + 8 * v47++), "label")}];
+      v46 = *params;
     }
 
-    while (v47 < (*(a11 + 1) - *a11) >> 3);
+    while (v47 < (*(params + 1) - *params) >> 3);
   }
 
-  (*(a15 + 2))(a15, [MEMORY[0x1E696AEC0] stringWithFormat:@"Beginning training"], &v159);
+  (*(logger + 2))(logger, [MEMORY[0x1E696AEC0] stringWithFormat:@"Beginning training"], &v159);
   if (v102)
   {
     v100 = 0;
@@ -1693,7 +1693,7 @@
     v105 = 0xAAAAAAAAAAAAAAABLL * v50;
     v111 = -1431655765 * v50;
     v51 = NAN;
-    v52 = v113;
+    v52 = selfCopy;
     do
     {
       v133 = 0;
@@ -1701,8 +1701,8 @@
       v135 = 0x2020000000;
       v136 = 0;
       v53 = dispatch_semaphore_create(0);
-      v54 = *a3;
-      if (*(*a3 + 8) != **a3)
+      v54 = *data;
+      if (*(*data + 8) != **data)
       {
         v55 = 0;
         do
@@ -1712,11 +1712,11 @@
           v132 = 0;
           v116[0] = 0;
           v160 = 0;
-          v57 = *a12;
-          v56 = *(a12 + 1);
+          v57 = *placeholders;
+          v56 = *(placeholders + 1);
           if (v49)
           {
-            if (v56 != *a12)
+            if (v56 != *placeholders)
             {
               v58 = 0;
               do
@@ -1726,7 +1726,7 @@
                 ++v58;
               }
 
-              while (v58 < (*(a12 + 1) - *a12) >> 3);
+              while (v58 < (*(placeholders + 1) - *placeholders) >> 3);
             }
 
             v59 = __src + 16 * v55;
@@ -1736,7 +1736,7 @@
 
           else
           {
-            if (v56 != *a12)
+            if (v56 != *placeholders)
             {
               v60 = 0;
               do
@@ -1746,13 +1746,13 @@
                 ++v60;
               }
 
-              while (v60 < (*(a12 + 1) - *a12) >> 3);
-              v54 = *a3;
+              while (v60 < (*(placeholders + 1) - *placeholders) >> 3);
+              v54 = *data;
             }
 
-            [(TransferSeqTagMLFHelper *)v52 getInputEmbeddingsAndTargetTensorsForSequenceData:&(*v54)[3 * v55] seqLabels:**a5 + 24 * v55 batchSize:v105 maxLength:v107 numClasses:v106 embeddingRef:v109 inputTensorDataItems:&v130 targetTensorData:v116 targetWeightTensorData:&v160];
+            [(TransferSeqTagMLFHelper *)v52 getInputEmbeddingsAndTargetTensorsForSequenceData:&(*v54)[3 * v55] seqLabels:**datasets + 24 * v55 batchSize:v105 maxLength:v107 numClasses:v106 embeddingRef:refCopy inputTensorDataItems:&v130 targetTensorData:v116 targetWeightTensorData:&v160];
             memset(buf, 0, sizeof(buf));
-            if (*(a12 + 1) != *a12)
+            if (*(placeholders + 1) != *placeholders)
             {
               v61 = 0;
               v62 = 0;
@@ -1763,7 +1763,7 @@
                 v61 += 8;
               }
 
-              while (v62 < (*(a12 + 1) - *a12) >> 3);
+              while (v62 < (*(placeholders + 1) - *placeholders) >> 3);
             }
 
             std::vector<std::vector<MLCTensorData *>>::push_back[abi:ne200100](&v151, buf);
@@ -1831,27 +1831,27 @@
           }
 
           v73 = objc_autoreleasePoolPush();
-          v74 = *a12;
-          if (*(a12 + 1) != *a12)
+          v74 = *placeholders;
+          if (*(placeholders + 1) != *placeholders)
           {
             v75 = 0;
             do
             {
-              [v45 setObject:*(v130 + v75) forKey:{objc_msgSend(*(v74 + 8 * v75), "label")}];
+              [dictionary setObject:*(v130 + v75) forKey:{objc_msgSend(*(v74 + 8 * v75), "label")}];
               ++v75;
-              v74 = *a12;
+              v74 = *placeholders;
             }
 
-            while (v75 < (*(a12 + 1) - *a12) >> 3);
+            while (v75 < (*(placeholders + 1) - *placeholders) >> 3);
           }
 
-          v52 = v113;
-          v163 = [a13 label];
+          v52 = selfCopy;
+          label = [labelPlaceholders label];
           v164 = v116[0];
-          v76 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v164 forKeys:&v163 count:1];
-          v161 = [a14 label];
+          v76 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v164 forKeys:&label count:1];
+          label2 = [weightsPlaceholders label];
           v162 = v160;
-          v77 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v162 forKeys:&v161 count:1];
+          v77 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v162 forKeys:&label2 count:1];
           v128[0] = MEMORY[0x1E69E9820];
           v128[1] = 3221225472;
           v128[2] = __268__TransferSeqTagMLFHelper_doSeqTagTrainingAndEvalFromData_batchedLabels_batchedPaddedLabelDatasets_labelArray_embeddingRef_modeLayerList_trainingGraph_inferenceGraph_scalarParams_inputPlaceholders_targetLabelPlaceholders_targetLabelWeightsPlaceholders_trainingLogger___block_invoke;
@@ -1859,11 +1859,11 @@
           v128[6] = &__p;
           v128[7] = &v133;
           v128[8] = v55;
-          v128[9] = a3;
+          v128[9] = data;
           v129 = 0;
           v128[4] = v53;
           v128[5] = &v141;
-          [a9 executeWithInputsData:v45 lossLabelsData:v76 lossLabelWeightsData:v77 batchSize:v111 options:0 completionHandler:v128];
+          [graph executeWithInputsData:dictionary lossLabelsData:v76 lossLabelWeightsData:v77 batchSize:v111 options:0 completionHandler:v128];
           v131 = v130;
           objc_autoreleasePoolPop(v73);
           if (v130)
@@ -1873,41 +1873,41 @@
           }
 
           ++v55;
-          v54 = *a3;
+          v54 = *data;
         }
 
-        while (v55 < 0xAAAAAAAAAAAAAAABLL * ((*(*a3 + 8) - **a3) >> 3));
+        while (v55 < 0xAAAAAAAAAAAAAAABLL * ((*(*data + 8) - **data) >> 3));
       }
 
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
         [TransferSeqTagMLFHelper doSeqTagTrainingAndEvalFromData:v127 batchedLabels:? batchedPaddedLabelDatasets:? labelArray:? embeddingRef:? modeLayerList:? trainingGraph:? inferenceGraph:? scalarParams:? inputPlaceholders:? targetLabelPlaceholders:? targetLabelWeightsPlaceholders:? trainingLogger:?];
-        v52 = v113;
+        v52 = selfCopy;
       }
 
       dispatch_semaphore_wait(v53, 0xFFFFFFFFFFFFFFFFLL);
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
         [TransferSeqTagMLFHelper doSeqTagTrainingAndEvalFromData:v125 batchedLabels:? batchedPaddedLabelDatasets:? labelArray:? embeddingRef:? modeLayerList:? trainingGraph:? inferenceGraph:? scalarParams:? inputPlaceholders:? targetLabelPlaceholders:? targetLabelWeightsPlaceholders:? trainingLogger:?];
-        v52 = v113;
+        v52 = selfCopy;
       }
 
-      [a9 synchronizeUpdates];
+      [graph synchronizeUpdates];
       dispatch_release(v53);
       v78 = *(v134 + 6);
-      v80 = **a3;
-      v79 = *(*a3 + 8);
+      v80 = **data;
+      v79 = *(*data + 8);
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
         [TransferSeqTagMLFHelper doSeqTagTrainingAndEvalFromData:v123 batchedLabels:? batchedPaddedLabelDatasets:? labelArray:? embeddingRef:? modeLayerList:? trainingGraph:? inferenceGraph:? scalarParams:? inputPlaceholders:? targetLabelPlaceholders:? targetLabelWeightsPlaceholders:? trainingLogger:?];
-        v52 = v113;
+        v52 = selfCopy;
       }
 
-      (*(a15 + 2))(a15, [MEMORY[0x1E696AEC0] stringWithFormat:@"Completed epoch number = [%d] Total Training Loss = %f", (v49 + 1), (v78 / (0xAAAAAAAAAAAAAAABLL * ((v79 - v80) >> 3)))], &v159);
+      (*(logger + 2))(logger, [MEMORY[0x1E696AEC0] stringWithFormat:@"Completed epoch number = [%d] Total Training Loss = %f", (v49 + 1), (v78 / (0xAAAAAAAAAAAAAAABLL * ((v79 - v80) >> 3)))], &v159);
       v119 = 0;
       v120 = 0;
       v121 = 0;
-      std::vector<void *>::__init_with_size[abi:ne200100]<void **,void **>(&v119, *a8, *(a8 + 1), (*(a8 + 1) - *a8) >> 3);
+      std::vector<void *>::__init_with_size[abi:ne200100]<void **,void **>(&v119, *list, *(list + 1), (*(list + 1) - *list) >> 3);
       v81 = [(TransferSeqTagMLFHelper *)v52 getModelLayerWeights:&v119];
       if (v119)
       {
@@ -1921,17 +1921,17 @@
       if (v49 == v102 - 1)
       {
         memset(buf, 0, sizeof(buf));
-        v82 = *a3;
-        v83 = *a5;
+        v82 = *data;
+        v83 = *datasets;
         std::string::basic_string[abi:ne200100]<0>(v117, "Training");
-        [(TransferSeqTagMLFHelper *)v52 evaluateInferenceGraphWithInputTensorData:&v151 batchedInputSentences:v82 batchedLabels:v83 inferenceGraph:a10 inputPlaceholders:a12 scalarParams:a11 labelArray:v104 dataTypeString:v117 trainingLogger:a15 predictedLabels:buf];
+        [(TransferSeqTagMLFHelper *)v52 evaluateInferenceGraphWithInputTensorData:&v151 batchedInputSentences:v82 batchedLabels:v83 inferenceGraph:inferenceGraph inputPlaceholders:placeholders scalarParams:params labelArray:arrayCopy dataTypeString:v117 trainingLogger:logger predictedLabels:buf];
         if (v118 < 0)
         {
           operator delete(v117[0]);
         }
 
         memset(v116, 0, sizeof(v116));
-        [(TransferSeqTagMLFHelper *)v52 labelIdsToString:buf labelArray:v104 labelStrings:v116];
+        [(TransferSeqTagMLFHelper *)v52 labelIdsToString:buf labelArray:arrayCopy labelStrings:v116];
         v84 = applesauce::CF::details::make_CFArrayRef<std::vector<std::string>>(v116);
         v160 = v84;
         CFDictionaryAddValue(theDict, kNLModelPredictedTrainingLabelsKey, v84);
@@ -1948,7 +1948,7 @@
 
       CoreNLP::MontrealModel::MontrealModel(v116, [v81 objectAtIndexedSubscript:0]);
       std::string::basic_string[abi:ne200100]<0>(v114, "Validation");
-      [(TransferSeqTagMLFHelper *)v52 evaluateMontrealModelOnData:&v156 evalLabels:v154 evalEmbeddingsCache:&v145 embeddingRef:v109 montrealModel:v116 labelArray:v104 trainingLogger:a15 dataTypeString:v114 predictedLabels:&v130];
+      [(TransferSeqTagMLFHelper *)v52 evaluateMontrealModelOnData:&v156 evalLabels:v154 evalEmbeddingsCache:&v145 embeddingRef:refCopy montrealModel:v116 labelArray:arrayCopy trainingLogger:logger dataTypeString:v114 predictedLabels:&v130];
       v86 = v85;
       if (v115 < 0)
       {
@@ -1967,7 +1967,7 @@
         }
 
         memset(buf, 0, sizeof(buf));
-        [(TransferSeqTagMLFHelper *)v52 labelIdsToString:&v130 labelArray:v104 labelStrings:buf];
+        [(TransferSeqTagMLFHelper *)v52 labelIdsToString:&v130 labelArray:arrayCopy labelStrings:buf];
         v87 = applesauce::CF::details::make_CFArrayRef<std::vector<std::string>>(buf);
         v160 = v87;
         if (CFDictionaryContainsKey(theDict, kNLModelPredictedValidationLabelsKey))
@@ -2059,7 +2059,7 @@
   }
 
   v146 = v94;
-  (*(a15 + 2))(a15, [MEMORY[0x1E696AEC0] stringWithFormat:@"Finished Training"], &v159);
+  (*(logger + 2))(logger, [MEMORY[0x1E696AEC0] stringWithFormat:@"Finished Training"], &v159);
   _Block_object_dispose(&__p, 8);
   _Block_object_dispose(&v141, 8);
   v141 = &v145;
@@ -2104,10 +2104,10 @@ void __268__TransferSeqTagMLFHelper_doSeqTagTrainingAndEvalFromData_batchedLabel
   }
 }
 
-- (void)labelIdsToString:(void *)a3 labelArray:(void *)a4 labelStrings:(void *)a5
+- (void)labelIdsToString:(void *)string labelArray:(void *)array labelStrings:(void *)strings
 {
-  v5 = *a3;
-  if (*(a3 + 1) != *a3)
+  v5 = *string;
+  if (*(string + 1) != *string)
   {
     v9 = 0;
     do
@@ -2120,27 +2120,27 @@ void __268__TransferSeqTagMLFHelper_doSeqTagTrainingAndEvalFromData_batchedLabel
         v12 = 0;
         do
         {
-          std::vector<std::string>::push_back[abi:ne200100](v13, (*a4 + 24 * *(v10 + 4 * v12++)));
-          v10 = *(*a3 + 24 * v9);
+          std::vector<std::string>::push_back[abi:ne200100](v13, (*array + 24 * *(v10 + 4 * v12++)));
+          v10 = *(*string + 24 * v9);
         }
 
-        while (v12 < (*(*a3 + 24 * v9 + 8) - v10) >> 2);
+        while (v12 < (*(*string + 24 * v9 + 8) - v10) >> 2);
       }
 
-      std::vector<std::vector<std::string>>::push_back[abi:ne200100](a5, v13);
+      std::vector<std::vector<std::string>>::push_back[abi:ne200100](strings, v13);
       v14 = v13;
       std::vector<std::string>::__destroy_vector::operator()[abi:ne200100](&v14);
       ++v9;
-      v5 = *a3;
+      v5 = *string;
     }
 
-    while (0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 3) > v9);
+    while (0xAAAAAAAAAAAAAAABLL * ((*(string + 1) - *string) >> 3) > v9);
   }
 }
 
-- (float)showF1ResultsMatrix:(void *)a3 labelCounts:()map<int perLabelResults:()int trainingLogger:()std:(std:(int>>> *)a4 :(void *)a5 allocator<std:(id)a6 :()basic_string<char pair<const)int :()std:(std::allocator<char>> *)a7 :char_traits<char> less<int> dataTypeString:
+- (float)showF1ResultsMatrix:(void *)matrix labelCounts:()map<int perLabelResults:()int trainingLogger:()std:(std:(int>>> *)std :(void *)a5 allocator<std:(id)a6 :()basic_string<char pair<const)int :()std:(std::allocator<char>> *)a7 :char_traits<char> less<int> dataTypeString:
 {
-  v10 = -1431655765 * ((*(a3 + 1) - *a3) >> 3);
+  v10 = -1431655765 * ((*(matrix + 1) - *matrix) >> 3);
   p_i = 0;
   std::vector<std::pair<float,float>>::vector[abi:ne200100](__p, v10);
   v35 = 0;
@@ -2198,8 +2198,8 @@ void __268__TransferSeqTagMLFHelper_doSeqTagTrainingAndEvalFromData_batchedLabel
       v23[1] = v19;
       v24 = MEMORY[0x1E696AEC0];
       p_i = &v34;
-      v25 = std::__tree<std::__value_type<int,int>,std::__map_value_compare<int,std::__value_type<int,int>,std::less<int>,true>,std::allocator<std::__value_type<int,int>>>::__emplace_unique_key_args<int,std::piecewise_construct_t const&,std::tuple<int const&>,std::tuple<>>(a4, &v34);
-      v26 = *a3 + 24 * v34;
+      v25 = std::__tree<std::__value_type<int,int>,std::__map_value_compare<int,std::__value_type<int,int>,std::less<int>,true>,std::allocator<std::__value_type<int,int>>>::__emplace_unique_key_args<int,std::piecewise_construct_t const&,std::tuple<int const&>,std::tuple<>>(std, &v34);
+      v26 = *matrix + 24 * v34;
       if (*(v26 + 23) < 0)
       {
         v26 = *v26;
@@ -2233,7 +2233,7 @@ void __268__TransferSeqTagMLFHelper_doSeqTagTrainingAndEvalFromData_batchedLabel
   return v28;
 }
 
-- (float)evaluateMontrealModelOnData:(void *)a3 evalLabels:(void *)a4 evalEmbeddingsCache:(void *)a5 embeddingRef:(void *)a6 montrealModel:(void *)a7 labelArray:(void *)a8 trainingLogger:(id)a9 dataTypeString:()basic_string<char predictedLabels:()std:(std::allocator<char>> *)a10 :char_traits<char>
+- (float)evaluateMontrealModelOnData:(void *)data evalLabels:(void *)labels evalEmbeddingsCache:(void *)cache embeddingRef:(void *)ref montrealModel:(void *)model labelArray:(void *)array trainingLogger:(id)logger dataTypeString:()basic_string<char predictedLabels:()std:(std::allocator<char>> *)self0 :char_traits<char>
 {
   v84 = *MEMORY[0x1E69E9840];
   v80[0] = 0;
@@ -2243,14 +2243,14 @@ void __268__TransferSeqTagMLFHelper_doSeqTagTrainingAndEvalFromData_batchedLabel
   v77 = v78;
   v78[0] = 0;
   LODWORD(v81) = 0;
-  if (*(a8 + 1) != *a8)
+  if (*(array + 1) != *array)
   {
     do
     {
       *buf = &v81;
       *(std::__tree<std::__value_type<int,int>,std::__map_value_compare<int,std::__value_type<int,int>,std::less<int>,true>,std::allocator<std::__value_type<int,int>>>::__emplace_unique_key_args<int,std::piecewise_construct_t const&,std::tuple<int const&>,std::tuple<>>(&v77, &v81) + 8) = 0;
       v76 = 0;
-      if (*(a8 + 1) == *a8)
+      if (*(array + 1) == *array)
       {
         break;
       }
@@ -2262,7 +2262,7 @@ void __268__TransferSeqTagMLFHelper_doSeqTagTrainingAndEvalFromData_batchedLabel
         *buf = &v76;
         *(std::__tree<std::__value_type<int,int>,std::__map_value_compare<int,std::__value_type<int,int>,std::less<int>,true>,std::allocator<std::__value_type<int,int>>>::__emplace_unique_key_args<int,std::piecewise_construct_t const&,std::tuple<int const&>,std::tuple<>>((v13 + 5), &v76) + 8) = 0;
         v14 = ++v76;
-        v15 = 0xAAAAAAAAAAAAAAABLL * ((*(a8 + 1) - *a8) >> 3);
+        v15 = 0xAAAAAAAAAAAAAAABLL * ((*(array + 1) - *array) >> 3);
       }
 
       while (v15 > v14);
@@ -2274,25 +2274,25 @@ void __268__TransferSeqTagMLFHelper_doSeqTagTrainingAndEvalFromData_batchedLabel
   }
 
   v75 = 0;
-  v17 = a9;
-  (*(a9 + 2))(a9, [MEMORY[0x1E696AEC0] stringWithFormat:@"Begin Validation...", a4, a5, a6], &v75);
-  if (*(a3 + 1) != *a3)
+  loggerCopy2 = logger;
+  (*(logger + 2))(logger, [MEMORY[0x1E696AEC0] stringWithFormat:@"Begin Validation...", labels, cache, ref], &v75);
+  if (*(data + 1) != *data)
   {
-    v65 = self;
+    selfCopy = self;
     v18 = 0;
     v19 = 0.0;
     v20 = 0.0;
-    v21 = a7;
+    modelCopy2 = model;
     while (1)
     {
       v22 = objc_autoreleasePoolPush();
       memset(buf, 0, sizeof(buf));
-      v23 = 0xAAAAAAAAAAAAAAABLL * ((*(*a3 + 24 * v18 + 8) - *(*a3 + 24 * v18)) >> 3);
-      CoreNLP::MontrealModel::setInput(v21, 1, v23, *(*a5 + 24 * v18), 0);
-      CoreNLP::MontrealModel::predict(v21);
+      v23 = 0xAAAAAAAAAAAAAAABLL * ((*(*data + 24 * v18 + 8) - *(*data + 24 * v18)) >> 3);
+      CoreNLP::MontrealModel::setInput(modelCopy2, 1, v23, *(*cache + 24 * v18), 0);
+      CoreNLP::MontrealModel::predict(modelCopy2);
       context = v22;
-      v24 = CoreNLP::MontrealModel::output(v21, 0);
-      v25 = CoreNLP::MontrealModel::outputSize(v21);
+      v24 = CoreNLP::MontrealModel::output(modelCopy2, 0);
+      v25 = CoreNLP::MontrealModel::outputSize(modelCopy2);
       if (v23 >= 1)
       {
         v26 = 0;
@@ -2335,9 +2335,9 @@ void __268__TransferSeqTagMLFHelper_doSeqTagTrainingAndEvalFromData_batchedLabel
       }
 
       std::vector<std::vector<int>>::push_back[abi:ne200100](v85, buf);
-      v36 = (*(*a3 + 24 * v18 + 8) - *(*a3 + 24 * v18)) >> 3;
+      v36 = (*(*data + 24 * v18 + 8) - *(*data + 24 * v18)) >> 3;
       v37 = 0xAAAAAAAAAAAAAAABLL * v36;
-      if (*(*a3 + 24 * v18 + 8) == *(*a3 + 24 * v18))
+      if (*(*data + 24 * v18 + 8) == *(*data + 24 * v18))
       {
         v46 = 0.0;
       }
@@ -2355,7 +2355,7 @@ void __268__TransferSeqTagMLFHelper_doSeqTagTrainingAndEvalFromData_batchedLabel
         v40 = 1;
         do
         {
-          v76 = *(*(*a4 + 24 * v18) + 4 * v38);
+          v76 = *(*(*labels + 24 * v18) + 4 * v38);
           v41 = *(*buf + 4 * v38);
           v81 = &v76;
           v42 = std::__tree<std::__value_type<int,int>,std::__map_value_compare<int,std::__value_type<int,int>,std::less<int>,true>,std::allocator<std::__value_type<int,int>>>::__emplace_unique_key_args<int,std::piecewise_construct_t const&,std::tuple<int const&>,std::tuple<>>(&v77, &v76);
@@ -2395,14 +2395,14 @@ LABEL_26:
       }
 
       objc_autoreleasePoolPop(context);
-      v21 = a7;
+      modelCopy2 = model;
       v19 = v19 + (v46 / v37);
       ++v18;
-      v47 = 0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 3);
+      v47 = 0xAAAAAAAAAAAAAAABLL * ((*(data + 1) - *data) >> 3);
       if (v47 <= v18)
       {
-        v17 = a9;
-        self = v65;
+        loggerCopy2 = logger;
+        self = selfCopy;
         goto LABEL_31;
       }
     }
@@ -2412,26 +2412,26 @@ LABEL_26:
   v20 = 0.0;
   v19 = 0.0;
 LABEL_31:
-  v48 = a10;
-  var0 = a10;
-  if (*(&a10->var0.var1 + 23) < 0)
+  stdCopy = std;
+  var0 = std;
+  if (*(&std->var0.var1 + 23) < 0)
   {
-    var0 = a10->var0.var1.var0;
+    var0 = std->var0.var1.var0;
   }
 
-  v17[2](v17, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s data prediction completed.\n", var0], &v75);
+  loggerCopy2[2](loggerCopy2, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s data prediction completed.\n", var0], &v75);
   std::map<int,int>::map[abi:ne200100](v72, &v77);
-  if (*(&a10->var0.var1 + 23) < 0)
+  if (*(&std->var0.var1 + 23) < 0)
   {
-    std::string::__init_copy_ctor_external(&v71, a10->var0.var1.var0, a10->var0.var1.var1);
+    std::string::__init_copy_ctor_external(&v71, std->var0.var1.var0, std->var0.var1.var1);
   }
 
   else
   {
-    v71 = *a10;
+    v71 = *std;
   }
 
-  [(TransferSeqTagMLFHelper *)self showF1ResultsMatrix:a8 labelCounts:v72 perLabelResults:&v79 trainingLogger:v17 dataTypeString:&v71];
+  [(TransferSeqTagMLFHelper *)self showF1ResultsMatrix:array labelCounts:v72 perLabelResults:&v79 trainingLogger:loggerCopy2 dataTypeString:&v71];
   v51 = v50;
   v52 = v19 / v47;
   v53 = v20 / v47;
@@ -2442,18 +2442,18 @@ LABEL_31:
 
   std::__tree<std::__value_type<NLLanguageID,__CFString const*>,std::__map_value_compare<NLLanguageID,std::__value_type<NLLanguageID,__CFString const*>,std::less<NLLanguageID>,true>,std::allocator<std::__value_type<NLLanguageID,__CFString const*>>>::destroy(v72, v72[1]);
   v54 = v52;
-  v17[2](v17, [MEMORY[0x1E696AEC0] stringWithFormat:@"Average Tag Accuracy = %4.2f, Average Instance Accuracy = %4.2f \n", *&v54, v53], &v75);
+  loggerCopy2[2](loggerCopy2, [MEMORY[0x1E696AEC0] stringWithFormat:@"Average Tag Accuracy = %4.2f, Average Instance Accuracy = %4.2f \n", *&v54, v53], &v75);
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    if (*(&a10->var0.var1 + 23) < 0)
+    if (*(&std->var0.var1 + 23) < 0)
     {
-      v48 = a10->var0.var1.var0;
+      stdCopy = std->var0.var1.var0;
     }
 
     *buf = 134218498;
     *&buf[4] = v54;
     *&buf[12] = 2080;
-    *&buf[14] = v48;
+    *&buf[14] = stdCopy;
     *&buf[22] = 2048;
     v83 = v51;
     _os_log_debug_impl(&dword_19D184000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "Montreal Average Tag Accuracy = %4.2f, %s F-1 score = %4.2f \n", buf, 0x20u);
@@ -2471,30 +2471,30 @@ LABEL_31:
   return v51;
 }
 
-- (void)evaluateInferenceGraphWithInputTensorData:(void *)a3 batchedInputSentences:(void *)a4 batchedLabels:(void *)a5 inferenceGraph:(id)a6 inputPlaceholders:(void *)a7 scalarParams:(void *)a8 labelArray:(void *)a9 dataTypeString:()basic_string<char trainingLogger:()std:(std::allocator<char>> *)a10 :char_traits<char> predictedLabels:
+- (void)evaluateInferenceGraphWithInputTensorData:(void *)data batchedInputSentences:(void *)sentences batchedLabels:(void *)labels inferenceGraph:(id)graph inputPlaceholders:(void *)placeholders scalarParams:(void *)params labelArray:(void *)array dataTypeString:()basic_string<char trainingLogger:()std:(std::allocator<char>> *)self0 :char_traits<char> predictedLabels:
 {
   v94 = *MEMORY[0x1E69E9840];
   v12 = [(NSDictionary *)self->_trainingParameters objectForKeyedSubscript:@"maxLength"];
   if (v12)
   {
-    v66 = [v12 intValue];
+    intValue = [v12 intValue];
   }
 
   else
   {
-    v66 = 30;
+    intValue = 30;
   }
 
   v13 = [(NSDictionary *)self->_trainingParameters objectForKeyedSubscript:@"batchSize"];
-  v68 = self;
+  selfCopy = self;
   if (v13)
   {
-    v70 = [v13 intValue];
+    intValue2 = [v13 intValue];
   }
 
   else
   {
-    v70 = 32;
+    intValue2 = 32;
   }
 
   v88[0] = 0;
@@ -2504,14 +2504,14 @@ LABEL_31:
   v85 = v86;
   v86[0] = 0;
   LODWORD(v83[0]) = 0;
-  if (*(a9 + 1) != *a9)
+  if (*(array + 1) != *array)
   {
     do
     {
       *buf = v83;
       *(std::__tree<std::__value_type<int,int>,std::__map_value_compare<int,std::__value_type<int,int>,std::less<int>,true>,std::allocator<std::__value_type<int,int>>>::__emplace_unique_key_args<int,std::piecewise_construct_t const&,std::tuple<int const&>,std::tuple<>>(&v85, v83) + 8) = 0;
       LODWORD(__p) = 0;
-      if (*(a9 + 1) == *a9)
+      if (*(array + 1) == *array)
       {
         break;
       }
@@ -2524,7 +2524,7 @@ LABEL_31:
         *(std::__tree<std::__value_type<int,int>,std::__map_value_compare<int,std::__value_type<int,int>,std::less<int>,true>,std::allocator<std::__value_type<int,int>>>::__emplace_unique_key_args<int,std::piecewise_construct_t const&,std::tuple<int const&>,std::tuple<>>((v14 + 5), &__p) + 8) = 0;
         v15 = __p + 1;
         LODWORD(__p) = __p + 1;
-        v16 = 0xAAAAAAAAAAAAAAABLL * ((*(a9 + 1) - *a9) >> 3);
+        v16 = 0xAAAAAAAAAAAAAAABLL * ((*(array + 1) - *array) >> 3);
       }
 
       while (v16 > v15);
@@ -2537,25 +2537,25 @@ LABEL_31:
 
   v84 = 0;
   (*(v95 + 16))(v95, [MEMORY[0x1E696AEC0] stringWithFormat:@"Begin Validation..."], &v84);
-  v75 = [MEMORY[0x1E695DF90] dictionary];
-  v18 = *a8;
-  if (*(a8 + 1) != *a8)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v18 = *params;
+  if (*(params + 1) != *params)
   {
     v19 = 0;
     do
     {
-      [v75 setObject:objc_msgSend(*(v18 + 8 * v19) forKey:{"data"), objc_msgSend(*(*a8 + 8 * v19), "label")}];
+      [dictionary setObject:objc_msgSend(*(v18 + 8 * v19) forKey:{"data"), objc_msgSend(*(*params + 8 * v19), "label")}];
       ++v19;
-      v18 = *a8;
+      v18 = *params;
     }
 
-    while (v19 < (*(a8 + 1) - *a8) >> 3);
+    while (v19 < (*(params + 1) - *params) >> 3);
   }
 
-  if (*(a3 + 1) != *a3)
+  if (*(data + 1) != *data)
   {
     v20 = 0;
-    v21 = v70;
+    v21 = intValue2;
     v22 = 0.0;
     v23 = 0.0;
     while (1)
@@ -2568,23 +2568,23 @@ LABEL_31:
 
       memset(buf, 0, sizeof(buf));
       memset(v83, 0, sizeof(v83));
-      v24 = *a7;
-      if (*(a7 + 1) != *a7)
+      v24 = *placeholders;
+      if (*(placeholders + 1) != *placeholders)
       {
         v25 = 0;
         do
         {
-          [v75 setObject:*(*(*a3 + 24 * v20) + 8 * v25) forKey:{objc_msgSend(*(v24 + 8 * v25), "label")}];
+          [dictionary setObject:*(*(*data + 24 * v20) + 8 * v25) forKey:{objc_msgSend(*(v24 + 8 * v25), "label")}];
           ++v25;
-          v24 = *a7;
+          v24 = *placeholders;
         }
 
-        while (v25 < (*(a7 + 1) - *a7) >> 3);
+        while (v25 < (*(placeholders + 1) - *placeholders) >> 3);
       }
 
-      [(TransferSeqTagMLFHelper *)v68 executeInferenceGraph:a6 inputsDictionary:v75 batchSize:v70 maxLength:v66 labelSize:-1431655765 * ((*(a9 + 1) - *a9) >> 3) predictedLabels:buf];
-      [(TransferSeqTagMLFHelper *)v68 getMaxIndicesFromOneHotVectors:*a5 + 24 * v20 maxIndicesBatch:v83];
-      if (v70)
+      [(TransferSeqTagMLFHelper *)selfCopy executeInferenceGraph:graph inputsDictionary:dictionary batchSize:intValue2 maxLength:intValue labelSize:-1431655765 * ((*(array + 1) - *array) >> 3) predictedLabels:buf];
+      [(TransferSeqTagMLFHelper *)selfCopy getMaxIndicesFromOneHotVectors:*labels + 24 * v20 maxIndicesBatch:v83];
+      if (intValue2)
       {
         break;
       }
@@ -2598,7 +2598,7 @@ LABEL_40:
       objc_autoreleasePoolPop(context);
       v23 = v23 / v21;
       v22 = v22 + (v27 / v21);
-      if (0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 3) <= ++v20)
+      if (0xAAAAAAAAAAAAAAABLL * ((*(data + 1) - *data) >> 3) <= ++v20)
       {
         goto LABEL_43;
       }
@@ -2610,14 +2610,14 @@ LABEL_40:
     while (1)
     {
       v28 = 3 * v26;
-      if (0xAAAAAAAAAAAAAAABLL * ((*(*(*a4 + 24 * v20) + 24 * v26 + 8) - *(*(*a4 + 24 * v20) + 24 * v26)) >> 3) >= v66)
+      if (0xAAAAAAAAAAAAAAABLL * ((*(*(*sentences + 24 * v20) + 24 * v26 + 8) - *(*(*sentences + 24 * v20) + 24 * v26)) >> 3) >= intValue)
       {
-        v29 = v66;
+        v29 = intValue;
       }
 
       else
       {
-        v29 = 0xAAAAAAAAAAAAAAABLL * ((*(*(*a4 + 24 * v20) + 24 * v26 + 8) - *(*(*a4 + 24 * v20) + 24 * v26)) >> 3);
+        v29 = 0xAAAAAAAAAAAAAAABLL * ((*(*(*sentences + 24 * v20) + 24 * v26 + 8) - *(*(*sentences + 24 * v20) + 24 * v26)) >> 3);
       }
 
       v30 = *(*buf + 24 * v26);
@@ -2679,7 +2679,7 @@ LABEL_40:
 
       v23 = v23 + 1.0;
 LABEL_37:
-      if (++v26 == v70)
+      if (++v26 == intValue2)
       {
         goto LABEL_40;
       }
@@ -2689,34 +2689,34 @@ LABEL_37:
   v23 = 0.0;
   v22 = 0.0;
 LABEL_43:
-  v40 = *a5;
-  v39 = *(a5 + 1);
+  v40 = *labels;
+  v39 = *(labels + 1);
   v41 = os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG);
   if (v41)
   {
     [TransferSeqTagMLFHelper evaluateInferenceGraphWithInputTensorData:v41 batchedInputSentences:v42 batchedLabels:v43 inferenceGraph:v44 inputPlaceholders:v45 scalarParams:v46 labelArray:v47 dataTypeString:v48 trainingLogger:? predictedLabels:?];
   }
 
-  v49 = a10;
-  var0 = a10;
-  if (*(&a10->var0.var1 + 23) < 0)
+  stdCopy = std;
+  var0 = std;
+  if (*(&std->var0.var1 + 23) < 0)
   {
-    var0 = a10->var0.var1.var0;
+    var0 = std->var0.var1.var0;
   }
 
   (*(v95 + 16))(v95, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s data prediction completed.\n", var0], &v84);
   std::map<int,int>::map[abi:ne200100](v78, &v85);
-  if (*(&a10->var0.var1 + 23) < 0)
+  if (*(&std->var0.var1 + 23) < 0)
   {
-    std::string::__init_copy_ctor_external(&v77, a10->var0.var1.var0, a10->var0.var1.var1);
+    std::string::__init_copy_ctor_external(&v77, std->var0.var1.var0, std->var0.var1.var1);
   }
 
   else
   {
-    v77 = *a10;
+    v77 = *std;
   }
 
-  [(TransferSeqTagMLFHelper *)v68 showF1ResultsMatrix:a9 labelCounts:v78 perLabelResults:&v87 trainingLogger:v95 dataTypeString:&v77];
+  [(TransferSeqTagMLFHelper *)selfCopy showF1ResultsMatrix:array labelCounts:v78 perLabelResults:&v87 trainingLogger:v95 dataTypeString:&v77];
   v52 = v51;
   v53 = (0xAAAAAAAAAAAAAAABLL * ((v39 - v40) >> 3));
   v54 = v22 / v53;
@@ -2730,15 +2730,15 @@ LABEL_43:
   (*(v95 + 16))(v95, [MEMORY[0x1E696AEC0] stringWithFormat:@"Average Tag Accuracy = %4.2f, Instance Accuracy = %4.2f \n", v54, v55], &v84);
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    if (*(&a10->var0.var1 + 23) < 0)
+    if (*(&std->var0.var1 + 23) < 0)
     {
-      v49 = a10->var0.var1.var0;
+      stdCopy = std->var0.var1.var0;
     }
 
     *buf = 134218498;
     *&buf[4] = v54;
     *&buf[12] = 2080;
-    *&buf[14] = v49;
+    *&buf[14] = stdCopy;
     *&buf[22] = 2048;
     v91 = v52;
     _os_log_debug_impl(&dword_19D184000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "MLF Average Tag Accuracy = %4.2f , %s F-1 Score = %4.2f\n", buf, 0x20u);
@@ -2755,7 +2755,7 @@ LABEL_43:
   v64 = *MEMORY[0x1E69E9840];
 }
 
-- (void)executeInferenceGraph:(id)a3 inputsDictionary:(id)a4 batchSize:(int)a5 maxLength:(int)a6 labelSize:(int)a7 predictedLabels:(void *)a8
+- (void)executeInferenceGraph:(id)graph inputsDictionary:(id)dictionary batchSize:(int)size maxLength:(int)length labelSize:(int)labelSize predictedLabels:(void *)labels
 {
   v12[0] = 0;
   v12[1] = v12;
@@ -2770,13 +2770,13 @@ LABEL_43:
   v8[1] = 3221225472;
   v8[2] = __112__TransferSeqTagMLFHelper_executeInferenceGraph_inputsDictionary_batchSize_maxLength_labelSize_predictedLabels___block_invoke;
   v8[3] = &unk_1E7625548;
-  v9 = a5;
-  v10 = a6;
-  v11 = a7;
+  sizeCopy = size;
+  lengthCopy = length;
+  labelSizeCopy = labelSize;
   v8[4] = self;
   v8[5] = v12;
-  v8[6] = a8;
-  [a3 executeWithInputsData:a4 batchSize:a5 options:2 completionHandler:v8];
+  v8[6] = labels;
+  [graph executeWithInputsData:dictionary batchSize:size options:2 completionHandler:v8];
   _Block_object_dispose(v12, 8);
   if (__p)
   {

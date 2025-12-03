@@ -1,26 +1,26 @@
 @interface PDBarcodeServiceConnectionTask
-- (PDBarcodeServiceConnectionTask)initWithCoder:(id)a3;
+- (PDBarcodeServiceConnectionTask)initWithCoder:(id)coder;
 - (id)headerFields;
 - (id)request;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleResponse:(id)a3 data:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleResponse:(id)response data:(id)data;
 @end
 
 @implementation PDBarcodeServiceConnectionTask
 
-- (PDBarcodeServiceConnectionTask)initWithCoder:(id)a3
+- (PDBarcodeServiceConnectionTask)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PDBarcodeServiceConnectionTask;
-  v5 = [(PDNetworkTask *)&v11 initWithCoder:v4];
+  v5 = [(PDNetworkTask *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"barcodeServiceURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"barcodeServiceURL"];
     barcodeServiceURL = v5->_barcodeServiceURL;
     v5->_barcodeServiceURL = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueIdentifier"];
     passUniqueIdentifier = v5->_passUniqueIdentifier;
     v5->_passUniqueIdentifier = v8;
   }
@@ -28,14 +28,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PDBarcodeServiceConnectionTask;
-  v4 = a3;
-  [(PDNetworkTask *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_barcodeServiceURL forKey:{@"barcodeServiceURL", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_passUniqueIdentifier forKey:@"passUniqueIdentifier"];
+  coderCopy = coder;
+  [(PDNetworkTask *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_barcodeServiceURL forKey:{@"barcodeServiceURL", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_passUniqueIdentifier forKey:@"passUniqueIdentifier"];
 }
 
 - (id)headerFields
@@ -52,13 +52,13 @@
 
 - (id)request
 {
-  v3 = [(PDBarcodeServiceConnectionTask *)self barcodeServiceURL];
+  barcodeServiceURL = [(PDBarcodeServiceConnectionTask *)self barcodeServiceURL];
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v4 = [(PDBarcodeServiceConnectionTask *)self endpointComponents];
-  v5 = [v4 countByEnumeratingWithState:&v63 objects:v75 count:16];
+  endpointComponents = [(PDBarcodeServiceConnectionTask *)self endpointComponents];
+  v5 = [endpointComponents countByEnumeratingWithState:&v63 objects:v75 count:16];
   if (v5)
   {
     v6 = v5;
@@ -66,39 +66,39 @@
     do
     {
       v8 = 0;
-      v9 = v3;
+      v9 = barcodeServiceURL;
       do
       {
         if (*v64 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(endpointComponents);
         }
 
         v10 = *(*(&v63 + 1) + 8 * v8);
         v11 = +[NSCharacterSet URLPathAllowedCharacterSet];
         v12 = [v10 stringByAddingPercentEncodingWithAllowedCharacters:v11];
-        v3 = [v9 URLByAppendingPathComponent:v12];
+        barcodeServiceURL = [v9 URLByAppendingPathComponent:v12];
 
         v8 = v8 + 1;
-        v9 = v3;
+        v9 = barcodeServiceURL;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v63 objects:v75 count:16];
+      v6 = [endpointComponents countByEnumeratingWithState:&v63 objects:v75 count:16];
     }
 
     while (v6);
   }
 
-  v50 = self;
-  v13 = [(PDBarcodeServiceConnectionTask *)self queryFields];
+  selfCopy = self;
+  queryFields = [(PDBarcodeServiceConnectionTask *)self queryFields];
   +[NSMutableString string];
-  v53 = v52 = v13;
+  v53 = v52 = queryFields;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  obj = [v13 allKeys];
+  obj = [queryFields allKeys];
   v14 = [obj countByEnumeratingWithState:&v59 objects:v74 count:16];
   if (v14)
   {
@@ -132,23 +132,23 @@
     while (v15);
   }
 
-  v25 = [v3 absoluteString];
-  v26 = [v25 stringByAppendingString:v53];
+  absoluteString = [barcodeServiceURL absoluteString];
+  v26 = [absoluteString stringByAppendingString:v53];
   v27 = [NSURL URLWithString:v26];
 
   v28 = [[NSMutableURLRequest alloc] initWithURL:v27];
-  v29 = [(PDBarcodeServiceConnectionTask *)v50 method];
-  [v28 setHTTPMethod:v29];
+  method = [(PDBarcodeServiceConnectionTask *)selfCopy method];
+  [v28 setHTTPMethod:method];
 
   [v28 setHTTPShouldHandleCookies:0];
   [v28 setCachePolicy:1];
-  v30 = [(PDBarcodeServiceConnectionTask *)v50 headerFields];
+  headerFields = [(PDBarcodeServiceConnectionTask *)selfCopy headerFields];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v31 = [v30 allKeys];
-  v32 = [v31 countByEnumeratingWithState:&v55 objects:v73 count:16];
+  allKeys = [headerFields allKeys];
+  v32 = [allKeys countByEnumeratingWithState:&v55 objects:v73 count:16];
   if (v32)
   {
     v33 = v32;
@@ -159,25 +159,25 @@
       {
         if (*v56 != v34)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(allKeys);
         }
 
         v36 = *(*(&v55 + 1) + 8 * j);
-        v37 = [v30 objectForKey:v36];
+        v37 = [headerFields objectForKey:v36];
         [v28 setValue:v37 forHTTPHeaderField:v36];
       }
 
-      v33 = [v31 countByEnumeratingWithState:&v55 objects:v73 count:16];
+      v33 = [allKeys countByEnumeratingWithState:&v55 objects:v73 count:16];
     }
 
     while (v33);
   }
 
-  v38 = [(PDBarcodeServiceConnectionTask *)v50 bodyDictionary];
-  if (v38)
+  bodyDictionary = [(PDBarcodeServiceConnectionTask *)selfCopy bodyDictionary];
+  if (bodyDictionary)
   {
     v54 = 0;
-    v39 = [NSJSONSerialization dataWithJSONObject:v38 options:0 error:&v54];
+    v39 = [NSJSONSerialization dataWithJSONObject:bodyDictionary options:0 error:&v54];
     v40 = v54;
     if (v39)
     {
@@ -193,7 +193,7 @@
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v68 = v50;
+        v68 = selfCopy;
         v69 = 2112;
         v70 = v40;
         _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "Could not create body data task for task %@: %@", buf, 0x16u);
@@ -208,10 +208,10 @@
   if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
   {
     v44 = [v28 URL];
-    v45 = [v28 allHTTPHeaderFields];
-    [v45 debugDescription];
+    allHTTPHeaderFields = [v28 allHTTPHeaderFields];
+    [allHTTPHeaderFields debugDescription];
     v47 = v46 = v27;
-    v48 = [v38 debugDescription];
+    v48 = [bodyDictionary debugDescription];
     *buf = 138412802;
     v68 = v44;
     v69 = 2112;
@@ -226,22 +226,22 @@
   return v28;
 }
 
-- (void)handleResponse:(id)a3 data:(id)a4
+- (void)handleResponse:(id)response data:(id)data
 {
-  v5 = a3;
-  v6 = [NSJSONSerialization JSONObjectWithData:a4 options:0 error:0];
+  responseCopy = response;
+  v6 = [NSJSONSerialization JSONObjectWithData:data options:0 error:0];
   v7 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 URL];
-    v9 = [v5 statusCode];
-    v10 = [v5 allHeaderFields];
-    v11 = [v10 debugDescription];
+    v8 = [responseCopy URL];
+    statusCode = [responseCopy statusCode];
+    allHeaderFields = [responseCopy allHeaderFields];
+    v11 = [allHeaderFields debugDescription];
     v12 = [v6 debugDescription];
     v13 = 138413058;
     v14 = v8;
     v15 = 2048;
-    v16 = v9;
+    v16 = statusCode;
     v17 = 2112;
     v18 = v11;
     v19 = 2112;

@@ -1,6 +1,6 @@
 @interface VUIAsynchronousWorkToken
 - (VUIAsynchronousWorkToken)init;
-- (VUIAsynchronousWorkToken)initWithOperation:(id)a3;
+- (VUIAsynchronousWorkToken)initWithOperation:(id)operation;
 - (void)cancel;
 @end
 
@@ -16,16 +16,16 @@
   return 0;
 }
 
-- (VUIAsynchronousWorkToken)initWithOperation:(id)a3
+- (VUIAsynchronousWorkToken)initWithOperation:(id)operation
 {
-  v5 = a3;
+  operationCopy = operation;
   v9.receiver = self;
   v9.super_class = VUIAsynchronousWorkToken;
   v6 = [(VUIAsynchronousWorkToken *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_operation, a3);
+    objc_storeStrong(&v6->_operation, operation);
   }
 
   return v7;
@@ -33,8 +33,8 @@
 
 - (void)cancel
 {
-  v2 = [(VUIAsynchronousWorkToken *)self operation];
-  [v2 cancel];
+  operation = [(VUIAsynchronousWorkToken *)self operation];
+  [operation cancel];
 }
 
 @end

@@ -1,37 +1,37 @@
 @interface PDBucket
-- (PDBucket)initWithDictionary:(id)a3 error:(id *)a4;
+- (PDBucket)initWithDictionary:(id)dictionary error:(id *)error;
 @end
 
 @implementation PDBucket
 
-- (PDBucket)initWithDictionary:(id)a3 error:(id *)a4
+- (PDBucket)initWithDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = PDBucket;
   v7 = [(PDBucket *)&v19 init];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@">="];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@">="];
     if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      v16 = handle_malformed_data(a4, @"bucket >=");
+      v16 = handle_malformed_data(error, @"bucket >=");
 LABEL_14:
 
       goto LABEL_15;
     }
 
-    v9 = [v6 objectForKeyedSubscript:@"count"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"count"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       [v8 doubleValue];
       [(PDBucket *)v7 setLowerInclusiveBound:?];
       -[PDBucket setCount:](v7, "setCount:", [v9 unsignedIntegerValue]);
-      v10 = [v6 objectForKeyedSubscript:@"label"];
+      v10 = [dictionaryCopy objectForKeyedSubscript:@"label"];
       [(PDBucket *)v7 setLabel:v10];
 
-      v11 = [(PDBucket *)v7 label];
-      if (!v11 || (v12 = v11, [(PDBucket *)v7 label], v13 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v13, v12, (isKindOfClass & 1) != 0))
+      label = [(PDBucket *)v7 label];
+      if (!label || (v12 = label, [(PDBucket *)v7 label], v13 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v13, v12, (isKindOfClass & 1) != 0))
       {
         v15 = v7;
 LABEL_13:
@@ -48,7 +48,7 @@ LABEL_13:
       v17 = @"bucket count";
     }
 
-    v15 = handle_malformed_data(a4, v17);
+    v15 = handle_malformed_data(error, v17);
     goto LABEL_13;
   }
 

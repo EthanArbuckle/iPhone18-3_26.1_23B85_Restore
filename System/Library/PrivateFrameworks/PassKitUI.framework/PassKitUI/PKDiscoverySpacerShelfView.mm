@@ -1,25 +1,25 @@
 @interface PKDiscoverySpacerShelfView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKDiscoverySpacerShelfView)initWithShelf:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKDiscoverySpacerShelfView)initWithShelf:(id)shelf;
 @end
 
 @implementation PKDiscoverySpacerShelfView
 
-- (PKDiscoverySpacerShelfView)initWithShelf:(id)a3
+- (PKDiscoverySpacerShelfView)initWithShelf:(id)shelf
 {
-  v4 = a3;
+  shelfCopy = shelf;
   v7.receiver = self;
   v7.super_class = PKDiscoverySpacerShelfView;
   v5 = [(PKDiscoveryShelfView *)&v7 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v5)
   {
-    v5->_spacerType = [v4 spacerType];
+    v5->_spacerType = [shelfCopy spacerType];
   }
 
   return v5;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v4 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], 0);
   v5 = v4;

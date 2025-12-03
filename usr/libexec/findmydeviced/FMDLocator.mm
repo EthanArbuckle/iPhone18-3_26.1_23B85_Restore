@@ -1,10 +1,10 @@
 @interface FMDLocator
-- (FMDLocator)initWithLocationManager:(id)a3;
-- (void)_processStopTimeout:(id)a3;
+- (FMDLocator)initWithLocationManager:(id)manager;
+- (void)_processStopTimeout:(id)timeout;
 - (void)dealloc;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 - (void)startLocator;
 - (void)stopLocator;
 @end
@@ -19,23 +19,23 @@
     sub_1002258DC(self, v3);
   }
 
-  v4 = [(FMDLocator *)self locManager];
-  [v4 setDelegate:0];
+  locManager = [(FMDLocator *)self locManager];
+  [locManager setDelegate:0];
 
-  v5 = [(FMDLocator *)self locManager];
-  [v5 stopUpdatingLocation];
+  locManager2 = [(FMDLocator *)self locManager];
+  [locManager2 stopUpdatingLocation];
 
-  v6 = [(FMDLocator *)self finishedTimer];
-  [v6 invalidate];
+  finishedTimer = [(FMDLocator *)self finishedTimer];
+  [finishedTimer invalidate];
 
   v7.receiver = self;
   v7.super_class = FMDLocator;
   [(FMDLocator *)&v7 dealloc];
 }
 
-- (FMDLocator)initWithLocationManager:(id)a3
+- (FMDLocator)initWithLocationManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = FMDLocator;
   v6 = [(FMDLocator *)&v9 init];
@@ -43,7 +43,7 @@
   if (v6)
   {
     *&v6->_desiredAccuracy = xmmword_1002586A0;
-    objc_storeStrong(&v6->_locManager, a3);
+    objc_storeStrong(&v6->_locManager, manager);
     [(FMDLocationManaging *)v7->_locManager setDelegate:v7];
     [(FMDLocationManaging *)v7->_locManager setDesiredAccuracy:v7->_desiredAccuracy];
     [(FMDLocationManaging *)v7->_locManager setDistanceFilter:kCLDistanceFilterNone];
@@ -57,12 +57,12 @@
   if (![(FMDLocator *)self locatorRunning])
   {
     v3 = +[FMDPowerMgr sharedInstance];
-    v4 = [(FMDLocator *)self powerAssertionName];
-    [v3 powerAssertionEnableWithReason:v4 timeout:(self->_duration + 2.0)];
+    powerAssertionName = [(FMDLocator *)self powerAssertionName];
+    [v3 powerAssertionEnableWithReason:powerAssertionName timeout:(self->_duration + 2.0)];
 
     v5 = +[FMXPCTransactionManager sharedInstance];
-    v6 = [(FMDLocator *)self xpcTransactionName];
-    [v5 beginTransaction:v6];
+    xpcTransactionName = [(FMDLocator *)self xpcTransactionName];
+    [v5 beginTransaction:xpcTransactionName];
 
     [(FMDLocator *)self setLocatorRunning:1];
     self->_launchTime = CFAbsoluteTimeGetCurrent();
@@ -73,9 +73,9 @@
     v8 = sub_100002880();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(FMDLocator *)self fm_logID];
+      fm_logID = [(FMDLocator *)self fm_logID];
       v10 = 138412290;
-      v11 = v9;
+      v11 = fm_logID;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@ Starting location service now", &v10, 0xCu);
     }
 
@@ -88,32 +88,32 @@
   v3 = sub_100002880();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(FMDLocator *)self fm_logID];
+    fm_logID = [(FMDLocator *)self fm_logID];
     v14 = 138412290;
-    v15 = v4;
+    v15 = fm_logID;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ Stopping location service now", &v14, 0xCu);
   }
 
   [(FMDLocator *)self setLocatorRunning:0];
-  v5 = [(FMDLocator *)self locManager];
+  locManager = [(FMDLocator *)self locManager];
 
-  if (v5)
+  if (locManager)
   {
-    v6 = [(FMDLocator *)self locManager];
-    [v6 setDelegate:0];
+    locManager2 = [(FMDLocator *)self locManager];
+    [locManager2 setDelegate:0];
 
-    v7 = [(FMDLocator *)self locManager];
-    [v7 stopUpdatingLocation];
+    locManager3 = [(FMDLocator *)self locManager];
+    [locManager3 stopUpdatingLocation];
 
     [(FMDLocator *)self setLocManager:0];
   }
 
-  v8 = [(FMDLocator *)self finishedTimer];
+  finishedTimer = [(FMDLocator *)self finishedTimer];
 
-  if (v8)
+  if (finishedTimer)
   {
-    v9 = [(FMDLocator *)self finishedTimer];
-    [v9 invalidate];
+    finishedTimer2 = [(FMDLocator *)self finishedTimer];
+    [finishedTimer2 invalidate];
 
     [(FMDLocator *)self setFinishedTimer:0];
   }
@@ -124,22 +124,22 @@
   }
 
   v10 = +[FMXPCTransactionManager sharedInstance];
-  v11 = [(FMDLocator *)self xpcTransactionName];
-  [v10 endTransaction:v11];
+  xpcTransactionName = [(FMDLocator *)self xpcTransactionName];
+  [v10 endTransaction:xpcTransactionName];
 
   v12 = +[FMDPowerMgr sharedInstance];
-  v13 = [(FMDLocator *)self powerAssertionName];
-  [v12 powerAssertionDisableWithReason:v13];
+  powerAssertionName = [(FMDLocator *)self powerAssertionName];
+  [v12 powerAssertionDisableWithReason:powerAssertionName];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v5 = a4;
-  if ([v5 count])
+  locationsCopy = locations;
+  if ([locationsCopy count])
   {
-    v6 = [(FMDLocator *)self locatorPublisher];
+    locatorPublisher = [(FMDLocator *)self locatorPublisher];
 
-    if (v6)
+    if (locatorPublisher)
     {
       +[NSMutableArray array];
       v9[0] = _NSConcreteStackBlock;
@@ -147,9 +147,9 @@
       v9[2] = sub_10015A614;
       v10 = v9[3] = &unk_1002CF030;
       v7 = v10;
-      [v5 enumerateObjectsUsingBlock:v9];
-      v8 = [(FMDLocator *)self locatorPublisher];
-      [v8 updatedLocations:v7];
+      [locationsCopy enumerateObjectsUsingBlock:v9];
+      locatorPublisher2 = [(FMDLocator *)self locatorPublisher];
+      [locatorPublisher2 updatedLocations:v7];
     }
 
     else
@@ -163,30 +163,30 @@
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = sub_100002880();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(FMDLocator *)self fm_logID];
+    fm_logID = [(FMDLocator *)self fm_logID];
     v11 = 138412546;
-    v12 = v7;
+    v12 = fm_logID;
     v13 = 2112;
-    v14 = v5;
+    v14 = errorCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ Location updates failed with error: %@", &v11, 0x16u);
   }
 
-  v8 = [v5 domain];
-  if (![v8 isEqualToString:kCLErrorDomain])
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:kCLErrorDomain])
   {
 
     goto LABEL_9;
   }
 
-  v9 = [v5 code];
+  code = [errorCopy code];
 
-  if (v9)
+  if (code)
   {
 LABEL_9:
     [(FMDLocator *)self stopLocator];
@@ -203,26 +203,26 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v3 = a3;
+  authorizationCopy = authorization;
   v4 = sub_100002880();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5[0] = 67109120;
-    v5[1] = [v3 authorizationStatus];
+    v5[1] = [authorizationCopy authorizationStatus];
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "FMDLocator: Location Manager auth status %d", v5, 8u);
   }
 }
 
-- (void)_processStopTimeout:(id)a3
+- (void)_processStopTimeout:(id)timeout
 {
   v4 = sub_100002880();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(FMDLocator *)self fm_logID];
+    fm_logID = [(FMDLocator *)self fm_logID];
     v6 = 138412290;
-    v7 = v5;
+    v7 = fm_logID;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%@ Location Services ending now after timeout", &v6, 0xCu);
   }
 

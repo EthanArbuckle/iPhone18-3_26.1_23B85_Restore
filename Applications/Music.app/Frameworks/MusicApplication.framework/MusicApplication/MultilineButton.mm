@@ -1,34 +1,34 @@
 @interface MultilineButton
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)accessibilityLabel;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setAccessibilityLabel:(id)a3;
-- (void)setAccessibilityTraits:(unint64_t)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setIsAccessibilityElement:(BOOL)a3;
+- (void)setAccessibilityLabel:(id)label;
+- (void)setAccessibilityTraits:(unint64_t)traits;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setIsAccessibilityElement:(BOOL)element;
 - (void)tintColorDidChange;
 @end
 
 @implementation MultilineButton
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_456BEC(a3);
+  selfCopy = self;
+  sub_456BEC(highlighted);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_456E38();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_4570DC(width, height);
   v8 = v7;
 
@@ -39,28 +39,28 @@
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = self;
-  if (![(MultilineButton *)v8 pointInside:v7 withEvent:x, y])
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  if (![(MultilineButton *)selfCopy pointInside:eventCopy withEvent:x, y])
   {
 
     goto LABEL_5;
   }
 
-  v9 = [(MultilineButton *)v8 isEnabled];
+  isEnabled = [(MultilineButton *)selfCopy isEnabled];
 
-  if ((v9 & 1) == 0)
+  if ((isEnabled & 1) == 0)
   {
 LABEL_5:
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (void)tintColorDidChange
@@ -72,17 +72,17 @@ LABEL_5:
   sub_457634();
 }
 
-- (void)setIsAccessibilityElement:(BOOL)a3
+- (void)setIsAccessibilityElement:(BOOL)element
 {
-  v3 = a3;
+  elementCopy = element;
   v4.receiver = self;
   v4.super_class = type metadata accessor for MultilineButton();
-  [(MultilineButton *)&v4 setIsAccessibilityElement:v3];
+  [(MultilineButton *)&v4 setIsAccessibilityElement:elementCopy];
 }
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_4573F8();
   v4 = v3;
 
@@ -99,18 +99,18 @@ LABEL_5:
   return v5;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     sub_AB92A0();
-    v4 = self;
+    selfCopy = self;
     v5 = sub_AB9260();
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
     v5 = 0;
   }
 
@@ -119,11 +119,11 @@ LABEL_5:
   [(MultilineButton *)&v7 setAccessibilityLabel:v5];
 }
 
-- (void)setAccessibilityTraits:(unint64_t)a3
+- (void)setAccessibilityTraits:(unint64_t)traits
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for MultilineButton();
-  [(MultilineButton *)&v4 setAccessibilityTraits:a3];
+  [(MultilineButton *)&v4 setAccessibilityTraits:traits];
 }
 
 @end

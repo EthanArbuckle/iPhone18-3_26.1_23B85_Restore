@@ -1,22 +1,22 @@
 @interface MKImageTextAttachment
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6;
-- (MKImageTextAttachment)initWithImage:(id)a3 verticalOffset:(double)a4;
-- (void)setVerticalOffset:(double)a3;
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index;
+- (MKImageTextAttachment)initWithImage:(id)image verticalOffset:(double)offset;
+- (void)setVerticalOffset:(double)offset;
 @end
 
 @implementation MKImageTextAttachment
 
-- (void)setVerticalOffset:(double)a3
+- (void)setVerticalOffset:(double)offset
 {
-  if (self->_verticalOffset != a3)
+  if (self->_verticalOffset != offset)
   {
-    self->_verticalOffset = a3;
+    self->_verticalOffset = offset;
   }
 }
 
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index
 {
-  v7 = [(MKImageTextAttachment *)self image:a3];
+  v7 = [(MKImageTextAttachment *)self image:container];
   [v7 size];
   v9 = v8;
   v11 = v10;
@@ -44,17 +44,17 @@
   return result;
 }
 
-- (MKImageTextAttachment)initWithImage:(id)a3 verticalOffset:(double)a4
+- (MKImageTextAttachment)initWithImage:(id)image verticalOffset:(double)offset
 {
-  v6 = a3;
+  imageCopy = image;
   v10.receiver = self;
   v10.super_class = MKImageTextAttachment;
   v7 = [(MKImageTextAttachment *)&v10 initWithData:0 ofType:0];
   v8 = v7;
   if (v7)
   {
-    v7->_verticalOffset = a4;
-    [(MKImageTextAttachment *)v7 setImage:v6];
+    v7->_verticalOffset = offset;
+    [(MKImageTextAttachment *)v7 setImage:imageCopy];
   }
 
   return v8;

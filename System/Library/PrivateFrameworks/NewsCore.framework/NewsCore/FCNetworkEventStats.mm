@@ -1,19 +1,19 @@
 @interface FCNetworkEventStats
-- (FCNetworkEventStats)initWithValues:(id)a3;
+- (FCNetworkEventStats)initWithValues:(id)values;
 @end
 
 @implementation FCNetworkEventStats
 
-- (FCNetworkEventStats)initWithValues:(id)a3
+- (FCNetworkEventStats)initWithValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v43.receiver = self;
   v43.super_class = FCNetworkEventStats;
   v5 = [(FCNetworkEventStats *)&v43 init];
   if (v5)
   {
     v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF > 0"];
-    v7 = [v4 filteredArrayUsingPredicate:v6];
+    v7 = [valuesCopy filteredArrayUsingPredicate:v6];
     if ([v7 count])
     {
       v5->_count = [v7 count];

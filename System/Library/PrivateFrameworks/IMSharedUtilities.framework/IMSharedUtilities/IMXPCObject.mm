@@ -1,20 +1,20 @@
 @interface IMXPCObject
 + (_xpc_type_s)type;
-- (IMXPCObject)initWithCoder:(id)a3;
-- (IMXPCObject)initWithXPCObject:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (IMXPCObject)initWithCoder:(id)coder;
+- (IMXPCObject)initWithXPCObject:(id)object;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IMXPCObject
 
-- (IMXPCObject)initWithXPCObject:(id)a3
+- (IMXPCObject)initWithXPCObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v6 = [(IMXPCObject *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_object, a3);
+    objc_storeStrong(&v6->_object, object);
   }
 
   return v7;
@@ -33,26 +33,26 @@
   objc_exception_throw(v7);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (self->_object)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v4 encodeXPCObject:self->_object forKey:@"_xpcObject"];
+      [coderCopy encodeXPCObject:self->_object forKey:@"_xpcObject"];
     }
   }
 }
 
-- (IMXPCObject)initWithCoder:(id)a3
+- (IMXPCObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 decodeXPCObjectOfType:objc_msgSend(objc_opt_class() forKey:{"type"), @"_xpcObject"}];
+    v5 = [coderCopy decodeXPCObjectOfType:objc_msgSend(objc_opt_class() forKey:{"type"), @"_xpcObject"}];
   }
 
   else

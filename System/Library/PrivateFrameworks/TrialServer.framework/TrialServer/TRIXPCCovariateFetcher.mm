@@ -3,9 +3,9 @@
 - (id)geoservicesBucketID;
 - (id)mapsDeviceCountryCode;
 - (int64_t)appleIntelligenceState;
-- (int64_t)appleIntelligenceStateWithUseCaseIdentifiers:(id)a3;
+- (int64_t)appleIntelligenceStateWithUseCaseIdentifiers:(id)identifiers;
 - (void)invalidateConnection;
-- (void)sendMessageToRemoteObject:(id)a3;
+- (void)sendMessageToRemoteObject:(id)object;
 - (void)setupArchivingServiceXPCConnection;
 @end
 
@@ -95,9 +95,9 @@ void __60__TRIXPCCovariateFetcher_setupArchivingServiceXPCConnection__block_invo
   return v2;
 }
 
-- (void)sendMessageToRemoteObject:(id)a3
+- (void)sendMessageToRemoteObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   [(TRIXPCCovariateFetcher *)self setupArchivingServiceXPCConnection];
   v5 = dispatch_group_create();
   inFlightConnectionQueue = self->inFlightConnectionQueue;
@@ -107,8 +107,8 @@ void __60__TRIXPCCovariateFetcher_setupArchivingServiceXPCConnection__block_invo
   block[3] = &unk_279DDF470;
   block[4] = self;
   v10 = v5;
-  v11 = v4;
-  v7 = v4;
+  v11 = objectCopy;
+  v7 = objectCopy;
   v8 = v5;
   dispatch_group_async(v8, inFlightConnectionQueue, block);
   dispatch_group_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
@@ -262,10 +262,10 @@ void __45__TRIXPCCovariateFetcher_geoservicesBucketID__block_invoke_2(uint64_t a
   v6[4] = &v7;
   v3 = MEMORY[0x2743948D0](v6, a2);
   [(TRIXPCCovariateFetcher *)self sendMessageToRemoteObject:v3];
-  v4 = [v8[5] integerValue];
+  integerValue = [v8[5] integerValue];
 
   _Block_object_dispose(&v7, 8);
-  return v4;
+  return integerValue;
 }
 
 void __48__TRIXPCCovariateFetcher_appleIntelligenceState__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -289,9 +289,9 @@ void __48__TRIXPCCovariateFetcher_appleIntelligenceState__block_invoke_2(uint64_
   (*(*(a1 + 32) + 16))();
 }
 
-- (int64_t)appleIntelligenceStateWithUseCaseIdentifiers:(id)a3
+- (int64_t)appleIntelligenceStateWithUseCaseIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -302,15 +302,15 @@ void __48__TRIXPCCovariateFetcher_appleIntelligenceState__block_invoke_2(uint64_
   v10 = 3221225472;
   v11 = __71__TRIXPCCovariateFetcher_appleIntelligenceStateWithUseCaseIdentifiers___block_invoke;
   v12 = &unk_279DE13D0;
-  v5 = v4;
+  v5 = identifiersCopy;
   v13 = v5;
   v14 = &v15;
   v6 = MEMORY[0x2743948D0](&v9);
   [(TRIXPCCovariateFetcher *)self sendMessageToRemoteObject:v6, v9, v10, v11, v12];
-  v7 = [v16[5] integerValue];
+  integerValue = [v16[5] integerValue];
 
   _Block_object_dispose(&v15, 8);
-  return v7;
+  return integerValue;
 }
 
 void __71__TRIXPCCovariateFetcher_appleIntelligenceStateWithUseCaseIdentifiers___block_invoke(uint64_t a1, void *a2, void *a3)

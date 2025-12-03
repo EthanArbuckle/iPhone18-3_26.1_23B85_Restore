@@ -1,14 +1,14 @@
 @interface MTTextQuery
-- (id)titleForPodcastUuid:(id)a3;
-- (void)runQueryWithText:(id)a3;
+- (id)titleForPodcastUuid:(id)uuid;
+- (void)runQueryWithText:(id)text;
 @end
 
 @implementation MTTextQuery
 
-- (void)runQueryWithText:(id)a3
+- (void)runQueryWithText:(id)text
 {
   v86[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  textCopy = text;
   v5 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:*MEMORY[0x277D3DCA0] ascending:0];
   v86[0] = v5;
   v6 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:*MEMORY[0x277D3DC18] ascending:0];
@@ -27,23 +27,23 @@
   v12 = [v10 arrayWithObject:v11];
   [(MTLibraryQuery *)self setPodcastSortDescriptors:v12];
 
-  v13 = [MEMORY[0x277D3DAD8] sortDescriptorsForCategoriesInSearch];
-  v64 = self;
-  [(MTLibraryQuery *)self setCategorySortDescriptors:v13];
+  sortDescriptorsForCategoriesInSearch = [MEMORY[0x277D3DAD8] sortDescriptorsForCategoriesInSearch];
+  selfCopy = self;
+  [(MTLibraryQuery *)self setCategorySortDescriptors:sortDescriptorsForCategoriesInSearch];
 
-  v14 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v15 = [v4 stringByTrimmingCharactersInSet:v14];
-  v16 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v17 = [v15 componentsSeparatedByCharactersInSet:v16];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v15 = [textCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v17 = [v15 componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
 
-  v80 = [MEMORY[0x277CBEB18] array];
-  v79 = [MEMORY[0x277CBEB18] array];
-  v78 = [MEMORY[0x277CBEB18] array];
-  v77 = [MEMORY[0x277CBEB18] array];
-  v76 = [MEMORY[0x277CBEB18] array];
-  v75 = [MEMORY[0x277CBEB18] array];
-  v74 = [MEMORY[0x277CBEB18] array];
-  v73 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
+  array5 = [MEMORY[0x277CBEB18] array];
+  array6 = [MEMORY[0x277CBEB18] array];
+  array7 = [MEMORY[0x277CBEB18] array];
+  array8 = [MEMORY[0x277CBEB18] array];
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
@@ -70,28 +70,28 @@
 
         v25 = *(*(&v81 + 1) + 8 * i);
         v26 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K contains[cl] %@", v69, v25];
-        [v80 addObject:v26];
+        [array addObject:v26];
 
         v27 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K contains[cl] %@", v66, v25];
-        [v79 addObject:v27];
+        [array2 addObject:v27];
 
         v28 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K contains[cl] %@", v71, v25];
-        [v78 addObject:v28];
+        [array3 addObject:v28];
 
         v29 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K contains[cl] %@", v20, v25];
-        [v77 addObject:v29];
+        [array4 addObject:v29];
 
         v30 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K contains[cl] %@", v21, v25];
-        [v76 addObject:v30];
+        [array5 addObject:v30];
 
         v31 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K contains[cl] %@", v22, v25];
-        [v75 addObject:v31];
+        [array6 addObject:v31];
 
         v32 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K > %@", v23, &unk_2870B6C08];
-        [v74 addObject:v32];
+        [array7 addObject:v32];
 
         v33 = [MEMORY[0x277D3DAD8] predicateForLibraryCategoriesMatching:v25];
-        [v73 addObject:v33];
+        [array8 addObject:v33];
       }
 
       v19 = [obj countByEnumeratingWithState:&v81 objects:v85 count:16];
@@ -100,20 +100,20 @@
     while (v19);
   }
 
-  v34 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v80];
-  v35 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v79];
-  v36 = [MEMORY[0x277D3DB38] predicateForNotHiddenNotImplicitlyFollowedPodcasts];
+  v34 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:array];
+  v35 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:array2];
+  predicateForNotHiddenNotImplicitlyFollowedPodcasts = [MEMORY[0x277D3DB38] predicateForNotHiddenNotImplicitlyFollowedPodcasts];
   v37 = MEMORY[0x277CCA920];
   v38 = [MEMORY[0x277CBEA60] arrayWithObjects:{v34, v35, 0}];
   v72 = [v37 orPredicateWithSubpredicates:v38];
 
   v39 = MEMORY[0x277CCA920];
-  v40 = [MEMORY[0x277CBEA60] arrayWithObjects:{v36, v72, 0}];
+  v40 = [MEMORY[0x277CBEA60] arrayWithObjects:{predicateForNotHiddenNotImplicitlyFollowedPodcasts, v72, 0}];
   v70 = [v39 andPredicateWithSubpredicates:v40];
 
-  v41 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v78];
+  v41 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:array3];
 
-  v42 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v77];
+  v42 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:array4];
 
   v43 = MEMORY[0x277CCA920];
   v44 = [MEMORY[0x277CBEA60] arrayWithObjects:{v41, v42, 0}];
@@ -121,19 +121,19 @@
 
   v46 = MEMORY[0x277D3DAF8];
   v47 = v45;
-  v68 = [v46 predicateForEpisodesInSearchResults];
+  predicateForEpisodesInSearchResults = [v46 predicateForEpisodesInSearchResults];
 
   v48 = MEMORY[0x277CCA920];
-  v49 = [MEMORY[0x277CBEA60] arrayWithObjects:{v68, v47, 0}];
+  v49 = [MEMORY[0x277CBEA60] arrayWithObjects:{predicateForEpisodesInSearchResults, v47, 0}];
 
   v50 = [v48 andPredicateWithSubpredicates:v49];
 
   v51 = MEMORY[0x277CCA920];
-  v52 = [v76 arrayByAddingObjectsFromArray:v74];
+  v52 = [array5 arrayByAddingObjectsFromArray:array7];
   v53 = [v51 andPredicateWithSubpredicates:v52];
 
   v54 = MEMORY[0x277CCA920];
-  v55 = [v75 arrayByAddingObjectsFromArray:v74];
+  v55 = [array6 arrayByAddingObjectsFromArray:array7];
   v56 = [v54 andPredicateWithSubpredicates:v55];
 
   v57 = MEMORY[0x277CCA920];
@@ -142,33 +142,33 @@
 
   v60 = MEMORY[0x277CCA920];
   v61 = v59;
-  v62 = [v60 andPredicateWithSubpredicates:v73];
-  [(MTLibraryQuery *)v64 runQueryWithPodcastPredicate:v70 episodePredicate:v50 channelPredicate:v61 categoryPredicate:v62];
+  v62 = [v60 andPredicateWithSubpredicates:array8];
+  [(MTLibraryQuery *)selfCopy runQueryWithPodcastPredicate:v70 episodePredicate:v50 channelPredicate:v61 categoryPredicate:v62];
 
   v63 = *MEMORY[0x277D85DE8];
 }
 
-- (id)titleForPodcastUuid:(id)a3
+- (id)titleForPodcastUuid:(id)uuid
 {
-  v3 = a3;
+  uuidCopy = uuid;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__4;
   v18 = __Block_byref_object_dispose__4;
   v19 = 0;
-  if (v3)
+  if (uuidCopy)
   {
-    v4 = [MEMORY[0x277D3DAE8] sharedInstance];
-    v5 = [v4 mainOrPrivateContext];
+    mEMORY[0x277D3DAE8] = [MEMORY[0x277D3DAE8] sharedInstance];
+    mainOrPrivateContext = [mEMORY[0x277D3DAE8] mainOrPrivateContext];
 
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __35__MTTextQuery_titleForPodcastUuid___block_invoke;
     v10[3] = &unk_279A44930;
-    v6 = v5;
+    v6 = mainOrPrivateContext;
     v11 = v6;
-    v12 = v3;
+    v12 = uuidCopy;
     v13 = &v14;
     [v6 performBlockAndWait:v10];
 

@@ -1,7 +1,7 @@
 @interface CalAssistantGetDefaultCalendar
 - (id)eventStore;
-- (void)performWithCompletion:(id)a3;
-- (void)setEventStore:(id)a3;
+- (void)performWithCompletion:(id)completion;
+- (void)setEventStore:(id)store;
 @end
 
 @implementation CalAssistantGetDefaultCalendar
@@ -21,20 +21,20 @@
   return eventStore;
 }
 
-- (void)setEventStore:(id)a3
+- (void)setEventStore:(id)store
 {
-  v5 = a3;
-  if (self->_eventStore != v5)
+  storeCopy = store;
+  if (self->_eventStore != storeCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_eventStore, a3);
-    v5 = v6;
+    v6 = storeCopy;
+    objc_storeStrong(&self->_eventStore, store);
+    storeCopy = v6;
   }
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   sub_2334B11EC();
   v8 = objc_msgSend_eventStore(self, v5, v6, v7);
   v12 = objc_msgSend_acquireDefaultCalendarForNewEvents(v8, v9, v10, v11);
@@ -53,7 +53,7 @@
   v41 = objc_alloc(MEMORY[0x277D471C0]);
   v48 = objc_msgSend_initWithAceCalendarSource_(v41, v42, v29, v43);
   v47 = objc_msgSend_dictionary(v48, v44, v45, v46);
-  v4[2](v4, v47);
+  completionCopy[2](completionCopy, v47);
 }
 
 @end

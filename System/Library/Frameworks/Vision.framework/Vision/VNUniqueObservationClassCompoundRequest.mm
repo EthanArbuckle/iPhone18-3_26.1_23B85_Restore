@@ -1,18 +1,18 @@
 @interface VNUniqueObservationClassCompoundRequest
-- (VNUniqueObservationClassCompoundRequest)initWithOriginalRequests:(id)a3 requestToObservationClassMap:(id)a4;
-- (VNUniqueObservationClassCompoundRequest)initWithSubrequests:(id)a3 uniqueObservationClasses:(id)a4;
-- (void)assignOriginalRequestsResultsFromObservations:(id)a3 obtainedInPerformingContext:(id)a4;
+- (VNUniqueObservationClassCompoundRequest)initWithOriginalRequests:(id)requests requestToObservationClassMap:(id)map;
+- (VNUniqueObservationClassCompoundRequest)initWithSubrequests:(id)subrequests uniqueObservationClasses:(id)classes;
+- (void)assignOriginalRequestsResultsFromObservations:(id)observations obtainedInPerformingContext:(id)context;
 @end
 
 @implementation VNUniqueObservationClassCompoundRequest
 
-- (void)assignOriginalRequestsResultsFromObservations:(id)a3 obtainedInPerformingContext:(id)a4
+- (void)assignOriginalRequestsResultsFromObservations:(id)observations obtainedInPerformingContext:(id)context
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
-  v8 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  observationsCopy = observations;
+  contextCopy = context;
+  v7 = observationsCopy;
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -34,7 +34,7 @@
 
         v14 = *(*(&v33 + 1) + 8 * i);
         v15 = objc_opt_class();
-        v16 = [v8 objectForKey:v15];
+        v16 = [strongToStrongObjectsMapTable objectForKey:v15];
         if (v16)
         {
           v17 = v16;
@@ -44,7 +44,7 @@
         else
         {
           v17 = [MEMORY[0x1E695DF70] arrayWithObject:v14];
-          [v8 setObject:v17 forKey:v15];
+          [strongToStrongObjectsMapTable setObject:v17 forKey:v15];
         }
       }
 
@@ -59,8 +59,8 @@
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v18 = [(VNCompoundRequest *)self originalRequests];
-  v19 = [v18 countByEnumeratingWithState:&v29 objects:v37 count:16];
+  originalRequests = [(VNCompoundRequest *)self originalRequests];
+  v19 = [originalRequests countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v19)
   {
     v20 = v19;
@@ -72,11 +72,11 @@
       {
         if (*v30 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(originalRequests);
         }
 
         v24 = *(*(&v29 + 1) + 8 * j);
-        v25 = [v8 objectForKey:{-[NSMapTable objectForKey:](self->_requestToObservationClassMap, "objectForKey:", v24, v27)}];
+        v25 = [strongToStrongObjectsMapTable objectForKey:{-[NSMapTable objectForKey:](self->_requestToObservationClassMap, "objectForKey:", v24, v27)}];
         if (v25)
         {
           v26 = v25;
@@ -88,49 +88,49 @@
         }
 
         [v24 setResults:v26];
-        [v6 cacheObservationsOfRequest:v24];
+        [contextCopy cacheObservationsOfRequest:v24];
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v29 objects:v37 count:16];
+      v20 = [originalRequests countByEnumeratingWithState:&v29 objects:v37 count:16];
     }
 
     while (v20);
   }
 }
 
-- (VNUniqueObservationClassCompoundRequest)initWithOriginalRequests:(id)a3 requestToObservationClassMap:(id)a4
+- (VNUniqueObservationClassCompoundRequest)initWithOriginalRequests:(id)requests requestToObservationClassMap:(id)map
 {
-  v7 = a4;
+  mapCopy = map;
   v11.receiver = self;
   v11.super_class = VNUniqueObservationClassCompoundRequest;
-  v8 = [(VNCompoundRequest *)&v11 initWithOriginalRequests:a3];
+  v8 = [(VNCompoundRequest *)&v11 initWithOriginalRequests:requests];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_requestToObservationClassMap, a4);
+    objc_storeStrong(&v8->_requestToObservationClassMap, map);
   }
 
   return v9;
 }
 
-- (VNUniqueObservationClassCompoundRequest)initWithSubrequests:(id)a3 uniqueObservationClasses:(id)a4
+- (VNUniqueObservationClassCompoundRequest)initWithSubrequests:(id)subrequests uniqueObservationClasses:(id)classes
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
-  +[VNError VNAssert:log:](VNError, "VNAssert:log:", v8 == [v7 count], @"Unexpected number of unique observation classes");
-  v9 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  subrequestsCopy = subrequests;
+  classesCopy = classes;
+  v8 = [subrequestsCopy count];
+  +[VNError VNAssert:log:](VNError, "VNAssert:log:", v8 == [classesCopy count], @"Unexpected number of unique observation classes");
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   if (v8)
   {
     for (i = 0; i != v8; ++i)
     {
-      v11 = [v7 objectAtIndex:i];
-      v12 = [v6 objectAtIndex:i];
-      [v9 setObject:v11 forKey:v12];
+      v11 = [classesCopy objectAtIndex:i];
+      v12 = [subrequestsCopy objectAtIndex:i];
+      [strongToStrongObjectsMapTable setObject:v11 forKey:v12];
     }
   }
 
-  v13 = [(VNUniqueObservationClassCompoundRequest *)self initWithOriginalRequests:v6 requestToObservationClassMap:v9];
+  v13 = [(VNUniqueObservationClassCompoundRequest *)self initWithOriginalRequests:subrequestsCopy requestToObservationClassMap:strongToStrongObjectsMapTable];
 
   return v13;
 }

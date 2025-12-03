@@ -1,28 +1,28 @@
 @interface BCSDomainConfigItem
 + (id)keysRequestedForCloudKitFetch;
-- (BCSDomainConfigItem)initWithBuckets:(int64_t)a3 domainShards:(int64_t)a4 filterShards:(int64_t)a5 expirationDate:(id)a6 filterMegaShardURL:(id)a7 domainMegaShardURL:(id)a8 itemTTL:(id)a9;
-- (BCSDomainConfigItem)initWithCoder:(id)a3;
-- (BCSDomainConfigItem)initWithJSONObj:(id)a3;
-- (BCSDomainConfigItem)initWithRecord:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BCSDomainConfigItem)initWithBuckets:(int64_t)buckets domainShards:(int64_t)shards filterShards:(int64_t)filterShards expirationDate:(id)date filterMegaShardURL:(id)l domainMegaShardURL:(id)rL itemTTL:(id)tL;
+- (BCSDomainConfigItem)initWithCoder:(id)coder;
+- (BCSDomainConfigItem)initWithJSONObj:(id)obj;
+- (BCSDomainConfigItem)initWithRecord:(id)record;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BCSDomainConfigItem
 
-- (BCSDomainConfigItem)initWithBuckets:(int64_t)a3 domainShards:(int64_t)a4 filterShards:(int64_t)a5 expirationDate:(id)a6 filterMegaShardURL:(id)a7 domainMegaShardURL:(id)a8 itemTTL:(id)a9
+- (BCSDomainConfigItem)initWithBuckets:(int64_t)buckets domainShards:(int64_t)shards filterShards:(int64_t)filterShards expirationDate:(id)date filterMegaShardURL:(id)l domainMegaShardURL:(id)rL itemTTL:(id)tL
 {
-  v16 = a8;
+  rLCopy = rL;
   v20.receiver = self;
   v20.super_class = BCSDomainConfigItem;
-  v17 = [(BCSConfigItem *)&v20 initWithBuckets:a3 shards:0 expirationDate:a6 filterMegaShardURL:a7 itemTTL:a9];
+  v17 = [(BCSConfigItem *)&v20 initWithBuckets:buckets shards:0 expirationDate:date filterMegaShardURL:l itemTTL:tL];
   v18 = v17;
   if (v17)
   {
-    v17->_domainShardCount = a4;
-    v17->_filterShardCount = a5;
-    objc_storeStrong(&v17->_domainMegaShardURL, a8);
+    v17->_domainShardCount = shards;
+    v17->_filterShardCount = filterShards;
+    objc_storeStrong(&v17->_domainMegaShardURL, rL);
   }
 
   return v18;
@@ -34,55 +34,55 @@
   v12.receiver = self;
   v12.super_class = BCSDomainConfigItem;
   v4 = [(BCSConfigItem *)&v12 description];
-  v5 = [(BCSConfigItem *)self buckets];
-  v6 = [(BCSDomainConfigItem *)self domainShardCount];
-  v7 = [(BCSDomainConfigItem *)self filterShardCount];
-  v8 = [(BCSConfigItem *)self expirationDate];
-  v9 = [(BCSConfigItem *)self itemTTL];
-  v10 = [v3 stringWithFormat:@"%@ - buckets:%lu - domainShards:%lu - filterShards:%lu - expirationDate:%@ - itemTTL:%@", v4, v5, v6, v7, v8, v9];
+  buckets = [(BCSConfigItem *)self buckets];
+  domainShardCount = [(BCSDomainConfigItem *)self domainShardCount];
+  filterShardCount = [(BCSDomainConfigItem *)self filterShardCount];
+  expirationDate = [(BCSConfigItem *)self expirationDate];
+  itemTTL = [(BCSConfigItem *)self itemTTL];
+  v10 = [v3 stringWithFormat:@"%@ - buckets:%lu - domainShards:%lu - filterShards:%lu - expirationDate:%@ - itemTTL:%@", v4, buckets, domainShardCount, filterShardCount, expirationDate, itemTTL];
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v14.receiver = self;
   v14.super_class = BCSDomainConfigItem;
-  v4 = [(BCSConfigItem *)&v14 copyWithZone:a3];
-  v5 = [(BCSConfigItem *)self buckets];
-  v6 = [(BCSDomainConfigItem *)self domainShardCount];
-  v7 = [(BCSDomainConfigItem *)self filterShardCount];
-  v8 = [(BCSConfigItem *)self expirationDate];
-  v9 = [(BCSConfigItem *)self filterMegaShardURL];
-  v10 = [(BCSDomainConfigItem *)self domainMegaShardURL];
-  v11 = [(BCSConfigItem *)self itemTTL];
-  v12 = [v4 initWithBuckets:v5 domainShards:v6 filterShards:v7 expirationDate:v8 filterMegaShardURL:v9 domainMegaShardURL:v10 itemTTL:v11];
+  v4 = [(BCSConfigItem *)&v14 copyWithZone:zone];
+  buckets = [(BCSConfigItem *)self buckets];
+  domainShardCount = [(BCSDomainConfigItem *)self domainShardCount];
+  filterShardCount = [(BCSDomainConfigItem *)self filterShardCount];
+  expirationDate = [(BCSConfigItem *)self expirationDate];
+  filterMegaShardURL = [(BCSConfigItem *)self filterMegaShardURL];
+  domainMegaShardURL = [(BCSDomainConfigItem *)self domainMegaShardURL];
+  itemTTL = [(BCSConfigItem *)self itemTTL];
+  v12 = [v4 initWithBuckets:buckets domainShards:domainShardCount filterShards:filterShardCount expirationDate:expirationDate filterMegaShardURL:filterMegaShardURL domainMegaShardURL:domainMegaShardURL itemTTL:itemTTL];
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = BCSDomainConfigItem;
-  v4 = a3;
-  [(BCSConfigItem *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_domainShardCount forKey:{@"BCSDomainConfigItemDomainShardsCodingKey", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_filterShardCount forKey:@"BCSDomainConfigItemFilterShardsCodingKey"];
-  [v4 encodeObject:self->_domainMegaShardURL forKey:@"BCSDomainConfigItemDomainMegaShardCodingKey"];
+  coderCopy = coder;
+  [(BCSConfigItem *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_domainShardCount forKey:{@"BCSDomainConfigItemDomainShardsCodingKey", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_filterShardCount forKey:@"BCSDomainConfigItemFilterShardsCodingKey"];
+  [coderCopy encodeObject:self->_domainMegaShardURL forKey:@"BCSDomainConfigItemDomainMegaShardCodingKey"];
 }
 
-- (BCSDomainConfigItem)initWithCoder:(id)a3
+- (BCSDomainConfigItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = BCSDomainConfigItem;
-  v5 = [(BCSConfigItem *)&v9 initWithCoder:v4];
+  v5 = [(BCSConfigItem *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_domainShardCount = [v4 decodeIntegerForKey:@"BCSDomainConfigItemDomainShardsCodingKey"];
-    v5->_filterShardCount = [v4 decodeIntegerForKey:@"BCSDomainConfigItemFilterShardsCodingKey"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BCSDomainConfigItemDomainMegaShardCodingKey"];
+    v5->_domainShardCount = [coderCopy decodeIntegerForKey:@"BCSDomainConfigItemDomainShardsCodingKey"];
+    v5->_filterShardCount = [coderCopy decodeIntegerForKey:@"BCSDomainConfigItemFilterShardsCodingKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BCSDomainConfigItemDomainMegaShardCodingKey"];
     domainMegaShardURL = v5->_domainMegaShardURL;
     v5->_domainMegaShardURL = v6;
   }
@@ -104,15 +104,15 @@
   return v2;
 }
 
-- (BCSDomainConfigItem)initWithJSONObj:(id)a3
+- (BCSDomainConfigItem)initWithJSONObj:(id)obj
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = [a3 objectForKeyedSubscript:@"records"];
+  v4 = [obj objectForKeyedSubscript:@"records"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 firstObject];
-    v6 = [v5 objectForKeyedSubscript:@"fields"];
+    firstObject = [v4 firstObject];
+    v6 = [firstObject objectForKeyedSubscript:@"fields"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -131,12 +131,12 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
-        v15 = [MEMORY[0x277CBEAA8] date];
+        date = [MEMORY[0x277CBEAA8] date];
         [v14 doubleValue];
-        v24 = [v15 dateByAddingTimeInterval:?];
+        v24 = [date dateByAddingTimeInterval:?];
 
         self = -[BCSDomainConfigItem initWithBuckets:domainShards:filterShards:expirationDate:](self, "initWithBuckets:domainShards:filterShards:expirationDate:", -[NSObject longLongValue](v8, "longLongValue"), [v10 longValue], objc_msgSend(v12, "longLongValue"), v24);
-        v16 = self;
+        selfCopy = self;
       }
 
       else
@@ -148,7 +148,7 @@
           _os_log_error_impl(&dword_242072000, v17, OS_LOG_TYPE_ERROR, "BCSDomainConfigItem buckets, domainShards, filterShards, or ttl is not an NSNumber", buf, 2u);
         }
 
-        v16 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -166,14 +166,14 @@
         _os_log_error_impl(&dword_242072000, v8, OS_LOG_TYPE_ERROR, "%s - Expected NSDictionary fields parameter. Got %@", buf, 0x16u);
       }
 
-      v16 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v5 = ABSLogCommon();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    firstObject = ABSLogCommon();
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
     {
       v20 = objc_opt_class();
       v21 = NSStringFromClass(v20);
@@ -181,29 +181,29 @@
       v26 = "[BCSDomainConfigItem(Conversion) initWithJSONObj:]";
       v27 = 2112;
       v28 = v21;
-      _os_log_error_impl(&dword_242072000, v5, OS_LOG_TYPE_ERROR, "%s - Expected NSArray for records parameter. Got %@", buf, 0x16u);
+      _os_log_error_impl(&dword_242072000, firstObject, OS_LOG_TYPE_ERROR, "%s - Expected NSArray for records parameter. Got %@", buf, 0x16u);
     }
 
-    v16 = 0;
+    selfCopy = 0;
   }
 
   v18 = *MEMORY[0x277D85DE8];
-  return v16;
+  return selfCopy;
 }
 
-- (BCSDomainConfigItem)initWithRecord:(id)a3
+- (BCSDomainConfigItem)initWithRecord:(id)record
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"buckets"];
-  v6 = [v4 objectForKeyedSubscript:@"domainShards"];
-  v7 = [v4 objectForKeyedSubscript:@"filterShards"];
-  v8 = [v4 objectForKeyedSubscript:@"ttl"];
+  recordCopy = record;
+  v5 = [recordCopy objectForKeyedSubscript:@"buckets"];
+  v6 = [recordCopy objectForKeyedSubscript:@"domainShards"];
+  v7 = [recordCopy objectForKeyedSubscript:@"filterShards"];
+  v8 = [recordCopy objectForKeyedSubscript:@"ttl"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v9 = [v4 objectForKeyedSubscript:@"filterArchive"];
-    v10 = [v4 objectForKeyedSubscript:@"domainArchive"];
+    v9 = [recordCopy objectForKeyedSubscript:@"filterArchive"];
+    v10 = [recordCopy objectForKeyedSubscript:@"domainArchive"];
     if (!v9)
     {
       v11 = ABSLogCommon();
@@ -226,20 +226,20 @@
       }
     }
 
-    v13 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     [v8 doubleValue];
-    v24 = [v13 dateByAddingTimeInterval:?];
+    v24 = [date dateByAddingTimeInterval:?];
 
-    v22 = [v5 longLongValue];
-    v21 = [v6 longLongValue];
-    v20 = [v7 longLongValue];
-    v14 = [v9 fileURL];
+    longLongValue = [v5 longLongValue];
+    longLongValue2 = [v6 longLongValue];
+    longLongValue3 = [v7 longLongValue];
+    fileURL = [v9 fileURL];
     [v10 fileURL];
     v15 = v23 = v10;
-    v16 = [(BCSConfigItem *)self _extractItemTTLFromConfigRecord:v4];
-    self = [(BCSDomainConfigItem *)self initWithBuckets:v22 domainShards:v21 filterShards:v20 expirationDate:v24 filterMegaShardURL:v14 domainMegaShardURL:v15 itemTTL:v16];
+    v16 = [(BCSConfigItem *)self _extractItemTTLFromConfigRecord:recordCopy];
+    self = [(BCSDomainConfigItem *)self initWithBuckets:longLongValue domainShards:longLongValue2 filterShards:longLongValue3 expirationDate:v24 filterMegaShardURL:fileURL domainMegaShardURL:v15 itemTTL:v16];
 
-    v17 = self;
+    selfCopy = self;
   }
 
   else
@@ -251,11 +251,11 @@
       _os_log_error_impl(&dword_242072000, v9, OS_LOG_TYPE_ERROR, "BCSDomainConfigItem buckets, domainShards, filterShards, or ttl is not an NSNumber", buf, 2u);
     }
 
-    v17 = 0;
+    selfCopy = 0;
   }
 
   v18 = *MEMORY[0x277D85DE8];
-  return v17;
+  return selfCopy;
 }
 
 @end

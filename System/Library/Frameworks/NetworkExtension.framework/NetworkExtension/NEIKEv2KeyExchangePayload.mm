@@ -1,16 +1,16 @@
 @interface NEIKEv2KeyExchangePayload
 - (BOOL)generatePayloadData;
 - (BOOL)hasRequiredFields;
-- (BOOL)parsePayloadData:(id)a3;
+- (BOOL)parsePayloadData:(id)data;
 @end
 
 @implementation NEIKEv2KeyExchangePayload
 
-- (BOOL)parsePayloadData:(id)a3
+- (BOOL)parsePayloadData:(id)data
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length] <= 3)
+  dataCopy = data;
+  if ([dataCopy length] <= 3)
   {
     v13 = ne_log_obj();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -20,13 +20,13 @@
       _os_log_error_impl(&dword_1BA83C000, v13, OS_LOG_TYPE_ERROR, "BACKTRACE %s called with null (payloadData.length >= sizeof(ikev2_payload_ke_hdr_t))", &v14, 0xCu);
     }
 
-    v10 = 0;
+    hasRequiredFields = 0;
   }
 
   else
   {
     v14 = 0;
-    [v4 getBytes:&v14 length:4];
+    [dataCopy getBytes:&v14 length:4];
     v5 = [NEIKEv2KEMProtocol alloc];
     v7 = [(NEIKEv2KEMProtocol *)v5 initWithMethod:bswap32(v14) >> 16];
     if (self)
@@ -34,17 +34,17 @@
       objc_setProperty_atomic(self, v6, v7, 32);
     }
 
-    v9 = [v4 subdataWithRange:{4, objc_msgSend(v4, "length") - 4}];
+    v9 = [dataCopy subdataWithRange:{4, objc_msgSend(dataCopy, "length") - 4}];
     if (self)
     {
       objc_setProperty_atomic(self, v8, v9, 40);
     }
 
-    v10 = [(NEIKEv2KeyExchangePayload *)self hasRequiredFields];
+    hasRequiredFields = [(NEIKEv2KeyExchangePayload *)self hasRequiredFields];
   }
 
   v11 = *MEMORY[0x1E69E9840];
-  return v10;
+  return hasRequiredFields;
 }
 
 - (BOOL)generatePayloadData
@@ -102,23 +102,23 @@ LABEL_12:
 
 - (BOOL)hasRequiredFields
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     v3 = objc_getProperty(self, a2, 32, 1);
     if (v3)
     {
       v5 = v3;
-      LOBYTE(v2) = objc_getProperty(v2, v4, 40, 1) != 0;
+      LOBYTE(selfCopy) = objc_getProperty(selfCopy, v4, 40, 1) != 0;
     }
 
     else
     {
-      LOBYTE(v2) = 0;
+      LOBYTE(selfCopy) = 0;
     }
   }
 
-  return v2;
+  return selfCopy;
 }
 
 @end

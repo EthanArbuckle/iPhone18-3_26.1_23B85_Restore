@@ -1,94 +1,94 @@
 @interface SXEmbedComponentView
 - (BOOL)allowHierarchyRemoval;
 - (BOOL)hasLoadedEmbedData;
-- (BOOL)shouldAllowRequestToURL:(id)a3;
+- (BOOL)shouldAllowRequestToURL:(id)l;
 - (BOOL)shouldLayoutWebView;
 - (BOOL)shouldShowWebView;
 - (CGSize)currentLayoutSize;
 - (CGSize)currentViewportSize;
 - (CGSize)currentlyLayoutingForSize;
-- (SXEmbedComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 reachabilityProvider:(id)a7 embedDataProvider:(id)a8 actionHandler:(id)a9 layoutInvalidator:(id)a10 websiteDataStore:(id)a11 processPoolCache:(id)a12 proxyAuthenticationHandler:(id)a13 sceneStateMonitor:(id)a14 analyticsReporting:(id)a15;
+- (SXEmbedComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory reachabilityProvider:(id)reachabilityProvider embedDataProvider:(id)dataProvider actionHandler:(id)handler layoutInvalidator:(id)self0 websiteDataStore:(id)self1 processPoolCache:(id)self2 proxyAuthenticationHandler:(id)self3 sceneStateMonitor:(id)self4 analyticsReporting:(id)self5;
 - (SXEmbedResource)embedResource;
 - (SXEmbedType)embedConfiguration;
 - (double)initialScale;
 - (id)enclosingHTML;
 - (id)unableToLoadMessage;
-- (id)webView:(id)a3 createWebViewWithConfiguration:(id)a4 forNavigationAction:(id)a5 windowFeatures:(id)a6;
+- (id)webView:(id)view createWebViewWithConfiguration:(id)configuration forNavigationAction:(id)action windowFeatures:(id)features;
 - (unint64_t)userActionMediaTypes;
-- (void)_webViewDidEnterElementFullscreen:(id)a3;
-- (void)_webViewDidExitElementFullscreen:(id)a3;
-- (void)_webViewDidExitFullscreen:(id)a3;
-- (void)_webViewWebProcessDidCrash:(id)a3;
+- (void)_webViewDidEnterElementFullscreen:(id)fullscreen;
+- (void)_webViewDidExitElementFullscreen:(id)fullscreen;
+- (void)_webViewDidExitFullscreen:(id)fullscreen;
+- (void)_webViewWebProcessDidCrash:(id)crash;
 - (void)addScriptMessageHandlers;
 - (void)dealloc;
 - (void)discardContents;
 - (void)displayEmbedIfNeeded;
-- (void)finalizeLayoutForSize:(CGSize)a3;
-- (void)handleError:(id)a3;
-- (void)layoutWebViewForSize:(CGSize)a3;
-- (void)loadComponent:(id)a3;
+- (void)finalizeLayoutForSize:(CGSize)size;
+- (void)handleError:(id)error;
+- (void)layoutWebViewForSize:(CGSize)size;
+- (void)loadComponent:(id)component;
 - (void)loadEmbedData;
 - (void)loadEmbedIfNeeded;
 - (void)loadWebView;
 - (void)loadWebViewIfNeeded;
-- (void)presentComponentWithChanges:(id)a3;
+- (void)presentComponentWithChanges:(id)changes;
 - (void)prewarmWebView;
 - (void)reloadEmbed;
 - (void)removeScriptMessageHandlers;
 - (void)renderContents;
-- (void)reportLoadEventWithError:(id)a3;
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4;
-- (void)showActivityIndicator:(BOOL)a3;
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4;
-- (void)viewport:(id)a3 appearStateChangedFromState:(unint64_t)a4;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
-- (void)webView:(id)a3 didReceiveAuthenticationChallenge:(id)a4 completionHandler:(id)a5;
-- (void)webViewEnteredFullscreen:(id)a3;
-- (void)webViewExitedFullscreen:(id)a3;
-- (void)willPresentComponentWithChanges:(id)a3;
+- (void)reportLoadEventWithError:(id)error;
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view;
+- (void)showActivityIndicator:(BOOL)indicator;
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message;
+- (void)viewport:(id)viewport appearStateChangedFromState:(unint64_t)state;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
+- (void)webView:(id)view didReceiveAuthenticationChallenge:(id)challenge completionHandler:(id)handler;
+- (void)webViewEnteredFullscreen:(id)fullscreen;
+- (void)webViewExitedFullscreen:(id)fullscreen;
+- (void)willPresentComponentWithChanges:(id)changes;
 @end
 
 @implementation SXEmbedComponentView
 
-- (SXEmbedComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 reachabilityProvider:(id)a7 embedDataProvider:(id)a8 actionHandler:(id)a9 layoutInvalidator:(id)a10 websiteDataStore:(id)a11 processPoolCache:(id)a12 proxyAuthenticationHandler:(id)a13 sceneStateMonitor:(id)a14 analyticsReporting:(id)a15
+- (SXEmbedComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory reachabilityProvider:(id)reachabilityProvider embedDataProvider:(id)dataProvider actionHandler:(id)handler layoutInvalidator:(id)self0 websiteDataStore:(id)self1 processPoolCache:(id)self2 proxyAuthenticationHandler:(id)self3 sceneStateMonitor:(id)self4 analyticsReporting:(id)self5
 {
-  v20 = a3;
-  v44 = a4;
-  v21 = a5;
-  v22 = a6;
-  v43 = a7;
-  v42 = a8;
-  v41 = a9;
-  v40 = a10;
-  v39 = a11;
-  v38 = a12;
-  v37 = a13;
-  v36 = a14;
-  v35 = a15;
+  providerCopy = provider;
+  viewportCopy = viewport;
+  delegateCopy = delegate;
+  factoryCopy = factory;
+  reachabilityProviderCopy = reachabilityProvider;
+  dataProviderCopy = dataProvider;
+  handlerCopy = handler;
+  invalidatorCopy = invalidator;
+  storeCopy = store;
+  cacheCopy = cache;
+  authenticationHandlerCopy = authenticationHandler;
+  monitorCopy = monitor;
+  reportingCopy = reporting;
   v49.receiver = self;
   v49.super_class = SXEmbedComponentView;
-  v23 = [(SXComponentView *)&v49 initWithDOMObjectProvider:v20 viewport:v44 presentationDelegate:v21 componentStyleRendererFactory:v22];
+  v23 = [(SXComponentView *)&v49 initWithDOMObjectProvider:providerCopy viewport:viewportCopy presentationDelegate:delegateCopy componentStyleRendererFactory:factoryCopy];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_reachabilityProvider, a7);
-    objc_storeStrong(&v24->_embedDataProvider, a8);
-    objc_storeStrong(&v24->_actionHandler, a9);
-    objc_storeStrong(&v24->_layoutInvalidator, a10);
+    objc_storeStrong(&v23->_reachabilityProvider, reachabilityProvider);
+    objc_storeStrong(&v24->_embedDataProvider, dataProvider);
+    objc_storeStrong(&v24->_actionHandler, handler);
+    objc_storeStrong(&v24->_layoutInvalidator, invalidator);
     v25 = [objc_alloc(MEMORY[0x1E69D6CE8]) initWithDelegate:v24 delegateProtocol:&unk_1F5404200];
     scriptMessageHandler = v24->_scriptMessageHandler;
     v24->_scriptMessageHandler = v25;
 
-    objc_storeStrong(&v24->_dataStore, a11);
-    objc_storeStrong(&v24->_processPoolCache, a12);
-    objc_storeStrong(&v24->_proxyAuthenticationHandler, a13);
-    objc_storeStrong(&v24->_sceneStateMonitor, a14);
-    objc_storeStrong(&v24->_analyticsReporting, a15);
-    v27 = [(SXComponentView *)v24 viewport];
-    [v27 addViewportChangeListener:v24 forOptions:8];
+    objc_storeStrong(&v24->_dataStore, store);
+    objc_storeStrong(&v24->_processPoolCache, cache);
+    objc_storeStrong(&v24->_proxyAuthenticationHandler, authenticationHandler);
+    objc_storeStrong(&v24->_sceneStateMonitor, monitor);
+    objc_storeStrong(&v24->_analyticsReporting, reporting);
+    viewport = [(SXComponentView *)v24 viewport];
+    [viewport addViewportChangeListener:v24 forOptions:8];
 
     v28 = [MEMORY[0x1E695DFA8] set];
     expectedMessages = v24->_expectedMessages;
@@ -98,8 +98,8 @@
     webCrashRetryThrottler = v24->_webCrashRetryThrottler;
     v24->_webCrashRetryThrottler = v30;
 
-    v32 = [(SXComponentView *)v24 contentView];
-    [v32 setClipsToBounds:1];
+    contentView = [(SXComponentView *)v24 contentView];
+    [contentView setClipsToBounds:1];
 
     objc_initWeak(&location, v24);
     sceneStateMonitor = v24->_sceneStateMonitor;
@@ -137,15 +137,15 @@ void __279__SXEmbedComponentView_initWithDOMObjectProvider_viewport_presentation
   [(SXComponentView *)&v3 dealloc];
 }
 
-- (void)loadComponent:(id)a3
+- (void)loadComponent:(id)component
 {
   v6.receiver = self;
   v6.super_class = SXEmbedComponentView;
-  [(SXComponentView *)&v6 loadComponent:a3];
-  v4 = [(SXComponentView *)self viewport];
-  v5 = [v4 appearState];
+  [(SXComponentView *)&v6 loadComponent:component];
+  viewport = [(SXComponentView *)self viewport];
+  appearState = [viewport appearState];
 
-  if (v5 == 2)
+  if (appearState == 2)
   {
     [(SXEmbedComponentView *)self prewarmWebView];
   }
@@ -164,35 +164,35 @@ void __279__SXEmbedComponentView_initWithDOMObjectProvider_viewport_presentation
   v6.receiver = self;
   v6.super_class = SXEmbedComponentView;
   [(SXComponentView *)&v6 discardContents];
-  v3 = [(SXEmbedComponentView *)self webView];
-  v4 = [(SXEmbedComponentView *)self webViewPresentingInFullscreen];
+  webView = [(SXEmbedComponentView *)self webView];
+  webViewPresentingInFullscreen = [(SXEmbedComponentView *)self webViewPresentingInFullscreen];
 
-  if (v3 != v4)
+  if (webView != webViewPresentingInFullscreen)
   {
-    v5 = [(SXEmbedComponentView *)self webView];
-    [v5 removeFromSuperview];
+    webView2 = [(SXEmbedComponentView *)self webView];
+    [webView2 removeFromSuperview];
   }
 }
 
-- (void)willPresentComponentWithChanges:(id)a3
+- (void)willPresentComponentWithChanges:(id)changes
 {
   v5.receiver = self;
   v5.super_class = SXEmbedComponentView;
-  [(SXComponentView *)&v5 willPresentComponentWithChanges:*&a3.var0 & 0xFFFFFFLL];
+  [(SXComponentView *)&v5 willPresentComponentWithChanges:*&changes.var0 & 0xFFFFFFLL];
   if ([(SXEmbedComponentView *)self shouldLayoutWebView])
   {
-    v4 = [(SXEmbedComponentView *)self webView];
-    [v4 setAlpha:0.0];
+    webView = [(SXEmbedComponentView *)self webView];
+    [webView setAlpha:0.0];
 
     [(SXEmbedComponentView *)self discardContents];
   }
 }
 
-- (void)presentComponentWithChanges:(id)a3
+- (void)presentComponentWithChanges:(id)changes
 {
   v4.receiver = self;
   v4.super_class = SXEmbedComponentView;
-  [(SXComponentView *)&v4 presentComponentWithChanges:*&a3.var0 & 0xFFFFFFLL];
+  [(SXComponentView *)&v4 presentComponentWithChanges:*&changes.var0 & 0xFFFFFFLL];
   [(SXEmbedComponentView *)self loadEmbedIfNeeded];
 }
 
@@ -208,9 +208,9 @@ void __279__SXEmbedComponentView_initWithDOMObjectProvider_viewport_presentation
 
 - (void)loadEmbedData
 {
-  v3 = a1;
-  v4 = [a2 component];
-  v5 = [v4 identifier];
+  selfCopy = self;
+  component = [a2 component];
+  identifier = [component identifier];
   OUTLINED_FUNCTION_0_4(&dword_1D825C000, v6, v7, "Failed to load embed user script, component-identifier=%{public}@", v8, v9, v10, v11, 2u);
 }
 
@@ -221,15 +221,15 @@ void __279__SXEmbedComponentView_initWithDOMObjectProvider_viewport_presentation
   if ([(SXEmbedComponentView *)self shouldLayoutWebView])
   {
     v3 = [SXWebContentLoadEvent alloc];
-    v4 = [(SXEmbedComponentView *)self embedResource];
-    v5 = [v4 URL];
+    embedResource = [(SXEmbedComponentView *)self embedResource];
+    v5 = [embedResource URL];
     v6 = [(SXWebContentLoadEvent *)v3 initWithURL:v5];
     [(SXEmbedComponentView *)self setLoadEvent:v6];
 
     [(SXComponentView *)self contentFrame];
     v8 = v7;
-    v9 = [(SXEmbedComponentView *)self embedConfiguration];
-    [v9 maximumWidth];
+    embedConfiguration = [(SXEmbedComponentView *)self embedConfiguration];
+    [embedConfiguration maximumWidth];
     v11 = v10;
 
     if (v8 >= v11)
@@ -246,12 +246,12 @@ void __279__SXEmbedComponentView_initWithDOMObjectProvider_viewport_presentation
       v39.width = v8;
       v39.height = Height;
       v15 = NSStringFromCGSize(v39);
-      v16 = [(SXComponentView *)self component];
-      v17 = [v16 identifier];
+      component = [(SXComponentView *)self component];
+      identifier = [component identifier];
       *buf = 138543618;
       v35 = v15;
       v36 = 2114;
-      v37 = v17;
+      v37 = identifier;
       _os_log_impl(&dword_1D825C000, v14, OS_LOG_TYPE_DEFAULT, "Starting layout for embed with size: %{public}@, component-identifier=%{public}@", buf, 0x16u);
     }
 
@@ -266,20 +266,20 @@ void __279__SXEmbedComponentView_initWithDOMObjectProvider_viewport_presentation
     if (os_log_type_enabled(SXEmbedLog, OS_LOG_TYPE_DEFAULT))
     {
       v19 = v18;
-      v20 = [(SXComponentView *)self component];
-      v21 = [v20 identifier];
+      component2 = [(SXComponentView *)self component];
+      identifier2 = [component2 identifier];
       *buf = 138543362;
-      v35 = v21;
+      v35 = identifier2;
       _os_log_impl(&dword_1D825C000, v19, OS_LOG_TYPE_DEFAULT, "Display embed, component-identifier=%{public}@", buf, 0xCu);
     }
 
     [(SXEmbedComponentView *)self showActivityIndicator:0];
-    v22 = [(SXEmbedComponentView *)self webView];
-    [v22 bounds];
+    webView = [(SXEmbedComponentView *)self webView];
+    [webView bounds];
     [(SXEmbedComponentView *)self layoutWebViewForSize:v23, v24];
 
-    v25 = [(SXEmbedComponentView *)self webView];
-    [v25 alpha];
+    webView2 = [(SXEmbedComponentView *)self webView];
+    [webView2 alpha];
     v27 = v26;
 
     if (v27 == 0.0)
@@ -296,21 +296,21 @@ void __279__SXEmbedComponentView_initWithDOMObjectProvider_viewport_presentation
 
       else
       {
-        v32 = [(SXEmbedComponentView *)self webView];
-        [v32 setAlpha:1.0];
+        webView3 = [(SXEmbedComponentView *)self webView];
+        [webView3 setAlpha:1.0];
       }
     }
 
     else
     {
-      v28 = [(SXEmbedComponentView *)self webView];
-      v29 = [v28 superview];
+      webView4 = [(SXEmbedComponentView *)self webView];
+      superview = [webView4 superview];
 
-      if (!v29)
+      if (!superview)
       {
-        v30 = [(SXComponentView *)self contentView];
-        v31 = [(SXEmbedComponentView *)self webView];
-        [v30 addSubview:v31];
+        contentView = [(SXComponentView *)self contentView];
+        webView5 = [(SXEmbedComponentView *)self webView];
+        [contentView addSubview:webView5];
       }
     }
   }
@@ -325,8 +325,8 @@ void __44__SXEmbedComponentView_displayEmbedIfNeeded__block_invoke(uint64_t a1)
 - (void)prewarmWebView
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(SXEmbedComponentView *)self webView];
-  if (v3)
+  webView = [(SXEmbedComponentView *)self webView];
+  if (webView)
   {
   }
 
@@ -336,10 +336,10 @@ void __44__SXEmbedComponentView_displayEmbedIfNeeded__block_invoke(uint64_t a1)
     if (os_log_type_enabled(SXEmbedLog, OS_LOG_TYPE_DEFAULT))
     {
       v5 = v4;
-      v6 = [(SXComponentView *)self component];
-      v7 = [v6 identifier];
+      component = [(SXComponentView *)self component];
+      identifier = [component identifier];
       v8 = 138543362;
-      v9 = v7;
+      v9 = identifier;
       _os_log_impl(&dword_1D825C000, v5, OS_LOG_TYPE_DEFAULT, "Prewarming web view, component-identifier=%{public}@", &v8, 0xCu);
     }
 
@@ -350,12 +350,12 @@ void __44__SXEmbedComponentView_displayEmbedIfNeeded__block_invoke(uint64_t a1)
 - (void)loadWebViewIfNeeded
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(SXEmbedComponentView *)self webView];
-  v4 = v3;
-  if (v3 || (v3 = [(SXComponentView *)self hasRenderedContents], v4 = 0, !v3))
+  webView = [(SXEmbedComponentView *)self webView];
+  v4 = webView;
+  if (webView || (webView = [(SXComponentView *)self hasRenderedContents], v4 = 0, !webView))
   {
 
-    MEMORY[0x1EEE66BB8](v3, v4);
+    MEMORY[0x1EEE66BB8](webView, v4);
   }
 
   else if (![(SXEmbedComponentView *)self failedLoading])
@@ -364,10 +364,10 @@ void __44__SXEmbedComponentView_displayEmbedIfNeeded__block_invoke(uint64_t a1)
     if (os_log_type_enabled(SXEmbedLog, OS_LOG_TYPE_DEFAULT))
     {
       v6 = v5;
-      v7 = [(SXComponentView *)self component];
-      v8 = [v7 identifier];
+      component = [(SXComponentView *)self component];
+      identifier = [component identifier];
       *buf = 138543362;
-      v10 = v8;
+      v10 = identifier;
       _os_log_impl(&dword_1D825C000, v6, OS_LOG_TYPE_DEFAULT, "Setting up web view, component-identifier=%{public}@", buf, 0xCu);
     }
 
@@ -382,15 +382,15 @@ void __44__SXEmbedComponentView_displayEmbedIfNeeded__block_invoke(uint64_t a1)
   if (os_log_type_enabled(SXEmbedLog, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(SXComponentView *)self component];
-    v6 = [v5 identifier];
+    component = [(SXComponentView *)self component];
+    identifier = [component identifier];
     v51 = 138543362;
-    v52 = v6;
+    v52 = identifier;
     _os_log_impl(&dword_1D825C000, v4, OS_LOG_TYPE_DEFAULT, "Setting up web view, component-identifier=%{public}@", &v51, 0xCu);
   }
 
-  v7 = [(SXEmbedComponentView *)self errorLabel];
-  [v7 removeFromSuperview];
+  errorLabel = [(SXEmbedComponentView *)self errorLabel];
+  [errorLabel removeFromSuperview];
 
   v8 = objc_alloc_init(MEMORY[0x1E6985350]);
   v9 = [objc_alloc(MEMORY[0x1E6985358]) initWithSource:@"document.body.style.webkitUserSelect = 'none';" injectionTime:1 forMainFrameOnly:0];
@@ -400,21 +400,21 @@ void __44__SXEmbedComponentView_displayEmbedIfNeeded__block_invoke(uint64_t a1)
   [v10 setAllowsAirPlayForMediaPlayback:0];
   [v10 setAllowsPictureInPictureMediaPlayback:0];
   [v10 _setWaitsForPaintAfterViewDidMoveToWindow:0];
-  v11 = [(SXEmbedComponentView *)self dataStore];
-  [v10 setWebsiteDataStore:v11];
+  dataStore = [(SXEmbedComponentView *)self dataStore];
+  [v10 setWebsiteDataStore:dataStore];
 
-  v12 = [(SXEmbedComponentView *)self processPoolCache];
-  v13 = [(SXEmbedComponentView *)self embedConfiguration];
-  v14 = [v13 baseURL];
-  v15 = [v12 processPoolForBaseURL:v14];
+  processPoolCache = [(SXEmbedComponentView *)self processPoolCache];
+  embedConfiguration = [(SXEmbedComponentView *)self embedConfiguration];
+  baseURL = [embedConfiguration baseURL];
+  v15 = [processPoolCache processPoolForBaseURL:baseURL];
 
   [v10 setProcessPool:v15];
   v16 = objc_alloc_init(MEMORY[0x1E6985338]);
   [v16 setJavaScriptCanOpenWindowsAutomatically:1];
-  v17 = [(SXEmbedComponentView *)self traitCollection];
-  v18 = [v17 userInterfaceIdiom];
+  traitCollection = [(SXEmbedComponentView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v18 == 1)
+  if (userInterfaceIdiom == 1)
   {
     [v16 _setFullScreenEnabled:1];
   }
@@ -424,8 +424,8 @@ void __44__SXEmbedComponentView_displayEmbedIfNeeded__block_invoke(uint64_t a1)
   [v10 setUserContentController:v8];
   [(SXComponentView *)self contentFrame];
   v20 = v19;
-  v21 = [(SXEmbedComponentView *)self embedConfiguration];
-  [v21 maximumWidth];
+  embedConfiguration2 = [(SXEmbedComponentView *)self embedConfiguration];
+  [embedConfiguration2 maximumWidth];
   v23 = v22;
 
   if (v20 >= v23)
@@ -433,8 +433,8 @@ void __44__SXEmbedComponentView_displayEmbedIfNeeded__block_invoke(uint64_t a1)
     v20 = v23;
   }
 
-  v24 = [(SXComponentView *)self contentView];
-  [v24 bounds];
+  contentView = [(SXComponentView *)self contentView];
+  [contentView bounds];
   v26 = v25;
   v28 = v27;
   v30 = v29;
@@ -442,48 +442,48 @@ void __44__SXEmbedComponentView_displayEmbedIfNeeded__block_invoke(uint64_t a1)
   v31 = [objc_alloc(MEMORY[0x1E69853A0]) initWithFrame:v10 configuration:{v26, v28, v20, v30}];
   [(SXEmbedComponentView *)self setWebView:v31];
 
-  v32 = [(SXEmbedComponentView *)self webView];
-  v33 = [v32 scrollView];
-  [v33 setScrollsToTop:0];
+  webView = [(SXEmbedComponentView *)self webView];
+  scrollView = [webView scrollView];
+  [scrollView setScrollsToTop:0];
 
-  v34 = [(SXEmbedComponentView *)self webView];
-  v35 = [v34 scrollView];
-  [v35 setContentInsetAdjustmentBehavior:2];
+  webView2 = [(SXEmbedComponentView *)self webView];
+  scrollView2 = [webView2 scrollView];
+  [scrollView2 setContentInsetAdjustmentBehavior:2];
 
-  v36 = [(SXEmbedComponentView *)self webView];
-  v37 = [v36 scrollView];
-  [v37 setScrollEnabled:0];
+  webView3 = [(SXEmbedComponentView *)self webView];
+  scrollView3 = [webView3 scrollView];
+  [scrollView3 setScrollEnabled:0];
 
-  v38 = [(SXEmbedComponentView *)self webView];
-  v39 = [v38 scrollView];
-  [v39 setDelegate:self];
+  webView4 = [(SXEmbedComponentView *)self webView];
+  scrollView4 = [webView4 scrollView];
+  [scrollView4 setDelegate:self];
 
-  v40 = [(SXEmbedComponentView *)self webView];
-  [v40 _setFullscreenDelegate:self];
+  webView5 = [(SXEmbedComponentView *)self webView];
+  [webView5 _setFullscreenDelegate:self];
 
-  v41 = [(SXEmbedComponentView *)self webView];
-  v42 = [v41 scrollView];
-  [v42 setAlwaysBounceVertical:0];
+  webView6 = [(SXEmbedComponentView *)self webView];
+  scrollView5 = [webView6 scrollView];
+  [scrollView5 setAlwaysBounceVertical:0];
 
-  v43 = [(SXEmbedComponentView *)self webView];
-  v44 = [v43 scrollView];
-  [v44 setAlwaysBounceHorizontal:0];
+  webView7 = [(SXEmbedComponentView *)self webView];
+  scrollView6 = [webView7 scrollView];
+  [scrollView6 setAlwaysBounceHorizontal:0];
 
-  v45 = [(SXEmbedComponentView *)self webView];
-  v46 = [MEMORY[0x1E69DC888] clearColor];
-  [v45 setBackgroundColor:v46];
+  webView8 = [(SXEmbedComponentView *)self webView];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [webView8 setBackgroundColor:clearColor];
 
-  v47 = [(SXEmbedComponentView *)self webView];
-  [v47 setOpaque:0];
+  webView9 = [(SXEmbedComponentView *)self webView];
+  [webView9 setOpaque:0];
 
-  v48 = [(SXEmbedComponentView *)self webView];
-  [v48 setNavigationDelegate:self];
+  webView10 = [(SXEmbedComponentView *)self webView];
+  [webView10 setNavigationDelegate:self];
 
-  v49 = [(SXEmbedComponentView *)self webView];
-  [v49 setUIDelegate:self];
+  webView11 = [(SXEmbedComponentView *)self webView];
+  [webView11 setUIDelegate:self];
 
-  v50 = [(SXEmbedComponentView *)self webView];
-  [v50 setAlpha:0.0];
+  webView12 = [(SXEmbedComponentView *)self webView];
+  [webView12 setAlpha:0.0];
 }
 
 - (void)reloadEmbed
@@ -491,33 +491,33 @@ void __44__SXEmbedComponentView_displayEmbedIfNeeded__block_invoke(uint64_t a1)
   v39 = *MEMORY[0x1E69E9840];
   if ([(SXEmbedComponentView *)self hasLoadedEmbedData])
   {
-    v3 = [(SXEmbedComponentView *)self webView];
+    webView = [(SXEmbedComponentView *)self webView];
 
-    if (v3)
+    if (webView)
     {
       v4 = SXEmbedLog;
       if (os_log_type_enabled(SXEmbedLog, OS_LOG_TYPE_DEFAULT))
       {
         v5 = v4;
-        v6 = [(SXComponentView *)self component];
-        v7 = [v6 identifier];
+        component = [(SXComponentView *)self component];
+        identifier = [component identifier];
         v37 = 138543362;
-        v38 = v7;
+        v38 = identifier;
         _os_log_impl(&dword_1D825C000, v5, OS_LOG_TYPE_DEFAULT, "Start loading embed, component-identifier=%{public}@", &v37, 0xCu);
       }
 
-      v8 = [(SXEmbedComponentView *)self webViewPresentingInFullscreen];
+      webViewPresentingInFullscreen = [(SXEmbedComponentView *)self webViewPresentingInFullscreen];
 
-      if (v8)
+      if (webViewPresentingInFullscreen)
       {
         v9 = SXEmbedLog;
         if (os_log_type_enabled(SXEmbedLog, OS_LOG_TYPE_DEFAULT))
         {
           v10 = v9;
-          v11 = [(SXComponentView *)self component];
-          v12 = [v11 identifier];
+          component2 = [(SXComponentView *)self component];
+          identifier2 = [component2 identifier];
           v37 = 138543362;
-          v38 = v12;
+          v38 = identifier2;
           _os_log_impl(&dword_1D825C000, v10, OS_LOG_TYPE_DEFAULT, "Web view in fullscreen, keeping it alive, component-identifier=%{public}@", &v37, 0xCu);
         }
 
@@ -534,61 +534,61 @@ void __44__SXEmbedComponentView_displayEmbedIfNeeded__block_invoke(uint64_t a1)
       v17 = [v15 requestWithURL:v16];
 
       [v17 setAttribution:1];
-      v18 = [(SXEmbedComponentView *)self webView];
-      v19 = [v18 loadSimulatedRequest:v17 responseHTMLString:&stru_1F532F6C0];
+      webView2 = [(SXEmbedComponentView *)self webView];
+      v19 = [webView2 loadSimulatedRequest:v17 responseHTMLString:&stru_1F532F6C0];
 
-      v20 = [(SXEmbedComponentView *)self layoutInvalidator];
-      v21 = [(SXComponentView *)self component];
-      [v20 mightInvalidateComponent:v21];
+      layoutInvalidator = [(SXEmbedComponentView *)self layoutInvalidator];
+      component3 = [(SXComponentView *)self component];
+      [layoutInvalidator mightInvalidateComponent:component3];
 
-      v22 = [(SXEmbedComponentView *)self webView];
-      [v22 setAlpha:0.0];
+      webView3 = [(SXEmbedComponentView *)self webView];
+      [webView3 setAlpha:0.0];
 
-      v23 = [(SXEmbedComponentView *)self embedConfiguration];
-      v24 = [v23 baseURL];
+      embedConfiguration = [(SXEmbedComponentView *)self embedConfiguration];
+      baseURL = [embedConfiguration baseURL];
 
       v25 = objc_alloc(MEMORY[0x1E6985358]);
-      v26 = [(SXEmbedComponentView *)self userScript];
-      v27 = [v25 initWithSource:v26 injectionTime:1 forMainFrameOnly:0];
+      userScript = [(SXEmbedComponentView *)self userScript];
+      v27 = [v25 initWithSource:userScript injectionTime:1 forMainFrameOnly:0];
 
-      v28 = [(SXEmbedComponentView *)self webView];
-      v29 = [v28 configuration];
-      v30 = [v29 userContentController];
-      [v30 addUserScript:v27];
+      webView4 = [(SXEmbedComponentView *)self webView];
+      configuration = [webView4 configuration];
+      userContentController = [configuration userContentController];
+      [userContentController addUserScript:v27];
 
-      v31 = [MEMORY[0x1E695AC18] requestWithURL:v24];
+      v31 = [MEMORY[0x1E695AC18] requestWithURL:baseURL];
       [v31 setAttribution:1];
-      v32 = [(SXEmbedComponentView *)self HTML];
-      v33 = [(SXEmbedComponentView *)self enclosingHTML];
-      v34 = [(SXEmbedComponentView *)self HTMLByEnclosingHTML:v32 withHTML:v33];
+      hTML = [(SXEmbedComponentView *)self HTML];
+      enclosingHTML = [(SXEmbedComponentView *)self enclosingHTML];
+      v34 = [(SXEmbedComponentView *)self HTMLByEnclosingHTML:hTML withHTML:enclosingHTML];
 
-      v35 = [(SXEmbedComponentView *)self webView];
-      v36 = [v35 loadSimulatedRequest:v31 responseHTMLString:v34];
+      webView5 = [(SXEmbedComponentView *)self webView];
+      v36 = [webView5 loadSimulatedRequest:v31 responseHTMLString:v34];
       [(SXEmbedComponentView *)self setInitialNavigation:v36];
     }
   }
 }
 
-- (void)layoutWebViewForSize:(CGSize)a3
+- (void)layoutWebViewForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(SXEmbedComponentView *)self webView];
-  [v6 setBounds:{0.0, 0.0, width, height}];
+  height = size.height;
+  width = size.width;
+  webView = [(SXEmbedComponentView *)self webView];
+  [webView setBounds:{0.0, 0.0, width, height}];
 
-  v10 = [(SXEmbedComponentView *)self webView];
-  v7 = [(SXComponentView *)self contentView];
-  [v7 bounds];
+  webView2 = [(SXEmbedComponentView *)self webView];
+  contentView = [(SXComponentView *)self contentView];
+  [contentView bounds];
   MidX = CGRectGetMidX(v12);
-  v9 = [(SXComponentView *)self contentView];
-  [v9 bounds];
-  [v10 setCenter:{MidX, CGRectGetMidY(v13)}];
+  contentView2 = [(SXComponentView *)self contentView];
+  [contentView2 bounds];
+  [webView2 setCenter:{MidX, CGRectGetMidY(v13)}];
 }
 
-- (void)finalizeLayoutForSize:(CGSize)a3
+- (void)finalizeLayoutForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v21 = *MEMORY[0x1E69E9840];
   v6 = SXEmbedLog;
   if (os_log_type_enabled(SXEmbedLog, OS_LOG_TYPE_DEFAULT))
@@ -597,36 +597,36 @@ void __44__SXEmbedComponentView_displayEmbedIfNeeded__block_invoke(uint64_t a1)
     v22.width = width;
     v22.height = height;
     v8 = NSStringFromCGSize(v22);
-    v9 = [(SXComponentView *)self component];
-    v10 = [v9 identifier];
+    component = [(SXComponentView *)self component];
+    identifier = [component identifier];
     v17 = 138543618;
     v18 = v8;
     v19 = 2114;
-    v20 = v10;
+    v20 = identifier;
     _os_log_impl(&dword_1D825C000, v7, OS_LOG_TYPE_DEFAULT, "Finalizing layout with size: %{public}@, component-identifier=%{public}@", &v17, 0x16u);
   }
 
-  v11 = [(SXEmbedComponentView *)self layoutInvalidator];
-  v12 = [(SXComponentView *)self component];
+  layoutInvalidator = [(SXEmbedComponentView *)self layoutInvalidator];
+  component2 = [(SXComponentView *)self component];
   [(SXEmbedComponentView *)self bounds];
-  v13 = [v11 invalidateComponent:v12 suggestedSize:{CGRectGetWidth(v23), height}];
+  v13 = [layoutInvalidator invalidateComponent:component2 suggestedSize:{CGRectGetWidth(v23), height}];
 
   [(SXEmbedComponentView *)self setCurrentlyLayoutingForSize:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   [(SXEmbedComponentView *)self setCurrentLayoutSize:width, height];
-  v14 = [(SXComponentView *)self viewport];
-  [v14 bounds];
+  viewport = [(SXComponentView *)self viewport];
+  [viewport bounds];
   [(SXEmbedComponentView *)self setCurrentViewportSize:v15, v16];
 
   [(SXEmbedComponentView *)self layoutWebViewForSize:width, height];
   [(SXEmbedComponentView *)self reportLoadEventWithError:0];
 }
 
-- (void)viewport:(id)a3 appearStateChangedFromState:(unint64_t)a4
+- (void)viewport:(id)viewport appearStateChangedFromState:(unint64_t)state
 {
-  v6 = a3;
-  if ([v6 appearState])
+  viewportCopy = viewport;
+  if ([viewportCopy appearState])
   {
-    if ([v6 appearState] == 2)
+    if ([viewportCopy appearState] == 2)
     {
       [(SXEmbedComponentView *)self prewarmWebView];
     }
@@ -634,53 +634,53 @@ void __44__SXEmbedComponentView_displayEmbedIfNeeded__block_invoke(uint64_t a1)
 
   else
   {
-    v5 = [(SXEmbedComponentView *)self webView];
-    [v5 pauseAllMediaPlaybackWithCompletionHandler:0];
+    webView = [(SXEmbedComponentView *)self webView];
+    [webView pauseAllMediaPlaybackWithCompletionHandler:0];
   }
 }
 
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message
 {
   *&v91[13] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 name];
-  v7 = [v6 isEqualToString:@"ANFExpect"];
+  messageCopy = message;
+  name = [messageCopy name];
+  v7 = [name isEqualToString:@"ANFExpect"];
 
   if (v7)
   {
-    v8 = [v5 body];
+    body = [messageCopy body];
 
-    if (v8)
+    if (body)
     {
       v9 = SXEmbedLog;
       if (os_log_type_enabled(SXEmbedLog, OS_LOG_TYPE_DEFAULT))
       {
         v10 = v9;
-        v11 = [v5 body];
-        v12 = [(SXComponentView *)self component];
-        v13 = [v12 identifier];
+        body2 = [messageCopy body];
+        component = [(SXComponentView *)self component];
+        identifier = [component identifier];
         v88 = 138543618;
-        v89 = v11;
+        v89 = body2;
         v90 = 2114;
-        *v91 = v13;
+        *v91 = identifier;
         _os_log_impl(&dword_1D825C000, v10, OS_LOG_TYPE_DEFAULT, "Expect message received: %{public}@, component-identifier=%{public}@", &v88, 0x16u);
       }
 
-      v14 = [(SXEmbedComponentView *)self expectedMessages];
-      v15 = [v5 body];
-      [v14 addObject:v15];
+      expectedMessages = [(SXEmbedComponentView *)self expectedMessages];
+      body3 = [messageCopy body];
+      [expectedMessages addObject:body3];
     }
 
     goto LABEL_53;
   }
 
-  v16 = [v5 name];
-  v17 = [v16 isEqualToString:@"ANFDone"];
+  name2 = [messageCopy name];
+  v17 = [name2 isEqualToString:@"ANFDone"];
 
   if (!v17)
   {
-    v38 = [v5 name];
-    v39 = [v38 isEqualToString:@"ANFUpdate"];
+    name3 = [messageCopy name];
+    v39 = [name3 isEqualToString:@"ANFUpdate"];
 
     if (v39)
     {
@@ -688,29 +688,29 @@ void __44__SXEmbedComponentView_displayEmbedIfNeeded__block_invoke(uint64_t a1)
       if (os_log_type_enabled(SXEmbedLog, OS_LOG_TYPE_DEFAULT))
       {
         v41 = v40;
-        v42 = [v5 body];
-        v43 = [(SXComponentView *)self component];
-        v44 = [v43 identifier];
+        body4 = [messageCopy body];
+        component2 = [(SXComponentView *)self component];
+        identifier2 = [component2 identifier];
         v88 = 138543618;
-        v89 = v42;
+        v89 = body4;
         v90 = 2114;
-        *v91 = v44;
+        *v91 = identifier2;
         _os_log_impl(&dword_1D825C000, v41, OS_LOG_TYPE_DEFAULT, "Update message received: %{public}@, component-identifier=%{public}@", &v88, 0x16u);
       }
 
-      v45 = [v5 body];
-      v46 = [v45 objectForKey:@"height"];
+      body5 = [messageCopy body];
+      unknownError = [body5 objectForKey:@"height"];
 
-      if (v46)
+      if (unknownError)
       {
-        [v46 floatValue];
+        [unknownError floatValue];
         if (v47 != 0.0)
         {
           v48 = v47;
           [(SXComponentView *)self contentFrame];
           v50 = v49;
-          v51 = [(SXEmbedComponentView *)self embedConfiguration];
-          [v51 maximumWidth];
+          embedConfiguration = [(SXEmbedComponentView *)self embedConfiguration];
+          [embedConfiguration maximumWidth];
           v53 = v52;
 
           if (v50 >= v53)
@@ -731,8 +731,8 @@ void __44__SXEmbedComponentView_displayEmbedIfNeeded__block_invoke(uint64_t a1)
 
     else
     {
-      v58 = [v5 name];
-      v59 = [v58 isEqualToString:@"ANFFailed"];
+      name4 = [messageCopy name];
+      v59 = [name4 isEqualToString:@"ANFFailed"];
 
       if (!v59)
       {
@@ -743,69 +743,69 @@ void __44__SXEmbedComponentView_displayEmbedIfNeeded__block_invoke(uint64_t a1)
       if (os_log_type_enabled(SXEmbedLog, OS_LOG_TYPE_DEFAULT))
       {
         v61 = v60;
-        v62 = [v5 body];
-        v63 = [(SXComponentView *)self component];
-        v64 = [v63 identifier];
+        body6 = [messageCopy body];
+        component3 = [(SXComponentView *)self component];
+        identifier3 = [component3 identifier];
         v88 = 138543618;
-        v89 = v62;
+        v89 = body6;
         v90 = 2114;
-        *v91 = v64;
+        *v91 = identifier3;
         _os_log_impl(&dword_1D825C000, v61, OS_LOG_TYPE_DEFAULT, "Failed message received: %{public}@, component-identifier=%{public}@", &v88, 0x16u);
       }
 
-      v46 = [MEMORY[0x1E696ABC0] unknownError];
-      [(SXEmbedComponentView *)self handleError:v46];
+      unknownError = [MEMORY[0x1E696ABC0] unknownError];
+      [(SXEmbedComponentView *)self handleError:unknownError];
     }
 
     goto LABEL_53;
   }
 
-  v18 = [v5 body];
+  body7 = [messageCopy body];
 
-  if (v18)
+  if (body7)
   {
     v19 = SXEmbedLog;
     if (os_log_type_enabled(SXEmbedLog, OS_LOG_TYPE_DEFAULT))
     {
       v20 = v19;
-      v21 = [v5 body];
-      v22 = [(SXEmbedComponentView *)self expectedMessages];
-      v23 = [v5 body];
-      v24 = [v22 containsObject:v23];
-      v25 = [(SXComponentView *)self component];
-      v26 = [v25 identifier];
+      body8 = [messageCopy body];
+      expectedMessages2 = [(SXEmbedComponentView *)self expectedMessages];
+      body9 = [messageCopy body];
+      v24 = [expectedMessages2 containsObject:body9];
+      component4 = [(SXComponentView *)self component];
+      identifier4 = [component4 identifier];
       v88 = 138543874;
-      v89 = v21;
+      v89 = body8;
       v90 = 1024;
       *v91 = v24;
       v91[2] = 2114;
-      *&v91[3] = v26;
+      *&v91[3] = identifier4;
       _os_log_impl(&dword_1D825C000, v20, OS_LOG_TYPE_DEFAULT, "Done message received: %{public}@, expected=%d, component-identifier=%{public}@", &v88, 0x1Cu);
     }
 
-    v27 = [v5 body];
+    body10 = [messageCopy body];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v29 = [v5 body];
-    v30 = v29;
+    body11 = [messageCopy body];
+    v30 = body11;
     if (isKindOfClass)
     {
-      v31 = [v29 objectForKey:@"key"];
+      expectedMessages7 = [body11 objectForKey:@"key"];
 
-      if (v31)
+      if (expectedMessages7)
       {
-        v32 = [(SXEmbedComponentView *)self expectedMessages];
-        v33 = [v32 containsObject:v31];
+        expectedMessages3 = [(SXEmbedComponentView *)self expectedMessages];
+        v33 = [expectedMessages3 containsObject:expectedMessages7];
 
         if (v33)
         {
-          v34 = [v5 body];
-          v35 = [v34 objectForKey:@"height"];
+          body12 = [messageCopy body];
+          body15 = [body12 objectForKey:@"height"];
 
-          if (v35)
+          if (body15)
           {
-            [v35 floatValue];
+            [body15 floatValue];
             v37 = v36;
           }
 
@@ -814,8 +814,8 @@ void __44__SXEmbedComponentView_displayEmbedIfNeeded__block_invoke(uint64_t a1)
             v37 = 1.79769313e308;
           }
 
-          v68 = [(SXEmbedComponentView *)self expectedMessages];
-          [v68 removeObject:v31];
+          expectedMessages4 = [(SXEmbedComponentView *)self expectedMessages];
+          [expectedMessages4 removeObject:expectedMessages7];
 
 LABEL_39:
           v33 = 1;
@@ -836,17 +836,17 @@ LABEL_39:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v65 = [(SXEmbedComponentView *)self expectedMessages];
-        v66 = [v5 body];
-        v67 = [v65 containsObject:v66];
+        expectedMessages5 = [(SXEmbedComponentView *)self expectedMessages];
+        body13 = [messageCopy body];
+        v67 = [expectedMessages5 containsObject:body13];
 
         if (!v67)
         {
           v33 = 1;
           v37 = 1.79769313e308;
 LABEL_41:
-          v69 = [(SXEmbedComponentView *)self expectedMessages];
-          v70 = [v69 count];
+          expectedMessages6 = [(SXEmbedComponentView *)self expectedMessages];
+          v70 = [expectedMessages6 count];
 
           if (v33 && !v70)
           {
@@ -854,23 +854,23 @@ LABEL_41:
             if (os_log_type_enabled(SXEmbedLog, OS_LOG_TYPE_DEFAULT))
             {
               v72 = v71;
-              v73 = [(SXComponentView *)self component];
-              v74 = [v73 identifier];
+              component5 = [(SXComponentView *)self component];
+              identifier5 = [component5 identifier];
               v88 = 138543362;
-              v89 = v74;
+              v89 = identifier5;
               _os_log_impl(&dword_1D825C000, v72, OS_LOG_TYPE_DEFAULT, "No more messages expected, finalizing layout, component-identifier=%{public}@", &v88, 0xCu);
             }
 
             if (v37 == 1.79769313e308)
             {
-              v75 = [(SXEmbedComponentView *)self webView];
-              v76 = [v75 scrollView];
-              [v76 contentSize];
+              webView = [(SXEmbedComponentView *)self webView];
+              scrollView = [webView scrollView];
+              [scrollView contentSize];
               v37 = v77;
             }
 
-            v78 = [v5 body];
-            v79 = [v78 objectForKey:@"width"];
+            body14 = [messageCopy body];
+            v79 = [body14 objectForKey:@"width"];
             [v79 floatValue];
             v81 = v80;
 
@@ -878,8 +878,8 @@ LABEL_41:
             {
               [(SXComponentView *)self contentFrame];
               v83 = v82;
-              v84 = [(SXEmbedComponentView *)self embedConfiguration];
-              [v84 maximumWidth];
+              embedConfiguration2 = [(SXEmbedComponentView *)self embedConfiguration];
+              [embedConfiguration2 maximumWidth];
               v86 = v85;
 
               if (v83 >= v86)
@@ -901,16 +901,16 @@ LABEL_41:
           goto LABEL_53;
         }
 
-        v31 = [(SXEmbedComponentView *)self expectedMessages];
-        v35 = [v5 body];
-        [v31 removeObject:v35];
+        expectedMessages7 = [(SXEmbedComponentView *)self expectedMessages];
+        body15 = [messageCopy body];
+        [expectedMessages7 removeObject:body15];
         v37 = 1.79769313e308;
         goto LABEL_39;
       }
 
       v33 = 1;
       v37 = 1.79769313e308;
-      v31 = v30;
+      expectedMessages7 = v30;
     }
 
 LABEL_40:
@@ -921,58 +921,58 @@ LABEL_40:
 LABEL_53:
 }
 
-- (void)handleError:(id)a3
+- (void)handleError:(id)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = SXEmbedLog;
   if (os_log_type_enabled(SXEmbedLog, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(SXComponentView *)self component];
-    v8 = [v7 identifier];
+    component = [(SXComponentView *)self component];
+    identifier = [component identifier];
     v23 = 138543618;
-    v24 = v4;
+    v24 = errorCopy;
     v25 = 2114;
-    v26 = v8;
+    v26 = identifier;
     _os_log_impl(&dword_1D825C000, v6, OS_LOG_TYPE_DEFAULT, "Received error while attempting to load embed: %{public}@, component-identifier=%{public}@", &v23, 0x16u);
   }
 
-  v9 = [(SXEmbedComponentView *)self layoutInvalidator];
-  v10 = [(SXComponentView *)self component];
-  [v9 cancelPendingInvalidationForComponent:v10];
+  layoutInvalidator = [(SXEmbedComponentView *)self layoutInvalidator];
+  component2 = [(SXComponentView *)self component];
+  [layoutInvalidator cancelPendingInvalidationForComponent:component2];
 
   [(SXEmbedComponentView *)self setFailedLoading:1];
   [(SXEmbedComponentView *)self showActivityIndicator:0];
   v11 = objc_alloc(MEMORY[0x1E69DCC10]);
-  v12 = [(SXComponentView *)self contentView];
-  [v12 bounds];
+  contentView = [(SXComponentView *)self contentView];
+  [contentView bounds];
   Width = CGRectGetWidth(v28);
-  v14 = [(SXComponentView *)self contentView];
-  [v14 bounds];
+  contentView2 = [(SXComponentView *)self contentView];
+  [contentView2 bounds];
   v15 = [v11 initWithFrame:{0.0, 0.0, Width, CGRectGetHeight(v29)}];
   [(SXEmbedComponentView *)self setErrorLabel:v15];
 
-  v16 = [(SXEmbedComponentView *)self errorLabel];
-  [v16 setNumberOfLines:0];
+  errorLabel = [(SXEmbedComponentView *)self errorLabel];
+  [errorLabel setNumberOfLines:0];
 
-  v17 = [(SXEmbedComponentView *)self errorLabel];
-  [v17 setTextAlignment:1];
+  errorLabel2 = [(SXEmbedComponentView *)self errorLabel];
+  [errorLabel2 setTextAlignment:1];
 
-  v18 = [(SXEmbedComponentView *)self errorLabel];
-  v19 = [(SXEmbedComponentView *)self unableToLoadMessage];
-  [v18 setText:v19];
+  errorLabel3 = [(SXEmbedComponentView *)self errorLabel];
+  unableToLoadMessage = [(SXEmbedComponentView *)self unableToLoadMessage];
+  [errorLabel3 setText:unableToLoadMessage];
 
-  v20 = [(SXComponentView *)self contentView];
-  v21 = [(SXEmbedComponentView *)self errorLabel];
-  [v20 addSubview:v21];
+  contentView3 = [(SXComponentView *)self contentView];
+  errorLabel4 = [(SXEmbedComponentView *)self errorLabel];
+  [contentView3 addSubview:errorLabel4];
 
   [(SXEmbedComponentView *)self removeScriptMessageHandlers];
-  v22 = [(SXEmbedComponentView *)self webView];
-  [v22 removeFromSuperview];
+  webView = [(SXEmbedComponentView *)self webView];
+  [webView removeFromSuperview];
 
   [(SXEmbedComponentView *)self setWebView:0];
-  [(SXEmbedComponentView *)self reportLoadEventWithError:v4];
+  [(SXEmbedComponentView *)self reportLoadEventWithError:errorCopy];
 }
 
 - (id)unableToLoadMessage
@@ -983,96 +983,96 @@ LABEL_53:
   return v3;
 }
 
-- (id)webView:(id)a3 createWebViewWithConfiguration:(id)a4 forNavigationAction:(id)a5 windowFeatures:(id)a6
+- (id)webView:(id)view createWebViewWithConfiguration:(id)configuration forNavigationAction:(id)action windowFeatures:(id)features
 {
   v35 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  viewCopy = view;
+  configurationCopy = configuration;
+  actionCopy = action;
+  featuresCopy = features;
   v14 = SXEmbedLog;
   if (os_log_type_enabled(SXEmbedLog, OS_LOG_TYPE_DEFAULT))
   {
     v15 = v14;
-    v16 = [v12 request];
-    v17 = [v16 URL];
-    v18 = [(SXComponentView *)self component];
-    v19 = [v18 identifier];
+    request = [actionCopy request];
+    v17 = [request URL];
+    component = [(SXComponentView *)self component];
+    identifier = [component identifier];
     v31 = 138543618;
     v32 = v17;
     v33 = 2114;
-    v34 = v19;
+    v34 = identifier;
     _os_log_impl(&dword_1D825C000, v15, OS_LOG_TYPE_DEFAULT, "Navigating to URL %{public}@ in reponse to new window for component-identifier=%{public}@", &v31, 0x16u);
   }
 
-  v20 = [v12 request];
-  v21 = [v20 URL];
-  v22 = [v21 absoluteString];
-  v23 = [v22 isEqualToString:@"about:blank"];
+  request2 = [actionCopy request];
+  v21 = [request2 URL];
+  absoluteString = [v21 absoluteString];
+  v23 = [absoluteString isEqualToString:@"about:blank"];
 
   if ((v23 & 1) == 0)
   {
     v24 = [SXLinkAction alloc];
-    v25 = [v12 request];
-    v26 = [v25 URL];
+    request3 = [actionCopy request];
+    v26 = [request3 URL];
     v27 = [(SXLinkAction *)v24 initWithURL:v26];
 
-    v28 = [(SXEmbedComponentView *)self actionHandler];
-    v29 = [(SXEmbedComponentView *)self webView];
-    [v29 frame];
-    [v28 handleAction:v27 sourceView:self sourceRect:0 invocationType:?];
+    actionHandler = [(SXEmbedComponentView *)self actionHandler];
+    webView = [(SXEmbedComponentView *)self webView];
+    [webView frame];
+    [actionHandler handleAction:v27 sourceView:self sourceRect:0 invocationType:?];
   }
 
   return 0;
 }
 
-- (void)_webViewDidExitFullscreen:(id)a3
+- (void)_webViewDidExitFullscreen:(id)fullscreen
 {
-  v4 = a3;
+  fullscreenCopy = fullscreen;
   if (![(SXEmbedComponentView *)self usingElementFullscreen])
   {
-    [(SXEmbedComponentView *)self webViewExitedFullscreen:v4];
+    [(SXEmbedComponentView *)self webViewExitedFullscreen:fullscreenCopy];
   }
 }
 
-- (void)_webViewDidEnterElementFullscreen:(id)a3
+- (void)_webViewDidEnterElementFullscreen:(id)fullscreen
 {
-  [(SXEmbedComponentView *)self webViewEnteredFullscreen:a3];
+  [(SXEmbedComponentView *)self webViewEnteredFullscreen:fullscreen];
 
   [(SXEmbedComponentView *)self setUsingElementFullscreen:1];
 }
 
-- (void)_webViewDidExitElementFullscreen:(id)a3
+- (void)_webViewDidExitElementFullscreen:(id)fullscreen
 {
-  [(SXEmbedComponentView *)self webViewExitedFullscreen:a3];
+  [(SXEmbedComponentView *)self webViewExitedFullscreen:fullscreen];
 
   [(SXEmbedComponentView *)self setUsingElementFullscreen:0];
 }
 
-- (void)_webViewWebProcessDidCrash:(id)a3
+- (void)_webViewWebProcessDidCrash:(id)crash
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  crashCopy = crash;
   v5 = SXEmbedLog;
   if (os_log_type_enabled(SXEmbedLog, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(SXComponentView *)self component];
-    v8 = [v7 identifier];
+    component = [(SXComponentView *)self component];
+    identifier = [component identifier];
     v16 = 138543362;
-    v17 = v8;
+    v17 = identifier;
     _os_log_impl(&dword_1D825C000, v6, OS_LOG_TYPE_DEFAULT, "Web view crashed, attempting reload, component-identifier=%{public}@", &v16, 0xCu);
   }
 
-  v9 = [(SXEmbedComponentView *)self webView];
+  webView = [(SXEmbedComponentView *)self webView];
 
-  if (v9 == v4)
+  if (webView == crashCopy)
   {
     [(SXEmbedComponentView *)self showActivityIndicator:1];
-    v10 = [(SXEmbedComponentView *)self webCrashRetryThrottler];
-    v11 = [v10 shouldReloadAfterWebProcessCrash];
+    webCrashRetryThrottler = [(SXEmbedComponentView *)self webCrashRetryThrottler];
+    shouldReloadAfterWebProcessCrash = [webCrashRetryThrottler shouldReloadAfterWebProcessCrash];
 
-    if (v11)
+    if (shouldReloadAfterWebProcessCrash)
     {
       [(SXEmbedComponentView *)self removeScriptMessageHandlers];
       [(SXEmbedComponentView *)self reloadEmbed];
@@ -1084,70 +1084,70 @@ LABEL_53:
       if (os_log_type_enabled(SXEmbedLog, OS_LOG_TYPE_DEFAULT))
       {
         v13 = v12;
-        v14 = [(SXComponentView *)self component];
-        v15 = [v14 identifier];
+        component2 = [(SXComponentView *)self component];
+        identifier2 = [component2 identifier];
         v16 = 138543362;
-        v17 = v15;
+        v17 = identifier2;
         _os_log_impl(&dword_1D825C000, v13, OS_LOG_TYPE_DEFAULT, "Stopped reloading after crash, threshold reached, component-identifier=%{public}@", &v16, 0xCu);
       }
     }
   }
 }
 
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v9 && [v9 code] != -999 && objc_msgSend(v10, "code") != -1002)
+  viewCopy = view;
+  navigationCopy = navigation;
+  errorCopy = error;
+  v10 = errorCopy;
+  if (errorCopy && [errorCopy code] != -999 && objc_msgSend(v10, "code") != -1002)
   {
     [(SXEmbedComponentView *)self handleError:v10];
   }
 }
 
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v9 && [v9 code] != -999 && objc_msgSend(v10, "code") != -1002)
+  viewCopy = view;
+  navigationCopy = navigation;
+  errorCopy = error;
+  v10 = errorCopy;
+  if (errorCopy && [errorCopy code] != -999 && objc_msgSend(v10, "code") != -1002)
   {
     [(SXEmbedComponentView *)self handleError:v10];
   }
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  v5 = a4;
-  v6 = [(SXEmbedComponentView *)self initialNavigation];
+  navigationCopy = navigation;
+  initialNavigation = [(SXEmbedComponentView *)self initialNavigation];
 
-  if (v6 == v5)
+  if (initialNavigation == navigationCopy)
   {
-    v7 = [(SXComponentView *)self contentView];
-    v8 = [(SXEmbedComponentView *)self webView];
-    [v7 addSubview:v8];
+    contentView = [(SXComponentView *)self contentView];
+    webView = [(SXEmbedComponentView *)self webView];
+    [contentView addSubview:webView];
 
     [(SXEmbedComponentView *)self setInitialNavigation:0];
   }
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  actionCopy = action;
+  handlerCopy = handler;
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __80__SXEmbedComponentView_webView_decidePolicyForNavigationAction_decisionHandler___block_invoke;
   v18 = &unk_1E8501268;
-  v11 = v9;
+  v11 = actionCopy;
   v19 = v11;
-  v20 = self;
-  v12 = v8;
+  selfCopy = self;
+  v12 = viewCopy;
   v21 = v12;
-  v13 = v10;
+  v13 = handlerCopy;
   v22 = v13;
   v14 = MEMORY[0x1DA716BE0](&v15);
   if ([MEMORY[0x1E696AF00] isMainThread])
@@ -1269,64 +1269,64 @@ LABEL_7:
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)webView:(id)a3 didReceiveAuthenticationChallenge:(id)a4 completionHandler:(id)a5
+- (void)webView:(id)view didReceiveAuthenticationChallenge:(id)challenge completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(SXEmbedComponentView *)self proxyAuthenticationHandler];
-  [v9 handleAuthenticationChallenge:v8 completion:v7];
+  handlerCopy = handler;
+  challengeCopy = challenge;
+  proxyAuthenticationHandler = [(SXEmbedComponentView *)self proxyAuthenticationHandler];
+  [proxyAuthenticationHandler handleAuthenticationChallenge:challengeCopy completion:handlerCopy];
 }
 
-- (BOOL)shouldAllowRequestToURL:(id)a3
+- (BOOL)shouldAllowRequestToURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 scheme];
-  if ([v4 isEqualToString:@"http"])
+  lCopy = l;
+  scheme = [lCopy scheme];
+  if ([scheme isEqualToString:@"http"])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 scheme];
-    v5 = [v6 isEqualToString:@"https"];
+    scheme2 = [lCopy scheme];
+    v5 = [scheme2 isEqualToString:@"https"];
   }
 
-  v7 = [v3 absoluteString];
-  v8 = [v7 isEqualToString:@"about:blank"];
+  absoluteString = [lCopy absoluteString];
+  v8 = [absoluteString isEqualToString:@"about:blank"];
 
   return (v5 | v8) & 1;
 }
 
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view
 {
-  v4 = [a3 pinchGestureRecognizer];
-  [v4 setEnabled:0];
+  pinchGestureRecognizer = [zooming pinchGestureRecognizer];
+  [pinchGestureRecognizer setEnabled:0];
 }
 
 - (id)enclosingHTML
 {
-  v3 = [(SXEmbedComponentView *)self embedConfiguration];
-  v4 = [v3 enclosingHTML];
+  embedConfiguration = [(SXEmbedComponentView *)self embedConfiguration];
+  enclosingHTML = [embedConfiguration enclosingHTML];
 
-  if ([v4 containsString:@"{initial_scale}"])
+  if ([enclosingHTML containsString:@"{initial_scale}"])
   {
     [(SXEmbedComponentView *)self initialScale];
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%f", v5];
-    v7 = [v4 stringByReplacingOccurrencesOfString:@"{initial_scale}" withString:v6];
+    v7 = [enclosingHTML stringByReplacingOccurrencesOfString:@"{initial_scale}" withString:v6];
 
-    v4 = v7;
+    enclosingHTML = v7;
   }
 
-  return v4;
+  return enclosingHTML;
 }
 
 - (double)initialScale
 {
   [(SXComponentView *)self contentFrame];
   Width = CGRectGetWidth(v9);
-  v4 = [(SXEmbedComponentView *)self embedConfiguration];
-  [v4 minimumWidth];
+  embedConfiguration = [(SXEmbedComponentView *)self embedConfiguration];
+  [embedConfiguration minimumWidth];
   v6 = v5;
 
   if (v6 >= 1.0)
@@ -1347,10 +1347,10 @@ LABEL_7:
   embedConfiguration = self->_embedConfiguration;
   if (!embedConfiguration)
   {
-    v4 = [(SXEmbedComponentView *)self embedDataProvider];
-    v5 = [(SXComponentView *)self component];
-    v6 = [v5 embedType];
-    v7 = [v4 embedForType:v6];
+    embedDataProvider = [(SXEmbedComponentView *)self embedDataProvider];
+    component = [(SXComponentView *)self component];
+    embedType = [component embedType];
+    v7 = [embedDataProvider embedForType:embedType];
     v8 = self->_embedConfiguration;
     self->_embedConfiguration = v7;
 
@@ -1370,11 +1370,11 @@ LABEL_7:
     return 0;
   }
 
-  v6 = [(SXEmbedComponentView *)self webView];
-  if (v6)
+  webView = [(SXEmbedComponentView *)self webView];
+  if (webView)
   {
-    v7 = [(SXEmbedComponentView *)self HTML];
-    if (v7 && [(SXComponentView *)self hasRenderedContents])
+    hTML = [(SXEmbedComponentView *)self HTML];
+    if (hTML && [(SXComponentView *)self hasRenderedContents])
     {
       [(SXEmbedComponentView *)self currentlyLayoutingForSize];
       v9 = v8;
@@ -1404,8 +1404,8 @@ LABEL_7:
   [(SXComponentView *)self contentFrame];
   if (v4 == v5)
   {
-    v6 = [(SXEmbedComponentView *)self webView];
-    if (v6)
+    webView = [(SXEmbedComponentView *)self webView];
+    if (webView)
     {
       v7 = ![(SXEmbedComponentView *)self failedLoading];
     }
@@ -1426,68 +1426,68 @@ LABEL_7:
 
 - (BOOL)hasLoadedEmbedData
 {
-  v3 = [(SXEmbedComponentView *)self HTML];
-  if (v3)
+  hTML = [(SXEmbedComponentView *)self HTML];
+  if (hTML)
   {
-    v4 = [(SXEmbedComponentView *)self userScript];
-    if (v4)
+    userScript = [(SXEmbedComponentView *)self userScript];
+    if (userScript)
     {
-      v5 = 1;
+      failedLoading = 1;
     }
 
     else
     {
-      v5 = [(SXEmbedComponentView *)self failedLoading];
+      failedLoading = [(SXEmbedComponentView *)self failedLoading];
     }
   }
 
   else
   {
-    v5 = [(SXEmbedComponentView *)self failedLoading];
+    failedLoading = [(SXEmbedComponentView *)self failedLoading];
   }
 
-  return v5;
+  return failedLoading;
 }
 
-- (void)showActivityIndicator:(BOOL)a3
+- (void)showActivityIndicator:(BOOL)indicator
 {
-  v3 = a3;
-  v5 = [(SXEmbedComponentView *)self activityIndicator];
+  indicatorCopy = indicator;
+  activityIndicator = [(SXEmbedComponentView *)self activityIndicator];
 
-  if (v3)
+  if (indicatorCopy)
   {
-    if (!v5)
+    if (!activityIndicator)
     {
       v6 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
       activityIndicator = self->_activityIndicator;
       self->_activityIndicator = v6;
 
       [(UIActivityIndicatorView *)self->_activityIndicator setHidesWhenStopped:1];
-      v8 = [(SXComponentView *)self contentView];
-      [v8 addSubview:self->_activityIndicator];
+      contentView = [(SXComponentView *)self contentView];
+      [contentView addSubview:self->_activityIndicator];
     }
 
-    v9 = [(SXEmbedComponentView *)self activityIndicator];
-    v10 = [(SXComponentView *)self contentView];
-    [v10 bounds];
+    activityIndicator2 = [(SXEmbedComponentView *)self activityIndicator];
+    contentView2 = [(SXComponentView *)self contentView];
+    [contentView2 bounds];
     MidX = CGRectGetMidX(v15);
-    v12 = [(SXComponentView *)self contentView];
-    [v12 bounds];
-    [v9 setCenter:{MidX, CGRectGetMidY(v16)}];
+    contentView3 = [(SXComponentView *)self contentView];
+    [contentView3 bounds];
+    [activityIndicator2 setCenter:{MidX, CGRectGetMidY(v16)}];
 
-    v13 = [(SXEmbedComponentView *)self activityIndicator];
-    [v13 startAnimating];
+    activityIndicator3 = [(SXEmbedComponentView *)self activityIndicator];
+    [activityIndicator3 startAnimating];
   }
 
   else
   {
-    if (!v5)
+    if (!activityIndicator)
     {
       return;
     }
 
-    v13 = [(SXEmbedComponentView *)self activityIndicator];
-    [v13 stopAnimating];
+    activityIndicator3 = [(SXEmbedComponentView *)self activityIndicator];
+    [activityIndicator3 stopAnimating];
   }
 }
 
@@ -1496,10 +1496,10 @@ LABEL_7:
   embedResource = self->_embedResource;
   if (!embedResource)
   {
-    v4 = [(SXComponentView *)self DOMObjectProvider];
-    v5 = [(SXComponentView *)self component];
-    v6 = [v5 resourceIdentifier];
-    v7 = [v4 resourceForIdentifier:v6];
+    dOMObjectProvider = [(SXComponentView *)self DOMObjectProvider];
+    component = [(SXComponentView *)self component];
+    resourceIdentifier = [component resourceIdentifier];
+    v7 = [dOMObjectProvider resourceForIdentifier:resourceIdentifier];
     v8 = self->_embedResource;
     self->_embedResource = v7;
 
@@ -1511,17 +1511,17 @@ LABEL_7:
 
 - (unint64_t)userActionMediaTypes
 {
-  v2 = [(SXEmbedComponentView *)self embedConfiguration];
-  v3 = [v2 autoPlayMedia];
+  embedConfiguration = [(SXEmbedComponentView *)self embedConfiguration];
+  autoPlayMedia = [embedConfiguration autoPlayMedia];
 
-  if ((v3 + 1) > 3)
+  if ((autoPlayMedia + 1) > 3)
   {
     return -1;
   }
 
   else
   {
-    return qword_1D8392340[v3 + 1];
+    return qword_1D8392340[autoPlayMedia + 1];
   }
 }
 
@@ -1529,21 +1529,21 @@ LABEL_7:
 {
   if (![(SXEmbedComponentView *)self hasRegisteredScriptMessageHandlers])
   {
-    v3 = [(SXEmbedComponentView *)self webView];
-    v4 = [v3 configuration];
-    v9 = [v4 userContentController];
+    webView = [(SXEmbedComponentView *)self webView];
+    configuration = [webView configuration];
+    userContentController = [configuration userContentController];
 
-    v5 = [(SXEmbedComponentView *)self scriptMessageHandler];
-    [v9 addScriptMessageHandler:v5 name:@"ANFExpect"];
+    scriptMessageHandler = [(SXEmbedComponentView *)self scriptMessageHandler];
+    [userContentController addScriptMessageHandler:scriptMessageHandler name:@"ANFExpect"];
 
-    v6 = [(SXEmbedComponentView *)self scriptMessageHandler];
-    [v9 addScriptMessageHandler:v6 name:@"ANFDone"];
+    scriptMessageHandler2 = [(SXEmbedComponentView *)self scriptMessageHandler];
+    [userContentController addScriptMessageHandler:scriptMessageHandler2 name:@"ANFDone"];
 
-    v7 = [(SXEmbedComponentView *)self scriptMessageHandler];
-    [v9 addScriptMessageHandler:v7 name:@"ANFUpdate"];
+    scriptMessageHandler3 = [(SXEmbedComponentView *)self scriptMessageHandler];
+    [userContentController addScriptMessageHandler:scriptMessageHandler3 name:@"ANFUpdate"];
 
-    v8 = [(SXEmbedComponentView *)self scriptMessageHandler];
-    [v9 addScriptMessageHandler:v8 name:@"ANFFailed"];
+    scriptMessageHandler4 = [(SXEmbedComponentView *)self scriptMessageHandler];
+    [userContentController addScriptMessageHandler:scriptMessageHandler4 name:@"ANFFailed"];
 
     [(SXEmbedComponentView *)self setHasRegisteredScriptMessageHandlers:1];
   }
@@ -1553,14 +1553,14 @@ LABEL_7:
 {
   if ([(SXEmbedComponentView *)self hasRegisteredScriptMessageHandlers])
   {
-    v3 = [(SXEmbedComponentView *)self webView];
-    v4 = [v3 configuration];
-    v5 = [v4 userContentController];
+    webView = [(SXEmbedComponentView *)self webView];
+    configuration = [webView configuration];
+    userContentController = [configuration userContentController];
 
-    [v5 removeScriptMessageHandlerForName:@"ANFExpect"];
-    [v5 removeScriptMessageHandlerForName:@"ANFDone"];
-    [v5 removeScriptMessageHandlerForName:@"ANFUpdate"];
-    [v5 removeScriptMessageHandlerForName:@"ANFFailed"];
+    [userContentController removeScriptMessageHandlerForName:@"ANFExpect"];
+    [userContentController removeScriptMessageHandlerForName:@"ANFDone"];
+    [userContentController removeScriptMessageHandlerForName:@"ANFUpdate"];
+    [userContentController removeScriptMessageHandlerForName:@"ANFFailed"];
     [(SXEmbedComponentView *)self setHasRegisteredScriptMessageHandlers:0];
   }
 }
@@ -1569,57 +1569,57 @@ LABEL_7:
 {
   v6.receiver = self;
   v6.super_class = SXEmbedComponentView;
-  v3 = [(SXComponentView *)&v6 allowHierarchyRemoval];
-  v4 = [(SXEmbedComponentView *)self webViewPresentingInFullscreen];
+  allowHierarchyRemoval = [(SXComponentView *)&v6 allowHierarchyRemoval];
+  webViewPresentingInFullscreen = [(SXEmbedComponentView *)self webViewPresentingInFullscreen];
 
-  return (v4 == 0) & v3;
+  return (webViewPresentingInFullscreen == 0) & allowHierarchyRemoval;
 }
 
-- (void)webViewEnteredFullscreen:(id)a3
+- (void)webViewEnteredFullscreen:(id)fullscreen
 {
-  [(SXEmbedComponentView *)self setWebViewPresentingInFullscreen:a3];
+  [(SXEmbedComponentView *)self setWebViewPresentingInFullscreen:fullscreen];
   [(SXEmbedComponentView *)self setWebView:0];
-  v4 = [(SXComponentView *)self presentationDelegate];
-  [v4 willReturnToFullscreenForComponent:self];
+  presentationDelegate = [(SXComponentView *)self presentationDelegate];
+  [presentationDelegate willReturnToFullscreenForComponent:self];
 }
 
-- (void)webViewExitedFullscreen:(id)a3
+- (void)webViewExitedFullscreen:(id)fullscreen
 {
-  v4 = [(SXEmbedComponentView *)self webView];
+  webView = [(SXEmbedComponentView *)self webView];
 
-  v5 = [(SXEmbedComponentView *)self webViewPresentingInFullscreen];
-  v6 = v5;
-  if (v4)
+  webViewPresentingInFullscreen = [(SXEmbedComponentView *)self webViewPresentingInFullscreen];
+  v6 = webViewPresentingInFullscreen;
+  if (webView)
   {
-    [v5 removeFromSuperview];
+    [webViewPresentingInFullscreen removeFromSuperview];
   }
 
   else
   {
-    [(SXEmbedComponentView *)self setWebView:v5];
+    [(SXEmbedComponentView *)self setWebView:webViewPresentingInFullscreen];
   }
 
   [(SXEmbedComponentView *)self setWebViewPresentingInFullscreen:0];
-  v7 = [(SXComponentView *)self presentationDelegate];
-  [v7 willDismissFullscreenCanvasForComponent:self];
+  presentationDelegate = [(SXComponentView *)self presentationDelegate];
+  [presentationDelegate willDismissFullscreenCanvasForComponent:self];
 }
 
-- (void)reportLoadEventWithError:(id)a3
+- (void)reportLoadEventWithError:(id)error
 {
-  v9 = a3;
-  v4 = [(SXEmbedComponentView *)self loadEvent];
+  errorCopy = error;
+  loadEvent = [(SXEmbedComponentView *)self loadEvent];
 
-  if (v4)
+  if (loadEvent)
   {
-    v5 = [(SXEmbedComponentView *)self loadEvent];
-    [v5 setError:v9];
+    loadEvent2 = [(SXEmbedComponentView *)self loadEvent];
+    [loadEvent2 setError:errorCopy];
 
-    v6 = [(SXEmbedComponentView *)self loadEvent];
-    [v6 determineEndDate];
+    loadEvent3 = [(SXEmbedComponentView *)self loadEvent];
+    [loadEvent3 determineEndDate];
 
-    v7 = [(SXEmbedComponentView *)self analyticsReporting];
-    v8 = [(SXEmbedComponentView *)self loadEvent];
-    [v7 reportEvent:v8];
+    analyticsReporting = [(SXEmbedComponentView *)self analyticsReporting];
+    loadEvent4 = [(SXEmbedComponentView *)self loadEvent];
+    [analyticsReporting reportEvent:loadEvent4];
 
     [(SXEmbedComponentView *)self setLoadEvent:0];
   }

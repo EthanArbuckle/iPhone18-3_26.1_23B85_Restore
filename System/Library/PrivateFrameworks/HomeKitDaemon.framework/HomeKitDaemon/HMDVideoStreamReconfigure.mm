@@ -1,33 +1,33 @@
 @interface HMDVideoStreamReconfigure
 + (id)logCategory;
-- (HMDVideoStreamReconfigure)initWithSessionID:(id)a3 workQueue:(id)a4 delegate:(id)a5;
+- (HMDVideoStreamReconfigure)initWithSessionID:(id)d workQueue:(id)queue delegate:(id)delegate;
 - (id)logIdentifier;
-- (void)_addReconfigureEvent:(uint64_t)a1;
+- (void)_addReconfigureEvent:(uint64_t)event;
 - (void)_processDownlinkQuality;
-- (void)downlinkQualityChanged:(id)a3;
-- (void)setDowngradeDebouceTimer:(uint64_t)a1;
-- (void)setUpgradeDebouceTimer:(uint64_t)a1;
-- (void)timerDidFire:(id)a3;
-- (void)updateReconfigurationMode:(BOOL)a3;
+- (void)downlinkQualityChanged:(id)changed;
+- (void)setDowngradeDebouceTimer:(uint64_t)timer;
+- (void)setUpgradeDebouceTimer:(uint64_t)timer;
+- (void)timerDidFire:(id)fire;
+- (void)updateReconfigurationMode:(BOOL)mode;
 @end
 
 @implementation HMDVideoStreamReconfigure
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fireCopy = fire;
   if (self)
   {
     dispatch_assert_queue_V2(self->_workQueue);
-    if (self->_upgradeDebouceTimer != v4)
+    if (self->_upgradeDebouceTimer != fireCopy)
     {
       downgradeDebouceTimer = self->_downgradeDebouceTimer;
 LABEL_4:
-      if (downgradeDebouceTimer == v4)
+      if (downgradeDebouceTimer == fireCopy)
       {
         v6 = objc_autoreleasePoolPush();
-        v7 = self;
+        selfCopy = self;
         v8 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
         {
@@ -38,14 +38,14 @@ LABEL_4:
         }
 
         objc_autoreleasePoolPop(v6);
-        [(HMDVideoStreamReconfigure *)v7 setDowngradeDebouceTimer:?];
+        [(HMDVideoStreamReconfigure *)selfCopy setDowngradeDebouceTimer:?];
         if (self)
         {
-          dispatch_assert_queue_V2(v7->_workQueue);
-          v7->_reconfigurationMode = 1;
-          [(HMDVideoStreamReconfigure *)v7 _addReconfigureEvent:?];
+          dispatch_assert_queue_V2(selfCopy->_workQueue);
+          selfCopy->_reconfigurationMode = 1;
+          [(HMDVideoStreamReconfigure *)selfCopy _addReconfigureEvent:?];
           v10 = objc_autoreleasePoolPush();
-          v11 = v7;
+          v11 = selfCopy;
           v12 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
           {
@@ -76,14 +76,14 @@ LABEL_20:
   {
     dispatch_assert_queue_V2(0);
     downgradeDebouceTimer = 0;
-    if (v4)
+    if (fireCopy)
     {
       goto LABEL_4;
     }
   }
 
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy2 = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
@@ -94,14 +94,14 @@ LABEL_20:
   }
 
   objc_autoreleasePoolPop(v15);
-  [(HMDVideoStreamReconfigure *)v16 setUpgradeDebouceTimer:?];
+  [(HMDVideoStreamReconfigure *)selfCopy2 setUpgradeDebouceTimer:?];
   if (self)
   {
-    dispatch_assert_queue_V2(v16->_workQueue);
-    v16->_reconfigurationMode = 1;
-    [(HMDVideoStreamReconfigure *)v16 _addReconfigureEvent:?];
+    dispatch_assert_queue_V2(selfCopy2->_workQueue);
+    selfCopy2->_reconfigurationMode = 1;
+    [(HMDVideoStreamReconfigure *)selfCopy2 _addReconfigureEvent:?];
     v19 = objc_autoreleasePoolPush();
-    v20 = v16;
+    v20 = selfCopy2;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
@@ -126,48 +126,48 @@ LABEL_21:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setUpgradeDebouceTimer:(uint64_t)a1
+- (void)setUpgradeDebouceTimer:(uint64_t)timer
 {
-  if (a1)
+  if (timer)
   {
-    objc_storeStrong((a1 + 32), a2);
+    objc_storeStrong((timer + 32), a2);
   }
 }
 
-- (void)setDowngradeDebouceTimer:(uint64_t)a1
+- (void)setDowngradeDebouceTimer:(uint64_t)timer
 {
-  if (a1)
+  if (timer)
   {
-    objc_storeStrong((a1 + 40), a2);
+    objc_storeStrong((timer + 40), a2);
   }
 }
 
-- (void)_addReconfigureEvent:(uint64_t)a1
+- (void)_addReconfigureEvent:(uint64_t)event
 {
-  dispatch_assert_queue_V2(*(a1 + 48));
-  if ([*(a1 + 24) count] == 10)
+  dispatch_assert_queue_V2(*(event + 48));
+  if ([*(event + 24) count] == 10)
   {
-    [*(a1 + 24) removeObjectAtIndex:0];
+    [*(event + 24) removeObjectAtIndex:0];
   }
 
   v4 = [[HMDVideoStreamReconfigureEvent alloc] initWithEventType:a2];
-  [*(a1 + 24) addObject:v4];
+  [*(event + 24) addObject:v4];
 }
 
-- (void)downlinkQualityChanged:(id)a3
+- (void)downlinkQualityChanged:(id)changed
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   if (self)
   {
     dispatch_assert_queue_V2(self->_workQueue);
-    v5 = [v4 copy];
+    v5 = [changedCopy copy];
     objc_storeStrong(&self->_downlinkQualityInfo, v5);
 
     if (self->_reconfigurationMode)
     {
       v6 = objc_autoreleasePoolPush();
-      v7 = self;
+      selfCopy = self;
       v8 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
@@ -197,18 +197,18 @@ LABEL_21:
 - (void)_processDownlinkQuality
 {
   v92 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!self)
   {
     v81 = *MEMORY[0x277D85DE8];
     return;
   }
 
-  dispatch_assert_queue_V2(*(a1 + 48));
+  dispatch_assert_queue_V2(*(self + 48));
   v2 = &OBJC_IVAR___HMDHome__networkRouterSupportDisableReason;
-  v3 = *(a1 + 16);
-  dispatch_assert_queue_V2(*(a1 + 48));
+  v3 = *(self + 16);
+  dispatch_assert_queue_V2(*(self + 48));
   v4 = objc_autoreleasePoolPush();
-  v5 = a1;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -225,10 +225,10 @@ LABEL_21:
   v8 = [v3 hmf_numberForKey:*MEMORY[0x277CE57B8]];
   v9 = [v3 hmf_BOOLForKey:*MEMORY[0x277CE57A8]];
   v10 = [v3 hmf_BOOLForKey:*MEMORY[0x277CE57B0]];
-  if (*(v5 + 4) && (v9 & 1) == 0)
+  if (*(selfCopy + 4) && (v9 & 1) == 0)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = v5;
+    v12 = selfCopy;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -244,10 +244,10 @@ LABEL_21:
     objc_storeStrong(v12 + 4, 0);
   }
 
-  if (!((*(v5 + 5) == 0) | v10 & 1))
+  if (!((*(selfCopy + 5) == 0) | v10 & 1))
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = v5;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -266,11 +266,11 @@ LABEL_21:
   if (v10)
   {
     v19 = [v83 isEqualToNumber:v8];
-    v20 = *(v5 + 5);
+    v20 = *(selfCopy + 5);
     if (v19)
     {
       v21 = objc_autoreleasePoolPush();
-      v22 = v5;
+      v22 = selfCopy;
       v23 = HMFGetOSLogHandle();
       v24 = os_log_type_enabled(v23, OS_LOG_TYPE_INFO);
       if (!v20)
@@ -317,7 +317,7 @@ LABEL_21:
     }
 
     v33 = objc_autoreleasePoolPush();
-    v34 = v5;
+    v34 = selfCopy;
     v35 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
     {
@@ -335,27 +335,27 @@ LABEL_21:
   if (v9)
   {
     v27 = [v83 isEqualToNumber:v8];
-    v28 = *(v5 + 4);
+    v28 = *(selfCopy + 4);
     if (v27)
     {
       if (!v28)
       {
         v82 = v8;
-        v46 = *(v5 + 9);
-        dispatch_assert_queue_V2(*(v5 + 6));
-        if ([*(v5 + 3) count] >= 4)
+        v46 = *(selfCopy + 9);
+        dispatch_assert_queue_V2(*(selfCopy + 6));
+        if ([*(selfCopy + 3) count] >= 4)
         {
-          v47 = *(v5 + 3);
+          v47 = *(selfCopy + 3);
           v48 = [v47 objectAtIndex:{objc_msgSend(v47, "count") - 1}];
 
-          v49 = *(v5 + 3);
+          v49 = *(selfCopy + 3);
           v50 = [v49 objectAtIndex:{objc_msgSend(v49, "count") - 2}];
 
-          v51 = *(v5 + 3);
+          v51 = *(selfCopy + 3);
           v52 = [v51 objectAtIndex:{objc_msgSend(v51, "count") - 3}];
 
           v53 = objc_autoreleasePoolPush();
-          v54 = v5;
+          v54 = selfCopy;
           v55 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
           {
@@ -421,7 +421,7 @@ LABEL_21:
         }
 
         v62 = objc_autoreleasePoolPush();
-        v63 = v5;
+        v63 = selfCopy;
         v64 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v64, OS_LOG_TYPE_INFO))
         {
@@ -454,7 +454,7 @@ LABEL_21:
       }
 
       v29 = objc_autoreleasePoolPush();
-      v30 = v5;
+      v30 = selfCopy;
       v31 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
       {
@@ -476,7 +476,7 @@ LABEL_25:
     }
 
     v38 = objc_autoreleasePoolPush();
-    v34 = v5;
+    v34 = selfCopy;
     v39 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
     {
@@ -495,14 +495,14 @@ LABEL_34:
 LABEL_51:
 
   v70 = v2[177];
-  v71 = *&v5[v70];
-  *&v5[v70] = 0;
+  v71 = *&selfCopy[v70];
+  *&selfCopy[v70] = 0;
   v72 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateReconfigurationMode:(BOOL)a3
+- (void)updateReconfigurationMode:(BOOL)mode
 {
-  v4 = self;
+  selfCopy = self;
   v23 = *MEMORY[0x277D85DE8];
   if (self)
   {
@@ -511,12 +511,12 @@ LABEL_51:
 
   dispatch_assert_queue_V2(&self->super.super);
   v5 = objc_autoreleasePoolPush();
-  v6 = v4;
+  v6 = selfCopy;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    if (v4)
+    if (selfCopy)
     {
       reconfigurationMode = v6->_reconfigurationMode;
     }
@@ -533,9 +533,9 @@ LABEL_51:
   }
 
   objc_autoreleasePoolPop(v5);
-  if (v4)
+  if (selfCopy)
   {
-    v6->_reconfigurationMode = a3;
+    v6->_reconfigurationMode = mode;
     if (v6->_downlinkQualityInfo)
     {
       v12 = objc_autoreleasePoolPush();
@@ -567,20 +567,20 @@ LABEL_51:
   return [(HMFObject *)self description];
 }
 
-- (HMDVideoStreamReconfigure)initWithSessionID:(id)a3 workQueue:(id)a4 delegate:(id)a5
+- (HMDVideoStreamReconfigure)initWithSessionID:(id)d workQueue:(id)queue delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = HMDVideoStreamReconfigure;
   v12 = [(HMDVideoStreamReconfigure *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_sessionID, a3);
-    objc_storeStrong(&v13->_workQueue, a4);
-    objc_storeWeak(&v13->_delegate, v11);
+    objc_storeStrong(&v12->_sessionID, d);
+    objc_storeStrong(&v13->_workQueue, queue);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
     v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:10];
     reconfigureEvents = v13->_reconfigureEvents;
     v13->_reconfigureEvents = v14;

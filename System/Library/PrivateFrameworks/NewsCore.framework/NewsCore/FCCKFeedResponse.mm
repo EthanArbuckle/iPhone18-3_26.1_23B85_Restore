@@ -75,9 +75,9 @@
   }
 
   [v4 addField:@"wasDropped" value:v10];
-  v11 = [v4 descriptionString];
+  descriptionString = [v4 descriptionString];
 
-  return v11;
+  return descriptionString;
 }
 
 @end

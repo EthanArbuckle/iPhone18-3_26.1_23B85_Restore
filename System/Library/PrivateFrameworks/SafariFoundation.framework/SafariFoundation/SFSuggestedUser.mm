@@ -1,57 +1,57 @@
 @interface SFSuggestedUser
-+ (id)suggestedUserWithValue:(id)a3 type:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (SFSuggestedUser)initWithCoder:(id)a3;
-- (SFSuggestedUser)initWithValue:(id)a3 type:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)suggestedUserWithValue:(id)value type:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (SFSuggestedUser)initWithCoder:(id)coder;
+- (SFSuggestedUser)initWithValue:(id)value type:(int64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (int64_t)compare:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)compare:(id)compare;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFSuggestedUser
 
-+ (id)suggestedUserWithValue:(id)a3 type:(int64_t)a4
++ (id)suggestedUserWithValue:(id)value type:(int64_t)type
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithValue:v6 type:a4];
+  valueCopy = value;
+  v7 = [[self alloc] initWithValue:valueCopy type:type];
 
   return v7;
 }
 
-- (SFSuggestedUser)initWithValue:(id)a3 type:(int64_t)a4
+- (SFSuggestedUser)initWithValue:(id)value type:(int64_t)type
 {
-  v6 = a3;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = SFSuggestedUser;
   v7 = [(SFSuggestedUser *)&v12 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [valueCopy copy];
     value = v7->_value;
     v7->_value = v8;
 
-    v7->_type = a4;
+    v7->_type = type;
     v10 = v7;
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   value = self->_value;
-  v5 = a3;
-  [v5 encodeObject:value forKey:@"suggestedUserValue"];
-  [v5 encodeInt64:self->_type forKey:@"suggestedUserType"];
-  [v5 encodeInt64:self->_usageFrequency forKey:@"suggestedUserUsageFrequency"];
+  coderCopy = coder;
+  [coderCopy encodeObject:value forKey:@"suggestedUserValue"];
+  [coderCopy encodeInt64:self->_type forKey:@"suggestedUserType"];
+  [coderCopy encodeInt64:self->_usageFrequency forKey:@"suggestedUserUsageFrequency"];
 }
 
-- (SFSuggestedUser)initWithCoder:(id)a3
+- (SFSuggestedUser)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suggestedUserValue"];
-  v6 = [v4 decodeInt64ForKey:@"suggestedUserType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suggestedUserValue"];
+  v6 = [coderCopy decodeInt64ForKey:@"suggestedUserType"];
   if (v6 >= 3)
   {
     v7 = 0;
@@ -62,7 +62,7 @@
     v7 = v6;
   }
 
-  v8 = [v4 decodeInt64ForKey:@"suggestedUserUsageFrequency"];
+  v8 = [coderCopy decodeInt64ForKey:@"suggestedUserUsageFrequency"];
 
   v9 = [(SFSuggestedUser *)self initWithValue:v5 type:v7];
   v10 = v9;
@@ -75,29 +75,29 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [[SFSuggestedUser alloc] initWithValue:self->_value type:self->_type];
   *(result + 3) = self->_usageFrequency;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 value];
+    value = [equalCopy value];
     value = self->_value;
-    if (value == v5)
+    if (value == value)
     {
       v7 = 1;
     }
 
     else
     {
-      v7 = [(NSString *)value isEqualToString:v5];
+      v7 = [(NSString *)value isEqualToString:value];
     }
   }
 
@@ -109,17 +109,17 @@
   return v7;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [v4 usageFrequency];
+  compareCopy = compare;
+  usageFrequency = [compareCopy usageFrequency];
   usageFrequency = self->_usageFrequency;
-  if (usageFrequency > v5)
+  if (usageFrequency > usageFrequency)
   {
     goto LABEL_2;
   }
 
-  if (usageFrequency < v5)
+  if (usageFrequency < usageFrequency)
   {
 LABEL_5:
     v7 = 1;
@@ -127,16 +127,16 @@ LABEL_5:
   }
 
   v9 = [(NSString *)self->_value length];
-  v10 = [v4 value];
-  v11 = [v10 length];
+  value = [compareCopy value];
+  v11 = [value length];
 
   if (v9 >= v11)
   {
     if (v9 <= v11)
     {
       value = self->_value;
-      v13 = [v4 value];
-      v7 = [(NSString *)value compare:v13];
+      value2 = [compareCopy value];
+      v7 = [(NSString *)value compare:value2];
 
       goto LABEL_6;
     }

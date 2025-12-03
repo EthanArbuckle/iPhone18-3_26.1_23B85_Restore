@@ -1,20 +1,20 @@
 @interface PLKColorBoxes
-+ (id)_mergeColor:(uint64_t)a3 withColor:(void *)a4 firstWeight:(void *)a5 secondWeight:;
-+ (id)colorBoxesForAverageColor:(id)a3 contrast:(double)a4;
-+ (id)colorBoxesForImage:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToColorBoxes:(id)a3;
-- (PLKColorBoxes)initWithCoder:(id)a3;
++ (id)_mergeColor:(uint64_t)color withColor:(void *)withColor firstWeight:(void *)weight secondWeight:;
++ (id)colorBoxesForAverageColor:(id)color contrast:(double)contrast;
++ (id)colorBoxesForImage:(id)image;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToColorBoxes:(id)boxes;
+- (PLKColorBoxes)initWithCoder:(id)coder;
 - (UIColor)averageColor;
 - (double)imageSize;
 - (double)luma;
-- (double)lumaInRect:(CGRect)a3;
-- (double)rectForColorBoxAtRow:(uint64_t)a3 col:;
+- (double)lumaInRect:(CGRect)rect;
+- (double)rectForColorBoxAtRow:(uint64_t)row col:;
 - (double)saturation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initWithColorBoxes:(uint64_t)a3 size:(uint64_t)a4 rowCount:(uint64_t)a5 columnCount:(char)a6 totalContrast8:(char)a7 totalSaturation8:(uint64_t)a8 imageSize:(double)a9 downsampledBoxSize:(double)a10 effectiveDownsampleFactor:(uint64_t)a11 pixelHeight:(uint64_t)a12 pixelWidth:(uint64_t)a13;
-- (uint64_t)colorBoxAtRow:(uint64_t)a3 col:;
+- (id)initWithColorBoxes:(uint64_t)boxes size:(uint64_t)size rowCount:(uint64_t)count columnCount:(char)columnCount totalContrast8:(char)contrast8 totalSaturation8:(uint64_t)saturation8 imageSize:(double)imageSize downsampledBoxSize:(double)self0 effectiveDownsampleFactor:(uint64_t)self1 pixelHeight:(uint64_t)self2 pixelWidth:(uint64_t)self3;
+- (uint64_t)colorBoxAtRow:(uint64_t)row col:;
 - (uint64_t)colorBoxesRowMajor;
 - (uint64_t)columnCount;
 - (uint64_t)downsampledBoxSize;
@@ -30,22 +30,22 @@
 - (unint64_t)hash;
 - (void)_calculateMissingSaturationDataIfNeeded;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PLKColorBoxes
 
-+ (id)colorBoxesForImage:(id)a3
++ (id)colorBoxesForImage:(id)image
 {
   v119 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  imageCopy = image;
+  v4 = imageCopy;
+  if (!imageCopy)
   {
     goto LABEL_17;
   }
 
-  [v3 size];
+  [imageCopy size];
   v7 = v5;
   v8 = v6;
   v9 = v5 == *MEMORY[0x277CBF3A8] && v6 == *(MEMORY[0x277CBF3A8] + 8);
@@ -99,22 +99,22 @@ LABEL_17:
       v24 = v11 / v23;
       [v4 scale];
       v26 = v13 / v25;
-      v27 = [v4 plk_wrappedIOSurface];
+      plk_wrappedIOSurface = [v4 plk_wrappedIOSurface];
       v28 = 0.0;
-      v21 = [v4 plk_cropImageWithRect:v27 != 0 outputSize:0.0 canUseIOSurface:{0.0, v7, v8, v24, v26}];
+      v21 = [v4 plk_cropImageWithRect:plk_wrappedIOSurface != 0 outputSize:0.0 canUseIOSurface:{0.0, v7, v8, v24, v26}];
 
       v100 = v13;
       AlignedBytesPerRow = CGBitmapGetAlignedBytesPerRow();
       space = CGColorSpaceCreateDeviceRGB();
       v29 = CGBitmapContextCreate(0, v11, v13, 8uLL, AlignedBytesPerRow, space, 0x4001u);
       CGContextSetInterpolationQuality(v29, kCGInterpolationLow);
-      v30 = [v21 plk_CGImageBackedImage];
-      v31 = [v30 CGImage];
+      plk_CGImageBackedImage = [v21 plk_CGImageBackedImage];
+      cGImage = [plk_CGImageBackedImage CGImage];
       v121.origin.x = 0.0;
       v121.origin.y = 0.0;
       v121.size.width = v11;
       v121.size.height = v22;
-      CGContextDrawImage(v29, v121, v31);
+      CGContextDrawImage(v29, v121, cGImage);
 
       c = v29;
       Data = CGBitmapContextGetData(v29);
@@ -391,18 +391,18 @@ LABEL_18:
   return v15;
 }
 
-+ (id)colorBoxesForAverageColor:(id)a3 contrast:(double)a4
++ (id)colorBoxesForAverageColor:(id)color contrast:(double)contrast
 {
   v49 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  colorCopy = color;
+  v8 = colorCopy;
+  if (colorCopy)
   {
     v41 = 0.0;
     v42 = 0.0;
     v39 = 0;
     v40 = 0.0;
-    if ([v7 getRed:&v42 green:&v41 blue:&v40 alpha:&v39])
+    if ([colorCopy getRed:&v42 green:&v41 blue:&v40 alpha:&v39])
     {
       v9 = 0.0;
       v35[0] = MEMORY[0x277D85DD0];
@@ -412,12 +412,12 @@ LABEL_18:
       v10 = v8;
       v36 = v10;
       v37 = a2;
-      v38 = a1;
+      selfCopy = self;
       v11 = MEMORY[0x223D5FAC0](v35);
       v12 = (v11)[2](v11, @"red", v42 * 255.0);
       v13 = (v11)[2](v11, @"green", v41 * 255.0);
       v14 = (v11)[2](v11, @"blue", v40 * 255.0);
-      v15 = (v11)[2](v11, @"contrast", fmin(fmax(a4, 0.0), 1.0) * 255.0);
+      v15 = (v11)[2](v11, @"contrast", fmin(fmax(contrast, 0.0), 1.0) * 255.0);
       v16 = fmax(v42, fmax(v41, v40));
       if (v16 > 0.0)
       {
@@ -575,23 +575,23 @@ uint64_t __52__PLKColorBoxes_colorBoxesForAverageColor_contrast___block_invoke(u
 
 - (double)luma
 {
-  v2 = [(PLKColorBoxes *)self averageColor];
-  [v2 _luminance];
+  averageColor = [(PLKColorBoxes *)self averageColor];
+  [averageColor _luminance];
   v4 = v3;
 
   return v4;
 }
 
-- (double)lumaInRect:(CGRect)a3
+- (double)lumaInRect:(CGRect)rect
 {
-  v3 = [(PLKColorBoxes *)self averageColorInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PLKColorBoxes *)self averageColorInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   [v3 _luminance];
   v5 = v4;
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = 5 * self->_rowCount * self->_columnCount;
   v5 = malloc_type_malloc(v4, 0x1000040957D8CC4uLL);
@@ -646,29 +646,29 @@ uint64_t __52__PLKColorBoxes_colorBoxesForAverageColor_contrast___block_invoke(u
   return result;
 }
 
-- (PLKColorBoxes)initWithCoder:(id)a3
+- (PLKColorBoxes)initWithCoder:(id)coder
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = PLKColorBoxes;
   v5 = [(PLKColorBoxes *)&v28 init];
   if (v5)
   {
-    [v4 decodeCGSizeForKey:@"imageSize"];
+    [coderCopy decodeCGSizeForKey:@"imageSize"];
     v5->_imageSize.width = v6;
     v5->_imageSize.height = v7;
-    v5->_downsampledBoxSize = [v4 decodeIntegerForKey:@"downsampledBoxSize"];
-    v5->_effectiveDownsampleFactor = [v4 decodeIntegerForKey:@"effectiveDownsampleFactor"];
-    v5->_pixelHeight = [v4 decodeIntegerForKey:@"pixelHeight"];
-    v5->_pixelWidth = [v4 decodeIntegerForKey:@"pixelWidth"];
-    v5->_rowCount = [v4 decodeIntegerForKey:@"rowCount"];
-    v5->_columnCount = [v4 decodeIntegerForKey:@"columnCount"];
-    v5->_size = [v4 decodeIntegerForKey:@"size"];
-    v5->_totalContrast8 = [v4 decodeIntForKey:@"totalContrast8"];
-    if ([v4 containsValueForKey:@"version"])
+    v5->_downsampledBoxSize = [coderCopy decodeIntegerForKey:@"downsampledBoxSize"];
+    v5->_effectiveDownsampleFactor = [coderCopy decodeIntegerForKey:@"effectiveDownsampleFactor"];
+    v5->_pixelHeight = [coderCopy decodeIntegerForKey:@"pixelHeight"];
+    v5->_pixelWidth = [coderCopy decodeIntegerForKey:@"pixelWidth"];
+    v5->_rowCount = [coderCopy decodeIntegerForKey:@"rowCount"];
+    v5->_columnCount = [coderCopy decodeIntegerForKey:@"columnCount"];
+    v5->_size = [coderCopy decodeIntegerForKey:@"size"];
+    v5->_totalContrast8 = [coderCopy decodeIntForKey:@"totalContrast8"];
+    if ([coderCopy containsValueForKey:@"version"])
     {
-      version = [v4 decodeIntegerForKey:@"version"];
+      version = [coderCopy decodeIntegerForKey:@"version"];
       v5->_version = version;
     }
 
@@ -699,12 +699,12 @@ uint64_t __52__PLKColorBoxes_colorBoxesForAverageColor_contrast___block_invoke(u
 
     else
     {
-      v5->_totalSaturation8 = [v4 decodeIntForKey:@"totalSaturation8"];
+      v5->_totalSaturation8 = [coderCopy decodeIntForKey:@"totalSaturation8"];
       v5->_saturationCalculated = 1;
     }
 
     __n = 0;
-    v11 = [v4 decodeBytesForKey:@"colorBoxesRowMajor" returnedLength:&__n];
+    v11 = [coderCopy decodeBytesForKey:@"colorBoxesRowMajor" returnedLength:&__n];
     if (!v11)
     {
       v20 = PLKLogCommon();
@@ -838,51 +838,51 @@ LABEL_40:
   [(PLKColorBoxes *)&v4 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   width = self->_imageSize.width;
   height = self->_imageSize.height;
-  v6 = a3;
-  [v6 encodeCGSize:@"imageSize" forKey:{width, height}];
-  [v6 encodeInteger:self->_downsampledBoxSize forKey:@"downsampledBoxSize"];
-  [v6 encodeInteger:self->_effectiveDownsampleFactor forKey:@"effectiveDownsampleFactor"];
-  [v6 encodeInteger:self->_pixelHeight forKey:@"pixelHeight"];
-  [v6 encodeInteger:self->_pixelWidth forKey:@"pixelWidth"];
-  [v6 encodeInteger:self->_rowCount forKey:@"rowCount"];
-  [v6 encodeInteger:self->_columnCount forKey:@"columnCount"];
-  [v6 encodeInteger:self->_size forKey:@"size"];
-  [v6 encodeInt:self->_totalContrast8 forKey:@"totalContrast8"];
-  [v6 encodeInt:self->_totalSaturation8 forKey:@"totalSaturation8"];
-  [v6 encodeInteger:self->_version forKey:@"version"];
-  [v6 encodeBytes:self->_colorBoxesRowMajor length:5 * self->_rowCount * self->_columnCount forKey:@"colorBoxesRowMajor"];
+  coderCopy = coder;
+  [coderCopy encodeCGSize:@"imageSize" forKey:{width, height}];
+  [coderCopy encodeInteger:self->_downsampledBoxSize forKey:@"downsampledBoxSize"];
+  [coderCopy encodeInteger:self->_effectiveDownsampleFactor forKey:@"effectiveDownsampleFactor"];
+  [coderCopy encodeInteger:self->_pixelHeight forKey:@"pixelHeight"];
+  [coderCopy encodeInteger:self->_pixelWidth forKey:@"pixelWidth"];
+  [coderCopy encodeInteger:self->_rowCount forKey:@"rowCount"];
+  [coderCopy encodeInteger:self->_columnCount forKey:@"columnCount"];
+  [coderCopy encodeInteger:self->_size forKey:@"size"];
+  [coderCopy encodeInt:self->_totalContrast8 forKey:@"totalContrast8"];
+  [coderCopy encodeInt:self->_totalSaturation8 forKey:@"totalSaturation8"];
+  [coderCopy encodeInteger:self->_version forKey:@"version"];
+  [coderCopy encodeBytes:self->_colorBoxesRowMajor length:5 * self->_rowCount * self->_columnCount forKey:@"colorBoxesRowMajor"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PLKColorBoxes *)self isEqualToColorBoxes:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PLKColorBoxes *)self isEqualToColorBoxes:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToColorBoxes:(id)a3
+- (BOOL)isEqualToColorBoxes:(id)boxes
 {
-  v4 = a3;
-  if (self == v4)
+  boxesCopy = boxes;
+  if (self == boxesCopy)
   {
     goto LABEL_22;
   }
 
-  if (!v4 || self->_size != v4->_size || (rowCount = self->_rowCount, rowCount != v4->_rowCount) || (columnCount = self->_columnCount, columnCount != v4->_columnCount) || self->_totalContrast8 != v4->_totalContrast8 || self->_totalSaturation8 != v4->_totalSaturation8 || self->_version != v4->_version)
+  if (!boxesCopy || self->_size != boxesCopy->_size || (rowCount = self->_rowCount, rowCount != boxesCopy->_rowCount) || (columnCount = self->_columnCount, columnCount != boxesCopy->_columnCount) || self->_totalContrast8 != boxesCopy->_totalContrast8 || self->_totalSaturation8 != boxesCopy->_totalSaturation8 || self->_version != boxesCopy->_version)
   {
 LABEL_21:
     v7 = 0;
@@ -890,18 +890,18 @@ LABEL_21:
   }
 
   v7 = 0;
-  if (self->_imageSize.width == v4->_imageSize.width)
+  if (self->_imageSize.width == boxesCopy->_imageSize.width)
   {
-    v8 = *&v4->_imageSize.height;
+    v8 = *&boxesCopy->_imageSize.height;
     height = self->_imageSize.height;
     if (height == *&v8)
     {
-      if (self->_downsampledBoxSize == v4->_downsampledBoxSize && self->_effectiveDownsampleFactor == v4->_effectiveDownsampleFactor && self->_pixelHeight == v4->_pixelHeight && self->_pixelWidth == v4->_pixelWidth)
+      if (self->_downsampledBoxSize == boxesCopy->_downsampledBoxSize && self->_effectiveDownsampleFactor == boxesCopy->_effectiveDownsampleFactor && self->_pixelHeight == boxesCopy->_pixelHeight && self->_pixelWidth == boxesCopy->_pixelWidth)
       {
         v10 = columnCount * rowCount;
         if (v10)
         {
-          p_var1 = &v4->_colorBoxesRowMajor->var1;
+          p_var1 = &boxesCopy->_colorBoxesRowMajor->var1;
           v12 = &self->_colorBoxesRowMajor->var1;
           v7 = 1;
           while (*(v12 - 1) == *(p_var1 - 1))
@@ -975,23 +975,23 @@ LABEL_23:
   return v14 ^ (v14 >> 31);
 }
 
-+ (id)_mergeColor:(uint64_t)a3 withColor:(void *)a4 firstWeight:(void *)a5 secondWeight:
++ (id)_mergeColor:(uint64_t)color withColor:(void *)withColor firstWeight:(void *)weight secondWeight:
 {
-  v8 = a4;
-  v9 = a5;
+  withColorCopy = withColor;
+  weightCopy = weight;
   objc_opt_self();
-  if (!(v8 | v9))
+  if (!(withColorCopy | weightCopy))
   {
-    v10 = [MEMORY[0x277D75348] systemGrayColor];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
     goto LABEL_16;
   }
 
-  if (!v8)
+  if (!withColorCopy)
   {
     goto LABEL_11;
   }
 
-  if (v9)
+  if (weightCopy)
   {
     v21 = 0.0;
     v22 = 0.0;
@@ -1000,11 +1000,11 @@ LABEL_23:
     v17 = 0.0;
     v18 = 0.0;
     v16 = 0.0;
-    if ([v8 getRed:&v22 green:&v21 blue:&v20 alpha:{&v19, 0}])
+    if ([withColorCopy getRed:&v22 green:&v21 blue:&v20 alpha:{&v19, 0}])
     {
-      if ([v9 getRed:&v18 green:&v17 blue:&v16 alpha:&v15])
+      if ([weightCopy getRed:&v18 green:&v17 blue:&v16 alpha:&v15])
       {
-        v10 = [MEMORY[0x277D75348] colorWithRed:fmin(fmax(v18 * a2 + v22 * a1 green:0.0) blue:1.0) alpha:{fmin(fmax(v17 * a2 + v21 * a1, 0.0), 1.0), fmin(fmax(v16 * a2 + v20 * a1, 0.0), 1.0), 1.0}];
+        systemGrayColor = [MEMORY[0x277D75348] colorWithRed:fmin(fmax(v18 * a2 + v22 * self green:0.0) blue:1.0) alpha:{fmin(fmax(v17 * a2 + v21 * self, 0.0), 1.0), fmin(fmax(v16 * a2 + v20 * self, 0.0), 1.0), 1.0}];
         goto LABEL_16;
       }
 
@@ -1024,14 +1024,14 @@ LABEL_23:
     }
 
 LABEL_11:
-    v10 = v9;
+    systemGrayColor = weightCopy;
     goto LABEL_16;
   }
 
 LABEL_15:
-  v10 = v8;
+  systemGrayColor = withColorCopy;
 LABEL_16:
-  v13 = v10;
+  v13 = systemGrayColor;
 
   return v13;
 }
@@ -1046,12 +1046,12 @@ LABEL_16:
   v8 = [v3 appendInteger:self->_totalContrast8 withName:@"Contrast"];
   v9 = [v3 appendInteger:self->_totalSaturation8 withName:@"Saturation"];
   v10 = [v3 appendInteger:self->_version withName:@"Version"];
-  v11 = [v3 build];
+  build = [v3 build];
 
-  return v11;
+  return build;
 }
 
-- (id)initWithColorBoxes:(uint64_t)a3 size:(uint64_t)a4 rowCount:(uint64_t)a5 columnCount:(char)a6 totalContrast8:(char)a7 totalSaturation8:(uint64_t)a8 imageSize:(double)a9 downsampledBoxSize:(double)a10 effectiveDownsampleFactor:(uint64_t)a11 pixelHeight:(uint64_t)a12 pixelWidth:(uint64_t)a13
+- (id)initWithColorBoxes:(uint64_t)boxes size:(uint64_t)size rowCount:(uint64_t)count columnCount:(char)columnCount totalContrast8:(char)contrast8 totalSaturation8:(uint64_t)saturation8 imageSize:(double)imageSize downsampledBoxSize:(double)self0 effectiveDownsampleFactor:(uint64_t)self1 pixelHeight:(uint64_t)self2 pixelWidth:(uint64_t)self3
 {
   if (result)
   {
@@ -1061,17 +1061,17 @@ LABEL_16:
     if (result)
     {
       *(result + 10) = a2;
-      *(result + 11) = a4;
-      *(result + 12) = a5;
-      *(result + 13) = a3;
-      *(result + 40) = a6;
-      *(result + 41) = a7;
-      *(result + 1) = a9;
-      *(result + 2) = a10;
-      *(result + 6) = a8;
-      *(result + 7) = a11;
-      *(result + 8) = a12;
-      *(result + 9) = a13;
+      *(result + 11) = size;
+      *(result + 12) = count;
+      *(result + 13) = boxes;
+      *(result + 40) = columnCount;
+      *(result + 41) = contrast8;
+      *(result + 1) = imageSize;
+      *(result + 2) = boxSize;
+      *(result + 6) = saturation8;
+      *(result + 7) = factor;
+      *(result + 8) = height;
+      *(result + 9) = width;
       *(result + 14) = 2;
       *(result + 24) = 1;
     }
@@ -1082,14 +1082,14 @@ LABEL_16:
 
 - (void)_calculateMissingSaturationDataIfNeeded
 {
-  if (a1 && (*(a1 + 24) & 1) == 0)
+  if (self && (*(self + 24) & 1) == 0)
   {
     v6 = 0;
-    v7 = *(a1 + 96) * *(a1 + 88);
+    v7 = *(self + 96) * *(self + 88);
     if (v7)
     {
-      v8 = (*(a1 + 80) + 2);
-      v9 = *(a1 + 96) * *(a1 + 88);
+      v8 = (*(self + 80) + 2);
+      v9 = *(self + 96) * *(self + 88);
       do
       {
         LOBYTE(a2.f64[0]) = *(v8 - 2);
@@ -1107,8 +1107,8 @@ LABEL_16:
       while (v9);
     }
 
-    *(a1 + 41) = v6 / v7;
-    *(a1 + 24) = 1;
+    *(self + 41) = v6 / v7;
+    *(self + 24) = 1;
     v11 = PLKLogCommon();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -1118,28 +1118,28 @@ LABEL_16:
   }
 }
 
-- (double)rectForColorBoxAtRow:(uint64_t)a3 col:
+- (double)rectForColorBoxAtRow:(uint64_t)row col:
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v3 = a1[6];
-  if ((v3 * a2 + v3) < a1[8])
+  v3 = self[6];
+  if ((v3 * a2 + v3) < self[8])
   {
-    v4 = a1[6];
+    v4 = self[6];
   }
 
-  a1[9];
-  return (a1[7] * v3 * a3);
+  self[9];
+  return (self[7] * v3 * row);
 }
 
-- (uint64_t)colorBoxAtRow:(uint64_t)a3 col:
+- (uint64_t)colorBoxAtRow:(uint64_t)row col:
 {
   if (result)
   {
-    return *(result + 80) + 5 * a3 + 5 * *(result + 96) * a2;
+    return *(result + 80) + 5 * row + 5 * *(result + 96) * a2;
   }
 
   return result;
@@ -1207,13 +1207,13 @@ LABEL_16:
 
 - (double)imageSize
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  result = *(a1 + 8);
-  v2 = *(a1 + 16);
+  result = *(self + 8);
+  v2 = *(self + 16);
   return result;
 }
 

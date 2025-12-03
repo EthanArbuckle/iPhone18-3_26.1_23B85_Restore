@@ -1,6 +1,6 @@
 @interface PHAudioCallViewControllerInvertColorsAccessibility
 - (void)_accessibilityLoadInvertColors;
-- (void)setBackgroundImage:(id)a3;
+- (void)setBackgroundImage:(id)image;
 @end
 
 @implementation PHAudioCallViewControllerInvertColorsAccessibility
@@ -11,11 +11,11 @@
   [v2 setAccessibilityIgnoresInvertColors:1];
 }
 
-- (void)setBackgroundImage:(id)a3
+- (void)setBackgroundImage:(id)image
 {
   v4.receiver = self;
   v4.super_class = PHAudioCallViewControllerInvertColorsAccessibility;
-  [(PHAudioCallViewControllerInvertColorsAccessibility *)&v4 setBackgroundImage:a3];
+  [(PHAudioCallViewControllerInvertColorsAccessibility *)&v4 setBackgroundImage:image];
   [(PHAudioCallViewControllerInvertColorsAccessibility *)self _accessibilityLoadInvertColors];
 }
 

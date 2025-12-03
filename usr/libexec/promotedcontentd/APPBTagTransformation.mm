@@ -1,14 +1,14 @@
 @interface APPBTagTransformation
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addRequiredTags:(id)a3;
-- (void)addResultTags:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addRequiredTags:(id)tags;
+- (void)addResultTags:(id)tags;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBTagTransformation
@@ -25,40 +25,40 @@
   return v3;
 }
 
-- (void)addRequiredTags:(id)a3
+- (void)addRequiredTags:(id)tags
 {
-  v4 = a3;
+  tagsCopy = tags;
   requiredTags = self->_requiredTags;
-  v8 = v4;
+  v8 = tagsCopy;
   if (!requiredTags)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_requiredTags;
     self->_requiredTags = v6;
 
-    v4 = v8;
+    tagsCopy = v8;
     requiredTags = self->_requiredTags;
   }
 
-  [(NSMutableArray *)requiredTags addObject:v4];
+  [(NSMutableArray *)requiredTags addObject:tagsCopy];
 }
 
-- (void)addResultTags:(id)a3
+- (void)addResultTags:(id)tags
 {
-  v4 = a3;
+  tagsCopy = tags;
   resultTags = self->_resultTags;
-  v8 = v4;
+  v8 = tagsCopy;
   if (!resultTags)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_resultTags;
     self->_resultTags = v6;
 
-    v4 = v8;
+    tagsCopy = v8;
     resultTags = self->_resultTags;
   }
 
-  [(NSMutableArray *)resultTags addObject:v4];
+  [(NSMutableArray *)resultTags addObject:tagsCopy];
 }
 
 - (id)description
@@ -66,8 +66,8 @@
   v7.receiver = self;
   v7.super_class = APPBTagTransformation;
   v3 = [(APPBTagTransformation *)&v7 description];
-  v4 = [(APPBTagTransformation *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBTagTransformation *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -91,9 +91,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -157,43 +157,43 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if ([(APPBTagTransformation *)self requiredTagsCount])
   {
-    [v12 clearRequiredTags];
-    v4 = [(APPBTagTransformation *)self requiredTagsCount];
-    if (v4)
+    [toCopy clearRequiredTags];
+    requiredTagsCount = [(APPBTagTransformation *)self requiredTagsCount];
+    if (requiredTagsCount)
     {
-      v5 = v4;
+      v5 = requiredTagsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(APPBTagTransformation *)self requiredTagsAtIndex:i];
-        [v12 addRequiredTags:v7];
+        [toCopy addRequiredTags:v7];
       }
     }
   }
 
   if ([(APPBTagTransformation *)self resultTagsCount])
   {
-    [v12 clearResultTags];
-    v8 = [(APPBTagTransformation *)self resultTagsCount];
-    if (v8)
+    [toCopy clearResultTags];
+    resultTagsCount = [(APPBTagTransformation *)self resultTagsCount];
+    if (resultTagsCount)
     {
-      v9 = v8;
+      v9 = resultTagsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(APPBTagTransformation *)self resultTagsAtIndex:j];
-        [v12 addResultTags:v11];
+        [toCopy addResultTags:v11];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -214,7 +214,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v23 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v23 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addRequiredTags:v11];
 
         v10 = v10 + 1;
@@ -247,7 +247,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v19 + 1) + 8 * v16) copyWithZone:{a3, v19}];
+        v17 = [*(*(&v19 + 1) + 8 * v16) copyWithZone:{zone, v19}];
         [v5 addResultTags:v17];
 
         v16 = v16 + 1;
@@ -263,13 +263,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((requiredTags = self->_requiredTags, !(requiredTags | v4[1])) || -[NSMutableArray isEqual:](requiredTags, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((requiredTags = self->_requiredTags, !(requiredTags | equalCopy[1])) || -[NSMutableArray isEqual:](requiredTags, "isEqual:")))
   {
     resultTags = self->_resultTags;
-    if (resultTags | v4[2])
+    if (resultTags | equalCopy[2])
     {
       v7 = [(NSMutableArray *)resultTags isEqual:?];
     }
@@ -288,14 +288,14 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v4[1];
+  v5 = fromCopy[1];
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v6)
   {
@@ -326,7 +326,7 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = v4[2];
+  v10 = fromCopy[2];
   v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v11)
   {

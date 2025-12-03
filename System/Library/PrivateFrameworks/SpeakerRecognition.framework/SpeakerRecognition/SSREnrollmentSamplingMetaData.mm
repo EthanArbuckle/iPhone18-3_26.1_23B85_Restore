@@ -1,6 +1,6 @@
 @interface SSREnrollmentSamplingMetaData
-- (SSREnrollmentSamplingMetaData)initWithDictionary:(id)a3;
-- (SSREnrollmentSamplingMetaData)initWithSelectionStatus:(id)a3 voiceProfileId:(id)a4;
+- (SSREnrollmentSamplingMetaData)initWithDictionary:(id)dictionary;
+- (SSREnrollmentSamplingMetaData)initWithSelectionStatus:(id)status voiceProfileId:(id)id;
 - (id)description;
 - (id)dictionaryRepresentation;
 @end
@@ -28,18 +28,18 @@
 
 - (id)description
 {
-  v2 = [(SSREnrollmentSamplingMetaData *)self dictionaryRepresentation];
-  v3 = [v2 description];
+  dictionaryRepresentation = [(SSREnrollmentSamplingMetaData *)self dictionaryRepresentation];
+  v3 = [dictionaryRepresentation description];
 
   return v3;
 }
 
-- (SSREnrollmentSamplingMetaData)initWithDictionary:(id)a3
+- (SSREnrollmentSamplingMetaData)initWithDictionary:(id)dictionary
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  dictionaryCopy = dictionary;
+  v5 = dictionaryCopy;
+  if (!dictionaryCopy)
   {
     v11 = *MEMORY[0x277D01970];
     if (!os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_ERROR))
@@ -55,7 +55,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"SSRSamplingVoiceProfileId"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"SSRSamplingVoiceProfileId"];
 
   if (!v6)
   {
@@ -85,7 +85,7 @@ LABEL_11:
     }
 
 LABEL_12:
-    v10 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
@@ -93,18 +93,18 @@ LABEL_12:
   v9 = [v5 objectForKeyedSubscript:@"SSRSamplingVoiceProfileId"];
   self = [(SSREnrollmentSamplingMetaData *)self initWithSelectionStatus:v8 voiceProfileId:v9];
 
-  v10 = self;
+  selfCopy = self;
 LABEL_13:
 
   v13 = *MEMORY[0x277D85DE8];
-  return v10;
+  return selfCopy;
 }
 
-- (SSREnrollmentSamplingMetaData)initWithSelectionStatus:(id)a3 voiceProfileId:(id)a4
+- (SSREnrollmentSamplingMetaData)initWithSelectionStatus:(id)status voiceProfileId:(id)id
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  statusCopy = status;
+  idCopy = id;
   v15.receiver = self;
   v15.super_class = SSREnrollmentSamplingMetaData;
   v9 = [(SSREnrollmentSamplingMetaData *)&v15 init];
@@ -114,10 +114,10 @@ LABEL_13:
     goto LABEL_5;
   }
 
-  if (v7 && v8)
+  if (statusCopy && idCopy)
   {
-    objc_storeStrong(&v9->_selectionStatus, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_selectionStatus, status);
+    objc_storeStrong(p_isa + 2, id);
 LABEL_5:
     v11 = p_isa;
     goto LABEL_9;
@@ -129,9 +129,9 @@ LABEL_5:
     *buf = 136315650;
     v17 = "[SSREnrollmentSamplingMetaData initWithSelectionStatus:voiceProfileId:]";
     v18 = 2112;
-    v19 = v7;
+    v19 = statusCopy;
     v20 = 2112;
-    v21 = v8;
+    v21 = idCopy;
     _os_log_error_impl(&dword_225E12000, v12, OS_LOG_TYPE_ERROR, "%s initializing samplingMetaData with nil inputs: %@, %@", buf, 0x20u);
   }
 

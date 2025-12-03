@@ -1,26 +1,26 @@
 @interface SecuritydXPCClient
-+ (void)configureSecuritydXPCProtocol:(id)a3;
-- (id)initTargetingSession:(int)a3;
-- (id)protocolWithSync:(BOOL)a3 errorHandler:(id)a4;
++ (void)configureSecuritydXPCProtocol:(id)protocol;
+- (id)initTargetingSession:(int)session;
+- (id)protocolWithSync:(BOOL)sync errorHandler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation SecuritydXPCClient
 
-- (id)protocolWithSync:(BOOL)a3 errorHandler:(id)a4
+- (id)protocolWithSync:(BOOL)sync errorHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(SecuritydXPCClient *)self connection];
-  v8 = v7;
-  if (v4)
+  syncCopy = sync;
+  handlerCopy = handler;
+  connection = [(SecuritydXPCClient *)self connection];
+  v8 = connection;
+  if (syncCopy)
   {
-    [v7 synchronousRemoteObjectProxyWithErrorHandler:v6];
+    [connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   else
   {
-    [v7 remoteObjectProxyWithErrorHandler:v6];
+    [connection remoteObjectProxyWithErrorHandler:handlerCopy];
   }
   v9 = ;
 
@@ -29,15 +29,15 @@
 
 - (void)dealloc
 {
-  v3 = [(SecuritydXPCClient *)self connection];
-  [v3 invalidate];
+  connection = [(SecuritydXPCClient *)self connection];
+  [connection invalidate];
 
   v4.receiver = self;
   v4.super_class = SecuritydXPCClient;
   [(SecuritydXPCClient *)&v4 dealloc];
 }
 
-- (id)initTargetingSession:(int)a3
+- (id)initTargetingSession:(int)session
 {
   v23 = *MEMORY[0x1E69E9840];
   v20.receiver = self;
@@ -54,18 +54,18 @@ LABEL_13:
   v6 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.securityd.general" options:0];
   [(SecuritydXPCClient *)v4 setConnection:v6];
 
-  v7 = [(SecuritydXPCClient *)v4 connection];
+  connection = [(SecuritydXPCClient *)v4 connection];
 
-  if (v7)
+  if (connection)
   {
-    v8 = [(SecuritydXPCClient *)v4 connection];
-    [v8 setRemoteObjectInterface:v5];
+    connection2 = [(SecuritydXPCClient *)v4 connection];
+    [connection2 setRemoteObjectInterface:v5];
 
-    v9 = [(SecuritydXPCClient *)v4 connection];
-    v10 = [v9 remoteObjectInterface];
-    [SecuritydXPCClient configureSecuritydXPCProtocol:v10];
+    connection3 = [(SecuritydXPCClient *)v4 connection];
+    remoteObjectInterface = [connection3 remoteObjectInterface];
+    [SecuritydXPCClient configureSecuritydXPCProtocol:remoteObjectInterface];
 
-    if (!a3)
+    if (!session)
     {
       v11 = secLogObjForScope("SecuritydXPCClient");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -85,14 +85,14 @@ LABEL_13:
           _os_log_debug_impl(&dword_1887D2000, v14, OS_LOG_TYPE_DEBUG, "Targeting foreground session for uid %d", buf, 8u);
         }
 
-        v15 = [(SecuritydXPCClient *)v4 connection];
-        v16 = [v15 _xpcConnection];
+        connection4 = [(SecuritydXPCClient *)v4 connection];
+        _xpcConnection = [connection4 _xpcConnection];
         xpc_connection_set_target_user_session_uid();
       }
     }
 
-    v17 = [(SecuritydXPCClient *)v4 connection];
-    [v17 resume];
+    connection5 = [(SecuritydXPCClient *)v4 connection];
+    [connection5 resume];
 
     goto LABEL_13;
   }
@@ -104,12 +104,12 @@ LABEL_14:
   return v12;
 }
 
-+ (void)configureSecuritydXPCProtocol:(id)a3
++ (void)configureSecuritydXPCProtocol:(id)protocol
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  protocolCopy = protocol;
   v4 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1EFAB1CC0];
-  [v3 setInterface:v4 forSelector:sel_SecItemAddAndNotifyOnSync_syncCallback_complete_ argumentIndex:1 ofReply:0];
+  [protocolCopy setInterface:v4 forSelector:sel_SecItemAddAndNotifyOnSync_syncCallback_complete_ argumentIndex:1 ofReply:0];
   v5 = +[SecXPCHelper safeErrorClasses];
   v6 = MEMORY[0x1E695DFD8];
   v22[0] = objc_opt_class();
@@ -136,19 +136,19 @@ LABEL_14:
   v17 = [v15 setWithArray:v16];
 
   [v4 setClasses:v5 forSelector:sel_callCallback_error_ argumentIndex:1 ofReply:0];
-  [v3 setClasses:v5 forSelector:sel_SecItemAddAndNotifyOnSync_syncCallback_complete_ argumentIndex:2 ofReply:1];
-  [v3 setClasses:v5 forSelector:sel_secItemSetCurrentItemAcrossAllDevices_newCurrentItemHash_accessGroup_identifier_viewHint_oldCurrentItemReference_oldCurrentItemHash_complete_ argumentIndex:0 ofReply:1];
-  [v3 setClasses:v5 forSelector:sel_secItemUnsetCurrentItemsAcrossAllDevices_identifiers_viewHint_complete_ argumentIndex:0 ofReply:1];
-  [v3 setClasses:v5 forSelector:sel_secItemFetchCurrentItemAcrossAllDevices_identifier_viewHint_fetchCloudValue_complete_ argumentIndex:2 ofReply:1];
-  [v3 setClasses:v5 forSelector:sel_secItemDigest_accessGroup_complete_ argumentIndex:1 ofReply:1];
-  [v3 setClasses:v5 forSelector:sel_secKeychainDeleteMultiuser_complete_ argumentIndex:1 ofReply:1];
-  [v3 setClasses:v8 forSelector:sel_secItemFetchCurrentItemOutOfBand_forceFetch_complete_ argumentIndex:0 ofReply:0];
-  [v3 setClasses:v11 forSelector:sel_secItemFetchCurrentItemOutOfBand_forceFetch_complete_ argumentIndex:0 ofReply:1];
-  [v3 setClasses:v5 forSelector:sel_secItemFetchCurrentItemOutOfBand_forceFetch_complete_ argumentIndex:1 ofReply:1];
-  [v3 setClasses:v14 forSelector:sel_secItemFetchPCSIdentityByKeyOutOfBand_forceFetch_complete_ argumentIndex:0 ofReply:0];
-  [v3 setClasses:v17 forSelector:sel_secItemFetchPCSIdentityByKeyOutOfBand_forceFetch_complete_ argumentIndex:0 ofReply:1];
-  [v3 setClasses:v5 forSelector:sel_secItemFetchPCSIdentityByKeyOutOfBand_forceFetch_complete_ argumentIndex:1 ofReply:1];
-  [v3 setClasses:v5 forSelector:sel_secKeychainCopyDatabasePath_ argumentIndex:1 ofReply:1];
+  [protocolCopy setClasses:v5 forSelector:sel_SecItemAddAndNotifyOnSync_syncCallback_complete_ argumentIndex:2 ofReply:1];
+  [protocolCopy setClasses:v5 forSelector:sel_secItemSetCurrentItemAcrossAllDevices_newCurrentItemHash_accessGroup_identifier_viewHint_oldCurrentItemReference_oldCurrentItemHash_complete_ argumentIndex:0 ofReply:1];
+  [protocolCopy setClasses:v5 forSelector:sel_secItemUnsetCurrentItemsAcrossAllDevices_identifiers_viewHint_complete_ argumentIndex:0 ofReply:1];
+  [protocolCopy setClasses:v5 forSelector:sel_secItemFetchCurrentItemAcrossAllDevices_identifier_viewHint_fetchCloudValue_complete_ argumentIndex:2 ofReply:1];
+  [protocolCopy setClasses:v5 forSelector:sel_secItemDigest_accessGroup_complete_ argumentIndex:1 ofReply:1];
+  [protocolCopy setClasses:v5 forSelector:sel_secKeychainDeleteMultiuser_complete_ argumentIndex:1 ofReply:1];
+  [protocolCopy setClasses:v8 forSelector:sel_secItemFetchCurrentItemOutOfBand_forceFetch_complete_ argumentIndex:0 ofReply:0];
+  [protocolCopy setClasses:v11 forSelector:sel_secItemFetchCurrentItemOutOfBand_forceFetch_complete_ argumentIndex:0 ofReply:1];
+  [protocolCopy setClasses:v5 forSelector:sel_secItemFetchCurrentItemOutOfBand_forceFetch_complete_ argumentIndex:1 ofReply:1];
+  [protocolCopy setClasses:v14 forSelector:sel_secItemFetchPCSIdentityByKeyOutOfBand_forceFetch_complete_ argumentIndex:0 ofReply:0];
+  [protocolCopy setClasses:v17 forSelector:sel_secItemFetchPCSIdentityByKeyOutOfBand_forceFetch_complete_ argumentIndex:0 ofReply:1];
+  [protocolCopy setClasses:v5 forSelector:sel_secItemFetchPCSIdentityByKeyOutOfBand_forceFetch_complete_ argumentIndex:1 ofReply:1];
+  [protocolCopy setClasses:v5 forSelector:sel_secKeychainCopyDatabasePath_ argumentIndex:1 ofReply:1];
 
   v18 = *MEMORY[0x1E69E9840];
 }

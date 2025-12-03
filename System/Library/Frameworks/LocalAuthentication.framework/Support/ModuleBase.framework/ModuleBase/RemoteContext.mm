@@ -1,27 +1,27 @@
 @interface RemoteContext
-- (RemoteContext)initWithOwnership:(id)a3 uuid:(id)a4 description:(id)a5 originalOwnership:(id)a6;
+- (RemoteContext)initWithOwnership:(id)ownership uuid:(id)uuid description:(id)description originalOwnership:(id)originalOwnership;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation RemoteContext
 
-- (RemoteContext)initWithOwnership:(id)a3 uuid:(id)a4 description:(id)a5 originalOwnership:(id)a6
+- (RemoteContext)initWithOwnership:(id)ownership uuid:(id)uuid description:(id)description originalOwnership:(id)originalOwnership
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  ownershipCopy = ownership;
+  uuidCopy = uuid;
+  descriptionCopy = description;
+  originalOwnershipCopy = originalOwnership;
   v21.receiver = self;
   v21.super_class = RemoteContext;
   v15 = [(RemoteContext *)&v21 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_ownership, a3);
-    objc_storeStrong(&v16->_uuid, a4);
-    objc_storeStrong(&v16->_description, a5);
-    objc_storeStrong(&v16->_originalOwnership, a6);
+    objc_storeStrong(&v15->_ownership, ownership);
+    objc_storeStrong(&v16->_uuid, uuid);
+    objc_storeStrong(&v16->_description, description);
+    objc_storeStrong(&v16->_originalOwnership, originalOwnership);
     v17 = [(RemoteContext *)v16 description];
     [v17 UTF8String];
     v18 = os_transaction_create();
@@ -44,7 +44,7 @@
   if (os_log_type_enabled(LA_LOG_log_0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_238BBF000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ deallocated", buf, 0xCu);
   }
 
@@ -57,12 +57,12 @@
 - (id)description
 {
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"RemoteContext registration for %@", self->_description];
-  v4 = [(RemoteContext *)self originalOwnership];
+  originalOwnership = [(RemoteContext *)self originalOwnership];
 
-  if (v4)
+  if (originalOwnership)
   {
-    v5 = [(RemoteContext *)self originalOwnership];
-    v6 = [v3 stringByAppendingFormat:@", keeping alive plugin of %@", v5];
+    originalOwnership2 = [(RemoteContext *)self originalOwnership];
+    v6 = [v3 stringByAppendingFormat:@", keeping alive plugin of %@", originalOwnership2];
 
     v3 = v6;
   }

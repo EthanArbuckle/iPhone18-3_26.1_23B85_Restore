@@ -1,23 +1,23 @@
 @interface _CollectingInvocationTrampoline
-- (BOOL)respondsToSelector:(SEL)a3;
-- (_CollectingInvocationTrampoline)initWithCollection:(id)a3 allMustMatch:(BOOL)a4;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (_CollectingInvocationTrampoline)initWithCollection:(id)collection allMustMatch:(BOOL)match;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation _CollectingInvocationTrampoline
 
-- (_CollectingInvocationTrampoline)initWithCollection:(id)a3 allMustMatch:(BOOL)a4
+- (_CollectingInvocationTrampoline)initWithCollection:(id)collection allMustMatch:(BOOL)match
 {
-  v7 = a3;
+  collectionCopy = collection;
   v14.receiver = self;
   v14.super_class = _CollectingInvocationTrampoline;
   v8 = [(_CollectingInvocationTrampoline *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_collection, a3);
-    v9->_allMustMatch = a4;
+    objc_storeStrong(&v8->_collection, collection);
+    v9->_allMustMatch = match;
     memset(v13, 0, sizeof(v13));
     v10 = v9->_collection;
     if ([(NSFastEnumeration *)v10 countByEnumeratingWithState:v13 objects:v15 count:16])
@@ -31,22 +31,22 @@
   return v9;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v4 = self;
+  selfCopy = self;
   v7.receiver = self;
   v7.super_class = _CollectingInvocationTrampoline;
   if (![(_CollectingInvocationTrampoline *)&v7 respondsToSelector:?])
   {
-    v4 = v4->_first;
+    selfCopy = selfCopy->_first;
   }
 
-  v5 = [(_CollectingInvocationTrampoline *)v4 methodSignatureForSelector:a3];
+  v5 = [(_CollectingInvocationTrampoline *)selfCopy methodSignatureForSelector:selector];
 
   return v5;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = _CollectingInvocationTrampoline;
@@ -64,9 +64,9 @@
   return v4 & 1;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   allMustMatch = self->_allMustMatch;
   v15 = allMustMatch;
   v11 = 0u;
@@ -87,9 +87,9 @@
           objc_enumerationMutation(v6);
         }
 
-        [v4 invokeWithTarget:*(*(&v11 + 1) + 8 * i)];
+        [invocationCopy invokeWithTarget:*(*(&v11 + 1) + 8 * i)];
         v10 = -86;
-        [v4 getReturnValue:&v10];
+        [invocationCopy getReturnValue:&v10];
         if (self->_allMustMatch)
         {
           allMustMatch &= v10;
@@ -109,7 +109,7 @@
     while (v7);
   }
 
-  [v4 setReturnValue:&v15];
+  [invocationCopy setReturnValue:&v15];
 }
 
 @end

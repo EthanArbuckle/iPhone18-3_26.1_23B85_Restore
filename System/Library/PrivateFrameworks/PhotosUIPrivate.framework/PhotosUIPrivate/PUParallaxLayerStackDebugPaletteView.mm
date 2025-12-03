@@ -1,33 +1,33 @@
 @interface PUParallaxLayerStackDebugPaletteView
-- (PUParallaxLayerStackDebugPaletteView)initWithColorPalette:(id)a3;
-- (void)_layoutPalette:(id)a3 origin:(CGPoint)a4 cellsPerRow:(int)a5 cellWidth:(double)a6 callback:(id)a7;
+- (PUParallaxLayerStackDebugPaletteView)initWithColorPalette:(id)palette;
+- (void)_layoutPalette:(id)palette origin:(CGPoint)origin cellsPerRow:(int)row cellWidth:(double)width callback:(id)callback;
 - (void)layoutSubviews;
 @end
 
 @implementation PUParallaxLayerStackDebugPaletteView
 
-- (void)_layoutPalette:(id)a3 origin:(CGPoint)a4 cellsPerRow:(int)a5 cellWidth:(double)a6 callback:(id)a7
+- (void)_layoutPalette:(id)palette origin:(CGPoint)origin cellsPerRow:(int)row cellWidth:(double)width callback:(id)callback
 {
-  y = a4.y;
-  x = a4.x;
-  v22 = a3;
-  v13 = a7;
-  v14 = [v22 primaryColors];
-  v15 = [v14 count];
+  y = origin.y;
+  x = origin.x;
+  paletteCopy = palette;
+  callbackCopy = callback;
+  primaryColors = [paletteCopy primaryColors];
+  v15 = [primaryColors count];
 
   if (v15)
   {
     v16 = 0;
-    v17 = a5;
+    rowCopy = row;
     do
     {
-      v18 = [v22 suggestionAtIndex:v16];
-      v19 = v13[2](v13, v18, x + (v16 % v17) * a6, y + (v16 / v17) * a6, a6 + -2.0, a6 + -2.0);
+      v18 = [paletteCopy suggestionAtIndex:v16];
+      v19 = callbackCopy[2](callbackCopy, v18, x + (v16 % rowCopy) * width, y + (v16 / rowCopy) * width, width + -2.0, width + -2.0);
       [(PUParallaxLayerStackDebugPaletteView *)self addSubview:v19];
 
       ++v16;
-      v20 = [v22 primaryColors];
-      v21 = [v20 count];
+      primaryColors2 = [paletteCopy primaryColors];
+      v21 = [primaryColors2 count];
     }
 
     while (v16 < v21);
@@ -41,8 +41,8 @@
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v3 = [(PUParallaxLayerStackDebugPaletteView *)self subviews];
-  v4 = [v3 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  subviews = [(PUParallaxLayerStackDebugPaletteView *)self subviews];
+  v4 = [subviews countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v4)
   {
     v5 = v4;
@@ -53,13 +53,13 @@
       {
         if (*v32 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v31 + 1) + 8 * i) removeFromSuperview];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v31 objects:v35 count:16];
     }
 
     while (v5);
@@ -74,22 +74,22 @@
   [v11 setText:@"Primary Colors"];
   [(PUParallaxLayerStackDebugPaletteView *)self addSubview:v11];
   v12 = y + 50.0 + 5.0;
-  v13 = [(PUParallaxLayerStackDebugPaletteView *)self palette];
-  [(PUParallaxLayerStackDebugPaletteView *)self _layoutPalette:v13 origin:12 cellsPerRow:&__block_literal_global_48546 cellWidth:x callback:v12, width / 12.0];
+  palette = [(PUParallaxLayerStackDebugPaletteView *)self palette];
+  [(PUParallaxLayerStackDebugPaletteView *)self _layoutPalette:palette origin:12 cellsPerRow:&__block_literal_global_48546 cellWidth:x callback:v12, width / 12.0];
 
-  v14 = [(PUParallaxLayerStackDebugPaletteView *)self palette];
-  v15 = [v14 secondaryColors];
-  v16 = [v15 count];
+  palette2 = [(PUParallaxLayerStackDebugPaletteView *)self palette];
+  secondaryColors = [palette2 secondaryColors];
+  v16 = [secondaryColors count];
 
   if (v16)
   {
-    v17 = [(PUParallaxLayerStackDebugPaletteView *)self palette];
-    v18 = [v17 primaryColors];
-    v19 = [v18 count] / 0xCuLL;
+    palette3 = [(PUParallaxLayerStackDebugPaletteView *)self palette];
+    primaryColors = [palette3 primaryColors];
+    v19 = [primaryColors count] / 0xCuLL;
 
-    v20 = [(PUParallaxLayerStackDebugPaletteView *)self palette];
-    v21 = [v20 primaryColors];
-    v22 = __ROR8__(0xAAAAAAAAAAAAAAABLL * [v21 count], 2);
+    palette4 = [(PUParallaxLayerStackDebugPaletteView *)self palette];
+    primaryColors2 = [palette4 primaryColors];
+    v22 = __ROR8__(0xAAAAAAAAAAAAAAABLL * [primaryColors2 count], 2);
 
     if (v22 <= 0x1555555555555555)
     {
@@ -106,15 +106,15 @@
     [v25 setText:@"Secondary Colors"];
     [(PUParallaxLayerStackDebugPaletteView *)self addSubview:v25];
     v26 = v12 + v24 + 50.0 + 5.0;
-    v27 = [(PUParallaxLayerStackDebugPaletteView *)self palette];
-    [(PUParallaxLayerStackDebugPaletteView *)self _layoutPalette:v27 origin:12 cellsPerRow:&__block_literal_global_83_48547 cellWidth:x callback:v26, width / 12.0];
+    palette5 = [(PUParallaxLayerStackDebugPaletteView *)self palette];
+    [(PUParallaxLayerStackDebugPaletteView *)self _layoutPalette:palette5 origin:12 cellsPerRow:&__block_literal_global_83_48547 cellWidth:x callback:v26, width / 12.0];
 
     v28 = v24 + v26;
     v29 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{x, v28, width, 50.0}];
     [v29 setText:@"Blended Colors"];
     [(PUParallaxLayerStackDebugPaletteView *)self addSubview:v29];
-    v30 = [(PUParallaxLayerStackDebugPaletteView *)self palette];
-    [(PUParallaxLayerStackDebugPaletteView *)self _layoutPalette:v30 origin:12 cellsPerRow:&__block_literal_global_88 cellWidth:x callback:v28 + 50.0 + 5.0, width / 12.0];
+    palette6 = [(PUParallaxLayerStackDebugPaletteView *)self palette];
+    [(PUParallaxLayerStackDebugPaletteView *)self _layoutPalette:palette6 origin:12 cellsPerRow:&__block_literal_global_88 cellWidth:x callback:v28 + 50.0 + 5.0, width / 12.0];
   }
 }
 
@@ -168,14 +168,14 @@ id __54__PUParallaxLayerStackDebugPaletteView_layoutSubviews__block_invoke(doubl
   return v12;
 }
 
-- (PUParallaxLayerStackDebugPaletteView)initWithColorPalette:(id)a3
+- (PUParallaxLayerStackDebugPaletteView)initWithColorPalette:(id)palette
 {
-  v4 = a3;
+  paletteCopy = palette;
   v8.receiver = self;
   v8.super_class = PUParallaxLayerStackDebugPaletteView;
   v5 = [(PUParallaxLayerStackDebugPaletteView *)&v8 initWithFrame:0.0, 0.0, 100.0, 100.0];
   palette = v5->_palette;
-  v5->_palette = v4;
+  v5->_palette = paletteCopy;
 
   return v5;
 }

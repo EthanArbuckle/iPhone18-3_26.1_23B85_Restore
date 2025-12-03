@@ -1,24 +1,24 @@
 @interface LSDatabaseRebuildContext
 + (id)currentRebuildContextIfExists;
-+ (void)withStatsGatherer:(void *)a3 runWithRebuildContext:;
-- (LSDatabaseRebuildContext)initWithStatsGatherer:(id)a3;
++ (void)withStatsGatherer:(void *)gatherer runWithRebuildContext:;
+- (LSDatabaseRebuildContext)initWithStatsGatherer:(id)gatherer;
 - (id)finishAndArmSaveTimer;
-- (void)noteRebuildError:(uint64_t)a1;
-- (void)registerItems:(uint64_t)a1;
+- (void)noteRebuildError:(uint64_t)error;
+- (void)registerItems:(uint64_t)items;
 @end
 
 @implementation LSDatabaseRebuildContext
 
-- (LSDatabaseRebuildContext)initWithStatsGatherer:(id)a3
+- (LSDatabaseRebuildContext)initWithStatsGatherer:(id)gatherer
 {
-  v5 = a3;
+  gathererCopy = gatherer;
   v11.receiver = self;
   v11.super_class = LSDatabaseRebuildContext;
   v6 = [(LSDatabaseRebuildContext *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_statsGatherer, a3);
+    objc_storeStrong(&v6->_statsGatherer, gatherer);
     v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     overriddenPlugins = v7->_overriddenPlugins;
     v7->_overriddenPlugins = v8;
@@ -37,10 +37,10 @@
   return v0;
 }
 
-+ (void)withStatsGatherer:(void *)a3 runWithRebuildContext:
++ (void)withStatsGatherer:(void *)gatherer runWithRebuildContext:
 {
   v4 = a2;
-  v5 = a3;
+  gathererCopy = gatherer;
   v6 = objc_opt_self();
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -49,8 +49,8 @@
   v12 = sel_withStatsGatherer_runWithRebuildContext_;
   v13 = v6;
   v10 = v4;
-  v11 = v5;
-  v7 = v5;
+  v11 = gathererCopy;
+  v7 = gathererCopy;
   v8 = v4;
   _LSServer_ExecuteSyncWithQuiescedInstallationActivity(v9);
 }
@@ -109,12 +109,12 @@ void __49__LSDatabaseRebuildContext_finishAndArmSaveTimer__block_invoke(uint64_t
   }
 }
 
-- (void)registerItems:(uint64_t)a1
+- (void)registerItems:(uint64_t)items
 {
   v66 = *MEMORY[0x1E69E9840];
   v3 = a2;
   obj = v3;
-  if (a1)
+  if (items)
   {
     v11 = OUTLINED_FUNCTION_21(v3, v4, v5, v6, v7, v8, v9, v10, v42, v3, v45, v47, 0, 0, 0, 0, 0, 0, 0, 0, v57, v58, v59, v60, v61, v62, v63, v64, v65);
     if (v11)
@@ -131,7 +131,7 @@ void __49__LSDatabaseRebuildContext_finishAndArmSaveTimer__block_invoke(uint64_t
             objc_enumerationMutation(obj);
           }
 
-          v14 = *(a1 + 16);
+          v14 = *(items + 16);
           v15 = *(v50 + 8 * i);
           v16 = v14;
           v17 = [v15 objectForKey:v46];
@@ -154,7 +154,7 @@ void __49__LSDatabaseRebuildContext_finishAndArmSaveTimer__block_invoke(uint64_t
 
           _LSLogStepFinished(13, 1, v27, @"end inspect %@", v28, v29, v30, v31, v25);
           v32 = [v24 objectForKey:@"ApplicationType"];
-          [(LSRebuildStatisticsGatherer *)*(a1 + 8) registeredBundleOfType:v32];
+          [(LSRebuildStatisticsGatherer *)*(items + 8) registeredBundleOfType:v32];
         }
 
         v12 = OUTLINED_FUNCTION_21(v33, v34, v35, v36, v37, v38, v39, v40, v43, obj, v46, v48, v49, v50, v51, v52, v53, v54, v55, v56, v57, v58, v59, v60, v61, v62, v63, v64, v65);
@@ -167,29 +167,29 @@ void __49__LSDatabaseRebuildContext_finishAndArmSaveTimer__block_invoke(uint64_t
   v41 = *MEMORY[0x1E69E9840];
 }
 
-- (void)noteRebuildError:(uint64_t)a1
+- (void)noteRebuildError:(uint64_t)error
 {
   newValue = a2;
-  if (a1)
+  if (error)
   {
-    objc_storeStrong((a1 + 24), a2);
-    [(LSRebuildStatisticsGatherer *)*(a1 + 8) setRebuildError:?];
+    objc_storeStrong((error + 24), a2);
+    [(LSRebuildStatisticsGatherer *)*(error + 8) setRebuildError:?];
   }
 }
 
 - (id)finishAndArmSaveTimer
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
+    selfCopy = self;
     v3 = _LSServer_DatabaseExecutionContext();
     [(LSDBExecutionContext *)v3 syncWrite:?];
 
-    a1 = v2[3];
+    self = selfCopy[3];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 void __68__LSDatabaseRebuildContext_withStatsGatherer_runWithRebuildContext___block_invoke_cold_1(uint64_t a1)

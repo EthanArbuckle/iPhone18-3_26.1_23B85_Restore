@@ -1,34 +1,34 @@
 @interface _INPBHomeAttributeValue
-- (BOOL)isEqual:(id)a3;
-- (_INPBHomeAttributeValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBHomeAttributeValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsLimitValue:(id)a3;
-- (int)StringAsUnit:(id)a3;
-- (int)StringAsValueType:(id)a3;
+- (int)StringAsLimitValue:(id)value;
+- (int)StringAsUnit:(id)unit;
+- (int)StringAsValueType:(id)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHasDoubleValue:(BOOL)a3;
-- (void)setHasIntegerValue:(BOOL)a3;
-- (void)setHasLimitValue:(BOOL)a3;
-- (void)setHasUnit:(BOOL)a3;
-- (void)setHasValueType:(BOOL)a3;
-- (void)setLimitValue:(int)a3;
-- (void)setStringValue:(id)a3;
-- (void)setUnit:(int)a3;
-- (void)setValueType:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHasDoubleValue:(BOOL)value;
+- (void)setHasIntegerValue:(BOOL)value;
+- (void)setHasLimitValue:(BOOL)value;
+- (void)setHasUnit:(BOOL)unit;
+- (void)setHasValueType:(BOOL)type;
+- (void)setLimitValue:(int)value;
+- (void)setStringValue:(id)value;
+- (void)setUnit:(int)unit;
+- (void)setValueType:(int)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBHomeAttributeValue
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBHomeAttributeValue *)self hasBooleanValue])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBHomeAttributeValue BOOLeanValue](self, "BOOLeanValue")}];
-    [v3 setObject:v4 forKeyedSubscript:@"BOOLeanValue"];
+    [dictionary setObject:v4 forKeyedSubscript:@"BOOLeanValue"];
   }
 
   if ([(_INPBHomeAttributeValue *)self hasDoubleValue])
@@ -36,80 +36,80 @@
     v5 = MEMORY[0x1E696AD98];
     [(_INPBHomeAttributeValue *)self doubleValue];
     v6 = [v5 numberWithDouble:?];
-    [v3 setObject:v6 forKeyedSubscript:@"doubleValue"];
+    [dictionary setObject:v6 forKeyedSubscript:@"doubleValue"];
   }
 
   if ([(_INPBHomeAttributeValue *)self hasIntegerValue])
   {
     v7 = [MEMORY[0x1E696AD98] numberWithInteger:{-[_INPBHomeAttributeValue integerValue](self, "integerValue")}];
-    [v3 setObject:v7 forKeyedSubscript:@"integerValue"];
+    [dictionary setObject:v7 forKeyedSubscript:@"integerValue"];
   }
 
   if ([(_INPBHomeAttributeValue *)self hasLimitValue])
   {
-    v8 = [(_INPBHomeAttributeValue *)self limitValue];
-    if (v8 == 1)
+    limitValue = [(_INPBHomeAttributeValue *)self limitValue];
+    if (limitValue == 1)
     {
       v9 = @"MIN";
     }
 
-    else if (v8 == 2)
+    else if (limitValue == 2)
     {
       v9 = @"MAX";
     }
 
     else
     {
-      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v8];
+      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", limitValue];
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"limitValue"];
+    [dictionary setObject:v9 forKeyedSubscript:@"limitValue"];
   }
 
-  v10 = [(_INPBHomeAttributeValue *)self rangeValue];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"rangeValue"];
+  rangeValue = [(_INPBHomeAttributeValue *)self rangeValue];
+  dictionaryRepresentation = [rangeValue dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"rangeValue"];
 
   if (self->_stringValue)
   {
-    v12 = [(_INPBHomeAttributeValue *)self stringValue];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"stringValue"];
+    stringValue = [(_INPBHomeAttributeValue *)self stringValue];
+    v13 = [stringValue copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"stringValue"];
   }
 
   if ([(_INPBHomeAttributeValue *)self hasUnit])
   {
-    v14 = [(_INPBHomeAttributeValue *)self unit];
-    if ((v14 - 1) >= 5)
+    unit = [(_INPBHomeAttributeValue *)self unit];
+    if ((unit - 1) >= 5)
     {
-      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v14];
+      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", unit];
     }
 
     else
     {
-      v15 = off_1E727F5B8[(v14 - 1)];
+      v15 = off_1E727F5B8[(unit - 1)];
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"unit"];
+    [dictionary setObject:v15 forKeyedSubscript:@"unit"];
   }
 
   if ([(_INPBHomeAttributeValue *)self hasValueType])
   {
-    v16 = [(_INPBHomeAttributeValue *)self valueType];
-    if (v16 >= 6)
+    valueType = [(_INPBHomeAttributeValue *)self valueType];
+    if (valueType >= 6)
     {
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v16];
+      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", valueType];
     }
 
     else
     {
-      v17 = off_1E727F5E0[v16];
+      v17 = off_1E727F5E0[valueType];
     }
 
-    [v3 setObject:v17 forKeyedSubscript:@"valueType"];
+    [dictionary setObject:v17 forKeyedSubscript:@"valueType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -202,44 +202,44 @@
   return v9 ^ v3 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
-  v5 = [(_INPBHomeAttributeValue *)self hasBooleanValue];
-  if (v5 != [v4 hasBooleanValue])
+  hasBooleanValue = [(_INPBHomeAttributeValue *)self hasBooleanValue];
+  if (hasBooleanValue != [equalCopy hasBooleanValue])
   {
     goto LABEL_28;
   }
 
   if ([(_INPBHomeAttributeValue *)self hasBooleanValue])
   {
-    if ([v4 hasBooleanValue])
+    if ([equalCopy hasBooleanValue])
     {
       BOOLeanValue = self->_BOOLeanValue;
-      if (BOOLeanValue != [v4 BOOLeanValue])
+      if (BOOLeanValue != [equalCopy BOOLeanValue])
       {
         goto LABEL_28;
       }
     }
   }
 
-  v7 = [(_INPBHomeAttributeValue *)self hasDoubleValue];
-  if (v7 != [v4 hasDoubleValue])
+  hasDoubleValue = [(_INPBHomeAttributeValue *)self hasDoubleValue];
+  if (hasDoubleValue != [equalCopy hasDoubleValue])
   {
     goto LABEL_28;
   }
 
   if ([(_INPBHomeAttributeValue *)self hasDoubleValue])
   {
-    if ([v4 hasDoubleValue])
+    if ([equalCopy hasDoubleValue])
     {
       doubleValue = self->_doubleValue;
-      [v4 doubleValue];
+      [equalCopy doubleValue];
       if (doubleValue != v9)
       {
         goto LABEL_28;
@@ -247,56 +247,56 @@
     }
   }
 
-  v10 = [(_INPBHomeAttributeValue *)self hasIntegerValue];
-  if (v10 != [v4 hasIntegerValue])
+  hasIntegerValue = [(_INPBHomeAttributeValue *)self hasIntegerValue];
+  if (hasIntegerValue != [equalCopy hasIntegerValue])
   {
     goto LABEL_28;
   }
 
   if ([(_INPBHomeAttributeValue *)self hasIntegerValue])
   {
-    if ([v4 hasIntegerValue])
+    if ([equalCopy hasIntegerValue])
     {
       integerValue = self->_integerValue;
-      if (integerValue != [v4 integerValue])
+      if (integerValue != [equalCopy integerValue])
       {
         goto LABEL_28;
       }
     }
   }
 
-  v12 = [(_INPBHomeAttributeValue *)self hasLimitValue];
-  if (v12 != [v4 hasLimitValue])
+  hasLimitValue = [(_INPBHomeAttributeValue *)self hasLimitValue];
+  if (hasLimitValue != [equalCopy hasLimitValue])
   {
     goto LABEL_28;
   }
 
   if ([(_INPBHomeAttributeValue *)self hasLimitValue])
   {
-    if ([v4 hasLimitValue])
+    if ([equalCopy hasLimitValue])
     {
       limitValue = self->_limitValue;
-      if (limitValue != [v4 limitValue])
+      if (limitValue != [equalCopy limitValue])
       {
         goto LABEL_28;
       }
     }
   }
 
-  v14 = [(_INPBHomeAttributeValue *)self rangeValue];
-  v15 = [v4 rangeValue];
-  if ((v14 != 0) == (v15 == 0))
+  rangeValue = [(_INPBHomeAttributeValue *)self rangeValue];
+  rangeValue2 = [equalCopy rangeValue];
+  if ((rangeValue != 0) == (rangeValue2 == 0))
   {
     goto LABEL_27;
   }
 
-  v16 = [(_INPBHomeAttributeValue *)self rangeValue];
-  if (v16)
+  rangeValue3 = [(_INPBHomeAttributeValue *)self rangeValue];
+  if (rangeValue3)
   {
-    v17 = v16;
-    v18 = [(_INPBHomeAttributeValue *)self rangeValue];
-    v19 = [v4 rangeValue];
-    v20 = [v18 isEqual:v19];
+    v17 = rangeValue3;
+    rangeValue4 = [(_INPBHomeAttributeValue *)self rangeValue];
+    rangeValue5 = [equalCopy rangeValue];
+    v20 = [rangeValue4 isEqual:rangeValue5];
 
     if (!v20)
     {
@@ -308,22 +308,22 @@
   {
   }
 
-  v14 = [(_INPBHomeAttributeValue *)self stringValue];
-  v15 = [v4 stringValue];
-  if ((v14 != 0) == (v15 == 0))
+  rangeValue = [(_INPBHomeAttributeValue *)self stringValue];
+  rangeValue2 = [equalCopy stringValue];
+  if ((rangeValue != 0) == (rangeValue2 == 0))
   {
 LABEL_27:
 
     goto LABEL_28;
   }
 
-  v21 = [(_INPBHomeAttributeValue *)self stringValue];
-  if (v21)
+  stringValue = [(_INPBHomeAttributeValue *)self stringValue];
+  if (stringValue)
   {
-    v22 = v21;
-    v23 = [(_INPBHomeAttributeValue *)self stringValue];
-    v24 = [v4 stringValue];
-    v25 = [v23 isEqual:v24];
+    v22 = stringValue;
+    stringValue2 = [(_INPBHomeAttributeValue *)self stringValue];
+    stringValue3 = [equalCopy stringValue];
+    v25 = [stringValue2 isEqual:stringValue3];
 
     if (!v25)
     {
@@ -335,15 +335,15 @@ LABEL_27:
   {
   }
 
-  v28 = [(_INPBHomeAttributeValue *)self hasUnit];
-  if (v28 == [v4 hasUnit])
+  hasUnit = [(_INPBHomeAttributeValue *)self hasUnit];
+  if (hasUnit == [equalCopy hasUnit])
   {
-    if (!-[_INPBHomeAttributeValue hasUnit](self, "hasUnit") || ![v4 hasUnit] || (unit = self->_unit, unit == objc_msgSend(v4, "unit")))
+    if (!-[_INPBHomeAttributeValue hasUnit](self, "hasUnit") || ![equalCopy hasUnit] || (unit = self->_unit, unit == objc_msgSend(equalCopy, "unit")))
     {
-      v30 = [(_INPBHomeAttributeValue *)self hasValueType];
-      if (v30 == [v4 hasValueType])
+      hasValueType = [(_INPBHomeAttributeValue *)self hasValueType];
+      if (hasValueType == [equalCopy hasValueType])
       {
-        if (!-[_INPBHomeAttributeValue hasValueType](self, "hasValueType") || ![v4 hasValueType] || (valueType = self->_valueType, valueType == objc_msgSend(v4, "valueType")))
+        if (!-[_INPBHomeAttributeValue hasValueType](self, "hasValueType") || ![equalCopy hasValueType] || (valueType = self->_valueType, valueType == objc_msgSend(equalCopy, "valueType")))
         {
           v26 = 1;
           goto LABEL_29;
@@ -359,7 +359,7 @@ LABEL_29:
   return v26;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBHomeAttributeValue allocWithZone:](_INPBHomeAttributeValue init];
   if ([(_INPBHomeAttributeValue *)self hasBooleanValue])
@@ -383,10 +383,10 @@ LABEL_29:
     [(_INPBHomeAttributeValue *)v5 setLimitValue:[(_INPBHomeAttributeValue *)self limitValue]];
   }
 
-  v6 = [(_INPBHomeAttributeRange *)self->_rangeValue copyWithZone:a3];
+  v6 = [(_INPBHomeAttributeRange *)self->_rangeValue copyWithZone:zone];
   [(_INPBHomeAttributeValue *)v5 setRangeValue:v6];
 
-  v7 = [(NSString *)self->_stringValue copyWithZone:a3];
+  v7 = [(NSString *)self->_stringValue copyWithZone:zone];
   [(_INPBHomeAttributeValue *)v5 setStringValue:v7];
 
   if ([(_INPBHomeAttributeValue *)self hasUnit])
@@ -402,33 +402,33 @@ LABEL_29:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBHomeAttributeValue *)self data];
+  coderCopy = coder;
+  data = [(_INPBHomeAttributeValue *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBHomeAttributeValue)initWithCoder:(id)a3
+- (_INPBHomeAttributeValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBHomeAttributeValue *)self initWithData:v6];
+    self = [(_INPBHomeAttributeValue *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v14 = a3;
+  toCopy = to;
   if ([(_INPBHomeAttributeValue *)self hasBooleanValue])
   {
     BOOLeanValue = self->_BOOLeanValue;
@@ -453,17 +453,17 @@ LABEL_29:
     PBDataWriterWriteInt32Field();
   }
 
-  v8 = [(_INPBHomeAttributeValue *)self rangeValue];
+  rangeValue = [(_INPBHomeAttributeValue *)self rangeValue];
 
-  if (v8)
+  if (rangeValue)
   {
-    v9 = [(_INPBHomeAttributeValue *)self rangeValue];
+    rangeValue2 = [(_INPBHomeAttributeValue *)self rangeValue];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_INPBHomeAttributeValue *)self stringValue];
+  stringValue = [(_INPBHomeAttributeValue *)self stringValue];
 
-  if (v10)
+  if (stringValue)
   {
     stringValue = self->_stringValue;
     PBDataWriterWriteStringField();
@@ -482,35 +482,35 @@ LABEL_29:
   }
 }
 
-- (int)StringAsValueType:(id)a3
+- (int)StringAsValueType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"BOOLEAN"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"BOOLEAN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"DOUBLE"])
+  else if ([typeCopy isEqualToString:@"DOUBLE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"STRING"])
+  else if ([typeCopy isEqualToString:@"STRING"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"INTEGER"])
+  else if ([typeCopy isEqualToString:@"INTEGER"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"LIMIT"])
+  else if ([typeCopy isEqualToString:@"LIMIT"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"RANGE"])
+  else if ([typeCopy isEqualToString:@"RANGE"])
   {
     v4 = 5;
   }
@@ -523,9 +523,9 @@ LABEL_29:
   return v4;
 }
 
-- (void)setHasValueType:(BOOL)a3
+- (void)setHasValueType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 32;
   }
@@ -538,10 +538,10 @@ LABEL_29:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setValueType:(int)a3
+- (void)setValueType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xDF;
   }
@@ -549,34 +549,34 @@ LABEL_29:
   else
   {
     *&self->_has = has | 0x20;
-    self->_valueType = a3;
+    self->_valueType = type;
   }
 }
 
-- (int)StringAsUnit:(id)a3
+- (int)StringAsUnit:(id)unit
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PERCENT"])
+  unitCopy = unit;
+  if ([unitCopy isEqualToString:@"PERCENT"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"FAHRENHEIT"])
+  else if ([unitCopy isEqualToString:@"FAHRENHEIT"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CELSIUS"])
+  else if ([unitCopy isEqualToString:@"CELSIUS"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"LUX"])
+  else if ([unitCopy isEqualToString:@"LUX"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SECONDS"])
+  else if ([unitCopy isEqualToString:@"SECONDS"])
   {
     v4 = 5;
   }
@@ -589,9 +589,9 @@ LABEL_29:
   return v4;
 }
 
-- (void)setHasUnit:(BOOL)a3
+- (void)setHasUnit:(BOOL)unit
 {
-  if (a3)
+  if (unit)
   {
     v3 = 16;
   }
@@ -604,10 +604,10 @@ LABEL_29:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setUnit:(int)a3
+- (void)setUnit:(int)unit
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (unit == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xEF;
   }
@@ -615,26 +615,26 @@ LABEL_29:
   else
   {
     *&self->_has = has | 0x10;
-    self->_unit = a3;
+    self->_unit = unit;
   }
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
-  v4 = [a3 copy];
+  v4 = [value copy];
   stringValue = self->_stringValue;
   self->_stringValue = v4;
 
   MEMORY[0x1EEE66BB8](v4, stringValue);
 }
 
-- (int)StringAsLimitValue:(id)a3
+- (int)StringAsLimitValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = 1;
-  if (([v3 isEqualToString:@"MIN"] & 1) == 0)
+  if (([valueCopy isEqualToString:@"MIN"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"MAX"])
+    if ([valueCopy isEqualToString:@"MAX"])
     {
       v4 = 2;
     }
@@ -648,9 +648,9 @@ LABEL_29:
   return v4;
 }
 
-- (void)setHasLimitValue:(BOOL)a3
+- (void)setHasLimitValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 8;
   }
@@ -663,10 +663,10 @@ LABEL_29:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setLimitValue:(int)a3
+- (void)setLimitValue:(int)value
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (value == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xF7;
   }
@@ -674,13 +674,13 @@ LABEL_29:
   else
   {
     *&self->_has = has | 8;
-    self->_limitValue = a3;
+    self->_limitValue = value;
   }
 }
 
-- (void)setHasIntegerValue:(BOOL)a3
+- (void)setHasIntegerValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 4;
   }
@@ -693,9 +693,9 @@ LABEL_29:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasDoubleValue:(BOOL)a3
+- (void)setHasDoubleValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 2;
   }

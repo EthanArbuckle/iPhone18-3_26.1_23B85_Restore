@@ -1,41 +1,41 @@
 @interface AMSDCloudDataManager
-+ (unint64_t)multiUserStatusForRecord:(id)a3 withHomeManager:(id)a4;
-+ (void)handleRecordZoneFetchFailed:(id)a3 inDatabase:(id)a4 withError:(id)a5;
-- (AMSDCloudDataManager)initWithDataSource:(id)a3;
++ (unint64_t)multiUserStatusForRecord:(id)record withHomeManager:(id)manager;
++ (void)handleRecordZoneFetchFailed:(id)failed inDatabase:(id)database withError:(id)error;
+- (AMSDCloudDataManager)initWithDataSource:(id)source;
 - (NSString)pushNotificationTopic;
-- (id)containerWithContainerIdentifier:(id)a3 options:(id)a4;
-- (void)handlePushNotification:(id)a3;
+- (id)containerWithContainerIdentifier:(id)identifier options:(id)options;
+- (void)handlePushNotification:(id)notification;
 @end
 
 @implementation AMSDCloudDataManager
 
-+ (unint64_t)multiUserStatusForRecord:(id)a3 withHomeManager:(id)a4
++ (unint64_t)multiUserStatusForRecord:(id)record withHomeManager:(id)manager
 {
-  v6 = a4;
-  v7 = [AMSDHomeManager identifiersForRecord:a3];
+  managerCopy = manager;
+  v7 = [AMSDHomeManager identifiersForRecord:record];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 first];
-    v10 = [v6 homeWithHomeIdentifier:v9];
+    first = [v7 first];
+    v10 = [managerCopy homeWithHomeIdentifier:first];
     v51 = 0;
-    v11 = [v10 resultWithError:&v51];
+    oSLogObject3 = [v10 resultWithError:&v51];
     v12 = v51;
 
-    if (v11)
+    if (oSLogObject3)
     {
-      v13 = [v11 users];
+      users = [oSLogObject3 users];
       v49[0] = _NSConcreteStackBlock;
       v49[1] = 3221225472;
       v49[2] = sub_100049A50;
       v49[3] = &unk_1002B0248;
       v14 = v8;
       v50 = v14;
-      v15 = [v13 ams_firstObjectPassingTest:v49];
+      v15 = [users ams_firstObjectPassingTest:v49];
 
       if (v15)
       {
-        v16 = [AMSDHomeManager multiUserStatusForHomeUser:v15 inHome:v11];
+        v16 = [AMSDHomeManager multiUserStatusForHomeUser:v15 inHome:oSLogObject3];
       }
 
       else
@@ -46,10 +46,10 @@
           v27 = +[AMSLogConfig sharedConfig];
         }
 
-        v28 = [v27 OSLogObject];
-        if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+        oSLogObject = [v27 OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
-          loga = v28;
+          loga = oSLogObject;
           v29 = AMSLogKey();
           v30 = objc_opt_class();
           v31 = v30;
@@ -65,10 +65,10 @@
             [NSString stringWithFormat:@"%@: ", v30];
           }
           v32 = ;
-          v43 = [v14 second];
+          second = [v14 second];
           v36 = AMSHashIfNeeded();
           v37 = AMSHashIfNeeded();
-          v38 = [v11 users];
+          users2 = [oSLogObject3 users];
           v39 = AMSHashIfNeeded();
           *buf = 138544130;
           v53 = v32;
@@ -88,7 +88,7 @@
             v32 = v42;
           }
 
-          v28 = loga;
+          oSLogObject = loga;
         }
 
         v16 = 0;
@@ -105,8 +105,8 @@
         v21 = +[AMSLogConfig sharedConfig];
       }
 
-      v22 = [v21 OSLogObject];
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v21 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v23 = AMSLogKey();
         v24 = objc_opt_class();
@@ -123,7 +123,7 @@
           [NSString stringWithFormat:@"%@: ", v24];
         }
         v26 = ;
-        v33 = [v8 first];
+        first2 = [v8 first];
         v34 = AMSHashIfNeeded();
         v35 = AMSLogableError();
         *buf = 138543874;
@@ -132,7 +132,7 @@
         v55 = v34;
         v56 = 2114;
         v57 = v35;
-        _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%{public}@Unable to locate home for record. Home Identifier = %{public}@ | error = %{public}@", buf, 0x20u);
+        _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@Unable to locate home for record. Home Identifier = %{public}@ | error = %{public}@", buf, 0x20u);
 
         if (log)
         {
@@ -153,30 +153,30 @@
       v12 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v12 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject3 = [v12 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
     {
       v17 = AMSLogKey();
       v18 = objc_opt_class();
       v19 = v18;
       if (v17)
       {
-        a1 = AMSLogKey();
-        [NSString stringWithFormat:@"%@: [%@] ", v19, a1];
+        self = AMSLogKey();
+        [NSString stringWithFormat:@"%@: [%@] ", v19, self];
       }
 
       else
       {
         [NSString stringWithFormat:@"%@: ", v18];
       }
-      v20 = ;
+      selfCopy = ;
       *buf = 138543362;
-      v53 = v20;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%{public}@Unable to locate identifiers for record", buf, 0xCu);
+      v53 = selfCopy;
+      _os_log_impl(&_mh_execute_header, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@Unable to locate identifiers for record", buf, 0xCu);
       if (v17)
       {
 
-        v20 = a1;
+        selfCopy = self;
       }
     }
 
@@ -186,9 +186,9 @@
   return v16;
 }
 
-- (AMSDCloudDataManager)initWithDataSource:(id)a3
+- (AMSDCloudDataManager)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v10.receiver = self;
   v10.super_class = AMSDCloudDataManager;
   v6 = [(AMSDCloudDataManager *)&v10 init];
@@ -198,7 +198,7 @@
     containers = v6->_containers;
     v6->_containers = v7;
 
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
   }
 
   return v6;
@@ -206,16 +206,16 @@
 
 - (NSString)pushNotificationTopic
 {
-  v2 = [(AMSDCloudDataManager *)self dataSource];
-  v3 = [v2 pushNotificationTopic];
+  dataSource = [(AMSDCloudDataManager *)self dataSource];
+  pushNotificationTopic = [dataSource pushNotificationTopic];
 
-  return v3;
+  return pushNotificationTopic;
 }
 
-- (id)containerWithContainerIdentifier:(id)a3 options:(id)a4
+- (id)containerWithContainerIdentifier:(id)identifier options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  optionsCopy = options;
   v9 = &_s18AppleMediaServices16RemoteSignInTaskC7performSDySSSbGyYaKFTjTu_ptr;
   v10 = +[AMSLogConfig sharedAccountsMultiUserConfig];
   if (!v10)
@@ -223,12 +223,12 @@
     v10 = +[AMSLogConfig sharedConfig];
   }
 
-  v11 = [v10 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v10 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v12 = AMSLogKey();
     v13 = objc_opt_class();
-    v29 = self;
+    selfCopy = self;
     if (v12)
     {
       v14 = AMSLogKey();
@@ -250,21 +250,21 @@
     v36 = v16;
     v37 = 2114;
     v38 = v17;
-    _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "%{public}@identifier: %{public}@ | options = %{public}@", buf, 0x20u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@identifier: %{public}@ | options = %{public}@", buf, 0x20u);
     if (v12)
     {
 
       v15 = a2;
     }
 
-    self = v29;
+    self = selfCopy;
     v9 = &_s18AppleMediaServices16RemoteSignInTaskC7performSDySSSbGyYaKFTjTu_ptr;
   }
 
-  if (v7)
+  if (identifierCopy)
   {
-    v18 = [(AMSDCloudDataManager *)self containers];
-    v19 = [v18 objectForKeyedSubscript:v7];
+    containers = [(AMSDCloudDataManager *)self containers];
+    v19 = [containers objectForKeyedSubscript:identifierCopy];
 
     if (v19)
     {
@@ -280,8 +280,8 @@
       v20 = +[AMSLogConfig sharedConfig];
     }
 
-    v21 = [v20 OSLogObject];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v20 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v22 = AMSLogKey();
       v23 = objc_opt_class();
@@ -299,7 +299,7 @@
       v25 = ;
       *buf = 138543362;
       v34 = v25;
-      _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "%{public}@Attempting to create a cloud container with no identifier", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@Attempting to create a cloud container with no identifier", buf, 0xCu);
       if (v22)
       {
 
@@ -308,20 +308,20 @@
     }
   }
 
-  v26 = [(AMSDCloudDataManager *)self dataSource];
-  v19 = [v26 containerWithContainerIdentifier:v7 options:v8];
+  dataSource = [(AMSDCloudDataManager *)self dataSource];
+  v19 = [dataSource containerWithContainerIdentifier:identifierCopy options:optionsCopy];
 
-  if (v7)
+  if (identifierCopy)
   {
-    v27 = [(AMSDCloudDataManager *)self containers];
+    containers2 = [(AMSDCloudDataManager *)self containers];
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = sub_100049F8C;
     v30[3] = &unk_1002B0270;
     v19 = v19;
     v31 = v19;
-    v32 = v7;
-    [v27 readWrite:v30];
+    v32 = identifierCopy;
+    [containers2 readWrite:v30];
   }
 
 LABEL_25:
@@ -329,19 +329,19 @@ LABEL_25:
   return v19;
 }
 
-- (void)handlePushNotification:(id)a3
+- (void)handlePushNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(AMSDCloudDataManager *)self dataSource];
-  [v5 handlePushNotification:v4];
+  notificationCopy = notification;
+  dataSource = [(AMSDCloudDataManager *)self dataSource];
+  [dataSource handlePushNotification:notificationCopy];
 }
 
-+ (void)handleRecordZoneFetchFailed:(id)a3 inDatabase:(id)a4 withError:(id)a5
++ (void)handleRecordZoneFetchFailed:(id)failed inDatabase:(id)database withError:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v9 ams_hasDomain:@"AMSDCloudDataErrorDomain" code:1])
+  failedCopy = failed;
+  databaseCopy = database;
+  errorCopy = error;
+  if ([errorCopy ams_hasDomain:@"AMSDCloudDataErrorDomain" code:1])
   {
     v10 = +[AMSLogConfig sharedAccountsMultiUserConfig];
     if (!v10)
@@ -349,13 +349,13 @@ LABEL_25:
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v12 = objc_opt_class();
       v13 = AMSLogKey();
       AMSHashIfNeeded();
-      v14 = v31 = v7;
+      v14 = v31 = failedCopy;
       v15 = AMSHashIfNeeded();
       v16 = AMSHashIfNeeded();
       *buf = 138544386;
@@ -368,14 +368,14 @@ LABEL_25:
       v42 = v15;
       v43 = 2114;
       v44 = v16;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Encryption keys are missing for a record zone. zoneIdentifier = %{public}@ | database = %{public}@ | error = %{public}@", buf, 0x34u);
+      _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Encryption keys are missing for a record zone. zoneIdentifier = %{public}@ | database = %{public}@ | error = %{public}@", buf, 0x34u);
     }
 
-    if ([v8 isPrivateDatabase])
+    if ([databaseCopy isPrivateDatabase])
     {
-      v34 = v7;
+      v34 = failedCopy;
       v17 = [NSArray arrayWithObjects:&v34 count:1];
-      v18 = [v8 deleteRecordZonesWithRecordZoneIdentifiers:v17];
+      v18 = [databaseCopy deleteRecordZonesWithRecordZoneIdentifiers:v17];
       v33 = 0;
       v19 = [v18 resultWithError:&v33];
       v20 = v33;
@@ -386,11 +386,11 @@ LABEL_25:
       }
     }
 
-    else if ([v8 isSharedDatabase])
+    else if ([databaseCopy isSharedDatabase])
     {
-      v21 = [v8 shareForRecordZoneIdentifier:v7];
-      v22 = [v21 identifier];
-      v23 = [v8 deleteRecordWithRecordIdentifier:v22 missingEncryptionIdentity:1];
+      v21 = [databaseCopy shareForRecordZoneIdentifier:failedCopy];
+      identifier = [v21 identifier];
+      v23 = [databaseCopy deleteRecordWithRecordIdentifier:identifier missingEncryptionIdentity:1];
       v32 = 0;
       v24 = [v23 resultWithError:&v32];
       v20 = v32;
@@ -404,8 +404,8 @@ LABEL_11:
           v25 = +[AMSLogConfig sharedConfig];
         }
 
-        v26 = [(AMSDRefreshMultiUserOptions *)v25 OSLogObject];
-        if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+        oSLogObject2 = [(AMSDRefreshMultiUserOptions *)v25 OSLogObject];
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
         {
           v27 = objc_opt_class();
           v28 = AMSLogKey();
@@ -416,7 +416,7 @@ LABEL_11:
           v38 = v28;
           v39 = 2114;
           v40 = v29;
-          _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to cleanup a record zone with missing encryption keys. error = %{public}@", buf, 0x20u);
+          _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to cleanup a record zone with missing encryption keys. error = %{public}@", buf, 0x20u);
         }
 
         goto LABEL_17;
@@ -431,8 +431,8 @@ LABEL_11:
     v25 = [[AMSDRefreshMultiUserOptions alloc] initWithReason:@"Missing encryption keys."];
     [(AMSDRefreshMultiUserOptions *)v25 setSchedulingInterval:60.0];
     [(AMSDRefreshMultiUserOptions *)v25 setShouldUseCloudData:1];
-    v26 = +[AMSDMultiUserController sharedController];
-    v30 = [v26 refreshWithOptions:v25];
+    oSLogObject2 = +[AMSDMultiUserController sharedController];
+    v30 = [oSLogObject2 refreshWithOptions:v25];
 LABEL_17:
   }
 }

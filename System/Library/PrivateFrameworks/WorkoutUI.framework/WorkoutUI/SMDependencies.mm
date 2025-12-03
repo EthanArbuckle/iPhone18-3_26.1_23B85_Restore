@@ -1,5 +1,5 @@
 @interface SMDependencies
-+ (id)workoutDependenciesWithWheelchairStatusProvider:(id)a3;
++ (id)workoutDependenciesWithWheelchairStatusProvider:(id)provider;
 - (SMDependencies)init;
 @end
 
@@ -12,14 +12,14 @@
   return result;
 }
 
-+ (id)workoutDependenciesWithWheelchairStatusProvider:(id)a3
++ (id)workoutDependenciesWithWheelchairStatusProvider:(id)provider
 {
   type metadata accessor for Dependencies();
   type metadata accessor for OS_dispatch_queue();
   swift_unknownObjectRetain();
   v4 = static OS_dispatch_queue.main.getter();
   swift_getObjectType();
-  v5 = specialized static Dependencies.workout(wheelchairStatusProvider:queue:)(a3, v4);
+  v5 = specialized static Dependencies.workout(wheelchairStatusProvider:queue:)(provider, v4);
 
   v6 = type metadata accessor for DependenciesWrapper();
   v7 = objc_allocWithZone(v6);

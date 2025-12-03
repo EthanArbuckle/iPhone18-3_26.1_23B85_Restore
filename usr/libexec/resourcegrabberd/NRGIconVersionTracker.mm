@@ -1,28 +1,28 @@
 @interface NRGIconVersionTracker
-- (BOOL)_appVersionChanged:(id)a3;
-- (NRGIconVersionTracker)initWithDelegate:(id)a3;
+- (BOOL)_appVersionChanged:(id)changed;
+- (NRGIconVersionTracker)initWithDelegate:(id)delegate;
 - (NRGIconVersionTracking)delegate;
 - (id)_activeVersionHistoryURL;
-- (id)_noLongerTrackedBundleIDs:(id)a3;
+- (id)_noLongerTrackedBundleIDs:(id)ds;
 - (id)_readActiveIconVersions;
 - (void)_appConduitUpdated;
 - (void)_removeActiveIconVersions;
-- (void)_withLock:(id)a3;
+- (void)_withLock:(id)lock;
 - (void)_writeActiveIconVersions;
 - (void)commit;
 - (void)dealloc;
 - (void)deviceSwitched;
 - (void)reset;
-- (void)setVersion:(id)a3 forBundleID:(id)a4;
+- (void)setVersion:(id)version forBundleID:(id)d;
 - (void)start;
 - (void)suspend;
 @end
 
 @implementation NRGIconVersionTracker
 
-- (NRGIconVersionTracker)initWithDelegate:(id)a3
+- (NRGIconVersionTracker)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = NRGIconVersionTracker;
   v5 = [(NRGIconVersionTracker *)&v12 init];
@@ -31,10 +31,10 @@
   {
     v5->_appConduitNotifyToken = -1;
     v5->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v5->_delegate, v4);
-    v7 = [(NRGIconVersionTracker *)v6 _readActiveIconVersions];
+    objc_storeWeak(&v5->_delegate, delegateCopy);
+    _readActiveIconVersions = [(NRGIconVersionTracker *)v6 _readActiveIconVersions];
     iconVersionDictionary = v6->_iconVersionDictionary;
-    v6->_iconVersionDictionary = v7;
+    v6->_iconVersionDictionary = _readActiveIconVersions;
 
     v9 = nrg_daemon_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -62,11 +62,11 @@
   [(NRGIconVersionTracker *)&v3 dealloc];
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -115,18 +115,18 @@
   [(NRGIconVersionTracker *)self _withLock:v4];
 }
 
-- (void)setVersion:(id)a3 forBundleID:(id)a4
+- (void)setVersion:(id)version forBundleID:(id)d
 {
-  v6 = a3;
+  versionCopy = version;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100004A04;
   v9[3] = &unk_1000205F8;
   v9[4] = self;
-  v10 = a4;
-  v11 = v6;
-  v7 = v6;
-  v8 = v10;
+  dCopy = d;
+  v11 = versionCopy;
+  v7 = versionCopy;
+  v8 = dCopy;
   [(NRGIconVersionTracker *)self _withLock:v9];
 }
 
@@ -166,7 +166,7 @@
     v11[2] = sub_100004D94;
     v11[3] = &unk_100020670;
     v12 = v7;
-    v13 = self;
+    selfCopy = self;
     v14 = v6;
     v9 = v6;
     v10 = v7;
@@ -185,25 +185,25 @@
   }
 }
 
-- (id)_noLongerTrackedBundleIDs:(id)a3
+- (id)_noLongerTrackedBundleIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   +[NSMutableSet set];
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_100005278;
   v12 = v11 = &unk_100020648;
-  v13 = self;
+  selfCopy = self;
   v5 = v12;
   [(NRGIconVersionTracker *)self _withLock:&v8];
-  [v5 minusSet:{v4, v8, v9, v10, v11}];
+  [v5 minusSet:{dsCopy, v8, v9, v10, v11}];
 
   v6 = [v5 copy];
 
   return v6;
 }
 
-- (BOOL)_appVersionChanged:(id)a3
+- (BOOL)_appVersionChanged:(id)changed
 {
   v18 = 0;
   v19 = &v18;
@@ -216,25 +216,25 @@
   v14[2] = sub_10000559C;
   v14[3] = &unk_100020698;
   v17 = &v18;
-  v15 = self;
-  v3 = a3;
-  v16 = v3;
-  [(NRGIconVersionTracker *)v15 _withLock:v14];
+  selfCopy = self;
+  changedCopy = changed;
+  v16 = changedCopy;
+  [(NRGIconVersionTracker *)selfCopy _withLock:v14];
   v4 = v19[5];
-  v5 = [v3 bundleShortVersion];
-  v6 = [v4 isEqualToString:v5];
+  bundleShortVersion = [changedCopy bundleShortVersion];
+  v6 = [v4 isEqualToString:bundleShortVersion];
 
   if (v6)
   {
     v7 = nrg_daemon_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [v3 bundleIdentifier];
-      v9 = [v3 bundleShortVersion];
+      bundleIdentifier = [changedCopy bundleIdentifier];
+      bundleShortVersion2 = [changedCopy bundleShortVersion];
       *buf = 138412546;
-      v25 = v8;
+      v25 = bundleIdentifier;
       v26 = 2112;
-      v27 = v9;
+      v27 = bundleShortVersion2;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%@ (%@) version hasn't changed", buf, 0x16u);
     }
   }
@@ -244,15 +244,15 @@
     v7 = nrg_daemon_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v3 bundleIdentifier];
+      bundleIdentifier2 = [changedCopy bundleIdentifier];
       v11 = v19[5];
-      v12 = [v3 bundleShortVersion];
+      bundleShortVersion3 = [changedCopy bundleShortVersion];
       *buf = 138412802;
-      v25 = v10;
+      v25 = bundleIdentifier2;
       v26 = 2112;
       v27 = v11;
       v28 = 2112;
-      v29 = v12;
+      v29 = bundleShortVersion3;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%@ version changed from %@ to %@", buf, 0x20u);
     }
   }
@@ -290,10 +290,10 @@
 - (id)_readActiveIconVersions
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(NRGIconVersionTracker *)self _activeVersionHistoryURL];
-  if (v4)
+  _activeVersionHistoryURL = [(NRGIconVersionTracker *)self _activeVersionHistoryURL];
+  if (_activeVersionHistoryURL)
   {
-    v5 = [NSData dataWithContentsOfURL:v4];
+    v5 = [NSData dataWithContentsOfURL:_activeVersionHistoryURL];
     if (v5)
     {
       v6 = objc_opt_class();
@@ -306,7 +306,7 @@
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v14 = v4;
+          v14 = _activeVersionHistoryURL;
           v15 = 2112;
           v16 = v7;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "loaded icon versions from %@ %@", buf, 0x16u);
@@ -332,8 +332,8 @@
 
 - (void)_writeActiveIconVersions
 {
-  v3 = [(NRGIconVersionTracker *)self _activeVersionHistoryURL];
-  if (v3)
+  _activeVersionHistoryURL = [(NRGIconVersionTracker *)self _activeVersionHistoryURL];
+  if (_activeVersionHistoryURL)
   {
     iconVersionDictionary = self->_iconVersionDictionary;
     p_iconVersionDictionary = &self->_iconVersionDictionary;
@@ -352,7 +352,7 @@
     else
     {
       v12 = 0;
-      [v6 writeToURL:v3 options:0x10000000 error:&v12];
+      [v6 writeToURL:_activeVersionHistoryURL options:0x10000000 error:&v12];
       v8 = v12;
       if (v8)
       {
@@ -371,7 +371,7 @@
         {
           v11 = *p_iconVersionDictionary;
           *buf = 138412546;
-          v15 = v3;
+          v15 = _activeVersionHistoryURL;
           v16 = 2112;
           v17 = v11;
           _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "wrote icon versions to %@ %@", buf, 0x16u);
@@ -383,11 +383,11 @@
 
 - (void)_removeActiveIconVersions
 {
-  v2 = [(NRGIconVersionTracker *)self _activeVersionHistoryURL];
-  v3 = v2;
-  if (v2)
+  _activeVersionHistoryURL = [(NRGIconVersionTracker *)self _activeVersionHistoryURL];
+  v3 = _activeVersionHistoryURL;
+  if (_activeVersionHistoryURL)
   {
-    v4 = +[NSString stringWithCString:encoding:](NSString, "stringWithCString:encoding:", [v2 fileSystemRepresentation], 4);
+    v4 = +[NSString stringWithCString:encoding:](NSString, "stringWithCString:encoding:", [_activeVersionHistoryURL fileSystemRepresentation], 4);
     v5 = +[NSFileManager defaultManager];
     v6 = [v5 fileExistsAtPath:v4];
 

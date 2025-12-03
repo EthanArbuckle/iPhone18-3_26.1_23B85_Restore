@@ -1,10 +1,10 @@
 @interface IDSProfileGetHandlesMessage
 - (IDSProfileGetHandlesMessage)init;
 - (id)additionalMessageHeaders;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
-- (void)handleResponseDictionary:(id)a3;
+- (void)handleResponseDictionary:(id)dictionary;
 @end
 
 @implementation IDSProfileGetHandlesMessage
@@ -41,18 +41,18 @@
 {
   v7.receiver = self;
   v7.super_class = IDSProfileGetHandlesMessage;
-  v3 = [(IDSProfileGetHandlesMessage *)&v7 additionalMessageHeaders];
-  v4 = [v3 mutableCopy];
+  additionalMessageHeaders = [(IDSProfileGetHandlesMessage *)&v7 additionalMessageHeaders];
+  v4 = [additionalMessageHeaders mutableCopy];
 
   if (!v4)
   {
     v4 = objc_alloc_init(NSMutableDictionary);
   }
 
-  v5 = [(IDSProfileGetHandlesMessage *)self dsAuthID];
-  if (v5)
+  dsAuthID = [(IDSProfileGetHandlesMessage *)self dsAuthID];
+  if (dsAuthID)
   {
-    CFDictionarySetValue(v4, @"x-ds-client-id", v5);
+    CFDictionarySetValue(v4, @"x-ds-client-id", dsAuthID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -63,27 +63,27 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = IDSProfileGetHandlesMessage;
-  v4 = [(IDSProfileGetHandlesMessage *)&v7 copyWithZone:a3];
-  v5 = [(IDSProfileGetHandlesMessage *)self responseHandles];
-  [v4 setResponseHandles:v5];
+  v4 = [(IDSProfileGetHandlesMessage *)&v7 copyWithZone:zone];
+  responseHandles = [(IDSProfileGetHandlesMessage *)self responseHandles];
+  [v4 setResponseHandles:responseHandles];
 
   return v4;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
   v7.receiver = self;
   v7.super_class = IDSProfileGetHandlesMessage;
-  v4 = a3;
-  [(IDSProfileGetHandlesMessage *)&v7 handleResponseDictionary:v4];
-  v5 = [v4 objectForKey:{@"handles", v7.receiver, v7.super_class}];
+  dictionaryCopy = dictionary;
+  [(IDSProfileGetHandlesMessage *)&v7 handleResponseDictionary:dictionaryCopy];
+  v5 = [dictionaryCopy objectForKey:{@"handles", v7.receiver, v7.super_class}];
   [(IDSProfileGetHandlesMessage *)self setResponseHandles:v5];
 
-  v6 = [v4 objectForKey:@"self-handle"];
+  v6 = [dictionaryCopy objectForKey:@"self-handle"];
 
   [(IDSProfileGetHandlesMessage *)self setSelfHandle:v6];
 }

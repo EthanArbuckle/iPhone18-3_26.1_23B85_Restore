@@ -1,9 +1,9 @@
 @interface SunriseSunsetProvider
-- (SunriseSunsetProvider)initWithCallback:(id)a3;
-- (id)copySunriseSunsetInfo:(int)a3;
+- (SunriseSunsetProvider)initWithCallback:(id)callback;
+- (id)copySunriseSunsetInfo:(int)info;
 - (id)copySunsetSunriseInfoFromContext;
 - (void)dealloc;
-- (void)registerBlock:(id)a3;
+- (void)registerBlock:(id)block;
 - (void)unregisterBlock;
 - (void)unregisterNotification;
 - (void)updateSunriseSunsetInfo;
@@ -14,21 +14,21 @@
 - (id)copySunsetSunriseInfoFromContext
 {
   v26 = *MEMORY[0x1E69E9840];
-  v24 = self;
+  selfCopy = self;
   v23 = a2;
   v22 = 0;
   v21 = 0;
   if (self->_duetContextStore)
   {
-    if (v24->_duetKeyPath)
+    if (selfCopy->_duetKeyPath)
     {
-      v22 = [(_CDClientContext *)v24->_duetContextStore objectForKeyedSubscript:v24->_duetKeyPath];
+      v22 = [(_CDClientContext *)selfCopy->_duetContextStore objectForKeyedSubscript:selfCopy->_duetKeyPath];
       if (v22)
       {
         v21 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:2];
-        if (v24->_logHandle)
+        if (selfCopy->_logHandle)
         {
-          logHandle = v24->_logHandle;
+          logHandle = selfCopy->_logHandle;
         }
 
         else
@@ -60,8 +60,8 @@
         v18 = NSClassFromString(&cfstr_Cdcontextqueri.isa);
         v16 = [v22 objectForKeyedSubscript:[(objc_class *)v18 sunriseSunsetAvailabilityStatusKey]];
         [v21 setValue:v16 forKey:@"status"];
-        v17 = [(objc_class *)v18 currentSunriseKey];
-        v15 = [v22 objectForKeyedSubscript:v17];
+        currentSunriseKey = [(objc_class *)v18 currentSunriseKey];
+        v15 = [v22 objectForKeyedSubscript:currentSunriseKey];
         v3[16] = v22;
         v14 = [v22 objectForKeyedSubscript:[(objc_class *)v18 currentSunsetKey]];
         v3[17] = v22;
@@ -87,55 +87,55 @@
   return v21;
 }
 
-- (SunriseSunsetProvider)initWithCallback:(id)a3
+- (SunriseSunsetProvider)initWithCallback:(id)callback
 {
-  v50 = self;
+  selfCopy = self;
   v49 = a2;
-  v48 = a3;
+  callbackCopy = callback;
   v47.receiver = self;
   v47.super_class = SunriseSunsetProvider;
-  v50 = [(SunriseSunsetProvider *)&v47 init];
-  if (v50)
+  selfCopy = [(SunriseSunsetProvider *)&v47 init];
+  if (selfCopy)
   {
     if (dlopen("/System/Library/PrivateFrameworks/CoreDuetContext.framework/CoreDuetContext", 1))
     {
       v3 = os_log_create("com.apple.CoreBrightness.NightShift", "sunprovider");
-      v50->_logHandle = v3;
-      v4 = [NSClassFromString(&cfstr_Cdclientcontex.isa) userContext];
-      v50->_duetContextStore = v4;
-      if (v50->_duetContextStore)
+      selfCopy->_logHandle = v3;
+      userContext = [NSClassFromString(&cfstr_Cdclientcontex.isa) userContext];
+      selfCopy->_duetContextStore = userContext;
+      if (selfCopy->_duetContextStore)
       {
-        v50->_duetDispatchSemaphore = dispatch_semaphore_create(1);
-        if (v48)
+        selfCopy->_duetDispatchSemaphore = dispatch_semaphore_create(1);
+        if (callbackCopy)
         {
-          v5 = _Block_copy(v48);
-          v50->_callbackBlock = v5;
+          v5 = _Block_copy(callbackCopy);
+          selfCopy->_callbackBlock = v5;
         }
 
-        v6 = [NSClassFromString(&cfstr_Cdcontextqueri.isa) keyPathForSunriseSunsetDataDictionary];
-        v50->_duetKeyPath = v6;
+        keyPathForSunriseSunsetDataDictionary = [NSClassFromString(&cfstr_Cdcontextqueri.isa) keyPathForSunriseSunsetDataDictionary];
+        selfCopy->_duetKeyPath = keyPathForSunriseSunsetDataDictionary;
         v7 = NSClassFromString(&cfstr_Cdcontextualpr.isa);
-        v8 = [(objc_class *)v7 predicateForChangeAtKeyPath:v50->_duetKeyPath];
-        v50->_predicate = v8;
+        v8 = [(objc_class *)v7 predicateForChangeAtKeyPath:selfCopy->_duetKeyPath];
+        selfCopy->_predicate = v8;
         v40 = MEMORY[0x1E69E9820];
         v41 = -1073741824;
         v42 = 0;
         v43 = __42__SunriseSunsetProvider_initWithCallback___block_invoke;
         v44 = &unk_1E867D1F8;
-        v45 = v50;
-        v50->_duetCallback = &v40;
+        v45 = selfCopy;
+        selfCopy->_duetCallback = &v40;
         v9 = NSClassFromString(&cfstr_Cdcontextualch.isa);
-        v10 = [(objc_class *)v9 registrationWithIdentifier:@"com.apple.CoreBrightness.registrationForSunsetSunrise" contextualPredicate:v50->_predicate dismissalPolicy:0 deviceSet:0 mustWake:0 callback:v50->_duetCallback];
-        v50->_duetRegistration = v10;
-        if (v50->_duetRegistration)
+        v10 = [(objc_class *)v9 registrationWithIdentifier:@"com.apple.CoreBrightness.registrationForSunsetSunrise" contextualPredicate:selfCopy->_predicate dismissalPolicy:0 deviceSet:0 mustWake:0 callback:selfCopy->_duetCallback];
+        selfCopy->_duetRegistration = v10;
+        if (selfCopy->_duetRegistration)
         {
-          [(_CDClientContext *)v50->_duetContextStore registerCallback:v50->_duetRegistration];
-          v50->_sunriseSunsetNotificationEnabled = 1;
+          [(_CDClientContext *)selfCopy->_duetContextStore registerCallback:selfCopy->_duetRegistration];
+          selfCopy->_sunriseSunsetNotificationEnabled = 1;
         }
 
-        if (v50->_logHandle)
+        if (selfCopy->_logHandle)
         {
-          logHandle = v50->_logHandle;
+          logHandle = selfCopy->_logHandle;
         }
 
         else
@@ -166,9 +166,9 @@
 
       else
       {
-        if (v50->_logHandle)
+        if (selfCopy->_logHandle)
         {
-          v23 = v50->_logHandle;
+          v23 = selfCopy->_logHandle;
         }
 
         else
@@ -196,16 +196,16 @@
           _os_log_error_impl(&dword_1DE8E5000, v20, v21, "Duet context store not available", v34, 2u);
         }
 
-        MEMORY[0x1E69E5920](v50);
+        MEMORY[0x1E69E5920](selfCopy);
         return 0;
       }
     }
 
     else
     {
-      if (v50->_logHandle)
+      if (selfCopy->_logHandle)
       {
-        v19 = v50->_logHandle;
+        v19 = selfCopy->_logHandle;
       }
 
       else
@@ -233,7 +233,7 @@
         _os_log_error_impl(&dword_1DE8E5000, v16, v17, "CoreDuet framework dynamic load failed", v31, 2u);
       }
 
-      MEMORY[0x1E69E5920](v50);
+      MEMORY[0x1E69E5920](selfCopy);
       return 0;
     }
   }
@@ -242,7 +242,7 @@
   {
     if (MEMORY[8])
     {
-      v15 = v50->_logHandle;
+      v15 = selfCopy->_logHandle;
     }
 
     else
@@ -270,11 +270,11 @@
       _os_log_error_impl(&dword_1DE8E5000, v12, v13, "error on initialisation", v28, 2u);
     }
 
-    MEMORY[0x1E69E5920](v50);
+    MEMORY[0x1E69E5920](selfCopy);
     return 0;
   }
 
-  return v50;
+  return selfCopy;
 }
 
 uint64_t __42__SunriseSunsetProvider_initWithCallback___block_invoke(uint64_t a1, uint64_t a2)
@@ -311,14 +311,14 @@ uint64_t __42__SunriseSunsetProvider_initWithCallback___block_invoke(uint64_t a1
   return 1;
 }
 
-- (void)registerBlock:(id)a3
+- (void)registerBlock:(id)block
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
+  blockCopy = block;
   if (self->_logHandle)
   {
-    logHandle = v14->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -346,18 +346,18 @@ uint64_t __42__SunriseSunsetProvider_initWithCallback___block_invoke(uint64_t a1
     _os_log_debug_impl(&dword_1DE8E5000, log, type, "register async callback block", v9, 2u);
   }
 
-  obj = v14;
-  objc_sync_enter(v14);
-  if (v14->_callbackBlock)
+  obj = selfCopy;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_callbackBlock)
   {
-    _Block_release(v14->_callbackBlock);
-    v14->_callbackBlock = 0;
+    _Block_release(selfCopy->_callbackBlock);
+    selfCopy->_callbackBlock = 0;
   }
 
-  if (v12)
+  if (blockCopy)
   {
-    v3 = _Block_copy(v12);
-    v14->_callbackBlock = v3;
+    v3 = _Block_copy(blockCopy);
+    selfCopy->_callbackBlock = v3;
   }
 
   objc_sync_exit(obj);
@@ -365,11 +365,11 @@ uint64_t __42__SunriseSunsetProvider_initWithCallback___block_invoke(uint64_t a1
 
 - (void)unregisterBlock
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
   if (self->_logHandle)
   {
-    logHandle = v11->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -397,12 +397,12 @@ uint64_t __42__SunriseSunsetProvider_initWithCallback___block_invoke(uint64_t a1
     _os_log_debug_impl(&dword_1DE8E5000, log, type, "unregistering async callback block", v7, 2u);
   }
 
-  obj = v11;
-  objc_sync_enter(v11);
-  if (v11->_callbackBlock)
+  obj = selfCopy;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_callbackBlock)
   {
-    _Block_release(v11->_callbackBlock);
-    v11->_callbackBlock = 0;
+    _Block_release(selfCopy->_callbackBlock);
+    selfCopy->_callbackBlock = 0;
   }
 
   objc_sync_exit(obj);
@@ -410,11 +410,11 @@ uint64_t __42__SunriseSunsetProvider_initWithCallback___block_invoke(uint64_t a1
 
 - (void)unregisterNotification
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
   if (self->_logHandle)
   {
-    logHandle = v11->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -442,26 +442,26 @@ uint64_t __42__SunriseSunsetProvider_initWithCallback___block_invoke(uint64_t a1
     _os_log_debug_impl(&dword_1DE8E5000, log, type, "unregistering notification", v7, 2u);
   }
 
-  obj = v11;
-  objc_sync_enter(v11);
-  if (v11->_duetRegistration)
+  obj = selfCopy;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_duetRegistration)
   {
-    [(_CDClientContext *)v11->_duetContextStore deregisterCallback:v11->_duetRegistration];
-    MEMORY[0x1E69E5920](v11->_duetRegistration);
+    [(_CDClientContext *)selfCopy->_duetContextStore deregisterCallback:selfCopy->_duetRegistration];
+    MEMORY[0x1E69E5920](selfCopy->_duetRegistration);
   }
 
-  v11->_sunriseSunsetNotificationEnabled = 0;
+  selfCopy->_sunriseSunsetNotificationEnabled = 0;
   objc_sync_exit(obj);
 }
 
 - (void)dealloc
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
   objc_sync_enter(self);
-  if (v12->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    logHandle = v12->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -489,36 +489,36 @@ uint64_t __42__SunriseSunsetProvider_initWithCallback___block_invoke(uint64_t a1
     _os_log_impl(&dword_1DE8E5000, log, type, "SunriseSunsetProvider terminating", v8, 2u);
   }
 
-  if (v12->_duetDispatchSemaphore)
+  if (selfCopy->_duetDispatchSemaphore)
   {
-    dispatch_semaphore_wait(v12->_duetDispatchSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-    dispatch_release(v12->_duetDispatchSemaphore);
-    v12->_duetDispatchSemaphore = 0;
+    dispatch_semaphore_wait(selfCopy->_duetDispatchSemaphore, 0xFFFFFFFFFFFFFFFFLL);
+    dispatch_release(selfCopy->_duetDispatchSemaphore);
+    selfCopy->_duetDispatchSemaphore = 0;
   }
 
-  MEMORY[0x1E69E5920](v12->_duetKeyPath);
-  v12->_duetKeyPath = 0;
-  MEMORY[0x1E69E5920](v12->_duetContextStore);
-  v12->_duetContextStore = 0;
-  MEMORY[0x1E69E5920](v12->_predicate);
-  v12->_predicate = 0;
-  if (v12->_logHandle)
+  MEMORY[0x1E69E5920](selfCopy->_duetKeyPath);
+  selfCopy->_duetKeyPath = 0;
+  MEMORY[0x1E69E5920](selfCopy->_duetContextStore);
+  selfCopy->_duetContextStore = 0;
+  MEMORY[0x1E69E5920](selfCopy->_predicate);
+  selfCopy->_predicate = 0;
+  if (selfCopy->_logHandle)
   {
-    MEMORY[0x1E69E5920](v12->_logHandle);
-    v12->_logHandle = 0;
+    MEMORY[0x1E69E5920](selfCopy->_logHandle);
+    selfCopy->_logHandle = 0;
   }
 
   objc_sync_exit(self);
-  v7.receiver = v12;
+  v7.receiver = selfCopy;
   v7.super_class = SunriseSunsetProvider;
   [(SunriseSunsetProvider *)&v7 dealloc];
 }
 
-- (id)copySunriseSunsetInfo:(int)a3
+- (id)copySunriseSunsetInfo:(int)info
 {
-  v53 = self;
+  selfCopy = self;
   v52 = a2;
-  v51 = a3;
+  infoCopy = info;
   v50 = 0;
   v43 = 0;
   v44 = &v43;
@@ -533,11 +533,11 @@ uint64_t __42__SunriseSunsetProvider_initWithCallback___block_invoke(uint64_t a1
   v41 = 32;
   v42 = 0;
   objc_sync_enter(self);
-  if (!v53->_duetDispatchSemaphore || dispatch_semaphore_wait(v53->_duetDispatchSemaphore, 0))
+  if (!selfCopy->_duetDispatchSemaphore || dispatch_semaphore_wait(selfCopy->_duetDispatchSemaphore, 0))
   {
-    if (v53->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v53->_logHandle;
+      logHandle = selfCopy->_logHandle;
     }
 
     else
@@ -575,16 +575,16 @@ uint64_t __42__SunriseSunsetProvider_initWithCallback___block_invoke(uint64_t a1
     v33 = __47__SunriseSunsetProvider_copySunriseSunsetInfo___block_invoke;
     v34 = &unk_1E867D220;
     v36 = &v43;
-    v35 = v53;
+    v35 = selfCopy;
     v37 = &v38;
     dispatch_async(global_queue, &block);
-    dsema = v53->_duetDispatchSemaphore;
-    v4 = dispatch_time(0, 1000000 * v51);
+    dsema = selfCopy->_duetDispatchSemaphore;
+    v4 = dispatch_time(0, 1000000 * infoCopy);
     if (dispatch_semaphore_wait(dsema, v4))
     {
-      if (v53->_logHandle)
+      if (selfCopy->_logHandle)
       {
-        v14 = v53->_logHandle;
+        v14 = selfCopy->_logHandle;
       }
 
       else
@@ -617,9 +617,9 @@ uint64_t __42__SunriseSunsetProvider_initWithCallback___block_invoke(uint64_t a1
 
     else
     {
-      if (v53->_logHandle)
+      if (selfCopy->_logHandle)
       {
-        v18 = v53->_logHandle;
+        v18 = selfCopy->_logHandle;
       }
 
       else
@@ -647,7 +647,7 @@ uint64_t __42__SunriseSunsetProvider_initWithCallback___block_invoke(uint64_t a1
         _os_log_debug_impl(&dword_1DE8E5000, log, type, "sunrise/sunset returned on time", v27, 2u);
       }
 
-      dispatch_semaphore_signal(v53->_duetDispatchSemaphore);
+      dispatch_semaphore_signal(selfCopy->_duetDispatchSemaphore);
       v50 = v44[5];
     }
   }
@@ -713,10 +713,10 @@ uint64_t __47__SunriseSunsetProvider_copySunriseSunsetInfo___block_invoke(uint64
 
 - (void)updateSunriseSunsetInfo
 {
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
   objc_sync_enter(self);
-  if (v18->_sunriseSunsetNotificationEnabled && v18->_duetDispatchSemaphore && !dispatch_semaphore_wait(v18->_duetDispatchSemaphore, 0))
+  if (selfCopy->_sunriseSunsetNotificationEnabled && selfCopy->_duetDispatchSemaphore && !dispatch_semaphore_wait(selfCopy->_duetDispatchSemaphore, 0))
   {
     global_queue = dispatch_get_global_queue(2, 0);
     block = MEMORY[0x1E69E9820];
@@ -724,15 +724,15 @@ uint64_t __47__SunriseSunsetProvider_copySunriseSunsetInfo___block_invoke(uint64
     v13 = 0;
     v14 = __48__SunriseSunsetProvider_updateSunriseSunsetInfo__block_invoke;
     v15 = &unk_1E867B480;
-    v16 = v18;
+    v16 = selfCopy;
     dispatch_async(global_queue, &block);
   }
 
   else
   {
-    if (v18->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v18->_logHandle;
+      logHandle = selfCopy->_logHandle;
     }
 
     else

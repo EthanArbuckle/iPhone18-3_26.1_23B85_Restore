@@ -1,17 +1,17 @@
 @interface SRAppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
 - (SRApplicationDataSource)dataSource;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
 - (void)_invalidateTrialManager;
 - (void)_updateDeferral;
 - (void)_verifyAndSyncTrialExperiments;
-- (void)_windowDidCreateContext:(id)a3;
-- (void)_windowWillDestroyContext:(id)a3;
+- (void)_windowDidCreateContext:(id)context;
+- (void)_windowWillDestroyContext:(id)context;
 - (void)didBecomeActiveHandler;
 - (void)invalidateKeyboardWindowIfNeeded;
 - (void)setUpViews;
 - (void)tearDownViews;
-- (void)userNotificationCenter:(id)a3 willPresentNotification:(id)a4 withCompletionHandler:(id)a5;
+- (void)userNotificationCenter:(id)center willPresentNotification:(id)notification withCompletionHandler:(id)handler;
 - (void)willEnterForegroundHandler;
 - (void)willResignActiveHandler;
 @end
@@ -21,13 +21,13 @@
 - (void)_updateDeferral
 {
   objc_initWeak(&location, self);
-  v3 = [(UIScene *)self->_currentScene _FBSScene];
+  _FBSScene = [(UIScene *)self->_currentScene _FBSScene];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100004004;
   v4[3] = &unk_100168D90;
   objc_copyWeak(&v5, &location);
-  [v3 updateClientSettingsWithBlock:v4];
+  [_FBSScene updateClientSettingsWithBlock:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -36,9 +36,9 @@
 - (void)invalidateKeyboardWindowIfNeeded
 {
   v3 = +[UIKeyboard activeKeyboard];
-  v4 = [v3 window];
+  window = [v3 window];
   v5 = NSClassFromString(@"UIRemoteKeyboardWindow");
-  if (v4)
+  if (window)
   {
     v6 = 1;
   }
@@ -55,13 +55,13 @@
     v16 = 0u;
     v17 = 0u;
     v7 = v18 = 0u;
-    v4 = [v7 countByEnumeratingWithState:&v15 objects:v25 count:16];
-    if (v4)
+    window = [v7 countByEnumeratingWithState:&v15 objects:v25 count:16];
+    if (window)
     {
       v8 = *v16;
       while (2)
       {
-        for (i = 0; i != v4; i = i + 1)
+        for (i = 0; i != window; i = i + 1)
         {
           if (*v16 != v8)
           {
@@ -71,13 +71,13 @@
           v10 = *(*(&v15 + 1) + 8 * i);
           if (objc_opt_isKindOfClass())
           {
-            v4 = v10;
+            window = v10;
             goto LABEL_15;
           }
         }
 
-        v4 = [v7 countByEnumeratingWithState:&v15 objects:v25 count:16];
-        if (v4)
+        window = [v7 countByEnumeratingWithState:&v15 objects:v25 count:16];
+        if (window)
         {
           continue;
         }
@@ -89,11 +89,11 @@
 LABEL_15:
   }
 
-  v11 = [v4 _windowInterfaceOrientation];
-  v12 = [(SRAppDelegate *)self appWindow];
-  v13 = [v12 _windowInterfaceOrientation];
+  _windowInterfaceOrientation = [window _windowInterfaceOrientation];
+  appWindow = [(SRAppDelegate *)self appWindow];
+  _windowInterfaceOrientation2 = [appWindow _windowInterfaceOrientation];
 
-  if (v4 && (objc_opt_respondsToSelector() & 1) != 0 && v11 != v13)
+  if (window && (objc_opt_respondsToSelector() & 1) != 0 && _windowInterfaceOrientation != _windowInterfaceOrientation2)
   {
     v14 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -101,13 +101,13 @@ LABEL_15:
       *buf = 136315650;
       v20 = "[SRAppDelegate invalidateKeyboardWindowIfNeeded]";
       v21 = 2048;
-      v22 = v11;
+      v22 = _windowInterfaceOrientation;
       v23 = 2048;
-      v24 = v13;
+      v24 = _windowInterfaceOrientation2;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s #keyboardInvalidation: Invalidating keyboard window because orientation (%ld) didn't match our launch orientation (%ld)", buf, 0x20u);
     }
 
-    [v4 invalidate];
+    [window invalidate];
   }
 }
 
@@ -115,9 +115,9 @@ LABEL_15:
 {
   [(SRAppDelegate *)self _verifyAndSyncTrialExperiments];
   SiriUISyncCachedPreferences();
-  v4 = [(SRAppDelegate *)self appWindow];
-  v3 = [v4 rootViewController];
-  [v3 willEnterForegroundHandler];
+  appWindow = [(SRAppDelegate *)self appWindow];
+  rootViewController = [appWindow rootViewController];
+  [rootViewController willEnterForegroundHandler];
 }
 
 - (void)_verifyAndSyncTrialExperiments
@@ -149,16 +149,16 @@ LABEL_15:
 
 - (void)setUpViews
 {
-  v3 = [(SRAppDelegate *)self appWindow];
-  v2 = [v3 rootViewController];
-  [v2 setUpViews];
+  appWindow = [(SRAppDelegate *)self appWindow];
+  rootViewController = [appWindow rootViewController];
+  [rootViewController setUpViews];
 }
 
 - (void)didBecomeActiveHandler
 {
-  v3 = [(SRAppDelegate *)self appWindow];
-  v2 = [v3 rootViewController];
-  [v2 didBecomeActiveHandler];
+  appWindow = [(SRAppDelegate *)self appWindow];
+  rootViewController = [appWindow rootViewController];
+  [rootViewController didBecomeActiveHandler];
 }
 
 - (void)_invalidateTrialManager
@@ -170,31 +170,31 @@ LABEL_15:
   }
 }
 
-- (void)_windowDidCreateContext:(id)a3
+- (void)_windowDidCreateContext:(id)context
 {
-  v4 = [a3 object];
-  if (v4 == self->_appWindow)
+  object = [context object];
+  if (object == self->_appWindow)
   {
-    v5 = v4;
+    v5 = object;
     [(SRAppDelegate *)self _updateDeferral];
-    v4 = v5;
+    object = v5;
   }
 }
 
-- (void)_windowWillDestroyContext:(id)a3
+- (void)_windowWillDestroyContext:(id)context
 {
-  v4 = [a3 object];
-  if (v4 == self->_appWindow)
+  object = [context object];
+  if (object == self->_appWindow)
   {
-    v5 = v4;
+    v5 = object;
     [(SRAppDelegate *)self _updateDeferral];
-    v4 = v5;
+    object = v5;
   }
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v5 = [NSNotificationCenter defaultCenter:a3];
+  v5 = [NSNotificationCenter defaultCenter:application];
   [v5 addObserver:self selector:"_windowDidCreateContext:" name:UIWindowDidCreateWindowContextNotification object:0];
   [v5 addObserver:self selector:"_windowWillDestroyContext:" name:UIWindowWillDestroyWindowContextNotification object:0];
   +[SRAssetsUtilities setupBackgroundAssetCheck];
@@ -220,7 +220,7 @@ LABEL_15:
   {
     v12 = v11;
     v13 = getpid();
-    v14 = [(SRSecureWindow *)v7 _contextId];
+    _contextId = [(SRSecureWindow *)v7 _contextId];
     v16 = 136316162;
     v17 = "[SRAppDelegate application:didFinishLaunchingWithOptions:]";
     v18 = 1024;
@@ -230,7 +230,7 @@ LABEL_15:
     v22 = 2048;
     v23 = v7;
     v24 = 1024;
-    v25 = v14;
+    v25 = _contextId;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%s (%u) Creating initial viewController (%p) and window (%p) and contextID %u", &v16, 0x2Cu);
   }
 
@@ -239,32 +239,32 @@ LABEL_15:
   return 1;
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v5 = [a4 configuration];
-  [v5 setDelegateClass:objc_opt_class()];
+  configuration = [session configuration];
+  [configuration setDelegateClass:objc_opt_class()];
 
-  return v5;
+  return configuration;
 }
 
 - (void)tearDownViews
 {
   [(SRAppDelegate *)self _invalidateTrialManager];
-  v4 = [(SRAppDelegate *)self appWindow];
-  v3 = [v4 rootViewController];
-  [v3 tearDownViews];
+  appWindow = [(SRAppDelegate *)self appWindow];
+  rootViewController = [appWindow rootViewController];
+  [rootViewController tearDownViews];
 }
 
 - (void)willResignActiveHandler
 {
-  v3 = [(SRAppDelegate *)self appWindow];
-  v2 = [v3 rootViewController];
-  [v2 willResignActiveHandler];
+  appWindow = [(SRAppDelegate *)self appWindow];
+  rootViewController = [appWindow rootViewController];
+  [rootViewController willResignActiveHandler];
 }
 
-- (void)userNotificationCenter:(id)a3 willPresentNotification:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center willPresentNotification:(id)notification withCompletionHandler:(id)handler
 {
-  v5 = a5;
+  handlerCopy = handler;
   v6 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
@@ -273,7 +273,7 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s Telling notification center to use list and banner presentation options", &v7, 0xCu);
   }
 
-  v5[2](v5, 24);
+  handlerCopy[2](handlerCopy, 24);
 }
 
 - (SRApplicationDataSource)dataSource

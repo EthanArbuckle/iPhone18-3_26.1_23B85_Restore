@@ -1,5 +1,5 @@
 @interface NSData
-+ (id)CKDataWithHexString:(id)a3 stringIsUppercase:(BOOL)a4;
++ (id)CKDataWithHexString:(id)string stringIsUppercase:(BOOL)uppercase;
 - (id)CKHexString;
 - (id)CKLowercaseHexStringWithoutSpaces;
 - (id)CKUppercaseHexStringWithoutSpaces;
@@ -9,9 +9,9 @@
 
 - (id)CKHexString
 {
-  v2 = self;
-  v3 = [(NSData *)v2 bytes];
-  v4 = [(NSData *)v2 length];
+  selfCopy = self;
+  bytes = [(NSData *)selfCopy bytes];
+  v4 = [(NSData *)selfCopy length];
   if (v4 > 0x5555555555555555)
   {
     v5 = 0;
@@ -25,7 +25,7 @@
   if (v7 >= 5)
   {
     v9 = 0;
-    v10 = v3;
+    v10 = bytes;
     v11 = v8;
     do
     {
@@ -81,7 +81,7 @@
   if (v7)
   {
 LABEL_17:
-    v16 = &v3[v9];
+    v16 = &bytes[v9];
     do
     {
       if (*v16 <= 0x9Fu)
@@ -128,8 +128,8 @@ LABEL_27:
 
 - (id)CKLowercaseHexStringWithoutSpaces
 {
-  v2 = [(NSData *)self CKHexString];
-  v3 = [v2 mutableCopy];
+  cKHexString = [(NSData *)self CKHexString];
+  v3 = [cKHexString mutableCopy];
 
   [v3 replaceOccurrencesOfString:@" " withString:&stru_5A178 options:0 range:{0, objc_msgSend(v3, "length")}];
 
@@ -138,21 +138,21 @@ LABEL_27:
 
 - (id)CKUppercaseHexStringWithoutSpaces
 {
-  v2 = [(NSData *)self CKHexString];
-  v3 = [v2 uppercaseString];
-  v4 = [v3 mutableCopy];
+  cKHexString = [(NSData *)self CKHexString];
+  uppercaseString = [cKHexString uppercaseString];
+  v4 = [uppercaseString mutableCopy];
 
   [v4 replaceOccurrencesOfString:@" " withString:&stru_5A178 options:0 range:{0, objc_msgSend(v4, "length")}];
 
   return v4;
 }
 
-+ (id)CKDataWithHexString:(id)a3 stringIsUppercase:(BOOL)a4
++ (id)CKDataWithHexString:(id)string stringIsUppercase:(BOOL)uppercase
 {
-  v4 = a4;
-  v5 = a3;
+  uppercaseCopy = uppercase;
+  stringCopy = string;
   v6 = objc_alloc_init(NSMutableData);
-  if (v4)
+  if (uppercaseCopy)
   {
     v7 = @"0123456789ABCDEF";
   }
@@ -162,7 +162,7 @@ LABEL_27:
     v7 = @"0123456789abcdef";
   }
 
-  if (v4)
+  if (uppercaseCopy)
   {
     v8 = -65;
   }
@@ -173,13 +173,13 @@ LABEL_27:
   }
 
   v9 = [NSCharacterSet characterSetWithCharactersInString:v7];
-  if ([v5 length])
+  if ([stringCopy length])
   {
     v10 = 0;
     do
     {
       v11 = v10;
-      if ([v5 length] <= v10)
+      if ([stringCopy length] <= v10)
       {
         v14 = 0;
         LODWORD(v13) = 0;
@@ -191,7 +191,7 @@ LABEL_27:
         do
         {
           v10 = v12;
-          v13 = [v5 characterAtIndex:v11];
+          v13 = [stringCopy characterAtIndex:v11];
           v14 = [v9 characterIsMember:v13];
           v11 = v10;
           if (v14)
@@ -199,14 +199,14 @@ LABEL_27:
             break;
           }
 
-          v15 = [v5 length];
+          v15 = [stringCopy length];
           v12 = v10 + 1;
         }
 
         while (v15 > v10);
       }
 
-      if ([v5 length] <= v11)
+      if ([stringCopy length] <= v11)
       {
         break;
       }
@@ -214,14 +214,14 @@ LABEL_27:
       ++v10;
       while (1)
       {
-        v16 = [v5 characterAtIndex:v11];
+        v16 = [stringCopy characterAtIndex:v11];
         if ([v9 characterIsMember:v16])
         {
           break;
         }
 
         v11 = v10;
-        if ([v5 length] <= v10++)
+        if ([stringCopy length] <= v10++)
         {
           goto LABEL_27;
         }
@@ -243,7 +243,7 @@ LABEL_27:
       [v6 appendBytes:&v21 length:1];
     }
 
-    while ([v5 length] > v10);
+    while ([stringCopy length] > v10);
   }
 
 LABEL_27:

@@ -1,47 +1,47 @@
 @interface _SFPBSportsSubscriptionRequestItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBSportsSubscriptionRequestItem)initWithDictionary:(id)a3;
-- (_SFPBSportsSubscriptionRequestItem)initWithFacade:(id)a3;
-- (_SFPBSportsSubscriptionRequestItem)initWithJSON:(id)a3;
+- (_SFPBSportsSubscriptionRequestItem)initWithDictionary:(id)dictionary;
+- (_SFPBSportsSubscriptionRequestItem)initWithFacade:(id)facade;
+- (_SFPBSportsSubscriptionRequestItem)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setCanonicalIdentifier:(id)a3;
-- (void)setLeagueIdentifier:(id)a3;
-- (void)setSportIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setCanonicalIdentifier:(id)identifier;
+- (void)setLeagueIdentifier:(id)identifier;
+- (void)setSportIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBSportsSubscriptionRequestItem
 
-- (_SFPBSportsSubscriptionRequestItem)initWithFacade:(id)a3
+- (_SFPBSportsSubscriptionRequestItem)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBSportsSubscriptionRequestItem *)self init];
   if (v5)
   {
-    v6 = [v4 canonicalIdentifier];
+    canonicalIdentifier = [facadeCopy canonicalIdentifier];
 
-    if (v6)
+    if (canonicalIdentifier)
     {
-      v7 = [v4 canonicalIdentifier];
-      [(_SFPBSportsSubscriptionRequestItem *)v5 setCanonicalIdentifier:v7];
+      canonicalIdentifier2 = [facadeCopy canonicalIdentifier];
+      [(_SFPBSportsSubscriptionRequestItem *)v5 setCanonicalIdentifier:canonicalIdentifier2];
     }
 
-    v8 = [v4 sportIdentifier];
+    sportIdentifier = [facadeCopy sportIdentifier];
 
-    if (v8)
+    if (sportIdentifier)
     {
-      v9 = [v4 sportIdentifier];
-      [(_SFPBSportsSubscriptionRequestItem *)v5 setSportIdentifier:v9];
+      sportIdentifier2 = [facadeCopy sportIdentifier];
+      [(_SFPBSportsSubscriptionRequestItem *)v5 setSportIdentifier:sportIdentifier2];
     }
 
-    v10 = [v4 leagueIdentifier];
+    leagueIdentifier = [facadeCopy leagueIdentifier];
 
-    if (v10)
+    if (leagueIdentifier)
     {
-      v11 = [v4 leagueIdentifier];
-      [(_SFPBSportsSubscriptionRequestItem *)v5 setLeagueIdentifier:v11];
+      leagueIdentifier2 = [facadeCopy leagueIdentifier];
+      [(_SFPBSportsSubscriptionRequestItem *)v5 setLeagueIdentifier:leagueIdentifier2];
     }
 
     v12 = v5;
@@ -50,15 +50,15 @@
   return v5;
 }
 
-- (_SFPBSportsSubscriptionRequestItem)initWithDictionary:(id)a3
+- (_SFPBSportsSubscriptionRequestItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = _SFPBSportsSubscriptionRequestItem;
   v5 = [(_SFPBSportsSubscriptionRequestItem *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"canonicalIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"canonicalIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
       [(_SFPBSportsSubscriptionRequestItem *)v5 setCanonicalIdentifier:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"sportIdentifier"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"sportIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
       [(_SFPBSportsSubscriptionRequestItem *)v5 setSportIdentifier:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"leagueIdentifier"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"leagueIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -88,30 +88,30 @@
   return v5;
 }
 
-- (_SFPBSportsSubscriptionRequestItem)initWithJSON:(id)a3
+- (_SFPBSportsSubscriptionRequestItem)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBSportsSubscriptionRequestItem *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBSportsSubscriptionRequestItem *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBSportsSubscriptionRequestItem *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -124,29 +124,29 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_canonicalIdentifier)
   {
-    v4 = [(_SFPBSportsSubscriptionRequestItem *)self canonicalIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"canonicalIdentifier"];
+    canonicalIdentifier = [(_SFPBSportsSubscriptionRequestItem *)self canonicalIdentifier];
+    v5 = [canonicalIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"canonicalIdentifier"];
   }
 
   if (self->_leagueIdentifier)
   {
-    v6 = [(_SFPBSportsSubscriptionRequestItem *)self leagueIdentifier];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"leagueIdentifier"];
+    leagueIdentifier = [(_SFPBSportsSubscriptionRequestItem *)self leagueIdentifier];
+    v7 = [leagueIdentifier copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"leagueIdentifier"];
   }
 
   if (self->_sportIdentifier)
   {
-    v8 = [(_SFPBSportsSubscriptionRequestItem *)self sportIdentifier];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"sportIdentifier"];
+    sportIdentifier = [(_SFPBSportsSubscriptionRequestItem *)self sportIdentifier];
+    v9 = [sportIdentifier copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"sportIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -156,28 +156,28 @@
   return v4 ^ [(NSString *)self->_leagueIdentifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_SFPBSportsSubscriptionRequestItem *)self canonicalIdentifier];
-  v6 = [v4 canonicalIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  canonicalIdentifier = [(_SFPBSportsSubscriptionRequestItem *)self canonicalIdentifier];
+  canonicalIdentifier2 = [equalCopy canonicalIdentifier];
+  if ((canonicalIdentifier != 0) == (canonicalIdentifier2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_SFPBSportsSubscriptionRequestItem *)self canonicalIdentifier];
-  if (v7)
+  canonicalIdentifier3 = [(_SFPBSportsSubscriptionRequestItem *)self canonicalIdentifier];
+  if (canonicalIdentifier3)
   {
-    v8 = v7;
-    v9 = [(_SFPBSportsSubscriptionRequestItem *)self canonicalIdentifier];
-    v10 = [v4 canonicalIdentifier];
-    v11 = [v9 isEqual:v10];
+    v8 = canonicalIdentifier3;
+    canonicalIdentifier4 = [(_SFPBSportsSubscriptionRequestItem *)self canonicalIdentifier];
+    canonicalIdentifier5 = [equalCopy canonicalIdentifier];
+    v11 = [canonicalIdentifier4 isEqual:canonicalIdentifier5];
 
     if (!v11)
     {
@@ -189,20 +189,20 @@
   {
   }
 
-  v5 = [(_SFPBSportsSubscriptionRequestItem *)self sportIdentifier];
-  v6 = [v4 sportIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  canonicalIdentifier = [(_SFPBSportsSubscriptionRequestItem *)self sportIdentifier];
+  canonicalIdentifier2 = [equalCopy sportIdentifier];
+  if ((canonicalIdentifier != 0) == (canonicalIdentifier2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_SFPBSportsSubscriptionRequestItem *)self sportIdentifier];
-  if (v12)
+  sportIdentifier = [(_SFPBSportsSubscriptionRequestItem *)self sportIdentifier];
+  if (sportIdentifier)
   {
-    v13 = v12;
-    v14 = [(_SFPBSportsSubscriptionRequestItem *)self sportIdentifier];
-    v15 = [v4 sportIdentifier];
-    v16 = [v14 isEqual:v15];
+    v13 = sportIdentifier;
+    sportIdentifier2 = [(_SFPBSportsSubscriptionRequestItem *)self sportIdentifier];
+    sportIdentifier3 = [equalCopy sportIdentifier];
+    v16 = [sportIdentifier2 isEqual:sportIdentifier3];
 
     if (!v16)
     {
@@ -214,12 +214,12 @@
   {
   }
 
-  v5 = [(_SFPBSportsSubscriptionRequestItem *)self leagueIdentifier];
-  v6 = [v4 leagueIdentifier];
-  if ((v5 != 0) != (v6 == 0))
+  canonicalIdentifier = [(_SFPBSportsSubscriptionRequestItem *)self leagueIdentifier];
+  canonicalIdentifier2 = [equalCopy leagueIdentifier];
+  if ((canonicalIdentifier != 0) != (canonicalIdentifier2 == 0))
   {
-    v17 = [(_SFPBSportsSubscriptionRequestItem *)self leagueIdentifier];
-    if (!v17)
+    leagueIdentifier = [(_SFPBSportsSubscriptionRequestItem *)self leagueIdentifier];
+    if (!leagueIdentifier)
     {
 
 LABEL_20:
@@ -227,10 +227,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_SFPBSportsSubscriptionRequestItem *)self leagueIdentifier];
-    v20 = [v4 leagueIdentifier];
-    v21 = [v19 isEqual:v20];
+    v18 = leagueIdentifier;
+    leagueIdentifier2 = [(_SFPBSportsSubscriptionRequestItem *)self leagueIdentifier];
+    leagueIdentifier3 = [equalCopy leagueIdentifier];
+    v21 = [leagueIdentifier2 isEqual:leagueIdentifier3];
 
     if (v21)
     {
@@ -250,49 +250,49 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(_SFPBSportsSubscriptionRequestItem *)self canonicalIdentifier];
-  if (v4)
+  toCopy = to;
+  canonicalIdentifier = [(_SFPBSportsSubscriptionRequestItem *)self canonicalIdentifier];
+  if (canonicalIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBSportsSubscriptionRequestItem *)self sportIdentifier];
-  if (v5)
+  sportIdentifier = [(_SFPBSportsSubscriptionRequestItem *)self sportIdentifier];
+  if (sportIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBSportsSubscriptionRequestItem *)self leagueIdentifier];
-  if (v6)
+  leagueIdentifier = [(_SFPBSportsSubscriptionRequestItem *)self leagueIdentifier];
+  if (leagueIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setLeagueIdentifier:(id)a3
+- (void)setLeagueIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   leagueIdentifier = self->_leagueIdentifier;
   self->_leagueIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setSportIdentifier:(id)a3
+- (void)setSportIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   sportIdentifier = self->_sportIdentifier;
   self->_sportIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setCanonicalIdentifier:(id)a3
+- (void)setCanonicalIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   canonicalIdentifier = self->_canonicalIdentifier;
   self->_canonicalIdentifier = v4;
 

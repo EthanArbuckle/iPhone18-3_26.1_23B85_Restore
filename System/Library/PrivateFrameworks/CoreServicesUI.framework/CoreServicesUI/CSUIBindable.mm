@@ -1,33 +1,33 @@
 @interface CSUIBindable
 - (CSUIBindable)init;
-- (CSUIBindable)initWithDocumentProxy:(id)a3;
-- (CSUIBindable)initWithType:(id)a3;
-- (CSUIBindable)initWithURL:(id)a3;
+- (CSUIBindable)initWithDocumentProxy:(id)proxy;
+- (CSUIBindable)initWithType:(id)type;
+- (CSUIBindable)initWithURL:(id)l;
 - (NSString)description;
 @end
 
 @implementation CSUIBindable
 
-- (CSUIBindable)initWithDocumentProxy:(id)a3
+- (CSUIBindable)initWithDocumentProxy:(id)proxy
 {
   v5 = (&self->super.isa + OBJC_IVAR___CSUIBindable_rawBindable);
   *&self->rawBindable[OBJC_IVAR___CSUIBindable_rawBindable + 16] = &type metadata for DocumentProxyBindable;
   v5[4] = sub_2478BCB84();
-  *v5 = a3;
+  *v5 = proxy;
   v8.receiver = self;
   v8.super_class = CSUIBindable;
-  v6 = a3;
+  proxyCopy = proxy;
   return [(CSUIBindable *)&v8 init];
 }
 
-- (CSUIBindable)initWithType:(id)a3
+- (CSUIBindable)initWithType:(id)type
 {
   v5 = sub_2478D88FC();
   v6 = *(v5 - 8);
   v7 = *(v6 + 64);
   MEMORY[0x28223BE20](v5);
   v9 = &v17 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v10 = a3;
+  typeCopy = type;
   sub_2478D88EC();
 
   v11 = sub_2478D88CC();
@@ -44,7 +44,7 @@
   return v15;
 }
 
-- (CSUIBindable)initWithURL:(id)a3
+- (CSUIBindable)initWithURL:(id)l
 {
   v4 = sub_2478D889C();
   v5 = *(v4 - 8);
@@ -66,11 +66,11 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_2478D8CEC();
   MEMORY[0x24C1AD190](0x6E6942495553433CLL, 0xEF203A656C626164);
-  v3 = *&v2->rawBindable[OBJC_IVAR___CSUIBindable_rawBindable + 24];
-  __swift_project_boxed_opaque_existential_0Tm((&v2->super.isa + OBJC_IVAR___CSUIBindable_rawBindable), *&v2->rawBindable[OBJC_IVAR___CSUIBindable_rawBindable + 16]);
+  v3 = *&selfCopy->rawBindable[OBJC_IVAR___CSUIBindable_rawBindable + 24];
+  __swift_project_boxed_opaque_existential_0Tm((&selfCopy->super.isa + OBJC_IVAR___CSUIBindable_rawBindable), *&selfCopy->rawBindable[OBJC_IVAR___CSUIBindable_rawBindable + 16]);
   v4 = *(v3 + 8);
   sub_2478D8E3C();
   MEMORY[0x24C1AD190](62, 0xE100000000000000);

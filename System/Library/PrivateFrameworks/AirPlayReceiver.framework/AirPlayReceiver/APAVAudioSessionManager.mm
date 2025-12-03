@@ -1,23 +1,23 @@
 @interface APAVAudioSessionManager
 + (APAVAudioSessionManager)ambientSessionManager;
 + (APAVAudioSessionManager)mediaSessionManager;
-- (APAVAudioSessionManager)initWithType:(unint64_t)a3;
+- (APAVAudioSessionManager)initWithType:(unint64_t)type;
 - (AVAudioSession)session;
-- (BOOL)_ifNeededChangeSessionTypeAndRequestNewBufferSize:(id *)a3;
-- (BOOL)setActive:(BOOL)a3 error:(id *)a4;
-- (BOOL)setAudioMode:(__CFString *)a3 isLongForm:(BOOL)a4 error:(id *)a5;
-- (BOOL)setDuckOthers:(unsigned __int8)a3 error:(id *)a4;
-- (BOOL)setPreferredHardwareFormat:(int64_t)a3 error:(id *)a4;
-- (BOOL)setPreferredOutputNumberOfChannels:(int64_t)a3 error:(id *)a4;
-- (BOOL)setPrefersMultichannelAudio:(unsigned __int8)a3 error:(id *)a4;
+- (BOOL)_ifNeededChangeSessionTypeAndRequestNewBufferSize:(id *)size;
+- (BOOL)setActive:(BOOL)active error:(id *)error;
+- (BOOL)setAudioMode:(__CFString *)mode isLongForm:(BOOL)form error:(id *)error;
+- (BOOL)setDuckOthers:(unsigned __int8)others error:(id *)error;
+- (BOOL)setPreferredHardwareFormat:(int64_t)format error:(id *)error;
+- (BOOL)setPreferredOutputNumberOfChannels:(int64_t)channels error:(id *)error;
+- (BOOL)setPrefersMultichannelAudio:(unsigned __int8)audio error:(id *)error;
 - (void)dealloc;
 - (void)resetSession;
-- (void)setUpSessionWithIsMixable:(BOOL)a3;
+- (void)setUpSessionWithIsMixable:(BOOL)mixable;
 @end
 
 @implementation APAVAudioSessionManager
 
-- (BOOL)setPreferredHardwareFormat:(int64_t)a3 error:(id *)a4
+- (BOOL)setPreferredHardwareFormat:(int64_t)format error:(id *)error
 {
   FigSimpleMutexLock();
   isSetUp = self->_isSetUp;
@@ -35,16 +35,16 @@
     }
 
     FigSimpleMutexUnlock();
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-6718 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-6718 userInfo:0];
     }
   }
 
   return isSetUp;
 }
 
-- (BOOL)setPreferredOutputNumberOfChannels:(int64_t)a3 error:(id *)a4
+- (BOOL)setPreferredOutputNumberOfChannels:(int64_t)channels error:(id *)error
 {
   FigSimpleMutexLock();
   isSetUp = self->_isSetUp;
@@ -62,29 +62,29 @@
     }
 
     FigSimpleMutexUnlock();
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-6718 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-6718 userInfo:0];
     }
   }
 
   return isSetUp;
 }
 
-- (BOOL)setDuckOthers:(unsigned __int8)a3 error:(id *)a4
+- (BOOL)setDuckOthers:(unsigned __int8)others error:(id *)error
 {
-  v5 = a3;
+  othersCopy = others;
   FigSimpleMutexLock();
   if (!self->_isSetUp)
   {
     if (gLogCategory_APAVAudioSessionManager <= 90 && (gLogCategory_APAVAudioSessionManager != -1 || _LogCategory_Initialize()))
     {
-      v17 = self;
+      selfCopy2 = self;
       v18 = "[APAVAudioSessionManager setDuckOthers:error:]";
       LogPrintF();
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_29;
     }
@@ -94,7 +94,7 @@
     v15 = -6718;
 LABEL_27:
     v11 = 0;
-    *a4 = [v13 errorWithDomain:v14 code:v15 userInfo:{0, v17, v18}];
+    *error = [v13 errorWithDomain:v14 code:v15 userInfo:{0, selfCopy2, v18}];
     goto LABEL_30;
   }
 
@@ -102,11 +102,11 @@ LABEL_27:
   {
     if (gLogCategory_APAVAudioSessionManager <= 90 && (gLogCategory_APAVAudioSessionManager != -1 || _LogCategory_Initialize()))
     {
-      v17 = self;
+      selfCopy2 = self;
       LogPrintF();
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_29;
     }
@@ -134,7 +134,7 @@ LABEL_27:
     v9 = MEMORY[0x277CB80A8];
   }
 
-  v10 = v5 == 0;
+  v10 = othersCopy == 0;
   v11 = 1;
   if (v10)
   {
@@ -146,7 +146,7 @@ LABEL_27:
     v12 = 2;
   }
 
-  if (![(AVAudioSession *)self->_session setCategory:v8 mode:*v9 routeSharingPolicy:0 options:v12 error:a4])
+  if (![(AVAudioSession *)self->_session setCategory:v8 mode:*v9 routeSharingPolicy:0 options:v12 error:error])
   {
     if (gLogCategory_APAVAudioSessionManager <= 90 && (gLogCategory_APAVAudioSessionManager != -1 || _LogCategory_Initialize()))
     {
@@ -162,9 +162,9 @@ LABEL_30:
   return v11;
 }
 
-- (BOOL)setActive:(BOOL)a3 error:(id *)a4
+- (BOOL)setActive:(BOOL)active error:(id *)error
 {
-  v5 = a3;
+  activeCopy = active;
   v15 = 0;
   FigSimpleMutexLock();
   if (!self->_isSetUp)
@@ -178,10 +178,10 @@ LABEL_30:
     goto LABEL_28;
   }
 
-  v7 = [(AVAudioSession *)self->_session categoryOptions];
-  v8 = [(AVAudioSession *)self->_session category];
-  v9 = [(AVAudioSession *)self->_session mode];
-  if (!v5)
+  categoryOptions = [(AVAudioSession *)self->_session categoryOptions];
+  category = [(AVAudioSession *)self->_session category];
+  mode = [(AVAudioSession *)self->_session mode];
+  if (!activeCopy)
   {
     if ([(AVAudioSession *)self->_session setActive:0 error:&v15])
     {
@@ -198,7 +198,7 @@ LABEL_19:
     goto LABEL_28;
   }
 
-  v10 = v9;
+  v10 = mode;
   v11 = [(APAVAudioSessionManager *)self _ifNeededChangeSessionTypeAndRequestNewBufferSize:&v15];
   if (v15)
   {
@@ -217,7 +217,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (v12 && ![(AVAudioSession *)self->_session setCategory:v8 mode:v10 options:v7 error:&v15])
+  if (v12 && ![(AVAudioSession *)self->_session setCategory:category mode:v10 options:categoryOptions error:&v15])
   {
     APSLogErrorAt();
     if (gLogCategory_APAVAudioSessionManager <= 90 && (gLogCategory_APAVAudioSessionManager != -1 || _LogCategory_Initialize()))
@@ -228,7 +228,7 @@ LABEL_27:
 
 LABEL_28:
     v13 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_15;
     }
@@ -244,10 +244,10 @@ LABEL_9:
   }
 
   v13 = 1;
-  if (a4)
+  if (error)
   {
 LABEL_14:
-    *a4 = v15;
+    *error = v15;
   }
 
 LABEL_15:
@@ -255,7 +255,7 @@ LABEL_15:
   return v13;
 }
 
-- (BOOL)_ifNeededChangeSessionTypeAndRequestNewBufferSize:(id *)a3
+- (BOOL)_ifNeededChangeSessionTypeAndRequestNewBufferSize:(id *)size
 {
   v21 = 0;
   FigSimpleMutexCheckIsLockedOnThisThread();
@@ -266,8 +266,8 @@ LABEL_15:
     {
       if (gLogCategory_APAVAudioSessionManager == -1)
       {
-        v8 = _LogCategory_Initialize();
-        if (!v8)
+        isOtherAudioPlaying = _LogCategory_Initialize();
+        if (!isOtherAudioPlaying)
         {
           goto LABEL_19;
         }
@@ -278,25 +278,25 @@ LABEL_30:
     }
 
 LABEL_31:
-    LOBYTE(v8) = 0;
+    LOBYTE(isOtherAudioPlaying) = 0;
     goto LABEL_19;
   }
 
-  v5 = [(AVAudioSession *)self->_session categoryOptions];
-  v6 = [(AVAudioSession *)self->_session IOBufferFrameSize];
+  categoryOptions = [(AVAudioSession *)self->_session categoryOptions];
+  iOBufferFrameSize = [(AVAudioSession *)self->_session IOBufferFrameSize];
   [(AVAudioSession *)self->_session sampleRate];
-  LOBYTE(v8) = 0;
+  LOBYTE(isOtherAudioPlaying) = 0;
   if (self->_type)
   {
     goto LABEL_19;
   }
 
-  if (v5 != 1)
+  if (categoryOptions != 1)
   {
     goto LABEL_19;
   }
 
-  if (v6 < 0x401)
+  if (iOBufferFrameSize < 0x401)
   {
     goto LABEL_19;
   }
@@ -307,8 +307,8 @@ LABEL_31:
     goto LABEL_19;
   }
 
-  v8 = [(AVAudioSession *)self->_session isOtherAudioPlaying];
-  if (!v8)
+  isOtherAudioPlaying = [(AVAudioSession *)self->_session isOtherAudioPlaying];
+  if (!isOtherAudioPlaying)
   {
     goto LABEL_19;
   }
@@ -335,22 +335,22 @@ LABEL_31:
 
     v20 = v10;
     session = self->_session;
-    v16 = self;
-    v18 = v6;
+    selfCopy = self;
+    v18 = iOBufferFrameSize;
     v19 = 1024;
     v17 = v13;
     LogPrintF();
   }
 
-  if (![(AVAudioSession *)self->_session setPreferredIOBufferDuration:&v21 error:v10, session, v16, v17, v18, v19, *&v20])
+  if (![(AVAudioSession *)self->_session setPreferredIOBufferDuration:&v21 error:v10, session, selfCopy, v17, v18, v19, *&v20])
   {
     APSLogErrorAt();
     if (gLogCategory_APAVAudioSessionManager <= 90)
     {
       if (gLogCategory_APAVAudioSessionManager == -1)
       {
-        v8 = _LogCategory_Initialize();
-        if (!v8)
+        isOtherAudioPlaying = _LogCategory_Initialize();
+        if (!isOtherAudioPlaying)
         {
           goto LABEL_19;
         }
@@ -364,7 +364,7 @@ LABEL_31:
 
   if ([(AVAudioSession *)self->_session setCategory:*MEMORY[0x277CB8030] mode:*MEMORY[0x277CB80A8] options:0 error:&v21])
   {
-    LOBYTE(v8) = 1;
+    LOBYTE(isOtherAudioPlaying) = 1;
     goto LABEL_19;
   }
 
@@ -379,22 +379,22 @@ LABEL_31:
     goto LABEL_30;
   }
 
-  v8 = _LogCategory_Initialize();
-  if (v8)
+  isOtherAudioPlaying = _LogCategory_Initialize();
+  if (isOtherAudioPlaying)
   {
     goto LABEL_30;
   }
 
 LABEL_19:
-  if (a3)
+  if (size)
   {
-    *a3 = v21;
+    *size = v21;
   }
 
-  return v8;
+  return isOtherAudioPlaying;
 }
 
-- (BOOL)setPrefersMultichannelAudio:(unsigned __int8)a3 error:(id *)a4
+- (BOOL)setPrefersMultichannelAudio:(unsigned __int8)audio error:(id *)error
 {
   FigSimpleMutexLock();
   isSetUp = self->_isSetUp;
@@ -412,18 +412,18 @@ LABEL_19:
     }
 
     FigSimpleMutexUnlock();
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-6718 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-6718 userInfo:0];
     }
   }
 
   return isSetUp;
 }
 
-- (BOOL)setAudioMode:(__CFString *)a3 isLongForm:(BOOL)a4 error:(id *)a5
+- (BOOL)setAudioMode:(__CFString *)mode isLongForm:(BOOL)form error:(id *)error
 {
-  LODWORD(v6) = a4;
+  LODWORD(v6) = form;
   FigSimpleMutexLock();
   if (self->_isSetUp)
   {
@@ -438,12 +438,12 @@ LABEL_19:
 
     if (!type)
     {
-      if (a3 == @"moviePlayback")
+      if (mode == @"moviePlayback")
       {
         goto LABEL_7;
       }
 
-      if (!a3)
+      if (!mode)
       {
 LABEL_9:
         v6 = v6;
@@ -467,18 +467,18 @@ LABEL_11:
 
         if (self->_type || !APSMultiPrimariesEnabled())
         {
-          v17 = [(AVAudioSession *)self->_session setCategory:v14 mode:v9 routeSharingPolicy:v6 options:[(AVAudioSession *)self->_session categoryOptions:session] error:a5];
+          v17 = [(AVAudioSession *)self->_session setCategory:v14 mode:v9 routeSharingPolicy:v6 options:[(AVAudioSession *)self->_session categoryOptions:session] error:error];
         }
 
         else
         {
-          v17 = [(AVAudioSession *)self->_session setCategory:v14 mode:v9 options:[(AVAudioSession *)self->_session categoryOptions] error:a5];
+          v17 = [(AVAudioSession *)self->_session setCategory:v14 mode:v9 options:[(AVAudioSession *)self->_session categoryOptions] error:error];
         }
 
         v16 = v17;
         if (v9 == *MEMORY[0x277CB80E0] && v17)
         {
-          v16 = [(AVAudioSession *)self->_session setMXSessionProperty:*MEMORY[0x277D27318] value:MEMORY[0x277CBEC38] error:a5];
+          v16 = [(AVAudioSession *)self->_session setMXSessionProperty:*MEMORY[0x277D27318] value:MEMORY[0x277CBEC38] error:error];
           if (gLogCategory_APAVAudioSessionManager <= 50 && (gLogCategory_APAVAudioSessionManager != -1 || _LogCategory_Initialize()))
           {
             LogPrintF();
@@ -490,7 +490,7 @@ LABEL_11:
       }
 
       v12 = IntWithDefault;
-      if (CFEqual(a3, @"moviePlayback"))
+      if (CFEqual(mode, @"moviePlayback"))
       {
 LABEL_7:
         v13 = MEMORY[0x277CB80B8];
@@ -498,7 +498,7 @@ LABEL_7:
 
       else
       {
-        if (!v12 || a3 != @"spokenAudio" && !CFEqual(a3, @"spokenAudio"))
+        if (!v12 || mode != @"spokenAudio" && !CFEqual(mode, @"spokenAudio"))
         {
           goto LABEL_9;
         }
@@ -523,7 +523,7 @@ LABEL_7:
           }
 
           v24 = v22;
-          v25 = a3;
+          modeCopy = mode;
           session = self;
           LogPrintF();
         }
@@ -551,9 +551,9 @@ LABEL_7:
 
   FigSimpleMutexUnlock();
   v16 = 0;
-  if (a5)
+  if (error)
   {
-    *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v15 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v15 userInfo:0];
   }
 
   return v16;
@@ -576,9 +576,9 @@ LABEL_7:
   FigSimpleMutexUnlock();
 }
 
-- (void)setUpSessionWithIsMixable:(BOOL)a3
+- (void)setUpSessionWithIsMixable:(BOOL)mixable
 {
-  v3 = a3;
+  mixableCopy = mixable;
   v19 = 0;
   FigSimpleMutexLock();
   if (!self->_isSetUp)
@@ -603,7 +603,7 @@ LABEL_7:
       }
 
       v16 = v7;
-      v18 = v3;
+      v18 = mixableCopy;
       session = self;
       LogPrintF();
     }
@@ -612,18 +612,18 @@ LABEL_7:
     if (v8 == 1)
     {
       self->_session = [objc_alloc(MEMORY[0x277CB83F8]) initAuxiliarySession];
-      v3 = 1;
+      mixableCopy = 1;
     }
 
     else if (v8)
     {
-      v3 = 0;
+      mixableCopy = 0;
     }
 
     else
     {
       self->_session = [MEMORY[0x277CB83F8] sharedInstance];
-      v3 = v3;
+      mixableCopy = mixableCopy;
     }
 
     if (self->_forceRAW)
@@ -667,12 +667,12 @@ LABEL_30:
 LABEL_47:
       if (v11 || !APSMultiPrimariesEnabled())
       {
-        [(AVAudioSession *)self->_session setCategory:v9 mode:v10 routeSharingPolicy:0 options:v3 error:0, v15, v17];
+        [(AVAudioSession *)self->_session setCategory:v9 mode:v10 routeSharingPolicy:0 options:mixableCopy error:0, v15, v17];
       }
 
       else
       {
-        [(AVAudioSession *)self->_session setCategory:v9 mode:v10 options:v3 error:0];
+        [(AVAudioSession *)self->_session setCategory:v9 mode:v10 options:mixableCopy error:0];
       }
 
       Int64 = APSSettingsGetInt64();
@@ -782,7 +782,7 @@ LABEL_74:
   [(APAVAudioSessionManager *)&v3 dealloc];
 }
 
-- (APAVAudioSessionManager)initWithType:(unint64_t)a3
+- (APAVAudioSessionManager)initWithType:(unint64_t)type
 {
   v6.receiver = self;
   v6.super_class = APAVAudioSessionManager;
@@ -791,7 +791,7 @@ LABEL_74:
   {
     v4->_mutex = FigSimpleMutexCreate();
     v4->_session = 0;
-    v4->_type = a3;
+    v4->_type = type;
     v4->_forceRAW = APSSettingsGetIntWithDefault() != 0;
     if (gLogCategory_APAVAudioSessionManager <= 50 && (gLogCategory_APAVAudioSessionManager != -1 || _LogCategory_Initialize()))
     {

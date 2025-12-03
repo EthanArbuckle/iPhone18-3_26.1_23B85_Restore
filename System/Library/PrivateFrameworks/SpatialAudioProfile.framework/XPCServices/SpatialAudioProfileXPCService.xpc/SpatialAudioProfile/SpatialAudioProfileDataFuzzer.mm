@@ -1,7 +1,7 @@
 @interface SpatialAudioProfileDataFuzzer
 + (id)sharedInstance;
 - (SpatialAudioProfileDataFuzzer)init;
-- (id)createNoiseSoundProfileFromData:(id)a3;
+- (id)createNoiseSoundProfileFromData:(id)data;
 @end
 
 @implementation SpatialAudioProfileDataFuzzer
@@ -32,17 +32,17 @@
   return v3;
 }
 
-- (id)createNoiseSoundProfileFromData:(id)a3
+- (id)createNoiseSoundProfileFromData:(id)data
 {
-  v5 = a3;
-  if (v5)
+  dataCopy = data;
+  if (dataCopy)
   {
     if (!self->_dataFuzzerStructRef)
     {
       operator new();
     }
 
-    NoisySoundProfilePack = IR::IRData::createNoisySoundProfilePack(v5, v4);
+    NoisySoundProfilePack = IR::IRData::createNoisySoundProfilePack(dataCopy, v4);
     if (self->_dataFuzzerStructRef)
     {
       operator delete();

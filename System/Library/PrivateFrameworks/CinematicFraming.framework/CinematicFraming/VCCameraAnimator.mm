@@ -1,12 +1,12 @@
 @interface VCCameraAnimator
 - (VCCameraAnimator)init;
 - (id).cxx_construct;
-- (void)configureWithPreset:(unint64_t)a3;
+- (void)configureWithPreset:(unint64_t)preset;
 - (void)interrupt;
 - (void)reset;
-- (void)startAtTime:(id *)a3 withCamera:(id)a4;
+- (void)startAtTime:(id *)time withCamera:(id)camera;
 - (void)stop;
-- (void)updateToTime:(id *)a3;
+- (void)updateToTime:(id *)time;
 @end
 
 @implementation VCCameraAnimator
@@ -21,18 +21,18 @@
   return v2;
 }
 
-- (void)startAtTime:(id *)a3 withCamera:(id)a4
+- (void)startAtTime:(id *)time withCamera:(id)camera
 {
-  v7 = a4;
-  objc_storeStrong(&self->_targetCamera, a4);
-  v8 = [v7 copy];
+  cameraCopy = camera;
+  objc_storeStrong(&self->_targetCamera, camera);
+  v8 = [cameraCopy copy];
   animatedCamera = self->_animatedCamera;
   self->_animatedCamera = v8;
 
-  v10 = *&a3->var0;
-  self->_currentTime.epoch = a3->var3;
+  v10 = *&time->var0;
+  self->_currentTime.epoch = time->var3;
   *&self->_currentTime.value = v10;
-  v19 = v7;
+  v19 = cameraCopy;
   [v19 rotation];
   self->_animation.targetValue.arr[0] = v11;
   [v19 rotation];
@@ -52,11 +52,11 @@
   self->_animation.duration = 0.0;
 }
 
-- (void)updateToTime:(id *)a3
+- (void)updateToTime:(id *)time
 {
   if (self->_currentTime.flags)
   {
-    currentTime = *a3;
+    currentTime = *time;
     Seconds = CMTimeGetSeconds(&currentTime);
     currentTime = self->_currentTime;
     v6 = Seconds - CMTimeGetSeconds(&currentTime);
@@ -84,8 +84,8 @@
       *&v20 = v20;
       [(VCCamera *)v16 setFocalLength:v20];
 
-      v21 = *&a3->var0;
-      self->_currentTime.epoch = a3->var3;
+      v21 = *&time->var0;
+      self->_currentTime.epoch = time->var3;
       *&self->_currentTime.value = v21;
     }
   }
@@ -163,12 +163,12 @@
   return self;
 }
 
-- (void)configureWithPreset:(unint64_t)a3
+- (void)configureWithPreset:(unint64_t)preset
 {
-  if (a3 <= 2)
+  if (preset <= 2)
   {
-    v3 = dbl_2434F7B28[a3];
-    *&self->_animation.stiffness = qword_2434F7B10[a3];
+    v3 = dbl_2434F7B28[preset];
+    *&self->_animation.stiffness = qword_2434F7B10[preset];
     self->_animation.mass = v3;
     self->_animation.dampRatio = 1.0;
   }

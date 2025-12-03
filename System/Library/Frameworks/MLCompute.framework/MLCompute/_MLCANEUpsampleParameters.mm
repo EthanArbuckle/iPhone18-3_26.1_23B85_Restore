@@ -1,33 +1,33 @@
 @interface _MLCANEUpsampleParameters
-+ (id)upsampleUnitParametersWith:(id)a3 scaleFactorX:(float)a4 scaleFactorY:(float)a5;
-- (_MLCANEUpsampleParameters)initWithUpsampleParams:(id)a3 scaleFactorX:(float)a4 scaleFactorY:(float)a5;
++ (id)upsampleUnitParametersWith:(id)with scaleFactorX:(float)x scaleFactorY:(float)y;
+- (_MLCANEUpsampleParameters)initWithUpsampleParams:(id)params scaleFactorX:(float)x scaleFactorY:(float)y;
 @end
 
 @implementation _MLCANEUpsampleParameters
 
-+ (id)upsampleUnitParametersWith:(id)a3 scaleFactorX:(float)a4 scaleFactorY:(float)a5
++ (id)upsampleUnitParametersWith:(id)with scaleFactorX:(float)x scaleFactorY:(float)y
 {
-  v8 = a3;
-  v9 = [a1 alloc];
-  *&v10 = a4;
-  *&v11 = a5;
-  v12 = [v9 initWithUpsampleParams:v8 scaleFactorX:v10 scaleFactorY:v11];
+  withCopy = with;
+  v9 = [self alloc];
+  *&v10 = x;
+  *&v11 = y;
+  v12 = [v9 initWithUpsampleParams:withCopy scaleFactorX:v10 scaleFactorY:v11];
 
   return v12;
 }
 
-- (_MLCANEUpsampleParameters)initWithUpsampleParams:(id)a3 scaleFactorX:(float)a4 scaleFactorY:(float)a5
+- (_MLCANEUpsampleParameters)initWithUpsampleParams:(id)params scaleFactorX:(float)x scaleFactorY:(float)y
 {
-  v9 = a3;
+  paramsCopy = params;
   v13.receiver = self;
   v13.super_class = _MLCANEUpsampleParameters;
   v10 = [(_MLCANEUpsampleParameters *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_upsampleParams, a3);
-    v11->_scaleFactorX = a4;
-    v11->_scaleFactorY = a5;
+    objc_storeStrong(&v10->_upsampleParams, params);
+    v11->_scaleFactorX = x;
+    v11->_scaleFactorY = y;
   }
 
   return v11;

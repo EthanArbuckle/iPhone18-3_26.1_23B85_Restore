@@ -2,16 +2,16 @@
 + (id)_matchedTextAttributes;
 + (id)_suggestedTextAttributes;
 - (BOOL)hidesImage;
-- (SearchSuggestionTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)_accessoryButtonTapped:(id)a3;
+- (SearchSuggestionTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)_accessoryButtonTapped:(id)tapped;
 - (void)layoutSubviews;
 - (void)preferredContentSizeCategoryDidChange;
 - (void)prepareForReuse;
-- (void)setHidesCompletionArrowView:(BOOL)a3;
-- (void)setHidesHistoryLastAccessedLabel:(BOOL)a3;
-- (void)setHidesImage:(BOOL)a3;
-- (void)setHistoryLastAccessedLabel:(id)a3;
-- (void)setSearchSuggestion:(id)a3 withQuery:(id)a4;
+- (void)setHidesCompletionArrowView:(BOOL)view;
+- (void)setHidesHistoryLastAccessedLabel:(BOOL)label;
+- (void)setHidesImage:(BOOL)image;
+- (void)setHistoryLastAccessedLabel:(id)label;
+- (void)setSearchSuggestion:(id)suggestion withQuery:(id)query;
 @end
 
 @implementation SearchSuggestionTableViewCell
@@ -30,8 +30,8 @@
   v7[0] = _matchedTextAttributes_paragraphStyle;
   v7[1] = _matchedTextAttributes_color;
   v6[2] = *MEMORY[0x277D740A8];
-  v3 = [_matchedTextAttributes_font _fontAdjustedForCurrentContentSizeCategory];
-  v7[2] = v3;
+  _fontAdjustedForCurrentContentSizeCategory = [_matchedTextAttributes_font _fontAdjustedForCurrentContentSizeCategory];
+  v7[2] = _fontAdjustedForCurrentContentSizeCategory;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:3];
 
   return v4;
@@ -74,8 +74,8 @@ void __55__SearchSuggestionTableViewCell__matchedTextAttributes__block_invoke()
   v6[0] = *MEMORY[0x277D740C0];
   v6[1] = v2;
   v7[0] = _suggestedTextAttributes_color;
-  v3 = [_suggestedTextAttributes_font _fontAdjustedForCurrentContentSizeCategory];
-  v7[1] = v3;
+  _fontAdjustedForCurrentContentSizeCategory = [_suggestedTextAttributes_font _fontAdjustedForCurrentContentSizeCategory];
+  v7[1] = _fontAdjustedForCurrentContentSizeCategory;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
 
   return v4;
@@ -100,25 +100,25 @@ void __57__SearchSuggestionTableViewCell__suggestedTextAttributes__block_invoke(
   _suggestedTextAttributes_font = v9;
 }
 
-- (SearchSuggestionTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SearchSuggestionTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v17.receiver = self;
   v17.super_class = SearchSuggestionTableViewCell;
-  v4 = [(SearchSuggestionTableViewCell *)&v17 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(SearchSuggestionTableViewCell *)&v17 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [MEMORY[0x277D755B8] systemImageNamed:@"magnifyingglass"];
-    v6 = [(SearchSuggestionTableViewCell *)v4 imageView];
-    [v6 setImage:v5];
+    imageView = [(SearchSuggestionTableViewCell *)v4 imageView];
+    [imageView setImage:v5];
 
-    v7 = [MEMORY[0x277D75348] labelColor];
-    v8 = [(SearchSuggestionTableViewCell *)v4 imageView];
-    [v8 setTintColor:v7];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    imageView2 = [(SearchSuggestionTableViewCell *)v4 imageView];
+    [imageView2 setTintColor:labelColor];
 
     v9 = [MEMORY[0x277D755D0] configurationWithTextStyle:*MEMORY[0x277D76918] scale:2];
-    v10 = [(SearchSuggestionTableViewCell *)v4 imageView];
-    [v10 setPreferredSymbolConfiguration:v9];
+    imageView3 = [(SearchSuggestionTableViewCell *)v4 imageView];
+    [imageView3 setPreferredSymbolConfiguration:v9];
 
     v11 = objc_alloc_init(CompletionArrowView);
     completionArrowView = v4->_completionArrowView;
@@ -144,16 +144,16 @@ void __57__SearchSuggestionTableViewCell__suggestedTextAttributes__block_invoke(
 
 - (BOOL)hidesImage
 {
-  v2 = [(SearchSuggestionTableViewCell *)self imageView];
-  v3 = [v2 image];
-  v4 = v3 == 0;
+  imageView = [(SearchSuggestionTableViewCell *)self imageView];
+  image = [imageView image];
+  v4 = image == 0;
 
   return v4;
 }
 
-- (void)setHidesImage:(BOOL)a3
+- (void)setHidesImage:(BOOL)image
 {
-  if (a3)
+  if (image)
   {
     v5 = 0;
   }
@@ -163,10 +163,10 @@ void __57__SearchSuggestionTableViewCell__suggestedTextAttributes__block_invoke(
     v5 = [MEMORY[0x277D755B8] systemImageNamed:@"magnifyingglass"];
   }
 
-  v6 = [(SearchSuggestionTableViewCell *)self imageView];
-  [v6 setImage:v5];
+  imageView = [(SearchSuggestionTableViewCell *)self imageView];
+  [imageView setImage:v5];
 
-  if (!a3)
+  if (!image)
   {
   }
 
@@ -187,12 +187,12 @@ void __57__SearchSuggestionTableViewCell__suggestedTextAttributes__block_invoke(
   }
 }
 
-- (void)setHidesCompletionArrowView:(BOOL)a3
+- (void)setHidesCompletionArrowView:(BOOL)view
 {
-  if (self->_hidesCompletionArrowView != a3)
+  if (self->_hidesCompletionArrowView != view)
   {
-    self->_hidesCompletionArrowView = a3;
-    if (a3)
+    self->_hidesCompletionArrowView = view;
+    if (view)
     {
       completionArrowView = 0;
     }
@@ -207,64 +207,64 @@ void __57__SearchSuggestionTableViewCell__suggestedTextAttributes__block_invoke(
   }
 }
 
-- (void)setHidesHistoryLastAccessedLabel:(BOOL)a3
+- (void)setHidesHistoryLastAccessedLabel:(BOOL)label
 {
-  if (self->_hidesHistoryLastAccessedLabel != a3)
+  if (self->_hidesHistoryLastAccessedLabel != label)
   {
-    self->_hidesHistoryLastAccessedLabel = a3;
-    v5 = [(SearchSuggestionTableViewCell *)self detailTextLabel];
-    v6 = v5;
-    if (a3)
+    self->_hidesHistoryLastAccessedLabel = label;
+    detailTextLabel = [(SearchSuggestionTableViewCell *)self detailTextLabel];
+    v6 = detailTextLabel;
+    if (label)
     {
-      [v5 setText:0];
+      [detailTextLabel setText:0];
     }
 
     else
     {
-      [v5 sizeToFit];
+      [detailTextLabel sizeToFit];
     }
   }
 }
 
-- (void)setHistoryLastAccessedLabel:(id)a3
+- (void)setHistoryLastAccessedLabel:(id)label
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCAB48];
-  v5 = a3;
+  labelCopy = label;
   v6 = [v4 alloc];
   v13[0] = *MEMORY[0x277D740C0];
-  v7 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v14[0] = v7;
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  v14[0] = secondaryLabelColor;
   v13[1] = *MEMORY[0x277D740A8];
   v8 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76938]];
-  v9 = [v8 _fontAdjustedForCurrentContentSizeCategory];
-  v14[1] = v9;
+  _fontAdjustedForCurrentContentSizeCategory = [v8 _fontAdjustedForCurrentContentSizeCategory];
+  v14[1] = _fontAdjustedForCurrentContentSizeCategory;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
-  v11 = [v6 initWithString:v5 attributes:v10];
+  v11 = [v6 initWithString:labelCopy attributes:v10];
 
-  v12 = [(SearchSuggestionTableViewCell *)self detailTextLabel];
-  [v12 setAttributedText:v11];
+  detailTextLabel = [(SearchSuggestionTableViewCell *)self detailTextLabel];
+  [detailTextLabel setAttributedText:v11];
 }
 
-- (void)setSearchSuggestion:(id)a3 withQuery:(id)a4
+- (void)setSearchSuggestion:(id)suggestion withQuery:(id)query
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  suggestionCopy = suggestion;
+  queryCopy = query;
   v8 = objc_alloc(MEMORY[0x277CCAB48]);
   v9 = +[SearchSuggestionTableViewCell _matchedTextAttributes];
-  v10 = [v8 initWithString:v6 attributes:v9];
+  v10 = [v8 initWithString:suggestionCopy attributes:v9];
 
   if ([v10 length])
   {
-    v27 = self;
+    selfCopy = self;
     v11 = +[SearchSuggestionTableViewCell _suggestedTextAttributes];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v12 = [v10 string];
-    v13 = [v7 rangesToHighlightInSearchSuggestion:v12];
+    string = [v10 string];
+    v13 = [queryCopy rangesToHighlightInSearchSuggestion:string];
 
     v14 = [v13 countByEnumeratingWithState:&v28 objects:v42 count:16];
     if (v14)
@@ -280,18 +280,18 @@ void __57__SearchSuggestionTableViewCell__suggestedTextAttributes__block_invoke(
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v28 + 1) + 8 * i) rangeValue];
+          rangeValue = [*(*(&v28 + 1) + 8 * i) rangeValue];
           v20 = v19;
-          if (v19 + v18 > [v10 length])
+          if (v19 + rangeValue > [v10 length])
           {
             v21 = WBS_LOG_CHANNEL_PREFIXURLAutocomplete();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
             {
               v24 = v21;
               v25 = [v10 length];
-              v26 = [v6 length];
+              v26 = [suggestionCopy length];
               *buf = 134219011;
-              v33 = v18;
+              v33 = rangeValue;
               v34 = 2048;
               v35 = v20;
               v36 = 2117;
@@ -306,7 +306,7 @@ void __57__SearchSuggestionTableViewCell__suggestedTextAttributes__block_invoke(
             goto LABEL_13;
           }
 
-          [v10 addAttributes:v11 range:{v18, v20}];
+          [v10 addAttributes:v11 range:{rangeValue, v20}];
         }
 
         v15 = [v13 countByEnumeratingWithState:&v28 objects:v42 count:16];
@@ -321,8 +321,8 @@ void __57__SearchSuggestionTableViewCell__suggestedTextAttributes__block_invoke(
 
 LABEL_13:
 
-    v22 = [(SearchSuggestionTableViewCell *)v27 textLabel];
-    [v22 setAttributedText:v10];
+    textLabel = [(SearchSuggestionTableViewCell *)selfCopy textLabel];
+    [textLabel setAttributedText:v10];
   }
 
   else
@@ -352,11 +352,11 @@ LABEL_13:
   [(CompletionListTableViewCell *)&v15 layoutSubviews];
   if (([(SearchSuggestionTableViewCell *)self _sf_usesLeftToRightLayout]& 1) == 0)
   {
-    v3 = [(SearchSuggestionTableViewCell *)self textLabel];
-    [v3 frame];
-    v4 = [(SearchSuggestionTableViewCell *)self layoutManager];
+    textLabel = [(SearchSuggestionTableViewCell *)self textLabel];
+    [textLabel frame];
+    layoutManager = [(SearchSuggestionTableViewCell *)self layoutManager];
     [(SearchSuggestionTableViewCell *)self frame];
-    [v4 textRectForCell:self rowWidth:0 forSizing:v5];
+    [layoutManager textRectForCell:self rowWidth:0 forSizing:v5];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -368,20 +368,20 @@ LABEL_13:
     v16.size.height = v13;
     CGRectGetWidth(v16);
     _SFRoundRectToPixels();
-    [v3 setFrame:?];
-    v14 = [(SearchSuggestionTableViewCell *)self detailTextLabel];
-    [v14 frame];
+    [textLabel setFrame:?];
+    detailTextLabel = [(SearchSuggestionTableViewCell *)self detailTextLabel];
+    [detailTextLabel frame];
     v17.origin.x = v7;
     v17.origin.y = v9;
     v17.size.width = v11;
     v17.size.height = v13;
     CGRectGetWidth(v17);
     _SFRoundRectToPixels();
-    [v14 setFrame:?];
+    [detailTextLabel setFrame:?];
   }
 }
 
-- (void)_accessoryButtonTapped:(id)a3
+- (void)_accessoryButtonTapped:(id)tapped
 {
   accessoryActionHandler = self->_accessoryActionHandler;
   if (accessoryActionHandler)

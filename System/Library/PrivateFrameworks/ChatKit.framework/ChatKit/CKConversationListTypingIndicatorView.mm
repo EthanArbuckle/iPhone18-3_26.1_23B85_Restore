@@ -3,12 +3,12 @@
 - (CKConversationListTypingIndicatorView)init;
 - (void)_updateTypingLayerTransform;
 - (void)resetTypingLayer;
-- (void)setFlipForRTLLayout:(BOOL)a3;
-- (void)setHighlightedState:(BOOL)a3;
-- (void)setTypingLayer:(id)a3;
+- (void)setFlipForRTLLayout:(BOOL)layout;
+- (void)setHighlightedState:(BOOL)state;
+- (void)setTypingLayer:(id)layer;
 - (void)startGrowAnimation;
 - (void)startPulseAnimation;
-- (void)startShrinkAnimationWithCompletionBlock:(id)a3;
+- (void)startShrinkAnimationWithCompletionBlock:(id)block;
 - (void)stopAnimation;
 @end
 
@@ -31,32 +31,32 @@
   return v6;
 }
 
-- (void)setFlipForRTLLayout:(BOOL)a3
+- (void)setFlipForRTLLayout:(BOOL)layout
 {
-  if (self->_flipForRTLLayout != a3)
+  if (self->_flipForRTLLayout != layout)
   {
-    self->_flipForRTLLayout = a3;
+    self->_flipForRTLLayout = layout;
     [(CKConversationListTypingIndicatorView *)self _updateTypingLayerTransform];
   }
 }
 
-- (void)setTypingLayer:(id)a3
+- (void)setTypingLayer:(id)layer
 {
-  v5 = a3;
+  layerCopy = layer;
   typingLayer = self->_typingLayer;
-  v8 = v5;
-  if (typingLayer != v5)
+  v8 = layerCopy;
+  if (typingLayer != layerCopy)
   {
     if (typingLayer)
     {
       [(CKConversationListTypingIndicatorLayer *)typingLayer removeFromSuperlayer];
     }
 
-    objc_storeStrong(&self->_typingLayer, a3);
+    objc_storeStrong(&self->_typingLayer, layer);
     if (self->_typingLayer)
     {
-      v7 = [(CKConversationListTypingIndicatorView *)self layer];
-      [v7 addSublayer:self->_typingLayer];
+      layer = [(CKConversationListTypingIndicatorView *)self layer];
+      [layer addSublayer:self->_typingLayer];
 
       [(CKConversationListTypingIndicatorView *)self _updateTypingLayerTransform];
       [(CKConversationListTypingIndicatorView *)self setNeedsLayout];
@@ -81,25 +81,25 @@
 
 - (void)startGrowAnimation
 {
-  v3 = [(CKConversationListTypingIndicatorView *)self typingLayer];
+  typingLayer = [(CKConversationListTypingIndicatorView *)self typingLayer];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __59__CKConversationListTypingIndicatorView_startGrowAnimation__block_invoke;
   v4[3] = &unk_1E72EBA18;
   v4[4] = self;
-  [v3 startGrowAnimationWithCompletionBlock:v4];
+  [typingLayer startGrowAnimationWithCompletionBlock:v4];
 }
 
 - (void)startPulseAnimation
 {
-  v2 = [(CKConversationListTypingIndicatorView *)self typingLayer];
-  [v2 startPulseAnimation];
+  typingLayer = [(CKConversationListTypingIndicatorView *)self typingLayer];
+  [typingLayer startPulseAnimation];
 }
 
-- (void)startShrinkAnimationWithCompletionBlock:(id)a3
+- (void)startShrinkAnimationWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
+  blockCopy = block;
+  v5 = blockCopy;
   typingLayer = self->_typingLayer;
   if (typingLayer)
   {
@@ -108,7 +108,7 @@
     v7[2] = __81__CKConversationListTypingIndicatorView_startShrinkAnimationWithCompletionBlock___block_invoke;
     v7[3] = &unk_1E72EE5D8;
     v7[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     [(CKTypingIndicatorLayer *)typingLayer startShrinkAnimationWithCompletionBlock:v7];
   }
 }
@@ -235,11 +235,11 @@ LABEL_12:
   }
 }
 
-- (void)setHighlightedState:(BOOL)a3
+- (void)setHighlightedState:(BOOL)state
 {
-  if (self->_highlightedState != a3)
+  if (self->_highlightedState != state)
   {
-    self->_highlightedState = a3;
+    self->_highlightedState = state;
     [(CKConversationListTypingIndicatorView *)self resetTypingLayer];
   }
 }

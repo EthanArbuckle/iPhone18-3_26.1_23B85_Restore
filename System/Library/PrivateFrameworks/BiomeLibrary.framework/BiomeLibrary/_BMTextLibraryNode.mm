@@ -2,25 +2,25 @@
 + (id)InputSession;
 + (id)configurationForInputSession;
 + (id)storeConfigurationForInputSession;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMTextLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"InputSession"])
+  if ([name isEqualToString:@"InputSession"])
   {
-    v4 = [a1 InputSession];
+    inputSession = [self InputSession];
   }
 
   else
   {
-    v4 = 0;
+    inputSession = 0;
   }
 
-  return v4;
+  return inputSession;
 }
 
 + (id)validKeyPaths
@@ -36,13 +36,13 @@
 
 + (id)configurationForInputSession
 {
-  v3 = [a1 storeConfigurationForInputSession];
-  v4 = [a1 syncPolicyForInputSession];
+  storeConfigurationForInputSession = [self storeConfigurationForInputSession];
+  syncPolicyForInputSession = [self syncPolicyForInputSession];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"84E983A2-152A-4096-BE5E-9C60D824630B"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Text.InputSession" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:&unk_1EF3EC3F0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Text.InputSession" eventClass:objc_opt_class() storeConfig:storeConfigurationForInputSession syncPolicy:syncPolicyForInputSession legacyNames:&unk_1EF3EC3F0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -58,7 +58,7 @@
 + (id)InputSession
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForInputSession];
+  configurationForInputSession = [self configurationForInputSession];
   v3 = +[BMTextInputSession columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -70,7 +70,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Text.InputSession" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Text.InputSession" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Text.InputSession" schema:v9 configuration:configurationForInputSession];
 
   v11 = *MEMORY[0x1E69E9840];
 

@@ -1,32 +1,32 @@
 @interface HMFStagedValue
 + (id)logCategory;
 - (BOOL)isStaged;
-- (HMFStagedValue)initWithValue:(id)a3;
+- (HMFStagedValue)initWithValue:(id)value;
 - (HMFStagedValueDelegate)delegate;
 - (id)committedValue;
 - (id)value;
-- (void)_commitValue:(id)a3;
-- (void)_stageValue:(id)a3 withTimer:(id)a4;
+- (void)_commitValue:(id)value;
+- (void)_stageValue:(id)value withTimer:(id)timer;
 - (void)_unstageValue;
-- (void)commitValue:(id)a3;
-- (void)setCommittedValue:(id)a3;
-- (void)stageValue:(id)a3;
-- (void)stageValue:(id)a3 withTimeout:(double)a4;
-- (void)timerDidFire:(id)a3;
+- (void)commitValue:(id)value;
+- (void)setCommittedValue:(id)value;
+- (void)stageValue:(id)value;
+- (void)stageValue:(id)value withTimeout:(double)timeout;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMFStagedValue
 
-- (HMFStagedValue)initWithValue:(id)a3
+- (HMFStagedValue)initWithValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v10.receiver = self;
   v10.super_class = HMFStagedValue;
   v6 = [(HMFStagedValue *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_committedValue, a3);
+    objc_storeStrong(&v6->_committedValue, value);
     v7->_isStaged = 0;
     timerFactory = v7->_timerFactory;
     v7->_timerFactory = &__block_literal_global_0;
@@ -42,37 +42,37 @@ HMFTimer *__32__HMFStagedValue_initWithValue___block_invoke(double a1)
   return v1;
 }
 
-- (void)stageValue:(id)a3 withTimeout:(double)a4
+- (void)stageValue:(id)value withTimeout:(double)timeout
 {
-  v7 = a3;
+  valueCopy = value;
   os_unfair_lock_lock_with_options();
-  v6 = (*(self->_timerFactory + 2))(a4);
-  [(HMFStagedValue *)self _stageValue:v7 withTimer:v6];
+  v6 = (*(self->_timerFactory + 2))(timeout);
+  [(HMFStagedValue *)self _stageValue:valueCopy withTimer:v6];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)stageValue:(id)a3
+- (void)stageValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   os_unfair_lock_lock_with_options();
-  [(HMFStagedValue *)self _stageValue:v4 withTimer:0];
+  [(HMFStagedValue *)self _stageValue:valueCopy withTimer:0];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)commitValue:(id)a3
+- (void)commitValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   os_unfair_lock_lock_with_options();
-  [(HMFStagedValue *)self _commitValue:v4];
+  [(HMFStagedValue *)self _commitValue:valueCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_stageValue:(id)a3 withTimer:(id)a4
+- (void)_stageValue:(id)value withTimer:(id)timer
 {
-  v9 = a3;
-  v7 = a4;
-  if (HMFEqualObjects(v9, self->_committedValue))
+  valueCopy = value;
+  timerCopy = timer;
+  if (HMFEqualObjects(valueCopy, self->_committedValue))
   {
     [(HMFStagedValue *)self _unstageValue];
   }
@@ -80,8 +80,8 @@ HMFTimer *__32__HMFStagedValue_initWithValue___block_invoke(double a1)
   else
   {
     self->_isStaged = 1;
-    objc_storeStrong(&self->_stagedValue, a3);
-    objc_storeStrong(&self->_timer, a4);
+    objc_storeStrong(&self->_stagedValue, value);
+    objc_storeStrong(&self->_timer, timer);
     timer = self->_timer;
     if (timer)
     {
@@ -101,9 +101,9 @@ HMFTimer *__32__HMFStagedValue_initWithValue___block_invoke(double a1)
   self->_timer = 0;
 }
 
-- (void)_commitValue:(id)a3
+- (void)_commitValue:(id)value
 {
-  objc_storeStrong(&self->_committedValue, a3);
+  objc_storeStrong(&self->_committedValue, value);
 
   [(HMFStagedValue *)self _unstageValue];
 }
@@ -140,34 +140,34 @@ HMFTimer *__32__HMFStagedValue_initWithValue___block_invoke(double a1)
   return isStaged;
 }
 
-- (void)setCommittedValue:(id)a3
+- (void)setCommittedValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   os_unfair_lock_lock_with_options();
   committedValue = self->_committedValue;
-  self->_committedValue = v4;
+  self->_committedValue = valueCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fireCopy = fire;
   os_unfair_lock_lock_with_options();
-  if (self->_isStaged && [(HMFTimer *)self->_timer isEqual:v4])
+  if (self->_isStaged && [(HMFTimer *)self->_timer isEqual:fireCopy])
   {
     v5 = self->_committedValue;
     v6 = self->_stagedValue;
     [(HMFStagedValue *)self _unstageValue];
     os_unfair_lock_unlock(&self->_lock);
-    v7 = [(HMFStagedValue *)self delegate];
+    delegate = [(HMFStagedValue *)self delegate];
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = HMFGetLogIdentifier(v9);
+      v11 = HMFGetLogIdentifier(selfCopy);
       v13 = 138544130;
       v14 = v11;
       v15 = 2112;
@@ -175,16 +175,16 @@ HMFTimer *__32__HMFStagedValue_initWithValue___block_invoke(double a1)
       v17 = 2112;
       v18 = v5;
       v19 = 2112;
-      v20 = v7;
+      v20 = delegate;
       _os_log_impl(&dword_22ADEC000, v10, OS_LOG_TYPE_INFO, "%{public}@Notify of expired value: %@ committed value: %@ delegate: %@", &v13, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v8);
-    if (v7)
+    if (delegate)
     {
       if (objc_opt_respondsToSelector())
       {
-        [v7 stagedValue:v9 didExpireValue:v6];
+        [delegate stagedValue:selfCopy didExpireValue:v6];
       }
     }
 

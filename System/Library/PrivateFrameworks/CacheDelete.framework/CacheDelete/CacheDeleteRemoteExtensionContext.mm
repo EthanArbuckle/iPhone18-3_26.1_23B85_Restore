@@ -2,10 +2,10 @@
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
 - (CacheDeleteRemoteExtensionContext)init;
-- (void)serviceCallback:(id)a3 replyBlock:(id)a4;
-- (void)serviceCancelPurge:(id)a3;
-- (void)serviceNotify:(id)a3 replyBlock:(id)a4;
-- (void)servicePing:(id)a3;
+- (void)serviceCallback:(id)callback replyBlock:(id)block;
+- (void)serviceCancelPurge:(id)purge;
+- (void)serviceNotify:(id)notify replyBlock:(id)block;
+- (void)servicePing:(id)ping;
 @end
 
 @implementation CacheDeleteRemoteExtensionContext
@@ -153,9 +153,9 @@ void __66__CacheDeleteRemoteExtensionContext_servicePurge_info_replyBlock___bloc
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)serviceCancelPurge:(id)a3
+- (void)serviceCancelPurge:(id)purge
 {
-  v3 = a3;
+  purgeCopy = purge;
   v4 = CDGetLogHandle("client");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -170,7 +170,7 @@ void __66__CacheDeleteRemoteExtensionContext_servicePurge_info_replyBlock___bloc
     v7[1] = 3221225472;
     v7[2] = __56__CacheDeleteRemoteExtensionContext_serviceCancelPurge___block_invoke;
     v7[3] = &unk_1E7F03218;
-    v9 = v3;
+    v9 = purgeCopy;
     v8 = v5;
     [v8 serviceCancelPurge:v7];
   }
@@ -184,7 +184,7 @@ void __66__CacheDeleteRemoteExtensionContext_servicePurge_info_replyBlock___bloc
       _os_log_error_impl(&dword_1BA7F1000, v6, OS_LOG_TYPE_ERROR, "No Listener!!", buf, 2u);
     }
 
-    v3[2](v3);
+    purgeCopy[2](purgeCopy);
   }
 }
 
@@ -256,36 +256,36 @@ void __69__CacheDeleteRemoteExtensionContext_servicePeriodic_info_replyBlock___b
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)serviceCallback:(id)a3 replyBlock:(id)a4
+- (void)serviceCallback:(id)callback replyBlock:(id)block
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  callbackCopy = callback;
+  blockCopy = block;
   v7 = CDGetLogHandle("client");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v5;
+    v11 = callbackCopy;
     _os_log_impl(&dword_1BA7F1000, v7, OS_LOG_TYPE_DEFAULT, "callback, urgency: %@", &v10, 0xCu);
   }
 
-  v8 = [v5 mutableCopy];
+  v8 = [callbackCopy mutableCopy];
   [v8 setObject:@"Unsupported callback" forKeyedSubscript:@"CACHE_DELETE_ERROR"];
-  v6[2](v6, v8);
+  blockCopy[2](blockCopy, v8);
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)serviceNotify:(id)a3 replyBlock:(id)a4
+- (void)serviceNotify:(id)notify replyBlock:(id)block
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  notifyCopy = notify;
+  blockCopy = block;
   v7 = CDGetLogHandle("client");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v5;
+    v15 = notifyCopy;
     _os_log_impl(&dword_1BA7F1000, v7, OS_LOG_TYPE_DEFAULT, "notify: %@", buf, 0xCu);
   }
 
@@ -296,9 +296,9 @@ void __69__CacheDeleteRemoteExtensionContext_servicePeriodic_info_replyBlock___b
     v11[1] = 3221225472;
     v11[2] = __62__CacheDeleteRemoteExtensionContext_serviceNotify_replyBlock___block_invoke;
     v11[3] = &unk_1E7F03218;
-    v13 = v6;
+    v13 = blockCopy;
     v12 = v8;
-    [v12 serviceNotify:v5 replyBlock:v11];
+    [v12 serviceNotify:notifyCopy replyBlock:v11];
   }
 
   else
@@ -310,7 +310,7 @@ void __69__CacheDeleteRemoteExtensionContext_servicePeriodic_info_replyBlock___b
       _os_log_error_impl(&dword_1BA7F1000, v9, OS_LOG_TYPE_ERROR, "No Listener!!", buf, 2u);
     }
 
-    v6[2](v6);
+    blockCopy[2](blockCopy);
   }
 
   v10 = *MEMORY[0x1E69E9840];
@@ -344,9 +344,9 @@ void __62__CacheDeleteRemoteExtensionContext_serviceNotify_replyBlock___block_in
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)servicePing:(id)a3
+- (void)servicePing:(id)ping
 {
-  v3 = a3;
+  pingCopy = ping;
   v4 = CDGetLogHandle("client");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -354,7 +354,7 @@ void __62__CacheDeleteRemoteExtensionContext_serviceNotify_replyBlock___block_in
     _os_log_impl(&dword_1BA7F1000, v4, OS_LOG_TYPE_DEFAULT, "PING", v5, 2u);
   }
 
-  v3[2](v3);
+  pingCopy[2](pingCopy);
 }
 
 @end

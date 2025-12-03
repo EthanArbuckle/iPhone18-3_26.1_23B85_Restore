@@ -1,6 +1,6 @@
 @interface ICIndexHandwritingOperation
 + (NSOperationQueue)sharedOperationQueue;
-- (ICIndexHandwritingOperation)initWithAttachmentObjectID:(id)a3 context:(id)a4;
+- (ICIndexHandwritingOperation)initWithAttachmentObjectID:(id)d context:(id)context;
 - (void)main;
 @end
 
@@ -30,18 +30,18 @@ uint64_t __51__ICIndexHandwritingOperation_sharedOperationQueue__block_invoke()
   return [v2 setMaxConcurrentOperationCount:1];
 }
 
-- (ICIndexHandwritingOperation)initWithAttachmentObjectID:(id)a3 context:(id)a4
+- (ICIndexHandwritingOperation)initWithAttachmentObjectID:(id)d context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = ICIndexHandwritingOperation;
   v9 = [(ICIndexHandwritingOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_attachmentObjectID, a3);
-    objc_storeStrong(&v10->_context, a4);
+    objc_storeStrong(&v9->_attachmentObjectID, d);
+    objc_storeStrong(&v10->_context, context);
   }
 
   return v10;
@@ -55,14 +55,14 @@ uint64_t __51__ICIndexHandwritingOperation_sharedOperationQueue__block_invoke()
   v15 = __Block_byref_object_copy__21;
   v16 = __Block_byref_object_dispose__21;
   v17 = 0;
-  v3 = [(ICIndexHandwritingOperation *)self context];
+  context = [(ICIndexHandwritingOperation *)self context];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __35__ICIndexHandwritingOperation_main__block_invoke;
   v11[3] = &unk_1E8468FA8;
   v11[4] = self;
   v11[5] = &v12;
-  [v3 performBlockAndWait:v11];
+  [context performBlockAndWait:v11];
 
   v4 = [ICInlineDrawingChangeCoalescer alloc];
   v5 = [(ICInlineDrawingChangeCoalescer *)v4 initWithAttachment:v13[5]];

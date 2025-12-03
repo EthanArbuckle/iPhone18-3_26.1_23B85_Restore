@@ -112,14 +112,14 @@
       v24.f64[1] = v25;
       computeHomogeneousPerspectiveTransformAndInverse(v37, v38, v14, v18, vcvt_f32_f64(v24), v22);
       v26 = [CIVector vectorWithX:v37[2] Y:v37[5] Z:v37[8]];
-      v27 = [(CIPerspectiveTile *)self _kernel];
+      _kernel = [(CIPerspectiveTile *)self _kernel];
       v28 = *MEMORY[0x1E695F040];
       v29 = *(MEMORY[0x1E695F040] + 8);
       v30 = *(MEMORY[0x1E695F040] + 16);
       v31 = *(MEMORY[0x1E695F040] + 24);
       v36[0] = v10;
       v36[1] = v26;
-      return [v27 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v36, 2), v28, v29, v30, v31}];
+      return [_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v36, 2), v28, v29, v30, v31}];
     }
   }
 

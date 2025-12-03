@@ -1,21 +1,21 @@
 @interface HDSPBiomeInBedDetectionProvider
-- (id)findLastTimeDeviceLockChangedDuringInterval:(id)a3 isLocked:(BOOL)a4 error:(id *)a5;
-- (id)findLastTimeDeviceWasPluggedInDuringInterval:(id)a3 error:(id *)a4;
-- (id)findMotionTerminusDuringInterval:(id)a3 latest:(BOOL)a4 error:(id *)a5;
-- (id)findTimesDeviceWasUnlockedDuringInterval:(id)a3 error:(id *)a4;
+- (id)findLastTimeDeviceLockChangedDuringInterval:(id)interval isLocked:(BOOL)locked error:(id *)error;
+- (id)findLastTimeDeviceWasPluggedInDuringInterval:(id)interval error:(id *)error;
+- (id)findMotionTerminusDuringInterval:(id)interval latest:(BOOL)latest error:(id *)error;
+- (id)findTimesDeviceWasUnlockedDuringInterval:(id)interval error:(id *)error;
 @end
 
 @implementation HDSPBiomeInBedDetectionProvider
 
-- (id)findMotionTerminusDuringInterval:(id)a3 latest:(BOOL)a4 error:(id *)a5
+- (id)findMotionTerminusDuringInterval:(id)interval latest:(BOOL)latest error:(id *)error
 {
-  v5 = a4;
+  latestCopy = latest;
   v70 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CC1CD0] isActivityAvailable];
+  intervalCopy = interval;
+  isActivityAvailable = [MEMORY[0x277CC1CD0] isActivityAvailable];
   v8 = HKSPLogForCategory();
   v9 = v8;
-  if (v7)
+  if (isActivityAvailable)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -41,8 +41,8 @@
     v57 = __Block_byref_object_dispose__4;
     v58 = 0;
     v11 = dispatch_semaphore_create(0);
-    v12 = [v6 startDate];
-    v13 = [v6 endDate];
+    startDate = [intervalCopy startDate];
+    endDate = [intervalCopy endDate];
     v49[0] = MEMORY[0x277D85DD0];
     v49[1] = 3221225472;
     v49[2] = __81__HDSPBiomeInBedDetectionProvider_findMotionTerminusDuringInterval_latest_error___block_invoke;
@@ -52,7 +52,7 @@
     v52 = &v53;
     dsema = v11;
     v50 = dsema;
-    [v9 queryActivityStartingFromDate:v12 toDate:v13 toQueue:v40 withHandler:v49];
+    [v9 queryActivityStartingFromDate:startDate toDate:endDate toQueue:v40 withHandler:v49];
 
     v14 = dispatch_time(0, 60000000000);
     if (dispatch_semaphore_wait(dsema, v14))
@@ -70,52 +70,52 @@
       [v40 cancelAllOperations];
     }
 
-    v16 = [v6 endDate];
-    v17 = [v6 endDate];
-    if (v5)
+    endDate2 = [intervalCopy endDate];
+    endDate3 = [intervalCopy endDate];
+    if (latestCopy)
     {
       v47 = 0uLL;
       v48 = 0uLL;
       v45 = 0uLL;
       v46 = 0uLL;
-      v18 = [v54[5] reverseObjectEnumerator];
-      v19 = [v18 countByEnumeratingWithState:&v45 objects:v64 count:16];
-      if (v19)
+      reverseObjectEnumerator = [v54[5] reverseObjectEnumerator];
+      startDate2 = [reverseObjectEnumerator countByEnumeratingWithState:&v45 objects:v64 count:16];
+      if (startDate2)
       {
         v20 = *v46;
         while (2)
         {
           v21 = 0;
-          v22 = v17;
-          v23 = v16;
+          v22 = endDate3;
+          v23 = endDate2;
           do
           {
             if (*v46 != v20)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
             v24 = *(*(&v45 + 1) + 8 * v21);
             if (([v24 stationary] & 1) == 0 && objc_msgSend(v24, "confidence") == 1)
             {
-              v17 = v22;
-              v19 = v17;
-              v16 = v23;
+              endDate3 = v22;
+              startDate2 = endDate3;
+              endDate2 = v23;
               goto LABEL_34;
             }
 
-            v16 = [v24 startDate];
+            endDate2 = [v24 startDate];
 
-            v17 = [v24 startDate];
+            endDate3 = [v24 startDate];
 
             v21 = v21 + 1;
-            v22 = v17;
-            v23 = v16;
+            v22 = endDate3;
+            v23 = endDate2;
           }
 
-          while (v19 != v21);
-          v19 = [v18 countByEnumeratingWithState:&v45 objects:v64 count:16];
-          if (v19)
+          while (startDate2 != v21);
+          startDate2 = [reverseObjectEnumerator countByEnumeratingWithState:&v45 objects:v64 count:16];
+          if (startDate2)
           {
             continue;
           }
@@ -131,30 +131,30 @@
       v44 = 0uLL;
       v41 = 0uLL;
       v42 = 0uLL;
-      v18 = [v54[5] objectEnumerator];
-      v19 = [v18 countByEnumeratingWithState:&v41 objects:v63 count:16];
-      if (v19)
+      reverseObjectEnumerator = [v54[5] objectEnumerator];
+      startDate2 = [reverseObjectEnumerator countByEnumeratingWithState:&v41 objects:v63 count:16];
+      if (startDate2)
       {
         v25 = *v42;
         while (2)
         {
-          for (i = 0; i != v19; i = i + 1)
+          for (i = 0; i != startDate2; i = i + 1)
           {
             if (*v42 != v25)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
             v27 = *(*(&v41 + 1) + 8 * i);
             if (([v27 stationary] & 1) == 0 && objc_msgSend(v27, "confidence") == 1)
             {
-              v19 = [v27 startDate];
+              startDate2 = [v27 startDate];
               goto LABEL_34;
             }
           }
 
-          v19 = [v18 countByEnumeratingWithState:&v41 objects:v63 count:16];
-          if (v19)
+          startDate2 = [reverseObjectEnumerator countByEnumeratingWithState:&v41 objects:v63 count:16];
+          if (startDate2)
           {
             continue;
           }
@@ -166,12 +166,12 @@
 
 LABEL_34:
 
-    if (a5)
+    if (error)
     {
       v28 = *(*(&buf + 1) + 40);
       if (v28)
       {
-        *a5 = v28;
+        *error = v28;
       }
     }
 
@@ -182,7 +182,7 @@ LABEL_34:
       *v59 = 138543618;
       v60 = v30;
       v61 = 2112;
-      v62 = v19;
+      v62 = startDate2;
       v31 = v30;
       _os_log_impl(&dword_269B11000, v29, OS_LOG_TYPE_DEFAULT, "[%{public}@] Last motion was %@", v59, 0x16u);
     }
@@ -201,12 +201,12 @@ LABEL_34:
       _os_log_error_impl(&dword_269B11000, v9, OS_LOG_TYPE_ERROR, "[%{public}@] Motion activity is not available for in bed detection", &buf, 0xCu);
     }
 
-    v19 = 0;
+    startDate2 = 0;
   }
 
   v32 = *MEMORY[0x277D85DE8];
 
-  return v19;
+  return startDate2;
 }
 
 void __81__HDSPBiomeInBedDetectionProvider_findMotionTerminusDuringInterval_latest_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -255,12 +255,12 @@ void __81__HDSPBiomeInBedDetectionProvider_findMotionTerminusDuringInterval_late
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)findLastTimeDeviceLockChangedDuringInterval:(id)a3 isLocked:(BOOL)a4 error:(id *)a5
+- (id)findLastTimeDeviceLockChangedDuringInterval:(id)interval isLocked:(BOOL)locked error:(id *)error
 {
-  v7 = a3;
+  intervalCopy = interval;
   v8 = BiomeLibrary();
-  v9 = [v8 Device];
-  v10 = [v9 ScreenLocked];
+  device = [v8 Device];
+  screenLocked = [device ScreenLocked];
 
   v28 = 0;
   v29 = &v28;
@@ -274,13 +274,13 @@ void __81__HDSPBiomeInBedDetectionProvider_findMotionTerminusDuringInterval_late
   v25 = __Block_byref_object_copy__4;
   v26 = __Block_byref_object_dispose__4;
   v27 = 0;
-  v11 = [MEMORY[0x277CF1A50] hdsp_optionsForDateInterval:v7 reversed:1];
-  v12 = [v10 publisherWithUseCase:@"com.apple.sleepd.inBedDetection" options:v11];
+  v11 = [MEMORY[0x277CF1A50] hdsp_optionsForDateInterval:intervalCopy reversed:1];
+  v12 = [screenLocked publisherWithUseCase:@"com.apple.sleepd.inBedDetection" options:v11];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __94__HDSPBiomeInBedDetectionProvider_findLastTimeDeviceLockChangedDuringInterval_isLocked_error___block_invoke;
   v20[3] = &__block_descriptor_33_e22_B16__0__BMStoreEvent_8l;
-  v21 = a4;
+  lockedCopy = locked;
   v13 = [v12 filterWithIsIncluded:v20];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -298,9 +298,9 @@ void __81__HDSPBiomeInBedDetectionProvider_findMotionTerminusDuringInterval_late
   if (v15)
   {
     v16 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = v15;
+      *error = v15;
     }
   }
 
@@ -345,30 +345,30 @@ uint64_t __94__HDSPBiomeInBedDetectionProvider_findLastTimeDeviceLockChangedDuri
   return 0;
 }
 
-- (id)findLastTimeDeviceWasPluggedInDuringInterval:(id)a3 error:(id *)a4
+- (id)findLastTimeDeviceWasPluggedInDuringInterval:(id)interval error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  intervalCopy = interval;
   v6 = HKSPLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [v5 startDate];
-    v10 = [v5 endDate];
+    startDate = [intervalCopy startDate];
+    endDate = [intervalCopy endDate];
     *buf = 138543874;
     *&buf[4] = v7;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = startDate;
     *&buf[22] = 2112;
-    v32 = v10;
+    v32 = endDate;
     _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Looking for last time device was plugged in between %@ and %@", buf, 0x20u);
   }
 
   v11 = BiomeLibrary();
-  v12 = [v11 Device];
-  v13 = [v12 Power];
-  v14 = [v13 PluggedIn];
+  device = [v11 Device];
+  power = [device Power];
+  pluggedIn = [power PluggedIn];
 
   *buf = 0;
   *&buf[8] = buf;
@@ -382,8 +382,8 @@ uint64_t __94__HDSPBiomeInBedDetectionProvider_findLastTimeDeviceLockChangedDuri
   v28 = __Block_byref_object_copy__4;
   v29 = __Block_byref_object_dispose__4;
   v30 = 0;
-  v15 = [MEMORY[0x277CF1A50] hdsp_optionsForDateInterval:v5 reversed:1];
-  v16 = [v14 publisherWithUseCase:@"com.apple.sleepd.inBedDetection" options:v15];
+  v15 = [MEMORY[0x277CF1A50] hdsp_optionsForDateInterval:intervalCopy reversed:1];
+  v16 = [pluggedIn publisherWithUseCase:@"com.apple.sleepd.inBedDetection" options:v15];
   v17 = [v16 filterWithIsIncluded:&__block_literal_global_2];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
@@ -401,9 +401,9 @@ uint64_t __94__HDSPBiomeInBedDetectionProvider_findLastTimeDeviceLockChangedDuri
   if (v19)
   {
     v20 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = v19;
+      *error = v19;
     }
   }
 
@@ -450,29 +450,29 @@ uint64_t __86__HDSPBiomeInBedDetectionProvider_findLastTimeDeviceWasPluggedInDur
   return 0;
 }
 
-- (id)findTimesDeviceWasUnlockedDuringInterval:(id)a3 error:(id *)a4
+- (id)findTimesDeviceWasUnlockedDuringInterval:(id)interval error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  intervalCopy = interval;
   v6 = HKSPLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [v5 startDate];
-    v10 = [v5 endDate];
+    startDate = [intervalCopy startDate];
+    endDate = [intervalCopy endDate];
     *buf = 138543874;
     *&buf[4] = v7;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = startDate;
     *&buf[22] = 2112;
-    v32 = v10;
+    v32 = endDate;
     _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Looking for times device was unlocked in between %@ and %@", buf, 0x20u);
   }
 
   v11 = BiomeLibrary();
-  v12 = [v11 Device];
-  v13 = [v12 ScreenLocked];
+  device = [v11 Device];
+  screenLocked = [device ScreenLocked];
 
   *buf = 0;
   *&buf[8] = buf;
@@ -486,8 +486,8 @@ uint64_t __86__HDSPBiomeInBedDetectionProvider_findLastTimeDeviceWasPluggedInDur
   v28 = __Block_byref_object_copy__4;
   v29 = __Block_byref_object_dispose__4;
   v30 = 0;
-  v14 = [MEMORY[0x277CF1A50] hdsp_optionsForDateInterval:v5];
-  v15 = [v13 publisherWithUseCase:@"com.apple.sleepd.inBedDetection" options:v14];
+  v14 = [MEMORY[0x277CF1A50] hdsp_optionsForDateInterval:intervalCopy];
+  v15 = [screenLocked publisherWithUseCase:@"com.apple.sleepd.inBedDetection" options:v14];
   v16 = objc_opt_new();
   v17 = [v15 reduceWithInitial:v16 nextPartialResult:&__block_literal_global_307];
   v24[0] = MEMORY[0x277D85DD0];
@@ -506,9 +506,9 @@ uint64_t __86__HDSPBiomeInBedDetectionProvider_findLastTimeDeviceWasPluggedInDur
   if (v19)
   {
     v20 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = v19;
+      *error = v19;
     }
   }
 

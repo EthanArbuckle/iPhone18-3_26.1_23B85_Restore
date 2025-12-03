@@ -7,36 +7,36 @@
 - (id)_maps_description
 {
   v3 = [NSMutableArray alloc];
-  v4 = [(CPRouteLine *)self routeLegs];
-  v36 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  routeLegs = [(CPRouteLine *)self routeLegs];
+  v36 = [v3 initWithCapacity:{objc_msgSend(routeLegs, "count")}];
 
-  v5 = [(CPRouteLine *)self routeLegs];
-  v6 = [v5 count];
+  routeLegs2 = [(CPRouteLine *)self routeLegs];
+  v6 = [routeLegs2 count];
 
   if (v6)
   {
     v7 = 0;
-    v35 = self;
+    selfCopy = self;
     do
     {
-      v8 = [(CPRouteLine *)self routeLegs];
-      v9 = [v8 objectAtIndexedSubscript:v7];
+      routeLegs3 = [(CPRouteLine *)self routeLegs];
+      v9 = [routeLegs3 objectAtIndexedSubscript:v7];
 
       v10 = [[NSMutableArray alloc] initWithCapacity:2];
-      v11 = [v9 origin];
-      v12 = [v11 name];
-      v13 = [v9 origin];
-      v14 = [v13 address];
-      v15 = [v14 shortAddress];
-      v16 = [NSString stringWithFormat:@"Origin: %@ | %@", v12, v15];
+      origin = [v9 origin];
+      name = [origin name];
+      origin2 = [v9 origin];
+      address = [origin2 address];
+      shortAddress = [address shortAddress];
+      v16 = [NSString stringWithFormat:@"Origin: %@ | %@", name, shortAddress];
       [v10 addObject:v16];
 
-      v17 = [v9 destination];
-      v18 = [v17 name];
-      v19 = [v9 destination];
-      v20 = [v19 address];
-      v21 = [v20 shortAddress];
-      v22 = [NSString stringWithFormat:@"Destination: %@ | %@", v18, v21];
+      destination = [v9 destination];
+      name2 = [destination name];
+      destination2 = [v9 destination];
+      address2 = [destination2 address];
+      shortAddress2 = [address2 shortAddress];
+      v22 = [NSString stringWithFormat:@"Destination: %@ | %@", name2, shortAddress2];
       [v10 addObject:v22];
 
       if (GEOConfigGetBOOL())
@@ -48,8 +48,8 @@
           v25 = 0;
           do
           {
-            v26 = [v9 coordinates3D];
-            v27 = [NSString stringWithFormat:@"    [%*d] %0.6f, %0.6f | %0.1fm", (v23 + 1), v25, *&v26[v24], *&v26[v24 + 8], *&v26[v24 + 16]];
+            coordinates3D = [v9 coordinates3D];
+            v27 = [NSString stringWithFormat:@"    [%*d] %0.6f, %0.6f | %0.1fm", (v23 + 1), v25, *&coordinates3D[v24], *&coordinates3D[v24 + 8], *&coordinates3D[v24 + 16]];
             [v10 addObject:v27];
 
             ++v25;
@@ -60,15 +60,15 @@
         }
       }
 
-      v28 = [v9 coordinates3DCount];
+      coordinates3DCount = [v9 coordinates3DCount];
       v29 = [v10 componentsJoinedByString:@"\n    "];
-      v30 = [NSString stringWithFormat:@"Route leg %d (%d coordinates):\n    %@", v7, v28, v29];
+      v30 = [NSString stringWithFormat:@"Route leg %d (%d coordinates):\n    %@", v7, coordinates3DCount, v29];
       [v36 addObject:v30];
 
       ++v7;
-      self = v35;
-      v31 = [(CPRouteLine *)v35 routeLegs];
-      v32 = [v31 count];
+      self = selfCopy;
+      routeLegs4 = [(CPRouteLine *)selfCopy routeLegs];
+      v32 = [routeLegs4 count];
     }
 
     while (v7 < v32);

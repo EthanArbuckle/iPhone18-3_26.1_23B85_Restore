@@ -1,52 +1,52 @@
 @interface SCLState
-- (BOOL)isEqual:(id)a3;
-- (SCLState)initWithActiveState:(unint64_t)a3 scheduleEnabled:(BOOL)a4 inSchedule:(BOOL)a5;
-- (SCLState)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SCLState)initWithActiveState:(unint64_t)state scheduleEnabled:(BOOL)enabled inSchedule:(BOOL)schedule;
+- (SCLState)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCLState
 
-- (SCLState)initWithActiveState:(unint64_t)a3 scheduleEnabled:(BOOL)a4 inSchedule:(BOOL)a5
+- (SCLState)initWithActiveState:(unint64_t)state scheduleEnabled:(BOOL)enabled inSchedule:(BOOL)schedule
 {
   v9.receiver = self;
   v9.super_class = SCLState;
   result = [(SCLState *)&v9 init];
   if (result)
   {
-    result->_activeState = a3;
-    result->_scheduleEnabled = a4;
-    result->_inSchedule = a5;
+    result->_activeState = state;
+    result->_scheduleEnabled = enabled;
+    result->_inSchedule = schedule;
   }
 
   return result;
 }
 
-- (SCLState)initWithCoder:(id)a3
+- (SCLState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SCLState;
   v5 = [(SCLState *)&v7 init];
   if (v5)
   {
-    v5->_activeState = [v4 decodeIntegerForKey:@"activeState"];
-    v5->_scheduleEnabled = [v4 decodeBoolForKey:@"scheduleEnabled"];
-    v5->_inSchedule = [v4 decodeBoolForKey:@"inSchedule"];
+    v5->_activeState = [coderCopy decodeIntegerForKey:@"activeState"];
+    v5->_scheduleEnabled = [coderCopy decodeBoolForKey:@"scheduleEnabled"];
+    v5->_inSchedule = [coderCopy decodeBoolForKey:@"inSchedule"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   activeState = self->_activeState;
-  v5 = a3;
-  [v5 encodeInteger:activeState forKey:@"activeState"];
-  [v5 encodeBool:-[SCLState isScheduleEnabled](self forKey:{"isScheduleEnabled"), @"scheduleEnabled"}];
-  [v5 encodeBool:-[SCLState isInSchedule](self forKey:{"isInSchedule"), @"inSchedule"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:activeState forKey:@"activeState"];
+  [coderCopy encodeBool:-[SCLState isScheduleEnabled](self forKey:{"isScheduleEnabled"), @"scheduleEnabled"}];
+  [coderCopy encodeBool:-[SCLState isInSchedule](self forKey:{"isInSchedule"), @"inSchedule"}];
 }
 
 - (id)description
@@ -54,15 +54,15 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SCLState *)self activeState];
-  if (v6 > 2)
+  activeState = [(SCLState *)self activeState];
+  if (activeState > 2)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = off_279B6C768[v6];
+    v7 = off_279B6C768[activeState];
   }
 
   v8 = [v3 stringWithFormat:@"<%@ %p %@; scheduleEnabled=%u; inSchedule=%u>", v5, self, v7, -[SCLState isScheduleEnabled](self, "isScheduleEnabled"), -[SCLState isInSchedule](self, "isInSchedule")];;
@@ -72,18 +72,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SCLState *)self activeState];
-  v4 = [(SCLState *)self isScheduleEnabled];
+  activeState = [(SCLState *)self activeState];
+  isScheduleEnabled = [(SCLState *)self isScheduleEnabled];
   v5 = 2;
-  if (!v4)
+  if (!isScheduleEnabled)
   {
     v5 = 0;
   }
 
-  v6 = v5 ^ v3;
-  v7 = [(SCLState *)self isInSchedule];
+  v6 = v5 ^ activeState;
+  isInSchedule = [(SCLState *)self isInSchedule];
   v8 = 4;
-  if (!v7)
+  if (!isInSchedule)
   {
     v8 = 0;
   }
@@ -91,18 +91,18 @@
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SCLState *)self activeState];
-    if (v6 == [v5 activeState] && (v7 = -[SCLState isScheduleEnabled](self, "isScheduleEnabled"), v7 == objc_msgSend(v5, "isScheduleEnabled")))
+    v5 = equalCopy;
+    activeState = [(SCLState *)self activeState];
+    if (activeState == [v5 activeState] && (v7 = -[SCLState isScheduleEnabled](self, "isScheduleEnabled"), v7 == objc_msgSend(v5, "isScheduleEnabled")))
     {
-      v9 = [(SCLState *)self isInSchedule];
-      v8 = v9 ^ [v5 isInSchedule] ^ 1;
+      isInSchedule = [(SCLState *)self isInSchedule];
+      v8 = isInSchedule ^ [v5 isInSchedule] ^ 1;
     }
 
     else

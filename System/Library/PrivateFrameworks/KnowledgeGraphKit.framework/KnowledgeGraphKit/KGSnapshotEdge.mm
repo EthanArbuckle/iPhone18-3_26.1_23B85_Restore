@@ -1,15 +1,15 @@
 @interface KGSnapshotEdge
-- (BOOL)isEqual:(id)a3;
-- (KGSnapshotEdge)initWithIdentifier:(unint64_t)a3 labels:(id)a4 properties:(id)a5 sourceNode:(id)a6 targetNode:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (KGSnapshotEdge)initWithIdentifier:(unint64_t)identifier labels:(id)labels properties:(id)properties sourceNode:(id)node targetNode:(id)targetNode;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation KGSnapshotEdge
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -17,13 +17,13 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_identifier == v4->_identifier;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_identifier == equalCopy->_identifier;
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   identifier = self->_identifier;
@@ -35,29 +35,29 @@
   return [v4 initWithIdentifier:identifier labels:labels properties:properties sourceNode:sourceNode targetNode:targetNode];
 }
 
-- (KGSnapshotEdge)initWithIdentifier:(unint64_t)a3 labels:(id)a4 properties:(id)a5 sourceNode:(id)a6 targetNode:(id)a7
+- (KGSnapshotEdge)initWithIdentifier:(unint64_t)identifier labels:(id)labels properties:(id)properties sourceNode:(id)node targetNode:(id)targetNode
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  labelsCopy = labels;
+  propertiesCopy = properties;
+  nodeCopy = node;
+  targetNodeCopy = targetNode;
   v23.receiver = self;
   v23.super_class = KGSnapshotEdge;
   v16 = [(KGSnapshotEdge *)&v23 init];
   v17 = v16;
   if (v16)
   {
-    v16->_identifier = a3;
-    v18 = [v12 copy];
+    v16->_identifier = identifier;
+    v18 = [labelsCopy copy];
     labels = v17->_labels;
     v17->_labels = v18;
 
-    v20 = [v13 copy];
+    v20 = [propertiesCopy copy];
     properties = v17->_properties;
     v17->_properties = v20;
 
-    objc_storeStrong(&v17->_sourceNode, a6);
-    objc_storeStrong(&v17->_targetNode, a7);
+    objc_storeStrong(&v17->_sourceNode, node);
+    objc_storeStrong(&v17->_targetNode, targetNode);
   }
 
   return v17;

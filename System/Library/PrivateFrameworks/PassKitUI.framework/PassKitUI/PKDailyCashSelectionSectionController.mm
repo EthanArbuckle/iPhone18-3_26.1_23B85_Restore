@@ -1,68 +1,68 @@
 @interface PKDailyCashSelectionSectionController
-- (BOOL)shouldHighlightItem:(id)a3;
-- (Class)supplementaryRegistrationClassForKind:(id)a3 sectionIdentifier:(id)a4;
+- (BOOL)shouldHighlightItem:(id)item;
+- (Class)supplementaryRegistrationClassForKind:(id)kind sectionIdentifier:(id)identifier;
 - (NSArray)identifiers;
-- (PKDailyCashSelectionSectionController)initWithSectionIdentifier:(id)a3 account:(id)a4 accountService:(id)a5 delegate:(id)a6;
+- (PKDailyCashSelectionSectionController)initWithSectionIdentifier:(id)identifier account:(id)account accountService:(id)service delegate:(id)delegate;
 - (id)_applyAccessory;
 - (id)_checkmarkAccessory;
 - (id)_disclosureAccessory;
-- (id)_eligibleAccountOfType:(unint64_t)a3;
+- (id)_eligibleAccountOfType:(unint64_t)type;
 - (id)_hasRedeemedAccessory;
 - (id)_pendingApplicationAccessory;
 - (id)_presentingViewController;
 - (id)_setupAccessory;
 - (id)_spinnerAccessory;
-- (id)analyticsEventReportWithPreSelect:(BOOL)a3;
-- (id)cellRegistrationForItem:(id)a3;
+- (id)analyticsEventReportWithPreSelect:(BOOL)select;
+- (id)cellRegistrationForItem:(id)item;
 - (id)dailyCashSelectionItems;
 - (id)footerTitle;
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
 - (void)_applyRewardsAsStatementCredit;
-- (void)_changeRewardsDestination:(unint64_t)a3;
-- (void)_changeRewardsDestinationAndOpenAccountIfNeeded:(unint64_t)a3;
+- (void)_changeRewardsDestination:(unint64_t)destination;
+- (void)_changeRewardsDestinationAndOpenAccountIfNeeded:(unint64_t)needed;
 - (void)_presentPeerPaymentNotEnabledAlert;
 - (void)_reloadSection;
-- (void)_reportDailyCashConfirmationEventWithRedemptionType:(unint64_t)a3 button:(id)a4;
-- (void)_reportDestinationButtonTapWithRedemptionType:(unint64_t)a3;
-- (void)accountAdded:(id)a3;
-- (void)accountChanged:(id)a3;
-- (void)accountRemoved:(id)a3;
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5;
+- (void)_reportDailyCashConfirmationEventWithRedemptionType:(unint64_t)type button:(id)button;
+- (void)_reportDestinationButtonTapWithRedemptionType:(unint64_t)type;
+- (void)accountAdded:(id)added;
+- (void)accountChanged:(id)changed;
+- (void)accountRemoved:(id)removed;
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)didSelectItem:(id)a3;
-- (void)featureApplicationAdded:(id)a3;
-- (void)featureApplicationChanged:(id)a3;
-- (void)featureApplicationRemoved:(id)a3;
-- (void)paymentSetupDidFinish:(id)a3;
-- (void)peerPaymentAccountResolutionController:(id)a3 requestsDismissCurrentViewControllerAnimated:(BOOL)a4;
-- (void)peerPaymentAccountResolutionController:(id)a3 requestsPresentViewController:(id)a4 animated:(BOOL)a5;
-- (void)preflightWithCompletion:(id)a3;
-- (void)presentConfirmationAlertWithTitle:(id)a3 redemptionType:(unint64_t)a4 confirmationHandler:(id)a5;
-- (void)willDisplayItem:(id)a3;
+- (void)didSelectItem:(id)item;
+- (void)featureApplicationAdded:(id)added;
+- (void)featureApplicationChanged:(id)changed;
+- (void)featureApplicationRemoved:(id)removed;
+- (void)paymentSetupDidFinish:(id)finish;
+- (void)peerPaymentAccountResolutionController:(id)controller requestsDismissCurrentViewControllerAnimated:(BOOL)animated;
+- (void)peerPaymentAccountResolutionController:(id)controller requestsPresentViewController:(id)viewController animated:(BOOL)animated;
+- (void)preflightWithCompletion:(id)completion;
+- (void)presentConfirmationAlertWithTitle:(id)title redemptionType:(unint64_t)type confirmationHandler:(id)handler;
+- (void)willDisplayItem:(id)item;
 @end
 
 @implementation PKDailyCashSelectionSectionController
 
-- (PKDailyCashSelectionSectionController)initWithSectionIdentifier:(id)a3 account:(id)a4 accountService:(id)a5 delegate:(id)a6
+- (PKDailyCashSelectionSectionController)initWithSectionIdentifier:(id)identifier account:(id)account accountService:(id)service delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  accountCopy = account;
+  serviceCopy = service;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = PKDailyCashSelectionSectionController;
   v15 = [(PKDailyCashSelectionSectionController *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_identifier, a3);
-    objc_storeWeak(&v16->_delegate, v14);
-    objc_storeStrong(&v16->_account, a4);
-    objc_storeStrong(&v16->_accountService, a5);
-    v17 = [MEMORY[0x1E69B8DB8] paymentService];
+    objc_storeStrong(&v15->_identifier, identifier);
+    objc_storeWeak(&v16->_delegate, delegateCopy);
+    objc_storeStrong(&v16->_account, account);
+    objc_storeStrong(&v16->_accountService, service);
+    paymentService = [MEMORY[0x1E69B8DB8] paymentService];
     paymentService = v16->_paymentService;
-    v16->_paymentService = v17;
+    v16->_paymentService = paymentService;
   }
 
   return v16;
@@ -76,22 +76,22 @@
   [(PKDailyCashSelectionSectionController *)&v3 dealloc];
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKAccount *)self->_account creditDetails];
-  self->_currentDestination = [v5 rewardsDestination];
+  completionCopy = completion;
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  self->_currentDestination = [creditDetails rewardsDestination];
 
-  v6 = [MEMORY[0x1E69B9000] sharedInstance];
-  v7 = [v6 account];
+  mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
+  account = [mEMORY[0x1E69B9000] account];
   peerPaymentAccount = self->_peerPaymentAccount;
-  self->_peerPaymentAccount = v7;
+  self->_peerPaymentAccount = account;
 
   v9 = [PKPeerPaymentAccountResolutionController alloc];
   v10 = self->_peerPaymentAccount;
-  v11 = [MEMORY[0x1E69B9020] sharedService];
+  mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
   v12 = objc_alloc_init(MEMORY[0x1E69B8A60]);
-  v13 = [(PKPeerPaymentAccountResolutionController *)v9 initWithAccount:v10 webService:v11 context:0 delegate:self passLibraryDataProvider:v12];
+  v13 = [(PKPeerPaymentAccountResolutionController *)v9 initWithAccount:v10 webService:mEMORY[0x1E69B9020] context:0 delegate:self passLibraryDataProvider:v12];
   peerPaymentAccountResolutionController = self->_peerPaymentAccountResolutionController;
   self->_peerPaymentAccountResolutionController = v13;
 
@@ -123,14 +123,14 @@
   v21[3] = &unk_1E8019220;
   v21[4] = self;
   [v15 addOperation:v21];
-  v16 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __65__PKDailyCashSelectionSectionController_preflightWithCompletion___block_invoke_14;
   v19[3] = &unk_1E8020CB8;
-  v20 = v4;
-  v17 = v4;
-  v18 = [v15 evaluateWithInput:v16 completion:v19];
+  v20 = completionCopy;
+  v17 = completionCopy;
+  v18 = [v15 evaluateWithInput:null completion:v19];
 }
 
 void __65__PKDailyCashSelectionSectionController_preflightWithCompletion___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -332,13 +332,13 @@ void __65__PKDailyCashSelectionSectionController_preflightWithCompletion___block
 {
   v50 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PKAccount *)self->_account redeemRewardsFeatureDescriptor];
-  v5 = [v4 supportedDestinations];
-  v6 = v5;
+  redeemRewardsFeatureDescriptor = [(PKAccount *)self->_account redeemRewardsFeatureDescriptor];
+  supportedDestinations = [redeemRewardsFeatureDescriptor supportedDestinations];
+  v6 = supportedDestinations;
   v7 = MEMORY[0x1E695E0F0];
-  if (v5)
+  if (supportedDestinations)
   {
-    v7 = v5;
+    v7 = supportedDestinations;
   }
 
   v8 = v7;
@@ -381,17 +381,17 @@ void __65__PKDailyCashSelectionSectionController_preflightWithCompletion___block
         [v18 setSelected:v17 == self->_currentDestination];
         if (v17 == 1)
         {
-          v32 = [(PKPeerPaymentAccountResolutionController *)self->_peerPaymentAccountResolutionController currentPeerPaymentAccountResolution];
-          if ((PKSavingsFDICSignageEnabled() & 1) == 0 && !v32)
+          currentPeerPaymentAccountResolution = [(PKPeerPaymentAccountResolutionController *)self->_peerPaymentAccountResolutionController currentPeerPaymentAccountResolution];
+          if ((PKSavingsFDICSignageEnabled() & 1) == 0 && !currentPeerPaymentAccountResolution)
           {
-            v33 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount currentBalance];
-            [v18 setBalance:v33];
+            currentBalance = [(PKPeerPaymentAccount *)self->_peerPaymentAccount currentBalance];
+            [v18 setBalance:currentBalance];
           }
 
           ++v13;
           if (self->_peerPaymentAccount)
           {
-            v34 = v32 == 1;
+            v34 = currentPeerPaymentAccountResolution == 1;
           }
 
           else
@@ -401,15 +401,15 @@ void __65__PKDailyCashSelectionSectionController_preflightWithCompletion___block
 
           v35 = !v34;
           [v18 setHasAccount:v35];
-          v36 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount state];
-          if ((v36 - 1) >= 4)
+          state = [(PKPeerPaymentAccount *)self->_peerPaymentAccount state];
+          if ((state - 1) >= 4)
           {
             v37 = 0;
           }
 
           else
           {
-            v37 = v36;
+            v37 = state;
           }
 
           [v18 setState:v37];
@@ -423,14 +423,14 @@ void __65__PKDailyCashSelectionSectionController_preflightWithCompletion___block
             v22 = [(PKDailyCashSelectionSectionController *)self _eligibleAccountOfType:4];
             [v18 setHasAccount:v22 != 0];
             [v18 setHasPendingApplication:self->_pendingSavingsApplication != 0];
-            v26 = [v22 savingsDetails];
-            v27 = [v26 accountSummary];
-            v28 = [v27 currentBalance];
+            savingsDetails = [v22 savingsDetails];
+            accountSummary = [savingsDetails accountSummary];
+            currentBalance2 = [accountSummary currentBalance];
 
-            v29 = [v22 savingsDetails];
-            v30 = [v29 currencyCode];
+            savingsDetails2 = [v22 savingsDetails];
+            currencyCode = [savingsDetails2 currencyCode];
 
-            if ((!PKSavingsFDICSignageEnabled() || [v22 FDICBehaviorShowCreditRewardsHubBalance]) && v28 && v30)
+            if ((!PKSavingsFDICSignageEnabled() || [v22 FDICBehaviorShowCreditRewardsHubBalance]) && currentBalance2 && currencyCode)
             {
               v31 = PKCurrencyAmountMake();
               [v18 setBalance:v31];
@@ -447,15 +447,15 @@ void __65__PKDailyCashSelectionSectionController_preflightWithCompletion___block
 
           if (v17 == 2 && self->_allowStatementCreditRedemption)
           {
-            v19 = [(PKAccount *)self->_account creditDetails];
-            v20 = [v19 accountSummary];
-            v21 = [(PKAccountUserCollection *)self->_accountUserCollection currentAccountUser];
-            v22 = [v20 redeemableRewardsBalanceForUser:v21];
+            creditDetails = [(PKAccount *)self->_account creditDetails];
+            accountSummary2 = [creditDetails accountSummary];
+            currentAccountUser = [(PKAccountUserCollection *)self->_accountUserCollection currentAccountUser];
+            v22 = [accountSummary2 redeemableRewardsBalanceForUser:currentAccountUser];
 
             if (v22)
             {
-              v23 = [(PKAccount *)self->_account creditDetails];
-              v24 = [v23 currencyCode];
+              creditDetails2 = [(PKAccount *)self->_account creditDetails];
+              currencyCode2 = [creditDetails2 currencyCode];
               v25 = PKCurrencyAmountMake();
 
               [v18 setBalance:v25];
@@ -550,9 +550,9 @@ uint64_t __64__PKDailyCashSelectionSectionController_dailyCashSelectionItems__bl
   }
 }
 
-- (id)analyticsEventReportWithPreSelect:(BOOL)a3
+- (id)analyticsEventReportWithPreSelect:(BOOL)select
 {
-  v21 = a3;
+  selectCopy = select;
   v30 = *MEMORY[0x1E69E9840];
   v22 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -586,8 +586,8 @@ uint64_t __64__PKDailyCashSelectionSectionController_dailyCashSelectionItems__bl
       }
 
       v14 = *(*(&v25 + 1) + 8 * i);
-      v15 = [v14 redemptionType];
-      switch(v15)
+      redemptionType = [v14 redemptionType];
+      switch(redemptionType)
       {
         case 3:
           if ([v14 hasAccount])
@@ -635,7 +635,7 @@ LABEL_20:
 LABEL_25:
 
   [v22 setObject:v4 forKeyedSubscript:*MEMORY[0x1E69BA520]];
-  if (v21)
+  if (selectCopy)
   {
     [v22 setObject:v12 forKeyedSubscript:*MEMORY[0x1E69BA540]];
   }
@@ -652,9 +652,9 @@ LABEL_25:
   return v2;
 }
 
-- (BOOL)shouldHighlightItem:(id)a3
+- (BOOL)shouldHighlightItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (PKStoreDemoModeEnabled())
   {
     v5 = 0;
@@ -662,32 +662,32 @@ LABEL_25:
 
   else
   {
-    v6 = v4;
-    v7 = [v6 redemptionType];
-    if (v7 == self->_currentDestination)
+    v6 = itemCopy;
+    redemptionType = [v6 redemptionType];
+    if (redemptionType == self->_currentDestination)
     {
-      v8 = [v6 hasAccount];
+      hasAccount = [v6 hasAccount];
     }
 
     else
     {
-      v8 = 0;
+      hasAccount = 0;
     }
 
-    v9 = [v6 hasPendingApplication];
+    hasPendingApplication = [v6 hasPendingApplication];
     v5 = 0;
-    if (v7 != 2 && (v8 & 1) == 0)
+    if (redemptionType != 2 && (hasAccount & 1) == 0)
     {
-      v5 = (self->_loadingDestination == 0) & (v9 ^ 1);
+      v5 = (self->_loadingDestination == 0) & (hasPendingApplication ^ 1);
     }
   }
 
   return v5;
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if ((PKStoreDemoModeEnabled() & 1) == 0)
   {
     v5 = dispatch_time(0, 100000000);
@@ -697,9 +697,9 @@ LABEL_25:
     block[3] = &unk_1E8010970;
     block[4] = self;
     dispatch_after(v5, MEMORY[0x1E69E96A0], block);
-    v6 = [v4 redemptionType];
-    [(PKDailyCashSelectionSectionController *)self _changeRewardsDestinationAndOpenAccountIfNeeded:v6];
-    [(PKDailyCashSelectionSectionController *)self _reportDestinationButtonTapWithRedemptionType:v6];
+    redemptionType = [itemCopy redemptionType];
+    [(PKDailyCashSelectionSectionController *)self _changeRewardsDestinationAndOpenAccountIfNeeded:redemptionType];
+    [(PKDailyCashSelectionSectionController *)self _reportDestinationButtonTapWithRedemptionType:redemptionType];
   }
 }
 
@@ -709,27 +709,27 @@ void __55__PKDailyCashSelectionSectionController_didSelectItem___block_invoke(ui
   [WeakRetained deselectCells];
 }
 
-- (void)willDisplayItem:(id)a3
+- (void)willDisplayItem:(id)item
 {
-  v14 = a3;
+  itemCopy = item;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = v14;
+  v5 = itemCopy;
   if (isKindOfClass)
   {
-    v6 = [v14 eventToReport];
-    v5 = v14;
-    if (v6)
+    eventToReport = [itemCopy eventToReport];
+    v5 = itemCopy;
+    if (eventToReport)
     {
       if (self->_account)
       {
-        v7 = v6;
+        v7 = eventToReport;
         if (!self->_deviceEventReporter)
         {
           v8 = objc_alloc(MEMORY[0x1E69B8358]);
           account = self->_account;
-          v10 = [MEMORY[0x1E69B8EF8] sharedService];
-          v11 = [v8 initWithAccount:account paymentWebService:v10];
+          mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+          v11 = [v8 initWithAccount:account paymentWebService:mEMORY[0x1E69B8EF8]];
           deviceEventReporter = self->_deviceEventReporter;
           self->_deviceEventReporter = v11;
         }
@@ -737,40 +737,40 @@ void __55__PKDailyCashSelectionSectionController_didSelectItem___block_invoke(ui
         v13 = [objc_alloc(MEMORY[0x1E69B8390]) initWithApp:1 page:2];
         [(PKAccountDeviceEventReporter *)self->_deviceEventReporter reportEventIfNecessary:v7 location:v13 completion:0];
 
-        v5 = v14;
+        v5 = itemCopy;
       }
     }
   }
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
   identifier = self->_identifier;
-  v8 = v5;
-  v9 = identifier;
-  v10 = v9;
-  if (v9 == v8)
+  v8 = identifierCopy;
+  identifierCopy2 = identifier;
+  v10 = identifierCopy2;
+  if (identifierCopy2 == v8)
   {
 
     goto LABEL_7;
   }
 
-  if (!v8 || !v9)
+  if (!v8 || !identifierCopy2)
   {
 
     goto LABEL_9;
   }
 
-  v11 = [(NSString *)v8 isEqualToString:v9];
+  v11 = [(NSString *)v8 isEqualToString:identifierCopy2];
 
   if (v11)
   {
 LABEL_7:
-    v12 = [(PKDailyCashSelectionSectionController *)self dailyCashSelectionItems];
+    dailyCashSelectionItems = [(PKDailyCashSelectionSectionController *)self dailyCashSelectionItems];
     currentDailyCashSelectionItems = self->_currentDailyCashSelectionItems;
-    self->_currentDailyCashSelectionItems = v12;
+    self->_currentDailyCashSelectionItems = dailyCashSelectionItems;
 
     [v6 appendItems:self->_currentDailyCashSelectionItems];
   }
@@ -780,9 +780,9 @@ LABEL_9:
   return v6;
 }
 
-- (id)cellRegistrationForItem:(id)a3
+- (id)cellRegistrationForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = objc_opt_class();
   objc_initWeak(&location, self);
   v6 = MEMORY[0x1E69DC800];
@@ -1041,7 +1041,7 @@ LABEL_46:
 LABEL_53:
 }
 
-- (id)_eligibleAccountOfType:(unint64_t)a3
+- (id)_eligibleAccountOfType:(unint64_t)type
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
@@ -1064,7 +1064,7 @@ LABEL_53:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 type] == a3 && objc_msgSend(v9, "state") != 4)
+        if ([v9 type] == type && objc_msgSend(v9, "state") != 4)
         {
           v10 = v9;
           goto LABEL_12;
@@ -1087,20 +1087,20 @@ LABEL_12:
   return v10;
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
   v5 = MEMORY[0x1E69DC7E0];
-  v6 = a3;
+  environmentCopy = environment;
   v7 = [[v5 alloc] initWithAppearance:2];
-  v8 = [(PKDailyCashSelectionSectionController *)self headerTitle];
-  v9 = [v8 length] != 0;
+  headerTitle = [(PKDailyCashSelectionSectionController *)self headerTitle];
+  v9 = [headerTitle length] != 0;
 
-  v10 = [(PKDailyCashSelectionSectionController *)self footerTitle];
-  v11 = [v10 length];
+  footerTitle = [(PKDailyCashSelectionSectionController *)self footerTitle];
+  v11 = [footerTitle length];
 
   [v7 setHeaderMode:v9];
   [v7 setFooterMode:v11 != 0];
-  v12 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v7 layoutEnvironment:v6];
+  v12 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v7 layoutEnvironment:environmentCopy];
 
   [v12 contentInsets];
   [v12 setContentInsets:?];
@@ -1108,12 +1108,12 @@ LABEL_12:
   return v12;
 }
 
-- (Class)supplementaryRegistrationClassForKind:(id)a3 sectionIdentifier:(id)a4
+- (Class)supplementaryRegistrationClassForKind:(id)kind sectionIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
+  kindCopy = kind;
+  identifierCopy = identifier;
   v7 = *MEMORY[0x1E69DDC08];
-  v8 = v5;
+  v8 = kindCopy;
   v9 = v8;
   if (v7 == v8)
   {
@@ -1154,13 +1154,13 @@ LABEL_14:
   return v14;
 }
 
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier
 {
-  v21 = a3;
-  v8 = a4;
-  v9 = a5;
+  registrationCopy = registration;
+  kindCopy = kind;
+  identifierCopy = identifier;
   v10 = *MEMORY[0x1E69DDC08];
-  v11 = v8;
+  v11 = kindCopy;
   v12 = v11;
   if (v10 == v11)
   {
@@ -1179,25 +1179,25 @@ LABEL_14:
   if (v13)
   {
 LABEL_7:
-    v14 = v21;
-    v15 = [(PKDailyCashSelectionSectionController *)self headerTitle];
-    [(PKFDICSignageView *)v14 setTitle:v15];
+    v14 = registrationCopy;
+    headerTitle = [(PKDailyCashSelectionSectionController *)self headerTitle];
+    [(PKFDICSignageView *)v14 setTitle:headerTitle];
     goto LABEL_8;
   }
 
 LABEL_14:
   v16 = *MEMORY[0x1E69DDC00];
   v17 = v12;
-  v15 = v17;
+  headerTitle = v17;
   if (v16 == v17)
   {
 
 LABEL_20:
-    v15 = v21;
-    [v15 setBottomInsetType:2];
-    [v15 setHorizontalAlignment:0];
-    v19 = [(PKDailyCashSelectionSectionController *)self footerTitle];
-    [v15 setFooterText:v19];
+    headerTitle = registrationCopy;
+    [headerTitle setBottomInsetType:2];
+    [headerTitle setHorizontalAlignment:0];
+    footerTitle = [(PKDailyCashSelectionSectionController *)self footerTitle];
+    [headerTitle setFooterText:footerTitle];
 
     v20 = [(NSArray *)self->_currentDailyCashSelectionItems pk_containsObjectPassingTest:&__block_literal_global_210];
     if (!PKSavingsFDICSignageEnabled() || !v20 || ([(PKAccount *)self->_account FDICBehaviorHideCreditRewardsHubSignage]& 1) != 0)
@@ -1206,7 +1206,7 @@ LABEL_20:
     }
 
     v14 = [[PKFDICSignageView alloc] initWithFeature:5 displayingBankName:0];
-    [v15 setAdditionalView:v14];
+    [headerTitle setAdditionalView:v14];
 LABEL_8:
 
 LABEL_9:
@@ -1272,16 +1272,16 @@ uint64_t __106__PKDailyCashSelectionSectionController_configureSupplementaryRegi
         }
 
         v12 = *(*(&v27 + 1) + 8 * i);
-        v13 = [v12 redemptionType];
-        v14 = [v12 state];
-        if (v13 == 3)
+        redemptionType = [v12 redemptionType];
+        state = [v12 state];
+        if (redemptionType == 3)
         {
           v26 = 1;
         }
 
         else
         {
-          if (v13 != 1)
+          if (redemptionType != 1)
           {
             continue;
           }
@@ -1289,9 +1289,9 @@ uint64_t __106__PKDailyCashSelectionSectionController_configureSupplementaryRegi
           v8 = 1;
         }
 
-        if (v14 != 1 && (self->_currentDestination == v13 || v10 == 2))
+        if (state != 1 && (self->_currentDestination == redemptionType || v10 == 2))
         {
-          v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v13];
+          v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:redemptionType];
           [v3 addObject:v16];
         }
       }
@@ -1310,10 +1310,10 @@ LABEL_21:
 
   if (self->_allowStatementCreditRedemption && [v3 count] == 1)
   {
-    v17 = [v3 anyObject];
-    v18 = [v17 integerValue];
+    anyObject = [v3 anyObject];
+    integerValue = [anyObject integerValue];
 
-    if (v18 == 1)
+    if (integerValue == 1)
     {
       v19 = PKLocalizedFeatureString();
       v20 = [v19 stringByAppendingString:@"\n"];
@@ -1364,10 +1364,10 @@ LABEL_32:
 - (id)_presentingViewController
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained rewardsHubCollectionView];
-  v4 = [v3 pkui_viewControllerFromResponderChain];
+  rewardsHubCollectionView = [WeakRetained rewardsHubCollectionView];
+  pkui_viewControllerFromResponderChain = [rewardsHubCollectionView pkui_viewControllerFromResponderChain];
 
-  return v4;
+  return pkui_viewControllerFromResponderChain;
 }
 
 - (id)_setupAccessory
@@ -1422,14 +1422,14 @@ LABEL_32:
   objc_copyWeak(&v16, &location);
   v3 = [v2 actionWithHandler:&v12];
   v4 = MEMORY[0x1E69DC738];
-  v5 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-  v6 = [v4 buttonWithConfiguration:v5 primaryAction:v3];
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  v6 = [v4 buttonWithConfiguration:plainButtonConfiguration primaryAction:v3];
 
-  v7 = [v6 configuration];
-  [v7 setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
-  [v6 setConfiguration:v7];
-  v8 = [v6 titleLabel];
-  [v8 setLineBreakMode:4];
+  configuration = [v6 configuration];
+  [configuration setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
+  [v6 setConfiguration:configuration];
+  titleLabel = [v6 titleLabel];
+  [titleLabel setLineBreakMode:4];
 
   v9 = PKLocalizedFeatureString();
   [v6 pkui_updateConfigurationWithTitle:v9];
@@ -1476,10 +1476,10 @@ void __56__PKDailyCashSelectionSectionController__applyAccessory__block_invoke(u
 
   else
   {
-    v4 = [(PKAccount *)self->_account creditDetails];
-    v5 = [v4 accountSummary];
-    v6 = [(PKAccountUserCollection *)self->_accountUserCollection currentAccountUser];
-    v7 = [v5 redeemableRewardsBalanceForUser:v6];
+    creditDetails = [(PKAccount *)self->_account creditDetails];
+    accountSummary = [creditDetails accountSummary];
+    currentAccountUser = [(PKAccountUserCollection *)self->_accountUserCollection currentAccountUser];
+    v7 = [accountSummary redeemableRewardsBalanceForUser:currentAccountUser];
 
     objc_initWeak(buf, self);
     v11 = MEMORY[0x1E69E9820];
@@ -1489,9 +1489,9 @@ void __56__PKDailyCashSelectionSectionController__applyAccessory__block_invoke(u
     objc_copyWeak(&v18, buf);
     v8 = v7;
     v15 = v8;
-    v2 = v4;
+    v2 = creditDetails;
     v16 = v2;
-    v17 = self;
+    selfCopy = self;
     v9 = _Block_copy(&v11);
     v10 = PKLocalizedFeatureString();
     [(PKDailyCashSelectionSectionController *)self presentConfirmationAlertWithTitle:v10 redemptionType:2 confirmationHandler:v9, v11, v12, v13, v14];
@@ -1593,7 +1593,7 @@ void __71__PKDailyCashSelectionSectionController__applyRewardsAsStatementCredit_
 LABEL_7:
 }
 
-- (void)_changeRewardsDestinationAndOpenAccountIfNeeded:(unint64_t)a3
+- (void)_changeRewardsDestinationAndOpenAccountIfNeeded:(unint64_t)needed
 {
   if (self->_loadingDestination)
   {
@@ -1605,7 +1605,7 @@ LABEL_7:
     }
   }
 
-  else if (a3 == 3)
+  else if (needed == 3)
   {
     v5 = [(PKDailyCashSelectionSectionController *)self _eligibleAccountOfType:4];
     if (v5)
@@ -1617,20 +1617,20 @@ LABEL_7:
     {
       self->_loadingDestination = 3;
       [(PKDailyCashSelectionSectionController *)self _reloadSection];
-      v10 = [(PKAccount *)self->_account redeemRewardsFeatureDescriptor];
-      v11 = [v10 productForFeature:5];
+      redeemRewardsFeatureDescriptor = [(PKAccount *)self->_account redeemRewardsFeatureDescriptor];
+      v11 = [redeemRewardsFeatureDescriptor productForFeature:5];
 
       if (v11)
       {
         v12 = objc_alloc(MEMORY[0x1E69B8D48]);
-        v13 = [MEMORY[0x1E69B8EF8] sharedService];
-        v14 = [v12 initWithWebService:v13];
+        mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+        v14 = [v12 initWithWebService:mEMORY[0x1E69B8EF8]];
 
         [v14 setReferrerIdentifier:@"cid%3Dapy-930-10001"];
         v15 = [PKFeatureOnBoardingViewController alloc];
-        v16 = [v11 onboardingItems];
-        v17 = [v16 firstObject];
-        v18 = [(PKFeatureOnBoardingViewController *)v15 initWithParentFlowController:0 setupDelegate:0 setupContext:0 onboardingContext:0 featureIdentifier:5 provisioningController:v14 paymentSetupProduct:v11 currentPage:v17];
+        onboardingItems = [v11 onboardingItems];
+        firstObject = [onboardingItems firstObject];
+        v18 = [(PKFeatureOnBoardingViewController *)v15 initWithParentFlowController:0 setupDelegate:0 setupContext:0 onboardingContext:0 featureIdentifier:5 provisioningController:v14 paymentSetupProduct:v11 currentPage:firstObject];
 
         objc_initWeak(buf, self);
         aBlock[0] = MEMORY[0x1E69E9820];
@@ -1641,8 +1641,8 @@ LABEL_7:
         v19 = _Block_copy(aBlock);
         v20 = [[PKNavigationController alloc] initWithRootViewController:v18];
         [(PKNavigationController *)v20 setModalInPresentation:1];
-        v21 = [(PKDailyCashSelectionSectionController *)self _presentingViewController];
-        [v21 presentViewController:v20 animated:1 completion:v19];
+        _presentingViewController = [(PKDailyCashSelectionSectionController *)self _presentingViewController];
+        [_presentingViewController presentViewController:v20 animated:1 completion:v19];
 
         objc_destroyWeak(&v24);
         objc_destroyWeak(buf);
@@ -1663,7 +1663,7 @@ LABEL_7:
     }
   }
 
-  else if (a3 == 1)
+  else if (needed == 1)
   {
     if (PKUserHasDisabledPeerPayment())
     {
@@ -1673,10 +1673,10 @@ LABEL_7:
 
     else
     {
-      v6 = [(PKPeerPaymentAccountResolutionController *)self->_peerPaymentAccountResolutionController currentPeerPaymentAccountResolution];
-      if (v6)
+      currentPeerPaymentAccountResolution = [(PKPeerPaymentAccountResolutionController *)self->_peerPaymentAccountResolutionController currentPeerPaymentAccountResolution];
+      if (currentPeerPaymentAccountResolution)
       {
-        v7 = v6;
+        v7 = currentPeerPaymentAccountResolution;
         objc_initWeak(buf, self);
         self->_loadingDestination = 1;
         [(PKDailyCashSelectionSectionController *)self _reloadSection];
@@ -1727,7 +1727,7 @@ void __89__PKDailyCashSelectionSectionController__changeRewardsDestinationAndOpe
   }
 }
 
-- (void)_changeRewardsDestination:(unint64_t)a3
+- (void)_changeRewardsDestination:(unint64_t)destination
 {
   if (self->_loadingDestination)
   {
@@ -1739,17 +1739,17 @@ void __89__PKDailyCashSelectionSectionController__changeRewardsDestinationAndOpe
     }
   }
 
-  if (a3 != 3)
+  if (destination != 3)
   {
-    if (a3 != 1)
+    if (destination != 1)
     {
       v6 = 0;
-      v7 = 0;
+      accountIdentifier = 0;
       goto LABEL_12;
     }
 
     v6 = PKLocalizedFeatureString();
-    v7 = 0;
+    accountIdentifier = 0;
     if (!v6)
     {
       goto LABEL_12;
@@ -1760,7 +1760,7 @@ void __89__PKDailyCashSelectionSectionController__changeRewardsDestinationAndOpe
 
   v6 = PKLocalizedFeatureString();
   v8 = [(PKDailyCashSelectionSectionController *)self _eligibleAccountOfType:4];
-  v7 = [v8 accountIdentifier];
+  accountIdentifier = [v8 accountIdentifier];
 
   if (v6)
   {
@@ -1771,12 +1771,12 @@ LABEL_10:
     v12 = __67__PKDailyCashSelectionSectionController__changeRewardsDestination___block_invoke;
     v13 = &unk_1E8020D70;
     objc_copyWeak(v16, buf);
-    v16[1] = a3;
-    v7 = v7;
-    v14 = v7;
-    v15 = self;
+    v16[1] = destination;
+    accountIdentifier = accountIdentifier;
+    v14 = accountIdentifier;
+    selfCopy = self;
     v9 = _Block_copy(&v10);
-    [(PKDailyCashSelectionSectionController *)self presentConfirmationAlertWithTitle:v6 redemptionType:a3 confirmationHandler:v9, v10, v11, v12, v13];
+    [(PKDailyCashSelectionSectionController *)self presentConfirmationAlertWithTitle:v6 redemptionType:destination confirmationHandler:v9, v10, v11, v12, v13];
 
     objc_destroyWeak(v16);
     objc_destroyWeak(buf);
@@ -1869,23 +1869,23 @@ void __67__PKDailyCashSelectionSectionController__changeRewardsDestination___blo
   }
 }
 
-- (void)_reportDailyCashConfirmationEventWithRedemptionType:(unint64_t)a3 button:(id)a4
+- (void)_reportDailyCashConfirmationEventWithRedemptionType:(unint64_t)type button:(id)button
 {
-  v6 = a4;
+  buttonCopy = button;
   v11 = [(PKDailyCashSelectionSectionController *)self analyticsEventReportWithPreSelect:0];
-  if (a3 - 1 > 2)
+  if (type - 1 > 2)
   {
     v7 = @"unknown";
   }
 
   else
   {
-    v7 = **(&unk_1E8020DC8 + a3 - 1);
+    v7 = **(&unk_1E8020DC8 + type - 1);
   }
 
   [v11 setObject:v7 forKeyedSubscript:*MEMORY[0x1E69BABE8]];
   [v11 setObject:*MEMORY[0x1E69BA6F0] forKeyedSubscript:*MEMORY[0x1E69BA680]];
-  [v11 setObject:v6 forKeyedSubscript:*MEMORY[0x1E69BA440]];
+  [v11 setObject:buttonCopy forKeyedSubscript:*MEMORY[0x1E69BA440]];
 
   v8 = MEMORY[0x1E69B8540];
   v9 = *MEMORY[0x1E69BB698];
@@ -1893,19 +1893,19 @@ void __67__PKDailyCashSelectionSectionController__changeRewardsDestination___blo
   [v8 subject:v9 sendEvent:v10];
 }
 
-- (void)_reportDestinationButtonTapWithRedemptionType:(unint64_t)a3
+- (void)_reportDestinationButtonTapWithRedemptionType:(unint64_t)type
 {
   v8 = [(PKDailyCashSelectionSectionController *)self analyticsEventReportWithPreSelect:0];
   [v8 setObject:*MEMORY[0x1E69BA558] forKeyedSubscript:*MEMORY[0x1E69BABE8]];
   [v8 setObject:*MEMORY[0x1E69BA6F0] forKeyedSubscript:*MEMORY[0x1E69BA680]];
-  if (a3 - 1 > 2)
+  if (type - 1 > 2)
   {
     v4 = @"unknown";
   }
 
   else
   {
-    v4 = **(&unk_1E8020DB0 + a3 - 1);
+    v4 = **(&unk_1E8020DB0 + type - 1);
   }
 
   [v8 setObject:v4 forKeyedSubscript:*MEMORY[0x1E69BA440]];
@@ -1915,16 +1915,16 @@ void __67__PKDailyCashSelectionSectionController__changeRewardsDestination___blo
   [v5 subject:v6 sendEvent:v7];
 }
 
-- (void)presentConfirmationAlertWithTitle:(id)a3 redemptionType:(unint64_t)a4 confirmationHandler:(id)a5
+- (void)presentConfirmationAlertWithTitle:(id)title redemptionType:(unint64_t)type confirmationHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9 && [v8 length])
+  titleCopy = title;
+  handlerCopy = handler;
+  if (handlerCopy && [titleCopy length])
   {
-    v10 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v8 message:0 preferredStyle:1];
+    v10 = [MEMORY[0x1E69DC650] alertControllerWithTitle:titleCopy message:0 preferredStyle:1];
     v11 = MEMORY[0x1E69DC648];
     v12 = PKLocalizedFeatureString();
-    v13 = [v11 actionWithTitle:v12 style:0 handler:v9];
+    v13 = [v11 actionWithTitle:v12 style:0 handler:handlerCopy];
     [v10 addAction:v13];
 
     objc_initWeak(&location, self);
@@ -1933,21 +1933,21 @@ void __67__PKDailyCashSelectionSectionController__changeRewardsDestination___blo
     aBlock[2] = __110__PKDailyCashSelectionSectionController_presentConfirmationAlertWithTitle_redemptionType_confirmationHandler___block_invoke;
     aBlock[3] = &unk_1E801BF80;
     objc_copyWeak(v21, &location);
-    v21[1] = a4;
+    v21[1] = type;
     v14 = _Block_copy(aBlock);
     v15 = MEMORY[0x1E69DC648];
     v16 = PKLocalizedFeatureString();
     v17 = [v15 actionWithTitle:v16 style:1 handler:v14];
     [v10 addAction:v17];
 
-    v18 = [(PKDailyCashSelectionSectionController *)self _presentingViewController];
+    _presentingViewController = [(PKDailyCashSelectionSectionController *)self _presentingViewController];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __110__PKDailyCashSelectionSectionController_presentConfirmationAlertWithTitle_redemptionType_confirmationHandler___block_invoke_2;
     v19[3] = &unk_1E80119C8;
     v19[4] = self;
-    v19[5] = a4;
-    [v18 presentViewController:v10 animated:1 completion:v19];
+    v19[5] = type;
+    [_presentingViewController presentViewController:v10 animated:1 completion:v19];
 
     objc_destroyWeak(v21);
     objc_destroyWeak(&location);
@@ -2002,8 +2002,8 @@ void __110__PKDailyCashSelectionSectionController_presentConfirmationAlertWithTi
   v10 = [v8 actionWithTitle:v9 style:1 handler:0];
   [v4 addAction:v10];
 
-  v11 = [(PKDailyCashSelectionSectionController *)self _presentingViewController];
-  [v11 presentViewController:v4 animated:1 completion:0];
+  _presentingViewController = [(PKDailyCashSelectionSectionController *)self _presentingViewController];
+  [_presentingViewController presentViewController:v4 animated:1 completion:0];
 }
 
 void __75__PKDailyCashSelectionSectionController__presentPeerPaymentNotEnabledAlert__block_invoke()
@@ -2012,16 +2012,16 @@ void __75__PKDailyCashSelectionSectionController__presentPeerPaymentNotEnabledAl
   PKOpenURL();
 }
 
-- (void)accountAdded:(id)a3
+- (void)accountAdded:(id)added
 {
-  v4 = a3;
+  addedCopy = added;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__PKDailyCashSelectionSectionController_accountAdded___block_invoke;
   v6[3] = &unk_1E8010A10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = addedCopy;
+  v5 = addedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -2037,16 +2037,16 @@ uint64_t __54__PKDailyCashSelectionSectionController_accountAdded___block_invoke
   return [v5 _reloadSection];
 }
 
-- (void)accountChanged:(id)a3
+- (void)accountChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __56__PKDailyCashSelectionSectionController_accountChanged___block_invoke;
   v6[3] = &unk_1E8010A10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = changedCopy;
+  v5 = changedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -2167,16 +2167,16 @@ LABEL_28:
   [*(a1 + 32) _reloadSection];
 }
 
-- (void)accountRemoved:(id)a3
+- (void)accountRemoved:(id)removed
 {
-  v4 = a3;
+  removedCopy = removed;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __56__PKDailyCashSelectionSectionController_accountRemoved___block_invoke;
   v6[3] = &unk_1E8010A10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = removedCopy;
+  v5 = removedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -2260,16 +2260,16 @@ LABEL_19:
   [*(a1 + 32) _reloadSection];
 }
 
-- (void)featureApplicationAdded:(id)a3
+- (void)featureApplicationAdded:(id)added
 {
-  v4 = a3;
+  addedCopy = added;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__PKDailyCashSelectionSectionController_featureApplicationAdded___block_invoke;
   v6[3] = &unk_1E8010A10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = addedCopy;
+  v5 = addedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -2298,16 +2298,16 @@ BOOL __65__PKDailyCashSelectionSectionController_featureApplicationAdded___block
   return v3;
 }
 
-- (void)featureApplicationChanged:(id)a3
+- (void)featureApplicationChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __67__PKDailyCashSelectionSectionController_featureApplicationChanged___block_invoke;
   v6[3] = &unk_1E8010A10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = changedCopy;
+  v5 = changedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -2409,16 +2409,16 @@ BOOL __67__PKDailyCashSelectionSectionController_featureApplicationChanged___blo
   return v3;
 }
 
-- (void)featureApplicationRemoved:(id)a3
+- (void)featureApplicationRemoved:(id)removed
 {
-  v4 = a3;
+  removedCopy = removed;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __67__PKDailyCashSelectionSectionController_featureApplicationRemoved___block_invoke;
   v6[3] = &unk_1E8010A10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = removedCopy;
+  v5 = removedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -2515,25 +2515,25 @@ BOOL __67__PKDailyCashSelectionSectionController_featureApplicationRemoved___blo
   return v3;
 }
 
-- (void)peerPaymentAccountResolutionController:(id)a3 requestsPresentViewController:(id)a4 animated:(BOOL)a5
+- (void)peerPaymentAccountResolutionController:(id)controller requestsPresentViewController:(id)viewController animated:(BOOL)animated
 {
-  v6 = a4;
-  v7 = [(PKDailyCashSelectionSectionController *)self _presentingViewController];
-  [v7 presentViewController:v6 animated:1 completion:0];
+  viewControllerCopy = viewController;
+  _presentingViewController = [(PKDailyCashSelectionSectionController *)self _presentingViewController];
+  [_presentingViewController presentViewController:viewControllerCopy animated:1 completion:0];
 }
 
-- (void)peerPaymentAccountResolutionController:(id)a3 requestsDismissCurrentViewControllerAnimated:(BOOL)a4
+- (void)peerPaymentAccountResolutionController:(id)controller requestsDismissCurrentViewControllerAnimated:(BOOL)animated
 {
-  [(PKDailyCashSelectionSectionController *)self _reloadSection:a3];
-  v5 = [(PKDailyCashSelectionSectionController *)self _presentingViewController];
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  [(PKDailyCashSelectionSectionController *)self _reloadSection:controller];
+  _presentingViewController = [(PKDailyCashSelectionSectionController *)self _presentingViewController];
+  [_presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)paymentSetupDidFinish:(id)a3
+- (void)paymentSetupDidFinish:(id)finish
 {
   [(PKDailyCashSelectionSectionController *)self _reloadSection];
-  v4 = [(PKDailyCashSelectionSectionController *)self _presentingViewController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  _presentingViewController = [(PKDailyCashSelectionSectionController *)self _presentingViewController];
+  [_presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 @end

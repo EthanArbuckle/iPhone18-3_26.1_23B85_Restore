@@ -1,10 +1,10 @@
 @interface OnboardingOngoingCycleFactorsDiffableTableViewAdaptor
-- (void)snapshotDidChangeWithDataSourceID:(id)a3 snapshot:(id)a4 animated:(BOOL)a5;
+- (void)snapshotDidChangeWithDataSourceID:(id)d snapshot:(id)snapshot animated:(BOOL)animated;
 @end
 
 @implementation OnboardingOngoingCycleFactorsDiffableTableViewAdaptor
 
-- (void)snapshotDidChangeWithDataSourceID:(id)a3 snapshot:(id)a4 animated:(BOOL)a5
+- (void)snapshotDidChangeWithDataSourceID:(id)d snapshot:(id)snapshot animated:(BOOL)animated
 {
   sub_29DF3BDDC(0, &qword_2A181CC60, MEMORY[0x29EDC7818]);
   v6 = v5;

@@ -1,45 +1,45 @@
 @interface CKVideoMessageRecordingViewController
-- (CKVideoMessageRecordingViewController)initWithPresentationView:(id)a3;
+- (CKVideoMessageRecordingViewController)initWithPresentationView:(id)view;
 - (CKVideoMessageRecordingViewControllerDelegate)videoMessageDelegate;
 - (void)_animateVideoIn;
 - (void)_cleanupCamera;
-- (void)_previewWarmedUp:(id)a3;
-- (void)actionMenuControllerWillDismissActionMenu:(id)a3 animated:(BOOL)a4;
+- (void)_previewWarmedUp:(id)up;
+- (void)actionMenuControllerWillDismissActionMenu:(id)menu animated:(BOOL)animated;
 - (void)cancel;
-- (void)ckVideoRecorder:(id)a3 imageDataCaptured:(id)a4 error:(id)a5;
-- (void)ckVideoRecorder:(id)a3 videoCaptured:(id)a4 error:(id)a5;
-- (void)ckVideoRecorderRecordingCanceled:(id)a3;
+- (void)ckVideoRecorder:(id)recorder imageDataCaptured:(id)captured error:(id)error;
+- (void)ckVideoRecorder:(id)recorder videoCaptured:(id)captured error:(id)error;
+- (void)ckVideoRecorderRecordingCanceled:(id)canceled;
 - (void)dealloc;
-- (void)dismissWithCompletion:(id)a3;
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4;
-- (void)photoMenuItemAction:(id)a3;
+- (void)dismissWithCompletion:(id)completion;
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info;
+- (void)photoMenuItemAction:(id)action;
 - (void)presentVideoActionMenuController;
-- (void)presentWithCompletion:(id)a3;
+- (void)presentWithCompletion:(id)completion;
 - (void)record;
 - (void)send;
-- (void)stopRecordingWithCompletionBlock:(id)a3;
-- (void)swapCamera:(id)a3;
-- (void)takePictureWithCompletionBlock:(id)a3;
-- (void)videoMenuItemAction:(id)a3;
+- (void)stopRecordingWithCompletionBlock:(id)block;
+- (void)swapCamera:(id)camera;
+- (void)takePictureWithCompletionBlock:(id)block;
+- (void)videoMenuItemAction:(id)action;
 - (void)viewDidLoad;
 @end
 
 @implementation CKVideoMessageRecordingViewController
 
-- (CKVideoMessageRecordingViewController)initWithPresentationView:(id)a3
+- (CKVideoMessageRecordingViewController)initWithPresentationView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = CKVideoMessageRecordingViewController;
   v6 = [(CKVideoMessageRecordingViewController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_presentationView, a3);
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v7 selector:sel__previewWarmedUp_ name:*MEMORY[0x1E6986B70] object:0];
-    [v8 addObserver:v7 selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
-    [v8 addObserver:v7 selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
+    objc_storeStrong(&v6->_presentationView, view);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__previewWarmedUp_ name:*MEMORY[0x1E6986B70] object:0];
+    [defaultCenter addObserver:v7 selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
+    [defaultCenter addObserver:v7 selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
   }
 
   return v7;
@@ -53,8 +53,8 @@
   [(CKVideoMessageRecordingViewController *)&v68 viewDidLoad];
   v3 = objc_alloc_init(MEMORY[0x1E69DCAD0]);
   v4 = objc_alloc(MEMORY[0x1E695DF90]);
-  v5 = [v3 _properties];
-  v6 = [v4 initWithDictionary:v5];
+  _properties = [v3 _properties];
+  v6 = [v4 initWithDictionary:_properties];
 
   v7 = MEMORY[0x1E695E118];
   [v6 setValue:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E69DE9B0]];
@@ -64,7 +64,7 @@
   [v6 setValue:v7 forKey:*MEMORY[0x1E69DE8D0]];
   [v3 _setProperties:v6];
   [v3 setAllowsEditing:0];
-  v9 = 1;
+  integerValue = 1;
   [v3 setSourceType:1];
   [v3 _setImagePickerSavingOptions:4];
   v10 = *MEMORY[0x1E69637F8];
@@ -75,45 +75,45 @@
 
   [v3 setCameraCaptureMode:1];
   [v3 setVideoQuality:0];
-  v12 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v13 = [v12 objectForKey:@"kCKVideoMessagingCameraDevice"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v13 = [standardUserDefaults objectForKey:@"kCKVideoMessagingCameraDevice"];
 
   if (v13)
   {
-    v9 = [v13 integerValue];
+    integerValue = [v13 integerValue];
   }
 
   v67 = v13;
-  if (v9 >= 1)
+  if (integerValue >= 1)
   {
     v14 = 1;
   }
 
   else
   {
-    v14 = v9;
+    v14 = integerValue;
   }
 
   [v3 setCameraDevice:v14];
   [v3 setShowsCameraControls:0];
   [v3 setDelegate:self];
   [(CKVideoMessageRecordingViewController *)self setCameraViewController:v3];
-  v15 = [(CKVideoMessageRecordingViewController *)self view];
-  [v15 bounds];
+  view = [(CKVideoMessageRecordingViewController *)self view];
+  [view bounds];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
   [(CKVideoMessageRecordingViewController *)self addChildViewController:v3];
-  v24 = [(CKVideoMessageRecordingViewController *)self cameraViewController];
-  v25 = [v24 view];
+  cameraViewController = [(CKVideoMessageRecordingViewController *)self cameraViewController];
+  view2 = [cameraViewController view];
 
-  [v25 setFrame:{v17, v19, v21, v23}];
-  [v25 setAlpha:0.0];
+  [view2 setFrame:{v17, v19, v21, v23}];
+  [view2 setAlpha:0.0];
   [v3 didMoveToParentViewController:self];
-  v65 = v25;
-  v66 = v15;
-  [v15 addSubview:v25];
+  v65 = view2;
+  v66 = view;
+  [view addSubview:view2];
   v26 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v17, v19, v21, v23}];
   [v26 setAutoresizingMask:18];
   v27 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 0.0, v21, 40.0}];
@@ -128,41 +128,41 @@
   v30 = [(CKRecordingElapsedTimeView *)v29 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(CKRecordingElapsedTimeView *)v30 setAutoresizingMask:5];
   [(CKVideoMessageRecordingViewController *)self setTimerView:v30];
-  v31 = [(CKVideoMessageRecordingViewController *)self timerView];
-  [v31 sizeToFit];
+  timerView = [(CKVideoMessageRecordingViewController *)self timerView];
+  [timerView sizeToFit];
 
-  v32 = [(CKVideoMessageRecordingViewController *)self timerView];
-  [v32 setHidden:1];
+  timerView2 = [(CKVideoMessageRecordingViewController *)self timerView];
+  [timerView2 setHidden:1];
 
-  v33 = [(CKVideoMessageRecordingViewController *)self topBackgroundView];
-  [v33 frame];
+  topBackgroundView = [(CKVideoMessageRecordingViewController *)self topBackgroundView];
+  [topBackgroundView frame];
   v34 = CGRectGetWidth(v70) * 0.5;
-  v35 = [(CKVideoMessageRecordingViewController *)self topBackgroundView];
-  [v35 frame];
+  topBackgroundView2 = [(CKVideoMessageRecordingViewController *)self topBackgroundView];
+  [topBackgroundView2 frame];
   v36 = CGRectGetHeight(v71) * 0.5;
-  v37 = [(CKVideoMessageRecordingViewController *)self timerView];
-  [v37 frame];
+  timerView3 = [(CKVideoMessageRecordingViewController *)self timerView];
+  [timerView3 frame];
   v39 = v38;
   v41 = v40;
   v42 = v34 - v38 * 0.5;
   v43 = v36 - v40 * 0.5;
 
-  v44 = [(CKVideoMessageRecordingViewController *)self timerView];
-  [v44 setFrame:{v42, v43, v39, v41}];
+  timerView4 = [(CKVideoMessageRecordingViewController *)self timerView];
+  [timerView4 setFrame:{v42, v43, v39, v41}];
 
-  v45 = [(CKVideoMessageRecordingViewController *)self topBackgroundView];
-  v46 = [(CKVideoMessageRecordingViewController *)self timerView];
-  [v45 addSubview:v46];
+  topBackgroundView3 = [(CKVideoMessageRecordingViewController *)self topBackgroundView];
+  timerView5 = [(CKVideoMessageRecordingViewController *)self timerView];
+  [topBackgroundView3 addSubview:timerView5];
 
-  v47 = [MEMORY[0x1E695E000] standardUserDefaults];
-  LOBYTE(v46) = [v47 BOOLForKey:@"CKSwapCameraButton"];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  LOBYTE(timerView5) = [standardUserDefaults2 BOOLForKey:@"CKSwapCameraButton"];
 
-  if ((v46 & 1) == 0)
+  if ((timerView5 & 1) == 0)
   {
     v48 = [MEMORY[0x1E69DC738] buttonWithType:0];
     v49 = [MEMORY[0x1E69DCAB8] ckImageNamed:@"CameraToggle"];
-    v50 = [MEMORY[0x1E69DC888] whiteColor];
-    v51 = [v49 _flatImageWithColor:v50];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v51 = [v49 _flatImageWithColor:whiteColor];
     [v48 setImage:v51 forState:0];
 
     [v48 setOpaque:0];
@@ -173,8 +173,8 @@
     v55 = v54;
     v57 = v56;
     v59 = v58;
-    v60 = [(CKVideoMessageRecordingViewController *)self topBackgroundView];
-    [v60 frame];
+    topBackgroundView4 = [(CKVideoMessageRecordingViewController *)self topBackgroundView];
+    [topBackgroundView4 frame];
     Width = CGRectGetWidth(v72);
     v73.origin.x = v53;
     v73.origin.y = v55;
@@ -184,14 +184,14 @@
 
     [v48 setFrame:{v62, 10.0, v57, v59}];
     [v48 setAutoresizingMask:1];
-    v63 = [(CKVideoMessageRecordingViewController *)self topBackgroundView];
-    [v63 addSubview:v48];
+    topBackgroundView5 = [(CKVideoMessageRecordingViewController *)self topBackgroundView];
+    [topBackgroundView5 addSubview:v48];
 
     [(CKVideoMessageRecordingViewController *)self setSwapCameraButton:v48];
   }
 
-  v64 = [(CKVideoMessageRecordingViewController *)self cameraViewController];
-  [v64 setCameraOverlayView:v26];
+  cameraViewController2 = [(CKVideoMessageRecordingViewController *)self cameraViewController];
+  [cameraViewController2 setCameraOverlayView:v26];
 }
 
 - (void)presentVideoActionMenuController
@@ -209,9 +209,9 @@
   v9 = [MEMORY[0x1E69DB878] ck_cui_cameraModeDialFontForContentSize:*MEMORY[0x1E69DDC70]];
   v10 = [MEMORY[0x1E69DB878] ck_cui_cameraKerningForFont:v9];
   v51[0] = *MEMORY[0x1E69DB650];
-  v11 = [MEMORY[0x1E69DC888] whiteColor];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   v12 = *MEMORY[0x1E69DB660];
-  v52[0] = v11;
+  v52[0] = whiteColor;
   v52[1] = v10;
   v46 = v10;
   v13 = *MEMORY[0x1E69DB648];
@@ -221,10 +221,10 @@
   v52[2] = v9;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v52 forKeys:v51 count:3];
 
-  v15 = [MEMORY[0x1E69938E0] actionMenuShutterButton];
-  [v15 setMode:0 animated:0];
-  [v15 setUserInteractionEnabled:0];
-  [v15 sizeToFit];
+  actionMenuShutterButton = [MEMORY[0x1E69938E0] actionMenuShutterButton];
+  [actionMenuShutterButton setMode:0 animated:0];
+  [actionMenuShutterButton setUserInteractionEnabled:0];
+  [actionMenuShutterButton sizeToFit];
   v16 = objc_alloc(MEMORY[0x1E696AAB0]);
   v17 = CKFrameworkBundle();
   v18 = [v17 localizedStringForKey:@"PHOTO" value:&stru_1F04268F8 table:@"ChatKit"];
@@ -234,12 +234,12 @@
   v44 = v19;
   [v20 setAttributedText:v19];
   [v20 sizeToFit];
-  v21 = [[CKActionMenuItem alloc] initWithView:v15 label:v20 target:self action:sel_photoMenuItemAction_];
+  v21 = [[CKActionMenuItem alloc] initWithView:actionMenuShutterButton label:v20 target:self action:sel_photoMenuItemAction_];
   [(CKVideoMessageRecordingViewController *)self setPhotoMenuItem:v21];
-  v22 = [MEMORY[0x1E69938E0] actionMenuShutterButton];
-  [v22 setMode:1 animated:0];
-  [v22 setUserInteractionEnabled:0];
-  [v22 sizeToFit];
+  actionMenuShutterButton2 = [MEMORY[0x1E69938E0] actionMenuShutterButton];
+  [actionMenuShutterButton2 setMode:1 animated:0];
+  [actionMenuShutterButton2 setUserInteractionEnabled:0];
+  [actionMenuShutterButton2 sizeToFit];
   v23 = objc_alloc(MEMORY[0x1E696AAB0]);
   v24 = CKFrameworkBundle();
   v25 = [v24 localizedStringForKey:@"VIDEO" value:&stru_1F04268F8 table:@"ChatKit"];
@@ -249,7 +249,7 @@
   v27 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v4, v5, v7, v6}];
   [v27 setAttributedText:v26];
   [v27 sizeToFit];
-  v28 = [(CKActionMenuItem *)[CKRecordActionMenuItem alloc] initWithView:v22 label:v27 target:self action:sel_videoMenuItemAction_];
+  v28 = [(CKActionMenuItem *)[CKRecordActionMenuItem alloc] initWithView:actionMenuShutterButton2 label:v27 target:self action:sel_videoMenuItemAction_];
   v29 = [CKActionMenuController alloc];
   v50[0] = v28;
   v50[1] = v21;
@@ -277,26 +277,26 @@
 
   v41 = floor((v33 + (v37 - v7) * 0.5) * v40) / v40;
   v42 = floor((v35 + (v39 - v6) * 0.5) * v40) / v40;
-  v43 = [(UIView *)self->_presentationView superview];
-  [(CKActionMenuController *)v31 presentActionMenuFromPoint:v43 inView:1 animated:v41, v42];
+  superview = [(UIView *)self->_presentationView superview];
+  [(CKActionMenuController *)v31 presentActionMenuFromPoint:superview inView:1 animated:v41, v42];
 }
 
-- (void)presentWithCompletion:(id)a3
+- (void)presentWithCompletion:(id)completion
 {
-  v10 = a3;
+  completionCopy = completion;
   v4 = [_CKVideoMessageRecordingWindow alloc];
-  v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v5 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v6 = [(_CKVideoMessageRecordingWindow *)v4 initWithFrame:?];
   overlayWindow = self->_overlayWindow;
   self->_overlayWindow = v6;
 
   [(UIWindow *)self->_overlayWindow setRootViewController:self];
   [(UIWindow *)self->_overlayWindow setHidden:0];
-  v8 = [(CKVideoMessageRecordingViewController *)self cameraViewController];
-  v9 = [v8 view];
+  cameraViewController = [(CKVideoMessageRecordingViewController *)self cameraViewController];
+  view = [cameraViewController view];
   [(UIWindow *)self->_overlayWindow bounds];
-  [v9 setFrame:?];
+  [view setFrame:?];
 
   self->_presented = 1;
   [(CKVideoMessageRecordingViewController *)self presentVideoActionMenuController];
@@ -305,15 +305,15 @@
     [(CKVideoMessageRecordingViewController *)self _animateVideoIn];
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2]();
+    completionCopy[2]();
   }
 
   [(CKVideoMessageRecordingViewController *)self setNeedsStatusBarAppearanceUpdate];
 }
 
-- (void)_previewWarmedUp:(id)a3
+- (void)_previewWarmedUp:(id)up
 {
   if (self->_presented)
   {
@@ -323,9 +323,9 @@
   self->_previewWarmedUp = 1;
 }
 
-- (void)dismissWithCompletion:(id)a3
+- (void)dismissWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   overlayWindow = self->_overlayWindow;
   if (overlayWindow)
   {
@@ -351,13 +351,13 @@
   v10 = self->_overlayWindow;
   self->_overlayWindow = 0;
 
-  v11 = [(CKVideoMessageRecordingViewController *)self videoActionMenuController];
-  [v11 setDelegate:0];
+  videoActionMenuController = [(CKVideoMessageRecordingViewController *)self videoActionMenuController];
+  [videoActionMenuController setDelegate:0];
   [(CKVideoMessageRecordingViewController *)self setVideoActionMenuController:0];
-  [v11 dismissActionMenuAnimated:1];
-  if (v4)
+  [videoActionMenuController dismissActionMenuAnimated:1];
+  if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -404,19 +404,19 @@ uint64_t __56__CKVideoMessageRecordingViewController__animateVideoIn__block_invo
   return result;
 }
 
-- (void)swapCamera:(id)a3
+- (void)swapCamera:(id)camera
 {
-  v4 = [(CKVideoMessageRecordingViewController *)self cameraViewController];
-  v5 = [v4 cameraDevice];
+  cameraViewController = [(CKVideoMessageRecordingViewController *)self cameraViewController];
+  cameraDevice = [cameraViewController cameraDevice];
 
-  if (v5 == 1)
+  if (cameraDevice == 1)
   {
     v6 = 0;
   }
 
   else
   {
-    if (v5)
+    if (cameraDevice)
     {
       goto LABEL_6;
     }
@@ -424,20 +424,20 @@ uint64_t __56__CKVideoMessageRecordingViewController__animateVideoIn__block_invo
     v6 = 1;
   }
 
-  v7 = [(CKVideoMessageRecordingViewController *)self cameraViewController];
-  [v7 setCameraDevice:v6];
+  cameraViewController2 = [(CKVideoMessageRecordingViewController *)self cameraViewController];
+  [cameraViewController2 setCameraDevice:v6];
 
 LABEL_6:
-  v11 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v8 = MEMORY[0x1E696AD98];
-  v9 = [(CKVideoMessageRecordingViewController *)self cameraViewController];
-  v10 = [v8 numberWithInteger:{objc_msgSend(v9, "cameraDevice")}];
-  [v11 setObject:v10 forKey:@"kCKVideoMessagingCameraDevice"];
+  cameraViewController3 = [(CKVideoMessageRecordingViewController *)self cameraViewController];
+  v10 = [v8 numberWithInteger:{objc_msgSend(cameraViewController3, "cameraDevice")}];
+  [standardUserDefaults setObject:v10 forKey:@"kCKVideoMessagingCameraDevice"];
 }
 
-- (void)actionMenuControllerWillDismissActionMenu:(id)a3 animated:(BOOL)a4
+- (void)actionMenuControllerWillDismissActionMenu:(id)menu animated:(BOOL)animated
 {
-  if (![(CKVideoMessageRecordingViewController *)self sending:a3])
+  if (![(CKVideoMessageRecordingViewController *)self sending:menu])
   {
 
     [(CKVideoMessageRecordingViewController *)self cancel];
@@ -448,27 +448,27 @@ LABEL_6:
 {
   if (![(CKVideoMessageRecordingViewController *)self recording])
   {
-    v3 = [(CKVideoMessageRecordingViewController *)self cameraViewController];
-    -[CKVideoMessageRecordingViewController setRecording:](self, "setRecording:", [v3 startVideoCapture]);
+    cameraViewController = [(CKVideoMessageRecordingViewController *)self cameraViewController];
+    -[CKVideoMessageRecordingViewController setRecording:](self, "setRecording:", [cameraViewController startVideoCapture]);
 
     if ([(CKVideoMessageRecordingViewController *)self recording])
     {
-      v4 = [(CKVideoMessageRecordingViewController *)self photoMenuItem];
-      [v4 setEnabled:0 animated:1];
+      photoMenuItem = [(CKVideoMessageRecordingViewController *)self photoMenuItem];
+      [photoMenuItem setEnabled:0 animated:1];
 
-      v5 = [(CKVideoMessageRecordingViewController *)self timerView];
-      [v5 setHidden:0];
+      timerView = [(CKVideoMessageRecordingViewController *)self timerView];
+      [timerView setHidden:0];
 
-      v6 = [(CKVideoMessageRecordingViewController *)self timerView];
-      [v6 startTimer];
+      timerView2 = [(CKVideoMessageRecordingViewController *)self timerView];
+      [timerView2 startTimer];
 
-      v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v8 = [v7 BOOLForKey:@"CKSwapCameraButton"];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      v8 = [standardUserDefaults BOOLForKey:@"CKSwapCameraButton"];
 
       if ((v8 & 1) == 0)
       {
-        v9 = [(CKVideoMessageRecordingViewController *)self swapCameraButton];
-        [v9 setHidden:1];
+        swapCameraButton = [(CKVideoMessageRecordingViewController *)self swapCameraButton];
+        [swapCameraButton setHidden:1];
       }
     }
 
@@ -480,9 +480,9 @@ LABEL_6:
   }
 }
 
-- (void)videoMenuItemAction:(id)a3
+- (void)videoMenuItemAction:(id)action
 {
-  if ([a3 isSelected])
+  if ([action isSelected])
   {
     [(CKVideoMessageRecordingViewController *)self record];
     v4[0] = MEMORY[0x1E69E9820];
@@ -543,14 +543,14 @@ void __61__CKVideoMessageRecordingViewController_videoMenuItemAction___block_inv
   }
 }
 
-- (void)takePictureWithCompletionBlock:(id)a3
+- (void)takePictureWithCompletionBlock:(id)block
 {
-  [(CKVideoMessageRecordingViewController *)self setMediaExportCompletionBlock:a3];
-  v4 = [(CKVideoMessageRecordingViewController *)self cameraViewController];
-  [v4 takePicture];
+  [(CKVideoMessageRecordingViewController *)self setMediaExportCompletionBlock:block];
+  cameraViewController = [(CKVideoMessageRecordingViewController *)self cameraViewController];
+  [cameraViewController takePicture];
 }
 
-- (void)photoMenuItemAction:(id)a3
+- (void)photoMenuItemAction:(id)action
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -560,33 +560,33 @@ void __61__CKVideoMessageRecordingViewController_videoMenuItemAction___block_inv
   [(CKVideoMessageRecordingViewController *)self takePictureWithCompletionBlock:v3];
 }
 
-- (void)stopRecordingWithCompletionBlock:(id)a3
+- (void)stopRecordingWithCompletionBlock:(id)block
 {
-  v6 = a3;
-  v4 = [(CKVideoMessageRecordingViewController *)self timerView];
-  [v4 endTimer];
+  blockCopy = block;
+  timerView = [(CKVideoMessageRecordingViewController *)self timerView];
+  [timerView endTimer];
 
   if ([(CKVideoMessageRecordingViewController *)self recording])
   {
     [(CKVideoMessageRecordingViewController *)self setRecording:0];
-    [(CKVideoMessageRecordingViewController *)self setMediaExportCompletionBlock:v6];
-    v5 = [(CKVideoMessageRecordingViewController *)self cameraViewController];
-    [v5 stopVideoCapture];
+    [(CKVideoMessageRecordingViewController *)self setMediaExportCompletionBlock:blockCopy];
+    cameraViewController = [(CKVideoMessageRecordingViewController *)self cameraViewController];
+    [cameraViewController stopVideoCapture];
   }
 
-  else if (v6)
+  else if (blockCopy)
   {
-    v6[2]();
+    blockCopy[2]();
   }
 }
 
 - (void)send
 {
   [(CKVideoMessageRecordingViewController *)self setSending:1];
-  v3 = [(CKVideoMessageRecordingViewController *)self videoMessageDelegate];
-  v4 = [(CKVideoMessageRecordingViewController *)self mediaObjectForSending];
-  v5 = [(CKVideoMessageRecordingViewController *)self captureError];
-  [v3 ckVideoMessageRecordingViewController:self mediaObjectCaptured:v4 error:v5];
+  videoMessageDelegate = [(CKVideoMessageRecordingViewController *)self videoMessageDelegate];
+  mediaObjectForSending = [(CKVideoMessageRecordingViewController *)self mediaObjectForSending];
+  captureError = [(CKVideoMessageRecordingViewController *)self captureError];
+  [videoMessageDelegate ckVideoMessageRecordingViewController:self mediaObjectCaptured:mediaObjectForSending error:captureError];
 
   [(CKVideoMessageRecordingViewController *)self setMediaObjectForSending:0];
 
@@ -596,41 +596,41 @@ void __61__CKVideoMessageRecordingViewController_videoMenuItemAction___block_inv
 - (void)cancel
 {
   [(CKVideoMessageRecordingViewController *)self setCanceled:1];
-  v3 = [(CKVideoMessageRecordingViewController *)self cameraViewController];
+  cameraViewController = [(CKVideoMessageRecordingViewController *)self cameraViewController];
 
-  if (v3)
+  if (cameraViewController)
   {
     [(CKVideoMessageRecordingViewController *)self stopRecordingWithCompletionBlock:0];
   }
 
-  v4 = [(CKVideoMessageRecordingViewController *)self videoMessageDelegate];
-  [v4 ckVideoMessageRecordingViewControllerRecordingCanceled:self];
+  videoMessageDelegate = [(CKVideoMessageRecordingViewController *)self videoMessageDelegate];
+  [videoMessageDelegate ckVideoMessageRecordingViewControllerRecordingCanceled:self];
 }
 
-- (void)ckVideoRecorderRecordingCanceled:(id)a3
+- (void)ckVideoRecorderRecordingCanceled:(id)canceled
 {
-  v4 = a3;
-  v5 = [(CKVideoMessageRecordingViewController *)self videoMessageDelegate];
-  [v5 ckVideoMessageRecordingViewControllerRecordingCanceled:self];
+  canceledCopy = canceled;
+  videoMessageDelegate = [(CKVideoMessageRecordingViewController *)self videoMessageDelegate];
+  [videoMessageDelegate ckVideoMessageRecordingViewControllerRecordingCanceled:self];
 
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v4 outputFileURL];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  outputFileURL = [canceledCopy outputFileURL];
 
-  [v7 removeItemAtURL:v6 error:0];
+  [defaultManager removeItemAtURL:outputFileURL error:0];
 }
 
-- (void)ckVideoRecorder:(id)a3 videoCaptured:(id)a4 error:(id)a5
+- (void)ckVideoRecorder:(id)recorder videoCaptured:(id)captured error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  recorderCopy = recorder;
+  capturedCopy = captured;
+  errorCopy = error;
+  v11 = errorCopy;
+  if (capturedCopy)
   {
-    if (!v10)
+    if (!errorCopy)
     {
       v12 = +[CKMediaObjectManager sharedInstance];
-      v13 = [v12 mediaObjectWithFileURL:v9 filename:@"Video Message.mov" transcoderUserInfo:0];
+      v13 = [v12 mediaObjectWithFileURL:capturedCopy filename:@"Video Message.mov" transcoderUserInfo:0];
 
       goto LABEL_8;
     }
@@ -649,33 +649,33 @@ void __61__CKVideoMessageRecordingViewController_videoMenuItemAction___block_inv
 LABEL_8:
   [(CKVideoMessageRecordingViewController *)self setMediaObjectForSending:v13];
   [(CKVideoMessageRecordingViewController *)self setCaptureError:v11];
-  v15 = [(CKVideoMessageRecordingViewController *)self mediaExportCompletionBlock];
+  mediaExportCompletionBlock = [(CKVideoMessageRecordingViewController *)self mediaExportCompletionBlock];
 
-  if (v15)
+  if (mediaExportCompletionBlock)
   {
-    v16 = [(CKVideoMessageRecordingViewController *)self mediaExportCompletionBlock];
-    v16[2]();
+    mediaExportCompletionBlock2 = [(CKVideoMessageRecordingViewController *)self mediaExportCompletionBlock];
+    mediaExportCompletionBlock2[2]();
 
     [(CKVideoMessageRecordingViewController *)self setMediaExportCompletionBlock:0];
   }
 
-  if (v9)
+  if (capturedCopy)
   {
-    v17 = [MEMORY[0x1E696AC08] defaultManager];
-    [v17 removeItemAtURL:v9 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager removeItemAtURL:capturedCopy error:0];
   }
 }
 
-- (void)ckVideoRecorder:(id)a3 imageDataCaptured:(id)a4 error:(id)a5
+- (void)ckVideoRecorder:(id)recorder imageDataCaptured:(id)captured error:(id)error
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  recorderCopy = recorder;
+  capturedCopy = captured;
+  errorCopy = error;
+  if (capturedCopy)
   {
-    v10 = [CKImageData UTITypeForData:v8];
+    v10 = [CKImageData UTITypeForData:capturedCopy];
     v11 = +[CKMediaObjectManager sharedInstance];
-    v12 = [v11 mediaObjectWithData:v8 UTIType:v10 filename:0 transcoderUserInfo:0];
+    v12 = [v11 mediaObjectWithData:capturedCopy UTIType:v10 filename:0 transcoderUserInfo:0];
   }
 
   else
@@ -684,34 +684,34 @@ LABEL_8:
   }
 
   [(CKVideoMessageRecordingViewController *)self setMediaObjectForSending:v12];
-  [(CKVideoMessageRecordingViewController *)self setCaptureError:v9];
-  v13 = [(CKVideoMessageRecordingViewController *)self mediaExportCompletionBlock];
+  [(CKVideoMessageRecordingViewController *)self setCaptureError:errorCopy];
+  mediaExportCompletionBlock = [(CKVideoMessageRecordingViewController *)self mediaExportCompletionBlock];
 
-  if (v13)
+  if (mediaExportCompletionBlock)
   {
-    v14 = [(CKVideoMessageRecordingViewController *)self mediaExportCompletionBlock];
-    v14[2]();
+    mediaExportCompletionBlock2 = [(CKVideoMessageRecordingViewController *)self mediaExportCompletionBlock];
+    mediaExportCompletionBlock2[2]();
 
     [(CKVideoMessageRecordingViewController *)self setMediaExportCompletionBlock:0];
   }
 }
 
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   if ([(CKVideoMessageRecordingViewController *)self canceled])
   {
     goto LABEL_24;
   }
 
-  v6 = [v5 objectForKey:*MEMORY[0x1E69DDE00]];
+  v6 = [infoCopy objectForKey:*MEMORY[0x1E69DDE00]];
   if (UTTypeConformsTo(v6, *MEMORY[0x1E6963850]))
   {
-    v7 = [v5 objectForKey:*MEMORY[0x1E69DDE08]];
+    v7 = [infoCopy objectForKey:*MEMORY[0x1E69DDE08]];
     if (v7)
     {
-      v8 = [v5 objectForKey:*MEMORY[0x1E69DE9C0]];
-      v9 = [v5 objectForKey:*MEMORY[0x1E69DE9B8]];
+      v8 = [infoCopy objectForKey:*MEMORY[0x1E69DE9C0]];
+      v9 = [infoCopy objectForKey:*MEMORY[0x1E69DE9B8]];
       [v9 doubleValue];
       v11 = v10;
       [v8 doubleValue];
@@ -748,7 +748,7 @@ LABEL_8:
     goto LABEL_18;
   }
 
-  v7 = [v5 objectForKey:*MEMORY[0x1E69DE960]];
+  v7 = [infoCopy objectForKey:*MEMORY[0x1E69DE960]];
   if (!v7)
   {
     v17 = IMLogHandleForCategory();
@@ -770,9 +770,9 @@ LABEL_16:
 LABEL_17:
 LABEL_18:
   [(CKVideoMessageRecordingViewController *)self setMediaObjectForSending:v16];
-  v19 = [(CKVideoMessageRecordingViewController *)self mediaExportCompletionBlock];
+  mediaExportCompletionBlock = [(CKVideoMessageRecordingViewController *)self mediaExportCompletionBlock];
 
-  if (v19)
+  if (mediaExportCompletionBlock)
   {
     goto LABEL_22;
   }
@@ -787,13 +787,13 @@ LABEL_18:
     [(CKVideoMessageRecordingViewController *)self stopRecordingWithCompletionBlock:v22];
   }
 
-  v20 = [(CKVideoMessageRecordingViewController *)self mediaExportCompletionBlock];
+  mediaExportCompletionBlock2 = [(CKVideoMessageRecordingViewController *)self mediaExportCompletionBlock];
 
-  if (v20)
+  if (mediaExportCompletionBlock2)
   {
 LABEL_22:
-    v21 = [(CKVideoMessageRecordingViewController *)self mediaExportCompletionBlock];
-    v21[2]();
+    mediaExportCompletionBlock3 = [(CKVideoMessageRecordingViewController *)self mediaExportCompletionBlock];
+    mediaExportCompletionBlock3[2]();
 
     [(CKVideoMessageRecordingViewController *)self setMediaExportCompletionBlock:0];
   }
@@ -805,8 +805,8 @@ LABEL_24:
 {
   if ([(UIImagePickerController *)self->_cameraViewController isViewLoaded])
   {
-    v3 = [(UIImagePickerController *)self->_cameraViewController view];
-    [v3 removeFromSuperview];
+    view = [(UIImagePickerController *)self->_cameraViewController view];
+    [view removeFromSuperview];
   }
 
   [(CKVideoMessageRecordingViewController *)self removeChildViewController:self->_cameraViewController];
@@ -814,14 +814,14 @@ LABEL_24:
   cameraViewController = self->_cameraViewController;
   self->_cameraViewController = 0;
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self];
   [(CKActionMenuController *)self->_videoActionMenuController setDelegate:0];

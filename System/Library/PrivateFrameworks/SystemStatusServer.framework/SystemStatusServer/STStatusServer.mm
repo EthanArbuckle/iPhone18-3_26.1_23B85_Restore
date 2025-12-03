@@ -2,27 +2,27 @@
 - (BSIntegerSet)publishedDomains;
 - (STStatusServer)init;
 - (STStatusServerDelegate)delegate;
-- (id)dataForDomain:(unint64_t)a3 client:(id)a4;
-- (id)initWithLocalStatusServer:(void *)a3 serverHandle:(void *)a4 publisherServerHandle:;
-- (id)publishedDataForDomain:(unint64_t)a3;
-- (id)publishedVolatileDataForDomain:(unint64_t)a3;
-- (void)addClientDataTransformerProvider:(id)a3 forDomain:(unint64_t)a4;
-- (void)addDataTransformer:(id)a3 forDomain:(unint64_t)a4;
-- (void)modifyClientDataTransformerProvider:(id)a3 forDomain:(unint64_t)a4 usingBlock:(id)a5;
-- (void)modifyDataTransformer:(id)a3 forDomain:(unint64_t)a4 usingBlock:(id)a5;
-- (void)publishData:(id)a3 forPublisherClient:(id)a4 domain:(unint64_t)a5 withChangeContext:(id)a6 completion:(id)a7;
-- (void)publishVolatileData:(id)a3 forPublisherClient:(id)a4 domain:(unint64_t)a5 withChangeContext:(id)a6 completion:(id)a7;
-- (void)registerClient:(id)a3 forDomain:(unint64_t)a4;
-- (void)registerPublisherClient:(id)a3 forDomain:(unint64_t)a4 fallbackData:(id)a5;
-- (void)removeClient:(id)a3 forDomain:(unint64_t)a4;
-- (void)removeClientDataTransformerProvider:(id)a3 forDomain:(unint64_t)a4;
-- (void)removeDataTransformer:(id)a3 forDomain:(unint64_t)a4;
-- (void)removePublisherClient:(id)a3 forDomain:(unint64_t)a4;
-- (void)replaceDataChangeRecord:(id)a3 forPublisherClient:(id)a4 completion:(id)a5;
-- (void)replaceVolatileDataChangeRecord:(id)a3 forPublisherClient:(id)a4 completion:(id)a5;
-- (void)reportUserInteraction:(id)a3 forClient:(id)a4 domain:(unint64_t)a5;
-- (void)updateDataForPublisherClient:(id)a3 domain:(unint64_t)a4 usingDiffProvider:(id)a5 completion:(id)a6;
-- (void)updateVolatileDataForPublisherClient:(id)a3 domain:(unint64_t)a4 usingDiffProvider:(id)a5 completion:(id)a6;
+- (id)dataForDomain:(unint64_t)domain client:(id)client;
+- (id)initWithLocalStatusServer:(void *)server serverHandle:(void *)handle publisherServerHandle:;
+- (id)publishedDataForDomain:(unint64_t)domain;
+- (id)publishedVolatileDataForDomain:(unint64_t)domain;
+- (void)addClientDataTransformerProvider:(id)provider forDomain:(unint64_t)domain;
+- (void)addDataTransformer:(id)transformer forDomain:(unint64_t)domain;
+- (void)modifyClientDataTransformerProvider:(id)provider forDomain:(unint64_t)domain usingBlock:(id)block;
+- (void)modifyDataTransformer:(id)transformer forDomain:(unint64_t)domain usingBlock:(id)block;
+- (void)publishData:(id)data forPublisherClient:(id)client domain:(unint64_t)domain withChangeContext:(id)context completion:(id)completion;
+- (void)publishVolatileData:(id)data forPublisherClient:(id)client domain:(unint64_t)domain withChangeContext:(id)context completion:(id)completion;
+- (void)registerClient:(id)client forDomain:(unint64_t)domain;
+- (void)registerPublisherClient:(id)client forDomain:(unint64_t)domain fallbackData:(id)data;
+- (void)removeClient:(id)client forDomain:(unint64_t)domain;
+- (void)removeClientDataTransformerProvider:(id)provider forDomain:(unint64_t)domain;
+- (void)removeDataTransformer:(id)transformer forDomain:(unint64_t)domain;
+- (void)removePublisherClient:(id)client forDomain:(unint64_t)domain;
+- (void)replaceDataChangeRecord:(id)record forPublisherClient:(id)client completion:(id)completion;
+- (void)replaceVolatileDataChangeRecord:(id)record forPublisherClient:(id)client completion:(id)completion;
+- (void)reportUserInteraction:(id)interaction forClient:(id)client domain:(unint64_t)domain;
+- (void)updateDataForPublisherClient:(id)client domain:(unint64_t)domain usingDiffProvider:(id)provider completion:(id)completion;
+- (void)updateVolatileDataForPublisherClient:(id)client domain:(unint64_t)domain usingDiffProvider:(id)provider completion:(id)completion;
 @end
 
 @implementation STStatusServer
@@ -45,26 +45,26 @@
   return v5;
 }
 
-- (id)initWithLocalStatusServer:(void *)a3 serverHandle:(void *)a4 publisherServerHandle:
+- (id)initWithLocalStatusServer:(void *)server serverHandle:(void *)handle publisherServerHandle:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  if (a1)
+  serverCopy = server;
+  handleCopy = handle;
+  if (self)
   {
-    v13.receiver = a1;
+    v13.receiver = self;
     v13.super_class = STStatusServer;
     v11 = objc_msgSendSuper2(&v13, sel_init);
-    a1 = v11;
+    self = v11;
     if (v11)
     {
       objc_storeStrong(v11 + 2, a2);
-      objc_storeStrong(a1 + 3, a3);
-      objc_storeStrong(a1 + 4, a4);
+      objc_storeStrong(self + 3, server);
+      objc_storeStrong(self + 4, handle);
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (BSIntegerSet)publishedDomains
@@ -74,204 +74,204 @@
   return v2;
 }
 
-- (id)publishedDataForDomain:(unint64_t)a3
+- (id)publishedDataForDomain:(unint64_t)domain
 {
   if (self)
   {
     self = self->_publisherServerHandle;
   }
 
-  return [(STStatusServer *)self publishedDataForDomain:a3];
+  return [(STStatusServer *)self publishedDataForDomain:domain];
 }
 
-- (id)publishedVolatileDataForDomain:(unint64_t)a3
+- (id)publishedVolatileDataForDomain:(unint64_t)domain
 {
   if (self)
   {
     self = self->_publisherServerHandle;
   }
 
-  return [(STStatusServer *)self publishedVolatileDataForDomain:a3];
+  return [(STStatusServer *)self publishedVolatileDataForDomain:domain];
 }
 
-- (void)registerPublisherClient:(id)a3 forDomain:(unint64_t)a4 fallbackData:(id)a5
+- (void)registerPublisherClient:(id)client forDomain:(unint64_t)domain fallbackData:(id)data
 {
   if (self)
   {
     self = self->_publisherServerHandle;
   }
 
-  [(STStatusServer *)self registerPublisherClient:a3 forDomain:a4 fallbackData:a5];
+  [(STStatusServer *)self registerPublisherClient:client forDomain:domain fallbackData:data];
 }
 
-- (void)removePublisherClient:(id)a3 forDomain:(unint64_t)a4
+- (void)removePublisherClient:(id)client forDomain:(unint64_t)domain
 {
   if (self)
   {
     self = self->_publisherServerHandle;
   }
 
-  [(STStatusServer *)self removePublisherClient:a3 forDomain:a4];
+  [(STStatusServer *)self removePublisherClient:client forDomain:domain];
 }
 
-- (void)replaceDataChangeRecord:(id)a3 forPublisherClient:(id)a4 completion:(id)a5
+- (void)replaceDataChangeRecord:(id)record forPublisherClient:(id)client completion:(id)completion
 {
   if (self)
   {
     self = self->_publisherServerHandle;
   }
 
-  [(STStatusServer *)self replaceDataChangeRecord:a3 forPublisherClient:a4 completion:a5];
+  [(STStatusServer *)self replaceDataChangeRecord:record forPublisherClient:client completion:completion];
 }
 
-- (void)replaceVolatileDataChangeRecord:(id)a3 forPublisherClient:(id)a4 completion:(id)a5
+- (void)replaceVolatileDataChangeRecord:(id)record forPublisherClient:(id)client completion:(id)completion
 {
   if (self)
   {
     self = self->_publisherServerHandle;
   }
 
-  [(STStatusServer *)self replaceVolatileDataChangeRecord:a3 forPublisherClient:a4 completion:a5];
+  [(STStatusServer *)self replaceVolatileDataChangeRecord:record forPublisherClient:client completion:completion];
 }
 
-- (void)publishData:(id)a3 forPublisherClient:(id)a4 domain:(unint64_t)a5 withChangeContext:(id)a6 completion:(id)a7
+- (void)publishData:(id)data forPublisherClient:(id)client domain:(unint64_t)domain withChangeContext:(id)context completion:(id)completion
 {
   if (self)
   {
     self = self->_publisherServerHandle;
   }
 
-  [(STStatusServer *)self publishData:a3 forPublisherClient:a4 domain:a5 withChangeContext:a6 completion:a7];
+  [(STStatusServer *)self publishData:data forPublisherClient:client domain:domain withChangeContext:context completion:completion];
 }
 
-- (void)publishVolatileData:(id)a3 forPublisherClient:(id)a4 domain:(unint64_t)a5 withChangeContext:(id)a6 completion:(id)a7
+- (void)publishVolatileData:(id)data forPublisherClient:(id)client domain:(unint64_t)domain withChangeContext:(id)context completion:(id)completion
 {
   if (self)
   {
     self = self->_publisherServerHandle;
   }
 
-  [(STStatusServer *)self publishVolatileData:a3 forPublisherClient:a4 domain:a5 withChangeContext:a6 completion:a7];
+  [(STStatusServer *)self publishVolatileData:data forPublisherClient:client domain:domain withChangeContext:context completion:completion];
 }
 
-- (void)updateDataForPublisherClient:(id)a3 domain:(unint64_t)a4 usingDiffProvider:(id)a5 completion:(id)a6
+- (void)updateDataForPublisherClient:(id)client domain:(unint64_t)domain usingDiffProvider:(id)provider completion:(id)completion
 {
   if (self)
   {
     self = self->_publisherServerHandle;
   }
 
-  [(STStatusServer *)self updateDataForPublisherClient:a3 domain:a4 usingDiffProvider:a5 completion:a6];
+  [(STStatusServer *)self updateDataForPublisherClient:client domain:domain usingDiffProvider:provider completion:completion];
 }
 
-- (void)updateVolatileDataForPublisherClient:(id)a3 domain:(unint64_t)a4 usingDiffProvider:(id)a5 completion:(id)a6
+- (void)updateVolatileDataForPublisherClient:(id)client domain:(unint64_t)domain usingDiffProvider:(id)provider completion:(id)completion
 {
   if (self)
   {
     self = self->_publisherServerHandle;
   }
 
-  [(STStatusServer *)self updateVolatileDataForPublisherClient:a3 domain:a4 usingDiffProvider:a5 completion:a6];
+  [(STStatusServer *)self updateVolatileDataForPublisherClient:client domain:domain usingDiffProvider:provider completion:completion];
 }
 
-- (id)dataForDomain:(unint64_t)a3 client:(id)a4
+- (id)dataForDomain:(unint64_t)domain client:(id)client
 {
   if (self)
   {
     self = self->_serverHandle;
   }
 
-  return [(STStatusServer *)self dataForDomain:a3 client:a4];
+  return [(STStatusServer *)self dataForDomain:domain client:client];
 }
 
-- (void)registerClient:(id)a3 forDomain:(unint64_t)a4
+- (void)registerClient:(id)client forDomain:(unint64_t)domain
 {
   if (self)
   {
     self = self->_serverHandle;
   }
 
-  [(STStatusServer *)self registerClient:a3 forDomain:a4];
+  [(STStatusServer *)self registerClient:client forDomain:domain];
 }
 
-- (void)removeClient:(id)a3 forDomain:(unint64_t)a4
+- (void)removeClient:(id)client forDomain:(unint64_t)domain
 {
   if (self)
   {
     self = self->_serverHandle;
   }
 
-  [(STStatusServer *)self removeClient:a3 forDomain:a4];
+  [(STStatusServer *)self removeClient:client forDomain:domain];
 }
 
-- (void)reportUserInteraction:(id)a3 forClient:(id)a4 domain:(unint64_t)a5
+- (void)reportUserInteraction:(id)interaction forClient:(id)client domain:(unint64_t)domain
 {
   if (self)
   {
     self = self->_serverHandle;
   }
 
-  [(STStatusServer *)self reportUserInteraction:a3 forClient:a4 domain:a5];
+  [(STStatusServer *)self reportUserInteraction:interaction forClient:client domain:domain];
 }
 
-- (void)addDataTransformer:(id)a3 forDomain:(unint64_t)a4
+- (void)addDataTransformer:(id)transformer forDomain:(unint64_t)domain
 {
   if (self)
   {
     self = self->_localStatusServer;
   }
 
-  [(STStatusServer *)self addDataTransformer:a3 forDomain:a4];
+  [(STStatusServer *)self addDataTransformer:transformer forDomain:domain];
 }
 
-- (void)removeDataTransformer:(id)a3 forDomain:(unint64_t)a4
+- (void)removeDataTransformer:(id)transformer forDomain:(unint64_t)domain
 {
   if (self)
   {
     self = self->_localStatusServer;
   }
 
-  [(STStatusServer *)self removeDataTransformer:a3 forDomain:a4];
+  [(STStatusServer *)self removeDataTransformer:transformer forDomain:domain];
 }
 
-- (void)modifyDataTransformer:(id)a3 forDomain:(unint64_t)a4 usingBlock:(id)a5
+- (void)modifyDataTransformer:(id)transformer forDomain:(unint64_t)domain usingBlock:(id)block
 {
   if (self)
   {
     self = self->_localStatusServer;
   }
 
-  [(STStatusServer *)self modifyDataTransformer:a3 forDomain:a4 usingBlock:a5];
+  [(STStatusServer *)self modifyDataTransformer:transformer forDomain:domain usingBlock:block];
 }
 
-- (void)addClientDataTransformerProvider:(id)a3 forDomain:(unint64_t)a4
+- (void)addClientDataTransformerProvider:(id)provider forDomain:(unint64_t)domain
 {
   if (self)
   {
     self = self->_localStatusServer;
   }
 
-  [(STStatusServer *)self addClientDataTransformerProvider:a3 forDomain:a4];
+  [(STStatusServer *)self addClientDataTransformerProvider:provider forDomain:domain];
 }
 
-- (void)removeClientDataTransformerProvider:(id)a3 forDomain:(unint64_t)a4
+- (void)removeClientDataTransformerProvider:(id)provider forDomain:(unint64_t)domain
 {
   if (self)
   {
     self = self->_localStatusServer;
   }
 
-  [(STStatusServer *)self removeClientDataTransformerProvider:a3 forDomain:a4];
+  [(STStatusServer *)self removeClientDataTransformerProvider:provider forDomain:domain];
 }
 
-- (void)modifyClientDataTransformerProvider:(id)a3 forDomain:(unint64_t)a4 usingBlock:(id)a5
+- (void)modifyClientDataTransformerProvider:(id)provider forDomain:(unint64_t)domain usingBlock:(id)block
 {
   if (self)
   {
     self = self->_localStatusServer;
   }
 
-  [(STStatusServer *)self modifyClientDataTransformerProvider:a3 forDomain:a4 usingBlock:a5];
+  [(STStatusServer *)self modifyClientDataTransformerProvider:provider forDomain:domain usingBlock:block];
 }
 
 - (STStatusServerDelegate)delegate

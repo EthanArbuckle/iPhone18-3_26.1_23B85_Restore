@@ -1,49 +1,49 @@
 @interface SBUISFloatingDockRemoteContentHostComponent
 - (SBUISFloatingDockRemoteContentHostComponentDelegate)delegate;
-- (id)handlePrivateActions:(id)a3;
-- (void)configureFileStackIcon:(id)a3 url:(id)a4 sortingBy:(id)a5 sortingOrderAscending:(BOOL)a6 displayMode:(id)a7 anchorFrame:(CGRect)a8 floatingDockFrame:(CGRect)a9 sourceLayerRenderId:(id)a10 sourceContextId:(id)a11 openIndicatorLayerRenderId:(id)a12 openIndicatorContextId:(id)a13 iconImageInfoSize:(CGSize)a14 iconImageInfoScale:(id)a15 iconImageContinuousCornerRadius:(id)a16 requestFromHost:(int64_t)a17 fence:(id)a18;
-- (void)fetchIconThumbnailWithSessionID:(id)a3 forIcon:(id)a4 url:(id)a5 completion:(id)a6;
-- (void)moveDocumentWithSessionID:(id)a3 securityURLWrappers:(id)a4 toFileStackIcon:(id)a5 url:(id)a6 completion:(id)a7;
-- (void)scene:(id)a3 clientDidConnect:(id)a4;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
+- (id)handlePrivateActions:(id)actions;
+- (void)configureFileStackIcon:(id)icon url:(id)url sortingBy:(id)by sortingOrderAscending:(BOOL)ascending displayMode:(id)mode anchorFrame:(CGRect)frame floatingDockFrame:(CGRect)dockFrame sourceLayerRenderId:(id)self0 sourceContextId:(id)self1 openIndicatorLayerRenderId:(id)self2 openIndicatorContextId:(id)self3 iconImageInfoSize:(CGSize)self4 iconImageInfoScale:(id)self5 iconImageContinuousCornerRadius:(id)self6 requestFromHost:(int64_t)self7 fence:(id)self8;
+- (void)fetchIconThumbnailWithSessionID:(id)d forIcon:(id)icon url:(id)url completion:(id)completion;
+- (void)moveDocumentWithSessionID:(id)d securityURLWrappers:(id)wrappers toFileStackIcon:(id)icon url:(id)url completion:(id)completion;
+- (void)scene:(id)scene clientDidConnect:(id)connect;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
 @end
 
 @implementation SBUISFloatingDockRemoteContentHostComponent
 
-- (void)configureFileStackIcon:(id)a3 url:(id)a4 sortingBy:(id)a5 sortingOrderAscending:(BOOL)a6 displayMode:(id)a7 anchorFrame:(CGRect)a8 floatingDockFrame:(CGRect)a9 sourceLayerRenderId:(id)a10 sourceContextId:(id)a11 openIndicatorLayerRenderId:(id)a12 openIndicatorContextId:(id)a13 iconImageInfoSize:(CGSize)a14 iconImageInfoScale:(id)a15 iconImageContinuousCornerRadius:(id)a16 requestFromHost:(int64_t)a17 fence:(id)a18
+- (void)configureFileStackIcon:(id)icon url:(id)url sortingBy:(id)by sortingOrderAscending:(BOOL)ascending displayMode:(id)mode anchorFrame:(CGRect)frame floatingDockFrame:(CGRect)dockFrame sourceLayerRenderId:(id)self0 sourceContextId:(id)self1 openIndicatorLayerRenderId:(id)self2 openIndicatorContextId:(id)self3 iconImageInfoSize:(CGSize)self4 iconImageInfoScale:(id)self5 iconImageContinuousCornerRadius:(id)self6 requestFromHost:(int64_t)self7 fence:(id)self8
 {
-  height = a9.size.height;
-  width = a9.size.width;
-  y = a9.origin.y;
-  x = a9.origin.x;
-  v25 = a8.size.height;
-  v26 = a8.size.width;
-  v27 = a8.origin.y;
-  v28 = a8.origin.x;
+  height = dockFrame.size.height;
+  width = dockFrame.size.width;
+  y = dockFrame.origin.y;
+  x = dockFrame.origin.x;
+  v25 = frame.size.height;
+  v26 = frame.size.width;
+  v27 = frame.origin.y;
+  v28 = frame.origin.x;
   v91 = *MEMORY[0x1E69E9840];
-  v60 = a3;
-  v29 = a4;
-  v30 = a5;
-  v31 = a7;
-  v32 = a10;
-  v49 = a11;
-  v50 = a12;
-  v51 = a13;
-  v52 = a15;
-  v33 = a16;
-  v58 = a18;
+  iconCopy = icon;
+  urlCopy = url;
+  byCopy = by;
+  modeCopy = mode;
+  idCopy = id;
+  contextIdCopy = contextId;
+  renderIdCopy = renderId;
+  indicatorContextIdCopy = indicatorContextId;
+  scaleCopy = scale;
+  radiusCopy = radius;
+  fenceCopy = fence;
   v67[0] = MEMORY[0x1E69E9820];
   v67[1] = 3221225472;
   v67[2] = __325__SBUISFloatingDockRemoteContentHostComponent_configureFileStackIcon_url_sortingBy_sortingOrderAscending_displayMode_anchorFrame_floatingDockFrame_sourceLayerRenderId_sourceContextId_openIndicatorLayerRenderId_openIndicatorContextId_iconImageInfoSize_iconImageInfoScale_iconImageContinuousCornerRadius_requestFromHost_fence___block_invoke;
   v67[3] = &unk_1E789E9B0;
-  v61 = v60;
+  v61 = iconCopy;
   v68 = v61;
-  v59 = v29;
+  v59 = urlCopy;
   v69 = v59;
-  v57 = v30;
+  v57 = byCopy;
   v70 = v57;
-  v88 = a6;
-  v56 = v31;
+  ascendingCopy = ascending;
+  v56 = modeCopy;
   v71 = v56;
   v78 = v28;
   v79 = v27;
@@ -53,34 +53,34 @@
   v83 = y;
   v84 = width;
   v85 = height;
-  v34 = v32;
+  v34 = idCopy;
   v72 = v34;
-  v35 = v49;
+  v35 = contextIdCopy;
   v73 = v35;
-  v36 = v50;
+  v36 = renderIdCopy;
   v74 = v36;
-  v37 = v51;
+  v37 = indicatorContextIdCopy;
   v75 = v37;
-  v86 = a14;
-  v38 = v52;
+  sizeCopy = size;
+  v38 = scaleCopy;
   v76 = v38;
-  v39 = v33;
+  v39 = radiusCopy;
   v77 = v39;
-  v87 = a17;
+  hostCopy = host;
   v40 = MEMORY[0x1AC58E960](v67);
-  v41 = [(FBSSceneComponent *)self hostScene];
-  v42 = [v41 isActive];
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  isActive = [hostScene isActive];
 
   v43 = SBLogDockFileStack();
   if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67240192;
-    v90 = v42;
+    v90 = isActive;
     _os_log_impl(&dword_1A9A79000, v43, OS_LOG_TYPE_DEFAULT, "Host scene is active %{public}d.", buf, 8u);
   }
 
-  v44 = [(FBSSceneComponent *)self hostScene];
-  if (v42)
+  hostScene2 = [(FBSSceneComponent *)self hostScene];
+  if (isActive)
   {
     v64[0] = MEMORY[0x1E69E9820];
     v64[1] = 3221225472;
@@ -88,12 +88,12 @@
     v64[3] = &unk_1E789E9D8;
     v45 = &v66;
     v66 = v40;
-    v46 = v58;
-    v65 = v58;
+    v46 = fenceCopy;
+    v65 = fenceCopy;
     v47 = v40;
-    [v44 performUpdate:v64];
+    [hostScene2 performUpdate:v64];
 
-    v44 = v65;
+    hostScene2 = v65;
   }
 
   else
@@ -105,8 +105,8 @@
     v45 = &v63;
     v63 = v40;
     v48 = v40;
-    [v44 updateSettings:v62];
-    v46 = v58;
+    [hostScene2 updateSettings:v62];
+    v46 = fenceCopy;
   }
 }
 
@@ -201,122 +201,122 @@ void __325__SBUISFloatingDockRemoteContentHostComponent_configureFileStackIcon_u
   }
 }
 
-- (void)moveDocumentWithSessionID:(id)a3 securityURLWrappers:(id)a4 toFileStackIcon:(id)a5 url:(id)a6 completion:(id)a7
+- (void)moveDocumentWithSessionID:(id)d securityURLWrappers:(id)wrappers toFileStackIcon:(id)icon url:(id)url completion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[SBUISFloatingDockFileStackActionContext alloc] initWithUUID:v16 iconIdentifier:v14 actionType:0 toIconURL:v13 fromSecurityURLWrappers:v15];
+  completionCopy = completion;
+  urlCopy = url;
+  iconCopy = icon;
+  wrappersCopy = wrappers;
+  dCopy = d;
+  v17 = [[SBUISFloatingDockFileStackActionContext alloc] initWithUUID:dCopy iconIdentifier:iconCopy actionType:0 toIconURL:urlCopy fromSecurityURLWrappers:wrappersCopy];
 
-  v18 = [[SBUISFloatingDockRemoteContentAction alloc] initWithContext:v17 handler:v12];
-  v19 = [(FBSSceneComponent *)self hostScene];
-  v20 = [v19 isActive];
+  v18 = [[SBUISFloatingDockRemoteContentAction alloc] initWithContext:v17 handler:completionCopy];
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  isActive = [hostScene isActive];
 
   v21 = SBLogDockFileStack();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     v24[0] = 67240192;
-    v24[1] = v20;
+    v24[1] = isActive;
     _os_log_impl(&dword_1A9A79000, v21, OS_LOG_TYPE_DEFAULT, "Host scene is active %{public}d at document move.", v24, 8u);
   }
 
-  if (v20)
+  if (isActive)
   {
-    v22 = [(FBSSceneComponent *)self hostScene];
+    hostScene2 = [(FBSSceneComponent *)self hostScene];
     v23 = [MEMORY[0x1E695DFD8] setWithObject:v18];
-    [v22 sendActions:v23];
+    [hostScene2 sendActions:v23];
   }
 }
 
-- (void)fetchIconThumbnailWithSessionID:(id)a3 forIcon:(id)a4 url:(id)a5 completion:(id)a6
+- (void)fetchIconThumbnailWithSessionID:(id)d forIcon:(id)icon url:(id)url completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[SBUISFloatingDockFileStackActionContext alloc] initWithUUID:v13 iconIdentifier:v12 actionType:1 toIconURL:v11];
+  completionCopy = completion;
+  urlCopy = url;
+  iconCopy = icon;
+  dCopy = d;
+  v14 = [[SBUISFloatingDockFileStackActionContext alloc] initWithUUID:dCopy iconIdentifier:iconCopy actionType:1 toIconURL:urlCopy];
 
-  v15 = [[SBUISFloatingDockRemoteContentAction alloc] initWithContext:v14 handler:v10];
-  v16 = [(FBSSceneComponent *)self hostScene];
-  v17 = [v16 isActive];
+  v15 = [[SBUISFloatingDockRemoteContentAction alloc] initWithContext:v14 handler:completionCopy];
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  isActive = [hostScene isActive];
 
   v18 = SBLogDockFileStack();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     v21[0] = 67240192;
-    v21[1] = v17;
+    v21[1] = isActive;
     _os_log_impl(&dword_1A9A79000, v18, OS_LOG_TYPE_DEFAULT, "Host scene is active %{public}d at thumbnail fetch.", v21, 8u);
   }
 
-  if (v17)
+  if (isActive)
   {
-    v19 = [(FBSSceneComponent *)self hostScene];
+    hostScene2 = [(FBSSceneComponent *)self hostScene];
     v20 = [MEMORY[0x1E695DFD8] setWithObject:v15];
-    [v19 sendActions:v20];
+    [hostScene2 sendActions:v20];
   }
 }
 
-- (void)scene:(id)a3 clientDidConnect:(id)a4
+- (void)scene:(id)scene clientDidConnect:(id)connect
 {
-  v5 = a4;
-  v6 = [(SBUISFloatingDockRemoteContentHostComponent *)self delegate];
-  [v6 clientDidConnect:v5];
+  connectCopy = connect;
+  delegate = [(SBUISFloatingDockRemoteContentHostComponent *)self delegate];
+  [delegate clientDidConnect:connectCopy];
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v5 = [a3 clientSettings];
-  v6 = [(SBUISFloatingDockRemoteContentHostComponent *)self delegate];
-  if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+  clientSettings = [scene clientSettings];
+  delegate = [(SBUISFloatingDockRemoteContentHostComponent *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v7 = [v5 requestFromClient];
-    if (v7 > 299)
+    requestFromClient = [clientSettings requestFromClient];
+    if (requestFromClient > 299)
     {
-      if (v7 != 300)
+      if (requestFromClient != 300)
       {
-        if (v7 == 301)
+        if (requestFromClient == 301)
         {
-          v27 = [MEMORY[0x1E696AFB0] UUID];
-          v9 = [v27 UUIDString];
+          uUID = [MEMORY[0x1E696AFB0] UUID];
+          uUIDString = [uUID UUIDString];
 
           if (objc_opt_respondsToSelector())
           {
-            v28 = [v5 fileStackIconIdentifier];
+            fileStackIconIdentifier = [clientSettings fileStackIconIdentifier];
 
-            v9 = v28;
+            uUIDString = fileStackIconIdentifier;
           }
 
-          v13 = v6;
+          v13 = delegate;
           v14 = 0;
         }
 
         else
         {
-          if (v7 != 302)
+          if (requestFromClient != 302)
           {
             goto LABEL_41;
           }
 
-          v11 = [MEMORY[0x1E696AFB0] UUID];
-          v9 = [v11 UUIDString];
+          uUID2 = [MEMORY[0x1E696AFB0] UUID];
+          uUIDString = [uUID2 UUIDString];
 
           if (objc_opt_respondsToSelector())
           {
-            v12 = [v5 fileStackIconIdentifier];
+            fileStackIconIdentifier2 = [clientSettings fileStackIconIdentifier];
 
-            v9 = v12;
+            uUIDString = fileStackIconIdentifier2;
           }
 
-          v13 = v6;
+          v13 = delegate;
           v14 = 1;
         }
 
-        [v13 clientRequestToAcknowledgeDidFinishAnimatingFor:v14 withFileStackIcon:v9];
+        [v13 clientRequestToAcknowledgeDidFinishAnimatingFor:v14 withFileStackIcon:uUIDString];
 LABEL_40:
 
         goto LABEL_41;
@@ -324,13 +324,13 @@ LABEL_40:
 
       if (objc_opt_respondsToSelector())
       {
-        v17 = [v5 errorMessage];
-        v18 = v17;
-        if (v17)
+        errorMessage = [clientSettings errorMessage];
+        v18 = errorMessage;
+        if (errorMessage)
         {
           v19 = MEMORY[0x1E696ABC0];
           v37 = *MEMORY[0x1E696A578];
-          v38[0] = v17;
+          v38[0] = errorMessage;
           v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:&v37 count:1];
           v21 = [v19 errorWithDomain:@"SBUISFloatingDockFileStackRequestErrorDomain" code:1 userInfo:v20];
         }
@@ -342,98 +342,98 @@ LABEL_40:
 
         if (objc_opt_respondsToSelector())
         {
-          v35 = [v5 fileStackPresentationContextIdentifier];
-          v36 = [[SBUISFloatingDockFileStackPresentationContext alloc] initWithContextIdentifier:v35];
-          [v6 completeContextRequestUpdateFromHost:v36 withError:v21];
+          fileStackPresentationContextIdentifier = [clientSettings fileStackPresentationContextIdentifier];
+          v36 = [[SBUISFloatingDockFileStackPresentationContext alloc] initWithContextIdentifier:fileStackPresentationContextIdentifier];
+          [delegate completeContextRequestUpdateFromHost:v36 withError:v21];
         }
       }
     }
 
     else
     {
-      switch(v7)
+      switch(requestFromClient)
       {
         case 201:
-          v15 = [MEMORY[0x1E696AFB0] UUID];
-          v9 = [v15 UUIDString];
+          uUID3 = [MEMORY[0x1E696AFB0] UUID];
+          uUIDString = [uUID3 UUIDString];
 
           if (objc_opt_respondsToSelector())
           {
-            v16 = [v5 fileStackIconIdentifier];
+            fileStackIconIdentifier3 = [clientSettings fileStackIconIdentifier];
 
-            v9 = v16;
+            uUIDString = fileStackIconIdentifier3;
           }
 
-          [v6 clientRequestToCloseFileStackIcon:v9];
+          [delegate clientRequestToCloseFileStackIcon:uUIDString];
           goto LABEL_40;
         case 202:
-          v22 = [MEMORY[0x1E696AFB0] UUID];
-          v9 = [v22 UUIDString];
+          uUID4 = [MEMORY[0x1E696AFB0] UUID];
+          uUIDString = [uUID4 UUIDString];
 
           v23 = [MEMORY[0x1E695DFF8] URLWithString:@"urlFromClient"];
           if (objc_opt_respondsToSelector())
           {
-            v24 = [v5 fileStackIconIdentifier];
+            fileStackIconIdentifier4 = [clientSettings fileStackIconIdentifier];
 
-            v9 = v24;
+            uUIDString = fileStackIconIdentifier4;
           }
 
           if (objc_opt_respondsToSelector())
           {
-            v25 = [v5 fileStackIconURL];
+            fileStackIconURL = [clientSettings fileStackIconURL];
 
-            v23 = v25;
+            v23 = fileStackIconURL;
           }
 
           if (objc_opt_respondsToSelector())
           {
-            v26 = [v5 fileStackIconSortingBy];
+            fileStackIconSortingBy = [clientSettings fileStackIconSortingBy];
           }
 
           else
           {
-            v26 = &stru_1F1D7ED48;
+            fileStackIconSortingBy = &stru_1F1D7ED48;
           }
 
           if (objc_opt_respondsToSelector())
           {
-            v29 = [v5 fileStackIconSortingOrderAscending];
+            fileStackIconSortingOrderAscending = [clientSettings fileStackIconSortingOrderAscending];
           }
 
           else
           {
-            v29 = 1;
+            fileStackIconSortingOrderAscending = 1;
           }
 
           if (objc_opt_respondsToSelector())
           {
-            v30 = [v5 fileStackIconDisplayMode];
+            fileStackIconDisplayMode = [clientSettings fileStackIconDisplayMode];
           }
 
           else
           {
-            v30 = &stru_1F1D7ED48;
+            fileStackIconDisplayMode = &stru_1F1D7ED48;
           }
 
           v31 = [SBUISFloatingDockFileStackPresentationContext alloc];
-          v32 = [MEMORY[0x1E696AFB0] UUID];
-          v33 = [v32 UUIDString];
-          v34 = [(SBUISFloatingDockFileStackPresentationContext *)v31 initWithFileStackPresentationContextIdentifier:v33 iconIdentifier:v9 url:v23 sortingBy:v26 sortingOrderAscending:v29 displayMode:v30 anchorFrame:*MEMORY[0x1E695F058] dockFrame:*(MEMORY[0x1E695F058] + 8) request:*(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), 202];
+          uUID5 = [MEMORY[0x1E696AFB0] UUID];
+          uUIDString2 = [uUID5 UUIDString];
+          v34 = [(SBUISFloatingDockFileStackPresentationContext *)v31 initWithFileStackPresentationContextIdentifier:uUIDString2 iconIdentifier:uUIDString url:v23 sortingBy:fileStackIconSortingBy sortingOrderAscending:fileStackIconSortingOrderAscending displayMode:fileStackIconDisplayMode anchorFrame:*MEMORY[0x1E695F058] dockFrame:*(MEMORY[0x1E695F058] + 8) request:*(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), 202];
 
-          [v6 clientRequestToInsertFileStackIcon:v34];
+          [delegate clientRequestToInsertFileStackIcon:v34];
           goto LABEL_40;
         case 203:
-          v8 = [MEMORY[0x1E696AFB0] UUID];
-          v9 = [v8 UUIDString];
+          uUID6 = [MEMORY[0x1E696AFB0] UUID];
+          uUIDString = [uUID6 UUIDString];
 
           if (objc_opt_respondsToSelector())
           {
-            v10 = [v5 fileStackIconIdentifier];
+            fileStackIconIdentifier5 = [clientSettings fileStackIconIdentifier];
 
-            v9 = v10;
+            uUIDString = fileStackIconIdentifier5;
           }
 
-          [v6 clientRequestToRemoveFileStackIcon:v9];
+          [delegate clientRequestToRemoveFileStackIcon:uUIDString];
           goto LABEL_40;
       }
     }
@@ -442,20 +442,20 @@ LABEL_40:
 LABEL_41:
 }
 
-- (id)handlePrivateActions:(id)a3
+- (id)handlePrivateActions:(id)actions
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v23 = [(SBUISFloatingDockRemoteContentHostComponent *)self delegate];
-  if (v23)
+  actionsCopy = actions;
+  delegate = [(SBUISFloatingDockRemoteContentHostComponent *)self delegate];
+  if (delegate)
   {
     [MEMORY[0x1E695DFA8] set];
-    v22 = v21 = v4;
+    v22 = v21 = actionsCopy;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v5 = v4;
+    v5 = actionsCopy;
     v6 = [v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (!v6)
     {
@@ -499,42 +499,42 @@ LABEL_41:
 
         if (v14)
         {
-          v15 = [v14 actionContext];
-          v16 = [v15 uuid];
-          v17 = [v15 iconIdentifier];
-          if ([v15 actionType] == 1000)
+          actionContext = [v14 actionContext];
+          uuid = [actionContext uuid];
+          iconIdentifier = [actionContext iconIdentifier];
+          if ([actionContext actionType] == 1000)
           {
-            [v23 clientRequestToDeleteDragAndDropTempDirsWithSessionID:v16];
+            [delegate clientRequestToDeleteDragAndDropTempDirsWithSessionID:uuid];
             [v22 addObject:v12];
 LABEL_21:
 
             goto LABEL_22;
           }
 
-          if ([v15 actionType] == 1001)
+          if ([actionContext actionType] == 1001)
           {
-            v18 = [v15 iconURL];
-            [v23 clientRequestToUpdateFileStackIcon:v17 toUrl:v18];
+            iconURL = [actionContext iconURL];
+            [delegate clientRequestToUpdateFileStackIcon:iconIdentifier toUrl:iconURL];
             goto LABEL_19;
           }
 
-          if ([v15 actionType] == 9001)
+          if ([actionContext actionType] == 9001)
           {
-            v18 = [v15 iconURL];
-            [v23 clientRequestTestHandleDownloadCompletedForFileStackIcon:v17 iconUrl:v18 isDownloadsFolder:1];
+            iconURL = [actionContext iconURL];
+            [delegate clientRequestTestHandleDownloadCompletedForFileStackIcon:iconIdentifier iconUrl:iconURL isDownloadsFolder:1];
 LABEL_19:
             [v22 addObject:v12];
           }
 
           else
           {
-            if ([v15 actionType] != 1002)
+            if ([actionContext actionType] != 1002)
             {
               goto LABEL_21;
             }
 
-            v18 = [v15 iconThumbnail];
-            [v23 clientRequestToUpdateFileStackIcon:v17 withThumbnail:v18];
+            iconURL = [actionContext iconThumbnail];
+            [delegate clientRequestToUpdateFileStackIcon:iconIdentifier withThumbnail:iconURL];
           }
 
           goto LABEL_21;
@@ -552,7 +552,7 @@ LABEL_22:
       {
 LABEL_27:
 
-        v4 = v21;
+        actionsCopy = v21;
         goto LABEL_29;
       }
     }

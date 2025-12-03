@@ -6,9 +6,9 @@
 
 + (BOOL)isEnabled
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 addSuiteNamed:@"com.apple.logging"];
-  v3 = [v2 BOOLForKey:@"DebugWACLogging"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults addSuiteNamed:@"com.apple.logging"];
+  v3 = [standardUserDefaults BOOLForKey:@"DebugWACLogging"];
 
   return v3;
 }

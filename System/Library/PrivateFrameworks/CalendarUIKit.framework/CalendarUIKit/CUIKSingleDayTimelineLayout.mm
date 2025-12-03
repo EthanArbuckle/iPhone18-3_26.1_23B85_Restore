@@ -1,26 +1,26 @@
 @interface CUIKSingleDayTimelineLayout
 - (BOOL)_inputIsInvalid;
 - (BOOL)isRightToLeftLayout;
-- (CGRect)_rectForStartSeconds:(int64_t)a3 endSeconds:(int64_t)a4;
-- (CUIKSingleDayTimelineLayout)initWithOccurrences:(id)a3 startOfDay:(id)a4 endOfDay:(id)a5 geometryDelegate:(id)a6 screenUtilsDelegate:(id)a7 calendar:(id)a8;
-- (double)_adjustedEndTimeForOccurrence:(id)a3;
-- (double)_adjustedStartTimeForOccurrence:(id)a3;
+- (CGRect)_rectForStartSeconds:(int64_t)seconds endSeconds:(int64_t)endSeconds;
+- (CUIKSingleDayTimelineLayout)initWithOccurrences:(id)occurrences startOfDay:(id)day endOfDay:(id)ofDay geometryDelegate:(id)delegate screenUtilsDelegate:(id)utilsDelegate calendar:(id)calendar;
+- (double)_adjustedEndTimeForOccurrence:(id)occurrence;
+- (double)_adjustedStartTimeForOccurrence:(id)occurrence;
 - (double)_combinedWidthOfPartitions;
-- (double)_effectiveEndTimeForOccurrence:(id)a3;
-- (double)_endOfCollisionZoneForY:(double)a3 occurrence:(id)a4;
-- (double)_topOfOccurrence:(id)a3;
-- (id)groupOccurrences:(id)a3;
-- (void)_calculateVerticalFrameAspectsForOccurrence:(id)a3;
-- (void)_capVisibleTextForBucket:(id)a3;
+- (double)_effectiveEndTimeForOccurrence:(id)occurrence;
+- (double)_endOfCollisionZoneForY:(double)y occurrence:(id)occurrence;
+- (double)_topOfOccurrence:(id)occurrence;
+- (id)groupOccurrences:(id)occurrences;
+- (void)_calculateVerticalFrameAspectsForOccurrence:(id)occurrence;
+- (void)_capVisibleTextForBucket:(id)bucket;
 - (void)_findCollidingOccurrences;
 - (void)_generateNewPartitions;
 - (void)_initializeFirstGridStripe;
 - (void)_mergePartitions;
-- (void)_popOccurrencesInPartition:(id)a3 endingBeforeTime:(double)a4;
-- (void)_putCollidingOccurrencesIntoBucketsInResize:(BOOL)a3;
+- (void)_popOccurrencesInPartition:(id)partition endingBeforeTime:(double)time;
+- (void)_putCollidingOccurrencesIntoBucketsInResize:(BOOL)resize;
 - (void)_reclaimSpaceFromStackedOccurrences;
 - (void)_stampOccurrenceFrames;
-- (void)applyLayoutToOccurrencesInResize:(BOOL)a3;
+- (void)applyLayoutToOccurrencesInResize:(BOOL)resize;
 @end
 
 @implementation CUIKSingleDayTimelineLayout
@@ -62,9 +62,9 @@
       }
 
       v20 = objc_loadWeakRetained(&self->_geometryDelegate);
-      v21 = [v20 originIsUpperLeft];
+      originIsUpperLeft = [v20 originIsUpperLeft];
 
-      if ((v21 & 1) == 0 && v18 < v9)
+      if ((originIsUpperLeft & 1) == 0 && v18 < v9)
       {
         goto LABEL_10;
       }
@@ -143,9 +143,9 @@ LABEL_11:
   }
 
   v7 = objc_loadWeakRetained(&self->_geometryDelegate);
-  v8 = [v7 shouldReverseLayoutDirection];
+  shouldReverseLayoutDirection = [v7 shouldReverseLayoutDirection];
 
-  return v8;
+  return shouldReverseLayoutDirection;
 }
 
 - (void)_reclaimSpaceFromStackedOccurrences
@@ -389,35 +389,35 @@ void __53__CUIKSingleDayTimelineLayout__generateNewPartitions__block_invoke(uint
   }
 }
 
-- (CUIKSingleDayTimelineLayout)initWithOccurrences:(id)a3 startOfDay:(id)a4 endOfDay:(id)a5 geometryDelegate:(id)a6 screenUtilsDelegate:(id)a7 calendar:(id)a8
+- (CUIKSingleDayTimelineLayout)initWithOccurrences:(id)occurrences startOfDay:(id)day endOfDay:(id)ofDay geometryDelegate:(id)delegate screenUtilsDelegate:(id)utilsDelegate calendar:(id)calendar
 {
-  v33 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  occurrencesCopy = occurrences;
+  dayCopy = day;
+  ofDayCopy = ofDay;
+  delegateCopy = delegate;
+  utilsDelegateCopy = utilsDelegate;
+  calendarCopy = calendar;
   v34.receiver = self;
   v34.super_class = CUIKSingleDayTimelineLayout;
   v20 = [(CUIKSingleDayTimelineLayout *)&v34 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_ungroupedOccurrences, a3);
-    objc_storeStrong(&v21->_calendar, a8);
-    objc_storeStrong(&v21->_startOfDay, a4);
-    [v15 timeIntervalSinceReferenceDate];
+    objc_storeStrong(&v20->_ungroupedOccurrences, occurrences);
+    objc_storeStrong(&v21->_calendar, calendar);
+    objc_storeStrong(&v21->_startOfDay, day);
+    [dayCopy timeIntervalSinceReferenceDate];
     v21->_startOfDayAbsoluteTime = v22;
-    objc_storeStrong(&v21->_endOfDay, a5);
-    [v16 timeIntervalSinceReferenceDate];
+    objc_storeStrong(&v21->_endOfDay, ofDay);
+    [ofDayCopy timeIntervalSinceReferenceDate];
     v21->_endOfDayAbsoluteTime = v23;
-    [v17 displayedRect];
+    [delegateCopy displayedRect];
     v21->_frame.origin.x = v24;
     v21->_frame.origin.y = v25;
     v21->_frame.size.width = v26;
     v21->_frame.size.height = v27;
-    objc_storeWeak(&v21->_geometryDelegate, v17);
-    objc_storeWeak(&v21->_screenUtilsDelegate, v18);
+    objc_storeWeak(&v21->_geometryDelegate, delegateCopy);
+    objc_storeWeak(&v21->_screenUtilsDelegate, utilsDelegateCopy);
     v28 = objc_alloc_init(MEMORY[0x1E695DF70]);
     occurrenceBuckets = v21->_occurrenceBuckets;
     v21->_occurrenceBuckets = v28;
@@ -430,17 +430,17 @@ void __53__CUIKSingleDayTimelineLayout__generateNewPartitions__block_invoke(uint
   return v21;
 }
 
-- (id)groupOccurrences:(id)a3
+- (id)groupOccurrences:(id)occurrences
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  occurrencesCopy = occurrences;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v43 = self;
+  selfCopy = self;
   v7 = self->_ungroupedOccurrences;
   v8 = [(NSArray *)v7 countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (v8)
@@ -457,7 +457,7 @@ void __53__CUIKSingleDayTimelineLayout__generateNewPartitions__block_invoke(uint
         }
 
         v12 = *(*(&v44 + 1) + 8 * i);
-        if ([v4 itemIsEligibleForGrouping:v12])
+        if ([occurrencesCopy itemIsEligibleForGrouping:v12])
         {
           v13 = v5;
         }
@@ -477,8 +477,8 @@ void __53__CUIKSingleDayTimelineLayout__generateNewPartitions__block_invoke(uint
   }
 
   [v5 sortUsingComparator:&__block_literal_global_3];
-  WeakRetained = objc_loadWeakRetained(&v43->_geometryDelegate);
-  v15 = [WeakRetained originIsUpperLeft];
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_geometryDelegate);
+  originIsUpperLeft = [WeakRetained originIsUpperLeft];
 
   if ([v5 count])
   {
@@ -486,9 +486,9 @@ void __53__CUIKSingleDayTimelineLayout__generateNewPartitions__block_invoke(uint
     do
     {
       v17 = [v5 objectAtIndexedSubscript:{v16, v42}];
-      v18 = objc_loadWeakRetained(&v43->_geometryDelegate);
-      v19 = [v17 start];
-      [v19 timeIntervalSinceReferenceDate];
+      v18 = objc_loadWeakRetained(&selfCopy->_geometryDelegate);
+      start = [v17 start];
+      [start timeIntervalSinceReferenceDate];
       [v18 pointForDate:?];
       v21 = v20;
 
@@ -499,7 +499,7 @@ void __53__CUIKSingleDayTimelineLayout__generateNewPartitions__block_invoke(uint
       if (v16 + 1 < [v5 count])
       {
         v25 = -v23;
-        if (v15)
+        if (originIsUpperLeft)
         {
           v25 = v23;
         }
@@ -508,18 +508,18 @@ void __53__CUIKSingleDayTimelineLayout__generateNewPartitions__block_invoke(uint
         while (1)
         {
           v27 = [v5 objectAtIndexedSubscript:{v24, v42}];
-          v28 = objc_loadWeakRetained(&v43->_geometryDelegate);
-          v29 = [v27 start];
-          [v29 timeIntervalSinceReferenceDate];
+          v28 = objc_loadWeakRetained(&selfCopy->_geometryDelegate);
+          start2 = [v27 start];
+          [start2 timeIntervalSinceReferenceDate];
           [v28 pointForDate:?];
           v31 = v30;
 
-          if (v15 ? v31 > v26 : v31 < v26)
+          if (originIsUpperLeft ? v31 > v26 : v31 < v26)
           {
             break;
           }
 
-          v33 = [v4 groupItem:v17 withItem:v27];
+          v33 = [occurrencesCopy groupItem:v17 withItem:v27];
           v34 = v33;
           if (v33)
           {
@@ -533,7 +533,7 @@ void __53__CUIKSingleDayTimelineLayout__generateNewPartitions__block_invoke(uint
 
             [v5 removeObjectAtIndex:v24];
             [v17 enoughHeightForOneLine];
-            if (!v15)
+            if (!originIsUpperLeft)
             {
               v36 = -v36;
             }
@@ -561,10 +561,10 @@ LABEL_30:
   [v6 addObjectsFromArray:{v5, v42}];
   [v6 sortUsingComparator:&__block_literal_global_3];
   v37 = [v6 copy];
-  occurrences = v43->_occurrences;
-  v43->_occurrences = v37;
+  occurrences = selfCopy->_occurrences;
+  selfCopy->_occurrences = v37;
 
-  v39 = v43->_occurrences;
+  v39 = selfCopy->_occurrences;
   v40 = v39;
 
   return v39;
@@ -600,7 +600,7 @@ uint64_t __48__CUIKSingleDayTimelineLayout_groupOccurrences___block_invoke(uint6
   return v8;
 }
 
-- (void)applyLayoutToOccurrencesInResize:(BOOL)a3
+- (void)applyLayoutToOccurrencesInResize:(BOOL)resize
 {
   p_occurrences = &self->_occurrences;
   if (!self->_occurrences)
@@ -639,7 +639,7 @@ uint64_t __48__CUIKSingleDayTimelineLayout_groupOccurrences___block_invoke(uint6
           currentOccurrence = self->_currentOccurrence;
           self->_currentOccurrence = v17;
 
-          if (a3)
+          if (resize)
           {
             [(CUIKSingleDayTimelineLayout *)self _findCollidingOccurrences];
             [(CUIKSingleDayTimelineLayout *)self _putCollidingOccurrencesIntoBucketsInResize:1];
@@ -676,35 +676,35 @@ uint64_t __48__CUIKSingleDayTimelineLayout_groupOccurrences___block_invoke(uint6
   }
 }
 
-- (void)_calculateVerticalFrameAspectsForOccurrence:(id)a3
+- (void)_calculateVerticalFrameAspectsForOccurrence:(id)occurrence
 {
-  v55 = a3;
-  v4 = [v55 startWithTravelTime];
+  occurrenceCopy = occurrence;
+  startWithTravelTime = [occurrenceCopy startWithTravelTime];
   v5 = 0.0;
   v6 = 0.0;
-  if ([v4 isAfterDate:self->_startOfDay])
+  if ([startWithTravelTime isAfterDate:self->_startOfDay])
   {
-    v7 = [(NSCalendar *)self->_calendar components:224 fromDate:v4];
-    v8 = [v7 second];
-    v9 = v8 + 60 * [v7 minute];
+    v7 = [(NSCalendar *)self->_calendar components:224 fromDate:startWithTravelTime];
+    second = [v7 second];
+    v9 = second + 60 * [v7 minute];
     v6 = (v9 + 3600 * [v7 hour]);
   }
 
-  v10 = [v55 start];
-  if ([v10 isAfterDate:self->_startOfDay])
+  start = [occurrenceCopy start];
+  if ([start isAfterDate:self->_startOfDay])
   {
-    v11 = [(NSCalendar *)self->_calendar components:224 fromDate:v10];
-    v12 = [v11 second];
-    v13 = v12 + 60 * [v11 minute];
+    v11 = [(NSCalendar *)self->_calendar components:224 fromDate:start];
+    second2 = [v11 second];
+    v13 = second2 + 60 * [v11 minute];
     v5 = (v13 + 3600 * [v11 hour]);
   }
 
-  v14 = [v55 end];
+  v14 = [occurrenceCopy end];
   if ([v14 isBeforeDate:self->_endOfDay])
   {
     v15 = [(NSCalendar *)self->_calendar components:224 fromDate:v14];
-    v16 = [v15 second];
-    v17 = v16 + 60 * [v15 minute];
+    second3 = [v15 second];
+    v17 = second3 + 60 * [v15 minute];
     v18 = (v17 + 3600 * [v15 hour]);
 
     v19 = v18;
@@ -725,7 +725,7 @@ uint64_t __48__CUIKSingleDayTimelineLayout_groupOccurrences___block_invoke(uint6
   v28 = v27;
   v30 = v29;
   v32 = v31;
-  [v55 enoughHeightForOneLine];
+  [occurrenceCopy enoughHeightForOneLine];
   v34 = v33;
   v52 = v26;
   v57.origin.x = v26;
@@ -752,24 +752,24 @@ uint64_t __48__CUIKSingleDayTimelineLayout_groupOccurrences___block_invoke(uint6
 
     v24 = v34 + v37;
     v40 = objc_loadWeakRetained(&self->_geometryDelegate);
-    v41 = [v40 originIsUpperLeft];
+    originIsUpperLeft = [v40 originIsUpperLeft];
 
     v42 = v34 - v36;
     v43 = v51;
     v44 = v51 - v42;
     v45 = v28 - v42;
-    if (!v41)
+    if (!originIsUpperLeft)
     {
       v43 = v44;
       v28 = v45;
     }
   }
 
-  [v55 setTravelTimeHeight:v24 - v34];
-  v46 = [v55 hideTravelTime];
+  [occurrenceCopy setTravelTimeHeight:v24 - v34];
+  hideTravelTime = [occurrenceCopy hideTravelTime];
   v48 = v53;
   v47 = v54;
-  if (v46)
+  if (hideTravelTime)
   {
     v47 = v52;
     v49 = v28;
@@ -780,7 +780,7 @@ uint64_t __48__CUIKSingleDayTimelineLayout_groupOccurrences___block_invoke(uint6
     v49 = v43;
   }
 
-  if (v46)
+  if (hideTravelTime)
   {
     v48 = v30;
     v50 = v34;
@@ -791,43 +791,43 @@ uint64_t __48__CUIKSingleDayTimelineLayout_groupOccurrences___block_invoke(uint6
     v50 = v24;
   }
 
-  [v55 setStagedFrame:{v47, v49, v48, v50}];
+  [occurrenceCopy setStagedFrame:{v47, v49, v48, v50}];
 }
 
-- (void)_popOccurrencesInPartition:(id)a3 endingBeforeTime:(double)a4
+- (void)_popOccurrencesInPartition:(id)partition endingBeforeTime:(double)time
 {
-  v6 = a3;
-  if (v6)
+  partitionCopy = partition;
+  if (partitionCopy)
   {
-    v10 = v6;
-    v7 = [v6 peekOccurrence];
-    v6 = v10;
-    if (v7)
+    v10 = partitionCopy;
+    peekOccurrence = [partitionCopy peekOccurrence];
+    partitionCopy = v10;
+    if (peekOccurrence)
     {
       do
       {
-        [(CUIKSingleDayTimelineLayout *)self _effectiveEndTimeForOccurrence:v7];
-        if (v8 > a4)
+        [(CUIKSingleDayTimelineLayout *)self _effectiveEndTimeForOccurrence:peekOccurrence];
+        if (v8 > time)
         {
           break;
         }
 
         [v10 popOccurrence];
-        v9 = [v10 peekOccurrence];
+        peekOccurrence2 = [v10 peekOccurrence];
 
-        v7 = v9;
+        peekOccurrence = peekOccurrence2;
       }
 
-      while (v9);
+      while (peekOccurrence2);
 
-      v6 = v10;
+      partitionCopy = v10;
     }
   }
 }
 
-- (double)_topOfOccurrence:(id)a3
+- (double)_topOfOccurrence:(id)occurrence
 {
-  [(CUIKSingleDayTimelineLayout *)self _adjustedStartTimeForOccurrence:a3];
+  [(CUIKSingleDayTimelineLayout *)self _adjustedStartTimeForOccurrence:occurrence];
   v5 = v4;
   WeakRetained = objc_loadWeakRetained(&self->_geometryDelegate);
   [WeakRetained pointForDate:v5];
@@ -836,12 +836,12 @@ uint64_t __48__CUIKSingleDayTimelineLayout_groupOccurrences___block_invoke(uint6
   return v8;
 }
 
-- (double)_endOfCollisionZoneForY:(double)a3 occurrence:(id)a4
+- (double)_endOfCollisionZoneForY:(double)y occurrence:(id)occurrence
 {
-  v6 = a4;
-  [v6 viewMaxNaturalTextHeight];
+  occurrenceCopy = occurrence;
+  [occurrenceCopy viewMaxNaturalTextHeight];
   v8 = v7;
-  [v6 stagedFrame];
+  [occurrenceCopy stagedFrame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -858,19 +858,19 @@ uint64_t __48__CUIKSingleDayTimelineLayout_groupOccurrences___block_invoke(uint6
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_geometryDelegate);
-  v19 = [WeakRetained originIsUpperLeft];
+  originIsUpperLeft = [WeakRetained originIsUpperLeft];
   v20 = -1.0;
-  if (v19)
+  if (originIsUpperLeft)
   {
     v20 = 1.0;
   }
 
-  v21 = a3 + v8 * v20;
+  v21 = y + v8 * v20;
 
   return v21;
 }
 
-- (void)_putCollidingOccurrencesIntoBucketsInResize:(BOOL)a3
+- (void)_putCollidingOccurrencesIntoBucketsInResize:(BOOL)resize
 {
   v37 = *MEMORY[0x1E69E9840];
   v5 = [(NSMutableArray *)self->_partitions count];
@@ -909,7 +909,7 @@ uint64_t __48__CUIKSingleDayTimelineLayout_groupOccurrences___block_invoke(uint6
   v25 = v9;
   v26 = v6;
   v27 = v8;
-  v28 = a3;
+  resizeCopy = resize;
   v12 = v10;
   v22 = v12;
   v24 = &v29;
@@ -1061,12 +1061,12 @@ LABEL_22:
   v11 = objc_alloc_init(CUIKSingleDayTimelineLayoutPartition);
   MEMORY[0x1CCAA7F10](self->_startOfDay);
   [(CUIKSingleDayTimelineLayoutPartition *)v11 setTopBoundaryTime:?];
-  v5 = [(CUIKSingleDayTimelineLayout *)self isRightToLeftLayout];
+  isRightToLeftLayout = [(CUIKSingleDayTimelineLayout *)self isRightToLeftLayout];
   x = self->_frame.origin.x;
   y = self->_frame.origin.y;
   width = self->_frame.size.width;
   height = self->_frame.size.height;
-  if (v5)
+  if (isRightToLeftLayout)
   {
     [(CUIKSingleDayTimelineLayoutPartition *)v11 setInitialStartBoundary:CGRectGetMaxX(*&x)];
     MinX = CGRectGetMinX(self->_frame);
@@ -1110,56 +1110,56 @@ LABEL_22:
   return v4;
 }
 
-- (void)_capVisibleTextForBucket:(id)a3
+- (void)_capVisibleTextForBucket:(id)bucket
 {
-  v4 = a3;
-  if (v4)
+  bucketCopy = bucket;
+  if (bucketCopy)
   {
-    v17 = v4;
-    v5 = [v4 earliestOccurrence];
-    if (v5)
+    v17 = bucketCopy;
+    earliestOccurrence = [bucketCopy earliestOccurrence];
+    if (earliestOccurrence)
     {
-      v6 = [v17 correspondingPartition];
-      v7 = [v6 peekOccurrence];
+      correspondingPartition = [v17 correspondingPartition];
+      peekOccurrence = [correspondingPartition peekOccurrence];
 
-      if (v7 && ([v7 visibleHeightLocked] & 1) == 0)
+      if (peekOccurrence && ([peekOccurrence visibleHeightLocked] & 1) == 0)
       {
-        [(CUIKSingleDayTimelineLayout *)self _adjustedStartTimeForOccurrence:v5];
+        [(CUIKSingleDayTimelineLayout *)self _adjustedStartTimeForOccurrence:earliestOccurrence];
         v9 = v8;
         WeakRetained = objc_loadWeakRetained(&self->_geometryDelegate);
         [WeakRetained pointForDate:v9];
         v12 = v11;
 
-        [v7 stagedFrame];
+        [peekOccurrence stagedFrame];
         v14 = v12 - v13;
         v15 = objc_loadWeakRetained(&self->_geometryDelegate);
         LOBYTE(WeakRetained) = [v15 originIsUpperLeft];
 
         if ((WeakRetained & 1) == 0)
         {
-          [v7 stagedFrame];
+          [peekOccurrence stagedFrame];
           v14 = v14 - v16;
         }
 
-        [v7 setVisibleHeight:fabs(v14)];
+        [peekOccurrence setVisibleHeight:fabs(v14)];
       }
     }
 
-    v4 = v17;
+    bucketCopy = v17;
   }
 }
 
-- (double)_adjustedStartTimeForOccurrence:(id)a3
+- (double)_adjustedStartTimeForOccurrence:(id)occurrence
 {
-  v4 = a3;
-  if ([v4 hideTravelTime])
+  occurrenceCopy = occurrence;
+  if ([occurrenceCopy hideTravelTime])
   {
-    [v4 start];
+    [occurrenceCopy start];
   }
 
   else
   {
-    [v4 startWithTravelTime];
+    [occurrenceCopy startWithTravelTime];
   }
   v5 = ;
 
@@ -1175,9 +1175,9 @@ LABEL_22:
   return result;
 }
 
-- (double)_adjustedEndTimeForOccurrence:(id)a3
+- (double)_adjustedEndTimeForOccurrence:(id)occurrence
 {
-  v4 = [a3 end];
+  v4 = [occurrence end];
   [v4 timeIntervalSinceReferenceDate];
   v6 = v5;
 
@@ -1190,12 +1190,12 @@ LABEL_22:
   return result;
 }
 
-- (double)_effectiveEndTimeForOccurrence:(id)a3
+- (double)_effectiveEndTimeForOccurrence:(id)occurrence
 {
-  v4 = a3;
-  [(CUIKSingleDayTimelineLayout *)self _adjustedEndTimeForOccurrence:v4];
+  occurrenceCopy = occurrence;
+  [(CUIKSingleDayTimelineLayout *)self _adjustedEndTimeForOccurrence:occurrenceCopy];
   v6 = v5;
-  [v4 stagedFrame];
+  [occurrenceCopy stagedFrame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -1224,15 +1224,15 @@ LABEL_22:
   return v18;
 }
 
-- (CGRect)_rectForStartSeconds:(int64_t)a3 endSeconds:(int64_t)a4
+- (CGRect)_rectForStartSeconds:(int64_t)seconds endSeconds:(int64_t)endSeconds
 {
   v5 = *(MEMORY[0x1E695F058] + 16);
-  v6 = a4 - a3;
-  v7 = (a4 + 100) % 3600;
-  v8 = a4 - a3 - 1679;
-  if (a3 / 86400.0 >= 0.0)
+  v6 = endSeconds - seconds;
+  v7 = (endSeconds + 100) % 3600;
+  v8 = endSeconds - seconds - 1679;
+  if (seconds / 86400.0 >= 0.0)
   {
-    v9 = a3 / 86400.0;
+    v9 = seconds / 86400.0;
   }
 
   else

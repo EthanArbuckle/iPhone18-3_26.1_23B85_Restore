@@ -1,21 +1,21 @@
 @interface ChromeMapToMapTransition
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation ChromeMapToMapTransition
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v3 = a3;
-  v4 = [v3 containerView];
-  v5 = [v3 viewControllerForKey:UITransitionContextToViewControllerKey];
-  [v3 finalFrameForViewController:v5];
+  transitionCopy = transition;
+  containerView = [transitionCopy containerView];
+  v5 = [transitionCopy viewControllerForKey:UITransitionContextToViewControllerKey];
+  [transitionCopy finalFrameForViewController:v5];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [v5 view];
-  [v4 addSubview:v14];
+  view = [v5 view];
+  [containerView addSubview:view];
 
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
@@ -28,7 +28,7 @@
   v21 = v13;
   v15 = v5;
   [UIView performWithoutAnimation:v16];
-  [v3 completeTransition:1];
+  [transitionCopy completeTransition:1];
 }
 
 @end

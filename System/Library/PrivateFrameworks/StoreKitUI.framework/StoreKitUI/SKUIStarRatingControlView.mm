@@ -1,26 +1,26 @@
 @interface SKUIStarRatingControlView
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUIStarRatingControlView)initWithFrame:(CGRect)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUIStarRatingControlView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
-- (void)didRating:(id)a3;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setEnabled:(BOOL)a3;
+- (void)didRating:(id)rating;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation SKUIStarRatingControlView
 
-- (SKUIStarRatingControlView)initWithFrame:(CGRect)a3
+- (SKUIStarRatingControlView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -35,11 +35,11 @@
 
   v29.receiver = self;
   v29.super_class = SKUIStarRatingControlView;
-  v16 = [(SKUIStarRatingControlView *)&v29 initWithFrame:x, y, width, height];
-  v17 = v16;
-  if (v16)
+  height = [(SKUIStarRatingControlView *)&v29 initWithFrame:x, y, width, height];
+  v17 = height;
+  if (height)
   {
-    [(SKUIStarRatingControlView *)v16 setContentMode:3];
+    [(SKUIStarRatingControlView *)height setContentMode:3];
     v18 = objc_alloc_init(SKUIStarRatingControl);
     control = v17->_control;
     v17->_control = v18;
@@ -73,7 +73,7 @@
   [(SKUIStarRatingControlView *)&v3 dealloc];
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -90,7 +90,7 @@
   return 0;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -111,7 +111,7 @@
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl())
   {
@@ -123,7 +123,7 @@
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -152,11 +152,11 @@
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v10 = a3;
-  objc_storeStrong(&self->_viewElement, a3);
-  [v10 ratingValue];
+  elementCopy = element;
+  objc_storeStrong(&self->_viewElement, element);
+  [elementCopy ratingValue];
   if (v7 <= 0.0)
   {
     v9 = 0;
@@ -164,7 +164,7 @@
 
   else
   {
-    [v10 ratingValue];
+    [elementCopy ratingValue];
     v9 = (v8 * 5.0);
   }
 
@@ -173,32 +173,32 @@
   [(SKUIStarRatingControlView *)self setNeedsDisplay];
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInset.top, v3), vceqq_f64(*&self->_contentInset.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(SKUIStarRatingControlView *)self setNeedsDisplay];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5.receiver = self;
   v5.super_class = SKUIStarRatingControlView;
   [(SKUIStarRatingControlView *)&v5 setEnabled:?];
-  [(SKUIStarRatingControl *)self->_control setEnabled:v3];
+  [(SKUIStarRatingControl *)self->_control setEnabled:enabledCopy];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(SKUIStarRatingControlView *)self bounds];
   v11 = CGRectInset(v10, -20.0, -20.0);
   v6 = x;
@@ -207,22 +207,22 @@
   return CGRectContainsPoint(v11, *&v6);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIImage *)self->_emptyStars size:a3.width];
+  [(UIImage *)self->_emptyStars size:fits.width];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)didRating:(id)a3
+- (void)didRating:(id)rating
 {
   v7[1] = *MEMORY[0x277D85DE8];
   viewElement = self->_viewElement;
   if (viewElement)
   {
     v6 = @"value";
-    v4 = [MEMORY[0x277CCABB0] numberWithInteger:{-[SKUIStarRatingControl userRating](self->_control, "userRating", a3)}];
+    v4 = [MEMORY[0x277CCABB0] numberWithInteger:{-[SKUIStarRatingControl userRating](self->_control, "userRating", rating)}];
     v7[0] = v4;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
     [(SKUIStarRatingViewElement *)viewElement dispatchEventOfType:15 canBubble:1 isCancelable:1 extraInfo:v5 completionBlock:0];

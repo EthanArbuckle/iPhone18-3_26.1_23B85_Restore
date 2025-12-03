@@ -1,30 +1,30 @@
 @interface NWURLSessionStreamTask
-+ (BOOL)isSubclassOfClass:(Class)a3;
-- (BOOL)isKindOfClass:(Class)a3;
++ (BOOL)isSubclassOfClass:(Class)class;
+- (BOOL)isKindOfClass:(Class)class;
 - (id)error;
-- (id)initWithLoader:(int)a3 identifier:(void *)a4 session:;
+- (id)initWithLoader:(int)loader identifier:(void *)identifier session:;
 - (id)response;
 - (void)captureStreams;
 - (void)checkForCompletion;
 - (void)closeRead;
 - (void)closeWrite;
 - (void)loaderBetterPathAvailable;
-- (void)loaderConnectedWithHTTPConnectionMetadata:(id)a3 CNAMEChain:(id)a4 unlistedTracker:(id)a5;
-- (void)readDataOfMinLength:(unint64_t)a3 maxLength:(unint64_t)a4 timeout:(double)a5 completionHandler:(id)a6;
-- (void)runCompletionHandler:(uint64_t)a1;
+- (void)loaderConnectedWithHTTPConnectionMetadata:(id)metadata CNAMEChain:(id)chain unlistedTracker:(id)tracker;
+- (void)readDataOfMinLength:(unint64_t)length maxLength:(unint64_t)maxLength timeout:(double)timeout completionHandler:(id)handler;
+- (void)runCompletionHandler:(uint64_t)handler;
 - (void)startNextLoad;
 - (void)startSecureConnection;
-- (void)writeData:(id)a3 timeout:(double)a4 completionHandler:(id)a5;
+- (void)writeData:(id)data timeout:(double)timeout completionHandler:(id)handler;
 @end
 
 @implementation NWURLSessionStreamTask
 
-- (id)initWithLoader:(int)a3 identifier:(void *)a4 session:
+- (id)initWithLoader:(int)loader identifier:(void *)identifier session:
 {
   v8 = a2;
-  if (a1)
+  if (self)
   {
-    v9 = [(NWURLSessionTask *)a1 initWithRequest:a3 identifier:a4 session:?];
+    v9 = [(NWURLSessionTask *)self initWithRequest:loader identifier:identifier session:?];
     v10 = v9;
     if (v9)
     {
@@ -41,11 +41,11 @@
   return v10;
 }
 
-- (void)loaderConnectedWithHTTPConnectionMetadata:(id)a3 CNAMEChain:(id)a4 unlistedTracker:(id)a5
+- (void)loaderConnectedWithHTTPConnectionMetadata:(id)metadata CNAMEChain:(id)chain unlistedTracker:(id)tracker
 {
-  v14 = a3;
-  v8 = a4;
-  v10 = a5;
+  metadataCopy = metadata;
+  chainCopy = chain;
+  trackerCopy = tracker;
   if (self)
   {
     startTimeoutTimer = self->super._startTimeoutTimer;
@@ -82,20 +82,20 @@
     }
 
     v10 = *(&self->super.super.isa + v3);
-    v5 = self;
+    selfCopy = self;
     if (v10)
     {
-      v6 = [(NWURLSessionDelegateWrapper *)v10 delegateFor_betterRouteDiscovered];
-      if (v6)
+      delegateFor_betterRouteDiscovered = [(NWURLSessionDelegateWrapper *)v10 delegateFor_betterRouteDiscovered];
+      if (delegateFor_betterRouteDiscovered)
       {
         v7 = v10[5];
         v11[0] = MEMORY[0x1E69E9820];
         v11[1] = 3221225472;
         v11[2] = __66__NWURLSessionDelegateWrapper_betterRouteDiscoveredForStreamTask___block_invoke;
         v11[3] = &unk_1E6A3B4E0;
-        v12 = v6;
+        v12 = delegateFor_betterRouteDiscovered;
         v13 = v7;
-        v14 = v5;
+        v14 = selfCopy;
         v8 = v10[7];
         v9 = v7;
         [(NWURLSessionDelegateQueue *)v8 runDelegateBlock:v11];
@@ -240,27 +240,27 @@ LABEL_12:
 
 - (void)checkForCompletion
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  nw_context_assert_queue(*(a1 + 320));
-  v2 = *(a1 + 296);
+  nw_context_assert_queue(*(self + 320));
+  v2 = *(self + 296);
   if (v2 != 1)
   {
     goto LABEL_7;
   }
 
-  if (*(a1 + 492) == 1 && (*(a1 + 493) & 1) != 0 || *(a1 + 280))
+  if (*(self + 492) == 1 && (*(self + 493) & 1) != 0 || *(self + 280))
   {
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __44__NWURLSessionStreamTask_checkForCompletion__block_invoke;
     v30[3] = &unk_1E6A3D868;
-    v30[4] = a1;
-    [(NWURLSessionTask *)a1 complete:v30];
-    v2 = *(a1 + 296);
+    v30[4] = self;
+    [(NWURLSessionTask *)self complete:v30];
+    v2 = *(self + 296);
 LABEL_7:
     if (v2 == 2)
     {
@@ -268,89 +268,89 @@ LABEL_7:
     }
   }
 
-  if (!*(a1 + 496) && *(a1 + 494) == 1)
+  if (!*(self + 496) && *(self + 494) == 1)
   {
     v3 = 248;
-    if (!*(a1 + 248))
+    if (!*(self + 248))
     {
       v3 = 240;
     }
 
-    if (*(a1 + v3))
+    if (*(self + v3))
     {
       v4 = [NWURLSessionInputStream alloc];
-      if (*(a1 + 492))
+      if (*(self + 492))
       {
         p_isa = &v4->super.super.super.isa;
         v6 = [NWURLError alloc];
-        v7 = *(a1 + 264);
-        v8 = a1;
+        v7 = *(self + 264);
+        selfCopy = self;
         if (v6)
         {
           v9 = [(NWURLError *)v6 initWithErrorCode:-1005];
           v6 = v9;
           if (v9)
           {
-            [(NWURLError *)v9 fillErrorForLoader:v7 andTask:v8];
+            [(NWURLError *)v9 fillErrorForLoader:v7 andTask:selfCopy];
           }
         }
 
-        v10 = [(NWURLSessionInputStream *)p_isa initWithStreamTask:v8 error:v6];
+        v10 = [(NWURLSessionInputStream *)p_isa initWithStreamTask:selfCopy error:v6];
       }
 
       else
       {
-        v10 = [(NWURLSessionInputStream *)&v4->super.super.super.isa initWithStreamTask:a1 error:0];
+        v10 = [(NWURLSessionInputStream *)&v4->super.super.super.isa initWithStreamTask:self error:0];
       }
 
       v11 = [NWURLSessionOutputStream alloc];
-      if (*(a1 + 493))
+      if (*(self + 493))
       {
         v12 = &v11->super.super.super.isa;
         v13 = [NWURLError alloc];
-        v14 = *(a1 + 264);
-        v15 = a1;
+        v14 = *(self + 264);
+        selfCopy2 = self;
         if (v13)
         {
           v16 = [(NWURLError *)v13 initWithErrorCode:-1005];
           v13 = v16;
           if (v16)
           {
-            [(NWURLError *)v16 fillErrorForLoader:v14 andTask:v15];
+            [(NWURLError *)v16 fillErrorForLoader:v14 andTask:selfCopy2];
           }
         }
 
-        v17 = [(NWURLSessionOutputStream *)v12 initWithStreamTask:v15 error:v13];
+        v17 = [(NWURLSessionOutputStream *)v12 initWithStreamTask:selfCopy2 error:v13];
       }
 
       else
       {
-        v17 = [(NWURLSessionOutputStream *)&v11->super.super.super.isa initWithStreamTask:a1 error:0];
+        v17 = [(NWURLSessionOutputStream *)&v11->super.super.super.isa initWithStreamTask:self error:0];
       }
 
       v18 = 248;
-      if (!*(a1 + 248))
+      if (!*(self + 248))
       {
         v18 = 240;
       }
 
-      v19 = *(a1 + v18);
-      v20 = a1;
+      v19 = *(self + v18);
+      selfCopy3 = self;
       v21 = v10;
       v23 = v17;
       if (v19)
       {
-        v24 = [(NWURLSessionDelegateWrapper *)v19 delegateFor_didBecomeInputOutputStream];
-        if (v24)
+        delegateFor_didBecomeInputOutputStream = [(NWURLSessionDelegateWrapper *)v19 delegateFor_didBecomeInputOutputStream];
+        if (delegateFor_didBecomeInputOutputStream)
         {
           v25 = *(v19 + 40);
           v31[0] = MEMORY[0x1E69E9820];
           v31[1] = 3221225472;
           v31[2] = __76__NWURLSessionDelegateWrapper_streamTask_didBecomeInputStream_outputStream___block_invoke;
           v31[3] = &unk_1E6A3C010;
-          v32 = v24;
+          v32 = delegateFor_didBecomeInputOutputStream;
           v33 = v25;
-          v34 = v20;
+          v34 = selfCopy3;
           v35 = v21;
           v36 = v23;
           v26 = *(v19 + 56);
@@ -359,11 +359,11 @@ LABEL_7:
         }
       }
 
-      v28 = *(a1 + 240);
-      *(a1 + 240) = 0;
+      v28 = *(self + 240);
+      *(self + 240) = 0;
 
-      v29 = *(a1 + 248);
-      *(a1 + 248) = 0;
+      v29 = *(self + 248);
+      *(self + 248) = 0;
     }
   }
 }
@@ -536,11 +536,11 @@ void __40__NWURLSessionStreamTask_captureStreams__block_invoke(uint64_t a1)
   }
 }
 
-- (void)writeData:(id)a3 timeout:(double)a4 completionHandler:(id)a5
+- (void)writeData:(id)data timeout:(double)timeout completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
+  dataCopy = data;
+  handlerCopy = handler;
+  v10 = handlerCopy;
   if (self)
   {
     queue = self->super._queue;
@@ -555,11 +555,11 @@ void __40__NWURLSessionStreamTask_captureStreams__block_invoke(uint64_t a1)
   v14[1] = 3221225472;
   v14[2] = __62__NWURLSessionStreamTask_writeData_timeout_completionHandler___block_invoke;
   v14[3] = &unk_1E6A35F70;
-  v15 = v8;
-  v16 = v9;
-  v17 = a4;
+  v15 = dataCopy;
+  v16 = handlerCopy;
+  timeoutCopy = timeout;
   v14[4] = self;
-  v12 = v8;
+  v12 = dataCopy;
   v13 = v10;
   dispatch_async(queue, v14);
 }
@@ -678,19 +678,19 @@ uint64_t __62__NWURLSessionStreamTask_writeData_timeout_completionHandler___bloc
   return (*(v2 + 16))(v2, v4);
 }
 
-- (void)runCompletionHandler:(uint64_t)a1
+- (void)runCompletionHandler:(uint64_t)handler
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (handler)
   {
     v5 = 248;
-    if (!*(a1 + 248))
+    if (!*(handler + 248))
     {
       v5 = 240;
     }
 
-    v6 = *(a1 + v5);
+    v6 = *(handler + v5);
     v7 = v3;
     if (v6)
     {
@@ -868,9 +868,9 @@ uint64_t __62__NWURLSessionStreamTask_writeData_timeout_completionHandler___bloc
   return (*(v2 + 16))(v2, v4);
 }
 
-- (void)readDataOfMinLength:(unint64_t)a3 maxLength:(unint64_t)a4 timeout:(double)a5 completionHandler:(id)a6
+- (void)readDataOfMinLength:(unint64_t)length maxLength:(unint64_t)maxLength timeout:(double)timeout completionHandler:(id)handler
 {
-  v10 = a6;
+  handlerCopy = handler;
   if (self)
   {
     queue = self->super._queue;
@@ -886,11 +886,11 @@ uint64_t __62__NWURLSessionStreamTask_writeData_timeout_completionHandler___bloc
   block[2] = __82__NWURLSessionStreamTask_readDataOfMinLength_maxLength_timeout_completionHandler___block_invoke;
   block[3] = &unk_1E6A33EC0;
   block[4] = self;
-  v14 = v10;
-  v15 = a5;
-  v16 = a3;
-  v17 = a4;
-  v12 = v10;
+  v14 = handlerCopy;
+  timeoutCopy = timeout;
+  lengthCopy = length;
+  maxLengthCopy = maxLength;
+  v12 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -1303,7 +1303,7 @@ uint64_t __82__NWURLSessionStreamTask_readDataOfMinLength_maxLength_timeout_comp
   return self;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   v5.receiver = self;
   v5.super_class = NWURLSessionStreamTask;
@@ -1314,13 +1314,13 @@ uint64_t __82__NWURLSessionStreamTask_readDataOfMinLength_maxLength_timeout_comp
 
   else
   {
-    return [(objc_class *)a3 isEqual:objc_opt_class()];
+    return [(objc_class *)class isEqual:objc_opt_class()];
   }
 }
 
-+ (BOOL)isSubclassOfClass:(Class)a3
++ (BOOL)isSubclassOfClass:(Class)class
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___NWURLSessionStreamTask;
   if (objc_msgSendSuper2(&v5, sel_isSubclassOfClass_))
   {
@@ -1329,7 +1329,7 @@ uint64_t __82__NWURLSessionStreamTask_readDataOfMinLength_maxLength_timeout_comp
 
   else
   {
-    return [(objc_class *)a3 isEqual:objc_opt_class()];
+    return [(objc_class *)class isEqual:objc_opt_class()];
   }
 }
 

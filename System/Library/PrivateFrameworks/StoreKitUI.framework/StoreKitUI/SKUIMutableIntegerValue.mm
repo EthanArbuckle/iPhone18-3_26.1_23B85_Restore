@@ -1,6 +1,6 @@
 @interface SKUIMutableIntegerValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -23,9 +23,9 @@
   return ~self->_integerValue;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -38,7 +38,7 @@
     }
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -46,13 +46,13 @@
   else
   {
     objc_opt_class();
-    v13 = (objc_opt_isKindOfClass() & 1) != 0 && v4->_integerValue == self->_integerValue;
+    v13 = (objc_opt_isKindOfClass() & 1) != 0 && equalCopy->_integerValue == self->_integerValue;
   }
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (os_variant_has_internal_content())
   {
@@ -66,7 +66,7 @@
     }
   }
 
-  v13 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v13 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v13 setIntegerValue:self->_integerValue];
   return v13;
 }

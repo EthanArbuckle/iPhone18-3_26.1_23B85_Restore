@@ -1,36 +1,36 @@
 @interface WindowPropertiesReaderViewController
-- (_TtC11MediaCoreUI36WindowPropertiesReaderViewController)initWithCoder:(id)a3;
-- (_TtC11MediaCoreUI36WindowPropertiesReaderViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (_TtC11MediaCoreUI36WindowPropertiesReaderViewController)initWithCoder:(id)coder;
+- (_TtC11MediaCoreUI36WindowPropertiesReaderViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation WindowPropertiesReaderViewController
 
-- (_TtC11MediaCoreUI36WindowPropertiesReaderViewController)initWithCoder:(id)a3
+- (_TtC11MediaCoreUI36WindowPropertiesReaderViewController)initWithCoder:(id)coder
 {
   result = sub_1C5BCBBC4();
   __break(1u);
   return result;
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  sub_1C5A98730(a3);
+  selfCopy = self;
+  sub_1C5A98730(appearing);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_1C5A9899C(a4, width, height);
+  selfCopy = self;
+  sub_1C5A9899C(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (_TtC11MediaCoreUI36WindowPropertiesReaderViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11MediaCoreUI36WindowPropertiesReaderViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

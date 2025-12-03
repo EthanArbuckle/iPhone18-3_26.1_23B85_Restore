@@ -1,19 +1,19 @@
 @interface SKUIShelfMenuBarViewElement
 + (id)supportedFeatures;
-- (SKUIShelfMenuBarViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
-- (void)_menuBarViewElementConfigurationRequestsReload:(id)a3;
+- (SKUIShelfMenuBarViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
+- (void)_menuBarViewElementConfigurationRequestsReload:(id)reload;
 - (void)_reloadMenuItems;
-- (void)enumerateChildrenUsingBlock:(id)a3;
+- (void)enumerateChildrenUsingBlock:(id)block;
 @end
 
 @implementation SKUIShelfMenuBarViewElement
 
-- (SKUIShelfMenuBarViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIShelfMenuBarViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIShelfMenuBarViewElement initWithDOMElement:parent:elementFactory:];
@@ -22,19 +22,19 @@
   v11 = objc_opt_class();
   if (v11 == objc_opt_class())
   {
-    v16 = [v8 getAttribute:@"entityProviderID"];
+    v16 = [elementCopy getAttribute:@"entityProviderID"];
     v17 = [v16 length];
 
     if (v17)
     {
-      v13 = [(SKUIShelfMenuBarViewElement *)[SKUIDynamicShelfMenuBarViewElement alloc] initWithDOMElement:v8 parent:v9 elementFactory:v10];
+      v13 = [(SKUIShelfMenuBarViewElement *)[SKUIDynamicShelfMenuBarViewElement alloc] initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
       goto LABEL_10;
     }
   }
 
   v19.receiver = self;
   v19.super_class = SKUIShelfMenuBarViewElement;
-  v12 = [(SKUIShelfViewElement *)&v19 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v12 = [(SKUIShelfViewElement *)&v19 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   v13 = v12;
   if (v12)
   {
@@ -55,7 +55,7 @@ LABEL_10:
   v9[1] = *MEMORY[0x277D85DE8];
   v9[0] = *MEMORY[0x277D1AF10];
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___SKUIShelfMenuBarViewElement;
   v4 = objc_msgSendSuper2(&v8, sel_supportedFeatures);
   if (v4)
@@ -72,14 +72,14 @@ LABEL_10:
   return v6;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
   v7.receiver = self;
   v7.super_class = SKUIShelfMenuBarViewElement;
-  v4 = a3;
-  v5 = [(SKUIShelfViewElement *)&v7 applyUpdatesWithElement:v4];
+  elementCopy = element;
+  v5 = [(SKUIShelfViewElement *)&v7 applyUpdatesWithElement:elementCopy];
 
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
     [(SKUIMenuBarViewElementConfiguration *)self->_configuration _setNeedsReload:1, v7.receiver, v7.super_class];
   }
@@ -87,18 +87,18 @@ LABEL_10:
   return v5;
 }
 
-- (void)enumerateChildrenUsingBlock:(id)a3
+- (void)enumerateChildrenUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SKUIShelfMenuBarViewElement *)self children];
+  blockCopy = block;
+  children = [(SKUIShelfMenuBarViewElement *)self children];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__SKUIShelfMenuBarViewElement_enumerateChildrenUsingBlock___block_invoke;
   v7[3] = &unk_2781FBFE8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [children enumerateObjectsUsingBlock:v7];
 }
 
 void __59__SKUIShelfMenuBarViewElement_enumerateChildrenUsingBlock___block_invoke(uint64_t a1, void *a2)
@@ -115,9 +115,9 @@ void __59__SKUIShelfMenuBarViewElement_enumerateChildrenUsingBlock___block_invok
   }
 }
 
-- (void)_menuBarViewElementConfigurationRequestsReload:(id)a3
+- (void)_menuBarViewElementConfigurationRequestsReload:(id)reload
 {
-  if (self->_configuration == a3)
+  if (self->_configuration == reload)
   {
     [(SKUIShelfMenuBarViewElement *)self _reloadMenuItems];
   }
@@ -125,17 +125,17 @@ void __59__SKUIShelfMenuBarViewElement_enumerateChildrenUsingBlock___block_invok
 
 - (void)_reloadMenuItems
 {
-  v2 = self;
+  selfCopy = self;
   v39 = *MEMORY[0x277D85DE8];
-  v3 = [(SKUIShelfMenuBarViewElement *)self style];
-  v4 = [v3 valueForStyle:@"itml-shelf-layout"];
+  style = [(SKUIShelfMenuBarViewElement *)self style];
+  v4 = [style valueForStyle:@"itml-shelf-layout"];
   v5 = [v4 isEqualToString:@"zooming"];
 
   if (v5)
   {
     v28 = v5;
-    v29 = v2;
-    [(SKUIShelfMenuBarViewElement *)v2 children];
+    v29 = selfCopy;
+    [(SKUIShelfMenuBarViewElement *)selfCopy children];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
@@ -165,9 +165,9 @@ void __59__SKUIShelfMenuBarViewElement_enumerateChildrenUsingBlock___block_invok
           if (v31 == 1)
           {
             v14 = v13;
-            v15 = [v14 children];
-            v16 = [v15 objectAtIndex:v32];
-            v17 = [v15 objectAtIndex:v33];
+            children = [v14 children];
+            v16 = [children objectAtIndex:v32];
+            v17 = [children objectAtIndex:v33];
             if (!v10)
             {
               v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -203,7 +203,7 @@ void __59__SKUIShelfMenuBarViewElement_enumerateChildrenUsingBlock___block_invok
     }
 
     v18 = 2;
-    v2 = v29;
+    selfCopy = v29;
     v5 = v28;
   }
 
@@ -216,31 +216,31 @@ void __59__SKUIShelfMenuBarViewElement_enumerateChildrenUsingBlock___block_invok
   }
 
   v19 = [v9 copy];
-  focusedViewElements = v2->_focusedViewElements;
-  v2->_focusedViewElements = v19;
+  focusedViewElements = selfCopy->_focusedViewElements;
+  selfCopy->_focusedViewElements = v19;
 
   v21 = [v8 copy];
-  regularViewElements = v2->_regularViewElements;
-  v2->_regularViewElements = v21;
+  regularViewElements = selfCopy->_regularViewElements;
+  selfCopy->_regularViewElements = v21;
 
   if (v5)
   {
     v23 = &__block_literal_global_14;
-    v24 = v2;
+    v24 = selfCopy;
   }
 
   else
   {
-    v24 = v2;
+    v24 = selfCopy;
     v23 = 0;
   }
 
   [(SKUIShelfViewElement *)v24 setShelfItemViewElementValidator:v23];
-  v25 = [(SKUIShelfMenuBarViewElement *)v2 style];
-  v26 = [v25 valueForStyle:@"itml-scroll-enabled"];
-  v27 = [v26 BOOLValue];
+  style2 = [(SKUIShelfMenuBarViewElement *)selfCopy style];
+  v26 = [style2 valueForStyle:@"itml-scroll-enabled"];
+  bOOLValue = [v26 BOOLValue];
 
-  [(SKUIMenuBarViewElementConfiguration *)v2->_configuration _reloadWithMenuBarStyle:v18 menuItemViewElements:v10 scrollEnabled:v27];
+  [(SKUIMenuBarViewElementConfiguration *)selfCopy->_configuration _reloadWithMenuBarStyle:v18 menuItemViewElements:v10 scrollEnabled:bOOLValue];
 }
 
 uint64_t __47__SKUIShelfMenuBarViewElement__reloadMenuItems__block_invoke(uint64_t a1, void *a2)

@@ -5,9 +5,9 @@
 - (BOOL)hasPrebakedThumbnail;
 - (BOOL)hasPrebakedWildcatThumbnails;
 - (BOOL)hasThumbnail;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
-- (PLPhotoDCFFileGroup)initWithName:(id)a3 number:(int)a4 directory:(id)a5;
+- (PLPhotoDCFFileGroup)initWithName:(id)name number:(int)number directory:(id)directory;
 - (id)date;
 - (id)extensions;
 - (id)imageSourceTypeHint;
@@ -21,21 +21,21 @@
 - (id)pathForTrimmedVideoFile;
 - (id)pathForVideoFile;
 - (id)pathForVideoPreviewFile;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)addExtension:(id)a3;
+- (void)addExtension:(id)extension;
 - (void)addExtensionsFromMetadataDirectory;
 - (void)createMetadataDirectoryIfNecessary;
 - (void)deleteFiles;
 - (void)deleteObsoleteFiles;
-- (void)setWriteIsPending:(BOOL)a3;
+- (void)setWriteIsPending:(BOOL)pending;
 @end
 
 @implementation PLPhotoDCFFileGroup
 
-- (void)setWriteIsPending:(BOOL)a3
+- (void)setWriteIsPending:(BOOL)pending
 {
-  if (a3)
+  if (pending)
   {
     v3 = 4;
   }
@@ -52,15 +52,15 @@
 - (void)deleteFiles
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(PLPhotoDCFFileGroup *)self pathForFullSizeImage];
-  [v3 removeItemAtPath:v4 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  pathForFullSizeImage = [(PLPhotoDCFFileGroup *)self pathForFullSizeImage];
+  [defaultManager removeItemAtPath:pathForFullSizeImage error:0];
 
-  v5 = [(PLPhotoDCFFileGroup *)self pathForVideoFile];
-  [v3 removeItemAtPath:v5 error:0];
+  pathForVideoFile = [(PLPhotoDCFFileGroup *)self pathForVideoFile];
+  [defaultManager removeItemAtPath:pathForVideoFile error:0];
 
-  v6 = [(PLPhotoDCFFileGroup *)self pathForMetadata];
-  v7 = [v6 stringByAppendingPathComponent:self->super._name];
+  pathForMetadata = [(PLPhotoDCFFileGroup *)self pathForMetadata];
+  v7 = [pathForMetadata stringByAppendingPathComponent:self->super._name];
 
   v27 = 0u;
   v28 = 0u;
@@ -83,7 +83,7 @@
         }
 
         v13 = [v7 stringByAppendingPathExtension:*(*(&v25 + 1) + 8 * v12)];
-        [v3 removeItemAtPath:v13 error:0];
+        [defaultManager removeItemAtPath:v13 error:0];
 
         ++v12;
       }
@@ -95,7 +95,7 @@
     while (v10);
   }
 
-  v14 = [(PLPhotoDCFFileGroup *)self pathForGroupWithoutExtension];
+  pathForGroupWithoutExtension = [(PLPhotoDCFFileGroup *)self pathForGroupWithoutExtension];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -116,8 +116,8 @@
           objc_enumerationMutation(v15);
         }
 
-        v20 = [v14 stringByAppendingPathExtension:{*(*(&v21 + 1) + 8 * v19), v21}];
-        [v3 removeItemAtPath:v20 error:0];
+        v20 = [pathForGroupWithoutExtension stringByAppendingPathExtension:{*(*(&v21 + 1) + 8 * v19), v21}];
+        [defaultManager removeItemAtPath:v20 error:0];
 
         ++v19;
       }
@@ -192,54 +192,54 @@
 
 - (id)pathForVideoPreviewFile
 {
-  v3 = [(PLPhotoDCFFileGroup *)self pathForMetadata];
-  v4 = [(PLPhotoDCFFileGroup *)self videoPreviewFilename];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  pathForMetadata = [(PLPhotoDCFFileGroup *)self pathForMetadata];
+  videoPreviewFilename = [(PLPhotoDCFFileGroup *)self videoPreviewFilename];
+  v5 = [pathForMetadata stringByAppendingPathComponent:videoPreviewFilename];
 
   return v5;
 }
 
 - (id)pathForLowResolutionFile
 {
-  v3 = [(PLPhotoDCFFileGroup *)self pathForMetadata];
-  v4 = [(PLPhotoDCFFileGroup *)self lowResolutionFilename];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  pathForMetadata = [(PLPhotoDCFFileGroup *)self pathForMetadata];
+  lowResolutionFilename = [(PLPhotoDCFFileGroup *)self lowResolutionFilename];
+  v5 = [pathForMetadata stringByAppendingPathComponent:lowResolutionFilename];
 
   return v5;
 }
 
 - (id)pathForPrebakedWildcatThumbnailsFile
 {
-  v3 = [(PLPhotoDCFFileGroup *)self pathForMetadata];
-  v4 = [(PLPhotoDCFFileGroup *)self prebakedWildcatThumbnailsFilename];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  pathForMetadata = [(PLPhotoDCFFileGroup *)self pathForMetadata];
+  prebakedWildcatThumbnailsFilename = [(PLPhotoDCFFileGroup *)self prebakedWildcatThumbnailsFilename];
+  v5 = [pathForMetadata stringByAppendingPathComponent:prebakedWildcatThumbnailsFilename];
 
   return v5;
 }
 
 - (id)pathForPrebakedPortraitScrubberThumbnails
 {
-  v3 = [(PLPhotoDCFFileGroup *)self pathForMetadata];
-  v4 = [(PLPhotoDCFFileGroup *)self prebakedPortraitScrubberThumbnailsFilename];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  pathForMetadata = [(PLPhotoDCFFileGroup *)self pathForMetadata];
+  prebakedPortraitScrubberThumbnailsFilename = [(PLPhotoDCFFileGroup *)self prebakedPortraitScrubberThumbnailsFilename];
+  v5 = [pathForMetadata stringByAppendingPathComponent:prebakedPortraitScrubberThumbnailsFilename];
 
   return v5;
 }
 
 - (id)pathForPrebakedLandscapeScrubberThumbnails
 {
-  v3 = [(PLPhotoDCFFileGroup *)self pathForMetadata];
-  v4 = [(PLPhotoDCFFileGroup *)self prebakedLandscapeScrubberThumbnailsFilename];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  pathForMetadata = [(PLPhotoDCFFileGroup *)self pathForMetadata];
+  prebakedLandscapeScrubberThumbnailsFilename = [(PLPhotoDCFFileGroup *)self prebakedLandscapeScrubberThumbnailsFilename];
+  v5 = [pathForMetadata stringByAppendingPathComponent:prebakedLandscapeScrubberThumbnailsFilename];
 
   return v5;
 }
 
 - (id)pathForThumbnailFile
 {
-  v3 = [(PLPhotoDCFFileGroup *)self pathForMetadata];
-  v4 = [(PLPhotoDCFFileGroup *)self thumbnailFilename];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  pathForMetadata = [(PLPhotoDCFFileGroup *)self pathForMetadata];
+  thumbnailFilename = [(PLPhotoDCFFileGroup *)self thumbnailFilename];
+  v5 = [pathForMetadata stringByAppendingPathComponent:thumbnailFilename];
 
   return v5;
 }
@@ -279,18 +279,18 @@
 
 - (void)createMetadataDirectoryIfNecessary
 {
-  v3 = [(PLPhotoDCFFileGroup *)self pathForMetadata];
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  if (([v2 fileExistsAtPath:v3] & 1) == 0)
+  pathForMetadata = [(PLPhotoDCFFileGroup *)self pathForMetadata];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if (([defaultManager fileExistsAtPath:pathForMetadata] & 1) == 0)
   {
-    [v2 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:0];
+    [defaultManager createDirectoryAtPath:pathForMetadata withIntermediateDirectories:1 attributes:0 error:0];
   }
 }
 
 - (id)pathForMetadataWithGroupName
 {
-  v3 = [(PLPhotoDCFFileGroup *)self pathForMetadata];
-  v4 = [v3 stringByAppendingPathComponent:self->super._name];
+  pathForMetadata = [(PLPhotoDCFFileGroup *)self pathForMetadata];
+  v4 = [pathForMetadata stringByAppendingPathComponent:self->super._name];
 
   return v4;
 }
@@ -312,9 +312,9 @@
   v18 = *MEMORY[0x1E69E9840];
   if ((*(self + 96) & 2) == 0)
   {
-    v3 = [MEMORY[0x1E696AC08] defaultManager];
-    v4 = [(PLPhotoDCFFileGroup *)self pathForMetadata];
-    v5 = [v4 stringByAppendingPathComponent:self->super._name];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    pathForMetadata = [(PLPhotoDCFFileGroup *)self pathForMetadata];
+    v5 = [pathForMetadata stringByAppendingPathComponent:self->super._name];
 
     v15 = 0u;
     v16 = 0u;
@@ -337,7 +337,7 @@
 
           v11 = *(*(&v13 + 1) + 8 * i);
           v12 = [v5 stringByAppendingPathExtension:{v11, v13}];
-          if ([v3 fileExistsAtPath:v12])
+          if ([defaultManager fileExistsAtPath:v12])
           {
             [(PLPhotoDCFFileGroup *)self addExtension:v11];
           }
@@ -353,16 +353,16 @@
   }
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [v4 date];
-  v6 = [(NSDate *)self->_date compare:v5];
+  compareCopy = compare;
+  date = [compareCopy date];
+  v6 = [(NSDate *)self->_date compare:date];
   if (v6 == NSOrderedSame)
   {
-    v7 = [(PLPhotoDCFObject *)self name];
-    v8 = [v4 name];
-    v6 = [v7 compare:v8];
+    name = [(PLPhotoDCFObject *)self name];
+    name2 = [compareCopy name];
+    v6 = [name compare:name2];
   }
 
   return v6;
@@ -373,39 +373,39 @@
   date = self->_date;
   if (date)
   {
-    v3 = date;
+    distantPast = date;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
   }
 
-  return v3;
+  return distantPast;
 }
 
-- (void)addExtension:(id)a3
+- (void)addExtension:(id)extension
 {
-  v5 = a3;
+  extensionCopy = extension;
   extensions = self->_extensions;
-  v12 = v5;
+  v12 = extensionCopy;
   if (!extensions)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v8 = self->_extensions;
     self->_extensions = v7;
 
-    v5 = v12;
+    extensionCopy = v12;
     extensions = self->_extensions;
   }
 
-  [(NSMutableSet *)extensions addObject:v5];
+  [(NSMutableSet *)extensions addObject:extensionCopy];
   pl_dispatch_once(&_InitializeFileExtensions_onceToken, &__block_literal_global_4176);
   if ([__imageFileExtensions containsObject:v12])
   {
     p_preferredExtension = &self->_preferredExtension;
 LABEL_5:
-    objc_storeStrong(p_preferredExtension, a3);
+    objc_storeStrong(p_preferredExtension, extension);
     goto LABEL_8;
   }
 
@@ -427,7 +427,7 @@ LABEL_8:
 - (BOOL)hasObsoleteFiles
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v4 = [(NSString *)self->_directoryPath stringByAppendingPathComponent:self->super._name];
   v12 = 0u;
   v13 = 0u;
@@ -448,7 +448,7 @@ LABEL_8:
         }
 
         v9 = [v4 stringByAppendingPathExtension:{*(*(&v12 + 1) + 8 * i), v12}];
-        v10 = [v3 fileExistsAtPath:v9];
+        v10 = [defaultManager fileExistsAtPath:v9];
 
         if (v10)
         {
@@ -475,7 +475,7 @@ LABEL_11:
 - (void)deleteObsoleteFiles
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v4 = [(NSString *)self->_directoryPath stringByAppendingPathComponent:self->super._name];
   v11 = 0u;
   v12 = 0u;
@@ -498,7 +498,7 @@ LABEL_11:
         }
 
         v10 = [v4 stringByAppendingPathExtension:{*(*(&v11 + 1) + 8 * v9), v11}];
-        [v3 removeItemAtPath:v10 error:0];
+        [defaultManager removeItemAtPath:v10 error:0];
 
         ++v9;
       }
@@ -521,10 +521,10 @@ LABEL_11:
   return [(PLPhotoDCFFileGroup *)self hasVideoFile];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -534,9 +534,9 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(PLPhotoDCFFileGroup *)self pathForGroupWithoutExtension];
-      v6 = [(PLPhotoDCFFileGroup *)v4 pathForGroupWithoutExtension];
-      v7 = [v5 isEqualToString:v6];
+      pathForGroupWithoutExtension = [(PLPhotoDCFFileGroup *)self pathForGroupWithoutExtension];
+      pathForGroupWithoutExtension2 = [(PLPhotoDCFFileGroup *)equalCopy pathForGroupWithoutExtension];
+      v7 = [pathForGroupWithoutExtension isEqualToString:pathForGroupWithoutExtension2];
     }
 
     else
@@ -552,8 +552,8 @@ LABEL_11:
 {
   if ((*(self + 96) & 1) == 0)
   {
-    v3 = [(PLPhotoDCFFileGroup *)self pathForGroupWithoutExtension];
-    self->_hash = [v3 hash];
+    pathForGroupWithoutExtension = [(PLPhotoDCFFileGroup *)self pathForGroupWithoutExtension];
+    self->_hash = [pathForGroupWithoutExtension hash];
 
     *(self + 96) |= 1u;
   }
@@ -581,27 +581,27 @@ LABEL_11:
   return @"public.jpeg";
 }
 
-- (PLPhotoDCFFileGroup)initWithName:(id)a3 number:(int)a4 directory:(id)a5
+- (PLPhotoDCFFileGroup)initWithName:(id)name number:(int)number directory:(id)directory
 {
-  v6 = *&a4;
-  v9 = a5;
+  v6 = *&number;
+  directoryCopy = directory;
   v20.receiver = self;
   v20.super_class = PLPhotoDCFFileGroup;
-  v10 = [(PLPhotoDCFObject *)&v20 initWithName:a3 number:v6];
+  v10 = [(PLPhotoDCFObject *)&v20 initWithName:name number:v6];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_directory, a5);
-    v12 = [(PLPhotoDCFDirectory *)v11->_directory fullPath];
+    objc_storeStrong(&v10->_directory, directory);
+    fullPath = [(PLPhotoDCFDirectory *)v11->_directory fullPath];
     directoryPath = v11->_directoryPath;
-    v11->_directoryPath = v12;
+    v11->_directoryPath = fullPath;
 
     preferredExtension = v11->_preferredExtension;
     v11->_preferredExtension = @"JPG";
 
-    v15 = [(PLPhotoDCFFileGroup *)v11 pathForMetadata];
-    v16 = [(PLPhotoDCFFileGroup *)v11 prebakedThumbnailFilename];
-    v17 = [v15 stringByAppendingPathComponent:v16];
+    pathForMetadata = [(PLPhotoDCFFileGroup *)v11 pathForMetadata];
+    prebakedThumbnailFilename = [(PLPhotoDCFFileGroup *)v11 prebakedThumbnailFilename];
+    v17 = [pathForMetadata stringByAppendingPathComponent:prebakedThumbnailFilename];
     prebakedThumbnailPath = v11->_prebakedThumbnailPath;
     v11->_prebakedThumbnailPath = v17;
   }

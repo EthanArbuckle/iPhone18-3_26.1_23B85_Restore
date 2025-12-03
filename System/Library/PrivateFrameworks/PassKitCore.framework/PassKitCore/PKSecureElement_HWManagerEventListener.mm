@@ -1,14 +1,14 @@
 @interface PKSecureElement_HWManagerEventListener
-- (void)secureElement:(id)a3 didChangeRestrictedMode:(BOOL)a4;
+- (void)secureElement:(id)element didChangeRestrictedMode:(BOOL)mode;
 @end
 
 @implementation PKSecureElement_HWManagerEventListener
 
-- (void)secureElement:(id)a3 didChangeRestrictedMode:(BOOL)a4
+- (void)secureElement:(id)element didChangeRestrictedMode:(BOOL)mode
 {
-  v4 = a4;
+  modeCopy = mode;
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  elementCopy = element;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -42,7 +42,7 @@
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) secureElement:v5 didChangeRestrictedMode:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) secureElement:elementCopy didChangeRestrictedMode:{modeCopy, v10}];
       }
 
       while (v7 != v9);

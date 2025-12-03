@@ -11,13 +11,13 @@
   v5.super_class = SBCameraHardwareButtonSettings;
   [(PTSettings *)&v5 setDefaultValues];
   v3 = +[SBDefaults localDefaults];
-  v4 = [v3 cameraHardwareButtonDefaults];
+  cameraHardwareButtonDefaults = [v3 cameraHardwareButtonDefaults];
 
-  [v4 shutterButtonLongPressTimeout];
+  [cameraHardwareButtonDefaults shutterButtonLongPressTimeout];
   [(SBCameraHardwareButtonSettings *)self setShutterButtonLongPressTimeout:?];
-  [v4 shutterButtonLongPressCancellationTimeout];
+  [cameraHardwareButtonDefaults shutterButtonLongPressCancellationTimeout];
   [(SBCameraHardwareButtonSettings *)self setShutterButtonLongPressCancellationTimeout:?];
-  -[SBCameraHardwareButtonSettings setShutterButtonShouldUsePocketDetection:](self, "setShutterButtonShouldUsePocketDetection:", [v4 shutterButtonShouldUsePocketDetection]);
+  -[SBCameraHardwareButtonSettings setShutterButtonShouldUsePocketDetection:](self, "setShutterButtonShouldUsePocketDetection:", [cameraHardwareButtonDefaults shutterButtonShouldUsePocketDetection]);
 }
 
 + (id)settingsControllerModule

@@ -1,19 +1,19 @@
 @interface _CNLazyArrayActionOnNext
-- (_CNLazyArrayActionOnNext)initWithInput:(id)a3 action:(id)a4;
+- (_CNLazyArrayActionOnNext)initWithInput:(id)input action:(id)action;
 - (id)nextObject;
 @end
 
 @implementation _CNLazyArrayActionOnNext
 
-- (_CNLazyArrayActionOnNext)initWithInput:(id)a3 action:(id)a4
+- (_CNLazyArrayActionOnNext)initWithInput:(id)input action:(id)action
 {
-  v6 = a4;
+  actionCopy = action;
   v12.receiver = self;
   v12.super_class = _CNLazyArrayActionOnNext;
-  v7 = [(_CNLazyArrayOperator *)&v12 initWithInput:a3];
+  v7 = [(_CNLazyArrayOperator *)&v12 initWithInput:input];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [actionCopy copy];
     action = v7->_action;
     v7->_action = v8;
 
@@ -25,15 +25,15 @@
 
 - (id)nextObject
 {
-  v3 = [(_CNLazyArrayOperator *)self input];
-  v4 = [v3 nextObject];
+  input = [(_CNLazyArrayOperator *)self input];
+  nextObject = [input nextObject];
 
-  if (v4)
+  if (nextObject)
   {
     (*(self->_action + 2))();
   }
 
-  return v4;
+  return nextObject;
 }
 
 @end

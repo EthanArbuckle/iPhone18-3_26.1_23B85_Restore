@@ -1,11 +1,11 @@
 @interface LaunchHistory
 + (_TtC9appstored13LaunchHistory)shared;
 - (_TtC9appstored13LaunchHistory)init;
-- (id)getBiomeLaunchesWithLogKey:(id)a3 dateInterval:(id)a4 latestLaunchOnly:(BOOL)a5;
-- (id)getLaunchesWithLogKey:(id)a3 dateInterval:(id)a4;
-- (id)syncIfNeededWithLogKey:(id)a3;
-- (id)syncLaunchesWithLogKey:(id)a3;
-- (void)clearLaunchHistoryWithBundleIDs:(id)a3;
+- (id)getBiomeLaunchesWithLogKey:(id)key dateInterval:(id)interval latestLaunchOnly:(BOOL)only;
+- (id)getLaunchesWithLogKey:(id)key dateInterval:(id)interval;
+- (id)syncIfNeededWithLogKey:(id)key;
+- (id)syncLaunchesWithLogKey:(id)key;
+- (void)clearLaunchHistoryWithBundleIDs:(id)ds;
 @end
 
 @implementation LaunchHistory
@@ -22,14 +22,14 @@
   return v3;
 }
 
-- (void)clearLaunchHistoryWithBundleIDs:(id)a3
+- (void)clearLaunchHistoryWithBundleIDs:(id)ds
 {
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_100110E0C(v4);
 }
 
-- (id)getLaunchesWithLogKey:(id)a3 dateInterval:(id)a4
+- (id)getLaunchesWithLogKey:(id)key dateInterval:(id)interval
 {
   v4 = type metadata accessor for DateInterval();
   v5 = *(v4 - 8);
@@ -44,35 +44,35 @@
   return v8.super.isa;
 }
 
-- (id)syncIfNeededWithLogKey:(id)a3
+- (id)syncIfNeededWithLogKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_100111CC0(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_100111CC0(keyCopy);
 
   return v6;
 }
 
-- (id)syncLaunchesWithLogKey:(id)a3
+- (id)syncLaunchesWithLogKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10011242C(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_10011242C(keyCopy);
 
   return v6;
 }
 
-- (id)getBiomeLaunchesWithLogKey:(id)a3 dateInterval:(id)a4 latestLaunchOnly:(BOOL)a5
+- (id)getBiomeLaunchesWithLogKey:(id)key dateInterval:(id)interval latestLaunchOnly:(BOOL)only
 {
-  v5 = a5;
+  onlyCopy = only;
   v8 = type metadata accessor for DateInterval();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v16 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static DateInterval._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a3;
-  v13 = self;
-  sub_100113074(v12, v11, v5);
+  keyCopy = key;
+  selfCopy = self;
+  sub_100113074(keyCopy, v11, onlyCopy);
 
   (*(v9 + 8))(v11, v8);
   sub_10009FAD4(0, &qword_10059D850);

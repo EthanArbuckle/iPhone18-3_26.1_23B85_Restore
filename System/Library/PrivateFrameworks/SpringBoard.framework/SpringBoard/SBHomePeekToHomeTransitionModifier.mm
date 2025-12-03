@@ -1,90 +1,90 @@
 @interface SBHomePeekToHomeTransitionModifier
-- (BOOL)shouldInterruptForActivity:(id)a3;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5;
-- (SBHomePeekToHomeTransitionModifier)initWithFromAppLayout:(id)a3 fromConfiguration:(int64_t)a4;
-- (double)opacityForItem:(id)a3;
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (id)animationAttributesForItem:(id)a3;
-- (void)transitionWillBegin:(id)a3;
+- (BOOL)shouldInterruptForActivity:(id)activity;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds;
+- (SBHomePeekToHomeTransitionModifier)initWithFromAppLayout:(id)layout fromConfiguration:(int64_t)configuration;
+- (double)opacityForItem:(id)item;
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (id)animationAttributesForItem:(id)item;
+- (void)transitionWillBegin:(id)begin;
 @end
 
 @implementation SBHomePeekToHomeTransitionModifier
 
-- (SBHomePeekToHomeTransitionModifier)initWithFromAppLayout:(id)a3 fromConfiguration:(int64_t)a4
+- (SBHomePeekToHomeTransitionModifier)initWithFromAppLayout:(id)layout fromConfiguration:(int64_t)configuration
 {
-  v8 = a3;
+  layoutCopy = layout;
   v12.receiver = self;
   v12.super_class = SBHomePeekToHomeTransitionModifier;
   v9 = [(SBWindowingModifier *)&v12 init];
   if (v9)
   {
-    if (!v8)
+    if (!layoutCopy)
     {
       [SBHomePeekToHomeTransitionModifier initWithFromAppLayout:a2 fromConfiguration:v9];
     }
 
-    objc_storeStrong(&v9->_fromAppLayout, a3);
-    v10 = [[SBHomePeekWindowingModifier alloc] initWithPeekingAppLayout:v8 configuration:a4];
+    objc_storeStrong(&v9->_fromAppLayout, layout);
+    v10 = [[SBHomePeekWindowingModifier alloc] initWithPeekingAppLayout:layoutCopy configuration:configuration];
     [(SBChainableModifier *)v9 addChildModifier:v10];
   }
 
   return v9;
 }
 
-- (BOOL)shouldInterruptForActivity:(id)a3
+- (BOOL)shouldInterruptForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_transitionID && [v4 isTransitionEvent])
+  activityCopy = activity;
+  v5 = activityCopy;
+  if (self->_transitionID && [activityCopy isTransitionEvent])
   {
-    v6 = [v5 transitionID];
+    transitionID = [v5 transitionID];
     if (BSEqualObjects())
     {
-      v7 = [v5 isGestureEvent];
+      isGestureEvent = [v5 isGestureEvent];
     }
 
     else
     {
-      v7 = 1;
+      isGestureEvent = 1;
     }
   }
 
   else
   {
-    v7 = [v5 isGestureEvent];
+    isGestureEvent = [v5 isGestureEvent];
   }
 
-  return v7;
+  return isGestureEvent;
 }
 
-- (void)transitionWillBegin:(id)a3
+- (void)transitionWillBegin:(id)begin
 {
-  v4 = [a3 transitionID];
+  transitionID = [begin transitionID];
   transitionID = self->_transitionID;
-  self->_transitionID = v4;
+  self->_transitionID = transitionID;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
-  v12 = [v11 itemForLayoutRole:a3];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
+  v12 = [layoutCopy itemForLayoutRole:role];
   if ([(SBAppLayout *)self->_fromAppLayout containsItem:v12])
   {
     v37.receiver = self;
     v37.super_class = SBHomePeekToHomeTransitionModifier;
-    [(SBHomePeekToHomeTransitionModifier *)&v37 frameForLayoutRole:a3 inAppLayout:v11 withBounds:x, y, width, height];
+    [(SBHomePeekToHomeTransitionModifier *)&v37 frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
 
-    v21 = [(SBHomePeekToHomeTransitionModifier *)self switcherSettings];
-    v22 = [v21 windowingSettings];
-    [v22 diffuseShadowRadius];
+    switcherSettings = [(SBHomePeekToHomeTransitionModifier *)self switcherSettings];
+    windowingSettings = [switcherSettings windowingSettings];
+    [windowingSettings diffuseShadowRadius];
     v24 = v23 * 2.8;
 
     [(SBHomePeekToHomeTransitionModifier *)self containerViewBounds];
@@ -104,7 +104,7 @@
   {
     v36.receiver = self;
     v36.super_class = SBHomePeekToHomeTransitionModifier;
-    [(SBHomePeekToHomeTransitionModifier *)&v36 frameForLayoutRole:a3 inAppLayout:v11 withBounds:x, y, width, height];
+    [(SBHomePeekToHomeTransitionModifier *)&v36 frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
     v26 = v27;
     v16 = v28;
     v18 = v29;
@@ -122,54 +122,54 @@
   return result;
 }
 
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  v7 = [v6 itemForLayoutRole:a3];
+  layoutCopy = layout;
+  v7 = [layoutCopy itemForLayoutRole:role];
   v8 = 1.0;
   if (![(SBAppLayout *)self->_fromAppLayout containsItem:v7])
   {
     v11.receiver = self;
     v11.super_class = SBHomePeekToHomeTransitionModifier;
-    [(SBHomePeekToHomeTransitionModifier *)&v11 scaleForLayoutRole:a3 inAppLayout:v6];
+    [(SBHomePeekToHomeTransitionModifier *)&v11 scaleForLayoutRole:role inAppLayout:layoutCopy];
     v8 = v9;
   }
 
   return v8;
 }
 
-- (double)opacityForItem:(id)a3
+- (double)opacityForItem:(id)item
 {
-  v4 = a3;
-  if (![v4 isAppLayout] || (fromAppLayout = self->_fromAppLayout, objc_msgSend(v4, "appLayout"), v6 = objc_claimAutoreleasedReturnValue(), LOBYTE(fromAppLayout) = -[SBAppLayout isOrContainsAppLayout:](fromAppLayout, "isOrContainsAppLayout:", v6), v6, v7 = 1.0, (fromAppLayout & 1) == 0))
+  itemCopy = item;
+  if (![itemCopy isAppLayout] || (fromAppLayout = self->_fromAppLayout, objc_msgSend(itemCopy, "appLayout"), v6 = objc_claimAutoreleasedReturnValue(), LOBYTE(fromAppLayout) = -[SBAppLayout isOrContainsAppLayout:](fromAppLayout, "isOrContainsAppLayout:", v6), v6, v7 = 1.0, (fromAppLayout & 1) == 0))
   {
     v10.receiver = self;
     v10.super_class = SBHomePeekToHomeTransitionModifier;
-    [(SBWindowingModifier *)&v10 opacityForItem:v4];
+    [(SBWindowingModifier *)&v10 opacityForItem:itemCopy];
     v7 = v8;
   }
 
   return v7;
 }
 
-- (id)animationAttributesForItem:(id)a3
+- (id)animationAttributesForItem:(id)item
 {
-  v4 = a3;
-  if ([v4 isAppLayout] && (fromAppLayout = self->_fromAppLayout, objc_msgSend(v4, "appLayout"), v6 = objc_claimAutoreleasedReturnValue(), LODWORD(fromAppLayout) = -[SBAppLayout isOrContainsAppLayout:](fromAppLayout, "isOrContainsAppLayout:", v6), v6, fromAppLayout))
+  itemCopy = item;
+  if ([itemCopy isAppLayout] && (fromAppLayout = self->_fromAppLayout, objc_msgSend(itemCopy, "appLayout"), v6 = objc_claimAutoreleasedReturnValue(), LODWORD(fromAppLayout) = -[SBAppLayout isOrContainsAppLayout:](fromAppLayout, "isOrContainsAppLayout:", v6), v6, fromAppLayout))
   {
     v7 = objc_alloc_init(SBMutableSwitcherAnimationAttributes);
     [(SBSwitcherAnimationAttributes *)v7 setUpdateMode:3];
-    v8 = [(SBHomePeekToHomeTransitionModifier *)self switcherSettings];
-    v9 = [v8 windowingSettings];
-    v10 = [v9 appToPeekLayoutSettings];
-    [(SBSwitcherAnimationAttributes *)v7 setLayoutSettings:v10];
+    switcherSettings = [(SBHomePeekToHomeTransitionModifier *)self switcherSettings];
+    windowingSettings = [switcherSettings windowingSettings];
+    appToPeekLayoutSettings = [windowingSettings appToPeekLayoutSettings];
+    [(SBSwitcherAnimationAttributes *)v7 setLayoutSettings:appToPeekLayoutSettings];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = SBHomePeekToHomeTransitionModifier;
-    v7 = [(SBWindowingModifier *)&v12 animationAttributesForItem:v4];
+    v7 = [(SBWindowingModifier *)&v12 animationAttributesForItem:itemCopy];
   }
 
   return v7;

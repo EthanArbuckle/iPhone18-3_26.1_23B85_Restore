@@ -1,28 +1,28 @@
 @interface SVDCapability
-- (BOOL)matchesCapabilityDescriptions:(id)a3;
-- (SVDCapability)initWithCoder:(id)a3;
+- (BOOL)matchesCapabilityDescriptions:(id)descriptions;
+- (SVDCapability)initWithCoder:(id)coder;
 - (id)key;
 @end
 
 @implementation SVDCapability
 
-- (SVDCapability)initWithCoder:(id)a3
+- (SVDCapability)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SVDCapability;
   return [(SVDCapability *)&v4 init];
 }
 
-- (BOOL)matchesCapabilityDescriptions:(id)a3
+- (BOOL)matchesCapabilityDescriptions:(id)descriptions
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  descriptionsCopy = descriptions;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v3;
+  obj = descriptionsCopy;
   v5 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v5)
   {
@@ -42,12 +42,12 @@
 
         v10 = *(*(&v31 + 1) + 8 * v9);
         v11 = [v10 key];
-        v12 = [v10 valueSet];
+        valueSet = [v10 valueSet];
         v13 = objc_alloc((p_cache + 56));
         v14 = v13;
-        if (v12)
+        if (valueSet)
         {
-          v15 = [v13 initWithKey:v11 valueSet:v12];
+          v15 = [v13 initWithKey:v11 valueSet:valueSet];
         }
 
         else
@@ -58,8 +58,8 @@
           v19 = v18 = p_cache;
           [v19 doubleValue];
           v21 = v20;
-          v22 = [v10 valueRangeUpperBound];
-          [v22 doubleValue];
+          valueRangeUpperBound = [v10 valueRangeUpperBound];
+          [valueRangeUpperBound doubleValue];
           v15 = [v14 initWithKey:v11 lowerbound:v21 upperbound:v23];
 
           p_cache = v18;
@@ -80,10 +80,10 @@
     while (v6);
   }
 
-  v24 = [(SVDCapability *)self _swiftBacking];
-  if ([v24 conformsToProtocol:&unk_287A5C698])
+  _swiftBacking = [(SVDCapability *)self _swiftBacking];
+  if ([_swiftBacking conformsToProtocol:&unk_287A5C698])
   {
-    v25 = [v24 matchesWithDescriptions:v4];
+    v25 = [_swiftBacking matchesWithDescriptions:v4];
   }
 
   else
@@ -97,8 +97,8 @@
 
 - (id)key
 {
-  v2 = [(SVDCapability *)self _swiftBacking];
-  v3 = [v2 key];
+  _swiftBacking = [(SVDCapability *)self _swiftBacking];
+  v3 = [_swiftBacking key];
 
   return v3;
 }

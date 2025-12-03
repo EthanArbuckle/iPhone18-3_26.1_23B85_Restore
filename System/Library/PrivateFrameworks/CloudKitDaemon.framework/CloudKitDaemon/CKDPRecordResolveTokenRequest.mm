@@ -1,15 +1,15 @@
 @interface CKDPRecordResolveTokenRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addRootRecordDesiredKeys:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasShouldFetchRootRecord:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addRootRecordDesiredKeys:(id)keys;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasShouldFetchRootRecord:(BOOL)record;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPRecordResolveTokenRequest
@@ -26,9 +26,9 @@
   return v3;
 }
 
-- (void)setHasShouldFetchRootRecord:(BOOL)a3
+- (void)setHasShouldFetchRootRecord:(BOOL)record
 {
-  if (a3)
+  if (record)
   {
     v3 = 2;
   }
@@ -41,22 +41,22 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addRootRecordDesiredKeys:(id)a3
+- (void)addRootRecordDesiredKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   rootRecordDesiredKeys = self->_rootRecordDesiredKeys;
-  v8 = v4;
+  v8 = keysCopy;
   if (!rootRecordDesiredKeys)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_rootRecordDesiredKeys;
     self->_rootRecordDesiredKeys = v6;
 
-    v4 = v8;
+    keysCopy = v8;
     rootRecordDesiredKeys = self->_rootRecordDesiredKeys;
   }
 
-  objc_msgSend_addObject_(rootRecordDesiredKeys, v4, v4);
+  objc_msgSend_addObject_(rootRecordDesiredKeys, keysCopy, keysCopy);
 }
 
 - (id)description
@@ -117,10 +117,10 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_routingKey)
   {
     PBDataWriterWriteStringField();
@@ -182,36 +182,36 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   routingKey = self->_routingKey;
-  v19 = v4;
+  v19 = toCopy;
   if (routingKey)
   {
-    objc_msgSend_setRoutingKey_(v4, v5, routingKey);
-    v4 = v19;
+    objc_msgSend_setRoutingKey_(toCopy, v5, routingKey);
+    toCopy = v19;
   }
 
   shortTokenHash = self->_shortTokenHash;
   if (shortTokenHash)
   {
     objc_msgSend_setShortTokenHash_(v19, v5, shortTokenHash);
-    v4 = v19;
+    toCopy = v19;
   }
 
   has = self->_has;
   if (has)
   {
-    v4[40] = self->_forceFetch;
-    v4[44] |= 1u;
+    toCopy[40] = self->_forceFetch;
+    toCopy[44] |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[41] = self->_shouldFetchRootRecord;
-    v4[44] |= 2u;
+    toCopy[41] = self->_shouldFetchRootRecord;
+    toCopy[44] |= 2u;
   }
 
   if (objc_msgSend_rootRecordDesiredKeysCount(self, v5, shortTokenHash))
@@ -236,17 +236,17 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v37 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_routingKey, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_routingKey, v11, zone);
   v13 = *(v10 + 24);
   *(v10 + 24) = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_shortTokenHash, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_shortTokenHash, v14, zone);
   v16 = *(v10 + 32);
   *(v10 + 32) = v15;
 
@@ -283,7 +283,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v25 = objc_msgSend_copyWithZone_(*(*(&v32 + 1) + 8 * i), v21, a3, v32);
+        v25 = objc_msgSend_copyWithZone_(*(*(&v32 + 1) + 8 * i), v21, zone, v32);
         objc_msgSend_addRootRecordDesiredKeys_(v10, v26, v25);
       }
 
@@ -293,7 +293,7 @@
     while (v22);
   }
 
-  v28 = objc_msgSend_copyWithZone_(self->_participantId, v27, a3);
+  v28 = objc_msgSend_copyWithZone_(self->_participantId, v27, zone);
   v29 = *(v10 + 8);
   *(v10 + 8) = v28;
 
@@ -301,17 +301,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_26;
   }
 
   routingKey = self->_routingKey;
-  v9 = v4[3];
+  v9 = equalCopy[3];
   if (routingKey | v9)
   {
     if (!objc_msgSend_isEqual_(routingKey, v7, v9))
@@ -321,7 +321,7 @@
   }
 
   shortTokenHash = self->_shortTokenHash;
-  v11 = v4[4];
+  v11 = equalCopy[4];
   if (shortTokenHash | v11)
   {
     if (!objc_msgSend_isEqual_(shortTokenHash, v7, v11))
@@ -330,48 +330,48 @@
     }
   }
 
-  v12 = *(v4 + 44);
+  v12 = *(equalCopy + 44);
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0)
+    if ((*(equalCopy + 44) & 1) == 0)
     {
       goto LABEL_26;
     }
 
-    v18 = *(v4 + 40);
+    v18 = *(equalCopy + 40);
     if (self->_forceFetch)
     {
-      if ((v4[5] & 1) == 0)
+      if ((equalCopy[5] & 1) == 0)
       {
         goto LABEL_26;
       }
     }
 
-    else if (v4[5])
+    else if (equalCopy[5])
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) != 0)
+    if ((*(equalCopy + 44) & 2) != 0)
     {
-      v19 = *(v4 + 41);
+      v19 = *(equalCopy + 41);
       if (self->_shouldFetchRootRecord)
       {
-        if (*(v4 + 41))
+        if (*(equalCopy + 41))
         {
           goto LABEL_10;
         }
       }
 
-      else if ((*(v4 + 41) & 1) == 0)
+      else if ((*(equalCopy + 41) & 1) == 0)
       {
         goto LABEL_10;
       }
@@ -382,21 +382,21 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if ((*(v4 + 44) & 2) != 0)
+  if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_26;
   }
 
 LABEL_10:
   rootRecordDesiredKeys = self->_rootRecordDesiredKeys;
-  v14 = v4[2];
+  v14 = equalCopy[2];
   if (rootRecordDesiredKeys | v14 && !objc_msgSend_isEqual_(rootRecordDesiredKeys, v7, v14))
   {
     goto LABEL_26;
   }
 
   participantId = self->_participantId;
-  v16 = v4[1];
+  v16 = equalCopy[1];
   if (participantId | v16)
   {
     isEqual = objc_msgSend_isEqual_(participantId, v7, v16);
@@ -442,33 +442,33 @@ LABEL_6:
   return v12 ^ objc_msgSend_hash(self->_participantId, v13, v14);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = *(v5 + 3);
+  fromCopy = from;
+  v6 = *(fromCopy + 3);
   if (v6)
   {
     objc_msgSend_setRoutingKey_(self, v4, v6);
   }
 
-  v7 = *(v5 + 4);
+  v7 = *(fromCopy + 4);
   if (v7)
   {
     objc_msgSend_setShortTokenHash_(self, v4, v7);
   }
 
-  v8 = *(v5 + 44);
+  v8 = *(fromCopy + 44);
   if (v8)
   {
-    self->_forceFetch = *(v5 + 40);
+    self->_forceFetch = *(fromCopy + 40);
     *&self->_has |= 1u;
-    v8 = *(v5 + 44);
+    v8 = *(fromCopy + 44);
   }
 
   if ((v8 & 2) != 0)
   {
-    self->_shouldFetchRootRecord = *(v5 + 41);
+    self->_shouldFetchRootRecord = *(fromCopy + 41);
     *&self->_has |= 2u;
   }
 
@@ -476,7 +476,7 @@ LABEL_6:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = *(v5 + 2);
+  v9 = *(fromCopy + 2);
   v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v19, v23, 16);
   if (v11)
   {
@@ -500,7 +500,7 @@ LABEL_6:
     while (v13);
   }
 
-  v17 = *(v5 + 1);
+  v17 = *(fromCopy + 1);
   if (v17)
   {
     objc_msgSend_setParticipantId_(self, v16, v17);

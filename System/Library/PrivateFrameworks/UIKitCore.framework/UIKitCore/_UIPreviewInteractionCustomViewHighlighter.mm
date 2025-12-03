@@ -1,42 +1,42 @@
 @interface _UIPreviewInteractionCustomViewHighlighter
-- (id)highlightShouldBeginInContainerView:(id)a3 presentationContainerView:(id)a4 previewingContext:(id)a5;
-- (void)finalizeHighlightForPreviewingContext:(id)a3;
-- (void)prepareHighlightWithPreviewingContext:(id)a3;
+- (id)highlightShouldBeginInContainerView:(id)view presentationContainerView:(id)containerView previewingContext:(id)context;
+- (void)finalizeHighlightForPreviewingContext:(id)context;
+- (void)prepareHighlightWithPreviewingContext:(id)context;
 @end
 
 @implementation _UIPreviewInteractionCustomViewHighlighter
 
-- (void)prepareHighlightWithPreviewingContext:(id)a3
+- (void)prepareHighlightWithPreviewingContext:(id)context
 {
-  v15 = a3;
-  v4 = [v15 sourceView];
-  [v15 preferredSourceViewRectInCoordinateSpace:v4];
+  contextCopy = context;
+  sourceView = [contextCopy sourceView];
+  [contextCopy preferredSourceViewRectInCoordinateSpace:sourceView];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [v15 customViewForInteractiveHighlight];
-  [v13 setFrame:{v6, v8, v10, v12}];
-  -[_UIPreviewInteractionCustomViewHighlighter setCustomViewFlipsHorizontalAxis:](self, "setCustomViewFlipsHorizontalAxis:", [v13 _flipsHorizontalAxis]);
-  if ([v4 _flipsHorizontalAxis])
+  customViewForInteractiveHighlight = [contextCopy customViewForInteractiveHighlight];
+  [customViewForInteractiveHighlight setFrame:{v6, v8, v10, v12}];
+  -[_UIPreviewInteractionCustomViewHighlighter setCustomViewFlipsHorizontalAxis:](self, "setCustomViewFlipsHorizontalAxis:", [customViewForInteractiveHighlight _flipsHorizontalAxis]);
+  if ([sourceView _flipsHorizontalAxis])
   {
-    [v13 _setFlipsHorizontalAxis:{-[_UIPreviewInteractionCustomViewHighlighter customViewFlipsHorizontalAxis](self, "customViewFlipsHorizontalAxis") ^ 1}];
+    [customViewForInteractiveHighlight _setFlipsHorizontalAxis:{-[_UIPreviewInteractionCustomViewHighlighter customViewFlipsHorizontalAxis](self, "customViewFlipsHorizontalAxis") ^ 1}];
   }
 
-  v14 = [v15 sourceView];
-  [v14 addSubview:v13];
+  sourceView2 = [contextCopy sourceView];
+  [sourceView2 addSubview:customViewForInteractiveHighlight];
 
-  [(_UIPreviewInteractionCustomViewHighlighter *)self setCustomView:v13];
+  [(_UIPreviewInteractionCustomViewHighlighter *)self setCustomView:customViewForInteractiveHighlight];
 }
 
-- (id)highlightShouldBeginInContainerView:(id)a3 presentationContainerView:(id)a4 previewingContext:(id)a5
+- (id)highlightShouldBeginInContainerView:(id)view presentationContainerView:(id)containerView previewingContext:(id)context
 {
-  v6 = a3;
-  v7 = [(_UIPreviewInteractionCustomViewHighlighter *)self customView];
-  [v7 _setFlipsHorizontalAxis:{-[_UIPreviewInteractionCustomViewHighlighter customViewFlipsHorizontalAxis](self, "customViewFlipsHorizontalAxis")}];
-  [v6 bounds];
-  [v7 setFrame:?];
-  [v6 addSubview:v7];
+  viewCopy = view;
+  customView = [(_UIPreviewInteractionCustomViewHighlighter *)self customView];
+  [customView _setFlipsHorizontalAxis:{-[_UIPreviewInteractionCustomViewHighlighter customViewFlipsHorizontalAxis](self, "customViewFlipsHorizontalAxis")}];
+  [viewCopy bounds];
+  [customView setFrame:?];
+  [viewCopy addSubview:customView];
 
   if (objc_opt_respondsToSelector())
   {
@@ -44,7 +44,7 @@
     v10[1] = 3221225472;
     v10[2] = __126___UIPreviewInteractionCustomViewHighlighter_highlightShouldBeginInContainerView_presentationContainerView_previewingContext___block_invoke;
     v10[3] = &unk_1E70F3590;
-    v11 = v7;
+    v11 = customView;
     v8 = [UIViewPropertyAnimator runningPropertyAnimatorWithDuration:4 delay:v10 options:0 animations:0.2 completion:0.0];
   }
 
@@ -56,10 +56,10 @@
   return v8;
 }
 
-- (void)finalizeHighlightForPreviewingContext:(id)a3
+- (void)finalizeHighlightForPreviewingContext:(id)context
 {
-  v3 = [(_UIPreviewInteractionCustomViewHighlighter *)self customView];
-  [v3 removeFromSuperview];
+  customView = [(_UIPreviewInteractionCustomViewHighlighter *)self customView];
+  [customView removeFromSuperview];
 }
 
 @end

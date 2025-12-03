@@ -1,25 +1,25 @@
 @interface DPMLRuntimeKeyboard
-+ (int)runWithTrialClient:(id)a3 error:(id *)a4;
++ (int)runWithTrialClient:(id)client error:(id *)error;
 @end
 
 @implementation DPMLRuntimeKeyboard
 
-+ (int)runWithTrialClient:(id)a3 error:(id *)a4
++ (int)runWithTrialClient:(id)client error:(id *)error
 {
-  v4 = a3;
+  clientCopy = client;
   v5 = +[NSLocale currentLocale];
-  v6 = [v5 languageCode];
-  if (!v6)
+  languageCode = [v5 languageCode];
+  if (!languageCode)
   {
 
     goto LABEL_32;
   }
 
-  v7 = v6;
+  v7 = languageCode;
   v8 = +[NSLocale currentLocale];
-  v9 = [v8 countryCode];
+  countryCode = [v8 countryCode];
 
-  if (!v9)
+  if (!countryCode)
   {
 LABEL_32:
     v47 = +[_PFLLog extension];
@@ -28,9 +28,9 @@ LABEL_32:
       sub_10001C274(v47);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [_DPMLRuntimeError errorWithCode:300 description:@"Cannot determine locale."];
+      *error = [_DPMLRuntimeError errorWithCode:300 description:@"Cannot determine locale."];
     }
 
     v15 = -1;
@@ -38,8 +38,8 @@ LABEL_32:
   }
 
   v10 = [BiomeKeyboardClient readDataWithCount:20];
-  v11 = [v10 allKeys];
-  v63 = [v4 downloadDbs:v11 suffix:0];
+  allKeys = [v10 allKeys];
+  v63 = [clientCopy downloadDbs:allKeys suffix:0];
 
   if ([v10 count])
   {
@@ -56,7 +56,7 @@ LABEL_32:
       v16 = *v73;
       v56 = kDPMetadataAlgorithmParameters;
       v55 = kDPMetadataAlgoParamDimensionality;
-      v57 = v4;
+      v57 = clientCopy;
       v53 = v10;
       v59 = v12;
       v51 = *v73;
@@ -102,7 +102,7 @@ LABEL_32:
                 v23 = v63;
                 do
                 {
-                  v24 = v4;
+                  v24 = clientCopy;
                   v25 = v12;
                   if (*v69 != v60)
                   {
@@ -114,22 +114,22 @@ LABEL_32:
                   v82[0] = v62;
                   v82[1] = v27;
                   v66 = v27;
-                  v28 = [v24 experimentIdentifier];
-                  v82[2] = v28;
-                  v29 = [v24 deploymentIdentifier];
-                  v82[3] = v29;
+                  experimentIdentifier = [v24 experimentIdentifier];
+                  v82[2] = experimentIdentifier;
+                  deploymentIdentifier = [v24 deploymentIdentifier];
+                  v82[3] = deploymentIdentifier;
                   v30 = v24;
-                  v31 = [v24 treatmentIdentifier];
-                  v82[4] = v31;
+                  treatmentIdentifier = [v24 treatmentIdentifier];
+                  v82[4] = treatmentIdentifier;
                   v32 = [NSArray arrayWithObjects:v82 count:5];
 
                   v33 = [v32 componentsJoinedByString:@":"];
                   v34 = [v25 objectForKeyedSubscript:v65];
                   v35 = [v34 objectForKeyedSubscript:v26];
                   v36 = [v23 objectForKeyedSubscript:v65];
-                  v37 = [KnownDictionary processTokens:v35 knownTokensFile:v36 unknownTokens:0 error:a4];
+                  v37 = [KnownDictionary processTokens:v35 knownTokensFile:v36 unknownTokens:0 error:error];
 
-                  if (*a4)
+                  if (*error)
                   {
                     goto LABEL_46;
                   }
@@ -138,7 +138,7 @@ LABEL_32:
                   {
                     v38 = [SqliteClient alloc];
                     v39 = [v23 objectForKeyedSubscript:v65];
-                    v40 = [(SqliteClient *)v38 initWithFile:v39 error:a4];
+                    v40 = [(SqliteClient *)v38 initWithFile:v39 error:error];
 
                     if (!v40)
                     {
@@ -153,13 +153,13 @@ LABEL_46:
 
                       v15 = -1;
                       v10 = v53;
-                      v4 = v30;
-                      v48 = v59;
+                      clientCopy = v30;
+                      allKeys2 = v59;
                       goto LABEL_47;
                     }
 
-                    v41 = [(SqliteClient *)v40 getTotalCount:a4];
-                    if (*a4)
+                    v41 = [(SqliteClient *)v40 getTotalCount:error];
+                    if (*error)
                     {
                       goto LABEL_45;
                     }
@@ -184,13 +184,13 @@ LABEL_46:
                     [KnownDictionary recordData:v37 baseKey:v33 metadata:v45];
                     v64 += [v37 count];
 
-                    v4 = v57;
+                    clientCopy = v57;
                     v23 = v63;
                   }
 
                   else
                   {
-                    v4 = v30;
+                    clientCopy = v30;
                   }
 
                   v12 = v59;
@@ -229,17 +229,17 @@ LABEL_46:
       v15 = 0;
     }
 
-    v48 = [v63 allKeys];
-    [v4 removeDbs:v48 suffix:0];
+    allKeys2 = [v63 allKeys];
+    [clientCopy removeDbs:allKeys2 suffix:0];
   }
 
   else
   {
-    v48 = +[_PFLLog extension];
-    if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
+    allKeys2 = +[_PFLLog extension];
+    if (os_log_type_enabled(allKeys2, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_INFO, "Biome did not return any message.", buf, 2u);
+      _os_log_impl(&_mh_execute_header, allKeys2, OS_LOG_TYPE_INFO, "Biome did not return any message.", buf, 2u);
     }
 
     v15 = 0;

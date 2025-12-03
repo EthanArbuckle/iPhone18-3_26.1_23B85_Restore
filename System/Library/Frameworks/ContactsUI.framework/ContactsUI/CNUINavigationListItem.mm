@@ -1,50 +1,50 @@
 @interface CNUINavigationListItem
-+ (id)bisectionTopLevelListItems:(id)a3;
-+ (id)filterNavigationListItemsForUserActionListModel:(id)a3 forBundleIdentifier:(id)a4;
-+ (id)itemForActionItem:(id)a3 usePropertyLabel:(BOOL)a4;
-+ (id)localizedLabelForActionItem:(id)a3 usePropertyLabel:(BOOL)a4;
-+ (id)navigationListItemForContactProperty:(id)a3;
-+ (id)navigationListItemsForUserActionListModel:(id)a3 displayDefaultAppsSectionedMenus:(BOOL)a4 displayNonDefaultAppsMenuTitle:(BOOL)a5;
-+ (id)parentListItemTitleForUserAction:(id)a3 displayNonDefaultAppsMenuTitle:(BOOL)a4;
++ (id)bisectionTopLevelListItems:(id)items;
++ (id)filterNavigationListItemsForUserActionListModel:(id)model forBundleIdentifier:(id)identifier;
++ (id)itemForActionItem:(id)item usePropertyLabel:(BOOL)label;
++ (id)localizedLabelForActionItem:(id)item usePropertyLabel:(BOOL)label;
++ (id)navigationListItemForContactProperty:(id)property;
++ (id)navigationListItemsForUserActionListModel:(id)model displayDefaultAppsSectionedMenus:(BOOL)menus displayNonDefaultAppsMenuTitle:(BOOL)title;
++ (id)parentListItemTitleForUserAction:(id)action displayNonDefaultAppsMenuTitle:(BOOL)title;
 - (CNUINavigationListItem)defaultItem;
-- (CNUINavigationListItem)initWithTitle:(id)a3 image:(id)a4;
+- (CNUINavigationListItem)initWithTitle:(id)title image:(id)image;
 - (CNUINavigationListItem)parent;
 @end
 
 @implementation CNUINavigationListItem
 
-+ (id)itemForActionItem:(id)a3 usePropertyLabel:(BOOL)a4
++ (id)itemForActionItem:(id)item usePropertyLabel:(BOOL)label
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [a1 localizedLabelForActionItem:v6 usePropertyLabel:v4];
+  labelCopy = label;
+  itemCopy = item;
+  v7 = [self localizedLabelForActionItem:itemCopy usePropertyLabel:labelCopy];
   v8 = [[CNUINavigationListItem alloc] initWithTitle:v7];
-  v9 = [v6 targetHandle];
-  [(CNUINavigationListItem *)v8 setSubtitle:v9];
+  targetHandle = [itemCopy targetHandle];
+  [(CNUINavigationListItem *)v8 setSubtitle:targetHandle];
 
-  [(CNUINavigationListItem *)v8 setContent:v6];
+  [(CNUINavigationListItem *)v8 setContent:itemCopy];
 
   return v8;
 }
 
-+ (id)bisectionTopLevelListItems:(id)a3
++ (id)bisectionTopLevelListItems:(id)items
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
-    v4 = [v3 firstObject];
-    [v4 setShouldDisplayInline:1];
-    if ([v3 count] <= 1)
+    firstObject = [itemsCopy firstObject];
+    [firstObject setShouldDisplayInline:1];
+    if ([itemsCopy count] <= 1)
     {
-      v13[0] = v4;
+      v13[0] = firstObject;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
     }
 
     else
     {
       v5 = objc_alloc_init(CNUINavigationListItem);
-      v6 = [v3 _cn_takeLast:{objc_msgSend(v3, "count") - 1}];
+      v6 = [itemsCopy _cn_takeLast:{objc_msgSend(itemsCopy, "count") - 1}];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __74__CNUINavigationListItem_CNUIUserActionModel__bisectionTopLevelListItems___block_invoke;
@@ -54,7 +54,7 @@
       [v6 _cn_each:v10];
       [(CNUINavigationListItem *)v7 setItems:v6];
       [(CNUINavigationListItem *)v7 setShouldDisplayInline:1];
-      v12[0] = v4;
+      v12[0] = firstObject;
       v12[1] = v7;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
     }
@@ -68,15 +68,15 @@
   return v8;
 }
 
-+ (id)parentListItemTitleForUserAction:(id)a3 displayNonDefaultAppsMenuTitle:(BOOL)a4
++ (id)parentListItemTitleForUserAction:(id)action displayNonDefaultAppsMenuTitle:(BOOL)title
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 type];
-  if ([v6 isEqualToString:*MEMORY[0x1E695C150]])
+  titleCopy = title;
+  actionCopy = action;
+  type = [actionCopy type];
+  if ([type isEqualToString:*MEMORY[0x1E695C150]])
   {
-    v7 = [v5 bundleIdentifier];
-    v8 = [v7 isEqualToString:*MEMORY[0x1E695C118]];
+    bundleIdentifier = [actionCopy bundleIdentifier];
+    v8 = [bundleIdentifier isEqualToString:*MEMORY[0x1E695C118]];
 
     if (v8)
     {
@@ -87,83 +87,83 @@
     }
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x1E695C170]])
+  if ([type isEqualToString:*MEMORY[0x1E695C170]])
   {
     v11 = &stru_1F0CE7398;
     v12 = @"Mail";
 LABEL_8:
-    if (v4)
+    if (titleCopy)
     {
       v11 = v12;
     }
 
-    v13 = v11;
+    applicationName = v11;
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x1E695C188]])
+  if ([type isEqualToString:*MEMORY[0x1E695C188]])
   {
     v11 = &stru_1F0CE7398;
     v12 = @"Pay";
     goto LABEL_8;
   }
 
-  v13 = [v5 applicationName];
+  applicationName = [actionCopy applicationName];
 LABEL_12:
-  v10 = v13;
+  v10 = applicationName;
 LABEL_13:
 
   return v10;
 }
 
-+ (id)navigationListItemsForUserActionListModel:(id)a3 displayDefaultAppsSectionedMenus:(BOOL)a4 displayNonDefaultAppsMenuTitle:(BOOL)a5
++ (id)navigationListItemsForUserActionListModel:(id)model displayDefaultAppsSectionedMenus:(BOOL)menus displayNonDefaultAppsMenuTitle:(BOOL)title
 {
-  v5 = a4;
+  menusCopy = menus;
   v54[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [MEMORY[0x1E695DF70] array];
-  v45 = [MEMORY[0x1E695DF90] dictionary];
-  v9 = [v7 actions];
-  v10 = [v7 defaultAction];
+  modelCopy = model;
+  array = [MEMORY[0x1E695DF70] array];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  actions = [modelCopy actions];
+  defaultAction = [modelCopy defaultAction];
 
-  v42 = v7;
-  v41 = v5;
-  if (v10)
+  v42 = modelCopy;
+  v41 = menusCopy;
+  if (defaultAction)
   {
-    v11 = [v7 defaultAction];
-    v12 = v11;
-    if (v5)
+    defaultAction2 = [modelCopy defaultAction];
+    v12 = defaultAction2;
+    if (menusCopy)
     {
-      v13 = [a1 itemForActionItem:v11 usePropertyLabel:0];
-      [v8 addObject:v13];
+      v13 = [self itemForActionItem:defaultAction2 usePropertyLabel:0];
+      [array addObject:v13];
 
 LABEL_5:
       v14 = 1;
       goto LABEL_8;
     }
 
-    v54[0] = v11;
+    v54[0] = defaultAction2;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:1];
-    v16 = [v15 arrayByAddingObjectsFromArray:v9];
+    v16 = [v15 arrayByAddingObjectsFromArray:actions];
 
-    v9 = v16;
+    actions = v16;
   }
 
-  else if (v5)
+  else if (menusCopy)
   {
     goto LABEL_5;
   }
 
-  v17 = [v9 _cn_map:&__block_literal_global_32231];
-  v18 = [v17 _cn_distinctObjects];
+  v17 = [actions _cn_map:&__block_literal_global_32231];
+  _cn_distinctObjects = [v17 _cn_distinctObjects];
 
-  v14 = [v18 count] != 1;
+  v14 = [_cn_distinctObjects count] != 1;
 LABEL_8:
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  obj = v9;
+  obj = actions;
   v19 = [obj countByEnumeratingWithState:&v47 objects:v53 count:16];
   if (v19)
   {
@@ -181,9 +181,9 @@ LABEL_8:
         }
 
         v23 = *(*(&v47 + 1) + 8 * v22);
-        v24 = [a1 itemForActionItem:v23 usePropertyLabel:1];
-        v25 = [v23 bundleIdentifier];
-        if (!v25)
+        v24 = [self itemForActionItem:v23 usePropertyLabel:1];
+        bundleIdentifier = [v23 bundleIdentifier];
+        if (!bundleIdentifier)
         {
           v29 = CNUILogContactCard();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -194,7 +194,7 @@ LABEL_8:
           }
 
 LABEL_21:
-          [v8 addObject:v24];
+          [array addObject:v24];
           goto LABEL_25;
         }
 
@@ -204,39 +204,39 @@ LABEL_21:
         }
 
         v26 = v21;
-        v27 = [v45 objectForKeyedSubscript:v25];
+        v27 = [dictionary objectForKeyedSubscript:bundleIdentifier];
         if (!v27)
         {
-          if (a5)
+          if (title)
           {
             v28 = 1;
           }
 
           else
           {
-            v30 = [v42 defaultAction];
-            v28 = v30 != 0;
+            defaultAction3 = [v42 defaultAction];
+            v28 = defaultAction3 != 0;
           }
 
-          v31 = [a1 parentListItemTitleForUserAction:v23 displayNonDefaultAppsMenuTitle:v28];
+          v31 = [self parentListItemTitleForUserAction:v23 displayNonDefaultAppsMenuTitle:v28];
           v27 = [[CNUINavigationListItem alloc] initWithTitle:v31];
-          [(CNUINavigationListItem *)v27 setIdentifier:v25];
+          [(CNUINavigationListItem *)v27 setIdentifier:bundleIdentifier];
           [(CNUINavigationListItem *)v27 setItems:MEMORY[0x1E695E0F0]];
-          [v8 addObject:v27];
-          [v45 setObject:v27 forKeyedSubscript:v25];
+          [array addObject:v27];
+          [dictionary setObject:v27 forKeyedSubscript:bundleIdentifier];
         }
 
         [v24 setParent:v27];
-        v32 = [(CNUINavigationListItem *)v27 items];
-        [v32 arrayByAddingObject:v24];
-        v33 = a1;
+        items = [(CNUINavigationListItem *)v27 items];
+        [items arrayByAddingObject:v24];
+        selfCopy = self;
         v34 = v14;
-        v36 = v35 = v8;
+        v36 = v35 = array;
         [(CNUINavigationListItem *)v27 setItems:v36];
 
-        v8 = v35;
+        array = v35;
         v14 = v34;
-        a1 = v33;
+        self = selfCopy;
 
         v21 = v26;
         v20 = v44;
@@ -254,13 +254,13 @@ LABEL_25:
 
   if (v41 && (([v42 hasDefaultApp] & 1) != 0 || (objc_msgSend(v42, "defaultAction"), v37 = objc_claimAutoreleasedReturnValue(), v37, v37)))
   {
-    v38 = [a1 bisectionTopLevelListItems:v8];
+    v38 = [self bisectionTopLevelListItems:array];
     v39 = [v38 copy];
   }
 
   else
   {
-    v39 = [v8 copy];
+    v39 = [array copy];
   }
 
   return v39;
@@ -285,30 +285,30 @@ __CFString *__153__CNUINavigationListItem_CNUIUserActionModel__navigationListIte
   return v4;
 }
 
-+ (id)filterNavigationListItemsForUserActionListModel:(id)a3 forBundleIdentifier:(id)a4
++ (id)filterNavigationListItemsForUserActionListModel:(id)model forBundleIdentifier:(id)identifier
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
-  v9 = [v6 actions];
-  v10 = [v6 defaultAction];
+  modelCopy = model;
+  identifierCopy = identifier;
+  array = [MEMORY[0x1E695DF70] array];
+  actions = [modelCopy actions];
+  defaultAction = [modelCopy defaultAction];
 
-  if (v10)
+  if (defaultAction)
   {
-    v11 = [v6 defaultAction];
-    v29[0] = v11;
+    defaultAction2 = [modelCopy defaultAction];
+    v29[0] = defaultAction2;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
-    v13 = [v12 arrayByAddingObjectsFromArray:v9];
+    v13 = [v12 arrayByAddingObjectsFromArray:actions];
 
-    v9 = v13;
+    actions = v13;
   }
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v14 = v9;
+  v14 = actions;
   v15 = [v14 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v15)
   {
@@ -324,12 +324,12 @@ __CFString *__153__CNUINavigationListItem_CNUIUserActionModel__navigationListIte
         }
 
         v19 = *(*(&v24 + 1) + 8 * i);
-        v20 = [v19 bundleIdentifier];
+        bundleIdentifier = [v19 bundleIdentifier];
 
-        if (v20 == v7)
+        if (bundleIdentifier == identifierCopy)
         {
-          v21 = [a1 itemForActionItem:v19 usePropertyLabel:1];
-          [v8 addObject:v21];
+          v21 = [self itemForActionItem:v19 usePropertyLabel:1];
+          [array addObject:v21];
         }
       }
 
@@ -339,38 +339,38 @@ __CFString *__153__CNUINavigationListItem_CNUIUserActionModel__navigationListIte
     while (v16);
   }
 
-  v22 = [v8 copy];
+  v22 = [array copy];
 
   return v22;
 }
 
-+ (id)localizedLabelForActionItem:(id)a3 usePropertyLabel:(BOOL)a4
++ (id)localizedLabelForActionItem:(id)item usePropertyLabel:(BOOL)label
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  itemCopy = item;
+  v6 = itemCopy;
+  if (label)
   {
-    v7 = [v5 contactProperty];
-    v8 = [v7 label];
+    contactProperty = [itemCopy contactProperty];
+    label = [contactProperty label];
   }
 
   else
   {
-    v8 = [v5 label];
+    label = [itemCopy label];
   }
 
   v9 = MEMORY[0x1E695CEE0];
-  v10 = [v6 contactProperty];
-  v11 = [v10 key];
-  v12 = [v9 localizedDisplayStringForLabel:v8 propertyName:v11];
+  contactProperty2 = [v6 contactProperty];
+  v11 = [contactProperty2 key];
+  v12 = [v9 localizedDisplayStringForLabel:label propertyName:v11];
 
-  v13 = [v6 type];
-  LODWORD(v11) = [v13 isEqualToString:*MEMORY[0x1E695C1A8]];
+  type = [v6 type];
+  LODWORD(v11) = [type isEqualToString:*MEMORY[0x1E695C1A8]];
 
   if (!v11)
   {
-    v17 = [v6 type];
-    v18 = [v17 isEqualToString:*MEMORY[0x1E695C190]];
+    type2 = [v6 type];
+    v18 = [type2 isEqualToString:*MEMORY[0x1E695C190]];
 
     if (!v18)
     {
@@ -419,51 +419,51 @@ LABEL_15:
   return v12;
 }
 
-+ (id)navigationListItemForContactProperty:(id)a3
++ (id)navigationListItemForContactProperty:(id)property
 {
-  v5 = a3;
+  propertyCopy = property;
   v6 = [CNUINavigationListItem alloc];
   v7 = MEMORY[0x1E695CEE0];
-  v8 = [v5 label];
-  v9 = [v5 key];
-  v10 = [v7 localizedDisplayStringForLabel:v8 propertyName:v9];
+  label = [propertyCopy label];
+  v9 = [propertyCopy key];
+  v10 = [v7 localizedDisplayStringForLabel:label propertyName:v9];
   v11 = [(CNUINavigationListItem *)v6 initWithTitle:v10];
 
-  v12 = [v5 value];
+  value = [propertyCopy value];
   objc_opt_class();
-  LOBYTE(v8) = objc_opt_isKindOfClass();
+  LOBYTE(label) = objc_opt_isKindOfClass();
 
-  if (v8)
+  if (label)
   {
-    v13 = [v5 value];
+    value2 = [propertyCopy value];
   }
 
   else
   {
-    v14 = [v5 key];
+    v14 = [propertyCopy key];
     v15 = [v14 isEqualToString:*MEMORY[0x1E695C330]];
 
     if (v15)
     {
-      v16 = [v5 value];
-      v13 = [v16 formattedStringValue];
+      value3 = [propertyCopy value];
+      value2 = [value3 formattedStringValue];
     }
 
     else
     {
-      v13 = 0;
+      value2 = 0;
     }
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"CNUINavigationListItem+CNContactProperty.m" lineNumber:28 description:{@"Value is not a string, not supported"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNUINavigationListItem+CNContactProperty.m" lineNumber:28 description:{@"Value is not a string, not supported"}];
   }
 
-  [(CNUINavigationListItem *)v11 setSubtitle:v13];
-  [(CNUINavigationListItem *)v11 setContent:v5];
+  [(CNUINavigationListItem *)v11 setSubtitle:value2];
+  [(CNUINavigationListItem *)v11 setContent:propertyCopy];
 
   return v11;
 }
@@ -482,21 +482,21 @@ LABEL_15:
   return WeakRetained;
 }
 
-- (CNUINavigationListItem)initWithTitle:(id)a3 image:(id)a4
+- (CNUINavigationListItem)initWithTitle:(id)title image:(id)image
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  imageCopy = image;
   v15.receiver = self;
   v15.super_class = CNUINavigationListItem;
   v8 = [(CNUINavigationListItem *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_image, a4);
+    objc_storeStrong(&v8->_image, image);
     items = v9->_items;
     v9->_items = 0;
 
-    v11 = [v6 copy];
+    v11 = [titleCopy copy];
     title = v9->_title;
     v9->_title = v11;
 

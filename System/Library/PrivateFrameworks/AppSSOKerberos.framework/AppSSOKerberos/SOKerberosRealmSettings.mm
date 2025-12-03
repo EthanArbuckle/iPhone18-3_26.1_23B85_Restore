@@ -26,53 +26,53 @@
 - (NSString)userPrincipalName;
 - (NSUUID)credentialUUID;
 - (OS_dispatch_semaphore)platformSSOLoginSemaphore;
-- (SOKerberosRealmSettings)initWithRealm:(id)a3;
+- (SOKerberosRealmSettings)initWithRealm:(id)realm;
 - (id)dumpSiteCodeCache;
-- (id)realmKey:(id)a3;
-- (id)siteCodeForNetworkFingerprint:(id)a3;
-- (void)cacheSiteCode:(id)a3;
+- (id)realmKey:(id)key;
+- (id)siteCodeForNetworkFingerprint:(id)fingerprint;
+- (void)cacheSiteCode:(id)code;
 - (void)dealloc;
 - (void)loadSiteCodes;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)platformSSOLoginInProgress;
 - (void)removeAllValues;
 - (void)saveSiteCodes;
-- (void)setCredentialUUID:(id)a3;
-- (void)setDateADPasswordCanChange:(id)a3;
-- (void)setDateADPasswordLastChangedWhenSynced:(id)a3;
-- (void)setDateExpirationChecked:(id)a3;
-- (void)setDateExpirationNotificationSent:(id)a3;
-- (void)setDateLastLogin:(id)a3;
-- (void)setDateLocalPasswordLastChanged:(id)a3;
-- (void)setDateLocalPasswordLastChangedWhenSynced:(id)a3;
-- (void)setDateLoginCancelled:(id)a3;
-- (void)setDateNextPacRefresh:(id)a3;
-- (void)setDatePasswordExpires:(id)a3;
-- (void)setDatePasswordLastChanged:(id)a3;
-- (void)setDatePasswordLastChangedAtLogin:(id)a3;
-- (void)setDateUserSignedOut:(id)a3;
-- (void)setNetworkHomeDirectory:(id)a3;
-- (void)setPkinitPersistentRef:(id)a3;
-- (void)setPlatformSSOLoginInProgress:(BOOL)a3;
-- (void)setSmartCardTokenID:(id)a3;
-- (void)setUserName:(id)a3;
-- (void)setUserPrincipalName:(id)a3;
+- (void)setCredentialUUID:(id)d;
+- (void)setDateADPasswordCanChange:(id)change;
+- (void)setDateADPasswordLastChangedWhenSynced:(id)synced;
+- (void)setDateExpirationChecked:(id)checked;
+- (void)setDateExpirationNotificationSent:(id)sent;
+- (void)setDateLastLogin:(id)login;
+- (void)setDateLocalPasswordLastChanged:(id)changed;
+- (void)setDateLocalPasswordLastChangedWhenSynced:(id)synced;
+- (void)setDateLoginCancelled:(id)cancelled;
+- (void)setDateNextPacRefresh:(id)refresh;
+- (void)setDatePasswordExpires:(id)expires;
+- (void)setDatePasswordLastChanged:(id)changed;
+- (void)setDatePasswordLastChangedAtLogin:(id)login;
+- (void)setDateUserSignedOut:(id)out;
+- (void)setNetworkHomeDirectory:(id)directory;
+- (void)setPkinitPersistentRef:(id)ref;
+- (void)setPlatformSSOLoginInProgress:(BOOL)progress;
+- (void)setSmartCardTokenID:(id)d;
+- (void)setUserName:(id)name;
+- (void)setUserPrincipalName:(id)name;
 - (void)startListeningForPlatformSSOTGTChanges;
 @end
 
 @implementation SOKerberosRealmSettings
 
-- (SOKerberosRealmSettings)initWithRealm:(id)a3
+- (SOKerberosRealmSettings)initWithRealm:(id)realm
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  realmCopy = realm;
   v6 = SO_LOG_SOKerberosRealmSettings();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v20 = "[SOKerberosRealmSettings initWithRealm:]";
     v21 = 2112;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&dword_24006C000, v6, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
@@ -85,19 +85,19 @@
     siteCodeCache = v7->_siteCodeCache;
     v7->_siteCodeCache = v8;
 
-    objc_storeStrong(&v7->_realm, a3);
-    v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    objc_storeStrong(&v7->_realm, realm);
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
     defaults = v7->_defaults;
-    v7->_defaults = v10;
+    v7->_defaults = standardUserDefaults;
 
     v12 = v7->_defaults;
     v13 = [(SOKerberosRealmSettings *)v7 realmKey:@"siteCodeCache"];
     [(NSUserDefaults *)v12 addObserver:v7 forKeyPath:v13 options:5 context:0];
 
     v7->_notifyToken = -1;
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.Kerberos.%@", v5];
+    realmCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.Kerberos.%@", realmCopy];
     notificationName = v7->_notificationName;
-    v7->_notificationName = v14;
+    v7->_notificationName = realmCopy;
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -112,27 +112,27 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)realmKey:(id)a3
+- (id)realmKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SOKerberosRealmSettings *)self realm];
-  v6 = [v5 stringByAppendingFormat:@":%@", v4];
+  keyCopy = key;
+  realm = [(SOKerberosRealmSettings *)self realm];
+  keyCopy = [realm stringByAppendingFormat:@":%@", keyCopy];
 
-  return v6;
+  return keyCopy;
 }
 
 - (void)removeAllValues
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(SOKerberosRealmSettings *)self defaults];
-  v4 = [v3 dictionaryRepresentation];
-  v5 = [v4 allKeys];
+  defaults = [(SOKerberosRealmSettings *)self defaults];
+  dictionaryRepresentation = [defaults dictionaryRepresentation];
+  allKeys = [dictionaryRepresentation allKeys];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v5;
+  v6 = allKeys;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -149,14 +149,14 @@
         }
 
         v11 = *(*(&v17 + 1) + 8 * v10);
-        v12 = [(SOKerberosRealmSettings *)self realm];
-        v13 = [v12 stringByAppendingFormat:@":"];
+        realm = [(SOKerberosRealmSettings *)self realm];
+        v13 = [realm stringByAppendingFormat:@":"];
         v14 = [v11 hasPrefix:v13];
 
         if (v14)
         {
-          v15 = [(SOKerberosRealmSettings *)self defaults];
-          [v15 removeObjectForKey:v11];
+          defaults2 = [(SOKerberosRealmSettings *)self defaults];
+          [defaults2 removeObjectForKey:v11];
         }
 
         ++v10;
@@ -174,43 +174,43 @@
 
 - (NSString)userPrincipalName
 {
-  v3 = [(SOKerberosRealmSettings *)self defaults];
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v4 = [(SOKerberosRealmSettings *)self realmKey:@"userPrincipalName"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaults objectForKey:v4];
 
   return v5;
 }
 
-- (void)setUserPrincipalName:(id)a3
+- (void)setUserPrincipalName:(id)name
 {
-  v4 = a3;
-  v6 = [(SOKerberosRealmSettings *)self defaults];
+  nameCopy = name;
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v5 = [(SOKerberosRealmSettings *)self realmKey:@"userPrincipalName"];
-  [v6 setObject:v4 forKey:v5];
+  [defaults setObject:nameCopy forKey:v5];
 }
 
 - (NSString)userName
 {
-  v3 = [(SOKerberosRealmSettings *)self defaults];
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v4 = [(SOKerberosRealmSettings *)self realmKey:@"userName"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaults objectForKey:v4];
 
   return v5;
 }
 
-- (void)setUserName:(id)a3
+- (void)setUserName:(id)name
 {
-  v4 = a3;
-  v6 = [(SOKerberosRealmSettings *)self defaults];
+  nameCopy = name;
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v5 = [(SOKerberosRealmSettings *)self realmKey:@"userName"];
-  [v6 setObject:v4 forKey:v5];
+  [defaults setObject:nameCopy forKey:v5];
 }
 
 - (NSUUID)credentialUUID
 {
-  v3 = [(SOKerberosRealmSettings *)self defaults];
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v4 = [(SOKerberosRealmSettings *)self realmKey:@"credentialUUID"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaults objectForKey:v4];
 
   if (v5)
   {
@@ -225,21 +225,21 @@
   return v6;
 }
 
-- (void)setCredentialUUID:(id)a3
+- (void)setCredentialUUID:(id)d
 {
-  v4 = a3;
-  v7 = [(SOKerberosRealmSettings *)self defaults];
-  v5 = [v4 UUIDString];
+  dCopy = d;
+  defaults = [(SOKerberosRealmSettings *)self defaults];
+  uUIDString = [dCopy UUIDString];
 
   v6 = [(SOKerberosRealmSettings *)self realmKey:@"credentialUUID"];
-  [v7 setObject:v5 forKey:v6];
+  [defaults setObject:uUIDString forKey:v6];
 }
 
 - (NSData)pkinitPersistentRef
 {
-  v3 = [(SOKerberosRealmSettings *)self defaults];
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v4 = [(SOKerberosRealmSettings *)self realmKey:@"pkinitPersistentRef"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaults objectForKey:v4];
   v6 = v5;
   if (v5)
   {
@@ -248,239 +248,239 @@
 
   else
   {
-    v8 = [(SOKerberosRealmSettings *)self defaults];
+    defaults2 = [(SOKerberosRealmSettings *)self defaults];
     v9 = [(SOKerberosRealmSettings *)self realmKey:@"pkinitPersistientRef"];
-    v7 = [v8 objectForKey:v9];
+    v7 = [defaults2 objectForKey:v9];
   }
 
   return v7;
 }
 
-- (void)setPkinitPersistentRef:(id)a3
+- (void)setPkinitPersistentRef:(id)ref
 {
-  v4 = a3;
-  v6 = [(SOKerberosRealmSettings *)self defaults];
+  refCopy = ref;
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v5 = [(SOKerberosRealmSettings *)self realmKey:@"pkinitPersistentRef"];
-  [v6 setObject:v4 forKey:v5];
+  [defaults setObject:refCopy forKey:v5];
 }
 
 - (NSString)smartCardTokenID
 {
-  v3 = [(SOKerberosRealmSettings *)self defaults];
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v4 = [(SOKerberosRealmSettings *)self realmKey:@"smartCardTokenID"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaults objectForKey:v4];
 
   return v5;
 }
 
-- (void)setSmartCardTokenID:(id)a3
+- (void)setSmartCardTokenID:(id)d
 {
-  v4 = a3;
-  v6 = [(SOKerberosRealmSettings *)self defaults];
+  dCopy = d;
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v5 = [(SOKerberosRealmSettings *)self realmKey:@"smartCardTokenID"];
-  [v6 setObject:v4 forKey:v5];
+  [defaults setObject:dCopy forKey:v5];
 }
 
 - (NSDate)dateLastLogin
 {
-  v3 = [(SOKerberosRealmSettings *)self defaults];
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v4 = [(SOKerberosRealmSettings *)self realmKey:@"dateLastLogin"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaults objectForKey:v4];
 
   return v5;
 }
 
-- (void)setDateLastLogin:(id)a3
+- (void)setDateLastLogin:(id)login
 {
-  v4 = a3;
-  v6 = [(SOKerberosRealmSettings *)self defaults];
+  loginCopy = login;
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v5 = [(SOKerberosRealmSettings *)self realmKey:@"dateLastLogin"];
-  [v6 setObject:v4 forKey:v5];
+  [defaults setObject:loginCopy forKey:v5];
 }
 
 - (NSDate)datePasswordLastChanged
 {
-  v3 = [(SOKerberosRealmSettings *)self defaults];
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v4 = [(SOKerberosRealmSettings *)self realmKey:@"datePasswordLastChanged"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaults objectForKey:v4];
 
   return v5;
 }
 
-- (void)setDatePasswordLastChanged:(id)a3
+- (void)setDatePasswordLastChanged:(id)changed
 {
-  v4 = a3;
-  v6 = [(SOKerberosRealmSettings *)self defaults];
+  changedCopy = changed;
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v5 = [(SOKerberosRealmSettings *)self realmKey:@"datePasswordLastChanged"];
-  [v6 setObject:v4 forKey:v5];
+  [defaults setObject:changedCopy forKey:v5];
 }
 
 - (NSDate)datePasswordLastChangedAtLogin
 {
-  v3 = [(SOKerberosRealmSettings *)self defaults];
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v4 = [(SOKerberosRealmSettings *)self realmKey:@"datePasswordLastChangedAtLogin"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaults objectForKey:v4];
 
   return v5;
 }
 
-- (void)setDatePasswordLastChangedAtLogin:(id)a3
+- (void)setDatePasswordLastChangedAtLogin:(id)login
 {
-  v4 = a3;
-  v6 = [(SOKerberosRealmSettings *)self defaults];
+  loginCopy = login;
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v5 = [(SOKerberosRealmSettings *)self realmKey:@"datePasswordLastChangedAtLogin"];
-  [v6 setObject:v4 forKey:v5];
+  [defaults setObject:loginCopy forKey:v5];
 }
 
 - (NSDate)dateNextPacRefresh
 {
-  v3 = [(SOKerberosRealmSettings *)self defaults];
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v4 = [(SOKerberosRealmSettings *)self realmKey:@"dateNextPacRefresh"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaults objectForKey:v4];
 
   return v5;
 }
 
-- (void)setDateNextPacRefresh:(id)a3
+- (void)setDateNextPacRefresh:(id)refresh
 {
-  v4 = a3;
-  v6 = [(SOKerberosRealmSettings *)self defaults];
+  refreshCopy = refresh;
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v5 = [(SOKerberosRealmSettings *)self realmKey:@"dateNextPacRefresh"];
-  [v6 setObject:v4 forKey:v5];
+  [defaults setObject:refreshCopy forKey:v5];
 }
 
 - (NSDate)dateADPasswordCanChange
 {
-  v3 = [(SOKerberosRealmSettings *)self defaults];
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v4 = [(SOKerberosRealmSettings *)self realmKey:@"datePasswordCanChange"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaults objectForKey:v4];
 
   return v5;
 }
 
-- (void)setDateADPasswordCanChange:(id)a3
+- (void)setDateADPasswordCanChange:(id)change
 {
-  v4 = a3;
-  v6 = [(SOKerberosRealmSettings *)self defaults];
+  changeCopy = change;
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v5 = [(SOKerberosRealmSettings *)self realmKey:@"datePasswordCanChange"];
-  [v6 setObject:v4 forKey:v5];
+  [defaults setObject:changeCopy forKey:v5];
 }
 
 - (NSDate)dateLocalPasswordLastChanged
 {
-  v3 = [(SOKerberosRealmSettings *)self defaults];
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v4 = [(SOKerberosRealmSettings *)self realmKey:@"dateLocalPasswordLastChanged"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaults objectForKey:v4];
 
   return v5;
 }
 
-- (void)setDateLocalPasswordLastChanged:(id)a3
+- (void)setDateLocalPasswordLastChanged:(id)changed
 {
-  v4 = a3;
-  v6 = [(SOKerberosRealmSettings *)self defaults];
+  changedCopy = changed;
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v5 = [(SOKerberosRealmSettings *)self realmKey:@"dateLocalPasswordLastChanged"];
-  [v6 setObject:v4 forKey:v5];
+  [defaults setObject:changedCopy forKey:v5];
 }
 
 - (NSDate)dateADPasswordLastChangedWhenSynced
 {
-  v3 = [(SOKerberosRealmSettings *)self defaults];
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v4 = [(SOKerberosRealmSettings *)self realmKey:@"dateADPasswordLastChangedWhenSynced"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaults objectForKey:v4];
 
   return v5;
 }
 
-- (void)setDateADPasswordLastChangedWhenSynced:(id)a3
+- (void)setDateADPasswordLastChangedWhenSynced:(id)synced
 {
-  v4 = a3;
-  v6 = [(SOKerberosRealmSettings *)self defaults];
+  syncedCopy = synced;
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v5 = [(SOKerberosRealmSettings *)self realmKey:@"dateADPasswordLastChangedWhenSynced"];
-  [v6 setObject:v4 forKey:v5];
+  [defaults setObject:syncedCopy forKey:v5];
 }
 
 - (NSDate)dateLocalPasswordLastChangedWhenSynced
 {
-  v3 = [(SOKerberosRealmSettings *)self defaults];
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v4 = [(SOKerberosRealmSettings *)self realmKey:@"dateLocalPasswordLastChangedWhenSynced"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaults objectForKey:v4];
 
   return v5;
 }
 
-- (void)setDateLocalPasswordLastChangedWhenSynced:(id)a3
+- (void)setDateLocalPasswordLastChangedWhenSynced:(id)synced
 {
-  v4 = a3;
-  v6 = [(SOKerberosRealmSettings *)self defaults];
+  syncedCopy = synced;
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v5 = [(SOKerberosRealmSettings *)self realmKey:@"dateLocalPasswordLastChangedWhenSynced"];
-  [v6 setObject:v4 forKey:v5];
+  [defaults setObject:syncedCopy forKey:v5];
 }
 
 - (NSDate)datePasswordExpires
 {
-  v3 = [(SOKerberosRealmSettings *)self defaults];
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v4 = [(SOKerberosRealmSettings *)self realmKey:@"datePasswordExpires"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaults objectForKey:v4];
 
   return v5;
 }
 
-- (void)setDatePasswordExpires:(id)a3
+- (void)setDatePasswordExpires:(id)expires
 {
-  v4 = a3;
-  v6 = [(SOKerberosRealmSettings *)self defaults];
+  expiresCopy = expires;
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v5 = [(SOKerberosRealmSettings *)self realmKey:@"datePasswordExpires"];
-  [v6 setObject:v4 forKey:v5];
+  [defaults setObject:expiresCopy forKey:v5];
 }
 
 - (BOOL)passwordNeverExpires
 {
-  v3 = [(SOKerberosRealmSettings *)self defaults];
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v4 = [(SOKerberosRealmSettings *)self realmKey:@"passwordNeverExpires"];
-  v5 = [v3 BOOLForKey:v4];
+  v5 = [defaults BOOLForKey:v4];
 
   return v5;
 }
 
 - (NSDate)dateExpirationNotificationSent
 {
-  v3 = [(SOKerberosRealmSettings *)self defaults];
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v4 = [(SOKerberosRealmSettings *)self realmKey:@"dateExpirationNotificationSent"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaults objectForKey:v4];
 
   return v5;
 }
 
-- (void)setDateExpirationNotificationSent:(id)a3
+- (void)setDateExpirationNotificationSent:(id)sent
 {
-  v4 = a3;
-  v6 = [(SOKerberosRealmSettings *)self defaults];
+  sentCopy = sent;
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v5 = [(SOKerberosRealmSettings *)self realmKey:@"dateExpirationNotificationSent"];
-  [v6 setObject:v4 forKey:v5];
+  [defaults setObject:sentCopy forKey:v5];
 }
 
 - (NSDate)dateExpirationChecked
 {
-  v3 = [(SOKerberosRealmSettings *)self defaults];
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v4 = [(SOKerberosRealmSettings *)self realmKey:@"dateExpirationChecked"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaults objectForKey:v4];
 
   return v5;
 }
 
-- (void)setDateExpirationChecked:(id)a3
+- (void)setDateExpirationChecked:(id)checked
 {
-  v4 = a3;
-  v6 = [(SOKerberosRealmSettings *)self defaults];
+  checkedCopy = checked;
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v5 = [(SOKerberosRealmSettings *)self realmKey:@"dateExpirationChecked"];
-  [v6 setObject:v4 forKey:v5];
+  [defaults setObject:checkedCopy forKey:v5];
 }
 
 - (NSNumber)daysUntilExpiration
 {
-  v2 = [(SOKerberosRealmSettings *)self datePasswordExpires];
-  [v2 timeIntervalSinceNow];
+  datePasswordExpires = [(SOKerberosRealmSettings *)self datePasswordExpires];
+  [datePasswordExpires timeIntervalSinceNow];
   v4 = v3;
 
   v5 = MEMORY[0x277CCABB0];
@@ -490,97 +490,97 @@
 
 - (NSString)networkHomeDirectory
 {
-  v3 = [(SOKerberosRealmSettings *)self defaults];
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v4 = [(SOKerberosRealmSettings *)self realmKey:@"networkHomeDirectory"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaults objectForKey:v4];
 
   return v5;
 }
 
-- (void)setNetworkHomeDirectory:(id)a3
+- (void)setNetworkHomeDirectory:(id)directory
 {
-  v4 = a3;
-  v6 = [(SOKerberosRealmSettings *)self defaults];
+  directoryCopy = directory;
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v5 = [(SOKerberosRealmSettings *)self realmKey:@"networkHomeDirectory"];
-  [v6 setObject:v4 forKey:v5];
+  [defaults setObject:directoryCopy forKey:v5];
 }
 
 - (BOOL)delayUserSetupCleared
 {
-  v3 = [(SOKerberosRealmSettings *)self defaults];
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v4 = [(SOKerberosRealmSettings *)self realmKey:@"delayUserSetupCleared"];
-  v5 = [v3 BOOLForKey:v4];
+  v5 = [defaults BOOLForKey:v4];
 
   return v5;
 }
 
 - (BOOL)networkAvailable
 {
-  v3 = [(SOKerberosRealmSettings *)self defaults];
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v4 = [(SOKerberosRealmSettings *)self realmKey:@"networkAvailable"];
-  v5 = [v3 BOOLForKey:v4];
+  v5 = [defaults BOOLForKey:v4];
 
   return v5;
 }
 
 - (BOOL)userCancelledLogin
 {
-  v3 = [(SOKerberosRealmSettings *)self defaults];
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v4 = [(SOKerberosRealmSettings *)self realmKey:@"userCancelledLogin"];
-  v5 = [v3 BOOLForKey:v4];
+  v5 = [defaults BOOLForKey:v4];
 
   return v5;
 }
 
 - (NSDate)dateLoginCancelled
 {
-  v3 = [(SOKerberosRealmSettings *)self defaults];
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v4 = [(SOKerberosRealmSettings *)self realmKey:@"dateLoginCancelled"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaults objectForKey:v4];
 
   return v5;
 }
 
-- (void)setDateLoginCancelled:(id)a3
+- (void)setDateLoginCancelled:(id)cancelled
 {
-  v4 = a3;
-  v6 = [(SOKerberosRealmSettings *)self defaults];
+  cancelledCopy = cancelled;
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v5 = [(SOKerberosRealmSettings *)self realmKey:@"dateLoginCancelled"];
-  [v6 setObject:v4 forKey:v5];
+  [defaults setObject:cancelledCopy forKey:v5];
 }
 
 - (BOOL)passwordChangeInProgress
 {
-  v3 = [(SOKerberosRealmSettings *)self defaults];
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v4 = [(SOKerberosRealmSettings *)self realmKey:@"passwordChangeInProgress"];
-  v5 = [v3 BOOLForKey:v4];
+  v5 = [defaults BOOLForKey:v4];
 
   return v5;
 }
 
 - (NSDate)dateUserSignedOut
 {
-  v3 = [(SOKerberosRealmSettings *)self defaults];
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v4 = [(SOKerberosRealmSettings *)self realmKey:@"dateUserSignedOut"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaults objectForKey:v4];
 
   return v5;
 }
 
-- (void)setDateUserSignedOut:(id)a3
+- (void)setDateUserSignedOut:(id)out
 {
-  v4 = a3;
-  v6 = [(SOKerberosRealmSettings *)self defaults];
+  outCopy = out;
+  defaults = [(SOKerberosRealmSettings *)self defaults];
   v5 = [(SOKerberosRealmSettings *)self realmKey:@"dateUserSignedOut"];
-  [v6 setObject:v4 forKey:v5];
+  [defaults setObject:outCopy forKey:v5];
 }
 
 - (OS_dispatch_semaphore)platformSSOLoginSemaphore
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_platformSSOLoginSemaphore;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_platformSSOLoginSemaphore;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -631,14 +631,14 @@ LABEL_13:
   }
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:state64];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  return v8;
+  return bOOLValue;
 }
 
-- (void)setPlatformSSOLoginInProgress:(BOOL)a3
+- (void)setPlatformSSOLoginInProgress:(BOOL)progress
 {
-  v3 = a3;
+  progressCopy = progress;
   p_notifyToken = &self->_notifyToken;
   notifyToken = self->_notifyToken;
   if (notifyToken != -1)
@@ -659,7 +659,7 @@ LABEL_13:
   if (*p_notifyToken != -1)
   {
 LABEL_17:
-    if (notify_set_state(notifyToken, v3))
+    if (notify_set_state(notifyToken, progressCopy))
     {
       v8 = SO_LOG_SOKerberosRealmSettings();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -724,28 +724,28 @@ LABEL_7:
 
 - (id)dumpSiteCodeCache
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(SOKerberosRealmSettings *)v2 siteCodeCache];
-  v4 = [v3 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  siteCodeCache = [(SOKerberosRealmSettings *)selfCopy siteCodeCache];
+  v4 = [siteCodeCache copy];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (void)cacheSiteCode:(id)a3
+- (void)cacheSiteCode:(id)code
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  codeCopy = code;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [(SOKerberosRealmSettings *)v5 siteCodeCache];
-  v7 = [v6 copy];
+  siteCodeCache = [(SOKerberosRealmSettings *)selfCopy siteCodeCache];
+  v7 = [siteCodeCache copy];
 
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v8)
@@ -761,19 +761,19 @@ LABEL_7:
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v11 networkFingerprint];
-        v13 = [v4 networkFingerprint];
-        v14 = [v12 isEqualToString:v13];
+        networkFingerprint = [v11 networkFingerprint];
+        networkFingerprint2 = [codeCopy networkFingerprint];
+        v14 = [networkFingerprint isEqualToString:networkFingerprint2];
 
         if (v14)
         {
-          [(NSMutableArray *)v5->_siteCodeCache removeObject:v11];
+          [(NSMutableArray *)selfCopy->_siteCodeCache removeObject:v11];
         }
 
         [v11 age];
         if (v15 > 432000.0)
         {
-          [(NSMutableArray *)v5->_siteCodeCache removeObject:v11];
+          [(NSMutableArray *)selfCopy->_siteCodeCache removeObject:v11];
         }
       }
 
@@ -786,29 +786,29 @@ LABEL_7:
   v16 = SO_LOG_SOKerberosRealmSettings();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    v17 = [v4 code];
-    [(SOKerberosRealmSettings *)v17 cacheSiteCode:v23, v16];
+    code = [codeCopy code];
+    [(SOKerberosRealmSettings *)code cacheSiteCode:v23, v16];
   }
 
-  [(NSMutableArray *)v5->_siteCodeCache addObject:v4];
-  [(SOKerberosRealmSettings *)v5 saveSiteCodes];
-  objc_sync_exit(v5);
+  [(NSMutableArray *)selfCopy->_siteCodeCache addObject:codeCopy];
+  [(SOKerberosRealmSettings *)selfCopy saveSiteCodes];
+  objc_sync_exit(selfCopy);
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)siteCodeForNetworkFingerprint:(id)a3
+- (id)siteCodeForNetworkFingerprint:(id)fingerprint
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  fingerprintCopy = fingerprint;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [(SOKerberosRealmSettings *)v5 siteCodeCache];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  siteCodeCache = [(SOKerberosRealmSettings *)selfCopy siteCodeCache];
+  v7 = [siteCodeCache countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v7)
   {
     v8 = *v18;
@@ -818,20 +818,20 @@ LABEL_7:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(siteCodeCache);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 networkFingerprint];
-        v12 = [v11 isEqualToString:v4];
+        networkFingerprint = [v10 networkFingerprint];
+        v12 = [networkFingerprint isEqualToString:fingerprintCopy];
 
         if (v12)
         {
           v13 = SO_LOG_SOKerberosRealmSettings();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
           {
-            v14 = [v10 code];
-            [(SOKerberosRealmSettings *)v14 siteCodeForNetworkFingerprint:v21, v13];
+            code = [v10 code];
+            [(SOKerberosRealmSettings *)code siteCodeForNetworkFingerprint:v21, v13];
           }
 
           v7 = v10;
@@ -839,7 +839,7 @@ LABEL_7:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v7 = [siteCodeCache countByEnumeratingWithState:&v17 objects:v22 count:16];
       if (v7)
       {
         continue;
@@ -851,17 +851,17 @@ LABEL_7:
 
 LABEL_13:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v15 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   v12 = SO_LOG_SOKerberosRealmSettings();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -869,7 +869,7 @@ LABEL_13:
   }
 
   v13 = [(SOKerberosRealmSettings *)self realmKey:@"siteCodeCache"];
-  v14 = [v9 isEqualToString:v13];
+  v14 = [pathCopy isEqualToString:v13];
 
   if (v14)
   {
@@ -877,13 +877,13 @@ LABEL_13:
   }
 
   v15 = [(SOKerberosRealmSettings *)self realmKey:@"platformSSOLoginInProgress"];
-  v16 = [v9 isEqualToString:v15];
+  v16 = [pathCopy isEqualToString:v15];
 
   if (v16)
   {
-    v17 = self;
-    objc_sync_enter(v17);
-    v18 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v18 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
 
     if (v18)
     {
@@ -894,15 +894,15 @@ LABEL_13:
       }
 
       v20 = dispatch_semaphore_create(0);
-      platformSSOLoginSemaphore = v17->_platformSSOLoginSemaphore;
-      v17->_platformSSOLoginSemaphore = v20;
+      platformSSOLoginSemaphore = selfCopy->_platformSSOLoginSemaphore;
+      selfCopy->_platformSSOLoginSemaphore = v20;
     }
 
     else
     {
-      v22 = [(SOKerberosRealmSettings *)v17 platformSSOLoginSemaphore];
+      platformSSOLoginSemaphore = [(SOKerberosRealmSettings *)selfCopy platformSSOLoginSemaphore];
 
-      if (v22)
+      if (platformSSOLoginSemaphore)
       {
         v23 = SO_LOG_SOKerberosRealmSettings();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -910,11 +910,11 @@ LABEL_13:
           [SOKerberosRealmSettings observeValueForKeyPath:ofObject:change:context:];
         }
 
-        dispatch_semaphore_signal(v17->_platformSSOLoginSemaphore);
+        dispatch_semaphore_signal(selfCopy->_platformSSOLoginSemaphore);
       }
     }
 
-    objc_sync_exit(v17);
+    objc_sync_exit(selfCopy);
   }
 }
 

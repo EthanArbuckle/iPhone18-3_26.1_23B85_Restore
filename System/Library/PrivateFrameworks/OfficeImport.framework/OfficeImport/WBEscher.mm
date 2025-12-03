@@ -1,25 +1,25 @@
 @interface WBEscher
-+ (id)readRootWithType:(int *)a3 reader:(id)a4;
-+ (void)readRootContainer:(id *)a3 type:(int *)a4 reader:(id)a5;
++ (id)readRootWithType:(int *)type reader:(id)reader;
++ (void)readRootContainer:(id *)container type:(int *)type reader:(id)reader;
 @end
 
 @implementation WBEscher
 
-+ (id)readRootWithType:(int *)a3 reader:(id)a4
++ (id)readRootWithType:(int *)type reader:(id)reader
 {
-  v5 = a4;
-  v13 = *a3;
-  v6 = [v5 wrdReader];
-  (*(*v6 + 440))(v6, &v13);
+  readerCopy = reader;
+  v13 = *type;
+  wrdReader = [readerCopy wrdReader];
+  (*(*wrdReader + 440))(wrdReader, &v13);
   v7 = v13;
-  *a3 = v13;
+  *type = v13;
   if (v7)
   {
     v8 = [ESDRoot alloc];
-    v9 = [v5 wrdReader];
-    if (v9)
+    wrdReader2 = [readerCopy wrdReader];
+    if (wrdReader2)
     {
-      v10 = v9 + 8;
+      v10 = wrdReader2 + 8;
     }
 
     else
@@ -38,12 +38,12 @@
   return v11;
 }
 
-+ (void)readRootContainer:(id *)a3 type:(int *)a4 reader:(id)a5
++ (void)readRootContainer:(id *)container type:(int *)type reader:(id)reader
 {
-  v8 = a5;
-  *a4 = 0;
-  v13 = v8;
-  v9 = [a1 readRootWithType:a4 reader:?];
+  readerCopy = reader;
+  *type = 0;
+  v13 = readerCopy;
+  v9 = [self readRootWithType:type reader:?];
   v10 = v9;
   if (v9 && [v9 childCount])
   {
@@ -53,7 +53,7 @@
     if (objc_opt_isKindOfClass())
     {
       v12 = v11;
-      *a3 = v11;
+      *container = v11;
     }
   }
 }

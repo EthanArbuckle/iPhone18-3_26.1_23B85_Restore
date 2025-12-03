@@ -1,8 +1,8 @@
 @interface NESMVPNSessionStateDisposing
 - (NESMVPNSessionStateDisposing)init;
-- (void)enterWithSession:(id)a3;
+- (void)enterWithSession:(id)session;
 - (void)handleEstablishIPC;
-- (void)handlePluginDisposeComplete:(id)a3;
+- (void)handlePluginDisposeComplete:(id)complete;
 - (void)handleTimeout;
 @end
 
@@ -60,9 +60,9 @@
     Property = 0;
   }
 
-  v5 = [Property authenticationPlugin];
+  authenticationPlugin = [Property authenticationPlugin];
 
-  if (v5)
+  if (authenticationPlugin)
   {
     if (self)
     {
@@ -74,14 +74,14 @@
 
     else
     {
-      v21 = [0 authenticationPlugin];
-      sub_10001A29C(v21, v22);
+      authenticationPlugin2 = [0 authenticationPlugin];
+      sub_10001A29C(authenticationPlugin2, v22);
 
       v10 = 0;
     }
 
-    v11 = [v10 authenticationPlugin];
-    [(NESMVPNSessionStateDisposing *)self handlePluginDisposeComplete:v11];
+    authenticationPlugin3 = [v10 authenticationPlugin];
+    [(NESMVPNSessionStateDisposing *)self handlePluginDisposeComplete:authenticationPlugin3];
   }
 
   if (self)
@@ -94,9 +94,9 @@
     v12 = 0;
   }
 
-  v13 = [v12 primaryTunnelPlugin];
+  primaryTunnelPlugin = [v12 primaryTunnelPlugin];
 
-  if (v13)
+  if (primaryTunnelPlugin)
   {
     if (self)
     {
@@ -108,14 +108,14 @@
 
     else
     {
-      v23 = [0 primaryTunnelPlugin];
-      sub_10001A29C(v23, v24);
+      primaryTunnelPlugin2 = [0 primaryTunnelPlugin];
+      sub_10001A29C(primaryTunnelPlugin2, v24);
 
       v18 = 0;
     }
 
-    v19 = [v18 primaryTunnelPlugin];
-    [(NESMVPNSessionStateDisposing *)self handlePluginDisposeComplete:v19];
+    primaryTunnelPlugin3 = [v18 primaryTunnelPlugin];
+    [(NESMVPNSessionStateDisposing *)self handlePluginDisposeComplete:primaryTunnelPlugin3];
   }
 
   else
@@ -134,11 +134,11 @@
   }
 }
 
-- (void)handlePluginDisposeComplete:(id)a3
+- (void)handlePluginDisposeComplete:(id)complete
 {
   v18.receiver = self;
   v18.super_class = NESMVPNSessionStateDisposing;
-  [(NESMVPNSessionState *)&v18 handlePluginDisposeComplete:a3];
+  [(NESMVPNSessionState *)&v18 handlePluginDisposeComplete:complete];
   if (!self || (--self->_pendingDisposeCount, !self->_pendingDisposeCount))
   {
     v4 = ne_log_obj();
@@ -184,12 +184,12 @@ LABEL_9:
     {
       [0 setAuthenticationPlugin:0];
       [0 setPrimaryTunnelPlugin:0];
-      v16 = [0 policySession];
-      sub_100030DC4(v16);
+      policySession = [0 policySession];
+      sub_100030DC4(policySession);
 
-      v17 = [0 restartPending];
+      restartPending = [0 restartPending];
       v15 = 0;
-      if (v17)
+      if (restartPending)
       {
         goto LABEL_9;
       }
@@ -199,12 +199,12 @@ LABEL_9:
   }
 }
 
-- (void)enterWithSession:(id)a3
+- (void)enterWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v25.receiver = self;
   v25.super_class = NESMVPNSessionStateDisposing;
-  [(NESMVPNSessionState *)&v25 enterWithSession:v4];
+  [(NESMVPNSessionState *)&v25 enterWithSession:sessionCopy];
   if (self)
   {
     self->_pendingDisposeCount = 0;
@@ -216,9 +216,9 @@ LABEL_9:
     Property = 0;
   }
 
-  v7 = [Property authenticationPlugin];
+  authenticationPlugin = [Property authenticationPlugin];
 
-  if (v7)
+  if (authenticationPlugin)
   {
     if (self)
     {
@@ -231,8 +231,8 @@ LABEL_9:
       v9 = 0;
     }
 
-    v10 = [v9 authenticationPlugin];
-    sub_1000198A8(v10, v11);
+    authenticationPlugin2 = [v9 authenticationPlugin];
+    sub_1000198A8(authenticationPlugin2, v11);
   }
 
   if (self)
@@ -245,9 +245,9 @@ LABEL_9:
     v12 = 0;
   }
 
-  v13 = [v12 primaryTunnelPlugin];
+  primaryTunnelPlugin = [v12 primaryTunnelPlugin];
 
-  if (v13)
+  if (primaryTunnelPlugin)
   {
     if (self)
     {
@@ -260,8 +260,8 @@ LABEL_9:
       v15 = 0;
     }
 
-    v16 = [v15 primaryTunnelPlugin];
-    sub_1000198A8(v16, v17);
+    primaryTunnelPlugin2 = [v15 primaryTunnelPlugin];
+    sub_1000198A8(primaryTunnelPlugin2, v17);
   }
 
   if (!self || !self->_pendingDisposeCount)
@@ -288,13 +288,13 @@ LABEL_9:
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%@ in state %@: no plugins to dispose", buf, 0x16u);
     }
 
-    v23 = [v4 queue];
+    queue = [sessionCopy queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10007BEC4;
     block[3] = &unk_1000EB1C0;
     block[4] = self;
-    dispatch_async(v23, block);
+    dispatch_async(queue, block);
   }
 }
 

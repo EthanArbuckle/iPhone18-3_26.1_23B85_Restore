@@ -1,10 +1,10 @@
 @interface OfflineMapsFeatureDiscoverySource
 - (GEOObserverHashTable)observers;
 - (OfflineMapsFeatureDiscoveryActionDelegate)actionDelegate;
-- (OfflineMapsFeatureDiscoverySource)initWithInsights:(id)a3 locationUpdater:(id)a4 isActive:(BOOL)a5;
+- (OfflineMapsFeatureDiscoverySource)initWithInsights:(id)insights locationUpdater:(id)updater isActive:(BOOL)active;
 - (void)_notifyObservers;
-- (void)_showTipFromModelData:(id)a3;
-- (void)didUpdateLocation:(id)a3;
+- (void)_showTipFromModelData:(id)data;
+- (void)didUpdateLocation:(id)location;
 - (void)updateFeatureEligibility;
 @end
 
@@ -15,13 +15,13 @@
   observers = self->_observers;
   if (!observers)
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v5 = [[GEOObserverHashTable alloc] initWithProtocol:&OBJC_PROTOCOL___HomeDataProvidingObserver queue:0];
     v6 = self->_observers;
     self->_observers = v5;
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
     observers = self->_observers;
   }
 
@@ -36,9 +36,9 @@
     if ([v4 userInterfaceIdiom])
     {
       v5 = +[UIDevice currentDevice];
-      v6 = [v5 userInterfaceIdiom];
+      userInterfaceIdiom = [v5 userInterfaceIdiom];
 
-      if (v6 != 1)
+      if (userInterfaceIdiom != 1)
       {
         v7 = sub_10003D9F4();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -101,17 +101,17 @@ LABEL_13:
   return WeakRetained;
 }
 
-- (void)didUpdateLocation:(id)a3
+- (void)didUpdateLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = sub_10003D9F4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 latLng];
-    [v6 lat];
+    latLng = [locationCopy latLng];
+    [latLng lat];
     v8 = v7;
-    v9 = [v4 latLng];
-    [v9 lng];
+    latLng2 = [locationCopy latLng];
+    [latLng2 lng];
     *buf = 134283777;
     v17 = v8;
     v18 = 2049;
@@ -129,29 +129,29 @@ LABEL_13:
   v13[2] = sub_1007F4860;
   v13[3] = &unk_101661340;
   objc_copyWeak(&v15, buf);
-  v14 = v4;
-  v12 = v4;
+  v14 = locationCopy;
+  v12 = locationCopy;
   dispatch_async(&_dispatch_main_q, v13);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(buf);
 }
 
-- (void)_showTipFromModelData:(id)a3
+- (void)_showTipFromModelData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_initWeak(location, self);
   v5 = [FeatureDiscoveryModel alloc];
-  v6 = [v4 tipImage];
-  v7 = [v4 tipTitle];
-  v8 = [v4 tipSubtitle];
-  v9 = [v4 tipActionTitle];
+  tipImage = [dataCopy tipImage];
+  tipTitle = [dataCopy tipTitle];
+  tipSubtitle = [dataCopy tipSubtitle];
+  tipActionTitle = [dataCopy tipActionTitle];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_1007F4CEC;
   v23[3] = &unk_101661340;
   objc_copyWeak(&v25, location);
-  v10 = v4;
+  v10 = dataCopy;
   v24 = v10;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
@@ -167,7 +167,7 @@ LABEL_13:
   v18 = v11;
   objc_copyWeak(&v19, location);
   LOBYTE(v14) = 1;
-  v12 = [(FeatureDiscoveryModel *)v5 initWithImage:v6 title:v7 subtitle:v8 actionTitle:v9 actionHandler:v23 bodyTapHandler:0 displayedHandler:v20 dismissHandler:v17 disableAffordanceAfterAction:v14];
+  v12 = [(FeatureDiscoveryModel *)v5 initWithImage:tipImage title:tipTitle subtitle:tipSubtitle actionTitle:tipActionTitle actionHandler:v23 bodyTapHandler:0 displayedHandler:v20 dismissHandler:v17 disableAffordanceAfterAction:v14];
   model = self->_model;
   self->_model = v12;
 
@@ -193,10 +193,10 @@ LABEL_13:
   }
 }
 
-- (OfflineMapsFeatureDiscoverySource)initWithInsights:(id)a3 locationUpdater:(id)a4 isActive:(BOOL)a5
+- (OfflineMapsFeatureDiscoverySource)initWithInsights:(id)insights locationUpdater:(id)updater isActive:(BOOL)active
 {
-  v9 = a3;
-  v10 = a4;
+  insightsCopy = insights;
+  updaterCopy = updater;
   v19.receiver = self;
   v19.super_class = OfflineMapsFeatureDiscoverySource;
   v11 = [(OfflineMapsFeatureDiscoverySource *)&v19 init];
@@ -207,16 +207,16 @@ LABEL_13:
     queue = v11->_queue;
     v11->_queue = v13;
 
-    objc_storeStrong(&v11->_msgInsights, a3);
+    objc_storeStrong(&v11->_msgInsights, insights);
     model = v11->_model;
     v11->_model = 0;
 
-    objc_storeStrong(&v11->_locationUpdater, a4);
+    objc_storeStrong(&v11->_locationUpdater, updater);
     v16 = [[OfflineMapsSuggestionsDataProvider alloc] initWithClientType:1 callbackQueue:v11->_queue];
     dataProvider = v11->_dataProvider;
     v11->_dataProvider = v16;
 
-    v11->_active = a5;
+    v11->_active = active;
     v11->_showFeature = 0;
   }
 

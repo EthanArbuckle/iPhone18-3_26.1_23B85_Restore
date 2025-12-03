@@ -8,16 +8,16 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFButtonActionCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFButtonActionCharacteristic *)self buttonActionValue];
+  buttonActionValue = [(CAFButtonActionCharacteristic *)self buttonActionValue];
 
-  return NSStringFromButtonAction(v2);
+  return NSStringFromButtonAction(buttonActionValue);
 }
 
 + (id)secondaryCharacteristicFormats

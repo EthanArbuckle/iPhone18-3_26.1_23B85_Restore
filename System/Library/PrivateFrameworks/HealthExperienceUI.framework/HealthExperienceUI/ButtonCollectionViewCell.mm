@@ -1,13 +1,13 @@
 @interface ButtonCollectionViewCell
-- (void)didTapButton:(id)a3;
+- (void)didTapButton:(id)button;
 @end
 
 @implementation ButtonCollectionViewCell
 
-- (void)didTapButton:(id)a3
+- (void)didTapButton:(id)button
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1BA4A7BF8();
   swift_unknownObjectRelease();
   sub_1BA0FEE1C();

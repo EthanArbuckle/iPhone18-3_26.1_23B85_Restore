@@ -1,21 +1,21 @@
 @interface CNFullscreenImageDataDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4;
-- (void)ABValueForABPerson:(void *)a3;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (BOOL)abPropertyID:(int *)d;
+- (BOOL)isEqualForContact:(id)contact other:(id)other;
+- (void)ABValueForABPerson:(void *)person;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNFullscreenImageDataDescription
 
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualForContact:(id)contact other:(id)other
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 fullscreenImageData];
-  if (!v8)
+  contactCopy = contact;
+  otherCopy = other;
+  fullscreenImageData = [contactCopy fullscreenImageData];
+  if (!fullscreenImageData)
   {
-    v4 = [v7 fullscreenImageData];
-    if (!v4)
+    fullscreenImageData2 = [otherCopy fullscreenImageData];
+    if (!fullscreenImageData2)
     {
       v11 = 1;
 LABEL_6:
@@ -24,11 +24,11 @@ LABEL_6:
     }
   }
 
-  v9 = [v6 fullscreenImageData];
-  v10 = [v7 fullscreenImageData];
-  v11 = [v9 isEqual:v10];
+  fullscreenImageData3 = [contactCopy fullscreenImageData];
+  fullscreenImageData4 = [otherCopy fullscreenImageData];
+  v11 = [fullscreenImageData3 isEqual:fullscreenImageData4];
 
-  if (!v8)
+  if (!fullscreenImageData)
   {
     goto LABEL_6;
   }
@@ -38,30 +38,30 @@ LABEL_7:
   return v11;
 }
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
-  v5 = a4;
-  v6 = a3;
-  v9 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"_fullscreenImageData"];
+  contactCopy = contact;
+  coderCopy = coder;
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_fullscreenImageData"];
 
   v7 = [v9 copy];
-  v8 = v5[38];
-  v5[38] = v7;
+  v8 = contactCopy[38];
+  contactCopy[38] = v7;
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A158];
+    *d = *MEMORY[0x1E698A158];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
-- (void)ABValueForABPerson:(void *)a3
+- (void)ABValueForABPerson:(void *)person
 {
-  result = ABPersonCopyImageDataWithFormat(a3, 4u);
+  result = ABPersonCopyImageDataWithFormat(person, 4u);
   if (result)
   {
 

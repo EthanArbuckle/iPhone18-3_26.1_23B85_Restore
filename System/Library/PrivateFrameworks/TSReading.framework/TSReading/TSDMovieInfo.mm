@@ -1,121 +1,121 @@
 @interface TSDMovieInfo
-- (BOOL)containsProperty:(int)a3;
+- (BOOL)containsProperty:(int)property;
 - (CGSize)rawDataSize;
-- (TSDMovieInfo)initWithContext:(id)a3 geometry:(id)a4;
-- (TSDMovieInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5;
-- (TSDMovieInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 movieData:(id)a6 loadedAsset:(id)a7;
-- (TSDMovieInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 movieRemoteURL:(id)a6 loadedAsset:(id)a7;
-- (double)doubleValueForProperty:(int)a3;
-- (float)floatValueForProperty:(int)a3;
+- (TSDMovieInfo)initWithContext:(id)context geometry:(id)geometry;
+- (TSDMovieInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style;
+- (TSDMovieInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style movieData:(id)data loadedAsset:(id)asset;
+- (TSDMovieInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style movieRemoteURL:(id)l loadedAsset:(id)asset;
+- (double)doubleValueForProperty:(int)property;
+- (float)floatValueForProperty:(int)property;
 - (id)animationFilters;
-- (id)copyWithContext:(id)a3 stylesheet:(id)a4;
-- (id)generateEmptyPosterImageForContext:(id)a3;
-- (id)makeAVAssetWithOptions:(id)a3;
-- (id)makePosterImageGeneratorWithAVAsset:(id)a3;
+- (id)copyWithContext:(id)context stylesheet:(id)stylesheet;
+- (id)generateEmptyPosterImageForContext:(id)context;
+- (id)makeAVAssetWithOptions:(id)options;
+- (id)makePosterImageGeneratorWithAVAsset:(id)asset;
 - (id)mediaDisplayName;
 - (id)mediaFileType;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)objectForProperty:(int)a3;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)objectForProperty:(int)property;
 - (id)presetKind;
-- (id)synchronouslyGenerateDefaultPosterImageForContext:(id)a3;
-- (int)intValueForProperty:(int)a3;
-- (int64_t)mixingTypeWithObject:(id)a3;
+- (id)synchronouslyGenerateDefaultPosterImageForContext:(id)context;
+- (int)intValueForProperty:(int)property;
+- (int64_t)mixingTypeWithObject:(id)object;
 - (void)dealloc;
-- (void)p_setPropertiesFromLoadedAsset:(id)a3;
-- (void)setAudioOnlyImageData:(id)a3;
-- (void)setImportedAuxiliaryMovieData:(id)a3;
-- (void)setMovieData:(id)a3;
-- (void)setMovieRemoteURL:(id)a3;
-- (void)setPosterImageData:(id)a3;
-- (void)setStreaming:(BOOL)a3;
-- (void)setStyle:(id)a3;
-- (void)setUrlForMPMPC:(id)a3;
+- (void)p_setPropertiesFromLoadedAsset:(id)asset;
+- (void)setAudioOnlyImageData:(id)data;
+- (void)setImportedAuxiliaryMovieData:(id)data;
+- (void)setMovieData:(id)data;
+- (void)setMovieRemoteURL:(id)l;
+- (void)setPosterImageData:(id)data;
+- (void)setStreaming:(BOOL)streaming;
+- (void)setStyle:(id)style;
+- (void)setUrlForMPMPC:(id)c;
 @end
 
 @implementation TSDMovieInfo
 
-- (void)setMovieData:(id)a3
+- (void)setMovieData:(id)data
 {
   [(TSPObject *)self willModify];
-  v5 = a3;
+  dataCopy = data;
 
-  self->mMovieData = a3;
+  self->mMovieData = data;
 }
 
-- (void)setMovieRemoteURL:(id)a3
+- (void)setMovieRemoteURL:(id)l
 {
   [(TSPObject *)self willModify];
-  v5 = [a3 copy];
+  v5 = [l copy];
 
   self->mMovieRemoteURL = v5;
 }
 
-- (void)setImportedAuxiliaryMovieData:(id)a3
+- (void)setImportedAuxiliaryMovieData:(id)data
 {
   [(TSPObject *)self willModify];
-  v5 = a3;
+  dataCopy = data;
 
-  self->mImportedAuxiliaryMovieData = a3;
+  self->mImportedAuxiliaryMovieData = data;
 }
 
-- (void)setAudioOnlyImageData:(id)a3
+- (void)setAudioOnlyImageData:(id)data
 {
   [(TSPObject *)self willModify];
-  v5 = a3;
+  dataCopy = data;
 
-  self->mAudioOnlyImageData = a3;
+  self->mAudioOnlyImageData = data;
 }
 
-- (void)setUrlForMPMPC:(id)a3
+- (void)setUrlForMPMPC:(id)c
 {
   [(TSPObject *)self willModify];
-  v5 = a3;
+  cCopy = c;
 
-  self->mURLForMPMPC = a3;
+  self->mURLForMPMPC = c;
 }
 
-- (TSDMovieInfo)initWithContext:(id)a3 geometry:(id)a4
+- (TSDMovieInfo)initWithContext:(id)context geometry:(id)geometry
 {
-  v4 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMovieInfo initWithContext:geometry:]"];
-  [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieInfo.m"), 81, @"please call the other init methods"}];
+  [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieInfo.m"), 81, @"please call the other init methods"}];
   return 0;
 }
 
-- (TSDMovieInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5
+- (TSDMovieInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style
 {
   v9.receiver = self;
   v9.super_class = TSDMovieInfo;
-  v6 = [(TSDMediaInfo *)&v9 initWithContext:a3 geometry:a4];
+  v6 = [(TSDMediaInfo *)&v9 initWithContext:context geometry:geometry];
   v7 = v6;
   if (v6)
   {
-    [(TSDMovieInfo *)v6 setStyle:a5];
+    [(TSDMovieInfo *)v6 setStyle:style];
     v7->mVolume = 1.0;
   }
 
   return v7;
 }
 
-- (TSDMovieInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 movieData:(id)a6 loadedAsset:(id)a7
+- (TSDMovieInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style movieData:(id)data loadedAsset:(id)asset
 {
-  v9 = [(TSDMovieInfo *)self initWithContext:a3 geometry:a4 style:a5];
+  v9 = [(TSDMovieInfo *)self initWithContext:context geometry:geometry style:style];
   if (v9)
   {
-    v9->mMovieData = a6;
-    [(TSDMovieInfo *)v9 p_setPropertiesFromLoadedAsset:a7];
+    v9->mMovieData = data;
+    [(TSDMovieInfo *)v9 p_setPropertiesFromLoadedAsset:asset];
   }
 
   return v9;
 }
 
-- (TSDMovieInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 movieRemoteURL:(id)a6 loadedAsset:(id)a7
+- (TSDMovieInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style movieRemoteURL:(id)l loadedAsset:(id)asset
 {
-  v9 = [(TSDMovieInfo *)self initWithContext:a3 geometry:a4 style:a5];
+  v9 = [(TSDMovieInfo *)self initWithContext:context geometry:geometry style:style];
   if (v9)
   {
-    v9->mMovieRemoteURL = [a6 copy];
-    [(TSDMovieInfo *)v9 p_setPropertiesFromLoadedAsset:a7];
+    v9->mMovieRemoteURL = [l copy];
+    [(TSDMovieInfo *)v9 p_setPropertiesFromLoadedAsset:asset];
   }
 
   return v9;
@@ -128,14 +128,14 @@
   [(TSDDrawableInfo *)&v3 dealloc];
 }
 
-- (id)copyWithContext:(id)a3 stylesheet:(id)a4
+- (id)copyWithContext:(id)context stylesheet:(id)stylesheet
 {
   v14.receiver = self;
   v14.super_class = TSDMovieInfo;
   v7 = [(TSDMediaInfo *)&v14 copyWithContext:?];
   if (v7)
   {
-    *(v7 + 21) = [(TSPData *)self->mMovieData copyWithContext:a3];
+    *(v7 + 21) = [(TSPData *)self->mMovieData copyWithContext:context];
     *(v7 + 22) = [(NSURL *)self->mMovieRemoteURL copy];
     *(v7 + 25) = *&self->mStartTime;
     *(v7 + 26) = *&self->mEndTime;
@@ -144,17 +144,17 @@
     *(v7 + 64) = LODWORD(self->mVolume);
     v7[288] = self->mAudioOnly;
     v7[260] = self->mStreaming;
-    *(v7 + 24) = [(TSPData *)self->mAudioOnlyImageData copyWithContext:a3];
-    *(v7 + 28) = [(TSPData *)self->mPosterImageData copyWithContext:a3];
+    *(v7 + 24) = [(TSPData *)self->mAudioOnlyImageData copyWithContext:context];
+    *(v7 + 28) = [(TSPData *)self->mPosterImageData copyWithContext:context];
     *(v7 + 232) = self->mNaturalSize;
     v7[268] = self->mAllowsAirPlayVideo;
     v7[269] = self->mUsesAirPlayVideoWhileAirPlayScreenIsActive;
     *(v7 + 66) = self->mControlStyle;
     *(v7 + 34) = [(NSURL *)self->mURLForMPMPC copy];
-    if (a4)
+    if (stylesheet)
     {
 LABEL_11:
-      v12 = [[TSSStyleMapper alloc] initWithTargetStylesheet:a4 newStyleDOLCContext:0];
+      v12 = [[TSSStyleMapper alloc] initWithTargetStylesheet:stylesheet newStyleDOLCContext:0];
       objc_opt_class();
       [(TSSStyleMapper *)v12 mappedStyleForStyle:self->mStyle];
       *(v7 + 35) = TSUDynamicCast();
@@ -162,10 +162,10 @@ LABEL_11:
       return v7;
     }
 
-    [a3 documentObject];
+    [context documentObject];
     if (objc_opt_respondsToSelector())
     {
-      v8 = a3;
+      contextCopy = context;
     }
 
     else
@@ -173,24 +173,24 @@ LABEL_11:
       [(TSPObjectContext *)[(TSPObject *)self context] documentObject];
       if ((objc_opt_respondsToSelector() & 1) == 0)
       {
-        v9 = [(TSSStyle *)self->mStyle stylesheet];
+        stylesheet = [(TSSStyle *)self->mStyle stylesheet];
 LABEL_9:
-        a4 = v9;
-        if (!v9)
+        stylesheet = stylesheet;
+        if (!stylesheet)
         {
-          v10 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler = [MEMORY[0x277D6C290] currentHandler];
           v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMovieInfo copyWithContext:stylesheet:]"];
-          [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieInfo.m"), 188, @"invalid nil value for '%s'", "stylesheet"}];
-          a4 = 0;
+          [currentHandler handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieInfo.m"), 188, @"invalid nil value for '%s'", "stylesheet"}];
+          stylesheet = 0;
         }
 
         goto LABEL_11;
       }
 
-      v8 = [(TSPObject *)self context];
+      contextCopy = [(TSPObject *)self context];
     }
 
-    v9 = [[(TSPObjectContext *)v8 documentObject] performSelector:sel_stylesheet];
+    stylesheet = [[(TSPObjectContext *)contextCopy documentObject] performSelector:sel_stylesheet];
     goto LABEL_9;
   }
 
@@ -201,16 +201,16 @@ LABEL_9:
 {
   if ([(TSDMovieInfo *)self movieData])
   {
-    v3 = [(TSDMovieInfo *)self movieData];
+    movieData = [(TSDMovieInfo *)self movieData];
 
-    return [(TSPData *)v3 filename];
+    return [(TSPData *)movieData filename];
   }
 
   else
   {
-    v5 = [(TSDMovieInfo *)self movieRemoteURL];
+    movieRemoteURL = [(TSDMovieInfo *)self movieRemoteURL];
 
-    return [(NSURL *)v5 lastPathComponent];
+    return [(NSURL *)movieRemoteURL lastPathComponent];
   }
 }
 
@@ -218,29 +218,29 @@ LABEL_9:
 {
   if ([(TSDMovieInfo *)self movieData])
   {
-    v3 = [(TSDMovieInfo *)self movieData];
+    movieData = [(TSDMovieInfo *)self movieData];
 
-    return [(TSPData *)v3 type];
+    return [(TSPData *)movieData type];
   }
 
   else
   {
     v6 = 0;
-    v5 = [(TSDMovieInfo *)self movieRemoteURL];
-    [(NSURL *)v5 getResourceValue:&v6 forKey:*MEMORY[0x277CBE918] error:0];
+    movieRemoteURL = [(TSDMovieInfo *)self movieRemoteURL];
+    [(NSURL *)movieRemoteURL getResourceValue:&v6 forKey:*MEMORY[0x277CBE918] error:0];
     return v6;
   }
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  if (self->mStyle != a3)
+  if (self->mStyle != style)
   {
     [(TSDDrawableInfo *)self willChangeProperties:+[TSDMediaStyle properties]];
     [(TSPObject *)self willModify];
-    v5 = a3;
+    styleCopy = style;
 
-    self->mStyle = a3;
+    self->mStyle = style;
   }
 }
 
@@ -258,14 +258,14 @@ LABEL_9:
   return [v4 presetKind];
 }
 
-- (void)setPosterImageData:(id)a3
+- (void)setPosterImageData:(id)data
 {
-  if (self->mPosterImageData != a3)
+  if (self->mPosterImageData != data)
   {
     [(TSPObject *)self willModify];
-    v5 = a3;
+    dataCopy = data;
 
-    self->mPosterImageData = a3;
+    self->mPosterImageData = data;
   }
 }
 
@@ -278,34 +278,34 @@ LABEL_9:
   return result;
 }
 
-- (void)p_setPropertiesFromLoadedAsset:(id)a3
+- (void)p_setPropertiesFromLoadedAsset:(id)asset
 {
   v27 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!asset)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMovieInfo p_setPropertiesFromLoadedAsset:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieInfo.m"), 276, @"invalid nil value for '%s'", "asset"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieInfo.m"), 276, @"invalid nil value for '%s'", "asset"}];
   }
 
-  if ([a3 statusOfValueForKey:@"duration" error:0] != 2)
+  if ([asset statusOfValueForKey:@"duration" error:0] != 2)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMovieInfo p_setPropertiesFromLoadedAsset:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieInfo.m"), 277, @"Invalid parameter not satisfying: %s", "[asset statusOfValueForKey:@duration error:NULL] == AVKeyValueStatusLoaded"}];
+    [currentHandler2 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieInfo.m"), 277, @"Invalid parameter not satisfying: %s", "[asset statusOfValueForKey:@duration error:NULL] == AVKeyValueStatusLoaded"}];
   }
 
-  if ([a3 statusOfValueForKey:@"tracks" error:0] != 2)
+  if ([asset statusOfValueForKey:@"tracks" error:0] != 2)
   {
-    v9 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMovieInfo p_setPropertiesFromLoadedAsset:]"];
-    [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieInfo.m"), 278, @"Invalid parameter not satisfying: %s", "[asset statusOfValueForKey:@tracks error:NULL] == AVKeyValueStatusLoaded"}];
+    [currentHandler3 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieInfo.m"), 278, @"Invalid parameter not satisfying: %s", "[asset statusOfValueForKey:@tracks error:NULL] == AVKeyValueStatusLoaded"}];
   }
 
   memset(&v25, 0, sizeof(v25));
-  if (a3)
+  if (asset)
   {
-    [a3 duration];
+    [asset duration];
   }
 
   else
@@ -321,8 +321,8 @@ LABEL_9:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v12 = [a3 tracks];
-  v13 = [v12 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  tracks = [asset tracks];
+  v13 = [tracks countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v13)
   {
     v14 = v13;
@@ -334,7 +334,7 @@ LABEL_9:
       {
         if (*v21 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(tracks);
         }
 
         v18 = *(*(&v20 + 1) + 8 * i);
@@ -345,7 +345,7 @@ LABEL_9:
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v14 = [tracks countByEnumeratingWithState:&v20 objects:v26 count:16];
       if (v14)
       {
         continue;
@@ -360,14 +360,14 @@ LABEL_21:
   [(TSDMovieInfo *)self setAudioOnly:v19];
 }
 
-- (void)setStreaming:(BOOL)a3
+- (void)setStreaming:(BOOL)streaming
 {
-  if (self->mStreaming != a3)
+  if (self->mStreaming != streaming)
   {
-    v3 = a3;
+    streamingCopy = streaming;
     [(TSPObject *)self willModify];
-    self->mStreaming = v3;
-    if (v3)
+    self->mStreaming = streamingCopy;
+    if (streamingCopy)
     {
 
       [(TSDDrawableInfo *)self setAspectRatioLocked:0];
@@ -385,9 +385,9 @@ LABEL_21:
 
   else
   {
-    v5 = [(TSDMovieInfo *)self isStreaming];
+    isStreaming = [(TSDMovieInfo *)self isStreaming];
     v3 = MEMORY[0x277CBEB98];
-    if (!v5)
+    if (!isStreaming)
     {
       return [MEMORY[0x277CBEB98] setWithObjects:{kTSDAnimationFilterStandard, kTSDAnimationFilterMovie, 0}];
     }
@@ -400,15 +400,15 @@ LABEL_21:
   return [v3 setWithObject:v6];
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3
+- (int64_t)mixingTypeWithObject:(id)object
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __37__TSDMovieInfo_mixingTypeWithObject___block_invoke;
   v4[3] = &unk_279D48738;
-  v4[4] = a3;
+  v4[4] = object;
   v4[5] = self;
-  return TSDMixingTypeWithObject(self, a3, v4);
+  return TSDMixingTypeWithObject(self, object, v4);
 }
 
 uint64_t __37__TSDMovieInfo_mixingTypeWithObject___block_invoke(uint64_t a1)
@@ -467,16 +467,16 @@ uint64_t __37__TSDMovieInfo_mixingTypeWithObject___block_invoke(uint64_t a1)
   return TSDMixingTypeBestFromMixingTypes(v6, v10);
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __49__TSDMovieInfo_mixedObjectWithFraction_ofObject___block_invoke;
   v5[3] = &unk_279D48760;
-  *&v5[6] = a3;
+  *&v5[6] = fraction;
   v5[4] = self;
-  v5[5] = a4;
-  return TSDMixingMixedObjectWithFraction(self, a4, v5);
+  v5[5] = object;
+  return TSDMixingMixedObjectWithFraction(self, object, v5);
 }
 
 id __49__TSDMovieInfo_mixedObjectWithFraction_ofObject___block_invoke(uint64_t a1)
@@ -492,14 +492,14 @@ id __49__TSDMovieInfo_mixedObjectWithFraction_ofObject___block_invoke(uint64_t a
   return v2;
 }
 
-- (id)makeAVAssetWithOptions:(id)a3
+- (id)makeAVAssetWithOptions:(id)options
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v5 = [(TSDMovieInfo *)self movieData];
-  if (v5)
+  movieData = [(TSDMovieInfo *)self movieData];
+  if (movieData)
   {
 
-    return [(TSPData *)v5 AVAssetWithOptions:a3];
+    return [(TSPData *)movieData AVAssetWithOptions:options];
   }
 
   else
@@ -512,9 +512,9 @@ id __49__TSDMovieInfo_mixedObjectWithFraction_ofObject___block_invoke(uint64_t a
       v11[0] = &unk_287DDD500;
       v8 = [objc_msgSend(MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:{1), "mutableCopy"}];
       v9 = v8;
-      if (a3)
+      if (options)
       {
-        [v8 addEntriesFromDictionary:a3];
+        [v8 addEntriesFromDictionary:options];
       }
 
       return [MEMORY[0x277CE6650] URLAssetWithURL:v7 options:v9];
@@ -524,9 +524,9 @@ id __49__TSDMovieInfo_mixedObjectWithFraction_ofObject___block_invoke(uint64_t a
   return result;
 }
 
-- (id)makePosterImageGeneratorWithAVAsset:(id)a3
+- (id)makePosterImageGeneratorWithAVAsset:(id)asset
 {
-  v3 = [objc_alloc(MEMORY[0x277CE6408]) initWithAsset:a3];
+  v3 = [objc_alloc(MEMORY[0x277CE6408]) initWithAsset:asset];
   v7 = *MEMORY[0x277CC08F0];
   v6 = v7;
   v8 = *(MEMORY[0x277CC08F0] + 16);
@@ -539,14 +539,14 @@ id __49__TSDMovieInfo_mixedObjectWithFraction_ofObject___block_invoke(uint64_t a
   return v3;
 }
 
-- (id)generateEmptyPosterImageForContext:(id)a3
+- (id)generateEmptyPosterImageForContext:(id)context
 {
   [(TSDMediaInfo *)self originalSize];
   if (v4 <= 0.0 || v5 <= 0.0)
   {
-    v10 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMovieInfo generateEmptyPosterImageForContext:]"];
-    [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieInfo.m"), 474, @"Movie's oriignal size should be nonzero."}];
+    [currentHandler handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieInfo.m"), 474, @"Movie's oriignal size should be nonzero."}];
     return 0;
   }
 
@@ -557,22 +557,22 @@ id __49__TSDMovieInfo_mixedObjectWithFraction_ofObject___block_invoke(uint64_t a
     v12.origin.x = TSDRectWithSize();
     CGContextFillRect(v6, v12);
     Image = CGBitmapContextCreateImage(v6);
-    v8 = [TSPData dataFromNSData:MEMORY[0x26D6A91F0]() filename:@"posterImage.png" context:a3];
+    v8 = [TSPData dataFromNSData:MEMORY[0x26D6A91F0]() filename:@"posterImage.png" context:context];
     CGImageRelease(Image);
     CGContextRelease(v6);
     return v8;
   }
 }
 
-- (id)synchronouslyGenerateDefaultPosterImageForContext:(id)a3
+- (id)synchronouslyGenerateDefaultPosterImageForContext:(id)context
 {
-  v5 = [(TSDMovieInfo *)self makeAVAsset];
-  v6 = [(TSDMovieInfo *)self makePosterImageGeneratorWithAVAsset:v5];
+  makeAVAsset = [(TSDMovieInfo *)self makeAVAsset];
+  v6 = [(TSDMovieInfo *)self makePosterImageGeneratorWithAVAsset:makeAVAsset];
   v16 = 0;
   CMTimeMakeWithSeconds(&time, self->mPosterTime, 90000);
-  if (v5)
+  if (makeAVAsset)
   {
-    [v5 duration];
+    [makeAVAsset duration];
   }
 
   else
@@ -587,13 +587,13 @@ id __49__TSDMovieInfo_mixedObjectWithFraction_ofObject___block_invoke(uint64_t a
   if (v7)
   {
     v8 = v7;
-    v9 = [TSPData dataFromNSData:MEMORY[0x26D6A91F0]() filename:@"posterImage.png" context:a3];
+    v9 = [TSPData dataFromNSData:MEMORY[0x26D6A91F0]() filename:@"posterImage.png" context:context];
     CGImageRelease(v8);
   }
 
   else if (v16 && [v16 code] == -11832 && (v10 = objc_msgSend(v16, "domain"), objc_msgSend(v10, "isEqualToString:", *MEMORY[0x277CE5DC0])))
   {
-    return [(TSDMovieInfo *)self generateEmptyPosterImageForContext:a3];
+    return [(TSDMovieInfo *)self generateEmptyPosterImageForContext:context];
   }
 
   else
@@ -604,9 +604,9 @@ id __49__TSDMovieInfo_mixedObjectWithFraction_ofObject___block_invoke(uint64_t a
   return v9;
 }
 
-- (BOOL)containsProperty:(int)a3
+- (BOOL)containsProperty:(int)property
 {
-  if ((a3 - 532) < 7)
+  if ((property - 532) < 7)
   {
     return 1;
   }
@@ -618,15 +618,15 @@ id __49__TSDMovieInfo_mixedObjectWithFraction_ofObject___block_invoke(uint64_t a
   return [(TSDDrawableInfo *)&v6 containsProperty:?];
 }
 
-- (id)objectForProperty:(int)a3
+- (id)objectForProperty:(int)property
 {
-  if (a3 == 533)
+  if (property == 533)
   {
 
     return [(TSDMovieInfo *)self posterImageData];
   }
 
-  else if (a3 == 532)
+  else if (property == 532)
   {
 
     return [(TSDMovieInfo *)self movieData];
@@ -642,9 +642,9 @@ id __49__TSDMovieInfo_mixedObjectWithFraction_ofObject___block_invoke(uint64_t a
   }
 }
 
-- (double)doubleValueForProperty:(int)a3
+- (double)doubleValueForProperty:(int)property
 {
-  switch(a3)
+  switch(property)
   {
     case 536:
 
@@ -670,9 +670,9 @@ id __49__TSDMovieInfo_mixedObjectWithFraction_ofObject___block_invoke(uint64_t a
   return result;
 }
 
-- (float)floatValueForProperty:(int)a3
+- (float)floatValueForProperty:(int)property
 {
-  if (a3 == 538)
+  if (property == 538)
   {
 
     [(TSDMovieInfo *)self volume];
@@ -690,9 +690,9 @@ id __49__TSDMovieInfo_mixedObjectWithFraction_ofObject___block_invoke(uint64_t a
   return result;
 }
 
-- (int)intValueForProperty:(int)a3
+- (int)intValueForProperty:(int)property
 {
-  if (a3 == 537)
+  if (property == 537)
   {
     return [(TSDMovieInfo *)self loopOption];
   }

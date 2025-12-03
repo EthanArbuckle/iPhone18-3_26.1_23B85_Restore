@@ -1,21 +1,21 @@
 @interface AFLocalizationManager
 - (AFLocalizationManager)init;
-- (AFLocalizationManager)initWithLocaleIdentifier:(id)a3;
+- (AFLocalizationManager)initWithLocaleIdentifier:(id)identifier;
 - (id)_truncationSentinel;
-- (id)accessibilityLabelForAFTextContentType:(id)a3;
-- (id)accessibilityLabelsForSecureHeaders:(id)a3 secureContents:(id)a4 truncationSentinel:(id)a5;
+- (id)accessibilityLabelForAFTextContentType:(id)type;
+- (id)accessibilityLabelsForSecureHeaders:(id)headers secureContents:(id)contents truncationSentinel:(id)sentinel;
 - (id)initForLocalizedStrings;
-- (id)localizedStringForKey:(id)a3;
-- (void)setLocaleIdentifier:(id)a3;
+- (id)localizedStringForKey:(id)key;
+- (void)setLocaleIdentifier:(id)identifier;
 @end
 
 @implementation AFLocalizationManager
 
 - (AFLocalizationManager)init
 {
-  v3 = [MEMORY[0x277CBEAF8] currentLocale];
-  v4 = [v3 localeIdentifier];
-  v5 = [(AFLocalizationManager *)self initWithLocaleIdentifier:v4];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  v5 = [(AFLocalizationManager *)self initWithLocaleIdentifier:localeIdentifier];
 
   return v5;
 }
@@ -27,59 +27,59 @@
   v2 = [(AFLocalizationManager *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAF8] currentLocale];
-    v4 = [v3 localeIdentifier];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
     localeIdentifier = v2->_localeIdentifier;
-    v2->_localeIdentifier = v4;
+    v2->_localeIdentifier = localeIdentifier;
   }
 
   return v2;
 }
 
-- (AFLocalizationManager)initWithLocaleIdentifier:(id)a3
+- (AFLocalizationManager)initWithLocaleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = AFLocalizationManager;
   v6 = [(AFLocalizationManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_localeIdentifier, a3);
+    objc_storeStrong(&v6->_localeIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (void)setLocaleIdentifier:(id)a3
+- (void)setLocaleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   localeIdentifier = self->_localeIdentifier;
   p_localeIdentifier = &self->_localeIdentifier;
-  v8 = v5;
-  if (([v5 isEqualToString:localeIdentifier] & 1) == 0)
+  v8 = identifierCopy;
+  if (([identifierCopy isEqualToString:localeIdentifier] & 1) == 0)
   {
-    objc_storeStrong(p_localeIdentifier, a3);
+    objc_storeStrong(p_localeIdentifier, identifier);
   }
 }
 
-- (id)localizedStringForKey:(id)a3
+- (id)localizedStringForKey:(id)key
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  keyCopy = key;
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v5 = [MEMORY[0x277CBEAF8] _deviceLanguage];
-  v6 = [v4 preferredLocalizations];
+  _deviceLanguage = [MEMORY[0x277CBEAF8] _deviceLanguage];
+  preferredLocalizations = [v4 preferredLocalizations];
   v7 = MEMORY[0x277CCA8D8];
-  v16[0] = v5;
+  v16[0] = _deviceLanguage;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-  v9 = [v7 preferredLocalizationsFromArray:v6 forPreferences:v8];
+  v9 = [v7 preferredLocalizationsFromArray:preferredLocalizations forPreferences:v8];
 
-  v10 = [v9 firstObject];
-  v11 = [v4 localizedStringForKey:v3 value:0 table:@"SuggestionContent" localization:v10];
-  if ([v11 isEqual:v3])
+  firstObject = [v9 firstObject];
+  v11 = [v4 localizedStringForKey:keyCopy value:0 table:@"SuggestionContent" localization:firstObject];
+  if ([v11 isEqual:keyCopy])
   {
-    v12 = [v4 localizedStringForKey:v3 value:&stru_28537ABC8 table:@"SuggestionContent"];
+    v12 = [v4 localizedStringForKey:keyCopy value:&stru_28537ABC8 table:@"SuggestionContent"];
   }
 
   else
@@ -102,35 +102,35 @@
   arc4random_buf(__buf, 0x10uLL);
   v2 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:__buf];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [v2 UUIDString];
-  v5 = [v3 stringWithFormat:@"*%@*", v4];
+  uUIDString = [v2 UUIDString];
+  v5 = [v3 stringWithFormat:@"*%@*", uUIDString];
 
   v6 = *MEMORY[0x277D85DE8];
 
   return v5;
 }
 
-- (id)accessibilityLabelsForSecureHeaders:(id)a3 secureContents:(id)a4 truncationSentinel:(id)a5
+- (id)accessibilityLabelsForSecureHeaders:(id)headers secureContents:(id)contents truncationSentinel:(id)sentinel
 {
   *&v30[5] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
-  if ([v7 count])
+  headersCopy = headers;
+  contentsCopy = contents;
+  sentinelCopy = sentinel;
+  v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(headersCopy, "count")}];
+  if ([headersCopy count])
   {
     v11 = 0;
-    v26 = v9;
+    v26 = sentinelCopy;
     do
     {
-      v12 = [v7 objectAtIndex:v11];
-      v13 = [v12 stringByReplacingOccurrencesOfString:v9 withString:&stru_28537ABC8];
+      v12 = [headersCopy objectAtIndex:v11];
+      v13 = [v12 stringByReplacingOccurrencesOfString:sentinelCopy withString:&stru_28537ABC8];
 
-      v14 = [v8 objectAtIndex:v11];
+      v14 = [contentsCopy objectAtIndex:v11];
       if ([v13 length] && objc_msgSend(v14, "length"))
       {
         v15 = v10;
-        v16 = v8;
+        v16 = contentsCopy;
         v17 = [(AFLocalizationManager *)self localizedStringForKey:@"PROACTIVE_CANDIDATE_ACCESSIBILITY_LABEL"];
         v28 = 0;
         v18 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v17 validFormatSpecifiers:@"%@%@" error:&v28, v13, v14];
@@ -152,9 +152,9 @@
           }
         }
 
-        v8 = v16;
+        contentsCopy = v16;
         v10 = v15;
-        v9 = v26;
+        sentinelCopy = v26;
         goto LABEL_17;
       }
 
@@ -181,7 +181,7 @@ LABEL_17:
       ++v11;
     }
 
-    while (v11 < [v7 count]);
+    while (v11 < [headersCopy count]);
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -189,23 +189,23 @@ LABEL_17:
   return v10;
 }
 
-- (id)accessibilityLabelForAFTextContentType:(id)a3
+- (id)accessibilityLabelForAFTextContentType:(id)type
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  typeCopy = type;
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v5 = [MEMORY[0x277CBEAF8] _deviceLanguage];
-  v6 = [v4 preferredLocalizations];
+  _deviceLanguage = [MEMORY[0x277CBEAF8] _deviceLanguage];
+  preferredLocalizations = [v4 preferredLocalizations];
   v7 = MEMORY[0x277CCA8D8];
-  v16[0] = v5;
+  v16[0] = _deviceLanguage;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-  v9 = [v7 preferredLocalizationsFromArray:v6 forPreferences:v8];
+  v9 = [v7 preferredLocalizationsFromArray:preferredLocalizations forPreferences:v8];
 
-  v10 = [v9 firstObject];
-  v11 = [v4 localizedStringForKey:v3 value:0 table:@"AXAFTextContentType" localization:v10];
-  if ([v11 isEqual:v3])
+  firstObject = [v9 firstObject];
+  v11 = [v4 localizedStringForKey:typeCopy value:0 table:@"AXAFTextContentType" localization:firstObject];
+  if ([v11 isEqual:typeCopy])
   {
-    v12 = [v4 localizedStringForKey:v3 value:&stru_28537ABC8 table:@"AXAFTextContentType"];
+    v12 = [v4 localizedStringForKey:typeCopy value:&stru_28537ABC8 table:@"AXAFTextContentType"];
   }
 
   else

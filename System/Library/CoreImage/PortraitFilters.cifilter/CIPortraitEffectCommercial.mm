@@ -207,22 +207,22 @@
 
             if (v27 && v29 && v31)
             {
-              v32 = [[LightingFacePoints alloc] initWithFaceLandmarkDictionary:v25 forImageRect:v119, v118, v117, v116];
-              v33 = [(LightingFacePoints *)v32 leftKickLights];
-              v123 = [CIVector vectorWithCGPoint:*v33, v33[1]];
-              v34 = [(LightingFacePoints *)v32 leftKickLights];
-              v122 = [CIVector vectorWithCGPoint:v34[1].x, v34[1].y];
-              v35 = [(LightingFacePoints *)v32 leftKickLights];
-              v121 = [CIVector vectorWithCGPoint:v35[2].x, v35[2].y];
-              v36 = [(LightingFacePoints *)v32 rightKickLights];
-              v37 = [CIVector vectorWithCGPoint:*v36, v36[1]];
+              v116 = [[LightingFacePoints alloc] initWithFaceLandmarkDictionary:v25 forImageRect:v119, v118, v117, v116];
+              leftKickLights = [(LightingFacePoints *)v116 leftKickLights];
+              v123 = [CIVector vectorWithCGPoint:*leftKickLights, leftKickLights[1]];
+              leftKickLights2 = [(LightingFacePoints *)v116 leftKickLights];
+              v122 = [CIVector vectorWithCGPoint:leftKickLights2[1].x, leftKickLights2[1].y];
+              leftKickLights3 = [(LightingFacePoints *)v116 leftKickLights];
+              v121 = [CIVector vectorWithCGPoint:leftKickLights3[2].x, leftKickLights3[2].y];
+              rightKickLights = [(LightingFacePoints *)v116 rightKickLights];
+              v37 = [CIVector vectorWithCGPoint:*rightKickLights, rightKickLights[1]];
               v38 = v20;
-              v39 = [(LightingFacePoints *)v32 rightKickLights];
-              v40 = [CIVector vectorWithCGPoint:v39[1].x, v39[1].y];
-              v41 = [(LightingFacePoints *)v32 rightKickLights];
-              v42 = [CIVector vectorWithCGPoint:v41[2].x, v41[2].y];
+              rightKickLights2 = [(LightingFacePoints *)v116 rightKickLights];
+              v40 = [CIVector vectorWithCGPoint:rightKickLights2[1].x, rightKickLights2[1].y];
+              rightKickLights3 = [(LightingFacePoints *)v116 rightKickLights];
+              v42 = [CIVector vectorWithCGPoint:rightKickLights3[2].x, rightKickLights3[2].y];
               v126 = [v25 objectForKeyedSubscript:@"orientation"];
-              [(LightingFacePoints *)v32 faceWidth];
+              [(LightingFacePoints *)v116 faceWidth];
               v44 = v43 / v117;
               [(NSNumber *)self->super.inputScale floatValue];
               v144[0] = @"inputImage";
@@ -250,11 +250,11 @@
               v145[9] = v126;
               v145[10] = inputKickLight;
               v48 = [(CIImage *)v38 imageByApplyingFilter:@"CIPortraitLightingSide" withInputParameters:[NSDictionary dictionaryWithObjects:v145 forKeys:v144 count:11]];
-              [(LightingFacePoints *)v32 centerNose];
+              [(LightingFacePoints *)v116 centerNose];
               v49 = [CIVector vectorWithCGPoint:?];
-              [(LightingFacePoints *)v32 bottomShadow];
+              [(LightingFacePoints *)v116 bottomShadow];
               v50 = [CIVector vectorWithCGPoint:?];
-              [(LightingFacePoints *)v32 bottomShadow];
+              [(LightingFacePoints *)v116 bottomShadow];
               v51 = [CIVector vectorWithCGPoint:?];
               v142[0] = @"inputImage";
               v142[1] = @"inputCenter1";
@@ -265,16 +265,16 @@
               v143[2] = v50;
               v143[3] = v51;
               v142[4] = @"inputHeight1";
-              [(LightingFacePoints *)v32 faceHeight];
+              [(LightingFacePoints *)v116 faceHeight];
               v143[4] = [NSNumber numberWithDouble:v52 * 0.75];
               v142[5] = @"inputWidth1";
-              [(LightingFacePoints *)v32 faceWidth];
+              [(LightingFacePoints *)v116 faceWidth];
               v143[5] = [NSNumber numberWithDouble:v53 * 0.45];
               v142[6] = @"inputHeight2";
-              [(LightingFacePoints *)v32 faceHeight];
+              [(LightingFacePoints *)v116 faceHeight];
               v143[6] = [NSNumber numberWithDouble:v54 * 0.55];
               v142[7] = @"inputWidth2";
-              [(LightingFacePoints *)v32 faceWidth];
+              [(LightingFacePoints *)v116 faceWidth];
               v143[7] = [NSNumber numberWithDouble:v55 * 0.55];
               v143[8] = &off_7A610;
               v142[8] = @"inputRotate2";
@@ -290,13 +290,13 @@
                 v57 = 1070141403;
               }
 
-              [(LightingFacePoints *)v32 centerNose];
+              [(LightingFacePoints *)v116 centerNose];
               v59 = v58;
-              [(LightingFacePoints *)v32 centerNose];
+              [(LightingFacePoints *)v116 centerNose];
               v61 = v60;
-              [(LightingFacePoints *)v32 centerChin];
+              [(LightingFacePoints *)v116 centerChin];
               v63 = v62;
-              [(LightingFacePoints *)v32 centerChin];
+              [(LightingFacePoints *)v116 centerChin];
               v65 = [CIVector vectorWithX:v59 Y:v61 Z:v63 W:v64];
               v140[0] = @"inputImage";
               v140[1] = @"inputCenter";
@@ -308,19 +308,19 @@
               LODWORD(v66) = v57;
               v141[3] = [NSNumber numberWithFloat:v66];
               v140[4] = @"inputWidth";
-              [(LightingFacePoints *)v32 faceWidth];
+              [(LightingFacePoints *)v116 faceWidth];
               v141[4] = [NSNumber numberWithDouble:v67 * 0.275];
               v140[5] = @"inputHeight";
-              [(LightingFacePoints *)v32 faceHeight];
+              [(LightingFacePoints *)v116 faceHeight];
               v141[5] = [NSNumber numberWithDouble:v68 * 0.45];
               v69 = [(CIImage *)v56 imageByApplyingFilter:@"CIPortraitLightingSpot" withInputParameters:[NSDictionary dictionaryWithObjects:v141 forKeys:v140 count:6]];
-              [(LightingFacePoints *)v32 centerChin];
+              [(LightingFacePoints *)v116 centerChin];
               v71 = v70;
-              [(LightingFacePoints *)v32 centerChin];
+              [(LightingFacePoints *)v116 centerChin];
               v73 = v72;
-              [(LightingFacePoints *)v32 centerChin];
+              [(LightingFacePoints *)v116 centerChin];
               v75 = v74;
-              [(LightingFacePoints *)v32 centerChin];
+              [(LightingFacePoints *)v116 centerChin];
               v77 = [CIVector vectorWithX:v71 Y:v73 Z:v75 W:v76];
               v138[0] = @"inputImage";
               v138[1] = @"inputCenter";
@@ -334,16 +334,16 @@
               v139[4] = &off_7A580;
               v138[4] = @"inputDarken";
               v138[5] = @"inputWidth";
-              [(LightingFacePoints *)v32 faceWidth];
+              [(LightingFacePoints *)v116 faceWidth];
               v139[5] = [NSNumber numberWithDouble:v79 * 0.035];
               v138[6] = @"inputHeight";
-              [(LightingFacePoints *)v32 faceWidth];
+              [(LightingFacePoints *)v116 faceWidth];
               v139[6] = [NSNumber numberWithDouble:v80 * 0.035];
               v81 = [(CIImage *)v69 imageByApplyingFilter:@"CIPortraitLightingSpot" withInputParameters:[NSDictionary dictionaryWithObjects:v139 forKeys:v138 count:7]];
-              v82 = [(LightingFacePoints *)v32 noseStrobe];
-              v83 = [CIVector vectorWithCGPoint:*v82, v82[1]];
-              v84 = [(LightingFacePoints *)v32 noseStrobe];
-              v85 = [CIVector vectorWithCGPoint:v84[1].x, v84[1].y];
+              noseStrobe = [(LightingFacePoints *)v116 noseStrobe];
+              v83 = [CIVector vectorWithCGPoint:*noseStrobe, noseStrobe[1]];
+              noseStrobe2 = [(LightingFacePoints *)v116 noseStrobe];
+              v85 = [CIVector vectorWithCGPoint:noseStrobe2[1].x, noseStrobe2[1].y];
               v136[0] = @"inputImage";
               v136[1] = @"inputCenter1";
               v137[0] = v81;
@@ -398,12 +398,12 @@
         inputDepthMap = [(CIImage *)inputDepthMap imageByApplyingTransform:&v127];
       }
 
-      v101 = [(CIPortraitEffectCommercial *)self _prepareDepth];
+      _prepareDepth = [(CIPortraitEffectCommercial *)self _prepareDepth];
       [(CIImage *)self->super.inputImage extent];
       inputDepthThreshold = self->inputDepthThreshold;
       v135[0] = inputDepthMap;
       v135[1] = inputDepthThreshold;
-      v107 = [v101 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v135, 2), v103, v104, v105, v106}];
+      v107 = [_prepareDepth applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v135, 2), v103, v104, v105, v106}];
       v108 = self->super.inputImage;
       v133[0] = @"inputBackgroundImage";
       v133[1] = @"inputMaskImage";
@@ -415,12 +415,12 @@
     [(NSNumber *)self->super.inputStrength floatValue];
     if (v109 < 1.0)
     {
-      v110 = [(CIPortraitEffectCommercial *)self _mixKernel];
+      _mixKernel = [(CIPortraitEffectCommercial *)self _mixKernel];
       [(CIImage *)self->super.inputImage extent];
       v132[0] = self->super.inputImage;
       v132[1] = v20;
       v132[2] = self->super.inputStrength;
-      v20 = [v110 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v132, 3), v111, v112, v113, v114}];
+      v20 = [_mixKernel applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v132, 3), v111, v112, v113, v114}];
     }
 
     return [(CIImage *)v20 _imageByRenderingToIntermediate];

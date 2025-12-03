@@ -17,13 +17,13 @@
 {
   v32 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(self, "count")}];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v7)
   {
     v8 = v7;
@@ -37,18 +37,18 @@
       {
         if (*v28 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v13 = *(*(&v27 + 1) + 8 * i);
         v14 = (*(v4 + 2))(v4, v13);
-        v15 = [v6 objectForKeyedSubscript:v13];
+        v15 = [selfCopy objectForKeyedSubscript:v13];
         v16 = *(v11 + 3872);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           [v15 parsec_dictionaryByMappingKeysUsingBlock:v4];
-          v17 = v6;
+          v17 = selfCopy;
           v18 = v8;
           v19 = v10;
           v20 = v9;
@@ -61,14 +61,14 @@
           v9 = v20;
           v10 = v19;
           v8 = v18;
-          v6 = v17;
+          selfCopy = v17;
           v4 = v26;
         }
 
         [v5 setObject:v15 forKeyedSubscript:v14];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v8);
@@ -81,7 +81,7 @@
 
 - (void)parsec_UUIDForKey:()ParsecNSDictionaryExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -100,7 +100,7 @@
 
 - (id)parsec_URLForKey:()ParsecNSDictionaryExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v1 length])
   {
@@ -125,7 +125,7 @@ LABEL_8:
 
 - (void)parsec_dictionaryForKey:()ParsecNSDictionaryExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -144,7 +144,7 @@ LABEL_8:
 
 - (void)parsec_arrayForKey:()ParsecNSDictionaryExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -163,7 +163,7 @@ LABEL_8:
 
 - (void)parsec_dateForKey:()ParsecNSDictionaryExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -182,7 +182,7 @@ LABEL_8:
 
 - (void)parsec_dataForKey:()ParsecNSDictionaryExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -201,7 +201,7 @@ LABEL_8:
 
 - (void)parsec_numberForKey:()ParsecNSDictionaryExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -220,7 +220,7 @@ LABEL_8:
 
 - (void)parsec_stringForKey:()ParsecNSDictionaryExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -239,10 +239,10 @@ LABEL_8:
 
 - (uint64_t)parsec_BOOLForKey:()ParsecNSDictionaryExtras
 {
-  v1 = [a1 parsec_numberForKey:?];
-  v2 = [v1 BOOLValue];
+  v1 = [self parsec_numberForKey:?];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 @end

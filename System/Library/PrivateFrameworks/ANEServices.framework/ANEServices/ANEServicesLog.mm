@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __24__ANEServicesLog_handle__block_invoke;
   block[3] = &unk_1E81172E0;
-  block[4] = a1;
+  block[4] = self;
   if (+[ANEServicesLog handle]::onceToken != -1)
   {
     dispatch_once(&+[ANEServicesLog handle]::onceToken, block);

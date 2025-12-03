@@ -1,21 +1,21 @@
 @interface SXEmailAction
-- (SXEmailAction)initWithRecipient:(id)a3 subject:(id)a4;
+- (SXEmailAction)initWithRecipient:(id)recipient subject:(id)subject;
 @end
 
 @implementation SXEmailAction
 
-- (SXEmailAction)initWithRecipient:(id)a3 subject:(id)a4
+- (SXEmailAction)initWithRecipient:(id)recipient subject:(id)subject
 {
-  v7 = a3;
-  v8 = a4;
+  recipientCopy = recipient;
+  subjectCopy = subject;
   v12.receiver = self;
   v12.super_class = SXEmailAction;
   v9 = [(SXEmailAction *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_subject, a4);
-    objc_storeStrong(&v10->_recipient, a3);
+    objc_storeStrong(&v9->_subject, subject);
+    objc_storeStrong(&v10->_recipient, recipient);
   }
 
   return v10;

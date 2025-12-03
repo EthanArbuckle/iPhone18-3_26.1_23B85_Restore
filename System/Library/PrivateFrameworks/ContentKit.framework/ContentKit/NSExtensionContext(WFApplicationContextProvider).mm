@@ -12,22 +12,22 @@
 
 - (BOOL)shouldReverseLayoutDirection
 {
-  v1 = [a1 extensionApplicationContextProviderDelegate];
-  v2 = [v1 extensionViewController];
-  v3 = [v2 view];
-  v4 = [v3 effectiveUserInterfaceLayoutDirection] == 1;
+  extensionApplicationContextProviderDelegate = [self extensionApplicationContextProviderDelegate];
+  extensionViewController = [extensionApplicationContextProviderDelegate extensionViewController];
+  view = [extensionViewController view];
+  v4 = [view effectiveUserInterfaceLayoutDirection] == 1;
 
   return v4;
 }
 
 - (id)keyWindowForWFApplicationContext:()WFApplicationContextProvider
 {
-  v1 = [a1 extensionApplicationContextProviderDelegate];
-  v2 = [v1 extensionViewController];
-  v3 = [v2 view];
-  v4 = [v3 window];
+  extensionApplicationContextProviderDelegate = [self extensionApplicationContextProviderDelegate];
+  extensionViewController = [extensionApplicationContextProviderDelegate extensionViewController];
+  view = [extensionViewController view];
+  window = [view window];
 
-  return v4;
+  return window;
 }
 
 - (void)setExtensionApplicationContextProviderDelegate:()WFApplicationContextProvider
@@ -37,51 +37,51 @@
   value = [v4 weakObjectsHashTable];
   [value addObject:v5];
 
-  objc_setAssociatedObject(a1, sel_extensionApplicationContextProviderDelegate, value, 1);
+  objc_setAssociatedObject(self, sel_extensionApplicationContextProviderDelegate, value, 1);
 }
 
 - (id)extensionApplicationContextProviderDelegate
 {
-  v1 = objc_getAssociatedObject(a1, sel_extensionApplicationContextProviderDelegate);
-  v2 = [v1 anyObject];
+  v1 = objc_getAssociatedObject(self, sel_extensionApplicationContextProviderDelegate);
+  anyObject = [v1 anyObject];
 
-  return v2;
+  return anyObject;
 }
 
 - (id)notificationNameForApplicationStateEvent:()WFApplicationContextProvider applicationContext:
 {
-  v4 = [a1 extensionApplicationContextProviderDelegate];
-  v5 = [v4 notificationNameForApplicationStateEvent:a3];
+  extensionApplicationContextProviderDelegate = [self extensionApplicationContextProviderDelegate];
+  v5 = [extensionApplicationContextProviderDelegate notificationNameForApplicationStateEvent:a3];
 
   return v5;
 }
 
 - (id)currentUserInterfaceTypeForWFApplicationContext:()WFApplicationContextProvider
 {
-  v4 = [a1 extensionApplicationContextProviderDelegate];
-  if (!v4)
+  extensionApplicationContextProviderDelegate = [self extensionApplicationContextProviderDelegate];
+  if (!extensionApplicationContextProviderDelegate)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"NSExtensionContext+WFApplicationContextProvider.m" lineNumber:30 description:@"The extension application context provider delegate is not set."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSExtensionContext+WFApplicationContextProvider.m" lineNumber:30 description:@"The extension application context provider delegate is not set."];
   }
 
-  v5 = [v4 currentUserInterfaceType];
+  currentUserInterfaceType = [extensionApplicationContextProviderDelegate currentUserInterfaceType];
 
-  return v5;
+  return currentUserInterfaceType;
 }
 
 - (id)bundleForWFApplicationContext:()WFApplicationContextProvider
 {
-  v4 = [a1 extensionApplicationContextProviderDelegate];
-  if (!v4)
+  extensionApplicationContextProviderDelegate = [self extensionApplicationContextProviderDelegate];
+  if (!extensionApplicationContextProviderDelegate)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"NSExtensionContext+WFApplicationContextProvider.m" lineNumber:24 description:@"The extension application context provider delegate is not set."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSExtensionContext+WFApplicationContextProvider.m" lineNumber:24 description:@"The extension application context provider delegate is not set."];
   }
 
-  v5 = [v4 bundle];
+  bundle = [extensionApplicationContextProviderDelegate bundle];
 
-  return v5;
+  return bundle;
 }
 
 @end

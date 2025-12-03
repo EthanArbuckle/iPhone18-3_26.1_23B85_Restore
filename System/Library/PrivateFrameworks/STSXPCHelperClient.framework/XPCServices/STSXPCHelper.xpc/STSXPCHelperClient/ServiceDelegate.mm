@@ -1,5 +1,5 @@
 @interface ServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (ServiceDelegate)init;
 @end
 
@@ -20,10 +20,10 @@
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ServiceDelegate listener:shouldAcceptNewConnection:]", 66, self, @"[XPCService]Processing new connection...", v8, v9, v32);
   if (self)
   {
@@ -43,26 +43,26 @@
 
   else
   {
-    v14 = sub_100023B28([STSXPCHelperEntitlementChecker alloc], v7);
+    v14 = sub_100023B28([STSXPCHelperEntitlementChecker alloc], connectionCopy);
     v17 = v14;
     if (v14 && (*(v14 + 8) & 1) != 0)
     {
       v18 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___STSHelperProtocol];
-      [v7 setExportedInterface:v18];
+      [connectionCopy setExportedInterface:v18];
 
-      v19 = v7;
+      v19 = connectionCopy;
       objc_opt_self();
       v20 = objc_opt_new();
       v21 = v20;
       if (v20)
       {
-        objc_storeStrong((v20 + 8), a4);
+        objc_storeStrong((v20 + 8), connection);
       }
 
       v22 = [STSXPCHelper alloc];
-      v23 = [v19 _queue];
+      _queue = [v19 _queue];
 
-      v24 = sub_100026CD8(v22, v23, v21);
+      v24 = sub_100026CD8(v22, _queue, v21);
       if (v21)
       {
         objc_storeStrong(v21 + 2, v24);

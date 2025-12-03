@@ -1,22 +1,22 @@
 @interface CKException
-- (CKException)initWithName:(id)a3 format:(id)a4 args:(char *)a5;
+- (CKException)initWithName:(id)name format:(id)format args:(char *)args;
 - (id)error;
 - (int)errorCode;
 @end
 
 @implementation CKException
 
-- (CKException)initWithName:(id)a3 format:(id)a4 args:(char *)a5
+- (CKException)initWithName:(id)name format:(id)format args:(char *)args
 {
   v8 = MEMORY[0x1E696AEC0];
-  v9 = a4;
-  v10 = a3;
+  formatCopy = format;
+  nameCopy = name;
   v11 = [v8 alloc];
-  v13 = objc_msgSend_initWithFormat_arguments_(v11, v12, v9, a5);
+  v13 = objc_msgSend_initWithFormat_arguments_(v11, v12, formatCopy, args);
 
   v16.receiver = self;
   v16.super_class = CKException;
-  v14 = [(CKException *)&v16 initWithName:v10 reason:v13 userInfo:0];
+  v14 = [(CKException *)&v16 initWithName:nameCopy reason:v13 userInfo:0];
 
   return v14;
 }

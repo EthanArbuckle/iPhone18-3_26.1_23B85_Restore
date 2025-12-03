@@ -1,12 +1,12 @@
 @interface FCModifyPersonalizationOperation
-+ (id)personalizationProfileFromRecord:(id)a3;
-+ (void)applyAggregates:(id)a3 toProfile:(id)a4 maxRatio:(double)a5;
-+ (void)applyChangeGroups:(id)a3 toProfile:(id)a4 treatment:(id)a5 prune:(BOOL)a6;
-+ (void)applyDeltas:(id)a3 toProfile:(id)a4 treatment:(id)a5 prune:(BOOL)a6;
-+ (void)pruneAggregates:(id)a3;
-- (BOOL)canRetryWithError:(id)a3 retryAfter:(id *)a4;
++ (id)personalizationProfileFromRecord:(id)record;
++ (void)applyAggregates:(id)aggregates toProfile:(id)profile maxRatio:(double)ratio;
++ (void)applyChangeGroups:(id)groups toProfile:(id)profile treatment:(id)treatment prune:(BOOL)prune;
++ (void)applyDeltas:(id)deltas toProfile:(id)profile treatment:(id)treatment prune:(BOOL)prune;
++ (void)pruneAggregates:(id)aggregates;
+- (BOOL)canRetryWithError:(id)error retryAfter:(id *)after;
 - (BOOL)validateOperation;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 - (void)resetForRetry;
 @end
@@ -16,9 +16,9 @@
 - (BOOL)validateOperation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(FCModifyPersonalizationOperation *)self database];
+  database = [(FCModifyPersonalizationOperation *)self database];
 
-  if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!database && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"must have a database to modify the personalization profile"];
     v15 = 136315906;
@@ -32,9 +32,9 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v15, 0x26u);
   }
 
-  v4 = [(FCModifyPersonalizationOperation *)self aggregates];
+  aggregates = [(FCModifyPersonalizationOperation *)self aggregates];
 
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!aggregates && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"must have aggregates to modify the personalization profile"];
     v15 = 136315906;
@@ -48,9 +48,9 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v15, 0x26u);
   }
 
-  v5 = [(FCModifyPersonalizationOperation *)self treatment];
+  treatment = [(FCModifyPersonalizationOperation *)self treatment];
 
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!treatment && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"must have a personalization treatment to modify the personalization profile"];
     v15 = 136315906;
@@ -64,14 +64,14 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v15, 0x26u);
   }
 
-  v6 = [(FCModifyPersonalizationOperation *)self database];
-  if (v6)
+  database2 = [(FCModifyPersonalizationOperation *)self database];
+  if (database2)
   {
-    v7 = [(FCModifyPersonalizationOperation *)self aggregates];
-    if (v7)
+    aggregates2 = [(FCModifyPersonalizationOperation *)self aggregates];
+    if (aggregates2)
     {
-      v8 = [(FCModifyPersonalizationOperation *)self treatment];
-      v9 = v8 != 0;
+      treatment2 = [(FCModifyPersonalizationOperation *)self treatment];
+      v9 = treatment2 != 0;
     }
 
     else
@@ -101,9 +101,9 @@
   v4 = v3;
   v16 = v4;
   v5 = _Block_copy(aBlock);
-  v6 = [(FCModifyPersonalizationOperation *)self remoteRecord];
+  remoteRecord = [(FCModifyPersonalizationOperation *)self remoteRecord];
 
-  if (v6)
+  if (remoteRecord)
   {
     v5[2](v5);
   }
@@ -130,8 +130,8 @@
     v13 = v4;
     v14 = v5;
     [(FCCKPrivateFetchRecordsOperation *)v7 setFetchRecordsCompletionBlock:v12];
-    v10 = [(FCModifyPersonalizationOperation *)self database];
-    [(FCCKPrivateDatabase *)v10 addOperation:v7];
+    database = [(FCModifyPersonalizationOperation *)self database];
+    [(FCCKPrivateDatabase *)database addOperation:v7];
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -249,37 +249,37 @@ void __52__FCModifyPersonalizationOperation_performOperation__block_invoke_2(uin
   }
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v10 = a3;
-  v4 = [(FCModifyPersonalizationOperation *)self saveCompletionHandler];
+  errorCopy = error;
+  saveCompletionHandler = [(FCModifyPersonalizationOperation *)self saveCompletionHandler];
 
-  if (v4)
+  if (saveCompletionHandler)
   {
-    v5 = [(FCModifyPersonalizationOperation *)self saveCompletionHandler];
-    v6 = [(FCModifyPersonalizationOperation *)self savedProfile];
-    v7 = [(FCModifyPersonalizationOperation *)self savedRecord];
-    v8 = [(FCModifyPersonalizationOperation *)self resultError];
-    if (v8)
+    saveCompletionHandler2 = [(FCModifyPersonalizationOperation *)self saveCompletionHandler];
+    savedProfile = [(FCModifyPersonalizationOperation *)self savedProfile];
+    savedRecord = [(FCModifyPersonalizationOperation *)self savedRecord];
+    resultError = [(FCModifyPersonalizationOperation *)self resultError];
+    if (resultError)
     {
-      v9 = v8;
+      v9 = resultError;
     }
 
     else
     {
-      v9 = v10;
+      v9 = errorCopy;
     }
 
-    (v5)[2](v5, v6, v7, v9);
+    (saveCompletionHandler2)[2](saveCompletionHandler2, savedProfile, savedRecord, v9);
   }
 }
 
-- (BOOL)canRetryWithError:(id)a3 retryAfter:(id *)a4
+- (BOOL)canRetryWithError:(id)error retryAfter:(id *)after
 {
-  v5 = [a3 fc_isCKErrorWithCode:14];
+  v5 = [error fc_isCKErrorWithCode:14];
   if (v5)
   {
-    *a4 = objc_opt_new();
+    *after = objc_opt_new();
   }
 
   return v5;
@@ -292,15 +292,15 @@ void __52__FCModifyPersonalizationOperation_performOperation__block_invoke_2(uin
   [(FCModifyPersonalizationOperation *)self setResultError:0];
 }
 
-+ (id)personalizationProfileFromRecord:(id)a3
++ (id)personalizationProfileFromRecord:(id)record
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  recordCopy = record;
+  v4 = recordCopy;
+  if (recordCopy)
   {
-    v5 = [v3 recordType];
-    v6 = [v5 isEqualToString:@"PersonalizationProfile"];
+    recordType = [recordCopy recordType];
+    v6 = [recordType isEqualToString:@"PersonalizationProfile"];
 
     if ((v6 & 1) == 0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -319,11 +319,11 @@ void __52__FCModifyPersonalizationOperation_performOperation__block_invoke_2(uin
 
   v7 = [v4 objectForKeyedSubscript:@"data"];
   v8 = [v4 objectForKeyedSubscript:@"version"];
-  v9 = [v8 unsignedIntegerValue];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
   if (v7)
   {
-    v10 = v9 == 1;
+    v10 = unsignedIntegerValue == 1;
   }
 
   else
@@ -338,7 +338,7 @@ void __52__FCModifyPersonalizationOperation_performOperation__block_invoke_2(uin
 
   else
   {
-    if (v9 != 1)
+    if (unsignedIntegerValue != 1)
     {
       v11 = FCPersonalizationLog;
       if (os_log_type_enabled(FCPersonalizationLog, OS_LOG_TYPE_DEFAULT))
@@ -363,25 +363,25 @@ void __52__FCModifyPersonalizationOperation_performOperation__block_invoke_2(uin
   return v15;
 }
 
-+ (void)applyChangeGroups:(id)a3 toProfile:(id)a4 treatment:(id)a5 prune:(BOOL)a6
++ (void)applyChangeGroups:(id)groups toProfile:(id)profile treatment:(id)treatment prune:(BOOL)prune
 {
-  v45 = a6;
+  pruneCopy = prune;
   v72 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 aggregatesByFeatureKey];
-  v12 = [v11 mutableCopy];
+  groupsCopy = groups;
+  profileCopy = profile;
+  treatmentCopy = treatment;
+  aggregatesByFeatureKey = [profileCopy aggregatesByFeatureKey];
+  v12 = [aggregatesByFeatureKey mutableCopy];
 
-  v46 = v9;
-  v13 = [v9 historiesByInstanceIdentifier];
-  v14 = [v13 mutableCopy];
+  v46 = profileCopy;
+  historiesByInstanceIdentifier = [profileCopy historiesByInstanceIdentifier];
+  v14 = [historiesByInstanceIdentifier mutableCopy];
 
   v60 = 0u;
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  obj = v8;
+  obj = groupsCopy;
   v15 = [obj countByEnumeratingWithState:&v58 objects:v71 count:16];
   if (v15)
   {
@@ -401,25 +401,25 @@ void __52__FCModifyPersonalizationOperation_performOperation__block_invoke_2(uin
         }
 
         v19 = *(*(&v58 + 1) + 8 * v18);
-        v20 = [v19 instanceIdentifier];
+        instanceIdentifier = [v19 instanceIdentifier];
 
-        if (v20)
+        if (instanceIdentifier)
         {
-          v21 = [v19 instanceIdentifier];
-          v22 = [v14 objectForKey:v21];
+          instanceIdentifier2 = [v19 instanceIdentifier];
+          v22 = [v14 objectForKey:instanceIdentifier2];
 
           if (!v22)
           {
             v22 = objc_alloc_init(MEMORY[0x1E69B6EF8]);
-            v23 = [v19 instanceIdentifier];
-            [v22 setInstanceIdentifier:v23];
+            instanceIdentifier3 = [v19 instanceIdentifier];
+            [v22 setInstanceIdentifier:instanceIdentifier3];
 
-            v24 = [v22 instanceIdentifier];
-            [v14 setObject:v22 forKey:v24];
+            instanceIdentifier4 = [v22 instanceIdentifier];
+            [v14 setObject:v22 forKey:instanceIdentifier4];
           }
 
-          v25 = [v19 changeNumber];
-          if (v25 > [v22 lastChangeNumber])
+          changeNumber = [v19 changeNumber];
+          if (changeNumber > [v22 lastChangeNumber])
           {
             v51 = v22;
             v52 = v19;
@@ -428,8 +428,8 @@ void __52__FCModifyPersonalizationOperation_performOperation__block_invoke_2(uin
             v57 = 0u;
             v54 = 0u;
             v55 = 0u;
-            v26 = [v19 deltas];
-            v27 = [v26 countByEnumeratingWithState:&v54 objects:v70 count:16];
+            deltas = [v19 deltas];
+            v27 = [deltas countByEnumeratingWithState:&v54 objects:v70 count:16];
             if (v27)
             {
               v28 = v27;
@@ -440,40 +440,40 @@ void __52__FCModifyPersonalizationOperation_performOperation__block_invoke_2(uin
                 {
                   if (*v55 != v29)
                   {
-                    objc_enumerationMutation(v26);
+                    objc_enumerationMutation(deltas);
                   }
 
                   v31 = *(*(&v54 + 1) + 8 * i);
-                  v32 = [v31 featureKey];
+                  featureKey = [v31 featureKey];
 
-                  if (v32)
+                  if (featureKey)
                   {
-                    v33 = [v31 featureKey];
-                    v34 = [v12 objectForKey:v33];
+                    featureKey2 = [v31 featureKey];
+                    v34 = [v12 objectForKey:featureKey2];
 
                     if (!v34)
                     {
                       v34 = objc_alloc_init(MEMORY[0x1E69B6EE8]);
-                      v35 = [v31 featureKey];
-                      [v34 setFeatureKey:v35];
+                      featureKey3 = [v31 featureKey];
+                      [v34 setFeatureKey:featureKey3];
 
-                      v36 = [v34 featureKey];
-                      [v12 setObject:v34 forKey:v36];
+                      featureKey4 = [v34 featureKey];
+                      [v12 setObject:v34 forKey:featureKey4];
                     }
 
-                    [v31 applyToAggregate:v34 withTreatment:v10];
+                    [v31 applyToAggregate:v34 withTreatment:treatmentCopy];
                   }
                 }
 
-                v28 = [v26 countByEnumeratingWithState:&v54 objects:v70 count:16];
+                v28 = [deltas countByEnumeratingWithState:&v54 objects:v70 count:16];
               }
 
               while (v28);
             }
 
-            v37 = [v52 changeNumber];
+            changeNumber2 = [v52 changeNumber];
             v22 = v51;
-            if (v37 != [v51 lastChangeNumber] + 1 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+            if (changeNumber2 != [v51 lastChangeNumber] + 1 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
             {
               v38 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"looks like we're replaying events out of order"];
               *buf = 136315906;
@@ -505,38 +505,38 @@ void __52__FCModifyPersonalizationOperation_performOperation__block_invoke_2(uin
     while (v16);
   }
 
-  if (v45)
+  if (pruneCopy)
   {
-    [a1 pruneAggregates:v12];
+    [self pruneAggregates:v12];
   }
 
-  v39 = [v12 allValues];
-  v40 = [v39 mutableCopy];
+  allValues = [v12 allValues];
+  v40 = [allValues mutableCopy];
   [v46 setAggregates:v40];
 
-  v41 = [v14 allValues];
-  v42 = [v41 mutableCopy];
+  allValues2 = [v14 allValues];
+  v42 = [allValues2 mutableCopy];
   [v46 setHistories:v42];
 
   v43 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)applyDeltas:(id)a3 toProfile:(id)a4 treatment:(id)a5 prune:(BOOL)a6
++ (void)applyDeltas:(id)deltas toProfile:(id)profile treatment:(id)treatment prune:(BOOL)prune
 {
-  v28 = a6;
+  pruneCopy = prune;
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v29 = v9;
-  v11 = [v9 aggregatesByFeatureKey];
-  v12 = [v11 mutableCopy];
+  deltasCopy = deltas;
+  profileCopy = profile;
+  treatmentCopy = treatment;
+  v29 = profileCopy;
+  aggregatesByFeatureKey = [profileCopy aggregatesByFeatureKey];
+  v12 = [aggregatesByFeatureKey mutableCopy];
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v13 = v8;
+  v13 = deltasCopy;
   v14 = [v13 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v14)
   {
@@ -552,24 +552,24 @@ void __52__FCModifyPersonalizationOperation_performOperation__block_invoke_2(uin
         }
 
         v18 = *(*(&v30 + 1) + 8 * i);
-        v19 = [v18 featureKey];
+        featureKey = [v18 featureKey];
 
-        if (v19)
+        if (featureKey)
         {
-          v20 = [v18 featureKey];
-          v21 = [v12 objectForKey:v20];
+          featureKey2 = [v18 featureKey];
+          v21 = [v12 objectForKey:featureKey2];
 
           if (!v21)
           {
             v21 = objc_alloc_init(MEMORY[0x1E69B6EE8]);
-            v22 = [v18 featureKey];
-            [v21 setFeatureKey:v22];
+            featureKey3 = [v18 featureKey];
+            [v21 setFeatureKey:featureKey3];
 
-            v23 = [v21 featureKey];
-            [v12 setObject:v21 forKey:v23];
+            featureKey4 = [v21 featureKey];
+            [v12 setObject:v21 forKey:featureKey4];
           }
 
-          [v18 applyToAggregate:v21 withTreatment:v10];
+          [v18 applyToAggregate:v21 withTreatment:treatmentCopy];
         }
       }
 
@@ -579,44 +579,44 @@ void __52__FCModifyPersonalizationOperation_performOperation__block_invoke_2(uin
     while (v15);
   }
 
-  if (v28)
+  if (pruneCopy)
   {
-    [a1 pruneAggregates:v12];
+    [self pruneAggregates:v12];
   }
 
-  v24 = [v12 allValues];
-  v25 = [v24 mutableCopy];
+  allValues = [v12 allValues];
+  v25 = [allValues mutableCopy];
   [v29 setAggregates:v25];
 
   v26 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)pruneAggregates:(id)a3
++ (void)pruneAggregates:(id)aggregates
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  aggregatesCopy = aggregates;
   v4 = FCPersonalizationDataMaxAggregates();
-  if ([v3 count] > v4)
+  if ([aggregatesCopy count] > v4)
   {
-    v5 = [MEMORY[0x1E695DF00] date];
-    [v5 timeIntervalSince1970];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSince1970];
     v7 = (v6 + v6);
 
-    v8 = [v3 allValues];
+    allValues = [aggregatesCopy allValues];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __68__FCModifyPersonalizationOperation_FCMergeUtility__pruneAggregates___block_invoke;
     v15[3] = &__block_descriptor_40_e71_q24__0__NTPBPersonalizationAggregate_8__NTPBPersonalizationAggregate_16l;
     v15[4] = v7;
-    v9 = [v8 sortedArrayUsingComparator:v15];
+    v9 = [allValues sortedArrayUsingComparator:v15];
 
-    v10 = [v9 fc_subarrayWithMaxCount:{objc_msgSend(v3, "count") - v4}];
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 postNotificationName:@"kFCPersonalizationDataDidPruneNotification" object:v10];
+    v10 = [v9 fc_subarrayWithMaxCount:{objc_msgSend(aggregatesCopy, "count") - v4}];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"kFCPersonalizationDataDidPruneNotification" object:v10];
 
     v12 = [v10 fc_arrayByTransformingWithBlock:&__block_literal_global_7];
-    [v3 removeObjectsForKeys:v12];
-    if ([v3 count] > v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+    [aggregatesCopy removeObjectsForKeys:v12];
+    if ([aggregatesCopy count] > v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"failed to prune personalization aggregates"];
       *buf = 136315906;
@@ -676,13 +676,13 @@ uint64_t __68__FCModifyPersonalizationOperation_FCMergeUtility__pruneAggregates_
   return v17;
 }
 
-+ (void)applyAggregates:(id)a3 toProfile:(id)a4 maxRatio:(double)a5
++ (void)applyAggregates:(id)aggregates toProfile:(id)profile maxRatio:(double)ratio
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 aggregatesByFeatureKey];
-  v11 = [v10 mutableCopy];
+  aggregatesCopy = aggregates;
+  profileCopy = profile;
+  aggregatesByFeatureKey = [profileCopy aggregatesByFeatureKey];
+  v11 = [aggregatesByFeatureKey mutableCopy];
 
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
@@ -690,7 +690,7 @@ uint64_t __68__FCModifyPersonalizationOperation_FCMergeUtility__pruneAggregates_
   v23[3] = &unk_1E7C37950;
   v12 = v11;
   v24 = v12;
-  [v8 enumerateKeysAndObjectsUsingBlock:v23];
+  [aggregatesCopy enumerateKeysAndObjectsUsingBlock:v23];
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -699,7 +699,7 @@ uint64_t __68__FCModifyPersonalizationOperation_FCMergeUtility__pruneAggregates_
   v18[1] = 3221225472;
   v18[2] = __87__FCModifyPersonalizationOperation_FCMergeUtility__applyAggregates_toProfile_maxRatio___block_invoke_3;
   v18[3] = &unk_1E7C37978;
-  *&v18[5] = a5;
+  *&v18[5] = ratio;
   v18[4] = &v19;
   [v12 enumerateKeysAndObjectsUsingBlock:v18];
   v13 = FCPersonalizationLog;
@@ -711,10 +711,10 @@ uint64_t __68__FCModifyPersonalizationOperation_FCMergeUtility__pruneAggregates_
     _os_log_impl(&dword_1B63EF000, v13, OS_LOG_TYPE_DEFAULT, "Adjusted a total of %lu aggregates", buf, 0xCu);
   }
 
-  [a1 pruneAggregates:v12];
-  v15 = [v12 allValues];
-  v16 = [v15 mutableCopy];
-  [v9 setAggregates:v16];
+  [self pruneAggregates:v12];
+  allValues = [v12 allValues];
+  v16 = [allValues mutableCopy];
+  [profileCopy setAggregates:v16];
 
   _Block_object_dispose(&v19, 8);
   v17 = *MEMORY[0x1E69E9840];

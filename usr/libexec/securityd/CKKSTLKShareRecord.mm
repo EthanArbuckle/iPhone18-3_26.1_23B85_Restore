@@ -1,38 +1,38 @@
 @interface CKKSTLKShareRecord
-+ (BOOL)intransactionRecordChanged:(id)a3 contextID:(id)a4 resync:(BOOL)a5 error:(id *)a6;
-+ (BOOL)intransactionRecordDeleted:(id)a3 contextID:(id)a4 resync:(BOOL)a5 error:(id *)a6;
-+ (id)allFor:(id)a3 contextID:(id)a4 keyUUID:(id)a5 zoneID:(id)a6 error:(id *)a7;
-+ (id)allForUUID:(id)a3 contextID:(id)a4 zoneID:(id)a5 error:(id *)a6;
-+ (id)allInZone:(id)a3 contextID:(id)a4 error:(id *)a5;
-+ (id)countsWithContextID:(id)a3 zoneID:(id)a4 error:(id *)a5;
-+ (id)fromDatabase:(id)a3 contextID:(id)a4 receiverPeerID:(id)a5 senderPeerID:(id)a6 zoneID:(id)a7 error:(id *)a8;
-+ (id)fromDatabaseRow:(id)a3;
-+ (id)share:(id)a3 contextID:(id)a4 as:(id)a5 to:(id)a6 epoch:(int64_t)a7 poisoned:(int64_t)a8 error:(id *)a9;
-+ (id)tryFromDatabase:(id)a3 contextID:(id)a4 receiverPeerID:(id)a5 senderPeerID:(id)a6 zoneID:(id)a7 error:(id *)a8;
-+ (id)tryFromDatabaseFromCKRecordID:(id)a3 contextID:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesCKRecord:(id)a3;
-- (BOOL)signatureVerifiesWithPeerSet:(id)a3 error:(id *)a4;
-- (BOOL)verifySignature:(id)a3 verifyingPeer:(id)a4 error:(id *)a5;
-- (CKKSTLKShareRecord)initWithShare:(id)a3 contextID:(id)a4 zoneID:(id)a5 encodedCKRecord:(id)a6;
++ (BOOL)intransactionRecordChanged:(id)changed contextID:(id)d resync:(BOOL)resync error:(id *)error;
++ (BOOL)intransactionRecordDeleted:(id)deleted contextID:(id)d resync:(BOOL)resync error:(id *)error;
++ (id)allFor:(id)for contextID:(id)d keyUUID:(id)iD zoneID:(id)zoneID error:(id *)error;
++ (id)allForUUID:(id)d contextID:(id)iD zoneID:(id)zoneID error:(id *)error;
++ (id)allInZone:(id)zone contextID:(id)d error:(id *)error;
++ (id)countsWithContextID:(id)d zoneID:(id)iD error:(id *)error;
++ (id)fromDatabase:(id)database contextID:(id)d receiverPeerID:(id)iD senderPeerID:(id)peerID zoneID:(id)zoneID error:(id *)error;
++ (id)fromDatabaseRow:(id)row;
++ (id)share:(id)share contextID:(id)d as:(id)as to:(id)to epoch:(int64_t)epoch poisoned:(int64_t)poisoned error:(id *)error;
++ (id)tryFromDatabase:(id)database contextID:(id)d receiverPeerID:(id)iD senderPeerID:(id)peerID zoneID:(id)zoneID error:(id *)error;
++ (id)tryFromDatabaseFromCKRecordID:(id)d contextID:(id)iD error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesCKRecord:(id)record;
+- (BOOL)signatureVerifiesWithPeerSet:(id)set error:(id *)error;
+- (BOOL)verifySignature:(id)signature verifyingPeer:(id)peer error:(id *)error;
+- (CKKSTLKShareRecord)initWithShare:(id)share contextID:(id)d zoneID:(id)iD encodedCKRecord:(id)record;
 - (NSData)signature;
 - (NSData)wrappedTLK;
 - (NSString)senderPeerID;
 - (NSString)tlkUUID;
 - (id)CKRecordName;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dataForSigning;
 - (id)description;
-- (id)init:(id)a3 contextID:(id)a4 sender:(id)a5 receiver:(id)a6 curve:(int64_t)a7 version:(unint64_t)a8 epoch:(int64_t)a9 poisoned:(int64_t)a10 zoneID:(id)a11 encodedCKRecord:(id)a12;
-- (id)initForKey:(id)a3 contextID:(id)a4 senderPeerID:(id)a5 recieverPeerID:(id)a6 receiverEncPublicKeySPKI:(id)a7 curve:(int64_t)a8 version:(unint64_t)a9 epoch:(int64_t)a10 poisoned:(int64_t)a11 wrappedKey:(id)a12 signature:(id)a13 zoneID:(id)a14 encodedCKRecord:(id)a15;
-- (id)recoverTLK:(id)a3 trustedPeers:(id)a4 error:(id *)a5;
-- (id)signRecord:(id)a3 error:(id *)a4;
+- (id)init:(id)init contextID:(id)d sender:(id)sender receiver:(id)receiver curve:(int64_t)curve version:(unint64_t)version epoch:(int64_t)epoch poisoned:(int64_t)self0 zoneID:(id)self1 encodedCKRecord:(id)self2;
+- (id)initForKey:(id)key contextID:(id)d senderPeerID:(id)iD recieverPeerID:(id)peerID receiverEncPublicKeySPKI:(id)i curve:(int64_t)curve version:(unint64_t)version epoch:(int64_t)self0 poisoned:(int64_t)self1 wrappedKey:(id)self2 signature:(id)self3 zoneID:(id)self4 encodedCKRecord:(id)self5;
+- (id)recoverTLK:(id)k trustedPeers:(id)peers error:(id *)error;
+- (id)signRecord:(id)record error:(id *)error;
 - (id)sqlValues;
-- (id)updateCKRecord:(id)a3 zoneID:(id)a4;
+- (id)updateCKRecord:(id)record zoneID:(id)d;
 - (id)whereClauseToFindSelf;
 - (int64_t)epoch;
 - (int64_t)poisoned;
-- (void)setFromCKRecord:(id)a3;
+- (void)setFromCKRecord:(id)record;
 @end
 
 @implementation CKKSTLKShareRecord
@@ -40,24 +40,24 @@
 - (id)sqlValues
 {
   v44[0] = @"uuid";
-  v43 = [(CKKSTLKShareRecord *)self share];
-  v42 = [v43 tlkUUID];
-  v45[0] = v42;
+  share = [(CKKSTLKShareRecord *)self share];
+  tlkUUID = [share tlkUUID];
+  v45[0] = tlkUUID;
   v44[1] = @"contextID";
-  v41 = [(CKKSCKRecordHolder *)self contextID];
-  v45[1] = v41;
+  contextID = [(CKKSCKRecordHolder *)self contextID];
+  v45[1] = contextID;
   v44[2] = @"senderpeerid";
-  v40 = [(CKKSTLKShareRecord *)self share];
-  v39 = [v40 senderPeerID];
-  v45[2] = v39;
+  share2 = [(CKKSTLKShareRecord *)self share];
+  senderPeerID = [share2 senderPeerID];
+  v45[2] = senderPeerID;
   v44[3] = @"recvpeerid";
-  v38 = [(CKKSTLKShareRecord *)self share];
-  v37 = [v38 receiverPeerID];
-  v45[3] = v37;
+  share3 = [(CKKSTLKShareRecord *)self share];
+  receiverPeerID = [share3 receiverPeerID];
+  v45[3] = receiverPeerID;
   v44[4] = @"recvpubenckey";
-  v3 = [(CKKSTLKShareRecord *)self share];
-  v4 = [v3 receiverPublicEncryptionKeySPKI];
-  v5 = [v4 base64EncodedStringWithOptions:0];
+  share4 = [(CKKSTLKShareRecord *)self share];
+  receiverPublicEncryptionKeySPKI = [share4 receiverPublicEncryptionKeySPKI];
+  v5 = [receiverPublicEncryptionKeySPKI base64EncodedStringWithOptions:0];
 
   if (v5)
   {
@@ -74,25 +74,25 @@
   v36 = v7;
   v45[4] = v7;
   v44[5] = @"poisoned";
-  v35 = [(CKKSTLKShareRecord *)self share];
-  v34 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%ld", [v35 poisoned]);
+  share5 = [(CKKSTLKShareRecord *)self share];
+  v34 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%ld", [share5 poisoned]);
   v45[5] = v34;
   v44[6] = @"epoch";
-  v33 = [(CKKSTLKShareRecord *)self share];
-  v32 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%ld", [v33 epoch]);
+  share6 = [(CKKSTLKShareRecord *)self share];
+  v32 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%ld", [share6 epoch]);
   v45[6] = v32;
   v44[7] = @"curve";
-  v8 = [(CKKSTLKShareRecord *)self share];
-  v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%ld", [v8 curve]);
+  share7 = [(CKKSTLKShareRecord *)self share];
+  v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%ld", [share7 curve]);
   v45[7] = v9;
   v44[8] = @"version";
-  v10 = [(CKKSTLKShareRecord *)self share];
-  v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%ld", [v10 version]);
+  share8 = [(CKKSTLKShareRecord *)self share];
+  v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%ld", [share8 version]);
   v45[8] = v11;
   v44[9] = @"wrappedkey";
-  v12 = [(CKKSTLKShareRecord *)self share];
-  v13 = [v12 wrappedTLK];
-  v14 = [v13 base64EncodedStringWithOptions:0];
+  share9 = [(CKKSTLKShareRecord *)self share];
+  wrappedTLK = [share9 wrappedTLK];
+  v14 = [wrappedTLK base64EncodedStringWithOptions:0];
 
   if (v14)
   {
@@ -108,9 +108,9 @@
 
   v45[9] = v16;
   v44[10] = @"signature";
-  v17 = [(CKKSTLKShareRecord *)self share];
-  v18 = [v17 signature];
-  v19 = [v18 base64EncodedStringWithOptions:0];
+  share10 = [(CKKSTLKShareRecord *)self share];
+  signature = [share10 signature];
+  v19 = [signature base64EncodedStringWithOptions:0];
 
   if (v19)
   {
@@ -126,12 +126,12 @@
 
   v45[10] = v21;
   v44[11] = @"ckzone";
-  v22 = [(CKKSCKRecordHolder *)self zoneID];
-  v23 = [v22 zoneName];
+  zoneID = [(CKKSCKRecordHolder *)self zoneID];
+  zoneName = [zoneID zoneName];
 
-  if (v23)
+  if (zoneName)
   {
-    v24 = v23;
+    v24 = zoneName;
   }
 
   else
@@ -143,8 +143,8 @@
 
   v45[11] = v25;
   v44[12] = @"ckrecord";
-  v26 = [(CKKSCKRecordHolder *)self encodedCKRecord];
-  v27 = [v26 base64EncodedStringWithOptions:0];
+  encodedCKRecord = [(CKKSCKRecordHolder *)self encodedCKRecord];
+  v27 = [encodedCKRecord base64EncodedStringWithOptions:0];
 
   if (v27)
   {
@@ -167,52 +167,52 @@
 - (id)whereClauseToFindSelf
 {
   v14[0] = @"uuid";
-  v3 = [(CKKSTLKShareRecord *)self share];
-  v4 = [v3 tlkUUID];
-  v15[0] = v4;
+  share = [(CKKSTLKShareRecord *)self share];
+  tlkUUID = [share tlkUUID];
+  v15[0] = tlkUUID;
   v14[1] = @"contextID";
-  v5 = [(CKKSCKRecordHolder *)self contextID];
-  v15[1] = v5;
+  contextID = [(CKKSCKRecordHolder *)self contextID];
+  v15[1] = contextID;
   v14[2] = @"senderpeerid";
-  v6 = [(CKKSTLKShareRecord *)self share];
-  v7 = [v6 senderPeerID];
-  v15[2] = v7;
+  share2 = [(CKKSTLKShareRecord *)self share];
+  senderPeerID = [share2 senderPeerID];
+  v15[2] = senderPeerID;
   v14[3] = @"recvpeerid";
-  v8 = [(CKKSTLKShareRecord *)self share];
-  v9 = [v8 receiverPeerID];
-  v15[3] = v9;
+  share3 = [(CKKSTLKShareRecord *)self share];
+  receiverPeerID = [share3 receiverPeerID];
+  v15[3] = receiverPeerID;
   v14[4] = @"ckzone";
-  v10 = [(CKKSCKRecordHolder *)self zoneID];
-  v11 = [v10 zoneName];
-  v15[4] = v11;
+  zoneID = [(CKKSCKRecordHolder *)self zoneID];
+  zoneName = [zoneID zoneName];
+  v15[4] = zoneName;
   v12 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:5];
 
   return v12;
 }
 
-- (void)setFromCKRecord:(id)a3
+- (void)setFromCKRecord:(id)record
 {
-  v41 = a3;
-  v4 = [v41 recordType];
-  v5 = [v4 isEqualToString:@"tlkshare"];
+  recordCopy = record;
+  recordType = [recordCopy recordType];
+  v5 = [recordType isEqualToString:@"tlkshare"];
 
   if ((v5 & 1) == 0)
   {
-    v25 = [v41 recordType];
-    v26 = [NSString stringWithFormat:@"CKRecordType (%@) was not %@", v25, @"devicestate"];
+    recordType2 = [recordCopy recordType];
+    v26 = [NSString stringWithFormat:@"CKRecordType (%@) was not %@", recordType2, @"devicestate"];
     v27 = [NSException exceptionWithName:@"WrongCKRecordTypeException" reason:v26 userInfo:0];
     v28 = v27;
 
     objc_exception_throw(v27);
   }
 
-  v40 = self;
-  [(CKKSCKRecordHolder *)self setStoredCKRecord:v41];
-  v6 = [v41 objectForKeyedSubscript:@"receiverPublicEncryptionKey"];
+  selfCopy = self;
+  [(CKKSCKRecordHolder *)self setStoredCKRecord:recordCopy];
+  v6 = [recordCopy objectForKeyedSubscript:@"receiverPublicEncryptionKey"];
   if (v6 && (v7 = v6, +[NSNull null](NSNull, "null"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v7 isEqual:v8], v8, v7, (v9 & 1) == 0))
   {
     v10 = [NSData alloc];
-    v11 = [v41 objectForKeyedSubscript:@"receiverPublicEncryptionKey"];
+    v11 = [recordCopy objectForKeyedSubscript:@"receiverPublicEncryptionKey"];
     v39 = [v10 initWithBase64EncodedString:v11 options:0];
   }
 
@@ -222,52 +222,52 @@
   }
 
   v12 = [CKKSTLKShare alloc];
-  v38 = [v41 objectForKeyedSubscript:@"parentkeyref"];
-  v37 = [v38 recordID];
-  v13 = [v37 recordName];
-  v14 = [v41 objectForKeyedSubscript:@"sender"];
-  v33 = [v41 objectForKeyedSubscript:@"receiver"];
-  v36 = [v41 objectForKeyedSubscript:@"curve"];
-  v31 = [v36 longValue];
-  v35 = [v41 objectForKeyedSubscript:@"version"];
-  v30 = [v35 longValue];
-  v34 = [v41 objectForKeyedSubscript:@"epoch"];
-  v15 = [v34 longValue];
-  v32 = [v41 objectForKeyedSubscript:@"poisoned"];
-  v16 = [v32 longValue];
+  v38 = [recordCopy objectForKeyedSubscript:@"parentkeyref"];
+  recordID = [v38 recordID];
+  recordName = [recordID recordName];
+  v14 = [recordCopy objectForKeyedSubscript:@"sender"];
+  v33 = [recordCopy objectForKeyedSubscript:@"receiver"];
+  v36 = [recordCopy objectForKeyedSubscript:@"curve"];
+  longValue = [v36 longValue];
+  v35 = [recordCopy objectForKeyedSubscript:@"version"];
+  longValue2 = [v35 longValue];
+  v34 = [recordCopy objectForKeyedSubscript:@"epoch"];
+  longValue3 = [v34 longValue];
+  v32 = [recordCopy objectForKeyedSubscript:@"poisoned"];
+  longValue4 = [v32 longValue];
   v17 = [NSData alloc];
-  v29 = [v41 objectForKeyedSubscript:@"wrappedkey"];
+  v29 = [recordCopy objectForKeyedSubscript:@"wrappedkey"];
   v18 = [v17 initWithBase64EncodedString:v29 options:0];
   v19 = [NSData alloc];
-  v20 = [v41 objectForKeyedSubscript:@"signature"];
+  v20 = [recordCopy objectForKeyedSubscript:@"signature"];
   v21 = [v19 initWithBase64EncodedString:v20 options:0];
-  v22 = [v41 recordID];
-  v23 = [v22 zoneID];
-  v24 = [(CKKSTLKShare *)v12 initForKey:v13 senderPeerID:v14 recieverPeerID:v33 receiverEncPublicKeySPKI:v39 curve:v31 version:v30 epoch:v15 poisoned:v16 wrappedKey:v18 signature:v21 zoneID:v23];
-  [(CKKSTLKShareRecord *)v40 setShare:v24];
+  recordID2 = [recordCopy recordID];
+  zoneID = [recordID2 zoneID];
+  v24 = [(CKKSTLKShare *)v12 initForKey:recordName senderPeerID:v14 recieverPeerID:v33 receiverEncPublicKeySPKI:v39 curve:longValue version:longValue2 epoch:longValue3 poisoned:longValue4 wrappedKey:v18 signature:v21 zoneID:zoneID];
+  [(CKKSTLKShareRecord *)selfCopy setShare:v24];
 }
 
-- (BOOL)matchesCKRecord:(id)a3
+- (BOOL)matchesCKRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 recordType];
-  v6 = [v5 isEqualToString:@"tlkshare"];
+  recordCopy = record;
+  recordType = [recordCopy recordType];
+  v6 = [recordType isEqualToString:@"tlkshare"];
 
   if (!v6)
   {
     goto LABEL_4;
   }
 
-  v7 = [v4 recordID];
-  v8 = [v7 recordName];
-  v9 = [(CKKSTLKShareRecord *)self CKRecordName];
-  v10 = [v8 isEqualToString:v9];
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
+  cKRecordName = [(CKKSTLKShareRecord *)self CKRecordName];
+  v10 = [recordName isEqualToString:cKRecordName];
 
   if (v10)
   {
     v11 = [CKKSTLKShareRecord alloc];
-    v12 = [(CKKSCKRecordHolder *)self contextID];
-    v13 = [(CKKSCKRecordHolder *)v11 initWithCKRecord:v4 contextID:v12];
+    contextID = [(CKKSCKRecordHolder *)self contextID];
+    v13 = [(CKKSCKRecordHolder *)v11 initWithCKRecord:recordCopy contextID:contextID];
 
     v14 = [(CKKSTLKShareRecord *)self isEqual:v13];
   }
@@ -281,34 +281,34 @@ LABEL_4:
   return v14;
 }
 
-- (id)updateCKRecord:(id)a3 zoneID:(id)a4
+- (id)updateCKRecord:(id)record zoneID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 recordID];
-  v9 = [v8 recordName];
-  v10 = [(CKKSTLKShareRecord *)self CKRecordName];
-  v11 = [v9 isEqualToString:v10];
+  recordCopy = record;
+  dCopy = d;
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
+  cKRecordName = [(CKKSTLKShareRecord *)self CKRecordName];
+  v11 = [recordName isEqualToString:cKRecordName];
 
   if ((v11 & 1) == 0)
   {
-    v42 = [v6 recordID];
-    v43 = [v42 recordName];
-    v44 = [(CKKSTLKShareRecord *)self CKRecordName];
-    v45 = [NSString stringWithFormat:@"CKRecord name (%@) was not %@", v43, v44];
+    recordID2 = [recordCopy recordID];
+    recordName2 = [recordID2 recordName];
+    cKRecordName2 = [(CKKSTLKShareRecord *)self CKRecordName];
+    v45 = [NSString stringWithFormat:@"CKRecord name (%@) was not %@", recordName2, cKRecordName2];
     v46 = [NSException exceptionWithName:@"WrongCKRecordNameException" reason:v45 userInfo:0];
     v47 = v46;
 
     goto LABEL_8;
   }
 
-  v12 = [v6 recordType];
-  v13 = [v12 isEqualToString:@"tlkshare"];
+  recordType = [recordCopy recordType];
+  v13 = [recordType isEqualToString:@"tlkshare"];
 
   if ((v13 & 1) == 0)
   {
-    v42 = [v6 recordType];
-    v48 = [NSString stringWithFormat:@"CKRecordType (%@) was not %@", v42, @"tlkshare"];
+    recordID2 = [recordCopy recordType];
+    v48 = [NSString stringWithFormat:@"CKRecordType (%@) was not %@", recordID2, @"tlkshare"];
     v46 = [NSException exceptionWithName:@"WrongCKRecordTypeException" reason:v48 userInfo:0];
     v49 = v46;
 
@@ -316,91 +316,91 @@ LABEL_8:
     objc_exception_throw(v46);
   }
 
-  v14 = [(CKKSTLKShareRecord *)self share];
-  v15 = [v14 senderPeerID];
-  [v6 setObject:v15 forKeyedSubscript:@"sender"];
+  share = [(CKKSTLKShareRecord *)self share];
+  senderPeerID = [share senderPeerID];
+  [recordCopy setObject:senderPeerID forKeyedSubscript:@"sender"];
 
-  v16 = [(CKKSTLKShareRecord *)self share];
-  v17 = [v16 receiverPeerID];
-  [v6 setObject:v17 forKeyedSubscript:@"receiver"];
+  share2 = [(CKKSTLKShareRecord *)self share];
+  receiverPeerID = [share2 receiverPeerID];
+  [recordCopy setObject:receiverPeerID forKeyedSubscript:@"receiver"];
 
-  v18 = [(CKKSTLKShareRecord *)self share];
-  v19 = [v18 receiverPublicEncryptionKeySPKI];
-  v20 = [v19 base64EncodedStringWithOptions:0];
-  [v6 setObject:v20 forKeyedSubscript:@"receiverPublicEncryptionKey"];
+  share3 = [(CKKSTLKShareRecord *)self share];
+  receiverPublicEncryptionKeySPKI = [share3 receiverPublicEncryptionKeySPKI];
+  v20 = [receiverPublicEncryptionKeySPKI base64EncodedStringWithOptions:0];
+  [recordCopy setObject:v20 forKeyedSubscript:@"receiverPublicEncryptionKey"];
 
-  v21 = [(CKKSTLKShareRecord *)self share];
-  v22 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v21 curve]);
-  [v6 setObject:v22 forKeyedSubscript:@"curve"];
+  share4 = [(CKKSTLKShareRecord *)self share];
+  v22 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [share4 curve]);
+  [recordCopy setObject:v22 forKeyedSubscript:@"curve"];
 
-  v23 = [(CKKSTLKShareRecord *)self share];
-  v24 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v23 version]);
-  [v6 setObject:v24 forKeyedSubscript:@"version"];
+  share5 = [(CKKSTLKShareRecord *)self share];
+  v24 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [share5 version]);
+  [recordCopy setObject:v24 forKeyedSubscript:@"version"];
 
-  v25 = [(CKKSTLKShareRecord *)self share];
-  v26 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [v25 epoch]);
-  [v6 setObject:v26 forKeyedSubscript:@"epoch"];
+  share6 = [(CKKSTLKShareRecord *)self share];
+  v26 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [share6 epoch]);
+  [recordCopy setObject:v26 forKeyedSubscript:@"epoch"];
 
-  v27 = [(CKKSTLKShareRecord *)self share];
-  v28 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [v27 poisoned]);
-  [v6 setObject:v28 forKeyedSubscript:@"poisoned"];
+  share7 = [(CKKSTLKShareRecord *)self share];
+  v28 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [share7 poisoned]);
+  [recordCopy setObject:v28 forKeyedSubscript:@"poisoned"];
 
   v29 = [CKReference alloc];
   v30 = [CKRecordID alloc];
-  v31 = [(CKKSTLKShareRecord *)self share];
-  v32 = [v31 tlkUUID];
-  v33 = [v30 initWithRecordName:v32 zoneID:v7];
+  share8 = [(CKKSTLKShareRecord *)self share];
+  tlkUUID = [share8 tlkUUID];
+  v33 = [v30 initWithRecordName:tlkUUID zoneID:dCopy];
   v34 = [v29 initWithRecordID:v33 action:CKReferenceActionValidate];
-  [v6 setObject:v34 forKeyedSubscript:@"parentkeyref"];
+  [recordCopy setObject:v34 forKeyedSubscript:@"parentkeyref"];
 
-  v35 = [(CKKSTLKShareRecord *)self share];
-  v36 = [v35 wrappedTLK];
-  v37 = [v36 base64EncodedStringWithOptions:0];
-  [v6 setObject:v37 forKeyedSubscript:@"wrappedkey"];
+  share9 = [(CKKSTLKShareRecord *)self share];
+  wrappedTLK = [share9 wrappedTLK];
+  v37 = [wrappedTLK base64EncodedStringWithOptions:0];
+  [recordCopy setObject:v37 forKeyedSubscript:@"wrappedkey"];
 
-  v38 = [(CKKSTLKShareRecord *)self share];
-  v39 = [v38 signature];
-  v40 = [v39 base64EncodedStringWithOptions:0];
-  [v6 setObject:v40 forKeyedSubscript:@"signature"];
+  share10 = [(CKKSTLKShareRecord *)self share];
+  signature = [share10 signature];
+  v40 = [signature base64EncodedStringWithOptions:0];
+  [recordCopy setObject:v40 forKeyedSubscript:@"signature"];
 
-  return v6;
+  return recordCopy;
 }
 
 - (id)CKRecordName
 {
-  v3 = [(CKKSTLKShareRecord *)self share];
-  v4 = [v3 tlkUUID];
-  v5 = [(CKKSTLKShareRecord *)self share];
-  v6 = [v5 receiverPeerID];
-  v7 = [(CKKSTLKShareRecord *)self share];
-  v8 = [v7 senderPeerID];
-  v9 = [NSString stringWithFormat:@"tlkshare-%@::%@::%@", v4, v6, v8];
+  share = [(CKKSTLKShareRecord *)self share];
+  tlkUUID = [share tlkUUID];
+  share2 = [(CKKSTLKShareRecord *)self share];
+  receiverPeerID = [share2 receiverPeerID];
+  share3 = [(CKKSTLKShareRecord *)self share];
+  senderPeerID = [share3 senderPeerID];
+  v9 = [NSString stringWithFormat:@"tlkshare-%@::%@::%@", tlkUUID, receiverPeerID, senderPeerID];
 
   return v9;
 }
 
-- (id)recoverTLK:(id)a3 trustedPeers:(id)a4 error:(id *)a5
+- (id)recoverTLK:(id)k trustedPeers:(id)peers error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CKKSTLKShareRecord *)self share];
-  v11 = [(CKKSCKRecordHolder *)self storedCKRecord];
-  v12 = [v10 recoverTLK:v9 trustedPeers:v8 ckrecord:v11 error:a5];
+  peersCopy = peers;
+  kCopy = k;
+  share = [(CKKSTLKShareRecord *)self share];
+  storedCKRecord = [(CKKSCKRecordHolder *)self storedCKRecord];
+  v12 = [share recoverTLK:kCopy trustedPeers:peersCopy ckrecord:storedCKRecord error:error];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CKKSTLKShareRecord *)self share];
-    v7 = [v5 share];
+    v5 = equalCopy;
+    share = [(CKKSTLKShareRecord *)self share];
+    share2 = [v5 share];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [share isEqual:share2];
   }
 
   else
@@ -411,138 +411,138 @@ LABEL_8:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(CKKSTLKShareRecord *)self share];
-  v7 = [v6 copyWithZone:a3];
-  v8 = [(CKKSCKRecordHolder *)self contextID];
-  v9 = [(CKKSCKRecordHolder *)self zoneID];
-  v10 = [(CKKSCKRecordHolder *)self encodedCKRecord];
-  v11 = [v5 initWithShare:v7 contextID:v8 zoneID:v9 encodedCKRecord:v10];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  share = [(CKKSTLKShareRecord *)self share];
+  v7 = [share copyWithZone:zone];
+  contextID = [(CKKSCKRecordHolder *)self contextID];
+  zoneID = [(CKKSCKRecordHolder *)self zoneID];
+  encodedCKRecord = [(CKKSCKRecordHolder *)self encodedCKRecord];
+  v11 = [v5 initWithShare:v7 contextID:contextID zoneID:zoneID encodedCKRecord:encodedCKRecord];
 
   return v11;
 }
 
-- (BOOL)signatureVerifiesWithPeerSet:(id)a3 error:(id *)a4
+- (BOOL)signatureVerifiesWithPeerSet:(id)set error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CKKSTLKShareRecord *)self share];
-  v8 = [(CKKSCKRecordHolder *)self storedCKRecord];
-  LOBYTE(a4) = [v7 signatureVerifiesWithPeerSet:v6 ckrecord:v8 error:a4];
+  setCopy = set;
+  share = [(CKKSTLKShareRecord *)self share];
+  storedCKRecord = [(CKKSCKRecordHolder *)self storedCKRecord];
+  LOBYTE(error) = [share signatureVerifiesWithPeerSet:setCopy ckrecord:storedCKRecord error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)verifySignature:(id)a3 verifyingPeer:(id)a4 error:(id *)a5
+- (BOOL)verifySignature:(id)signature verifyingPeer:(id)peer error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CKKSTLKShareRecord *)self share];
-  v11 = [(CKKSCKRecordHolder *)self storedCKRecord];
-  LOBYTE(a5) = [v10 verifySignature:v9 verifyingPeer:v8 ckrecord:v11 error:a5];
+  peerCopy = peer;
+  signatureCopy = signature;
+  share = [(CKKSTLKShareRecord *)self share];
+  storedCKRecord = [(CKKSCKRecordHolder *)self storedCKRecord];
+  LOBYTE(error) = [share verifySignature:signatureCopy verifyingPeer:peerCopy ckrecord:storedCKRecord error:error];
 
-  return a5;
+  return error;
 }
 
-- (id)signRecord:(id)a3 error:(id *)a4
+- (id)signRecord:(id)record error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CKKSTLKShareRecord *)self share];
-  v8 = [(CKKSCKRecordHolder *)self storedCKRecord];
-  v9 = [v7 signRecord:v6 ckrecord:v8 error:a4];
+  recordCopy = record;
+  share = [(CKKSTLKShareRecord *)self share];
+  storedCKRecord = [(CKKSCKRecordHolder *)self storedCKRecord];
+  v9 = [share signRecord:recordCopy ckrecord:storedCKRecord error:error];
 
   return v9;
 }
 
 - (id)dataForSigning
 {
-  v3 = [(CKKSTLKShareRecord *)self share];
-  v4 = [(CKKSCKRecordHolder *)self storedCKRecord];
-  v5 = [v3 dataForSigning:v4];
+  share = [(CKKSTLKShareRecord *)self share];
+  storedCKRecord = [(CKKSCKRecordHolder *)self storedCKRecord];
+  v5 = [share dataForSigning:storedCKRecord];
 
   return v5;
 }
 
 - (NSData)signature
 {
-  v2 = [(CKKSTLKShareRecord *)self share];
-  v3 = [v2 signature];
+  share = [(CKKSTLKShareRecord *)self share];
+  signature = [share signature];
 
-  return v3;
+  return signature;
 }
 
 - (NSData)wrappedTLK
 {
-  v2 = [(CKKSTLKShareRecord *)self share];
-  v3 = [v2 wrappedTLK];
+  share = [(CKKSTLKShareRecord *)self share];
+  wrappedTLK = [share wrappedTLK];
 
-  return v3;
+  return wrappedTLK;
 }
 
 - (int64_t)poisoned
 {
-  v2 = [(CKKSTLKShareRecord *)self share];
-  v3 = [v2 poisoned];
+  share = [(CKKSTLKShareRecord *)self share];
+  poisoned = [share poisoned];
 
-  return v3;
+  return poisoned;
 }
 
 - (int64_t)epoch
 {
-  v2 = [(CKKSTLKShareRecord *)self share];
-  v3 = [v2 epoch];
+  share = [(CKKSTLKShareRecord *)self share];
+  epoch = [share epoch];
 
-  return v3;
+  return epoch;
 }
 
 - (NSString)senderPeerID
 {
-  v2 = [(CKKSTLKShareRecord *)self share];
-  v3 = [v2 senderPeerID];
+  share = [(CKKSTLKShareRecord *)self share];
+  senderPeerID = [share senderPeerID];
 
-  return v3;
+  return senderPeerID;
 }
 
 - (NSString)tlkUUID
 {
-  v2 = [(CKKSTLKShareRecord *)self share];
-  v3 = [v2 tlkUUID];
+  share = [(CKKSTLKShareRecord *)self share];
+  tlkUUID = [share tlkUUID];
 
-  return v3;
+  return tlkUUID;
 }
 
 - (id)description
 {
-  v3 = [(CKKSCKRecordHolder *)self contextID];
-  v4 = [(CKKSTLKShareRecord *)self share];
-  v5 = [v4 tlkUUID];
-  v6 = [(CKKSTLKShareRecord *)self share];
-  v7 = [v6 receiverPeerID];
-  v8 = [(CKKSTLKShareRecord *)self share];
-  v9 = [v8 senderPeerID];
-  v10 = [(CKKSCKRecordHolder *)self storedCKRecord];
-  v11 = [v10 modificationDate];
-  v12 = [NSString stringWithFormat:@"<CKKSTLKShare[%@](%@): recv:%@ send:%@ mod:%@>", v3, v5, v7, v9, v11];
+  contextID = [(CKKSCKRecordHolder *)self contextID];
+  share = [(CKKSTLKShareRecord *)self share];
+  tlkUUID = [share tlkUUID];
+  share2 = [(CKKSTLKShareRecord *)self share];
+  receiverPeerID = [share2 receiverPeerID];
+  share3 = [(CKKSTLKShareRecord *)self share];
+  senderPeerID = [share3 senderPeerID];
+  storedCKRecord = [(CKKSCKRecordHolder *)self storedCKRecord];
+  modificationDate = [storedCKRecord modificationDate];
+  v12 = [NSString stringWithFormat:@"<CKKSTLKShare[%@](%@): recv:%@ send:%@ mod:%@>", contextID, tlkUUID, receiverPeerID, senderPeerID, modificationDate];
 
   return v12;
 }
 
-- (id)initForKey:(id)a3 contextID:(id)a4 senderPeerID:(id)a5 recieverPeerID:(id)a6 receiverEncPublicKeySPKI:(id)a7 curve:(int64_t)a8 version:(unint64_t)a9 epoch:(int64_t)a10 poisoned:(int64_t)a11 wrappedKey:(id)a12 signature:(id)a13 zoneID:(id)a14 encodedCKRecord:(id)a15
+- (id)initForKey:(id)key contextID:(id)d senderPeerID:(id)iD recieverPeerID:(id)peerID receiverEncPublicKeySPKI:(id)i curve:(int64_t)curve version:(unint64_t)version epoch:(int64_t)self0 poisoned:(int64_t)self1 wrappedKey:(id)self2 signature:(id)self3 zoneID:(id)self4 encodedCKRecord:(id)self5
 {
-  v20 = a3;
-  v21 = a5;
-  v22 = a6;
-  v23 = a7;
-  v24 = a12;
-  v25 = a13;
-  v26 = a14;
+  keyCopy = key;
+  iDCopy = iD;
+  peerIDCopy = peerID;
+  iCopy = i;
+  wrappedKeyCopy = wrappedKey;
+  signatureCopy = signature;
+  zoneIDCopy = zoneID;
   v32.receiver = self;
   v32.super_class = CKKSTLKShareRecord;
-  v27 = [(CKKSCKRecordHolder *)&v32 initWithCKRecordType:@"tlkshare" encodedCKRecord:a15 contextID:a4 zoneID:v26];
+  v27 = [(CKKSCKRecordHolder *)&v32 initWithCKRecordType:@"tlkshare" encodedCKRecord:record contextID:d zoneID:zoneIDCopy];
   if (v27)
   {
-    v28 = [[CKKSTLKShare alloc] initForKey:v20 senderPeerID:v21 recieverPeerID:v22 receiverEncPublicKeySPKI:v23 curve:a8 version:a9 epoch:a10 poisoned:a11 wrappedKey:v24 signature:v25 zoneID:v26];
+    v28 = [[CKKSTLKShare alloc] initForKey:keyCopy senderPeerID:iDCopy recieverPeerID:peerIDCopy receiverEncPublicKeySPKI:iCopy curve:curve version:version epoch:epoch poisoned:poisoned wrappedKey:wrappedKeyCopy signature:signatureCopy zoneID:zoneIDCopy];
     share = v27->_share;
     v27->_share = v28;
   }
@@ -550,18 +550,18 @@ LABEL_8:
   return v27;
 }
 
-- (id)init:(id)a3 contextID:(id)a4 sender:(id)a5 receiver:(id)a6 curve:(int64_t)a7 version:(unint64_t)a8 epoch:(int64_t)a9 poisoned:(int64_t)a10 zoneID:(id)a11 encodedCKRecord:(id)a12
+- (id)init:(id)init contextID:(id)d sender:(id)sender receiver:(id)receiver curve:(int64_t)curve version:(unint64_t)version epoch:(int64_t)epoch poisoned:(int64_t)self0 zoneID:(id)self1 encodedCKRecord:(id)self2
 {
-  v18 = a3;
-  v19 = a5;
-  v20 = a6;
-  v21 = a11;
+  initCopy = init;
+  senderCopy = sender;
+  receiverCopy = receiver;
+  iDCopy = iD;
   v26.receiver = self;
   v26.super_class = CKKSTLKShareRecord;
-  v22 = [(CKKSCKRecordHolder *)&v26 initWithCKRecordType:@"tlkshare" encodedCKRecord:a12 contextID:a4 zoneID:v21];
+  v22 = [(CKKSCKRecordHolder *)&v26 initWithCKRecordType:@"tlkshare" encodedCKRecord:record contextID:d zoneID:iDCopy];
   if (v22)
   {
-    v23 = [[CKKSTLKShare alloc] init:v18 sender:v19 receiver:v20 curve:a7 version:a8 epoch:a9 poisoned:a10 zoneID:v21];
+    v23 = [[CKKSTLKShare alloc] init:initCopy sender:senderCopy receiver:receiverCopy curve:curve version:version epoch:epoch poisoned:poisoned zoneID:iDCopy];
     share = v22->_share;
     v22->_share = v23;
   }
@@ -569,40 +569,40 @@ LABEL_8:
   return v22;
 }
 
-- (CKKSTLKShareRecord)initWithShare:(id)a3 contextID:(id)a4 zoneID:(id)a5 encodedCKRecord:(id)a6
+- (CKKSTLKShareRecord)initWithShare:(id)share contextID:(id)d zoneID:(id)iD encodedCKRecord:(id)record
 {
-  v11 = a3;
+  shareCopy = share;
   v15.receiver = self;
   v15.super_class = CKKSTLKShareRecord;
-  v12 = [(CKKSCKRecordHolder *)&v15 initWithCKRecordType:@"tlkshare" encodedCKRecord:a6 contextID:a4 zoneID:a5];
+  v12 = [(CKKSCKRecordHolder *)&v15 initWithCKRecordType:@"tlkshare" encodedCKRecord:record contextID:d zoneID:iD];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_share, a3);
+    objc_storeStrong(&v12->_share, share);
   }
 
   return v13;
 }
 
-+ (id)countsWithContextID:(id)a3 zoneID:(id)a4 error:(id *)a5
++ (id)countsWithContextID:(id)d zoneID:(id)iD error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = sub_1001D3B64;
   v22 = sub_1001D3B74;
   v23 = 0;
-  v9 = [objc_opt_class() sqlTable];
-  v25[0] = v7;
+  sqlTable = [objc_opt_class() sqlTable];
+  v25[0] = dCopy;
   v24[0] = @"contextID";
   v24[1] = @"ckzone";
-  v10 = [v8 zoneName];
-  v11 = v10;
-  if (v10)
+  zoneName = [iDCopy zoneName];
+  v11 = zoneName;
+  if (zoneName)
   {
-    v12 = v10;
+    v12 = zoneName;
   }
 
   else
@@ -619,7 +619,7 @@ LABEL_8:
   v17[2] = sub_1001D3B7C;
   v17[3] = &unk_100344498;
   v17[4] = &v18;
-  [CKKSSQLDatabaseObject queryDatabaseTable:v9 where:v14 columns:&off_1003659D0 groupBy:0 orderBy:0 limit:-1 processRow:v17 error:a5];
+  [CKKSSQLDatabaseObject queryDatabaseTable:sqlTable where:v14 columns:&off_1003659D0 groupBy:0 orderBy:0 limit:-1 processRow:v17 error:error];
 
   v15 = v19[5];
   _Block_object_dispose(&v18, 8);
@@ -627,25 +627,25 @@ LABEL_8:
   return v15;
 }
 
-+ (BOOL)intransactionRecordDeleted:(id)a3 contextID:(id)a4 resync:(BOOL)a5 error:(id *)a6
++ (BOOL)intransactionRecordDeleted:(id)deleted contextID:(id)d resync:(BOOL)resync error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(__CFString *)v8 zoneID];
-  v11 = [v10 zoneName];
-  v12 = sub_100019104(@"ckksshare", v11);
+  deletedCopy = deleted;
+  dCopy = d;
+  zoneID = [(__CFString *)deletedCopy zoneID];
+  zoneName = [zoneID zoneName];
+  v12 = sub_100019104(@"ckksshare", zoneName);
 
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
     v24 = @"tlkshare";
     v25 = 2112;
-    v26 = v8;
+    v26 = deletedCopy;
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "CloudKit notification: deleted tlk share record(%@): %@", buf, 0x16u);
   }
 
   v22 = 0;
-  v13 = [CKKSTLKShareRecord tryFromDatabaseFromCKRecordID:v8 contextID:v9 error:&v22];
+  v13 = [CKKSTLKShareRecord tryFromDatabaseFromCKRecordID:deletedCopy contextID:dCopy error:&v22];
 
   v14 = v22;
   v21 = v14;
@@ -654,34 +654,34 @@ LABEL_8:
 
   if (v15)
   {
-    v16 = [(__CFString *)v8 zoneID];
-    v17 = [v16 zoneName];
-    v18 = sub_100019104(@"ckksshare", v17);
+    zoneID2 = [(__CFString *)deletedCopy zoneID];
+    zoneName2 = [zoneID2 zoneName];
+    v18 = sub_100019104(@"ckksshare", zoneName2);
 
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v24 = v8;
+      v24 = deletedCopy;
       v25 = 2112;
       v26 = v15;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "CK notification: Couldn't delete deleted TLKShare: %@ %@", buf, 0x16u);
     }
 
-    if (a6)
+    if (error)
     {
       v19 = v15;
-      *a6 = v15;
+      *error = v15;
     }
   }
 
   return v15 == 0;
 }
 
-+ (BOOL)intransactionRecordChanged:(id)a3 contextID:(id)a4 resync:(BOOL)a5 error:(id *)a6
++ (BOOL)intransactionRecordChanged:(id)changed contextID:(id)d resync:(BOOL)resync error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(CKKSCKRecordHolder *)[CKKSTLKShareRecord alloc] initWithCKRecord:v8 contextID:v9];
+  changedCopy = changed;
+  dCopy = d;
+  v10 = [(CKKSCKRecordHolder *)[CKKSTLKShareRecord alloc] initWithCKRecord:changedCopy contextID:dCopy];
 
   v19 = 0;
   v11 = [(CKKSSQLDatabaseObject *)v10 saveToDatabase:&v19];
@@ -693,10 +693,10 @@ LABEL_8:
 
   if ((v11 & 1) == 0)
   {
-    v13 = [v8 recordID];
-    v14 = [v13 zoneID];
-    v15 = [v14 zoneName];
-    v16 = sub_100019104(@"ckksshare", v15);
+    recordID = [changedCopy recordID];
+    zoneID = [recordID zoneID];
+    zoneName = [zoneID zoneName];
+    v16 = sub_100019104(@"ckksshare", zoneName);
 
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -707,86 +707,86 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Couldn't save new TLK share to database: %@ %@", buf, 0x16u);
     }
 
-    if (a6)
+    if (error)
     {
       v17 = v12;
-      *a6 = v12;
+      *error = v12;
     }
   }
 
   return v11;
 }
 
-+ (id)fromDatabaseRow:(id)a3
++ (id)fromDatabaseRow:(id)row
 {
-  v3 = a3;
+  rowCopy = row;
   v4 = [CKRecordZoneID alloc];
-  v5 = [v3 objectForKeyedSubscript:@"ckzone"];
-  v6 = [v5 asString];
-  v34 = [v4 initWithZoneName:v6 ownerName:CKCurrentUserDefaultName];
+  v5 = [rowCopy objectForKeyedSubscript:@"ckzone"];
+  asString = [v5 asString];
+  v34 = [v4 initWithZoneName:asString ownerName:CKCurrentUserDefaultName];
 
-  v7 = [v3 objectForKeyedSubscript:@"curve"];
-  v29 = [v7 asNSInteger];
+  v7 = [rowCopy objectForKeyedSubscript:@"curve"];
+  asNSInteger = [v7 asNSInteger];
 
-  v8 = [v3 objectForKeyedSubscript:@"version"];
-  v9 = [v8 asNSInteger];
+  v8 = [rowCopy objectForKeyedSubscript:@"version"];
+  asNSInteger2 = [v8 asNSInteger];
 
   v10 = [CKKSTLKShareRecord alloc];
-  v32 = [v3 objectForKeyedSubscript:@"uuid"];
-  v33 = [v32 asString];
-  v31 = [v3 objectForKeyedSubscript:@"contextID"];
-  v25 = [v31 asString];
-  v28 = [v3 objectForKeyedSubscript:@"senderpeerid"];
-  v23 = [v28 asString];
-  v27 = [v3 objectForKeyedSubscript:@"recvpeerid"];
-  v22 = [v27 asString];
-  v26 = [v3 objectForKeyedSubscript:@"recvpubenckey"];
-  v20 = [v26 asBase64DecodedData];
-  v24 = [v3 objectForKeyedSubscript:@"epoch"];
-  v11 = [v24 asNSInteger];
-  v21 = [v3 objectForKeyedSubscript:@"poisoned"];
-  v12 = [v21 asNSInteger];
-  v13 = [v3 objectForKeyedSubscript:@"wrappedkey"];
-  v14 = [v13 asBase64DecodedData];
-  v15 = [v3 objectForKeyedSubscript:@"signature"];
-  v16 = [v15 asBase64DecodedData];
-  v17 = [v3 objectForKeyedSubscript:@"ckrecord"];
+  v32 = [rowCopy objectForKeyedSubscript:@"uuid"];
+  asString2 = [v32 asString];
+  v31 = [rowCopy objectForKeyedSubscript:@"contextID"];
+  asString3 = [v31 asString];
+  v28 = [rowCopy objectForKeyedSubscript:@"senderpeerid"];
+  asString4 = [v28 asString];
+  v27 = [rowCopy objectForKeyedSubscript:@"recvpeerid"];
+  asString5 = [v27 asString];
+  v26 = [rowCopy objectForKeyedSubscript:@"recvpubenckey"];
+  asBase64DecodedData = [v26 asBase64DecodedData];
+  v24 = [rowCopy objectForKeyedSubscript:@"epoch"];
+  asNSInteger3 = [v24 asNSInteger];
+  v21 = [rowCopy objectForKeyedSubscript:@"poisoned"];
+  asNSInteger4 = [v21 asNSInteger];
+  v13 = [rowCopy objectForKeyedSubscript:@"wrappedkey"];
+  asBase64DecodedData2 = [v13 asBase64DecodedData];
+  v15 = [rowCopy objectForKeyedSubscript:@"signature"];
+  asBase64DecodedData3 = [v15 asBase64DecodedData];
+  v17 = [rowCopy objectForKeyedSubscript:@"ckrecord"];
 
-  v18 = [v17 asBase64DecodedData];
-  v30 = [(CKKSTLKShareRecord *)v10 initForKey:v33 contextID:v25 senderPeerID:v23 recieverPeerID:v22 receiverEncPublicKeySPKI:v20 curve:v29 version:v9 epoch:v11 poisoned:v12 wrappedKey:v14 signature:v16 zoneID:v34 encodedCKRecord:v18];
+  asBase64DecodedData4 = [v17 asBase64DecodedData];
+  v30 = [(CKKSTLKShareRecord *)v10 initForKey:asString2 contextID:asString3 senderPeerID:asString4 recieverPeerID:asString5 receiverEncPublicKeySPKI:asBase64DecodedData curve:asNSInteger version:asNSInteger2 epoch:asNSInteger3 poisoned:asNSInteger4 wrappedKey:asBase64DecodedData2 signature:asBase64DecodedData3 zoneID:v34 encodedCKRecord:asBase64DecodedData4];
 
   return v30;
 }
 
-+ (id)tryFromDatabaseFromCKRecordID:(id)a3 contextID:(id)a4 error:(id *)a5
++ (id)tryFromDatabaseFromCKRecordID:(id)d contextID:(id)iD error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v60 = 0;
   v10 = [NSRegularExpression regularExpressionWithPattern:@"^tlkshare-(?<uuid>[0-9A-Fa-f-]*)::(?<receiver>.*)::(?<sender>.*)$" options:1 error:&v60];
   v11 = v60;
   v12 = v11;
   if (!v11)
   {
-    v15 = [v8 recordName];
-    v16 = [v8 recordName];
-    v17 = [v10 firstMatchInString:v15 options:0 range:{0, objc_msgSend(v16, "length")}];
+    recordName = [dCopy recordName];
+    recordName2 = [dCopy recordName];
+    v17 = [v10 firstMatchInString:recordName options:0 range:{0, objc_msgSend(recordName2, "length")}];
 
     if (v17)
     {
-      v57 = a1;
-      v18 = [v8 recordName];
+      selfCopy = self;
+      recordName3 = [dCopy recordName];
       v19 = [v17 rangeWithName:@"uuid"];
-      v21 = [v18 substringWithRange:{v19, v20}];
+      v21 = [recordName3 substringWithRange:{v19, v20}];
 
-      v22 = [v8 recordName];
+      recordName4 = [dCopy recordName];
       v23 = [v17 rangeWithName:@"receiver"];
-      v25 = [v22 substringWithRange:{v23, v24}];
+      v25 = [recordName4 substringWithRange:{v23, v24}];
 
-      v26 = [v8 recordName];
+      recordName5 = [dCopy recordName];
       v58 = v17;
       v27 = [v17 rangeWithName:@"sender"];
-      v29 = [v26 substringWithRange:{v27, v28}];
+      v29 = [recordName5 substringWithRange:{v27, v28}];
 
       v61[0] = @"uuid";
       v30 = v21;
@@ -806,9 +806,9 @@ LABEL_8:
       v55 = v35;
       v62[0] = v35;
       v61[1] = @"contextID";
-      v36 = v9;
+      v36 = iDCopy;
       v37 = v36;
-      v59 = v9;
+      v59 = iDCopy;
       if (v36)
       {
         v38 = v36;
@@ -858,12 +858,12 @@ LABEL_8:
 
       v62[3] = v46;
       v61[4] = @"ckzone";
-      v47 = [v8 zoneID];
-      v48 = [v47 zoneName];
+      zoneID = [dCopy zoneID];
+      zoneName = [zoneID zoneName];
 
-      if (v48)
+      if (zoneName)
       {
-        v49 = v48;
+        v49 = zoneName;
       }
 
       else
@@ -875,38 +875,38 @@ LABEL_8:
 
       v62[4] = v50;
       v51 = [NSDictionary dictionaryWithObjects:v62 forKeys:v61 count:5];
-      v14 = [v57 tryFromDatabaseWhere:v51 error:a5];
+      v14 = [selfCopy tryFromDatabaseWhere:v51 error:error];
 
       v17 = v58;
-      v33 = v56;
+      recordName6 = v56;
     }
 
     else
     {
-      if (!a5)
+      if (!error)
       {
         v14 = 0;
         goto LABEL_25;
       }
 
-      v59 = v9;
-      v33 = [v8 recordName];
-      v34 = [NSString stringWithFormat:@"Couldn't parse '%@' as a TLKShare ID", v33];
+      v59 = iDCopy;
+      recordName6 = [dCopy recordName];
+      v34 = [NSString stringWithFormat:@"Couldn't parse '%@' as a TLKShare ID", recordName6];
       [NSError errorWithDomain:@"CKKSErrorDomain" code:22 description:v34];
-      *a5 = v14 = 0;
+      *error = v14 = 0;
     }
 
-    v9 = v59;
+    iDCopy = v59;
 LABEL_25:
 
     goto LABEL_26;
   }
 
-  if (a5)
+  if (error)
   {
     v13 = v11;
     v14 = 0;
-    *a5 = v12;
+    *error = v12;
   }
 
   else
@@ -919,15 +919,15 @@ LABEL_26:
   return v14;
 }
 
-+ (id)allInZone:(id)a3 contextID:(id)a4 error:(id *)a5
++ (id)allInZone:(id)zone contextID:(id)d error:(id *)error
 {
-  v8 = a3;
+  zoneCopy = zone;
   v20[0] = @"contextID";
-  v9 = a4;
-  v10 = v9;
-  if (v9)
+  dCopy = d;
+  v10 = dCopy;
+  if (dCopy)
   {
-    v11 = v9;
+    v11 = dCopy;
   }
 
   else
@@ -939,11 +939,11 @@ LABEL_26:
 
   v20[1] = @"ckzone";
   v21[0] = v12;
-  v13 = [v8 zoneName];
-  v14 = v13;
-  if (v13)
+  zoneName = [zoneCopy zoneName];
+  v14 = zoneName;
+  if (zoneName)
   {
-    v15 = v13;
+    v15 = zoneName;
   }
 
   else
@@ -955,18 +955,18 @@ LABEL_26:
 
   v21[1] = v16;
   v17 = [NSDictionary dictionaryWithObjects:v21 forKeys:v20 count:2];
-  v18 = [a1 allWhere:v17 error:a5];
+  v18 = [self allWhere:v17 error:error];
 
   return v18;
 }
 
-+ (id)allForUUID:(id)a3 contextID:(id)a4 zoneID:(id)a5 error:(id *)a6
++ (id)allForUUID:(id)d contextID:(id)iD zoneID:(id)zoneID error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  zoneIDCopy = zoneID;
   v28[0] = @"uuid";
-  v13 = v10;
+  v13 = dCopy;
   v14 = v13;
   if (v13)
   {
@@ -982,7 +982,7 @@ LABEL_26:
 
   v29[0] = v16;
   v28[1] = @"contextID";
-  v17 = v11;
+  v17 = iDCopy;
   v18 = v17;
   if (v17)
   {
@@ -998,11 +998,11 @@ LABEL_26:
 
   v29[1] = v20;
   v28[2] = @"ckzone";
-  v21 = [v12 zoneName];
-  v22 = v21;
-  if (v21)
+  zoneName = [zoneIDCopy zoneName];
+  v22 = zoneName;
+  if (zoneName)
   {
-    v23 = v21;
+    v23 = zoneName;
   }
 
   else
@@ -1014,19 +1014,19 @@ LABEL_26:
 
   v29[2] = v24;
   v25 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:3];
-  v26 = [a1 allWhere:v25 error:a6];
+  v26 = [self allWhere:v25 error:error];
 
   return v26;
 }
 
-+ (id)allFor:(id)a3 contextID:(id)a4 keyUUID:(id)a5 zoneID:(id)a6 error:(id *)a7
++ (id)allFor:(id)for contextID:(id)d keyUUID:(id)iD zoneID:(id)zoneID error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  forCopy = for;
+  dCopy = d;
+  iDCopy = iD;
+  zoneIDCopy = zoneID;
   v31[0] = @"recvpeerid";
-  v16 = v12;
+  v16 = forCopy;
   v17 = v16;
   if (v16)
   {
@@ -1042,7 +1042,7 @@ LABEL_26:
 
   v32[0] = v19;
   v31[1] = @"contextID";
-  v20 = v13;
+  v20 = dCopy;
   v21 = v20;
   if (v20)
   {
@@ -1057,14 +1057,14 @@ LABEL_26:
   v23 = v22;
 
   v32[1] = v23;
-  v32[2] = v14;
+  v32[2] = iDCopy;
   v31[2] = @"uuid";
   v31[3] = @"ckzone";
-  v24 = [v15 zoneName];
-  v25 = v24;
-  if (v24)
+  zoneName = [zoneIDCopy zoneName];
+  v25 = zoneName;
+  if (zoneName)
   {
-    v26 = v24;
+    v26 = zoneName;
   }
 
   else
@@ -1076,20 +1076,20 @@ LABEL_26:
 
   v32[3] = v27;
   v28 = [NSDictionary dictionaryWithObjects:v32 forKeys:v31 count:4];
-  v29 = [a1 allWhere:v28 error:a7];
+  v29 = [self allWhere:v28 error:error];
 
   return v29;
 }
 
-+ (id)tryFromDatabase:(id)a3 contextID:(id)a4 receiverPeerID:(id)a5 senderPeerID:(id)a6 zoneID:(id)a7 error:(id *)a8
++ (id)tryFromDatabase:(id)database contextID:(id)d receiverPeerID:(id)iD senderPeerID:(id)peerID zoneID:(id)zoneID error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  databaseCopy = database;
+  dCopy = d;
+  iDCopy = iD;
+  peerIDCopy = peerID;
+  zoneIDCopy = zoneID;
   v45[0] = @"uuid";
-  v17 = v12;
+  v17 = databaseCopy;
   v18 = v17;
   if (v17)
   {
@@ -1105,7 +1105,7 @@ LABEL_26:
 
   v46[0] = v20;
   v45[1] = @"contextID";
-  v21 = v13;
+  v21 = dCopy;
   v22 = v21;
   if (v21)
   {
@@ -1121,7 +1121,7 @@ LABEL_26:
 
   v46[1] = v24;
   v45[2] = @"recvpeerid";
-  v25 = v14;
+  v25 = iDCopy;
   v26 = v25;
   if (v25)
   {
@@ -1138,7 +1138,7 @@ LABEL_26:
 
   v46[2] = v28;
   v45[3] = @"senderpeerid";
-  v29 = v15;
+  v29 = peerIDCopy;
   v30 = v29;
   v42 = v20;
   if (v29)
@@ -1155,12 +1155,12 @@ LABEL_26:
 
   v46[3] = v32;
   v45[4] = @"ckzone";
-  v33 = v16;
-  v34 = [v16 zoneName];
-  v35 = v34;
-  if (v34)
+  v33 = zoneIDCopy;
+  zoneName = [zoneIDCopy zoneName];
+  v35 = zoneName;
+  if (zoneName)
   {
-    v36 = v34;
+    v36 = zoneName;
   }
 
   else
@@ -1172,20 +1172,20 @@ LABEL_26:
 
   v46[4] = v37;
   v38 = [NSDictionary dictionaryWithObjects:v46 forKeys:v45 count:5];
-  v39 = [a1 tryFromDatabaseWhere:v38 error:a8];
+  v39 = [self tryFromDatabaseWhere:v38 error:error];
 
   return v39;
 }
 
-+ (id)fromDatabase:(id)a3 contextID:(id)a4 receiverPeerID:(id)a5 senderPeerID:(id)a6 zoneID:(id)a7 error:(id *)a8
++ (id)fromDatabase:(id)database contextID:(id)d receiverPeerID:(id)iD senderPeerID:(id)peerID zoneID:(id)zoneID error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  databaseCopy = database;
+  dCopy = d;
+  iDCopy = iD;
+  peerIDCopy = peerID;
+  zoneIDCopy = zoneID;
   v45[0] = @"uuid";
-  v17 = v12;
+  v17 = databaseCopy;
   v18 = v17;
   if (v17)
   {
@@ -1201,7 +1201,7 @@ LABEL_26:
 
   v46[0] = v20;
   v45[1] = @"contextID";
-  v21 = v13;
+  v21 = dCopy;
   v22 = v21;
   if (v21)
   {
@@ -1217,7 +1217,7 @@ LABEL_26:
 
   v46[1] = v24;
   v45[2] = @"recvpeerid";
-  v25 = v14;
+  v25 = iDCopy;
   v26 = v25;
   if (v25)
   {
@@ -1234,7 +1234,7 @@ LABEL_26:
 
   v46[2] = v28;
   v45[3] = @"senderpeerid";
-  v29 = v15;
+  v29 = peerIDCopy;
   v30 = v29;
   v42 = v20;
   if (v29)
@@ -1251,12 +1251,12 @@ LABEL_26:
 
   v46[3] = v32;
   v45[4] = @"ckzone";
-  v33 = v16;
-  v34 = [v16 zoneName];
-  v35 = v34;
-  if (v34)
+  v33 = zoneIDCopy;
+  zoneName = [zoneIDCopy zoneName];
+  v35 = zoneName;
+  if (zoneName)
   {
-    v36 = v34;
+    v36 = zoneName;
   }
 
   else
@@ -1268,46 +1268,46 @@ LABEL_26:
 
   v46[4] = v37;
   v38 = [NSDictionary dictionaryWithObjects:v46 forKeys:v45 count:5];
-  v39 = [a1 fromDatabaseWhere:v38 error:a8];
+  v39 = [self fromDatabaseWhere:v38 error:error];
 
   return v39;
 }
 
-+ (id)share:(id)a3 contextID:(id)a4 as:(id)a5 to:(id)a6 epoch:(int64_t)a7 poisoned:(int64_t)a8 error:(id *)a9
++ (id)share:(id)share contextID:(id)d as:(id)as to:(id)to epoch:(int64_t)epoch poisoned:(int64_t)poisoned error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [v12 uuid];
-  v17 = [v15 peerID];
-  v18 = [v14 peerID];
-  v19 = [v12 zoneID];
+  shareCopy = share;
+  dCopy = d;
+  asCopy = as;
+  toCopy = to;
+  uuid = [shareCopy uuid];
+  peerID = [toCopy peerID];
+  peerID2 = [asCopy peerID];
+  zoneID = [shareCopy zoneID];
   v35 = 0;
-  v20 = v13;
-  v34 = [CKKSTLKShareRecord tryFromDatabase:v16 contextID:v13 receiverPeerID:v17 senderPeerID:v18 zoneID:v19 error:&v35];
+  v20 = dCopy;
+  v34 = [CKKSTLKShareRecord tryFromDatabase:uuid contextID:dCopy receiverPeerID:peerID senderPeerID:peerID2 zoneID:zoneID error:&v35];
   v21 = v35;
 
   if (v21)
   {
-    v22 = [v12 zoneID];
-    v23 = [v22 zoneName];
-    v24 = sub_100019104(@"ckksshare", v23);
+    zoneID2 = [shareCopy zoneID];
+    zoneName = [zoneID2 zoneName];
+    v24 = sub_100019104(@"ckksshare", zoneName);
 
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v37 = v12;
+      v37 = shareCopy;
       v38 = 2112;
       v39 = v21;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "couldn't load old share for %@: %@", buf, 0x16u);
     }
 
-    if (a9)
+    if (error)
     {
       v25 = v21;
       v26 = 0;
-      *a9 = v21;
+      *error = v21;
     }
 
     else
@@ -1318,13 +1318,13 @@ LABEL_26:
 
   else
   {
-    v27 = [CKKSTLKShare share:v12 as:v14 to:v15 epoch:a7 poisoned:a8 error:a9];
+    v27 = [CKKSTLKShare share:shareCopy as:asCopy to:toCopy epoch:epoch poisoned:poisoned error:error];
     if (v27)
     {
       v28 = [CKKSTLKShareRecord alloc];
-      v29 = [v12 zoneID];
-      v30 = [v34 encodedCKRecord];
-      v26 = [(CKKSTLKShareRecord *)v28 initWithShare:v27 contextID:v20 zoneID:v29 encodedCKRecord:v30];
+      zoneID3 = [shareCopy zoneID];
+      encodedCKRecord = [v34 encodedCKRecord];
+      v26 = [(CKKSTLKShareRecord *)v28 initWithShare:v27 contextID:v20 zoneID:zoneID3 encodedCKRecord:encodedCKRecord];
     }
 
     else

@@ -2,14 +2,14 @@
 - (WiFiUtil)init;
 - (WiFiUtilDelegate)delegate;
 - (void)dealloc;
-- (void)deviceAttached:(__WiFiDeviceClient *)a3;
+- (void)deviceAttached:(__WiFiDeviceClient *)attached;
 - (void)invalidate;
 - (void)notifyDevicePowerChanged;
 - (void)onQueueDeregisterDevices;
 - (void)onQueueInvalidate;
 - (void)onQueueReEnumerateDevices;
 - (void)onQueueRegisterDevices;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation WiFiUtil
@@ -151,21 +151,21 @@
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   q = self->_q;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10033FDD8;
   v7[3] = &unk_1004328A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(q, v7);
 }
 
-- (void)deviceAttached:(__WiFiDeviceClient *)a3
+- (void)deviceAttached:(__WiFiDeviceClient *)attached
 {
   q = self->_q;
   block[0] = _NSConcreteStackBlock;

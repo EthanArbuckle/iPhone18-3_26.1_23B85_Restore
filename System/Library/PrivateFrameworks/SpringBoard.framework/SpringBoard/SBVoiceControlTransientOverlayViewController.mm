@@ -1,34 +1,34 @@
 @interface SBVoiceControlTransientOverlayViewController
 - (BOOL)shouldAutorotate;
 - (NSString)coverSheetIdentifier;
-- (SBVoiceControlTransientOverlayViewController)initWithSource:(id)a3;
+- (SBVoiceControlTransientOverlayViewController)initWithSource:(id)source;
 - (SBVoiceControlTransientOverlayViewControllerDelegate)voiceControlDelegate;
 - (id)newTransientOverlayDismissalTransitionCoordinator;
 - (id)newTransientOverlayPresentationTransitionCoordinator;
 - (void)beginIgnoringAppearanceUpdates;
 - (void)dealloc;
 - (void)endIgnoringAppearanceUpdates;
-- (void)setContainerOrientation:(int64_t)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setContainerOrientation:(int64_t)orientation;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)voiceControlViewControllerRequestsDismissal:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)voiceControlViewControllerRequestsDismissal:(id)dismissal;
 @end
 
 @implementation SBVoiceControlTransientOverlayViewController
 
-- (SBVoiceControlTransientOverlayViewController)initWithSource:(id)a3
+- (SBVoiceControlTransientOverlayViewController)initWithSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = SBVoiceControlTransientOverlayViewController;
   v5 = [(SBTransientOverlayViewController *)&v9 initWithNibName:0 bundle:0];
   if (v5)
   {
-    v6 = [[SBVoiceControlViewController alloc] initWithSource:v4];
+    v6 = [[SBVoiceControlViewController alloc] initWithSource:sourceCopy];
     contentViewController = v5->_contentViewController;
     v5->_contentViewController = v6;
 
@@ -41,15 +41,15 @@
 
 - (void)dealloc
 {
-  v3 = [(SBVoiceControlViewController *)self->_contentViewController parentViewController];
+  parentViewController = [(SBVoiceControlViewController *)self->_contentViewController parentViewController];
 
-  if (v3 == self)
+  if (parentViewController == self)
   {
     [(SBVoiceControlViewController *)self->_contentViewController willMoveToParentViewController:0];
     if ([(SBVoiceControlViewController *)self->_contentViewController isViewLoaded])
     {
-      v4 = [(SBVoiceControlViewController *)self->_contentViewController view];
-      [v4 removeFromSuperview];
+      view = [(SBVoiceControlViewController *)self->_contentViewController view];
+      [view removeFromSuperview];
     }
 
     [(SBVoiceControlViewController *)self->_contentViewController removeFromParentViewController];
@@ -72,27 +72,27 @@
   return [(SBVoiceControlViewController *)contentViewController shouldAutorotate];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = SBVoiceControlTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v5 viewDidAppear:?];
   if (![(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates])
   {
-    [(SBVoiceControlViewController *)self->_contentViewController viewDidAppear:v3];
+    [(SBVoiceControlViewController *)self->_contentViewController viewDidAppear:appearCopy];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = SBVoiceControlTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v6 viewDidDisappear:?];
   if (![(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates])
   {
-    [(SBVoiceControlViewController *)self->_contentViewController viewDidDisappear:v3];
+    [(SBVoiceControlViewController *)self->_contentViewController viewDidDisappear:disappearCopy];
     WeakRetained = objc_loadWeakRetained(&self->_voiceControlDelegate);
     [WeakRetained voiceControlTransientOverlayViewControllerDidDisappear:self];
   }
@@ -103,18 +103,18 @@
   v22.receiver = self;
   v22.super_class = SBVoiceControlTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v22 viewDidLayoutSubviews];
-  v3 = [(SBTransientOverlayViewController *)self contentView];
-  [v3 bounds];
+  contentView = [(SBTransientOverlayViewController *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(SBVoiceControlViewController *)self->_contentViewController view];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  view = [(SBVoiceControlViewController *)self->_contentViewController view];
+  [view setFrame:{v5, v7, v9, v11}];
 
-  v13 = [(SBTransientOverlayViewController *)self backgroundView];
-  [v13 bounds];
+  backgroundView = [(SBTransientOverlayViewController *)self backgroundView];
+  [backgroundView bounds];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -132,56 +132,56 @@
   backdropView = self->_backdropView;
   self->_backdropView = v3;
 
-  v5 = [(SBTransientOverlayViewController *)self backgroundView];
-  [v5 addSubview:self->_backdropView];
+  backgroundView = [(SBTransientOverlayViewController *)self backgroundView];
+  [backgroundView addSubview:self->_backdropView];
 
-  v6 = [(SBTransientOverlayViewController *)self contentView];
+  contentView = [(SBTransientOverlayViewController *)self contentView];
   [(SBVoiceControlTransientOverlayViewController *)self addChildViewController:self->_contentViewController];
-  v7 = [(SBVoiceControlViewController *)self->_contentViewController view];
-  [v6 addSubview:v7];
+  view = [(SBVoiceControlViewController *)self->_contentViewController view];
+  [contentView addSubview:view];
 
   [(SBVoiceControlViewController *)self->_contentViewController didMoveToParentViewController:self];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = SBVoiceControlTransientOverlayViewController;
   [(SBVoiceControlTransientOverlayViewController *)&v5 viewWillAppear:?];
   if (![(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates])
   {
-    [(SBVoiceControlViewController *)self->_contentViewController viewWillAppear:v3];
+    [(SBVoiceControlViewController *)self->_contentViewController viewWillAppear:appearCopy];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = SBVoiceControlTransientOverlayViewController;
   [(SBVoiceControlTransientOverlayViewController *)&v5 viewWillDisappear:?];
   if (![(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates])
   {
-    [(SBVoiceControlViewController *)self->_contentViewController viewWillDisappear:v3];
+    [(SBVoiceControlViewController *)self->_contentViewController viewWillDisappear:disappearCopy];
   }
 }
 
 - (void)beginIgnoringAppearanceUpdates
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates];
+  isIgnoringAppearanceUpdates = [(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates];
   v6.receiver = self;
   v6.super_class = SBVoiceControlTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v6 beginIgnoringAppearanceUpdates];
-  v4 = [(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates];
-  if (!v3 && v4)
+  isIgnoringAppearanceUpdates2 = [(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates];
+  if (!isIgnoringAppearanceUpdates && isIgnoringAppearanceUpdates2)
   {
     v5 = SBLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Begin ignoring appearance changes...", buf, 0xCu);
     }
   }
@@ -190,50 +190,50 @@
 - (void)endIgnoringAppearanceUpdates
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates];
+  isIgnoringAppearanceUpdates = [(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates];
   v9.receiver = self;
   v9.super_class = SBVoiceControlTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v9 endIgnoringAppearanceUpdates];
-  v4 = [(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates];
-  if (v3 && !v4)
+  isIgnoringAppearanceUpdates2 = [(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates];
+  if (isIgnoringAppearanceUpdates && !isIgnoringAppearanceUpdates2)
   {
-    v5 = [(SBVoiceControlViewController *)self->_contentViewController _appearState];
-    v6 = [(SBVoiceControlTransientOverlayViewController *)self _appearState];
+    _appearState = [(SBVoiceControlViewController *)self->_contentViewController _appearState];
+    _appearState2 = [(SBVoiceControlTransientOverlayViewController *)self _appearState];
     v7 = SBLogCommon();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v11 = self;
+      selfCopy = self;
       v12 = 2048;
-      v13 = v5;
+      v13 = _appearState;
       v14 = 2048;
-      v15 = v6;
+      v15 = _appearState2;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Ended ignoring appearance changes. Content appear state: %td, container appear state: %td", buf, 0x20u);
     }
 
-    if (v6 != v5)
+    if (_appearState2 != _appearState)
     {
-      if (v6 - 1 < 2)
+      if (_appearState2 - 1 < 2)
       {
-        if (v5 - 3 <= 0xFFFFFFFD)
+        if (_appearState - 3 <= 0xFFFFFFFD)
         {
           [(SBVoiceControlViewController *)self->_contentViewController viewWillAppear:0];
         }
 
-        if (v6 == 2)
+        if (_appearState2 == 2)
         {
           [(SBVoiceControlViewController *)self->_contentViewController viewDidAppear:0];
         }
       }
 
-      else if (v6 == 3 || !v6)
+      else if (_appearState2 == 3 || !_appearState2)
       {
-        if (v5 && v5 != 3)
+        if (_appearState && _appearState != 3)
         {
           [(SBVoiceControlViewController *)self->_contentViewController viewWillDisappear:0];
         }
 
-        if (!v6)
+        if (!_appearState2)
         {
           [(SBVoiceControlViewController *)self->_contentViewController viewDidDisappear:0];
           WeakRetained = objc_loadWeakRetained(&self->_voiceControlDelegate);
@@ -418,11 +418,11 @@ void __100__SBVoiceControlTransientOverlayViewController_newTransientOverlayPres
   dispatch_group_leave(v2);
 }
 
-- (void)setContainerOrientation:(int64_t)a3
+- (void)setContainerOrientation:(int64_t)orientation
 {
   v3.receiver = self;
   v3.super_class = SBVoiceControlTransientOverlayViewController;
-  [(SBTransientOverlayViewController *)&v3 setContainerOrientation:a3];
+  [(SBTransientOverlayViewController *)&v3 setContainerOrientation:orientation];
 }
 
 - (NSString)coverSheetIdentifier
@@ -432,7 +432,7 @@ void __100__SBVoiceControlTransientOverlayViewController_newTransientOverlayPres
   return NSStringFromClass(v2);
 }
 
-- (void)voiceControlViewControllerRequestsDismissal:(id)a3
+- (void)voiceControlViewControllerRequestsDismissal:(id)dismissal
 {
   WeakRetained = objc_loadWeakRetained(&self->_voiceControlDelegate);
   [WeakRetained voiceControlTransientOverlayViewControllerRequestsDismissal:self];

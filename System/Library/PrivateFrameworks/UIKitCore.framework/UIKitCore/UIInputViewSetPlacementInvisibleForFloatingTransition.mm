@@ -1,15 +1,15 @@
 @interface UIInputViewSetPlacementInvisibleForFloatingTransition
-+ (id)placementWithPlacement:(id)a3 forFloatingAssistantViewTransition:(BOOL)a4;
++ (id)placementWithPlacement:(id)placement forFloatingAssistantViewTransition:(BOOL)transition;
 - (BOOL)showsEditItems;
 @end
 
 @implementation UIInputViewSetPlacementInvisibleForFloatingTransition
 
-+ (id)placementWithPlacement:(id)a3 forFloatingAssistantViewTransition:(BOOL)a4
++ (id)placementWithPlacement:(id)placement forFloatingAssistantViewTransition:(BOOL)transition
 {
   v15 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (([v7 isVisible] & 1) == 0)
+  placementCopy = placement;
+  if (([placementCopy isVisible] & 1) == 0)
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -34,12 +34,12 @@
     }
   }
 
-  v8 = objc_alloc_init(a1);
+  v8 = objc_alloc_init(self);
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(v8 + 5, a3);
-    v9[48] = a4;
+    objc_storeStrong(v8 + 5, placement);
+    v9[48] = transition;
   }
 
   return v9;

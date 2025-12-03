@@ -1,5 +1,5 @@
 @interface MapsSuggestionsSiri
-+ (BOOL)canLearnFromBundleID:(id)a3;
++ (BOOL)canLearnFromBundleID:(id)d;
 + (BOOL)isAllowedOnHomeScreen;
 + (BOOL)isAllowedOnLockScreen;
 + (BOOL)isEnabled;
@@ -98,12 +98,12 @@ void __53__MapsSuggestionsSiri_isAllowedOnLockScreenCondition__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
   v5 = *MEMORY[0x1E69A1A78];
@@ -114,7 +114,7 @@ void __53__MapsSuggestionsSiri_isAllowedOnLockScreenCondition__block_invoke()
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v9 = "NO";
-    if (v4)
+    if (bOOLValue)
     {
       v10 = "YES";
     }
@@ -136,7 +136,7 @@ void __53__MapsSuggestionsSiri_isAllowedOnLockScreenCondition__block_invoke()
     _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_DEBUG, "allowedOnHomeScreen Global: %s Maps:%s", &v12, 0x16u);
   }
 
-  return (v7 ^ 1) & v4;
+  return (v7 ^ 1) & bOOLValue;
 }
 
 + (BOOL)isAllowedOnLockScreen
@@ -187,12 +187,12 @@ void __53__MapsSuggestionsSiri_isAllowedOnLockScreenCondition__block_invoke()
   return (v7 ^ 1) & v4;
 }
 
-+ (BOOL)canLearnFromBundleID:(id)a3
++ (BOOL)canLearnFromBundleID:(id)d
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dCopy = d;
   v4 = CFPreferencesCopyAppValue(@"SiriCanLearnFromAppBlacklist", @"com.apple.suggestions");
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:dCopy];
 
   if (v5)
   {
@@ -200,7 +200,7 @@ void __53__MapsSuggestionsSiri_isAllowedOnLockScreenCondition__block_invoke()
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       v8 = 138412290;
-      v9 = v3;
+      v9 = dCopy;
       _os_log_impl(&dword_1C5126000, v6, OS_LOG_TYPE_DEBUG, "Can't learn from: %@", &v8, 0xCu);
     }
   }

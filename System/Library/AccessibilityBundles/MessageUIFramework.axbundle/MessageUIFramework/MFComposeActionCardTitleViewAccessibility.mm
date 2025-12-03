@@ -1,20 +1,20 @@
 @interface MFComposeActionCardTitleViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)didMoveToWindow;
 @end
 
 @implementation MFComposeActionCardTitleViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MFComposeActionCardTitleView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFComposeActionCardTitleView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"UIDimmingView"];
-  [v3 validateClass:@"UITransitionView"];
-  [v3 validateClass:@"UIDropShadowView"];
-  [v3 validateClass:@"MFMailComposeView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MFComposeActionCardTitleView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFComposeActionCardTitleView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"UIDimmingView"];
+  [validationsCopy validateClass:@"UITransitionView"];
+  [validationsCopy validateClass:@"UIDropShadowView"];
+  [validationsCopy validateClass:@"MFMailComposeView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -26,19 +26,19 @@
   v3 = [(MFComposeActionCardTitleViewAccessibility *)self safeValueForKey:@"titleLabel"];
   [v3 setAccessibilityTraits:*MEMORY[0x29EDC7F80]];
   v4 = [(MFComposeActionCardTitleViewAccessibility *)self _accessibilityViewAncestorIsKindOf:NSClassFromString(&cfstr_Uitransitionvi.isa)];
-  v5 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v28[0] = MEMORY[0x29EDCA5F8];
   v28[1] = 3221225472;
   v28[2] = __87__MFComposeActionCardTitleViewAccessibility__accessibilityLoadAccessibilityInformation__block_invoke;
   v28[3] = &unk_29F2D19A8;
-  v6 = v5;
+  v6 = array;
   v29 = v6;
   v7 = [v4 _accessibilityFindSubviewDescendant:v28];
   v27 = 0;
   objc_opt_class();
   v8 = __UIAccessibilityCastAsClass();
-  v9 = [v8 window];
-  v10 = [v9 _accessibilityFindSubviewDescendant:&__block_literal_global_0];
+  window = [v8 window];
+  v10 = [window _accessibilityFindSubviewDescendant:&__block_literal_global_0];
 
   v11 = [v10 _accessibilityViewAncestorIsKindOf:NSClassFromString(&cfstr_Uidropshadowvi.isa)];
   v25[0] = MEMORY[0x29EDCA5F8];

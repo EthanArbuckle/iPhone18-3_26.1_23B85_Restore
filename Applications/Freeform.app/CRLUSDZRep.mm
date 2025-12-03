@@ -1,8 +1,8 @@
 @interface CRLUSDZRep
-- (BOOL)containsPoint:(CGPoint)a3 withPrecision:(BOOL)a4;
+- (BOOL)containsPoint:(CGPoint)point withPrecision:(BOOL)precision;
 - (BOOL)directlyManagesContentPlatformView;
-- (BOOL)directlyManagesVisibilityOfKnob:(id)a3;
-- (BOOL)handleSingleTapAtPoint:(CGPoint)a3 inputType:(int64_t)a4;
+- (BOOL)directlyManagesVisibilityOfKnob:(id)knob;
+- (BOOL)handleSingleTapAtPoint:(CGPoint)point inputType:(int64_t)type;
 - (BOOL)manuallyControlsMiniFormatter;
 - (BOOL)occludesSelectedRep;
 - (BOOL)shouldShowKnobs;
@@ -13,43 +13,43 @@
 - (NSString)crlaxLabel;
 - (NSString)debugDescription;
 - (UIView)contentPlatformView;
-- (_TtC8Freeform10CRLUSDZRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (_TtC8Freeform10CRLUSDZRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (id)dynamicResizeDidBegin;
-- (id)newTrackerForKnob:(id)a3;
-- (id)resizedGeometryForTransform:(CGAffineTransform *)a3;
-- (void)addKnobsToArray:(id)a3;
+- (id)newTrackerForKnob:(id)knob;
+- (id)resizedGeometryForTransform:(CGAffineTransform *)transform;
+- (void)addKnobsToArray:(id)array;
 - (void)applicationDidEnterBackground;
 - (void)becameNotSelected;
 - (void)becameSelected;
 - (void)didEndZooming;
 - (void)didExitPreviewMode;
-- (void)didUpdateRenderable:(id)a3;
-- (void)drawInContext:(CGContext *)a3;
+- (void)didUpdateRenderable:(id)renderable;
+- (void)drawInContext:(CGContext *)context;
 - (void)dynamicDragDidBegin;
-- (void)dynamicDragDidEndAt:(CGPoint)a3;
-- (void)dynamicOperationDidBeginWithRealTimeCommands:(BOOL)a3;
-- (void)dynamicResizeDidEndWithTracker:(id)a3;
+- (void)dynamicDragDidEndAt:(CGPoint)at;
+- (void)dynamicOperationDidBeginWithRealTimeCommands:(BOOL)commands;
+- (void)dynamicResizeDidEndWithTracker:(id)tracker;
 - (void)dynamicRotateDidBegin;
 - (void)enterPreviewMode;
-- (void)handleSpinnerTapWithSender:(id)a3;
+- (void)handleSpinnerTapWithSender:(id)sender;
 - (void)hideMiniFormatterIfNecessary;
 - (void)interruptRendering;
 - (void)prepareForPencilKitSnapshotting;
-- (void)processChangedProperty:(unint64_t)a3;
+- (void)processChangedProperty:(unint64_t)property;
 - (void)resumeRendering;
-- (void)selectionPathDidChangeWithNotification:(id)a3;
-- (void)updateRenderableGeometryFromLayout:(id)a3;
+- (void)selectionPathDidChangeWithNotification:(id)notification;
+- (void)updateRenderableGeometryFromLayout:(id)layout;
 - (void)willBeRemoved;
 - (void)willBeginZooming;
 @end
 
 @implementation CRLUSDZRep
 
-- (_TtC8Freeform10CRLUSDZRep)initWithLayout:(id)a3 canvas:(id)a4
+- (_TtC8Freeform10CRLUSDZRep)initWithLayout:(id)layout canvas:(id)canvas
 {
-  v5 = a3;
-  v6 = a4;
-  return sub_100CF61CC(v5, a4);
+  layoutCopy = layout;
+  canvasCopy = canvas;
+  return sub_100CF61CC(layoutCopy, canvas);
 }
 
 - (BOOL)shouldShowKnobs
@@ -71,7 +71,7 @@
   v2 = *(*(&self->super.super.isa + OBJC_IVAR____TtC8Freeform10CRLUSDZRep_knobController) + OBJC_IVAR____TtC8Freeform21CRLUSDZKnobController_playPauseKnob);
   if (v2 && (*(v2 + OBJC_IVAR____TtC8Freeform20CRLUSDZPlayPauseKnob_isPlaying) & 1) != 0)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = sub_100D0D22C();
   }
 
@@ -83,18 +83,18 @@
   return v4 & 1;
 }
 
-- (BOOL)directlyManagesVisibilityOfKnob:(id)a3
+- (BOOL)directlyManagesVisibilityOfKnob:(id)knob
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_100D05140(v4);
+  knobCopy = knob;
+  selfCopy = self;
+  LOBYTE(self) = sub_100D05140(knobCopy);
 
   return self & 1;
 }
 
-- (BOOL)handleSingleTapAtPoint:(CGPoint)a3 inputType:(int64_t)a4
+- (BOOL)handleSingleTapAtPoint:(CGPoint)point inputType:(int64_t)type
 {
-  v4 = self;
+  selfCopy = self;
   v5 = sub_100D152F0();
 
   return v5 & 1;
@@ -102,32 +102,32 @@
 
 - (void)hideMiniFormatterIfNecessary
 {
-  v2 = self;
+  selfCopy = self;
   sub_100D05494();
 }
 
 - (void)interruptRendering
 {
-  v2 = self;
+  selfCopy = self;
   sub_100D05668();
 }
 
 - (void)resumeRendering
 {
-  v2 = self;
+  selfCopy = self;
   sub_100D059F0();
 }
 
 - (void)applicationDidEnterBackground
 {
-  v2 = self;
+  selfCopy = self;
   sub_100D0450C(0);
   sub_100F97B24(1);
 }
 
 - (BOOL)occludesSelectedRep
 {
-  v2 = self;
+  selfCopy = self;
   sub_100D0656C();
   v4 = v3;
 
@@ -136,7 +136,7 @@
 
 - (BOOL)shouldSuppressSelectionHighlightDuringMultiselection
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100D0686C();
 
   return v3 & 1;
@@ -144,15 +144,15 @@
 
 - (UIView)contentPlatformView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100D069C8();
 
   return v3;
 }
 
-- (void)handleSpinnerTapWithSender:(id)a3
+- (void)handleSpinnerTapWithSender:(id)sender
 {
-  if (a3)
+  if (sender)
   {
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
@@ -195,7 +195,7 @@
 
 - (NSArray)additionalRenderablesOverRenderable
 {
-  v2 = self;
+  selfCopy = self;
   sub_100D08A40();
 
   sub_100006370(0, &qword_101A00020);
@@ -204,17 +204,17 @@
   return v3.super.isa;
 }
 
-- (void)processChangedProperty:(unint64_t)a3
+- (void)processChangedProperty:(unint64_t)property
 {
-  v4 = self;
-  sub_100D08B34(a3);
+  selfCopy = self;
+  sub_100D08B34(property);
 }
 
-- (void)updateRenderableGeometryFromLayout:(id)a3
+- (void)updateRenderableGeometryFromLayout:(id)layout
 {
-  v4 = a3;
-  v5 = self;
-  sub_100D08DE0(v4);
+  layoutCopy = layout;
+  selfCopy = self;
+  sub_100D08DE0(layoutCopy);
 }
 
 - (NSArray)overlayRenderables
@@ -233,13 +233,13 @@
   return isa;
 }
 
-- (id)resizedGeometryForTransform:(CGAffineTransform *)a3
+- (id)resizedGeometryForTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->c;
-  v8[0] = *&a3->a;
+  v3 = *&transform->c;
+  v8[0] = *&transform->a;
   v8[1] = v3;
-  v8[2] = *&a3->tx;
-  v4 = self;
+  v8[2] = *&transform->tx;
+  selfCopy = self;
   sub_100D09678(v8);
   v6 = v5;
 
@@ -248,9 +248,9 @@
 
 - (CGRect)frameInUnscaledCanvasForMarqueeSelecting
 {
-  v2 = self;
-  [(CRLCanvasRep *)v2 boundsForStandardKnobs];
-  [(CRLCanvasRep *)v2 convertNaturalRectToUnscaledCanvas:?];
+  selfCopy = self;
+  [(CRLCanvasRep *)selfCopy boundsForStandardKnobs];
+  [(CRLCanvasRep *)selfCopy convertNaturalRectToUnscaledCanvas:?];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -269,37 +269,37 @@
 
 - (void)becameSelected
 {
-  v2 = self;
+  selfCopy = self;
   sub_100D098D4();
 }
 
 - (void)becameNotSelected
 {
-  v2 = self;
+  selfCopy = self;
   sub_100D09CF8();
 }
 
 - (void)prepareForPencilKitSnapshotting
 {
-  v2 = self;
+  selfCopy = self;
   sub_100D0A1E4();
 }
 
-- (BOOL)containsPoint:(CGPoint)a3 withPrecision:(BOOL)a4
+- (BOOL)containsPoint:(CGPoint)point withPrecision:(BOOL)precision
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = self;
-  v8 = sub_100D0A6B4(a4, x, y);
+  y = point.y;
+  x = point.x;
+  selfCopy = self;
+  v8 = sub_100D0A6B4(precision, x, y);
 
   return v8 & 1;
 }
 
-- (void)didUpdateRenderable:(id)a3
+- (void)didUpdateRenderable:(id)renderable
 {
-  v4 = a3;
-  v5 = self;
-  sub_100D0A958(v4);
+  renderableCopy = renderable;
+  selfCopy = self;
+  sub_100D0A958(renderableCopy);
 }
 
 - (void)dynamicDragDidBegin
@@ -316,10 +316,10 @@
   }
 }
 
-- (void)dynamicDragDidEndAt:(CGPoint)a3
+- (void)dynamicDragDidEndAt:(CGPoint)at
 {
-  y = a3.y;
-  x = a3.x;
+  y = at.y;
+  x = at.x;
   v7.receiver = self;
   v7.super_class = type metadata accessor for CRLUSDZRep(0);
   v5 = v7.receiver;
@@ -334,38 +334,38 @@
 
 - (id)dynamicResizeDidBegin
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100D0B4B0();
 
   return v3;
 }
 
-- (void)dynamicResizeDidEndWithTracker:(id)a3
+- (void)dynamicResizeDidEndWithTracker:(id)tracker
 {
-  v5 = a3;
-  v6 = self;
-  sub_100D0B5D0(a3);
+  trackerCopy = tracker;
+  selfCopy = self;
+  sub_100D0B5D0(tracker);
 }
 
 - (void)willBeginZooming
 {
-  v2 = self;
+  selfCopy = self;
   sub_100D0B71C();
 }
 
 - (void)didEndZooming
 {
-  v2 = self;
+  selfCopy = self;
   sub_100D0B810();
 }
 
-- (void)dynamicOperationDidBeginWithRealTimeCommands:(BOOL)a3
+- (void)dynamicOperationDidBeginWithRealTimeCommands:(BOOL)commands
 {
-  v3 = a3;
+  commandsCopy = commands;
   v5.receiver = self;
   v5.super_class = type metadata accessor for CRLUSDZRep(0);
   v4 = v5.receiver;
-  [(CRLCanvasRep *)&v5 dynamicOperationDidBeginWithRealTimeCommands:v3];
+  [(CRLCanvasRep *)&v5 dynamicOperationDidBeginWithRealTimeCommands:commandsCopy];
   sub_100CF979C();
 }
 
@@ -380,40 +380,40 @@
   sub_100D0CF54();
 }
 
-- (void)selectionPathDidChangeWithNotification:(id)a3
+- (void)selectionPathDidChangeWithNotification:(id)notification
 {
-  v3 = self;
-  if ([(CRLCanvasRep *)v3 isLocked])
+  selfCopy = self;
+  if ([(CRLCanvasRep *)selfCopy isLocked])
   {
-    [(CRLCanvasRep *)v3 invalidateKnobs];
+    [(CRLCanvasRep *)selfCopy invalidateKnobs];
   }
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_100D0D3F0(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_100D0D3F0(contextCopy);
 }
 
-- (void)addKnobsToArray:(id)a3
+- (void)addKnobsToArray:(id)array
 {
-  v4 = a3;
-  v5 = self;
-  sub_100D0EE58(v4);
+  arrayCopy = array;
+  selfCopy = self;
+  sub_100D0EE58(arrayCopy);
 }
 
-- (id)newTrackerForKnob:(id)a3
+- (id)newTrackerForKnob:(id)knob
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC8Freeform10CRLUSDZRep_knobController);
-  v5 = a3;
-  v6 = self;
-  v7 = sub_100D13FF4(v5, v6, v4);
+  knobCopy = knob;
+  selfCopy = self;
+  v7 = sub_100D13FF4(knobCopy, selfCopy, v4);
   if (!v7)
   {
-    v10.receiver = v6;
+    v10.receiver = selfCopy;
     v10.super_class = type metadata accessor for CRLUSDZRep(0);
-    v7 = [(CRLCanvasRep *)&v10 newTrackerForKnob:v5];
+    v7 = [(CRLCanvasRep *)&v10 newTrackerForKnob:knobCopy];
   }
 
   v8 = v7;
@@ -423,7 +423,7 @@
 
 - (NSString)crlaxLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_100D1248C();
   v4 = v3;
 
@@ -442,7 +442,7 @@
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_100D131D0();
 
   v3 = String._bridgeToObjectiveC()();
@@ -453,7 +453,7 @@
 - (void)dynamicRotateDidBegin
 {
   v0 = objc_opt_self();
-  v1 = [v0 _atomicIncrementAssertCount];
+  _atomicIncrementAssertCount = [v0 _atomicIncrementAssertCount];
   v23 = [objc_allocWithZone(NSString) init];
   sub_100604538(_swiftEmptyArrayStorage, &v23);
   StaticString.description.getter();
@@ -462,7 +462,7 @@
   StaticString.description.getter();
   v3 = String._bridgeToObjectiveC()();
 
-  v4 = [v3 lastPathComponent];
+  lastPathComponent = [v3 lastPathComponent];
 
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
@@ -478,7 +478,7 @@
   *(inited + 16) = xmmword_10146CA70;
   *(inited + 56) = &type metadata for Int32;
   *(inited + 64) = &protocol witness table for Int32;
-  *(inited + 32) = v1;
+  *(inited + 32) = _atomicIncrementAssertCount;
   v10 = sub_100006370(0, &qword_1019F4D30);
   *(inited + 96) = v10;
   v11 = sub_10000FDE0(&qword_1019F52E0, &qword_1019F4D30);
@@ -527,8 +527,8 @@
 
 - (void)enterPreviewMode
 {
-  v5 = self;
-  v2 = [(CRLCanvasRep *)v5 info];
+  selfCopy = self;
+  info = [(CRLCanvasRep *)selfCopy info];
   type metadata accessor for CRLBoardItem(0);
   v3 = swift_isaMask & *swift_dynamicCastClassUnconditional();
   v4 = (*(v3 + 624))();

@@ -1,23 +1,23 @@
 @interface KVTokenizer
-- (KVTokenizer)initWithLocale:(id)a3;
-- (id)queryFromText:(id)a3;
+- (KVTokenizer)initWithLocale:(id)locale;
+- (id)queryFromText:(id)text;
 @end
 
 @implementation KVTokenizer
 
-- (id)queryFromText:(id)a3
+- (id)queryFromText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = [KVSpanMatchQuery alloc];
-  v10 = objc_msgSend_queryFromText_(self->_tokenizer, v6, v4, v7, v8, v9);
+  v10 = objc_msgSend_queryFromText_(self->_tokenizer, v6, textCopy, v7, v8, v9);
   v15 = objc_msgSend_initWithQuery_(v5, v11, v10, v12, v13, v14);
 
   return v15;
 }
 
-- (KVTokenizer)initWithLocale:(id)a3
+- (KVTokenizer)initWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v16.receiver = self;
   v16.super_class = KVTokenizer;
   v5 = [(KVTokenizer *)&v16 init];
@@ -42,7 +42,7 @@
     v7 = v6;
     _Block_object_dispose(&v18, 8);
     v8 = [v6 alloc];
-    v13 = objc_msgSend_initWithLocale_(v8, v9, v4, v10, v11, v12);
+    v13 = objc_msgSend_initWithLocale_(v8, v9, localeCopy, v10, v11, v12);
     tokenizer = v5->_tokenizer;
     v5->_tokenizer = v13;
   }

@@ -1,12 +1,12 @@
 @interface FRPrivateDataUpdateCoordinator
 - (FRPrivateDataUpdateCoordinator)init;
-- (FRPrivateDataUpdateCoordinator)initWithNetworkReachability:(id)a3;
-- (void)_updatePrivateDataControllersWithCompletion:(id)a3;
+- (FRPrivateDataUpdateCoordinator)initWithNetworkReachability:(id)reachability;
+- (void)_updatePrivateDataControllersWithCompletion:(id)completion;
 - (void)markAllPrivateDataControllersAsNeedingUpdate;
-- (void)networkReachabilityDidChange:(id)a3;
-- (void)privateDataControllerDidBecomeDirty:(id)a3;
-- (void)setPrivateDataControllers:(id)a3;
-- (void)updatePrivateDataControllersWithCompletion:(id)a3;
+- (void)networkReachabilityDidChange:(id)change;
+- (void)privateDataControllerDidBecomeDirty:(id)dirty;
+- (void)setPrivateDataControllers:(id)controllers;
+- (void)updatePrivateDataControllersWithCompletion:(id)completion;
 @end
 
 @implementation FRPrivateDataUpdateCoordinator
@@ -34,9 +34,9 @@
   objc_exception_throw(v4);
 }
 
-- (FRPrivateDataUpdateCoordinator)initWithNetworkReachability:(id)a3
+- (FRPrivateDataUpdateCoordinator)initWithNetworkReachability:(id)reachability
 {
-  v4 = a3;
+  reachabilityCopy = reachability;
   v9.receiver = self;
   v9.super_class = FRPrivateDataUpdateCoordinator;
   v5 = [(FRPrivateDataUpdateCoordinator *)&v9 init];
@@ -46,15 +46,15 @@
     updateQueue = v5->_updateQueue;
     v5->_updateQueue = v6;
 
-    [v4 addObserver:v5];
+    [reachabilityCopy addObserver:v5];
   }
 
   return v5;
 }
 
-- (void)setPrivateDataControllers:(id)a3
+- (void)setPrivateDataControllers:(id)controllers
 {
-  v4 = a3;
+  controllersCopy = controllers;
   +[NSThread isMainThread];
   v21 = 0u;
   v22 = 0u;
@@ -87,7 +87,7 @@
     while (v7);
   }
 
-  v10 = [v4 copy];
+  v10 = [controllersCopy copy];
   privateDataControllers = self->_privateDataControllers;
   self->_privateDataControllers = v10;
 
@@ -95,7 +95,7 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v12 = v4;
+  v12 = controllersCopy;
   v13 = [v12 countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v13)
   {
@@ -125,11 +125,11 @@
   [(FRPrivateDataUpdateCoordinator *)self _updatePrivateDataControllersWithCompletion:0];
 }
 
-- (void)updatePrivateDataControllersWithCompletion:(id)a3
+- (void)updatePrivateDataControllersWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   +[NSThread isMainThread];
-  [(FRPrivateDataUpdateCoordinator *)self _updatePrivateDataControllersWithCompletion:v4];
+  [(FRPrivateDataUpdateCoordinator *)self _updatePrivateDataControllersWithCompletion:completionCopy];
 }
 
 - (void)markAllPrivateDataControllersAsNeedingUpdate
@@ -138,8 +138,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(FRPrivateDataUpdateCoordinator *)self privateDataControllers];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  privateDataControllers = [(FRPrivateDataUpdateCoordinator *)self privateDataControllers];
+  v3 = [privateDataControllers countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -151,7 +151,7 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(privateDataControllers);
         }
 
         [*(*(&v7 + 1) + 8 * v6) markAsDirty];
@@ -159,24 +159,24 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [privateDataControllers countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)_updatePrivateDataControllersWithCompletion:(id)a3
+- (void)_updatePrivateDataControllersWithCompletion:(id)completion
 {
-  v19 = a3;
+  completionCopy = completion;
   +[NSThread isMainThread];
   v4 = dispatch_group_create();
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [(FRPrivateDataUpdateCoordinator *)self privateDataControllers];
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  privateDataControllers = [(FRPrivateDataUpdateCoordinator *)self privateDataControllers];
+  v6 = [privateDataControllers countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v6)
   {
     v7 = v6;
@@ -187,7 +187,7 @@
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(privateDataControllers);
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
@@ -200,7 +200,7 @@
             v13 = v12;
             v14 = objc_opt_class();
             NSStringFromClass(v14);
-            v15 = v5;
+            v15 = privateDataControllers;
             v17 = v16 = self;
             *buf = 138543618;
             v28 = v17;
@@ -209,11 +209,11 @@
             _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "update coordinator will get in line to trigger sync, target=%{public}@, instance=%lu", buf, 0x16u);
 
             self = v16;
-            v5 = v15;
+            privateDataControllers = v15;
           }
 
           dispatch_group_enter(v4);
-          v18 = [(FRPrivateDataUpdateCoordinator *)self updateQueue];
+          updateQueue = [(FRPrivateDataUpdateCoordinator *)self updateQueue];
           v20[0] = _NSConcreteStackBlock;
           v20[1] = 3221225472;
           v20[2] = sub_100052190;
@@ -221,40 +221,40 @@
           v20[4] = v10;
           v22 = v11;
           v21 = v4;
-          [v18 enqueueBlockForMainThread:v20];
+          [updateQueue enqueueBlockForMainThread:v20];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v7 = [privateDataControllers countByEnumeratingWithState:&v23 objects:v31 count:16];
     }
 
     while (v7);
   }
 
-  if (v19)
+  if (completionCopy)
   {
     if (FCDispatchGroupIsEmpty())
     {
-      v19[2](v19);
+      completionCopy[2](completionCopy);
     }
 
     else
     {
-      dispatch_group_notify(v4, &_dispatch_main_q, v19);
+      dispatch_group_notify(v4, &_dispatch_main_q, completionCopy);
     }
   }
 }
 
-- (void)privateDataControllerDidBecomeDirty:(id)a3
+- (void)privateDataControllerDidBecomeDirty:(id)dirty
 {
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"_updatePrivateDataControllersWithCompletion:" object:0];
 
   [(FRPrivateDataUpdateCoordinator *)self performSelector:"_updatePrivateDataControllersWithCompletion:" withObject:0 afterDelay:1.0];
 }
 
-- (void)networkReachabilityDidChange:(id)a3
+- (void)networkReachabilityDidChange:(id)change
 {
-  if ([a3 isNetworkReachable])
+  if ([change isNetworkReachable])
   {
 
     [(FRPrivateDataUpdateCoordinator *)self updatePrivateDataControllersWithCompletion:0];

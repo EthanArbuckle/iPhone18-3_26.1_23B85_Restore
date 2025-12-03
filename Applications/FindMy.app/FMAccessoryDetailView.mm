@@ -8,7 +8,7 @@
 
 - (void)handleAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002CE0A8();
 }
 
@@ -20,7 +20,7 @@
     v4 = Strong;
     v5 = swift_allocObject();
     *(v5 + 16) = v4;
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1003A51F8(sub_1002CE964, v5);
     swift_unknownObjectRelease();
@@ -29,7 +29,7 @@
 
 - (void)handleSerialReveal
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002CE324();
 }
 

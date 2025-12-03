@@ -1,11 +1,11 @@
 @interface DomainHelperInterface
 - (_TtC12icloudMCCKit21DomainHelperInterface)init;
-- (int64_t)getPKCategoryForDomain:(id)a3;
+- (int64_t)getPKCategoryForDomain:(id)domain;
 @end
 
 @implementation DomainHelperInterface
 
-- (int64_t)getPKCategoryForDomain:(id)a3
+- (int64_t)getPKCategoryForDomain:(id)domain
 {
   sub_1D373797C();
   if (qword_1EDEF4BF8 != -1)

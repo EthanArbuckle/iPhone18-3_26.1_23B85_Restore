@@ -1,6 +1,6 @@
 @interface VCSessionParticipantMediaStreamInfo
 - (VCSessionParticipantMediaStreamInfo)init;
-- (void)addStreamConfig:(id)a3;
+- (void)addStreamConfig:(id)config;
 - (void)dealloc;
 @end
 
@@ -29,7 +29,7 @@
   [(VCSessionParticipantMediaStreamInfo *)&v3 dealloc];
 }
 
-- (void)addStreamConfig:(id)a3
+- (void)addStreamConfig:(id)config
 {
   [(NSMutableArray *)self->_streamConfigs addObject:?];
   if (self->_isOneToOneSupported)
@@ -39,7 +39,7 @@
 
   else
   {
-    v5 = [objc_msgSend(a3 "multiwayConfig")];
+    v5 = [objc_msgSend(config "multiwayConfig")];
   }
 
   self->_isOneToOneSupported = v5;

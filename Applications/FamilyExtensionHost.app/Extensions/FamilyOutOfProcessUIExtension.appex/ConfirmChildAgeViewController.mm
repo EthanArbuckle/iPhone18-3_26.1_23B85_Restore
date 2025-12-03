@@ -1,13 +1,13 @@
 @interface ConfirmChildAgeViewController
-- (_TtC29FamilyOutOfProcessUIExtension29ConfirmChildAgeViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5;
-- (_TtC29FamilyOutOfProcessUIExtension29ConfirmChildAgeViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 adoptTableViewScrollView:(BOOL)a6;
-- (_TtC29FamilyOutOfProcessUIExtension29ConfirmChildAgeViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5;
-- (_TtC29FamilyOutOfProcessUIExtension29ConfirmChildAgeViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 adoptTableViewScrollView:(BOOL)a6;
+- (_TtC29FamilyOutOfProcessUIExtension29ConfirmChildAgeViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon;
+- (_TtC29FamilyOutOfProcessUIExtension29ConfirmChildAgeViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon adoptTableViewScrollView:(BOOL)view;
+- (_TtC29FamilyOutOfProcessUIExtension29ConfirmChildAgeViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name;
+- (_TtC29FamilyOutOfProcessUIExtension29ConfirmChildAgeViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name adoptTableViewScrollView:(BOOL)view;
 - (id)showUpdateChildBdayLink;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -15,45 +15,45 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100001BD8();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100002070(a3);
+  selfCopy = self;
+  sub_100002070(appear);
 }
 
-- (_TtC29FamilyOutOfProcessUIExtension29ConfirmChildAgeViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5
-{
-  result = _swift_stdlib_reportUnimplementedInitializer();
-  __break(1u);
-  return result;
-}
-
-- (_TtC29FamilyOutOfProcessUIExtension29ConfirmChildAgeViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5
+- (_TtC29FamilyOutOfProcessUIExtension29ConfirmChildAgeViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC29FamilyOutOfProcessUIExtension29ConfirmChildAgeViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 adoptTableViewScrollView:(BOOL)a6
+- (_TtC29FamilyOutOfProcessUIExtension29ConfirmChildAgeViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC29FamilyOutOfProcessUIExtension29ConfirmChildAgeViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 adoptTableViewScrollView:(BOOL)a6
+- (_TtC29FamilyOutOfProcessUIExtension29ConfirmChildAgeViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name adoptTableViewScrollView:(BOOL)view
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (_TtC29FamilyOutOfProcessUIExtension29ConfirmChildAgeViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon adoptTableViewScrollView:(BOOL)view
+{
+  result = _swift_stdlib_reportUnimplementedInitializer();
+  __break(1u);
+  return result;
+}
+
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_10001B410();
   v7 = *(v6 - 8);
@@ -61,19 +61,19 @@
   __chkstk_darwin(v6);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_10001B3F0();
-  v11 = a3;
-  v12 = self;
-  v13 = sub_100003034(v11);
+  viewCopy = view;
+  selfCopy = self;
+  v13 = sub_100003034(viewCopy);
 
   (*(v7 + 8))(v10, v6);
 
   return v13;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   v3 = *&self->OBTableWelcomeController_opaque[OBJC_IVAR____TtC29FamilyOutOfProcessUIExtension29ConfirmChildAgeViewController_viewModel];
-  v4 = self;
+  selfCopy = self;
 
   v5 = sub_10001B720();
 
@@ -82,7 +82,7 @@
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v5 = sub_10001B410();
   v6 = *(v5 - 8);
@@ -90,9 +90,9 @@
   __chkstk_darwin(v5);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_10001B3F0();
-  v10 = a3;
+  viewCopy = view;
   isa = sub_10001B3E0().super.isa;
-  [v10 deselectRowAtIndexPath:isa animated:0];
+  [viewCopy deselectRowAtIndexPath:isa animated:0];
 
   (*(v6 + 8))(v9, v5);
 }

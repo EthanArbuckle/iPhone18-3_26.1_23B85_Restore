@@ -1,14 +1,14 @@
 @interface MPSNDArrayDefaultAllocator
 - (MPSNDArrayDefaultAllocator)init;
-- (MPSNDArrayDefaultAllocator)initWithCoder:(id)a3;
-- (id)arrayForCommandBuffer:(id)a3 arrayDescriptor:(id)a4 kernel:(id)a5;
-- (id)bufferForCommandBuffer:(id)a3 size:(unint64_t)a4 options:(unint64_t)a5 kernel:(id)a6;
+- (MPSNDArrayDefaultAllocator)initWithCoder:(id)coder;
+- (id)arrayForCommandBuffer:(id)buffer arrayDescriptor:(id)descriptor kernel:(id)kernel;
+- (id)bufferForCommandBuffer:(id)buffer size:(unint64_t)size options:(unint64_t)options kernel:(id)kernel;
 - (void)dealloc;
 @end
 
 @implementation MPSNDArrayDefaultAllocator
 
-- (MPSNDArrayDefaultAllocator)initWithCoder:(id)a3
+- (MPSNDArrayDefaultAllocator)initWithCoder:(id)coder
 {
   v13.receiver = self;
   v13.super_class = MPSNDArrayDefaultAllocator;
@@ -30,18 +30,18 @@
   return v3;
 }
 
-- (id)arrayForCommandBuffer:(id)a3 arrayDescriptor:(id)a4 kernel:(id)a5
+- (id)arrayForCommandBuffer:(id)buffer arrayDescriptor:(id)descriptor kernel:(id)kernel
 {
   v7 = [MPSNDArray alloc];
-  v12 = objc_msgSend_device(a3, v8, v9, v10, v11);
-  v15 = objc_msgSend_initWithDevice_descriptor_(v7, v13, v12, a4, v14);
+  v12 = objc_msgSend_device(buffer, v8, v9, v10, v11);
+  v15 = objc_msgSend_initWithDevice_descriptor_(v7, v13, v12, descriptor, v14);
   v16 = v15;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = sub_22E344130;
   v21[3] = &unk_2787BE7E8;
   v21[4] = v15;
-  objc_msgSend_addCompletedHandler_(a3, v17, v21, v18, v19);
+  objc_msgSend_addCompletedHandler_(buffer, v17, v21, v18, v19);
   return v15;
 }
 
@@ -49,13 +49,13 @@
 {
   if (!self->_dealloc_ok)
   {
-    v2 = self;
+    selfCopy = self;
     v3 = MTLReportFailureTypeEnabled();
-    self = v2;
+    self = selfCopy;
     if (v3)
     {
       MTLReportFailure();
-      self = v2;
+      self = selfCopy;
     }
   }
 
@@ -77,11 +77,11 @@
   return result;
 }
 
-- (id)bufferForCommandBuffer:(id)a3 size:(unint64_t)a4 options:(unint64_t)a5 kernel:(id)a6
+- (id)bufferForCommandBuffer:(id)buffer size:(unint64_t)size options:(unint64_t)options kernel:(id)kernel
 {
-  v8 = objc_msgSend_device(a3, a2, a3, a4, a5, a6);
+  v8 = objc_msgSend_device(buffer, a2, buffer, size, options, kernel);
 
-  return objc_msgSend_newBufferWithLength_options_(v8, v9, a4, a5, v10);
+  return objc_msgSend_newBufferWithLength_options_(v8, v9, size, options, v10);
 }
 
 @end

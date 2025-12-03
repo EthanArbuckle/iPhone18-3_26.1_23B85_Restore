@@ -1,6 +1,6 @@
 @interface SKCaptureUnarchiverDelegate
 + (id)sharedInstance;
-- (Class)unarchiver:(id)a3 cannotDecodeObjectOfClassName:(id)a4 originalClasses:(id)a5;
+- (Class)unarchiver:(id)unarchiver cannotDecodeObjectOfClassName:(id)name originalClasses:(id)classes;
 @end
 
 @implementation SKCaptureUnarchiverDelegate
@@ -16,15 +16,15 @@
   return v2;
 }
 
-- (Class)unarchiver:(id)a3 cannotDecodeObjectOfClassName:(id)a4 originalClasses:(id)a5
+- (Class)unarchiver:(id)unarchiver cannotDecodeObjectOfClassName:(id)name originalClasses:(id)classes
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = a5;
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  classesCopy = classes;
+  v6 = [classesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -34,7 +34,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(classesCopy);
         }
 
         v9 = NSClassFromString(*(*(&v11 + 1) + 8 * i));
@@ -45,7 +45,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [classesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;

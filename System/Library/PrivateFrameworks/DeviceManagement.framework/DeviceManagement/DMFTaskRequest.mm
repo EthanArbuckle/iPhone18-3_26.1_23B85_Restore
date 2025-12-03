@@ -1,14 +1,14 @@
 @interface DMFTaskRequest
-+ (BOOL)isPermittedOnPlatform:(unint64_t)a3;
++ (BOOL)isPermittedOnPlatform:(unint64_t)platform;
 @end
 
 @implementation DMFTaskRequest
 
-+ (BOOL)isPermittedOnPlatform:(unint64_t)a3
++ (BOOL)isPermittedOnPlatform:(unint64_t)platform
 {
-  v4 = [a1 permittedPlatforms];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v6 = [v4 containsObject:v5];
+  permittedPlatforms = [self permittedPlatforms];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:platform];
+  v6 = [permittedPlatforms containsObject:v5];
 
   return v6;
 }

@@ -1,12 +1,12 @@
 @interface MapsSuggestionsBaseFeeler
 + (BOOL)isEnabled;
-- (BOOL)canProduceSignalType:(int64_t)a3;
-- (MapsSuggestionsBaseFeeler)initWithDelegate:(id)a3;
-- (MapsSuggestionsBaseFeeler)initWithDelegate:(id)a3 name:(id)a4;
+- (BOOL)canProduceSignalType:(int64_t)type;
+- (MapsSuggestionsBaseFeeler)initWithDelegate:(id)delegate;
+- (MapsSuggestionsBaseFeeler)initWithDelegate:(id)delegate name:(id)name;
 - (MapsSuggestionsFeelerDelegate)delegate;
 - (NSString)description;
 - (int64_t)disposition;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation MapsSuggestionsBaseFeeler
@@ -17,13 +17,13 @@
   v8.receiver = self;
   v8.super_class = MapsSuggestionsBaseFeeler;
   v4 = [(MapsSuggestionsBaseFeeler *)&v8 description];
-  v5 = [(MapsSuggestionsBaseFeeler *)self uniqueName];
-  v6 = [v3 initWithFormat:@"%@ '%@'", v4, v5];
+  uniqueName = [(MapsSuggestionsBaseFeeler *)self uniqueName];
+  v6 = [v3 initWithFormat:@"%@ '%@'", v4, uniqueName];
 
   return v6;
 }
 
-- (BOOL)canProduceSignalType:(int64_t)a3
+- (BOOL)canProduceSignalType:(int64_t)type
 {
   result = [(MapsSuggestionsBaseFeeler *)self doesNotRecognizeSelector:a2];
   __break(1u);
@@ -44,31 +44,31 @@
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
 }
 
-- (MapsSuggestionsBaseFeeler)initWithDelegate:(id)a3
+- (MapsSuggestionsBaseFeeler)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [objc_opt_class() description];
-  v6 = [(MapsSuggestionsBaseFeeler *)self initWithDelegate:v4 name:v5];
+  v6 = [(MapsSuggestionsBaseFeeler *)self initWithDelegate:delegateCopy name:v5];
 
   return v6;
 }
 
-- (MapsSuggestionsBaseFeeler)initWithDelegate:(id)a3 name:(id)a4
+- (MapsSuggestionsBaseFeeler)initWithDelegate:(id)delegate name:(id)name
 {
-  objc_initWeak(&location, a3);
-  v6 = a4;
+  objc_initWeak(&location, delegate);
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = MapsSuggestionsBaseFeeler;
   v7 = [(MapsSuggestionsBaseFeeler *)&v12 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [nameCopy copy];
     name = v7->_name;
     v7->_name = v8;
 
@@ -82,7 +82,7 @@
 
 + (BOOL)isEnabled
 {
-  result = [a1 doesNotRecognizeSelector:a2];
+  result = [self doesNotRecognizeSelector:a2];
   __break(1u);
   return result;
 }

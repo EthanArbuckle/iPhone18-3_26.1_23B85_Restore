@@ -1,13 +1,13 @@
 @interface SRTrialConfiguration
 + (id)configuration;
 - (SRTrialConfiguration)init;
-- (id)clientsForNamespace:(id)a3;
+- (id)clientsForNamespace:(id)namespace;
 - (id)debugDescription;
 - (id)namespaceTypes;
-- (id)namespaceTypesForClient:(id)a3;
+- (id)namespaceTypesForClient:(id)client;
 - (void)clear;
-- (void)setParameterName:(id)a3 namespaceId:(id)a4;
-- (void)setProperties:(id)a3 client:(id)a4;
+- (void)setParameterName:(id)name namespaceId:(id)id;
+- (void)setProperties:(id)properties client:(id)client;
 @end
 
 @implementation SRTrialConfiguration
@@ -122,8 +122,8 @@
   }
 
   v14 = MEMORY[0x1E695DFD8];
-  v15 = [v3 allValues];
-  v16 = [v14 setWithArray:v15];
+  allValues = [v3 allValues];
+  v16 = [v14 setWithArray:allValues];
 
   v17 = *MEMORY[0x1E69E9840];
 
@@ -157,55 +157,55 @@
   return v4;
 }
 
-- (void)setProperties:(id)a3 client:(id)a4
+- (void)setProperties:(id)properties client:(id)client
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [v13 objectForKeyedSubscript:@"namespaceId"];
-  v8 = [v13 objectForKeyedSubscript:@"namespaceName"];
+  propertiesCopy = properties;
+  clientCopy = client;
+  v7 = [propertiesCopy objectForKeyedSubscript:@"namespaceId"];
+  v8 = [propertiesCopy objectForKeyedSubscript:@"namespaceName"];
   v9 = v8;
   if (v7 && v8)
   {
-    v10 = [(NSMutableDictionary *)self->_namespaceMap objectForKeyedSubscript:v6];
+    v10 = [(NSMutableDictionary *)self->_namespaceMap objectForKeyedSubscript:clientCopy];
 
     if (!v10)
     {
       v11 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-      [(NSMutableDictionary *)self->_namespaceMap setObject:v11 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_namespaceMap setObject:v11 forKeyedSubscript:clientCopy];
     }
 
-    v12 = [(NSMutableDictionary *)self->_namespaceMap objectForKeyedSubscript:v6];
+    v12 = [(NSMutableDictionary *)self->_namespaceMap objectForKeyedSubscript:clientCopy];
     [v12 addObject:v7];
 
-    [(NSMutableDictionary *)self->_properties setObject:v13 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_properties setObject:propertiesCopy forKeyedSubscript:v7];
     [(NSMutableDictionary *)self->_namespaceDescription setObject:v9 forKeyedSubscript:v7];
   }
 }
 
-- (void)setParameterName:(id)a3 namespaceId:(id)a4
+- (void)setParameterName:(id)name namespaceId:(id)id
 {
-  v11 = a3;
+  nameCopy = name;
   parameterMap = self->_parameterMap;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)parameterMap objectForKeyedSubscript:v11];
+  idCopy = id;
+  v8 = [(NSMutableDictionary *)parameterMap objectForKeyedSubscript:nameCopy];
 
   if (!v8)
   {
     v9 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    [(NSMutableDictionary *)self->_parameterMap setObject:v9 forKeyedSubscript:v11];
+    [(NSMutableDictionary *)self->_parameterMap setObject:v9 forKeyedSubscript:nameCopy];
   }
 
-  v10 = [(NSMutableDictionary *)self->_parameterMap objectForKeyedSubscript:v11];
-  [v10 addObject:v7];
+  v10 = [(NSMutableDictionary *)self->_parameterMap objectForKeyedSubscript:nameCopy];
+  [v10 addObject:idCopy];
 }
 
-- (id)namespaceTypesForClient:(id)a3
+- (id)namespaceTypesForClient:(id)client
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  clientCopy = client;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v23 = v4;
-  [(NSMutableDictionary *)self->_namespaceMap objectForKeyedSubscript:v4];
+  v23 = clientCopy;
+  [(NSMutableDictionary *)self->_namespaceMap objectForKeyedSubscript:clientCopy];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -283,19 +283,19 @@
   }
 
   v18 = MEMORY[0x1E695DFD8];
-  v19 = [v5 allValues];
-  v20 = [v18 setWithArray:v19];
+  allValues = [v5 allValues];
+  v20 = [v18 setWithArray:allValues];
 
   v21 = *MEMORY[0x1E69E9840];
 
   return v20;
 }
 
-- (id)clientsForNamespace:(id)a3
+- (id)clientsForNamespace:(id)namespace
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v18 = [MEMORY[0x1E695DF70] array];
+  namespaceCopy = namespace;
+  array = [MEMORY[0x1E695DF70] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -321,11 +321,11 @@
         {
           v12 = v11;
           v13 = [(NSMutableDictionary *)self->_namespaceMap objectForKeyedSubscript:v10];
-          v14 = [v13 containsObject:v4];
+          v14 = [v13 containsObject:namespaceCopy];
 
           if (v14)
           {
-            [v18 addObject:v10];
+            [array addObject:v10];
           }
         }
       }
@@ -336,7 +336,7 @@
     while (v7);
   }
 
-  v15 = [MEMORY[0x1E695DFD8] setWithArray:v18];
+  v15 = [MEMORY[0x1E695DFD8] setWithArray:array];
 
   v16 = *MEMORY[0x1E69E9840];
 

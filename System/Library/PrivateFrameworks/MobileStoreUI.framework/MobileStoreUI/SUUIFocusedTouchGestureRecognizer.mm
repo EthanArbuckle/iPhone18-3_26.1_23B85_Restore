@@ -1,21 +1,21 @@
 @interface SUUIFocusedTouchGestureRecognizer
-- (SUUIFocusedTouchGestureRecognizer)initWithFocusedView:(id)a3 touchAllowance:(UIEdgeInsets)a4;
+- (SUUIFocusedTouchGestureRecognizer)initWithFocusedView:(id)view touchAllowance:(UIEdgeInsets)allowance;
 - (UIEdgeInsets)touchAllowance;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation SUUIFocusedTouchGestureRecognizer
 
-- (SUUIFocusedTouchGestureRecognizer)initWithFocusedView:(id)a3 touchAllowance:(UIEdgeInsets)a4
+- (SUUIFocusedTouchGestureRecognizer)initWithFocusedView:(id)view touchAllowance:(UIEdgeInsets)allowance
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v11 = a3;
-  if (v11)
+  right = allowance.right;
+  bottom = allowance.bottom;
+  left = allowance.left;
+  top = allowance.top;
+  viewCopy = view;
+  if (viewCopy)
   {
     v17.receiver = self;
     v17.super_class = SUUIFocusedTouchGestureRecognizer;
@@ -23,7 +23,7 @@
     v13 = v12;
     if (v12)
     {
-      objc_storeStrong(&v12->_focusedView, a3);
+      objc_storeStrong(&v12->_focusedView, view);
       v13->_touchAllowance.top = top;
       v13->_touchAllowance.left = left;
       v13->_touchAllowance.bottom = bottom;
@@ -31,18 +31,18 @@
     }
 
     self = v13;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"SUUIFocusedTouchGestureRecognizer.m" lineNumber:20 description:@"A focused view is required."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SUUIFocusedTouchGestureRecognizer.m" lineNumber:20 description:@"A focused view is required."];
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 - (void)reset
@@ -56,23 +56,23 @@
   [(SUUIFocusedTouchGestureRecognizer *)&v4 reset];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  beganCopy = began;
+  eventCopy = event;
+  v8 = eventCopy;
   if (self->_didTouchOutside)
   {
     goto LABEL_27;
   }
 
-  v32 = v7;
+  v32 = eventCopy;
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v9 = [v6 countByEnumeratingWithState:&v37 objects:v42 count:16];
+  v9 = [beganCopy countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v9)
   {
     v10 = v9;
@@ -84,7 +84,7 @@
       {
         if (*v38 != v12)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(beganCopy);
         }
 
         v14 = *(*(&v37 + 1) + 8 * i);
@@ -115,7 +115,7 @@
         }
       }
 
-      v10 = [v6 countByEnumeratingWithState:&v37 objects:v42 count:16];
+      v10 = [beganCopy countByEnumeratingWithState:&v37 objects:v42 count:16];
     }
 
     while (v10);
@@ -170,21 +170,21 @@ LABEL_27:
     activeTouches = self->_activeTouches;
     if (activeTouches)
     {
-      [(NSMutableSet *)activeTouches unionSet:v6];
+      [(NSMutableSet *)activeTouches unionSet:beganCopy];
     }
 
     else
     {
-      v30 = [objc_alloc(MEMORY[0x277CBEB58]) initWithSet:v6];
+      v30 = [objc_alloc(MEMORY[0x277CBEB58]) initWithSet:beganCopy];
       v31 = self->_activeTouches;
       self->_activeTouches = v30;
     }
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  [(NSMutableSet *)self->_activeTouches minusSet:a3, a4];
+  [(NSMutableSet *)self->_activeTouches minusSet:ended, event];
   if (![(NSMutableSet *)self->_activeTouches count])
   {
     if (self->_didTouchOutside)

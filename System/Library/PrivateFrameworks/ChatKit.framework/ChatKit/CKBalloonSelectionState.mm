@@ -1,23 +1,23 @@
 @interface CKBalloonSelectionState
-+ (id)balloonSelectionState:(int64_t)a3;
-+ (id)balloonSelectionState:(int64_t)a3 textSelectionRange:(_NSRange)a4;
-- (CKBalloonSelectionState)initWithStyle:(int64_t)a3 textSelectionRange:(_NSRange)a4;
++ (id)balloonSelectionState:(int64_t)state;
++ (id)balloonSelectionState:(int64_t)state textSelectionRange:(_NSRange)range;
+- (CKBalloonSelectionState)initWithStyle:(int64_t)style textSelectionRange:(_NSRange)range;
 - (_NSRange)textSelectionRange;
 - (id)description;
 @end
 
 @implementation CKBalloonSelectionState
 
-- (CKBalloonSelectionState)initWithStyle:(int64_t)a3 textSelectionRange:(_NSRange)a4
+- (CKBalloonSelectionState)initWithStyle:(int64_t)style textSelectionRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v8.receiver = self;
   v8.super_class = CKBalloonSelectionState;
   result = [(CKBalloonSelectionState *)&v8 init];
   if (result)
   {
-    result->_style = a3;
+    result->_style = style;
     result->_textSelectionRange.location = location;
     result->_textSelectionRange.length = length;
   }
@@ -25,16 +25,16 @@
   return result;
 }
 
-+ (id)balloonSelectionState:(int64_t)a3
++ (id)balloonSelectionState:(int64_t)state
 {
-  v3 = [[a1 alloc] initWithStyle:a3 textSelectionRange:{0, 0}];
+  v3 = [[self alloc] initWithStyle:state textSelectionRange:{0, 0}];
 
   return v3;
 }
 
-+ (id)balloonSelectionState:(int64_t)a3 textSelectionRange:(_NSRange)a4
++ (id)balloonSelectionState:(int64_t)state textSelectionRange:(_NSRange)range
 {
-  v4 = [[a1 alloc] initWithStyle:a3 textSelectionRange:{a4.location, a4.length}];
+  v4 = [[self alloc] initWithStyle:state textSelectionRange:{range.location, range.length}];
 
   return v4;
 }

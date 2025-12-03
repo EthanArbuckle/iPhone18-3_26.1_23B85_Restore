@@ -1,40 +1,40 @@
 @interface WFTrelloBoardSubstitutableState
-+ (id)serializedRepresentationFromValue:(id)a3;
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
++ (id)serializedRepresentationFromValue:(id)value;
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFTrelloBoardSubstitutableState
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFVariableSubstitutableParameterState *)self variable];
+  contextCopy = context;
+  handlerCopy = handler;
+  valueHandlerCopy = valueHandler;
+  variable = [(WFVariableSubstitutableParameterState *)self variable];
 
-  if (v11)
+  if (variable)
   {
-    v12 = [(WFVariableSubstitutableParameterState *)self variable];
-    if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    variable2 = [(WFVariableSubstitutableParameterState *)self variable];
+    if (variable2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v13 = [v12 prompt];
-      v9[2](v9, v13, 0);
+      prompt = [variable2 prompt];
+      handlerCopy[2](handlerCopy, prompt, 0);
     }
 
     else
     {
 
-      v14 = [(WFVariableSubstitutableParameterState *)self variable];
+      variable3 = [(WFVariableSubstitutableParameterState *)self variable];
       v15 = objc_opt_class();
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __92__WFTrelloBoardSubstitutableState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke;
       v17[3] = &unk_278C21810;
-      v18 = v10;
-      [v14 getObjectRepresentationForClass:v15 context:v8 completionHandler:v17];
+      v18 = valueHandlerCopy;
+      [variable3 getObjectRepresentationForClass:v15 context:contextCopy completionHandler:v17];
 
-      v12 = v18;
+      variable2 = v18;
     }
   }
 
@@ -42,7 +42,7 @@
   {
     v16.receiver = self;
     v16.super_class = WFTrelloBoardSubstitutableState;
-    [(WFVariableSubstitutableParameterState *)&v16 processWithContext:v8 userInputRequiredHandler:v9 valueHandler:v10];
+    [(WFVariableSubstitutableParameterState *)&v16 processWithContext:contextCopy userInputRequiredHandler:handlerCopy valueHandler:valueHandlerCopy];
   }
 }
 
@@ -79,12 +79,12 @@ void __92__WFTrelloBoardSubstitutableState_processWithContext_userInputRequiredH
   (*(v3 + 16))(v3, v4, a1[5]);
 }
 
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  representationCopy = representation;
   v6 = objc_opt_class();
-  v7 = v5;
+  v7 = representationCopy;
   if (v7 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     v9 = getWFGeneralLogObject();
@@ -125,11 +125,11 @@ void __92__WFTrelloBoardSubstitutableState_processWithContext_userInputRequiredH
   return v11;
 }
 
-+ (id)serializedRepresentationFromValue:(id)a3
++ (id)serializedRepresentationFromValue:(id)value
 {
-  if (a3)
+  if (value)
   {
-    v4 = [MEMORY[0x277D7C768] JSONDictionaryFromModel:a3 error:0];
+    v4 = [MEMORY[0x277D7C768] JSONDictionaryFromModel:value error:0];
   }
 
   else

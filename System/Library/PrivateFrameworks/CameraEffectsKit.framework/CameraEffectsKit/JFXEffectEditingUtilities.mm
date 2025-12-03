@@ -1,44 +1,44 @@
 @interface JFXEffectEditingUtilities
-+ (BOOL)canEditTextForEffect:(id)a3;
++ (BOOL)canEditTextForEffect:(id)effect;
 + (BOOL)isFaceTrackingDataAvailable;
-+ (BOOL)makeOverlayTrackedMaintainingAppearance:(id)a3 atTime:(id *)a4 newTrackingType:(int64_t)a5 arMetadata:(id)a6 playableInterfaceOrientation:(int64_t)a7;
-+ (BOOL)shouldAutoEditTextForEffect:(id)a3;
-+ (BOOL)shouldRenderTextWithMotionWhileEditingTextForEffectID:(id)a3;
-+ (CGPoint)JFX_closeButtonInsetForEffect:(id)a3 viewBounds:(CGRect)a4;
-+ (CGPoint)JFX_convertPoint:(CGPoint)a3 fromSize:(CGSize)a4 toSize:(CGSize)a5 invertY:(BOOL)a6;
-+ (CGPoint)nextNormalizedInsertionPointForOverlay:(id)a3 scaleRelativeToCenterSquare:(double)a4 atTime:(id *)a5 applyTracking:(BOOL)a6 withARMetadata:(id)a7 transformAnimation:(id)a8 playableMediaContentMode:(int)a9 playableInterfaceOrientation:(int64_t)a10;
-+ (CGPoint)removeButtonPositionForEffect:(id)a3 atTime:(id *)a4 atPosterFrameRelativeToBounds:(CGRect)a5 viewCorrectionTransform:(CGAffineTransform *)a6;
-+ (CGPoint)spacingBetweenCenterPointOfEffect:(id)a3 point:(CGPoint)a4 relativeToBounds:(CGRect)a5 atTime:(id *)a6;
++ (BOOL)makeOverlayTrackedMaintainingAppearance:(id)appearance atTime:(id *)time newTrackingType:(int64_t)type arMetadata:(id)metadata playableInterfaceOrientation:(int64_t)orientation;
++ (BOOL)shouldAutoEditTextForEffect:(id)effect;
++ (BOOL)shouldRenderTextWithMotionWhileEditingTextForEffectID:(id)d;
++ (CGPoint)JFX_closeButtonInsetForEffect:(id)effect viewBounds:(CGRect)bounds;
++ (CGPoint)JFX_convertPoint:(CGPoint)point fromSize:(CGSize)size toSize:(CGSize)toSize invertY:(BOOL)y;
++ (CGPoint)nextNormalizedInsertionPointForOverlay:(id)overlay scaleRelativeToCenterSquare:(double)square atTime:(id *)time applyTracking:(BOOL)tracking withARMetadata:(id)metadata transformAnimation:(id)animation playableMediaContentMode:(int)mode playableInterfaceOrientation:(int64_t)self0;
++ (CGPoint)removeButtonPositionForEffect:(id)effect atTime:(id *)time atPosterFrameRelativeToBounds:(CGRect)bounds viewCorrectionTransform:(CGAffineTransform *)transform;
++ (CGPoint)spacingBetweenCenterPointOfEffect:(id)effect point:(CGPoint)point relativeToBounds:(CGRect)bounds atTime:(id *)time;
 + (CGRect)JFX_compositionBounds;
-+ (CGRect)JFX_currentFaceRectRelativeToBounds:(CGRect)a3 atTime:(id *)a4 faceAnchor:(id)a5 transformAnimation:(id)a6 playableMediaContentMode:(int)a7 playableInterfaceOrientation:(int64_t)a8 playableAspectRatio:(int64_t)a9 playableAspectRatioPreservationMode:(int64_t)a10;
-+ (CGRect)JFX_rectAtNormalizedPointinCenteredSquareInFaceRect:(CGPoint)a3 faceAnchor:(id)a4 atTime:(id *)a5 scaleRelativeToCenterSquare:(double)a6 relativeToBounds:(CGRect)a7 transformAnimation:(id)a8 playableMediaContentMode:(int)a9 playableInterfaceOrientation:(int64_t)a10 playableAspectRatio:(int64_t)a11 playableAspectRatioPreservationMode:(int64_t)a12;
-+ (CGRect)currentFaceRectRelativeToBounds:(CGRect)a3 atTime:(id *)a4 transformAnimation:(id)a5 playableMediaContentMode:(int)a6 playableInterfaceOrientation:(int64_t)a7 playableAspectRatio:(int64_t)a8 playableAspectRatioPreservationMode:(int64_t)a9;
-+ (id)JFX_hitTestOverlays:(id)a3 atNormalizedPoint:(CGPoint)a4 atTime:(id *)a5 forcePosterFrame:(BOOL)a6 adjustForMinimumSize:(BOOL)a7 normalizedMinimumSize:(id)a8;
-+ (id)hitTestOverlays:(id)a3 atPoint:(CGPoint)a4 relativeToBounds:(CGRect)a5 atTime:(id *)a6 adjustForMinimumSize:(BOOL)a7 normalizedMinimumSize:(id)a8;
-+ (id)hitTestOverlaysAtPosterFrame:(id)a3 atNormalizedPoint:(CGPoint)a4 atTime:(id *)a5 adjustForMinimumSize:(BOOL)a6 normalizedMinimumSize:(id)a7;
-+ (id)hitTestOverlaysAtPosterFrame:(id)a3 atPoint:(CGPoint)a4 relativeToBounds:(CGRect)a5 atTime:(id *)a6 adjustForMinimumSize:(BOOL)a7 normalizedMinimumSize:(id)a8;
-+ (id)newTextEditingPropertiesForEffect:(id)a3 relativeTo:(CGRect)a4 atTime:(id *)a5 withNewText:(id)a6 moveBeforeScalingToAvoidKeyboard:(BOOL)a7;
++ (CGRect)JFX_currentFaceRectRelativeToBounds:(CGRect)bounds atTime:(id *)time faceAnchor:(id)anchor transformAnimation:(id)animation playableMediaContentMode:(int)mode playableInterfaceOrientation:(int64_t)orientation playableAspectRatio:(int64_t)ratio playableAspectRatioPreservationMode:(int64_t)self0;
++ (CGRect)JFX_rectAtNormalizedPointinCenteredSquareInFaceRect:(CGPoint)rect faceAnchor:(id)anchor atTime:(id *)time scaleRelativeToCenterSquare:(double)square relativeToBounds:(CGRect)bounds transformAnimation:(id)animation playableMediaContentMode:(int)mode playableInterfaceOrientation:(int64_t)self0 playableAspectRatio:(int64_t)self1 playableAspectRatioPreservationMode:(int64_t)self2;
++ (CGRect)currentFaceRectRelativeToBounds:(CGRect)bounds atTime:(id *)time transformAnimation:(id)animation playableMediaContentMode:(int)mode playableInterfaceOrientation:(int64_t)orientation playableAspectRatio:(int64_t)ratio playableAspectRatioPreservationMode:(int64_t)preservationMode;
++ (id)JFX_hitTestOverlays:(id)overlays atNormalizedPoint:(CGPoint)point atTime:(id *)time forcePosterFrame:(BOOL)frame adjustForMinimumSize:(BOOL)size normalizedMinimumSize:(id)minimumSize;
++ (id)hitTestOverlays:(id)overlays atPoint:(CGPoint)point relativeToBounds:(CGRect)bounds atTime:(id *)time adjustForMinimumSize:(BOOL)size normalizedMinimumSize:(id)minimumSize;
++ (id)hitTestOverlaysAtPosterFrame:(id)frame atNormalizedPoint:(CGPoint)point atTime:(id *)time adjustForMinimumSize:(BOOL)size normalizedMinimumSize:(id)minimumSize;
++ (id)hitTestOverlaysAtPosterFrame:(id)frame atPoint:(CGPoint)point relativeToBounds:(CGRect)bounds atTime:(id *)time adjustForMinimumSize:(BOOL)size normalizedMinimumSize:(id)minimumSize;
++ (id)newTextEditingPropertiesForEffect:(id)effect relativeTo:(CGRect)to atTime:(id *)time withNewText:(id)text moveBeforeScalingToAvoidKeyboard:(BOOL)keyboard;
 + (id)normalizedInsertionPoints;
-+ (id)textForEffect:(id)a3;
++ (id)textForEffect:(id)effect;
 + (id)trackedNormalizedInsertionPoints;
-+ (int64_t)trackingTypeForOverlayPointIntersectionWithFaceRect:(CGPoint)a3 atTime:(id *)a4 relativeTo:(CGRect)a5 defaultTrackingType:(int64_t)a6 faceAnchor:(id)a7 transformAnimation:(id)a8 playableMediaContentMode:(int)a9 playableInterfaceOrientation:(int64_t)a10 playableAspectRatio:(int64_t)a11 playableAspectRatioPreservationMode:(int64_t)a12;
-+ (unint64_t)JFX_bestTrackedInsertionPointIndexForOverlay:(id)a3 atTime:(id *)a4 insertionPoints:(id)a5 startingIndex:(unint64_t)a6 visibilityThreshold:(double)a7 scaleRelativeToCenterSquare:(double)a8 withARMetadata:(id)a9 transformAnimation:(id)a10 playableMediaContentMode:(int)a11 playableInterfaceOrientation:(int64_t)a12;
-+ (unint64_t)maximumTextLengthForEffect:(id)a3;
++ (int64_t)trackingTypeForOverlayPointIntersectionWithFaceRect:(CGPoint)rect atTime:(id *)time relativeTo:(CGRect)to defaultTrackingType:(int64_t)type faceAnchor:(id)anchor transformAnimation:(id)animation playableMediaContentMode:(int)mode playableInterfaceOrientation:(int64_t)self0 playableAspectRatio:(int64_t)self1 playableAspectRatioPreservationMode:(int64_t)self2;
++ (unint64_t)JFX_bestTrackedInsertionPointIndexForOverlay:(id)overlay atTime:(id *)time insertionPoints:(id)points startingIndex:(unint64_t)index visibilityThreshold:(double)threshold scaleRelativeToCenterSquare:(double)square withARMetadata:(id)metadata transformAnimation:(id)self0 playableMediaContentMode:(int)self1 playableInterfaceOrientation:(int64_t)self2;
++ (unint64_t)maximumTextLengthForEffect:(id)effect;
 + (unint64_t)nextInsertionPointIndex;
-+ (void)JFX_ApplyTextFlipIfNeeded:(id)a3 transform:(CGAffineTransform *)a4;
-+ (void)JFX_setTextRenderingEnabledForEffect:(id)a3 value:(BOOL)a4;
-+ (void)addTransformToEffect:(id)a3 transform:(CGAffineTransform *)a4 relativeToBounds:(CGRect)a5 time:(id *)a6 restrictToBounds:(BOOL)a7;
-+ (void)applyCameraTrackingTransformToOverlay:(id)a3 withARMetadata:(id)a4 playableInterfaceOrientation:(int64_t)a5;
-+ (void)beginTextEditingForEffect:(id)a3;
-+ (void)configureOverlayForInsertion:(id)a3 atNormalizedPoint:(CGPoint)a4 atTime:(id *)a5 isPositionRelativeToCenterSquare:(BOOL)a6 isPositionRelativeToFace:(BOOL)a7 scaleRelativeToCenterSquare:(double)a8 rotationAngle:(double)a9 applyTracking:(BOOL)a10 autoDetectTrackingType:(BOOL)a11 withARMetadata:(id)a12 previewViewCorrectionTransform:(CGAffineTransform *)a13 transformAnimation:(id)a14 playableMediaContentMode:(int)a15 playableInterfaceOrientation:(int64_t)a16 playableAspectRatio:(int64_t)a17 playableAspectRatioPreservationMode:(int64_t)a18;
-+ (void)configureOverlayForInsertion:(id)a3 inRect:(CGRect)a4 atTime:(id *)a5 rotationAngle:(double)a6 applyTracking:(BOOL)a7 autoDetectTrackingType:(BOOL)a8 withARMetadata:(id)a9 previewViewCorrectionTransform:(CGAffineTransform *)a10 transformAnimation:(id)a11 playableMediaContentMode:(int)a12 playableInterfaceOrientation:(int64_t)a13 playableAspectRatio:(int64_t)a14 playableAspectRatioPreservationMode:(int64_t)a15;
-+ (void)disableAnimationForEffects:(id)a3;
-+ (void)enableAnimationForEffects:(id)a3 animationStartTime:(id *)a4;
-+ (void)endTextEditingForEffect:(id)a3;
-+ (void)setInsertionPointIndex:(unint64_t)a3;
-+ (void)suspendOverlayTrackingMaintainingAppearance:(id)a3 forViewBounds:(CGRect)a4 atTime:(id *)a5 arMetadata:(id)a6 playableInterfaceOrientation:(int64_t)a7;
-+ (void)updateEffectText:(id)a3 newText:(id)a4;
-+ (void)updateEffectToDefaultTextIfEmpty:(id)a3;
++ (void)JFX_ApplyTextFlipIfNeeded:(id)needed transform:(CGAffineTransform *)transform;
++ (void)JFX_setTextRenderingEnabledForEffect:(id)effect value:(BOOL)value;
++ (void)addTransformToEffect:(id)effect transform:(CGAffineTransform *)transform relativeToBounds:(CGRect)bounds time:(id *)time restrictToBounds:(BOOL)toBounds;
++ (void)applyCameraTrackingTransformToOverlay:(id)overlay withARMetadata:(id)metadata playableInterfaceOrientation:(int64_t)orientation;
++ (void)beginTextEditingForEffect:(id)effect;
++ (void)configureOverlayForInsertion:(id)insertion atNormalizedPoint:(CGPoint)point atTime:(id *)time isPositionRelativeToCenterSquare:(BOOL)square isPositionRelativeToFace:(BOOL)face scaleRelativeToCenterSquare:(double)centerSquare rotationAngle:(double)angle applyTracking:(BOOL)self0 autoDetectTrackingType:(BOOL)self1 withARMetadata:(id)self2 previewViewCorrectionTransform:(CGAffineTransform *)self3 transformAnimation:(id)self4 playableMediaContentMode:(int)self5 playableInterfaceOrientation:(int64_t)self6 playableAspectRatio:(int64_t)self7 playableAspectRatioPreservationMode:(int64_t)self8;
++ (void)configureOverlayForInsertion:(id)insertion inRect:(CGRect)rect atTime:(id *)time rotationAngle:(double)angle applyTracking:(BOOL)tracking autoDetectTrackingType:(BOOL)type withARMetadata:(id)metadata previewViewCorrectionTransform:(CGAffineTransform *)self0 transformAnimation:(id)self1 playableMediaContentMode:(int)self2 playableInterfaceOrientation:(int64_t)self3 playableAspectRatio:(int64_t)self4 playableAspectRatioPreservationMode:(int64_t)self5;
++ (void)disableAnimationForEffects:(id)effects;
++ (void)enableAnimationForEffects:(id)effects animationStartTime:(id *)time;
++ (void)endTextEditingForEffect:(id)effect;
++ (void)setInsertionPointIndex:(unint64_t)index;
++ (void)suspendOverlayTrackingMaintainingAppearance:(id)appearance forViewBounds:(CGRect)bounds atTime:(id *)time arMetadata:(id)metadata playableInterfaceOrientation:(int64_t)orientation;
++ (void)updateEffectText:(id)text newText:(id)newText;
++ (void)updateEffectToDefaultTextIfEmpty:(id)empty;
 @end
 
 @implementation JFXEffectEditingUtilities
@@ -99,13 +99,13 @@ void __61__JFXEffectEditingUtilities_trackedNormalizedInsertionPoints__block_inv
   trackedNormalizedInsertionPoints_s_trackedNormalizedInsertionPoints = v4;
 }
 
-+ (void)setInsertionPointIndex:(unint64_t)a3
++ (void)setInsertionPointIndex:(unint64_t)index
 {
-  s_insertionPointIndex = a3;
-  v4 = [a1 normalizedInsertionPoints];
-  v5 = [v4 count];
+  s_insertionPointIndex = index;
+  normalizedInsertionPoints = [self normalizedInsertionPoints];
+  v5 = [normalizedInsertionPoints count];
 
-  if (v5 <= a3)
+  if (v5 <= index)
   {
     s_insertionPointIndex = 0;
   }
@@ -115,8 +115,8 @@ void __61__JFXEffectEditingUtilities_trackedNormalizedInsertionPoints__block_inv
 {
   v2 = s_insertionPointIndex++;
   v3 = s_insertionPointIndex;
-  v4 = [a1 normalizedInsertionPoints];
-  v5 = [v4 count];
+  normalizedInsertionPoints = [self normalizedInsertionPoints];
+  v5 = [normalizedInsertionPoints count];
 
   if (v3 >= v5)
   {
@@ -126,33 +126,33 @@ void __61__JFXEffectEditingUtilities_trackedNormalizedInsertionPoints__block_inv
   return v2;
 }
 
-+ (CGPoint)nextNormalizedInsertionPointForOverlay:(id)a3 scaleRelativeToCenterSquare:(double)a4 atTime:(id *)a5 applyTracking:(BOOL)a6 withARMetadata:(id)a7 transformAnimation:(id)a8 playableMediaContentMode:(int)a9 playableInterfaceOrientation:(int64_t)a10
++ (CGPoint)nextNormalizedInsertionPointForOverlay:(id)overlay scaleRelativeToCenterSquare:(double)square atTime:(id *)time applyTracking:(BOOL)tracking withARMetadata:(id)metadata transformAnimation:(id)animation playableMediaContentMode:(int)mode playableInterfaceOrientation:(int64_t)self0
 {
-  v13 = a6;
-  v17 = a3;
-  v18 = a7;
-  v19 = a8;
-  if (v17)
+  trackingCopy = tracking;
+  overlayCopy = overlay;
+  metadataCopy = metadata;
+  animationCopy = animation;
+  if (overlayCopy)
   {
-    v20 = [a1 nextInsertionPointIndex];
-    v21 = [v18 faceAnchor];
+    nextInsertionPointIndex = [self nextInsertionPointIndex];
+    faceAnchor = [metadataCopy faceAnchor];
 
-    if (v13 && v21)
+    if (trackingCopy && faceAnchor)
     {
-      v22 = [a1 trackedNormalizedInsertionPoints];
-      v31 = *&a5->var0;
-      var3 = a5->var3;
-      LODWORD(v30) = a9;
-      v20 = [a1 JFX_bestTrackedInsertionPointIndexForOverlay:v17 atTime:&v31 insertionPoints:v22 startingIndex:v20 visibilityThreshold:v18 scaleRelativeToCenterSquare:v19 withARMetadata:0.4 transformAnimation:a4 playableMediaContentMode:v30 playableInterfaceOrientation:a10];
-      [a1 setInsertionPointIndex:v20 + 1];
+      trackedNormalizedInsertionPoints = [self trackedNormalizedInsertionPoints];
+      v31 = *&time->var0;
+      var3 = time->var3;
+      LODWORD(v30) = mode;
+      nextInsertionPointIndex = [self JFX_bestTrackedInsertionPointIndexForOverlay:overlayCopy atTime:&v31 insertionPoints:trackedNormalizedInsertionPoints startingIndex:nextInsertionPointIndex visibilityThreshold:metadataCopy scaleRelativeToCenterSquare:animationCopy withARMetadata:0.4 transformAnimation:square playableMediaContentMode:v30 playableInterfaceOrientation:orientation];
+      [self setInsertionPointIndex:nextInsertionPointIndex + 1];
     }
 
     else
     {
-      v22 = [a1 normalizedInsertionPoints];
+      trackedNormalizedInsertionPoints = [self normalizedInsertionPoints];
     }
 
-    v25 = [v22 objectAtIndexedSubscript:v20];
+    v25 = [trackedNormalizedInsertionPoints objectAtIndexedSubscript:nextInsertionPointIndex];
     [v25 CGPointValue];
     v23 = v26;
     v24 = v27;
@@ -171,51 +171,51 @@ void __61__JFXEffectEditingUtilities_trackedNormalizedInsertionPoints__block_inv
   return result;
 }
 
-+ (unint64_t)JFX_bestTrackedInsertionPointIndexForOverlay:(id)a3 atTime:(id *)a4 insertionPoints:(id)a5 startingIndex:(unint64_t)a6 visibilityThreshold:(double)a7 scaleRelativeToCenterSquare:(double)a8 withARMetadata:(id)a9 transformAnimation:(id)a10 playableMediaContentMode:(int)a11 playableInterfaceOrientation:(int64_t)a12
++ (unint64_t)JFX_bestTrackedInsertionPointIndexForOverlay:(id)overlay atTime:(id *)time insertionPoints:(id)points startingIndex:(unint64_t)index visibilityThreshold:(double)threshold scaleRelativeToCenterSquare:(double)square withARMetadata:(id)metadata transformAnimation:(id)self0 playableMediaContentMode:(int)self1 playableInterfaceOrientation:(int64_t)self2
 {
-  v18 = a3;
-  v19 = a5;
-  v20 = a9;
-  v57 = a10;
-  v21 = [v20 faceAnchor];
+  overlayCopy = overlay;
+  pointsCopy = points;
+  metadataCopy = metadata;
+  animationCopy = animation;
+  faceAnchor = [metadataCopy faceAnchor];
 
-  if (v21)
+  if (faceAnchor)
   {
-    [a1 JFX_compositionBounds];
+    [self JFX_compositionBounds];
     v53 = v23;
     v54 = v22;
     v51 = v25;
     v52 = v24;
-    v26 = [v19 count];
+    v26 = [pointsCopy count];
     if (v26)
     {
       v27 = v26;
-      v50 = a1;
+      selfCopy = self;
       v28 = 0.0;
       v29 = v26;
-      v30 = a6;
+      indexCopy = index;
       while (1)
       {
         v58 = v28;
-        v31 = v19;
-        v32 = [v19 objectAtIndexedSubscript:v30];
+        v31 = pointsCopy;
+        v32 = [pointsCopy objectAtIndexedSubscript:indexCopy];
         [v32 CGPointValue];
         v34 = v33;
         v36 = v35;
 
-        v37 = [v20 faceAnchor];
-        v38 = [v18 playableAspectRatio];
-        v39 = [v18 playableAspectRatioPreservationMode];
-        v59 = *&a4->var0;
-        var3 = a4->var3;
-        [v50 JFX_rectAtNormalizedPointinCenteredSquareInFaceRect:v37 faceAnchor:&v59 atTime:v57 scaleRelativeToCenterSquare:a11 relativeToBounds:a12 transformAnimation:v38 playableMediaContentMode:v34 playableInterfaceOrientation:v36 playableAspectRatio:a8 playableAspectRatioPreservationMode:{v54, v53, v52, v51, v39}];
+        faceAnchor2 = [metadataCopy faceAnchor];
+        playableAspectRatio = [overlayCopy playableAspectRatio];
+        playableAspectRatioPreservationMode = [overlayCopy playableAspectRatioPreservationMode];
+        v59 = *&time->var0;
+        var3 = time->var3;
+        [selfCopy JFX_rectAtNormalizedPointinCenteredSquareInFaceRect:faceAnchor2 faceAnchor:&v59 atTime:animationCopy scaleRelativeToCenterSquare:mode relativeToBounds:orientation transformAnimation:playableAspectRatio playableMediaContentMode:v34 playableInterfaceOrientation:v36 playableAspectRatio:square playableAspectRatioPreservationMode:{v54, v53, v52, v51, playableAspectRatioPreservationMode}];
         v41 = v40;
         v43 = v42;
         v45 = v44;
         v47 = v46;
 
         v48 = CGRectPercentOfRectThatIntersectsRect(v41, v43, v45, v47, v54, v53, v52, v51);
-        if (v48 > a7)
+        if (v48 > threshold)
         {
           break;
         }
@@ -224,42 +224,42 @@ void __61__JFXEffectEditingUtilities_trackedNormalizedInsertionPoints__block_inv
         if (v48 > v58)
         {
           v28 = v48;
-          a6 = v30;
+          index = indexCopy;
         }
 
-        if (v30 + 1 < v27)
+        if (indexCopy + 1 < v27)
         {
-          ++v30;
+          ++indexCopy;
         }
 
         else
         {
-          v30 = 0;
+          indexCopy = 0;
         }
 
         --v29;
-        v19 = v31;
+        pointsCopy = v31;
         if (!v29)
         {
           goto LABEL_13;
         }
       }
 
-      a6 = v30;
-      v19 = v31;
+      index = indexCopy;
+      pointsCopy = v31;
     }
   }
 
 LABEL_13:
 
-  return a6;
+  return index;
 }
 
-+ (CGRect)JFX_rectAtNormalizedPointinCenteredSquareInFaceRect:(CGPoint)a3 faceAnchor:(id)a4 atTime:(id *)a5 scaleRelativeToCenterSquare:(double)a6 relativeToBounds:(CGRect)a7 transformAnimation:(id)a8 playableMediaContentMode:(int)a9 playableInterfaceOrientation:(int64_t)a10 playableAspectRatio:(int64_t)a11 playableAspectRatioPreservationMode:(int64_t)a12
++ (CGRect)JFX_rectAtNormalizedPointinCenteredSquareInFaceRect:(CGPoint)rect faceAnchor:(id)anchor atTime:(id *)time scaleRelativeToCenterSquare:(double)square relativeToBounds:(CGRect)bounds transformAnimation:(id)animation playableMediaContentMode:(int)mode playableInterfaceOrientation:(int64_t)self0 playableAspectRatio:(int64_t)self1 playableAspectRatioPreservationMode:(int64_t)self2
 {
-  x = a3.x;
-  v26 = *a5;
-  [a1 JFX_currentFaceRectRelativeToBounds:&v26 atTime:a4 faceAnchor:a8 transformAnimation:*&a9 playableMediaContentMode:a10 playableInterfaceOrientation:a11 playableAspectRatio:a7.origin.x playableAspectRatioPreservationMode:{a7.origin.y, a7.size.width, a7.size.height, a12}];
+  x = rect.x;
+  v26 = *time;
+  [self JFX_currentFaceRectRelativeToBounds:&v26 atTime:anchor faceAnchor:animation transformAnimation:*&mode playableMediaContentMode:orientation playableInterfaceOrientation:ratio playableAspectRatio:bounds.origin.x playableAspectRatioPreservationMode:{bounds.origin.y, bounds.size.width, bounds.size.height, preservationMode}];
   v17 = v16;
   v19 = v18;
   if (v14 > v15)
@@ -267,7 +267,7 @@ LABEL_13:
     x = (x + (v14 / v15 + -1.0) * 0.5) / (v14 / v15);
   }
 
-  v20 = fmin(v14, v15) * a6;
+  v20 = fmin(v14, v15) * square;
   v21 = v17 + CGRectMakeWithSizeAndCenterPoint(v20, v20, v14 * x);
   v25 = v19 + v24;
   result.size.height = v23;
@@ -277,34 +277,34 @@ LABEL_13:
   return result;
 }
 
-+ (void)configureOverlayForInsertion:(id)a3 atNormalizedPoint:(CGPoint)a4 atTime:(id *)a5 isPositionRelativeToCenterSquare:(BOOL)a6 isPositionRelativeToFace:(BOOL)a7 scaleRelativeToCenterSquare:(double)a8 rotationAngle:(double)a9 applyTracking:(BOOL)a10 autoDetectTrackingType:(BOOL)a11 withARMetadata:(id)a12 previewViewCorrectionTransform:(CGAffineTransform *)a13 transformAnimation:(id)a14 playableMediaContentMode:(int)a15 playableInterfaceOrientation:(int64_t)a16 playableAspectRatio:(int64_t)a17 playableAspectRatioPreservationMode:(int64_t)a18
++ (void)configureOverlayForInsertion:(id)insertion atNormalizedPoint:(CGPoint)point atTime:(id *)time isPositionRelativeToCenterSquare:(BOOL)square isPositionRelativeToFace:(BOOL)face scaleRelativeToCenterSquare:(double)centerSquare rotationAngle:(double)angle applyTracking:(BOOL)self0 autoDetectTrackingType:(BOOL)self1 withARMetadata:(id)self2 previewViewCorrectionTransform:(CGAffineTransform *)self3 transformAnimation:(id)self4 playableMediaContentMode:(int)self5 playableInterfaceOrientation:(int64_t)self6 playableAspectRatio:(int64_t)self7 playableAspectRatioPreservationMode:(int64_t)self8
 {
-  v18 = a11;
-  v65 = a10;
-  v21 = a7;
-  y = a4.y;
-  x = a4.x;
-  v27 = a3;
-  v28 = a12;
-  v29 = a14;
-  if (v27)
+  typeCopy = type;
+  trackingCopy = tracking;
+  faceCopy = face;
+  y = point.y;
+  x = point.x;
+  insertionCopy = insertion;
+  metadataCopy = metadata;
+  animationCopy = animation;
+  if (insertionCopy)
   {
-    v64 = v21;
-    v30 = a13;
-    [v27 setPlayableAspectRatio:a17];
-    v31 = a18;
-    [v27 setPlayableAspectRatioPreservationMode:a18];
-    [v27 setTransformAnimation:v29];
-    v32 = multiplierForAspectRatio(a17);
-    v33 = [v27 transformAnimation];
-    [v33 setAspectRatio:v32];
+    v64 = faceCopy;
+    transformCopy2 = transform;
+    [insertionCopy setPlayableAspectRatio:ratio];
+    preservationModeCopy2 = preservationMode;
+    [insertionCopy setPlayableAspectRatioPreservationMode:preservationMode];
+    [insertionCopy setTransformAnimation:animationCopy];
+    v32 = multiplierForAspectRatio(ratio);
+    transformAnimation = [insertionCopy transformAnimation];
+    [transformAnimation setAspectRatio:v32];
 
-    [a1 JFX_compositionBounds];
+    [self JFX_compositionBounds];
     v37 = v36;
     v39 = v38;
     v40 = v34;
     v41 = v35;
-    if (!a6)
+    if (!square)
     {
       if (v34 <= v35)
       {
@@ -320,107 +320,107 @@ LABEL_13:
       }
     }
 
-    v42 = [v28 faceAnchor];
+    faceAnchor = [metadataCopy faceAnchor];
 
-    if (v65 && v42 && v64)
+    if (trackingCopy && faceAnchor && v64)
     {
       v43 = objc_opt_class();
-      v44 = [v28 faceAnchor];
-      v66 = *&a5->var0;
-      *&v67 = a5->var3;
+      faceAnchor2 = [metadataCopy faceAnchor];
+      v66 = *&time->var0;
+      *&v67 = time->var3;
       v45 = v43;
-      v46 = a15;
-      [v45 JFX_rectAtNormalizedPointinCenteredSquareInFaceRect:v44 faceAnchor:&v66 atTime:x scaleRelativeToCenterSquare:y relativeToBounds:a8 transformAnimation:v37 playableMediaContentMode:v39 playableInterfaceOrientation:v40 playableAspectRatio:v41 playableAspectRatioPreservationMode:a18];
+      modeCopy2 = mode;
+      [v45 JFX_rectAtNormalizedPointinCenteredSquareInFaceRect:faceAnchor2 faceAnchor:&v66 atTime:x scaleRelativeToCenterSquare:y relativeToBounds:centerSquare transformAnimation:v37 playableMediaContentMode:v39 playableInterfaceOrientation:v40 playableAspectRatio:v41 playableAspectRatioPreservationMode:preservationMode];
       v48 = v47;
       v50 = v49;
       v52 = v51;
       v54 = v53;
 
-      v31 = a18;
-      v30 = a13;
+      preservationModeCopy2 = preservationMode;
+      transformCopy2 = transform;
     }
 
     else
     {
-      [v27 playableRectInOutputSize:{v40, v41}];
-      v57 = fmin(v55, v56) * a8;
+      [insertionCopy playableRectInOutputSize:{v40, v41}];
+      v57 = fmin(v55, v56) * centerSquare;
       if (v40 > v41)
       {
         x = ((v40 / v41 + -1.0) * 0.5 + x) / (v40 / v41);
       }
 
-      v46 = a15;
+      modeCopy2 = mode;
       v48 = CGRectMakeWithSizeAndCenterPoint(v57, v57, v40 * x);
       v50 = v58;
       v52 = v59;
       v54 = v60;
     }
 
-    v61 = *&a5->var0;
-    var3 = a5->var3;
-    v62 = *&v30->c;
-    v66 = *&v30->a;
+    v61 = *&time->var0;
+    var3 = time->var3;
+    v62 = *&transformCopy2->c;
+    v66 = *&transformCopy2->a;
     v67 = v62;
-    v68 = *&v30->tx;
+    v68 = *&transformCopy2->tx;
     v69 = v61;
-    LODWORD(v63) = v46;
-    [a1 configureOverlayForInsertion:v27 inRect:&v69 atTime:v65 rotationAngle:v18 applyTracking:v28 autoDetectTrackingType:&v66 withARMetadata:v48 previewViewCorrectionTransform:v50 transformAnimation:v52 playableMediaContentMode:v54 playableInterfaceOrientation:a9 playableAspectRatio:v29 playableAspectRatioPreservationMode:{v63, a16, a17, v31}];
+    LODWORD(v63) = modeCopy2;
+    [self configureOverlayForInsertion:insertionCopy inRect:&v69 atTime:trackingCopy rotationAngle:typeCopy applyTracking:metadataCopy autoDetectTrackingType:&v66 withARMetadata:v48 previewViewCorrectionTransform:v50 transformAnimation:v52 playableMediaContentMode:v54 playableInterfaceOrientation:angle playableAspectRatio:animationCopy playableAspectRatioPreservationMode:{v63, orientation, ratio, preservationModeCopy2}];
   }
 }
 
-+ (void)configureOverlayForInsertion:(id)a3 inRect:(CGRect)a4 atTime:(id *)a5 rotationAngle:(double)a6 applyTracking:(BOOL)a7 autoDetectTrackingType:(BOOL)a8 withARMetadata:(id)a9 previewViewCorrectionTransform:(CGAffineTransform *)a10 transformAnimation:(id)a11 playableMediaContentMode:(int)a12 playableInterfaceOrientation:(int64_t)a13 playableAspectRatio:(int64_t)a14 playableAspectRatioPreservationMode:(int64_t)a15
++ (void)configureOverlayForInsertion:(id)insertion inRect:(CGRect)rect atTime:(id *)time rotationAngle:(double)angle applyTracking:(BOOL)tracking autoDetectTrackingType:(BOOL)type withARMetadata:(id)metadata previewViewCorrectionTransform:(CGAffineTransform *)self0 transformAnimation:(id)self1 playableMediaContentMode:(int)self2 playableInterfaceOrientation:(int64_t)self3 playableAspectRatio:(int64_t)self4 playableAspectRatioPreservationMode:(int64_t)self5
 {
-  v17 = a8;
-  v18 = a7;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v26 = a3;
-  v27 = a9;
-  v28 = a11;
-  if (v26)
+  typeCopy = type;
+  trackingCopy = tracking;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  insertionCopy = insertion;
+  metadataCopy = metadata;
+  animationCopy = animation;
+  if (insertionCopy)
   {
-    v56 = v17;
+    v56 = typeCopy;
     v58 = x;
-    [v26 setTransformAnimation:v28];
-    v29 = multiplierForAspectRatio(a14);
-    v30 = [v26 transformAnimation];
-    [v30 setAspectRatio:v29];
+    [insertionCopy setTransformAnimation:animationCopy];
+    v29 = multiplierForAspectRatio(ratio);
+    transformAnimation = [insertionCopy transformAnimation];
+    [transformAnimation setAspectRatio:v29];
 
-    [a1 JFX_compositionBounds];
+    [self JFX_compositionBounds];
     v32 = v31;
     v34 = v33;
     v36 = v35;
     v38 = v37;
-    [v26 setRenderSize:{v35, v37}];
-    [v26 setPlayableAspectRatio:a14];
-    [v26 setPlayableAspectRatioPreservationMode:a15];
-    [v26 enablePresentationState:1];
-    v39 = [v26 renderEffect];
+    [insertionCopy setRenderSize:{v35, v37}];
+    [insertionCopy setPlayableAspectRatio:ratio];
+    [insertionCopy setPlayableAspectRatioPreservationMode:preservationMode];
+    [insertionCopy enablePresentationState:1];
+    renderEffect = [insertionCopy renderEffect];
     v62 = *kDefaultEffectPreviewAnimationRange;
-    [v39 setEffectRange:&v62];
+    [renderEffect setEffectRange:&v62];
 
     v40 = *(MEMORY[0x277CBF2C0] + 16);
     *&v62.a = *MEMORY[0x277CBF2C0];
     *&v62.c = v40;
     *&v62.tx = *(MEMORY[0x277CBF2C0] + 32);
-    if (a6 != 0.0)
+    if (angle != 0.0)
     {
-      CGAffineTransformMakeRotation(&v62, a6);
+      CGAffineTransformMakeRotation(&v62, angle);
     }
 
-    v41 = *&a10->c;
-    *&v61.a = *&a10->a;
+    v41 = *&transform->c;
+    *&v61.a = *&transform->a;
     *&v61.c = v41;
-    *&v61.tx = *&a10->tx;
+    *&v61.tx = *&transform->tx;
     if (!CGAffineTransformIsIdentity(&v61))
     {
       t1 = v62;
-      v42 = *&a10->c;
-      *&t2.a = *&a10->a;
+      v42 = *&transform->c;
+      *&t2.a = *&transform->a;
       *&t2.c = v42;
-      *&t2.tx = *&a10->tx;
+      *&t2.tx = *&transform->tx;
       CGAffineTransformConcat(&v61, &t1, &t2);
       v62 = v61;
     }
@@ -430,17 +430,17 @@ LABEL_13:
     if (!CGAffineTransformIsIdentity(&v61))
     {
       v61 = v62;
-      *&t1.a = *&a5->var0;
-      *&t1.c = a5->var3;
-      [a1 addTransformToEffect:v26 transform:&v61 relativeToBounds:&t1 time:0 restrictToBounds:{v32, v34, v36, v38}];
+      *&t1.a = *&time->var0;
+      *&t1.c = time->var3;
+      [self addTransformToEffect:insertionCopy transform:&v61 relativeToBounds:&t1 time:0 restrictToBounds:{v32, v34, v36, v38}];
     }
 
-    *&v61.a = *&a5->var0;
-    *&v61.c = a5->var3;
-    [v26 applyScaleToFitFrame:&v61 withComponentTime:1 relativeRect:v58 restrictToBounds:{y, width, height, v32, v34, v36, v38}];
-    v44 = [v27 faceAnchor];
+    *&v61.a = *&time->var0;
+    *&v61.c = time->var3;
+    [insertionCopy applyScaleToFitFrame:&v61 withComponentTime:1 relativeRect:v58 restrictToBounds:{y, width, height, v32, v34, v36, v38}];
+    faceAnchor = [metadataCopy faceAnchor];
 
-    if (v18 && v44)
+    if (trackingCopy && faceAnchor)
     {
       if (v56)
       {
@@ -451,9 +451,9 @@ LABEL_13:
         v48 = width;
         v49 = height;
         v51 = v50;
-        v52 = [v27 faceAnchor];
-        *&v61.a = *&a5->var0;
-        *&v61.c = a5->var3;
+        faceAnchor2 = [metadataCopy faceAnchor];
+        *&v61.a = *&time->var0;
+        *&v61.c = time->var3;
         v53 = CenterPoint;
         v54 = v51;
         height = v49;
@@ -462,7 +462,7 @@ LABEL_13:
         v32 = v46;
         v34 = v57;
         v43 = v58;
-        v55 = [a1 trackingTypeForOverlayPointIntersectionWithFaceRect:&v61 atTime:2 relativeTo:v52 defaultTrackingType:v28 faceAnchor:a12 transformAnimation:a13 playableMediaContentMode:v53 playableInterfaceOrientation:v54 playableAspectRatio:v32 playableAspectRatioPreservationMode:{v57, v36, v38, a14, a15}];
+        v55 = [self trackingTypeForOverlayPointIntersectionWithFaceRect:&v61 atTime:2 relativeTo:faceAnchor2 defaultTrackingType:animationCopy faceAnchor:mode transformAnimation:orientation playableMediaContentMode:v53 playableInterfaceOrientation:v54 playableAspectRatio:v32 playableAspectRatioPreservationMode:{v57, v36, v38, ratio, preservationMode}];
       }
 
       else
@@ -470,58 +470,58 @@ LABEL_13:
         v55 = 2;
       }
 
-      *&v61.a = *&a5->var0;
-      *&v61.c = a5->var3;
-      [a1 makeOverlayTrackedMaintainingAppearance:v26 atTime:&v61 newTrackingType:v55 arMetadata:v27 playableInterfaceOrientation:a13];
-      *&v61.a = *&a5->var0;
-      *&v61.c = a5->var3;
-      [v26 applyScaleToFitFrame:&v61 withComponentTime:1 relativeRect:v43 restrictToBounds:{y, width, height, v32, v34, v36, v38}];
+      *&v61.a = *&time->var0;
+      *&v61.c = time->var3;
+      [self makeOverlayTrackedMaintainingAppearance:insertionCopy atTime:&v61 newTrackingType:v55 arMetadata:metadataCopy playableInterfaceOrientation:orientation];
+      *&v61.a = *&time->var0;
+      *&v61.c = time->var3;
+      [insertionCopy applyScaleToFitFrame:&v61 withComponentTime:1 relativeRect:v43 restrictToBounds:{y, width, height, v32, v34, v36, v38}];
     }
   }
 }
 
-+ (id)hitTestOverlays:(id)a3 atPoint:(CGPoint)a4 relativeToBounds:(CGRect)a5 atTime:(id *)a6 adjustForMinimumSize:(BOOL)a7 normalizedMinimumSize:(id)a8
++ (id)hitTestOverlays:(id)overlays atPoint:(CGPoint)point relativeToBounds:(CGRect)bounds atTime:(id *)time adjustForMinimumSize:(BOOL)size normalizedMinimumSize:(id)minimumSize
 {
-  v10 = *a6;
-  v8 = [a1 JFX_hitTestOverlays:a3 atNormalizedPoint:&v10 atTime:0 forcePosterFrame:a7 adjustForMinimumSize:a4.x / a5.size.width normalizedMinimumSize:{a4.y / a5.size.height, a8.var0, a8.var1}];
+  v10 = *time;
+  v8 = [self JFX_hitTestOverlays:overlays atNormalizedPoint:&v10 atTime:0 forcePosterFrame:size adjustForMinimumSize:point.x / bounds.size.width normalizedMinimumSize:{point.y / bounds.size.height, minimumSize.var0, minimumSize.var1}];
 
   return v8;
 }
 
-+ (id)hitTestOverlaysAtPosterFrame:(id)a3 atPoint:(CGPoint)a4 relativeToBounds:(CGRect)a5 atTime:(id *)a6 adjustForMinimumSize:(BOOL)a7 normalizedMinimumSize:(id)a8
++ (id)hitTestOverlaysAtPosterFrame:(id)frame atPoint:(CGPoint)point relativeToBounds:(CGRect)bounds atTime:(id *)time adjustForMinimumSize:(BOOL)size normalizedMinimumSize:(id)minimumSize
 {
-  v10 = *a6;
-  v8 = [a1 JFX_hitTestOverlays:a3 atNormalizedPoint:&v10 atTime:1 forcePosterFrame:a7 adjustForMinimumSize:a4.x / a5.size.width normalizedMinimumSize:{a4.y / a5.size.height, a8.var0, a8.var1}];
+  v10 = *time;
+  v8 = [self JFX_hitTestOverlays:frame atNormalizedPoint:&v10 atTime:1 forcePosterFrame:size adjustForMinimumSize:point.x / bounds.size.width normalizedMinimumSize:{point.y / bounds.size.height, minimumSize.var0, minimumSize.var1}];
 
   return v8;
 }
 
-+ (id)hitTestOverlaysAtPosterFrame:(id)a3 atNormalizedPoint:(CGPoint)a4 atTime:(id *)a5 adjustForMinimumSize:(BOOL)a6 normalizedMinimumSize:(id)a7
++ (id)hitTestOverlaysAtPosterFrame:(id)frame atNormalizedPoint:(CGPoint)point atTime:(id *)time adjustForMinimumSize:(BOOL)size normalizedMinimumSize:(id)minimumSize
 {
-  v9 = *a5;
-  v7 = [a1 JFX_hitTestOverlays:a3 atNormalizedPoint:&v9 atTime:1 forcePosterFrame:a6 adjustForMinimumSize:a4.x normalizedMinimumSize:{a4.y, a7.var0, a7.var1}];
+  v9 = *time;
+  v7 = [self JFX_hitTestOverlays:frame atNormalizedPoint:&v9 atTime:1 forcePosterFrame:size adjustForMinimumSize:point.x normalizedMinimumSize:{point.y, minimumSize.var0, minimumSize.var1}];
 
   return v7;
 }
 
-+ (id)JFX_hitTestOverlays:(id)a3 atNormalizedPoint:(CGPoint)a4 atTime:(id *)a5 forcePosterFrame:(BOOL)a6 adjustForMinimumSize:(BOOL)a7 normalizedMinimumSize:(id)a8
++ (id)JFX_hitTestOverlays:(id)overlays atNormalizedPoint:(CGPoint)point atTime:(id *)time forcePosterFrame:(BOOL)frame adjustForMinimumSize:(BOOL)size normalizedMinimumSize:(id)minimumSize
 {
-  var1 = a8.var1;
-  var0 = a8.var0;
-  v10 = a7;
-  v11 = a6;
-  y = a4.y;
-  x = a4.x;
+  var1 = minimumSize.var1;
+  var0 = minimumSize.var0;
+  sizeCopy = size;
+  frameCopy = frame;
+  y = point.y;
+  x = point.x;
   v36 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  if ([v15 count])
+  overlaysCopy = overlays;
+  if ([overlaysCopy count])
   {
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v16 = [v15 reverseObjectEnumerator];
-    v17 = [v16 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    reverseObjectEnumerator = [overlaysCopy reverseObjectEnumerator];
+    v17 = [reverseObjectEnumerator countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v17)
     {
       v18 = v17;
@@ -532,25 +532,25 @@ LABEL_13:
         {
           if (*v32 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v21 = *(*(&v31 + 1) + 8 * i);
-          v22 = [v21 renderEffect];
-          [v22 outputSize];
+          renderEffect = [v21 renderEffect];
+          [renderEffect outputSize];
           v24 = v23;
           v26 = v25;
 
-          v29 = *&a5->var0;
-          var3 = a5->var3;
-          if ([v21 hitTestPoint:&v29 atTime:v11 forcePosterFrame:1 relativeTo:v10 basisOrigin:x * v24 adjustForMinimumSize:y * v26 normalizedMinimumSize:{0.0, 0.0, v24, v26, var0, var1}])
+          v29 = *&time->var0;
+          var3 = time->var3;
+          if ([v21 hitTestPoint:&v29 atTime:frameCopy forcePosterFrame:1 relativeTo:sizeCopy basisOrigin:x * v24 adjustForMinimumSize:y * v26 normalizedMinimumSize:{0.0, 0.0, v24, v26, var0, var1}])
           {
             v27 = v21;
             goto LABEL_12;
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v18 = [reverseObjectEnumerator countByEnumeratingWithState:&v31 objects:v35 count:16];
         if (v18)
         {
           continue;
@@ -572,52 +572,52 @@ LABEL_12:
   return v27;
 }
 
-+ (void)suspendOverlayTrackingMaintainingAppearance:(id)a3 forViewBounds:(CGRect)a4 atTime:(id *)a5 arMetadata:(id)a6 playableInterfaceOrientation:(int64_t)a7
++ (void)suspendOverlayTrackingMaintainingAppearance:(id)appearance forViewBounds:(CGRect)bounds atTime:(id *)time arMetadata:(id)metadata playableInterfaceOrientation:(int64_t)orientation
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v14 = a3;
-  v15 = a6;
-  if ([v14 isCurrentlyTracking])
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  appearanceCopy = appearance;
+  metadataCopy = metadata;
+  if ([appearanceCopy isCurrentlyTracking])
   {
-    v16 = [v14 trackingProps];
-    v17 = [v16 currentTrackingType];
+    trackingProps = [appearanceCopy trackingProps];
+    currentTrackingType = [trackingProps currentTrackingType];
 
-    if (v17 == 1)
+    if (currentTrackingType == 1)
     {
-      v18 = [v15 faceAnchor];
-      [JFXFaceTrackingUtilities rollAngleFromFaceAnchor:v18 forInterfaceOrientation:a7];
+      faceAnchor = [metadataCopy faceAnchor];
+      [JFXFaceTrackingUtilities rollAngleFromFaceAnchor:faceAnchor forInterfaceOrientation:orientation];
 
-      v19 = [v14 renderEffect];
-      v20 = [v19 origin];
+      renderEffect = [appearanceCopy renderEffect];
+      origin = [renderEffect origin];
 
-      v21 = [v14 renderEffect];
-      [v21 outputSize];
+      renderEffect2 = [appearanceCopy renderEffect];
+      [renderEffect2 outputSize];
 
       v22 = CGRectMakeWithSize();
-      v60 = *&a5->var0;
-      *&v61 = a5->var3;
-      [v14 effectCenterAtTime:&v60 forcePosterFrame:1 includeTransformAnimation:0 includePlayableAspectScale:0 relativeTo:v20 basisOrigin:v22];
+      v60 = *&time->var0;
+      *&v61 = time->var3;
+      [appearanceCopy effectCenterAtTime:&v60 forcePosterFrame:1 includeTransformAnimation:0 includePlayableAspectScale:0 relativeTo:origin basisOrigin:v22];
       v49 = v24;
       v50 = v23;
-      v25 = [v14 faceTrackingTransform];
-      v26 = JFXMakeFaceTrackedEffectTransformFaceCamera(v25);
-      [v14 setFaceTrackingTransform:v26];
+      faceTrackingTransform = [appearanceCopy faceTrackingTransform];
+      v26 = JFXMakeFaceTrackedEffectTransformFaceCamera(faceTrackingTransform);
+      [appearanceCopy setFaceTrackingTransform:v26];
 
-      v60 = *&a5->var0;
-      *&v61 = a5->var3;
-      [v14 imageFrameAtTime:&v60 forcePosterFrame:1 includeDropShadow:1 relativeTo:1 basisOrigin:{x, y, width, height}];
+      v60 = *&time->var0;
+      *&v61 = time->var3;
+      [appearanceCopy imageFrameAtTime:&v60 forcePosterFrame:1 includeDropShadow:1 relativeTo:1 basisOrigin:{x, y, width, height}];
       v28 = v27;
       v30 = v29;
       v32 = v31;
       v34 = v33;
-      [v14 setFaceTrackingTransform:v25];
-      [v14 suspendTracking];
-      v60 = *&a5->var0;
-      *&v61 = a5->var3;
-      [v14 applyScaleToFitFrame:&v60 withComponentTime:v28 relativeRect:{v30, v32, v34, x, y, width, height}];
+      [appearanceCopy setFaceTrackingTransform:faceTrackingTransform];
+      [appearanceCopy suspendTracking];
+      v60 = *&time->var0;
+      *&v61 = time->var3;
+      [appearanceCopy applyScaleToFitFrame:&v60 withComponentTime:v28 relativeRect:{v30, v32, v34, x, y, width, height}];
       v66 = 0u;
       v67 = 0u;
       v64 = 0u;
@@ -626,9 +626,9 @@ LABEL_12:
       v63 = 0u;
       v60 = 0u;
       v61 = 0u;
-      if (v14)
+      if (appearanceCopy)
       {
-        [v14 topLevelTransform];
+        [appearanceCopy topLevelTransform];
       }
 
       vars0 = v62;
@@ -646,36 +646,36 @@ LABEL_12:
       v63 = v55;
       v66 = v40;
       v58 = v40;
-      [v14 setTopLevelTransform:&v52];
+      [appearanceCopy setTopLevelTransform:&v52];
     }
 
     else
     {
-      v60 = *&a5->var0;
-      *&v61 = a5->var3;
-      [v14 imageFrameAtTime:&v60 forcePosterFrame:1 includeDropShadow:1 relativeTo:1 basisOrigin:{x, y, width, height}];
+      v60 = *&time->var0;
+      *&v61 = time->var3;
+      [appearanceCopy imageFrameAtTime:&v60 forcePosterFrame:1 includeDropShadow:1 relativeTo:1 basisOrigin:{x, y, width, height}];
       v42 = v41;
       v44 = v43;
       v46 = v45;
       v48 = v47;
-      [v14 suspendTracking];
-      v60 = *&a5->var0;
-      *&v61 = a5->var3;
-      [v14 applyScaleToFitFrame:&v60 withComponentTime:v42 relativeRect:{v44, v46, v48, x, y, width, height}];
+      [appearanceCopy suspendTracking];
+      v60 = *&time->var0;
+      *&v61 = time->var3;
+      [appearanceCopy applyScaleToFitFrame:&v60 withComponentTime:v42 relativeRect:{v44, v46, v48, x, y, width, height}];
     }
   }
 }
 
-+ (BOOL)makeOverlayTrackedMaintainingAppearance:(id)a3 atTime:(id *)a4 newTrackingType:(int64_t)a5 arMetadata:(id)a6 playableInterfaceOrientation:(int64_t)a7
++ (BOOL)makeOverlayTrackedMaintainingAppearance:(id)appearance atTime:(id *)time newTrackingType:(int64_t)type arMetadata:(id)metadata playableInterfaceOrientation:(int64_t)orientation
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = [v12 trackingProps];
-  v15 = [v14 currentTrackingType];
+  appearanceCopy = appearance;
+  metadataCopy = metadata;
+  trackingProps = [appearanceCopy trackingProps];
+  currentTrackingType = [trackingProps currentTrackingType];
 
-  if (a5)
+  if (type)
   {
-    _ZF = v15 == a5;
+    _ZF = currentTrackingType == type;
   }
 
   else
@@ -686,20 +686,20 @@ LABEL_12:
   v17 = !_ZF;
   if (!_ZF)
   {
-    [a1 JFX_compositionBounds];
+    [self JFX_compositionBounds];
     v19 = v18;
     v21 = v20;
     v23 = v22;
     v25 = v24;
-    v26 = [v13 faceAnchor];
-    [JFXFaceTrackingUtilities rollAngleFromFaceAnchor:v26 forInterfaceOrientation:a7];
+    faceAnchor = [metadataCopy faceAnchor];
+    [JFXFaceTrackingUtilities rollAngleFromFaceAnchor:faceAnchor forInterfaceOrientation:orientation];
     v28 = v27;
 
-    if (v15)
+    if (currentTrackingType)
     {
-      *&STACK[0x700] = *&a4->var0;
-      STACK[0x710] = a4->var3;
-      [v12 effectCenterAtTime:&STACK[0x700] forcePosterFrame:1 includeTransformAnimation:1 includePlayableAspectScale:1 relativeTo:1 basisOrigin:{v19, v21, v23, v25}];
+      *&STACK[0x700] = *&time->var0;
+      STACK[0x710] = time->var3;
+      [appearanceCopy effectCenterAtTime:&STACK[0x700] forcePosterFrame:1 includeTransformAnimation:1 includePlayableAspectScale:1 relativeTo:1 basisOrigin:{v19, v21, v23, v25}];
       v30 = v29;
       v32 = v31;
       *&STACK[0x760] = 0u;
@@ -710,21 +710,21 @@ LABEL_12:
       *&STACK[0x730] = 0u;
       *&STACK[0x700] = 0u;
       *&STACK[0x710] = 0u;
-      if (v12)
+      if (appearanceCopy)
       {
-        v123 = *&a4->var0;
-        *&v124.f64[0] = a4->var3;
-        [v12 transformAtTime:&v123 forcePosterFrame:1 includeTransformAnimation:0 includePlayableAspectScale:1 relativeTo:1 basisOrigin:{v19, v21, v23, v25}];
+        v123 = *&time->var0;
+        *&v124.f64[0] = time->var3;
+        [appearanceCopy transformAtTime:&v123 forcePosterFrame:1 includeTransformAnimation:0 includePlayableAspectScale:1 relativeTo:1 basisOrigin:{v19, v21, v23, v25}];
       }
 
-      v33 = [v12 trackingProps];
-      [v33 setTrackingType:a5];
+      trackingProps2 = [appearanceCopy trackingProps];
+      [trackingProps2 setTrackingType:type];
 
-      v34 = [v12 faceTrackingTransform];
+      faceTrackingTransform = [appearanceCopy faceTrackingTransform];
 
-      if (!v34)
+      if (!faceTrackingTransform)
       {
-        [a1 applyCameraTrackingTransformToOverlay:v12 withARMetadata:v13 playableInterfaceOrientation:a7];
+        [self applyCameraTrackingTransformToOverlay:appearanceCopy withARMetadata:metadataCopy playableInterfaceOrientation:orientation];
       }
 
       v35 = 0uLL;
@@ -737,11 +737,11 @@ LABEL_12:
       v36 = 0uLL;
       v123 = 0u;
       v124 = 0u;
-      if (v12)
+      if (appearanceCopy)
       {
-        v115 = *&a4->var0;
-        *&v116.f64[0] = a4->var3;
-        [v12 transformAtTime:&v115 forcePosterFrame:1 includeTransformAnimation:0 includePlayableAspectScale:1 relativeTo:1 basisOrigin:{v19, v21, v23, v25}];
+        v115 = *&time->var0;
+        *&v116.f64[0] = time->var3;
+        [appearanceCopy transformAtTime:&v115 forcePosterFrame:1 includeTransformAnimation:0 includePlayableAspectScale:1 relativeTo:1 basisOrigin:{v19, v21, v23, v25}];
         v36 = 0uLL;
         v37 = *&STACK[0x6B0];
         v38 = *&STACK[0x6D0];
@@ -769,7 +769,7 @@ LABEL_12:
 
       v116 = v36;
       v117 = v36;
-      if (a5 == 2)
+      if (type == 2)
       {
         v28 = -v28;
       }
@@ -793,28 +793,28 @@ LABEL_12:
       t1 = v109;
       t1_16 = v110;
       t1_32 = v111;
-      t2 = *&a4->var0;
-      *&t2_16 = a4->var3;
-      [a1 addTransformToEffect:v12 transform:&t1 relativeToBounds:&t2 time:0 restrictToBounds:{v19, v21, v23, v25}];
-      t1 = *&a4->var0;
-      *&t1_16.f64[0] = a4->var3;
-      [v12 effectCenterAtTime:&t1 forcePosterFrame:1 includeTransformAnimation:1 includePlayableAspectScale:1 relativeTo:1 basisOrigin:{v19, v21, v23, v25}];
+      t2 = *&time->var0;
+      *&t2_16 = time->var3;
+      [self addTransformToEffect:appearanceCopy transform:&t1 relativeToBounds:&t2 time:0 restrictToBounds:{v19, v21, v23, v25}];
+      t1 = *&time->var0;
+      *&t1_16.f64[0] = time->var3;
+      [appearanceCopy effectCenterAtTime:&t1 forcePosterFrame:1 includeTransformAnimation:1 includePlayableAspectScale:1 relativeTo:1 basisOrigin:{v19, v21, v23, v25}];
       CGAffineTransformMakeTranslation(&t1, v30 - v49, v32 - v50);
-      t2 = *&a4->var0;
-      *&t2_16 = a4->var3;
-      [a1 addTransformToEffect:v12 transform:&t1 relativeToBounds:&t2 time:0 restrictToBounds:{v19, v21, v23, v25}];
+      t2 = *&time->var0;
+      *&t2_16 = time->var3;
+      [self addTransformToEffect:appearanceCopy transform:&t1 relativeToBounds:&t2 time:0 restrictToBounds:{v19, v21, v23, v25}];
     }
 
     else
     {
-      v40 = [v12 renderEffect];
-      [v40 outputSize];
+      renderEffect = [appearanceCopy renderEffect];
+      [renderEffect outputSize];
       v42.f64[1] = v41;
       v102 = v42;
 
-      if (v12)
+      if (appearanceCopy)
       {
-        [v12 topLevelTransform];
+        [appearanceCopy topLevelTransform];
       }
 
       else
@@ -831,55 +831,55 @@ LABEL_12:
 
       __asm { FMOV            V0.2D, #0.5 }
 
-      *&STACK[0x700] = *&a4->var0;
-      STACK[0x710] = a4->var3;
-      [v12 imageFrameAtTime:&STACK[0x700] forcePosterFrame:1 includeDropShadow:1 relativeTo:1 basisOrigin:{v19, v21, v23, v25}];
+      *&STACK[0x700] = *&time->var0;
+      STACK[0x710] = time->var3;
+      [appearanceCopy imageFrameAtTime:&STACK[0x700] forcePosterFrame:1 includeDropShadow:1 relativeTo:1 basisOrigin:{v19, v21, v23, v25}];
       v56 = v55;
       v58 = v57;
       v60 = v59;
       v62 = v61;
-      v63 = [v12 trackingProps];
-      [v63 setTrackingType:a5];
+      trackingProps3 = [appearanceCopy trackingProps];
+      [trackingProps3 setTrackingType:type];
 
-      v64 = [v12 faceTrackingTransform];
+      faceTrackingTransform2 = [appearanceCopy faceTrackingTransform];
 
-      if (!v64)
+      if (!faceTrackingTransform2)
       {
-        [a1 applyCameraTrackingTransformToOverlay:v12 withARMetadata:v13 playableInterfaceOrientation:a7];
+        [self applyCameraTrackingTransformToOverlay:appearanceCopy withARMetadata:metadataCopy playableInterfaceOrientation:orientation];
       }
 
-      v65 = [v12 faceTrackingTransform];
-      if (a5 == 1)
+      faceTrackingTransform3 = [appearanceCopy faceTrackingTransform];
+      if (type == 1)
       {
-        v66 = [v12 faceTrackingTransform];
-        v67 = JFXMakeFaceTrackedEffectTransformFaceCamera(v66);
-        [v12 setFaceTrackingTransform:v67];
+        faceTrackingTransform4 = [appearanceCopy faceTrackingTransform];
+        v67 = JFXMakeFaceTrackedEffectTransformFaceCamera(faceTrackingTransform4);
+        [appearanceCopy setFaceTrackingTransform:v67];
 
-        *&STACK[0x700] = *&a4->var0;
-        STACK[0x710] = a4->var3;
-        [v12 applyScaleToFitFrame:&STACK[0x700] withComponentTime:v56 relativeRect:{v58, v60, v62, v19, v21, v23, v25}];
-        [v12 setFaceTrackingTransform:v65];
+        *&STACK[0x700] = *&time->var0;
+        STACK[0x710] = time->var3;
+        [appearanceCopy applyScaleToFitFrame:&STACK[0x700] withComponentTime:v56 relativeRect:{v58, v60, v62, v19, v21, v23, v25}];
+        [appearanceCopy setFaceTrackingTransform:faceTrackingTransform3];
       }
 
       else
       {
-        *&STACK[0x700] = *&a4->var0;
-        STACK[0x710] = a4->var3;
-        [v12 applyScaleToFitFrame:&STACK[0x700] withComponentTime:v56 relativeRect:{v58, v60, v62, v19, v21, v23, v25}];
+        *&STACK[0x700] = *&time->var0;
+        STACK[0x710] = time->var3;
+        [appearanceCopy applyScaleToFitFrame:&STACK[0x700] withComponentTime:v56 relativeRect:{v58, v60, v62, v19, v21, v23, v25}];
       }
 
       LODWORD(v109.f64[1]) = 0;
       v109.f64[0] = 0.0;
-      v68 = [v12 faceTrackingTransform];
-      [v68 transformForTrackingType:a5];
-      v69 = [v12 faceTrackingTransform];
-      [v69 cameraTransform];
+      faceTrackingTransform5 = [appearanceCopy faceTrackingTransform];
+      [faceTrackingTransform5 transformForTrackingType:type];
+      faceTrackingTransform6 = [appearanceCopy faceTrackingTransform];
+      [faceTrackingTransform6 cameraTransform];
       v100 = v71;
       v101 = v70;
       vars0 = v73;
       v99 = v72;
-      v74 = [v12 faceTrackingTransform];
-      [v74 cameraProjection];
+      faceTrackingTransform7 = [appearanceCopy faceTrackingTransform];
+      [faceTrackingTransform7 cameraProjection];
       v97 = vcvt_f32_f64(v102);
       v95 = v75;
       v96 = v76;
@@ -895,12 +895,12 @@ LABEL_12:
       *&STACK[0x730] = 0u;
       *&STACK[0x700] = 0u;
       *&STACK[0x710] = 0u;
-      if (v12)
+      if (appearanceCopy)
       {
-        [v12 topLevelTransform];
+        [appearanceCopy topLevelTransform];
       }
 
-      if (a5 == 1)
+      if (type == 1)
       {
         v79 = *&STACK[0x750];
         v119 = *&STACK[0x740];
@@ -946,56 +946,56 @@ LABEL_12:
       v91 = *&STACK[0x730];
       *&STACK[0x6A0] = *&STACK[0x720];
       *&STACK[0x6B0] = v91;
-      [v12 setTopLevelTransform:{&v123, v101, v100, v99, vars0, v93, v94, v95, v96, *&v97}];
+      [appearanceCopy setTopLevelTransform:{&v123, v101, v100, v99, vars0, v93, v94, v95, v96, *&v97}];
     }
   }
 
   return v17;
 }
 
-+ (void)applyCameraTrackingTransformToOverlay:(id)a3 withARMetadata:(id)a4 playableInterfaceOrientation:(int64_t)a5
++ (void)applyCameraTrackingTransformToOverlay:(id)overlay withARMetadata:(id)metadata playableInterfaceOrientation:(int64_t)orientation
 {
-  v13 = a3;
-  v7 = a4;
-  v8 = [v7 faceAnchor];
+  overlayCopy = overlay;
+  metadataCopy = metadata;
+  faceAnchor = [metadataCopy faceAnchor];
 
-  if (v8)
+  if (faceAnchor)
   {
     +[JFXMediaSettings compositionSize];
-    [v13 playableRectInOutputSize:?];
-    v11 = [[JFXFaceTrackingTransformCalculator alloc] initWithARMetaData:v7 outputSize:a5 playableInterfaceOrientation:v9, v10];
-    v12 = [(JFXFaceTrackingTransformCalculator *)v11 calculateFaceTrackingTransform];
-    [v13 setFaceTrackingTransform:v12];
+    [overlayCopy playableRectInOutputSize:?];
+    v11 = [[JFXFaceTrackingTransformCalculator alloc] initWithARMetaData:metadataCopy outputSize:orientation playableInterfaceOrientation:v9, v10];
+    calculateFaceTrackingTransform = [(JFXFaceTrackingTransformCalculator *)v11 calculateFaceTrackingTransform];
+    [overlayCopy setFaceTrackingTransform:calculateFaceTrackingTransform];
   }
 }
 
-+ (CGPoint)JFX_convertPoint:(CGPoint)a3 fromSize:(CGSize)a4 toSize:(CGSize)a5 invertY:(BOOL)a6
++ (CGPoint)JFX_convertPoint:(CGPoint)point fromSize:(CGSize)size toSize:(CGSize)toSize invertY:(BOOL)y
 {
-  v6 = a3.x / a4.width;
-  v7 = a3.y / a4.height;
-  if (a6)
+  v6 = point.x / size.width;
+  v7 = point.y / size.height;
+  if (y)
   {
     v7 = 1.0 - v7;
   }
 
-  v8 = v6 * a5.width;
-  v9 = a5.height * v7;
+  v8 = v6 * toSize.width;
+  v9 = toSize.height * v7;
   result.y = v9;
   result.x = v8;
   return result;
 }
 
-+ (int64_t)trackingTypeForOverlayPointIntersectionWithFaceRect:(CGPoint)a3 atTime:(id *)a4 relativeTo:(CGRect)a5 defaultTrackingType:(int64_t)a6 faceAnchor:(id)a7 transformAnimation:(id)a8 playableMediaContentMode:(int)a9 playableInterfaceOrientation:(int64_t)a10 playableAspectRatio:(int64_t)a11 playableAspectRatioPreservationMode:(int64_t)a12
++ (int64_t)trackingTypeForOverlayPointIntersectionWithFaceRect:(CGPoint)rect atTime:(id *)time relativeTo:(CGRect)to defaultTrackingType:(int64_t)type faceAnchor:(id)anchor transformAnimation:(id)animation playableMediaContentMode:(int)mode playableInterfaceOrientation:(int64_t)self0 playableAspectRatio:(int64_t)self1 playableAspectRatioPreservationMode:(int64_t)self2
 {
-  if (!a7)
+  if (!anchor)
   {
     return 0;
   }
 
-  y = a3.y;
-  x = a3.x;
-  v15 = *a4;
-  [a1 JFX_currentFaceRectRelativeToBounds:&v15 atTime:a7 faceAnchor:a8 transformAnimation:*&a9 playableMediaContentMode:a10 playableInterfaceOrientation:a11 playableAspectRatio:a5.origin.x playableAspectRatioPreservationMode:{a5.origin.y, a5.size.width, a5.size.height, a12}];
+  y = rect.y;
+  x = rect.x;
+  v15 = *time;
+  [self JFX_currentFaceRectRelativeToBounds:&v15 atTime:anchor faceAnchor:animation transformAnimation:*&mode playableMediaContentMode:orientation playableInterfaceOrientation:ratio playableAspectRatio:to.origin.x playableAspectRatioPreservationMode:{to.origin.y, to.size.width, to.size.height, preservationMode}];
   v16.x = x;
   v16.y = y;
   if (CGRectContainsPoint(v17, v16))
@@ -1009,13 +1009,13 @@ LABEL_12:
   }
 }
 
-+ (CGPoint)JFX_closeButtonInsetForEffect:(id)a3 viewBounds:(CGRect)a4
++ (CGPoint)JFX_closeButtonInsetForEffect:(id)effect viewBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  [a3 closeButtonInset];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  [effect closeButtonInset];
   v9 = v8;
   v11 = v10;
   v16.origin.x = x;
@@ -1034,24 +1034,24 @@ LABEL_12:
   return result;
 }
 
-+ (CGPoint)removeButtonPositionForEffect:(id)a3 atTime:(id *)a4 atPosterFrameRelativeToBounds:(CGRect)a5 viewCorrectionTransform:(CGAffineTransform *)a6
++ (CGPoint)removeButtonPositionForEffect:(id)effect atTime:(id *)time atPosterFrameRelativeToBounds:(CGRect)bounds viewCorrectionTransform:(CGAffineTransform *)transform
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a3;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  effectCopy = effect;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v13;
-    v15 = [v14 includeDropShadowWhenPositioningCloseButton];
-    if (([a1 isFaceTrackingDataAvailable] & 1) == 0)
+    v14 = effectCopy;
+    includeDropShadowWhenPositioningCloseButton = [v14 includeDropShadowWhenPositioningCloseButton];
+    if (([self isFaceTrackingDataAvailable] & 1) == 0)
     {
-      v16 = [v14 trackingProps];
-      v17 = [v16 currentTrackingType];
+      trackingProps = [v14 trackingProps];
+      currentTrackingType = [trackingProps currentTrackingType];
 
-      if (v17)
+      if (currentTrackingType)
       {
         v18 = 1.79769313e308;
         v19 = 1.79769313e308;
@@ -1061,11 +1061,11 @@ LABEL_34:
       }
     }
 
-    v20 = a6;
+    transformCopy = transform;
     v21 = [JFXEffectEditingUtilities textForEffect:v14];
-    v22 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
     v23 = v21;
-    v24 = [v21 stringByTrimmingCharactersInSet:v22];
+    v24 = [v21 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
     v25 = [v24 length];
 
     if (!v25)
@@ -1073,13 +1073,13 @@ LABEL_34:
       [JFXEffectEditingUtilities updateEffectText:v14 newText:@"!"];
     }
 
-    v56.a = *&a4->var0;
-    *&v56.b.x = a4->var3;
-    v26 = [JFXOverlayEffectFrame frameWithEffect:v14 relativeToSize:1 origin:&v56 time:1 forcePosterFrame:v15 includeDropShadow:0 includeTextFrames:width, height];
-    v27 = v26;
-    if (v26)
+    v56.a = *&time->var0;
+    *&v56.b.x = time->var3;
+    height = [JFXOverlayEffectFrame frameWithEffect:v14 relativeToSize:1 origin:&v56 time:1 forcePosterFrame:includeDropShadowWhenPositioningCloseButton includeDropShadow:0 includeTextFrames:width, height];
+    v27 = height;
+    if (height)
     {
-      [v26 cornerPoints];
+      [height cornerPoints];
     }
 
     else
@@ -1097,14 +1097,14 @@ LABEL_34:
       [JFXEffectEditingUtilities updateEffectText:v14 newText:v23];
     }
 
-    [a1 JFX_closeButtonInsetForEffect:v14 viewBounds:{x, y, width, height}];
+    [self JFX_closeButtonInsetForEffect:v14 viewBounds:{x, y, width, height}];
     v53 = v37;
     v54 = v36;
-    v38 = [v14 topLevelTransformObject];
-    v39 = v38;
-    if (v38)
+    topLevelTransformObject = [v14 topLevelTransformObject];
+    v39 = topLevelTransformObject;
+    if (topLevelTransformObject)
     {
-      [v38 SIMDFloat4x4];
+      [topLevelTransformObject SIMDFloat4x4];
     }
 
     v40 = *(MEMORY[0x277D41B90] + 80);
@@ -1122,10 +1122,10 @@ LABEL_34:
     pv_transform_info_make();
     CGAffineTransformMakeScale(&v56, sx[0], sx[1]);
     v55 = vaddq_f64(v56.c, vmlaq_n_f64(vmulq_n_f64(v56.b, v53), v56.a, v54));
-    v44 = *&v20->c;
-    v56.a = *&v20->a;
+    v44 = *&transformCopy->c;
+    v56.a = *&transformCopy->a;
     v56.b = v44;
-    v56.c = *&v20->tx;
+    v56.c = *&transformCopy->tx;
     if (CGAffineTransformIsIdentity(&v56))
     {
       v45 = v55;
@@ -1136,7 +1136,7 @@ LABEL_33:
       goto LABEL_34;
     }
 
-    v46 = atan2(v20->b, v20->a);
+    v46 = atan2(transformCopy->b, transformCopy->a);
       ;
     }
 
@@ -1194,7 +1194,7 @@ LABEL_33:
     }
 
 LABEL_32:
-    v45 = vaddq_f64(*&v20->tx, vmlaq_n_f64(vmulq_laneq_f64(*&v20->c, v55, 1), *&v20->a, v55.f64[0]));
+    v45 = vaddq_f64(*&transformCopy->tx, vmlaq_n_f64(vmulq_laneq_f64(*&transformCopy->c, v55, 1), *&transformCopy->a, v55.f64[0]));
     goto LABEL_33;
   }
 
@@ -1209,24 +1209,24 @@ LABEL_35:
   return result;
 }
 
-+ (CGPoint)spacingBetweenCenterPointOfEffect:(id)a3 point:(CGPoint)a4 relativeToBounds:(CGRect)a5 atTime:(id *)a6
++ (CGPoint)spacingBetweenCenterPointOfEffect:(id)effect point:(CGPoint)point relativeToBounds:(CGRect)bounds atTime:(id *)time
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4.y;
-  v12 = a4.x;
-  v13 = a3;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v11 = point.y;
+  v12 = point.x;
+  effectCopy = effect;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     memset(&v20[1], 0, sizeof(PVCGPointQuad));
-    if (v13)
+    if (effectCopy)
     {
-      v20[0].a = *&a6->var0;
-      *&v20[0].b.x = a6->var3;
-      [v13 cornersAtTime:v20 forcePosterFrame:1 includeDropShadow:1 scale:1 relativeTo:1.0 basisOrigin:{1.0, x, y, width, height}];
+      v20[0].a = *&time->var0;
+      *&v20[0].b.x = time->var3;
+      [effectCopy cornersAtTime:v20 forcePosterFrame:1 includeDropShadow:1 scale:1 relativeTo:1.0 basisOrigin:{1.0, x, y, width, height}];
     }
 
     v20[0] = v20[1];
@@ -1248,54 +1248,54 @@ LABEL_35:
   return result;
 }
 
-+ (void)addTransformToEffect:(id)a3 transform:(CGAffineTransform *)a4 relativeToBounds:(CGRect)a5 time:(id *)a6 restrictToBounds:(BOOL)a7
++ (void)addTransformToEffect:(id)effect transform:(CGAffineTransform *)transform relativeToBounds:(CGRect)bounds time:(id *)time restrictToBounds:(BOOL)toBounds
 {
-  v7 = a7;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v15 = a3;
+  toBoundsCopy = toBounds;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  effectCopy = effect;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = v15;
+    v16 = effectCopy;
     v17 = v16;
     if (v16)
     {
       v25 = 0u;
       v26 = 0u;
-      v18 = *&a4->c;
-      v21 = *&a4->a;
+      v18 = *&transform->c;
+      v21 = *&transform->a;
       v22 = v18;
-      v23 = *&a4->tx;
+      v23 = *&transform->tx;
       v24 = 0u;
-      v19 = *&a6->var0;
-      var3 = a6->var3;
-      [v16 addTransform:&v21 withComponentTime:&v19 relativeTo:1 basisOrigin:v7 restrictToBounds:{x, y, width, height}];
+      v19 = *&time->var0;
+      var3 = time->var3;
+      [v16 addTransform:&v21 withComponentTime:&v19 relativeTo:1 basisOrigin:toBoundsCopy restrictToBounds:{x, y, width, height}];
       v21 = v24;
       v22 = v25;
       v23 = v26;
-      [a1 JFX_ApplyTextFlipIfNeeded:v17 transform:&v21];
+      [self JFX_ApplyTextFlipIfNeeded:v17 transform:&v21];
     }
   }
 }
 
-+ (void)JFX_ApplyTextFlipIfNeeded:(id)a3 transform:(CGAffineTransform *)a4
++ (void)JFX_ApplyTextFlipIfNeeded:(id)needed transform:(CGAffineTransform *)transform
 {
-  v16 = a3;
-  v6 = atan2(a4->b, a4->a);
-  v7 = [v16 supportsFlippingText];
-  v8 = [v16 supportsFlippingTail];
-  v9 = v8;
-  if ((v7 & 1) != 0 || v8)
+  neededCopy = needed;
+  v6 = atan2(transform->b, transform->a);
+  supportsFlippingText = [neededCopy supportsFlippingText];
+  supportsFlippingTail = [neededCopy supportsFlippingTail];
+  v9 = supportsFlippingTail;
+  if ((supportsFlippingText & 1) != 0 || supportsFlippingTail)
   {
-    if ([a1 isStreamingMode])
+    if ([self isStreamingMode])
     {
-      v10 = [v16 trackingProps];
-      v11 = [v10 currentTrackingType];
+      trackingProps = [neededCopy trackingProps];
+      currentTrackingType = [trackingProps currentTrackingType];
 
-      if (v11 != 1)
+      if (currentTrackingType != 1)
       {
         v12 = +[JFXOrientationMonitor deviceInterfaceOrientation];
         switch(v12)
@@ -1329,23 +1329,23 @@ LABEL_35:
     v15 = i < 4.71238898 && i > 1.57079633;
     if (v15)
     {
-      if (v7)
+      if (supportsFlippingText)
       {
-        [v16 setFlipText:1];
+        [neededCopy setFlipText:1];
       }
 
       if (v9)
       {
 LABEL_24:
-        [v16 setFlipTail:v15];
+        [neededCopy setFlipTail:v15];
       }
     }
 
     else
     {
-      if (v7)
+      if (supportsFlippingText)
       {
-        [v16 setFlipText:0];
+        [neededCopy setFlipText:0];
       }
 
       if (v9)
@@ -1356,37 +1356,37 @@ LABEL_24:
   }
 }
 
-+ (void)updateEffectText:(id)a3 newText:(id)a4
++ (void)updateEffectText:(id)text newText:(id)newText
 {
-  v7 = a3;
-  v5 = a4;
+  textCopy = text;
+  newTextCopy = newText;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v7;
-    if (!v5 || ![(__CFString *)v5 length])
+    v6 = textCopy;
+    if (!newTextCopy || ![(__CFString *)newTextCopy length])
     {
 
-      v5 = @" ";
+      newTextCopy = @" ";
     }
 
-    [v6 setString:v5 atIndex:0];
+    [v6 setString:newTextCopy atIndex:0];
   }
 }
 
-+ (void)updateEffectToDefaultTextIfEmpty:(id)a3
++ (void)updateEffectToDefaultTextIfEmpty:(id)empty
 {
-  v13 = a3;
+  emptyCopy = empty;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v13;
-    v4 = [v3 strings];
-    v5 = [v4 firstObject];
-    v6 = [v5 string];
+    v3 = emptyCopy;
+    strings = [v3 strings];
+    firstObject = [strings firstObject];
+    string = [firstObject string];
 
-    v7 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v8 = [v6 stringByTrimmingCharactersInSet:v7];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v8 = [string stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
     v9 = [v8 length];
 
     if (!v9)
@@ -1395,8 +1395,8 @@ LABEL_24:
       v11 = v10;
       if (v10)
       {
-        v12 = [v10 string];
-        [v3 setString:v12 atIndex:0];
+        string2 = [v10 string];
+        [v3 setString:string2 atIndex:0];
       }
     }
   }
@@ -1404,76 +1404,76 @@ LABEL_24:
   MEMORY[0x2821F96F8]();
 }
 
-+ (id)textForEffect:(id)a3
++ (id)textForEffect:(id)effect
 {
-  v3 = a3;
+  effectCopy = effect;
   objc_opt_class();
   v4 = &stru_28553D028;
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v3 strings];
-    v6 = [v5 firstObject];
-    v7 = [v6 string];
+    strings = [effectCopy strings];
+    firstObject = [strings firstObject];
+    string = [firstObject string];
 
-    if (v7)
+    if (string)
     {
-      v4 = v7;
+      v4 = string;
     }
   }
 
   return v4;
 }
 
-+ (void)JFX_setTextRenderingEnabledForEffect:(id)a3 value:(BOOL)a4
++ (void)JFX_setTextRenderingEnabledForEffect:(id)effect value:(BOOL)value
 {
-  v4 = a4;
-  v5 = a3;
+  valueCopy = value;
+  effectCopy = effect;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v4)
+    if (valueCopy)
     {
-      [v5 endTextEditing];
+      [effectCopy endTextEditing];
     }
 
     else
     {
-      [v5 beginTextEditing];
+      [effectCopy beginTextEditing];
     }
   }
 }
 
-+ (void)beginTextEditingForEffect:(id)a3
++ (void)beginTextEditingForEffect:(id)effect
 {
-  v6 = a3;
-  v4 = [v6 effectID];
-  v5 = [a1 shouldRenderTextWithMotionWhileEditingTextForEffectID:v4];
+  effectCopy = effect;
+  effectID = [effectCopy effectID];
+  v5 = [self shouldRenderTextWithMotionWhileEditingTextForEffectID:effectID];
 
   if ((v5 & 1) == 0)
   {
-    [a1 JFX_setTextRenderingEnabledForEffect:v6 value:0];
+    [self JFX_setTextRenderingEnabledForEffect:effectCopy value:0];
   }
 }
 
-+ (void)endTextEditingForEffect:(id)a3
++ (void)endTextEditingForEffect:(id)effect
 {
-  v6 = a3;
-  v4 = [v6 effectID];
-  v5 = [a1 shouldRenderTextWithMotionWhileEditingTextForEffectID:v4];
+  effectCopy = effect;
+  effectID = [effectCopy effectID];
+  v5 = [self shouldRenderTextWithMotionWhileEditingTextForEffectID:effectID];
 
   if ((v5 & 1) == 0)
   {
-    [a1 JFX_setTextRenderingEnabledForEffect:v6 value:1];
+    [self JFX_setTextRenderingEnabledForEffect:effectCopy value:1];
   }
 }
 
-+ (BOOL)canEditTextForEffect:(id)a3
++ (BOOL)canEditTextForEffect:(id)effect
 {
-  v3 = a3;
+  effectCopy = effect;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = effectCopy;
     if ([v4 textBakedIn])
     {
       v5 = 0;
@@ -1482,8 +1482,8 @@ LABEL_24:
     else
     {
       v6 = [v4 defaultAttributedString:0];
-      v7 = [v6 string];
-      v5 = [v7 length] != 0;
+      string = [v6 string];
+      v5 = [string length] != 0;
     }
   }
 
@@ -1495,82 +1495,82 @@ LABEL_24:
   return v5;
 }
 
-+ (BOOL)shouldAutoEditTextForEffect:(id)a3
++ (BOOL)shouldAutoEditTextForEffect:(id)effect
 {
-  v3 = a3;
+  effectCopy = effect;
   objc_opt_class();
-  v4 = (objc_opt_isKindOfClass() & 1) == 0 || ([v3 isEmoji] & 1) == 0;
+  v4 = (objc_opt_isKindOfClass() & 1) == 0 || ([effectCopy isEmoji] & 1) == 0;
 
   return v4;
 }
 
-+ (unint64_t)maximumTextLengthForEffect:(id)a3
++ (unint64_t)maximumTextLengthForEffect:(id)effect
 {
-  v3 = a3;
+  effectCopy = effect;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 maxCharacters];
+    maxCharacters = [effectCopy maxCharacters];
   }
 
   else
   {
-    v4 = -1;
+    maxCharacters = -1;
   }
 
-  return v4;
+  return maxCharacters;
 }
 
-+ (id)newTextEditingPropertiesForEffect:(id)a3 relativeTo:(CGRect)a4 atTime:(id *)a5 withNewText:(id)a6 moveBeforeScalingToAvoidKeyboard:(BOOL)a7
++ (id)newTextEditingPropertiesForEffect:(id)effect relativeTo:(CGRect)to atTime:(id *)time withNewText:(id)text moveBeforeScalingToAvoidKeyboard:(BOOL)keyboard
 {
-  v7 = a7;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v14 = a3;
-  v15 = a6;
+  keyboardCopy = keyboard;
+  height = to.size.height;
+  width = to.size.width;
+  y = to.origin.y;
+  x = to.origin.x;
+  effectCopy = effect;
+  textCopy = text;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = *&a5->var0;
-    var3 = a5->var3;
-    v16 = [JFXEffectTextEditingProperties textEditingPropertiesWithTextEffect:v14 withText:v15 relativeTo:&v18 atTime:0 index:v7 moveBeforeScalingToAvoidKeyboard:x, y, width, height];
+    v18 = *&time->var0;
+    var3 = time->var3;
+    height = [JFXEffectTextEditingProperties textEditingPropertiesWithTextEffect:effectCopy withText:textCopy relativeTo:&v18 atTime:0 index:keyboardCopy moveBeforeScalingToAvoidKeyboard:x, y, width, height];
   }
 
   else
   {
-    v16 = 0;
+    height = 0;
   }
 
-  return v16;
+  return height;
 }
 
-+ (BOOL)shouldRenderTextWithMotionWhileEditingTextForEffectID:(id)a3
++ (BOOL)shouldRenderTextWithMotionWhileEditingTextForEffectID:(id)d
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277D418C0]] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277D418C8]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277D419B8]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277D419C0]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277D41998]))
+  dCopy = d;
+  if ([dCopy isEqualToString:*MEMORY[0x277D418C0]] & 1) != 0 || (objc_msgSend(dCopy, "isEqualToString:", *MEMORY[0x277D418C8]) & 1) != 0 || (objc_msgSend(dCopy, "isEqualToString:", *MEMORY[0x277D419B8]) & 1) != 0 || (objc_msgSend(dCopy, "isEqualToString:", *MEMORY[0x277D419C0]) & 1) != 0 || (objc_msgSend(dCopy, "isEqualToString:", *MEMORY[0x277D41998]))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:*MEMORY[0x277D419B0]];
+    v4 = [dCopy isEqualToString:*MEMORY[0x277D419B0]];
   }
 
   return v4;
 }
 
-+ (void)enableAnimationForEffects:(id)a3 animationStartTime:(id *)a4
++ (void)enableAnimationForEffects:(id)effects animationStartTime:(id *)time
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  effectsCopy = effects;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v6 = [effectsCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1581,7 +1581,7 @@ LABEL_24:
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(effectsCopy);
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
@@ -1591,11 +1591,11 @@ LABEL_24:
           v20 = 0u;
           v21 = 0u;
           v19 = 0u;
-          v11 = [v10 renderEffect];
-          v12 = v11;
-          if (v11)
+          renderEffect = [v10 renderEffect];
+          v12 = renderEffect;
+          if (renderEffect)
           {
-            [v11 effectRange];
+            [renderEffect effectRange];
           }
 
           else
@@ -1605,36 +1605,36 @@ LABEL_24:
             v19 = 0u;
           }
 
-          *&v20 = a4->var3;
-          v13 = *&a4->var0;
+          *&v20 = time->var3;
+          v13 = *&time->var0;
           v18 = v21;
           v19 = v13;
           v16 = v13;
           v17 = v20;
-          v14 = [v10 renderEffect];
+          renderEffect2 = [v10 renderEffect];
           v15[0] = v16;
           v15[1] = v17;
           v15[2] = v18;
-          [v14 setEffectRange:v15];
+          [renderEffect2 setEffectRange:v15];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v7 = [effectsCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v7);
   }
 }
 
-+ (void)disableAnimationForEffects:(id)a3
++ (void)disableAnimationForEffects:(id)effects
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  effectsCopy = effects;
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [effectsCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1646,14 +1646,14 @@ LABEL_24:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(effectsCopy);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) enablePresentationState:1];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [effectsCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -1663,25 +1663,25 @@ LABEL_24:
 + (BOOL)isFaceTrackingDataAvailable
 {
   v2 = +[JFXVideoCameraController sharedInstance];
-  v3 = [v2 hasValidFaceData];
+  hasValidFaceData = [v2 hasValidFaceData];
 
-  return v3;
+  return hasValidFaceData;
 }
 
-+ (CGRect)currentFaceRectRelativeToBounds:(CGRect)a3 atTime:(id *)a4 transformAnimation:(id)a5 playableMediaContentMode:(int)a6 playableInterfaceOrientation:(int64_t)a7 playableAspectRatio:(int64_t)a8 playableAspectRatioPreservationMode:(int64_t)a9
++ (CGRect)currentFaceRectRelativeToBounds:(CGRect)bounds atTime:(id *)time transformAnimation:(id)animation playableMediaContentMode:(int)mode playableInterfaceOrientation:(int64_t)orientation playableAspectRatio:(int64_t)ratio playableAspectRatioPreservationMode:(int64_t)preservationMode
 {
-  v12 = *&a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v19 = a5;
+  v12 = *&mode;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  animationCopy = animation;
   v20 = +[JFXVideoCameraController sharedInstance];
-  v21 = [v20 mostRecentARMetadata];
-  v22 = [v21 faceAnchor];
+  mostRecentARMetadata = [v20 mostRecentARMetadata];
+  faceAnchor = [mostRecentARMetadata faceAnchor];
 
-  v35 = *a4;
-  [a1 JFX_currentFaceRectRelativeToBounds:&v35 atTime:v22 faceAnchor:v19 transformAnimation:v12 playableMediaContentMode:a7 playableInterfaceOrientation:a8 playableAspectRatio:x playableAspectRatioPreservationMode:{y, width, height, a9}];
+  v35 = *time;
+  [self JFX_currentFaceRectRelativeToBounds:&v35 atTime:faceAnchor faceAnchor:animationCopy transformAnimation:v12 playableMediaContentMode:orientation playableInterfaceOrientation:ratio playableAspectRatio:x playableAspectRatioPreservationMode:{y, width, height, preservationMode}];
   v24 = v23;
   v26 = v25;
   v28 = v27;
@@ -1698,15 +1698,15 @@ LABEL_24:
   return result;
 }
 
-+ (CGRect)JFX_currentFaceRectRelativeToBounds:(CGRect)a3 atTime:(id *)a4 faceAnchor:(id)a5 transformAnimation:(id)a6 playableMediaContentMode:(int)a7 playableInterfaceOrientation:(int64_t)a8 playableAspectRatio:(int64_t)a9 playableAspectRatioPreservationMode:(int64_t)a10
++ (CGRect)JFX_currentFaceRectRelativeToBounds:(CGRect)bounds atTime:(id *)time faceAnchor:(id)anchor transformAnimation:(id)animation playableMediaContentMode:(int)mode playableInterfaceOrientation:(int64_t)orientation playableAspectRatio:(int64_t)ratio playableAspectRatioPreservationMode:(int64_t)self0
 {
-  v12 = *&a7;
-  height = a3.size.height;
-  width = a3.size.width;
-  v17 = a6;
-  v18 = a5;
-  v19 = multiplierForAspectRatio(a9);
-  v20 = PVViewContentModeFromAspectRatioPreservationMode(a10);
+  v12 = *&mode;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  animationCopy = animation;
+  anchorCopy = anchor;
+  v19 = multiplierForAspectRatio(ratio);
+  v20 = PVViewContentModeFromAspectRatioPreservationMode(preservationMode);
   v21 = 1.0;
   if (v20 > 2)
   {
@@ -1775,7 +1775,7 @@ LABEL_8:
 LABEL_21:
   v55 = 0.0;
   v56 = 0.0;
-  [JFXFaceTrackingUtilities faceRectInImageWithFaceAnchor:v18 invertY:1 interfaceOrientation:a8 imageResolution:&v55];
+  [JFXFaceTrackingUtilities faceRectInImageWithFaceAnchor:anchorCopy invertY:1 interfaceOrientation:orientation imageResolution:&v55];
   v23 = v22;
   v25 = v24;
   v27 = v26;
@@ -1872,9 +1872,9 @@ LABEL_44:
   y = (v21 - v39) * 0.5 + 0.0;
   memset(&v54, 0, sizeof(v54));
   PVTransformAnimationInfoIdentity();
-  *&v50.time.value = *&a4->var0;
-  v50.time.epoch = a4->var3;
-  if ([MEMORY[0x277D416B0] getTransformInfoFromAnimation:v17 atTime:&v50 renderSize:v12 contentMode:0 invertY:&v54 outInfo:{v19, v21}])
+  *&v50.time.value = *&time->var0;
+  v50.time.epoch = time->var3;
+  if ([MEMORY[0x277D416B0] getTransformInfoFromAnimation:animationCopy atTime:&v50 renderSize:v12 contentMode:0 invertY:&v54 outInfo:{v19, v21}])
   {
     v52 = 0u;
     v53 = 0u;

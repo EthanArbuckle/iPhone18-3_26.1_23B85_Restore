@@ -14,7 +14,7 @@
 + (id)storeConfigurationForSemantic;
 + (id)storeConfigurationForSignificantVisit;
 + (id)storeConfigurationForVisit;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)sublibraries;
 + (id)validKeyPaths;
 @end
@@ -24,7 +24,7 @@
 + (id)MicroLocationVisit
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForMicroLocationVisit];
+  configurationForMicroLocationVisit = [self configurationForMicroLocationVisit];
   v3 = +[BMLocationMicroLocationVisit columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -36,7 +36,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Location.MicroLocationVisit" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Location.MicroLocationVisit" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Location.MicroLocationVisit" schema:v9 configuration:configurationForMicroLocationVisit];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -45,13 +45,13 @@
 
 + (id)configurationForMicroLocationVisit
 {
-  v3 = [a1 storeConfigurationForMicroLocationVisit];
-  v4 = [a1 syncPolicyForMicroLocationVisit];
+  storeConfigurationForMicroLocationVisit = [self storeConfigurationForMicroLocationVisit];
+  syncPolicyForMicroLocationVisit = [self syncPolicyForMicroLocationVisit];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"D973E44D-D444-43B2-B656-2F572EFCA03F"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Location.MicroLocationVisit" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Location.MicroLocationVisit" eventClass:objc_opt_class() storeConfig:storeConfigurationForMicroLocationVisit syncPolicy:syncPolicyForMicroLocationVisit legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -67,11 +67,11 @@
 + (id)sublibraries
 {
   v9[3] = *MEMORY[0x1E69E9840];
-  v3 = [a1 Emergency];
-  v4 = [a1 MicroLocation];
-  v9[1] = v4;
-  v5 = [a1 PointOfInterest];
-  v9[2] = v5;
+  emergency = [self Emergency];
+  microLocation = [self MicroLocation];
+  v9[1] = microLocation;
+  pointOfInterest = [self PointOfInterest];
+  v9[2] = pointOfInterest;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:3];
 
   v7 = *MEMORY[0x1E69E9840];
@@ -82,7 +82,7 @@
 + (id)Visit
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForVisit];
+  configurationForVisit = [self configurationForVisit];
   v3 = +[BMLocationVisit columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -94,7 +94,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Location.Visit" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Location.Visit" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Location.Visit" schema:v9 configuration:configurationForVisit];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -103,13 +103,13 @@
 
 + (id)configurationForVisit
 {
-  v3 = [a1 storeConfigurationForVisit];
-  v4 = [a1 syncPolicyForVisit];
+  storeConfigurationForVisit = [self storeConfigurationForVisit];
+  syncPolicyForVisit = [self syncPolicyForVisit];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"00FEC37A-43FE-428E-9CC1-AA6E5CCE5EE2"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Location.Visit" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Location.Visit" eventClass:objc_opt_class() storeConfig:storeConfigurationForVisit syncPolicy:syncPolicyForVisit legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -122,38 +122,38 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"HashedCoordinates"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"HashedCoordinates"])
   {
-    v5 = [a1 HashedCoordinates];
+    hashedCoordinates = [self HashedCoordinates];
 LABEL_11:
-    v6 = v5;
+    v6 = hashedCoordinates;
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:@"MicroLocationVisit"])
+  if ([nameCopy isEqualToString:@"MicroLocationVisit"])
   {
-    v5 = [a1 MicroLocationVisit];
+    hashedCoordinates = [self MicroLocationVisit];
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"Semantic"])
+  if ([nameCopy isEqualToString:@"Semantic"])
   {
-    v5 = [a1 Semantic];
+    hashedCoordinates = [self Semantic];
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"SignificantVisit"])
+  if ([nameCopy isEqualToString:@"SignificantVisit"])
   {
-    v5 = [a1 SignificantVisit];
+    hashedCoordinates = [self SignificantVisit];
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"Visit"])
+  if ([nameCopy isEqualToString:@"Visit"])
   {
-    v5 = [a1 Visit];
+    hashedCoordinates = [self Visit];
     goto LABEL_11;
   }
 
@@ -188,13 +188,13 @@ LABEL_12:
 
 + (id)configurationForSignificantVisit
 {
-  v3 = [a1 storeConfigurationForSignificantVisit];
-  v4 = [a1 syncPolicyForSignificantVisit];
+  storeConfigurationForSignificantVisit = [self storeConfigurationForSignificantVisit];
+  syncPolicyForSignificantVisit = [self syncPolicyForSignificantVisit];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"7A03F83B-6242-4F92-8EE6-DB1EAC77F546"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Location.SignificantVisit" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Location.SignificantVisit" eventClass:objc_opt_class() storeConfig:storeConfigurationForSignificantVisit syncPolicy:syncPolicyForSignificantVisit legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -210,8 +210,8 @@ LABEL_12:
 + (id)configurationForSemantic
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = [a1 storeConfigurationForSemantic];
-  v4 = [a1 syncPolicyForSemantic];
+  storeConfigurationForSemantic = [self storeConfigurationForSemantic];
+  syncPolicyForSemantic = [self syncPolicyForSemantic];
   v5 = objc_alloc(MEMORY[0x1E698F330]);
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"TRUEPREDICATE" argumentArray:0];
   v7 = [v5 initWithIdentifier:@"reset-privacy-and-location-warnings" predicate:v6];
@@ -222,7 +222,7 @@ LABEL_12:
   v10 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"024238EA-AB88-46BE-9D43-E0A6442135D3"];
   BYTE2(v14) = 1;
   LOWORD(v14) = 1;
-  v11 = [v9 _libraryStreamConfigurationWithUUID:v10 streamIdentifier:@"Location.Semantic" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:&unk_1EF3EB508 internalMetadata:0 enableSubscriptions:v14 enableSubscriptionSubstream:0 enableTombstoneSubstream:v8 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v11 = [v9 _libraryStreamConfigurationWithUUID:v10 streamIdentifier:@"Location.Semantic" eventClass:objc_opt_class() storeConfig:storeConfigurationForSemantic syncPolicy:syncPolicyForSemantic legacyNames:&unk_1EF3EB508 internalMetadata:0 enableSubscriptions:v14 enableSubscriptionSubstream:0 enableTombstoneSubstream:v8 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   v12 = *MEMORY[0x1E69E9840];
 
@@ -239,13 +239,13 @@ LABEL_12:
 
 + (id)configurationForHashedCoordinates
 {
-  v3 = [a1 storeConfigurationForHashedCoordinates];
-  v4 = [a1 syncPolicyForHashedCoordinates];
+  storeConfigurationForHashedCoordinates = [self storeConfigurationForHashedCoordinates];
+  syncPolicyForHashedCoordinates = [self syncPolicyForHashedCoordinates];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"F6D9CEC1-83A8-4682-A94C-120F98197DBE"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Location.HashedCoordinates" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Location.HashedCoordinates" eventClass:objc_opt_class() storeConfig:storeConfigurationForHashedCoordinates syncPolicy:syncPolicyForHashedCoordinates legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -261,7 +261,7 @@ LABEL_12:
 + (id)SignificantVisit
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForSignificantVisit];
+  configurationForSignificantVisit = [self configurationForSignificantVisit];
   v3 = +[BMLocationSignificantVisit columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -273,7 +273,7 @@ LABEL_12:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Location.SignificantVisit" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Location.SignificantVisit" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Location.SignificantVisit" schema:v9 configuration:configurationForSignificantVisit];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -283,7 +283,7 @@ LABEL_12:
 + (id)Semantic
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForSemantic];
+  configurationForSemantic = [self configurationForSemantic];
   v3 = +[BMLocationSemantic columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -295,7 +295,7 @@ LABEL_12:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Location.Semantic" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Location.Semantic" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Location.Semantic" schema:v9 configuration:configurationForSemantic];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -305,7 +305,7 @@ LABEL_12:
 + (id)HashedCoordinates
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForHashedCoordinates];
+  configurationForHashedCoordinates = [self configurationForHashedCoordinates];
   v3 = +[BMLocationHashedCoordinates columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -317,7 +317,7 @@ LABEL_12:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Location.HashedCoordinates" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Location.HashedCoordinates" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Location.HashedCoordinates" schema:v9 configuration:configurationForHashedCoordinates];
 
   v11 = *MEMORY[0x1E69E9840];
 

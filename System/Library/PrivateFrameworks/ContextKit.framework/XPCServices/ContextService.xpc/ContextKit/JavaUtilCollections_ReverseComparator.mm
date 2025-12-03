@@ -1,29 +1,29 @@
 @interface JavaUtilCollections_ReverseComparator
 + (void)initialize;
-- (int)compareWithId:(id)a3 withId:(id)a4;
+- (int)compareWithId:(id)id withId:(id)withId;
 @end
 
 @implementation JavaUtilCollections_ReverseComparator
 
-- (int)compareWithId:(id)a3 withId:(id)a4
+- (int)compareWithId:(id)id withId:(id)withId
 {
   v6 = JavaLangComparable_class_();
-  if (!a4)
+  if (!withId)
   {
     JreThrowNullPointerException();
   }
 
-  if (([v6 isInstance:a4] & 1) == 0)
+  if (([v6 isInstance:withId] & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
-  return [a4 compareToWithId:a3];
+  return [withId compareToWithId:id];
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssignAndConsume(&qword_100554DC8, [JavaUtilCollections_ReverseComparator alloc]);
     atomic_store(1u, JavaUtilCollections_ReverseComparator__initialized);

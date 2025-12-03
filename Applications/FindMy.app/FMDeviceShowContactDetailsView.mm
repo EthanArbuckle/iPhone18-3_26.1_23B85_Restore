@@ -7,13 +7,13 @@
 
 - (void)setupSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10044C204();
 }
 
 - (void)showContactDetailsRowTap
 {
-  v2 = self;
+  selfCopy = self;
   sub_10044C510();
 }
 

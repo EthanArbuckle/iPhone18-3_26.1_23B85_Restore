@@ -1,6 +1,6 @@
 @interface VTNovDetectorResult
 - (NSDictionary)dictionary;
-- (VTNovDetectorResult)initWithResult:(id)a3;
+- (VTNovDetectorResult)initWithResult:(id)result;
 @end
 
 @implementation VTNovDetectorResult
@@ -35,21 +35,21 @@
   return v11;
 }
 
-- (VTNovDetectorResult)initWithResult:(id)a3
+- (VTNovDetectorResult)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v8.receiver = self;
   v8.super_class = VTNovDetectorResult;
   v5 = [(VTNovDetectorResult *)&v8 init];
   if (v5)
   {
-    v5->_sampleFed = [v4 sampleFed];
-    v5->_bestPhrase = [v4 bestPhrase];
-    v5->_bestStart = [v4 bestStart];
-    v5->_bestEnd = [v4 bestEnd];
-    [v4 bestScore];
+    v5->_sampleFed = [resultCopy sampleFed];
+    v5->_bestPhrase = [resultCopy bestPhrase];
+    v5->_bestStart = [resultCopy bestStart];
+    v5->_bestEnd = [resultCopy bestEnd];
+    [resultCopy bestScore];
     v5->_bestScore = v6;
-    v5->_earlyWarning = [v4 earlyWarning];
+    v5->_earlyWarning = [resultCopy earlyWarning];
   }
 
   return v5;

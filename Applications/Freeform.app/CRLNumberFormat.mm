@@ -1,13 +1,13 @@
 @interface CRLNumberFormat
-- (id)decimalFormatterForLocale:(id)a3;
+- (id)decimalFormatterForLocale:(id)locale;
 @end
 
 @implementation CRLNumberFormat
 
-- (id)decimalFormatterForLocale:(id)a3
+- (id)decimalFormatterForLocale:(id)locale
 {
-  v3 = a3;
-  v4 = [[CRLDecimalFormatter alloc] initWithLocale:v3 style:1];
+  localeCopy = locale;
+  v4 = [[CRLDecimalFormatter alloc] initWithLocale:localeCopy style:1];
 
   return v4;
 }

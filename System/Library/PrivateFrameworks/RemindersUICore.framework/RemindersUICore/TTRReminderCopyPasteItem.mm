@@ -1,8 +1,8 @@
 @interface TTRReminderCopyPasteItem
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
 - (_TtC15RemindersUICore24TTRReminderCopyPasteItem)init;
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TTRReminderCopyPasteItem
@@ -14,29 +14,29 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  TTRReminderCopyPasteItem.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  TTRReminderCopyPasteItem.encode(with:)(coderCopy);
 }
 
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   _Block_copy(v5);
-  v6 = self;
-  v7 = sub_21D7F8E30(v6, v5);
+  selfCopy = self;
+  v7 = sub_21D7F8E30(selfCopy, v5);
   _Block_release(v5);
   _Block_release(v5);
 
   return v7;
 }
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   v8 = sub_21DBF551C();
   v10 = v9;
 

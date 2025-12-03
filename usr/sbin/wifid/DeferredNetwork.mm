@@ -1,8 +1,8 @@
 @interface DeferredNetwork
-- (BOOL)doesContain:(__WiFiNetwork *)a3;
-- (BOOL)setDeferredNetwork:(__WiFiNetwork *)a3;
+- (BOOL)doesContain:(__WiFiNetwork *)contain;
+- (BOOL)setDeferredNetwork:(__WiFiNetwork *)network;
 - (DeferredNetwork)init;
-- (double)timeSinceFirstDeferral:(__WiFiNetwork *)a3;
+- (double)timeSinceFirstDeferral:(__WiFiNetwork *)deferral;
 - (void)dealloc;
 - (void)reset;
 @end
@@ -40,13 +40,13 @@
   objc_autoreleasePoolPop(v3);
 }
 
-- (BOOL)doesContain:(__WiFiNetwork *)a3
+- (BOOL)doesContain:(__WiFiNetwork *)contain
 {
   v5 = objc_autoreleasePoolPush();
   history = self->_history;
   if (history)
   {
-    v7 = [(NSMutableArray *)history containsObject:a3];
+    v7 = [(NSMutableArray *)history containsObject:contain];
   }
 
   else
@@ -58,7 +58,7 @@
   return v7;
 }
 
-- (BOOL)setDeferredNetwork:(__WiFiNetwork *)a3
+- (BOOL)setDeferredNetwork:(__WiFiNetwork *)network
 {
   v5 = objc_autoreleasePoolPush();
   history = self->_history;
@@ -68,7 +68,7 @@
     {
       +[NSDate timeIntervalSinceReferenceDate];
       self->_firstSeen = v7;
-      self->_ssid = [sub_10000A878(a3) copy];
+      self->_ssid = [sub_10000A878(network) copy];
     }
 
     if ([(NSMutableArray *)self->_history count]>= 0xA)
@@ -76,14 +76,14 @@
       [(NSMutableArray *)self->_history removeObjectAtIndex:0];
     }
 
-    [(NSMutableArray *)self->_history addObject:a3];
+    [(NSMutableArray *)self->_history addObject:network];
   }
 
   objc_autoreleasePoolPop(v5);
   return history != 0;
 }
 
-- (double)timeSinceFirstDeferral:(__WiFiNetwork *)a3
+- (double)timeSinceFirstDeferral:(__WiFiNetwork *)deferral
 {
   v5 = objc_autoreleasePoolPush();
   history = self->_history;
@@ -98,7 +98,7 @@
     v9 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:3 message:{"%s: %@ not previously time-deferred", "-[DeferredNetwork timeSinceFirstDeferral:]", sub_10000A878(a3)}];
+      [off_100298C40 WFLog:3 message:{"%s: %@ not previously time-deferred", "-[DeferredNetwork timeSinceFirstDeferral:]", sub_10000A878(deferral)}];
     }
 
     objc_autoreleasePoolPop(v9);

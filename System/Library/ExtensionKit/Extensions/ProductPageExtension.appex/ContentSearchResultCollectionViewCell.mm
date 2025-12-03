@@ -1,12 +1,12 @@
 @interface ContentSearchResultCollectionViewCell
-- (_TtC20ProductPageExtension37ContentSearchResultCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC20ProductPageExtension37ContentSearchResultCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation ContentSearchResultCollectionViewCell
 
-- (_TtC20ProductPageExtension37ContentSearchResultCollectionViewCell)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension37ContentSearchResultCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC20ProductPageExtension37ContentSearchResultCollectionViewCell_lockupView;
   *(&self->super.super.super.super.super.isa + v4) = [objc_allocWithZone(type metadata accessor for SmallSearchLockupView()) initWithFrame:{0.0, 0.0, 0.0, 0.0}];
@@ -20,7 +20,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100295C00();
 }
 

@@ -1,5 +1,5 @@
 @interface ValueStepper
-- (_TtC8PaperKit12ValueStepper)initWithFrame:(CGRect)a3;
+- (_TtC8PaperKit12ValueStepper)initWithFrame:(CGRect)frame;
 - (void)didTapLeftButton;
 - (void)didTapRightButton;
 - (void)updateUI;
@@ -9,23 +9,23 @@
 
 - (void)didTapLeftButton
 {
-  v2 = self;
+  selfCopy = self;
   ValueStepper.didTapLeftButton()();
 }
 
 - (void)didTapRightButton
 {
-  v2 = self;
+  selfCopy = self;
   ValueStepper.didTapRightButton()();
 }
 
 - (void)updateUI
 {
-  v2 = self;
+  selfCopy = self;
   ValueStepper.updateUI()();
 }
 
-- (_TtC8PaperKit12ValueStepper)initWithFrame:(CGRect)a3
+- (_TtC8PaperKit12ValueStepper)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

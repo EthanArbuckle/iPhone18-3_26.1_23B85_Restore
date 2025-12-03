@@ -12,7 +12,7 @@
   v4[2] = *MEMORY[0x277D85DE8];
   v4[0] = 0;
   v4[1] = 0;
-  [a1 getUUIDBytes:v4];
+  [self getUUIDBytes:v4];
   v1 = [MEMORY[0x277CBEA90] dataWithBytes:v4 length:16];
   v2 = *MEMORY[0x277D85DE8];
 
@@ -50,17 +50,17 @@
   v3 = a3;
   if ([v3 length] == 16)
   {
-    v4 = [MEMORY[0x277CCAD78] hmbUUIDFromData:v3];
+    hmbDescription = [MEMORY[0x277CCAD78] hmbUUIDFromData:v3];
 
-    [v4 UUIDString];
+    [hmbDescription UUIDString];
   }
 
   else
   {
     v5 = MEMORY[0x277CCACA8];
-    v4 = [v3 hmbDescription];
+    hmbDescription = [v3 hmbDescription];
 
-    [v5 stringWithFormat:@"<MALFORMED UUID: %@>", v4];
+    [v5 stringWithFormat:@"<MALFORMED UUID: %@>", hmbDescription];
   }
   v6 = ;
 

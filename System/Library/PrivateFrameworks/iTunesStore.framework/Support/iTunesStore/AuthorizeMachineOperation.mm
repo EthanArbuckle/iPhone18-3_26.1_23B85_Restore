@@ -1,8 +1,8 @@
 @interface AuthorizeMachineOperation
-- (AuthorizeMachineOperation)initWithAuthorizationRequest:(id)a3;
-- (BOOL)_handleResponse:(id)a3 error:(id *)a4;
-- (BOOL)_runAuthentication:(id *)a3;
-- (BOOL)_runAuthorizationWithAuthentication:(BOOL)a3 error:(id *)a4;
+- (AuthorizeMachineOperation)initWithAuthorizationRequest:(id)request;
+- (BOOL)_handleResponse:(id)response error:(id *)error;
+- (BOOL)_runAuthentication:(id *)authentication;
+- (BOOL)_runAuthorizationWithAuthentication:(BOOL)authentication error:(id *)error;
 - (BOOL)allowSilentAuthentication;
 - (BOOL)shouldAddKeysToKeyBag;
 - (BOOL)shouldPromptForCredentials;
@@ -16,43 +16,43 @@
 - (id)_accountIdentifier;
 - (id)_newAuthenticationContext;
 - (id)_newBodyDictionary;
-- (id)_newMachineDataOperationWithResponse:(id)a3;
+- (id)_newMachineDataOperationWithResponse:(id)response;
 - (id)_newURLOperation;
 - (id)authorizationToken;
 - (void)_run;
-- (void)_setResponse:(id)a3;
+- (void)_setResponse:(id)response;
 - (void)dealloc;
-- (void)setAccountIdentifier:(id)a3;
-- (void)setAllowSilentAuthentication:(BOOL)a3;
-- (void)setAuthorizationToken:(id)a3;
-- (void)setClientIdentifierHeader:(id)a3;
-- (void)setFamilyMemberAccountIdentifier:(id)a3;
-- (void)setKeybagPath:(id)a3;
-- (void)setReason:(id)a3;
-- (void)setShouldAddKeysToKeyBag:(BOOL)a3;
-- (void)setShouldPromptForCredentials:(BOOL)a3;
-- (void)setUserAgent:(id)a3;
+- (void)setAccountIdentifier:(id)identifier;
+- (void)setAllowSilentAuthentication:(BOOL)authentication;
+- (void)setAuthorizationToken:(id)token;
+- (void)setClientIdentifierHeader:(id)header;
+- (void)setFamilyMemberAccountIdentifier:(id)identifier;
+- (void)setKeybagPath:(id)path;
+- (void)setReason:(id)reason;
+- (void)setShouldAddKeysToKeyBag:(BOOL)bag;
+- (void)setShouldPromptForCredentials:(BOOL)credentials;
+- (void)setUserAgent:(id)agent;
 @end
 
 @implementation AuthorizeMachineOperation
 
-- (AuthorizeMachineOperation)initWithAuthorizationRequest:(id)a3
+- (AuthorizeMachineOperation)initWithAuthorizationRequest:(id)request
 {
   v6.receiver = self;
   v6.super_class = AuthorizeMachineOperation;
   v4 = [(AuthorizeMachineOperation *)&v6 init];
   if (v4)
   {
-    v4->_accountIdentifier = [a3 accountIdentifier];
-    v4->_allowSilentAuthentication = [a3 allowSilentAuthentication];
-    if ([a3 familyAccountIdentifier])
+    v4->_accountIdentifier = [request accountIdentifier];
+    v4->_allowSilentAuthentication = [request allowSilentAuthentication];
+    if ([request familyAccountIdentifier])
     {
-      v4->_familyMemberAccountIdentifier = [a3 familyAccountIdentifier];
+      v4->_familyMemberAccountIdentifier = [request familyAccountIdentifier];
     }
 
-    v4->_keybagPath = [a3 keybagPath];
-    v4->_token = [a3 authorizationToken];
-    v4->_reason = [a3 reason];
+    v4->_keybagPath = [request keybagPath];
+    v4->_token = [request authorizationToken];
+    v4->_reason = [request reason];
   }
 
   return v4;
@@ -129,120 +129,120 @@
   return v3;
 }
 
-- (void)setAccountIdentifier:(id)a3
+- (void)setAccountIdentifier:(id)identifier
 {
   [(AuthorizeMachineOperation *)self lock];
   accountIdentifier = self->_accountIdentifier;
-  if (accountIdentifier != a3)
+  if (accountIdentifier != identifier)
   {
 
-    self->_accountIdentifier = [a3 copy];
+    self->_accountIdentifier = [identifier copy];
   }
 
   [(AuthorizeMachineOperation *)self unlock];
 }
 
-- (void)setAllowSilentAuthentication:(BOOL)a3
+- (void)setAllowSilentAuthentication:(BOOL)authentication
 {
-  v3 = a3;
+  authenticationCopy = authentication;
   [(AuthorizeMachineOperation *)self lock];
-  if (self->_allowSilentAuthentication != v3)
+  if (self->_allowSilentAuthentication != authenticationCopy)
   {
-    self->_allowSilentAuthentication = v3;
+    self->_allowSilentAuthentication = authenticationCopy;
   }
 
   [(AuthorizeMachineOperation *)self unlock];
 }
 
-- (void)setAuthorizationToken:(id)a3
+- (void)setAuthorizationToken:(id)token
 {
   [(AuthorizeMachineOperation *)self lock];
   token = self->_token;
-  if (token != a3)
+  if (token != token)
   {
 
-    self->_token = a3;
+    self->_token = token;
   }
 
   [(AuthorizeMachineOperation *)self unlock];
 }
 
-- (void)setClientIdentifierHeader:(id)a3
+- (void)setClientIdentifierHeader:(id)header
 {
   [(AuthorizeMachineOperation *)self lock];
   clientIdentifierHeader = self->_clientIdentifierHeader;
-  if (clientIdentifierHeader != a3)
+  if (clientIdentifierHeader != header)
   {
 
-    self->_clientIdentifierHeader = [a3 copy];
+    self->_clientIdentifierHeader = [header copy];
   }
 
   [(AuthorizeMachineOperation *)self unlock];
 }
 
-- (void)setFamilyMemberAccountIdentifier:(id)a3
+- (void)setFamilyMemberAccountIdentifier:(id)identifier
 {
   [(AuthorizeMachineOperation *)self lock];
   familyMemberAccountIdentifier = self->_familyMemberAccountIdentifier;
-  if (familyMemberAccountIdentifier != a3)
+  if (familyMemberAccountIdentifier != identifier)
   {
 
-    self->_familyMemberAccountIdentifier = [a3 copy];
+    self->_familyMemberAccountIdentifier = [identifier copy];
   }
 
   [(AuthorizeMachineOperation *)self unlock];
 }
 
-- (void)setKeybagPath:(id)a3
+- (void)setKeybagPath:(id)path
 {
   [(AuthorizeMachineOperation *)self lock];
   keybagPath = self->_keybagPath;
-  if (keybagPath != a3)
+  if (keybagPath != path)
   {
 
-    self->_keybagPath = [a3 copy];
+    self->_keybagPath = [path copy];
   }
 
   [(AuthorizeMachineOperation *)self unlock];
 }
 
-- (void)setReason:(id)a3
+- (void)setReason:(id)reason
 {
   [(AuthorizeMachineOperation *)self lock];
   reason = self->_reason;
-  if (reason != a3)
+  if (reason != reason)
   {
 
-    self->_reason = [a3 copy];
+    self->_reason = [reason copy];
   }
 
   [(AuthorizeMachineOperation *)self unlock];
 }
 
-- (void)setShouldAddKeysToKeyBag:(BOOL)a3
+- (void)setShouldAddKeysToKeyBag:(BOOL)bag
 {
   [(AuthorizeMachineOperation *)self lock];
-  self->_shouldAddKeysToKeyBag = a3;
+  self->_shouldAddKeysToKeyBag = bag;
 
   [(AuthorizeMachineOperation *)self unlock];
 }
 
-- (void)setShouldPromptForCredentials:(BOOL)a3
+- (void)setShouldPromptForCredentials:(BOOL)credentials
 {
   [(AuthorizeMachineOperation *)self lock];
-  self->_shouldPromptForCredentials = a3;
+  self->_shouldPromptForCredentials = credentials;
 
   [(AuthorizeMachineOperation *)self unlock];
 }
 
-- (void)setUserAgent:(id)a3
+- (void)setUserAgent:(id)agent
 {
   [(AuthorizeMachineOperation *)self lock];
   userAgent = self->_userAgent;
-  if (userAgent != a3)
+  if (userAgent != agent)
   {
 
-    self->_userAgent = [a3 copy];
+    self->_userAgent = [agent copy];
   }
 
   [(AuthorizeMachineOperation *)self unlock];
@@ -281,14 +281,14 @@
   return v3;
 }
 
-- (BOOL)_handleResponse:(id)a3 error:(id *)a4
+- (BOOL)_handleResponse:(id)response error:(id *)error
 {
-  v7 = [a3 objectForKey:@"failureType"];
+  v7 = [response objectForKey:@"failureType"];
   if (!v7)
   {
     if ([(AuthorizeMachineOperation *)self shouldAddKeysToKeyBag])
     {
-      v8 = [a3 objectForKey:@"keybag"];
+      v8 = [response objectForKey:@"keybag"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -304,15 +304,15 @@
           v10 = +[SSLogConfig sharedConfig];
         }
 
-        v11 = [v10 shouldLog];
+        shouldLog = [v10 shouldLog];
         if ([v10 shouldLogToDisk])
         {
-          v12 = v11 | 2;
+          v12 = shouldLog | 2;
         }
 
         else
         {
-          v12 = v11;
+          v12 = shouldLog;
         }
 
         if (!os_log_type_enabled([v10 OSLogObject], OS_LOG_TYPE_INFO))
@@ -343,13 +343,13 @@
 
     v9 = 0;
 LABEL_19:
-    if (!a4)
+    if (!error)
     {
       return v7 == 0;
     }
 
 LABEL_20:
-    *a4 = v9;
+    *error = v9;
     return v7 == 0;
   }
 
@@ -359,7 +359,7 @@ LABEL_20:
   }
 
   v9 = SSError();
-  if (a4)
+  if (error)
   {
     goto LABEL_20;
   }
@@ -369,11 +369,11 @@ LABEL_20:
 
 - (id)_newAuthenticationContext
 {
-  v3 = [(AuthorizeMachineOperation *)self accountIdentifier];
+  accountIdentifier = [(AuthorizeMachineOperation *)self accountIdentifier];
   v4 = [SSMutableAuthenticationContext alloc];
-  if (v3)
+  if (accountIdentifier)
   {
-    v5 = [v4 initWithAccountIdentifier:v3];
+    v5 = [v4 initWithAccountIdentifier:accountIdentifier];
   }
 
   else
@@ -384,8 +384,8 @@ LABEL_20:
   v6 = v5;
   [v5 setAllowsSilentAuthentication:{-[AuthorizeMachineOperation allowSilentAuthentication](self, "allowSilentAuthentication")}];
   [v6 setClientIdentifierHeader:{-[AuthorizeMachineOperation clientIdentifierHeader](self, "clientIdentifierHeader")}];
-  v7 = [(AuthorizeMachineOperation *)self userAgent];
-  [v6 setValue:v7 forHTTPHeaderField:SSHTTPHeaderUserAgent];
+  userAgent = [(AuthorizeMachineOperation *)self userAgent];
+  [v6 setValue:userAgent forHTTPHeaderField:SSHTTPHeaderUserAgent];
   if ([+[SpringBoardUtility isScreenLocked] sharedInstance]
   {
     [v6 setPromptStyle:1000];
@@ -396,34 +396,34 @@ LABEL_20:
 
 - (id)_newBodyDictionary
 {
-  v3 = [(AuthorizeMachineOperation *)self reason];
-  v4 = [(AuthorizeMachineOperation *)self _accountIdentifier];
-  if (!v4)
+  reason = [(AuthorizeMachineOperation *)self reason];
+  _accountIdentifier = [(AuthorizeMachineOperation *)self _accountIdentifier];
+  if (!_accountIdentifier)
   {
     goto LABEL_38;
   }
 
-  v5 = v4;
-  v6 = [(NSString *)v3 isEqualToString:@"refetch"]? 8 : 1;
-  v7 = [(AuthorizeMachineOperation *)self keybagPath];
+  v5 = _accountIdentifier;
+  v6 = [(NSString *)reason isEqualToString:@"refetch"]? 8 : 1;
+  keybagPath = [(AuthorizeMachineOperation *)self keybagPath];
   v8 = +[SSLogConfig sharedDaemonConfig];
   v9 = v8;
-  if (v7)
+  if (keybagPath)
   {
     if (!v8)
     {
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v10 = [v9 shouldLog];
+    shouldLog = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
     if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -438,7 +438,7 @@ LABEL_20:
       v39 = 2112;
       v40 = v5;
       v41 = 2112;
-      v42 = v7;
+      v42 = keybagPath;
       LODWORD(v36) = 32;
       v35 = &v37;
       v12 = _os_log_send_and_compose_impl();
@@ -452,7 +452,7 @@ LABEL_20:
       }
     }
 
-    v15 = sub_1000B1B1C([v5 unsignedLongLongValue], v6, v7);
+    v15 = sub_1000B1B1C([v5 unsignedLongLongValue], v6, keybagPath);
   }
 
   else
@@ -462,15 +462,15 @@ LABEL_20:
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v16 = [v9 shouldLog];
+    shouldLog2 = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v17 = v16 | 2;
+      v17 = shouldLog2 | 2;
     }
 
     else
     {
-      v17 = v16;
+      v17 = shouldLog2;
     }
 
     if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -519,15 +519,15 @@ LABEL_20:
       [v23 setObject:v26 forKey:@"guid"];
     }
 
-    v27 = [(ISDevice *)v25 deviceName];
-    if (v27)
+    deviceName = [(ISDevice *)v25 deviceName];
+    if (deviceName)
     {
-      [v23 setObject:v27 forKey:@"machineName"];
+      [v23 setObject:deviceName forKey:@"machineName"];
     }
 
-    if (v3)
+    if (reason)
     {
-      [v23 setObject:v3 forKey:@"reason"];
+      [v23 setObject:reason forKey:@"reason"];
     }
 
     [v23 setObject:v5 forKey:@"ownerDsid"];
@@ -542,15 +542,15 @@ LABEL_38:
       v28 = +[SSLogConfig sharedConfig];
     }
 
-    v29 = [v28 shouldLog];
+    shouldLog3 = [v28 shouldLog];
     if ([v28 shouldLogToDisk])
     {
-      v30 = v29 | 2;
+      v30 = shouldLog3 | 2;
     }
 
     else
     {
-      v30 = v29;
+      v30 = shouldLog3;
     }
 
     if (!os_log_type_enabled([v28 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -581,9 +581,9 @@ LABEL_38:
   return v23;
 }
 
-- (id)_newMachineDataOperationWithResponse:(id)a3
+- (id)_newMachineDataOperationWithResponse:(id)response
 {
-  v4 = [[SSMachineDataRequest alloc] initWithURLResponse:a3];
+  v4 = [[SSMachineDataRequest alloc] initWithURLResponse:response];
   if (!v4)
   {
     return 0;
@@ -599,14 +599,14 @@ LABEL_38:
 
 - (id)_newURLOperation
 {
-  v3 = [(AuthorizeMachineOperation *)self _newBodyDictionary];
-  if (!v3)
+  _newBodyDictionary = [(AuthorizeMachineOperation *)self _newBodyDictionary];
+  if (!_newBodyDictionary)
   {
     return 0;
   }
 
-  v4 = v3;
-  v5 = [NSPropertyListSerialization dataWithPropertyList:v3 format:100 options:0 error:0];
+  v4 = _newBodyDictionary;
+  v5 = [NSPropertyListSerialization dataWithPropertyList:_newBodyDictionary format:100 options:0 error:0];
   if (v5)
   {
     v6 = v5;
@@ -614,8 +614,8 @@ LABEL_38:
     [v7 setDataProvider:{+[DaemonProtocolDataProvider provider](DaemonProtocolDataProvider, "provider")}];
     [v7 setMachineDataStyle:0];
     [v7 setUseUserSpecificURLBag:1];
-    v8 = [(AuthorizeMachineOperation *)self _newAuthenticationContext];
-    [v7 setAuthenticationContext:v8];
+    _newAuthenticationContext = [(AuthorizeMachineOperation *)self _newAuthenticationContext];
+    [v7 setAuthenticationContext:_newAuthenticationContext];
 
     v9 = objc_alloc_init(SSMutableURLRequestProperties);
     [v9 setAllowedRetryCount:0];
@@ -624,8 +624,8 @@ LABEL_38:
     [v9 setHTTPMethod:@"POST"];
     [v9 setURLBagKey:@"authorizeMachine"];
     [v9 setValue:@"application/x-apple-plist" forHTTPHeaderField:@"Content-Type"];
-    v10 = [(AuthorizeMachineOperation *)self userAgent];
-    [v9 setValue:v10 forHTTPHeaderField:SSHTTPHeaderUserAgent];
+    userAgent = [(AuthorizeMachineOperation *)self userAgent];
+    [v9 setValue:userAgent forHTTPHeaderField:SSHTTPHeaderUserAgent];
     [(AuthorizeMachineOperation *)self lock];
     familyMemberAccountIdentifier = self->_familyMemberAccountIdentifier;
     if (familyMemberAccountIdentifier)
@@ -661,15 +661,15 @@ LABEL_38:
 - (void)_run
 {
   v32 = 0;
-  v3 = [(AuthorizeMachineOperation *)self accountIdentifier];
-  if (v3)
+  accountIdentifier = [(AuthorizeMachineOperation *)self accountIdentifier];
+  if (accountIdentifier)
   {
-    v4 = v3;
+    v4 = accountIdentifier;
     v31 = 0;
-    v5 = [(AuthorizeMachineOperation *)self authorizationToken];
-    if (v5)
+    authorizationToken = [(AuthorizeMachineOperation *)self authorizationToken];
+    if (authorizationToken)
     {
-      v6 = v5;
+      v6 = authorizationToken;
 LABEL_4:
       v7 = 0;
       goto LABEL_5;
@@ -697,15 +697,15 @@ LABEL_4:
       v14 = +[SSLogConfig sharedConfig];
     }
 
-    v15 = [v14 shouldLog];
+    shouldLog = [v14 shouldLog];
     if ([v14 shouldLogToDisk])
     {
-      v16 = v15 | 2;
+      v16 = shouldLog | 2;
     }
 
     else
     {
-      v16 = v15;
+      v16 = shouldLog;
     }
 
     if (!os_log_type_enabled([v14 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -743,15 +743,15 @@ LABEL_4:
         v21 = +[SSLogConfig sharedConfig];
       }
 
-      v22 = [v21 shouldLog];
+      shouldLog2 = [v21 shouldLog];
       if ([v21 shouldLogToDisk])
       {
-        v23 = v22 | 2;
+        v23 = shouldLog2 | 2;
       }
 
       else
       {
-        v23 = v22;
+        v23 = shouldLog2;
       }
 
       if (!os_log_type_enabled([v21 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -805,15 +805,15 @@ LABEL_6:
     v10 = +[SSLogConfig sharedConfig];
   }
 
-  v11 = [v10 shouldLog];
+  shouldLog3 = [v10 shouldLog];
   if ([v10 shouldLogToDisk])
   {
-    v12 = v11 | 2;
+    v12 = shouldLog3 | 2;
   }
 
   else
   {
-    v12 = v11;
+    v12 = shouldLog3;
   }
 
   if (!os_log_type_enabled([v10 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -847,7 +847,7 @@ LABEL_22:
   [(AuthorizeMachineOperation *)self setSuccess:v8];
 }
 
-- (BOOL)_runAuthentication:(id *)a3
+- (BOOL)_runAuthentication:(id *)authentication
 {
   v5 = +[SSLogConfig sharedAccountsAuthenticationConfig];
   if (!v5)
@@ -855,15 +855,15 @@ LABEL_22:
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
   if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -888,57 +888,57 @@ LABEL_22:
     }
   }
 
-  v11 = [(AuthorizeMachineOperation *)self _newAuthenticationContext];
-  v12 = [[SSAuthenticateRequest alloc] initWithAuthenticationContext:v11];
+  _newAuthenticationContext = [(AuthorizeMachineOperation *)self _newAuthenticationContext];
+  v12 = [[SSAuthenticateRequest alloc] initWithAuthenticationContext:_newAuthenticationContext];
   v13 = [v12 run];
-  v14 = [v13 error];
-  if (!v14)
+  error = [v13 error];
+  if (!error)
   {
     -[AuthorizeMachineOperation setAccountIdentifier:](self, "setAccountIdentifier:", [objc_msgSend(v13 "authenticatedAccount")]);
   }
 
-  if (a3 && v14)
+  if (authentication && error)
   {
-    *a3 = 0;
+    *authentication = 0;
   }
 
-  return v14 == 0;
+  return error == 0;
 }
 
-- (BOOL)_runAuthorizationWithAuthentication:(BOOL)a3 error:(id *)a4
+- (BOOL)_runAuthorizationWithAuthentication:(BOOL)authentication error:(id *)error
 {
-  v4 = a3;
+  authenticationCopy = authentication;
   v34 = 0;
   while (1)
   {
-    v6 = [(AuthorizeMachineOperation *)self _newURLOperation];
-    if (!v6)
+    _newURLOperation = [(AuthorizeMachineOperation *)self _newURLOperation];
+    if (!_newURLOperation)
     {
       LOBYTE(self) = 0;
       v34 = SSError();
       goto LABEL_26;
     }
 
-    v7 = v6;
-    [v6 setNeedsAuthentication:v4];
+    v7 = _newURLOperation;
+    [_newURLOperation setNeedsAuthentication:authenticationCopy];
     v8 = +[SSLogConfig sharedDaemonConfig];
     if (!v8)
     {
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v9 |= 2u;
+      shouldLog |= 2u;
     }
 
     if (!os_log_type_enabled([v8 OSLogObject], OS_LOG_TYPE_INFO))
     {
-      v9 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (v9)
+    if (shouldLog)
     {
       v10 = objc_opt_class();
       token = self->_token;
@@ -947,7 +947,7 @@ LABEL_22:
       v37 = 2112;
       v38 = token;
       v39 = 1024;
-      v40 = v4;
+      v40 = authenticationCopy;
       LODWORD(v32) = 28;
       v31 = &v35;
       v12 = _os_log_send_and_compose_impl();
@@ -980,12 +980,12 @@ LABEL_22:
 
     v17 = v16;
     v18 = [(AuthorizeMachineOperation *)self runSubOperation:v16 returningError:0];
-    v19 = [v17 syncState];
+    syncState = [v17 syncState];
     [(AuthorizeMachineOperation *)self lock];
     mdRetryCount = self->_mdRetryCount;
     self->_mdRetryCount = mdRetryCount + 1;
 
-    self->_mdSyncState = [v19 copy];
+    self->_mdSyncState = [syncState copy];
     [(AuthorizeMachineOperation *)self unlock];
     if (mdRetryCount > 0)
     {
@@ -993,8 +993,8 @@ LABEL_22:
 LABEL_25:
       LOBYTE(self) = 0;
 LABEL_26:
-      v24 = a4;
-      if (!a4)
+      errorCopy3 = error;
+      if (!error)
       {
         return self;
       }
@@ -1002,7 +1002,7 @@ LABEL_26:
       goto LABEL_42;
     }
 
-    if (v19)
+    if (syncState)
     {
       v21 = 1;
     }
@@ -1034,15 +1034,15 @@ LABEL_26:
     v25 = +[SSLogConfig sharedConfig];
   }
 
-  v26 = [v25 shouldLog];
+  shouldLog2 = [v25 shouldLog];
   if ([v25 shouldLogToDisk])
   {
-    v27 = v26 | 2;
+    v27 = shouldLog2 | 2;
   }
 
   else
   {
-    v27 = v26;
+    v27 = shouldLog2;
   }
 
   if (os_log_type_enabled([v25 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -1064,7 +1064,7 @@ LABEL_26:
     v38 = v34;
     LODWORD(v32) = 22;
     self = _os_log_send_and_compose_impl();
-    v24 = a4;
+    errorCopy3 = error;
     if (self)
     {
       [NSString stringWithCString:self encoding:4, &v35, v32];
@@ -1079,10 +1079,10 @@ LABEL_26:
 LABEL_39:
     LOBYTE(self) = 0;
 LABEL_40:
-    v24 = a4;
+    errorCopy3 = error;
   }
 
-  if (!v24)
+  if (!errorCopy3)
   {
     return self;
   }
@@ -1090,20 +1090,20 @@ LABEL_40:
 LABEL_42:
   if ((self & 1) == 0)
   {
-    *v24 = v34;
+    *errorCopy3 = v34;
   }
 
   return self;
 }
 
-- (void)_setResponse:(id)a3
+- (void)_setResponse:(id)response
 {
   [(AuthorizeMachineOperation *)self lock];
   response = self->_response;
-  if (response != a3)
+  if (response != response)
   {
 
-    self->_response = a3;
+    self->_response = response;
   }
 
   [(AuthorizeMachineOperation *)self unlock];

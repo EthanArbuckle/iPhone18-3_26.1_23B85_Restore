@@ -1,26 +1,26 @@
 @interface VFXMTLDeformerStack
-- (Class)deformerClassForMeshlesshGeometry:(__CFXGeometry *)a3;
+- (Class)deformerClassForMeshlesshGeometry:(__CFXGeometry *)geometry;
 - (MTLBlitCommandEncoder)currentBlitEncoder;
 - (RGCachedComputeCommandEncoder)currentComputeEncoder;
 - (__n128)_currentFrustumInfo;
 - (__n128)currentTransforms;
-- (id)deindexedToFirstDeindexedTableBufferWithBlitEncoder:(id)a3 indexSizeOut:(unint64_t *)a4;
-- (id)deindexedToOriginalTableBufferWithBlitEncoder:(id)a3 indexSizeOut:(unint64_t *)a4;
-- (id)dependencyBufferForInput:(unint64_t)a3 dependencyMesh:(id)a4;
-- (id)dependencyBufferForInput:(unint64_t)a3 dependencyStack:(id)a4;
-- (id)newBufferForDataKind:(unsigned __int8)a3 meshSource:(__CFXMeshSource *)a4 dataType:(signed __int16)a5 forStageInputOutputDescriptor:(BOOL)a6 usePrivateStorageMode:(BOOL)a7 outStride:(unint64_t *)a8;
-- (id)newBufferForDataKind:(unsigned __int8)a3 positionSource:(__CFXMeshSource *)a4 normalSource:(__CFXMeshSource *)a5 positionDataType:(signed __int16)a6 normalDataType:(signed __int16)a7 forStageInputOutputDescriptor:(BOOL)a8 usePrivateStorageMode:(BOOL)a9 outStride:(unint64_t *)a10 outPositionOffset:(unint64_t *)a11 outNormalOffset:(unint64_t *)a12;
-- (id)originalToFirstDeindexedTableBufferWithBlitEncoder:(id)a3 indexSizeOut:(unint64_t *)a4;
+- (id)deindexedToFirstDeindexedTableBufferWithBlitEncoder:(id)encoder indexSizeOut:(unint64_t *)out;
+- (id)deindexedToOriginalTableBufferWithBlitEncoder:(id)encoder indexSizeOut:(unint64_t *)out;
+- (id)dependencyBufferForInput:(unint64_t)input dependencyMesh:(id)mesh;
+- (id)dependencyBufferForInput:(unint64_t)input dependencyStack:(id)stack;
+- (id)newBufferForDataKind:(unsigned __int8)kind meshSource:(__CFXMeshSource *)source dataType:(signed __int16)type forStageInputOutputDescriptor:(BOOL)descriptor usePrivateStorageMode:(BOOL)mode outStride:(unint64_t *)stride;
+- (id)newBufferForDataKind:(unsigned __int8)kind positionSource:(__CFXMeshSource *)source normalSource:(__CFXMeshSource *)normalSource positionDataType:(signed __int16)type normalDataType:(signed __int16)dataType forStageInputOutputDescriptor:(BOOL)descriptor usePrivateStorageMode:(BOOL)mode outStride:(unint64_t *)self0 outPositionOffset:(unint64_t *)self1 outNormalOffset:(unint64_t *)self2;
+- (id)originalToFirstDeindexedTableBufferWithBlitEncoder:(id)encoder indexSizeOut:(unint64_t *)out;
 - (unint64_t)currentFrameHash;
 - (void)dealloc;
-- (void)encodeCommandsInNewCommandBufferUsingBlock:(id)a3;
-- (void)enumerateInternalDeformersUsingBlock:(id)a3;
-- (void)reconfigureIfNeededWithContext:(id)a3 programHashCodeRequirements:(id)a4;
-- (void)setStageInputOutputBuffersToEncoder:(id)a3;
-- (void)setupFinalMeshFromBaseMeshWithInfo:(id)a3;
-- (void)setupFinalMeshFromMeshlessBaseGeometryWithInfo:(id)a3;
-- (void)setupInitialBuffersWithBasePositionSourceProvider:(id)a3 baseNormalSourceProvider:(id)a4 baseTangentSourceProvider:(id)a5 info:(id)a6;
-- (void)updateDependencyBuffersInBufferArray:(id *)a3 forDeformer:(id)a4;
+- (void)encodeCommandsInNewCommandBufferUsingBlock:(id)block;
+- (void)enumerateInternalDeformersUsingBlock:(id)block;
+- (void)reconfigureIfNeededWithContext:(id)context programHashCodeRequirements:(id)requirements;
+- (void)setStageInputOutputBuffersToEncoder:(id)encoder;
+- (void)setupFinalMeshFromBaseMeshWithInfo:(id)info;
+- (void)setupFinalMeshFromMeshlessBaseGeometryWithInfo:(id)info;
+- (void)setupInitialBuffersWithBasePositionSourceProvider:(id)provider baseNormalSourceProvider:(id)sourceProvider baseTangentSourceProvider:(id)tangentSourceProvider info:(id)info;
+- (void)updateDependencyBuffersInBufferArray:(id *)array forDeformer:(id)deformer;
 @end
 
 @implementation VFXMTLDeformerStack
@@ -32,9 +32,9 @@
   [(VFXMTLDeformerStack *)&v3 dealloc];
 }
 
-- (Class)deformerClassForMeshlesshGeometry:(__CFXGeometry *)a3
+- (Class)deformerClassForMeshlesshGeometry:(__CFXGeometry *)geometry
 {
-  v3 = CFGetTypeID(a3);
+  v3 = CFGetTypeID(geometry);
   if (v3 == sub_1AF15B134())
   {
 
@@ -53,34 +53,34 @@
   }
 }
 
-- (void)enumerateInternalDeformersUsingBlock:(id)a3
+- (void)enumerateInternalDeformersUsingBlock:(id)block
 {
   if (self->_morphDeformer)
   {
-    (*(a3 + 2))(a3);
+    (*(block + 2))(block);
   }
 
   if (self->_skinDeformer)
   {
-    (*(a3 + 2))(a3);
+    (*(block + 2))(block);
   }
 
   if (self->_meshlessDeformer)
   {
-    (*(a3 + 2))(a3);
+    (*(block + 2))(block);
   }
 
   if (self->_smoothNormalsDeformer)
   {
-    v5 = *(a3 + 2);
+    v5 = *(block + 2);
 
-    v5(a3);
+    v5(block);
   }
 }
 
-- (void)setupInitialBuffersWithBasePositionSourceProvider:(id)a3 baseNormalSourceProvider:(id)a4 baseTangentSourceProvider:(id)a5 info:(id)a6
+- (void)setupInitialBuffersWithBasePositionSourceProvider:(id)provider baseNormalSourceProvider:(id)sourceProvider baseTangentSourceProvider:(id)tangentSourceProvider info:(id)info
 {
-  v6 = *&a6.var0;
+  v6 = *&info.var0;
   initialPositionBuffer = self->_initialPositionBuffer;
   if (initialPositionBuffer)
   {
@@ -115,7 +115,7 @@
   if ((v6 & 0x100010001) != 0)
   {
     self->_initialBuffersStageInputDescriptor = objc_alloc_init(MEMORY[0x1E6974188]);
-    v15 = (*(a3 + 2))(a3, self->_deformDataKind);
+    v15 = (*(provider + 2))(provider, self->_deformDataKind);
     v19 = sub_1AF1AE6EC(v15);
     if (v6)
     {
@@ -178,7 +178,7 @@ LABEL_12:
     objc_msgSend_setStepFunction_(v82, v83, 5, v84);
     if ((v6 & 0x1000000) != 0)
     {
-      v93 = (*(a4 + 2))(a4, self->_deformDataKind);
+      v93 = (*(sourceProvider + 2))(sourceProvider, self->_deformDataKind);
       if (!v93)
       {
         v94 = sub_1AF0D5194();
@@ -222,7 +222,7 @@ LABEL_25:
       objc_msgSend_setStepFunction_(v132, v133, 5, v134);
       if ((v6 & 0x10000000000) != 0)
       {
-        v143 = (*(a5 + 2))(a5, self->_deformDataKind);
+        v143 = (*(tangentSourceProvider + 2))(tangentSourceProvider, self->_deformDataKind);
         if (!v143)
         {
           v144 = sub_1AF0D5194();
@@ -256,7 +256,7 @@ LABEL_25:
   }
 }
 
-- (void)setupFinalMeshFromBaseMeshWithInfo:(id)a3
+- (void)setupFinalMeshFromBaseMeshWithInfo:(id)info
 {
   *&v164[5] = *MEMORY[0x1E69E9840];
   deformPositionBuffer = self->_deformPositionBuffer;
@@ -309,7 +309,7 @@ LABEL_25:
   }
 
   finalDataKind = self->_finalDataKind;
-  v14 = objc_msgSend_vertexDescriptor(MEMORY[0x1E69741E0], a2, *&a3.var0, v3);
+  v14 = objc_msgSend_vertexDescriptor(MEMORY[0x1E69741E0], a2, *&info.var0, v3);
   v15 = sub_1AF1A4F3C(self->_baseMesh);
   v16 = objc_alloc(MEMORY[0x1E695DF70]);
   v19 = objc_msgSend_initWithCapacity_(v16, v17, v15, v18);
@@ -329,12 +329,12 @@ LABEL_25:
   v157[7] = &v159;
   v158 = finalDataKind == 0;
   sub_1AF1A2BEC(baseMesh, v21, v157);
-  if (a3.var0)
+  if (info.var0)
   {
     v22 = sub_1AF1F1A7C(30);
     v23 = sub_1AF1A4604(self->_baseMesh, 0, 0, self->_deformDataKind);
     v24 = sub_1AF1AE6EC(v23);
-    if ((*&a3.var0 & 0x100) != 0)
+    if ((*&info.var0 & 0x100) != 0)
     {
       v26 = objc_msgSend_newBufferForDataKind_meshSource_dataType_forStageInputOutputDescriptor_usePrivateStorageMode_outStride_(self, v25, self->_deformDataKind, v23, 8, 0, 0, 0);
     }
@@ -379,12 +379,12 @@ LABEL_25:
     self->_deformNormalStageInputOutputDescriptorInfo.bufferLayoutStride = v72;
   }
 
-  if ((*&a3 & 0x10000) != 0)
+  if ((*&info & 0x10000) != 0)
   {
     v73 = sub_1AF1F1A7C(31);
     v74 = sub_1AF1A4604(self->_baseMesh, 0, 0, self->_deformDataKind);
     v75 = sub_1AF1AE6EC(v74);
-    if ((*&a3 & 0x1000000) != 0)
+    if ((*&info & 0x1000000) != 0)
     {
       v77 = objc_msgSend_newBufferForDataKind_meshSource_dataType_forStageInputOutputDescriptor_usePrivateStorageMode_outStride_(self, v76, self->_deformDataKind, v74, 9, 0, 0, 0);
     }
@@ -485,7 +485,7 @@ LABEL_25:
   _Block_object_dispose(&v159, 8);
 }
 
-- (void)setupFinalMeshFromMeshlessBaseGeometryWithInfo:(id)a3
+- (void)setupFinalMeshFromMeshlessBaseGeometryWithInfo:(id)info
 {
   deformPositionBuffer = self->_deformPositionBuffer;
   if (deformPositionBuffer)
@@ -541,11 +541,11 @@ LABEL_25:
     v13 = sub_1AF0D5194();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
     {
-      sub_1AFDE2A94(v13, a2, *&a3.var0, v3, v14, v15, v16, v17);
+      sub_1AFDE2A94(v13, a2, *&info.var0, v3, v14, v15, v16, v17);
     }
   }
 
-  self->_finalMesh = objc_msgSend_finalMesh(self->_meshlessDeformer, a2, *&a3.var0, v3);
+  self->_finalMesh = objc_msgSend_finalMesh(self->_meshlessDeformer, a2, *&info.var0, v3);
   v18 = sub_1AF1F1A7C(30);
   v19 = sub_1AFDEA004(self->_finalMesh);
   v23 = objc_msgSend_attributes(v19, v20, v21, v22);
@@ -558,16 +558,16 @@ LABEL_25:
   sub_1AFDE851C(self->_resourceManager, v39 * v18, 32);
   self->_deformPositionBuffer = v40;
   CFRelease(v38);
-  if (a3.var0 && (v44 = sub_1AF0D5194(), os_log_type_enabled(v44, OS_LOG_TYPE_FAULT)))
+  if (info.var0 && (v44 = sub_1AF0D5194(), os_log_type_enabled(v44, OS_LOG_TYPE_FAULT)))
   {
     sub_1AFDE2B0C(v44, v41, v42, v43, v45, v46, v47, v48);
-    if ((*&a3 & 0x10000) == 0)
+    if ((*&info & 0x10000) == 0)
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*&a3 & 0x10000) == 0)
+  else if ((*&info & 0x10000) == 0)
   {
     goto LABEL_23;
   }
@@ -587,7 +587,7 @@ LABEL_23:
   self->_deformPositionStageInputOutputDescriptorInfo.bufferLayoutStride = v58;
 }
 
-- (id)deindexedToOriginalTableBufferWithBlitEncoder:(id)a3 indexSizeOut:(unint64_t *)a4
+- (id)deindexedToOriginalTableBufferWithBlitEncoder:(id)encoder indexSizeOut:(unint64_t *)out
 {
   *&v29[5] = *MEMORY[0x1E69E9840];
   if (!self->_deindexedToOriginalTableBuffer)
@@ -605,7 +605,7 @@ LABEL_23:
     v10 = sub_1AF1AE6EC(v9);
     v11 = v27;
     v12 = v27 - 1;
-    v26 = a3;
+    encoderCopy = encoder;
     if ((v27 - 1) < 0)
     {
       v15 = 8;
@@ -628,7 +628,7 @@ LABEL_23:
     }
 
     self->_deindexedToOriginalTableBufferIndexSize = v15;
-    *a4 = v15;
+    *out = v15;
     v25 = self->_deindexedToOriginalTableBufferIndexSize * v11;
     v16 = malloc_type_malloc(v25, 0x407733AFuLL);
     v17 = v16;
@@ -666,7 +666,7 @@ LABEL_23:
     if (!v27)
     {
 LABEL_31:
-      self->_deindexedToOriginalTableBuffer = sub_1AFDE847C(self->_resourceManager, v17, v25, v26);
+      self->_deindexedToOriginalTableBuffer = sub_1AFDE847C(self->_resourceManager, v17, v25, encoderCopy);
       free(v17);
       return self->_deindexedToOriginalTableBuffer;
     }
@@ -709,16 +709,16 @@ LABEL_30:
     }
   }
 
-  *a4 = self->_deindexedToOriginalTableBufferIndexSize;
+  *out = self->_deindexedToOriginalTableBufferIndexSize;
   return self->_deindexedToOriginalTableBuffer;
 }
 
-- (id)deindexedToFirstDeindexedTableBufferWithBlitEncoder:(id)a3 indexSizeOut:(unint64_t *)a4
+- (id)deindexedToFirstDeindexedTableBufferWithBlitEncoder:(id)encoder indexSizeOut:(unint64_t *)out
 {
   *&v35[5] = *MEMORY[0x1E69E9840];
   if (self->_deindexedToFirstDeindexedTableBuffer)
   {
-    *a4 = self->_deindexedToFirstDeindexedTableBufferIndexSize;
+    *out = self->_deindexedToFirstDeindexedTableBufferIndexSize;
   }
 
   else
@@ -733,7 +733,7 @@ LABEL_30:
     }
 
     v9 = result;
-    v29 = a3;
+    encoderCopy = encoder;
     v10 = sub_1AF1A4604(self->_baseMesh, 0, 0, 0);
     v11 = sub_1AF1AE6EC(v10);
     v12 = v31;
@@ -760,7 +760,7 @@ LABEL_30:
     }
 
     self->_deindexedToFirstDeindexedTableBufferIndexSize = v16;
-    *a4 = v16;
+    *out = v16;
     v28 = self->_deindexedToFirstDeindexedTableBufferIndexSize * v12;
     v17 = malloc_type_malloc(v28, 0xF4697E52uLL);
     v18 = v17;
@@ -855,18 +855,18 @@ LABEL_30:
       }
     }
 
-    self->_deindexedToFirstDeindexedTableBuffer = sub_1AFDE847C(self->_resourceManager, v18, v28, v29);
+    self->_deindexedToFirstDeindexedTableBuffer = sub_1AFDE847C(self->_resourceManager, v18, v28, encoderCopy);
     free(v18);
   }
 
   return self->_deindexedToFirstDeindexedTableBuffer;
 }
 
-- (id)originalToFirstDeindexedTableBufferWithBlitEncoder:(id)a3 indexSizeOut:(unint64_t *)a4
+- (id)originalToFirstDeindexedTableBufferWithBlitEncoder:(id)encoder indexSizeOut:(unint64_t *)out
 {
   if (self->_originalToFirstDeindexedTableBuffer)
   {
-    *a4 = self->_originalToFirstDeindexedTableBufferIndexSize;
+    *out = self->_originalToFirstDeindexedTableBufferIndexSize;
   }
 
   else
@@ -895,7 +895,7 @@ LABEL_30:
     }
 
     self->_originalToFirstDeindexedTableBufferIndexSize = v13;
-    *a4 = v13;
+    *out = v13;
     v14 = v10;
     v15 = self->_originalToFirstDeindexedTableBufferIndexSize * v10;
     v16 = malloc_type_malloc(v15, 0xB69AB802uLL);
@@ -963,20 +963,20 @@ LABEL_30:
       while (v14);
     }
 
-    self->_originalToFirstDeindexedTableBuffer = sub_1AFDE847C(self->_resourceManager, v16, v15, a3);
+    self->_originalToFirstDeindexedTableBuffer = sub_1AFDE847C(self->_resourceManager, v16, v15, encoder);
     free(v17);
   }
 
   return self->_originalToFirstDeindexedTableBuffer;
 }
 
-- (id)newBufferForDataKind:(unsigned __int8)a3 meshSource:(__CFXMeshSource *)a4 dataType:(signed __int16)a5 forStageInputOutputDescriptor:(BOOL)a6 usePrivateStorageMode:(BOOL)a7 outStride:(unint64_t *)a8
+- (id)newBufferForDataKind:(unsigned __int8)kind meshSource:(__CFXMeshSource *)source dataType:(signed __int16)type forStageInputOutputDescriptor:(BOOL)descriptor usePrivateStorageMode:(BOOL)mode outStride:(unint64_t *)stride
 {
-  v10 = a6;
-  v11 = a5;
-  v14 = sub_1AF1AE6EC(a4);
-  v15 = sub_1AF288070(v11);
-  if (v10)
+  descriptorCopy = descriptor;
+  typeCopy = type;
+  v14 = sub_1AF1AE6EC(source);
+  v15 = sub_1AF288070(typeCopy);
+  if (descriptorCopy)
   {
     v16 = sub_1AFDE78C8(&self->_resourceManager->super.isa);
     if (sub_1AF1F32D4(v16, v17, v18, v19))
@@ -988,7 +988,7 @@ LABEL_30:
   v20 = malloc_type_malloc(v15 * v14, 0x100004077774924uLL);
   v35 = 0u;
   v36 = 0u;
-  sub_1AF1AE1A8(a4, &v35);
+  sub_1AF1AE1A8(source, &v35);
   if (v14)
   {
     v27 = 0;
@@ -996,7 +996,7 @@ LABEL_30:
     do
     {
       *v29.i64 = sub_1AF279750(BYTE4(v36), (v35 + v27 * BYTE6(v36)), v24, v25, v26);
-      sub_1AF279B88(v11, v28, v29);
+      sub_1AF279B88(typeCopy, v28, v29);
       v28 += v15;
       ++v27;
     }
@@ -1005,7 +1005,7 @@ LABEL_30:
   }
 
   resourceManager = self->_resourceManager;
-  if (a7)
+  if (mode)
   {
     v31 = objc_msgSend_currentBlitEncoder(self, v21, v22, v23);
     v32 = sub_1AFDE847C(resourceManager, v20, (v15 * v14), v31);
@@ -1018,20 +1018,20 @@ LABEL_30:
 
   v33 = v32;
   free(v20);
-  if (a8)
+  if (stride)
   {
-    *a8 = v15;
+    *stride = v15;
   }
 
   return v33;
 }
 
-- (id)newBufferForDataKind:(unsigned __int8)a3 positionSource:(__CFXMeshSource *)a4 normalSource:(__CFXMeshSource *)a5 positionDataType:(signed __int16)a6 normalDataType:(signed __int16)a7 forStageInputOutputDescriptor:(BOOL)a8 usePrivateStorageMode:(BOOL)a9 outStride:(unint64_t *)a10 outPositionOffset:(unint64_t *)a11 outNormalOffset:(unint64_t *)a12
+- (id)newBufferForDataKind:(unsigned __int8)kind positionSource:(__CFXMeshSource *)source normalSource:(__CFXMeshSource *)normalSource positionDataType:(signed __int16)type normalDataType:(signed __int16)dataType forStageInputOutputDescriptor:(BOOL)descriptor usePrivateStorageMode:(BOOL)mode outStride:(unint64_t *)self0 outPositionOffset:(unint64_t *)self1 outNormalOffset:(unint64_t *)self2
 {
-  v12 = a8;
-  v13 = a7;
-  v14 = a6;
-  if (a3 == 1 && a5 && (v18 = sub_1AF1AE6EC(a4), v18 != sub_1AF1AE6EC(a5)))
+  descriptorCopy = descriptor;
+  dataTypeCopy = dataType;
+  typeCopy = type;
+  if (kind == 1 && normalSource && (v18 = sub_1AF1AE6EC(source), v18 != sub_1AF1AE6EC(normalSource)))
   {
     v43 = sub_1AF0D5194();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -1044,11 +1044,11 @@ LABEL_30:
 
   else
   {
-    v19 = sub_1AF1AE6EC(a4);
-    v20 = sub_1AF288070(v14);
-    v21 = sub_1AF288070(v13);
+    v19 = sub_1AF1AE6EC(source);
+    v20 = sub_1AF288070(typeCopy);
+    v21 = sub_1AF288070(dataTypeCopy);
     v22 = v21 + v20;
-    if (v12)
+    if (descriptorCopy)
     {
       v23 = v21;
       v24 = sub_1AFDE78C8(&self->_resourceManager->super.isa);
@@ -1059,17 +1059,17 @@ LABEL_30:
       }
     }
 
-    v45 = self;
+    selfCopy = self;
     v28 = malloc_type_malloc(v22 * v19, 0x100004077774924uLL);
     v48 = 0u;
     v49 = 0u;
-    sub_1AF1AE1A8(a4, &v48);
+    sub_1AF1AE1A8(source, &v48);
     v34 = 0uLL;
     v46 = 0u;
     v47 = 0u;
-    if (a5)
+    if (normalSource)
     {
-      sub_1AF1AE1A8(a5, &v46);
+      sub_1AF1AE1A8(normalSource, &v46);
     }
 
     if (v19)
@@ -1079,11 +1079,11 @@ LABEL_30:
       do
       {
         *v37.i64 = sub_1AF279750(BYTE4(v49), (v48 + v35 * BYTE6(v49)), v34, v32, v33);
-        sub_1AF279B88(v14, v36, v37);
-        if (a5)
+        sub_1AF279B88(typeCopy, v36, v37);
+        if (normalSource)
         {
           *v38.i64 = sub_1AF279750(BYTE4(v47), (v46 + v35 * BYTE6(v47)), v34, v32, v33);
-          sub_1AF279B88(v13, v36 + v20, v38);
+          sub_1AF279B88(dataTypeCopy, v36 + v20, v38);
         }
 
         v36 += v22;
@@ -1093,33 +1093,33 @@ LABEL_30:
       while (v19 != v35);
     }
 
-    v39 = v45[1];
-    if (a9)
+    v39 = selfCopy[1];
+    if (mode)
     {
-      v40 = objc_msgSend_currentBlitEncoder(v45, v29, v30, v31);
+      v40 = objc_msgSend_currentBlitEncoder(selfCopy, v29, v30, v31);
       v41 = sub_1AFDE847C(v39, v28, (v22 * v19), v40);
     }
 
     else
     {
-      sub_1AFDE8444(v45[1], v28, (v22 * v19), 0);
+      sub_1AFDE8444(selfCopy[1], v28, (v22 * v19), 0);
     }
 
     v42 = v41;
     free(v28);
-    if (a10)
+    if (stride)
     {
-      *a10 = v22;
+      *stride = v22;
     }
 
-    if (a11)
+    if (offset)
     {
-      *a11 = 0;
+      *offset = 0;
     }
 
-    if (a12)
+    if (normalOffset)
     {
-      *a12 = v20;
+      *normalOffset = v20;
     }
   }
 
@@ -1138,16 +1138,16 @@ LABEL_30:
   return result;
 }
 
-- (void)reconfigureIfNeededWithContext:(id)a3 programHashCodeRequirements:(id)a4
+- (void)reconfigureIfNeededWithContext:(id)context programHashCodeRequirements:(id)requirements
 {
-  v4 = *&a4.var0;
+  v4 = *&requirements.var0;
   v204 = *MEMORY[0x1E69E9840];
-  if (self->_isValid && (!a4.var0 || self->_finalTangentBuffer))
+  if (self->_isValid && (!requirements.var0 || self->_finalTangentBuffer))
   {
     return;
   }
 
-  self->_currentInitRenderContext = a3;
+  self->_currentInitRenderContext = context;
   v6 = sub_1AF16B950(self->_cfxDeformerStack);
   v7 = sub_1AF170774(v6);
   v10 = v7;
@@ -1213,7 +1213,7 @@ LABEL_30:
     v27 |= objc_msgSend_requiredInputs(VFXMTLSkinDeformer, v23, v24, v25);
   }
 
-  v165 = self;
+  selfCopy = self;
   v159 = v12;
   if (v12)
   {
@@ -1247,15 +1247,15 @@ LABEL_30:
     while (v32);
   }
 
-  baseMesh = v165->_baseMesh;
+  baseMesh = selfCopy->_baseMesh;
   if (!baseMesh)
   {
     v36 = 0;
     goto LABEL_33;
   }
 
-  v36 = sub_1AF1A47C0(baseMesh, 1, v165->_deformDataKind, 0);
-  v37 = v165->_baseMesh;
+  v36 = sub_1AF1A47C0(baseMesh, 1, selfCopy->_deformDataKind, 0);
+  v37 = selfCopy->_baseMesh;
   if (!v37)
   {
 LABEL_33:
@@ -1263,12 +1263,12 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  v38 = sub_1AF1A47C0(v37, 4, v165->_deformDataKind, 0);
+  v38 = sub_1AF1A47C0(v37, 4, selfCopy->_deformDataKind, 0);
 LABEL_34:
   v160 = v10;
   v39 = finalDataKind != 0;
-  finalNormalBuffer = v165->_finalNormalBuffer;
-  finalTangentBuffer = v165->_finalTangentBuffer;
+  finalNormalBuffer = selfCopy->_finalNormalBuffer;
+  finalTangentBuffer = selfCopy->_finalTangentBuffer;
   v168 = v17;
   if (v17)
   {
@@ -1307,7 +1307,7 @@ LABEL_34:
   {
     v48 = v44;
     v49 = *v192;
-    v50 = v165;
+    v50 = selfCopy;
     do
     {
       for (j = 0; j != v48; ++j)
@@ -1330,7 +1330,7 @@ LABEL_34:
 
   else
   {
-    v50 = v165;
+    v50 = selfCopy;
   }
 
   v161 = v164 & ((v40 & 2) == 0);
@@ -1449,7 +1449,7 @@ LABEL_34:
   if (v169)
   {
     v75 = 1;
-    v76 = v165;
+    v76 = selfCopy;
     v77 = v157;
   }
 
@@ -1462,7 +1462,7 @@ LABEL_34:
       v75 = 1;
     }
 
-    v76 = v165;
+    v76 = selfCopy;
   }
 
   v78 = v161 ^ v153;
@@ -1739,23 +1739,23 @@ LABEL_34:
 
 - (__n128)currentTransforms
 {
-  v2 = *(a1 + 560);
-  *(a2 + 128) = *(a1 + 544);
+  v2 = *(self + 560);
+  *(a2 + 128) = *(self + 544);
   *(a2 + 144) = v2;
-  v3 = *(a1 + 592);
-  *(a2 + 160) = *(a1 + 576);
+  v3 = *(self + 592);
+  *(a2 + 160) = *(self + 576);
   *(a2 + 176) = v3;
-  v4 = *(a1 + 496);
-  *(a2 + 64) = *(a1 + 480);
+  v4 = *(self + 496);
+  *(a2 + 64) = *(self + 480);
   *(a2 + 80) = v4;
-  v5 = *(a1 + 528);
-  *(a2 + 96) = *(a1 + 512);
+  v5 = *(self + 528);
+  *(a2 + 96) = *(self + 512);
   *(a2 + 112) = v5;
-  v6 = *(a1 + 432);
-  *a2 = *(a1 + 416);
+  v6 = *(self + 432);
+  *a2 = *(self + 416);
   *(a2 + 16) = v6;
-  result = *(a1 + 448);
-  v8 = *(a1 + 464);
+  result = *(self + 448);
+  v8 = *(self + 464);
   *(a2 + 32) = result;
   *(a2 + 48) = v8;
   return result;
@@ -1763,15 +1763,15 @@ LABEL_34:
 
 - (__n128)_currentFrustumInfo
 {
-  v2 = *(a1 + 688);
-  *(a2 + 64) = *(a1 + 672);
+  v2 = *(self + 688);
+  *(a2 + 64) = *(self + 672);
   *(a2 + 80) = v2;
-  *(a2 + 96) = *(a1 + 704);
-  v3 = *(a1 + 624);
-  *a2 = *(a1 + 608);
+  *(a2 + 96) = *(self + 704);
+  v3 = *(self + 624);
+  *a2 = *(self + 608);
   *(a2 + 16) = v3;
-  result = *(a1 + 656);
-  *(a2 + 32) = *(a1 + 640);
+  result = *(self + 656);
+  *(a2 + 32) = *(self + 640);
   *(a2 + 48) = result;
   return result;
 }
@@ -1790,41 +1790,41 @@ LABEL_34:
   return result;
 }
 
-- (void)encodeCommandsInNewCommandBufferUsingBlock:(id)a3
+- (void)encodeCommandsInNewCommandBufferUsingBlock:(id)block
 {
   self->_currentUpdateComputeCommandEncoder = 0;
-  v5 = objc_msgSend_resourceCommandBuffer(self->_currentUpdateRenderContext, a2, a3, v3);
-  v6 = *(a3 + 2);
+  v5 = objc_msgSend_resourceCommandBuffer(self->_currentUpdateRenderContext, a2, block, v3);
+  v6 = *(block + 2);
 
-  v6(a3, v5);
+  v6(block, v5);
 }
 
-- (void)setStageInputOutputBuffersToEncoder:(id)a3
+- (void)setStageInputOutputBuffersToEncoder:(id)encoder
 {
-  objc_msgSend_setBuffer_offset_atIndex_(a3, a2, self->_currentUpdateBuffers.srcPositions, 0, 10);
-  objc_msgSend_setBuffer_offset_atIndex_(a3, v5, self->_currentUpdateBuffers.srcNormals, 0, 11);
+  objc_msgSend_setBuffer_offset_atIndex_(encoder, a2, self->_currentUpdateBuffers.srcPositions, 0, 10);
+  objc_msgSend_setBuffer_offset_atIndex_(encoder, v5, self->_currentUpdateBuffers.srcNormals, 0, 11);
   srcTangents = self->_currentUpdateBuffers.srcTangents;
 
-  objc_msgSend_setBuffer_offset_atIndex_(a3, v6, srcTangents, 0, 12);
+  objc_msgSend_setBuffer_offset_atIndex_(encoder, v6, srcTangents, 0, 12);
 }
 
-- (id)dependencyBufferForInput:(unint64_t)a3 dependencyStack:(id)a4
+- (id)dependencyBufferForInput:(unint64_t)input dependencyStack:(id)stack
 {
-  if (a3 <= 8)
+  if (input <= 8)
   {
-    if (((1 << a3) & 0x48) != 0)
+    if (((1 << input) & 0x48) != 0)
     {
-      return *(a4 + 11);
+      return *(stack + 11);
     }
 
-    if (((1 << a3) & 0x90) != 0)
+    if (((1 << input) & 0x90) != 0)
     {
-      return *(a4 + 12);
+      return *(stack + 12);
     }
 
-    if (((1 << a3) & 0x120) != 0)
+    if (((1 << input) & 0x120) != 0)
     {
-      return *(a4 + 13);
+      return *(stack + 13);
     }
   }
 
@@ -1837,7 +1837,7 @@ LABEL_34:
   return 0;
 }
 
-- (id)dependencyBufferForInput:(unint64_t)a3 dependencyMesh:(id)a4
+- (id)dependencyBufferForInput:(unint64_t)input dependencyMesh:(id)mesh
 {
   v4 = sub_1AF0D5194();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -1848,19 +1848,19 @@ LABEL_34:
   return 0;
 }
 
-- (void)updateDependencyBuffersInBufferArray:(id *)a3 forDeformer:(id)a4
+- (void)updateDependencyBuffersInBufferArray:(id *)array forDeformer:(id)deformer
 {
   v4 = MEMORY[0x1E69E9820];
-  *&a3->var8 = 0u;
-  *&a3->var10 = 0u;
-  *&a3->var6 = 0u;
+  *&array->var8 = 0u;
+  *&array->var10 = 0u;
+  *&array->var6 = 0u;
   v5[0] = v4;
   v5[1] = 3221225472;
   v5[2] = sub_1AF1E701C;
   v5[3] = &unk_1E7A7C2C0;
   v5[4] = self;
-  v5[5] = a3;
-  objc_msgSend__enumerateDependencyNodesUsingBlock_(a4, a2, v5, a4);
+  v5[5] = array;
+  objc_msgSend__enumerateDependencyNodesUsingBlock_(deformer, a2, v5, deformer);
 }
 
 @end

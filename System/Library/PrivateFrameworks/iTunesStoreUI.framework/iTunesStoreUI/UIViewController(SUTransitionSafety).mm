@@ -95,19 +95,19 @@
 
   if (__TransitionSafetyCount >= 1)
   {
-    v2 = [MEMORY[0x1E69D4938] sharedConfig];
-    v3 = [v2 shouldLog];
-    if ([v2 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v4 = v3 | 2;
+      v4 = shouldLog | 2;
     }
 
     else
     {
-      v4 = v3;
+      v4 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v2 OSLogObject], OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
       v4 &= 2u;
     }
@@ -135,7 +135,7 @@
     {
       do
       {
-        [a1 endTransitionSafety];
+        [self endTransitionSafety];
       }
 
       while (__TransitionSafetyCount > 0);
@@ -187,12 +187,12 @@
 
 - (uint64_t)transitionSafePresentModalViewController:()SUTransitionSafety animated:
 {
-  if ([a1 presentedViewController])
+  if ([self presentedViewController])
   {
-    [a1 dismissViewControllerAnimated:a4 completion:0];
+    [self dismissViewControllerAnimated:a4 completion:0];
   }
 
-  v7 = [objc_opt_class() transitionSafePerformer:a1];
+  v7 = [objc_opt_class() transitionSafePerformer:self];
 
   return [v7 presentViewController:a3 animated:1 completion:0];
 }

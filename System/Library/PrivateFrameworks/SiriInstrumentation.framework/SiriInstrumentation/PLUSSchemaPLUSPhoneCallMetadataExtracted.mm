@@ -1,36 +1,36 @@
 @interface PLUSSchemaPLUSPhoneCallMetadataExtracted
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PLUSSchemaPLUSPhoneCallMetadataExtracted)initWithDictionary:(id)a3;
-- (PLUSSchemaPLUSPhoneCallMetadataExtracted)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PLUSSchemaPLUSPhoneCallMetadataExtracted)initWithDictionary:(id)dictionary;
+- (PLUSSchemaPLUSPhoneCallMetadataExtracted)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasFollowupNameSimilarity:(BOOL)a3;
-- (void)setHasHasSiriInitiatedCall:(BOOL)a3;
-- (void)setHasHasUserMadeFollowupCallWithinDetectionWindow:(BOOL)a3;
-- (void)setHasHasUserMadeFollowupCallWithinEvaluationWindow:(BOOL)a3;
-- (void)setHasIsSameCallCapabilityForFollowup:(BOOL)a3;
-- (void)setHasIsSameCallRouteForSiriAndFollowup:(BOOL)a3;
-- (void)setHasSiriAndFollowupContactComparison:(BOOL)a3;
-- (void)setHasSiriCallDuration:(BOOL)a3;
-- (void)setHasSiriCallTimeToHangup:(BOOL)a3;
-- (void)setHasUserTimeToFollowup:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasFollowupNameSimilarity:(BOOL)similarity;
+- (void)setHasHasSiriInitiatedCall:(BOOL)call;
+- (void)setHasHasUserMadeFollowupCallWithinDetectionWindow:(BOOL)window;
+- (void)setHasHasUserMadeFollowupCallWithinEvaluationWindow:(BOOL)window;
+- (void)setHasIsSameCallCapabilityForFollowup:(BOOL)followup;
+- (void)setHasIsSameCallRouteForSiriAndFollowup:(BOOL)followup;
+- (void)setHasSiriAndFollowupContactComparison:(BOOL)comparison;
+- (void)setHasSiriCallDuration:(BOOL)duration;
+- (void)setHasSiriCallTimeToHangup:(BOOL)hangup;
+- (void)setHasUserTimeToFollowup:(BOOL)followup;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PLUSSchemaPLUSPhoneCallMetadataExtracted
 
-- (PLUSSchemaPLUSPhoneCallMetadataExtracted)initWithDictionary:(id)a3
+- (PLUSSchemaPLUSPhoneCallMetadataExtracted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = PLUSSchemaPLUSPhoneCallMetadataExtracted;
   v5 = [(PLUSSchemaPLUSPhoneCallMetadataExtracted *)&v27 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"originalPlusId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"originalPlusId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,35 +38,35 @@
       [(PLUSSchemaPLUSPhoneCallMetadataExtracted *)v5 setOriginalPlusId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"hasSiriResolvedContact"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"hasSiriResolvedContact"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSPhoneCallMetadataExtracted setHasSiriResolvedContact:](v5, "setHasSiriResolvedContact:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"hasSiriInitiatedCall"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"hasSiriInitiatedCall"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSPhoneCallMetadataExtracted setHasSiriInitiatedCall:](v5, "setHasSiriInitiatedCall:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"hasUserMadeFollowupCallWithinDetectionWindow"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"hasUserMadeFollowupCallWithinDetectionWindow"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSPhoneCallMetadataExtracted setHasUserMadeFollowupCallWithinDetectionWindow:](v5, "setHasUserMadeFollowupCallWithinDetectionWindow:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"hasUserMadeFollowupCallWithinEvaluationWindow"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"hasUserMadeFollowupCallWithinEvaluationWindow"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSPhoneCallMetadataExtracted setHasUserMadeFollowupCallWithinEvaluationWindow:](v5, "setHasUserMadeFollowupCallWithinEvaluationWindow:", [v11 BOOLValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"siriAndFollowupContactComparison"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"siriAndFollowupContactComparison"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
     }
 
     v22 = v12;
-    v13 = [v4 objectForKeyedSubscript:@"siriCallDuration"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"siriCallDuration"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,7 +82,7 @@
     }
 
     v25 = v8;
-    v14 = [v4 objectForKeyedSubscript:@"siriCallTimeToHangup"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"siriCallTimeToHangup"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,7 +90,7 @@
     }
 
     v26 = v6;
-    v15 = [v4 objectForKeyedSubscript:@"userTimeToFollowup"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"userTimeToFollowup"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -99,7 +99,7 @@
 
     v23 = v11;
     v24 = v9;
-    v16 = [v4 objectForKeyedSubscript:@"isSameCallRouteForSiriAndFollowup"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"isSameCallRouteForSiriAndFollowup"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -107,14 +107,14 @@
     }
 
     v17 = v10;
-    v18 = [v4 objectForKeyedSubscript:@"isSameCallCapabilityForFollowup"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"isSameCallCapabilityForFollowup"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSPhoneCallMetadataExtracted setIsSameCallCapabilityForFollowup:](v5, "setIsSameCallCapabilityForFollowup:", [v18 BOOLValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"followupNameSimilarity"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"followupNameSimilarity"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -127,30 +127,30 @@
   return v5;
 }
 
-- (PLUSSchemaPLUSPhoneCallMetadataExtracted)initWithJSON:(id)a3
+- (PLUSSchemaPLUSPhoneCallMetadataExtracted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PLUSSchemaPLUSPhoneCallMetadataExtracted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PLUSSchemaPLUSPhoneCallMetadataExtracted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PLUSSchemaPLUSPhoneCallMetadataExtracted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -163,7 +163,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x400) != 0)
   {
@@ -178,14 +178,14 @@
       v6 = off_1E78E08C0[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"followupNameSimilarity"];
+    [dictionary setObject:v6 forKeyedSubscript:@"followupNameSimilarity"];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[PLUSSchemaPLUSPhoneCallMetadataExtracted hasSiriInitiatedCall](self, "hasSiriInitiatedCall")}];
-    [v3 setObject:v10 forKeyedSubscript:@"hasSiriInitiatedCall"];
+    [dictionary setObject:v10 forKeyedSubscript:@"hasSiriInitiatedCall"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -206,7 +206,7 @@ LABEL_8:
   }
 
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[PLUSSchemaPLUSPhoneCallMetadataExtracted hasSiriResolvedContact](self, "hasSiriResolvedContact")}];
-  [v3 setObject:v11 forKeyedSubscript:@"hasSiriResolvedContact"];
+  [dictionary setObject:v11 forKeyedSubscript:@"hasSiriResolvedContact"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -222,7 +222,7 @@ LABEL_9:
 
 LABEL_18:
   v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[PLUSSchemaPLUSPhoneCallMetadataExtracted hasUserMadeFollowupCallWithinDetectionWindow](self, "hasUserMadeFollowupCallWithinDetectionWindow")}];
-  [v3 setObject:v12 forKeyedSubscript:@"hasUserMadeFollowupCallWithinDetectionWindow"];
+  [dictionary setObject:v12 forKeyedSubscript:@"hasUserMadeFollowupCallWithinDetectionWindow"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -238,7 +238,7 @@ LABEL_10:
 
 LABEL_19:
   v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[PLUSSchemaPLUSPhoneCallMetadataExtracted hasUserMadeFollowupCallWithinEvaluationWindow](self, "hasUserMadeFollowupCallWithinEvaluationWindow")}];
-  [v3 setObject:v13 forKeyedSubscript:@"hasUserMadeFollowupCallWithinEvaluationWindow"];
+  [dictionary setObject:v13 forKeyedSubscript:@"hasUserMadeFollowupCallWithinEvaluationWindow"];
 
   has = self->_has;
   if ((has & 0x200) == 0)
@@ -254,29 +254,29 @@ LABEL_11:
 
 LABEL_20:
   v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[PLUSSchemaPLUSPhoneCallMetadataExtracted isSameCallCapabilityForFollowup](self, "isSameCallCapabilityForFollowup")}];
-  [v3 setObject:v14 forKeyedSubscript:@"isSameCallCapabilityForFollowup"];
+  [dictionary setObject:v14 forKeyedSubscript:@"isSameCallCapabilityForFollowup"];
 
   if ((*&self->_has & 0x100) != 0)
   {
 LABEL_12:
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[PLUSSchemaPLUSPhoneCallMetadataExtracted isSameCallRouteForSiriAndFollowup](self, "isSameCallRouteForSiriAndFollowup")}];
-    [v3 setObject:v7 forKeyedSubscript:@"isSameCallRouteForSiriAndFollowup"];
+    [dictionary setObject:v7 forKeyedSubscript:@"isSameCallRouteForSiriAndFollowup"];
   }
 
 LABEL_13:
   if (self->_originalPlusId)
   {
-    v8 = [(PLUSSchemaPLUSPhoneCallMetadataExtracted *)self originalPlusId];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    originalPlusId = [(PLUSSchemaPLUSPhoneCallMetadataExtracted *)self originalPlusId];
+    dictionaryRepresentation = [originalPlusId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"originalPlusId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"originalPlusId"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"originalPlusId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"originalPlusId"];
     }
   }
 
@@ -294,7 +294,7 @@ LABEL_13:
       v18 = off_1E78E08E0[v17];
     }
 
-    [v3 setObject:v18 forKeyedSubscript:@"siriAndFollowupContactComparison"];
+    [dictionary setObject:v18 forKeyedSubscript:@"siriAndFollowupContactComparison"];
     v16 = self->_has;
     if ((v16 & 0x20) == 0)
     {
@@ -316,7 +316,7 @@ LABEL_37:
         v22 = off_1E78E0930[v21];
       }
 
-      [v3 setObject:v22 forKeyedSubscript:@"siriCallTimeToHangup"];
+      [dictionary setObject:v22 forKeyedSubscript:@"siriCallTimeToHangup"];
       if ((*&self->_has & 0x80) == 0)
       {
         goto LABEL_45;
@@ -342,7 +342,7 @@ LABEL_37:
     v20 = off_1E78E0908[v19];
   }
 
-  [v3 setObject:v20 forKeyedSubscript:@"siriCallDuration"];
+  [dictionary setObject:v20 forKeyedSubscript:@"siriCallDuration"];
   v16 = self->_has;
   if ((v16 & 0x40) != 0)
   {
@@ -364,13 +364,13 @@ LABEL_41:
       v24 = off_1E78E0950[v23];
     }
 
-    [v3 setObject:v24 forKeyedSubscript:@"userTimeToFollowup"];
+    [dictionary setObject:v24 forKeyedSubscript:@"userTimeToFollowup"];
   }
 
 LABEL_45:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -527,30 +527,30 @@ LABEL_12:
   return v5 ^ v3 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_52;
   }
 
-  v5 = [(PLUSSchemaPLUSPhoneCallMetadataExtracted *)self originalPlusId];
-  v6 = [v4 originalPlusId];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  originalPlusId = [(PLUSSchemaPLUSPhoneCallMetadataExtracted *)self originalPlusId];
+  originalPlusId2 = [equalCopy originalPlusId];
+  v7 = originalPlusId2;
+  if ((originalPlusId != 0) == (originalPlusId2 == 0))
   {
 
     goto LABEL_52;
   }
 
-  v8 = [(PLUSSchemaPLUSPhoneCallMetadataExtracted *)self originalPlusId];
-  if (v8)
+  originalPlusId3 = [(PLUSSchemaPLUSPhoneCallMetadataExtracted *)self originalPlusId];
+  if (originalPlusId3)
   {
-    v9 = v8;
-    v10 = [(PLUSSchemaPLUSPhoneCallMetadataExtracted *)self originalPlusId];
-    v11 = [v4 originalPlusId];
-    v12 = [v10 isEqual:v11];
+    v9 = originalPlusId3;
+    originalPlusId4 = [(PLUSSchemaPLUSPhoneCallMetadataExtracted *)self originalPlusId];
+    originalPlusId5 = [equalCopy originalPlusId];
+    v12 = [originalPlusId4 isEqual:originalPlusId5];
 
     if (!v12)
     {
@@ -563,7 +563,7 @@ LABEL_12:
   }
 
   has = self->_has;
-  v14 = v4[22];
+  v14 = equalCopy[22];
   if ((*&has & 1) != (v14 & 1))
   {
 LABEL_52:
@@ -574,13 +574,13 @@ LABEL_52:
   if (*&has)
   {
     hasSiriResolvedContact = self->_hasSiriResolvedContact;
-    if (hasSiriResolvedContact != [v4 hasSiriResolvedContact])
+    if (hasSiriResolvedContact != [equalCopy hasSiriResolvedContact])
     {
       goto LABEL_52;
     }
 
     has = self->_has;
-    v14 = v4[22];
+    v14 = equalCopy[22];
   }
 
   v16 = (*&has >> 1) & 1;
@@ -592,13 +592,13 @@ LABEL_52:
   if (v16)
   {
     hasSiriInitiatedCall = self->_hasSiriInitiatedCall;
-    if (hasSiriInitiatedCall != [v4 hasSiriInitiatedCall])
+    if (hasSiriInitiatedCall != [equalCopy hasSiriInitiatedCall])
     {
       goto LABEL_52;
     }
 
     has = self->_has;
-    v14 = v4[22];
+    v14 = equalCopy[22];
   }
 
   v18 = (*&has >> 2) & 1;
@@ -610,13 +610,13 @@ LABEL_52:
   if (v18)
   {
     hasUserMadeFollowupCallWithinDetectionWindow = self->_hasUserMadeFollowupCallWithinDetectionWindow;
-    if (hasUserMadeFollowupCallWithinDetectionWindow != [v4 hasUserMadeFollowupCallWithinDetectionWindow])
+    if (hasUserMadeFollowupCallWithinDetectionWindow != [equalCopy hasUserMadeFollowupCallWithinDetectionWindow])
     {
       goto LABEL_52;
     }
 
     has = self->_has;
-    v14 = v4[22];
+    v14 = equalCopy[22];
   }
 
   v20 = (*&has >> 3) & 1;
@@ -628,13 +628,13 @@ LABEL_52:
   if (v20)
   {
     hasUserMadeFollowupCallWithinEvaluationWindow = self->_hasUserMadeFollowupCallWithinEvaluationWindow;
-    if (hasUserMadeFollowupCallWithinEvaluationWindow != [v4 hasUserMadeFollowupCallWithinEvaluationWindow])
+    if (hasUserMadeFollowupCallWithinEvaluationWindow != [equalCopy hasUserMadeFollowupCallWithinEvaluationWindow])
     {
       goto LABEL_52;
     }
 
     has = self->_has;
-    v14 = v4[22];
+    v14 = equalCopy[22];
   }
 
   v22 = (*&has >> 4) & 1;
@@ -646,13 +646,13 @@ LABEL_52:
   if (v22)
   {
     siriAndFollowupContactComparison = self->_siriAndFollowupContactComparison;
-    if (siriAndFollowupContactComparison != [v4 siriAndFollowupContactComparison])
+    if (siriAndFollowupContactComparison != [equalCopy siriAndFollowupContactComparison])
     {
       goto LABEL_52;
     }
 
     has = self->_has;
-    v14 = v4[22];
+    v14 = equalCopy[22];
   }
 
   v24 = (*&has >> 5) & 1;
@@ -664,13 +664,13 @@ LABEL_52:
   if (v24)
   {
     siriCallDuration = self->_siriCallDuration;
-    if (siriCallDuration != [v4 siriCallDuration])
+    if (siriCallDuration != [equalCopy siriCallDuration])
     {
       goto LABEL_52;
     }
 
     has = self->_has;
-    v14 = v4[22];
+    v14 = equalCopy[22];
   }
 
   v26 = (*&has >> 6) & 1;
@@ -682,13 +682,13 @@ LABEL_52:
   if (v26)
   {
     siriCallTimeToHangup = self->_siriCallTimeToHangup;
-    if (siriCallTimeToHangup != [v4 siriCallTimeToHangup])
+    if (siriCallTimeToHangup != [equalCopy siriCallTimeToHangup])
     {
       goto LABEL_52;
     }
 
     has = self->_has;
-    v14 = v4[22];
+    v14 = equalCopy[22];
   }
 
   v28 = (*&has >> 7) & 1;
@@ -700,13 +700,13 @@ LABEL_52:
   if (v28)
   {
     userTimeToFollowup = self->_userTimeToFollowup;
-    if (userTimeToFollowup != [v4 userTimeToFollowup])
+    if (userTimeToFollowup != [equalCopy userTimeToFollowup])
     {
       goto LABEL_52;
     }
 
     has = self->_has;
-    v14 = v4[22];
+    v14 = equalCopy[22];
   }
 
   v30 = (*&has >> 8) & 1;
@@ -718,13 +718,13 @@ LABEL_52:
   if (v30)
   {
     isSameCallRouteForSiriAndFollowup = self->_isSameCallRouteForSiriAndFollowup;
-    if (isSameCallRouteForSiriAndFollowup != [v4 isSameCallRouteForSiriAndFollowup])
+    if (isSameCallRouteForSiriAndFollowup != [equalCopy isSameCallRouteForSiriAndFollowup])
     {
       goto LABEL_52;
     }
 
     has = self->_has;
-    v14 = v4[22];
+    v14 = equalCopy[22];
   }
 
   v32 = (*&has >> 9) & 1;
@@ -736,10 +736,10 @@ LABEL_52:
   if (v32)
   {
     isSameCallCapabilityForFollowup = self->_isSameCallCapabilityForFollowup;
-    if (isSameCallCapabilityForFollowup == [v4 isSameCallCapabilityForFollowup])
+    if (isSameCallCapabilityForFollowup == [equalCopy isSameCallCapabilityForFollowup])
     {
       has = self->_has;
-      v14 = v4[22];
+      v14 = equalCopy[22];
       goto LABEL_48;
     }
 
@@ -756,7 +756,7 @@ LABEL_48:
   if (v34)
   {
     followupNameSimilarity = self->_followupNameSimilarity;
-    if (followupNameSimilarity != [v4 followupNameSimilarity])
+    if (followupNameSimilarity != [equalCopy followupNameSimilarity])
     {
       goto LABEL_52;
     }
@@ -768,14 +768,14 @@ LABEL_53:
   return v36;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(PLUSSchemaPLUSPhoneCallMetadataExtracted *)self originalPlusId];
+  toCopy = to;
+  originalPlusId = [(PLUSSchemaPLUSPhoneCallMetadataExtracted *)self originalPlusId];
 
-  if (v4)
+  if (originalPlusId)
   {
-    v5 = [(PLUSSchemaPLUSPhoneCallMetadataExtracted *)self originalPlusId];
+    originalPlusId2 = [(PLUSSchemaPLUSPhoneCallMetadataExtracted *)self originalPlusId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -786,11 +786,11 @@ LABEL_53:
     has = self->_has;
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v7 = v8;
+    v7 = toCopy;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -810,7 +810,7 @@ LABEL_7:
   }
 
   PBDataWriterWriteBOOLField();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -825,7 +825,7 @@ LABEL_8:
 
 LABEL_21:
   PBDataWriterWriteBOOLField();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -840,7 +840,7 @@ LABEL_9:
 
 LABEL_22:
   PBDataWriterWriteInt32Field();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -855,7 +855,7 @@ LABEL_10:
 
 LABEL_23:
   PBDataWriterWriteInt32Field();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -870,7 +870,7 @@ LABEL_11:
 
 LABEL_24:
   PBDataWriterWriteInt32Field();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -885,7 +885,7 @@ LABEL_12:
 
 LABEL_25:
   PBDataWriterWriteInt32Field();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -900,7 +900,7 @@ LABEL_13:
 
 LABEL_26:
   PBDataWriterWriteBOOLField();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -915,20 +915,20 @@ LABEL_14:
 
 LABEL_27:
   PBDataWriterWriteBOOLField();
-  v7 = v8;
+  v7 = toCopy;
   if ((*&self->_has & 0x400) != 0)
   {
 LABEL_15:
     PBDataWriterWriteInt32Field();
-    v7 = v8;
+    v7 = toCopy;
   }
 
 LABEL_16:
 }
 
-- (void)setHasFollowupNameSimilarity:(BOOL)a3
+- (void)setHasFollowupNameSimilarity:(BOOL)similarity
 {
-  if (a3)
+  if (similarity)
   {
     v3 = 1024;
   }
@@ -941,9 +941,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasIsSameCallCapabilityForFollowup:(BOOL)a3
+- (void)setHasIsSameCallCapabilityForFollowup:(BOOL)followup
 {
-  if (a3)
+  if (followup)
   {
     v3 = 512;
   }
@@ -956,9 +956,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasIsSameCallRouteForSiriAndFollowup:(BOOL)a3
+- (void)setHasIsSameCallRouteForSiriAndFollowup:(BOOL)followup
 {
-  if (a3)
+  if (followup)
   {
     v3 = 256;
   }
@@ -971,9 +971,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasUserTimeToFollowup:(BOOL)a3
+- (void)setHasUserTimeToFollowup:(BOOL)followup
 {
-  if (a3)
+  if (followup)
   {
     v3 = 128;
   }
@@ -986,9 +986,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasSiriCallTimeToHangup:(BOOL)a3
+- (void)setHasSiriCallTimeToHangup:(BOOL)hangup
 {
-  if (a3)
+  if (hangup)
   {
     v3 = 64;
   }
@@ -1001,9 +1001,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasSiriCallDuration:(BOOL)a3
+- (void)setHasSiriCallDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 32;
   }
@@ -1016,9 +1016,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasSiriAndFollowupContactComparison:(BOOL)a3
+- (void)setHasSiriAndFollowupContactComparison:(BOOL)comparison
 {
-  if (a3)
+  if (comparison)
   {
     v3 = 16;
   }
@@ -1031,9 +1031,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasHasUserMadeFollowupCallWithinEvaluationWindow:(BOOL)a3
+- (void)setHasHasUserMadeFollowupCallWithinEvaluationWindow:(BOOL)window
 {
-  if (a3)
+  if (window)
   {
     v3 = 8;
   }
@@ -1046,9 +1046,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasHasUserMadeFollowupCallWithinDetectionWindow:(BOOL)a3
+- (void)setHasHasUserMadeFollowupCallWithinDetectionWindow:(BOOL)window
 {
-  if (a3)
+  if (window)
   {
     v3 = 4;
   }
@@ -1061,9 +1061,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasHasSiriInitiatedCall:(BOOL)a3
+- (void)setHasHasSiriInitiatedCall:(BOOL)call
 {
-  if (a3)
+  if (call)
   {
     v3 = 2;
   }
@@ -1076,17 +1076,17 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = PLUSSchemaPLUSPhoneCallMetadataExtracted;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(PLUSSchemaPLUSPhoneCallMetadataExtracted *)self originalPlusId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(PLUSSchemaPLUSPhoneCallMetadataExtracted *)self deleteOriginalPlusId];
   }

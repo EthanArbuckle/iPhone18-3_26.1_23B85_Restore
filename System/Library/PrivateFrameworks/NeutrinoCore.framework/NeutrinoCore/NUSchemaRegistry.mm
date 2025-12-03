@@ -1,26 +1,26 @@
 @interface NUSchemaRegistry
 + (id)sharedRegistry;
-- (BOOL)_registerSchema:(id)a3 error:(id *)a4;
-- (BOOL)_registerVersion:(id)a3 withOriginalIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)registerSchema:(id)a3 error:(id *)a4;
-- (BOOL)registerSchemas:(id)a3 error:(id *)a4;
+- (BOOL)_registerSchema:(id)schema error:(id *)error;
+- (BOOL)_registerVersion:(id)version withOriginalIdentifier:(id)identifier error:(id *)error;
+- (BOOL)registerSchema:(id)schema error:(id *)error;
+- (BOOL)registerSchemas:(id)schemas error:(id *)error;
 - (NUSchemaRegistry)init;
-- (id)_allVersionsWithOriginalIdentifier:(id)a3 upToVersion:(id)a4;
-- (id)_latestVersionWithOriginalIdentifier:(id)a3;
-- (id)latestVersionWithNamespace:(id)a3 name:(id)a4;
-- (id)schemaWithIdentifier:(id)a3;
-- (id)versionsCompatibleWithIdentifier:(id)a3;
+- (id)_allVersionsWithOriginalIdentifier:(id)identifier upToVersion:(id)version;
+- (id)_latestVersionWithOriginalIdentifier:(id)identifier;
+- (id)latestVersionWithNamespace:(id)namespace name:(id)name;
+- (id)schemaWithIdentifier:(id)identifier;
+- (id)versionsCompatibleWithIdentifier:(id)identifier;
 - (void)_registerBuiltInSchemas;
 @end
 
 @implementation NUSchemaRegistry
 
-- (id)_allVersionsWithOriginalIdentifier:(id)a3 upToVersion:(id)a4
+- (id)_allVersionsWithOriginalIdentifier:(id)identifier upToVersion:(id)version
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  identifierCopy = identifier;
+  versionCopy = version;
+  if (!identifierCopy)
   {
     v12 = NUAssertLogger_20189();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -41,8 +41,8 @@
         v26 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v29 = [v27 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v45 = v26;
         v46 = 2114;
@@ -53,8 +53,8 @@
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v45 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -63,8 +63,8 @@
     _NUAssertFailHandler("[NUSchemaRegistry _allVersionsWithOriginalIdentifier:upToVersion:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchemaRegistry.m", 291, @"Invalid parameter not satisfying: %s", v31, v32, v33, v34, "identifier != nil");
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = versionCopy;
+  if (!versionCopy)
   {
     v19 = NUAssertLogger_20189();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -85,8 +85,8 @@
         v35 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v36 = MEMORY[0x1E696AF00];
         v37 = v35;
-        v38 = [v36 callStackSymbols];
-        v39 = [v38 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v36 callStackSymbols];
+        v39 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v45 = v35;
         v46 = 2114;
@@ -97,8 +97,8 @@
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v45 = v25;
       _os_log_error_impl(&dword_1C0184000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -107,17 +107,17 @@
     _NUAssertFailHandler("[NUSchemaRegistry _allVersionsWithOriginalIdentifier:upToVersion:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchemaRegistry.m", 292, @"Invalid parameter not satisfying: %s", v40, v41, v42, v43, "version != nil");
   }
 
-  v9 = [(NSMutableDictionary *)self->_versions objectForKeyedSubscript:v6];
+  v9 = [(NSMutableDictionary *)self->_versions objectForKeyedSubscript:identifierCopy];
   v10 = [v9 subarrayWithRange:{0, objc_msgSend(v9, "indexOfObject:inSortedRange:options:usingComparator:", v8, 0, objc_msgSend(v9, "count"), 1024, &__block_literal_global_48_20203)}];
 
   return v10;
 }
 
-- (id)versionsCompatibleWithIdentifier:(id)a3
+- (id)versionsCompatibleWithIdentifier:(id)identifier
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v13 = NUAssertLogger_20189();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -138,8 +138,8 @@
         v20 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v21 = MEMORY[0x1E696AF00];
         v22 = v20;
-        v23 = [v21 callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v21 callStackSymbols];
+        v24 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v20;
         *&buf[12] = 2114;
@@ -150,8 +150,8 @@
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v19;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -160,7 +160,7 @@
     _NUAssertFailHandler("[NUSchemaRegistry versionsCompatibleWithIdentifier:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchemaRegistry.m", 274, @"Invalid parameter not satisfying: %s", v25, v26, v27, v28, "identifier");
   }
 
-  v5 = v4;
+  v5 = identifierCopy;
   v6 = +[NUVersion versionZero];
   v7 = [v5 identifierWithVersion:v6];
 
@@ -200,11 +200,11 @@ void __53__NUSchemaRegistry_versionsCompatibleWithIdentifier___block_invoke(uint
   *(v5 + 40) = v4;
 }
 
-- (id)_latestVersionWithOriginalIdentifier:(id)a3
+- (id)_latestVersionWithOriginalIdentifier:(id)identifier
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v9 = NUAssertLogger_20189();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -225,8 +225,8 @@ void __53__NUSchemaRegistry_versionsCompatibleWithIdentifier___block_invoke(uint
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v26 = v16;
         v27 = 2114;
@@ -237,8 +237,8 @@ void __53__NUSchemaRegistry_versionsCompatibleWithIdentifier___block_invoke(uint
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v26 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -247,19 +247,19 @@ void __53__NUSchemaRegistry_versionsCompatibleWithIdentifier___block_invoke(uint
     _NUAssertFailHandler("[NUSchemaRegistry _latestVersionWithOriginalIdentifier:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchemaRegistry.m", 263, @"Invalid parameter not satisfying: %s", v21, v22, v23, v24, "identifier != nil");
   }
 
-  v5 = v4;
-  v6 = [(NSMutableDictionary *)self->_versions objectForKeyedSubscript:v4];
-  v7 = [v6 lastObject];
+  v5 = identifierCopy;
+  v6 = [(NSMutableDictionary *)self->_versions objectForKeyedSubscript:identifierCopy];
+  lastObject = [v6 lastObject];
 
-  return v7;
+  return lastObject;
 }
 
-- (id)latestVersionWithNamespace:(id)a3 name:(id)a4
+- (id)latestVersionWithNamespace:(id)namespace name:(id)name
 {
   v55 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  namespaceCopy = namespace;
+  nameCopy = name;
+  if (!namespaceCopy)
   {
     v16 = NUAssertLogger_20189();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -280,8 +280,8 @@ void __53__NUSchemaRegistry_versionsCompatibleWithIdentifier___block_invoke(uint
         v30 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v31 = MEMORY[0x1E696AF00];
         v32 = v30;
-        v33 = [v31 callStackSymbols];
-        v34 = [v33 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v31 callStackSymbols];
+        v34 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v30;
         *&buf[12] = 2114;
@@ -292,8 +292,8 @@ void __53__NUSchemaRegistry_versionsCompatibleWithIdentifier___block_invoke(uint
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v22;
       _os_log_error_impl(&dword_1C0184000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -302,8 +302,8 @@ void __53__NUSchemaRegistry_versionsCompatibleWithIdentifier___block_invoke(uint
     _NUAssertFailHandler("[NUSchemaRegistry latestVersionWithNamespace:name:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchemaRegistry.m", 245, @"Invalid parameter not satisfying: %s", v35, v36, v37, v38, "namespace != nil");
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = nameCopy;
+  if (!nameCopy)
   {
     v23 = NUAssertLogger_20189();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -324,8 +324,8 @@ void __53__NUSchemaRegistry_versionsCompatibleWithIdentifier___block_invoke(uint
         v39 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v40 = MEMORY[0x1E696AF00];
         v41 = v39;
-        v42 = [v40 callStackSymbols];
-        v43 = [v42 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v40 callStackSymbols];
+        v43 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v39;
         *&buf[12] = 2114;
@@ -336,8 +336,8 @@ void __53__NUSchemaRegistry_versionsCompatibleWithIdentifier___block_invoke(uint
 
     else if (v27)
     {
-      v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v29 = [v28 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v29 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v29;
       _os_log_error_impl(&dword_1C0184000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -348,7 +348,7 @@ void __53__NUSchemaRegistry_versionsCompatibleWithIdentifier___block_invoke(uint
 
   v9 = [NUIdentifier alloc];
   v10 = +[NUVersion versionZero];
-  v11 = [(NUIdentifier *)v9 initWithNamespace:v6 name:v8 version:v10];
+  v11 = [(NUIdentifier *)v9 initWithNamespace:namespaceCopy name:v8 version:v10];
 
   *buf = 0;
   *&buf[8] = buf;
@@ -380,11 +380,11 @@ uint64_t __52__NUSchemaRegistry_latestVersionWithNamespace_name___block_invoke(u
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)schemaWithIdentifier:(id)a3
+- (id)schemaWithIdentifier:(id)identifier
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v9 = NUAssertLogger_20189();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -405,8 +405,8 @@ uint64_t __52__NUSchemaRegistry_latestVersionWithNamespace_name___block_invoke(u
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v16;
         *&buf[12] = 2114;
@@ -417,8 +417,8 @@ uint64_t __52__NUSchemaRegistry_latestVersionWithNamespace_name___block_invoke(u
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -438,10 +438,10 @@ uint64_t __52__NUSchemaRegistry_latestVersionWithNamespace_name___block_invoke(u
   block[1] = 3221225472;
   block[2] = __41__NUSchemaRegistry_schemaWithIdentifier___block_invoke;
   block[3] = &unk_1E810B500;
-  v26 = v4;
+  v26 = identifierCopy;
   v27 = buf;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
   v7 = *(*&buf[8] + 40);
 
@@ -457,11 +457,11 @@ uint64_t __41__NUSchemaRegistry_schemaWithIdentifier___block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)registerSchemas:(id)a3 error:(id *)a4
+- (BOOL)registerSchemas:(id)schemas error:(id *)error
 {
   v86 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  schemasCopy = schemas;
+  if (!schemasCopy)
   {
     v35 = NUAssertLogger_20189();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -482,8 +482,8 @@ uint64_t __41__NUSchemaRegistry_schemaWithIdentifier___block_invoke(uint64_t a1)
         v49 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v50 = MEMORY[0x1E696AF00];
         v51 = v49;
-        v52 = [v50 callStackSymbols];
-        v53 = [v52 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v50 callStackSymbols];
+        v53 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v83 = v49;
         v84 = 2114;
@@ -494,8 +494,8 @@ uint64_t __41__NUSchemaRegistry_schemaWithIdentifier___block_invoke(uint64_t a1)
 
     else if (v39)
     {
-      v40 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v41 = [v40 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v41 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v83 = v41;
       _os_log_error_impl(&dword_1C0184000, v38, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -504,7 +504,7 @@ uint64_t __41__NUSchemaRegistry_schemaWithIdentifier___block_invoke(uint64_t a1)
     _NUAssertFailHandler("[NUSchemaRegistry registerSchemas:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchemaRegistry.m", 153, @"Invalid parameter not satisfying: %s", v54, v55, v56, v57, "schemas != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v42 = NUAssertLogger_20189();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -525,8 +525,8 @@ uint64_t __41__NUSchemaRegistry_schemaWithIdentifier___block_invoke(uint64_t a1)
         v58 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v59 = MEMORY[0x1E696AF00];
         v60 = v58;
-        v61 = [v59 callStackSymbols];
-        v62 = [v61 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v59 callStackSymbols];
+        v62 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v83 = v58;
         v84 = 2114;
@@ -537,8 +537,8 @@ uint64_t __41__NUSchemaRegistry_schemaWithIdentifier___block_invoke(uint64_t a1)
 
     else if (v46)
     {
-      v47 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v48 = [v47 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v48 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v83 = v48;
       _os_log_error_impl(&dword_1C0184000, v45, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -547,9 +547,9 @@ uint64_t __41__NUSchemaRegistry_schemaWithIdentifier___block_invoke(uint64_t a1)
     _NUAssertFailHandler("[NUSchemaRegistry registerSchemas:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchemaRegistry.m", 154, @"Invalid parameter not satisfying: %s", v63, v64, v65, v66, "error != NULL");
   }
 
-  v6 = v5;
-  v68 = a4;
-  v7 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  v6 = schemasCopy;
+  errorCopy = error;
+  v7 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(schemasCopy, "count")}];
   v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v6, "count")}];
   v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v6, "count")}];
   v76 = 0u;
@@ -572,15 +572,15 @@ uint64_t __41__NUSchemaRegistry_schemaWithIdentifier___block_invoke(uint64_t a1)
         }
 
         v15 = *(*(&v76 + 1) + 8 * i);
-        v16 = [v15 identifier];
-        [v7 addObject:v16];
+        identifier = [v15 identifier];
+        [v7 addObject:identifier];
 
-        v17 = [v15 identifier];
-        [v8 setObject:v15 forKeyedSubscript:v17];
+        identifier2 = [v15 identifier];
+        [v8 setObject:v15 forKeyedSubscript:identifier2];
 
-        v18 = [v15 schemaDependencies];
-        v19 = [v15 identifier];
-        [v9 setObject:v18 forKeyedSubscript:v19];
+        schemaDependencies = [v15 schemaDependencies];
+        identifier3 = [v15 identifier];
+        [v9 setObject:schemaDependencies forKeyedSubscript:identifier3];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v76 objects:v81 count:16];
@@ -595,11 +595,11 @@ uint64_t __41__NUSchemaRegistry_schemaWithIdentifier___block_invoke(uint64_t a1)
     v20 = 0x1E695D000uLL;
     while (2)
     {
-      v21 = [v7 anyObject];
-      v22 = [objc_alloc(*(v20 + 4000)) initWithObject:v21];
+      anyObject = [v7 anyObject];
+      v22 = [objc_alloc(*(v20 + 4000)) initWithObject:anyObject];
       do
       {
-        v23 = [v9 objectForKeyedSubscript:v21];
+        v23 = [v9 objectForKeyedSubscript:anyObject];
         v74[0] = MEMORY[0x1E69E9820];
         v74[1] = 3221225472;
         v74[2] = __42__NUSchemaRegistry_registerSchemas_error___block_invoke;
@@ -610,29 +610,29 @@ uint64_t __41__NUSchemaRegistry_schemaWithIdentifier___block_invoke(uint64_t a1)
 
         if (v25 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          [v69 addObject:v21];
-          [v24 removeObject:v21];
-          [v22 removeObject:v21];
-          v26 = [v22 lastObject];
+          [v69 addObject:anyObject];
+          [v24 removeObject:anyObject];
+          [v22 removeObject:anyObject];
+          lastObject = [v22 lastObject];
 
-          v21 = v26;
+          anyObject = lastObject;
         }
 
         else
         {
-          v27 = [v9 objectForKeyedSubscript:v21];
+          v27 = [v9 objectForKeyedSubscript:anyObject];
           v28 = [v27 objectAtIndexedSubscript:v25];
 
           if ([v22 containsObject:v28])
           {
-            *v68 = [NUError failureError:@"Cyclic schema dependency detected" object:v28];
+            *errorCopy = [NUError failureError:@"Cyclic schema dependency detected" object:v28];
 
             LOBYTE(v22) = 0;
             goto LABEL_30;
           }
 
           [v22 addObject:v28];
-          v21 = v28;
+          anyObject = v28;
         }
       }
 
@@ -668,7 +668,7 @@ LABEL_21:
       }
 
       v33 = [v8 objectForKeyedSubscript:*(*(&v70 + 1) + 8 * v32)];
-      LODWORD(v22) = [(NUSchemaRegistry *)self registerSchema:v33 error:v68];
+      LODWORD(v22) = [(NUSchemaRegistry *)self registerSchema:v33 error:errorCopy];
 
       if (!v22)
       {
@@ -699,12 +699,12 @@ LABEL_30:
   return v22;
 }
 
-- (BOOL)_registerVersion:(id)a3 withOriginalIdentifier:(id)a4 error:(id *)a5
+- (BOOL)_registerVersion:(id)version withOriginalIdentifier:(id)identifier error:(id *)error
 {
   v72 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  versionCopy = version;
+  identifierCopy = identifier;
+  if (!versionCopy)
   {
     v20 = NUAssertLogger_20189();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -725,8 +725,8 @@ LABEL_30:
         v41 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v42 = MEMORY[0x1E696AF00];
         v43 = v41;
-        v44 = [v42 callStackSymbols];
-        v45 = [v44 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v42 callStackSymbols];
+        v45 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v69 = v41;
         v70 = 2114;
@@ -737,8 +737,8 @@ LABEL_30:
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v69 = v26;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -747,8 +747,8 @@ LABEL_30:
     _NUAssertFailHandler("[NUSchemaRegistry _registerVersion:withOriginalIdentifier:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchemaRegistry.m", 112, @"Invalid parameter not satisfying: %s", v46, v47, v48, v49, "version != nil");
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = identifierCopy;
+  if (!identifierCopy)
   {
     v27 = NUAssertLogger_20189();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -769,8 +769,8 @@ LABEL_30:
         v50 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v51 = MEMORY[0x1E696AF00];
         v52 = v50;
-        v53 = [v51 callStackSymbols];
-        v54 = [v53 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v51 callStackSymbols];
+        v54 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v69 = v50;
         v70 = 2114;
@@ -781,8 +781,8 @@ LABEL_30:
 
     else if (v31)
     {
-      v32 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v33 = [v32 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v33 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v69 = v33;
       _os_log_error_impl(&dword_1C0184000, v30, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -791,7 +791,7 @@ LABEL_30:
     _NUAssertFailHandler("[NUSchemaRegistry _registerVersion:withOriginalIdentifier:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchemaRegistry.m", 113, @"Invalid parameter not satisfying: %s", v55, v56, v57, v58, "identifier != nil");
   }
 
-  if (!a5)
+  if (!error)
   {
     v34 = NUAssertLogger_20189();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -812,8 +812,8 @@ LABEL_30:
         v59 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v60 = MEMORY[0x1E696AF00];
         v61 = v59;
-        v62 = [v60 callStackSymbols];
-        v63 = [v62 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v60 callStackSymbols];
+        v63 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v69 = v59;
         v70 = 2114;
@@ -824,8 +824,8 @@ LABEL_30:
 
     else if (v38)
     {
-      v39 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v40 = [v39 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v40 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v69 = v40;
       _os_log_error_impl(&dword_1C0184000, v37, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -834,11 +834,11 @@ LABEL_30:
     _NUAssertFailHandler("[NUSchemaRegistry _registerVersion:withOriginalIdentifier:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchemaRegistry.m", 114, @"Invalid parameter not satisfying: %s", v64, v65, v66, v67, "error != nil");
   }
 
-  v11 = [(NSMutableDictionary *)self->_versions objectForKeyedSubscript:v9];
+  v11 = [(NSMutableDictionary *)self->_versions objectForKeyedSubscript:identifierCopy];
   if (v11)
   {
     v12 = v11;
-    v13 = [v11 indexOfObject:v8 inSortedRange:0 options:objc_msgSend(v11 usingComparator:{"count"), 1024, &__block_literal_global_20264}];
+    v13 = [v11 indexOfObject:versionCopy inSortedRange:0 options:objc_msgSend(v11 usingComparator:{"count"), 1024, &__block_literal_global_20264}];
     v14 = v13;
     if (v13)
     {
@@ -850,19 +850,19 @@ LABEL_30:
       v15 = 0;
     }
 
-    [v12 insertObject:v8 atIndex:v14];
-    if ([v8 minor] <= 0)
+    [v12 insertObject:versionCopy atIndex:v14];
+    if ([versionCopy minor] <= 0)
     {
       goto LABEL_14;
     }
 
     if (v15)
     {
-      v16 = [v15 major];
-      if (v16 == [v8 major])
+      major = [v15 major];
+      if (major == [versionCopy major])
       {
-        v17 = [v15 minor];
-        if (v17 == [v8 minor] - 1)
+        minor = [v15 minor];
+        if (minor == [versionCopy minor] - 1)
         {
           goto LABEL_14;
         }
@@ -870,16 +870,16 @@ LABEL_30:
     }
 
 LABEL_15:
-    [NUError missingError:@"Previous minor version is not registered" object:v8];
-    *a5 = v18 = 0;
+    [NUError missingError:@"Previous minor version is not registered" object:versionCopy];
+    *error = v18 = 0;
     goto LABEL_16;
   }
 
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  [v12 addObject:v8];
+  [v12 addObject:versionCopy];
   [(NSMutableDictionary *)self->_versions setObject:v12 forKeyedSubscript:v10];
   v15 = 0;
-  if ([v8 minor] > 0)
+  if ([versionCopy minor] > 0)
   {
     goto LABEL_15;
   }
@@ -891,11 +891,11 @@ LABEL_16:
   return v18;
 }
 
-- (BOOL)_registerSchema:(id)a3 error:(id *)a4
+- (BOOL)_registerSchema:(id)schema error:(id *)error
 {
   v53 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  schemaCopy = schema;
+  if (!schemaCopy)
   {
     v16 = NUAssertLogger_20189();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -916,8 +916,8 @@ LABEL_16:
         v30 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v31 = MEMORY[0x1E696AF00];
         v32 = v30;
-        v33 = [v31 callStackSymbols];
-        v34 = [v33 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v31 callStackSymbols];
+        v34 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v50 = v30;
         v51 = 2114;
@@ -928,8 +928,8 @@ LABEL_16:
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v50 = v22;
       _os_log_error_impl(&dword_1C0184000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -938,7 +938,7 @@ LABEL_16:
     _NUAssertFailHandler("[NUSchemaRegistry _registerSchema:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchemaRegistry.m", 84, @"Invalid parameter not satisfying: %s", v35, v36, v37, v38, "schema != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v23 = NUAssertLogger_20189();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -959,8 +959,8 @@ LABEL_16:
         v39 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v40 = MEMORY[0x1E696AF00];
         v41 = v39;
-        v42 = [v40 callStackSymbols];
-        v43 = [v42 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v40 callStackSymbols];
+        v43 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v50 = v39;
         v51 = 2114;
@@ -971,8 +971,8 @@ LABEL_16:
 
     else if (v27)
     {
-      v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v29 = [v28 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v29 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v50 = v29;
       _os_log_error_impl(&dword_1C0184000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -981,44 +981,44 @@ LABEL_16:
     _NUAssertFailHandler("[NUSchemaRegistry _registerSchema:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchemaRegistry.m", 85, @"Invalid parameter not satisfying: %s", v44, v45, v46, v47, "error != NULL");
   }
 
-  v7 = v6;
-  v8 = [v6 identifier];
-  v9 = [(NSMutableDictionary *)self->_schemas objectForKey:v8];
+  v7 = schemaCopy;
+  identifier = [schemaCopy identifier];
+  v9 = [(NSMutableDictionary *)self->_schemas objectForKey:identifier];
 
   if (v9)
   {
-    [NUError duplicateError:@"Schema identifier already registered" object:v8];
-    *a4 = LOBYTE(v10) = 0;
+    [NUError duplicateError:@"Schema identifier already registered" object:identifier];
+    *error = LOBYTE(v10) = 0;
   }
 
   else
   {
-    v11 = [v8 version];
+    version = [identifier version];
     v12 = +[NUVersion versionZero];
-    v13 = [v8 identifierWithVersion:v12];
+    v13 = [identifier identifierWithVersion:v12];
     v48 = 0;
-    v10 = [(NUSchemaRegistry *)self _registerVersion:v11 withOriginalIdentifier:v13 error:&v48];
+    v10 = [(NUSchemaRegistry *)self _registerVersion:version withOriginalIdentifier:v13 error:&v48];
     v14 = v48;
 
     if (v10)
     {
-      [(NSMutableDictionary *)self->_schemas setObject:v7 forKey:v8];
+      [(NSMutableDictionary *)self->_schemas setObject:v7 forKey:identifier];
     }
 
     else
     {
-      *a4 = [NUError errorWithCode:1 reason:@"Failed to register schema version" object:v7 underlyingError:v14];
+      *error = [NUError errorWithCode:1 reason:@"Failed to register schema version" object:v7 underlyingError:v14];
     }
   }
 
   return v10;
 }
 
-- (BOOL)registerSchema:(id)a3 error:(id *)a4
+- (BOOL)registerSchema:(id)schema error:(id *)error
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  schemaCopy = schema;
+  if (!schemaCopy)
   {
     v15 = NUAssertLogger_20189();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1039,8 +1039,8 @@ LABEL_16:
         v29 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v30 = MEMORY[0x1E696AF00];
         v31 = v29;
-        v32 = [v30 callStackSymbols];
-        v33 = [v32 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v30 callStackSymbols];
+        v33 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v29;
         *&buf[12] = 2114;
@@ -1051,8 +1051,8 @@ LABEL_16:
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v21;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1061,7 +1061,7 @@ LABEL_16:
     _NUAssertFailHandler("[NUSchemaRegistry registerSchema:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchemaRegistry.m", 61, @"Invalid parameter not satisfying: %s", v34, v35, v36, v37, "schema != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v22 = NUAssertLogger_20189();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -1082,8 +1082,8 @@ LABEL_16:
         v38 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v39 = MEMORY[0x1E696AF00];
         v40 = v38;
-        v41 = [v39 callStackSymbols];
-        v42 = [v41 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v39 callStackSymbols];
+        v42 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v38;
         *&buf[12] = 2114;
@@ -1094,8 +1094,8 @@ LABEL_16:
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v28 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v28;
       _os_log_error_impl(&dword_1C0184000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1104,9 +1104,9 @@ LABEL_16:
     _NUAssertFailHandler("[NUSchemaRegistry registerSchema:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchemaRegistry.m", 62, @"Invalid parameter not satisfying: %s", v43, v44, v45, v46, "error != NULL");
   }
 
-  v7 = v6;
+  v7 = schemaCopy;
   v51 = 0;
-  v8 = [v6 isValid:&v51];
+  v8 = [schemaCopy isValid:&v51];
   v9 = v51;
   if (v8)
   {
@@ -1122,7 +1122,7 @@ LABEL_16:
     v49 = buf;
     block[4] = self;
     v48 = v7;
-    v50 = a4;
+    errorCopy = error;
     v11 = v9;
     dispatch_sync(queue, block);
     v12 = *(*&buf[8] + 24);
@@ -1133,7 +1133,7 @@ LABEL_16:
   else
   {
     v13 = v51;
-    *a4 = [NUError errorWithCode:2 reason:@"Schema is not valid" object:v7 underlyingError:v13];
+    *error = [NUError errorWithCode:2 reason:@"Schema is not valid" object:v7 underlyingError:v13];
 
     v12 = 0;
   }
@@ -1177,8 +1177,8 @@ uint64_t __41__NUSchemaRegistry_registerSchema_error___block_invoke(uint64_t a1)
         v13 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v14 = MEMORY[0x1E696AF00];
         v15 = v13;
-        v16 = [v14 callStackSymbols];
-        v17 = [v16 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v14 callStackSymbols];
+        v17 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v24 = v13;
         v25 = 2114;
@@ -1189,8 +1189,8 @@ uint64_t __41__NUSchemaRegistry_registerSchema_error___block_invoke(uint64_t a1)
 
     else if (v10)
     {
-      v11 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v12 = [v11 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v12 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v24 = v12;
       _os_log_error_impl(&dword_1C0184000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1225,9 +1225,9 @@ uint64_t __41__NUSchemaRegistry_registerSchema_error___block_invoke(uint64_t a1)
 + (id)sharedRegistry
 {
   v2 = +[NUFactory sharedFactory];
-  v3 = [v2 schemaRegistry];
+  schemaRegistry = [v2 schemaRegistry];
 
-  return v3;
+  return schemaRegistry;
 }
 
 @end

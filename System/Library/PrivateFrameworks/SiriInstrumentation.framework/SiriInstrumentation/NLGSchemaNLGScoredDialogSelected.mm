@@ -1,26 +1,26 @@
 @interface NLGSchemaNLGScoredDialogSelected
-- (BOOL)isEqual:(id)a3;
-- (NLGSchemaNLGScoredDialogSelected)initWithDictionary:(id)a3;
-- (NLGSchemaNLGScoredDialogSelected)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLGSchemaNLGScoredDialogSelected)initWithDictionary:(id)dictionary;
+- (NLGSchemaNLGScoredDialogSelected)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLGSchemaNLGScoredDialogSelected
 
-- (NLGSchemaNLGScoredDialogSelected)initWithDictionary:(id)a3
+- (NLGSchemaNLGScoredDialogSelected)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = NLGSchemaNLGScoredDialogSelected;
   v5 = [(NLGSchemaNLGScoredDialogSelected *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"dialogScorer"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"dialogScorer"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(NLGSchemaNLGScoredDialogSelected *)v5 setDialogScorer:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"dialogCandidateStatistics"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"dialogCandidateStatistics"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(NLGSchemaNLGScoredDialogSelected *)v5 setDialogCandidateStatistics:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"selectedScoredDialog"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"selectedScoredDialog"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,30 +50,30 @@
   return v5;
 }
 
-- (NLGSchemaNLGScoredDialogSelected)initWithJSON:(id)a3
+- (NLGSchemaNLGScoredDialogSelected)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLGSchemaNLGScoredDialogSelected *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLGSchemaNLGScoredDialogSelected *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLGSchemaNLGScoredDialogSelected *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -86,58 +86,58 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_dialogCandidateStatistics)
   {
-    v4 = [(NLGSchemaNLGScoredDialogSelected *)self dialogCandidateStatistics];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    dialogCandidateStatistics = [(NLGSchemaNLGScoredDialogSelected *)self dialogCandidateStatistics];
+    dictionaryRepresentation = [dialogCandidateStatistics dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"dialogCandidateStatistics"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"dialogCandidateStatistics"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"dialogCandidateStatistics"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"dialogCandidateStatistics"];
     }
   }
 
   if (self->_dialogScorer)
   {
-    v7 = [(NLGSchemaNLGScoredDialogSelected *)self dialogScorer];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    dialogScorer = [(NLGSchemaNLGScoredDialogSelected *)self dialogScorer];
+    dictionaryRepresentation2 = [dialogScorer dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"dialogScorer"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"dialogScorer"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"dialogScorer"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"dialogScorer"];
     }
   }
 
   if (self->_selectedScoredDialog)
   {
-    v10 = [(NLGSchemaNLGScoredDialogSelected *)self selectedScoredDialog];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    selectedScoredDialog = [(NLGSchemaNLGScoredDialogSelected *)self selectedScoredDialog];
+    dictionaryRepresentation3 = [selectedScoredDialog dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"selectedScoredDialog"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"selectedScoredDialog"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"selectedScoredDialog"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"selectedScoredDialog"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -147,28 +147,28 @@
   return v4 ^ [(NLGSchemaNLGScoredDialog *)self->_selectedScoredDialog hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(NLGSchemaNLGScoredDialogSelected *)self dialogScorer];
-  v6 = [v4 dialogScorer];
-  if ((v5 != 0) == (v6 == 0))
+  dialogScorer = [(NLGSchemaNLGScoredDialogSelected *)self dialogScorer];
+  dialogScorer2 = [equalCopy dialogScorer];
+  if ((dialogScorer != 0) == (dialogScorer2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(NLGSchemaNLGScoredDialogSelected *)self dialogScorer];
-  if (v7)
+  dialogScorer3 = [(NLGSchemaNLGScoredDialogSelected *)self dialogScorer];
+  if (dialogScorer3)
   {
-    v8 = v7;
-    v9 = [(NLGSchemaNLGScoredDialogSelected *)self dialogScorer];
-    v10 = [v4 dialogScorer];
-    v11 = [v9 isEqual:v10];
+    v8 = dialogScorer3;
+    dialogScorer4 = [(NLGSchemaNLGScoredDialogSelected *)self dialogScorer];
+    dialogScorer5 = [equalCopy dialogScorer];
+    v11 = [dialogScorer4 isEqual:dialogScorer5];
 
     if (!v11)
     {
@@ -180,20 +180,20 @@
   {
   }
 
-  v5 = [(NLGSchemaNLGScoredDialogSelected *)self dialogCandidateStatistics];
-  v6 = [v4 dialogCandidateStatistics];
-  if ((v5 != 0) == (v6 == 0))
+  dialogScorer = [(NLGSchemaNLGScoredDialogSelected *)self dialogCandidateStatistics];
+  dialogScorer2 = [equalCopy dialogCandidateStatistics];
+  if ((dialogScorer != 0) == (dialogScorer2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(NLGSchemaNLGScoredDialogSelected *)self dialogCandidateStatistics];
-  if (v12)
+  dialogCandidateStatistics = [(NLGSchemaNLGScoredDialogSelected *)self dialogCandidateStatistics];
+  if (dialogCandidateStatistics)
   {
-    v13 = v12;
-    v14 = [(NLGSchemaNLGScoredDialogSelected *)self dialogCandidateStatistics];
-    v15 = [v4 dialogCandidateStatistics];
-    v16 = [v14 isEqual:v15];
+    v13 = dialogCandidateStatistics;
+    dialogCandidateStatistics2 = [(NLGSchemaNLGScoredDialogSelected *)self dialogCandidateStatistics];
+    dialogCandidateStatistics3 = [equalCopy dialogCandidateStatistics];
+    v16 = [dialogCandidateStatistics2 isEqual:dialogCandidateStatistics3];
 
     if (!v16)
     {
@@ -205,12 +205,12 @@
   {
   }
 
-  v5 = [(NLGSchemaNLGScoredDialogSelected *)self selectedScoredDialog];
-  v6 = [v4 selectedScoredDialog];
-  if ((v5 != 0) != (v6 == 0))
+  dialogScorer = [(NLGSchemaNLGScoredDialogSelected *)self selectedScoredDialog];
+  dialogScorer2 = [equalCopy selectedScoredDialog];
+  if ((dialogScorer != 0) != (dialogScorer2 == 0))
   {
-    v17 = [(NLGSchemaNLGScoredDialogSelected *)self selectedScoredDialog];
-    if (!v17)
+    selectedScoredDialog = [(NLGSchemaNLGScoredDialogSelected *)self selectedScoredDialog];
+    if (!selectedScoredDialog)
     {
 
 LABEL_20:
@@ -218,10 +218,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(NLGSchemaNLGScoredDialogSelected *)self selectedScoredDialog];
-    v20 = [v4 selectedScoredDialog];
-    v21 = [v19 isEqual:v20];
+    v18 = selectedScoredDialog;
+    selectedScoredDialog2 = [(NLGSchemaNLGScoredDialogSelected *)self selectedScoredDialog];
+    selectedScoredDialog3 = [equalCopy selectedScoredDialog];
+    v21 = [selectedScoredDialog2 isEqual:selectedScoredDialog3];
 
     if (v21)
     {
@@ -241,66 +241,66 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(NLGSchemaNLGScoredDialogSelected *)self dialogScorer];
+  toCopy = to;
+  dialogScorer = [(NLGSchemaNLGScoredDialogSelected *)self dialogScorer];
 
-  if (v4)
+  if (dialogScorer)
   {
-    v5 = [(NLGSchemaNLGScoredDialogSelected *)self dialogScorer];
+    dialogScorer2 = [(NLGSchemaNLGScoredDialogSelected *)self dialogScorer];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(NLGSchemaNLGScoredDialogSelected *)self dialogCandidateStatistics];
+  dialogCandidateStatistics = [(NLGSchemaNLGScoredDialogSelected *)self dialogCandidateStatistics];
 
-  if (v6)
+  if (dialogCandidateStatistics)
   {
-    v7 = [(NLGSchemaNLGScoredDialogSelected *)self dialogCandidateStatistics];
+    dialogCandidateStatistics2 = [(NLGSchemaNLGScoredDialogSelected *)self dialogCandidateStatistics];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(NLGSchemaNLGScoredDialogSelected *)self selectedScoredDialog];
+  selectedScoredDialog = [(NLGSchemaNLGScoredDialogSelected *)self selectedScoredDialog];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (selectedScoredDialog)
   {
-    v10 = [(NLGSchemaNLGScoredDialogSelected *)self selectedScoredDialog];
+    selectedScoredDialog2 = [(NLGSchemaNLGScoredDialogSelected *)self selectedScoredDialog];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = NLGSchemaNLGScoredDialogSelected;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(NLGSchemaNLGScoredDialogSelected *)self dialogScorer];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  dialogScorer = [(NLGSchemaNLGScoredDialogSelected *)self dialogScorer];
+  v7 = [dialogScorer applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(NLGSchemaNLGScoredDialogSelected *)self deleteDialogScorer];
   }
 
-  v9 = [(NLGSchemaNLGScoredDialogSelected *)self dialogCandidateStatistics];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  dialogCandidateStatistics = [(NLGSchemaNLGScoredDialogSelected *)self dialogCandidateStatistics];
+  v10 = [dialogCandidateStatistics applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(NLGSchemaNLGScoredDialogSelected *)self deleteDialogCandidateStatistics];
   }
 
-  v12 = [(NLGSchemaNLGScoredDialogSelected *)self selectedScoredDialog];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  selectedScoredDialog = [(NLGSchemaNLGScoredDialogSelected *)self selectedScoredDialog];
+  v13 = [selectedScoredDialog applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(NLGSchemaNLGScoredDialogSelected *)self deleteSelectedScoredDialog];
   }

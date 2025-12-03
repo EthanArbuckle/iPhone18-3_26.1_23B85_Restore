@@ -1,20 +1,20 @@
 @interface SessionOverlayView
-- (_TtC9SeymourUI18SessionOverlayView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI18SessionOverlayView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)safeAreaInsetsDidChange;
 - (void)updateConstraints;
-- (void)willMoveToSuperview:(id)a3;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation SessionOverlayView
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   v12.receiver = self;
   v12.super_class = type metadata accessor for SessionOverlayView();
-  v4 = a3;
+  superviewCopy = superview;
   v5 = v12.receiver;
-  [(SessionOverlayView *)&v12 willMoveToSuperview:v4];
+  [(SessionOverlayView *)&v12 willMoveToSuperview:superviewCopy];
   v6 = *&v5[OBJC_IVAR____TtC9SeymourUI18SessionOverlayView_metricContainer];
   v7 = objc_opt_self();
   v8 = swift_allocObject();
@@ -36,7 +36,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20C12E184();
 }
 
@@ -50,7 +50,7 @@
   sub_20C12E614();
 }
 
-- (_TtC9SeymourUI18SessionOverlayView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI18SessionOverlayView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -59,7 +59,7 @@
 
 - (void)updateConstraints
 {
-  v2 = self;
+  selfCopy = self;
   sub_20C1305B0();
 }
 

@@ -1,26 +1,26 @@
 @interface ICQAsyncValueLoader
-- (ICQAsyncValueLoader)initWithDefaultValue:(id)a3 valueFetcher:(id)a4;
+- (ICQAsyncValueLoader)initWithDefaultValue:(id)value valueFetcher:(id)fetcher;
 - (id)value;
 - (void)fetchValueAsynchronously;
 @end
 
 @implementation ICQAsyncValueLoader
 
-- (ICQAsyncValueLoader)initWithDefaultValue:(id)a3 valueFetcher:(id)a4
+- (ICQAsyncValueLoader)initWithDefaultValue:(id)value valueFetcher:(id)fetcher
 {
-  v7 = a3;
-  v8 = a4;
+  valueCopy = value;
+  fetcherCopy = fetcher;
   v13.receiver = self;
   v13.super_class = ICQAsyncValueLoader;
   v9 = [(ICQAsyncValueLoader *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [fetcherCopy copy];
     fetchValue = v9->_fetchValue;
     v9->_fetchValue = v10;
 
     v9->_valueLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_value, a3);
+    objc_storeStrong(&v9->_value, value);
     [(ICQAsyncValueLoader *)v9 fetchValueAsynchronously];
   }
 
@@ -29,13 +29,13 @@
 
 - (void)fetchValueAsynchronously
 {
-  v3 = [(ICQAsyncValueLoader *)self fetchValue];
+  fetchValue = [(ICQAsyncValueLoader *)self fetchValue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __47__ICQAsyncValueLoader_fetchValueAsynchronously__block_invoke;
   v4[3] = &unk_27A652F20;
   v4[4] = self;
-  (v3)[2](v3, v4);
+  (fetchValue)[2](fetchValue, v4);
 }
 
 void __47__ICQAsyncValueLoader_fetchValueAsynchronously__block_invoke(uint64_t a1, void *a2)

@@ -1,24 +1,24 @@
 @interface AXResultRowAccessibilityElement
-- (AXResultRowAccessibilityElement)initWithAccessibilityContainer:(id)a3 label1:(id)a4 label2:(id)a5 label3:(id)a6;
+- (AXResultRowAccessibilityElement)initWithAccessibilityContainer:(id)container label1:(id)label1 label2:(id)label2 label3:(id)label3;
 - (CGRect)accessibilityFrame;
 @end
 
 @implementation AXResultRowAccessibilityElement
 
-- (AXResultRowAccessibilityElement)initWithAccessibilityContainer:(id)a3 label1:(id)a4 label2:(id)a5 label3:(id)a6
+- (AXResultRowAccessibilityElement)initWithAccessibilityContainer:(id)container label1:(id)label1 label2:(id)label2 label3:(id)label3
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  label1Copy = label1;
+  label2Copy = label2;
+  label3Copy = label3;
   v17.receiver = self;
   v17.super_class = AXResultRowAccessibilityElement;
-  v14 = [(AXResultRowAccessibilityElement *)&v17 initWithAccessibilityContainer:a3];
+  v14 = [(AXResultRowAccessibilityElement *)&v17 initWithAccessibilityContainer:container];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_label1, a4);
-    objc_storeStrong(&v15->_label2, a5);
-    objc_storeStrong(&v15->_label3, a6);
+    objc_storeStrong(&v14->_label1, label1);
+    objc_storeStrong(&v15->_label2, label2);
+    objc_storeStrong(&v15->_label3, label3);
   }
 
   return v15;
@@ -26,13 +26,13 @@
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(AXResultRowAccessibilityElement *)self accessibilityContainer];
+  accessibilityContainer = [(AXResultRowAccessibilityElement *)self accessibilityContainer];
   NSClassFromString(&cfstr_Uitableviewcel.isa);
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(UIView *)v3 safeValueForKey:@"realTableViewCell"];
+    v4 = [(UIView *)accessibilityContainer safeValueForKey:@"realTableViewCell"];
 
-    v3 = v4;
+    accessibilityContainer = v4;
   }
 
   objc_opt_class();
@@ -43,8 +43,8 @@
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(UILabel *)self->_label1 superview];
-    [(UIView *)v3 convertRect:v13 fromView:v6, v8, v10, v12];
+    superview = [(UILabel *)self->_label1 superview];
+    [(UIView *)accessibilityContainer convertRect:superview fromView:v6, v8, v10, v12];
     v62 = v15;
     v63 = v14;
     v60 = v17;
@@ -55,8 +55,8 @@
     v21 = v20;
     v23 = v22;
     v25 = v24;
-    v26 = [(UILabel *)self->_label2 superview];
-    [(UIView *)v3 convertRect:v26 fromView:v19, v21, v23, v25];
+    superview2 = [(UILabel *)self->_label2 superview];
+    [(UIView *)accessibilityContainer convertRect:superview2 fromView:v19, v21, v23, v25];
     v28 = v27;
     v30 = v29;
     v32 = v31;
@@ -67,8 +67,8 @@
     v38 = v37;
     v40 = v39;
     v42 = v41;
-    v43 = [(UILabel *)self->_label3 superview];
-    [(UIView *)v3 convertRect:v43 fromView:v36, v38, v40, v42];
+    superview3 = [(UILabel *)self->_label3 superview];
+    [(UIView *)accessibilityContainer convertRect:superview3 fromView:v36, v38, v40, v42];
     v45 = v44;
     v47 = v46;
     v49 = v48;
@@ -88,7 +88,7 @@
     v71.size.width = v49;
     v71.size.height = v51;
     v67 = CGRectUnion(v66, v71);
-    v68 = UIAccessibilityConvertFrameToScreenCoordinates(v67, v3);
+    v68 = UIAccessibilityConvertFrameToScreenCoordinates(v67, accessibilityContainer);
   }
 
   else

@@ -1,5 +1,5 @@
 @interface TSDgPTPUnicastUDPv4PtPPort
-+ (id)diagnosticInfoForService:(id)a3;
++ (id)diagnosticInfoForService:(id)service;
 - (id)_destinationAddressString;
 - (id)_destinationIPv4Address;
 - (id)_sourceAddressString;
@@ -12,44 +12,44 @@
 {
   v9.receiver = self;
   v9.super_class = TSDgPTPUnicastUDPv4PtPPort;
-  v3 = [(TSDgPTPNetworkPort *)&v9 _sourceAddressString];
-  v4 = [(TSDgPTPPort *)self service];
-  v5 = [v4 iodPropertyForKey:@"SourceIPAddress"];
+  _sourceAddressString = [(TSDgPTPNetworkPort *)&v9 _sourceAddressString];
+  service = [(TSDgPTPPort *)self service];
+  v5 = [service iodPropertyForKey:@"SourceIPAddress"];
 
   if (v5)
   {
-    v6 = [v5 unsignedIntValue];
-    v7 = [NSString stringWithFormat:@"%u.%u.%u.%u", HIBYTE(v6), BYTE2(v6), BYTE1(v6), v6];
+    unsignedIntValue = [v5 unsignedIntValue];
+    v7 = [NSString stringWithFormat:@"%u.%u.%u.%u", HIBYTE(unsignedIntValue), BYTE2(unsignedIntValue), BYTE1(unsignedIntValue), unsignedIntValue];
 
-    v3 = v7;
+    _sourceAddressString = v7;
   }
 
-  return v3;
+  return _sourceAddressString;
 }
 
 - (id)_destinationAddressString
 {
   v9.receiver = self;
   v9.super_class = TSDgPTPUnicastUDPv4PtPPort;
-  v3 = [(TSDgPTPNetworkPort *)&v9 _destinationAddressString];
-  v4 = [(TSDgPTPPort *)self service];
-  v5 = [v4 iodPropertyForKey:@"DestinationIPAddress"];
+  _destinationAddressString = [(TSDgPTPNetworkPort *)&v9 _destinationAddressString];
+  service = [(TSDgPTPPort *)self service];
+  v5 = [service iodPropertyForKey:@"DestinationIPAddress"];
 
   if (v5)
   {
-    v6 = [v5 unsignedIntValue];
-    v7 = [NSString stringWithFormat:@"%u.%u.%u.%u", HIBYTE(v6), BYTE2(v6), BYTE1(v6), v6];
+    unsignedIntValue = [v5 unsignedIntValue];
+    v7 = [NSString stringWithFormat:@"%u.%u.%u.%u", HIBYTE(unsignedIntValue), BYTE2(unsignedIntValue), BYTE1(unsignedIntValue), unsignedIntValue];
 
-    v3 = v7;
+    _destinationAddressString = v7;
   }
 
-  return v3;
+  return _destinationAddressString;
 }
 
 - (id)_destinationIPv4Address
 {
-  v2 = [(TSDgPTPPort *)self service];
-  v3 = [v2 iodPropertyForKey:@"DestinationIPAddress"];
+  service = [(TSDgPTPPort *)self service];
+  v3 = [service iodPropertyForKey:@"DestinationIPAddress"];
 
   return v3;
 }
@@ -58,42 +58,42 @@
 {
   v9.receiver = self;
   v9.super_class = TSDgPTPUnicastUDPv4PtPPort;
-  v3 = [(TSDgPTPNetworkPort *)&v9 propertiesForXPC];
-  v4 = [(TSDgPTPPort *)self service];
-  v5 = [v4 iodPropertyForKey:@"SourceIPAddress"];
-  [v3 setObject:v5 forKeyedSubscript:@"SourceIPAddress"];
+  propertiesForXPC = [(TSDgPTPNetworkPort *)&v9 propertiesForXPC];
+  service = [(TSDgPTPPort *)self service];
+  v5 = [service iodPropertyForKey:@"SourceIPAddress"];
+  [propertiesForXPC setObject:v5 forKeyedSubscript:@"SourceIPAddress"];
 
-  v6 = [(TSDgPTPPort *)self service];
-  v7 = [v6 iodPropertyForKey:@"DestinationIPAddress"];
-  [v3 setObject:v7 forKeyedSubscript:@"DestinationIPAddress"];
+  service2 = [(TSDgPTPPort *)self service];
+  v7 = [service2 iodPropertyForKey:@"DestinationIPAddress"];
+  [propertiesForXPC setObject:v7 forKeyedSubscript:@"DestinationIPAddress"];
 
-  return v3;
+  return propertiesForXPC;
 }
 
-+ (id)diagnosticInfoForService:(id)a3
++ (id)diagnosticInfoForService:(id)service
 {
-  v4 = a3;
-  v15.receiver = a1;
+  serviceCopy = service;
+  v15.receiver = self;
   v15.super_class = &OBJC_METACLASS___TSDgPTPUnicastUDPv4PtPPort;
-  v5 = objc_msgSendSuper2(&v15, "diagnosticInfoForService:", v4);
+  v5 = objc_msgSendSuper2(&v15, "diagnosticInfoForService:", serviceCopy);
   v6 = [NSNumber numberWithInt:3];
   [v5 setObject:v6 forKeyedSubscript:@"PortType"];
 
-  v7 = [v4 iodPropertyForKey:@"SourceIPAddress"];
+  v7 = [serviceCopy iodPropertyForKey:@"SourceIPAddress"];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 unsignedIntValue];
-    v10 = [NSString stringWithFormat:@"%u.%u.%u.%u", HIBYTE(v9), BYTE2(v9), BYTE1(v9), v9];
+    unsignedIntValue = [v7 unsignedIntValue];
+    v10 = [NSString stringWithFormat:@"%u.%u.%u.%u", HIBYTE(unsignedIntValue), BYTE2(unsignedIntValue), BYTE1(unsignedIntValue), unsignedIntValue];
     [v5 setObject:v10 forKeyedSubscript:@"SourceAddress"];
   }
 
-  v11 = [v4 iodPropertyForKey:@"DestinationIPAddress"];
+  v11 = [serviceCopy iodPropertyForKey:@"DestinationIPAddress"];
 
   if (v11)
   {
-    v12 = [v11 unsignedIntValue];
-    v13 = [NSString stringWithFormat:@"%u.%u.%u.%u", HIBYTE(v12), BYTE2(v12), BYTE1(v12), v12];
+    unsignedIntValue2 = [v11 unsignedIntValue];
+    v13 = [NSString stringWithFormat:@"%u.%u.%u.%u", HIBYTE(unsignedIntValue2), BYTE2(unsignedIntValue2), BYTE1(unsignedIntValue2), unsignedIntValue2];
     [v5 setObject:v13 forKeyedSubscript:@"DestinationAddress"];
   }
 

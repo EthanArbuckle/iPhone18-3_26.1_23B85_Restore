@@ -1,5 +1,5 @@
 @interface _SVXUserFeedbackVoiceContentMutation
-- (_SVXUserFeedbackVoiceContentMutation)initWithBaseModel:(id)a3;
+- (_SVXUserFeedbackVoiceContentMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
@@ -14,15 +14,15 @@
     {
       if ((*&self->_mutationFlags & 2) != 0)
       {
-        v6 = self->_text;
+        text = self->_text;
       }
 
       else
       {
-        v6 = [(SVXUserFeedbackVoiceContent *)baseModel text];
+        text = [(SVXUserFeedbackVoiceContent *)baseModel text];
       }
 
-      v7 = v6;
+      v7 = text;
       if ((*&self->_mutationFlags & 4) != 0)
       {
         isPhonetic = self->_isPhonetic;
@@ -52,16 +52,16 @@ LABEL_13:
   return v5;
 }
 
-- (_SVXUserFeedbackVoiceContentMutation)initWithBaseModel:(id)a3
+- (_SVXUserFeedbackVoiceContentMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _SVXUserFeedbackVoiceContentMutation;
   v6 = [(_SVXUserFeedbackVoiceContentMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;

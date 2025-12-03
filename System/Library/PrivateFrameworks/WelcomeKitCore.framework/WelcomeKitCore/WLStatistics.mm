@@ -1,5 +1,5 @@
 @interface WLStatistics
-+ (id)_statisticsWithContentType:(id)a3;
++ (id)_statisticsWithContentType:(id)type;
 - (id)description;
 - (id)fetchLogString;
 - (int64_t)importBytesUsed;
@@ -8,12 +8,12 @@
 
 @implementation WLStatistics
 
-+ (id)_statisticsWithContentType:(id)a3
++ (id)_statisticsWithContentType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = objc_alloc_init(WLStatistics);
   contentType = v4->_contentType;
-  v4->_contentType = v3;
+  v4->_contentType = typeCopy;
 
   return v4;
 }

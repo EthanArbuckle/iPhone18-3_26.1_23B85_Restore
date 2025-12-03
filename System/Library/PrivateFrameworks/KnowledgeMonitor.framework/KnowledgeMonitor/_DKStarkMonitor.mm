@@ -1,9 +1,9 @@
 @interface _DKStarkMonitor
-+ (id)_eventWithState:(BOOL)a3;
++ (id)_eventWithState:(BOOL)state;
 - (void)deactivate;
 - (void)dealloc;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
 - (void)start;
 - (void)stop;
 - (void)synchronouslyReflectCurrentValue;
@@ -14,9 +14,9 @@
 
 - (void)synchronouslyReflectCurrentValue
 {
-  v3 = [(_DKMonitor *)self currentEvent];
+  currentEvent = [(_DKMonitor *)self currentEvent];
 
-  if (!v3)
+  if (!currentEvent)
   {
 
     [(_DKStarkMonitor *)self updateCurrentState];
@@ -31,9 +31,9 @@
   [(_DKMonitor *)&v3 dealloc];
 }
 
-+ (id)_eventWithState:(BOOL)a3
++ (id)_eventWithState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     [MEMORY[0x277CFE1A0] yes];
   }
@@ -44,10 +44,10 @@
   }
   v3 = ;
   v4 = MEMORY[0x277CFE1D8];
-  v5 = [MEMORY[0x277CFE298] carPlayIsConnectedStream];
-  v6 = [MEMORY[0x277CBEAA8] date];
-  v7 = [MEMORY[0x277CBEAA8] distantFuture];
-  v8 = [v4 eventWithStream:v5 startDate:v6 endDate:v7 value:v3];
+  carPlayIsConnectedStream = [MEMORY[0x277CFE298] carPlayIsConnectedStream];
+  date = [MEMORY[0x277CBEAA8] date];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v8 = [v4 eventWithStream:carPlayIsConnectedStream startDate:date endDate:distantFuture value:v3];
 
   return v8;
 }
@@ -73,12 +73,12 @@
 
 - (void)deactivate
 {
-  v3 = [(_DKStarkMonitor *)self sessionStatus];
+  sessionStatus = [(_DKStarkMonitor *)self sessionStatus];
 
-  if (v3)
+  if (sessionStatus)
   {
-    v4 = [(_DKStarkMonitor *)self sessionStatus];
-    [v4 removeSessionObserver:self];
+    sessionStatus2 = [(_DKStarkMonitor *)self sessionStatus];
+    [sessionStatus2 removeSessionObserver:self];
 
     [(_DKStarkMonitor *)self setSessionStatus:0];
   }
@@ -86,24 +86,24 @@
 
 - (void)updateCurrentState
 {
-  v3 = [(_DKStarkMonitor *)self sessionStatus];
-  v4 = [v3 currentSession];
-  v5 = v4 != 0;
+  sessionStatus = [(_DKStarkMonitor *)self sessionStatus];
+  currentSession = [sessionStatus currentSession];
+  v5 = currentSession != 0;
 
   v6 = [_DKStarkMonitor _eventWithState:v5];
   [(_DKMonitor *)self setCurrentEvent:v6 inferHistoricalState:1];
 
   v9 = [MEMORY[0x277CCABB0] numberWithBool:v5];
-  v7 = [MEMORY[0x277CFE318] userContext];
-  v8 = [MEMORY[0x277CFE338] keyPathForCarplayConnectedStatus];
-  [v7 setObject:v9 forKeyedSubscript:v8];
+  userContext = [MEMORY[0x277CFE318] userContext];
+  keyPathForCarplayConnectedStatus = [MEMORY[0x277CFE338] keyPathForCarplayConnectedStatus];
+  [userContext setObject:v9 forKeyedSubscript:keyPathForCarplayConnectedStatus];
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
-  if (a3)
+  if (connect)
   {
-    v4 = [(_DKMonitor *)self queue];
+    queue = [(_DKMonitor *)self queue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __37___DKStarkMonitor_sessionDidConnect___block_invoke;
@@ -118,15 +118,15 @@
     v10 = v6;
     v11 = v5;
     v7 = v6;
-    dispatch_async(v4, block);
+    dispatch_async(queue, block);
   }
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
-  if (a3)
+  if (disconnect)
   {
-    v4 = [(_DKMonitor *)self queue];
+    queue = [(_DKMonitor *)self queue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __40___DKStarkMonitor_sessionDidDisconnect___block_invoke;
@@ -141,7 +141,7 @@
     v10 = v6;
     v11 = v5;
     v7 = v6;
-    dispatch_async(v4, block);
+    dispatch_async(queue, block);
   }
 }
 

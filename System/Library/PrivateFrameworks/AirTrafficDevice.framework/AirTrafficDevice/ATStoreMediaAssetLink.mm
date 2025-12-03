@@ -1,20 +1,20 @@
 @interface ATStoreMediaAssetLink
 - (ATAssetLinkDelegate)delegate;
 - (ATStoreMediaAssetLink)init;
-- (BOOL)_canEnqueueAssetUnderCurrentEnvironmentConditions:(id)a3 didUpdatePauseReason:(BOOL *)a4;
-- (BOOL)canEnqueueAsset:(id)a3;
+- (BOOL)_canEnqueueAssetUnderCurrentEnvironmentConditions:(id)conditions didUpdatePauseReason:(BOOL *)reason;
+- (BOOL)canEnqueueAsset:(id)asset;
 - (BOOL)open;
-- (id)enqueueAssets:(id)a3 force:(BOOL)a4;
-- (int64_t)_ATAssetStateForStoreDownloadState:(int64_t)a3;
-- (void)ATStoreDownloadService:(id)a3 didChangeStateForAsset:(id)a4 oldState:(int64_t)a5 newState:(int64_t)a6;
-- (void)ATStoreDownloadService:(id)a3 didFinishAsset:(id)a4 withError:(id)a5 cancelPendingAssetsInBatch:(BOOL)a6;
-- (void)ATStoreDownloadService:(id)a3 didUpdateProgressForAsset:(id)a4 progress:(float)a5;
-- (void)_finishAsset:(id)a3 error:(id)a4 cancelPendingAssetsInBatch:(BOOL)a5;
+- (id)enqueueAssets:(id)assets force:(BOOL)force;
+- (int64_t)_ATAssetStateForStoreDownloadState:(int64_t)state;
+- (void)ATStoreDownloadService:(id)service didChangeStateForAsset:(id)asset oldState:(int64_t)state newState:(int64_t)newState;
+- (void)ATStoreDownloadService:(id)service didFinishAsset:(id)asset withError:(id)error cancelPendingAssetsInBatch:(BOOL)batch;
+- (void)ATStoreDownloadService:(id)service didUpdateProgressForAsset:(id)asset progress:(float)progress;
+- (void)_finishAsset:(id)asset error:(id)error cancelPendingAssetsInBatch:(BOOL)batch;
 - (void)_setupActivityToResumeDownloads;
-- (void)cancelAssets:(id)a3;
+- (void)cancelAssets:(id)assets;
 - (void)close;
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3;
-- (void)prioritizeAsset:(id)a3;
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability;
+- (void)prioritizeAsset:(id)asset;
 @end
 
 @implementation ATStoreMediaAssetLink
@@ -26,42 +26,42 @@
   return WeakRetained;
 }
 
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability
 {
-  if ([a3 isRemoteServerLikelyReachable])
+  if ([reachability isRemoteServerLikelyReachable])
   {
 
     [(ATStoreMediaAssetLink *)self _setupActivityToResumeDownloads];
   }
 }
 
-- (BOOL)_canEnqueueAssetUnderCurrentEnvironmentConditions:(id)a3 didUpdatePauseReason:(BOOL *)a4
+- (BOOL)_canEnqueueAssetUnderCurrentEnvironmentConditions:(id)conditions didUpdatePauseReason:(BOOL *)reason
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (![v6 isRestore])
+  conditionsCopy = conditions;
+  if (![conditionsCopy isRestore])
   {
-    v8 = [MEMORY[0x277D7FA90] sharedMonitor];
-    v9 = [v8 isNetworkConstrained];
+    mEMORY[0x277D7FA90] = [MEMORY[0x277D7FA90] sharedMonitor];
+    isNetworkConstrained = [mEMORY[0x277D7FA90] isNetworkConstrained];
 
-    if (!v9 || ([v6 allowDownloadOnConstrainedNetwork] & 1) != 0)
+    if (!isNetworkConstrained || ([conditionsCopy allowDownloadOnConstrainedNetwork] & 1) != 0)
     {
       goto LABEL_11;
     }
 
-    if (a4)
+    if (reason)
     {
-      *a4 = ([v6 downloadPauseReason] & 2) == 0;
+      *reason = ([conditionsCopy downloadPauseReason] & 2) == 0;
     }
 
-    [v6 setDownloadPauseReason:{objc_msgSend(v6, "downloadPauseReason") | 2}];
+    [conditionsCopy setDownloadPauseReason:{objc_msgSend(conditionsCopy, "downloadPauseReason") | 2}];
     v10 = _ATLogCategoryStoreDownloads();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543618;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 2114;
-      v18 = v6;
+      v18 = conditionsCopy;
       v11 = "%{public}@ disallowing download of %{public}@ as the network is constrained";
 LABEL_16:
       _os_log_impl(&dword_223819000, v10, OS_LOG_TYPE_DEFAULT, v11, &v15, 0x16u);
@@ -76,26 +76,26 @@ LABEL_17:
   v7 = +[ATRestoreManager sharedManager];
   if (([v7 hasProperNetworkConditions] & 1) == 0)
   {
-    v12 = [v6 isPrioritized];
+    isPrioritized = [conditionsCopy isPrioritized];
 
-    if (v12)
+    if (isPrioritized)
     {
       goto LABEL_11;
     }
 
-    if (a4)
+    if (reason)
     {
-      *a4 = ([v6 downloadPauseReason] & 4) == 0;
+      *reason = ([conditionsCopy downloadPauseReason] & 4) == 0;
     }
 
-    [v6 setDownloadPauseReason:{objc_msgSend(v6, "downloadPauseReason") | 4}];
+    [conditionsCopy setDownloadPauseReason:{objc_msgSend(conditionsCopy, "downloadPauseReason") | 4}];
     v10 = _ATLogCategoryStoreDownloads();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543618;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 2114;
-      v18 = v6;
+      v18 = conditionsCopy;
       v11 = "%{public}@ disallowing restore of %{public}@ due to current network conditions";
       goto LABEL_16;
     }
@@ -240,23 +240,23 @@ void __56__ATStoreMediaAssetLink__setupActivityToResumeDownloads__block_invoke_4
   }
 }
 
-- (int64_t)_ATAssetStateForStoreDownloadState:(int64_t)a3
+- (int64_t)_ATAssetStateForStoreDownloadState:(int64_t)state
 {
-  if ((a3 - 2) > 4)
+  if ((state - 2) > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_223908010[a3 - 2];
+    return qword_223908010[state - 2];
   }
 }
 
-- (void)_finishAsset:(id)a3 error:(id)a4 cancelPendingAssetsInBatch:(BOOL)a5
+- (void)_finishAsset:(id)asset error:(id)error cancelPendingAssetsInBatch:(BOOL)batch
 {
-  v8 = a3;
-  v9 = a4;
+  assetCopy = asset;
+  errorCopy = error;
   v31[0] = 0;
   v31[1] = v31;
   v31[2] = 0x2020000000;
@@ -266,26 +266,26 @@ void __56__ATStoreMediaAssetLink__setupActivityToResumeDownloads__block_invoke_4
   block[1] = 3221225472;
   block[2] = __71__ATStoreMediaAssetLink__finishAsset_error_cancelPendingAssetsInBatch___block_invoke;
   block[3] = &unk_2784E5870;
-  v11 = v8;
+  v11 = assetCopy;
   v26 = v11;
-  v27 = self;
-  v12 = v9;
+  selfCopy = self;
+  v12 = errorCopy;
   v28 = v12;
   v29 = v31;
-  v30 = a5;
+  batchCopy = batch;
   dispatch_sync(queue, block);
   callbackQueue = self->_callbackQueue;
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
   v18 = __71__ATStoreMediaAssetLink__finishAsset_error_cancelPendingAssetsInBatch___block_invoke_39;
   v19 = &unk_2784E5870;
-  v20 = self;
+  selfCopy2 = self;
   v23 = v31;
   v14 = v11;
   v21 = v14;
   v15 = v12;
   v22 = v15;
-  v24 = a5;
+  batchCopy2 = batch;
   dispatch_async(callbackQueue, &v16);
   [(ATStoreMediaAssetLink *)self _setupActivityToResumeDownloads:v16];
 
@@ -391,28 +391,28 @@ void __71__ATStoreMediaAssetLink__finishAsset_error_cancelPendingAssetsInBatch__
   }
 }
 
-- (void)ATStoreDownloadService:(id)a3 didFinishAsset:(id)a4 withError:(id)a5 cancelPendingAssetsInBatch:(BOOL)a6
+- (void)ATStoreDownloadService:(id)service didFinishAsset:(id)asset withError:(id)error cancelPendingAssetsInBatch:(BOOL)batch
 {
-  v6 = a6;
-  v9 = a5;
-  v10 = a4;
-  [(ATStoreMediaAssetLink *)self _finishAsset:v10 error:v9 cancelPendingAssetsInBatch:v6];
-  v11 = [MEMORY[0x277CE53F8] sharedInstance];
-  [v11 logAssetLinkOfType:0 didFinishAsset:v10 withError:v9];
+  batchCopy = batch;
+  errorCopy = error;
+  assetCopy = asset;
+  [(ATStoreMediaAssetLink *)self _finishAsset:assetCopy error:errorCopy cancelPendingAssetsInBatch:batchCopy];
+  mEMORY[0x277CE53F8] = [MEMORY[0x277CE53F8] sharedInstance];
+  [mEMORY[0x277CE53F8] logAssetLinkOfType:0 didFinishAsset:assetCopy withError:errorCopy];
 }
 
-- (void)ATStoreDownloadService:(id)a3 didUpdateProgressForAsset:(id)a4 progress:(float)a5
+- (void)ATStoreDownloadService:(id)service didUpdateProgressForAsset:(id)asset progress:(float)progress
 {
-  v7 = a4;
+  assetCopy = asset;
   callbackQueue = self->_callbackQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __83__ATStoreMediaAssetLink_ATStoreDownloadService_didUpdateProgressForAsset_progress___block_invoke;
   block[3] = &unk_2784E5848;
   block[4] = self;
-  v11 = v7;
-  v12 = a5;
-  v9 = v7;
+  v11 = assetCopy;
+  progressCopy = progress;
+  v9 = assetCopy;
   dispatch_async(callbackQueue, block);
 }
 
@@ -422,14 +422,14 @@ void __83__ATStoreMediaAssetLink_ATStoreDownloadService_didUpdateProgressForAsse
   [WeakRetained assetLink:*(a1 + 32) didUpdateAsset:*(a1 + 40) progress:*(a1 + 48)];
 }
 
-- (void)ATStoreDownloadService:(id)a3 didChangeStateForAsset:(id)a4 oldState:(int64_t)a5 newState:(int64_t)a6
+- (void)ATStoreDownloadService:(id)service didChangeStateForAsset:(id)asset oldState:(int64_t)state newState:(int64_t)newState
 {
-  v8 = a4;
-  [v8 setAssetState:{-[ATStoreMediaAssetLink _ATAssetStateForStoreDownloadState:](self, "_ATAssetStateForStoreDownloadState:", a6)}];
-  if (a6 == 2)
+  assetCopy = asset;
+  [assetCopy setAssetState:{-[ATStoreMediaAssetLink _ATAssetStateForStoreDownloadState:](self, "_ATAssetStateForStoreDownloadState:", newState)}];
+  if (newState == 2)
   {
-    v9 = [MEMORY[0x277CE53F8] sharedInstance];
-    [v9 logAssetLinkOfType:0 didBeginDownloadingAsset:v8];
+    mEMORY[0x277CE53F8] = [MEMORY[0x277CE53F8] sharedInstance];
+    [mEMORY[0x277CE53F8] logAssetLinkOfType:0 didBeginDownloadingAsset:assetCopy];
   }
 
   callbackQueue = self->_callbackQueue;
@@ -438,8 +438,8 @@ void __83__ATStoreMediaAssetLink_ATStoreDownloadService_didUpdateProgressForAsse
   v12[2] = __89__ATStoreMediaAssetLink_ATStoreDownloadService_didChangeStateForAsset_oldState_newState___block_invoke;
   v12[3] = &unk_2784E5960;
   v12[4] = self;
-  v13 = v8;
-  v11 = v8;
+  v13 = assetCopy;
+  v11 = assetCopy;
   dispatch_async(callbackQueue, v12);
 }
 
@@ -453,17 +453,17 @@ void __89__ATStoreMediaAssetLink_ATStoreDownloadService_didChangeStateForAsset_o
   [WeakRetained assetLink:v3 didTransitionAssetStates:v4];
 }
 
-- (void)prioritizeAsset:(id)a3
+- (void)prioritizeAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__ATStoreMediaAssetLink_prioritizeAsset___block_invoke;
   v7[3] = &unk_2784E5960;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assetCopy;
+  v6 = assetCopy;
   dispatch_async(queue, v7);
 }
 
@@ -480,24 +480,24 @@ uint64_t __41__ATStoreMediaAssetLink_prioritizeAsset___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)cancelAssets:(id)a3
+- (void)cancelAssets:(id)assets
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetsCopy = assets;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__4551;
   v23 = __Block_byref_object_dispose__4552;
-  v24 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__ATStoreMediaAssetLink_cancelAssets___block_invoke;
   block[3] = &unk_2784E5988;
-  v6 = v4;
+  v6 = assetsCopy;
   v16 = v6;
-  v17 = self;
+  selfCopy = self;
   v18 = &v19;
   dispatch_sync(queue, block);
   v13 = 0u;
@@ -576,43 +576,43 @@ void __38__ATStoreMediaAssetLink_cancelAssets___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)canEnqueueAsset:(id)a3
+- (BOOL)canEnqueueAsset:(id)asset
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetCopy = asset;
   v5 = +[ATDeviceSettings sharedInstance];
-  v6 = [v5 useNewDownloadService];
+  useNewDownloadService = [v5 useNewDownloadService];
 
-  if (!v6)
+  if (!useNewDownloadService)
   {
     goto LABEL_36;
   }
 
-  v7 = [v4 variantOptions];
-  v8 = [v7 objectForKey:@"AssetParts"];
-  v9 = [v8 unsignedIntegerValue];
+  variantOptions = [assetCopy variantOptions];
+  v8 = [variantOptions objectForKey:@"AssetParts"];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-  if (v9)
+  if (unsignedIntegerValue)
   {
-    if ((v9 & 1) == 0)
+    if ((unsignedIntegerValue & 1) == 0)
     {
       goto LABEL_36;
     }
   }
 
-  if ([v4 bypassStore])
+  if ([assetCopy bypassStore])
   {
     goto LABEL_36;
   }
 
-  v10 = [v4 dataclass];
-  if ([v10 isEqualToString:@"Media"])
+  dataclass = [assetCopy dataclass];
+  if ([dataclass isEqualToString:@"Media"])
   {
     goto LABEL_8;
   }
 
-  v11 = [v4 dataclass];
-  if ([v11 isEqualToString:@"Book"])
+  dataclass2 = [assetCopy dataclass];
+  if ([dataclass2 isEqualToString:@"Book"])
   {
 
 LABEL_8:
@@ -625,8 +625,8 @@ LABEL_8:
     goto LABEL_36;
   }
 
-  v31 = [v4 dataclass];
-  v32 = [v31 isEqualToString:@"Podcasts"];
+  dataclass3 = [assetCopy dataclass];
+  v32 = [dataclass3 isEqualToString:@"Podcasts"];
 
   if ((v32 & 1) == 0)
   {
@@ -634,35 +634,35 @@ LABEL_8:
   }
 
 LABEL_9:
-  v12 = [v4 storeInfo];
+  storeInfo = [assetCopy storeInfo];
 
-  if (!v12)
+  if (!storeInfo)
   {
     goto LABEL_36;
   }
 
-  v13 = [v4 assetType];
-  if ([v13 isEqualToString:@"Music"])
+  assetType = [assetCopy assetType];
+  if ([assetType isEqualToString:@"Music"])
   {
     v14 = 1;
   }
 
   else
   {
-    v15 = [v4 assetType];
-    v14 = [v15 isEqualToString:@"MusicVideo"];
+    assetType2 = [assetCopy assetType];
+    v14 = [assetType2 isEqualToString:@"MusicVideo"];
   }
 
-  v16 = [v4 assetType];
-  v17 = [v16 isEqualToString:@"Audiobook"];
+  assetType3 = [assetCopy assetType];
+  v17 = [assetType3 isEqualToString:@"Audiobook"];
 
-  v18 = [v4 storeInfo];
-  v19 = [v18 redownloadParams];
-  v20 = [v19 length];
+  storeInfo2 = [assetCopy storeInfo];
+  redownloadParams = [storeInfo2 redownloadParams];
+  v20 = [redownloadParams length];
 
-  v21 = [v4 storeInfo];
-  v22 = [v21 endpointType];
-  v23 = [v22 integerValue];
+  storeInfo3 = [assetCopy storeInfo];
+  endpointType = [storeInfo3 endpointType];
+  integerValue = [endpointType integerValue];
 
   if (!v14)
   {
@@ -674,28 +674,28 @@ LABEL_9:
     goto LABEL_32;
   }
 
-  if (![v4 isRestore])
+  if (![assetCopy isRestore])
   {
     goto LABEL_27;
   }
 
-  if (v23 == 2 && !v20)
+  if (integerValue == 2 && !v20)
   {
     goto LABEL_36;
   }
 
-  if (v23 > 1)
+  if (integerValue > 1)
   {
 LABEL_27:
-    v33 = [v4 isRestore];
-    if (v23 - 3 < 0xFFFFFFFFFFFFFFFELL)
+    isRestore = [assetCopy isRestore];
+    if (integerValue - 3 < 0xFFFFFFFFFFFFFFFELL)
     {
       v34 = 1;
     }
 
     else
     {
-      v34 = v33;
+      v34 = isRestore;
     }
 
     if ((v34 & (v17 ^ 1) & 1) == 0)
@@ -715,8 +715,8 @@ LABEL_33:
       goto LABEL_37;
     }
 
-    v35 = [v4 dataclass];
-    v36 = [v35 isEqualToString:@"Book"];
+    dataclass4 = [assetCopy dataclass];
+    v36 = [dataclass4 isEqualToString:@"Book"];
 
     if ((v36 & 1) == 0)
     {
@@ -725,15 +725,15 @@ LABEL_33:
         goto LABEL_33;
       }
 
-      v38 = [MEMORY[0x277D7FA80] currentDeviceInfo];
-      if ([v38 isWatch])
+      currentDeviceInfo = [MEMORY[0x277D7FA80] currentDeviceInfo];
+      if ([currentDeviceInfo isWatch])
       {
 
         goto LABEL_33;
       }
 
-      v39 = [v4 assetType];
-      v40 = [v39 isEqualToString:@"Audiobook"];
+      assetType4 = [assetCopy assetType];
+      v40 = [assetType4 isEqualToString:@"Audiobook"];
 
       if ((v40 & 1) == 0)
       {
@@ -746,24 +746,24 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  v24 = [MEMORY[0x277D7FCA0] activeAccount];
-  v25 = [MEMORY[0x277D7FCA8] defaultIdentityStore];
+  activeAccount = [MEMORY[0x277D7FCA0] activeAccount];
+  defaultIdentityStore = [MEMORY[0x277D7FCA8] defaultIdentityStore];
   v41 = 0;
-  v26 = [v25 DSIDForUserIdentity:v24 outError:&v41];
+  v26 = [defaultIdentityStore DSIDForUserIdentity:activeAccount outError:&v41];
   v27 = v41;
 
   if (!v26 || v27)
   {
-    v29 = _ATLogCategoryStoreDownloads();
-    if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+    dSID = _ATLogCategoryStoreDownloads();
+    if (os_log_type_enabled(dSID, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v43 = self;
+      selfCopy = self;
       v44 = 2114;
-      v45 = v4;
+      v45 = assetCopy;
       v46 = 2114;
       v47 = v27;
-      _os_log_impl(&dword_223819000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@ Could not get DSID for active account. (asset=%{public}@, error=%{public}@)", buf, 0x20u);
+      _os_log_impl(&dword_223819000, dSID, OS_LOG_TYPE_DEFAULT, "%{public}@ Could not get DSID for active account. (asset=%{public}@, error=%{public}@)", buf, 0x20u);
     }
 
     v30 = 0;
@@ -771,17 +771,17 @@ LABEL_36:
 
   else
   {
-    v28 = [v4 storeInfo];
-    v29 = [v28 DSID];
+    storeInfo4 = [assetCopy storeInfo];
+    dSID = [storeInfo4 DSID];
 
-    if (v26 == v29)
+    if (v26 == dSID)
     {
       v30 = 1;
     }
 
     else
     {
-      v30 = [v26 isEqual:v29];
+      v30 = [v26 isEqual:dSID];
     }
   }
 
@@ -789,37 +789,37 @@ LABEL_37:
   return v30;
 }
 
-- (id)enqueueAssets:(id)a3 force:(BOOL)a4
+- (id)enqueueAssets:(id)assets force:(BOOL)force
 {
   v57 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  assetsCopy = assets;
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
   v47 = __Block_byref_object_copy__4551;
   v48 = __Block_byref_object_dispose__4552;
-  v49 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
   v41 = __Block_byref_object_copy__4551;
   v42 = __Block_byref_object_dispose__4552;
-  v43 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
   v35 = __Block_byref_object_copy__4551;
   v36 = __Block_byref_object_dispose__4552;
-  v37 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__ATStoreMediaAssetLink_enqueueAssets_force___block_invoke;
   block[3] = &unk_2784E5820;
-  v8 = v6;
+  v8 = assetsCopy;
   v26 = v8;
-  v27 = self;
-  v31 = a4;
+  selfCopy = self;
+  forceCopy = force;
   v28 = &v44;
   v29 = &v32;
   v30 = &v38;
@@ -831,7 +831,7 @@ LABEL_37:
     {
       v10 = v33[5];
       *buf = 138543618;
-      v52 = self;
+      selfCopy3 = self;
       v53 = 2114;
       v54 = v10;
       _os_log_impl(&dword_223819000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ Download paused reason changed for %{public}@", buf, 0x16u);
@@ -849,7 +849,7 @@ LABEL_37:
       v13 = v39[5];
       v14 = [v13 count];
       *buf = 138543874;
-      v52 = self;
+      selfCopy3 = self;
       v53 = 2114;
       v54 = v13;
       v55 = 2048;

@@ -1,10 +1,10 @@
 @interface WFGenerativeResultTypePickerParameter
 - (Class)stateClass;
-- (id)accessoryIconForPossibleState:(id)a3;
-- (id)accessoryImageForPossibleState:(id)a3;
-- (id)defaultSerializedRepresentationForEnumeration:(id)a3;
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4;
-- (id)loadPossibleStatesForEnumeration:(id)a3;
+- (id)accessoryIconForPossibleState:(id)state;
+- (id)accessoryImageForPossibleState:(id)state;
+- (id)defaultSerializedRepresentationForEnumeration:(id)enumeration;
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state;
+- (id)loadPossibleStatesForEnumeration:(id)enumeration;
 @end
 
 @implementation WFGenerativeResultTypePickerParameter
@@ -16,30 +16,30 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (id)accessoryImageForPossibleState:(id)a3
+- (id)accessoryImageForPossibleState:(id)state
 {
-  v4 = a3;
-  v5 = self;
+  stateCopy = state;
+  selfCopy = self;
   v6 = sub_23DF2F97C();
 
   return v6;
 }
 
-- (id)accessoryIconForPossibleState:(id)a3
+- (id)accessoryIconForPossibleState:(id)state
 {
-  v4 = a3;
-  v5 = self;
+  stateCopy = state;
+  selfCopy = self;
   sub_23DF2FE20();
   v7 = v6;
 
   return v7;
 }
 
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  enumerationCopy = enumeration;
+  stateCopy = state;
+  selfCopy = self;
   sub_23DF30248();
   v10 = v9;
 
@@ -56,19 +56,19 @@
   return v11;
 }
 
-- (id)loadPossibleStatesForEnumeration:(id)a3
+- (id)loadPossibleStatesForEnumeration:(id)enumeration
 {
-  v4 = a3;
-  v5 = self;
+  enumerationCopy = enumeration;
+  selfCopy = self;
   v6 = sub_23DF30460();
 
   return v6;
 }
 
-- (id)defaultSerializedRepresentationForEnumeration:(id)a3
+- (id)defaultSerializedRepresentationForEnumeration:(id)enumeration
 {
-  v4 = a3;
-  v5 = self;
+  enumerationCopy = enumeration;
+  selfCopy = self;
   sub_23DF3141C(v14);
 
   v6 = v15;

@@ -1,8 +1,8 @@
 @interface MCAssetAudio
 - (NSSet)songs;
-- (void)addSong:(id)a3;
+- (void)addSong:(id)song;
 - (void)demolish;
-- (void)removeSong:(id)a3;
+- (void)removeSong:(id)song;
 @end
 
 @implementation MCAssetAudio
@@ -41,7 +41,7 @@
   return v4;
 }
 
-- (void)addSong:(id)a3
+- (void)addSong:(id)song
 {
   objc_sync_enter(self);
   mSongs = self->mSongs;
@@ -51,15 +51,15 @@
     self->mSongs = mSongs;
   }
 
-  [(NSMutableSet *)mSongs addObject:a3];
+  [(NSMutableSet *)mSongs addObject:song];
 
   objc_sync_exit(self);
 }
 
-- (void)removeSong:(id)a3
+- (void)removeSong:(id)song
 {
   objc_sync_enter(self);
-  [(NSMutableSet *)self->mSongs removeObject:a3];
+  [(NSMutableSet *)self->mSongs removeObject:song];
   if (![(NSMutableSet *)self->mSongs count])
   {
 

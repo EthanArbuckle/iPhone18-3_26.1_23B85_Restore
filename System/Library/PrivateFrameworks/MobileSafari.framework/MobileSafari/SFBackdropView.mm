@@ -1,18 +1,18 @@
 @interface SFBackdropView
 + (Class)layerClass;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (CABackdropLayer)backdropLayer;
-- (SFBackdropView)initWithCoder:(id)a3;
-- (SFBackdropView)initWithFrame:(CGRect)a3;
+- (SFBackdropView)initWithCoder:(id)coder;
+- (SFBackdropView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SFBackdropView
 
-- (SFBackdropView)initWithFrame:(CGRect)a3
+- (SFBackdropView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = SFBackdropView;
-  return [(SFBackdropView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(SFBackdropView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
 + (Class)layerClass
@@ -22,13 +22,13 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  if (a3)
+  if (key)
   {
-    v3 = self;
+    selfCopy = self;
     sub_18BC20BD8();
-    v4 = v3;
+    v4 = selfCopy;
     if (sub_18BC20C78())
     {
 
@@ -56,19 +56,19 @@
 
 - (CABackdropLayer)backdropLayer
 {
-  v2 = [(SFBackdropView *)self layer];
+  layer = [(SFBackdropView *)self layer];
   objc_opt_self();
   v3 = swift_dynamicCastObjCClassUnconditional();
 
   return v3;
 }
 
-- (SFBackdropView)initWithCoder:(id)a3
+- (SFBackdropView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = SFBackdropView;
-  v3 = a3;
-  v4 = [(SFBackdropView *)&v6 initWithCoder:v3];
+  coderCopy = coder;
+  v4 = [(SFBackdropView *)&v6 initWithCoder:coderCopy];
 
   if (v4)
   {

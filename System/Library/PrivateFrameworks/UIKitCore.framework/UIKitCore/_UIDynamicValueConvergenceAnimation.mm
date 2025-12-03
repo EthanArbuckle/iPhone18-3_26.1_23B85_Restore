@@ -1,43 +1,43 @@
 @interface _UIDynamicValueConvergenceAnimation
-- (BOOL)_animateForInterval:(double)a3;
-- (_UIDynamicValueConvergenceAnimation)initWithValue:(double)a3 targetValue:(double)a4 convergenceRate:(double)a5 minimumDifference:(double)a6;
-- (void)runWithValueApplier:(id)a3 completion:(id)a4;
+- (BOOL)_animateForInterval:(double)interval;
+- (_UIDynamicValueConvergenceAnimation)initWithValue:(double)value targetValue:(double)targetValue convergenceRate:(double)rate minimumDifference:(double)difference;
+- (void)runWithValueApplier:(id)applier completion:(id)completion;
 @end
 
 @implementation _UIDynamicValueConvergenceAnimation
 
-- (_UIDynamicValueConvergenceAnimation)initWithValue:(double)a3 targetValue:(double)a4 convergenceRate:(double)a5 minimumDifference:(double)a6
+- (_UIDynamicValueConvergenceAnimation)initWithValue:(double)value targetValue:(double)targetValue convergenceRate:(double)rate minimumDifference:(double)difference
 {
   v11.receiver = self;
   v11.super_class = _UIDynamicValueConvergenceAnimation;
   result = [(_UIDynamicAnimation *)&v11 init];
   if (result)
   {
-    result->_value = a3;
-    result->_targetValue = a4;
-    result->_convergenceRate = a5;
-    result->_minimumDifference = a6;
+    result->_value = value;
+    result->_targetValue = targetValue;
+    result->_convergenceRate = rate;
+    result->_minimumDifference = difference;
   }
 
   return result;
 }
 
-- (void)runWithValueApplier:(id)a3 completion:(id)a4
+- (void)runWithValueApplier:(id)applier completion:(id)completion
 {
-  v6 = a4;
-  v7 = _Block_copy(a3);
+  completionCopy = completion;
+  v7 = _Block_copy(applier);
   applier = self->_applier;
   self->_applier = v7;
 
   v9.receiver = self;
   v9.super_class = _UIDynamicValueConvergenceAnimation;
-  [(_UIDynamicAnimation *)&v9 runWithCompletion:v6];
+  [(_UIDynamicAnimation *)&v9 runWithCompletion:completionCopy];
 }
 
-- (BOOL)_animateForInterval:(double)a3
+- (BOOL)_animateForInterval:(double)interval
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = (a3 * 1000.0);
+  v3 = (interval * 1000.0);
   if (v3 < 1)
   {
     return 0;

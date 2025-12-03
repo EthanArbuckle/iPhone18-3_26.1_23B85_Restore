@@ -1,10 +1,10 @@
 @interface MPActionTrigger
 + (id)actionTrigger;
 - (MPActionTrigger)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)setAction:(id)a3;
-- (void)setActionKey:(id)a3;
+- (void)setAction:(id)action;
+- (void)setActionKey:(id)key;
 @end
 
 @implementation MPActionTrigger
@@ -36,7 +36,7 @@
   [(MPAction *)&v3 dealloc];
 }
 
-- (void)setActionKey:(id)a3
+- (void)setActionKey:(id)key
 {
   actionKey = self->_actionKey;
   if (actionKey)
@@ -45,29 +45,29 @@
     self->_actionKey = 0;
   }
 
-  self->_actionKey = [a3 copy];
+  self->_actionKey = [key copy];
   action = self->super._action;
   if (action)
   {
 
-    [(MCAction *)action setActionKey:a3];
+    [(MCAction *)action setActionKey:key];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = MPActionTrigger;
-  v4 = [(MPAction *)&v6 copyWithZone:a3];
+  v4 = [(MPAction *)&v6 copyWithZone:zone];
   [v4 setActionKey:self->_actionKey];
   return v4;
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
   v5.receiver = self;
   v5.super_class = MPActionTrigger;
-  [(MPAction *)&v5 setAction:a3];
+  [(MPAction *)&v5 setAction:action];
   action = self->super._action;
   if (action)
   {

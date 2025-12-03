@@ -1,27 +1,27 @@
 @interface MXIBackLayer
-- (MXIBackLayer)initWithDevice:(id)a3 tileSize:(unsigned int)a4 tileMips:(unsigned int)a5 downsampleLODs:(unsigned int)a6 pixelFormat:(unint64_t)a7 failOnBinaryArchiveMiss:(BOOL)a8 error:(id *)a9;
-- (void)createBackLayerWthCommandBuffer:(id)a3;
-- (void)processWthCommandBuffer:(id)a3 colorTexture:(id)a4 depthTexture:(id)a5;
+- (MXIBackLayer)initWithDevice:(id)device tileSize:(unsigned int)size tileMips:(unsigned int)mips downsampleLODs:(unsigned int)ds pixelFormat:(unint64_t)format failOnBinaryArchiveMiss:(BOOL)miss error:(id *)error;
+- (void)createBackLayerWthCommandBuffer:(id)buffer;
+- (void)processWthCommandBuffer:(id)buffer colorTexture:(id)texture depthTexture:(id)depthTexture;
 @end
 
 @implementation MXIBackLayer
 
-- (MXIBackLayer)initWithDevice:(id)a3 tileSize:(unsigned int)a4 tileMips:(unsigned int)a5 downsampleLODs:(unsigned int)a6 pixelFormat:(unint64_t)a7 failOnBinaryArchiveMiss:(BOOL)a8 error:(id *)a9
+- (MXIBackLayer)initWithDevice:(id)device tileSize:(unsigned int)size tileMips:(unsigned int)mips downsampleLODs:(unsigned int)ds pixelFormat:(unint64_t)format failOnBinaryArchiveMiss:(BOOL)miss error:(id *)error
 {
-  v9 = a8;
+  missCopy = miss;
   v173 = *MEMORY[0x277D85DE8];
-  v15 = a3;
+  deviceCopy = device;
   v169.receiver = self;
   v169.super_class = MXIBackLayer;
   v19 = [(MXIBackLayer *)&v169 init];
   if (v19)
   {
-    v163 = a7;
-    v164 = a6;
-    v165 = a4;
-    v162 = a5;
+    formatCopy = format;
+    dsCopy = ds;
+    sizeCopy = size;
+    mipsCopy = mips;
     v20 = objc_msgSend_bundleWithIdentifier_(MEMORY[0x277CCA8D8], v16, @"com.apple.mxi", v17, v18);
-    v26 = objc_msgSend_newDefaultLibraryWithBundle_error_(v15, v21, v20, a9, v22);
+    v26 = objc_msgSend_newDefaultLibraryWithBundle_error_(deviceCopy, v21, v20, error, v22);
     if (v26)
     {
       v27 = v20;
@@ -29,14 +29,14 @@
 
     else
     {
-      if (a9)
+      if (error)
       {
-        *a9 = 0;
+        *error = 0;
       }
 
       v27 = objc_msgSend_bundleWithIdentifier_(MEMORY[0x277CCA8D8], v23, @"com.apple.mxi.TiledTests", v24, v25);
 
-      v26 = objc_msgSend_newDefaultLibraryWithBundle_error_(v15, v29, v27, a9, v30);
+      v26 = objc_msgSend_newDefaultLibraryWithBundle_error_(deviceCopy, v29, v27, error, v30);
     }
 
     v168 = objc_opt_new();
@@ -44,7 +44,7 @@
     v33 = objc_msgSend_URLForResource_withExtension_(v27, v31, @"mxi_archive", @"metallib", v32);
     objc_msgSend_setUrl_(v168, v34, v33, v35, v36);
 
-    v39 = objc_msgSend_newBinaryArchiveWithDescriptor_error_(v15, v37, v168, a9, v38);
+    v39 = objc_msgSend_newBinaryArchiveWithDescriptor_error_(deviceCopy, v37, v168, error, v38);
     v167 = v39;
     if (v39)
     {
@@ -57,7 +57,7 @@
       v43 = _mxi_log();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
       {
-        v48 = objc_msgSend_localizedDescription(*a9, v44, v45, v46, v47);
+        v48 = objc_msgSend_localizedDescription(*error, v44, v45, v46, v47);
         *buf = 138412290;
         v172 = v48;
         _os_log_impl(&dword_22F9C3000, v43, OS_LOG_TYPE_ERROR, "[MXI.framework/MXIBackLayer.mm:43] [TiledProcessor] WARNING: nil MTLBinaryArchive for mxi_archive, error %@", buf, 0xCu);
@@ -66,7 +66,7 @@
       v42 = 0;
     }
 
-    if (v9)
+    if (missCopy)
     {
       v49 = 4;
     }
@@ -81,7 +81,7 @@
     objc_msgSend_setComputeFunction_(v50, v55, v54, v56, v57);
 
     objc_msgSend_setBinaryArchives_(v50, v58, v42, v59, v60);
-    v62 = objc_msgSend_newComputePipelineStateWithDescriptor_options_reflection_error_(v15, v61, v50, v49, 0, a9);
+    v62 = objc_msgSend_newComputePipelineStateWithDescriptor_options_reflection_error_(deviceCopy, v61, v50, v49, 0, error);
     concatRGBD = v19->_concatRGBD;
     v19->_concatRGBD = v62;
 
@@ -107,7 +107,7 @@
     objc_msgSend_setComputeFunction_(v64, v69, v68, v70, v71);
 
     objc_msgSend_setBinaryArchives_(v64, v72, v42, v73, v74);
-    v76 = objc_msgSend_newComputePipelineStateWithDescriptor_options_reflection_error_(v15, v75, v64, v49, 0, a9);
+    v76 = objc_msgSend_newComputePipelineStateWithDescriptor_options_reflection_error_(deviceCopy, v75, v64, v49, 0, error);
     downscaleAlphtaWeighted = v19->_downscaleAlphtaWeighted;
     v19->_downscaleAlphtaWeighted = v76;
 
@@ -134,7 +134,7 @@
     objc_msgSend_setComputeFunction_(v78, v83, v82, v84, v85);
 
     objc_msgSend_setBinaryArchives_(v78, v86, v42, v87, v88);
-    v90 = objc_msgSend_newComputePipelineStateWithDescriptor_options_reflection_error_(v15, v89, v78, 0, 0, a9);
+    v90 = objc_msgSend_newComputePipelineStateWithDescriptor_options_reflection_error_(deviceCopy, v89, v78, 0, 0, error);
     backLayerBlend = v19->_backLayerBlend;
     v19->_backLayerBlend = v90;
 
@@ -142,27 +142,27 @@
     {
       v92 = objc_opt_new();
       objc_msgSend_setTextureType_(v92, v93, 2, v94, v95);
-      objc_msgSend_setWidth_(v92, v96, v165 << (v164 - 1), v97, v98);
-      objc_msgSend_setHeight_(v92, v99, v165 << (v164 - 1), v100, v101);
-      objc_msgSend_setPixelFormat_(v92, v102, v163, v103, v104);
-      objc_msgSend_setMipmapLevelCount_(v92, v105, v164 + 1, v106, v107);
+      objc_msgSend_setWidth_(v92, v96, sizeCopy << (dsCopy - 1), v97, v98);
+      objc_msgSend_setHeight_(v92, v99, sizeCopy << (dsCopy - 1), v100, v101);
+      objc_msgSend_setPixelFormat_(v92, v102, formatCopy, v103, v104);
+      objc_msgSend_setMipmapLevelCount_(v92, v105, dsCopy + 1, v106, v107);
       objc_msgSend_setUsage_(v92, v108, 3, v109, v110);
-      v114 = objc_msgSend_newTextureWithDescriptor_(v15, v111, v92, v112, v113);
+      v114 = objc_msgSend_newTextureWithDescriptor_(deviceCopy, v111, v92, v112, v113);
       backLayerTexture = v19->_backLayerTexture;
       v19->_backLayerTexture = v114;
 
       if (v19->_backLayerTexture)
       {
-        objc_msgSend_setWidth_(v92, v116, v165, v117, v118);
-        objc_msgSend_setHeight_(v92, v119, v165, v120, v121);
-        objc_msgSend_setMipmapLevelCount_(v92, v122, v162, v123, v124);
-        v128 = objc_msgSend_newTextureWithDescriptor_(v15, v125, v92, v126, v127);
+        objc_msgSend_setWidth_(v92, v116, sizeCopy, v117, v118);
+        objc_msgSend_setHeight_(v92, v119, sizeCopy, v120, v121);
+        objc_msgSend_setMipmapLevelCount_(v92, v122, mipsCopy, v123, v124);
+        v128 = objc_msgSend_newTextureWithDescriptor_(deviceCopy, v125, v92, v126, v127);
         tileTexture = v19->_tileTexture;
         v19->_tileTexture = v128;
 
         if (v19->_tileTexture)
         {
-          v19->_lods = v164;
+          v19->_lods = dsCopy;
           v28 = v19;
 LABEL_37:
           v50 = v78;
@@ -213,15 +213,15 @@ LABEL_39:
   return v28;
 }
 
-- (void)processWthCommandBuffer:(id)a3 colorTexture:(id)a4 depthTexture:(id)a5
+- (void)processWthCommandBuffer:(id)buffer colorTexture:(id)texture depthTexture:(id)depthTexture
 {
-  v8 = a4;
-  v9 = a5;
-  v14 = objc_msgSend_computeCommandEncoder(a3, v10, v11, v12, v13);
+  textureCopy = texture;
+  depthTextureCopy = depthTexture;
+  v14 = objc_msgSend_computeCommandEncoder(buffer, v10, v11, v12, v13);
   objc_msgSend_setLabel_(v14, v15, @"MXI: ConcatRGBD", v16, v17);
   objc_msgSend_setComputePipelineState_(v14, v18, self->_concatRGBD, v19, v20);
-  objc_msgSend_setTexture_atIndex_(v14, v21, v8, 0, v22);
-  objc_msgSend_setTexture_atIndex_(v14, v23, v9, 1, v24);
+  objc_msgSend_setTexture_atIndex_(v14, v21, textureCopy, 0, v22);
+  objc_msgSend_setTexture_atIndex_(v14, v23, depthTextureCopy, 1, v24);
   objc_msgSend_setTexture_atIndex_(v14, v25, self->_backLayerTexture, 2, v26);
   v43[0] = objc_msgSend_width(self->_backLayerTexture, v27, v28, v29, v30);
   v43[1] = objc_msgSend_height(self->_backLayerTexture, v31, v32, v33, v34);
@@ -232,10 +232,10 @@ LABEL_39:
   objc_msgSend_endEncoding(v14, v37, v38, v39, v40);
 }
 
-- (void)createBackLayerWthCommandBuffer:(id)a3
+- (void)createBackLayerWthCommandBuffer:(id)buffer
 {
-  v4 = a3;
-  v9 = objc_msgSend_computeCommandEncoder(v4, v5, v6, v7, v8);
+  bufferCopy = buffer;
+  v9 = objc_msgSend_computeCommandEncoder(bufferCopy, v5, v6, v7, v8);
   objc_msgSend_setLabel_(v9, v10, @"MXI: Backlayer filtering", v11, v12);
   backLayerTexture = self->_backLayerTexture;
   v18 = objc_msgSend_pixelFormat(backLayerTexture, v14, v15, v16, v17);
@@ -287,7 +287,7 @@ LABEL_39:
   v97 = 1;
   objc_msgSend_dispatchThreads_threadsPerThreadgroup_(v9, v74, &v98, &v96, v75);
   objc_msgSend_endEncoding(v9, v76, v77, v78, v79);
-  v84 = objc_msgSend_blitCommandEncoder(v4, v80, v81, v82, v83);
+  v84 = objc_msgSend_blitCommandEncoder(bufferCopy, v80, v81, v82, v83);
   objc_msgSend_setLabel_(v84, v85, @"MXI: Backlayer mipmapping", v86, v87);
   objc_msgSend_generateMipmapsForTexture_(v84, v88, self->_tileTexture, v89, v90);
   objc_msgSend_endEncoding(v84, v91, v92, v93, v94);

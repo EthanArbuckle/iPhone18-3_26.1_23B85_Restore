@@ -1,11 +1,11 @@
 @interface UIPresenterObserver
 - (_TtC12DrawingBoard19UIPresenterObserver)init;
-- (void)scenePresenter:(id)a3 hostingWillChange:(BOOL)a4;
+- (void)scenePresenter:(id)presenter hostingWillChange:(BOOL)change;
 @end
 
 @implementation UIPresenterObserver
 
-- (void)scenePresenter:(id)a3 hostingWillChange:(BOOL)a4
+- (void)scenePresenter:(id)presenter hostingWillChange:(BOOL)change
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27EF1C1A0);
   MEMORY[0x28223BE20](v6 - 8);
@@ -13,14 +13,14 @@
   v9 = sub_249D73294();
   (*(*(v9 - 8) + 56))(v8, 1, 1, v9);
   sub_249D73274();
-  v10 = self;
+  selfCopy = self;
   v11 = sub_249D73264();
   v12 = swift_allocObject();
   v13 = MEMORY[0x277D85700];
   *(v12 + 16) = v11;
   *(v12 + 24) = v13;
-  *(v12 + 32) = v10;
-  *(v12 + 40) = a4;
+  *(v12 + 32) = selfCopy;
+  *(v12 + 40) = change;
   sub_249D41820(0, 0, v8, &unk_249D76590, v12);
 }
 

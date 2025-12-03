@@ -1,26 +1,26 @@
 @interface ATXHomeScreenConfigurationDiffer
-+ (BOOL)_widget:(id)a3 hasSamePersonalityAsOtherWidget:(id)a4;
-- (ATXHomeScreenConfigurationDiffer)initWithPreviousConfigurations:(id)a3 currentConfigurations:(id)a4;
++ (BOOL)_widget:(id)_widget hasSamePersonalityAsOtherWidget:(id)widget;
+- (ATXHomeScreenConfigurationDiffer)initWithPreviousConfigurations:(id)configurations currentConfigurations:(id)currentConfigurations;
 - (void)_calculatePinnedWidgetChanges;
 - (void)_calculateStackedWidgetChanges;
 @end
 
 @implementation ATXHomeScreenConfigurationDiffer
 
-- (ATXHomeScreenConfigurationDiffer)initWithPreviousConfigurations:(id)a3 currentConfigurations:(id)a4
+- (ATXHomeScreenConfigurationDiffer)initWithPreviousConfigurations:(id)configurations currentConfigurations:(id)currentConfigurations
 {
-  v6 = a3;
-  v7 = a4;
+  configurationsCopy = configurations;
+  currentConfigurationsCopy = currentConfigurations;
   v16.receiver = self;
   v16.super_class = ATXHomeScreenConfigurationDiffer;
   v8 = [(ATXHomeScreenConfigurationDiffer *)&v16 init];
   if (v8)
   {
-    v9 = [[ATXHomeScreenConfigurationComponents alloc] initWithConfigurations:v6];
+    v9 = [[ATXHomeScreenConfigurationComponents alloc] initWithConfigurations:configurationsCopy];
     previousComponents = v8->_previousComponents;
     v8->_previousComponents = v9;
 
-    v11 = [[ATXHomeScreenConfigurationComponents alloc] initWithConfigurations:v7];
+    v11 = [[ATXHomeScreenConfigurationComponents alloc] initWithConfigurations:currentConfigurationsCopy];
     currentComponents = v8->_currentComponents;
     v8->_currentComponents = v11;
 
@@ -39,13 +39,13 @@
 {
   v39 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E695DFA0]);
-  v4 = [(ATXHomeScreenConfigurationComponentsDiffer *)self->_componentsDiffer addedPinnedWidgets];
-  v5 = [v3 initWithArray:v4];
+  addedPinnedWidgets = [(ATXHomeScreenConfigurationComponentsDiffer *)self->_componentsDiffer addedPinnedWidgets];
+  v5 = [v3 initWithArray:addedPinnedWidgets];
 
   v6 = objc_alloc(MEMORY[0x1E695DFA0]);
-  v24 = self;
-  v7 = [(ATXHomeScreenConfigurationComponentsDiffer *)self->_componentsDiffer deletedPinnedWidgets];
-  v27 = [v6 initWithArray:v7];
+  selfCopy = self;
+  deletedPinnedWidgets = [(ATXHomeScreenConfigurationComponentsDiffer *)self->_componentsDiffer deletedPinnedWidgets];
+  v27 = [v6 initWithArray:deletedPinnedWidgets];
 
   v8 = objc_opt_new();
   v9 = objc_opt_new();
@@ -110,36 +110,36 @@
 
   [obj minusOrderedSet:v8];
   [v27 minusOrderedSet:v9];
-  v18 = [obj array];
-  addedPinnedWidgets = v24->_addedPinnedWidgets;
-  v24->_addedPinnedWidgets = v18;
+  array = [obj array];
+  addedPinnedWidgets = selfCopy->_addedPinnedWidgets;
+  selfCopy->_addedPinnedWidgets = array;
 
-  v20 = [v27 array];
-  deletedPinnedWidgets = v24->_deletedPinnedWidgets;
-  v24->_deletedPinnedWidgets = v20;
+  array2 = [v27 array];
+  deletedPinnedWidgets = selfCopy->_deletedPinnedWidgets;
+  selfCopy->_deletedPinnedWidgets = array2;
 
-  v22 = [v8 array];
-  configuredPinnedWidgets = v24->_configuredPinnedWidgets;
-  v24->_configuredPinnedWidgets = v22;
+  array3 = [v8 array];
+  configuredPinnedWidgets = selfCopy->_configuredPinnedWidgets;
+  selfCopy->_configuredPinnedWidgets = array3;
 }
 
 - (void)_calculateStackedWidgetChanges
 {
   v62 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E695DFA0]);
-  v4 = [(ATXHomeScreenConfigurationComponentsDiffer *)self->_componentsDiffer userAddedStackedWidgets];
-  v5 = [v3 initWithArray:v4];
+  userAddedStackedWidgets = [(ATXHomeScreenConfigurationComponentsDiffer *)self->_componentsDiffer userAddedStackedWidgets];
+  v5 = [v3 initWithArray:userAddedStackedWidgets];
 
   v6 = objc_alloc(MEMORY[0x1E695DFA0]);
-  v7 = [(ATXHomeScreenConfigurationComponentsDiffer *)self->_componentsDiffer userDeletedStackedWidgets];
-  v8 = [v6 initWithArray:v7];
+  userDeletedStackedWidgets = [(ATXHomeScreenConfigurationComponentsDiffer *)self->_componentsDiffer userDeletedStackedWidgets];
+  v8 = [v6 initWithArray:userDeletedStackedWidgets];
 
   v56 = 0u;
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v9 = [(ATXHomeScreenConfigurationDiffer *)self addedStacks];
-  v10 = [v9 countByEnumeratingWithState:&v54 objects:v61 count:16];
+  addedStacks = [(ATXHomeScreenConfigurationDiffer *)self addedStacks];
+  v10 = [addedStacks countByEnumeratingWithState:&v54 objects:v61 count:16];
   if (v10)
   {
     v11 = v10;
@@ -150,14 +150,14 @@
       {
         if (*v55 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(addedStacks);
         }
 
-        v14 = [*(*(&v54 + 1) + 8 * i) widgets];
-        [v5 removeObjectsInArray:v14];
+        widgets = [*(*(&v54 + 1) + 8 * i) widgets];
+        [v5 removeObjectsInArray:widgets];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v54 objects:v61 count:16];
+      v11 = [addedStacks countByEnumeratingWithState:&v54 objects:v61 count:16];
     }
 
     while (v11);
@@ -167,8 +167,8 @@
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v15 = [(ATXHomeScreenConfigurationDiffer *)self deletedStacks];
-  v16 = [v15 countByEnumeratingWithState:&v50 objects:v60 count:16];
+  deletedStacks = [(ATXHomeScreenConfigurationDiffer *)self deletedStacks];
+  v16 = [deletedStacks countByEnumeratingWithState:&v50 objects:v60 count:16];
   if (v16)
   {
     v17 = v16;
@@ -179,20 +179,20 @@
       {
         if (*v51 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(deletedStacks);
         }
 
-        v20 = [*(*(&v50 + 1) + 8 * j) widgets];
-        [v8 removeObjectsInArray:v20];
+        widgets2 = [*(*(&v50 + 1) + 8 * j) widgets];
+        [v8 removeObjectsInArray:widgets2];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v50 objects:v60 count:16];
+      v17 = [deletedStacks countByEnumeratingWithState:&v50 objects:v60 count:16];
     }
 
     while (v17);
   }
 
-  v37 = self;
+  selfCopy = self;
 
   v21 = objc_opt_new();
   v22 = objc_opt_new();
@@ -260,33 +260,33 @@
 
   [obj minusOrderedSet:v21];
   [v8 minusOrderedSet:v22];
-  v31 = [obj array];
-  widgetsAddedToStacksByUser = v37->_widgetsAddedToStacksByUser;
-  v37->_widgetsAddedToStacksByUser = v31;
+  array = [obj array];
+  widgetsAddedToStacksByUser = selfCopy->_widgetsAddedToStacksByUser;
+  selfCopy->_widgetsAddedToStacksByUser = array;
 
-  v33 = [v8 array];
-  widgetsDeletedFromStacksByUser = v37->_widgetsDeletedFromStacksByUser;
-  v37->_widgetsDeletedFromStacksByUser = v33;
+  array2 = [v8 array];
+  widgetsDeletedFromStacksByUser = selfCopy->_widgetsDeletedFromStacksByUser;
+  selfCopy->_widgetsDeletedFromStacksByUser = array2;
 
-  v35 = [v21 array];
-  configuredStackedWidgets = v37->_configuredStackedWidgets;
-  v37->_configuredStackedWidgets = v35;
+  array3 = [v21 array];
+  configuredStackedWidgets = selfCopy->_configuredStackedWidgets;
+  selfCopy->_configuredStackedWidgets = array3;
 }
 
-+ (BOOL)_widget:(id)a3 hasSamePersonalityAsOtherWidget:(id)a4
++ (BOOL)_widget:(id)_widget hasSamePersonalityAsOtherWidget:(id)widget
 {
-  v5 = a4;
-  v6 = a3;
+  widgetCopy = widget;
+  _widgetCopy = _widget;
   v7 = [ATXWidgetPersonality alloc];
-  v8 = [v6 extensionBundleId];
-  v9 = [v6 widgetKind];
+  extensionBundleId = [_widgetCopy extensionBundleId];
+  widgetKind = [_widgetCopy widgetKind];
 
-  v10 = [(ATXWidgetPersonality *)v7 initWithExtensionBundleId:v8 kind:v9];
+  v10 = [(ATXWidgetPersonality *)v7 initWithExtensionBundleId:extensionBundleId kind:widgetKind];
   v11 = [ATXWidgetPersonality alloc];
-  v12 = [v5 extensionBundleId];
-  v13 = [v5 widgetKind];
+  extensionBundleId2 = [widgetCopy extensionBundleId];
+  widgetKind2 = [widgetCopy widgetKind];
 
-  v14 = [(ATXWidgetPersonality *)v11 initWithExtensionBundleId:v12 kind:v13];
+  v14 = [(ATXWidgetPersonality *)v11 initWithExtensionBundleId:extensionBundleId2 kind:widgetKind2];
   LOBYTE(v11) = [(ATXWidgetPersonality *)v10 isEqual:v14];
 
   return v11;

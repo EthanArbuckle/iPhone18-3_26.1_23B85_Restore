@@ -1,31 +1,31 @@
 @interface SignpostReporterConfigObserverDelegate
-- (SignpostReporterConfigObserverDelegate)initWithCallbackBlock:(id)a3;
-- (void)observer:(id)a3 didChangeConfiguration:(id)a4 type:(id)a5;
+- (SignpostReporterConfigObserverDelegate)initWithCallbackBlock:(id)block;
+- (void)observer:(id)observer didChangeConfiguration:(id)configuration type:(id)type;
 @end
 
 @implementation SignpostReporterConfigObserverDelegate
 
-- (SignpostReporterConfigObserverDelegate)initWithCallbackBlock:(id)a3
+- (SignpostReporterConfigObserverDelegate)initWithCallbackBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8.receiver = self;
   v8.super_class = SignpostReporterConfigObserverDelegate;
   v5 = [(SignpostReporterConfigObserverDelegate *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SignpostReporterConfigObserverDelegate *)v5 setCallbackBlock:v4];
+    [(SignpostReporterConfigObserverDelegate *)v5 setCallbackBlock:blockCopy];
   }
 
   return v6;
 }
 
-- (void)observer:(id)a3 didChangeConfiguration:(id)a4 type:(id)a5
+- (void)observer:(id)observer didChangeConfiguration:(id)configuration type:(id)type
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(SignpostReporterConfigObserverDelegate *)self callbackBlock];
-  v9[2](v9, v8, v7);
+  typeCopy = type;
+  configurationCopy = configuration;
+  callbackBlock = [(SignpostReporterConfigObserverDelegate *)self callbackBlock];
+  callbackBlock[2](callbackBlock, configurationCopy, typeCopy);
 }
 
 @end

@@ -1,28 +1,28 @@
 @interface AXMLayoutTable
-+ (id)region:(id)a3 row:(id)a4;
++ (id)region:(id)region row:(id)row;
 - (CGRect)frame;
 - (CGRect)normalizedFrame;
 @end
 
 @implementation AXMLayoutTable
 
-+ (id)region:(id)a3 row:(id)a4
++ (id)region:(id)region row:(id)row
 {
-  v5 = a3;
-  v6 = a4;
+  regionCopy = region;
+  rowCopy = row;
   v7 = objc_alloc_init(AXMLayoutTable);
   header = v7->_header;
-  v7->_header = v5;
-  v9 = v5;
+  v7->_header = regionCopy;
+  v9 = regionCopy;
 
-  v10 = [MEMORY[0x1E695DF70] arrayWithObject:v6];
+  v10 = [MEMORY[0x1E695DF70] arrayWithObject:rowCopy];
 
   rows = v7->_rows;
   v7->_rows = v10;
 
-  v12 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   columns = v7->_columns;
-  v7->_columns = v12;
+  v7->_columns = array;
 
   return v7;
 }

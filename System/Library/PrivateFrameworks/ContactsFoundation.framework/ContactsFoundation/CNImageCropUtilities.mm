@@ -1,27 +1,27 @@
 @interface CNImageCropUtilities
-+ (CGRect)centeredSquareCropRectInRect:(CGRect)a3;
-+ (CGRect)intersectingSquareCropRect:(CGRect)a3 forRect:(CGRect)a4;
-+ (CGRect)scaledCropRect:(CGRect)a3 fromSize:(CGSize)a4 toSize:(CGSize)a5;
-+ (CGRect)squareCropRect:(CGRect)a3 toFitSize:(CGSize)a4;
++ (CGRect)centeredSquareCropRectInRect:(CGRect)rect;
++ (CGRect)intersectingSquareCropRect:(CGRect)rect forRect:(CGRect)forRect;
++ (CGRect)scaledCropRect:(CGRect)rect fromSize:(CGSize)size toSize:(CGSize)toSize;
++ (CGRect)squareCropRect:(CGRect)rect toFitSize:(CGSize)size;
 @end
 
 @implementation CNImageCropUtilities
 
-+ (CGRect)centeredSquareCropRectInRect:(CGRect)a3
++ (CGRect)centeredSquareCropRectInRect:(CGRect)rect
 {
-  if (a3.size.width >= a3.size.height)
+  if (rect.size.width >= rect.size.height)
   {
-    height = a3.size.height;
+    height = rect.size.height;
   }
 
   else
   {
-    height = a3.size.width;
+    height = rect.size.width;
   }
 
-  v4 = height == a3.size.width;
-  v5 = a3.origin.x + (a3.size.width - height) * 0.5;
-  v6 = a3.origin.y + (a3.size.height - height) * 0.5;
+  v4 = height == rect.size.width;
+  v5 = rect.origin.x + (rect.size.width - height) * 0.5;
+  v6 = rect.origin.y + (rect.size.height - height) * 0.5;
   if (v4)
   {
     y = v6;
@@ -29,12 +29,12 @@
 
   else
   {
-    y = a3.origin.y;
+    y = rect.origin.y;
   }
 
   if (v4)
   {
-    x = a3.origin.x;
+    x = rect.origin.x;
   }
 
   else
@@ -78,16 +78,16 @@
   return result;
 }
 
-+ (CGRect)squareCropRect:(CGRect)a3 toFitSize:(CGSize)a4
++ (CGRect)squareCropRect:(CGRect)rect toFitSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3.size.height;
-  v7 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = size.height;
+  width = size.width;
+  v6 = rect.size.height;
+  v7 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10 = 0.0;
-  if (a4.width == 0.0 && a4.height == 0.0 || a4.width == 0.0)
+  if (size.width == 0.0 && size.height == 0.0 || size.width == 0.0)
   {
     v11 = 0.0;
     v12 = 0.0;
@@ -99,9 +99,9 @@
     v11 = 0.0;
     v12 = 0.0;
     v13 = 0.0;
-    if (a4.height != 0.0)
+    if (size.height != 0.0)
     {
-      [objc_opt_class() intersectingSquareCropRect:x forRect:{y, v7, v6, 0.0, 0.0, a4.width, a4.height}];
+      [objc_opt_class() intersectingSquareCropRect:x forRect:{y, v7, v6, 0.0, 0.0, size.width, size.height}];
       v15 = v14;
       v26 = v16;
       v27 = 0;
@@ -164,25 +164,25 @@ LABEL_16:
   return result;
 }
 
-+ (CGRect)scaledCropRect:(CGRect)a3 fromSize:(CGSize)a4 toSize:(CGSize)a5
++ (CGRect)scaledCropRect:(CGRect)rect fromSize:(CGSize)size toSize:(CGSize)toSize
 {
-  x = a3.origin.x;
+  x = rect.origin.x;
   v6 = 0.0;
-  if (a4.width == 0.0 && a4.height == 0.0)
+  if (size.width == 0.0 && size.height == 0.0)
   {
     v7 = 0.0;
     v8 = 0.0;
     v9 = 0.0;
   }
 
-  else if (a5.width != 0.0 || (v7 = 0.0, v8 = 0.0, v9 = 0.0, a5.height != 0.0))
+  else if (toSize.width != 0.0 || (v7 = 0.0, v8 = 0.0, v9 = 0.0, toSize.height != 0.0))
   {
-    v10 = a5.width / a4.width;
-    v11 = a5.height / a4.height;
+    v10 = toSize.width / size.width;
+    v11 = toSize.height / size.height;
     v6 = x * v10;
-    v7 = a3.origin.y * v11;
-    v8 = rint(a3.size.width * v10);
-    v9 = rint(a3.size.height * v11);
+    v7 = rect.origin.y * v11;
+    v8 = rint(rect.size.width * v10);
+    v9 = rint(rect.size.height * v11);
   }
 
   v12 = v7;
@@ -195,16 +195,16 @@ LABEL_16:
   return result;
 }
 
-+ (CGRect)intersectingSquareCropRect:(CGRect)a3 forRect:(CGRect)a4
++ (CGRect)intersectingSquareCropRect:(CGRect)rect forRect:(CGRect)forRect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v29 = a3.size.height;
-  v8 = a3.size.width;
-  v9 = a3.origin.y;
-  v10 = a3.origin.x;
+  height = forRect.size.height;
+  width = forRect.size.width;
+  y = forRect.origin.y;
+  x = forRect.origin.x;
+  v29 = rect.size.height;
+  v8 = rect.size.width;
+  v9 = rect.origin.y;
+  v10 = rect.origin.x;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;

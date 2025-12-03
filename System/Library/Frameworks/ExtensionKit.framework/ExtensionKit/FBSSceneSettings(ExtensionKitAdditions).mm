@@ -6,8 +6,8 @@
 
 - (void)ex_role
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20211529];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20211529];
   v3 = objc_opt_class();
   v4 = v2;
   if (v3)

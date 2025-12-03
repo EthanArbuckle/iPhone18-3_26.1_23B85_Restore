@@ -1,9 +1,9 @@
 @interface SearchUIBiomeSubscriberRegistry
 + (SearchUIBiomeSubscriberRegistry)sharedManager;
 - (SearchUIBiomeSubscriberRegistry)init;
-- (id)requestSubscriberForIdentifier:(id)a3;
-- (id)validCachedSubscriber:(id)a3 ofClass:(Class)a4;
-- (void)cacheSubscriber:(id)a3 forKey:(id)a4;
+- (id)requestSubscriberForIdentifier:(id)identifier;
+- (id)validCachedSubscriber:(id)subscriber ofClass:(Class)class;
+- (void)cacheSubscriber:(id)subscriber forKey:(id)key;
 - (void)flush;
 @end
 
@@ -43,27 +43,27 @@ uint64_t __48__SearchUIBiomeSubscriberRegistry_sharedManager__block_invoke()
   return v2;
 }
 
-- (void)cacheSubscriber:(id)a3 forKey:(id)a4
+- (void)cacheSubscriber:(id)subscriber forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  if (v8 && [v6 length])
+  subscriberCopy = subscriber;
+  keyCopy = key;
+  if (subscriberCopy && [keyCopy length])
   {
-    v7 = [(SearchUIBiomeSubscriberRegistry *)self subscribers];
-    [v7 setObject:v8 forKey:v6];
+    subscribers = [(SearchUIBiomeSubscriberRegistry *)self subscribers];
+    [subscribers setObject:subscriberCopy forKey:keyCopy];
   }
 }
 
-- (id)validCachedSubscriber:(id)a3 ofClass:(Class)a4
+- (id)validCachedSubscriber:(id)subscriber ofClass:(Class)class
 {
-  v5 = a3;
-  v6 = [(SearchUIBiomeSubscriberRegistry *)self subscribers];
-  v7 = [v6 objectForKey:v5];
+  subscriberCopy = subscriber;
+  subscribers = [(SearchUIBiomeSubscriberRegistry *)self subscribers];
+  v7 = [subscribers objectForKey:subscriberCopy];
 
   if (v7 && (([v7 finished] & 1) != 0 || (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v9 = [(SearchUIBiomeSubscriberRegistry *)self subscribers];
-    [v9 removeObjectForKey:v5];
+    subscribers2 = [(SearchUIBiomeSubscriberRegistry *)self subscribers];
+    [subscribers2 removeObjectForKey:subscriberCopy];
 
     v8 = 0;
   }
@@ -76,14 +76,14 @@ uint64_t __48__SearchUIBiomeSubscriberRegistry_sharedManager__block_invoke()
   return v8;
 }
 
-- (id)requestSubscriberForIdentifier:(id)a3
+- (id)requestSubscriberForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SearchUIBiomeSubscriberRegistry *)self validCachedSubscriber:v4 ofClass:objc_opt_class()];
+  identifierCopy = identifier;
+  v5 = [(SearchUIBiomeSubscriberRegistry *)self validCachedSubscriber:identifierCopy ofClass:objc_opt_class()];
   if (!v5)
   {
-    v5 = [[SearchUIBiomeStreamSubscriber alloc] initWithStreamIdentifier:v4];
-    [(SearchUIBiomeSubscriberRegistry *)self cacheSubscriber:v5 forKey:v4];
+    v5 = [[SearchUIBiomeStreamSubscriber alloc] initWithStreamIdentifier:identifierCopy];
+    [(SearchUIBiomeSubscriberRegistry *)self cacheSubscriber:v5 forKey:identifierCopy];
   }
 
   return v5;
@@ -91,8 +91,8 @@ uint64_t __48__SearchUIBiomeSubscriberRegistry_sharedManager__block_invoke()
 
 - (void)flush
 {
-  v2 = [(SearchUIBiomeSubscriberRegistry *)self subscribers];
-  [v2 removeAllObjects];
+  subscribers = [(SearchUIBiomeSubscriberRegistry *)self subscribers];
+  [subscribers removeAllObjects];
 }
 
 @end

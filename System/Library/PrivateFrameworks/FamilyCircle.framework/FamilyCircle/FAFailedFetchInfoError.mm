@@ -1,46 +1,46 @@
 @interface FAFailedFetchInfoError
-+ (id)errorWithCachedFamilyCircle:(id)a3 underlyingError:(id)a4;
-- (FAFailedFetchInfoError)initWithCachedFamilyCircle:(id)a3 underlyingError:(id)a4;
++ (id)errorWithCachedFamilyCircle:(id)circle underlyingError:(id)error;
+- (FAFailedFetchInfoError)initWithCachedFamilyCircle:(id)circle underlyingError:(id)error;
 @end
 
 @implementation FAFailedFetchInfoError
 
-+ (id)errorWithCachedFamilyCircle:(id)a3 underlyingError:(id)a4
++ (id)errorWithCachedFamilyCircle:(id)circle underlyingError:(id)error
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 userInfo];
-  v8 = [v7 mutableCopy];
+  errorCopy = error;
+  circleCopy = circle;
+  userInfo = [errorCopy userInfo];
+  v8 = [userInfo mutableCopy];
 
   [v8 removeObjectForKey:@"NSErrorPeerCertificateChainKey"];
   [v8 removeObjectForKey:@"NSErrorClientCertificateChainKey"];
   [v8 removeObjectForKey:NSURLErrorFailingURLPeerTrustErrorKey];
   [v8 removeObjectForKey:NSUnderlyingErrorKey];
-  v9 = [v5 domain];
-  v10 = [v5 code];
+  domain = [errorCopy domain];
+  code = [errorCopy code];
 
-  v11 = [NSError errorWithDomain:v9 code:v10 userInfo:v8];
+  v11 = [NSError errorWithDomain:domain code:code userInfo:v8];
 
-  v12 = [[FAFailedFetchInfoError alloc] initWithCachedFamilyCircle:v6 underlyingError:v11];
+  v12 = [[FAFailedFetchInfoError alloc] initWithCachedFamilyCircle:circleCopy underlyingError:v11];
 
   return v12;
 }
 
-- (FAFailedFetchInfoError)initWithCachedFamilyCircle:(id)a3 underlyingError:(id)a4
+- (FAFailedFetchInfoError)initWithCachedFamilyCircle:(id)circle underlyingError:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 domain];
-  v10 = [v8 code];
-  v11 = [v8 userInfo];
+  circleCopy = circle;
+  errorCopy = error;
+  domain = [errorCopy domain];
+  code = [errorCopy code];
+  userInfo = [errorCopy userInfo];
   v14.receiver = self;
   v14.super_class = FAFailedFetchInfoError;
-  v12 = [(FAFailedFetchInfoError *)&v14 initWithDomain:v9 code:v10 userInfo:v11];
+  v12 = [(FAFailedFetchInfoError *)&v14 initWithDomain:domain code:code userInfo:userInfo];
 
   if (v12)
   {
-    objc_storeStrong(v12 + 2, a4);
-    objc_storeStrong(v12 + 1, a3);
+    objc_storeStrong(v12 + 2, error);
+    objc_storeStrong(v12 + 1, circle);
   }
 
   return v12;

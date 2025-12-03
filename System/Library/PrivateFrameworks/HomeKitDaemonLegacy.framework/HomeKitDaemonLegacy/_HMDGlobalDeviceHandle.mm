@@ -1,57 +1,57 @@
 @interface _HMDGlobalDeviceHandle
-- (BOOL)isEqual:(id)a3;
-- (_HMDGlobalDeviceHandle)initWithCoder:(id)a3;
-- (_HMDGlobalDeviceHandle)initWithDestination:(id)a3;
-- (_HMDGlobalDeviceHandle)initWithPushToken:(id)a3 accountHandle:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (_HMDGlobalDeviceHandle)initWithCoder:(id)coder;
+- (_HMDGlobalDeviceHandle)initWithDestination:(id)destination;
+- (_HMDGlobalDeviceHandle)initWithPushToken:(id)token accountHandle:(id)handle;
 - (id)description;
 - (id)destination;
 - (id)privateDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HMDGlobalDeviceHandle
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = _HMDGlobalDeviceHandle;
-  v4 = a3;
-  [(_HMDDeviceHandle *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(_HMDDeviceHandle *)&v7 encodeWithCoder:coderCopy];
   v5 = [(_HMDGlobalDeviceHandle *)self pushToken:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"HM.token"];
+  [coderCopy encodeObject:v5 forKey:@"HM.token"];
 
-  v6 = [(_HMDGlobalDeviceHandle *)self accountHandle];
-  [v4 encodeObject:v6 forKey:@"HM.account"];
+  accountHandle = [(_HMDGlobalDeviceHandle *)self accountHandle];
+  [coderCopy encodeObject:accountHandle forKey:@"HM.account"];
 }
 
-- (_HMDGlobalDeviceHandle)initWithCoder:(id)a3
+- (_HMDGlobalDeviceHandle)initWithCoder:(id)coder
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.token"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.token"];
   if (v5)
   {
     v17.receiver = self;
     v17.super_class = _HMDGlobalDeviceHandle;
-    v6 = [(_HMDDeviceHandle *)&v17 initWithCoder:v4];
+    v6 = [(_HMDDeviceHandle *)&v17 initWithCoder:coderCopy];
     v7 = v6;
     if (v6)
     {
       objc_storeStrong(&v6->_pushToken, v5);
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.account"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.account"];
       accountHandle = v7->_accountHandle;
       v7->_accountHandle = v8;
     }
 
-    v10 = v7;
-    v11 = v10;
+    selfCopy = v7;
+    v11 = selfCopy;
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -73,36 +73,36 @@
 
 - (id)destination
 {
-  v3 = [(_HMDGlobalDeviceHandle *)self pushToken];
-  v4 = [(_HMDGlobalDeviceHandle *)self accountHandle];
-  v5 = [v4 URI];
-  v6 = [v5 prefixedURI];
-  v7 = MEMORY[0x259C01FD0](v3, v6);
+  pushToken = [(_HMDGlobalDeviceHandle *)self pushToken];
+  accountHandle = [(_HMDGlobalDeviceHandle *)self accountHandle];
+  v5 = [accountHandle URI];
+  prefixedURI = [v5 prefixedURI];
+  v7 = MEMORY[0x259C01FD0](pushToken, prefixedURI);
 
   return v7;
 }
 
 - (id)privateDescription
 {
-  v3 = [MEMORY[0x277D0F8D8] defaultFormatter];
+  defaultFormatter = [MEMORY[0x277D0F8D8] defaultFormatter];
   v4 = [(_HMDGlobalDeviceHandle *)self description];
-  v5 = [v3 privateStringForObjectValue:v4];
+  v5 = [defaultFormatter privateStringForObjectValue:v4];
 
   return v5;
 }
 
 - (id)description
 {
-  v2 = [(_HMDGlobalDeviceHandle *)self pushToken];
-  v3 = [v2 hmf_hexadecimalStringWithOptions:0];
+  pushToken = [(_HMDGlobalDeviceHandle *)self pushToken];
+  v3 = [pushToken hmf_hexadecimalStringWithOptions:0];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -112,7 +112,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -123,9 +123,9 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(_HMDGlobalDeviceHandle *)self pushToken];
-      v8 = [(_HMDGlobalDeviceHandle *)v6 pushToken];
-      v9 = [v7 isEqualToData:v8];
+      pushToken = [(_HMDGlobalDeviceHandle *)self pushToken];
+      pushToken2 = [(_HMDGlobalDeviceHandle *)v6 pushToken];
+      v9 = [pushToken isEqualToData:pushToken2];
     }
 
     else
@@ -139,24 +139,24 @@
 
 - (unint64_t)hash
 {
-  v2 = [(_HMDGlobalDeviceHandle *)self pushToken];
-  v3 = [v2 hash];
+  pushToken = [(_HMDGlobalDeviceHandle *)self pushToken];
+  v3 = [pushToken hash];
 
   return v3;
 }
 
-- (_HMDGlobalDeviceHandle)initWithDestination:(id)a3
+- (_HMDGlobalDeviceHandle)initWithDestination:(id)destination
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  destinationCopy = destination;
+  v5 = destinationCopy;
+  if (destinationCopy)
   {
     v29 = 0;
     v30 = 0;
     v27 = 0;
     v28 = 0;
-    v6 = __parseGlobalDestination(v4, &v30, &v29, &v28, &v27);
+    v6 = __parseGlobalDestination(destinationCopy, &v30, &v29, &v28, &v27);
     v7 = v30;
     v8 = v29;
     v9 = v28;
@@ -177,14 +177,14 @@
         v11->_accountHandle = v14;
       }
 
-      v16 = v11;
-      v17 = v16;
+      selfCopy2 = v11;
+      v17 = selfCopy2;
     }
 
     else
     {
       v21 = objc_autoreleasePoolPush();
-      v16 = self;
+      selfCopy2 = self;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
@@ -206,7 +206,7 @@
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -224,26 +224,26 @@
   return v17;
 }
 
-- (_HMDGlobalDeviceHandle)initWithPushToken:(id)a3 accountHandle:(id)a4
+- (_HMDGlobalDeviceHandle)initWithPushToken:(id)token accountHandle:(id)handle
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  tokenCopy = token;
+  handleCopy = handle;
+  v8 = handleCopy;
+  if (tokenCopy)
   {
-    v9 = [v7 URI];
-    v10 = [v9 prefixedURI];
-    v11 = MEMORY[0x259C01FD0](v6, v10);
+    v9 = [handleCopy URI];
+    prefixedURI = [v9 prefixedURI];
+    v11 = MEMORY[0x259C01FD0](tokenCopy, prefixedURI);
 
-    v12 = [(_HMDGlobalDeviceHandle *)self initWithDestination:v11];
-    v13 = v12;
+    selfCopy = [(_HMDGlobalDeviceHandle *)self initWithDestination:v11];
+    v13 = selfCopy;
   }
 
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {

@@ -1,25 +1,25 @@
 @interface PLPhotoLibraryImportValidation
-- (BOOL)checkLegacyLibraryRequiresRepairWithError:(id *)a3;
-- (BOOL)checkLegacyLibraryVersionStatusWithError:(id *)a3;
-- (BOOL)checkLibraryCPLStatusWithError:(id *)a3;
-- (BOOL)checkLibraryVersionStatusWithError:(id *)a3;
-- (BOOL)isLibraryValidForImportWithError:(id *)a3;
-- (PLPhotoLibraryImportValidation)initWithLibraryManager:(id)a3;
+- (BOOL)checkLegacyLibraryRequiresRepairWithError:(id *)error;
+- (BOOL)checkLegacyLibraryVersionStatusWithError:(id *)error;
+- (BOOL)checkLibraryCPLStatusWithError:(id *)error;
+- (BOOL)checkLibraryVersionStatusWithError:(id *)error;
+- (BOOL)isLibraryValidForImportWithError:(id *)error;
+- (PLPhotoLibraryImportValidation)initWithLibraryManager:(id)manager;
 @end
 
 @implementation PLPhotoLibraryImportValidation
 
-- (BOOL)checkLegacyLibraryRequiresRepairWithError:(id *)a3
+- (BOOL)checkLegacyLibraryRequiresRepairWithError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   return 1;
 }
 
-- (BOOL)checkLegacyLibraryVersionStatusWithError:(id *)a3
+- (BOOL)checkLegacyLibraryVersionStatusWithError:(id *)error
 {
   v43[1] = *MEMORY[0x1E69E9840];
   v32 = 0;
@@ -28,9 +28,9 @@
   v35 = __Block_byref_object_copy__108485;
   v36 = __Block_byref_object_dispose__108486;
   v37 = 0;
-  v5 = [(PLPhotoLibraryPathManager *)self->_pm libraryURL];
+  libraryURL = [(PLPhotoLibraryPathManager *)self->_pm libraryURL];
   v31 = 0;
-  v6 = [v5 bookmarkDataWithOptions:0 includingResourceValuesForKeys:0 relativeToURL:0 error:&v31];
+  v6 = [libraryURL bookmarkDataWithOptions:0 includingResourceValuesForKeys:0 relativeToURL:0 error:&v31];
   v7 = v31;
 
   if (v6)
@@ -105,7 +105,7 @@
   v24 = v33[5];
   if (v24)
   {
-    if (!a3)
+    if (!error)
     {
       goto LABEL_15;
     }
@@ -118,10 +118,10 @@
   objc_storeStrong(v25, obj);
   v23 = v33;
   v24 = v33[5];
-  if (a3)
+  if (error)
   {
 LABEL_14:
-    *a3 = v24;
+    *error = v24;
     v23 = v33;
   }
 
@@ -253,12 +253,12 @@ LABEL_15:
 LABEL_17:
 }
 
-- (BOOL)checkLibraryVersionStatusWithError:(id *)a3
+- (BOOL)checkLibraryVersionStatusWithError:(id *)error
 {
   v18 = 0;
   fm = self->_fm;
-  v6 = [(PLPhotoLibraryPathManager *)self->_pm photosDatabasePath];
-  LODWORD(fm) = [(NSFileManager *)fm fileExistsAtPath:v6 isDirectory:&v18];
+  photosDatabasePath = [(PLPhotoLibraryPathManager *)self->_pm photosDatabasePath];
+  LODWORD(fm) = [(NSFileManager *)fm fileExistsAtPath:photosDatabasePath isDirectory:&v18];
   v7 = v18;
 
   if (fm)
@@ -273,14 +273,14 @@ LABEL_17:
 
   if (v8)
   {
-    v11 = [(PLLibraryServicesManager *)self->_libraryServicesManager modelMigrator];
-    v12 = [v11 legacyMigrationState];
+    modelMigrator = [(PLLibraryServicesManager *)self->_libraryServicesManager modelMigrator];
+    legacyMigrationState = [modelMigrator legacyMigrationState];
 
     v9 = 0;
     v13 = 0;
-    if (v12 > 2)
+    if (legacyMigrationState > 2)
     {
-      if ((v12 - 3) >= 2)
+      if ((legacyMigrationState - 3) >= 2)
       {
         goto LABEL_14;
       }
@@ -288,11 +288,11 @@ LABEL_17:
 
     else
     {
-      if (!v12)
+      if (!legacyMigrationState)
       {
         v13 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:72001 userInfo:0];
         v9 = 0;
-        if (!a3)
+        if (!error)
         {
           goto LABEL_16;
         }
@@ -300,9 +300,9 @@ LABEL_17:
         goto LABEL_15;
       }
 
-      if (v12 != 1)
+      if (legacyMigrationState != 1)
       {
-        if (v12 != 2)
+        if (legacyMigrationState != 2)
         {
           goto LABEL_14;
         }
@@ -329,11 +329,11 @@ LABEL_17:
 LABEL_13:
   v13 = v10;
 LABEL_14:
-  if (a3)
+  if (error)
   {
 LABEL_15:
     v13 = v13;
-    *a3 = v13;
+    *error = v13;
   }
 
 LABEL_16:
@@ -341,16 +341,16 @@ LABEL_16:
   return v9;
 }
 
-- (BOOL)checkLibraryCPLStatusWithError:(id *)a3
+- (BOOL)checkLibraryCPLStatusWithError:(id *)error
 {
-  v5 = [(PLPhotoLibraryPathManager *)self->_pm libraryURL];
-  v6 = PLIsCloudPhotoLibraryEnabledForPhotoLibraryURL(v5);
+  libraryURL = [(PLPhotoLibraryPathManager *)self->_pm libraryURL];
+  v6 = PLIsCloudPhotoLibraryEnabledForPhotoLibraryURL(libraryURL);
 
   if (v6)
   {
     v7 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:72006 userInfo:0];
     v8 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -360,8 +360,8 @@ LABEL_16:
 
   v14 = 0;
   fm = self->_fm;
-  v10 = [(PLPhotoLibraryPathManager *)self->_pm disableICloudPhotosFilePath];
-  v11 = [(NSFileManager *)fm fileExistsAtPath:v10 isDirectory:&v14];
+  disableICloudPhotosFilePath = [(PLPhotoLibraryPathManager *)self->_pm disableICloudPhotosFilePath];
+  v11 = [(NSFileManager *)fm fileExistsAtPath:disableICloudPhotosFilePath isDirectory:&v14];
   if (v14)
   {
     v12 = 0;
@@ -383,11 +383,11 @@ LABEL_16:
   }
 
   v8 = !v12;
-  if (a3)
+  if (error)
   {
 LABEL_11:
     v7 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
 LABEL_12:
@@ -395,7 +395,7 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)isLibraryValidForImportWithError:(id *)a3
+- (BOOL)isLibraryValidForImportWithError:(id *)error
 {
   v10 = *MEMORY[0x1E69E9840];
   v4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:72002 userInfo:0];
@@ -407,22 +407,22 @@ LABEL_12:
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_ERROR, "[ImportLibraryValidation] Library is invalid for import. Error: %@", &v8, 0xCu);
   }
 
-  if (a3)
+  if (error)
   {
     v6 = v4;
-    *a3 = v4;
+    *error = v4;
   }
 
   return 0;
 }
 
-- (PLPhotoLibraryImportValidation)initWithLibraryManager:(id)a3
+- (PLPhotoLibraryImportValidation)initWithLibraryManager:(id)manager
 {
-  v6 = a3;
-  if (!v6)
+  managerCopy = manager;
+  if (!managerCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PLPhotoLibraryImportValidation.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"manager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibraryImportValidation.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"manager"}];
   }
 
   v15.receiver = self;
@@ -431,14 +431,14 @@ LABEL_12:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_libraryServicesManager, a3);
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
+    objc_storeStrong(&v7->_libraryServicesManager, manager);
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     fm = v8->_fm;
-    v8->_fm = v9;
+    v8->_fm = defaultManager;
 
-    v11 = [(PLLibraryServicesManager *)v8->_libraryServicesManager pathManager];
+    pathManager = [(PLLibraryServicesManager *)v8->_libraryServicesManager pathManager];
     pm = v8->_pm;
-    v8->_pm = v11;
+    v8->_pm = pathManager;
   }
 
   return v8;

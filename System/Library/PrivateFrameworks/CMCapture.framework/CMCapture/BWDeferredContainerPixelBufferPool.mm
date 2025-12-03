@@ -1,21 +1,21 @@
 @interface BWDeferredContainerPixelBufferPool
-- (BWDeferredContainerPixelBufferPool)initWithVideoFormat:(id)a3 capacity:(unint64_t)a4 name:(id)a5;
+- (BWDeferredContainerPixelBufferPool)initWithVideoFormat:(id)format capacity:(unint64_t)capacity name:(id)name;
 - (__CVBuffer)newPixelBuffer;
 - (void)dealloc;
-- (void)flushToMinimumCapacity:(unint64_t)a3;
+- (void)flushToMinimumCapacity:(unint64_t)capacity;
 @end
 
 @implementation BWDeferredContainerPixelBufferPool
 
-- (BWDeferredContainerPixelBufferPool)initWithVideoFormat:(id)a3 capacity:(unint64_t)a4 name:(id)a5
+- (BWDeferredContainerPixelBufferPool)initWithVideoFormat:(id)format capacity:(unint64_t)capacity name:(id)name
 {
   v9.receiver = self;
   v9.super_class = BWDeferredContainerPixelBufferPool;
   v8 = 0;
-  v6 = [(BWPixelBufferPool *)&v9 initWithVideoFormat:a3 capacity:a4 name:a5 clientProvidesPool:0 memoryPool:0 providesBackPressure:0 reportSlowBackPressureAllocations:v8];
+  v6 = [(BWPixelBufferPool *)&v9 initWithVideoFormat:format capacity:capacity name:name clientProvidesPool:0 memoryPool:0 providesBackPressure:0 reportSlowBackPressureAllocations:v8];
   if (v6)
   {
-    v6->_videoFormat = a3;
+    v6->_videoFormat = format;
     [+[BWDeferredCaptureContainerManager sharedInstance](BWDeferredCaptureContainerManager addBufferPool:"addBufferPool:", v6];
   }
 
@@ -38,11 +38,11 @@
   [(BWPixelBufferPool *)&v3 dealloc];
 }
 
-- (void)flushToMinimumCapacity:(unint64_t)a3
+- (void)flushToMinimumCapacity:(unint64_t)capacity
 {
   v5 = +[BWDeferredCaptureContainerManager sharedInstance];
 
-  [(BWDeferredCaptureContainerManager *)v5 flush:self toMinimumCapacity:a3];
+  [(BWDeferredCaptureContainerManager *)v5 flush:self toMinimumCapacity:capacity];
 }
 
 @end

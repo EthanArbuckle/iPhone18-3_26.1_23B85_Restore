@@ -1,15 +1,15 @@
 @interface AWDCoreRoutineFMCReturnToCarInstance
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasHorizontalAccuracy:(BOOL)a3;
-- (void)setHasHorizontalDistance:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasHorizontalAccuracy:(BOOL)accuracy;
+- (void)setHasHorizontalDistance:(BOOL)distance;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineFMCReturnToCarInstance
@@ -22,9 +22,9 @@
   [(AWDCoreRoutineFMCReturnToCarInstance *)&v3 dealloc];
 }
 
-- (void)setHasHorizontalAccuracy:(BOOL)a3
+- (void)setHasHorizontalAccuracy:(BOOL)accuracy
 {
-  if (a3)
+  if (accuracy)
   {
     v3 = 2;
   }
@@ -37,9 +37,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasHorizontalDistance:(BOOL)a3
+- (void)setHasHorizontalDistance:(BOOL)distance
 {
-  if (a3)
+  if (distance)
   {
     v3 = 4;
   }
@@ -61,34 +61,34 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   parkingId = self->_parkingId;
   if (parkingId)
   {
-    [v3 setObject:parkingId forKey:@"parkingId"];
+    [dictionary setObject:parkingId forKey:@"parkingId"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_horizontalAccuracy), @"horizontalAccuracy"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_horizontalAccuracy), @"horizontalAccuracy"}];
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_horizontalDistance), @"horizontalDistance"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_horizontalDistance), @"horizontalDistance"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -117,37 +117,37 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 32) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 32) |= 1u;
   }
 
   if (self->_parkingId)
   {
-    [a3 setParkingId:?];
+    [to setParkingId:?];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 4) = self->_horizontalAccuracy;
-    *(a3 + 32) |= 2u;
+    *(to + 4) = self->_horizontalAccuracy;
+    *(to + 32) |= 2u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(a3 + 5) = self->_horizontalDistance;
-    *(a3 + 32) |= 4u;
+    *(to + 5) = self->_horizontalDistance;
+    *(to + 32) |= 4u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -155,7 +155,7 @@
     *(v5 + 32) |= 1u;
   }
 
-  *(v6 + 24) = [(NSString *)self->_parkingId copyWithZone:a3];
+  *(v6 + 24) = [(NSString *)self->_parkingId copyWithZone:zone];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -173,22 +173,22 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 32);
+    v7 = *(equal + 32);
     if (has)
     {
-      if ((*(a3 + 32) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 32) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_19;
       }
     }
 
-    else if (*(a3 + 32))
+    else if (*(equal + 32))
     {
 LABEL_19:
       LOBYTE(v5) = 0;
@@ -196,7 +196,7 @@ LABEL_19:
     }
 
     parkingId = self->_parkingId;
-    if (parkingId | *(a3 + 3))
+    if (parkingId | *(equal + 3))
     {
       v5 = [(NSString *)parkingId isEqual:?];
       if (!v5)
@@ -209,21 +209,21 @@ LABEL_19:
 
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 32) & 2) == 0 || self->_horizontalAccuracy != *(a3 + 4))
+      if ((*(equal + 32) & 2) == 0 || self->_horizontalAccuracy != *(equal + 4))
       {
         goto LABEL_19;
       }
     }
 
-    else if ((*(a3 + 32) & 2) != 0)
+    else if ((*(equal + 32) & 2) != 0)
     {
       goto LABEL_19;
     }
 
-    LOBYTE(v5) = (*(a3 + 32) & 4) == 0;
+    LOBYTE(v5) = (*(equal + 32) & 4) == 0;
     if ((has & 4) != 0)
     {
-      if ((*(a3 + 32) & 4) == 0 || self->_horizontalDistance != *(a3 + 5))
+      if ((*(equal + 32) & 4) == 0 || self->_horizontalDistance != *(equal + 5))
       {
         goto LABEL_19;
       }
@@ -272,30 +272,30 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 32))
+  if (*(from + 32))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDCoreRoutineFMCReturnToCarInstance *)self setParkingId:?];
   }
 
-  v5 = *(a3 + 32);
+  v5 = *(from + 32);
   if ((v5 & 2) != 0)
   {
-    self->_horizontalAccuracy = *(a3 + 4);
+    self->_horizontalAccuracy = *(from + 4);
     *&self->_has |= 2u;
-    v5 = *(a3 + 32);
+    v5 = *(from + 32);
   }
 
   if ((v5 & 4) != 0)
   {
-    self->_horizontalDistance = *(a3 + 5);
+    self->_horizontalDistance = *(from + 5);
     *&self->_has |= 4u;
   }
 }

@@ -1,8 +1,8 @@
 @interface MPCMRArtworkDataSource
-- (MPCMRArtworkDataSource)initWithController:(id)a3;
+- (MPCMRArtworkDataSource)initWithController:(id)controller;
 - (MPCMediaRemoteController)controller;
-- (id)existingRepresentationForArtworkCatalog:(id)a3;
-- (void)loadRepresentationForArtworkCatalog:(id)a3 completionHandler:(id)a4;
+- (id)existingRepresentationForArtworkCatalog:(id)catalog;
+- (void)loadRepresentationForArtworkCatalog:(id)catalog completionHandler:(id)handler;
 @end
 
 @implementation MPCMRArtworkDataSource
@@ -14,28 +14,28 @@
   return WeakRetained;
 }
 
-- (void)loadRepresentationForArtworkCatalog:(id)a3 completionHandler:(id)a4
+- (void)loadRepresentationForArtworkCatalog:(id)catalog completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 token];
-  [v6 scaledFittingSize];
+  catalogCopy = catalog;
+  handlerCopy = handler;
+  token = [catalogCopy token];
+  [catalogCopy scaledFittingSize];
   v10 = v9;
   v12 = v11;
-  v13 = [(MPCMRArtworkDataSource *)self controller];
-  v14 = [v8 identifier];
-  v15 = [v8 artworkIdentifier];
-  v16 = [v13 contentItemArtworkForContentItemIdentifier:v14 artworkIdentifier:v15 size:{v10, v12}];
+  controller = [(MPCMRArtworkDataSource *)self controller];
+  identifier = [token identifier];
+  artworkIdentifier = [token artworkIdentifier];
+  v16 = [controller contentItemArtworkForContentItemIdentifier:identifier artworkIdentifier:artworkIdentifier size:{v10, v12}];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __80__MPCMRArtworkDataSource_loadRepresentationForArtworkCatalog_completionHandler___block_invoke;
   v20[3] = &unk_1E8238878;
-  v21 = v6;
-  v22 = v7;
+  v21 = catalogCopy;
+  v22 = handlerCopy;
   v23 = v10;
   v24 = v12;
-  v17 = v6;
-  v18 = v7;
+  v17 = catalogCopy;
+  v18 = handlerCopy;
   v19 = [v16 onCompletion:v20];
 }
 
@@ -52,27 +52,27 @@ void __80__MPCMRArtworkDataSource_loadRepresentationForArtworkCatalog_completion
   (*(v6 + 16))(v6, v10, v8);
 }
 
-- (id)existingRepresentationForArtworkCatalog:(id)a3
+- (id)existingRepresentationForArtworkCatalog:(id)catalog
 {
-  v4 = a3;
-  v5 = [v4 token];
-  [v4 scaledFittingSize];
+  catalogCopy = catalog;
+  token = [catalogCopy token];
+  [catalogCopy scaledFittingSize];
   v7 = v6;
   v9 = v8;
-  v10 = [(MPCMRArtworkDataSource *)self controller];
-  v11 = [v5 artworkIdentifier];
-  v12 = [v10 contentItemArtworkCacheStateForArtworkIdentifier:v11 size:{v7, v9}];
+  controller = [(MPCMRArtworkDataSource *)self controller];
+  artworkIdentifier = [token artworkIdentifier];
+  v12 = [controller contentItemArtworkCacheStateForArtworkIdentifier:artworkIdentifier size:{v7, v9}];
 
   if (v12)
   {
-    v13 = [v5 identifier];
-    v14 = [v5 artworkIdentifier];
-    v15 = [v10 contentItemArtworkForContentItemIdentifier:v13 artworkIdentifier:v14 size:{v7, v9}];
+    identifier = [token identifier];
+    artworkIdentifier2 = [token artworkIdentifier];
+    v15 = [controller contentItemArtworkForContentItemIdentifier:identifier artworkIdentifier:artworkIdentifier2 size:{v7, v9}];
 
     v16 = MEMORY[0x1E69704B0];
-    v17 = [v4 visualIdenticalityIdentifier];
-    v18 = [v15 result];
-    v19 = [v16 representationForVisualIdentity:v17 withSize:v18 image:{v7, v9}];
+    visualIdenticalityIdentifier = [catalogCopy visualIdenticalityIdentifier];
+    result = [v15 result];
+    v19 = [v16 representationForVisualIdentity:visualIdenticalityIdentifier withSize:result image:{v7, v9}];
   }
 
   else
@@ -83,16 +83,16 @@ void __80__MPCMRArtworkDataSource_loadRepresentationForArtworkCatalog_completion
   return v19;
 }
 
-- (MPCMRArtworkDataSource)initWithController:(id)a3
+- (MPCMRArtworkDataSource)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = MPCMRArtworkDataSource;
   v5 = [(MPCMRArtworkDataSource *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_controller, v4);
+    objc_storeWeak(&v5->_controller, controllerCopy);
   }
 
   return v6;

@@ -1,10 +1,10 @@
 @interface TPMessageIndicatorViewModel
 - (CGSize)indicatorImageSize;
 - (NSUUID)messageUUID;
-- (TPMessageIndicatorViewModel)initWithDuration:(double)a3 identifier:(id)a4 mediaURL:(id)a5 thumbnailURL:(id)a6 transcriptSummary:(id)a7 isRead:(BOOL)a8 isSensitive:(BOOL)a9 isVideo:(BOOL)a10 fromHandle:(id)a11;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TPMessageIndicatorViewModel)initWithDuration:(double)duration identifier:(id)identifier mediaURL:(id)l thumbnailURL:(id)rL transcriptSummary:(id)summary isRead:(BOOL)read isSensitive:(BOOL)sensitive isVideo:(BOOL)self0 fromHandle:(id)self1;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)indicatorImageWithDefaultTintColor:(id)a3;
+- (id)indicatorImageWithDefaultTintColor:(id)color;
 @end
 
 @implementation TPMessageIndicatorViewModel
@@ -24,75 +24,75 @@
   return v3;
 }
 
-- (TPMessageIndicatorViewModel)initWithDuration:(double)a3 identifier:(id)a4 mediaURL:(id)a5 thumbnailURL:(id)a6 transcriptSummary:(id)a7 isRead:(BOOL)a8 isSensitive:(BOOL)a9 isVideo:(BOOL)a10 fromHandle:(id)a11
+- (TPMessageIndicatorViewModel)initWithDuration:(double)duration identifier:(id)identifier mediaURL:(id)l thumbnailURL:(id)rL transcriptSummary:(id)summary isRead:(BOOL)read isSensitive:(BOOL)sensitive isVideo:(BOOL)self0 fromHandle:(id)self1
 {
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a11;
+  identifierCopy = identifier;
+  lCopy = l;
+  rLCopy = rL;
+  summaryCopy = summary;
+  handleCopy = handle;
   v35.receiver = self;
   v35.super_class = TPMessageIndicatorViewModel;
   v23 = [(TPMessageIndicatorViewModel *)&v35 init];
   v24 = v23;
   if (v23)
   {
-    v23->_duration = a3;
-    v25 = [v18 copy];
+    v23->_duration = duration;
+    v25 = [identifierCopy copy];
     identifier = v24->_identifier;
     v24->_identifier = v25;
 
-    v27 = [v19 copy];
+    v27 = [lCopy copy];
     mediaURL = v24->_mediaURL;
     v24->_mediaURL = v27;
 
-    v29 = [v20 copy];
+    v29 = [rLCopy copy];
     thumbnailURL = v24->_thumbnailURL;
     v24->_thumbnailURL = v29;
 
-    v31 = [v21 copy];
+    v31 = [summaryCopy copy];
     transcriptSummary = v24->_transcriptSummary;
     v24->_transcriptSummary = v31;
 
-    v24->_isRead = a8;
-    v24->_isSensitive = a9;
-    v24->_isVideo = a10;
-    objc_storeStrong(&v24->_fromHandle, a11);
+    v24->_isRead = read;
+    v24->_isSensitive = sensitive;
+    v24->_isVideo = video;
+    objc_storeStrong(&v24->_fromHandle, handle);
     v33 = v24;
   }
 
   return v24;
 }
 
-- (id)indicatorImageWithDefaultTintColor:(id)a3
+- (id)indicatorImageWithDefaultTintColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (![(TPMessageIndicatorViewModel *)self isSensitive])
   {
     if (![(TPMessageIndicatorViewModel *)self isRead])
     {
       v6 = UIImageGetUnreadIndicator();
-      v5 = v6;
+      videoMessageRecordGlyphImage = v6;
       goto LABEL_8;
     }
 
-    v5 = [MEMORY[0x1E69DCAB8] videoMessageRecordGlyphImage];
+    videoMessageRecordGlyphImage = [MEMORY[0x1E69DCAB8] videoMessageRecordGlyphImage];
 LABEL_6:
-    v7 = [MEMORY[0x1E69DC888] labelColor];
-    v8 = [v5 imageWithTintColor:v7];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    v8 = [videoMessageRecordGlyphImage imageWithTintColor:labelColor];
 
     goto LABEL_9;
   }
 
-  v5 = [MEMORY[0x1E69DCAB8] videoMessageSensitiveGlyphImage];
+  videoMessageRecordGlyphImage = [MEMORY[0x1E69DCAB8] videoMessageSensitiveGlyphImage];
   if ([(TPMessageIndicatorViewModel *)self isRead])
   {
     goto LABEL_6;
   }
 
-  v6 = v5;
+  v6 = videoMessageRecordGlyphImage;
 LABEL_8:
-  v8 = [v6 imageWithTintColor:v4];
+  v8 = [v6 imageWithTintColor:colorCopy];
 LABEL_9:
 
   return v8;
@@ -121,9 +121,9 @@ LABEL_9:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   LOBYTE(v6) = self->_isVideo;
   return [v4 initWithDuration:self->_identifier identifier:self->_mediaURL mediaURL:self->_thumbnailURL thumbnailURL:self->_transcriptSummary transcriptSummary:self->_isRead isRead:self->_isSensitive isSensitive:self->_duration isVideo:v6 fromHandle:self->_fromHandle];
 }

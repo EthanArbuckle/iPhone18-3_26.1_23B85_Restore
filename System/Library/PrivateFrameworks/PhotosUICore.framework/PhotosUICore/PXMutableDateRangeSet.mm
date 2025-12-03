@@ -1,6 +1,6 @@
 @interface PXMutableDateRangeSet
-- (BOOL)_attemptToAddDateRange:(id)a3 outNextRange:(id *)a4;
-- (void)addDateRange:(id)a3;
+- (BOOL)_attemptToAddDateRange:(id)range outNextRange:(id *)nextRange;
+- (void)addDateRange:(id)range;
 - (void)removeAllDateRanges;
 @end
 
@@ -8,18 +8,18 @@
 
 - (void)removeAllDateRanges
 {
-  v2 = [(PXDateRangeSet *)self _dateRanges];
-  [v2 removeAllObjects];
+  _dateRanges = [(PXDateRangeSet *)self _dateRanges];
+  [_dateRanges removeAllObjects];
 }
 
-- (BOOL)_attemptToAddDateRange:(id)a3 outNextRange:(id *)a4
+- (BOOL)_attemptToAddDateRange:(id)range outNextRange:(id *)nextRange
 {
   v36 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!a4)
+  rangeCopy = range;
+  if (!nextRange)
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"PXDateRangeSet.m" lineNumber:142 description:@"outNextAttempt required"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXDateRangeSet.m" lineNumber:142 description:@"outNextAttempt required"];
   }
 
   [(PXDateRangeSet *)self _dateRanges];
@@ -46,17 +46,17 @@
         }
 
         v15 = *(*(&v31 + 1) + 8 * v13);
-        if ([v7 intersectsRange:{v15, v31}])
+        if ([rangeCopy intersectsRange:{v15, v31}])
         {
 
           v16 = [v8 objectAtIndex:v14];
           [v8 removeObjectAtIndex:v14];
-          [v7 startDate];
+          [rangeCopy startDate];
           v18 = v17;
           [v16 startDate];
           if (v18 <= v19)
           {
-            v20 = v7;
+            v20 = rangeCopy;
           }
 
           else
@@ -66,12 +66,12 @@
 
           [v20 startDate];
           v22 = v21;
-          [v7 endDate];
+          [rangeCopy endDate];
           v24 = v23;
           [v16 endDate];
           if (v24 >= v25)
           {
-            v26 = v7;
+            v26 = rangeCopy;
           }
 
           else
@@ -80,13 +80,13 @@
           }
 
           [v26 endDate];
-          *a4 = [[PXDateRange alloc] initWithStartDate:v22 endDate:v27];
+          *nextRange = [[PXDateRange alloc] initWithStartDate:v22 endDate:v27];
 
           v28 = 0;
           goto LABEL_26;
         }
 
-        if ([v7 isStrictlyBeforeRange:v15])
+        if ([rangeCopy isStrictlyBeforeRange:v15])
         {
           v11 = v14;
           goto LABEL_22;
@@ -116,12 +116,12 @@ LABEL_22:
 
   if (v11 >= [v8 count])
   {
-    [v8 addObject:v7];
+    [v8 addObject:rangeCopy];
   }
 
   else
   {
-    [v8 insertObject:v7 atIndex:v11];
+    [v8 insertObject:rangeCopy atIndex:v11];
   }
 
   v28 = 1;
@@ -130,10 +130,10 @@ LABEL_26:
   return v28;
 }
 
-- (void)addDateRange:(id)a3
+- (void)addDateRange:(id)range
 {
-  v4 = a3;
-  v5 = v4;
+  rangeCopy = range;
+  v5 = rangeCopy;
   do
   {
     v6 = v5;

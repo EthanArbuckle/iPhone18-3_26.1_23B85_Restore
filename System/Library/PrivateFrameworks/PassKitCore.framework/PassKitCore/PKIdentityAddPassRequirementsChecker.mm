@@ -1,11 +1,11 @@
 @interface PKIdentityAddPassRequirementsChecker
-- (BOOL)hasConflictingIdentityPassWithIdentityPasses:(id)a3;
+- (BOOL)hasConflictingIdentityPassWithIdentityPasses:(id)passes;
 - (_TtC11PassKitCore36PKIdentityAddPassRequirementsChecker)init;
 @end
 
 @implementation PKIdentityAddPassRequirementsChecker
 
-- (BOOL)hasConflictingIdentityPassWithIdentityPasses:(id)a3
+- (BOOL)hasConflictingIdentityPassWithIdentityPasses:(id)passes
 {
   sub_1AD3D3200(0, &unk_1EB599EA0);
   v4 = sub_1ADB06610();
@@ -19,7 +19,7 @@
   else
   {
     v8 = v4;
-    v9 = self;
+    selfCopy = self;
     v10 = sub_1AD45A490(v8, v6);
 
     return v10 > 0;

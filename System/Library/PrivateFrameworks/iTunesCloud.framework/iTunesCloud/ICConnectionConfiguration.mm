@@ -1,15 +1,15 @@
 @interface ICConnectionConfiguration
-+ (id)configurationFromSourceConfiguration:(id)a3 userIdentity:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)configurationFromSourceConfiguration:(id)configuration userIdentity:(id)identity;
+- (BOOL)isEqual:(id)equal;
 - (ICConnectionConfiguration)init;
-- (ICConnectionConfiguration)initWithCoder:(id)a3;
-- (ICConnectionConfiguration)initWithUserIdentity:(id)a3;
-- (ICConnectionConfiguration)initWithUserIdentity:(id)a3 userIdentityStore:(id)a4;
-- (ICConnectionConfiguration)initWithUserIdentity:(id)a3 userIdentityStore:(id)a4 clientIdentity:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ICConnectionConfiguration)initWithCoder:(id)coder;
+- (ICConnectionConfiguration)initWithUserIdentity:(id)identity;
+- (ICConnectionConfiguration)initWithUserIdentity:(id)identity userIdentityStore:(id)store;
+- (ICConnectionConfiguration)initWithUserIdentity:(id)identity userIdentityStore:(id)store clientIdentity:(id)clientIdentity;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICConnectionConfiguration
@@ -33,12 +33,12 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [ICConnectionConfiguration alloc];
-  v5 = [(ICConnectionConfiguration *)self userIdentity];
-  v6 = [(ICConnectionConfiguration *)self userIdentityStore];
-  v7 = [(ICConnectionConfiguration *)v4 initWithUserIdentity:v5 userIdentityStore:v6];
+  userIdentity = [(ICConnectionConfiguration *)self userIdentity];
+  userIdentityStore = [(ICConnectionConfiguration *)self userIdentityStore];
+  v7 = [(ICConnectionConfiguration *)v4 initWithUserIdentity:userIdentity userIdentityStore:userIdentityStore];
 
   v8 = [(NSURL *)self->_baseURL copy];
   v9 = *(v7 + 32);
@@ -62,58 +62,58 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   userIdentity = self->_userIdentity;
   userIdentityStore = self->_userIdentityStore;
-  v6 = a3;
-  [v6 ic_encodeUserIdentity:userIdentity withStore:userIdentityStore forKey:@"userIdentity"];
-  [v6 encodeObject:self->_userIdentityStore forKey:@"userIdentityStore"];
-  [v6 encodeObject:self->_baseURL forKey:@"baseURL"];
-  [v6 encodeObject:self->_libraryBagKey forKey:@"libraryBagKey"];
-  [v6 encodeObject:self->_buildIdentifier forKey:@"buildIdentifier"];
-  [v6 encodeObject:self->_purchaseClientIdentifier forKey:@"purchaseClientIdentifier"];
-  [v6 encodeInt64:self->_requestReason forKey:@"requestReason"];
-  [v6 encodeObject:self->_familyMemberStoreID forKey:@"familyMemberStoreID"];
-  [v6 encodeTCCIdentity:self->_clientIdentity forKey:@"tccUserIdentity"];
+  coderCopy = coder;
+  [coderCopy ic_encodeUserIdentity:userIdentity withStore:userIdentityStore forKey:@"userIdentity"];
+  [coderCopy encodeObject:self->_userIdentityStore forKey:@"userIdentityStore"];
+  [coderCopy encodeObject:self->_baseURL forKey:@"baseURL"];
+  [coderCopy encodeObject:self->_libraryBagKey forKey:@"libraryBagKey"];
+  [coderCopy encodeObject:self->_buildIdentifier forKey:@"buildIdentifier"];
+  [coderCopy encodeObject:self->_purchaseClientIdentifier forKey:@"purchaseClientIdentifier"];
+  [coderCopy encodeInt64:self->_requestReason forKey:@"requestReason"];
+  [coderCopy encodeObject:self->_familyMemberStoreID forKey:@"familyMemberStoreID"];
+  [coderCopy encodeTCCIdentity:self->_clientIdentity forKey:@"tccUserIdentity"];
 }
 
-- (ICConnectionConfiguration)initWithCoder:(id)a3
+- (ICConnectionConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ICConnectionConfiguration *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userIdentity"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userIdentity"];
     userIdentity = v5->_userIdentity;
     v5->_userIdentity = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userIdentityStore"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userIdentityStore"];
     userIdentityStore = v5->_userIdentityStore;
     v5->_userIdentityStore = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"baseURL"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"baseURL"];
     baseURL = v5->_baseURL;
     v5->_baseURL = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"libraryBagKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"libraryBagKey"];
     libraryBagKey = v5->_libraryBagKey;
     v5->_libraryBagKey = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"buildIdentifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"buildIdentifier"];
     buildIdentifier = v5->_buildIdentifier;
     v5->_buildIdentifier = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"purchaseClientIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"purchaseClientIdentifier"];
     purchaseClientIdentifier = v5->_purchaseClientIdentifier;
     v5->_purchaseClientIdentifier = v16;
 
-    v5->_requestReason = [v4 decodeInt64ForKey:@"requestReason"];
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"familyMemberStoreID"];
+    v5->_requestReason = [coderCopy decodeInt64ForKey:@"requestReason"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"familyMemberStoreID"];
     familyMemberStoreID = v5->_familyMemberStoreID;
     v5->_familyMemberStoreID = v18;
 
-    v20 = [v4 decodeTCCIdentityForKey:@"tccUserIdentity"];
+    v20 = [coderCopy decodeTCCIdentityForKey:@"tccUserIdentity"];
     clientIdentity = v5->_clientIdentity;
     v5->_clientIdentity = v20;
   }
@@ -121,12 +121,12 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
-    LOBYTE(v15) = 1;
+    LOBYTE(libraryBagKey) = 1;
   }
 
   else
@@ -134,27 +134,27 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ICConnectionConfiguration *)self userIdentityStore];
-      v7 = [(ICConnectionConfiguration *)v5 userIdentityStore];
-      if (v6 != v7 && ![v6 isEqual:v7])
+      v5 = equalCopy;
+      userIdentityStore = [(ICConnectionConfiguration *)self userIdentityStore];
+      userIdentityStore2 = [(ICConnectionConfiguration *)v5 userIdentityStore];
+      if (userIdentityStore != userIdentityStore2 && ![userIdentityStore isEqual:userIdentityStore2])
       {
-        LOBYTE(v15) = 0;
+        LOBYTE(libraryBagKey) = 0;
 LABEL_41:
 
         goto LABEL_42;
       }
 
-      v8 = [(ICConnectionConfiguration *)self userIdentity];
-      v9 = [(ICConnectionConfiguration *)v5 userIdentity];
-      v10 = [(ICConnectionConfiguration *)self userIdentityStore];
-      v11 = v8;
-      v12 = v9;
-      v13 = v10;
+      userIdentity = [(ICConnectionConfiguration *)self userIdentity];
+      userIdentity2 = [(ICConnectionConfiguration *)v5 userIdentity];
+      userIdentityStore3 = [(ICConnectionConfiguration *)self userIdentityStore];
+      v11 = userIdentity;
+      v12 = userIdentity2;
+      v13 = userIdentityStore3;
       v14 = v13;
       if (v11 != v12)
       {
-        LOBYTE(v15) = 0;
+        LOBYTE(libraryBagKey) = 0;
         v16 = v13;
         v17 = v12;
         if (v11)
@@ -162,31 +162,31 @@ LABEL_41:
           v39 = v11;
           if (v12)
           {
-            LODWORD(v15) = [v11 isEqualToIdentity:v12 inStore:v13];
+            LODWORD(libraryBagKey) = [v11 isEqualToIdentity:v12 inStore:v13];
 
-            if (!v15)
+            if (!libraryBagKey)
             {
               goto LABEL_40;
             }
 
 LABEL_14:
-            v18 = [(ICConnectionConfiguration *)self baseURL];
-            v19 = [(ICConnectionConfiguration *)v5 baseURL];
-            v17 = v19;
-            v39 = v18;
-            if (v18 == v19)
+            baseURL = [(ICConnectionConfiguration *)self baseURL];
+            baseURL2 = [(ICConnectionConfiguration *)v5 baseURL];
+            v17 = baseURL2;
+            v39 = baseURL;
+            if (baseURL == baseURL2)
             {
-              v38 = v19;
+              v38 = baseURL2;
             }
 
             else
             {
-              v20 = [(ICConnectionConfiguration *)self baseURL];
-              v36 = [(ICConnectionConfiguration *)v5 baseURL];
-              v37 = v20;
-              if (![v20 isEqual:?])
+              baseURL3 = [(ICConnectionConfiguration *)self baseURL];
+              baseURL4 = [(ICConnectionConfiguration *)v5 baseURL];
+              v37 = baseURL3;
+              if (![baseURL3 isEqual:?])
               {
-                LOBYTE(v15) = 0;
+                LOBYTE(libraryBagKey) = 0;
 LABEL_37:
 
                 v16 = v37;
@@ -196,53 +196,53 @@ LABEL_37:
               v38 = v17;
             }
 
-            v15 = [(ICConnectionConfiguration *)self libraryBagKey];
-            v21 = [(ICConnectionConfiguration *)v5 libraryBagKey];
-            if (v15 == v21 || [v15 isEqual:v21])
+            libraryBagKey = [(ICConnectionConfiguration *)self libraryBagKey];
+            libraryBagKey2 = [(ICConnectionConfiguration *)v5 libraryBagKey];
+            if (libraryBagKey == libraryBagKey2 || [libraryBagKey isEqual:libraryBagKey2])
             {
               v33 = v14;
-              v34 = v21;
-              v22 = [(ICConnectionConfiguration *)self buildIdentifier];
-              v23 = [(ICConnectionConfiguration *)v5 buildIdentifier];
-              v35 = v15;
-              if (v22 == v23 || [v22 isEqual:v23])
+              v34 = libraryBagKey2;
+              buildIdentifier = [(ICConnectionConfiguration *)self buildIdentifier];
+              buildIdentifier2 = [(ICConnectionConfiguration *)v5 buildIdentifier];
+              v35 = libraryBagKey;
+              if (buildIdentifier == buildIdentifier2 || [buildIdentifier isEqual:buildIdentifier2])
               {
-                v31 = v6;
-                v32 = v23;
-                v24 = [(ICConnectionConfiguration *)self purchaseClientIdentifier];
-                v25 = [(ICConnectionConfiguration *)v5 purchaseClientIdentifier];
-                if (v24 == v25 || [v24 isEqual:v25])
+                v31 = userIdentityStore;
+                v32 = buildIdentifier2;
+                purchaseClientIdentifier = [(ICConnectionConfiguration *)self purchaseClientIdentifier];
+                purchaseClientIdentifier2 = [(ICConnectionConfiguration *)v5 purchaseClientIdentifier];
+                if (purchaseClientIdentifier == purchaseClientIdentifier2 || [purchaseClientIdentifier isEqual:purchaseClientIdentifier2])
                 {
-                  v30 = v25;
-                  v26 = [(ICConnectionConfiguration *)self familyMemberStoreID];
-                  v27 = [(ICConnectionConfiguration *)v5 familyMemberStoreID];
-                  v29 = v26;
-                  if (v26 == v27 || [v26 isEqual:v27])
+                  v30 = purchaseClientIdentifier2;
+                  familyMemberStoreID = [(ICConnectionConfiguration *)self familyMemberStoreID];
+                  familyMemberStoreID2 = [(ICConnectionConfiguration *)v5 familyMemberStoreID];
+                  v29 = familyMemberStoreID;
+                  if (familyMemberStoreID == familyMemberStoreID2 || [familyMemberStoreID isEqual:familyMemberStoreID2])
                   {
-                    v15 = [(ICConnectionConfiguration *)self requestReason];
-                    LOBYTE(v15) = v15 == [(ICConnectionConfiguration *)v5 requestReason];
+                    libraryBagKey = [(ICConnectionConfiguration *)self requestReason];
+                    LOBYTE(libraryBagKey) = libraryBagKey == [(ICConnectionConfiguration *)v5 requestReason];
                   }
 
                   else
                   {
-                    LOBYTE(v15) = 0;
+                    LOBYTE(libraryBagKey) = 0;
                   }
 
-                  v25 = v30;
+                  purchaseClientIdentifier2 = v30;
                 }
 
                 else
                 {
-                  LOBYTE(v15) = 0;
+                  LOBYTE(libraryBagKey) = 0;
                 }
 
-                v6 = v31;
-                v23 = v32;
+                userIdentityStore = v31;
+                buildIdentifier2 = v32;
               }
 
               else
               {
-                LOBYTE(v15) = 0;
+                LOBYTE(libraryBagKey) = 0;
               }
 
               v17 = v38;
@@ -256,7 +256,7 @@ LABEL_37:
             else
             {
 
-              LOBYTE(v15) = 0;
+              LOBYTE(libraryBagKey) = 0;
               v17 = v38;
               if (v39 == v38)
               {
@@ -284,50 +284,50 @@ LABEL_40:
       goto LABEL_14;
     }
 
-    LOBYTE(v15) = 0;
+    LOBYTE(libraryBagKey) = 0;
   }
 
 LABEL_42:
 
-  return v15;
+  return libraryBagKey;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(ICConnectionConfiguration *)self userIdentity];
-  v4 = [(ICConnectionConfiguration *)self userIdentityStore];
-  v5 = [v3 hashInStore:v4];
-  v6 = [(ICConnectionConfiguration *)self userIdentityStore];
-  v7 = [v6 hash] ^ v5;
-  v8 = [(ICConnectionConfiguration *)self baseURL];
-  v9 = [v8 hash];
-  v10 = [(ICConnectionConfiguration *)self libraryBagKey];
-  v11 = v7 ^ v9 ^ [v10 hash];
-  v12 = [(ICConnectionConfiguration *)self buildIdentifier];
-  v13 = [v12 hash];
-  v14 = [(ICConnectionConfiguration *)self purchaseClientIdentifier];
-  v15 = v13 ^ [v14 hash];
+  userIdentity = [(ICConnectionConfiguration *)self userIdentity];
+  userIdentityStore = [(ICConnectionConfiguration *)self userIdentityStore];
+  v5 = [userIdentity hashInStore:userIdentityStore];
+  userIdentityStore2 = [(ICConnectionConfiguration *)self userIdentityStore];
+  v7 = [userIdentityStore2 hash] ^ v5;
+  baseURL = [(ICConnectionConfiguration *)self baseURL];
+  v9 = [baseURL hash];
+  libraryBagKey = [(ICConnectionConfiguration *)self libraryBagKey];
+  v11 = v7 ^ v9 ^ [libraryBagKey hash];
+  buildIdentifier = [(ICConnectionConfiguration *)self buildIdentifier];
+  v13 = [buildIdentifier hash];
+  purchaseClientIdentifier = [(ICConnectionConfiguration *)self purchaseClientIdentifier];
+  v15 = v13 ^ [purchaseClientIdentifier hash];
   v16 = v11 ^ v15 ^ [(ICConnectionConfiguration *)self requestReason];
-  v17 = [(ICConnectionConfiguration *)self familyMemberStoreID];
-  v18 = [v17 hash];
+  familyMemberStoreID = [(ICConnectionConfiguration *)self familyMemberStoreID];
+  v18 = [familyMemberStoreID hash];
 
   return v16 ^ v18;
 }
 
-- (ICConnectionConfiguration)initWithUserIdentity:(id)a3 userIdentityStore:(id)a4 clientIdentity:(id)a5
+- (ICConnectionConfiguration)initWithUserIdentity:(id)identity userIdentityStore:(id)store clientIdentity:(id)clientIdentity
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identityCopy = identity;
+  storeCopy = store;
+  clientIdentityCopy = clientIdentity;
   v22.receiver = self;
   v22.super_class = ICConnectionConfiguration;
   v12 = [(ICConnectionConfiguration *)&v22 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_userIdentity, a3);
-    objc_storeStrong(&v13->_userIdentityStore, a4);
-    objc_storeStrong(&v13->_clientIdentity, a5);
+    objc_storeStrong(&v12->_userIdentity, identity);
+    objc_storeStrong(&v13->_userIdentityStore, store);
+    objc_storeStrong(&v13->_clientIdentity, clientIdentity);
     v14 = MGCopyAnswer();
     if (![(__CFString *)v14 length])
     {
@@ -351,30 +351,30 @@ LABEL_42:
   return v13;
 }
 
-- (ICConnectionConfiguration)initWithUserIdentity:(id)a3 userIdentityStore:(id)a4
+- (ICConnectionConfiguration)initWithUserIdentity:(id)identity userIdentityStore:(id)store
 {
-  v6 = a4;
-  v7 = a3;
+  storeCopy = store;
+  identityCopy = identity;
   v8 = MSVTCCIdentityForCurrentProcess();
-  v9 = [(ICConnectionConfiguration *)self initWithUserIdentity:v7 userIdentityStore:v6 clientIdentity:v8];
+  v9 = [(ICConnectionConfiguration *)self initWithUserIdentity:identityCopy userIdentityStore:storeCopy clientIdentity:v8];
 
   return v9;
 }
 
-- (ICConnectionConfiguration)initWithUserIdentity:(id)a3
+- (ICConnectionConfiguration)initWithUserIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v5 = +[ICUserIdentityStore defaultIdentityStore];
-  v6 = [(ICConnectionConfiguration *)self initWithUserIdentity:v4 userIdentityStore:v5];
+  v6 = [(ICConnectionConfiguration *)self initWithUserIdentity:identityCopy userIdentityStore:v5];
 
   return v6;
 }
 
-+ (id)configurationFromSourceConfiguration:(id)a3 userIdentity:(id)a4
++ (id)configurationFromSourceConfiguration:(id)configuration userIdentity:(id)identity
 {
-  v5 = a4;
-  v6 = [a3 copy];
-  [v6 setUserIdentity:v5];
+  identityCopy = identity;
+  v6 = [configuration copy];
+  [v6 setUserIdentity:identityCopy];
 
   return v6;
 }

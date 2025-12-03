@@ -20,18 +20,18 @@
   v10[3] = &unk_2785054E8;
   v11 = v8;
   v9 = v8;
-  [a1 br_removeDomain:a3 options:0 sync:a4 completionHandler:v10];
+  [self br_removeDomain:a3 options:0 sync:a4 completionHandler:v10];
 }
 
 - (void)_br_removeDomain:()BRCAdditions options:retries:completionHandler:
 {
   v10 = a3;
   v11 = a6;
-  v12 = [MEMORY[0x277D77BF8] sharedManager];
-  v13 = [v12 currentPersona];
-  v14 = [v13 userPersonaUniqueString];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  currentPersona = [mEMORY[0x277D77BF8] currentPersona];
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
 
-  objc_initWeak(&location, a1);
+  objc_initWeak(&location, self);
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __90__NSFileProviderManager_BRCAdditions___br_removeDomain_options_retries_completionHandler___block_invoke;
@@ -40,12 +40,12 @@
   v21 = v15;
   v22[1] = a5;
   objc_copyWeak(v22, &location);
-  v16 = v14;
+  v16 = userPersonaUniqueString;
   v19 = v16;
   v17 = v10;
   v20 = v17;
   v22[2] = a4;
-  [a1 removeDomain:v17 options:a4 completionHandler:v18];
+  [self removeDomain:v17 options:a4 completionHandler:v18];
 
   objc_destroyWeak(v22);
   objc_destroyWeak(&location);
@@ -66,18 +66,18 @@
     v34 = 0;
     v12 = MEMORY[0x277CFAF00];
     v13 = [BRCUserDefaults defaultsForMangledID:0];
-    v14 = [v13 xpcConnectionFailureRetries];
+    xpcConnectionFailureRetries = [v13 xpcConnectionFailureRetries];
     v28 = 0;
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __86__NSFileProviderManager_BRCAdditions__br_removeDomain_options_sync_completionHandler___block_invoke;
     v24[3] = &unk_278506B98;
-    v24[4] = a1;
+    v24[4] = self;
     v15 = v10;
     v25 = v15;
     v26 = &v29;
     v27 = a4;
-    LODWORD(v12) = [v12 executeXPCWithMaxRetries:v14 error:&v28 block:v24];
+    LODWORD(v12) = [v12 executeXPCWithMaxRetries:xpcConnectionFailureRetries error:&v28 block:v24];
     v16 = v28;
 
     if (v12)
@@ -125,7 +125,7 @@
     v23 = &v29;
     v21 = v10;
     v22 = v11;
-    [a1 br_removeDomain:v21 options:a4 completionHandler:v20];
+    [self br_removeDomain:v21 options:a4 completionHandler:v20];
 
     _Block_object_dispose(&v29, 8);
   }
@@ -140,7 +140,7 @@
   v11 = a5;
   v12 = MEMORY[0x277CFAF00];
   v13 = [BRCUserDefaults defaultsForMangledID:0];
-  v14 = [v13 xpcConnectionFailureRetries];
+  xpcConnectionFailureRetries = [v13 xpcConnectionFailureRetries];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __102__NSFileProviderManager_BRCAdditions__br_importDomain_forProviderIdentifier_fromDirectoryAtURL_error___block_invoke;
@@ -151,7 +151,7 @@
   v15 = v11;
   v16 = v10;
   v17 = v9;
-  v18 = [v12 executeXPCWithMaxRetries:v14 error:a6 block:v20];
+  v18 = [v12 executeXPCWithMaxRetries:xpcConnectionFailureRetries error:a6 block:v20];
 
   return v18;
 }
@@ -164,7 +164,7 @@
   v14 = a6;
   v15 = MEMORY[0x277CFAF00];
   v16 = [BRCUserDefaults defaultsForMangledID:0];
-  v17 = [v16 xpcConnectionFailureRetries];
+  xpcConnectionFailureRetries = [v16 xpcConnectionFailureRetries];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __115__NSFileProviderManager_BRCAdditions__br_importDomain_forProviderIdentifier_fromDirectoryAtURL_knownFolders_error___block_invoke;
@@ -177,7 +177,7 @@
   v19 = v13;
   v20 = v12;
   v21 = v11;
-  v22 = [v15 executeXPCWithMaxRetries:v17 error:a7 block:v24];
+  v22 = [v15 executeXPCWithMaxRetries:xpcConnectionFailureRetries error:a7 block:v24];
 
   return v22;
 }
@@ -188,7 +188,7 @@
   v8 = a4;
   v9 = MEMORY[0x277CFAF00];
   v10 = [BRCUserDefaults defaultsForMangledID:0];
-  v11 = [v10 xpcConnectionFailureRetries];
+  xpcConnectionFailureRetries = [v10 xpcConnectionFailureRetries];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __80__NSFileProviderManager_BRCAdditions__br_addDomain_forProviderIdentifier_error___block_invoke;
@@ -197,7 +197,7 @@
   v18 = v8;
   v12 = v8;
   v13 = v7;
-  v14 = [v9 executeXPCWithMaxRetries:v11 error:a5 block:v16];
+  v14 = [v9 executeXPCWithMaxRetries:xpcConnectionFailureRetries error:a5 block:v16];
 
   return v14;
 }
@@ -208,15 +208,15 @@
   v7 = MEMORY[0x277CFAF00];
   v8 = a4;
   v9 = [BRCUserDefaults defaultsForMangledID:0];
-  v10 = [v9 xpcConnectionFailureRetries];
+  xpcConnectionFailureRetries = [v9 xpcConnectionFailureRetries];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __70__NSFileProviderManager_BRCAdditions__br_addDomain_completionHandler___block_invoke;
   v12[3] = &unk_278504658;
-  v12[4] = a1;
+  v12[4] = self;
   v13 = v6;
   v11 = v6;
-  [v7 executeAsyncXPCWithMaxRetries:v10 completion:v8 xpcInvokeBlock:v12];
+  [v7 executeAsyncXPCWithMaxRetries:xpcConnectionFailureRetries completion:v8 xpcInvokeBlock:v12];
 }
 
 - (void)br_signalEnumeratorForContainerItemIdentifier:()BRCAdditions completionHandler:
@@ -225,15 +225,15 @@
   v7 = MEMORY[0x277CFAF00];
   v8 = a4;
   v9 = [BRCUserDefaults defaultsForMangledID:0];
-  v10 = [v9 xpcConnectionFailureRetries];
+  xpcConnectionFailureRetries = [v9 xpcConnectionFailureRetries];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __103__NSFileProviderManager_BRCAdditions__br_signalEnumeratorForContainerItemIdentifier_completionHandler___block_invoke;
   v12[3] = &unk_278504658;
-  v12[4] = a1;
+  v12[4] = self;
   v13 = v6;
   v11 = v6;
-  [v7 executeAsyncXPCWithMaxRetries:v10 completion:v8 xpcInvokeBlock:v12];
+  [v7 executeAsyncXPCWithMaxRetries:xpcConnectionFailureRetries completion:v8 xpcInvokeBlock:v12];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface MapsAppTestTileData
 - (BOOL)runTest;
-- (MapsAppTestTileData)initWithApplication:(id)a3 testName:(id)a4 options:(id)a5;
+- (MapsAppTestTileData)initWithApplication:(id)application testName:(id)name options:(id)options;
 @end
 
 @implementation MapsAppTestTileData
@@ -10,10 +10,10 @@
   [(MapsAppTest *)self startedTest];
   if (self->_hasRequiredOptions)
   {
-    v3 = [(MapsAppTest *)self mainVKMapView];
+    mainVKMapView = [(MapsAppTest *)self mainVKMapView];
     CLLocationCoordinate2DMake(self->_latitude, self->_longitude);
-    v4 = [(MapsAppTest *)self mainMKMapView];
-    [v4 bounds];
+    mainMKMapView = [(MapsAppTest *)self mainMKMapView];
+    [mainMKMapView bounds];
     v6 = v5;
     v8 = v7;
 
@@ -21,12 +21,12 @@
     GEOMapRectForCoordinateRegion();
     v17 = v9;
     *&v9 = self->_zoom;
-    v13 = [v3 pptTileStatisticsForMapType:self->_mapType latitude:self->_latitude longitude:self->_longitude zoom:v9 width:v6 height:v8 rect:{v10, v11, *&v17, v12}];
+    v13 = [mainVKMapView pptTileStatisticsForMapType:self->_mapType latitude:self->_latitude longitude:self->_longitude zoom:v9 width:v6 height:v8 rect:{v10, v11, *&v17, v12}];
     v14 = v13 != 0;
     if (v13)
     {
-      v15 = [(MapsAppTest *)self results];
-      [v15 addEntriesFromDictionary:v13];
+      results = [(MapsAppTest *)self results];
+      [results addEntriesFromDictionary:v13];
 
       [(MapsAppTest *)self finishedTest];
     }
@@ -46,24 +46,24 @@
   return v14;
 }
 
-- (MapsAppTestTileData)initWithApplication:(id)a3 testName:(id)a4 options:(id)a5
+- (MapsAppTestTileData)initWithApplication:(id)application testName:(id)name options:(id)options
 {
-  v8 = a5;
+  optionsCopy = options;
   v24.receiver = self;
   v24.super_class = MapsAppTestTileData;
-  v9 = [(MapsAppTest *)&v24 initWithApplication:a3 testName:a4 options:v8];
+  v9 = [(MapsAppTest *)&v24 initWithApplication:application testName:name options:optionsCopy];
   if (v9)
   {
-    v10 = [v8 objectForKeyedSubscript:@"latitude"];
+    v10 = [optionsCopy objectForKeyedSubscript:@"latitude"];
     if (v10)
     {
-      v11 = [v8 objectForKeyedSubscript:@"longitude"];
+      v11 = [optionsCopy objectForKeyedSubscript:@"longitude"];
       if (v11)
       {
-        v12 = [v8 objectForKeyedSubscript:@"zoom"];
+        v12 = [optionsCopy objectForKeyedSubscript:@"zoom"];
         if (v12)
         {
-          v13 = [v8 objectForKeyedSubscript:@"mapType"];
+          v13 = [optionsCopy objectForKeyedSubscript:@"mapType"];
           p_hasRequiredOptions = &v9->_hasRequiredOptions;
           v9->_hasRequiredOptions = v13 != 0;
         }
@@ -90,19 +90,19 @@
 
     if (*p_hasRequiredOptions)
     {
-      v15 = [v8 objectForKeyedSubscript:@"latitude"];
+      v15 = [optionsCopy objectForKeyedSubscript:@"latitude"];
       [v15 doubleValue];
       v9->_latitude = v16;
 
-      v17 = [v8 objectForKeyedSubscript:@"longitude"];
+      v17 = [optionsCopy objectForKeyedSubscript:@"longitude"];
       [v17 doubleValue];
       v9->_longitude = v18;
 
-      v19 = [v8 objectForKeyedSubscript:@"zoom"];
+      v19 = [optionsCopy objectForKeyedSubscript:@"zoom"];
       [v19 floatValue];
       v9->_zoom = v20;
 
-      v21 = [v8 objectForKeyedSubscript:@"mapType"];
+      v21 = [optionsCopy objectForKeyedSubscript:@"mapType"];
       if ([v21 isEqualToString:@"VKMapTypeStandard"])
       {
         v22 = 0;

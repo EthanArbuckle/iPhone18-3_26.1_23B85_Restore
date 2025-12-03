@@ -1,80 +1,80 @@
 @interface HKQuerySortConstraint
-+ (id)sortConstraintByRelaxingSortConstraint:(id)a3 error:(id *)a4;
-+ (id)sortConstraintWithSortDescriptor:(id)a3 predicate:(id)a4;
++ (id)sortConstraintByRelaxingSortConstraint:(id)constraint error:(id *)error;
++ (id)sortConstraintWithSortDescriptor:(id)descriptor predicate:(id)predicate;
 - (BOOL)canRelax;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKQuerySortConstraint)init;
-- (HKQuerySortConstraint)initWithCoder:(id)a3;
-- (HKQuerySortConstraint)initWithSortDescriptor:(id)a3 predicate:(id)a4;
+- (HKQuerySortConstraint)initWithCoder:(id)coder;
+- (HKQuerySortConstraint)initWithSortDescriptor:(id)descriptor predicate:(id)predicate;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKQuerySortConstraint
 
-+ (id)sortConstraintWithSortDescriptor:(id)a3 predicate:(id)a4
++ (id)sortConstraintWithSortDescriptor:(id)descriptor predicate:(id)predicate
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  descriptorCopy = descriptor;
+  predicateCopy = predicate;
+  if (predicateCopy)
   {
-    v9 = [v7 key];
-    v10 = [v8 leftExpression];
-    v11 = [v10 keyPath];
-    v12 = [v9 isEqualToString:v11];
+    v9 = [descriptorCopy key];
+    leftExpression = [predicateCopy leftExpression];
+    keyPath = [leftExpression keyPath];
+    v12 = [v9 isEqualToString:keyPath];
 
     if ((v12 & 1) == 0)
     {
-      [HKQuerySortConstraint sortConstraintWithSortDescriptor:a2 predicate:a1];
+      [HKQuerySortConstraint sortConstraintWithSortDescriptor:a2 predicate:self];
     }
 
-    if ([v8 predicateOperatorType] != 4 && objc_msgSend(v8, "predicateOperatorType") != 2 && objc_msgSend(v8, "predicateOperatorType"))
+    if ([predicateCopy predicateOperatorType] != 4 && objc_msgSend(predicateCopy, "predicateOperatorType") != 2 && objc_msgSend(predicateCopy, "predicateOperatorType"))
     {
-      [HKQuerySortConstraint sortConstraintWithSortDescriptor:a2 predicate:a1];
+      [HKQuerySortConstraint sortConstraintWithSortDescriptor:a2 predicate:self];
     }
   }
 
-  v13 = [[a1 alloc] initWithSortDescriptor:v7 predicate:v8];
+  v13 = [[self alloc] initWithSortDescriptor:descriptorCopy predicate:predicateCopy];
 
   return v13;
 }
 
-+ (id)sortConstraintByRelaxingSortConstraint:(id)a3 error:(id *)a4
++ (id)sortConstraintByRelaxingSortConstraint:(id)constraint error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 predicate];
+  constraintCopy = constraint;
+  predicate = [constraintCopy predicate];
 
-  if (v6)
+  if (predicate)
   {
-    v7 = [v5 predicate];
-    v8 = [v7 predicateOperatorType];
+    predicate2 = [constraintCopy predicate];
+    predicateOperatorType = [predicate2 predicateOperatorType];
 
-    if (v8 == 4)
+    if (predicateOperatorType == 4)
     {
       v9 = MEMORY[0x1E696AB18];
-      v10 = [v5 sortDescriptor];
-      v11 = [v10 key];
-      v12 = [v5 predicate];
-      v13 = [v12 rightExpression];
-      v14 = [v13 constantValue];
-      v15 = [v5 sortDescriptor];
-      v16 = [v9 hk_inequalityPredicateWithKey:v11 value:v14 ascending:{objc_msgSend(v15, "ascending")}];
+      sortDescriptor = [constraintCopy sortDescriptor];
+      v11 = [sortDescriptor key];
+      predicate3 = [constraintCopy predicate];
+      rightExpression = [predicate3 rightExpression];
+      constantValue = [rightExpression constantValue];
+      sortDescriptor2 = [constraintCopy sortDescriptor];
+      sortDescriptor4 = [v9 hk_inequalityPredicateWithKey:v11 value:constantValue ascending:{objc_msgSend(sortDescriptor2, "ascending")}];
 
-      v17 = [v5 sortDescriptor];
-      v18 = [HKQuerySortConstraint sortConstraintWithSortDescriptor:v17 predicate:v16];
+      sortDescriptor3 = [constraintCopy sortDescriptor];
+      v18 = [HKQuerySortConstraint sortConstraintWithSortDescriptor:sortDescriptor3 predicate:sortDescriptor4];
     }
 
     else
     {
-      v16 = [v5 sortDescriptor];
-      v18 = [HKQuerySortConstraint sortConstraintWithSortDescriptor:v16 predicate:0];
+      sortDescriptor4 = [constraintCopy sortDescriptor];
+      v18 = [HKQuerySortConstraint sortConstraintWithSortDescriptor:sortDescriptor4 predicate:0];
     }
   }
 
   else
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a4 code:3 format:@"Unable to relax sort constraint"];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:@"Unable to relax sort constraint"];
     v18 = 0;
   }
 
@@ -83,8 +83,8 @@
 
 - (BOOL)canRelax
 {
-  v2 = [(HKQuerySortConstraint *)self predicate];
-  v3 = v2 != 0;
+  predicate = [(HKQuerySortConstraint *)self predicate];
+  v3 = predicate != 0;
 
   return v3;
 }
@@ -99,20 +99,20 @@
   return 0;
 }
 
-- (HKQuerySortConstraint)initWithSortDescriptor:(id)a3 predicate:(id)a4
+- (HKQuerySortConstraint)initWithSortDescriptor:(id)descriptor predicate:(id)predicate
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  predicateCopy = predicate;
   v14.receiver = self;
   v14.super_class = HKQuerySortConstraint;
   v8 = [(HKQuerySortConstraint *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [descriptorCopy copy];
     sortDescriptor = v8->_sortDescriptor;
     v8->_sortDescriptor = v9;
 
-    v11 = [v7 copy];
+    v11 = [predicateCopy copy];
     predicate = v8->_predicate;
     v8->_predicate = v11;
   }
@@ -132,18 +132,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HKQuerySortConstraint *)self sortDescriptor];
-  v4 = [v3 hash];
-  v5 = [(HKQuerySortConstraint *)self predicate];
-  v6 = [v5 hash];
+  sortDescriptor = [(HKQuerySortConstraint *)self sortDescriptor];
+  v4 = [sortDescriptor hash];
+  predicate = [(HKQuerySortConstraint *)self predicate];
+  v6 = [predicate hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -153,26 +153,26 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       sortDescriptor = self->_sortDescriptor;
-      v7 = [(HKQuerySortConstraint *)v5 sortDescriptor];
-      v8 = v7;
-      if (sortDescriptor == v7)
+      sortDescriptor = [(HKQuerySortConstraint *)v5 sortDescriptor];
+      v8 = sortDescriptor;
+      if (sortDescriptor == sortDescriptor)
       {
       }
 
       else
       {
-        v9 = [(HKQuerySortConstraint *)v5 sortDescriptor];
-        if (!v9)
+        sortDescriptor2 = [(HKQuerySortConstraint *)v5 sortDescriptor];
+        if (!sortDescriptor2)
         {
           goto LABEL_14;
         }
 
-        v10 = v9;
+        v10 = sortDescriptor2;
         v11 = self->_sortDescriptor;
-        v12 = [(HKQuerySortConstraint *)v5 sortDescriptor];
-        LODWORD(v11) = [(NSSortDescriptor *)v11 isEqual:v12];
+        sortDescriptor3 = [(HKQuerySortConstraint *)v5 sortDescriptor];
+        LODWORD(v11) = [(NSSortDescriptor *)v11 isEqual:sortDescriptor3];
 
         if (!v11)
         {
@@ -181,9 +181,9 @@
       }
 
       predicate = self->_predicate;
-      v15 = [(HKQuerySortConstraint *)v5 predicate];
-      v8 = v15;
-      if (predicate == v15)
+      predicate = [(HKQuerySortConstraint *)v5 predicate];
+      v8 = predicate;
+      if (predicate == predicate)
       {
 
 LABEL_17:
@@ -191,13 +191,13 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v16 = [(HKQuerySortConstraint *)v5 predicate];
-      if (v16)
+      predicate2 = [(HKQuerySortConstraint *)v5 predicate];
+      if (predicate2)
       {
-        v17 = v16;
+        v17 = predicate2;
         v18 = self->_predicate;
-        v19 = [(HKQuerySortConstraint *)v5 predicate];
-        LOBYTE(v18) = [(NSComparisonPredicate *)v18 isEqual:v19];
+        predicate3 = [(HKQuerySortConstraint *)v5 predicate];
+        LOBYTE(v18) = [(NSComparisonPredicate *)v18 isEqual:predicate3];
 
         if (v18)
         {
@@ -224,35 +224,35 @@ LABEL_19:
   return v13;
 }
 
-- (HKQuerySortConstraint)initWithCoder:(id)a3
+- (HKQuerySortConstraint)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SortDescriptor"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SortDescriptor"];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x1E695DFD8]);
     v7 = objc_opt_class();
     v8 = [v6 initWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"Predicate"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"Predicate"];
     self = [(HKQuerySortConstraint *)self initWithSortDescriptor:v5 predicate:v9];
 
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sortDescriptor = self->_sortDescriptor;
-  v5 = a3;
-  [v5 encodeObject:sortDescriptor forKey:@"SortDescriptor"];
-  [v5 encodeObject:self->_predicate forKey:@"Predicate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sortDescriptor forKey:@"SortDescriptor"];
+  [coderCopy encodeObject:self->_predicate forKey:@"Predicate"];
 }
 
 + (void)sortConstraintWithSortDescriptor:(uint64_t)a1 predicate:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

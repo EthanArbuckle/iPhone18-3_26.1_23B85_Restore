@@ -1,16 +1,16 @@
 @interface CNAutocompleteSuggestionsViewSectionHeaderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (CNAutocompleteSuggestionsViewSectionHeaderAccessibility)initWithFrame:(CGRect)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (CNAutocompleteSuggestionsViewSectionHeaderAccessibility)initWithFrame:(CGRect)frame;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation CNAutocompleteSuggestionsViewSectionHeaderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNAutocompleteSuggestionsViewSectionHeader" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNAutocompleteSuggestionsViewSectionHeader" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNAutocompleteSuggestionsViewSectionHeader" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNAutocompleteSuggestionsViewSectionHeader" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -22,11 +22,11 @@
   [v3 setAccessibilityTraits:*MEMORY[0x29EDC7F80]];
 }
 
-- (CNAutocompleteSuggestionsViewSectionHeaderAccessibility)initWithFrame:(CGRect)a3
+- (CNAutocompleteSuggestionsViewSectionHeaderAccessibility)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CNAutocompleteSuggestionsViewSectionHeaderAccessibility;
-  v3 = [(CNAutocompleteSuggestionsViewSectionHeaderAccessibility *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CNAutocompleteSuggestionsViewSectionHeaderAccessibility *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

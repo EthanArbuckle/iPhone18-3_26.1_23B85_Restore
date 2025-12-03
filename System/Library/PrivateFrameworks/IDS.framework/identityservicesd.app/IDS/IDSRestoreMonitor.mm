@@ -1,11 +1,11 @@
 @interface IDSRestoreMonitor
 + (IDSRestoreMonitor)sharedInstance;
-- (BOOL)hasActionForTarget:(id)a3;
-- (IDSRestoreMonitor)initWithTimerBlock:(id)a3;
+- (BOOL)hasActionForTarget:(id)target;
+- (IDSRestoreMonitor)initWithTimerBlock:(id)block;
 - (void)_timerFired;
 - (void)_timerFiredOnMain;
-- (void)addTarget:(id)a3 actionBlock:(id)a4;
-- (void)removeTarget:(id)a3;
+- (void)addTarget:(id)target actionBlock:(id)block;
+- (void)removeTarget:(id)target;
 @end
 
 @implementation IDSRestoreMonitor
@@ -22,45 +22,45 @@
   return v3;
 }
 
-- (IDSRestoreMonitor)initWithTimerBlock:(id)a3
+- (IDSRestoreMonitor)initWithTimerBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v10.receiver = self;
     v10.super_class = IDSRestoreMonitor;
     v5 = [(IDSRestoreMonitor *)&v10 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [blockCopy copy];
       timerBlock = v5->_timerBlock;
       v5->_timerBlock = v6;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (BOOL)hasActionForTarget:(id)a3
+- (BOOL)hasActionForTarget:(id)target
 {
-  v3 = [(NSMapTable *)self->_actionByTarget objectForKey:a3];
+  v3 = [(NSMapTable *)self->_actionByTarget objectForKey:target];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)addTarget:(id)a3 actionBlock:(id)a4
+- (void)addTarget:(id)target actionBlock:(id)block
 {
-  v13 = a3;
-  v6 = a4;
+  targetCopy = target;
+  blockCopy = block;
   actionByTarget = self->_actionByTarget;
   if (!actionByTarget)
   {
@@ -71,8 +71,8 @@
     actionByTarget = self->_actionByTarget;
   }
 
-  v10 = objc_retainBlock(v6);
-  [(NSMapTable *)actionByTarget setObject:v10 forKey:v13];
+  v10 = objc_retainBlock(blockCopy);
+  [(NSMapTable *)actionByTarget setObject:v10 forKey:targetCopy];
 
   if (!self->_restoreTimer)
   {
@@ -82,9 +82,9 @@
   }
 }
 
-- (void)removeTarget:(id)a3
+- (void)removeTarget:(id)target
 {
-  [(NSMapTable *)self->_actionByTarget removeObjectForKey:a3];
+  [(NSMapTable *)self->_actionByTarget removeObjectForKey:target];
   if (![(NSMapTable *)self->_actionByTarget count])
   {
     actionByTarget = self->_actionByTarget;

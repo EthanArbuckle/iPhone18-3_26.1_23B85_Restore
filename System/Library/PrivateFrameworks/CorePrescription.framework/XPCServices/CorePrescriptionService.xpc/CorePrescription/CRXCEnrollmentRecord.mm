@@ -1,9 +1,9 @@
 @interface CRXCEnrollmentRecord
 + (NSString)noLensesUUID;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)modifiedDate;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRXCEnrollmentRecord
@@ -36,11 +36,11 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_100081658();
     swift_unknownObjectRelease();
@@ -49,7 +49,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = CRXCEnrollmentRecord.isEqual(_:)(v8);
@@ -60,7 +60,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   CRXCEnrollmentRecord.description.getter();
 
   v3 = sub_100081288();
@@ -68,11 +68,11 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CRXCEnrollmentRecord.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CRXCEnrollmentRecord.encode(with:)(coderCopy);
 }
 
 @end

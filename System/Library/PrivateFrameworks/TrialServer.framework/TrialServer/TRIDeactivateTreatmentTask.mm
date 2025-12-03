@@ -1,29 +1,29 @@
 @interface TRIDeactivateTreatmentTask
-+ (id)parseFromData:(id)a3;
-+ (id)prevTelemetryFieldsFromActivationEventDatabase:(id)a3 deactivatedRecord:(id)a4;
++ (id)parseFromData:(id)data;
++ (id)prevTelemetryFieldsFromActivationEventDatabase:(id)database deactivatedRecord:(id)record;
 - (NSString)description;
-- (TRIDeactivateTreatmentTask)initWithCoder:(id)a3;
+- (TRIDeactivateTreatmentTask)initWithCoder:(id)coder;
 - (id)_asPersistedTask;
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4;
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue;
 - (id)serialize;
 - (id)trialSystemTelemetry;
 - (unint64_t)requiredCapabilities;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRIDeactivateTreatmentTask
 
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue
 {
   v203 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v167 = a4;
+  contextCopy = context;
+  queueCopy = queue;
   v6 = objc_opt_new();
-  v180 = v5;
-  v171 = [TRIExperimentPostLaunchRecorder recorderFromContext:v5];
-  v7 = [v5 experimentDatabase];
-  v8 = [(TRIExperimentBaseTask *)self experiment];
-  v9 = [v8 experimentId];
+  v180 = contextCopy;
+  v171 = [TRIExperimentPostLaunchRecorder recorderFromContext:contextCopy];
+  experimentDatabase = [contextCopy experimentDatabase];
+  experiment = [(TRIExperimentBaseTask *)self experiment];
+  experimentId = [experiment experimentId];
   v192[0] = MEMORY[0x277D85DD0];
   v192[1] = 3221225472;
   v192[2] = __60__TRIDeactivateTreatmentTask_runUsingContext_withTaskQueue___block_invoke_2;
@@ -31,7 +31,7 @@
   v192[4] = self;
   v168 = v6;
   v193 = v168;
-  LOBYTE(v6) = [v7 enumerateExperimentRecordsMatchingExperimentId:v9 block:v192];
+  LOBYTE(v6) = [experimentDatabase enumerateExperimentRecordsMatchingExperimentId:experimentId block:v192];
 
   if (v6)
   {
@@ -49,10 +49,10 @@
       {
         v175 = 0;
         v10 = 0;
-        v177 = 0;
+        treatmentId2 = 0;
         v178 = *v189;
         v11 = 2;
-        v173 = -1;
+        deploymentId = -1;
         do
         {
           for (i = 0; i != v179; ++i)
@@ -71,29 +71,29 @@
 
               if (v16)
               {
-                if (v177)
+                if (treatmentId2)
                 {
                   v17 = TRILogCategory_Server();
                   if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
                   {
-                    v18 = [v13 experimentDeployment];
-                    v19 = [v18 shortDesc];
-                    v20 = [v13 treatmentId];
+                    experimentDeployment = [v13 experimentDeployment];
+                    shortDesc = [experimentDeployment shortDesc];
+                    treatmentId = [v13 treatmentId];
                     *buf = 138543874;
-                    *&buf[4] = v19;
+                    *&buf[4] = shortDesc;
                     *&buf[12] = 2112;
-                    *&buf[14] = v177;
+                    *&buf[14] = treatmentId2;
                     *&buf[22] = 2112;
-                    v201 = v20;
+                    v201 = treatmentId;
                     _os_log_error_impl(&dword_26F567000, v17, OS_LOG_TYPE_ERROR, "Same experiment %{public}@ has multiple treatments that can be deactivated.(%@, %@)", buf, 0x20u);
                   }
                 }
 
                 else
                 {
-                  v177 = [v13 treatmentId];
-                  v23 = [v13 experimentDeployment];
-                  v173 = [v23 deploymentId];
+                  treatmentId2 = [v13 treatmentId];
+                  experimentDeployment2 = [v13 experimentDeployment];
+                  deploymentId = [experimentDeployment2 deploymentId];
 
                   v17 = TRIDeploymentEnvironment_EnumDescriptor();
                   v24 = -[NSObject textFormatNameForValue:](v17, "textFormatNameForValue:", [v13 deploymentEnvironment]);
@@ -104,13 +104,13 @@
                 v25 = TRILogCategory_Server();
                 if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
                 {
-                  v26 = [v13 treatmentId];
-                  v27 = [v13 experimentDeployment];
-                  v28 = [v27 shortDesc];
+                  treatmentId3 = [v13 treatmentId];
+                  experimentDeployment3 = [v13 experimentDeployment];
+                  shortDesc2 = [experimentDeployment3 shortDesc];
                   *buf = 138412546;
-                  *&buf[4] = v26;
+                  *&buf[4] = treatmentId3;
                   *&buf[12] = 2114;
-                  *&buf[14] = v28;
+                  *&buf[14] = shortDesc2;
                   _os_log_impl(&dword_26F567000, v25, OS_LOG_TYPE_DEFAULT, "Deactivating treatment %@ of experiment %{public}@.", buf, 0x16u);
                 }
 
@@ -118,21 +118,21 @@
                 *&buf[8] = buf;
                 *&buf[16] = 0x2020000000;
                 LOBYTE(v201) = 1;
-                v29 = [v180 paths];
-                v30 = [v29 namespaceDescriptorsExperimentDir];
+                paths = [v180 paths];
+                namespaceDescriptorsExperimentDir = [paths namespaceDescriptorsExperimentDir];
 
-                v31 = [v13 namespaces];
+                namespaces = [v13 namespaces];
 
-                if (v31)
+                if (namespaces)
                 {
-                  v32 = [v13 namespaces];
+                  namespaces2 = [v13 namespaces];
                   v185[0] = MEMORY[0x277D85DD0];
                   v185[1] = 3221225472;
                   v185[2] = __60__TRIDeactivateTreatmentTask_runUsingContext_withTaskQueue___block_invoke_66;
                   v185[3] = &unk_279DE3BD8;
                   v187 = buf;
-                  v186 = v30;
-                  [v32 enumerateObjectsUsingBlock:v185];
+                  v186 = namespaceDescriptorsExperimentDir;
+                  [namespaces2 enumerateObjectsUsingBlock:v185];
                 }
 
                 if (*(*&buf[8] + 24) != 1)
@@ -140,21 +140,21 @@
                   goto LABEL_51;
                 }
 
-                v33 = [v13 artifact];
-                v34 = [v33 experiment];
-                v35 = [v34 projectId];
+                artifact = [v13 artifact];
+                experiment2 = [artifact experiment];
+                projectId = [experiment2 projectId];
 
-                v36 = [v180 paths];
-                v37 = [TRILogTreatmentProvider providerWithProjectId:v35 paths:v36];
+                paths2 = [v180 paths];
+                v37 = [TRILogTreatmentProvider providerWithProjectId:projectId paths:paths2];
 
                 if (v37 || ([v180 paths], v38 = objc_claimAutoreleasedReturnValue(), +[TRILogTreatmentProvider providerWithProjectId:paths:](TRILogTreatmentProvider, "providerWithProjectId:paths:", 1, v38), v37 = objc_claimAutoreleasedReturnValue(), v38, v37))
                 {
-                  v39 = [v13 treatmentId];
+                  treatmentId4 = [v13 treatmentId];
 
-                  if (v39)
+                  if (treatmentId4)
                   {
-                    v40 = [v13 treatmentId];
-                    [v37 removeTreatment:v40];
+                    treatmentId5 = [v13 treatmentId];
+                    [v37 removeTreatment:treatmentId5];
                   }
                 }
 
@@ -170,43 +170,43 @@
 
                   if ((v42 & 1) == 0)
                   {
-                    v108 = [MEMORY[0x277CCA890] currentHandler];
-                    v109 = [v13 treatmentId];
-                    v110 = [v13 experimentDeployment];
-                    v111 = [v110 shortDesc];
-                    [v108 handleFailureInMethod:a2 object:self file:@"TRIDeactivateTreatmentTask.m" lineNumber:233 description:{@"Cannot deactivate treatment %@ of experiment %@ because the type is %d.", v109, v111, objc_msgSend(v13, "type")}];
+                    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+                    treatmentId6 = [v13 treatmentId];
+                    experimentDeployment4 = [v13 experimentDeployment];
+                    shortDesc3 = [experimentDeployment4 shortDesc];
+                    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIDeactivateTreatmentTask.m" lineNumber:233 description:{@"Cannot deactivate treatment %@ of experiment %@ because the type is %d.", treatmentId6, shortDesc3, objc_msgSend(v13, "type")}];
                   }
 
-                  v43 = [v13 artifact];
-                  v44 = [v43 experiment];
-                  v45 = [v44 projectId];
+                  artifact2 = [v13 artifact];
+                  experiment3 = [artifact2 experiment];
+                  projectId2 = [experiment3 projectId];
 
-                  v46 = [v180 paths];
-                  v47 = [TRILogTreatmentProvider providerWithProjectId:v45 paths:v46];
+                  paths3 = [v180 paths];
+                  v47 = [TRILogTreatmentProvider providerWithProjectId:projectId2 paths:paths3];
 
-                  v48 = [v13 treatmentId];
+                  treatmentId7 = [v13 treatmentId];
 
-                  if (v48)
+                  if (treatmentId7)
                   {
-                    v49 = [v13 treatmentId];
-                    [v47 removeTreatment:v49];
+                    treatmentId8 = [v13 treatmentId];
+                    [v47 removeTreatment:treatmentId8];
                   }
 
-                  v50 = [v180 experimentDatabase];
-                  v51 = [v13 experimentDeployment];
-                  v52 = [v50 setStatus:3 forExperimentDeployment:v51 usingTransaction:0];
+                  experimentDatabase2 = [v180 experimentDatabase];
+                  experimentDeployment5 = [v13 experimentDeployment];
+                  v52 = [experimentDatabase2 setStatus:3 forExperimentDeployment:experimentDeployment5 usingTransaction:0];
 
                   if ((v52 & 1) == 0)
                   {
                     v53 = TRILogCategory_Server();
                     if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
                     {
-                      v78 = [v13 experimentDeployment];
-                      v79 = [v78 shortDesc];
+                      experimentDeployment6 = [v13 experimentDeployment];
+                      shortDesc4 = [experimentDeployment6 shortDesc];
                       *v198 = 138412546;
-                      *&v198[4] = v79;
+                      *&v198[4] = shortDesc4;
                       *&v198[12] = 2112;
-                      *&v198[14] = v177;
+                      *&v198[14] = treatmentId2;
                       _os_log_error_impl(&dword_26F567000, v53, OS_LOG_TYPE_ERROR, "Failed to update status for experiment (%@, %@) to finished", v198, 0x16u);
                     }
 
@@ -215,12 +215,12 @@
 
                   if ([v13 status] == 1)
                   {
-                    v54 = [v13 treatmentId];
+                    treatmentId9 = [v13 treatmentId];
 
-                    if (v54)
+                    if (treatmentId9)
                     {
-                      v55 = [v180 activationEventDatabase];
-                      v56 = [TRIDeactivateTreatmentTask prevTelemetryFieldsFromActivationEventDatabase:v55 deactivatedRecord:v13];
+                      activationEventDatabase = [v180 activationEventDatabase];
+                      v56 = [TRIDeactivateTreatmentTask prevTelemetryFieldsFromActivationEventDatabase:activationEventDatabase deactivatedRecord:v13];
 
                       v57 = [TRIExperimentPostLaunchEvent deactivationEventWithTriggerEvent:[(TRIDeactivateTreatmentTask *)self triggerEvent] experimentRecord:v13 additionalTelemetry:v56];
                       [v171 recordEvent:v57];
@@ -228,29 +228,29 @@
 
                     if ([v13 type] == 1 && objc_msgSend(v13, "requiresTreatmentInstall"))
                     {
-                      v58 = [v13 treatmentId];
-                      if (v58)
+                      treatmentId10 = [v13 treatmentId];
+                      if (treatmentId10)
                       {
-                        v59 = [v13 namespaces];
-                        v60 = [v59 firstObject];
-                        v170 = [v60 name];
+                        namespaces3 = [v13 namespaces];
+                        firstObject = [namespaces3 firstObject];
+                        name = [firstObject name];
 
-                        if (v170)
+                        if (name)
                         {
-                          v61 = [v180 namespaceDatabase];
-                          v62 = [v61 dynamicNamespaceRecordWithNamespaceName:v170];
+                          namespaceDatabase = [v180 namespaceDatabase];
+                          v62 = [namespaceDatabase dynamicNamespaceRecordWithNamespaceName:name];
 
                           if (v62)
                           {
-                            v63 = [v62 appContainer];
+                            appContainer = [v62 appContainer];
                           }
 
                           else
                           {
-                            v63 = 0;
+                            appContainer = 0;
                           }
 
-                          v80 = v63;
+                          v80 = appContainer;
                         }
 
                         else
@@ -259,18 +259,18 @@
                         }
 
                         log = v80;
-                        v81 = [TRIContentTracker contentIdentifierForTreatmentArtifactWithTreatmentId:v58 container:?];
-                        v82 = [v180 contentTracker];
-                        v83 = [v82 dropRefWithContentIdentifier:v81];
+                        v81 = [TRIContentTracker contentIdentifierForTreatmentArtifactWithTreatmentId:treatmentId10 container:?];
+                        contentTracker = [v180 contentTracker];
+                        v83 = [contentTracker dropRefWithContentIdentifier:v81];
 
                         if ((v83 & 1) == 0)
                         {
                           v84 = TRILogCategory_Server();
                           if (os_log_type_enabled(v84, OS_LOG_TYPE_ERROR))
                           {
-                            v107 = [v13 treatmentId];
+                            treatmentId11 = [v13 treatmentId];
                             *v198 = 138412290;
-                            *&v198[4] = v107;
+                            *&v198[4] = treatmentId11;
                             _os_log_error_impl(&dword_26F567000, v84, OS_LOG_TYPE_ERROR, "Failed to drop reference on artifact for treatment %@.", v198, 0xCu);
                           }
                         }
@@ -281,30 +281,30 @@
                         log = TRILogCategory_Server();
                         if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
                         {
-                          v76 = [v13 experimentDeployment];
-                          v77 = [v76 shortDesc];
+                          experimentDeployment7 = [v13 experimentDeployment];
+                          shortDesc5 = [experimentDeployment7 shortDesc];
                           *v198 = 138543362;
-                          *&v198[4] = v77;
+                          *&v198[4] = shortDesc5;
                           _os_log_error_impl(&dword_26F567000, log, OS_LOG_TYPE_ERROR, "Can't drop reference when deactivating experiment %{public}@; no treatmentId available.", v198, 0xCu);
                         }
                       }
                     }
 
-                    v85 = [v13 experimentDeployment];
-                    v86 = [TRIContentTracker contentIdentifierForExperimentArtifactWithDeployment:v85];
+                    experimentDeployment8 = [v13 experimentDeployment];
+                    v86 = [TRIContentTracker contentIdentifierForExperimentArtifactWithDeployment:experimentDeployment8];
 
-                    v87 = [v180 contentTracker];
-                    v88 = [v87 dropRefWithContentIdentifier:v86];
+                    contentTracker2 = [v180 contentTracker];
+                    v88 = [contentTracker2 dropRefWithContentIdentifier:v86];
 
                     if ((v88 & 1) == 0)
                     {
                       v89 = TRILogCategory_Server();
                       if (os_log_type_enabled(v89, OS_LOG_TYPE_ERROR))
                       {
-                        v105 = [v13 experimentDeployment];
-                        v106 = [v105 shortDesc];
+                        experimentDeployment9 = [v13 experimentDeployment];
+                        shortDesc6 = [experimentDeployment9 shortDesc];
                         *v198 = 138543362;
-                        *&v198[4] = v106;
+                        *&v198[4] = shortDesc6;
                         _os_log_error_impl(&dword_26F567000, v89, OS_LOG_TYPE_ERROR, "Failed to drop reference on artifact for experiment %{public}@.", v198, 0xCu);
                       }
                     }
@@ -314,16 +314,16 @@
 
                   else if ([v13 status] == 2)
                   {
-                    v64 = [v13 treatmentId];
+                    treatmentId12 = [v13 treatmentId];
 
-                    if (v64)
+                    if (treatmentId12)
                     {
-                      v65 = [v180 activationEventDatabase];
-                      v66 = [TRIDeactivateTreatmentTask prevTelemetryFieldsFromActivationEventDatabase:v65 deactivatedRecord:v13];
+                      activationEventDatabase2 = [v180 activationEventDatabase];
+                      v66 = [TRIDeactivateTreatmentTask prevTelemetryFieldsFromActivationEventDatabase:activationEventDatabase2 deactivatedRecord:v13];
 
-                      v67 = [(TRIDeactivateTreatmentTask *)self triggerEvent];
-                      v68 = [v180 experimentHistoryDatabase];
-                      v69 = [TRIExperimentPostLaunchEvent obsoletionOrDeactivationEventWithTriggerEvent:v67 previousStateProvider:v68 experimentRecord:v13 additionalTelemetry:v66];
+                      triggerEvent = [(TRIDeactivateTreatmentTask *)self triggerEvent];
+                      experimentHistoryDatabase = [v180 experimentHistoryDatabase];
+                      v69 = [TRIExperimentPostLaunchEvent obsoletionOrDeactivationEventWithTriggerEvent:triggerEvent previousStateProvider:experimentHistoryDatabase experimentRecord:v13 additionalTelemetry:v66];
 
                       [v171 recordEvent:v69];
                     }
@@ -333,14 +333,14 @@
                   *&v198[8] = v198;
                   *&v198[16] = 0x2020000000;
                   v199 = 0;
-                  v90 = [v180 experimentDatabase];
+                  experimentDatabase3 = [v180 experimentDatabase];
                   v182[0] = MEMORY[0x277D85DD0];
                   v182[1] = 3221225472;
                   v182[2] = __60__TRIDeactivateTreatmentTask_runUsingContext_withTaskQueue___block_invoke_78;
                   v182[3] = &unk_279DE3C00;
                   v183 = v180;
                   v184 = v198;
-                  [v90 writeTransactionWithFailableBlock:v182];
+                  [experimentDatabase3 writeTransactionWithFailableBlock:v182];
 
                   if ((*(*&v198[8] + 24) & 1) == 0)
                   {
@@ -357,41 +357,41 @@
                   v92 = TRILogCategory_Server();
                   if (os_log_type_enabled(v92, OS_LOG_TYPE_DEBUG))
                   {
-                    v102 = [v13 experimentDeployment];
-                    v103 = [v102 shortDesc];
-                    v104 = [v13 treatmentId];
+                    experimentDeployment10 = [v13 experimentDeployment];
+                    shortDesc7 = [experimentDeployment10 shortDesc];
+                    treatmentId13 = [v13 treatmentId];
                     *v194 = 138543618;
-                    v195 = v103;
+                    v195 = shortDesc7;
                     v196 = 2112;
-                    v197 = v104;
+                    v197 = treatmentId13;
                     _os_log_debug_impl(&dword_26F567000, v92, OS_LOG_TYPE_DEBUG, "Experiment %{public}@ with treatment %@ deactivated.", v194, 0x16u);
                   }
 
                   v93 = TRILogCategory_Server();
                   if (os_log_type_enabled(v93, OS_LOG_TYPE_DEFAULT))
                   {
-                    v94 = [v13 treatmentId];
-                    v95 = [v13 experimentDeployment];
-                    v96 = [v95 shortDesc];
+                    treatmentId14 = [v13 treatmentId];
+                    experimentDeployment11 = [v13 experimentDeployment];
+                    shortDesc8 = [experimentDeployment11 shortDesc];
                     *v194 = 138412546;
-                    v195 = v94;
+                    v195 = treatmentId14;
                     v196 = 2114;
-                    v197 = v96;
+                    v197 = shortDesc8;
                     _os_log_impl(&dword_26F567000, v93, OS_LOG_TYPE_DEFAULT, "Notify about updates to namespaces in treatment %@ of experiment %{public}@ (deactivated treatment).", v194, 0x16u);
                   }
 
-                  v97 = [v13 namespaces];
+                  namespaces4 = [v13 namespaces];
                   v181[0] = MEMORY[0x277D85DD0];
                   v181[1] = 3221225472;
                   v181[2] = __60__TRIDeactivateTreatmentTask_runUsingContext_withTaskQueue___block_invoke_81;
                   v181[3] = &unk_279DE3C28;
                   v181[4] = v13;
-                  [v97 enumerateObjectsUsingBlock:v181];
+                  [namespaces4 enumerateObjectsUsingBlock:v181];
 
                   v98 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:(60 * arc4random_uniform(0x1Eu))];
-                  v99 = [(TRIExperimentBaseTask *)self experiment];
-                  v100 = [v99 experimentId];
-                  v101 = [TRIUnsubscribeChannelTask taskWithExperimentId:v100 startTime:v98];
+                  experiment4 = [(TRIExperimentBaseTask *)self experiment];
+                  experimentId2 = [experiment4 experimentId];
+                  v101 = [TRIUnsubscribeChannelTask taskWithExperimentId:experimentId2 startTime:v98];
 
                   [v172 addObject:v101];
                   _Block_object_dispose(v198, 8);
@@ -411,16 +411,16 @@ LABEL_51:
                 v21 = TRILogCategory_Server();
                 if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
                 {
-                  v70 = [v13 treatmentId];
-                  v71 = [v13 experimentDeployment];
-                  v72 = [v71 shortDesc];
-                  v73 = [v13 type];
+                  treatmentId15 = [v13 treatmentId];
+                  experimentDeployment12 = [v13 experimentDeployment];
+                  shortDesc9 = [experimentDeployment12 shortDesc];
+                  type = [v13 type];
                   *buf = 138412802;
-                  *&buf[4] = v70;
+                  *&buf[4] = treatmentId15;
                   *&buf[12] = 2114;
-                  *&buf[14] = v72;
+                  *&buf[14] = shortDesc9;
                   *&buf[22] = 1024;
-                  LODWORD(v201) = v73;
+                  LODWORD(v201) = type;
                   _os_log_error_impl(&dword_26F567000, v21, OS_LOG_TYPE_ERROR, "Cannot deactivate treatment %@ of experiment %{public}@ because the type is %d.", buf, 0x1Cu);
                 }
 
@@ -443,10 +443,10 @@ LABEL_51:
               v22 = TRILogCategory_Server();
               if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
               {
-                v74 = [(TRIExperimentBaseTask *)self experiment];
-                v75 = [v74 experimentId];
+                experiment5 = [(TRIExperimentBaseTask *)self experiment];
+                experimentId3 = [experiment5 experimentId];
                 *buf = 138543362;
-                *&buf[4] = v75;
+                *&buf[4] = experimentId3;
                 _os_log_debug_impl(&dword_26F567000, v22, OS_LOG_TYPE_DEBUG, "Experiment %{public}@ is already deactivated, nothing to do.", buf, 0xCu);
               }
             }
@@ -459,52 +459,52 @@ LABEL_51:
 
         while (v179);
 
-        if (v177)
+        if (treatmentId2)
         {
-          v112 = [v180 activationEventDatabase];
-          v113 = [(TRIExperimentBaseTask *)self experiment];
-          v114 = [v113 experimentId];
-          v115 = [v112 activationEventRecordWithParentId:v114 factorPackSetId:v177 deploymentId:v173];
+          activationEventDatabase3 = [v180 activationEventDatabase];
+          experiment6 = [(TRIExperimentBaseTask *)self experiment];
+          experimentId4 = [experiment6 experimentId];
+          v115 = [activationEventDatabase3 activationEventRecordWithParentId:experimentId4 factorPackSetId:treatmentId2 deploymentId:deploymentId];
 
           if (v115)
           {
             v116 = objc_opt_new();
-            v117 = [v115 osBuild];
-            [v116 setPrevOsBuild:v117];
+            osBuild = [v115 osBuild];
+            [v116 setPrevOsBuild:osBuild];
 
             v118 = MEMORY[0x277CCACA8];
-            v119 = [v115 languageCode];
-            v120 = [v115 regionCode];
-            if (v120)
+            languageCode = [v115 languageCode];
+            regionCode = [v115 regionCode];
+            if (regionCode)
             {
-              v121 = [v115 regionCode];
-              v122 = [v118 stringWithFormat:@"%@-%@", v119, v121];
+              regionCode2 = [v115 regionCode];
+              v121 = [v118 stringWithFormat:@"%@-%@", languageCode, regionCode2];
             }
 
             else
             {
-              v122 = [v118 stringWithFormat:@"%@-%@", v119, &stru_287FA0430];
+              v121 = [v118 stringWithFormat:@"%@-%@", languageCode, &stru_287FA0430];
             }
 
-            [v116 setPrevBcp47DeviceLocale:v122];
-            v142 = [v115 carrierBundleIdentifier];
-            [v116 setPrevCarrierBundleIdentifier:v142];
+            [v116 setPrevBcp47DeviceLocale:v121];
+            carrierBundleIdentifier = [v115 carrierBundleIdentifier];
+            [v116 setPrevCarrierBundleIdentifier:carrierBundleIdentifier];
 
-            v143 = [v115 carrierCountryIsoCode];
-            [v116 setPrevCarrierCountryIsoCode:v143];
+            carrierCountryIsoCode = [v115 carrierCountryIsoCode];
+            [v116 setPrevCarrierCountryIsoCode:carrierCountryIsoCode];
 
-            v144 = [v116 ensureExperimentFields];
-            [v144 setClientTreatmentId:v177];
+            ensureExperimentFields = [v116 ensureExperimentFields];
+            [ensureExperimentFields setClientTreatmentId:treatmentId2];
 
             if (v175)
             {
               [v116 setClientDeploymentEnv:v175];
             }
 
-            v145 = [v180 activationEventDatabase];
-            v146 = [(TRIExperimentBaseTask *)self experiment];
-            v147 = [v146 experimentId];
-            v148 = [v145 deleteRecordWithParentId:v147 factorPackSetId:v177 deploymentId:v173];
+            activationEventDatabase4 = [v180 activationEventDatabase];
+            experiment7 = [(TRIExperimentBaseTask *)self experiment];
+            experimentId5 = [experiment7 experimentId];
+            v148 = [activationEventDatabase4 deleteRecordWithParentId:experimentId5 factorPackSetId:treatmentId2 deploymentId:deploymentId];
 
             if (!v148)
             {
@@ -512,7 +512,7 @@ LABEL_51:
               if (os_log_type_enabled(v149, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412290;
-                *&buf[4] = v177;
+                *&buf[4] = treatmentId2;
                 _os_log_error_impl(&dword_26F567000, v149, OS_LOG_TYPE_ERROR, "Unable to delete row from treatments db for treatment %@.", buf, 0xCu);
               }
             }
@@ -520,28 +520,28 @@ LABEL_51:
 
           else
           {
-            v122 = TRILogCategory_Server();
-            if (os_log_type_enabled(v122, OS_LOG_TYPE_DEFAULT))
+            v121 = TRILogCategory_Server();
+            if (os_log_type_enabled(v121, OS_LOG_TYPE_DEFAULT))
             {
-              v140 = [(TRIExperimentBaseTask *)self experiment];
-              v141 = [v140 experimentId];
+              experiment8 = [(TRIExperimentBaseTask *)self experiment];
+              experimentId6 = [experiment8 experimentId];
               *buf = 138543874;
-              *&buf[4] = v141;
+              *&buf[4] = experimentId6;
               *&buf[12] = 2112;
-              *&buf[14] = v177;
+              *&buf[14] = treatmentId2;
               *&buf[22] = 1024;
-              LODWORD(v201) = v173;
-              _os_log_impl(&dword_26F567000, v122, OS_LOG_TYPE_DEFAULT, "Unable to retrieve activation event for experiment id %{public}@, treatment id %@, deployment id %ul", buf, 0x1Cu);
+              LODWORD(v201) = deploymentId;
+              _os_log_impl(&dword_26F567000, v121, OS_LOG_TYPE_DEFAULT, "Unable to retrieve activation event for experiment id %{public}@, treatment id %@, deployment id %ul", buf, 0x1Cu);
             }
 
             v116 = 0;
           }
 
-          if (v173 != -1)
+          if (deploymentId != -1)
           {
             v150 = [MEMORY[0x277CCABB0] numberWithInt:?];
-            v151 = [v150 stringValue];
-            [v116 setClientDeploymentId:v151];
+            stringValue = [v150 stringValue];
+            [v116 setClientDeploymentId:stringValue];
           }
 
           v152 = MEMORY[0x277D73B40];
@@ -560,7 +560,7 @@ LABEL_51:
         else
         {
           v116 = 0;
-          v177 = 0;
+          treatmentId2 = 0;
           v137 = 0;
         }
       }
@@ -570,7 +570,7 @@ LABEL_51:
 
         v116 = 0;
         v175 = 0;
-        v177 = 0;
+        treatmentId2 = 0;
         v10 = 0;
         v137 = 0;
         v11 = 2;
@@ -605,30 +605,30 @@ LABEL_51:
 
     else
     {
-      v129 = [(TRIDeactivateTreatmentTask *)self failOnUnrecognizedExperiment];
+      failOnUnrecognizedExperiment = [(TRIDeactivateTreatmentTask *)self failOnUnrecognizedExperiment];
       v130 = TRILogCategory_Server();
       v131 = v130;
-      if (v129)
+      if (failOnUnrecognizedExperiment)
       {
         if (os_log_type_enabled(v130, OS_LOG_TYPE_ERROR))
         {
-          v162 = [(TRIExperimentBaseTask *)self experiment];
-          v163 = [v162 experimentId];
+          experiment9 = [(TRIExperimentBaseTask *)self experiment];
+          experimentId7 = [experiment9 experimentId];
           *buf = 138543362;
-          *&buf[4] = v163;
+          *&buf[4] = experimentId7;
           _os_log_error_impl(&dword_26F567000, v131, OS_LOG_TYPE_ERROR, "cannot deactivate experiment %{public}@: experiment not found in database", buf, 0xCu);
         }
 
-        v132 = [(TRIExperimentBaseTask *)self experiment];
-        v133 = [v132 experimentId];
-        v134 = [(TRIExperimentBaseTask *)self experiment];
-        v135 = +[TRIExperimentDeploymentTreatment treatmentTripleWithExperimentId:deploymentId:treatmentId:](TRIExperimentDeploymentTreatment, "treatmentTripleWithExperimentId:deploymentId:treatmentId:", v133, [v134 deploymentId], @"unspecified-or-default-treatment");
+        experiment10 = [(TRIExperimentBaseTask *)self experiment];
+        experimentId8 = [experiment10 experimentId];
+        experiment11 = [(TRIExperimentBaseTask *)self experiment];
+        v135 = +[TRIExperimentDeploymentTreatment treatmentTripleWithExperimentId:deploymentId:treatmentId:](TRIExperimentDeploymentTreatment, "treatmentTripleWithExperimentId:deploymentId:treatmentId:", experimentId8, [experiment11 deploymentId], @"unspecified-or-default-treatment");
 
         v136 = [TRIExperimentPostLaunchEvent failureEventWithEventType:9 treatmentTriple:v135 failureReason:@"experiment-not-found"];
         if (!v136)
         {
-          v165 = [MEMORY[0x277CCA890] currentHandler];
-          [v165 handleFailureInMethod:a2 object:self file:@"TRIDeactivateTreatmentTask.m" lineNumber:152 description:{@"Expression was unexpectedly nil/false: %@", @"[TRIExperimentPostLaunchEvent failureEventWithEventType:TRIInternalExperimentAllocationStatusTypeTreatmentDeactivationFailure treatmentTriple:triple failureReason:kDeactivateFailureReasonExperimentNotFound]"}];
+          currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIDeactivateTreatmentTask.m" lineNumber:152 description:{@"Expression was unexpectedly nil/false: %@", @"[TRIExperimentPostLaunchEvent failureEventWithEventType:TRIInternalExperimentAllocationStatusTypeTreatmentDeactivationFailure treatmentTriple:triple failureReason:kDeactivateFailureReasonExperimentNotFound]"}];
         }
 
         [v171 recordEvent:v136];
@@ -639,10 +639,10 @@ LABEL_51:
       {
         if (os_log_type_enabled(v130, OS_LOG_TYPE_DEFAULT))
         {
-          v138 = [(TRIExperimentBaseTask *)self experiment];
-          v139 = [v138 experimentId];
+          experiment12 = [(TRIExperimentBaseTask *)self experiment];
+          experimentId9 = [experiment12 experimentId];
           *buf = 138543362;
-          *&buf[4] = v139;
+          *&buf[4] = experimentId9;
           _os_log_impl(&dword_26F567000, v131, OS_LOG_TYPE_DEFAULT, "Unable to find experiment %{public}@ in database. Completing", buf, 0xCu);
         }
 
@@ -653,16 +653,16 @@ LABEL_51:
 
   else
   {
-    v123 = [(TRIExperimentBaseTask *)self experiment];
-    v124 = [v123 experimentId];
-    v125 = [(TRIExperimentBaseTask *)self experiment];
-    v126 = +[TRIExperimentDeploymentTreatment treatmentTripleWithExperimentId:deploymentId:treatmentId:](TRIExperimentDeploymentTreatment, "treatmentTripleWithExperimentId:deploymentId:treatmentId:", v124, [v125 deploymentId], @"unspecified-or-default-treatment");
+    experiment13 = [(TRIExperimentBaseTask *)self experiment];
+    experimentId10 = [experiment13 experimentId];
+    experiment14 = [(TRIExperimentBaseTask *)self experiment];
+    v126 = +[TRIExperimentDeploymentTreatment treatmentTripleWithExperimentId:deploymentId:treatmentId:](TRIExperimentDeploymentTreatment, "treatmentTripleWithExperimentId:deploymentId:treatmentId:", experimentId10, [experiment14 deploymentId], @"unspecified-or-default-treatment");
 
     v127 = [TRIExperimentPostLaunchEvent failureEventWithEventType:9 treatmentTriple:v126 failureReason:@"database-failure"];
     if (!v127)
     {
-      v164 = [MEMORY[0x277CCA890] currentHandler];
-      [v164 handleFailureInMethod:a2 object:self file:@"TRIDeactivateTreatmentTask.m" lineNumber:137 description:{@"Expression was unexpectedly nil/false: %@", @"[TRIExperimentPostLaunchEvent failureEventWithEventType:TRIInternalExperimentAllocationStatusTypeTreatmentDeactivationFailure treatmentTriple:triple failureReason:kDeactivateFailureReasonDatabaseFailure]"}];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIDeactivateTreatmentTask.m" lineNumber:137 description:{@"Expression was unexpectedly nil/false: %@", @"[TRIExperimentPostLaunchEvent failureEventWithEventType:TRIInternalExperimentAllocationStatusTypeTreatmentDeactivationFailure treatmentTriple:triple failureReason:kDeactivateFailureReasonDatabaseFailure]"}];
     }
 
     [v171 recordEvent:v127];
@@ -765,46 +765,46 @@ uint64_t __60__TRIDeactivateTreatmentTask_runUsingContext_withTaskQueue___block_
   return v4;
 }
 
-+ (id)prevTelemetryFieldsFromActivationEventDatabase:(id)a3 deactivatedRecord:(id)a4
++ (id)prevTelemetryFieldsFromActivationEventDatabase:(id)database deactivatedRecord:(id)record
 {
-  v5 = a3;
-  v6 = a4;
+  databaseCopy = database;
+  recordCopy = record;
   v7 = objc_opt_new();
-  v8 = [v6 treatmentId];
+  treatmentId = [recordCopy treatmentId];
 
-  if (v8)
+  if (treatmentId)
   {
-    v9 = [v6 experimentDeployment];
-    v10 = [v9 experimentId];
-    v11 = [v6 treatmentId];
-    v12 = [v6 experimentDeployment];
-    v13 = [v5 activationEventRecordWithParentId:v10 factorPackSetId:v11 deploymentId:{objc_msgSend(v12, "deploymentId")}];
+    experimentDeployment = [recordCopy experimentDeployment];
+    experimentId = [experimentDeployment experimentId];
+    treatmentId2 = [recordCopy treatmentId];
+    experimentDeployment2 = [recordCopy experimentDeployment];
+    v13 = [databaseCopy activationEventRecordWithParentId:experimentId factorPackSetId:treatmentId2 deploymentId:{objc_msgSend(experimentDeployment2, "deploymentId")}];
 
     if (v13)
     {
-      v14 = [v13 osBuild];
-      [v7 setPrevOsBuild:v14];
+      osBuild = [v13 osBuild];
+      [v7 setPrevOsBuild:osBuild];
 
       v15 = MEMORY[0x277CCACA8];
-      v16 = [v13 languageCode];
-      v17 = [v13 regionCode];
-      if (v17)
+      languageCode = [v13 languageCode];
+      regionCode = [v13 regionCode];
+      if (regionCode)
       {
-        v18 = [v13 regionCode];
-        v19 = [v15 stringWithFormat:@"%@-%@", v16, v18];
+        regionCode2 = [v13 regionCode];
+        v19 = [v15 stringWithFormat:@"%@-%@", languageCode, regionCode2];
       }
 
       else
       {
-        v19 = [v15 stringWithFormat:@"%@-%@", v16, &stru_287FA0430];
+        v19 = [v15 stringWithFormat:@"%@-%@", languageCode, &stru_287FA0430];
       }
 
       [v7 setPrevBcp47DeviceLocale:v19];
-      v22 = [v13 carrierBundleIdentifier];
-      [v7 setPrevCarrierBundleIdentifier:v22];
+      carrierBundleIdentifier = [v13 carrierBundleIdentifier];
+      [v7 setPrevCarrierBundleIdentifier:carrierBundleIdentifier];
 
-      v23 = [v13 carrierCountryIsoCode];
-      [v7 setPrevCarrierCountryIsoCode:v23];
+      carrierCountryIsoCode = [v13 carrierCountryIsoCode];
+      [v7 setPrevCarrierCountryIsoCode:carrierCountryIsoCode];
 
       v24 = v7;
     }
@@ -826,30 +826,30 @@ uint64_t __60__TRIDeactivateTreatmentTask_runUsingContext_withTaskQueue___block_
 - (id)_asPersistedTask
 {
   v3 = objc_opt_new();
-  v4 = [(TRIExperimentBaseTask *)self experiment];
-  v5 = [v4 experimentId];
-  [v3 setExperimentId:v5];
+  experiment = [(TRIExperimentBaseTask *)self experiment];
+  experimentId = [experiment experimentId];
+  [v3 setExperimentId:experimentId];
 
-  v6 = [(TRIExperimentBaseTask *)self experiment];
-  [v3 setDeploymentId:{objc_msgSend(v6, "deploymentId")}];
+  experiment2 = [(TRIExperimentBaseTask *)self experiment];
+  [v3 setDeploymentId:{objc_msgSend(experiment2, "deploymentId")}];
 
   [v3 setFailOnUnrecognizedExperiment:{-[TRIDeactivateTreatmentTask failOnUnrecognizedExperiment](self, "failOnUnrecognizedExperiment")}];
   [v3 setRetryCount:{-[TRIDeactivateTreatmentTask retryCount](self, "retryCount")}];
-  v7 = [(TRIDeactivateTreatmentTask *)self startTime];
+  startTime = [(TRIDeactivateTreatmentTask *)self startTime];
 
-  if (v7)
+  if (startTime)
   {
     v8 = objc_alloc(MEMORY[0x277D73B88]);
-    v9 = [(TRIDeactivateTreatmentTask *)self startTime];
-    v10 = [v8 initWithDate:v9];
+    startTime2 = [(TRIDeactivateTreatmentTask *)self startTime];
+    v10 = [v8 initWithDate:startTime2];
     [v3 setStartTimestamp:v10];
   }
 
   taskAttribution = self->_taskAttribution;
   if (taskAttribution)
   {
-    v12 = [(TRITaskAttributing *)taskAttribution asPersistedTaskAttribution];
-    [v3 setTaskAttribution:v12];
+    asPersistedTaskAttribution = [(TRITaskAttributing *)taskAttribution asPersistedTaskAttribution];
+    [v3 setTaskAttribution:asPersistedTaskAttribution];
   }
 
   triggerEvent = self->_triggerEvent;
@@ -863,53 +863,53 @@ uint64_t __60__TRIDeactivateTreatmentTask_runUsingContext_withTaskQueue___block_
 
 - (id)serialize
 {
-  v4 = [(TRIDeactivateTreatmentTask *)self _asPersistedTask];
-  v5 = [v4 data];
+  _asPersistedTask = [(TRIDeactivateTreatmentTask *)self _asPersistedTask];
+  data = [_asPersistedTask data];
 
-  if (!v5)
+  if (!data)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v7 handleFailureInMethod:a2 object:self file:@"TRIDeactivateTreatmentTask.m" lineNumber:543 description:{@"Unexpected failure to serialize %@", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIDeactivateTreatmentTask.m" lineNumber:543 description:{@"Unexpected failure to serialize %@", v9}];
   }
 
-  return v5;
+  return data;
 }
 
-+ (id)parseFromData:(id)a3
++ (id)parseFromData:(id)data
 {
   v34 = *MEMORY[0x277D85DE8];
   v31 = 0;
-  v3 = [(TRIPBMessage *)TRIDeactivateTreatmentPersistedTask parseFromData:a3 error:&v31];
+  v3 = [(TRIPBMessage *)TRIDeactivateTreatmentPersistedTask parseFromData:data error:&v31];
   v4 = v31;
   if (v3)
   {
     if ([v3 hasExperimentId])
     {
-      v5 = [v3 experimentId];
-      v6 = [v5 length];
+      experimentId = [v3 experimentId];
+      v6 = [experimentId length];
 
       if (v6)
       {
         if ([v3 hasFailOnUnrecognizedExperiment])
         {
-          v7 = [v3 failOnUnrecognizedExperiment];
+          failOnUnrecognizedExperiment = [v3 failOnUnrecognizedExperiment];
         }
 
         else
         {
-          v7 = 0;
+          failOnUnrecognizedExperiment = 0;
         }
 
         if ([v3 hasDeploymentId])
         {
-          v17 = [v3 deploymentId];
+          deploymentId = [v3 deploymentId];
         }
 
         else
         {
-          v17 = 0xFFFFFFFFLL;
+          deploymentId = 0xFFFFFFFFLL;
         }
 
         if ([v3 hasTriggerEvent] && (v18 = objc_msgSend(v3, "triggerEvent") - 2, v18 <= 0x17))
@@ -924,8 +924,8 @@ uint64_t __60__TRIDeactivateTreatmentTask_runUsingContext_withTaskQueue___block_
 
         if ([v3 hasTaskAttribution])
         {
-          v20 = [v3 taskAttribution];
-          v8 = [TRITaskAttributionInternalInsecure taskAttributionFromPersistedTask:v20];
+          taskAttribution = [v3 taskAttribution];
+          v8 = [TRITaskAttributionInternalInsecure taskAttributionFromPersistedTask:taskAttribution];
 
           if (!v8)
           {
@@ -949,30 +949,30 @@ uint64_t __60__TRIDeactivateTreatmentTask_runUsingContext_withTaskQueue___block_
         }
 
         v24 = objc_opt_class();
-        v25 = [v3 experimentId];
+        experimentId2 = [v3 experimentId];
         if ([v3 hasStartTimestamp])
         {
-          v26 = [v3 startTimestamp];
-          v27 = [v26 date];
-          v21 = [v24 taskWithExperimentId:v25 deploymentId:v17 startTime:v27 failOnUnrecognizedExperiment:v7 triggerEvent:v19 taskAttribution:v8];
+          startTimestamp = [v3 startTimestamp];
+          date = [startTimestamp date];
+          v21 = [v24 taskWithExperimentId:experimentId2 deploymentId:deploymentId startTime:date failOnUnrecognizedExperiment:failOnUnrecognizedExperiment triggerEvent:v19 taskAttribution:v8];
         }
 
         else
         {
-          v21 = [v24 taskWithExperimentId:v25 deploymentId:v17 startTime:0 failOnUnrecognizedExperiment:v7 triggerEvent:v19 taskAttribution:v8];
+          v21 = [v24 taskWithExperimentId:experimentId2 deploymentId:deploymentId startTime:0 failOnUnrecognizedExperiment:failOnUnrecognizedExperiment triggerEvent:v19 taskAttribution:v8];
         }
 
         if ([v3 hasRetryCount])
         {
-          v28 = [v3 retryCount];
+          retryCount = [v3 retryCount];
         }
 
         else
         {
-          v28 = 0;
+          retryCount = 0;
         }
 
-        [v21 setRetryCount:v28];
+        [v21 setRetryCount:retryCount];
         goto LABEL_28;
       }
 
@@ -1049,16 +1049,16 @@ LABEL_28:
 
 - (NSString)description
 {
-  v3 = [(TRIDeactivateTreatmentTask *)self startTime];
-  [v3 timeIntervalSince1970];
+  startTime = [(TRIDeactivateTreatmentTask *)self startTime];
+  [startTime timeIntervalSince1970];
   v5 = llround(v4);
 
   v6 = MEMORY[0x277CCACA8];
   v7 = objc_opt_class();
-  v8 = [(TRIExperimentBaseTask *)self experiment];
-  v9 = [v8 experimentId];
-  v10 = [(TRIExperimentBaseTask *)self experiment];
-  v11 = [v6 stringWithFormat:@"<%@:%@, %d, %ld, r:%d>", v7, v9, objc_msgSend(v10, "deploymentId"), v5, -[TRIDeactivateTreatmentTask retryCount](self, "retryCount")];
+  experiment = [(TRIExperimentBaseTask *)self experiment];
+  experimentId = [experiment experimentId];
+  experiment2 = [(TRIExperimentBaseTask *)self experiment];
+  v11 = [v6 stringWithFormat:@"<%@:%@, %d, %ld, r:%d>", v7, experimentId, objc_msgSend(experiment2, "deploymentId"), v5, -[TRIDeactivateTreatmentTask retryCount](self, "retryCount")];
 
   return v11;
 }
@@ -1067,37 +1067,37 @@ LABEL_28:
 {
   v8.receiver = self;
   v8.super_class = TRIDeactivateTreatmentTask;
-  v3 = [(TRIExperimentBaseTask *)&v8 trialSystemTelemetry];
-  if (!v3)
+  trialSystemTelemetry = [(TRIExperimentBaseTask *)&v8 trialSystemTelemetry];
+  if (!trialSystemTelemetry)
   {
-    v3 = objc_opt_new();
+    trialSystemTelemetry = objc_opt_new();
   }
 
   taskAttribution = self->_taskAttribution;
   if (taskAttribution)
   {
-    v5 = [(TRITaskAttributing *)taskAttribution teamIdentifier];
-    [v3 setClientTeamId:v5];
+    teamIdentifier = [(TRITaskAttributing *)taskAttribution teamIdentifier];
+    [trialSystemTelemetry setClientTeamId:teamIdentifier];
 
-    if (([v3 hasContainerOriginFields] & 1) == 0)
+    if (([trialSystemTelemetry hasContainerOriginFields] & 1) == 0)
     {
       v6 = [TRITelemetryFactory containerOriginTelemetryForTaskAttribution:self->_taskAttribution];
-      [v3 mergeFrom:v6];
+      [trialSystemTelemetry mergeFrom:v6];
     }
   }
 
-  return v3;
+  return trialSystemTelemetry;
 }
 
-- (TRIDeactivateTreatmentTask)initWithCoder:(id)a3
+- (TRIDeactivateTreatmentTask)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TRIDeactivateTreatmentTask;
   v5 = [(TRIDeactivateTreatmentTask *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
     if (v6)
     {
       v7 = [objc_opt_class() parseFromData:v6];
@@ -1117,18 +1117,18 @@ LABEL_28:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIDeactivateTreatmentTask.m" lineNumber:696 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIDeactivateTreatmentTask.m" lineNumber:696 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
   }
 
-  v5 = [(TRIDeactivateTreatmentTask *)self serialize];
-  [v7 encodeObject:v5 forKey:@"pb"];
+  serialize = [(TRIDeactivateTreatmentTask *)self serialize];
+  [coderCopy encodeObject:serialize forKey:@"pb"];
 }
 
 @end

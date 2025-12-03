@@ -1,8 +1,8 @@
 @interface ATXBehavioralPredictionsFeatureCache
 - (ATXBehavioralPredictionsFeatureCache)init;
-- (ATXPredictionItem)itemForBundleId:(SEL)a3;
+- (ATXPredictionItem)itemForBundleId:(SEL)id;
 - (vector<ATXPredictionItem,)itemsForBundleIds:(ATXBehavioralPredictionsFeatureCache *)self;
-- (void)addItem:(ATXPredictionItem *)a3 forBundleId:(id)a4;
+- (void)addItem:(ATXPredictionItem *)item forBundleId:(id)id;
 @end
 
 @implementation ATXBehavioralPredictionsFeatureCache
@@ -27,7 +27,7 @@
   return v2;
 }
 
-- (ATXPredictionItem)itemForBundleId:(SEL)a3
+- (ATXPredictionItem)itemForBundleId:(SEL)id
 {
   v6 = a4;
   v17 = 0;
@@ -91,18 +91,18 @@ void __56__ATXBehavioralPredictionsFeatureCache_itemForBundleId___block_invoke(u
   }
 }
 
-- (void)addItem:(ATXPredictionItem *)a3 forBundleId:(id)a4
+- (void)addItem:(ATXPredictionItem *)item forBundleId:(id)id
 {
-  v6 = a4;
+  idCopy = id;
   lock = self->_lock;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3321888768;
   v9[2] = __60__ATXBehavioralPredictionsFeatureCache_addItem_forBundleId___block_invoke;
   v9[3] = &unk_28398F0A0;
-  v10 = v6;
-  v11 = a3->key;
-  memcpy(v12, &a3->actionHash, sizeof(v12));
-  v8 = v6;
+  v10 = idCopy;
+  v11 = item->key;
+  memcpy(v12, &item->actionHash, sizeof(v12));
+  v8 = idCopy;
   [(_PASLock *)lock runWithLockAcquired:v9];
 }
 

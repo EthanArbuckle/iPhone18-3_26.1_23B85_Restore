@@ -3,13 +3,13 @@
 + (id)GetCurrentlyActiveSessionMode;
 + (id)sharedInstance;
 - (CSMXSessionMonitor)init;
-- (void)_handleSomeClientIsActiveDidChangeNotification:(id)a3;
+- (void)_handleSomeClientIsActiveDidChangeNotification:(id)notification;
 - (void)_querySomeClientIsActive;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_startObservingAVSystemControllerLifecycle;
 - (void)_startObservingSomeClientIsActive;
 - (void)_stopMonitoring;
-- (void)_systemControllerDied:(id)a3;
+- (void)_systemControllerDied:(id)died;
 @end
 
 @implementation CSMXSessionMonitor
@@ -25,30 +25,30 @@
   dispatch_async(queue, block);
 }
 
-- (void)_handleSomeClientIsActiveDidChangeNotification:(id)a3
+- (void)_handleSomeClientIsActiveDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10014DBF4;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_systemControllerDied:(id)a3
+- (void)_systemControllerDied:(id)died
 {
-  v4 = a3;
+  diedCopy = died;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEBUG))
   {
     v6 = 136315394;
     v7 = "[CSMXSessionMonitor _systemControllerDied:]";
     v8 = 2114;
-    v9 = v4;
+    v9 = diedCopy;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s notification = %{public}@", &v6, 0x16u);
   }
 
@@ -92,7 +92,7 @@
   [v4 removeObserver:self];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEBUG))

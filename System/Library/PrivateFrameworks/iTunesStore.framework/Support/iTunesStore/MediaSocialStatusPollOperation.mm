@@ -1,23 +1,23 @@
 @interface MediaSocialStatusPollOperation
-- (MediaSocialStatusPollOperation)initWithStatusPollRequests:(id)a3;
+- (MediaSocialStatusPollOperation)initWithStatusPollRequests:(id)requests;
 - (NSArray)statusPollRequests;
 - (id)_requestURL;
 - (id)responseBlock;
 - (void)main;
-- (void)setResponseBlock:(id)a3;
+- (void)setResponseBlock:(id)block;
 @end
 
 @implementation MediaSocialStatusPollOperation
 
-- (MediaSocialStatusPollOperation)initWithStatusPollRequests:(id)a3
+- (MediaSocialStatusPollOperation)initWithStatusPollRequests:(id)requests
 {
-  v4 = a3;
+  requestsCopy = requests;
   v9.receiver = self;
   v9.super_class = MediaSocialStatusPollOperation;
   v5 = [(MediaSocialStatusPollOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [requestsCopy copy];
     statusPollRequests = v5->_statusPollRequests;
     v5->_statusPollRequests = v6;
   }
@@ -35,13 +35,13 @@
   return v4;
 }
 
-- (void)setResponseBlock:(id)a3
+- (void)setResponseBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(MediaSocialStatusPollOperation *)self lock];
-  if (self->_responseBlock != v6)
+  if (self->_responseBlock != blockCopy)
   {
-    v4 = [v6 copy];
+    v4 = [blockCopy copy];
     responseBlock = self->_responseBlock;
     self->_responseBlock = v4;
   }
@@ -60,14 +60,14 @@
 
 - (void)main
 {
-  v2 = self;
-  v62 = [(MediaSocialStatusPollOperation *)self _requestURL];
+  selfCopy = self;
+  _requestURL = [(MediaSocialStatusPollOperation *)self _requestURL];
   v3 = objc_opt_new();
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v4 = v2->_statusPollRequests;
+  v4 = selfCopy->_statusPollRequests;
   v5 = [(NSArray *)v4 countByEnumeratingWithState:&v70 objects:v79 count:16];
   if (v5)
   {
@@ -82,10 +82,10 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v70 + 1) + 8 * i) activityIdentifier];
-        if (v9)
+        activityIdentifier = [*(*(&v70 + 1) + 8 * i) activityIdentifier];
+        if (activityIdentifier)
         {
-          [v3 addObject:v9];
+          [v3 addObject:activityIdentifier];
         }
       }
 
@@ -96,35 +96,35 @@
   }
 
   v10 = [v3 componentsJoinedByString:{@", "}];
-  if (!v62)
+  if (!_requestURL)
   {
     v30 = SSError();
     v31 = 0;
     goto LABEL_41;
   }
 
-  v61 = v2;
-  v11 = [(NSArray *)v2->_statusPollRequests firstObject];
+  v61 = selfCopy;
+  firstObject = [(NSArray *)selfCopy->_statusPollRequests firstObject];
   v12 = objc_alloc_init(ISStoreURLOperation);
   v13 = +[DaemonProtocolDataProvider provider];
   [v12 setDataProvider:v13];
 
   v14 = [SSAuthenticationContext alloc];
-  v15 = [v11 accountIdentifier];
-  v16 = [v14 initWithAccountIdentifier:v15];
+  accountIdentifier = [firstObject accountIdentifier];
+  v16 = [v14 initWithAccountIdentifier:accountIdentifier];
 
   [v12 setAuthenticationContext:v16];
-  v17 = [[SSMutableURLRequestProperties alloc] initWithURL:v62];
+  v17 = [[SSMutableURLRequestProperties alloc] initWithURL:_requestURL];
   [v17 setAllowedRetryCount:0];
   [v17 setITunesStoreRequest:1];
   [v17 setTimeoutInterval:30.0];
   [v17 setValue:v10 forRequestParameter:@"activities"];
   SSVAddMediaSocialHeadersToURLRequestProperties();
-  v18 = [v11 sourceApplicationIdentifier];
-  v19 = v18;
-  if (v18)
+  sourceApplicationIdentifier = [firstObject sourceApplicationIdentifier];
+  v19 = sourceApplicationIdentifier;
+  if (sourceApplicationIdentifier)
   {
-    v20 = sub_1001FBA18(v18);
+    v20 = sub_1001FBA18(sourceApplicationIdentifier);
     [v17 setValue:v20 forHTTPHeaderField:SSHTTPHeaderUserAgent];
   }
 
@@ -135,22 +135,22 @@
     v21 = +[SSLogConfig sharedConfig];
   }
 
-  v22 = [v21 shouldLog];
+  shouldLog = [v21 shouldLog];
   if ([v21 shouldLogToDisk])
   {
-    v22 |= 2u;
+    shouldLog |= 2u;
   }
 
-  v23 = [v21 OSLogObject];
-  if (!os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
+  oSLogObject = [v21 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
-    v22 &= 2u;
+    shouldLog &= 2u;
   }
 
-  if (!v22)
+  if (!shouldLog)
   {
-    v29 = v11;
-    v2 = v61;
+    v29 = firstObject;
+    selfCopy = v61;
     goto LABEL_24;
   }
 
@@ -159,8 +159,8 @@
   v25 = v10;
   v26 = objc_opt_class();
   v63 = v26;
-  [v11 activityIdentifier];
-  v27 = v59 = v11;
+  [firstObject activityIdentifier];
+  v27 = v59 = firstObject;
   v75 = 138412546;
   v76 = v26;
   v10 = v25;
@@ -172,20 +172,20 @@
   v50 = &v75;
   v28 = _os_log_send_and_compose_impl();
 
-  v2 = v61;
+  selfCopy = v61;
   v29 = v59;
 
   if (v28)
   {
-    v23 = [NSString stringWithCString:v28 encoding:4, &v75, v51];
+    oSLogObject = [NSString stringWithCString:v28 encoding:4, &v75, v51];
     free(v28);
-    v50 = v23;
+    v50 = oSLogObject;
     SSFileLog();
 LABEL_24:
   }
 
   v69 = 0;
-  v32 = [(MediaSocialStatusPollOperation *)v2 runSubOperation:v12 returningError:&v69];
+  v32 = [(MediaSocialStatusPollOperation *)selfCopy runSubOperation:v12 returningError:&v69];
   v33 = v69;
   v31 = 0;
   if (v32)
@@ -193,19 +193,19 @@ LABEL_24:
     v55 = v10;
     v34 = v29;
     v31 = objc_alloc_init(NSMutableDictionary);
-    v35 = [v12 dataProvider];
-    v36 = [v35 output];
+    dataProvider = [v12 dataProvider];
+    output = [dataProvider output];
 
-    v37 = v36;
+    v37 = output;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v54 = v33;
-      v38 = [v36 objectForKey:@"activities"];
+      v38 = [output objectForKey:@"activities"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v52 = v36;
+        v52 = output;
         v53 = v16;
         v64 = v31;
         v57 = v17;
@@ -215,7 +215,7 @@ LABEL_24:
         v68 = 0u;
         v65 = 0u;
         v66 = 0u;
-        v39 = v2->_statusPollRequests;
+        v39 = selfCopy->_statusPollRequests;
         v40 = [(NSArray *)v39 countByEnumeratingWithState:&v65 objects:v74 count:16];
         if (v40)
         {
@@ -231,20 +231,20 @@ LABEL_24:
               }
 
               v44 = *(*(&v65 + 1) + 8 * j);
-              v45 = [v44 activityIdentifier];
-              v46 = [v38 objectForKey:v45];
+              activityIdentifier2 = [v44 activityIdentifier];
+              v46 = [v38 objectForKey:activityIdentifier2];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
                 v47 = objc_alloc_init(MediaSocialPostResponse);
-                [(MediaSocialPostResponse *)v47 setActivityIdentifier:v45];
+                [(MediaSocialPostResponse *)v47 setActivityIdentifier:activityIdentifier2];
                 [v44 pollingInterval];
                 [(MediaSocialPostResponse *)v47 setPollingInterval:?];
                 [v44 pollingDuration];
                 [(MediaSocialPostResponse *)v47 setPollDuration:?];
                 -[MediaSocialPostResponse setPostIdentifier:](v47, "setPostIdentifier:", [v44 postIdentifier]);
                 [(MediaSocialPostResponse *)v47 setValuesWithResponseDictionary:v46];
-                [v64 setObject:v47 forKey:v45];
+                [v64 setObject:v47 forKey:activityIdentifier2];
               }
             }
 
@@ -255,7 +255,7 @@ LABEL_24:
         }
 
         v34 = v60;
-        v2 = v61;
+        selfCopy = v61;
         v17 = v57;
         v12 = v58;
         v37 = v52;
@@ -272,12 +272,12 @@ LABEL_24:
 
   v30 = 0;
 LABEL_41:
-  v48 = [(MediaSocialStatusPollOperation *)v2 responseBlock];
-  v49 = v48;
-  if (v48)
+  responseBlock = [(MediaSocialStatusPollOperation *)selfCopy responseBlock];
+  v49 = responseBlock;
+  if (responseBlock)
   {
-    (*(v48 + 16))(v48, v31, v30);
-    [(MediaSocialStatusPollOperation *)v2 setResponseBlock:0];
+    (*(responseBlock + 16))(responseBlock, v31, v30);
+    [(MediaSocialStatusPollOperation *)selfCopy setResponseBlock:0];
   }
 }
 

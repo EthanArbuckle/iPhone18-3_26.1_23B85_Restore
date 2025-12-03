@@ -1,48 +1,48 @@
 @interface EKExpandingTextView
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (EKExpandingTextView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (EKExpandingTextView)initWithFrame:(CGRect)frame;
 - (void)_updatePlaceholder;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setAttributedText:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setContentSize:(CGSize)a3;
-- (void)setFont:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
+- (void)setAttributedText:(id)text;
+- (void)setBackgroundColor:(id)color;
+- (void)setContentSize:(CGSize)size;
+- (void)setFont:(id)font;
+- (void)setTextAlignment:(int64_t)alignment;
 @end
 
 @implementation EKExpandingTextView
 
-- (EKExpandingTextView)initWithFrame:(CGRect)a3
+- (EKExpandingTextView)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = EKExpandingTextView;
-  v3 = [(EKExpandingTextView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(EKExpandingTextView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(EKExpandingTextView *)v3 textLayoutManager];
-    v6 = [v5 textContainer];
-    v7 = [v6 layoutManager];
-    [v7 setLimitsLayoutForSuspiciousContents:1];
+    textLayoutManager = [(EKExpandingTextView *)v3 textLayoutManager];
+    textContainer = [textLayoutManager textContainer];
+    layoutManager = [textContainer layoutManager];
+    [layoutManager setLimitsLayoutForSuspiciousContents:1];
 
     v8 = objc_alloc(MEMORY[0x1E69DCC10]);
     v9 = [v8 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     placeholderLabel = v4->_placeholderLabel;
     v4->_placeholderLabel = v9;
 
-    v11 = [MEMORY[0x1E69DC888] lightGrayColor];
-    [(UILabel *)v4->_placeholderLabel setTextColor:v11];
+    lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+    [(UILabel *)v4->_placeholderLabel setTextColor:lightGrayColor];
 
     [(EKExpandingTextView *)v4 addSubview:v4->_placeholderLabel];
     [(EKExpandingTextView *)v4 setScrollEnabled:0];
     [(EKExpandingTextView *)v4 setShowsVerticalScrollIndicator:0];
     v4->_allowEnclosingViewScroll = 1;
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v4 selector:sel__updatePlaceholder name:*MEMORY[0x1E69DE750] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__updatePlaceholder name:*MEMORY[0x1E69DE750] object:0];
   }
 
   return v4;
@@ -50,8 +50,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DE750] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE750] object:0];
 
   v4.receiver = self;
   v4.super_class = EKExpandingTextView;
@@ -73,20 +73,20 @@
     v4 = v4 + 10.0;
   }
 
-  v11 = [(EKExpandingTextView *)self font];
-  [v11 pointSize];
+  font = [(EKExpandingTextView *)self font];
+  [font pointSize];
   *&v12 = v12 * 0.5;
   v13 = roundf(*&v12);
 
   [(UILabel *)self->_placeholderLabel setFrame:v4, v6 + v13, v8 + -10.0, v10 - v13];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  if (-[EKExpandingTextView isFirstResponder](self, "isFirstResponder") && ![v7 type])
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  if (-[EKExpandingTextView isFirstResponder](self, "isFirstResponder") && ![eventCopy type])
   {
     [(EKExpandingTextView *)self bounds];
     v14 = CGRectInset(v13, 0.0, -20.0);
@@ -99,7 +99,7 @@
   {
     v11.receiver = self;
     v11.super_class = EKExpandingTextView;
-    v8 = [(EKExpandingTextView *)&v11 pointInside:v7 withEvent:x, y];
+    v8 = [(EKExpandingTextView *)&v11 pointInside:eventCopy withEvent:x, y];
   }
 
   v9 = v8;
@@ -109,76 +109,76 @@
 
 - (void)_updatePlaceholder
 {
-  v3 = [(EKExpandingTextView *)self hasText];
+  hasText = [(EKExpandingTextView *)self hasText];
   placeholderLabel = self->_placeholderLabel;
 
-  [(UILabel *)placeholderLabel setHidden:v3];
+  [(UILabel *)placeholderLabel setHidden:hasText];
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
   v4.receiver = self;
   v4.super_class = EKExpandingTextView;
-  [(EKExpandingTextView *)&v4 setAttributedText:a3];
+  [(EKExpandingTextView *)&v4 setAttributedText:text];
   [(EKExpandingTextView *)self _updatePlaceholder];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
   v5.receiver = self;
   v5.super_class = EKExpandingTextView;
-  v4 = a3;
-  [(EKExpandingTextView *)&v5 setFont:v4];
-  [(UILabel *)self->_placeholderLabel setFont:v4, v5.receiver, v5.super_class];
+  fontCopy = font;
+  [(EKExpandingTextView *)&v5 setFont:fontCopy];
+  [(UILabel *)self->_placeholderLabel setFont:fontCopy, v5.receiver, v5.super_class];
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
   v5.receiver = self;
   v5.super_class = EKExpandingTextView;
   [(EKExpandingTextView *)&v5 setTextAlignment:?];
-  [(UILabel *)self->_placeholderLabel setTextAlignment:a3];
+  [(UILabel *)self->_placeholderLabel setTextAlignment:alignment];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = EKExpandingTextView;
-  v4 = a3;
-  [(EKExpandingTextView *)&v5 setBackgroundColor:v4];
-  [(UILabel *)self->_placeholderLabel setBackgroundColor:v4, v5.receiver, v5.super_class];
+  colorCopy = color;
+  [(EKExpandingTextView *)&v5 setBackgroundColor:colorCopy];
+  [(UILabel *)self->_placeholderLabel setBackgroundColor:colorCopy, v5.receiver, v5.super_class];
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(EKExpandingTextView *)self contentSize];
   v7 = v6;
   v17.receiver = self;
   v17.super_class = EKExpandingTextView;
   [(EKExpandingTextView *)&v17 setContentSize:width, height];
-  v8 = [(EKExpandingTextView *)self delegate];
+  delegate = [(EKExpandingTextView *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(EKExpandingTextView *)self delegate];
-    v11 = [v10 textViewShouldSignalContentSizeChange:self];
+    delegate2 = [(EKExpandingTextView *)self delegate];
+    v11 = [delegate2 textViewShouldSignalContentSizeChange:self];
 
     if (v11)
     {
       v12 = vabdd_f64(v7, height);
-      v13 = [(EKExpandingTextView *)self font];
-      [v13 lineHeight];
+      font = [(EKExpandingTextView *)self font];
+      [font lineHeight];
       v15 = v14;
 
       if (v12 > v15)
       {
-        v16 = [(EKExpandingTextView *)self delegate];
+        delegate3 = [(EKExpandingTextView *)self delegate];
         if (objc_opt_respondsToSelector())
         {
-          [v16 textViewDidChangeContentHeight:self];
+          [delegate3 textViewDidChangeContentHeight:self];
         }
       }
     }
@@ -199,10 +199,10 @@
     v10 = v3;
     if (vabds_f32(v9, v10) >= 0.00000011921)
     {
-      v11 = [(EKExpandingTextView *)self delegate];
+      delegate = [(EKExpandingTextView *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        [v11 textViewDidChangeContentHeight:self];
+        [delegate textViewDidChangeContentHeight:self];
       }
     }
 
@@ -217,10 +217,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v18.receiver = self;
   v18.super_class = EKExpandingTextView;
   [(EKExpandingTextView *)&v18 sizeThatFits:?];
@@ -240,10 +240,10 @@
     v13 = v7;
     if (vabds_f32(v12, v13) >= 0.00000011921)
     {
-      v14 = [(EKExpandingTextView *)self delegate];
+      delegate = [(EKExpandingTextView *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        [v14 textViewDidChangeContentHeight:self];
+        [delegate textViewDidChangeContentHeight:self];
       }
     }
 
@@ -258,9 +258,9 @@
   return result;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (sel_toggleItalics_ == a3)
+  if (sel_toggleItalics_ == action)
   {
     return 0;
   }

@@ -1,31 +1,31 @@
 @interface BKSystemShellDescriptor
 + (BKSystemShellDescriptor)new;
-+ (id)build:(id)a3;
++ (id)build:(id)build;
 - (BKSystemShellDescriptor)init;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)debugDescription;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)appendDescriptionToStream:(id)a3;
+- (void)appendDescriptionToStream:(id)stream;
 @end
 
 @implementation BKSystemShellDescriptor
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v12 = a3;
+  streamCopy = stream;
   pid = self->_pid;
   v5 = BSProcessDescriptionForPID();
-  [v12 appendString:v5 withName:0];
+  [streamCopy appendString:v5 withName:0];
 
-  if (([v12 hasSuccinctStyle] & 1) == 0)
+  if (([streamCopy hasSuccinctStyle] & 1) == 0)
   {
-    v6 = [v12 appendObject:self->_bundleIdentifier withName:@"bundleIdentifier"];
-    v7 = [v12 appendObject:self->_bundlePath withName:@"bundlePath"];
-    v8 = [v12 appendObject:self->_jobLabel withName:@"jobLabel"];
-    v9 = [v12 appendDouble:@"systemIdleSleepInterval" withName:2 decimalPrecision:self->_systemIdleSleepInterval];
+    v6 = [streamCopy appendObject:self->_bundleIdentifier withName:@"bundleIdentifier"];
+    v7 = [streamCopy appendObject:self->_bundlePath withName:@"bundlePath"];
+    v8 = [streamCopy appendObject:self->_jobLabel withName:@"jobLabel"];
+    v9 = [streamCopy appendDouble:@"systemIdleSleepInterval" withName:2 decimalPrecision:self->_systemIdleSleepInterval];
     watchdogType = self->_watchdogType;
     if (watchdogType)
     {
@@ -45,7 +45,7 @@
       v11 = @"BackBoard";
     }
 
-    [v12 appendString:v11 withName:@"watchdogType"];
+    [streamCopy appendString:v11 withName:@"watchdogType"];
   }
 }
 
@@ -65,27 +65,27 @@
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [BKMutableSystemShellDescriptor alloc];
 
   return sub_100078790(v4, self);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [BKSystemShellDescriptor alloc];
 
   return sub_100078790(v4, self);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5[1];
     bundleIdentifier = self->_bundleIdentifier;
     v12 = BSEqualObjects() && (v8 = v5[2], bundlePath = self->_bundlePath, BSEqualObjects()) && (v10 = v5[3], jobLabel = self->_jobLabel, BSEqualObjects()) && *(v5 + 8) == self->_pid && *(v5 + 5) == self->_systemIdleSleepInterval && v5[6] == self->_watchdogType;
@@ -130,7 +130,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSystemShellDescriptor.m";
     v17 = 1024;
@@ -159,7 +159,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = a1;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSystemShellDescriptor.m";
     v17 = 1024;
@@ -175,11 +175,11 @@
   return result;
 }
 
-+ (id)build:(id)a3
++ (id)build:(id)build
 {
-  v3 = a3;
+  buildCopy = build;
   v4 = sub_100078828([BKMutableSystemShellDescriptor alloc]);
-  v3[2](v3, v4);
+  buildCopy[2](buildCopy, v4);
 
   v5 = [v4 copy];
 

@@ -1,23 +1,23 @@
 @interface CKCheckSupportedDeviceCapabilitiesOperation
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3;
-- (BOOL)CKOperationShouldRun:(id *)a3;
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks;
+- (BOOL)CKOperationShouldRun:(id *)run;
 - (BOOL)hasCKOperationCallbacksSet;
 - (CKCheckSupportedDeviceCapabilitiesOperation)init;
-- (CKCheckSupportedDeviceCapabilitiesOperation)initWithDesiredCapabilities:(id)a3 zoneIDs:(id)a4 options:(id)a5;
-- (CKCheckSupportedDeviceCapabilitiesOperation)initWithDesiredCapabilitySets:(id)a3 zoneIDs:(id)a4 options:(id)a5;
+- (CKCheckSupportedDeviceCapabilitiesOperation)initWithDesiredCapabilities:(id)capabilities zoneIDs:(id)ds options:(id)options;
+- (CKCheckSupportedDeviceCapabilitiesOperation)initWithDesiredCapabilitySets:(id)sets zoneIDs:(id)ds options:(id)options;
 - (id)activityCreate;
 - (id)checkSupportedDeviceCapabilitiesCompletionBlock;
 - (id)perResultBlock;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)ckSignpostBegin;
-- (void)ckSignpostEndWithError:(id)a3;
-- (void)fillFromOperationInfo:(id)a3;
-- (void)fillOutOperationInfo:(id)a3;
-- (void)handleSupportedDeviceCapabilityCheckResultForRecordZoneID:(id)a3 capabilitySet:(id)a4 result:(id)a5 error:(id)a6;
+- (void)ckSignpostEndWithError:(id)error;
+- (void)fillFromOperationInfo:(id)info;
+- (void)fillOutOperationInfo:(id)info;
+- (void)handleSupportedDeviceCapabilityCheckResultForRecordZoneID:(id)d capabilitySet:(id)set result:(id)result error:(id)error;
 - (void)performCKOperation;
-- (void)setCheckSupportedDeviceCapabilitiesCompletionBlock:(id)a3;
-- (void)setCheckSupportedDeviceCapabilitiesCompletionBlockIVar:(id)a3;
-- (void)setPerResultBlock:(id)a3;
+- (void)setCheckSupportedDeviceCapabilitiesCompletionBlock:(id)block;
+- (void)setCheckSupportedDeviceCapabilitiesCompletionBlockIVar:(id)var;
+- (void)setPerResultBlock:(id)block;
 @end
 
 @implementation CKCheckSupportedDeviceCapabilitiesOperation
@@ -41,26 +41,26 @@
   return v2;
 }
 
-- (CKCheckSupportedDeviceCapabilitiesOperation)initWithDesiredCapabilities:(id)a3 zoneIDs:(id)a4 options:(id)a5
+- (CKCheckSupportedDeviceCapabilitiesOperation)initWithDesiredCapabilities:(id)capabilities zoneIDs:(id)ds options:(id)options
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  capabilitiesCopy = capabilities;
+  dsCopy = ds;
+  optionsCopy = options;
   v15 = objc_msgSend_init(self, v11, v12);
   if (v15)
   {
-    v16 = objc_msgSend_copy(v9, v13, v14);
+    v16 = objc_msgSend_copy(dsCopy, v13, v14);
     zoneIDs = v15->_zoneIDs;
     v15->_zoneIDs = v16;
 
-    v20 = objc_msgSend_copy(v8, v18, v19);
+    v20 = objc_msgSend_copy(capabilitiesCopy, v18, v19);
     v30[0] = v20;
     v22 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v21, v30, 1);
     desiredCapabilitySets = v15->_desiredCapabilitySets;
     v15->_desiredCapabilitySets = v22;
 
-    v26 = objc_msgSend_copy(v10, v24, v25);
+    v26 = objc_msgSend_copy(optionsCopy, v24, v25);
     options = v15->_options;
     v15->_options = v26;
   }
@@ -69,23 +69,23 @@
   return v15;
 }
 
-- (CKCheckSupportedDeviceCapabilitiesOperation)initWithDesiredCapabilitySets:(id)a3 zoneIDs:(id)a4 options:(id)a5
+- (CKCheckSupportedDeviceCapabilitiesOperation)initWithDesiredCapabilitySets:(id)sets zoneIDs:(id)ds options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  setsCopy = sets;
+  dsCopy = ds;
+  optionsCopy = options;
   v15 = objc_msgSend_init(self, v11, v12);
   if (v15)
   {
-    v16 = objc_msgSend_copy(v9, v13, v14);
+    v16 = objc_msgSend_copy(dsCopy, v13, v14);
     zoneIDs = v15->_zoneIDs;
     v15->_zoneIDs = v16;
 
-    v20 = objc_msgSend_copy(v8, v18, v19);
+    v20 = objc_msgSend_copy(setsCopy, v18, v19);
     desiredCapabilitySets = v15->_desiredCapabilitySets;
     v15->_desiredCapabilitySets = v20;
 
-    v24 = objc_msgSend_copy(v10, v22, v23);
+    v24 = objc_msgSend_copy(optionsCopy, v22, v23);
     options = v15->_options;
     v15->_options = v24;
   }
@@ -93,9 +93,9 @@
   return v15;
 }
 
-- (void)setPerResultBlock:(id)a3
+- (void)setPerResultBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -109,16 +109,16 @@
     v12[2] = sub_1885FBD7C;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     perResultBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_perResultBlock != v6)
+  if (self->_perResultBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     perResultBlock = self->_perResultBlock;
     self->_perResultBlock = v9;
 LABEL_9:
@@ -161,9 +161,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)setCheckSupportedDeviceCapabilitiesCompletionBlockIVar:(id)a3
+- (void)setCheckSupportedDeviceCapabilitiesCompletionBlockIVar:(id)var
 {
-  v6 = a3;
+  varCopy = var;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -177,16 +177,16 @@ LABEL_9:
     v12[2] = sub_1885FC108;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = varCopy;
     dispatch_sync(v11, v12);
 
     checkSupportedDeviceCapabilitiesCompletionBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_checkSupportedDeviceCapabilitiesCompletionBlock != v6)
+  if (self->_checkSupportedDeviceCapabilitiesCompletionBlock != varCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(varCopy, v7, v8);
     checkSupportedDeviceCapabilitiesCompletionBlock = self->_checkSupportedDeviceCapabilitiesCompletionBlock;
     self->_checkSupportedDeviceCapabilitiesCompletionBlock = v9;
 LABEL_9:
@@ -229,46 +229,46 @@ LABEL_9:
   return v6;
 }
 
-- (void)setCheckSupportedDeviceCapabilitiesCompletionBlock:(id)a3
+- (void)setCheckSupportedDeviceCapabilitiesCompletionBlock:(id)block
 {
-  v4 = a3 == 0;
-  v7 = a3;
+  v4 = block == 0;
+  blockCopy = block;
   objc_msgSend_setCanDropItemResultsEarly_(self, v5, v4);
-  objc_msgSend_setCheckSupportedDeviceCapabilitiesCompletionBlockIVar_(self, v6, v7);
+  objc_msgSend_setCheckSupportedDeviceCapabilitiesCompletionBlockIVar_(self, v6, blockCopy);
 }
 
-- (void)fillOutOperationInfo:(id)a3
+- (void)fillOutOperationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_zoneIDs(self, v5, v6);
-  objc_msgSend_setZoneIDs_(v4, v8, v7);
+  objc_msgSend_setZoneIDs_(infoCopy, v8, v7);
 
   v11 = objc_msgSend_desiredCapabilitySets(self, v9, v10);
-  objc_msgSend_setDesiredCapabilitySets_(v4, v12, v11);
+  objc_msgSend_setDesiredCapabilitySets_(infoCopy, v12, v11);
 
   v15 = objc_msgSend_options(self, v13, v14);
-  objc_msgSend_setOptions_(v4, v16, v15);
+  objc_msgSend_setOptions_(infoCopy, v16, v15);
 
   v17.receiver = self;
   v17.super_class = CKCheckSupportedDeviceCapabilitiesOperation;
-  [(CKDatabaseOperation *)&v17 fillOutOperationInfo:v4];
+  [(CKDatabaseOperation *)&v17 fillOutOperationInfo:infoCopy];
 }
 
-- (void)fillFromOperationInfo:(id)a3
+- (void)fillFromOperationInfo:(id)info
 {
   v17.receiver = self;
   v17.super_class = CKCheckSupportedDeviceCapabilitiesOperation;
-  v4 = a3;
-  [(CKDatabaseOperation *)&v17 fillFromOperationInfo:v4];
-  v7 = objc_msgSend_zoneIDs(v4, v5, v6, v17.receiver, v17.super_class);
+  infoCopy = info;
+  [(CKDatabaseOperation *)&v17 fillFromOperationInfo:infoCopy];
+  v7 = objc_msgSend_zoneIDs(infoCopy, v5, v6, v17.receiver, v17.super_class);
   zoneIDs = self->_zoneIDs;
   self->_zoneIDs = v7;
 
-  v11 = objc_msgSend_desiredCapabilitySets(v4, v9, v10);
+  v11 = objc_msgSend_desiredCapabilitySets(infoCopy, v9, v10);
   desiredCapabilitySets = self->_desiredCapabilitySets;
   self->_desiredCapabilitySets = v11;
 
-  v15 = objc_msgSend_options(v4, v13, v14);
+  v15 = objc_msgSend_options(infoCopy, v13, v14);
 
   options = self->_options;
   self->_options = v15;
@@ -298,20 +298,20 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)CKOperationShouldRun:(id *)a3
+- (BOOL)CKOperationShouldRun:(id *)run
 {
   v72 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend_database(self, a2, a3);
+  v5 = objc_msgSend_database(self, a2, run);
   v8 = objc_msgSend_scope(v5, v6, v7);
 
   if (v8 != 2)
   {
-    if (a3)
+    if (run)
     {
       v44 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v9, @"CKInternalErrorDomain", 1019, @"This operation should only be called on the private database");
       v45 = v44;
       result = 0;
-      *a3 = v44;
+      *run = v44;
       goto LABEL_34;
     }
 
@@ -323,12 +323,12 @@ LABEL_9:
 
   if (!v14)
   {
-    if (a3)
+    if (run)
     {
       v46 = objc_opt_class();
       v47 = NSStringFromClass(v46);
       objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v48, @"CKErrorDomain", 12, @"At least one zone ID must be passed to %@", v47);
-      *a3 = LABEL_27:;
+      *run = LABEL_27:;
     }
 
 LABEL_33:
@@ -362,7 +362,7 @@ LABEL_5:
         break;
       }
 
-      if (!objc_msgSend_zoneIDHasCorrectDatabaseScope_error_(self, v24, v23, a3))
+      if (!objc_msgSend_zoneIDHasCorrectDatabaseScope_error_(self, v24, v23, run))
       {
         goto LABEL_32;
       }
@@ -379,7 +379,7 @@ LABEL_5:
       }
     }
 
-    if (!a3)
+    if (!run)
     {
       goto LABEL_32;
     }
@@ -401,7 +401,7 @@ LABEL_12:
 
   if (!v31)
   {
-    if (!a3)
+    if (!run)
     {
       goto LABEL_33;
     }
@@ -435,7 +435,7 @@ LABEL_15:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a3)
+        if (!run)
         {
           goto LABEL_32;
         }
@@ -465,7 +465,7 @@ LABEL_15:
       }
     }
 
-    if (!a3)
+    if (!run)
     {
       goto LABEL_32;
     }
@@ -473,7 +473,7 @@ LABEL_15:
     v57 = objc_opt_class();
     v51 = NSStringFromClass(v57);
     objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v58, @"CKErrorDomain", 12, @"At least one capability is required in each capability set passed to %@.", v51);
-    *a3 = LABEL_31:;
+    *run = LABEL_31:;
 
 LABEL_32:
     goto LABEL_33;
@@ -483,7 +483,7 @@ LABEL_22:
 
   v61.receiver = self;
   v61.super_class = CKCheckSupportedDeviceCapabilitiesOperation;
-  result = [(CKDatabaseOperation *)&v61 CKOperationShouldRun:a3];
+  result = [(CKDatabaseOperation *)&v61 CKOperationShouldRun:run];
 LABEL_34:
   v53 = *MEMORY[0x1E69E9840];
   return result;
@@ -519,13 +519,13 @@ LABEL_34:
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleSupportedDeviceCapabilityCheckResultForRecordZoneID:(id)a3 capabilitySet:(id)a4 result:(id)a5 error:(id)a6
+- (void)handleSupportedDeviceCapabilityCheckResultForRecordZoneID:(id)d capabilitySet:(id)set result:(id)result error:(id)error
 {
   v64 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v15 = objc_msgSend_CKClientSuitableError(a6, v13, v14);
+  dCopy = d;
+  setCopy = set;
+  resultCopy = result;
+  v15 = objc_msgSend_CKClientSuitableError(error, v13, v14);
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -550,12 +550,12 @@ LABEL_34:
 LABEL_25:
       if (self)
       {
-        objc_msgSend_setObject_forKeyedSubscript_(self->_recordZoneErrors, v45, v15, v10, *v62, *&v62[16], v63);
+        objc_msgSend_setObject_forKeyedSubscript_(self->_recordZoneErrors, v45, v15, dCopy, *v62, *&v62[16], v63);
       }
 
       else
       {
-        objc_msgSend_setObject_forKeyedSubscript_(0, v45, v15, v10, *v62, *&v62[16], v63);
+        objc_msgSend_setObject_forKeyedSubscript_(0, v45, v15, dCopy, *v62, *&v62[16], v63);
       }
 
       goto LABEL_37;
@@ -590,9 +590,9 @@ LABEL_25:
     if ((v29 - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v24))
     {
       *v62 = 138412802;
-      *&v62[4] = v10;
+      *&v62[4] = dCopy;
       *&v62[12] = 2112;
-      *&v62[14] = v11;
+      *&v62[14] = setCopy;
       *&v62[22] = 2112;
       v63 = v15;
       v30 = "Record zone %@ supported device capabilities check failed for capability set %@ with error: %@";
@@ -645,9 +645,9 @@ LABEL_20:
     if ((v42 - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v24))
     {
       *v62 = 138412546;
-      *&v62[4] = v10;
+      *&v62[4] = dCopy;
       *&v62[12] = 2112;
-      *&v62[14] = v11;
+      *&v62[14] = setCopy;
       v30 = "Record zone %@ supported device capabilities %@ checked";
       v31 = v24;
       v32 = v42;
@@ -669,12 +669,12 @@ LABEL_20:
 LABEL_28:
   if (self)
   {
-    objc_msgSend_objectForKeyedSubscript_(self->_resultsByRecordZoneID, v45, v10, *v62, *&v62[8], v63);
+    objc_msgSend_objectForKeyedSubscript_(self->_resultsByRecordZoneID, v45, dCopy, *v62, *&v62[8], v63);
   }
 
   else
   {
-    objc_msgSend_objectForKeyedSubscript_(0, v45, v10, *v62, *&v62[8], v63);
+    objc_msgSend_objectForKeyedSubscript_(0, v45, dCopy, *v62, *&v62[8], v63);
   }
   v47 = ;
 
@@ -683,12 +683,12 @@ LABEL_28:
     v49 = objc_opt_new();
     if (self)
     {
-      objc_msgSend_setObject_forKeyedSubscript_(self->_resultsByRecordZoneID, v48, v49, v10);
+      objc_msgSend_setObject_forKeyedSubscript_(self->_resultsByRecordZoneID, v48, v49, dCopy);
     }
 
     else
     {
-      objc_msgSend_setObject_forKeyedSubscript_(0, v48, v49, v10);
+      objc_msgSend_setObject_forKeyedSubscript_(0, v48, v49, dCopy);
     }
   }
 
@@ -703,8 +703,8 @@ LABEL_28:
   }
 
   v51 = resultsByRecordZoneID;
-  v53 = objc_msgSend_objectForKeyedSubscript_(v51, v52, v10);
-  objc_msgSend_setObject_forKey_(v53, v54, v12, v11);
+  v53 = objc_msgSend_objectForKeyedSubscript_(v51, v52, dCopy);
+  objc_msgSend_setObject_forKey_(v53, v54, resultCopy, setCopy);
 
 LABEL_37:
   v55 = objc_msgSend_perResultBlock_wrapper(self, v45, v46, *v62, *&v62[8]);
@@ -722,16 +722,16 @@ LABEL_37:
 
   if (v59)
   {
-    v59[2](v59, v10, v11, v12, v15);
+    v59[2](v59, dCopy, setCopy, resultCopy, v15);
   }
 
   v61 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
   v59 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -779,7 +779,7 @@ LABEL_37:
     }
   }
 
-  if (!v4)
+  if (!errorCopy)
   {
     if (self)
     {
@@ -805,12 +805,12 @@ LABEL_37:
         objc_msgSend_setObject_forKeyedSubscript_(v20, v21, 0, @"CKPartialErrors");
       }
 
-      v4 = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v23, @"CKInternalErrorDomain", 1011, v22, @"Couldn't check supported device capabilities in some record zones");
+      errorCopy = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v23, @"CKInternalErrorDomain", 1011, v22, @"Couldn't check supported device capabilities in some record zones");
     }
 
     else
     {
-      v4 = 0;
+      errorCopy = 0;
     }
   }
 
@@ -828,7 +828,7 @@ LABEL_37:
     {
       v44 = objc_msgSend_operationID(self, v26, v27);
       v45 = &stru_1EFA32970;
-      if (v4)
+      if (errorCopy)
       {
         v46 = @" Error was: ";
       }
@@ -838,9 +838,9 @@ LABEL_37:
         v46 = &stru_1EFA32970;
       }
 
-      if (v4)
+      if (errorCopy)
       {
-        v45 = objc_msgSend_CKClientSuitableError(v4, v42, v43);
+        v45 = objc_msgSend_CKClientSuitableError(errorCopy, v42, v43);
       }
 
       *buf = 138543874;
@@ -850,13 +850,13 @@ LABEL_37:
       v57 = 2112;
       v58 = v45;
       _os_log_debug_impl(&dword_1883EA000, v25, OS_LOG_TYPE_DEBUG, "Operation %{public}@ has completed.%@%@", buf, 0x20u);
-      if (v4)
+      if (errorCopy)
       {
       }
     }
 
     v32 = objc_msgSend_checkSupportedDeviceCapabilitiesCompletionBlock(self, v28, v29);
-    if (v4)
+    if (errorCopy)
     {
       v33 = 0;
     }
@@ -876,10 +876,10 @@ LABEL_37:
       v33 = resultsByRecordZoneID;
     }
 
-    v39 = objc_msgSend_CKClientSuitableError(v4, v30, v31);
+    v39 = objc_msgSend_CKClientSuitableError(errorCopy, v30, v31);
     (v32)[2](v32, v33, v39);
 
-    if (!v4)
+    if (!errorCopy)
     {
     }
 
@@ -898,7 +898,7 @@ LABEL_37:
     {
       v49 = objc_msgSend_operationID(self, v35, v36);
       v50 = &stru_1EFA32970;
-      if (v4)
+      if (errorCopy)
       {
         v51 = @" Error was: ";
       }
@@ -908,9 +908,9 @@ LABEL_37:
         v51 = &stru_1EFA32970;
       }
 
-      if (v4)
+      if (errorCopy)
       {
-        v50 = objc_msgSend_CKClientSuitableError(v4, v47, v48);
+        v50 = objc_msgSend_CKClientSuitableError(errorCopy, v47, v48);
       }
 
       *buf = 138543874;
@@ -920,7 +920,7 @@ LABEL_37:
       v57 = 2112;
       v58 = v50;
       _os_log_debug_impl(&dword_1883EA000, v34, OS_LOG_TYPE_DEBUG, "Operation %{public}@ finished but no checkSupportedDeviceCapabilitiesCompletionBlock was set.%{public}@%@", buf, 0x20u);
-      if (v4)
+      if (errorCopy)
       {
       }
     }
@@ -929,7 +929,7 @@ LABEL_37:
   objc_msgSend_setPerResultBlock_(self, v37, 0);
   v52.receiver = self;
   v52.super_class = CKCheckSupportedDeviceCapabilitiesOperation;
-  [(CKOperation *)&v52 _finishOnCallbackQueueWithError:v4];
+  [(CKOperation *)&v52 _finishOnCallbackQueueWithError:errorCopy];
 
   v41 = *MEMORY[0x1E69E9840];
 }
@@ -1008,10 +1008,10 @@ LABEL_37:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ckSignpostEndWithError:(id)a3
+- (void)ckSignpostEndWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -1055,7 +1055,7 @@ LABEL_37:
     if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = errorCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v11, OS_SIGNPOST_INTERVAL_END, v16, "CKCheckSupportedDeviceCapabilitiesOperation", "Error=%{signpost.description:attribute}@ ", &v18, 0xCu);
     }
   }
@@ -1070,28 +1070,28 @@ LABEL_37:
   return v2;
 }
 
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  tweaksCopy = tweaks;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v11 = objc_msgSend_setWithObjects_(v4, v10, v6, v7, v8, v9, 0);
-  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v5, v12, v11, sel_handleSupportedDeviceCapabilityCheckResultForRecordZoneID_capabilitySet_result_error_, 1, 0);
+  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(tweaksCopy, v12, v11, sel_handleSupportedDeviceCapabilityCheckResultForRecordZoneID_capabilitySet_result_error_, 1, 0);
 
   v13 = MEMORY[0x1E695DFD8];
   v14 = objc_opt_class();
   v16 = objc_msgSend_setWithObjects_(v13, v15, v14, 0);
-  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v5, v17, v16, sel_handleSupportedDeviceCapabilityCheckResultForRecordZoneID_capabilitySet_result_error_, 2, 0);
+  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(tweaksCopy, v17, v16, sel_handleSupportedDeviceCapabilityCheckResultForRecordZoneID_capabilitySet_result_error_, 2, 0);
 
   v18 = CKErrorUserInfoClasses();
-  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v5, v19, v18, sel_handleSupportedDeviceCapabilityCheckResultForRecordZoneID_capabilitySet_result_error_, 3, 0);
+  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(tweaksCopy, v19, v18, sel_handleSupportedDeviceCapabilityCheckResultForRecordZoneID_capabilitySet_result_error_, 3, 0);
 
-  v20.receiver = a1;
+  v20.receiver = self;
   v20.super_class = &OBJC_METACLASS___CKCheckSupportedDeviceCapabilitiesOperation;
-  objc_msgSendSuper2(&v20, sel_applyDaemonCallbackInterfaceTweaks_, v5);
+  objc_msgSendSuper2(&v20, sel_applyDaemonCallbackInterfaceTweaks_, tweaksCopy);
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface GCGenericDeviceRumbleModel
-+ (GCGenericDeviceRumbleModel)modelWithDictionaryRepresentation:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (GCGenericDeviceRumbleModel)modelWithDictionaryRepresentation:(id)representation error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (GCGenericDeviceRumbleModel)init;
-- (GCGenericDeviceRumbleModel)initWithCoder:(id)a3;
+- (GCGenericDeviceRumbleModel)initWithCoder:(id)coder;
 - (id)debugDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCGenericDeviceRumbleModel
@@ -17,21 +17,21 @@
   return 0;
 }
 
-- (GCGenericDeviceRumbleModel)initWithCoder:(id)a3
+- (GCGenericDeviceRumbleModel)initWithCoder:(id)coder
 {
   v26[2] = *MEMORY[0x1E69E9840];
   v23.receiver = self;
   v23.super_class = GCGenericDeviceRumbleModel;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(GCGenericDeviceRumbleModel *)&v23 init];
-  [v3 decodeFloatForKey:@"dispatchFrequency"];
+  [coderCopy decodeFloatForKey:@"dispatchFrequency"];
   v4->_dispatchFrequency = v5;
   v6 = MEMORY[0x1E695DFD8];
   v26[0] = objc_opt_class();
   v26[1] = objc_opt_class();
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
   v8 = [v6 setWithArray:v7];
-  v9 = [v3 decodeObjectOfClasses:v8 forKey:@"actuators"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"actuators"];
   actuators = v4->_actuators;
   v4->_actuators = v9;
 
@@ -42,7 +42,7 @@
   v25[3] = objc_opt_class();
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:4];
   v13 = [v11 setWithArray:v12];
-  v14 = [v3 decodeObjectOfClasses:v13 forKey:@"nodes"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"nodes"];
   nodes = v4->_nodes;
   v4->_nodes = v14;
 
@@ -51,7 +51,7 @@
   v24[1] = objc_opt_class();
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
   v18 = [v16 setWithArray:v17];
-  v19 = [v3 decodeObjectOfClasses:v18 forKey:@"outputs"];
+  v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"outputs"];
 
   outputs = v4->_outputs;
   v4->_outputs = v19;
@@ -60,19 +60,19 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(GCGenericDeviceRumbleModel *)self dispatchFrequency];
-  [v4 encodeFloat:@"dispatchFrequency" forKey:?];
-  v5 = [(GCGenericDeviceRumbleModel *)self actuators];
-  [v4 encodeObject:v5 forKey:@"actuators"];
+  [coderCopy encodeFloat:@"dispatchFrequency" forKey:?];
+  actuators = [(GCGenericDeviceRumbleModel *)self actuators];
+  [coderCopy encodeObject:actuators forKey:@"actuators"];
 
-  v6 = [(GCGenericDeviceRumbleModel *)self nodes];
-  [v4 encodeObject:v6 forKey:@"nodes"];
+  nodes = [(GCGenericDeviceRumbleModel *)self nodes];
+  [coderCopy encodeObject:nodes forKey:@"nodes"];
 
-  v7 = [(GCGenericDeviceRumbleModel *)self outputs];
-  [v4 encodeObject:v7 forKey:@"outputs"];
+  outputs = [(GCGenericDeviceRumbleModel *)self outputs];
+  [coderCopy encodeObject:outputs forKey:@"outputs"];
 }
 
 - (unint64_t)hash
@@ -82,9 +82,9 @@
   return [v2 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -105,7 +105,7 @@
 
   [(GCGenericDeviceRumbleModel *)self dispatchFrequency];
   v6 = v5;
-  [v4 dispatchFrequency];
+  [equalCopy dispatchFrequency];
   if (v6 != v7)
   {
 LABEL_10:
@@ -113,17 +113,17 @@ LABEL_10:
     goto LABEL_15;
   }
 
-  v8 = [(GCGenericDeviceRumbleModel *)self actuators];
-  v9 = [v4 actuators];
-  if ([v8 isEqual:v9])
+  actuators = [(GCGenericDeviceRumbleModel *)self actuators];
+  actuators2 = [equalCopy actuators];
+  if ([actuators isEqual:actuators2])
   {
-    v10 = [(GCGenericDeviceRumbleModel *)self nodes];
-    v11 = [v4 nodes];
-    if ([v10 isEqual:v11])
+    nodes = [(GCGenericDeviceRumbleModel *)self nodes];
+    nodes2 = [equalCopy nodes];
+    if ([nodes isEqual:nodes2])
     {
-      v12 = [(GCGenericDeviceRumbleModel *)self outputs];
-      v13 = [v4 outputs];
-      v14 = [v12 isEqual:v13];
+      outputs = [(GCGenericDeviceRumbleModel *)self outputs];
+      outputs2 = [equalCopy outputs];
+      v14 = [outputs isEqual:outputs2];
     }
 
     else
@@ -148,39 +148,39 @@ LABEL_15:
   v4 = NSStringFromClass(v3);
   [(GCGenericDeviceRumbleModel *)self dispatchFrequency];
   v6 = v5;
-  v7 = [(GCGenericDeviceRumbleModel *)self actuators];
-  v8 = [v7 debugDescription];
+  actuators = [(GCGenericDeviceRumbleModel *)self actuators];
+  v8 = [actuators debugDescription];
   v9 = [v8 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
-  v10 = [(GCGenericDeviceRumbleModel *)self nodes];
-  v11 = [(GCGenericDeviceRumbleModel *)self outputs];
-  v12 = [v11 debugDescription];
+  nodes = [(GCGenericDeviceRumbleModel *)self nodes];
+  outputs = [(GCGenericDeviceRumbleModel *)self outputs];
+  v12 = [outputs debugDescription];
   v13 = [v12 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
-  v14 = [v16 stringWithFormat:@"<%@ %p> {\n\t dispatchFrequency = %f\n\t actuators = %@\n\t nodes = %@\n\t outputs = %@\n}", v4, self, *&v6, v9, v10, v13];
+  v14 = [v16 stringWithFormat:@"<%@ %p> {\n\t dispatchFrequency = %f\n\t actuators = %@\n\t nodes = %@\n\t outputs = %@\n}", v4, self, *&v6, v9, nodes, v13];
 
   return v14;
 }
 
-+ (GCGenericDeviceRumbleModel)modelWithDictionaryRepresentation:(id)a3 error:(id *)a4
++ (GCGenericDeviceRumbleModel)modelWithDictionaryRepresentation:(id)representation error:(id *)error
 {
   v127[2] = *MEMORY[0x1E69E9840];
   v93 = objc_opt_new();
   v113[0] = 0;
-  v88 = a3;
-  v5 = [a3 gc_requiredObjectForKey:@"DispatchFrequency" ofClass:objc_opt_class() error:v113];
+  representationCopy = representation;
+  v5 = [representation gc_requiredObjectForKey:@"DispatchFrequency" ofClass:objc_opt_class() error:v113];
   v6 = v113[0];
   if (!v5)
   {
-    if (a4)
+    if (error)
     {
       v61 = MEMORY[0x1E696ABC0];
       v126[0] = *MEMORY[0x1E696A578];
-      v62 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", a1];
+      v62 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", self];
       v127[0] = v62;
       v126[1] = *MEMORY[0x1E696A588];
-      v63 = [v6 localizedFailureReason];
-      v127[1] = v63;
+      localizedFailureReason = [v6 localizedFailureReason];
+      v127[1] = localizedFailureReason;
       v64 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v127 forKeys:v126 count:2];
-      *a4 = [(NSError *)v61 gc_modelError:v64 userInfo:?];
+      *error = [(NSError *)v61 gc_modelError:v64 userInfo:?];
     }
 
     goto LABEL_70;
@@ -190,22 +190,22 @@ LABEL_15:
   [v93 setDispatchFrequency:?];
 
   v112 = 0;
-  v7 = [v88 gc_requiredObjectForKey:@"Actuators" ofClass:objc_opt_class() error:&v112];
+  v7 = [representationCopy gc_requiredObjectForKey:@"Actuators" ofClass:objc_opt_class() error:&v112];
   v8 = v112;
   if (!v7)
   {
     v6 = v8;
-    if (a4)
+    if (error)
     {
       v65 = MEMORY[0x1E696ABC0];
       v124[0] = *MEMORY[0x1E696A578];
-      v66 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", a1];
+      v66 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", self];
       v125[0] = v66;
       v124[1] = *MEMORY[0x1E696A588];
-      v67 = [v6 localizedFailureReason];
-      v125[1] = v67;
+      localizedFailureReason2 = [v6 localizedFailureReason];
+      v125[1] = localizedFailureReason2;
       v68 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v125 forKeys:v124 count:2];
-      *a4 = [(NSError *)v65 gc_modelError:v68 userInfo:?];
+      *error = [(NSError *)v65 gc_modelError:v68 userInfo:?];
     }
 
     goto LABEL_70;
@@ -237,29 +237,29 @@ LABEL_15:
     [v93 setActuators:v12];
   }
 
-  else if (a4)
+  else if (error)
   {
     v78 = MEMORY[0x1E696ABC0];
     v122[0] = *MEMORY[0x1E696A578];
-    v84 = [v107[5] localizedDescription];
-    if ([v84 length])
+    localizedDescription = [v107[5] localizedDescription];
+    if ([localizedDescription length])
     {
       [v107[5] localizedDescription];
     }
 
     else
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", a1];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", self];
     }
     v80 = ;
     v123[0] = v80;
     v122[1] = *MEMORY[0x1E696A588];
-    v15 = [v107[5] localizedFailureReason];
-    v16 = v15;
+    localizedFailureReason3 = [v107[5] localizedFailureReason];
+    v16 = localizedFailureReason3;
     v17 = &stru_1F4E1BE30;
-    if (v15)
+    if (localizedFailureReason3)
     {
-      v17 = v15;
+      v17 = localizedFailureReason3;
     }
 
     v123[1] = v17;
@@ -268,29 +268,29 @@ LABEL_15:
     if (v18)
     {
       v19 = v107[5];
-      v20 = v19;
+      null = v19;
     }
 
     else
     {
-      v20 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
       v19 = v107[5];
     }
 
-    v77 = v20;
-    v123[2] = v20;
+    v77 = null;
+    v123[2] = null;
     v122[3] = @"GCFailingKeyPathErrorKey";
-    v21 = [v19 gc_failingKeyPath];
-    v22 = v21;
-    if (!v21)
+    gc_failingKeyPath = [v19 gc_failingKeyPath];
+    v22 = gc_failingKeyPath;
+    if (!gc_failingKeyPath)
     {
-      v21 = MEMORY[0x1E695E0F0];
+      gc_failingKeyPath = MEMORY[0x1E695E0F0];
     }
 
-    v23 = [v21 arrayByAddingObject:@"Actuators"];
+    v23 = [gc_failingKeyPath arrayByAddingObject:@"Actuators"];
     v123[3] = v23;
     v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v123 forKeys:v122 count:4];
-    *a4 = [(NSError *)v78 gc_modelError:v24 userInfo:?];
+    *error = [(NSError *)v78 gc_modelError:v24 userInfo:?];
 
     if (!v18)
     {
@@ -304,22 +304,22 @@ LABEL_15:
   }
 
   v101 = 0;
-  v25 = [v88 gc_requiredObjectForKey:@"Nodes" ofClass:objc_opt_class() error:&v101];
+  v25 = [representationCopy gc_requiredObjectForKey:@"Nodes" ofClass:objc_opt_class() error:&v101];
   v26 = v101;
   if (!v25)
   {
     v6 = v26;
-    if (a4)
+    if (error)
     {
       v69 = MEMORY[0x1E696ABC0];
       v120[0] = *MEMORY[0x1E696A578];
-      v70 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", a1];
+      v70 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", self];
       v121[0] = v70;
       v120[1] = *MEMORY[0x1E696A588];
-      v71 = [v6 localizedFailureReason];
-      v121[1] = v71;
+      localizedFailureReason4 = [v6 localizedFailureReason];
+      v121[1] = localizedFailureReason4;
       v72 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v121 forKeys:v120 count:2];
-      *a4 = [(NSError *)v69 gc_modelError:v72 userInfo:?];
+      *error = [(NSError *)v69 gc_modelError:v72 userInfo:?];
     }
 
     goto LABEL_70;
@@ -348,29 +348,29 @@ LABEL_15:
     [v93 setNodes:v28];
   }
 
-  else if (a4)
+  else if (error)
   {
     v79 = MEMORY[0x1E696ABC0];
     v118[0] = *MEMORY[0x1E696A578];
-    v85 = [v107[5] localizedDescription];
-    if ([v85 length])
+    localizedDescription2 = [v107[5] localizedDescription];
+    if ([localizedDescription2 length])
     {
       [v107[5] localizedDescription];
     }
 
     else
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", a1];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", self];
     }
     v81 = ;
     v119[0] = v81;
     v118[1] = *MEMORY[0x1E696A588];
-    v31 = [v107[5] localizedFailureReason];
-    v32 = v31;
+    localizedFailureReason5 = [v107[5] localizedFailureReason];
+    v32 = localizedFailureReason5;
     v33 = &stru_1F4E1BE30;
-    if (v31)
+    if (localizedFailureReason5)
     {
-      v33 = v31;
+      v33 = localizedFailureReason5;
     }
 
     v119[1] = v33;
@@ -379,28 +379,28 @@ LABEL_15:
     if (v34)
     {
       v35 = v107[5];
-      v36 = v35;
+      null2 = v35;
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
+      null2 = [MEMORY[0x1E695DFB0] null];
       v35 = v107[5];
     }
 
-    v119[2] = v36;
+    v119[2] = null2;
     v118[3] = @"GCFailingKeyPathErrorKey";
-    v37 = [v35 gc_failingKeyPath];
-    v38 = v37;
-    if (!v37)
+    gc_failingKeyPath2 = [v35 gc_failingKeyPath];
+    v38 = gc_failingKeyPath2;
+    if (!gc_failingKeyPath2)
     {
-      v37 = MEMORY[0x1E695E0F0];
+      gc_failingKeyPath2 = MEMORY[0x1E695E0F0];
     }
 
-    v39 = [v37 arrayByAddingObject:@"Nodes"];
+    v39 = [gc_failingKeyPath2 arrayByAddingObject:@"Nodes"];
     v119[3] = v39;
     v40 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v119 forKeys:v118 count:4];
-    *a4 = [(NSError *)v79 gc_modelError:v40 userInfo:?];
+    *error = [(NSError *)v79 gc_modelError:v40 userInfo:?];
 
     if (!v34)
     {
@@ -414,26 +414,26 @@ LABEL_15:
   }
 
   v97 = 0;
-  v41 = [v88 gc_requiredObjectForKey:@"Outputs" ofClass:objc_opt_class() error:&v97];
+  v41 = [representationCopy gc_requiredObjectForKey:@"Outputs" ofClass:objc_opt_class() error:&v97];
   v42 = v97;
   if (!v41)
   {
     v6 = v42;
-    if (a4)
+    if (error)
     {
       v73 = MEMORY[0x1E696ABC0];
       v116[0] = *MEMORY[0x1E696A578];
-      v74 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", a1];
+      v74 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", self];
       v117[0] = v74;
       v116[1] = *MEMORY[0x1E696A588];
-      v75 = [v6 localizedFailureReason];
-      v117[1] = v75;
+      localizedFailureReason6 = [v6 localizedFailureReason];
+      v117[1] = localizedFailureReason6;
       v76 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v117 forKeys:v116 count:2];
-      *a4 = [(NSError *)v73 gc_modelError:v76 userInfo:?];
+      *error = [(NSError *)v73 gc_modelError:v76 userInfo:?];
     }
 
 LABEL_70:
-    v58 = 0;
+    build = 0;
     v57 = v6;
     goto LABEL_57;
   }
@@ -461,29 +461,29 @@ LABEL_70:
     [v93 setOutputs:v44];
   }
 
-  else if (a4)
+  else if (error)
   {
     v82 = MEMORY[0x1E696ABC0];
     v114[0] = *MEMORY[0x1E696A578];
-    v89 = [v107[5] localizedDescription];
-    if ([v89 length])
+    localizedDescription3 = [v107[5] localizedDescription];
+    if ([localizedDescription3 length])
     {
       [v107[5] localizedDescription];
     }
 
     else
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", a1];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", self];
     }
     v83 = ;
     v115[0] = v83;
     v114[1] = *MEMORY[0x1E696A588];
-    v47 = [v107[5] localizedFailureReason];
-    v48 = v47;
+    localizedFailureReason7 = [v107[5] localizedFailureReason];
+    v48 = localizedFailureReason7;
     v49 = &stru_1F4E1BE30;
-    if (v47)
+    if (localizedFailureReason7)
     {
-      v49 = v47;
+      v49 = localizedFailureReason7;
     }
 
     v115[1] = v49;
@@ -492,28 +492,28 @@ LABEL_70:
     if (v50)
     {
       v51 = v107[5];
-      v52 = v51;
+      null3 = v51;
     }
 
     else
     {
-      v52 = [MEMORY[0x1E695DFB0] null];
+      null3 = [MEMORY[0x1E695DFB0] null];
       v51 = v107[5];
     }
 
-    v115[2] = v52;
+    v115[2] = null3;
     v114[3] = @"GCFailingKeyPathErrorKey";
-    v53 = [v51 gc_failingKeyPath];
-    v54 = v53;
-    if (!v53)
+    gc_failingKeyPath3 = [v51 gc_failingKeyPath];
+    v54 = gc_failingKeyPath3;
+    if (!gc_failingKeyPath3)
     {
-      v53 = MEMORY[0x1E695E0F0];
+      gc_failingKeyPath3 = MEMORY[0x1E695E0F0];
     }
 
-    v55 = [v53 arrayByAddingObject:@"Outputs"];
+    v55 = [gc_failingKeyPath3 arrayByAddingObject:@"Outputs"];
     v115[3] = v55;
     v56 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v115 forKeys:v114 count:4];
-    *a4 = [(NSError *)v82 gc_modelError:v56 userInfo:?];
+    *error = [(NSError *)v82 gc_modelError:v56 userInfo:?];
 
     if (!v50)
     {
@@ -524,7 +524,7 @@ LABEL_70:
   if (v45 == v46)
   {
     v57 = v93;
-    v58 = [v93 build];
+    build = [v93 build];
     v93 = 0;
 LABEL_57:
 
@@ -532,12 +532,12 @@ LABEL_57:
   }
 
 LABEL_58:
-  v58 = 0;
+  build = 0;
 LABEL_59:
 
   v59 = *MEMORY[0x1E69E9840];
 
-  return v58;
+  return build;
 }
 
 void __85__GCGenericDeviceRumbleModel_Serialization__modelWithDictionaryRepresentation_error___block_invoke(uint64_t a1, void (**a2)(void, void, void), uint64_t a3, _BYTE *a4)

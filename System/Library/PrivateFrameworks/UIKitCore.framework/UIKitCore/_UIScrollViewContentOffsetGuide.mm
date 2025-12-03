@@ -1,5 +1,5 @@
 @interface _UIScrollViewContentOffsetGuide
-- (BOOL)_uili_requiresObservationForVariable:(id)a3;
+- (BOOL)_uili_requiresObservationForVariable:(id)variable;
 - (id)_boundsHeightVariable;
 - (id)_boundsWidthVariable;
 - (id)_minXVariable;
@@ -8,100 +8,100 @@
 - (id)nsli_boundsWidthVariable;
 - (id)nsli_minXVariable;
 - (id)nsli_minYVariable;
-- (void)_setOwningView:(id)a3;
+- (void)_setOwningView:(id)view;
 @end
 
 @implementation _UIScrollViewContentOffsetGuide
 
 - (id)nsli_boundsWidthVariable
 {
-  v2 = [(UILayoutGuide *)self owningView];
-  v3 = [v2 nsli_contentXOffsetVariable];
+  owningView = [(UILayoutGuide *)self owningView];
+  nsli_contentXOffsetVariable = [owningView nsli_contentXOffsetVariable];
 
-  return v3;
+  return nsli_contentXOffsetVariable;
 }
 
 - (id)nsli_boundsHeightVariable
 {
-  v2 = [(UILayoutGuide *)self owningView];
-  v3 = [v2 nsli_contentYOffsetVariable];
+  owningView = [(UILayoutGuide *)self owningView];
+  nsli_contentYOffsetVariable = [owningView nsli_contentYOffsetVariable];
 
-  return v3;
+  return nsli_contentYOffsetVariable;
 }
 
 - (id)nsli_minXVariable
 {
-  v2 = [(UILayoutGuide *)self owningView];
-  v3 = [v2 nsli_minXVariable];
+  owningView = [(UILayoutGuide *)self owningView];
+  nsli_minXVariable = [owningView nsli_minXVariable];
 
-  return v3;
+  return nsli_minXVariable;
 }
 
 - (id)nsli_minYVariable
 {
-  v2 = [(UILayoutGuide *)self owningView];
-  v3 = [v2 nsli_minYVariable];
+  owningView = [(UILayoutGuide *)self owningView];
+  nsli_minYVariable = [owningView nsli_minYVariable];
 
-  return v3;
+  return nsli_minYVariable;
 }
 
-- (void)_setOwningView:(id)a3
+- (void)_setOwningView:(id)view
 {
   v3.receiver = self;
   v3.super_class = _UIScrollViewContentOffsetGuide;
-  [(UILayoutGuide *)&v3 _setOwningView:a3];
+  [(UILayoutGuide *)&v3 _setOwningView:view];
 }
 
 - (id)_minXVariable
 {
-  v2 = [(UILayoutGuide *)self owningView];
-  v3 = [v2 _minXVariable];
+  owningView = [(UILayoutGuide *)self owningView];
+  _minXVariable = [owningView _minXVariable];
 
-  return v3;
+  return _minXVariable;
 }
 
 - (id)_minYVariable
 {
-  v2 = [(UILayoutGuide *)self owningView];
-  v3 = [v2 _minYVariable];
+  owningView = [(UILayoutGuide *)self owningView];
+  _minYVariable = [owningView _minYVariable];
 
-  return v3;
+  return _minYVariable;
 }
 
 - (id)_boundsWidthVariable
 {
-  v2 = [(UILayoutGuide *)self owningView];
-  v3 = [v2 nsli_contentXOffsetVariable];
+  owningView = [(UILayoutGuide *)self owningView];
+  nsli_contentXOffsetVariable = [owningView nsli_contentXOffsetVariable];
 
-  return v3;
+  return nsli_contentXOffsetVariable;
 }
 
 - (id)_boundsHeightVariable
 {
-  v2 = [(UILayoutGuide *)self owningView];
-  v3 = [v2 nsli_contentYOffsetVariable];
+  owningView = [(UILayoutGuide *)self owningView];
+  nsli_contentYOffsetVariable = [owningView nsli_contentYOffsetVariable];
 
-  return v3;
+  return nsli_contentYOffsetVariable;
 }
 
-- (BOOL)_uili_requiresObservationForVariable:(id)a3
+- (BOOL)_uili_requiresObservationForVariable:(id)variable
 {
-  v4 = a3;
-  v5 = [(_UIScrollViewContentOffsetGuide *)self _minXVariable];
-  v6 = v5;
-  if (v5 == v4)
+  variableCopy = variable;
+  _minXVariable = [(_UIScrollViewContentOffsetGuide *)self _minXVariable];
+  v6 = _minXVariable;
+  if (_minXVariable == variableCopy)
   {
 
     goto LABEL_5;
   }
 
-  v7 = [(_UIScrollViewContentOffsetGuide *)self _minYVariable];
+  _minYVariable = [(_UIScrollViewContentOffsetGuide *)self _minYVariable];
 
-  if (v7 == v4)
+  if (_minYVariable == variableCopy)
   {
 LABEL_5:
-    v9 = [(UILayoutGuide *)self owningView];
-    v8 = [v9 _uili_requiresObservationForVariable:v4];
+    owningView = [(UILayoutGuide *)self owningView];
+    v8 = [owningView _uili_requiresObservationForVariable:variableCopy];
 
     goto LABEL_6;
   }

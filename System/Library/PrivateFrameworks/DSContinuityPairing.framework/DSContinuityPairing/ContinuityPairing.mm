@@ -1,17 +1,17 @@
 @interface ContinuityPairing
 - (_TtC19DSContinuityPairing17ContinuityPairing)init;
-- (void)fetchContinuityDevicesWithCompletionHandler:(id)a3;
-- (void)unpairDeviceWith:(NSUUID *)a3 completionHandler:(id)a4;
+- (void)fetchContinuityDevicesWithCompletionHandler:(id)handler;
+- (void)unpairDeviceWith:(NSUUID *)with completionHandler:(id)handler;
 @end
 
 @implementation ContinuityPairing
 
-- (void)fetchContinuityDevicesWithCompletionHandler:(id)a3
+- (void)fetchContinuityDevicesWithCompletionHandler:(id)handler
 {
   v5 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE80690, &qword_247F3B018) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -27,18 +27,18 @@
   v12[3] = 0;
   v12[4] = &unk_247F3B078;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_247F37264(0, 0, v7, &unk_247F3B080, v12);
 }
 
-- (void)unpairDeviceWith:(NSUUID *)a3 completionHandler:(id)a4
+- (void)unpairDeviceWith:(NSUUID *)with completionHandler:(id)handler
 {
   v7 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE80690, &qword_247F3B018) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = with;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_247F3A6F8();
@@ -53,8 +53,8 @@
   v14[3] = 0;
   v14[4] = &unk_247F3B038;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  withCopy = with;
+  selfCopy = self;
   sub_247F37264(0, 0, v9, &unk_247F3B048, v14);
 }
 

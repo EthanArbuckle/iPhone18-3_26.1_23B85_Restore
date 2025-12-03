@@ -1,5 +1,5 @@
 @interface GEOAPDaemon
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (GEOAPDaemon)init;
 - (void)_setupSigHandler;
 - (void)_shutdown;
@@ -54,19 +54,19 @@
   [(GEOAPDaemon *)&v3 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = sub_100000F70();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v5;
+    *(&buf + 4) = connectionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "new connection : %@", &buf, 0xCu);
   }
 
   v7 = [GEOAPDaemonManagerBridge alloc];
-  v8 = v5;
+  v8 = connectionCopy;
   if (v7)
   {
     v16.receiver = v7;
@@ -75,7 +75,7 @@
     v7 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_listener, a4);
+      objc_storeStrong(&v9->_listener, connection);
       v10 = sub_100000F70();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {

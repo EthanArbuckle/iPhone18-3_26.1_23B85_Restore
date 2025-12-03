@@ -1,27 +1,27 @@
 @interface DAContactsContact
-- (DAContactsContact)initWithContact:(id)a3;
+- (DAContactsContact)initWithContact:(id)contact;
 - (id)eTag;
 - (id)externalIdentifier;
 - (id)externalUUID;
 - (int)legacyIdentifier;
 - (void)asPerson;
-- (void)setETag:(id)a3;
-- (void)setExternalIdentifier:(id)a3;
-- (void)setExternalUUID:(id)a3;
-- (void)updateSaveRequest:(id)a3;
+- (void)setETag:(id)tag;
+- (void)setExternalIdentifier:(id)identifier;
+- (void)setExternalUUID:(id)d;
+- (void)updateSaveRequest:(id)request;
 @end
 
 @implementation DAContactsContact
 
-- (DAContactsContact)initWithContact:(id)a3
+- (DAContactsContact)initWithContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v9.receiver = self;
   v9.super_class = DAContactsContact;
   v5 = [(DAContactsContact *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [contactCopy mutableCopy];
     mutableContact = v5->_mutableContact;
     v5->_mutableContact = v6;
   }
@@ -31,79 +31,79 @@
 
 - (int)legacyIdentifier
 {
-  v2 = [(DAContactsContact *)self mutableContact];
-  v3 = [v2 iOSLegacyIdentifier];
+  mutableContact = [(DAContactsContact *)self mutableContact];
+  iOSLegacyIdentifier = [mutableContact iOSLegacyIdentifier];
 
-  return v3;
+  return iOSLegacyIdentifier;
 }
 
 - (id)eTag
 {
-  v2 = [(DAContactsContact *)self mutableContact];
-  v3 = [v2 externalModificationTag];
+  mutableContact = [(DAContactsContact *)self mutableContact];
+  externalModificationTag = [mutableContact externalModificationTag];
 
-  return v3;
+  return externalModificationTag;
 }
 
-- (void)setETag:(id)a3
+- (void)setETag:(id)tag
 {
-  v4 = a3;
-  v5 = [(DAContactsContact *)self mutableContact];
-  [v5 setExternalModificationTag:v4];
+  tagCopy = tag;
+  mutableContact = [(DAContactsContact *)self mutableContact];
+  [mutableContact setExternalModificationTag:tagCopy];
 }
 
 - (id)externalUUID
 {
-  v2 = [(DAContactsContact *)self mutableContact];
-  v3 = [v2 externalUUID];
+  mutableContact = [(DAContactsContact *)self mutableContact];
+  externalUUID = [mutableContact externalUUID];
 
-  return v3;
+  return externalUUID;
 }
 
-- (void)setExternalUUID:(id)a3
+- (void)setExternalUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(DAContactsContact *)self mutableContact];
-  [v5 setExternalUUID:v4];
+  dCopy = d;
+  mutableContact = [(DAContactsContact *)self mutableContact];
+  [mutableContact setExternalUUID:dCopy];
 }
 
 - (id)externalIdentifier
 {
-  v2 = [(DAContactsContact *)self mutableContact];
-  v3 = [v2 externalIdentifier];
+  mutableContact = [(DAContactsContact *)self mutableContact];
+  externalIdentifier = [mutableContact externalIdentifier];
 
-  return v3;
+  return externalIdentifier;
 }
 
-- (void)setExternalIdentifier:(id)a3
+- (void)setExternalIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DAContactsContact *)self mutableContact];
-  [v5 setExternalIdentifier:v4];
+  identifierCopy = identifier;
+  mutableContact = [(DAContactsContact *)self mutableContact];
+  [mutableContact setExternalIdentifier:identifierCopy];
 }
 
-- (void)updateSaveRequest:(id)a3
+- (void)updateSaveRequest:(id)request
 {
-  v8 = a3;
-  v4 = [(DAContactsContact *)self markedForDeletion];
-  v5 = [(DAContactsContact *)self mutableContact];
-  v6 = v5;
-  if (v4)
+  requestCopy = request;
+  markedForDeletion = [(DAContactsContact *)self markedForDeletion];
+  mutableContact = [(DAContactsContact *)self mutableContact];
+  mutableContact2 = mutableContact;
+  if (markedForDeletion)
   {
-    [v8 deleteContact:v5];
+    [requestCopy deleteContact:mutableContact];
   }
 
   else
   {
-    v7 = [v5 hasBeenPersisted];
+    hasBeenPersisted = [mutableContact hasBeenPersisted];
 
-    if (!v7)
+    if (!hasBeenPersisted)
     {
       goto LABEL_6;
     }
 
-    v6 = [(DAContactsContact *)self mutableContact];
-    [v8 updateContact:v6];
+    mutableContact2 = [(DAContactsContact *)self mutableContact];
+    [requestCopy updateContact:mutableContact2];
   }
 
 LABEL_6:

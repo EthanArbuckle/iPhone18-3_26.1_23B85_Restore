@@ -15,11 +15,11 @@
 
 - (id)featureFlags
 {
-  v2 = objc_getAssociatedObject(a1, @"_featureFlags");
+  v2 = objc_getAssociatedObject(self, @"_featureFlags");
   if (!v2)
   {
     v2 = objc_alloc_init(MEMORY[0x277D6EED8]);
-    objc_setAssociatedObject(a1, @"_featureFlags", v2, 0x301);
+    objc_setAssociatedObject(self, @"_featureFlags", v2, 0x301);
   }
 
   return v2;
@@ -28,18 +28,18 @@
 - (__CFString)_encodedDialerStringSkippingUnmappedCharacters:()MobilePhoneAdditions
 {
   v5 = objc_alloc_init(MEMORY[0x277D6EED8]);
-  v6 = [v5 smartDialerLocalizationEnabled];
+  smartDialerLocalizationEnabled = [v5 smartDialerLocalizationEnabled];
 
-  if (v6)
+  if (smartDialerLocalizationEnabled)
   {
-    v7 = [(__CFString *)a1 copy];
-    v8 = [MEMORY[0x277CBEAF8] currentLocale];
+    v7 = [(__CFString *)self copy];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
     v9 = TINumberPadGetEncodedStringAllowingUnmappedCharacters();
 
     goto LABEL_69;
   }
 
-  Length = CFStringGetLength(a1);
+  Length = CFStringGetLength(self);
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
@@ -48,15 +48,15 @@
   v41 = 0u;
   *buffer = 0u;
   v39 = 0u;
-  v46 = a1;
+  selfCopy = self;
   v49 = 0;
   v50 = Length;
-  CharactersPtr = CFStringGetCharactersPtr(a1);
+  CharactersPtr = CFStringGetCharactersPtr(self);
   CStringPtr = 0;
   v47 = CharactersPtr;
   if (!CharactersPtr)
   {
-    CStringPtr = CFStringGetCStringPtr(a1, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(self, 0x600u);
   }
 
   v48 = CStringPtr;
@@ -124,7 +124,7 @@
 
             v54.location = v34 + v49;
             v54.length = v18 + v32;
-            CFStringGetCharacters(v46, v54, buffer);
+            CFStringGetCharacters(selfCopy, v54, buffer);
             v29 = v51;
           }
 
@@ -246,16 +246,16 @@ LABEL_69:
 
 - (__CFString)processNumberInLatin:()MobilePhoneAdditions
 {
-  Length = CFStringGetLength(a1);
-  v37 = a1;
+  Length = CFStringGetLength(self);
+  selfCopy = self;
   v40 = 0;
   v41 = Length;
-  CharactersPtr = CFStringGetCharactersPtr(a1);
+  CharactersPtr = CFStringGetCharactersPtr(self);
   CStringPtr = 0;
   v38 = CharactersPtr;
   if (!CharactersPtr)
   {
-    CStringPtr = CFStringGetCStringPtr(a1, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(self, 0x600u);
   }
 
   v35 = 0u;
@@ -327,7 +327,7 @@ LABEL_11:
 
             v45.location = v24 + v40;
             v45.length = v13 + v22;
-            CFStringGetCharacters(v37, v45, buffer);
+            CFStringGetCharacters(selfCopy, v45, buffer);
             v19 = v42;
           }
 
@@ -373,9 +373,9 @@ LABEL_13:
 {
   v4 = MEMORY[0x277D75348];
   v5 = a3;
-  v6 = [v4 secondaryLabelColor];
-  v7 = [MEMORY[0x277D75348] labelColor];
-  v8 = [a1 attributedStringToHighlightText:v5 primaryColour:v6 secondaryColour:v7];
+  secondaryLabelColor = [v4 secondaryLabelColor];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v8 = [self attributedStringToHighlightText:v5 primaryColour:secondaryLabelColor secondaryColour:labelColor];
 
   return v8;
 }
@@ -384,9 +384,9 @@ LABEL_13:
 {
   v6 = MEMORY[0x277D75348];
   v7 = a3;
-  v8 = [v6 secondaryLabelColor];
-  v9 = [MEMORY[0x277D75348] labelColor];
-  v10 = [a1 attributedStringToHighlightText:v7 primaryColour:v8 secondaryColour:v9 style:a4];
+  secondaryLabelColor = [v6 secondaryLabelColor];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v10 = [self attributedStringToHighlightText:v7 primaryColour:secondaryLabelColor secondaryColour:labelColor style:a4];
 
   return v10;
 }
@@ -397,13 +397,13 @@ LABEL_13:
   v10 = a3;
   v11 = a4;
   v12 = a5;
-  v13 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:a1];
-  if ([a1 length])
+  v13 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:self];
+  if ([self length])
   {
-    v14 = [a1 length];
+    v14 = [self length];
     v15 = *MEMORY[0x277D740C0];
     [v13 addAttribute:*MEMORY[0x277D740C0] value:v11 range:{0, v14}];
-    v16 = a1;
+    selfCopy = self;
     v17 = v10;
     v18 = a6 - 1;
     if (a6 == 1)
@@ -411,7 +411,7 @@ LABEL_13:
       v34 = v12;
       v35 = v11;
       v36 = v10;
-      v19 = [v16 componentsSeparatedByString:@" "];
+      v19 = [selfCopy componentsSeparatedByString:@" "];
       v20 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v19, "count")}];
       v40 = 0u;
       v41 = 0u;
@@ -444,10 +444,10 @@ LABEL_13:
 
       v27 = [v20 componentsJoinedByString:@" "];
 
-      v28 = [v17 unformattedNumberInLatin];
+      unformattedNumberInLatin = [v17 unformattedNumberInLatin];
 
-      v17 = v28;
-      v16 = v27;
+      v17 = unformattedNumberInLatin;
+      selfCopy = v27;
       v11 = v35;
       v10 = v36;
       a6 = 1;
@@ -455,15 +455,15 @@ LABEL_13:
       v18 = 0;
     }
 
-    v29 = [v16 rangeToHighlightText:v17];
+    v29 = [selfCopy rangeToHighlightText:v17];
     if (v30)
     {
       [v13 addAttribute:v15 value:v12 range:{v29, v30}];
     }
 
-    else if (v18 < 2 || [v17 isNumeric] && objc_msgSend(v16, "isNumeric"))
+    else if (v18 < 2 || [v17 isNumeric] && objc_msgSend(selfCopy, "isNumeric"))
     {
-      v31 = [v16 indexSetToHighlightDigitsInText:v17 allowMatchingLastFour:a6 == 2];
+      v31 = [selfCopy indexSetToHighlightDigitsInText:v17 allowMatchingLastFour:a6 == 2];
       v37[0] = MEMORY[0x277D85DD0];
       v37[1] = 3221225472;
       v37[2] = __102__NSString_MobilePhoneAdditions__attributedStringToHighlightText_primaryColour_secondaryColour_style___block_invoke;
@@ -482,21 +482,21 @@ LABEL_13:
 - (uint64_t)rangeToHighlightText:()MobilePhoneAdditions
 {
   v4 = a3;
-  if ([a1 length])
+  if ([self length])
   {
-    v5 = [a1 sanitizedString];
-    v6 = [v5 stringByRemovingDiatrics];
+    sanitizedString = [self sanitizedString];
+    stringByRemovingDiatrics = [sanitizedString stringByRemovingDiatrics];
 
-    v7 = [v4 sanitizedString];
-    v8 = [v7 stringByRemovingDiatrics];
+    sanitizedString2 = [v4 sanitizedString];
+    stringByRemovingDiatrics2 = [sanitizedString2 stringByRemovingDiatrics];
 
     v9 = MEMORY[0x277CCACA8];
-    v10 = [MEMORY[0x277CCAC68] escapedPatternForString:v8];
+    v10 = [MEMORY[0x277CCAC68] escapedPatternForString:stringByRemovingDiatrics2];
     v11 = [v9 stringWithFormat:@"(?:(?<![^\\W_])|(?=[\\W_]))%@", v10];
 
     if ([v4 length])
     {
-      v12 = [v6 rangeOfString:v11 options:1025];
+      v12 = [stringByRemovingDiatrics rangeOfString:v11 options:1025];
     }
 
     else
@@ -516,16 +516,16 @@ LABEL_13:
 - (id)indexSetToHighlightDigitsInText:()MobilePhoneAdditions allowMatchingLastFour:
 {
   v6 = a3;
-  v7 = [a1 _indexSetToHighlightDigitsInText:v6];
+  v7 = [self _indexSetToHighlightDigitsInText:v6];
   if (!v7 && a4)
   {
-    v8 = [a1 featureFlags];
-    v9 = [v8 smartDialerLastFourDigitsSearchEnabled];
+    featureFlags = [self featureFlags];
+    smartDialerLastFourDigitsSearchEnabled = [featureFlags smartDialerLastFourDigitsSearchEnabled];
 
-    if (v9)
+    if (smartDialerLastFourDigitsSearchEnabled)
     {
-      v10 = [a1 _stringForLastFourDigitMatch];
-      v11 = [v10 _indexSetToHighlightDigitsInText:v6];
+      _stringForLastFourDigitMatch = [self _stringForLastFourDigitMatch];
+      v11 = [_stringForLastFourDigitMatch _indexSetToHighlightDigitsInText:v6];
       v12 = [v11 mutableCopy];
 
       [v12 shiftIndexesStartingAtIndex:0 by:-1];
@@ -545,22 +545,22 @@ LABEL_13:
 {
   v4 = a3;
   v5 = objc_alloc_init(MEMORY[0x277CCAB58]);
-  theString = a1;
+  theString = self;
   v55 = 0;
-  Length = CFStringGetLength(a1);
-  CharactersPtr = CFStringGetCharactersPtr(a1);
+  Length = CFStringGetLength(self);
+  CharactersPtr = CFStringGetCharactersPtr(self);
   CStringPtr = 0;
   v53 = CharactersPtr;
   if (!CharactersPtr)
   {
-    CStringPtr = CFStringGetCStringPtr(a1, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(self, 0x600u);
   }
 
   v57 = 0;
   v58 = 0;
   v54 = CStringPtr;
-  v8 = [v4 unformattedNumber];
-  v9 = CFStringGetLength(v8);
+  unformattedNumber = [v4 unformattedNumber];
+  v9 = CFStringGetLength(unformattedNumber);
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
@@ -569,15 +569,15 @@ LABEL_13:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v37 = v8;
+  v37 = unformattedNumber;
   v40 = 0;
   v41 = v9;
-  v10 = CFStringGetCharactersPtr(v8);
+  v10 = CFStringGetCharactersPtr(unformattedNumber);
   v11 = 0;
   v38 = v10;
   if (!v10)
   {
-    v11 = CFStringGetCStringPtr(v8, 0x600u);
+    v11 = CFStringGetCStringPtr(unformattedNumber, 0x600u);
   }
 
   v50 = 0u;
@@ -591,10 +591,10 @@ LABEL_13:
   v42 = 0;
   v43 = 0;
   v39 = v11;
-  if ([(__CFString *)a1 length:v29])
+  if ([(__CFString *)self length:v29])
   {
     v12 = 0;
-    for (i = 0; i < [(__CFString *)a1 length]; ++i)
+    for (i = 0; i < [(__CFString *)self length]; ++i)
     {
       if (i < 0 || (v14 = Length, Length <= i))
       {
@@ -724,21 +724,21 @@ LABEL_54:
 
 - (id)_stringForLastFourDigitMatch
 {
-  theString = a1;
+  theString = self;
   v20 = 0;
-  Length = CFStringGetLength(a1);
+  Length = CFStringGetLength(self);
   CharactersPtr = CFStringGetCharactersPtr(theString);
   CStringPtr = 0;
   v18 = CharactersPtr;
   if (!CharactersPtr)
   {
-    CStringPtr = CFStringGetCStringPtr(a1, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(self, 0x600u);
   }
 
   v22 = 0;
   v23 = 0;
   v19 = CStringPtr;
-  v4 = [(__CFString *)a1 length:0];
+  v4 = [(__CFString *)self length:0];
   v5 = 0;
   while (1)
   {
@@ -810,13 +810,13 @@ LABEL_54:
     v5 += v10;
     if (v5 == 4)
     {
-      v13 = [(__CFString *)a1 mutableCopy];
+      v13 = [(__CFString *)self mutableCopy];
       [v13 insertString:@" " atIndex:v4];
       goto LABEL_27;
     }
   }
 
-  v13 = [(__CFString *)a1 mutableCopy];
+  v13 = [(__CFString *)self mutableCopy];
 LABEL_27:
   v14 = [v13 copy];
 

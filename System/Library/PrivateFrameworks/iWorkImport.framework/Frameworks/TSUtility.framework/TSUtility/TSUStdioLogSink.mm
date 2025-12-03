@@ -1,7 +1,7 @@
 @interface TSUStdioLogSink
 + (id)sharedInstance;
 - (TSUStdioLogSink)init;
-- (id)logSinkBlockWithFilePointer:(__sFILE *)a3;
+- (id)logSinkBlockWithFilePointer:(__sFILE *)pointer;
 @end
 
 @implementation TSUStdioLogSink
@@ -40,14 +40,14 @@
   return v3;
 }
 
-- (id)logSinkBlockWithFilePointer:(__sFILE *)a3
+- (id)logSinkBlockWithFilePointer:(__sFILE *)pointer
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_2770FB8D8;
   v6[3] = &unk_27A703B18;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = pointer;
   v3 = _Block_copy(v6);
   v4 = [v3 copy];
 

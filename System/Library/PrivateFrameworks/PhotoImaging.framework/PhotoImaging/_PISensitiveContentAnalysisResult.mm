@@ -1,6 +1,6 @@
 @interface _PISensitiveContentAnalysisResult
 - (NSString)description;
-- (_PISensitiveContentAnalysisResult)initWithSanitization:(id)a3;
+- (_PISensitiveContentAnalysisResult)initWithSanitization:(id)sanitization;
 - (double)sensitivityScore;
 @end
 
@@ -12,33 +12,33 @@
   v32.receiver = self;
   v32.super_class = _PISensitiveContentAnalysisResult;
   v3 = [(_PISensitiveContentAnalysisResult *)&v32 description];
-  v4 = [(_PISensitiveContentAnalysisResult *)self sanitization];
-  v5 = [v4 safe];
+  sanitization = [(_PISensitiveContentAnalysisResult *)self sanitization];
+  safe = [sanitization safe];
   v6 = @"NO";
-  if (v5)
+  if (safe)
   {
     v6 = @"YES";
   }
 
   v7 = [v3 stringByAppendingFormat:@"\n   isSafe: %@", v6];
 
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  v9 = [(_PISensitiveContentAnalysisResult *)self sanitization];
-  v10 = [v9 signals];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  sanitization2 = [(_PISensitiveContentAnalysisResult *)self sanitization];
+  signals = [sanitization2 signals];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __48___PISensitiveContentAnalysisResult_description__block_invoke;
   v30[3] = &unk_1E82A9C30;
-  v11 = v8;
+  v11 = dictionary;
   v31 = v11;
-  [v10 enumerateKeysAndObjectsUsingBlock:v30];
+  [signals enumerateKeysAndObjectsUsingBlock:v30];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v12 = [v11 allKeys];
-  v13 = [v12 sortedArrayUsingComparator:&__block_literal_global_143];
+  allKeys = [v11 allKeys];
+  v13 = [allKeys sortedArrayUsingComparator:&__block_literal_global_143];
 
   obj = v13;
   v14 = [v13 countByEnumeratingWithState:&v26 objects:v33 count:16];
@@ -69,8 +69,8 @@
           v21 = @"UNSAFE";
         }
 
-        v22 = [v20 score];
-        [v22 doubleValue];
+        score = [v20 score];
+        [score doubleValue];
         v7 = [v18 stringByAppendingFormat:@"\n        %@: %@ (%f)", v19, v21, v23];
 
         ++v17;
@@ -90,23 +90,23 @@
 - (double)sensitivityScore
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"PI_FORCE_SAFETY_CHECK_FAIL"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"PI_FORCE_SAFETY_CHECK_FAIL"];
 
   if ((v4 & 1) == 0)
   {
     Helper_x8__OBJC_CLASS___SCMLImageLabelCoder = gotLoadHelper_x8__OBJC_CLASS___SCMLImageLabelCoder(v5);
-    v9 = [*(v8 + 1824) instance];
-    v10 = [v9 encodeToP1:@"ivs.nsfw_explicit"];
+    instance = [*(v8 + 1824) instance];
+    v10 = [instance encodeToP1:@"ivs.nsfw_explicit"];
 
-    v11 = [(SCMLImageSanitization *)self->_sanitization signals];
-    v12 = [v11 objectForKeyedSubscript:v10];
+    signals = [(SCMLImageSanitization *)self->_sanitization signals];
+    v12 = [signals objectForKeyedSubscript:v10];
 
     if (v12)
     {
 LABEL_18:
-      v30 = [v12 score];
-      [v30 doubleValue];
+      score = [v12 score];
+      [score doubleValue];
       v6 = v31;
 
       return v6;
@@ -125,8 +125,8 @@ LABEL_18:
       v16 = MEMORY[0x1E696AEC0];
       sanitization = self->_sanitization;
       v18 = v15;
-      v19 = [(SCMLImageSanitization *)sanitization signals];
-      v20 = [v16 stringWithFormat:@"Did not get the expected signal. Expected %@, got %@", v10, v19];
+      signals2 = [(SCMLImageSanitization *)sanitization signals];
+      v20 = [v16 stringWithFormat:@"Did not get the expected signal. Expected %@, got %@", v10, signals2];
       *buf = 138543362;
       v40 = v20;
       _os_log_impl(&dword_1C7694000, v18, OS_LOG_TYPE_DEFAULT, "Continue: %{public}@", buf, 0xCu);
@@ -158,8 +158,8 @@ LABEL_11:
         v24 = MEMORY[0x1E696AF00];
         v25 = specific;
         v26 = v22;
-        v27 = [v24 callStackSymbols];
-        v28 = [v27 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v24 callStackSymbols];
+        v28 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v40 = specific;
         v41 = 2114;
@@ -180,8 +180,8 @@ LABEL_17:
     {
       v33 = MEMORY[0x1E696AF00];
       v34 = v29;
-      v35 = [v33 callStackSymbols];
-      v36 = [v35 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v33 callStackSymbols];
+      v36 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v40 = v36;
       _os_log_error_impl(&dword_1C7694000, v34, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -193,14 +193,14 @@ LABEL_17:
   return 0.999;
 }
 
-- (_PISensitiveContentAnalysisResult)initWithSanitization:(id)a3
+- (_PISensitiveContentAnalysisResult)initWithSanitization:(id)sanitization
 {
-  v4 = a3;
+  sanitizationCopy = sanitization;
   v8.receiver = self;
   v8.super_class = _PISensitiveContentAnalysisResult;
   v5 = [(_PISensitiveContentAnalysisResult *)&v8 init];
   sanitization = v5->_sanitization;
-  v5->_sanitization = v4;
+  v5->_sanitization = sanitizationCopy;
 
   return v5;
 }

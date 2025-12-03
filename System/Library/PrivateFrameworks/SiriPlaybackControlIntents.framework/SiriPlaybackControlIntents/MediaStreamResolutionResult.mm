@@ -1,22 +1,22 @@
 @interface MediaStreamResolutionResult
-+ (id)confirmationRequiredWithMediaStreamToConfirm:(id)a3;
-+ (id)disambiguationWithMediaStreamsToDisambiguate:(id)a3;
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3;
-+ (id)successWithResolvedMediaStream:(id)a3;
++ (id)confirmationRequiredWithMediaStreamToConfirm:(id)confirm;
++ (id)disambiguationWithMediaStreamsToDisambiguate:(id)disambiguate;
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedMediaStream:(id)stream;
 @end
 
 @implementation MediaStreamResolutionResult
 
-+ (id)successWithResolvedMediaStream:(id)a3
++ (id)successWithResolvedMediaStream:(id)stream
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_268B32628(v4);
+  streamCopy = stream;
+  v5 = sub_268B32628(streamCopy);
 
   return v5;
 }
 
-+ (id)disambiguationWithMediaStreamsToDisambiguate:(id)a3
++ (id)disambiguationWithMediaStreamsToDisambiguate:(id)disambiguate
 {
   type metadata accessor for MediaStream();
   v3 = sub_268B37CF4();
@@ -26,16 +26,16 @@
   return v4;
 }
 
-+ (id)confirmationRequiredWithMediaStreamToConfirm:(id)a3
++ (id)confirmationRequiredWithMediaStreamToConfirm:(id)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_268B32784(a3);
+  confirmCopy = confirm;
+  v5 = sub_268B32784(confirm);
 
   return v5;
 }
 
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate
 {
   sub_268B2CDF4();
   sub_268B37CF4();

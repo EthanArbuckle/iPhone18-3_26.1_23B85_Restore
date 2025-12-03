@@ -1,17 +1,17 @@
 @interface MRDMusicHandoffSession
-- (MRDMusicHandoffSession)initWithSource:(id)a3 destination:(id)a4;
+- (MRDMusicHandoffSession)initWithSource:(id)source destination:(id)destination;
 - (id)description;
-- (void)handleEvent:(id)a3;
+- (void)handleEvent:(id)event;
 - (void)invalidate;
 - (void)start;
 @end
 
 @implementation MRDMusicHandoffSession
 
-- (MRDMusicHandoffSession)initWithSource:(id)a3 destination:(id)a4
+- (MRDMusicHandoffSession)initWithSource:(id)source destination:(id)destination
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  destinationCopy = destination;
   v19.receiver = self;
   v19.super_class = MRDMusicHandoffSession;
   v9 = [(MRDMusicHandoffSession *)&v19 init];
@@ -21,15 +21,15 @@
     identifier = v9->_identifier;
     v9->_identifier = v10;
 
-    objc_storeStrong(&v9->_sourcePlayerPath, a3);
-    objc_storeStrong(&v9->_destinationPlayerPath, a4);
+    objc_storeStrong(&v9->_sourcePlayerPath, source);
+    objc_storeStrong(&v9->_destinationPlayerPath, destination);
     v9->_state = 0;
     v9->_lock._os_unfair_lock_opaque = 0;
     v12 = [NSString stringWithFormat:@"com.apple.MediaRemote.MRDMusicHandoffSession-%@", v9->_identifier];
-    v13 = [v12 UTF8String];
+    uTF8String = [v12 UTF8String];
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v15 = MRMusicHandoffSessionGetQueue();
-    v16 = dispatch_queue_create_with_target_V2(v13, v14, v15);
+    v16 = dispatch_queue_create_with_target_V2(uTF8String, v14, v15);
     notificationQueue = v9->_notificationQueue;
     v9->_notificationQueue = v16;
   }
@@ -39,8 +39,8 @@
 
 - (id)description
 {
-  v2 = [(MRDMusicHandoffSession *)self identifier];
-  v3 = [NSString stringWithFormat:@"<MRDMusicHandoffSession - identifier: %@>", v2];
+  identifier = [(MRDMusicHandoffSession *)self identifier];
+  v3 = [NSString stringWithFormat:@"<MRDMusicHandoffSession - identifier: %@>", identifier];
 
   return v3;
 }
@@ -77,11 +77,11 @@
   }
 }
 
-- (void)handleEvent:(id)a3
+- (void)handleEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 type];
-  if (v5 == 1)
+  eventCopy = event;
+  type = [eventCopy type];
+  if (type == 1)
   {
     os_unfair_lock_lock(&self->_lock);
     self->_state = 2;
@@ -93,11 +93,11 @@
     v11[3] = &unk_1004B68F0;
     v11[4] = self;
     v7 = &v12;
-    v12 = v4;
+    v12 = eventCopy;
     v8 = v11;
   }
 
-  else if (v5 == 2)
+  else if (type == 2)
   {
     os_unfair_lock_lock(&self->_lock);
     self->_state = 2;
@@ -109,7 +109,7 @@
     v13[3] = &unk_1004B68F0;
     v13[4] = self;
     v7 = &v14;
-    v14 = v4;
+    v14 = eventCopy;
     v8 = v13;
   }
 
@@ -122,7 +122,7 @@
     v9[3] = &unk_1004B68F0;
     v9[4] = self;
     v7 = &v10;
-    v10 = v4;
+    v10 = eventCopy;
     v8 = v9;
   }
 

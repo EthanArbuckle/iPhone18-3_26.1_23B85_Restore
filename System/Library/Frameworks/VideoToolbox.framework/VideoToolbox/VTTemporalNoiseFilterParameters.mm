@@ -1,13 +1,13 @@
 @interface VTTemporalNoiseFilterParameters
-- (VTTemporalNoiseFilterParameters)initWithSourceFrame:(id)a3 nextFrames:(id)a4 previousFrames:(id)a5 destinationFrame:(id)a6 filterStrength:(float)a7 hasDiscontinuity:(unsigned __int8)a8;
+- (VTTemporalNoiseFilterParameters)initWithSourceFrame:(id)frame nextFrames:(id)frames previousFrames:(id)previousFrames destinationFrame:(id)destinationFrame filterStrength:(float)strength hasDiscontinuity:(unsigned __int8)discontinuity;
 - (void)dealloc;
 @end
 
 @implementation VTTemporalNoiseFilterParameters
 
-- (VTTemporalNoiseFilterParameters)initWithSourceFrame:(id)a3 nextFrames:(id)a4 previousFrames:(id)a5 destinationFrame:(id)a6 filterStrength:(float)a7 hasDiscontinuity:(unsigned __int8)a8
+- (VTTemporalNoiseFilterParameters)initWithSourceFrame:(id)frame nextFrames:(id)frames previousFrames:(id)previousFrames destinationFrame:(id)destinationFrame filterStrength:(float)strength hasDiscontinuity:(unsigned __int8)discontinuity
 {
-  v8 = a8;
+  discontinuityCopy = discontinuity;
   v16.receiver = self;
   v16.super_class = VTTemporalNoiseFilterParameters;
   v14 = [(VTTemporalNoiseFilterParameters *)&v16 init];
@@ -17,30 +17,30 @@
     return v14;
   }
 
-  if (!a3)
+  if (!frame)
   {
     NSLog(&cfstr_SourceframeIsN.isa);
     return 0;
   }
 
-  if (!a6)
+  if (!destinationFrame)
   {
     NSLog(&cfstr_Destinationfra.isa);
     return 0;
   }
 
-  if (a7 < 0.0 || a7 > 1.0)
+  if (strength < 0.0 || strength > 1.0)
   {
     NSLog(&cfstr_InvalidFilters.isa);
     return 0;
   }
 
-  v14->_sourceFrame = a3;
-  v14->_nextFrames = a4;
-  v14->_previousFrames = a5;
-  v14->_destinationFrame = a6;
-  v14->_filterStrength = a7;
-  v14->_hasDiscontinuity = v8 != 0;
+  v14->_sourceFrame = frame;
+  v14->_nextFrames = frames;
+  v14->_previousFrames = previousFrames;
+  v14->_destinationFrame = destinationFrame;
+  v14->_filterStrength = strength;
+  v14->_hasDiscontinuity = discontinuityCopy != 0;
   return v14;
 }
 

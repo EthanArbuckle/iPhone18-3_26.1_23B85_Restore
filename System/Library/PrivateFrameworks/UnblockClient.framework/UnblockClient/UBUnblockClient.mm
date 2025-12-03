@@ -1,10 +1,10 @@
 @interface UBUnblockClient
 - (UBUnblockClient)init;
-- (id)handleRecoverReply:(id)a3 input_services:(id)a4 err:(id *)a5;
-- (id)prepareRecoverRequest:(id)a3 stackshot_data:(id)a4 err:(id *)a5;
+- (id)handleRecoverReply:(id)reply input_services:(id)input_services err:(id *)err;
+- (id)prepareRecoverRequest:(id)request stackshot_data:(id)stackshot_data err:(id *)err;
 - (void)dealloc;
 - (void)openConnectionToUnblockService;
-- (void)recover:(id)a3 stackshotData:(id)a4 replyQueue:(id)a5 callback:(id)a6;
+- (void)recover:(id)recover stackshotData:(id)data replyQueue:(id)queue callback:(id)callback;
 @end
 
 @implementation UBUnblockClient
@@ -71,20 +71,20 @@ LABEL_13:
   xpc_connection_resume(v12);
 }
 
-- (id)prepareRecoverRequest:(id)a3 stackshot_data:(id)a4 err:(id *)a5
+- (id)prepareRecoverRequest:(id)request stackshot_data:(id)stackshot_data err:(id *)err
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  stackshot_dataCopy = stackshot_data;
   v17 = 0;
-  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v17];
+  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:request requiringSecureCoding:1 error:&v17];
   v9 = v17;
   if (v8)
   {
     v10 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_uint64(v10, "UBRequestKey", 1uLL);
-    if (v7 && [v7 length] && objc_msgSend(v7, "bytes"))
+    if (stackshot_dataCopy && [stackshot_dataCopy length] && objc_msgSend(stackshot_dataCopy, "bytes"))
     {
-      xpc_dictionary_set_data(v10, "UBStackshotDataKey", [v7 bytes], objc_msgSend(v7, "length"));
+      xpc_dictionary_set_data(v10, "UBStackshotDataKey", [stackshot_dataCopy bytes], objc_msgSend(stackshot_dataCopy, "length"));
     }
 
     xpc_dictionary_set_data(v10, "UBStuckServicesDataKey", [v8 bytes], objc_msgSend(v8, "length"));
@@ -108,11 +108,11 @@ LABEL_13:
     }
 
     *__error() = v12;
-    if (a5)
+    if (err)
     {
       v14 = v9;
       v10 = 0;
-      *a5 = v9;
+      *err = v9;
     }
 
     else
@@ -126,14 +126,14 @@ LABEL_13:
   return v10;
 }
 
-- (id)handleRecoverReply:(id)a3 input_services:(id)a4 err:(id *)a5
+- (id)handleRecoverReply:(id)reply input_services:(id)input_services err:(id *)err
 {
   v168 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (MEMORY[0x27439FD10](v7) == MEMORY[0x277D86480])
+  replyCopy = reply;
+  input_servicesCopy = input_services;
+  if (MEMORY[0x27439FD10](replyCopy) == MEMORY[0x277D86480])
   {
-    string = xpc_dictionary_get_string(v7, *MEMORY[0x277D86400]);
+    string = xpc_dictionary_get_string(replyCopy, *MEMORY[0x277D86400]);
     v12 = *__error();
     v13 = _ublogt();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -143,11 +143,11 @@ LABEL_13:
 
     *__error() = v12;
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:string];
-    if (a5)
+    if (err)
     {
       v15 = MEMORY[0x277CCA9B8];
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v14 forKey:*MEMORY[0x277CCA450]];
-      *a5 = [v15 errorWithDomain:@"UBUnblockError" code:2 userInfo:v16];
+      *err = [v15 errorWithDomain:@"UBUnblockError" code:2 userInfo:v16];
     }
 
 LABEL_14:
@@ -157,19 +157,19 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (MEMORY[0x27439FD10](v7) != MEMORY[0x277D86468])
+  if (MEMORY[0x27439FD10](replyCopy) != MEMORY[0x277D86468])
   {
-    if (a5)
+    if (err)
     {
       v9 = MEMORY[0x277CCA9B8];
       v10 = [MEMORY[0x277CBEAC0] dictionaryWithObject:@"Unexcepted xpc event received." forKey:*MEMORY[0x277CCA450]];
-      *a5 = [v9 errorWithDomain:@"UBUnblockError" code:2 userInfo:v10];
+      *err = [v9 errorWithDomain:@"UBUnblockError" code:2 userInfo:v10];
     }
 
     goto LABEL_15;
   }
 
-  if (xpc_dictionary_get_int64(v7, "UBResultKey"))
+  if (xpc_dictionary_get_int64(replyCopy, "UBResultKey"))
   {
     v17 = *__error();
     v18 = _ublogt();
@@ -179,7 +179,7 @@ LABEL_15:
     }
 
     *__error() = v17;
-    if (!a5)
+    if (!err)
     {
       goto LABEL_15;
     }
@@ -191,7 +191,7 @@ LABEL_15:
   }
 
   length = 0;
-  data = xpc_dictionary_get_data(v7, "UBStuckServicesResultsDataKey", &length);
+  data = xpc_dictionary_get_data(replyCopy, "UBStuckServicesResultsDataKey", &length);
   if (data)
   {
     v25 = [MEMORY[0x277CBEA90] dataWithBytes:data length:length];
@@ -208,11 +208,11 @@ LABEL_15:
       }
 
       *__error() = v28;
-      if (a5)
+      if (err)
       {
         v30 = v27;
         v21 = 0;
-        *a5 = v27;
+        *err = v27;
 LABEL_105:
 
         goto LABEL_106;
@@ -221,11 +221,11 @@ LABEL_105:
 
     else
     {
-      v34 = [v8 count];
+      v34 = [input_servicesCopy count];
       if (v34 == [v26 count])
       {
         v121 = v25;
-        v119 = a5;
+        errCopy = err;
         v35 = objc_alloc_init(MEMORY[0x277CBEB38]);
         v157[0] = MEMORY[0x277D85DD0];
         v157[1] = 3221225472;
@@ -238,14 +238,14 @@ LABEL_105:
         v154 = 0u;
         v155 = 0u;
         v156 = 0u;
-        obj = v8;
+        obj = input_servicesCopy;
         v124 = [obj countByEnumeratingWithState:&v153 objects:v167 count:16];
         if (v124)
         {
           v37 = 0;
           v125 = *v154;
           v117 = 0;
-          v118 = v8;
+          v118 = input_servicesCopy;
           v123 = v26;
           while (2)
           {
@@ -268,18 +268,18 @@ LABEL_105:
 
               if ([v39 threadID] != 1)
               {
-                v42 = [v39 threadID];
-                if (v42 != [v40 threadID])
+                threadID = [v39 threadID];
+                if (threadID != [v40 threadID])
                 {
                   goto LABEL_99;
                 }
               }
 
-              v43 = [v39 incidentUUID];
+              incidentUUID = [v39 incidentUUID];
               [v40 service];
               v44 = v128 = v40;
-              v45 = [v44 incidentUUID];
-              v46 = [v43 isEqual:v45];
+              incidentUUID2 = [v44 incidentUUID];
+              v46 = [incidentUUID isEqual:incidentUUID2];
 
               v40 = v128;
               if ((v46 & 1) == 0)
@@ -293,12 +293,12 @@ LABEL_99:
                 }
 
                 *__error() = v113;
-                v8 = v118;
-                if (v119)
+                input_servicesCopy = v118;
+                if (errCopy)
                 {
                   v115 = MEMORY[0x277CCA9B8];
                   v116 = [MEMORY[0x277CBEAC0] dictionaryWithObject:@"Result has invalid pid/thread_id/incident service's data" forKey:*MEMORY[0x277CCA450]];
-                  *v119 = [v115 errorWithDomain:@"UBUnblockError" code:2 userInfo:v116];
+                  *errCopy = [v115 errorWithDomain:@"UBUnblockError" code:2 userInfo:v116];
                 }
 
                 v21 = 0;
@@ -312,8 +312,8 @@ LABEL_99:
               v152 = 0u;
               v149 = 0u;
               v150 = 0u;
-              v47 = [v128 processesAndThreadsInvolved];
-              v48 = [v47 countByEnumeratingWithState:&v149 objects:v166 count:16];
+              processesAndThreadsInvolved = [v128 processesAndThreadsInvolved];
+              v48 = [processesAndThreadsInvolved countByEnumeratingWithState:&v149 objects:v166 count:16];
               if (v48)
               {
                 v49 = v48;
@@ -324,27 +324,27 @@ LABEL_99:
                   {
                     if (*v150 != v50)
                     {
-                      objc_enumerationMutation(v47);
+                      objc_enumerationMutation(processesAndThreadsInvolved);
                     }
 
                     v52 = *(*(&v149 + 1) + 8 * i);
-                    v53 = [v52 process];
-                    v54 = (v36)[2](v36, v53);
+                    process = [v52 process];
+                    v54 = (v36)[2](v36, process);
                     [v52 setProcess:v54];
                   }
 
-                  v49 = [v47 countByEnumeratingWithState:&v149 objects:v166 count:16];
+                  v49 = [processesAndThreadsInvolved countByEnumeratingWithState:&v149 objects:v166 count:16];
                 }
 
                 while (v49);
               }
 
-              v55 = [v128 selectedProcess];
+              selectedProcess = [v128 selectedProcess];
 
-              if (v55)
+              if (selectedProcess)
               {
-                v56 = [v128 selectedProcess];
-                v57 = (v36)[2](v36, v56);
+                selectedProcess2 = [v128 selectedProcess];
+                v57 = (v36)[2](v36, selectedProcess2);
                 [v128 setSelectedProcess:v57];
               }
 
@@ -352,8 +352,8 @@ LABEL_99:
               v148 = 0u;
               v145 = 0u;
               v146 = 0u;
-              v58 = [v128 serviceDependencyChain];
-              v59 = [v58 countByEnumeratingWithState:&v145 objects:v165 count:16];
+              serviceDependencyChain = [v128 serviceDependencyChain];
+              v59 = [serviceDependencyChain countByEnumeratingWithState:&v145 objects:v165 count:16];
               if (v59)
               {
                 v60 = v59;
@@ -364,36 +364,36 @@ LABEL_99:
                   {
                     if (*v146 != v61)
                     {
-                      objc_enumerationMutation(v58);
+                      objc_enumerationMutation(serviceDependencyChain);
                     }
 
                     v63 = *(*(&v145 + 1) + 8 * j);
-                    v64 = [v63 process];
-                    v65 = (v36)[2](v36, v64);
+                    process2 = [v63 process];
+                    v65 = (v36)[2](v36, process2);
                     [v63 setProcess:v65];
                   }
 
-                  v60 = [v58 countByEnumeratingWithState:&v145 objects:v165 count:16];
+                  v60 = [serviceDependencyChain countByEnumeratingWithState:&v145 objects:v165 count:16];
                 }
 
                 while (v60);
               }
 
               v66 = v128;
-              v67 = [v128 processesBlockedByThisIssueOnly];
-              v68 = [v67 count];
+              processesBlockedByThisIssueOnly = [v128 processesBlockedByThisIssueOnly];
+              v68 = [processesBlockedByThisIssueOnly count];
 
               if (v68)
               {
-                v69 = [v128 processesBlockedByThisIssueOnly];
-                v70 = [v69 mutableCopy];
+                processesBlockedByThisIssueOnly2 = [v128 processesBlockedByThisIssueOnly];
+                v70 = [processesBlockedByThisIssueOnly2 mutableCopy];
 
                 v143 = 0u;
                 v144 = 0u;
                 v141 = 0u;
                 v142 = 0u;
-                v71 = [v128 processesBlockedByThisIssueOnly];
-                v72 = [v71 countByEnumeratingWithState:&v141 objects:v164 count:16];
+                processesBlockedByThisIssueOnly3 = [v128 processesBlockedByThisIssueOnly];
+                v72 = [processesBlockedByThisIssueOnly3 countByEnumeratingWithState:&v141 objects:v164 count:16];
                 if (v72)
                 {
                   v73 = v72;
@@ -405,7 +405,7 @@ LABEL_99:
                     {
                       if (*v142 != v75)
                       {
-                        objc_enumerationMutation(v71);
+                        objc_enumerationMutation(processesBlockedByThisIssueOnly3);
                       }
 
                       v77 = v36[2](v36, *(*(&v141 + 1) + 8 * k));
@@ -414,7 +414,7 @@ LABEL_99:
                       ++v74;
                     }
 
-                    v73 = [v71 countByEnumeratingWithState:&v141 objects:v164 count:16];
+                    v73 = [processesBlockedByThisIssueOnly3 countByEnumeratingWithState:&v141 objects:v164 count:16];
                   }
 
                   while (v73);
@@ -425,20 +425,20 @@ LABEL_99:
                 [v128 setProcessesBlockedByThisIssueOnly:v78];
               }
 
-              v79 = [v66 processesBlockedByThisAndOtherIssues];
-              v80 = [v79 count];
+              processesBlockedByThisAndOtherIssues = [v66 processesBlockedByThisAndOtherIssues];
+              v80 = [processesBlockedByThisAndOtherIssues count];
 
               if (v80)
               {
-                v81 = [v66 processesBlockedByThisAndOtherIssues];
-                v82 = [v81 mutableCopy];
+                processesBlockedByThisAndOtherIssues2 = [v66 processesBlockedByThisAndOtherIssues];
+                v82 = [processesBlockedByThisAndOtherIssues2 mutableCopy];
 
                 v139 = 0u;
                 v140 = 0u;
                 v137 = 0u;
                 v138 = 0u;
-                v83 = [v66 processesBlockedByThisAndOtherIssues];
-                v84 = [v83 countByEnumeratingWithState:&v137 objects:v163 count:16];
+                processesBlockedByThisAndOtherIssues3 = [v66 processesBlockedByThisAndOtherIssues];
+                v84 = [processesBlockedByThisAndOtherIssues3 countByEnumeratingWithState:&v137 objects:v163 count:16];
                 if (v84)
                 {
                   v85 = v84;
@@ -450,7 +450,7 @@ LABEL_99:
                     {
                       if (*v138 != v87)
                       {
-                        objc_enumerationMutation(v83);
+                        objc_enumerationMutation(processesBlockedByThisAndOtherIssues3);
                       }
 
                       v89 = v36[2](v36, *(*(&v137 + 1) + 8 * m));
@@ -459,7 +459,7 @@ LABEL_99:
                       ++v86;
                     }
 
-                    v85 = [v83 countByEnumeratingWithState:&v137 objects:v163 count:16];
+                    v85 = [processesBlockedByThisAndOtherIssues3 countByEnumeratingWithState:&v137 objects:v163 count:16];
                   }
 
                   while (v85);
@@ -470,20 +470,20 @@ LABEL_99:
                 [v128 setProcessesBlockedByThisAndOtherIssues:v90];
               }
 
-              v91 = [v66 processesBlockedByOtherIssuesOnly];
-              v92 = [v91 count];
+              processesBlockedByOtherIssuesOnly = [v66 processesBlockedByOtherIssuesOnly];
+              v92 = [processesBlockedByOtherIssuesOnly count];
 
               if (v92)
               {
-                v93 = [v66 processesBlockedByOtherIssuesOnly];
-                v94 = [v93 mutableCopy];
+                processesBlockedByOtherIssuesOnly2 = [v66 processesBlockedByOtherIssuesOnly];
+                v94 = [processesBlockedByOtherIssuesOnly2 mutableCopy];
 
                 v135 = 0u;
                 v136 = 0u;
                 v133 = 0u;
                 v134 = 0u;
-                v95 = [v66 processesBlockedByOtherIssuesOnly];
-                v96 = [v95 countByEnumeratingWithState:&v133 objects:v162 count:16];
+                processesBlockedByOtherIssuesOnly3 = [v66 processesBlockedByOtherIssuesOnly];
+                v96 = [processesBlockedByOtherIssuesOnly3 countByEnumeratingWithState:&v133 objects:v162 count:16];
                 if (v96)
                 {
                   v97 = v96;
@@ -495,7 +495,7 @@ LABEL_99:
                     {
                       if (*v134 != v99)
                       {
-                        objc_enumerationMutation(v95);
+                        objc_enumerationMutation(processesBlockedByOtherIssuesOnly3);
                       }
 
                       v101 = v36[2](v36, *(*(&v133 + 1) + 8 * n));
@@ -504,7 +504,7 @@ LABEL_99:
                       ++v98;
                     }
 
-                    v97 = [v95 countByEnumeratingWithState:&v133 objects:v162 count:16];
+                    v97 = [processesBlockedByOtherIssuesOnly3 countByEnumeratingWithState:&v133 objects:v162 count:16];
                   }
 
                   while (v97);
@@ -523,7 +523,7 @@ LABEL_99:
 
             while (v127 + 1 != v124);
             v27 = v117;
-            v8 = v118;
+            input_servicesCopy = v118;
             v124 = [obj countByEnumeratingWithState:&v153 objects:v167 count:16];
             if (v124)
             {
@@ -581,11 +581,11 @@ LABEL_104:
       }
 
       *__error() = v109;
-      if (a5)
+      if (err)
       {
         v111 = MEMORY[0x277CCA9B8];
         v112 = [MEMORY[0x277CBEAC0] dictionaryWithObject:@"Result does not have all services data." forKey:*MEMORY[0x277CCA450]];
-        *a5 = [v111 errorWithDomain:@"UBUnblockError" code:2 userInfo:v112];
+        *err = [v111 errorWithDomain:@"UBUnblockError" code:2 userInfo:v112];
       }
     }
 
@@ -601,7 +601,7 @@ LABEL_104:
   }
 
   *__error() = v31;
-  if (!a5)
+  if (!err)
   {
     goto LABEL_15;
   }
@@ -609,7 +609,7 @@ LABEL_104:
   v33 = MEMORY[0x277CCA9B8];
   v27 = [MEMORY[0x277CBEAC0] dictionaryWithObject:@"Received NULL watchdog services result data." forKey:*MEMORY[0x277CCA450]];
   [v33 errorWithDomain:@"UBUnblockError" code:2 userInfo:v27];
-  *a5 = v21 = 0;
+  *err = v21 = 0;
 LABEL_106:
 
 LABEL_16:
@@ -667,16 +667,16 @@ LABEL_16:
   [(UBUnblockClient *)&v7 dealloc];
 }
 
-- (void)recover:(id)a3 stackshotData:(id)a4 replyQueue:(id)a5 callback:(id)a6
+- (void)recover:(id)recover stackshotData:(id)data replyQueue:(id)queue callback:(id)callback
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  recoverCopy = recover;
+  dataCopy = data;
+  queueCopy = queue;
+  callbackCopy = callback;
   v14 = objc_autoreleasePoolPush();
-  if (!v12)
+  if (!queueCopy)
   {
-    v12 = dispatch_get_global_queue(0, 0);
+    queueCopy = dispatch_get_global_queue(0, 0);
   }
 
   os_unfair_lock_lock(&self->_lock);
@@ -692,9 +692,9 @@ LABEL_16:
     }
 
     *__error() = v15;
-    if (v10 && [v10 count])
+    if (recoverCopy && [recoverCopy count])
     {
-      if (!v11 || ![v11 length] || !objc_msgSend(v11, "bytes"))
+      if (!dataCopy || ![dataCopy length] || !objc_msgSend(dataCopy, "bytes"))
       {
         v17 = *__error();
         v18 = _ublogt();
@@ -708,7 +708,7 @@ LABEL_16:
       }
 
       v35 = 0;
-      v19 = [(UBUnblockClient *)self prepareRecoverRequest:v10 stackshot_data:v11 err:&v35];
+      v19 = [(UBUnblockClient *)self prepareRecoverRequest:recoverCopy stackshot_data:dataCopy err:&v35];
       v20 = v35;
       if (v19)
       {
@@ -718,9 +718,9 @@ LABEL_16:
         v29[2] = __61__UBUnblockClient_recover_stackshotData_replyQueue_callback___block_invoke_2;
         v29[3] = &unk_279E025A8;
         v29[4] = self;
-        v30 = v10;
-        v31 = v13;
-        xpc_connection_send_message_with_reply(connection, v19, v12, v29);
+        v30 = recoverCopy;
+        v31 = callbackCopy;
+        xpc_connection_send_message_with_reply(connection, v19, queueCopy, v29);
         os_unfair_lock_unlock(&self->_lock);
 
         v22 = v30;
@@ -732,10 +732,10 @@ LABEL_16:
         v32[1] = 3221225472;
         v32[2] = __61__UBUnblockClient_recover_stackshotData_replyQueue_callback___block_invoke_616;
         v32[3] = &unk_279E02580;
-        v34 = v13;
+        v34 = callbackCopy;
         v20 = v20;
         v33 = v20;
-        dispatch_async(v12, v32);
+        dispatch_async(queueCopy, v32);
         os_unfair_lock_unlock(&self->_lock);
 
         v22 = v34;
@@ -753,9 +753,9 @@ LABEL_16:
       block[2] = __61__UBUnblockClient_recover_stackshotData_replyQueue_callback___block_invoke_615;
       block[3] = &unk_279E02580;
       v37 = v25;
-      v38 = v13;
+      v38 = callbackCopy;
       v20 = v25;
-      dispatch_async(v12, block);
+      dispatch_async(queueCopy, block);
       os_unfair_lock_unlock(&self->_lock);
 
       v19 = v38;
@@ -773,9 +773,9 @@ LABEL_16:
     v40[2] = __61__UBUnblockClient_recover_stackshotData_replyQueue_callback___block_invoke;
     v40[3] = &unk_279E02580;
     v41 = v28;
-    v42 = v13;
+    v42 = callbackCopy;
     v20 = v28;
-    dispatch_async(v12, v40);
+    dispatch_async(queueCopy, v40);
     os_unfair_lock_unlock(&self->_lock);
 
     v19 = v42;

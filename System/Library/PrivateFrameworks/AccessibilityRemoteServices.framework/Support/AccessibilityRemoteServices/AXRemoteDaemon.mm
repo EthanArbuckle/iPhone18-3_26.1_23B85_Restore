@@ -1,15 +1,15 @@
 @interface AXRemoteDaemon
 + (id)sharedInstance;
 - (id)_init;
-- (id)remoteReceiver:(id)a3 connectingDevice:(id)a4 setupConnection:(BOOL)a5 withOptions:(id)a6;
+- (id)remoteReceiver:(id)receiver connectingDevice:(id)device setupConnection:(BOOL)connection withOptions:(id)options;
 - (void)_cancelTransactionIfNecessary;
 - (void)_notifyUserEventOccured;
-- (void)_sendScrollEventWithScrollAmount:(int64_t)a3;
-- (void)remoteReceiver:(id)a3 didActivateWithError:(id)a4;
-- (void)remoteReceiver:(id)a3 didReceivePayload:(id)a4 withOptions:(id)a5;
-- (void)remoteReceiverDidDisconnect:(id)a3;
+- (void)_sendScrollEventWithScrollAmount:(int64_t)amount;
+- (void)remoteReceiver:(id)receiver didActivateWithError:(id)error;
+- (void)remoteReceiver:(id)receiver didReceivePayload:(id)payload withOptions:(id)options;
+- (void)remoteReceiverDidDisconnect:(id)disconnect;
 - (void)run;
-- (void)scrollAccumulator:(id)a3 didAccumulateScrollInDirection:(int64_t)a4;
+- (void)scrollAccumulator:(id)accumulator didAccumulateScrollInDirection:(int64_t)direction;
 - (void)startXPCService;
 @end
 
@@ -48,14 +48,14 @@
     v9 = [[AXDispatchTimer alloc] initWithTargetSerialQueue:&_dispatch_main_q];
     [(AXRemoteDaemon *)v2 setTransactionTimeoutTimer:v9];
 
-    v10 = [(AXRemoteDaemon *)v2 transactionTimeoutTimer];
-    [v10 setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
+    transactionTimeoutTimer = [(AXRemoteDaemon *)v2 transactionTimeoutTimer];
+    [transactionTimeoutTimer setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
 
     v11 = objc_opt_new();
     [(AXRemoteDaemon *)v2 setScrollAccumulator:v11];
 
-    v12 = [(AXRemoteDaemon *)v2 scrollAccumulator];
-    [v12 setDelegate:v2];
+    scrollAccumulator = [(AXRemoteDaemon *)v2 scrollAccumulator];
+    [scrollAccumulator setDelegate:v2];
   }
 
   return v2;
@@ -92,9 +92,9 @@
 
 - (void)_cancelTransactionIfNecessary
 {
-  v3 = [(AXRemoteDaemon *)self transaction];
+  transaction = [(AXRemoteDaemon *)self transaction];
 
-  if (v3)
+  if (transaction)
   {
     v4 = ax_remote_daemon_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -106,9 +106,9 @@
     [(AXRemoteDaemon *)self setTransaction:0];
   }
 
-  v5 = [(AXRemoteDaemon *)self previousVoiceOverEnabledState];
+  previousVoiceOverEnabledState = [(AXRemoteDaemon *)self previousVoiceOverEnabledState];
 
-  if (v5)
+  if (previousVoiceOverEnabledState)
   {
     v6 = ax_remote_daemon_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -117,8 +117,8 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "resetting VoiceOver state", v8, 2u);
     }
 
-    v7 = [(AXRemoteDaemon *)self previousVoiceOverEnabledState];
-    [v7 BOOLValue];
+    previousVoiceOverEnabledState2 = [(AXRemoteDaemon *)self previousVoiceOverEnabledState];
+    [previousVoiceOverEnabledState2 BOOLValue];
     _AXSVoiceOverTouchSetEnabled();
 
     [(AXRemoteDaemon *)self setPreviousVoiceOverEnabledState:0];
@@ -134,24 +134,24 @@
   }
 }
 
-- (void)_sendScrollEventWithScrollAmount:(int64_t)a3
+- (void)_sendScrollEventWithScrollAmount:(int64_t)amount
 {
   v5 = objc_alloc_init(AXEventRepresentation);
   [v5 setType:1100];
-  [v5 setScrollAmount:a3];
+  [v5 setScrollAmount:amount];
   v4 = +[AXEventTapManager sharedManager];
   [v4 sendHIDSystemEvent:v5 senderID:0x8000000817319384];
 }
 
-- (void)scrollAccumulator:(id)a3 didAccumulateScrollInDirection:(int64_t)a4
+- (void)scrollAccumulator:(id)accumulator didAccumulateScrollInDirection:(int64_t)direction
 {
-  v6 = a3;
-  if (a4 == 2)
+  accumulatorCopy = accumulator;
+  if (direction == 2)
   {
-    v12 = v6;
+    v12 = accumulatorCopy;
     if (AXDeviceIsTV())
     {
-      v7 = self;
+      selfCopy2 = self;
       v8 = -1;
       goto LABEL_7;
     }
@@ -165,12 +165,12 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (a4 != 1)
+  if (direction != 1)
   {
     goto LABEL_12;
   }
 
-  v12 = v6;
+  v12 = accumulatorCopy;
   if (!AXDeviceIsTV())
   {
     v9 = +[AXRDeviceRemoteActionHelper sharedInstance];
@@ -179,41 +179,41 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v7 = self;
+  selfCopy2 = self;
   v8 = 1;
 LABEL_7:
-  [(AXRemoteDaemon *)v7 _sendScrollEventWithScrollAmount:v8];
+  [(AXRemoteDaemon *)selfCopy2 _sendScrollEventWithScrollAmount:v8];
 LABEL_11:
-  v6 = v12;
+  accumulatorCopy = v12;
 LABEL_12:
 }
 
-- (void)remoteReceiver:(id)a3 didActivateWithError:(id)a4
+- (void)remoteReceiver:(id)receiver didActivateWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = ax_remote_daemon_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = errorCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "remote receiver did activate with error: %@", &v7, 0xCu);
   }
 
   [(AXRemoteDaemon *)self _resetTransactionTimer];
 }
 
-- (id)remoteReceiver:(id)a3 connectingDevice:(id)a4 setupConnection:(BOOL)a5 withOptions:(id)a6
+- (id)remoteReceiver:(id)receiver connectingDevice:(id)device setupConnection:(BOOL)connection withOptions:(id)options
 {
-  v6 = a5;
-  v9 = a6;
-  v10 = a4;
-  if (v6)
+  connectionCopy = connection;
+  optionsCopy = options;
+  deviceCopy = device;
+  if (connectionCopy)
   {
     v11 = AXRLocalizedStringForKey();
-    v12 = [v9 objectForKeyedSubscript:AXRDeviceRequestsVoiceOverEnabledKey];
-    v13 = [v12 BOOLValue];
+    v12 = [optionsCopy objectForKeyedSubscript:AXRDeviceRequestsVoiceOverEnabledKey];
+    bOOLValue = [v12 BOOLValue];
 
-    if (v13 && !_AXSVoiceOverTouchEnabled())
+    if (bOOLValue && !_AXSVoiceOverTouchEnabled())
     {
       v14 = ax_remote_daemon_log();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -253,8 +253,8 @@ LABEL_12:
     v29[2] = v21;
     v28[3] = AXRHandGestureCustomizedActionsKey;
     v22 = +[AXSettings sharedInstance];
-    v23 = [v22 remoteHandGestureCustomizedActions];
-    v29[3] = v23;
+    remoteHandGestureCustomizedActions = [v22 remoteHandGestureCustomizedActions];
+    v29[3] = remoteHandGestureCustomizedActions;
     v18 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:4];
 
     v24 = +[AXSystemAppServer server];
@@ -271,12 +271,12 @@ LABEL_12:
   }
 
   v25 = +[AXBannerServices sharedInstance];
-  [v25 presentBannerWithTitle:v10 message:v11 duration:3.0];
+  [v25 presentBannerWithTitle:deviceCopy message:v11 duration:3.0];
 
   return v18;
 }
 
-- (void)remoteReceiverDidDisconnect:(id)a3
+- (void)remoteReceiverDidDisconnect:(id)disconnect
 {
   v3 = ax_remote_daemon_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -288,14 +288,14 @@ LABEL_12:
   AXPerformBlockOnMainThread();
 }
 
-- (void)remoteReceiver:(id)a3 didReceivePayload:(id)a4 withOptions:(id)a5
+- (void)remoteReceiver:(id)receiver didReceivePayload:(id)payload withOptions:(id)options
 {
-  v7 = a4;
-  v8 = a5;
+  payloadCopy = payload;
+  optionsCopy = options;
   v9 = ax_remote_daemon_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    sub_100003C30(v7, v8, v9);
+    sub_100003C30(payloadCopy, optionsCopy, v9);
   }
 
   receiverQueue = self->_receiverQueue;
@@ -303,9 +303,9 @@ LABEL_12:
   v13 = 3221225472;
   v14 = sub_100001EF8;
   v15 = &unk_100008658;
-  v16 = v7;
-  v17 = self;
-  v11 = v7;
+  v16 = payloadCopy;
+  selfCopy = self;
+  v11 = payloadCopy;
   dispatch_async(receiverQueue, &v12);
   [(AXRemoteDaemon *)self _resetTransactionTimer:v12];
 }

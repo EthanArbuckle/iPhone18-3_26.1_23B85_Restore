@@ -1,26 +1,26 @@
 @interface InformationCell
-- (_TtC23ShelfKitCollectionViews15InformationCell)initWithFrame:(CGRect)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC23ShelfKitCollectionViews15InformationCell)initWithFrame:(CGRect)frame;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation InformationCell
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(InformationCell *)&v6 traitCollectionDidChange:v4];
+  [(InformationCell *)&v6 traitCollectionDidChange:changeCopy];
   sub_26216C();
 }
 
-- (_TtC23ShelfKitCollectionViews15InformationCell)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews15InformationCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews15InformationCell_kind) = 16;
   v9 = OBJC_IVAR____TtC23ShelfKitCollectionViews15InformationCell_info;

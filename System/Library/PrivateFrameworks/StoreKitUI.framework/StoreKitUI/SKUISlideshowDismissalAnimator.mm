@@ -1,12 +1,12 @@
 @interface SKUISlideshowDismissalAnimator
 - (CGRect)imageRect;
-- (double)transitionDuration:(id)a3;
-- (void)animateTransition:(id)a3;
+- (double)transitionDuration:(id)duration;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation SKUISlideshowDismissalAnimator
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
   if (os_variant_has_internal_content())
   {
@@ -23,9 +23,9 @@
   return 0.25;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -38,14 +38,14 @@
     }
   }
 
-  v13 = [v4 viewControllerForKey:*MEMORY[0x277D77230]];
-  v14 = [v4 viewControllerForKey:*MEMORY[0x277D77240]];
-  v15 = [v14 view];
-  v16 = [v13 view];
-  v17 = [v4 containerView];
-  [v4 finalFrameForViewController:v14];
-  [v15 setFrame:?];
-  [v16 frame];
+  v13 = [transitionCopy viewControllerForKey:*MEMORY[0x277D77230]];
+  v14 = [transitionCopy viewControllerForKey:*MEMORY[0x277D77240]];
+  view = [v14 view];
+  view2 = [v13 view];
+  containerView = [transitionCopy containerView];
+  [transitionCopy finalFrameForViewController:v14];
+  [view setFrame:?];
+  [view2 frame];
   v19 = v18;
   v21 = v20;
   v23 = v22;
@@ -55,29 +55,29 @@
   v29 = v28;
   v31 = v30;
   v33 = v32;
-  v34 = [(UIImageView *)self->_imageView superview];
-  [v17 convertRect:v34 fromView:{v27, v29, v31, v33}];
+  superview = [(UIImageView *)self->_imageView superview];
+  [containerView convertRect:superview fromView:{v27, v29, v31, v33}];
   v36 = v35;
   v38 = v37;
   v40 = v39;
   v42 = v41;
 
-  [v16 setAlpha:0.0];
+  [view2 setAlpha:0.0];
   v43 = [objc_alloc(MEMORY[0x277D75DE8]) initWithFrame:2020 privateStyle:{v19, v21, v23, v25}];
   [v43 setAlpha:1.0];
   [v43 setAutoresizingMask:18];
-  [v17 addSubview:v43];
+  [containerView addSubview:v43];
   [(UIImageView *)self->_imageView setFrame:self->_imageRect.origin.x, self->_imageRect.origin.y, self->_imageRect.size.width, self->_imageRect.size.height];
-  [v17 addSubview:self->_imageView];
+  [containerView addSubview:self->_imageView];
   v44 = MEMORY[0x277D75D18];
-  [(SKUISlideshowDismissalAnimator *)self transitionDuration:v4];
+  [(SKUISlideshowDismissalAnimator *)self transitionDuration:transitionCopy];
   v46 = v45;
   v54[0] = MEMORY[0x277D85DD0];
   v54[1] = 3221225472;
   v54[2] = __52__SKUISlideshowDismissalAnimator_animateTransition___block_invoke;
   v54[3] = &unk_2781FDE88;
   v55 = v43;
-  v56 = self;
+  selfCopy = self;
   v57 = v36;
   v58 = v38;
   v59 = v40;
@@ -88,10 +88,10 @@
   v50[3] = &unk_2781FBFC0;
   v50[4] = self;
   v51 = v55;
-  v52 = v16;
-  v53 = v4;
-  v47 = v4;
-  v48 = v16;
+  v52 = view2;
+  v53 = transitionCopy;
+  v47 = transitionCopy;
+  v48 = view2;
   v49 = v55;
   [v44 animateWithDuration:v54 animations:v50 completion:v46];
 }

@@ -1,14 +1,14 @@
 @interface CKBalloonBaseShapeLayer
 - (_TtC7ChatKit23CKBalloonBaseShapeLayer)init;
-- (_TtC7ChatKit23CKBalloonBaseShapeLayer)initWithCoder:(id)a3;
-- (_TtC7ChatKit23CKBalloonBaseShapeLayer)initWithLayer:(id)a3;
-- (id)actionForKey:(id)a3;
+- (_TtC7ChatKit23CKBalloonBaseShapeLayer)initWithCoder:(id)coder;
+- (_TtC7ChatKit23CKBalloonBaseShapeLayer)initWithLayer:(id)layer;
+- (id)actionForKey:(id)key;
 - (void)layoutSublayers;
 @end
 
 @implementation CKBalloonBaseShapeLayer
 
-- (_TtC7ChatKit23CKBalloonBaseShapeLayer)initWithLayer:(id)a3
+- (_TtC7ChatKit23CKBalloonBaseShapeLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_190D58140();
@@ -18,21 +18,21 @@
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   sub_19090DE1C();
 }
 
-- (id)actionForKey:(id)a3
+- (id)actionForKey:(id)key
 {
   v4 = sub_190D56F10();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_19090E4E8(v4, v6);
 
   return v8;
 }
 
-- (_TtC7ChatKit23CKBalloonBaseShapeLayer)initWithCoder:(id)a3
+- (_TtC7ChatKit23CKBalloonBaseShapeLayer)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   result = sub_190D58510();

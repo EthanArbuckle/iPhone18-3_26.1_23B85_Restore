@@ -1,16 +1,16 @@
 @interface CMStrideCalibrationHistory
-- (CMStrideCalibrationHistory)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (CMStrideCalibrationHistory)initWithCalibrationTracks:(id)a3 rawSpeedToKValueBins:(id)a4 stepCadenceToStrideLengthBins:(id)a5;
-- (CMStrideCalibrationHistory)initWithCoder:(id)a3;
+- (CMStrideCalibrationHistory)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (CMStrideCalibrationHistory)initWithCalibrationTracks:(id)tracks rawSpeedToKValueBins:(id)bins stepCadenceToStrideLengthBins:(id)lengthBins;
+- (CMStrideCalibrationHistory)initWithCoder:(id)coder;
 - (id)binarySampleRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMStrideCalibrationHistory
 
-- (CMStrideCalibrationHistory)initWithCoder:(id)a3
+- (CMStrideCalibrationHistory)initWithCoder:(id)coder
 {
   v24.receiver = self;
   v24.super_class = CMStrideCalibrationHistory;
@@ -21,54 +21,54 @@
     v6 = objc_opt_class();
     v7 = objc_opt_class();
     v9 = objc_msgSend_setWithObjects_(v5, v8, v6, v7, 0);
-    v4->_calibrationTracks = objc_msgSend_decodeObjectOfClasses_forKey_(a3, v10, v9, @"kCMStrideCalibrationHistoryCodingKeyCalibrationTracks");
+    v4->_calibrationTracks = objc_msgSend_decodeObjectOfClasses_forKey_(coder, v10, v9, @"kCMStrideCalibrationHistoryCodingKeyCalibrationTracks");
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v15 = objc_msgSend_setWithObjects_(v11, v14, v12, v13, 0);
-    v4->_rawSpeedToKValueBins = objc_msgSend_decodeObjectOfClasses_forKey_(a3, v16, v15, @"kCMStrideCalibrationHistoryCodingKeyRawSpeedToKValueBins");
+    v4->_rawSpeedToKValueBins = objc_msgSend_decodeObjectOfClasses_forKey_(coder, v16, v15, @"kCMStrideCalibrationHistoryCodingKeyRawSpeedToKValueBins");
     v17 = MEMORY[0x1E695DFD8];
     v18 = objc_opt_class();
     v19 = objc_opt_class();
     v21 = objc_msgSend_setWithObjects_(v17, v20, v18, v19, 0);
-    v4->_stepCadenceToStrideLengthBins = objc_msgSend_decodeObjectOfClasses_forKey_(a3, v22, v21, @"kCMStrideCalibrationHistoryCodingKeyStepCadenceToStrideLengthBins");
+    v4->_stepCadenceToStrideLengthBins = objc_msgSend_decodeObjectOfClasses_forKey_(coder, v22, v21, @"kCMStrideCalibrationHistoryCodingKeyStepCadenceToStrideLengthBins");
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeObject_forKey_(a3, a2, self->_calibrationTracks, @"kCMStrideCalibrationHistoryCodingKeyCalibrationTracks");
-  objc_msgSend_encodeObject_forKey_(a3, v5, self->_rawSpeedToKValueBins, @"kCMStrideCalibrationHistoryCodingKeyRawSpeedToKValueBins");
+  objc_msgSend_encodeObject_forKey_(coder, a2, self->_calibrationTracks, @"kCMStrideCalibrationHistoryCodingKeyCalibrationTracks");
+  objc_msgSend_encodeObject_forKey_(coder, v5, self->_rawSpeedToKValueBins, @"kCMStrideCalibrationHistoryCodingKeyRawSpeedToKValueBins");
   stepCadenceToStrideLengthBins = self->_stepCadenceToStrideLengthBins;
 
-  objc_msgSend_encodeObject_forKey_(a3, v6, stepCadenceToStrideLengthBins, @"kCMStrideCalibrationHistoryCodingKeyStepCadenceToStrideLengthBins");
+  objc_msgSend_encodeObject_forKey_(coder, v6, stepCadenceToStrideLengthBins, @"kCMStrideCalibrationHistoryCodingKeyStepCadenceToStrideLengthBins");
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
 
-  v10[1] = objc_msgSend_copyWithZone_(self->_calibrationTracks, v11, a3);
-  v10[2] = objc_msgSend_copyWithZone_(self->_rawSpeedToKValueBins, v12, a3);
+  v10[1] = objc_msgSend_copyWithZone_(self->_calibrationTracks, v11, zone);
+  v10[2] = objc_msgSend_copyWithZone_(self->_rawSpeedToKValueBins, v12, zone);
 
-  v10[3] = objc_msgSend_copyWithZone_(self->_stepCadenceToStrideLengthBins, v13, a3);
+  v10[3] = objc_msgSend_copyWithZone_(self->_stepCadenceToStrideLengthBins, v13, zone);
   return v10;
 }
 
-- (CMStrideCalibrationHistory)initWithCalibrationTracks:(id)a3 rawSpeedToKValueBins:(id)a4 stepCadenceToStrideLengthBins:(id)a5
+- (CMStrideCalibrationHistory)initWithCalibrationTracks:(id)tracks rawSpeedToKValueBins:(id)bins stepCadenceToStrideLengthBins:(id)lengthBins
 {
   v10.receiver = self;
   v10.super_class = CMStrideCalibrationHistory;
   v8 = [(CMStrideCalibrationHistory *)&v10 init];
   if (v8)
   {
-    v8->_calibrationTracks = a3;
-    v8->_rawSpeedToKValueBins = a4;
-    v8->_stepCadenceToStrideLengthBins = a5;
+    v8->_calibrationTracks = tracks;
+    v8->_rawSpeedToKValueBins = bins;
+    v8->_stepCadenceToStrideLengthBins = lengthBins;
   }
 
   return v8;
@@ -94,9 +94,9 @@
   return v5;
 }
 
-- (CMStrideCalibrationHistory)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (CMStrideCalibrationHistory)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
-  if (objc_msgSend_length(a3, a2, a3, a4, a5))
+  if (objc_msgSend_length(representation, a2, representation, metadata, timestamp))
   {
     v19.receiver = self;
     v19.super_class = CMStrideCalibrationHistory;
@@ -109,7 +109,7 @@
       v11 = objc_opt_class();
       v12 = objc_opt_class();
       v14 = objc_msgSend_setWithObjects_(v9, v13, v10, v11, v12, 0);
-      v16 = objc_msgSend_unarchivedObjectOfClasses_fromData_error_(v8, v15, v14, a3, 0);
+      v16 = objc_msgSend_unarchivedObjectOfClasses_fromData_error_(v8, v15, v14, representation, 0);
       if (v16)
       {
         v17 = v16;

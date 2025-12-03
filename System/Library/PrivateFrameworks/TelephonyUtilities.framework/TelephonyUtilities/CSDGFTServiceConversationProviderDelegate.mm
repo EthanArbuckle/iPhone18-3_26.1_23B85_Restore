@@ -1,29 +1,29 @@
 @interface CSDGFTServiceConversationProviderDelegate
-- (BOOL)isManagingCallWithUUID:(id)a3;
-- (BOOL)isProviderForeground:(id)a3;
-- (BOOL)shouldHandleProvider:(id)a3;
-- (BOOL)shouldHandleProviderWithIdentifier:(id)a3;
-- (CSDGFTServiceConversationProviderDelegate)initWithConversationManager:(id)a3 queue:(id)a4 invitationResolver:(id)a5;
-- (void)conversationManager:(id)a3 conversationChanged:(id)a4;
-- (void)provider:(id)a3 performEndCallAction:(id)a4;
-- (void)provider:(id)a3 performJoinCallAction:(id)a4;
-- (void)provider:(id)a3 performSetRelayingCallAction:(id)a4;
-- (void)provider:(id)a3 performSetSendingVideoCallAction:(id)a4;
+- (BOOL)isManagingCallWithUUID:(id)d;
+- (BOOL)isProviderForeground:(id)foreground;
+- (BOOL)shouldHandleProvider:(id)provider;
+- (BOOL)shouldHandleProviderWithIdentifier:(id)identifier;
+- (CSDGFTServiceConversationProviderDelegate)initWithConversationManager:(id)manager queue:(id)queue invitationResolver:(id)resolver;
+- (void)conversationManager:(id)manager conversationChanged:(id)changed;
+- (void)provider:(id)provider performEndCallAction:(id)action;
+- (void)provider:(id)provider performJoinCallAction:(id)action;
+- (void)provider:(id)provider performSetRelayingCallAction:(id)action;
+- (void)provider:(id)provider performSetSendingVideoCallAction:(id)action;
 @end
 
 @implementation CSDGFTServiceConversationProviderDelegate
 
-- (CSDGFTServiceConversationProviderDelegate)initWithConversationManager:(id)a3 queue:(id)a4 invitationResolver:(id)a5
+- (CSDGFTServiceConversationProviderDelegate)initWithConversationManager:(id)manager queue:(id)queue invitationResolver:(id)resolver
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  queueCopy = queue;
+  resolverCopy = resolver;
   v18.receiver = self;
   v18.super_class = CSDGFTServiceConversationProviderDelegate;
-  v11 = [(CSDAbstractFaceTimeConversationProviderDelegate *)&v18 initWithConversationManager:v8 queue:v9 invitationResolver:v10];
+  v11 = [(CSDAbstractFaceTimeConversationProviderDelegate *)&v18 initWithConversationManager:managerCopy queue:queueCopy invitationResolver:resolverCopy];
   if (v11)
   {
-    v12 = [[CSDProcessObserver alloc] initWithQueue:v9];
+    v12 = [[CSDProcessObserver alloc] initWithQueue:queueCopy];
     processObserver = v11->_processObserver;
     v11->_processObserver = v12;
 
@@ -41,18 +41,18 @@
   return v11;
 }
 
-- (BOOL)isProviderForeground:(id)a3
+- (BOOL)isProviderForeground:(id)foreground
 {
-  v4 = a3;
-  v5 = [(CSDGFTServiceConversationProviderDelegate *)self processObserver];
-  v6 = [v5 fetchCurrentProcessStatesForBundleIdentifier:v4];
+  foregroundCopy = foreground;
+  processObserver = [(CSDGFTServiceConversationProviderDelegate *)self processObserver];
+  v6 = [processObserver fetchCurrentProcessStatesForBundleIdentifier:foregroundCopy];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [v6 allValues];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [v6 allValues];
+  v8 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = *v13;
@@ -62,7 +62,7 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v12 + 1) + 8 * i) integerValue] == 4)
@@ -72,7 +72,7 @@
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v8)
       {
         continue;
@@ -87,48 +87,48 @@ LABEL_11:
   return v8;
 }
 
-- (void)provider:(id)a3 performJoinCallAction:(id)a4
+- (void)provider:(id)provider performJoinCallAction:(id)action
 {
-  v5 = a4;
+  actionCopy = action;
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v75 = v5;
+    v75 = actionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "action: %@", buf, 0xCu);
   }
 
   v7 = +[CSDConversationProviderManager sharedInstance];
-  v8 = [v5 conversationProviderIdentifier];
-  v9 = [v7 tuConversationProviderForIdentifier:v8];
+  conversationProviderIdentifier = [actionCopy conversationProviderIdentifier];
+  v9 = [v7 tuConversationProviderForIdentifier:conversationProviderIdentifier];
 
-  v10 = [v9 bundleIdentifier];
-  if (v10 && (v11 = v10, [v9 bundleIdentifier], v12 = objc_claimAutoreleasedReturnValue(), v13 = -[CSDGFTServiceConversationProviderDelegate isProviderForeground:](self, "isProviderForeground:", v12), v12, v11, (v13 & 1) == 0))
+  bundleIdentifier = [v9 bundleIdentifier];
+  if (bundleIdentifier && (v11 = bundleIdentifier, [v9 bundleIdentifier], v12 = objc_claimAutoreleasedReturnValue(), v13 = -[CSDGFTServiceConversationProviderDelegate isProviderForeground:](self, "isProviderForeground:", v12), v12, v11, (v13 & 1) == 0))
   {
     v19 = sub_100004778();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v9 bundleIdentifier];
+      bundleIdentifier2 = [v9 bundleIdentifier];
       *buf = 138412290;
-      v75 = v20;
+      v75 = bundleIdentifier2;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "[WARN] bundleIdentifer: %@ not in the foreground, failing join call action", buf, 0xCu);
     }
 
-    [v5 fail];
+    [actionCopy fail];
   }
 
   else
   {
-    v53 = self;
-    v14 = [v5 callerID];
+    selfCopy = self;
+    callerID = [actionCopy callerID];
     v15 = &_s10Foundation3URLVMa_ptr_0;
     v54 = v9;
-    if (v14)
+    if (callerID)
     {
       v16 = [TUConversationMember alloc];
-      v17 = [v5 callerID];
-      v18 = [v17 tuHandle];
-      v56 = [v16 initWithHandle:v18 nickname:0];
+      callerID2 = [actionCopy callerID];
+      tuHandle = [callerID2 tuHandle];
+      v56 = [v16 initWithHandle:tuHandle nickname:0];
     }
 
     else
@@ -136,19 +136,19 @@ LABEL_11:
       v56 = 0;
     }
 
-    v21 = [v5 remoteMembers];
-    v58 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v21 count]);
+    remoteMembers = [actionCopy remoteMembers];
+    v58 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [remoteMembers count]);
 
-    v22 = [v5 otherInvitedHandles];
-    v23 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v22 count]);
+    otherInvitedHandles = [actionCopy otherInvitedHandles];
+    v23 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [otherInvitedHandles count]);
 
     v24 = +[NSMutableSet set];
     v69 = 0u;
     v70 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v55 = v5;
-    obj = [v5 remoteMembers];
+    v55 = actionCopy;
+    obj = [actionCopy remoteMembers];
     v25 = [obj countByEnumeratingWithState:&v69 objects:v79 count:16];
     v57 = v24;
     if (v25)
@@ -167,16 +167,16 @@ LABEL_11:
           }
 
           v29 = *(*(&v69 + 1) + 8 * v28);
-          v30 = [v29 handle];
-          v31 = [v30 tuHandle];
+          handle = [v29 handle];
+          tuHandle2 = [handle tuHandle];
 
-          if ([v24 containsObject:v31])
+          if ([v24 containsObject:tuHandle2])
           {
             v32 = sub_100004778();
             if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              v75 = v31;
+              v75 = tuHandle2;
               v76 = 2112;
               v77 = v24;
               _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "[WARN] Skipping member with handle %@ because it already exists in seen handles: %@", buf, 0x16u);
@@ -186,9 +186,9 @@ LABEL_11:
           else
           {
             v33 = v15;
-            v32 = [objc_alloc(v15[183]) initWithHandle:v31 nickname:0];
-            v34 = [v29 stableDeviceIdentifier];
-            [v32 setStableDeviceIdentifier:v34];
+            v32 = [objc_alloc(v15[183]) initWithHandle:tuHandle2 nickname:0];
+            stableDeviceIdentifier = [v29 stableDeviceIdentifier];
+            [v32 setStableDeviceIdentifier:stableDeviceIdentifier];
 
             v67 = 0u;
             v68 = 0u;
@@ -210,7 +210,7 @@ LABEL_11:
                     objc_enumerationMutation(v36);
                   }
 
-                  if ([*(*(&v65 + 1) + 8 * i) isEquivalentToHandle:v31])
+                  if ([*(*(&v65 + 1) + 8 * i) isEquivalentToHandle:tuHandle2])
                   {
                     [v32 setIsOtherInvitedHandle:1];
                   }
@@ -224,7 +224,7 @@ LABEL_11:
 
             [v58 addObject:v32];
             v24 = v57;
-            [v57 addObject:v31];
+            [v57 addObject:tuHandle2];
             v23 = v35;
             v15 = v33;
             v26 = v59;
@@ -244,9 +244,9 @@ LABEL_11:
     v64 = 0u;
     v61 = 0u;
     v62 = 0u;
-    v5 = v55;
-    v41 = [v55 otherInvitedHandles];
-    v42 = [v41 countByEnumeratingWithState:&v61 objects:v73 count:16];
+    actionCopy = v55;
+    otherInvitedHandles2 = [v55 otherInvitedHandles];
+    v42 = [otherInvitedHandles2 countByEnumeratingWithState:&v61 objects:v73 count:16];
     v9 = v54;
     if (v42)
     {
@@ -258,23 +258,23 @@ LABEL_11:
         {
           if (*v62 != v44)
           {
-            objc_enumerationMutation(v41);
+            objc_enumerationMutation(otherInvitedHandles2);
           }
 
-          v46 = [*(*(&v61 + 1) + 8 * j) tuHandle];
-          [v23 addObject:v46];
+          tuHandle3 = [*(*(&v61 + 1) + 8 * j) tuHandle];
+          [v23 addObject:tuHandle3];
         }
 
-        v43 = [v41 countByEnumeratingWithState:&v61 objects:v73 count:16];
+        v43 = [otherInvitedHandles2 countByEnumeratingWithState:&v61 objects:v73 count:16];
       }
 
       while (v43);
     }
 
-    v47 = [(CSDAbstractFaceTimeConversationProviderDelegate *)v53 conversationManager];
-    v48 = [v55 groupUUID];
-    v49 = [v55 messagesGroupUUID];
-    v50 = [v55 remotePushTokens];
+    conversationManager = [(CSDAbstractFaceTimeConversationProviderDelegate *)selfCopy conversationManager];
+    groupUUID = [v55 groupUUID];
+    messagesGroupUUID = [v55 messagesGroupUUID];
+    remotePushTokens = [v55 remotePushTokens];
     if ([v55 isVideo])
     {
       v51 = 2;
@@ -285,11 +285,11 @@ LABEL_11:
       v51 = 1;
     }
 
-    v52 = [v47 findOrCreateConversationWithGroupUUID:v48 messagesGroupUUID:v49 remoteMembers:v58 otherInvitedHandles:v23 localMember:v56 remotePushTokens:v50 link:0 activity:0 avMode:v51 presentationMode:objc_msgSend(v55 conversationProvider:"presentationMode") screenSharingRequest:{v54, 0}];
+    v52 = [conversationManager findOrCreateConversationWithGroupUUID:groupUUID messagesGroupUUID:messagesGroupUUID remoteMembers:v58 otherInvitedHandles:v23 localMember:v56 remotePushTokens:remotePushTokens link:0 activity:0 avMode:v51 presentationMode:objc_msgSend(v55 conversationProvider:"presentationMode") screenSharingRequest:{v54, 0}];
 
     if (v52)
     {
-      [(CSDAbstractFaceTimeConversationProviderDelegate *)v53 proceedToJoinForConversation:v52 action:v55];
+      [(CSDAbstractFaceTimeConversationProviderDelegate *)selfCopy proceedToJoinForConversation:v52 action:v55];
     }
 
     else
@@ -299,32 +299,32 @@ LABEL_11:
   }
 }
 
-- (void)provider:(id)a3 performEndCallAction:(id)a4
+- (void)provider:(id)provider performEndCallAction:(id)action
 {
-  v5 = a4;
-  v6 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v6);
+  actionCopy = action;
+  queue = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = sub_100004778();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138412290;
-    v19 = v5;
+    v19 = actionCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Performing end call action %@", &v18, 0xCu);
   }
 
-  v8 = [v5 callUUID];
-  v9 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsByCallUUID];
-  v10 = [v9 objectForKeyedSubscript:v8];
+  callUUID = [actionCopy callUUID];
+  conversationUUIDsByCallUUID = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsByCallUUID];
+  v10 = [conversationUUIDsByCallUUID objectForKeyedSubscript:callUUID];
 
-  v11 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-  v12 = [v11 conversationsByUUID];
-  v13 = [v12 objectForKeyedSubscript:v10];
+  conversationManager = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+  conversationsByUUID = [conversationManager conversationsByUUID];
+  v13 = [conversationsByUUID objectForKeyedSubscript:v10];
 
   if (v13)
   {
-    [(CSDAbstractFaceTimeConversationProviderDelegate *)self leaveConversation:v13 withCallUUID:v8 reason:-1];
-    [v5 fulfill];
+    [(CSDAbstractFaceTimeConversationProviderDelegate *)self leaveConversation:v13 withCallUUID:callUUID reason:-1];
+    [actionCopy fulfill];
   }
 
   else
@@ -332,187 +332,187 @@ LABEL_11:
     v14 = sub_100004778();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsByCallUUID];
-      v16 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-      v17 = [v16 conversationsByUUID];
+      conversationUUIDsByCallUUID2 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsByCallUUID];
+      conversationManager2 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+      conversationsByUUID2 = [conversationManager2 conversationsByUUID];
       v18 = 138412802;
-      v19 = v8;
+      v19 = callUUID;
       v20 = 2112;
-      v21 = v15;
+      v21 = conversationUUIDsByCallUUID2;
       v22 = 2112;
-      v23 = v17;
+      v23 = conversationsByUUID2;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[WARN] Could not find conversation for end call action call UUID %@. self.conversationUUIDsByCallUUID: %@ self.conversationManager.conversationsByUUID: %@", &v18, 0x20u);
     }
 
-    [v5 fail];
+    [actionCopy fail];
   }
 
-  [(CSDAbstractFaceTimeConversationProviderDelegate *)self leaveConversationForCallUUID:v8 endedReason:-1];
+  [(CSDAbstractFaceTimeConversationProviderDelegate *)self leaveConversationForCallUUID:callUUID endedReason:-1];
 }
 
-- (void)provider:(id)a3 performSetRelayingCallAction:(id)a4
+- (void)provider:(id)provider performSetRelayingCallAction:(id)action
 {
-  v5 = a4;
-  v6 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v6);
+  actionCopy = action;
+  queue = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = sub_100004778();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = actionCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Failing %@ It is not supported by GFTaaS", &v8, 0xCu);
   }
 
-  [v5 fail];
+  [actionCopy fail];
 }
 
-- (void)provider:(id)a3 performSetSendingVideoCallAction:(id)a4
+- (void)provider:(id)provider performSetSendingVideoCallAction:(id)action
 {
-  v5 = a4;
-  v6 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v6);
+  actionCopy = action;
+  queue = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = sub_100004778();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = actionCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Failing %@ It is not supported by GFTaaS", &v8, 0xCu);
   }
 
-  [v5 fail];
+  [actionCopy fail];
 }
 
-- (BOOL)isManagingCallWithUUID:(id)a3
+- (BOOL)isManagingCallWithUUID:(id)d
 {
-  v10 = a3;
-  v4 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v4);
+  dCopy = d;
+  queue = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsByCallUUID];
-  v6 = [v5 objectForKeyedSubscript:v10];
+  conversationUUIDsByCallUUID = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsByCallUUID];
+  v6 = [conversationUUIDsByCallUUID objectForKeyedSubscript:dCopy];
 
-  v7 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-  v8 = [v7 conversationsByUUID];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  conversationManager = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+  conversationsByUUID = [conversationManager conversationsByUUID];
+  v9 = [conversationsByUUID objectForKeyedSubscript:v6];
 
   v13.receiver = self;
   v13.super_class = CSDGFTServiceConversationProviderDelegate;
-  LODWORD(self) = [(CSDAbstractFaceTimeConversationProviderDelegate *)&v13 isManagingCallWithUUID:v10];
+  LODWORD(self) = [(CSDAbstractFaceTimeConversationProviderDelegate *)&v13 isManagingCallWithUUID:dCopy];
 
-  LOBYTE(v10) = 0;
+  LOBYTE(dCopy) = 0;
   if (self && v9)
   {
-    v11 = [v9 provider];
-    LODWORD(v10) = [v11 isDefaultProvider] ^ 1;
+    provider = [v9 provider];
+    LODWORD(dCopy) = [provider isDefaultProvider] ^ 1;
   }
 
-  return v10;
+  return dCopy;
 }
 
-- (void)conversationManager:(id)a3 conversationChanged:(id)a4
+- (void)conversationManager:(id)manager conversationChanged:(id)changed
 {
-  v5 = a4;
-  v6 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v6);
+  changedCopy = changed;
+  queue = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self callUUIDsByConversationUUID];
-  v8 = [v5 UUID];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  callUUIDsByConversationUUID = [(CSDAbstractFaceTimeConversationProviderDelegate *)self callUUIDsByConversationUUID];
+  uUID = [changedCopy UUID];
+  v9 = [callUUIDsByConversationUUID objectForKeyedSubscript:uUID];
 
-  v10 = [[CXCallUpdate alloc] initWithTUConversation:v5];
-  v11 = [v5 remoteMembers];
-  v12 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v11 count]);
+  v10 = [[CXCallUpdate alloc] initWithTUConversation:changedCopy];
+  remoteMembers = [changedCopy remoteMembers];
+  v12 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [remoteMembers count]);
 
-  v13 = [v5 remoteMembers];
+  remoteMembers2 = [changedCopy remoteMembers];
   v50[0] = _NSConcreteStackBlock;
   v50[1] = 3221225472;
   v50[2] = sub_100203EB8;
   v50[3] = &unk_10061A200;
   v14 = v12;
   v51 = v14;
-  [v13 enumerateObjectsUsingBlock:v50];
+  [remoteMembers2 enumerateObjectsUsingBlock:v50];
 
   [v10 setRemoteParticipantHandles:v14];
-  v15 = [v5 activeRemoteParticipantCXHandles];
-  v16 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v15 count]);
+  activeRemoteParticipantCXHandles = [changedCopy activeRemoteParticipantCXHandles];
+  v16 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [activeRemoteParticipantCXHandles count]);
 
-  v17 = [v5 activeRemoteParticipantCXHandles];
+  activeRemoteParticipantCXHandles2 = [changedCopy activeRemoteParticipantCXHandles];
   v48[0] = _NSConcreteStackBlock;
   v48[1] = 3221225472;
   v48[2] = sub_100203F6C;
   v48[3] = &unk_10061E620;
   v18 = v16;
   v49 = v18;
-  [v17 enumerateObjectsUsingBlock:v48];
+  [activeRemoteParticipantCXHandles2 enumerateObjectsUsingBlock:v48];
 
   [v10 setActiveRemoteParticipantHandles:v18];
-  [v10 setOneToOneModeEnabled:{objc_msgSend(v5, "isOneToOneModeEnabled")}];
-  [v10 setScreenSharingType:{objc_msgSend(v5, "screenSharingType")}];
-  if ([v5 isOneToOneModeEnabled])
+  [v10 setOneToOneModeEnabled:{objc_msgSend(changedCopy, "isOneToOneModeEnabled")}];
+  [v10 setScreenSharingType:{objc_msgSend(changedCopy, "screenSharingType")}];
+  if ([changedCopy isOneToOneModeEnabled])
   {
-    v19 = [v5 mergedActiveRemoteParticipants];
-    if ([v19 count] == 1)
+    mergedActiveRemoteParticipants = [changedCopy mergedActiveRemoteParticipants];
+    if ([mergedActiveRemoteParticipants count] == 1)
     {
-      v20 = [v5 mergedActiveRemoteParticipants];
-      v21 = [v20 anyObject];
-      v22 = [v21 streamToken];
+      mergedActiveRemoteParticipants2 = [changedCopy mergedActiveRemoteParticipants];
+      anyObject = [mergedActiveRemoteParticipants2 anyObject];
+      streamToken = [anyObject streamToken];
 
-      if (!v22)
+      if (!streamToken)
       {
         goto LABEL_6;
       }
 
-      v19 = [v5 mergedActiveRemoteParticipants];
-      v23 = [v19 anyObject];
-      [v10 setVideoStreamToken:{objc_msgSend(v23, "streamToken")}];
+      mergedActiveRemoteParticipants = [changedCopy mergedActiveRemoteParticipants];
+      anyObject2 = [mergedActiveRemoteParticipants anyObject];
+      [v10 setVideoStreamToken:{objc_msgSend(anyObject2, "streamToken")}];
     }
   }
 
 LABEL_6:
-  v24 = [v5 state];
-  if (v24 > 1)
+  state = [changedCopy state];
+  if (state > 1)
   {
-    if (v24 == 2)
+    if (state == 2)
     {
       if (!v9)
       {
-        v35 = sub_100004778();
-        if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+        conversationManager = sub_100004778();
+        if (os_log_type_enabled(conversationManager, OS_LOG_TYPE_ERROR))
         {
-          sub_10047B9B4(v5, v35);
+          sub_10047B9B4(changedCopy, conversationManager);
         }
 
         goto LABEL_44;
       }
 
-      if ([v5 isLocallyCreated])
+      if ([changedCopy isLocallyCreated])
       {
-        if (([v5 isOneToOneModeEnabled] & 1) == 0)
+        if (([changedCopy isOneToOneModeEnabled] & 1) == 0)
         {
           [v10 setRequiresInCallSounds:0];
-          v27 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self provider];
+          provider = [(CSDAbstractFaceTimeConversationProviderDelegate *)self provider];
           v28 = +[NSDate date];
-          [v27 reportOutgoingCallWithUUID:v9 startedConnectingAtDate:v28];
+          [provider reportOutgoingCallWithUUID:v9 startedConnectingAtDate:v28];
         }
 
-        v29 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self provider];
+        provider2 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self provider];
         v30 = +[NSDate date];
-        [v29 reportOutgoingCallWithUUID:v9 sentInvitationAtDate:v30];
+        [provider2 reportOutgoingCallWithUUID:v9 sentInvitationAtDate:v30];
       }
 
       [(CSDAbstractFaceTimeConversationProviderDelegate *)self fullfillPendingJoinActionsForCallUUIDIfNecessary:v9];
       goto LABEL_43;
     }
 
-    if (v24 == 4)
+    if (state == 4)
     {
       [v10 setMixesVoiceWithMedia:0];
       goto LABEL_42;
     }
 
-    if (v24 != 3)
+    if (state != 3)
     {
       goto LABEL_42;
     }
@@ -522,37 +522,37 @@ LABEL_6:
       v36 = sub_100004778();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
-        sub_10047BA2C(v5, v36);
+        sub_10047BA2C(changedCopy, v36);
       }
 
-      v35 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-      v37 = [v5 UUID];
-      [v35 leaveConversationWithUUID:v37];
+      conversationManager = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+      uUID2 = [changedCopy UUID];
+      [conversationManager leaveConversationWithUUID:uUID2];
 
       goto LABEL_44;
     }
 
-    if ([v5 isOneToOneModeEnabled])
+    if ([changedCopy isOneToOneModeEnabled])
     {
-      v25 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self faceTimeDemuxerDelegate];
+      faceTimeDemuxerDelegate = [(CSDAbstractFaceTimeConversationProviderDelegate *)self faceTimeDemuxerDelegate];
       v26 = +[NSDate date];
-      [v25 providerDelegate:self callWithUUID:v9 connectedAtDate:v26];
+      [faceTimeDemuxerDelegate providerDelegate:self callWithUUID:v9 connectedAtDate:v26];
     }
 
     else
     {
-      v25 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self provider];
+      faceTimeDemuxerDelegate = [(CSDAbstractFaceTimeConversationProviderDelegate *)self provider];
       v26 = +[NSDate date];
-      [v25 reportOutgoingCallWithUUID:v9 connectedAtDate:v26];
+      [faceTimeDemuxerDelegate reportOutgoingCallWithUUID:v9 connectedAtDate:v26];
     }
 
-    if ([v5 isOneToOneModeEnabled])
+    if ([changedCopy isOneToOneModeEnabled])
     {
       [v10 setConversation:1];
     }
 
-    v38 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self provider];
-    v39 = [v38 pendingCallActionsOfClass:objc_opt_class() withCallUUID:v9];
+    provider3 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self provider];
+    v39 = [provider3 pendingCallActionsOfClass:objc_opt_class() withCallUUID:v9];
 
     v46 = 0u;
     v47 = 0u;
@@ -589,10 +589,10 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  if (!v24)
+  if (!state)
   {
-    v31 = [v5 UUID];
-    v32 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self _isWaitingToJoinForConversationUUID:v31];
+    uUID3 = [changedCopy UUID];
+    v32 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self _isWaitingToJoinForConversationUUID:uUID3];
 
     if (v32)
     {
@@ -602,13 +602,13 @@ LABEL_41:
     v33 = objc_alloc_init(CXCallFailureContext);
     [v33 setFailureReason:0];
     [v33 setProviderEndedReason:504];
-    v34 = [v5 UUID];
-    [(CSDAbstractFaceTimeConversationProviderDelegate *)self cleanUpConversationIfNecessaryForConversationUUID:v34 failureContext:v33];
+    uUID4 = [changedCopy UUID];
+    [(CSDAbstractFaceTimeConversationProviderDelegate *)self cleanUpConversationIfNecessaryForConversationUUID:uUID4 failureContext:v33];
 
     goto LABEL_41;
   }
 
-  if (v24 == 1)
+  if (state == 1)
   {
     [(CSDAbstractFaceTimeConversationProviderDelegate *)self fullfillPendingJoinActionsForCallUUIDIfNecessary:v9];
   }
@@ -617,26 +617,26 @@ LABEL_42:
   if (v9)
   {
 LABEL_43:
-    v35 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self provider];
-    [v35 reportCallWithUUID:v9 updated:v10];
+    conversationManager = [(CSDAbstractFaceTimeConversationProviderDelegate *)self provider];
+    [conversationManager reportCallWithUUID:v9 updated:v10];
 LABEL_44:
   }
 }
 
-- (BOOL)shouldHandleProviderWithIdentifier:(id)a3
+- (BOOL)shouldHandleProviderWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[CSDConversationProviderManager sharedInstance];
-  v5 = [v4 conversationProviderForIdentifier:v3];
+  v5 = [v4 conversationProviderForIdentifier:identifierCopy];
 
   return v5 != 0;
 }
 
-- (BOOL)shouldHandleProvider:(id)a3
+- (BOOL)shouldHandleProvider:(id)provider
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 isDefaultProvider] & 1) == 0)
+  providerCopy = provider;
+  v4 = providerCopy;
+  if (providerCopy && ([providerCopy isDefaultProvider] & 1) == 0)
   {
     v5 = [v4 isTelephonyWithSharePlayProvider] ^ 1;
   }

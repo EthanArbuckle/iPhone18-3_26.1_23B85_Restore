@@ -6,22 +6,22 @@
 
 - (void)main
 {
-  v3 = [(HDCloudSyncOperation *)self configuration];
-  v4 = [v3 repository];
-  v5 = [v4 profile];
-  v6 = [v5 legacyRepositoryProfile];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
+  profile = [repository profile];
+  legacyRepositoryProfile = [profile legacyRepositoryProfile];
 
-  v7 = [v6 daemon];
-  v8 = [v7 cloudSyncCoordinator];
-  v9 = [v8 accountProvider];
+  daemon = [legacyRepositoryProfile daemon];
+  cloudSyncCoordinator = [daemon cloudSyncCoordinator];
+  accountProvider = [cloudSyncCoordinator accountProvider];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __50__HDCloudSyncPipelineStageDisableSyncLocally_main__block_invoke;
   v11[3] = &unk_278616020;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  [v9 disableSyncLocallyWithCompletion:v11];
+  v12 = legacyRepositoryProfile;
+  v10 = legacyRepositoryProfile;
+  [accountProvider disableSyncLocallyWithCompletion:v11];
 }
 
 void __50__HDCloudSyncPipelineStageDisableSyncLocally_main__block_invoke(uint64_t a1, char a2, void *a3)

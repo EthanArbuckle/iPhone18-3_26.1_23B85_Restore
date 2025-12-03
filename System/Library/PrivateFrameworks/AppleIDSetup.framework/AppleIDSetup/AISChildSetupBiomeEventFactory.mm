@@ -1,5 +1,5 @@
 @interface AISChildSetupBiomeEventFactory
-+ (id)biomeEventWithIsNewChildAccount:(id)a3 startDate:(id)a4 endDate:(id)a5 completedSetup:(id)a6 lastViewedScreen:(int64_t)a7 appUsage:(id)a8 askToBuy:(id)a9 commSafety:(id)a10 screenDistance:(id)a11 age:(id)a12 flowType:(int64_t)a13;
++ (id)biomeEventWithIsNewChildAccount:(id)account startDate:(id)date endDate:(id)endDate completedSetup:(id)setup lastViewedScreen:(int64_t)screen appUsage:(id)usage askToBuy:(id)buy commSafety:(id)self0 screenDistance:(id)self1 age:(id)self2 flowType:(int64_t)self3;
 + (id)log;
 @end
 
@@ -24,25 +24,25 @@ uint64_t __37__AISChildSetupBiomeEventFactory_log__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)biomeEventWithIsNewChildAccount:(id)a3 startDate:(id)a4 endDate:(id)a5 completedSetup:(id)a6 lastViewedScreen:(int64_t)a7 appUsage:(id)a8 askToBuy:(id)a9 commSafety:(id)a10 screenDistance:(id)a11 age:(id)a12 flowType:(int64_t)a13
++ (id)biomeEventWithIsNewChildAccount:(id)account startDate:(id)date endDate:(id)endDate completedSetup:(id)setup lastViewedScreen:(int64_t)screen appUsage:(id)usage askToBuy:(id)buy commSafety:(id)self0 screenDistance:(id)self1 age:(id)self2 flowType:(int64_t)self3
 {
-  v30 = a12;
-  v18 = a11;
-  v19 = a10;
-  v20 = a9;
-  v21 = a8;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
-  v25 = a3;
+  ageCopy = age;
+  distanceCopy = distance;
+  safetyCopy = safety;
+  buyCopy = buy;
+  usageCopy = usage;
+  setupCopy = setup;
+  endDateCopy = endDate;
+  dateCopy = date;
+  accountCopy = account;
   v26 = +[AISChildSetupBiomeEventFactory log];
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
   {
     [AISChildSetupBiomeEventFactory biomeEventWithIsNewChildAccount:v26 startDate:? endDate:? completedSetup:? lastViewedScreen:? appUsage:? askToBuy:? commSafety:? screenDistance:? age:? flowType:?];
   }
 
-  LODWORD(v29) = a13;
-  v27 = [objc_alloc(MEMORY[0x277CF1018]) initWithIsNewChildAccount:v25 startDate:v24 endDate:v23 completedSetup:v22 lastViewedScreen:a7 appUsage:v21 askToBuy:v20 commSafety:v19 screenDistance:v18 age:v30 flowType:v29];
+  LODWORD(v29) = type;
+  v27 = [objc_alloc(MEMORY[0x277CF1018]) initWithIsNewChildAccount:accountCopy startDate:dateCopy endDate:endDateCopy completedSetup:setupCopy lastViewedScreen:screen appUsage:usageCopy askToBuy:buyCopy commSafety:safetyCopy screenDistance:distanceCopy age:ageCopy flowType:v29];
 
   return v27;
 }

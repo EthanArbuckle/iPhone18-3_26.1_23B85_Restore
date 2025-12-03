@@ -1,19 +1,19 @@
 @interface ICSManageStorageDrilldownController
 - (ICSManageStorageDrilldownController)init;
-- (ICSManageStorageDrilldownController)initWithAppBundleID:(id)a3 account:(id)a4 navigationController:(id)a5;
-- (ICSManageStorageDrilldownController)initWithAppBundleID:(id)a3 account:(id)a4 presentingController:(id)a5;
-- (void)beginLoadingForSpecifier:(id)a3;
+- (ICSManageStorageDrilldownController)initWithAppBundleID:(id)d account:(id)account navigationController:(id)controller;
+- (ICSManageStorageDrilldownController)initWithAppBundleID:(id)d account:(id)account presentingController:(id)controller;
+- (void)beginLoadingForSpecifier:(id)specifier;
 - (void)cancelLoading;
-- (void)loadFailed:(id)a3 withError:(id)a4;
-- (void)loadFinished:(id)a3;
-- (void)loadStarted:(id)a3;
+- (void)loadFailed:(id)failed withError:(id)error;
+- (void)loadFinished:(id)finished;
+- (void)loadStarted:(id)started;
 @end
 
 @implementation ICSManageStorageDrilldownController
 
-- (ICSManageStorageDrilldownController)initWithAppBundleID:(id)a3 account:(id)a4 presentingController:(id)a5
+- (ICSManageStorageDrilldownController)initWithAppBundleID:(id)d account:(id)account presentingController:(id)controller
 {
-  if (a3)
+  if (d)
   {
     v7 = sub_2759BA298();
     v9 = v8;
@@ -25,31 +25,31 @@
     v9 = 0;
   }
 
-  v10 = a4;
-  v11 = a5;
-  v12 = sub_2758D53E4(v7, v9, a4);
+  accountCopy = account;
+  controllerCopy = controller;
+  v12 = sub_2758D53E4(v7, v9, account);
 
   return v12;
 }
 
-- (ICSManageStorageDrilldownController)initWithAppBundleID:(id)a3 account:(id)a4 navigationController:(id)a5
+- (ICSManageStorageDrilldownController)initWithAppBundleID:(id)d account:(id)account navigationController:(id)controller
 {
-  if (a3)
+  if (d)
   {
     sub_2759BA298();
-    v8 = a4;
-    v9 = a5;
+    accountCopy = account;
+    controllerCopy = controller;
     v10 = sub_2759BA258();
   }
 
   else
   {
-    v11 = a4;
-    v12 = a5;
+    accountCopy2 = account;
+    controllerCopy2 = controller;
     v10 = 0;
   }
 
-  v13 = [(ICSManageStorageDrilldownController *)self initWithAppBundleID:v10 account:a4 presentingController:0];
+  v13 = [(ICSManageStorageDrilldownController *)self initWithAppBundleID:v10 account:account presentingController:0];
 
   swift_beginAccess();
   swift_unknownObjectWeakAssign();
@@ -59,22 +59,22 @@
 
 - (void)cancelLoading
 {
-  v2 = self;
+  selfCopy = self;
   ManageStorageDrilldownController.cancelLoading()();
 }
 
-- (void)beginLoadingForSpecifier:(id)a3
+- (void)beginLoadingForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = self;
-  ManageStorageDrilldownController.beginLoading(specifier:)(v4);
+  specifierCopy = specifier;
+  selfCopy = self;
+  ManageStorageDrilldownController.beginLoading(specifier:)(specifierCopy);
 }
 
-- (void)loadStarted:(id)a3
+- (void)loadStarted:(id)started
 {
-  if (a3)
+  if (started)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_2759BA818();
     swift_unknownObjectRelease();
@@ -83,7 +83,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   _s14iCloudSettings32ManageStorageDrilldownControllerC11loadStartedyyypSgF_0();
@@ -91,11 +91,11 @@
   sub_27586BF04(v6, &qword_280A0ED70, &qword_2759C6C60);
 }
 
-- (void)loadFinished:(id)a3
+- (void)loadFinished:(id)finished
 {
-  if (a3)
+  if (finished)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_2759BA818();
     swift_unknownObjectRelease();
@@ -104,7 +104,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   ManageStorageDrilldownController.loadFinished(_:)();
@@ -112,25 +112,25 @@
   sub_27586BF04(v6, &qword_280A0ED70, &qword_2759C6C60);
 }
 
-- (void)loadFailed:(id)a3 withError:(id)a4
+- (void)loadFailed:(id)failed withError:(id)error
 {
-  if (a3)
+  if (failed)
   {
-    v6 = a4;
-    v7 = self;
+    errorCopy = error;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_2759BA818();
-    v8 = swift_unknownObjectRelease();
+    selfCopy2 = swift_unknownObjectRelease();
   }
 
   else
   {
     memset(v10, 0, sizeof(v10));
-    v9 = a4;
-    v8 = self;
+    errorCopy2 = error;
+    selfCopy2 = self;
   }
 
-  ManageStorageDrilldownController.loadFailed(_:withError:)(v8, a4);
+  ManageStorageDrilldownController.loadFailed(_:withError:)(selfCopy2, error);
 
   sub_27586BF04(v10, &qword_280A0ED70, &qword_2759C6C60);
 }

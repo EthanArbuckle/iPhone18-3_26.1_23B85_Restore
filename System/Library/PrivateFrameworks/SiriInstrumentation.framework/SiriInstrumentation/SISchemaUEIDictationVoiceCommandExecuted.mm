@@ -1,37 +1,37 @@
 @interface SISchemaUEIDictationVoiceCommandExecuted
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaUEIDictationVoiceCommandExecuted)initWithDictionary:(id)a3;
-- (SISchemaUEIDictationVoiceCommandExecuted)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaUEIDictationVoiceCommandExecuted)initWithDictionary:(id)dictionary;
+- (SISchemaUEIDictationVoiceCommandExecuted)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasCommandExecutionEndTimeInNs:(BOOL)a3;
-- (void)setHasCommandExecutionStartTimeInNs:(BOOL)a3;
-- (void)setHasCommandPayloadCharacterCount:(BOOL)a3;
-- (void)setHasCommandPayloadWordCount:(BOOL)a3;
-- (void)setHasCommandTargetCharacterCount:(BOOL)a3;
-- (void)setHasCommandTargetWordCount:(BOOL)a3;
-- (void)setHasCommandType:(BOOL)a3;
-- (void)setHasHasAdjacentEdit:(BOOL)a3;
-- (void)setHasHasSpelling:(BOOL)a3;
-- (void)setHasHasTextSelection:(BOOL)a3;
-- (void)setHasIsWfstParseable:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasCommandExecutionEndTimeInNs:(BOOL)ns;
+- (void)setHasCommandExecutionStartTimeInNs:(BOOL)ns;
+- (void)setHasCommandPayloadCharacterCount:(BOOL)count;
+- (void)setHasCommandPayloadWordCount:(BOOL)count;
+- (void)setHasCommandTargetCharacterCount:(BOOL)count;
+- (void)setHasCommandTargetWordCount:(BOOL)count;
+- (void)setHasCommandType:(BOOL)type;
+- (void)setHasHasAdjacentEdit:(BOOL)edit;
+- (void)setHasHasSpelling:(BOOL)spelling;
+- (void)setHasHasTextSelection:(BOOL)selection;
+- (void)setHasIsWfstParseable:(BOOL)parseable;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaUEIDictationVoiceCommandExecuted
 
-- (SISchemaUEIDictationVoiceCommandExecuted)initWithDictionary:(id)a3
+- (SISchemaUEIDictationVoiceCommandExecuted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v29.receiver = self;
   v29.super_class = SISchemaUEIDictationVoiceCommandExecuted;
   v5 = [(SISchemaUEIDictationVoiceCommandExecuted *)&v29 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"voiceCommandId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"voiceCommandId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,42 +39,42 @@
       [(SISchemaUEIDictationVoiceCommandExecuted *)v5 setVoiceCommandId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"commandStatus"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"commandStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUEIDictationVoiceCommandExecuted setCommandStatus:](v5, "setCommandStatus:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"commandType"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"commandType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUEIDictationVoiceCommandExecuted setCommandType:](v5, "setCommandType:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"commandTargetWordCount"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"commandTargetWordCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUEIDictationVoiceCommandExecuted setCommandTargetWordCount:](v5, "setCommandTargetWordCount:", [v10 unsignedLongLongValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"commandPayloadWordCount"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"commandPayloadWordCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUEIDictationVoiceCommandExecuted setCommandPayloadWordCount:](v5, "setCommandPayloadWordCount:", [v11 unsignedLongLongValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"commandTargetCharacterCount"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"commandTargetCharacterCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUEIDictationVoiceCommandExecuted setCommandTargetCharacterCount:](v5, "setCommandTargetCharacterCount:", [v12 unsignedLongLongValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"commandPayloadCharacterCount"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"commandPayloadCharacterCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,7 +82,7 @@
     }
 
     v27 = v8;
-    v14 = [v4 objectForKeyedSubscript:{@"commandExecutionStartTimeInNs", v13}];
+    v14 = [dictionaryCopy objectForKeyedSubscript:{@"commandExecutionStartTimeInNs", v13}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,7 +90,7 @@
     }
 
     v28 = v6;
-    v15 = [v4 objectForKeyedSubscript:@"commandExecutionEndTimeInNs"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"commandExecutionEndTimeInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -98,7 +98,7 @@
     }
 
     v26 = v9;
-    v16 = [v4 objectForKeyedSubscript:@"hasSpelling"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"hasSpelling"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -107,7 +107,7 @@
 
     v24 = v12;
     v25 = v10;
-    v17 = [v4 objectForKeyedSubscript:@"hasTextSelection"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"hasTextSelection"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -115,14 +115,14 @@
     }
 
     v18 = v11;
-    v19 = [v4 objectForKeyedSubscript:@"isWfstParseable"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"isWfstParseable"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUEIDictationVoiceCommandExecuted setIsWfstParseable:](v5, "setIsWfstParseable:", [v19 BOOLValue]);
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"hasAdjacentEdit"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"hasAdjacentEdit"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -135,30 +135,30 @@
   return v5;
 }
 
-- (SISchemaUEIDictationVoiceCommandExecuted)initWithJSON:(id)a3
+- (SISchemaUEIDictationVoiceCommandExecuted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaUEIDictationVoiceCommandExecuted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaUEIDictationVoiceCommandExecuted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaUEIDictationVoiceCommandExecuted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -171,12 +171,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x80) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[SISchemaUEIDictationVoiceCommandExecuted commandExecutionEndTimeInNs](self, "commandExecutionEndTimeInNs")}];
-    [v3 setObject:v8 forKeyedSubscript:@"commandExecutionEndTimeInNs"];
+    [dictionary setObject:v8 forKeyedSubscript:@"commandExecutionEndTimeInNs"];
 
     has = self->_has;
     if ((has & 0x40) == 0)
@@ -197,7 +197,7 @@ LABEL_3:
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[SISchemaUEIDictationVoiceCommandExecuted commandExecutionStartTimeInNs](self, "commandExecutionStartTimeInNs")}];
-  [v3 setObject:v9 forKeyedSubscript:@"commandExecutionStartTimeInNs"];
+  [dictionary setObject:v9 forKeyedSubscript:@"commandExecutionStartTimeInNs"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -213,7 +213,7 @@ LABEL_4:
 
 LABEL_19:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[SISchemaUEIDictationVoiceCommandExecuted commandPayloadCharacterCount](self, "commandPayloadCharacterCount")}];
-  [v3 setObject:v10 forKeyedSubscript:@"commandPayloadCharacterCount"];
+  [dictionary setObject:v10 forKeyedSubscript:@"commandPayloadCharacterCount"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -229,7 +229,7 @@ LABEL_5:
 
 LABEL_20:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[SISchemaUEIDictationVoiceCommandExecuted commandPayloadWordCount](self, "commandPayloadWordCount")}];
-  [v3 setObject:v11 forKeyedSubscript:@"commandPayloadWordCount"];
+  [dictionary setObject:v11 forKeyedSubscript:@"commandPayloadWordCount"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -255,7 +255,7 @@ LABEL_21:
     v13 = off_1E78E6610[v12];
   }
 
-  [v3 setObject:v13 forKeyedSubscript:@"commandStatus"];
+  [dictionary setObject:v13 forKeyedSubscript:@"commandStatus"];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -270,7 +270,7 @@ LABEL_7:
 
 LABEL_25:
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[SISchemaUEIDictationVoiceCommandExecuted commandTargetCharacterCount](self, "commandTargetCharacterCount")}];
-  [v3 setObject:v14 forKeyedSubscript:@"commandTargetCharacterCount"];
+  [dictionary setObject:v14 forKeyedSubscript:@"commandTargetCharacterCount"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -286,7 +286,7 @@ LABEL_8:
 
 LABEL_26:
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[SISchemaUEIDictationVoiceCommandExecuted commandTargetWordCount](self, "commandTargetWordCount")}];
-  [v3 setObject:v15 forKeyedSubscript:@"commandTargetWordCount"];
+  [dictionary setObject:v15 forKeyedSubscript:@"commandTargetWordCount"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -312,7 +312,7 @@ LABEL_27:
     v17 = off_1E78E6628[v16];
   }
 
-  [v3 setObject:v17 forKeyedSubscript:@"commandType"];
+  [dictionary setObject:v17 forKeyedSubscript:@"commandType"];
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -327,7 +327,7 @@ LABEL_10:
 
 LABEL_31:
   v18 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaUEIDictationVoiceCommandExecuted hasAdjacentEdit](self, "hasAdjacentEdit")}];
-  [v3 setObject:v18 forKeyedSubscript:@"hasAdjacentEdit"];
+  [dictionary setObject:v18 forKeyedSubscript:@"hasAdjacentEdit"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -343,7 +343,7 @@ LABEL_11:
 
 LABEL_32:
   v19 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaUEIDictationVoiceCommandExecuted hasSpelling](self, "hasSpelling")}];
-  [v3 setObject:v19 forKeyedSubscript:@"hasSpelling"];
+  [dictionary setObject:v19 forKeyedSubscript:@"hasSpelling"];
 
   has = self->_has;
   if ((has & 0x200) == 0)
@@ -359,35 +359,35 @@ LABEL_12:
 
 LABEL_33:
   v20 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaUEIDictationVoiceCommandExecuted hasTextSelection](self, "hasTextSelection")}];
-  [v3 setObject:v20 forKeyedSubscript:@"hasTextSelection"];
+  [dictionary setObject:v20 forKeyedSubscript:@"hasTextSelection"];
 
   if ((*&self->_has & 0x400) != 0)
   {
 LABEL_13:
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaUEIDictationVoiceCommandExecuted isWfstParseable](self, "isWfstParseable")}];
-    [v3 setObject:v5 forKeyedSubscript:@"isWfstParseable"];
+    [dictionary setObject:v5 forKeyedSubscript:@"isWfstParseable"];
   }
 
 LABEL_14:
   if (self->_voiceCommandId)
   {
-    v6 = [(SISchemaUEIDictationVoiceCommandExecuted *)self voiceCommandId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    voiceCommandId = [(SISchemaUEIDictationVoiceCommandExecuted *)self voiceCommandId];
+    dictionaryRepresentation = [voiceCommandId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"voiceCommandId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"voiceCommandId"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"voiceCommandId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"voiceCommandId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -558,30 +558,30 @@ LABEL_13:
   return v5 ^ v3 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_56;
   }
 
-  v5 = [(SISchemaUEIDictationVoiceCommandExecuted *)self voiceCommandId];
-  v6 = [v4 voiceCommandId];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  voiceCommandId = [(SISchemaUEIDictationVoiceCommandExecuted *)self voiceCommandId];
+  voiceCommandId2 = [equalCopy voiceCommandId];
+  v7 = voiceCommandId2;
+  if ((voiceCommandId != 0) == (voiceCommandId2 == 0))
   {
 
     goto LABEL_56;
   }
 
-  v8 = [(SISchemaUEIDictationVoiceCommandExecuted *)self voiceCommandId];
-  if (v8)
+  voiceCommandId3 = [(SISchemaUEIDictationVoiceCommandExecuted *)self voiceCommandId];
+  if (voiceCommandId3)
   {
-    v9 = v8;
-    v10 = [(SISchemaUEIDictationVoiceCommandExecuted *)self voiceCommandId];
-    v11 = [v4 voiceCommandId];
-    v12 = [v10 isEqual:v11];
+    v9 = voiceCommandId3;
+    voiceCommandId4 = [(SISchemaUEIDictationVoiceCommandExecuted *)self voiceCommandId];
+    voiceCommandId5 = [equalCopy voiceCommandId];
+    v12 = [voiceCommandId4 isEqual:voiceCommandId5];
 
     if (!v12)
     {
@@ -594,7 +594,7 @@ LABEL_13:
   }
 
   has = self->_has;
-  v14 = v4[38];
+  v14 = equalCopy[38];
   if ((*&has & 1) != (v14 & 1))
   {
 LABEL_56:
@@ -605,13 +605,13 @@ LABEL_56:
   if (*&has)
   {
     commandStatus = self->_commandStatus;
-    if (commandStatus != [v4 commandStatus])
+    if (commandStatus != [equalCopy commandStatus])
     {
       goto LABEL_56;
     }
 
     has = self->_has;
-    v14 = v4[38];
+    v14 = equalCopy[38];
   }
 
   v16 = (*&has >> 1) & 1;
@@ -623,13 +623,13 @@ LABEL_56:
   if (v16)
   {
     commandType = self->_commandType;
-    if (commandType != [v4 commandType])
+    if (commandType != [equalCopy commandType])
     {
       goto LABEL_56;
     }
 
     has = self->_has;
-    v14 = v4[38];
+    v14 = equalCopy[38];
   }
 
   v18 = (*&has >> 2) & 1;
@@ -641,13 +641,13 @@ LABEL_56:
   if (v18)
   {
     commandTargetWordCount = self->_commandTargetWordCount;
-    if (commandTargetWordCount != [v4 commandTargetWordCount])
+    if (commandTargetWordCount != [equalCopy commandTargetWordCount])
     {
       goto LABEL_56;
     }
 
     has = self->_has;
-    v14 = v4[38];
+    v14 = equalCopy[38];
   }
 
   v20 = (*&has >> 3) & 1;
@@ -659,13 +659,13 @@ LABEL_56:
   if (v20)
   {
     commandPayloadWordCount = self->_commandPayloadWordCount;
-    if (commandPayloadWordCount != [v4 commandPayloadWordCount])
+    if (commandPayloadWordCount != [equalCopy commandPayloadWordCount])
     {
       goto LABEL_56;
     }
 
     has = self->_has;
-    v14 = v4[38];
+    v14 = equalCopy[38];
   }
 
   v22 = (*&has >> 4) & 1;
@@ -677,13 +677,13 @@ LABEL_56:
   if (v22)
   {
     commandTargetCharacterCount = self->_commandTargetCharacterCount;
-    if (commandTargetCharacterCount != [v4 commandTargetCharacterCount])
+    if (commandTargetCharacterCount != [equalCopy commandTargetCharacterCount])
     {
       goto LABEL_56;
     }
 
     has = self->_has;
-    v14 = v4[38];
+    v14 = equalCopy[38];
   }
 
   v24 = (*&has >> 5) & 1;
@@ -695,13 +695,13 @@ LABEL_56:
   if (v24)
   {
     commandPayloadCharacterCount = self->_commandPayloadCharacterCount;
-    if (commandPayloadCharacterCount != [v4 commandPayloadCharacterCount])
+    if (commandPayloadCharacterCount != [equalCopy commandPayloadCharacterCount])
     {
       goto LABEL_56;
     }
 
     has = self->_has;
-    v14 = v4[38];
+    v14 = equalCopy[38];
   }
 
   v26 = (*&has >> 6) & 1;
@@ -713,13 +713,13 @@ LABEL_56:
   if (v26)
   {
     commandExecutionStartTimeInNs = self->_commandExecutionStartTimeInNs;
-    if (commandExecutionStartTimeInNs != [v4 commandExecutionStartTimeInNs])
+    if (commandExecutionStartTimeInNs != [equalCopy commandExecutionStartTimeInNs])
     {
       goto LABEL_56;
     }
 
     has = self->_has;
-    v14 = v4[38];
+    v14 = equalCopy[38];
   }
 
   v28 = (*&has >> 7) & 1;
@@ -731,13 +731,13 @@ LABEL_56:
   if (v28)
   {
     commandExecutionEndTimeInNs = self->_commandExecutionEndTimeInNs;
-    if (commandExecutionEndTimeInNs != [v4 commandExecutionEndTimeInNs])
+    if (commandExecutionEndTimeInNs != [equalCopy commandExecutionEndTimeInNs])
     {
       goto LABEL_56;
     }
 
     has = self->_has;
-    v14 = v4[38];
+    v14 = equalCopy[38];
   }
 
   v30 = (*&has >> 8) & 1;
@@ -749,13 +749,13 @@ LABEL_56:
   if (v30)
   {
     hasSpelling = self->_hasSpelling;
-    if (hasSpelling != [v4 hasSpelling])
+    if (hasSpelling != [equalCopy hasSpelling])
     {
       goto LABEL_56;
     }
 
     has = self->_has;
-    v14 = v4[38];
+    v14 = equalCopy[38];
   }
 
   v32 = (*&has >> 9) & 1;
@@ -767,13 +767,13 @@ LABEL_56:
   if (v32)
   {
     hasTextSelection = self->_hasTextSelection;
-    if (hasTextSelection != [v4 hasTextSelection])
+    if (hasTextSelection != [equalCopy hasTextSelection])
     {
       goto LABEL_56;
     }
 
     has = self->_has;
-    v14 = v4[38];
+    v14 = equalCopy[38];
   }
 
   v34 = (*&has >> 10) & 1;
@@ -785,10 +785,10 @@ LABEL_56:
   if (v34)
   {
     isWfstParseable = self->_isWfstParseable;
-    if (isWfstParseable == [v4 isWfstParseable])
+    if (isWfstParseable == [equalCopy isWfstParseable])
     {
       has = self->_has;
-      v14 = v4[38];
+      v14 = equalCopy[38];
       goto LABEL_52;
     }
 
@@ -805,7 +805,7 @@ LABEL_52:
   if (v36)
   {
     hasAdjacentEdit = self->_hasAdjacentEdit;
-    if (hasAdjacentEdit != [v4 hasAdjacentEdit])
+    if (hasAdjacentEdit != [equalCopy hasAdjacentEdit])
     {
       goto LABEL_56;
     }
@@ -817,14 +817,14 @@ LABEL_57:
   return v38;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(SISchemaUEIDictationVoiceCommandExecuted *)self voiceCommandId];
+  toCopy = to;
+  voiceCommandId = [(SISchemaUEIDictationVoiceCommandExecuted *)self voiceCommandId];
 
-  if (v4)
+  if (voiceCommandId)
   {
-    v5 = [(SISchemaUEIDictationVoiceCommandExecuted *)self voiceCommandId];
+    voiceCommandId2 = [(SISchemaUEIDictationVoiceCommandExecuted *)self voiceCommandId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -835,11 +835,11 @@ LABEL_57:
     has = self->_has;
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v7 = v8;
+    v7 = toCopy;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -859,7 +859,7 @@ LABEL_7:
   }
 
   PBDataWriterWriteUint64Field();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -874,7 +874,7 @@ LABEL_8:
 
 LABEL_22:
   PBDataWriterWriteUint64Field();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -889,7 +889,7 @@ LABEL_9:
 
 LABEL_23:
   PBDataWriterWriteUint64Field();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -904,7 +904,7 @@ LABEL_10:
 
 LABEL_24:
   PBDataWriterWriteUint64Field();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -919,7 +919,7 @@ LABEL_11:
 
 LABEL_25:
   PBDataWriterWriteUint64Field();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -934,7 +934,7 @@ LABEL_12:
 
 LABEL_26:
   PBDataWriterWriteUint64Field();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -949,7 +949,7 @@ LABEL_13:
 
 LABEL_27:
   PBDataWriterWriteBOOLField();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -964,7 +964,7 @@ LABEL_14:
 
 LABEL_28:
   PBDataWriterWriteBOOLField();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -979,20 +979,20 @@ LABEL_15:
 
 LABEL_29:
   PBDataWriterWriteBOOLField();
-  v7 = v8;
+  v7 = toCopy;
   if ((*&self->_has & 0x800) != 0)
   {
 LABEL_16:
     PBDataWriterWriteBOOLField();
-    v7 = v8;
+    v7 = toCopy;
   }
 
 LABEL_17:
 }
 
-- (void)setHasHasAdjacentEdit:(BOOL)a3
+- (void)setHasHasAdjacentEdit:(BOOL)edit
 {
-  if (a3)
+  if (edit)
   {
     v3 = 2048;
   }
@@ -1005,9 +1005,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasIsWfstParseable:(BOOL)a3
+- (void)setHasIsWfstParseable:(BOOL)parseable
 {
-  if (a3)
+  if (parseable)
   {
     v3 = 1024;
   }
@@ -1020,9 +1020,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasHasTextSelection:(BOOL)a3
+- (void)setHasHasTextSelection:(BOOL)selection
 {
-  if (a3)
+  if (selection)
   {
     v3 = 512;
   }
@@ -1035,9 +1035,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasHasSpelling:(BOOL)a3
+- (void)setHasHasSpelling:(BOOL)spelling
 {
-  if (a3)
+  if (spelling)
   {
     v3 = 256;
   }
@@ -1050,9 +1050,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasCommandExecutionEndTimeInNs:(BOOL)a3
+- (void)setHasCommandExecutionEndTimeInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 128;
   }
@@ -1065,9 +1065,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasCommandExecutionStartTimeInNs:(BOOL)a3
+- (void)setHasCommandExecutionStartTimeInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 64;
   }
@@ -1080,9 +1080,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasCommandPayloadCharacterCount:(BOOL)a3
+- (void)setHasCommandPayloadCharacterCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 32;
   }
@@ -1095,9 +1095,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasCommandTargetCharacterCount:(BOOL)a3
+- (void)setHasCommandTargetCharacterCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 16;
   }
@@ -1110,9 +1110,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasCommandPayloadWordCount:(BOOL)a3
+- (void)setHasCommandPayloadWordCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 8;
   }
@@ -1125,9 +1125,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasCommandTargetWordCount:(BOOL)a3
+- (void)setHasCommandTargetWordCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -1140,9 +1140,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasCommandType:(BOOL)a3
+- (void)setHasCommandType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -1155,17 +1155,17 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = SISchemaUEIDictationVoiceCommandExecuted;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SISchemaUEIDictationVoiceCommandExecuted *)self voiceCommandId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(SISchemaUEIDictationVoiceCommandExecuted *)self deleteVoiceCommandId];
   }

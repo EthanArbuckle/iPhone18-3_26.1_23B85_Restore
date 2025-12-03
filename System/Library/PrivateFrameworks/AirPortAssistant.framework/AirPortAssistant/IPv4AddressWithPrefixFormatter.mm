@@ -1,28 +1,28 @@
 @interface IPv4AddressWithPrefixFormatter
-- (BOOL)isPartialStringValid:(id)a3 newEditingString:(id *)a4 errorDescription:(id *)a5;
+- (BOOL)isPartialStringValid:(id)valid newEditingString:(id *)string errorDescription:(id *)description;
 @end
 
 @implementation IPv4AddressWithPrefixFormatter
 
-- (BOOL)isPartialStringValid:(id)a3 newEditingString:(id *)a4 errorDescription:(id *)a5
+- (BOOL)isPartialStringValid:(id)valid newEditingString:(id *)string errorDescription:(id *)description
 {
   v18.receiver = self;
   v18.super_class = IPv4AddressWithPrefixFormatter;
-  v7 = [(IPv4AddressFormatter *)&v18 isPartialStringValid:a3 newEditingString:a4 errorDescription:?];
+  v7 = [(IPv4AddressFormatter *)&v18 isPartialStringValid:valid newEditingString:string errorDescription:?];
   if (v7)
   {
-    if (objc_msgSend_length(a3, v8, v9))
+    if (objc_msgSend_length(valid, v8, v9))
     {
-      v11 = objc_msgSend_rangeOfString_(a3, v10, @"/");
+      v11 = objc_msgSend_rangeOfString_(valid, v10, @"/");
       if (v11 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        if (objc_msgSend_length(a3, v12, v13) >= 0x10)
+        if (objc_msgSend_length(valid, v12, v13) >= 0x10)
         {
-          if (a5)
+          if (description)
           {
 LABEL_6:
             LOBYTE(v7) = 0;
-            *a5 = @"gErC";
+            *description = @"gErC";
             return v7;
           }
 
@@ -34,10 +34,10 @@ LABEL_9:
 
       else
       {
-        v14 = objc_msgSend_substringFromIndex_(a3, v12, v11 + 1);
+        v14 = objc_msgSend_substringFromIndex_(valid, v12, v11 + 1);
         if (objc_msgSend_integerValue(v14, v15, v16) >= 0x21)
         {
-          if (a5)
+          if (description)
           {
             goto LABEL_6;
           }

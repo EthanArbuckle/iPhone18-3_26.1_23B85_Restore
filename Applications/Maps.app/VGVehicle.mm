@@ -2,7 +2,7 @@
 - (BOOL)isLPRWithElectricEngine;
 - (LSApplicationRecord)applicationRecord;
 - (id)evChargingPorts;
-- (id)updatedTraitsFrom:(id)a3;
+- (id)updatedTraitsFrom:(id)from;
 @end
 
 @implementation VGVehicle
@@ -13,8 +13,8 @@
   if (!v4)
   {
     v5 = [LSApplicationRecord alloc];
-    v6 = [(VGVehicle *)self pairedAppIdentifier];
-    v4 = [v5 initWithBundleIdentifier:v6 allowPlaceholder:0 error:0];
+    pairedAppIdentifier = [(VGVehicle *)self pairedAppIdentifier];
+    v4 = [v5 initWithBundleIdentifier:pairedAppIdentifier allowPlaceholder:0 error:0];
 
     objc_setAssociatedObject(self, a2, v4, 1);
   }
@@ -22,23 +22,23 @@
   return v4;
 }
 
-- (id)updatedTraitsFrom:(id)a3
+- (id)updatedTraitsFrom:(id)from
 {
-  v4 = a3;
-  v5 = [(VGVehicle *)self evChargingPorts];
-  [v4 setEvChargingPorts:v5];
+  fromCopy = from;
+  evChargingPorts = [(VGVehicle *)self evChargingPorts];
+  [fromCopy setEvChargingPorts:evChargingPorts];
 
-  [v4 clearEngineTypes];
+  [fromCopy clearEngineTypes];
   v6 = +[MapsExternalDevice sharedInstance];
-  v7 = [v6 engineTypes];
+  engineTypes = [v6 engineTypes];
 
-  if (v7)
+  if (engineTypes)
   {
-    [v4 addEngineType:1];
-    if ((v7 & 0x1000000) == 0)
+    [fromCopy addEngineType:1];
+    if ((engineTypes & 0x1000000) == 0)
     {
 LABEL_3:
-      if ((v7 & 0x100) == 0)
+      if ((engineTypes & 0x100) == 0)
       {
         goto LABEL_4;
       }
@@ -47,16 +47,16 @@ LABEL_3:
     }
   }
 
-  else if ((v7 & 0x1000000) == 0)
+  else if ((engineTypes & 0x1000000) == 0)
   {
     goto LABEL_3;
   }
 
-  [v4 addEngineType:4];
-  if ((v7 & 0x100) == 0)
+  [fromCopy addEngineType:4];
+  if ((engineTypes & 0x100) == 0)
   {
 LABEL_4:
-    if ((v7 & 0x10000) != 0)
+    if ((engineTypes & 0x10000) != 0)
     {
       goto LABEL_11;
     }
@@ -65,11 +65,11 @@ LABEL_4:
   }
 
 LABEL_8:
-  [v4 addEngineType:2];
-  if ((v7 & 0x10000) != 0)
+  [fromCopy addEngineType:2];
+  if ((engineTypes & 0x10000) != 0)
   {
 LABEL_11:
-    [v4 addEngineType:3];
+    [fromCopy addEngineType:3];
     goto LABEL_12;
   }
 
@@ -80,14 +80,14 @@ LABEL_9:
   }
 
 LABEL_12:
-  [v4 clearPreferredBrands];
+  [fromCopy clearPreferredBrands];
   v8 = +[NSMutableSet set];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v9 = [(VGVehicle *)self preferredChargingNetworks];
-  v10 = [v9 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  preferredChargingNetworks = [(VGVehicle *)self preferredChargingNetworks];
+  v10 = [preferredChargingNetworks countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v10)
   {
     v11 = v10;
@@ -98,14 +98,14 @@ LABEL_12:
       {
         if (*v26 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(preferredChargingNetworks);
         }
 
         v14 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [*(*(&v25 + 1) + 8 * i) globalBrandID]);
         [v8 addObject:v14];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v11 = [preferredChargingNetworks countByEnumeratingWithState:&v25 objects:v30 count:16];
     }
 
     while (v11);
@@ -130,7 +130,7 @@ LABEL_12:
           objc_enumerationMutation(v15);
         }
 
-        [v4 addPreferredBrand:{objc_msgSend(*(*(&v21 + 1) + 8 * j), "unsignedLongLongValue", v21)}];
+        [fromCopy addPreferredBrand:{objc_msgSend(*(*(&v21 + 1) + 8 * j), "unsignedLongLongValue", v21)}];
       }
 
       v17 = [v15 countByEnumeratingWithState:&v21 objects:v29 count:16];
@@ -139,16 +139,16 @@ LABEL_12:
     while (v17);
   }
 
-  return v4;
+  return fromCopy;
 }
 
 - (BOOL)isLPRWithElectricEngine
 {
-  v3 = [(VGVehicle *)self lprVehicleType];
-  if (v3)
+  lprVehicleType = [(VGVehicle *)self lprVehicleType];
+  if (lprVehicleType)
   {
-    v4 = [(VGVehicle *)self lprPowerType];
-    v5 = [v4 isEqualToString:@"EV"];
+    lprPowerType = [(VGVehicle *)self lprPowerType];
+    v5 = [lprPowerType isEqualToString:@"EV"];
   }
 
   else
@@ -166,8 +166,8 @@ LABEL_12:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [(VGVehicle *)self powerByConnector];
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  powerByConnector = [(VGVehicle *)self powerByConnector];
+  v5 = [powerByConnector countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -178,7 +178,7 @@ LABEL_12:
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(powerByConnector);
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
@@ -187,8 +187,8 @@ LABEL_12:
         if (v10)
         {
           v11 = v10;
-          v12 = [(VGVehicle *)self powerByConnector];
-          v13 = [v12 objectForKeyedSubscript:v9];
+          powerByConnector2 = [(VGVehicle *)self powerByConnector];
+          v13 = [powerByConnector2 objectForKeyedSubscript:v9];
 
           v14 = objc_alloc_init(GEOPDEvChargingPort);
           [v14 setChargingConnectorType:v11];
@@ -201,7 +201,7 @@ LABEL_12:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v6 = [powerByConnector countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v6);

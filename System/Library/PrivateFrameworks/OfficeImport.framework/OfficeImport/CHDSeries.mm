@@ -1,25 +1,25 @@
 @interface CHDSeries
-+ (id)seriesWithChart:(id)a3;
++ (id)seriesWithChart:(id)chart;
 - (BOOL)hasTrendlines;
-- (CHDSeries)initWithChart:(id)a3;
+- (CHDSeries)initWithChart:(id)chart;
 - (NSString)description;
 - (id)chart;
 - (id)chartType;
-- (id)defaultSeriesNameForIndex:(unint64_t)a3;
+- (id)defaultSeriesNameForIndex:(unint64_t)index;
 - (id)shallowCopy;
 - (unint64_t)categoryCount;
 - (void)clearBackPointers;
-- (void)setCategoryData:(id)a3;
-- (void)setDataValuePropertiesCollection:(id)a3;
-- (void)setDefaultDataLabel:(id)a3;
-- (void)setErrorBar:(id)a3;
-- (void)setErrorBarXAxis:(id)a3;
-- (void)setErrorBarYAxis:(id)a3;
-- (void)setGraphicProperties:(id)a3;
-- (void)setLastCachedName:(id)a3;
-- (void)setName:(id)a3;
-- (void)setTrendlineCollection:(id)a3;
-- (void)setValueData:(id)a3;
+- (void)setCategoryData:(id)data;
+- (void)setDataValuePropertiesCollection:(id)collection;
+- (void)setDefaultDataLabel:(id)label;
+- (void)setErrorBar:(id)bar;
+- (void)setErrorBarXAxis:(id)axis;
+- (void)setErrorBarYAxis:(id)axis;
+- (void)setGraphicProperties:(id)properties;
+- (void)setLastCachedName:(id)name;
+- (void)setName:(id)name;
+- (void)setTrendlineCollection:(id)collection;
+- (void)setValueData:(id)data;
 @end
 
 @implementation CHDSeries
@@ -77,16 +77,16 @@
   return result;
 }
 
-- (CHDSeries)initWithChart:(id)a3
+- (CHDSeries)initWithChart:(id)chart
 {
-  v4 = a3;
+  chartCopy = chart;
   v12.receiver = self;
   v12.super_class = CHDSeries;
   v5 = [(CHDSeries *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mChart, v4);
+    objc_storeWeak(&v5->mChart, chartCopy);
     v7 = objc_alloc_init(EDKeyedCollection);
     mDataValuePropertiesCollection = v6->mDataValuePropertiesCollection;
     v6->mDataValuePropertiesCollection = v7;
@@ -102,99 +102,99 @@
   return v6;
 }
 
-+ (id)seriesWithChart:(id)a3
++ (id)seriesWithChart:(id)chart
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithChart:v3];
+  chartCopy = chart;
+  v4 = [objc_alloc(objc_opt_class()) initWithChart:chartCopy];
 
   return v4;
 }
 
-- (void)setLastCachedName:(id)a3
+- (void)setLastCachedName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   mLastCachedName = self->mLastCachedName;
   p_mLastCachedName = &self->mLastCachedName;
-  if (mLastCachedName != v5)
+  if (mLastCachedName != nameCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mLastCachedName, a3);
-    v5 = v8;
+    v8 = nameCopy;
+    objc_storeStrong(p_mLastCachedName, name);
+    nameCopy = v8;
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   p_mName = &self->mName;
-  if (self->mName != v5)
+  if (self->mName != nameCopy)
   {
-    v9 = v5;
-    objc_storeStrong(p_mName, a3);
+    v9 = nameCopy;
+    objc_storeStrong(p_mName, name);
     if (v9)
     {
       WeakRetained = objc_loadWeakRetained(&self->mChart);
-      v8 = [WeakRetained processors];
-      [v8 markObject:v9 processor:objc_opt_class()];
+      processors = [WeakRetained processors];
+      [processors markObject:v9 processor:objc_opt_class()];
     }
   }
 
   MEMORY[0x2821F9730](p_mName);
 }
 
-- (void)setValueData:(id)a3
+- (void)setValueData:(id)data
 {
-  v5 = a3;
-  if (self->mValueData != v5)
+  dataCopy = data;
+  if (self->mValueData != dataCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->mValueData, a3);
+    v8 = dataCopy;
+    objc_storeStrong(&self->mValueData, data);
     WeakRetained = objc_loadWeakRetained(&self->mChart);
-    v7 = [WeakRetained processors];
-    [v7 markObject:v8 processor:objc_opt_class()];
+    processors = [WeakRetained processors];
+    [processors markObject:v8 processor:objc_opt_class()];
 
-    v5 = v8;
+    dataCopy = v8;
   }
 }
 
-- (void)setCategoryData:(id)a3
+- (void)setCategoryData:(id)data
 {
-  v5 = a3;
-  if (self->mCategoryData != v5)
+  dataCopy = data;
+  if (self->mCategoryData != dataCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->mCategoryData, a3);
+    v8 = dataCopy;
+    objc_storeStrong(&self->mCategoryData, data);
     WeakRetained = objc_loadWeakRetained(&self->mChart);
-    v7 = [WeakRetained processors];
-    [v7 markObject:v8 processor:objc_opt_class()];
+    processors = [WeakRetained processors];
+    [processors markObject:v8 processor:objc_opt_class()];
 
-    v5 = v8;
+    dataCopy = v8;
   }
 }
 
-- (void)setDataValuePropertiesCollection:(id)a3
+- (void)setDataValuePropertiesCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   mDataValuePropertiesCollection = self->mDataValuePropertiesCollection;
   p_mDataValuePropertiesCollection = &self->mDataValuePropertiesCollection;
-  if (mDataValuePropertiesCollection != v5)
+  if (mDataValuePropertiesCollection != collectionCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mDataValuePropertiesCollection, a3);
-    v5 = v8;
+    v8 = collectionCopy;
+    objc_storeStrong(p_mDataValuePropertiesCollection, collection);
+    collectionCopy = v8;
   }
 }
 
-- (void)setTrendlineCollection:(id)a3
+- (void)setTrendlineCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   mTrendlinesCollection = self->mTrendlinesCollection;
   p_mTrendlinesCollection = &self->mTrendlinesCollection;
-  if (mTrendlinesCollection != v5)
+  if (mTrendlinesCollection != collectionCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mTrendlinesCollection, a3);
-    v5 = v8;
+    v8 = collectionCopy;
+    objc_storeStrong(p_mTrendlinesCollection, collection);
+    collectionCopy = v8;
   }
 }
 
@@ -209,102 +209,102 @@
   return mTrendlinesCollection;
 }
 
-- (void)setErrorBar:(id)a3
+- (void)setErrorBar:(id)bar
 {
-  v12 = a3;
-  if (v12)
+  barCopy = bar;
+  if (barCopy)
   {
-    if ([v12 direction] == 1)
+    if ([barCopy direction] == 1)
     {
-      [(CHDSeries *)self setErrorBarYAxis:v12];
+      [(CHDSeries *)self setErrorBarYAxis:barCopy];
     }
 
     else
     {
-      [(CHDSeries *)self setErrorBarXAxis:v12];
+      [(CHDSeries *)self setErrorBarXAxis:barCopy];
     }
 
-    v4 = [v12 minusValues];
+    minusValues = [barCopy minusValues];
 
-    if (v4)
+    if (minusValues)
     {
       WeakRetained = objc_loadWeakRetained(&self->mChart);
-      v6 = [WeakRetained processors];
-      v7 = [v12 minusValues];
-      [v6 markObject:v7 processor:objc_opt_class()];
+      processors = [WeakRetained processors];
+      minusValues2 = [barCopy minusValues];
+      [processors markObject:minusValues2 processor:objc_opt_class()];
     }
 
-    v8 = [v12 plusValues];
+    plusValues = [barCopy plusValues];
 
-    if (v8)
+    if (plusValues)
     {
       v9 = objc_loadWeakRetained(&self->mChart);
-      v10 = [v9 processors];
-      v11 = [v12 plusValues];
-      [v10 markObject:v11 processor:objc_opt_class()];
+      processors2 = [v9 processors];
+      plusValues2 = [barCopy plusValues];
+      [processors2 markObject:plusValues2 processor:objc_opt_class()];
     }
   }
 }
 
-- (void)setErrorBarXAxis:(id)a3
+- (void)setErrorBarXAxis:(id)axis
 {
-  v5 = a3;
+  axisCopy = axis;
   mErrorBarX = self->mErrorBarX;
   p_mErrorBarX = &self->mErrorBarX;
-  if (mErrorBarX != v5)
+  if (mErrorBarX != axisCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mErrorBarX, a3);
-    v5 = v8;
+    v8 = axisCopy;
+    objc_storeStrong(p_mErrorBarX, axis);
+    axisCopy = v8;
   }
 }
 
-- (void)setErrorBarYAxis:(id)a3
+- (void)setErrorBarYAxis:(id)axis
 {
-  v5 = a3;
+  axisCopy = axis;
   mErrorBarY = self->mErrorBarY;
   p_mErrorBarY = &self->mErrorBarY;
-  if (mErrorBarY != v5)
+  if (mErrorBarY != axisCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mErrorBarY, a3);
-    v5 = v8;
+    v8 = axisCopy;
+    objc_storeStrong(p_mErrorBarY, axis);
+    axisCopy = v8;
   }
 }
 
-- (void)setDefaultDataLabel:(id)a3
+- (void)setDefaultDataLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   mDefaultDataLabel = self->mDefaultDataLabel;
   p_mDefaultDataLabel = &self->mDefaultDataLabel;
-  if (mDefaultDataLabel != v5)
+  if (mDefaultDataLabel != labelCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mDefaultDataLabel, a3);
-    v5 = v8;
+    v8 = labelCopy;
+    objc_storeStrong(p_mDefaultDataLabel, label);
+    labelCopy = v8;
   }
 }
 
-- (void)setGraphicProperties:(id)a3
+- (void)setGraphicProperties:(id)properties
 {
-  v5 = a3;
+  propertiesCopy = properties;
   mGraphicProperties = self->mGraphicProperties;
   p_mGraphicProperties = &self->mGraphicProperties;
-  if (mGraphicProperties != v5)
+  if (mGraphicProperties != propertiesCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mGraphicProperties, a3);
-    v5 = v8;
+    v8 = propertiesCopy;
+    objc_storeStrong(p_mGraphicProperties, properties);
+    propertiesCopy = v8;
   }
 }
 
-- (id)defaultSeriesNameForIndex:(unint64_t)a3
+- (id)defaultSeriesNameForIndex:(unint64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->mChart);
-  v6 = [WeakRetained isMSGraph];
+  isMSGraph = [WeakRetained isMSGraph];
 
   v7 = @"Series";
-  if (v6)
+  if (isMSGraph)
   {
     v8 = objc_loadWeakRetained(&self->mChartType);
     objc_opt_class();
@@ -325,9 +325,9 @@
       v13 = v12;
       if (v11)
       {
-        v14 = [v12 isColumn];
+        isColumn = [v12 isColumn];
 
-        if (v14)
+        if (isColumn)
         {
           v7 = @"Column ";
         }
@@ -375,15 +375,15 @@
     }
 
     v21 = objc_loadWeakRetained(&self->mChart);
-    v22 = [v21 is3D];
+    is3D = [v21 is3D];
 
-    if (v22)
+    if (is3D)
     {
       v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"3-D ", v7];
     }
   }
 
-  v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%ld", v7, a3 + 1];
+  v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%ld", v7, index + 1];
 
   return v23;
 }

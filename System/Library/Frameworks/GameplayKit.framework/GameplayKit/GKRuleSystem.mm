@@ -4,7 +4,7 @@
 - (float)gradeForFact:(id)fact;
 - (float)maximumGradeForFacts:(NSArray *)facts;
 - (float)minimumGradeForFacts:(NSArray *)facts;
-- (void)_addRuleToAgenda:(id)a3;
+- (void)_addRuleToAgenda:(id)agenda;
 - (void)addRule:(GKRule *)rule;
 - (void)addRulesFromArray:(NSArray *)rules;
 - (void)assertFact:(id)fact grade:(float)grade;
@@ -99,19 +99,19 @@
   [(NSMutableArray *)self->_agenda removeObjectsInArray:self->_toBeExecuted];
   while ([(NSMutableArray *)self->_toBeExecuted count])
   {
-    v9 = [(NSMutableArray *)self->_toBeExecuted firstObject];
+    firstObject = [(NSMutableArray *)self->_toBeExecuted firstObject];
     [(NSMutableArray *)self->_toBeExecuted removeObjectAtIndex:0];
-    [(NSMutableArray *)self->_executed addObject:v9];
-    [v9 performActionWithSystem:self];
+    [(NSMutableArray *)self->_executed addObject:firstObject];
+    [firstObject performActionWithSystem:self];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addRuleToAgenda:(id)a3
+- (void)_addRuleToAgenda:(id)agenda
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  agendaCopy = agenda;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -135,8 +135,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * v10) salience];
-        if (v12 < [v4 salience])
+        salience = [*(*(&v14 + 1) + 8 * v10) salience];
+        if (salience < [agendaCopy salience])
         {
           v8 = v11;
           goto LABEL_12;
@@ -164,7 +164,7 @@
 
 LABEL_12:
 
-  [(NSMutableArray *)self->_agenda insertObject:v4 atIndex:v8];
+  [(NSMutableArray *)self->_agenda insertObject:agendaCopy atIndex:v8];
   v13 = *MEMORY[0x277D85DE8];
 }
 
@@ -225,10 +225,10 @@ LABEL_12:
 
 - (NSArray)facts
 {
-  v2 = [(NSMapTable *)self->_gradeByFact keyEnumerator];
-  v3 = [v2 allObjects];
+  keyEnumerator = [(NSMapTable *)self->_gradeByFact keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (float)gradeForFact:(id)fact

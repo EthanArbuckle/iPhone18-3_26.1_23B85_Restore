@@ -1,68 +1,68 @@
 @interface PUPlayButtonTileView
 - (BOOL)showAsPause;
 - (PUPlayButtonTileView)init;
-- (PUPlayButtonTileView)initWithCoder:(id)a3;
-- (PUPlayButtonTileView)initWithFrame:(CGRect)a3;
-- (PUPlayButtonTileView)initWithStyle:(int64_t)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)setShowAsPause:(BOOL)a3;
-- (void)setTarget:(id)a3 selector:(SEL)a4;
+- (PUPlayButtonTileView)initWithCoder:(id)coder;
+- (PUPlayButtonTileView)initWithFrame:(CGRect)frame;
+- (PUPlayButtonTileView)initWithStyle:(int64_t)style;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)setShowAsPause:(BOOL)pause;
+- (void)setTarget:(id)target selector:(SEL)selector;
 @end
 
 @implementation PUPlayButtonTileView
 
-- (PUPlayButtonTileView)initWithCoder:(id)a3
+- (PUPlayButtonTileView)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PUPlayButtonTileView.m" lineNumber:73 description:{@"%s is not available as initializer", "-[PUPlayButtonTileView initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUPlayButtonTileView.m" lineNumber:73 description:{@"%s is not available as initializer", "-[PUPlayButtonTileView initWithCoder:]"}];
 
   abort();
 }
 
 - (PUPlayButtonTileView)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUPlayButtonTileView.m" lineNumber:69 description:{@"%s is not available as initializer", "-[PUPlayButtonTileView init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUPlayButtonTileView.m" lineNumber:69 description:{@"%s is not available as initializer", "-[PUPlayButtonTileView init]"}];
 
   abort();
 }
 
-- (PUPlayButtonTileView)initWithFrame:(CGRect)a3
+- (PUPlayButtonTileView)initWithFrame:(CGRect)frame
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PUPlayButtonTileView.m" lineNumber:65 description:{@"%s is not available as initializer", "-[PUPlayButtonTileView initWithFrame:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUPlayButtonTileView.m" lineNumber:65 description:{@"%s is not available as initializer", "-[PUPlayButtonTileView initWithFrame:]"}];
 
   abort();
 }
 
-- (void)setTarget:(id)a3 selector:(SEL)a4
+- (void)setTarget:(id)target selector:(SEL)selector
 {
-  v6 = a3;
-  v7 = [(PUPlayButtonTileView *)self button];
-  [v7 setTarget:v6 action:a4];
+  targetCopy = target;
+  button = [(PUPlayButtonTileView *)self button];
+  [button setTarget:targetCopy action:selector];
 }
 
 - (BOOL)showAsPause
 {
-  v2 = [(PUPlayButtonTileView *)self button];
-  v3 = [v2 showAsPause];
+  button = [(PUPlayButtonTileView *)self button];
+  showAsPause = [button showAsPause];
 
-  return v3;
+  return showAsPause;
 }
 
-- (void)setShowAsPause:(BOOL)a3
+- (void)setShowAsPause:(BOOL)pause
 {
-  v3 = a3;
-  v4 = [(PUPlayButtonTileView *)self button];
-  [v4 setShowAsPause:v3];
+  pauseCopy = pause;
+  button = [(PUPlayButtonTileView *)self button];
+  [button setShowAsPause:pauseCopy];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = PUPlayButtonTileView;
-  v5 = [(PUPlayButtonTileView *)&v7 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(PUPlayButtonTileView *)&v7 hitTest:event withEvent:test.x, test.y];
   if (v5 == self)
   {
 
@@ -72,23 +72,23 @@
   return v5;
 }
 
-- (PUPlayButtonTileView)initWithStyle:(int64_t)a3
+- (PUPlayButtonTileView)initWithStyle:(int64_t)style
 {
   v11.receiver = self;
   v11.super_class = PUPlayButtonTileView;
   v4 = [(PUPlayButtonTileView *)&v11 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v4)
   {
-    if (a3)
+    if (style)
     {
-      if (a3 == 1)
+      if (style == 1)
       {
         v5 = [MEMORY[0x1E69DD250] px_videoOverlayButtonWithStyle:3];
         button = v4->_button;
         v4->_button = v5;
 
-        v7 = [MEMORY[0x1E69DC888] whiteColor];
-        [(PXVideoOverlayButton *)v4->_button setTintColor:v7];
+        whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+        [(PXVideoOverlayButton *)v4->_button setTintColor:whiteColor];
       }
     }
 

@@ -10,7 +10,7 @@
 - (UIAccessibilityCustomRotor)mentionsRotor;
 - (UIAccessibilityCustomRotor)tablesRotor;
 - (UIAccessibilityCustomRotor)tagsRotor;
-- (id)searchForAXElementWithPredicate:(id)a3 rotorType:(id)a4;
+- (id)searchForAXElementWithPredicate:(id)predicate rotorType:(id)type;
 @end
 
 @implementation ICAccessibilityCustomRotorController
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __54__ICAccessibilityCustomRotorController_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -41,26 +41,26 @@ void __54__ICAccessibilityCustomRotorController_sharedInstance__block_invoke(uin
 
 - (UIAccessibilityCustomRotor)linksRotor
 {
-  v3 = [(ICAccessibilityCustomRotorController *)self storedLinksRotor];
-  if (!v3)
+  storedLinksRotor = [(ICAccessibilityCustomRotorController *)self storedLinksRotor];
+  if (!storedLinksRotor)
   {
     objc_initWeak(&location, self);
     v4 = objc_alloc(MEMORY[0x277D75090]);
-    v5 = [MEMORY[0x277CCA8D8] mainBundle];
-    v6 = [v5 localizedStringForKey:@"Links" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v6 = [mainBundle localizedStringForKey:@"Links" value:&stru_282757698 table:0];
     v8 = MEMORY[0x277D85DD0];
     v9 = 3221225472;
     v10 = __50__ICAccessibilityCustomRotorController_linksRotor__block_invoke;
     v11 = &unk_2781AE928;
     objc_copyWeak(&v12, &location);
-    v3 = [v4 initWithName:v6 itemSearchBlock:&v8];
+    storedLinksRotor = [v4 initWithName:v6 itemSearchBlock:&v8];
 
-    [(ICAccessibilityCustomRotorController *)self setStoredLinksRotor:v3, v8, v9, v10, v11];
+    [(ICAccessibilityCustomRotorController *)self setStoredLinksRotor:storedLinksRotor, v8, v9, v10, v11];
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
   }
 
-  return v3;
+  return storedLinksRotor;
 }
 
 id __50__ICAccessibilityCustomRotorController_linksRotor__block_invoke(uint64_t a1, void *a2)
@@ -74,26 +74,26 @@ id __50__ICAccessibilityCustomRotorController_linksRotor__block_invoke(uint64_t 
 
 - (UIAccessibilityCustomRotor)checklistRotor
 {
-  v3 = [(ICAccessibilityCustomRotorController *)self storedChecklistRotor];
-  if (!v3)
+  storedChecklistRotor = [(ICAccessibilityCustomRotorController *)self storedChecklistRotor];
+  if (!storedChecklistRotor)
   {
     objc_initWeak(&location, self);
     v4 = objc_alloc(MEMORY[0x277D75090]);
-    v5 = [MEMORY[0x277CCA8D8] mainBundle];
-    v6 = [v5 localizedStringForKey:@"Checklist items" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v6 = [mainBundle localizedStringForKey:@"Checklist items" value:&stru_282757698 table:0];
     v8 = MEMORY[0x277D85DD0];
     v9 = 3221225472;
     v10 = __54__ICAccessibilityCustomRotorController_checklistRotor__block_invoke;
     v11 = &unk_2781AE928;
     objc_copyWeak(&v12, &location);
-    v3 = [v4 initWithName:v6 itemSearchBlock:&v8];
+    storedChecklistRotor = [v4 initWithName:v6 itemSearchBlock:&v8];
 
-    [(ICAccessibilityCustomRotorController *)self setStoredChecklistRotor:v3, v8, v9, v10, v11];
+    [(ICAccessibilityCustomRotorController *)self setStoredChecklistRotor:storedChecklistRotor, v8, v9, v10, v11];
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
   }
 
-  return v3;
+  return storedChecklistRotor;
 }
 
 id __54__ICAccessibilityCustomRotorController_checklistRotor__block_invoke(uint64_t a1, void *a2)
@@ -107,26 +107,26 @@ id __54__ICAccessibilityCustomRotorController_checklistRotor__block_invoke(uint6
 
 - (UIAccessibilityCustomRotor)attachmentsRotor
 {
-  v3 = [(ICAccessibilityCustomRotorController *)self storedAttachmentsRotor];
-  if (!v3)
+  storedAttachmentsRotor = [(ICAccessibilityCustomRotorController *)self storedAttachmentsRotor];
+  if (!storedAttachmentsRotor)
   {
     objc_initWeak(&location, self);
     v4 = objc_alloc(MEMORY[0x277D75090]);
-    v5 = [MEMORY[0x277CCA8D8] mainBundle];
-    v6 = [v5 localizedStringForKey:@"Attachments" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v6 = [mainBundle localizedStringForKey:@"Attachments" value:&stru_282757698 table:0];
     v8 = MEMORY[0x277D85DD0];
     v9 = 3221225472;
     v10 = __56__ICAccessibilityCustomRotorController_attachmentsRotor__block_invoke;
     v11 = &unk_2781AE928;
     objc_copyWeak(&v12, &location);
-    v3 = [v4 initWithName:v6 itemSearchBlock:&v8];
+    storedAttachmentsRotor = [v4 initWithName:v6 itemSearchBlock:&v8];
 
-    [(ICAccessibilityCustomRotorController *)self setStoredAttachmentsRotor:v3, v8, v9, v10, v11];
+    [(ICAccessibilityCustomRotorController *)self setStoredAttachmentsRotor:storedAttachmentsRotor, v8, v9, v10, v11];
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
   }
 
-  return v3;
+  return storedAttachmentsRotor;
 }
 
 id __56__ICAccessibilityCustomRotorController_attachmentsRotor__block_invoke(uint64_t a1, void *a2)
@@ -140,26 +140,26 @@ id __56__ICAccessibilityCustomRotorController_attachmentsRotor__block_invoke(uin
 
 - (UIAccessibilityCustomRotor)tagsRotor
 {
-  v3 = [(ICAccessibilityCustomRotorController *)self storedTagsRotor];
-  if (!v3)
+  storedTagsRotor = [(ICAccessibilityCustomRotorController *)self storedTagsRotor];
+  if (!storedTagsRotor)
   {
     objc_initWeak(&location, self);
     v4 = objc_alloc(MEMORY[0x277D75090]);
-    v5 = [MEMORY[0x277CCA8D8] mainBundle];
-    v6 = [v5 localizedStringForKey:@"Tags" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v6 = [mainBundle localizedStringForKey:@"Tags" value:&stru_282757698 table:0];
     v8 = MEMORY[0x277D85DD0];
     v9 = 3221225472;
     v10 = __49__ICAccessibilityCustomRotorController_tagsRotor__block_invoke;
     v11 = &unk_2781AE928;
     objc_copyWeak(&v12, &location);
-    v3 = [v4 initWithName:v6 itemSearchBlock:&v8];
+    storedTagsRotor = [v4 initWithName:v6 itemSearchBlock:&v8];
 
-    [(ICAccessibilityCustomRotorController *)self setStoredTagsRotor:v3, v8, v9, v10, v11];
+    [(ICAccessibilityCustomRotorController *)self setStoredTagsRotor:storedTagsRotor, v8, v9, v10, v11];
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
   }
 
-  return v3;
+  return storedTagsRotor;
 }
 
 id __49__ICAccessibilityCustomRotorController_tagsRotor__block_invoke(uint64_t a1, void *a2)
@@ -173,26 +173,26 @@ id __49__ICAccessibilityCustomRotorController_tagsRotor__block_invoke(uint64_t a
 
 - (UIAccessibilityCustomRotor)mentionsRotor
 {
-  v3 = [(ICAccessibilityCustomRotorController *)self storedMentionsRotor];
-  if (!v3)
+  storedMentionsRotor = [(ICAccessibilityCustomRotorController *)self storedMentionsRotor];
+  if (!storedMentionsRotor)
   {
     objc_initWeak(&location, self);
     v4 = objc_alloc(MEMORY[0x277D75090]);
-    v5 = [MEMORY[0x277CCA8D8] mainBundle];
-    v6 = [v5 localizedStringForKey:@"Mentions" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v6 = [mainBundle localizedStringForKey:@"Mentions" value:&stru_282757698 table:0];
     v8 = MEMORY[0x277D85DD0];
     v9 = 3221225472;
     v10 = __53__ICAccessibilityCustomRotorController_mentionsRotor__block_invoke;
     v11 = &unk_2781AE928;
     objc_copyWeak(&v12, &location);
-    v3 = [v4 initWithName:v6 itemSearchBlock:&v8];
+    storedMentionsRotor = [v4 initWithName:v6 itemSearchBlock:&v8];
 
-    [(ICAccessibilityCustomRotorController *)self setStoredMentionsRotor:v3, v8, v9, v10, v11];
+    [(ICAccessibilityCustomRotorController *)self setStoredMentionsRotor:storedMentionsRotor, v8, v9, v10, v11];
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
   }
 
-  return v3;
+  return storedMentionsRotor;
 }
 
 id __53__ICAccessibilityCustomRotorController_mentionsRotor__block_invoke(uint64_t a1, void *a2)
@@ -206,26 +206,26 @@ id __53__ICAccessibilityCustomRotorController_mentionsRotor__block_invoke(uint64
 
 - (UIAccessibilityCustomRotor)tablesRotor
 {
-  v3 = [(ICAccessibilityCustomRotorController *)self storedTablesRotor];
-  if (!v3)
+  storedTablesRotor = [(ICAccessibilityCustomRotorController *)self storedTablesRotor];
+  if (!storedTablesRotor)
   {
     objc_initWeak(&location, self);
     v4 = objc_alloc(MEMORY[0x277D75090]);
-    v5 = [MEMORY[0x277CCA8D8] mainBundle];
-    v6 = [v5 localizedStringForKey:@"Tables" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v6 = [mainBundle localizedStringForKey:@"Tables" value:&stru_282757698 table:0];
     v8 = MEMORY[0x277D85DD0];
     v9 = 3221225472;
     v10 = __51__ICAccessibilityCustomRotorController_tablesRotor__block_invoke;
     v11 = &unk_2781AE928;
     objc_copyWeak(&v12, &location);
-    v3 = [v4 initWithName:v6 itemSearchBlock:&v8];
+    storedTablesRotor = [v4 initWithName:v6 itemSearchBlock:&v8];
 
-    [(ICAccessibilityCustomRotorController *)self setStoredTablesRotor:v3, v8, v9, v10, v11];
+    [(ICAccessibilityCustomRotorController *)self setStoredTablesRotor:storedTablesRotor, v8, v9, v10, v11];
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
   }
 
-  return v3;
+  return storedTablesRotor;
 }
 
 id __51__ICAccessibilityCustomRotorController_tablesRotor__block_invoke(uint64_t a1, void *a2)
@@ -239,26 +239,26 @@ id __51__ICAccessibilityCustomRotorController_tablesRotor__block_invoke(uint64_t
 
 - (UIAccessibilityCustomRotor)calculationResultsRotor
 {
-  v3 = [(ICAccessibilityCustomRotorController *)self storedCalculationResultRotor];
-  if (!v3)
+  storedCalculationResultRotor = [(ICAccessibilityCustomRotorController *)self storedCalculationResultRotor];
+  if (!storedCalculationResultRotor)
   {
     objc_initWeak(&location, self);
     v4 = objc_alloc(MEMORY[0x277D75090]);
-    v5 = [MEMORY[0x277CCA8D8] mainBundle];
-    v6 = [v5 localizedStringForKey:@"Calculation Results" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v6 = [mainBundle localizedStringForKey:@"Calculation Results" value:&stru_282757698 table:0];
     v8 = MEMORY[0x277D85DD0];
     v9 = 3221225472;
     v10 = __63__ICAccessibilityCustomRotorController_calculationResultsRotor__block_invoke;
     v11 = &unk_2781AE928;
     objc_copyWeak(&v12, &location);
-    v3 = [v4 initWithName:v6 itemSearchBlock:&v8];
+    storedCalculationResultRotor = [v4 initWithName:v6 itemSearchBlock:&v8];
 
-    [(ICAccessibilityCustomRotorController *)self setStoredCalculationResultRotor:v3, v8, v9, v10, v11];
+    [(ICAccessibilityCustomRotorController *)self setStoredCalculationResultRotor:storedCalculationResultRotor, v8, v9, v10, v11];
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
   }
 
-  return v3;
+  return storedCalculationResultRotor;
 }
 
 id __63__ICAccessibilityCustomRotorController_calculationResultsRotor__block_invoke(uint64_t a1, void *a2)
@@ -272,26 +272,26 @@ id __63__ICAccessibilityCustomRotorController_calculationResultsRotor__block_inv
 
 - (UIAccessibilityCustomRotor)calculationErrorsRotor
 {
-  v3 = [(ICAccessibilityCustomRotorController *)self storedCalculationErrorsRotor];
-  if (!v3)
+  storedCalculationErrorsRotor = [(ICAccessibilityCustomRotorController *)self storedCalculationErrorsRotor];
+  if (!storedCalculationErrorsRotor)
   {
     objc_initWeak(&location, self);
     v4 = objc_alloc(MEMORY[0x277D75090]);
-    v5 = [MEMORY[0x277CCA8D8] mainBundle];
-    v6 = [v5 localizedStringForKey:@"Calculation Errors" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v6 = [mainBundle localizedStringForKey:@"Calculation Errors" value:&stru_282757698 table:0];
     v8 = MEMORY[0x277D85DD0];
     v9 = 3221225472;
     v10 = __62__ICAccessibilityCustomRotorController_calculationErrorsRotor__block_invoke;
     v11 = &unk_2781AE928;
     objc_copyWeak(&v12, &location);
-    v3 = [v4 initWithName:v6 itemSearchBlock:&v8];
+    storedCalculationErrorsRotor = [v4 initWithName:v6 itemSearchBlock:&v8];
 
-    [(ICAccessibilityCustomRotorController *)self setStoredCalculationErrorsRotor:v3, v8, v9, v10, v11];
+    [(ICAccessibilityCustomRotorController *)self setStoredCalculationErrorsRotor:storedCalculationErrorsRotor, v8, v9, v10, v11];
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
   }
 
-  return v3;
+  return storedCalculationErrorsRotor;
 }
 
 id __62__ICAccessibilityCustomRotorController_calculationErrorsRotor__block_invoke(uint64_t a1, void *a2)
@@ -305,115 +305,115 @@ id __62__ICAccessibilityCustomRotorController_calculationErrorsRotor__block_invo
 
 - (NSArray)sharedTextViewRotors
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(ICAccessibilityCustomRotorController *)self noteEditorViewController];
-  v5 = [v4 textView];
+  array = [MEMORY[0x277CBEB18] array];
+  noteEditorViewController = [(ICAccessibilityCustomRotorController *)self noteEditorViewController];
+  textView = [noteEditorViewController textView];
 
-  v6 = [v5 elementsForAccessibilityRotorType:@"ICAccessibilityRotorTypeLinks"];
+  v6 = [textView elementsForAccessibilityRotorType:@"ICAccessibilityRotorTypeLinks"];
   v7 = [v6 count];
 
   if (v7)
   {
-    v8 = [(ICAccessibilityCustomRotorController *)self linksRotor];
-    [v3 addObject:v8];
+    linksRotor = [(ICAccessibilityCustomRotorController *)self linksRotor];
+    [array addObject:linksRotor];
   }
 
-  v9 = [v5 elementsForAccessibilityRotorType:@"ICAccessibilityRotorTypeChecklist"];
+  v9 = [textView elementsForAccessibilityRotorType:@"ICAccessibilityRotorTypeChecklist"];
   v10 = [v9 count];
 
   if (v10)
   {
-    v11 = [(ICAccessibilityCustomRotorController *)self checklistRotor];
-    [v3 addObject:v11];
+    checklistRotor = [(ICAccessibilityCustomRotorController *)self checklistRotor];
+    [array addObject:checklistRotor];
   }
 
-  v12 = [v5 elementsForAccessibilityRotorType:@"ICAccessibilityRotorTypeAttachments"];
+  v12 = [textView elementsForAccessibilityRotorType:@"ICAccessibilityRotorTypeAttachments"];
   v13 = [v12 count];
 
   if (v13)
   {
-    v14 = [(ICAccessibilityCustomRotorController *)self attachmentsRotor];
-    [v3 addObject:v14];
+    attachmentsRotor = [(ICAccessibilityCustomRotorController *)self attachmentsRotor];
+    [array addObject:attachmentsRotor];
   }
 
-  v15 = [v5 elementsForAccessibilityRotorType:@"ICAccessibilityRotorTypeTags"];
+  v15 = [textView elementsForAccessibilityRotorType:@"ICAccessibilityRotorTypeTags"];
   v16 = [v15 count];
 
   if (v16)
   {
-    v17 = [(ICAccessibilityCustomRotorController *)self tagsRotor];
-    [v3 addObject:v17];
+    tagsRotor = [(ICAccessibilityCustomRotorController *)self tagsRotor];
+    [array addObject:tagsRotor];
   }
 
-  v18 = [v5 elementsForAccessibilityRotorType:@"ICAccessibilityRotorTypeMentions"];
+  v18 = [textView elementsForAccessibilityRotorType:@"ICAccessibilityRotorTypeMentions"];
   v19 = [v18 count];
 
   if (v19)
   {
-    v20 = [(ICAccessibilityCustomRotorController *)self mentionsRotor];
-    [v3 addObject:v20];
+    mentionsRotor = [(ICAccessibilityCustomRotorController *)self mentionsRotor];
+    [array addObject:mentionsRotor];
   }
 
-  v21 = [v5 elementsForAccessibilityRotorType:@"ICAccessibilityRotorTypeTables"];
+  v21 = [textView elementsForAccessibilityRotorType:@"ICAccessibilityRotorTypeTables"];
   v22 = [v21 count];
 
   if (v22)
   {
-    v23 = [(ICAccessibilityCustomRotorController *)self tablesRotor];
-    [v3 addObject:v23];
+    tablesRotor = [(ICAccessibilityCustomRotorController *)self tablesRotor];
+    [array addObject:tablesRotor];
   }
 
-  v24 = [v5 elementsForAccessibilityRotorType:@"ICAccessibilityRotorTypeCalculationResults"];
+  v24 = [textView elementsForAccessibilityRotorType:@"ICAccessibilityRotorTypeCalculationResults"];
   v25 = [v24 count];
 
   if (v25)
   {
-    v26 = [(ICAccessibilityCustomRotorController *)self calculationResultsRotor];
-    [v3 addObject:v26];
+    calculationResultsRotor = [(ICAccessibilityCustomRotorController *)self calculationResultsRotor];
+    [array addObject:calculationResultsRotor];
 
-    v27 = [v5 elementsForAccessibilityRotorType:@"ICAccessibilityRotorTypeCalculationErrors"];
+    v27 = [textView elementsForAccessibilityRotorType:@"ICAccessibilityRotorTypeCalculationErrors"];
     v28 = [v27 count];
 
     if (v28)
     {
-      v29 = [(ICAccessibilityCustomRotorController *)self calculationErrorsRotor];
-      [v3 addObject:v29];
+      calculationErrorsRotor = [(ICAccessibilityCustomRotorController *)self calculationErrorsRotor];
+      [array addObject:calculationErrorsRotor];
     }
   }
 
-  v30 = [v3 copy];
+  v30 = [array copy];
 
   return v30;
 }
 
-- (id)searchForAXElementWithPredicate:(id)a3 rotorType:(id)a4
+- (id)searchForAXElementWithPredicate:(id)predicate rotorType:(id)type
 {
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  typeCopy = type;
   objc_opt_class();
-  v8 = [(ICAccessibilityCustomRotorController *)self noteEditorViewController];
-  v9 = [v8 textView];
+  noteEditorViewController = [(ICAccessibilityCustomRotorController *)self noteEditorViewController];
+  textView = [noteEditorViewController textView];
   v10 = ICDynamicCast();
 
-  v11 = [v6 currentItem];
-  v12 = [v11 targetElement];
+  currentItem = [predicateCopy currentItem];
+  targetElement = [currentItem targetElement];
 
-  v13 = [(ICAccessibilityCustomRotorController *)self noteEditorViewController];
-  v14 = [v13 textView];
+  noteEditorViewController2 = [(ICAccessibilityCustomRotorController *)self noteEditorViewController];
+  textView2 = [noteEditorViewController2 textView];
 
   v45 = v10;
-  if (v12 == v14)
+  if (targetElement == textView2)
   {
     if ([v10 isFirstResponder])
     {
-      v16 = [v10 selectedRange];
+      selectedRange = [v10 selectedRange];
       v18 = v19;
     }
 
     else
     {
-      v16 = 0;
+      selectedRange = 0;
       v18 = 0;
     }
   }
@@ -421,18 +421,18 @@ id __62__ICAccessibilityCustomRotorController_calculationErrorsRotor__block_invo
   else
   {
     v15 = ICCheckedProtocolCast();
-    v16 = [v15 textRangeInNote];
+    selectedRange = [v15 textRangeInNote];
     v18 = v17;
   }
 
-  v20 = [v6 searchDirection];
-  v21 = [(ICAccessibilityCustomRotorController *)self noteEditorViewController];
-  v22 = [v21 textView];
-  v23 = [v22 elementsForAccessibilityRotorType:v7];
+  searchDirection = [predicateCopy searchDirection];
+  noteEditorViewController3 = [(ICAccessibilityCustomRotorController *)self noteEditorViewController];
+  textView3 = [noteEditorViewController3 textView];
+  v23 = [textView3 elementsForAccessibilityRotorType:typeCopy];
 
   v24 = [v23 sortedArrayUsingComparator:&__block_literal_global_17];
 
-  if (v20 == 1)
+  if (searchDirection == 1)
   {
     v25 = v18;
   }
@@ -442,22 +442,22 @@ id __62__ICAccessibilityCustomRotorController_calculationErrorsRotor__block_invo
     v25 = 0;
   }
 
-  v26 = v16 + v25;
-  if (v20 == 1)
+  v26 = selectedRange + v25;
+  if (searchDirection == 1)
   {
     v52 = 0uLL;
     v53 = 0uLL;
     v50 = 0uLL;
     v51 = 0uLL;
-    v32 = v24;
-    v27 = [v32 countByEnumeratingWithState:&v50 objects:v55 count:16];
+    reverseObjectEnumerator = v24;
+    v27 = [reverseObjectEnumerator countByEnumeratingWithState:&v50 objects:v55 count:16];
     if (v27)
     {
       v28 = v27;
       v41 = v24;
-      v42 = v12;
-      v43 = v7;
-      v44 = v6;
+      v42 = targetElement;
+      v43 = typeCopy;
+      v44 = predicateCopy;
       v29 = *v51;
       while (2)
       {
@@ -465,7 +465,7 @@ id __62__ICAccessibilityCustomRotorController_calculationErrorsRotor__block_invo
         {
           if (*v51 != v29)
           {
-            objc_enumerationMutation(v32);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v31 = *(*(&v50 + 1) + 8 * i);
@@ -485,7 +485,7 @@ LABEL_35:
           }
         }
 
-        v28 = [v32 countByEnumeratingWithState:&v50 objects:v55 count:16];
+        v28 = [reverseObjectEnumerator countByEnumeratingWithState:&v50 objects:v55 count:16];
         if (v28)
         {
           continue;
@@ -505,8 +505,8 @@ LABEL_37:
   v49 = 0uLL;
   v46 = 0uLL;
   v47 = 0uLL;
-  v32 = [v24 reverseObjectEnumerator];
-  v33 = [v32 countByEnumeratingWithState:&v46 objects:v54 count:16];
+  reverseObjectEnumerator = [v24 reverseObjectEnumerator];
+  v33 = [reverseObjectEnumerator countByEnumeratingWithState:&v46 objects:v54 count:16];
   if (!v33)
   {
     goto LABEL_37;
@@ -514,9 +514,9 @@ LABEL_37:
 
   v34 = v33;
   v41 = v24;
-  v42 = v12;
-  v43 = v7;
-  v44 = v6;
+  v42 = targetElement;
+  v43 = typeCopy;
+  v44 = predicateCopy;
   v35 = *v47;
   do
   {
@@ -524,7 +524,7 @@ LABEL_37:
     {
       if (*v47 != v35)
       {
-        objc_enumerationMutation(v32);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v31 = *(*(&v46 + 1) + 8 * j);
@@ -542,18 +542,18 @@ LABEL_37:
       }
     }
 
-    v34 = [v32 countByEnumeratingWithState:&v46 objects:v54 count:16];
+    v34 = [reverseObjectEnumerator countByEnumeratingWithState:&v46 objects:v54 count:16];
   }
 
   while (v34);
 LABEL_34:
   v37 = 0;
 LABEL_36:
-  v7 = v43;
-  v6 = v44;
+  typeCopy = v43;
+  predicateCopy = v44;
   v38 = v45;
   v24 = v41;
-  v12 = v42;
+  targetElement = v42;
 LABEL_38:
 
   if (v37)

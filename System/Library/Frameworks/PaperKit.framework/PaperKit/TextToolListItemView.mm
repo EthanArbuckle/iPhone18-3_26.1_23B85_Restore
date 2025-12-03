@@ -1,10 +1,10 @@
 @interface TextToolListItemView
 - (BOOL)isHighlighted;
-- (_TtC8PaperKit20TextToolListItemView)initWithFrame:(CGRect)a3;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)setHighlighted:(BOOL)a3;
+- (_TtC8PaperKit20TextToolListItemView)initWithFrame:(CGRect)frame;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation TextToolListItemView
@@ -16,30 +16,30 @@
   return [(TextToolListItemView *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   ObjectType = swift_getObjectType();
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = self;
-  [(TextToolListItemView *)&v9 setHighlighted:v3];
-  v8.receiver = v6;
+  selfCopy = self;
+  [(TextToolListItemView *)&v9 setHighlighted:highlightedCopy];
+  v8.receiver = selfCopy;
   v8.super_class = ObjectType;
   if ([(TextToolListItemView *)&v8 isHighlighted])
   {
-    v7 = [objc_opt_self() secondarySystemFillColor];
+    secondarySystemFillColor = [objc_opt_self() secondarySystemFillColor];
   }
 
   else
   {
-    v7 = 0;
+    secondarySystemFillColor = 0;
   }
 
-  [(TextToolListItemView *)v6 setBackgroundColor:v7];
+  [(TextToolListItemView *)selfCopy setBackgroundColor:secondarySystemFillColor];
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   type metadata accessor for PKMathRecognitionItemAttributes(0, &lazy cache variable for type metadata for UIContextMenuConfiguration);
   v4 = swift_allocObject();
@@ -49,27 +49,27 @@
   return v5;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
   type metadata accessor for PKMathRecognitionItemAttributes(0, &lazy cache variable for type metadata for UIPointerRegion);
-  v6 = self;
-  [(TextToolListItemView *)v6 bounds];
+  selfCopy = self;
+  [(TextToolListItemView *)selfCopy bounds];
   v7 = UIPointerRegion.init(rect:identifier:)();
 
   return v7;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  interactionCopy = interaction;
+  regionCopy = region;
+  selfCopy = self;
   v9 = specialized TextToolListItemView.pointerInteraction(_:styleFor:)();
 
   return v9;
 }
 
-- (_TtC8PaperKit20TextToolListItemView)initWithFrame:(CGRect)a3
+- (_TtC8PaperKit20TextToolListItemView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

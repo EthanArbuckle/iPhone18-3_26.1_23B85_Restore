@@ -1,16 +1,16 @@
 @interface SearchAssetUUIDsValidator
 - (_TtC12PhotosUICoreP33_2FBF52365A1D24C5F1D36119D5560C9725SearchAssetUUIDsValidator)init;
-- (id)prepareForPhotoLibraryChange:(id)a3;
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3 withPreparedInfo:(id)a4;
+- (id)prepareForPhotoLibraryChange:(id)change;
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue withPreparedInfo:(id)info;
 @end
 
 @implementation SearchAssetUUIDsValidator
 
-- (id)prepareForPhotoLibraryChange:(id)a3
+- (id)prepareForPhotoLibraryChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1A43F54FC(v4);
+  changeCopy = change;
+  selfCopy = self;
+  v6 = sub_1A43F54FC(changeCopy);
 
   if (v6)
   {
@@ -25,9 +25,9 @@
   return v7;
 }
 
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3 withPreparedInfo:(id)a4
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue withPreparedInfo:(id)info
 {
-  if (a4)
+  if (info)
   {
     v6 = sub_1A524C3E4();
   }
@@ -37,8 +37,8 @@
     v6 = 0;
   }
 
-  v7 = a3;
-  v8 = self;
+  queueCopy = queue;
+  selfCopy = self;
   sub_1A43F5CA4(v6);
 }
 

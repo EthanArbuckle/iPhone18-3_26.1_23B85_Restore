@@ -1,24 +1,24 @@
 @interface HDMCDiagnosticsServer
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7;
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error;
 + (id)requiredEntitlements;
-- (HDMCDiagnosticsServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 profileExtension:(id)a7;
-- (void)remote_triggerAnalysisForDiagnosticsWithCompletion:(id)a3;
+- (HDMCDiagnosticsServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate profileExtension:(id)extension;
+- (void)remote_triggerAnalysisForDiagnosticsWithCompletion:(id)completion;
 @end
 
 @implementation HDMCDiagnosticsServer
 
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v13 profile];
-  v16 = [v15 profileExtensionWithIdentifier:*MEMORY[0x277D11920]];
+  dCopy = d;
+  configurationCopy = configuration;
+  clientCopy = client;
+  delegateCopy = delegate;
+  profile = [clientCopy profile];
+  v16 = [profile profileExtensionWithIdentifier:*MEMORY[0x277D11920]];
 
   if (v16)
   {
-    v17 = [objc_alloc(objc_opt_class()) initWithUUID:v11 configuration:v12 client:v13 delegate:v14 profileExtension:v16];
+    v17 = [objc_alloc(objc_opt_class()) initWithUUID:dCopy configuration:configurationCopy client:clientCopy delegate:delegateCopy profileExtension:v16];
   }
 
   else
@@ -26,10 +26,10 @@
     v18 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"No profile extension found for %@", objc_opt_class()}];
     if (v18)
     {
-      if (a7)
+      if (error)
       {
         v19 = v18;
-        *a7 = v18;
+        *error = v18;
       }
 
       else
@@ -44,20 +44,20 @@
   return v17;
 }
 
-- (HDMCDiagnosticsServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 profileExtension:(id)a7
+- (HDMCDiagnosticsServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate profileExtension:(id)extension
 {
-  v13 = a5;
-  v14 = a7;
+  clientCopy = client;
+  extensionCopy = extension;
   v18.receiver = self;
   v18.super_class = HDMCDiagnosticsServer;
-  v15 = [(HDStandardTaskServer *)&v18 initWithUUID:a3 configuration:a4 client:v13 delegate:a6];
+  v15 = [(HDStandardTaskServer *)&v18 initWithUUID:d configuration:configuration client:clientCopy delegate:delegate];
   if (v15)
   {
-    v16 = [v13 profile];
-    objc_storeWeak(&v15->_profile, v16);
+    profile = [clientCopy profile];
+    objc_storeWeak(&v15->_profile, profile);
 
-    objc_storeStrong(&v15->_profileExtension, a7);
-    objc_storeStrong(&v15->_client, a5);
+    objc_storeStrong(&v15->_profileExtension, extension);
+    objc_storeStrong(&v15->_client, client);
   }
 
   return v15;
@@ -73,10 +73,10 @@
   return v2;
 }
 
-- (void)remote_triggerAnalysisForDiagnosticsWithCompletion:(id)a3
+- (void)remote_triggerAnalysisForDiagnosticsWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC2E8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_DEFAULT))
@@ -94,8 +94,8 @@
   v11[2] = __76__HDMCDiagnosticsServer_remote_triggerAnalysisForDiagnosticsWithCompletion___block_invoke;
   v11[3] = &unk_27865AEF0;
   v11[4] = self;
-  v12 = v4;
-  v9 = v4;
+  v12 = completionCopy;
+  v9 = completionCopy;
   dispatch_async(v8, v11);
 
   v10 = *MEMORY[0x277D85DE8];

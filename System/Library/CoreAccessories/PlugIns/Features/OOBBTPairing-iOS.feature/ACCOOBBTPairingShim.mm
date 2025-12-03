@@ -1,32 +1,32 @@
 @interface ACCOOBBTPairingShim
-- (ACCOOBBTPairingShim)initWithDelegate:(id)a3;
+- (ACCOOBBTPairingShim)initWithDelegate:(id)delegate;
 - (ACCOOBBTPairingShimProtocol)delegate;
-- (BOOL)tryProcessXPCMessage:(id)a3 connection:(id)a4 server:(id)a5;
+- (BOOL)tryProcessXPCMessage:(id)message connection:(id)connection server:(id)server;
 - (id)description;
-- (void)accessoryAttached:(id)a3 accInfoDict:(id)a4;
-- (void)accessoryDetached:(id)a3;
-- (void)accessoryInfo:(id)a3 oobBtPairingUID:(id)a4 accessoryMacAddr:(id)a5 deviceClass:(unsigned int)a6;
-- (void)accessoryPairingCompletion:(id)a3 oobBtPairingUID:(id)a4 accessoryMacAddr:(id)a5 sendStop:(BOOL)a6 result:(unsigned __int8)a7;
-- (void)beginPairingWithCurrentAccessory:(id)a3;
+- (void)accessoryAttached:(id)attached accInfoDict:(id)dict;
+- (void)accessoryDetached:(id)detached;
+- (void)accessoryInfo:(id)info oobBtPairingUID:(id)d accessoryMacAddr:(id)addr deviceClass:(unsigned int)class;
+- (void)accessoryPairingCompletion:(id)completion oobBtPairingUID:(id)d accessoryMacAddr:(id)addr sendStop:(BOOL)stop result:(unsigned __int8)result;
+- (void)beginPairingWithCurrentAccessory:(id)accessory;
 - (void)dealloc;
 @end
 
 @implementation ACCOOBBTPairingShim
 
-- (ACCOOBBTPairingShim)initWithDelegate:(id)a3
+- (ACCOOBBTPairingShim)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = ACCOOBBTPairingShim;
   v5 = [(ACCOOBBTPairingShim *)&v10 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCAD78] UUID];
-    v7 = [v6 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     uid = v5->_uid;
-    v5->_uid = v7;
+    v5->_uid = uUIDString;
 
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v5;
@@ -48,15 +48,15 @@
   v2 = MEMORY[0x277CCACA8];
   uid = self->_uid;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [v2 stringWithFormat:@"<ACCOOBBTPairingShim>[_uid=%@ _delegate=%@]", uid, WeakRetained];
+  weakRetained = [v2 stringWithFormat:@"<ACCOOBBTPairingShim>[_uid=%@ _delegate=%@]", uid, WeakRetained];
 
-  return v5;
+  return weakRetained;
 }
 
-- (void)beginPairingWithCurrentAccessory:(id)a3
+- (void)beginPairingWithCurrentAccessory:(id)accessory
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoryCopy = accessory;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -86,46 +86,46 @@
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = accessoryCopy;
     _os_log_impl(&dword_23361B000, v7, OS_LOG_TYPE_DEFAULT, "Beginning OOB BT pairing: accessory=%@", &v10, 0xCu);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained startOOBBTPairing:v4];
+  [WeakRetained startOOBBTPairing:accessoryCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessoryAttached:(id)a3 accInfoDict:(id)a4
+- (void)accessoryAttached:(id)attached accInfoDict:(id)dict
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  attachedCopy = attached;
+  dictCopy = dict;
   v7 = *MEMORY[0x277CE84D0];
-  v8 = [v6 objectForKey:*MEMORY[0x277CE84D0]];
+  v8 = [dictCopy objectForKey:*MEMORY[0x277CE84D0]];
 
   if (v8)
   {
-    v9 = [v6 objectForKey:v7];
-    [v5 setDisplayName:v9];
+    v9 = [dictCopy objectForKey:v7];
+    [attachedCopy setDisplayName:v9];
   }
 
   v10 = *MEMORY[0x277CE84B8];
-  v11 = [v6 objectForKey:*MEMORY[0x277CE84B8]];
+  v11 = [dictCopy objectForKey:*MEMORY[0x277CE84B8]];
 
   if (v11)
   {
-    v12 = [v6 objectForKey:v10];
-    [v5 setCertData:v12];
+    v12 = [dictCopy objectForKey:v10];
+    [attachedCopy setCertData:v12];
   }
 
   v13 = *MEMORY[0x277CE84C0];
-  v14 = [v6 objectForKey:*MEMORY[0x277CE84C0]];
+  v14 = [dictCopy objectForKey:*MEMORY[0x277CE84C0]];
 
   if (v14)
   {
-    v15 = [v6 objectForKey:v13];
-    [v5 setCertSerial:v15];
+    v15 = [dictCopy objectForKey:v13];
+    [attachedCopy setCertSerial:v15];
   }
 
   if (gLogObjects && gNumLogObjects >= 1)
@@ -147,17 +147,17 @@
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138412290;
-    v20 = v5;
+    v20 = attachedCopy;
     _os_log_impl(&dword_23361B000, v16, OS_LOG_TYPE_DEFAULT, "accessoryAttached: %@", &v19, 0xCu);
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessoryDetached:(id)a3
+- (void)accessoryDetached:(id)detached
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  detachedCopy = detached;
   if (gLogObjects)
   {
     v4 = gNumLogObjects < 1;
@@ -187,19 +187,19 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v3;
+    v9 = detachedCopy;
     _os_log_impl(&dword_23361B000, v6, OS_LOG_TYPE_DEFAULT, "accessoryDetached: %@", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessoryInfo:(id)a3 oobBtPairingUID:(id)a4 accessoryMacAddr:(id)a5 deviceClass:(unsigned int)a6
+- (void)accessoryInfo:(id)info oobBtPairingUID:(id)d accessoryMacAddr:(id)addr deviceClass:(unsigned int)class
 {
   v47 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  infoCopy = info;
+  dCopy = d;
+  addrCopy = addr;
   if (gLogObjects)
   {
     v13 = gNumLogObjects < 1;
@@ -229,17 +229,17 @@
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    *&buf[4] = v10;
+    *&buf[4] = infoCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v11;
+    *&buf[14] = dCopy;
     *&buf[22] = 2112;
-    *&buf[24] = v12;
+    *&buf[24] = addrCopy;
     LOWORD(v45) = 1024;
-    *(&v45 + 2) = a6;
+    *(&v45 + 2) = class;
     _os_log_impl(&dword_23361B000, v15, OS_LOG_TYPE_DEFAULT, "accessoryInfo: %@ oobBtPairingUID:%@ accessoryMacAddr:%@ deviceClass:%d", buf, 0x26u);
   }
 
-  if (v10 && v11)
+  if (infoCopy && dCopy)
   {
     v40 = -21846;
     v39 = -1431655766;
@@ -270,15 +270,15 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       *v41 = 138412290;
-      v42 = v12;
+      v42 = addrCopy;
       _os_log_impl(&dword_23361B000, v17, OS_LOG_TYPE_INFO, "Remote MAC Address: %@", v41, 0xCu);
     }
 
-    v21 = [v12 bytes];
-    v37 = *v21;
-    v38 = *(v21 + 4);
-    [v10 setCurrentRemoteMACAddress:v12];
-    [v10 setCurrentOOBBTPairingUID:v11];
+    bytes = [addrCopy bytes];
+    v37 = *bytes;
+    v38 = *(bytes + 4);
+    [infoCopy setCurrentRemoteMACAddress:addrCopy];
+    [infoCopy setCurrentOOBBTPairingUID:dCopy];
     if (gLogObjects && gNumLogObjects >= 1)
     {
       v22 = *gLogObjects;
@@ -297,13 +297,13 @@
 
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
-      v24 = [v10 currentRemoteMACAddress];
+      currentRemoteMACAddress = [infoCopy currentRemoteMACAddress];
       *v41 = 138412290;
-      v42 = v24;
+      v42 = currentRemoteMACAddress;
       _os_log_impl(&dword_23361B000, v22, OS_LOG_TYPE_INFO, "Storing remote MAC Address: %@", v41, 0xCu);
     }
 
-    [v10 BTSession];
+    [infoCopy BTSession];
     if (BTLocalDeviceGetDefault())
     {
       if (gLogObjects && gNumLogObjects >= 1)
@@ -357,16 +357,16 @@
       if (BTDeviceAddressFromString())
       {
 LABEL_62:
-        [v10 setCurrentRemoteMACAddress:0];
-        [v10 setCurrentOOBBTPairingUID:0];
+        [infoCopy setCurrentRemoteMACAddress:0];
+        [infoCopy setCurrentOOBBTPairingUID:0];
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
-        [WeakRetained stopOOBBTPairing:v10];
+        [WeakRetained stopOOBBTPairing:infoCopy];
 LABEL_63:
 
         goto LABEL_64;
       }
 
-      [v10 BTSession];
+      [infoCopy BTSession];
       if (BTDeviceFromAddress())
       {
         if (gLogObjects && gNumLogObjects >= 1)
@@ -402,8 +402,8 @@ LABEL_63:
 
       else
       {
-        [v10 setCurrentRemoteBTDevice:0];
-        [v10 BTAccessoryManager];
+        [infoCopy setCurrentRemoteBTDevice:0];
+        [infoCopy BTAccessoryManager];
         if (BTAccessoryManagerGenerateLinkKey())
         {
           WeakRetained = logObjectForModule();
@@ -415,14 +415,14 @@ LABEL_63:
 
         else
         {
-          WeakRetained = [v10 displayName];
+          WeakRetained = [infoCopy displayName];
           if (!WeakRetained)
           {
-            v30 = [v10 iap2ShimAccessory];
-            WeakRetained = [v30 name];
+            iap2ShimAccessory = [infoCopy iap2ShimAccessory];
+            WeakRetained = [iap2ShimAccessory name];
           }
 
-          [v10 BTAccessoryManager];
+          [infoCopy BTAccessoryManager];
           [WeakRetained UTF8String];
           v31 = BTAccessoryManagerSetLinkKeyEx();
           v32 = logObjectForModule();
@@ -438,7 +438,7 @@ LABEL_63:
             v34 = [MEMORY[0x277CBEA90] dataWithBytes:v43 length:16];
             v35 = [MEMORY[0x277CBEA90] dataWithBytes:&v39 length:6];
             v36 = objc_loadWeakRetained(&self->_delegate);
-            [v36 linkKey:v34 deviceMacAddr:v35 accessory:v10];
+            [v36 linkKey:v34 deviceMacAddr:v35 accessory:infoCopy];
 
             goto LABEL_63;
           }
@@ -473,9 +473,9 @@ LABEL_63:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *&buf[4] = v10;
+    *&buf[4] = infoCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v11;
+    *&buf[14] = dCopy;
     _os_log_impl(&dword_23361B000, v18, OS_LOG_TYPE_DEFAULT, "Invalid accessory(%@) or oobBtPairingUID(%@)", buf, 0x16u);
   }
 
@@ -483,14 +483,14 @@ LABEL_64:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessoryPairingCompletion:(id)a3 oobBtPairingUID:(id)a4 accessoryMacAddr:(id)a5 sendStop:(BOOL)a6 result:(unsigned __int8)a7
+- (void)accessoryPairingCompletion:(id)completion oobBtPairingUID:(id)d accessoryMacAddr:(id)addr sendStop:(BOOL)stop result:(unsigned __int8)result
 {
-  v7 = a7;
-  v8 = a6;
+  resultCopy = result;
+  stopCopy = stop;
   v42 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  completionCopy = completion;
+  dCopy = d;
+  addrCopy = addr;
   if (gLogObjects)
   {
     v15 = gNumLogObjects < 1;
@@ -520,19 +520,19 @@ LABEL_64:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *v33 = 138413314;
-    *&v33[4] = v12;
+    *&v33[4] = completionCopy;
     v34 = 2112;
-    v35 = v13;
+    v35 = dCopy;
     v36 = 2112;
-    v37 = v14;
+    v37 = addrCopy;
     v38 = 1024;
-    v39 = v8;
+    v39 = stopCopy;
     v40 = 1024;
-    v41 = v7;
+    v41 = resultCopy;
     _os_log_impl(&dword_23361B000, v17, OS_LOG_TYPE_DEFAULT, "accessoryPairingCompletion: %@ oobBtPairingUID:%@ accessoryMacAddr:%@ sendStop:%d result:%d", v33, 0x2Cu);
   }
 
-  if (v12 && v13)
+  if (completionCopy && dCopy)
   {
     if (gLogObjects && gNumLogObjects >= 1)
     {
@@ -556,7 +556,7 @@ LABEL_64:
       _os_log_impl(&dword_23361B000, v18, OS_LOG_TYPE_DEFAULT, "Asking BTServer to connect to the remote device...", v33, 2u);
     }
 
-    if (v7)
+    if (resultCopy)
     {
       if (gLogObjects && gNumLogObjects >= 1)
       {
@@ -582,9 +582,9 @@ LABEL_64:
       goto LABEL_36;
     }
 
-    if ([v12 currentRemoteBTDevice] && (objc_msgSend(v12, "carPlaySupported") & 1) == 0)
+    if ([completionCopy currentRemoteBTDevice] && (objc_msgSend(completionCopy, "carPlaySupported") & 1) == 0)
     {
-      [v12 currentRemoteBTDevice];
+      [completionCopy currentRemoteBTDevice];
       v25 = BTDeviceConnect();
       if (gLogObjects && gNumLogObjects >= 1)
       {
@@ -617,7 +617,7 @@ LABEL_64:
 
     else
     {
-      if (![v12 currentRemoteBTDevice])
+      if (![completionCopy currentRemoteBTDevice])
       {
         if (gLogObjects && gNumLogObjects >= 1)
         {
@@ -642,7 +642,7 @@ LABEL_64:
         }
       }
 
-      if (![v12 carPlaySupported])
+      if (![completionCopy carPlaySupported])
       {
         goto LABEL_37;
       }
@@ -668,11 +668,11 @@ LABEL_64:
 LABEL_36:
 
 LABEL_37:
-        [v12 setCurrentRemoteMACAddress:{0, *v33}];
-        if (v8)
+        [completionCopy setCurrentRemoteMACAddress:{0, *v33}];
+        if (stopCopy)
         {
           WeakRetained = objc_loadWeakRetained(&self->_delegate);
-          [WeakRetained stopOOBBTPairing:v12];
+          [WeakRetained stopOOBBTPairing:completionCopy];
         }
 
         goto LABEL_39;
@@ -694,11 +694,11 @@ LABEL_39:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)tryProcessXPCMessage:(id)a3 connection:(id)a4 server:(id)a5
+- (BOOL)tryProcessXPCMessage:(id)message connection:(id)connection server:(id)server
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  string = xpc_dictionary_get_string(v6, MEMORY[0x277CE8508]);
+  messageCopy = message;
+  string = xpc_dictionary_get_string(messageCopy, MEMORY[0x277CE8508]);
   if (!string)
   {
     if (gLogObjects)
@@ -770,7 +770,7 @@ LABEL_39:
   v14 = strcmp(string, "IAPAppBeginOOBPairingStr");
   if (!v14)
   {
-    uint64 = xpc_dictionary_get_uint64(v6, MEMORY[0x277CE8500]);
+    uint64 = xpc_dictionary_get_uint64(messageCopy, MEMORY[0x277CE8500]);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v17 = [WeakRetained oobBtAccessoryForConnectionID:uint64];
 

@@ -1,25 +1,25 @@
 @interface HKDataMetadataAudiogramFrequenciesSection
-- (HKDataMetadataAudiogramFrequenciesSection)initWithSample:(id)a3 leftEar:(BOOL)a4 unitController:(id)a5;
-- (id)_formattedFrequencyStringFromSensitivityPoint:(id)a3;
-- (id)_formattedSensitivityStringFromSensitivityPoint:(id)a3 isLeftEar:(BOOL)a4 unitController:(id)a5;
-- (id)_sensitivityQuantityFromSensitivityPoint:(id)a3 isLeftEar:(BOOL)a4;
-- (void)_addCellsFromAudiogramSample:(id)a3 forLeftEar:(BOOL)a4 unitController:(id)a5;
+- (HKDataMetadataAudiogramFrequenciesSection)initWithSample:(id)sample leftEar:(BOOL)ear unitController:(id)controller;
+- (id)_formattedFrequencyStringFromSensitivityPoint:(id)point;
+- (id)_formattedSensitivityStringFromSensitivityPoint:(id)point isLeftEar:(BOOL)ear unitController:(id)controller;
+- (id)_sensitivityQuantityFromSensitivityPoint:(id)point isLeftEar:(BOOL)ear;
+- (void)_addCellsFromAudiogramSample:(id)sample forLeftEar:(BOOL)ear unitController:(id)controller;
 @end
 
 @implementation HKDataMetadataAudiogramFrequenciesSection
 
-- (HKDataMetadataAudiogramFrequenciesSection)initWithSample:(id)a3 leftEar:(BOOL)a4 unitController:(id)a5
+- (HKDataMetadataAudiogramFrequenciesSection)initWithSample:(id)sample leftEar:(BOOL)ear unitController:(id)controller
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  earCopy = ear;
+  sampleCopy = sample;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v8;
+    v10 = sampleCopy;
     v11 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v12 = v11;
-    if (v6)
+    if (earCopy)
     {
       v13 = @"LEFT_FULL";
     }
@@ -37,55 +37,55 @@
     v16 = v15;
     if (v15)
     {
-      [(HKDataMetadataAudiogramFrequenciesSection *)v15 _addCellsFromAudiogramSample:v10 forLeftEar:v6 unitController:v9];
+      [(HKDataMetadataAudiogramFrequenciesSection *)v15 _addCellsFromAudiogramSample:v10 forLeftEar:earCopy unitController:controllerCopy];
     }
 
     self = v16;
 
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (id)_sensitivityQuantityFromSensitivityPoint:(id)a3 isLeftEar:(BOOL)a4
+- (id)_sensitivityQuantityFromSensitivityPoint:(id)point isLeftEar:(BOOL)ear
 {
-  v4 = !a4;
-  v5 = [a3 tests];
+  v4 = !ear;
+  tests = [point tests];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __96__HKDataMetadataAudiogramFrequenciesSection__sensitivityQuantityFromSensitivityPoint_isLeftEar___block_invoke;
   v10[3] = &__block_descriptor_40_e36_B16__0__HKAudiogramSensitivityTest_8l;
   v10[4] = v4;
-  v6 = [v5 hk_filter:v10];
-  v7 = [v6 firstObject];
+  v6 = [tests hk_filter:v10];
+  firstObject = [v6 firstObject];
 
-  v8 = [v7 sensitivity];
+  sensitivity = [firstObject sensitivity];
 
-  return v8;
+  return sensitivity;
 }
 
-- (void)_addCellsFromAudiogramSample:(id)a3 forLeftEar:(BOOL)a4 unitController:(id)a5
+- (void)_addCellsFromAudiogramSample:(id)sample forLeftEar:(BOOL)ear unitController:(id)controller
 {
-  v5 = a4;
+  earCopy = ear;
   v30 = *MEMORY[0x1E69E9840];
-  v22 = a5;
+  controllerCopy = controller;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = [a3 sensitivityPoints];
+  obj = [sample sensitivityPoints];
   v8 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v8)
   {
     v9 = v8;
     v23 = *v25;
-    if (v5)
+    if (earCopy)
     {
       v10 = @"Left";
     }
@@ -106,11 +106,11 @@
         }
 
         v12 = *(*(&v24 + 1) + 8 * i);
-        v13 = [(HKDataMetadataAudiogramFrequenciesSection *)self _sensitivityQuantityFromSensitivityPoint:v12 isLeftEar:v5];
+        v13 = [(HKDataMetadataAudiogramFrequenciesSection *)self _sensitivityQuantityFromSensitivityPoint:v12 isLeftEar:earCopy];
         if (v13)
         {
           v14 = [(HKDataMetadataAudiogramFrequenciesSection *)self _formattedFrequencyStringFromSensitivityPoint:v12];
-          v15 = [(HKDataMetadataAudiogramFrequenciesSection *)self _formattedSensitivityStringFromSensitivityPoint:v12 isLeftEar:v5 unitController:v22];
+          v15 = [(HKDataMetadataAudiogramFrequenciesSection *)self _formattedSensitivityStringFromSensitivityPoint:v12 isLeftEar:earCopy unitController:controllerCopy];
           v16 = v21;
           v17 = [v14 hk_stringByReplacingSpacesWithString:&stru_1F42FFBE0];
           v28[0] = @"HKAudiogramSample";
@@ -131,11 +131,11 @@
   }
 }
 
-- (id)_formattedFrequencyStringFromSensitivityPoint:(id)a3
+- (id)_formattedFrequencyStringFromSensitivityPoint:(id)point
 {
-  v3 = [a3 frequency];
-  v4 = [MEMORY[0x1E696C510] hertzUnit];
-  [v3 doubleValueForUnit:v4];
+  frequency = [point frequency];
+  hertzUnit = [MEMORY[0x1E696C510] hertzUnit];
+  [frequency doubleValueForUnit:hertzUnit];
   v6 = v5;
 
   v7 = HKNumberFormatterWithDecimalPrecision(5, 0);
@@ -161,22 +161,22 @@
   return v14;
 }
 
-- (id)_formattedSensitivityStringFromSensitivityPoint:(id)a3 isLeftEar:(BOOL)a4 unitController:(id)a5
+- (id)_formattedSensitivityStringFromSensitivityPoint:(id)point isLeftEar:(BOOL)ear unitController:(id)controller
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [MEMORY[0x1E696C510] decibelHearingLevelUnit];
-  v11 = [(HKDataMetadataAudiogramFrequenciesSection *)self _sensitivityQuantityFromSensitivityPoint:v8 isLeftEar:v6];
-  v12 = [MEMORY[0x1E696C608] sharedBehavior];
-  v13 = [v12 features];
-  v14 = [v13 yodel];
+  earCopy = ear;
+  pointCopy = point;
+  controllerCopy = controller;
+  decibelHearingLevelUnit = [MEMORY[0x1E696C510] decibelHearingLevelUnit];
+  v11 = [(HKDataMetadataAudiogramFrequenciesSection *)self _sensitivityQuantityFromSensitivityPoint:pointCopy isLeftEar:earCopy];
+  mEMORY[0x1E696C608] = [MEMORY[0x1E696C608] sharedBehavior];
+  features = [mEMORY[0x1E696C608] features];
+  yodel = [features yodel];
 
-  if (v14)
+  if (yodel)
   {
-    v15 = [v8 tests];
-    v16 = v15;
-    if (v6)
+    tests = [pointCopy tests];
+    v16 = tests;
+    if (earCopy)
     {
       v17 = &__block_literal_global_9;
     }
@@ -186,33 +186,33 @@
       v17 = &__block_literal_global_332;
     }
 
-    v18 = [v15 hk_filter:v17];
+    v18 = [tests hk_filter:v17];
 
-    v19 = [v18 firstObject];
-    v20 = [v19 clampedSensitivity];
+    firstObject = [v18 firstObject];
+    clampedSensitivity = [firstObject clampedSensitivity];
 
-    v21 = [v18 firstObject];
-    v22 = [v21 clampingRange];
+    firstObject2 = [v18 firstObject];
+    clampingRange = [firstObject2 clampingRange];
 
-    if (v20)
+    if (clampedSensitivity)
     {
-      v44 = v8;
+      v44 = pointCopy;
       v23 = MEMORY[0x1E696AD98];
-      [v20 doubleValueForUnit:v10];
+      [clampedSensitivity doubleValueForUnit:decibelHearingLevelUnit];
       v25 = [v23 numberWithDouble:HKRoundWithPositiveZeroForDoubleValue(v24)];
       v26 = HKNumberFormatterFromTemplate(0);
       v27 = 1;
-      v43 = HKFormattedStringFromValue(v25, 0, v9, 1, v26);
+      v43 = HKFormattedStringFromValue(v25, 0, controllerCopy, 1, v26);
 
-      v28 = [v22 lowerBound];
-      if (([v28 hk_isGreaterThanQuantity:v11] & 1) == 0)
+      lowerBound = [clampingRange lowerBound];
+      if (([lowerBound hk_isGreaterThanQuantity:v11] & 1) == 0)
       {
-        v29 = [v22 lowerBound];
-        v27 = [v29 isEqual:v11];
+        lowerBound2 = [clampingRange lowerBound];
+        v27 = [lowerBound2 isEqual:v11];
       }
 
-      v30 = [v22 upperBound];
-      if ([v30 hk_isLessThanQuantity:v11])
+      upperBound = [clampingRange upperBound];
+      if ([upperBound hk_isLessThanQuantity:v11])
       {
 
         if ((v27 & 1) == 0)
@@ -221,7 +221,7 @@
         }
 
 LABEL_12:
-        v42 = v9;
+        v42 = controllerCopy;
         v32 = @"AUDIOGRAM_SENSITIVITY_POINT_VALUE_WITH_UNIT_CLAMPED_FROM_BELOW_%@";
 LABEL_15:
         v33 = MEMORY[0x1E696AEC0];
@@ -229,13 +229,13 @@ LABEL_15:
         v35 = [v34 localizedStringForKey:v32 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Yodel"];
         v36 = [v33 localizedStringWithFormat:v35, v43];
 
-        v8 = v44;
-        v9 = v42;
+        pointCopy = v44;
+        controllerCopy = v42;
         goto LABEL_19;
       }
 
-      v31 = [v22 upperBound];
-      v41 = [v31 isEqual:v11];
+      upperBound2 = [clampingRange upperBound];
+      v41 = [upperBound2 isEqual:v11];
 
       if (v27)
       {
@@ -245,23 +245,23 @@ LABEL_15:
       if (v41)
       {
 LABEL_14:
-        v42 = v9;
+        v42 = controllerCopy;
         v32 = @"AUDIOGRAM_SENSITIVITY_POINT_VALUE_WITH_UNIT_CLAMPED_FROM_ABOVE_%@";
         goto LABEL_15;
       }
 
-      v8 = v44;
+      pointCopy = v44;
     }
   }
 
   v37 = MEMORY[0x1E696AD98];
-  [v11 doubleValueForUnit:v10];
-  v20 = [v37 numberWithDouble:HKRoundWithPositiveZeroForDoubleValue(v38)];
+  [v11 doubleValueForUnit:decibelHearingLevelUnit];
+  clampedSensitivity = [v37 numberWithDouble:HKRoundWithPositiveZeroForDoubleValue(v38)];
   v39 = HKNumberFormatterFromTemplate(0);
-  v22 = HKFormattedStringFromValue(v20, 0, v9, 1, v39);
+  clampingRange = HKFormattedStringFromValue(clampedSensitivity, 0, controllerCopy, 1, v39);
 
-  v25 = [v9 localizedDisplayNameForUnit:v10 value:v20];
-  v36 = HKFormatValueAndUnit(v22, v25);
+  v25 = [controllerCopy localizedDisplayNameForUnit:decibelHearingLevelUnit value:clampedSensitivity];
+  v36 = HKFormatValueAndUnit(clampingRange, v25);
 LABEL_19:
 
   return v36;

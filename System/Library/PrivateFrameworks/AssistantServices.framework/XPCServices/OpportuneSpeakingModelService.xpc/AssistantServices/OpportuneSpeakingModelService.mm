@@ -1,91 +1,91 @@
 @interface OpportuneSpeakingModelService
 - (OpportuneSpeakingModelService)init;
-- (void)createModelWithType:(int64_t)a3 completion:(id)a4;
-- (void)recordFeedbackOfType:(int64_t)a3 forSpeakableId:(id)a4;
-- (void)recordNotificationUsageForSpeakableId:(id)a3 withStartDate:(id)a4 withEndDate:(id)a5 withCompletion:(id)a6;
-- (void)recordRecommendedAction:(id)a3 forSpeakableId:(id)a4 withModelIdentifier:(id)a5;
+- (void)createModelWithType:(int64_t)type completion:(id)completion;
+- (void)recordFeedbackOfType:(int64_t)type forSpeakableId:(id)id;
+- (void)recordNotificationUsageForSpeakableId:(id)id withStartDate:(id)date withEndDate:(id)endDate withCompletion:(id)completion;
+- (void)recordRecommendedAction:(id)action forSpeakableId:(id)id withModelIdentifier:(id)identifier;
 @end
 
 @implementation OpportuneSpeakingModelService
 
-- (void)recordNotificationUsageForSpeakableId:(id)a3 withStartDate:(id)a4 withEndDate:(id)a5 withCompletion:(id)a6
+- (void)recordNotificationUsageForSpeakableId:(id)id withStartDate:(id)date withEndDate:(id)endDate withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  idCopy = id;
+  dateCopy = date;
+  endDateCopy = endDate;
+  completionCopy = completion;
   v14 = dispatch_time(0, 90000000000);
   queue = self->_queue;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10000725C;
   v20[3] = &unk_100010620;
-  v21 = v10;
-  v22 = v11;
-  v23 = v12;
-  v24 = v13;
-  v16 = v13;
-  v17 = v12;
-  v18 = v11;
-  v19 = v10;
+  v21 = idCopy;
+  v22 = dateCopy;
+  v23 = endDateCopy;
+  v24 = completionCopy;
+  v16 = completionCopy;
+  v17 = endDateCopy;
+  v18 = dateCopy;
+  v19 = idCopy;
   dispatch_after(v14, queue, v20);
 }
 
-- (void)recordRecommendedAction:(id)a3 forSpeakableId:(id)a4 withModelIdentifier:(id)a5
+- (void)recordRecommendedAction:(id)action forSpeakableId:(id)id withModelIdentifier:(id)identifier
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  identifierCopy = identifier;
+  idCopy = id;
+  actionCopy = action;
   v10 = +[AFOpportuneSpeakingModuleDataCollection sharedCollector];
-  [v10 logRecommendedAction:v9 forSpeakableId:v8 withModelId:v7];
+  [v10 logRecommendedAction:actionCopy forSpeakableId:idCopy withModelId:identifierCopy];
 }
 
-- (void)recordFeedbackOfType:(int64_t)a3 forSpeakableId:(id)a4
+- (void)recordFeedbackOfType:(int64_t)type forSpeakableId:(id)id
 {
-  if (a3 == 2)
+  if (type == 2)
   {
-    v6 = [OSMBackgroundFeatureManager sharedBackgroundFeatureManager:a3];
-    v5 = [v6 feedbackManager];
-    [v5 setLastNegativeFeedbackForContact:0];
+    v6 = [OSMBackgroundFeatureManager sharedBackgroundFeatureManager:type];
+    feedbackManager = [v6 feedbackManager];
+    [feedbackManager setLastNegativeFeedbackForContact:0];
   }
 }
 
-- (void)createModelWithType:(int64_t)a3 completion:(id)a4
+- (void)createModelWithType:(int64_t)type completion:(id)completion
 {
-  v14 = a4;
+  completionCopy = completion;
   modelsByType = self->_modelsByType;
-  v7 = [NSNumber numberWithInteger:a3];
+  v7 = [NSNumber numberWithInteger:type];
   v8 = [(NSMutableDictionary *)modelsByType objectForKey:v7];
 
-  v9 = [v8 modelIdentifier];
+  modelIdentifier = [v8 modelIdentifier];
   if (!v8)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       v10 = &off_100010208;
     }
 
     else
     {
-      if (a3 != 3)
+      if (type != 3)
       {
         v8 = 0;
 LABEL_8:
-        v11 = [v8 modelIdentifier];
+        modelIdentifier2 = [v8 modelIdentifier];
 
-        if (v11)
+        if (modelIdentifier2)
         {
           v12 = self->_modelsByType;
-          v13 = [NSNumber numberWithInteger:a3];
+          v13 = [NSNumber numberWithInteger:type];
           [(NSMutableDictionary *)v12 setObject:v8 forKey:v13];
 
-          [(NSMutableDictionary *)self->_modelsByIdentifier setObject:v8 forKey:v11];
-          v9 = v11;
+          [(NSMutableDictionary *)self->_modelsByIdentifier setObject:v8 forKey:modelIdentifier2];
+          modelIdentifier = modelIdentifier2;
         }
 
         else
         {
-          v9 = 0;
+          modelIdentifier = 0;
         }
 
         goto LABEL_11;
@@ -99,7 +99,7 @@ LABEL_8:
   }
 
 LABEL_11:
-  v14[2](v14, v8, v9);
+  completionCopy[2](completionCopy, v8, modelIdentifier);
 }
 
 - (OpportuneSpeakingModelService)init

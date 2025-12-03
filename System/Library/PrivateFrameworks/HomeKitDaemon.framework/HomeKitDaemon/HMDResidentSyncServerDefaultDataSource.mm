@@ -7,30 +7,30 @@
 
 - (int64_t)maximumTransactionsForStoreChange
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"residentSyncMaximumTransactionsForStoreChange"];
-  v4 = [v3 numberValue];
-  v5 = [v4 integerValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"residentSyncMaximumTransactionsForStoreChange"];
+  numberValue = [v3 numberValue];
+  integerValue = [numberValue integerValue];
 
-  if (v5 < 0)
+  if (integerValue < 0)
   {
     return 1;
   }
 
   else
   {
-    return v5;
+    return integerValue;
   }
 }
 
 - (int64_t)maximumTransactionsForSparseUpdate
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"residentSyncMaximumTransactionsForSparseUpdate"];
-  v4 = [v3 numberValue];
-  v5 = [v4 integerValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"residentSyncMaximumTransactionsForSparseUpdate"];
+  numberValue = [v3 numberValue];
+  integerValue = [numberValue integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 @end

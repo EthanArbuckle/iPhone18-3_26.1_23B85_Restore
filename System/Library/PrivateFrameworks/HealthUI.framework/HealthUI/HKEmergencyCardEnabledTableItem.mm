@@ -2,22 +2,22 @@
 - (UIEdgeInsets)separatorInset;
 - (UITableView)tableView;
 - (id)_editCell;
-- (id)_viewCellForTableView:(id)a3;
+- (id)_viewCellForTableView:(id)view;
 - (id)footerTextViewString;
-- (id)initInEditMode:(BOOL)a3;
-- (id)tableView:(id)a3 cellForRowAtIndex:(int64_t)a4;
+- (id)initInEditMode:(BOOL)mode;
+- (id)tableView:(id)view cellForRowAtIndex:(int64_t)index;
 - (id)titleForFooter;
 - (id)titleForHeader;
-- (void)switchWasChanged:(BOOL)a3;
+- (void)switchWasChanged:(BOOL)changed;
 @end
 
 @implementation HKEmergencyCardEnabledTableItem
 
-- (id)initInEditMode:(BOOL)a3
+- (id)initInEditMode:(BOOL)mode
 {
   v4.receiver = self;
   v4.super_class = HKEmergencyCardEnabledTableItem;
-  return [(HKEmergencyCardTableItem *)&v4 initInEditMode:a3];
+  return [(HKEmergencyCardTableItem *)&v4 initInEditMode:mode];
 }
 
 - (id)_editCell
@@ -28,8 +28,8 @@
     v4 = [HKMedicalIDEditorSwitchCell alloc];
     v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v6 = [v5 localizedStringForKey:@"show_medical_id_switch_title" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-    v7 = [(HKEmergencyCardTableItem *)self data];
-    v8 = -[HKMedicalIDEditorSwitchCell initWithTitle:defaultState:](v4, "initWithTitle:defaultState:", v6, [v7 isDisabled] ^ 1);
+    data = [(HKEmergencyCardTableItem *)self data];
+    v8 = -[HKMedicalIDEditorSwitchCell initWithTitle:defaultState:](v4, "initWithTitle:defaultState:", v6, [data isDisabled] ^ 1);
     v9 = self->_cell;
     self->_cell = v8;
 
@@ -40,19 +40,19 @@
   return cell;
 }
 
-- (id)_viewCellForTableView:(id)a3
+- (id)_viewCellForTableView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = +[_HKMedicalIDMultilineStringCell defaultReuseIdentifier];
-  v6 = [v4 dequeueReusableCellWithIdentifier:v5];
+  v6 = [viewCopy dequeueReusableCellWithIdentifier:v5];
 
   v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v8 = [v7 localizedStringForKey:@"show_medical_id_switch_title" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-  v9 = [v6 titleLabel];
-  [v9 setText:v8];
+  titleLabel = [v6 titleLabel];
+  [titleLabel setText:v8];
 
-  v10 = [(HKEmergencyCardTableItem *)self data];
-  LODWORD(v7) = [v10 isDisabled];
+  data = [(HKEmergencyCardTableItem *)self data];
+  LODWORD(v7) = [data isDisabled];
   v11 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v12 = v11;
   if (v7)
@@ -66,17 +66,17 @@
   }
 
   v14 = [v11 localizedStringForKey:v13 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-  v15 = [v6 detailLabel];
-  [v15 setText:v14];
+  detailLabel = [v6 detailLabel];
+  [detailLabel setText:v14];
 
   return v6;
 }
 
-- (void)switchWasChanged:(BOOL)a3
+- (void)switchWasChanged:(BOOL)changed
 {
-  v3 = a3;
-  v5 = [(HKEmergencyCardTableItem *)self data];
-  [v5 setIsDisabled:!v3];
+  changedCopy = changed;
+  data = [(HKEmergencyCardTableItem *)self data];
+  [data setIsDisabled:!changedCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_tableView);
   [WeakRetained reloadData];
@@ -95,22 +95,22 @@
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndex:(int64_t)a4
+- (id)tableView:(id)view cellForRowAtIndex:(int64_t)index
 {
-  v5 = a3;
+  viewCopy = view;
   if ([(HKEmergencyCardTableItem *)self isInEditMode])
   {
-    objc_storeWeak(&self->_tableView, v5);
+    objc_storeWeak(&self->_tableView, viewCopy);
 
-    v6 = [(HKEmergencyCardEnabledTableItem *)self _editCell];
+    _editCell = [(HKEmergencyCardEnabledTableItem *)self _editCell];
   }
 
   else
   {
-    v6 = [(HKEmergencyCardEnabledTableItem *)self _viewCellForTableView:v5];
+    _editCell = [(HKEmergencyCardEnabledTableItem *)self _viewCellForTableView:viewCopy];
   }
 
-  return v6;
+  return _editCell;
 }
 
 - (id)titleForHeader
@@ -124,16 +124,16 @@
 - (id)footerTextViewString
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v2 = [(HKEmergencyCardEnabledTableItem *)self titleForFooter];
+  titleForFooter = [(HKEmergencyCardEnabledTableItem *)self titleForFooter];
   v3 = objc_alloc(MEMORY[0x1E696AD40]);
   v9[0] = *MEMORY[0x1E69DB650];
-  v4 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v10[0] = v4;
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  v10[0] = secondaryLabelColor;
   v9[1] = *MEMORY[0x1E69DB648];
   v5 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
   v10[1] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
-  v7 = [v3 initWithString:v2 attributes:v6];
+  v7 = [v3 initWithString:titleForFooter attributes:v6];
 
   return v7;
 }
@@ -142,11 +142,11 @@
 {
   if ([(HKEmergencyCardTableItem *)self isInEditMode]&& _os_feature_enabled_impl())
   {
-    v3 = [(HKEmergencyCardTableItem *)self data];
-    v4 = [v3 isDisabled];
+    data = [(HKEmergencyCardTableItem *)self data];
+    isDisabled = [data isDisabled];
 
     v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    if (v4)
+    if (isDisabled)
     {
       v6 = @"show_locked_disabled_footer";
     }
@@ -164,15 +164,15 @@
       v7 = MEMORY[0x1E696AEC0];
       v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
       v8 = [v5 localizedStringForKey:@"show_medical_id_detail_for_tinker_profile_%@" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-tinker"];
-      v9 = [(HKEmergencyCardTableItem *)self profileFirstName];
-      v10 = [v7 stringWithFormat:v8, v9];
+      profileFirstName = [(HKEmergencyCardTableItem *)self profileFirstName];
+      v10 = [v7 stringWithFormat:v8, profileFirstName];
 
       goto LABEL_12;
     }
 
-    v11 = [MEMORY[0x1E696C608] hasPairedWatch];
+    hasPairedWatch = [MEMORY[0x1E696C608] hasPairedWatch];
     v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    if (v11)
+    if (hasPairedWatch)
     {
       v6 = @"show_medical_id_detail_with_watch";
     }

@@ -2,7 +2,7 @@
 - (NSNumber)vluAuthorized;
 - (NSString)environmentBundleIdentifier;
 - (VICVisualIntelligenceAnalysisRequestConfig)init;
-- (void)setEnvironmentBundleIdentifier:(id)a3;
+- (void)setEnvironmentBundleIdentifier:(id)identifier;
 @end
 
 @implementation VICVisualIntelligenceAnalysisRequestConfig
@@ -25,9 +25,9 @@
   return v3;
 }
 
-- (void)setEnvironmentBundleIdentifier:(id)a3
+- (void)setEnvironmentBundleIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = sub_1D8B15970();
     v6 = v5;

@@ -1,13 +1,13 @@
 @interface RTTripClusterProcessorOptions
-- (RTTripClusterProcessorOptions)initWithDefaultsManager:(id)a3;
+- (RTTripClusterProcessorOptions)initWithDefaultsManager:(id)manager;
 - (id)description;
 @end
 
 @implementation RTTripClusterProcessorOptions
 
-- (RTTripClusterProcessorOptions)initWithDefaultsManager:(id)a3
+- (RTTripClusterProcessorOptions)initWithDefaultsManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v54.receiver = self;
   v54.super_class = RTTripClusterProcessorOptions;
   v5 = [(RTTripClusterProcessorOptions *)&v54 init];
@@ -34,9 +34,9 @@
     *(v6 + 21) = 0x3FE8000000000000;
     *(v6 + 22) = 3;
     *(v6 + 184) = vdupq_n_s64(5uLL);
-    if (v4)
+    if (managerCopy)
     {
-      v8 = [v4 objectForKey:@"RTDefaultsTripSegmentClusteringDtwDistanceThreshold"];
+      v8 = [managerCopy objectForKey:@"RTDefaultsTripSegmentClusteringDtwDistanceThreshold"];
       v53 = v8;
       if (v8)
       {
@@ -49,46 +49,46 @@
       }
 
       *(v6 + 11) = v9;
-      v10 = [v4 objectForKey:@"RTDefaultsTripSegmentClusterUsingRoadCoordinates"];
+      v10 = [managerCopy objectForKey:@"RTDefaultsTripSegmentClusterUsingRoadCoordinates"];
       v52 = v10;
       if (v10)
       {
-        v11 = [v10 BOOLValue];
+        bOOLValue = [v10 BOOLValue];
       }
 
       else
       {
-        v11 = v6[13];
+        bOOLValue = v6[13];
       }
 
-      v6[13] = v11;
-      v12 = [v4 objectForKey:@"RTDefaultsTripSegmentRecordDebuggingDataInFile"];
+      v6[13] = bOOLValue;
+      v12 = [managerCopy objectForKey:@"RTDefaultsTripSegmentRecordDebuggingDataInFile"];
       v51 = v12;
       if (v12)
       {
-        v13 = [v12 BOOLValue];
+        bOOLValue2 = [v12 BOOLValue];
       }
 
       else
       {
-        v13 = v6[14];
+        bOOLValue2 = v6[14];
       }
 
-      v6[14] = v13;
-      v14 = [v4 objectForKey:@"RTDefaultsLearnedRoutesCurrentLocationSPIEnabled"];
+      v6[14] = bOOLValue2;
+      v14 = [managerCopy objectForKey:@"RTDefaultsLearnedRoutesCurrentLocationSPIEnabled"];
       v50 = v14;
       if (v14)
       {
-        v15 = [v14 BOOLValue];
+        bOOLValue3 = [v14 BOOLValue];
       }
 
       else
       {
-        v15 = v6[15];
+        bOOLValue3 = v6[15];
       }
 
-      v6[15] = v15;
-      v16 = [v4 objectForKey:@"RTDefaultsTripClusterStartEndRoadCountBufferZonePercentage"];
+      v6[15] = bOOLValue3;
+      v16 = [managerCopy objectForKey:@"RTDefaultsTripClusterStartEndRoadCountBufferZonePercentage"];
       v49 = v16;
       if (v16)
       {
@@ -101,46 +101,46 @@
       }
 
       *(v6 + 21) = v17;
-      v18 = [v4 objectForKey:@"RTDefaultsTripClusterMaxClusterTraversalCount"];
+      v18 = [managerCopy objectForKey:@"RTDefaultsTripClusterMaxClusterTraversalCount"];
       v48 = v18;
       if (v18)
       {
-        v19 = [v18 intValue];
+        intValue = [v18 intValue];
       }
 
       else
       {
-        v19 = *(v6 + 7);
+        intValue = *(v6 + 7);
       }
 
-      *(v6 + 7) = v19;
-      v20 = [v4 objectForKey:@"RTDefaultsTripClusterMaxTripSegmentDistance"];
+      *(v6 + 7) = intValue;
+      v20 = [managerCopy objectForKey:@"RTDefaultsTripClusterMaxTripSegmentDistance"];
       v47 = v20;
       if (v20)
       {
-        v21 = [v20 intValue];
+        intValue2 = [v20 intValue];
       }
 
       else
       {
-        v21 = *(v6 + 8);
+        intValue2 = *(v6 + 8);
       }
 
-      *(v6 + 8) = v21;
-      v22 = [v4 objectForKey:@"RTDefaultsTripClusterMaxTripSegmentTime"];
+      *(v6 + 8) = intValue2;
+      v22 = [managerCopy objectForKey:@"RTDefaultsTripClusterMaxTripSegmentTime"];
       v23 = v22;
       if (v22)
       {
-        v24 = [v22 intValue];
+        intValue3 = [v22 intValue];
       }
 
       else
       {
-        v24 = *(v6 + 9);
+        intValue3 = *(v6 + 9);
       }
 
-      *(v6 + 9) = v24;
-      v25 = [v4 objectForKey:@"RTDefaultsTripClusterRoadFamiliarityDecayFactor"];
+      *(v6 + 9) = intValue3;
+      v25 = [managerCopy objectForKey:@"RTDefaultsTripClusterRoadFamiliarityDecayFactor"];
       v26 = v25;
       if (v25)
       {
@@ -153,84 +153,84 @@
       }
 
       *(v6 + 18) = v27;
-      v28 = [v4 objectForKey:@"RTDefaultsTripClusterEnableWalkBikeClustering"];
+      v28 = [managerCopy objectForKey:@"RTDefaultsTripClusterEnableWalkBikeClustering"];
       v29 = v28;
       if (v28)
       {
-        v30 = [v28 BOOLValue];
+        bOOLValue4 = [v28 BOOLValue];
       }
 
       else
       {
-        v30 = v6[16];
+        bOOLValue4 = v6[16];
       }
 
-      v6[16] = v30;
-      v31 = [v4 objectForKey:@"RTDefaultsTripClusterMaxDeletionAttemptsForClusterData"];
+      v6[16] = bOOLValue4;
+      v31 = [managerCopy objectForKey:@"RTDefaultsTripClusterMaxDeletionAttemptsForClusterData"];
       v32 = v31;
       if (v31)
       {
-        v33 = [v31 intValue];
+        intValue4 = [v31 intValue];
       }
 
       else
       {
-        v33 = *(v6 + 22);
+        intValue4 = *(v6 + 22);
       }
 
-      *(v6 + 22) = v33;
-      v34 = [v4 objectForKey:@"RTDefaultsTripClusterRehydrateRouteLocationsFromWaypoints"];
+      *(v6 + 22) = intValue4;
+      v34 = [managerCopy objectForKey:@"RTDefaultsTripClusterRehydrateRouteLocationsFromWaypoints"];
       v35 = v34;
       if (v34)
       {
-        v36 = [v34 BOOLValue];
+        bOOLValue5 = [v34 BOOLValue];
       }
 
       else
       {
-        v36 = v6[17];
+        bOOLValue5 = v6[17];
       }
 
-      v6[17] = v36;
-      v37 = [v4 objectForKey:@"RTDefaultsTripClusterCleanUpClustersWithDuplicateWaypoints"];
+      v6[17] = bOOLValue5;
+      v37 = [managerCopy objectForKey:@"RTDefaultsTripClusterCleanUpClustersWithDuplicateWaypoints"];
       v38 = v37;
       if (v37)
       {
-        v39 = [v37 BOOLValue];
+        bOOLValue6 = [v37 BOOLValue];
       }
 
       else
       {
-        v39 = v6[18];
+        bOOLValue6 = v6[18];
       }
 
-      v6[18] = v39;
-      v40 = [v4 objectForKey:@"RTDefaultsTripClusterMaxCleanUpOperationsCountPerRun"];
+      v6[18] = bOOLValue6;
+      v40 = [managerCopy objectForKey:@"RTDefaultsTripClusterMaxCleanUpOperationsCountPerRun"];
       v41 = v40;
       if (v40)
       {
-        v42 = [v40 intValue];
+        intValue5 = [v40 intValue];
       }
 
       else
       {
-        v42 = *(v6 + 23);
+        intValue5 = *(v6 + 23);
       }
 
-      *(v6 + 23) = v42;
-      v43 = [v4 objectForKey:@"RTDefaultsTripClusterMaxRouteRehydrationsCountPerRun"];
+      *(v6 + 23) = intValue5;
+      v43 = [managerCopy objectForKey:@"RTDefaultsTripClusterMaxRouteRehydrationsCountPerRun"];
       v44 = v43;
       if (v43)
       {
-        v45 = [v43 intValue];
+        intValue6 = [v43 intValue];
       }
 
       else
       {
-        v45 = *(v6 + 24);
+        intValue6 = *(v6 + 24);
       }
 
-      *(v6 + 24) = v45;
+      *(v6 + 24) = intValue6;
     }
   }
 

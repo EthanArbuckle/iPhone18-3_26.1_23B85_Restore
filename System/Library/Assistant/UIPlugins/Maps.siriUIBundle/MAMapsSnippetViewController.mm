@@ -1,21 +1,21 @@
 @interface MAMapsSnippetViewController
-- (id)viewControllerForSnippet:(id)a3;
+- (id)viewControllerForSnippet:(id)snippet;
 @end
 
 @implementation MAMapsSnippetViewController
 
-- (id)viewControllerForSnippet:(id)a3
+- (id)viewControllerForSnippet:(id)snippet
 {
-  v3 = a3;
+  snippetCopy = snippet;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = +[MKMapService sharedService];
     [v4 captureUserAction:8001 onTarget:801 eventValue:0];
 
-    v5 = v3;
-    v6 = [v5 items];
-    v7 = [v6 count];
+    v5 = snippetCopy;
+    items = [v5 items];
+    v7 = [items count];
 
     if (v7 >= 2 && [v5 selectedItemIndex] == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -38,7 +38,7 @@
       v9 = +[MKMapService sharedService];
       [v9 captureUserAction:8002 onTarget:801 eventValue:0];
 
-      v10 = [[MAMapsDisambiguationController alloc] initWithDisambiguationSnippet:v3];
+      v10 = [[MAMapsDisambiguationController alloc] initWithDisambiguationSnippet:snippetCopy];
     }
 
     else

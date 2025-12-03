@@ -1,7 +1,7 @@
 @interface TIWordSearchShapeBased
-- (BOOL)addTopCandidateForCode:(id)a3 option:(unint64_t)a4 autoconvertedCandidates:(id)a5 candidateRefsDictionary:(id)a6;
-- (BOOL)validateCode:(id)a3 withOption:(unint64_t)a4;
-- (id)autoconvertLongestValidPrefixes:(id)a3 option:(unint64_t)a4 candidateResultSet:(id)a5 autoconvertedCandidateArray:(id *)a6;
+- (BOOL)addTopCandidateForCode:(id)code option:(unint64_t)option autoconvertedCandidates:(id)candidates candidateRefsDictionary:(id)dictionary;
+- (BOOL)validateCode:(id)code withOption:(unint64_t)option;
+- (id)autoconvertLongestValidPrefixes:(id)prefixes option:(unint64_t)option candidateResultSet:(id)set autoconvertedCandidateArray:(id *)array;
 - (void)updateMecabraState;
 @end
 
@@ -15,13 +15,13 @@
   [(TIWordSearch *)self updateDictionaryPaths];
 }
 
-- (BOOL)validateCode:(id)a3 withOption:(unint64_t)a4
+- (BOOL)validateCode:(id)code withOption:(unint64_t)option
 {
-  v6 = a3;
-  v7 = [(TIWordSearch *)self mecabraEnvironment];
-  LODWORD(a4) = [v7 analyzeString:v6 options:a4];
+  codeCopy = code;
+  mecabraEnvironment = [(TIWordSearch *)self mecabraEnvironment];
+  LODWORD(option) = [mecabraEnvironment analyzeString:codeCopy options:option];
 
-  if (!a4)
+  if (!option)
   {
     return 0;
   }
@@ -30,15 +30,15 @@
   return MecabraGetNextCandidate() != 0;
 }
 
-- (BOOL)addTopCandidateForCode:(id)a3 option:(unint64_t)a4 autoconvertedCandidates:(id)a5 candidateRefsDictionary:(id)a6
+- (BOOL)addTopCandidateForCode:(id)code option:(unint64_t)option autoconvertedCandidates:(id)candidates candidateRefsDictionary:(id)dictionary
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a3;
-  v13 = [(TIWordSearch *)self mecabraEnvironment];
-  LODWORD(a4) = [v13 analyzeString:v12 options:a4];
+  candidatesCopy = candidates;
+  dictionaryCopy = dictionary;
+  codeCopy = code;
+  mecabraEnvironment = [(TIWordSearch *)self mecabraEnvironment];
+  LODWORD(option) = [mecabraEnvironment analyzeString:codeCopy options:option];
 
-  if (!a4)
+  if (!option)
   {
     goto LABEL_4;
   }
@@ -48,9 +48,9 @@
   if (NextCandidate)
   {
     v15 = [objc_alloc(MEMORY[0x277D6F448]) initWithMecabraCandidate:NextCandidate];
-    [v10 addObject:v15];
-    v16 = [v15 mecabraCandidatePointerValue];
-    [v11 setObject:NextCandidate forKeyedSubscript:v16];
+    [candidatesCopy addObject:v15];
+    mecabraCandidatePointerValue = [v15 mecabraCandidatePointerValue];
+    [dictionaryCopy setObject:NextCandidate forKeyedSubscript:mecabraCandidatePointerValue];
 
 LABEL_4:
     LOBYTE(NextCandidate) = 1;
@@ -59,24 +59,24 @@ LABEL_4:
   return NextCandidate;
 }
 
-- (id)autoconvertLongestValidPrefixes:(id)a3 option:(unint64_t)a4 candidateResultSet:(id)a5 autoconvertedCandidateArray:(id *)a6
+- (id)autoconvertLongestValidPrefixes:(id)prefixes option:(unint64_t)option candidateResultSet:(id)set autoconvertedCandidateArray:(id *)array
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [v9 length];
+  prefixesCopy = prefixes;
+  setCopy = set;
+  v11 = [prefixesCopy length];
   if (v11)
   {
     v12 = v11;
-    v30 = a6;
-    v31 = v10;
-    v13 = 0;
+    arrayCopy = array;
+    v31 = setCopy;
+    array = 0;
     v14 = 0;
     v15 = 0;
     v16 = 1;
     do
     {
-      v17 = [v9 substringWithRange:{v15, v16}];
-      if ([(TIWordSearchShapeBased *)self validateCode:v17 withOption:a4])
+      v17 = [prefixesCopy substringWithRange:{v15, v16}];
+      if ([(TIWordSearchShapeBased *)self validateCode:v17 withOption:option])
       {
         ++v16;
       }
@@ -86,30 +86,30 @@ LABEL_4:
         v18 = v16 - 1;
         if (!v18)
         {
-          v20 = v9;
-          v22 = v13;
+          v20 = prefixesCopy;
+          v22 = array;
           v24 = v14;
 LABEL_17:
           v28 = v20;
 
-          v10 = v31;
+          setCopy = v31;
           goto LABEL_21;
         }
 
-        if (!v13)
+        if (!array)
         {
-          v13 = [MEMORY[0x277CBEB18] array];
-          v19 = [MEMORY[0x277CBEB38] dictionary];
+          array = [MEMORY[0x277CBEB18] array];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
 
-          v14 = v19;
+          v14 = dictionary;
         }
 
-        v20 = v9;
-        v21 = [v9 substringWithRange:{v15, v18}];
-        v22 = v13;
-        v23 = v13;
+        v20 = prefixesCopy;
+        v21 = [prefixesCopy substringWithRange:{v15, v18}];
+        v22 = array;
+        v23 = array;
         v24 = v14;
-        v25 = [(TIWordSearchShapeBased *)self addTopCandidateForCode:v21 option:a4 autoconvertedCandidates:v23 candidateRefsDictionary:v14];
+        v25 = [(TIWordSearchShapeBased *)self addTopCandidateForCode:v21 option:option autoconvertedCandidates:v23 candidateRefsDictionary:v14];
 
         if (!v25)
         {
@@ -119,22 +119,22 @@ LABEL_17:
         v15 += v18;
         v16 = 1;
         v14 = v24;
-        v13 = v22;
-        v9 = v20;
+        array = v22;
+        prefixesCopy = v20;
       }
     }
 
     while (v16 + v15 <= v12);
-    v20 = v9;
-    v22 = v13;
+    v20 = prefixesCopy;
+    v22 = array;
     v24 = v14;
     if (v15)
     {
-      v10 = v31;
-      if (v30)
+      setCopy = v31;
+      if (arrayCopy)
       {
         v26 = v22;
-        *v30 = v22;
+        *arrayCopy = v22;
       }
 
       [v31 setAutoconvertedMecabraCandidates:v22 candidateRefsDictionary:v24];
@@ -142,12 +142,12 @@ LABEL_17:
       goto LABEL_20;
     }
 
-    v10 = v31;
+    setCopy = v31;
   }
 
   else
   {
-    v20 = v9;
+    v20 = prefixesCopy;
     v22 = 0;
     v24 = 0;
   }

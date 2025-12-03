@@ -1,11 +1,11 @@
 @interface STYPerformanceChecker
 + (id)sharedPerfChecker;
-- (int64_t)triage:(id)a3;
-- (void)checkFramerateOfAnimationScenario:(id)a3 completionHandler:(id)a4;
-- (void)checkLatencyOfResponsivenessScenario:(id)a3 completionHandler:(id)a4;
-- (void)checkPerformanceOfScenarioReport:(id)a3 completionHandler:(id)a4;
+- (int64_t)triage:(id)triage;
+- (void)checkFramerateOfAnimationScenario:(id)scenario completionHandler:(id)handler;
+- (void)checkLatencyOfResponsivenessScenario:(id)scenario completionHandler:(id)handler;
+- (void)checkPerformanceOfScenarioReport:(id)report completionHandler:(id)handler;
 - (void)dealloc;
-- (void)reportError:(int64_t)a3 report:(id)a4 completionHandler:(id)a5;
+- (void)reportError:(int64_t)error report:(id)report completionHandler:(id)handler;
 @end
 
 @implementation STYPerformanceChecker
@@ -66,90 +66,90 @@ void __42__STYPerformanceChecker_sharedPerfChecker__block_invoke()
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkPerformanceOfScenarioReport:(id)a3 completionHandler:(id)a4
+- (void)checkPerformanceOfScenarioReport:(id)report completionHandler:(id)handler
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v11 scenario];
-  v8 = [v7 kpi];
+  reportCopy = report;
+  handlerCopy = handler;
+  scenario = [reportCopy scenario];
+  v8 = [scenario kpi];
 
   if (v8 == -1001)
   {
-    [(STYPerformanceChecker *)self checkFramerateOfAnimationScenario:v11 completionHandler:v6];
+    [(STYPerformanceChecker *)self checkFramerateOfAnimationScenario:reportCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v9 = [v11 scenario];
-    v10 = [v9 kpi];
+    scenario2 = [reportCopy scenario];
+    v10 = [scenario2 kpi];
 
     if (v10 == -1000)
     {
-      [(STYPerformanceChecker *)self checkLatencyOfResponsivenessScenario:v11 completionHandler:v6];
+      [(STYPerformanceChecker *)self checkLatencyOfResponsivenessScenario:reportCopy completionHandler:handlerCopy];
     }
 
     else
     {
-      [(STYPerformanceChecker *)self reportError:-100001 report:v11 completionHandler:v6];
+      [(STYPerformanceChecker *)self reportError:-100001 report:reportCopy completionHandler:handlerCopy];
     }
   }
 }
 
-- (void)reportError:(int64_t)a3 report:(id)a4 completionHandler:(id)a5
+- (void)reportError:(int64_t)error report:(id)report completionHandler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  reportCopy = report;
+  handlerCopy = handler;
   v10 = +[STYFrameworkHelper sharedHelper];
-  v11 = [v10 logHandle];
+  logHandle = [v10 logHandle];
 
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
   {
-    v26 = [v8 scenario];
-    v21 = [v26 scenarioID];
+    scenario = [reportCopy scenario];
+    scenarioID = [scenario scenarioID];
     perfCheckerErrors = self->_perfCheckerErrors;
-    v23 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-    v24 = [v23 stringValue];
-    v25 = [(NSDictionary *)perfCheckerErrors valueForKey:v24];
+    v23 = [MEMORY[0x277CCABB0] numberWithInteger:error];
+    stringValue = [v23 stringValue];
+    v25 = [(NSDictionary *)perfCheckerErrors valueForKey:stringValue];
     *buf = 138412802;
-    v30 = v21;
+    v30 = scenarioID;
     v31 = 2048;
-    v32 = a3;
+    errorCopy = error;
     v33 = 2112;
     v34 = v25;
-    _os_log_error_impl(&dword_2656CE000, v11, OS_LOG_TYPE_ERROR, "Encountered error conditions while checking performance of %@ :  %ld / %@", buf, 0x20u);
+    _os_log_error_impl(&dword_2656CE000, logHandle, OS_LOG_TYPE_ERROR, "Encountered error conditions while checking performance of %@ :  %ld / %@", buf, 0x20u);
   }
 
   v27 = *MEMORY[0x277CCA450];
-  v12 = [MEMORY[0x277CCA8D8] mainBundle];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
   v13 = self->_perfCheckerErrors;
-  v14 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v15 = [v14 stringValue];
-  v16 = [(NSDictionary *)v13 valueForKey:v15];
-  v17 = [v12 localizedStringForKey:v16 value:&stru_287705D88 table:0];
+  v14 = [MEMORY[0x277CCABB0] numberWithInteger:error];
+  stringValue2 = [v14 stringValue];
+  v16 = [(NSDictionary *)v13 valueForKey:stringValue2];
+  v17 = [mainBundle localizedStringForKey:v16 value:&stru_287705D88 table:0];
   v28 = v17;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
 
-  v19 = [MEMORY[0x277CCA9B8] errorWithDomain:STYPerformanceCheckerErrorDomain code:a3 userInfo:v18];
-  v9[2](v9, 0, v19, v8);
+  v19 = [MEMORY[0x277CCA9B8] errorWithDomain:STYPerformanceCheckerErrorDomain code:error userInfo:v18];
+  handlerCopy[2](handlerCopy, 0, v19, reportCopy);
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkLatencyOfResponsivenessScenario:(id)a3 completionHandler:(id)a4
+- (void)checkLatencyOfResponsivenessScenario:(id)scenario completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  scenarioCopy = scenario;
+  handlerCopy = handler;
   serialUtilityQueue = self->_serialUtilityQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__STYPerformanceChecker_checkLatencyOfResponsivenessScenario_completionHandler___block_invoke;
   block[3] = &unk_279B9B508;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = scenarioCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = scenarioCopy;
   dispatch_async(serialUtilityQueue, block);
 }
 
@@ -177,20 +177,20 @@ uint64_t __80__STYPerformanceChecker_checkLatencyOfResponsivenessScenario_comple
   }
 }
 
-- (void)checkFramerateOfAnimationScenario:(id)a3 completionHandler:(id)a4
+- (void)checkFramerateOfAnimationScenario:(id)scenario completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  scenarioCopy = scenario;
+  handlerCopy = handler;
   serialUtilityQueue = self->_serialUtilityQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__STYPerformanceChecker_checkFramerateOfAnimationScenario_completionHandler___block_invoke;
   block[3] = &unk_279B9B508;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = scenarioCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = scenarioCopy;
   dispatch_async(serialUtilityQueue, block);
 }
 
@@ -262,7 +262,7 @@ uint64_t __77__STYPerformanceChecker_checkFramerateOfAnimationScenario_completio
   return result;
 }
 
-- (int64_t)triage:(id)a3
+- (int64_t)triage:(id)triage
 {
   if (self->_underThermalPressure)
   {

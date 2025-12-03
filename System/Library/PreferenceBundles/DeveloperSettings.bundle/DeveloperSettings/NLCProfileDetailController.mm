@@ -1,27 +1,27 @@
 @interface NLCProfileDetailController
-- (BOOL)isValid:(id)a3 format:(id)a4;
+- (BOOL)isValid:(id)valid format:(id)format;
 - (NLCProfileDetailController)init;
-- (id)getProfileName:(id)a3;
-- (id)getProtocolFamily:(id)a3;
+- (id)getProfileName:(id)name;
+- (id)getProtocolFamily:(id)family;
 - (id)specifiers;
-- (void)cancelButtonClicked:(id)a3;
-- (void)deleteConfirm:(id)a3;
-- (void)deleteNLCProfile:(id)a3;
-- (void)dupProfile:(id)a3;
+- (void)cancelButtonClicked:(id)clicked;
+- (void)deleteConfirm:(id)confirm;
+- (void)deleteNLCProfile:(id)profile;
+- (void)dupProfile:(id)profile;
 - (void)loadValuesFromCurrentProfile;
 - (void)loadView;
-- (void)saveButtonClicked:(id)a3;
+- (void)saveButtonClicked:(id)clicked;
 - (void)saveValuesToCurrentProfile;
-- (void)setDNSDelay:(id)a3 specifier:(id)a4;
-- (void)setInBandwidth:(id)a3 specifier:(id)a4;
-- (void)setInDelay:(id)a3 specifier:(id)a4;
-- (void)setInPLR:(id)a3 specifier:(id)a4;
-- (void)setInterfaceName:(id)a3 specifier:(id)a4;
-- (void)setOutBandwidth:(id)a3 specifier:(id)a4;
-- (void)setOutDelay:(id)a3 specifier:(id)a4;
-- (void)setOutPLR:(id)a3 specifier:(id)a4;
-- (void)setProfileName:(id)a3 specifier:(id)a4;
-- (void)setProtocolFamily:(id)a3 specifier:(id)a4;
+- (void)setDNSDelay:(id)delay specifier:(id)specifier;
+- (void)setInBandwidth:(id)bandwidth specifier:(id)specifier;
+- (void)setInDelay:(id)delay specifier:(id)specifier;
+- (void)setInPLR:(id)r specifier:(id)specifier;
+- (void)setInterfaceName:(id)name specifier:(id)specifier;
+- (void)setOutBandwidth:(id)bandwidth specifier:(id)specifier;
+- (void)setOutDelay:(id)delay specifier:(id)specifier;
+- (void)setOutPLR:(id)r specifier:(id)specifier;
+- (void)setProfileName:(id)name specifier:(id)specifier;
+- (void)setProtocolFamily:(id)family specifier:(id)specifier;
 - (void)updateDoneButton;
 @end
 
@@ -72,9 +72,9 @@
     v4->_interfaceName = &stru_3E0D8;
 
     v15 = +[NLCSettings sharedInstance];
-    v16 = [v15 currentProfile];
+    currentProfile = [v15 currentProfile];
     profileName = v4->_profileName;
-    v4->_profileName = v16;
+    v4->_profileName = currentProfile;
 
     v18 = objc_alloc_init(NSNumberFormatter);
     bwFmtr = v4->_bwFmtr;
@@ -156,8 +156,8 @@
     [v119 addObject:v9];
     if (dword_49FB0)
     {
-      v13 = [v9 placeholder];
-      NSLog(@"nameCell placeHolder: %@", v13);
+      placeholder = [v9 placeholder];
+      NSLog(@"nameCell placeHolder: %@", placeholder);
     }
   }
 
@@ -524,7 +524,7 @@
   return v106;
 }
 
-- (void)deleteConfirm:(id)a3
+- (void)deleteConfirm:(id)confirm
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = LocalizableGTStringKeyForKey();
@@ -551,23 +551,23 @@
   [(NLCProfileDetailController *)self presentViewController:v6 animated:1 completion:0];
 }
 
-- (void)dupProfile:(id)a3
+- (void)dupProfile:(id)profile
 {
-  v22 = a3;
+  profileCopy = profile;
   if (dword_49FB0)
   {
     NSLog(@"%s name: %@", "[NLCProfileDetailController dupProfile:]", self->_profileName);
   }
 
   v4 = [(NSString *)self->_profileName componentsSeparatedByString:@" "];
-  v5 = [v4 lastObject];
+  lastObject = [v4 lastObject];
 
-  v6 = [v5 integerValue];
-  v7 = v6;
-  if (v6)
+  integerValue = [lastObject integerValue];
+  v7 = integerValue;
+  if (integerValue)
   {
-    v8 = v6 + 1;
-    v9 = [(NSString *)self->_profileName substringToIndex:[(NSString *)self->_profileName length]- (log((v6 + 1)) / 2.30258509 + 2.0)];
+    v8 = integerValue + 1;
+    v9 = [(NSString *)self->_profileName substringToIndex:[(NSString *)self->_profileName length]- (log((integerValue + 1)) / 2.30258509 + 2.0)];
   }
 
   else
@@ -639,9 +639,9 @@
   [(NLCProfileDetailController *)self showController:v18];
 }
 
-- (void)deleteNLCProfile:(id)a3
+- (void)deleteNLCProfile:(id)profile
 {
-  v6 = a3;
+  profileCopy = profile;
   if (dword_49FB0)
   {
     NSLog(@"%s name: %@", "[NLCProfileDetailController deleteNLCProfile:]", self->_profileName);
@@ -659,9 +659,9 @@
   }
 }
 
-- (void)saveButtonClicked:(id)a3
+- (void)saveButtonClicked:(id)clicked
 {
-  v34 = a3;
+  clickedCopy = clicked;
   if (dword_49FB0)
   {
     NSLog(@"%s", "[NLCProfileDetailController saveButtonClicked:]");
@@ -723,8 +723,8 @@ LABEL_12:
 
   profileName = self->_profileName;
   v14 = +[NLCSettings sharedInstance];
-  v15 = [v14 currentProfile];
-  LOBYTE(profileName) = [(NSString *)profileName isEqualToString:v15];
+  currentProfile = [v14 currentProfile];
+  LOBYTE(profileName) = [(NSString *)profileName isEqualToString:currentProfile];
 
   if (profileName)
   {
@@ -749,8 +749,8 @@ LABEL_12:
   {
     v30 = qword_49FB8;
     v31 = +[NLCSettings sharedInstance];
-    v32 = [v31 currentProfile];
-    [v30 removeProfileWithName:v32];
+    currentProfile2 = [v31 currentProfile];
+    [v30 removeProfileWithName:currentProfile2];
 
     [qword_49FB8 setSelectedProfileName:self->_profileName];
     v33 = +[NLCSettings sharedInstance];
@@ -764,11 +764,11 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)cancelButtonClicked:(id)a3
+- (void)cancelButtonClicked:(id)clicked
 {
   if (dword_49FB0)
   {
-    NSLog(@"%s", a2, a3, "[NLCProfileDetailController cancelButtonClicked:]");
+    NSLog(@"%s", a2, clicked, "[NLCProfileDetailController cancelButtonClicked:]");
   }
 
   [(NLCProfileDetailController *)self dismissViewControllerAnimated:1 completion:0];
@@ -777,12 +777,12 @@ LABEL_18:
 - (void)updateDoneButton
 {
   WeakRetained = objc_loadWeakRetained(&self->PSListController_opaque[OBJC_IVAR___PSViewController__rootController]);
-  v7 = [WeakRetained navigationBar];
+  navigationBar = [WeakRetained navigationBar];
 
   dirty = self->_dirty;
-  v5 = [v7 topItem];
-  v6 = [v5 rightBarButtonItem];
-  [v6 setEnabled:dirty];
+  topItem = [navigationBar topItem];
+  rightBarButtonItem = [topItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:dirty];
 }
 
 - (void)loadView
@@ -795,47 +795,47 @@ LABEL_18:
   v8.receiver = self;
   v8.super_class = NLCProfileDetailController;
   [(NLCProfileDetailController *)&v8 loadView];
-  v3 = [(NLCProfileDetailController *)self navigationItem];
+  navigationItem = [(NLCProfileDetailController *)self navigationItem];
   isPreset = self->_isPreset;
   v5 = [UIBarButtonItem alloc];
   if (isPreset)
   {
     v6 = [v5 initWithBarButtonSystemItem:0 target:self action:"cancelButtonClicked:"];
-    [v3 setLeftBarButtonItem:v6];
+    [navigationItem setLeftBarButtonItem:v6];
   }
 
   else
   {
     v7 = [v5 initWithBarButtonSystemItem:1 target:self action:"cancelButtonClicked:"];
-    [v3 setLeftBarButtonItem:v7];
+    [navigationItem setLeftBarButtonItem:v7];
 
     v6 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:3 target:self action:"saveButtonClicked:"];
-    [v3 setRightBarButtonItem:v6];
+    [navigationItem setRightBarButtonItem:v6];
   }
 }
 
-- (void)setProfileName:(id)a3 specifier:(id)a4
+- (void)setProfileName:(id)name specifier:(id)specifier
 {
-  v8 = a3;
-  v7 = a4;
+  nameCopy = name;
+  specifierCopy = specifier;
   if (dword_49FB0)
   {
-    NSLog(@"%s %@", "[NLCProfileDetailController setProfileName:specifier:]", v8);
+    NSLog(@"%s %@", "[NLCProfileDetailController setProfileName:specifier:]", nameCopy);
   }
 
-  if (([v8 isEqualToString:self->_profileName] & 1) == 0)
+  if (([nameCopy isEqualToString:self->_profileName] & 1) == 0)
   {
-    objc_storeStrong(&self->_profileName, a3);
+    objc_storeStrong(&self->_profileName, name);
     self->_dirty = 1;
     [(NLCProfileDetailController *)self updateDoneButton];
   }
 }
 
-- (id)getProfileName:(id)a3
+- (id)getProfileName:(id)name
 {
   if (dword_49FB0)
   {
-    NSLog(@"%s", a2, a3, "[NLCProfileDetailController getProfileName:]");
+    NSLog(@"%s", a2, name, "[NLCProfileDetailController getProfileName:]");
   }
 
   profileName = self->_profileName;
@@ -843,19 +843,19 @@ LABEL_18:
   return profileName;
 }
 
-- (BOOL)isValid:(id)a3 format:(id)a4
+- (BOOL)isValid:(id)valid format:(id)format
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSNumberFormatter *)v7 numberFromString:v6];
-  if (v8 || ([v6 isEqualToString:&stru_3E0D8] & 1) != 0)
+  validCopy = valid;
+  formatCopy = format;
+  v8 = [(NSNumberFormatter *)formatCopy numberFromString:validCopy];
+  if (v8 || ([validCopy isEqualToString:&stru_3E0D8] & 1) != 0)
   {
     v9 = 1;
   }
 
   else
   {
-    if (self->_bwFmtr == v7 || self->_plrFmtr == v7 || self->_delayFmtr == v7)
+    if (self->_bwFmtr == formatCopy || self->_plrFmtr == formatCopy || self->_delayFmtr == formatCopy)
     {
       v12 = [NSBundle bundleForClass:objc_opt_class()];
       v13 = LocalizableGTStringKeyForKey();
@@ -871,10 +871,10 @@ LABEL_18:
     v15 = [NSBundle bundleForClass:objc_opt_class()];
     v16 = LocalizableGTStringKeyForKey();
     v17 = [v15 localizedStringForKey:v16 value:&stru_3E0D8 table:@"NLCSettings"];
-    v24 = [v14 initWithFormat:v17, v6];
+    validCopy = [v14 initWithFormat:v17, validCopy];
 
     v18 = v11;
-    v19 = [UIAlertController alertControllerWithTitle:v24 message:v11 preferredStyle:1];
+    v19 = [UIAlertController alertControllerWithTitle:validCopy message:v11 preferredStyle:1];
     v20 = [NSBundle bundleForClass:objc_opt_class()];
     v21 = LocalizableGTStringKeyForKey();
     v22 = [v20 localizedStringForKey:v21 value:&stru_3E0D8 table:@"NLCSettings"];
@@ -889,15 +889,15 @@ LABEL_18:
   return v9;
 }
 
-- (void)setInBandwidth:(id)a3 specifier:(id)a4
+- (void)setInBandwidth:(id)bandwidth specifier:(id)specifier
 {
-  v9 = a3;
-  v7 = a4;
-  if ([(NLCProfileDetailController *)self isValid:v9 format:self->_bwFmtr])
+  bandwidthCopy = bandwidth;
+  specifierCopy = specifier;
+  if ([(NLCProfileDetailController *)self isValid:bandwidthCopy format:self->_bwFmtr])
   {
-    if (([v9 isEqualToString:self->_inBandwidth] & 1) == 0)
+    if (([bandwidthCopy isEqualToString:self->_inBandwidth] & 1) == 0)
     {
-      objc_storeStrong(&self->_inBandwidth, a3);
+      objc_storeStrong(&self->_inBandwidth, bandwidth);
       self->_dirty = 1;
       [(NLCProfileDetailController *)self updateDoneButton];
     }
@@ -905,21 +905,21 @@ LABEL_18:
 
   else
   {
-    v8 = [v7 propertyForKey:PSTableCellKey];
+    v8 = [specifierCopy propertyForKey:PSTableCellKey];
     [v8 setValue:self->_inBandwidth];
     [v8 setNeedsDisplay];
   }
 }
 
-- (void)setInPLR:(id)a3 specifier:(id)a4
+- (void)setInPLR:(id)r specifier:(id)specifier
 {
-  v9 = a3;
-  v7 = a4;
-  if ([(NLCProfileDetailController *)self isValid:v9 format:self->_plrFmtr])
+  rCopy = r;
+  specifierCopy = specifier;
+  if ([(NLCProfileDetailController *)self isValid:rCopy format:self->_plrFmtr])
   {
-    if (([v9 isEqualToString:self->_inPLR] & 1) == 0)
+    if (([rCopy isEqualToString:self->_inPLR] & 1) == 0)
     {
-      objc_storeStrong(&self->_inPLR, a3);
+      objc_storeStrong(&self->_inPLR, r);
       self->_dirty = 1;
       [(NLCProfileDetailController *)self updateDoneButton];
     }
@@ -927,21 +927,21 @@ LABEL_18:
 
   else
   {
-    v8 = [v7 propertyForKey:PSTableCellKey];
+    v8 = [specifierCopy propertyForKey:PSTableCellKey];
     [v8 setValue:self->_inPLR];
     [v8 setNeedsDisplay];
   }
 }
 
-- (void)setInDelay:(id)a3 specifier:(id)a4
+- (void)setInDelay:(id)delay specifier:(id)specifier
 {
-  v9 = a3;
-  v7 = a4;
-  if ([(NLCProfileDetailController *)self isValid:v9 format:self->_delayFmtr])
+  delayCopy = delay;
+  specifierCopy = specifier;
+  if ([(NLCProfileDetailController *)self isValid:delayCopy format:self->_delayFmtr])
   {
-    if (([v9 isEqualToString:self->_inDelay] & 1) == 0)
+    if (([delayCopy isEqualToString:self->_inDelay] & 1) == 0)
     {
-      objc_storeStrong(&self->_inDelay, a3);
+      objc_storeStrong(&self->_inDelay, delay);
       self->_dirty = 1;
       [(NLCProfileDetailController *)self updateDoneButton];
     }
@@ -949,21 +949,21 @@ LABEL_18:
 
   else
   {
-    v8 = [v7 propertyForKey:PSTableCellKey];
+    v8 = [specifierCopy propertyForKey:PSTableCellKey];
     [v8 setValue:self->_inDelay];
     [v8 setNeedsDisplay];
   }
 }
 
-- (void)setOutBandwidth:(id)a3 specifier:(id)a4
+- (void)setOutBandwidth:(id)bandwidth specifier:(id)specifier
 {
-  v9 = a3;
-  v7 = a4;
-  if ([(NLCProfileDetailController *)self isValid:v9 format:self->_bwFmtr])
+  bandwidthCopy = bandwidth;
+  specifierCopy = specifier;
+  if ([(NLCProfileDetailController *)self isValid:bandwidthCopy format:self->_bwFmtr])
   {
-    if (([v9 isEqualToString:self->_outBandwidth] & 1) == 0)
+    if (([bandwidthCopy isEqualToString:self->_outBandwidth] & 1) == 0)
     {
-      objc_storeStrong(&self->_outBandwidth, a3);
+      objc_storeStrong(&self->_outBandwidth, bandwidth);
       self->_dirty = 1;
       [(NLCProfileDetailController *)self updateDoneButton];
     }
@@ -971,21 +971,21 @@ LABEL_18:
 
   else
   {
-    v8 = [v7 propertyForKey:PSTableCellKey];
+    v8 = [specifierCopy propertyForKey:PSTableCellKey];
     [v8 setValue:self->_outBandwidth];
     [v8 setNeedsDisplay];
   }
 }
 
-- (void)setOutPLR:(id)a3 specifier:(id)a4
+- (void)setOutPLR:(id)r specifier:(id)specifier
 {
-  v9 = a3;
-  v7 = a4;
-  if ([(NLCProfileDetailController *)self isValid:v9 format:self->_plrFmtr])
+  rCopy = r;
+  specifierCopy = specifier;
+  if ([(NLCProfileDetailController *)self isValid:rCopy format:self->_plrFmtr])
   {
-    if (([v9 isEqualToString:self->_outPLR] & 1) == 0)
+    if (([rCopy isEqualToString:self->_outPLR] & 1) == 0)
     {
-      objc_storeStrong(&self->_outPLR, a3);
+      objc_storeStrong(&self->_outPLR, r);
       self->_dirty = 1;
       [(NLCProfileDetailController *)self updateDoneButton];
     }
@@ -993,21 +993,21 @@ LABEL_18:
 
   else
   {
-    v8 = [v7 propertyForKey:PSTableCellKey];
+    v8 = [specifierCopy propertyForKey:PSTableCellKey];
     [v8 setValue:self->_outPLR];
     [v8 setNeedsDisplay];
   }
 }
 
-- (void)setOutDelay:(id)a3 specifier:(id)a4
+- (void)setOutDelay:(id)delay specifier:(id)specifier
 {
-  v9 = a3;
-  v7 = a4;
-  if ([(NLCProfileDetailController *)self isValid:v9 format:self->_delayFmtr])
+  delayCopy = delay;
+  specifierCopy = specifier;
+  if ([(NLCProfileDetailController *)self isValid:delayCopy format:self->_delayFmtr])
   {
-    if (([v9 isEqualToString:self->_outDelay] & 1) == 0)
+    if (([delayCopy isEqualToString:self->_outDelay] & 1) == 0)
     {
-      objc_storeStrong(&self->_outDelay, a3);
+      objc_storeStrong(&self->_outDelay, delay);
       self->_dirty = 1;
       [(NLCProfileDetailController *)self updateDoneButton];
     }
@@ -1015,21 +1015,21 @@ LABEL_18:
 
   else
   {
-    v8 = [v7 propertyForKey:PSTableCellKey];
+    v8 = [specifierCopy propertyForKey:PSTableCellKey];
     [v8 setValue:self->_outDelay];
     [v8 setNeedsDisplay];
   }
 }
 
-- (void)setDNSDelay:(id)a3 specifier:(id)a4
+- (void)setDNSDelay:(id)delay specifier:(id)specifier
 {
-  v9 = a3;
-  v7 = a4;
-  if ([(NLCProfileDetailController *)self isValid:v9 format:self->_delayFmtr])
+  delayCopy = delay;
+  specifierCopy = specifier;
+  if ([(NLCProfileDetailController *)self isValid:delayCopy format:self->_delayFmtr])
   {
-    if (([v9 isEqualToString:self->_dnsDelay] & 1) == 0)
+    if (([delayCopy isEqualToString:self->_dnsDelay] & 1) == 0)
     {
-      objc_storeStrong(&self->_dnsDelay, a3);
+      objc_storeStrong(&self->_dnsDelay, delay);
       self->_dirty = 1;
       [(NLCProfileDetailController *)self updateDoneButton];
     }
@@ -1037,27 +1037,27 @@ LABEL_18:
 
   else
   {
-    v8 = [v7 propertyForKey:PSTableCellKey];
+    v8 = [specifierCopy propertyForKey:PSTableCellKey];
     [v8 setValue:self->_dnsDelay];
     [v8 setNeedsDisplay];
   }
 }
 
-- (void)setProtocolFamily:(id)a3 specifier:(id)a4
+- (void)setProtocolFamily:(id)family specifier:(id)specifier
 {
-  v6 = a3;
-  if (([v6 isEqualToString:self->_protocolFamily] & 1) == 0)
+  familyCopy = family;
+  if (([familyCopy isEqualToString:self->_protocolFamily] & 1) == 0)
   {
-    objc_storeStrong(&self->_protocolFamily, a3);
+    objc_storeStrong(&self->_protocolFamily, family);
     self->_dirty = 1;
     [(NLCProfileDetailController *)self updateDoneButton];
   }
 }
 
-- (id)getProtocolFamily:(id)a3
+- (id)getProtocolFamily:(id)family
 {
   protocolFamily = self->_protocolFamily;
-  if (*(a3 + OBJC_IVAR___PSSpecifier_cellType) == 4)
+  if (*(family + OBJC_IVAR___PSSpecifier_cellType) == 4)
   {
     [(NSString *)protocolFamily intValue];
     v4 = [NSBundle bundleForClass:objc_opt_class()];
@@ -1073,12 +1073,12 @@ LABEL_18:
   return v6;
 }
 
-- (void)setInterfaceName:(id)a3 specifier:(id)a4
+- (void)setInterfaceName:(id)name specifier:(id)specifier
 {
-  v6 = a3;
-  if (([v6 isEqualToString:self->_interfaceName] & 1) == 0)
+  nameCopy = name;
+  if (([nameCopy isEqualToString:self->_interfaceName] & 1) == 0)
   {
-    objc_storeStrong(&self->_interfaceName, a3);
+    objc_storeStrong(&self->_interfaceName, name);
     self->_dirty = 1;
     [(NLCProfileDetailController *)self updateDoneButton];
   }
@@ -1151,15 +1151,15 @@ LABEL_18:
   if (v3)
   {
     v4 = [v3 objectForKey:@"DownlinkBandwidth"];
-    v5 = [v4 intValue];
+    intValue = [v4 intValue];
 
     v6 = [v67 objectForKey:@"DownlinkBandwidthUnit"];
-    v7 = [v6 intValue];
+    intValue2 = [v6 intValue];
 
-    v8 = v5 * 1000.0;
-    if (!v7)
+    v8 = intValue * 1000.0;
+    if (!intValue2)
     {
-      v8 = v5;
+      v8 = intValue;
     }
 
     bwFmtr = self->_bwFmtr;
@@ -1180,24 +1180,24 @@ LABEL_18:
     self->_inPLR = v19;
 
     v21 = [v67 objectForKey:@"DownlinkDelay"];
-    v22 = [v21 intValue];
+    intValue3 = [v21 intValue];
 
     v23 = self->_bwFmtr;
-    v24 = [NSNumber numberWithInt:v22];
+    v24 = [NSNumber numberWithInt:intValue3];
     v25 = [(NSNumberFormatter *)v23 stringFromNumber:v24];
     inDelay = self->_inDelay;
     self->_inDelay = v25;
 
     v27 = [v67 objectForKey:@"UplinkBandwidth"];
-    v28 = [v27 intValue];
+    intValue4 = [v27 intValue];
 
     v29 = [v67 objectForKey:@"UplinkBandwidthUnit"];
     LODWORD(v24) = [v29 intValue];
 
-    v30 = v28 * 1000.0;
+    v30 = intValue4 * 1000.0;
     if (!v24)
     {
-      v30 = v28;
+      v30 = intValue4;
     }
 
     v31 = self->_bwFmtr;
@@ -1218,19 +1218,19 @@ LABEL_18:
     self->_outPLR = v41;
 
     v43 = [v67 objectForKey:@"UplinkDelay"];
-    v44 = [v43 intValue];
+    intValue5 = [v43 intValue];
 
     v45 = self->_bwFmtr;
-    v46 = [NSNumber numberWithInt:v44];
+    v46 = [NSNumber numberWithInt:intValue5];
     v47 = [(NSNumberFormatter *)v45 stringFromNumber:v46];
     outDelay = self->_outDelay;
     self->_outDelay = v47;
 
     v49 = [v67 objectForKey:@"DNSDelayValue"];
-    v50 = [v49 intValue];
+    intValue6 = [v49 intValue];
 
     v51 = self->_bwFmtr;
-    v52 = [NSNumber numberWithInt:v50];
+    v52 = [NSNumber numberWithInt:intValue6];
     v53 = [(NSNumberFormatter *)v51 stringFromNumber:v52];
     dnsDelay = self->_dnsDelay;
     self->_dnsDelay = v53;
@@ -1256,9 +1256,9 @@ LABEL_18:
     }
 
     v59 = [v67 objectForKey:@"ProtocolFamily"];
-    v60 = [v59 intValue];
+    intValue7 = [v59 intValue];
 
-    v61 = [NSString stringWithFormat:@"%d", v60];
+    v61 = [NSString stringWithFormat:@"%d", intValue7];
     protocolFamily = self->_protocolFamily;
     self->_protocolFamily = v61;
 

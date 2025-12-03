@@ -1,17 +1,17 @@
 @interface AUVerticalTabView
 - (NSArray)accessibilityElements;
-- (_TtC12CoreAudioKit17AUVerticalTabView)initWithFrame:(CGRect)a3;
+- (_TtC12CoreAudioKit17AUVerticalTabView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation AUVerticalTabView
 
-- (_TtC12CoreAudioKit17AUVerticalTabView)initWithFrame:(CGRect)a3
+- (_TtC12CoreAudioKit17AUVerticalTabView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12CoreAudioKit17AUVerticalTabView_horizontal) = 0;
   v7 = MEMORY[0x277D84F90];
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12CoreAudioKit17AUVerticalTabView_tabs) = MEMORY[0x277D84F90];
@@ -27,7 +27,7 @@
 
 - (NSArray)accessibilityElements
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_237122830();
 
   if (v3)
@@ -45,7 +45,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2371235F4();
 }
 

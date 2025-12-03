@@ -1,12 +1,12 @@
 @interface UPQuery
-+ (id)tokenDescription:(id)a3;
-- (UPQuery)initWithProtobufQuery:(id)a3 error:(id *)a4;
-- (UPQuery)initWithUtterance:(id)a3 tokens:(id)a4 embeddingsByToken:(id)a5 spans:(id)a6 dialogAct:(id)a7;
-- (id)_buildEmbeddingsDictionaryWithNonWhitespaceTokens:(id)a3 nonWhitespaceTokenIndexes:(id)a4 embeddings:(id)a5 error:(id *)a6;
-- (id)_buildTokenListWithTokenChain:(id)a3 nonWhitespaceTokenIndexes:(id)a4;
-- (id)_createDialogActWithProtobufQuery:(id)a3;
-- (id)_getNonWhitespaceTokenIndexes:(id)a3;
-- (id)buildSpansListWithProtobufQuery:(id)a3 nonWhitespaceTokenIndexes:(id)a4 error:(id *)a5;
++ (id)tokenDescription:(id)description;
+- (UPQuery)initWithProtobufQuery:(id)query error:(id *)error;
+- (UPQuery)initWithUtterance:(id)utterance tokens:(id)tokens embeddingsByToken:(id)token spans:(id)spans dialogAct:(id)act;
+- (id)_buildEmbeddingsDictionaryWithNonWhitespaceTokens:(id)tokens nonWhitespaceTokenIndexes:(id)indexes embeddings:(id)embeddings error:(id *)error;
+- (id)_buildTokenListWithTokenChain:(id)chain nonWhitespaceTokenIndexes:(id)indexes;
+- (id)_createDialogActWithProtobufQuery:(id)query;
+- (id)_getNonWhitespaceTokenIndexes:(id)indexes;
+- (id)buildSpansListWithProtobufQuery:(id)query nonWhitespaceTokenIndexes:(id)indexes error:(id *)error;
 - (id)description;
 @end
 
@@ -15,8 +15,8 @@
 - (id)description
 {
   v32 = *MEMORY[0x277D85DE8];
-  v25 = [MEMORY[0x277CBEB18] array];
-  v24 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -37,9 +37,9 @@
 
         v4 = *(*(&v27 + 1) + 8 * i);
         v5 = [objc_opt_class() tokenDescription:v4];
-        [v25 addObject:v5];
-        v6 = [(UPQuery *)self embeddingsByToken];
-        v7 = [v6 objectForKeyedSubscript:v4];
+        [array addObject:v5];
+        embeddingsByToken = [(UPQuery *)self embeddingsByToken];
+        v7 = [embeddingsByToken objectForKeyedSubscript:v4];
 
         v8 = NSStringFromSelector(sel_description);
         v9 = [v7 valueForKey:v8];
@@ -48,7 +48,7 @@
         v12 = [v10 stringWithFormat:@"[%@]", v11];
 
         v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ => %@", v5, v12];
-        [v24 addObject:v13];
+        [array2 addObject:v13];
       }
 
       v26 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -58,45 +58,45 @@
   }
 
   v14 = MEMORY[0x277CCACA8];
-  v15 = [(UPQuery *)self utterance];
-  v16 = [v25 componentsJoinedByString:{@", "}];
-  v17 = [v24 componentsJoinedByString:@"\n"];
-  v18 = [(UPQuery *)self spans];
-  v19 = [v14 stringWithFormat:@"{UPQuery\n  utterance: %@\n  tokens: %@\n  embeddingsByToken:\n%@\n  spans:\n%@\n}", v15, v16, v17, v18];
+  utterance = [(UPQuery *)self utterance];
+  v16 = [array componentsJoinedByString:{@", "}];
+  v17 = [array2 componentsJoinedByString:@"\n"];
+  spans = [(UPQuery *)self spans];
+  v19 = [v14 stringWithFormat:@"{UPQuery\n  utterance: %@\n  tokens: %@\n  embeddingsByToken:\n%@\n  spans:\n%@\n}", utterance, v16, v17, spans];
 
   v20 = *MEMORY[0x277D85DE8];
 
   return v19;
 }
 
-- (id)_createDialogActWithProtobufQuery:(id)a3
+- (id)_createDialogActWithProtobufQuery:(id)query
 {
-  v3 = a3;
-  if (![v3 hasTurnInput])
+  queryCopy = query;
+  if (![queryCopy hasTurnInput])
   {
     goto LABEL_12;
   }
 
-  v4 = [v3 turnInput];
-  if (([v4 hasTurnContext] & 1) == 0)
+  turnInput = [queryCopy turnInput];
+  if (([turnInput hasTurnContext] & 1) == 0)
   {
     goto LABEL_11;
   }
 
-  v5 = [v3 turnInput];
-  v6 = [v5 turnContext];
-  if (([v6 hasNlContext] & 1) == 0)
+  turnInput2 = [queryCopy turnInput];
+  turnContext = [turnInput2 turnContext];
+  if (([turnContext hasNlContext] & 1) == 0)
   {
 
 LABEL_11:
     goto LABEL_12;
   }
 
-  v7 = [v3 turnInput];
-  v8 = [v7 turnContext];
-  v9 = [v8 nlContext];
-  v10 = [v9 systemDialogActs];
-  v11 = [v10 count];
+  turnInput3 = [queryCopy turnInput];
+  turnContext2 = [turnInput3 turnContext];
+  nlContext = [turnContext2 nlContext];
+  systemDialogActs = [nlContext systemDialogActs];
+  v11 = [systemDialogActs count];
 
   if (!v11)
   {
@@ -105,12 +105,12 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v12 = [v3 turnInput];
-  v13 = [v12 turnContext];
-  v14 = [v13 nlContext];
-  v15 = [v14 systemDialogActsCount];
+  turnInput4 = [queryCopy turnInput];
+  turnContext3 = [turnInput4 turnContext];
+  nlContext2 = [turnContext3 nlContext];
+  systemDialogActsCount = [nlContext2 systemDialogActsCount];
 
-  if (v15 >= 2)
+  if (systemDialogActsCount >= 2)
   {
     v16 = SNLPOSLoggerForCategory(3);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -120,34 +120,34 @@ LABEL_12:
     }
   }
 
-  v17 = [v3 turnInput];
-  v18 = [v17 turnContext];
-  v19 = [v18 nlContext];
-  v20 = [v19 systemDialogActs];
-  v21 = [v20 firstObject];
+  turnInput5 = [queryCopy turnInput];
+  turnContext4 = [turnInput5 turnContext];
+  nlContext3 = [turnContext4 nlContext];
+  systemDialogActs2 = [nlContext3 systemDialogActs];
+  firstObject = [systemDialogActs2 firstObject];
 
-  v22 = [MEMORY[0x277D5DF08] convertSystemDialogAct:v21];
+  v22 = [MEMORY[0x277D5DF08] convertSystemDialogAct:firstObject];
 
 LABEL_13:
 
   return v22;
 }
 
-- (id)buildSpansListWithProtobufQuery:(id)a3 nonWhitespaceTokenIndexes:(id)a4 error:(id *)a5
+- (id)buildSpansListWithProtobufQuery:(id)query nonWhitespaceTokenIndexes:(id)indexes error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "matchingSpansCount")}];
-  if ([v7 matchingSpansCount])
+  queryCopy = query;
+  indexesCopy = indexes;
+  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(queryCopy, "matchingSpansCount")}];
+  if ([queryCopy matchingSpansCount])
   {
     v10 = 0;
     while (1)
     {
       v11 = [UPSpan alloc];
-      v12 = [v7 matchingSpansAtIndex:v10];
+      v12 = [queryCopy matchingSpansAtIndex:v10];
       v21 = 0;
-      v13 = [(UPSpan *)v11 initWithProtobufSpan:v12 nonWhitespaceTokenIndexes:v8 error:&v21];
+      v13 = [(UPSpan *)v11 initWithProtobufSpan:v12 nonWhitespaceTokenIndexes:indexesCopy error:&v21];
       v14 = v21;
 
       if (!v13)
@@ -157,7 +157,7 @@ LABEL_13:
 
       [v9 addObject:v13];
 
-      if ([v7 matchingSpansCount] <= ++v10)
+      if ([queryCopy matchingSpansCount] <= ++v10)
       {
         goto LABEL_5;
       }
@@ -166,16 +166,16 @@ LABEL_13:
     v16 = SNLPOSLoggerForCategory(3);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v14 localizedDescription];
+      localizedDescription = [v14 localizedDescription];
       *buf = 138412290;
-      v23 = v17;
+      v23 = localizedDescription;
       _os_log_impl(&dword_22284A000, v16, OS_LOG_TYPE_ERROR, "Hit error when converting protobuf span to UPSpan: %@", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v18 = v14;
-      *a5 = v14;
+      *error = v14;
     }
 
     v15 = 0;
@@ -192,16 +192,16 @@ LABEL_5:
   return v15;
 }
 
-- (id)_buildEmbeddingsDictionaryWithNonWhitespaceTokens:(id)a3 nonWhitespaceTokenIndexes:(id)a4 embeddings:(id)a5 error:(id *)a6
+- (id)_buildEmbeddingsDictionaryWithNonWhitespaceTokens:(id)tokens nonWhitespaceTokenIndexes:(id)indexes embeddings:(id)embeddings error:(id *)error
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 count];
-  if (v12 == [v10 count])
+  tokensCopy = tokens;
+  indexesCopy = indexes;
+  embeddingsCopy = embeddings;
+  v12 = [tokensCopy count];
+  if (v12 == [indexesCopy count])
   {
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v36[0] = 0;
     v36[1] = v36;
     v36[2] = 0x2020000000;
@@ -220,20 +220,20 @@ LABEL_5:
     v19[1] = 3221225472;
     v19[2] = __104__UPQuery__buildEmbeddingsDictionaryWithNonWhitespaceTokens_nonWhitespaceTokenIndexes_embeddings_error___block_invoke;
     v19[3] = &unk_2784B6DC0;
-    v20 = v9;
+    v20 = tokensCopy;
     v23 = v36;
-    v21 = v11;
+    v21 = embeddingsCopy;
     v24 = &v26;
     v25 = &v32;
-    v14 = v13;
+    v14 = dictionary;
     v22 = v14;
-    [v10 enumerateIndexesUsingBlock:v19];
+    [indexesCopy enumerateIndexesUsingBlock:v19];
     if (*(v33 + 24) == 1)
     {
       v15 = 0;
-      if (a6)
+      if (error)
       {
-        *a6 = v27[5];
+        *error = v27[5];
       }
     }
 
@@ -249,7 +249,7 @@ LABEL_5:
 
   else
   {
-    if (!a6)
+    if (!error)
     {
       v15 = 0;
       goto LABEL_11;
@@ -260,7 +260,7 @@ LABEL_5:
     v39[0] = @"Count of nonWhitespaceTokens does not match nonWhitespaceTokenIndexes";
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:&v38 count:1];
     [v16 errorWithDomain:@"com.apple.uaapcustomluframework" code:10 userInfo:v14];
-    *a6 = v15 = 0;
+    *error = v15 = 0;
   }
 
 LABEL_11:
@@ -293,24 +293,24 @@ void __104__UPQuery__buildEmbeddingsDictionaryWithNonWhitespaceTokens_nonWhitesp
   }
 }
 
-- (id)_buildTokenListWithTokenChain:(id)a3 nonWhitespaceTokenIndexes:(id)a4
+- (id)_buildTokenListWithTokenChain:(id)chain nonWhitespaceTokenIndexes:(id)indexes
 {
-  v5 = a3;
-  v6 = a4;
+  chainCopy = chain;
+  indexesCopy = indexes;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy_;
   v20 = __Block_byref_object_dispose_;
-  v21 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __67__UPQuery__buildTokenListWithTokenChain_nonWhitespaceTokenIndexes___block_invoke;
   v13 = &unk_2784B6D98;
-  v7 = v5;
+  v7 = chainCopy;
   v14 = v7;
   v15 = &v16;
-  [v6 enumerateIndexesUsingBlock:&v10];
+  [indexesCopy enumerateIndexesUsingBlock:&v10];
   v8 = [v17[5] copy];
 
   _Block_object_dispose(&v16, 8);
@@ -324,44 +324,44 @@ void __67__UPQuery__buildTokenListWithTokenChain_nonWhitespaceTokenIndexes___blo
   [*(*(*(a1 + 40) + 8) + 40) addObject:v3];
 }
 
-- (id)_getNonWhitespaceTokenIndexes:(id)a3
+- (id)_getNonWhitespaceTokenIndexes:(id)indexes
 {
-  v3 = a3;
-  v4 = [v3 tokensCount];
-  v5 = [MEMORY[0x277CCAB58] indexSet];
-  if (v4)
+  indexesCopy = indexes;
+  tokensCount = [indexesCopy tokensCount];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
+  if (tokensCount)
   {
-    for (i = 0; i != v4; ++i)
+    for (i = 0; i != tokensCount; ++i)
     {
-      v7 = [v3 tokensAtIndex:i];
+      v7 = [indexesCopy tokensAtIndex:i];
       if (([v7 isWhitespace] & 1) == 0)
       {
-        [v5 addIndex:i];
+        [indexSet addIndex:i];
       }
     }
   }
 
-  v8 = [objc_alloc(MEMORY[0x277CCAA78]) initWithIndexSet:v5];
+  v8 = [objc_alloc(MEMORY[0x277CCAA78]) initWithIndexSet:indexSet];
 
   return v8;
 }
 
-- (UPQuery)initWithProtobufQuery:(id)a3 error:(id *)a4
+- (UPQuery)initWithProtobufQuery:(id)query error:(id *)error
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([v6 hasTokenChain])
+  queryCopy = query;
+  if ([queryCopy hasTokenChain])
   {
-    v7 = [v6 tokenChain];
-    v29 = [(UPQuery *)self _getNonWhitespaceTokenIndexes:v7];
-    v30 = [(UPQuery *)self _buildTokenListWithTokenChain:v7 nonWhitespaceTokenIndexes:?];
-    v8 = [MEMORY[0x277CCAB68] string];
+    tokenChain = [queryCopy tokenChain];
+    v29 = [(UPQuery *)self _getNonWhitespaceTokenIndexes:tokenChain];
+    v30 = [(UPQuery *)self _buildTokenListWithTokenChain:tokenChain nonWhitespaceTokenIndexes:?];
+    string = [MEMORY[0x277CCAB68] string];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v9 = [v7 tokens];
-    v10 = [v9 countByEnumeratingWithState:&v33 objects:v39 count:16];
+    tokens = [tokenChain tokens];
+    v10 = [tokens countByEnumeratingWithState:&v33 objects:v39 count:16];
     if (v10)
     {
       v11 = v10;
@@ -372,70 +372,70 @@ void __67__UPQuery__buildTokenListWithTokenChain_nonWhitespaceTokenIndexes___blo
         {
           if (*v34 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(tokens);
           }
 
-          v14 = [*(*(&v33 + 1) + 8 * i) value];
-          [v8 appendString:v14];
+          value = [*(*(&v33 + 1) + 8 * i) value];
+          [string appendString:value];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v33 objects:v39 count:16];
+        v11 = [tokens countByEnumeratingWithState:&v33 objects:v39 count:16];
       }
 
       while (v11);
     }
 
-    if ([v6 hasEmbeddings])
+    if ([queryCopy hasEmbeddings])
     {
-      v15 = [v6 embeddings];
+      embeddings = [queryCopy embeddings];
       v32 = 0;
       v16 = v29;
-      v17 = [(UPQuery *)self _buildEmbeddingsDictionaryWithNonWhitespaceTokens:v30 nonWhitespaceTokenIndexes:v29 embeddings:v15 error:&v32];
+      v17 = [(UPQuery *)self _buildEmbeddingsDictionaryWithNonWhitespaceTokens:v30 nonWhitespaceTokenIndexes:v29 embeddings:embeddings error:&v32];
       v18 = v32;
 
       if (v17)
       {
         v31 = 0;
-        v19 = [(UPQuery *)self buildSpansListWithProtobufQuery:v6 nonWhitespaceTokenIndexes:v29 error:&v31];
+        v19 = [(UPQuery *)self buildSpansListWithProtobufQuery:queryCopy nonWhitespaceTokenIndexes:v29 error:&v31];
         v20 = v31;
         v28 = v20;
         if (v19)
         {
-          v21 = [(UPQuery *)self _createDialogActWithProtobufQuery:v6];
-          self = [(UPQuery *)self initWithUtterance:v8 tokens:v30 embeddingsByToken:v17 spans:v19 dialogAct:v21];
+          v21 = [(UPQuery *)self _createDialogActWithProtobufQuery:queryCopy];
+          self = [(UPQuery *)self initWithUtterance:string tokens:v30 embeddingsByToken:v17 spans:v19 dialogAct:v21];
 
-          v22 = self;
+          selfCopy = self;
         }
 
         else
         {
-          v22 = 0;
+          selfCopy = 0;
           if (v20)
           {
-            *a4 = v20;
+            *error = v20;
           }
         }
       }
 
-      else if (a4)
+      else if (error)
       {
         v25 = v18;
-        v22 = 0;
-        *a4 = v18;
+        selfCopy = 0;
+        *error = v18;
       }
 
       else
       {
-        v22 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
       v16 = v29;
-      if (!a4)
+      if (!error)
       {
-        v22 = 0;
+        selfCopy = 0;
 LABEL_27:
 
         goto LABEL_28;
@@ -446,67 +446,67 @@ LABEL_27:
       v38 = @"Request has no embeddings";
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
       [v24 errorWithDomain:@"com.apple.uaapcustomluframework" code:10 userInfo:v18];
-      *a4 = v22 = 0;
+      *error = selfCopy = 0;
     }
 
     goto LABEL_27;
   }
 
-  if (a4)
+  if (error)
   {
     v23 = MEMORY[0x277CCA9B8];
     v40 = *MEMORY[0x277CCA450];
     v41[0] = @"Request has no token chain";
-    v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:&v40 count:1];
-    [v23 errorWithDomain:@"com.apple.uaapcustomluframework" code:10 userInfo:v7];
-    *a4 = v22 = 0;
+    tokenChain = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:&v40 count:1];
+    [v23 errorWithDomain:@"com.apple.uaapcustomluframework" code:10 userInfo:tokenChain];
+    *error = selfCopy = 0;
 LABEL_28:
 
     goto LABEL_29;
   }
 
-  v22 = 0;
+  selfCopy = 0;
 LABEL_29:
 
   v26 = *MEMORY[0x277D85DE8];
-  return v22;
+  return selfCopy;
 }
 
-- (UPQuery)initWithUtterance:(id)a3 tokens:(id)a4 embeddingsByToken:(id)a5 spans:(id)a6 dialogAct:(id)a7
+- (UPQuery)initWithUtterance:(id)utterance tokens:(id)tokens embeddingsByToken:(id)token spans:(id)spans dialogAct:(id)act
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  utteranceCopy = utterance;
+  tokensCopy = tokens;
+  tokenCopy = token;
+  spansCopy = spans;
+  actCopy = act;
   v23.receiver = self;
   v23.super_class = UPQuery;
   v17 = [(UPQuery *)&v23 init];
   if (v17)
   {
-    v18 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     uuid = v17->_uuid;
-    v17->_uuid = v18;
+    v17->_uuid = uUID;
 
-    v20 = [v12 copy];
+    v20 = [utteranceCopy copy];
     utterance = v17->_utterance;
     v17->_utterance = v20;
 
-    objc_storeStrong(&v17->_tokens, a4);
-    objc_storeStrong(&v17->_embeddingsByToken, a5);
-    objc_storeStrong(&v17->_dialogAct, a7);
-    objc_storeStrong(&v17->_spans, a6);
+    objc_storeStrong(&v17->_tokens, tokens);
+    objc_storeStrong(&v17->_embeddingsByToken, token);
+    objc_storeStrong(&v17->_dialogAct, act);
+    objc_storeStrong(&v17->_spans, spans);
   }
 
   return v17;
 }
 
-+ (id)tokenDescription:(id)a3
++ (id)tokenDescription:(id)description
 {
-  v3 = a3;
-  if ([v3 hasBegin])
+  descriptionCopy = description;
+  if ([descriptionCopy hasBegin])
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", objc_msgSend(v3, "begin")];
+    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", objc_msgSend(descriptionCopy, "begin")];
   }
 
   else
@@ -514,9 +514,9 @@ LABEL_29:
     v4 = @"(missing)";
   }
 
-  if ([v3 hasEnd])
+  if ([descriptionCopy hasEnd])
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", objc_msgSend(v3, "end")];
+    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", objc_msgSend(descriptionCopy, "end")];
   }
 
   else
@@ -524,17 +524,17 @@ LABEL_29:
     v5 = @"(missing)";
   }
 
-  if ([v3 hasValue])
+  if ([descriptionCopy hasValue])
   {
-    v6 = [v3 value];
+    value = [descriptionCopy value];
   }
 
   else
   {
-    v6 = @"(missing)";
+    value = @"(missing)";
   }
 
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"{Token begin=%@, end=%@, value='%@'}", v4, v5, v6];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"{Token begin=%@, end=%@, value='%@'}", v4, v5, value];
 
   return v7;
 }

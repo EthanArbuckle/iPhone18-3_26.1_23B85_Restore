@@ -1,26 +1,26 @@
 @interface SBSOSMigrationHomeScreenFolder
-- (SBSOSMigrationHomeScreenFolder)initWithCoder:(id)a3;
-- (SBSOSMigrationHomeScreenFolder)initWithDisplayName:(id)a3 apps:(id)a4;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SBSOSMigrationHomeScreenFolder)initWithCoder:(id)coder;
+- (SBSOSMigrationHomeScreenFolder)initWithDisplayName:(id)name apps:(id)apps;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SBSOSMigrationHomeScreenFolder
 
-- (SBSOSMigrationHomeScreenFolder)initWithDisplayName:(id)a3 apps:(id)a4
+- (SBSOSMigrationHomeScreenFolder)initWithDisplayName:(id)name apps:(id)apps
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  appsCopy = apps;
   v14.receiver = self;
   v14.super_class = SBSOSMigrationHomeScreenFolder;
   v8 = [(SBSOSMigrationHomeScreenFolder *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     displayName = v8->_displayName;
     v8->_displayName = v9;
 
-    v11 = [v7 copy];
+    v11 = [appsCopy copy];
     apps = v8->_apps;
     v8->_apps = v11;
   }
@@ -28,39 +28,39 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SBSOSMigrationHomeScreenFolder *)self displayName];
-  [v4 encodeObject:v5 forKey:@"displayName"];
+  coderCopy = coder;
+  displayName = [(SBSOSMigrationHomeScreenFolder *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"displayName"];
 
-  v6 = [(SBSOSMigrationHomeScreenFolder *)self apps];
-  [v4 encodeObject:v6 forKey:@"apps"];
+  apps = [(SBSOSMigrationHomeScreenFolder *)self apps];
+  [coderCopy encodeObject:apps forKey:@"apps"];
 }
 
-- (SBSOSMigrationHomeScreenFolder)initWithCoder:(id)a3
+- (SBSOSMigrationHomeScreenFolder)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"displayName"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"displayName"];
 
   v7 = objc_opt_self();
-  v8 = [v4 decodeArrayOfObjectsOfClass:v7 forKey:@"apps"];
+  v8 = [coderCopy decodeArrayOfObjectsOfClass:v7 forKey:@"apps"];
 
   v9 = [(SBSOSMigrationHomeScreenFolder *)self initWithDisplayName:v6 apps:v8];
   return v9;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __60__SBSOSMigrationHomeScreenFolder_appendDescriptionToStream___block_invoke;
   v6[3] = &unk_1E735F7F0;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = streamCopy;
+  selfCopy = self;
+  v5 = streamCopy;
   [v5 appendProem:self block:v6];
 }
 

@@ -1,35 +1,35 @@
 @interface _UIBarBackgroundLayout
-- (_UIBarBackgroundLayout)initWithLayout:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_UIBarBackgroundLayout)initWithLayout:(id)layout;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)describeInto:(id)a3;
-- (void)setBackgroundAlpha:(double)a3;
-- (void)setShadowAlpha:(double)a3;
+- (void)describeInto:(id)into;
+- (void)setBackgroundAlpha:(double)alpha;
+- (void)setShadowAlpha:(double)alpha;
 @end
 
 @implementation _UIBarBackgroundLayout
 
-- (_UIBarBackgroundLayout)initWithLayout:(id)a3
+- (_UIBarBackgroundLayout)initWithLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v13.receiver = self;
   v13.super_class = _UIBarBackgroundLayout;
   v5 = [(_UIBarBackgroundLayout *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (layoutCopy)
     {
-      *(v5 + 1) = v4[1];
-      *(v5 + 2) = v4[2];
-      *(v5 + 3) = v4[3];
-      *(v5 + 4) = v4[4];
-      *(v5 + 5) = v4[5];
-      *(v5 + 6) = v4[6];
-      *(v5 + 7) = v4[7];
-      v5[64] = *(v4 + 64);
-      v5[65] = *(v4 + 65);
-      v5[66] = *(v4 + 66);
+      *(v5 + 1) = layoutCopy[1];
+      *(v5 + 2) = layoutCopy[2];
+      *(v5 + 3) = layoutCopy[3];
+      *(v5 + 4) = layoutCopy[4];
+      *(v5 + 5) = layoutCopy[5];
+      *(v5 + 6) = layoutCopy[6];
+      *(v5 + 7) = layoutCopy[7];
+      v5[64] = *(layoutCopy + 64);
+      v5[65] = *(layoutCopy + 65);
+      v5[66] = *(layoutCopy + 66);
     }
 
     else
@@ -43,51 +43,51 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 initWithLayout:self];
 }
 
-- (void)setBackgroundAlpha:(double)a3
+- (void)setBackgroundAlpha:(double)alpha
 {
-  v3 = fmax(fmin(a3, 1.0), 0.0);
+  v3 = fmax(fmin(alpha, 1.0), 0.0);
   if (v3 != self->_backgroundAlpha)
   {
     self->_backgroundAlpha = v3;
   }
 }
 
-- (void)setShadowAlpha:(double)a3
+- (void)setShadowAlpha:(double)alpha
 {
-  v3 = fmax(fmin(a3, 1.0), 0.0);
+  v3 = fmax(fmin(alpha, 1.0), 0.0);
   if (v3 != self->_shadowAlpha)
   {
     self->_shadowAlpha = v3;
   }
 }
 
-- (void)describeInto:(id)a3
+- (void)describeInto:(id)into
 {
-  v4 = a3;
-  [v4 appendFormat:@" idiom=%li style=%li backgroundAlpha=%f shadowAlpha=%f", self->_interfaceIdiom, self->_interfaceStyle, *&self->_backgroundAlpha, *&self->_shadowAlpha];
+  intoCopy = into;
+  [intoCopy appendFormat:@" idiom=%li style=%li backgroundAlpha=%f shadowAlpha=%f", self->_interfaceIdiom, self->_interfaceStyle, *&self->_backgroundAlpha, *&self->_shadowAlpha];
   if (self->_shadowHidden)
   {
-    [v4 appendString:@" shadowHidden"];
+    [intoCopy appendString:@" shadowHidden"];
   }
 
   if (self->_useExplicitGeometry)
   {
-    [v4 appendFormat:@" height1=%f height2=%f", *&self->_backgroundHeight1, *&self->_backgroundHeight2];
+    [intoCopy appendFormat:@" height1=%f height2=%f", *&self->_backgroundHeight1, *&self->_backgroundHeight2];
   }
 
   else
   {
-    [v4 appendString:@" fullHeight"];
+    [intoCopy appendString:@" fullHeight"];
   }
 
-  [v4 appendFormat:@" transitionProgress=%f", *&self->_backgroundTransitionProgress];
+  [intoCopy appendFormat:@" transitionProgress=%f", *&self->_backgroundTransitionProgress];
 }
 
 - (id)description

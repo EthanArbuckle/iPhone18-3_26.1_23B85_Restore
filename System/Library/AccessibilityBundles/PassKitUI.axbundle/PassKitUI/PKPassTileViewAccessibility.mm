@@ -1,51 +1,51 @@
 @interface PKPassTileViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axHostingViewLabel;
 - (id)accessibilityLabel;
 @end
 
 @implementation PKPassTileViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPassTileView" hasInstanceVariable:@"_title" withType:"UILabel"];
-  [v3 validateClass:@"PKPassTileView" hasInstanceVariable:@"_body" withType:"UILabel"];
-  [v3 validateClass:@"PKPassTileView" hasInstanceVariable:@"_footer" withType:"UILabel"];
-  [v3 validateClass:@"PKPassTileView" hasInstanceVariable:@"_foreignView" withType:"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPassTileView" hasInstanceVariable:@"_title" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKPassTileView" hasInstanceVariable:@"_body" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKPassTileView" hasInstanceVariable:@"_footer" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKPassTileView" hasInstanceVariable:@"_foreignView" withType:"UIView"];
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(PKPassTileViewAccessibility *)self _axHostingView];
+  _axHostingView = [(PKPassTileViewAccessibility *)self _axHostingView];
 
-  if (v3)
+  if (_axHostingView)
   {
-    v4 = [(PKPassTileViewAccessibility *)self _axHostingViewLabel];
+    _axHostingViewLabel = [(PKPassTileViewAccessibility *)self _axHostingViewLabel];
   }
 
   else
   {
     v5 = [(PKPassTileViewAccessibility *)self safeUIViewForKey:@"_title"];
-    v6 = [v5 accessibilityLabel];
+    accessibilityLabel = [v5 accessibilityLabel];
 
     v7 = [(PKPassTileViewAccessibility *)self safeUIViewForKey:@"_body"];
-    v8 = [v7 accessibilityLabel];
+    accessibilityLabel2 = [v7 accessibilityLabel];
 
     v9 = [(PKPassTileViewAccessibility *)self safeUIViewForKey:@"_footer"];
-    v10 = [v9 accessibilityLabel];
+    accessibilityLabel3 = [v9 accessibilityLabel];
 
-    v11 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{3, v6, v8, v10}];
-    v4 = AXLabelForElements();
+    v11 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{3, accessibilityLabel, accessibilityLabel2, accessibilityLabel3}];
+    _axHostingViewLabel = AXLabelForElements();
   }
 
-  return v4;
+  return _axHostingViewLabel;
 }
 
 - (id)_axHostingViewLabel
 {
-  v2 = [(PKPassTileViewAccessibility *)self _axHostingView];
-  v3 = [v2 _accessibilityFindUnsortedDescendantsPassingTest:&__block_literal_global_1];
+  _axHostingView = [(PKPassTileViewAccessibility *)self _axHostingView];
+  v3 = [_axHostingView _accessibilityFindUnsortedDescendantsPassingTest:&__block_literal_global_1];
 
   v4 = AXLabelForElements();
 

@@ -1,22 +1,22 @@
 @interface SRAuthExtensionContext
 - (id)remoteProxy;
-- (void)openURL:(id)a3 completionHandler:(id)a4;
+- (void)openURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation SRAuthExtensionContext
 
 - (id)remoteProxy
 {
-  v2 = [(SRAuthExtensionContext *)self _auxiliaryConnection];
+  _auxiliaryConnection = [(SRAuthExtensionContext *)self _auxiliaryConnection];
 
-  return [v2 remoteObjectProxy];
+  return [_auxiliaryConnection remoteObjectProxy];
 }
 
-- (void)openURL:(id)a3 completionHandler:(id)a4
+- (void)openURL:(id)l completionHandler:(id)handler
 {
-  v6 = [(SRAuthExtensionContext *)self remoteProxy];
+  remoteProxy = [(SRAuthExtensionContext *)self remoteProxy];
 
-  [v6 openURL:a3 completionHandler:a4];
+  [remoteProxy openURL:l completionHandler:handler];
 }
 
 @end

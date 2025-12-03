@@ -1,13 +1,13 @@
 @interface GTAccelerationStructureServerSession
-+ (void)sessionWithReplayClient:(GTMTLReplayClient *)a3 functionIndex:(unint64_t)a4 requestID:(id)a5 transport:(id)a6 dataHandler:(id)a7 accelerationStructureKey:(unint64_t)a8 completionHandler:(id)a9;
++ (void)sessionWithReplayClient:(GTMTLReplayClient *)client functionIndex:(unint64_t)index requestID:(id)d transport:(id)transport dataHandler:(id)handler accelerationStructureKey:(unint64_t)key completionHandler:(id)completionHandler;
 - (void)dealloc;
-- (void)nextSample:(unint64_t)a3;
-- (void)receiveData:(id)a3;
+- (void)nextSample:(unint64_t)sample;
+- (void)receiveData:(id)data;
 @end
 
 @implementation GTAccelerationStructureServerSession
 
-- (void)nextSample:(unint64_t)a3
+- (void)nextSample:(unint64_t)sample
 {
   objc_initWeak(&location, self);
   v5 = MEMORY[0x277CCA8C8];
@@ -16,7 +16,7 @@
   v7[2] = __51__GTAccelerationStructureServerSession_nextSample___block_invoke;
   v7[3] = &unk_279658B28;
   objc_copyWeak(v8, &location);
-  v8[1] = a3;
+  v8[1] = sample;
   v6 = [v5 blockOperationWithBlock:v7];
   [self->_clientContext->var7.var0 addOperation:v6];
 
@@ -199,13 +199,13 @@ void __51__GTAccelerationStructureServerSession_nextSample___block_invoke_4(uint
   }
 }
 
-- (void)receiveData:(id)a3
+- (void)receiveData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   server = self->_server;
   if (server)
   {
-    (*(server->var0 + 4))(server, [v5 bytes], objc_msgSend(v5, "length"));
+    (*(server->var0 + 4))(server, [dataCopy bytes], objc_msgSend(dataCopy, "length"));
   }
 }
 
@@ -252,26 +252,26 @@ void __51__GTAccelerationStructureServerSession_nextSample___block_invoke_4(uint
   [(GTAccelerationStructureServerSession *)&v8 dealloc];
 }
 
-+ (void)sessionWithReplayClient:(GTMTLReplayClient *)a3 functionIndex:(unint64_t)a4 requestID:(id)a5 transport:(id)a6 dataHandler:(id)a7 accelerationStructureKey:(unint64_t)a8 completionHandler:(id)a9
++ (void)sessionWithReplayClient:(GTMTLReplayClient *)client functionIndex:(unint64_t)index requestID:(id)d transport:(id)transport dataHandler:(id)handler accelerationStructureKey:(unint64_t)key completionHandler:(id)completionHandler
 {
-  v13 = a5;
-  v21 = a6;
-  v14 = a7;
-  v20 = a9;
-  var1 = a3->var1;
+  dCopy = d;
+  transportCopy = transport;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  var1 = client->var1;
   v16 = objc_alloc_init(GTAccelerationStructureServerSession);
   v17 = v16;
   if (v16)
   {
-    if (v13)
+    if (dCopy)
     {
-      v16->requestID = [v13 unsignedLongValue];
+      v16->requestID = [dCopy unsignedLongValue];
     }
 
-    v17->_clientContext = a3;
-    v17->_functionIndex = a4;
-    objc_storeStrong(&v17->_transport, a6);
-    v18 = MEMORY[0x253033CF0](v14);
+    v17->_clientContext = client;
+    v17->_functionIndex = index;
+    objc_storeStrong(&v17->_transport, transport);
+    v18 = MEMORY[0x253033CF0](handlerCopy);
     dataHandler = v17->_dataHandler;
     v17->_dataHandler = v18;
 

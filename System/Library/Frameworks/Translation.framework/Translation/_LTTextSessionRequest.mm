@@ -1,42 +1,42 @@
 @interface _LTTextSessionRequest
 - (NSLocale)resolvedSourceLocale;
 - (NSLocale)resolvedTargetLocale;
-- (id)_initWithBatch:(id)a3 sourceLocale:(id)a4 targetLocale:(id)a5 isForDownloadRequest:(BOOL)a6 itemHandler:(id)a7 completionHandler:(id)a8;
-- (id)initForDownloadRequestWithSourceLocale:(id)a3 targetLocale:(id)a4 completionHandler:(id)a5;
+- (id)_initWithBatch:(id)batch sourceLocale:(id)locale targetLocale:(id)targetLocale isForDownloadRequest:(BOOL)request itemHandler:(id)handler completionHandler:(id)completionHandler;
+- (id)initForDownloadRequestWithSourceLocale:(id)locale targetLocale:(id)targetLocale completionHandler:(id)handler;
 - (void)_cleanUp;
-- (void)_invocationEndedWithErrorSELFLogging:(id)a3;
+- (void)_invocationEndedWithErrorSELFLogging:(id)logging;
 - (void)didComplete;
-- (void)didReceiveError:(id)a3 forInput:(id)a4;
-- (void)didReceiveInterruptionFromHandler:(id)a3;
+- (void)didReceiveError:(id)error forInput:(id)input;
+- (void)didReceiveInterruptionFromHandler:(id)handler;
 - (void)didStartTranslating;
-- (void)didTranslateInput:(id)a3 withResult:(id)a4;
-- (void)setResolvedSourceLocale:(id)a3;
-- (void)setResolvedTargetLocale:(id)a3;
+- (void)didTranslateInput:(id)input withResult:(id)result;
+- (void)setResolvedSourceLocale:(id)locale;
+- (void)setResolvedTargetLocale:(id)locale;
 @end
 
 @implementation _LTTextSessionRequest
 
-- (id)initForDownloadRequestWithSourceLocale:(id)a3 targetLocale:(id)a4 completionHandler:(id)a5
+- (id)initForDownloadRequestWithSourceLocale:(id)locale targetLocale:(id)targetLocale completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __95___LTTextSessionRequest_initForDownloadRequestWithSourceLocale_targetLocale_completionHandler___block_invoke;
   v12[3] = &unk_278B6D6E0;
-  v13 = v8;
-  v9 = v8;
-  v10 = [(_LTTextSessionRequest *)self _initWithBatch:MEMORY[0x277CBEBF8] sourceLocale:a3 targetLocale:a4 isForDownloadRequest:1 itemHandler:0 completionHandler:v12];
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [(_LTTextSessionRequest *)self _initWithBatch:MEMORY[0x277CBEBF8] sourceLocale:locale targetLocale:targetLocale isForDownloadRequest:1 itemHandler:0 completionHandler:v12];
 
   return v10;
 }
 
-- (id)_initWithBatch:(id)a3 sourceLocale:(id)a4 targetLocale:(id)a5 isForDownloadRequest:(BOOL)a6 itemHandler:(id)a7 completionHandler:(id)a8
+- (id)_initWithBatch:(id)batch sourceLocale:(id)locale targetLocale:(id)targetLocale isForDownloadRequest:(BOOL)request itemHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  batchCopy = batch;
+  localeCopy = locale;
+  targetLocaleCopy = targetLocale;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v43.receiver = self;
   v43.super_class = _LTTextSessionRequest;
   v19 = [(_LTTextSessionRequest *)&v43 init];
@@ -46,34 +46,34 @@
     queue = v19->_queue;
     v19->_queue = v20;
 
-    v22 = [v14 copy];
+    v22 = [batchCopy copy];
     batch = v19->_batch;
     v19->_batch = v22;
 
-    v24 = [v15 copy];
+    v24 = [localeCopy copy];
     resolvedSourceLocale = v19->_resolvedSourceLocale;
     v19->_resolvedSourceLocale = v24;
 
-    v26 = [v16 copy];
+    v26 = [targetLocaleCopy copy];
     resolvedTargetLocale = v19->_resolvedTargetLocale;
     v19->_resolvedTargetLocale = v26;
 
-    v19->_isForDownloadRequest = a6;
-    v28 = [v17 copy];
+    v19->_isForDownloadRequest = request;
+    v28 = [handlerCopy copy];
     itemHandler = v19->_itemHandler;
     v19->_itemHandler = v28;
 
-    v30 = [v18 copy];
+    v30 = [completionHandlerCopy copy];
     completionHandler = v19->_completionHandler;
     v19->_completionHandler = v30;
 
-    v32 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v14, "count")}];
+    v32 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(batchCopy, "count")}];
     resultMap = v19->_resultMap;
     v19->_resultMap = v32;
 
-    v34 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     logIdentifier = v19->_logIdentifier;
-    v19->_logIdentifier = v34;
+    v19->_logIdentifier = uUID;
 
     v36 = _LTOSLogTextAPI();
     v19->_signpostID = os_signpost_id_generate(v36);
@@ -122,14 +122,14 @@
   }
 }
 
-- (void)didReceiveError:(id)a3 forInput:(id)a4
+- (void)didReceiveError:(id)error forInput:(id)input
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
   if (self->_completionHandler)
   {
-    [(_LTTextSessionRequest *)self _invocationEndedWithErrorSELFLogging:v5];
+    [(_LTTextSessionRequest *)self _invocationEndedWithErrorSELFLogging:errorCopy];
     v6 = _LTOSLogTextAPI();
     v7 = v6;
     signpostID = self->_signpostID;
@@ -171,7 +171,7 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v17 = 138412290;
-      v18 = v5;
+      v18 = errorCopy;
       _os_log_impl(&dword_23AAF5000, v15, OS_LOG_TYPE_INFO, "Text request received error, but already called completion handler so ignoring new error: %@", &v17, 0xCu);
     }
   }
@@ -179,14 +179,14 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didTranslateInput:(id)a3 withResult:(id)a4
+- (void)didTranslateInput:(id)input withResult:(id)result
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  resultCopy = result;
   queue = self->_queue;
-  v8 = a3;
+  inputCopy = input;
   dispatch_assert_queue_V2(queue);
-  v9 = [(NSArray *)self->_batch indexOfObject:v8];
+  v9 = [(NSArray *)self->_batch indexOfObject:inputCopy];
 
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -214,12 +214,12 @@
 
     resultMap = self->_resultMap;
     v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v9];
-    [(NSMutableDictionary *)resultMap setObject:v6 forKeyedSubscript:v15];
+    [(NSMutableDictionary *)resultMap setObject:resultCopy forKeyedSubscript:v15];
 
     itemHandler = self->_itemHandler;
     if (itemHandler)
     {
-      itemHandler[2](itemHandler, v6, 0);
+      itemHandler[2](itemHandler, resultCopy, 0);
     }
   }
 
@@ -302,12 +302,12 @@
   return resolvedTargetLocale;
 }
 
-- (void)setResolvedSourceLocale:(id)a3
+- (void)setResolvedSourceLocale:(id)locale
 {
   queue = self->_queue;
-  v5 = a3;
+  localeCopy = locale;
   dispatch_assert_queue_V2(queue);
-  v6 = [v5 copy];
+  v6 = [localeCopy copy];
 
   resolvedSourceLocale = self->_resolvedSourceLocale;
   self->_resolvedSourceLocale = v6;
@@ -322,12 +322,12 @@
   }
 }
 
-- (void)setResolvedTargetLocale:(id)a3
+- (void)setResolvedTargetLocale:(id)locale
 {
   queue = self->_queue;
-  v5 = a3;
+  localeCopy = locale;
   dispatch_assert_queue_V2(queue);
-  v6 = [v5 copy];
+  v6 = [localeCopy copy];
 
   resolvedTargetLocale = self->_resolvedTargetLocale;
   self->_resolvedTargetLocale = v6;
@@ -355,7 +355,7 @@
   [(NSMutableDictionary *)resultMap removeAllObjects];
 }
 
-- (void)didReceiveInterruptionFromHandler:(id)a3
+- (void)didReceiveInterruptionFromHandler:(id)handler
 {
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -369,14 +369,14 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_invocationEndedWithErrorSELFLogging:(id)a3
+- (void)_invocationEndedWithErrorSELFLogging:(id)logging
 {
-  v5 = a3;
+  loggingCopy = logging;
   dispatch_assert_queue_V2(self->_queue);
   if (![(_LTTextSessionRequest *)self isForDownloadRequest])
   {
-    v4 = [(_LTTextSessionRequest *)self logIdentifier];
-    [_LTTranslator selfLoggingInvocationDidError:v5 invocationId:v4];
+    logIdentifier = [(_LTTextSessionRequest *)self logIdentifier];
+    [_LTTranslator selfLoggingInvocationDidError:loggingCopy invocationId:logIdentifier];
   }
 }
 

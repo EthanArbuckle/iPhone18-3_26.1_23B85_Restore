@@ -1,7 +1,7 @@
 @interface SBTodayWidgetXCodeDebuggingUtility
 - (SBTodayWidgetXCodeDebuggingUtility)init;
-- (void)_reallyLaunchTodayViewFromCurrentContextWithCompletion:(id)a3;
-- (void)launchTodayViewFromCurrentContextWithCompletion:(id)a3;
+- (void)_reallyLaunchTodayViewFromCurrentContextWithCompletion:(id)completion;
+- (void)launchTodayViewFromCurrentContextWithCompletion:(id)completion;
 @end
 
 @implementation SBTodayWidgetXCodeDebuggingUtility
@@ -18,26 +18,26 @@
     v2->_lockScreenManager = v3;
 
     v5 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-    v6 = [v5 policyAggregator];
+    policyAggregator = [v5 policyAggregator];
     policyAggregator = v2->_policyAggregator;
-    v2->_policyAggregator = v6;
+    v2->_policyAggregator = policyAggregator;
   }
 
   return v2;
 }
 
-- (void)launchTodayViewFromCurrentContextWithCompletion:(id)a3
+- (void)launchTodayViewFromCurrentContextWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = [[SBDismissOverlaysAnimationController alloc] initWithTransitionContextProvider:0 options:-1];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __86__SBTodayWidgetXCodeDebuggingUtility_launchTodayViewFromCurrentContextWithCompletion___block_invoke;
   v12 = &unk_2783A9C98;
-  v13 = self;
-  v14 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v14 = completionCopy;
+  v6 = completionCopy;
   [(SBDismissOverlaysAnimationController *)v5 setCompletionBlock:&v9];
   [(SBDismissOverlaysAnimationController *)v5 begin:v9];
   v7 = SBLogDashBoard();
@@ -62,13 +62,13 @@ uint64_t __86__SBTodayWidgetXCodeDebuggingUtility_launchTodayViewFromCurrentCont
   return [*(a1 + 32) _reallyLaunchTodayViewFromCurrentContextWithCompletion:*(a1 + 40)];
 }
 
-- (void)_reallyLaunchTodayViewFromCurrentContextWithCompletion:(id)a3
+- (void)_reallyLaunchTodayViewFromCurrentContextWithCompletion:(id)completion
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBLockScreenManager *)self->_lockScreenManager isUILocked];
+  completionCopy = completion;
+  isUILocked = [(SBLockScreenManager *)self->_lockScreenManager isUILocked];
   policyAggregator = self->_policyAggregator;
-  if (!v5)
+  if (!isUILocked)
   {
     if ([(SBMainDisplayPolicyAggregator *)policyAggregator allowsCapability:24])
     {
@@ -77,13 +77,13 @@ uint64_t __86__SBTodayWidgetXCodeDebuggingUtility_launchTodayViewFromCurrentCont
       v22[2] = __93__SBTodayWidgetXCodeDebuggingUtility__reallyLaunchTodayViewFromCurrentContextWithCompletion___block_invoke_3;
       v22[3] = &unk_2783A9C98;
       v22[4] = self;
-      v23 = v4;
+      v23 = completionCopy;
       SBWorkspaceForceToSpringBoard(v22);
 
       goto LABEL_17;
     }
 
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_17;
     }
@@ -97,14 +97,14 @@ uint64_t __86__SBTodayWidgetXCodeDebuggingUtility_launchTodayViewFromCurrentCont
 LABEL_14:
     v20 = [v17 dictionaryWithObjects:v18 forKeys:v19 count:1];
     v21 = [v16 errorWithDomain:@"SBTodayWidgetLaunchErrorDomain" code:1 userInfo:v20];
-    (*(v4 + 2))(v4, 0, v21);
+    (*(completionCopy + 2))(completionCopy, 0, v21);
 
     goto LABEL_17;
   }
 
   if (![(SBMainDisplayPolicyAggregator *)policyAggregator allowsCapability:23])
   {
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_17;
     }
@@ -118,28 +118,28 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v7 = [(SBLockScreenManager *)self->_lockScreenManager lockScreenEnvironment];
-  v8 = [v7 rootViewController];
+  lockScreenEnvironment = [(SBLockScreenManager *)self->_lockScreenManager lockScreenEnvironment];
+  rootViewController = [lockScreenEnvironment rootViewController];
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if (v4 && (isKindOfClass & 1) == 0)
+  if (completionCopy && (isKindOfClass & 1) == 0)
   {
     v10 = MEMORY[0x277CCA9B8];
     v29 = *MEMORY[0x277CCA450];
     v30 = @"DashBoard is required to work in the lock-screen.";
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
     v12 = [v10 errorWithDomain:@"SBTodayWidgetLaunchErrorDomain" code:2 userInfo:v11];
-    (*(v4 + 2))(v4, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
   }
 
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __93__SBTodayWidgetXCodeDebuggingUtility__reallyLaunchTodayViewFromCurrentContextWithCompletion___block_invoke;
   v24[3] = &unk_2783A98A0;
-  v13 = v8;
+  v13 = rootViewController;
   v25 = v13;
-  v26 = v4;
+  v26 = completionCopy;
   v14 = MEMORY[0x223D6F7F0](v24);
   v15 = +[SBCoverSheetPresentationManager sharedInstance];
   if ([v15 isCoverSheetHostingAnApp])

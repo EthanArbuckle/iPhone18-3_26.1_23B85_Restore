@@ -1,18 +1,18 @@
 @interface MKPlaceCollectionCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation MKPlaceCollectionCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MKPlaceCollectionCell" hasInstanceMethod:@"collectionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MKPlaceCollectionCell" hasInstanceMethod:@"savedView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MKPlaceCollectionCell" hasInstanceMethod:@"savedCollectionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MKPlaceCollectionCell" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MKPlaceCollectionViewModel" hasInstanceMethod:@"placeCollection" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MKPlaceCollectionCell" hasInstanceMethod:@"collectionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MKPlaceCollectionCell" hasInstanceMethod:@"savedView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MKPlaceCollectionCell" hasInstanceMethod:@"savedCollectionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MKPlaceCollectionCell" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MKPlaceCollectionViewModel" hasInstanceMethod:@"placeCollection" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -22,18 +22,18 @@
   v5 = AXPublisherDescriptionForCollection(v4);
 
   v6 = [(MKPlaceCollectionCellAccessibility *)self safeValueForKey:@"collectionLabel"];
-  v7 = [v6 accessibilityLabel];
+  accessibilityLabel = [v6 accessibilityLabel];
 
   v8 = [(MKPlaceCollectionCellAccessibility *)self safeUIViewForKey:@"savedView"];
   if ([v8 isHidden])
   {
-    v9 = 0;
+    accessibilityLabel2 = 0;
   }
 
   else
   {
     v10 = [(MKPlaceCollectionCellAccessibility *)self safeValueForKey:@"savedCollectionLabel"];
-    v9 = [v10 accessibilityLabel];
+    accessibilityLabel2 = [v10 accessibilityLabel];
   }
 
   v11 = __UIAXStringForVariables();

@@ -1,6 +1,6 @@
 @interface ISMessagesAppRecipe
 - (ISMessagesAppRecipe)init;
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4;
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale;
 @end
 
 @implementation ISMessagesAppRecipe
@@ -20,10 +20,10 @@
   return v3;
 }
 
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7 = objc_alloc_init(ISLayer);
   [(ISLayer *)v7 setSize:width, height];
   [(ISLayer *)v7 setName:@"layer"];
@@ -46,8 +46,8 @@
     [(ISLayer *)v11 setName:@"Image"];
     [(ISLayer *)v11 setSize:width, height];
     v12 = MEMORY[0x1E69A8990];
-    v13 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
-    v14 = [v12 imageBagWithResourcesNamed:@"MessagesAppOutline" fromBundle:v13];
+    iconsetResourceBundle = [MEMORY[0x1E69A8960] iconsetResourceBundle];
+    v14 = [v12 imageBagWithResourcesNamed:@"MessagesAppOutline" fromBundle:iconsetResourceBundle];
 
     [(ISContentLayer *)v11 setContent:v14];
     [(ISLayer *)v7 addSublayer:v11];
@@ -59,8 +59,8 @@
     [(ISLayer *)v15 setSize:width, height];
     [(ISLayer *)v15 setName:@"mask layer"];
     v16 = MEMORY[0x1E69A8990];
-    v17 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
-    v18 = [v16 imageBagWithResourcesNamed:@"MessagesAppMask" fromBundle:v17];
+    iconsetResourceBundle2 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
+    v18 = [v16 imageBagWithResourcesNamed:@"MessagesAppMask" fromBundle:iconsetResourceBundle2];
 
     [(ISContentLayer *)v15 setContent:v18];
     [(ISLayer *)v7 setMask:v15];

@@ -1,18 +1,18 @@
 @interface RAWDemosaicFilter
-- (CGRect)regionOf:(int)a3 destRect:(CGRect)a4 userInfo:(id)a5;
+- (CGRect)regionOf:(int)of destRect:(CGRect)rect userInfo:(id)info;
 - (id)blacks;
 - (id)crop;
 - (id)exposureFactor;
 - (id)noiseModel;
 - (id)outputImage;
-- (id)phaseFor:(int)a3;
+- (id)phaseFor:(int)for;
 - (id)phaseForBayer;
 - (id)phaseForQuadra;
 - (id)phaseForXtrans;
 - (id)range;
 - (int)forceVersion;
 - (int)sensorType;
-- (int)versionfor:(int)a3;
+- (int)versionfor:(int)versionfor;
 @end
 
 @implementation RAWDemosaicFilter
@@ -31,18 +31,18 @@
   return v11;
 }
 
-- (CGRect)regionOf:(int)a3 destRect:(CGRect)a4 userInfo:(id)a5
+- (CGRect)regionOf:(int)of destRect:(CGRect)rect userInfo:(id)info
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a5;
-  v13 = objc_msgSend_objectAtIndexedSubscript_(v9, v10, 2, v11, v12);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  infoCopy = info;
+  v13 = objc_msgSend_objectAtIndexedSubscript_(infoCopy, v10, 2, v11, v12);
   objc_msgSend_floatValue(v13, v14, v15, v16, v17);
   v19 = v18;
 
-  v23 = objc_msgSend_objectAtIndexedSubscript_(v9, v20, 3, v21, v22);
+  v23 = objc_msgSend_objectAtIndexedSubscript_(infoCopy, v20, 3, v21, v22);
   objc_msgSend_floatValue(v23, v24, v25, v26, v27);
   v29 = v28;
 
@@ -55,11 +55,11 @@
   v31 = v63.origin.y;
   v32 = v63.size.width;
   v33 = v63.size.height;
-  v37 = objc_msgSend_objectAtIndexedSubscript_(v9, v34, 0, v35, v36);
+  v37 = objc_msgSend_objectAtIndexedSubscript_(infoCopy, v34, 0, v35, v36);
   objc_msgSend_floatValue(v37, v38, v39, v40, v41);
   v43 = v42;
 
-  v47 = objc_msgSend_objectAtIndexedSubscript_(v9, v44, 1, v45, v46);
+  v47 = objc_msgSend_objectAtIndexedSubscript_(infoCopy, v44, 1, v45, v46);
   objc_msgSend_floatValue(v47, v48, v49, v50, v51);
   v53 = v52;
 
@@ -193,9 +193,9 @@
   return objc_msgSend_numberWithFloat_(v5, v7, v8, v9, v10, v11);
 }
 
-- (int)versionfor:(int)a3
+- (int)versionfor:(int)versionfor
 {
-  v6 = objc_msgSend_intValue(self->inputVersion, a2, *&a3, v3, v4);
+  v6 = objc_msgSend_intValue(self->inputVersion, a2, *&versionfor, v3, v4);
   if (v6)
   {
     v7 = v6;
@@ -216,17 +216,17 @@
     v8 = 8;
   }
 
-  if (!a3)
+  if (!versionfor)
   {
     v7 = v8;
   }
 
-  if (a3 == 1)
+  if (versionfor == 1)
   {
     v7 = v8;
   }
 
-  if (a3 == 2)
+  if (versionfor == 2)
   {
     return v8;
   }
@@ -237,28 +237,28 @@
   }
 }
 
-- (id)phaseFor:(int)a3
+- (id)phaseFor:(int)for
 {
-  if (a3 == 2)
+  if (for == 2)
   {
-    v5 = objc_msgSend_phaseForXtrans(self, a2, *&a3, v3, v4);
+    v5 = objc_msgSend_phaseForXtrans(self, a2, *&for, v3, v4);
   }
 
-  else if (a3 == 1)
+  else if (for == 1)
   {
-    v5 = objc_msgSend_phaseForQuadra(self, a2, *&a3, v3, v4);
+    v5 = objc_msgSend_phaseForQuadra(self, a2, *&for, v3, v4);
   }
 
   else
   {
-    if (a3)
+    if (for)
     {
-      objc_msgSend_vectorWithX_Y_(MEMORY[0x277CBF788], a2, *&a3, v3, v4, 0.0, 0.0);
+      objc_msgSend_vectorWithX_Y_(MEMORY[0x277CBF788], a2, *&for, v3, v4, 0.0, 0.0);
     }
 
     else
     {
-      objc_msgSend_phaseForBayer(self, a2, *&a3, v3, v4);
+      objc_msgSend_phaseForBayer(self, a2, *&for, v3, v4);
     }
     v5 = ;
   }

@@ -11,17 +11,17 @@
 
 + (BOOL)brc_swizzleInstanceMethod:()BRCSwizzle with:
 {
-  InstanceMethod = class_getInstanceMethod(a1, name);
-  v8 = class_getInstanceMethod(a1, a4);
+  InstanceMethod = class_getInstanceMethod(self, name);
+  v8 = class_getInstanceMethod(self, a4);
   if (InstanceMethod && (v9 = v8) != 0)
   {
     Implementation = method_getImplementation(v8);
     TypeEncoding = method_getTypeEncoding(v9);
-    if (class_addMethod(a1, name, Implementation, TypeEncoding))
+    if (class_addMethod(self, name, Implementation, TypeEncoding))
     {
       v12 = method_getImplementation(v9);
       v13 = method_getTypeEncoding(v9);
-      class_replaceMethod(a1, name, v12, v13);
+      class_replaceMethod(self, name, v12, v13);
     }
 
     else
@@ -29,7 +29,7 @@
       method_exchangeImplementations(v9, InstanceMethod);
     }
 
-    return v9 == class_getInstanceMethod(a1, name);
+    return v9 == class_getInstanceMethod(self, name);
   }
 
   else
@@ -47,9 +47,9 @@
 
 + (BOOL)brc_swizzleClassMethod:()BRCSwizzle with:
 {
-  ClassMethod = class_getClassMethod(a1, name);
-  v8 = class_getClassMethod(a1, a4);
-  Class = object_getClass(a1);
+  ClassMethod = class_getClassMethod(self, name);
+  v8 = class_getClassMethod(self, a4);
+  Class = object_getClass(self);
   if (ClassMethod && v8)
   {
     v10 = Class;
@@ -85,17 +85,17 @@
 
 + (BOOL)brc_swizzleInstanceMethod:()BRCSwizzle with:newSel:
 {
-  InstanceMethod = class_getInstanceMethod(a1, name);
+  InstanceMethod = class_getInstanceMethod(self, name);
   v10 = class_getInstanceMethod(a4, a5);
   if (InstanceMethod && (v11 = v10) != 0)
   {
     Implementation = method_getImplementation(v10);
     TypeEncoding = method_getTypeEncoding(v11);
-    if (class_addMethod(a1, name, Implementation, TypeEncoding))
+    if (class_addMethod(self, name, Implementation, TypeEncoding))
     {
       v14 = method_getImplementation(v11);
       v15 = method_getTypeEncoding(v11);
-      class_replaceMethod(a1, name, v14, v15);
+      class_replaceMethod(self, name, v14, v15);
     }
 
     else
@@ -103,7 +103,7 @@
       method_exchangeImplementations(v11, InstanceMethod);
     }
 
-    return v11 == class_getInstanceMethod(a1, name);
+    return v11 == class_getInstanceMethod(self, name);
   }
 
   else
@@ -121,9 +121,9 @@
 
 + (BOOL)brc_swizzleClassMethod:()BRCSwizzle with:newSel:
 {
-  ClassMethod = class_getClassMethod(a1, name);
+  ClassMethod = class_getClassMethod(self, name);
   v10 = class_getClassMethod(a4, a5);
-  Class = object_getClass(a1);
+  Class = object_getClass(self);
   if (ClassMethod && v10)
   {
     v12 = Class;
@@ -160,19 +160,19 @@
 + (uint64_t)brc_swizzleInstanceMethod:()BRCSwizzle with:newSel:usingBlock:
 {
   v10 = a6;
-  [a1 brc_swizzleInstanceMethod:a3 with:a4 newSel:a5];
+  [self brc_swizzleInstanceMethod:a3 with:a4 newSel:a5];
   v10[2](v10);
 
-  return [a1 brc_swizzleInstanceMethod:a5 with:a4 newSel:a3];
+  return [self brc_swizzleInstanceMethod:a5 with:a4 newSel:a3];
 }
 
 + (uint64_t)brc_swizzleClassMethod:()BRCSwizzle with:newSel:usingBlock:
 {
   v10 = a6;
-  [a1 brc_swizzleClassMethod:a3 with:a4 newSel:a5];
+  [self brc_swizzleClassMethod:a3 with:a4 newSel:a5];
   v10[2](v10);
 
-  return [a1 brc_swizzleClassMethod:a5 with:a4 newSel:a3];
+  return [self brc_swizzleClassMethod:a5 with:a4 newSel:a3];
 }
 
 + (void)brc_swizzleInstanceMethod:()BRCSwizzle with:.cold.1()

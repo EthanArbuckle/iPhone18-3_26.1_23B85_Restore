@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_FixupDefaultStickerConfidenceScoreValues
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_FixupDefaultStickerConfidenceScoreValues
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v71 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = +[PLManagedAsset fetchRequest];
   v8 = MEMORY[0x1E696AE18];
   v9 = +[PLVisualSearchAttributes algorithmVersionKey];
@@ -21,7 +21,7 @@
   v34[1] = 3221225472;
   v34[2] = __111__PLModelMigrationAction_FixupDefaultStickerConfidenceScoreValues_performActionWithManagedObjectContext_error___block_invoke;
   v34[3] = &unk_1E7575B30;
-  v14 = v6;
+  v14 = contextCopy;
   v35 = v14;
   v15 = [(PLEnumerateAndSaveController *)v11 initWithName:v13 fetchRequest:v7 context:v14 options:4 generateContextBlock:v34 didFetchObjectIDsBlock:0 processResultBlock:&__block_literal_global_53874];
 
@@ -35,9 +35,9 @@
 
     if (v20)
     {
-      v21 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (!v21)
+      if (!logger)
       {
         v29 = PLMigrationGetLog();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -51,7 +51,7 @@
           _os_log_impl(&dword_19BF1F000, v29, OS_LOG_TYPE_ERROR, "Failed to process %{public}@. Error: %{public}@", buf, 0x16u);
         }
 
-        if (!a4)
+        if (!error)
         {
           goto LABEL_9;
         }
@@ -110,7 +110,7 @@
       }
     }
 
-    if (!a4)
+    if (!error)
     {
 LABEL_9:
       v18 = 3;
@@ -119,7 +119,7 @@ LABEL_9:
 
 LABEL_8:
     v27 = v17;
-    *a4 = v17;
+    *error = v17;
     goto LABEL_9;
   }
 

@@ -1,12 +1,12 @@
 @interface BMInternalManagerConfiguration
 - (BMInternalManagerConfiguration)init;
-- (BMInternalManagerConfiguration)initWithDirectory:(id)a3 shouldRunUpdatesOnSchedule:(BOOL)a4 shouldPurgeOutdatedData:(BOOL)a5;
+- (BMInternalManagerConfiguration)initWithDirectory:(id)directory shouldRunUpdatesOnSchedule:(BOOL)schedule shouldPurgeOutdatedData:(BOOL)data;
 - (NSString)description;
 @end
 
 @implementation BMInternalManagerConfiguration
 
-- (BMInternalManagerConfiguration)initWithDirectory:(id)a3 shouldRunUpdatesOnSchedule:(BOOL)a4 shouldPurgeOutdatedData:(BOOL)a5
+- (BMInternalManagerConfiguration)initWithDirectory:(id)directory shouldRunUpdatesOnSchedule:(BOOL)schedule shouldPurgeOutdatedData:(BOOL)data
 {
   v8 = sub_310D0();
   v9 = *(v8 - 8);
@@ -15,8 +15,8 @@
   v12 = &v16 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_310A0();
   (*(v9 + 16))(self + OBJC_IVAR___BMInternalManagerConfiguration_localStorageDirectory, v12, v8);
-  *(&self->super.isa + OBJC_IVAR___BMInternalManagerConfiguration_shouldRunUpdatesOnSchedule) = a4;
-  *(&self->super.isa + OBJC_IVAR___BMInternalManagerConfiguration_shouldPurgeOutdatedData) = a5;
+  *(&self->super.isa + OBJC_IVAR___BMInternalManagerConfiguration_shouldRunUpdatesOnSchedule) = schedule;
+  *(&self->super.isa + OBJC_IVAR___BMInternalManagerConfiguration_shouldPurgeOutdatedData) = data;
   v13 = type metadata accessor for ManagerConfiguration();
   v16.receiver = self;
   v16.super_class = v13;
@@ -27,7 +27,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_E978();
 
   v3 = sub_31300();

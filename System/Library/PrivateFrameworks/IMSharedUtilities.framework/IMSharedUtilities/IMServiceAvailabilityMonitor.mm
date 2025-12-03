@@ -21,10 +21,10 @@
 
 - (BOOL)isiMessageEnabled
 {
-  v2 = [objc_opt_self() sharedInstance];
-  if (v2)
+  sharedInstance = [objc_opt_self() sharedInstance];
+  if (sharedInstance)
   {
-    v3 = v2;
+    v3 = sharedInstance;
     if (qword_1EB300820 != -1)
     {
       swift_once();
@@ -33,7 +33,7 @@
     v4 = sub_1A88C82A8();
     v5 = [v3 availabilityForListenerID:v4 forService:1];
 
-    LOBYTE(v2) = v5 == 1;
+    LOBYTE(sharedInstance) = v5 == 1;
   }
 
   else
@@ -41,7 +41,7 @@
     __break(1u);
   }
 
-  return v2;
+  return sharedInstance;
 }
 
 @end

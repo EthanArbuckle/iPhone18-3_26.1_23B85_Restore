@@ -1,32 +1,32 @@
 @interface MBCKRemoveDomainRequest
-+ (BOOL)_removeDomain:(id)a3 cache:(id)a4 tracker:(id)a5 account:(id)a6 error:(id *)a7;
-+ (BOOL)removeDomain:(id)a3 cache:(id)a4 databaseManager:(id)a5 account:(id)a6 connection:(id)a7 error:(id *)a8;
-+ (id)removeDomainRequestForDevice:(id)a3;
++ (BOOL)_removeDomain:(id)domain cache:(id)cache tracker:(id)tracker account:(id)account error:(id *)error;
++ (BOOL)removeDomain:(id)domain cache:(id)cache databaseManager:(id)manager account:(id)account connection:(id)connection error:(id *)error;
++ (id)removeDomainRequestForDevice:(id)device;
 - (MBCKDevice)device;
-- (MBCKRemoveDomainRequest)initWithDevice:(id)a3;
+- (MBCKRemoveDomainRequest)initWithDevice:(id)device;
 - (id)recordRepresentation;
 @end
 
 @implementation MBCKRemoveDomainRequest
 
-+ (id)removeDomainRequestForDevice:(id)a3
++ (id)removeDomainRequestForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [[MBCKRemoveDomainRequest alloc] initWithDevice:v3];
+  deviceCopy = device;
+  v4 = [[MBCKRemoveDomainRequest alloc] initWithDevice:deviceCopy];
 
   return v4;
 }
 
-- (MBCKRemoveDomainRequest)initWithDevice:(id)a3
+- (MBCKRemoveDomainRequest)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v12.receiver = self;
   v12.super_class = MBCKRemoveDomainRequest;
   v5 = [(MBCKModel *)&v12 initWithRecord:0 cache:0];
   v6 = v5;
   if (v5)
   {
-    [(MBCKRemoveDomainRequest *)v5 setDevice:v4];
+    [(MBCKRemoveDomainRequest *)v5 setDevice:deviceCopy];
     v7 = MBRandomUUID();
     uuid = v6->_uuid;
     v6->_uuid = v7;
@@ -43,51 +43,51 @@
 {
   v10.receiver = self;
   v10.super_class = MBCKRemoveDomainRequest;
-  v3 = [(MBCKModel *)&v10 recordRepresentation];
-  v4 = [v3 objectForKeyedSubscript:@"device"];
+  recordRepresentation = [(MBCKModel *)&v10 recordRepresentation];
+  v4 = [recordRepresentation objectForKeyedSubscript:@"device"];
 
   if (!v4)
   {
     v5 = [CKReference alloc];
-    v6 = [(MBCKRemoveDomainRequest *)self device];
-    v7 = [v6 recordID];
-    v8 = [v5 initWithRecordID:v7 action:0];
-    [v3 setObject:v8 forKeyedSubscript:@"device"];
+    device = [(MBCKRemoveDomainRequest *)self device];
+    recordID = [device recordID];
+    v8 = [v5 initWithRecordID:recordID action:0];
+    [recordRepresentation setObject:v8 forKeyedSubscript:@"device"];
   }
 
-  [v3 setObject:self->_domainHMACsToRemove forKeyedSubscript:@"domainHMACsToRemove"];
+  [recordRepresentation setObject:self->_domainHMACsToRemove forKeyedSubscript:@"domainHMACsToRemove"];
 
-  return v3;
+  return recordRepresentation;
 }
 
-+ (BOOL)_removeDomain:(id)a3 cache:(id)a4 tracker:(id)a5 account:(id)a6 error:(id *)a7
++ (BOOL)_removeDomain:(id)domain cache:(id)cache tracker:(id)tracker account:(id)account error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v29 = a6;
+  domainCopy = domain;
+  cacheCopy = cache;
+  trackerCopy = tracker;
+  accountCopy = account;
   v33 = 0;
-  v14 = [MBCKAccount fetchAccountWithOperationTracker:v13 cache:v12 error:&v33];
+  v14 = [MBCKAccount fetchAccountWithOperationTracker:trackerCopy cache:cacheCopy error:&v33];
   v15 = v33;
   if (v14)
   {
-    if ([v14 fetchDevicesWithOperationTracker:v13 error:a7])
+    if ([v14 fetchDevicesWithOperationTracker:trackerCopy error:error])
     {
       v28 = MBDeviceUUID();
       v16 = [v14 deviceForUUID:v28];
       if (v16)
       {
         v17 = [MBCKRemoveDomainRequest removeDomainRequestForDevice:v16];
-        v18 = [v11 isEqualToString:@"AppDomain-com.apple.iBooks"];
-        v19 = [v16 hmacKey];
+        v18 = [domainCopy isEqualToString:@"AppDomain-com.apple.iBooks"];
+        hmacKey = [v16 hmacKey];
         if (v18)
         {
-          [MBCKManifest domainHmac:@"BooksDomain" key:v19];
+          [MBCKManifest domainHmac:@"BooksDomain" key:hmacKey];
         }
 
         else
         {
-          [MBCKManifest domainHmac:v11 key:v19];
+          [MBCKManifest domainHmac:domainCopy key:hmacKey];
         }
         v23 = ;
         [v17 addDomainHmacToRemove:v23];
@@ -99,7 +99,7 @@
         v37 = sub_100124B28;
         v38 = 0;
         v24 = dispatch_semaphore_create(0);
-        v25 = [v17 recordRepresentation];
+        recordRepresentation = [v17 recordRepresentation];
         v30[0] = _NSConcreteStackBlock;
         v30[1] = 3221225472;
         v30[2] = sub_100124B30;
@@ -107,7 +107,7 @@
         p_buf = &buf;
         v26 = v24;
         v31 = v26;
-        [v13 saveRecord:v25 delegate:0 completion:v30];
+        [trackerCopy saveRecord:recordRepresentation delegate:0 completion:v30];
 
         v21 = *(*(&buf + 1) + 40) != 0;
         _Block_object_dispose(&buf, 8);
@@ -137,11 +137,11 @@ LABEL_12:
 
   if (![MBError isError:v15 withCode:4])
   {
-    if (a7)
+    if (error)
     {
       v22 = v15;
       v21 = 0;
-      *a7 = v15;
+      *error = v15;
       goto LABEL_19;
     }
 
@@ -162,27 +162,27 @@ LABEL_19:
   return v21;
 }
 
-+ (BOOL)removeDomain:(id)a3 cache:(id)a4 databaseManager:(id)a5 account:(id)a6 connection:(id)a7 error:(id *)a8
++ (BOOL)removeDomain:(id)domain cache:(id)cache databaseManager:(id)manager account:(id)account connection:(id)connection error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a5;
+  domainCopy = domain;
+  cacheCopy = cache;
+  accountCopy = account;
+  connectionCopy = connection;
+  managerCopy = manager;
   v18 = +[MBCKOperationPolicy expensiveCellularPolicy];
-  v19 = [MBCKOperationTracker operationTrackerWithAccount:v15 databaseManager:v17 policy:v18 error:a8];
+  v19 = [MBCKOperationTracker operationTrackerWithAccount:accountCopy databaseManager:managerCopy policy:v18 error:error];
 
   if (v19)
   {
-    v20 = [v16 processName];
-    v21 = [v18 operationGroupWithName:@"removeDomain" processName:v20];
+    processName = [connectionCopy processName];
+    v21 = [v18 operationGroupWithName:@"removeDomain" processName:processName];
     [v19 setCkOperationGroup:v21];
 
     v22 = +[MBAppManager appManager];
-    v23 = [v15 persona];
-    [v22 setEnabled:0 forDomainName:v13 persona:v23];
+    persona = [accountCopy persona];
+    [v22 setEnabled:0 forDomainName:domainCopy persona:persona];
 
-    v24 = [objc_opt_class() _removeDomain:v13 cache:v14 tracker:v19 account:v15 error:a8];
+    v24 = [objc_opt_class() _removeDomain:domainCopy cache:cacheCopy tracker:v19 account:accountCopy error:error];
   }
 
   else

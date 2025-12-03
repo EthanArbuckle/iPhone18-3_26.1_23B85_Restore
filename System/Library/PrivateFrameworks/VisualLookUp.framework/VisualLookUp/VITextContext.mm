@@ -1,23 +1,23 @@
 @interface VITextContext
-- (VITextContext)initWithSurroundingText:(id)a3 normalizedBoundingBoxes:(id)a4;
+- (VITextContext)initWithSurroundingText:(id)text normalizedBoundingBoxes:(id)boxes;
 @end
 
 @implementation VITextContext
 
-- (VITextContext)initWithSurroundingText:(id)a3 normalizedBoundingBoxes:(id)a4
+- (VITextContext)initWithSurroundingText:(id)text normalizedBoundingBoxes:(id)boxes
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  boxesCopy = boxes;
   v14.receiver = self;
   v14.super_class = VITextContext;
   v8 = [(VITextContext *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [textCopy copy];
     surroundingText = v8->_surroundingText;
     v8->_surroundingText = v9;
 
-    v11 = [v7 copy];
+    v11 = [boxesCopy copy];
     normalizedBoundingBoxes = v8->_normalizedBoundingBoxes;
     v8->_normalizedBoundingBoxes = v11;
   }

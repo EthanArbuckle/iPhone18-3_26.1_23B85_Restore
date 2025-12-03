@@ -1,19 +1,19 @@
 @interface WGWidgetListEditViewFavoritesTableCellView
-- (WGWidgetListEditViewFavoritesTableCellView)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (WGWidgetListEditViewFavoritesTableCellView)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation WGWidgetListEditViewFavoritesTableCellView
 
-- (WGWidgetListEditViewFavoritesTableCellView)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WGWidgetListEditViewFavoritesTableCellView)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v30[2] = *MEMORY[0x277D85DE8];
   v29.receiver = self;
   v29.super_class = WGWidgetListEditViewFavoritesTableCellView;
-  v4 = [(WGWidgetListEditViewFavoritesTableCellView *)&v29 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(WGWidgetListEditViewFavoritesTableCellView *)&v29 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(WGWidgetListEditViewFavoritesTableCellView *)v4 contentView];
+    contentView = [(WGWidgetListEditViewFavoritesTableCellView *)v4 contentView];
     v7 = [MEMORY[0x277D755B8] systemImageNamed:@"plus.circle.fill"];
     v8 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v7];
     [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -54,16 +54,16 @@
     [v20 setAxis:0];
     [v20 setAlignment:2];
     [v20 setSpacing:8.0];
-    [v6 addSubview:v20];
+    [contentView addSubview:v20];
     v21 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v22 = [v20 centerXAnchor];
-    v23 = [v6 centerXAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    centerXAnchor = [v20 centerXAnchor];
+    centerXAnchor2 = [contentView centerXAnchor];
+    v24 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v21 addObject:v24];
 
-    v25 = [v20 centerYAnchor];
-    v26 = [v6 centerYAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    centerYAnchor = [v20 centerYAnchor];
+    centerYAnchor2 = [contentView centerYAnchor];
+    v27 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v21 addObject:v27];
 
     [MEMORY[0x277CCAAD0] activateConstraints:v21];

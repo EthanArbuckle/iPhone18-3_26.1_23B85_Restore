@@ -1,22 +1,22 @@
 @interface SiriUISashView
-+ ($131113AABFBD927EF350151908AA1243)_textContainerStyleForSashItem:(SEL)a3;
++ ($131113AABFBD927EF350151908AA1243)_textContainerStyleForSashItem:(SEL)item;
 + (id)_font;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SiriUISashView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SiriUISashView)initWithFrame:(CGRect)frame;
 - (UIButton)backNavigationButton;
 - (void)_setupBackNavigationButton;
 - (void)layoutSubviews;
-- (void)setNavigating:(BOOL)a3;
-- (void)setSashItem:(id)a3 locale:(id)a4;
+- (void)setNavigating:(BOOL)navigating;
+- (void)setSashItem:(id)item locale:(id)locale;
 @end
 
 @implementation SiriUISashView
 
-- (SiriUISashView)initWithFrame:(CGRect)a3
+- (SiriUISashView)initWithFrame:(CGRect)frame
 {
   v30.receiver = self;
   v30.super_class = SiriUISashView;
-  v3 = [(SiriUISashView *)&v30 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SiriUISashView *)&v30 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D75D18]);
@@ -28,8 +28,8 @@
     contentView = v3->_contentView;
     v3->_contentView = v9;
 
-    v11 = [(SiriUISashView *)v3 layer];
-    [v11 setAllowsGroupBlending:0];
+    layer = [(SiriUISashView *)v3 layer];
+    [layer setAllowsGroupBlending:0];
 
     v12 = [objc_alloc(MEMORY[0x277D755E8]) initWithFrame:{v5, v6, v7, v8}];
     imageView = v3->_imageView;
@@ -40,12 +40,12 @@
     v3->_textContainerView = v14;
 
     v16 = v3->_textContainerView;
-    v17 = [objc_opt_class() _font];
-    [(SiriUITextContainerView *)v16 setFont:v17];
+    _font = [objc_opt_class() _font];
+    [(SiriUITextContainerView *)v16 setFont:_font];
 
     v18 = v3->_textContainerView;
-    v19 = [MEMORY[0x277D75348] siriui_semiTransparentTextColor];
-    [(SiriUITextContainerView *)v18 setTextColor:v19];
+    siriui_semiTransparentTextColor = [MEMORY[0x277D75348] siriui_semiTransparentTextColor];
+    [(SiriUITextContainerView *)v18 setTextColor:siriui_semiTransparentTextColor];
 
     v20 = [MEMORY[0x277D75210] effectWithStyle:8];
     v21 = [MEMORY[0x277D75D00] effectForBlurEffect:v20 style:1];
@@ -53,8 +53,8 @@
     vibrantTextBackgroundView = v3->_vibrantTextBackgroundView;
     v3->_vibrantTextBackgroundView = v22;
 
-    v24 = [(UIVisualEffectView *)v3->_vibrantTextBackgroundView contentView];
-    [v24 addSubview:v3->_textContainerView];
+    contentView = [(UIVisualEffectView *)v3->_vibrantTextBackgroundView contentView];
+    [contentView addSubview:v3->_textContainerView];
 
     [(UIView *)v3->_contentView addSubview:v3->_imageView];
     [(UIView *)v3->_contentView addSubview:v3->_vibrantTextBackgroundView];
@@ -88,8 +88,8 @@
   v28 = v7;
   v9 = 16.0;
   height = 20.0;
-  v11 = [(SiriSharedUISashItem *)self->_sashItem image];
-  if (v11)
+  image = [(SiriSharedUISashItem *)self->_sashItem image];
+  if (image)
   {
     v30.origin.x = 16.0;
     v30.origin.y = 16.0;
@@ -182,15 +182,15 @@
   [(SiriUITextContainerView *)textContainerView setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   sashItem = self->_sashItem;
   v6 = 0.0;
-  if (sashItem && ![(SiriSharedUISashItem *)sashItem isHidden:a3.width])
+  if (sashItem && ![(SiriSharedUISashItem *)sashItem isHidden:fits.width])
   {
-    v7 = [(SiriSharedUISashItem *)self->_sashItem image];
-    if (v7)
+    image = [(SiriSharedUISashItem *)self->_sashItem image];
+    if (image)
     {
       v8 = 20.0 + 16.0;
     }
@@ -225,36 +225,36 @@
   return result;
 }
 
-- (void)setSashItem:(id)a3 locale:(id)a4
+- (void)setSashItem:(id)item locale:(id)locale
 {
-  v6 = a3;
-  if (![(SiriSharedUISashItem *)self->_sashItem isEqual:v6])
+  itemCopy = item;
+  if (![(SiriSharedUISashItem *)self->_sashItem isEqual:itemCopy])
   {
-    objc_storeStrong(&self->_sashItem, a3);
+    objc_storeStrong(&self->_sashItem, item);
     sashItem = self->_sashItem;
     if (sashItem)
     {
-      v8 = [(SiriSharedUISashItem *)sashItem isHidden];
+      isHidden = [(SiriSharedUISashItem *)sashItem isHidden];
     }
 
     else
     {
-      v8 = 1;
+      isHidden = 1;
     }
 
     imageView = self->_imageView;
-    v10 = [v6 image];
-    [(UIImageView *)imageView setImage:v10];
+    image = [itemCopy image];
+    [(UIImageView *)imageView setImage:image];
 
     textContainerView = self->_textContainerView;
-    v12 = [v6 title];
-    [(SiriUITextContainerView *)textContainerView setText:v12];
+    title = [itemCopy title];
+    [(SiriUITextContainerView *)textContainerView setText:title];
 
     v13 = self->_textContainerView;
     v14 = objc_opt_class();
     if (v14)
     {
-      [v14 _textContainerStyleForSashItem:v6];
+      [v14 _textContainerStyleForSashItem:itemCopy];
     }
 
     else
@@ -266,39 +266,39 @@
     }
 
     [(SiriUITextContainerView *)v13 setTextContainerStyle:&v21];
-    [(UIImageView *)self->_imageView setHidden:v8];
-    [(SiriUITextContainerView *)self->_textContainerView setHidden:v8];
-    v15 = [v6 backgroundColor];
+    [(UIImageView *)self->_imageView setHidden:isHidden];
+    [(SiriUITextContainerView *)self->_textContainerView setHidden:isHidden];
+    backgroundColor = [itemCopy backgroundColor];
 
-    if (v15)
+    if (backgroundColor)
     {
       contentView = self->_contentView;
-      v17 = [v6 backgroundColor];
-      [(UIView *)contentView setBackgroundColor:v17];
+      backgroundColor2 = [itemCopy backgroundColor];
+      [(UIView *)contentView setBackgroundColor:backgroundColor2];
     }
 
-    v18 = [v6 textColor];
+    textColor = [itemCopy textColor];
 
-    if (v18)
+    if (textColor)
     {
       v19 = self->_textContainerView;
-      v20 = [v6 textColor];
-      [(SiriUITextContainerView *)v19 setTextColor:v20];
+      textColor2 = [itemCopy textColor];
+      [(SiriUITextContainerView *)v19 setTextColor:textColor2];
 
       [(UIVisualEffectView *)self->_vibrantTextBackgroundView setEffect:0];
     }
 
-    self->_requestsExtraPadding = [v6 requestsExtraPadding];
+    self->_requestsExtraPadding = [itemCopy requestsExtraPadding];
     [(SiriUISashView *)self setNeedsLayout];
   }
 }
 
-- (void)setNavigating:(BOOL)a3
+- (void)setNavigating:(BOOL)navigating
 {
-  if (self->_navigating != a3)
+  if (self->_navigating != navigating)
   {
-    self->_navigating = a3;
-    if (a3)
+    self->_navigating = navigating;
+    if (navigating)
     {
       [(SiriUISashView *)self _setupBackNavigationButton];
     }
@@ -334,8 +334,8 @@
     [(UIButton *)self->_backNavigationButton setBackgroundImage:v4 forState:0];
     [(UIButton *)self->_backNavigationButton setBackgroundImage:v4 forState:1];
     v7 = self->_backNavigationButton;
-    v8 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UIButton *)v7 setTintColor:v8];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [(UIButton *)v7 setTintColor:systemGrayColor];
 
     v9 = self->_backNavigationButton;
     UIEdgeInsetsMakeWithEdges();
@@ -346,8 +346,8 @@
     vibrantButtonBackgroundView = self->_vibrantButtonBackgroundView;
     self->_vibrantButtonBackgroundView = v12;
 
-    v14 = [(UIVisualEffectView *)self->_vibrantButtonBackgroundView contentView];
-    [v14 addSubview:self->_backNavigationButton];
+    contentView = [(UIVisualEffectView *)self->_vibrantButtonBackgroundView contentView];
+    [contentView addSubview:self->_backNavigationButton];
 
     [(UIView *)self->_contentView addSubview:self->_vibrantButtonBackgroundView];
   }
@@ -370,8 +370,8 @@
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
   v7 = [objc_alloc(MEMORY[0x277D74310]) initWithFontAttributes:v6];
   v8 = MEMORY[0x277D74300];
-  v9 = [MEMORY[0x277D75520] defaultMetrics];
-  [v9 scaledValueForValue:15.0];
+  defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
+  [defaultMetrics scaledValueForValue:15.0];
   v11 = round(v10);
 
   v12 = [v8 fontWithDescriptor:v7 size:{fmax(v11, 15.0)}];
@@ -379,15 +379,15 @@
   return v12;
 }
 
-+ ($131113AABFBD927EF350151908AA1243)_textContainerStyleForSashItem:(SEL)a3
++ ($131113AABFBD927EF350151908AA1243)_textContainerStyleForSashItem:(SEL)item
 {
   *&retstr->var0 = unk_2694DDDB8;
   *&retstr->var2 = unk_2694DDDC8;
   *&retstr->var3.left = unk_2694DDDD8;
   retstr->var3.right = 16.0;
-  v5 = [a4 image];
+  image = [a4 image];
 
-  if (v5)
+  if (image)
   {
     result = SiriLanguageIsRTL();
     v7 = 32;

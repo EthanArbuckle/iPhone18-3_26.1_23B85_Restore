@@ -1,11 +1,11 @@
 @interface HKSPAnalyticsSleepNotificationEvent
-- (HKSPAnalyticsSleepNotificationEvent)initWithType:(unint64_t)a3 action:(unint64_t)a4;
+- (HKSPAnalyticsSleepNotificationEvent)initWithType:(unint64_t)type action:(unint64_t)action;
 - (NSString)description;
 @end
 
 @implementation HKSPAnalyticsSleepNotificationEvent
 
-- (HKSPAnalyticsSleepNotificationEvent)initWithType:(unint64_t)a3 action:(unint64_t)a4
+- (HKSPAnalyticsSleepNotificationEvent)initWithType:(unint64_t)type action:(unint64_t)action
 {
   v19[2] = *MEMORY[0x277D85DE8];
   v17.receiver = self;
@@ -16,7 +16,7 @@
   {
     objc_storeStrong(&v6->_eventName, @"com.apple.SleepHealth.SleepNotificationEvent");
     v8 = @"FocusIntroduction";
-    if (!a3)
+    if (!type)
     {
       v8 = @"BedtimeReminder";
     }
@@ -24,14 +24,14 @@
     v18[0] = @"notificationType";
     v18[1] = @"notificationAction";
     v19[0] = v8;
-    if (a4 - 1 > 3)
+    if (action - 1 > 3)
     {
       v9 = @"Fired";
     }
 
     else
     {
-      v9 = off_279C76528[a4 - 1];
+      v9 = off_279C76528[action - 1];
     }
 
     v19[1] = v9;

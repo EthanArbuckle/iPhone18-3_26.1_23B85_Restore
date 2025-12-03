@@ -1,30 +1,30 @@
 @interface LCFDatabaseColumnConnection
-- (BOOL)doQueryEachStep:(id)a3 statementStepHandler:(id)a4;
-- (BOOL)doQueryExec:(id)a3;
-- (BOOL)writeFeatures:(id)a3 featureValueType:(int64_t)a4;
-- (id)init:(id)a3 databaseName:(id)a4 tableName:(id)a5;
+- (BOOL)doQueryEachStep:(id)step statementStepHandler:(id)handler;
+- (BOOL)doQueryExec:(id)exec;
+- (BOOL)writeFeatures:(id)features featureValueType:(int64_t)type;
+- (id)init:(id)init databaseName:(id)name tableName:(id)tableName;
 - (id)query;
 - (void)ensureDatabaseTable;
 @end
 
 @implementation LCFDatabaseColumnConnection
 
-- (id)init:(id)a3 databaseName:(id)a4 tableName:(id)a5
+- (id)init:(id)init databaseName:(id)name tableName:(id)tableName
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  initCopy = init;
+  nameCopy = name;
+  tableNameCopy = tableName;
   v17.receiver = self;
   v17.super_class = LCFDatabaseColumnConnection;
   v12 = [(LCFDatabaseColumnConnection *)&v17 init];
   if (v12)
   {
     LCFLoggingUtilsInit();
-    objc_storeStrong(&v12->_databaseBaseURL, a3);
-    objc_storeStrong(&v12->_databaseName, a4);
-    objc_storeStrong(&v12->_tableName, a5);
-    v13 = [(NSURL *)v12->_databaseBaseURL path];
-    v14 = [v13 stringByAppendingPathComponent:v12->_databaseName];
+    objc_storeStrong(&v12->_databaseBaseURL, init);
+    objc_storeStrong(&v12->_databaseName, name);
+    objc_storeStrong(&v12->_tableName, tableName);
+    path = [(NSURL *)v12->_databaseBaseURL path];
+    v14 = [path stringByAppendingPathComponent:v12->_databaseName];
     databaseNamePath = v12->_databaseNamePath;
     v12->_databaseNamePath = v14;
 
@@ -37,17 +37,17 @@
 - (void)ensureDatabaseTable
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(NSURL *)self->_databaseBaseURL path];
-  if (([v3 fileExistsAtPath:v4] & 1) == 0)
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [(NSURL *)self->_databaseBaseURL path];
+  if (([defaultManager fileExistsAtPath:path] & 1) == 0)
   {
-    [v3 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:0];
+    [defaultManager createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:0];
   }
 
   p_databaseNamePath = &self->_databaseNamePath;
-  v6 = [(NSString *)self->_databaseNamePath UTF8String];
+  uTF8String = [(NSString *)self->_databaseNamePath UTF8String];
   ppDb = 0;
-  if (sqlite3_open(v6, &ppDb))
+  if (sqlite3_open(uTF8String, &ppDb))
   {
     v7 = LCFLogDatabaseColumnConnection;
     if (os_log_type_enabled(LCFLogDatabaseColumnConnection, OS_LOG_TYPE_ERROR))
@@ -86,19 +86,19 @@
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)doQueryEachStep:(id)a3 statementStepHandler:(id)a4
+- (BOOL)doQueryEachStep:(id)step statementStepHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  if ([v8 fileExistsAtPath:self->_databaseNamePath])
+  stepCopy = step;
+  handlerCopy = handler;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if ([defaultManager fileExistsAtPath:self->_databaseNamePath])
   {
-    v9 = [(NSString *)self->_databaseNamePath UTF8String];
+    uTF8String = [(NSString *)self->_databaseNamePath UTF8String];
     ppDb = 0;
-    if (!sqlite3_open(v9, &ppDb))
+    if (!sqlite3_open(uTF8String, &ppDb))
     {
       v12 = 0;
-      sqlite3_prepare_v2(ppDb, [v6 UTF8String], -1, &v12, 0);
+      sqlite3_prepare_v2(ppDb, [stepCopy UTF8String], -1, &v12, 0);
       while (1)
       {
         v10 = sqlite3_step(v12);
@@ -107,7 +107,7 @@
           break;
         }
 
-        v7[2](v7, v12);
+        handlerCopy[2](handlerCopy, v12);
       }
 
       if (v10 != 101)
@@ -122,22 +122,22 @@
   return 1;
 }
 
-- (BOOL)doQueryExec:(id)a3
+- (BOOL)doQueryExec:(id)exec
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  if ([v5 fileExistsAtPath:self->_databaseNamePath] && (v6 = -[NSString UTF8String](self->_databaseNamePath, "UTF8String"), ppDb = 0, !sqlite3_open(v6, &ppDb)))
+  execCopy = exec;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if ([defaultManager fileExistsAtPath:self->_databaseNamePath] && (v6 = -[NSString UTF8String](self->_databaseNamePath, "UTF8String"), ppDb = 0, !sqlite3_open(v6, &ppDb)))
   {
     sqlite3_exec(ppDb, "BEGIN", 0, 0, 0);
     v17 = 0;
-    v9 = sqlite3_exec(ppDb, [v4 UTF8String], 0, 0, &v17);
+    v9 = sqlite3_exec(ppDb, [execCopy UTF8String], 0, 0, &v17);
     v7 = v9 == 0;
     if (v9)
     {
       v10 = LCFLogDatabaseConnection;
       if (os_log_type_enabled(LCFLogDatabaseConnection, OS_LOG_TYPE_ERROR))
       {
-        [(LCFDatabaseConnection *)v4 ensureDatabaseTable:v10];
+        [(LCFDatabaseConnection *)execCopy ensureDatabaseTable:v10];
       }
     }
 
@@ -153,10 +153,10 @@
   return v7;
 }
 
-- (BOOL)writeFeatures:(id)a3 featureValueType:(int64_t)a4
+- (BOOL)writeFeatures:(id)features featureValueType:(int64_t)type
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  featuresCopy = features;
   [(LCFDatabaseColumnConnection *)self query];
   v27 = 0u;
   v28 = 0u;
@@ -177,26 +177,26 @@
         }
 
         v12 = *(*(&v27 + 1) + 8 * i);
-        v13 = [v12 featureName];
-        v14 = [v13 isEqualToString:v6];
+        featureName = [v12 featureName];
+        v14 = [featureName isEqualToString:featuresCopy];
 
         if (v14)
         {
-          v21 = [v12 featureValueType];
-          v20 = v21 == a4;
-          if (v21 != a4)
+          featureValueType = [v12 featureValueType];
+          v20 = featureValueType == type;
+          if (featureValueType != type)
           {
             v22 = LCFLogDatabaseConnection;
             if (os_log_type_enabled(LCFLogDatabaseConnection, OS_LOG_TYPE_ERROR))
             {
               v25 = v22;
-              v26 = [v12 featureValueType];
+              featureValueType2 = [v12 featureValueType];
               *buf = 138412802;
-              v32 = v6;
+              v32 = featuresCopy;
               v33 = 2048;
-              v34 = v26;
+              v34 = featureValueType2;
               v35 = 2048;
-              v36 = a4;
+              typeCopy = type;
               _os_log_error_impl(&dword_255F22000, v25, OS_LOG_TYPE_ERROR, "Wrong type is asked %@ %ld %ld", buf, 0x20u);
             }
 
@@ -220,8 +220,8 @@
 
   v15 = MEMORY[0x277CCACA8];
   tableName = self->_tableName;
-  v17 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  v18 = [v15 stringWithFormat:@"INSERT INTO %@ (ColumnName, Type) VALUES('%@', %@)", tableName, v6, v17];
+  v17 = [MEMORY[0x277CCABB0] numberWithInteger:type];
+  v18 = [v15 stringWithFormat:@"INSERT INTO %@ (ColumnName, Type) VALUES('%@', %@)", tableName, featuresCopy, v17];
 
   [(LCFDatabaseColumnConnection *)self doQueryExec:v18];
   nameTypesCache = self->_nameTypesCache;

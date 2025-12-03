@@ -1,17 +1,17 @@
 @interface UIWebFormRotatingAccessoryPopover
-- (UIWebFormRotatingAccessoryPopover)initWithDOMNode:(id)a3;
+- (UIWebFormRotatingAccessoryPopover)initWithDOMNode:(id)node;
 - (unint64_t)popoverArrowDirections;
 - (void)accessoryDone;
-- (void)popoverWasDismissed:(id)a3;
+- (void)popoverWasDismissed:(id)dismissed;
 @end
 
 @implementation UIWebFormRotatingAccessoryPopover
 
-- (UIWebFormRotatingAccessoryPopover)initWithDOMNode:(id)a3
+- (UIWebFormRotatingAccessoryPopover)initWithDOMNode:(id)node
 {
   v7.receiver = self;
   v7.super_class = UIWebFormRotatingAccessoryPopover;
-  v3 = [(UIWebRotatingNodePopover *)&v7 initWithDOMNode:a3];
+  v3 = [(UIWebRotatingNodePopover *)&v7 initWithDOMNode:node];
   v4 = v3;
   if (v3)
   {
@@ -25,11 +25,11 @@
 - (void)accessoryDone
 {
   WebThreadLock();
-  v3 = [(UIWebRotatingNodePopover *)self node];
-  v4 = [v3 ownerDocument];
-  v6 = [v4 webFrame];
+  node = [(UIWebRotatingNodePopover *)self node];
+  ownerDocument = [node ownerDocument];
+  webFrame = [ownerDocument webFrame];
 
-  v5 = [UIWebBrowserView getUIWebBrowserViewForWebFrame:v6];
+  v5 = [UIWebBrowserView getUIWebBrowserViewForWebFrame:webFrame];
   [v5 accessoryDone];
 }
 
@@ -48,11 +48,11 @@
   return 3;
 }
 
-- (void)popoverWasDismissed:(id)a3
+- (void)popoverWasDismissed:(id)dismissed
 {
-  v4 = [(UIWebRotatingNodePopover *)self node];
+  node = [(UIWebRotatingNodePopover *)self node];
 
-  if (v4)
+  if (node)
   {
 
     [(UIWebFormRotatingAccessoryPopover *)self accessoryDone];

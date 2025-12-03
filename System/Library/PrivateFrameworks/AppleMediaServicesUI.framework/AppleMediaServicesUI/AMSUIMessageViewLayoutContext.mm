@@ -1,6 +1,6 @@
 @interface AMSUIMessageViewLayoutContext
 - (AMSUIMessageView)messageView;
-- (AMSUIMessageViewLayoutContext)initWithMessageView:(id)a3;
+- (AMSUIMessageViewLayoutContext)initWithMessageView:(id)view;
 - (BOOL)_isAccessoryViewLeading;
 - (BOOL)_isFooterButtonPartOfContentFrame;
 - (BOOL)_isIconImageTopAligned;
@@ -20,13 +20,13 @@
 - (CGRect)mainContentFrame;
 - (CGRect)maskViewFrame;
 - (CGRect)textViewFrame;
-- (CGSize)_contentSizeThatFits:(CGRect)a3;
+- (CGSize)_contentSizeThatFits:(CGRect)fits;
 - (CGSize)_makeImageViewSize;
 - (CGSize)contentSize;
 - (CGSize)debugButtonSize;
 - (CGSize)lastFittingSize;
 - (CGSize)lastSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (CGSize)textViewContentHuggingSize;
 - (NSDirectionalEdgeInsets)contentLayoutMargins;
 - (double)_bannerMaxTextWidth;
@@ -38,29 +38,29 @@
 - (double)_interitemSpacing;
 - (double)_maxFooterButtonWidth;
 - (double)_maxTextContainerWidth;
-- (double)_scaledUIValueForValue:(double)a3;
+- (double)_scaledUIValueForValue:(double)value;
 - (double)leadingContentTextBaseline;
 - (double)separatorThickness;
 - (double)totalFooterButtonHeight;
 - (unint64_t)effectiveImageStyle;
 - (void)_calculateFooterButtonSizes;
-- (void)_updateWithRootFrame:(CGRect)a3;
+- (void)_updateWithRootFrame:(CGRect)frame;
 - (void)calculateAccessorySecondaryViewFrame;
 - (void)calculateAccessorySecondaryViewSize;
 - (void)calculateAccessoryViewFrame;
 - (void)calculateAccessoryViewSize;
-- (void)calculateMainContentFrameRootFrame:(CGRect)a3;
+- (void)calculateMainContentFrameRootFrame:(CGRect)frame;
 - (void)calculateTextViewExclusionFrame;
-- (void)calculateTextViewSizeInFrame:(CGRect)a3 dirty:(BOOL)a4;
+- (void)calculateTextViewSizeInFrame:(CGRect)frame dirty:(BOOL)dirty;
 - (void)invalidate;
 - (void)layoutSubviewFrames;
 @end
 
 @implementation AMSUIMessageViewLayoutContext
 
-- (AMSUIMessageViewLayoutContext)initWithMessageView:(id)a3
+- (AMSUIMessageViewLayoutContext)initWithMessageView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v17.receiver = self;
   v17.super_class = AMSUIMessageViewLayoutContext;
   v5 = [(AMSUIMessageViewLayoutContext *)&v17 init];
@@ -75,13 +75,13 @@
     v5->_debugButtonFrame.size = v15;
     v14 = *MEMORY[0x1E695F060];
     v5->_contentSize = *MEMORY[0x1E695F060];
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     footerButtonFrames = v6->_footerButtonFrames;
-    v6->_footerButtonFrames = v7;
+    v6->_footerButtonFrames = array;
 
-    v9 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     footerButtonFramesPreFlatten = v6->_footerButtonFramesPreFlatten;
-    v6->_footerButtonFramesPreFlatten = v9;
+    v6->_footerButtonFramesPreFlatten = array2;
 
     v6->_footerContainerViewFrame.origin = v16;
     v6->_footerContainerViewFrame.size = v15;
@@ -96,10 +96,10 @@
     v6->_mainContentFrame.size = v15;
     v6->_maskViewFrame.origin = v16;
     v6->_maskViewFrame.size = v15;
-    objc_storeWeak(&v6->_messageView, v4);
-    v11 = [MEMORY[0x1E695DF70] array];
+    objc_storeWeak(&v6->_messageView, viewCopy);
+    array3 = [MEMORY[0x1E695DF70] array];
     separatorViewFrames = v6->_separatorViewFrames;
-    v6->_separatorViewFrames = v11;
+    v6->_separatorViewFrames = array3;
 
     v6->_textViewFrame.origin = v16;
     v6->_textViewFrame.size = v15;
@@ -119,8 +119,8 @@
 
 - (void)layoutSubviewFrames
 {
-  v3 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  [v3 frame];
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  [messageView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -132,10 +132,10 @@
     [(AMSUIMessageViewLayoutContext *)self setContentSize:v9, v11];
   }
 
-  v15 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v16 = [v15 isSizing];
+  messageView2 = [(AMSUIMessageViewLayoutContext *)self messageView];
+  isSizing = [messageView2 isSizing];
 
-  if (v16)
+  if (isSizing)
   {
     [(AMSUIMessageViewLayoutContext *)self lastSize];
     v9 = v17;
@@ -159,10 +159,10 @@
   [(AMSUIMessageViewLayoutContext *)self setLastMessageViewFrame:v5, v7, v9, v11];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(AMSUIMessageViewLayoutContext *)self lastFittingSize];
   if (width == v7 && height == v6)
   {
@@ -205,14 +205,14 @@
   return result;
 }
 
-- (CGSize)_contentSizeThatFits:(CGRect)a3
+- (CGSize)_contentSizeThatFits:(CGRect)fits
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v9 = [v8 style];
+  height = fits.size.height;
+  width = fits.size.width;
+  y = fits.origin.y;
+  x = fits.origin.x;
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  style = [messageView style];
   [(AMSUIMessageViewLayoutContext *)self setIsDirty:1];
   [(AMSUIMessageViewLayoutContext *)self _updateWithRootFrame:x, y, width, height];
   [(AMSUIMessageViewLayoutContext *)self _effectiveTextViewFrame];
@@ -229,10 +229,10 @@
     v14 = v13;
     if ([(AMSUIMessageViewLayoutContext *)self shouldUseStackedLayout])
     {
-      v15 = [v8 textView];
-      v16 = [v15 hasText];
+      textView = [messageView textView];
+      hasText = [textView hasText];
       v17 = 0.0;
-      if (v16)
+      if (hasText)
       {
         [(AMSUIMessageViewLayoutContext *)self _imageToLabelSpacing];
       }
@@ -240,7 +240,7 @@
       v11 = v11 + v14 + v17;
     }
 
-    else if (v9 == 5)
+    else if (style == 5)
     {
       if (v14 + 10.0 + 10.0 >= v11)
       {
@@ -254,9 +254,9 @@
     }
   }
 
-  v18 = [v8 accessorySecondaryView];
+  accessorySecondaryView = [messageView accessorySecondaryView];
 
-  if (v18)
+  if (accessorySecondaryView)
   {
     [(AMSUIMessageViewLayoutContext *)self accessorySecondaryViewFrame];
     if (v19 >= v11)
@@ -268,8 +268,8 @@
   [(AMSUIMessageViewLayoutContext *)self contentLayoutMargins];
   v21 = v20;
   v23 = v11 + v22;
-  v24 = [(AMSUIMessageViewLayoutContext *)self footerButtonFrames];
-  v25 = [v24 count];
+  footerButtonFrames = [(AMSUIMessageViewLayoutContext *)self footerButtonFrames];
+  v25 = [footerButtonFrames count];
   v26 = 0.0;
   v27 = 0.0;
   if (v25)
@@ -286,37 +286,37 @@
 
   v30 = v21 + v28 + v26;
 
-  v31 = [v8 maskShapeView];
+  maskShapeView = [messageView maskShapeView];
 
-  if (v31)
+  if (maskShapeView)
   {
-    v32 = [v8 maskShapeView];
-    if ([v32 arrowDirection] == 1)
+    maskShapeView2 = [messageView maskShapeView];
+    if ([maskShapeView2 arrowDirection] == 1)
     {
     }
 
     else
     {
-      v33 = [v8 maskShapeView];
-      v34 = [v33 arrowDirection];
+      maskShapeView3 = [messageView maskShapeView];
+      arrowDirection = [maskShapeView3 arrowDirection];
 
-      if (v34 != 2)
+      if (arrowDirection != 2)
       {
         goto LABEL_26;
       }
     }
 
-    v35 = [(AMSUIMessageViewLayoutContext *)self messageView];
-    v36 = [v35 maskShapeView];
-    [v36 arrowHeight];
+    messageView2 = [(AMSUIMessageViewLayoutContext *)self messageView];
+    maskShapeView4 = [messageView2 maskShapeView];
+    [maskShapeView4 arrowHeight];
     v30 = v30 + v37;
   }
 
 LABEL_26:
-  if (v9 == 1)
+  if (style == 1)
   {
-    v38 = [v8 traitCollection];
-    v39 = [v38 horizontalSizeClass];
+    traitCollection = [messageView traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
 
     v40 = 76.0;
     if (v30 >= 76.0)
@@ -330,7 +330,7 @@ LABEL_26:
       v41 = v30;
     }
 
-    if (v39 == 2)
+    if (horizontalSizeClass == 2)
     {
       v30 = v40;
     }
@@ -353,12 +353,12 @@ LABEL_26:
   return result;
 }
 
-- (void)_updateWithRootFrame:(CGRect)a3
+- (void)_updateWithRootFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v384 = *MEMORY[0x1E69E9840];
   [(AMSUIMessageViewLayoutContext *)self calculateMainContentFrameRootFrame:?];
   if ([(AMSUIMessageViewLayoutContext *)self isDirty])
@@ -393,27 +393,27 @@ LABEL_26:
   v336 = v21;
   v24 = v23;
   v330 = v25;
-  v26 = [MEMORY[0x1E695DF70] array];
-  v332 = [(AMSUIMessageViewLayoutContext *)self footerButtonFramesPreFlatten];
+  array = [MEMORY[0x1E695DF70] array];
+  footerButtonFramesPreFlatten = [(AMSUIMessageViewLayoutContext *)self footerButtonFramesPreFlatten];
   [(AMSUIMessageViewLayoutContext *)self debugButtonSize];
   v28 = v27;
   v338 = v29;
   [(AMSUIMessageViewLayoutContext *)self accessorySpacing];
   v324 = v30;
-  v31 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v32 = [v31 buttons];
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  buttons = [messageView buttons];
 
-  v33 = [(AMSUIMessageViewLayoutContext *)self _isAccessoryViewLeading];
-  v34 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v35 = [v34 traitCollection];
-  v331 = [v35 layoutDirection];
+  _isAccessoryViewLeading = [(AMSUIMessageViewLayoutContext *)self _isAccessoryViewLeading];
+  messageView2 = [(AMSUIMessageViewLayoutContext *)self messageView];
+  traitCollection = [messageView2 traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
-  v36 = [(AMSUIMessageViewLayoutContext *)self isImageViewHidden];
+  isImageViewHidden = [(AMSUIMessageViewLayoutContext *)self isImageViewHidden];
   [(AMSUIMessageViewLayoutContext *)self leadingContentTextBaseline];
   v38 = v37;
-  v39 = [(AMSUIMessageViewLayoutContext *)self shouldUseStackedLayout];
-  v40 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v41 = [v40 style];
+  shouldUseStackedLayout = [(AMSUIMessageViewLayoutContext *)self shouldUseStackedLayout];
+  messageView3 = [(AMSUIMessageViewLayoutContext *)self messageView];
+  style = [messageView3 style];
 
   [(AMSUIMessageViewLayoutContext *)self totalFooterButtonHeight];
   v43 = v42;
@@ -422,35 +422,35 @@ LABEL_26:
   [(AMSUIMessageViewLayoutContext *)self _makeImageViewSize];
   v45 = v44;
   v360 = v46;
-  v47 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  [v47 accessoryView];
+  messageView4 = [(AMSUIMessageViewLayoutContext *)self messageView];
+  [messageView4 accessoryView];
 
   v358 = v45;
-  if (!v39)
+  if (!shouldUseStackedLayout)
   {
-    v48 = [(AMSUIMessageViewLayoutContext *)self _isIconImageTopAligned];
-    v49 = v48;
-    if (!v41)
+    _isIconImageTopAligned = [(AMSUIMessageViewLayoutContext *)self _isIconImageTopAligned];
+    v49 = _isIconImageTopAligned;
+    if (!style)
     {
-      v58 = v32;
-      v59 = v39;
-      v60 = v33;
-      v61 = v36;
+      v58 = buttons;
+      v59 = shouldUseStackedLayout;
+      v60 = _isAccessoryViewLeading;
+      v61 = isImageViewHidden;
       v328 = v14;
-      v62 = [(AMSUIMessageViewLayoutContext *)self messageView];
-      v63 = [v62 traitCollection];
-      v64 = [v63 userInterfaceIdiom];
+      messageView5 = [(AMSUIMessageViewLayoutContext *)self messageView];
+      traitCollection2 = [messageView5 traitCollection];
+      userInterfaceIdiom = [traitCollection2 userInterfaceIdiom];
 
-      if (v64 == 1)
+      if (userInterfaceIdiom == 1)
       {
         [(AMSUIMessageViewLayoutContext *)self contentLayoutMargins];
         v352 = 15.0 - v65;
         v52 = 0.0;
-        v36 = v61;
-        v33 = v60;
-        v39 = v59;
-        v32 = v58;
-        v41 = 0;
+        isImageViewHidden = v61;
+        _isAccessoryViewLeading = v60;
+        shouldUseStackedLayout = v59;
+        buttons = v58;
+        style = 0;
         if (v49)
         {
           goto LABEL_28;
@@ -460,11 +460,11 @@ LABEL_26:
       else
       {
         v52 = 11.0;
-        v36 = v61;
-        v33 = v60;
-        v39 = v59;
-        v32 = v58;
-        v41 = 0;
+        isImageViewHidden = v61;
+        _isAccessoryViewLeading = v60;
+        shouldUseStackedLayout = v59;
+        buttons = v58;
+        style = 0;
         if (v49)
         {
           goto LABEL_28;
@@ -474,13 +474,13 @@ LABEL_26:
       goto LABEL_26;
     }
 
-    if ((v41 & 0xFFFFFFFFFFFFFFFELL) == 2)
+    if ((style & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
       v326 = v38;
       v328 = v14;
       v50 = v28;
-      v51 = [(AMSUIMessageViewLayoutContext *)self effectiveImageStyle];
-      if (v51 == 2)
+      effectiveImageStyle = [(AMSUIMessageViewLayoutContext *)self effectiveImageStyle];
+      if (effectiveImageStyle == 2)
       {
         v52 = 15.0;
       }
@@ -490,11 +490,11 @@ LABEL_26:
         v52 = 11.0;
       }
 
-      v53 = v51 == 2 || v49;
+      v53 = effectiveImageStyle == 2 || v49;
       [(AMSUIMessageViewLayoutContext *)self mainContentFrame];
       v55 = v54;
-      v56 = [(AMSUIMessageViewLayoutContext *)self _isSymbolImage];
-      v57 = v360 + v52 < v55 && v56;
+      _isSymbolImage = [(AMSUIMessageViewLayoutContext *)self _isSymbolImage];
+      v57 = v360 + v52 < v55 && _isSymbolImage;
       v28 = v50;
       if (v53)
       {
@@ -516,13 +516,13 @@ LABEL_29:
       }
 
 LABEL_26:
-      v68 = [(AMSUIMessageViewLayoutContext *)self messageView];
-      v69 = [v68 imageView];
-      [v69 alignmentRectInsets];
+      messageView6 = [(AMSUIMessageViewLayoutContext *)self messageView];
+      imageView = [messageView6 imageView];
+      [imageView alignmentRectInsets];
 
-      v70 = [(AMSUIMessageViewLayoutContext *)self messageView];
-      v71 = [v70 imageView];
-      [v71 alignmentRectForFrame:{v352, v362, v45, v360}];
+      messageView7 = [(AMSUIMessageViewLayoutContext *)self messageView];
+      imageView2 = [messageView7 imageView];
+      [imageView2 alignmentRectForFrame:{v352, v362, v45, v360}];
       v73 = v72;
       v74 = v38;
       v75 = v11;
@@ -541,21 +541,21 @@ LABEL_26:
       goto LABEL_30;
     }
 
-    if (!v48)
+    if (!_isIconImageTopAligned)
     {
       v328 = v14;
       goto LABEL_26;
     }
 
     v66 = 11.0;
-    if (v41 == 5)
+    if (style == 5)
     {
       v66 = 10.0;
     }
 
     [(AMSUIMessageViewLayoutContext *)self _scaledUIValueForValue:v66];
     v362 = v67;
-    if (v41 != 5)
+    if (style != 5)
     {
       goto LABEL_29;
     }
@@ -565,7 +565,7 @@ LABEL_30:
   v84 = v28;
   v85 = MEMORY[0x1E695F058];
   v86 = v24;
-  if (v32)
+  if (buttons)
   {
     [(AMSUIMessageViewLayoutContext *)self _maxFooterButtonWidth];
   }
@@ -583,9 +583,9 @@ LABEL_30:
   v329 = *v85;
   if (![(AMSUIMessageViewLayoutContext *)self _isFooterButtonPartOfContentFrame])
   {
-    v97 = [(AMSUIMessageViewLayoutContext *)self messageView];
-    v98 = [v97 textView];
-    [v98 textContainerInset];
+    messageView8 = [(AMSUIMessageViewLayoutContext *)self messageView];
+    textView = [messageView8 textView];
+    [textView textContainerInset];
     v100 = v99;
     v101 = -v99;
 
@@ -593,10 +593,10 @@ LABEL_30:
     {
       [(AMSUIMessageViewLayoutContext *)self mainContentFrame];
       v103 = (v102 - v367) * 0.5;
-      v104 = [(AMSUIMessageViewLayoutContext *)self messageView];
-      v105 = [v104 accessoryView];
+      messageView9 = [(AMSUIMessageViewLayoutContext *)self messageView];
+      accessoryView = [messageView9 accessoryView];
 
-      if (v105)
+      if (accessoryView)
       {
         v327 = v38;
         [(AMSUIMessageViewLayoutContext *)self accessorySpacing];
@@ -626,7 +626,7 @@ LABEL_30:
 
     else
     {
-      if (!v36 && v39)
+      if (!isImageViewHidden && shouldUseStackedLayout)
       {
         [(AMSUIMessageViewLayoutContext *)self _imageToLabelSpacing];
         v101 = v360 + v120 - v100;
@@ -636,14 +636,14 @@ LABEL_30:
     }
 
     v350 = v103;
-    v141 = v41 == 5 || v39;
+    v141 = style == 5 || shouldUseStackedLayout;
     if ((v141 & 1) == 0)
     {
       [(AMSUIMessageViewLayoutContext *)self mainContentFrame];
       v143 = (v142 - v14) * 0.5;
-      v144 = [(AMSUIMessageViewLayoutContext *)self messageView];
-      v145 = [v144 textView];
-      [v145 textContainerInset];
+      messageView10 = [(AMSUIMessageViewLayoutContext *)self messageView];
+      textView2 = [messageView10 textView];
+      [textView2 textContainerInset];
       v101 = -v146;
 
       if (v143 >= v101)
@@ -653,10 +653,10 @@ LABEL_30:
     }
 
     v354 = v101;
-    if (v32)
+    if (buttons)
     {
       [(AMSUIMessageViewLayoutContext *)self mainContentFrame];
-      if (v41 != 5)
+      if (style != 5)
       {
         v147 = v38 + v147;
       }
@@ -666,20 +666,20 @@ LABEL_30:
       v149 = v148 - v43;
       [(AMSUIMessageViewLayoutContext *)self _bottomFooterSpacing];
       v95 = v149 - v150;
-      if (v41 == 3)
+      if (style == 3)
       {
         v365 = v43;
         v368 = v149 - v150;
-        v151 = [(AMSUIMessageViewLayoutContext *)self messageView];
-        v152 = [v151 maskShapeView];
-        v153 = [v152 arrowDirection];
+        messageView11 = [(AMSUIMessageViewLayoutContext *)self messageView];
+        maskShapeView = [messageView11 maskShapeView];
+        arrowDirection = [maskShapeView arrowDirection];
 
         v139 = v338;
-        if (v153 == 2)
+        if (arrowDirection == 2)
         {
-          v154 = [(AMSUIMessageViewLayoutContext *)self messageView];
-          v155 = [v154 maskShapeView];
-          [v155 arrowHeight];
+          messageView12 = [(AMSUIMessageViewLayoutContext *)self messageView];
+          maskShapeView2 = [messageView12 maskShapeView];
+          [maskShapeView2 arrowHeight];
           v368 = v368 - v156;
         }
 
@@ -693,7 +693,7 @@ LABEL_84:
         v382 = 0u;
         v379 = 0u;
         v380 = 0u;
-        v161 = v332;
+        v161 = footerButtonFramesPreFlatten;
         v162 = [v161 countByEnumeratingWithState:&v379 objects:v383 count:16];
         if (v162)
         {
@@ -714,7 +714,7 @@ LABEL_84:
               v171 = v170;
               [(AMSUIMessageViewLayoutContext *)self separatorThickness];
               v173 = [MEMORY[0x1E696B098] valueWithCGRect:{v167, v169, v171, v172}];
-              [v26 addObject:v173];
+              [array addObject:v173];
             }
 
             v163 = [v161 countByEnumeratingWithState:&v379 objects:v383 count:16];
@@ -740,9 +740,9 @@ LABEL_92:
     goto LABEL_77;
   }
 
-  if (v39)
+  if (shouldUseStackedLayout)
   {
-    if (!v36)
+    if (!isImageViewHidden)
     {
       [(AMSUIMessageViewLayoutContext *)self _imageToLabelSpacing];
       v11 = v11 + v360 + v90;
@@ -750,7 +750,7 @@ LABEL_92:
 
     v354 = v11;
     v350 = v9;
-    if (v32)
+    if (buttons)
     {
       v91 = v88;
       [(AMSUIMessageViewLayoutContext *)self mainContentFrame];
@@ -771,15 +771,15 @@ LABEL_77:
     goto LABEL_79;
   }
 
-  v321 = v36;
+  v321 = isImageViewHidden;
   v322 = v84;
   v110 = *MEMORY[0x1E695F060];
   v111 = *(MEMORY[0x1E695F060] + 8);
-  v112 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v113 = [v112 textView];
-  v114 = [v113 hasText];
+  messageView13 = [(AMSUIMessageViewLayoutContext *)self messageView];
+  textView3 = [messageView13 textView];
+  hasText = [textView3 hasText];
 
-  if (v114)
+  if (hasText)
   {
     v115 = v370 + v111;
   }
@@ -789,7 +789,7 @@ LABEL_77:
     v115 = v111;
   }
 
-  if (v114)
+  if (hasText)
   {
     v116 = v367 + v110;
   }
@@ -799,8 +799,8 @@ LABEL_77:
     v116 = v110;
   }
 
-  v117 = v33;
-  if (v32)
+  v117 = _isAccessoryViewLeading;
+  if (buttons)
   {
     v118 = v373;
     if (v116 < v373)
@@ -819,19 +819,19 @@ LABEL_77:
 
   [(AMSUIMessageViewLayoutContext *)self mainContentFrame];
   v122 = v121;
-  v123 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v124 = [v123 textView];
-  [v124 textContainerInset];
+  messageView14 = [(AMSUIMessageViewLayoutContext *)self messageView];
+  textView4 = [messageView14 textView];
+  [textView4 textContainerInset];
 
   [(AMSUIMessageViewLayoutContext *)self _footerButtonSpacing];
   v126 = v125;
-  v127 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v128 = [v127 textView];
-  v129 = [v128 hasText];
+  messageView15 = [(AMSUIMessageViewLayoutContext *)self messageView];
+  textView5 = [messageView15 textView];
+  hasText2 = [textView5 hasText];
   v130 = v370 + v126;
-  if (v32)
+  if (buttons)
   {
-    v131 = v129;
+    v131 = hasText2;
   }
 
   else
@@ -857,26 +857,26 @@ LABEL_77:
   v139 = v338;
   v140 = v362;
   v91 = v329;
-  v33 = v117;
-  v36 = v321;
+  _isAccessoryViewLeading = v117;
+  isImageViewHidden = v321;
 LABEL_80:
   v365 = v43;
   v368 = v95;
   v371 = v96;
-  if (v41 - 2 < 2)
+  if (style - 2 < 2)
   {
     goto LABEL_83;
   }
 
-  if (v41 == 1)
+  if (style == 1)
   {
-    if (!v36 && !v39)
+    if (!isImageViewHidden && !shouldUseStackedLayout)
     {
       [(AMSUIMessageViewLayoutContext *)self contentLayoutMargins];
       v310 = v358 + v309;
       v323 = v86;
       v363 = v140;
-      v311 = v33;
+      v311 = _isAccessoryViewLeading;
       if ([(AMSUIMessageViewLayoutContext *)self _isSymbolImage])
       {
         [(AMSUIMessageViewLayoutContext *)self _scaledUIValueForValue:16.0];
@@ -890,9 +890,9 @@ LABEL_80:
       v313 = v310 + v312;
       [(AMSUIMessageViewLayoutContext *)self separatorThickness];
       v315 = v314;
-      v316 = [(AMSUIMessageViewLayoutContext *)self messageView];
-      v317 = [v316 accessoryView];
-      v318 = v317 != 0;
+      messageView16 = [(AMSUIMessageViewLayoutContext *)self messageView];
+      accessoryView2 = [messageView16 accessoryView];
+      v318 = accessoryView2 != 0;
 
       v319 = v346 + v344 + v324 + v313;
       if (!v318 || !v311)
@@ -901,7 +901,7 @@ LABEL_80:
       }
 
       v320 = [MEMORY[0x1E696B098] valueWithCGRect:{v319, (v325 - (v325 + -24.0)) * 0.5, v315, v325 + -24.0}];
-      [v26 addObject:v320];
+      [array addObject:v320];
 
       v157 = v323;
       v158 = v14;
@@ -910,13 +910,13 @@ LABEL_80:
     }
   }
 
-  else if (v41 == 5)
+  else if (style == 5)
   {
 LABEL_83:
     v157 = v86;
     v158 = v14;
     v159 = v358;
-    if (!v32)
+    if (!buttons)
     {
       goto LABEL_95;
     }
@@ -993,14 +993,14 @@ LABEL_95:
   v374 = v231;
   *&v378[6] = v231;
   *&v378[7] = v233;
-  v236 = [v332 ams_mapWithTransform:v378];
+  v236 = [footerButtonFramesPreFlatten ams_mapWithTransform:v378];
   v237 = [v235 arrayWithArray:v236];
 
-  if (v41 <= 5 && ((1 << v41) & 0x2C) != 0)
+  if (style <= 5 && ((1 << style) & 0x2C) != 0)
   {
-    v238 = v331;
+    v238 = layoutDirection;
     v239 = v89;
-    if (v32)
+    if (buttons)
     {
       v240 = *(v234 + 3952);
       v377[0] = MEMORY[0x1E69E9820];
@@ -1011,16 +1011,16 @@ LABEL_95:
       *&v377[5] = v369;
       *&v377[6] = v374;
       *&v377[7] = v233;
-      v241 = [v26 ams_mapWithTransform:v377];
+      v241 = [array ams_mapWithTransform:v377];
       v242 = [v240 arrayWithArray:v241];
 
-      v26 = v242;
+      array = v242;
     }
   }
 
   else
   {
-    v238 = v331;
+    v238 = layoutDirection;
     v239 = v89;
   }
 
@@ -1063,7 +1063,7 @@ LABEL_95:
     v376[2] = __54__AMSUIMessageViewLayoutContext__updateWithRootFrame___block_invoke_3;
     v376[3] = &unk_1E7F25200;
     v376[4] = self;
-    v282 = [v26 ams_mapWithTransform:v376];
+    v282 = [array ams_mapWithTransform:v376];
     v283 = [v281 arrayWithArray:v282];
 
     v284 = *(v234 + 3952);
@@ -1083,7 +1083,7 @@ LABEL_95:
     v296 = v295;
     v298 = v297;
     v237 = v286;
-    v26 = v283;
+    array = v283;
   }
 
   else
@@ -1094,8 +1094,8 @@ LABEL_95:
     v294 = v244;
   }
 
-  v299 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  [v299 bounds];
+  messageView17 = [(AMSUIMessageViewLayoutContext *)self messageView];
+  [messageView17 bounds];
   v301 = v300;
   v303 = v302;
   v305 = v304;
@@ -1106,7 +1106,7 @@ LABEL_95:
   [(AMSUIMessageViewLayoutContext *)self setTextViewFrame:v351, v353, v355, v357];
   [(AMSUIMessageViewLayoutContext *)self setAccessoryViewFrame:v343, v345, v347, v349];
   [(AMSUIMessageViewLayoutContext *)self setAccessorySecondaryViewFrame:v335, v337, v339, v341];
-  [(AMSUIMessageViewLayoutContext *)self setSeparatorViewFrames:v26];
+  [(AMSUIMessageViewLayoutContext *)self setSeparatorViewFrames:array];
   [(AMSUIMessageViewLayoutContext *)self setFooterContainerViewFrame:v372, v369, v374, v366];
   [(AMSUIMessageViewLayoutContext *)self setFooterButtonFrames:v237];
   [(AMSUIMessageViewLayoutContext *)self setDebugButtonFrame:v243, v294, v296, v298];
@@ -1170,21 +1170,21 @@ uint64_t __54__AMSUIMessageViewLayoutContext__updateWithRootFrame___block_invoke
 
 - (void)calculateAccessoryViewFrame
 {
-  v3 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v4 = [v3 accessoryView];
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  accessoryView = [messageView accessoryView];
 
-  if (v4)
+  if (accessoryView)
   {
     [(AMSUIMessageViewLayoutContext *)self accessoryViewFrame];
     v6 = v5;
     v8 = v7;
-    v9 = [(AMSUIMessageViewLayoutContext *)self messageView];
-    v10 = [v9 accessoryView];
+    messageView2 = [(AMSUIMessageViewLayoutContext *)self messageView];
+    accessoryView2 = [messageView2 accessoryView];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v19 = v10;
+      v19 = accessoryView2;
     }
 
     else
@@ -1222,10 +1222,10 @@ uint64_t __54__AMSUIMessageViewLayoutContext__updateWithRootFrame___block_invoke
 
 - (void)calculateAccessorySecondaryViewFrame
 {
-  v3 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v4 = [v3 accessorySecondaryView];
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  accessorySecondaryView = [messageView accessorySecondaryView];
 
-  if (v4)
+  if (accessorySecondaryView)
   {
     [(AMSUIMessageViewLayoutContext *)self accessorySecondaryViewFrame];
     v6 = v5;
@@ -1249,16 +1249,16 @@ uint64_t __54__AMSUIMessageViewLayoutContext__updateWithRootFrame___block_invoke
 
 - (void)calculateAccessoryViewSize
 {
-  v3 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v4 = [v3 accessoryView];
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  accessoryView = [messageView accessoryView];
 
-  if (v4)
+  if (accessoryView)
   {
     v5 = *MEMORY[0x1E695F058];
     v6 = *(MEMORY[0x1E695F058] + 8);
-    v7 = [(AMSUIMessageViewLayoutContext *)self messageView];
-    v8 = [v7 accessoryView];
-    [v8 sizeThatFits:{100.0, 1.79769313e308}];
+    messageView2 = [(AMSUIMessageViewLayoutContext *)self messageView];
+    accessoryView2 = [messageView2 accessoryView];
+    [accessoryView2 sizeThatFits:{100.0, 1.79769313e308}];
     v10 = v9;
     v12 = v11;
 
@@ -1268,16 +1268,16 @@ uint64_t __54__AMSUIMessageViewLayoutContext__updateWithRootFrame___block_invoke
 
 - (void)calculateAccessorySecondaryViewSize
 {
-  v3 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v4 = [v3 accessorySecondaryView];
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  accessorySecondaryView = [messageView accessorySecondaryView];
 
-  if (v4)
+  if (accessorySecondaryView)
   {
     v5 = *MEMORY[0x1E695F058];
     v6 = *(MEMORY[0x1E695F058] + 8);
-    v7 = [(AMSUIMessageViewLayoutContext *)self messageView];
-    v8 = [v7 accessorySecondaryView];
-    [v8 sizeThatFits:{100.0, 1.79769313e308}];
+    messageView2 = [(AMSUIMessageViewLayoutContext *)self messageView];
+    accessorySecondaryView2 = [messageView2 accessorySecondaryView];
+    [accessorySecondaryView2 sizeThatFits:{100.0, 1.79769313e308}];
     v10 = v9;
     v12 = v11;
 
@@ -1285,11 +1285,11 @@ uint64_t __54__AMSUIMessageViewLayoutContext__updateWithRootFrame___block_invoke
   }
 }
 
-- (void)calculateMainContentFrameRootFrame:(CGRect)a3
+- (void)calculateMainContentFrameRootFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  [(AMSUIMessageViewLayoutContext *)self mainContentFrame:a3.origin.x];
+  height = frame.size.height;
+  width = frame.size.width;
+  [(AMSUIMessageViewLayoutContext *)self mainContentFrame:frame.origin.x];
   [(AMSUIMessageViewLayoutContext *)self contentLayoutMargins];
   v7 = v6;
   v9 = v8;
@@ -1298,13 +1298,13 @@ uint64_t __54__AMSUIMessageViewLayoutContext__updateWithRootFrame___block_invoke
   [(AMSUIMessageViewLayoutContext *)self _bottomFooterSpacing];
   v15 = v13 - v14;
   v16 = width - v9 - v11;
-  v17 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v18 = [v17 style];
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  style = [messageView style];
 
-  if (v18 == 2)
+  if (style == 2)
   {
-    v19 = [(AMSUIMessageViewLayoutContext *)self messageView];
-    [v19 safeAreaInsets];
+    messageView2 = [(AMSUIMessageViewLayoutContext *)self messageView];
+    [messageView2 safeAreaInsets];
     v21 = v20;
     v23 = v22;
     v25 = v24;
@@ -1314,8 +1314,8 @@ uint64_t __54__AMSUIMessageViewLayoutContext__updateWithRootFrame___block_invoke
     v16 = v16 - (v23 + v27);
   }
 
-  v28 = [(AMSUIMessageViewLayoutContext *)self footerButtonFrames];
-  v29 = [v28 count];
+  footerButtonFrames = [(AMSUIMessageViewLayoutContext *)self footerButtonFrames];
+  v29 = [footerButtonFrames count];
 
   if (v29)
   {
@@ -1329,28 +1329,28 @@ uint64_t __54__AMSUIMessageViewLayoutContext__updateWithRootFrame___block_invoke
     v15 = v15 - v31;
   }
 
-  v32 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v33 = [v32 maskShapeView];
+  messageView3 = [(AMSUIMessageViewLayoutContext *)self messageView];
+  maskShapeView = [messageView3 maskShapeView];
 
-  if (v33)
+  if (maskShapeView)
   {
-    v34 = [(AMSUIMessageViewLayoutContext *)self messageView];
-    v35 = [v34 maskShapeView];
-    [v35 arrowHeight];
+    messageView4 = [(AMSUIMessageViewLayoutContext *)self messageView];
+    maskShapeView2 = [messageView4 maskShapeView];
+    [maskShapeView2 arrowHeight];
     v37 = v36;
 
-    v38 = [(AMSUIMessageViewLayoutContext *)self messageView];
-    v39 = [v38 maskShapeView];
-    v40 = [v39 arrowDirection];
+    messageView5 = [(AMSUIMessageViewLayoutContext *)self messageView];
+    maskShapeView3 = [messageView5 maskShapeView];
+    arrowDirection = [maskShapeView3 arrowDirection];
 
-    if (v40 <= 3)
+    if (arrowDirection <= 3)
     {
-      if (v40 == 1)
+      if (arrowDirection == 1)
       {
         v7 = v7 + v37;
       }
 
-      else if (v40 != 2)
+      else if (arrowDirection != 2)
       {
         goto LABEL_19;
       }
@@ -1359,12 +1359,12 @@ uint64_t __54__AMSUIMessageViewLayoutContext__updateWithRootFrame___block_invoke
       goto LABEL_19;
     }
 
-    if (v40 == 4)
+    if (arrowDirection == 4)
     {
       v9 = v9 + v37;
     }
 
-    else if (v40 != 8)
+    else if (arrowDirection != 8)
     {
       goto LABEL_19;
     }
@@ -1377,15 +1377,15 @@ LABEL_19:
   [(AMSUIMessageViewLayoutContext *)self setMainContentFrame:v9, v7, v16, v15];
 }
 
-- (void)calculateTextViewSizeInFrame:(CGRect)a3 dirty:(BOOL)a4
+- (void)calculateTextViewSizeInFrame:(CGRect)frame dirty:(BOOL)dirty
 {
-  v4 = a4;
+  dirtyCopy = dirty;
   v42[1] = *MEMORY[0x1E69E9840];
-  v6 = [(AMSUIMessageViewLayoutContext *)self messageView:a3.origin.x];
-  v7 = [v6 textView];
-  v8 = [v7 hasText];
+  v6 = [(AMSUIMessageViewLayoutContext *)self messageView:frame.origin.x];
+  textView = [v6 textView];
+  hasText = [textView hasText];
 
-  if (v8)
+  if (hasText)
   {
     [(AMSUIMessageViewLayoutContext *)self _maxTextContainerWidth];
     v10 = v9;
@@ -1398,50 +1398,50 @@ LABEL_19:
       }
     }
 
-    if (v4)
+    if (dirtyCopy)
     {
       [(AMSUIMessageViewLayoutContext *)self mainContentFrame];
       v13 = v12;
-      v14 = [(AMSUIMessageViewLayoutContext *)self messageView];
-      v15 = [v14 textView];
-      [v15 textContainerInset];
+      messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+      textView2 = [messageView textView];
+      [textView2 textContainerInset];
       v17 = v16;
       v19 = v18;
 
       v20 = v19 + v13 + v17;
       [(AMSUIMessageViewLayoutContext *)self calculateTextViewExclusionFrame];
-      v21 = [(AMSUIMessageViewLayoutContext *)self textViewExclusionPath];
+      textViewExclusionPath = [(AMSUIMessageViewLayoutContext *)self textViewExclusionPath];
 
-      if (v21)
+      if (textViewExclusionPath)
       {
-        v22 = [(AMSUIMessageViewLayoutContext *)self textViewExclusionPath];
-        v42[0] = v22;
-        v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:1];
-        v24 = [(AMSUIMessageViewLayoutContext *)self messageView];
-        v25 = [v24 textView];
-        v26 = [v25 textContainer];
-        [v26 setExclusionPaths:v23];
+        textViewExclusionPath2 = [(AMSUIMessageViewLayoutContext *)self textViewExclusionPath];
+        v42[0] = textViewExclusionPath2;
+        textView4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:1];
+        messageView2 = [(AMSUIMessageViewLayoutContext *)self messageView];
+        textView3 = [messageView2 textView];
+        textContainer = [textView3 textContainer];
+        [textContainer setExclusionPaths:textView4];
       }
 
       else
       {
-        v22 = [(AMSUIMessageViewLayoutContext *)self messageView];
-        v23 = [v22 textView];
-        v24 = [v23 textContainer];
-        [v24 setExclusionPaths:MEMORY[0x1E695E0F0]];
+        textViewExclusionPath2 = [(AMSUIMessageViewLayoutContext *)self messageView];
+        textView4 = [textViewExclusionPath2 textView];
+        messageView2 = [textView4 textContainer];
+        [messageView2 setExclusionPaths:MEMORY[0x1E695E0F0]];
       }
 
-      v27 = [(AMSUIMessageViewLayoutContext *)self messageView];
-      v28 = [v27 textView];
-      [v28 sizeThatFits:{v10, v20}];
+      messageView3 = [(AMSUIMessageViewLayoutContext *)self messageView];
+      textView5 = [messageView3 textView];
+      [textView5 sizeThatFits:{v10, v20}];
       v30 = v29;
       v32 = v31;
 
-      v33 = [(AMSUIMessageViewLayoutContext *)self messageView];
-      v34 = [v33 traitCollection];
-      v35 = [v34 layoutDirection];
+      messageView4 = [(AMSUIMessageViewLayoutContext *)self messageView];
+      traitCollection = [messageView4 traitCollection];
+      layoutDirection = [traitCollection layoutDirection];
 
-      if (v35 == 1)
+      if (layoutDirection == 1)
       {
         v36 = v10;
       }
@@ -1465,19 +1465,19 @@ LABEL_19:
 
 - (void)calculateTextViewExclusionFrame
 {
-  v3 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  if (!-[AMSUIMessageViewLayoutContext _isAccessoryViewLeading](self, "_isAccessoryViewLeading") || ([v3 accessorySecondaryView], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  if (!-[AMSUIMessageViewLayoutContext _isAccessoryViewLeading](self, "_isAccessoryViewLeading") || ([messageView accessorySecondaryView], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    v5 = [v3 accessoryView];
-    if (v5)
+    accessoryView = [messageView accessoryView];
+    if (accessoryView)
     {
 
       goto LABEL_6;
     }
 
-    v6 = [v3 accessorySecondaryView];
+    accessorySecondaryView = [messageView accessorySecondaryView];
 
-    if (v6)
+    if (accessorySecondaryView)
     {
 LABEL_6:
       [(AMSUIMessageViewLayoutContext *)self accessoryViewFrame];
@@ -1485,11 +1485,11 @@ LABEL_6:
       y = v9;
       v12 = v11;
       height = v13;
-      v15 = [v3 accessoryView];
+      accessoryView2 = [messageView accessoryView];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v16 = v15;
+        v16 = accessoryView2;
       }
 
       else
@@ -1497,21 +1497,21 @@ LABEL_6:
         v16 = 0;
       }
 
-      v17 = [(AMSUIMessageViewLayoutContext *)self messageView];
-      v18 = [v17 accessorySecondaryView];
+      messageView2 = [(AMSUIMessageViewLayoutContext *)self messageView];
+      accessorySecondaryView2 = [messageView2 accessorySecondaryView];
 
-      if (v18)
+      if (accessorySecondaryView2)
       {
         [(AMSUIMessageViewLayoutContext *)self accessorySecondaryViewFrame];
         v8 = v19;
         y = v20;
         v12 = v21;
         height = v22;
-        v23 = [v3 accessorySecondaryView];
+        accessorySecondaryView3 = [messageView accessorySecondaryView];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v24 = v23;
+          v24 = accessorySecondaryView3;
         }
 
         else
@@ -1545,10 +1545,10 @@ LABEL_25:
       [(AMSUIMessageViewLayoutContext *)self accessorySpacing];
       x = v27 - v28;
       width = v12 + v28;
-      v31 = [v3 traitCollection];
-      v32 = [v31 layoutDirection];
+      traitCollection = [messageView traitCollection];
+      layoutDirection = [traitCollection layoutDirection];
 
-      if (v32 == 1)
+      if (layoutDirection == 1)
       {
         memset(&v37, 0, sizeof(v37));
         CGAffineTransformMakeScale(&v37, -1.0, 1.0);
@@ -1591,14 +1591,14 @@ LABEL_26:
 {
   if ([(AMSUIMessageViewLayoutContext *)self isDirty])
   {
-    v3 = [(AMSUIMessageViewLayoutContext *)self messageView];
-    v4 = [v3 buttons];
-    v5 = [v4 count];
+    messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+    buttons = [messageView buttons];
+    v5 = [buttons count];
 
     if (v5)
     {
-      v6 = [(AMSUIMessageViewLayoutContext *)self footerButtonFramesPreFlatten];
-      [v6 removeAllObjects];
+      footerButtonFramesPreFlatten = [(AMSUIMessageViewLayoutContext *)self footerButtonFramesPreFlatten];
+      [footerButtonFramesPreFlatten removeAllObjects];
 
       [(AMSUIMessageViewLayoutContext *)self _maxFooterButtonWidth];
       v8 = v7;
@@ -1606,8 +1606,8 @@ LABEL_26:
       v12[1] = v12;
       v12[2] = 0x2020000000;
       v12[3] = 0;
-      v9 = [(AMSUIMessageViewLayoutContext *)self messageView];
-      v10 = [v9 buttons];
+      messageView2 = [(AMSUIMessageViewLayoutContext *)self messageView];
+      buttons2 = [messageView2 buttons];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __60__AMSUIMessageViewLayoutContext__calculateFooterButtonSizes__block_invoke;
@@ -1616,7 +1616,7 @@ LABEL_26:
       v11[7] = 0x4061800000000000;
       v11[4] = self;
       v11[5] = v12;
-      [v10 enumerateObjectsUsingBlock:v11];
+      [buttons2 enumerateObjectsUsingBlock:v11];
 
       _Block_object_dispose(v12, 8);
     }
@@ -1649,23 +1649,23 @@ double __60__AMSUIMessageViewLayoutContext__calculateFooterButtonSizes__block_in
 
 - (double)_bottomFooterSpacing
 {
-  v2 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  [v2 style];
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  [messageView style];
 
   return 0.0;
 }
 
 - (NSDirectionalEdgeInsets)contentLayoutMargins
 {
-  v3 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v4 = [v3 traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v5);
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  traitCollection = [messageView traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  v7 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v8 = [v7 style];
+  messageView2 = [(AMSUIMessageViewLayoutContext *)self messageView];
+  style = [messageView2 style];
 
-  if (v8 == 1)
+  if (style == 1)
   {
     v12 = 10.0;
     v9 = 1;
@@ -1673,7 +1673,7 @@ double __60__AMSUIMessageViewLayoutContext__calculateFooterButtonSizes__block_in
     v11 = 12.0;
   }
 
-  else if (v8)
+  else if (style)
   {
     v12 = 11.0;
     v9 = 1;
@@ -1691,12 +1691,12 @@ double __60__AMSUIMessageViewLayoutContext__calculateFooterButtonSizes__block_in
 
   else
   {
-    v13 = [(AMSUIMessageViewLayoutContext *)self messageView];
-    v14 = [v13 traitCollection];
-    v15 = [v14 userInterfaceIdiom];
+    messageView3 = [(AMSUIMessageViewLayoutContext *)self messageView];
+    traitCollection2 = [messageView3 traitCollection];
+    userInterfaceIdiom = [traitCollection2 userInterfaceIdiom];
 
     v12 = 11.0;
-    if (v15 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v10 = 9.0;
     }
@@ -1706,7 +1706,7 @@ double __60__AMSUIMessageViewLayoutContext__calculateFooterButtonSizes__block_in
       v10 = 11.0;
     }
 
-    if (v15 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v11 = 9.0;
     }
@@ -1719,12 +1719,12 @@ double __60__AMSUIMessageViewLayoutContext__calculateFooterButtonSizes__block_in
     v9 = 1;
   }
 
-  v16 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  if ([v16 style] == 1 && !-[AMSUIMessageViewLayoutContext shouldUseStackedLayout](self, "shouldUseStackedLayout"))
+  messageView4 = [(AMSUIMessageViewLayoutContext *)self messageView];
+  if ([messageView4 style] == 1 && !-[AMSUIMessageViewLayoutContext shouldUseStackedLayout](self, "shouldUseStackedLayout"))
   {
-    v34 = [(AMSUIMessageViewLayoutContext *)self isImageViewHidden];
+    isImageViewHidden = [(AMSUIMessageViewLayoutContext *)self isImageViewHidden];
 
-    if (!v34)
+    if (!isImageViewHidden)
     {
       if ([(AMSUIMessageViewLayoutContext *)self _isSymbolImage])
       {
@@ -1759,29 +1759,29 @@ double __60__AMSUIMessageViewLayoutContext__calculateFooterButtonSizes__block_in
     v18 = v12;
   }
 
-  v22 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  if ([v22 style])
+  messageView5 = [(AMSUIMessageViewLayoutContext *)self messageView];
+  if ([messageView5 style])
   {
   }
 
   else
   {
-    v23 = [(AMSUIMessageViewLayoutContext *)self messageView];
-    v24 = [v23 traitCollection];
-    v25 = [v24 userInterfaceIdiom];
+    messageView6 = [(AMSUIMessageViewLayoutContext *)self messageView];
+    traitCollection3 = [messageView6 traitCollection];
+    userInterfaceIdiom2 = [traitCollection3 userInterfaceIdiom];
 
-    if (v25 == 1)
+    if (userInterfaceIdiom2 == 1)
     {
-      v26 = [(AMSUIMessageViewLayoutContext *)self messageView];
-      [v26 safeAreaInsets];
+      messageView7 = [(AMSUIMessageViewLayoutContext *)self messageView];
+      [messageView7 safeAreaInsets];
       v28 = v27;
       v30 = v29;
 
-      v31 = [(AMSUIMessageViewLayoutContext *)self messageView];
-      v32 = [v31 traitCollection];
-      v33 = [v32 layoutDirection];
+      messageView8 = [(AMSUIMessageViewLayoutContext *)self messageView];
+      traitCollection4 = [messageView8 traitCollection];
+      layoutDirection = [traitCollection4 layoutDirection];
 
-      if (v33 == 1)
+      if (layoutDirection == 1)
       {
         if (v11 < v28)
         {
@@ -1811,21 +1811,21 @@ double __60__AMSUIMessageViewLayoutContext__calculateFooterButtonSizes__block_in
 {
   [(AMSUIMessageViewLayoutContext *)self _imageLength];
   v4 = v3;
-  v5 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v6 = [v5 imageView];
-  v7 = [v6 image];
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  imageView = [messageView imageView];
+  image = [imageView image];
 
-  v8 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  LODWORD(v6) = [v8 preLayoutImageView];
+  messageView2 = [(AMSUIMessageViewLayoutContext *)self messageView];
+  LODWORD(imageView) = [messageView2 preLayoutImageView];
 
-  if (!v6 || v7)
+  if (!imageView || image)
   {
-    if (!v7)
+    if (!image)
     {
-      v9 = [(AMSUIMessageViewLayoutContext *)self messageView];
-      v10 = [v9 micaPlayer];
+      messageView3 = [(AMSUIMessageViewLayoutContext *)self messageView];
+      micaPlayer = [messageView3 micaPlayer];
 
-      if (!v10)
+      if (!micaPlayer)
       {
         v4 = *MEMORY[0x1E695F060];
         v12 = *(MEMORY[0x1E695F060] + 8);
@@ -1833,8 +1833,8 @@ double __60__AMSUIMessageViewLayoutContext__calculateFooterButtonSizes__block_in
       }
     }
 
-    v11 = [(AMSUIMessageViewLayoutContext *)self messageView];
-    [v11 micaPlayer];
+    messageView4 = [(AMSUIMessageViewLayoutContext *)self messageView];
+    [messageView4 micaPlayer];
   }
 
   v12 = v4;
@@ -1849,46 +1849,46 @@ LABEL_7:
 
 - (double)_bannerMaxTextWidth
 {
-  v2 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v3 = [v2 traitCollection];
-  v4 = [v3 horizontalSizeClass] == 2;
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  traitCollection = [messageView traitCollection];
+  v4 = [traitCollection horizontalSizeClass] == 2;
 
   return dbl_1BB1EF250[v4];
 }
 
 - (unint64_t)effectiveImageStyle
 {
-  v3 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v4 = [v3 imageStyle];
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  imageStyle = [messageView imageStyle];
 
-  if (!v4)
+  if (!imageStyle)
   {
     return 1;
   }
 
-  v5 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v6 = [v5 imageStyle];
+  messageView2 = [(AMSUIMessageViewLayoutContext *)self messageView];
+  imageStyle2 = [messageView2 imageStyle];
 
-  return v6;
+  return imageStyle2;
 }
 
 - (double)_footerButtonSpacing
 {
-  v3 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v4 = [v3 style];
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  style = [messageView style];
 
-  if (v4)
+  if (style)
   {
-    v5 = [(AMSUIMessageViewLayoutContext *)self messageView];
-    v6 = [v5 style];
+    messageView2 = [(AMSUIMessageViewLayoutContext *)self messageView];
+    style2 = [messageView2 style];
 
     v7 = 0.0;
-    if (v6 == 6)
+    if (style2 == 6)
     {
-      v8 = [(AMSUIMessageViewLayoutContext *)self messageView];
-      v9 = [v8 traitCollection];
-      v10 = [v9 preferredContentSizeCategory];
-      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v10);
+      messageView3 = [(AMSUIMessageViewLayoutContext *)self messageView];
+      traitCollection = [messageView3 traitCollection];
+      preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
       v7 = 0.0;
       if (IsAccessibilityCategory)
@@ -1909,17 +1909,17 @@ LABEL_7:
 
 - (double)_footerMinimumHeight
 {
-  v3 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  if (![v3 style] && !-[AMSUIMessageViewLayoutContext shouldUseStackedLayout](self, "shouldUseStackedLayout"))
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  if (![messageView style] && !-[AMSUIMessageViewLayoutContext shouldUseStackedLayout](self, "shouldUseStackedLayout"))
   {
 
     return 0.0;
   }
 
-  v4 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v5 = [v4 style];
+  messageView2 = [(AMSUIMessageViewLayoutContext *)self messageView];
+  style = [messageView2 style];
 
-  if (v5 == 6)
+  if (style == 6)
   {
     return 0.0;
   }
@@ -1930,9 +1930,9 @@ LABEL_7:
 
 - (CGRect)_effectiveTextViewFrame
 {
-  v3 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v4 = [v3 textView];
-  [v4 textContainerInset];
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  textView = [messageView textView];
+  [textView textContainerInset];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -1956,31 +1956,31 @@ LABEL_7:
   }
 
   v3 = _imageLength_ams_once_object___COUNTER__;
-  v4 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v5 = [v4 traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v6);
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  traitCollection = [messageView traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (!IsAccessibilityCategory)
   {
     goto LABEL_6;
   }
 
-  v8 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v9 = [v8 traitCollection];
-  v10 = [v9 preferredContentSizeCategory];
-  v11 = [v3 objectForKeyedSubscript:v10];
+  messageView2 = [(AMSUIMessageViewLayoutContext *)self messageView];
+  traitCollection2 = [messageView2 traitCollection];
+  preferredContentSizeCategory2 = [traitCollection2 preferredContentSizeCategory];
+  v11 = [v3 objectForKeyedSubscript:preferredContentSizeCategory2];
 
   if (!v11 || ([v11 doubleValue], v13 = v12, v11, v13 == 2.22507386e-308))
   {
 LABEL_6:
-    v14 = [(AMSUIMessageViewLayoutContext *)self messageView];
-    v15 = [v14 style];
+    messageView3 = [(AMSUIMessageViewLayoutContext *)self messageView];
+    style = [messageView3 style];
 
-    if (v15)
+    if (style)
     {
-      v16 = [(AMSUIMessageViewLayoutContext *)self messageView];
-      if ([v16 style] == 3)
+      messageView4 = [(AMSUIMessageViewLayoutContext *)self messageView];
+      if ([messageView4 style] == 3)
       {
 LABEL_10:
 
@@ -1996,11 +1996,11 @@ LABEL_25:
 
         if (![(AMSUIMessageViewLayoutContext *)self _isSymbolImage])
         {
-          v18 = [(AMSUIMessageViewLayoutContext *)self messageView];
-          if ([v18 style] == 3)
+          messageView5 = [(AMSUIMessageViewLayoutContext *)self messageView];
+          if ([messageView5 style] == 3)
           {
-            v19 = [(AMSUIMessageViewLayoutContext *)self messageView];
-            [v19 buttons];
+            messageView6 = [(AMSUIMessageViewLayoutContext *)self messageView];
+            [messageView6 buttons];
           }
 
           goto LABEL_16;
@@ -2009,37 +2009,37 @@ LABEL_25:
         goto LABEL_19;
       }
 
-      v17 = [(AMSUIMessageViewLayoutContext *)self messageView];
-      if ([v17 style] == 2)
+      messageView7 = [(AMSUIMessageViewLayoutContext *)self messageView];
+      if ([messageView7 style] == 2)
       {
 
         goto LABEL_10;
       }
 
-      v21 = [(AMSUIMessageViewLayoutContext *)self messageView];
-      v22 = [v21 style];
+      messageView8 = [(AMSUIMessageViewLayoutContext *)self messageView];
+      style2 = [messageView8 style];
 
-      if (v22 == 6)
+      if (style2 == 6)
       {
         goto LABEL_11;
       }
 
-      v23 = [(AMSUIMessageViewLayoutContext *)self messageView];
-      v24 = [v23 style];
+      messageView9 = [(AMSUIMessageViewLayoutContext *)self messageView];
+      style3 = [messageView9 style];
 
-      if (v24 == 5)
+      if (style3 == 5)
       {
 LABEL_19:
         v13 = 45.0;
         goto LABEL_26;
       }
 
-      v25 = [(AMSUIMessageViewLayoutContext *)self messageView];
-      if ([v25 style] == 4)
+      messageView10 = [(AMSUIMessageViewLayoutContext *)self messageView];
+      if ([messageView10 style] == 4)
       {
-        v26 = [(AMSUIMessageViewLayoutContext *)self _isSymbolImage];
+        _isSymbolImage = [(AMSUIMessageViewLayoutContext *)self _isSymbolImage];
 
-        if (!v26)
+        if (!_isSymbolImage)
         {
           *&v20 = 52.0;
           goto LABEL_25;
@@ -2084,11 +2084,11 @@ void __45__AMSUIMessageViewLayoutContext__imageLength__block_invoke()
 
 - (double)_imageToLabelSpacing
 {
-  v3 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v4 = [v3 style];
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  style = [messageView style];
 
   v5 = 4.0;
-  if (!v4)
+  if (!style)
   {
     v5 = 6.0;
   }
@@ -2099,25 +2099,25 @@ void __45__AMSUIMessageViewLayoutContext__imageLength__block_invoke()
 
 - (double)_interitemSpacing
 {
-  v3 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v4 = [v3 style];
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  style = [messageView style];
 
   v5 = 10.0;
-  if (v4)
+  if (style)
   {
-    v6 = [(AMSUIMessageViewLayoutContext *)self messageView];
-    v7 = [v6 style];
+    messageView2 = [(AMSUIMessageViewLayoutContext *)self messageView];
+    style2 = [messageView2 style];
 
-    if (v7 != 1)
+    if (style2 != 1)
     {
-      v8 = [(AMSUIMessageViewLayoutContext *)self messageView];
-      if ([v8 style] != 2)
+      messageView3 = [(AMSUIMessageViewLayoutContext *)self messageView];
+      if ([messageView3 style] != 2)
       {
-        v9 = [(AMSUIMessageViewLayoutContext *)self messageView];
-        if ([v9 style] != 6)
+        messageView4 = [(AMSUIMessageViewLayoutContext *)self messageView];
+        if ([messageView4 style] != 6)
         {
-          v10 = [(AMSUIMessageViewLayoutContext *)self messageView];
-          [v10 style];
+          messageView5 = [(AMSUIMessageViewLayoutContext *)self messageView];
+          [messageView5 style];
         }
       }
 
@@ -2131,13 +2131,13 @@ void __45__AMSUIMessageViewLayoutContext__imageLength__block_invoke()
 
 - (BOOL)_isAccessoryViewLeading
 {
-  v3 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v4 = [v3 accessoryView];
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  accessoryView = [messageView accessoryView];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = accessoryView;
   }
 
   else
@@ -2145,37 +2145,37 @@ void __45__AMSUIMessageViewLayoutContext__imageLength__block_invoke()
     v5 = 0;
   }
 
-  v6 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v7 = [v6 traitCollection];
-  v8 = [v7 userInterfaceIdiom];
+  messageView2 = [(AMSUIMessageViewLayoutContext *)self messageView];
+  traitCollection = [messageView2 traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v8 == 6)
+  if (userInterfaceIdiom == 6)
   {
-    v9 = [(AMSUIMessageViewLayoutContext *)self messageView];
-    if ([v9 style] == 2)
+    messageView3 = [(AMSUIMessageViewLayoutContext *)self messageView];
+    if ([messageView3 style] == 2)
     {
-      v10 = [v5 isDefaultCloseButton];
+      isDefaultCloseButton = [v5 isDefaultCloseButton];
     }
 
     else
     {
-      v11 = [(AMSUIMessageViewLayoutContext *)self messageView];
-      if ([v11 style] == 6)
+      messageView4 = [(AMSUIMessageViewLayoutContext *)self messageView];
+      if ([messageView4 style] == 6)
       {
-        v10 = [v5 isDefaultCloseButton];
+        isDefaultCloseButton = [v5 isDefaultCloseButton];
       }
 
       else
       {
-        v12 = [(AMSUIMessageViewLayoutContext *)self messageView];
-        if ([v12 style] == 3)
+        messageView5 = [(AMSUIMessageViewLayoutContext *)self messageView];
+        if ([messageView5 style] == 3)
         {
-          v10 = [v5 isDefaultCloseButton];
+          isDefaultCloseButton = [v5 isDefaultCloseButton];
         }
 
         else
         {
-          v10 = 0;
+          isDefaultCloseButton = 0;
         }
       }
     }
@@ -2183,65 +2183,65 @@ void __45__AMSUIMessageViewLayoutContext__imageLength__block_invoke()
 
   else
   {
-    v10 = 0;
+    isDefaultCloseButton = 0;
   }
 
-  return v10;
+  return isDefaultCloseButton;
 }
 
 - (BOOL)_isIconImageTopAligned
 {
-  v3 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v4 = [v3 style];
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  style = [messageView style];
 
-  if (v4 == 5)
+  if (style == 5)
   {
     return 1;
   }
 
-  if (v4)
+  if (style)
   {
     return 0;
   }
 
-  v5 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v6 = [v5 traitCollection];
-  v7 = [v6 userInterfaceIdiom] != 0;
+  messageView2 = [(AMSUIMessageViewLayoutContext *)self messageView];
+  traitCollection = [messageView2 traitCollection];
+  v7 = [traitCollection userInterfaceIdiom] != 0;
 
   return v7;
 }
 
 - (BOOL)_isFooterButtonPartOfContentFrame
 {
-  v2 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v3 = [v2 style];
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  style = [messageView style];
 
-  return (v3 - 6) < 0xFFFFFFFFFFFFFFFBLL;
+  return (style - 6) < 0xFFFFFFFFFFFFFFFBLL;
 }
 
 - (BOOL)_isSymbolImage
 {
-  v3 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  if ([v3 isImageSymbolImage])
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  if ([messageView isImageSymbolImage])
   {
-    v4 = 1;
+    isSymbolImage = 1;
   }
 
   else
   {
-    v5 = [(AMSUIMessageViewLayoutContext *)self messageView];
-    v6 = [v5 imageView];
-    v7 = [v6 image];
-    v4 = [v7 isSymbolImage];
+    messageView2 = [(AMSUIMessageViewLayoutContext *)self messageView];
+    imageView = [messageView2 imageView];
+    image = [imageView image];
+    isSymbolImage = [image isSymbolImage];
   }
 
-  return v4;
+  return isSymbolImage;
 }
 
 - (BOOL)_isTextOnlyBanner
 {
-  v3 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  if ([v3 style] == 1 && -[AMSUIMessageViewLayoutContext isImageViewHidden](self, "isImageViewHidden"))
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  if ([messageView style] == 1 && -[AMSUIMessageViewLayoutContext isImageViewHidden](self, "isImageViewHidden"))
   {
     v4 = ![(AMSUIMessageViewLayoutContext *)self shouldUseStackedLayout];
   }
@@ -2258,25 +2258,25 @@ void __45__AMSUIMessageViewLayoutContext__imageLength__block_invoke()
 {
   [(AMSUIMessageViewLayoutContext *)self mainContentFrame];
   v4 = v3;
-  v5 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v6 = [v5 style];
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  style = [messageView style];
 
-  if (v6 != 5)
+  if (style != 5)
   {
     [(AMSUIMessageViewLayoutContext *)self leadingContentTextBaseline];
     v4 = v4 - v7;
   }
 
-  v8 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  if ([v8 style] != 2)
+  messageView2 = [(AMSUIMessageViewLayoutContext *)self messageView];
+  if ([messageView2 style] != 2)
   {
-    v9 = [(AMSUIMessageViewLayoutContext *)self messageView];
-    if ([v9 style] != 3)
+    messageView3 = [(AMSUIMessageViewLayoutContext *)self messageView];
+    if ([messageView3 style] != 3)
     {
-      v14 = [(AMSUIMessageViewLayoutContext *)self messageView];
-      v15 = [v14 style];
+      messageView4 = [(AMSUIMessageViewLayoutContext *)self messageView];
+      style2 = [messageView4 style];
 
-      if (v15 != 5)
+      if (style2 != 5)
       {
         goto LABEL_8;
       }
@@ -2289,13 +2289,13 @@ LABEL_7:
   [(AMSUIMessageViewLayoutContext *)self contentLayoutMargins];
   v4 = v4 + v10;
 LABEL_8:
-  v11 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  if ([v11 style] || -[AMSUIMessageViewLayoutContext shouldUseStackedLayout](self, "shouldUseStackedLayout"))
+  messageView5 = [(AMSUIMessageViewLayoutContext *)self messageView];
+  if ([messageView5 style] || -[AMSUIMessageViewLayoutContext shouldUseStackedLayout](self, "shouldUseStackedLayout"))
   {
-    v12 = [(AMSUIMessageViewLayoutContext *)self messageView];
-    v13 = [v12 style];
+    messageView6 = [(AMSUIMessageViewLayoutContext *)self messageView];
+    style3 = [messageView6 style];
 
-    if (v13 != 6)
+    if (style3 != 6)
     {
       return v4;
     }
@@ -2317,12 +2317,12 @@ LABEL_8:
   return v4 - v5;
 }
 
-- (double)_scaledUIValueForValue:(double)a3
+- (double)_scaledUIValueForValue:(double)value
 {
   v5 = [MEMORY[0x1E69DCA40] metricsForTextStyle:*MEMORY[0x1E69DDD80]];
-  v6 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v7 = [v6 traitCollection];
-  [v5 scaledValueForValue:v7 compatibleWithTraitCollection:a3];
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  traitCollection = [messageView traitCollection];
+  [v5 scaledValueForValue:traitCollection compatibleWithTraitCollection:value];
   v9 = v8;
 
   return v9;
@@ -2330,11 +2330,11 @@ LABEL_8:
 
 - (BOOL)_shouldOffsetFooterButtonFromMainContentView
 {
-  v3 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  if ([v3 style])
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  if ([messageView style])
   {
-    v4 = [(AMSUIMessageViewLayoutContext *)self messageView];
-    if ([v4 style] == 6)
+    messageView2 = [(AMSUIMessageViewLayoutContext *)self messageView];
+    if ([messageView2 style] == 6)
     {
       v5 = ![(AMSUIMessageViewLayoutContext *)self shouldUseStackedLayout];
     }
@@ -2355,26 +2355,26 @@ LABEL_8:
 
 - (BOOL)_shouldTextViewTextFillUnderCloseButton
 {
-  v3 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  if (![v3 style])
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  if (![messageView style])
   {
-    v6 = 0;
+    isDefaultCloseButton = 0;
 LABEL_9:
 
-    return v6;
+    return isDefaultCloseButton;
   }
 
-  v4 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v5 = [v4 style];
+  messageView2 = [(AMSUIMessageViewLayoutContext *)self messageView];
+  style = [messageView2 style];
 
-  if (v5 != 1)
+  if (style != 1)
   {
-    v3 = [(AMSUIMessageViewLayoutContext *)self messageView];
-    v7 = [v3 accessoryView];
+    messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+    accessoryView = [messageView accessoryView];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
+      v8 = accessoryView;
     }
 
     else
@@ -2382,7 +2382,7 @@ LABEL_9:
       v8 = 0;
     }
 
-    v6 = [v8 isDefaultCloseButton];
+    isDefaultCloseButton = [v8 isDefaultCloseButton];
     goto LABEL_9;
   }
 
@@ -2391,28 +2391,28 @@ LABEL_9:
 
 - (BOOL)shouldUseStackedLayout
 {
-  v2 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v3 = [v2 traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  traitCollection = [messageView traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   return IsAccessibilityCategory;
 }
 
 - (BOOL)isImageViewHidden
 {
-  v3 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v4 = [v3 imageView];
-  v5 = [v4 image];
-  if (v5)
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  imageView = [messageView imageView];
+  image = [imageView image];
+  if (image)
   {
     LOBYTE(v6) = 0;
   }
 
   else
   {
-    v7 = [(AMSUIMessageViewLayoutContext *)self messageView];
-    v6 = [v7 preLayoutImageView] ^ 1;
+    messageView2 = [(AMSUIMessageViewLayoutContext *)self messageView];
+    v6 = [messageView2 preLayoutImageView] ^ 1;
   }
 
   return v6;
@@ -2425,10 +2425,10 @@ LABEL_9:
   {
     [(AMSUIMessageViewLayoutContext *)self _makeImageViewSize];
     v5 = v4 + 0.0;
-    v6 = [(AMSUIMessageViewLayoutContext *)self messageView];
-    v7 = [v6 style];
+    messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+    style = [messageView style];
 
-    if (v7 == 1)
+    if (style == 1)
     {
       if ([(AMSUIMessageViewLayoutContext *)self _isSymbolImage])
       {
@@ -2450,14 +2450,14 @@ LABEL_9:
     }
   }
 
-  v10 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v11 = [v10 accessoryView];
-  if (v11)
+  messageView2 = [(AMSUIMessageViewLayoutContext *)self messageView];
+  accessoryView = [messageView2 accessoryView];
+  if (accessoryView)
   {
-    v12 = v11;
-    v13 = [(AMSUIMessageViewLayoutContext *)self _isAccessoryViewLeading];
+    v12 = accessoryView;
+    _isAccessoryViewLeading = [(AMSUIMessageViewLayoutContext *)self _isAccessoryViewLeading];
 
-    if (v13)
+    if (_isAccessoryViewLeading)
     {
       [(AMSUIMessageViewLayoutContext *)self accessoryViewFrame];
       v15 = v14;
@@ -2472,9 +2472,9 @@ LABEL_9:
   {
   }
 
-  v19 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v20 = [v19 textView];
-  [v20 textContainerInset];
+  messageView3 = [(AMSUIMessageViewLayoutContext *)self messageView];
+  textView = [messageView3 textView];
+  [textView textContainerInset];
   v22 = v3 - v21;
 
   return v22;
@@ -2482,9 +2482,9 @@ LABEL_9:
 
 - (double)separatorThickness
 {
-  v2 = [(AMSUIMessageViewLayoutContext *)self messageView];
-  v3 = [v2 traitCollection];
-  [v3 displayScale];
+  messageView = [(AMSUIMessageViewLayoutContext *)self messageView];
+  traitCollection = [messageView traitCollection];
+  [traitCollection displayScale];
   v5 = 1.0 / v4;
 
   return v5;
@@ -2493,8 +2493,8 @@ LABEL_9:
 - (double)totalFooterButtonHeight
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSUIMessageViewLayoutContext *)self footerButtonFramesPreFlatten];
-  v4 = [v3 count];
+  footerButtonFramesPreFlatten = [(AMSUIMessageViewLayoutContext *)self footerButtonFramesPreFlatten];
+  v4 = [footerButtonFramesPreFlatten count];
 
   if (v4)
   {
@@ -2504,8 +2504,8 @@ LABEL_9:
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = [(AMSUIMessageViewLayoutContext *)self footerButtonFramesPreFlatten];
-    v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    footerButtonFramesPreFlatten2 = [(AMSUIMessageViewLayoutContext *)self footerButtonFramesPreFlatten];
+    v8 = [footerButtonFramesPreFlatten2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -2517,14 +2517,14 @@ LABEL_9:
         {
           if (*v17 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(footerButtonFramesPreFlatten2);
           }
 
           [*(*(&v16 + 1) + 8 * i) CGRectValue];
           v11 = v11 + v6 + v13;
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v9 = [footerButtonFramesPreFlatten2 countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v9);

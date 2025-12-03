@@ -1,15 +1,15 @@
 @interface MFMailMessageLibraryAddMailboxActionsUpgradeStep
-+ (id)_readSavedOperationsAtPath:(id)a3;
-+ (int)runWithConnection:(id)a3;
++ (id)_readSavedOperationsAtPath:(id)path;
++ (int)runWithConnection:(id)connection;
 @end
 
 @implementation MFMailMessageLibraryAddMailboxActionsUpgradeStep
 
-+ (int)runWithConnection:(id)a3
++ (int)runWithConnection:(id)connection
 {
   v45 = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  if ([v31 executeStatementString:@"CREATE TABLE IF NOT EXISTS mailbox_actions (ROWID INTEGER PRIMARY KEY AUTOINCREMENT errorMessage:{account_identifier TEXT, action_type INTEGER, mailbox_name TEXT);", @"Creating mailbox_actions table"}])
+  connectionCopy = connection;
+  if ([connectionCopy executeStatementString:@"CREATE TABLE IF NOT EXISTS mailbox_actions (ROWID INTEGER PRIMARY KEY AUTOINCREMENT errorMessage:{account_identifier TEXT, action_type INTEGER, mailbox_name TEXT);", @"Creating mailbox_actions table"}])
   {
     v40 = 0u;
     v41 = 0u;
@@ -33,11 +33,11 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v4 = [v3 path];
-            v30 = [v4 stringByAppendingPathComponent:@".OfflineCache/operations"];
+            path = [v3 path];
+            v30 = [path stringByAppendingPathComponent:@".OfflineCache/operations"];
 
-            v25 = [a1 _readSavedOperationsAtPath:v30];
-            v5 = [v31 preparedStatementForQueryString:{@"INSERT INTO mailbox_actions (account_identifier, action_type, mailbox_name) VALUES (?, ?, ?)"}];
+            v25 = [self _readSavedOperationsAtPath:v30];
+            v5 = [connectionCopy preparedStatementForQueryString:{@"INSERT INTO mailbox_actions (account_identifier, action_type, mailbox_name) VALUES (?, ?, ?)"}];
             v36 = 0u;
             v37 = 0u;
             v34 = 0u;
@@ -57,10 +57,10 @@
                   }
 
                   v10 = *(*(&v34 + 1) + 8 * j);
-                  v11 = [v10 operationType];
-                  v12 = [v3 identifier];
-                  v13 = v12;
-                  if (v11 == 1)
+                  operationType = [v10 operationType];
+                  identifier = [v3 identifier];
+                  v13 = identifier;
+                  if (operationType == 1)
                   {
                     v14 = 1;
                   }
@@ -70,11 +70,11 @@
                     v14 = 2;
                   }
 
-                  v42[0] = v12;
+                  v42[0] = identifier;
                   v15 = [MEMORY[0x1E696AD98] numberWithInteger:v14];
                   v42[1] = v15;
-                  v16 = [v10 mailboxName];
-                  v42[2] = v16;
+                  mailboxName = [v10 mailboxName];
+                  v42[2] = mailboxName;
                   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:3];
 
                   v33 = 0;
@@ -130,13 +130,13 @@ LABEL_28:
   return v21;
 }
 
-+ (id)_readSavedOperationsAtPath:(id)a3
++ (id)_readSavedOperationsAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = objc_opt_new();
-  if (v3)
+  if (pathCopy)
   {
-    v5 = [objc_allocWithZone(MEMORY[0x1E695DEF0]) initWithContentsOfFile:v3 options:1 error:0];
+    v5 = [objc_allocWithZone(MEMORY[0x1E695DEF0]) initWithContentsOfFile:pathCopy options:1 error:0];
     v6 = v5;
     if (v5)
     {
@@ -146,8 +146,8 @@ LABEL_28:
       {
         do
         {
-          v8 = [v6 bytes];
-          if (*(v8 + v12) != 0x7FFF || *(v8 + v12 + 2) != 255)
+          bytes = [v6 bytes];
+          if (*(bytes + v12) != 0x7FFF || *(bytes + v12 + 2) != 255)
           {
             break;
           }

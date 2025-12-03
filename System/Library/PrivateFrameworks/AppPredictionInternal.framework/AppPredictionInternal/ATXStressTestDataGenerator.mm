@@ -1,16 +1,16 @@
 @interface ATXStressTestDataGenerator
-- (id)_startCallIntentWithRecipientName:(id)a3;
-- (id)_visitWebpageNSUAForURLString:(id)a3;
+- (id)_startCallIntentWithRecipientName:(id)name;
+- (id)_visitWebpageNSUAForURLString:(id)string;
 - (void)_updateActionFeedbackWithConfirmsAndRejects;
 - (void)_updateDonationPipelineWithIntentsAndNSUAs;
 - (void)clearAllDataForStressCycler;
-- (void)clearAllDataForStressCyclerWithCompletion:(id)a3;
+- (void)clearAllDataForStressCyclerWithCompletion:(id)completion;
 - (void)clearDataForBehavioralActionPredictions;
-- (void)enumerateSampleIntentAndUserActivityATXActionsWithBlock:(id)a3;
-- (void)enumerateSampleIntentAndUserActivityEventsWithBlock:(id)a3;
+- (void)enumerateSampleIntentAndUserActivityATXActionsWithBlock:(id)block;
+- (void)enumerateSampleIntentAndUserActivityEventsWithBlock:(id)block;
 - (void)generateDataForBehavioralActionPredictions;
 - (void)seedAllDataForStressCycler;
-- (void)setupForStressCyclerWithCompletion:(id)a3;
+- (void)setupForStressCyclerWithCompletion:(id)completion;
 @end
 
 @implementation ATXStressTestDataGenerator
@@ -53,21 +53,21 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setupForStressCyclerWithCompletion:(id)a3
+- (void)setupForStressCyclerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(ATXStressTestDataGenerator *)self clearAllDataForStressCycler];
   [(ATXStressTestDataGenerator *)self seedAllDataForStressCycler];
-  v4[2](v4, 0);
+  completionCopy[2](completionCopy, 0);
 
   xpc_transaction_exit_clean();
 }
 
-- (void)clearAllDataForStressCyclerWithCompletion:(id)a3
+- (void)clearAllDataForStressCyclerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(ATXStressTestDataGenerator *)self clearAllDataForStressCycler];
-  v4[2](v4, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
 - (void)generateDataForBehavioralActionPredictions
@@ -258,33 +258,33 @@ void __102__ATXStressTestDataGenerator_BehavioralActionPredictions___updateActio
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_visitWebpageNSUAForURLString:(id)a3
+- (id)_visitWebpageNSUAForURLString:(id)string
 {
   v3 = MEMORY[0x277CC1EF0];
-  v4 = a3;
+  stringCopy = string;
   v5 = [v3 alloc];
   v6 = [v5 initWithActivityType:*MEMORY[0x277CCA850]];
-  v7 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v4];
+  v7 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:stringCopy];
   [v6 setWebpageURL:v7];
 
-  v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SC DEBUG: %@", v4];
-  [v6 setTitle:v8];
+  stringCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SC DEBUG: %@", stringCopy];
+  [v6 setTitle:stringCopy];
 
   [v6 setEligibleForPrediction:1];
 
   return v6;
 }
 
-- (id)_startCallIntentWithRecipientName:(id)a3
+- (id)_startCallIntentWithRecipientName:(id)name
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CD3E98];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithValue:v4 type:0];
+  nameCopy = name;
+  v5 = [[v3 alloc] initWithValue:nameCopy type:0];
   v6 = objc_alloc(MEMORY[0x277CD3E90]);
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"SC DEBUG: %@", v4];
+  nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"SC DEBUG: %@", nameCopy];
 
-  v8 = [v6 initWithPersonHandle:v5 nameComponents:0 displayName:v7 image:0 contactIdentifier:0 customIdentifier:0];
+  v8 = [v6 initWithPersonHandle:v5 nameComponents:0 displayName:nameCopy image:0 contactIdentifier:0 customIdentifier:0];
   v9 = objc_alloc(MEMORY[0x277CD41A8]);
   v14[0] = v8;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
@@ -295,13 +295,13 @@ void __102__ATXStressTestDataGenerator_BehavioralActionPredictions___updateActio
   return v11;
 }
 
-- (void)enumerateSampleIntentAndUserActivityATXActionsWithBlock:(id)a3
+- (void)enumerateSampleIntentAndUserActivityATXActionsWithBlock:(id)block
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v38 = +[_ATXAppIconState sharedInstance];
-  v5 = [v38 allAppsKnownToSpringBoard];
-  v6 = [v5 subarrayWithRange:{0, 30}];
+  allAppsKnownToSpringBoard = [v38 allAppsKnownToSpringBoard];
+  v6 = [allAppsKnownToSpringBoard subarrayWithRange:{0, 30}];
 
   v47 = 0u;
   v48 = 0u;
@@ -337,7 +337,7 @@ void __102__ATXStressTestDataGenerator_BehavioralActionPredictions___updateActio
           v16 = [v13 initWithFormat:@"https://www.example%@.com", v15];
 
           v17 = [(ATXStressTestDataGenerator *)self _visitWebpageNSUAForURLString:v16];
-          v18 = self;
+          selfCopy = self;
           v19 = objc_alloc(*(v9 + 712));
           v20 = v9;
           v21 = objc_opt_new();
@@ -345,12 +345,12 @@ void __102__ATXStressTestDataGenerator_BehavioralActionPredictions___updateActio
           v22 = [v19 initWithNSUserActivity:v17 actionUUID:v21 bundleId:v44 contentAttributeSet:0 itemIdentifier:0 heuristic:0 heuristicMetadata:0 criteria:0 isFutureMedia:v37 title:v16 subtitle:v16];
 
           v23 = objc_autoreleasePoolPush();
-          v4[2](v4, v22);
+          blockCopy[2](blockCopy, v22);
           v24 = v23;
           v9 = v20;
           objc_autoreleasePoolPop(v24);
 
-          self = v18;
+          self = selfCopy;
           v8 = v14;
 
           v7 = v12;
@@ -369,12 +369,12 @@ void __102__ATXStressTestDataGenerator_BehavioralActionPredictions___updateActio
           v32 = [v30 initWithIntent:v29 actionUUID:v31 bundleId:v44 heuristic:0 heuristicMetadata:0 criteria:0 isFutureMedia:v36 title:v28 subtitle:v28];
 
           v33 = objc_autoreleasePoolPush();
-          v4[2](v4, v32);
+          blockCopy[2](blockCopy, v32);
           v34 = v33;
           v9 = v20;
           objc_autoreleasePoolPop(v34);
 
-          self = v18;
+          self = selfCopy;
           v8 = v14;
 
           v7 = v12;
@@ -394,15 +394,15 @@ void __102__ATXStressTestDataGenerator_BehavioralActionPredictions___updateActio
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateSampleIntentAndUserActivityEventsWithBlock:(id)a3
+- (void)enumerateSampleIntentAndUserActivityEventsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __111__ATXStressTestDataGenerator_BehavioralActionPredictions__enumerateSampleIntentAndUserActivityEventsWithBlock___block_invoke;
   v6[3] = &unk_27859B888;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(ATXStressTestDataGenerator *)self enumerateSampleIntentAndUserActivityATXActionsWithBlock:v6];
 }
 

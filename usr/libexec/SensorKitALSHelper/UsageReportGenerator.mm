@@ -1,43 +1,43 @@
 @interface UsageReportGenerator
 + (void)initialize;
-- (UsageReportGenerator)initWithLaunchEvents:(id)a3 usageReportWriter:(id)a4 messagesUsageReportWriter:(id)a5 phoneUsageReportWriter:(id)a6 chClient:(id)a7 queue:(id)a8 defaults:(id)a9;
+- (UsageReportGenerator)initWithLaunchEvents:(id)events usageReportWriter:(id)writer messagesUsageReportWriter:(id)reportWriter phoneUsageReportWriter:(id)usageReportWriter chClient:(id)client queue:(id)queue defaults:(id)defaults;
 - (void)dealloc;
-- (void)launchEventRunActivity:(id)a3;
-- (void)sensorWriterDidStopMonitoring:(id)a3;
-- (void)sensorWriterWillStartMonitoring:(id)a3;
+- (void)launchEventRunActivity:(id)activity;
+- (void)sensorWriterDidStopMonitoring:(id)monitoring;
+- (void)sensorWriterWillStartMonitoring:(id)monitoring;
 @end
 
 @implementation UsageReportGenerator
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_10002B2E0 = os_log_create("com.apple.SensorKit", "SensorKitUsageReportGenerator");
   }
 }
 
-- (UsageReportGenerator)initWithLaunchEvents:(id)a3 usageReportWriter:(id)a4 messagesUsageReportWriter:(id)a5 phoneUsageReportWriter:(id)a6 chClient:(id)a7 queue:(id)a8 defaults:(id)a9
+- (UsageReportGenerator)initWithLaunchEvents:(id)events usageReportWriter:(id)writer messagesUsageReportWriter:(id)reportWriter phoneUsageReportWriter:(id)usageReportWriter chClient:(id)client queue:(id)queue defaults:(id)defaults
 {
   v21.receiver = self;
   v21.super_class = UsageReportGenerator;
   v15 = [(UsageReportGenerator *)&v21 init];
   if (v15)
   {
-    v15->_queue = a8;
-    v15->_chClient = a7;
-    v15->_deviceUsageReportWriter = a4;
-    v15->_messagesUsageReportWriter = a5;
-    v15->_phoneUsageReportWriter = a6;
+    v15->_queue = queue;
+    v15->_chClient = client;
+    v15->_deviceUsageReportWriter = writer;
+    v15->_messagesUsageReportWriter = reportWriter;
+    v15->_phoneUsageReportWriter = usageReportWriter;
     v15->_deviceUsageReports = objc_alloc_init(NSMutableDictionary);
     v15->_notificationBundleIdsByNotificationId = objc_alloc_init(NSMutableDictionary);
     v15->_messagesUsageReports = objc_alloc_init(NSMutableDictionary);
     v15->_phoneUsageReports = objc_alloc_init(NSMutableDictionary);
-    v16 = a3;
-    v15->_launchEvents = v16;
-    if (v16)
+    eventsCopy = events;
+    v15->_launchEvents = eventsCopy;
+    if (eventsCopy)
     {
-      objc_storeWeak(&v16->_delegate, v15);
+      objc_storeWeak(&eventsCopy->_delegate, v15);
     }
 
     [(SRSensorWriter *)v15->_deviceUsageReportWriter setDelegate:v15];
@@ -59,7 +59,7 @@
     v15->_deviceUsageQueryIntervals = objc_alloc_init(NSMutableArray);
     objc_setProperty_nonatomic(v15, v17, 0, 200);
     objc_setProperty_nonatomic(v15, v18, 0, 208);
-    objc_setProperty_nonatomic(v15, v19, a9, 216);
+    objc_setProperty_nonatomic(v15, v19, defaults, 216);
   }
 
   return v15;
@@ -115,21 +115,21 @@
   [(UsageReportGenerator *)&v16 dealloc];
 }
 
-- (void)launchEventRunActivity:(id)a3
+- (void)launchEventRunActivity:(id)activity
 {
-  if (a3)
+  if (activity)
   {
-    if ([*(a3 + 1) isEqualToString:@"com.apple.sensorkit.launchUsageCollector"])
+    if ([*(activity + 1) isEqualToString:@"com.apple.sensorkit.launchUsageCollector"])
     {
       goto LABEL_3;
     }
 
-    if ([*(a3 + 1) isEqualToString:@"com.apple.sensorkit.launchPhoneUsageCollector"])
+    if ([*(activity + 1) isEqualToString:@"com.apple.sensorkit.launchPhoneUsageCollector"])
     {
       goto LABEL_9;
     }
 
-    v27 = *(a3 + 1);
+    v27 = *(activity + 1);
   }
 
   else
@@ -139,11 +139,11 @@
 LABEL_3:
       if (self)
       {
-        v5 = [(SRDataCollectorsDefaults *)self->_defaults lastDeviceUsageQueryDate];
+        lastDeviceUsageQueryDate = [(SRDataCollectorsDefaults *)self->_defaults lastDeviceUsageQueryDate];
         [(SRDataCollectorsDefaults *)self->_defaults queryIntervalShift];
         [+[NSDate dateWithSRAbsoluteTime:](NSDate timeIntervalSinceReferenceDate:fmax(SRAbsoluteTimeGetCurrent() - v6];
         v8 = [NSDate dateWithTimeIntervalSinceReferenceDate:floor(v7 / 900.0) * 900.0];
-        [(NSDate *)v8 timeIntervalSinceDate:v5];
+        [(NSDate *)v8 timeIntervalSinceDate:lastDeviceUsageQueryDate];
         if (v9 >= 900.0)
         {
           deviceUsageQueryIntervals = self->_deviceUsageQueryIntervals;
@@ -155,13 +155,13 @@ LABEL_3:
           do
           {
             v22 = [NSDate dateWithTimeInterval:v21 sinceDate:v20];
-            v23 = [[NSDateInterval alloc] initWithStartDate:-[NSDate laterDate:](v22 endDate:{"laterDate:", v5), v21}];
+            v23 = [[NSDateInterval alloc] initWithStartDate:-[NSDate laterDate:](v22 endDate:{"laterDate:", lastDeviceUsageQueryDate), v21}];
             [v19 addObject:v23];
 
             v21 = v22;
           }
 
-          while ([(NSDate *)v5 compare:v22]== NSOrderedAscending);
+          while ([(NSDate *)lastDeviceUsageQueryDate compare:v22]== NSOrderedAscending);
           [(NSMutableArray *)deviceUsageQueryIntervals addObjectsFromArray:[NSArray arrayWithArray:v19]];
           v24 = qword_10002B2E0;
           if (os_log_type_enabled(qword_10002B2E0, OS_LOG_TYPE_DEFAULT))
@@ -170,7 +170,7 @@ LABEL_3:
             *buf = 138412802;
             *&buf[4] = v25;
             *&buf[12] = 2112;
-            *&buf[14] = v5;
+            *&buf[14] = lastDeviceUsageQueryDate;
             *&buf[22] = 2112;
             v56 = v8;
             _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Intervals to query:%@ from %@ till %@", buf, 0x20u);
@@ -179,7 +179,7 @@ LABEL_3:
           v26 = self->_deviceUsageQueryIntervals;
           if (v26)
           {
-            sub_10000E96C(&self->super.isa, [(NSMutableArray *)v26 lastObject], a3);
+            sub_10000E96C(&self->super.isa, [(NSMutableArray *)v26 lastObject], activity);
             return;
           }
 
@@ -187,7 +187,7 @@ LABEL_3:
           if (os_log_type_enabled(qword_10002B2E0, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            *&buf[4] = v5;
+            *&buf[4] = lastDeviceUsageQueryDate;
             *&buf[12] = 2112;
             *&buf[14] = v8;
             _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "No intervals to query. Start date: %@, end date:%@", buf, 0x16u);
@@ -202,7 +202,7 @@ LABEL_3:
             *buf = 138544130;
             *&buf[4] = +[NSDate now];
             *&buf[12] = 2114;
-            *&buf[14] = v5;
+            *&buf[14] = lastDeviceUsageQueryDate;
             *&buf[22] = 2114;
             v56 = v8;
             LOWORD(v57) = 2050;
@@ -227,7 +227,7 @@ LABEL_9:
         return;
       }
 
-      v11 = [(SRDataCollectorsDefaults *)self->_defaults lastPhoneUsageQueryDate];
+      lastPhoneUsageQueryDate = [(SRDataCollectorsDefaults *)self->_defaults lastPhoneUsageQueryDate];
       v12 = +[NSDate date];
       [(SRDataCollectorsDefaults *)self->_defaults phoneUsageReportInterval];
       v14 = v13;
@@ -239,23 +239,23 @@ LABEL_9:
         }
 
         [(NSDate *)v12 timeIntervalSinceReferenceDate];
-        v16 = [NSDate dateWithTimeIntervalSinceReferenceDate:v14 * floor(v15 / v14)];
+        sr_localMidnightPriorToDate = [NSDate dateWithTimeIntervalSinceReferenceDate:v14 * floor(v15 / v14)];
       }
 
       else
       {
-        v16 = [(NSDate *)v12 sr_localMidnightPriorToDate];
+        sr_localMidnightPriorToDate = [(NSDate *)v12 sr_localMidnightPriorToDate];
       }
 
-      v12 = v16;
+      v12 = sr_localMidnightPriorToDate;
 LABEL_29:
       [(SRDataCollectorsDefaults *)self->_defaults phoneUsageReportInterval];
       v35 = v34;
-      v36 = [(SRDataCollectorsDefaults *)self->_defaults bypassQueryFromMidnightToMidnight];
-      [(NSDate *)v12 timeIntervalSinceDate:v11];
+      bypassQueryFromMidnightToMidnight = [(SRDataCollectorsDefaults *)self->_defaults bypassQueryFromMidnightToMidnight];
+      [(NSDate *)v12 timeIntervalSinceDate:lastPhoneUsageQueryDate];
       if (v37 >= v35)
       {
-        v40 = [[NSDateInterval alloc] initWithStartDate:v11 endDate:v12];
+        v40 = [[NSDateInterval alloc] initWithStartDate:lastPhoneUsageQueryDate endDate:v12];
         [(NSMutableDictionary *)self->_phoneUsageReports removeAllObjects];
         objc_initWeak(&location, self);
         v41 = os_transaction_create();
@@ -264,7 +264,7 @@ LABEL_29:
         *&buf[16] = sub_10000DE50;
         v56 = &unk_100024DD8;
         objc_copyWeak(v59, &location);
-        *&v57 = a3;
+        *&v57 = activity;
         *(&v57 + 1) = v41;
         v58 = v12;
         sub_10000D220(self, v40, &off_100027170, buf);
@@ -279,14 +279,14 @@ LABEL_29:
       {
         v39 = *&v35;
         *buf = 138543874;
-        if (!v36)
+        if (!bypassQueryFromMidnightToMidnight)
         {
           v39 = 0x40F5180000000000;
         }
 
         *&buf[4] = v12;
         *&buf[12] = 2114;
-        *&buf[14] = v11;
+        *&buf[14] = lastPhoneUsageQueryDate;
         *&buf[22] = 2050;
         v56 = v39;
         _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "Phone Usage. Time before now (%{public}@) and the last run (%{public}@) is less than our report interval (%{public}f). Waiting until next time", buf, 0x20u);
@@ -301,7 +301,7 @@ LABEL_29:
     return;
   }
 
-  v28 = [(SRDataCollectorsDefaults *)self->_defaults lastMessagesUsageQueryDate];
+  lastMessagesUsageQueryDate = [(SRDataCollectorsDefaults *)self->_defaults lastMessagesUsageQueryDate];
   v29 = +[NSDate date];
   [(SRDataCollectorsDefaults *)self->_defaults messagesUsageReportInterval];
   v31 = v30;
@@ -313,20 +313,20 @@ LABEL_29:
     }
 
     [(NSDate *)v29 timeIntervalSinceReferenceDate];
-    v33 = [NSDate dateWithTimeIntervalSinceReferenceDate:v31 * floor(v32 / v31)];
+    sr_localMidnightPriorToDate2 = [NSDate dateWithTimeIntervalSinceReferenceDate:v31 * floor(v32 / v31)];
   }
 
   else
   {
-    v33 = [(NSDate *)v29 sr_localMidnightPriorToDate];
+    sr_localMidnightPriorToDate2 = [(NSDate *)v29 sr_localMidnightPriorToDate];
   }
 
-  v29 = v33;
+  v29 = sr_localMidnightPriorToDate2;
 LABEL_41:
   [(SRDataCollectorsDefaults *)self->_defaults messagesUsageReportInterval];
   v44 = v43;
-  v45 = [(SRDataCollectorsDefaults *)self->_defaults bypassQueryFromMidnightToMidnight];
-  [(NSDate *)v29 timeIntervalSinceDate:v28];
+  bypassQueryFromMidnightToMidnight2 = [(SRDataCollectorsDefaults *)self->_defaults bypassQueryFromMidnightToMidnight];
+  [(NSDate *)v29 timeIntervalSinceDate:lastMessagesUsageQueryDate];
   if (v46 < v44)
   {
     v47 = qword_10002B2E0;
@@ -336,24 +336,24 @@ LABEL_41:
       v49 = *&v44;
       *buf = 138543874;
       *&buf[4] = v48;
-      if (!v45)
+      if (!bypassQueryFromMidnightToMidnight2)
       {
         v49 = 0x40F5180000000000;
       }
 
       *&buf[12] = 2114;
-      *&buf[14] = v28;
+      *&buf[14] = lastMessagesUsageQueryDate;
       *&buf[22] = 2050;
       v56 = v49;
       _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "Messages usage. Time before now (%{public}@) and the last run (%{public}@) is less than our report interval (%{public}f). Waiting until next time", buf, 0x20u);
     }
 
 LABEL_46:
-    [a3 markCompleted];
+    [activity markCompleted];
     return;
   }
 
-  v50 = [[NSDateInterval alloc] initWithStartDate:v28 endDate:v29];
+  v50 = [[NSDateInterval alloc] initWithStartDate:lastMessagesUsageQueryDate endDate:v29];
   [(NSMutableDictionary *)self->_messagesUsageReports removeAllObjects];
   objc_initWeak(&location, self);
   v51 = os_transaction_create();
@@ -362,7 +362,7 @@ LABEL_46:
   *&buf[16] = sub_10000E07C;
   v56 = &unk_100024DD8;
   objc_copyWeak(v59, &location);
-  *&v57 = a3;
+  *&v57 = activity;
   *(&v57 + 1) = v51;
   v58 = v29;
   sub_10000D220(self, v50, &off_100027188, buf);
@@ -371,11 +371,11 @@ LABEL_46:
   objc_destroyWeak(&location);
 }
 
-- (void)sensorWriterWillStartMonitoring:(id)a3
+- (void)sensorWriterWillStartMonitoring:(id)monitoring
 {
-  if (self->_deviceUsageReportWriter != a3)
+  if (self->_deviceUsageReportWriter != monitoring)
   {
-    if (self->_phoneUsageReportWriter == a3)
+    if (self->_phoneUsageReportWriter == monitoring)
     {
       launchEvents = self->_launchEvents;
       v14 = @"com.apple.sensorkit.launchPhoneUsageCollector";
@@ -384,13 +384,13 @@ LABEL_46:
 
     else
     {
-      if (self->_messagesUsageReportWriter != a3)
+      if (self->_messagesUsageReportWriter != monitoring)
       {
         v5 = qword_10002B2E0;
         if (os_log_type_enabled(qword_10002B2E0, OS_LOG_TYPE_FAULT))
         {
           *buf = 138412290;
-          v12 = a3;
+          monitoringCopy = monitoring;
           _os_log_fault_impl(&_mh_execute_header, v5, OS_LOG_TYPE_FAULT, "Unknown writer: %@", buf, 0xCu);
         }
 
@@ -422,16 +422,16 @@ LABEL_46:
   [(SRCHClient *)chClient downloadDatabaseAssetIfNeeded:v10];
 }
 
-- (void)sensorWriterDidStopMonitoring:(id)a3
+- (void)sensorWriterDidStopMonitoring:(id)monitoring
 {
-  if (self->_deviceUsageReportWriter == a3)
+  if (self->_deviceUsageReportWriter == monitoring)
   {
     launchEvents = self->_launchEvents;
     v7 = @"com.apple.sensorkit.launchUsageCollector";
     v4 = &v7;
   }
 
-  else if (self->_phoneUsageReportWriter == a3)
+  else if (self->_phoneUsageReportWriter == monitoring)
   {
     launchEvents = self->_launchEvents;
     v6 = @"com.apple.sensorkit.launchPhoneUsageCollector";
@@ -440,7 +440,7 @@ LABEL_46:
 
   else
   {
-    if (self->_messagesUsageReportWriter != a3)
+    if (self->_messagesUsageReportWriter != monitoring)
     {
       return;
     }

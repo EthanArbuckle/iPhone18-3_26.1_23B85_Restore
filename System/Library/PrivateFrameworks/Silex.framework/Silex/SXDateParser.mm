@@ -1,13 +1,13 @@
 @interface SXDateParser
-- (id)dateFromString:(id)a3;
+- (id)dateFromString:(id)string;
 @end
 
 @implementation SXDateParser
 
-- (id)dateFromString:(id)a3
+- (id)dateFromString:(id)string
 {
-  v3 = a3;
-  if (v3)
+  stringCopy = string;
+  if (stringCopy)
   {
     v4 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:@"([0-9]{4})-([01][0-9])-([0-3][0-9])(T([0-2][0-9]):([0-5][0-9]):([0-5][0-9])(Z|([+-])([0-2][0-9]):([0-9][0-9]))?)?" options:1 error:0];
     v5 = objc_alloc_init(MEMORY[0x1E695DF10]);
@@ -20,7 +20,7 @@
     v32 = 0x3032000000;
     v33 = __Block_byref_object_copy__2;
     v34 = __Block_byref_object_dispose__2;
-    v35 = [MEMORY[0x1E695DFE8] systemTimeZone];
+    systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
     v26 = 0;
     v27 = &v26;
     v28 = 0x2020000000;
@@ -31,12 +31,12 @@
     v23 = __Block_byref_object_copy__2;
     v24 = __Block_byref_object_dispose__2;
     v25 = 0;
-    v8 = [v3 length];
+    v8 = [stringCopy length];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __31__SXDateParser_dateFromString___block_invoke;
     v14[3] = &unk_1E8501A58;
-    v15 = v3;
+    v15 = stringCopy;
     v17 = &v30;
     v18 = &v20;
     v19 = &v26;
@@ -52,8 +52,8 @@
     {
       [v9 setTimeZone:v31[5]];
       v12 = [SXParsedDate alloc];
-      v13 = [v9 date];
-      v10 = [(SXParsedDate *)v12 initWithDate:v13 containedTime:*(v27 + 24) timeZone:v21[5]];
+      date = [v9 date];
+      v10 = [(SXParsedDate *)v12 initWithDate:date containedTime:*(v27 + 24) timeZone:v21[5]];
     }
 
     _Block_object_dispose(&v20, 8);

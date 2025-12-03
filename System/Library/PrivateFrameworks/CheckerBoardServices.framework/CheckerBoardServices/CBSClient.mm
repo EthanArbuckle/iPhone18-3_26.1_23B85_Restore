@@ -68,8 +68,8 @@ void __17__CBSClient_init__block_invoke_92()
 
 - (id)remoteAlertServer
 {
-  v2 = [(CBSClient *)self connection];
-  v3 = [v2 remoteObjectProxyWithErrorHandler:&__block_literal_global_97];
+  connection = [(CBSClient *)self connection];
+  v3 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_97];
 
   return v3;
 }
@@ -86,8 +86,8 @@ void __30__CBSClient_remoteAlertServer__block_invoke(uint64_t a1, void *a2)
 
 - (id)systemServicesServer
 {
-  v2 = [(CBSClient *)self connection];
-  v3 = [v2 remoteObjectProxyWithErrorHandler:&__block_literal_global_99];
+  connection = [(CBSClient *)self connection];
+  v3 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_99];
 
   return v3;
 }

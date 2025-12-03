@@ -10,10 +10,10 @@
 
 + (id)sharedInstance
 {
-  v2 = [a1 _classKey];
+  _classKey = [self _classKey];
   os_unfair_recursive_lock_lock_with_options();
-  v3 = [SingletonCache objectForKeyedSubscript:v2];
-  v4 = v3;
+  v3 = [SingletonCache objectForKeyedSubscript:_classKey];
+  _init = v3;
   if (SingletonCache)
   {
     v5 = v3 == 0;
@@ -26,13 +26,13 @@
 
   if (v5)
   {
-    v4 = [objc_alloc(objc_opt_class()) _init];
-    [SingletonCache setObject:v4 forKeyedSubscript:v2];
+    _init = [objc_alloc(objc_opt_class()) _init];
+    [SingletonCache setObject:_init forKeyedSubscript:_classKey];
   }
 
   os_unfair_recursive_lock_unlock();
 
-  return v4;
+  return _init;
 }
 
 - (id)_init
@@ -55,9 +55,9 @@
   v2 = SingletonCacheUsageCount;
   if (!SingletonCacheUsageCount)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v4 = SingletonCache;
-    SingletonCache = v3;
+    SingletonCache = dictionary;
 
     v2 = SingletonCacheUsageCount;
   }

@@ -1,20 +1,20 @@
 @interface AVTStickerImageEncoder
-- (id)dataFromImage:(id)a3 clippingRect:(CGRect)a4;
-- (id)imageFromData:(id)a3 error:(id *)a4;
-- (id)imageFromURL:(id)a3 error:(id *)a4;
+- (id)dataFromImage:(id)image clippingRect:(CGRect)rect;
+- (id)imageFromData:(id)data error:(id *)error;
+- (id)imageFromURL:(id)l error:(id *)error;
 @end
 
 @implementation AVTStickerImageEncoder
 
-- (id)imageFromURL:(id)a3 error:(id *)a4
+- (id)imageFromURL:(id)l error:(id *)error
 {
   v6 = MEMORY[0x1E695DEF0];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithContentsOfURL:v7 options:1 error:a4];
+  lCopy = l;
+  v8 = [[v6 alloc] initWithContentsOfURL:lCopy options:1 error:error];
 
   if (v8)
   {
-    v9 = [(AVTStickerImageEncoder *)self imageFromData:v8 error:a4];
+    v9 = [(AVTStickerImageEncoder *)self imageFromData:v8 error:error];
   }
 
   else
@@ -25,29 +25,29 @@
   return v9;
 }
 
-- (id)imageFromData:(id)a3 error:(id *)a4
+- (id)imageFromData:(id)data error:(id *)error
 {
-  v5 = [MEMORY[0x1E69DCAB8] imageWithData:a3];
+  v5 = [MEMORY[0x1E69DCAB8] imageWithData:data];
   v6 = v5;
-  if (a4 && !v5)
+  if (error && !v5)
   {
-    *a4 = [MEMORY[0x1E698E338] errorWithCode:604 userInfo:0];
+    *error = [MEMORY[0x1E698E338] errorWithCode:604 userInfo:0];
   }
 
   return v6;
 }
 
-- (id)dataFromImage:(id)a3 clippingRect:(CGRect)a4
+- (id)dataFromImage:(id)image clippingRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v26[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  DataProvider = CGImageGetDataProvider([v8 CGImage]);
+  imageCopy = image;
+  DataProvider = CGImageGetDataProvider([imageCopy CGImage]);
   v10 = CGImageSourceCreateWithDataProvider(DataProvider, 0);
-  [v8 scale];
+  [imageCopy scale];
   v12 = v11 * 72.0;
   v25[0] = *MEMORY[0x1E696D888];
   v13 = [MEMORY[0x1E696AD98] numberWithDouble:v11 * 72.0];
@@ -68,11 +68,11 @@
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:3];
 
   Mutable = CFDataCreateMutable(0, 0);
-  v19 = [*MEMORY[0x1E6982F28] identifier];
-  v20 = CGImageDestinationCreateWithData(Mutable, v19, 1uLL, 0);
+  identifier = [*MEMORY[0x1E6982F28] identifier];
+  v20 = CGImageDestinationCreateWithData(Mutable, identifier, 1uLL, 0);
 
-  v21 = [v8 CGImage];
-  CGImageDestinationAddImage(v20, v21, v17);
+  cGImage = [imageCopy CGImage];
+  CGImageDestinationAddImage(v20, cGImage, v17);
   CGImageDestinationFinalize(v20);
   if (v20)
   {

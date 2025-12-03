@@ -1,10 +1,10 @@
 @interface MCNetworkUsageRulesPayloadHandler
-+ (BOOL)_rebuildWiFiAssistConfigurationIncludingPayloads:(id)a3 excludingPayloads:(id)a4 error:(id *)a5;
-+ (BOOL)_writeWiFiAssistConfiguration:(id)a3 withError:(id *)a4;
-+ (id)_WiFiAssistConfigurationForPayloads:(id)a3 includingPayloads:(id)a4 excludingPayloads:(id)a5 error:(id *)a6;
-+ (id)internalErrorWithCode:(int)a3 underlyingError:(id)a4;
-- (BOOL)_installApplicationRulesFromPayload:(id)a3 outError:(id *)a4;
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
++ (BOOL)_rebuildWiFiAssistConfigurationIncludingPayloads:(id)payloads excludingPayloads:(id)excludingPayloads error:(id *)error;
++ (BOOL)_writeWiFiAssistConfiguration:(id)configuration withError:(id *)error;
++ (id)_WiFiAssistConfigurationForPayloads:(id)payloads includingPayloads:(id)includingPayloads excludingPayloads:(id)excludingPayloads error:(id *)error;
++ (id)internalErrorWithCode:(int)code underlyingError:(id)error;
+- (BOOL)_installApplicationRulesFromPayload:(id)payload outError:(id *)error;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
 - (void)remove;
 - (void)setAside;
 - (void)unsetAside;
@@ -12,29 +12,29 @@
 
 @implementation MCNetworkUsageRulesPayloadHandler
 
-+ (id)internalErrorWithCode:(int)a3 underlyingError:(id)a4
++ (id)internalErrorWithCode:(int)code underlyingError:(id)error
 {
   v4 = MCNetworkUsageRulesErrorDomain;
-  v5 = a3;
-  v6 = a4;
+  codeCopy = code;
+  errorCopy = error;
   v7 = MCErrorArray();
-  v8 = [NSError MCErrorWithDomain:v4 code:v5 descriptionArray:v7 underlyingError:v6 errorType:MCErrorTypeFatal, 0];
+  v8 = [NSError MCErrorWithDomain:v4 code:codeCopy descriptionArray:v7 underlyingError:errorCopy errorType:MCErrorTypeFatal, 0];
 
   return v8;
 }
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
-  v8 = [(MCNewPayloadHandler *)self payload:a3];
-  v9 = [v8 applicationRules];
+  v8 = [(MCNewPayloadHandler *)self payload:installer];
+  applicationRules = [v8 applicationRules];
 
-  if (!v9 || (v29 = 0, v10 = [(MCNetworkUsageRulesPayloadHandler *)self _installApplicationRulesFromPayload:v8 outError:&v29], v9 = v29, v10))
+  if (!applicationRules || (v29 = 0, v10 = [(MCNetworkUsageRulesPayloadHandler *)self _installApplicationRulesFromPayload:v8 outError:&v29], applicationRules = v29, v10))
   {
-    v11 = [v8 SIMRules];
+    sIMRules = [v8 SIMRules];
 
-    if (v11)
+    if (sIMRules)
     {
-      v23 = a6;
+      errorCopy = error;
       v12 = +[NSMutableArray array];
       v25 = 0u;
       v26 = 0u;
@@ -56,9 +56,9 @@
             }
 
             v18 = *(*(&v25 + 1) + 8 * i);
-            v19 = [v18 SIMRules];
+            sIMRules2 = [v18 SIMRules];
 
-            if (v19)
+            if (sIMRules2)
             {
               [v12 addObject:v18];
             }
@@ -71,40 +71,40 @@
       }
 
       [v12 addObject:v8];
-      v24 = v9;
+      v24 = applicationRules;
       [objc_opt_class() _rebuildWiFiAssistConfigurationIncludingPayloads:v12 excludingPayloads:qword_100136A80 error:&v24];
       v20 = v24;
 
-      v9 = v20;
-      a6 = v23;
+      applicationRules = v20;
+      error = errorCopy;
     }
   }
 
-  if (a6 && v9)
+  if (error && applicationRules)
   {
-    v21 = v9;
-    *a6 = v9;
+    v21 = applicationRules;
+    *error = applicationRules;
   }
 
-  return v9 == 0;
+  return applicationRules == 0;
 }
 
 - (void)setAside
 {
-  v2 = [(MCNewPayloadHandler *)self payload];
-  v3 = [v2 applicationRules];
+  payload = [(MCNewPayloadHandler *)self payload];
+  applicationRules = [payload applicationRules];
 
-  if (v3)
+  if (applicationRules)
   {
     v4 = +[MCNetworkUsageRulesPayload typeStrings];
-    v5 = [v4 firstObject];
+    firstObject = [v4 firstObject];
     v6 = MCNEProfileIngestionHandlerClassForPayload();
 
     if ([v6 lockConfigurations])
     {
       [v6 loadConfigurationsForceReloadFromDisk];
-      v7 = [v2 persistentResourceID];
-      v8 = [v6 setAsideConfigurationName:v7 unsetAside:0];
+      persistentResourceID = [payload persistentResourceID];
+      v8 = [v6 setAsideConfigurationName:persistentResourceID unsetAside:0];
 
       [v6 unlockConfigurations];
     }
@@ -120,9 +120,9 @@
     }
   }
 
-  v10 = [v2 SIMRules];
+  sIMRules = [payload SIMRules];
 
-  if (v10)
+  if (sIMRules)
   {
     v11 = qword_100136A80;
     if (!qword_100136A80)
@@ -134,7 +134,7 @@
       v11 = qword_100136A80;
     }
 
-    [v11 addObject:v2];
+    [v11 addObject:payload];
     v19 = 0;
     v14 = [objc_opt_class() _rebuildWiFiAssistConfigurationIncludingPayloads:0 excludingPayloads:qword_100136A80 error:&v19];
     v15 = v19;
@@ -143,19 +143,19 @@
       v16 = _MCLogObjects[0];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v17 = [v2 displayName];
-        v18 = v17;
-        if (!v17)
+        displayName = [payload displayName];
+        uUID = displayName;
+        if (!displayName)
         {
-          v18 = [v2 UUID];
+          uUID = [payload UUID];
         }
 
         *buf = 138543618;
-        v21 = v18;
+        v21 = uUID;
         v22 = 2114;
         v23 = v15;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Failed to rebuild Wi-Fi Assist configuration excluding payload %{public}@: %{public}@", buf, 0x16u);
-        if (!v17)
+        if (!displayName)
         {
         }
       }
@@ -165,20 +165,20 @@
 
 - (void)unsetAside
 {
-  v2 = [(MCNewPayloadHandler *)self payload];
-  v3 = [v2 applicationRules];
+  payload = [(MCNewPayloadHandler *)self payload];
+  applicationRules = [payload applicationRules];
 
-  if (v3)
+  if (applicationRules)
   {
     v4 = +[MCNetworkUsageRulesPayload typeStrings];
-    v5 = [v4 firstObject];
+    firstObject = [v4 firstObject];
     v6 = MCNEProfileIngestionHandlerClassForPayload();
 
     if ([v6 lockConfigurations])
     {
       [v6 loadConfigurationsForceReloadFromDisk];
-      v7 = [v2 persistentResourceID];
-      v8 = [v6 setAsideConfigurationName:v7 unsetAside:1];
+      persistentResourceID = [payload persistentResourceID];
+      v8 = [v6 setAsideConfigurationName:persistentResourceID unsetAside:1];
 
       [v6 unlockConfigurations];
     }
@@ -194,11 +194,11 @@
     }
   }
 
-  v10 = [v2 SIMRules];
+  sIMRules = [payload SIMRules];
 
-  if (v10)
+  if (sIMRules)
   {
-    [qword_100136A80 removeObject:v2];
+    [qword_100136A80 removeObject:payload];
     v16 = 0;
     v11 = [objc_opt_class() _rebuildWiFiAssistConfigurationIncludingPayloads:0 excludingPayloads:qword_100136A80 error:&v16];
     v12 = v16;
@@ -207,19 +207,19 @@
       v13 = _MCLogObjects[0];
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v14 = [v2 displayName];
-        v15 = v14;
-        if (!v14)
+        displayName = [payload displayName];
+        uUID = displayName;
+        if (!displayName)
         {
-          v15 = [v2 UUID];
+          uUID = [payload UUID];
         }
 
         *buf = 138543618;
-        v18 = v15;
+        v18 = uUID;
         v19 = 2114;
         v20 = v12;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to rebuild Wi-Fi Assist configuration including payload %{public}@: %{public}@", buf, 0x16u);
-        if (!v14)
+        if (!displayName)
         {
         }
       }
@@ -229,24 +229,24 @@
 
 - (void)remove
 {
-  v3 = [(MCNewPayloadHandler *)self payload];
-  v4 = [v3 applicationRules];
+  payload = [(MCNewPayloadHandler *)self payload];
+  applicationRules = [payload applicationRules];
 
-  if (v4)
+  if (applicationRules)
   {
     v5 = +[MCNetworkUsageRulesPayload typeStrings];
-    v6 = [v5 firstObject];
+    firstObject = [v5 firstObject];
     v7 = MCNEProfileIngestionHandlerClassForPayload();
 
     if ([v7 lockConfigurations])
     {
       [v7 loadConfigurationsForceReloadFromDisk];
-      v8 = [v3 persistentResourceID];
+      persistentResourceID = [payload persistentResourceID];
 
-      if (v8)
+      if (persistentResourceID)
       {
-        v9 = [v3 persistentResourceID];
-        [v7 removeConfigurationWithIdentifier:v9];
+        persistentResourceID2 = [payload persistentResourceID];
+        [v7 removeConfigurationWithIdentifier:persistentResourceID2];
       }
 
       else
@@ -274,16 +274,16 @@
     }
   }
 
-  v12 = [v3 SIMRules];
+  sIMRules = [payload SIMRules];
 
-  if (v12)
+  if (sIMRules)
   {
-    v13 = [(MCNewPayloadHandler *)self profileHandler];
-    v14 = [v13 isSetAside];
+    profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+    isSetAside = [profileHandler isSetAside];
 
-    if (v14)
+    if (isSetAside)
     {
-      [qword_100136A80 removeObject:v3];
+      [qword_100136A80 removeObject:payload];
     }
 
     else
@@ -293,7 +293,7 @@
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v16 = [MCProfileHandler payloadsOfClass:objc_opt_class() removedBeforePayload:v3];
+      v16 = [MCProfileHandler payloadsOfClass:objc_opt_class() removedBeforePayload:payload];
       v17 = [v16 countByEnumeratingWithState:&v29 objects:v37 count:16];
       if (v17)
       {
@@ -309,9 +309,9 @@
             }
 
             v21 = *(*(&v29 + 1) + 8 * i);
-            v22 = [v21 SIMRules];
+            sIMRules2 = [v21 SIMRules];
 
-            if (v22)
+            if (sIMRules2)
             {
               [v15 addObject:v21];
             }
@@ -323,7 +323,7 @@
         while (v18);
       }
 
-      [v15 addObject:v3];
+      [v15 addObject:payload];
       v28 = 0;
       v23 = [objc_opt_class() _rebuildWiFiAssistConfigurationIncludingPayloads:0 excludingPayloads:v15 error:&v28];
       v24 = v28;
@@ -332,19 +332,19 @@
         v25 = _MCLogObjects[0];
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
         {
-          v26 = [v3 displayName];
-          v27 = v26;
-          if (!v26)
+          displayName = [payload displayName];
+          uUID = displayName;
+          if (!displayName)
           {
-            v27 = [v3 UUID];
+            uUID = [payload UUID];
           }
 
           *buf = 138543618;
-          v34 = v27;
+          v34 = uUID;
           v35 = 2114;
           v36 = v24;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "Failed to rebuild Wi-Fi Assist configuration excluding payload %{public}@: %{public}@", buf, 0x16u);
-          if (!v26)
+          if (!displayName)
           {
           }
         }
@@ -353,61 +353,61 @@
   }
 }
 
-- (BOOL)_installApplicationRulesFromPayload:(id)a3 outError:(id *)a4
+- (BOOL)_installApplicationRulesFromPayload:(id)payload outError:(id *)error
 {
-  v6 = a3;
+  payloadCopy = payload;
   v7 = +[MCNetworkUsageRulesPayload typeStrings];
-  v8 = [v7 firstObject];
+  firstObject = [v7 firstObject];
   v9 = MCNEProfileIngestionHandlerClassForPayload();
 
   if ([v9 lockConfigurations])
   {
-    v10 = [v6 displayName];
-    if (!v10)
+    displayName = [payloadCopy displayName];
+    if (!displayName)
     {
-      v10 = [v6 UUID];
+      displayName = [payloadCopy UUID];
     }
 
     [v9 loadConfigurationsForceReloadFromDisk];
     v35[0] = @"ApplicationRules";
-    v11 = [v6 applicationRules];
+    applicationRules = [payloadCopy applicationRules];
     v35[1] = @"PayloadDisplayName";
-    v36[0] = v11;
-    v36[1] = v10;
+    v36[0] = applicationRules;
+    v36[1] = displayName;
     v12 = [NSDictionary dictionaryWithObjects:v36 forKeys:v35 count:2];
     v13 = [MCVPNPayloadBase NEVPNPayloadBaseDelegateWithConfigurationDict:v12];
 
     v14 = +[MCNetworkUsageRulesPayload typeStrings];
-    v15 = [v14 firstObject];
-    [v9 createConfigurationFromPayload:v13 payloadType:v15];
+    firstObject2 = [v14 firstObject];
+    [v9 createConfigurationFromPayload:v13 payloadType:firstObject2];
 
-    v16 = [v9 ingestedConfiguration];
-    if (v16)
+    ingestedConfiguration = [v9 ingestedConfiguration];
+    if (ingestedConfiguration)
     {
-      v17 = [v6 UUID];
-      v18 = [v6 organization];
-      [v16 setPayloadInfoCommon:v17 payloadOrganization:v18];
+      uUID = [payloadCopy UUID];
+      organization = [payloadCopy organization];
+      [ingestedConfiguration setPayloadInfoCommon:uUID payloadOrganization:organization];
 
-      v19 = [(MCNewPayloadHandler *)self profileHandler];
-      v20 = [v19 profile];
+      profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+      profile = [profileHandler profile];
 
       v33[0] = kMCPayloadUUIDKey;
-      v21 = [v20 UUID];
-      v34[0] = v21;
+      uUID2 = [profile UUID];
+      v34[0] = uUID2;
       v33[1] = kMCPayloadIdentifierKey;
-      v22 = [v20 identifier];
-      v34[1] = v22;
+      identifier = [profile identifier];
+      v34[1] = identifier;
       v23 = [NSDictionary dictionaryWithObjects:v34 forKeys:v33 count:2];
 
-      [v16 setProfileInfo:v23];
+      [ingestedConfiguration setProfileInfo:v23];
       [v9 updateDefaultAfterAddingConfiguration];
-      v24 = [v16 getConfigurationIdentifier];
-      [v6 setPersistentResourceID:v24];
+      getConfigurationIdentifier = [ingestedConfiguration getConfigurationIdentifier];
+      [payloadCopy setPersistentResourceID:getConfigurationIdentifier];
 
       v31 = 0;
-      LOBYTE(v22) = [v9 saveIngestedConfiguration:&v31];
+      LOBYTE(identifier) = [v9 saveIngestedConfiguration:&v31];
       v25 = v31;
-      if ((v22 & 1) == 0)
+      if ((identifier & 1) == 0)
       {
         v26 = [MCNetworkUsageRulesPayloadHandler internalErrorWithCode:41002 underlyingError:v25];
 
@@ -422,10 +422,10 @@
 
     [v9 unlockConfigurations];
     v28 = v25 == 0;
-    if (a4 && v25)
+    if (error && v25)
     {
       v29 = v25;
-      *a4 = v25;
+      *error = v25;
     }
   }
 
@@ -438,10 +438,10 @@
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "Could not get NetworkExtension store lock.", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       [MCNetworkUsageRulesPayloadHandler internalErrorWithCode:41000];
-      *a4 = v28 = 0;
+      *error = v28 = 0;
     }
 
     else
@@ -453,10 +453,10 @@
   return v28;
 }
 
-+ (BOOL)_rebuildWiFiAssistConfigurationIncludingPayloads:(id)a3 excludingPayloads:(id)a4 error:(id *)a5
++ (BOOL)_rebuildWiFiAssistConfigurationIncludingPayloads:(id)payloads excludingPayloads:(id)excludingPayloads error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  payloadsCopy = payloads;
+  excludingPayloadsCopy = excludingPayloads;
   v9 = +[NSMutableArray array];
   v27 = 0u;
   v28 = 0u;
@@ -480,9 +480,9 @@
         }
 
         v16 = *(*(&v27 + 1) + 8 * i);
-        v17 = [v16 SIMRules];
+        sIMRules = [v16 SIMRules];
 
-        if (v17)
+        if (sIMRules)
         {
           [v9 addObject:v16];
         }
@@ -495,7 +495,7 @@
   }
 
   v26 = 0;
-  v18 = [a1 _WiFiAssistConfigurationForPayloads:v9 includingPayloads:v7 excludingPayloads:v8 error:&v26];
+  v18 = [self _WiFiAssistConfigurationForPayloads:v9 includingPayloads:payloadsCopy excludingPayloads:excludingPayloadsCopy error:&v26];
   v19 = v26;
   if (v19)
   {
@@ -506,49 +506,49 @@
   else
   {
     v25 = 0;
-    v21 = [a1 _writeWiFiAssistConfiguration:v18 withError:&v25];
+    v21 = [self _writeWiFiAssistConfiguration:v18 withError:&v25];
     v20 = v25;
   }
 
-  if (a5 && v20)
+  if (error && v20)
   {
     v22 = v20;
-    *a5 = v20;
+    *error = v20;
   }
 
   return v21;
 }
 
-+ (id)_WiFiAssistConfigurationForPayloads:(id)a3 includingPayloads:(id)a4 excludingPayloads:(id)a5 error:(id *)a6
++ (id)_WiFiAssistConfigurationForPayloads:(id)payloads includingPayloads:(id)includingPayloads excludingPayloads:(id)excludingPayloads error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 count] || objc_msgSend(v10, "count"))
+  payloadsCopy = payloads;
+  includingPayloadsCopy = includingPayloads;
+  excludingPayloadsCopy = excludingPayloads;
+  if ([includingPayloadsCopy count] || objc_msgSend(excludingPayloadsCopy, "count"))
   {
     v90[0] = _NSConcreteStackBlock;
     v90[1] = 3221225472;
     v90[2] = sub_1000256AC;
     v90[3] = &unk_10011C280;
-    v91 = v9;
-    v92 = v10;
-    v11 = [v8 indexesOfObjectsPassingTest:v90];
-    [v8 removeObjectsAtIndexes:v11];
+    v91 = includingPayloadsCopy;
+    v92 = excludingPayloadsCopy;
+    v11 = [payloadsCopy indexesOfObjectsPassingTest:v90];
+    [payloadsCopy removeObjectsAtIndexes:v11];
   }
 
-  if ([v9 count])
+  if ([includingPayloadsCopy count])
   {
-    [v8 addObjectsFromArray:v9];
+    [payloadsCopy addObjectsFromArray:includingPayloadsCopy];
   }
 
-  v67 = v9;
+  v67 = includingPayloadsCopy;
   v12 = +[NSMutableSet set];
   v86 = 0u;
   v87 = 0u;
   v88 = 0u;
   v89 = 0u;
-  v13 = v8;
-  v55 = v10;
+  v13 = payloadsCopy;
+  v55 = excludingPayloadsCopy;
   v56 = v13;
   v69 = v12;
   v52 = [v13 countByEnumeratingWithState:&v86 objects:v103 count:16];
@@ -625,8 +625,8 @@ LABEL_39:
               v71 = 0u;
               v72 = 0u;
               v73 = 0u;
-              v37 = [v36 SIMRules];
-              v38 = [v37 countByEnumeratingWithState:&v70 objects:v95 count:16];
+              sIMRules = [v36 SIMRules];
+              v38 = [sIMRules countByEnumeratingWithState:&v70 objects:v95 count:16];
               if (v38)
               {
                 v39 = v38;
@@ -637,7 +637,7 @@ LABEL_39:
                   {
                     if (*v71 != v40)
                     {
-                      objc_enumerationMutation(v37);
+                      objc_enumerationMutation(sIMRules);
                     }
 
                     v42 = *(*(&v70 + 1) + 8 * i);
@@ -651,7 +651,7 @@ LABEL_39:
                     [v32 addObject:v43];
                   }
 
-                  v39 = [v37 countByEnumeratingWithState:&v70 objects:v95 count:16];
+                  v39 = [sIMRules countByEnumeratingWithState:&v70 objects:v95 count:16];
                 }
 
                 while (v39);
@@ -733,13 +733,13 @@ LABEL_18:
     }
 
     v25 = *(*(&v78 + 1) + 8 * v24);
-    v26 = [v25 uppercaseString];
-    if ([v12 containsObject:v26])
+    uppercaseString = [v25 uppercaseString];
+    if ([v12 containsObject:uppercaseString])
     {
       break;
     }
 
-    [v12 addObject:v26];
+    [v12 addObject:uppercaseString];
 LABEL_31:
 
     if (v22 == ++v24)
@@ -759,12 +759,12 @@ LABEL_31:
     v27 = _MCLogObjects[0];
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      v28 = [v17 displayName];
-      v29 = v28;
-      if (!v28)
+      displayName = [v17 displayName];
+      v29 = displayName;
+      if (!displayName)
       {
-        v65 = [v17 UUID];
-        v29 = v65;
+        uUID = [v17 UUID];
+        v29 = uUID;
       }
 
       *buf = 138543618;
@@ -772,7 +772,7 @@ LABEL_31:
       v99 = 2114;
       v100 = v25;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "Found pre-existing conflicting ICCIDs while rebuilding configuration for Network Usage Rules payload %{public}@: %{public}@", buf, 0x16u);
-      if (!v28)
+      if (!displayName)
       {
       }
 
@@ -794,11 +794,11 @@ LABEL_31:
   }
 
   v48 = v56;
-  if (a6)
+  if (error)
   {
     v49 = v31;
     v46 = 0;
-    *a6 = v31;
+    *error = v31;
   }
 
   else
@@ -812,9 +812,9 @@ LABEL_58:
   return v46;
 }
 
-+ (BOOL)_writeWiFiAssistConfiguration:(id)a3 withError:(id *)a4
++ (BOOL)_writeWiFiAssistConfiguration:(id)configuration withError:(id *)error
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = MCSystemGroupContainerPathWithGroupIdentifier();
   v7 = v6;
   if (v6)
@@ -849,7 +849,7 @@ LABEL_11:
 LABEL_8:
         v15 = [v8 stringByAppendingFormat:@"/%@", @"com.apple.WiFiAssist.configuration.plist"];
         v26 = 0;
-        v16 = [NSPropertyListSerialization dataWithPropertyList:v5 format:200 options:0 error:&v26];
+        v16 = [NSPropertyListSerialization dataWithPropertyList:configurationCopy format:200 options:0 error:&v26];
         v17 = v26;
         v13 = v17;
         if (v16)
@@ -886,12 +886,12 @@ LABEL_13:
   }
 
   v20 = v19;
-  if (a4 && !v20)
+  if (error && !v20)
   {
     v21 = MCNetworkUsageRulesErrorDomain;
-    v22 = [@"ERROR_NETWORK_USAGE_CANNOT_WRITE_WIFI_ASSIST_CONFIGURATION" MCAppendGreenteaSuffix];
+    mCAppendGreenteaSuffix = [@"ERROR_NETWORK_USAGE_CANNOT_WRITE_WIFI_ASSIST_CONFIGURATION" MCAppendGreenteaSuffix];
     v23 = MCErrorArray();
-    *a4 = [NSError MCErrorWithDomain:v21 code:41004 descriptionArray:v23 underlyingError:v13 errorType:MCErrorTypeFatal, 0];
+    *error = [NSError MCErrorWithDomain:v21 code:41004 descriptionArray:v23 underlyingError:v13 errorType:MCErrorTypeFatal, 0];
   }
 
   return v20;

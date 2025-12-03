@@ -1,109 +1,109 @@
 @interface ATXComplication
-+ (id)complicationFromDictionaryRepresentation:(id)a3 error:(id *)a4;
-+ (id)stringForComplicationSource:(int)a3;
-- (ATXComplication)initWithCoder:(id)a3;
-- (ATXComplication)initWithExtensionBundleIdentifier:(id)a3 kind:(id)a4 containerBundleIdentifier:(id)a5 widgetFamily:(int64_t)a6 intent:(id)a7 source:(int)a8;
-- (ATXComplication)initWithWidgetDescriptor:(id)a3 widgetFamily:(int64_t)a4 intent:(id)a5;
-- (ATXComplication)initWithWidgetDescriptor:(id)a3 widgetFamily:(int64_t)a4 intent:(id)a5 source:(int)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXComplication:(id)a3;
-- (BOOL)matches:(id)a3;
-- (BOOL)matchesPersonality:(id)a3;
++ (id)complicationFromDictionaryRepresentation:(id)representation error:(id *)error;
++ (id)stringForComplicationSource:(int)source;
+- (ATXComplication)initWithCoder:(id)coder;
+- (ATXComplication)initWithExtensionBundleIdentifier:(id)identifier kind:(id)kind containerBundleIdentifier:(id)bundleIdentifier widgetFamily:(int64_t)family intent:(id)intent source:(int)source;
+- (ATXComplication)initWithWidgetDescriptor:(id)descriptor widgetFamily:(int64_t)family intent:(id)intent;
+- (ATXComplication)initWithWidgetDescriptor:(id)descriptor widgetFamily:(int64_t)family intent:(id)intent source:(int)source;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXComplication:(id)complication;
+- (BOOL)matches:(id)matches;
+- (BOOL)matchesPersonality:(id)personality;
 - (CHSExtensionIdentity)extensionIdentity;
 - (CHSWidgetDescriptor)widgetDescriptor;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXComplication
 
-- (ATXComplication)initWithExtensionBundleIdentifier:(id)a3 kind:(id)a4 containerBundleIdentifier:(id)a5 widgetFamily:(int64_t)a6 intent:(id)a7 source:(int)a8
+- (ATXComplication)initWithExtensionBundleIdentifier:(id)identifier kind:(id)kind containerBundleIdentifier:(id)bundleIdentifier widgetFamily:(int64_t)family intent:(id)intent source:(int)source
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
+  identifierCopy = identifier;
+  kindCopy = kind;
+  bundleIdentifierCopy = bundleIdentifier;
+  intentCopy = intent;
   v26.receiver = self;
   v26.super_class = ATXComplication;
   v18 = [(ATXComplication *)&v26 init];
   if (v18)
   {
-    v19 = [v14 copy];
+    v19 = [identifierCopy copy];
     extensionBundleIdentifier = v18->_extensionBundleIdentifier;
     v18->_extensionBundleIdentifier = v19;
 
-    v21 = [v15 copy];
+    v21 = [kindCopy copy];
     kind = v18->_kind;
     v18->_kind = v21;
 
-    v23 = [v16 copy];
+    v23 = [bundleIdentifierCopy copy];
     containerBundleIdentifier = v18->_containerBundleIdentifier;
     v18->_containerBundleIdentifier = v23;
 
-    v18->_widgetFamily = a6;
-    objc_storeStrong(&v18->_intent, a7);
-    v18->_source = a8;
+    v18->_widgetFamily = family;
+    objc_storeStrong(&v18->_intent, intent);
+    v18->_source = source;
   }
 
   return v18;
 }
 
-- (ATXComplication)initWithWidgetDescriptor:(id)a3 widgetFamily:(int64_t)a4 intent:(id)a5
+- (ATXComplication)initWithWidgetDescriptor:(id)descriptor widgetFamily:(int64_t)family intent:(id)intent
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 extensionBundleIdentifier];
-  v11 = [v9 kind];
-  v12 = [v9 extensionIdentity];
+  intentCopy = intent;
+  descriptorCopy = descriptor;
+  extensionBundleIdentifier = [descriptorCopy extensionBundleIdentifier];
+  kind = [descriptorCopy kind];
+  extensionIdentity = [descriptorCopy extensionIdentity];
 
-  v13 = [v12 containerBundleIdentifier];
-  v14 = [(ATXComplication *)self initWithExtensionBundleIdentifier:v10 kind:v11 containerBundleIdentifier:v13 widgetFamily:a4 intent:v8 source:0];
+  containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
+  v14 = [(ATXComplication *)self initWithExtensionBundleIdentifier:extensionBundleIdentifier kind:kind containerBundleIdentifier:containerBundleIdentifier widgetFamily:family intent:intentCopy source:0];
 
   return v14;
 }
 
-- (ATXComplication)initWithWidgetDescriptor:(id)a3 widgetFamily:(int64_t)a4 intent:(id)a5 source:(int)a6
+- (ATXComplication)initWithWidgetDescriptor:(id)descriptor widgetFamily:(int64_t)family intent:(id)intent source:(int)source
 {
-  v6 = *&a6;
-  v10 = a5;
-  v11 = a3;
-  v12 = [v11 extensionBundleIdentifier];
-  v13 = [v11 kind];
-  v14 = [v11 extensionIdentity];
+  v6 = *&source;
+  intentCopy = intent;
+  descriptorCopy = descriptor;
+  extensionBundleIdentifier = [descriptorCopy extensionBundleIdentifier];
+  kind = [descriptorCopy kind];
+  extensionIdentity = [descriptorCopy extensionIdentity];
 
-  v15 = [v14 containerBundleIdentifier];
-  v16 = [(ATXComplication *)self initWithExtensionBundleIdentifier:v12 kind:v13 containerBundleIdentifier:v15 widgetFamily:a4 intent:v10 source:v6];
+  containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
+  v16 = [(ATXComplication *)self initWithExtensionBundleIdentifier:extensionBundleIdentifier kind:kind containerBundleIdentifier:containerBundleIdentifier widgetFamily:family intent:intentCopy source:v6];
 
   return v16;
 }
 
-+ (id)complicationFromDictionaryRepresentation:(id)a3 error:(id *)a4
++ (id)complicationFromDictionaryRepresentation:(id)representation error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"extensionBundleIdentifier"];
+  representationCopy = representation;
+  v6 = [representationCopy objectForKeyedSubscript:@"extensionBundleIdentifier"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [v5 objectForKeyedSubscript:@"extensionBundleIdentifier"];
-    v9 = [v5 objectForKeyedSubscript:@"kind"];
+    v8 = [representationCopy objectForKeyedSubscript:@"extensionBundleIdentifier"];
+    v9 = [representationCopy objectForKeyedSubscript:@"kind"];
     objc_opt_class();
     v10 = objc_opt_isKindOfClass();
 
     if (v10)
     {
-      v11 = [v5 objectForKeyedSubscript:@"kind"];
-      v12 = [v5 objectForKeyedSubscript:@"containerBundleIdentifier"];
+      v11 = [representationCopy objectForKeyedSubscript:@"kind"];
+      v12 = [representationCopy objectForKeyedSubscript:@"containerBundleIdentifier"];
       objc_opt_class();
       v13 = objc_opt_isKindOfClass();
 
       if (v13)
       {
-        v14 = [v5 objectForKeyedSubscript:@"containerBundleIdentifier"];
+        v14 = [representationCopy objectForKeyedSubscript:@"containerBundleIdentifier"];
       }
 
       else
@@ -111,18 +111,18 @@
         v14 = 0;
       }
 
-      v18 = [v5 objectForKeyedSubscript:@"widgetFamily"];
+      v18 = [representationCopy objectForKeyedSubscript:@"widgetFamily"];
       objc_opt_class();
       v19 = objc_opt_isKindOfClass();
 
       if (v19)
       {
-        v20 = [v5 objectForKeyedSubscript:@"widgetFamily"];
+        v20 = [representationCopy objectForKeyedSubscript:@"widgetFamily"];
         v21 = CHSWidgetFamilyFromString();
 
         if ((CHSWidgetFamilyIsAccessory() & 1) != 0 || v21 == 1)
         {
-          v27 = [v5 objectForKeyedSubscript:@"intent"];
+          v27 = [representationCopy objectForKeyedSubscript:@"intent"];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -132,31 +132,31 @@
             if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
             {
               v30 = [objc_alloc(MEMORY[0x1E69C5B78]) initWithTypeName:@"typeName" parameters:v29];
-              v31 = [v30 createIntent];
+              createIntent = [v30 createIntent];
             }
 
             else
             {
-              v31 = 0;
+              createIntent = 0;
             }
           }
 
           else
           {
-            v31 = 0;
+            createIntent = 0;
           }
 
-          v17 = [[ATXComplication alloc] initWithExtensionBundleIdentifier:v8 kind:v11 containerBundleIdentifier:v14 widgetFamily:v21 intent:v31 source:0];
+          v17 = [[ATXComplication alloc] initWithExtensionBundleIdentifier:v8 kind:v11 containerBundleIdentifier:v14 widgetFamily:v21 intent:createIntent source:0];
 
           goto LABEL_34;
         }
 
-        if (a4)
+        if (error)
         {
           v22 = objc_alloc(MEMORY[0x1E696AEC0]);
           v23 = NSStringFromWidgetFamily();
           v24 = [v22 initWithFormat:@"missing key: provided widget family is not a complication family: %@", v23];
-          *a4 = errorWithDescription(v24);
+          *error = errorWithDescription(v24);
 
           v25 = __atxlog_handle_lock_screen();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -168,10 +168,10 @@
         }
       }
 
-      else if (a4)
+      else if (error)
       {
         v26 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"missing key: %@", @"widgetFamily"];
-        *a4 = errorWithDescription(v26);
+        *error = errorWithDescription(v26);
 
         v25 = __atxlog_handle_lock_screen();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -190,10 +190,10 @@ LABEL_35:
       goto LABEL_36;
     }
 
-    if (a4)
+    if (error)
     {
       v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"missing key: %@", @"kind"];
-      *a4 = errorWithDescription(v16);
+      *error = errorWithDescription(v16);
 
       v11 = __atxlog_handle_lock_screen();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -208,14 +208,14 @@ LABEL_35:
 
   else
   {
-    if (!a4)
+    if (!error)
     {
       v17 = 0;
       goto LABEL_37;
     }
 
     v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"missing key: %@", @"extensionBundleIdentifier"];
-    *a4 = errorWithDescription(v15);
+    *error = errorWithDescription(v15);
 
     v8 = __atxlog_handle_lock_screen();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -236,27 +236,27 @@ LABEL_37:
 {
   v11[4] = *MEMORY[0x1E69E9840];
   v10[0] = @"extensionBundleIdentifier";
-  v3 = [(ATXComplication *)self extensionBundleIdentifier];
-  v11[0] = v3;
+  extensionBundleIdentifier = [(ATXComplication *)self extensionBundleIdentifier];
+  v11[0] = extensionBundleIdentifier;
   v10[1] = @"kind";
-  v4 = [(ATXComplication *)self kind];
-  v11[1] = v4;
+  kind = [(ATXComplication *)self kind];
+  v11[1] = kind;
   v10[2] = @"containerBundleIdentifier";
-  v5 = [(ATXComplication *)self containerBundleIdentifier];
-  v6 = v5;
-  if (!v5)
+  containerBundleIdentifier = [(ATXComplication *)self containerBundleIdentifier];
+  null = containerBundleIdentifier;
+  if (!containerBundleIdentifier)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[2] = v6;
+  v11[2] = null;
   v10[3] = @"widgetFamily";
   [(ATXComplication *)self widgetFamily];
   v7 = NSStringFromWidgetFamily();
   v11[3] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:4];
 
-  if (!v5)
+  if (!containerBundleIdentifier)
   {
   }
 
@@ -267,15 +267,15 @@ LABEL_37:
 {
   v3 = objc_alloc(MEMORY[0x1E6994388]);
   v4 = objc_alloc(MEMORY[0x1E6994290]);
-  v5 = [(ATXComplication *)self extensionBundleIdentifier];
-  v6 = [(ATXComplication *)self containerBundleIdentifier];
-  v7 = [v4 initWithExtensionBundleIdentifier:v5 containerBundleIdentifier:v6 deviceIdentifier:0];
-  v8 = [(ATXComplication *)self kind];
+  extensionBundleIdentifier = [(ATXComplication *)self extensionBundleIdentifier];
+  containerBundleIdentifier = [(ATXComplication *)self containerBundleIdentifier];
+  v7 = [v4 initWithExtensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier deviceIdentifier:0];
+  kind = [(ATXComplication *)self kind];
   [(ATXComplication *)self widgetFamily];
   v9 = CHSWidgetFamilyMaskFromWidgetFamily();
-  v10 = [(ATXComplication *)self intent];
-  v11 = [v10 _className];
-  v12 = [v3 initWithExtensionIdentity:v7 kind:v8 supportedFamilies:v9 intentType:v11];
+  intent = [(ATXComplication *)self intent];
+  _className = [intent _className];
+  v12 = [v3 initWithExtensionIdentity:v7 kind:kind supportedFamilies:v9 intentType:_className];
 
   return v12;
 }
@@ -283,37 +283,37 @@ LABEL_37:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(ATXComplication *)self extensionBundleIdentifier];
-  v5 = [(ATXComplication *)self kind];
-  v6 = [(ATXComplication *)self containerBundleIdentifier];
+  extensionBundleIdentifier = [(ATXComplication *)self extensionBundleIdentifier];
+  kind = [(ATXComplication *)self kind];
+  containerBundleIdentifier = [(ATXComplication *)self containerBundleIdentifier];
   [(ATXComplication *)self widgetFamily];
   v7 = NSStringFromWidgetFamily();
-  v8 = [(ATXComplication *)self intent];
-  v9 = [v8 description];
+  intent = [(ATXComplication *)self intent];
+  v9 = [intent description];
   v10 = [objc_opt_class() stringForComplicationSource:{-[ATXComplication source](self, "source")}];
-  v11 = [v3 initWithFormat:@"ATXComplication: extensionBundleIdentifier: %@, kind: %@, containerBundleIdentifier: %@, widgetFamily: %@, intent: %@, source:%@", v4, v5, v6, v7, v9, v10];
+  v11 = [v3 initWithFormat:@"ATXComplication: extensionBundleIdentifier: %@, kind: %@, containerBundleIdentifier: %@, widgetFamily: %@, intent: %@, source:%@", extensionBundleIdentifier, kind, containerBundleIdentifier, v7, v9, v10];
 
   return v11;
 }
 
-- (ATXComplication)initWithCoder:(id)a3
+- (ATXComplication)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"widgetDescriptor"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"widgetDescriptor"];
   if (!v5)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extensionBundleIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extensionBundleIdentifier"];
     if (v7)
     {
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
       if (v8)
       {
-        v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"containerBundleIdentifier"];
-        v10 = [v4 decodeIntegerForKey:@"widgetFamily"];
-        v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"intent"];
-        self = -[ATXComplication initWithExtensionBundleIdentifier:kind:containerBundleIdentifier:widgetFamily:intent:source:](self, "initWithExtensionBundleIdentifier:kind:containerBundleIdentifier:widgetFamily:intent:source:", v7, v8, v9, v10, v11, [v4 decodeInt32ForKey:@"source"]);
+        v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"containerBundleIdentifier"];
+        v10 = [coderCopy decodeIntegerForKey:@"widgetFamily"];
+        v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intent"];
+        self = -[ATXComplication initWithExtensionBundleIdentifier:kind:containerBundleIdentifier:widgetFamily:intent:source:](self, "initWithExtensionBundleIdentifier:kind:containerBundleIdentifier:widgetFamily:intent:source:", v7, v8, v9, v10, v11, [coderCopy decodeInt32ForKey:@"source"]);
 
-        v6 = self;
+        selfCopy2 = self;
 LABEL_12:
 
         goto LABEL_13;
@@ -335,46 +335,46 @@ LABEL_12:
       }
     }
 
-    v6 = 0;
+    selfCopy2 = 0;
     goto LABEL_12;
   }
 
-  self = -[ATXComplication initWithWidgetDescriptor:widgetFamily:intent:source:](self, "initWithWidgetDescriptor:widgetFamily:intent:source:", v5, [v4 decodeIntegerForKey:@"widgetFamily"], 0, 0);
-  v6 = self;
+  self = -[ATXComplication initWithWidgetDescriptor:widgetFamily:intent:source:](self, "initWithWidgetDescriptor:widgetFamily:intent:source:", v5, [coderCopy decodeIntegerForKey:@"widgetFamily"], 0, 0);
+  selfCopy2 = self;
 LABEL_13:
 
-  return v6;
+  return selfCopy2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(ATXComplication *)self extensionBundleIdentifier];
-  [v8 encodeObject:v4 forKey:@"extensionBundleIdentifier"];
+  coderCopy = coder;
+  extensionBundleIdentifier = [(ATXComplication *)self extensionBundleIdentifier];
+  [coderCopy encodeObject:extensionBundleIdentifier forKey:@"extensionBundleIdentifier"];
 
-  v5 = [(ATXComplication *)self kind];
-  [v8 encodeObject:v5 forKey:@"kind"];
+  kind = [(ATXComplication *)self kind];
+  [coderCopy encodeObject:kind forKey:@"kind"];
 
-  v6 = [(ATXComplication *)self containerBundleIdentifier];
-  [v8 encodeObject:v6 forKey:@"containerBundleIdentifier"];
+  containerBundleIdentifier = [(ATXComplication *)self containerBundleIdentifier];
+  [coderCopy encodeObject:containerBundleIdentifier forKey:@"containerBundleIdentifier"];
 
-  [v8 encodeInteger:-[ATXComplication widgetFamily](self forKey:{"widgetFamily"), @"widgetFamily"}];
-  v7 = [(ATXComplication *)self intent];
-  [v8 encodeObject:v7 forKey:@"intent"];
+  [coderCopy encodeInteger:-[ATXComplication widgetFamily](self forKey:{"widgetFamily"), @"widgetFamily"}];
+  intent = [(ATXComplication *)self intent];
+  [coderCopy encodeObject:intent forKey:@"intent"];
 
-  [v8 encodeInt32:-[ATXComplication source](self forKey:{"source"), @"source"}];
+  [coderCopy encodeInt32:-[ATXComplication source](self forKey:{"source"), @"source"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ATXComplication allocWithZone:a3];
-  v5 = [(ATXComplication *)self extensionBundleIdentifier];
-  v6 = [(ATXComplication *)self kind];
-  v7 = [(ATXComplication *)self containerBundleIdentifier];
-  v8 = [(ATXComplication *)self widgetFamily];
-  v9 = [(ATXComplication *)self intent];
-  v10 = [v9 copy];
-  v11 = [(ATXComplication *)v4 initWithExtensionBundleIdentifier:v5 kind:v6 containerBundleIdentifier:v7 widgetFamily:v8 intent:v10 source:[(ATXComplication *)self source]];
+  v4 = [ATXComplication allocWithZone:zone];
+  extensionBundleIdentifier = [(ATXComplication *)self extensionBundleIdentifier];
+  kind = [(ATXComplication *)self kind];
+  containerBundleIdentifier = [(ATXComplication *)self containerBundleIdentifier];
+  widgetFamily = [(ATXComplication *)self widgetFamily];
+  intent = [(ATXComplication *)self intent];
+  v10 = [intent copy];
+  v11 = [(ATXComplication *)v4 initWithExtensionBundleIdentifier:extensionBundleIdentifier kind:kind containerBundleIdentifier:containerBundleIdentifier widgetFamily:widgetFamily intent:v10 source:[(ATXComplication *)self source]];
 
   [(ATXComplication *)v11 setScore:self->_score];
   [(ATXComplication *)v11 setPredictionSource:self->_predictionSource];
@@ -383,41 +383,41 @@ LABEL_13:
 
 - (unint64_t)hash
 {
-  v3 = [(ATXComplication *)self extensionBundleIdentifier];
-  v4 = [v3 hash];
+  extensionBundleIdentifier = [(ATXComplication *)self extensionBundleIdentifier];
+  v4 = [extensionBundleIdentifier hash];
 
-  v5 = [(ATXComplication *)self kind];
-  v6 = [v5 hash] - v4 + 32 * v4;
+  kind = [(ATXComplication *)self kind];
+  v6 = [kind hash] - v4 + 32 * v4;
 
-  v7 = [(ATXComplication *)self containerBundleIdentifier];
-  v8 = [v7 hash] - v6 + 32 * v6;
+  containerBundleIdentifier = [(ATXComplication *)self containerBundleIdentifier];
+  v8 = [containerBundleIdentifier hash] - v6 + 32 * v6;
 
   return self->_widgetFamily - v8 + 32 * v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXComplication *)self isEqualToATXComplication:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXComplication *)self isEqualToATXComplication:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXComplication:(id)a3
+- (BOOL)isEqualToATXComplication:(id)complication
 {
-  v4 = a3;
+  complicationCopy = complication;
   v5 = self->_extensionBundleIdentifier;
   v6 = v5;
-  if (v5 == v4[2])
+  if (v5 == complicationCopy[2])
   {
   }
 
@@ -433,7 +433,7 @@ LABEL_13:
 
   v8 = self->_kind;
   v9 = v8;
-  if (v8 == v4[3])
+  if (v8 == complicationCopy[3])
   {
   }
 
@@ -449,7 +449,7 @@ LABEL_13:
 
   v11 = self->_containerBundleIdentifier;
   v12 = v11;
-  if (v11 == v4[4])
+  if (v11 == complicationCopy[4])
   {
 
     goto LABEL_13;
@@ -461,7 +461,7 @@ LABEL_13:
   {
 LABEL_13:
     widgetFamily = self->_widgetFamily;
-    v14 = widgetFamily == [v4 widgetFamily];
+    v14 = widgetFamily == [complicationCopy widgetFamily];
     goto LABEL_14;
   }
 
@@ -472,30 +472,30 @@ LABEL_14:
   return v14;
 }
 
-+ (id)stringForComplicationSource:(int)a3
++ (id)stringForComplicationSource:(int)source
 {
-  if ((a3 - 1) > 5)
+  if ((source - 1) > 5)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_1E80C5438[a3 - 1];
+    return off_1E80C5438[source - 1];
   }
 }
 
-- (BOOL)matchesPersonality:(id)a3
+- (BOOL)matchesPersonality:(id)personality
 {
-  v5 = a3;
-  v6 = v5;
+  personalityCopy = personality;
+  v6 = personalityCopy;
   extensionBundleIdentifier = self->_extensionBundleIdentifier;
   v8 = extensionBundleIdentifier;
   if (extensionBundleIdentifier)
   {
 LABEL_2:
-    v9 = [v6 extensionBundleIdentifier];
-    LOBYTE(v8) = [(NSString *)v8 isEqualToString:v9];
+    extensionBundleIdentifier = [v6 extensionBundleIdentifier];
+    LOBYTE(v8) = [(NSString *)v8 isEqualToString:extensionBundleIdentifier];
 
     if (extensionBundleIdentifier)
     {
@@ -505,8 +505,8 @@ LABEL_2:
     goto LABEL_8;
   }
 
-  v3 = [v5 extensionBundleIdentifier];
-  if (v3)
+  extensionBundleIdentifier2 = [personalityCopy extensionBundleIdentifier];
+  if (extensionBundleIdentifier2)
   {
     v8 = self->_extensionBundleIdentifier;
     if (v8)
@@ -530,8 +530,8 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v3 = [v6 kind];
-  if (!v3)
+  extensionBundleIdentifier2 = [v6 kind];
+  if (!extensionBundleIdentifier2)
   {
     v13 = 1;
     goto LABEL_16;
@@ -547,8 +547,8 @@ LABEL_16:
   }
 
 LABEL_10:
-  v12 = [v6 kind];
-  v13 = [(NSString *)v11 isEqualToString:v12];
+  kind = [v6 kind];
+  v13 = [(NSString *)v11 isEqualToString:kind];
 
   if (!kind)
   {
@@ -560,18 +560,18 @@ LABEL_17:
   return v8 & v13;
 }
 
-- (BOOL)matches:(id)a3
+- (BOOL)matches:(id)matches
 {
-  v6 = a3;
-  v7 = v6;
+  matchesCopy = matches;
+  v7 = matchesCopy;
   extensionBundleIdentifier = self->_extensionBundleIdentifier;
   v9 = extensionBundleIdentifier;
   if (extensionBundleIdentifier)
   {
 LABEL_2:
-    v10 = [v7 extensionIdentity];
-    v11 = [v10 extensionBundleIdentifier];
-    LOBYTE(v9) = [(NSString *)v9 isEqualToString:v11];
+    extensionIdentity = [v7 extensionIdentity];
+    extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
+    LOBYTE(v9) = [(NSString *)v9 isEqualToString:extensionBundleIdentifier];
 
     if (extensionBundleIdentifier)
     {
@@ -581,9 +581,9 @@ LABEL_2:
     goto LABEL_8;
   }
 
-  v3 = [v6 extensionIdentity];
-  v4 = [v3 extensionBundleIdentifier];
-  if (v4)
+  extensionIdentity2 = [matchesCopy extensionIdentity];
+  extensionBundleIdentifier2 = [extensionIdentity2 extensionBundleIdentifier];
+  if (extensionBundleIdentifier2)
   {
     v9 = self->_extensionBundleIdentifier;
     if (v9)
@@ -607,8 +607,8 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v3 = [v7 kind];
-  if (!v3)
+  extensionIdentity2 = [v7 kind];
+  if (!extensionIdentity2)
   {
     v15 = 1;
     goto LABEL_16;
@@ -624,8 +624,8 @@ LABEL_16:
   }
 
 LABEL_10:
-  v14 = [v7 kind];
-  v15 = [(NSString *)v13 isEqualToString:v14];
+  kind = [v7 kind];
+  v15 = [(NSString *)v13 isEqualToString:kind];
 
   if (!kind)
   {

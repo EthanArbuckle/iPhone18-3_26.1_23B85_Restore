@@ -1,11 +1,11 @@
 @interface TSPDeepCopyReadAssistant
 - (BOOL)isCrossDocumentPaste;
-- (BOOL)processMetadataObject:(id)a3 error:(id *)a4;
+- (BOOL)processMetadataObject:(id)object error:(id *)error;
 - (TSPDeepCopyReadAssistant)init;
-- (TSPDeepCopyReadAssistant)initWithContext:(id)a3 objectMap:(id)a4 cachedMetadataObject:(id)a5 cachedDataMap:(id)a6;
-- (id)cachedDataForIdentifier:(int64_t)a3;
-- (id)decodeDeepCopySerializedData:(id)a3 options:(id)a4 error:(id *)a5;
-- (int64_t)objectIdentifierForUUID:(id)a3;
+- (TSPDeepCopyReadAssistant)initWithContext:(id)context objectMap:(id)map cachedMetadataObject:(id)object cachedDataMap:(id)dataMap;
+- (id)cachedDataForIdentifier:(int64_t)identifier;
+- (id)decodeDeepCopySerializedData:(id)data options:(id)options error:(id *)error;
+- (int64_t)objectIdentifierForUUID:(id)d;
 @end
 
 @implementation TSPDeepCopyReadAssistant
@@ -26,33 +26,33 @@
   objc_exception_throw(v13);
 }
 
-- (TSPDeepCopyReadAssistant)initWithContext:(id)a3 objectMap:(id)a4 cachedMetadataObject:(id)a5 cachedDataMap:(id)a6
+- (TSPDeepCopyReadAssistant)initWithContext:(id)context objectMap:(id)map cachedMetadataObject:(id)object cachedDataMap:(id)dataMap
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  contextCopy = context;
+  mapCopy = map;
+  objectCopy = object;
+  dataMapCopy = dataMap;
   v17.receiver = self;
   v17.super_class = TSPDeepCopyReadAssistant;
   v14 = [(TSPDeepCopyReadAssistant *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_context, v10);
-    objc_storeStrong(&v15->_objectMap, a4);
-    objc_storeStrong(&v15->_cachedMetadataObject, a5);
-    objc_storeStrong(&v15->_cachedDataMap, a6);
+    objc_storeWeak(&v14->_context, contextCopy);
+    objc_storeStrong(&v15->_objectMap, map);
+    objc_storeStrong(&v15->_cachedMetadataObject, object);
+    objc_storeStrong(&v15->_cachedDataMap, dataMap);
   }
 
   return v15;
 }
 
-- (id)decodeDeepCopySerializedData:(id)a3 options:(id)a4 error:(id *)a5
+- (id)decodeDeepCopySerializedData:(id)data options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  optionsCopy = options;
   v10 = 0;
-  if (v8)
+  if (dataCopy)
   {
     v11 = 0;
     if (self->_cachedMetadataObject)
@@ -60,8 +60,8 @@
       v12 = [TSPFinalizeHandlerQueue alloc];
       v14 = objc_msgSend_initWithRootObjectIdentifier_(v12, v13, 0);
       v15 = [TSPMemoryDecoder alloc];
-      v17 = objc_msgSend_initWithMetadataDispatchData_rootObjectComponentDispatchData_delegate_(v15, v16, 0, v8, 0);
-      v19 = objc_msgSend_objectForKeyedSubscript_(v9, v18, @"TSPObjectDeepCopyOption_IsTransientObject");
+      v17 = objc_msgSend_initWithMetadataDispatchData_rootObjectComponentDispatchData_delegate_(v15, v16, 0, dataCopy, 0);
+      v19 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v18, @"TSPObjectDeepCopyOption_IsTransientObject");
       self->_isDecodingTransientObject = objc_msgSend_BOOLValue(v19, v20, v21);
 
       WeakRetained = objc_loadWeakRetained(&self->_context);
@@ -103,24 +103,24 @@
     v11 = 0;
   }
 
-  if (a5)
+  if (error)
   {
     v36 = v10;
-    *a5 = v10;
+    *error = v10;
   }
 
   return v11;
 }
 
-- (BOOL)processMetadataObject:(id)a3 error:(id *)a4
+- (BOOL)processMetadataObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   objc_opt_class();
   v7 = TSUDynamicCast();
   v10 = v7;
   if (!v7)
   {
-    if (!a4)
+    if (!error)
     {
       v29 = 0;
       v28 = 0;
@@ -132,7 +132,7 @@ LABEL_8:
 LABEL_9:
     v31 = v28;
     v29 = 0;
-    *a4 = v28;
+    *error = v28;
     goto LABEL_11;
   }
 
@@ -141,7 +141,7 @@ LABEL_9:
   {
     v30 = objc_msgSend_tsp_errorWithCode_(MEMORY[0x277CCA9B8], v12, 11);
     v28 = v30;
-    if (!a4)
+    if (!error)
     {
       v29 = 0;
       goto LABEL_11;
@@ -175,19 +175,19 @@ LABEL_11:
   return v29;
 }
 
-- (int64_t)objectIdentifierForUUID:(id)a3
+- (int64_t)objectIdentifierForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v7 = objc_msgSend_componentObjectUUIDMap(self->_component, v5, v6);
-  v9 = objc_msgSend_identifierForObjectUUID_(v7, v8, v4);
+  v9 = objc_msgSend_identifierForObjectUUID_(v7, v8, dCopy);
 
   return v9;
 }
 
-- (id)cachedDataForIdentifier:(int64_t)a3
+- (id)cachedDataForIdentifier:(int64_t)identifier
 {
   cachedDataMap = self->_cachedDataMap;
-  v4 = objc_msgSend_numberWithLongLong_(MEMORY[0x277CCABB0], a2, a3);
+  v4 = objc_msgSend_numberWithLongLong_(MEMORY[0x277CCABB0], a2, identifier);
   v6 = objc_msgSend_objectForKeyedSubscript_(cachedDataMap, v5, v4);
 
   return v6;
@@ -195,12 +195,12 @@ LABEL_11:
 
 - (BOOL)isCrossDocumentPaste
 {
-  v3 = self;
+  selfCopy = self;
   v4 = objc_msgSend_context(self->_cachedMetadataObject, a2, v2);
-  WeakRetained = objc_loadWeakRetained(&v3->_context);
-  LOBYTE(v3) = v4 != WeakRetained;
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_context);
+  LOBYTE(selfCopy) = v4 != WeakRetained;
 
-  return v3;
+  return selfCopy;
 }
 
 @end

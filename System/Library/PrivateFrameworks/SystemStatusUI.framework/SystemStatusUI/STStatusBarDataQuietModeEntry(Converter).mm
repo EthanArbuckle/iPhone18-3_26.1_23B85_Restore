@@ -13,12 +13,12 @@
   {
     if (strnlen(a5, a6))
     {
-      v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:a5];
+      selfCopy = [MEMORY[0x277CCACA8] stringWithUTF8String:a5];
     }
 
     else
     {
-      v17 = 0;
+      selfCopy = 0;
     }
 
     if (strnlen(a7, a8))
@@ -31,16 +31,16 @@
       v19 = 0;
     }
 
-    v18 = [v16 entryWithFocusName:v17 imageNamed:v19 BOOLValue:a9];
+    disabledEntry = [v16 entryWithFocusName:selfCopy imageNamed:v19 BOOLValue:a9];
   }
 
   else
   {
-    v18 = [v15 disabledEntry];
-    v17 = a1;
+    disabledEntry = [v15 disabledEntry];
+    selfCopy = self;
   }
 
-  return v18;
+  return disabledEntry;
 }
 
 @end

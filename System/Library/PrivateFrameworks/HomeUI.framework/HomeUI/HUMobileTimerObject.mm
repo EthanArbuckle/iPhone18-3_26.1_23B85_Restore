@@ -1,48 +1,48 @@
 @interface HUMobileTimerObject
-- (BOOL)_alarmIDsMatch:(id)a3;
-- (BOOL)_timerIDsMatch:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_alarmIDsMatch:(id)match;
+- (BOOL)_timerIDsMatch:(id)match;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isIgnorableTimerObject;
-- (HUMobileTimerObject)initWithAlarm:(id)a3;
-- (HUMobileTimerObject)initWithTimer:(id)a3;
+- (HUMobileTimerObject)initWithAlarm:(id)alarm;
+- (HUMobileTimerObject)initWithTimer:(id)timer;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
 @end
 
 @implementation HUMobileTimerObject
 
-- (HUMobileTimerObject)initWithAlarm:(id)a3
+- (HUMobileTimerObject)initWithAlarm:(id)alarm
 {
-  v5 = a3;
+  alarmCopy = alarm;
   v11.receiver = self;
   v11.super_class = HUMobileTimerObject;
   v6 = [(HUMobileTimerObject *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_alarm, a3);
-    v8 = [v5 alarmID];
+    objc_storeStrong(&v6->_alarm, alarm);
+    alarmID = [alarmCopy alarmID];
     uniqueIdentifier = v7->_uniqueIdentifier;
-    v7->_uniqueIdentifier = v8;
+    v7->_uniqueIdentifier = alarmID;
   }
 
   return v7;
 }
 
-- (HUMobileTimerObject)initWithTimer:(id)a3
+- (HUMobileTimerObject)initWithTimer:(id)timer
 {
-  v5 = a3;
+  timerCopy = timer;
   v11.receiver = self;
   v11.super_class = HUMobileTimerObject;
   v6 = [(HUMobileTimerObject *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_timer, a3);
-    v8 = [v5 timerID];
+    objc_storeStrong(&v6->_timer, timer);
+    timerID = [timerCopy timerID];
     uniqueIdentifier = v7->_uniqueIdentifier;
-    v7->_uniqueIdentifier = v8;
+    v7->_uniqueIdentifier = timerID;
   }
 
   return v7;
@@ -50,24 +50,24 @@
 
 - (unint64_t)hash
 {
-  v4 = [(HUMobileTimerObject *)self alarm];
-  if (v4)
+  alarm = [(HUMobileTimerObject *)self alarm];
+  if (alarm)
   {
     goto LABEL_2;
   }
 
-  v5 = [(HUMobileTimerObject *)self timer];
+  timer = [(HUMobileTimerObject *)self timer];
 
-  if (!v5)
+  if (!timer)
   {
-    v4 = [MEMORY[0x277CCA890] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"HUMobileTimerObject.m" lineNumber:41 description:@"HUMobileTimerObject must wrap an alarm or a timer"];
+    alarm = [MEMORY[0x277CCA890] currentHandler];
+    [alarm handleFailureInMethod:a2 object:self file:@"HUMobileTimerObject.m" lineNumber:41 description:@"HUMobileTimerObject must wrap an alarm or a timer"];
 LABEL_2:
   }
 
-  v6 = [(HUMobileTimerObject *)self alarm];
+  alarm2 = [(HUMobileTimerObject *)self alarm];
 
-  if (v6)
+  if (alarm2)
   {
     [(HUMobileTimerObject *)self alarm];
   }
@@ -82,60 +82,60 @@ LABEL_2:
   return v8;
 }
 
-- (BOOL)_timerIDsMatch:(id)a3
+- (BOOL)_timerIDsMatch:(id)match
 {
-  v4 = a3;
-  v5 = [(HUMobileTimerObject *)self timer];
+  matchCopy = match;
+  timer = [(HUMobileTimerObject *)self timer];
 
   v6 = 0;
-  if (v4 && v5)
+  if (matchCopy && timer)
   {
-    v7 = [(HUMobileTimerObject *)self timer];
-    v8 = [v7 timerID];
-    v9 = [v4 timerID];
-    v6 = [v8 isEqual:v9];
+    timer2 = [(HUMobileTimerObject *)self timer];
+    timerID = [timer2 timerID];
+    timerID2 = [matchCopy timerID];
+    v6 = [timerID isEqual:timerID2];
   }
 
   return v6;
 }
 
-- (BOOL)_alarmIDsMatch:(id)a3
+- (BOOL)_alarmIDsMatch:(id)match
 {
-  v4 = a3;
-  v5 = [(HUMobileTimerObject *)self alarm];
+  matchCopy = match;
+  alarm = [(HUMobileTimerObject *)self alarm];
 
   v6 = 0;
-  if (v4 && v5)
+  if (matchCopy && alarm)
   {
-    v7 = [(HUMobileTimerObject *)self alarm];
-    v8 = [v7 alarmID];
-    v9 = [v4 alarmID];
-    v6 = [v8 isEqual:v9];
+    alarm2 = [(HUMobileTimerObject *)self alarm];
+    alarmID = [alarm2 alarmID];
+    alarmID2 = [matchCopy alarmID];
+    v6 = [alarmID isEqual:alarmID2];
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = [(HUMobileTimerObject *)self alarm];
-  if (v6)
+  equalCopy = equal;
+  alarm = [(HUMobileTimerObject *)self alarm];
+  if (alarm)
   {
     goto LABEL_2;
   }
 
-  v7 = [(HUMobileTimerObject *)self timer];
+  timer = [(HUMobileTimerObject *)self timer];
 
-  if (!v7)
+  if (!timer)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"HUMobileTimerObject.m" lineNumber:70 description:@"HUMobileTimerObject must wrap an alarm or a timer"];
+    alarm = [MEMORY[0x277CCA890] currentHandler];
+    [alarm handleFailureInMethod:a2 object:self file:@"HUMobileTimerObject.m" lineNumber:70 description:@"HUMobileTimerObject must wrap an alarm or a timer"];
 LABEL_2:
   }
 
   objc_opt_class();
-  v8 = v5;
+  v8 = equalCopy;
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -153,24 +153,24 @@ LABEL_2:
     goto LABEL_17;
   }
 
-  v11 = [(HUMobileTimerObject *)self alarm];
+  alarm2 = [(HUMobileTimerObject *)self alarm];
 
-  if (!v11)
+  if (!alarm2)
   {
-    v16 = [(HUMobileTimerObject *)self timer];
+    timer2 = [(HUMobileTimerObject *)self timer];
 
-    if (v16)
+    if (timer2)
     {
-      v17 = [v10 timer];
+      timer3 = [v10 timer];
 
-      if (!v17)
+      if (!timer3)
       {
         v18 = objc_opt_class();
         NSLog(&cfstr_ComparingNonTi.isa, v18);
       }
 
-      v14 = [v10 timer];
-      v15 = [(HUMobileTimerObject *)self _timerIDsMatch:v14];
+      timer4 = [v10 timer];
+      v15 = [(HUMobileTimerObject *)self _timerIDsMatch:timer4];
       goto LABEL_16;
     }
 
@@ -179,16 +179,16 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v12 = [v10 alarm];
+  alarm3 = [v10 alarm];
 
-  if (!v12)
+  if (!alarm3)
   {
     v13 = objc_opt_class();
     NSLog(&cfstr_ComparingNonAl.isa, v13);
   }
 
-  v14 = [v10 alarm];
-  v15 = [(HUMobileTimerObject *)self _alarmIDsMatch:v14];
+  timer4 = [v10 alarm];
+  v15 = [(HUMobileTimerObject *)self _alarmIDsMatch:timer4];
 LABEL_16:
   v19 = v15;
 
@@ -198,25 +198,25 @@ LABEL_18:
 
 - (BOOL)isIgnorableTimerObject
 {
-  v3 = [(HUMobileTimerObject *)self timer];
+  timer = [(HUMobileTimerObject *)self timer];
 
-  if (v3)
+  if (timer)
   {
-    v4 = [(HUMobileTimerObject *)self timer];
-    v5 = [v4 isCurrentTimer];
+    timer2 = [(HUMobileTimerObject *)self timer];
+    isCurrentTimer = [timer2 isCurrentTimer];
 
-    if (v5)
+    if (isCurrentTimer)
     {
       return 1;
     }
 
-    v7 = [(HUMobileTimerObject *)self timer];
-    if ([v7 state] == 1)
+    timer3 = [(HUMobileTimerObject *)self timer];
+    if ([timer3 state] == 1)
     {
-      v8 = [(HUMobileTimerObject *)self timer];
-      v9 = [v8 isFiring];
+      timer4 = [(HUMobileTimerObject *)self timer];
+      isFiring = [timer4 isFiring];
 
-      if (!v9)
+      if (!isFiring)
       {
         return 1;
       }
@@ -230,37 +230,37 @@ LABEL_18:
   return 0;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(HUMobileTimerObject *)self alarm];
-  if (v5)
+  compareCopy = compare;
+  alarm = [(HUMobileTimerObject *)self alarm];
+  if (alarm)
   {
-    v6 = v5;
-    v7 = [v4 alarm];
+    v6 = alarm;
+    alarm2 = [compareCopy alarm];
 
-    if (v7)
+    if (alarm2)
     {
-      v8 = [(HUMobileTimerObject *)self alarm];
-      v9 = [v4 alarm];
+      alarm3 = [(HUMobileTimerObject *)self alarm];
+      alarm4 = [compareCopy alarm];
 LABEL_7:
-      v13 = v9;
-      v14 = [v8 compare:v9];
+      v13 = alarm4;
+      v14 = [alarm3 compare:alarm4];
 
       goto LABEL_11;
     }
   }
 
-  v10 = [(HUMobileTimerObject *)self timer];
-  if (v10)
+  timer = [(HUMobileTimerObject *)self timer];
+  if (timer)
   {
-    v11 = v10;
-    v12 = [v4 timer];
+    v11 = timer;
+    timer2 = [compareCopy timer];
 
-    if (v12)
+    if (timer2)
     {
-      v8 = [(HUMobileTimerObject *)self timer];
-      v9 = [v4 timer];
+      alarm3 = [(HUMobileTimerObject *)self timer];
+      alarm4 = [compareCopy timer];
       goto LABEL_7;
     }
   }
@@ -280,79 +280,79 @@ LABEL_11:
 
 - (id)description
 {
-  v4 = [(HUMobileTimerObject *)self alarm];
-  if (v4)
+  alarm = [(HUMobileTimerObject *)self alarm];
+  if (alarm)
   {
     goto LABEL_2;
   }
 
-  v5 = [(HUMobileTimerObject *)self timer];
+  timer = [(HUMobileTimerObject *)self timer];
 
-  if (!v5)
+  if (!timer)
   {
-    v4 = [MEMORY[0x277CCA890] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"HUMobileTimerObject.m" lineNumber:123 description:@"HUMobileTimerObject must wrap an alarm or a timer"];
+    alarm = [MEMORY[0x277CCA890] currentHandler];
+    [alarm handleFailureInMethod:a2 object:self file:@"HUMobileTimerObject.m" lineNumber:123 description:@"HUMobileTimerObject must wrap an alarm or a timer"];
 LABEL_2:
   }
 
   v6 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v7 = [(HUMobileTimerObject *)self alarm];
+  alarm2 = [(HUMobileTimerObject *)self alarm];
 
   v8 = MEMORY[0x277CCACA8];
-  if (v7)
+  if (alarm2)
   {
-    v9 = [(HUMobileTimerObject *)self alarm];
-    v10 = [v8 stringWithFormat:@"%p", v9];
+    alarm3 = [(HUMobileTimerObject *)self alarm];
+    v10 = [v8 stringWithFormat:@"%p", alarm3];
     [v6 appendString:v10 withName:@"MTAlarm"];
 
-    v11 = [(HUMobileTimerObject *)self alarm];
-    v12 = [v11 alarmID];
-    v13 = [v6 appendObject:v12 withName:@"AlarmID"];
+    alarm4 = [(HUMobileTimerObject *)self alarm];
+    alarmID = [alarm4 alarmID];
+    v13 = [v6 appendObject:alarmID withName:@"AlarmID"];
 
-    v14 = [(HUMobileTimerObject *)self alarm];
-    v15 = [v6 appendBool:objc_msgSend(v14 withName:{"isEnabled"), @"Enabled"}];
+    alarm5 = [(HUMobileTimerObject *)self alarm];
+    v15 = [v6 appendBool:objc_msgSend(alarm5 withName:{"isEnabled"), @"Enabled"}];
 
-    v16 = [(HUMobileTimerObject *)self alarm];
-    v17 = [v16 title];
-    v18 = [v6 appendObject:v17 withName:@"Title"];
+    alarm6 = [(HUMobileTimerObject *)self alarm];
+    title = [alarm6 title];
+    v18 = [v6 appendObject:title withName:@"Title"];
 
     v19 = MEMORY[0x277CCACA8];
-    v20 = [(HUMobileTimerObject *)self alarm];
-    v21 = [v20 hour];
-    v22 = [(HUMobileTimerObject *)self alarm];
-    v23 = [v19 stringWithFormat:@"%lu:%lu", v21, objc_msgSend(v22, "minute")];
+    alarm7 = [(HUMobileTimerObject *)self alarm];
+    hour = [alarm7 hour];
+    alarm8 = [(HUMobileTimerObject *)self alarm];
+    v23 = [v19 stringWithFormat:@"%lu:%lu", hour, objc_msgSend(alarm8, "minute")];
     v24 = [v6 appendObject:v23 withName:@"HH:MM"];
   }
 
   else
   {
-    v25 = [(HUMobileTimerObject *)self timer];
-    v26 = [v8 stringWithFormat:@"%p", v25];
+    timer2 = [(HUMobileTimerObject *)self timer];
+    v26 = [v8 stringWithFormat:@"%p", timer2];
     [v6 appendString:v26 withName:@"MTTimer"];
 
-    v27 = [(HUMobileTimerObject *)self timer];
-    v28 = [v27 timerID];
-    v29 = [v6 appendObject:v28 withName:@"TimerID"];
+    timer3 = [(HUMobileTimerObject *)self timer];
+    timerID = [timer3 timerID];
+    v29 = [v6 appendObject:timerID withName:@"TimerID"];
 
-    v30 = [(HUMobileTimerObject *)self timer];
-    v31 = [v6 appendUnsignedInteger:objc_msgSend(v30 withName:{"state"), @"State"}];
+    timer4 = [(HUMobileTimerObject *)self timer];
+    v31 = [v6 appendUnsignedInteger:objc_msgSend(timer4 withName:{"state"), @"State"}];
 
-    v32 = [(HUMobileTimerObject *)self timer];
-    v33 = [v32 title];
-    v34 = [v6 appendObject:v33 withName:@"Title"];
+    timer5 = [(HUMobileTimerObject *)self timer];
+    title2 = [timer5 title];
+    v34 = [v6 appendObject:title2 withName:@"Title"];
 
-    v35 = [(HUMobileTimerObject *)self timer];
-    [v35 remainingTime];
+    timer6 = [(HUMobileTimerObject *)self timer];
+    [timer6 remainingTime];
     v36 = [v6 appendTimeInterval:@"Remaining" withName:1 decomposeUnits:?];
 
-    v20 = [(HUMobileTimerObject *)self timer];
-    [v20 duration];
+    alarm7 = [(HUMobileTimerObject *)self timer];
+    [alarm7 duration];
     v37 = [v6 appendTimeInterval:@"of" withName:1 decomposeUnits:?];
   }
 
-  v38 = [v6 build];
+  build = [v6 build];
 
-  return v38;
+  return build;
 }
 
 @end

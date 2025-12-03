@@ -6,7 +6,7 @@
 
 - (NSAttributedString)attributedText
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001B96E4();
 
   return v3;

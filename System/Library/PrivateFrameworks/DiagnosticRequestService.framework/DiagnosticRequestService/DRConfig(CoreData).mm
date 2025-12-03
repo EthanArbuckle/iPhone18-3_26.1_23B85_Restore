@@ -10,20 +10,20 @@
   v3 = MEMORY[0x277D051F8];
   v4 = a3;
   v17 = [v3 alloc];
-  v16 = [v4 build];
-  v5 = [v4 teamID];
-  v6 = [v4 configDescription];
-  v7 = [v4 configUUID];
-  v8 = [v4 receivedDate];
-  v9 = [v4 startDate];
-  v10 = [v4 endDate];
-  v11 = [v4 payload];
-  v12 = [v4 payloadIsJSON];
+  build = [v4 build];
+  teamID = [v4 teamID];
+  configDescription = [v4 configDescription];
+  configUUID = [v4 configUUID];
+  receivedDate = [v4 receivedDate];
+  startDate = [v4 startDate];
+  endDate = [v4 endDate];
+  payload = [v4 payload];
+  payloadIsJSON = [v4 payloadIsJSON];
   LOBYTE(v3) = [v4 skippedHysteresis];
 
   BYTE1(v15) = v3;
-  LOBYTE(v15) = v12;
-  v13 = [v17 initWithBuild:v16 teamID:v5 configDescription:v6 configUUID:v7 receivedDate:v8 startDate:v9 endDate:v10 payload:v11 payloadIsJSON:v15 skipHysteresis:?];
+  LOBYTE(v15) = payloadIsJSON;
+  v13 = [v17 initWithBuild:build teamID:teamID configDescription:configDescription configUUID:configUUID receivedDate:receivedDate startDate:startDate endDate:endDate payload:payload payloadIsJSON:v15 skipHysteresis:?];
 
   return v13;
 }
@@ -33,32 +33,32 @@
   v4 = a3;
   v5 = [[DRConfigMO alloc] initWithContext:v4];
 
-  v6 = [a1 teamID];
-  [(DRConfigMO *)v5 setTeamID:v6];
+  teamID = [self teamID];
+  [(DRConfigMO *)v5 setTeamID:teamID];
 
-  v7 = [a1 build];
-  [(DRConfigMO *)v5 setBuild:v7];
+  build = [self build];
+  [(DRConfigMO *)v5 setBuild:build];
 
-  v8 = [a1 configDescription];
-  [(DRConfigMO *)v5 setConfigDescription:v8];
+  configDescription = [self configDescription];
+  [(DRConfigMO *)v5 setConfigDescription:configDescription];
 
-  v9 = [a1 configUUID];
-  [(DRConfigMO *)v5 setConfigUUID:v9];
+  configUUID = [self configUUID];
+  [(DRConfigMO *)v5 setConfigUUID:configUUID];
 
-  v10 = [a1 receivedDate];
-  [(DRConfigMO *)v5 setReceivedDate:v10];
+  receivedDate = [self receivedDate];
+  [(DRConfigMO *)v5 setReceivedDate:receivedDate];
 
-  v11 = [a1 startDate];
-  [(DRConfigMO *)v5 setStartDate:v11];
+  startDate = [self startDate];
+  [(DRConfigMO *)v5 setStartDate:startDate];
 
-  v12 = [a1 endDate];
-  [(DRConfigMO *)v5 setEndDate:v12];
+  endDate = [self endDate];
+  [(DRConfigMO *)v5 setEndDate:endDate];
 
-  v13 = [a1 payload];
-  [(DRConfigMO *)v5 setPayload:v13];
+  payload = [self payload];
+  [(DRConfigMO *)v5 setPayload:payload];
 
-  -[DRConfigMO setPayloadIsJSON:](v5, "setPayloadIsJSON:", [a1 payloadIsJSON]);
-  -[DRConfigMO setSkippedHysteresis:](v5, "setSkippedHysteresis:", [a1 skippedHysteresis]);
+  -[DRConfigMO setPayloadIsJSON:](v5, "setPayloadIsJSON:", [self payloadIsJSON]);
+  -[DRConfigMO setSkippedHysteresis:](v5, "setSkippedHysteresis:", [self skippedHysteresis]);
 
   return v5;
 }

@@ -1,9 +1,9 @@
 @interface SSCompressionHelper
 + (id)sharedInstance;
-- (char)getDataOutWithSize:(unint64_t)a3 withFlag:(unint64_t)a4 fd:(int *)a5;
-- (int)unTarFileWithFd:(id)a3 toPath:(id)a4;
-- (int)unpackageTarForFd:(int)a3 size:(unint64_t)a4 parentDir:(const char *)a5;
-- (void)uncompressedContentsForCompressedFile:(id)a3 outPath:(id)a4;
+- (char)getDataOutWithSize:(unint64_t)size withFlag:(unint64_t)flag fd:(int *)fd;
+- (int)unTarFileWithFd:(id)fd toPath:(id)path;
+- (int)unpackageTarForFd:(int)fd size:(unint64_t)size parentDir:(const char *)dir;
+- (void)uncompressedContentsForCompressedFile:(id)file outPath:(id)path;
 @end
 
 @implementation SSCompressionHelper
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __37__SSCompressionHelper_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -32,10 +32,10 @@ uint64_t __37__SSCompressionHelper_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (char)getDataOutWithSize:(unint64_t)a3 withFlag:(unint64_t)a4 fd:(int *)a5
+- (char)getDataOutWithSize:(unint64_t)size withFlag:(unint64_t)flag fd:(int *)fd
 {
-  *a5 = -1;
-  TemporaryFileOfSize = allocateTemporaryFileOfSize(a3, a4);
+  *fd = -1;
+  TemporaryFileOfSize = allocateTemporaryFileOfSize(size, flag);
   if (TemporaryFileOfSize < 0)
   {
     v10 = PRSLogCategoryDefault();
@@ -48,10 +48,10 @@ uint64_t __37__SSCompressionHelper_sharedInstance__block_invoke(uint64_t a1)
   else
   {
     v8 = TemporaryFileOfSize;
-    result = mmap(0, a3, 3, 1, TemporaryFileOfSize, 0);
+    result = mmap(0, size, 3, 1, TemporaryFileOfSize, 0);
     if (result != -1)
     {
-      *a5 = v8;
+      *fd = v8;
       return result;
     }
 
@@ -66,13 +66,13 @@ uint64_t __37__SSCompressionHelper_sharedInstance__block_invoke(uint64_t a1)
   return 0;
 }
 
-- (void)uncompressedContentsForCompressedFile:(id)a3 outPath:(id)a4
+- (void)uncompressedContentsForCompressedFile:(id)file outPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v6 = MEMORY[0x1E695DEF0];
-  v7 = a3;
+  fileCopy = file;
   v25 = 0;
-  v8 = [[v6 alloc] initWithContentsOfFile:v7 options:8 error:&v25];
+  v8 = [[v6 alloc] initWithContentsOfFile:fileCopy options:8 error:&v25];
 
   v9 = v25;
   if (v9)
@@ -89,9 +89,9 @@ uint64_t __37__SSCompressionHelper_sharedInstance__block_invoke(uint64_t a1)
   v24 = -1;
   v23 = -1;
   v11 = [v8 length];
-  v12 = [v8 bytes];
-  v13 = *(v12 - 1);
-  v14 = doBlockDecompression(v12, v11 - 8, v13, &v24, COMPRESSION_LZFSE, &v23);
+  bytes = [v8 bytes];
+  v13 = *(bytes - 1);
+  v14 = doBlockDecompression(bytes, v11 - 8, v13, &v24, COMPRESSION_LZFSE, &v23);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __69__SSCompressionHelper_uncompressedContentsForCompressedFile_outPath___block_invoke;
@@ -114,7 +114,7 @@ uint64_t __37__SSCompressionHelper_sharedInstance__block_invoke(uint64_t a1)
     goto LABEL_15;
   }
 
-  v17 = open([v5 UTF8String], 514, 384);
+  v17 = open([pathCopy UTF8String], 514, 384);
   if (v17 < 0)
   {
     v20 = PRSLogCategoryDefault();
@@ -163,11 +163,11 @@ uint64_t __69__SSCompressionHelper_uncompressedContentsForCompressedFile_outPath
   return result;
 }
 
-- (int)unpackageTarForFd:(int)a3 size:(unint64_t)a4 parentDir:(const char *)a5
+- (int)unpackageTarForFd:(int)fd size:(unint64_t)size parentDir:(const char *)dir
 {
   v25 = *MEMORY[0x1E69E9840];
   memset(&v22, 0, sizeof(v22));
-  if (stat(a5, &v22) == -1 && mkdir(a5, 0x1C0u))
+  if (stat(dir, &v22) == -1 && mkdir(dir, 0x1C0u))
   {
     goto LABEL_16;
   }
@@ -185,9 +185,9 @@ uint64_t __69__SSCompressionHelper_uncompressedContentsForCompressedFile_outPath
   v10 = mmap(0, 0x2800000uLL, 3, 1, v8, 0);
   if (v10 == -1)
   {
-    v17 = 41943040;
+    sizeCopy = 41943040;
 LABEL_15:
-    munmap(0xFFFFFFFFFFFFFFFFLL, v17);
+    munmap(0xFFFFFFFFFFFFFFFFLL, sizeCopy);
     close(v9);
 LABEL_16:
     v16 = -1;
@@ -195,9 +195,9 @@ LABEL_16:
   }
 
   v11 = v10;
-  if (mmap(0, a4, 1, 1, a3, 0) == -1)
+  if (mmap(0, size, 1, 1, fd, 0) == -1)
   {
-    v17 = a4;
+    sizeCopy = size;
     goto LABEL_15;
   }
 
@@ -266,11 +266,11 @@ LABEL_17:
   return v16;
 }
 
-- (int)unTarFileWithFd:(id)a3 toPath:(id)a4
+- (int)unTarFileWithFd:(id)fd toPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = dup([v6 fileDescriptor]);
+  fdCopy = fd;
+  pathCopy = path;
+  v8 = dup([fdCopy fileDescriptor]);
   if ((v8 & 0x80000000) == 0)
   {
     v9 = v8;
@@ -287,7 +287,7 @@ LABEL_17:
 
     else
     {
-      v11 = -[SSCompressionHelper unpackageTarForFd:size:parentDir:](self, "unpackageTarForFd:size:parentDir:", [v6 fileDescriptor], v15.st_size, objc_msgSend(v7, "UTF8String"));
+      v11 = -[SSCompressionHelper unpackageTarForFd:size:parentDir:](self, "unpackageTarForFd:size:parentDir:", [fdCopy fileDescriptor], v15.st_size, objc_msgSend(pathCopy, "UTF8String"));
       v12 = PRSLogCategoryDefault();
       v10 = v12;
       if (!v11)

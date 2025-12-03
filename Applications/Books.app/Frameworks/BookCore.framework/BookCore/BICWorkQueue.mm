@@ -1,22 +1,22 @@
 @interface BICWorkQueue
-+ (BICWorkQueue)workQueueWithHighPriorityTargetQueue:(id)a3 backgroundTargetQueue:(id)a4 numConcurrentWorkItems:(unint64_t)a5;
++ (BICWorkQueue)workQueueWithHighPriorityTargetQueue:(id)queue backgroundTargetQueue:(id)targetQueue numConcurrentWorkItems:(unint64_t)items;
 - (BOOL)hasLargeBacklog;
 - (id)_statsString;
 - (id)description;
 - (void)_startNextWorkItem;
-- (void)addWorkItemWithPriority:(id)a3 description:(id)a4 block:(id)a5;
-- (void)workComplete:(id)a3;
+- (void)addWorkItemWithPriority:(id)priority description:(id)description block:(id)block;
+- (void)workComplete:(id)complete;
 @end
 
 @implementation BICWorkQueue
 
-+ (BICWorkQueue)workQueueWithHighPriorityTargetQueue:(id)a3 backgroundTargetQueue:(id)a4 numConcurrentWorkItems:(unint64_t)a5
++ (BICWorkQueue)workQueueWithHighPriorityTargetQueue:(id)queue backgroundTargetQueue:(id)targetQueue numConcurrentWorkItems:(unint64_t)items
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = objc_alloc_init(a1);
-  [v10 setNumConcurrentWorkItems:a5];
-  if (a5 <= 1)
+  targetQueueCopy = targetQueue;
+  queueCopy = queue;
+  v10 = objc_alloc_init(self);
+  [v10 setNumConcurrentWorkItems:items];
+  if (items <= 1)
   {
     v11 = 0;
   }
@@ -28,11 +28,11 @@
 
   v12 = dispatch_queue_attr_make_with_autorelease_frequency(v11, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v13 = dispatch_queue_attr_make_with_qos_class(v12, QOS_CLASS_USER_INITIATED, 0);
-  v14 = dispatch_queue_create_with_target_V2("com.apple.coverWorkQ_high", v13, v9);
+  v14 = dispatch_queue_create_with_target_V2("com.apple.coverWorkQ_high", v13, queueCopy);
 
   [v10 setHighPriorityWorkQ:v14];
   v15 = dispatch_queue_attr_make_with_qos_class(v12, QOS_CLASS_BACKGROUND, 0);
-  v16 = dispatch_queue_create_with_target_V2("com.apple.coverWorkQ_low", v15, v8);
+  v16 = dispatch_queue_create_with_target_V2("com.apple.coverWorkQ_low", v15, targetQueueCopy);
 
   [v10 setLowPriorityWorkQ:v16];
   v17 = +[NSMutableSet set];
@@ -49,7 +49,7 @@
 
 - (BOOL)hasLargeBacklog
 {
-  v2 = self;
+  selfCopy = self;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -58,21 +58,21 @@
   v5[1] = 3221225472;
   v6 = sub_7AC00;
   v7 = &unk_2C7AE0;
-  v8 = self;
+  selfCopy2 = self;
   v9 = &v10;
   v3 = v5;
   os_unfair_lock_lock_with_options();
   v6(v3);
-  os_unfair_lock_unlock(&v2->_accessLock);
+  os_unfair_lock_unlock(&selfCopy->_accessLock);
 
-  LOBYTE(v2) = *(v11 + 24);
+  LOBYTE(selfCopy) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)addWorkItemWithPriority:(id)a3 description:(id)a4 block:(id)a5
+- (void)addWorkItemWithPriority:(id)priority description:(id)description block:(id)block
 {
-  [BICWorkItem workItemWithPriority:a3 description:a4 block:a5];
+  [BICWorkItem workItemWithPriority:priority description:description block:block];
   v10 = _NSConcreteStackBlock;
   v11 = 3221225472;
   v12 = sub_7ADF0;
@@ -86,13 +86,13 @@
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = [(BICWorkQueue *)self identifier:v10];
-    v9 = [(BICWorkQueue *)self _statsString];
+    _statsString = [(BICWorkQueue *)self _statsString];
     *buf = 138543874;
     v17 = v6;
     v18 = 2112;
     v19 = v8;
     v20 = 2114;
-    v21 = v9;
+    v21 = _statsString;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "BICWorkQueue: Adding %{public}@ to queue %@. %{public}@", buf, 0x20u);
   }
 
@@ -111,7 +111,7 @@
   v14[1] = 3221225472;
   v15 = sub_7B0F8;
   v16 = &unk_2CA7A8;
-  v17 = self;
+  selfCopy = self;
   v18 = &v19;
   v3 = v14;
   os_unfair_lock_lock_with_options();
@@ -135,14 +135,14 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = v20[5];
-      v8 = [(BICWorkQueue *)self identifier];
-      v9 = [(BICWorkQueue *)self _statsString];
+      identifier = [(BICWorkQueue *)self identifier];
+      _statsString = [(BICWorkQueue *)self _statsString];
       *buf = 138543874;
       v26 = v7;
       v27 = 2112;
-      v28 = v8;
+      v28 = identifier;
       v29 = 2114;
-      v30 = v9;
+      v30 = _statsString;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "BICWorkQueue: Starting %{public}@ on queue %@. %{public}@", buf, 0x20u);
     }
 
@@ -160,7 +160,7 @@
   _Block_object_dispose(&v19, 8);
 }
 
-- (void)workComplete:(id)a3
+- (void)workComplete:(id)complete
 {
   v17 = 0;
   v18 = &v17;
@@ -171,9 +171,9 @@
   v12 = sub_7B8F4;
   v13 = &unk_2C7BC0;
   v16 = &v17;
-  v14 = self;
-  v4 = a3;
-  v15 = v4;
+  selfCopy = self;
+  completeCopy = complete;
+  v15 = completeCopy;
   v5 = v11;
   os_unfair_lock_lock_with_options();
   v12(v5);
@@ -184,14 +184,14 @@
     v6 = BCImageCacheLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [(BICWorkQueue *)self identifier];
-      v8 = [(BICWorkQueue *)self _statsString];
+      identifier = [(BICWorkQueue *)self identifier];
+      _statsString = [(BICWorkQueue *)self _statsString];
       *buf = 138543874;
-      v22 = v4;
+      v22 = completeCopy;
       v23 = 2112;
-      v24 = v7;
+      v24 = identifier;
       v25 = 2114;
-      v26 = v8;
+      v26 = _statsString;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "BICWorkQueue: Finished %{public}@ on queue %@. %{public}@", buf, 0x20u);
     }
 
@@ -203,11 +203,11 @@
     v9 = BCImageCacheLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(BICWorkQueue *)self identifier];
+      identifier2 = [(BICWorkQueue *)self identifier];
       *buf = 138543618;
-      v22 = v4;
+      v22 = completeCopy;
       v23 = 2112;
-      v24 = v10;
+      v24 = identifier2;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "BICWorkQueue: Already timed-out %{public}@ now completed on queue %@", buf, 0x16u);
     }
   }
@@ -233,7 +233,7 @@
   v6[1] = 3221225472;
   v7 = sub_7BB20;
   v8 = &unk_2CB0E0;
-  v9 = self;
+  selfCopy = self;
   v10 = &v21;
   v11 = &v17;
   v12 = &v13;
@@ -252,9 +252,9 @@
 
 - (id)description
 {
-  v3 = [(BICWorkQueue *)self identifier];
-  v4 = [(BICWorkQueue *)self _statsString];
-  v5 = [NSString stringWithFormat:@"BICWorkQueue %@. %@", v3, v4];
+  identifier = [(BICWorkQueue *)self identifier];
+  _statsString = [(BICWorkQueue *)self _statsString];
+  v5 = [NSString stringWithFormat:@"BICWorkQueue %@. %@", identifier, _statsString];
 
   return v5;
 }

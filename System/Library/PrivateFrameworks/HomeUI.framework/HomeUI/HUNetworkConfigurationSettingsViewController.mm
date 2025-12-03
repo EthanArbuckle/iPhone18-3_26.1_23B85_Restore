@@ -1,72 +1,72 @@
 @interface HUNetworkConfigurationSettingsViewController
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (HUNetworkConfigurationSettingsViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4;
-- (HUNetworkConfigurationSettingsViewController)initWithNetworkConfigurationGroupItem:(id)a3;
-- (id)buildItemModuleControllerForModule:(id)a3;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (void)itemManagerDidFinishUpdate:(id)a3;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (HUNetworkConfigurationSettingsViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style;
+- (HUNetworkConfigurationSettingsViewController)initWithNetworkConfigurationGroupItem:(id)item;
+- (id)buildItemModuleControllerForModule:(id)module;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (void)itemManagerDidFinishUpdate:(id)update;
 - (void)updateNetworkConfigurationSettingsModuleFooter;
 @end
 
 @implementation HUNetworkConfigurationSettingsViewController
 
-- (HUNetworkConfigurationSettingsViewController)initWithNetworkConfigurationGroupItem:(id)a3
+- (HUNetworkConfigurationSettingsViewController)initWithNetworkConfigurationGroupItem:(id)item
 {
-  v4 = a3;
-  v5 = [[HUNetworkConfigurationSettingsItemManager alloc] initWithDelegate:self networkConfigurationGroupItem:v4];
+  itemCopy = item;
+  v5 = [[HUNetworkConfigurationSettingsItemManager alloc] initWithDelegate:self networkConfigurationGroupItem:itemCopy];
   v10.receiver = self;
   v10.super_class = HUNetworkConfigurationSettingsViewController;
   v6 = [(HUItemTableViewController *)&v10 initWithItemManager:v5 tableViewStyle:1];
   if (v6)
   {
-    v7 = [v4 group];
-    v8 = [v7 hf_title];
-    [(HUNetworkConfigurationSettingsViewController *)v6 setTitle:v8];
+    group = [itemCopy group];
+    hf_title = [group hf_title];
+    [(HUNetworkConfigurationSettingsViewController *)v6 setTitle:hf_title];
   }
 
   return v6;
 }
 
-- (HUNetworkConfigurationSettingsViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4
+- (HUNetworkConfigurationSettingsViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithNetworkConfigurationGroupItem_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUNetworkConfigurationSettingsViewController.m" lineNumber:43 description:{@"%s is unavailable; use %@ instead", "-[HUNetworkConfigurationSettingsViewController initWithItemManager:tableViewStyle:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUNetworkConfigurationSettingsViewController.m" lineNumber:43 description:{@"%s is unavailable; use %@ instead", "-[HUNetworkConfigurationSettingsViewController initWithItemManager:tableViewStyle:]", v7}];
 
   return 0;
 }
 
-- (id)buildItemModuleControllerForModule:(id)a3
+- (id)buildItemModuleControllerForModule:(id)module
 {
-  v5 = a3;
-  v6 = [(HUItemTableViewController *)self itemManager];
-  v7 = [v6 networkConfigurationSettingsModule];
-  v8 = [v5 isEqual:v7];
+  moduleCopy = module;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  networkConfigurationSettingsModule = [itemManager networkConfigurationSettingsModule];
+  v8 = [moduleCopy isEqual:networkConfigurationSettingsModule];
 
   if (v8)
   {
-    v9 = [[HUNetworkConfigurationSettingsModuleController alloc] initWithModule:v5];
+    v9 = [[HUNetworkConfigurationSettingsModuleController alloc] initWithModule:moduleCopy];
     [(HUNetworkConfigurationSettingsViewController *)self setNetworkConfigurationSettingsModuleController:v9];
 
-    v10 = [(HUNetworkConfigurationSettingsViewController *)self networkConfigurationSettingsModuleController];
+    networkConfigurationSettingsModuleController = [(HUNetworkConfigurationSettingsViewController *)self networkConfigurationSettingsModuleController];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"HUNetworkConfigurationSettingsViewController.m" lineNumber:54 description:{@"Unexpected module %@", v5}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUNetworkConfigurationSettingsViewController.m" lineNumber:54 description:{@"Unexpected module %@", moduleCopy}];
 
-    v10 = 0;
+    networkConfigurationSettingsModuleController = 0;
   }
 
-  return v10;
+  return networkConfigurationSettingsModuleController;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
   v15.receiver = self;
   v15.super_class = HUNetworkConfigurationSettingsViewController;
-  v5 = [(HUItemTableViewController *)&v15 tableView:a3 viewForFooterInSection:a4];
+  v5 = [(HUItemTableViewController *)&v15 tableView:view viewForFooterInSection:section];
   objc_opt_class();
   v6 = v5;
   if (objc_opt_isKindOfClass())
@@ -81,54 +81,54 @@
 
   v8 = v7;
 
-  v9 = [(HUNetworkConfigurationSettingsViewController *)self networkConfigurationSettingsModuleController];
-  v10 = [v8 messageTextView];
-  [v10 setTappableTextViewDelegate:v9];
+  networkConfigurationSettingsModuleController = [(HUNetworkConfigurationSettingsViewController *)self networkConfigurationSettingsModuleController];
+  messageTextView = [v8 messageTextView];
+  [messageTextView setTappableTextViewDelegate:networkConfigurationSettingsModuleController];
 
-  v11 = [v8 messageTextView];
-  [v11 setDelegate:self];
+  messageTextView2 = [v8 messageTextView];
+  [messageTextView2 setDelegate:self];
 
-  v12 = [v8 messageTextView];
-  [v12 setSelectable:0];
+  messageTextView3 = [v8 messageTextView];
+  [messageTextView3 setSelectable:0];
 
-  v13 = [v8 messageTextView];
-  [v13 _setInteractiveTextSelectionDisabled:1];
+  messageTextView4 = [v8 messageTextView];
+  [messageTextView4 _setInteractiveTextSelectionDisabled:1];
 
   return v6;
 }
 
-- (void)itemManagerDidFinishUpdate:(id)a3
+- (void)itemManagerDidFinishUpdate:(id)update
 {
   v4.receiver = self;
   v4.super_class = HUNetworkConfigurationSettingsViewController;
-  [(HUItemTableViewController *)&v4 itemManagerDidFinishUpdate:a3];
+  [(HUItemTableViewController *)&v4 itemManagerDidFinishUpdate:update];
   [(HUNetworkConfigurationSettingsViewController *)self updateNetworkConfigurationSettingsModuleFooter];
 }
 
 - (void)updateNetworkConfigurationSettingsModuleFooter
 {
-  v3 = [(HUItemTableViewController *)self itemManager];
-  [v3 recalculateVisibilityAndSortAllItems];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  [itemManager recalculateVisibilityAndSortAllItems];
 
-  v4 = [(HUNetworkConfigurationSettingsViewController *)self tableView];
-  [v4 reloadData];
+  tableView = [(HUNetworkConfigurationSettingsViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   v15 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  lCopy = l;
   v9 = HFLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    v14 = v8;
+    v14 = lCopy;
     _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "%@: User tapped URL: %@", &v11, 0x16u);
   }
 
-  return (a6 - 3) < 0xFFFFFFFFFFFFFFFELL;
+  return (interaction - 3) < 0xFFFFFFFFFFFFFFFELL;
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface CKWalletItemQueryController
-- (id)chatGUIDForSearchableItem:(id)a3;
-- (id)detailsFilterQueriesForChatGUIDs:(id)a3;
-- (id)detailsResultsValidationQueriesForChatGUIDs:(id)a3;
+- (id)chatGUIDForSearchableItem:(id)item;
+- (id)detailsFilterQueriesForChatGUIDs:(id)ds;
+- (id)detailsResultsValidationQueriesForChatGUIDs:(id)ds;
 - (id)fetchAttributes;
 - (id)filterQueries;
-- (id)queryAttributesForText:(id)a3;
+- (id)queryAttributesForText:(id)text;
 @end
 
 @implementation CKWalletItemQueryController
@@ -44,10 +44,10 @@
   return v7;
 }
 
-- (id)queryAttributesForText:(id)a3
+- (id)queryAttributesForText:(id)text
 {
   v10[3] = *MEMORY[0x1E69E9840];
-  if ([a3 length])
+  if ([text length])
   {
     v3 = *MEMORY[0x1E6963D18];
     v10[0] = *MEMORY[0x1E69649F8];
@@ -71,16 +71,16 @@
   return v7;
 }
 
-- (id)detailsFilterQueriesForChatGUIDs:(id)a3
+- (id)detailsFilterQueriesForChatGUIDs:(id)ds
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  dsCopy = ds;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = v3;
+  v5 = dsCopy;
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -110,7 +110,7 @@
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__67;
   v18 = __Block_byref_object_dispose__67;
-  v19 = [MEMORY[0x1E696AEC0] string];
+  string = [MEMORY[0x1E696AEC0] string];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __64__CKWalletItemQueryController_detailsFilterQueriesForChatGUIDs___block_invoke;
@@ -148,16 +148,16 @@ void __64__CKWalletItemQueryController_detailsFilterQueriesForChatGUIDs___block_
   }
 }
 
-- (id)detailsResultsValidationQueriesForChatGUIDs:(id)a3
+- (id)detailsResultsValidationQueriesForChatGUIDs:(id)ds
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  dsCopy = ds;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  obj = v3;
+  obj = dsCopy;
   v5 = [obj countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -187,12 +187,12 @@ void __64__CKWalletItemQueryController_detailsFilterQueriesForChatGUIDs___block_
   return v4;
 }
 
-- (id)chatGUIDForSearchableItem:(id)a3
+- (id)chatGUIDForSearchableItem:(id)item
 {
-  v3 = [a3 attributeSet];
-  v4 = [v3 accountIdentifier];
+  attributeSet = [item attributeSet];
+  accountIdentifier = [attributeSet accountIdentifier];
 
-  return v4;
+  return accountIdentifier;
 }
 
 @end

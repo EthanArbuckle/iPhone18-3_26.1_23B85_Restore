@@ -1,9 +1,9 @@
 @interface MBApp
-+ (BOOL)_unzipPlaceholderDomainZipFile:(id)a3 intoDirectory:(id)a4 error:(id *)a5;
-+ (BOOL)unzipPlaceholderDomainZipFile:(id)a3 intoDirectory:(id)a4 error:(id *)a5;
-+ (id)appWithPropertyList:(id)a3;
-+ (id)safeHarborWithPath:(id)a3;
-+ (void)_addContainer:(id)a3 toArray:(id)a4 visited:(id)a5;
++ (BOOL)_unzipPlaceholderDomainZipFile:(id)file intoDirectory:(id)directory error:(id *)error;
++ (BOOL)unzipPlaceholderDomainZipFile:(id)file intoDirectory:(id)directory error:(id *)error;
++ (id)appWithPropertyList:(id)list;
++ (id)safeHarborWithPath:(id)path;
++ (void)_addContainer:(id)container toArray:(id)array visited:(id)visited;
 - (BOOL)isAppUpdating;
 - (BOOL)isPlaceholder;
 - (BOOL)isSystemApp;
@@ -11,29 +11,29 @@
 - (NSArray)groups;
 - (NSArray)plugins;
 - (NSString)entitlementsRelativePath;
-- (id)_placeholderDomainRootedInDirectory:(id)a3;
-- (id)archivePlaceholderDomainWithPersonaIdentifier:(id)a3 intoDirectory:(id)a4 error:(id *)a5;
+- (id)_placeholderDomainRootedInDirectory:(id)directory;
+- (id)archivePlaceholderDomainWithPersonaIdentifier:(id)identifier intoDirectory:(id)directory error:(id *)error;
 - (id)domain;
 @end
 
 @implementation MBApp
 
-+ (BOOL)unzipPlaceholderDomainZipFile:(id)a3 intoDirectory:(id)a4 error:(id *)a5
++ (BOOL)unzipPlaceholderDomainZipFile:(id)file intoDirectory:(id)directory error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (!a5)
+  fileCopy = file;
+  directoryCopy = directory;
+  if (!error)
   {
     __assert_rtn("+[MBApp(Archiving) unzipPlaceholderDomainZipFile:intoDirectory:error:]", "MBApp+Archiving.m", 19, "outError");
   }
 
-  v10 = v9;
+  v10 = directoryCopy;
   v11 = +[NSFileManager defaultManager];
-  v12 = [v10 lastPathComponent];
-  v13 = [v12 stringByAppendingPathExtension:@"unzipping"];
+  lastPathComponent = [v10 lastPathComponent];
+  v13 = [lastPathComponent stringByAppendingPathExtension:@"unzipping"];
 
-  v14 = [v10 stringByDeletingLastPathComponent];
-  v15 = [v14 stringByAppendingPathComponent:v13];
+  stringByDeletingLastPathComponent = [v10 stringByDeletingLastPathComponent];
+  v15 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v13];
 
   v16 = MBGetDefaultLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -45,7 +45,7 @@
     _MBLog();
   }
 
-  if ([v11 fileExistsAtPath:v15] && (objc_msgSend(v11, "removeItemAtPath:error:", v15, a5) & 1) == 0)
+  if ([v11 fileExistsAtPath:v15] && (objc_msgSend(v11, "removeItemAtPath:error:", v15, error) & 1) == 0)
   {
     v24 = MBGetDefaultLog();
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -53,17 +53,17 @@
       goto LABEL_21;
     }
 
-    v26 = *a5;
+    v26 = *error;
     *buf = 138412546;
     v37 = v15;
     v38 = 2112;
     v39 = v26;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "Placeholder: Unable to remove existing temporary placeholder extraction directory: %@: %@", buf, 0x16u);
-    v32 = *a5;
+    v32 = *error;
     goto LABEL_20;
   }
 
-  if (([v11 createDirectoryAtPath:v15 withIntermediateDirectories:1 attributes:0 error:{a5, v30}] & 1) == 0)
+  if (([v11 createDirectoryAtPath:v15 withIntermediateDirectories:1 attributes:0 error:{error, v30}] & 1) == 0)
   {
     v24 = MBGetDefaultLog();
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -71,30 +71,30 @@
       goto LABEL_21;
     }
 
-    v25 = *a5;
+    v25 = *error;
     *buf = 138412546;
     v37 = v15;
     v38 = 2112;
     v39 = v25;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "Placeholder: Unable to create temporary placeholder extraction directory: %@: %@", buf, 0x16u);
-    v31 = *a5;
+    v31 = *error;
 LABEL_20:
     _MBLog();
     goto LABEL_21;
   }
 
-  if (([a1 _unzipPlaceholderDomainZipFile:v8 intoDirectory:v15 error:a5] & 1) == 0)
+  if (([self _unzipPlaceholderDomainZipFile:fileCopy intoDirectory:v15 error:error] & 1) == 0)
   {
     v24 = MBGetDefaultLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      v27 = *a5;
+      v27 = *error;
       *buf = 138412546;
       v37 = v15;
       v38 = 2112;
       v39 = v27;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "Placeholder: Unable to unzip placeholder: %@: %@", buf, 0x16u);
-      v33 = *a5;
+      v33 = *error;
       goto LABEL_20;
     }
 
@@ -104,7 +104,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if ([v11 fileExistsAtPath:v10] && (objc_msgSend(v11, "removeItemAtPath:error:", v10, a5) & 1) == 0)
+  if ([v11 fileExistsAtPath:v10] && (objc_msgSend(v11, "removeItemAtPath:error:", v10, error) & 1) == 0)
   {
     v24 = MBGetDefaultLog();
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -112,19 +112,19 @@ LABEL_21:
       goto LABEL_21;
     }
 
-    v29 = *a5;
+    v29 = *error;
     *buf = 138412546;
     v37 = v10;
     v38 = 2112;
     v39 = v29;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "Placeholder: Unable to remove existing placeholder directory: %@: %@", buf, 0x16u);
-    v34 = *a5;
+    v34 = *error;
     goto LABEL_20;
   }
 
-  v17 = [v15 fileSystemRepresentation];
-  v18 = [v10 fileSystemRepresentation];
-  rename(v17, v18, v19);
+  fileSystemRepresentation = [v15 fileSystemRepresentation];
+  fileSystemRepresentation2 = [v10 fileSystemRepresentation];
+  rename(fileSystemRepresentation, fileSystemRepresentation2, v19);
   if (v20)
   {
     v21 = MBGetDefaultLog();
@@ -143,7 +143,7 @@ LABEL_21:
     }
 
     [MBError posixErrorWithCode:*__error() path:v10 format:@"%@ -> %@", v15, v10];
-    *a5 = v23 = 0;
+    *error = v23 = 0;
   }
 
   else
@@ -156,22 +156,22 @@ LABEL_22:
   return v23;
 }
 
-+ (BOOL)_unzipPlaceholderDomainZipFile:(id)a3 intoDirectory:(id)a4 error:(id *)a5
++ (BOOL)_unzipPlaceholderDomainZipFile:(id)file intoDirectory:(id)directory error:(id *)error
 {
-  v8 = a3;
-  v41 = a4;
-  if (!a5)
+  fileCopy = file;
+  directoryCopy = directory;
+  if (!error)
   {
     __assert_rtn("+[MBApp(Archiving) _unzipPlaceholderDomainZipFile:intoDirectory:error:]", "MBApp+Archiving.m", 65, "outError");
   }
 
-  v9 = a1;
-  objc_sync_enter(v9);
-  v10 = open([v8 fileSystemRepresentation], 0);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v10 = open([fileCopy fileSystemRepresentation], 0);
   if (v10 < 0)
   {
-    [MBError posixErrorWithCode:*__error() path:v8 format:@"Unable to open zip file"];
-    *a5 = v24 = 0;
+    [MBError posixErrorWithCode:*__error() path:fileCopy format:@"Unable to open zip file"];
+    *error = v24 = 0;
     goto LABEL_21;
   }
 
@@ -187,11 +187,11 @@ LABEL_22:
   v65 = SZExtractorOptionsDenyInvalidSymlinks;
   v66 = &__kCFBooleanTrue;
   v12 = [NSDictionary dictionaryWithObjects:&v66 forKeys:&v65 count:1];
-  v13 = [v11 initWithPath:v41 options:v12];
+  v13 = [v11 initWithPath:directoryCopy options:v12];
 
   if (!v13)
   {
-    v31 = [MBError errorWithDomain:@"MBErrorDomain" code:0 path:v41 format:@"Unable to init SZExtractor"];
+    v31 = [MBError errorWithDomain:@"MBErrorDomain" code:0 path:directoryCopy format:@"Unable to init SZExtractor"];
     v32 = v55[5];
     v55[5] = v31;
 
@@ -240,7 +240,7 @@ LABEL_31:
   v15 = [[NSMutableData alloc] initWithCapacity:0x4000];
   [v15 setLength:0x4000];
   v16 = v15;
-  v17 = [v15 mutableBytes];
+  mutableBytes = [v15 mutableBytes];
   do
   {
     v18 = objc_autoreleasePoolPush();
@@ -248,12 +248,12 @@ LABEL_31:
     *(&v62 + 1) = &v62;
     v63 = 0x2020000000;
     v64 = 0;
-    v19 = read(v42, v17, 0x4000uLL);
+    v19 = read(v42, mutableBytes, 0x4000uLL);
     if (v19)
     {
       if (v19 == -1)
       {
-        v26 = [MBError errorWithDomain:@"MBErrorDomain" code:0 path:v8 format:@"Unable to read bytes from zip file"];
+        v26 = [MBError errorWithDomain:@"MBErrorDomain" code:0 path:fileCopy format:@"Unable to read bytes from zip file"];
         v27 = v55[5];
         v55[5] = v26;
 
@@ -307,7 +307,7 @@ LABEL_26:
   v43[1] = 3221225472;
   v43[2] = sub_1001AF15C;
   v43[3] = &unk_1003C0C80;
-  v44 = v8;
+  v44 = fileCopy;
   v46 = &v54;
   v22 = v14;
   v45 = v22;
@@ -326,7 +326,7 @@ LABEL_26:
   v23 = v55[5];
   if (v23)
   {
-    *a5 = v23;
+    *error = v23;
     v24 = v55[5] == 0;
   }
 
@@ -338,20 +338,20 @@ LABEL_26:
   _Block_object_dispose(&v54, 8);
 
 LABEL_21:
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 
   return v24;
 }
 
-- (id)_placeholderDomainRootedInDirectory:(id)a3
+- (id)_placeholderDomainRootedInDirectory:(id)directory
 {
-  v4 = a3;
-  v5 = [(MBApp *)self bundleID];
-  v6 = [v5 stringByAppendingPathExtension:@"ipa"];
+  directoryCopy = directory;
+  bundleID = [(MBApp *)self bundleID];
+  v6 = [bundleID stringByAppendingPathExtension:@"ipa"];
 
-  v7 = [(MBApp *)self bundleID];
-  v8 = [(MBContainer *)self volumeMountPoint];
-  v9 = [MBDomain appPlaceholderDomainWithIdentifier:v7 volumeMountPoint:v8 rootPath:v4];
+  bundleID2 = [(MBApp *)self bundleID];
+  volumeMountPoint = [(MBContainer *)self volumeMountPoint];
+  v9 = [MBDomain appPlaceholderDomainWithIdentifier:bundleID2 volumeMountPoint:volumeMountPoint rootPath:directoryCopy];
 
   v10 = [NSSet setWithObject:v6];
   [v9 setRelativePathsToBackupAndRestore:v10];
@@ -361,36 +361,36 @@ LABEL_21:
   return v9;
 }
 
-- (id)archivePlaceholderDomainWithPersonaIdentifier:(id)a3 intoDirectory:(id)a4 error:(id *)a5
+- (id)archivePlaceholderDomainWithPersonaIdentifier:(id)identifier intoDirectory:(id)directory error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (!a5)
+  identifierCopy = identifier;
+  directoryCopy = directory;
+  if (!error)
   {
     __assert_rtn("[MBApp(Archiving) archivePlaceholderDomainWithPersonaIdentifier:intoDirectory:error:]", "MBApp+Archiving.m", 171, "outError");
   }
 
-  v10 = v9;
-  v11 = [(MBApp *)self bundleID];
-  if (!v11)
+  v10 = directoryCopy;
+  bundleID = [(MBApp *)self bundleID];
+  if (!bundleID)
   {
     __assert_rtn("[MBApp(Archiving) archivePlaceholderDomainWithPersonaIdentifier:intoDirectory:error:]", "MBApp+Archiving.m", 174, "bundleID");
   }
 
-  v12 = v11;
-  v13 = [(MBApp *)self bundleDir];
-  if (!v13)
+  v12 = bundleID;
+  bundleDir = [(MBApp *)self bundleDir];
+  if (!bundleDir)
   {
     __assert_rtn("[MBApp(Archiving) archivePlaceholderDomainWithPersonaIdentifier:intoDirectory:error:]", "MBApp+Archiving.m", 176, "bundleDir");
   }
 
-  v14 = v13;
-  v15 = [v13 stringByStandardizingPath];
+  v14 = bundleDir;
+  stringByStandardizingPath = [bundleDir stringByStandardizingPath];
   if (!mkdir([v10 fileSystemRepresentation], 0x1C0u) || *__error() == 17)
   {
-    v47 = a5;
+    errorCopy = error;
     memset(&v58, 0, sizeof(v58));
-    if (stat([v15 fileSystemRepresentation], &v58))
+    if (stat([stringByStandardizingPath fileSystemRepresentation], &v58))
     {
       tv_sec = 0;
     }
@@ -424,11 +424,11 @@ LABEL_21:
       goto LABEL_44;
     }
 
-    v45 = v15;
+    v45 = stringByStandardizingPath;
     v21 = +[NSFileManager defaultManager];
     v22 = [v17 stringByAppendingPathExtension:@"zip"];
     v48 = v21;
-    v46 = v8;
+    v46 = identifierCopy;
     v44 = v17;
     if ([v21 fileExistsAtPath:v22])
     {
@@ -449,7 +449,7 @@ LABEL_21:
 
         v38 = v24;
         v28 = 0;
-        *v47 = v24;
+        *errorCopy = v24;
         v32 = v24;
         v17 = v44;
         goto LABEL_42;
@@ -513,7 +513,7 @@ LABEL_28:
 
         v36 = v32;
         v28 = 0;
-        *v47 = v32;
+        *errorCopy = v32;
       }
 
       v37 = v48;
@@ -542,13 +542,13 @@ LABEL_28:
 
     v40 = v32;
     v28 = 0;
-    *v47 = v32;
+    *errorCopy = v32;
 LABEL_42:
     v37 = v48;
 LABEL_43:
 
-    v8 = v46;
-    v15 = v45;
+    identifierCopy = v46;
+    stringByStandardizingPath = v45;
 LABEL_44:
 
     goto LABEL_45;
@@ -567,23 +567,23 @@ LABEL_44:
   }
 
   [MBError errorWithErrno:v29 path:v10 format:@"Placeholder: mkdir failed"];
-  *a5 = v28 = 0;
+  *error = v28 = 0;
 LABEL_45:
 
   return v28;
 }
 
-+ (id)appWithPropertyList:(id)a3
++ (id)appWithPropertyList:(id)list
 {
-  v3 = a3;
-  v4 = [(MBContainer *)[MBApp alloc] initWithPropertyList:v3 volumeMountPoint:0];
+  listCopy = list;
+  v4 = [(MBContainer *)[MBApp alloc] initWithPropertyList:listCopy volumeMountPoint:0];
 
   return v4;
 }
 
-+ (id)safeHarborWithPath:(id)a3
++ (id)safeHarborWithPath:(id)path
 {
-  v3 = [a3 stringByAppendingPathComponent:kMBSafeHarborInfoDirName];
+  v3 = [path stringByAppendingPathComponent:kMBSafeHarborInfoDirName];
   v4 = [v3 stringByAppendingPathComponent:kMBSafeHarborInfoPlistFilename];
 
   v5 = [NSDictionary dictionaryWithContentsOfFile:v4];
@@ -602,8 +602,8 @@ LABEL_45:
 
 - (NSString)entitlementsRelativePath
 {
-  v2 = [(MBApp *)self bundleDir];
-  v3 = sub_100261B78(v2);
+  bundleDir = [(MBApp *)self bundleDir];
+  v3 = sub_100261B78(bundleDir);
 
   return v3;
 }
@@ -632,8 +632,8 @@ LABEL_45:
 
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = [MBAppGroup alloc];
-        v11 = [(MBContainer *)self volumeMountPoint];
-        v12 = [(MBContainer *)v10 initWithPropertyList:v9 volumeMountPoint:v11];
+        volumeMountPoint = [(MBContainer *)self volumeMountPoint];
+        v12 = [(MBContainer *)v10 initWithPropertyList:v9 volumeMountPoint:volumeMountPoint];
         [v3 addObject:v12];
       }
 
@@ -670,8 +670,8 @@ LABEL_45:
 
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = [MBAppPlugin alloc];
-        v11 = [(MBContainer *)self volumeMountPoint];
-        v12 = [(MBContainer *)v10 initWithPropertyList:v9 volumeMountPoint:v11];
+        volumeMountPoint = [(MBContainer *)self volumeMountPoint];
+        v12 = [(MBContainer *)v10 initWithPropertyList:v9 volumeMountPoint:volumeMountPoint];
         [v3 addObject:v12];
       }
 
@@ -684,16 +684,16 @@ LABEL_45:
   return v3;
 }
 
-+ (void)_addContainer:(id)a3 toArray:(id)a4 visited:(id)a5
++ (void)_addContainer:(id)container toArray:(id)array visited:(id)visited
 {
-  v10 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v10 identifier];
-  if (([v8 containsObject:v9] & 1) == 0)
+  containerCopy = container;
+  arrayCopy = array;
+  visitedCopy = visited;
+  identifier = [containerCopy identifier];
+  if (([visitedCopy containsObject:identifier] & 1) == 0)
   {
-    [v7 addObject:v10];
-    [v8 addObject:v9];
+    [arrayCopy addObject:containerCopy];
+    [visitedCopy addObject:identifier];
   }
 }
 
@@ -706,8 +706,8 @@ LABEL_45:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = [(MBApp *)self groups];
-  v6 = [v5 countByEnumeratingWithState:&v30 objects:v36 count:16];
+  groups = [(MBApp *)self groups];
+  v6 = [groups countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v6)
   {
     v7 = v6;
@@ -718,13 +718,13 @@ LABEL_45:
       {
         if (*v31 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(groups);
         }
 
         [objc_opt_class() _addContainer:*(*(&v30 + 1) + 8 * i) toArray:v4 visited:v3];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v30 objects:v36 count:16];
+      v7 = [groups countByEnumeratingWithState:&v30 objects:v36 count:16];
     }
 
     while (v7);
@@ -755,8 +755,8 @@ LABEL_45:
         v25 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v14 = [v13 groups];
-        v15 = [v14 countByEnumeratingWithState:&v22 objects:v34 count:16];
+        groups2 = [v13 groups];
+        v15 = [groups2 countByEnumeratingWithState:&v22 objects:v34 count:16];
         if (v15)
         {
           v16 = v15;
@@ -767,13 +767,13 @@ LABEL_45:
             {
               if (*v23 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(groups2);
               }
 
               [objc_opt_class() _addContainer:*(*(&v22 + 1) + 8 * k) toArray:v4 visited:v3];
             }
 
-            v16 = [v14 countByEnumeratingWithState:&v22 objects:v34 count:16];
+            v16 = [groups2 countByEnumeratingWithState:&v22 objects:v34 count:16];
           }
 
           while (v16);
@@ -792,17 +792,17 @@ LABEL_45:
 - (BOOL)isAppUpdating
 {
   v2 = [(NSMutableDictionary *)self->super._plist objectForKeyedSubscript:@"IsUpdating"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isPlaceholder
 {
   v2 = [(NSMutableDictionary *)self->super._plist objectForKeyedSubscript:@"IsPlaceholder"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isSystemApp
@@ -823,10 +823,10 @@ LABEL_45:
 
 - (id)domain
 {
-  v3 = [(MBApp *)self bundleID];
-  v4 = [(MBContainer *)self volumeMountPoint];
-  v5 = [(MBContainer *)self containerDir];
-  v6 = [MBDomain appDomainWithIdentifier:v3 volumeMountPoint:v4 rootPath:v5];
+  bundleID = [(MBApp *)self bundleID];
+  volumeMountPoint = [(MBContainer *)self volumeMountPoint];
+  containerDir = [(MBContainer *)self containerDir];
+  v6 = [MBDomain appDomainWithIdentifier:bundleID volumeMountPoint:volumeMountPoint rootPath:containerDir];
 
   v7 = sub_10026242C();
   [v6 setRelativePathsToBackupAndRestore:v7];

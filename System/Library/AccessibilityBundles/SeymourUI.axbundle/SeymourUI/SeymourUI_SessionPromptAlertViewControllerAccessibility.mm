@@ -1,16 +1,16 @@
 @interface SeymourUI_SessionPromptAlertViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation SeymourUI_SessionPromptAlertViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SeymourUI.SessionPromptAlertViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"SeymourUI.SessionPromptAlertViewController" hasSwiftField:@"titleLabel" withSwiftType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SeymourUI.SessionPromptAlertViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"SeymourUI.SessionPromptAlertViewController" hasSwiftField:@"titleLabel" withSwiftType:"UILabel"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

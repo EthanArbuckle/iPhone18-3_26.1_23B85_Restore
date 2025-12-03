@@ -1,22 +1,22 @@
 @interface NSObject
 + (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key;
-+ (BOOL)implementsSelector:(SEL)a3;
-+ (BOOL)instancesImplementSelector:(SEL)a3;
++ (BOOL)implementsSelector:(SEL)selector;
++ (BOOL)instancesImplementSelector:(SEL)selector;
 + (NSSet)keyPathsForValuesAffectingValueForKey:(NSString *)key;
-+ (id)_createMutableArrayValueGetterWithContainerClassID:(id)a3 key:(id)a4;
-+ (id)_createMutableOrderedSetValueGetterWithContainerClassID:(id)a3 key:(id)a4;
-+ (id)_createMutableSetValueGetterWithContainerClassID:(id)a3 key:(id)a4;
-+ (id)_createOtherValueGetterWithContainerClassID:(id)a3 key:(id)a4;
-+ (id)_createOtherValueSetterWithContainerClassID:(id)a3 key:(id)a4;
-+ (id)_createValueGetterWithContainerClassID:(id)a3 key:(id)a4;
-+ (id)_createValuePrimitiveGetterWithContainerClassID:(id)a3 key:(id)a4;
-+ (id)_createValuePrimitiveSetterWithContainerClassID:(id)a3 key:(id)a4;
-+ (id)_createValueSetterWithContainerClassID:(id)a3 key:(id)a4;
-+ (id)_keysForValuesAffectingValueForKey:(id)a3;
++ (id)_createMutableArrayValueGetterWithContainerClassID:(id)d key:(id)key;
++ (id)_createMutableOrderedSetValueGetterWithContainerClassID:(id)d key:(id)key;
++ (id)_createMutableSetValueGetterWithContainerClassID:(id)d key:(id)key;
++ (id)_createOtherValueGetterWithContainerClassID:(id)d key:(id)key;
++ (id)_createOtherValueSetterWithContainerClassID:(id)d key:(id)key;
++ (id)_createValueGetterWithContainerClassID:(id)d key:(id)key;
++ (id)_createValuePrimitiveGetterWithContainerClassID:(id)d key:(id)key;
++ (id)_createValuePrimitiveSetterWithContainerClassID:(id)d key:(id)key;
++ (id)_createValueSetterWithContainerClassID:(id)d key:(id)key;
++ (id)_keysForValuesAffectingValueForKey:(id)key;
 + (void)cancelPreviousPerformRequestsWithTarget:(id)aTarget;
 + (void)cancelPreviousPerformRequestsWithTarget:(id)aTarget selector:(SEL)aSelector object:(id)anArgument;
 + (void)setKeys:(NSArray *)keys triggerChangeNotificationsForDependentKey:(NSString *)dependentKey;
-- (BOOL)implementsSelector:(SEL)a3;
+- (BOOL)implementsSelector:(SEL)selector;
 - (BOOL)validateValue:(id *)ioValue forKey:(NSString *)inKey error:(NSError *)outError;
 - (BOOL)validateValue:(id *)ioValue forKeyPath:(NSString *)inKeyPath error:(NSError *)outError;
 - (NSDictionary)dictionaryWithValuesForKeys:(NSArray *)keys;
@@ -27,25 +27,25 @@
 - (NSMutableSet)mutableSetValueForKey:(NSString *)key;
 - (NSMutableSet)mutableSetValueForKeyPath:(NSString *)keyPath;
 - (id)_implicitObservationInfo;
-- (id)addChainedObservers:(id)a3;
-- (id)addObservationTransformer:(id)a3;
-- (id)addObserver:(id)a3;
-- (id)addObserver:(id)a3 forObservableKeyPath:(id)a4;
-- (id)addObserverBlock:(id)a3;
+- (id)addChainedObservers:(id)observers;
+- (id)addObservationTransformer:(id)transformer;
+- (id)addObserver:(id)observer;
+- (id)addObserver:(id)observer forObservableKeyPath:(id)path;
+- (id)addObserverBlock:(id)block;
 - (id)replacementObjectForKeyedArchiver:(NSKeyedArchiver *)archiver;
 - (id)replacementObjectForPortCoder:(NSPortCoder *)coder;
 - (id)valueForKey:(NSString *)key;
 - (id)valueForKeyPath:(NSString *)keyPath;
 - (id)valueForUndefinedKey:(NSString *)key;
-- (void)_addObserver:(id)a3 forProperty:(id)a4 options:(unint64_t)a5 context:(void *)a6;
-- (void)_changeValueForKey:(id)a3 key:(id)a4 key:(id)a5 usingBlock:(id)a6;
-- (void)_changeValueForKey:(id)a3 usingBlock:(id)a4;
-- (void)_changeValueForKeys:(id *)a3 count:(unint64_t)a4 maybeOldValuesDict:(id)a5 maybeNewValuesDict:(id)a6 usingBlock:(id)a7;
-- (void)_notifyObserversForKeyPath:(id)a3 change:(id)a4;
-- (void)_notifyObserversOfChangeFromValuesForKeys:(id)a3 toValuesForKeys:(id)a4;
-- (void)_receiveBox:(id)a3;
-- (void)_removeObserver:(id)a3 forProperty:(id)a4;
-- (void)_setSharedObservationInfo:(uint64_t)a1;
+- (void)_addObserver:(id)observer forProperty:(id)property options:(unint64_t)options context:(void *)context;
+- (void)_changeValueForKey:(id)key key:(id)a4 key:(id)a5 usingBlock:(id)block;
+- (void)_changeValueForKey:(id)key usingBlock:(id)block;
+- (void)_changeValueForKeys:(id *)keys count:(unint64_t)count maybeOldValuesDict:(id)dict maybeNewValuesDict:(id)valuesDict usingBlock:(id)block;
+- (void)_notifyObserversForKeyPath:(id)path change:(id)change;
+- (void)_notifyObserversOfChangeFromValuesForKeys:(id)keys toValuesForKeys:(id)forKeys;
+- (void)_receiveBox:(id)box;
+- (void)_removeObserver:(id)observer forProperty:(id)property;
+- (void)_setSharedObservationInfo:(uint64_t)info;
 - (void)addObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context;
 - (void)finishObserving;
 - (void)observationInfo;
@@ -57,14 +57,14 @@
 - (void)performSelectorInBackground:(SEL)aSelector withObject:(id)arg;
 - (void)performSelectorOnMainThread:(SEL)aSelector withObject:(id)arg waitUntilDone:(BOOL)wait;
 - (void)performSelectorOnMainThread:(SEL)aSelector withObject:(id)arg waitUntilDone:(BOOL)wait modes:(NSArray *)array;
-- (void)receiveObservedError:(id)a3;
-- (void)receiveObservedValue:(id)a3;
-- (void)removeObservation:(id)a3;
+- (void)receiveObservedError:(id)error;
+- (void)receiveObservedValue:(id)value;
+- (void)removeObservation:(id)observation;
 - (void)removeObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath;
 - (void)removeObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath context:(void *)context;
-- (void)setObservation:(id)a3 forObservingKeyPath:(id)a4;
+- (void)setObservation:(id)observation forObservingKeyPath:(id)path;
 - (void)setObservationInfo:(void *)observationInfo;
-- (void)setSharedObservers:(id)a3;
+- (void)setSharedObservers:(id)observers;
 - (void)setValue:(id)value forKey:(NSString *)key;
 - (void)setValue:(id)value forKeyPath:(NSString *)keyPath;
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key;
@@ -110,21 +110,21 @@
   return Value;
 }
 
-- (id)addObserver:(id)a3 forObservableKeyPath:(id)a4
+- (id)addObserver:(id)observer forObservableKeyPath:(id)path
 {
-  v7 = [a3 conformsToProtocol:&unk_1EEF6F120];
+  v7 = [observer conformsToProtocol:&unk_1EEF6F120];
   v8 = off_1E69EED08;
   if (!v7)
   {
     v8 = off_1E69EECE0;
   }
 
-  v9 = [objc_alloc(*v8) initWithObservable:self observer:a3 keyPath:a4];
+  v9 = [objc_alloc(*v8) initWithObservable:self observer:observer keyPath:path];
 
   return v9;
 }
 
-- (void)setObservation:(id)a3 forObservingKeyPath:(id)a4
+- (void)setObservation:(id)observation forObservingKeyPath:(id)path
 {
   os_unfair_lock_lock(&setObservation_forObservingKeyPath__lock);
   AssociatedObject = objc_getAssociatedObject(self, "strongObservingKeyPathsAssociationKey");
@@ -134,25 +134,25 @@
     objc_setAssociatedObject(self, "strongObservingKeyPathsAssociationKey", AssociatedObject, 0x301);
   }
 
-  if (a3)
+  if (observation)
   {
-    [(NSMapTable *)AssociatedObject setObject:a3 forKey:a4];
+    [(NSMapTable *)AssociatedObject setObject:observation forKey:path];
   }
 
   else
   {
-    [(NSMapTable *)AssociatedObject removeObjectForKey:a4];
+    [(NSMapTable *)AssociatedObject removeObjectForKey:path];
   }
 
   os_unfair_lock_unlock(&setObservation_forObservingKeyPath__lock);
 }
 
-- (void)setSharedObservers:(id)a3
+- (void)setSharedObservers:(id)observers
 {
-  if (a3)
+  if (observers)
   {
 
-    [a3 _assignToObject:self];
+    [observers _assignToObject:self];
   }
 
   else
@@ -180,15 +180,15 @@
   [v2 finishObserving];
 }
 
-- (id)addChainedObservers:(id)a3
+- (id)addChainedObservers:(id)observers
 {
   v17 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [a3 reverseObjectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v12 count:16];
+  reverseObjectEnumerator = [observers reverseObjectEnumerator];
+  v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v13 objects:v12 count:16];
   if (v5)
   {
     v6 = v5;
@@ -200,7 +200,7 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -212,7 +212,7 @@
         v7 = v10;
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v12 count:16];
+      v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v13 objects:v12 count:16];
     }
 
     while (v6);
@@ -226,7 +226,7 @@
   return [self addObserver:v7];
 }
 
-- (id)addObserverBlock:(id)a3
+- (id)addObserverBlock:(id)block
 {
   if (qword_1ED43E7C0 != -1)
   {
@@ -237,14 +237,14 @@
   if (class_getMethodImplementation(Class, sel_addObserver_) == _MergedGlobals_19_1 || [self _overrideUseFastBlockObservers])
   {
     v6 = [_NSObserverList _copyObserversOfObject:1 creatingIfAbsent:?];
-    v7 = [(_NSObserverList *)v6 addBlockSink:a3 toObservableObject:self forTag:1];
+    v7 = [(_NSObserverList *)v6 addBlockSink:block toObservableObject:self forTag:1];
 
     return v7;
   }
 
   else
   {
-    v9 = [NSObservationSink handleValuesWithBlock:a3];
+    v9 = [NSObservationSink handleValuesWithBlock:block];
 
     return [self addObserver:v9];
   }
@@ -258,31 +258,31 @@ IMP __64__NSObject_DefaultObservationImplementations__addObserverBlock___block_i
   return result;
 }
 
-- (id)addObservationTransformer:(id)a3
+- (id)addObservationTransformer:(id)transformer
 {
   v4[5] = *MEMORY[0x1E69E9840];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __73__NSObject_DefaultObservationImplementations__addObservationTransformer___block_invoke;
   v4[3] = &unk_1E69F3DB0;
-  v4[4] = a3;
+  v4[4] = transformer;
   return [self addObserver:[NSObservationTransformer mapValuesWithBlock:v4]];
 }
 
-- (void)receiveObservedError:(id)a3
+- (void)receiveObservedError:(id)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v11 = __68__NSObject_DefaultObservationImplementations__receiveObservedError___block_invoke;
   v12 = &unk_1E69F30D8;
-  v13 = self;
+  selfCopy = self;
   v14[0] = 0;
   StackObservedValueClassAndBoxSize = getStackObservedValueClassAndBoxSize(v14);
   MEMORY[0x1EEE9AC00](StackObservedValueClassAndBoxSize);
   v8 = objc_constructInstance(v7, &v10[-1] - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0));
   v8[6] = 2;
-  *(v8 + 1) = a3;
+  *(v8 + 1) = error;
   *(v8 + 2) = self;
   v11(v10, v8);
 }
@@ -293,20 +293,20 @@ void __68__NSObject_DefaultObservationImplementations__receiveObservedError___bl
   [v3 _receiveBox:a2];
 }
 
-- (void)receiveObservedValue:(id)a3
+- (void)receiveObservedValue:(id)value
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v11 = __68__NSObject_DefaultObservationImplementations__receiveObservedValue___block_invoke;
   v12 = &unk_1E69F30D8;
-  v13 = self;
+  selfCopy = self;
   v14[0] = 0;
   StackObservedValueClassAndBoxSize = getStackObservedValueClassAndBoxSize(v14);
   MEMORY[0x1EEE9AC00](StackObservedValueClassAndBoxSize);
   v8 = objc_constructInstance(v7, &v10[-1] - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0));
   v8[6] = 1;
-  *(v8 + 1) = a3;
+  *(v8 + 1) = value;
   *(v8 + 2) = self;
   v11(v10, v8);
 }
@@ -317,23 +317,23 @@ void __68__NSObject_DefaultObservationImplementations__receiveObservedValue___bl
   [v3 _receiveBox:a2];
 }
 
-- (id)addObserver:(id)a3
+- (id)addObserver:(id)observer
 {
   v5 = [_NSObserverList _copyObserversOfObject:1 creatingIfAbsent:?];
-  v6 = [(_NSObserverList *)v5 addObserver:a3 toObservableObject:self];
+  v6 = [(_NSObserverList *)v5 addObserver:observer toObservableObject:self];
 
   return v6;
 }
 
-- (void)removeObservation:(id)a3
+- (void)removeObservation:(id)observation
 {
   v4 = [_NSObserverList _copyObserversOfObject:0 creatingIfAbsent:?];
-  [v4 removeObservation:a3];
+  [v4 removeObservation:observation];
 }
 
-- (void)_receiveBox:(id)a3
+- (void)_receiveBox:(id)box
 {
-  v4 = *(a3 + 6);
+  v4 = *(box + 6);
   switch(v4)
   {
     case 3:
@@ -341,12 +341,12 @@ void __68__NSObject_DefaultObservationImplementations__receiveObservedValue___bl
       [self finishObserving];
       break;
     case 2:
-      v6 = *(a3 + 1);
+      v6 = *(box + 1);
 
       [self receiveObservedError:v6];
       break;
     case 1:
-      v5 = *(a3 + 1);
+      v5 = *(box + 1);
 
       [self receiveObservedValue:v5];
       break;
@@ -355,12 +355,12 @@ void __68__NSObject_DefaultObservationImplementations__receiveObservedValue___bl
   }
 }
 
-+ (id)_createMutableArrayValueGetterWithContainerClassID:(id)a3 key:(id)a4
++ (id)_createMutableArrayValueGetterWithContainerClassID:(id)d key:(id)key
 {
   v42 = *MEMORY[0x1E69E9840];
-  if (_NSKVONotifyingMutatorsShouldNotifyForIsaAndKey(a1, a4))
+  if (_NSKVONotifyingMutatorsShouldNotifyForIsaAndKey(self, key))
   {
-    v7 = _NSKVONotifyingOriginalClassForIsa(a1);
+    v7 = _NSKVONotifyingOriginalClassForIsa(self);
     v8 = NSKeyValueCachedMutableArrayGetters;
     if (!NSKeyValueCachedMutableArrayGetters)
     {
@@ -375,10 +375,10 @@ void __68__NSObject_DefaultObservationImplementations__receiveObservedValue___bl
 
     callBacks.version = 0;
     callBacks.retain = v7;
-    callBacks.release = a4;
-    if (a4)
+    callBacks.release = key;
+    if (key)
     {
-      v10 = CFHash(a4);
+      v10 = CFHash(key);
       v8 = NSKeyValueCachedMutableArrayGetters;
     }
 
@@ -395,10 +395,10 @@ void __68__NSObject_DefaultObservationImplementations__receiveObservedValue___bl
       CFSetAddValue(NSKeyValueCachedMutableArrayGetters, Value);
     }
 
-    return [[NSKeyValueNotifyingMutableCollectionGetter alloc] initWithContainerClassID:a3 key:a4 mutableCollectionGetter:Value proxyClass:objc_opt_self()];
+    return [[NSKeyValueNotifyingMutableCollectionGetter alloc] initWithContainerClassID:d key:key mutableCollectionGetter:Value proxyClass:objc_opt_self()];
   }
 
-  v11 = [a4 lengthOfBytesUsingEncoding:4];
+  v11 = [key lengthOfBytesUsingEncoding:4];
   v12 = v11;
   v13 = v11 + 1;
   if (v11 == -1)
@@ -413,13 +413,13 @@ void __68__NSObject_DefaultObservationImplementations__receiveObservedValue___bl
     v15 = malloc_type_malloc(v11 + 1, 0x100004077774924uLL);
   }
 
-  [a4 getCString:v15 maxLength:v13 encoding:{4, v14}];
+  [key getCString:v15 maxLength:v13 encoding:{4, v14}];
   if (v13 >= 2 && v15 && memchr(v15, 0, v12))
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Attempted to use a key or key path whose UTF-8 representation contains a NUL character" userInfo:0]);
   }
 
-  if ([a4 length])
+  if ([key length])
   {
     *v15 = __toupper(*v15);
   }
@@ -437,11 +437,11 @@ void __68__NSObject_DefaultObservationImplementations__receiveObservedValue___bl
   }
 
   callBacks.version = 0;
-  callBacks.retain = a1;
-  callBacks.release = a4;
-  if (a4)
+  callBacks.retain = self;
+  callBacks.release = key;
+  if (key)
   {
-    v18 = CFHash(a4);
+    v18 = CFHash(key);
     v16 = _MergedGlobals_98;
   }
 
@@ -450,42 +450,42 @@ void __68__NSObject_DefaultObservationImplementations__receiveObservedValue___bl
     v18 = 0;
   }
 
-  callBacks.copyDescription = (v18 ^ a1);
-  v21 = CFSetGetValue(v16, &callBacks);
-  if (!v21)
+  callBacks.copyDescription = (v18 ^ self);
+  _createValueGetterWithContainerClassID_key_ = CFSetGetValue(v16, &callBacks);
+  if (!_createValueGetterWithContainerClassID_key_)
   {
-    v21 = [a1 _createValueGetterWithContainerClassID_key_];
-    CFSetAddValue(_MergedGlobals_98, v21);
+    _createValueGetterWithContainerClassID_key_ = [self _createValueGetterWithContainerClassID_key_];
+    CFSetAddValue(_MergedGlobals_98, _createValueGetterWithContainerClassID_key_);
   }
 
-  v22 = NSKeyValueMethodForPattern(a1, "insertObject:in%sAtIndex:", v15);
-  v23 = NSKeyValueMethodForPattern(a1, "insert%s:atIndexes:", v15);
-  v24 = NSKeyValueMethodForPattern(a1, "removeObjectFrom%sAtIndex:", v15);
-  v25 = NSKeyValueMethodForPattern(a1, "remove%sAtIndexes:", v15);
+  v22 = NSKeyValueMethodForPattern(self, "insertObject:in%sAtIndex:", v15);
+  v23 = NSKeyValueMethodForPattern(self, "insert%s:atIndexes:", v15);
+  v24 = NSKeyValueMethodForPattern(self, "removeObjectFrom%sAtIndex:", v15);
+  v25 = NSKeyValueMethodForPattern(self, "remove%sAtIndexes:", v15);
   if (v22 | v23)
   {
     v26 = v25;
     if (v24 | v25)
     {
-      v40 = a3;
+      dCopy = d;
       v27 = objc_alloc_init(NSKeyValueMutatingArrayMethodSet);
       v27->insertObjectAtIndex = v22;
       v27->insertObjectsAtIndexes = v23;
       v27->removeObjectAtIndex = v24;
       v27->removeObjectsAtIndexes = v26;
-      v27->replaceObjectAtIndex = NSKeyValueMethodForPattern(a1, "replaceObjectIn%sAtIndex:withObject:", v15);
-      v27->replaceObjectsAtIndexes = NSKeyValueMethodForPattern(a1, "replace%sAtIndexes:with%s:", v15, v15);
+      v27->replaceObjectAtIndex = NSKeyValueMethodForPattern(self, "replaceObjectIn%sAtIndex:withObject:", v15);
+      v27->replaceObjectsAtIndexes = NSKeyValueMethodForPattern(self, "replace%sAtIndexes:with%s:", v15, v15);
       if (objc_opt_isKindOfClass())
       {
         v28 = [NSKeyValueFastMutableCollection1Getter alloc];
-        v29 = [v21 methods];
-        v30 = [(NSKeyValueFastMutableCollection1Getter *)v28 initWithContainerClassID:v40 key:a4 nonmutatingMethods:v29 mutatingMethods:v27 proxyClass:objc_opt_self()];
+        methods = [_createValueGetterWithContainerClassID_key_ methods];
+        v30 = [(NSKeyValueFastMutableCollection1Getter *)v28 initWithContainerClassID:dCopy key:key nonmutatingMethods:methods mutatingMethods:v27 proxyClass:objc_opt_self()];
       }
 
       else
       {
         v38 = [NSKeyValueFastMutableCollection2Getter alloc];
-        v30 = [(NSKeyValueFastMutableCollection2Getter *)v38 initWithContainerClassID:v40 key:a4 baseGetter:v21 mutatingMethods:v27 proxyClass:objc_opt_self()];
+        v30 = [(NSKeyValueFastMutableCollection2Getter *)v38 initWithContainerClassID:dCopy key:key baseGetter:_createValueGetterWithContainerClassID_key_ mutatingMethods:v27 proxyClass:objc_opt_self()];
       }
 
       v20 = v30;
@@ -514,12 +514,12 @@ LABEL_40:
   }
 
   callBacks.version = 0;
-  callBacks.retain = a1;
-  callBacks.release = a4;
-  v33 = a3;
-  if (a4)
+  callBacks.retain = self;
+  callBacks.release = key;
+  dCopy2 = d;
+  if (key)
   {
-    v34 = CFHash(a4);
+    v34 = CFHash(key);
     v31 = NSKeyValueCachedSetters;
   }
 
@@ -528,22 +528,22 @@ LABEL_40:
     v34 = 0;
   }
 
-  callBacks.copyDescription = (v34 ^ a1);
-  v35 = CFSetGetValue(v31, &callBacks);
-  if (!v35)
+  callBacks.copyDescription = (v34 ^ self);
+  _createValueSetterWithContainerClassID_key_ = CFSetGetValue(v31, &callBacks);
+  if (!_createValueSetterWithContainerClassID_key_)
   {
-    v35 = [a1 _createValueSetterWithContainerClassID_key_];
-    CFSetAddValue(NSKeyValueCachedSetters, v35);
+    _createValueSetterWithContainerClassID_key_ = [self _createValueSetterWithContainerClassID_key_];
+    CFSetAddValue(NSKeyValueCachedSetters, _createValueSetterWithContainerClassID_key_);
   }
 
   if (objc_opt_isKindOfClass())
   {
-    v36 = -[NSKeyValueIvarMutableCollectionGetter initWithContainerClassID:key:containerIsa:ivar:proxyClass:]([NSKeyValueIvarMutableCollectionGetter alloc], "initWithContainerClassID:key:containerIsa:ivar:proxyClass:", v33, a4, a1, [v35 ivar], objc_opt_self());
+    v36 = -[NSKeyValueIvarMutableCollectionGetter initWithContainerClassID:key:containerIsa:ivar:proxyClass:]([NSKeyValueIvarMutableCollectionGetter alloc], "initWithContainerClassID:key:containerIsa:ivar:proxyClass:", dCopy2, key, self, [_createValueSetterWithContainerClassID_key_ ivar], objc_opt_self());
   }
 
   else
   {
-    v36 = [[NSKeyValueSlowMutableCollectionGetter alloc] initWithContainerClassID:v33 key:a4 baseGetter:v21 baseSetter:v35 containerIsa:a1 proxyClass:objc_opt_self()];
+    v36 = [[NSKeyValueSlowMutableCollectionGetter alloc] initWithContainerClassID:dCopy2 key:key baseGetter:_createValueGetterWithContainerClassID_key_ baseSetter:_createValueSetterWithContainerClassID_key_ containerIsa:self proxyClass:objc_opt_self()];
   }
 
   v20 = v36;
@@ -618,15 +618,15 @@ LABEL_40:
   callBacks.retain = Class;
   callBacks.release = key;
   callBacks.copyDescription = (CFHash(key) ^ Class);
-  v9 = CFSetGetValue(NSKeyValueCachedSetters, &callBacks);
-  if (!v9)
+  _createValueSetterWithContainerClassID_key_ = CFSetGetValue(NSKeyValueCachedSetters, &callBacks);
+  if (!_createValueSetterWithContainerClassID_key_)
   {
-    v9 = [Class _createValueSetterWithContainerClassID_key_];
-    CFSetAddValue(NSKeyValueCachedSetters, v9);
+    _createValueSetterWithContainerClassID_key_ = [Class _createValueSetterWithContainerClassID_key_];
+    CFSetAddValue(NSKeyValueCachedSetters, _createValueSetterWithContainerClassID_key_);
   }
 
   os_unfair_lock_unlock(&NSKeyValueCachedAccessorLock);
-  _NSSetUsingKeyValueSetter(self, v9, value);
+  _NSSetUsingKeyValueSetter(self, _createValueSetterWithContainerClassID_key_, value);
 }
 
 - (BOOL)validateValue:(id *)ioValue forKey:(NSString *)inKey error:(NSError *)outError
@@ -1088,15 +1088,15 @@ LABEL_7:
 
 - (id)valueForUndefinedKey:(NSString *)key
 {
-  v3 = key;
+  null = key;
   v5 = [NSString stringWithFormat:@"[<%@ %p> valueForUndefinedKey:]: this class is not key value coding-compliant for the key %@.", objc_opt_class(), self, key];
   v6 = objc_alloc(MEMORY[0x1E695DF20]);
-  if (!v3)
+  if (!null)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v7 = [v6 initWithObjectsAndKeys:{self, @"NSTargetObjectUserInfoKey", v3, @"NSUnknownUserInfoKey", 0}];
+  v7 = [v6 initWithObjectsAndKeys:{self, @"NSTargetObjectUserInfoKey", null, @"NSUnknownUserInfoKey", 0}];
   v8 = [MEMORY[0x1E695DF30] exceptionWithName:@"NSUnknownKeyException" reason:v5 userInfo:v7];
 
   [v8 raise];
@@ -1105,15 +1105,15 @@ LABEL_7:
 
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key
 {
-  v4 = key;
+  null = key;
   v6 = [NSString stringWithFormat:@"[<%@ %p> setValue:forUndefinedKey:]: this class is not key value coding-compliant for the key %@.", objc_opt_class(), self, key];
   v7 = objc_alloc(MEMORY[0x1E695DF20]);
-  if (!v4)
+  if (!null)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v8 = [v7 initWithObjectsAndKeys:{self, @"NSTargetObjectUserInfoKey", v4, @"NSUnknownUserInfoKey", 0}];
+  v8 = [v7 initWithObjectsAndKeys:{self, @"NSTargetObjectUserInfoKey", null, @"NSUnknownUserInfoKey", 0}];
   v9 = [MEMORY[0x1E695DF30] exceptionWithName:@"NSUnknownKeyException" reason:v6 userInfo:v8];
 
   [v9 raise];
@@ -1125,10 +1125,10 @@ LABEL_7:
   v6 = malloc_type_malloc(8 * v5, 0x80040B8603338uLL);
   v7 = malloc_type_malloc(8 * v5, 0x80040B8603338uLL);
   [(NSArray *)keys getObjects:v6 range:0, v5];
-  v8 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   if (v5)
   {
-    v9 = v8;
+    v9 = null;
     v10 = v6;
     v11 = v7;
     v12 = v5;
@@ -1162,7 +1162,7 @@ LABEL_7:
 - (void)setValuesForKeysWithDictionary:(NSDictionary *)keyedValues
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -1183,7 +1183,7 @@ LABEL_7:
 
         v10 = *(*(&v14 + 1) + 8 * i);
         v11 = [(NSDictionary *)keyedValues objectForKey:v10];
-        if (v11 == v5)
+        if (v11 == null)
         {
           v12 = 0;
         }
@@ -1203,10 +1203,10 @@ LABEL_7:
   }
 }
 
-+ (id)_createValueGetterWithContainerClassID:(id)a3 key:(id)a4
++ (id)_createValueGetterWithContainerClassID:(id)d key:(id)key
 {
   v33[3] = *MEMORY[0x1E69E9840];
-  v7 = [a4 lengthOfBytesUsingEncoding:4];
+  v7 = [key lengthOfBytesUsingEncoding:4];
   v8 = v7 + 1;
   if (v7 == -1)
   {
@@ -1220,7 +1220,7 @@ LABEL_7:
     v10 = malloc_type_malloc(v7 + 1, 0x100004077774924uLL);
   }
 
-  [a4 getCString:v10 maxLength:v8 encoding:{4, v9}];
+  [key getCString:v10 maxLength:v8 encoding:{4, v9}];
   if (v8 <= 1)
   {
     v11 = 1;
@@ -1238,7 +1238,7 @@ LABEL_7:
     goto LABEL_52;
   }
 
-  v14 = [a4 length];
+  v14 = [key length];
   if (v14)
   {
     v14 = __toupper(*v10);
@@ -1257,7 +1257,7 @@ LABEL_7:
     LOBYTE(v33[0]) = 0;
   }
 
-  [a4 getCString:v15 maxLength:v8 encoding:4];
+  [key getCString:v15 maxLength:v8 encoding:4];
   if ((v13 & 1) == 0)
   {
     if (memchr(v10, 0, v11 - 1))
@@ -1267,19 +1267,19 @@ LABEL_52:
     }
   }
 
-  v16 = NSKeyValueMethodForPattern(a1, "get%s", v10);
-  if (v16 || (v16 = NSKeyValueMethodForPattern(a1, "%s", v15)) != 0 || (v16 = NSKeyValueMethodForPattern(a1, "is%s", v10)) != 0 || (v16 = NSKeyValueMethodForPattern(a1, "_get%s", v10)) != 0 || (v16 = NSKeyValueMethodForPattern(a1, "_%s", v15)) != 0)
+  v16 = NSKeyValueMethodForPattern(self, "get%s", v10);
+  if (v16 || (v16 = NSKeyValueMethodForPattern(self, "%s", v15)) != 0 || (v16 = NSKeyValueMethodForPattern(self, "is%s", v10)) != 0 || (v16 = NSKeyValueMethodForPattern(self, "_get%s", v10)) != 0 || (v16 = NSKeyValueMethodForPattern(self, "_%s", v15)) != 0)
   {
-    v17 = [[NSKeyValueMethodGetter alloc] initWithContainerClassID:a3 key:a4 method:v16];
+    v17 = [[NSKeyValueMethodGetter alloc] initWithContainerClassID:d key:key method:v16];
 LABEL_28:
     v18 = v17;
     goto LABEL_29;
   }
 
-  v20 = NSKeyValueMethodForPattern(a1, "countOf%s", v10);
-  v21 = NSKeyValueMethodForPattern(a1, "objectIn%sAtIndex:", v10);
-  v22 = NSKeyValueMethodForPattern(a1, "%sAtIndexes:", v15);
-  v23 = NSKeyValueMethodForPattern(a1, "indexIn%sOfObject:", v10);
+  v20 = NSKeyValueMethodForPattern(self, "countOf%s", v10);
+  v21 = NSKeyValueMethodForPattern(self, "objectIn%sAtIndex:", v10);
+  v22 = NSKeyValueMethodForPattern(self, "%sAtIndexes:", v15);
+  v23 = NSKeyValueMethodForPattern(self, "indexIn%sOfObject:", v10);
   if (v23 && v20)
   {
     if (v21 | v22)
@@ -1291,8 +1291,8 @@ LABEL_28:
       v25->indexOfObject = v24;
       v25->objectsAtIndexes = v22;
       v26 = v25;
-      v25->getObjectsRange = NSKeyValueMethodForPattern(a1, "get%s:range:", v10);
-      v18 = [[NSKeyValueCollectionGetter alloc] initWithContainerClassID:a3 key:a4 methods:v26 proxyClass:objc_opt_self()];
+      v25->getObjectsRange = NSKeyValueMethodForPattern(self, "get%s:range:", v10);
+      v18 = [[NSKeyValueCollectionGetter alloc] initWithContainerClassID:d key:key methods:v26 proxyClass:objc_opt_self()];
 
       goto LABEL_29;
     }
@@ -1309,10 +1309,10 @@ LABEL_28:
     v27->count = v20;
     v27->objectAtIndex = v21;
     v27->objectsAtIndexes = v22;
-    v27->getObjectsRange = NSKeyValueMethodForPattern(a1, "get%s:range:", v10);
+    v27->getObjectsRange = NSKeyValueMethodForPattern(self, "get%s:range:", v10);
     v28 = [NSKeyValueCollectionGetter alloc];
 LABEL_45:
-    v18 = [(NSKeyValueCollectionGetter *)v28 initWithContainerClassID:a3 key:a4 methods:v27 proxyClass:objc_opt_self()];
+    v18 = [(NSKeyValueCollectionGetter *)v28 initWithContainerClassID:d key:key methods:v27 proxyClass:objc_opt_self()];
 
 LABEL_29:
     if (v18)
@@ -1324,8 +1324,8 @@ LABEL_29:
   }
 
 LABEL_41:
-  v29 = NSKeyValueMethodForPattern(a1, "enumeratorOf%s", v10);
-  v30 = NSKeyValueMethodForPattern(a1, "memberOf%s:", v10);
+  v29 = NSKeyValueMethodForPattern(self, "enumeratorOf%s", v10);
+  v30 = NSKeyValueMethodForPattern(self, "memberOf%s:", v10);
   if (v20)
   {
     if (v29)
@@ -1343,18 +1343,18 @@ LABEL_41:
     }
   }
 
-  if ([a1 accessInstanceVariablesDirectly])
+  if ([self accessInstanceVariablesDirectly])
   {
-    v32 = NSKeyValueIvarForPattern(a1, "_%s", v15);
-    if (v32 || (v32 = NSKeyValueIvarForPattern(a1, "_is%s", v10)) != 0 || (v32 = NSKeyValueIvarForPattern(a1, "%s", v15)) != 0 || (v32 = NSKeyValueIvarForPattern(a1, "is%s", v10)) != 0)
+    v32 = NSKeyValueIvarForPattern(self, "_%s", v15);
+    if (v32 || (v32 = NSKeyValueIvarForPattern(self, "_is%s", v10)) != 0 || (v32 = NSKeyValueIvarForPattern(self, "%s", v15)) != 0 || (v32 = NSKeyValueIvarForPattern(self, "is%s", v10)) != 0)
     {
-      v17 = [[NSKeyValueIvarGetter alloc] initWithContainerClassID:a3 key:a4 containerIsa:a1 ivar:v32];
+      v17 = [[NSKeyValueIvarGetter alloc] initWithContainerClassID:d key:key containerIsa:self ivar:v32];
       goto LABEL_28;
     }
   }
 
 LABEL_30:
-  v18 = [a1 _createValuePrimitiveGetterWithContainerClassID:a3 key:a4];
+  v18 = [self _createValuePrimitiveGetterWithContainerClassID:d key:key];
 LABEL_31:
   if (v8)
   {
@@ -1365,10 +1365,10 @@ LABEL_31:
   return v18;
 }
 
-+ (id)_createValueSetterWithContainerClassID:(id)a3 key:(id)a4
++ (id)_createValueSetterWithContainerClassID:(id)d key:(id)key
 {
   v21[3] = *MEMORY[0x1E69E9840];
-  v7 = [a4 lengthOfBytesUsingEncoding:4];
+  v7 = [key lengthOfBytesUsingEncoding:4];
   v8 = v7 + 1;
   if (v7 == -1)
   {
@@ -1382,7 +1382,7 @@ LABEL_31:
     v10 = malloc_type_malloc(v7 + 1, 0x100004077774924uLL);
   }
 
-  [a4 getCString:v10 maxLength:v8 encoding:{4, v9}];
+  [key getCString:v10 maxLength:v8 encoding:{4, v9}];
   if (v8 <= 1)
   {
     v11 = 1;
@@ -1400,7 +1400,7 @@ LABEL_31:
     goto LABEL_37;
   }
 
-  v14 = [a4 length];
+  v14 = [key length];
   if (v14)
   {
     v14 = __toupper(*v10);
@@ -1419,7 +1419,7 @@ LABEL_31:
     LOBYTE(v21[0]) = 0;
   }
 
-  [a4 getCString:v15 maxLength:v8 encoding:4];
+  [key getCString:v15 maxLength:v8 encoding:4];
   if ((v13 & 1) == 0)
   {
     if (memchr(v10, 0, v11 - 1))
@@ -1429,19 +1429,19 @@ LABEL_37:
     }
   }
 
-  v16 = NSKeyValueMethodForPattern(a1, "set%s:", v10);
-  if (v16 || (v16 = NSKeyValueMethodForPattern(a1, "_set%s:", v10)) != 0 || (v16 = NSKeyValueMethodForPattern(a1, "setIs%s:", v10)) != 0)
+  v16 = NSKeyValueMethodForPattern(self, "set%s:", v10);
+  if (v16 || (v16 = NSKeyValueMethodForPattern(self, "_set%s:", v10)) != 0 || (v16 = NSKeyValueMethodForPattern(self, "setIs%s:", v10)) != 0)
   {
-    v17 = [[NSKeyValueMethodSetter alloc] initWithContainerClassID:a3 key:a4 method:v16];
+    v17 = [[NSKeyValueMethodSetter alloc] initWithContainerClassID:d key:key method:v16];
     goto LABEL_26;
   }
 
-  if ([a1 accessInstanceVariablesDirectly])
+  if ([self accessInstanceVariablesDirectly])
   {
-    v20 = NSKeyValueIvarForPattern(a1, "_%s", v15);
-    if (v20 || (v20 = NSKeyValueIvarForPattern(a1, "_is%s", v10)) != 0 || (v20 = NSKeyValueIvarForPattern(a1, "%s", v15)) != 0 || (v20 = NSKeyValueIvarForPattern(a1, "is%s", v10)) != 0)
+    v20 = NSKeyValueIvarForPattern(self, "_%s", v15);
+    if (v20 || (v20 = NSKeyValueIvarForPattern(self, "_is%s", v10)) != 0 || (v20 = NSKeyValueIvarForPattern(self, "%s", v15)) != 0 || (v20 = NSKeyValueIvarForPattern(self, "is%s", v10)) != 0)
     {
-      v17 = [[NSKeyValueIvarSetter alloc] initWithContainerClassID:a3 key:a4 containerIsa:a1 ivar:v20];
+      v17 = [[NSKeyValueIvarSetter alloc] initWithContainerClassID:d key:key containerIsa:self ivar:v20];
 LABEL_26:
       v18 = v17;
       if (v17)
@@ -1451,7 +1451,7 @@ LABEL_26:
     }
   }
 
-  v18 = [a1 _createValuePrimitiveSetterWithContainerClassID:a3 key:a4];
+  v18 = [self _createValuePrimitiveSetterWithContainerClassID:d key:key];
 LABEL_28:
   if (v8)
   {
@@ -1462,12 +1462,12 @@ LABEL_28:
   return v18;
 }
 
-+ (id)_createMutableOrderedSetValueGetterWithContainerClassID:(id)a3 key:(id)a4
++ (id)_createMutableOrderedSetValueGetterWithContainerClassID:(id)d key:(id)key
 {
   v42 = *MEMORY[0x1E69E9840];
-  if (_NSKVONotifyingMutatorsShouldNotifyForIsaAndKey(a1, a4))
+  if (_NSKVONotifyingMutatorsShouldNotifyForIsaAndKey(self, key))
   {
-    v7 = _NSKVONotifyingOriginalClassForIsa(a1);
+    v7 = _NSKVONotifyingOriginalClassForIsa(self);
     v8 = NSKeyValueCachedMutableOrderedSetGetters;
     if (!NSKeyValueCachedMutableOrderedSetGetters)
     {
@@ -1482,10 +1482,10 @@ LABEL_28:
 
     callBacks.version = 0;
     callBacks.retain = v7;
-    callBacks.release = a4;
-    if (a4)
+    callBacks.release = key;
+    if (key)
     {
-      v10 = CFHash(a4);
+      v10 = CFHash(key);
       v8 = NSKeyValueCachedMutableOrderedSetGetters;
     }
 
@@ -1502,10 +1502,10 @@ LABEL_28:
       CFSetAddValue(NSKeyValueCachedMutableOrderedSetGetters, Value);
     }
 
-    return [[NSKeyValueNotifyingMutableCollectionGetter alloc] initWithContainerClassID:a3 key:a4 mutableCollectionGetter:Value proxyClass:objc_opt_self()];
+    return [[NSKeyValueNotifyingMutableCollectionGetter alloc] initWithContainerClassID:d key:key mutableCollectionGetter:Value proxyClass:objc_opt_self()];
   }
 
-  v11 = [a4 lengthOfBytesUsingEncoding:4];
+  v11 = [key lengthOfBytesUsingEncoding:4];
   v12 = v11;
   v13 = v11 + 1;
   if (v11 == -1)
@@ -1520,13 +1520,13 @@ LABEL_28:
     v15 = malloc_type_malloc(v11 + 1, 0x100004077774924uLL);
   }
 
-  [a4 getCString:v15 maxLength:v13 encoding:{4, v14}];
+  [key getCString:v15 maxLength:v13 encoding:{4, v14}];
   if (v13 >= 2 && v15 && memchr(v15, 0, v12))
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Attempted to use a key or key path whose UTF-8 representation contains a NUL character" userInfo:0]);
   }
 
-  if ([a4 length])
+  if ([key length])
   {
     *v15 = __toupper(*v15);
   }
@@ -1544,11 +1544,11 @@ LABEL_28:
   }
 
   callBacks.version = 0;
-  callBacks.retain = a1;
-  callBacks.release = a4;
-  if (a4)
+  callBacks.retain = self;
+  callBacks.release = key;
+  if (key)
   {
-    v18 = CFHash(a4);
+    v18 = CFHash(key);
     v16 = _MergedGlobals_98;
   }
 
@@ -1557,42 +1557,42 @@ LABEL_28:
     v18 = 0;
   }
 
-  callBacks.copyDescription = (v18 ^ a1);
-  v21 = CFSetGetValue(v16, &callBacks);
-  if (!v21)
+  callBacks.copyDescription = (v18 ^ self);
+  _createValueGetterWithContainerClassID_key_ = CFSetGetValue(v16, &callBacks);
+  if (!_createValueGetterWithContainerClassID_key_)
   {
-    v21 = [a1 _createValueGetterWithContainerClassID_key_];
-    CFSetAddValue(_MergedGlobals_98, v21);
+    _createValueGetterWithContainerClassID_key_ = [self _createValueGetterWithContainerClassID_key_];
+    CFSetAddValue(_MergedGlobals_98, _createValueGetterWithContainerClassID_key_);
   }
 
-  v22 = NSKeyValueMethodForPattern(a1, "insertObject:in%sAtIndex:", v15);
-  v23 = NSKeyValueMethodForPattern(a1, "insert%s:atIndexes:", v15);
-  v24 = NSKeyValueMethodForPattern(a1, "removeObjectFrom%sAtIndex:", v15);
-  v25 = NSKeyValueMethodForPattern(a1, "remove%sAtIndexes:", v15);
+  v22 = NSKeyValueMethodForPattern(self, "insertObject:in%sAtIndex:", v15);
+  v23 = NSKeyValueMethodForPattern(self, "insert%s:atIndexes:", v15);
+  v24 = NSKeyValueMethodForPattern(self, "removeObjectFrom%sAtIndex:", v15);
+  v25 = NSKeyValueMethodForPattern(self, "remove%sAtIndexes:", v15);
   if (v22 | v23)
   {
     v26 = v25;
     if (v24 | v25)
     {
-      v40 = a3;
+      dCopy = d;
       v27 = objc_alloc_init(NSKeyValueMutatingOrderedSetMethodSet);
       v27->insertObjectAtIndex = v22;
       v27->insertObjectsAtIndexes = v23;
       v27->removeObjectAtIndex = v24;
       v27->removeObjectsAtIndexes = v26;
-      v27->replaceObjectAtIndex = NSKeyValueMethodForPattern(a1, "replaceObjectIn%sAtIndex:withObject:", v15);
-      v27->replaceObjectsAtIndexes = NSKeyValueMethodForPattern(a1, "replace%sAtIndexes:with%s:", v15, v15);
+      v27->replaceObjectAtIndex = NSKeyValueMethodForPattern(self, "replaceObjectIn%sAtIndex:withObject:", v15);
+      v27->replaceObjectsAtIndexes = NSKeyValueMethodForPattern(self, "replace%sAtIndexes:with%s:", v15, v15);
       if (objc_opt_isKindOfClass())
       {
         v28 = [NSKeyValueFastMutableCollection1Getter alloc];
-        v29 = [v21 methods];
-        v30 = [(NSKeyValueFastMutableCollection1Getter *)v28 initWithContainerClassID:v40 key:a4 nonmutatingMethods:v29 mutatingMethods:v27 proxyClass:objc_opt_self()];
+        methods = [_createValueGetterWithContainerClassID_key_ methods];
+        v30 = [(NSKeyValueFastMutableCollection1Getter *)v28 initWithContainerClassID:dCopy key:key nonmutatingMethods:methods mutatingMethods:v27 proxyClass:objc_opt_self()];
       }
 
       else
       {
         v38 = [NSKeyValueFastMutableCollection2Getter alloc];
-        v30 = [(NSKeyValueFastMutableCollection2Getter *)v38 initWithContainerClassID:v40 key:a4 baseGetter:v21 mutatingMethods:v27 proxyClass:objc_opt_self()];
+        v30 = [(NSKeyValueFastMutableCollection2Getter *)v38 initWithContainerClassID:dCopy key:key baseGetter:_createValueGetterWithContainerClassID_key_ mutatingMethods:v27 proxyClass:objc_opt_self()];
       }
 
       v20 = v30;
@@ -1621,12 +1621,12 @@ LABEL_40:
   }
 
   callBacks.version = 0;
-  callBacks.retain = a1;
-  callBacks.release = a4;
-  v33 = a3;
-  if (a4)
+  callBacks.retain = self;
+  callBacks.release = key;
+  dCopy2 = d;
+  if (key)
   {
-    v34 = CFHash(a4);
+    v34 = CFHash(key);
     v31 = NSKeyValueCachedSetters;
   }
 
@@ -1635,22 +1635,22 @@ LABEL_40:
     v34 = 0;
   }
 
-  callBacks.copyDescription = (v34 ^ a1);
-  v35 = CFSetGetValue(v31, &callBacks);
-  if (!v35)
+  callBacks.copyDescription = (v34 ^ self);
+  _createValueSetterWithContainerClassID_key_ = CFSetGetValue(v31, &callBacks);
+  if (!_createValueSetterWithContainerClassID_key_)
   {
-    v35 = [a1 _createValueSetterWithContainerClassID_key_];
-    CFSetAddValue(NSKeyValueCachedSetters, v35);
+    _createValueSetterWithContainerClassID_key_ = [self _createValueSetterWithContainerClassID_key_];
+    CFSetAddValue(NSKeyValueCachedSetters, _createValueSetterWithContainerClassID_key_);
   }
 
   if (objc_opt_isKindOfClass())
   {
-    v36 = -[NSKeyValueIvarMutableCollectionGetter initWithContainerClassID:key:containerIsa:ivar:proxyClass:]([NSKeyValueIvarMutableCollectionGetter alloc], "initWithContainerClassID:key:containerIsa:ivar:proxyClass:", v33, a4, a1, [v35 ivar], objc_opt_self());
+    v36 = -[NSKeyValueIvarMutableCollectionGetter initWithContainerClassID:key:containerIsa:ivar:proxyClass:]([NSKeyValueIvarMutableCollectionGetter alloc], "initWithContainerClassID:key:containerIsa:ivar:proxyClass:", dCopy2, key, self, [_createValueSetterWithContainerClassID_key_ ivar], objc_opt_self());
   }
 
   else
   {
-    v36 = [[NSKeyValueSlowMutableCollectionGetter alloc] initWithContainerClassID:v33 key:a4 baseGetter:v21 baseSetter:v35 containerIsa:a1 proxyClass:objc_opt_self()];
+    v36 = [[NSKeyValueSlowMutableCollectionGetter alloc] initWithContainerClassID:dCopy2 key:key baseGetter:_createValueGetterWithContainerClassID_key_ baseSetter:_createValueSetterWithContainerClassID_key_ containerIsa:self proxyClass:objc_opt_self()];
   }
 
   v20 = v36;
@@ -1662,12 +1662,12 @@ LABEL_40:
   return v20;
 }
 
-+ (id)_createMutableSetValueGetterWithContainerClassID:(id)a3 key:(id)a4
++ (id)_createMutableSetValueGetterWithContainerClassID:(id)d key:(id)key
 {
   v42 = *MEMORY[0x1E69E9840];
-  if (_NSKVONotifyingMutatorsShouldNotifyForIsaAndKey(a1, a4))
+  if (_NSKVONotifyingMutatorsShouldNotifyForIsaAndKey(self, key))
   {
-    v7 = _NSKVONotifyingOriginalClassForIsa(a1);
+    v7 = _NSKVONotifyingOriginalClassForIsa(self);
     v8 = NSKeyValueCachedMutableSetGetters;
     if (!NSKeyValueCachedMutableSetGetters)
     {
@@ -1682,10 +1682,10 @@ LABEL_40:
 
     callBacks.version = 0;
     callBacks.retain = v7;
-    callBacks.release = a4;
-    if (a4)
+    callBacks.release = key;
+    if (key)
     {
-      v10 = CFHash(a4);
+      v10 = CFHash(key);
       v8 = NSKeyValueCachedMutableSetGetters;
     }
 
@@ -1702,10 +1702,10 @@ LABEL_40:
       CFSetAddValue(NSKeyValueCachedMutableSetGetters, Value);
     }
 
-    return [[NSKeyValueNotifyingMutableCollectionGetter alloc] initWithContainerClassID:a3 key:a4 mutableCollectionGetter:Value proxyClass:objc_opt_self()];
+    return [[NSKeyValueNotifyingMutableCollectionGetter alloc] initWithContainerClassID:d key:key mutableCollectionGetter:Value proxyClass:objc_opt_self()];
   }
 
-  v11 = [a4 lengthOfBytesUsingEncoding:4];
+  v11 = [key lengthOfBytesUsingEncoding:4];
   v12 = v11;
   v13 = v11 + 1;
   if (v11 == -1)
@@ -1720,13 +1720,13 @@ LABEL_40:
     v15 = malloc_type_malloc(v11 + 1, 0x100004077774924uLL);
   }
 
-  [a4 getCString:v15 maxLength:v13 encoding:{4, v14}];
+  [key getCString:v15 maxLength:v13 encoding:{4, v14}];
   if (v13 >= 2 && v15 && memchr(v15, 0, v12))
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Attempted to use a key or key path whose UTF-8 representation contains a NUL character" userInfo:0]);
   }
 
-  if ([a4 length])
+  if ([key length])
   {
     *v15 = __toupper(*v15);
   }
@@ -1744,11 +1744,11 @@ LABEL_40:
   }
 
   callBacks.version = 0;
-  callBacks.retain = a1;
-  callBacks.release = a4;
-  if (a4)
+  callBacks.retain = self;
+  callBacks.release = key;
+  if (key)
   {
-    v18 = CFHash(a4);
+    v18 = CFHash(key);
     v16 = _MergedGlobals_98;
   }
 
@@ -1757,40 +1757,40 @@ LABEL_40:
     v18 = 0;
   }
 
-  callBacks.copyDescription = (v18 ^ a1);
-  v21 = CFSetGetValue(v16, &callBacks);
-  if (!v21)
+  callBacks.copyDescription = (v18 ^ self);
+  _createValueGetterWithContainerClassID_key_ = CFSetGetValue(v16, &callBacks);
+  if (!_createValueGetterWithContainerClassID_key_)
   {
-    v21 = [a1 _createValueGetterWithContainerClassID_key_];
-    CFSetAddValue(_MergedGlobals_98, v21);
+    _createValueGetterWithContainerClassID_key_ = [self _createValueGetterWithContainerClassID_key_];
+    CFSetAddValue(_MergedGlobals_98, _createValueGetterWithContainerClassID_key_);
   }
 
-  v22 = NSKeyValueMethodForPattern(a1, "add%sObject:", v15);
-  v23 = NSKeyValueMethodForPattern(a1, "remove%s:", v15);
-  v24 = NSKeyValueMethodForPattern(a1, "remove%sObject:", v15);
-  v25 = NSKeyValueMethodForPattern(a1, "add%s:", v15);
+  v22 = NSKeyValueMethodForPattern(self, "add%sObject:", v15);
+  v23 = NSKeyValueMethodForPattern(self, "remove%s:", v15);
+  v24 = NSKeyValueMethodForPattern(self, "remove%sObject:", v15);
+  v25 = NSKeyValueMethodForPattern(self, "add%s:", v15);
   if (v22 | v25 && v24 | v23)
   {
     v26 = v25;
-    v40 = a3;
+    dCopy = d;
     v27 = objc_alloc_init(NSKeyValueMutatingSetMethodSet);
     v27->addObject = v22;
-    v27->intersectSet = NSKeyValueMethodForPattern(a1, "intersect%s:", v15);
+    v27->intersectSet = NSKeyValueMethodForPattern(self, "intersect%s:", v15);
     v27->minusSet = v23;
     v27->removeObject = v24;
-    v27->setSet = NSKeyValueMethodForPattern(a1, "set%s:", v15);
+    v27->setSet = NSKeyValueMethodForPattern(self, "set%s:", v15);
     v27->unionSet = v26;
     if (objc_opt_isKindOfClass())
     {
       v28 = [NSKeyValueFastMutableCollection1Getter alloc];
-      v29 = [v21 methods];
-      v30 = [(NSKeyValueFastMutableCollection1Getter *)v28 initWithContainerClassID:v40 key:a4 nonmutatingMethods:v29 mutatingMethods:v27 proxyClass:objc_opt_self()];
+      methods = [_createValueGetterWithContainerClassID_key_ methods];
+      v30 = [(NSKeyValueFastMutableCollection1Getter *)v28 initWithContainerClassID:dCopy key:key nonmutatingMethods:methods mutatingMethods:v27 proxyClass:objc_opt_self()];
     }
 
     else
     {
       v38 = [NSKeyValueFastMutableCollection2Getter alloc];
-      v30 = [(NSKeyValueFastMutableCollection2Getter *)v38 initWithContainerClassID:v40 key:a4 baseGetter:v21 mutatingMethods:v27 proxyClass:objc_opt_self()];
+      v30 = [(NSKeyValueFastMutableCollection2Getter *)v38 initWithContainerClassID:dCopy key:key baseGetter:_createValueGetterWithContainerClassID_key_ mutatingMethods:v27 proxyClass:objc_opt_self()];
     }
 
     v20 = v30;
@@ -1818,12 +1818,12 @@ LABEL_40:
   }
 
   callBacks.version = 0;
-  callBacks.retain = a1;
-  callBacks.release = a4;
-  v33 = a3;
-  if (a4)
+  callBacks.retain = self;
+  callBacks.release = key;
+  dCopy2 = d;
+  if (key)
   {
-    v34 = CFHash(a4);
+    v34 = CFHash(key);
     v31 = NSKeyValueCachedSetters;
   }
 
@@ -1832,22 +1832,22 @@ LABEL_40:
     v34 = 0;
   }
 
-  callBacks.copyDescription = (v34 ^ a1);
-  v35 = CFSetGetValue(v31, &callBacks);
-  if (!v35)
+  callBacks.copyDescription = (v34 ^ self);
+  _createValueSetterWithContainerClassID_key_ = CFSetGetValue(v31, &callBacks);
+  if (!_createValueSetterWithContainerClassID_key_)
   {
-    v35 = [a1 _createValueSetterWithContainerClassID_key_];
-    CFSetAddValue(NSKeyValueCachedSetters, v35);
+    _createValueSetterWithContainerClassID_key_ = [self _createValueSetterWithContainerClassID_key_];
+    CFSetAddValue(NSKeyValueCachedSetters, _createValueSetterWithContainerClassID_key_);
   }
 
   if (objc_opt_isKindOfClass())
   {
-    v36 = -[NSKeyValueIvarMutableCollectionGetter initWithContainerClassID:key:containerIsa:ivar:proxyClass:]([NSKeyValueIvarMutableCollectionGetter alloc], "initWithContainerClassID:key:containerIsa:ivar:proxyClass:", v33, a4, a1, [v35 ivar], objc_opt_self());
+    v36 = -[NSKeyValueIvarMutableCollectionGetter initWithContainerClassID:key:containerIsa:ivar:proxyClass:]([NSKeyValueIvarMutableCollectionGetter alloc], "initWithContainerClassID:key:containerIsa:ivar:proxyClass:", dCopy2, key, self, [_createValueSetterWithContainerClassID_key_ ivar], objc_opt_self());
   }
 
   else
   {
-    v36 = [[NSKeyValueSlowMutableCollectionGetter alloc] initWithContainerClassID:v33 key:a4 baseGetter:v21 baseSetter:v35 containerIsa:a1 proxyClass:objc_opt_self()];
+    v36 = [[NSKeyValueSlowMutableCollectionGetter alloc] initWithContainerClassID:dCopy2 key:key baseGetter:_createValueGetterWithContainerClassID_key_ baseSetter:_createValueSetterWithContainerClassID_key_ containerIsa:self proxyClass:objc_opt_self()];
   }
 
   v20 = v36;
@@ -1859,24 +1859,24 @@ LABEL_40:
   return v20;
 }
 
-+ (id)_createOtherValueGetterWithContainerClassID:(id)a3 key:(id)a4
++ (id)_createOtherValueGetterWithContainerClassID:(id)d key:(id)key
 {
   v7 = [NSKeyValueUndefinedGetter alloc];
 
-  return [(NSKeyValueUndefinedGetter *)v7 initWithContainerClassID:a3 key:a4 containerIsa:a1];
+  return [(NSKeyValueUndefinedGetter *)v7 initWithContainerClassID:d key:key containerIsa:self];
 }
 
-+ (id)_createOtherValueSetterWithContainerClassID:(id)a3 key:(id)a4
++ (id)_createOtherValueSetterWithContainerClassID:(id)d key:(id)key
 {
   v7 = [NSKeyValueUndefinedSetter alloc];
 
-  return [(NSKeyValueUndefinedSetter *)v7 initWithContainerClassID:a3 key:a4 containerIsa:a1];
+  return [(NSKeyValueUndefinedSetter *)v7 initWithContainerClassID:d key:key containerIsa:self];
 }
 
-+ (id)_createValuePrimitiveGetterWithContainerClassID:(id)a3 key:(id)a4
++ (id)_createValuePrimitiveGetterWithContainerClassID:(id)d key:(id)key
 {
   v21[3] = *MEMORY[0x1E69E9840];
-  v7 = [a4 lengthOfBytesUsingEncoding:4];
+  v7 = [key lengthOfBytesUsingEncoding:4];
   v8 = v7 + 1;
   if (v7 == -1)
   {
@@ -1890,7 +1890,7 @@ LABEL_40:
     v10 = malloc_type_malloc(v7 + 1, 0x100004077774924uLL);
   }
 
-  [a4 getCString:v10 maxLength:v8 encoding:{4, v9}];
+  [key getCString:v10 maxLength:v8 encoding:{4, v9}];
   if (v8 <= 1)
   {
     v11 = 1;
@@ -1908,7 +1908,7 @@ LABEL_40:
     goto LABEL_36;
   }
 
-  v14 = [a4 length];
+  v14 = [key length];
   if (v14)
   {
     v14 = __toupper(*v10);
@@ -1927,7 +1927,7 @@ LABEL_40:
     LOBYTE(v21[0]) = 0;
   }
 
-  [a4 getCString:v15 maxLength:v8 encoding:4];
+  [key getCString:v15 maxLength:v8 encoding:4];
   if ((v13 & 1) == 0)
   {
     if (memchr(v10, 0, v11 - 1))
@@ -1937,19 +1937,19 @@ LABEL_36:
     }
   }
 
-  v16 = NSKeyValueMethodForPattern(a1, "getPrimitive%s", v10);
-  if (v16 || (v16 = NSKeyValueMethodForPattern(a1, "primitive%s", v10)) != 0)
+  v16 = NSKeyValueMethodForPattern(self, "getPrimitive%s", v10);
+  if (v16 || (v16 = NSKeyValueMethodForPattern(self, "primitive%s", v10)) != 0)
   {
-    v17 = [[NSKeyValueMethodGetter alloc] initWithContainerClassID:a3 key:a4 method:v16];
+    v17 = [[NSKeyValueMethodGetter alloc] initWithContainerClassID:d key:key method:v16];
     goto LABEL_25;
   }
 
-  if ([a1 accessInstanceVariablesDirectly])
+  if ([self accessInstanceVariablesDirectly])
   {
-    v20 = NSKeyValueIvarForPattern(a1, "_%s", v15);
-    if (v20 || (v20 = NSKeyValueIvarForPattern(a1, "_is%s", v10)) != 0 || (v20 = NSKeyValueIvarForPattern(a1, "%s", v15)) != 0 || (v20 = NSKeyValueIvarForPattern(a1, "is%s", v10)) != 0)
+    v20 = NSKeyValueIvarForPattern(self, "_%s", v15);
+    if (v20 || (v20 = NSKeyValueIvarForPattern(self, "_is%s", v10)) != 0 || (v20 = NSKeyValueIvarForPattern(self, "%s", v15)) != 0 || (v20 = NSKeyValueIvarForPattern(self, "is%s", v10)) != 0)
     {
-      v17 = [[NSKeyValueIvarGetter alloc] initWithContainerClassID:a3 key:a4 containerIsa:a1 ivar:v20];
+      v17 = [[NSKeyValueIvarGetter alloc] initWithContainerClassID:d key:key containerIsa:self ivar:v20];
 LABEL_25:
       v18 = v17;
       if (v17)
@@ -1959,7 +1959,7 @@ LABEL_25:
     }
   }
 
-  v18 = [a1 _createOtherValueGetterWithContainerClassID:a3 key:a4];
+  v18 = [self _createOtherValueGetterWithContainerClassID:d key:key];
 LABEL_27:
   if (v8)
   {
@@ -1970,10 +1970,10 @@ LABEL_27:
   return v18;
 }
 
-+ (id)_createValuePrimitiveSetterWithContainerClassID:(id)a3 key:(id)a4
++ (id)_createValuePrimitiveSetterWithContainerClassID:(id)d key:(id)key
 {
   v21[3] = *MEMORY[0x1E69E9840];
-  v7 = [a4 lengthOfBytesUsingEncoding:4];
+  v7 = [key lengthOfBytesUsingEncoding:4];
   v8 = v7 + 1;
   if (v7 == -1)
   {
@@ -1987,7 +1987,7 @@ LABEL_27:
     v10 = malloc_type_malloc(v7 + 1, 0x100004077774924uLL);
   }
 
-  [a4 getCString:v10 maxLength:v8 encoding:{4, v9}];
+  [key getCString:v10 maxLength:v8 encoding:{4, v9}];
   if (v8 <= 1)
   {
     v11 = 1;
@@ -2005,7 +2005,7 @@ LABEL_27:
     goto LABEL_35;
   }
 
-  v14 = [a4 length];
+  v14 = [key length];
   if (v14)
   {
     v14 = __toupper(*v10);
@@ -2024,7 +2024,7 @@ LABEL_27:
     LOBYTE(v21[0]) = 0;
   }
 
-  [a4 getCString:v15 maxLength:v8 encoding:4];
+  [key getCString:v15 maxLength:v8 encoding:4];
   if ((v13 & 1) == 0)
   {
     if (memchr(v10, 0, v11 - 1))
@@ -2034,19 +2034,19 @@ LABEL_35:
     }
   }
 
-  v16 = NSKeyValueMethodForPattern(a1, "setPrimitive%s:", v10);
+  v16 = NSKeyValueMethodForPattern(self, "setPrimitive%s:", v10);
   if (v16)
   {
-    v17 = [[NSKeyValueMethodSetter alloc] initWithContainerClassID:a3 key:a4 method:v16];
+    v17 = [[NSKeyValueMethodSetter alloc] initWithContainerClassID:d key:key method:v16];
     goto LABEL_30;
   }
 
-  if ([a1 accessInstanceVariablesDirectly])
+  if ([self accessInstanceVariablesDirectly])
   {
-    v18 = NSKeyValueIvarForPattern(a1, "_%s", v15);
-    if (v18 || (v18 = NSKeyValueIvarForPattern(a1, "_is%s", v10)) != 0 || (v18 = NSKeyValueIvarForPattern(a1, "%s", v15)) != 0 || (v18 = NSKeyValueIvarForPattern(a1, "is%s", v10)) != 0)
+    v18 = NSKeyValueIvarForPattern(self, "_%s", v15);
+    if (v18 || (v18 = NSKeyValueIvarForPattern(self, "_is%s", v10)) != 0 || (v18 = NSKeyValueIvarForPattern(self, "%s", v15)) != 0 || (v18 = NSKeyValueIvarForPattern(self, "is%s", v10)) != 0)
     {
-      v17 = [[NSKeyValueIvarSetter alloc] initWithContainerClassID:a3 key:a4 containerIsa:a1 ivar:v18];
+      v17 = [[NSKeyValueIvarSetter alloc] initWithContainerClassID:d key:key containerIsa:self ivar:v18];
 LABEL_30:
       v19 = v17;
       if (v17)
@@ -2056,7 +2056,7 @@ LABEL_30:
     }
   }
 
-  v19 = [a1 _createOtherValueSetterWithContainerClassID:a3 key:a4];
+  v19 = [self _createOtherValueSetterWithContainerClassID:d key:key];
 LABEL_32:
   if (v8)
   {
@@ -2072,47 +2072,47 @@ LABEL_32:
   v6 = atomic_load(_NSKVO51127338RequiresSilencingExceptions);
   if ((v6 & 1) == 0)
   {
-    v7 = [NSString stringWithFormat:@"%@: An -observeValueForKeyPath:ofObject:change:context: message was received but not handled.\nKey path: %@\nObserved object: %@\nChange: %@\nContext: %p", self, keyPath, object, change, context];
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:v7 userInfo:0]);
+    context = [NSString stringWithFormat:@"%@: An -observeValueForKeyPath:ofObject:change:context: message was received but not handled.\nKey path: %@\nObserved object: %@\nChange: %@\nContext: %p", self, keyPath, object, change, context];
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:context userInfo:0]);
   }
 
   NSLog(@"%@: An -observeValueForKeyPath:ofObject:change:context: message was received but not handled.\nKey path: %@\nObserved object: %@\nChange: %@\nContext: %p", a2, self, keyPath, object, change, context);
 }
 
-- (void)_addObserver:(id)a3 forProperty:(id)a4 options:(unint64_t)a5 context:(void *)a6
+- (void)_addObserver:(id)observer forProperty:(id)property options:(unint64_t)options context:(void *)context
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  if ((a5 & 4) != 0)
+  if ((options & 4) != 0)
   {
     v23[0] = 0;
-    v11 = [a4 keyPath];
+    keyPath = [property keyPath];
     os_unfair_recursive_lock_unlock();
-    if (a5)
+    if (options)
     {
-      v12 = [self valueForKeyPath:v11];
-      if (!v12)
+      null = [self valueForKeyPath:keyPath];
+      if (!null)
       {
-        v12 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
       }
     }
 
     else
     {
-      v12 = 0;
+      null = 0;
     }
 
     v22[0] = 1;
     v22[1] = 0;
     v22[3] = 0;
     v22[4] = 0;
-    v22[2] = v12;
-    NSKeyValueNotifyObserver(a3, v11, self, a6, 0, 0, v22, v23);
+    v22[2] = null;
+    NSKeyValueNotifyObserver(observer, keyPath, self, context, 0, 0, v22, v23);
 
     os_unfair_recursive_lock_lock_with_options();
   }
 
-  v13 = _NSKeyValueRetainedObservationInfoForObject(self, *(a4 + 1));
-  if ((a5 & 0x100) != 0 && (v14 = _CFGetTSD()) != 0)
+  v13 = _NSKeyValueRetainedObservationInfoForObject(self, *(property + 1));
+  if ((options & 0x100) != 0 && (v14 = _CFGetTSD()) != 0)
   {
     v15 = *(v14 + 16);
   }
@@ -2125,14 +2125,14 @@ LABEL_32:
   [_NSKVODeallocSentinel _havingRegistrationLockHeldAttachSentinelToObjectIfNeeded:self];
   v23[0] = 0;
   v21 = 0;
-  v16 = _NSKeyValueObservationInfoCreateByAdding(v13, a3, a4, a5, a6, v15, &v21, v23);
-  _NSKeyValueReplaceObservationInfoForObject(self, *(a4 + 1), v13, v16);
-  [a4 object:self didAddObservance:v23[0] recurse:1];
+  v16 = _NSKeyValueObservationInfoCreateByAdding(v13, observer, property, options, context, v15, &v21, v23);
+  _NSKeyValueReplaceObservationInfoForObject(self, *(property + 1), v13, v16);
+  [property object:self didAddObservance:v23[0] recurse:1];
   if ((self & 0x8000000000000000) == 0)
   {
     Class = object_getClass(self);
-    v18 = [a4 isaForAutonotifying];
-    if (!v18 || Class == v18)
+    isaForAutonotifying = [property isaForAutonotifying];
+    if (!isaForAutonotifying || Class == isaForAutonotifying)
     {
       if (!_NSKVOUsesBaseClassObservationInfoImplementationForClass(Class))
       {
@@ -2150,7 +2150,7 @@ LABEL_32:
 
     else
     {
-      object_setClass(self, v18);
+      object_setClass(self, isaForAutonotifying);
       objc_setAssociatedObject(self, &_NSKeyValueObservingObservationInfoOverriderMayThrowOnDealloc, MEMORY[0x1E695E118], 1);
     }
   }
@@ -2160,16 +2160,16 @@ LABEL_32:
   }
 }
 
-- (void)_removeObserver:(id)a3 forProperty:(id)a4
+- (void)_removeObserver:(id)observer forProperty:(id)property
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v7 = *(a4 + 1);
+  v7 = *(property + 1);
   v8 = _NSKeyValueRetainedObservationInfoForObject(self, v7);
   if (v8)
   {
     v9 = v8;
     v10 = _CFGetTSD();
-    if (v10 && (v11 = v10, *(v10 + 32) == self) && *(v10 + 40) == a3 && [*(v10 + 48) isEqualToString:{objc_msgSend(a4, "keyPath")}])
+    if (v10 && (v11 = v10, *(v10 + 32) == self) && *(v10 + 40) == observer && [*(v10 + 48) isEqualToString:{objc_msgSend(property, "keyPath")}])
     {
       v13 = *(v11 + 56);
       v12 = *(v11 + 64);
@@ -2185,13 +2185,13 @@ LABEL_32:
 
     v25[0] = 0;
     v24 = 0;
-    v15 = _NSKeyValueObservationInfoCreateByRemoving(v9, a3, a4, v12, v14 & 1, v13, &v24, v25);
+    v15 = _NSKeyValueObservationInfoCreateByRemoving(v9, observer, property, v12, v14 & 1, v13, &v24, v25);
     if (v25[0])
     {
       v16 = v15;
       v17 = v25[0];
-      _NSKeyValueReplaceObservationInfoForObject(self, *(a4 + 1), v9, v16);
-      [a4 object:self didRemoveObservance:v25[0] recurse:1];
+      _NSKeyValueReplaceObservationInfoForObject(self, *(property + 1), v9, v16);
+      [property object:self didRemoveObservance:v25[0] recurse:1];
       if (!v16)
       {
         Class = object_getClass(self);
@@ -2212,7 +2212,7 @@ LABEL_32:
 
 LABEL_25:
     v22 = objc_opt_class();
-    v23 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"Cannot remove an observer <%@ %p> for the key path %@ from <%@ %p> because it is not registered as an observer.", v22, a3, objc_msgSend(a4, "keyPath"), objc_opt_class(), self), 0}];
+    v23 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"Cannot remove an observer <%@ %p> for the key path %@ from <%@ %p> because it is not registered as an observer.", v22, observer, objc_msgSend(property, "keyPath"), objc_opt_class(), self), 0}];
     objc_exception_throw(v23);
   }
 
@@ -2329,14 +2329,14 @@ LABEL_25:
   NSKeyValueWillChangeWithPerThreadPendingNotifications(self, key, 0, NSKeyValueWillChangeBySetMutation, v5, 0);
 }
 
-+ (id)_keysForValuesAffectingValueForKey:(id)a3
++ (id)_keysForValuesAffectingValueForKey:(id)key
 {
   v21 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock_with_options();
   v4 = qword_1ED43F6E8;
   if (qword_1ED43F6E8 && (v5 = objc_opt_class(), (v6 = CFDictionaryGetValue(v4, v5)) != 0))
   {
-    Value = CFDictionaryGetValue(v6, a3);
+    Value = CFDictionaryGetValue(v6, key);
   }
 
   else
@@ -2388,10 +2388,10 @@ LABEL_25:
   v6[1] = 3221225472;
   v7 = __84__NSObject_NSKeyValueObservingCustomization__keyPathsForValuesAffectingValueForKey___block_invoke;
   v8 = &unk_1E69F4828;
-  v9 = a1;
+  selfCopy = self;
   if (_class_isSwift() && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    return [a1 __NS_swiftOverlay_keyPathsForValuesAffectingValueForKey:key foundationImplementation:v6];
+    return [self __NS_swiftOverlay_keyPathsForValuesAffectingValueForKey:key foundationImplementation:v6];
   }
 
   else
@@ -2460,10 +2460,10 @@ uint64_t __84__NSObject_NSKeyValueObservingCustomization__keyPathsForValuesAffec
   v6[1] = 3221225472;
   v7 = __83__NSObject_NSKeyValueObservingCustomization__automaticallyNotifiesObserversForKey___block_invoke;
   v8 = &unk_1E69F4850;
-  v9 = a1;
+  selfCopy = self;
   if (_class_isSwift() && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    return [a1 __NS_swiftOverlay_automaticallyNotifiesObserversForKey:key foundationImplementation:v6];
+    return [self __NS_swiftOverlay_automaticallyNotifiesObserversForKey:key foundationImplementation:v6];
   }
 
   else
@@ -2587,11 +2587,11 @@ LABEL_20:
     qword_1ED43F6E8 = Mutable;
   }
 
-  Value = CFDictionaryGetValue(Mutable, a1);
+  Value = CFDictionaryGetValue(Mutable, self);
   if (!Value)
   {
     Value = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
-    CFDictionarySetValue(qword_1ED43F6E8, a1, Value);
+    CFDictionarySetValue(qword_1ED43F6E8, self, Value);
   }
 
   CFDictionarySetValue(Value, dependentKey, v7);
@@ -2599,10 +2599,10 @@ LABEL_20:
   os_unfair_lock_unlock(&_MergedGlobals_103);
 }
 
-- (void)_notifyObserversForKeyPath:(id)a3 change:(id)a4
+- (void)_notifyObserversForKeyPath:(id)path change:(id)change
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v31 = self;
+  selfCopy = self;
   v6 = _NSKeyValueRetainedObservationInfoForObject(self, 0);
   if (v6)
   {
@@ -2616,7 +2616,7 @@ LABEL_20:
     {
       v29[1] = v29;
       v30 = v7;
-      v32 = a4;
+      changeCopy = change;
       while (1)
       {
         v11 = *v10;
@@ -2636,57 +2636,57 @@ LABEL_29:
       }
 
       v12 = *(v11 + 8);
-      v13 = [*(v11 + 16) restOfKeyPathIfContainedByValueForKeyPath:a3];
+      v13 = [*(v11 + 16) restOfKeyPathIfContainedByValueForKeyPath:path];
       if (v13)
       {
         v14 = v13;
-        v15 = a3;
+        pathCopy = path;
         v16 = [v13 length];
-        v17 = [objc_msgSend(a4 objectForKey:{@"kind", "integerValue"}];
+        v17 = [objc_msgSend(change objectForKey:{@"kind", "integerValue"}];
         if ((*(v11 + 40) & 0x20) != 0)
         {
-          v23 = [a4 objectForKey:@"old"];
-          v18 = v23;
+          v23 = [change objectForKey:@"old"];
+          null = v23;
           if (v16)
           {
-            v18 = [v23 valueForKeyPath:v14];
+            null = [v23 valueForKeyPath:v14];
           }
 
-          if (!v18)
+          if (!null)
           {
-            v18 = [MEMORY[0x1E695DFB0] null];
+            null = [MEMORY[0x1E695DFB0] null];
           }
         }
 
         else
         {
-          v18 = 0;
+          null = 0;
         }
 
         if ((*(v11 + 40) & 0x10) != 0)
         {
-          v25 = [a4 objectForKey:@"new"];
-          v24 = v25;
+          v25 = [change objectForKey:@"new"];
+          null2 = v25;
           if (v16)
           {
-            v24 = [v25 valueForKeyPath:v14];
+            null2 = [v25 valueForKeyPath:v14];
           }
 
-          a3 = v15;
-          if (!v24)
+          path = pathCopy;
+          if (!null2)
           {
-            v24 = [MEMORY[0x1E695DFB0] null];
+            null2 = [MEMORY[0x1E695DFB0] null];
           }
         }
 
         else
         {
-          v24 = 0;
-          a3 = v15;
+          null2 = 0;
+          path = pathCopy;
         }
 
-        v26 = [v32 objectForKey:@"indexes"];
-        v21 = [*(v11 + 16) keyPath];
+        v26 = [changeCopy objectForKey:@"indexes"];
+        keyPath = [*(v11 + 16) keyPath];
         v27 = *(v11 + 24);
         if (*(v11 + 41))
         {
@@ -2699,23 +2699,23 @@ LABEL_29:
         }
 
         v33 = v17;
-        v34 = v18;
-        v35 = v24;
+        v34 = null;
+        v35 = null2;
         v36 = v26;
       }
 
       else
       {
-        if (![*(v11 + 16) matchesWithoutOperatorComponentsKeyPath:a3])
+        if (![*(v11 + 16) matchesWithoutOperatorComponentsKeyPath:path])
         {
 LABEL_28:
           [(NSKeyValueObservance *)v11 releaseMembers];
           goto LABEL_29;
         }
 
-        v19 = [objc_msgSend(a4 objectForKey:{@"kind", "integerValue"}];
-        v20 = [a4 objectForKey:@"indexes"];
-        v21 = [*(v11 + 16) keyPath];
+        v19 = [objc_msgSend(change objectForKey:{@"kind", "integerValue"}];
+        v20 = [change objectForKey:@"indexes"];
+        keyPath = [*(v11 + 16) keyPath];
         if (*(v11 + 41))
         {
           v22 = *(v11 + 32);
@@ -2734,8 +2734,8 @@ LABEL_28:
       }
 
       v37 = 0;
-      NSKeyValueNotifyObserver(v12, v21, v31, v27, v22, 0, &v33, v38);
-      a4 = v32;
+      NSKeyValueNotifyObserver(v12, keyPath, selfCopy, v27, v22, 0, &v33, v38);
+      change = changeCopy;
       goto LABEL_28;
     }
 
@@ -2744,12 +2744,12 @@ LABEL_32:
   }
 }
 
-- (void)_notifyObserversOfChangeFromValuesForKeys:(id)a3 toValuesForKeys:(id)a4
+- (void)_notifyObserversOfChangeFromValuesForKeys:(id)keys toValuesForKeys:(id)forKeys
 {
-  v5 = a3;
+  keysCopy = keys;
   v41 = *MEMORY[0x1E69E9840];
-  v7 = [a3 count];
-  v8 = [a4 count];
+  v7 = [keys count];
+  v8 = [forKeys count];
   v9 = v8 + v7;
   if ((v8 + v7) >> 60)
   {
@@ -2772,7 +2772,7 @@ LABEL_32:
   MEMORY[0x1EEE9AC00](v10);
   v12 = &v22 - v11;
   v35 = 0;
-  v23 = self;
+  selfCopy = self;
   if (v9 >= 0x101)
   {
     v12 = _CFCreateArrayStorage();
@@ -2789,7 +2789,7 @@ LABEL_32:
   v37 = 0u;
   v38 = 0u;
   v13 = 0;
-  v14 = [a4 countByEnumeratingWithState:&v37 objects:v36 count:16];
+  v14 = [forKeys countByEnumeratingWithState:&v37 objects:v36 count:16];
   if (v14)
   {
     v15 = *v38;
@@ -2799,17 +2799,17 @@ LABEL_32:
       {
         if (*v38 != v15)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(forKeys);
         }
 
         v17 = *(*(&v37 + 1) + 8 * i);
-        if (![v5 objectForKey:v17])
+        if (![keysCopy objectForKey:v17])
         {
           *&v12[8 * v13++] = v17;
         }
       }
 
-      v14 = [a4 countByEnumeratingWithState:&v37 objects:v36 count:16];
+      v14 = [forKeys countByEnumeratingWithState:&v37 objects:v36 count:16];
     }
 
     while (v14);
@@ -2833,11 +2833,11 @@ LABEL_32:
   v25[3] = &unk_1E69F4878;
   v25[8] = v12;
   v25[9] = v13;
-  v25[4] = a4;
+  v25[4] = forKeys;
   v25[5] = &v31;
   v25[6] = v26;
   v25[7] = &v27;
-  [v5 enumerateKeysAndObjectsUsingBlock:v25];
+  [keysCopy enumerateKeysAndObjectsUsingBlock:v25];
   v18 = v28[3];
   v19 = v32[3] + v13;
   if (v9 < v18 + v19)
@@ -2849,33 +2849,33 @@ LABEL_32:
   {
     if (!v18)
     {
-      if (v5)
+      if (keysCopy)
       {
-        if (a4)
+        if (forKeys)
         {
 LABEL_29:
-          [v23 _changeValueForKeys:v12 count:v19 maybeOldValuesDict:v5 maybeNewValuesDict:a4 usingBlock:0];
+          [selfCopy _changeValueForKeys:v12 count:v19 maybeOldValuesDict:keysCopy maybeNewValuesDict:forKeys usingBlock:0];
           goto LABEL_30;
         }
       }
 
       else
       {
-        v5 = [MEMORY[0x1E695DF20] dictionary];
-        if (a4)
+        keysCopy = [MEMORY[0x1E695DF20] dictionary];
+        if (forKeys)
         {
           goto LABEL_29;
         }
       }
 
-      a4 = [MEMORY[0x1E695DF20] dictionary];
+      forKeys = [MEMORY[0x1E695DF20] dictionary];
       goto LABEL_29;
     }
 
     bzero(&v12[8 * v19], 8 * (v9 - (v18 + v19)));
-    if (v5)
+    if (keysCopy)
     {
-      if (!a4)
+      if (!forKeys)
       {
         goto LABEL_27;
       }
@@ -2883,11 +2883,11 @@ LABEL_29:
 
     else
     {
-      v5 = [MEMORY[0x1E695DF20] dictionary];
-      if (!a4)
+      keysCopy = [MEMORY[0x1E695DF20] dictionary];
+      if (!forKeys)
       {
 LABEL_27:
-        a4 = [MEMORY[0x1E695DF20] dictionary];
+        forKeys = [MEMORY[0x1E695DF20] dictionary];
       }
     }
 
@@ -2929,17 +2929,17 @@ LABEL_6:
   return result;
 }
 
-- (void)_changeValueForKeys:(id *)a3 count:(unint64_t)a4 maybeOldValuesDict:(id)a5 maybeNewValuesDict:(id)a6 usingBlock:(id)a7
+- (void)_changeValueForKeys:(id *)keys count:(unint64_t)count maybeOldValuesDict:(id)dict maybeNewValuesDict:(id)valuesDict usingBlock:(id)block
 {
-  v32 = a6;
-  v33 = a7;
-  v31 = a3;
+  valuesDictCopy = valuesDict;
+  blockCopy = block;
+  keysCopy = keys;
   v43[160] = *MEMORY[0x1E69E9840];
   bzero(v43, 0x500uLL);
   os_unfair_recursive_lock_lock_with_options();
   v10 = _NSKeyValueRetainedObservationInfoForObject(self, 0);
-  v11 = [self _implicitObservationInfo];
-  v12 = v11;
+  _implicitObservationInfo = [self _implicitObservationInfo];
+  v12 = _implicitObservationInfo;
   if (v10)
   {
     v13 = [*(v10 + 8) count];
@@ -2954,7 +2954,7 @@ LABEL_3:
   else
   {
     v13 = 0;
-    if (v11)
+    if (_implicitObservationInfo)
     {
       goto LABEL_3;
     }
@@ -3002,8 +3002,8 @@ LABEL_6:
   if (!v20)
   {
     v28 = 0;
-    v24 = v33;
-    if (!v33)
+    v24 = blockCopy;
+    if (!blockCopy)
     {
       goto LABEL_32;
     }
@@ -3019,44 +3019,44 @@ LABEL_6:
   BYTE8(v40) = 1;
   v41 = 0;
   v42 = 0;
-  if (a4 && v30)
+  if (count && v30)
   {
-    v22 = v31;
-    v23 = a4;
+    v22 = keysCopy;
+    countCopy = count;
     do
     {
       if (*v22)
       {
-        NSKeyValueWillChange(self, *v22, 0, v17, v13, NSKeyValueWillChangeBySetting, a5, NSKeyValuePushPendingNotificationLocal, &v37, 0);
+        NSKeyValueWillChange(self, *v22, 0, v17, v13, NSKeyValueWillChangeBySetting, dict, NSKeyValuePushPendingNotificationLocal, &v37, 0);
       }
 
       ++v22;
-      --v23;
+      --countCopy;
     }
 
-    while (v23);
+    while (countCopy);
   }
 
-  v24 = v33;
+  v24 = blockCopy;
   v25 = v34;
   if (v35)
   {
     BYTE8(v40) = 0;
-    if ((a4 - 1) >= 0)
+    if ((count - 1) >= 0)
     {
-      v26 = v31 - 1;
+      v26 = keysCopy - 1;
       do
       {
-        v27 = v26[a4];
+        v27 = v26[count];
         if (v27)
         {
-          NSKeyValueWillChange(self, v27, 0, v36, v25, NSKeyValueWillChangeBySetting, a5, NSKeyValuePushPendingNotificationLocal, &v37, 0);
+          NSKeyValueWillChange(self, v27, 0, v36, v25, NSKeyValueWillChangeBySetting, dict, NSKeyValuePushPendingNotificationLocal, &v37, 0);
         }
 
-        --a4;
+        --count;
       }
 
-      while (a4 > 0);
+      while (count > 0);
     }
   }
 
@@ -3077,7 +3077,7 @@ LABEL_32:
     v39 = 0;
     v40 = 0uLL;
     v41 = v10;
-    NSKeyValueDidChange(self, 0, 0, NSKeyValueDidChangeBySetting, v32, NSKeyValuePopPendingNotificationLocal, &v37);
+    NSKeyValueDidChange(self, 0, 0, NSKeyValueDidChangeBySetting, valuesDictCopy, NSKeyValuePopPendingNotificationLocal, &v37);
   }
 
   for (; v15; --v15)
@@ -3092,25 +3092,25 @@ LABEL_32:
   }
 }
 
-- (void)_changeValueForKey:(id)a3 key:(id)a4 key:(id)a5 usingBlock:(id)a6
+- (void)_changeValueForKey:(id)key key:(id)a4 key:(id)a5 usingBlock:(id)block
 {
   v6[3] = *MEMORY[0x1E69E9840];
-  v6[0] = a3;
+  v6[0] = key;
   v6[1] = a4;
   v6[2] = a5;
-  [self _changeValueForKeys:v6 count:3 maybeOldValuesDict:0 maybeNewValuesDict:0 usingBlock:a6];
+  [self _changeValueForKeys:v6 count:3 maybeOldValuesDict:0 maybeNewValuesDict:0 usingBlock:block];
 }
 
-- (void)_changeValueForKey:(id)a3 usingBlock:(id)a4
+- (void)_changeValueForKey:(id)key usingBlock:(id)block
 {
   v4[1] = *MEMORY[0x1E69E9840];
-  v4[0] = a3;
-  [self _changeValueForKeys:v4 count:1 maybeOldValuesDict:0 maybeNewValuesDict:0 usingBlock:a4];
+  v4[0] = key;
+  [self _changeValueForKeys:v4 count:1 maybeOldValuesDict:0 maybeNewValuesDict:0 usingBlock:block];
 }
 
-- (void)_setSharedObservationInfo:(uint64_t)a1
+- (void)_setSharedObservationInfo:(uint64_t)info
 {
-  if (!a1)
+  if (!info)
   {
     return;
   }
@@ -3127,7 +3127,7 @@ LABEL_32:
     Mutable = CFDictionaryCreateMutable(0, 0, 0, MEMORY[0x1E695E9E8]);
     NSKeyValueSharedObservationInfoPerObject = Mutable;
 LABEL_7:
-    CFDictionarySetValue(Mutable, ~a1, a2);
+    CFDictionarySetValue(Mutable, ~info, a2);
     goto LABEL_8;
   }
 
@@ -3136,7 +3136,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  CFDictionaryRemoveValue(NSKeyValueSharedObservationInfoPerObject, ~a1);
+  CFDictionaryRemoveValue(NSKeyValueSharedObservationInfoPerObject, ~info);
 LABEL_8:
 
   os_unfair_lock_unlock(&NSKeyValueObservationInfoLock);
@@ -3157,36 +3157,36 @@ LABEL_8:
   }
 }
 
-+ (BOOL)instancesImplementSelector:(SEL)a3
++ (BOOL)instancesImplementSelector:(SEL)selector
 {
-  if (!a3)
+  if (!selector)
   {
-    _NSObjectRaiseNullSelectorException(a1, a2);
+    _NSObjectRaiseNullSelectorException(self, a2);
   }
 
-  return class_getMethodImplementation(a1, a3) != MEMORY[0x1E69E58E8];
+  return class_getMethodImplementation(self, selector) != MEMORY[0x1E69E58E8];
 }
 
-+ (BOOL)implementsSelector:(SEL)a3
++ (BOOL)implementsSelector:(SEL)selector
 {
-  if (!a3)
+  if (!selector)
   {
-    _NSObjectRaiseNullSelectorException(a1, a2);
+    _NSObjectRaiseNullSelectorException(self, a2);
   }
 
-  Class = object_getClass(a1);
-  return class_getMethodImplementation(Class, a3) != MEMORY[0x1E69E58E8];
+  Class = object_getClass(self);
+  return class_getMethodImplementation(Class, selector) != MEMORY[0x1E69E58E8];
 }
 
-- (BOOL)implementsSelector:(SEL)a3
+- (BOOL)implementsSelector:(SEL)selector
 {
-  if (!a3)
+  if (!selector)
   {
     _NSObjectRaiseNullSelectorException(self, a2);
   }
 
   v4 = objc_opt_class();
-  return class_getMethodImplementation(v4, a3) != MEMORY[0x1E69E58E8];
+  return class_getMethodImplementation(v4, selector) != MEMORY[0x1E69E58E8];
 }
 
 - (void)performSelector:(SEL)aSelector withObject:(id)anArgument afterDelay:(NSTimeInterval)delay
@@ -3279,11 +3279,11 @@ LABEL_8:
 + (void)cancelPreviousPerformRequestsWithTarget:(id)aTarget selector:(SEL)aSelector object:(id)anArgument
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = [MEMORY[0x1E695DFD0] currentRunLoop];
-  if (v8)
+  currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+  if (currentRunLoop)
   {
-    v9 = v8;
-    objc_sync_enter(v8);
+    v9 = currentRunLoop;
+    objc_sync_enter(currentRunLoop);
     Count = CFArrayGetCount([v9 _dperf]);
     if (Count)
     {
@@ -3378,11 +3378,11 @@ LABEL_8:
 + (void)cancelPreviousPerformRequestsWithTarget:(id)aTarget
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DFD0] currentRunLoop];
-  if (v4)
+  currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+  if (currentRunLoop)
   {
-    v5 = v4;
-    objc_sync_enter(v4);
+    v5 = currentRunLoop;
+    objc_sync_enter(currentRunLoop);
     Count = CFArrayGetCount([v5 _dperf]);
     if (Count)
     {
@@ -3480,7 +3480,7 @@ LABEL_8:
   {
     if (v8 && +[NSThread currentThread]== thr)
     {
-      v33 = self;
+      selfCopy = self;
       v34 = arg;
       [self aSelector];
 
@@ -3491,7 +3491,7 @@ LABEL_8:
     {
       v37 = a2;
       v14 = [_NSThreadPerformInfo alloc];
-      v38 = self;
+      selfCopy2 = self;
       if (v14)
       {
         v41.receiver = v14;
@@ -3499,15 +3499,15 @@ LABEL_8:
         v15 = [&v41 init];
         if (isBlock(self))
         {
-          v16 = [self copy];
+          selfCopy3 = [self copy];
         }
 
         else
         {
-          v16 = self;
+          selfCopy3 = self;
         }
 
-        *(v15 + 1) = v16;
+        *(v15 + 1) = selfCopy3;
         if (aSelector)
         {
           v17 = aSelector;
@@ -3592,26 +3592,26 @@ LABEL_8:
         if (v8)
         {
 LABEL_30:
-          v27 = [(NSThread *)thr qualityOfService];
-          if (v27 == NSQualityOfServiceDefault)
+          qualityOfService = [(NSThread *)thr qualityOfService];
+          if (qualityOfService == NSQualityOfServiceDefault)
           {
             v28 = 25;
           }
 
           else
           {
-            v28 = v27;
+            v28 = qualityOfService;
           }
 
-          v29 = [+[NSThread currentThread](NSThread qualityOfService];
-          if (v29 == NSQualityOfServiceDefault)
+          qualityOfService2 = [+[NSThread currentThread](NSThread qualityOfService];
+          if (qualityOfService2 == NSQualityOfServiceDefault)
           {
             v30 = 25;
           }
 
           else
           {
-            v30 = v29;
+            v30 = qualityOfService2;
           }
 
           if (v30 <= v28)
@@ -3625,12 +3625,12 @@ LABEL_30:
           }
 
           [(NSThread *)thr _nq:v15];
-          v32 = [v15 wait];
+          wait = [v15 wait];
           [(NSThread *)thr _endQoSOverride:v31];
 
-          if (v32 == 1)
+          if (wait == 1)
           {
-            v36 = [MEMORY[0x1E695DF30] exceptionWithName:@"NSDestinationInvalidException" reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: target thread exited while waiting for the perform", _NSMethodExceptionProem(v38, v37)), 0}];
+            v36 = [MEMORY[0x1E695DF30] exceptionWithName:@"NSDestinationInvalidException" reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: target thread exited while waiting for the perform", _NSMethodExceptionProem(selfCopy2, v37)), 0}];
             objc_exception_throw(v36);
           }
 

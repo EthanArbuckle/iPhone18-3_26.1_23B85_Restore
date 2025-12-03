@@ -1,7 +1,7 @@
 @interface APEncryptedIDProvider
 + (id)provider;
 - (APEncryptedIDProvider)init;
-- (id)encryptedIDsForIDAccountPrivate:(id)a3;
+- (id)encryptedIDsForIDAccountPrivate:(id)private;
 - (void)_encryptIDs;
 - (void)userAccountChanged;
 @end
@@ -36,8 +36,8 @@
 
 - (void)userAccountChanged
 {
-  v3 = [(APEncryptedIDProvider *)self currentEncryptedIDs];
-  [(APEncryptedIDProvider *)self setOldEncryptedIDs:v3];
+  currentEncryptedIDs = [(APEncryptedIDProvider *)self currentEncryptedIDs];
+  [(APEncryptedIDProvider *)self setOldEncryptedIDs:currentEncryptedIDs];
 
   [(APEncryptedIDProvider *)self _encryptIDs];
 }
@@ -59,34 +59,34 @@
   [(APEncryptedIDProvider *)self setCurrentEncryptedIDs:v5];
 }
 
-- (id)encryptedIDsForIDAccountPrivate:(id)a3
+- (id)encryptedIDsForIDAccountPrivate:(id)private
 {
-  v4 = a3;
-  v5 = [(APEncryptedIDProvider *)self currentEncryptedIDs];
-  v6 = [v5 unencryptedIAdID];
-  v7 = [v4 iAdID];
-  v8 = [v6 isEqual:v7];
+  privateCopy = private;
+  currentEncryptedIDs = [(APEncryptedIDProvider *)self currentEncryptedIDs];
+  unencryptedIAdID = [currentEncryptedIDs unencryptedIAdID];
+  iAdID = [privateCopy iAdID];
+  v8 = [unencryptedIAdID isEqual:iAdID];
 
   if (v8)
   {
-    v9 = v5;
+    v9 = currentEncryptedIDs;
   }
 
   else
   {
-    v10 = [(APEncryptedIDProvider *)self oldEncryptedIDs];
-    v11 = v10;
-    if (v10 && ([v10 unencryptedIAdID], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "iAdID"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v12, "isEqual:", v13), v13, v12, v14))
+    oldEncryptedIDs = [(APEncryptedIDProvider *)self oldEncryptedIDs];
+    v11 = oldEncryptedIDs;
+    if (oldEncryptedIDs && ([oldEncryptedIDs unencryptedIAdID], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(privateCopy, "iAdID"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v12, "isEqual:", v13), v13, v12, v14))
     {
       v9 = v11;
     }
 
     else
     {
-      v9 = [[APEncryptedID alloc] initWithIDAccountPrivate:v4];
-      v15 = [(APEncryptedIDProvider *)self oldEncryptedIDs];
+      v9 = [[APEncryptedID alloc] initWithIDAccountPrivate:privateCopy];
+      oldEncryptedIDs2 = [(APEncryptedIDProvider *)self oldEncryptedIDs];
 
-      if (!v15)
+      if (!oldEncryptedIDs2)
       {
         [(APEncryptedIDProvider *)self setOldEncryptedIDs:v9];
       }

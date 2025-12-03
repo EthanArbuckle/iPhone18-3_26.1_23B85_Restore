@@ -1,28 +1,28 @@
 @interface ODDSiriSchemaODDAssistantExperimentDimensions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDAssistantExperimentDimensions)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDAssistantExperimentDimensions)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODDSiriSchemaODDAssistantExperimentDimensions)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDAssistantExperimentDimensions)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsFirstTriggerOrAfterFirstTrigger:(BOOL)a3;
-- (void)setHasIsTriggered:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsFirstTriggerOrAfterFirstTrigger:(BOOL)trigger;
+- (void)setHasIsTriggered:(BOOL)triggered;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDAssistantExperimentDimensions
 
-- (ODDSiriSchemaODDAssistantExperimentDimensions)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDAssistantExperimentDimensions)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = ODDSiriSchemaODDAssistantExperimentDimensions;
   v5 = [(ODDSiriSchemaODDAssistantExperimentDimensions *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"assistantDimensions"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"assistantDimensions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,28 +30,28 @@
       [(ODDSiriSchemaODDAssistantExperimentDimensions *)v5 setAssistantDimensions:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"experimentAllocationStatus"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"experimentAllocationStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAssistantExperimentDimensions setExperimentAllocationStatus:](v5, "setExperimentAllocationStatus:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isTriggered"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isTriggered"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAssistantExperimentDimensions setIsTriggered:](v5, "setIsTriggered:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isFirstTriggerOrAfterFirstTrigger"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isFirstTriggerOrAfterFirstTrigger"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAssistantExperimentDimensions setIsFirstTriggerOrAfterFirstTrigger:](v5, "setIsFirstTriggerOrAfterFirstTrigger:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"codePathId"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"codePathId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,30 +65,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDAssistantExperimentDimensions)initWithJSON:(id)a3
+- (ODDSiriSchemaODDAssistantExperimentDimensions)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -101,36 +101,36 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_assistantDimensions)
   {
-    v4 = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self assistantDimensions];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    assistantDimensions = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self assistantDimensions];
+    dictionaryRepresentation = [assistantDimensions dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"assistantDimensions"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"assistantDimensions"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"assistantDimensions"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"assistantDimensions"];
     }
   }
 
   if (self->_codePathId)
   {
-    v7 = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self codePathId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    codePathId = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self codePathId];
+    dictionaryRepresentation2 = [codePathId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"codePathId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"codePathId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"codePathId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"codePathId"];
     }
   }
 
@@ -148,14 +148,14 @@
       v12 = off_1E78DCE10[v11];
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"experimentAllocationStatus"];
+    [dictionary setObject:v12 forKeyedSubscript:@"experimentAllocationStatus"];
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDAssistantExperimentDimensions isFirstTriggerOrAfterFirstTrigger](self, "isFirstTriggerOrAfterFirstTrigger")}];
-    [v3 setObject:v13 forKeyedSubscript:@"isFirstTriggerOrAfterFirstTrigger"];
+    [dictionary setObject:v13 forKeyedSubscript:@"isFirstTriggerOrAfterFirstTrigger"];
 
     has = self->_has;
   }
@@ -163,12 +163,12 @@
   if ((has & 2) != 0)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDAssistantExperimentDimensions isTriggered](self, "isTriggered")}];
-    [v3 setObject:v14 forKeyedSubscript:@"isTriggered"];
+    [dictionary setObject:v14 forKeyedSubscript:@"isTriggered"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -212,28 +212,28 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6 ^ [(SISchemaUUID *)self->_codePathId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
-  v5 = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self assistantDimensions];
-  v6 = [v4 assistantDimensions];
-  if ((v5 != 0) == (v6 == 0))
+  assistantDimensions = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self assistantDimensions];
+  assistantDimensions2 = [equalCopy assistantDimensions];
+  if ((assistantDimensions != 0) == (assistantDimensions2 == 0))
   {
     goto LABEL_22;
   }
 
-  v7 = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self assistantDimensions];
-  if (v7)
+  assistantDimensions3 = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self assistantDimensions];
+  if (assistantDimensions3)
   {
-    v8 = v7;
-    v9 = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self assistantDimensions];
-    v10 = [v4 assistantDimensions];
-    v11 = [v9 isEqual:v10];
+    v8 = assistantDimensions3;
+    assistantDimensions4 = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self assistantDimensions];
+    assistantDimensions5 = [equalCopy assistantDimensions];
+    v11 = [assistantDimensions4 isEqual:assistantDimensions5];
 
     if (!v11)
     {
@@ -246,7 +246,7 @@ LABEL_4:
   }
 
   has = self->_has;
-  v13 = v4[32];
+  v13 = equalCopy[32];
   if ((*&has & 1) != (v13 & 1))
   {
     goto LABEL_23;
@@ -255,13 +255,13 @@ LABEL_4:
   if (*&has)
   {
     experimentAllocationStatus = self->_experimentAllocationStatus;
-    if (experimentAllocationStatus != [v4 experimentAllocationStatus])
+    if (experimentAllocationStatus != [equalCopy experimentAllocationStatus])
     {
       goto LABEL_23;
     }
 
     has = self->_has;
-    v13 = v4[32];
+    v13 = equalCopy[32];
   }
 
   v15 = (*&has >> 1) & 1;
@@ -273,13 +273,13 @@ LABEL_4:
   if (v15)
   {
     isTriggered = self->_isTriggered;
-    if (isTriggered != [v4 isTriggered])
+    if (isTriggered != [equalCopy isTriggered])
     {
       goto LABEL_23;
     }
 
     has = self->_has;
-    v13 = v4[32];
+    v13 = equalCopy[32];
   }
 
   v17 = (*&has >> 2) & 1;
@@ -291,23 +291,23 @@ LABEL_4:
   if (v17)
   {
     isFirstTriggerOrAfterFirstTrigger = self->_isFirstTriggerOrAfterFirstTrigger;
-    if (isFirstTriggerOrAfterFirstTrigger != [v4 isFirstTriggerOrAfterFirstTrigger])
+    if (isFirstTriggerOrAfterFirstTrigger != [equalCopy isFirstTriggerOrAfterFirstTrigger])
     {
       goto LABEL_23;
     }
   }
 
-  v5 = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self codePathId];
-  v6 = [v4 codePathId];
-  if ((v5 != 0) == (v6 == 0))
+  assistantDimensions = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self codePathId];
+  assistantDimensions2 = [equalCopy codePathId];
+  if ((assistantDimensions != 0) == (assistantDimensions2 == 0))
   {
 LABEL_22:
 
     goto LABEL_23;
   }
 
-  v19 = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self codePathId];
-  if (!v19)
+  codePathId = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self codePathId];
+  if (!codePathId)
   {
 
 LABEL_26:
@@ -315,10 +315,10 @@ LABEL_26:
     goto LABEL_24;
   }
 
-  v20 = v19;
-  v21 = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self codePathId];
-  v22 = [v4 codePathId];
-  v23 = [v21 isEqual:v22];
+  v20 = codePathId;
+  codePathId2 = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self codePathId];
+  codePathId3 = [equalCopy codePathId];
+  v23 = [codePathId2 isEqual:codePathId3];
 
   if (v23)
   {
@@ -332,14 +332,14 @@ LABEL_24:
   return v24;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
-  v4 = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self assistantDimensions];
+  toCopy = to;
+  assistantDimensions = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self assistantDimensions];
 
-  if (v4)
+  if (assistantDimensions)
   {
-    v5 = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self assistantDimensions];
+    assistantDimensions2 = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self assistantDimensions];
     PBDataWriterWriteSubmessage();
   }
 
@@ -373,21 +373,21 @@ LABEL_6:
   }
 
 LABEL_7:
-  v7 = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self codePathId];
+  codePathId = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self codePathId];
 
-  v8 = v10;
-  if (v7)
+  v8 = toCopy;
+  if (codePathId)
   {
-    v9 = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self codePathId];
+    codePathId2 = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self codePathId];
     PBDataWriterWriteSubmessage();
 
-    v8 = v10;
+    v8 = toCopy;
   }
 }
 
-- (void)setHasIsFirstTriggerOrAfterFirstTrigger:(BOOL)a3
+- (void)setHasIsFirstTriggerOrAfterFirstTrigger:(BOOL)trigger
 {
-  if (a3)
+  if (trigger)
   {
     v3 = 4;
   }
@@ -400,9 +400,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsTriggered:(BOOL)a3
+- (void)setHasIsTriggered:(BOOL)triggered
 {
-  if (a3)
+  if (triggered)
   {
     v3 = 2;
   }
@@ -415,26 +415,26 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = ODDSiriSchemaODDAssistantExperimentDimensions;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self assistantDimensions];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  assistantDimensions = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self assistantDimensions];
+  v7 = [assistantDimensions applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ODDSiriSchemaODDAssistantExperimentDimensions *)self deleteAssistantDimensions];
   }
 
-  v9 = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self codePathId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  codePathId = [(ODDSiriSchemaODDAssistantExperimentDimensions *)self codePathId];
+  v10 = [codePathId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ODDSiriSchemaODDAssistantExperimentDimensions *)self deleteCodePathId];
   }

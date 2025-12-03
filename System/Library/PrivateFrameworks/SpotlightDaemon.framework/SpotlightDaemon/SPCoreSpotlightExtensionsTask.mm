@@ -1,32 +1,32 @@
 @interface SPCoreSpotlightExtensionsTask
-- (void)_performWithExtensionsEnumerator:(id)a3 completionBlock:(id)a4;
+- (void)_performWithExtensionsEnumerator:(id)enumerator completionBlock:(id)block;
 - (void)start;
 @end
 
 @implementation SPCoreSpotlightExtensionsTask
 
-- (void)_performWithExtensionsEnumerator:(id)a3 completionBlock:(id)a4
+- (void)_performWithExtensionsEnumerator:(id)enumerator completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  enumeratorCopy = enumerator;
+  blockCopy = block;
+  if (!blockCopy)
   {
     [SPCoreSpotlightExtensionsTask _performWithExtensionsEnumerator:completionBlock:];
   }
 
-  v8 = v7;
-  v9 = [(SPCoreSpotlightExtensionsTask *)self performBlock];
-  if (!v9)
+  v8 = blockCopy;
+  performBlock = [(SPCoreSpotlightExtensionsTask *)self performBlock];
+  if (!performBlock)
   {
     [SPCoreSpotlightExtensionsTask _performWithExtensionsEnumerator:completionBlock:];
   }
 
-  v10 = [v6 nextObject];
-  if (v10)
+  nextObject = [enumeratorCopy nextObject];
+  if (nextObject)
   {
     v11 = dispatch_group_create();
-    v12 = [(SPCoreSpotlightExtensionsTask *)self performBlock];
-    (v12)[2](v12, v10, v11);
+    performBlock2 = [(SPCoreSpotlightExtensionsTask *)self performBlock];
+    (performBlock2)[2](performBlock2, nextObject, v11);
 
     v13 = dispatch_get_global_queue(9, 0);
     block[0] = MEMORY[0x277D85DD0];
@@ -34,7 +34,7 @@
     block[2] = __82__SPCoreSpotlightExtensionsTask__performWithExtensionsEnumerator_completionBlock___block_invoke;
     block[3] = &unk_278934F08;
     block[4] = self;
-    v15 = v6;
+    v15 = enumeratorCopy;
     v16 = v8;
     dispatch_group_notify(v11, v13, block);
   }
@@ -55,8 +55,8 @@ void __82__SPCoreSpotlightExtensionsTask__performWithExtensionsEnumerator_comple
 
 - (void)start
 {
-  v3 = [(SPCoreSpotlightExtensionsTask *)self completionBlock];
-  if (!v3)
+  completionBlock = [(SPCoreSpotlightExtensionsTask *)self completionBlock];
+  if (!completionBlock)
   {
     [SPCoreSpotlightExtensionsTask start];
   }
@@ -70,7 +70,7 @@ void __82__SPCoreSpotlightExtensionsTask__performWithExtensionsEnumerator_comple
   v18 = 0;
   v5 = dispatch_group_create();
   dispatch_group_enter(v5);
-  v6 = [MEMORY[0x277CC3538] sharedManager];
+  mEMORY[0x277CC3538] = [MEMORY[0x277CC3538] sharedManager];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __38__SPCoreSpotlightExtensionsTask_start__block_invoke;
@@ -78,8 +78,8 @@ void __82__SPCoreSpotlightExtensionsTask__performWithExtensionsEnumerator_comple
   v16 = v17;
   v7 = v5;
   v14 = v7;
-  v15 = self;
-  [v6 findExtensionsWithCompletionBlock:v13];
+  selfCopy = self;
+  [mEMORY[0x277CC3538] findExtensionsWithCompletionBlock:v13];
 
   v8 = dispatch_get_global_queue(17, 0);
   v10[0] = MEMORY[0x277D85DD0];

@@ -1,12 +1,12 @@
 @interface POPrebootDataKey
 + (NSNumber)prebootEncryptionAlgorithm;
-+ (id)createKeyAndReturnError:(id *)a3;
-+ (id)verifiedKeyWithPrebootData:(id)a3 error:(id *)a4;
++ (id)createKeyAndReturnError:(id *)error;
++ (id)verifiedKeyWithPrebootData:(id)data error:(id *)error;
 - (NSData)keyData;
 - (NSString)encryptedKeyData;
 - (_TtC15PlatformSSOCore16POPrebootDataKey)init;
-- (void)setEncryptedKeyData:(id)a3;
-- (void)setKeyData:(id)a3;
+- (void)setEncryptedKeyData:(id)data;
+- (void)setKeyData:(id)data;
 @end
 
 @implementation POPrebootDataKey
@@ -42,9 +42,9 @@
   return v4;
 }
 
-- (void)setEncryptedKeyData:(id)a3
+- (void)setEncryptedKeyData:(id)data
 {
-  if (a3)
+  if (data)
   {
     v4 = sub_25E941848();
     v6 = v5;
@@ -81,20 +81,20 @@
   return v3;
 }
 
-- (void)setKeyData:(id)a3
+- (void)setKeyData:(id)data
 {
-  v3 = a3;
-  if (a3)
+  dataCopy = data;
+  if (data)
   {
-    v5 = self;
-    v6 = v3;
-    v3 = sub_25E941478();
+    selfCopy = self;
+    v6 = dataCopy;
+    dataCopy = sub_25E941478();
     v8 = v7;
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
     v8 = 0xF000000000000000;
   }
 
@@ -102,7 +102,7 @@
   swift_beginAccess();
   v11 = *v10;
   v12 = v10[1];
-  *v10 = v3;
+  *v10 = dataCopy;
   v10[1] = v8;
   sub_25E8B2B18(v11, v12);
 }
@@ -118,7 +118,7 @@
   return [(POPrebootDataKey *)&v4 init];
 }
 
-+ (id)verifiedKeyWithPrebootData:(id)a3 error:(id *)a4
++ (id)verifiedKeyWithPrebootData:(id)data error:(id *)error
 {
   if (qword_27FD0CD70 != -1)
   {
@@ -129,12 +129,12 @@
   __swift_project_value_buffer(v5, qword_27FD0CD78);
   v6 = Logger.PSSO_ERROR(code:description:)(-1001);
   swift_willThrow();
-  if (a4)
+  if (error)
   {
     v7 = sub_25E9413F8();
 
     v8 = v7;
-    *a4 = v7;
+    *error = v7;
   }
 
   else
@@ -144,7 +144,7 @@
   return 0;
 }
 
-+ (id)createKeyAndReturnError:(id *)a3
++ (id)createKeyAndReturnError:(id *)error
 {
   sub_25E916980();
 

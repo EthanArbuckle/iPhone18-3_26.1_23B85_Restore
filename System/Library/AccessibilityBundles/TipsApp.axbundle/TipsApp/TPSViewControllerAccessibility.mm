@@ -1,14 +1,14 @@
 @interface TPSViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation TPSViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TPSViewController" hasInstanceMethod:@"setLoading:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"TPSViewController" hasInstanceVariable:@"_loading" withType:"B"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TPSViewController" hasInstanceMethod:@"setLoading:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"TPSViewController" hasInstanceVariable:@"_loading" withType:"B"];
 }
 
 @end

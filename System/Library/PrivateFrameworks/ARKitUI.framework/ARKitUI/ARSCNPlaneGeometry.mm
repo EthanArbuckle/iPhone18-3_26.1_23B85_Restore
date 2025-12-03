@@ -47,7 +47,7 @@
       *buf = 138543874;
       v21 = v15;
       v22 = 2048;
-      v23 = a1;
+      selfCopy = self;
       v24 = 2114;
       v25 = v4;
       _os_log_impl(&dword_23D3AE000, v8, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Error creating new Metal buffer with device %{public}@", buf, 0x20u);
@@ -74,7 +74,7 @@
   _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE7reserveEm(&v45, 3 * [(ARPlaneGeometry *)v3 triangleCount]);
   for (i = 0; i < 3 * [(ARPlaneGeometry *)v3 triangleCount]; ++i)
   {
-    v5 = [(ARPlaneGeometry *)v3 vertices];
+    vertices = [(ARPlaneGeometry *)v3 vertices];
     v6 = [(ARPlaneGeometry *)v3 triangleIndices][2 * i];
     v7 = v49;
     if (v49 >= v50)
@@ -107,7 +107,7 @@
       }
 
       v12 = (16 * v9);
-      *v12 = *(v5 + 16 * v6);
+      *v12 = *(vertices + 16 * v6);
       v8 = 16 * v9 + 16;
       v13 = v12 - (v49 - __p);
       memcpy(v13, __p, v49 - __p);
@@ -123,12 +123,12 @@
 
     else
     {
-      *v49 = *(v5 + 16 * v6);
+      *v49 = *(vertices + 16 * v6);
       v8 = (v7 + 16);
     }
 
     v49 = v8;
-    v15 = [(ARPlaneGeometry *)v3 textureCoordinates];
+    textureCoordinates = [(ARPlaneGeometry *)v3 textureCoordinates];
     v16 = [(ARPlaneGeometry *)v3 triangleIndices][2 * i];
     v17 = v46;
     if (v46 >= v47)
@@ -161,7 +161,7 @@
       }
 
       v22 = (8 * v19);
-      *v22 = *(v15 + 8 * v16);
+      *v22 = *(textureCoordinates + 8 * v16);
       v18 = 8 * v19 + 8;
       v23 = v22 - (v46 - v45);
       memcpy(v23, v45, v46 - v45);
@@ -177,21 +177,21 @@
 
     else
     {
-      *v46 = *(v15 + 8 * v16);
+      *v46 = *(textureCoordinates + 8 * v16);
       v18 = (v17 + 8);
     }
 
     v46 = v18;
   }
 
-  v25 = [(MTLBuffer *)self->_vertexBuffer contents];
-  memcpy(v25, __p, v49 - __p);
-  v26 = [(MTLBuffer *)self->_textureCoordinateBuffer contents];
-  memcpy(v26, v45, v46 - v45);
-  v27 = [(ARPlaneGeometry *)v3 triangleCount];
-  v28 = [(SCNGeometry *)self geometryElements];
-  v29 = [v28 firstObject];
-  [v29 setPrimitiveRange:{0, v27}];
+  contents = [(MTLBuffer *)self->_vertexBuffer contents];
+  memcpy(contents, __p, v49 - __p);
+  contents2 = [(MTLBuffer *)self->_textureCoordinateBuffer contents];
+  memcpy(contents2, v45, v46 - v45);
+  triangleCount = [(ARPlaneGeometry *)v3 triangleCount];
+  geometryElements = [(SCNGeometry *)self geometryElements];
+  firstObject = [geometryElements firstObject];
+  [firstObject setPrimitiveRange:{0, triangleCount}];
 
   [(ARPlaneGeometry *)v3 center];
   v38 = v30;

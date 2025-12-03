@@ -12,8 +12,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(PHVideoOverlayContentView *)self subviews];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  subviews = [(PHVideoOverlayContentView *)self subviews];
+  v3 = [subviews countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -25,7 +25,7 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v7 + 1) + 8 * v6) removeFromSuperview];
@@ -33,7 +33,7 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [subviews countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);

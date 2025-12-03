@@ -1,31 +1,31 @@
 @interface HMDCameraRemoteStreamSession
 + (id)logCategory;
-- (HMDCameraRemoteStreamSession)initWithSessionID:(id)a3 reachabilityPath:(unint64_t)a4 streamSender:(id)a5 streamReceiver:(id)a6 remoteCapabilities:(id)a7 streamPreference:(id)a8;
+- (HMDCameraRemoteStreamSession)initWithSessionID:(id)d reachabilityPath:(unint64_t)path streamSender:(id)sender streamReceiver:(id)receiver remoteCapabilities:(id)capabilities streamPreference:(id)preference;
 - (NSString)stateDescription;
 - (id)logIdentifier;
-- (void)updateState:(int64_t)a3;
+- (void)updateState:(int64_t)state;
 @end
 
 @implementation HMDCameraRemoteStreamSession
 
 - (id)logIdentifier
 {
-  v2 = [(HMDCameraStreamSession *)self sessionID];
-  v3 = [v2 description];
+  sessionID = [(HMDCameraStreamSession *)self sessionID];
+  v3 = [sessionID description];
 
   return v3;
 }
 
 - (NSString)stateDescription
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = 1;
   do
   {
     if ([(HMDCameraRemoteStreamSession *)self containsState:v4])
     {
       v5 = HMDCameraRemoteStreamSessionStateAsString(v4);
-      [v3 addObject:v5];
+      [array addObject:v5];
     }
 
     v6 = v4 >= 5;
@@ -33,29 +33,29 @@
   }
 
   while (!v6);
-  v7 = [v3 componentsJoinedByString:{@", "}];
+  v7 = [array componentsJoinedByString:{@", "}];
 
   return v7;
 }
 
-- (void)updateState:(int64_t)a3
+- (void)updateState:(int64_t)state
 {
   v18 = *MEMORY[0x277D85DE8];
-  [(HMDCameraRemoteStreamSession *)self setStreamState:[(HMDCameraRemoteStreamSession *)self streamState]| a3];
+  [(HMDCameraRemoteStreamSession *)self setStreamState:[(HMDCameraRemoteStreamSession *)self streamState]| state];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = HMDCameraRemoteStreamSessionStateAsString(a3);
-    v10 = [(HMDCameraRemoteStreamSession *)v6 stateDescription];
+    v9 = HMDCameraRemoteStreamSessionStateAsString(state);
+    stateDescription = [(HMDCameraRemoteStreamSession *)selfCopy stateDescription];
     v12 = 138543874;
     v13 = v8;
     v14 = 2112;
     v15 = v9;
     v16 = 2112;
-    v17 = v10;
+    v17 = stateDescription;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Updated with state %@ to %@", &v12, 0x20u);
   }
 
@@ -63,21 +63,21 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCameraRemoteStreamSession)initWithSessionID:(id)a3 reachabilityPath:(unint64_t)a4 streamSender:(id)a5 streamReceiver:(id)a6 remoteCapabilities:(id)a7 streamPreference:(id)a8
+- (HMDCameraRemoteStreamSession)initWithSessionID:(id)d reachabilityPath:(unint64_t)path streamSender:(id)sender streamReceiver:(id)receiver remoteCapabilities:(id)capabilities streamPreference:(id)preference
 {
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
-  v18 = a7;
-  v19 = a3;
+  senderCopy = sender;
+  receiverCopy = receiver;
+  preferenceCopy = preference;
+  capabilitiesCopy = capabilities;
+  dCopy = d;
   v20 = isWatch();
   v21 = 4;
-  if (a4 != 3)
+  if (path != 3)
   {
     v21 = 1;
   }
 
-  if (a4 == 2)
+  if (path == 2)
   {
     v21 = 3;
   }
@@ -94,12 +94,12 @@
 
   v25.receiver = self;
   v25.super_class = HMDCameraRemoteStreamSession;
-  v23 = [(HMDCameraStreamSession *)&v25 initWithSessionID:v19 streamingTierType:v22 remoteCapabilities:v18 streamPreference:v17];
+  v23 = [(HMDCameraStreamSession *)&v25 initWithSessionID:dCopy streamingTierType:v22 remoteCapabilities:capabilitiesCopy streamPreference:preferenceCopy];
 
   if (v23)
   {
-    objc_storeStrong(&v23->_streamSender, a5);
-    objc_storeStrong(&v23->_streamReceiver, a6);
+    objc_storeStrong(&v23->_streamSender, sender);
+    objc_storeStrong(&v23->_streamReceiver, receiver);
     v23->_streamState = 0;
   }
 

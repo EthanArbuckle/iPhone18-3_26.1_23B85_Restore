@@ -1,15 +1,15 @@
 @interface TSCHBarSeriesModelCache
-- (TSCHBarSeriesModelCache)initWithChartModel:(id)a3 forSeries:(unint64_t)a4;
+- (TSCHBarSeriesModelCache)initWithChartModel:(id)model forSeries:(unint64_t)series;
 @end
 
 @implementation TSCHBarSeriesModelCache
 
-- (TSCHBarSeriesModelCache)initWithChartModel:(id)a3 forSeries:(unint64_t)a4
+- (TSCHBarSeriesModelCache)initWithChartModel:(id)model forSeries:(unint64_t)series
 {
-  v6 = a3;
-  v11 = objc_msgSend_chartInfo(v6, v7, v8, v9, v10);
-  v16 = objc_msgSend_numberOfSeries(v6, v12, v13, v14, v15);
-  if (v11 && v16 > a4)
+  modelCopy = model;
+  v11 = objc_msgSend_chartInfo(modelCopy, v7, v8, v9, v10);
+  v16 = objc_msgSend_numberOfSeries(modelCopy, v12, v13, v14, v15);
+  if (v11 && v16 > series)
   {
     v258.receiver = self;
     v258.super_class = TSCHBarSeriesModelCache;
@@ -17,16 +17,16 @@
     v26 = v21;
     if (v21)
     {
-      v21->_seriesIndex = a4;
-      v27 = objc_msgSend_seriesAtIndex_(v6, v22, v23, v24, v25, a4);
+      v21->_seriesIndex = series;
+      v27 = objc_msgSend_seriesAtIndex_(modelCopy, v22, v23, v24, v25, series);
       series = v26->_series;
       v26->_series = v27;
 
       v33 = objc_msgSend_seriesType(v26->_series, v29, v30, v31, v32);
       v38 = objc_msgSend_axisIDForAxisType_(v26->_series, v34, v35, v36, v37, 2);
       v43 = objc_msgSend_axisIDForAxisType_(v26->_series, v39, v40, v41, v42, 1);
-      v48 = objc_msgSend_axisForID_(v6, v44, v45, v46, v47, v38);
-      v53 = objc_msgSend_axisForID_(v6, v49, v50, v51, v52, v43);
+      v48 = objc_msgSend_axisForID_(modelCopy, v44, v45, v46, v47, v38);
+      v53 = objc_msgSend_axisForID_(modelCopy, v49, v50, v51, v52, v43);
       objc_opt_class();
       objc_msgSend_isCategory(v53, v54, v55, v56, v57);
       v58 = TSUDynamicCast();
@@ -88,7 +88,7 @@
       v120 = objc_msgSend_model(v26->_series, v116, v117, v118, v119);
       v125 = objc_msgSend_numberOfGroupsInSeries_(v120, v121, v122, v123, v124, v26->_series);
 
-      v130 = objc_msgSend_numberOfSeriesForCalculatingBarWidth_(v33, v126, v127, v128, v129, v6);
+      v130 = objc_msgSend_numberOfSeriesForCalculatingBarWidth_(v33, v126, v127, v128, v129, modelCopy);
       LODWORD(v131) = 1120403456;
       objc_msgSend_floatValueForProperty_defaultValue_(v11, v132, v131, v133, v134, 1105);
       v136 = v135;
@@ -153,9 +153,9 @@
       objc_msgSend_floatValueForProperty_defaultValue_(v26->_series, v214, v213, v215, v216, 1168);
       v218 = v217;
       v26->_opacity = v218;
-      if (objc_msgSend_groupedShadowsForChartModel_(TSCHStyleUtilities, v219, v218, v220, v221, v6))
+      if (objc_msgSend_groupedShadowsForChartModel_(TSCHStyleUtilities, v219, v218, v220, v221, modelCopy))
       {
-        v226 = objc_msgSend_seriesAtIndex_(v6, v222, v223, v224, v225, 0);
+        v226 = objc_msgSend_seriesAtIndex_(modelCopy, v222, v223, v224, v225, 0);
         v231 = objc_msgSend_objectValueForProperty_(v226, v227, v228, v229, v230, 1172);
         v236 = objc_msgSend_copy(v231, v232, v233, v234, v235);
         shadow = v26->_shadow;
@@ -185,7 +185,7 @@
     }
 
     self = v26;
-    v192 = self;
+    selfCopy = self;
   }
 
   else
@@ -196,10 +196,10 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v177, v184, v185, v186, v187, v178, v183, 36, 0, "Bad inputs to [TSCHBarSeriesModelCache initWithChartModel:forSeries:]");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v188, v189, v190, v191);
-    v192 = 0;
+    selfCopy = 0;
   }
 
-  return v192;
+  return selfCopy;
 }
 
 @end

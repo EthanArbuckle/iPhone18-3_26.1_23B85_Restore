@@ -1,14 +1,14 @@
 @interface SiriCoreDataDecompressor
-- (id)decompressedDataForBytes:(const void *)a3 length:(unint64_t)a4 error:(id *)a5;
+- (id)decompressedDataForBytes:(const void *)bytes length:(unint64_t)length error:(id *)error;
 @end
 
 @implementation SiriCoreDataDecompressor
 
-- (id)decompressedDataForBytes:(const void *)a3 length:(unint64_t)a4 error:(id *)a5
+- (id)decompressedDataForBytes:(const void *)bytes length:(unint64_t)length error:(id *)error
 {
-  if (a3)
+  if (bytes)
   {
-    v5 = dispatch_data_create(a3, a4, 0, 0);
+    v5 = dispatch_data_create(bytes, length, 0, 0);
   }
 
   else

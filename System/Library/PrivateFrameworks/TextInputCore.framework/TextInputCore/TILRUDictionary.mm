@@ -1,20 +1,20 @@
 @interface TILRUDictionary
-+ (id)dictionaryWithMaximumCapacity:(unint64_t)a3;
-- (TILRUDictionary)initWithMaximumCapacity:(unint64_t)a3;
++ (id)dictionaryWithMaximumCapacity:(unint64_t)capacity;
+- (TILRUDictionary)initWithMaximumCapacity:(unint64_t)capacity;
 - (id)allKeysInLRUOrder;
 - (id)allValuesInLRUOrder;
 - (id)description;
-- (id)objectForKey:(id)a3;
-- (id)objectForKeyWithoutAffectingLRU:(id)a3;
+- (id)objectForKey:(id)key;
+- (id)objectForKeyWithoutAffectingLRU:(id)u;
 - (unint64_t)linkedListCount;
-- (void)_addNodeToFront:(id)a3;
-- (void)_moveNodeToFront:(id)a3;
-- (void)_removeNode:(id)a3;
-- (void)_removeNodeFromLinkedList:(id)a3;
+- (void)_addNodeToFront:(id)front;
+- (void)_moveNodeToFront:(id)front;
+- (void)_removeNode:(id)node;
+- (void)_removeNodeFromLinkedList:(id)list;
 - (void)dealloc;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation TILRUDictionary
@@ -34,9 +34,9 @@
   self->_tail->prev = self->_head;
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = CFDictionaryGetValue(self->_dictionary, a3);
+  v4 = CFDictionaryGetValue(self->_dictionary, key);
   if (v4)
   {
     [(TILRUDictionary *)self _removeNode:v4];
@@ -45,17 +45,17 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  key = a4;
+  key = key;
   dictionary = self->_dictionary;
-  v7 = a3;
+  objectCopy = object;
   v8 = CFDictionaryGetValue(dictionary, key);
   if (v8)
   {
     v9 = v8;
     [(TILRUDictionary *)self _moveNodeToFront:v8];
-    [(TILRUDictionaryNode *)v9 setObject:v7];
+    [(TILRUDictionaryNode *)v9 setObject:objectCopy];
   }
 
   else
@@ -66,29 +66,29 @@
     }
 
     v10 = [key copyWithZone:0];
-    v9 = [[TILRUDictionaryNode alloc] initWithKey:v10 object:v7];
+    v9 = [[TILRUDictionaryNode alloc] initWithKey:v10 object:objectCopy];
 
     CFDictionaryAddValue(self->_dictionary, v10, v9);
     [(TILRUDictionary *)self _addNodeToFront:v9];
-    v7 = v10;
+    objectCopy = v10;
   }
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = CFDictionaryGetValue(self->_dictionary, a3);
+  v4 = CFDictionaryGetValue(self->_dictionary, key);
   if (v4)
   {
     [(TILRUDictionary *)self _moveNodeToFront:v4];
-    v5 = [v4 object];
+    object = [v4 object];
   }
 
   else
   {
-    v5 = 0;
+    object = 0;
   }
 
-  return v5;
+  return object;
 }
 
 - (id)description
@@ -106,8 +106,8 @@
     do
     {
       v6 = [p_isa key];
-      v7 = [p_isa object];
-      [v3 appendFormat:@"\t%@ = %@;\n", v6, v7];
+      object = [p_isa object];
+      [v3 appendFormat:@"\t%@ = %@;\n", v6, object];
 
       v8 = p_isa[3];
       p_isa = &v8->super.isa;
@@ -121,15 +121,15 @@
   return v3;
 }
 
-- (TILRUDictionary)initWithMaximumCapacity:(unint64_t)a3
+- (TILRUDictionary)initWithMaximumCapacity:(unint64_t)capacity
 {
   v10.receiver = self;
   v10.super_class = TILRUDictionary;
   v4 = [(TILRUDictionary *)&v10 init];
   if (v4)
   {
-    v4->_dictionary = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], a3, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
-    v4->_maxCount = a3;
+    v4->_dictionary = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], capacity, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
+    v4->_maxCount = capacity;
     v5 = [[TILRUDictionaryNode alloc] initWithKey:0 object:0];
     head = v4->_head;
     v4->_head = v5;
@@ -145,21 +145,21 @@
   return v4;
 }
 
-+ (id)dictionaryWithMaximumCapacity:(unint64_t)a3
++ (id)dictionaryWithMaximumCapacity:(unint64_t)capacity
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithMaximumCapacity:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithMaximumCapacity:capacity];
 
   return v3;
 }
 
-- (void)_addNodeToFront:(id)a3
+- (void)_addNodeToFront:(id)front
 {
-  v4 = a3;
+  frontCopy = front;
   v5 = self->_head->next;
   head = self->_head;
   next = head->next;
-  head->next = v4;
-  v11 = v4;
+  head->next = frontCopy;
+  v11 = frontCopy;
 
   v8 = self->_head;
   v9 = v11->next;
@@ -170,49 +170,49 @@
   v10->prev = v11;
 }
 
-- (void)_moveNodeToFront:(id)a3
+- (void)_moveNodeToFront:(id)front
 {
-  if (self->_head->next != a3)
+  if (self->_head->next != front)
   {
-    v5 = a3;
-    [(TILRUDictionary *)self _removeNodeFromLinkedList:v5];
-    [(TILRUDictionary *)self _addNodeToFront:v5];
+    frontCopy = front;
+    [(TILRUDictionary *)self _removeNodeFromLinkedList:frontCopy];
+    [(TILRUDictionary *)self _addNodeToFront:frontCopy];
   }
 }
 
-- (void)_removeNode:(id)a3
+- (void)_removeNode:(id)node
 {
-  v4 = a3;
-  [(TILRUDictionary *)self _removeNodeFromLinkedList:v4];
+  nodeCopy = node;
+  [(TILRUDictionary *)self _removeNodeFromLinkedList:nodeCopy];
   dictionary = self->_dictionary;
-  v6 = [v4 key];
+  v6 = [nodeCopy key];
 
   CFDictionaryRemoveValue(dictionary, v6);
 }
 
-- (void)_removeNodeFromLinkedList:(id)a3
+- (void)_removeNodeFromLinkedList:(id)list
 {
-  v4 = *(a3 + 4);
-  v5 = *(a3 + 3);
+  v4 = *(list + 4);
+  v5 = *(list + 3);
   v6 = v4[3];
   v4[3] = v5;
   v7 = v5;
   v8 = v4;
-  v9 = a3;
+  listCopy = list;
 
   v7[4] = v8;
 }
 
-- (id)objectForKeyWithoutAffectingLRU:(id)a3
+- (id)objectForKeyWithoutAffectingLRU:(id)u
 {
-  Value = CFDictionaryGetValue(self->_dictionary, a3);
+  Value = CFDictionaryGetValue(self->_dictionary, u);
 
   return [Value object];
 }
 
 - (id)allValuesInLRUOrder
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = self->_head->next;
   p_isa = &v4->super.isa;
   if (v4 == self->_tail)
@@ -224,8 +224,8 @@
   {
     do
     {
-      v6 = [p_isa object];
-      [v3 addObject:v6];
+      object = [p_isa object];
+      [array addObject:object];
 
       v7 = p_isa[3];
       p_isa = &v7->super.isa;
@@ -234,12 +234,12 @@
     while (v7 != self->_tail);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)allKeysInLRUOrder
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = self->_head->next;
   p_isa = &v4->super.isa;
   if (v4 == self->_tail)
@@ -252,7 +252,7 @@
     do
     {
       v6 = [p_isa key];
-      [v3 addObject:v6];
+      [array addObject:v6];
 
       v7 = p_isa[3];
       p_isa = &v7->super.isa;
@@ -261,7 +261,7 @@
     while (v7 != self->_tail);
   }
 
-  return v3;
+  return array;
 }
 
 - (unint64_t)linkedListCount

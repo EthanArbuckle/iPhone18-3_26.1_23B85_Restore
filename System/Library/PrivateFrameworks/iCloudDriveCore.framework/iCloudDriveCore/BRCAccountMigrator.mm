@@ -24,15 +24,15 @@
     _os_log_debug_impl(&dword_223E7A000, v4, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx performing migration for %@%@", buf, 0x20u);
   }
 
-  v5 = [MEMORY[0x277CB8F48] defaultStore];
-  v6 = [v5 br_appleAccountWithPersonID:self->super._dsid];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  v6 = [defaultStore br_appleAccountWithPersonID:self->super._dsid];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __29__BRCAccountMigrator_perform__block_invoke;
   v17[3] = &unk_2784FF478;
   v7 = v6;
   v18 = v7;
-  v19 = self;
+  selfCopy = self;
   v8 = MEMORY[0x22AA4A310](v17);
   if (v7)
   {

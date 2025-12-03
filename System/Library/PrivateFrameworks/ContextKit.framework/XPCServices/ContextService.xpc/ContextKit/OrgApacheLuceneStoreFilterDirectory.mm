@@ -1,24 +1,24 @@
 @interface OrgApacheLuceneStoreFilterDirectory
-- (OrgApacheLuceneStoreFilterDirectory)initWithOrgApacheLuceneStoreDirectory:(id)a3;
-- (id)createOutputWithNSString:(id)a3 withOrgApacheLuceneStoreIOContext:(id)a4;
+- (OrgApacheLuceneStoreFilterDirectory)initWithOrgApacheLuceneStoreDirectory:(id)directory;
+- (id)createOutputWithNSString:(id)string withOrgApacheLuceneStoreIOContext:(id)context;
 - (id)description;
 - (id)listAll;
-- (id)obtainLockWithNSString:(id)a3;
-- (id)openInputWithNSString:(id)a3 withOrgApacheLuceneStoreIOContext:(id)a4;
-- (int64_t)fileLengthWithNSString:(id)a3;
+- (id)obtainLockWithNSString:(id)string;
+- (id)openInputWithNSString:(id)string withOrgApacheLuceneStoreIOContext:(id)context;
+- (int64_t)fileLengthWithNSString:(id)string;
 - (void)close;
 - (void)dealloc;
-- (void)deleteFileWithNSString:(id)a3;
-- (void)renameFileWithNSString:(id)a3 withNSString:(id)a4;
-- (void)syncWithJavaUtilCollection:(id)a3;
+- (void)deleteFileWithNSString:(id)string;
+- (void)renameFileWithNSString:(id)string withNSString:(id)sString;
+- (void)syncWithJavaUtilCollection:(id)collection;
 @end
 
 @implementation OrgApacheLuceneStoreFilterDirectory
 
-- (OrgApacheLuceneStoreFilterDirectory)initWithOrgApacheLuceneStoreDirectory:(id)a3
+- (OrgApacheLuceneStoreFilterDirectory)initWithOrgApacheLuceneStoreDirectory:(id)directory
 {
   OrgApacheLuceneStoreDirectory_init(self, a2);
-  JreStrongAssign(&self->in_, a3);
+  JreStrongAssign(&self->in_, directory);
   return self;
 }
 
@@ -33,7 +33,7 @@
   return [(OrgApacheLuceneStoreDirectory *)in listAll];
 }
 
-- (void)deleteFileWithNSString:(id)a3
+- (void)deleteFileWithNSString:(id)string
 {
   in = self->in_;
   if (!in)
@@ -41,10 +41,10 @@
     JreThrowNullPointerException();
   }
 
-  [(OrgApacheLuceneStoreDirectory *)in deleteFileWithNSString:a3];
+  [(OrgApacheLuceneStoreDirectory *)in deleteFileWithNSString:string];
 }
 
-- (int64_t)fileLengthWithNSString:(id)a3
+- (int64_t)fileLengthWithNSString:(id)string
 {
   in = self->in_;
   if (!in)
@@ -52,10 +52,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(OrgApacheLuceneStoreDirectory *)in fileLengthWithNSString:a3];
+  return [(OrgApacheLuceneStoreDirectory *)in fileLengthWithNSString:string];
 }
 
-- (id)createOutputWithNSString:(id)a3 withOrgApacheLuceneStoreIOContext:(id)a4
+- (id)createOutputWithNSString:(id)string withOrgApacheLuceneStoreIOContext:(id)context
 {
   in = self->in_;
   if (!in)
@@ -63,10 +63,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(OrgApacheLuceneStoreDirectory *)in createOutputWithNSString:a3 withOrgApacheLuceneStoreIOContext:a4];
+  return [(OrgApacheLuceneStoreDirectory *)in createOutputWithNSString:string withOrgApacheLuceneStoreIOContext:context];
 }
 
-- (void)syncWithJavaUtilCollection:(id)a3
+- (void)syncWithJavaUtilCollection:(id)collection
 {
   in = self->in_;
   if (!in)
@@ -74,10 +74,10 @@
     JreThrowNullPointerException();
   }
 
-  [(OrgApacheLuceneStoreDirectory *)in syncWithJavaUtilCollection:a3];
+  [(OrgApacheLuceneStoreDirectory *)in syncWithJavaUtilCollection:collection];
 }
 
-- (void)renameFileWithNSString:(id)a3 withNSString:(id)a4
+- (void)renameFileWithNSString:(id)string withNSString:(id)sString
 {
   in = self->in_;
   if (!in)
@@ -85,10 +85,10 @@
     JreThrowNullPointerException();
   }
 
-  [(OrgApacheLuceneStoreDirectory *)in renameFileWithNSString:a3 withNSString:a4];
+  [(OrgApacheLuceneStoreDirectory *)in renameFileWithNSString:string withNSString:sString];
 }
 
-- (id)openInputWithNSString:(id)a3 withOrgApacheLuceneStoreIOContext:(id)a4
+- (id)openInputWithNSString:(id)string withOrgApacheLuceneStoreIOContext:(id)context
 {
   in = self->in_;
   if (!in)
@@ -96,10 +96,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(OrgApacheLuceneStoreDirectory *)in openInputWithNSString:a3 withOrgApacheLuceneStoreIOContext:a4];
+  return [(OrgApacheLuceneStoreDirectory *)in openInputWithNSString:string withOrgApacheLuceneStoreIOContext:context];
 }
 
-- (id)obtainLockWithNSString:(id)a3
+- (id)obtainLockWithNSString:(id)string
 {
   in = self->in_;
   if (!in)
@@ -107,7 +107,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(OrgApacheLuceneStoreDirectory *)in obtainLockWithNSString:a3];
+  return [(OrgApacheLuceneStoreDirectory *)in obtainLockWithNSString:string];
 }
 
 - (void)close

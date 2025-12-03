@@ -1,54 +1,54 @@
 @interface PKPeerPaymentSetupFlowHeroView
 - (BOOL)_shouldShowBubbleView;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKPeerPaymentSetupFlowHeroView)initWithPeerPaymentPassSnapShot:(id)a3 peerPaymentCredential:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKPeerPaymentSetupFlowHeroView)initWithPeerPaymentPassSnapShot:(id)shot peerPaymentCredential:(id)credential;
 - (id)_defaultCurrencyAmount;
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)_updateImageViewDynamicColors;
 - (void)layoutSubviews;
-- (void)startAnimationWithCompletion:(id)a3;
+- (void)startAnimationWithCompletion:(id)completion;
 @end
 
 @implementation PKPeerPaymentSetupFlowHeroView
 
-- (PKPeerPaymentSetupFlowHeroView)initWithPeerPaymentPassSnapShot:(id)a3 peerPaymentCredential:(id)a4
+- (PKPeerPaymentSetupFlowHeroView)initWithPeerPaymentPassSnapShot:(id)shot peerPaymentCredential:(id)credential
 {
-  v6 = a3;
-  v7 = a4;
+  shotCopy = shot;
+  credentialCopy = credential;
   v21.receiver = self;
   v21.super_class = PKPeerPaymentSetupFlowHeroView;
   v8 = [(PKPeerPaymentSetupFlowHeroView *)&v21 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_credential, a4);
-    v10 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v6];
+    objc_storeStrong(&v8->_credential, credential);
+    v10 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:shotCopy];
     passSnapshotView = v9->_passSnapshotView;
     v9->_passSnapshotView = v10;
 
     [(UIImageView *)v9->_passSnapshotView setContentMode:1];
     [(UIImageView *)v9->_passSnapshotView setAccessibilityIgnoresInvertColors:1];
     [(PKPeerPaymentSetupFlowHeroView *)v9 addSubview:v9->_passSnapshotView];
-    v12 = [(UIImageView *)v9->_passSnapshotView layer];
-    [v12 setShouldRasterize:1];
-    [v12 setRasterizationScale:PKUIScreenScale()];
+    layer = [(UIImageView *)v9->_passSnapshotView layer];
+    [layer setShouldRasterize:1];
+    [layer setRasterizationScale:PKUIScreenScale()];
     v13 = [MEMORY[0x1E69DC888] colorWithRed:0.0 green:0.0 blue:0.25 alpha:1.0];
-    [v12 setShadowColor:{objc_msgSend(v13, "CGColor")}];
+    [layer setShadowColor:{objc_msgSend(v13, "CGColor")}];
 
     LODWORD(v14) = 1041865114;
-    [v12 setShadowOpacity:v14];
-    [v12 setShadowOffset:{0.0, 4.0}];
-    [v12 setShadowRadius:4.0];
+    [layer setShadowOpacity:v14];
+    [layer setShadowOffset:{0.0, 4.0}];
+    [layer setShadowRadius:4.0];
     [(PKPeerPaymentSetupFlowHeroView *)v9 _updateImageViewDynamicColors];
     if ([(PKPeerPaymentSetupFlowHeroView *)v9 _shouldShowBubbleView])
     {
-      v15 = [(PKPeerPaymentCredential *)v9->_credential amount];
-      if (!v15)
+      amount = [(PKPeerPaymentCredential *)v9->_credential amount];
+      if (!amount)
       {
-        v15 = [(PKPeerPaymentSetupFlowHeroView *)v9 _defaultCurrencyAmount];
+        amount = [(PKPeerPaymentSetupFlowHeroView *)v9 _defaultCurrencyAmount];
       }
 
-      v16 = [[PKPeerPaymentHeroBubbleView alloc] initWithCurrencyAmount:v15 regitrationFlowState:[(PKPeerPaymentCredential *)v9->_credential flowState]];
+      v16 = [[PKPeerPaymentHeroBubbleView alloc] initWithCurrencyAmount:amount regitrationFlowState:[(PKPeerPaymentCredential *)v9->_credential flowState]];
       bubbleView = v9->_bubbleView;
       v9->_bubbleView = v16;
 
@@ -57,11 +57,11 @@
     }
 
     v9->_animationState = [(PKPeerPaymentCredential *)v9->_credential flowState]== 2;
-    v18 = [(PKPeerPaymentHeroBubbleView *)v9->_bubbleView layer];
-    [v18 setAnchorPoint:{0.0, 0.0}];
+    layer2 = [(PKPeerPaymentHeroBubbleView *)v9->_bubbleView layer];
+    [layer2 setAnchorPoint:{0.0, 0.0}];
 
-    v19 = [(UIImageView *)v9->_passSnapshotView layer];
-    [v19 setAnchorPoint:{0.0, 0.0}];
+    layer3 = [(UIImageView *)v9->_passSnapshotView layer];
+    [layer3 setAnchorPoint:{0.0, 0.0}];
   }
 
   return v9;
@@ -147,9 +147,9 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIImageView *)self->_passSnapshotView frame:a3.width];
+  [(UIImageView *)self->_passSnapshotView frame:fits.width];
   v6 = v4 + 15.0;
   if (!self->_bubbleView)
   {
@@ -170,10 +170,10 @@
   [(PKPeerPaymentSetupFlowHeroView *)self _updateImageViewDynamicColors];
 }
 
-- (void)startAnimationWithCompletion:(id)a3
+- (void)startAnimationWithCompletion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   animationState = self->_animationState;
   v6 = PKLogFacilityTypeGetObject();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -233,7 +233,7 @@
     v25[2] = __63__PKPeerPaymentSetupFlowHeroView_startAnimationWithCompletion___block_invoke_2;
     v25[3] = &unk_1E80158C0;
     v25[4] = self;
-    v26 = v4;
+    v26 = completionCopy;
     [v23 animateWithDuration:0x10000 delay:v27 usingSpringWithDamping:v25 initialSpringVelocity:0.7 options:0.0 animations:1.0 completion:1.0];
   }
 
@@ -248,9 +248,9 @@
       _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "Cannot animate the message bubble when the registration flow state is %@", &buf, 0xCu);
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -292,13 +292,13 @@ uint64_t __63__PKPeerPaymentSetupFlowHeroView_startAnimationWithCompletion___blo
 
 - (void)_updateImageViewDynamicColors
 {
-  v3 = [(PKPeerPaymentSetupFlowHeroView *)self traitCollection];
+  traitCollection = [(PKPeerPaymentSetupFlowHeroView *)self traitCollection];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __63__PKPeerPaymentSetupFlowHeroView__updateImageViewDynamicColors__block_invoke;
   v4[3] = &unk_1E8010970;
   v4[4] = self;
-  PKUIPerformWithEffectiveTraitCollection(v3, v4);
+  PKUIPerformWithEffectiveTraitCollection(traitCollection, v4);
 }
 
 void __63__PKPeerPaymentSetupFlowHeroView__updateImageViewDynamicColors__block_invoke(uint64_t a1)
@@ -318,13 +318,13 @@ void __63__PKPeerPaymentSetupFlowHeroView__updateImageViewDynamicColors__block_i
 
 - (BOOL)_shouldShowBubbleView
 {
-  v3 = [(PKPeerPaymentCredential *)self->_credential flowState];
-  if ((v3 - 3) < 3)
+  flowState = [(PKPeerPaymentCredential *)self->_credential flowState];
+  if ((flowState - 3) < 3)
   {
     return 1;
   }
 
-  if (v3 == 2)
+  if (flowState == 2)
   {
     return [(PKPeerPaymentCredential *)self->_credential paymentMode]!= 2;
   }

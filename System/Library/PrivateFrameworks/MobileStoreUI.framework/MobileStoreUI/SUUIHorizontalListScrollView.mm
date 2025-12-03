@@ -1,28 +1,28 @@
 @interface SUUIHorizontalListScrollView
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)_sizeForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (id)_attributedStringForButton:(id)a3 context:(id)a4;
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4;
-+ (id)_attributedStringForText:(id)a3 style:(id)a4 context:(id)a5;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUUIHorizontalListScrollView)initWithFrame:(CGRect)a3;
-- (id)viewForElementIdentifier:(id)a3;
-- (void)_buttonAction:(id)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)_sizeForViewElement:(id)element width:(double)width context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (id)_attributedStringForButton:(id)button context:(id)context;
++ (id)_attributedStringForLabel:(id)label context:(id)context;
++ (id)_attributedStringForText:(id)text style:(id)style context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUUIHorizontalListScrollView)initWithFrame:(CGRect)frame;
+- (id)viewForElementIdentifier:(id)identifier;
+- (void)_buttonAction:(id)action;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
 @end
 
 @implementation SUUIHorizontalListScrollView
 
-- (SUUIHorizontalListScrollView)initWithFrame:(CGRect)a3
+- (SUUIHorizontalListScrollView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = SUUIHorizontalListScrollView;
-  v3 = [(SUUIViewReuseView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIViewReuseView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:517 valueOptions:0 capacity:0];
@@ -46,10 +46,10 @@
   return v3;
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -58,15 +58,15 @@
   v11[1] = 3221225472;
   v11[2] = __79__SUUIHorizontalListScrollView_prefetchResourcesForViewElement_reason_context___block_invoke;
   v11[3] = &unk_2798F5E50;
-  v9 = v8;
+  v9 = contextCopy;
   v13 = &v15;
-  v14 = a4;
+  reasonCopy = reason;
   v12 = v9;
-  [v7 enumerateChildrenUsingBlock:v11];
-  LOBYTE(a4) = *(v16 + 24);
+  [elementCopy enumerateChildrenUsingBlock:v11];
+  LOBYTE(reason) = *(v16 + 24);
 
   _Block_object_dispose(&v15, 8);
-  return a4;
+  return reason;
 }
 
 uint64_t __79__SUUIHorizontalListScrollView_prefetchResourcesForViewElement_reason_context___block_invoke(uint64_t a1, uint64_t a2)
@@ -76,7 +76,7 @@ uint64_t __79__SUUIHorizontalListScrollView_prefetchResourcesForViewElement_reas
   return result;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
   v4 = *MEMORY[0x277CBF3A8];
   v5 = *(MEMORY[0x277CBF3A8] + 8);
@@ -85,22 +85,22 @@ uint64_t __79__SUUIHorizontalListScrollView_prefetchResourcesForViewElement_reas
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [v8 labelLayoutCache];
+  contextCopy = context;
+  elementCopy = element;
+  labelLayoutCache = [contextCopy labelLayoutCache];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __74__SUUIHorizontalListScrollView_requestLayoutForViewElement_width_context___block_invoke;
   v13[3] = &unk_2798F5E78;
-  v16 = a4;
-  v17 = a1;
-  v14 = v10;
-  v15 = v8;
-  v11 = v8;
-  v12 = v10;
-  [v9 enumerateChildrenUsingBlock:v13];
+  widthCopy = width;
+  selfCopy = self;
+  v14 = labelLayoutCache;
+  v15 = contextCopy;
+  v11 = contextCopy;
+  v12 = labelLayoutCache;
+  [elementCopy enumerateChildrenUsingBlock:v13];
 }
 
 void __74__SUUIHorizontalListScrollView_requestLayoutForViewElement_width_context___block_invoke(uint64_t a1, void *a2)
@@ -144,10 +144,10 @@ LABEL_10:
 LABEL_12:
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v8 = a4;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3010000000;
@@ -161,13 +161,13 @@ LABEL_12:
   v19[1] = 3221225472;
   v19[2] = __70__SUUIHorizontalListScrollView_sizeThatFitsWidth_viewElement_context___block_invoke;
   v19[3] = &unk_2798FDC38;
-  v23 = a1;
-  v24 = a3;
-  v10 = v9;
+  selfCopy = self;
+  widthCopy = width;
+  v10 = contextCopy;
   v20 = v10;
   v21 = &v29;
   v22 = &v25;
-  [v8 enumerateChildrenUsingBlock:v19];
+  [elementCopy enumerateChildrenUsingBlock:v19];
   v11 = v26[3];
   v12 = v30;
   v13 = v11 <= 1;
@@ -212,22 +212,22 @@ double __70__SUUIHorizontalListScrollView_sizeThatFitsWidth_viewElement_context_
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   [(NSMapTable *)self->_viewElementViews removeAllObjects];
   [(NSMapTable *)self->_imageViewToImageResourceCacheKey removeAllObjects];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __68__SUUIHorizontalListScrollView_reloadWithViewElement_width_context___block_invoke;
   v12[3] = &unk_2798F5EF0;
-  v16 = a4;
-  v13 = v8;
-  v14 = v9;
-  v15 = self;
-  v10 = v9;
-  v11 = v8;
+  widthCopy = width;
+  v13 = elementCopy;
+  v14 = contextCopy;
+  selfCopy = self;
+  v10 = contextCopy;
+  v11 = elementCopy;
   [(SUUIViewReuseView *)self modifyUsingBlock:v12];
 }
 
@@ -365,12 +365,12 @@ LABEL_21:
 LABEL_27:
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 requestIdentifier];
+  imageCopy = image;
+  contextCopy = context;
+  requestIdentifier = [request requestIdentifier];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -380,7 +380,7 @@ LABEL_27:
   if (v11)
   {
     v12 = v11;
-    v22 = v8;
+    v22 = imageCopy;
     v13 = *v25;
     while (2)
     {
@@ -393,21 +393,21 @@ LABEL_27:
 
         v15 = *(*(&v24 + 1) + 8 * i);
         v16 = [(NSMapTable *)self->_imageViewToImageResourceCacheKey objectForKey:v15, v22];
-        v17 = [v9 requestIdentifierForResourceCacheKey:v16];
+        v17 = [contextCopy requestIdentifierForResourceCacheKey:v16];
         v18 = v17;
-        if (v17 && [v17 unsignedIntegerValue] == v10)
+        if (v17 && [v17 unsignedIntegerValue] == requestIdentifier)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v20 = [v15 imageView];
-            v8 = v22;
-            [v20 setImage:v22];
+            imageView = [v15 imageView];
+            imageCopy = v22;
+            [imageView setImage:v22];
           }
 
           else
           {
-            v8 = v22;
+            imageCopy = v22;
             [v15 setImage:v22];
           }
 
@@ -426,7 +426,7 @@ LABEL_27:
     }
 
     v19 = 0;
-    v8 = v22;
+    imageCopy = v22;
   }
 
   else
@@ -439,10 +439,10 @@ LABEL_16:
   return v19;
 }
 
-- (id)viewForElementIdentifier:(id)a3
+- (id)viewForElementIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -464,8 +464,8 @@ LABEL_16:
 
         v9 = *(*(&v16 + 1) + 8 * i);
         v10 = [(NSMapTable *)self->_viewElementViews objectForKey:v9];
-        v11 = [v10 itmlID];
-        v12 = [v11 isEqualToString:v4];
+        itmlID = [v10 itmlID];
+        v12 = [itmlID isEqualToString:identifierCopy];
 
         if (v12)
         {
@@ -498,12 +498,12 @@ LABEL_11:
   v4 = v3;
   v6 = v5;
   [(UIScrollView *)self->_scrollView setFrame:?];
-  v7 = [(SUUIViewReuseView *)self allExistingViews];
+  allExistingViews = [(SUUIViewReuseView *)self allExistingViews];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v8 = [allExistingViews countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -515,7 +515,7 @@ LABEL_11:
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allExistingViews);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
@@ -538,7 +538,7 @@ LABEL_11:
         [(UIScrollView *)self->_scrollView addSubview:v13];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [allExistingViews countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v9);
@@ -553,19 +553,19 @@ LABEL_11:
   [(UIScrollView *)self->_scrollView setScrollEnabled:MaxX > v4];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v23 = *MEMORY[0x277D85DE8];
   v7 = *MEMORY[0x277CBF3A8];
   v6 = *(MEMORY[0x277CBF3A8] + 8);
-  v8 = [(SUUIViewReuseView *)self allExistingViews];
+  allExistingViews = [(SUUIViewReuseView *)self allExistingViews];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v9 = [allExistingViews countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -577,7 +577,7 @@ LABEL_11:
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allExistingViews);
         }
 
         [*(*(&v18 + 1) + 8 * v12) sizeThatFits:{width, height}];
@@ -591,15 +591,15 @@ LABEL_11:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [allExistingViews countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v10);
   }
 
-  if ([v8 count] >= 2)
+  if ([allExistingViews count] >= 2)
   {
-    v7 = v7 + (([v8 count] - 1) * 18.0);
+    v7 = v7 + (([allExistingViews count] - 1) * 18.0);
   }
 
   [(UIScrollView *)self->_scrollView contentInset];
@@ -615,88 +615,88 @@ LABEL_11:
   return result;
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
   v4 = MEMORY[0x277CCAB98];
-  v5 = a3;
-  v7 = [v4 defaultCenter];
-  [v7 postNotificationName:0x286AF1D80 object:self];
-  v6 = [(NSMapTable *)self->_viewElementViews objectForKey:v5];
+  actionCopy = action;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter postNotificationName:0x286AF1D80 object:self];
+  v6 = [(NSMapTable *)self->_viewElementViews objectForKey:actionCopy];
 
   [v6 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
 }
 
-+ (id)_attributedStringForButton:(id)a3 context:(id)a4
++ (id)_attributedStringForButton:(id)button context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 buttonText];
-  v9 = [v6 buttonTitleStyle];
-  if (v9)
+  buttonCopy = button;
+  contextCopy = context;
+  buttonText = [buttonCopy buttonText];
+  buttonTitleStyle = [buttonCopy buttonTitleStyle];
+  if (buttonTitleStyle)
   {
-    v10 = [a1 _attributedStringForText:v8 style:v9 context:v7];
+    v10 = [self _attributedStringForText:buttonText style:buttonTitleStyle context:contextCopy];
   }
 
   else
   {
-    v11 = [v6 style];
-    v10 = [a1 _attributedStringForText:v8 style:v11 context:v7];
+    style = [buttonCopy style];
+    v10 = [self _attributedStringForText:buttonText style:style context:contextCopy];
   }
 
   return v10;
 }
 
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4
++ (id)_attributedStringForLabel:(id)label context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 text];
-  v9 = [v7 style];
+  contextCopy = context;
+  labelCopy = label;
+  text = [labelCopy text];
+  style = [labelCopy style];
 
-  v10 = [a1 _attributedStringForText:v8 style:v9 context:v6];
+  v10 = [self _attributedStringForText:text style:style context:contextCopy];
 
   return v10;
 }
 
-+ (id)_attributedStringForText:(id)a3 style:(id)a4 context:(id)a5
++ (id)_attributedStringForText:(id)text style:(id)style context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = SUUIViewElementFontWithStyle(v8);
+  textCopy = text;
+  styleCopy = style;
+  contextCopy = context;
+  v10 = SUUIViewElementFontWithStyle(styleCopy);
   if (!v10)
   {
     v10 = SUUIFontForTextStyle(5);
   }
 
-  v11 = [v9 tintColor];
-  v12 = SUUIViewElementPlainColorWithStyle(v8, v11);
+  tintColor = [contextCopy tintColor];
+  v12 = SUUIViewElementPlainColorWithStyle(styleCopy, tintColor);
 
   if (!v12)
   {
     v12 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.8];
   }
 
-  v13 = [v7 attributedStringWithDefaultFont:v10 foregroundColor:v12 style:v8];
+  v13 = [textCopy attributedStringWithDefaultFont:v10 foregroundColor:v12 style:styleCopy];
 
   return v13;
 }
 
-+ (CGSize)_sizeForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (CGSize)_sizeForViewElement:(id)element width:(double)width context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
-  if ([v7 elementType] == 32)
+  elementCopy = element;
+  contextCopy = context;
+  if ([elementCopy elementType] == 32)
   {
-    v9 = [MEMORY[0x277D759A0] mainScreen];
-    [v9 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v10 = 16.0;
     v12 = 1.0 / v11;
   }
 
   else
   {
-    [v8 sizeForViewElement:v7 width:a4];
+    [contextCopy sizeForViewElement:elementCopy width:width];
     v12 = v13;
     v10 = v14;
   }

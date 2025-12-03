@@ -1,21 +1,21 @@
 @interface SFPowerSourceMonitor
-- (BOOL)powerSourcesListWithOutInfo:(const void *)a3 outSources:(const __CFArray *)a4 outSourcesCount:(int64_t *)a5;
+- (BOOL)powerSourcesListWithOutInfo:(const void *)info outSources:(const __CFArray *)sources outSourcesCount:(int64_t *)count;
 - (SFPowerSourceMonitor)init;
 - (void)_cleanup;
-- (void)_foundPowerSource:(id)a3 desc:(id)a4 adapterDesc:(id)a5;
-- (void)_handlePowerSourcesChanged:(id)a3 changes:(unsigned int)a4;
-- (void)_handlePowerSourcesFound:(id)a3;
-- (void)_handlePowerSourcesLost:(id)a3;
-- (void)_removePowerSources:(id)a3;
+- (void)_foundPowerSource:(id)source desc:(id)desc adapterDesc:(id)adapterDesc;
+- (void)_handlePowerSourcesChanged:(id)changed changes:(unsigned int)changes;
+- (void)_handlePowerSourcesFound:(id)found;
+- (void)_handlePowerSourcesLost:(id)lost;
+- (void)_removePowerSources:(id)sources;
 - (void)_triggerUpdatePowerSources;
 - (void)_update;
-- (void)_updatePowerSource:(id)a3 desc:(id)a4 adapterDesc:(id)a5;
+- (void)_updatePowerSource:(id)source desc:(id)desc adapterDesc:(id)adapterDesc;
 - (void)_updatePowerSources;
-- (void)_updatePowerSourcesWithInfo:(void *)a3 sources:(__CFArray *)a4 sourcesCount:(int64_t)a5;
-- (void)activateWithCompletion:(id)a3;
+- (void)_updatePowerSourcesWithInfo:(void *)info sources:(__CFArray *)sources sourcesCount:(int64_t)count;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setChangeFlags:(unsigned int)a3;
+- (void)setChangeFlags:(unsigned int)flags;
 @end
 
 @implementation SFPowerSourceMonitor
@@ -230,28 +230,28 @@ LABEL_18:
   }
 }
 
-- (void)setChangeFlags:(unsigned int)a3
+- (void)setChangeFlags:(unsigned int)flags
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_activateCalled)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_activateCalled)
   {
-    dispatchQueue = v4->_dispatchQueue;
+    dispatchQueue = selfCopy->_dispatchQueue;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __39__SFPowerSourceMonitor_setChangeFlags___block_invoke;
     v6[3] = &unk_1E788D970;
-    v7 = a3;
-    v6[4] = v4;
+    flagsCopy = flags;
+    v6[4] = selfCopy;
     dispatch_async(dispatchQueue, v6);
   }
 
   else
   {
-    v4->_changeFlags = a3;
+    selfCopy->_changeFlags = flags;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __39__SFPowerSourceMonitor_setChangeFlags___block_invoke(uint64_t result)
@@ -267,23 +267,23 @@ uint64_t __39__SFPowerSourceMonitor_setChangeFlags___block_invoke(uint64_t resul
   return result;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v5->_activateCalled = 1;
-  dispatchQueue = v5->_dispatchQueue;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_activateCalled = 1;
+  dispatchQueue = selfCopy->_dispatchQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __47__SFPowerSourceMonitor_activateWithCompletion___block_invoke;
   v8[3] = &unk_1E788B210;
-  v8[4] = v5;
-  v9 = v4;
-  v7 = v4;
+  v8[4] = selfCopy;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(dispatchQueue, v8);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __47__SFPowerSourceMonitor_activateWithCompletion___block_invoke(uint64_t a1)
@@ -493,7 +493,7 @@ LABEL_5:
   return [v3 _triggerUpdatePowerSources];
 }
 
-- (BOOL)powerSourcesListWithOutInfo:(const void *)a3 outSources:(const __CFArray *)a4 outSourcesCount:(int64_t *)a5
+- (BOOL)powerSourcesListWithOutInfo:(const void *)info outSources:(const __CFArray *)sources outSourcesCount:(int64_t *)count
 {
   cf = 0;
   v9 = IOPSCopyPowerSourcesByTypePrecise();
@@ -530,10 +530,10 @@ LABEL_8:
     v13 = IOPSCopyPowerSourcesList(v12);
     if (v13)
     {
-      *a3 = cf;
-      *a4 = v13;
+      *info = cf;
+      *sources = v13;
       v14 = 0;
-      *a5 = CFArrayGetCount(v13);
+      *count = CFArrayGetCount(v13);
 LABEL_11:
       v15 = 1;
       goto LABEL_12;
@@ -560,7 +560,7 @@ LABEL_11:
       v20 = self->_ucat;
     }
 
-    v22 = [v14 localizedDescription];
+    localizedDescription = [v14 localizedDescription];
     LogPrintF();
   }
 
@@ -603,7 +603,7 @@ void __50__SFPowerSourceMonitor__triggerUpdatePowerSources__block_invoke(uint64_
   }
 }
 
-- (void)_updatePowerSourcesWithInfo:(void *)a3 sources:(__CFArray *)a4 sourcesCount:(int64_t)a5
+- (void)_updatePowerSourcesWithInfo:(void *)info sources:(__CFArray *)sources sourcesCount:(int64_t)count
 {
   v86 = *MEMORY[0x1E69E9840];
   powerSourcesUpdateIndex = self->_powerSourcesUpdateIndex + 1;
@@ -626,28 +626,28 @@ void __50__SFPowerSourceMonitor__triggerUpdatePowerSources__block_invoke(uint64_
     powerSourcesUpdateIndex = self->_powerSourcesUpdateIndex;
   }
 
-  v60 = a5;
+  countCopy = count;
   v62 = [(NSMutableDictionary *)self->_powerSources count];
   v58 = powerSourcesUpdateIndex;
   LogPrintF();
 LABEL_5:
-  self->_previousSourcesCount = a5;
+  self->_previousSourcesCount = count;
   powerSources = self->_powerSources;
   v82[0] = MEMORY[0x1E69E9820];
   v82[1] = 3221225472;
   v82[2] = __73__SFPowerSourceMonitor__updatePowerSourcesWithInfo_sources_sourcesCount___block_invoke;
   v82[3] = &unk_1E788D998;
-  v69 = self;
+  selfCopy = self;
   v82[4] = self;
-  [(NSMutableDictionary *)powerSources enumerateKeysAndObjectsUsingBlock:v82, v58, v60, v62];
+  [(NSMutableDictionary *)powerSources enumerateKeysAndObjectsUsingBlock:v82, v58, countCopy, v62];
   v66 = IOPSCopyExternalPowerAdapterDetails();
-  if (a5 >= 1)
+  if (count >= 1)
   {
     v13 = 0;
     while (1)
     {
-      ValueAtIndex = CFArrayGetValueAtIndex(a4, v13);
-      v15 = IOPSGetPowerSourceDescription(a3, ValueAtIndex);
+      ValueAtIndex = CFArrayGetValueAtIndex(sources, v13);
+      v15 = IOPSGetPowerSourceDescription(info, ValueAtIndex);
       v16 = self->_ucat->var0;
       if (v16 > 10)
       {
@@ -728,7 +728,7 @@ LABEL_25:
 
 LABEL_26:
 
-      if (a5 == ++v13)
+      if (count == ++v13)
       {
         goto LABEL_30;
       }
@@ -748,7 +748,7 @@ LABEL_30:
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
-  v26 = self;
+  selfCopy2 = self;
   obj = [(NSMutableDictionary *)self->_powerSources allValues];
   v71 = [obj countByEnumeratingWithState:&v78 objects:v85 count:16];
   if (!v71)
@@ -769,12 +769,12 @@ LABEL_30:
       }
 
       v28 = *(*(&v78 + 1) + 8 * v27);
-      v29 = [v28 groupID];
-      if ([v29 length])
+      groupID = [v28 groupID];
+      if ([groupID length])
       {
-        if ([v25 containsObject:v29])
+        if ([v25 containsObject:groupID])
         {
-          v30 = v26->_ucat->var0;
+          v30 = selfCopy2->_ucat->var0;
           if (v30 <= 10)
           {
             if (v30 == -1)
@@ -784,10 +784,10 @@ LABEL_30:
                 goto LABEL_75;
               }
 
-              v54 = v26->_ucat;
+              v54 = selfCopy2->_ucat;
             }
 
-            v59 = v26->_powerSourcesUpdateIndex;
+            v59 = selfCopy2->_powerSourcesUpdateIndex;
             v61 = v28;
             LogPrintF();
           }
@@ -797,11 +797,11 @@ LABEL_75:
           goto LABEL_76;
         }
 
-        v32 = [(NSMutableDictionary *)v26->_powerSources allValues];
-        v33 = [MEMORY[0x1E696AE18] predicateWithFormat:@"groupID == %@", v29];
-        v31 = [v32 filteredArrayUsingPredicate:v33];
+        allValues = [(NSMutableDictionary *)selfCopy2->_powerSources allValues];
+        v33 = [MEMORY[0x1E696AE18] predicateWithFormat:@"groupID == %@", groupID];
+        v31 = [allValues filteredArrayUsingPredicate:v33];
 
-        [v25 addObject:v29];
+        [v25 addObject:groupID];
       }
 
       else
@@ -810,7 +810,7 @@ LABEL_75:
         v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v84 count:1];
       }
 
-      v34 = v26->_ucat->var0;
+      v34 = selfCopy2->_ucat->var0;
       if (v34 <= 10)
       {
         if (v34 != -1)
@@ -818,21 +818,21 @@ LABEL_75:
           goto LABEL_44;
         }
 
-        v36 = v26->_ucat;
+        v36 = selfCopy2->_ucat;
         if (_LogCategory_Initialize())
         {
-          v52 = v26->_ucat;
+          v52 = selfCopy2->_ucat;
 LABEL_44:
-          v35 = v26->_powerSourcesUpdateIndex;
-          v63 = [v28 accessoryCategory];
+          v35 = selfCopy2->_powerSourcesUpdateIndex;
+          accessoryCategory = [v28 accessoryCategory];
           v64 = [v31 count];
           v59 = v35;
-          v61 = v29;
+          v61 = groupID;
           LogPrintF();
         }
       }
 
-      v72 = v29;
+      v72 = groupID;
       v73 = v27;
       v76 = 0u;
       v77 = 0u;
@@ -858,11 +858,11 @@ LABEL_44:
 
             v45 = *(*(&v74 + 1) + 8 * i);
             v46 = [v45 present] ^ 1;
-            v47 = [v45 added];
+            added = [v45 added];
             v43 &= v46;
-            v42 &= v47;
+            v42 &= added;
             v48 = [v45 changes] | v40;
-            if ((v46 | v47))
+            if ((v46 | added))
             {
               v40 = v48 | 0x200;
             }
@@ -886,8 +886,8 @@ LABEL_44:
         v43 = 1;
       }
 
-      v26 = v69;
-      v49 = v69->_ucat->var0;
+      selfCopy2 = selfCopy;
+      v49 = selfCopy->_ucat->var0;
       if (v49 > 10)
       {
         goto LABEL_67;
@@ -900,7 +900,7 @@ LABEL_44:
 
       if (_LogCategory_Initialize())
       {
-        v53 = v69->_ucat;
+        v53 = selfCopy->_ucat;
 LABEL_60:
         v50 = "no";
         if (v43)
@@ -921,29 +921,29 @@ LABEL_60:
         v64 = v40;
         v65 = &unk_1A998F040;
         v61 = v51;
-        v63 = v50;
-        v59 = v69->_powerSourcesUpdateIndex;
+        accessoryCategory = v50;
+        v59 = selfCopy->_powerSourcesUpdateIndex;
         LogPrintF();
       }
 
 LABEL_67:
       if (v43)
       {
-        [(SFPowerSourceMonitor *)v69 _handlePowerSourcesLost:v37];
+        [(SFPowerSourceMonitor *)selfCopy _handlePowerSourcesLost:v37];
       }
 
       else if (v42)
       {
-        [(SFPowerSourceMonitor *)v69 _handlePowerSourcesFound:v37];
+        [(SFPowerSourceMonitor *)selfCopy _handlePowerSourcesFound:v37];
       }
 
       else if (v40)
       {
-        [(SFPowerSourceMonitor *)v69 _handlePowerSourcesChanged:v37 changes:v40];
+        [(SFPowerSourceMonitor *)selfCopy _handlePowerSourcesChanged:v37 changes:v40];
       }
 
       v25 = v68;
-      v29 = v72;
+      groupID = v72;
       v27 = v73;
 LABEL_76:
 
@@ -992,33 +992,33 @@ LABEL_5:
   [v5 setChanges:0];
 }
 
-- (void)_foundPowerSource:(id)a3 desc:(id)a4 adapterDesc:(id)a5
+- (void)_foundPowerSource:(id)source desc:(id)desc adapterDesc:(id)adapterDesc
 {
-  v20 = a3;
-  v8 = a5;
-  v9 = a4;
+  sourceCopy = source;
+  adapterDescCopy = adapterDesc;
+  descCopy = desc;
   v10 = objc_alloc_init(SFPowerSource);
-  -[SFPowerSource setSourceID:](v10, "setSourceID:", [v20 integerValue]);
-  [(SFPowerSource *)v10 updateWithPowerSourceDescription:v9];
+  -[SFPowerSource setSourceID:](v10, "setSourceID:", [sourceCopy integerValue]);
+  [(SFPowerSource *)v10 updateWithPowerSourceDescription:descCopy];
 
   [(SFPowerSource *)v10 setAdded:1];
   if ([(SFPowerSource *)v10 isInternal])
   {
     [(SFPowerSource *)v10 setGroupID:@"Internal"];
-    [(SFPowerSource *)v10 updateWithPowerAdapterDetails:v8];
+    [(SFPowerSource *)v10 updateWithPowerAdapterDetails:adapterDescCopy];
     goto LABEL_13;
   }
 
-  v11 = [(SFPowerSource *)v10 accessoryCategory];
-  v12 = v11;
-  if (v11 != @"Battery Case")
+  accessoryCategory = [(SFPowerSource *)v10 accessoryCategory];
+  v12 = accessoryCategory;
+  if (accessoryCategory != @"Battery Case")
   {
-    if (!v11)
+    if (!accessoryCategory)
     {
       goto LABEL_10;
     }
 
-    v13 = [(__CFString *)v11 isEqual:@"Battery Case"];
+    v13 = [(__CFString *)accessoryCategory isEqual:@"Battery Case"];
 
     if (!v13)
     {
@@ -1026,22 +1026,22 @@ LABEL_5:
     }
   }
 
-  v14 = [(SFPowerSource *)v10 transportType];
-  if (v14 == @"AID")
+  transportType = [(SFPowerSource *)v10 transportType];
+  if (transportType == @"AID")
   {
 
     goto LABEL_12;
   }
 
-  v15 = v14;
-  if (!v14)
+  v15 = transportType;
+  if (!transportType)
   {
 LABEL_10:
 
     goto LABEL_13;
   }
 
-  v16 = [(__CFString *)v14 isEqual:@"AID"];
+  v16 = [(__CFString *)transportType isEqual:@"AID"];
 
   if (v16)
   {
@@ -1050,7 +1050,7 @@ LABEL_12:
   }
 
 LABEL_13:
-  [(NSMutableDictionary *)self->_powerSources setObject:v10 forKeyedSubscript:v20];
+  [(NSMutableDictionary *)self->_powerSources setObject:v10 forKeyedSubscript:sourceCopy];
   var0 = self->_ucat->var0;
   if (var0 > 10)
   {
@@ -1073,15 +1073,15 @@ LABEL_15:
 LABEL_17:
 }
 
-- (void)_updatePowerSource:(id)a3 desc:(id)a4 adapterDesc:(id)a5
+- (void)_updatePowerSource:(id)source desc:(id)desc adapterDesc:(id)adapterDesc
 {
-  v20 = a3;
-  v8 = a5;
-  v9 = [v20 updateWithPowerSourceDescription:a4];
+  sourceCopy = source;
+  adapterDescCopy = adapterDesc;
+  v9 = [sourceCopy updateWithPowerSourceDescription:desc];
   var0 = self->_ucat->var0;
   if (var0 <= 10)
   {
-    v11 = v20;
+    v11 = sourceCopy;
     if (var0 == -1)
     {
       if (!_LogCategory_Initialize())
@@ -1090,7 +1090,7 @@ LABEL_17:
       }
 
       ucat = self->_ucat;
-      v11 = v20;
+      v11 = sourceCopy;
     }
 
     v18 = v9;
@@ -1101,19 +1101,19 @@ LABEL_17:
   }
 
 LABEL_5:
-  if (([v20 isInternal] & 1) != 0 || (objc_msgSend(v20, "groupID"), v12 = objc_claimAutoreleasedReturnValue(), v12 == @"Internal") || (v13 = v12) != 0 && (v14 = -[__CFString isEqual:](v12, "isEqual:", @"Internal"), v13, v13, v14))
+  if (([sourceCopy isInternal] & 1) != 0 || (objc_msgSend(sourceCopy, "groupID"), v12 = objc_claimAutoreleasedReturnValue(), v12 == @"Internal") || (v13 = v12) != 0 && (v14 = -[__CFString isEqual:](v12, "isEqual:", @"Internal"), v13, v13, v14))
   {
-    v9 = [v20 updateWithPowerAdapterDetails:v8] | v9;
+    v9 = [sourceCopy updateWithPowerAdapterDetails:adapterDescCopy] | v9;
   }
 
-  [v20 setChanges:v9];
+  [sourceCopy setChanges:v9];
 }
 
-- (void)_handlePowerSourcesFound:(id)a3
+- (void)_handlePowerSourcesFound:(id)found
 {
-  v4 = a3;
+  foundCopy = found;
   var0 = self->_ucat->var0;
-  v10 = v4;
+  v10 = foundCopy;
   if (var0 <= 10)
   {
     if (var0 != -1)
@@ -1121,12 +1121,12 @@ LABEL_5:
 LABEL_3:
       powerSourcesUpdateIndex = self->_powerSourcesUpdateIndex;
       LogPrintF();
-      v4 = v10;
+      foundCopy = v10;
       goto LABEL_5;
     }
 
     v6 = _LogCategory_Initialize();
-    v4 = v10;
+    foundCopy = v10;
     if (v6)
     {
       ucat = self->_ucat;
@@ -1139,14 +1139,14 @@ LABEL_5:
   if (powerSourcesFoundHandler)
   {
     (powerSourcesFoundHandler)[2](powerSourcesFoundHandler, v10);
-    v4 = v10;
+    foundCopy = v10;
   }
 }
 
-- (void)_handlePowerSourcesChanged:(id)a3 changes:(unsigned int)a4
+- (void)_handlePowerSourcesChanged:(id)changed changes:(unsigned int)changes
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  changedCopy = changed;
   var0 = self->_ucat->var0;
   if (var0 > 10)
   {
@@ -1164,15 +1164,15 @@ LABEL_5:
   }
 
   powerSourcesUpdateIndex = self->_powerSourcesUpdateIndex;
-  v23 = v5;
+  v23 = changedCopy;
   LogPrintF();
 LABEL_5:
-  v7 = [v5 mutableCopy];
+  v7 = [changedCopy mutableCopy];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = v5;
+  v8 = changedCopy;
   v9 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (!v9)
   {
@@ -1230,7 +1230,7 @@ LABEL_13:
 LABEL_20:
 
   powerSourcesChangedHandler = self->_powerSourcesChangedHandler;
-  if (powerSourcesChangedHandler && (self->_changeFlags & a4) != 0)
+  if (powerSourcesChangedHandler && (self->_changeFlags & changes) != 0)
   {
     powerSourcesChangedHandler[2](powerSourcesChangedHandler, v7);
   }
@@ -1238,25 +1238,25 @@ LABEL_20:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handlePowerSourcesLost:(id)a3
+- (void)_handlePowerSourcesLost:(id)lost
 {
-  v4 = a3;
+  lostCopy = lost;
   var0 = self->_ucat->var0;
-  v11 = v4;
+  v11 = lostCopy;
   if (var0 <= 10)
   {
     if (var0 != -1)
     {
 LABEL_3:
       powerSourcesUpdateIndex = self->_powerSourcesUpdateIndex;
-      v10 = v4;
+      v10 = lostCopy;
       LogPrintF();
-      v4 = v11;
+      lostCopy = v11;
       goto LABEL_5;
     }
 
     v6 = _LogCategory_Initialize();
-    v4 = v11;
+    lostCopy = v11;
     if (v6)
     {
       ucat = self->_ucat;
@@ -1265,7 +1265,7 @@ LABEL_3:
   }
 
 LABEL_5:
-  [(SFPowerSourceMonitor *)self _removePowerSources:v4, powerSourcesUpdateIndex, v10];
+  [(SFPowerSourceMonitor *)self _removePowerSources:lostCopy, powerSourcesUpdateIndex, v10];
   powerSourcesLostHandler = self->_powerSourcesLostHandler;
   if (powerSourcesLostHandler)
   {
@@ -1273,15 +1273,15 @@ LABEL_5:
   }
 }
 
-- (void)_removePowerSources:(id)a3
+- (void)_removePowerSources:(id)sources
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sourcesCopy = sources;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [sourcesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1293,7 +1293,7 @@ LABEL_5:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sourcesCopy);
         }
 
         v9 = [(NSMutableDictionary *)self->_powerSources allKeysForObject:*(*(&v11 + 1) + 8 * v8)];
@@ -1303,7 +1303,7 @@ LABEL_5:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [sourcesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);

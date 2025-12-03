@@ -1,31 +1,31 @@
 @interface TPTextFlowLayoutController
-- (TPTextFlowLayoutController)initWithPageController:(id)a3;
-- (id)hintForFlow:(id)a3 pageIndex:(unint64_t)a4;
-- (id)p_flowForLayoutMgr:(id)a3;
-- (id)p_flowsOnPage:(id)a3 textBoxes:(id)a4;
-- (id)p_flowsOnPageIndex:(unint64_t)a3;
-- (id)p_layoutMgrForFlow:(id)a3;
-- (id)p_orderedTextBoxesForFlow:(id)a3 textBoxes:(id)a4;
-- (id)p_previousTextBoxForTarget:(id)a3;
-- (id)previousTargetLastColumnForTarget:(id)a3;
+- (TPTextFlowLayoutController)initWithPageController:(id)controller;
+- (id)hintForFlow:(id)flow pageIndex:(unint64_t)index;
+- (id)p_flowForLayoutMgr:(id)mgr;
+- (id)p_flowsOnPage:(id)page textBoxes:(id)boxes;
+- (id)p_flowsOnPageIndex:(unint64_t)index;
+- (id)p_layoutMgrForFlow:(id)flow;
+- (id)p_orderedTextBoxesForFlow:(id)flow textBoxes:(id)boxes;
+- (id)p_previousTextBoxForTarget:(id)target;
+- (id)previousTargetLastColumnForTarget:(id)target;
 - (id)textWrapper;
-- (unint64_t)pageIndexNeedingLayoutPreviousToPageIndex:(unint64_t)a3;
+- (unint64_t)pageIndexNeedingLayoutPreviousToPageIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)deflatePage:(id)a3 intoHints:(id)a4 topicNumberHints:(id)a5;
-- (void)i_trimFlow:(id)a3 pageIndex:(unint64_t)a4 toCharIndex:(unint64_t)a5;
-- (void)invalidateFlows:(id)a3 startingPage:(id)a4;
-- (void)layOutFlowsIfNeededOnPage:(id)a3;
-- (void)layoutManagerNeedsLayout:(id)a3;
-- (void)p_setLayoutMgr:(id)a3 forFlow:(id)a4;
-- (void)processWidowAndInflationOnPage:(id)a3;
+- (void)deflatePage:(id)page intoHints:(id)hints topicNumberHints:(id)numberHints;
+- (void)i_trimFlow:(id)flow pageIndex:(unint64_t)index toCharIndex:(unint64_t)charIndex;
+- (void)invalidateFlows:(id)flows startingPage:(id)page;
+- (void)layOutFlowsIfNeededOnPage:(id)page;
+- (void)layoutManagerNeedsLayout:(id)layout;
+- (void)p_setLayoutMgr:(id)mgr forFlow:(id)flow;
+- (void)processWidowAndInflationOnPage:(id)page;
 - (void)teardown;
 @end
 
 @implementation TPTextFlowLayoutController
 
-- (TPTextFlowLayoutController)initWithPageController:(id)a3
+- (TPTextFlowLayoutController)initWithPageController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v46.receiver = self;
   v46.super_class = TPTextFlowLayoutController;
   v5 = [(TPTextFlowLayoutController *)&v46 init];
@@ -116,13 +116,13 @@
   self->_tornDown = 1;
 }
 
-- (void)layOutFlowsIfNeededOnPage:(id)a3
+- (void)layOutFlowsIfNeededOnPage:(id)page
 {
   v330 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v300 = objc_msgSend_layoutController(v3, v4, v5, v6, v7, v8);
+  pageCopy = page;
+  v300 = objc_msgSend_layoutController(pageCopy, v4, v5, v6, v7, v8);
   v295 = objc_msgSend_set(MEMORY[0x277CBEB58], v9, v10, v11, v12, v13);
-  objc_msgSend_p_flowsOnPage_textBoxes_(self, v14, v15, v16, v17, v18, v3);
+  objc_msgSend_p_flowsOnPage_textBoxes_(self, v14, v15, v16, v17, v18, pageCopy);
   v324 = 0u;
   v325 = 0u;
   v322 = 0u;
@@ -155,14 +155,14 @@
           }
 
           v306 = v40;
-          for (j = objc_msgSend_pageIndex(v3, v39, v41, v42, v43, v44); j != -1; --j)
+          for (j = objc_msgSend_pageIndex(pageCopy, v39, v41, v42, v43, v44); j != -1; --j)
           {
             WeakRetained = objc_loadWeakRetained(&self->_pageController);
             v74 = objc_msgSend_i_pageHintForPageIndex_(WeakRetained, v69, v70, v71, v72, v73, j);
 
             if (objc_msgSend_pageKind(v74, v75, v76, v77, v78, v79) && objc_msgSend_pageKind(v74, v80, v81, v82, v83, v84) != 5)
             {
-              v90 = objc_msgSend_pageIndex(v3, v85, v86, v87, v88, v89);
+              v90 = objc_msgSend_pageIndex(pageCopy, v85, v86, v87, v88, v89);
               v96 = objc_msgSend_flowHints(v74, v91, v92, v93, v94, v95);
               v102 = objc_msgSend_objectForKeyedSubscript_(v96, v97, v98, v99, v100, v101, v301);
               v108 = v102;
@@ -332,7 +332,7 @@ LABEL_24:
                         v142 = *(*(&v310 + 1) + 8 * v144);
 
                         v151 = objc_msgSend_pageIndex(v142, v146, v147, v148, v149, v150);
-                        if (objc_msgSend_pageIndex(v3, v152, v153, v154, v155, v156) == v151)
+                        if (objc_msgSend_pageIndex(pageCopy, v152, v153, v154, v155, v156) == v151)
                         {
                           break;
                         }
@@ -440,16 +440,16 @@ LABEL_73:
   }
 }
 
-- (void)deflatePage:(id)a3 intoHints:(id)a4 topicNumberHints:(id)a5
+- (void)deflatePage:(id)page intoHints:(id)hints topicNumberHints:(id)numberHints
 {
   v428 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v400 = a4;
-  v389 = a5;
-  v401 = v7;
-  v392 = objc_msgSend_layoutController(v7, v8, v9, v10, v11, v12);
+  pageCopy = page;
+  hintsCopy = hints;
+  numberHintsCopy = numberHints;
+  v401 = pageCopy;
+  v392 = objc_msgSend_layoutController(pageCopy, v8, v9, v10, v11, v12);
   v388 = objc_msgSend_set(MEMORY[0x277CBEB58], v13, v14, v15, v16, v17);
-  objc_msgSend_p_flowsOnPage_textBoxes_(self, v18, v19, v20, v21, v22, v7);
+  objc_msgSend_p_flowsOnPage_textBoxes_(self, v18, v19, v20, v21, v22, pageCopy);
   v421 = 0u;
   v422 = 0u;
   v419 = 0u;
@@ -490,7 +490,7 @@ LABEL_73:
               }
 
               v47 = *(*(&v415 + 1) + 8 * j);
-              v48 = objc_msgSend_objectForKeyedSubscript_(v400, v41, v42, v43, v44, v45, v33);
+              v48 = objc_msgSend_objectForKeyedSubscript_(hintsCopy, v41, v42, v43, v44, v45, v33);
               v395 = objc_msgSend_p_layoutMgrForFlow_(self, v49, v50, v51, v52, v53, v33);
               if (!v395)
               {
@@ -514,10 +514,10 @@ LABEL_73:
                 IsVertical = objc_msgSend_textIsVertical(v47, v104, v105, v106, v107, v108);
                 objc_msgSend_setTextIsVertical_(v83, v110, v111, v112, v113, v114, IsVertical);
                 v48 = v83;
-                objc_msgSend_setObject_forUncopiedKey_(v400, v115, v116, v117, v118, v119, v83, v33);
+                objc_msgSend_setObject_forUncopiedKey_(hintsCopy, v115, v116, v117, v118, v119, v83, v33);
               }
 
-              v120 = objc_msgSend_objectForKeyedSubscript_(v400, v54, v55, v56, v57, v58, v33);
+              v120 = objc_msgSend_objectForKeyedSubscript_(hintsCopy, v54, v55, v56, v57, v58, v33);
               v126 = objc_msgSend_layoutsForInfo_(v392, v121, v122, v123, v124, v125, v47);
               v413 = 0u;
               v414 = 0u;
@@ -673,7 +673,7 @@ LABEL_27:
 
         v292 = *(*(&v402 + 1) + 8 * m);
         v293 = objc_msgSend_p_layoutMgrForFlow_(self, v284, v286, v287, v288, v289, v292);
-        v299 = objc_msgSend_objectForKeyedSubscript_(v400, v294, v295, v296, v297, v298, v292);
+        v299 = objc_msgSend_objectForKeyedSubscript_(hintsCopy, v294, v295, v296, v297, v298, v292);
         v305 = v299;
         v306 = v235;
         if (!v293)
@@ -713,7 +713,7 @@ LABEL_51:
           v330 = v290;
           if (v324)
           {
-            objc_msgSend_setObject_forUncopiedKey_(v389, v325, v326, v327, v328, v329, v324, v292);
+            objc_msgSend_setObject_forUncopiedKey_(numberHintsCopy, v325, v326, v327, v328, v329, v324, v292);
           }
 
           else
@@ -741,13 +741,13 @@ LABEL_54:
   }
 }
 
-- (void)processWidowAndInflationOnPage:(id)a3
+- (void)processWidowAndInflationOnPage:(id)page
 {
   v211 = *MEMORY[0x277D85DE8];
-  v200 = a3;
-  v189 = objc_msgSend_pageIndex(v200, v3, v4, v5, v6, v7);
+  pageCopy = page;
+  v189 = objc_msgSend_pageIndex(pageCopy, v3, v4, v5, v6, v7);
   v191 = objc_msgSend_set(MEMORY[0x277CBEB58], v8, v9, v10, v11, v12);
-  objc_msgSend_p_flowsOnPage_textBoxes_(self, v13, v14, v15, v16, v17, v200);
+  objc_msgSend_p_flowsOnPage_textBoxes_(self, v13, v14, v15, v16, v17, pageCopy);
   v207 = 0u;
   v208 = 0u;
   v205 = 0u;
@@ -769,7 +769,7 @@ LABEL_54:
         v193 = objc_msgSend_p_orderedTextBoxesForFlow_textBoxes_(self, v23, v24, v25, v26, v27);
         v33 = objc_msgSend_lastObject(v193, v28, v29, v30, v31, v32);
         objc_opt_class();
-        v39 = objc_msgSend_layoutController(v200, v34, v35, v36, v37, v38);
+        v39 = objc_msgSend_layoutController(pageCopy, v34, v35, v36, v37, v38);
         v45 = objc_msgSend_layoutForInfo_(v39, v40, v41, v42, v43, v44, v33);
         v196 = TSUCheckedDynamicCast();
 
@@ -814,7 +814,7 @@ LABEL_54:
               if (v91 != v33)
               {
                 objc_opt_class();
-                v97 = objc_msgSend_layoutController(v200, v92, v93, v94, v95, v96);
+                v97 = objc_msgSend_layoutController(pageCopy, v92, v93, v94, v95, v96);
                 v103 = objc_msgSend_layoutForInfo_(v97, v98, v99, v100, v101, v102, v91);
                 v104 = TSUCheckedDynamicCast();
 
@@ -909,19 +909,19 @@ LABEL_54:
   }
 }
 
-- (void)invalidateFlows:(id)a3 startingPage:(id)a4
+- (void)invalidateFlows:(id)flows startingPage:(id)page
 {
   v134 = *MEMORY[0x277D85DE8];
-  v108 = a3;
-  v110 = a4;
-  v10 = objc_msgSend_pageIndex(v110, v5, v6, v7, v8, v9);
+  flowsCopy = flows;
+  pageCopy = page;
+  v10 = objc_msgSend_pageIndex(pageCopy, v5, v6, v7, v8, v9);
   v117 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], v11, v12, v13, v14, v15);
-  v114 = objc_msgSend_layoutController(v110, v16, v17, v18, v19, v20);
+  v114 = objc_msgSend_layoutController(pageCopy, v16, v17, v18, v19, v20);
   v129 = 0u;
   v130 = 0u;
   v127 = 0u;
   v128 = 0u;
-  obj = v108;
+  obj = flowsCopy;
   v109 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v21, v22, v23, v24, v25, &v127, v133, 16);
   if (v109)
   {
@@ -940,7 +940,7 @@ LABEL_54:
         v124 = 0u;
         v125 = 0u;
         v126 = 0u;
-        v115 = objc_msgSend_textboxes(v30, v26, 0, v27, v28, v29, v108);
+        v115 = objc_msgSend_textboxes(v30, v26, 0, v27, v28, v29, flowsCopy);
         v36 = objc_msgSend_countByEnumeratingWithState_objects_count_(v115, v31, v32, v33, v34, v35, &v123, v132, 16);
         if (v36)
         {
@@ -1032,16 +1032,16 @@ LABEL_54:
   }
 }
 
-- (id)hintForFlow:(id)a3 pageIndex:(unint64_t)a4
+- (id)hintForFlow:(id)flow pageIndex:(unint64_t)index
 {
-  v6 = a3;
+  flowCopy = flow;
   WeakRetained = objc_loadWeakRetained(&self->_pageController);
-  v13 = objc_msgSend_i_pageHintForPageIndex_(WeakRetained, v8, v9, v10, v11, v12, a4);
+  v13 = objc_msgSend_i_pageHintForPageIndex_(WeakRetained, v8, v9, v10, v11, v12, index);
 
   if (v13)
   {
     v19 = objc_msgSend_flowHints(v13, v14, v15, v16, v17, v18);
-    v25 = objc_msgSend_objectForKeyedSubscript_(v19, v20, v21, v22, v23, v24, v6);
+    v25 = objc_msgSend_objectForKeyedSubscript_(v19, v20, v21, v22, v23, v24, flowCopy);
   }
 
   else
@@ -1052,20 +1052,20 @@ LABEL_54:
   return v25;
 }
 
-- (unint64_t)pageIndexNeedingLayoutPreviousToPageIndex:(unint64_t)a3
+- (unint64_t)pageIndexNeedingLayoutPreviousToPageIndex:(unint64_t)index
 {
   v79 = *MEMORY[0x277D85DE8];
   v70 = objc_msgSend_p_flowsOnPageIndex_(self, a2, v3, v4, v5, v6);
   v71 = objc_msgSend_count(v70, v8, v9, v10, v11, v12);
-  if (a3 && v71)
+  if (index && v71)
   {
     v13 = objc_alloc(MEMORY[0x277CBEB58]);
     v20 = objc_msgSend_initWithCapacity_(v13, v14, v15, v16, v17, v18, v71);
-    v25 = a3;
-    while (v71 > objc_msgSend_count(v20, v19, v21, v22, v23, v24) && a3)
+    indexCopy3 = index;
+    while (v71 > objc_msgSend_count(v20, v19, v21, v22, v23, v24) && index)
     {
       WeakRetained = objc_loadWeakRetained(&self->_pageController);
-      v73 = objc_msgSend_i_pageHintForPageIndex_(WeakRetained, v27, v28, v29, v30, v31, --a3);
+      v73 = objc_msgSend_i_pageHintForPageIndex_(WeakRetained, v27, v28, v29, v30, v31, --index);
 
       if (v73)
       {
@@ -1091,7 +1091,7 @@ LABEL_54:
               if ((objc_msgSend_containsObject_(v20, v42, v44, v45, v46, v47, v50) & 1) == 0)
               {
                 objc_msgSend_addObject_(v20, v42, v44, v45, v46, v47, v50);
-                if (a3 < v25)
+                if (index < indexCopy3)
                 {
                   v51 = objc_msgSend_p_layoutMgrForFlow_(self, v42, v44, v45, v46, v47, v50);
                   v57 = objc_msgSend_flowHints(v73, v52, v53, v54, v55, v56);
@@ -1099,7 +1099,7 @@ LABEL_54:
 
                   if (objc_msgSend_needsLayoutInColumn_(v51, v64, v65, v66, v67, v68, v63))
                   {
-                    v25 = a3;
+                    indexCopy3 = index;
                   }
                 }
               }
@@ -1116,18 +1116,18 @@ LABEL_54:
 
   else
   {
-    v25 = a3;
+    indexCopy3 = index;
   }
 
-  return v25;
+  return indexCopy3;
 }
 
-- (void)layoutManagerNeedsLayout:(id)a3
+- (void)layoutManagerNeedsLayout:(id)layout
 {
   v118 = *MEMORY[0x277D85DE8];
-  v105 = a3;
-  v109 = objc_msgSend_p_flowForLayoutMgr_(self, v4, v5, v6, v7, v8, v105);
-  v108 = objc_msgSend_dirtyRanges(v105, v9, v10, v11, v12, v13);
+  layoutCopy = layout;
+  v109 = objc_msgSend_p_flowForLayoutMgr_(self, v4, v5, v6, v7, v8, layoutCopy);
+  v108 = objc_msgSend_dirtyRanges(layoutCopy, v9, v10, v11, v12, v13);
   v19 = objc_msgSend_superRange(v108, v14, v15, v16, v17, v18);
   v106 = v20;
   v107 = v19;
@@ -1227,9 +1227,9 @@ LABEL_54:
   return v16;
 }
 
-- (id)p_previousTextBoxForTarget:(id)a3
+- (id)p_previousTextBoxForTarget:(id)target
 {
-  v3 = a3;
+  targetCopy = target;
   objc_opt_class();
   v4 = TSUCheckedDynamicCast();
   objc_opt_class();
@@ -1272,9 +1272,9 @@ LABEL_54:
   return v43;
 }
 
-- (id)previousTargetLastColumnForTarget:(id)a3
+- (id)previousTargetLastColumnForTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   v207 = 0;
   v208 = &v207;
   v5.n128_u64[0] = 0x3032000000;
@@ -1282,7 +1282,7 @@ LABEL_54:
   v210 = sub_275FD7F10;
   v211 = sub_275FD7F20;
   v212 = 0;
-  v10 = objc_msgSend_p_previousTextBoxForTarget_(self, v6, v5, v7, v8, v9, v4);
+  v10 = objc_msgSend_p_previousTextBoxForTarget_(self, v6, v5, v7, v8, v9, targetCopy);
   if (v10)
   {
     WeakRetained = objc_loadWeakRetained(&self->_pageController);
@@ -1290,7 +1290,7 @@ LABEL_54:
     v23 = objc_msgSend_floatingDrawables(v17, v18, v19, v20, v21, v22);
     v29 = objc_msgSend_pageIndexForDrawable_(v23, v24, v25, v26, v27, v28, v10);
 
-    v35 = objc_msgSend_layoutController(v4, v30, v31, v32, v33, v34);
+    v35 = objc_msgSend_layoutController(targetCopy, v30, v31, v32, v33, v34);
     v41 = objc_msgSend_layoutsForInfo_(v35, v36, v37, v38, v39, v40, v10);
     v47 = objc_msgSend_anyObject(v41, v42, v43, v44, v45, v46);
 
@@ -1341,7 +1341,7 @@ LABEL_54:
     else if (v205)
     {
       objc_opt_class();
-      v99 = objc_msgSend_parent(v4, v94, v95, v96, v97, v98);
+      v99 = objc_msgSend_parent(targetCopy, v94, v95, v96, v97, v98);
       v105 = objc_msgSend_info(v99, v100, v101, v102, v103, v104);
       v106 = TSUCheckedDynamicCast();
 
@@ -1406,32 +1406,32 @@ LABEL_54:
   return v201;
 }
 
-- (void)i_trimFlow:(id)a3 pageIndex:(unint64_t)a4 toCharIndex:(unint64_t)a5
+- (void)i_trimFlow:(id)flow pageIndex:(unint64_t)index toCharIndex:(unint64_t)charIndex
 {
-  v32 = a3;
+  flowCopy = flow;
   WeakRetained = objc_loadWeakRetained(&self->_pageController);
-  v14 = objc_msgSend_i_pageHintForPageIndex_(WeakRetained, v9, v10, v11, v12, v13, a4);
+  v14 = objc_msgSend_i_pageHintForPageIndex_(WeakRetained, v9, v10, v11, v12, v13, index);
 
   v20 = objc_msgSend_flowHints(v14, v15, v16, v17, v18, v19);
-  v26 = objc_msgSend_objectForKeyedSubscript_(v20, v21, v22, v23, v24, v25, v32);
+  v26 = objc_msgSend_objectForKeyedSubscript_(v20, v21, v22, v23, v24, v25, flowCopy);
 
   if (v26)
   {
-    objc_msgSend_trimToCharIndex_inTarget_removeFootnoteReferenceCount_removeAutoNumberFootnoteCount_(v26, v27, v28, v29, v30, v31, a5, 0, 0, 0);
+    objc_msgSend_trimToCharIndex_inTarget_removeFootnoteReferenceCount_removeAutoNumberFootnoteCount_(v26, v27, v28, v29, v30, v31, charIndex, 0, 0, 0);
   }
 }
 
-- (id)p_flowsOnPage:(id)a3 textBoxes:(id)a4
+- (id)p_flowsOnPage:(id)page textBoxes:(id)boxes
 {
   v62 = *MEMORY[0x277D85DE8];
-  v55 = a3;
-  v56 = a4;
+  pageCopy = page;
+  boxesCopy = boxes;
   v5 = objc_opt_new();
   v59 = 0u;
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v10 = objc_msgSend_children(v55, v6, 0, v7, v8, v9);
+  v10 = objc_msgSend_children(pageCopy, v6, 0, v7, v8, v9);
   v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, v12, v13, v14, v15, &v57, v61, 16);
   if (v16)
   {
@@ -1450,11 +1450,11 @@ LABEL_54:
         v25 = v19;
         if (v19)
         {
-          v26 = objc_msgSend_info(v19, v20, v21, v22, v23, v24, v55);
+          v26 = objc_msgSend_info(v19, v20, v21, v22, v23, v24, pageCopy);
           v33 = objc_msgSend_textFlow(v26, v27, v28, v29, v30, v31);
           if (v33)
           {
-            objc_msgSend_addObject_(v56, v32, v34, v35, v36, v37, v26);
+            objc_msgSend_addObject_(boxesCopy, v32, v34, v35, v36, v37, v26);
             v43 = objc_msgSend_textFlow(v26, v38, v39, v40, v41, v42);
             objc_msgSend_addObject_(v5, v44, v45, v46, v47, v48, v43);
           }
@@ -1470,7 +1470,7 @@ LABEL_54:
   return v5;
 }
 
-- (id)p_flowsOnPageIndex:(unint64_t)a3
+- (id)p_flowsOnPageIndex:(unint64_t)index
 {
   v79 = *MEMORY[0x277D85DE8];
   v73 = objc_opt_new();
@@ -1481,7 +1481,7 @@ LABEL_54:
   WeakRetained = objc_loadWeakRetained(&self->_pageController);
   v11 = objc_msgSend_documentRoot(WeakRetained, v6, v7, v8, v9, v10);
   v17 = objc_msgSend_floatingDrawables(v11, v12, v13, v14, v15, v16);
-  v23 = objc_msgSend_drawablesOnPageIndex_(v17, v18, v19, v20, v21, v22, a3);
+  v23 = objc_msgSend_drawablesOnPageIndex_(v17, v18, v19, v20, v21, v22, index);
 
   v29 = objc_msgSend_countByEnumeratingWithState_objects_count_(v23, v24, v25, v26, v27, v28, &v74, v78, 16);
   if (v29)
@@ -1527,17 +1527,17 @@ LABEL_54:
   return v73;
 }
 
-- (id)p_orderedTextBoxesForFlow:(id)a3 textBoxes:(id)a4
+- (id)p_orderedTextBoxesForFlow:(id)flow textBoxes:(id)boxes
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  flowCopy = flow;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v6 = a4;
+  boxesCopy = boxes;
   v12 = 0;
-  v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, v8, v9, v10, v11, &v38, v42, 16);
+  v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(boxesCopy, v7, v8, v9, v10, v11, &v38, v42, 16);
   if (v14)
   {
     v19 = *v39;
@@ -1547,12 +1547,12 @@ LABEL_54:
       {
         if (*v39 != v19)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(boxesCopy);
         }
 
         v21 = *(*(&v38 + 1) + 8 * i);
         v22 = objc_msgSend_textFlow(v21, v13, v15, v16, v17, v18);
-        v23 = v22 == v5;
+        v23 = v22 == flowCopy;
 
         if (v23)
         {
@@ -1565,13 +1565,13 @@ LABEL_54:
         }
       }
 
-      v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v13, v15, v16, v17, v18, &v38, v42, 16);
+      v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(boxesCopy, v13, v15, v16, v17, v18, &v38, v42, 16);
     }
 
     while (v14);
   }
 
-  v29 = objc_msgSend_textboxes(v5, v24, v25, v26, v27, v28);
+  v29 = objc_msgSend_textboxes(flowCopy, v24, v25, v26, v27, v28);
   v35 = v29;
   if (v12)
   {
@@ -1587,24 +1587,24 @@ LABEL_54:
   return v12;
 }
 
-- (void)p_setLayoutMgr:(id)a3 forFlow:(id)a4
+- (void)p_setLayoutMgr:(id)mgr forFlow:(id)flow
 {
-  v17 = a3;
-  v6 = a4;
-  objc_msgSend_setObject_forKey_(self->_layoutMgrs, v7, v8, v9, v10, v11, v17, v6);
-  objc_msgSend_setObject_forKey_(self->_flows, v12, v13, v14, v15, v16, v6, v17);
+  mgrCopy = mgr;
+  flowCopy = flow;
+  objc_msgSend_setObject_forKey_(self->_layoutMgrs, v7, v8, v9, v10, v11, mgrCopy, flowCopy);
+  objc_msgSend_setObject_forKey_(self->_flows, v12, v13, v14, v15, v16, flowCopy, mgrCopy);
 }
 
-- (id)p_layoutMgrForFlow:(id)a3
+- (id)p_layoutMgrForFlow:(id)flow
 {
-  v7 = objc_msgSend_objectForKey_(self->_layoutMgrs, a2, v3, v4, v5, v6, a3);
+  v7 = objc_msgSend_objectForKey_(self->_layoutMgrs, a2, v3, v4, v5, v6, flow);
 
   return v7;
 }
 
-- (id)p_flowForLayoutMgr:(id)a3
+- (id)p_flowForLayoutMgr:(id)mgr
 {
-  v7 = objc_msgSend_objectForKey_(self->_flows, a2, v3, v4, v5, v6, a3);
+  v7 = objc_msgSend_objectForKey_(self->_flows, a2, v3, v4, v5, v6, mgr);
 
   return v7;
 }

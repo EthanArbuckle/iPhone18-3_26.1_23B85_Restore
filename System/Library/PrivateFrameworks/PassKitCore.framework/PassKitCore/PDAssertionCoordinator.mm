@@ -1,24 +1,24 @@
 @interface PDAssertionCoordinator
 + (id)suppressionApplicationRegistry;
-- (BOOL)hasAssertionsOfType:(unint64_t)a3;
+- (BOOL)hasAssertionsOfType:(unint64_t)type;
 - (NSString)description;
-- (PDAssertionCoordinator)initWithConnection:(id)a3;
+- (PDAssertionCoordinator)initWithConnection:(id)connection;
 - (PDAssertionCoordinatorDelegate)delegate;
-- (id)assertionsOfType:(unint64_t)a3;
-- (void)_acquireAssertion:(id)a3 handler:(id)a4;
-- (void)_acquireContactlessInterfaceSuppressionAssertion:(id)a3 handler:(id)a4;
-- (void)_addRequestForAssertion:(id)a3 handler:(id)a4;
-- (void)_cancelPendingAssertionRequest:(id)a3;
+- (id)assertionsOfType:(unint64_t)type;
+- (void)_acquireAssertion:(id)assertion handler:(id)handler;
+- (void)_acquireContactlessInterfaceSuppressionAssertion:(id)assertion handler:(id)handler;
+- (void)_addRequestForAssertion:(id)assertion handler:(id)handler;
+- (void)_cancelPendingAssertionRequest:(id)request;
 - (void)_processPendingAssertionRequests;
 - (void)_showAlertForContactlessInterfaceSuppression;
-- (void)acquireAssertionOfType:(unint64_t)a3 withIdentifier:(id)a4 reason:(id)a5 handler:(id)a6;
-- (void)assertionOfType:(unint64_t)a3 withIdentifier:(id)a4 isValid:(id)a5;
-- (void)assertionOfType:(unint64_t)a3 withIdentifier:(id)a4 shouldInvalidateWhenBackgrounded:(BOOL)a5;
-- (void)assertionRequestDidTimeout:(id)a3;
+- (void)acquireAssertionOfType:(unint64_t)type withIdentifier:(id)identifier reason:(id)reason handler:(id)handler;
+- (void)assertionOfType:(unint64_t)type withIdentifier:(id)identifier isValid:(id)valid;
+- (void)assertionOfType:(unint64_t)type withIdentifier:(id)identifier shouldInvalidateWhenBackgrounded:(BOOL)backgrounded;
+- (void)assertionRequestDidTimeout:(id)timeout;
 - (void)cancelPendingAssertionRequests;
-- (void)hasValidAssertionOfType:(unint64_t)a3 completion:(id)a4;
+- (void)hasValidAssertionOfType:(unint64_t)type completion:(id)completion;
 - (void)invalidateAllAssertions;
-- (void)invalidateAssertionOfType:(unint64_t)a3 withIdentifier:(id)a4 handler:(id)a5;
+- (void)invalidateAssertionOfType:(unint64_t)type withIdentifier:(id)identifier handler:(id)handler;
 - (void)invalidateAssertionsForBackgroundApplicationState;
 - (void)processPendingAssertionRequests;
 @end
@@ -49,12 +49,12 @@ void __56__PDAssertionCoordinator_suppressionApplicationRegistry__block_invoke()
   _MergedGlobals_7_0 = v3;
 }
 
-- (PDAssertionCoordinator)initWithConnection:(id)a3
+- (PDAssertionCoordinator)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v17.receiver = self;
   v17.super_class = PDAssertionCoordinator;
-  v5 = [(PDXPCService *)&v17 initWithConnection:v4];
+  v5 = [(PDXPCService *)&v17 initWithConnection:connectionCopy];
   v6 = v5;
   if (v5)
   {
@@ -72,7 +72,7 @@ void __56__PDAssertionCoordinator_suppressionApplicationRegistry__block_invoke()
     coordinatorSerialQueue = v6->_coordinatorSerialQueue;
     v6->_coordinatorSerialQueue = v12;
 
-    v14 = [[PKEntitlementWhitelist alloc] initWithConnection:v4];
+    v14 = [[PKEntitlementWhitelist alloc] initWithConnection:connectionCopy];
     whitelist = v6->_whitelist;
     v6->_whitelist = v14;
 
@@ -83,23 +83,23 @@ void __56__PDAssertionCoordinator_suppressionApplicationRegistry__block_invoke()
   return v6;
 }
 
-- (void)acquireAssertionOfType:(unint64_t)a3 withIdentifier:(id)a4 reason:(id)a5 handler:(id)a6
+- (void)acquireAssertionOfType:(unint64_t)type withIdentifier:(id)identifier reason:(id)reason handler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v12)
+  identifierCopy = identifier;
+  reasonCopy = reason;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     coordinatorSerialQueue = self->_coordinatorSerialQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __79__PDAssertionCoordinator_acquireAssertionOfType_withIdentifier_reason_handler___block_invoke;
     block[3] = &unk_1E79D1F80;
-    v19 = a3;
-    v15 = v10;
-    v16 = v11;
-    v17 = self;
-    v18 = v12;
+    typeCopy = type;
+    v15 = identifierCopy;
+    v16 = reasonCopy;
+    selfCopy = self;
+    v18 = handlerCopy;
     dispatch_async(coordinatorSerialQueue, block);
   }
 }
@@ -111,21 +111,21 @@ void __79__PDAssertionCoordinator_acquireAssertionOfType_withIdentifier_reason_h
   [*(a1 + 48) _processPendingAssertionRequests];
 }
 
-- (void)invalidateAssertionOfType:(unint64_t)a3 withIdentifier:(id)a4 handler:(id)a5
+- (void)invalidateAssertionOfType:(unint64_t)type withIdentifier:(id)identifier handler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   coordinatorSerialQueue = self->_coordinatorSerialQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __75__PDAssertionCoordinator_invalidateAssertionOfType_withIdentifier_handler___block_invoke;
   v13[3] = &unk_1E79C4D88;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = identifierCopy;
+  v15 = handlerCopy;
+  typeCopy = type;
+  v11 = handlerCopy;
+  v12 = identifierCopy;
   dispatch_async(coordinatorSerialQueue, v13);
 }
 
@@ -218,19 +218,19 @@ uint64_t __75__PDAssertionCoordinator_invalidateAssertionOfType_withIdentifier_h
   return v8;
 }
 
-- (void)assertionOfType:(unint64_t)a3 withIdentifier:(id)a4 shouldInvalidateWhenBackgrounded:(BOOL)a5
+- (void)assertionOfType:(unint64_t)type withIdentifier:(id)identifier shouldInvalidateWhenBackgrounded:(BOOL)backgrounded
 {
-  v8 = a4;
+  identifierCopy = identifier;
   coordinatorSerialQueue = self->_coordinatorSerialQueue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __90__PDAssertionCoordinator_assertionOfType_withIdentifier_shouldInvalidateWhenBackgrounded___block_invoke;
   v11[3] = &unk_1E79DBE18;
-  v12 = v8;
-  v13 = a3;
+  v12 = identifierCopy;
+  typeCopy = type;
   v11[4] = self;
-  v14 = a5;
-  v10 = v8;
+  backgroundedCopy = backgrounded;
+  v10 = identifierCopy;
   dispatch_async(coordinatorSerialQueue, v11);
 }
 
@@ -291,21 +291,21 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)assertionOfType:(unint64_t)a3 withIdentifier:(id)a4 isValid:(id)a5
+- (void)assertionOfType:(unint64_t)type withIdentifier:(id)identifier isValid:(id)valid
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  validCopy = valid;
   coordinatorSerialQueue = self->_coordinatorSerialQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __65__PDAssertionCoordinator_assertionOfType_withIdentifier_isValid___block_invoke;
   v13[3] = &unk_1E79C4D88;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = identifierCopy;
+  v15 = validCopy;
+  typeCopy = type;
+  v11 = validCopy;
+  v12 = identifierCopy;
   dispatch_async(coordinatorSerialQueue, v13);
 }
 
@@ -368,13 +368,13 @@ uint64_t __65__PDAssertionCoordinator_assertionOfType_withIdentifier_isValid___b
   return v8;
 }
 
-- (void)hasValidAssertionOfType:(unint64_t)a3 completion:(id)a4
+- (void)hasValidAssertionOfType:(unint64_t)type completion:(id)completion
 {
-  v8 = a4;
-  v6 = [(PDAssertionCoordinator *)self delegate];
-  v7 = [v6 assertionCoordinator:self assertionExistsOfType:a3];
+  completionCopy = completion;
+  delegate = [(PDAssertionCoordinator *)self delegate];
+  v7 = [delegate assertionCoordinator:self assertionExistsOfType:type];
 
-  v8[2](v8, v7);
+  completionCopy[2](completionCopy, v7);
 }
 
 - (void)_showAlertForContactlessInterfaceSuppression
@@ -394,16 +394,16 @@ uint64_t __65__PDAssertionCoordinator_assertionOfType_withIdentifier_isValid___b
   [PKUserNotificationAgent presentNotificationWithParameters:v7 responseHandler:0];
 }
 
-- (void)_acquireContactlessInterfaceSuppressionAssertion:(id)a3 handler:(id)a4
+- (void)_acquireContactlessInterfaceSuppressionAssertion:(id)assertion handler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  assertionCopy = assertion;
+  handlerCopy = handler;
+  v8 = handlerCopy;
   suppressionPermissionState = self->_suppressionPermissionState;
   if (suppressionPermissionState == 1)
   {
-    [(PDAssertionCoordinator *)self _acquireAssertion:v6 handler:v7];
+    [(PDAssertionCoordinator *)self _acquireAssertion:assertionCopy handler:handlerCopy];
   }
 
   else if (suppressionPermissionState)
@@ -417,7 +417,7 @@ uint64_t __65__PDAssertionCoordinator_assertionOfType_withIdentifier_isValid___b
         {
 LABEL_10:
           self->_suppressionPermissionState = 1;
-          [(PDAssertionCoordinator *)self _acquireAssertion:v6 handler:v8];
+          [(PDAssertionCoordinator *)self _acquireAssertion:assertionCopy handler:v8];
 LABEL_17:
 
           goto LABEL_18;
@@ -439,7 +439,7 @@ LABEL_17:
           v13 = 138412546;
           v14 = bundleIdentifier;
           v15 = 1024;
-          v16 = [(PDXPCService *)self remoteProcessIdentifier];
+          remoteProcessIdentifier = [(PDXPCService *)self remoteProcessIdentifier];
           _os_log_error_impl(&dword_1AD337000, v11, OS_LOG_TYPE_ERROR, "Application (%@:%d) is missing entitlement for contactless interface suppression.", &v13, 0x12u);
         }
       }
@@ -452,44 +452,44 @@ LABEL_17:
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
 LABEL_18:
 }
 
-- (void)_acquireAssertion:(id)a3 handler:(id)a4
+- (void)_acquireAssertion:(id)assertion handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  assertionCopy = assertion;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [WeakRetained assertionCoordinator:self canAcquireAssertion:v6];
+  v9 = [WeakRetained assertionCoordinator:self canAcquireAssertion:assertionCopy];
 
   if (v9)
   {
-    v10 = [v6 type];
+    type = [assertionCopy type];
     os_unfair_lock_lock(&self->_lock);
     assertionsByType = self->_assertionsByType;
-    p_isa = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v10];
+    p_isa = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
     v13 = [(NSMutableDictionary *)assertionsByType objectForKeyedSubscript:p_isa];
 
     if (!v13)
     {
       v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
       p_isa = &self->_assertionsByType->super.super.isa;
-      v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v10];
+      v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
       [p_isa setObject:v13 forKeyedSubscript:v14];
     }
 
-    v15 = [v6 identifier];
-    v16 = v15;
+    identifier = [assertionCopy identifier];
+    v16 = identifier;
     if (v13)
     {
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __52__PDAssertionCoordinator__acquireAssertion_handler___block_invoke;
       v19[3] = &unk_1E79DFD80;
-      v17 = v15;
+      v17 = identifier;
       v20 = v17;
       if ([v13 indexOfObjectPassingTest:v19] != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -504,7 +504,7 @@ LABEL_13:
       p_isa = &v20;
     }
 
-    [v13 addObject:v6];
+    [v13 addObject:assertionCopy];
     os_unfair_lock_unlock(&self->_lock);
     if (v13)
     {
@@ -516,14 +516,14 @@ LABEL_13:
     }
 
     v13 = objc_loadWeakRetained(&self->_delegate);
-    [v13 assertionCoordinator:self didAcquireAssertion:v6];
+    [v13 assertionCoordinator:self didAcquireAssertion:assertionCopy];
     v18 = 1;
     goto LABEL_13;
   }
 
   v18 = 0;
 LABEL_14:
-  v7[2](v7, v18);
+  handlerCopy[2](handlerCopy, v18);
 }
 
 uint64_t __52__PDAssertionCoordinator__acquireAssertion_handler___block_invoke(uint64_t a1, void *a2)
@@ -550,18 +550,18 @@ uint64_t __52__PDAssertionCoordinator__acquireAssertion_handler___block_invoke(u
   return v8;
 }
 
-- (void)_addRequestForAssertion:(id)a3 handler:(id)a4
+- (void)_addRequestForAssertion:(id)assertion handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PDAssertionRequest alloc] initWithAssertion:v7 delegate:self resultHandler:v6];
+  handlerCopy = handler;
+  assertionCopy = assertion;
+  v8 = [[PDAssertionRequest alloc] initWithAssertion:assertionCopy delegate:self resultHandler:handlerCopy];
 
   [(NSMutableArray *)self->_pendingAssertionRequests addObject:v8];
 }
 
-- (void)_cancelPendingAssertionRequest:(id)a3
+- (void)_cancelPendingAssertionRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -571,7 +571,7 @@ uint64_t __52__PDAssertionCoordinator__acquireAssertion_handler___block_invoke(u
   v8 = 3221225472;
   v9 = __57__PDAssertionCoordinator__cancelPendingAssertionRequest___block_invoke;
   v10 = &unk_1E79DFDD0;
-  v6 = v4;
+  v6 = requestCopy;
   v11 = v6;
   v12 = &v13;
   [(NSMutableArray *)pendingAssertionRequests enumerateObjectsUsingBlock:&v7];
@@ -635,17 +635,17 @@ void __58__PDAssertionCoordinator__processPendingAssertionRequests__block_invoke
   }
 }
 
-- (void)assertionRequestDidTimeout:(id)a3
+- (void)assertionRequestDidTimeout:(id)timeout
 {
-  v4 = a3;
+  timeoutCopy = timeout;
   coordinatorSerialQueue = self->_coordinatorSerialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__PDAssertionCoordinator_assertionRequestDidTimeout___block_invoke;
   v7[3] = &unk_1E79C4DD8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = timeoutCopy;
+  v6 = timeoutCopy;
   dispatch_async(coordinatorSerialQueue, v7);
 }
 
@@ -771,11 +771,11 @@ void __75__PDAssertionCoordinator_invalidateAssertionsForBackgroundApplicationSt
   }
 }
 
-- (id)assertionsOfType:(unint64_t)a3
+- (id)assertionsOfType:(unint64_t)type
 {
   os_unfair_lock_lock(&self->_lock);
   assertionsByType = self->_assertionsByType;
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
   v7 = [(NSMutableDictionary *)assertionsByType objectForKeyedSubscript:v6];
   v8 = [v7 copy];
 
@@ -784,11 +784,11 @@ void __75__PDAssertionCoordinator_invalidateAssertionsForBackgroundApplicationSt
   return v8;
 }
 
-- (BOOL)hasAssertionsOfType:(unint64_t)a3
+- (BOOL)hasAssertionsOfType:(unint64_t)type
 {
   os_unfair_lock_lock(&self->_lock);
   assertionsByType = self->_assertionsByType;
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
   v7 = [(NSMutableDictionary *)assertionsByType objectForKeyedSubscript:v6];
   v8 = [v7 count] != 0;
 

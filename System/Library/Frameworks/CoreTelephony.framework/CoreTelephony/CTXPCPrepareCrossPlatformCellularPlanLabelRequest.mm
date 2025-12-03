@@ -1,18 +1,18 @@
 @interface CTXPCPrepareCrossPlatformCellularPlanLabelRequest
 + (id)allowedClassesForArguments;
-- (CTXPCPrepareCrossPlatformCellularPlanLabelRequest)initWithPlanLabels:(id)a3;
+- (CTXPCPrepareCrossPlatformCellularPlanLabelRequest)initWithPlanLabels:(id)labels;
 - (id)planLabels;
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4;
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation CTXPCPrepareCrossPlatformCellularPlanLabelRequest
 
-- (CTXPCPrepareCrossPlatformCellularPlanLabelRequest)initWithPlanLabels:(id)a3
+- (CTXPCPrepareCrossPlatformCellularPlanLabelRequest)initWithPlanLabels:(id)labels
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  labelsCopy = labels;
   v10 = @"planLabels";
-  v11[0] = v4;
+  v11[0] = labelsCopy;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v9.receiver = self;
   v9.super_class = CTXPCPrepareCrossPlatformCellularPlanLabelRequest;
@@ -22,18 +22,18 @@
   return v6;
 }
 
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CTXPCPrepareCrossPlatformCellularPlanLabelRequest *)self planLabels];
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  planLabels = [(CTXPCPrepareCrossPlatformCellularPlanLabelRequest *)self planLabels];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __97__CTXPCPrepareCrossPlatformCellularPlanLabelRequest_performRequestWithHandler_completionHandler___block_invoke;
   v10[3] = &unk_1E6A46180;
-  v9 = v7;
+  v9 = completionHandlerCopy;
   v11 = v9;
-  [v6 prepareCrossPlatformCellularPlanLabel:v8 completion:v10];
+  [handlerCopy prepareCrossPlatformCellularPlanLabel:planLabels completion:v10];
 }
 
 void __97__CTXPCPrepareCrossPlatformCellularPlanLabelRequest_performRequestWithHandler_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -48,7 +48,7 @@ void __97__CTXPCPrepareCrossPlatformCellularPlanLabelRequest_performRequestWithH
 + (id)allowedClassesForArguments
 {
   v8[2] = *MEMORY[0x1E69E9840];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CTXPCPrepareCrossPlatformCellularPlanLabelRequest;
   v2 = objc_msgSendSuper2(&v7, sel_allowedClassesForArguments);
   v8[0] = objc_opt_class();
@@ -63,8 +63,8 @@ void __97__CTXPCPrepareCrossPlatformCellularPlanLabelRequest_performRequestWithH
 
 - (id)planLabels
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKeyedSubscript:@"planLabels"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKeyedSubscript:@"planLabels"];
   v4 = CTThrowingCastIfClass<NSArray<CTCellularPlanCrossPlatformLabel *>>(v3);
 
   return v4;

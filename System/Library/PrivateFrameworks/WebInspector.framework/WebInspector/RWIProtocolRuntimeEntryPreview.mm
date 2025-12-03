@@ -1,38 +1,38 @@
 @interface RWIProtocolRuntimeEntryPreview
-- (RWIProtocolRuntimeEntryPreview)initWithValue:(id)a3;
+- (RWIProtocolRuntimeEntryPreview)initWithValue:(id)value;
 - (RWIProtocolRuntimeObjectPreview)key;
 - (RWIProtocolRuntimeObjectPreview)value;
-- (void)setKey:(id)a3;
-- (void)setValue:(id)a3;
+- (void)setKey:(id)key;
+- (void)setValue:(id)value;
 @end
 
 @implementation RWIProtocolRuntimeEntryPreview
 
-- (RWIProtocolRuntimeEntryPreview)initWithValue:(id)a3
+- (RWIProtocolRuntimeEntryPreview)initWithValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v8.receiver = self;
   v8.super_class = RWIProtocolRuntimeEntryPreview;
   v5 = [(RWIProtocolJSONObject *)&v8 init];
   if (v5)
   {
-    if (!v4)
+    if (!valueCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"value"}];
     }
 
-    [(RWIProtocolRuntimeEntryPreview *)v5 setValue:v4];
+    [(RWIProtocolRuntimeEntryPreview *)v5 setValue:valueCopy];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)setKey:(id)a3
+- (void)setKey:(id)key
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolRuntimeEntryPreview;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"key"];
+  [(RWIProtocolJSONObject *)&v3 setObject:key forKey:@"key"];
 }
 
 - (RWIProtocolRuntimeObjectPreview)key
@@ -90,11 +90,11 @@
   return v7;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolRuntimeEntryPreview;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"value"];
+  [(RWIProtocolJSONObject *)&v3 setObject:value forKey:@"value"];
 }
 
 - (RWIProtocolRuntimeObjectPreview)value

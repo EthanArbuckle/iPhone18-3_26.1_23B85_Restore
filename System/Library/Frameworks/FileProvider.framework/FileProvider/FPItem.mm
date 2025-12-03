@@ -1,22 +1,22 @@
 @interface FPItem
 + (id)allUbiquitousResourceKeys;
-+ (id)appLibraryFromContainerItem:(id)a3 documentsItem:(id)a4;
-+ (id)archivePlaceholderForItem:(id)a3 underParent:(id)a4 inProviderDomainID:(id)a5 withArchiveFormat:(unint64_t)a6;
++ (id)appLibraryFromContainerItem:(id)item documentsItem:(id)documentsItem;
++ (id)archivePlaceholderForItem:(id)item underParent:(id)parent inProviderDomainID:(id)d withArchiveFormat:(unint64_t)format;
 + (id)fp_minimalAttributesForEviction;
 + (id)fp_minimalAttributesForEvictionPriority;
 + (id)fp_queryFetchAttributes;
 + (id)generatePlaceholderIdentifier;
-+ (id)generatePlaceholderIdentifierWithOriginalID:(id)a3;
-+ (id)genericArchivePlaceholderUnderParent:(id)a3 inProviderDomainID:(id)a4 withArchiveFormat:(unint64_t)a5;
-+ (id)placeholderWithCopyOfExistingItem:(id)a3 lastUsageUpdatePolicy:(unint64_t)a4 underParent:(id)a5 inProviderDomainID:(id)a6;
-+ (id)placeholderWithName:(id)a3 contentType:(id)a4 contentAccessDate:(id)a5 underParent:(id)a6 inProviderDomainID:(id)a7;
-+ (id)placeholderWithName:(id)a3 isFolder:(BOOL)a4 contentAccessDate:(id)a5 underParent:(id)a6 inProviderDomainID:(id)a7;
-+ (id)placeholderWithName:(id)a3 typeIdentifier:(id)a4 contentAccessDate:(id)a5 underParent:(id)a6 inProviderDomainID:(id)a7;
-+ (id)temporaryPlaceholderFromItem:(id)a3;
++ (id)generatePlaceholderIdentifierWithOriginalID:(id)d;
++ (id)genericArchivePlaceholderUnderParent:(id)parent inProviderDomainID:(id)d withArchiveFormat:(unint64_t)format;
++ (id)placeholderWithCopyOfExistingItem:(id)item lastUsageUpdatePolicy:(unint64_t)policy underParent:(id)parent inProviderDomainID:(id)d;
++ (id)placeholderWithName:(id)name contentType:(id)type contentAccessDate:(id)date underParent:(id)parent inProviderDomainID:(id)d;
++ (id)placeholderWithName:(id)name isFolder:(BOOL)folder contentAccessDate:(id)date underParent:(id)parent inProviderDomainID:(id)d;
++ (id)placeholderWithName:(id)name typeIdentifier:(id)identifier contentAccessDate:(id)date underParent:(id)parent inProviderDomainID:(id)d;
++ (id)temporaryPlaceholderFromItem:(id)item;
 - (BOOL)fp_isCloudDocsContainer;
 - (BOOL)isBusy;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToItem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToItem:(id)item;
 - (BOOL)isExternalDownloadPlaceholder;
 - (BOOL)isFlattenedPackage;
 - (BOOL)isFolder;
@@ -25,14 +25,14 @@
 - (BOOL)isPinnedSubitem;
 - (BOOL)isValidAppLibrary;
 - (BOOL)isValidContainerForAppLibrary;
-- (FPItem)initWithCoder:(id)a3;
-- (FPItem)initWithProviderDomainID:(id)a3 itemIdentifier:(id)a4 parentItemIdentifier:(id)a5 filename:(id)a6 contentType:(id)a7;
-- (FPItem)initWithProviderDomainID:(id)a3 itemIdentifier:(id)a4 parentItemIdentifier:(id)a5 filename:(id)a6 isDirectory:(BOOL)a7;
-- (FPItem)initWithProviderDomainID:(id)a3 itemIdentifier:(id)a4 parentItemIdentifier:(id)a5 filename:(id)a6 typeIdentifier:(id)a7;
-- (FPItem)initWithProviderID:(id)a3 domainIdentifier:(id)a4 itemIdentifier:(id)a5 parentItemIdentifier:(id)a6 filename:(id)a7 contentType:(id)a8;
-- (FPItem)initWithProviderID:(id)a3 domainIdentifier:(id)a4 itemIdentifier:(id)a5 parentItemIdentifier:(id)a6 filename:(id)a7 isDirectory:(BOOL)a8;
-- (FPItem)initWithSearchableItem:(id)a3;
-- (FPItem)initWithVendorItem:(id)a3 provider:(id)a4 domain:(id)a5 spotlightDomainIdentifier:(id)a6 extensionCapabilities:(unint64_t)a7 useFPFS:(BOOL)a8;
+- (FPItem)initWithCoder:(id)coder;
+- (FPItem)initWithProviderDomainID:(id)d itemIdentifier:(id)identifier parentItemIdentifier:(id)itemIdentifier filename:(id)filename contentType:(id)type;
+- (FPItem)initWithProviderDomainID:(id)d itemIdentifier:(id)identifier parentItemIdentifier:(id)itemIdentifier filename:(id)filename isDirectory:(BOOL)directory;
+- (FPItem)initWithProviderDomainID:(id)d itemIdentifier:(id)identifier parentItemIdentifier:(id)itemIdentifier filename:(id)filename typeIdentifier:(id)typeIdentifier;
+- (FPItem)initWithProviderID:(id)d domainIdentifier:(id)identifier itemIdentifier:(id)itemIdentifier parentItemIdentifier:(id)parentItemIdentifier filename:(id)filename contentType:(id)type;
+- (FPItem)initWithProviderID:(id)d domainIdentifier:(id)identifier itemIdentifier:(id)itemIdentifier parentItemIdentifier:(id)parentItemIdentifier filename:(id)filename isDirectory:(BOOL)directory;
+- (FPItem)initWithSearchableItem:(id)item;
+- (FPItem)initWithVendorItem:(id)item provider:(id)provider domain:(id)domain spotlightDomainIdentifier:(id)identifier extensionCapabilities:(unint64_t)capabilities useFPFS:(BOOL)s;
 - (FPItemID)formerItemID;
 - (FPItemID)itemID;
 - (FPItemID)parentFormerItemID;
@@ -61,54 +61,54 @@
 - (id)_downloadingStatus;
 - (id)_sharedByDecorationType;
 - (id)copyAsPending;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)coreSpotlightIdentifier;
-- (id)descriptionForFPCTL:(BOOL)a3;
-- (id)fieldDifferencesWithItem:(id)a3 onlyMetadata:(BOOL)a4;
-- (id)fp_valueForKeyPath:(id)a3;
+- (id)descriptionForFPCTL:(BOOL)l;
+- (id)fieldDifferencesWithItem:(id)item onlyMetadata:(BOOL)metadata;
+- (id)fp_valueForKeyPath:(id)path;
 - (id)humanReadableCapabilities;
 - (id)scopedSearchQueryUnderItem;
 - (id)strippedCopy;
 - (id)toSearchableItem;
-- (id)ubiquitousResourceKeysDiffAgainstItem:(id)a3;
-- (int64_t)localizedStandardTagsCompare:(id)a3;
+- (id)ubiquitousResourceKeysDiffAgainstItem:(id)item;
+- (int64_t)localizedStandardTagsCompare:(id)compare;
 - (unint64_t)folderType;
 - (unint64_t)hash;
-- (void)_coreSpotlightAttributeForKey:(id)a3;
-- (void)_evaluateTypes:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)itemIsSupportedSearchScopeWithCachePolicy:(unint64_t)a3 completionHandler:(id)a4;
-- (void)overrideFields:(id)a3 ofItem:(id)a4;
-- (void)setContentType:(id)a3;
-- (void)setFileURL:(id)a3;
-- (void)setFilename:(id)a3;
-- (void)setItemIdentifier:(id)a3;
-- (void)setProviderDomainID:(id)a3;
-- (void)setProviderID:(id)a3;
-- (void)setTagData:(id)a3;
-- (void)setTypeIdentifier:(id)a3;
+- (void)_coreSpotlightAttributeForKey:(id)key;
+- (void)_evaluateTypes:(id)types;
+- (void)encodeWithCoder:(id)coder;
+- (void)itemIsSupportedSearchScopeWithCachePolicy:(unint64_t)policy completionHandler:(id)handler;
+- (void)overrideFields:(id)fields ofItem:(id)item;
+- (void)setContentType:(id)type;
+- (void)setFileURL:(id)l;
+- (void)setFilename:(id)filename;
+- (void)setItemIdentifier:(id)identifier;
+- (void)setProviderDomainID:(id)d;
+- (void)setProviderID:(id)d;
+- (void)setTagData:(id)data;
+- (void)setTypeIdentifier:(id)identifier;
 @end
 
 @implementation FPItem
 
 - (BOOL)isPackage
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_typesEvaluated)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_typesEvaluated)
   {
-    isPackage = v2->_isPackage;
-    objc_sync_exit(v2);
+    isPackage = selfCopy->_isPackage;
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v4 = v2->_contentType;
-    objc_sync_exit(v2);
+    v4 = selfCopy->_contentType;
+    objc_sync_exit(selfCopy);
 
-    [(FPItem *)v2 _evaluateTypes:v4];
-    isPackage = v2->_isPackage;
-    v2 = v4;
+    [(FPItem *)selfCopy _evaluateTypes:v4];
+    isPackage = selfCopy->_isPackage;
+    selfCopy = v4;
   }
 
   return isPackage;
@@ -116,10 +116,10 @@
 
 - (NSURL)fileURL
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_fileURL;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_fileURL;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -154,31 +154,31 @@
 
 - (BOOL)isFlattenedPackage
 {
-  v2 = [(FPItem *)self filename];
-  v3 = [v2 pathExtension];
-  v4 = [v3 isEqualToString:@"pkgf"];
+  filename = [(FPItem *)self filename];
+  pathExtension = [filename pathExtension];
+  v4 = [pathExtension isEqualToString:@"pkgf"];
 
   return v4;
 }
 
 - (BOOL)isFolder
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_typesEvaluated)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_typesEvaluated)
   {
-    isFolder = v2->_isFolder;
-    objc_sync_exit(v2);
+    isFolder = selfCopy->_isFolder;
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v4 = v2->_contentType;
-    objc_sync_exit(v2);
+    v4 = selfCopy->_contentType;
+    objc_sync_exit(selfCopy);
 
-    [(FPItem *)v2 _evaluateTypes:v4];
-    isFolder = v2->_isFolder;
-    v2 = v4;
+    [(FPItem *)selfCopy _evaluateTypes:v4];
+    isFolder = selfCopy->_isFolder;
+    selfCopy = v4;
   }
 
   return isFolder;
@@ -223,8 +223,8 @@
 
 - (BOOL)isBusy
 {
-  v2 = [(FPItem *)self creationDate];
-  [v2 timeIntervalSince1970];
+  creationDate = [(FPItem *)self creationDate];
+  [creationDate timeIntervalSince1970];
   is_busy_date = fpfs_is_busy_date(v3);
 
   return is_busy_date;
@@ -232,10 +232,10 @@
 
 - (NSString)typeIdentifier
 {
-  v2 = [(FPItem *)self contentType];
-  v3 = [v2 identifier];
+  contentType = [(FPItem *)self contentType];
+  identifier = [contentType identifier];
 
-  return v3;
+  return identifier;
 }
 
 + (id)fp_queryFetchAttributes
@@ -762,7 +762,7 @@
 
 - (NSArray)itemDecorations
 {
-  v3 = [(FPItem *)self providerID];
+  providerID = [(FPItem *)self providerID];
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x2020000000;
@@ -772,7 +772,7 @@
   v15 = 3221225472;
   v16 = __25__FPItem_itemDecorations__block_invoke;
   v17 = &unk_1E793A128;
-  v5 = v3;
+  v5 = providerID;
   v18 = v5;
   v19 = v20;
   v6 = [(NSArray *)decorations fp_map:&v14];
@@ -788,8 +788,8 @@
   v10 = [v9 mutableCopy];
   if ([(FPItem *)self isShared])
   {
-    v11 = [(FPItem *)self _sharedByDecorationType];
-    v12 = [FPItemDecoration decorationWithIdentifier:v11 bundleIdentifier:@"com.apple.FileProvider"];
+    _sharedByDecorationType = [(FPItem *)self _sharedByDecorationType];
+    v12 = [FPItemDecoration decorationWithIdentifier:_sharedByDecorationType bundleIdentifier:@"com.apple.FileProvider"];
 
     [v10 addObject:v12];
   }
@@ -801,18 +801,18 @@
 
 - (NSString)providerItemIdentifier
 {
-  v2 = [(FPItem *)self providerItemID];
-  v3 = [v2 identifier];
+  providerItemID = [(FPItem *)self providerItemID];
+  identifier = [providerItemID identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (FPItemID)providerItemID
 {
-  v3 = [(FPItem *)self itemID];
-  v4 = [v3 isDiskIdentifier];
+  itemID = [(FPItem *)self itemID];
+  isDiskIdentifier = [itemID isDiskIdentifier];
 
-  if (v4)
+  if (isDiskIdentifier)
   {
     [(FPItem *)self formerItemID];
   }
@@ -843,20 +843,20 @@
 
 - (NSString)providerIDForDeduplication
 {
-  v2 = [(FPItem *)self providerID];
-  if ([v2 isEqualToString:@"com.apple.CloudDocs.MobileDocumentsFileProvider"])
+  providerID = [(FPItem *)self providerID];
+  if ([providerID isEqualToString:@"com.apple.CloudDocs.MobileDocumentsFileProvider"])
   {
     v3 = @"com.apple.CloudDocs.iCloudDriveFileProvider";
   }
 
-  else if ([v2 isEqualToString:@"com.apple.CloudDocs.MobileDocumentsFileProviderManaged"])
+  else if ([providerID isEqualToString:@"com.apple.CloudDocs.MobileDocumentsFileProviderManaged"])
   {
     v3 = @"com.apple.CloudDocs.iCloudDriveFileProviderManaged";
   }
 
   else
   {
-    v3 = v2;
+    v3 = providerID;
   }
 
   return v3;
@@ -864,53 +864,53 @@
 
 - (NSProgress)progress
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  progress = v2->_progress;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  progress = selfCopy->_progress;
   if (progress)
   {
     v4 = progress;
-    objc_sync_exit(v2);
-    v5 = v2;
+    objc_sync_exit(selfCopy);
+    v5 = selfCopy;
   }
 
   else
   {
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
 
     v5 = +[FPProgressManager defaultManager];
-    if (v2->_offline)
+    if (selfCopy->_offline)
     {
       v6 = 0;
     }
 
     else
     {
-      if (v2->_downloading || [(FPItem *)v2 isExternalDownloadPlaceholder])
+      if (selfCopy->_downloading || [(FPItem *)selfCopy isExternalDownloadPlaceholder])
       {
-        v7 = [v5 downloadProgressForItem:v2];
+        v7 = [v5 downloadProgressForItem:selfCopy];
       }
 
-      else if (v2->_uploading)
+      else if (selfCopy->_uploading)
       {
-        v7 = [v5 uploadProgressForItem:v2];
+        v7 = [v5 uploadProgressForItem:selfCopy];
       }
 
       else
       {
-        v7 = [v5 copyProgressForItem:v2];
+        v7 = [v5 copyProgressForItem:selfCopy];
       }
 
       v6 = v7;
     }
 
-    v8 = v2;
+    v8 = selfCopy;
     objc_sync_enter(v8);
-    v9 = v2->_progress;
+    v9 = selfCopy->_progress;
     if (!v9)
     {
-      objc_storeStrong(&v2->_progress, v6);
-      v9 = v2->_progress;
+      objc_storeStrong(&selfCopy->_progress, v6);
+      v9 = selfCopy->_progress;
     }
 
     v4 = v9;
@@ -922,8 +922,8 @@
 
 - (BOOL)isExternalDownloadPlaceholder
 {
-  v2 = [(FPItem *)self typeIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.safari.download"];
+  typeIdentifier = [(FPItem *)self typeIdentifier];
+  v3 = [typeIdentifier isEqualToString:@"com.apple.safari.download"];
 
   return v3;
 }
@@ -937,10 +937,10 @@
 
 - (NSProgress)copyingProgress
 {
-  v2 = [(FPItem *)self progress];
-  if ([(NSProgress *)v2 fp_isAccountedAsCopyProgress])
+  progress = [(FPItem *)self progress];
+  if ([(NSProgress *)progress fp_isAccountedAsCopyProgress])
   {
-    v3 = v2;
+    v3 = progress;
   }
 
   else
@@ -957,30 +957,30 @@
 {
   if (self->_downloading || [(FPItem *)self isExternalDownloadPlaceholder])
   {
-    v3 = [(FPItem *)self progress];
+    progress = [(FPItem *)self progress];
   }
 
   else
   {
-    v3 = 0;
+    progress = 0;
   }
 
-  return v3;
+  return progress;
 }
 
 - (NSProgress)uploadingProgress
 {
   if (self->_uploading)
   {
-    v4 = [(FPItem *)self progress];
+    progress = [(FPItem *)self progress];
   }
 
   else
   {
-    v4 = 0;
+    progress = 0;
   }
 
-  return v4;
+  return progress;
 }
 
 - (unint64_t)folderType
@@ -993,21 +993,21 @@
   result = self->_folderType;
   if (!result)
   {
-    v4 = [(FPItem *)self filename];
-    v5 = [(FPItem *)self parentItemIdentifier];
-    v6 = [(FPItem *)self providerID];
-    v7 = [(FPItem *)self detachedRootLogicalURL];
-    v8 = v7;
-    if (!v7)
+    filename = [(FPItem *)self filename];
+    parentItemIdentifier = [(FPItem *)self parentItemIdentifier];
+    providerID = [(FPItem *)self providerID];
+    detachedRootLogicalURL = [(FPItem *)self detachedRootLogicalURL];
+    fileURL = detachedRootLogicalURL;
+    if (!detachedRootLogicalURL)
     {
-      v8 = [(FPItem *)self fileURL];
+      fileURL = [(FPItem *)self fileURL];
     }
 
-    v9 = [(FPItem *)self isContainer];
-    v10 = [(FPItem *)self cloudContainerIdentifier];
-    self->_folderType = CalculateFolderType(v4, v5, v6, v8, v9, v10);
+    isContainer = [(FPItem *)self isContainer];
+    cloudContainerIdentifier = [(FPItem *)self cloudContainerIdentifier];
+    self->_folderType = CalculateFolderType(filename, parentItemIdentifier, providerID, fileURL, isContainer, cloudContainerIdentifier);
 
-    if (!v7)
+    if (!detachedRootLogicalURL)
     {
     }
 
@@ -1019,13 +1019,13 @@
 
 - (BOOL)isPinnedSubitem
 {
-  v3 = [(FPItem *)self isInPinnedFolder];
-  if (v3)
+  isInPinnedFolder = [(FPItem *)self isInPinnedFolder];
+  if (isInPinnedFolder)
   {
-    LOBYTE(v3) = ![(FPItem *)self isPinned];
+    LOBYTE(isInPinnedFolder) = ![(FPItem *)self isPinned];
   }
 
-  return v3;
+  return isInPinnedFolder;
 }
 
 - (FPItemID)parentItemID
@@ -1046,8 +1046,8 @@
 {
   capabilities = self->_capabilities;
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(FPItem *)self isReadable];
-  v6 = [(FPItem *)self isWritable];
+  isReadable = [(FPItem *)self isReadable];
+  isWritable = [(FPItem *)self isWritable];
   v7 = 83;
   v8 = 45;
   if ((capabilities & 0x2000000) == 0)
@@ -1119,12 +1119,12 @@
 
   v20 = v16;
   v18 = 119;
-  if (!v6)
+  if (!isWritable)
   {
     v18 = 45;
   }
 
-  if (v5)
+  if (isReadable)
   {
     v8 = 114;
   }
@@ -1162,30 +1162,30 @@
   return v6;
 }
 
-- (FPItem)initWithProviderID:(id)a3 domainIdentifier:(id)a4 itemIdentifier:(id)a5 parentItemIdentifier:(id)a6 filename:(id)a7 contentType:(id)a8
+- (FPItem)initWithProviderID:(id)d domainIdentifier:(id)identifier itemIdentifier:(id)itemIdentifier parentItemIdentifier:(id)parentItemIdentifier filename:(id)filename contentType:(id)type
 {
-  v28 = a3;
-  v27 = a4;
-  v26 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  dCopy = d;
+  identifierCopy = identifier;
+  itemIdentifierCopy = itemIdentifier;
+  parentItemIdentifierCopy = parentItemIdentifier;
+  filenameCopy = filename;
+  typeCopy = type;
   v29.receiver = self;
   v29.super_class = FPItem;
   v18 = [(FPItem *)&v29 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_providerID, a3);
-    objc_storeStrong(&v19->_domainIdentifier, a4);
-    objc_storeStrong(&v19->_itemIdentifier, a5);
-    objc_storeStrong(&v19->_parentItemIdentifier, a6);
-    if (@"NSFileProviderTrashContainerItemIdentifier" == v15)
+    objc_storeStrong(&v18->_providerID, d);
+    objc_storeStrong(&v19->_domainIdentifier, identifier);
+    objc_storeStrong(&v19->_itemIdentifier, itemIdentifier);
+    objc_storeStrong(&v19->_parentItemIdentifier, parentItemIdentifier);
+    if (@"NSFileProviderTrashContainerItemIdentifier" == parentItemIdentifierCopy)
     {
       v19->_trashed = 1;
     }
 
-    objc_storeStrong(&v19->_filename, a7);
+    objc_storeStrong(&v19->_filename, filename);
     v19->_capabilities = 3;
     v19->_contentPolicy = 0;
     v20 = [(NSString *)v19->_filename hasPrefix:@"."];
@@ -1206,11 +1206,11 @@
       }
     }
 
-    [(FPItem *)v19 setContentType:v17, a2, v26, v27, v28];
+    [(FPItem *)v19 setContentType:typeCopy, a2, itemIdentifierCopy, identifierCopy, dCopy];
     if (!v19->_domainIdentifier)
     {
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v22 handleFailureInMethod:v25 object:v19 file:@"FPItem.m" lineNumber:496 description:@"domain identifier must not be nil"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:v25 object:v19 file:@"FPItem.m" lineNumber:496 description:@"domain identifier must not be nil"];
     }
 
     [(FPItem *)v19 setAllowsContextualMenuDownloadEntry:1];
@@ -1219,73 +1219,73 @@
   return v19;
 }
 
-- (FPItem)initWithProviderID:(id)a3 domainIdentifier:(id)a4 itemIdentifier:(id)a5 parentItemIdentifier:(id)a6 filename:(id)a7 isDirectory:(BOOL)a8
+- (FPItem)initWithProviderID:(id)d domainIdentifier:(id)identifier itemIdentifier:(id)itemIdentifier parentItemIdentifier:(id)parentItemIdentifier filename:(id)filename isDirectory:(BOOL)directory
 {
   v8 = MEMORY[0x1E6982DC8];
-  if (!a8)
+  if (!directory)
   {
     v8 = MEMORY[0x1E6982E48];
   }
 
-  return [(FPItem *)self initWithProviderID:a3 domainIdentifier:a4 itemIdentifier:a5 parentItemIdentifier:a6 filename:a7 contentType:*v8];
+  return [(FPItem *)self initWithProviderID:d domainIdentifier:identifier itemIdentifier:itemIdentifier parentItemIdentifier:parentItemIdentifier filename:filename contentType:*v8];
 }
 
-- (FPItem)initWithProviderDomainID:(id)a3 itemIdentifier:(id)a4 parentItemIdentifier:(id)a5 filename:(id)a6 contentType:(id)a7
+- (FPItem)initWithProviderDomainID:(id)d itemIdentifier:(id)identifier parentItemIdentifier:(id)itemIdentifier filename:(id)filename contentType:(id)type
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [v16 fp_toProviderID];
-  v18 = [v16 fp_toDomainIdentifier];
+  typeCopy = type;
+  filenameCopy = filename;
+  itemIdentifierCopy = itemIdentifier;
+  identifierCopy = identifier;
+  dCopy = d;
+  fp_toProviderID = [dCopy fp_toProviderID];
+  fp_toDomainIdentifier = [dCopy fp_toDomainIdentifier];
 
-  v19 = [(FPItem *)self initWithProviderID:v17 domainIdentifier:v18 itemIdentifier:v15 parentItemIdentifier:v14 filename:v13 contentType:v12];
+  v19 = [(FPItem *)self initWithProviderID:fp_toProviderID domainIdentifier:fp_toDomainIdentifier itemIdentifier:identifierCopy parentItemIdentifier:itemIdentifierCopy filename:filenameCopy contentType:typeCopy];
   return v19;
 }
 
-- (FPItem)initWithProviderDomainID:(id)a3 itemIdentifier:(id)a4 parentItemIdentifier:(id)a5 filename:(id)a6 typeIdentifier:(id)a7
+- (FPItem)initWithProviderDomainID:(id)d itemIdentifier:(id)identifier parentItemIdentifier:(id)itemIdentifier filename:(id)filename typeIdentifier:(id)typeIdentifier
 {
   v12 = MEMORY[0x1E6982C40];
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [v12 fp_cachedTypeWithIdentifier:a7];
-  v18 = [(FPItem *)self initWithProviderDomainID:v16 itemIdentifier:v15 parentItemIdentifier:v14 filename:v13 contentType:v17];
+  filenameCopy = filename;
+  itemIdentifierCopy = itemIdentifier;
+  identifierCopy = identifier;
+  dCopy = d;
+  v17 = [v12 fp_cachedTypeWithIdentifier:typeIdentifier];
+  v18 = [(FPItem *)self initWithProviderDomainID:dCopy itemIdentifier:identifierCopy parentItemIdentifier:itemIdentifierCopy filename:filenameCopy contentType:v17];
 
   return v18;
 }
 
-- (FPItem)initWithProviderDomainID:(id)a3 itemIdentifier:(id)a4 parentItemIdentifier:(id)a5 filename:(id)a6 isDirectory:(BOOL)a7
+- (FPItem)initWithProviderDomainID:(id)d itemIdentifier:(id)identifier parentItemIdentifier:(id)itemIdentifier filename:(id)filename isDirectory:(BOOL)directory
 {
   v7 = MEMORY[0x1E6982DC8];
-  if (!a7)
+  if (!directory)
   {
     v7 = MEMORY[0x1E6982E48];
   }
 
-  return [(FPItem *)self initWithProviderDomainID:a3 itemIdentifier:a4 parentItemIdentifier:a5 filename:a6 contentType:*v7];
+  return [(FPItem *)self initWithProviderDomainID:d itemIdentifier:identifier parentItemIdentifier:itemIdentifier filename:filename contentType:*v7];
 }
 
-- (FPItem)initWithVendorItem:(id)a3 provider:(id)a4 domain:(id)a5 spotlightDomainIdentifier:(id)a6 extensionCapabilities:(unint64_t)a7 useFPFS:(BOOL)a8
+- (FPItem)initWithVendorItem:(id)item provider:(id)provider domain:(id)domain spotlightDomainIdentifier:(id)identifier extensionCapabilities:(unint64_t)capabilities useFPFS:(BOOL)s
 {
-  v228 = a8;
-  v8 = a7;
+  sCopy = s;
+  capabilitiesCopy = capabilities;
   v235 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  obj = a6;
-  v17 = a6;
+  itemCopy = item;
+  providerCopy = provider;
+  domainCopy = domain;
+  obj = identifier;
+  identifierCopy = identifier;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v19 = [v14 conformsToProtocol:&unk_1F1FCDF20];
+  v19 = [itemCopy conformsToProtocol:&unk_1F1FCDF20];
   if (v19)
   {
     if (isKindOfClass & 1) != 0 || (objc_opt_respondsToSelector())
     {
-      v20 = [v14 providerIdentifier];
+      providerIdentifier = [itemCopy providerIdentifier];
 
       if (isKindOfClass)
       {
@@ -1295,53 +1295,53 @@
 
     else
     {
-      v20 = v15;
+      providerIdentifier = providerCopy;
     }
 
     if (objc_opt_respondsToSelector())
     {
 LABEL_9:
-      v21 = [v14 fp_domainIdentifier];
+      fp_domainIdentifier = [itemCopy fp_domainIdentifier];
       goto LABEL_11;
     }
   }
 
   else
   {
-    v20 = v15;
+    providerIdentifier = providerCopy;
   }
 
-  v21 = v16;
+  fp_domainIdentifier = domainCopy;
 LABEL_11:
-  v22 = v21;
+  v22 = fp_domainIdentifier;
 
-  if (v20)
+  if (providerIdentifier)
   {
     v223 = v19;
     v227 = v22;
-    v23 = [v14 parentItemIdentifier];
-    v24 = [v14 itemIdentifier];
-    v25 = v24;
-    if (v228)
+    parentItemIdentifier = [itemCopy parentItemIdentifier];
+    itemIdentifier = [itemCopy itemIdentifier];
+    v25 = itemIdentifier;
+    if (sCopy)
     {
       v26 = @"NSFileProviderRootContainerItemIdentifier";
-      if (([v24 isEqualToString:@"NSFileProviderRootContainerItemIdentifier"] & 1) != 0 || (v26 = @"NSFileProviderTrashContainerItemIdentifier", objc_msgSend(v25, "isEqualToString:", @"NSFileProviderTrashContainerItemIdentifier")))
+      if (([itemIdentifier isEqualToString:@"NSFileProviderRootContainerItemIdentifier"] & 1) != 0 || (v26 = @"NSFileProviderTrashContainerItemIdentifier", objc_msgSend(v25, "isEqualToString:", @"NSFileProviderTrashContainerItemIdentifier")))
       {
         v27 = v26;
 
-        v23 = v27;
+        parentItemIdentifier = v27;
       }
     }
 
-    v225 = v17;
-    v226 = v23;
+    v225 = identifierCopy;
+    v226 = parentItemIdentifier;
     v222 = a2;
     if (isKindOfClass & 1) != 0 || (objc_opt_respondsToSelector())
     {
-      v28 = [v14 itemVersion];
+      itemVersion = [itemCopy itemVersion];
       p_itemVersion = &self->_itemVersion;
       itemVersion = self->_itemVersion;
-      self->_itemVersion = v28;
+      self->_itemVersion = itemVersion;
 
       if (self->_itemVersion)
       {
@@ -1351,42 +1351,42 @@ LABEL_11:
       if (isKindOfClass)
       {
 LABEL_24:
-        v33 = [v14 versionIdentifier];
+        versionIdentifier = [itemCopy versionIdentifier];
         v34 = [NSFileProviderItemVersion alloc];
-        v35 = [MEMORY[0x1E695DEF0] data];
-        v36 = [(NSFileProviderItemVersion *)v34 initWithContentVersion:v33 metadataVersion:v35];
+        data = [MEMORY[0x1E695DEF0] data];
+        v36 = [(NSFileProviderItemVersion *)v34 initWithContentVersion:versionIdentifier metadataVersion:data];
         v37 = *p_itemVersion;
         *p_itemVersion = v36;
 
 LABEL_25:
-        v38 = [v14 filename];
+        filename = [itemCopy filename];
         if (isKindOfClass)
         {
 LABEL_29:
-          v39 = [v14 contentType];
+          contentType = [itemCopy contentType];
           objc_opt_class();
           v40 = objc_opt_isKindOfClass();
 
           if (v40)
           {
-            v41 = [v14 contentType];
+            contentType2 = [itemCopy contentType];
             goto LABEL_36;
           }
 
           if (isKindOfClass)
           {
 LABEL_33:
-            v41 = [v14 typeIdentifier];
+            contentType2 = [itemCopy typeIdentifier];
 
-            if (v41)
+            if (contentType2)
             {
               v42 = MEMORY[0x1E6982C40];
-              v43 = [v14 typeIdentifier];
-              v41 = [v42 fp_cachedTypeWithIdentifier:v43];
+              typeIdentifier = [itemCopy typeIdentifier];
+              contentType2 = [v42 fp_cachedTypeWithIdentifier:typeIdentifier];
             }
 
 LABEL_36:
-            if (!-[__CFString length](v38, "length") && (dyld_program_sdk_at_least() & 1) == 0 && [v25 isEqualToString:@"NSFileProviderRootContainerItemIdentifier"])
+            if (!-[__CFString length](filename, "length") && (dyld_program_sdk_at_least() & 1) == 0 && [v25 isEqualToString:@"NSFileProviderRootContainerItemIdentifier"])
             {
               v44 = fp_current_or_default_log();
               if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
@@ -1395,14 +1395,14 @@ LABEL_36:
                 _os_log_impl(&dword_1AAAE1000, v44, OS_LOG_TYPE_DEFAULT, "[WARNING] Working around missing file name for root item of legacy provider", buf, 2u);
               }
 
-              v38 = @"Root";
+              filename = @"Root";
             }
 
-            if (!v41)
+            if (!contentType2)
             {
               if (dyld_program_sdk_at_least())
               {
-                v41 = 0;
+                contentType2 = 0;
               }
 
               else
@@ -1415,56 +1415,56 @@ LABEL_36:
                   _os_log_impl(&dword_1AAAE1000, v45, OS_LOG_TYPE_DEFAULT, "[WARNING] Working around missing type identifier of legacy provider for item %@", buf, 0xCu);
                 }
 
-                v41 = *MEMORY[0x1E6982E48];
+                contentType2 = *MEMORY[0x1E6982E48];
               }
             }
 
-            if ([v20 length] && objc_msgSend(v25, "length") && -[__CFString length](v38, "length") && v41)
+            if ([providerIdentifier length] && objc_msgSend(v25, "length") && -[__CFString length](filename, "length") && contentType2)
             {
-              if (!v228 || *p_itemVersion)
+              if (!sCopy || *p_itemVersion)
               {
-                v46 = [(FPItem *)self initWithProviderID:v20 domainIdentifier:v227 itemIdentifier:v25 parentItemIdentifier:v226 filename:v38 contentType:v41];
+                v46 = [(FPItem *)self initWithProviderID:providerIdentifier domainIdentifier:v227 itemIdentifier:v25 parentItemIdentifier:v226 filename:filename contentType:contentType2];
 
                 if (!v46)
                 {
 LABEL_371:
                   self = v46;
-                  v31 = self;
-                  v17 = v225;
+                  selfCopy = self;
+                  identifierCopy = v225;
 LABEL_63:
 
                   v22 = v227;
                   goto LABEL_64;
                 }
 
-                v221 = v8;
+                v221 = capabilitiesCopy;
                 if (isKindOfClass)
                 {
-                  v46->_capabilities = [v14 capabilities];
+                  v46->_capabilities = [itemCopy capabilities];
                   v47 = v223;
-                  v48 = v228;
+                  v48 = sCopy;
                 }
 
                 else
                 {
-                  if (v228)
+                  if (sCopy)
                   {
-                    v61 = 67;
+                    capabilities = 67;
                   }
 
                   else
                   {
-                    v61 = 3;
+                    capabilities = 3;
                   }
 
                   if (objc_opt_respondsToSelector())
                   {
-                    v61 = [v14 capabilities];
+                    capabilities = [itemCopy capabilities];
                   }
 
-                  v46->_capabilities = v61;
+                  v46->_capabilities = capabilities;
                   v47 = v223;
-                  v48 = v228;
+                  v48 = sCopy;
                   if ((objc_opt_respondsToSelector() & 1) == 0)
                   {
                     documentSize = v46->_documentSize;
@@ -1474,15 +1474,15 @@ LABEL_63:
                   }
                 }
 
-                v62 = [v14 documentSize];
+                documentSize = [itemCopy documentSize];
                 v63 = v46->_documentSize;
-                v46->_documentSize = v62;
+                v46->_documentSize = documentSize;
 
                 if (isKindOfClass)
                 {
-                  v64 = [v14 childItemCount];
+                  childItemCount = [itemCopy childItemCount];
                   childItemCount = v46->_childItemCount;
-                  v46->_childItemCount = v64;
+                  v46->_childItemCount = childItemCount;
 
                   goto LABEL_79;
                 }
@@ -1490,30 +1490,30 @@ LABEL_63:
 LABEL_75:
                 if (objc_opt_respondsToSelector())
                 {
-                  v67 = [v14 childItemCount];
+                  childItemCount2 = [itemCopy childItemCount];
                 }
 
                 else
                 {
-                  v67 = 0;
+                  childItemCount2 = 0;
                 }
 
                 v68 = v46->_childItemCount;
-                v46->_childItemCount = v67;
+                v46->_childItemCount = childItemCount2;
 
                 if ((objc_opt_respondsToSelector() & 1) == 0)
                 {
-                  v71 = [MEMORY[0x1E695DF00] date];
+                  date = [MEMORY[0x1E695DF00] date];
                   creationDate = v46->_creationDate;
-                  v46->_creationDate = v71;
+                  v46->_creationDate = date;
 
                   v46->_unsupportedFields |= 0x40uLL;
 LABEL_82:
                   if ((objc_opt_respondsToSelector() & 1) == 0)
                   {
-                    v77 = [MEMORY[0x1E695DF00] date];
+                    date2 = [MEMORY[0x1E695DF00] date];
                     contentModificationDate = v46->_contentModificationDate;
-                    v46->_contentModificationDate = v77;
+                    v46->_contentModificationDate = date2;
 
                     v46->_unsupportedFields |= 0x80uLL;
                     if (v47)
@@ -1521,16 +1521,16 @@ LABEL_82:
 LABEL_87:
                       if (objc_opt_respondsToSelector())
                       {
-                        v79 = [v14 formerIdentifier];
+                        formerIdentifier = [itemCopy formerIdentifier];
                       }
 
                       else
                       {
-                        v79 = 0;
+                        formerIdentifier = 0;
                       }
 
                       formerIdentifier = v46->_formerIdentifier;
-                      v46->_formerIdentifier = v79;
+                      v46->_formerIdentifier = formerIdentifier;
 
                       if (objc_opt_respondsToSelector())
                       {
@@ -1538,7 +1538,7 @@ LABEL_87:
                       }
 
 LABEL_93:
-                      v82 = 0;
+                      parentFormerIdentifier = 0;
                       goto LABEL_94;
                     }
 
@@ -1550,29 +1550,29 @@ LABEL_89:
                   }
 
 LABEL_83:
-                  v73 = [v14 contentModificationDate];
+                  contentModificationDate = [itemCopy contentModificationDate];
                   v74 = v46->_contentModificationDate;
-                  v46->_contentModificationDate = v73;
+                  v46->_contentModificationDate = contentModificationDate;
 
                   if (v47)
                   {
                     if (isKindOfClass)
                     {
-                      v75 = [v14 formerIdentifier];
+                      formerIdentifier2 = [itemCopy formerIdentifier];
                       v76 = v46->_formerIdentifier;
-                      v46->_formerIdentifier = v75;
+                      v46->_formerIdentifier = formerIdentifier2;
 
 LABEL_92:
-                      v82 = [v14 parentFormerIdentifier];
+                      parentFormerIdentifier = [itemCopy parentFormerIdentifier];
 LABEL_94:
                       parentFormerIdentifier = v46->_parentFormerIdentifier;
-                      v46->_parentFormerIdentifier = v82;
+                      v46->_parentFormerIdentifier = parentFormerIdentifier;
 
                       if (isKindOfClass & 1) != 0 || (objc_opt_respondsToSelector())
                       {
-                        v84 = [v14 lastUsedDate];
+                        lastUsedDate = [itemCopy lastUsedDate];
                         lastUsedDate = v46->_lastUsedDate;
-                        v46->_lastUsedDate = v84;
+                        v46->_lastUsedDate = lastUsedDate;
 
                         if ((v47 & 1) == 0)
                         {
@@ -1600,15 +1600,15 @@ LABEL_94:
                       if (objc_opt_respondsToSelector())
                       {
 LABEL_101:
-                        v87 = [v14 tags];
+                        tags = [itemCopy tags];
                         goto LABEL_103;
                       }
 
 LABEL_102:
-                      v87 = 0;
+                      tags = 0;
 LABEL_103:
                       tags = v46->_tags;
-                      v46->_tags = v87;
+                      v46->_tags = tags;
 
                       if (!v46->_tags)
                       {
@@ -1618,11 +1618,11 @@ LABEL_103:
                           goto LABEL_112;
                         }
 
-                        v89 = [v14 tagData];
-                        v90 = v89;
-                        if (v89)
+                        tagData = [itemCopy tagData];
+                        v90 = tagData;
+                        if (tagData)
                         {
-                          v91 = FPGetTagsFromTagsData(v89);
+                          v91 = FPGetTagsFromTagsData(tagData);
                           v92 = v46->_tags;
                           v46->_tags = v91;
                         }
@@ -1632,22 +1632,22 @@ LABEL_103:
 
                       if (isKindOfClass)
                       {
-                        v93 = [v14 favoriteRank];
+                        favoriteRank = [itemCopy favoriteRank];
                         favoriteRank = v46->_favoriteRank;
-                        v46->_favoriteRank = v93;
+                        v46->_favoriteRank = favoriteRank;
 
-                        v46->_trashed = [v14 isTrashed];
-                        v46->_uploaded = [v14 isUploaded];
-                        v46->_uploading = [v14 isUploading];
+                        v46->_trashed = [itemCopy isTrashed];
+                        v46->_uploaded = [itemCopy isUploaded];
+                        v46->_uploading = [itemCopy isUploading];
                         goto LABEL_124;
                       }
 
 LABEL_112:
                       if (objc_opt_respondsToSelector())
                       {
-                        v95 = [v14 favoriteRank];
+                        favoriteRank2 = [itemCopy favoriteRank];
                         v96 = v46->_favoriteRank;
-                        v46->_favoriteRank = v95;
+                        v46->_favoriteRank = favoriteRank2;
                       }
 
                       else
@@ -1660,48 +1660,48 @@ LABEL_112:
 
                       if (objc_opt_respondsToSelector())
                       {
-                        v98 = [v14 isTrashed];
+                        isTrashed = [itemCopy isTrashed];
                       }
 
                       else
                       {
-                        v98 = 0;
+                        isTrashed = 0;
                       }
 
-                      v46->_trashed = v98;
+                      v46->_trashed = isTrashed;
                       v99 = objc_opt_respondsToSelector();
-                      v100 = v48;
+                      isUploaded = v48;
                       if (v99)
                       {
-                        v100 = [v14 isUploaded];
+                        isUploaded = [itemCopy isUploaded];
                       }
 
-                      v46->_uploaded = v100;
+                      v46->_uploaded = isUploaded;
                       if (objc_opt_respondsToSelector())
                       {
-                        v101 = [v14 isUploading];
+                        isUploading = [itemCopy isUploading];
                       }
 
                       else
                       {
-                        v101 = 0;
+                        isUploading = 0;
                       }
 
-                      v46->_uploading = v101;
+                      v46->_uploading = isUploading;
                       if ((objc_opt_respondsToSelector() & 1) == 0)
                       {
-                        v102 = 0;
+                        uploadingError = 0;
 LABEL_126:
-                        v220 = v102;
-                        v103 = [v102 fp_internalErrorForVendorErrorWithCallerDescription:@"item.uploadingError" itemCreationBlock:0];
+                        v220 = uploadingError;
+                        v103 = [uploadingError fp_internalErrorForVendorErrorWithCallerDescription:@"item.uploadingError" itemCreationBlock:0];
                         uploadingError = v46->_uploadingError;
                         v46->_uploadingError = v103;
 
                         if (isKindOfClass)
                         {
-                          v46->_downloading = [v14 isDownloading];
-                          v46->_downloaded = [v14 isDownloaded];
-                          v46->_mostRecentVersionDownloaded = [v14 isMostRecentVersionDownloaded];
+                          v46->_downloading = [itemCopy isDownloading];
+                          v46->_downloaded = [itemCopy isDownloaded];
+                          v46->_mostRecentVersionDownloaded = [itemCopy isMostRecentVersionDownloaded];
                           v46->_supportsMostRecentVersionDownloaded = 1;
                         }
 
@@ -1709,29 +1709,29 @@ LABEL_126:
                         {
                           if (objc_opt_respondsToSelector())
                           {
-                            v105 = [v14 isDownloading];
+                            isDownloading = [itemCopy isDownloading];
                           }
 
                           else
                           {
-                            v105 = 0;
+                            isDownloading = 0;
                           }
 
-                          v46->_downloading = v105;
+                          v46->_downloading = isDownloading;
                           if (objc_opt_respondsToSelector())
                           {
-                            v106 = [v14 isDownloaded];
+                            isDownloaded = [itemCopy isDownloaded];
                           }
 
                           else
                           {
-                            v106 = 0;
+                            isDownloaded = 0;
                           }
 
-                          v46->_downloaded = v106;
+                          v46->_downloaded = isDownloaded;
                           if (objc_opt_respondsToSelector())
                           {
-                            downloaded = [v14 isMostRecentVersionDownloaded];
+                            downloaded = [itemCopy isMostRecentVersionDownloaded];
                           }
 
                           else
@@ -1748,17 +1748,17 @@ LABEL_126:
                           v47 = v223;
                           if ((objc_opt_respondsToSelector() & 1) == 0)
                           {
-                            v108 = 0;
+                            downloadingError = 0;
 LABEL_142:
-                            v219 = v108;
-                            v109 = [v108 fp_internalErrorForVendorErrorWithCallerDescription:@"item.downloadingError" itemCreationBlock:0];
+                            v219 = downloadingError;
+                            v109 = [downloadingError fp_internalErrorForVendorErrorWithCallerDescription:@"item.downloadingError" itemCreationBlock:0];
                             downloadingError = v46->_downloadingError;
                             v46->_downloadingError = v109;
 
                             if (isKindOfClass)
                             {
-                              v46->_shared = [v14 isShared];
-                              v46->_sharedByCurrentUser = [v14 isSharedByCurrentUser];
+                              v46->_shared = [itemCopy isShared];
+                              v46->_sharedByCurrentUser = [itemCopy isSharedByCurrentUser];
                               if ((v47 & 1) == 0)
                               {
                                 goto LABEL_155;
@@ -1769,18 +1769,18 @@ LABEL_142:
                             {
                               if (objc_opt_respondsToSelector())
                               {
-                                v111 = [v14 isShared];
+                                isShared = [itemCopy isShared];
                               }
 
                               else
                               {
-                                v111 = 0;
+                                isShared = 0;
                               }
 
-                              v46->_shared = v111;
+                              v46->_shared = isShared;
                               if (objc_opt_respondsToSelector())
                               {
-                                v46->_sharedByCurrentUser = [v14 isSharedByCurrentUser];
+                                v46->_sharedByCurrentUser = [itemCopy isSharedByCurrentUser];
                                 if ((v47 & 1) == 0)
                                 {
 LABEL_155:
@@ -1809,7 +1809,7 @@ LABEL_155:
                               }
                             }
 
-                            v46->_fp_lastModifiedByCurrentUser = [v14 fp_isLastModifiedByCurrentUser];
+                            v46->_fp_lastModifiedByCurrentUser = [itemCopy fp_isLastModifiedByCurrentUser];
                             if (isKindOfClass)
                             {
                               goto LABEL_157;
@@ -1827,9 +1827,9 @@ LABEL_156:
                             }
 
 LABEL_157:
-                            v112 = [v14 collaborationIdentifier];
+                            collaborationIdentifier = [itemCopy collaborationIdentifier];
                             collaborationIdentifier = v46->_collaborationIdentifier;
-                            v46->_collaborationIdentifier = v112;
+                            v46->_collaborationIdentifier = collaborationIdentifier;
 
                             if ((v47 & 1) == 0)
                             {
@@ -1839,7 +1839,7 @@ LABEL_157:
                             if (isKindOfClass)
                             {
 LABEL_162:
-                              v46->_isCollaborationInvitation = [v14 isCollaborationInvitation];
+                              v46->_isCollaborationInvitation = [itemCopy isCollaborationInvitation];
                               if ((isKindOfClass & 1) == 0)
                               {
                                 goto LABEL_163;
@@ -1861,16 +1861,16 @@ LABEL_165:
 LABEL_163:
                               if (objc_opt_respondsToSelector())
                               {
-                                v114 = [v14 ownerNameComponents];
+                                ownerNameComponents = [itemCopy ownerNameComponents];
                               }
 
                               else
                               {
-                                v114 = 0;
+                                ownerNameComponents = 0;
                               }
 
                               ownerNameComponents = v46->_ownerNameComponents;
-                              v46->_ownerNameComponents = v114;
+                              v46->_ownerNameComponents = ownerNameComponents;
 
                               if ((objc_opt_respondsToSelector() & 1) == 0)
                               {
@@ -1886,9 +1886,9 @@ LABEL_163:
                               }
 
 LABEL_169:
-                              v118 = [v14 mostRecentEditorNameComponents];
+                              mostRecentEditorNameComponents = [itemCopy mostRecentEditorNameComponents];
                               v119 = v46->_mostRecentEditorNameComponents;
-                              v46->_mostRecentEditorNameComponents = v118;
+                              v46->_mostRecentEditorNameComponents = mostRecentEditorNameComponents;
 
                               if ((v47 & 1) == 0)
                               {
@@ -1904,54 +1904,54 @@ LABEL_173:
                               if (objc_opt_respondsToSelector())
                               {
 LABEL_174:
-                                v121 = [v14 originatorInfo];
+                                originatorInfo = [itemCopy originatorInfo];
 LABEL_176:
                                 originatorInfo = v46->_originatorInfo;
-                                v46->_originatorInfo = v121;
+                                v46->_originatorInfo = originatorInfo;
 
                                 if (isKindOfClass & 1) != 0 || (objc_opt_respondsToSelector())
                                 {
-                                  v123 = [v14 userInfo];
+                                  userInfo = [itemCopy userInfo];
                                   userInfo = v46->_userInfo;
-                                  v46->_userInfo = v123;
+                                  v46->_userInfo = userInfo;
 
                                   if (v47)
                                   {
                                     if (isKindOfClass)
                                     {
-                                      v46->_excludedFromSync = [v14 isExcludedFromSync];
-                                      v46->_ignoreRoot = [v14 isIgnoreRoot];
+                                      v46->_excludedFromSync = [itemCopy isExcludedFromSync];
+                                      v46->_ignoreRoot = [itemCopy isIgnoreRoot];
 LABEL_190:
-                                      v127 = [v14 exclusionType];
+                                      exclusionType = [itemCopy exclusionType];
                                       goto LABEL_192;
                                     }
 
 LABEL_182:
                                     if (objc_opt_respondsToSelector())
                                     {
-                                      v126 = [v14 isExcludedFromSync];
+                                      isExcludedFromSync = [itemCopy isExcludedFromSync];
                                     }
 
                                     else
                                     {
-                                      v126 = 0;
+                                      isExcludedFromSync = 0;
                                     }
 
-                                    v46->_excludedFromSync = v126;
+                                    v46->_excludedFromSync = isExcludedFromSync;
                                     if (objc_opt_respondsToSelector())
                                     {
-                                      v128 = [v14 isIgnoreRoot];
+                                      isIgnoreRoot = [itemCopy isIgnoreRoot];
                                     }
 
                                     else
                                     {
-                                      v128 = 0;
+                                      isIgnoreRoot = 0;
                                     }
 
-                                    v46->_ignoreRoot = v128;
+                                    v46->_ignoreRoot = isIgnoreRoot;
                                     if ((objc_opt_respondsToSelector() & 1) == 0)
                                     {
-                                      v127 = 0;
+                                      exclusionType = 0;
                                       goto LABEL_192;
                                     }
 
@@ -1970,37 +1970,37 @@ LABEL_182:
                                   }
                                 }
 
-                                v127 = 0;
+                                exclusionType = 0;
                                 *&v46->_excludedFromSync = 0;
 LABEL_192:
-                                v46->_exclusionType = v127;
+                                v46->_exclusionType = exclusionType;
                                 if (isKindOfClass & 1) != 0 || (objc_opt_respondsToSelector())
                                 {
-                                  v129 = [v14 symlinkTargetPath];
+                                  symlinkTargetPath = [itemCopy symlinkTargetPath];
                                 }
 
                                 else
                                 {
-                                  v129 = 0;
+                                  symlinkTargetPath = 0;
                                 }
 
                                 symlinkTargetPath = v46->_symlinkTargetPath;
-                                v46->_symlinkTargetPath = v129;
+                                v46->_symlinkTargetPath = symlinkTargetPath;
 
                                 if (!v48)
                                 {
                                   if (v47 && ((isKindOfClass & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0))
                                   {
-                                    v131 = [v14 fileURL];
+                                    fileURL = [itemCopy fileURL];
                                   }
 
                                   else
                                   {
-                                    v131 = 0;
+                                    fileURL = 0;
                                   }
 
                                   fileURL = v46->_fileURL;
-                                  v46->_fileURL = v131;
+                                  v46->_fileURL = fileURL;
                                 }
 
                                 if (v225)
@@ -2010,9 +2010,9 @@ LABEL_192:
                                   {
                                     if (isKindOfClass)
                                     {
-                                      v133 = [v14 fp_spotlightSubDomainIdentifier];
+                                      fp_spotlightSubDomainIdentifier = [itemCopy fp_spotlightSubDomainIdentifier];
                                       fp_spotlightSubDomainIdentifier = v46->_fp_spotlightSubDomainIdentifier;
-                                      v46->_fp_spotlightSubDomainIdentifier = v133;
+                                      v46->_fp_spotlightSubDomainIdentifier = fp_spotlightSubDomainIdentifier;
 
                                       goto LABEL_221;
                                     }
@@ -2023,15 +2023,15 @@ LABEL_211:
                                       if (objc_opt_respondsToSelector())
                                       {
 LABEL_213:
-                                        v137 = [v14 fp_spotlightSubDomainIdentifier];
+                                        fp_spotlightSubDomainIdentifier2 = [itemCopy fp_spotlightSubDomainIdentifier];
                                         v138 = v46->_fp_spotlightSubDomainIdentifier;
-                                        v46->_fp_spotlightSubDomainIdentifier = v137;
+                                        v46->_fp_spotlightSubDomainIdentifier = fp_spotlightSubDomainIdentifier2;
 
                                         if (isKindOfClass)
                                         {
-                                          v139 = [v14 displayName];
+                                          displayName = [itemCopy displayName];
                                           displayName = v46->_displayName;
-                                          v46->_displayName = v139;
+                                          v46->_displayName = displayName;
 
                                           goto LABEL_225;
                                         }
@@ -2046,15 +2046,15 @@ LABEL_220:
                                         }
 
 LABEL_221:
-                                        v150 = [v14 displayName];
+                                        displayName2 = [itemCopy displayName];
                                         v151 = v46->_displayName;
-                                        v46->_displayName = v150;
+                                        v46->_displayName = displayName2;
 
                                         if (isKindOfClass)
                                         {
-                                          v152 = [v14 hasUnresolvedConflicts];
+                                          hasUnresolvedConflicts = [itemCopy hasUnresolvedConflicts];
                                           hasUnresolvedConflicts = v46->_hasUnresolvedConflicts;
-                                          v46->_hasUnresolvedConflicts = v152;
+                                          v46->_hasUnresolvedConflicts = hasUnresolvedConflicts;
 
                                           goto LABEL_229;
                                         }
@@ -2069,15 +2069,15 @@ LABEL_224:
                                         }
 
 LABEL_225:
-                                        v155 = [v14 hasUnresolvedConflicts];
+                                        hasUnresolvedConflicts2 = [itemCopy hasUnresolvedConflicts];
                                         v156 = v46->_hasUnresolvedConflicts;
-                                        v46->_hasUnresolvedConflicts = v155;
+                                        v46->_hasUnresolvedConflicts = hasUnresolvedConflicts2;
 
                                         if (isKindOfClass)
                                         {
-                                          v157 = [v14 isDownloadRequested];
+                                          isDownloadRequested = [itemCopy isDownloadRequested];
                                           isDownloadRequested = v46->_isDownloadRequested;
-                                          v46->_isDownloadRequested = v157;
+                                          v46->_isDownloadRequested = isDownloadRequested;
 
                                           goto LABEL_233;
                                         }
@@ -2092,15 +2092,15 @@ LABEL_228:
                                         }
 
 LABEL_229:
-                                        v160 = [v14 isDownloadRequested];
+                                        isDownloadRequested2 = [itemCopy isDownloadRequested];
                                         v161 = v46->_isDownloadRequested;
-                                        v46->_isDownloadRequested = v160;
+                                        v46->_isDownloadRequested = isDownloadRequested2;
 
                                         if (isKindOfClass)
                                         {
-                                          v162 = [v14 sharingPermissions];
+                                          sharingPermissions = [itemCopy sharingPermissions];
                                           sharingPermissions = v46->_sharingPermissions;
-                                          v46->_sharingPermissions = v162;
+                                          v46->_sharingPermissions = sharingPermissions;
 
                                           goto LABEL_234;
                                         }
@@ -2115,28 +2115,28 @@ LABEL_232:
                                         }
 
 LABEL_233:
-                                        v165 = [v14 sharingPermissions];
+                                        sharingPermissions2 = [itemCopy sharingPermissions];
                                         v166 = v46->_sharingPermissions;
-                                        v46->_sharingPermissions = v165;
+                                        v46->_sharingPermissions = sharingPermissions2;
 
                                         if (isKindOfClass)
                                         {
 LABEL_234:
-                                          v167 = [v14 fp_isContainer];
-                                          v46->_isContainer = v167;
+                                          fp_isContainer = [itemCopy fp_isContainer];
+                                          v46->_isContainer = fp_isContainer;
                                           p_isContainer = &v46->_isContainer;
-                                          if ((v167 & 1) == 0)
+                                          if ((fp_isContainer & 1) == 0)
                                           {
                                             goto LABEL_246;
                                           }
 
                                           if (isKindOfClass)
                                           {
-                                            v46->_isContainerPristine = [v14 fp_isContainerPristine];
+                                            v46->_isContainerPristine = [itemCopy fp_isContainerPristine];
 LABEL_245:
-                                            v171 = [v14 fp_appContainerBundleIdentifier];
+                                            fp_appContainerBundleIdentifier = [itemCopy fp_appContainerBundleIdentifier];
                                             fp_appContainerBundleIdentifier = v46->_fp_appContainerBundleIdentifier;
-                                            v46->_fp_appContainerBundleIdentifier = v171;
+                                            v46->_fp_appContainerBundleIdentifier = fp_appContainerBundleIdentifier;
 
 LABEL_246:
                                             if (isKindOfClass)
@@ -2158,10 +2158,10 @@ LABEL_238:
                                           goto LABEL_249;
                                         }
 
-                                        v169 = [v14 fp_isContainer];
-                                        v46->_isContainer = v169;
+                                        fp_isContainer2 = [itemCopy fp_isContainer];
+                                        v46->_isContainer = fp_isContainer2;
                                         p_isContainer = &v46->_isContainer;
-                                        if ((v169 & 1) == 0)
+                                        if ((fp_isContainer2 & 1) == 0)
                                         {
                                           goto LABEL_249;
                                         }
@@ -2169,15 +2169,15 @@ LABEL_238:
 LABEL_240:
                                         if (objc_opt_respondsToSelector())
                                         {
-                                          v170 = [v14 fp_isContainerPristine];
+                                          fp_isContainerPristine = [itemCopy fp_isContainerPristine];
                                         }
 
                                         else
                                         {
-                                          v170 = 0;
+                                          fp_isContainerPristine = 0;
                                         }
 
-                                        v46->_isContainerPristine = v170;
+                                        v46->_isContainerPristine = fp_isContainerPristine;
                                         if (objc_opt_respondsToSelector())
                                         {
                                           goto LABEL_245;
@@ -2189,10 +2189,10 @@ LABEL_240:
 LABEL_249:
                                         if ((objc_opt_respondsToSelector() & 1) == 0)
                                         {
-                                          v146 = 0;
+                                          containerDisplayName = 0;
 LABEL_252:
                                           containerDisplayName = v46->_containerDisplayName;
-                                          v46->_containerDisplayName = v146;
+                                          v46->_containerDisplayName = containerDisplayName;
 
                                           if (!v46->_fp_appContainerBundleIdentifier)
                                           {
@@ -2206,7 +2206,7 @@ LABEL_252:
                                               goto LABEL_262;
                                             }
 
-                                            v175 = [v14 performSelector:sel_fp_cloudContainerClientBundleIdentifiers];
+                                            v175 = [itemCopy performSelector:sel_fp_cloudContainerClientBundleIdentifiers];
                                             v176 = [FPAppMetadata findBundleIDForCurrentPlatformInSet:v175];
                                             v177 = v46->_fp_appContainerBundleIdentifier;
                                             v46->_fp_appContainerBundleIdentifier = v176;
@@ -2216,9 +2216,9 @@ LABEL_252:
                                           {
                                             if (isKindOfClass)
                                             {
-                                              v178 = [v14 fp_parentDomainIdentifier];
+                                              fp_parentDomainIdentifier = [itemCopy fp_parentDomainIdentifier];
                                               fp_parentDomainIdentifier = v46->_fp_parentDomainIdentifier;
-                                              v46->_fp_parentDomainIdentifier = v178;
+                                              v46->_fp_parentDomainIdentifier = fp_parentDomainIdentifier;
 
                                               goto LABEL_267;
                                             }
@@ -2226,16 +2226,16 @@ LABEL_252:
 LABEL_260:
                                             if (objc_opt_respondsToSelector())
                                             {
-                                              v180 = [v14 fp_parentDomainIdentifier];
+                                              fp_parentDomainIdentifier2 = [itemCopy fp_parentDomainIdentifier];
                                             }
 
                                             else
                                             {
-                                              v180 = 0;
+                                              fp_parentDomainIdentifier2 = 0;
                                             }
 
                                             v184 = v46->_fp_parentDomainIdentifier;
-                                            v46->_fp_parentDomainIdentifier = v180;
+                                            v46->_fp_parentDomainIdentifier = fp_parentDomainIdentifier2;
 
                                             if ((objc_opt_respondsToSelector() & 1) == 0)
                                             {
@@ -2251,9 +2251,9 @@ LABEL_260:
                                             }
 
 LABEL_267:
-                                            v185 = [v14 fp_cloudContainerIdentifier];
+                                            fp_cloudContainerIdentifier = [itemCopy fp_cloudContainerIdentifier];
                                             v186 = v46->_cloudContainerIdentifier;
-                                            v46->_cloudContainerIdentifier = v185;
+                                            v46->_cloudContainerIdentifier = fp_cloudContainerIdentifier;
 
                                             if (!v46->_excludedFromSync)
                                             {
@@ -2266,7 +2266,7 @@ LABEL_273:
                                               if (objc_opt_respondsToSelector())
                                               {
 LABEL_274:
-                                                v46->_isUbiquitous = [v14 fp_isUbiquitous];
+                                                v46->_isUbiquitous = [itemCopy fp_isUbiquitous];
                                                 goto LABEL_277;
                                               }
 
@@ -2280,18 +2280,18 @@ LABEL_271:
 LABEL_277:
                                               if (isKindOfClass)
                                               {
-                                                v46->_topLevelSharedItem = [v14 isTopLevelSharedItem];
-                                                v46->_contentZoneRoot = [v14 isContentZoneRoot];
-                                                v46->_inPinnedFolder = [v14 isInPinnedFolder];
-                                                v46->_pinned = [v14 isPinned];
-                                                v46->_recursivelyDownloaded = [v14 isRecursivelyDownloaded];
+                                                v46->_topLevelSharedItem = [itemCopy isTopLevelSharedItem];
+                                                v46->_contentZoneRoot = [itemCopy isContentZoneRoot];
+                                                v46->_inPinnedFolder = [itemCopy isInPinnedFolder];
+                                                v46->_pinned = [itemCopy isPinned];
+                                                v46->_recursivelyDownloaded = [itemCopy isRecursivelyDownloaded];
                                               }
 
                                               else
                                               {
                                                 if (objc_opt_respondsToSelector())
                                                 {
-                                                  shared = [v14 isTopLevelSharedItem];
+                                                  shared = [itemCopy isTopLevelSharedItem];
                                                 }
 
                                                 else
@@ -2302,64 +2302,64 @@ LABEL_277:
                                                 v46->_topLevelSharedItem = shared;
                                                 if (objc_opt_respondsToSelector())
                                                 {
-                                                  v190 = [v14 isContentZoneRoot];
+                                                  isContentZoneRoot = [itemCopy isContentZoneRoot];
                                                 }
 
                                                 else
                                                 {
-                                                  v190 = 0;
+                                                  isContentZoneRoot = 0;
                                                 }
 
-                                                v46->_contentZoneRoot = v190;
+                                                v46->_contentZoneRoot = isContentZoneRoot;
                                                 if (objc_opt_respondsToSelector())
                                                 {
-                                                  v191 = [v14 isInPinnedFolder];
+                                                  isInPinnedFolder = [itemCopy isInPinnedFolder];
                                                 }
 
                                                 else
                                                 {
-                                                  v191 = 0;
+                                                  isInPinnedFolder = 0;
                                                 }
 
-                                                v46->_inPinnedFolder = v191;
+                                                v46->_inPinnedFolder = isInPinnedFolder;
                                                 if (objc_opt_respondsToSelector())
                                                 {
-                                                  v192 = [v14 isPinned];
+                                                  isPinned = [itemCopy isPinned];
                                                 }
 
                                                 else
                                                 {
-                                                  v192 = 0;
+                                                  isPinned = 0;
                                                 }
 
-                                                v46->_pinned = v192;
+                                                v46->_pinned = isPinned;
                                                 if (objc_opt_respondsToSelector())
                                                 {
-                                                  v193 = [v14 isRecursivelyDownloaded];
+                                                  isRecursivelyDownloaded = [itemCopy isRecursivelyDownloaded];
                                                 }
 
                                                 else
                                                 {
-                                                  v193 = 0;
+                                                  isRecursivelyDownloaded = 0;
                                                 }
 
-                                                v46->_recursivelyDownloaded = v193;
+                                                v46->_recursivelyDownloaded = isRecursivelyDownloaded;
                                                 if ((objc_opt_respondsToSelector() & 1) == 0)
                                                 {
-                                                  v188 = 0;
+                                                  conflictingVersions = 0;
                                                   goto LABEL_298;
                                                 }
                                               }
 
-                                              v188 = [v14 conflictingVersions];
+                                              conflictingVersions = [itemCopy conflictingVersions];
 LABEL_298:
                                               conflictingVersions = v46->_conflictingVersions;
-                                              v46->_conflictingVersions = v188;
+                                              v46->_conflictingVersions = conflictingVersions;
 
                                               if (isKindOfClass & 1) != 0 || (objc_opt_respondsToSelector())
                                               {
-                                                v195 = [v14 extendedAttributes];
-                                                if (v195)
+                                                extendedAttributes = [itemCopy extendedAttributes];
+                                                if (extendedAttributes)
                                                 {
                                                   objc_opt_class();
                                                   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2367,7 +2367,7 @@ LABEL_298:
                                                     objc_opt_class();
                                                     if ((objc_opt_isKindOfClass() & 1) == 0)
                                                     {
-                                                      [FPItem initWithVendorItem:v195 provider:v222 domain:v46 spotlightDomainIdentifier:v14 extensionCapabilities:? useFPFS:?];
+                                                      [FPItem initWithVendorItem:extendedAttributes provider:v222 domain:v46 spotlightDomainIdentifier:itemCopy extensionCapabilities:? useFPFS:?];
                                                     }
                                                   }
 
@@ -2375,11 +2375,11 @@ LABEL_298:
                                                   v229[1] = 3221225472;
                                                   v229[2] = __101__FPItem_initWithVendorItem_provider_domain_spotlightDomainIdentifier_extensionCapabilities_useFPFS___block_invoke;
                                                   v229[3] = &unk_1E793A0B8;
-                                                  v230 = v14;
+                                                  v230 = itemCopy;
                                                   v232 = v222;
                                                   v196 = v46;
                                                   v231 = v196;
-                                                  v197 = [v195 fp_filter:v229];
+                                                  v197 = [extendedAttributes fp_filter:v229];
                                                   extendedAttributes = v196->_extendedAttributes;
                                                   v196->_extendedAttributes = v197;
 
@@ -2388,9 +2388,9 @@ LABEL_298:
 
                                                 if (isKindOfClass)
                                                 {
-                                                  v46->_fileSystemFlags = [v14 fileSystemFlags];
+                                                  v46->_fileSystemFlags = [itemCopy fileSystemFlags];
                                                   v46->_enumerationOrigin = 0;
-                                                  v199 = v228;
+                                                  v199 = sCopy;
                                                   goto LABEL_321;
                                                 }
                                               }
@@ -2402,7 +2402,7 @@ LABEL_298:
 
                                               if (objc_opt_respondsToSelector())
                                               {
-                                                v46->_fileSystemFlags = [v14 fileSystemFlags];
+                                                v46->_fileSystemFlags = [itemCopy fileSystemFlags];
                                               }
 
                                               else
@@ -2418,7 +2418,7 @@ LABEL_298:
                                                 }
 
                                                 v201 = v200 & 0xFFFFFFFFFFFFFFFDLL | (2 * (v46->_capabilities & 1));
-                                                if (v47 && (objc_opt_respondsToSelector() & 1) != 0 && [v14 isHidden])
+                                                if (v47 && (objc_opt_respondsToSelector() & 1) != 0 && [itemCopy isHidden])
                                                 {
                                                   v202 = v201 | 8;
                                                 }
@@ -2437,12 +2437,12 @@ LABEL_298:
                                                 v46->_unsupportedFields |= 0x100uLL;
                                               }
 
-                                              v199 = v228;
+                                              v199 = sCopy;
                                               v46->_enumerationOrigin = 0;
                                               if ((objc_opt_respondsToSelector() & 1) == 0)
                                               {
                                                 v46->_contentPolicy = 0;
-                                                if (v228)
+                                                if (sCopy)
                                                 {
                                                   goto LABEL_330;
                                                 }
@@ -2466,22 +2466,22 @@ LABEL_330:
                                                 {
                                                   if (isKindOfClass)
                                                   {
-                                                    v204 = [v14 preformattedOwnerName];
+                                                    preformattedOwnerName = [itemCopy preformattedOwnerName];
                                                     preformattedOwnerName = v46->_preformattedOwnerName;
-                                                    v46->_preformattedOwnerName = v204;
+                                                    v46->_preformattedOwnerName = preformattedOwnerName;
 
 LABEL_341:
-                                                    v207 = [v14 preformattedMostRecentEditorName];
+                                                    preformattedMostRecentEditorName = [itemCopy preformattedMostRecentEditorName];
 LABEL_342:
                                                     preformattedMostRecentEditorName = v46->_preformattedMostRecentEditorName;
-                                                    v46->_preformattedMostRecentEditorName = v207;
+                                                    v46->_preformattedMostRecentEditorName = preformattedMostRecentEditorName;
 
                                                     if ([(NSData *)v46->_versionIdentifier length]>= 0x3E9)
                                                     {
                                                       [FPItem initWithVendorItem:v222 provider:v46 domain:? spotlightDomainIdentifier:? extensionCapabilities:? useFPFS:?];
                                                     }
 
-                                                    if ([v14 conformsToProtocol:&unk_1F1FCDAF8])
+                                                    if ([itemCopy conformsToProtocol:&unk_1F1FCDAF8])
                                                     {
                                                       if ((isKindOfClass & 1) == 0 && (objc_opt_respondsToSelector() & 1) == 0)
                                                       {
@@ -2493,48 +2493,48 @@ LABEL_342:
                                                         goto LABEL_354;
                                                       }
 
-                                                      v211 = [v14 decorations];
+                                                      decorations = [itemCopy decorations];
                                                       decorations = v46->_decorations;
-                                                      v46->_decorations = v211;
+                                                      v46->_decorations = decorations;
                                                     }
 
                                                     if (v47)
                                                     {
                                                       if (isKindOfClass)
                                                       {
-                                                        v46->_fileID = [v14 fileID];
-                                                        v46->_documentID = [v14 documentID];
+                                                        v46->_fileID = [itemCopy fileID];
+                                                        v46->_documentID = [itemCopy documentID];
 LABEL_360:
-                                                        v214 = [v14 inheritedUserInfo];
+                                                        inheritedUserInfo = [itemCopy inheritedUserInfo];
                                                         goto LABEL_362;
                                                       }
 
 LABEL_352:
                                                       if (objc_opt_respondsToSelector())
                                                       {
-                                                        v213 = [v14 fileID];
+                                                        fileID = [itemCopy fileID];
                                                       }
 
                                                       else
                                                       {
-                                                        v213 = 0;
+                                                        fileID = 0;
                                                       }
 
-                                                      v46->_fileID = v213;
+                                                      v46->_fileID = fileID;
                                                       if (objc_opt_respondsToSelector())
                                                       {
-                                                        v215 = [v14 documentID];
+                                                        documentID = [itemCopy documentID];
                                                       }
 
                                                       else
                                                       {
-                                                        v215 = 0;
+                                                        documentID = 0;
                                                       }
 
-                                                      v46->_documentID = v215;
+                                                      v46->_documentID = documentID;
                                                       if ((objc_opt_respondsToSelector() & 1) == 0)
                                                       {
-                                                        v214 = 0;
+                                                        inheritedUserInfo = 0;
                                                         goto LABEL_362;
                                                       }
 
@@ -2542,17 +2542,17 @@ LABEL_352:
                                                     }
 
 LABEL_354:
-                                                    v214 = 0;
+                                                    inheritedUserInfo = 0;
                                                     v46->_fileID = 0;
                                                     v46->_documentID = 0;
 LABEL_362:
                                                     inheritedUserInfo = v46->_inheritedUserInfo;
-                                                    v46->_inheritedUserInfo = v214;
+                                                    v46->_inheritedUserInfo = inheritedUserInfo;
 
                                                     if (isKindOfClass & 1) != 0 || (objc_opt_respondsToSelector())
                                                     {
-                                                      v46->_typeAndCreator.type = [v14 typeAndCreator];
-                                                      v46->_typeAndCreator.creator = [v14 typeAndCreator] >> 32;
+                                                      v46->_typeAndCreator.type = [itemCopy typeAndCreator];
+                                                      v46->_typeAndCreator.creator = [itemCopy typeAndCreator] >> 32;
                                                       if ((v47 & 1) == 0)
                                                       {
                                                         goto LABEL_370;
@@ -2577,7 +2577,7 @@ LABEL_362:
                                                     if (objc_opt_respondsToSelector())
                                                     {
 LABEL_369:
-                                                      v46->_unsupportedFields = [v14 unsupportedFields];
+                                                      v46->_unsupportedFields = [itemCopy unsupportedFields];
                                                     }
 
 LABEL_370:
@@ -2587,16 +2587,16 @@ LABEL_370:
 
                                                   if (objc_opt_respondsToSelector())
                                                   {
-                                                    v208 = [v14 preformattedOwnerName];
+                                                    preformattedOwnerName2 = [itemCopy preformattedOwnerName];
                                                   }
 
                                                   else
                                                   {
-                                                    v208 = 0;
+                                                    preformattedOwnerName2 = 0;
                                                   }
 
                                                   v209 = v46->_preformattedOwnerName;
-                                                  v46->_preformattedOwnerName = v208;
+                                                  v46->_preformattedOwnerName = preformattedOwnerName2;
 
                                                   if (objc_opt_respondsToSelector())
                                                   {
@@ -2610,13 +2610,13 @@ LABEL_370:
                                                   v46->_preformattedOwnerName = 0;
                                                 }
 
-                                                v207 = 0;
+                                                preformattedMostRecentEditorName = 0;
                                                 goto LABEL_342;
                                               }
 
 LABEL_321:
-                                              __FILEPROVIDER_BAD_CONTENT_POLICY__([v14 contentPolicy], v199);
-                                              v46->_contentPolicy = [v14 contentPolicy];
+                                              __FILEPROVIDER_BAD_CONTENT_POLICY__([itemCopy contentPolicy], v199);
+                                              v46->_contentPolicy = [itemCopy contentPolicy];
                                               v46->_capabilities |= 0x40uLL;
                                               if (v199)
                                               {
@@ -2627,7 +2627,7 @@ LABEL_321:
                                             }
 
 LABEL_279:
-                                            v188 = 0;
+                                            conflictingVersions = 0;
                                             v46->_topLevelSharedItem = v46->_shared;
                                             v46->_contentZoneRoot = 0;
                                             *&v46->_inPinnedFolder = 0;
@@ -2666,31 +2666,31 @@ LABEL_276:
                                         }
 
 LABEL_250:
-                                        v146 = [v14 containerDisplayName];
+                                        containerDisplayName = [itemCopy containerDisplayName];
                                         goto LABEL_252;
                                       }
                                     }
 
                                     else if (objc_opt_respondsToSelector())
                                     {
-                                      v148 = [v14 fp_spotlightDomainIdentifier];
+                                      fp_spotlightDomainIdentifier = [itemCopy fp_spotlightDomainIdentifier];
 LABEL_219:
                                       v149 = v46->_fp_spotlightSubDomainIdentifier;
-                                      v46->_fp_spotlightSubDomainIdentifier = v148;
+                                      v46->_fp_spotlightSubDomainIdentifier = fp_spotlightDomainIdentifier;
 
                                       goto LABEL_220;
                                     }
 
-                                    v148 = 0;
+                                    fp_spotlightDomainIdentifier = 0;
                                     goto LABEL_219;
                                   }
                                 }
 
                                 else if (isKindOfClass)
                                 {
-                                  v135 = [v14 spotlightDomainIdentifier];
+                                  spotlightDomainIdentifier = [itemCopy spotlightDomainIdentifier];
                                   spotlightDomainIdentifier = v46->_spotlightDomainIdentifier;
-                                  v46->_spotlightDomainIdentifier = v135;
+                                  v46->_spotlightDomainIdentifier = spotlightDomainIdentifier;
 
                                   if (v47)
                                   {
@@ -2718,32 +2718,32 @@ LABEL_219:
                                 v145 = v46->_sharingPermissions;
                                 v46->_sharingPermissions = 0;
 
-                                v146 = 0;
+                                containerDisplayName = 0;
                                 v46->_isContainer = 0;
                                 p_isContainer = &v46->_isContainer;
                                 goto LABEL_252;
                               }
 
 LABEL_175:
-                              v121 = 0;
+                              originatorInfo = 0;
                               goto LABEL_176;
                             }
 
 LABEL_166:
-                            v115 = [v14 ownerNameComponents];
+                            ownerNameComponents2 = [itemCopy ownerNameComponents];
                             v116 = v46->_ownerNameComponents;
-                            v46->_ownerNameComponents = v115;
+                            v46->_ownerNameComponents = ownerNameComponents2;
 
                             goto LABEL_169;
                           }
                         }
 
-                        v108 = [v14 downloadingError];
+                        downloadingError = [itemCopy downloadingError];
                         goto LABEL_142;
                       }
 
 LABEL_124:
-                      v102 = [v14 uploadingError];
+                      uploadingError = [itemCopy uploadingError];
                       goto LABEL_126;
                     }
 
@@ -2754,9 +2754,9 @@ LABEL_124:
                 }
 
 LABEL_79:
-                v69 = [v14 creationDate];
+                creationDate = [itemCopy creationDate];
                 v70 = v46->_creationDate;
-                v46->_creationDate = v69;
+                v46->_creationDate = creationDate;
 
                 if (isKindOfClass)
                 {
@@ -2767,32 +2767,32 @@ LABEL_79:
               }
 
               v50 = 1;
-              v49 = v228;
+              v49 = sCopy;
             }
 
             else
             {
-              v49 = v228;
-              v50 = v228 && *p_itemVersion == 0;
+              v49 = sCopy;
+              v50 = sCopy && *p_itemVersion == 0;
             }
 
-            __FILEPROVIDER_BAD_ITEM__(v14, v20, v25, v38, v41, v50, v49);
+            __FILEPROVIDER_BAD_ITEM__(itemCopy, providerIdentifier, v25, filename, contentType2, v50, v49);
             fp_simulate_crash(@"can't create item because at least one of the required properties is missing. See the log for more details.", v51, v52, v53, v54, v55, v56, v57, v218);
             v58 = fp_current_or_default_log();
-            v17 = v225;
+            identifierCopy = v225;
             if (os_log_type_enabled(v58, OS_LOG_TYPE_FAULT))
             {
               [FPItem initWithVendorItem:provider:domain:spotlightDomainIdentifier:extensionCapabilities:useFPFS:];
             }
 
-            v31 = 0;
+            selfCopy = 0;
             goto LABEL_63;
           }
 
 LABEL_32:
           if ((objc_opt_respondsToSelector() & 1) == 0)
           {
-            v41 = 0;
+            contentType2 = 0;
             goto LABEL_36;
           }
 
@@ -2827,15 +2827,15 @@ LABEL_28:
     }
 
 LABEL_27:
-    v38 = [v14 filename];
+    filename = [itemCopy filename];
     goto LABEL_28;
   }
 
-  v31 = 0;
+  selfCopy = 0;
 LABEL_64:
 
   v59 = *MEMORY[0x1E69E9840];
-  return v31;
+  return selfCopy;
 }
 
 uint64_t __101__FPItem_initWithVendorItem_provider_domain_spotlightDomainIdentifier_extensionCapabilities_useFPFS___block_invoke(void *a1, void *a2, void *a3)
@@ -2869,35 +2869,35 @@ uint64_t __101__FPItem_initWithVendorItem_provider_domain_spotlightDomainIdentif
   return isKindOfClass & v8 & 1;
 }
 
-- (FPItem)initWithCoder:(id)a3
+- (FPItem)initWithCoder:(id)coder
 {
   v145[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  coderCopy = coder;
   context = objc_autoreleasePoolPush();
   v6 = 0x1E696A000uLL;
-  v142 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_providerIdentifier"];
-  v143 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_domainIdentifier"];
+  v142 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_providerIdentifier"];
+  v143 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_domainIdentifier"];
   if (!v143)
   {
     v143 = @"NSFileProviderDomainDefaultIdentifier";
   }
 
   v7 = [MEMORY[0x1E696AEC0] fp_providerDomainIDFromProviderID:v142 domainIdentifier:v143];
-  v8 = [v5 fp_checkProviderIdentifier:v7];
+  v8 = [coderCopy fp_checkProviderIdentifier:v7];
 
   if ((v8 & 1) == 0)
   {
 
     objc_autoreleasePoolPop(context);
 LABEL_23:
-    v133 = 0;
+    selfCopy = 0;
     goto LABEL_24;
   }
 
-  v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_itemIdentifier"];
-  v10 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_parentItemIdentifier"];
-  v11 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_filename"];
-  v12 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_contentType"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_itemIdentifier"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_parentItemIdentifier"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_filename"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_contentType"];
   if (v12)
   {
     v13 = v12;
@@ -2905,8 +2905,8 @@ LABEL_23:
     v15 = v10;
     v16 = v9;
     v17 = MEMORY[0x1E6982C40];
-    v18 = [v12 identifier];
-    v19 = [v17 fp_cachedTypeWithIdentifier:v18 alreadyAvailableType:v13];
+    identifier = [v12 identifier];
+    v19 = [v17 fp_cachedTypeWithIdentifier:identifier alreadyAvailableType:v13];
 
     v20 = v19;
     if (v19)
@@ -2921,8 +2921,8 @@ LABEL_23:
         goto LABEL_14;
       }
 
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v21 handleFailureInMethod:a2 object:self file:@"FPItem.m" lineNumber:962 description:@"received contentType with an invalid type"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"FPItem.m" lineNumber:962 description:@"received contentType with an invalid type"];
     }
 
     v9 = v16;
@@ -2936,7 +2936,7 @@ LABEL_23:
     v20 = 0;
   }
 
-  v22 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_typeIdentifier"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_typeIdentifier"];
   if (!v22)
   {
     v78 = fp_current_or_default_log();
@@ -2959,25 +2959,25 @@ LABEL_14:
   if (self)
   {
     v26 = *(v6 + 3776);
-    v27 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_formerIdentifier"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_formerIdentifier"];
     formerIdentifier = self->_formerIdentifier;
     self->_formerIdentifier = v27;
 
     v29 = *(v6 + 3776);
-    v30 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_parentFormerIdentifier"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_parentFormerIdentifier"];
     parentFormerIdentifier = self->_parentFormerIdentifier;
     self->_parentFormerIdentifier = v30;
 
     v32 = *(v6 + 3776);
-    v33 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_displayName"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_displayName"];
     displayName = self->_displayName;
     self->_displayName = v33;
 
-    v35 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_documentSize"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_documentSize"];
     documentSize = self->_documentSize;
     self->_documentSize = v35;
 
-    v37 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_urlWrapper"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_urlWrapper"];
     urlWrapper = self->_urlWrapper;
     self->_urlWrapper = v37;
 
@@ -2985,22 +2985,22 @@ LABEL_14:
     fileURL = self->_fileURL;
     self->_fileURL = v39;
 
-    v41 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_detachedRootLogicalURL"];
+    v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_detachedRootLogicalURL"];
     detachedRootLogicalURL = self->_detachedRootLogicalURL;
     self->_detachedRootLogicalURL = v41;
 
-    self->_capabilities = [v5 decodeIntegerForKey:@"_capabilities"];
-    self->_enumerationOrigin = [v5 decodeIntegerForKey:@"_enumerationOrigin"];
-    v43 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_creationDate"];
+    self->_capabilities = [coderCopy decodeIntegerForKey:@"_capabilities"];
+    self->_enumerationOrigin = [coderCopy decodeIntegerForKey:@"_enumerationOrigin"];
+    v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_creationDate"];
     creationDate = self->_creationDate;
     self->_creationDate = v43;
 
-    v45 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_contentModificationDate"];
+    v45 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_contentModificationDate"];
     contentModificationDate = self->_contentModificationDate;
     self->_contentModificationDate = v45;
 
-    self->_trashed = [v5 decodeBoolForKey:@"_trashed"];
-    v47 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_lastUsedDate"];
+    self->_trashed = [coderCopy decodeBoolForKey:@"_trashed"];
+    v47 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_lastUsedDate"];
     lastUsedDate = self->_lastUsedDate;
     self->_lastUsedDate = v47;
 
@@ -3008,52 +3008,52 @@ LABEL_14:
     v140 = v20;
     v50 = objc_opt_class();
     v51 = [v49 setWithObjects:{v50, objc_opt_class(), 0}];
-    v52 = [v5 decodeObjectOfClasses:v51 forKey:@"_tags"];
+    v52 = [coderCopy decodeObjectOfClasses:v51 forKey:@"_tags"];
     tags = self->_tags;
     self->_tags = v52;
 
-    v54 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_favoriteRank"];
+    v54 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_favoriteRank"];
     favoriteRank = self->_favoriteRank;
     self->_favoriteRank = v54;
 
-    self->_uploaded = [v5 decodeBoolForKey:@"_uploaded"];
-    self->_uploading = [v5 decodeBoolForKey:@"_uploading"];
-    v56 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_uploadingError"];
+    self->_uploaded = [coderCopy decodeBoolForKey:@"_uploaded"];
+    self->_uploading = [coderCopy decodeBoolForKey:@"_uploading"];
+    v56 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_uploadingError"];
     uploadingError = self->_uploadingError;
     self->_uploadingError = v56;
 
-    self->_excludedFromSync = [v5 decodeBoolForKey:@"_excludedFromSync"];
-    self->_ignoreRoot = [v5 decodeBoolForKey:@"_ignoreRoot"];
-    self->_exclusionType = [v5 decodeIntegerForKey:@"_exclusionType"];
-    self->_downloaded = [v5 decodeBoolForKey:@"_downloaded"];
-    self->_downloading = [v5 decodeBoolForKey:@"_downloading"];
-    v58 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_downloadingError"];
+    self->_excludedFromSync = [coderCopy decodeBoolForKey:@"_excludedFromSync"];
+    self->_ignoreRoot = [coderCopy decodeBoolForKey:@"_ignoreRoot"];
+    self->_exclusionType = [coderCopy decodeIntegerForKey:@"_exclusionType"];
+    self->_downloaded = [coderCopy decodeBoolForKey:@"_downloaded"];
+    self->_downloading = [coderCopy decodeBoolForKey:@"_downloading"];
+    v58 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_downloadingError"];
     downloadingError = self->_downloadingError;
     self->_downloadingError = v58;
 
-    self->_mostRecentVersionDownloaded = [v5 decodeBoolForKey:@"_mostRecentVersionDownloaded"];
-    self->_shared = [v5 decodeBoolForKey:@"_shared"];
-    self->_sharedByCurrentUser = [v5 decodeBoolForKey:@"_sharedByCurrentUser"];
-    self->_fp_lastModifiedByCurrentUser = [v5 decodeBoolForKey:@"_fp_lastModifiedByCurrentUser"];
-    v60 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_ownerNameComponents"];
+    self->_mostRecentVersionDownloaded = [coderCopy decodeBoolForKey:@"_mostRecentVersionDownloaded"];
+    self->_shared = [coderCopy decodeBoolForKey:@"_shared"];
+    self->_sharedByCurrentUser = [coderCopy decodeBoolForKey:@"_sharedByCurrentUser"];
+    self->_fp_lastModifiedByCurrentUser = [coderCopy decodeBoolForKey:@"_fp_lastModifiedByCurrentUser"];
+    v60 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_ownerNameComponents"];
     ownerNameComponents = self->_ownerNameComponents;
     self->_ownerNameComponents = v60;
 
-    v62 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_mostRecentEditorNameComponents"];
+    v62 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_mostRecentEditorNameComponents"];
     mostRecentEditorNameComponents = self->_mostRecentEditorNameComponents;
     self->_mostRecentEditorNameComponents = v62;
 
     v64 = v6;
     v65 = *(v6 + 3776);
-    v66 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_collaborationIdentifier"];
+    v66 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_collaborationIdentifier"];
     collaborationIdentifier = self->_collaborationIdentifier;
     self->_collaborationIdentifier = v66;
 
-    v68 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_originatorInfo"];
+    v68 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_originatorInfo"];
     originatorInfo = self->_originatorInfo;
     self->_originatorInfo = v68;
 
-    v70 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_childItemCount"];
+    v70 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_childItemCount"];
     childItemCount = self->_childItemCount;
     self->_childItemCount = v70;
 
@@ -3069,85 +3069,85 @@ LABEL_14:
     v77 = objc_opt_class();
     v20 = v140;
     v78 = [v137 setWithObjects:{v136, v73, v74, v75, v76, v77, objc_opt_class(), 0}];
-    v79 = [v5 decodeObjectOfClasses:v78 forKey:@"_userInfo"];
+    v79 = [coderCopy decodeObjectOfClasses:v78 forKey:@"_userInfo"];
     userInfo = self->_userInfo;
     self->_userInfo = v79;
 
-    self->_state = [v5 decodeIntegerForKey:@"_state"];
+    self->_state = [coderCopy decodeIntegerForKey:@"_state"];
     v81 = *(v64 + 3776);
-    v82 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_placeholdIdentifier"];
+    v82 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_placeholdIdentifier"];
     placeholderIdentifier = self->_placeholderIdentifier;
     self->_placeholderIdentifier = v82;
 
-    v84 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_versionIdentifier"];
+    v84 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_versionIdentifier"];
     versionIdentifier = self->_versionIdentifier;
     self->_versionIdentifier = v84;
 
-    v86 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_itemVersion"];
+    v86 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_itemVersion"];
     itemVersion = self->_itemVersion;
     self->_itemVersion = v86;
 
     v88 = *(v64 + 3776);
-    v89 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"rsdi"];
+    v89 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rsdi"];
     spotlightDomainIdentifier = self->_spotlightDomainIdentifier;
     self->_spotlightDomainIdentifier = v89;
 
     v91 = *(v64 + 3776);
-    v92 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_spotlightDomainIdentifier"];
+    v92 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_spotlightDomainIdentifier"];
     fp_spotlightSubDomainIdentifier = self->_fp_spotlightSubDomainIdentifier;
     self->_fp_spotlightSubDomainIdentifier = v92;
 
-    v94 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_hasUnresolvedConflicts"];
+    v94 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_hasUnresolvedConflicts"];
     hasUnresolvedConflicts = self->_hasUnresolvedConflicts;
     self->_hasUnresolvedConflicts = v94;
 
-    v96 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_isDownloadRequested"];
+    v96 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_isDownloadRequested"];
     isDownloadRequested = self->_isDownloadRequested;
     self->_isDownloadRequested = v96;
 
     v98 = *(v64 + 3776);
-    v99 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_sharingPermissions"];
+    v99 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_sharingPermissions"];
     sharingPermissions = self->_sharingPermissions;
     self->_sharingPermissions = v99;
 
     v101 = *(v64 + 3776);
-    v102 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_containerDisplayName"];
+    v102 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_containerDisplayName"];
     containerDisplayName = self->_containerDisplayName;
     self->_containerDisplayName = v102;
 
-    self->_supportsMostRecentVersionDownloaded = [v5 decodeBoolForKey:@"_supportsMostRecentVersionDownloaded"];
+    self->_supportsMostRecentVersionDownloaded = [coderCopy decodeBoolForKey:@"_supportsMostRecentVersionDownloaded"];
     v104 = *(v64 + 3776);
-    v105 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_fp_appContainerBundleIdentifier"];
+    v105 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_fp_appContainerBundleIdentifier"];
     fp_appContainerBundleIdentifier = self->_fp_appContainerBundleIdentifier;
     self->_fp_appContainerBundleIdentifier = v105;
 
     v107 = *(v64 + 3776);
-    v108 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_fp_parentDomainIdentifier"];
+    v108 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_fp_parentDomainIdentifier"];
     fp_parentDomainIdentifier = self->_fp_parentDomainIdentifier;
     self->_fp_parentDomainIdentifier = v108;
 
     v110 = *(v64 + 3776);
-    v111 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"_cloudContainerIdentifier"];
+    v111 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_cloudContainerIdentifier"];
     cloudContainerIdentifier = self->_cloudContainerIdentifier;
     self->_cloudContainerIdentifier = v111;
 
-    self->_isUbiquitous = [v5 decodeBoolForKey:@"_isUbiquitous"];
-    self->_isContainer = [v5 decodeBoolForKey:@"_isContainer"];
-    self->_isContainerPristine = [v5 decodeBoolForKey:@"_isContainerPristine"];
-    self->_topLevelSharedItem = [v5 decodeBoolForKey:@"_topLevelSharedItem"];
-    self->_inPinnedFolder = [v5 decodeBoolForKey:@"_inPinnedFolder"];
-    self->_pinned = [v5 decodeBoolForKey:@"_pinned"];
-    self->_contentZoneRoot = [v5 decodeBoolForKey:@"_contentZoneRoot"];
-    self->_isCollaborationInvitation = [v5 decodeBoolForKey:@"_isCollaborationInvitation"];
-    self->_recursivelyDownloaded = [v5 decodeBoolForKey:@"_recursivelyDownloaded"];
+    self->_isUbiquitous = [coderCopy decodeBoolForKey:@"_isUbiquitous"];
+    self->_isContainer = [coderCopy decodeBoolForKey:@"_isContainer"];
+    self->_isContainerPristine = [coderCopy decodeBoolForKey:@"_isContainerPristine"];
+    self->_topLevelSharedItem = [coderCopy decodeBoolForKey:@"_topLevelSharedItem"];
+    self->_inPinnedFolder = [coderCopy decodeBoolForKey:@"_inPinnedFolder"];
+    self->_pinned = [coderCopy decodeBoolForKey:@"_pinned"];
+    self->_contentZoneRoot = [coderCopy decodeBoolForKey:@"_contentZoneRoot"];
+    self->_isCollaborationInvitation = [coderCopy decodeBoolForKey:@"_isCollaborationInvitation"];
+    self->_recursivelyDownloaded = [coderCopy decodeBoolForKey:@"_recursivelyDownloaded"];
     v113 = MEMORY[0x1E695DFD8];
     v114 = objc_opt_class();
     v115 = [v113 setWithObjects:{v114, objc_opt_class(), 0}];
-    v116 = [v5 decodeObjectOfClasses:v115 forKey:@"_conflictingVersions"];
+    v116 = [coderCopy decodeObjectOfClasses:v115 forKey:@"_conflictingVersions"];
     conflictingVersions = self->_conflictingVersions;
     self->_conflictingVersions = v116;
 
-    self->_fileSystemFlags = [v5 decodeIntegerForKey:@"_fileSystemFlags"];
+    self->_fileSystemFlags = [coderCopy decodeIntegerForKey:@"_fileSystemFlags"];
     v118 = MEMORY[0x1E695DFD8];
     v145[0] = objc_opt_class();
     v119 = *(v64 + 3776);
@@ -3155,7 +3155,7 @@ LABEL_14:
     v145[2] = objc_opt_class();
     v120 = [MEMORY[0x1E695DEC8] arrayWithObjects:v145 count:3];
     v121 = [v118 setWithArray:v120];
-    v122 = [v5 decodeObjectOfClasses:v121 forKey:@"_extendedAttributes"];
+    v122 = [coderCopy decodeObjectOfClasses:v121 forKey:@"_extendedAttributes"];
     extendedAttributes = self->_extendedAttributes;
     self->_extendedAttributes = v122;
 
@@ -3167,26 +3167,26 @@ LABEL_14:
     v144[1] = objc_opt_class();
     v126 = [MEMORY[0x1E695DEC8] arrayWithObjects:v144 count:2];
     v127 = [v124 setWithArray:v126];
-    v128 = [v5 decodeObjectOfClasses:v127 forKey:@"_decorations"];
+    v128 = [coderCopy decodeObjectOfClasses:v127 forKey:@"_decorations"];
     decorations = self->_decorations;
     self->_decorations = v128;
 
-    self->_fileID = [v5 decodeInt64ForKey:@"_fileID"];
-    self->_documentID = [v5 decodeInt32ForKey:@"_documentID"];
-    v130 = [v5 decodeObjectOfClasses:v78 forKey:@"_inheritedUserInfo"];
+    self->_fileID = [coderCopy decodeInt64ForKey:@"_fileID"];
+    self->_documentID = [coderCopy decodeInt32ForKey:@"_documentID"];
+    v130 = [coderCopy decodeObjectOfClasses:v78 forKey:@"_inheritedUserInfo"];
     inheritedUserInfo = self->_inheritedUserInfo;
     self->_inheritedUserInfo = v130;
 
-    self->_allowsContextualMenuDownloadEntry = [v5 decodeBoolForKey:@"_allowsContextualMenuDownloadEntry"];
-    self->_typeAndCreator.type = [v5 decodeInt32ForKey:@"_typeAndCreator.type"];
-    self->_typeAndCreator.creator = [v5 decodeInt32ForKey:@"_typeAndCreator.creator"];
-    self->_contentPolicy = [v5 decodeIntegerForKey:@"_contentPolicy"];
-    self->_inheritedContentPolicy = [v5 decodeIntegerForKey:@"_inheritedContentPolicy"];
-    self->_effectiveContentPolicy = [v5 decodeIntegerForKey:@"_effectiveContentPolicy"];
-    self->_unsupportedFields = [v5 decodeIntegerForKey:@"_unsupportedFields"];
-    self->_isEvictedWithClone = [v5 decodeBoolForKey:@"_isEvictedWithClone"];
-    self->_syncPaused = [v5 decodeBoolForKey:@"_syncPaused"];
-    self->_supportsUploadWithFailOnConflict = [v5 decodeBoolForKey:@"_supportsUploadWithFailOnConflict"];
+    self->_allowsContextualMenuDownloadEntry = [coderCopy decodeBoolForKey:@"_allowsContextualMenuDownloadEntry"];
+    self->_typeAndCreator.type = [coderCopy decodeInt32ForKey:@"_typeAndCreator.type"];
+    self->_typeAndCreator.creator = [coderCopy decodeInt32ForKey:@"_typeAndCreator.creator"];
+    self->_contentPolicy = [coderCopy decodeIntegerForKey:@"_contentPolicy"];
+    self->_inheritedContentPolicy = [coderCopy decodeIntegerForKey:@"_inheritedContentPolicy"];
+    self->_effectiveContentPolicy = [coderCopy decodeIntegerForKey:@"_effectiveContentPolicy"];
+    self->_unsupportedFields = [coderCopy decodeIntegerForKey:@"_unsupportedFields"];
+    self->_isEvictedWithClone = [coderCopy decodeBoolForKey:@"_isEvictedWithClone"];
+    self->_syncPaused = [coderCopy decodeBoolForKey:@"_syncPaused"];
+    self->_supportsUploadWithFailOnConflict = [coderCopy decodeBoolForKey:@"_supportsUploadWithFailOnConflict"];
     v132 = 1;
 LABEL_19:
 
@@ -3203,16 +3203,16 @@ LABEL_21:
   }
 
   self = self;
-  v133 = self;
+  selfCopy = self;
 LABEL_24:
 
   v134 = *MEMORY[0x1E69E9840];
-  return v133;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (!self->_providerID || (itemIdentifier = self->_itemIdentifier) == 0 || !self->_filename || !self->_contentType)
   {
     v6 = fp_current_or_default_log();
@@ -3231,125 +3231,125 @@ LABEL_24:
     itemIdentifier = self->_itemIdentifier;
   }
 
-  [v4 encodeObject:itemIdentifier forKey:@"_itemIdentifier"];
-  [v4 encodeObject:self->_formerIdentifier forKey:@"_formerIdentifier"];
-  [v4 encodeObject:self->_parentFormerIdentifier forKey:@"_parentFormerIdentifier"];
-  [v4 encodeObject:self->_parentItemIdentifier forKey:@"_parentItemIdentifier"];
-  [v4 encodeObject:self->_providerID forKey:@"_providerIdentifier"];
-  [v4 encodeObject:self->_domainIdentifier forKey:@"_domainIdentifier"];
-  [v4 encodeObject:self->_filename forKey:@"_filename"];
-  [v4 encodeObject:self->_displayName forKey:@"_displayName"];
-  [v4 encodeObject:self->_contentType forKey:@"_contentType"];
-  [v4 encodeObject:self->_documentSize forKey:@"_documentSize"];
+  [coderCopy encodeObject:itemIdentifier forKey:@"_itemIdentifier"];
+  [coderCopy encodeObject:self->_formerIdentifier forKey:@"_formerIdentifier"];
+  [coderCopy encodeObject:self->_parentFormerIdentifier forKey:@"_parentFormerIdentifier"];
+  [coderCopy encodeObject:self->_parentItemIdentifier forKey:@"_parentItemIdentifier"];
+  [coderCopy encodeObject:self->_providerID forKey:@"_providerIdentifier"];
+  [coderCopy encodeObject:self->_domainIdentifier forKey:@"_domainIdentifier"];
+  [coderCopy encodeObject:self->_filename forKey:@"_filename"];
+  [coderCopy encodeObject:self->_displayName forKey:@"_displayName"];
+  [coderCopy encodeObject:self->_contentType forKey:@"_contentType"];
+  [coderCopy encodeObject:self->_documentSize forKey:@"_documentSize"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     urlWrapper = self->_urlWrapper;
     if (urlWrapper)
     {
-      [v4 encodeObject:urlWrapper forKey:@"_urlWrapper"];
+      [coderCopy encodeObject:urlWrapper forKey:@"_urlWrapper"];
     }
 
     else
     {
-      v16 = self;
-      objc_sync_enter(v16);
-      v17 = v16->_fileURL;
-      objc_sync_exit(v16);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      v17 = selfCopy->_fileURL;
+      objc_sync_exit(selfCopy);
 
       if (v17)
       {
         v18 = [FPSandboxingURLWrapper wrapperWithURL:v17 readonly:0 error:0];
-        [v4 encodeObject:v18 forKey:@"_urlWrapper"];
+        [coderCopy encodeObject:v18 forKey:@"_urlWrapper"];
       }
     }
   }
 
-  [v4 encodeObject:self->_detachedRootLogicalURL forKey:@"_detachedRootLogicalURL"];
-  [v4 encodeInteger:self->_capabilities forKey:@"_capabilities"];
-  [v4 encodeInteger:self->_enumerationOrigin forKey:@"_enumerationOrigin"];
-  [v4 encodeObject:self->_creationDate forKey:@"_creationDate"];
-  [v4 encodeObject:self->_contentModificationDate forKey:@"_contentModificationDate"];
-  [v4 encodeBool:self->_trashed forKey:@"_trashed"];
-  [v4 encodeObject:self->_lastUsedDate forKey:@"_lastUsedDate"];
-  [v4 encodeObject:self->_tags forKey:@"_tags"];
-  [v4 encodeObject:self->_favoriteRank forKey:@"_favoriteRank"];
-  [v4 encodeBool:self->_uploaded forKey:@"_uploaded"];
-  [v4 encodeBool:self->_uploading forKey:@"_uploading"];
-  [v4 encodeObject:self->_uploadingError forKey:@"_uploadingError"];
-  [v4 encodeBool:self->_excludedFromSync forKey:@"_excludedFromSync"];
-  [v4 encodeBool:self->_ignoreRoot forKey:@"_ignoreRoot"];
-  [v4 encodeInteger:self->_exclusionType forKey:@"_exclusionType"];
-  [v4 encodeBool:self->_downloaded forKey:@"_downloaded"];
-  [v4 encodeBool:self->_downloading forKey:@"_downloading"];
-  [v4 encodeObject:self->_downloadingError forKey:@"_downloadingError"];
-  [v4 encodeBool:self->_mostRecentVersionDownloaded forKey:@"_mostRecentVersionDownloaded"];
-  [v4 encodeBool:self->_shared forKey:@"_shared"];
-  [v4 encodeBool:self->_sharedByCurrentUser forKey:@"_sharedByCurrentUser"];
-  [v4 encodeBool:self->_fp_lastModifiedByCurrentUser forKey:@"_fp_lastModifiedByCurrentUser"];
-  [v4 encodeObject:self->_ownerNameComponents forKey:@"_ownerNameComponents"];
-  [v4 encodeObject:self->_mostRecentEditorNameComponents forKey:@"_mostRecentEditorNameComponents"];
-  [v4 encodeObject:self->_collaborationIdentifier forKey:@"_collaborationIdentifier"];
-  [v4 encodeObject:self->_originatorInfo forKey:@"_originatorInfo"];
-  [v4 encodeObject:self->_childItemCount forKey:@"_childItemCount"];
-  [v4 encodeObject:self->_userInfo forKey:@"_userInfo"];
-  [v4 encodeInteger:self->_state forKey:@"_state"];
-  [v4 encodeObject:self->_placeholderIdentifier forKey:@"_placeholdIdentifier"];
-  [v4 encodeObject:self->_versionIdentifier forKey:@"_versionIdentifier"];
-  [v4 encodeObject:self->_itemVersion forKey:@"_itemVersion"];
-  [v4 encodeObject:self->_spotlightDomainIdentifier forKey:@"rsdi"];
-  [v4 encodeObject:self->_fp_spotlightSubDomainIdentifier forKey:@"_spotlightDomainIdentifier"];
-  [v4 encodeBool:self->_inPinnedFolder forKey:@"_inPinnedFolder"];
-  [v4 encodeBool:self->_pinned forKey:@"_pinned"];
-  [v4 encodeObject:self->_hasUnresolvedConflicts forKey:@"_hasUnresolvedConflicts"];
-  [v4 encodeObject:self->_isDownloadRequested forKey:@"_isDownloadRequested"];
-  [v4 encodeObject:self->_sharingPermissions forKey:@"_sharingPermissions"];
-  [v4 encodeObject:self->_containerDisplayName forKey:@"_containerDisplayName"];
-  [v4 encodeBool:self->_supportsMostRecentVersionDownloaded forKey:@"_supportsMostRecentVersionDownloaded"];
-  [v4 encodeObject:self->_fp_appContainerBundleIdentifier forKey:@"_fp_appContainerBundleIdentifier"];
-  [v4 encodeObject:self->_fp_parentDomainIdentifier forKey:@"_fp_parentDomainIdentifier"];
-  [v4 encodeObject:self->_cloudContainerIdentifier forKey:@"_cloudContainerIdentifier"];
-  [v4 encodeBool:self->_isUbiquitous forKey:@"_isUbiquitous"];
-  [v4 encodeBool:self->_isContainer forKey:@"_isContainer"];
-  [v4 encodeBool:self->_isContainerPristine forKey:@"_isContainerPristine"];
-  [v4 encodeBool:self->_topLevelSharedItem forKey:@"_topLevelSharedItem"];
-  [v4 encodeBool:self->_recursivelyDownloaded forKey:@"_recursivelyDownloaded"];
-  [v4 encodeBool:self->_contentZoneRoot forKey:@"_contentZoneRoot"];
-  [v4 encodeObject:self->_conflictingVersions forKey:@"_conflictingVersions"];
-  [v4 encodeBool:self->_isCollaborationInvitation forKey:@"_isCollaborationInvitation"];
-  [v4 encodeInteger:self->_fileSystemFlags forKey:@"_fileSystemFlags"];
-  [v4 encodeObject:self->_extendedAttributes forKey:@"_extendedAttributes"];
-  [v4 encodeObject:self->_decorations forKey:@"_decorations"];
-  [v4 encodeInt64:self->_fileID forKey:@"_fileID"];
-  [v4 encodeInt32:self->_documentID forKey:@"_documentID"];
-  [v4 encodeObject:self->_inheritedUserInfo forKey:@"_inheritedUserInfo"];
-  [v4 encodeBool:self->_allowsContextualMenuDownloadEntry forKey:@"_allowsContextualMenuDownloadEntry"];
-  [v4 encodeInt32:self->_typeAndCreator.type forKey:@"_typeAndCreator.type"];
-  [v4 encodeInt32:self->_typeAndCreator.creator forKey:@"_typeAndCreator.creator"];
-  [v4 encodeInteger:self->_contentPolicy forKey:@"_contentPolicy"];
-  [v4 encodeInteger:self->_inheritedContentPolicy forKey:@"_inheritedContentPolicy"];
-  [v4 encodeInteger:self->_effectiveContentPolicy forKey:@"_effectiveContentPolicy"];
-  [v4 encodeInteger:self->_unsupportedFields forKey:@"_unsupportedFields"];
-  [v4 encodeBool:self->_isEvictedWithClone forKey:@"_isEvictedWithClone"];
-  [v4 encodeBool:self->_syncPaused forKey:@"_syncPaused"];
-  [v4 encodeBool:self->_supportsUploadWithFailOnConflict forKey:@"_supportsUploadWithFailOnConflict"];
+  [coderCopy encodeObject:self->_detachedRootLogicalURL forKey:@"_detachedRootLogicalURL"];
+  [coderCopy encodeInteger:self->_capabilities forKey:@"_capabilities"];
+  [coderCopy encodeInteger:self->_enumerationOrigin forKey:@"_enumerationOrigin"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"_creationDate"];
+  [coderCopy encodeObject:self->_contentModificationDate forKey:@"_contentModificationDate"];
+  [coderCopy encodeBool:self->_trashed forKey:@"_trashed"];
+  [coderCopy encodeObject:self->_lastUsedDate forKey:@"_lastUsedDate"];
+  [coderCopy encodeObject:self->_tags forKey:@"_tags"];
+  [coderCopy encodeObject:self->_favoriteRank forKey:@"_favoriteRank"];
+  [coderCopy encodeBool:self->_uploaded forKey:@"_uploaded"];
+  [coderCopy encodeBool:self->_uploading forKey:@"_uploading"];
+  [coderCopy encodeObject:self->_uploadingError forKey:@"_uploadingError"];
+  [coderCopy encodeBool:self->_excludedFromSync forKey:@"_excludedFromSync"];
+  [coderCopy encodeBool:self->_ignoreRoot forKey:@"_ignoreRoot"];
+  [coderCopy encodeInteger:self->_exclusionType forKey:@"_exclusionType"];
+  [coderCopy encodeBool:self->_downloaded forKey:@"_downloaded"];
+  [coderCopy encodeBool:self->_downloading forKey:@"_downloading"];
+  [coderCopy encodeObject:self->_downloadingError forKey:@"_downloadingError"];
+  [coderCopy encodeBool:self->_mostRecentVersionDownloaded forKey:@"_mostRecentVersionDownloaded"];
+  [coderCopy encodeBool:self->_shared forKey:@"_shared"];
+  [coderCopy encodeBool:self->_sharedByCurrentUser forKey:@"_sharedByCurrentUser"];
+  [coderCopy encodeBool:self->_fp_lastModifiedByCurrentUser forKey:@"_fp_lastModifiedByCurrentUser"];
+  [coderCopy encodeObject:self->_ownerNameComponents forKey:@"_ownerNameComponents"];
+  [coderCopy encodeObject:self->_mostRecentEditorNameComponents forKey:@"_mostRecentEditorNameComponents"];
+  [coderCopy encodeObject:self->_collaborationIdentifier forKey:@"_collaborationIdentifier"];
+  [coderCopy encodeObject:self->_originatorInfo forKey:@"_originatorInfo"];
+  [coderCopy encodeObject:self->_childItemCount forKey:@"_childItemCount"];
+  [coderCopy encodeObject:self->_userInfo forKey:@"_userInfo"];
+  [coderCopy encodeInteger:self->_state forKey:@"_state"];
+  [coderCopy encodeObject:self->_placeholderIdentifier forKey:@"_placeholdIdentifier"];
+  [coderCopy encodeObject:self->_versionIdentifier forKey:@"_versionIdentifier"];
+  [coderCopy encodeObject:self->_itemVersion forKey:@"_itemVersion"];
+  [coderCopy encodeObject:self->_spotlightDomainIdentifier forKey:@"rsdi"];
+  [coderCopy encodeObject:self->_fp_spotlightSubDomainIdentifier forKey:@"_spotlightDomainIdentifier"];
+  [coderCopy encodeBool:self->_inPinnedFolder forKey:@"_inPinnedFolder"];
+  [coderCopy encodeBool:self->_pinned forKey:@"_pinned"];
+  [coderCopy encodeObject:self->_hasUnresolvedConflicts forKey:@"_hasUnresolvedConflicts"];
+  [coderCopy encodeObject:self->_isDownloadRequested forKey:@"_isDownloadRequested"];
+  [coderCopy encodeObject:self->_sharingPermissions forKey:@"_sharingPermissions"];
+  [coderCopy encodeObject:self->_containerDisplayName forKey:@"_containerDisplayName"];
+  [coderCopy encodeBool:self->_supportsMostRecentVersionDownloaded forKey:@"_supportsMostRecentVersionDownloaded"];
+  [coderCopy encodeObject:self->_fp_appContainerBundleIdentifier forKey:@"_fp_appContainerBundleIdentifier"];
+  [coderCopy encodeObject:self->_fp_parentDomainIdentifier forKey:@"_fp_parentDomainIdentifier"];
+  [coderCopy encodeObject:self->_cloudContainerIdentifier forKey:@"_cloudContainerIdentifier"];
+  [coderCopy encodeBool:self->_isUbiquitous forKey:@"_isUbiquitous"];
+  [coderCopy encodeBool:self->_isContainer forKey:@"_isContainer"];
+  [coderCopy encodeBool:self->_isContainerPristine forKey:@"_isContainerPristine"];
+  [coderCopy encodeBool:self->_topLevelSharedItem forKey:@"_topLevelSharedItem"];
+  [coderCopy encodeBool:self->_recursivelyDownloaded forKey:@"_recursivelyDownloaded"];
+  [coderCopy encodeBool:self->_contentZoneRoot forKey:@"_contentZoneRoot"];
+  [coderCopy encodeObject:self->_conflictingVersions forKey:@"_conflictingVersions"];
+  [coderCopy encodeBool:self->_isCollaborationInvitation forKey:@"_isCollaborationInvitation"];
+  [coderCopy encodeInteger:self->_fileSystemFlags forKey:@"_fileSystemFlags"];
+  [coderCopy encodeObject:self->_extendedAttributes forKey:@"_extendedAttributes"];
+  [coderCopy encodeObject:self->_decorations forKey:@"_decorations"];
+  [coderCopy encodeInt64:self->_fileID forKey:@"_fileID"];
+  [coderCopy encodeInt32:self->_documentID forKey:@"_documentID"];
+  [coderCopy encodeObject:self->_inheritedUserInfo forKey:@"_inheritedUserInfo"];
+  [coderCopy encodeBool:self->_allowsContextualMenuDownloadEntry forKey:@"_allowsContextualMenuDownloadEntry"];
+  [coderCopy encodeInt32:self->_typeAndCreator.type forKey:@"_typeAndCreator.type"];
+  [coderCopy encodeInt32:self->_typeAndCreator.creator forKey:@"_typeAndCreator.creator"];
+  [coderCopy encodeInteger:self->_contentPolicy forKey:@"_contentPolicy"];
+  [coderCopy encodeInteger:self->_inheritedContentPolicy forKey:@"_inheritedContentPolicy"];
+  [coderCopy encodeInteger:self->_effectiveContentPolicy forKey:@"_effectiveContentPolicy"];
+  [coderCopy encodeInteger:self->_unsupportedFields forKey:@"_unsupportedFields"];
+  [coderCopy encodeBool:self->_isEvictedWithClone forKey:@"_isEvictedWithClone"];
+  [coderCopy encodeBool:self->_syncPaused forKey:@"_syncPaused"];
+  [coderCopy encodeBool:self->_supportsUploadWithFailOnConflict forKey:@"_supportsUploadWithFailOnConflict"];
 }
 
-- (id)fieldDifferencesWithItem:(id)a3 onlyMetadata:(BOOL)a4
+- (id)fieldDifferencesWithItem:(id)item onlyMetadata:(BOOL)metadata
 {
-  v8 = a3;
+  itemCopy = item;
   v9 = objc_opt_new();
-  if (a4)
+  if (metadata)
   {
     goto LABEL_52;
   }
 
-  v10 = [v8 itemIdentifier];
-  if (v10)
+  itemIdentifier = [itemCopy itemIdentifier];
+  if (itemIdentifier)
   {
-    v4 = [(FPItem *)self itemIdentifier];
-    v5 = [v8 itemIdentifier];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self itemIdentifier];
+    itemIdentifier3 = [itemCopy itemIdentifier];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
 LABEL_9:
@@ -3358,16 +3358,16 @@ LABEL_9:
     }
   }
 
-  v11 = [(FPItem *)self itemIdentifier];
-  if (v11)
+  itemIdentifier4 = [(FPItem *)self itemIdentifier];
+  if (itemIdentifier4)
   {
-    v12 = [v8 itemIdentifier];
+    itemIdentifier5 = [itemCopy itemIdentifier];
 
-    if (v10)
+    if (itemIdentifier)
     {
     }
 
-    if (!v12)
+    if (!itemIdentifier5)
     {
       goto LABEL_9;
     }
@@ -3376,18 +3376,18 @@ LABEL_9:
   else
   {
 
-    if (v10)
+    if (itemIdentifier)
     {
     }
   }
 
 LABEL_12:
-  v13 = [v8 formerIdentifier];
-  if (v13)
+  formerIdentifier = [itemCopy formerIdentifier];
+  if (formerIdentifier)
   {
-    v4 = [(FPItem *)self formerIdentifier];
-    v5 = [v8 formerIdentifier];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self formerIdentifier];
+    itemIdentifier3 = [itemCopy formerIdentifier];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
 LABEL_19:
@@ -3396,16 +3396,16 @@ LABEL_19:
     }
   }
 
-  v14 = [(FPItem *)self formerIdentifier];
-  if (v14)
+  formerIdentifier2 = [(FPItem *)self formerIdentifier];
+  if (formerIdentifier2)
   {
-    v15 = [v8 formerIdentifier];
+    formerIdentifier3 = [itemCopy formerIdentifier];
 
-    if (v13)
+    if (formerIdentifier)
     {
     }
 
-    if (!v15)
+    if (!formerIdentifier3)
     {
       goto LABEL_19;
     }
@@ -3414,18 +3414,18 @@ LABEL_19:
   else
   {
 
-    if (v13)
+    if (formerIdentifier)
     {
     }
   }
 
 LABEL_22:
-  v16 = [v8 parentItemIdentifier];
-  if (v16)
+  parentItemIdentifier = [itemCopy parentItemIdentifier];
+  if (parentItemIdentifier)
   {
-    v4 = [(FPItem *)self parentItemIdentifier];
-    v5 = [v8 parentItemIdentifier];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self parentItemIdentifier];
+    itemIdentifier3 = [itemCopy parentItemIdentifier];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
 LABEL_29:
@@ -3434,16 +3434,16 @@ LABEL_29:
     }
   }
 
-  v17 = [(FPItem *)self parentItemIdentifier];
-  if (v17)
+  parentItemIdentifier2 = [(FPItem *)self parentItemIdentifier];
+  if (parentItemIdentifier2)
   {
-    v18 = [v8 parentItemIdentifier];
+    parentItemIdentifier3 = [itemCopy parentItemIdentifier];
 
-    if (v16)
+    if (parentItemIdentifier)
     {
     }
 
-    if (!v18)
+    if (!parentItemIdentifier3)
     {
       goto LABEL_29;
     }
@@ -3452,18 +3452,18 @@ LABEL_29:
   else
   {
 
-    if (v16)
+    if (parentItemIdentifier)
     {
     }
   }
 
 LABEL_32:
-  v19 = [v8 providerID];
-  if (v19)
+  providerID = [itemCopy providerID];
+  if (providerID)
   {
-    v4 = [(FPItem *)self providerID];
-    v5 = [v8 providerID];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self providerID];
+    itemIdentifier3 = [itemCopy providerID];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
 LABEL_39:
@@ -3472,35 +3472,35 @@ LABEL_39:
     }
   }
 
-  v20 = [(FPItem *)self providerID];
-  if (!v20)
+  providerID2 = [(FPItem *)self providerID];
+  if (!providerID2)
   {
 
-    if (v19)
+    if (providerID)
     {
     }
 
     goto LABEL_42;
   }
 
-  v21 = [v8 providerID];
+  providerID3 = [itemCopy providerID];
 
-  if (v19)
+  if (providerID)
   {
   }
 
-  if (!v21)
+  if (!providerID3)
   {
     goto LABEL_39;
   }
 
 LABEL_42:
-  v22 = [v8 domainIdentifier];
-  if (v22)
+  domainIdentifier = [itemCopy domainIdentifier];
+  if (domainIdentifier)
   {
-    v4 = [(FPItem *)self domainIdentifier];
-    v5 = [v8 domainIdentifier];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self domainIdentifier];
+    itemIdentifier3 = [itemCopy domainIdentifier];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
 LABEL_49:
@@ -3509,16 +3509,16 @@ LABEL_49:
     }
   }
 
-  v23 = [(FPItem *)self domainIdentifier];
-  if (v23)
+  domainIdentifier2 = [(FPItem *)self domainIdentifier];
+  if (domainIdentifier2)
   {
-    v24 = [v8 domainIdentifier];
+    domainIdentifier3 = [itemCopy domainIdentifier];
 
-    if (v22)
+    if (domainIdentifier)
     {
     }
 
-    if (!v24)
+    if (!domainIdentifier3)
     {
       goto LABEL_49;
     }
@@ -3527,18 +3527,18 @@ LABEL_49:
   else
   {
 
-    if (v22)
+    if (domainIdentifier)
     {
     }
   }
 
 LABEL_52:
-  v25 = [v8 filename];
-  if (v25)
+  filename = [itemCopy filename];
+  if (filename)
   {
-    v4 = [(FPItem *)self filename];
-    v5 = [v8 filename];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self filename];
+    itemIdentifier3 = [itemCopy filename];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
 LABEL_59:
@@ -3547,16 +3547,16 @@ LABEL_59:
     }
   }
 
-  v26 = [(FPItem *)self filename];
-  if (v26)
+  filename2 = [(FPItem *)self filename];
+  if (filename2)
   {
-    v27 = [v8 filename];
+    filename3 = [itemCopy filename];
 
-    if (v25)
+    if (filename)
     {
     }
 
-    if (!v27)
+    if (!filename3)
     {
       goto LABEL_59;
     }
@@ -3565,18 +3565,18 @@ LABEL_59:
   else
   {
 
-    if (v25)
+    if (filename)
     {
     }
   }
 
 LABEL_62:
-  v28 = [v8 displayName];
-  if (v28)
+  displayName = [itemCopy displayName];
+  if (displayName)
   {
-    v4 = [(FPItem *)self displayName];
-    v5 = [v8 displayName];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self displayName];
+    itemIdentifier3 = [itemCopy displayName];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
 LABEL_69:
@@ -3585,16 +3585,16 @@ LABEL_69:
     }
   }
 
-  v29 = [(FPItem *)self displayName];
-  if (v29)
+  displayName2 = [(FPItem *)self displayName];
+  if (displayName2)
   {
-    v30 = [v8 displayName];
+    displayName3 = [itemCopy displayName];
 
-    if (v28)
+    if (displayName)
     {
     }
 
-    if (!v30)
+    if (!displayName3)
     {
       goto LABEL_69;
     }
@@ -3603,18 +3603,18 @@ LABEL_69:
   else
   {
 
-    if (v28)
+    if (displayName)
     {
     }
   }
 
 LABEL_72:
-  v31 = [v8 contentType];
-  if (v31)
+  contentType = [itemCopy contentType];
+  if (contentType)
   {
-    v4 = [(FPItem *)self contentType];
-    v5 = [v8 contentType];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self contentType];
+    itemIdentifier3 = [itemCopy contentType];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
 LABEL_79:
@@ -3623,16 +3623,16 @@ LABEL_79:
     }
   }
 
-  v32 = [(FPItem *)self contentType];
-  if (v32)
+  contentType2 = [(FPItem *)self contentType];
+  if (contentType2)
   {
-    v33 = [v8 contentType];
+    contentType3 = [itemCopy contentType];
 
-    if (v31)
+    if (contentType)
     {
     }
 
-    if (!v33)
+    if (!contentType3)
     {
       goto LABEL_79;
     }
@@ -3641,18 +3641,18 @@ LABEL_79:
   else
   {
 
-    if (v31)
+    if (contentType)
     {
     }
   }
 
 LABEL_82:
-  v34 = [v8 documentSize];
-  if (v34)
+  documentSize = [itemCopy documentSize];
+  if (documentSize)
   {
-    v4 = [(FPItem *)self documentSize];
-    v5 = [v8 documentSize];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self documentSize];
+    itemIdentifier3 = [itemCopy documentSize];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
 LABEL_89:
@@ -3661,16 +3661,16 @@ LABEL_89:
     }
   }
 
-  v35 = [(FPItem *)self documentSize];
-  if (v35)
+  documentSize2 = [(FPItem *)self documentSize];
+  if (documentSize2)
   {
-    v36 = [v8 documentSize];
+    documentSize3 = [itemCopy documentSize];
 
-    if (v34)
+    if (documentSize)
     {
     }
 
-    if (!v36)
+    if (!documentSize3)
     {
       goto LABEL_89;
     }
@@ -3679,18 +3679,18 @@ LABEL_89:
   else
   {
 
-    if (v34)
+    if (documentSize)
     {
     }
   }
 
 LABEL_92:
-  v37 = [v8 fileURL];
-  if (v37)
+  fileURL = [itemCopy fileURL];
+  if (fileURL)
   {
-    v4 = [(FPItem *)self fileURL];
-    v5 = [v8 fileURL];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self fileURL];
+    itemIdentifier3 = [itemCopy fileURL];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
 LABEL_99:
@@ -3699,16 +3699,16 @@ LABEL_99:
     }
   }
 
-  v38 = [(FPItem *)self fileURL];
-  if (v38)
+  fileURL2 = [(FPItem *)self fileURL];
+  if (fileURL2)
   {
-    v39 = [v8 fileURL];
+    fileURL3 = [itemCopy fileURL];
 
-    if (v37)
+    if (fileURL)
     {
     }
 
-    if (!v39)
+    if (!fileURL3)
     {
       goto LABEL_99;
     }
@@ -3717,30 +3717,30 @@ LABEL_99:
   else
   {
 
-    if (v37)
+    if (fileURL)
     {
     }
   }
 
 LABEL_102:
-  v40 = [(FPItem *)self capabilities];
-  if (v40 != [v8 capabilities])
+  capabilities = [(FPItem *)self capabilities];
+  if (capabilities != [itemCopy capabilities])
   {
     [v9 addObject:@"capabilities"];
   }
 
-  v41 = [(FPItem *)self enumerationOrigin];
-  if (v41 != [v8 enumerationOrigin])
+  enumerationOrigin = [(FPItem *)self enumerationOrigin];
+  if (enumerationOrigin != [itemCopy enumerationOrigin])
   {
     [v9 addObject:@"enumerationOrigin"];
   }
 
-  v42 = [v8 creationDate];
-  if (v42)
+  creationDate = [itemCopy creationDate];
+  if (creationDate)
   {
-    v4 = [(FPItem *)self creationDate];
-    v5 = [v8 creationDate];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self creationDate];
+    itemIdentifier3 = [itemCopy creationDate];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
 LABEL_113:
@@ -3749,16 +3749,16 @@ LABEL_113:
     }
   }
 
-  v43 = [(FPItem *)self creationDate];
-  if (v43)
+  creationDate2 = [(FPItem *)self creationDate];
+  if (creationDate2)
   {
-    v44 = [v8 creationDate];
+    creationDate3 = [itemCopy creationDate];
 
-    if (v42)
+    if (creationDate)
     {
     }
 
-    if (!v44)
+    if (!creationDate3)
     {
       goto LABEL_113;
     }
@@ -3767,18 +3767,18 @@ LABEL_113:
   else
   {
 
-    if (v42)
+    if (creationDate)
     {
     }
   }
 
 LABEL_116:
-  v45 = [v8 contentModificationDate];
-  if (v45)
+  contentModificationDate = [itemCopy contentModificationDate];
+  if (contentModificationDate)
   {
-    v4 = [(FPItem *)self contentModificationDate];
-    v5 = [v8 contentModificationDate];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self contentModificationDate];
+    itemIdentifier3 = [itemCopy contentModificationDate];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
 LABEL_123:
@@ -3787,16 +3787,16 @@ LABEL_123:
     }
   }
 
-  v46 = [(FPItem *)self contentModificationDate];
-  if (v46)
+  contentModificationDate2 = [(FPItem *)self contentModificationDate];
+  if (contentModificationDate2)
   {
-    v47 = [v8 contentModificationDate];
+    contentModificationDate3 = [itemCopy contentModificationDate];
 
-    if (v45)
+    if (contentModificationDate)
     {
     }
 
-    if (!v47)
+    if (!contentModificationDate3)
     {
       goto LABEL_123;
     }
@@ -3805,24 +3805,24 @@ LABEL_123:
   else
   {
 
-    if (v45)
+    if (contentModificationDate)
     {
     }
   }
 
 LABEL_126:
-  v48 = [(FPItem *)self isTrashed];
-  if (v48 != [v8 isTrashed])
+  isTrashed = [(FPItem *)self isTrashed];
+  if (isTrashed != [itemCopy isTrashed])
   {
     [v9 addObject:@"isTrashed"];
   }
 
-  v49 = [v8 lastUsedDate];
-  if (v49)
+  lastUsedDate = [itemCopy lastUsedDate];
+  if (lastUsedDate)
   {
-    v4 = [(FPItem *)self lastUsedDate];
-    v5 = [v8 lastUsedDate];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self lastUsedDate];
+    itemIdentifier3 = [itemCopy lastUsedDate];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
 LABEL_135:
@@ -3831,16 +3831,16 @@ LABEL_135:
     }
   }
 
-  v50 = [(FPItem *)self lastUsedDate];
-  if (v50)
+  lastUsedDate2 = [(FPItem *)self lastUsedDate];
+  if (lastUsedDate2)
   {
-    v51 = [v8 lastUsedDate];
+    lastUsedDate3 = [itemCopy lastUsedDate];
 
-    if (v49)
+    if (lastUsedDate)
     {
     }
 
-    if (!v51)
+    if (!lastUsedDate3)
     {
       goto LABEL_135;
     }
@@ -3849,18 +3849,18 @@ LABEL_135:
   else
   {
 
-    if (v49)
+    if (lastUsedDate)
     {
     }
   }
 
 LABEL_138:
-  v52 = [v8 tags];
-  if (v52)
+  tags = [itemCopy tags];
+  if (tags)
   {
-    v4 = [(FPItem *)self tags];
-    v5 = [v8 tags];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self tags];
+    itemIdentifier3 = [itemCopy tags];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
 LABEL_145:
@@ -3869,16 +3869,16 @@ LABEL_145:
     }
   }
 
-  v53 = [(FPItem *)self tags];
-  if (v53)
+  tags2 = [(FPItem *)self tags];
+  if (tags2)
   {
-    v54 = [v8 tags];
+    tags3 = [itemCopy tags];
 
-    if (v52)
+    if (tags)
     {
     }
 
-    if (!v54)
+    if (!tags3)
     {
       goto LABEL_145;
     }
@@ -3887,18 +3887,18 @@ LABEL_145:
   else
   {
 
-    if (v52)
+    if (tags)
     {
     }
   }
 
 LABEL_148:
-  v55 = [v8 favoriteRank];
-  if (v55)
+  favoriteRank = [itemCopy favoriteRank];
+  if (favoriteRank)
   {
-    v4 = [(FPItem *)self favoriteRank];
-    v5 = [v8 favoriteRank];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self favoriteRank];
+    itemIdentifier3 = [itemCopy favoriteRank];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
 LABEL_155:
@@ -3907,16 +3907,16 @@ LABEL_155:
     }
   }
 
-  v56 = [(FPItem *)self favoriteRank];
-  if (v56)
+  favoriteRank2 = [(FPItem *)self favoriteRank];
+  if (favoriteRank2)
   {
-    v57 = [v8 favoriteRank];
+    favoriteRank3 = [itemCopy favoriteRank];
 
-    if (v55)
+    if (favoriteRank)
     {
     }
 
-    if (!v57)
+    if (!favoriteRank3)
     {
       goto LABEL_155;
     }
@@ -3925,35 +3925,35 @@ LABEL_155:
   else
   {
 
-    if (v55)
+    if (favoriteRank)
     {
     }
   }
 
 LABEL_158:
-  if (a4)
+  if (metadata)
   {
     goto LABEL_225;
   }
 
-  v58 = [(FPItem *)self isUploaded];
-  if (v58 != [v8 isUploaded])
+  isUploaded = [(FPItem *)self isUploaded];
+  if (isUploaded != [itemCopy isUploaded])
   {
     [v9 addObject:@"isUploaded"];
   }
 
-  v59 = [(FPItem *)self isUploading];
-  if (v59 != [v8 isUploading])
+  isUploading = [(FPItem *)self isUploading];
+  if (isUploading != [itemCopy isUploading])
   {
     [v9 addObject:@"isUploading"];
   }
 
-  v60 = [v8 uploadingError];
-  if (v60)
+  uploadingError = [itemCopy uploadingError];
+  if (uploadingError)
   {
-    v4 = [(FPItem *)self uploadingError];
-    v5 = [v8 uploadingError];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self uploadingError];
+    itemIdentifier3 = [itemCopy uploadingError];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
 LABEL_170:
@@ -3962,16 +3962,16 @@ LABEL_170:
     }
   }
 
-  v61 = [(FPItem *)self uploadingError];
-  if (v61)
+  uploadingError2 = [(FPItem *)self uploadingError];
+  if (uploadingError2)
   {
-    v62 = [v8 uploadingError];
+    uploadingError3 = [itemCopy uploadingError];
 
-    if (v60)
+    if (uploadingError)
     {
     }
 
-    if (!v62)
+    if (!uploadingError3)
     {
       goto LABEL_170;
     }
@@ -3980,30 +3980,30 @@ LABEL_170:
   else
   {
 
-    if (v60)
+    if (uploadingError)
     {
     }
   }
 
 LABEL_173:
-  v63 = [(FPItem *)self isDownloaded];
-  if (v63 != [v8 isDownloaded])
+  isDownloaded = [(FPItem *)self isDownloaded];
+  if (isDownloaded != [itemCopy isDownloaded])
   {
     [v9 addObject:@"isDownloaded"];
   }
 
-  v64 = [(FPItem *)self isDownloading];
-  if (v64 != [v8 isDownloading])
+  isDownloading = [(FPItem *)self isDownloading];
+  if (isDownloading != [itemCopy isDownloading])
   {
     [v9 addObject:@"isDownloading"];
   }
 
-  v65 = [v8 downloadingError];
-  if (v65)
+  downloadingError = [itemCopy downloadingError];
+  if (downloadingError)
   {
-    v4 = [(FPItem *)self downloadingError];
-    v5 = [v8 downloadingError];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self downloadingError];
+    itemIdentifier3 = [itemCopy downloadingError];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
 LABEL_184:
@@ -4012,16 +4012,16 @@ LABEL_184:
     }
   }
 
-  v66 = [(FPItem *)self downloadingError];
-  if (v66)
+  downloadingError2 = [(FPItem *)self downloadingError];
+  if (downloadingError2)
   {
-    v67 = [v8 downloadingError];
+    downloadingError3 = [itemCopy downloadingError];
 
-    if (v65)
+    if (downloadingError)
     {
     }
 
-    if (!v67)
+    if (!downloadingError3)
     {
       goto LABEL_184;
     }
@@ -4030,42 +4030,42 @@ LABEL_184:
   else
   {
 
-    if (v65)
+    if (downloadingError)
     {
     }
   }
 
 LABEL_187:
-  v68 = [(FPItem *)self isMostRecentVersionDownloaded];
-  if (v68 != [v8 isMostRecentVersionDownloaded])
+  isMostRecentVersionDownloaded = [(FPItem *)self isMostRecentVersionDownloaded];
+  if (isMostRecentVersionDownloaded != [itemCopy isMostRecentVersionDownloaded])
   {
     [v9 addObject:@"isMostRecentVersionDownloaded"];
   }
 
-  v69 = [(FPItem *)self isShared];
-  if (v69 != [v8 isShared])
+  isShared = [(FPItem *)self isShared];
+  if (isShared != [itemCopy isShared])
   {
     [v9 addObject:@"isShared"];
   }
 
-  v70 = [(FPItem *)self isSharedByCurrentUser];
-  if (v70 != [v8 isSharedByCurrentUser])
+  isSharedByCurrentUser = [(FPItem *)self isSharedByCurrentUser];
+  if (isSharedByCurrentUser != [itemCopy isSharedByCurrentUser])
   {
     [v9 addObject:@"isSharedByCurrentUser"];
   }
 
-  v71 = [(FPItem *)self fp_isLastModifiedByCurrentUser];
-  if (v71 != [v8 fp_isLastModifiedByCurrentUser])
+  fp_isLastModifiedByCurrentUser = [(FPItem *)self fp_isLastModifiedByCurrentUser];
+  if (fp_isLastModifiedByCurrentUser != [itemCopy fp_isLastModifiedByCurrentUser])
   {
     [v9 addObject:@"fp_isLastModifiedByCurrentUser"];
   }
 
-  v72 = [v8 ownerNameComponents];
-  if (v72)
+  ownerNameComponents = [itemCopy ownerNameComponents];
+  if (ownerNameComponents)
   {
-    v4 = [(FPItem *)self ownerNameComponents];
-    v5 = [v8 ownerNameComponents];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self ownerNameComponents];
+    itemIdentifier3 = [itemCopy ownerNameComponents];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
 LABEL_202:
@@ -4074,16 +4074,16 @@ LABEL_202:
     }
   }
 
-  v73 = [(FPItem *)self ownerNameComponents];
-  if (v73)
+  ownerNameComponents2 = [(FPItem *)self ownerNameComponents];
+  if (ownerNameComponents2)
   {
-    v74 = [v8 ownerNameComponents];
+    ownerNameComponents3 = [itemCopy ownerNameComponents];
 
-    if (v72)
+    if (ownerNameComponents)
     {
     }
 
-    if (!v74)
+    if (!ownerNameComponents3)
     {
       goto LABEL_202;
     }
@@ -4092,18 +4092,18 @@ LABEL_202:
   else
   {
 
-    if (v72)
+    if (ownerNameComponents)
     {
     }
   }
 
 LABEL_205:
-  v75 = [v8 mostRecentEditorNameComponents];
-  if (v75)
+  mostRecentEditorNameComponents = [itemCopy mostRecentEditorNameComponents];
+  if (mostRecentEditorNameComponents)
   {
-    v4 = [(FPItem *)self mostRecentEditorNameComponents];
-    v5 = [v8 mostRecentEditorNameComponents];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self mostRecentEditorNameComponents];
+    itemIdentifier3 = [itemCopy mostRecentEditorNameComponents];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
 LABEL_212:
@@ -4112,35 +4112,35 @@ LABEL_212:
     }
   }
 
-  v76 = [(FPItem *)self mostRecentEditorNameComponents];
-  if (!v76)
+  mostRecentEditorNameComponents2 = [(FPItem *)self mostRecentEditorNameComponents];
+  if (!mostRecentEditorNameComponents2)
   {
 
-    if (v75)
+    if (mostRecentEditorNameComponents)
     {
     }
 
     goto LABEL_215;
   }
 
-  v77 = [v8 mostRecentEditorNameComponents];
+  mostRecentEditorNameComponents3 = [itemCopy mostRecentEditorNameComponents];
 
-  if (v75)
+  if (mostRecentEditorNameComponents)
   {
   }
 
-  if (!v77)
+  if (!mostRecentEditorNameComponents3)
   {
     goto LABEL_212;
   }
 
 LABEL_215:
-  v78 = [v8 collaborationIdentifier];
-  if (v78)
+  collaborationIdentifier = [itemCopy collaborationIdentifier];
+  if (collaborationIdentifier)
   {
-    v4 = [(FPItem *)self collaborationIdentifier];
-    v5 = [v8 collaborationIdentifier];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self collaborationIdentifier];
+    itemIdentifier3 = [itemCopy collaborationIdentifier];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
 LABEL_222:
@@ -4149,16 +4149,16 @@ LABEL_222:
     }
   }
 
-  v79 = [(FPItem *)self collaborationIdentifier];
-  if (v79)
+  collaborationIdentifier2 = [(FPItem *)self collaborationIdentifier];
+  if (collaborationIdentifier2)
   {
-    v80 = [v8 collaborationIdentifier];
+    collaborationIdentifier3 = [itemCopy collaborationIdentifier];
 
-    if (v78)
+    if (collaborationIdentifier)
     {
     }
 
-    if (!v80)
+    if (!collaborationIdentifier3)
     {
       goto LABEL_222;
     }
@@ -4167,18 +4167,18 @@ LABEL_222:
   else
   {
 
-    if (v78)
+    if (collaborationIdentifier)
     {
     }
   }
 
 LABEL_225:
-  v81 = [v8 childItemCount];
-  if (v81)
+  childItemCount = [itemCopy childItemCount];
+  if (childItemCount)
   {
-    v4 = [(FPItem *)self childItemCount];
-    v5 = [v8 childItemCount];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self childItemCount];
+    itemIdentifier3 = [itemCopy childItemCount];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
 LABEL_232:
@@ -4187,16 +4187,16 @@ LABEL_232:
     }
   }
 
-  v82 = [(FPItem *)self childItemCount];
-  if (v82)
+  childItemCount2 = [(FPItem *)self childItemCount];
+  if (childItemCount2)
   {
-    v83 = [v8 childItemCount];
+    childItemCount3 = [itemCopy childItemCount];
 
-    if (v81)
+    if (childItemCount)
     {
     }
 
-    if (!v83)
+    if (!childItemCount3)
     {
       goto LABEL_232;
     }
@@ -4205,18 +4205,18 @@ LABEL_232:
   else
   {
 
-    if (v81)
+    if (childItemCount)
     {
     }
   }
 
 LABEL_235:
-  v84 = [v8 userInfo];
-  if (v84)
+  userInfo = [itemCopy userInfo];
+  if (userInfo)
   {
-    v4 = [(FPItem *)self userInfo];
-    v5 = [v8 userInfo];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self userInfo];
+    itemIdentifier3 = [itemCopy userInfo];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
 LABEL_242:
@@ -4225,16 +4225,16 @@ LABEL_242:
     }
   }
 
-  v85 = [(FPItem *)self userInfo];
-  if (v85)
+  userInfo2 = [(FPItem *)self userInfo];
+  if (userInfo2)
   {
-    v86 = [v8 userInfo];
+    userInfo3 = [itemCopy userInfo];
 
-    if (v84)
+    if (userInfo)
     {
     }
 
-    if (!v86)
+    if (!userInfo3)
     {
       goto LABEL_242;
     }
@@ -4243,29 +4243,29 @@ LABEL_242:
   else
   {
 
-    if (v84)
+    if (userInfo)
     {
     }
   }
 
 LABEL_245:
-  if (a4)
+  if (metadata)
   {
     goto LABEL_394;
   }
 
-  v87 = [(FPItem *)self state];
-  if (v87 != [v8 state])
+  state = [(FPItem *)self state];
+  if (state != [itemCopy state])
   {
     [v9 addObject:@"state"];
   }
 
-  v88 = [v8 placeholderIdentifier];
-  if (v88)
+  placeholderIdentifier = [itemCopy placeholderIdentifier];
+  if (placeholderIdentifier)
   {
-    v84 = [(FPItem *)self placeholderIdentifier];
-    v4 = [v8 placeholderIdentifier];
-    if (([v84 isEqual:v4] & 1) == 0)
+    userInfo = [(FPItem *)self placeholderIdentifier];
+    itemIdentifier2 = [itemCopy placeholderIdentifier];
+    if (([userInfo isEqual:itemIdentifier2] & 1) == 0)
     {
 
 LABEL_255:
@@ -4274,16 +4274,16 @@ LABEL_255:
     }
   }
 
-  v89 = [(FPItem *)self placeholderIdentifier];
-  if (v89)
+  placeholderIdentifier2 = [(FPItem *)self placeholderIdentifier];
+  if (placeholderIdentifier2)
   {
-    v90 = [v8 placeholderIdentifier];
+    placeholderIdentifier3 = [itemCopy placeholderIdentifier];
 
-    if (v88)
+    if (placeholderIdentifier)
     {
     }
 
-    if (!v90)
+    if (!placeholderIdentifier3)
     {
       goto LABEL_255;
     }
@@ -4292,18 +4292,18 @@ LABEL_255:
   else
   {
 
-    if (v88)
+    if (placeholderIdentifier)
     {
     }
   }
 
 LABEL_258:
-  v91 = [v8 versionIdentifier];
-  if (v91)
+  versionIdentifier = [itemCopy versionIdentifier];
+  if (versionIdentifier)
   {
-    v84 = [(FPItem *)self versionIdentifier];
-    v4 = [v8 versionIdentifier];
-    if (([v84 isEqual:v4] & 1) == 0)
+    userInfo = [(FPItem *)self versionIdentifier];
+    itemIdentifier2 = [itemCopy versionIdentifier];
+    if (([userInfo isEqual:itemIdentifier2] & 1) == 0)
     {
 
 LABEL_265:
@@ -4312,16 +4312,16 @@ LABEL_265:
     }
   }
 
-  v92 = [(FPItem *)self versionIdentifier];
-  if (v92)
+  versionIdentifier2 = [(FPItem *)self versionIdentifier];
+  if (versionIdentifier2)
   {
-    v93 = [v8 versionIdentifier];
+    versionIdentifier3 = [itemCopy versionIdentifier];
 
-    if (v91)
+    if (versionIdentifier)
     {
     }
 
-    if (!v93)
+    if (!versionIdentifier3)
     {
       goto LABEL_265;
     }
@@ -4330,18 +4330,18 @@ LABEL_265:
   else
   {
 
-    if (v91)
+    if (versionIdentifier)
     {
     }
   }
 
 LABEL_268:
-  v94 = [v8 itemVersion];
-  if (v94)
+  itemVersion = [itemCopy itemVersion];
+  if (itemVersion)
   {
-    v84 = [(FPItem *)self itemVersion];
-    v4 = [v8 itemVersion];
-    if (([v84 isEqual:v4] & 1) == 0)
+    userInfo = [(FPItem *)self itemVersion];
+    itemIdentifier2 = [itemCopy itemVersion];
+    if (([userInfo isEqual:itemIdentifier2] & 1) == 0)
     {
 
 LABEL_275:
@@ -4350,16 +4350,16 @@ LABEL_275:
     }
   }
 
-  v95 = [(FPItem *)self itemVersion];
-  if (v95)
+  itemVersion2 = [(FPItem *)self itemVersion];
+  if (itemVersion2)
   {
-    v96 = [v8 itemVersion];
+    itemVersion3 = [itemCopy itemVersion];
 
-    if (v94)
+    if (itemVersion)
     {
     }
 
-    if (!v96)
+    if (!itemVersion3)
     {
       goto LABEL_275;
     }
@@ -4368,18 +4368,18 @@ LABEL_275:
   else
   {
 
-    if (v94)
+    if (itemVersion)
     {
     }
   }
 
 LABEL_278:
-  v97 = [v8 spotlightDomainIdentifier];
-  if (v97)
+  spotlightDomainIdentifier = [itemCopy spotlightDomainIdentifier];
+  if (spotlightDomainIdentifier)
   {
-    v84 = [(FPItem *)self spotlightDomainIdentifier];
-    v4 = [v8 spotlightDomainIdentifier];
-    if (([v84 isEqual:v4] & 1) == 0)
+    userInfo = [(FPItem *)self spotlightDomainIdentifier];
+    itemIdentifier2 = [itemCopy spotlightDomainIdentifier];
+    if (([userInfo isEqual:itemIdentifier2] & 1) == 0)
     {
 
 LABEL_285:
@@ -4388,16 +4388,16 @@ LABEL_285:
     }
   }
 
-  v98 = [(FPItem *)self spotlightDomainIdentifier];
-  if (v98)
+  spotlightDomainIdentifier2 = [(FPItem *)self spotlightDomainIdentifier];
+  if (spotlightDomainIdentifier2)
   {
-    v99 = [v8 spotlightDomainIdentifier];
+    spotlightDomainIdentifier3 = [itemCopy spotlightDomainIdentifier];
 
-    if (v97)
+    if (spotlightDomainIdentifier)
     {
     }
 
-    if (!v99)
+    if (!spotlightDomainIdentifier3)
     {
       goto LABEL_285;
     }
@@ -4406,18 +4406,18 @@ LABEL_285:
   else
   {
 
-    if (v97)
+    if (spotlightDomainIdentifier)
     {
     }
   }
 
 LABEL_288:
-  v100 = [v8 fp_spotlightSubDomainIdentifier];
-  if (v100)
+  fp_spotlightSubDomainIdentifier = [itemCopy fp_spotlightSubDomainIdentifier];
+  if (fp_spotlightSubDomainIdentifier)
   {
-    v84 = [(FPItem *)self fp_spotlightSubDomainIdentifier];
-    v4 = [v8 fp_spotlightSubDomainIdentifier];
-    if (([v84 isEqual:v4] & 1) == 0)
+    userInfo = [(FPItem *)self fp_spotlightSubDomainIdentifier];
+    itemIdentifier2 = [itemCopy fp_spotlightSubDomainIdentifier];
+    if (([userInfo isEqual:itemIdentifier2] & 1) == 0)
     {
 
 LABEL_295:
@@ -4426,16 +4426,16 @@ LABEL_295:
     }
   }
 
-  v101 = [(FPItem *)self fp_spotlightSubDomainIdentifier];
-  if (v101)
+  fp_spotlightSubDomainIdentifier2 = [(FPItem *)self fp_spotlightSubDomainIdentifier];
+  if (fp_spotlightSubDomainIdentifier2)
   {
-    v102 = [v8 fp_spotlightSubDomainIdentifier];
+    fp_spotlightSubDomainIdentifier3 = [itemCopy fp_spotlightSubDomainIdentifier];
 
-    if (v100)
+    if (fp_spotlightSubDomainIdentifier)
     {
     }
 
-    if (!v102)
+    if (!fp_spotlightSubDomainIdentifier3)
     {
       goto LABEL_295;
     }
@@ -4444,30 +4444,30 @@ LABEL_295:
   else
   {
 
-    if (v100)
+    if (fp_spotlightSubDomainIdentifier)
     {
     }
   }
 
 LABEL_298:
-  v103 = [(FPItem *)self isInPinnedFolder];
-  if (v103 != [v8 isInPinnedFolder])
+  isInPinnedFolder = [(FPItem *)self isInPinnedFolder];
+  if (isInPinnedFolder != [itemCopy isInPinnedFolder])
   {
     [v9 addObject:@"isInPinnedFolder"];
   }
 
-  v104 = [(FPItem *)self isPinned];
-  if (v104 != [v8 isPinned])
+  isPinned = [(FPItem *)self isPinned];
+  if (isPinned != [itemCopy isPinned])
   {
     [v9 addObject:@"isPinned"];
   }
 
-  v105 = [v8 hasUnresolvedConflicts];
-  if (v105)
+  hasUnresolvedConflicts = [itemCopy hasUnresolvedConflicts];
+  if (hasUnresolvedConflicts)
   {
-    v84 = [(FPItem *)self hasUnresolvedConflicts];
-    v4 = [v8 hasUnresolvedConflicts];
-    if (([v84 isEqual:v4] & 1) == 0)
+    userInfo = [(FPItem *)self hasUnresolvedConflicts];
+    itemIdentifier2 = [itemCopy hasUnresolvedConflicts];
+    if (([userInfo isEqual:itemIdentifier2] & 1) == 0)
     {
 
 LABEL_309:
@@ -4476,16 +4476,16 @@ LABEL_309:
     }
   }
 
-  v106 = [(FPItem *)self hasUnresolvedConflicts];
-  if (v106)
+  hasUnresolvedConflicts2 = [(FPItem *)self hasUnresolvedConflicts];
+  if (hasUnresolvedConflicts2)
   {
-    v107 = [v8 hasUnresolvedConflicts];
+    hasUnresolvedConflicts3 = [itemCopy hasUnresolvedConflicts];
 
-    if (v105)
+    if (hasUnresolvedConflicts)
     {
     }
 
-    if (!v107)
+    if (!hasUnresolvedConflicts3)
     {
       goto LABEL_309;
     }
@@ -4494,18 +4494,18 @@ LABEL_309:
   else
   {
 
-    if (v105)
+    if (hasUnresolvedConflicts)
     {
     }
   }
 
 LABEL_312:
-  v108 = [v8 isDownloadRequested];
-  if (v108)
+  isDownloadRequested = [itemCopy isDownloadRequested];
+  if (isDownloadRequested)
   {
-    v84 = [(FPItem *)self isDownloadRequested];
-    v4 = [v8 isDownloadRequested];
-    if (([v84 isEqual:v4] & 1) == 0)
+    userInfo = [(FPItem *)self isDownloadRequested];
+    itemIdentifier2 = [itemCopy isDownloadRequested];
+    if (([userInfo isEqual:itemIdentifier2] & 1) == 0)
     {
 
 LABEL_319:
@@ -4514,16 +4514,16 @@ LABEL_319:
     }
   }
 
-  v109 = [(FPItem *)self isDownloadRequested];
-  if (v109)
+  isDownloadRequested2 = [(FPItem *)self isDownloadRequested];
+  if (isDownloadRequested2)
   {
-    v110 = [v8 isDownloadRequested];
+    isDownloadRequested3 = [itemCopy isDownloadRequested];
 
-    if (v108)
+    if (isDownloadRequested)
     {
     }
 
-    if (!v110)
+    if (!isDownloadRequested3)
     {
       goto LABEL_319;
     }
@@ -4532,18 +4532,18 @@ LABEL_319:
   else
   {
 
-    if (v108)
+    if (isDownloadRequested)
     {
     }
   }
 
 LABEL_322:
-  v111 = [v8 sharingPermissions];
-  if (v111)
+  sharingPermissions = [itemCopy sharingPermissions];
+  if (sharingPermissions)
   {
-    v84 = [(FPItem *)self sharingPermissions];
-    v4 = [v8 sharingPermissions];
-    if (([v84 isEqual:v4] & 1) == 0)
+    userInfo = [(FPItem *)self sharingPermissions];
+    itemIdentifier2 = [itemCopy sharingPermissions];
+    if (([userInfo isEqual:itemIdentifier2] & 1) == 0)
     {
 
 LABEL_329:
@@ -4552,16 +4552,16 @@ LABEL_329:
     }
   }
 
-  v112 = [(FPItem *)self sharingPermissions];
-  if (v112)
+  sharingPermissions2 = [(FPItem *)self sharingPermissions];
+  if (sharingPermissions2)
   {
-    v113 = [v8 sharingPermissions];
+    sharingPermissions3 = [itemCopy sharingPermissions];
 
-    if (v111)
+    if (sharingPermissions)
     {
     }
 
-    if (!v113)
+    if (!sharingPermissions3)
     {
       goto LABEL_329;
     }
@@ -4570,18 +4570,18 @@ LABEL_329:
   else
   {
 
-    if (v111)
+    if (sharingPermissions)
     {
     }
   }
 
 LABEL_332:
-  v114 = [v8 containerDisplayName];
-  if (v114)
+  containerDisplayName = [itemCopy containerDisplayName];
+  if (containerDisplayName)
   {
-    v84 = [(FPItem *)self containerDisplayName];
-    v4 = [v8 containerDisplayName];
-    if (([v84 isEqual:v4] & 1) == 0)
+    userInfo = [(FPItem *)self containerDisplayName];
+    itemIdentifier2 = [itemCopy containerDisplayName];
+    if (([userInfo isEqual:itemIdentifier2] & 1) == 0)
     {
 
 LABEL_339:
@@ -4590,16 +4590,16 @@ LABEL_339:
     }
   }
 
-  v115 = [(FPItem *)self containerDisplayName];
-  if (v115)
+  containerDisplayName2 = [(FPItem *)self containerDisplayName];
+  if (containerDisplayName2)
   {
-    v116 = [v8 containerDisplayName];
+    containerDisplayName3 = [itemCopy containerDisplayName];
 
-    if (v114)
+    if (containerDisplayName)
     {
     }
 
-    if (!v116)
+    if (!containerDisplayName3)
     {
       goto LABEL_339;
     }
@@ -4608,24 +4608,24 @@ LABEL_339:
   else
   {
 
-    if (v114)
+    if (containerDisplayName)
     {
     }
   }
 
 LABEL_342:
-  v117 = [(FPItem *)self supportsMostRecentVersionDownloaded];
-  if (v117 != [v8 supportsMostRecentVersionDownloaded])
+  supportsMostRecentVersionDownloaded = [(FPItem *)self supportsMostRecentVersionDownloaded];
+  if (supportsMostRecentVersionDownloaded != [itemCopy supportsMostRecentVersionDownloaded])
   {
     [v9 addObject:@"supportsMostRecentVersionDownloaded"];
   }
 
-  v118 = [v8 fp_appContainerBundleIdentifier];
-  if (v118)
+  fp_appContainerBundleIdentifier = [itemCopy fp_appContainerBundleIdentifier];
+  if (fp_appContainerBundleIdentifier)
   {
-    v84 = [(FPItem *)self fp_appContainerBundleIdentifier];
-    v4 = [v8 fp_appContainerBundleIdentifier];
-    if (([v84 isEqual:v4] & 1) == 0)
+    userInfo = [(FPItem *)self fp_appContainerBundleIdentifier];
+    itemIdentifier2 = [itemCopy fp_appContainerBundleIdentifier];
+    if (([userInfo isEqual:itemIdentifier2] & 1) == 0)
     {
 
 LABEL_351:
@@ -4634,16 +4634,16 @@ LABEL_351:
     }
   }
 
-  v119 = [(FPItem *)self fp_appContainerBundleIdentifier];
-  if (v119)
+  fp_appContainerBundleIdentifier2 = [(FPItem *)self fp_appContainerBundleIdentifier];
+  if (fp_appContainerBundleIdentifier2)
   {
-    v120 = [v8 fp_appContainerBundleIdentifier];
+    fp_appContainerBundleIdentifier3 = [itemCopy fp_appContainerBundleIdentifier];
 
-    if (v118)
+    if (fp_appContainerBundleIdentifier)
     {
     }
 
-    if (!v120)
+    if (!fp_appContainerBundleIdentifier3)
     {
       goto LABEL_351;
     }
@@ -4652,18 +4652,18 @@ LABEL_351:
   else
   {
 
-    if (v118)
+    if (fp_appContainerBundleIdentifier)
     {
     }
   }
 
 LABEL_354:
-  v121 = [v8 fp_parentDomainIdentifier];
-  if (v121)
+  fp_parentDomainIdentifier = [itemCopy fp_parentDomainIdentifier];
+  if (fp_parentDomainIdentifier)
   {
-    v84 = [(FPItem *)self fp_parentDomainIdentifier];
-    v4 = [v8 fp_parentDomainIdentifier];
-    if (([v84 isEqual:v4] & 1) == 0)
+    userInfo = [(FPItem *)self fp_parentDomainIdentifier];
+    itemIdentifier2 = [itemCopy fp_parentDomainIdentifier];
+    if (([userInfo isEqual:itemIdentifier2] & 1) == 0)
     {
 
 LABEL_361:
@@ -4672,16 +4672,16 @@ LABEL_361:
     }
   }
 
-  v122 = [(FPItem *)self fp_parentDomainIdentifier];
-  if (v122)
+  fp_parentDomainIdentifier2 = [(FPItem *)self fp_parentDomainIdentifier];
+  if (fp_parentDomainIdentifier2)
   {
-    v123 = [v8 fp_parentDomainIdentifier];
+    fp_parentDomainIdentifier3 = [itemCopy fp_parentDomainIdentifier];
 
-    if (v121)
+    if (fp_parentDomainIdentifier)
     {
     }
 
-    if (!v123)
+    if (!fp_parentDomainIdentifier3)
     {
       goto LABEL_361;
     }
@@ -4690,18 +4690,18 @@ LABEL_361:
   else
   {
 
-    if (v121)
+    if (fp_parentDomainIdentifier)
     {
     }
   }
 
 LABEL_364:
-  v124 = [v8 cloudContainerIdentifier];
-  if (v124)
+  cloudContainerIdentifier = [itemCopy cloudContainerIdentifier];
+  if (cloudContainerIdentifier)
   {
-    v84 = [(FPItem *)self cloudContainerIdentifier];
-    v4 = [v8 cloudContainerIdentifier];
-    if (([v84 isEqual:v4] & 1) == 0)
+    userInfo = [(FPItem *)self cloudContainerIdentifier];
+    itemIdentifier2 = [itemCopy cloudContainerIdentifier];
+    if (([userInfo isEqual:itemIdentifier2] & 1) == 0)
     {
 
 LABEL_371:
@@ -4710,16 +4710,16 @@ LABEL_371:
     }
   }
 
-  v125 = [(FPItem *)self cloudContainerIdentifier];
-  if (v125)
+  cloudContainerIdentifier2 = [(FPItem *)self cloudContainerIdentifier];
+  if (cloudContainerIdentifier2)
   {
-    v126 = [v8 cloudContainerIdentifier];
+    cloudContainerIdentifier3 = [itemCopy cloudContainerIdentifier];
 
-    if (v124)
+    if (cloudContainerIdentifier)
     {
     }
 
-    if (!v126)
+    if (!cloudContainerIdentifier3)
     {
       goto LABEL_371;
     }
@@ -4728,48 +4728,48 @@ LABEL_371:
   else
   {
 
-    if (v124)
+    if (cloudContainerIdentifier)
     {
     }
   }
 
 LABEL_374:
-  v127 = [(FPItem *)self isUbiquitous];
-  if (v127 != [v8 isUbiquitous])
+  isUbiquitous = [(FPItem *)self isUbiquitous];
+  if (isUbiquitous != [itemCopy isUbiquitous])
   {
     [v9 addObject:@"isUbiquitous"];
   }
 
-  v128 = [(FPItem *)self isContainer];
-  if (v128 != [v8 isContainer])
+  isContainer = [(FPItem *)self isContainer];
+  if (isContainer != [itemCopy isContainer])
   {
     [v9 addObject:@"isContainer"];
   }
 
-  v129 = [(FPItem *)self isContainerPristine];
-  if (v129 != [v8 isContainerPristine])
+  isContainerPristine = [(FPItem *)self isContainerPristine];
+  if (isContainerPristine != [itemCopy isContainerPristine])
   {
     [v9 addObject:@"isContainerPristine"];
   }
 
-  v130 = [(FPItem *)self isTopLevelSharedItem];
-  if (v130 != [v8 isTopLevelSharedItem])
+  isTopLevelSharedItem = [(FPItem *)self isTopLevelSharedItem];
+  if (isTopLevelSharedItem != [itemCopy isTopLevelSharedItem])
   {
     [v9 addObject:@"isTopLevelSharedItem"];
   }
 
-  v131 = [(FPItem *)self isRecursivelyDownloaded];
-  if (v131 != [v8 isRecursivelyDownloaded])
+  isRecursivelyDownloaded = [(FPItem *)self isRecursivelyDownloaded];
+  if (isRecursivelyDownloaded != [itemCopy isRecursivelyDownloaded])
   {
     [v9 addObject:@"isRecursivelyDownloaded"];
   }
 
-  v132 = [v8 conflictingVersions];
-  if (v132)
+  conflictingVersions = [itemCopy conflictingVersions];
+  if (conflictingVersions)
   {
-    v84 = [(FPItem *)self conflictingVersions];
-    v4 = [v8 conflictingVersions];
-    if (([v84 isEqual:v4] & 1) == 0)
+    userInfo = [(FPItem *)self conflictingVersions];
+    itemIdentifier2 = [itemCopy conflictingVersions];
+    if (([userInfo isEqual:itemIdentifier2] & 1) == 0)
     {
 
 LABEL_391:
@@ -4778,16 +4778,16 @@ LABEL_391:
     }
   }
 
-  v133 = [(FPItem *)self conflictingVersions];
-  if (v133)
+  conflictingVersions2 = [(FPItem *)self conflictingVersions];
+  if (conflictingVersions2)
   {
-    v134 = [v8 conflictingVersions];
+    conflictingVersions3 = [itemCopy conflictingVersions];
 
-    if (v132)
+    if (conflictingVersions)
     {
     }
 
-    if (!v134)
+    if (!conflictingVersions3)
     {
       goto LABEL_391;
     }
@@ -4796,24 +4796,24 @@ LABEL_391:
   else
   {
 
-    if (v132)
+    if (conflictingVersions)
     {
     }
   }
 
 LABEL_394:
-  v135 = [(FPItem *)self fileSystemFlags];
-  if (v135 != [v8 fileSystemFlags])
+  fileSystemFlags = [(FPItem *)self fileSystemFlags];
+  if (fileSystemFlags != [itemCopy fileSystemFlags])
   {
     [v9 addObject:@"fileSystemFlags"];
   }
 
-  v136 = [v8 extendedAttributes];
-  if (v136)
+  extendedAttributes = [itemCopy extendedAttributes];
+  if (extendedAttributes)
   {
-    v84 = [(FPItem *)self extendedAttributes];
-    v4 = [v8 extendedAttributes];
-    if (([v84 isEqual:v4] & 1) == 0)
+    userInfo = [(FPItem *)self extendedAttributes];
+    itemIdentifier2 = [itemCopy extendedAttributes];
+    if (([userInfo isEqual:itemIdentifier2] & 1) == 0)
     {
 
 LABEL_403:
@@ -4822,16 +4822,16 @@ LABEL_403:
     }
   }
 
-  v137 = [(FPItem *)self extendedAttributes];
-  if (v137)
+  extendedAttributes2 = [(FPItem *)self extendedAttributes];
+  if (extendedAttributes2)
   {
-    v138 = [v8 extendedAttributes];
+    extendedAttributes3 = [itemCopy extendedAttributes];
 
-    if (v136)
+    if (extendedAttributes)
     {
     }
 
-    if (!v138)
+    if (!extendedAttributes3)
     {
       goto LABEL_403;
     }
@@ -4840,18 +4840,18 @@ LABEL_403:
   else
   {
 
-    if (v136)
+    if (extendedAttributes)
     {
     }
   }
 
 LABEL_406:
-  v139 = [v8 decorations];
-  if (v139)
+  decorations = [itemCopy decorations];
+  if (decorations)
   {
-    v84 = [(FPItem *)self decorations];
-    v4 = [v8 decorations];
-    if (([v84 isEqual:v4] & 1) == 0)
+    userInfo = [(FPItem *)self decorations];
+    itemIdentifier2 = [itemCopy decorations];
+    if (([userInfo isEqual:itemIdentifier2] & 1) == 0)
     {
 
 LABEL_413:
@@ -4860,16 +4860,16 @@ LABEL_413:
     }
   }
 
-  v140 = [(FPItem *)self decorations];
-  if (v140)
+  decorations2 = [(FPItem *)self decorations];
+  if (decorations2)
   {
-    v141 = [v8 decorations];
+    decorations3 = [itemCopy decorations];
 
-    if (v139)
+    if (decorations)
     {
     }
 
-    if (!v141)
+    if (!decorations3)
     {
       goto LABEL_413;
     }
@@ -4878,44 +4878,44 @@ LABEL_413:
   else
   {
 
-    if (v139)
+    if (decorations)
     {
     }
   }
 
 LABEL_416:
-  v142 = [(FPItem *)self typeAndCreator];
-  if (v142 != [v8 typeAndCreator] || (v143 = -[FPItem typeAndCreator](self, "typeAndCreator"), (objc_msgSend(v8, "typeAndCreator") ^ *&v143) >> 32))
+  typeAndCreator = [(FPItem *)self typeAndCreator];
+  if (typeAndCreator != [itemCopy typeAndCreator] || (v143 = -[FPItem typeAndCreator](self, "typeAndCreator"), (objc_msgSend(itemCopy, "typeAndCreator") ^ *&v143) >> 32))
   {
     [v9 addObject:@"typeAndCreator"];
   }
 
-  v144 = [(FPItem *)self contentPolicy];
-  if (v144 != [v8 contentPolicy])
+  contentPolicy = [(FPItem *)self contentPolicy];
+  if (contentPolicy != [itemCopy contentPolicy])
   {
     [v9 addObject:@"contentPolicy"];
   }
 
-  v145 = [(FPItem *)self inheritedContentPolicy];
-  if (v145 != [v8 inheritedContentPolicy])
+  inheritedContentPolicy = [(FPItem *)self inheritedContentPolicy];
+  if (inheritedContentPolicy != [itemCopy inheritedContentPolicy])
   {
     [v9 addObject:@"inheritedContentPolicy"];
   }
 
-  v146 = [(FPItem *)self effectiveContentPolicy];
-  if (v146 != [v8 effectiveContentPolicy])
+  effectiveContentPolicy = [(FPItem *)self effectiveContentPolicy];
+  if (effectiveContentPolicy != [itemCopy effectiveContentPolicy])
   {
     [v9 addObject:@"effectiveContentPolicy"];
   }
 
-  v147 = [(FPItem *)self isEvictedWithClone];
-  if (v147 != [v8 isEvictedWithClone])
+  isEvictedWithClone = [(FPItem *)self isEvictedWithClone];
+  if (isEvictedWithClone != [itemCopy isEvictedWithClone])
   {
     [v9 addObject:@"isEvictedWithClone"];
   }
 
-  v148 = [(FPItem *)self isSyncPaused];
-  if (v148 != [v8 isSyncPaused])
+  isSyncPaused = [(FPItem *)self isSyncPaused];
+  if (isSyncPaused != [itemCopy isSyncPaused])
   {
     [v9 addObject:@"isSyncPaused"];
   }
@@ -4923,28 +4923,28 @@ LABEL_416:
   v149 = fp_current_or_default_log();
   if (os_log_type_enabled(v149, OS_LOG_TYPE_DEBUG))
   {
-    [FPItem fieldDifferencesWithItem:v9 onlyMetadata:v8];
+    [FPItem fieldDifferencesWithItem:v9 onlyMetadata:itemCopy];
   }
 
   v150 = v9;
   return v9;
 }
 
-- (void)overrideFields:(id)a3 ofItem:(id)a4
+- (void)overrideFields:(id)fields ofItem:(id)item
 {
-  v8 = a3;
-  v9 = a4;
-  if (![v8 containsObject:@"itemIdentifier"])
+  fieldsCopy = fields;
+  itemCopy = item;
+  if (![fieldsCopy containsObject:@"itemIdentifier"])
   {
     goto LABEL_14;
   }
 
-  v10 = [v9 itemIdentifier];
-  if (v10)
+  itemIdentifier = [itemCopy itemIdentifier];
+  if (itemIdentifier)
   {
-    v4 = [(FPItem *)self itemIdentifier];
-    v5 = [v9 itemIdentifier];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self itemIdentifier];
+    itemIdentifier3 = [itemCopy itemIdentifier];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
 LABEL_9:
@@ -4954,24 +4954,24 @@ LABEL_9:
         [FPItem overrideFields:ofItem:];
       }
 
-      v14 = [v9 itemIdentifier];
+      itemIdentifier4 = [itemCopy itemIdentifier];
       itemIdentifier = self->_itemIdentifier;
-      self->_itemIdentifier = v14;
+      self->_itemIdentifier = itemIdentifier4;
 
       goto LABEL_14;
     }
   }
 
-  v11 = [(FPItem *)self itemIdentifier];
-  if (v11)
+  itemIdentifier5 = [(FPItem *)self itemIdentifier];
+  if (itemIdentifier5)
   {
-    v12 = [v9 itemIdentifier];
+    itemIdentifier6 = [itemCopy itemIdentifier];
 
-    if (v10)
+    if (itemIdentifier)
     {
     }
 
-    if (!v12)
+    if (!itemIdentifier6)
     {
       goto LABEL_9;
     }
@@ -4980,31 +4980,31 @@ LABEL_9:
   else
   {
 
-    if (v10)
+    if (itemIdentifier)
     {
     }
   }
 
 LABEL_14:
-  if (![v8 containsObject:@"formerIdentifier"])
+  if (![fieldsCopy containsObject:@"formerIdentifier"])
   {
     goto LABEL_28;
   }
 
-  formerIdentifier = [v9 formerIdentifier];
+  formerIdentifier = [itemCopy formerIdentifier];
   if (formerIdentifier)
   {
-    v4 = [(FPItem *)self formerIdentifier];
-    v5 = [v9 formerIdentifier];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self formerIdentifier];
+    itemIdentifier3 = [itemCopy formerIdentifier];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
       goto LABEL_22;
     }
   }
 
-  v17 = [(FPItem *)self formerIdentifier];
-  if (!v17)
+  formerIdentifier = [(FPItem *)self formerIdentifier];
+  if (!formerIdentifier)
   {
 
     if (!formerIdentifier)
@@ -5015,13 +5015,13 @@ LABEL_14:
     goto LABEL_27;
   }
 
-  v18 = [v9 formerIdentifier];
+  formerIdentifier2 = [itemCopy formerIdentifier];
 
   if (formerIdentifier)
   {
   }
 
-  if (!v18)
+  if (!formerIdentifier2)
   {
 LABEL_22:
     v19 = fp_current_or_default_log();
@@ -5030,32 +5030,32 @@ LABEL_22:
       [FPItem overrideFields:ofItem:];
     }
 
-    v20 = [v9 formerIdentifier];
+    formerIdentifier3 = [itemCopy formerIdentifier];
     formerIdentifier = self->_formerIdentifier;
-    self->_formerIdentifier = v20;
+    self->_formerIdentifier = formerIdentifier3;
 LABEL_27:
   }
 
 LABEL_28:
-  if (![v8 containsObject:@"parentFormerIdentifier"])
+  if (![fieldsCopy containsObject:@"parentFormerIdentifier"])
   {
     goto LABEL_42;
   }
 
-  parentFormerIdentifier = [v9 parentFormerIdentifier];
+  parentFormerIdentifier = [itemCopy parentFormerIdentifier];
   if (parentFormerIdentifier)
   {
-    v4 = [(FPItem *)self parentFormerIdentifier];
-    v5 = [v9 parentFormerIdentifier];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self parentFormerIdentifier];
+    itemIdentifier3 = [itemCopy parentFormerIdentifier];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
       goto LABEL_36;
     }
   }
 
-  v22 = [(FPItem *)self parentFormerIdentifier];
-  if (!v22)
+  parentFormerIdentifier = [(FPItem *)self parentFormerIdentifier];
+  if (!parentFormerIdentifier)
   {
 
     if (!parentFormerIdentifier)
@@ -5066,13 +5066,13 @@ LABEL_28:
     goto LABEL_41;
   }
 
-  v23 = [v9 parentFormerIdentifier];
+  parentFormerIdentifier2 = [itemCopy parentFormerIdentifier];
 
   if (parentFormerIdentifier)
   {
   }
 
-  if (!v23)
+  if (!parentFormerIdentifier2)
   {
 LABEL_36:
     v24 = fp_current_or_default_log();
@@ -5081,32 +5081,32 @@ LABEL_36:
       [FPItem overrideFields:ofItem:];
     }
 
-    v25 = [v9 parentFormerIdentifier];
+    parentFormerIdentifier3 = [itemCopy parentFormerIdentifier];
     parentFormerIdentifier = self->_parentFormerIdentifier;
-    self->_parentFormerIdentifier = v25;
+    self->_parentFormerIdentifier = parentFormerIdentifier3;
 LABEL_41:
   }
 
 LABEL_42:
-  if (![v8 containsObject:@"parentItemIdentifier"])
+  if (![fieldsCopy containsObject:@"parentItemIdentifier"])
   {
     goto LABEL_56;
   }
 
-  parentItemIdentifier = [v9 parentItemIdentifier];
+  parentItemIdentifier = [itemCopy parentItemIdentifier];
   if (parentItemIdentifier)
   {
-    v4 = [(FPItem *)self parentItemIdentifier];
-    v5 = [v9 parentItemIdentifier];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self parentItemIdentifier];
+    itemIdentifier3 = [itemCopy parentItemIdentifier];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
       goto LABEL_50;
     }
   }
 
-  v27 = [(FPItem *)self parentItemIdentifier];
-  if (!v27)
+  parentItemIdentifier = [(FPItem *)self parentItemIdentifier];
+  if (!parentItemIdentifier)
   {
 
     if (!parentItemIdentifier)
@@ -5117,13 +5117,13 @@ LABEL_42:
     goto LABEL_55;
   }
 
-  v28 = [v9 parentItemIdentifier];
+  parentItemIdentifier2 = [itemCopy parentItemIdentifier];
 
   if (parentItemIdentifier)
   {
   }
 
-  if (!v28)
+  if (!parentItemIdentifier2)
   {
 LABEL_50:
     v29 = fp_current_or_default_log();
@@ -5132,32 +5132,32 @@ LABEL_50:
       [FPItem overrideFields:ofItem:];
     }
 
-    v30 = [v9 parentItemIdentifier];
+    parentItemIdentifier3 = [itemCopy parentItemIdentifier];
     parentItemIdentifier = self->_parentItemIdentifier;
-    self->_parentItemIdentifier = v30;
+    self->_parentItemIdentifier = parentItemIdentifier3;
 LABEL_55:
   }
 
 LABEL_56:
-  if (![v8 containsObject:@"providerID"])
+  if (![fieldsCopy containsObject:@"providerID"])
   {
     goto LABEL_70;
   }
 
-  providerID = [v9 providerID];
+  providerID = [itemCopy providerID];
   if (providerID)
   {
-    v4 = [(FPItem *)self providerID];
-    v5 = [v9 providerID];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self providerID];
+    itemIdentifier3 = [itemCopy providerID];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
       goto LABEL_64;
     }
   }
 
-  v32 = [(FPItem *)self providerID];
-  if (!v32)
+  providerID = [(FPItem *)self providerID];
+  if (!providerID)
   {
 
     if (!providerID)
@@ -5168,13 +5168,13 @@ LABEL_56:
     goto LABEL_69;
   }
 
-  v33 = [v9 providerID];
+  providerID2 = [itemCopy providerID];
 
   if (providerID)
   {
   }
 
-  if (!v33)
+  if (!providerID2)
   {
 LABEL_64:
     v34 = fp_current_or_default_log();
@@ -5183,32 +5183,32 @@ LABEL_64:
       [FPItem overrideFields:ofItem:];
     }
 
-    v35 = [v9 providerID];
+    providerID3 = [itemCopy providerID];
     providerID = self->_providerID;
-    self->_providerID = v35;
+    self->_providerID = providerID3;
 LABEL_69:
   }
 
 LABEL_70:
-  if (![v8 containsObject:@"domainIdentifier"])
+  if (![fieldsCopy containsObject:@"domainIdentifier"])
   {
     goto LABEL_84;
   }
 
-  domainIdentifier = [v9 domainIdentifier];
+  domainIdentifier = [itemCopy domainIdentifier];
   if (domainIdentifier)
   {
-    v4 = [(FPItem *)self domainIdentifier];
-    v5 = [v9 domainIdentifier];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self domainIdentifier];
+    itemIdentifier3 = [itemCopy domainIdentifier];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
       goto LABEL_78;
     }
   }
 
-  v37 = [(FPItem *)self domainIdentifier];
-  if (!v37)
+  domainIdentifier = [(FPItem *)self domainIdentifier];
+  if (!domainIdentifier)
   {
 
     if (!domainIdentifier)
@@ -5219,13 +5219,13 @@ LABEL_70:
     goto LABEL_83;
   }
 
-  v38 = [v9 domainIdentifier];
+  domainIdentifier2 = [itemCopy domainIdentifier];
 
   if (domainIdentifier)
   {
   }
 
-  if (!v38)
+  if (!domainIdentifier2)
   {
 LABEL_78:
     v39 = fp_current_or_default_log();
@@ -5234,32 +5234,32 @@ LABEL_78:
       [FPItem overrideFields:ofItem:];
     }
 
-    v40 = [v9 domainIdentifier];
+    domainIdentifier3 = [itemCopy domainIdentifier];
     domainIdentifier = self->_domainIdentifier;
-    self->_domainIdentifier = v40;
+    self->_domainIdentifier = domainIdentifier3;
 LABEL_83:
   }
 
 LABEL_84:
-  if (![v8 containsObject:@"filename"])
+  if (![fieldsCopy containsObject:@"filename"])
   {
     goto LABEL_98;
   }
 
-  filename = [v9 filename];
+  filename = [itemCopy filename];
   if (filename)
   {
-    v4 = [(FPItem *)self filename];
-    v5 = [v9 filename];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self filename];
+    itemIdentifier3 = [itemCopy filename];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
       goto LABEL_92;
     }
   }
 
-  v42 = [(FPItem *)self filename];
-  if (!v42)
+  filename = [(FPItem *)self filename];
+  if (!filename)
   {
 
     if (!filename)
@@ -5270,13 +5270,13 @@ LABEL_84:
     goto LABEL_97;
   }
 
-  v43 = [v9 filename];
+  filename2 = [itemCopy filename];
 
   if (filename)
   {
   }
 
-  if (!v43)
+  if (!filename2)
   {
 LABEL_92:
     v44 = fp_current_or_default_log();
@@ -5285,32 +5285,32 @@ LABEL_92:
       [FPItem overrideFields:ofItem:];
     }
 
-    v45 = [v9 filename];
+    filename3 = [itemCopy filename];
     filename = self->_filename;
-    self->_filename = v45;
+    self->_filename = filename3;
 LABEL_97:
   }
 
 LABEL_98:
-  if (![v8 containsObject:@"displayName"])
+  if (![fieldsCopy containsObject:@"displayName"])
   {
     goto LABEL_112;
   }
 
-  displayName = [v9 displayName];
+  displayName = [itemCopy displayName];
   if (displayName)
   {
-    v4 = [(FPItem *)self displayName];
-    v5 = [v9 displayName];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self displayName];
+    itemIdentifier3 = [itemCopy displayName];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
       goto LABEL_106;
     }
   }
 
-  v47 = [(FPItem *)self displayName];
-  if (!v47)
+  displayName = [(FPItem *)self displayName];
+  if (!displayName)
   {
 
     if (!displayName)
@@ -5321,13 +5321,13 @@ LABEL_98:
     goto LABEL_111;
   }
 
-  v48 = [v9 displayName];
+  displayName2 = [itemCopy displayName];
 
   if (displayName)
   {
   }
 
-  if (!v48)
+  if (!displayName2)
   {
 LABEL_106:
     v49 = fp_current_or_default_log();
@@ -5336,35 +5336,35 @@ LABEL_106:
       [FPItem overrideFields:ofItem:];
     }
 
-    v50 = [v9 displayName];
+    displayName3 = [itemCopy displayName];
     displayName = self->_displayName;
-    self->_displayName = v50;
+    self->_displayName = displayName3;
 LABEL_111:
   }
 
 LABEL_112:
-  if (![v8 containsObject:@"contentType"])
+  if (![fieldsCopy containsObject:@"contentType"])
   {
     goto LABEL_126;
   }
 
-  v51 = [v9 contentType];
-  if (v51)
+  contentType = [itemCopy contentType];
+  if (contentType)
   {
-    v4 = [(FPItem *)self contentType];
-    v5 = [v9 contentType];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self contentType];
+    itemIdentifier3 = [itemCopy contentType];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
       goto LABEL_120;
     }
   }
 
-  v52 = [(FPItem *)self contentType];
-  if (!v52)
+  contentType2 = [(FPItem *)self contentType];
+  if (!contentType2)
   {
 
-    if (!v51)
+    if (!contentType)
     {
       goto LABEL_126;
     }
@@ -5372,13 +5372,13 @@ LABEL_112:
     goto LABEL_125;
   }
 
-  v53 = [v9 contentType];
+  contentType3 = [itemCopy contentType];
 
-  if (v51)
+  if (contentType)
   {
   }
 
-  if (!v53)
+  if (!contentType3)
   {
 LABEL_120:
     v54 = fp_current_or_default_log();
@@ -5387,31 +5387,31 @@ LABEL_120:
       [FPItem overrideFields:ofItem:];
     }
 
-    v51 = [v9 contentType];
-    [(FPItem *)self setContentType:v51];
+    contentType = [itemCopy contentType];
+    [(FPItem *)self setContentType:contentType];
 LABEL_125:
   }
 
 LABEL_126:
-  if (![v8 containsObject:@"documentSize"])
+  if (![fieldsCopy containsObject:@"documentSize"])
   {
     goto LABEL_140;
   }
 
-  documentSize = [v9 documentSize];
+  documentSize = [itemCopy documentSize];
   if (documentSize)
   {
-    v4 = [(FPItem *)self documentSize];
-    v5 = [v9 documentSize];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self documentSize];
+    itemIdentifier3 = [itemCopy documentSize];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
       goto LABEL_134;
     }
   }
 
-  v56 = [(FPItem *)self documentSize];
-  if (!v56)
+  documentSize = [(FPItem *)self documentSize];
+  if (!documentSize)
   {
 
     if (!documentSize)
@@ -5422,13 +5422,13 @@ LABEL_126:
     goto LABEL_139;
   }
 
-  v57 = [v9 documentSize];
+  documentSize2 = [itemCopy documentSize];
 
   if (documentSize)
   {
   }
 
-  if (!v57)
+  if (!documentSize2)
   {
 LABEL_134:
     v58 = fp_current_or_default_log();
@@ -5437,21 +5437,21 @@ LABEL_134:
       [FPItem overrideFields:ofItem:];
     }
 
-    v59 = [v9 documentSize];
+    documentSize3 = [itemCopy documentSize];
     documentSize = self->_documentSize;
-    self->_documentSize = v59;
+    self->_documentSize = documentSize3;
 LABEL_139:
   }
 
 LABEL_140:
-  if ([v8 containsObject:@"fileURL"])
+  if ([fieldsCopy containsObject:@"fileURL"])
   {
-    fileURL = [v9 fileURL];
+    fileURL = [itemCopy fileURL];
     if (fileURL)
     {
-      v4 = [(FPItem *)self fileURL];
-      v5 = [v9 fileURL];
-      if (([v4 isEqual:v5] & 1) == 0)
+      itemIdentifier2 = [(FPItem *)self fileURL];
+      itemIdentifier3 = [itemCopy fileURL];
+      if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
       {
 
 LABEL_148:
@@ -5461,23 +5461,23 @@ LABEL_148:
           [FPItem overrideFields:ofItem:];
         }
 
-        v64 = [v9 fileURL];
+        fileURL = [itemCopy fileURL];
         fileURL = self->_fileURL;
-        self->_fileURL = v64;
+        self->_fileURL = fileURL;
         goto LABEL_153;
       }
     }
 
-    v61 = [(FPItem *)self fileURL];
-    if (v61)
+    fileURL2 = [(FPItem *)self fileURL];
+    if (fileURL2)
     {
-      v62 = [v9 fileURL];
+      fileURL3 = [itemCopy fileURL];
 
       if (fileURL)
       {
       }
 
-      if (!v62)
+      if (!fileURL3)
       {
         goto LABEL_148;
       }
@@ -5494,52 +5494,52 @@ LABEL_153:
     }
   }
 
-  if ([v8 containsObject:@"capabilities"])
+  if ([fieldsCopy containsObject:@"capabilities"])
   {
-    v65 = [(FPItem *)self capabilities];
-    if (v65 != [v9 capabilities])
+    capabilities = [(FPItem *)self capabilities];
+    if (capabilities != [itemCopy capabilities])
     {
       v66 = fp_current_or_default_log();
       if (os_log_type_enabled(v66, OS_LOG_TYPE_DEBUG))
       {
-        [(FPItem *)v9 overrideFields:v66 ofItem:?];
+        [(FPItem *)itemCopy overrideFields:v66 ofItem:?];
       }
 
-      self->_capabilities = [v9 capabilities];
+      self->_capabilities = [itemCopy capabilities];
     }
   }
 
-  if ([v8 containsObject:@"enumerationOrigin"])
+  if ([fieldsCopy containsObject:@"enumerationOrigin"])
   {
-    v67 = [(FPItem *)self enumerationOrigin];
-    if (v67 != [v9 enumerationOrigin])
+    enumerationOrigin = [(FPItem *)self enumerationOrigin];
+    if (enumerationOrigin != [itemCopy enumerationOrigin])
     {
       v68 = fp_current_or_default_log();
       if (os_log_type_enabled(v68, OS_LOG_TYPE_DEBUG))
       {
-        [(FPItem *)v9 overrideFields:v68 ofItem:?];
+        [(FPItem *)itemCopy overrideFields:v68 ofItem:?];
       }
 
-      self->_enumerationOrigin = [v9 enumerationOrigin];
+      self->_enumerationOrigin = [itemCopy enumerationOrigin];
     }
   }
 
-  if ([v8 containsObject:@"creationDate"])
+  if ([fieldsCopy containsObject:@"creationDate"])
   {
-    creationDate = [v9 creationDate];
+    creationDate = [itemCopy creationDate];
     if (creationDate)
     {
-      v4 = [(FPItem *)self creationDate];
-      v5 = [v9 creationDate];
-      if (([v4 isEqual:v5] & 1) == 0)
+      itemIdentifier2 = [(FPItem *)self creationDate];
+      itemIdentifier3 = [itemCopy creationDate];
+      if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
       {
 
         goto LABEL_172;
       }
     }
 
-    v70 = [(FPItem *)self creationDate];
-    if (!v70)
+    creationDate = [(FPItem *)self creationDate];
+    if (!creationDate)
     {
 
       if (!creationDate)
@@ -5550,13 +5550,13 @@ LABEL_153:
       goto LABEL_177;
     }
 
-    v71 = [v9 creationDate];
+    creationDate2 = [itemCopy creationDate];
 
     if (creationDate)
     {
     }
 
-    if (!v71)
+    if (!creationDate2)
     {
 LABEL_172:
       v72 = fp_current_or_default_log();
@@ -5565,22 +5565,22 @@ LABEL_172:
         [FPItem overrideFields:ofItem:];
       }
 
-      v73 = [v9 creationDate];
+      creationDate3 = [itemCopy creationDate];
       creationDate = self->_creationDate;
-      self->_creationDate = v73;
+      self->_creationDate = creationDate3;
 LABEL_177:
     }
   }
 
 LABEL_178:
-  if ([v8 containsObject:@"contentModificationDate"])
+  if ([fieldsCopy containsObject:@"contentModificationDate"])
   {
-    contentModificationDate = [v9 contentModificationDate];
+    contentModificationDate = [itemCopy contentModificationDate];
     if (contentModificationDate)
     {
-      v4 = [(FPItem *)self contentModificationDate];
-      v5 = [v9 contentModificationDate];
-      if (([v4 isEqual:v5] & 1) == 0)
+      itemIdentifier2 = [(FPItem *)self contentModificationDate];
+      itemIdentifier3 = [itemCopy contentModificationDate];
+      if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
       {
 
 LABEL_186:
@@ -5590,23 +5590,23 @@ LABEL_186:
           [FPItem overrideFields:ofItem:];
         }
 
-        v78 = [v9 contentModificationDate];
+        contentModificationDate = [itemCopy contentModificationDate];
         contentModificationDate = self->_contentModificationDate;
-        self->_contentModificationDate = v78;
+        self->_contentModificationDate = contentModificationDate;
         goto LABEL_191;
       }
     }
 
-    v75 = [(FPItem *)self contentModificationDate];
-    if (v75)
+    contentModificationDate2 = [(FPItem *)self contentModificationDate];
+    if (contentModificationDate2)
     {
-      v76 = [v9 contentModificationDate];
+      contentModificationDate3 = [itemCopy contentModificationDate];
 
       if (contentModificationDate)
       {
       }
 
-      if (!v76)
+      if (!contentModificationDate3)
       {
         goto LABEL_186;
       }
@@ -5623,37 +5623,37 @@ LABEL_191:
     }
   }
 
-  if ([v8 containsObject:@"isTrashed"])
+  if ([fieldsCopy containsObject:@"isTrashed"])
   {
-    v79 = [(FPItem *)self isTrashed];
-    if (v79 != [v9 isTrashed])
+    isTrashed = [(FPItem *)self isTrashed];
+    if (isTrashed != [itemCopy isTrashed])
     {
       v80 = fp_current_or_default_log();
       if (os_log_type_enabled(v80, OS_LOG_TYPE_DEBUG))
       {
-        [(FPItem *)v9 overrideFields:v80 ofItem:?];
+        [(FPItem *)itemCopy overrideFields:v80 ofItem:?];
       }
 
-      self->_trashed = [v9 isTrashed];
+      self->_trashed = [itemCopy isTrashed];
     }
   }
 
-  if ([v8 containsObject:@"lastUsedDate"])
+  if ([fieldsCopy containsObject:@"lastUsedDate"])
   {
-    lastUsedDate = [v9 lastUsedDate];
+    lastUsedDate = [itemCopy lastUsedDate];
     if (lastUsedDate)
     {
-      v4 = [(FPItem *)self lastUsedDate];
-      v5 = [v9 lastUsedDate];
-      if (([v4 isEqual:v5] & 1) == 0)
+      itemIdentifier2 = [(FPItem *)self lastUsedDate];
+      itemIdentifier3 = [itemCopy lastUsedDate];
+      if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
       {
 
         goto LABEL_205;
       }
     }
 
-    v82 = [(FPItem *)self lastUsedDate];
-    if (!v82)
+    lastUsedDate = [(FPItem *)self lastUsedDate];
+    if (!lastUsedDate)
     {
 
       if (!lastUsedDate)
@@ -5664,13 +5664,13 @@ LABEL_191:
       goto LABEL_210;
     }
 
-    v83 = [v9 lastUsedDate];
+    lastUsedDate2 = [itemCopy lastUsedDate];
 
     if (lastUsedDate)
     {
     }
 
-    if (!v83)
+    if (!lastUsedDate2)
     {
 LABEL_205:
       v84 = fp_current_or_default_log();
@@ -5679,33 +5679,33 @@ LABEL_205:
         [FPItem overrideFields:ofItem:];
       }
 
-      v85 = [v9 lastUsedDate];
+      lastUsedDate3 = [itemCopy lastUsedDate];
       lastUsedDate = self->_lastUsedDate;
-      self->_lastUsedDate = v85;
+      self->_lastUsedDate = lastUsedDate3;
 LABEL_210:
     }
   }
 
 LABEL_211:
-  if (![v8 containsObject:@"tags"])
+  if (![fieldsCopy containsObject:@"tags"])
   {
     goto LABEL_225;
   }
 
-  tags = [v9 tags];
+  tags = [itemCopy tags];
   if (tags)
   {
-    v4 = [(FPItem *)self tags];
-    v5 = [v9 tags];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self tags];
+    itemIdentifier3 = [itemCopy tags];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
       goto LABEL_219;
     }
   }
 
-  v87 = [(FPItem *)self tags];
-  if (!v87)
+  tags = [(FPItem *)self tags];
+  if (!tags)
   {
 
     if (!tags)
@@ -5716,13 +5716,13 @@ LABEL_211:
     goto LABEL_224;
   }
 
-  v88 = [v9 tags];
+  tags2 = [itemCopy tags];
 
   if (tags)
   {
   }
 
-  if (!v88)
+  if (!tags2)
   {
 LABEL_219:
     v89 = fp_current_or_default_log();
@@ -5731,21 +5731,21 @@ LABEL_219:
       [FPItem overrideFields:ofItem:];
     }
 
-    v90 = [v9 tags];
+    tags3 = [itemCopy tags];
     tags = self->_tags;
-    self->_tags = v90;
+    self->_tags = tags3;
 LABEL_224:
   }
 
 LABEL_225:
-  if ([v8 containsObject:@"favoriteRank"])
+  if ([fieldsCopy containsObject:@"favoriteRank"])
   {
-    favoriteRank = [v9 favoriteRank];
+    favoriteRank = [itemCopy favoriteRank];
     if (favoriteRank)
     {
-      v4 = [(FPItem *)self favoriteRank];
-      v5 = [v9 favoriteRank];
-      if (([v4 isEqual:v5] & 1) == 0)
+      itemIdentifier2 = [(FPItem *)self favoriteRank];
+      itemIdentifier3 = [itemCopy favoriteRank];
+      if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
       {
 
 LABEL_233:
@@ -5755,23 +5755,23 @@ LABEL_233:
           [FPItem overrideFields:ofItem:];
         }
 
-        v95 = [v9 favoriteRank];
+        favoriteRank = [itemCopy favoriteRank];
         favoriteRank = self->_favoriteRank;
-        self->_favoriteRank = v95;
+        self->_favoriteRank = favoriteRank;
         goto LABEL_238;
       }
     }
 
-    v92 = [(FPItem *)self favoriteRank];
-    if (v92)
+    favoriteRank2 = [(FPItem *)self favoriteRank];
+    if (favoriteRank2)
     {
-      v93 = [v9 favoriteRank];
+      favoriteRank3 = [itemCopy favoriteRank];
 
       if (favoriteRank)
       {
       }
 
-      if (!v93)
+      if (!favoriteRank3)
       {
         goto LABEL_233;
       }
@@ -5788,44 +5788,44 @@ LABEL_238:
     }
   }
 
-  if ([v8 containsObject:@"isUploaded"])
+  if ([fieldsCopy containsObject:@"isUploaded"])
   {
-    v96 = [(FPItem *)self isUploaded];
-    if (v96 != [v9 isUploaded])
+    isUploaded = [(FPItem *)self isUploaded];
+    if (isUploaded != [itemCopy isUploaded])
     {
       v97 = fp_current_or_default_log();
       if (os_log_type_enabled(v97, OS_LOG_TYPE_DEBUG))
       {
-        [(FPItem *)v9 overrideFields:v97 ofItem:?];
+        [(FPItem *)itemCopy overrideFields:v97 ofItem:?];
       }
 
-      self->_uploaded = [v9 isUploaded];
+      self->_uploaded = [itemCopy isUploaded];
     }
   }
 
-  if ([v8 containsObject:@"isUploading"])
+  if ([fieldsCopy containsObject:@"isUploading"])
   {
-    v98 = [(FPItem *)self isUploading];
-    if (v98 != [v9 isUploading])
+    isUploading = [(FPItem *)self isUploading];
+    if (isUploading != [itemCopy isUploading])
     {
       v99 = fp_current_or_default_log();
       if (os_log_type_enabled(v99, OS_LOG_TYPE_DEBUG))
       {
-        [(FPItem *)v9 overrideFields:v99 ofItem:?];
+        [(FPItem *)itemCopy overrideFields:v99 ofItem:?];
       }
 
-      self->_uploading = [v9 isUploading];
+      self->_uploading = [itemCopy isUploading];
     }
   }
 
-  if ([v8 containsObject:@"uploadingError"])
+  if ([fieldsCopy containsObject:@"uploadingError"])
   {
-    uploadingError = [v9 uploadingError];
+    uploadingError = [itemCopy uploadingError];
     if (uploadingError)
     {
-      v4 = [(FPItem *)self uploadingError];
-      v5 = [v9 uploadingError];
-      if (([v4 isEqual:v5] & 1) == 0)
+      itemIdentifier2 = [(FPItem *)self uploadingError];
+      itemIdentifier3 = [itemCopy uploadingError];
+      if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
       {
 
 LABEL_257:
@@ -5835,23 +5835,23 @@ LABEL_257:
           [FPItem overrideFields:ofItem:];
         }
 
-        v104 = [v9 uploadingError];
+        uploadingError = [itemCopy uploadingError];
         uploadingError = self->_uploadingError;
-        self->_uploadingError = v104;
+        self->_uploadingError = uploadingError;
         goto LABEL_262;
       }
     }
 
-    v101 = [(FPItem *)self uploadingError];
-    if (v101)
+    uploadingError2 = [(FPItem *)self uploadingError];
+    if (uploadingError2)
     {
-      v102 = [v9 uploadingError];
+      uploadingError3 = [itemCopy uploadingError];
 
       if (uploadingError)
       {
       }
 
-      if (!v102)
+      if (!uploadingError3)
       {
         goto LABEL_257;
       }
@@ -5868,44 +5868,44 @@ LABEL_262:
     }
   }
 
-  if ([v8 containsObject:@"isDownloaded"])
+  if ([fieldsCopy containsObject:@"isDownloaded"])
   {
-    v105 = [(FPItem *)self isDownloaded];
-    if (v105 != [v9 isDownloaded])
+    isDownloaded = [(FPItem *)self isDownloaded];
+    if (isDownloaded != [itemCopy isDownloaded])
     {
       v106 = fp_current_or_default_log();
       if (os_log_type_enabled(v106, OS_LOG_TYPE_DEBUG))
       {
-        [(FPItem *)v9 overrideFields:v106 ofItem:?];
+        [(FPItem *)itemCopy overrideFields:v106 ofItem:?];
       }
 
-      self->_downloaded = [v9 isDownloaded];
+      self->_downloaded = [itemCopy isDownloaded];
     }
   }
 
-  if ([v8 containsObject:@"isDownloading"])
+  if ([fieldsCopy containsObject:@"isDownloading"])
   {
-    v107 = [(FPItem *)self isDownloading];
-    if (v107 != [v9 isDownloading])
+    isDownloading = [(FPItem *)self isDownloading];
+    if (isDownloading != [itemCopy isDownloading])
     {
       v108 = fp_current_or_default_log();
       if (os_log_type_enabled(v108, OS_LOG_TYPE_DEBUG))
       {
-        [(FPItem *)v9 overrideFields:v108 ofItem:?];
+        [(FPItem *)itemCopy overrideFields:v108 ofItem:?];
       }
 
-      self->_downloading = [v9 isDownloading];
+      self->_downloading = [itemCopy isDownloading];
     }
   }
 
-  if ([v8 containsObject:@"downloadingError"])
+  if ([fieldsCopy containsObject:@"downloadingError"])
   {
-    downloadingError = [v9 downloadingError];
+    downloadingError = [itemCopy downloadingError];
     if (downloadingError)
     {
-      v4 = [(FPItem *)self downloadingError];
-      v5 = [v9 downloadingError];
-      if (([v4 isEqual:v5] & 1) == 0)
+      itemIdentifier2 = [(FPItem *)self downloadingError];
+      itemIdentifier3 = [itemCopy downloadingError];
+      if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
       {
 
 LABEL_281:
@@ -5915,23 +5915,23 @@ LABEL_281:
           [FPItem overrideFields:ofItem:];
         }
 
-        v113 = [v9 downloadingError];
+        downloadingError = [itemCopy downloadingError];
         downloadingError = self->_downloadingError;
-        self->_downloadingError = v113;
+        self->_downloadingError = downloadingError;
         goto LABEL_286;
       }
     }
 
-    v110 = [(FPItem *)self downloadingError];
-    if (v110)
+    downloadingError2 = [(FPItem *)self downloadingError];
+    if (downloadingError2)
     {
-      v111 = [v9 downloadingError];
+      downloadingError3 = [itemCopy downloadingError];
 
       if (downloadingError)
       {
       }
 
-      if (!v111)
+      if (!downloadingError3)
       {
         goto LABEL_281;
       }
@@ -5948,82 +5948,82 @@ LABEL_286:
     }
   }
 
-  if ([v8 containsObject:@"isMostRecentVersionDownloaded"])
+  if ([fieldsCopy containsObject:@"isMostRecentVersionDownloaded"])
   {
-    v114 = [(FPItem *)self isMostRecentVersionDownloaded];
-    if (v114 != [v9 isMostRecentVersionDownloaded])
+    isMostRecentVersionDownloaded = [(FPItem *)self isMostRecentVersionDownloaded];
+    if (isMostRecentVersionDownloaded != [itemCopy isMostRecentVersionDownloaded])
     {
       v115 = fp_current_or_default_log();
       if (os_log_type_enabled(v115, OS_LOG_TYPE_DEBUG))
       {
-        [(FPItem *)v9 overrideFields:v115 ofItem:?];
+        [(FPItem *)itemCopy overrideFields:v115 ofItem:?];
       }
 
-      self->_mostRecentVersionDownloaded = [v9 isMostRecentVersionDownloaded];
+      self->_mostRecentVersionDownloaded = [itemCopy isMostRecentVersionDownloaded];
     }
   }
 
-  if ([v8 containsObject:@"isShared"])
+  if ([fieldsCopy containsObject:@"isShared"])
   {
-    v116 = [(FPItem *)self isShared];
-    if (v116 != [v9 isShared])
+    isShared = [(FPItem *)self isShared];
+    if (isShared != [itemCopy isShared])
     {
       v117 = fp_current_or_default_log();
       if (os_log_type_enabled(v117, OS_LOG_TYPE_DEBUG))
       {
-        [(FPItem *)v9 overrideFields:v117 ofItem:?];
+        [(FPItem *)itemCopy overrideFields:v117 ofItem:?];
       }
 
-      self->_shared = [v9 isShared];
+      self->_shared = [itemCopy isShared];
     }
   }
 
-  if ([v8 containsObject:@"isSharedByCurrentUser"])
+  if ([fieldsCopy containsObject:@"isSharedByCurrentUser"])
   {
-    v118 = [(FPItem *)self isSharedByCurrentUser];
-    if (v118 != [v9 isSharedByCurrentUser])
+    isSharedByCurrentUser = [(FPItem *)self isSharedByCurrentUser];
+    if (isSharedByCurrentUser != [itemCopy isSharedByCurrentUser])
     {
       v119 = fp_current_or_default_log();
       if (os_log_type_enabled(v119, OS_LOG_TYPE_DEBUG))
       {
-        [(FPItem *)v9 overrideFields:v119 ofItem:?];
+        [(FPItem *)itemCopy overrideFields:v119 ofItem:?];
       }
 
-      self->_sharedByCurrentUser = [v9 isSharedByCurrentUser];
+      self->_sharedByCurrentUser = [itemCopy isSharedByCurrentUser];
     }
   }
 
-  if ([v8 containsObject:@"fp_isLastModifiedByCurrentUser"])
+  if ([fieldsCopy containsObject:@"fp_isLastModifiedByCurrentUser"])
   {
-    v120 = [(FPItem *)self fp_isLastModifiedByCurrentUser];
-    if (v120 != [v9 fp_isLastModifiedByCurrentUser])
+    fp_isLastModifiedByCurrentUser = [(FPItem *)self fp_isLastModifiedByCurrentUser];
+    if (fp_isLastModifiedByCurrentUser != [itemCopy fp_isLastModifiedByCurrentUser])
     {
       v121 = fp_current_or_default_log();
       if (os_log_type_enabled(v121, OS_LOG_TYPE_DEBUG))
       {
-        [(FPItem *)v9 overrideFields:v121 ofItem:?];
+        [(FPItem *)itemCopy overrideFields:v121 ofItem:?];
       }
 
-      self->_fp_lastModifiedByCurrentUser = [v9 fp_isLastModifiedByCurrentUser];
+      self->_fp_lastModifiedByCurrentUser = [itemCopy fp_isLastModifiedByCurrentUser];
     }
   }
 
-  if ([v8 containsObject:@"ownerNameComponents"])
+  if ([fieldsCopy containsObject:@"ownerNameComponents"])
   {
-    ownerNameComponents = [v9 ownerNameComponents];
+    ownerNameComponents = [itemCopy ownerNameComponents];
     if (ownerNameComponents)
     {
-      v4 = [(FPItem *)self ownerNameComponents];
-      v5 = [v9 ownerNameComponents];
-      if (([v4 isEqual:v5] & 1) == 0)
+      itemIdentifier2 = [(FPItem *)self ownerNameComponents];
+      itemIdentifier3 = [itemCopy ownerNameComponents];
+      if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
       {
 
         goto LABEL_315;
       }
     }
 
-    v123 = [(FPItem *)self ownerNameComponents];
-    if (!v123)
+    ownerNameComponents = [(FPItem *)self ownerNameComponents];
+    if (!ownerNameComponents)
     {
 
       if (!ownerNameComponents)
@@ -6034,13 +6034,13 @@ LABEL_286:
       goto LABEL_320;
     }
 
-    v124 = [v9 ownerNameComponents];
+    ownerNameComponents2 = [itemCopy ownerNameComponents];
 
     if (ownerNameComponents)
     {
     }
 
-    if (!v124)
+    if (!ownerNameComponents2)
     {
 LABEL_315:
       v125 = fp_current_or_default_log();
@@ -6049,33 +6049,33 @@ LABEL_315:
         [FPItem overrideFields:ofItem:];
       }
 
-      v126 = [v9 ownerNameComponents];
+      ownerNameComponents3 = [itemCopy ownerNameComponents];
       ownerNameComponents = self->_ownerNameComponents;
-      self->_ownerNameComponents = v126;
+      self->_ownerNameComponents = ownerNameComponents3;
 LABEL_320:
     }
   }
 
 LABEL_321:
-  if (![v8 containsObject:@"mostRecentEditorNameComponents"])
+  if (![fieldsCopy containsObject:@"mostRecentEditorNameComponents"])
   {
     goto LABEL_335;
   }
 
-  mostRecentEditorNameComponents = [v9 mostRecentEditorNameComponents];
+  mostRecentEditorNameComponents = [itemCopy mostRecentEditorNameComponents];
   if (mostRecentEditorNameComponents)
   {
-    v4 = [(FPItem *)self mostRecentEditorNameComponents];
-    v5 = [v9 mostRecentEditorNameComponents];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self mostRecentEditorNameComponents];
+    itemIdentifier3 = [itemCopy mostRecentEditorNameComponents];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
       goto LABEL_329;
     }
   }
 
-  v128 = [(FPItem *)self mostRecentEditorNameComponents];
-  if (!v128)
+  mostRecentEditorNameComponents = [(FPItem *)self mostRecentEditorNameComponents];
+  if (!mostRecentEditorNameComponents)
   {
 
     if (!mostRecentEditorNameComponents)
@@ -6086,13 +6086,13 @@ LABEL_321:
     goto LABEL_334;
   }
 
-  v129 = [v9 mostRecentEditorNameComponents];
+  mostRecentEditorNameComponents2 = [itemCopy mostRecentEditorNameComponents];
 
   if (mostRecentEditorNameComponents)
   {
   }
 
-  if (!v129)
+  if (!mostRecentEditorNameComponents2)
   {
 LABEL_329:
     v130 = fp_current_or_default_log();
@@ -6101,32 +6101,32 @@ LABEL_329:
       [FPItem overrideFields:ofItem:];
     }
 
-    v131 = [v9 mostRecentEditorNameComponents];
+    mostRecentEditorNameComponents3 = [itemCopy mostRecentEditorNameComponents];
     mostRecentEditorNameComponents = self->_mostRecentEditorNameComponents;
-    self->_mostRecentEditorNameComponents = v131;
+    self->_mostRecentEditorNameComponents = mostRecentEditorNameComponents3;
 LABEL_334:
   }
 
 LABEL_335:
-  if (![v8 containsObject:@"collaborationIdentifier"])
+  if (![fieldsCopy containsObject:@"collaborationIdentifier"])
   {
     goto LABEL_349;
   }
 
-  collaborationIdentifier = [v9 collaborationIdentifier];
+  collaborationIdentifier = [itemCopy collaborationIdentifier];
   if (collaborationIdentifier)
   {
-    v4 = [(FPItem *)self collaborationIdentifier];
-    v5 = [v9 collaborationIdentifier];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self collaborationIdentifier];
+    itemIdentifier3 = [itemCopy collaborationIdentifier];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
       goto LABEL_343;
     }
   }
 
-  v133 = [(FPItem *)self collaborationIdentifier];
-  if (!v133)
+  collaborationIdentifier = [(FPItem *)self collaborationIdentifier];
+  if (!collaborationIdentifier)
   {
 
     if (!collaborationIdentifier)
@@ -6137,13 +6137,13 @@ LABEL_335:
     goto LABEL_348;
   }
 
-  v134 = [v9 collaborationIdentifier];
+  collaborationIdentifier2 = [itemCopy collaborationIdentifier];
 
   if (collaborationIdentifier)
   {
   }
 
-  if (!v134)
+  if (!collaborationIdentifier2)
   {
 LABEL_343:
     v135 = fp_current_or_default_log();
@@ -6152,32 +6152,32 @@ LABEL_343:
       [FPItem overrideFields:ofItem:];
     }
 
-    v136 = [v9 collaborationIdentifier];
+    collaborationIdentifier3 = [itemCopy collaborationIdentifier];
     collaborationIdentifier = self->_collaborationIdentifier;
-    self->_collaborationIdentifier = v136;
+    self->_collaborationIdentifier = collaborationIdentifier3;
 LABEL_348:
   }
 
 LABEL_349:
-  if (![v8 containsObject:@"childItemCount"])
+  if (![fieldsCopy containsObject:@"childItemCount"])
   {
     goto LABEL_363;
   }
 
-  childItemCount = [v9 childItemCount];
+  childItemCount = [itemCopy childItemCount];
   if (childItemCount)
   {
-    v4 = [(FPItem *)self childItemCount];
-    v5 = [v9 childItemCount];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self childItemCount];
+    itemIdentifier3 = [itemCopy childItemCount];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
       goto LABEL_357;
     }
   }
 
-  v138 = [(FPItem *)self childItemCount];
-  if (!v138)
+  childItemCount = [(FPItem *)self childItemCount];
+  if (!childItemCount)
   {
 
     if (!childItemCount)
@@ -6188,13 +6188,13 @@ LABEL_349:
     goto LABEL_362;
   }
 
-  v139 = [v9 childItemCount];
+  childItemCount2 = [itemCopy childItemCount];
 
   if (childItemCount)
   {
   }
 
-  if (!v139)
+  if (!childItemCount2)
   {
 LABEL_357:
     v140 = fp_current_or_default_log();
@@ -6203,21 +6203,21 @@ LABEL_357:
       [FPItem overrideFields:ofItem:];
     }
 
-    v141 = [v9 childItemCount];
+    childItemCount3 = [itemCopy childItemCount];
     childItemCount = self->_childItemCount;
-    self->_childItemCount = v141;
+    self->_childItemCount = childItemCount3;
 LABEL_362:
   }
 
 LABEL_363:
-  if ([v8 containsObject:@"userInfo"])
+  if ([fieldsCopy containsObject:@"userInfo"])
   {
-    userInfo = [v9 userInfo];
+    userInfo = [itemCopy userInfo];
     if (userInfo)
     {
-      v4 = [(FPItem *)self userInfo];
-      v5 = [v9 userInfo];
-      if (([v4 isEqual:v5] & 1) == 0)
+      itemIdentifier2 = [(FPItem *)self userInfo];
+      itemIdentifier3 = [itemCopy userInfo];
+      if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
       {
 
 LABEL_371:
@@ -6227,23 +6227,23 @@ LABEL_371:
           [FPItem overrideFields:ofItem:];
         }
 
-        v146 = [v9 userInfo];
+        userInfo = [itemCopy userInfo];
         userInfo = self->_userInfo;
-        self->_userInfo = v146;
+        self->_userInfo = userInfo;
         goto LABEL_376;
       }
     }
 
-    v143 = [(FPItem *)self userInfo];
-    if (v143)
+    userInfo2 = [(FPItem *)self userInfo];
+    if (userInfo2)
     {
-      v144 = [v9 userInfo];
+      userInfo3 = [itemCopy userInfo];
 
       if (userInfo)
       {
       }
 
-      if (!v144)
+      if (!userInfo3)
       {
         goto LABEL_371;
       }
@@ -6260,37 +6260,37 @@ LABEL_376:
     }
   }
 
-  if ([v8 containsObject:@"state"])
+  if ([fieldsCopy containsObject:@"state"])
   {
-    v147 = [(FPItem *)self state];
-    if (v147 != [v9 state])
+    state = [(FPItem *)self state];
+    if (state != [itemCopy state])
     {
       v148 = fp_current_or_default_log();
       if (os_log_type_enabled(v148, OS_LOG_TYPE_DEBUG))
       {
-        [(FPItem *)v9 overrideFields:v148 ofItem:?];
+        [(FPItem *)itemCopy overrideFields:v148 ofItem:?];
       }
 
-      self->_state = [v9 state];
+      self->_state = [itemCopy state];
     }
   }
 
-  if ([v8 containsObject:@"placeholderIdentifier"])
+  if ([fieldsCopy containsObject:@"placeholderIdentifier"])
   {
-    placeholderIdentifier = [v9 placeholderIdentifier];
+    placeholderIdentifier = [itemCopy placeholderIdentifier];
     if (placeholderIdentifier)
     {
-      v4 = [(FPItem *)self placeholderIdentifier];
-      v5 = [v9 placeholderIdentifier];
-      if (([v4 isEqual:v5] & 1) == 0)
+      itemIdentifier2 = [(FPItem *)self placeholderIdentifier];
+      itemIdentifier3 = [itemCopy placeholderIdentifier];
+      if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
       {
 
         goto LABEL_390;
       }
     }
 
-    v150 = [(FPItem *)self placeholderIdentifier];
-    if (!v150)
+    placeholderIdentifier = [(FPItem *)self placeholderIdentifier];
+    if (!placeholderIdentifier)
     {
 
       if (!placeholderIdentifier)
@@ -6301,13 +6301,13 @@ LABEL_376:
       goto LABEL_395;
     }
 
-    v151 = [v9 placeholderIdentifier];
+    placeholderIdentifier2 = [itemCopy placeholderIdentifier];
 
     if (placeholderIdentifier)
     {
     }
 
-    if (!v151)
+    if (!placeholderIdentifier2)
     {
 LABEL_390:
       v152 = fp_current_or_default_log();
@@ -6316,33 +6316,33 @@ LABEL_390:
         [FPItem overrideFields:ofItem:];
       }
 
-      v153 = [v9 placeholderIdentifier];
+      placeholderIdentifier3 = [itemCopy placeholderIdentifier];
       placeholderIdentifier = self->_placeholderIdentifier;
-      self->_placeholderIdentifier = v153;
+      self->_placeholderIdentifier = placeholderIdentifier3;
 LABEL_395:
     }
   }
 
 LABEL_396:
-  if (![v8 containsObject:@"versionIdentifier"])
+  if (![fieldsCopy containsObject:@"versionIdentifier"])
   {
     goto LABEL_410;
   }
 
-  versionIdentifier = [v9 versionIdentifier];
+  versionIdentifier = [itemCopy versionIdentifier];
   if (versionIdentifier)
   {
-    v4 = [(FPItem *)self versionIdentifier];
-    v5 = [v9 versionIdentifier];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self versionIdentifier];
+    itemIdentifier3 = [itemCopy versionIdentifier];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
       goto LABEL_404;
     }
   }
 
-  v155 = [(FPItem *)self versionIdentifier];
-  if (!v155)
+  versionIdentifier = [(FPItem *)self versionIdentifier];
+  if (!versionIdentifier)
   {
 
     if (!versionIdentifier)
@@ -6353,13 +6353,13 @@ LABEL_396:
     goto LABEL_409;
   }
 
-  v156 = [v9 versionIdentifier];
+  versionIdentifier2 = [itemCopy versionIdentifier];
 
   if (versionIdentifier)
   {
   }
 
-  if (!v156)
+  if (!versionIdentifier2)
   {
 LABEL_404:
     v157 = fp_current_or_default_log();
@@ -6368,32 +6368,32 @@ LABEL_404:
       [FPItem overrideFields:ofItem:];
     }
 
-    v158 = [v9 versionIdentifier];
+    versionIdentifier3 = [itemCopy versionIdentifier];
     versionIdentifier = self->_versionIdentifier;
-    self->_versionIdentifier = v158;
+    self->_versionIdentifier = versionIdentifier3;
 LABEL_409:
   }
 
 LABEL_410:
-  if (![v8 containsObject:@"itemVersion"])
+  if (![fieldsCopy containsObject:@"itemVersion"])
   {
     goto LABEL_424;
   }
 
-  itemVersion = [v9 itemVersion];
+  itemVersion = [itemCopy itemVersion];
   if (itemVersion)
   {
-    v4 = [(FPItem *)self itemVersion];
-    v5 = [v9 itemVersion];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self itemVersion];
+    itemIdentifier3 = [itemCopy itemVersion];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
       goto LABEL_418;
     }
   }
 
-  v160 = [(FPItem *)self itemVersion];
-  if (!v160)
+  itemVersion = [(FPItem *)self itemVersion];
+  if (!itemVersion)
   {
 
     if (!itemVersion)
@@ -6404,13 +6404,13 @@ LABEL_410:
     goto LABEL_423;
   }
 
-  v161 = [v9 itemVersion];
+  itemVersion2 = [itemCopy itemVersion];
 
   if (itemVersion)
   {
   }
 
-  if (!v161)
+  if (!itemVersion2)
   {
 LABEL_418:
     v162 = fp_current_or_default_log();
@@ -6419,32 +6419,32 @@ LABEL_418:
       [FPItem overrideFields:ofItem:];
     }
 
-    v163 = [v9 itemVersion];
+    itemVersion3 = [itemCopy itemVersion];
     itemVersion = self->_itemVersion;
-    self->_itemVersion = v163;
+    self->_itemVersion = itemVersion3;
 LABEL_423:
   }
 
 LABEL_424:
-  if (![v8 containsObject:@"spotlightDomainIdentifier"])
+  if (![fieldsCopy containsObject:@"spotlightDomainIdentifier"])
   {
     goto LABEL_438;
   }
 
-  spotlightDomainIdentifier = [v9 spotlightDomainIdentifier];
+  spotlightDomainIdentifier = [itemCopy spotlightDomainIdentifier];
   if (spotlightDomainIdentifier)
   {
-    v4 = [(FPItem *)self spotlightDomainIdentifier];
-    v5 = [v9 spotlightDomainIdentifier];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self spotlightDomainIdentifier];
+    itemIdentifier3 = [itemCopy spotlightDomainIdentifier];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
       goto LABEL_432;
     }
   }
 
-  v165 = [(FPItem *)self spotlightDomainIdentifier];
-  if (!v165)
+  spotlightDomainIdentifier = [(FPItem *)self spotlightDomainIdentifier];
+  if (!spotlightDomainIdentifier)
   {
 
     if (!spotlightDomainIdentifier)
@@ -6455,13 +6455,13 @@ LABEL_424:
     goto LABEL_437;
   }
 
-  v166 = [v9 spotlightDomainIdentifier];
+  spotlightDomainIdentifier2 = [itemCopy spotlightDomainIdentifier];
 
   if (spotlightDomainIdentifier)
   {
   }
 
-  if (!v166)
+  if (!spotlightDomainIdentifier2)
   {
 LABEL_432:
     v167 = fp_current_or_default_log();
@@ -6470,21 +6470,21 @@ LABEL_432:
       [FPItem overrideFields:ofItem:];
     }
 
-    v168 = [v9 spotlightDomainIdentifier];
+    spotlightDomainIdentifier3 = [itemCopy spotlightDomainIdentifier];
     spotlightDomainIdentifier = self->_spotlightDomainIdentifier;
-    self->_spotlightDomainIdentifier = v168;
+    self->_spotlightDomainIdentifier = spotlightDomainIdentifier3;
 LABEL_437:
   }
 
 LABEL_438:
-  if ([v8 containsObject:@"fp_spotlightSubDomainIdentifier"])
+  if ([fieldsCopy containsObject:@"fp_spotlightSubDomainIdentifier"])
   {
-    fp_spotlightSubDomainIdentifier = [v9 fp_spotlightSubDomainIdentifier];
+    fp_spotlightSubDomainIdentifier = [itemCopy fp_spotlightSubDomainIdentifier];
     if (fp_spotlightSubDomainIdentifier)
     {
-      v4 = [(FPItem *)self fp_spotlightSubDomainIdentifier];
-      v5 = [v9 fp_spotlightSubDomainIdentifier];
-      if (([v4 isEqual:v5] & 1) == 0)
+      itemIdentifier2 = [(FPItem *)self fp_spotlightSubDomainIdentifier];
+      itemIdentifier3 = [itemCopy fp_spotlightSubDomainIdentifier];
+      if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
       {
 
 LABEL_446:
@@ -6494,23 +6494,23 @@ LABEL_446:
           [FPItem overrideFields:ofItem:];
         }
 
-        v173 = [v9 fp_spotlightSubDomainIdentifier];
+        fp_spotlightSubDomainIdentifier = [itemCopy fp_spotlightSubDomainIdentifier];
         fp_spotlightSubDomainIdentifier = self->_fp_spotlightSubDomainIdentifier;
-        self->_fp_spotlightSubDomainIdentifier = v173;
+        self->_fp_spotlightSubDomainIdentifier = fp_spotlightSubDomainIdentifier;
         goto LABEL_451;
       }
     }
 
-    v170 = [(FPItem *)self fp_spotlightSubDomainIdentifier];
-    if (v170)
+    fp_spotlightSubDomainIdentifier2 = [(FPItem *)self fp_spotlightSubDomainIdentifier];
+    if (fp_spotlightSubDomainIdentifier2)
     {
-      v171 = [v9 fp_spotlightSubDomainIdentifier];
+      fp_spotlightSubDomainIdentifier3 = [itemCopy fp_spotlightSubDomainIdentifier];
 
       if (fp_spotlightSubDomainIdentifier)
       {
       }
 
-      if (!v171)
+      if (!fp_spotlightSubDomainIdentifier3)
       {
         goto LABEL_446;
       }
@@ -6527,52 +6527,52 @@ LABEL_451:
     }
   }
 
-  if ([v8 containsObject:@"isInPinnedFolder"])
+  if ([fieldsCopy containsObject:@"isInPinnedFolder"])
   {
-    v174 = [(FPItem *)self isInPinnedFolder];
-    if (v174 != [v9 isInPinnedFolder])
+    isInPinnedFolder = [(FPItem *)self isInPinnedFolder];
+    if (isInPinnedFolder != [itemCopy isInPinnedFolder])
     {
       v175 = fp_current_or_default_log();
       if (os_log_type_enabled(v175, OS_LOG_TYPE_DEBUG))
       {
-        [(FPItem *)v9 overrideFields:v175 ofItem:?];
+        [(FPItem *)itemCopy overrideFields:v175 ofItem:?];
       }
 
-      self->_inPinnedFolder = [v9 isInPinnedFolder];
+      self->_inPinnedFolder = [itemCopy isInPinnedFolder];
     }
   }
 
-  if ([v8 containsObject:@"isPinned"])
+  if ([fieldsCopy containsObject:@"isPinned"])
   {
-    v176 = [(FPItem *)self isPinned];
-    if (v176 != [v9 isPinned])
+    isPinned = [(FPItem *)self isPinned];
+    if (isPinned != [itemCopy isPinned])
     {
       v177 = fp_current_or_default_log();
       if (os_log_type_enabled(v177, OS_LOG_TYPE_DEBUG))
       {
-        [(FPItem *)v9 overrideFields:v177 ofItem:?];
+        [(FPItem *)itemCopy overrideFields:v177 ofItem:?];
       }
 
-      self->_pinned = [v9 isPinned];
+      self->_pinned = [itemCopy isPinned];
     }
   }
 
-  if ([v8 containsObject:@"hasUnresolvedConflicts"])
+  if ([fieldsCopy containsObject:@"hasUnresolvedConflicts"])
   {
-    hasUnresolvedConflicts = [v9 hasUnresolvedConflicts];
+    hasUnresolvedConflicts = [itemCopy hasUnresolvedConflicts];
     if (hasUnresolvedConflicts)
     {
-      v4 = [(FPItem *)self hasUnresolvedConflicts];
-      v5 = [v9 hasUnresolvedConflicts];
-      if (([v4 isEqual:v5] & 1) == 0)
+      itemIdentifier2 = [(FPItem *)self hasUnresolvedConflicts];
+      itemIdentifier3 = [itemCopy hasUnresolvedConflicts];
+      if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
       {
 
         goto LABEL_470;
       }
     }
 
-    v179 = [(FPItem *)self hasUnresolvedConflicts];
-    if (!v179)
+    hasUnresolvedConflicts = [(FPItem *)self hasUnresolvedConflicts];
+    if (!hasUnresolvedConflicts)
     {
 
       if (!hasUnresolvedConflicts)
@@ -6583,13 +6583,13 @@ LABEL_451:
       goto LABEL_475;
     }
 
-    v180 = [v9 hasUnresolvedConflicts];
+    hasUnresolvedConflicts2 = [itemCopy hasUnresolvedConflicts];
 
     if (hasUnresolvedConflicts)
     {
     }
 
-    if (!v180)
+    if (!hasUnresolvedConflicts2)
     {
 LABEL_470:
       v181 = fp_current_or_default_log();
@@ -6598,33 +6598,33 @@ LABEL_470:
         [FPItem overrideFields:ofItem:];
       }
 
-      v182 = [v9 hasUnresolvedConflicts];
+      hasUnresolvedConflicts3 = [itemCopy hasUnresolvedConflicts];
       hasUnresolvedConflicts = self->_hasUnresolvedConflicts;
-      self->_hasUnresolvedConflicts = v182;
+      self->_hasUnresolvedConflicts = hasUnresolvedConflicts3;
 LABEL_475:
     }
   }
 
 LABEL_476:
-  if (![v8 containsObject:@"isDownloadRequested"])
+  if (![fieldsCopy containsObject:@"isDownloadRequested"])
   {
     goto LABEL_490;
   }
 
-  isDownloadRequested = [v9 isDownloadRequested];
+  isDownloadRequested = [itemCopy isDownloadRequested];
   if (isDownloadRequested)
   {
-    v4 = [(FPItem *)self isDownloadRequested];
-    v5 = [v9 isDownloadRequested];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self isDownloadRequested];
+    itemIdentifier3 = [itemCopy isDownloadRequested];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
       goto LABEL_484;
     }
   }
 
-  v184 = [(FPItem *)self isDownloadRequested];
-  if (!v184)
+  isDownloadRequested = [(FPItem *)self isDownloadRequested];
+  if (!isDownloadRequested)
   {
 
     if (!isDownloadRequested)
@@ -6635,13 +6635,13 @@ LABEL_476:
     goto LABEL_489;
   }
 
-  v185 = [v9 isDownloadRequested];
+  isDownloadRequested2 = [itemCopy isDownloadRequested];
 
   if (isDownloadRequested)
   {
   }
 
-  if (!v185)
+  if (!isDownloadRequested2)
   {
 LABEL_484:
     v186 = fp_current_or_default_log();
@@ -6650,32 +6650,32 @@ LABEL_484:
       [FPItem overrideFields:ofItem:];
     }
 
-    v187 = [v9 isDownloadRequested];
+    isDownloadRequested3 = [itemCopy isDownloadRequested];
     isDownloadRequested = self->_isDownloadRequested;
-    self->_isDownloadRequested = v187;
+    self->_isDownloadRequested = isDownloadRequested3;
 LABEL_489:
   }
 
 LABEL_490:
-  if (![v8 containsObject:@"sharingPermissions"])
+  if (![fieldsCopy containsObject:@"sharingPermissions"])
   {
     goto LABEL_504;
   }
 
-  sharingPermissions = [v9 sharingPermissions];
+  sharingPermissions = [itemCopy sharingPermissions];
   if (sharingPermissions)
   {
-    v4 = [(FPItem *)self sharingPermissions];
-    v5 = [v9 sharingPermissions];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self sharingPermissions];
+    itemIdentifier3 = [itemCopy sharingPermissions];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
       goto LABEL_498;
     }
   }
 
-  v189 = [(FPItem *)self sharingPermissions];
-  if (!v189)
+  sharingPermissions = [(FPItem *)self sharingPermissions];
+  if (!sharingPermissions)
   {
 
     if (!sharingPermissions)
@@ -6686,13 +6686,13 @@ LABEL_490:
     goto LABEL_503;
   }
 
-  v190 = [v9 sharingPermissions];
+  sharingPermissions2 = [itemCopy sharingPermissions];
 
   if (sharingPermissions)
   {
   }
 
-  if (!v190)
+  if (!sharingPermissions2)
   {
 LABEL_498:
     v191 = fp_current_or_default_log();
@@ -6701,21 +6701,21 @@ LABEL_498:
       [FPItem overrideFields:ofItem:];
     }
 
-    v192 = [v9 sharingPermissions];
+    sharingPermissions3 = [itemCopy sharingPermissions];
     sharingPermissions = self->_sharingPermissions;
-    self->_sharingPermissions = v192;
+    self->_sharingPermissions = sharingPermissions3;
 LABEL_503:
   }
 
 LABEL_504:
-  if ([v8 containsObject:@"containerDisplayName"])
+  if ([fieldsCopy containsObject:@"containerDisplayName"])
   {
-    containerDisplayName = [v9 containerDisplayName];
+    containerDisplayName = [itemCopy containerDisplayName];
     if (containerDisplayName)
     {
-      v4 = [(FPItem *)self containerDisplayName];
-      v5 = [v9 containerDisplayName];
-      if (([v4 isEqual:v5] & 1) == 0)
+      itemIdentifier2 = [(FPItem *)self containerDisplayName];
+      itemIdentifier3 = [itemCopy containerDisplayName];
+      if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
       {
 
 LABEL_512:
@@ -6725,23 +6725,23 @@ LABEL_512:
           [FPItem overrideFields:ofItem:];
         }
 
-        v197 = [v9 containerDisplayName];
+        containerDisplayName = [itemCopy containerDisplayName];
         containerDisplayName = self->_containerDisplayName;
-        self->_containerDisplayName = v197;
+        self->_containerDisplayName = containerDisplayName;
         goto LABEL_517;
       }
     }
 
-    v194 = [(FPItem *)self containerDisplayName];
-    if (v194)
+    containerDisplayName2 = [(FPItem *)self containerDisplayName];
+    if (containerDisplayName2)
     {
-      v195 = [v9 containerDisplayName];
+      containerDisplayName3 = [itemCopy containerDisplayName];
 
       if (containerDisplayName)
       {
       }
 
-      if (!v195)
+      if (!containerDisplayName3)
       {
         goto LABEL_512;
       }
@@ -6758,37 +6758,37 @@ LABEL_517:
     }
   }
 
-  if ([v8 containsObject:@"supportsMostRecentVersionDownloaded"])
+  if ([fieldsCopy containsObject:@"supportsMostRecentVersionDownloaded"])
   {
-    v198 = [(FPItem *)self supportsMostRecentVersionDownloaded];
-    if (v198 != [v9 supportsMostRecentVersionDownloaded])
+    supportsMostRecentVersionDownloaded = [(FPItem *)self supportsMostRecentVersionDownloaded];
+    if (supportsMostRecentVersionDownloaded != [itemCopy supportsMostRecentVersionDownloaded])
     {
       v199 = fp_current_or_default_log();
       if (os_log_type_enabled(v199, OS_LOG_TYPE_DEBUG))
       {
-        [(FPItem *)v9 overrideFields:v199 ofItem:?];
+        [(FPItem *)itemCopy overrideFields:v199 ofItem:?];
       }
 
-      self->_supportsMostRecentVersionDownloaded = [v9 supportsMostRecentVersionDownloaded];
+      self->_supportsMostRecentVersionDownloaded = [itemCopy supportsMostRecentVersionDownloaded];
     }
   }
 
-  if ([v8 containsObject:@"fp_appContainerBundleIdentifier"])
+  if ([fieldsCopy containsObject:@"fp_appContainerBundleIdentifier"])
   {
-    fp_appContainerBundleIdentifier = [v9 fp_appContainerBundleIdentifier];
+    fp_appContainerBundleIdentifier = [itemCopy fp_appContainerBundleIdentifier];
     if (fp_appContainerBundleIdentifier)
     {
-      v4 = [(FPItem *)self fp_appContainerBundleIdentifier];
-      v5 = [v9 fp_appContainerBundleIdentifier];
-      if (([v4 isEqual:v5] & 1) == 0)
+      itemIdentifier2 = [(FPItem *)self fp_appContainerBundleIdentifier];
+      itemIdentifier3 = [itemCopy fp_appContainerBundleIdentifier];
+      if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
       {
 
         goto LABEL_531;
       }
     }
 
-    v201 = [(FPItem *)self fp_appContainerBundleIdentifier];
-    if (!v201)
+    fp_appContainerBundleIdentifier = [(FPItem *)self fp_appContainerBundleIdentifier];
+    if (!fp_appContainerBundleIdentifier)
     {
 
       if (!fp_appContainerBundleIdentifier)
@@ -6799,13 +6799,13 @@ LABEL_517:
       goto LABEL_536;
     }
 
-    v202 = [v9 fp_appContainerBundleIdentifier];
+    fp_appContainerBundleIdentifier2 = [itemCopy fp_appContainerBundleIdentifier];
 
     if (fp_appContainerBundleIdentifier)
     {
     }
 
-    if (!v202)
+    if (!fp_appContainerBundleIdentifier2)
     {
 LABEL_531:
       v203 = fp_current_or_default_log();
@@ -6814,33 +6814,33 @@ LABEL_531:
         [FPItem overrideFields:ofItem:];
       }
 
-      v204 = [v9 fp_appContainerBundleIdentifier];
+      fp_appContainerBundleIdentifier3 = [itemCopy fp_appContainerBundleIdentifier];
       fp_appContainerBundleIdentifier = self->_fp_appContainerBundleIdentifier;
-      self->_fp_appContainerBundleIdentifier = v204;
+      self->_fp_appContainerBundleIdentifier = fp_appContainerBundleIdentifier3;
 LABEL_536:
     }
   }
 
 LABEL_537:
-  if (![v8 containsObject:@"fp_parentDomainIdentifier"])
+  if (![fieldsCopy containsObject:@"fp_parentDomainIdentifier"])
   {
     goto LABEL_551;
   }
 
-  fp_parentDomainIdentifier = [v9 fp_parentDomainIdentifier];
+  fp_parentDomainIdentifier = [itemCopy fp_parentDomainIdentifier];
   if (fp_parentDomainIdentifier)
   {
-    v4 = [(FPItem *)self fp_parentDomainIdentifier];
-    v5 = [v9 fp_parentDomainIdentifier];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self fp_parentDomainIdentifier];
+    itemIdentifier3 = [itemCopy fp_parentDomainIdentifier];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
       goto LABEL_545;
     }
   }
 
-  v206 = [(FPItem *)self fp_parentDomainIdentifier];
-  if (!v206)
+  fp_parentDomainIdentifier = [(FPItem *)self fp_parentDomainIdentifier];
+  if (!fp_parentDomainIdentifier)
   {
 
     if (!fp_parentDomainIdentifier)
@@ -6851,13 +6851,13 @@ LABEL_537:
     goto LABEL_550;
   }
 
-  v207 = [v9 fp_parentDomainIdentifier];
+  fp_parentDomainIdentifier2 = [itemCopy fp_parentDomainIdentifier];
 
   if (fp_parentDomainIdentifier)
   {
   }
 
-  if (!v207)
+  if (!fp_parentDomainIdentifier2)
   {
 LABEL_545:
     v208 = fp_current_or_default_log();
@@ -6866,21 +6866,21 @@ LABEL_545:
       [FPItem overrideFields:ofItem:];
     }
 
-    v209 = [v9 fp_parentDomainIdentifier];
+    fp_parentDomainIdentifier3 = [itemCopy fp_parentDomainIdentifier];
     fp_parentDomainIdentifier = self->_fp_parentDomainIdentifier;
-    self->_fp_parentDomainIdentifier = v209;
+    self->_fp_parentDomainIdentifier = fp_parentDomainIdentifier3;
 LABEL_550:
   }
 
 LABEL_551:
-  if ([v8 containsObject:@"cloudContainerIdentifier"])
+  if ([fieldsCopy containsObject:@"cloudContainerIdentifier"])
   {
-    cloudContainerIdentifier = [v9 cloudContainerIdentifier];
+    cloudContainerIdentifier = [itemCopy cloudContainerIdentifier];
     if (cloudContainerIdentifier)
     {
-      v4 = [(FPItem *)self cloudContainerIdentifier];
-      v5 = [v9 cloudContainerIdentifier];
-      if (([v4 isEqual:v5] & 1) == 0)
+      itemIdentifier2 = [(FPItem *)self cloudContainerIdentifier];
+      itemIdentifier3 = [itemCopy cloudContainerIdentifier];
+      if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
       {
 
 LABEL_559:
@@ -6890,23 +6890,23 @@ LABEL_559:
           [FPItem overrideFields:ofItem:];
         }
 
-        v214 = [v9 cloudContainerIdentifier];
+        cloudContainerIdentifier = [itemCopy cloudContainerIdentifier];
         cloudContainerIdentifier = self->_cloudContainerIdentifier;
-        self->_cloudContainerIdentifier = v214;
+        self->_cloudContainerIdentifier = cloudContainerIdentifier;
         goto LABEL_564;
       }
     }
 
-    v211 = [(FPItem *)self cloudContainerIdentifier];
-    if (v211)
+    cloudContainerIdentifier2 = [(FPItem *)self cloudContainerIdentifier];
+    if (cloudContainerIdentifier2)
     {
-      v212 = [v9 cloudContainerIdentifier];
+      cloudContainerIdentifier3 = [itemCopy cloudContainerIdentifier];
 
       if (cloudContainerIdentifier)
       {
       }
 
-      if (!v212)
+      if (!cloudContainerIdentifier3)
       {
         goto LABEL_559;
       }
@@ -6923,89 +6923,89 @@ LABEL_564:
     }
   }
 
-  if ([v8 containsObject:@"isUbiquitous"])
+  if ([fieldsCopy containsObject:@"isUbiquitous"])
   {
-    v215 = [(FPItem *)self isUbiquitous];
-    if (v215 != [v9 isUbiquitous])
+    isUbiquitous = [(FPItem *)self isUbiquitous];
+    if (isUbiquitous != [itemCopy isUbiquitous])
     {
       v216 = fp_current_or_default_log();
       if (os_log_type_enabled(v216, OS_LOG_TYPE_DEBUG))
       {
-        [(FPItem *)v9 overrideFields:v216 ofItem:?];
+        [(FPItem *)itemCopy overrideFields:v216 ofItem:?];
       }
 
-      self->_isUbiquitous = [v9 isUbiquitous];
+      self->_isUbiquitous = [itemCopy isUbiquitous];
     }
   }
 
-  if ([v8 containsObject:@"isContainer"])
+  if ([fieldsCopy containsObject:@"isContainer"])
   {
-    v217 = [(FPItem *)self isContainer];
-    if (v217 != [v9 isContainer])
+    isContainer = [(FPItem *)self isContainer];
+    if (isContainer != [itemCopy isContainer])
     {
       v218 = fp_current_or_default_log();
       if (os_log_type_enabled(v218, OS_LOG_TYPE_DEBUG))
       {
-        [(FPItem *)v9 overrideFields:v218 ofItem:?];
+        [(FPItem *)itemCopy overrideFields:v218 ofItem:?];
       }
 
-      self->_isContainer = [v9 isContainer];
+      self->_isContainer = [itemCopy isContainer];
     }
   }
 
-  if ([v8 containsObject:@"isContainerPristine"])
+  if ([fieldsCopy containsObject:@"isContainerPristine"])
   {
-    v219 = [(FPItem *)self isContainerPristine];
-    if (v219 != [v9 isContainerPristine])
+    isContainerPristine = [(FPItem *)self isContainerPristine];
+    if (isContainerPristine != [itemCopy isContainerPristine])
     {
       v220 = fp_current_or_default_log();
       if (os_log_type_enabled(v220, OS_LOG_TYPE_DEBUG))
       {
-        [(FPItem *)v9 overrideFields:v220 ofItem:?];
+        [(FPItem *)itemCopy overrideFields:v220 ofItem:?];
       }
 
-      self->_isContainerPristine = [v9 isContainerPristine];
+      self->_isContainerPristine = [itemCopy isContainerPristine];
     }
   }
 
-  if ([v8 containsObject:@"isTopLevelSharedItem"])
+  if ([fieldsCopy containsObject:@"isTopLevelSharedItem"])
   {
-    v221 = [(FPItem *)self isTopLevelSharedItem];
-    if (v221 != [v9 isTopLevelSharedItem])
+    isTopLevelSharedItem = [(FPItem *)self isTopLevelSharedItem];
+    if (isTopLevelSharedItem != [itemCopy isTopLevelSharedItem])
     {
       v222 = fp_current_or_default_log();
       if (os_log_type_enabled(v222, OS_LOG_TYPE_DEBUG))
       {
-        [(FPItem *)v9 overrideFields:v222 ofItem:?];
+        [(FPItem *)itemCopy overrideFields:v222 ofItem:?];
       }
 
-      self->_topLevelSharedItem = [v9 isTopLevelSharedItem];
+      self->_topLevelSharedItem = [itemCopy isTopLevelSharedItem];
     }
   }
 
-  if ([v8 containsObject:@"isRecursivelyDownloaded"])
+  if ([fieldsCopy containsObject:@"isRecursivelyDownloaded"])
   {
-    v223 = [(FPItem *)self isRecursivelyDownloaded];
-    if (v223 != [v9 isRecursivelyDownloaded])
+    isRecursivelyDownloaded = [(FPItem *)self isRecursivelyDownloaded];
+    if (isRecursivelyDownloaded != [itemCopy isRecursivelyDownloaded])
     {
       v224 = fp_current_or_default_log();
       if (os_log_type_enabled(v224, OS_LOG_TYPE_DEBUG))
       {
-        [(FPItem *)v9 overrideFields:v224 ofItem:?];
+        [(FPItem *)itemCopy overrideFields:v224 ofItem:?];
       }
 
-      self->_recursivelyDownloaded = [v9 isRecursivelyDownloaded];
+      self->_recursivelyDownloaded = [itemCopy isRecursivelyDownloaded];
     }
   }
 
-  if ([v8 containsObject:@"conflictingVersions"])
+  if ([fieldsCopy containsObject:@"conflictingVersions"])
   {
-    conflictingVersions = [v9 conflictingVersions];
+    conflictingVersions = [itemCopy conflictingVersions];
     if (conflictingVersions)
     {
-      v4 = [(FPItem *)self conflictingVersions];
-      v5 = [v9 conflictingVersions];
-      if (([v4 isEqual:v5] & 1) == 0)
+      itemIdentifier2 = [(FPItem *)self conflictingVersions];
+      itemIdentifier3 = [itemCopy conflictingVersions];
+      if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
       {
 
 LABEL_598:
@@ -7015,23 +7015,23 @@ LABEL_598:
           [FPItem overrideFields:ofItem:];
         }
 
-        v229 = [v9 conflictingVersions];
+        conflictingVersions = [itemCopy conflictingVersions];
         conflictingVersions = self->_conflictingVersions;
-        self->_conflictingVersions = v229;
+        self->_conflictingVersions = conflictingVersions;
         goto LABEL_603;
       }
     }
 
-    v226 = [(FPItem *)self conflictingVersions];
-    if (v226)
+    conflictingVersions2 = [(FPItem *)self conflictingVersions];
+    if (conflictingVersions2)
     {
-      v227 = [v9 conflictingVersions];
+      conflictingVersions3 = [itemCopy conflictingVersions];
 
       if (conflictingVersions)
       {
       }
 
-      if (!v227)
+      if (!conflictingVersions3)
       {
         goto LABEL_598;
       }
@@ -7048,37 +7048,37 @@ LABEL_603:
     }
   }
 
-  if ([v8 containsObject:@"fileSystemFlags"])
+  if ([fieldsCopy containsObject:@"fileSystemFlags"])
   {
-    v230 = [(FPItem *)self fileSystemFlags];
-    if (v230 != [v9 fileSystemFlags])
+    fileSystemFlags = [(FPItem *)self fileSystemFlags];
+    if (fileSystemFlags != [itemCopy fileSystemFlags])
     {
       v231 = fp_current_or_default_log();
       if (os_log_type_enabled(v231, OS_LOG_TYPE_DEBUG))
       {
-        [(FPItem *)v9 overrideFields:v231 ofItem:?];
+        [(FPItem *)itemCopy overrideFields:v231 ofItem:?];
       }
 
-      self->_fileSystemFlags = [v9 fileSystemFlags];
+      self->_fileSystemFlags = [itemCopy fileSystemFlags];
     }
   }
 
-  if ([v8 containsObject:@"extendedAttributes"])
+  if ([fieldsCopy containsObject:@"extendedAttributes"])
   {
-    extendedAttributes = [v9 extendedAttributes];
+    extendedAttributes = [itemCopy extendedAttributes];
     if (extendedAttributes)
     {
-      v4 = [(FPItem *)self extendedAttributes];
-      v5 = [v9 extendedAttributes];
-      if (([v4 isEqual:v5] & 1) == 0)
+      itemIdentifier2 = [(FPItem *)self extendedAttributes];
+      itemIdentifier3 = [itemCopy extendedAttributes];
+      if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
       {
 
         goto LABEL_617;
       }
     }
 
-    v233 = [(FPItem *)self extendedAttributes];
-    if (!v233)
+    extendedAttributes = [(FPItem *)self extendedAttributes];
+    if (!extendedAttributes)
     {
 
       if (!extendedAttributes)
@@ -7089,13 +7089,13 @@ LABEL_603:
       goto LABEL_622;
     }
 
-    v234 = [v9 extendedAttributes];
+    extendedAttributes2 = [itemCopy extendedAttributes];
 
     if (extendedAttributes)
     {
     }
 
-    if (!v234)
+    if (!extendedAttributes2)
     {
 LABEL_617:
       v235 = fp_current_or_default_log();
@@ -7104,33 +7104,33 @@ LABEL_617:
         [FPItem overrideFields:ofItem:];
       }
 
-      v236 = [v9 extendedAttributes];
+      extendedAttributes3 = [itemCopy extendedAttributes];
       extendedAttributes = self->_extendedAttributes;
-      self->_extendedAttributes = v236;
+      self->_extendedAttributes = extendedAttributes3;
 LABEL_622:
     }
   }
 
 LABEL_623:
-  if (![v8 containsObject:@"decorations"])
+  if (![fieldsCopy containsObject:@"decorations"])
   {
     goto LABEL_637;
   }
 
-  decorations = [v9 decorations];
+  decorations = [itemCopy decorations];
   if (decorations)
   {
-    v4 = [(FPItem *)self decorations];
-    v5 = [v9 decorations];
-    if (([v4 isEqual:v5] & 1) == 0)
+    itemIdentifier2 = [(FPItem *)self decorations];
+    itemIdentifier3 = [itemCopy decorations];
+    if (([itemIdentifier2 isEqual:itemIdentifier3] & 1) == 0)
     {
 
       goto LABEL_631;
     }
   }
 
-  v238 = [(FPItem *)self decorations];
-  if (!v238)
+  decorations = [(FPItem *)self decorations];
+  if (!decorations)
   {
 
     if (!decorations)
@@ -7141,13 +7141,13 @@ LABEL_623:
     goto LABEL_636;
   }
 
-  v239 = [v9 decorations];
+  decorations2 = [itemCopy decorations];
 
   if (decorations)
   {
   }
 
-  if (!v239)
+  if (!decorations2)
   {
 LABEL_631:
     v240 = fp_current_or_default_log();
@@ -7156,116 +7156,116 @@ LABEL_631:
       [FPItem overrideFields:ofItem:];
     }
 
-    v241 = [v9 decorations];
+    decorations3 = [itemCopy decorations];
     decorations = self->_decorations;
-    self->_decorations = v241;
+    self->_decorations = decorations3;
 LABEL_636:
   }
 
 LABEL_637:
-  if ([v8 containsObject:@"typeAndCreator"])
+  if ([fieldsCopy containsObject:@"typeAndCreator"])
   {
     v242 = fp_current_or_default_log();
     if (os_log_type_enabled(v242, OS_LOG_TYPE_DEBUG))
     {
-      [FPItem overrideFields:v9 ofItem:?];
+      [FPItem overrideFields:itemCopy ofItem:?];
     }
 
-    self->_typeAndCreator = [v9 typeAndCreator];
+    self->_typeAndCreator = [itemCopy typeAndCreator];
   }
 
-  if ([v8 containsObject:@"contentPolicy"])
+  if ([fieldsCopy containsObject:@"contentPolicy"])
   {
-    v243 = [(FPItem *)self contentPolicy];
-    if (v243 != [v9 contentPolicy])
+    contentPolicy = [(FPItem *)self contentPolicy];
+    if (contentPolicy != [itemCopy contentPolicy])
     {
       v244 = fp_current_or_default_log();
       if (os_log_type_enabled(v244, OS_LOG_TYPE_DEBUG))
       {
-        [(FPItem *)v9 overrideFields:v244 ofItem:?];
+        [(FPItem *)itemCopy overrideFields:v244 ofItem:?];
       }
 
-      self->_contentPolicy = [v9 contentPolicy];
+      self->_contentPolicy = [itemCopy contentPolicy];
     }
   }
 
-  if ([v8 containsObject:@"inheritedContentPolicy"])
+  if ([fieldsCopy containsObject:@"inheritedContentPolicy"])
   {
-    v245 = [(FPItem *)self inheritedContentPolicy];
-    if (v245 != [v9 inheritedContentPolicy])
+    inheritedContentPolicy = [(FPItem *)self inheritedContentPolicy];
+    if (inheritedContentPolicy != [itemCopy inheritedContentPolicy])
     {
       v246 = fp_current_or_default_log();
       if (os_log_type_enabled(v246, OS_LOG_TYPE_DEBUG))
       {
-        [(FPItem *)v9 overrideFields:v246 ofItem:?];
+        [(FPItem *)itemCopy overrideFields:v246 ofItem:?];
       }
 
-      self->_inheritedContentPolicy = [v9 inheritedContentPolicy];
+      self->_inheritedContentPolicy = [itemCopy inheritedContentPolicy];
     }
   }
 
-  if ([v8 containsObject:@"effectiveContentPolicy"])
+  if ([fieldsCopy containsObject:@"effectiveContentPolicy"])
   {
-    v247 = [(FPItem *)self effectiveContentPolicy];
-    if (v247 != [v9 effectiveContentPolicy])
+    effectiveContentPolicy = [(FPItem *)self effectiveContentPolicy];
+    if (effectiveContentPolicy != [itemCopy effectiveContentPolicy])
     {
       v248 = fp_current_or_default_log();
       if (os_log_type_enabled(v248, OS_LOG_TYPE_DEBUG))
       {
-        [(FPItem *)v9 overrideFields:v248 ofItem:?];
+        [(FPItem *)itemCopy overrideFields:v248 ofItem:?];
       }
 
-      self->_effectiveContentPolicy = [v9 effectiveContentPolicy];
+      self->_effectiveContentPolicy = [itemCopy effectiveContentPolicy];
     }
   }
 
-  if ([v8 containsObject:@"isEvictedWithClone"])
+  if ([fieldsCopy containsObject:@"isEvictedWithClone"])
   {
-    v249 = [(FPItem *)self isEvictedWithClone];
-    if (v249 != [v9 isEvictedWithClone])
+    isEvictedWithClone = [(FPItem *)self isEvictedWithClone];
+    if (isEvictedWithClone != [itemCopy isEvictedWithClone])
     {
       v250 = fp_current_or_default_log();
       if (os_log_type_enabled(v250, OS_LOG_TYPE_DEBUG))
       {
-        [(FPItem *)v9 overrideFields:v250 ofItem:?];
+        [(FPItem *)itemCopy overrideFields:v250 ofItem:?];
       }
 
-      self->_isEvictedWithClone = [v9 isEvictedWithClone];
+      self->_isEvictedWithClone = [itemCopy isEvictedWithClone];
     }
   }
 
-  if ([v8 containsObject:@"isSyncPaused"])
+  if ([fieldsCopy containsObject:@"isSyncPaused"])
   {
-    v251 = [(FPItem *)self isSyncPaused];
-    if (v251 != [v9 isSyncPaused])
+    isSyncPaused = [(FPItem *)self isSyncPaused];
+    if (isSyncPaused != [itemCopy isSyncPaused])
     {
       v252 = fp_current_or_default_log();
       if (os_log_type_enabled(v252, OS_LOG_TYPE_DEBUG))
       {
-        [(FPItem *)v9 overrideFields:v252 ofItem:?];
+        [(FPItem *)itemCopy overrideFields:v252 ofItem:?];
       }
 
-      self->_syncPaused = [v9 isSyncPaused];
+      self->_syncPaused = [itemCopy isSyncPaused];
     }
   }
 
-  if ([v8 containsObject:@"supportsUploadWithFailOnConflict"])
+  if ([fieldsCopy containsObject:@"supportsUploadWithFailOnConflict"])
   {
-    v253 = [(FPItem *)self supportsUploadWithFailOnConflict];
-    if (v253 != [v9 supportsUploadWithFailOnConflict])
+    supportsUploadWithFailOnConflict = [(FPItem *)self supportsUploadWithFailOnConflict];
+    if (supportsUploadWithFailOnConflict != [itemCopy supportsUploadWithFailOnConflict])
     {
       v254 = fp_current_or_default_log();
       if (os_log_type_enabled(v254, OS_LOG_TYPE_DEBUG))
       {
-        [(FPItem *)v9 overrideFields:v254 ofItem:?];
+        [(FPItem *)itemCopy overrideFields:v254 ofItem:?];
       }
 
-      self->_supportsUploadWithFailOnConflict = [v9 supportsUploadWithFailOnConflict];
+      self->_supportsUploadWithFailOnConflict = [itemCopy supportsUploadWithFailOnConflict];
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[FPItem alloc] initWithVendorItem:self provider:self->_providerID domain:self->_domainIdentifier spotlightDomainIdentifier:self->_spotlightDomainIdentifier extensionCapabilities:-1 useFPFS:0];
   p_isa = &v4->super.isa;
@@ -7290,15 +7290,15 @@ LABEL_637:
 - (id)strippedCopy
 {
   v3 = [FPItem alloc];
-  v4 = [(FPItem *)self providerDomainID];
-  v5 = [(FPItem *)self itemIdentifier];
-  v6 = [(FPItem *)self parentItemIdentifier];
-  v7 = [(FPItem *)self filename];
-  v8 = [(FPItem *)self typeIdentifier];
-  v9 = [(FPItem *)v3 initWithProviderDomainID:v4 itemIdentifier:v5 parentItemIdentifier:v6 filename:v7 typeIdentifier:v8];
+  providerDomainID = [(FPItem *)self providerDomainID];
+  itemIdentifier = [(FPItem *)self itemIdentifier];
+  parentItemIdentifier = [(FPItem *)self parentItemIdentifier];
+  filename = [(FPItem *)self filename];
+  typeIdentifier = [(FPItem *)self typeIdentifier];
+  v9 = [(FPItem *)v3 initWithProviderDomainID:providerDomainID itemIdentifier:itemIdentifier parentItemIdentifier:parentItemIdentifier filename:filename typeIdentifier:typeIdentifier];
 
-  v10 = [(FPItem *)self itemVersion];
-  [(FPItem *)v9 setItemVersion:v10];
+  itemVersion = [(FPItem *)self itemVersion];
+  [(FPItem *)v9 setItemVersion:itemVersion];
 
   return v9;
 }
@@ -7310,34 +7310,34 @@ LABEL_637:
     return 0;
   }
 
-  v3 = [(FPItem *)self providerItemIdentifier];
-  if ([v3 isEqualToString:@"a1"])
+  providerItemIdentifier = [(FPItem *)self providerItemIdentifier];
+  if ([providerItemIdentifier isEqualToString:@"self"])
   {
-    v4 = [(FPItem *)self providerID];
-    v5 = [v4 fp_isiCloudDriveIdentifier];
+    providerID = [(FPItem *)self providerID];
+    fp_isiCloudDriveIdentifier = [providerID fp_isiCloudDriveIdentifier];
   }
 
   else
   {
-    v5 = 0;
+    fp_isiCloudDriveIdentifier = 0;
   }
 
-  return v5;
+  return fp_isiCloudDriveIdentifier;
 }
 
-- (void)setTypeIdentifier:(id)a3
+- (void)setTypeIdentifier:(id)identifier
 {
-  v4 = [MEMORY[0x1E6982C40] fp_cachedTypeWithIdentifier:a3];
+  v4 = [MEMORY[0x1E6982C40] fp_cachedTypeWithIdentifier:identifier];
   [(FPItem *)self setContentType:v4];
 }
 
-- (void)setContentType:(id)a3
+- (void)setContentType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   obj = self;
   objc_sync_enter(obj);
   contentType = obj->_contentType;
-  obj->_contentType = v4;
+  obj->_contentType = typeCopy;
 
   obj->_typesEvaluated = 0;
   objc_sync_exit(obj);
@@ -7353,9 +7353,9 @@ LABEL_637:
       v4 = [[FPUserInfo alloc] initWithUserInfo:self->_userInfo];
       v5 = [[FPUserInfo alloc] initWithUserInfo:self->_inheritedUserInfo];
       v6 = [FPUserInfo mergeWithUserInfo:v4 intoParentUserInfo:v5];
-      v7 = [v6 userInfo];
+      userInfo = [v6 userInfo];
       v8 = self->_resolvedUserInfoCache;
-      self->_resolvedUserInfoCache = v7;
+      self->_resolvedUserInfoCache = userInfo;
     }
 
     resolvedUserInfoCache = self->_resolvedUserInfoCache;
@@ -7368,7 +7368,7 @@ LABEL_637:
 
 - (NSString)displayName
 {
-  v3 = [(FPItem *)self fileSystemFlags];
+  fileSystemFlags = [(FPItem *)self fileSystemFlags];
   v11 = [(FPItem *)self folderType]- 2;
   if (v11 > 2)
   {
@@ -7382,11 +7382,11 @@ LABEL_637:
 
   if ([(NSString *)v12 length])
   {
-    v13 = [(FPItem *)self isFolder];
+    isFolder = [(FPItem *)self isFolder];
     v14 = v12;
-    v15 = (v3 >> 4) & 1;
+    v15 = (fileSystemFlags >> 4) & 1;
 LABEL_6:
-    v16 = [(NSString *)v14 fp_displayNameFromFilenameWithHiddenPathExtension:v15 isFolder:v13];
+    v16 = [(NSString *)v14 fp_displayNameFromFilenameWithHiddenPathExtension:v15 isFolder:isFolder];
     goto LABEL_9;
   }
 
@@ -7394,7 +7394,7 @@ LABEL_6:
   if (!displayName)
   {
     filename = self->_filename;
-    v13 = [(FPItem *)self isFolder];
+    isFolder = [(FPItem *)self isFolder];
     v14 = filename;
     v15 = 1;
     goto LABEL_6;
@@ -7407,12 +7407,12 @@ LABEL_9:
   return v18;
 }
 
-- (void)setFilename:(id)a3
+- (void)setFilename:(id)filename
 {
-  v12 = a3;
-  if (v12)
+  filenameCopy = filename;
+  if (filenameCopy)
   {
-    objc_storeStrong(&self->_filename, a3);
+    objc_storeStrong(&self->_filename, filename);
     displayName = self->_displayName;
     self->_displayName = 0;
   }
@@ -7428,12 +7428,12 @@ LABEL_9:
   }
 }
 
-- (void)setProviderID:(id)a3
+- (void)setProviderID:(id)d
 {
-  v12 = a3;
-  if (v12)
+  dCopy = d;
+  if (dCopy)
   {
-    objc_storeStrong(&self->_providerID, a3);
+    objc_storeStrong(&self->_providerID, d);
   }
 
   else
@@ -7447,12 +7447,12 @@ LABEL_9:
   }
 }
 
-- (void)setItemIdentifier:(id)a3
+- (void)setItemIdentifier:(id)identifier
 {
-  v12 = a3;
-  if (v12)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    objc_storeStrong(&self->_itemIdentifier, a3);
+    objc_storeStrong(&self->_itemIdentifier, identifier);
   }
 
   else
@@ -7466,20 +7466,20 @@ LABEL_9:
   }
 }
 
-- (void)_evaluateTypes:(id)a3
+- (void)_evaluateTypes:(id)types
 {
   v4 = [(UTType *)self->_contentType conformsToType:*MEMORY[0x1E6982F30]];
   v5 = [(UTType *)self->_contentType conformsToType:*MEMORY[0x1E6982D80]];
-  v6 = 1;
+  isFlattenedPackage = 1;
   if (!v4)
   {
-    v6 = [(FPItem *)self isFlattenedPackage];
+    isFlattenedPackage = [(FPItem *)self isFlattenedPackage];
   }
 
   obj = self;
   objc_sync_enter(obj);
   obj->_isFolder = v5 && !v4;
-  obj->_isPackage = v6;
+  obj->_isPackage = isFlattenedPackage;
   obj->_typesEvaluated = 1;
   objc_sync_exit(obj);
 }
@@ -7499,23 +7499,23 @@ LABEL_9:
   return v3;
 }
 
-- (void)setProviderDomainID:(id)a3
+- (void)setProviderDomainID:(id)d
 {
-  v4 = a3;
-  v5 = [v4 fp_toProviderID];
+  dCopy = d;
+  fp_toProviderID = [dCopy fp_toProviderID];
   providerID = self->_providerID;
-  self->_providerID = v5;
+  self->_providerID = fp_toProviderID;
 
-  v7 = [v4 fp_toDomainIdentifier];
+  fp_toDomainIdentifier = [dCopy fp_toDomainIdentifier];
 
   domainIdentifier = self->_domainIdentifier;
-  self->_domainIdentifier = v7;
+  self->_domainIdentifier = fp_toDomainIdentifier;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -7523,24 +7523,24 @@ LABEL_9:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(FPItem *)self isEqualToItem:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(FPItem *)self isEqualToItem:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToItem:(id)a3
+- (BOOL)isEqualToItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (self == itemCopy)
   {
     goto LABEL_9;
   }
 
   itemIdentifier = self->_itemIdentifier;
-  v7 = [(FPItem *)v4 itemIdentifier];
-  LODWORD(itemIdentifier) = [(NSString *)itemIdentifier isEqualToString:v7];
+  itemIdentifier = [(FPItem *)itemCopy itemIdentifier];
+  LODWORD(itemIdentifier) = [(NSString *)itemIdentifier isEqualToString:itemIdentifier];
 
   if (!itemIdentifier)
   {
@@ -7548,25 +7548,25 @@ LABEL_9:
   }
 
   domainIdentifier = self->_domainIdentifier;
-  v9 = [(FPItem *)v5 domainIdentifier];
-  v10 = v9;
-  if (domainIdentifier == v9)
+  domainIdentifier = [(FPItem *)v5 domainIdentifier];
+  v10 = domainIdentifier;
+  if (domainIdentifier == domainIdentifier)
   {
   }
 
   else
   {
-    v11 = [(FPItem *)v5 domainIdentifier];
-    if (!v11)
+    domainIdentifier2 = [(FPItem *)v5 domainIdentifier];
+    if (!domainIdentifier2)
     {
 
       goto LABEL_11;
     }
 
-    v12 = v11;
+    v12 = domainIdentifier2;
     v13 = self->_domainIdentifier;
-    v14 = [(FPItem *)v5 domainIdentifier];
-    LODWORD(v13) = [(NSString *)v13 isEqualToString:v14];
+    domainIdentifier3 = [(FPItem *)v5 domainIdentifier];
+    LODWORD(v13) = [(NSString *)v13 isEqualToString:domainIdentifier3];
 
     if (!v13)
     {
@@ -7575,8 +7575,8 @@ LABEL_9:
   }
 
   providerID = self->_providerID;
-  v16 = [(FPItem *)v5 providerID];
-  LOBYTE(providerID) = [(NSString *)providerID isEqualToString:v16];
+  providerID = [(FPItem *)v5 providerID];
+  LOBYTE(providerID) = [(NSString *)providerID isEqualToString:providerID];
 
   if ((providerID & 1) == 0)
   {
@@ -7592,12 +7592,12 @@ LABEL_12:
   return v17;
 }
 
-- (id)descriptionForFPCTL:(BOOL)a3
+- (id)descriptionForFPCTL:(BOOL)l
 {
-  v3 = a3;
+  lCopy = l;
   v5 = [MEMORY[0x1E696AD60] stringWithCapacity:256];
   v6 = v5;
-  if (!v3)
+  if (!lCopy)
   {
     [v5 appendFormat:@"<"];
   }
@@ -7620,7 +7620,7 @@ LABEL_12:
 
   p_isa = &v8->isa;
 LABEL_8:
-  if (v3)
+  if (lCopy)
   {
     [v6 appendFormat:@"i:%@", p_isa, v76, v77];
   }
@@ -7669,7 +7669,7 @@ LABEL_17:
 
 LABEL_18:
   displayName = self->_displayName;
-  if (v3)
+  if (lCopy)
   {
     if (displayName)
     {
@@ -7686,14 +7686,14 @@ LABEL_18:
   {
     if (displayName)
     {
-      v11 = [(NSString *)displayName fp_obfuscatedFilename];
-      [v6 appendFormat:@" l:%@", v11];
+      fp_obfuscatedFilename = [(NSString *)displayName fp_obfuscatedFilename];
+      [v6 appendFormat:@" l:%@", fp_obfuscatedFilename];
     }
 
     else
     {
-      v11 = [(NSString *)self->_filename fp_obfuscatedFilename];
-      [v6 appendFormat:@" f:%@", v11];
+      fp_obfuscatedFilename = [(NSString *)self->_filename fp_obfuscatedFilename];
+      [v6 appendFormat:@" f:%@", fp_obfuscatedFilename];
     }
   }
 
@@ -7752,8 +7752,8 @@ LABEL_42:
     [v6 appendFormat:@" c:%@", self->_childItemCount];
   }
 
-  v17 = [(FPItem *)self humanReadableCapabilities];
-  [v6 appendFormat:@" cap:%@", v17];
+  humanReadableCapabilities = [(FPItem *)self humanReadableCapabilities];
+  [v6 appendFormat:@" cap:%@", humanReadableCapabilities];
 
   [(NSDate *)self->_creationDate timeIntervalSince1970];
   [v6 appendFormat:@" bt:%lld", v18];
@@ -7761,9 +7761,9 @@ LABEL_42:
   [v6 appendFormat:@" mt:%lld", v19];
   if ([(FPItem *)self isItemPinned]|| [(FPItem *)self isPinnedSubitem])
   {
-    v20 = [(FPItem *)self isPinnedSubitem];
+    isPinnedSubitem = [(FPItem *)self isPinnedSubitem];
     v21 = 114;
-    if (v20)
+    if (isPinnedSubitem)
     {
       v21 = 115;
     }
@@ -7780,11 +7780,11 @@ LABEL_42:
 
   if (self->_shared)
   {
-    v24 = [MEMORY[0x1E695DF70] array];
-    v25 = v24;
+    array = [MEMORY[0x1E695DF70] array];
+    v25 = array;
     if (self->_sharedByCurrentUser)
     {
-      [v24 addObject:@"shared-by-me"];
+      [array addObject:@"shared-by-me"];
     }
 
     else
@@ -7793,8 +7793,8 @@ LABEL_42:
       if (ownerNameComponents)
       {
         v27 = MEMORY[0x1E696AEC0];
-        v28 = [(NSPersonNameComponents *)ownerNameComponents givenName];
-        v29 = [v27 stringWithFormat:@"shared-by:%@", v28];
+        givenName = [(NSPersonNameComponents *)ownerNameComponents givenName];
+        v29 = [v27 stringWithFormat:@"shared-by:%@", givenName];
 
         [v25 addObject:v29];
       }
@@ -7811,8 +7811,8 @@ LABEL_42:
       if (mostRecentEditorNameComponents)
       {
         v31 = MEMORY[0x1E696AEC0];
-        v32 = [(NSPersonNameComponents *)mostRecentEditorNameComponents givenName];
-        v33 = [v31 stringWithFormat:@"mod-by:%@", v32];
+        givenName2 = [(NSPersonNameComponents *)mostRecentEditorNameComponents givenName];
+        v33 = [v31 stringWithFormat:@"mod-by:%@", givenName2];
 
         [v25 addObject:v33];
       }
@@ -7835,13 +7835,13 @@ LABEL_42:
     }
   }
 
-  v35 = [(FPItem *)self tags];
-  v36 = [v35 count];
+  tags = [(FPItem *)self tags];
+  v36 = [tags count];
 
   if (v36)
   {
-    v37 = [(FPItem *)self tags];
-    v38 = [v37 fp_map:&__block_literal_global_2];
+    tags2 = [(FPItem *)self tags];
+    v38 = [tags2 fp_map:&__block_literal_global_2];
     v39 = [v38 componentsJoinedByString:{@", "}];
     [v6 appendFormat:@" tags:[%@]", v39];
   }
@@ -7852,17 +7852,17 @@ LABEL_42:
     [v6 appendFormat:@" fr:%llu", -[NSNumber unsignedLongLongValue](favoriteRank, "unsignedLongLongValue")];
   }
 
-  if (!v3)
+  if (!lCopy)
   {
-    v41 = self;
-    objc_sync_enter(v41);
-    v42 = v41->_fileURL;
-    objc_sync_exit(v41);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v42 = selfCopy->_fileURL;
+    objc_sync_exit(selfCopy);
 
     if (v42)
     {
-      v43 = [(NSURL *)v42 fp_shortDescription];
-      [v6 appendFormat:@" url:%@", v43];
+      fp_shortDescription = [(NSURL *)v42 fp_shortDescription];
+      [v6 appendFormat:@" url:%@", fp_shortDescription];
     }
   }
 
@@ -7932,22 +7932,22 @@ LABEL_42:
     [v6 appendFormat:@" creatorcode:%x", self->_typeAndCreator.creator];
   }
 
-  v52 = [(FPItem *)self typeIdentifier];
-  [v6 appendFormat:@" uti:%@", v52];
+  typeIdentifier = [(FPItem *)self typeIdentifier];
+  [v6 appendFormat:@" uti:%@", typeIdentifier];
 
   symlinkTargetPath = self->_symlinkTargetPath;
   if (symlinkTargetPath)
   {
-    v54 = [(NSString *)symlinkTargetPath fp_obfuscatedPath];
-    [v6 appendFormat:@" tg:%@", v54];
+    fp_obfuscatedPath = [(NSString *)symlinkTargetPath fp_obfuscatedPath];
+    [v6 appendFormat:@" tg:%@", fp_obfuscatedPath];
   }
 
   if (self->_uploading)
   {
-    v55 = self;
-    objc_sync_enter(v55);
-    v56 = v55->_progress;
-    objc_sync_exit(v55);
+    selfCopy2 = self;
+    objc_sync_enter(selfCopy2);
+    v56 = selfCopy2->_progress;
+    objc_sync_exit(selfCopy2);
 
     if ([(NSProgress *)v56 fp_isOfFileOperationKind:*MEMORY[0x1E696A870]])
     {
@@ -7995,10 +7995,10 @@ LABEL_42:
 
   if (self->_downloading || [(FPItem *)self isExternalDownloadPlaceholder])
   {
-    v62 = self;
-    objc_sync_enter(v62);
-    v63 = v62->_progress;
-    objc_sync_exit(v62);
+    selfCopy3 = self;
+    objc_sync_enter(selfCopy3);
+    v63 = selfCopy3->_progress;
+    objc_sync_exit(selfCopy3);
 
     if ([(NSProgress *)v63 fp_isOfFileOperationKind:*MEMORY[0x1E696A848]])
     {
@@ -8108,7 +8108,7 @@ LABEL_144:
     [v6 appendFormat:@" deco:%@", v69];
   }
 
-  if (v3)
+  if (lCopy)
   {
     if ([(NSDictionary *)self->_userInfo count])
     {
@@ -8167,37 +8167,37 @@ LABEL_144:
   return tags;
 }
 
-- (void)setTagData:(id)a3
+- (void)setTagData:(id)data
 {
-  v4 = a3;
-  v8 = v4;
-  if (!v4)
+  dataCopy = data;
+  v8 = dataCopy;
+  if (!dataCopy)
   {
     tags = self->_tags;
     self->_tags = 0;
 
-    v4 = 0;
+    dataCopy = 0;
   }
 
-  v6 = FPGetTagsFromTagsData(v4);
+  v6 = FPGetTagsFromTagsData(dataCopy);
   v7 = self->_tags;
   self->_tags = v6;
 }
 
-- (int64_t)localizedStandardTagsCompare:(id)a3
+- (int64_t)localizedStandardTagsCompare:(id)compare
 {
-  v4 = a3;
-  v5 = [(FPItem *)self tags];
-  v6 = [v4 tags];
-  v7 = [v5 count];
-  if (v7 >= [v6 count])
+  compareCopy = compare;
+  tags = [(FPItem *)self tags];
+  tags2 = [compareCopy tags];
+  v7 = [tags count];
+  if (v7 >= [tags2 count])
   {
-    v8 = v6;
+    v8 = tags2;
   }
 
   else
   {
-    v8 = v5;
+    v8 = tags;
   }
 
   v9 = [v8 count];
@@ -8208,8 +8208,8 @@ LABEL_144:
     while (1)
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = [v5 objectAtIndexedSubscript:v11];
-      v14 = [v6 objectAtIndexedSubscript:v11];
+      v13 = [tags objectAtIndexedSubscript:v11];
+      v14 = [tags2 objectAtIndexedSubscript:v11];
       v15 = [v13 localizedStandardCompare:v14];
 
       objc_autoreleasePoolPop(v12);
@@ -8228,13 +8228,13 @@ LABEL_144:
   else
   {
 LABEL_8:
-    if ([v5 count] && objc_msgSend(v6, "count"))
+    if ([tags count] && objc_msgSend(tags2, "count"))
     {
-      v16 = [v5 count];
-      if (v16 >= [v6 count])
+      v16 = [tags count];
+      if (v16 >= [tags2 count])
       {
-        v17 = [v5 count];
-        v15 = v17 != [v6 count];
+        v17 = [tags count];
+        v15 = v17 != [tags2 count];
       }
 
       else
@@ -8243,9 +8243,9 @@ LABEL_8:
       }
     }
 
-    else if ([v5 count] || objc_msgSend(v6, "count"))
+    else if ([tags count] || objc_msgSend(tags2, "count"))
     {
-      if ([v5 count])
+      if ([tags count])
       {
         v15 = -1;
       }
@@ -8270,24 +8270,24 @@ LABEL_8:
   versionIdentifier = self->_versionIdentifier;
   if (versionIdentifier)
   {
-    v3 = versionIdentifier;
+    contentVersion = versionIdentifier;
   }
 
   else
   {
-    v3 = [(NSFileProviderItemVersion *)self->_itemVersion contentVersion];
+    contentVersion = [(NSFileProviderItemVersion *)self->_itemVersion contentVersion];
   }
 
-  return v3;
+  return contentVersion;
 }
 
-- (void)setFileURL:(id)a3
+- (void)setFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   obj = self;
   objc_sync_enter(obj);
   fileURL = obj->_fileURL;
-  obj->_fileURL = v4;
+  obj->_fileURL = lCopy;
 
   objc_sync_exit(obj);
 }
@@ -8304,9 +8304,9 @@ LABEL_8:
     return @"com.apple.FileProvider.ModifiedByMe";
   }
 
-  v5 = [(FPItem *)self mostRecentEditorNameComponents];
+  mostRecentEditorNameComponents = [(FPItem *)self mostRecentEditorNameComponents];
 
-  if (v5)
+  if (mostRecentEditorNameComponents)
   {
     return @"com.apple.FileProvider.ModifiedByOther";
   }
@@ -8317,9 +8317,9 @@ LABEL_2:
     return @"com.apple.FileProvider.SharedByMe";
   }
 
-  v4 = [(FPItem *)self ownerNameComponents];
+  ownerNameComponents = [(FPItem *)self ownerNameComponents];
 
-  if (v4)
+  if (ownerNameComponents)
   {
     return @"com.apple.FileProvider.SharedByOther";
   }
@@ -8381,38 +8381,38 @@ id __25__FPItem_itemDecorations__block_invoke(uint64_t a1, uint64_t a2)
   return v12;
 }
 
-- (id)ubiquitousResourceKeysDiffAgainstItem:(id)a3
+- (id)ubiquitousResourceKeysDiffAgainstItem:(id)item
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [(FPItem *)self isCloudItem];
-  if (v6 != [v4 isCloudItem])
+  itemCopy = item;
+  array = [MEMORY[0x1E695DF70] array];
+  isCloudItem = [(FPItem *)self isCloudItem];
+  if (isCloudItem != [itemCopy isCloudItem])
   {
-    [v5 addObject:*MEMORY[0x1E695DBD8]];
+    [array addObject:*MEMORY[0x1E695DBD8]];
   }
 
-  v7 = [(FPItem *)self isUploaded];
-  if (v7 != [v4 isUploaded])
+  isUploaded = [(FPItem *)self isUploaded];
+  if (isUploaded != [itemCopy isUploaded])
   {
-    [v5 addObject:*MEMORY[0x1E695DCD8]];
+    [array addObject:*MEMORY[0x1E695DCD8]];
   }
 
-  v8 = [(FPItem *)self isUploading];
-  if (v8 != [v4 isUploading])
+  isUploading = [(FPItem *)self isUploading];
+  if (isUploading != [itemCopy isUploading])
   {
-    [v5 addObject:*MEMORY[0x1E695DCE0]];
+    [array addObject:*MEMORY[0x1E695DCE0]];
   }
 
-  v9 = [(FPItem *)self isDownloading];
-  if (v9 != [v4 isDownloading])
+  isDownloading = [(FPItem *)self isDownloading];
+  if (isDownloading != [itemCopy isDownloading])
   {
-    [v5 addObject:*MEMORY[0x1E695DCB8]];
+    [array addObject:*MEMORY[0x1E695DCB8]];
   }
 
-  v10 = [(FPItem *)self _downloadingStatus];
-  v11 = [v4 _downloadingStatus];
-  v12 = v10;
-  v13 = v11;
+  _downloadingStatus = [(FPItem *)self _downloadingStatus];
+  _downloadingStatus2 = [itemCopy _downloadingStatus];
+  v12 = _downloadingStatus;
+  v13 = _downloadingStatus2;
   v14 = v13;
   if (v12 == v13)
   {
@@ -8431,14 +8431,14 @@ id __25__FPItem_itemDecorations__block_invoke(uint64_t a1, uint64_t a2)
   if ((v15 & 1) == 0)
   {
 LABEL_15:
-    [v5 addObject:*MEMORY[0x1E695DC98]];
+    [array addObject:*MEMORY[0x1E695DC98]];
   }
 
 LABEL_16:
-  v16 = [(FPItem *)self uploadingError];
-  v17 = [v4 uploadingError];
-  v18 = v16;
-  v19 = v17;
+  uploadingError = [(FPItem *)self uploadingError];
+  uploadingError2 = [itemCopy uploadingError];
+  v18 = uploadingError;
+  v19 = uploadingError2;
   v20 = v19;
   if (v18 == v19)
   {
@@ -8457,14 +8457,14 @@ LABEL_16:
   if ((v21 & 1) == 0)
   {
 LABEL_22:
-    [v5 addObject:*MEMORY[0x1E695DCF0]];
+    [array addObject:*MEMORY[0x1E695DCF0]];
   }
 
 LABEL_23:
-  v22 = [(FPItem *)self downloadingError];
-  v23 = [v4 downloadingError];
-  v24 = v22;
-  v25 = v23;
+  downloadingError = [(FPItem *)self downloadingError];
+  downloadingError2 = [itemCopy downloadingError];
+  v24 = downloadingError;
+  v25 = downloadingError2;
   v26 = v25;
   if (v24 == v25)
   {
@@ -8483,14 +8483,14 @@ LABEL_23:
   if ((v27 & 1) == 0)
   {
 LABEL_29:
-    [v5 addObject:*MEMORY[0x1E695DC80]];
+    [array addObject:*MEMORY[0x1E695DC80]];
   }
 
 LABEL_30:
-  v28 = [(FPItem *)self ownerNameComponents];
-  v29 = [v4 ownerNameComponents];
-  v30 = v28;
-  v31 = v29;
+  ownerNameComponents = [(FPItem *)self ownerNameComponents];
+  ownerNameComponents2 = [itemCopy ownerNameComponents];
+  v30 = ownerNameComponents;
+  v31 = ownerNameComponents2;
   v32 = v31;
   if (v30 == v31)
   {
@@ -8509,14 +8509,14 @@ LABEL_30:
   if ((v33 & 1) == 0)
   {
 LABEL_36:
-    [v5 addObject:*MEMORY[0x1E695DD10]];
+    [array addObject:*MEMORY[0x1E695DD10]];
   }
 
 LABEL_37:
-  v34 = [(FPItem *)self mostRecentEditorNameComponents];
-  v35 = [v4 mostRecentEditorNameComponents];
-  v36 = v34;
-  v37 = v35;
+  mostRecentEditorNameComponents = [(FPItem *)self mostRecentEditorNameComponents];
+  mostRecentEditorNameComponents2 = [itemCopy mostRecentEditorNameComponents];
+  v36 = mostRecentEditorNameComponents;
+  v37 = mostRecentEditorNameComponents2;
   v38 = v37;
   if (v36 == v37)
   {
@@ -8535,14 +8535,14 @@ LABEL_37:
   if ((v39 & 1) == 0)
   {
 LABEL_43:
-    [v5 addObject:*MEMORY[0x1E695DD08]];
+    [array addObject:*MEMORY[0x1E695DD08]];
   }
 
 LABEL_44:
-  v40 = [(FPItem *)self hasUnresolvedConflicts];
-  v41 = [v4 hasUnresolvedConflicts];
-  v42 = v40;
-  v43 = v41;
+  hasUnresolvedConflicts = [(FPItem *)self hasUnresolvedConflicts];
+  hasUnresolvedConflicts2 = [itemCopy hasUnresolvedConflicts];
+  v42 = hasUnresolvedConflicts;
+  v43 = hasUnresolvedConflicts2;
   v44 = v43;
   if (v42 == v43)
   {
@@ -8561,14 +8561,14 @@ LABEL_44:
   if ((v45 & 1) == 0)
   {
 LABEL_50:
-    [v5 addObject:*MEMORY[0x1E695DCA8]];
+    [array addObject:*MEMORY[0x1E695DCA8]];
   }
 
 LABEL_51:
-  v46 = [(FPItem *)self containerDisplayName];
-  v47 = [v4 containerDisplayName];
-  v48 = v46;
-  v49 = v47;
+  containerDisplayName = [(FPItem *)self containerDisplayName];
+  containerDisplayName2 = [itemCopy containerDisplayName];
+  v48 = containerDisplayName;
+  v49 = containerDisplayName2;
   v50 = v49;
   if (v48 == v49)
   {
@@ -8587,14 +8587,14 @@ LABEL_51:
   if ((v51 & 1) == 0)
   {
 LABEL_57:
-    [v5 addObject:*MEMORY[0x1E695DC70]];
+    [array addObject:*MEMORY[0x1E695DC70]];
   }
 
 LABEL_58:
-  v52 = [(FPItem *)self isDownloadRequested];
-  v53 = [v4 isDownloadRequested];
-  v54 = v52;
-  v55 = v53;
+  isDownloadRequested = [(FPItem *)self isDownloadRequested];
+  isDownloadRequested2 = [itemCopy isDownloadRequested];
+  v54 = isDownloadRequested;
+  v55 = isDownloadRequested2;
   v56 = v55;
   if (v54 == v55)
   {
@@ -8613,44 +8613,44 @@ LABEL_58:
   if ((v57 & 1) == 0)
   {
 LABEL_64:
-    [v5 addObject:*MEMORY[0x1E695DC78]];
+    [array addObject:*MEMORY[0x1E695DC78]];
   }
 
 LABEL_65:
-  v58 = [(FPItem *)self isShared];
-  if (v58 != [v4 isShared])
+  isShared = [(FPItem *)self isShared];
+  if (isShared != [itemCopy isShared])
   {
-    [v5 addObject:*MEMORY[0x1E695DCC8]];
+    [array addObject:*MEMORY[0x1E695DCC8]];
   }
 
   if ([(FPItem *)self isShared])
   {
-    if ([v4 isShared])
+    if ([itemCopy isShared])
     {
-      v59 = [(FPItem *)self isSharedByCurrentUser];
-      if (v59 != [v4 isSharedByCurrentUser])
+      isSharedByCurrentUser = [(FPItem *)self isSharedByCurrentUser];
+      if (isSharedByCurrentUser != [itemCopy isSharedByCurrentUser])
       {
-        [v5 addObject:*MEMORY[0x1E695DD00]];
+        [array addObject:*MEMORY[0x1E695DD00]];
       }
     }
   }
 
   if ([(FPItem *)self isShared])
   {
-    if ([v4 isShared])
+    if ([itemCopy isShared])
     {
-      v60 = [(FPItem *)self isWritable];
-      if (v60 != [v4 isWritable])
+      isWritable = [(FPItem *)self isWritable];
+      if (isWritable != [itemCopy isWritable])
       {
-        [v5 addObject:*MEMORY[0x1E695DCF8]];
+        [array addObject:*MEMORY[0x1E695DCF8]];
       }
     }
   }
 
-  v61 = [(FPItem *)self sharingPermissions];
-  v62 = [v4 sharingPermissions];
-  v63 = v61;
-  v64 = v62;
+  sharingPermissions = [(FPItem *)self sharingPermissions];
+  sharingPermissions2 = [itemCopy sharingPermissions];
+  v63 = sharingPermissions;
+  v64 = sharingPermissions2;
   v65 = v64;
   if (v63 == v64)
   {
@@ -8669,23 +8669,23 @@ LABEL_65:
   if ((v66 & 1) == 0)
   {
 LABEL_81:
-    [v5 addObject:*MEMORY[0x1E695DD20]];
+    [array addObject:*MEMORY[0x1E695DD20]];
   }
 
 LABEL_82:
-  v67 = [(FPItem *)self isSyncPaused];
-  if (v67 != [v4 isSyncPaused])
+  isSyncPaused = [(FPItem *)self isSyncPaused];
+  if (isSyncPaused != [itemCopy isSyncPaused])
   {
-    [v5 addObject:*MEMORY[0x1E695DCD0]];
+    [array addObject:*MEMORY[0x1E695DCD0]];
   }
 
-  v68 = [(FPItem *)self supportsUploadWithFailOnConflict];
-  if (v68 != [v4 supportsUploadWithFailOnConflict])
+  supportsUploadWithFailOnConflict = [(FPItem *)self supportsUploadWithFailOnConflict];
+  if (supportsUploadWithFailOnConflict != [itemCopy supportsUploadWithFailOnConflict])
   {
-    [v5 addObject:*MEMORY[0x1E695DCE8]];
+    [array addObject:*MEMORY[0x1E695DCE8]];
   }
 
-  v69 = [MEMORY[0x1E695DFD8] setWithArray:v5];
+  v69 = [MEMORY[0x1E695DFD8] setWithArray:array];
 
   return v69;
 }
@@ -8698,9 +8698,9 @@ LABEL_82:
     {
       if ([(FPItem *)self supportsMostRecentVersionDownloaded])
       {
-        v3 = [(FPItem *)self isMostRecentVersionDownloaded];
+        isMostRecentVersionDownloaded = [(FPItem *)self isMostRecentVersionDownloaded];
         v4 = MEMORY[0x1E695DC88];
-        if (!v3)
+        if (!isMostRecentVersionDownloaded)
         {
           v4 = MEMORY[0x1E695DC90];
         }
@@ -8730,14 +8730,14 @@ LABEL_82:
 
 - (BOOL)isKnownByTheProvider
 {
-  v3 = [(FPItem *)self itemIdentifier];
-  if ([v3 hasPrefix:@"__fp/"])
+  itemIdentifier = [(FPItem *)self itemIdentifier];
+  if ([itemIdentifier hasPrefix:@"__fp/"])
   {
-    v4 = [(FPItem *)self formerIdentifier];
-    if (v4)
+    formerIdentifier = [(FPItem *)self formerIdentifier];
+    if (formerIdentifier)
     {
-      v5 = [(FPItem *)self formerIdentifier];
-      v6 = [v5 hasPrefix:@"__fp/"] ^ 1;
+      formerIdentifier2 = [(FPItem *)self formerIdentifier];
+      v6 = [formerIdentifier2 hasPrefix:@"__fp/"] ^ 1;
     }
 
     else
@@ -8754,12 +8754,12 @@ LABEL_82:
   return v6;
 }
 
-- (void)itemIsSupportedSearchScopeWithCachePolicy:(unint64_t)a3 completionHandler:(id)a4
+- (void)itemIsSupportedSearchScopeWithCachePolicy:(unint64_t)policy completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   if (![(FPItem *)self isFolder]|| [(FPItem *)self exclusionType]|| [(FPItem *)self isIgnoreRoot])
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   else
@@ -8768,8 +8768,8 @@ LABEL_82:
     v7[1] = 3221225472;
     v7[2] = __70__FPItem_itemIsSupportedSearchScopeWithCachePolicy_completionHandler___block_invoke;
     v7[3] = &unk_1E793A150;
-    v8 = v6;
-    [FPProviderDomain fetchProviderDomainForItem:self cachePolicy:a3 completionHandler:v7];
+    v8 = handlerCopy;
+    [FPProviderDomain fetchProviderDomainForItem:self cachePolicy:policy completionHandler:v7];
   }
 }
 
@@ -8794,11 +8794,11 @@ uint64_t __70__FPItem_itemIsSupportedSearchScopeWithCachePolicy_completionHandle
   return v4(v5, v6, a3);
 }
 
-- (id)fp_valueForKeyPath:(id)a3
+- (id)fp_valueForKeyPath:(id)path
 {
   v13 = 0;
   v14 = 0;
-  v4 = [a3 fp_splitKeyPathInProperty:&v14 remainder:&v13];
+  v4 = [path fp_splitKeyPathInProperty:&v14 remainder:&v13];
   v5 = v14;
   v6 = v13;
   v7 = 0;
@@ -8833,10 +8833,10 @@ LABEL_9:
 
 - (FPItemID)providerParentItemID
 {
-  v3 = [(FPItem *)self parentItemID];
-  v4 = [v3 isDiskIdentifier];
+  parentItemID = [(FPItem *)self parentItemID];
+  isDiskIdentifier = [parentItemID isDiskIdentifier];
 
-  if (v4)
+  if (isDiskIdentifier)
   {
     [(FPItem *)self parentFormerItemID];
   }
@@ -8852,10 +8852,10 @@ LABEL_9:
 
 - (NSString)providerParentItemIdentifier
 {
-  v2 = [(FPItem *)self providerParentItemID];
-  v3 = [v2 identifier];
+  providerParentItemID = [(FPItem *)self providerParentItemID];
+  identifier = [providerParentItemID identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (id)scopedSearchQueryUnderItem
@@ -8863,9 +8863,9 @@ LABEL_9:
   if ([(FPItem *)self isFolder])
   {
     v3 = [NSFileProviderSearchQuery alloc];
-    v4 = [(FPItem *)self itemID];
-    v5 = [(FPItem *)self providerItemID];
-    v6 = [(NSFileProviderSearchQuery *)v3 initWithSearchScopedToItemID:v4 alternateItemID:v5];
+    itemID = [(FPItem *)self itemID];
+    providerItemID = [(FPItem *)self providerItemID];
+    v6 = [(NSFileProviderSearchQuery *)v3 initWithSearchScopedToItemID:itemID alternateItemID:providerItemID];
   }
 
   else
@@ -8878,9 +8878,9 @@ LABEL_9:
 
 - (id)coreSpotlightIdentifier
 {
-  v3 = [(FPItem *)self formerIdentifier];
+  formerIdentifier = [(FPItem *)self formerIdentifier];
 
-  if (v3)
+  if (formerIdentifier)
   {
     [(FPItem *)self formerItemID];
   }
@@ -8890,19 +8890,19 @@ LABEL_9:
     [(FPItem *)self itemID];
   }
   v4 = ;
-  v5 = [v4 coreSpotlightIdentifier];
+  coreSpotlightIdentifier = [v4 coreSpotlightIdentifier];
 
-  return v5;
+  return coreSpotlightIdentifier;
 }
 
-+ (id)appLibraryFromContainerItem:(id)a3 documentsItem:(id)a4
++ (id)appLibraryFromContainerItem:(id)item documentsItem:(id)documentsItem
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  itemCopy = item;
+  documentsItemCopy = documentsItem;
+  v9 = documentsItemCopy;
+  if (itemCopy)
   {
-    if (v8)
+    if (documentsItemCopy)
     {
       goto LABEL_3;
     }
@@ -8910,8 +8910,8 @@ LABEL_9:
 
   else
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:a1 file:@"FPItem+FPAppLibraryCollection.m" lineNumber:20 description:@"containerItem must not be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"FPItem+FPAppLibraryCollection.m" lineNumber:20 description:@"containerItem must not be nil"];
 
     if (v9)
     {
@@ -8919,46 +8919,46 @@ LABEL_9:
     }
   }
 
-  v21 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v21 handleFailureInMethod:a2 object:a1 file:@"FPItem+FPAppLibraryCollection.m" lineNumber:21 description:@"documentsItem must not be nil"];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"FPItem+FPAppLibraryCollection.m" lineNumber:21 description:@"documentsItem must not be nil"];
 
 LABEL_3:
-  if ([v7 fp_isCloudDocsContainer])
+  if ([itemCopy fp_isCloudDocsContainer])
   {
     v10 = 0;
   }
 
   else
   {
-    v11 = [v7 copy];
-    v12 = [v9 fileURL];
-    [v11 setFileURL:v12];
+    v11 = [itemCopy copy];
+    fileURL = [v9 fileURL];
+    [v11 setFileURL:fileURL];
 
-    v13 = [v9 itemIdentifier];
-    [v11 setItemIdentifier:v13];
+    itemIdentifier = [v9 itemIdentifier];
+    [v11 setItemIdentifier:itemIdentifier];
 
     [v11 setFileID:{objc_msgSend(v9, "fileID")}];
-    v14 = [v9 formerIdentifier];
-    [v11 setFormerIdentifier:v14];
+    formerIdentifier = [v9 formerIdentifier];
+    [v11 setFormerIdentifier:formerIdentifier];
 
-    v15 = [v9 creationDate];
-    [v11 setCreationDate:v15];
+    creationDate = [v9 creationDate];
+    [v11 setCreationDate:creationDate];
 
-    v16 = [v9 lastUsedDate];
-    [v11 setLastUsedDate:v16];
+    lastUsedDate = [v9 lastUsedDate];
+    [v11 setLastUsedDate:lastUsedDate];
 
-    v17 = [v9 contentModificationDate];
-    [v11 setContentModificationDate:v17];
+    contentModificationDate = [v9 contentModificationDate];
+    [v11 setContentModificationDate:contentModificationDate];
 
     [v11 setRecursivelyDownloaded:{objc_msgSend(v9, "isRecursivelyDownloaded")}];
     [v11 setDownloaded:{objc_msgSend(v9, "isDownloaded")}];
     [v11 setDownloading:{objc_msgSend(v9, "isDownloading")}];
     [v11 setCapabilities:{objc_msgSend(v9, "capabilities")}];
-    v18 = [v9 favoriteRank];
-    [v11 setFavoriteRank:v18];
+    favoriteRank = [v9 favoriteRank];
+    [v11 setFavoriteRank:favoriteRank];
 
-    v19 = [v9 childItemCount];
-    [v11 setChildItemCount:v19];
+    childItemCount = [v9 childItemCount];
+    [v11 setChildItemCount:childItemCount];
 
     [v11 setPinned:{objc_msgSend(v9, "isPinned")}];
     [v11 setInPinnedFolder:{objc_msgSend(v9, "isInPinnedFolder")}];
@@ -8987,17 +8987,17 @@ LABEL_3:
 
 - (BOOL)isValidAppLibrary
 {
-  v3 = [(FPItem *)self isValidContainerForAppLibrary];
-  if (v3)
+  isValidContainerForAppLibrary = [(FPItem *)self isValidContainerForAppLibrary];
+  if (isValidContainerForAppLibrary)
   {
-    v4 = [(FPItem *)self fileURL];
-    v5 = [v4 lastPathComponent];
-    v6 = [v5 isEqualToString:@"Documents"];
+    fileURL = [(FPItem *)self fileURL];
+    lastPathComponent = [fileURL lastPathComponent];
+    v6 = [lastPathComponent isEqualToString:@"Documents"];
 
-    LOBYTE(v3) = v6;
+    LOBYTE(isValidContainerForAppLibrary) = v6;
   }
 
-  return v3;
+  return isValidContainerForAppLibrary;
 }
 
 - (BOOL)isValidContainerForAppLibrary
@@ -9007,14 +9007,14 @@ LABEL_3:
     return 0;
   }
 
-  v3 = [(FPItem *)self fp_appContainerBundleIdentifier];
-  if ([v3 length])
+  fp_appContainerBundleIdentifier = [(FPItem *)self fp_appContainerBundleIdentifier];
+  if ([fp_appContainerBundleIdentifier length])
   {
-    v4 = [(FPItem *)self displayName];
-    if ([v4 length])
+    displayName = [(FPItem *)self displayName];
+    if ([displayName length])
     {
-      v5 = [(FPItem *)self fileURL];
-      v6 = v5 != 0;
+      fileURL = [(FPItem *)self fileURL];
+      v6 = fileURL != 0;
     }
 
     else
@@ -9033,10 +9033,10 @@ LABEL_3:
 
 - (id)toSearchableItem
 {
-  v3 = [(FPItem *)self spotlightDomainIdentifier];
-  if (v3)
+  spotlightDomainIdentifier = [(FPItem *)self spotlightDomainIdentifier];
+  if (spotlightDomainIdentifier)
   {
-    v4 = v3;
+    v4 = spotlightDomainIdentifier;
     v137 = 0;
     v138 = &v137;
     v139 = 0x2050000000;
@@ -9056,27 +9056,27 @@ LABEL_3:
     v6 = v5;
     _Block_object_dispose(&v137, 8);
     v7 = objc_alloc_init(v5);
-    v125 = [(FPItem *)self coreSpotlightIdentifier];
-    v124 = [(FPItem *)self providerID];
-    v123 = [(FPItem *)self domainIdentifier];
-    v122 = [(FPItem *)self filename];
-    v121 = [(FPItem *)self filename];
-    v120 = [(FPItem *)self displayName];
-    v119 = [(FPItem *)self typeIdentifier];
-    v8 = [(FPItem *)self formerIdentifier];
-    if (v8)
+    coreSpotlightIdentifier = [(FPItem *)self coreSpotlightIdentifier];
+    providerID = [(FPItem *)self providerID];
+    domainIdentifier = [(FPItem *)self domainIdentifier];
+    filename = [(FPItem *)self filename];
+    filename2 = [(FPItem *)self filename];
+    displayName = [(FPItem *)self displayName];
+    typeIdentifier = [(FPItem *)self typeIdentifier];
+    formerIdentifier = [(FPItem *)self formerIdentifier];
+    if (formerIdentifier)
     {
-      v9 = v8;
-      v10 = [(FPItem *)self formerIdentifier];
-      v11 = [(FPItem *)self itemID];
-      v12 = [v11 identifier];
-      v13 = [v10 isEqualToString:v12];
+      v9 = formerIdentifier;
+      formerIdentifier2 = [(FPItem *)self formerIdentifier];
+      itemID = [(FPItem *)self itemID];
+      identifier = [itemID identifier];
+      v13 = [formerIdentifier2 isEqualToString:identifier];
 
       if ((v13 & 1) == 0)
       {
         v132 = 0;
-        v14 = [(FPItem *)self itemIdentifier];
-        v15 = [v14 fp_getParsedDiskIdentifier:&v132];
+        itemIdentifier = [(FPItem *)self itemIdentifier];
+        v15 = [itemIdentifier fp_getParsedDiskIdentifier:&v132];
 
         if (v15)
         {
@@ -9094,8 +9094,8 @@ LABEL_3:
 
     v16 = 0;
 LABEL_15:
-    v19 = [(FPItem *)self contentType];
-    if (v19 && (!-[FPItem isCloudItem](self, "isCloudItem") || -[FPItem isDownloaded](self, "isDownloaded")) && (([v19 conformsToType:*MEMORY[0x1E6982E30]] & 1) != 0 || objc_msgSend(v19, "conformsToType:", *MEMORY[0x1E6982EE8])))
+    contentType = [(FPItem *)self contentType];
+    if (contentType && (!-[FPItem isCloudItem](self, "isCloudItem") || -[FPItem isDownloaded](self, "isDownloaded")) && (([contentType conformsToType:*MEMORY[0x1E6982E30]] & 1) != 0 || objc_msgSend(contentType, "conformsToType:", *MEMORY[0x1E6982EE8])))
     {
       v20 = MEMORY[0x1E695E118];
     }
@@ -9105,11 +9105,11 @@ LABEL_15:
       v20 = 0;
     }
 
-    v21 = [(FPItem *)self contentType];
-    v22 = [v21 _localizedDescriptionDictionary];
+    contentType2 = [(FPItem *)self contentType];
+    _localizedDescriptionDictionary = [contentType2 _localizedDescriptionDictionary];
 
     v84 = v20;
-    if (v22)
+    if (_localizedDescriptionDictionary)
     {
       v137 = 0;
       v138 = &v137;
@@ -9129,7 +9129,7 @@ LABEL_15:
 
       v24 = v23;
       _Block_object_dispose(&v137, 8);
-      v118 = [[v23 alloc] initWithLocalizedStrings:v22];
+      v118 = [[v23 alloc] initWithLocalizedStrings:_localizedDescriptionDictionary];
     }
 
     else
@@ -9137,20 +9137,20 @@ LABEL_15:
       v118 = 0;
     }
 
-    v117 = [(FPItem *)self creationDate];
-    v116 = [(FPItem *)self contentModificationDate];
-    v25 = [(FPItem *)self tags];
-    v82 = v25;
-    v83 = v22;
-    if ([v25 count])
+    creationDate = [(FPItem *)self creationDate];
+    contentModificationDate = [(FPItem *)self contentModificationDate];
+    tags = [(FPItem *)self tags];
+    v82 = tags;
+    v83 = _localizedDescriptionDictionary;
+    if ([tags count])
     {
-      v115 = [v25 fp_map:&__block_literal_global_36];
-      v26 = [v25 count];
+      v115 = [tags fp_map:&__block_literal_global_36];
+      v26 = [tags count];
       v130[0] = MEMORY[0x1E69E9820];
       v130[1] = 3221225472;
       v130[2] = __44__FPItem_CSSearchableItem__toSearchableItem__block_invoke_2;
       v130[3] = &unk_1E793CF78;
-      v131 = v25;
+      v131 = tags;
       v27 = v130;
       v137 = 0;
       v138 = &v137;
@@ -9186,27 +9186,27 @@ LABEL_15:
       v115 = 0;
     }
 
-    v113 = [(FPItem *)self lastUsedDate];
-    v112 = [(FPItem *)self favoriteRank];
+    lastUsedDate = [(FPItem *)self lastUsedDate];
+    favoriteRank = [(FPItem *)self favoriteRank];
     v31 = [MEMORY[0x1E696AD98] numberWithBool:{-[FPItem isUploaded](self, "isUploaded")}];
     v111 = [MEMORY[0x1E696AD98] numberWithBool:{-[FPItem isUploaded](self, "isUploaded")}];
 
     v110 = [MEMORY[0x1E696AD98] numberWithBool:{-[FPItem isUploading](self, "isUploading")}];
-    v32 = [(FPItem *)self uploadingError];
-    v109 = [FPSearchableItemError stringFromError:v32];
+    uploadingError = [(FPItem *)self uploadingError];
+    v109 = [FPSearchableItemError stringFromError:uploadingError];
 
     v108 = [MEMORY[0x1E696AD98] numberWithBool:{-[FPItem isDownloaded](self, "isDownloaded")}];
     v107 = [MEMORY[0x1E696AD98] numberWithBool:{-[FPItem isDownloading](self, "isDownloading")}];
-    v33 = [(FPItem *)self downloadingError];
-    v106 = [FPSearchableItemError stringFromError:v33];
+    downloadingError = [(FPItem *)self downloadingError];
+    v106 = [FPSearchableItemError stringFromError:downloadingError];
 
     v105 = [MEMORY[0x1E696AD98] numberWithBool:{-[FPItem isRecursivelyDownloaded](self, "isRecursivelyDownloaded")}];
     v104 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[FPItem capabilities](self, "capabilities")}];
     v103 = [MEMORY[0x1E696AD98] numberWithBool:{-[FPItem isPinned](self, "isPinned")}];
     v102 = [MEMORY[0x1E696AD98] numberWithBool:{-[FPItem isInPinnedFolder](self, "isInPinnedFolder")}];
-    v34 = [(FPItem *)self itemVersion];
-    v79 = v34;
-    if (v34 && (v35 = v34, ([v34 isEmpty] & 1) == 0))
+    itemVersion = [(FPItem *)self itemVersion];
+    v79 = itemVersion;
+    if (itemVersion && (v35 = itemVersion, ([itemVersion isEmpty] & 1) == 0))
     {
       v100 = [FPSearchableItemVersion stringFromVersion:v35];
       v101 = 0;
@@ -9214,13 +9214,13 @@ LABEL_15:
 
     else
     {
-      v36 = [(FPItem *)self versionIdentifier];
+      versionIdentifier = [(FPItem *)self versionIdentifier];
 
-      if (v36)
+      if (versionIdentifier)
       {
         v37 = objc_alloc(MEMORY[0x1E696AEC0]);
-        v38 = [(FPItem *)self versionIdentifier];
-        v39 = [v38 base64EncodedDataWithOptions:0];
+        versionIdentifier2 = [(FPItem *)self versionIdentifier];
+        v39 = [versionIdentifier2 base64EncodedDataWithOptions:0];
         v101 = [v37 initWithData:v39 encoding:4];
 
         v100 = 0;
@@ -9233,31 +9233,31 @@ LABEL_15:
       }
     }
 
-    v99 = [(FPItem *)self providerID];
-    v98 = [(FPItem *)self fp_appContainerBundleIdentifier];
-    v97 = [(FPItem *)self cloudContainerIdentifier];
+    providerID2 = [(FPItem *)self providerID];
+    fp_appContainerBundleIdentifier = [(FPItem *)self fp_appContainerBundleIdentifier];
+    cloudContainerIdentifier = [(FPItem *)self cloudContainerIdentifier];
     v96 = [MEMORY[0x1E696AD98] numberWithBool:{-[FPItem isContainer](self, "isContainer")}];
     v95 = [MEMORY[0x1E696AD98] numberWithBool:{-[FPItem isContainerPristine](self, "isContainerPristine")}];
     v94 = [MEMORY[0x1E696AD98] numberWithBool:{-[FPItem isUbiquitous](self, "isUbiquitous")}];
-    v40 = [(FPItem *)self fp_parentDomainIdentifier];
+    fp_parentDomainIdentifier = [(FPItem *)self fp_parentDomainIdentifier];
 
-    if (v40)
+    if (fp_parentDomainIdentifier)
     {
-      v93 = [(FPItem *)self fp_parentDomainIdentifier];
+      fp_parentDomainIdentifier2 = [(FPItem *)self fp_parentDomainIdentifier];
     }
 
     else
     {
-      v93 = 0;
+      fp_parentDomainIdentifier2 = 0;
     }
 
-    v41 = [(FPItem *)self userInfo];
-    v78 = v41;
-    if ([v41 count])
+    userInfo = [(FPItem *)self userInfo];
+    v78 = userInfo;
+    if ([userInfo count])
     {
       v128 = 0;
       v129 = 0;
-      v42 = FPEncodeUserInfo(v41, &v129, &v128);
+      v42 = FPEncodeUserInfo(userInfo, &v129, &v128);
       v43 = v129;
       v44 = v128;
       v126 = 0;
@@ -9275,11 +9275,11 @@ LABEL_15:
       v127 = 0;
     }
 
-    v45 = [(FPItem *)self documentSize];
-    v46 = v45;
-    if (v45)
+    documentSize = [(FPItem *)self documentSize];
+    v46 = documentSize;
+    if (documentSize)
     {
-      v92 = [MEMORY[0x1E696AD98] numberWithDouble:{objc_msgSend(v45, "unsignedIntegerValue") / 1000000.0}];
+      v92 = [MEMORY[0x1E696AD98] numberWithDouble:{objc_msgSend(documentSize, "unsignedIntegerValue") / 1000000.0}];
     }
 
     else
@@ -9290,95 +9290,95 @@ LABEL_15:
     v91 = [MEMORY[0x1E696AD98] numberWithBool:{-[FPItem isShared](self, "isShared")}];
     v90 = [MEMORY[0x1E696AD98] numberWithBool:{-[FPItem isSharedByCurrentUser](self, "isSharedByCurrentUser")}];
     v89 = [MEMORY[0x1E696AD98] numberWithBool:{-[FPItem fp_isLastModifiedByCurrentUser](self, "fp_isLastModifiedByCurrentUser")}];
-    v47 = [(FPItem *)self preformattedOwnerName];
+    preformattedOwnerName = [(FPItem *)self preformattedOwnerName];
 
-    if (v47)
+    if (preformattedOwnerName)
     {
-      v88 = [(FPItem *)self preformattedOwnerName];
+      preformattedOwnerName2 = [(FPItem *)self preformattedOwnerName];
     }
 
     else
     {
-      v49 = [(FPItem *)self ownerNameComponents];
+      ownerNameComponents = [(FPItem *)self ownerNameComponents];
 
-      if (v49)
+      if (ownerNameComponents)
       {
         v48 = objc_opt_new();
-        v50 = [(FPItem *)self ownerNameComponents];
-        v88 = [v48 stringFromPersonNameComponents:v50];
+        ownerNameComponents2 = [(FPItem *)self ownerNameComponents];
+        preformattedOwnerName2 = [v48 stringFromPersonNameComponents:ownerNameComponents2];
 
         goto LABEL_55;
       }
 
-      v88 = 0;
+      preformattedOwnerName2 = 0;
     }
 
     v48 = 0;
 LABEL_55:
-    v51 = [(FPItem *)self preformattedMostRecentEditorName];
+    preformattedMostRecentEditorName = [(FPItem *)self preformattedMostRecentEditorName];
 
     v77 = v46;
-    if (v51)
+    if (preformattedMostRecentEditorName)
     {
       v76 = v48;
-      v87 = [(FPItem *)self preformattedMostRecentEditorName];
+      preformattedMostRecentEditorName2 = [(FPItem *)self preformattedMostRecentEditorName];
     }
 
     else
     {
-      v52 = [(FPItem *)self mostRecentEditorNameComponents];
+      mostRecentEditorNameComponents = [(FPItem *)self mostRecentEditorNameComponents];
 
-      if (v52)
+      if (mostRecentEditorNameComponents)
       {
         if (!v48)
         {
           v48 = objc_opt_new();
         }
 
-        v53 = [(FPItem *)self mostRecentEditorNameComponents];
+        mostRecentEditorNameComponents2 = [(FPItem *)self mostRecentEditorNameComponents];
         v76 = v48;
-        v87 = [v48 stringFromPersonNameComponents:v53];
+        preformattedMostRecentEditorName2 = [v48 stringFromPersonNameComponents:mostRecentEditorNameComponents2];
       }
 
       else
       {
         v76 = v48;
-        v87 = 0;
+        preformattedMostRecentEditorName2 = 0;
       }
     }
 
     v86 = [MEMORY[0x1E696AD98] numberWithBool:{-[FPItem isMostRecentVersionDownloaded](self, "isMostRecentVersionDownloaded")}];
     v85 = [MEMORY[0x1E696AD98] numberWithBool:{-[FPItem isTrashed](self, "isTrashed")}];
-    v54 = [(FPItem *)self fileURL];
-    v55 = [(FPItem *)self fileURL];
+    fileURL = [(FPItem *)self fileURL];
+    fileURL2 = [(FPItem *)self fileURL];
     v56 = _CFURLPromiseCopyPhysicalURL();
 
-    v80 = v19;
+    v80 = contentType;
     if (v56)
     {
       v57 = v56;
 
-      v54 = v57;
+      fileURL = v57;
     }
 
     v58 = MEMORY[0x1E695E118];
-    v59 = v54;
-    v60 = [(FPItem *)self parentFormerIdentifier];
-    v61 = v60;
-    if (v60)
+    v59 = fileURL;
+    parentFormerIdentifier = [(FPItem *)self parentFormerIdentifier];
+    v61 = parentFormerIdentifier;
+    if (parentFormerIdentifier)
     {
-      v62 = v60;
+      parentItemIdentifier = parentFormerIdentifier;
     }
 
     else
     {
-      v62 = [(FPItem *)self parentItemIdentifier];
+      parentItemIdentifier = [(FPItem *)self parentItemIdentifier];
     }
 
-    v63 = v62;
+    v63 = parentItemIdentifier;
 
-    v64 = [(FPItem *)self capabilities];
-    v65 = [MEMORY[0x1E696AD98] numberWithBool:(v64 >> 6) & 1];
+    capabilities = [(FPItem *)self capabilities];
+    v65 = [MEMORY[0x1E696AD98] numberWithBool:(capabilities >> 6) & 1];
     if ([(FPItem *)self isTopLevelSharedItem])
     {
       v66 = v58;
@@ -9389,24 +9389,24 @@ LABEL_55:
       v66 = 0;
     }
 
-    v67 = [(FPItem *)self collaborationIdentifier];
-    [v7 setFileItemID:v125];
-    [v7 setFileProviderID:v124];
-    [v7 setFileProviderDomainIdentifier:v123];
-    [v7 setFilename:v122];
-    [v7 setAttribute:v121 forKey:@"FPFilename"];
-    [v7 setDisplayName:v120];
-    [v7 setContentType:v119];
+    collaborationIdentifier = [(FPItem *)self collaborationIdentifier];
+    [v7 setFileItemID:coreSpotlightIdentifier];
+    [v7 setFileProviderID:providerID];
+    [v7 setFileProviderDomainIdentifier:domainIdentifier];
+    [v7 setFilename:filename];
+    [v7 setAttribute:filename2 forKey:@"FPFilename"];
+    [v7 setDisplayName:displayName];
+    [v7 setContentType:typeIdentifier];
     v81 = v16;
     [v7 setAttribute:v16 forKey:@"FPOnDiskIdentifier"];
     [v7 setEligibleForPhotosProcessing:v84];
     [v7 setKind:v118];
-    [v7 setContentCreationDate:v117];
-    [v7 setContentModificationDate:v116];
+    [v7 setContentCreationDate:creationDate];
+    [v7 setContentModificationDate:contentModificationDate];
     [v7 setUserTags:v115];
     [v7 setAttribute:v114 forKey:@"_kMDItemUserTags"];
-    [v7 setLastUsedDate:v113];
-    [v7 setFavoriteRank:v112];
+    [v7 setLastUsedDate:lastUsedDate];
+    [v7 setFavoriteRank:favoriteRank];
     [v7 setUploaded:v111];
     [v7 setUploading:v110];
     [v7 setAttribute:v109 forKey:@"FPUploadingError"];
@@ -9419,32 +9419,32 @@ LABEL_55:
     [v7 setAttribute:v102 forKey:@"FPItemIsInPinnedFolder"];
     [v7 setAttribute:v100 forKey:@"FPItemVersion"];
     [v7 setVersionIdentifier:v101];
-    [v7 setBundleID:v99];
-    [v7 setAttribute:v98 forKey:@"FPAppContainerBundleID"];
-    [v7 setAttribute:v97 forKey:@"FPCloudContainerID"];
+    [v7 setBundleID:providerID2];
+    [v7 setAttribute:fp_appContainerBundleIdentifier forKey:@"FPAppContainerBundleID"];
+    [v7 setAttribute:cloudContainerIdentifier forKey:@"FPCloudContainerID"];
     [v7 setAttribute:v96 forKey:@"FPIsContainer"];
     [v7 setAttribute:v95 forKey:@"FPIsContainerPristine"];
     [v7 setAttribute:v94 forKey:@"FPIsUbiquitous"];
-    [v7 setAttribute:v93 forKey:@"FPParentDomainID"];
+    [v7 setAttribute:fp_parentDomainIdentifier2 forKey:@"FPParentDomainID"];
     [v7 setAttribute:v127 forKey:@"FPUserInfoKeys"];
     [v7 setAttribute:v126 forKey:@"FPUserInfoValues"];
     [v7 setFileSize:v92];
     [v7 setShared:v91];
     [v7 setUserOwned:v90];
     [v7 setAttribute:v89 forKey:@"FPLastModifiedByCurrentUser"];
-    [v7 setOwnerName:v88];
-    [v7 setLastEditorName:v87];
+    [v7 setOwnerName:preformattedOwnerName2];
+    [v7 setLastEditorName:preformattedMostRecentEditorName2];
     [v7 setAttribute:v86 forKey:@"FPMostRecentVersionDownloaded"];
     [v7 setTrashed:v85];
     [v7 setContentURL:v59];
     [v7 setAttribute:v63 forKey:@"FPParentFileItemID"];
     [v7 setAttribute:v65 forKey:@"FPEvictable"];
     [v7 setAttribute:v66 forKey:@"FPIsTopLevelSharedItem"];
-    [v7 setAttribute:v67 forKey:@"FPCollaborationIdentifier"];
-    v68 = [(FPItem *)self fp_spotlightSubDomainIdentifier];
-    if (v68)
+    [v7 setAttribute:collaborationIdentifier forKey:@"FPCollaborationIdentifier"];
+    fp_spotlightSubDomainIdentifier = [(FPItem *)self fp_spotlightSubDomainIdentifier];
+    if (fp_spotlightSubDomainIdentifier)
     {
-      v69 = [v4 stringByAppendingPathExtension:v68];
+      v69 = [v4 stringByAppendingPathExtension:fp_spotlightSubDomainIdentifier];
 
       v4 = v69;
     }
@@ -9468,11 +9468,11 @@ LABEL_55:
     v71 = v70;
     _Block_object_dispose(&v137, 8);
     v72 = [v70 alloc];
-    v73 = [(FPItem *)self coreSpotlightIdentifier];
-    v17 = [v72 initWithUniqueIdentifier:v73 domainIdentifier:v4 attributeSet:v7];
+    coreSpotlightIdentifier2 = [(FPItem *)self coreSpotlightIdentifier];
+    v17 = [v72 initWithUniqueIdentifier:coreSpotlightIdentifier2 domainIdentifier:v4 attributeSet:v7];
 
-    v74 = [MEMORY[0x1E695DF00] distantFuture];
-    [v17 setExpirationDate:v74];
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+    [v17 setExpirationDate:distantFuture];
 
     goto LABEL_76;
   }
@@ -9498,20 +9498,20 @@ void __44__FPItem_CSSearchableItem__toSearchableItem__block_invoke_2(uint64_t a1
   *a4 = [v7 color];
 }
 
-- (FPItem)initWithSearchableItem:(id)a3
+- (FPItem)initWithSearchableItem:(id)item
 {
-  v4 = a3;
-  v5 = [[_CSSearchableItemAdapter alloc] initWithSearchableItem:v4];
+  itemCopy = item;
+  v5 = [[_CSSearchableItemAdapter alloc] initWithSearchableItem:itemCopy];
 
-  v6 = [(_CSSearchableItemAdapter *)v5 attributeSet];
-  v7 = [v6 fileProviderID];
-  if (![v7 length])
+  attributeSet = [(_CSSearchableItemAdapter *)v5 attributeSet];
+  fileProviderID = [attributeSet fileProviderID];
+  if (![fileProviderID length])
   {
     goto LABEL_14;
   }
 
-  v8 = [(_CSSearchableItemAdapter *)v5 typeIdentifier];
-  if (![v8 length])
+  typeIdentifier = [(_CSSearchableItemAdapter *)v5 typeIdentifier];
+  if (![typeIdentifier length])
   {
 LABEL_13:
 
@@ -9519,53 +9519,53 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v9 = [(_CSSearchableItemAdapter *)v5 filename];
-  if (![v9 length])
+  filename = [(_CSSearchableItemAdapter *)v5 filename];
+  if (![filename length])
   {
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v10 = [(_CSSearchableItemAdapter *)v5 parentItemIdentifier];
-  if (![v10 length])
+  parentItemIdentifier = [(_CSSearchableItemAdapter *)v5 parentItemIdentifier];
+  if (![parentItemIdentifier length])
   {
 
     goto LABEL_12;
   }
 
-  v11 = [(_CSSearchableItemAdapter *)v5 itemIdentifier];
-  v12 = [v11 length];
+  itemIdentifier = [(_CSSearchableItemAdapter *)v5 itemIdentifier];
+  v12 = [itemIdentifier length];
 
   if (!v12)
   {
 LABEL_15:
-    v30 = [(_CSSearchableItemAdapter *)v5 typeIdentifier];
-    v23 = [v30 length];
+    typeIdentifier2 = [(_CSSearchableItemAdapter *)v5 typeIdentifier];
+    contentType = [typeIdentifier2 length];
 
-    if (v23)
+    if (contentType)
     {
-      v23 = [(_CSSearchableItemAdapter *)v5 contentType];
+      contentType = [(_CSSearchableItemAdapter *)v5 contentType];
     }
 
-    v24 = [(_CSSearchableItemAdapter *)v5 attributeSet];
-    v25 = [v24 fileProviderID];
-    v26 = [(_CSSearchableItemAdapter *)v5 itemIdentifier];
-    v27 = [(_CSSearchableItemAdapter *)v5 filename];
-    __FILEPROVIDER_BAD_ITEM__(v5, v25, v26, v27, v23, 0, 0);
+    attributeSet2 = [(_CSSearchableItemAdapter *)v5 attributeSet];
+    fileProviderID2 = [attributeSet2 fileProviderID];
+    itemIdentifier2 = [(_CSSearchableItemAdapter *)v5 itemIdentifier];
+    filename2 = [(_CSSearchableItemAdapter *)v5 filename];
+    __FILEPROVIDER_BAD_ITEM__(v5, fileProviderID2, itemIdentifier2, filename2, contentType, 0, 0);
     v22 = 0;
     goto LABEL_18;
   }
 
   v13 = [FPItem alloc];
-  v14 = [(_CSSearchableItemAdapter *)v5 attributeSet];
-  v15 = [v14 fileProviderID];
-  v16 = [(_CSSearchableItemAdapter *)v5 attributeSet];
-  v17 = [v16 fileProviderDomainIdentifier];
-  v18 = v17;
-  if (v17)
+  attributeSet3 = [(_CSSearchableItemAdapter *)v5 attributeSet];
+  fileProviderID3 = [attributeSet3 fileProviderID];
+  attributeSet4 = [(_CSSearchableItemAdapter *)v5 attributeSet];
+  fileProviderDomainIdentifier = [attributeSet4 fileProviderDomainIdentifier];
+  v18 = fileProviderDomainIdentifier;
+  if (fileProviderDomainIdentifier)
   {
-    v19 = v17;
+    v19 = fileProviderDomainIdentifier;
   }
 
   else
@@ -9573,21 +9573,21 @@ LABEL_15:
     v19 = @"NSFileProviderDomainDefaultIdentifier";
   }
 
-  v20 = [(_CSSearchableItemAdapter *)v5 attributeSet];
-  v21 = [v20 domainIdentifier];
-  v22 = [(FPItem *)v13 initWithVendorItem:v5 provider:v15 domain:v19 spotlightDomainIdentifier:v21 extensionCapabilities:-1 useFPFS:0];
+  attributeSet5 = [(_CSSearchableItemAdapter *)v5 attributeSet];
+  domainIdentifier = [attributeSet5 domainIdentifier];
+  v22 = [(FPItem *)v13 initWithVendorItem:v5 provider:fileProviderID3 domain:v19 spotlightDomainIdentifier:domainIdentifier extensionCapabilities:-1 useFPFS:0];
 
   [(FPItem *)v22 setEnumerationOrigin:2];
   if ([(FPItem *)v22 isFolder])
   {
-    v23 = [(FPItem *)v22 filename];
-    v24 = [(FPItem *)v22 parentItemIdentifier];
-    v25 = [(FPItem *)v22 providerID];
-    v26 = [(_CSSearchableItemAdapter *)v5 attributeSet];
-    v27 = [v26 contentURL];
-    v28 = [(FPItem *)v22 isContainer];
-    v29 = [(FPItem *)v22 cloudContainerIdentifier];
-    [(FPItem *)v22 setFolderType:CalculateFolderType(v23, v24, v25, v27, v28, v29)];
+    contentType = [(FPItem *)v22 filename];
+    attributeSet2 = [(FPItem *)v22 parentItemIdentifier];
+    fileProviderID2 = [(FPItem *)v22 providerID];
+    itemIdentifier2 = [(_CSSearchableItemAdapter *)v5 attributeSet];
+    filename2 = [itemIdentifier2 contentURL];
+    isContainer = [(FPItem *)v22 isContainer];
+    cloudContainerIdentifier = [(FPItem *)v22 cloudContainerIdentifier];
+    [(FPItem *)v22 setFolderType:CalculateFolderType(contentType, attributeSet2, fileProviderID2, filename2, isContainer, cloudContainerIdentifier)];
 
 LABEL_18:
   }
@@ -9636,78 +9636,78 @@ LABEL_18:
 + (id)generatePlaceholderIdentifier
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [v3 UUIDString];
-  v5 = [v4 componentsSeparatedByString:@"-"];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v5 = [uUIDString componentsSeparatedByString:@"-"];
   v6 = [v5 objectAtIndexedSubscript:0];
   v7 = [v2 stringWithFormat:@"%@/%@", @"__fp", v6];
 
   return v7;
 }
 
-+ (id)generatePlaceholderIdentifierWithOriginalID:(id)a3
++ (id)generatePlaceholderIdentifierWithOriginalID:(id)d
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = MEMORY[0x1E696AFB0];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [v6 UUIDString];
-  v8 = [v7 componentsSeparatedByString:@"-"];
+  dCopy = d;
+  uUID = [v4 UUID];
+  uUIDString = [uUID UUIDString];
+  v8 = [uUIDString componentsSeparatedByString:@"-"];
   v9 = [v8 objectAtIndexedSubscript:0];
-  v10 = [v3 stringWithFormat:@"%@/%@/%@", @"__fp", v9, v5];
+  dCopy = [v3 stringWithFormat:@"%@/%@/%@", @"__fp", v9, dCopy];
 
-  return v10;
+  return dCopy;
 }
 
-+ (id)temporaryPlaceholderFromItem:(id)a3
++ (id)temporaryPlaceholderFromItem:(id)item
 {
-  v3 = [a3 copyAsPending];
-  [v3 setFavoriteRank:0];
-  [v3 setUploading:0];
-  [v3 setDownloading:0];
-  [v3 setFp_lastModifiedByCurrentUser:0];
-  [v3 setOwnerNameComponents:0];
-  [v3 setMostRecentEditorNameComponents:0];
-  [v3 setEnumerationOrigin:0];
-  [v3 setFp_spotlightSubDomainIdentifier:0];
-  [v3 setContainerDisplayName:0];
-  [v3 setFp_appContainerBundleIdentifier:0];
-  [v3 setFp_parentDomainIdentifier:0];
-  [v3 setCloudContainerIdentifier:0];
-  [v3 setFileURL:0];
-  [v3 setShared:0];
-  [v3 setSharedByCurrentUser:0];
-  [v3 setState:5];
+  copyAsPending = [item copyAsPending];
+  [copyAsPending setFavoriteRank:0];
+  [copyAsPending setUploading:0];
+  [copyAsPending setDownloading:0];
+  [copyAsPending setFp_lastModifiedByCurrentUser:0];
+  [copyAsPending setOwnerNameComponents:0];
+  [copyAsPending setMostRecentEditorNameComponents:0];
+  [copyAsPending setEnumerationOrigin:0];
+  [copyAsPending setFp_spotlightSubDomainIdentifier:0];
+  [copyAsPending setContainerDisplayName:0];
+  [copyAsPending setFp_appContainerBundleIdentifier:0];
+  [copyAsPending setFp_parentDomainIdentifier:0];
+  [copyAsPending setCloudContainerIdentifier:0];
+  [copyAsPending setFileURL:0];
+  [copyAsPending setShared:0];
+  [copyAsPending setSharedByCurrentUser:0];
+  [copyAsPending setState:5];
 
-  return v3;
+  return copyAsPending;
 }
 
-+ (id)placeholderWithCopyOfExistingItem:(id)a3 lastUsageUpdatePolicy:(unint64_t)a4 underParent:(id)a5 inProviderDomainID:(id)a6
++ (id)placeholderWithCopyOfExistingItem:(id)item lastUsageUpdatePolicy:(unint64_t)policy underParent:(id)parent inProviderDomainID:(id)d
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [a1 temporaryPlaceholderFromItem:v12];
-  v14 = [a1 generatePlaceholderIdentifier];
-  [v13 setItemIdentifier:v14];
+  dCopy = d;
+  parentCopy = parent;
+  itemCopy = item;
+  v13 = [self temporaryPlaceholderFromItem:itemCopy];
+  generatePlaceholderIdentifier = [self generatePlaceholderIdentifier];
+  [v13 setItemIdentifier:generatePlaceholderIdentifier];
 
-  v15 = [v12 itemIdentifier];
+  itemIdentifier = [itemCopy itemIdentifier];
 
-  [v13 setPlaceholderIdentifier:v15];
-  [v13 setParentItemIdentifier:v11];
+  [v13 setPlaceholderIdentifier:itemIdentifier];
+  [v13 setParentItemIdentifier:parentCopy];
 
-  if (@"NSFileProviderTrashContainerItemIdentifier" == v11)
+  if (@"NSFileProviderTrashContainerItemIdentifier" == parentCopy)
   {
     [v13 setTrashed:1];
   }
 
-  [v13 setProviderDomainID:v10];
-  if (a4)
+  [v13 setProviderDomainID:dCopy];
+  if (policy)
   {
-    if (a4 == 2)
+    if (policy == 2)
     {
-      v16 = [MEMORY[0x1E695DF00] date];
-      [v13 setLastUsedDate:v16];
+      date = [MEMORY[0x1E695DF00] date];
+      [v13 setLastUsedDate:date];
     }
   }
 
@@ -9719,104 +9719,104 @@ LABEL_18:
   return v13;
 }
 
-+ (id)genericArchivePlaceholderUnderParent:(id)a3 inProviderDomainID:(id)a4 withArchiveFormat:(unint64_t)a5
++ (id)genericArchivePlaceholderUnderParent:(id)parent inProviderDomainID:(id)d withArchiveFormat:(unint64_t)format
 {
   v23 = 0;
-  v7 = a4;
-  v8 = a3;
-  v9 = [FPArchiveOperation extensionForArchiveFormat:a5 utType:&v23];
+  dCopy = d;
+  parentCopy = parent;
+  v9 = [FPArchiveOperation extensionForArchiveFormat:format utType:&v23];
   v10 = v23;
   v18 = FPLoc(@"ARCHIVE_FILENAME", v11, v12, v13, v14, v15, v16, v17, v22);
   v19 = [v18 stringByAppendingPathExtension:v9];
-  v20 = [FPItem placeholderWithName:v19 contentType:v10 contentAccessDate:0 underParent:v8 inProviderDomainID:v7];
+  v20 = [FPItem placeholderWithName:v19 contentType:v10 contentAccessDate:0 underParent:parentCopy inProviderDomainID:dCopy];
 
   return v20;
 }
 
-+ (id)archivePlaceholderForItem:(id)a3 underParent:(id)a4 inProviderDomainID:(id)a5 withArchiveFormat:(unint64_t)a6
++ (id)archivePlaceholderForItem:(id)item underParent:(id)parent inProviderDomainID:(id)d withArchiveFormat:(unint64_t)format
 {
   v22 = 0;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [FPArchiveOperation extensionForArchiveFormat:a6 utType:&v22];
+  dCopy = d;
+  parentCopy = parent;
+  itemCopy = item;
+  v12 = [FPArchiveOperation extensionForArchiveFormat:format utType:&v22];
   v13 = v22;
-  v14 = [v11 filename];
-  v15 = [v14 fp_displayNameFromFilenameWithHiddenPathExtension:1 isFolder:{objc_msgSend(v11, "isFolder")}];
+  filename = [itemCopy filename];
+  v15 = [filename fp_displayNameFromFilenameWithHiddenPathExtension:1 isFolder:{objc_msgSend(itemCopy, "isFolder")}];
   v16 = [v15 fp_filenameFromDisplayNameWithExtension:v12];
 
-  v17 = [FPItem placeholderWithName:v16 contentType:v13 contentAccessDate:0 underParent:v10 inProviderDomainID:v9];
+  v17 = [FPItem placeholderWithName:v16 contentType:v13 contentAccessDate:0 underParent:parentCopy inProviderDomainID:dCopy];
 
-  v18 = [v11 displayName];
-  [v17 setDisplayName:v18];
+  displayName = [itemCopy displayName];
+  [v17 setDisplayName:displayName];
 
-  v19 = [v11 itemIdentifier];
-  [v17 setPlaceholderIdentifier:v19];
+  itemIdentifier = [itemCopy itemIdentifier];
+  [v17 setPlaceholderIdentifier:itemIdentifier];
 
-  [v17 setCapabilities:{objc_msgSend(v11, "capabilities")}];
-  [v17 setEnumerationOrigin:{objc_msgSend(v11, "enumerationOrigin")}];
-  v20 = [v11 fileSystemFlags];
+  [v17 setCapabilities:{objc_msgSend(itemCopy, "capabilities")}];
+  [v17 setEnumerationOrigin:{objc_msgSend(itemCopy, "enumerationOrigin")}];
+  fileSystemFlags = [itemCopy fileSystemFlags];
 
-  [v17 setFileSystemFlags:v20];
+  [v17 setFileSystemFlags:fileSystemFlags];
 
   return v17;
 }
 
-+ (id)placeholderWithName:(id)a3 contentType:(id)a4 contentAccessDate:(id)a5 underParent:(id)a6 inProviderDomainID:(id)a7
++ (id)placeholderWithName:(id)name contentType:(id)type contentAccessDate:(id)date underParent:(id)parent inProviderDomainID:(id)d
 {
-  v12 = a5;
-  v13 = a7;
-  v14 = a6;
-  v15 = a4;
-  v16 = a3;
+  dateCopy = date;
+  dCopy = d;
+  parentCopy = parent;
+  typeCopy = type;
+  nameCopy = name;
   v17 = [FPItem alloc];
-  v18 = [a1 generatePlaceholderIdentifier];
-  v19 = [(FPItem *)v17 initWithProviderDomainID:v13 itemIdentifier:v18 parentItemIdentifier:v14 filename:v16 contentType:v15];
+  generatePlaceholderIdentifier = [self generatePlaceholderIdentifier];
+  v19 = [(FPItem *)v17 initWithProviderDomainID:dCopy itemIdentifier:generatePlaceholderIdentifier parentItemIdentifier:parentCopy filename:nameCopy contentType:typeCopy];
 
-  if (v12)
+  if (dateCopy)
   {
-    [(FPItem *)v19 setLastUsedDate:v12];
+    [(FPItem *)v19 setLastUsedDate:dateCopy];
   }
 
-  v20 = [MEMORY[0x1E695DF00] date];
-  [(FPItem *)v19 setCreationDate:v20];
+  date = [MEMORY[0x1E695DF00] date];
+  [(FPItem *)v19 setCreationDate:date];
 
-  v21 = [(FPItem *)v19 creationDate];
-  [(FPItem *)v19 setContentModificationDate:v21];
+  creationDate = [(FPItem *)v19 creationDate];
+  [(FPItem *)v19 setContentModificationDate:creationDate];
 
   [(FPItem *)v19 setState:5];
 
   return v19;
 }
 
-+ (id)placeholderWithName:(id)a3 typeIdentifier:(id)a4 contentAccessDate:(id)a5 underParent:(id)a6 inProviderDomainID:(id)a7
++ (id)placeholderWithName:(id)name typeIdentifier:(id)identifier contentAccessDate:(id)date underParent:(id)parent inProviderDomainID:(id)d
 {
   v11 = MEMORY[0x1E6982C40];
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
-  v16 = [v11 fp_cachedTypeWithIdentifier:a4];
-  v17 = [FPItem placeholderWithName:v15 contentType:v16 contentAccessDate:v14 underParent:v13 inProviderDomainID:v12];
+  dCopy = d;
+  parentCopy = parent;
+  dateCopy = date;
+  nameCopy = name;
+  v16 = [v11 fp_cachedTypeWithIdentifier:identifier];
+  v17 = [FPItem placeholderWithName:nameCopy contentType:v16 contentAccessDate:dateCopy underParent:parentCopy inProviderDomainID:dCopy];
 
   return v17;
 }
 
-+ (id)placeholderWithName:(id)a3 isFolder:(BOOL)a4 contentAccessDate:(id)a5 underParent:(id)a6 inProviderDomainID:(id)a7
++ (id)placeholderWithName:(id)name isFolder:(BOOL)folder contentAccessDate:(id)date underParent:(id)parent inProviderDomainID:(id)d
 {
   v7 = MEMORY[0x1E6982DC8];
-  if (!a4)
+  if (!folder)
   {
     v7 = MEMORY[0x1E6982E48];
   }
 
-  return [a1 placeholderWithName:a3 contentType:*v7 contentAccessDate:a5 underParent:a6 inProviderDomainID:a7];
+  return [self placeholderWithName:name contentType:*v7 contentAccessDate:date underParent:parent inProviderDomainID:d];
 }
 
-- (void)_coreSpotlightAttributeForKey:(id)a3
+- (void)_coreSpotlightAttributeForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"kMDItemIsTrashed"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"kMDItemIsTrashed"])
   {
     v5 = @"isTrashed";
 LABEL_8:
@@ -9824,13 +9824,13 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"kMDItemDisplayName"])
+  if ([keyCopy isEqualToString:@"kMDItemDisplayName"])
   {
     v5 = @"displayName";
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"FPDomainIdentifier"] || objc_msgSend(v4, "isEqualToString:", @"kMDItemFileProviderID"))
+  if ([keyCopy isEqualToString:@"FPDomainIdentifier"] || objc_msgSend(keyCopy, "isEqualToString:", @"kMDItemFileProviderID"))
   {
     v5 = @"providerDomainID";
     goto LABEL_8;
@@ -9839,7 +9839,7 @@ LABEL_8:
   v8 = fp_current_or_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    [(FPItem(MDSimpleQueryEvaluator) *)v4 _coreSpotlightAttributeForKey:v8];
+    [(FPItem(MDSimpleQueryEvaluator) *)keyCopy _coreSpotlightAttributeForKey:v8];
   }
 
   v6 = 0;

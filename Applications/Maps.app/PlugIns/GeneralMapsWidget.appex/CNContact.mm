@@ -1,15 +1,15 @@
 @interface CNContact
-- (CGImage)imageForCustomImageKey:(unint64_t)a3 suggestedSize:(CGSize)a4 contentScale:(float)a5;
+- (CGImage)imageForCustomImageKey:(unint64_t)key suggestedSize:(CGSize)size contentScale:(float)scale;
 @end
 
 @implementation CNContact
 
-- (CGImage)imageForCustomImageKey:(unint64_t)a3 suggestedSize:(CGSize)a4 contentScale:(float)a5
+- (CGImage)imageForCustomImageKey:(unint64_t)key suggestedSize:(CGSize)size contentScale:(float)scale
 {
-  v5 = [(CNContact *)self avatarImageWithSize:0 scale:a4.width rightToLeft:a4.height, a5];
-  v6 = [v5 CGImage];
+  scale = [(CNContact *)self avatarImageWithSize:0 scale:size.width rightToLeft:size.height, scale];
+  cGImage = [scale CGImage];
 
-  return v6;
+  return cGImage;
 }
 
 @end

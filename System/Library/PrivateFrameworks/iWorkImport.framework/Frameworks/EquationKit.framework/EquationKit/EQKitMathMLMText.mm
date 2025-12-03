@@ -1,23 +1,23 @@
 @interface EQKitMathMLMText
-- (EQKitMathMLMText)initWithContent:(id)a3;
+- (EQKitMathMLMText)initWithContent:(id)content;
 - (const)mathMLAttributes;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (id)layoutSchemata;
 - (void)dealloc;
 @end
 
 @implementation EQKitMathMLMText
 
-- (EQKitMathMLMText)initWithContent:(id)a3
+- (EQKitMathMLMText)initWithContent:(id)content
 {
-  if (a3)
+  if (content)
   {
     v6.receiver = self;
     v6.super_class = EQKitMathMLMText;
     v4 = [(EQKitMathMLMText *)&v6 init];
     if (v4)
     {
-      v4->mContent = a3;
+      v4->mContent = content;
     }
   }
 
@@ -37,9 +37,9 @@
   [(EQKitMathMLMText *)&v3 dealloc];
 }
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
-  v5 = objc_msgSend_parseChildrenAsTokenContentFromXMLNode_(a4, a2, a3, a4);
+  v5 = objc_msgSend_parseChildrenAsTokenContentFromXMLNode_(parser, a2, node, parser);
 
   return MEMORY[0x2821F9670](self, sel_initWithContent_, v5, v6);
 }
@@ -59,7 +59,7 @@
 {
   *a2 = &unk_2884CB990;
   *(a2 + 8) = 22;
-  result = a1;
+  result = self;
   *(a2 + 16) = result;
   *(a2 + 24) = 0;
   return result;

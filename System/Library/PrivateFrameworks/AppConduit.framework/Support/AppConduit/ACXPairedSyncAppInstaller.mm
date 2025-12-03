@@ -1,38 +1,38 @@
 @interface ACXPairedSyncAppInstaller
-- (ACXPairedSyncAppInstaller)initWithSyncSession:(id)a3 forConnection:(id)a4 delegate:(id)a5;
+- (ACXPairedSyncAppInstaller)initWithSyncSession:(id)session forConnection:(id)connection delegate:(id)delegate;
 - (ACXPairedSyncAppInstallerDelegate)delegate;
 - (void)_onQueue_applicationsChanged;
-- (void)_onQueue_checkIfPendingInstallAppsAreInstalledInRemoteAppList:(id)a3;
+- (void)_onQueue_checkIfPendingInstallAppsAreInstalledInRemoteAppList:(id)list;
 - (void)_onQueue_completeSyncIfDone;
 - (void)_registerForAppsChangedNotification;
 - (void)_unregisterForAppsChangedNotification;
-- (void)applicationsAdded:(id)a3;
-- (void)applicationsRemoved:(id)a3;
-- (void)applicationsUpdated:(id)a3;
+- (void)applicationsAdded:(id)added;
+- (void)applicationsRemoved:(id)removed;
+- (void)applicationsUpdated:(id)updated;
 - (void)dealloc;
-- (void)reportAppInstallFailureForBundleID:(id)a3;
+- (void)reportAppInstallFailureForBundleID:(id)d;
 - (void)resyncCompleted;
 - (void)start;
 @end
 
 @implementation ACXPairedSyncAppInstaller
 
-- (ACXPairedSyncAppInstaller)initWithSyncSession:(id)a3 forConnection:(id)a4 delegate:(id)a5
+- (ACXPairedSyncAppInstaller)initWithSyncSession:(id)session forConnection:(id)connection delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sessionCopy = session;
+  connectionCopy = connection;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = ACXPairedSyncAppInstaller;
   v12 = [(ACXPairedSyncAppInstaller *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_delegate, v11);
-    objc_storeStrong(&v13->_syncSession, a3);
-    objc_storeStrong(&v13->_connection, a4);
-    v14 = [v10 device];
-    v13->_gizmoSupportsRemoteAppList = [v14 supportsRemoteAppList];
+    objc_storeWeak(&v12->_delegate, delegateCopy);
+    objc_storeStrong(&v13->_syncSession, session);
+    objc_storeStrong(&v13->_connection, connection);
+    device = [connectionCopy device];
+    v13->_gizmoSupportsRemoteAppList = [device supportsRemoteAppList];
 
     v13->_gizmoAppsChangedNotificationToken = -1;
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -68,14 +68,14 @@
       MOLogWrite();
     }
 
-    v3 = [(ACXPairedSyncAppInstaller *)self connection];
-    v4 = [v3 availableSystemAppList];
+    connection = [(ACXPairedSyncAppInstaller *)self connection];
+    availableSystemAppList = [connection availableSystemAppList];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100018C1C;
     v10[3] = &unk_10008D3C8;
     v10[4] = self;
-    [v4 waitForInstallableSystemAppBundleIDs:v10];
+    [availableSystemAppList waitForInstallableSystemAppBundleIDs:v10];
   }
 
   else
@@ -87,47 +87,47 @@
     }
 
     v5 = +[ACXAvailableApplicationManager sharedApplicationManager];
-    v6 = [v5 bundleIDsOfLocallyAvailableSystemAppsForPreWatchOSSix];
+    bundleIDsOfLocallyAvailableSystemAppsForPreWatchOSSix = [v5 bundleIDsOfLocallyAvailableSystemAppsForPreWatchOSSix];
 
-    v7 = [(ACXPairedSyncAppInstaller *)self connection];
-    v8 = [v6 allObjects];
+    connection2 = [(ACXPairedSyncAppInstaller *)self connection];
+    allObjects = [bundleIDsOfLocallyAvailableSystemAppsForPreWatchOSSix allObjects];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100018E1C;
     v9[3] = &unk_10008D3F0;
     v9[4] = self;
-    [v7 installSystemApplicationsWithBundleIDs:v8 withCompletion:v9];
+    [connection2 installSystemApplicationsWithBundleIDs:allObjects withCompletion:v9];
   }
 }
 
-- (void)reportAppInstallFailureForBundleID:(id)a3
+- (void)reportAppInstallFailureForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(ACXPairedSyncAppInstaller *)self queue];
+  dCopy = d;
+  queue = [(ACXPairedSyncAppInstaller *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000190B8;
   v7[3] = &unk_10008CC38;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  sub_100005828(v5, v7);
+  v8 = dCopy;
+  selfCopy = self;
+  v6 = dCopy;
+  sub_100005828(queue, v7);
 }
 
-- (void)_onQueue_checkIfPendingInstallAppsAreInstalledInRemoteAppList:(id)a3
+- (void)_onQueue_checkIfPendingInstallAppsAreInstalledInRemoteAppList:(id)list
 {
-  v4 = a3;
-  v5 = [(ACXPairedSyncAppInstaller *)self queue];
-  dispatch_assert_queue_V2(v5);
+  listCopy = list;
+  queue = [(ACXPairedSyncAppInstaller *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v20 = self;
-  v7 = [(ACXPairedSyncAppInstaller *)self appsPendingInstallOnGizmo];
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  selfCopy = self;
+  appsPendingInstallOnGizmo = [(ACXPairedSyncAppInstaller *)self appsPendingInstallOnGizmo];
+  v8 = [appsPendingInstallOnGizmo countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -138,12 +138,12 @@
       {
         if (*v23 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(appsPendingInstallOnGizmo);
         }
 
         v12 = *(*(&v22 + 1) + 8 * i);
         v21 = 0;
-        v13 = [v4 applicationIsInstalledWithBundleID:v12 error:&v21];
+        v13 = [listCopy applicationIsInstalledWithBundleID:v12 error:&v21];
         v14 = v21;
         v15 = v14;
         if (v13)
@@ -159,8 +159,8 @@
 
         else if (v14)
         {
-          v16 = [v14 domain];
-          if (([v16 isEqualToString:@"ACXErrorDomain"] & 1) == 0)
+          domain = [v14 domain];
+          if (([domain isEqualToString:@"ACXErrorDomain"] & 1) == 0)
           {
 
 LABEL_18:
@@ -172,16 +172,16 @@ LABEL_18:
             goto LABEL_22;
           }
 
-          v17 = [v15 code];
+          code = [v15 code];
 
-          if (v17 != 19)
+          if (code != 19)
           {
             goto LABEL_18;
           }
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v9 = [appsPendingInstallOnGizmo countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v9)
       {
         continue;
@@ -193,22 +193,22 @@ LABEL_18:
 
 LABEL_22:
 
-  v18 = [(ACXPairedSyncAppInstaller *)v20 appsPendingInstallOnGizmo];
-  [v18 minusSet:v6];
+  appsPendingInstallOnGizmo2 = [(ACXPairedSyncAppInstaller *)selfCopy appsPendingInstallOnGizmo];
+  [appsPendingInstallOnGizmo2 minusSet:v6];
 
-  [(ACXPairedSyncAppInstaller *)v20 _onQueue_completeSyncIfDone];
+  [(ACXPairedSyncAppInstaller *)selfCopy _onQueue_completeSyncIfDone];
 }
 
 - (void)_registerForAppsChangedNotification
 {
-  v3 = [@"com.apple.sockpuppet.applications.updated" UTF8String];
-  v4 = [(ACXPairedSyncAppInstaller *)self queue];
+  uTF8String = [@"com.apple.sockpuppet.applications.updated" UTF8String];
+  queue = [(ACXPairedSyncAppInstaller *)self queue];
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_100019464;
   handler[3] = &unk_10008D418;
   handler[4] = self;
-  notify_register_dispatch(v3, &self->_gizmoAppsChangedNotificationToken, v4, handler);
+  notify_register_dispatch(uTF8String, &self->_gizmoAppsChangedNotificationToken, queue, handler);
 }
 
 - (void)_unregisterForAppsChangedNotification
@@ -227,17 +227,17 @@ LABEL_22:
 
   if ([(ACXPairedSyncAppInstaller *)self gizmoSupportsRemoteAppList])
   {
-    v6 = [(ACXPairedSyncAppInstaller *)self connection];
-    v4 = [v6 remoteAppList];
-    v5 = [(ACXPairedSyncAppInstaller *)self queue];
-    [v4 removeObserver:self queue:v5];
+    connection = [(ACXPairedSyncAppInstaller *)self connection];
+    remoteAppList = [connection remoteAppList];
+    queue = [(ACXPairedSyncAppInstaller *)self queue];
+    [remoteAppList removeObserver:self queue:queue];
   }
 }
 
 - (void)_onQueue_completeSyncIfDone
 {
-  v3 = [(ACXPairedSyncAppInstaller *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ACXPairedSyncAppInstaller *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(ACXPairedSyncAppInstaller *)self waitingForInstallList])
   {
@@ -250,12 +250,12 @@ LABEL_22:
 
   else
   {
-    v4 = [(ACXPairedSyncAppInstaller *)self appsPendingInstallOnGizmo];
-    if (v4 && (v5 = v4, -[ACXPairedSyncAppInstaller appsPendingInstallOnGizmo](self, "appsPendingInstallOnGizmo"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 count], v6, v5, v7))
+    appsPendingInstallOnGizmo = [(ACXPairedSyncAppInstaller *)self appsPendingInstallOnGizmo];
+    if (appsPendingInstallOnGizmo && (v5 = appsPendingInstallOnGizmo, -[ACXPairedSyncAppInstaller appsPendingInstallOnGizmo](self, "appsPendingInstallOnGizmo"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 count], v6, v5, v7))
     {
       if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
       {
-        v10 = [(ACXPairedSyncAppInstaller *)self appsPendingInstallOnGizmo];
+        appsPendingInstallOnGizmo2 = [(ACXPairedSyncAppInstaller *)self appsPendingInstallOnGizmo];
         MOLogWrite();
       }
     }
@@ -267,9 +267,9 @@ LABEL_22:
         MOLogWrite();
       }
 
-      v8 = [(ACXPairedSyncAppInstaller *)self delegate];
-      v9 = [(ACXPairedSyncAppInstaller *)self syncSession];
-      [v8 installCompleteForSyncSession:v9];
+      delegate = [(ACXPairedSyncAppInstaller *)self delegate];
+      syncSession = [(ACXPairedSyncAppInstaller *)self syncSession];
+      [delegate installCompleteForSyncSession:syncSession];
 
       [(ACXPairedSyncAppInstaller *)self _unregisterForAppsChangedNotification];
     }
@@ -278,21 +278,21 @@ LABEL_22:
 
 - (void)_onQueue_applicationsChanged
 {
-  v3 = [(ACXPairedSyncAppInstaller *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ACXPairedSyncAppInstaller *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = +[ACXGizmoStateManager sharedStateManager];
-  v5 = [(ACXPairedSyncAppInstaller *)self connection];
-  v6 = [v5 device];
-  v7 = [v4 stateForDevice:v6];
+  connection = [(ACXPairedSyncAppInstaller *)self connection];
+  device = [connection device];
+  v7 = [v4 stateForDevice:device];
 
   v8 = +[NSMutableSet set];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [(ACXPairedSyncAppInstaller *)self appsPendingInstallOnGizmo];
-  v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  appsPendingInstallOnGizmo = [(ACXPairedSyncAppInstaller *)self appsPendingInstallOnGizmo];
+  v10 = [appsPendingInstallOnGizmo countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
     v11 = v10;
@@ -303,7 +303,7 @@ LABEL_22:
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(appsPendingInstallOnGizmo);
         }
 
         v14 = *(*(&v16 + 1) + 8 * i);
@@ -313,29 +313,29 @@ LABEL_22:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v11 = [appsPendingInstallOnGizmo countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v11);
   }
 
-  v15 = [(ACXPairedSyncAppInstaller *)self appsPendingInstallOnGizmo];
-  [v15 minusSet:v8];
+  appsPendingInstallOnGizmo2 = [(ACXPairedSyncAppInstaller *)self appsPendingInstallOnGizmo];
+  [appsPendingInstallOnGizmo2 minusSet:v8];
 
   [(ACXPairedSyncAppInstaller *)self _onQueue_completeSyncIfDone];
 }
 
-- (void)applicationsAdded:(id)a3
+- (void)applicationsAdded:(id)added
 {
-  v4 = a3;
-  v5 = [(ACXPairedSyncAppInstaller *)self queue];
-  dispatch_assert_queue_V2(v5);
+  addedCopy = added;
+  queue = [(ACXPairedSyncAppInstaller *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = addedCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -351,17 +351,17 @@ LABEL_22:
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 bundleIdentifier];
+        bundleIdentifier = [v11 bundleIdentifier];
         if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
         {
-          v14 = v12;
+          v14 = bundleIdentifier;
           MOLogWrite();
         }
 
         if ([v11 isDeletable] && objc_msgSend(v11, "isSystemApp"))
         {
-          v13 = [(ACXPairedSyncAppInstaller *)self appsPendingInstallOnGizmo];
-          [v13 removeObject:v12];
+          appsPendingInstallOnGizmo = [(ACXPairedSyncAppInstaller *)self appsPendingInstallOnGizmo];
+          [appsPendingInstallOnGizmo removeObject:bundleIdentifier];
         }
       }
 
@@ -374,17 +374,17 @@ LABEL_22:
   [(ACXPairedSyncAppInstaller *)self _onQueue_completeSyncIfDone];
 }
 
-- (void)applicationsRemoved:(id)a3
+- (void)applicationsRemoved:(id)removed
 {
-  v4 = a3;
-  v5 = [(ACXPairedSyncAppInstaller *)self queue];
-  dispatch_assert_queue_V2(v5);
+  removedCopy = removed;
+  queue = [(ACXPairedSyncAppInstaller *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v4;
+  v6 = removedCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -406,8 +406,8 @@ LABEL_22:
           MOLogWrite();
         }
 
-        v12 = [(ACXPairedSyncAppInstaller *)self appsPendingInstallOnGizmo];
-        [v12 removeObject:v11];
+        appsPendingInstallOnGizmo = [(ACXPairedSyncAppInstaller *)self appsPendingInstallOnGizmo];
+        [appsPendingInstallOnGizmo removeObject:v11];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -419,17 +419,17 @@ LABEL_22:
   [(ACXPairedSyncAppInstaller *)self _onQueue_completeSyncIfDone];
 }
 
-- (void)applicationsUpdated:(id)a3
+- (void)applicationsUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [(ACXPairedSyncAppInstaller *)self queue];
-  dispatch_assert_queue_V2(v5);
+  updatedCopy = updated;
+  queue = [(ACXPairedSyncAppInstaller *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = updatedCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -445,17 +445,17 @@ LABEL_22:
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 bundleIdentifier];
+        bundleIdentifier = [v11 bundleIdentifier];
         if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
         {
-          v14 = v12;
+          v14 = bundleIdentifier;
           MOLogWrite();
         }
 
         if ([v11 isDeletable] && objc_msgSend(v11, "isSystemApp"))
         {
-          v13 = [(ACXPairedSyncAppInstaller *)self appsPendingInstallOnGizmo];
-          [v13 removeObject:v12];
+          appsPendingInstallOnGizmo = [(ACXPairedSyncAppInstaller *)self appsPendingInstallOnGizmo];
+          [appsPendingInstallOnGizmo removeObject:bundleIdentifier];
         }
       }
 
@@ -470,12 +470,12 @@ LABEL_22:
 
 - (void)resyncCompleted
 {
-  v3 = [(ACXPairedSyncAppInstaller *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ACXPairedSyncAppInstaller *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(ACXPairedSyncAppInstaller *)self connection];
-  v4 = [v5 remoteAppList];
-  [(ACXPairedSyncAppInstaller *)self _onQueue_checkIfPendingInstallAppsAreInstalledInRemoteAppList:v4];
+  connection = [(ACXPairedSyncAppInstaller *)self connection];
+  remoteAppList = [connection remoteAppList];
+  [(ACXPairedSyncAppInstaller *)self _onQueue_checkIfPendingInstallAppsAreInstalledInRemoteAppList:remoteAppList];
 }
 
 - (ACXPairedSyncAppInstallerDelegate)delegate

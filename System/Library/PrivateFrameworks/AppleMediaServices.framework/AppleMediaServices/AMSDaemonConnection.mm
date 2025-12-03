@@ -1,18 +1,18 @@
 @interface AMSDaemonConnection
 - (AMSDaemonConnection)init;
-- (id)_connectionProxyWithAccessBlock:(id)a3;
-- (id)_serviceInterfaceForSelector:(SEL)a3;
+- (id)_connectionProxyWithAccessBlock:(id)block;
+- (id)_serviceInterfaceForSelector:(SEL)selector;
 - (id)accountCachedServerDataService;
 - (id)accountManagementServiceProxy;
-- (id)accountManagementServiceProxySyncWithError:(id *)a3;
+- (id)accountManagementServiceProxySyncWithError:(id *)error;
 - (id)accountPostSignInServiceProxy;
 - (id)accountSignOutServiceProxy;
 - (id)autoBugCaptureServiceProxy;
-- (id)autoBugCaptureServiceProxySyncWithError:(id *)a3;
-- (id)callService:(id)a3 then:(id)a4;
+- (id)autoBugCaptureServiceProxySyncWithError:(id *)error;
+- (id)callService:(id)service then:(id)then;
 - (id)cookieServiceProxy;
-- (id)cookieServiceProxySyncWithError:(id *)a3;
-- (id)deviceMessengerProxyWithDelegate:(id)a3;
+- (id)cookieServiceProxySyncWithError:(id *)error;
+- (id)deviceMessengerProxyWithDelegate:(id)delegate;
 - (id)dismissQRDialogServiceProxy;
 - (id)fraudReportServiceProxy;
 - (id)keychainServiceProxy;
@@ -21,13 +21,13 @@
 - (id)paymentValidationServiceProxy;
 - (id)purchaseServiceProxy;
 - (id)pushNotificationService;
-- (id)securityServiceProxyWithDelegate:(id)a3;
-- (void)_connectionSyncProxyWithAccessBlock:(id)a3;
-- (void)_errorForwardingProxyForServiceProxy:(id)a3 proxyReplyError:(id)a4 interface:(id)a5 proxyPromise:(id)a6;
+- (id)securityServiceProxyWithDelegate:(id)delegate;
+- (void)_connectionSyncProxyWithAccessBlock:(id)block;
+- (void)_errorForwardingProxyForServiceProxy:(id)proxy proxyReplyError:(id)error interface:(id)interface proxyPromise:(id)promise;
 - (void)_handleInterruption;
 - (void)_handleInvalidation;
 - (void)_initializeConnection;
-- (void)addInterruptionHandler:(id)a3;
+- (void)addInterruptionHandler:(id)handler;
 - (void)attemptResumeIfRequired;
 - (void)dealloc;
 @end
@@ -43,13 +43,13 @@
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
     v9 = objc_opt_class();
     v5 = v9;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_DEBUG, "%{public}@: deallocated", buf, 0xCu);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: deallocated", buf, 0xCu);
   }
 
   [(NSXPCConnection *)self->_sharedConnection setInvalidationHandler:0];
@@ -95,19 +95,19 @@
     v4 = +[AMSLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v23 = objc_opt_class();
     v24 = 2114;
     v25 = v3;
-    _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Initializing XPC connection", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Initializing XPC connection", buf, 0x16u);
   }
 
   v6 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.xpc.amsaccountsd" options:0];
-  v7 = [(AMSDaemonConnection *)self sharedConnectionAccessQueue];
-  [(NSXPCConnection *)v6 _setQueue:v7];
+  sharedConnectionAccessQueue = [(AMSDaemonConnection *)self sharedConnectionAccessQueue];
+  [(NSXPCConnection *)v6 _setQueue:sharedConnectionAccessQueue];
 
   objc_initWeak(buf, self);
   v19[0] = MEMORY[0x1E69E9820];
@@ -155,9 +155,9 @@ void __53__AMSDaemonConnection_accountCachedServerDataService__block_invoke(uint
 - (void)attemptResumeIfRequired
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSDaemonConnection *)self sharedConnection];
+  sharedConnection = [(AMSDaemonConnection *)self sharedConnection];
 
-  if (!v3)
+  if (!sharedConnection)
   {
     v4 = +[AMSLogConfig sharedAccountsDaemonConfig];
     if (!v4)
@@ -165,8 +165,8 @@ void __53__AMSDaemonConnection_accountCachedServerDataService__block_invoke(uint
       v4 = +[AMSLogConfig sharedConfig];
     }
 
-    v5 = [v4 OSLogObject];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v4 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v6 = objc_opt_class();
       v7 = AMSLogKey();
@@ -174,7 +174,7 @@ void __53__AMSDaemonConnection_accountCachedServerDataService__block_invoke(uint
       v9 = v6;
       v10 = 2114;
       v11 = v7;
-      _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Reconnecting XPC connection", &v8, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Reconnecting XPC connection", &v8, 0x16u);
     }
 
     [(AMSDaemonConnection *)self _initializeConnection];
@@ -202,19 +202,19 @@ void __53__AMSDaemonConnection_accountCachedServerDataService__block_invoke_2(ui
   [v5 _errorForwardingProxyForServiceProxy:v7 proxyReplyError:v6 interface:v8 proxyPromise:*(a1 + 40)];
 }
 
-- (void)addInterruptionHandler:(id)a3
+- (void)addInterruptionHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(AMSDaemonConnection *)self sharedConnectionAccessQueue];
+    sharedConnectionAccessQueue = [(AMSDaemonConnection *)self sharedConnectionAccessQueue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __46__AMSDaemonConnection_addInterruptionHandler___block_invoke;
     v6[3] = &unk_1E73B36D0;
     v6[4] = self;
-    v7 = v4;
-    dispatch_sync(v5, v6);
+    v7 = handlerCopy;
+    dispatch_sync(sharedConnectionAccessQueue, v6);
   }
 }
 
@@ -225,16 +225,16 @@ void __46__AMSDaemonConnection_addInterruptionHandler___block_invoke(uint64_t a1
   [v3 addObject:v2];
 }
 
-- (id)callService:(id)a3 then:(id)a4
+- (id)callService:(id)service then:(id)then
 {
-  v5 = a4;
+  thenCopy = then;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __40__AMSDaemonConnection_callService_then___block_invoke;
   v9[3] = &unk_1E73B63A0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [a3 thenWithBlock:v9];
+  v10 = thenCopy;
+  v6 = thenCopy;
+  v7 = [service thenWithBlock:v9];
 
   return v7;
 }
@@ -302,7 +302,7 @@ void __52__AMSDaemonConnection_accountManagementServiceProxy__block_invoke_2(uin
   [v5 _errorForwardingProxyForServiceProxy:v7 proxyReplyError:v6 interface:v8 proxyPromise:*(a1 + 40)];
 }
 
-- (id)accountManagementServiceProxySyncWithError:(id *)a3
+- (id)accountManagementServiceProxySyncWithError:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
   v18 = 0;
@@ -333,8 +333,8 @@ void __52__AMSDaemonConnection_accountManagementServiceProxy__block_invoke_2(uin
       v4 = +[AMSLogConfig sharedConfig];
     }
 
-    v5 = [v4 OSLogObject];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v4 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v6 = objc_opt_class();
       v7 = AMSLogKey();
@@ -345,13 +345,13 @@ void __52__AMSDaemonConnection_accountManagementServiceProxy__block_invoke_2(uin
       v27 = v7;
       v28 = 2114;
       v29 = v8;
-      _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error connecting sync proxy. error = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error connecting sync proxy. error = %{public}@", buf, 0x20u);
     }
 
     v9 = 0;
-    if (a3)
+    if (error)
     {
-      *a3 = v19[5];
+      *error = v19[5];
     }
   }
 
@@ -586,7 +586,7 @@ void __47__AMSDaemonConnection_onDeviceDataServiceProxy__block_invoke_2(uint64_t
   [v5 _errorForwardingProxyForServiceProxy:v7 proxyReplyError:v6 interface:v8 proxyPromise:*(a1 + 40)];
 }
 
-- (id)autoBugCaptureServiceProxySyncWithError:(id *)a3
+- (id)autoBugCaptureServiceProxySyncWithError:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
   v18 = 0;
@@ -617,8 +617,8 @@ void __47__AMSDaemonConnection_onDeviceDataServiceProxy__block_invoke_2(uint64_t
       v4 = +[AMSLogConfig sharedConfig];
     }
 
-    v5 = [v4 OSLogObject];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v4 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v6 = objc_opt_class();
       v7 = AMSLogKey();
@@ -629,13 +629,13 @@ void __47__AMSDaemonConnection_onDeviceDataServiceProxy__block_invoke_2(uint64_t
       v27 = v7;
       v28 = 2114;
       v29 = v8;
-      _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error connecting sync proxy. error = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error connecting sync proxy. error = %{public}@", buf, 0x20u);
     }
 
     v9 = 0;
-    if (a3)
+    if (error)
     {
-      *a3 = v19[5];
+      *error = v19[5];
     }
   }
 
@@ -768,7 +768,7 @@ void __41__AMSDaemonConnection_cookieServiceProxy__block_invoke_2(uint64_t a1, v
   [v5 _errorForwardingProxyForServiceProxy:v7 proxyReplyError:v6 interface:v8 proxyPromise:*(a1 + 40)];
 }
 
-- (id)cookieServiceProxySyncWithError:(id *)a3
+- (id)cookieServiceProxySyncWithError:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
   v18 = 0;
@@ -799,8 +799,8 @@ void __41__AMSDaemonConnection_cookieServiceProxy__block_invoke_2(uint64_t a1, v
       v4 = +[AMSLogConfig sharedConfig];
     }
 
-    v5 = [v4 OSLogObject];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v4 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v6 = objc_opt_class();
       v7 = AMSLogKey();
@@ -811,13 +811,13 @@ void __41__AMSDaemonConnection_cookieServiceProxy__block_invoke_2(uint64_t a1, v
       v27 = v7;
       v28 = 2114;
       v29 = v8;
-      _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error connecting sync proxy. error = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error connecting sync proxy. error = %{public}@", buf, 0x20u);
     }
 
     v9 = 0;
-    if (a3)
+    if (error)
     {
-      *a3 = v19[5];
+      *error = v19[5];
     }
   }
 
@@ -916,16 +916,16 @@ void __55__AMSDaemonConnection_cookieServiceProxySyncWithError___block_invoke_55
   }
 }
 
-- (id)deviceMessengerProxyWithDelegate:(id)a3
+- (id)deviceMessengerProxyWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__AMSDaemonConnection_deviceMessengerProxyWithDelegate___block_invoke;
   v8[3] = &unk_1E73B65D0;
-  v9 = v4;
-  v10 = self;
-  v5 = v4;
+  v9 = delegateCopy;
+  selfCopy = self;
+  v5 = delegateCopy;
   v6 = [(AMSDaemonConnection *)self _connectionProxyWithAccessBlock:v8];
 
   return v6;
@@ -1194,16 +1194,16 @@ void __46__AMSDaemonConnection_pushNotificationService__block_invoke_2(uint64_t 
   [v5 _errorForwardingProxyForServiceProxy:v7 proxyReplyError:v6 interface:v8 proxyPromise:*(a1 + 40)];
 }
 
-- (id)securityServiceProxyWithDelegate:(id)a3
+- (id)securityServiceProxyWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__AMSDaemonConnection_securityServiceProxyWithDelegate___block_invoke;
   v8[3] = &unk_1E73B65D0;
-  v9 = v4;
-  v10 = self;
-  v5 = v4;
+  v9 = delegateCopy;
+  selfCopy = self;
+  v5 = delegateCopy;
   v6 = [(AMSDaemonConnection *)self _connectionProxyWithAccessBlock:v8];
 
   return v6;
@@ -1234,16 +1234,16 @@ void __56__AMSDaemonConnection_securityServiceProxyWithDelegate___block_invoke_2
   [v5 _errorForwardingProxyForServiceProxy:v7 proxyReplyError:v6 interface:v8 proxyPromise:*(a1 + 40)];
 }
 
-- (void)_connectionSyncProxyWithAccessBlock:(id)a3
+- (void)_connectionSyncProxyWithAccessBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[AMSProcessInfo currentProcess];
-  v6 = [v5 isAMSAccountsDaemon];
+  isAMSAccountsDaemon = [v5 isAMSAccountsDaemon];
 
-  if (v6)
+  if (isAMSAccountsDaemon)
   {
     v12 = AMSErrorWithFormat(11, @"Connection Proxy Failed", @"Sync proxy unavailable", v7, v8, v9, v10, v11, v15[0]);
-    v4[2](v4, 0, v12);
+    blockCopy[2](blockCopy, 0, v12);
   }
 
   else
@@ -1254,16 +1254,16 @@ void __56__AMSDaemonConnection_securityServiceProxyWithDelegate___block_invoke_2
     v19 = __Block_byref_object_copy__21;
     v20 = __Block_byref_object_dispose__21;
     v21 = 0;
-    v13 = [(AMSDaemonConnection *)self sharedConnection];
+    sharedConnection = [(AMSDaemonConnection *)self sharedConnection];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __59__AMSDaemonConnection__connectionSyncProxyWithAccessBlock___block_invoke;
     v15[3] = &unk_1E73B6738;
     v15[4] = self;
     v15[5] = &v16;
-    v14 = [v13 synchronousRemoteObjectProxyWithErrorHandler:v15];
+    v14 = [sharedConnection synchronousRemoteObjectProxyWithErrorHandler:v15];
 
-    (v4)[2](v4, v14, v17[5]);
+    (blockCopy)[2](blockCopy, v14, v17[5]);
     _Block_object_dispose(&v16, 8);
   }
 }
@@ -1294,14 +1294,14 @@ void __59__AMSDaemonConnection__connectionSyncProxyWithAccessBlock___block_invok
   }
 }
 
-- (id)_connectionProxyWithAccessBlock:(id)a3
+- (id)_connectionProxyWithAccessBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc_init(AMSMutablePromise);
   v6 = +[AMSProcessInfo currentProcess];
-  v7 = [v6 isAMSAccountsDaemon];
+  isAMSAccountsDaemon = [v6 isAMSAccountsDaemon];
 
-  if (v7)
+  if (isAMSAccountsDaemon)
   {
     v13 = AMSErrorWithFormat(11, @"Connection Proxy Failed", @"Async proxy unavailable", v8, v9, v10, v11, v12, v22);
     [(AMSMutablePromise *)v5 finishWithError:v13];
@@ -1310,7 +1310,7 @@ void __59__AMSDaemonConnection__connectionSyncProxyWithAccessBlock___block_invok
 
   else
   {
-    v15 = [(AMSDaemonConnection *)self sharedConnectionAccessQueue];
+    sharedConnectionAccessQueue = [(AMSDaemonConnection *)self sharedConnectionAccessQueue];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __55__AMSDaemonConnection__connectionProxyWithAccessBlock___block_invoke;
@@ -1318,7 +1318,7 @@ void __59__AMSDaemonConnection__connectionSyncProxyWithAccessBlock___block_invok
     v23[4] = self;
     v16 = v5;
     v24 = v16;
-    v25 = v4;
+    v25 = blockCopy;
     v17 = v23;
     v18 = AMSLogKey();
     block[0] = MEMORY[0x1E69E9820];
@@ -1328,7 +1328,7 @@ void __59__AMSDaemonConnection__connectionSyncProxyWithAccessBlock___block_invok
     v27 = v18;
     v28 = v17;
     v19 = v18;
-    dispatch_async(v15, block);
+    dispatch_async(sharedConnectionAccessQueue, block);
 
     v20 = v16;
   }
@@ -1395,25 +1395,25 @@ void __55__AMSDaemonConnection__connectionProxyWithAccessBlock___block_invoke_2(
   }
 }
 
-- (void)_errorForwardingProxyForServiceProxy:(id)a3 proxyReplyError:(id)a4 interface:(id)a5 proxyPromise:(id)a6
+- (void)_errorForwardingProxyForServiceProxy:(id)proxy proxyReplyError:(id)error interface:(id)interface proxyPromise:(id)promise
 {
-  v12 = a4;
-  v9 = a6;
-  if (a3)
+  errorCopy = error;
+  promiseCopy = promise;
+  if (proxy)
   {
-    v10 = a5;
-    v11 = a3;
-    a3 = [[AMSDaemonConnectionErrorForwardingProxy alloc] initWithProxy:v11 fromInterface:v10];
+    interfaceCopy = interface;
+    proxyCopy = proxy;
+    proxy = [[AMSDaemonConnectionErrorForwardingProxy alloc] initWithProxy:proxyCopy fromInterface:interfaceCopy];
   }
 
-  [v9 finishWithResult:a3 error:v12];
+  [promiseCopy finishWithResult:proxy error:errorCopy];
 }
 
 - (void)_handleInterruption
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSDaemonConnection *)self sharedConnectionAccessQueue];
-  dispatch_assert_queue_V2(v3);
+  sharedConnectionAccessQueue = [(AMSDaemonConnection *)self sharedConnectionAccessQueue];
+  dispatch_assert_queue_V2(sharedConnectionAccessQueue);
 
   v4 = +[AMSLogConfig sharedAccountsDaemonConfig];
   if (!v4)
@@ -1421,8 +1421,8 @@ void __55__AMSDaemonConnection__connectionProxyWithAccessBlock___block_invoke_2(
     v4 = +[AMSLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
@@ -1431,7 +1431,7 @@ void __55__AMSDaemonConnection__connectionProxyWithAccessBlock___block_invoke_2(
     v20 = v6;
     v21 = 2114;
     v22 = v8;
-    _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Connection interrupted.", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Connection interrupted.", buf, 0x16u);
   }
 
   [(AMSDaemonConnection *)self setSharedConnection:0];
@@ -1439,8 +1439,8 @@ void __55__AMSDaemonConnection__connectionProxyWithAccessBlock___block_invoke_2(
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v9 = [(AMSDaemonConnection *)self interruptionHandlers];
-  v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  interruptionHandlers = [(AMSDaemonConnection *)self interruptionHandlers];
+  v10 = [interruptionHandlers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1452,14 +1452,14 @@ void __55__AMSDaemonConnection__connectionProxyWithAccessBlock___block_invoke_2(
       {
         if (*v15 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(interruptionHandlers);
         }
 
         (*(*(*(&v14 + 1) + 8 * v13++) + 16))();
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v11 = [interruptionHandlers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v11);
@@ -1469,8 +1469,8 @@ void __55__AMSDaemonConnection__connectionProxyWithAccessBlock___block_invoke_2(
 - (void)_handleInvalidation
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = [(AMSDaemonConnection *)self sharedConnectionAccessQueue];
-  dispatch_assert_queue_V2(v2);
+  sharedConnectionAccessQueue = [(AMSDaemonConnection *)self sharedConnectionAccessQueue];
+  dispatch_assert_queue_V2(sharedConnectionAccessQueue);
 
   v3 = +[AMSLogConfig sharedAccountsDaemonConfig];
   if (!v3)
@@ -1478,8 +1478,8 @@ void __55__AMSDaemonConnection__connectionProxyWithAccessBlock___block_invoke_2(
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v5 = objc_opt_class();
     v6 = v5;
@@ -1488,16 +1488,16 @@ void __55__AMSDaemonConnection__connectionProxyWithAccessBlock___block_invoke_2(
     v9 = v5;
     v10 = 2114;
     v11 = v7;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Connection could not be established (invalidated)", &v8, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Connection could not be established (invalidated)", &v8, 0x16u);
   }
 }
 
-- (id)_serviceInterfaceForSelector:(SEL)a3
+- (id)_serviceInterfaceForSelector:(SEL)selector
 {
-  v4 = [(AMSDaemonConnection *)self sharedConnection];
-  v5 = [v4 remoteObjectInterface];
+  sharedConnection = [(AMSDaemonConnection *)self sharedConnection];
+  remoteObjectInterface = [sharedConnection remoteObjectInterface];
 
-  v6 = [v5 interfaceForSelector:a3 argumentIndex:0 ofReply:1];
+  v6 = [remoteObjectInterface interfaceForSelector:selector argumentIndex:0 ofReply:1];
 
   return v6;
 }

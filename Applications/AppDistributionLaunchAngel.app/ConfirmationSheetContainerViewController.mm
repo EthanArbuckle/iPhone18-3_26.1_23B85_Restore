@@ -1,13 +1,13 @@
 @interface ConfirmationSheetContainerViewController
-- (_TtC26AppDistributionLaunchAngel40ConfirmationSheetContainerViewController)initWithCoder:(id)a3;
-- (_TtC26AppDistributionLaunchAngel40ConfirmationSheetContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC26AppDistributionLaunchAngel40ConfirmationSheetContainerViewController)initWithCoder:(id)coder;
+- (_TtC26AppDistributionLaunchAngel40ConfirmationSheetContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation ConfirmationSheetContainerViewController
 
-- (_TtC26AppDistributionLaunchAngel40ConfirmationSheetContainerViewController)initWithCoder:(id)a3
+- (_TtC26AppDistributionLaunchAngel40ConfirmationSheetContainerViewController)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -21,10 +21,10 @@
   *v4 = 0;
   v4[1] = 0;
   v5 = OBJC_IVAR____TtC26AppDistributionLaunchAngel40ConfirmationSheetContainerViewController_isIPad;
-  v6 = [objc_opt_self() currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice = [objc_opt_self() currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  *(&self->super.super.super.isa + v5) = v7 == 1;
+  *(&self->super.super.super.isa + v5) = userInterfaceIdiom == 1;
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
@@ -42,14 +42,14 @@
 
   v7.receiver = self;
   v7.super_class = type metadata accessor for ConfirmationSheetContainerViewController();
-  v3 = self;
+  selfCopy = self;
   [(ConfirmationSheetContainerViewController *)&v7 viewDidLoad];
-  v4 = [(ConfirmationSheetContainerViewController *)v3 view:v7.receiver];
+  v4 = [(ConfirmationSheetContainerViewController *)selfCopy view:v7.receiver];
   if (v4)
   {
     v5 = v4;
-    v6 = [objc_opt_self() clearColor];
-    [v5 setBackgroundColor:v6];
+    clearColor = [objc_opt_self() clearColor];
+    [v5 setBackgroundColor:clearColor];
   }
 
   else
@@ -58,7 +58,7 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -68,11 +68,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  sub_10005FEC8(a3);
+  selfCopy = self;
+  sub_10005FEC8(appear);
 }
 
-- (_TtC26AppDistributionLaunchAngel40ConfirmationSheetContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC26AppDistributionLaunchAngel40ConfirmationSheetContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

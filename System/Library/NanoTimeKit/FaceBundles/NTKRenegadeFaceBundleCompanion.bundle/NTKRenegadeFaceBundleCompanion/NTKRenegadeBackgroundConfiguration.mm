@@ -1,23 +1,23 @@
 @interface NTKRenegadeBackgroundConfiguration
-+ (id)_snapshotBezierPathWithDataAssetName:(id)a3 quiltFrame:(CGRect)a4;
-+ (id)interpolatedConfigurationWithFraction:(double)a3 fromConfiguration:(id)a4 toConfiguration:(id)a5;
-+ (id)snapshotConfigurationWithBoundingFrame:(CGRect)a3 complicationEdgeInsets:(UIEdgeInsets)a4;
++ (id)_snapshotBezierPathWithDataAssetName:(id)name quiltFrame:(CGRect)frame;
++ (id)interpolatedConfigurationWithFraction:(double)fraction fromConfiguration:(id)configuration toConfiguration:(id)toConfiguration;
++ (id)snapshotConfigurationWithBoundingFrame:(CGRect)frame complicationEdgeInsets:(UIEdgeInsets)insets;
 - (CGRect)bottomQuiltMaxBoundingRect;
 - (CGRect)bottomQuiltMinBoundingRect;
 - (CGRect)topQuiltMaxBoundingRect;
 - (CGRect)topQuiltMinBoundingRect;
-- (_BYTE)initWithTopQuiltPieceOverlapsBottom:(double)a3 randomizationSeedValue:(double)a4 topQuiltMinBoundingRect:(double)a5 topQuiltMaxBoundingRect:(double)a6 bottomQuiltMinBoundingRect:(double)a7 bottomQuiltMaxBoundingRect:(double)a8 lineVariance:(double)a9 quiltOverlap:(uint64_t)a10;
-- (id)_generateVariationValuesForQuiltPieceWithTopLeftPoint:(CGPoint)a3 topRightPoint:(CGPoint)a4 bottomLeftPoint:(CGPoint)a5 bottomRightPoint:(CGPoint)a6 variance:(double)a7;
-- (id)_quiltVariationValuesForSideLength:(double)a3 variance:(double)a4 fromKeyFraction:(double)a5 toKeyFraction:(double)a6;
+- (_BYTE)initWithTopQuiltPieceOverlapsBottom:(double)bottom randomizationSeedValue:(double)value topQuiltMinBoundingRect:(double)rect topQuiltMaxBoundingRect:(double)boundingRect bottomQuiltMinBoundingRect:(double)minBoundingRect bottomQuiltMaxBoundingRect:(double)maxBoundingRect lineVariance:(double)variance quiltOverlap:(uint64_t)self0;
+- (id)_generateVariationValuesForQuiltPieceWithTopLeftPoint:(CGPoint)point topRightPoint:(CGPoint)rightPoint bottomLeftPoint:(CGPoint)leftPoint bottomRightPoint:(CGPoint)bottomRightPoint variance:(double)variance;
+- (id)_quiltVariationValuesForSideLength:(double)length variance:(double)variance fromKeyFraction:(double)fraction toKeyFraction:(double)keyFraction;
 - (id)description;
 - (void)_generateQuiltPaths;
 @end
 
 @implementation NTKRenegadeBackgroundConfiguration
 
-- (_BYTE)initWithTopQuiltPieceOverlapsBottom:(double)a3 randomizationSeedValue:(double)a4 topQuiltMinBoundingRect:(double)a5 topQuiltMaxBoundingRect:(double)a6 bottomQuiltMinBoundingRect:(double)a7 bottomQuiltMaxBoundingRect:(double)a8 lineVariance:(double)a9 quiltOverlap:(uint64_t)a10
+- (_BYTE)initWithTopQuiltPieceOverlapsBottom:(double)bottom randomizationSeedValue:(double)value topQuiltMinBoundingRect:(double)rect topQuiltMaxBoundingRect:(double)boundingRect bottomQuiltMinBoundingRect:(double)minBoundingRect bottomQuiltMaxBoundingRect:(double)maxBoundingRect lineVariance:(double)variance quiltOverlap:(uint64_t)self0
 {
-  v39.receiver = a1;
+  v39.receiver = self;
   v39.super_class = NTKRenegadeBackgroundConfiguration;
   v36 = objc_msgSendSuper2(&v39, "init");
   v37 = v36;
@@ -26,13 +26,13 @@
     v36[48] = a11;
     *(v36 + 7) = a12;
     *(v36 + 10) = a2;
-    *(v36 + 11) = a3;
-    *(v36 + 12) = a4;
-    *(v36 + 13) = a5;
-    *(v36 + 14) = a6;
-    *(v36 + 15) = a7;
-    *(v36 + 16) = a8;
-    *(v36 + 17) = a9;
+    *(v36 + 11) = bottom;
+    *(v36 + 12) = value;
+    *(v36 + 13) = rect;
+    *(v36 + 14) = boundingRect;
+    *(v36 + 15) = minBoundingRect;
+    *(v36 + 16) = maxBoundingRect;
+    *(v36 + 17) = variance;
     *(v36 + 18) = a17;
     *(v36 + 19) = a18;
     *(v36 + 20) = a19;
@@ -243,19 +243,19 @@
   self->_bottomQuiltPath = v74;
 }
 
-- (id)_generateVariationValuesForQuiltPieceWithTopLeftPoint:(CGPoint)a3 topRightPoint:(CGPoint)a4 bottomLeftPoint:(CGPoint)a5 bottomRightPoint:(CGPoint)a6 variance:(double)a7
+- (id)_generateVariationValuesForQuiltPieceWithTopLeftPoint:(CGPoint)point topRightPoint:(CGPoint)rightPoint bottomLeftPoint:(CGPoint)leftPoint bottomRightPoint:(CGPoint)bottomRightPoint variance:(double)variance
 {
-  y = a5.y;
-  x = a5.x;
-  v8 = a3.y;
-  v9 = a3.x;
-  v11 = [(NTKRenegadeSeededRandomizer *)self->_randomizer unsignedLongValue];
-  v12 = ((v11 / 0xA) + 2 * ((v11 / 0xA * 0x199999999999999AuLL) >> 64)) & 3;
+  y = leftPoint.y;
+  x = leftPoint.x;
+  v8 = point.y;
+  v9 = point.x;
+  unsignedLongValue = [(NTKRenegadeSeededRandomizer *)self->_randomizer unsignedLongValue];
+  v12 = ((unsignedLongValue / 0xA) + 2 * ((unsignedLongValue / 0xA * 0x199999999999999AuLL) >> 64)) & 3;
   v13 = 1.0;
   v14 = 0.0;
   if (v12 <= 1)
   {
-    if ((((v11 / 0xA) + 2 * ((v11 / 0xA * 0x199999999999999AuLL) >> 64)) & 3) == 0)
+    if ((((unsignedLongValue / 0xA) + 2 * ((unsignedLongValue / 0xA * 0x199999999999999AuLL) >> 64)) & 3) == 0)
     {
       v15 = 0;
       v13 = 0.95;
@@ -282,8 +282,8 @@ LABEL_7:
   v27 = 0.95;
   v16 = 0.0;
 LABEL_10:
-  v17 = [(NTKRenegadeBackgroundConfiguration *)self _quiltVariationValuesForSideLength:NTKRenegadeLengthBetweenPoints(x variance:y fromKeyFraction:v9 toKeyFraction:v8), a7, v14, v13];
-  v18 = NTKRenegadeLengthBetweenPoints(v9, v8, a4.x, a4.y);
+  v17 = [(NTKRenegadeBackgroundConfiguration *)self _quiltVariationValuesForSideLength:NTKRenegadeLengthBetweenPoints(x variance:y fromKeyFraction:v9 toKeyFraction:v8), variance, v14, v13];
+  v18 = NTKRenegadeLengthBetweenPoints(v9, v8, rightPoint.x, rightPoint.y);
   if (v15)
   {
     v19 = 0.95;
@@ -304,9 +304,9 @@ LABEL_10:
     v20 = 0.0;
   }
 
-  v21 = [(NTKRenegadeBackgroundConfiguration *)self _quiltVariationValuesForSideLength:v18 variance:a7 fromKeyFraction:v16 toKeyFraction:v19, *&x];
-  v22 = [(NTKRenegadeBackgroundConfiguration *)self _quiltVariationValuesForSideLength:NTKRenegadeLengthBetweenPoints(a4.x variance:a4.y fromKeyFraction:a6.x toKeyFraction:a6.y), a7, v20, v27];
-  v23 = [(NTKRenegadeBackgroundConfiguration *)self _quiltVariationValuesForSideLength:NTKRenegadeLengthBetweenPoints(a6.x variance:a6.y fromKeyFraction:v26 toKeyFraction:y), a7, v14, v13];
+  v21 = [(NTKRenegadeBackgroundConfiguration *)self _quiltVariationValuesForSideLength:v18 variance:variance fromKeyFraction:v16 toKeyFraction:v19, *&x];
+  v22 = [(NTKRenegadeBackgroundConfiguration *)self _quiltVariationValuesForSideLength:NTKRenegadeLengthBetweenPoints(rightPoint.x variance:rightPoint.y fromKeyFraction:bottomRightPoint.x toKeyFraction:bottomRightPoint.y), variance, v20, v27];
+  v23 = [(NTKRenegadeBackgroundConfiguration *)self _quiltVariationValuesForSideLength:NTKRenegadeLengthBetweenPoints(bottomRightPoint.x variance:bottomRightPoint.y fromKeyFraction:v26 toKeyFraction:y), variance, v14, v13];
   v31[0] = &off_10AF8;
   v31[1] = &off_10B28;
   v32[0] = v17;
@@ -320,14 +320,14 @@ LABEL_10:
   return v24;
 }
 
-- (id)_quiltVariationValuesForSideLength:(double)a3 variance:(double)a4 fromKeyFraction:(double)a5 toKeyFraction:(double)a6
+- (id)_quiltVariationValuesForSideLength:(double)length variance:(double)variance fromKeyFraction:(double)fraction toKeyFraction:(double)keyFraction
 {
-  v10 = a4 * 0.1;
+  v10 = variance * 0.1;
   v11 = objc_opt_new();
-  v12 = [NSNumber numberWithDouble:a5];
+  v12 = [NSNumber numberWithDouble:fraction];
   v23[0] = v12;
   v24[0] = &off_10CD8;
-  v13 = [NSNumber numberWithDouble:a6];
+  v13 = [NSNumber numberWithDouble:keyFraction];
   v23[1] = v13;
   v24[1] = &off_10CD8;
   v14 = [NSDictionary dictionaryWithObjects:v24 forKeys:v23 count:2];
@@ -337,22 +337,22 @@ LABEL_10:
   v16 = 0.0;
   for (i = 1; i != 6; ++i)
   {
-    if (a4 - v16 <= v10)
+    if (variance - v16 <= v10)
     {
       v15 ^= 1u;
     }
 
     if (v15)
     {
-      v18 = a4;
+      varianceCopy = variance;
     }
 
     else
     {
-      v18 = 0.0;
+      varianceCopy = 0.0;
     }
 
-    [(NTKRenegadeSeededRandomizer *)self->_randomizer floatValueBetweenFirstValue:v16 secondValue:v18];
+    [(NTKRenegadeSeededRandomizer *)self->_randomizer floatValueBetweenFirstValue:v16 secondValue:varianceCopy];
     v16 = v19;
     v20 = [NSNumber numberWithDouble:v19];
     v21 = [NSNumber numberWithDouble:i / 6.0];
@@ -394,53 +394,53 @@ LABEL_10:
   return v10;
 }
 
-+ (id)interpolatedConfigurationWithFraction:(double)a3 fromConfiguration:(id)a4 toConfiguration:(id)a5
++ (id)interpolatedConfigurationWithFraction:(double)fraction fromConfiguration:(id)configuration toConfiguration:(id)toConfiguration
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [a1 new];
-  v10 = [v7 topQuiltPath];
-  v11 = [v8 topQuiltPath];
+  configurationCopy = configuration;
+  toConfigurationCopy = toConfiguration;
+  v9 = [self new];
+  topQuiltPath = [configurationCopy topQuiltPath];
+  topQuiltPath2 = [toConfigurationCopy topQuiltPath];
   v12 = NTKInterpolateBetweenBezierPaths();
   v13 = v9[2];
   v9[2] = v12;
 
-  v14 = [v7 bottomQuiltPath];
-  v15 = [v8 bottomQuiltPath];
+  bottomQuiltPath = [configurationCopy bottomQuiltPath];
+  bottomQuiltPath2 = [toConfigurationCopy bottomQuiltPath];
   v16 = NTKInterpolateBetweenBezierPaths();
   v17 = v9[3];
   v9[3] = v16;
 
   v9[7] = 0;
-  LODWORD(v14) = [v8 topQuiltPieceOverlapsBottom];
+  LODWORD(bottomQuiltPath) = [toConfigurationCopy topQuiltPieceOverlapsBottom];
 
-  if (v14)
+  if (bottomQuiltPath)
   {
-    v18 = [v7 topQuiltPieceOverlapsBottom];
+    topQuiltPieceOverlapsBottom = [configurationCopy topQuiltPieceOverlapsBottom];
   }
 
   else
   {
-    v18 = 0;
+    topQuiltPieceOverlapsBottom = 0;
   }
 
-  *(v9 + 48) = v18;
+  *(v9 + 48) = topQuiltPieceOverlapsBottom;
 
   return v9;
 }
 
-+ (id)snapshotConfigurationWithBoundingFrame:(CGRect)a3 complicationEdgeInsets:(UIEdgeInsets)a4
++ (id)snapshotConfigurationWithBoundingFrame:(CGRect)frame complicationEdgeInsets:(UIEdgeInsets)insets
 {
-  v5 = NTKRenegadeHorizontallyCenteredFrameWithEdgeInsets(a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a4.top, a4.left, a4.bottom);
+  v5 = NTKRenegadeHorizontallyCenteredFrameWithEdgeInsets(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height, insets.top, insets.left, insets.bottom);
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [a1 new];
-  v13 = [a1 _snapshotBezierPathWithDataAssetName:@"SnapshotVectorHour" quiltFrame:{v5, v7, v9, v11}];
+  v12 = [self new];
+  v13 = [self _snapshotBezierPathWithDataAssetName:@"SnapshotVectorHour" quiltFrame:{v5, v7, v9, v11}];
   v14 = v12[2];
   v12[2] = v13;
 
-  v15 = [a1 _snapshotBezierPathWithDataAssetName:@"SnapshotVectorMinute" quiltFrame:{v5, v7, v9, v11}];
+  v15 = [self _snapshotBezierPathWithDataAssetName:@"SnapshotVectorMinute" quiltFrame:{v5, v7, v9, v11}];
   v16 = v12[3];
   v12[3] = v15;
 
@@ -450,15 +450,15 @@ LABEL_10:
   return v12;
 }
 
-+ (id)_snapshotBezierPathWithDataAssetName:(id)a3 quiltFrame:(CGRect)a4
++ (id)_snapshotBezierPathWithDataAssetName:(id)name quiltFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  nameCopy = name;
   v9 = [NSBundle bundleForClass:objc_opt_class()];
-  v10 = [[NSDataAsset alloc] initWithName:v8 bundle:v9];
+  v10 = [[NSDataAsset alloc] initWithName:nameCopy bundle:v9];
 
   v11 = NTKRenegadeBezierPathFromSVGDataAsset(v10, x, y, width, height);
 

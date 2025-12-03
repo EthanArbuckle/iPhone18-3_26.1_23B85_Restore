@@ -1,7 +1,7 @@
 @interface NTKComplicationProviderOptions
 - (NTKComplicationProviderOptions)init;
-- (id)_initWithOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NTKComplicationProviderOptions
@@ -32,37 +32,37 @@
   return v2;
 }
 
-- (id)_initWithOptions:(id)a3
+- (id)_initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v13.receiver = self;
   v13.super_class = NTKComplicationProviderOptions;
   v5 = [(NTKComplicationProviderOptions *)&v13 init];
   if (v5)
   {
-    v6 = [*(v4 + 2) copy];
+    v6 = [*(optionsCopy + 2) copy];
     allowedComplicationTypes = v5->_allowedComplicationTypes;
     v5->_allowedComplicationTypes = v6;
 
-    v8 = [*(v4 + 3) copy];
+    v8 = [*(optionsCopy + 3) copy];
     rankedFamilies = v5->_rankedFamilies;
     v5->_rankedFamilies = v8;
 
-    v10 = [*(v4 + 4) copy];
+    v10 = [*(optionsCopy + 4) copy];
     supportedDateStyles = v5->_supportedDateStyles;
     v5->_supportedDateStyles = v10;
 
-    v5->_includeDisabledTypes = *(v4 + 8);
-    v5->_allowGenericDateComplication = *(v4 + 9);
-    v5->_locationStyle = *(v4 + 5);
+    v5->_includeDisabledTypes = *(optionsCopy + 8);
+    v5->_allowGenericDateComplication = *(optionsCopy + 9);
+    v5->_locationStyle = *(optionsCopy + 5);
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 _initWithOptions:self];
 }

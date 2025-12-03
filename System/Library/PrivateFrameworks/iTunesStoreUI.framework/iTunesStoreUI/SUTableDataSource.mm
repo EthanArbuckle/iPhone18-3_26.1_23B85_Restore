@@ -1,15 +1,15 @@
 @interface SUTableDataSource
 - (SUTableDataSource)init;
-- (id)cachedConfigurationForClass:(Class)a3 index:(int64_t)a4;
-- (id)cellContextForConfigurationClass:(Class)a3;
-- (id)titleForDeleteConfirmationForIndexPath:(id)a3;
+- (id)cachedConfigurationForClass:(Class)class index:(int64_t)index;
+- (id)cellContextForConfigurationClass:(Class)class;
+- (id)titleForDeleteConfirmationForIndexPath:(id)path;
 - (void)beginPreferringUserInteraction;
 - (void)dealloc;
 - (void)didBeginPreferringUserInteraction;
 - (void)didEndPreferringUserInteraction;
 - (void)endPreferringUserInteraction;
 - (void)reloadCellContexts;
-- (void)setCellReuseSource:(id)a3;
+- (void)setCellReuseSource:(id)source;
 @end
 
 @implementation SUTableDataSource
@@ -45,40 +45,40 @@
   }
 }
 
-- (id)cachedConfigurationForClass:(Class)a3 index:(int64_t)a4
+- (id)cachedConfigurationForClass:(Class)class index:(int64_t)index
 {
-  v6 = [(SUVariableCellConfigurationCache *)self->_configurationCache cacheForClass:a3];
-  v7 = [v6 configurationForRow:a4];
-  v8 = [v6 cellContext];
-  if (!v8)
+  v6 = [(SUVariableCellConfigurationCache *)self->_configurationCache cacheForClass:class];
+  v7 = [v6 configurationForRow:index];
+  cellContext = [v6 cellContext];
+  if (!cellContext)
   {
-    v8 = [(SUVariableCellConfigurationCache *)self->_configurationCache cellContext];
+    cellContext = [(SUVariableCellConfigurationCache *)self->_configurationCache cellContext];
   }
 
-  [v8 setTableViewStyle:{-[SUTableDataSource tableViewStyle](self, "tableViewStyle")}];
-  [v7 setContext:v8];
+  [cellContext setTableViewStyle:{-[SUTableDataSource tableViewStyle](self, "tableViewStyle")}];
+  [v7 setContext:cellContext];
   return v7;
 }
 
-- (id)cellContextForConfigurationClass:(Class)a3
+- (id)cellContextForConfigurationClass:(Class)class
 {
-  v3 = [(SUVariableCellConfigurationCache *)self->_configurationCache cacheForClass:a3];
+  v3 = [(SUVariableCellConfigurationCache *)self->_configurationCache cacheForClass:class];
 
   return [v3 cellContext];
 }
 
 - (void)didBeginPreferringUserInteraction
 {
-  v2 = [(ISURLOperationPool *)[(SUTableDataSource *)self imagePool] operationQueue];
+  operationQueue = [(ISURLOperationPool *)[(SUTableDataSource *)self imagePool] operationQueue];
 
-  [v2 setSuspended:1];
+  [operationQueue setSuspended:1];
 }
 
 - (void)didEndPreferringUserInteraction
 {
-  v2 = [(ISURLOperationPool *)[(SUTableDataSource *)self imagePool] operationQueue];
+  operationQueue = [(ISURLOperationPool *)[(SUTableDataSource *)self imagePool] operationQueue];
 
-  [v2 setSuspended:0];
+  [operationQueue setSuspended:0];
 }
 
 - (void)endPreferringUserInteraction
@@ -110,17 +110,17 @@
   [(SUVariableCellConfigurationCache *)configurationCache reset];
 }
 
-- (void)setCellReuseSource:(id)a3
+- (void)setCellReuseSource:(id)source
 {
-  if (a3 && (objc_opt_respondsToSelector() & 1) == 0)
+  if (source && (objc_opt_respondsToSelector() & 1) == 0)
   {
     [(SUTableDataSource *)a2 setCellReuseSource:?];
   }
 
-  self->_cellReuseSource = a3;
+  self->_cellReuseSource = source;
 }
 
-- (id)titleForDeleteConfirmationForIndexPath:(id)a3
+- (id)titleForDeleteConfirmationForIndexPath:(id)path
 {
   v3 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
 

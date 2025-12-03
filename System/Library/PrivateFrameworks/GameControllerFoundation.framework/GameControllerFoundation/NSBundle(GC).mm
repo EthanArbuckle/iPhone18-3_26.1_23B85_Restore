@@ -50,7 +50,7 @@
 + (id)gc_bundleForExecutableAtPath:()GC
 {
   v2 = [MEMORY[0x1E695DFF8] fileURLWithPath:?];
-  v3 = [a1 gc_bundleForExecutableAtURL:v2];
+  v3 = [self gc_bundleForExecutableAtURL:v2];
 
   return v3;
 }

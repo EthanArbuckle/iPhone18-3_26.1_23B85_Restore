@@ -1,25 +1,25 @@
 @interface WFPredictedLocationTransitionTriggerConfigurationViewController
-- (WFPredictedLocationTransitionTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4;
+- (WFPredictedLocationTransitionTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode;
 - (id)customSections;
-- (id)infoForSection:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (id)infoForSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 - (id)tableViewCellClasses;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateUI;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WFPredictedLocationTransitionTriggerConfigurationViewController
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v7 = -[WFPredictedLocationTransitionTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v6 section]);
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v7 = -[WFPredictedLocationTransitionTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v8 = getWFTriggersLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -34,42 +34,42 @@
   v10 = [v9 isEqual:@"triggerLocation"];
 
   v11 = [v7 objectForKeyedSubscript:@"items"];
-  v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
-  v13 = [v12 unsignedIntegerValue];
-  v14 = [(WFTriggerConfigurationViewController *)self trigger];
-  v15 = v14;
+  v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+  unsignedIntegerValue = [v12 unsignedIntegerValue];
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  v15 = trigger;
   if (v10)
   {
-    [v14 setDestinationType:v13];
+    [trigger setDestinationType:unsignedIntegerValue];
   }
 
   else
   {
-    [v14 setMinutesBefore:v13];
+    [trigger setMinutesBefore:unsignedIntegerValue];
   }
 
-  v16 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v16 reloadData];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 
   [(WFTriggerConfigurationViewController *)self updateNextButtonEnabledState];
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(WFPredictedLocationTransitionTriggerConfigurationViewController *)self infoForSection:a4];
+  v4 = [(WFPredictedLocationTransitionTriggerConfigurationViewController *)self infoForSection:section];
   v5 = [v4 objectForKeyedSubscript:@"sectionTitle"];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = -[WFPredictedLocationTransitionTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v6 section]);
+  pathCopy = path;
+  viewCopy = view;
+  v8 = -[WFPredictedLocationTransitionTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v9 = [v8 objectForKeyedSubscript:@"cellIdentifier"];
-  v10 = [v7 dequeueReusableCellWithIdentifier:v9 forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9 forIndexPath:pathCopy];
 
   [v10 setAccessoryType:0];
   [v10 setSelectionStyle:0];
@@ -86,26 +86,26 @@
   v14 = [v13 isEqual:@"triggerLocation"];
 
   v15 = [v8 objectForKeyedSubscript:@"items"];
-  v16 = [v15 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
-  v17 = [v16 unsignedIntegerValue];
+  v16 = [v15 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+  unsignedIntegerValue = [v16 unsignedIntegerValue];
 
   if (!v14)
   {
-    if (v17 <= 5)
+    if (unsignedIntegerValue <= 5)
     {
-      v19 = WFLocalizedString(off_279EE8ED0[v17]);
-      v20 = [v10 textLabel];
-      [v20 setText:v19];
+      v19 = WFLocalizedString(off_279EE8ED0[unsignedIntegerValue]);
+      textLabel = [v10 textLabel];
+      [textLabel setText:v19];
     }
 
-    v21 = [(WFTriggerConfigurationViewController *)self trigger];
-    v22 = [v21 minutesBefore];
+    trigger = [(WFTriggerConfigurationViewController *)self trigger];
+    minutesBefore = [trigger minutesBefore];
     goto LABEL_13;
   }
 
-  if (v17)
+  if (unsignedIntegerValue)
   {
-    if (v17 != 1)
+    if (unsignedIntegerValue != 1)
     {
       v23 = getWFTriggersLogObject();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
@@ -113,7 +113,7 @@
         v27 = 136315394;
         v28 = "[WFPredictedLocationTransitionTriggerConfigurationViewController tableView:cellForRowAtIndexPath:]";
         v29 = 2048;
-        v30 = [v6 row];
+        v30 = [pathCopy row];
         _os_log_impl(&dword_274719000, v23, OS_LOG_TYPE_FAULT, "%s Unexpected destination for WFSectionLocation: %lu", &v27, 0x16u);
       }
 
@@ -129,16 +129,16 @@
   }
 
   v23 = WFLocalizedString(v18);
-  v24 = [v10 textLabel];
-  [v24 setText:v23];
+  textLabel2 = [v10 textLabel];
+  [textLabel2 setText:v23];
 
 LABEL_12:
-  v21 = [(WFTriggerConfigurationViewController *)self trigger];
-  v22 = [v21 destinationType];
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  minutesBefore = [trigger destinationType];
 LABEL_13:
-  v25 = v22;
+  v25 = minutesBefore;
 
-  if (v25 == v17)
+  if (v25 == unsignedIntegerValue)
   {
     [v10 setAccessoryType:3];
   }
@@ -148,9 +148,9 @@ LABEL_15:
   return v10;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(WFPredictedLocationTransitionTriggerConfigurationViewController *)self infoForSection:a4];
+  v4 = [(WFPredictedLocationTransitionTriggerConfigurationViewController *)self infoForSection:section];
   v5 = [v4 objectForKeyedSubscript:@"identifier"];
   v6 = [v5 isEqual:@"triggerDescription"];
 
@@ -179,35 +179,35 @@ LABEL_15:
   return v7;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(WFTriggerConfigurationViewController *)self sections];
-  v4 = [v3 count];
+  sections = [(WFTriggerConfigurationViewController *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (id)infoForSection:(int64_t)a3
+- (id)infoForSection:(int64_t)section
 {
-  v4 = [(WFTriggerConfigurationViewController *)self sections];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  sections = [(WFTriggerConfigurationViewController *)self sections];
+  v5 = [sections objectAtIndexedSubscript:section];
 
   return v5;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = WFPredictedLocationTransitionTriggerConfigurationViewController;
-  [(WFPredictedLocationTransitionTriggerConfigurationViewController *)&v5 viewWillAppear:a3];
-  v4 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v4 reloadData];
+  [(WFPredictedLocationTransitionTriggerConfigurationViewController *)&v5 viewWillAppear:appear];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)updateUI
 {
-  v2 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v2 reloadData];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (id)customSections
@@ -253,19 +253,19 @@ LABEL_15:
   return v4;
 }
 
-- (WFPredictedLocationTransitionTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4
+- (WFPredictedLocationTransitionTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode
 {
-  v7 = a3;
+  triggerCopy = trigger;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFPredictedLocationTransitionTriggerConfigurationViewController.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"[trigger isKindOfClass:[WFPredictedLocationTransitionTrigger class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFPredictedLocationTransitionTriggerConfigurationViewController.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"[trigger isKindOfClass:[WFPredictedLocationTransitionTrigger class]]"}];
   }
 
   v13.receiver = self;
   v13.super_class = WFPredictedLocationTransitionTriggerConfigurationViewController;
-  v8 = [(WFTriggerConfigurationViewController *)&v13 initWithTrigger:v7 mode:a4];
+  v8 = [(WFTriggerConfigurationViewController *)&v13 initWithTrigger:triggerCopy mode:mode];
   v9 = v8;
   if (v8)
   {

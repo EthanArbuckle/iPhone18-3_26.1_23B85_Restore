@@ -1,14 +1,14 @@
 @interface MSCameraItem
 - (BOOL)locked;
 - (BOOL)protectionStatus;
-- (MSCameraItem)initWithFSURL:(id)a3 name:(id)a4 parent:(id)a5 device:(id)a6;
-- (MSCameraItem)initWithName:(id)a3 parent:(id)a4 device:(id)a5;
+- (MSCameraItem)initWithFSURL:(id)l name:(id)name parent:(id)parent device:(id)device;
+- (MSCameraItem)initWithName:(id)name parent:(id)parent device:(id)device;
 - (NSString)name;
 - (id)baseName;
 - (id)device;
 - (id)parent;
-- (id)refreshInfo:(id)a3;
-- (int64_t)compareObjectHandle:(id)a3;
+- (id)refreshInfo:(id)info;
+- (int64_t)compareObjectHandle:(id)handle;
 - (timespec)fsCreationTime;
 - (timespec)fsModificationTime;
 - (unint64_t)captureDate;
@@ -19,101 +19,101 @@
 - (void)cancelSource;
 - (void)dealloc;
 - (void)refreshAndNotify;
-- (void)setCaptureDate:(unint64_t)a3;
-- (void)setModificationDate:(unint64_t)a3;
-- (void)setName:(id)a3;
-- (void)setSize:(unint64_t)a3;
+- (void)setCaptureDate:(unint64_t)date;
+- (void)setModificationDate:(unint64_t)date;
+- (void)setName:(id)name;
+- (void)setSize:(unint64_t)size;
 @end
 
 @implementation MSCameraItem
 
 - (NSString)name
 {
-  v2 = [(MSCameraItem *)self cameraItemProxy];
-  v3 = [v2 name];
+  cameraItemProxy = [(MSCameraItem *)self cameraItemProxy];
+  name = [cameraItemProxy name];
 
-  return v3;
+  return name;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  v5 = [(MSCameraItem *)self cameraItemProxy];
-  [v5 setName:v4];
+  nameCopy = name;
+  cameraItemProxy = [(MSCameraItem *)self cameraItemProxy];
+  [cameraItemProxy setName:nameCopy];
 }
 
 - (id)baseName
 {
-  v2 = [(MSCameraItem *)self name];
-  v3 = [v2 stringByDeletingPathExtension];
+  name = [(MSCameraItem *)self name];
+  stringByDeletingPathExtension = [name stringByDeletingPathExtension];
 
-  return v3;
+  return stringByDeletingPathExtension;
 }
 
 - (unint64_t)size
 {
-  v2 = [(MSCameraItem *)self cameraItemProxy];
-  v3 = [v2 size];
+  cameraItemProxy = [(MSCameraItem *)self cameraItemProxy];
+  v3 = [cameraItemProxy size];
 
   return v3;
 }
 
-- (void)setSize:(unint64_t)a3
+- (void)setSize:(unint64_t)size
 {
-  v4 = [(MSCameraItem *)self cameraItemProxy];
-  [v4 setSize:a3];
+  cameraItemProxy = [(MSCameraItem *)self cameraItemProxy];
+  [cameraItemProxy setSize:size];
 }
 
 - (unsigned)objHandle
 {
-  v2 = [(MSCameraItem *)self cameraItemProxy];
-  v3 = [v2 objectHandle];
+  cameraItemProxy = [(MSCameraItem *)self cameraItemProxy];
+  objectHandle = [cameraItemProxy objectHandle];
 
-  return v3;
+  return objectHandle;
 }
 
 - (unsigned)parentObject
 {
-  v2 = [(MSCameraItem *)self cameraItemProxy];
-  v3 = [v2 parentObjectHandle];
+  cameraItemProxy = [(MSCameraItem *)self cameraItemProxy];
+  parentObjectHandle = [cameraItemProxy parentObjectHandle];
 
-  return v3;
+  return parentObjectHandle;
 }
 
 - (BOOL)protectionStatus
 {
-  v2 = [(MSCameraItem *)self cameraItemProxy];
-  v3 = [v2 readOnly];
+  cameraItemProxy = [(MSCameraItem *)self cameraItemProxy];
+  readOnly = [cameraItemProxy readOnly];
 
-  return v3;
+  return readOnly;
 }
 
 - (unint64_t)captureDate
 {
-  v2 = [(MSCameraItem *)self cameraItemProxy];
-  v3 = [v2 captureDate];
+  cameraItemProxy = [(MSCameraItem *)self cameraItemProxy];
+  captureDate = [cameraItemProxy captureDate];
 
-  return v3;
+  return captureDate;
 }
 
-- (void)setCaptureDate:(unint64_t)a3
+- (void)setCaptureDate:(unint64_t)date
 {
-  v4 = [(MSCameraItem *)self cameraItemProxy];
-  [v4 setCaptureDate:a3];
+  cameraItemProxy = [(MSCameraItem *)self cameraItemProxy];
+  [cameraItemProxy setCaptureDate:date];
 }
 
 - (unint64_t)modificationDate
 {
-  v2 = [(MSCameraItem *)self cameraItemProxy];
-  v3 = [v2 modificationDate];
+  cameraItemProxy = [(MSCameraItem *)self cameraItemProxy];
+  modificationDate = [cameraItemProxy modificationDate];
 
-  return v3;
+  return modificationDate;
 }
 
-- (void)setModificationDate:(unint64_t)a3
+- (void)setModificationDate:(unint64_t)date
 {
-  v4 = [(MSCameraItem *)self cameraItemProxy];
-  [v4 setModificationDate:a3];
+  cameraItemProxy = [(MSCameraItem *)self cameraItemProxy];
+  [cameraItemProxy setModificationDate:date];
 }
 
 - (void)cancelSource
@@ -135,21 +135,21 @@
   [(MSCameraItem *)&v3 dealloc];
 }
 
-- (MSCameraItem)initWithFSURL:(id)a3 name:(id)a4 parent:(id)a5 device:(id)a6
+- (MSCameraItem)initWithFSURL:(id)l name:(id)name parent:(id)parent device:(id)device
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  nameCopy = name;
+  parentCopy = parent;
+  deviceCopy = device;
   v31.receiver = self;
   v31.super_class = MSCameraItem;
   v14 = [(MSCameraItem *)&v31 init];
   v15 = v14;
   if (v14)
   {
-    v28 = v12;
-    v29 = v11;
-    [(MSCameraItem *)v14 setDevice:v13];
+    v28 = parentCopy;
+    v29 = nameCopy;
+    [(MSCameraItem *)v14 setDevice:deviceCopy];
     v16 = objc_opt_new();
     [(MSCameraItem *)v15 setCameraItemProxy:v16];
 
@@ -160,14 +160,14 @@
     v32[4] = NSURLIsWritableKey;
     v17 = [NSArray arrayWithObjects:v32 count:5];
     v30 = 0;
-    v18 = [v10 resourceValuesForKeys:v17 error:&v30];
+    v18 = [lCopy resourceValuesForKeys:v17 error:&v30];
     v19 = v30;
 
     if (v19)
     {
       v20 = v15;
       v15 = 0;
-      v12 = v28;
+      parentCopy = v28;
     }
 
     else
@@ -185,23 +185,23 @@
       atomic_fetch_add(_sCameraFileID, 1u);
       [(MSCameraItem *)v15 setObjHandle:?];
       [(MSCameraItem *)v15 setName:v29];
-      v12 = v28;
+      parentCopy = v28;
       -[MSCameraItem setParentObject:](v15, "setParentObject:", [v28 objHandle]);
-      v26 = [v10 path];
-      [(MSCameraItem *)v15 setPath:v26];
+      path = [lCopy path];
+      [(MSCameraItem *)v15 setPath:path];
     }
 
-    v11 = v29;
+    nameCopy = v29;
   }
 
   return v15;
 }
 
-- (MSCameraItem)initWithName:(id)a3 parent:(id)a4 device:(id)a5
+- (MSCameraItem)initWithName:(id)name parent:(id)parent device:(id)device
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  parentCopy = parent;
+  deviceCopy = device;
   v19.receiver = self;
   v19.super_class = MSCameraItem;
   v11 = [(MSCameraItem *)&v19 init];
@@ -210,19 +210,19 @@
     v12 = objc_opt_new();
     [(MSCameraItem *)v11 setCameraItemProxy:v12];
 
-    [(MSCameraItem *)v11 setName:v8];
-    -[MSCameraItem setParentObject:](v11, "setParentObject:", [v9 objHandle]);
-    [(MSCameraItem *)v11 setDevice:v10];
+    [(MSCameraItem *)v11 setName:nameCopy];
+    -[MSCameraItem setParentObject:](v11, "setParentObject:", [parentCopy objHandle]);
+    [(MSCameraItem *)v11 setDevice:deviceCopy];
     memset(&v18.st_size, 0, 48);
-    v13 = [v9 path];
-    v14 = [(MSCameraItem *)v11 name];
-    v15 = [v13 stringByAppendingString:v14];
+    path = [parentCopy path];
+    name = [(MSCameraItem *)v11 name];
+    v15 = [path stringByAppendingString:name];
     [(MSCameraItem *)v11 setPath:v15];
 
-    v16 = [(MSCameraItem *)v11 path];
-    LODWORD(v14) = lstat([v16 UTF8String], &v18);
+    path2 = [(MSCameraItem *)v11 path];
+    LODWORD(name) = lstat([path2 UTF8String], &v18);
 
-    if (v14)
+    if (name)
     {
 
       v11 = 0;
@@ -251,18 +251,18 @@
     v14 = v6;
     v7 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
 
-    v8 = [(MSCameraItem *)self device];
-    v9 = [(MSCameraItem *)self device];
-    v10 = [v9 allConnections];
-    [v8 sendUpdatedItemsNotification:v7 toConnections:v10];
+    device = [(MSCameraItem *)self device];
+    device2 = [(MSCameraItem *)self device];
+    allConnections = [device2 allConnections];
+    [device sendUpdatedItemsNotification:v7 toConnections:allConnections];
   }
 }
 
-- (id)refreshInfo:(id)a3
+- (id)refreshInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(MSCameraItem *)self path];
-  v6 = [NSURL fileURLWithPath:v5];
+  infoCopy = info;
+  path = [(MSCameraItem *)self path];
+  v6 = [NSURL fileURLWithPath:path];
 
   v76[0] = NSURLFileSizeKey;
   v76[1] = NSURLCreationDateKey;
@@ -281,32 +281,32 @@
   {
     v64 = v6;
     v10 = [v8 objectForKeyedSubscript:NSURLCreationDateKey];
-    v11 = [(MSCameraItem *)self captureDate];
+    captureDate = [(MSCameraItem *)self captureDate];
     v65 = v10;
     [v10 timeIntervalSince1970];
-    if (v11 != v12)
+    if (captureDate != v12)
     {
       __ICOSLogCreate();
-      v13 = [(MSCameraItem *)self name];
-      if ([v13 length] >= 0x15)
+      name = [(MSCameraItem *)self name];
+      if ([name length] >= 0x15)
       {
-        v14 = [v13 substringWithRange:{0, 18}];
+        v14 = [name substringWithRange:{0, 18}];
         v15 = [v14 stringByAppendingString:@".."];
 
-        v13 = v15;
+        name = v15;
       }
 
-      v16 = [(MSCameraItem *)self captureDate];
+      captureDate2 = [(MSCameraItem *)self captureDate];
       [v65 timeIntervalSince1970];
-      v18 = [NSString stringWithFormat:@"refreshInfo: creation date %llu -> %llu", v16, v17];
+      v18 = [NSString stringWithFormat:@"refreshInfo: creation date %llu -> %llu", captureDate2, v17];
       v19 = _gICOSLog;
       if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = v13;
+        v20 = name;
         v21 = v19;
-        v22 = [v13 UTF8String];
+        uTF8String = [name UTF8String];
         *buf = 136446466;
-        v73 = v22;
+        v73 = uTF8String;
         v74 = 2114;
         v75 = v18;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -314,40 +314,40 @@
 
       [v65 timeIntervalSince1970];
       [(MSCameraItem *)self setCaptureDate:v23];
-      if (v4)
+      if (infoCopy)
       {
         v24 = [NSNumber numberWithUnsignedLongLong:[(MSCameraItem *)self captureDate]];
-        [v4 setObject:v24 forKeyedSubscript:@"ICCaptureDate"];
+        [infoCopy setObject:v24 forKeyedSubscript:@"ICCaptureDate"];
       }
     }
 
     v25 = [v8 objectForKeyedSubscript:NSURLContentModificationDateKey];
-    v26 = [(MSCameraItem *)self modificationDate];
+    modificationDate = [(MSCameraItem *)self modificationDate];
     [v25 timeIntervalSince1970];
-    if (v26 != v27)
+    if (modificationDate != v27)
     {
       __ICOSLogCreate();
-      v28 = [(MSCameraItem *)self name];
-      if ([v28 length] >= 0x15)
+      name2 = [(MSCameraItem *)self name];
+      if ([name2 length] >= 0x15)
       {
-        v29 = [v28 substringWithRange:{0, 18}];
+        v29 = [name2 substringWithRange:{0, 18}];
         v30 = [v29 stringByAppendingString:@".."];
 
-        v28 = v30;
+        name2 = v30;
       }
 
-      v31 = [(MSCameraItem *)self modificationDate];
+      modificationDate2 = [(MSCameraItem *)self modificationDate];
       v32 = v25;
       [v25 timeIntervalSince1970];
-      v34 = [NSString stringWithFormat:@"refreshInfo: modification date %llu -> %llu", v31, v33];
+      v34 = [NSString stringWithFormat:@"refreshInfo: modification date %llu -> %llu", modificationDate2, v33];
       v35 = _gICOSLog;
       if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
       {
-        v36 = v28;
+        v36 = name2;
         v37 = v35;
-        v38 = [v28 UTF8String];
+        uTF8String2 = [name2 UTF8String];
         *buf = 136446466;
-        v73 = v38;
+        v73 = uTF8String2;
         v74 = 2114;
         v75 = v34;
         _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -356,39 +356,39 @@
       v25 = v32;
       [v32 timeIntervalSince1970];
       [(MSCameraItem *)self setModificationDate:v39];
-      if (v4)
+      if (infoCopy)
       {
         v40 = [NSNumber numberWithUnsignedLongLong:[(MSCameraItem *)self modificationDate]];
-        [v4 setObject:v40 forKeyedSubscript:@"ICModificationDate"];
+        [infoCopy setObject:v40 forKeyedSubscript:@"ICModificationDate"];
       }
     }
 
-    v41 = v4;
+    v41 = infoCopy;
     v42 = [v8 objectForKeyedSubscript:NSURLFileSizeKey];
     v43 = [(MSCameraItem *)self size];
-    v44 = [v42 unsignedLongLongValue];
-    if (v43 != v44)
+    unsignedLongLongValue = [v42 unsignedLongLongValue];
+    if (v43 != unsignedLongLongValue)
     {
       v63 = v25;
       __ICOSLogCreate();
-      v45 = [(MSCameraItem *)self name];
-      if ([v45 length] >= 0x15)
+      name3 = [(MSCameraItem *)self name];
+      if ([name3 length] >= 0x15)
       {
-        v46 = [v45 substringWithRange:{0, 18}];
+        v46 = [name3 substringWithRange:{0, 18}];
         v47 = [v46 stringByAppendingString:@".."];
 
-        v45 = v47;
+        name3 = v47;
       }
 
       v48 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"refreshInfo: file size %llu -> %llu", -[MSCameraItem size](self, "size"), [v42 unsignedLongLongValue]);
       v49 = _gICOSLog;
       if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
       {
-        v50 = v45;
+        v50 = name3;
         v51 = v49;
-        v52 = [v45 UTF8String];
+        uTF8String3 = [name3 UTF8String];
         *buf = 136446466;
-        v73 = v52;
+        v73 = uTF8String3;
         v74 = 2114;
         v75 = v48;
         _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -403,16 +403,16 @@
       }
     }
 
-    v54 = [(MSCameraItem *)self type];
-    v4 = v41;
+    type = [(MSCameraItem *)self type];
+    infoCopy = v41;
     v6 = v64;
-    if (v43 != v44 && v54 == 1836019574)
+    if (v43 != unsignedLongLongValue && type == 1836019574)
     {
       v55 = dispatch_semaphore_create(0);
       v56 = objc_alloc_init(NSMutableArray);
       v57 = [AVURLAsset alloc];
-      v58 = [(MSCameraItem *)self path];
-      v59 = [NSURL fileURLWithPath:v58];
+      path2 = [(MSCameraItem *)self path];
+      v59 = [NSURL fileURLWithPath:path2];
       v60 = [v57 initWithURL:v59 options:0];
 
       [v56 addObject:@"duration"];
@@ -423,8 +423,8 @@
         v66[2] = __28__MSCameraItem_refreshInfo___block_invoke;
         v66[3] = &unk_1000248F0;
         v67 = v60;
-        v68 = self;
-        v69 = v4;
+        selfCopy = self;
+        v69 = infoCopy;
         v70 = v55;
         [v67 loadValuesAsynchronouslyForKeys:v56 completionHandler:v66];
       }
@@ -435,9 +435,9 @@
     }
   }
 
-  v61 = [(MSCameraItem *)self cameraItemProxy];
+  cameraItemProxy = [(MSCameraItem *)self cameraItemProxy];
 
-  return v61;
+  return cameraItemProxy;
 }
 
 void __28__MSCameraItem_refreshInfo___block_invoke(uint64_t a1)
@@ -519,15 +519,15 @@ LABEL_12:
   dispatch_semaphore_signal(*(a1 + 56));
 }
 
-- (int64_t)compareObjectHandle:(id)a3
+- (int64_t)compareObjectHandle:(id)handle
 {
-  v4 = [a3 objHandle];
-  if (v4 == [(MSCameraItem *)self objHandle])
+  objHandle = [handle objHandle];
+  if (objHandle == [(MSCameraItem *)self objHandle])
   {
     return 0;
   }
 
-  if (v4 > [(MSCameraItem *)self objHandle])
+  if (objHandle > [(MSCameraItem *)self objHandle])
   {
     return -1;
   }
@@ -537,20 +537,20 @@ LABEL_12:
 
 - (BOOL)locked
 {
-  v3 = [(MSCameraItem *)self device];
-  v4 = [v3 cameraDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"ICDeviceLocked"];
+  device = [(MSCameraItem *)self device];
+  cameraDictionary = [device cameraDictionary];
+  v5 = [cameraDictionary objectForKeyedSubscript:@"ICDeviceLocked"];
   if ([v5 BOOLValue])
   {
-    v6 = 1;
+    protectionStatus = 1;
   }
 
   else
   {
-    v6 = [(MSCameraItem *)self protectionStatus];
+    protectionStatus = [(MSCameraItem *)self protectionStatus];
   }
 
-  return v6;
+  return protectionStatus;
 }
 
 - (id)parent

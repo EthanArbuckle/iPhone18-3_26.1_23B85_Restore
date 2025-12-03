@@ -16,24 +16,24 @@
 - (id)markupString
 {
   WeakRetained = objc_loadWeakRetained(&qword_1002BD2D0);
-  v3 = [WeakRetained licenseMarkup];
+  licenseMarkup = [WeakRetained licenseMarkup];
 
-  if (!v3)
+  if (!licenseMarkup)
   {
-    v4 = [UIApp activeWatch];
-    v5 = [v4 valueForProperty:NRDevicePropertyMarketingVersion];
+    activeWatch = [UIApp activeWatch];
+    v5 = [activeWatch valueForProperty:NRDevicePropertyMarketingVersion];
     if (!v5)
     {
-      v5 = [v4 valueForProperty:NRDevicePropertySystemVersion];
+      v5 = [activeWatch valueForProperty:NRDevicePropertySystemVersion];
     }
 
     v6 = [NSString stringWithFormat:@"<a href=%@>%@</a>", @"https://www.apple.com/legal/", @"https://www.apple.com/legal/"];
     v7 = [NSBundle bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"LICENSE_FALLBACK" value:&stru_10026E598 table:@"Legal"];
-    v3 = [NSString stringWithFormat:v8, v5, v6];
+    licenseMarkup = [NSString stringWithFormat:v8, v5, v6];
   }
 
-  return v3;
+  return licenseMarkup;
 }
 
 @end

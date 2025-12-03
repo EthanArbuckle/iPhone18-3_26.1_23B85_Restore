@@ -1,12 +1,12 @@
 @interface SDAirDropInformation
-- (BOOL)BOOLValue:(void *)a3;
+- (BOOL)BOOLValue:(void *)value;
 - (SDAirDropInformation)init;
 - (SDAirDropInformationDelegate)delegate;
 - (void)addObservers;
 - (void)dealloc;
 - (void)removeObservers;
 - (void)setInformationAndNotify;
-- (void)setProperty:(void *)a3 forKey:(id)a4;
+- (void)setProperty:(void *)property forKey:(id)key;
 - (void)start;
 - (void)stop;
 @end
@@ -57,40 +57,40 @@
   return v3;
 }
 
-- (BOOL)BOOLValue:(void *)a3
+- (BOOL)BOOLValue:(void *)value
 {
-  if (!a3)
+  if (!value)
   {
     return 0;
   }
 
-  v4 = CFGetTypeID(a3);
-  return v4 == CFBooleanGetTypeID() && CFBooleanGetValue(a3) != 0;
+  v4 = CFGetTypeID(value);
+  return v4 == CFBooleanGetTypeID() && CFBooleanGetValue(value) != 0;
 }
 
-- (void)setProperty:(void *)a3 forKey:(id)a4
+- (void)setProperty:(void *)property forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   properties = self->_properties;
-  v9 = v6;
-  if (a3)
+  v9 = keyCopy;
+  if (property)
   {
-    [(NSMutableDictionary *)properties setObject:a3 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)properties setObject:property forKeyedSubscript:keyCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)properties removeObjectForKey:v6];
+    [(NSMutableDictionary *)properties removeObjectForKey:keyCopy];
   }
 
   if ([v9 isEqual:kSFOperationWirelessEnabledKey])
   {
-    [(SDStatusMonitor *)self->_monitor setWirelessEnabled:[(SDAirDropInformation *)self BOOLValue:a3]];
+    [(SDStatusMonitor *)self->_monitor setWirelessEnabled:[(SDAirDropInformation *)self BOOLValue:property]];
   }
 
   else if ([v9 isEqual:kSFOperationBluetoothEnabledKey])
   {
-    [(SDStatusMonitor *)self->_monitor setBluetoothEnabled:[(SDAirDropInformation *)self BOOLValue:a3]];
+    [(SDStatusMonitor *)self->_monitor setBluetoothEnabled:[(SDAirDropInformation *)self BOOLValue:property]];
   }
 
   else if ([v9 isEqualToString:kSFOperationWirelessAccessPointKey])
@@ -101,7 +101,7 @@
 
   else if ([v9 isEqualToString:kSFOperationAirplaneModeEnabledKey])
   {
-    [(SDStatusMonitor *)self->_monitor setAirplaneModeEnabled:[(SDAirDropInformation *)self BOOLValue:a3]];
+    [(SDStatusMonitor *)self->_monitor setAirplaneModeEnabled:[(SDAirDropInformation *)self BOOLValue:property]];
   }
 }
 
@@ -133,8 +133,8 @@
   v10 = [NSNumber numberWithBool:[(SDStatusMonitor *)self->_monitor wirelessAccessPoint]];
   [(NSMutableDictionary *)self->_properties setObject:v10 forKeyedSubscript:kSFOperationWirelessAccessPointKey];
 
-  v11 = [(SDStatusMonitor *)self->_monitor someComputerName];
-  [(NSMutableDictionary *)self->_properties setObject:v11 forKeyedSubscript:kSFOperationReceiverComputerNameKey];
+  someComputerName = [(SDStatusMonitor *)self->_monitor someComputerName];
+  [(NSMutableDictionary *)self->_properties setObject:someComputerName forKeyedSubscript:kSFOperationReceiverComputerNameKey];
 
   v12 = [NSNumber numberWithInt:[(SDStatusMonitor *)self->_monitor isAirDropAllowed]^ 1];
   [(NSMutableDictionary *)self->_properties setObject:v12 forKeyedSubscript:kSFOperationAirDropMDMRestrictedKey];

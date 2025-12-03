@@ -1,31 +1,31 @@
 @interface NSJoin
-+ (id)joinWithSourceAttributeName:(uint64_t)a3 destinationAttributeName:;
-- (BOOL)isEqual:(id)a3;
-- (NSJoin)initWithCoder:(id)a3;
-- (NSJoin)initWithSourceAttributeName:(id)a3 destinationAttributeName:(id)a4;
++ (id)joinWithSourceAttributeName:(uint64_t)name destinationAttributeName:;
+- (BOOL)isEqual:(id)equal;
+- (NSJoin)initWithCoder:(id)coder;
+- (NSJoin)initWithSourceAttributeName:(id)name destinationAttributeName:(id)attributeName;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSJoin
 
-+ (id)joinWithSourceAttributeName:(uint64_t)a3 destinationAttributeName:
++ (id)joinWithSourceAttributeName:(uint64_t)name destinationAttributeName:
 {
-  v3 = [objc_alloc(objc_opt_self()) initWithSourceAttributeName:a2 destinationAttributeName:a3];
+  v3 = [objc_alloc(objc_opt_self()) initWithSourceAttributeName:a2 destinationAttributeName:name];
 
   return v3;
 }
 
-- (NSJoin)initWithSourceAttributeName:(id)a3 destinationAttributeName:(id)a4
+- (NSJoin)initWithSourceAttributeName:(id)name destinationAttributeName:(id)attributeName
 {
   v8.receiver = self;
   v8.super_class = NSJoin;
   v6 = [(NSJoin *)&v8 init];
   if (v6)
   {
-    v6->_sourceAttributeName = [a3 copy];
-    v6->_destinationAttributeName = [a4 copy];
+    v6->_sourceAttributeName = [name copy];
+    v6->_destinationAttributeName = [attributeName copy];
   }
 
   return v6;
@@ -38,9 +38,9 @@
   [(NSJoin *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -53,7 +53,7 @@
 
   if (self)
   {
-    if (![(NSString *)self->_sourceAttributeName isEqualToString:*(a3 + 1)])
+    if (![(NSString *)self->_sourceAttributeName isEqualToString:*(equal + 1)])
     {
       return 0;
     }
@@ -63,7 +63,7 @@
 
   else
   {
-    v8 = [0 isEqualToString:*(a3 + 1)];
+    v8 = [0 isEqualToString:*(equal + 1)];
     destinationAttributeName = 0;
     if ((v8 & 1) == 0)
     {
@@ -71,7 +71,7 @@
     }
   }
 
-  return [(NSString *)destinationAttributeName isEqualToString:*(a3 + 2)];
+  return [(NSString *)destinationAttributeName isEqualToString:*(equal + 2)];
 }
 
 - (unint64_t)hash
@@ -91,29 +91,29 @@
   return [(NSString *)destinationAttributeName hash]^ v3;
 }
 
-- (NSJoin)initWithCoder:(id)a3
+- (NSJoin)initWithCoder:(id)coder
 {
-  v5 = [a3 decodeObjectForKey:@"NSSourceAttributeName"];
-  v6 = [a3 decodeObjectForKey:@"NSDestinationAttributeName"];
+  v5 = [coder decodeObjectForKey:@"NSSourceAttributeName"];
+  v6 = [coder decodeObjectForKey:@"NSDestinationAttributeName"];
 
   return [(NSJoin *)self initWithSourceAttributeName:v5 destinationAttributeName:v6];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (self)
   {
-    [a3 encodeObject:self->_sourceAttributeName forKey:@"NSSourceAttributeName"];
+    [coder encodeObject:self->_sourceAttributeName forKey:@"NSSourceAttributeName"];
     destinationAttributeName = self->_destinationAttributeName;
   }
 
   else
   {
-    [a3 encodeObject:0 forKey:@"NSSourceAttributeName"];
+    [coder encodeObject:0 forKey:@"NSSourceAttributeName"];
     destinationAttributeName = 0;
   }
 
-  [a3 encodeObject:destinationAttributeName forKey:@"NSDestinationAttributeName"];
+  [coder encodeObject:destinationAttributeName forKey:@"NSDestinationAttributeName"];
 }
 
 @end

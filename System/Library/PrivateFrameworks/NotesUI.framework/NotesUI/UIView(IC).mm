@@ -36,18 +36,18 @@
 
 - (uint64_t)ic_hasCompactWidth
 {
-  v1 = [a1 traitCollection];
-  v2 = [v1 ic_hasCompactWidth];
+  traitCollection = [self traitCollection];
+  ic_hasCompactWidth = [traitCollection ic_hasCompactWidth];
 
-  return v2;
+  return ic_hasCompactWidth;
 }
 
 - (id)ic_windowScene
 {
-  v1 = [a1 window];
-  v2 = [v1 windowScene];
+  window = [self window];
+  windowScene = [window windowScene];
 
-  return v2;
+  return windowScene;
 }
 
 - (id)ic_viewControllerManager
@@ -60,23 +60,23 @@
   v10 = 0;
   v3 = MEMORY[0x1E69E9820];
   performBlockOnMainThreadAndWait();
-  v1 = [v6[5] ic_viewControllerManager];
+  ic_viewControllerManager = [v6[5] ic_viewControllerManager];
   _Block_object_dispose(&v5, 8);
 
-  return v1;
+  return ic_viewControllerManager;
 }
 
 - (uint64_t)ic_isInSecureWindow
 {
-  v2 = [a1 window];
+  window = [self window];
 
-  if (v2)
+  if (window)
   {
-    v3 = [a1 window];
-    v4 = [v3 screen];
-    v5 = [v4 ic_isSecure];
+    window2 = [self window];
+    screen = [window2 screen];
+    ic_isSecure = [screen ic_isSecure];
 
-    return v5;
+    return ic_isSecure;
   }
 
   else
@@ -93,7 +93,7 @@
 
 - (uint64_t)ic_crashIfWindowIsSecure
 {
-  result = [a1 ic_isInSecureWindow];
+  result = [self ic_isInSecureWindow];
   if (result)
   {
     v2 = os_log_create("com.apple.notes", "UI");
@@ -110,16 +110,16 @@
 
 - (id)ic_appearanceInfo
 {
-  v1 = [a1 traitCollection];
-  v2 = [v1 ic_appearanceInfo];
+  traitCollection = [self traitCollection];
+  ic_appearanceInfo = [traitCollection ic_appearanceInfo];
 
-  return v2;
+  return ic_appearanceInfo;
 }
 
 - (id)ic_window
 {
   objc_opt_class();
-  v2 = [a1 window];
+  window = [self window];
   v3 = ICDynamicCast();
   v4 = v3;
   if (v3)
@@ -129,9 +129,9 @@
 
   else
   {
-    v6 = [a1 ic_windowScene];
-    v7 = [v6 windows];
-    v5 = [v7 ic_firstObjectOfClass:objc_opt_class()];
+    ic_windowScene = [self ic_windowScene];
+    windows = [ic_windowScene windows];
+    v5 = [windows ic_firstObjectOfClass:objc_opt_class()];
   }
 
   return v5;
@@ -139,8 +139,8 @@
 
 - (id)ic_enclosingScrollView
 {
-  v1 = [a1 superview];
-  if (v1)
+  superview = [self superview];
+  if (superview)
   {
     while (1)
     {
@@ -150,61 +150,61 @@
         break;
       }
 
-      v2 = [v1 superview];
+      v1Superview = [superview superview];
 
-      v1 = v2;
-      if (!v2)
+      superview = v1Superview;
+      if (!v1Superview)
       {
         goto LABEL_6;
       }
     }
 
-    v1 = v1;
+    superview = superview;
   }
 
 LABEL_6:
 
-  return v1;
+  return superview;
 }
 
 - (void)ic_applyRoundedCorners:()IC radius:
 {
-  v7 = [a1 layer];
-  v8 = v7;
+  layer = [self layer];
+  layer2 = layer;
   if (a4 == -1)
   {
-    [v7 setCornerRadius:a2];
+    [layer setCornerRadius:a2];
   }
 
   else
   {
-    [v7 setCornerRadius:0.0];
+    [layer setCornerRadius:0.0];
 
-    v8 = [MEMORY[0x1E69794A0] layer];
+    layer2 = [MEMORY[0x1E69794A0] layer];
     v9 = MEMORY[0x1E69DC728];
-    [a1 bounds];
+    [self bounds];
     v10 = [v9 bezierPathWithRoundedRect:a4 byRoundingCorners:? cornerRadii:?];
-    [v8 setPath:{objc_msgSend(v10, "CGPath")}];
-    v11 = [a1 layer];
-    [v11 setMask:v8];
+    [layer2 setPath:{objc_msgSend(v10, "CGPath")}];
+    layer3 = [self layer];
+    [layer3 setMask:layer2];
   }
 
   v12 = *MEMORY[0x1E69796E8];
-  v13 = [a1 layer];
-  [v13 setCornerCurve:v12];
+  layer4 = [self layer];
+  [layer4 setCornerCurve:v12];
 
-  v14 = [a1 layer];
-  [v14 setMasksToBounds:1];
+  layer5 = [self layer];
+  [layer5 setMasksToBounds:1];
 }
 
 - (void)ic_applyRoundedCornersWithTopLeadingRadius:()IC topTrailingRadius:bottomLeadingRadius:bottomTrailingRadius:
 {
   v10 = *MEMORY[0x1E69796E8];
-  v11 = [a1 layer];
-  [v11 setCornerCurve:v10];
+  layer = [self layer];
+  [layer setCornerCurve:v10];
 
-  v12 = [a1 effectiveUserInterfaceLayoutDirection];
-  if (v12 == 1)
+  effectiveUserInterfaceLayoutDirection = [self effectiveUserInterfaceLayoutDirection];
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v13 = a3;
   }
@@ -214,7 +214,7 @@ LABEL_6:
     v13 = a2;
   }
 
-  if (v12 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     a3 = a2;
     v14 = a4;
@@ -225,12 +225,12 @@ LABEL_6:
     v14 = a5;
   }
 
-  if (v12 != 1)
+  if (effectiveUserInterfaceLayoutDirection != 1)
   {
     a5 = a4;
   }
 
-  v15 = [a1 layer];
+  layer2 = [self layer];
   *v16 = a5;
   *&v16[1] = a5;
   *&v16[2] = v14;
@@ -239,22 +239,22 @@ LABEL_6:
   *&v16[5] = a3;
   *&v16[6] = v13;
   *&v16[7] = v13;
-  [v15 setCornerRadii:v16];
+  [layer2 setCornerRadii:v16];
 }
 
 - (void)ic_applyRoundedCornersFromView:()IC
 {
   v4 = a3;
-  v5 = [v4 layer];
-  v6 = [v5 cornerCurve];
-  v7 = [a1 layer];
-  [v7 setCornerCurve:v6];
+  layer = [v4 layer];
+  cornerCurve = [layer cornerCurve];
+  layer2 = [self layer];
+  [layer2 setCornerCurve:cornerCurve];
 
-  v8 = [v4 layer];
-  v9 = v8;
-  if (v8)
+  layer3 = [v4 layer];
+  v9 = layer3;
+  if (layer3)
   {
-    [v8 cornerRadii];
+    [layer3 cornerRadii];
   }
 
   else
@@ -265,62 +265,62 @@ LABEL_6:
     v16 = 0u;
   }
 
-  v10 = [a1 layer];
+  layer4 = [self layer];
   v14[0] = v15;
   v14[1] = v16;
   v14[2] = v17;
   v14[3] = v18;
-  [v10 setCornerRadii:v14];
+  [layer4 setCornerRadii:v14];
 
-  v11 = [v4 layer];
-  v12 = [v11 masksToBounds];
-  v13 = [a1 layer];
-  [v13 setMasksToBounds:v12];
+  layer5 = [v4 layer];
+  masksToBounds = [layer5 masksToBounds];
+  layer6 = [self layer];
+  [layer6 setMasksToBounds:masksToBounds];
 }
 
 - (void)ic_applyShadowWithRadius:()IC opacity:offset:shadowPathIsBounds:
 {
-  v13 = [MEMORY[0x1E69DC888] blackColor];
-  v14 = [v13 CGColor];
-  v15 = [a1 layer];
-  [v15 setShadowColor:v14];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  cGColor = [blackColor CGColor];
+  layer = [self layer];
+  [layer setShadowColor:cGColor];
 
-  v16 = [a1 layer];
-  [v16 setShadowRadius:a2];
+  layer2 = [self layer];
+  [layer2 setShadowRadius:a2];
 
-  v17 = [a1 layer];
+  layer3 = [self layer];
   *&a3 = a3;
   LODWORD(v18) = LODWORD(a3);
-  [v17 setShadowOpacity:v18];
+  [layer3 setShadowOpacity:v18];
 
-  v19 = [a1 layer];
-  [v19 setShadowOffset:{a4, a5}];
+  layer4 = [self layer];
+  [layer4 setShadowOffset:{a4, a5}];
 
-  v20 = [a1 layer];
-  [v20 setShadowPathIsBounds:a7];
+  layer5 = [self layer];
+  [layer5 setShadowPathIsBounds:a7];
 }
 
 - (void)ic_removeShadow
 {
-  v2 = [a1 layer];
-  [v2 setShadowColor:0];
+  layer = [self layer];
+  [layer setShadowColor:0];
 
-  v3 = [a1 layer];
-  [v3 setShadowOpacity:0.0];
+  layer2 = [self layer];
+  [layer2 setShadowOpacity:0.0];
 }
 
 - (BOOL)ic_inSidebar
 {
-  v2 = [a1 traitCollection];
-  if ([v2 _splitViewControllerContext] == 1)
+  traitCollection = [self traitCollection];
+  if ([traitCollection _splitViewControllerContext] == 1)
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = [a1 traitCollection];
-    v3 = [v4 _splitViewControllerContext] == 2;
+    traitCollection2 = [self traitCollection];
+    v3 = [traitCollection2 _splitViewControllerContext] == 2;
   }
 
   return v3;
@@ -328,66 +328,66 @@ LABEL_6:
 
 - (uint64_t)ic_hasCompactHeight
 {
-  v1 = [a1 traitCollection];
-  v2 = [v1 ic_hasCompactHeight];
+  traitCollection = [self traitCollection];
+  ic_hasCompactHeight = [traitCollection ic_hasCompactHeight];
 
-  return v2;
+  return ic_hasCompactHeight;
 }
 
 - (uint64_t)ic_hasCompactSize
 {
-  v1 = [a1 traitCollection];
-  v2 = [v1 ic_hasCompactSize];
+  traitCollection = [self traitCollection];
+  ic_hasCompactSize = [traitCollection ic_hasCompactSize];
 
-  return v2;
+  return ic_hasCompactSize;
 }
 
 - (uint64_t)ic_behavior
 {
-  v1 = [a1 traitCollection];
-  v2 = [v1 ic_behavior];
+  traitCollection = [self traitCollection];
+  ic_behavior = [traitCollection ic_behavior];
 
-  return v2;
+  return ic_behavior;
 }
 
 - (id)ic_preferredContentSizeCategory
 {
-  v2 = [a1 minimumContentSizeCategory];
-  v3 = [a1 maximumContentSizeCategory];
-  if (UIContentSizeCategoryCompareToCategory(v2, v3))
+  minimumContentSizeCategory = [self minimumContentSizeCategory];
+  maximumContentSizeCategory = [self maximumContentSizeCategory];
+  if (UIContentSizeCategoryCompareToCategory(minimumContentSizeCategory, maximumContentSizeCategory))
   {
-    v4 = 0;
+    minimumContentSizeCategory2 = 0;
   }
 
   else
   {
-    v4 = [a1 minimumContentSizeCategory];
+    minimumContentSizeCategory2 = [self minimumContentSizeCategory];
   }
 
-  return v4;
+  return minimumContentSizeCategory2;
 }
 
 - (void)setIc_preferredContentSizeCategory:()IC
 {
   v4 = a3;
-  [a1 setMinimumContentSizeCategory:v4];
-  [a1 setMaximumContentSizeCategory:v4];
+  [self setMinimumContentSizeCategory:v4];
+  [self setMaximumContentSizeCategory:v4];
 }
 
 - (id)ic_imageRenderedFromLayer
 {
-  v2 = [a1 layer];
-  [v2 layoutIfNeeded];
+  layer = [self layer];
+  [layer layoutIfNeeded];
 
-  v3 = [MEMORY[0x1E69DCA80] defaultFormat];
+  defaultFormat = [MEMORY[0x1E69DCA80] defaultFormat];
   v4 = objc_alloc(MEMORY[0x1E69DCA78]);
-  [a1 bounds];
-  v7 = [v4 initWithSize:v3 format:{v5, v6}];
+  [self bounds];
+  v7 = [v4 initWithSize:defaultFormat format:{v5, v6}];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __39__UIView_IC__ic_imageRenderedFromLayer__block_invoke;
   v10[3] = &unk_1E8468D20;
-  v10[4] = a1;
+  v10[4] = self;
   v8 = [v7 imageWithActions:v10];
 
   return v8;
@@ -396,19 +396,19 @@ LABEL_6:
 - (id)ic_imageRenderedFromViewHierarchyAfterScreenUpdates:()IC fallback:
 {
   v6 = a4;
-  v7 = [a1 layer];
-  [v7 layoutIfNeeded];
+  layer = [self layer];
+  [layer layoutIfNeeded];
 
-  v8 = [MEMORY[0x1E69DCA80] defaultFormat];
+  defaultFormat = [MEMORY[0x1E69DCA80] defaultFormat];
   v9 = objc_alloc(MEMORY[0x1E69DCA78]);
-  [a1 bounds];
-  v12 = [v9 initWithSize:v8 format:{v10, v11}];
+  [self bounds];
+  v12 = [v9 initWithSize:defaultFormat format:{v10, v11}];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __75__UIView_IC__ic_imageRenderedFromViewHierarchyAfterScreenUpdates_fallback___block_invoke;
   v16[3] = &unk_1E846B988;
   v18 = a3;
-  v16[4] = a1;
+  v16[4] = self;
   v17 = v6;
   v13 = v6;
   v14 = [v12 imageWithActions:v16];
@@ -419,10 +419,10 @@ LABEL_6:
 - (id)ic_imageViewRenderedFromLayer
 {
   v2 = objc_alloc(MEMORY[0x1E69DCAE0]);
-  [a1 bounds];
+  [self bounds];
   v3 = [v2 initWithFrame:?];
-  v4 = [a1 ic_imageRenderedFromLayer];
-  [v3 setImage:v4];
+  ic_imageRenderedFromLayer = [self ic_imageRenderedFromLayer];
+  [v3 setImage:ic_imageRenderedFromLayer];
 
   return v3;
 }
@@ -430,9 +430,9 @@ LABEL_6:
 - (id)ic_imageViewRenderedFromViewHierarchy
 {
   v2 = objc_alloc(MEMORY[0x1E69DCAE0]);
-  [a1 bounds];
+  [self bounds];
   v3 = [v2 initWithFrame:?];
-  v4 = [a1 ic_imageRenderedFromViewHierarchyAfterScreenUpdates:0];
+  v4 = [self ic_imageRenderedFromViewHierarchyAfterScreenUpdates:0];
   [v3 setImage:v4];
 
   return v3;
@@ -442,13 +442,13 @@ LABEL_6:
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [a1 constraints];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  constraints = [self constraints];
+  v7 = [constraints countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -459,60 +459,60 @@ LABEL_6:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(constraints);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 firstItem];
-        v13 = v12;
-        if (v12 == v4)
+        firstItem = [v11 firstItem];
+        v13 = firstItem;
+        if (firstItem == v4)
         {
         }
 
         else
         {
-          v14 = [v11 secondItem];
+          secondItem = [v11 secondItem];
 
-          if (v14 != v4)
+          if (secondItem != v4)
           {
             continue;
           }
         }
 
-        [v5 addObject:v11];
+        [array addObject:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [constraints countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  [a1 removeConstraints:v5];
+  [self removeConstraints:array];
 }
 
 - (void)ic_addAnchorsToFillSuperviewWithLeadingPadding:()IC trailingPadding:topPadding:bottomPadding:usesSafeAreaLayoutGuideHorizontally:usesSafeAreaLayoutGuideVertically:
 {
   v37[4] = *MEMORY[0x1E69E9840];
-  [a1 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v15 = [a1 superview];
-  v16 = [v15 safeAreaLayoutGuide];
+  [self setTranslatesAutoresizingMaskIntoConstraints:0];
+  superview = [self superview];
+  safeAreaLayoutGuide = [superview safeAreaLayoutGuide];
   if (a8)
   {
-    v17 = v16;
+    v17 = safeAreaLayoutGuide;
   }
 
   else
   {
-    v17 = v15;
+    v17 = superview;
   }
 
-  v18 = v16;
-  v36 = v16;
-  v19 = [v17 topAnchor];
-  v35 = v19;
-  v20 = [v17 bottomAnchor];
-  v33 = v20;
+  v18 = safeAreaLayoutGuide;
+  v36 = safeAreaLayoutGuide;
+  topAnchor = [v17 topAnchor];
+  v35 = topAnchor;
+  bottomAnchor = [v17 bottomAnchor];
+  v33 = bottomAnchor;
   if (a7)
   {
     v21 = v18;
@@ -520,23 +520,23 @@ LABEL_6:
 
   else
   {
-    v21 = v15;
+    v21 = superview;
   }
 
-  v32 = [v21 leadingAnchor];
-  v22 = [v21 trailingAnchor];
+  leadingAnchor = [v21 leadingAnchor];
+  trailingAnchor = [v21 trailingAnchor];
   v31 = MEMORY[0x1E696ACD8];
-  v34 = [a1 topAnchor];
-  v23 = [v34 constraintEqualToAnchor:v19 constant:a4];
+  topAnchor2 = [self topAnchor];
+  v23 = [topAnchor2 constraintEqualToAnchor:topAnchor constant:a4];
   v37[0] = v23;
-  v24 = [a1 bottomAnchor];
-  v25 = [v24 constraintEqualToAnchor:v20 constant:-a5];
+  bottomAnchor2 = [self bottomAnchor];
+  v25 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor constant:-a5];
   v37[1] = v25;
-  v26 = [a1 leadingAnchor];
-  v27 = [v26 constraintEqualToAnchor:v32 constant:a2];
+  leadingAnchor2 = [self leadingAnchor];
+  v27 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor constant:a2];
   v37[2] = v27;
-  v28 = [a1 trailingAnchor];
-  v29 = [v28 constraintEqualToAnchor:v22 constant:-a3];
+  trailingAnchor2 = [self trailingAnchor];
+  v29 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor constant:-a3];
   v37[3] = v29;
   v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:4];
   [v31 activateConstraints:v30];
@@ -545,25 +545,25 @@ LABEL_6:
 - (void)ic_addAnchorsToFillSuperviewLayoutMargins
 {
   v18[4] = *MEMORY[0x1E69E9840];
-  [a1 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v17 = [a1 superview];
-  v2 = [v17 layoutMarginsGuide];
+  [self setTranslatesAutoresizingMaskIntoConstraints:0];
+  superview = [self superview];
+  layoutMarginsGuide = [superview layoutMarginsGuide];
   v12 = MEMORY[0x1E696ACD8];
-  v16 = [a1 topAnchor];
-  v15 = [v2 topAnchor];
-  v14 = [v16 constraintEqualToAnchor:v15];
+  topAnchor = [self topAnchor];
+  topAnchor2 = [layoutMarginsGuide topAnchor];
+  v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v18[0] = v14;
-  v13 = [a1 bottomAnchor];
-  v3 = [v2 bottomAnchor];
-  v4 = [v13 constraintEqualToAnchor:v3];
+  bottomAnchor = [self bottomAnchor];
+  bottomAnchor2 = [layoutMarginsGuide bottomAnchor];
+  v4 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v18[1] = v4;
-  v5 = [a1 leadingAnchor];
-  v6 = [v2 leadingAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  leadingAnchor = [self leadingAnchor];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v18[2] = v7;
-  v8 = [a1 trailingAnchor];
-  v9 = [v2 trailingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  trailingAnchor = [self trailingAnchor];
+  trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+  v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v18[3] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:4];
   [v12 activateConstraints:v11];
@@ -571,9 +571,9 @@ LABEL_6:
 
 - (void)ic_addConstraintsToFillSuperview
 {
-  v1 = a1;
-  [v1 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = _NSDictionaryOfVariableBindings(&cfstr_View_0.isa, v1, 0);
+  selfCopy = self;
+  [selfCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  v6 = _NSDictionaryOfVariableBindings(&cfstr_View_0.isa, selfCopy, 0);
 
   v2 = MEMORY[0x1E696ACD8];
   v3 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|[view]|" options:0 metrics:0 views:v6];
@@ -586,18 +586,18 @@ LABEL_6:
 
 - (id)ic_renderImage
 {
-  v2 = [a1 layer];
-  [v2 layoutIfNeeded];
+  layer = [self layer];
+  [layer layoutIfNeeded];
 
-  v3 = [MEMORY[0x1E69DCA80] defaultFormat];
+  defaultFormat = [MEMORY[0x1E69DCA80] defaultFormat];
   v4 = objc_alloc(MEMORY[0x1E69DCA78]);
-  [a1 bounds];
-  v7 = [v4 initWithSize:v3 format:{v5, v6}];
+  [self bounds];
+  v7 = [v4 initWithSize:defaultFormat format:{v5, v6}];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __28__UIView_IC__ic_renderImage__block_invoke;
   v10[3] = &unk_1E8468D20;
-  v10[4] = a1;
+  v10[4] = self;
   v8 = [v7 imageWithActions:v10];
 
   return v8;
@@ -606,10 +606,10 @@ LABEL_6:
 - (id)ic_renderImageView
 {
   v2 = objc_alloc(MEMORY[0x1E69DCAE0]);
-  [a1 bounds];
+  [self bounds];
   v3 = [v2 initWithFrame:?];
-  v4 = [a1 ic_renderImage];
-  [v3 setImage:v4];
+  ic_renderImage = [self ic_renderImage];
+  [v3 setImage:ic_renderImage];
 
   return v3;
 }
@@ -631,7 +631,7 @@ LABEL_6:
     v14[2] = __74__UIView_IC__ic_animateWithDuration_timingFunction_animations_completion___block_invoke;
     v14[3] = &unk_1E8469BB0;
     v15 = v9;
-    [v13 animateWithDuration:v11 animations:v14 completion:a1];
+    [v13 animateWithDuration:v11 animations:v14 completion:self];
 
     [MEMORY[0x1E6979518] commit];
   }
@@ -640,12 +640,12 @@ LABEL_6:
 - (uint64_t)ic_isFrontSubview:()IC
 {
   v4 = a3;
-  v5 = [a1 subviews];
-  v6 = [v5 lastObject];
+  subviews = [self subviews];
+  lastObject = [subviews lastObject];
 
-  if (v6)
+  if (lastObject)
   {
-    v7 = v6 == v4;
+    v7 = lastObject == v4;
   }
 
   else

@@ -1,14 +1,14 @@
 @interface ContinuousSelectionGestureRecognizer
-- (_TtC13FitnessCoreUI36ContinuousSelectionGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (_TtC13FitnessCoreUI36ContinuousSelectionGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation ContinuousSelectionGestureRecognizer
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -18,14 +18,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  if (![(ContinuousSelectionGestureRecognizer *)v5 state])
+  selfCopy = self;
+  if (![(ContinuousSelectionGestureRecognizer *)selfCopy state])
   {
-    [(ContinuousSelectionGestureRecognizer *)v5 setState:1];
+    [(ContinuousSelectionGestureRecognizer *)selfCopy setState:1];
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -35,12 +35,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v6 = a4;
-  v7 = self;
-  sub_20C3A6EB8(v6);
+  eventCopy = event;
+  selfCopy = self;
+  sub_20C3A6EB8(eventCopy);
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -50,8 +50,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v6 = self;
-  if ([(ContinuousSelectionGestureRecognizer *)v6 state]== 1 || [(ContinuousSelectionGestureRecognizer *)v6 state]== 2)
+  selfCopy = self;
+  if ([(ContinuousSelectionGestureRecognizer *)selfCopy state]== 1 || [(ContinuousSelectionGestureRecognizer *)selfCopy state]== 2)
   {
     v5 = 3;
   }
@@ -61,10 +61,10 @@
     v5 = 5;
   }
 
-  [(ContinuousSelectionGestureRecognizer *)v6 setState:v5];
+  [(ContinuousSelectionGestureRecognizer *)selfCopy setState:v5];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -74,8 +74,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v6 = self;
-  if ([(ContinuousSelectionGestureRecognizer *)v6 state])
+  selfCopy = self;
+  if ([(ContinuousSelectionGestureRecognizer *)selfCopy state])
   {
     v5 = 4;
   }
@@ -85,10 +85,10 @@
     v5 = 5;
   }
 
-  [(ContinuousSelectionGestureRecognizer *)v6 setState:v5];
+  [(ContinuousSelectionGestureRecognizer *)selfCopy setState:v5];
 }
 
-- (_TtC13FitnessCoreUI36ContinuousSelectionGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_TtC13FitnessCoreUI36ContinuousSelectionGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -98,7 +98,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     sub_20C3E907C();
@@ -110,7 +110,7 @@
     memset(v8, 0, sizeof(v8));
   }
 
-  v6 = sub_20C3A6AB0(v8, a4);
+  v6 = sub_20C3A6AB0(v8, action);
 
   return v6;
 }

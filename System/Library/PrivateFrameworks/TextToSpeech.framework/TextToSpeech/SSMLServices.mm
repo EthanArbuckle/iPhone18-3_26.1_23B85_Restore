@@ -1,9 +1,9 @@
 @interface SSMLServices
 + (_TtC12TextToSpeech12SSMLServices)shared;
-+ (void)setShared:(id)a3;
++ (void)setShared:(id)shared;
 - (_TtC12TextToSpeech12SSMLServices)init;
-- (id)makeProsodySnippetWithString:(id)a3 rate:(id)a4 pitch:(id)a5 volume:(id)a6;
-- (id)parseSSMLToPlainText:(id)a3 error:(id *)a4;
+- (id)makeProsodySnippetWithString:(id)string rate:(id)rate pitch:(id)pitch volume:(id)volume;
+- (id)parseSSMLToPlainText:(id)text error:(id *)error;
 @end
 
 @implementation SSMLServices
@@ -19,10 +19,10 @@
   return qword_1EB391168;
 }
 
-+ (void)setShared:(id)a3
++ (void)setShared:(id)shared
 {
   v3 = qword_1EB391160;
-  v4 = a3;
+  sharedCopy = shared;
   if (v3 != -1)
   {
     swift_once();
@@ -30,10 +30,10 @@
 
   swift_beginAccess();
   v5 = qword_1EB391168;
-  qword_1EB391168 = v4;
+  qword_1EB391168 = sharedCopy;
 }
 
-- (id)parseSSMLToPlainText:(id)a3 error:(id *)a4
+- (id)parseSSMLToPlainText:(id)text error:(id *)error
 {
   sub_1A957C0F8();
   TTSMarkup.SpeechDocument.init(ssml:)(v6);
@@ -44,15 +44,15 @@
   return v4;
 }
 
-- (id)makeProsodySnippetWithString:(id)a3 rate:(id)a4 pitch:(id)a5 volume:(id)a6
+- (id)makeProsodySnippetWithString:(id)string rate:(id)rate pitch:(id)pitch volume:(id)volume
 {
   v10 = sub_1A957C0F8();
   v12 = v11;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = self;
-  sub_1A9377E18(v10, v12, a4, a5, a6);
+  rateCopy = rate;
+  pitchCopy = pitch;
+  volumeCopy = volume;
+  selfCopy = self;
+  sub_1A9377E18(v10, v12, rate, pitch, volume);
 
   v17 = sub_1A957C0C8();
 

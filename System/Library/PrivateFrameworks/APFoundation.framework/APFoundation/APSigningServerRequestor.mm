@@ -1,11 +1,11 @@
 @interface APSigningServerRequestor
 - (APSigningServerRequestor)init;
-- (BOOL)_retrieveResponse:(void *)a3 andLength:(unsigned int *)a4 fromData:(id)a5 error:(id *)a6;
+- (BOOL)_retrieveResponse:(void *)response andLength:(unsigned int *)length fromData:(id)data error:(id *)error;
 - (id)deviceModel;
 - (id)systemNameAndVersion;
 - (id)userAgentString;
-- (void)sendRequest:(id)a3 requestType:(int64_t)a4 completionHandler:(id)a5;
-- (void)sendRequestForData:(id)a3 requestType:(int64_t)a4 completionHandler:(id)a5;
+- (void)sendRequest:(id)request requestType:(int64_t)type completionHandler:(id)handler;
+- (void)sendRequestForData:(id)data requestType:(int64_t)type completionHandler:(id)handler;
 @end
 
 @implementation APSigningServerRequestor
@@ -29,11 +29,11 @@
   return v5;
 }
 
-- (void)sendRequestForData:(id)a3 requestType:(int64_t)a4 completionHandler:(id)a5
+- (void)sendRequestForData:(id)data requestType:(int64_t)type completionHandler:(id)handler
 {
   v77[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  handlerCopy = handler;
   if (objc_msgSend_isAppleInternalInstall(APSystemInternal, v10, v11, v12))
   {
     v15 = objc_alloc(MEMORY[0x1E695E000]);
@@ -55,7 +55,7 @@
     v25 = @"https://sas.pcms.apple.com/sas/v1/auth/";
   }
 
-  if (a4 == 1301)
+  if (type == 1301)
   {
     v26 = @"init";
   }
@@ -65,7 +65,7 @@
     v26 = @"setup";
   }
 
-  if (a4 == 1301)
+  if (type == 1301)
   {
     v27 = @"x-apple-auth-init-token";
   }
@@ -86,7 +86,7 @@
   v42 = objc_msgSend_stringWithFormat_(v35, v40, @"%lu", v41, v39);
   v76[0] = v27;
   v76[1] = @"x-apple-auth-request-id";
-  v77[0] = v8;
+  v77[0] = dataCopy;
   v77[1] = v42;
   v76[2] = @"user-agent";
   v46 = objc_msgSend_userAgentString(self, v43, v44, v45);
@@ -100,23 +100,23 @@
     goto LABEL_21;
   }
 
-  v71 = v8;
+  v71 = dataCopy;
   v57 = objc_alloc_init(APSigningAuthoritySettings);
   v61 = v57;
-  if (a4 == 1301)
+  if (type == 1301)
   {
     v62 = objc_msgSend_contextServerInitDelay(v57, v58, v59, v60);
   }
 
   else
   {
-    if (a4 != 1302)
+    if (type != 1302)
     {
 LABEL_20:
 
-      v8 = v71;
+      dataCopy = v71;
 LABEL_21:
-      objc_msgSend_sendRequest_requestType_completionHandler_(self, v56, v34, a4, v9);
+      objc_msgSend_sendRequest_requestType_completionHandler_(self, v56, v34, type, handlerCopy);
       goto LABEL_22;
     }
 
@@ -139,26 +139,26 @@ LABEL_21:
   block[3] = &unk_1E7F1D178;
   block[4] = self;
   v73 = v34;
-  v75 = a4;
-  v74 = v9;
+  typeCopy = type;
+  v74 = handlerCopy;
   dispatch_after(v68, v69, block);
 
-  v8 = v71;
+  dataCopy = v71;
 LABEL_22:
 
   v70 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendRequest:(id)a3 requestType:(int64_t)a4 completionHandler:(id)a5
+- (void)sendRequest:(id)request requestType:(int64_t)type completionHandler:(id)handler
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a3;
+  handlerCopy = handler;
+  requestCopy = request;
   v10 = APLogForCategory(0x30uLL);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349056;
-    v36 = a4;
+    typeCopy = type;
     _os_log_impl(&dword_1BADC1000, v10, OS_LOG_TYPE_DEBUG, "Attempt to send network request of type %{public}ld.", buf, 0xCu);
   }
 
@@ -169,37 +169,37 @@ LABEL_22:
   v29 = sub_1BAF1A718;
   v30 = &unk_1E7F1D1A0;
   v31 = v14;
-  v32 = self;
-  v33 = v8;
-  v34 = a4;
-  v19 = v8;
+  selfCopy = self;
+  v33 = handlerCopy;
+  typeCopy2 = type;
+  v19 = handlerCopy;
   v20 = v14;
-  v22 = objc_msgSend_dataTaskWithRequest_completionHandler_(v18, v21, v9, &v27);
+  v22 = objc_msgSend_dataTaskWithRequest_completionHandler_(v18, v21, requestCopy, &v27);
 
   objc_msgSend_resume(v22, v23, v24, v25, v27, v28, v29, v30);
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_retrieveResponse:(void *)a3 andLength:(unsigned int *)a4 fromData:(id)a5 error:(id *)a6
+- (BOOL)_retrieveResponse:(void *)response andLength:(unsigned int *)length fromData:(id)data error:(id *)error
 {
   v46[1] = *MEMORY[0x1E69E9840];
   v9 = MEMORY[0x1E696AEC0];
-  v10 = a5;
+  dataCopy = data;
   v11 = [v9 alloc];
-  v13 = objc_msgSend_initWithData_encoding_(v11, v12, v10, 4);
+  v13 = objc_msgSend_initWithData_encoding_(v11, v12, dataCopy, 4);
 
   objc_opt_class();
   v16 = v13;
   if (!v16)
   {
-    if (a6)
+    if (error)
     {
       v28 = MEMORY[0x1E696ABC0];
       v45 = @"reason";
       v29 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v14, @"%@ is nil", v15, @"Encoded result string");
       v46[0] = v29;
       v31 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v30, v46, &v45, 1);
-      *a6 = objc_msgSend_errorWithDomain_code_userInfo_(v28, v32, @"com.apple.ap.signingServerRequestor", 6200, v31);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v28, v32, @"com.apple.ap.signingServerRequestor", 6200, v31);
 LABEL_8:
     }
 
@@ -211,7 +211,7 @@ LABEL_9:
 
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a6)
+    if (error)
     {
       v33 = MEMORY[0x1E696ABC0];
       v43 = @"reason";
@@ -221,7 +221,7 @@ LABEL_9:
       v31 = objc_msgSend_stringWithFormat_(v34, v36, @"%@ is of the wrong type (%@)", v37, @"Encoded result string", v29);
       v44 = v31;
       v39 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v38, &v44, &v43, 1);
-      *a6 = objc_msgSend_errorWithDomain_code_userInfo_(v33, v40, @"com.apple.ap.signingServerRequestor", 6200, v39);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v33, v40, @"com.apple.ap.signingServerRequestor", 6200, v39);
 
       goto LABEL_8;
     }
@@ -232,8 +232,8 @@ LABEL_9:
   v17 = objc_alloc(MEMORY[0x1E695DEF0]);
   v19 = objc_msgSend_initWithBase64EncodedString_options_(v17, v18, v16, 0);
   v20 = v19;
-  *a3 = objc_msgSend_bytes(v20, v21, v22, v23);
-  *a4 = objc_msgSend_length(v19, v24, v25, v26);
+  *response = objc_msgSend_bytes(v20, v21, v22, v23);
+  *length = objc_msgSend_length(v19, v24, v25, v26);
 
   v27 = 1;
 LABEL_10:

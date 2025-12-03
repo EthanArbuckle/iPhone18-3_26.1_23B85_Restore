@@ -1,46 +1,46 @@
 @interface HUCameraActivityZoneCanvasView
 - (BOOL)canCreateActivityZone;
-- (BOOL)currentZonesIntersectPoint:(CGPoint)a3;
-- (BOOL)currentZonesIntersectSegmentFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4;
+- (BOOL)currentZonesIntersectPoint:(CGPoint)point;
+- (BOOL)currentZonesIntersectSegmentFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint;
 - (BOOL)isCreatingActivityZone;
-- (BOOL)isValidPointInView:(CGPoint)a3;
-- (CGPoint)_hmPointToCGPoint:(id)a3;
-- (CGPoint)_normalizedPointForPoint:(CGPoint)a3;
+- (BOOL)isValidPointInView:(CGPoint)view;
+- (CGPoint)_hmPointToCGPoint:(id)point;
+- (CGPoint)_normalizedPointForPoint:(CGPoint)point;
 - (HUCameraActivityZoneCanvasDelegate)delegate;
-- (HUCameraActivityZoneCanvasView)initWithFrame:(CGRect)a3;
-- (id)_hmPointForTapPoint:(CGPoint)a3;
-- (id)activityZoneContainingPoint:(CGPoint)a3;
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5;
-- (id)selectedActivityZoneAtPoint:(CGPoint)a3;
-- (void)_addTouchpointAtPoint:(CGPoint)a3 inContext:(CGContext *)a4 withRed:(double)a5 green:(double)a6 blue:(double)a7;
-- (void)_displayMenuForActivityZone:(id)a3;
-- (void)_drawPolygonWithMaskPath:(id)a3;
+- (HUCameraActivityZoneCanvasView)initWithFrame:(CGRect)frame;
+- (id)_hmPointForTapPoint:(CGPoint)point;
+- (id)activityZoneContainingPoint:(CGPoint)point;
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions;
+- (id)selectedActivityZoneAtPoint:(CGPoint)point;
+- (void)_addTouchpointAtPoint:(CGPoint)point inContext:(CGContext *)context withRed:(double)red green:(double)green blue:(double)blue;
+- (void)_displayMenuForActivityZone:(id)zone;
+- (void)_drawPolygonWithMaskPath:(id)path;
 - (void)_drawTouchPoints;
-- (void)_editActivityZone:(id)a3;
+- (void)_editActivityZone:(id)zone;
 - (void)_finishEditingCurrentActivityZone;
-- (void)_handleBeginForGesture:(id)a3;
-- (void)_handleChangeForGesture:(id)a3;
-- (void)_handleEndForGesture:(id)a3;
+- (void)_handleBeginForGesture:(id)gesture;
+- (void)_handleChangeForGesture:(id)gesture;
+- (void)_handleEndForGesture:(id)gesture;
 - (void)_prepCurrentActivityZoneForDeselection;
 - (void)_resetCanvasAndCurrentZone;
 - (void)clearActivityZone;
 - (void)createActivityZone;
-- (void)didPan:(id)a3;
-- (void)didTap:(id)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)loadActivityZones:(id)a3;
+- (void)didPan:(id)pan;
+- (void)didTap:(id)tap;
+- (void)drawRect:(CGRect)rect;
+- (void)loadActivityZones:(id)zones;
 - (void)preventAttemptToMovePoint;
-- (void)setDisplaysInclusionZones:(BOOL)a3;
+- (void)setDisplaysInclusionZones:(BOOL)zones;
 - (void)updateAfterVideoBoundsChange;
 @end
 
 @implementation HUCameraActivityZoneCanvasView
 
-- (HUCameraActivityZoneCanvasView)initWithFrame:(CGRect)a3
+- (HUCameraActivityZoneCanvasView)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = HUCameraActivityZoneCanvasView;
-  v3 = [(HUCameraActivityZoneCanvasView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUCameraActivityZoneCanvasView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -52,8 +52,8 @@
     v3->_currentActivityZone = v6;
 
     [(HUCameraActivityZoneCanvasView *)v3 setClipsToBounds:0];
-    v8 = [MEMORY[0x277D75348] clearColor];
-    [(HUCameraActivityZoneCanvasView *)v3 setBackgroundColor:v8];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(HUCameraActivityZoneCanvasView *)v3 setBackgroundColor:clearColor];
 
     v9 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v3 action:sel_didTap_];
     [v9 setNumberOfTapsRequired:1];
@@ -68,8 +68,8 @@
     v3->_canvasView = v11;
 
     [(UIImageView *)v3->_canvasView setAutoresizingMask:18];
-    v13 = [MEMORY[0x277D75348] clearColor];
-    [(UIImageView *)v3->_canvasView setBackgroundColor:v13];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UIImageView *)v3->_canvasView setBackgroundColor:clearColor2];
 
     [(HUCameraActivityZoneCanvasView *)v3 center];
     [(UIImageView *)v3->_canvasView setCenter:?];
@@ -93,18 +93,18 @@
   [(HUCameraActivityZoneCanvasView *)self setNeedsDisplay];
 }
 
-- (void)_drawPolygonWithMaskPath:(id)a3
+- (void)_drawPolygonWithMaskPath:(id)path
 {
-  v4 = a3;
-  v5 = [(HUCameraActivityZoneCanvasView *)self activityZones];
+  pathCopy = path;
+  activityZones = [(HUCameraActivityZoneCanvasView *)self activityZones];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__HUCameraActivityZoneCanvasView__drawPolygonWithMaskPath___block_invoke;
   v7[3] = &unk_277DC4A30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = pathCopy;
+  v6 = pathCopy;
+  [activityZones enumerateObjectsUsingBlock:v7];
 }
 
 void __59__HUCameraActivityZoneCanvasView__drawPolygonWithMaskPath___block_invoke(uint64_t a1, void *a2)
@@ -191,7 +191,7 @@ LABEL_17:
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v4 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.6];
   [v4 setFill];
@@ -203,8 +203,8 @@ LABEL_17:
   [(HUCameraActivityZoneCanvasView *)self _drawPolygonWithMaskPath:v8];
   if ([(HUCameraActivityZoneCanvasView *)self displaysInclusionZones])
   {
-    v6 = [(HUCameraActivityZoneCanvasView *)self activityZones];
-    v7 = [v6 count];
+    activityZones = [(HUCameraActivityZoneCanvasView *)self activityZones];
+    v7 = [activityZones count];
 
     if (v7)
     {
@@ -220,17 +220,17 @@ LABEL_17:
   v28 = 0.0;
   v29 = 0.0;
   v27 = 0.0;
-  v3 = [MEMORY[0x277D75348] systemYellowColor];
-  [v3 getRed:&v29 green:&v28 blue:&v27 alpha:0];
+  systemYellowColor = [MEMORY[0x277D75348] systemYellowColor];
+  [systemYellowColor getRed:&v29 green:&v28 blue:&v27 alpha:0];
 
   v25 = 0.0;
   v26 = 0.0;
   blue = 0.0;
-  v4 = [MEMORY[0x277D75348] systemOrangeColor];
-  [v4 getRed:&v26 green:&v25 blue:&blue alpha:0];
+  systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+  [systemOrangeColor getRed:&v26 green:&v25 blue:&blue alpha:0];
 
-  v5 = [(HUCameraActivityZoneCanvasView *)self canvasView];
-  [v5 bounds];
+  canvasView = [(HUCameraActivityZoneCanvasView *)self canvasView];
+  [canvasView bounds];
   v30.width = v6;
   v30.height = v7;
   UIGraphicsBeginImageContextWithOptions(v30, 0, 0.0);
@@ -238,28 +238,28 @@ LABEL_17:
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSetRGBFillColor(CurrentContext, v29, v28, v27, 0.5);
   CGContextSetLineWidth(CurrentContext, 4.0);
-  v9 = [MEMORY[0x277D75208] bezierPath];
-  [v9 setLineJoinStyle:1];
-  [v9 setLineCapStyle:1];
-  v10 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+  bezierPath = [MEMORY[0x277D75208] bezierPath];
+  [bezierPath setLineJoinStyle:1];
+  [bezierPath setLineCapStyle:1];
+  currentActivityZone = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __50__HUCameraActivityZoneCanvasView__drawTouchPoints__block_invoke;
   v17 = &unk_277DC4A58;
-  v18 = v9;
-  v19 = self;
+  v18 = bezierPath;
+  selfCopy = self;
   v20 = CurrentContext;
   v21 = v29;
   v22 = v28;
   v23 = v27;
-  v11 = v9;
-  [v10 enumerateObjectsUsingBlock:&v14];
+  v11 = bezierPath;
+  [currentActivityZone enumerateObjectsUsingBlock:&v14];
 
   CGContextSetRGBStrokeColor(CurrentContext, v26, v25, blue, 1.0);
   [v11 stroke];
   v12 = UIGraphicsGetImageFromCurrentImageContext();
-  v13 = [(HUCameraActivityZoneCanvasView *)self canvasView];
-  [v13 setImage:v12];
+  canvasView2 = [(HUCameraActivityZoneCanvasView *)self canvasView];
+  [canvasView2 setImage:v12];
 
   UIGraphicsEndImageContext();
 }
@@ -295,15 +295,15 @@ uint64_t __50__HUCameraActivityZoneCanvasView__drawTouchPoints__block_invoke(uin
   return [v14 _addTouchpointAtPoint:v15 inContext:v11 withRed:v12 green:v16 blue:{v17, v18}];
 }
 
-- (void)loadActivityZones:(id)a3
+- (void)loadActivityZones:(id)zones
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  zonesCopy = zones;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = v4;
+    v8 = zonesCopy;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "Load activity zones:%@", buf, 0xCu);
   }
 
@@ -312,7 +312,7 @@ uint64_t __50__HUCameraActivityZoneCanvasView__drawTouchPoints__block_invoke(uin
   v6[2] = __52__HUCameraActivityZoneCanvasView_loadActivityZones___block_invoke;
   v6[3] = &unk_277DC4A80;
   v6[4] = self;
-  [v4 enumerateObjectsUsingBlock:v6];
+  [zonesCopy enumerateObjectsUsingBlock:v6];
   [(HUCameraActivityZoneCanvasView *)self setNeedsDisplay];
 }
 
@@ -335,21 +335,21 @@ void __52__HUCameraActivityZoneCanvasView_loadActivityZones___block_invoke(uint6
   v12[2] = 0x3032000000;
   v12[3] = __Block_byref_object_copy__33;
   v12[4] = __Block_byref_object_dispose__33;
-  v13 = [MEMORY[0x277D75208] bezierPath];
-  v3 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+  bezierPath = [MEMORY[0x277D75208] bezierPath];
+  currentActivityZone = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __55__HUCameraActivityZoneCanvasView_canCreateActivityZone__block_invoke;
   v11[3] = &unk_277DB92F0;
   v11[4] = self;
   v11[5] = v12;
-  [v3 enumerateObjectsUsingBlock:v11];
+  [currentActivityZone enumerateObjectsUsingBlock:v11];
 
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [(HUCameraActivityZoneCanvasView *)self activityZones];
+  activityZones = [(HUCameraActivityZoneCanvasView *)self activityZones];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__HUCameraActivityZoneCanvasView_canCreateActivityZone__block_invoke_2;
@@ -357,7 +357,7 @@ void __52__HUCameraActivityZoneCanvasView_loadActivityZones___block_invoke(uint6
   v6[4] = self;
   v6[5] = v12;
   v6[6] = &v7;
-  [v4 enumerateObjectsUsingBlock:v6];
+  [activityZones enumerateObjectsUsingBlock:v6];
 
   LOBYTE(self) = *(v8 + 24) == 0;
   _Block_object_dispose(&v7, 8);
@@ -409,10 +409,10 @@ uint64_t __55__HUCameraActivityZoneCanvasView_canCreateActivityZone__block_invok
 
 - (void)createActivityZone
 {
-  v3 = [(HUCameraActivityZoneCanvasView *)self canCreateActivityZone];
+  canCreateActivityZone = [(HUCameraActivityZoneCanvasView *)self canCreateActivityZone];
   v4 = HFLogForCategory();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (canCreateActivityZone)
   {
     if (v5)
     {
@@ -420,22 +420,22 @@ uint64_t __55__HUCameraActivityZoneCanvasView_canCreateActivityZone__block_invok
       _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "Create activity zone.", v14, 2u);
     }
 
-    v6 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-    v7 = [v6 firstObject];
+    currentActivityZone = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+    firstObject = [currentActivityZone firstObject];
 
-    v8 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-    v9 = [v7 copy];
-    [v8 addObject:v9];
+    currentActivityZone2 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+    v9 = [firstObject copy];
+    [currentActivityZone2 addObject:v9];
 
-    v10 = [(HUCameraActivityZoneCanvasView *)self activityZones];
-    v11 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-    v12 = [v11 mutableCopy];
-    [v10 addObject:v12];
+    activityZones = [(HUCameraActivityZoneCanvasView *)self activityZones];
+    currentActivityZone3 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+    v12 = [currentActivityZone3 mutableCopy];
+    [activityZones addObject:v12];
 
     [(HUCameraActivityZoneCanvasView *)self _resetCanvasAndCurrentZone];
     [(HUCameraActivityZoneCanvasView *)self setNeedsDisplay];
-    v13 = [(HUCameraActivityZoneCanvasView *)self delegate];
-    [v13 didUpdateActivityZoneCanvas:self];
+    delegate = [(HUCameraActivityZoneCanvasView *)self delegate];
+    [delegate didUpdateActivityZoneCanvas:self];
   }
 
   else
@@ -446,22 +446,22 @@ uint64_t __55__HUCameraActivityZoneCanvasView_canCreateActivityZone__block_invok
       _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "Unable to create activity zone.", buf, 2u);
     }
 
-    v7 = [(HUCameraActivityZoneCanvasView *)self delegate];
-    [v7 didAttemptToCreateOverlappingZoneForCanvas:self];
+    firstObject = [(HUCameraActivityZoneCanvasView *)self delegate];
+    [firstObject didAttemptToCreateOverlappingZoneForCanvas:self];
   }
 }
 
-- (id)_hmPointForTapPoint:(CGPoint)a3
+- (id)_hmPointForTapPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__33;
   v14 = __Block_byref_object_dispose__33;
   v15 = 0;
-  v6 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+  currentActivityZone = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __54__HUCameraActivityZoneCanvasView__hmPointForTapPoint___block_invoke;
@@ -470,7 +470,7 @@ uint64_t __55__HUCameraActivityZoneCanvasView_canCreateActivityZone__block_invok
   *&v9[7] = y;
   v9[4] = self;
   v9[5] = &v10;
-  [v6 enumerateObjectsUsingBlock:v9];
+  [currentActivityZone enumerateObjectsUsingBlock:v9];
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -496,68 +496,68 @@ void __54__HUCameraActivityZoneCanvasView__hmPointForTapPoint___block_invoke(uin
 {
   [(HUCameraActivityZoneCanvasView *)self setEditingActivityZone:0];
   [(HUCameraActivityZoneCanvasView *)self setCurrentActivityZone:0];
-  v3 = [(HUCameraActivityZoneCanvasView *)self canvasView];
-  [v3 setImage:0];
+  canvasView = [(HUCameraActivityZoneCanvasView *)self canvasView];
+  [canvasView setImage:0];
 }
 
 - (void)_prepCurrentActivityZoneForDeselection
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-  v4 = [v3 firstObject];
-  if (!v4)
+  currentActivityZone = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+  firstObject = [currentActivityZone firstObject];
+  if (!firstObject)
   {
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v5 = v4;
-  v6 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-  v7 = [v6 firstObject];
-  v8 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-  v9 = [v8 lastObject];
-  v10 = [v7 isEqual:v9];
+  v5 = firstObject;
+  currentActivityZone2 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+  firstObject2 = [currentActivityZone2 firstObject];
+  currentActivityZone3 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+  lastObject = [currentActivityZone3 lastObject];
+  v10 = [firstObject2 isEqual:lastObject];
 
   if ((v10 & 1) == 0)
   {
-    v11 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-    v12 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-    v13 = [v12 firstObject];
-    [v11 addObject:v13];
+    currentActivityZone4 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+    currentActivityZone5 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+    firstObject3 = [currentActivityZone5 firstObject];
+    [currentActivityZone4 addObject:firstObject3];
 
-    v3 = HFLogForCategory();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    currentActivityZone = HFLogForCategory();
+    if (os_log_type_enabled(currentActivityZone, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+      currentActivityZone6 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
       v17 = 138412290;
-      v18 = v14;
-      _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEFAULT, "Finished editing. Re-added the last HMPoint to the zone:%@", &v17, 0xCu);
+      v18 = currentActivityZone6;
+      _os_log_impl(&dword_20CEB6000, currentActivityZone, OS_LOG_TYPE_DEFAULT, "Finished editing. Re-added the last HMPoint to the zone:%@", &v17, 0xCu);
     }
 
     goto LABEL_5;
   }
 
 LABEL_6:
-  v15 = [(HUCameraActivityZoneCanvasView *)self delegate];
-  v16 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-  [v15 didUpdateActivityZone:v16];
+  delegate = [(HUCameraActivityZoneCanvasView *)self delegate];
+  currentActivityZone7 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+  [delegate didUpdateActivityZone:currentActivityZone7];
 }
 
 - (void)_finishEditingCurrentActivityZone
 {
   [(HUCameraActivityZoneCanvasView *)self _prepCurrentActivityZoneForDeselection];
   [(HUCameraActivityZoneCanvasView *)self _resetCanvasAndCurrentZone];
-  v3 = [MEMORY[0x277D75718] sharedMenuController];
-  [v3 hideMenu];
+  mEMORY[0x277D75718] = [MEMORY[0x277D75718] sharedMenuController];
+  [mEMORY[0x277D75718] hideMenu];
 }
 
-- (void)_editActivityZone:(id)a3
+- (void)_editActivityZone:(id)zone
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-  v6 = [v5 isEqual:v4];
+  zoneCopy = zone;
+  currentActivityZone = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+  v6 = [currentActivityZone isEqual:zoneCopy];
 
   if (v6)
   {
@@ -565,7 +565,7 @@ LABEL_6:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v4;
+      v15 = zoneCopy;
       _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "Stop editing the activity zone:%@", &v14, 0xCu);
     }
 
@@ -574,17 +574,17 @@ LABEL_6:
 
   else
   {
-    v8 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+    currentActivityZone2 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
 
-    if (v8)
+    if (currentActivityZone2)
     {
       [(HUCameraActivityZoneCanvasView *)self _prepCurrentActivityZoneForDeselection];
     }
 
     [(HUCameraActivityZoneCanvasView *)self setEditingActivityZone:1];
-    v9 = [v4 firstObject];
-    v10 = [v4 lastObject];
-    v11 = [v9 isEqual:v10];
+    firstObject = [zoneCopy firstObject];
+    lastObject = [zoneCopy lastObject];
+    v11 = [firstObject isEqual:lastObject];
 
     if (v11)
     {
@@ -592,34 +592,34 @@ LABEL_6:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 138412290;
-        v15 = v4;
+        v15 = zoneCopy;
         _os_log_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_DEFAULT, "Removing the copied last object for the activity zone:%@", &v14, 0xCu);
       }
 
-      [v4 removeLastObject];
+      [zoneCopy removeLastObject];
     }
 
     v13 = HFLogForCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v4;
+      v15 = zoneCopy;
       _os_log_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_DEFAULT, "Edit activity zone:%@", &v14, 0xCu);
     }
 
-    [(HUCameraActivityZoneCanvasView *)self setCurrentActivityZone:v4];
+    [(HUCameraActivityZoneCanvasView *)self setCurrentActivityZone:zoneCopy];
     [(HUCameraActivityZoneCanvasView *)self _drawTouchPoints];
-    [(HUCameraActivityZoneCanvasView *)self _displayMenuForActivityZone:v4];
+    [(HUCameraActivityZoneCanvasView *)self _displayMenuForActivityZone:zoneCopy];
   }
 }
 
-- (void)_displayMenuForActivityZone:(id)a3
+- (void)_displayMenuForActivityZone:(id)zone
 {
-  v4 = [a3 firstObject];
-  v10 = v4;
-  if (v4)
+  firstObject = [zone firstObject];
+  v10 = firstObject;
+  if (firstObject)
   {
-    [(HUCameraActivityZoneCanvasView *)self _hmPointToCGPoint:v4];
+    [(HUCameraActivityZoneCanvasView *)self _hmPointToCGPoint:firstObject];
     v7 = v6 + -17.0;
   }
 
@@ -630,8 +630,8 @@ LABEL_6:
   }
 
   v8 = [MEMORY[0x277D754C0] configurationWithIdentifier:0 sourcePoint:{v5, v7}];
-  v9 = [(HUCameraActivityZoneCanvasView *)self editMenuInteraction];
-  [v9 presentEditMenuWithConfiguration:v8];
+  editMenuInteraction = [(HUCameraActivityZoneCanvasView *)self editMenuInteraction];
+  [editMenuInteraction presentEditMenuWithConfiguration:v8];
 }
 
 - (void)clearActivityZone
@@ -640,39 +640,39 @@ LABEL_6:
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+    currentActivityZone = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
     v10 = 138412290;
-    v11 = v4;
+    v11 = currentActivityZone;
     _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEFAULT, "Clear activity zone:%@", &v10, 0xCu);
   }
 
   [(HUCameraActivityZoneCanvasView *)self setEditingActivityZone:0];
-  v5 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-  [v5 removeAllObjects];
+  currentActivityZone2 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+  [currentActivityZone2 removeAllObjects];
 
-  v6 = [(HUCameraActivityZoneCanvasView *)self activityZones];
-  v7 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-  [v6 removeObject:v7];
+  activityZones = [(HUCameraActivityZoneCanvasView *)self activityZones];
+  currentActivityZone3 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+  [activityZones removeObject:currentActivityZone3];
 
-  v8 = [(HUCameraActivityZoneCanvasView *)self canvasView];
-  [v8 setImage:0];
+  canvasView = [(HUCameraActivityZoneCanvasView *)self canvasView];
+  [canvasView setImage:0];
 
   [(HUCameraActivityZoneCanvasView *)self setNeedsDisplay];
-  v9 = [(HUCameraActivityZoneCanvasView *)self delegate];
-  [v9 didUpdateActivityZoneCanvas:self];
+  delegate = [(HUCameraActivityZoneCanvasView *)self delegate];
+  [delegate didUpdateActivityZoneCanvas:self];
 }
 
-- (id)activityZoneContainingPoint:(CGPoint)a3
+- (id)activityZoneContainingPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__33;
   v14 = __Block_byref_object_dispose__33;
   v15 = 0;
-  v6 = [(HUCameraActivityZoneCanvasView *)self activityZones];
+  activityZones = [(HUCameraActivityZoneCanvasView *)self activityZones];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __62__HUCameraActivityZoneCanvasView_activityZoneContainingPoint___block_invoke;
@@ -681,7 +681,7 @@ LABEL_6:
   *&v9[7] = y;
   v9[4] = self;
   v9[5] = &v10;
-  [v6 enumerateObjectsUsingBlock:v9];
+  [activityZones enumerateObjectsUsingBlock:v9];
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -725,10 +725,10 @@ uint64_t __62__HUCameraActivityZoneCanvasView_activityZoneContainingPoint___bloc
   }
 }
 
-- (id)selectedActivityZoneAtPoint:(CGPoint)a3
+- (id)selectedActivityZoneAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (-[HUCameraActivityZoneCanvasView isEditingActivityZone](self, "isEditingActivityZone") || (-[HUCameraActivityZoneCanvasView currentActivityZone](self, "currentActivityZone"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 count], v6, !v7))
   {
     v8 = [(HUCameraActivityZoneCanvasView *)self activityZoneContainingPoint:x, y];
@@ -742,11 +742,11 @@ uint64_t __62__HUCameraActivityZoneCanvasView_activityZoneContainingPoint___bloc
   return v8;
 }
 
-- (void)setDisplaysInclusionZones:(BOOL)a3
+- (void)setDisplaysInclusionZones:(BOOL)zones
 {
-  if (self->_displaysInclusionZones != a3)
+  if (self->_displaysInclusionZones != zones)
   {
-    self->_displaysInclusionZones = a3;
+    self->_displaysInclusionZones = zones;
     [(HUCameraActivityZoneCanvasView *)self setNeedsDisplay];
   }
 }
@@ -758,32 +758,32 @@ uint64_t __62__HUCameraActivityZoneCanvasView_activityZoneContainingPoint___bloc
     return 0;
   }
 
-  v4 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-  v3 = [v4 count] > 2;
+  currentActivityZone = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+  v3 = [currentActivityZone count] > 2;
 
   return v3;
 }
 
-- (BOOL)isValidPointInView:(CGPoint)a3
+- (BOOL)isValidPointInView:(CGPoint)view
 {
-  v3 = [(HUCameraActivityZoneCanvasView *)self activityZoneContainingPoint:a3.x, a3.y];
+  v3 = [(HUCameraActivityZoneCanvasView *)self activityZoneContainingPoint:view.x, view.y];
   v4 = v3 == 0;
 
   return v4;
 }
 
-- (BOOL)currentZonesIntersectSegmentFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4
+- (BOOL)currentZonesIntersectSegmentFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = toPoint.y;
+  x = toPoint.x;
+  v6 = point.y;
+  v7 = point.x;
   v29 = *MEMORY[0x277D85DE8];
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v9 = [(HUCameraActivityZoneCanvasView *)self activityZones];
+  activityZones = [(HUCameraActivityZoneCanvasView *)self activityZones];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __80__HUCameraActivityZoneCanvasView_currentZonesIntersectSegmentFromPoint_toPoint___block_invoke;
@@ -794,7 +794,7 @@ uint64_t __62__HUCameraActivityZoneCanvasView_activityZoneContainingPoint___bloc
   *&v14[9] = y;
   v14[4] = self;
   v14[5] = &v15;
-  [v9 enumerateObjectsUsingBlock:v14];
+  [activityZones enumerateObjectsUsingBlock:v14];
 
   v10 = HFLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -896,14 +896,14 @@ uint64_t __80__HUCameraActivityZoneCanvasView_currentZonesIntersectSegmentFromPo
   return result;
 }
 
-- (BOOL)currentZonesIntersectPoint:(CGPoint)a3
+- (BOOL)currentZonesIntersectPoint:(CGPoint)point
 {
-  v4 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-  v5 = [v4 lastObject];
+  currentActivityZone = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+  lastObject = [currentActivityZone lastObject];
 
-  if (v5)
+  if (lastObject)
   {
-    [(HUCameraActivityZoneCanvasView *)self _hmPointToCGPoint:v5];
+    [(HUCameraActivityZoneCanvasView *)self _hmPointToCGPoint:lastObject];
     v6 = [HUCameraActivityZoneCanvasView currentZonesIntersectSegmentFromPoint:"currentZonesIntersectSegmentFromPoint:toPoint:" toPoint:?];
   }
 
@@ -917,26 +917,26 @@ uint64_t __80__HUCameraActivityZoneCanvasView_currentZonesIntersectSegmentFromPo
 
 - (void)preventAttemptToMovePoint
 {
-  v3 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-  v4 = [(HUCameraActivityZoneCanvasView *)self currentTouchPointIndex];
-  v5 = [(HUCameraActivityZoneCanvasView *)self startingTouchPoint];
-  [v3 replaceObjectAtIndex:v4 withObject:v5];
+  currentActivityZone = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+  currentTouchPointIndex = [(HUCameraActivityZoneCanvasView *)self currentTouchPointIndex];
+  startingTouchPoint = [(HUCameraActivityZoneCanvasView *)self startingTouchPoint];
+  [currentActivityZone replaceObjectAtIndex:currentTouchPointIndex withObject:startingTouchPoint];
 
   [(HUCameraActivityZoneCanvasView *)self _drawTouchPoints];
   [(HUCameraActivityZoneCanvasView *)self setNeedsDisplay];
   [(HUCameraActivityZoneCanvasView *)self setCurrentTouchPointIndex:-1];
   [(HUCameraActivityZoneCanvasView *)self setStartingTouchPoint:0];
-  v6 = [(HUCameraActivityZoneCanvasView *)self delegate];
-  [v6 didAttemptToMovePointToOverlapZoneForCanvas:self];
+  delegate = [(HUCameraActivityZoneCanvasView *)self delegate];
+  [delegate didAttemptToMovePointToOverlapZoneForCanvas:self];
 }
 
-- (void)didTap:(id)a3
+- (void)didTap:(id)tap
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 state] == 3)
+  tapCopy = tap;
+  if ([tapCopy state] == 3)
   {
-    [v4 locationInView:self];
+    [tapCopy locationInView:self];
     v6 = v5;
     v8 = v7;
     if ([(HUCameraActivityZoneCanvasView *)self isEditingActivityZone])
@@ -962,7 +962,7 @@ LABEL_22:
       v24 = [(HUCameraActivityZoneCanvasView *)self selectedActivityZoneAtPoint:v6, v8];
       if (v24)
       {
-        v25 = v24;
+        delegate5 = v24;
         [(HUCameraActivityZoneCanvasView *)self _editActivityZone:v24];
         [(HUCameraActivityZoneCanvasView *)self setNeedsDisplay];
       }
@@ -981,54 +981,54 @@ LABEL_22:
             _os_log_impl(&dword_20CEB6000, v43, OS_LOG_TYPE_DEFAULT, "Invalid location. Not creating touchpoint at:%.2f,%.2f.", v44, 0x16u);
           }
 
-          v36 = [(HUCameraActivityZoneCanvasView *)self delegate];
-          [v36 didAttemptToAddOverlappingLineForCanvas:self];
+          delegate = [(HUCameraActivityZoneCanvasView *)self delegate];
+          [delegate didAttemptToAddOverlappingLineForCanvas:self];
         }
 
         else
         {
           [(HUCameraActivityZoneCanvasView *)self _normalizedPointForPoint:v6, v8];
-          v36 = [objc_alloc(MEMORY[0x277CD1D10]) initWithPoint:{v34, v35}];
-          v37 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+          delegate = [objc_alloc(MEMORY[0x277CD1D10]) initWithPoint:{v34, v35}];
+          currentActivityZone = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
 
-          if (!v37)
+          if (!currentActivityZone)
           {
             v38 = objc_alloc_init(MEMORY[0x277CBEB18]);
             [(HUCameraActivityZoneCanvasView *)self setCurrentActivityZone:v38];
           }
 
-          v39 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-          [v39 addObject:v36];
+          currentActivityZone2 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+          [currentActivityZone2 addObject:delegate];
 
           [(HUCameraActivityZoneCanvasView *)self _drawTouchPoints];
           v40 = HFLogForCategory();
           if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
           {
             *v44 = 138412290;
-            *&v44[4] = v36;
+            *&v44[4] = delegate;
             _os_log_impl(&dword_20CEB6000, v40, OS_LOG_TYPE_DEFAULT, "Add touch point:%@", v44, 0xCu);
           }
 
-          v41 = [(HUCameraActivityZoneCanvasView *)self delegate];
-          v42 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-          [v41 didUpdateActivityZone:v42];
+          delegate2 = [(HUCameraActivityZoneCanvasView *)self delegate];
+          currentActivityZone3 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+          [delegate2 didUpdateActivityZone:currentActivityZone3];
         }
 
-        v25 = 0;
+        delegate5 = 0;
       }
 
       goto LABEL_21;
     }
 
-    v10 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-    v11 = [v10 firstObject];
-    v12 = [v9 isEqual:v11];
+    currentActivityZone4 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+    firstObject = [currentActivityZone4 firstObject];
+    v12 = [v9 isEqual:firstObject];
 
-    v13 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-    v14 = v13;
+    currentActivityZone5 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+    v14 = currentActivityZone5;
     if (v12)
     {
-      v15 = [v13 count];
+      v15 = [currentActivityZone5 count];
 
       if (v15 == 1)
       {
@@ -1039,31 +1039,31 @@ LABEL_22:
           _os_log_impl(&dword_20CEB6000, v16, OS_LOG_TYPE_DEFAULT, "Delete the first touchpoint.", v44, 2u);
         }
 
-        v17 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-        [v17 removeObjectAtIndex:0];
+        currentActivityZone6 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+        [currentActivityZone6 removeObjectAtIndex:0];
 
         [(HUCameraActivityZoneCanvasView *)self _drawTouchPoints];
         v18 = HFLogForCategory();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
-          v19 = [(HUCameraActivityZoneCanvasView *)self activityZones];
-          v20 = [v19 count];
+          activityZones = [(HUCameraActivityZoneCanvasView *)self activityZones];
+          v20 = [activityZones count];
           *v44 = 134217984;
           *&v44[4] = v20;
           _os_log_impl(&dword_20CEB6000, v18, OS_LOG_TYPE_DEFAULT, "Remove the activity. Zone count:%lu", v44, 0xCu);
         }
 
-        v21 = [(HUCameraActivityZoneCanvasView *)self delegate];
-        v22 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-        [v21 didUpdateActivityZone:v22];
+        delegate3 = [(HUCameraActivityZoneCanvasView *)self delegate];
+        currentActivityZone7 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+        [delegate3 didUpdateActivityZone:currentActivityZone7];
 
-        v23 = [(HUCameraActivityZoneCanvasView *)self delegate];
-        [v23 didUpdateActivityZoneCanvas:self];
+        delegate4 = [(HUCameraActivityZoneCanvasView *)self delegate];
+        [delegate4 didUpdateActivityZoneCanvas:self];
         goto LABEL_19;
       }
 
-      v32 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-      v33 = [v32 count];
+      currentActivityZone8 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+      v33 = [currentActivityZone8 count];
 
       if (v33 > 2)
       {
@@ -1071,12 +1071,12 @@ LABEL_22:
         goto LABEL_20;
       }
 
-      v23 = HFLogForCategory();
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+      delegate4 = HFLogForCategory();
+      if (os_log_type_enabled(delegate4, OS_LOG_TYPE_DEFAULT))
       {
         *v44 = 0;
         v28 = "Ignore taps on the target since there are less than 3 points";
-        v29 = v23;
+        v29 = delegate4;
         v30 = 2;
         goto LABEL_18;
       }
@@ -1084,19 +1084,19 @@ LABEL_22:
 
     else
     {
-      v26 = [v13 indexOfObject:v9];
+      v26 = [currentActivityZone5 indexOfObject:v9];
 
-      v27 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-      [v27 removeObjectAtIndex:v26];
+      currentActivityZone9 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+      [currentActivityZone9 removeObjectAtIndex:v26];
 
       [(HUCameraActivityZoneCanvasView *)self _drawTouchPoints];
-      v23 = HFLogForCategory();
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+      delegate4 = HFLogForCategory();
+      if (os_log_type_enabled(delegate4, OS_LOG_TYPE_DEFAULT))
       {
         *v44 = 138412290;
         *&v44[4] = v9;
         v28 = "Deleted touchpoint:%@.";
-        v29 = v23;
+        v29 = delegate4;
         v30 = 12;
 LABEL_18:
         _os_log_impl(&dword_20CEB6000, v29, OS_LOG_TYPE_DEFAULT, v28, v44, v30);
@@ -1106,9 +1106,9 @@ LABEL_18:
 LABEL_19:
 
 LABEL_20:
-    v25 = [(HUCameraActivityZoneCanvasView *)self delegate];
-    v31 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-    [v25 didUpdateActivityZone:v31];
+    delegate5 = [(HUCameraActivityZoneCanvasView *)self delegate];
+    currentActivityZone10 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+    [delegate5 didUpdateActivityZone:currentActivityZone10];
 
 LABEL_21:
     goto LABEL_22;
@@ -1117,39 +1117,39 @@ LABEL_21:
 LABEL_23:
 }
 
-- (void)didPan:(id)a3
+- (void)didPan:(id)pan
 {
-  v7 = a3;
-  v4 = [v7 state];
-  if (v4 == 3)
+  panCopy = pan;
+  state = [panCopy state];
+  if (state == 3)
   {
-    [(HUCameraActivityZoneCanvasView *)self _handleEndForGesture:v7];
+    [(HUCameraActivityZoneCanvasView *)self _handleEndForGesture:panCopy];
     goto LABEL_8;
   }
 
-  if (v4 == 2)
+  if (state == 2)
   {
-    [(HUCameraActivityZoneCanvasView *)self _handleChangeForGesture:v7];
+    [(HUCameraActivityZoneCanvasView *)self _handleChangeForGesture:panCopy];
     goto LABEL_8;
   }
 
-  v5 = v4 == 1;
-  v6 = v7;
+  v5 = state == 1;
+  v6 = panCopy;
   if (v5)
   {
-    [(HUCameraActivityZoneCanvasView *)self _handleBeginForGesture:v7];
+    [(HUCameraActivityZoneCanvasView *)self _handleBeginForGesture:panCopy];
 LABEL_8:
-    v6 = v7;
+    v6 = panCopy;
   }
 }
 
-- (void)_handleBeginForGesture:(id)a3
+- (void)_handleBeginForGesture:(id)gesture
 {
-  [a3 locationInView:self];
+  [gesture locationInView:self];
   v5 = v4;
   v7 = v6;
   [(HUCameraActivityZoneCanvasView *)self setCurrentTouchPointIndex:-1];
-  v8 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+  currentActivityZone = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__HUCameraActivityZoneCanvasView__handleBeginForGesture___block_invoke;
@@ -1157,7 +1157,7 @@ LABEL_8:
   v9[4] = self;
   v9[5] = v5;
   v9[6] = v7;
-  [v8 enumerateObjectsUsingBlock:v9];
+  [currentActivityZone enumerateObjectsUsingBlock:v9];
 }
 
 void __57__HUCameraActivityZoneCanvasView__handleBeginForGesture___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -1189,12 +1189,12 @@ void __57__HUCameraActivityZoneCanvasView__handleBeginForGesture___block_invoke(
   }
 }
 
-- (void)_handleChangeForGesture:(id)a3
+- (void)_handleChangeForGesture:(id)gesture
 {
-  v16 = a3;
+  gestureCopy = gesture;
   if (([(HUCameraActivityZoneCanvasView *)self currentTouchPointIndex]& 0x8000000000000000) == 0)
   {
-    [v16 locationInView:self];
+    [gestureCopy locationInView:self];
     v5 = v4;
     v7 = fmax(v6, 0.0);
     [(HUCameraActivityZoneCanvasView *)self bounds];
@@ -1217,47 +1217,47 @@ void __57__HUCameraActivityZoneCanvasView__handleBeginForGesture___block_invoke(
 
     [(HUCameraActivityZoneCanvasView *)self _normalizedPointForPoint:v7, v11];
     v14 = [objc_alloc(MEMORY[0x277CD1D10]) initWithPoint:{v12, v13}];
-    v15 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-    [v15 replaceObjectAtIndex:-[HUCameraActivityZoneCanvasView currentTouchPointIndex](self withObject:{"currentTouchPointIndex"), v14}];
+    currentActivityZone = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+    [currentActivityZone replaceObjectAtIndex:-[HUCameraActivityZoneCanvasView currentTouchPointIndex](self withObject:{"currentTouchPointIndex"), v14}];
 
     [(HUCameraActivityZoneCanvasView *)self _drawTouchPoints];
     [(HUCameraActivityZoneCanvasView *)self setNeedsDisplay];
   }
 }
 
-- (void)_handleEndForGesture:(id)a3
+- (void)_handleEndForGesture:(id)gesture
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  gestureCopy = gesture;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v33 = 138412290;
-    v34 = v4;
+    v34 = gestureCopy;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "Finished pan:%@", &v33, 0xCu);
   }
 
   if (([(HUCameraActivityZoneCanvasView *)self currentTouchPointIndex]& 0x8000000000000000) == 0)
   {
-    [v4 locationInView:self];
+    [gestureCopy locationInView:self];
     v7 = v6;
     v9 = v8;
-    v10 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-    v11 = [v10 objectAtIndex:{-[HUCameraActivityZoneCanvasView currentTouchPointIndex](self, "currentTouchPointIndex")}];
+    currentActivityZone = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+    delegate2 = [currentActivityZone objectAtIndex:{-[HUCameraActivityZoneCanvasView currentTouchPointIndex](self, "currentTouchPointIndex")}];
 
-    v12 = [(HUCameraActivityZoneCanvasView *)self currentTouchPointIndex];
-    v13 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-    v14 = [v13 count] - 1;
+    currentTouchPointIndex = [(HUCameraActivityZoneCanvasView *)self currentTouchPointIndex];
+    currentActivityZone2 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+    v14 = [currentActivityZone2 count] - 1;
 
-    if (v12 < v14)
+    if (currentTouchPointIndex < v14)
     {
-      v15 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-      v16 = [v15 objectAtIndex:{-[HUCameraActivityZoneCanvasView currentTouchPointIndex](self, "currentTouchPointIndex") + 1}];
+      currentActivityZone3 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+      delegate = [currentActivityZone3 objectAtIndex:{-[HUCameraActivityZoneCanvasView currentTouchPointIndex](self, "currentTouchPointIndex") + 1}];
 
-      [(HUCameraActivityZoneCanvasView *)self _hmPointToCGPoint:v11];
+      [(HUCameraActivityZoneCanvasView *)self _hmPointToCGPoint:delegate2];
       v18 = v17;
       v20 = v19;
-      [(HUCameraActivityZoneCanvasView *)self _hmPointToCGPoint:v16];
+      [(HUCameraActivityZoneCanvasView *)self _hmPointToCGPoint:delegate];
       if ([(HUCameraActivityZoneCanvasView *)self currentZonesIntersectSegmentFromPoint:v18 toPoint:v20, v21, v22])
       {
         v23 = HFLogForCategory();
@@ -1279,13 +1279,13 @@ LABEL_16:
 
     if ([(HUCameraActivityZoneCanvasView *)self currentTouchPointIndex]>= 1)
     {
-      v26 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
-      v16 = [v26 objectAtIndex:{-[HUCameraActivityZoneCanvasView currentTouchPointIndex](self, "currentTouchPointIndex") - 1}];
+      currentActivityZone4 = [(HUCameraActivityZoneCanvasView *)self currentActivityZone];
+      delegate = [currentActivityZone4 objectAtIndex:{-[HUCameraActivityZoneCanvasView currentTouchPointIndex](self, "currentTouchPointIndex") - 1}];
 
-      [(HUCameraActivityZoneCanvasView *)self _hmPointToCGPoint:v11];
+      [(HUCameraActivityZoneCanvasView *)self _hmPointToCGPoint:delegate2];
       v28 = v27;
       v30 = v29;
-      [(HUCameraActivityZoneCanvasView *)self _hmPointToCGPoint:v16];
+      [(HUCameraActivityZoneCanvasView *)self _hmPointToCGPoint:delegate];
       if ([(HUCameraActivityZoneCanvasView *)self currentZonesIntersectSegmentFromPoint:v28 toPoint:v30, v31, v32])
       {
         v23 = HFLogForCategory();
@@ -1308,8 +1308,8 @@ LABEL_20:
       }
     }
 
-    v16 = [(HUCameraActivityZoneCanvasView *)self delegate];
-    [v16 didUpdateActivityZoneCanvas:self];
+    delegate = [(HUCameraActivityZoneCanvasView *)self delegate];
+    [delegate didUpdateActivityZoneCanvas:self];
     goto LABEL_20;
   }
 
@@ -1320,15 +1320,15 @@ LABEL_20:
     _os_log_error_impl(&dword_20CEB6000, v25, OS_LOG_TYPE_ERROR, "Invalid touchPointIndex. Bailing.", &v33, 2u);
   }
 
-  v11 = [(HUCameraActivityZoneCanvasView *)self delegate];
-  [v11 didUpdateActivityZoneCanvas:self];
+  delegate2 = [(HUCameraActivityZoneCanvasView *)self delegate];
+  [delegate2 didUpdateActivityZoneCanvas:self];
 LABEL_21:
 }
 
-- (CGPoint)_normalizedPointForPoint:(CGPoint)a3
+- (CGPoint)_normalizedPointForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(HUCameraActivityZoneCanvasView *)self bounds];
   v7 = x / fmax(v6, 1.0);
   [(HUCameraActivityZoneCanvasView *)self bounds];
@@ -1339,9 +1339,9 @@ LABEL_21:
   return result;
 }
 
-- (CGPoint)_hmPointToCGPoint:(id)a3
+- (CGPoint)_hmPointToCGPoint:(id)point
 {
-  [a3 point];
+  [point point];
   v5 = v4;
   v7 = v6;
   [(HUCameraActivityZoneCanvasView *)self bounds];
@@ -1354,27 +1354,27 @@ LABEL_21:
   return result;
 }
 
-- (void)_addTouchpointAtPoint:(CGPoint)a3 inContext:(CGContext *)a4 withRed:(double)a5 green:(double)a6 blue:(double)a7
+- (void)_addTouchpointAtPoint:(CGPoint)point inContext:(CGContext *)context withRed:(double)red green:(double)green blue:(double)blue
 {
-  y = a3.y;
-  x = a3.x;
-  v13 = [MEMORY[0x277D75208] bezierPathWithOvalInRect:{a3.x + -3.0, a3.y + -3.0, 6.0, 6.0}];
+  y = point.y;
+  x = point.x;
+  v13 = [MEMORY[0x277D75208] bezierPathWithOvalInRect:{point.x + -3.0, point.y + -3.0, 6.0, 6.0}];
   v17 = 0.0;
   v18 = 0.0;
   blue = 0.0;
-  v14 = [MEMORY[0x277D75348] systemOrangeColor];
-  [v14 getRed:&v18 green:&v17 blue:&blue alpha:0];
+  systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+  [systemOrangeColor getRed:&v18 green:&v17 blue:&blue alpha:0];
 
-  CGContextSetRGBFillColor(a4, v18, v17, blue, 1.0);
+  CGContextSetRGBFillColor(context, v18, v17, blue, 1.0);
   [v13 fill];
   v15 = [MEMORY[0x277D75208] bezierPathWithOvalInRect:{x + -17.0, y + -17.0, 34.0, 34.0}];
-  CGContextSetRGBFillColor(a4, a5, a6, a7, 0.5);
-  CGContextSetRGBStrokeColor(a4, a5, a6, a7, 1.0);
+  CGContextSetRGBFillColor(context, red, green, blue, 0.5);
+  CGContextSetRGBStrokeColor(context, red, green, blue, 1.0);
   [v15 fill];
   [v15 stroke];
 }
 
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277D750C8];

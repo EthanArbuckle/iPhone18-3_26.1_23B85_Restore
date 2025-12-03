@@ -1,59 +1,59 @@
 @interface MTIndexPathShifter
-- (void)_setIndexPath:(unint64_t)a3;
-- (void)_shiftIndexPath:(unint64_t)a3;
-- (void)processChangeAtIndexPath:(id)a3 forChangeType:(unint64_t)a4 newIndexPath:(id)a5;
-- (void)setInitialIndexPath:(id)a3;
+- (void)_setIndexPath:(unint64_t)path;
+- (void)_shiftIndexPath:(unint64_t)path;
+- (void)processChangeAtIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath;
+- (void)setInitialIndexPath:(id)path;
 @end
 
 @implementation MTIndexPathShifter
 
-- (void)setInitialIndexPath:(id)a3
+- (void)setInitialIndexPath:(id)path
 {
-  v5 = a3;
-  objc_storeStrong(&self->_initialIndexPath, a3);
+  pathCopy = path;
+  objc_storeStrong(&self->_initialIndexPath, path);
   shiftedIndexPath = self->_shiftedIndexPath;
-  self->_shiftedIndexPath = v5;
+  self->_shiftedIndexPath = pathCopy;
 
   [(MTIndexPathShifter *)self setIsComplete:0];
 }
 
-- (void)processChangeAtIndexPath:(id)a3 forChangeType:(unint64_t)a4 newIndexPath:(id)a5
+- (void)processChangeAtIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath
 {
-  v20 = a3;
-  v8 = a5;
-  v9 = [(MTIndexPathShifter *)self shiftedIndexPath];
-  v10 = [v9 section];
-  v11 = [v20 section];
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  shiftedIndexPath = [(MTIndexPathShifter *)self shiftedIndexPath];
+  section = [shiftedIndexPath section];
+  section2 = [pathCopy section];
 
-  if (v10 == v11 && ![(MTIndexPathShifter *)self isComplete])
+  if (section == section2 && ![(MTIndexPathShifter *)self isComplete])
   {
-    switch(a4)
+    switch(type)
     {
       case 3uLL:
-        v18 = [(MTIndexPathShifter *)self initialIndexPath];
-        v19 = [v20 isEqual:v18];
+        initialIndexPath = [(MTIndexPathShifter *)self initialIndexPath];
+        v19 = [pathCopy isEqual:initialIndexPath];
 
         if (!v19)
         {
-          [(MTIndexPathShifter *)self processChangeAtIndexPath:v20 forChangeType:2 newIndexPath:0];
-          [(MTIndexPathShifter *)self processChangeAtIndexPath:0 forChangeType:1 newIndexPath:v8];
+          [(MTIndexPathShifter *)self processChangeAtIndexPath:pathCopy forChangeType:2 newIndexPath:0];
+          [(MTIndexPathShifter *)self processChangeAtIndexPath:0 forChangeType:1 newIndexPath:indexPathCopy];
           goto LABEL_3;
         }
 
-        [(MTIndexPathShifter *)self setShiftedIndexPath:v8];
+        [(MTIndexPathShifter *)self setShiftedIndexPath:indexPathCopy];
         break;
       case 2uLL:
-        v16 = [(MTIndexPathShifter *)self initialIndexPath];
-        v17 = [v16 row];
+        initialIndexPath2 = [(MTIndexPathShifter *)self initialIndexPath];
+        v17 = [initialIndexPath2 row];
 
-        if ([v20 row] != v17)
+        if ([pathCopy row] != v17)
         {
-          if ([v20 row] >= v17)
+          if ([pathCopy row] >= v17)
           {
             goto LABEL_3;
           }
 
-          v14 = self;
+          selfCopy2 = self;
           v15 = -1;
           goto LABEL_18;
         }
@@ -61,18 +61,18 @@
         [(MTIndexPathShifter *)self _setIndexPath:0x7FFFFFFFFFFFFFFFLL];
         break;
       case 1uLL:
-        v12 = [(MTIndexPathShifter *)self initialIndexPath];
-        v13 = [v12 row];
+        initialIndexPath3 = [(MTIndexPathShifter *)self initialIndexPath];
+        v13 = [initialIndexPath3 row];
 
-        if ([v8 row] > v13)
+        if ([indexPathCopy row] > v13)
         {
           goto LABEL_3;
         }
 
-        v14 = self;
+        selfCopy2 = self;
         v15 = 1;
 LABEL_18:
-        [(MTIndexPathShifter *)v14 _shiftIndexPath:v15];
+        [(MTIndexPathShifter *)selfCopy2 _shiftIndexPath:v15];
         goto LABEL_3;
       default:
         goto LABEL_3;
@@ -84,21 +84,21 @@ LABEL_18:
 LABEL_3:
 }
 
-- (void)_shiftIndexPath:(unint64_t)a3
+- (void)_shiftIndexPath:(unint64_t)path
 {
-  v5 = [(MTIndexPathShifter *)self shiftedIndexPath];
-  -[MTIndexPathShifter _setIndexPath:](self, "_setIndexPath:", [v5 row] + a3);
+  shiftedIndexPath = [(MTIndexPathShifter *)self shiftedIndexPath];
+  -[MTIndexPathShifter _setIndexPath:](self, "_setIndexPath:", [shiftedIndexPath row] + path);
 }
 
-- (void)_setIndexPath:(unint64_t)a3
+- (void)_setIndexPath:(unint64_t)path
 {
-  v5 = [(MTIndexPathShifter *)self shiftedIndexPath];
-  v6 = [v5 row];
+  shiftedIndexPath = [(MTIndexPathShifter *)self shiftedIndexPath];
+  v6 = [shiftedIndexPath row];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(MTIndexPathShifter *)self shiftedIndexPath];
-    v7 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", a3, [v8 section]);
+    shiftedIndexPath2 = [(MTIndexPathShifter *)self shiftedIndexPath];
+    v7 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", path, [shiftedIndexPath2 section]);
     [(MTIndexPathShifter *)self setShiftedIndexPath:v7];
   }
 }

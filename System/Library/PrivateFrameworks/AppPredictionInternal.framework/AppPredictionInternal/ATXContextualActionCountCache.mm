@@ -1,11 +1,11 @@
 @interface ATXContextualActionCountCache
 - (ATXContextualActionCountCache)init;
-- (BOOL)isHeadingHomeActionTime:(id)a3;
-- (BOOL)isHeadingToWorkActionTime:(id)a3;
-- (BOOL)isOtherActionTime:(id)a3;
+- (BOOL)isHeadingHomeActionTime:(id)time;
+- (BOOL)isHeadingToWorkActionTime:(id)time;
+- (BOOL)isOtherActionTime:(id)time;
 - (id)getAllCounts;
-- (id)getCountsForContext:(id)a3;
-- (void)addMinimalActionParameter:(id)a3;
+- (id)getCountsForContext:(id)context;
+- (void)addMinimalActionParameter:(id)parameter;
 @end
 
 @implementation ATXContextualActionCountCache
@@ -17,9 +17,9 @@
   v2 = [(ATXContextualActionCountCache *)&v18 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
     oldestAction = v2->_oldestAction;
-    v2->_oldestAction = v3;
+    v2->_oldestAction = distantFuture;
 
     v5 = objc_opt_new();
     headingToWorkActions = v2->headingToWorkActions;
@@ -50,25 +50,25 @@
   return v2;
 }
 
-- (void)addMinimalActionParameter:(id)a3
+- (void)addMinimalActionParameter:(id)parameter
 {
-  v4 = a3;
-  v5 = [v4 actionTime];
+  parameterCopy = parameter;
+  actionTime = [parameterCopy actionTime];
 
-  if (v5)
+  if (actionTime)
   {
-    v6 = [v4 actionTime];
-    [v4 setActionTime:0];
-    v7 = [(NSDate *)self->_oldestAction earlierDate:v6];
+    actionTime2 = [parameterCopy actionTime];
+    [parameterCopy setActionTime:0];
+    v7 = [(NSDate *)self->_oldestAction earlierDate:actionTime2];
     oldestAction = self->_oldestAction;
     self->_oldestAction = v7;
 
-    v9 = [(ATXContextualActionCountCache *)self isHeadingToWorkActionTime:v6];
-    v10 = [(ATXContextualActionCountCache *)self isHeadingHomeActionTime:v6];
-    v11 = [(ATXContextualActionCountCache *)self isOtherActionTime:v6];
+    v9 = [(ATXContextualActionCountCache *)self isHeadingToWorkActionTime:actionTime2];
+    v10 = [(ATXContextualActionCountCache *)self isHeadingHomeActionTime:actionTime2];
+    v11 = [(ATXContextualActionCountCache *)self isOtherActionTime:actionTime2];
     if (v9)
     {
-      [(NSCountedSet *)self->headingToWorkActions addObject:v4];
+      [(NSCountedSet *)self->headingToWorkActions addObject:parameterCopy];
       if (!v10)
       {
 LABEL_4:
@@ -80,7 +80,7 @@ LABEL_6:
         }
 
 LABEL_5:
-        [(NSCountedSet *)self->unspecifiedActions addObject:v4];
+        [(NSCountedSet *)self->unspecifiedActions addObject:parameterCopy];
         goto LABEL_6;
       }
     }
@@ -90,7 +90,7 @@ LABEL_5:
       goto LABEL_4;
     }
 
-    [(NSCountedSet *)self->headingHomeActions addObject:v4];
+    [(NSCountedSet *)self->headingHomeActions addObject:parameterCopy];
     if (!v11)
     {
       goto LABEL_6;
@@ -102,13 +102,13 @@ LABEL_5:
   v12 = __atxlog_handle_dailyroutines();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
   {
-    [(ATXContextualActionCountCache *)v4 addMinimalActionParameter:v12];
+    [(ATXContextualActionCountCache *)parameterCopy addMinimalActionParameter:v12];
   }
 
 LABEL_10:
 }
 
-- (BOOL)isHeadingToWorkActionTime:(id)a3
+- (BOOL)isHeadingToWorkActionTime:(id)time
 {
   headingToWorkDateInterval = self->headingToWorkDateInterval;
   if (!headingToWorkDateInterval)
@@ -116,15 +116,15 @@ LABEL_10:
     return 1;
   }
 
-  v5 = a3;
-  v6 = [(NSDateInterval *)headingToWorkDateInterval startDate];
-  v7 = [(NSDateInterval *)self->headingToWorkDateInterval endDate];
-  v8 = [ATXTimeUtil time:v5 isBetweenStartTime:v6 andEndTime:v7];
+  timeCopy = time;
+  startDate = [(NSDateInterval *)headingToWorkDateInterval startDate];
+  endDate = [(NSDateInterval *)self->headingToWorkDateInterval endDate];
+  v8 = [ATXTimeUtil time:timeCopy isBetweenStartTime:startDate andEndTime:endDate];
 
   return v8;
 }
 
-- (BOOL)isHeadingHomeActionTime:(id)a3
+- (BOOL)isHeadingHomeActionTime:(id)time
 {
   headingHomeDateInterval = self->headingHomeDateInterval;
   if (!headingHomeDateInterval)
@@ -132,15 +132,15 @@ LABEL_10:
     return 1;
   }
 
-  v5 = a3;
-  v6 = [(NSDateInterval *)headingHomeDateInterval startDate];
-  v7 = [(NSDateInterval *)self->headingHomeDateInterval endDate];
-  v8 = [ATXTimeUtil time:v5 isBetweenStartTime:v6 andEndTime:v7];
+  timeCopy = time;
+  startDate = [(NSDateInterval *)headingHomeDateInterval startDate];
+  endDate = [(NSDateInterval *)self->headingHomeDateInterval endDate];
+  v8 = [ATXTimeUtil time:timeCopy isBetweenStartTime:startDate andEndTime:endDate];
 
   return v8;
 }
 
-- (BOOL)isOtherActionTime:(id)a3
+- (BOOL)isOtherActionTime:(id)time
 {
   otherDateInterval = self->otherDateInterval;
   if (!otherDateInterval)
@@ -148,19 +148,19 @@ LABEL_10:
     return 1;
   }
 
-  v5 = a3;
-  v6 = [(NSDateInterval *)otherDateInterval startDate];
-  v7 = [(NSDateInterval *)self->otherDateInterval endDate];
-  v8 = [ATXTimeUtil time:v5 isBetweenStartTime:v6 andEndTime:v7];
+  timeCopy = time;
+  startDate = [(NSDateInterval *)otherDateInterval startDate];
+  endDate = [(NSDateInterval *)self->otherDateInterval endDate];
+  v8 = [ATXTimeUtil time:timeCopy isBetweenStartTime:startDate andEndTime:endDate];
 
   return v8;
 }
 
-- (id)getCountsForContext:(id)a3
+- (id)getCountsForContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 contextType];
-  switch(v5)
+  contextCopy = context;
+  contextType = [contextCopy contextType];
+  switch(contextType)
   {
     case 0:
       unspecifiedActions = self->unspecifiedActions;
@@ -178,10 +178,10 @@ LABEL_7:
   v8 = __atxlog_handle_default();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    [(ATXContextualActionCountCache *)v4 getCountsForContext:v8];
+    [(ATXContextualActionCountCache *)contextCopy getCountsForContext:v8];
   }
 
-  [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Unsupported context type was given: %lu", objc_msgSend(v4, "contextType")}];
+  [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Unsupported context type was given: %lu", objc_msgSend(contextCopy, "contextType")}];
   v7 = objc_opt_new();
 LABEL_11:
   v9 = v7;

@@ -1,25 +1,25 @@
 @interface _SBDisplayAssertionStack
 - (NSString)description;
-- (_SBDisplayAssertionStack)initWithRootDisplay:(id)a3 delegate:(id)a4;
-- (id)acquireAssertionForDisplay:(id)a3 level:(unint64_t)a4 deactivationReasons:(unint64_t)a5 delegate:(id)a6;
-- (void)_assertion:(id)a3 updatedPreferences:(id)a4;
-- (void)_assertionDidInvalidate:(id)a3;
-- (void)_evalAndApplyOldPreferences:(id)a3 newPreferences:(id)a4;
-- (void)activateAssertionsForDisplay:(id)a3;
+- (_SBDisplayAssertionStack)initWithRootDisplay:(id)display delegate:(id)delegate;
+- (id)acquireAssertionForDisplay:(id)display level:(unint64_t)level deactivationReasons:(unint64_t)reasons delegate:(id)delegate;
+- (void)_assertion:(id)_assertion updatedPreferences:(id)preferences;
+- (void)_assertionDidInvalidate:(id)invalidate;
+- (void)_evalAndApplyOldPreferences:(id)preferences newPreferences:(id)newPreferences;
+- (void)activateAssertionsForDisplay:(id)display;
 - (void)dealloc;
-- (void)invalidateAssertionForDerivedDisplayDisconnect:(id)a3;
+- (void)invalidateAssertionForDerivedDisplayDisconnect:(id)disconnect;
 - (void)invalidateForDisplayDisconnect;
 @end
 
 @implementation _SBDisplayAssertionStack
 
-- (_SBDisplayAssertionStack)initWithRootDisplay:(id)a3 delegate:(id)a4
+- (_SBDisplayAssertionStack)initWithRootDisplay:(id)display delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 isRootIdentity])
+  displayCopy = display;
+  delegateCopy = delegate;
+  if ([displayCopy isRootIdentity])
   {
-    if (v8)
+    if (delegateCopy)
     {
       goto LABEL_3;
     }
@@ -28,7 +28,7 @@
   else
   {
     [_SBDisplayAssertionStack initWithRootDisplay:delegate:];
-    if (v8)
+    if (delegateCopy)
     {
       goto LABEL_3;
     }
@@ -42,8 +42,8 @@ LABEL_3:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_rootIdentity, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_rootIdentity, display);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     v10->_invalidated = 0;
     v11 = [MEMORY[0x277CCAB00] mapTableWithKeyOptions:512 valueOptions:0x10000];
     assertionControlPreferences = v10->_assertionControlPreferences;
@@ -56,7 +56,7 @@ LABEL_3:
 - (void)dealloc
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -65,16 +65,16 @@ LABEL_3:
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendObject:self->_rootIdentity withName:@"display"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (void)activateAssertionsForDisplay:(id)a3
+- (void)activateAssertionsForDisplay:(id)display
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([(FBSDisplayIdentity *)self->_rootIdentity isEqual:v4]& 1) == 0)
+  displayCopy = display;
+  if (([(FBSDisplayIdentity *)self->_rootIdentity isEqual:displayCopy]& 1) == 0)
   {
     [_SBDisplayAssertionStack activateAssertionsForDisplay:];
   }
@@ -93,7 +93,7 @@ LABEL_3:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = displayCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "stack[%{public}@] activating assertions for display", &v7, 0xCu);
   }
 
@@ -102,19 +102,19 @@ LABEL_3:
   [(_SBDisplayAssertionStack *)self _evalAndApplyOldPreferences:v6 newPreferences:self->_assertionControlPreferences];
 }
 
-- (id)acquireAssertionForDisplay:(id)a3 level:(unint64_t)a4 deactivationReasons:(unint64_t)a5 delegate:(id)a6
+- (id)acquireAssertionForDisplay:(id)display level:(unint64_t)level deactivationReasons:(unint64_t)reasons delegate:(id)delegate
 {
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  if (([(FBSDisplayIdentity *)self->_rootIdentity isEqual:v10]& 1) == 0)
+  displayCopy = display;
+  delegateCopy = delegate;
+  if (([(FBSDisplayIdentity *)self->_rootIdentity isEqual:displayCopy]& 1) == 0)
   {
     [_SBDisplayAssertionStack acquireAssertionForDisplay:level:deactivationReasons:delegate:];
   }
 
-  if (SBDisplayAssertionLevelIsValid(a4))
+  if (SBDisplayAssertionLevelIsValid(level))
   {
-    if (v11)
+    if (delegateCopy)
     {
       goto LABEL_5;
     }
@@ -123,7 +123,7 @@ LABEL_3:
   else
   {
     [_SBDisplayAssertionStack acquireAssertionForDisplay:level:deactivationReasons:delegate:];
-    if (v11)
+    if (delegateCopy)
     {
       goto LABEL_5;
     }
@@ -156,9 +156,9 @@ LABEL_5:
         }
 
         v17 = *(*(&v25 + 1) + 8 * i);
-        if ([v17 level] == a4)
+        if ([v17 level] == level)
         {
-          [_SBDisplayAssertionStack acquireAssertionForDisplay:a4 level:a2 deactivationReasons:self delegate:v17];
+          [_SBDisplayAssertionStack acquireAssertionForDisplay:level level:a2 deactivationReasons:self delegate:v17];
         }
       }
 
@@ -168,7 +168,7 @@ LABEL_5:
     while (v14);
   }
 
-  v18 = [[SBDisplayAssertion alloc] _initWithPhysicalDisplay:v10 level:a4 deactivationReasons:a5 assertionStack:self delegate:v11];
+  v18 = [[SBDisplayAssertion alloc] _initWithPhysicalDisplay:displayCopy level:level deactivationReasons:reasons assertionStack:self delegate:delegateCopy];
   v19 = SBLogDisplayAssertions();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
@@ -196,17 +196,17 @@ LABEL_5:
 - (void)invalidateForDisplayDisconnect
 {
   OUTLINED_FUNCTION_1_2();
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v1 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
 
-- (void)invalidateAssertionForDerivedDisplayDisconnect:(id)a3
+- (void)invalidateAssertionForDerivedDisplayDisconnect:(id)disconnect
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = _SBActiveAssertion(self->_assertionControlPreferences);
-  if ([v5 isEqual:v4] && self->_activated)
+  if ([v5 isEqual:disconnectCopy] && self->_activated)
   {
     v6 = SBLogDisplayAssertions();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -215,22 +215,22 @@ LABEL_5:
       v8 = 138543618;
       v9 = rootIdentity;
       v10 = 2114;
-      v11 = v4;
+      v11 = disconnectCopy;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "stack[%{public}@] informing assertion it's lost control of the display. assertion: %{public}@", &v8, 0x16u);
     }
 
-    [v4 _didLoseControlOfDisplayForDeactivationReasons:0];
+    [disconnectCopy _didLoseControlOfDisplayForDeactivationReasons:0];
   }
 
-  [v4 _didInvalidateForDisplayDisconnect];
-  [(NSMapTable *)self->_assertionControlPreferences removeObjectForKey:v4];
+  [disconnectCopy _didInvalidateForDisplayDisconnect];
+  [(NSMapTable *)self->_assertionControlPreferences removeObjectForKey:disconnectCopy];
 }
 
-- (void)_assertion:(id)a3 updatedPreferences:(id)a4
+- (void)_assertion:(id)_assertion updatedPreferences:(id)preferences
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  _assertionCopy = _assertion;
+  preferencesCopy = preferences;
   if (self->_invalidated)
   {
     v8 = SBLogDisplayAssertions();
@@ -245,8 +245,8 @@ LABEL_5:
 
   else
   {
-    v8 = [(NSMapTable *)self->_assertionControlPreferences objectForKey:v6];
-    v10 = [v7 isEqual:v8];
+    v8 = [(NSMapTable *)self->_assertionControlPreferences objectForKey:_assertionCopy];
+    v10 = [preferencesCopy isEqual:v8];
     v11 = SBLogDisplayAssertions();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
     if (v10)
@@ -257,9 +257,9 @@ LABEL_5:
         v17 = 138543874;
         v18 = v13;
         v19 = 2114;
-        v20 = v6;
+        v20 = _assertionCopy;
         v21 = 2114;
-        v22 = v7;
+        v22 = preferencesCopy;
         _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "stack[%{public}@] ignoring assertion wantsControlOfDisplay since no change. assertion: %{public}@; preferences: %{public}@", &v17, 0x20u);
       }
     }
@@ -272,14 +272,14 @@ LABEL_5:
         v17 = 138543874;
         v18 = v14;
         v19 = 2114;
-        v20 = v6;
+        v20 = _assertionCopy;
         v21 = 2114;
-        v22 = v7;
+        v22 = preferencesCopy;
         _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "stack[%{public}@] assertion preferences changed. assertion: %{public}@; preferences: %{public}@", &v17, 0x20u);
       }
 
       v11 = [(NSMapTable *)self->_assertionControlPreferences copy];
-      [(NSMapTable *)self->_assertionControlPreferences setObject:v7 forKey:v6];
+      [(NSMapTable *)self->_assertionControlPreferences setObject:preferencesCopy forKey:_assertionCopy];
       if (self->_activated)
       {
         [(_SBDisplayAssertionStack *)self _evalAndApplyOldPreferences:v11 newPreferences:self->_assertionControlPreferences];
@@ -294,9 +294,9 @@ LABEL_5:
           v17 = 138543874;
           v18 = v16;
           v19 = 2114;
-          v20 = v6;
+          v20 = _assertionCopy;
           v21 = 2114;
-          v22 = v7;
+          v22 = preferencesCopy;
           _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "stack[%{public}@] ignoring assertion wantsControlOfDisplay because we're not active. assertion: %{public}@; preferences: %{public}@", &v17, 0x20u);
         }
       }
@@ -304,10 +304,10 @@ LABEL_5:
   }
 }
 
-- (void)_assertionDidInvalidate:(id)a3
+- (void)_assertionDidInvalidate:(id)invalidate
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  invalidateCopy = invalidate;
   invalidated = self->_invalidated;
   v6 = SBLogDisplayAssertions();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -333,7 +333,7 @@ LABEL_5:
     }
 
     v6 = [(NSMapTable *)self->_assertionControlPreferences copy];
-    [(NSMapTable *)self->_assertionControlPreferences removeObjectForKey:v4];
+    [(NSMapTable *)self->_assertionControlPreferences removeObjectForKey:invalidateCopy];
     if (self->_activated)
     {
       [(_SBDisplayAssertionStack *)self _evalAndApplyOldPreferences:v6 newPreferences:self->_assertionControlPreferences];
@@ -348,22 +348,22 @@ LABEL_5:
         v12 = 138543618;
         v13 = v11;
         v14 = 2114;
-        v15 = v4;
+        v15 = invalidateCopy;
         _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "stack[%{public}@] ignoring assertion invalidation because we're not active. assertion: %{public}@", &v12, 0x16u);
       }
     }
   }
 }
 
-- (void)_evalAndApplyOldPreferences:(id)a3 newPreferences:(id)a4
+- (void)_evalAndApplyOldPreferences:(id)preferences newPreferences:(id)newPreferences
 {
   v61 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  preferencesCopy = preferences;
+  newPreferencesCopy = newPreferences;
+  v8 = newPreferencesCopy;
+  if (preferencesCopy)
   {
-    if (v7)
+    if (newPreferencesCopy)
     {
       goto LABEL_3;
     }
@@ -391,7 +391,7 @@ LABEL_3:
   }
 
   v9 = MEMORY[0x277CBEB58];
-  v10 = NSAllMapTableKeys(v6);
+  v10 = NSAllMapTableKeys(preferencesCopy);
   v11 = [v9 setWithArray:v10];
 
   v12 = [v11 mutableCopy];
@@ -401,9 +401,9 @@ LABEL_3:
 
   [v12 minusSet:v15];
   [v15 minusSet:v11];
-  v16 = _SBActiveAssertion(v6);
+  v16 = _SBActiveAssertion(preferencesCopy);
   v17 = _SBActiveAssertion(v8);
-  v18 = [(NSMapTable *)v6 objectForKey:v16];
+  v18 = [(NSMapTable *)preferencesCopy objectForKey:v16];
   v48 = v17;
   v19 = [(NSMapTable *)v8 objectForKey:v17];
   if (([v18 isEqual:v19] & 1) == 0 && v18 != v19)
@@ -414,11 +414,11 @@ LABEL_3:
 
   v44 = v19;
   v45 = v18;
-  v21 = [v16 deactivationReasonsWhenActive];
-  v22 = [v48 deactivationReasonsWhenActive];
-  if (v16 != v48 || v21 != v22)
+  deactivationReasonsWhenActive = [v16 deactivationReasonsWhenActive];
+  deactivationReasonsWhenActive2 = [v48 deactivationReasonsWhenActive];
+  if (v16 != v48 || deactivationReasonsWhenActive != deactivationReasonsWhenActive2)
   {
-    v49 = v22;
+    v49 = deactivationReasonsWhenActive2;
     v23 = SBLogDisplayAssertions();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
@@ -452,12 +452,12 @@ LABEL_3:
       [v16 _didLoseControlOfDisplayForDeactivationReasons:v25];
     }
 
-    if (v21 != v25)
+    if (deactivationReasonsWhenActive != v25)
     {
       v41 = v11;
       v42 = v8;
-      v46 = self;
-      v43 = v6;
+      selfCopy = self;
+      v43 = preferencesCopy;
       v52 = 0u;
       v53 = 0u;
       v50 = 0u;
@@ -484,7 +484,7 @@ LABEL_3:
               v36 = SBLogDisplayAssertions();
               if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
               {
-                v37 = v46->_rootIdentity;
+                v37 = selfCopy->_rootIdentity;
                 v38 = UIApplicationSceneDeactivationReasonMaskDescriptionComponents();
                 *buf = 138543874;
                 v56 = v37;
@@ -509,8 +509,8 @@ LABEL_3:
       }
 
       v8 = v42;
-      v6 = v43;
-      self = v46;
+      preferencesCopy = v43;
+      self = selfCopy;
       v11 = v41;
     }
 

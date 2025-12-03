@@ -1,127 +1,127 @@
 @interface PKTransactionHistoryViewController
 - ($85E40A55691FE2F31975A98F57E3065D)pkui_navigationStatusBarStyleDescriptor;
-- (BOOL)collectionView:(id)a3 shouldBeginMultipleSelectionInteractionAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (PKTransactionHistoryViewController)initWithDataSource:(id)a3 transactionGroup:(id)a4 transactionSourceCollection:(id)a5 familyCollection:(id)a6 account:(id)a7 accountUserCollection:(id)a8 physicalCards:(id)a9 fetcher:(id)a10 detailViewStyle:(int64_t)a11;
-- (PKTransactionHistoryViewController)initWithFetcher:(id)a3 transactionSourceCollection:(id)a4 familyCollection:(id)a5 account:(id)a6 accountUserCollection:(id)a7 physicalCards:(id)a8 featuredTransaction:(id)a9 selectedTransactions:(id)a10;
-- (PKTransactionHistoryViewController)initWithInstallmentPlan:(id)a3 transactionSourceCollection:(id)a4 familyCollection:(id)a5 account:(id)a6 accountUserCollection:(id)a7 physicalCards:(id)a8;
-- (PKTransactionHistoryViewController)initWithTransactionGroup:(id)a3 transactionSourceCollection:(id)a4 familyCollection:(id)a5 account:(id)a6 accountUserCollection:(id)a7 physicalCards:(id)a8 fetcher:(id)a9 detailViewStyle:(int64_t)a10;
-- (PKTransactionHistoryViewController)initWithTransactionGroups:(id)a3 headerGroup:(id)a4 groupPresenter:(id)a5 regionUpdater:(id)a6 tokens:(id)a7 transactionSourceCollection:(id)a8 familyCollection:(id)a9 account:(id)a10 accountUserCollection:(id)a11 physicalCards:(id)a12;
+- (BOOL)collectionView:(id)view shouldBeginMultipleSelectionInteractionAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (PKTransactionHistoryViewController)initWithDataSource:(id)source transactionGroup:(id)group transactionSourceCollection:(id)collection familyCollection:(id)familyCollection account:(id)account accountUserCollection:(id)userCollection physicalCards:(id)cards fetcher:(id)self0 detailViewStyle:(int64_t)self1;
+- (PKTransactionHistoryViewController)initWithFetcher:(id)fetcher transactionSourceCollection:(id)collection familyCollection:(id)familyCollection account:(id)account accountUserCollection:(id)userCollection physicalCards:(id)cards featuredTransaction:(id)transaction selectedTransactions:(id)self0;
+- (PKTransactionHistoryViewController)initWithInstallmentPlan:(id)plan transactionSourceCollection:(id)collection familyCollection:(id)familyCollection account:(id)account accountUserCollection:(id)userCollection physicalCards:(id)cards;
+- (PKTransactionHistoryViewController)initWithTransactionGroup:(id)group transactionSourceCollection:(id)collection familyCollection:(id)familyCollection account:(id)account accountUserCollection:(id)userCollection physicalCards:(id)cards fetcher:(id)fetcher detailViewStyle:(int64_t)self0;
+- (PKTransactionHistoryViewController)initWithTransactionGroups:(id)groups headerGroup:(id)group groupPresenter:(id)presenter regionUpdater:(id)updater tokens:(id)tokens transactionSourceCollection:(id)collection familyCollection:(id)familyCollection account:(id)self0 accountUserCollection:(id)self1 physicalCards:(id)self2;
 - (id)_barButtonItems;
-- (id)_createActivityDeletionConfirmationWithCompletion:(id)a3;
-- (id)_initWithDataSource:(id)a3 presenters:(id)a4 layout:(id)a5 headerPresenter:(id)a6;
+- (id)_createActivityDeletionConfirmationWithCompletion:(id)completion;
+- (id)_initWithDataSource:(id)source presenters:(id)presenters layout:(id)layout headerPresenter:(id)presenter;
 - (id)_selectedText;
 - (id)_toolbarItems;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 layout:(id)a4 trailingSwipeActionsConfigurationForItemAtIndexPath:(id)a5;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view layout:(id)layout trailingSwipeActionsConfigurationForItemAtIndexPath:(id)path;
 - (id)group;
-- (void)_handleEditButtonTapped:(id)a3;
+- (void)_handleEditButtonTapped:(id)tapped;
 - (void)_handleInfoButtonTapped;
 - (void)_handleMessageButtonTapped;
 - (void)_handlePhoneButtonTapped;
-- (void)_handleSelectButtonTapped:(id)a3;
+- (void)_handleSelectButtonTapped:(id)tapped;
 - (void)_showContactDetailsViewController;
 - (void)_showMapsDetailsViewController;
-- (void)_updateHeaderCellWithAnimationProgress:(id)a3;
+- (void)_updateHeaderCellWithAnimationProgress:(id)progress;
 - (void)_updateNavigationBar;
-- (void)_updateNavigationBarIconForNavigationBarAppeared:(BOOL)a3;
-- (void)_updateNavigationBarIconWithLogoURL:(id)a3;
+- (void)_updateNavigationBarIconForNavigationBarAppeared:(BOOL)appeared;
+- (void)_updateNavigationBarIconWithLogoURL:(id)l;
 - (void)_updateTitle;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)deleteItemsAtIndexPaths:(id)a3;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)deleteItemsAtIndexPaths:(id)paths;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)performCollectionViewDataReload;
-- (void)setContactAvatarManager:(id)a3;
-- (void)setEditing:(BOOL)a3;
+- (void)setContactAvatarManager:(id)manager;
+- (void)setEditing:(BOOL)editing;
 - (void)transactionHistoryUpdated;
 - (void)updateContent;
-- (void)updateContentUnavailableConfigurationUsingState:(id)a3;
-- (void)updateGroup:(id)a3;
-- (void)updateGroups:(id)a3 headerGroup:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)updateContentUnavailableConfigurationUsingState:(id)state;
+- (void)updateGroup:(id)group;
+- (void)updateGroups:(id)groups headerGroup:(id)group;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation PKTransactionHistoryViewController
 
-- (id)_initWithDataSource:(id)a3 presenters:(id)a4 layout:(id)a5 headerPresenter:(id)a6
+- (id)_initWithDataSource:(id)source presenters:(id)presenters layout:(id)layout headerPresenter:(id)presenter
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  sourceCopy = source;
+  layoutCopy = layout;
+  presenterCopy = presenter;
   v23.receiver = self;
   v23.super_class = PKTransactionHistoryViewController;
-  v13 = [(PKDashboardViewController *)&v23 initWithDataSource:v10 presenters:a4 layout:v11];
+  v13 = [(PKDashboardViewController *)&v23 initWithDataSource:sourceCopy presenters:presenters layout:layoutCopy];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_layout, a5);
-    v14->_hideTopPocket = [v11 useStickyHeader];
-    [v10 setCustomDelegate:v14];
-    v15 = [v10 headerIndexPath];
+    objc_storeStrong(&v13->_layout, layout);
+    v14->_hideTopPocket = [layoutCopy useStickyHeader];
+    [sourceCopy setCustomDelegate:v14];
+    headerIndexPath = [sourceCopy headerIndexPath];
     headerIndexPath = v14->_headerIndexPath;
-    v14->_headerIndexPath = v15;
+    v14->_headerIndexPath = headerIndexPath;
 
-    objc_storeStrong(&v14->_headerPresenter, a6);
-    v17 = [(PKTransactionHistoryViewController *)v14 navigationItem];
-    v18 = [(PKTransactionHistoryViewController *)v14 _barButtonItems];
-    [v17 setRightBarButtonItems:v18];
+    objc_storeStrong(&v14->_headerPresenter, presenter);
+    navigationItem = [(PKTransactionHistoryViewController *)v14 navigationItem];
+    _barButtonItems = [(PKTransactionHistoryViewController *)v14 _barButtonItems];
+    [navigationItem setRightBarButtonItems:_barButtonItems];
 
-    v19 = [v17 standardAppearance];
-    v20 = [v19 backgroundEffect];
-    [v12 setOverlayEffect:v20];
+    standardAppearance = [navigationItem standardAppearance];
+    backgroundEffect = [standardAppearance backgroundEffect];
+    [presenterCopy setOverlayEffect:backgroundEffect];
 
-    v21 = [v19 shadowColor];
-    [v12 setShadowColor:v21];
+    shadowColor = [standardAppearance shadowColor];
+    [presenterCopy setShadowColor:shadowColor];
   }
 
   return v14;
 }
 
-- (PKTransactionHistoryViewController)initWithFetcher:(id)a3 transactionSourceCollection:(id)a4 familyCollection:(id)a5 account:(id)a6 accountUserCollection:(id)a7 physicalCards:(id)a8 featuredTransaction:(id)a9 selectedTransactions:(id)a10
+- (PKTransactionHistoryViewController)initWithFetcher:(id)fetcher transactionSourceCollection:(id)collection familyCollection:(id)familyCollection account:(id)account accountUserCollection:(id)userCollection physicalCards:(id)cards featuredTransaction:(id)transaction selectedTransactions:(id)self0
 {
   v41[6] = *MEMORY[0x1E69E9840];
-  v40 = a4;
-  v36 = a5;
-  v39 = a5;
-  v38 = a9;
-  v16 = a10;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a3;
-  v21 = [v20 type];
+  collectionCopy = collection;
+  familyCollectionCopy = familyCollection;
+  familyCollectionCopy2 = familyCollection;
+  transactionCopy = transaction;
+  transactionsCopy = transactions;
+  cardsCopy = cards;
+  userCollectionCopy = userCollection;
+  accountCopy = account;
+  fetcherCopy = fetcher;
+  type = [fetcherCopy type];
   v22 = 0;
   v23 = 0;
-  if (v21 <= 6)
+  if (type <= 6)
   {
-    if (((1 << v21) & 0x59) != 0)
+    if (((1 << type) & 0x59) != 0)
     {
       v23 = 0;
       v22 = 2;
     }
 
-    else if (v21 == 1)
+    else if (type == 1)
     {
       v23 = 1;
       v22 = 1;
     }
 
-    else if (v21 == 5)
+    else if (type == 5)
     {
       v23 = 0;
       v22 = 3;
     }
   }
 
-  v37 = [[PKTransactionHistoryDefaultDataSource alloc] initWithFetcher:v20 transactionSourceCollection:v40 familyCollection:v39 account:v19 accountUserCollection:v18 physicalCards:v17 featuredTransaction:v38 selectedTransactions:v16 type:v22];
+  v37 = [[PKTransactionHistoryDefaultDataSource alloc] initWithFetcher:fetcherCopy transactionSourceCollection:collectionCopy familyCollection:familyCollectionCopy2 account:accountCopy accountUserCollection:userCollectionCopy physicalCards:cardsCopy featuredTransaction:transactionCopy selectedTransactions:transactionsCopy type:v22];
 
   v24 = objc_alloc_init(PKDashboardDetailHeaderItemPresenter);
   v25 = [[PKDashboardPaymentTransactionItemPresenter alloc] initWithContext:1 detailViewStyle:0 avatarViewDelegate:self];
@@ -147,78 +147,78 @@
 
   if (v33)
   {
-    objc_storeStrong(&v33->_transaction, a9);
-    objc_storeStrong(&v33->_transactionSourceCollection, a4);
-    objc_storeStrong(&v33->_familyCollection, v36);
+    objc_storeStrong(&v33->_transaction, transaction);
+    objc_storeStrong(&v33->_transactionSourceCollection, collection);
+    objc_storeStrong(&v33->_familyCollection, familyCollectionCopy);
     v33->_historyType = v22;
   }
 
   return v33;
 }
 
-- (PKTransactionHistoryViewController)initWithTransactionGroup:(id)a3 transactionSourceCollection:(id)a4 familyCollection:(id)a5 account:(id)a6 accountUserCollection:(id)a7 physicalCards:(id)a8 fetcher:(id)a9 detailViewStyle:(int64_t)a10
+- (PKTransactionHistoryViewController)initWithTransactionGroup:(id)group transactionSourceCollection:(id)collection familyCollection:(id)familyCollection account:(id)account accountUserCollection:(id)userCollection physicalCards:(id)cards fetcher:(id)fetcher detailViewStyle:(int64_t)self0
 {
-  v17 = a9;
-  v18 = a8;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  v23 = a3;
-  v24 = [[PKTransactionHistoryDefaultDataSource alloc] initWithTransactionGroup:v23 transactionSourceCollection:v22 familyCollection:v21 account:v20 accountUserCollection:v19 physicalCards:v18 fetcher:v17];
-  v25 = [(PKTransactionHistoryViewController *)self initWithDataSource:v24 transactionGroup:v23 transactionSourceCollection:v22 familyCollection:v21 account:v20 accountUserCollection:v19 physicalCards:v18 fetcher:v17 detailViewStyle:a10];
+  fetcherCopy = fetcher;
+  cardsCopy = cards;
+  userCollectionCopy = userCollection;
+  accountCopy = account;
+  familyCollectionCopy = familyCollection;
+  collectionCopy = collection;
+  groupCopy = group;
+  v24 = [[PKTransactionHistoryDefaultDataSource alloc] initWithTransactionGroup:groupCopy transactionSourceCollection:collectionCopy familyCollection:familyCollectionCopy account:accountCopy accountUserCollection:userCollectionCopy physicalCards:cardsCopy fetcher:fetcherCopy];
+  v25 = [(PKTransactionHistoryViewController *)self initWithDataSource:v24 transactionGroup:groupCopy transactionSourceCollection:collectionCopy familyCollection:familyCollectionCopy account:accountCopy accountUserCollection:userCollectionCopy physicalCards:cardsCopy fetcher:fetcherCopy detailViewStyle:style];
 
   return v25;
 }
 
-- (PKTransactionHistoryViewController)initWithDataSource:(id)a3 transactionGroup:(id)a4 transactionSourceCollection:(id)a5 familyCollection:(id)a6 account:(id)a7 accountUserCollection:(id)a8 physicalCards:(id)a9 fetcher:(id)a10 detailViewStyle:(int64_t)a11
+- (PKTransactionHistoryViewController)initWithDataSource:(id)source transactionGroup:(id)group transactionSourceCollection:(id)collection familyCollection:(id)familyCollection account:(id)account accountUserCollection:(id)userCollection physicalCards:(id)cards fetcher:(id)self0 detailViewStyle:(int64_t)self1
 {
   v32[3] = *MEMORY[0x1E69E9840];
-  v13 = a4;
-  v14 = a3;
-  v15 = [v13 type];
-  if ((v15 - 4) > 5)
+  groupCopy = group;
+  sourceCopy = source;
+  type = [groupCopy type];
+  if ((type - 4) > 5)
   {
     v16 = 0;
   }
 
   else
   {
-    v16 = qword_1BE1164F8[v15 - 4];
+    v16 = qword_1BE1164F8[type - 4];
   }
 
-  v17 = [[PKDashboardPaymentTransactionItemPresenter alloc] initWithContext:v16 detailViewStyle:a11 avatarViewDelegate:self];
+  v17 = [[PKDashboardPaymentTransactionItemPresenter alloc] initWithContext:v16 detailViewStyle:style avatarViewDelegate:self];
   v18 = objc_alloc_init(PKDashboardDetailHeaderItemPresenter);
   v19 = objc_alloc_init(PKTransactionGroupItemPresenter);
   v20 = objc_alloc_init(PKHeaderVerticalScrollingLayout);
-  if ([v13 type] == 14)
+  if ([groupCopy type] == 14)
   {
-    v31 = v14;
-    v21 = [v13 searchQuery];
-    v22 = [v21 tokens];
-    v23 = [v22 count];
+    v31 = sourceCopy;
+    searchQuery = [groupCopy searchQuery];
+    tokens = [searchQuery tokens];
+    v23 = [tokens count];
 
-    v24 = [v13 searchQuery];
-    v25 = [v24 displayNameToken];
-    v26 = [v25 merchant];
+    searchQuery2 = [groupCopy searchQuery];
+    displayNameToken = [searchQuery2 displayNameToken];
+    merchant = [displayNameToken merchant];
 
-    if (v23 == 1 && v26)
+    if (v23 == 1 && merchant)
     {
       [(PKHeaderVerticalScrollingLayout *)v20 setUseStickyHeader:1];
     }
 
-    v14 = v31;
+    sourceCopy = v31;
   }
 
   else
   {
-    v26 = 0;
+    merchant = 0;
   }
 
-  v27 = [v13 type];
-  if (v27 != 9 && v27 != 7)
+  type2 = [groupCopy type];
+  if (type2 != 9 && type2 != 7)
   {
-    if (v27 != 2)
+    if (type2 != 2)
     {
       goto LABEL_15;
     }
@@ -232,7 +232,7 @@ LABEL_15:
   v32[1] = v17;
   v32[2] = v19;
   v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:3];
-  v29 = [(PKTransactionHistoryViewController *)self _initWithDataSource:v14 presenters:v28 layout:v20 headerPresenter:v18];
+  v29 = [(PKTransactionHistoryViewController *)self _initWithDataSource:sourceCopy presenters:v28 layout:v20 headerPresenter:v18];
 
   if (v29)
   {
@@ -242,18 +242,18 @@ LABEL_15:
   return v29;
 }
 
-- (PKTransactionHistoryViewController)initWithInstallmentPlan:(id)a3 transactionSourceCollection:(id)a4 familyCollection:(id)a5 account:(id)a6 accountUserCollection:(id)a7 physicalCards:(id)a8
+- (PKTransactionHistoryViewController)initWithInstallmentPlan:(id)plan transactionSourceCollection:(id)collection familyCollection:(id)familyCollection account:(id)account accountUserCollection:(id)userCollection physicalCards:(id)cards
 {
   v32[4] = *MEMORY[0x1E69E9840];
-  v15 = a4;
-  obj = a5;
-  v16 = a5;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a3;
-  v31 = v15;
-  v21 = [[PKTransactionHistoryDefaultDataSource alloc] initWithInstallmentPlan:v20 transactionSourceCollection:v15 familyCollection:v16 account:v19 accountUserCollection:v18 physicalCards:v17];
+  collectionCopy = collection;
+  obj = familyCollection;
+  familyCollectionCopy = familyCollection;
+  cardsCopy = cards;
+  userCollectionCopy = userCollection;
+  accountCopy = account;
+  planCopy = plan;
+  v31 = collectionCopy;
+  v21 = [[PKTransactionHistoryDefaultDataSource alloc] initWithInstallmentPlan:planCopy transactionSourceCollection:collectionCopy familyCollection:familyCollectionCopy account:accountCopy accountUserCollection:userCollectionCopy physicalCards:cardsCopy];
 
   v22 = objc_alloc_init(PKDashboardDetailHeaderItemPresenter);
   v23 = [[PKDashboardPaymentTransactionItemPresenter alloc] initWithContext:1 detailViewStyle:0 avatarViewDelegate:self];
@@ -270,47 +270,47 @@ LABEL_15:
   if (v28)
   {
     v28->_historyType = 3;
-    objc_storeStrong(&v28->_transactionSourceCollection, a4);
+    objc_storeStrong(&v28->_transactionSourceCollection, collection);
     objc_storeStrong(&v28->_familyCollection, obj);
   }
 
   return v28;
 }
 
-- (PKTransactionHistoryViewController)initWithTransactionGroups:(id)a3 headerGroup:(id)a4 groupPresenter:(id)a5 regionUpdater:(id)a6 tokens:(id)a7 transactionSourceCollection:(id)a8 familyCollection:(id)a9 account:(id)a10 accountUserCollection:(id)a11 physicalCards:(id)a12
+- (PKTransactionHistoryViewController)initWithTransactionGroups:(id)groups headerGroup:(id)group groupPresenter:(id)presenter regionUpdater:(id)updater tokens:(id)tokens transactionSourceCollection:(id)collection familyCollection:(id)familyCollection account:(id)self0 accountUserCollection:(id)self1 physicalCards:(id)self2
 {
   v42[2] = *MEMORY[0x1E69E9840];
-  v40 = a4;
-  v17 = a5;
-  v18 = a9;
-  v19 = a12;
-  v20 = a11;
-  v21 = a10;
-  v22 = a8;
-  v23 = a7;
-  v24 = a6;
-  v25 = a3;
-  v26 = [PKTransactionHistoryDefaultDataSource initWithTransactionGroups:"initWithTransactionGroups:headerGroup:regionUpdater:tokens:transactionSourceCollection:familyCollection:account:accountUserCollection:physicalCards:" headerGroup:v25 regionUpdater:v21 tokens:v20 transactionSourceCollection:v19 familyCollection:? account:? accountUserCollection:? physicalCards:?];
+  groupCopy = group;
+  presenterCopy = presenter;
+  familyCollectionCopy = familyCollection;
+  cardsCopy = cards;
+  userCollectionCopy = userCollection;
+  accountCopy = account;
+  collectionCopy = collection;
+  tokensCopy = tokens;
+  updaterCopy = updater;
+  groupsCopy = groups;
+  v26 = [PKTransactionHistoryDefaultDataSource initWithTransactionGroups:"initWithTransactionGroups:headerGroup:regionUpdater:tokens:transactionSourceCollection:familyCollection:account:accountUserCollection:physicalCards:" headerGroup:groupsCopy regionUpdater:accountCopy tokens:userCollectionCopy transactionSourceCollection:cardsCopy familyCollection:? account:? accountUserCollection:? physicalCards:?];
 
   v27 = objc_alloc_init(PKDashboardDetailHeaderItemPresenter);
-  v28 = [v17 snapshotManager];
-  [(PKDashboardDetailHeaderItemPresenter *)v27 setSnapshotManager:v28];
+  snapshotManager = [presenterCopy snapshotManager];
+  [(PKDashboardDetailHeaderItemPresenter *)v27 setSnapshotManager:snapshotManager];
 
-  v29 = [v17 avatarManager];
-  [(PKDashboardDetailHeaderItemPresenter *)v27 setAvatarManager:v29];
+  avatarManager = [presenterCopy avatarManager];
+  [(PKDashboardDetailHeaderItemPresenter *)v27 setAvatarManager:avatarManager];
 
   v30 = objc_alloc_init(PKHeaderVerticalScrollingLayout);
-  if ([v40 type] == 14)
+  if ([groupCopy type] == 14)
   {
-    v31 = [v40 searchQuery];
-    v32 = [v31 tokens];
-    v33 = [v32 count];
+    searchQuery = [groupCopy searchQuery];
+    tokens = [searchQuery tokens];
+    v33 = [tokens count];
 
-    v34 = [v40 searchQuery];
-    v35 = [v34 displayNameToken];
-    v36 = [v35 merchant];
+    searchQuery2 = [groupCopy searchQuery];
+    displayNameToken = [searchQuery2 displayNameToken];
+    merchant = [displayNameToken merchant];
 
-    if (v33 == 1 && v36)
+    if (v33 == 1 && merchant)
     {
       [(PKHeaderVerticalScrollingLayout *)v30 setUseStickyHeader:1];
     }
@@ -318,18 +318,18 @@ LABEL_15:
 
   else
   {
-    v36 = 0;
+    merchant = 0;
   }
 
   v42[0] = v27;
-  v42[1] = v17;
+  v42[1] = presenterCopy;
   v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:2];
   v38 = [(PKTransactionHistoryViewController *)self _initWithDataSource:v26 presenters:v37 layout:v30 headerPresenter:v27];
 
   if (v38)
   {
     v38->_historyType = 4;
-    objc_storeStrong(&v38->_familyCollection, a9);
+    objc_storeStrong(&v38->_familyCollection, familyCollection);
   }
 
   return v38;
@@ -355,13 +355,13 @@ LABEL_15:
   v9.receiver = self;
   v9.super_class = PKTransactionHistoryViewController;
   [(PKDashboardViewController *)&v9 viewDidLoad];
-  v3 = [(PKTransactionHistoryViewController *)self view];
-  v4 = [(PKTransactionHistoryViewController *)self collectionView];
+  view = [(PKTransactionHistoryViewController *)self view];
+  collectionView = [(PKTransactionHistoryViewController *)self collectionView];
   v5 = +[PKDashboardViewController backgroundColor];
-  [v3 setBackgroundColor:v5];
-  v6 = [(PKTransactionHistoryViewController *)self navigationItem];
-  v7 = [(PKTransactionHistoryViewController *)self _dataSource];
-  if ([v7 useLargeTitle])
+  [view setBackgroundColor:v5];
+  navigationItem = [(PKTransactionHistoryViewController *)self navigationItem];
+  _dataSource = [(PKTransactionHistoryViewController *)self _dataSource];
+  if ([_dataSource useLargeTitle])
   {
     v8 = 1;
   }
@@ -371,26 +371,26 @@ LABEL_15:
     v8 = 2;
   }
 
-  [v6 setLargeTitleDisplayMode:v8];
-  [v4 setAllowsMultipleSelectionDuringEditing:1];
+  [navigationItem setLargeTitleDisplayMode:v8];
+  [collectionView setAllowsMultipleSelectionDuringEditing:1];
   [(PKTransactionHistoryViewController *)self _updateTitle];
-  [v3 setAccessibilityIdentifier:*MEMORY[0x1E69B9D50]];
+  [view setAccessibilityIdentifier:*MEMORY[0x1E69B9D50]];
 }
 
-- (void)_updateNavigationBarIconForNavigationBarAppeared:(BOOL)a3
+- (void)_updateNavigationBarIconForNavigationBarAppeared:(BOOL)appeared
 {
-  v3 = a3;
+  appearedCopy = appeared;
   titleIconImageView = self->_titleIconImageView;
   if (titleIconImageView)
   {
     titleView = self->_titleView;
-    if (v3)
+    if (appearedCopy)
     {
       if (!titleView)
       {
-        v7 = [(PKTransactionHistoryViewController *)self navigationController];
-        v8 = [v7 navigationBar];
-        [v8 frame];
+        navigationController = [(PKTransactionHistoryViewController *)self navigationController];
+        navigationBar = [navigationController navigationBar];
+        [navigationBar frame];
         v10 = v9;
 
         v11 = [[PKAnimatedNavigationBarTitleView alloc] initWithFrame:0.0, 0.0, v10, v10];
@@ -398,8 +398,8 @@ LABEL_15:
         self->_titleView = v11;
 
         [(PKAnimatedNavigationBarTitleView *)self->_titleView setMaxWidth:33.0];
-        v13 = [(PKTransactionHistoryViewController *)self navigationItem];
-        [v13 pkui_setCenterAlignedTitleView:self->_titleView];
+        navigationItem = [(PKTransactionHistoryViewController *)self navigationItem];
+        [navigationItem pkui_setCenterAlignedTitleView:self->_titleView];
 
         titleView = self->_titleView;
         titleIconImageView = self->_titleIconImageView;
@@ -416,9 +416,9 @@ LABEL_15:
 
   else if (self->_titleText)
   {
-    v14 = [(PKTransactionHistoryViewController *)self navigationItem];
-    v16 = v14;
-    if (v3)
+    navigationItem2 = [(PKTransactionHistoryViewController *)self navigationItem];
+    v16 = navigationItem2;
+    if (appearedCopy)
     {
       titleText = self->_titleText;
     }
@@ -428,13 +428,13 @@ LABEL_15:
       titleText = 0;
     }
 
-    [v14 _setTitle:titleText animated:1];
+    [navigationItem2 _setTitle:titleText animated:1];
   }
 }
 
-- (void)updateContentUnavailableConfigurationUsingState:(id)a3
+- (void)updateContentUnavailableConfigurationUsingState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if (self->_wantsLoadingConfiguration && !self->_timerLoadingConfiguration)
   {
     if (self->_contentIsLoaded)
@@ -450,28 +450,28 @@ LABEL_15:
 
     else
     {
-      v5 = [MEMORY[0x1E69DC8C8] loadingConfiguration];
-      [(PKTransactionHistoryViewController *)self setContentUnavailableConfiguration:v5];
+      loadingConfiguration = [MEMORY[0x1E69DC8C8] loadingConfiguration];
+      [(PKTransactionHistoryViewController *)self setContentUnavailableConfiguration:loadingConfiguration];
     }
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v16.receiver = self;
   v16.super_class = PKTransactionHistoryViewController;
   [(PKTransactionHistoryViewController *)&v16 viewWillAppear:?];
-  [(PKDashboardViewController *)self shouldPresentAllContent:1 animated:v3];
-  v5 = [(PKTransactionHistoryViewController *)self _dataSource];
-  if ([v5 useLargeTitle])
+  [(PKDashboardViewController *)self shouldPresentAllContent:1 animated:appearCopy];
+  _dataSource = [(PKTransactionHistoryViewController *)self _dataSource];
+  if ([_dataSource useLargeTitle])
   {
-    v6 = [(PKTransactionHistoryViewController *)self navigationController];
-    v7 = [v6 navigationBar];
-    [v7 setPrefersLargeTitles:1];
+    navigationController = [(PKTransactionHistoryViewController *)self navigationController];
+    navigationBar = [navigationController navigationBar];
+    [navigationBar setPrefersLargeTitles:1];
   }
 
-  [v5 loadTransactionsIfNeeded];
+  [_dataSource loadTransactionsIfNeeded];
   if (self->_wantsLoadingConfiguration && !self->_timerLoadingConfiguration)
   {
     v8 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, MEMORY[0x1E69E96A0]);
@@ -517,11 +517,11 @@ void __53__PKTransactionHistoryViewController_viewWillAppear___block_invoke_2(ui
   *(v1 + 1352) = 0;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PKTransactionHistoryViewController;
-  [(PKTransactionHistoryViewController *)&v5 viewDidDisappear:a3];
+  [(PKTransactionHistoryViewController *)&v5 viewDidDisappear:disappear];
   if ([(PKTransactionHistoryViewController *)self shouldPromptForReview])
   {
     WeakRetained = objc_loadWeakRetained(&self->_navigationController);
@@ -534,10 +534,10 @@ void __53__PKTransactionHistoryViewController_viewWillAppear___block_invoke_2(ui
   v43.receiver = self;
   v43.super_class = PKTransactionHistoryViewController;
   [(PKTransactionHistoryViewController *)&v43 viewWillLayoutSubviews];
-  v3 = [(PKTransactionHistoryViewController *)self collectionView];
-  [v3 contentOffset];
+  collectionView = [(PKTransactionHistoryViewController *)self collectionView];
+  [collectionView contentOffset];
   v5 = v4;
-  [v3 safeAreaInsets];
+  [collectionView safeAreaInsets];
   v8 = v7;
   v9 = MEMORY[0x1E69DDCE0];
   if (self->_footer)
@@ -555,12 +555,12 @@ void __53__PKTransactionHistoryViewController_viewWillAppear___block_invoke_2(ui
   v13 = *v9;
   v14 = v9[1];
   v15 = v9[3];
-  v16 = [(PKHeaderVerticalScrollingLayout *)self->_layout useStickyHeader];
+  useStickyHeader = [(PKHeaderVerticalScrollingLayout *)self->_layout useStickyHeader];
   v17 = v13;
-  if (v16)
+  if (useStickyHeader)
   {
     v17 = self->_headerHeight - v8;
-    [v3 pkui_naturalRestingBounds];
+    [collectionView pkui_naturalRestingBounds];
     v19 = v5 - v18;
     v20 = v17 - (v5 - v18);
     if (v19 < 0.0)
@@ -569,16 +569,16 @@ void __53__PKTransactionHistoryViewController_viewWillAppear___block_invoke_2(ui
     }
   }
 
-  [v3 verticalScrollIndicatorInsets];
+  [collectionView verticalScrollIndicatorInsets];
   if (v24 != v14 || v21 != v17 || v23 != v15 || v22 != v12)
   {
-    [v3 setVerticalScrollIndicatorInsets:{v17, v14, v12, v15}];
+    [collectionView setVerticalScrollIndicatorInsets:{v17, v14, v12, v15}];
   }
 
-  [v3 contentInset];
+  [collectionView contentInset];
   if (v31 != v14 || v28 != v13 || v30 != v15 || v29 != v12)
   {
-    [v3 setContentInset:{v13, v14, v12, v15}];
+    [collectionView setContentInset:{v13, v14, v12, v15}];
   }
 
   headerHeight = self->_headerHeight;
@@ -591,7 +591,7 @@ void __53__PKTransactionHistoryViewController_viewWillAppear___block_invoke_2(ui
 
   else
   {
-    if (v16)
+    if (useStickyHeader)
     {
       v37 = v8;
     }
@@ -621,8 +621,8 @@ LABEL_43:
 LABEL_44:
   if (self->_headerIndexPath)
   {
-    v41 = [(PKTransactionHistoryViewController *)self collectionView];
-    v42 = [v41 cellForItemAtIndexPath:self->_headerIndexPath];
+    collectionView2 = [(PKTransactionHistoryViewController *)self collectionView];
+    v42 = [collectionView2 cellForItemAtIndexPath:self->_headerIndexPath];
 
     if (v42)
     {
@@ -640,14 +640,14 @@ LABEL_44:
   v17.receiver = self;
   v17.super_class = PKTransactionHistoryViewController;
   [(PKTransactionHistoryViewController *)&v17 viewDidLayoutSubviews];
-  v3 = [(PKTransactionHistoryViewController *)self view];
-  [v3 bounds];
+  view = [(PKTransactionHistoryViewController *)self view];
+  [view bounds];
   if (self->_footerContainer)
   {
     v7 = v4;
     v8 = v5;
     v9 = v6;
-    [v3 safeAreaInsets];
+    [view safeAreaInsets];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -666,26 +666,26 @@ LABEL_44:
   }
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = PKTransactionHistoryViewController;
   [(PKTransactionHistoryViewController *)&v5 willMoveToParentViewController:?];
-  if (!a3)
+  if (!controller)
   {
     objc_storeWeak(&self->_navigationController, 0);
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = PKTransactionHistoryViewController;
-  [(PKTransactionHistoryViewController *)&v6 didMoveToParentViewController:a3];
-  v4 = [(PKTransactionHistoryViewController *)self navigationController];
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  [(PKTransactionHistoryViewController *)&v6 didMoveToParentViewController:controller];
+  navigationController = [(PKTransactionHistoryViewController *)self navigationController];
+  if (navigationController && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = navigationController;
     objc_storeWeak(&self->_navigationController, v5);
     if (self->_hideTopPocketDirty)
     {
@@ -700,26 +700,26 @@ LABEL_44:
   }
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  v3 = a3;
+  editingCopy = editing;
   v16.receiver = self;
   v16.super_class = PKTransactionHistoryViewController;
-  [(PKTransactionHistoryViewController *)&v16 setEditing:a3 animated:1];
-  v5 = [(PKTransactionHistoryViewController *)self navigationItem];
-  v6 = [(PKTransactionHistoryViewController *)self _barButtonItems];
-  [v5 setRightBarButtonItems:v6];
+  [(PKTransactionHistoryViewController *)&v16 setEditing:editing animated:1];
+  navigationItem = [(PKTransactionHistoryViewController *)self navigationItem];
+  _barButtonItems = [(PKTransactionHistoryViewController *)self _barButtonItems];
+  [navigationItem setRightBarButtonItems:_barButtonItems];
 
   if (_UISolariumFeatureFlagEnabled())
   {
     [(PKTransactionHistoryViewController *)self _updateTitle];
   }
 
-  if (v3)
+  if (editingCopy)
   {
-    v7 = [(PKTransactionHistoryViewController *)self collectionView];
-    v8 = [v7 indexPathsForSelectedItems];
-    v9 = [v8 count];
+    collectionView = [(PKTransactionHistoryViewController *)self collectionView];
+    indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+    v9 = [indexPathsForSelectedItems count];
 
     if (v9)
     {
@@ -732,57 +732,57 @@ LABEL_44:
     }
 
     v11 = PKLocalizedPaymentString(&v10->isa);
-    v12 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v11 style:0 target:self action:sel__handleSelectButtonTapped_];
-    [v12 setAccessibilityIdentifier:*MEMORY[0x1E69B9BF8]];
-    v13 = [(PKTransactionHistoryViewController *)self navigationItem];
-    [v13 setLeftBarButtonItem:v12 animated:1];
+    navigationItem3 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v11 style:0 target:self action:sel__handleSelectButtonTapped_];
+    [navigationItem3 setAccessibilityIdentifier:*MEMORY[0x1E69B9BF8]];
+    navigationItem2 = [(PKTransactionHistoryViewController *)self navigationItem];
+    [navigationItem2 setLeftBarButtonItem:navigationItem3 animated:1];
 
-    v14 = [(PKTransactionHistoryViewController *)self _toolbarItems];
-    [(PKTransactionHistoryViewController *)self setToolbarItems:v14];
+    _toolbarItems = [(PKTransactionHistoryViewController *)self _toolbarItems];
+    [(PKTransactionHistoryViewController *)self setToolbarItems:_toolbarItems];
   }
 
   else
   {
-    v12 = [(PKTransactionHistoryViewController *)self navigationItem];
-    [v12 setLeftBarButtonItem:0 animated:0];
+    navigationItem3 = [(PKTransactionHistoryViewController *)self navigationItem];
+    [navigationItem3 setLeftBarButtonItem:0 animated:0];
   }
 
-  v15 = [(PKTransactionHistoryViewController *)self navigationController];
-  [v15 setToolbarHidden:!v3 animated:1];
+  navigationController = [(PKTransactionHistoryViewController *)self navigationController];
+  [navigationController setToolbarHidden:!editingCopy animated:1];
 }
 
-- (void)updateGroup:(id)a3
+- (void)updateGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(PKTransactionHistoryViewController *)self _dataSource];
-  [v5 updateGroup:v4];
+  groupCopy = group;
+  _dataSource = [(PKTransactionHistoryViewController *)self _dataSource];
+  [_dataSource updateGroup:groupCopy];
 }
 
 - (id)group
 {
-  v2 = [(PKTransactionHistoryViewController *)self _dataSource];
-  v3 = [v2 group];
+  _dataSource = [(PKTransactionHistoryViewController *)self _dataSource];
+  group = [_dataSource group];
 
-  return v3;
+  return group;
 }
 
-- (void)updateGroups:(id)a3 headerGroup:(id)a4
+- (void)updateGroups:(id)groups headerGroup:(id)group
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKTransactionHistoryViewController *)self _dataSource];
-  [v8 updateGroups:v7 headerGroup:v6];
+  groupCopy = group;
+  groupsCopy = groups;
+  _dataSource = [(PKTransactionHistoryViewController *)self _dataSource];
+  [_dataSource updateGroups:groupsCopy headerGroup:groupCopy];
 }
 
-- (void)setContactAvatarManager:(id)a3
+- (void)setContactAvatarManager:(id)manager
 {
-  v5 = a3;
-  if (self->_contactAvatarManager != v5)
+  managerCopy = manager;
+  if (self->_contactAvatarManager != managerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_contactAvatarManager, a3);
+    v6 = managerCopy;
+    objc_storeStrong(&self->_contactAvatarManager, manager);
     [(PKDashboardDetailHeaderItemPresenter *)self->_headerPresenter setAvatarManager:v6];
-    v5 = v6;
+    managerCopy = v6;
   }
 }
 
@@ -791,20 +791,20 @@ LABEL_44:
   v43.receiver = self;
   v43.super_class = PKTransactionHistoryViewController;
   [(PKDashboardViewController *)&v43 updateContent];
-  v3 = [(PKTransactionHistoryViewController *)self navigationItem];
-  v4 = [v3 rightBarButtonItems];
-  v5 = [(PKTransactionHistoryViewController *)self _barButtonItems];
+  navigationItem = [(PKTransactionHistoryViewController *)self navigationItem];
+  rightBarButtonItems = [navigationItem rightBarButtonItems];
+  _barButtonItems = [(PKTransactionHistoryViewController *)self _barButtonItems];
   if ((PKEqualObjects() & 1) == 0)
   {
-    [v3 setRightBarButtonItems:v5 animated:1];
+    [navigationItem setRightBarButtonItems:_barButtonItems animated:1];
   }
 
-  v6 = [(PKTransactionHistoryViewController *)self _dataSource];
+  _dataSource = [(PKTransactionHistoryViewController *)self _dataSource];
   [(PKTransactionHistoryViewController *)self _updateTitle];
-  v7 = [v6 footerTitle];
-  v8 = [v6 footerTotal];
-  v9 = v8;
-  if (v7 && v8)
+  footerTitle = [_dataSource footerTitle];
+  footerTotal = [_dataSource footerTotal];
+  v9 = footerTotal;
+  if (footerTitle && footerTotal)
   {
     footer = self->_footer;
     if (!footer)
@@ -821,8 +821,8 @@ LABEL_44:
       if (_UISolariumEnabled())
       {
         v18 = objc_alloc(MEMORY[0x1E69DD6C8]);
-        v19 = [(PKTransactionHistoryViewController *)self collectionView];
-        v20 = [v18 initWithScrollView:v19 edge:4 style:1];
+        collectionView = [(PKTransactionHistoryViewController *)self collectionView];
+        v20 = [v18 initWithScrollView:collectionView edge:4 style:1];
 
         [(PKDashboardViewControllerFooterView *)self->_footer addInteraction:v20];
       }
@@ -833,8 +833,8 @@ LABEL_44:
 
       [(PKDashboardViewControllerFooterContainer *)self->_footerContainer setCurrentFooter:self->_footer];
       [(PKDashboardViewControllerFooterContainer *)self->_footerContainer setAlpha:0.0];
-      v23 = [(PKTransactionHistoryViewController *)self view];
-      [v23 addSubview:self->_footerContainer];
+      view = [(PKTransactionHistoryViewController *)self view];
+      [view addSubview:self->_footerContainer];
 
       v42[0] = MEMORY[0x1E69E9820];
       v42[1] = 3221225472;
@@ -845,63 +845,63 @@ LABEL_44:
       footer = self->_footer;
     }
 
-    v24 = [(PKDashboardViewControllerFooterView *)footer leadingTitle];
-    [v24 setText:v7];
+    leadingTitle = [(PKDashboardViewControllerFooterView *)footer leadingTitle];
+    [leadingTitle setText:footerTitle];
 
-    v25 = [v9 amount];
-    v26 = [v25 pk_isNegativeNumber];
+    amount = [v9 amount];
+    pk_isNegativeNumber = [amount pk_isNegativeNumber];
 
-    if (v26)
+    if (pk_isNegativeNumber)
     {
-      v27 = [v9 negativeValue];
+      negativeValue = [v9 negativeValue];
 
-      v28 = [(PKDashboardViewControllerFooterView *)self->_footer leadingDetail];
-      v29 = [v27 formattedStringValue];
-      v30 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F3BD5BF0.isa, v29);
-      [v28 setText:v30];
+      leadingDetail = [(PKDashboardViewControllerFooterView *)self->_footer leadingDetail];
+      formattedStringValue = [negativeValue formattedStringValue];
+      v30 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F3BD5BF0.isa, formattedStringValue);
+      [leadingDetail setText:v30];
 
-      v9 = v27;
+      v9 = negativeValue;
     }
 
     else
     {
-      v28 = [(PKDashboardViewControllerFooterView *)self->_footer leadingDetail];
-      v29 = [v9 formattedStringValue];
-      [v28 setText:v29];
+      leadingDetail = [(PKDashboardViewControllerFooterView *)self->_footer leadingDetail];
+      formattedStringValue = [v9 formattedStringValue];
+      [leadingDetail setText:formattedStringValue];
     }
 
-    v31 = [v6 footerSecondaryTitle];
-    v32 = [v6 footerSecondaryTotal];
-    v33 = v32;
-    if (v31 && v32)
+    footerSecondaryTitle = [_dataSource footerSecondaryTitle];
+    footerSecondaryTotal = [_dataSource footerSecondaryTotal];
+    v33 = footerSecondaryTotal;
+    if (footerSecondaryTitle && footerSecondaryTotal)
     {
-      v41 = v3;
-      v34 = [(PKDashboardViewControllerFooterView *)self->_footer trailingTitle];
-      [v34 setText:v31];
+      v41 = navigationItem;
+      trailingTitle = [(PKDashboardViewControllerFooterView *)self->_footer trailingTitle];
+      [trailingTitle setText:footerSecondaryTitle];
 
-      v35 = [v33 amount];
-      v36 = [v35 pk_isNegativeNumber];
+      amount2 = [v33 amount];
+      pk_isNegativeNumber2 = [amount2 pk_isNegativeNumber];
 
-      if (v36)
+      if (pk_isNegativeNumber2)
       {
-        v40 = [v33 negativeValue];
+        negativeValue2 = [v33 negativeValue];
 
-        v37 = [(PKDashboardViewControllerFooterView *)self->_footer trailingDetail];
-        v38 = [v40 formattedStringValue];
-        v39 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F3BD5BF0.isa, v38);
-        [v37 setText:v39];
+        trailingDetail = [(PKDashboardViewControllerFooterView *)self->_footer trailingDetail];
+        formattedStringValue2 = [negativeValue2 formattedStringValue];
+        v39 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F3BD5BF0.isa, formattedStringValue2);
+        [trailingDetail setText:v39];
 
-        v33 = v40;
+        v33 = negativeValue2;
       }
 
       else
       {
-        v37 = [(PKDashboardViewControllerFooterView *)self->_footer trailingDetail];
-        v38 = [v33 formattedStringValue];
-        [v37 setText:v38];
+        trailingDetail = [(PKDashboardViewControllerFooterView *)self->_footer trailingDetail];
+        formattedStringValue2 = [v33 formattedStringValue];
+        [trailingDetail setText:formattedStringValue2];
       }
 
-      v3 = v41;
+      navigationItem = v41;
     }
 
     [(PKDashboardViewControllerFooterView *)self->_footer setNeedsLayout];
@@ -916,54 +916,54 @@ LABEL_44:
 - (void)performCollectionViewDataReload
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PKTransactionHistoryViewController *)self collectionView];
-  if ([v3 numberOfItemsInSection:0] != 1)
+  collectionView = [(PKTransactionHistoryViewController *)self collectionView];
+  if ([collectionView numberOfItemsInSection:0] != 1)
   {
 
     goto LABEL_5;
   }
 
-  v4 = [(PKDashboardViewController *)self dataSource];
-  v5 = [v4 numberOfItemsInSection:0];
+  dataSource = [(PKDashboardViewController *)self dataSource];
+  v5 = [dataSource numberOfItemsInSection:0];
 
   if (v5 != 1)
   {
 LABEL_5:
-    v11 = [(PKTransactionHistoryViewController *)self collectionView];
-    v10 = [v11 numberOfSections];
+    collectionView2 = [(PKTransactionHistoryViewController *)self collectionView];
+    numberOfSections = [collectionView2 numberOfSections];
 
     v7 = 0;
     goto LABEL_6;
   }
 
-  v6 = [(PKTransactionHistoryViewController *)self collectionView];
+  collectionView3 = [(PKTransactionHistoryViewController *)self collectionView];
   v14[0] = self->_headerIndexPath;
   v7 = 1;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  [v6 reconfigureItemsAtIndexPaths:v8];
+  [collectionView3 reconfigureItemsAtIndexPaths:v8];
 
-  v9 = [(PKTransactionHistoryViewController *)self collectionView];
-  v10 = [v9 numberOfSections] - 1;
+  collectionView4 = [(PKTransactionHistoryViewController *)self collectionView];
+  numberOfSections = [collectionView4 numberOfSections] - 1;
 
 LABEL_6:
-  v12 = [(PKTransactionHistoryViewController *)self collectionView];
-  v13 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v7, v10}];
-  [v12 reloadSections:v13];
+  collectionView5 = [(PKTransactionHistoryViewController *)self collectionView];
+  v13 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v7, numberOfSections}];
+  [collectionView5 reloadSections:v13];
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v8 = a5;
+  pathCopy = path;
   v16.receiver = self;
   v16.super_class = PKTransactionHistoryViewController;
-  [(PKDashboardViewController *)&v16 collectionView:a3 layout:a4 sizeForItemAtIndexPath:v8];
+  [(PKDashboardViewController *)&v16 collectionView:view layout:layout sizeForItemAtIndexPath:pathCopy];
   v10 = v9;
   v12 = v11;
-  if (self->_headerIndexPath && [v8 isEqual:?] && self->_headerHeight != v12)
+  if (self->_headerIndexPath && [pathCopy isEqual:?] && self->_headerHeight != v12)
   {
     self->_headerHeight = v12;
-    v13 = [(PKTransactionHistoryViewController *)self view];
-    [v13 setNeedsLayout];
+    view = [(PKTransactionHistoryViewController *)self view];
+    [view setNeedsLayout];
   }
 
   v14 = v10;
@@ -973,15 +973,15 @@ LABEL_6:
   return result;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = PKTransactionHistoryViewController;
-  v7 = [(PKDashboardViewController *)&v9 collectionView:a3 cellForItemAtIndexPath:v6];
+  v7 = [(PKDashboardViewController *)&v9 collectionView:view cellForItemAtIndexPath:pathCopy];
   if (self->_headerIndexPath)
   {
-    if ([v6 isEqual:?])
+    if ([pathCopy isEqual:?])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -994,41 +994,41 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEditing])
+  viewCopy = view;
+  pathCopy = path;
+  if ([viewCopy isEditing])
   {
-    v8 = [(PKDashboardViewController *)self dataSource];
-    v9 = [v8 itemAtIndexPath:v7];
+    dataSource = [(PKDashboardViewController *)self dataSource];
+    v9 = [dataSource itemAtIndexPath:pathCopy];
 
-    v10 = [(PKDashboardViewController *)self dataSource];
-    v11 = [v10 canDeleteItem:v9];
+    dataSource2 = [(PKDashboardViewController *)self dataSource];
+    v11 = [dataSource2 canDeleteItem:v9];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = PKTransactionHistoryViewController;
-    v11 = [(PKDashboardViewController *)&v13 collectionView:v6 shouldSelectItemAtIndexPath:v7];
+    v11 = [(PKDashboardViewController *)&v13 collectionView:viewCopy shouldSelectItemAtIndexPath:pathCopy];
   }
 
   return v11;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v8.receiver = self;
   v8.super_class = PKTransactionHistoryViewController;
-  v6 = a3;
-  [(PKDashboardViewController *)&v8 collectionView:v6 didSelectItemAtIndexPath:a4];
-  LODWORD(a4) = [v6 isEditing];
+  viewCopy = view;
+  [(PKDashboardViewController *)&v8 collectionView:viewCopy didSelectItemAtIndexPath:path];
+  LODWORD(path) = [viewCopy isEditing];
 
-  if (a4)
+  if (path)
   {
-    v7 = [(PKTransactionHistoryViewController *)self _toolbarItems];
-    [(PKTransactionHistoryViewController *)self setToolbarItems:v7];
+    _toolbarItems = [(PKTransactionHistoryViewController *)self _toolbarItems];
+    [(PKTransactionHistoryViewController *)self setToolbarItems:_toolbarItems];
 
     [(PKTransactionHistoryViewController *)self _updateNavigationBar];
     if (_UISolariumFeatureFlagEnabled())
@@ -1038,12 +1038,12 @@ LABEL_6:
   }
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
-  if ([a3 isEditing])
+  if ([view isEditing])
   {
-    v5 = [(PKTransactionHistoryViewController *)self _toolbarItems];
-    [(PKTransactionHistoryViewController *)self setToolbarItems:v5];
+    _toolbarItems = [(PKTransactionHistoryViewController *)self _toolbarItems];
+    [(PKTransactionHistoryViewController *)self setToolbarItems:_toolbarItems];
 
     [(PKTransactionHistoryViewController *)self _updateNavigationBar];
     if (_UISolariumFeatureFlagEnabled())
@@ -1054,23 +1054,23 @@ LABEL_6:
   }
 }
 
-- (BOOL)collectionView:(id)a3 shouldBeginMultipleSelectionInteractionAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldBeginMultipleSelectionInteractionAtIndexPath:(id)path
 {
-  v4 = [(PKTransactionHistoryViewController *)self _dataSource:a3];
-  v5 = [v4 areTransactionsEditable];
+  v4 = [(PKTransactionHistoryViewController *)self _dataSource:view];
+  areTransactionsEditable = [v4 areTransactionsEditable];
 
-  return v5;
+  return areTransactionsEditable;
 }
 
-- (id)collectionView:(id)a3 layout:(id)a4 trailingSwipeActionsConfigurationForItemAtIndexPath:(id)a5
+- (id)collectionView:(id)view layout:(id)layout trailingSwipeActionsConfigurationForItemAtIndexPath:(id)path
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PKDashboardViewController *)self dataSource];
-  v12 = [v11 itemAtIndexPath:v10];
-  if ([v11 canDeleteItem:v12])
+  viewCopy = view;
+  layoutCopy = layout;
+  pathCopy = path;
+  dataSource = [(PKDashboardViewController *)self dataSource];
+  v12 = [dataSource itemAtIndexPath:pathCopy];
+  if ([dataSource canDeleteItem:v12])
   {
     v13 = PKLocalizedString(&cfstr_DashboardTrail.isa);
     objc_initWeak(&location, self);
@@ -1081,8 +1081,8 @@ LABEL_6:
     v21[3] = &unk_1E8020548;
     objc_copyWeak(&v25, &location);
     v22 = v12;
-    v23 = v8;
-    v24 = v10;
+    v23 = viewCopy;
+    v24 = pathCopy;
     v15 = [v14 contextualActionWithStyle:1 title:v13 handler:v21];
     v16 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"trash"];
     [v15 setImage:v16];
@@ -1144,27 +1144,27 @@ void __112__PKTransactionHistoryViewController_collectionView_layout_trailingSwi
   }
 }
 
-- (void)_updateHeaderCellWithAnimationProgress:(id)a3
+- (void)_updateHeaderCellWithAnimationProgress:(id)progress
 {
-  v15 = a3;
-  v4 = [(PKHeaderVerticalScrollingLayout *)self->_layout useStickyHeader];
-  [v15 setOverlayAlpha:self->_merchantHeaderAnimationProgress];
-  if (v4)
+  progressCopy = progress;
+  useStickyHeader = [(PKHeaderVerticalScrollingLayout *)self->_layout useStickyHeader];
+  [progressCopy setOverlayAlpha:self->_merchantHeaderAnimationProgress];
+  if (useStickyHeader)
   {
     if (self->_merchantHeaderAnimationProgress >= 1.0)
     {
-      [v15 setOverlayAlpha:0.0];
+      [progressCopy setOverlayAlpha:0.0];
     }
 
-    v5 = [(PKTransactionHistoryViewController *)self collectionView];
-    v6 = v5;
+    collectionView = [(PKTransactionHistoryViewController *)self collectionView];
+    collectionView2 = collectionView;
     if (self->_headerHeight > 0.0)
     {
-      [v5 contentOffset];
+      [collectionView contentOffset];
       v8 = v7;
-      [v6 safeAreaInsets];
+      [collectionView2 safeAreaInsets];
       v10 = v9;
-      [v15 topLabelWithRespectTo:v6];
+      [progressCopy topLabelWithRespectTo:collectionView2];
       v12 = v8 <= v11 - v10;
       goto LABEL_8;
     }
@@ -1172,14 +1172,14 @@ void __112__PKTransactionHistoryViewController_collectionView_layout_trailingSwi
 
   else
   {
-    v6 = [(PKTransactionHistoryViewController *)self collectionView];
+    collectionView2 = [(PKTransactionHistoryViewController *)self collectionView];
   }
 
   v12 = 0;
 LABEL_8:
-  if ([v6 _hiddenPocketEdges] != v12)
+  if ([collectionView2 _hiddenPocketEdges] != v12)
   {
-    [v6 _setHiddenPocketEdges:v12];
+    [collectionView2 _setHiddenPocketEdges:v12];
   }
 
   if (self->_hideTopPocket != v12)
@@ -1200,19 +1200,19 @@ LABEL_8:
   }
 }
 
-- (void)_updateNavigationBarIconWithLogoURL:(id)a3
+- (void)_updateNavigationBarIconWithLogoURL:(id)l
 {
-  if (a3)
+  if (l)
   {
     v4 = MEMORY[0x1E69B8A08];
-    v5 = a3;
-    v6 = [v4 sharedImageAssetDownloader];
+    lCopy = l;
+    sharedImageAssetDownloader = [v4 sharedImageAssetDownloader];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __74__PKTransactionHistoryViewController__updateNavigationBarIconWithLogoURL___block_invoke;
     v7[3] = &unk_1E8020570;
     v7[4] = self;
-    [v6 downloadFromUrl:v5 completionHandler:v7];
+    [sharedImageAssetDownloader downloadFromUrl:lCopy completionHandler:v7];
   }
 }
 
@@ -1237,21 +1237,21 @@ void __74__PKTransactionHistoryViewController__updateNavigationBarIconWithLogoUR
 
 - (void)_updateNavigationBar
 {
-  v3 = [(PKTransactionHistoryViewController *)self navigationItem];
-  v4 = [(PKTransactionHistoryViewController *)self _barButtonItems];
-  [v3 setRightBarButtonItems:v4];
+  navigationItem = [(PKTransactionHistoryViewController *)self navigationItem];
+  _barButtonItems = [(PKTransactionHistoryViewController *)self _barButtonItems];
+  [navigationItem setRightBarButtonItems:_barButtonItems];
 
-  v5 = [(PKTransactionHistoryViewController *)self collectionView];
-  LODWORD(v4) = [v5 isEditing];
+  collectionView = [(PKTransactionHistoryViewController *)self collectionView];
+  LODWORD(_barButtonItems) = [collectionView isEditing];
 
-  if (v4)
+  if (_barButtonItems)
   {
-    v6 = [(PKTransactionHistoryViewController *)self collectionView];
-    v7 = [v6 indexPathsForSelectedItems];
-    v8 = [v7 count];
+    collectionView2 = [(PKTransactionHistoryViewController *)self collectionView];
+    indexPathsForSelectedItems = [collectionView2 indexPathsForSelectedItems];
+    v8 = [indexPathsForSelectedItems count];
 
-    v12 = [(PKTransactionHistoryViewController *)self navigationItem];
-    v9 = [v12 leftBarButtonItem];
+    navigationItem2 = [(PKTransactionHistoryViewController *)self navigationItem];
+    leftBarButtonItem = [navigationItem2 leftBarButtonItem];
     if (v8)
     {
       v10 = @"TRANSACTION_HISTORY_DESELECT_ALL";
@@ -1263,29 +1263,29 @@ void __74__PKTransactionHistoryViewController__updateNavigationBarIconWithLogoUR
     }
 
     v11 = PKLocalizedPaymentString(&v10->isa);
-    [v9 setTitle:v11];
+    [leftBarButtonItem setTitle:v11];
   }
 }
 
-- (void)deleteItemsAtIndexPaths:(id)a3
+- (void)deleteItemsAtIndexPaths:(id)paths
 {
   v8.receiver = self;
   v8.super_class = PKTransactionHistoryViewController;
-  [(PKDashboardViewController *)&v8 deleteItemsAtIndexPaths:a3];
-  v4 = [(PKTransactionHistoryViewController *)self _dataSource];
-  v5 = [v4 transactionHistoryItemsCount];
+  [(PKDashboardViewController *)&v8 deleteItemsAtIndexPaths:paths];
+  _dataSource = [(PKTransactionHistoryViewController *)self _dataSource];
+  transactionHistoryItemsCount = [_dataSource transactionHistoryItemsCount];
 
-  if (!v5)
+  if (!transactionHistoryItemsCount)
   {
-    v6 = [(PKTransactionHistoryViewController *)self navigationController];
-    if ([v6 pk_settings_useStateDrivenNavigation])
+    navigationController = [(PKTransactionHistoryViewController *)self navigationController];
+    if ([navigationController pk_settings_useStateDrivenNavigation])
     {
-      [v6 pk_settings_popViewController];
+      [navigationController pk_settings_popViewController];
     }
 
     else
     {
-      v7 = [v6 popViewControllerAnimated:1];
+      v7 = [navigationController popViewControllerAnimated:1];
     }
   }
 }
@@ -1304,10 +1304,10 @@ void __74__PKTransactionHistoryViewController__updateNavigationBarIconWithLogoUR
   [(PKTransactionHistoryViewController *)self _updateNavigationBar];
 }
 
-- (id)_createActivityDeletionConfirmationWithCompletion:(id)a3
+- (id)_createActivityDeletionConfirmationWithCompletion:(id)completion
 {
-  v3 = a3;
-  if (v3)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v4 = PKLocalizedIdentityString(&cfstr_TransactionDel.isa);
     v5 = PKLocalizedIdentityString(&cfstr_TransactionDel_0.isa);
@@ -1318,7 +1318,7 @@ void __74__PKTransactionHistoryViewController__updateNavigationBarIconWithLogoUR
     v19[1] = 3221225472;
     v19[2] = __88__PKTransactionHistoryViewController__createActivityDeletionConfirmationWithCompletion___block_invoke;
     v19[3] = &unk_1E8011248;
-    v9 = v3;
+    v9 = completionCopy;
     v20 = v9;
     v10 = [v8 actionWithTitle:v5 style:2 handler:v19];
     [v7 addAction:v10];
@@ -1352,34 +1352,34 @@ void __74__PKTransactionHistoryViewController__updateNavigationBarIconWithLogoUR
 
 - (void)_updateTitle
 {
-  v25 = [(PKTransactionHistoryViewController *)self navigationItem];
-  v3 = [(PKTransactionHistoryViewController *)self _dataSource];
-  v4 = [v3 type];
-  if (v4 == 4 || v4 == 2)
+  navigationItem = [(PKTransactionHistoryViewController *)self navigationItem];
+  _dataSource = [(PKTransactionHistoryViewController *)self _dataSource];
+  type = [_dataSource type];
+  if (type == 4 || type == 2)
   {
-    v8 = [v3 group];
-    v5 = v8;
-    if (!v8)
+    group = [_dataSource group];
+    merchant2 = group;
+    if (!group)
     {
-      v7 = 0;
+      logoImageURL2 = 0;
       v6 = 0;
       goto LABEL_27;
     }
 
-    v9 = [v8 type];
-    v7 = 0;
-    if (v9 > 6)
+    type2 = [group type];
+    logoImageURL2 = 0;
+    if (type2 > 6)
     {
-      switch(v9)
+      switch(type2)
       {
         case 7:
-          v12 = [v5 transactions];
-          v13 = [v12 firstObject];
-          v14 = [v13 accountType];
+          transactions = [merchant2 transactions];
+          firstObject = [transactions firstObject];
+          accountType = [firstObject accountType];
 
           v15 = PKPassKitUIBundle();
-          v10 = v15;
-          if (v14 == 3)
+          merchant = v15;
+          if (accountType == 3)
           {
             v16 = @"SAVINGS_Interest";
           }
@@ -1392,13 +1392,13 @@ void __74__PKTransactionHistoryViewController__updateNavigationBarIconWithLogoUR
           break;
         case 9:
           v15 = PKPassKitUIBundle();
-          v10 = v15;
+          merchant = v15;
           v16 = @"AppleCardIcon";
           break;
         case 14:
 LABEL_10:
-          v10 = [v3 merchant];
-          if (!v10)
+          merchant = [_dataSource merchant];
+          if (!merchant)
           {
             v6 = 0;
 LABEL_25:
@@ -1408,8 +1408,8 @@ LABEL_25:
 
           PKUIScreenScale();
           v6 = PKMapsIconForMerchant();
-          v11 = [v10 logoImageURL];
-          [(PKTransactionHistoryViewController *)self _updateNavigationBarIconWithLogoURL:v11];
+          logoImageURL = [merchant logoImageURL];
+          [(PKTransactionHistoryViewController *)self _updateNavigationBarIconWithLogoURL:logoImageURL];
 LABEL_24:
 
           goto LABEL_25;
@@ -1419,23 +1419,23 @@ LABEL_16:
           goto LABEL_27;
       }
 
-      v11 = [v15 URLForResource:v16 withExtension:@"pdf"];
+      logoImageURL = [v15 URLForResource:v16 withExtension:@"pdf"];
       v17 = PKUIScreenScale();
-      v6 = PKUIImageFromPDF(v11, 33.0, 33.0, v17);
+      v6 = PKUIImageFromPDF(logoImageURL, 33.0, 33.0, v17);
       goto LABEL_24;
     }
 
-    if (!v9)
+    if (!type2)
     {
-      [v5 merchantCategory];
+      [merchant2 merchantCategory];
       PKUIScreenScale();
       v6 = PKMapsIconForMerchantCategory();
 LABEL_26:
-      v7 = 0;
+      logoImageURL2 = 0;
       goto LABEL_27;
     }
 
-    if (v9 == 1)
+    if (type2 == 1)
     {
       goto LABEL_10;
     }
@@ -1443,37 +1443,37 @@ LABEL_26:
     goto LABEL_16;
   }
 
-  if (v4 == 1)
+  if (type == 1)
   {
-    v5 = [v3 merchant];
+    merchant2 = [_dataSource merchant];
     PKUIScreenScale();
     v6 = PKMapsIconForMerchant();
-    v7 = [v5 logoImageURL];
+    logoImageURL2 = [merchant2 logoImageURL];
 LABEL_27:
 
     goto LABEL_28;
   }
 
-  v7 = 0;
+  logoImageURL2 = 0;
   v6 = 0;
 LABEL_28:
-  v18 = [v3 useLargeTitle];
-  v19 = [v3 navigationBarTitle];
+  useLargeTitle = [_dataSource useLargeTitle];
+  navigationBarTitle = [_dataSource navigationBarTitle];
   if (_UISolariumFeatureFlagEnabled())
   {
-    v20 = [(PKTransactionHistoryViewController *)self collectionView];
-    v21 = [v20 isEditing];
+    collectionView = [(PKTransactionHistoryViewController *)self collectionView];
+    isEditing = [collectionView isEditing];
 
-    if (v21)
+    if (isEditing)
     {
-      v22 = [(PKTransactionHistoryViewController *)self _selectedText];
+      _selectedText = [(PKTransactionHistoryViewController *)self _selectedText];
 
-      v19 = v22;
+      navigationBarTitle = _selectedText;
     }
   }
 
-  [v25 setBackButtonTitle:v19];
-  [v25 setBackButtonDisplayMode:1];
+  [navigationItem setBackButtonTitle:navigationBarTitle];
+  [navigationItem setBackButtonDisplayMode:1];
   if (v6)
   {
     v23 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v6];
@@ -1483,26 +1483,26 @@ LABEL_28:
     [(UIImageView *)self->_titleIconImageView setContentMode:1];
     [(UIImageView *)self->_titleIconImageView _setContinuousCornerRadius:3.0];
     [(UIImageView *)self->_titleIconImageView setClipsToBounds:1];
-    [(PKTransactionHistoryViewController *)self _updateNavigationBarIconWithLogoURL:v7];
+    [(PKTransactionHistoryViewController *)self _updateNavigationBarIconWithLogoURL:logoImageURL2];
   }
 
-  else if (v18)
+  else if (useLargeTitle)
   {
-    [v25 setTitle:v19];
+    [navigationItem setTitle:navigationBarTitle];
   }
 
   else
   {
-    objc_storeStrong(&self->_titleText, v19);
+    objc_storeStrong(&self->_titleText, navigationBarTitle);
   }
 }
 
 - (id)_barButtonItems
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PKTransactionHistoryViewController *)self _dataSource];
-  v5 = [v4 merchant];
-  v6 = v5;
+  _dataSource = [(PKTransactionHistoryViewController *)self _dataSource];
+  merchant = [_dataSource merchant];
+  v6 = merchant;
   historyType = self->_historyType;
   if (historyType - 1 < 2)
   {
@@ -1518,11 +1518,11 @@ LABEL_28:
     }
 
 LABEL_4:
-    if (!v5)
+    if (!merchant)
     {
-      v9 = [v4 areTransactionsEditable];
+      areTransactionsEditable = [_dataSource areTransactionsEditable];
       objc_initWeak(&location, self);
-      if ((v9 & 1) == 0)
+      if ((areTransactionsEditable & 1) == 0)
       {
         goto LABEL_35;
       }
@@ -1530,24 +1530,24 @@ LABEL_4:
       goto LABEL_29;
     }
 
-    if ([v5 shouldIgnoreMapsMatches])
+    if ([merchant shouldIgnoreMapsMatches])
     {
       v8 = 0;
     }
 
     else
     {
-      v14 = [v6 mapsMerchant];
-      v8 = v14 != 0;
+      mapsMerchant = [v6 mapsMerchant];
+      v8 = mapsMerchant != 0;
     }
 
-    v15 = [v6 phoneNumber];
-    v11 = v15 != 0;
+    phoneNumber = [v6 phoneNumber];
+    v11 = phoneNumber != 0;
 
-    v16 = [v6 businessChatURL];
-    v12 = v16 != 0;
+    businessChatURL = [v6 businessChatURL];
+    v12 = businessChatURL != 0;
 
-    v13 = [v4 areTransactionsEditable];
+    areTransactionsEditable2 = [_dataSource areTransactionsEditable];
     objc_initWeak(&location, self);
     if (!v8)
     {
@@ -1557,17 +1557,17 @@ LABEL_4:
     goto LABEL_14;
   }
 
-  v10 = [v4 contact];
+  contact = [_dataSource contact];
 
   objc_initWeak(&location, self);
-  if (!v10)
+  if (!contact)
   {
     goto LABEL_35;
   }
 
   v11 = 0;
   v12 = 0;
-  v13 = 0;
+  areTransactionsEditable2 = 0;
 LABEL_14:
   if (self->_loadingMapsViewController)
   {
@@ -1587,7 +1587,7 @@ LABEL_14:
   detailsButton = self->_detailsButton;
   if (!detailsButton)
   {
-    v20 = v13;
+    v20 = areTransactionsEditable2;
     v49 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"info"];
     v21 = MEMORY[0x1E69DC628];
     v22 = PKLocalizedString(&cfstr_More.isa);
@@ -1606,7 +1606,7 @@ LABEL_14:
     objc_destroyWeak(&v56);
 
     detailsButton = self->_detailsButton;
-    v13 = v20;
+    areTransactionsEditable2 = v20;
   }
 
   [v3 addObject:detailsButton];
@@ -1620,7 +1620,7 @@ LABEL_21:
   phoneButton = self->_phoneButton;
   if (!phoneButton)
   {
-    v50 = v13;
+    v50 = areTransactionsEditable2;
     v27 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"phone.fill"];
     v28 = MEMORY[0x1E69DC628];
     v29 = PKLocalizedPaymentString(&cfstr_Call.isa);
@@ -1639,7 +1639,7 @@ LABEL_21:
     objc_destroyWeak(&v54);
 
     phoneButton = self->_phoneButton;
-    v13 = v50;
+    areTransactionsEditable2 = v50;
   }
 
   [v3 addObject:phoneButton];
@@ -1649,7 +1649,7 @@ LABEL_24:
     messageButton = self->_messageButton;
     if (!messageButton)
     {
-      v34 = v13;
+      v34 = areTransactionsEditable2;
       v35 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"message.fill"];
       v36 = MEMORY[0x1E69DC628];
       v37 = PKLocalizedPaymentString(&cfstr_Message.isa);
@@ -1668,13 +1668,13 @@ LABEL_24:
       objc_destroyWeak(&v52);
 
       messageButton = self->_messageButton;
-      v13 = v34;
+      areTransactionsEditable2 = v34;
     }
 
     [v3 addObject:messageButton];
   }
 
-  if (v13)
+  if (areTransactionsEditable2)
   {
 LABEL_29:
     if ([v3 count] >= 3)
@@ -1684,11 +1684,11 @@ LABEL_29:
       [v3 addObject:v41];
     }
 
-    v42 = [(PKTransactionHistoryViewController *)self collectionView];
-    v43 = [v42 isEditing];
+    collectionView = [(PKTransactionHistoryViewController *)self collectionView];
+    isEditing = [collectionView isEditing];
 
     v44 = objc_alloc(MEMORY[0x1E69DC708]);
-    if (v43)
+    if (isEditing)
     {
       v45 = 1;
     }
@@ -1729,9 +1729,9 @@ void __53__PKTransactionHistoryViewController__barButtonItems__block_invoke_3(ui
 
 - (id)_selectedText
 {
-  v2 = [(PKTransactionHistoryViewController *)self collectionView];
-  v3 = [v2 indexPathsForSelectedItems];
-  v4 = [v3 count];
+  collectionView = [(PKTransactionHistoryViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  v4 = [indexPathsForSelectedItems count];
 
   return PKLocalizedPaymentString(&cfstr_TransactionHis_2.isa, &cfstr_Lu.isa, v4);
 }
@@ -1756,9 +1756,9 @@ void __53__PKTransactionHistoryViewController__barButtonItems__block_invoke_3(ui
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
-  v10 = [(PKTransactionHistoryViewController *)self collectionView];
-  v11 = [v10 indexPathsForSelectedItems];
-  [v9 setEnabled:{objc_msgSend(v11, "count") != 0}];
+  collectionView = [(PKTransactionHistoryViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  [v9 setEnabled:{objc_msgSend(indexPathsForSelectedItems, "count") != 0}];
 
   [v3 addObject:v9];
   v12 = [v3 copy];
@@ -1869,7 +1869,7 @@ LABEL_4:
 
   else
   {
-    v3 = [(PKTransactionHistoryViewController *)self _dataSource];
+    _dataSource = [(PKTransactionHistoryViewController *)self _dataSource];
     historyType = self->_historyType;
     v5 = historyType > 4;
     v6 = (1 << historyType) & 0x16;
@@ -1878,17 +1878,17 @@ LABEL_4:
       goto LABEL_11;
     }
 
-    v10 = v3;
-    v8 = [v3 merchant];
-    v9 = [v8 businessChatURL];
+    v10 = _dataSource;
+    merchant = [_dataSource merchant];
+    businessChatURL = [merchant businessChatURL];
 
-    if (v9)
+    if (businessChatURL)
     {
       PKOpenURL();
     }
   }
 
-  v3 = v10;
+  _dataSource = v10;
 LABEL_11:
 }
 
@@ -1896,8 +1896,8 @@ LABEL_11:
 {
   if (!PKStoreDemoModeEnabled())
   {
-    v3 = [(PKTransactionHistoryViewController *)self _dataSource];
-    v4 = v3;
+    _dataSource = [(PKTransactionHistoryViewController *)self _dataSource];
+    v4 = _dataSource;
     historyType = self->_historyType;
     if (historyType - 1 < 2)
     {
@@ -1906,14 +1906,14 @@ LABEL_11:
 
     if (!historyType)
     {
-      v12 = [v3 contact];
-      v13 = [v12 phoneNumbers];
-      v14 = [v13 firstObject];
-      v15 = [v14 value];
+      contact = [_dataSource contact];
+      phoneNumbers = [contact phoneNumbers];
+      firstObject = [phoneNumbers firstObject];
+      value = [firstObject value];
 
-      if (v15)
+      if (value)
       {
-        v16 = [v15 stringValue];
+        stringValue = [value stringValue];
         v17 = PKTelephoneURLFromPhoneNumber();
 
         PKOpenURL();
@@ -1925,30 +1925,30 @@ LABEL_11:
     if (historyType == 4)
     {
 LABEL_8:
-      v6 = [v3 merchant];
-      v7 = [v6 phoneNumber];
+      merchant = [_dataSource merchant];
+      phoneNumber = [merchant phoneNumber];
 
-      if (v7)
+      if (phoneNumber)
       {
-        v8 = [v4 merchant];
-        v9 = [v8 useDisplayNameIgnoringBrand];
+        merchant2 = [v4 merchant];
+        useDisplayNameIgnoringBrand = [merchant2 useDisplayNameIgnoringBrand];
 
-        v10 = [v4 merchant];
-        v11 = v10;
-        if (v9)
+        merchant3 = [v4 merchant];
+        v11 = merchant3;
+        if (useDisplayNameIgnoringBrand)
         {
-          [v10 displayNameIgnoringBrand];
+          [merchant3 displayNameIgnoringBrand];
         }
 
         else
         {
-          [v10 displayName];
+          [merchant3 displayName];
         }
         v18 = ;
 
-        v19 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v7 message:v18 preferredStyle:0];
-        v20 = [v19 popoverPresentationController];
-        [v20 setSourceItem:self->_phoneButton];
+        v19 = [MEMORY[0x1E69DC650] alertControllerWithTitle:phoneNumber message:v18 preferredStyle:0];
+        popoverPresentationController = [v19 popoverPresentationController];
+        [popoverPresentationController setSourceItem:self->_phoneButton];
 
         v21 = PKLocalizedString(&cfstr_Call.isa);
         v22 = MEMORY[0x1E69DC648];
@@ -1956,7 +1956,7 @@ LABEL_8:
         v25[1] = 3221225472;
         v25[2] = __62__PKTransactionHistoryViewController__handlePhoneButtonTapped__block_invoke;
         v25[3] = &unk_1E80112E8;
-        v26 = v7;
+        v26 = phoneNumber;
         v23 = [v22 actionWithTitle:v21 style:0 handler:v25];
         [v19 addAction:v23];
         [v19 setPreferredAction:v23];
@@ -1979,20 +1979,20 @@ void __62__PKTransactionHistoryViewController__handlePhoneButtonTapped__block_in
   PKOpenURL();
 }
 
-- (void)_handleEditButtonTapped:(id)a3
+- (void)_handleEditButtonTapped:(id)tapped
 {
-  v4 = [(PKTransactionHistoryViewController *)self collectionView];
-  v5 = [v4 isEditing];
+  collectionView = [(PKTransactionHistoryViewController *)self collectionView];
+  isEditing = [collectionView isEditing];
 
-  [(PKTransactionHistoryViewController *)self setEditing:v5 ^ 1u];
+  [(PKTransactionHistoryViewController *)self setEditing:isEditing ^ 1u];
 }
 
-- (void)_handleSelectButtonTapped:(id)a3
+- (void)_handleSelectButtonTapped:(id)tapped
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = [(PKTransactionHistoryViewController *)self collectionView];
-  v5 = [v4 indexPathsForSelectedItems];
-  v6 = [v5 count];
+  collectionView = [(PKTransactionHistoryViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  v6 = [indexPathsForSelectedItems count];
 
   if (v6)
   {
@@ -2000,10 +2000,10 @@ void __62__PKTransactionHistoryViewController__handlePhoneButtonTapped__block_in
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v7 = [(PKTransactionHistoryViewController *)self collectionView];
-    v8 = [v7 indexPathsForSelectedItems];
+    collectionView2 = [(PKTransactionHistoryViewController *)self collectionView];
+    indexPathsForSelectedItems2 = [collectionView2 indexPathsForSelectedItems];
 
-    v9 = [v8 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    v9 = [indexPathsForSelectedItems2 countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v9)
     {
       v10 = v9;
@@ -2015,18 +2015,18 @@ void __62__PKTransactionHistoryViewController__handlePhoneButtonTapped__block_in
         {
           if (*v32 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(indexPathsForSelectedItems2);
           }
 
           v13 = *(*(&v31 + 1) + 8 * v12);
-          v14 = [(PKTransactionHistoryViewController *)self collectionView];
-          [v14 deselectItemAtIndexPath:v13 animated:0];
+          collectionView3 = [(PKTransactionHistoryViewController *)self collectionView];
+          [collectionView3 deselectItemAtIndexPath:v13 animated:0];
 
           ++v12;
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v10 = [indexPathsForSelectedItems2 countByEnumeratingWithState:&v31 objects:v35 count:16];
       }
 
       while (v10);
@@ -2035,47 +2035,47 @@ void __62__PKTransactionHistoryViewController__handlePhoneButtonTapped__block_in
 
   else
   {
-    v15 = [(PKTransactionHistoryViewController *)self collectionView];
-    v16 = [v15 numberOfSections];
+    collectionView4 = [(PKTransactionHistoryViewController *)self collectionView];
+    numberOfSections = [collectionView4 numberOfSections];
 
-    if (v16 >= 1)
+    if (numberOfSections >= 1)
     {
       v17 = 0;
       do
       {
-        v18 = [(PKTransactionHistoryViewController *)self collectionView];
-        v19 = [v18 numberOfItemsInSection:v17];
+        collectionView5 = [(PKTransactionHistoryViewController *)self collectionView];
+        v19 = [collectionView5 numberOfItemsInSection:v17];
 
         if (v19 >= 1)
         {
           v20 = 0;
           do
           {
-            v21 = [(PKTransactionHistoryViewController *)self collectionView];
+            collectionView6 = [(PKTransactionHistoryViewController *)self collectionView];
             v22 = [MEMORY[0x1E696AC88] indexPathForRow:v20 inSection:v17];
-            v23 = [(PKTransactionHistoryViewController *)self collectionView:v21 shouldSelectItemAtIndexPath:v22];
+            v23 = [(PKTransactionHistoryViewController *)self collectionView:collectionView6 shouldSelectItemAtIndexPath:v22];
 
             if (v23)
             {
-              v24 = [(PKTransactionHistoryViewController *)self collectionView];
+              collectionView7 = [(PKTransactionHistoryViewController *)self collectionView];
               v25 = [MEMORY[0x1E696AC88] indexPathForRow:v20 inSection:v17];
-              [v24 selectItemAtIndexPath:v25 animated:0 scrollPosition:0];
+              [collectionView7 selectItemAtIndexPath:v25 animated:0 scrollPosition:0];
             }
 
             ++v20;
-            v26 = [(PKTransactionHistoryViewController *)self collectionView];
-            v27 = [v26 numberOfItemsInSection:v17];
+            collectionView8 = [(PKTransactionHistoryViewController *)self collectionView];
+            v27 = [collectionView8 numberOfItemsInSection:v17];
           }
 
           while (v20 < v27);
         }
 
         ++v17;
-        v28 = [(PKTransactionHistoryViewController *)self collectionView];
-        v29 = [v28 numberOfSections];
+        collectionView9 = [(PKTransactionHistoryViewController *)self collectionView];
+        numberOfSections2 = [collectionView9 numberOfSections];
       }
 
-      while (v17 < v29);
+      while (v17 < numberOfSections2);
     }
   }
 
@@ -2085,33 +2085,33 @@ void __62__PKTransactionHistoryViewController__handlePhoneButtonTapped__block_in
     [(PKTransactionHistoryViewController *)self _updateTitle];
   }
 
-  v30 = [(PKTransactionHistoryViewController *)self _toolbarItems];
-  [(PKTransactionHistoryViewController *)self setToolbarItems:v30];
+  _toolbarItems = [(PKTransactionHistoryViewController *)self _toolbarItems];
+  [(PKTransactionHistoryViewController *)self setToolbarItems:_toolbarItems];
 }
 
 - (void)_showContactDetailsViewController
 {
-  v9 = [(PKTransactionHistoryViewController *)self _dataSource];
+  _dataSource = [(PKTransactionHistoryViewController *)self _dataSource];
   CNContactViewControllerClass = getCNContactViewControllerClass();
-  v4 = [v9 contact];
-  v5 = [(objc_class *)CNContactViewControllerClass viewControllerForContact:v4];
+  contact = [_dataSource contact];
+  v5 = [(objc_class *)CNContactViewControllerClass viewControllerForContact:contact];
 
   [v5 setAllowsEditing:0];
-  v6 = [v5 navigationItem];
+  navigationItem = [v5 navigationItem];
   v7 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
   [v7 configureWithTransparentBackground];
-  [v6 setStandardAppearance:v7];
+  [navigationItem setStandardAppearance:v7];
   if (v5)
   {
-    v8 = [(PKTransactionHistoryViewController *)self navigationController];
-    if ([v8 pk_settings_useStateDrivenNavigation])
+    navigationController = [(PKTransactionHistoryViewController *)self navigationController];
+    if ([navigationController pk_settings_useStateDrivenNavigation])
     {
-      [v8 pk_settings_pushViewController:v5];
+      [navigationController pk_settings_pushViewController:v5];
     }
 
     else
     {
-      [v8 pushViewController:v5 animated:1];
+      [navigationController pushViewController:v5 animated:1];
     }
   }
 }
@@ -2121,17 +2121,17 @@ void __62__PKTransactionHistoryViewController__handlePhoneButtonTapped__block_in
   v25[1] = *MEMORY[0x1E69E9840];
   if (!self->_loadingMapsViewController)
   {
-    v3 = [(PKTransactionHistoryViewController *)self _dataSource];
-    v4 = [v3 merchant];
-    v5 = [v4 mapsMerchant];
-    v6 = [v5 identifier];
+    _dataSource = [(PKTransactionHistoryViewController *)self _dataSource];
+    merchant = [_dataSource merchant];
+    mapsMerchant = [merchant mapsMerchant];
+    identifier = [mapsMerchant identifier];
 
-    if (v6)
+    if (identifier)
     {
       self->_loadingMapsViewController = 1;
-      v7 = [(PKTransactionHistoryViewController *)self navigationItem];
-      v8 = [(PKTransactionHistoryViewController *)self _barButtonItems];
-      [v7 setRightBarButtonItems:v8];
+      navigationItem = [(PKTransactionHistoryViewController *)self navigationItem];
+      _barButtonItems = [(PKTransactionHistoryViewController *)self _barButtonItems];
+      [navigationItem setRightBarButtonItems:_barButtonItems];
 
       loadingMapsTimer = self->_loadingMapsTimer;
       if (loadingMapsTimer)
@@ -2158,7 +2158,7 @@ void __62__PKTransactionHistoryViewController__handlePhoneButtonTapped__block_in
       dispatch_source_set_event_handler(v15, handler);
       dispatch_resume(self->_loadingMapsTimer);
       v16 = objc_alloc_init(MEMORY[0x1E696F260]);
-      v17 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v6];
+      v17 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:identifier];
       v25[0] = v17;
       v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
       [v16 _setMuids:v18];
@@ -2169,7 +2169,7 @@ void __62__PKTransactionHistoryViewController__handlePhoneButtonTapped__block_in
       v20[2] = __68__PKTransactionHistoryViewController__showMapsDetailsViewController__block_invoke_2;
       v20[3] = &unk_1E8016120;
       objc_copyWeak(v21, &location);
-      v21[1] = v6;
+      v21[1] = identifier;
       [v19 startWithCompletionHandler:v20];
       objc_destroyWeak(v21);
 

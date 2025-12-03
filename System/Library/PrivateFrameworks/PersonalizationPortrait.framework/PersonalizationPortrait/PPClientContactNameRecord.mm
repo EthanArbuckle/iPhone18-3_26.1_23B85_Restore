@@ -1,50 +1,50 @@
 @interface PPClientContactNameRecord
-- (PPClientContactNameRecord)initWithIdentifier:(id)a3 score:(double)a4 source:(unsigned __int8)a5 sourceIdentifier:(id)a6 changeType:(unsigned __int8)a7 firstName:(id)a8 phoneticFirstName:(id)a9 middleName:(id)a10 phoneticMiddleName:(id)a11 lastName:(id)a12 phoneticLastName:(id)a13 organizationName:(id)a14 jobTitle:(id)a15 nickname:(id)a16 relatedNames:(id)a17 streetNames:(id)a18 cityNames:(id)a19;
+- (PPClientContactNameRecord)initWithIdentifier:(id)identifier score:(double)score source:(unsigned __int8)source sourceIdentifier:(id)sourceIdentifier changeType:(unsigned __int8)type firstName:(id)name phoneticFirstName:(id)firstName middleName:(id)self0 phoneticMiddleName:(id)self1 lastName:(id)self2 phoneticLastName:(id)self3 organizationName:(id)self4 jobTitle:(id)self5 nickname:(id)self6 relatedNames:(id)self7 streetNames:(id)self8 cityNames:(id)self9;
 @end
 
 @implementation PPClientContactNameRecord
 
-- (PPClientContactNameRecord)initWithIdentifier:(id)a3 score:(double)a4 source:(unsigned __int8)a5 sourceIdentifier:(id)a6 changeType:(unsigned __int8)a7 firstName:(id)a8 phoneticFirstName:(id)a9 middleName:(id)a10 phoneticMiddleName:(id)a11 lastName:(id)a12 phoneticLastName:(id)a13 organizationName:(id)a14 jobTitle:(id)a15 nickname:(id)a16 relatedNames:(id)a17 streetNames:(id)a18 cityNames:(id)a19
+- (PPClientContactNameRecord)initWithIdentifier:(id)identifier score:(double)score source:(unsigned __int8)source sourceIdentifier:(id)sourceIdentifier changeType:(unsigned __int8)type firstName:(id)name phoneticFirstName:(id)firstName middleName:(id)self0 phoneticMiddleName:(id)self1 lastName:(id)self2 phoneticLastName:(id)self3 organizationName:(id)self4 jobTitle:(id)self5 nickname:(id)self6 relatedNames:(id)self7 streetNames:(id)self8 cityNames:(id)self9
 {
-  v45 = a3;
-  v33 = a6;
-  v44 = a6;
-  v43 = a8;
-  v35 = a9;
-  v42 = a9;
-  v41 = a10;
-  v40 = a11;
-  v39 = a12;
-  v38 = a13;
-  v37 = a14;
-  v23 = a15;
-  v24 = a16;
-  v25 = a17;
-  v26 = a18;
-  v27 = a19;
+  identifierCopy = identifier;
+  sourceIdentifierCopy = sourceIdentifier;
+  sourceIdentifierCopy2 = sourceIdentifier;
+  nameCopy = name;
+  firstNameCopy = firstName;
+  firstNameCopy2 = firstName;
+  middleNameCopy = middleName;
+  phoneticMiddleNameCopy = phoneticMiddleName;
+  lastNameCopy = lastName;
+  phoneticLastNameCopy = phoneticLastName;
+  organizationNameCopy = organizationName;
+  titleCopy = title;
+  nicknameCopy = nickname;
+  namesCopy = names;
+  streetNamesCopy = streetNames;
+  cityNamesCopy = cityNames;
   v46.receiver = self;
   v46.super_class = PPClientContactNameRecord;
-  v28 = [(PPContactNameRecord *)&v46 init_];
-  v29 = v28;
-  if (v28)
+  init_ = [(PPContactNameRecord *)&v46 init_];
+  v29 = init_;
+  if (init_)
   {
-    objc_storeStrong(v28 + 1, a3);
-    v29->_score = a4;
-    v29->_source = a5;
-    objc_storeStrong(&v29->_sourceIdentifier, v33);
-    v29->_changeType = a7;
-    objc_storeStrong(&v29->_firstName, a8);
-    objc_storeStrong(&v29->_phoneticFirstName, v35);
-    objc_storeStrong(&v29->_middleName, a10);
-    objc_storeStrong(&v29->_phoneticMiddleName, a11);
-    objc_storeStrong(&v29->_lastName, a12);
-    objc_storeStrong(&v29->_phoneticLastName, a13);
-    objc_storeStrong(&v29->_organizationName, a14);
-    objc_storeStrong(&v29->_jobTitle, a15);
-    objc_storeStrong(&v29->_nickname, a16);
-    objc_storeStrong(&v29->_relatedNames, a17);
-    objc_storeStrong(&v29->_streetNames, a18);
-    objc_storeStrong(&v29->_cityNames, a19);
+    objc_storeStrong(init_ + 1, identifier);
+    v29->_score = score;
+    v29->_source = source;
+    objc_storeStrong(&v29->_sourceIdentifier, sourceIdentifierCopy);
+    v29->_changeType = type;
+    objc_storeStrong(&v29->_firstName, name);
+    objc_storeStrong(&v29->_phoneticFirstName, firstNameCopy);
+    objc_storeStrong(&v29->_middleName, middleName);
+    objc_storeStrong(&v29->_phoneticMiddleName, phoneticMiddleName);
+    objc_storeStrong(&v29->_lastName, lastName);
+    objc_storeStrong(&v29->_phoneticLastName, phoneticLastName);
+    objc_storeStrong(&v29->_organizationName, organizationName);
+    objc_storeStrong(&v29->_jobTitle, title);
+    objc_storeStrong(&v29->_nickname, nickname);
+    objc_storeStrong(&v29->_relatedNames, names);
+    objc_storeStrong(&v29->_streetNames, streetNames);
+    objc_storeStrong(&v29->_cityNames, cityNames);
   }
 
   return v29;

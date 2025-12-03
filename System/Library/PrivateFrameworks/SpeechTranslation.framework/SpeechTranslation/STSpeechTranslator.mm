@@ -1,28 +1,28 @@
 @interface STSpeechTranslator
-+ (void)preferredInputAudioFormatForLocale:(id)a3 completion:(id)a4;
++ (void)preferredInputAudioFormatForLocale:(id)locale completion:(id)completion;
 - (AVAudioFormat)currentOutputFormat;
 - (AVAudioFormat)preferredOutputAudioFormat;
 - (STSpeechTranslator)init;
-- (STSpeechTranslator)initWithConfiguration:(id)a3 delegate:(id)a4;
-- (STSpeechTranslator)initWithSourceLocale:(id)a3 targetLocale:(id)a4 delegate:(id)a5;
+- (STSpeechTranslator)initWithConfiguration:(id)configuration delegate:(id)delegate;
+- (STSpeechTranslator)initWithSourceLocale:(id)locale targetLocale:(id)targetLocale delegate:(id)delegate;
 - (STSpeechTranslatorDelegate)delegate;
-- (void)addAudio:(id)a3;
+- (void)addAudio:(id)audio;
 - (void)finishAudio;
-- (void)setConfiguration:(id)a3;
-- (void)setPreferredOutputAudioFormat:(id)a3;
-- (void)translator:(id)a3 didEncounterError:(id)a4;
-- (void)translator:(id)a3 didProduceSpeakableOutput:(id)a4;
-- (void)translator:(id)a3 didProduceTranslatedOutputs:(id)a4;
-- (void)translatorDidFinish:(id)a3;
+- (void)setConfiguration:(id)configuration;
+- (void)setPreferredOutputAudioFormat:(id)format;
+- (void)translator:(id)translator didEncounterError:(id)error;
+- (void)translator:(id)translator didProduceSpeakableOutput:(id)output;
+- (void)translator:(id)translator didProduceTranslatedOutputs:(id)outputs;
+- (void)translatorDidFinish:(id)finish;
 @end
 
 @implementation STSpeechTranslator
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
   v4 = *(self + OBJC_IVAR___STSpeechTranslator_configuration);
-  *(self + OBJC_IVAR___STSpeechTranslator_configuration) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___STSpeechTranslator_configuration) = configuration;
+  configurationCopy = configuration;
 }
 
 - (STSpeechTranslatorDelegate)delegate
@@ -32,7 +32,7 @@
   return Strong;
 }
 
-+ (void)preferredInputAudioFormatForLocale:(id)a3 completion:(id)a4
++ (void)preferredInputAudioFormatForLocale:(id)locale completion:(id)completion
 {
   v5 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_280407E80, &qword_26B5E3C70) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   (MEMORY[0x28223BE20])();
@@ -44,7 +44,7 @@
   v12 = &v22 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x28223BE20](v11);
   v14 = &v22 - v13;
-  v15 = _Block_copy(a4);
+  v15 = _Block_copy(completion);
   sub_26B5E160C();
   v16 = swift_allocObject();
   *(v16 + 16) = v15;
@@ -73,23 +73,23 @@
   return *(self + v3);
 }
 
-- (void)setPreferredOutputAudioFormat:(id)a3
+- (void)setPreferredOutputAudioFormat:(id)format
 {
   v5 = OBJC_IVAR___STSpeechTranslator_preferredOutputAudioFormat;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = format;
+  formatCopy = format;
 }
 
-- (STSpeechTranslator)initWithConfiguration:(id)a3 delegate:(id)a4
+- (STSpeechTranslator)initWithConfiguration:(id)configuration delegate:(id)delegate
 {
-  v5 = a3;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  return STSpeechTranslator.init(configuration:delegate:)(v5, a4);
+  return STSpeechTranslator.init(configuration:delegate:)(configurationCopy, delegate);
 }
 
-- (STSpeechTranslator)initWithSourceLocale:(id)a3 targetLocale:(id)a4 delegate:(id)a5
+- (STSpeechTranslator)initWithSourceLocale:(id)locale targetLocale:(id)targetLocale delegate:(id)delegate
 {
   v6 = sub_26B5E161C();
   v7 = *(*(v6 - 8) + 64);
@@ -100,16 +100,16 @@
   sub_26B5E160C();
   sub_26B5E160C();
   swift_unknownObjectRetain();
-  v13 = sub_26B5DC508(v12, v10, a5);
+  v13 = sub_26B5DC508(v12, v10, delegate);
   swift_unknownObjectRelease();
   return v13;
 }
 
-- (void)addAudio:(id)a3
+- (void)addAudio:(id)audio
 {
-  v4 = a3;
-  v5 = self;
-  sub_26B5D5740(v4);
+  audioCopy = audio;
+  selfCopy = self;
+  sub_26B5D5740(audioCopy);
 }
 
 - (void)finishAudio
@@ -124,13 +124,13 @@
   v8[2] = 0;
   v8[3] = 0;
   v8[4] = self;
-  v9 = self;
+  selfCopy = self;
   sub_26B5D37D0(0, 0, v6, &unk_26B5E3D18, v8);
 }
 
 - (AVAudioFormat)currentOutputFormat
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_26B5D5F5C();
 
   return v3;
@@ -143,7 +143,7 @@
   return result;
 }
 
-- (void)translator:(id)a3 didProduceTranslatedOutputs:(id)a4
+- (void)translator:(id)translator didProduceTranslatedOutputs:(id)outputs
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_280407E80, &qword_26B5E3C70);
   v6 = *(*(v5 - 8) + 64);
@@ -158,19 +158,19 @@
   v11[3] = 0;
   v11[4] = v9;
   v11[5] = self;
-  v12 = self;
+  selfCopy = self;
   sub_26B5D37D0(0, 0, v8, &unk_26B5E3D08, v11);
 }
 
-- (void)translator:(id)a3 didProduceSpeakableOutput:(id)a4
+- (void)translator:(id)translator didProduceSpeakableOutput:(id)output
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_26B5DC7B0(v7);
+  translatorCopy = translator;
+  outputCopy = output;
+  selfCopy = self;
+  sub_26B5DC7B0(outputCopy);
 }
 
-- (void)translator:(id)a3 didEncounterError:(id)a4
+- (void)translator:(id)translator didEncounterError:(id)error
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_280407E80, &qword_26B5E3C70);
   v7 = *(*(v6 - 8) + 64);
@@ -181,14 +181,14 @@
   v11 = swift_allocObject();
   v11[2] = 0;
   v11[3] = 0;
-  v11[4] = a4;
+  v11[4] = error;
   v11[5] = self;
-  v12 = a4;
-  v13 = self;
+  errorCopy = error;
+  selfCopy = self;
   sub_26B5D37D0(0, 0, v9, &unk_26B5E3D00, v11);
 }
 
-- (void)translatorDidFinish:(id)a3
+- (void)translatorDidFinish:(id)finish
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_280407E80, &qword_26B5E3C70);
   v5 = *(*(v4 - 8) + 64);
@@ -200,7 +200,7 @@
   v9[2] = 0;
   v9[3] = 0;
   v9[4] = self;
-  v10 = self;
+  selfCopy = self;
   sub_26B5D37D0(0, 0, v7, &unk_26B5E3CF8, v9);
 }
 

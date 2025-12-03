@@ -1,33 +1,33 @@
 @interface BYODAddEmailRequest
-- (BYODAddEmailRequest)initWithAccount:(id)a3 accountStore:(id)a4 domain:(id)a5 emailArray:(id)a6 dsid:(id)a7 withEmail:(id)a8 withPhone:(id)a9;
+- (BYODAddEmailRequest)initWithAccount:(id)account accountStore:(id)store domain:(id)domain emailArray:(id)array dsid:(id)dsid withEmail:(id)email withPhone:(id)phone;
 - (id)bodyDictionary;
 - (id)urlString;
-- (void)performRequestWithCallback:(id)a3;
+- (void)performRequestWithCallback:(id)callback;
 @end
 
 @implementation BYODAddEmailRequest
 
-- (BYODAddEmailRequest)initWithAccount:(id)a3 accountStore:(id)a4 domain:(id)a5 emailArray:(id)a6 dsid:(id)a7 withEmail:(id)a8 withPhone:(id)a9
+- (BYODAddEmailRequest)initWithAccount:(id)account accountStore:(id)store domain:(id)domain emailArray:(id)array dsid:(id)dsid withEmail:(id)email withPhone:(id)phone
 {
-  v15 = a3;
-  v16 = a4;
-  v24 = a5;
-  v23 = a6;
-  v22 = a7;
-  v21 = a8;
-  v17 = a9;
-  v18 = [(BYODAddEmailRequest *)self urlString];
+  accountCopy = account;
+  storeCopy = store;
+  domainCopy = domain;
+  arrayCopy = array;
+  dsidCopy = dsid;
+  emailCopy = email;
+  phoneCopy = phone;
+  urlString = [(BYODAddEmailRequest *)self urlString];
   v25.receiver = self;
   v25.super_class = BYODAddEmailRequest;
-  v19 = [(BYODRequest *)&v25 initWithURLString:v18 accountStore:v16 appleAccount:v15 httpRequestType:@"POST" requestBody:0 httpHeader:0];
+  v19 = [(BYODRequest *)&v25 initWithURLString:urlString accountStore:storeCopy appleAccount:accountCopy httpRequestType:@"POST" requestBody:0 httpHeader:0];
 
   if (v19)
   {
-    objc_storeStrong(&v19->_domainName, a5);
-    objc_storeStrong(&v19->_emailArray, a6);
-    objc_storeStrong(&v19->_dsid, a7);
-    objc_storeStrong(&v19->_invitedEmail, a8);
-    objc_storeStrong(&v19->_invitedPhone, a9);
+    objc_storeStrong(&v19->_domainName, domain);
+    objc_storeStrong(&v19->_emailArray, array);
+    objc_storeStrong(&v19->_dsid, dsid);
+    objc_storeStrong(&v19->_invitedEmail, email);
+    objc_storeStrong(&v19->_invitedPhone, phone);
   }
 
   return v19;
@@ -35,21 +35,21 @@
 
 - (id)urlString
 {
-  v2 = [(BYODRequest *)self iCloudAppleAccount];
-  v3 = [v2 propertiesForDataclass:@"com.apple.Dataclass.PremiumMailSettings"];
+  iCloudAppleAccount = [(BYODRequest *)self iCloudAppleAccount];
+  v3 = [iCloudAppleAccount propertiesForDataclass:@"com.apple.Dataclass.PremiumMailSettings"];
   v4 = [v3 objectForKeyedSubscript:@"addCustomEmailURL"];
 
   return v4;
 }
 
-- (void)performRequestWithCallback:(id)a3
+- (void)performRequestWithCallback:(id)callback
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_5ACD0;
   v5[3] = &unk_B97F0;
-  v6 = a3;
-  v4 = v6;
+  callbackCopy = callback;
+  v4 = callbackCopy;
   [(BYODRequest *)self performRequestWithHandler:v5];
 }
 

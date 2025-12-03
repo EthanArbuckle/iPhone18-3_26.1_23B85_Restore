@@ -5,15 +5,15 @@
 - (id)newSpecifiersForChineseShuangpin;
 - (id)newSpecifiersForChineseWubi;
 - (id)specifiers;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
 - (void)dealloc;
 - (void)reloadKeyboardSpecifiers;
-- (void)reloadSoftwareLayoutSpecifiersWithMultilingualSet:(id)a3;
-- (void)removeInputModeInMultilingualSet:(id)a3;
-- (void)setShuangpinType:(id)a3;
-- (void)setSoftwareLayout:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)reloadSoftwareLayoutSpecifiersWithMultilingualSet:(id)set;
+- (void)removeInputModeInMultilingualSet:(id)set;
+- (void)setShuangpinType:(id)type;
+- (void)setSoftwareLayout:(id)layout;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateTitle;
 - (void)viewDidLoad;
 @end
@@ -51,9 +51,9 @@
   }
 
   v4 = v3;
-  v5 = [(KSSoftwareLayoutDetailControllerViewController *)self navigationItem];
+  navigationItem = [(KSSoftwareLayoutDetailControllerViewController *)self navigationItem];
 
-  [v5 setTitle:v4];
+  [navigationItem setTitle:v4];
 }
 
 - (id)specifiers
@@ -89,10 +89,10 @@
 
   NormalizedIdentifier = TIInputModeGetNormalizedIdentifier();
   v70 = [TIInputModeGetComponentsFromIdentifier() objectForKey:@"sw"];
-  v6 = [(KSSoftwareLayoutDetailControllerViewController *)self multilingualSet];
+  multilingualSet = [(KSSoftwareLayoutDetailControllerViewController *)self multilingualSet];
   if (_os_feature_enabled_impl())
   {
-    v7 = [(NSArray *)v6 count]> 1;
+    v7 = [(NSArray *)multilingualSet count]> 1;
   }
 
   else
@@ -107,7 +107,7 @@
   v61 = NormalizedIdentifier;
   if (_os_feature_enabled_impl())
   {
-    v10 = [TIUIGetAddableInputModesForMultilingualSet(v6) count] != 0;
+    v10 = [TIUIGetAddableInputModesForMultilingualSet(multilingualSet) count] != 0;
   }
 
   else
@@ -118,7 +118,7 @@
   [(KSSoftwareLayoutDetailControllerViewController *)self setShowingLanguagesSection:v10 || v7];
   if (_os_feature_enabled_impl())
   {
-    IsMultiscriptInput = TIUIMultilingualSetIsMultiscriptInput(v6, 0);
+    IsMultiscriptInput = TIUIMultilingualSetIsMultiscriptInput(multilingualSet, 0);
   }
 
   else
@@ -137,13 +137,13 @@
       v9 = [v63 mutableCopy];
     }
 
-    else if ((TIUIMultilingualSetContainsTransliterationInputModes(v6) & 1) == 0)
+    else if ((TIUIMultilingualSetContainsTransliterationInputModes(multilingualSet) & 1) == 0)
     {
       v89 = 0u;
       v90 = 0u;
       v87 = 0u;
       v88 = 0u;
-      v19 = [(NSArray *)v6 countByEnumeratingWithState:&v87 objects:v95 count:16];
+      v19 = [(NSArray *)multilingualSet countByEnumeratingWithState:&v87 objects:v95 count:16];
       if (v19)
       {
         v20 = v19;
@@ -154,7 +154,7 @@
           {
             if (*v88 != v21)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(multilingualSet);
             }
 
             v23 = *(*(&v87 + 1) + 8 * i);
@@ -162,7 +162,7 @@
             [v9 addObjectsFromArray:UIKeyboardGetSupportedSoftwareKeyboardsForInputMode()];
           }
 
-          v20 = [(NSArray *)v6 countByEnumeratingWithState:&v87 objects:v95 count:16];
+          v20 = [(NSArray *)multilingualSet countByEnumeratingWithState:&v87 objects:v95 count:16];
         }
 
         while (v20);
@@ -175,7 +175,7 @@
     v59 = v7;
     if (v7)
     {
-      v24 = [(NSArray *)v6 count]!= 2 || v10;
+      v24 = [(NSArray *)multilingualSet count]!= 2 || v10;
       v25 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       if (v24)
       {
@@ -197,12 +197,12 @@
     v27 = [v25 localizedStringForKey:v26 value:&stru_28679E3A8 table:@"Keyboard"];
     [v64 setProperty:v27 forKey:*MEMORY[0x277D3FF88]];
     [v69 addObject:v64];
-    [(NSArray *)v6 firstObject];
+    [(NSArray *)multilingualSet firstObject];
     [MEMORY[0x277CBEAF8] preferredLanguages];
     MultilingualSetFromInputModesWithPreferredLanguages = TIInputModeGetMultilingualSetFromInputModesWithPreferredLanguages();
     v83 = 0u;
     v84 = 0u;
-    v60 = v6;
+    v60 = multilingualSet;
     if ([(NSArray *)MultilingualSetFromInputModesWithPreferredLanguages count])
     {
       v29 = MultilingualSetFromInputModesWithPreferredLanguages;
@@ -210,7 +210,7 @@
 
     else
     {
-      v29 = v6;
+      v29 = multilingualSet;
     }
 
     v85 = 0uLL;
@@ -256,7 +256,7 @@
       [v69 addObject:v40];
     }
 
-    v6 = v60;
+    multilingualSet = v60;
     if (v59)
     {
       goto LABEL_66;
@@ -334,7 +334,7 @@ LABEL_66:
 
         [*(*(&v79 + 1) + 8 * m) identifier];
         MultilingualSet = TIInputModeGetMultilingualSet();
-        if (TIUIGetMultlingualSetsAreEqual(v6, MultilingualSet))
+        if (TIUIGetMultlingualSetsAreEqual(multilingualSet, MultilingualSet))
         {
           [MultilingualSet firstObject];
           v47 = [TIInputModeGetComponentsFromIdentifier() objectForKey:@"sw"];
@@ -443,10 +443,10 @@ LABEL_76:
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [v12 integerValue];
-        v14 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:KSGetShuangpinNameFromType(v13) target:self set:0 get:0 detail:0 cell:3 edit:0];
+        integerValue = [v12 integerValue];
+        v14 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:KSGetShuangpinNameFromType(integerValue) target:self set:0 get:0 detail:0 cell:3 edit:0];
         [v14 setProperty:objc_msgSend(v12 forKey:{"stringValue"), v10}];
-        if (v4 == v13)
+        if (v4 == integerValue)
         {
           [v18 setProperty:v14 forKey:v17];
         }
@@ -496,10 +496,10 @@ LABEL_76:
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [v12 integerValue];
-        v14 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:KSGetWubiStandardName(v13) target:self set:0 get:0 detail:0 cell:3 edit:0];
+        integerValue = [v12 integerValue];
+        v14 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:KSGetWubiStandardName(integerValue) target:self set:0 get:0 detail:0 cell:3 edit:0];
         [v14 setProperty:objc_msgSend(v12 forKey:{"stringValue"), v10}];
-        if (v4 == v13)
+        if (v4 == integerValue)
         {
           [v18 setProperty:v14 forKey:v17];
         }
@@ -517,20 +517,20 @@ LABEL_76:
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v16.receiver = self;
   v16.super_class = KSSoftwareLayoutDetailControllerViewController;
   [KSSoftwareLayoutDetailControllerViewController tableView:sel_tableView_didSelectRowAtIndexPath_ didSelectRowAtIndexPath:?];
-  v7 = [a3 cellForRowAtIndexPath:a4];
+  v7 = [view cellForRowAtIndexPath:path];
   if (v7)
   {
     v8 = v7;
     [(KSSoftwareLayoutDetailControllerViewController *)self inputMode];
     if (KSInputModeIsChineseShuangpin())
     {
-      v9 = [v8 specifier];
-      v10 = [v9 propertyForKey:*MEMORY[0x277D3FFB8]];
+      specifier = [v8 specifier];
+      v10 = [specifier propertyForKey:*MEMORY[0x277D3FFB8]];
       v11 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v10, "integerValue")}];
       if (v11)
       {
@@ -542,8 +542,8 @@ LABEL_76:
     {
       [(KSSoftwareLayoutDetailControllerViewController *)self inputMode];
       IsChineseWubi = KSInputModeIsChineseWubi();
-      v13 = [v8 specifier];
-      v14 = [v13 propertyForKey:*MEMORY[0x277D3FFB8]];
+      specifier2 = [v8 specifier];
+      v14 = [specifier2 propertyForKey:*MEMORY[0x277D3FFB8]];
       v15 = v14;
       if (IsChineseWubi)
       {
@@ -566,8 +566,8 @@ LABEL_76:
   result = self->_inputMode;
   if (!result)
   {
-    v4 = [(KSSoftwareLayoutDetailControllerViewController *)self specifier];
-    result = [objc_msgSend(v4 propertyForKey:{*MEMORY[0x277D3FFB8]), "copy"}];
+    specifier = [(KSSoftwareLayoutDetailControllerViewController *)self specifier];
+    result = [objc_msgSend(specifier propertyForKey:{*MEMORY[0x277D3FFB8]), "copy"}];
     self->_inputMode = result;
   }
 
@@ -580,8 +580,8 @@ LABEL_76:
   result = self->_multilingualSet;
   if (!result)
   {
-    v4 = [(KSSoftwareLayoutDetailControllerViewController *)self specifier];
-    v5 = [v4 propertyForKey:*MEMORY[0x277D401A8]];
+    specifier = [(KSSoftwareLayoutDetailControllerViewController *)self specifier];
+    v5 = [specifier propertyForKey:*MEMORY[0x277D401A8]];
     if (!v5)
     {
       v7[0] = [(KSSoftwareLayoutDetailControllerViewController *)self inputMode];
@@ -596,7 +596,7 @@ LABEL_76:
   return result;
 }
 
-- (void)setSoftwareLayout:(id)a3
+- (void)setSoftwareLayout:(id)layout
 {
   v5 = [+[KSKeyboardListController inputModes](KSKeyboardListController "inputModes")];
   if (![v5 count])
@@ -618,12 +618,12 @@ LABEL_76:
       [(KSSoftwareLayoutDetailControllerViewController *)self inputMode];
       v11 = [TIInputModeGetComponentsFromIdentifier() mutableCopy];
       v12 = [v11 objectForKey:@"sw"];
-      if (v12 && ([v12 isEqualToString:a3] & 1) != 0)
+      if (v12 && ([v12 isEqualToString:layout] & 1) != 0)
       {
         return;
       }
 
-      [v11 setObject:a3 forKey:@"sw"];
+      [v11 setObject:layout forKey:@"sw"];
       IdentifierFromComponents = UIKeyboardInputModeGetIdentifierFromComponents();
       [v5 replaceObjectAtIndex:v7 withObject:IdentifierFromComponents];
       [(KSSoftwareLayoutDetailControllerViewController *)self setInputMode:IdentifierFromComponents];
@@ -653,7 +653,7 @@ LABEL_76:
 
           [v5 objectAtIndexedSubscript:v9];
           TIInputModeGetNormalizedIdentifier();
-          if ([UIKeyboardGetSupportedSoftwareKeyboardsForInputMode() containsObject:a3])
+          if ([UIKeyboardGetSupportedSoftwareKeyboardsForInputMode() containsObject:layout])
           {
             break;
           }
@@ -692,24 +692,24 @@ LABEL_20:
   }
 }
 
-- (void)setShuangpinType:(id)a3
+- (void)setShuangpinType:(id)type
 {
-  v5 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  [v5 setValue:a3 forPreferenceKey:*MEMORY[0x277D6FA70]];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+  [mEMORY[0x277D6F470] setValue:type forPreferenceKey:*MEMORY[0x277D6FA70]];
   KSUpdateShuangpinSWLayout();
 
   [(KSSoftwareLayoutDetailControllerViewController *)self reloadKeyboardSpecifiers];
 }
 
-- (void)removeInputModeInMultilingualSet:(id)a3
+- (void)removeInputModeInMultilingualSet:(id)set
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v23 = a3;
+  setCopy = set;
   NormalizedIdentifier = TIInputModeGetNormalizedIdentifier();
   obj = TIUIGetPairedInputModesForInputMode(NormalizedIdentifier);
   v7 = [obj countByEnumeratingWithState:&v32 objects:v38 count:16];
@@ -732,9 +732,9 @@ LABEL_20:
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v11 = self;
-        v12 = [(KSSoftwareLayoutDetailControllerViewController *)self multilingualSet];
-        v13 = [(NSArray *)v12 countByEnumeratingWithState:&v28 objects:v37 count:16];
+        selfCopy = self;
+        multilingualSet = [(KSSoftwareLayoutDetailControllerViewController *)self multilingualSet];
+        v13 = [(NSArray *)multilingualSet countByEnumeratingWithState:&v28 objects:v37 count:16];
         if (v13)
         {
           v14 = v13;
@@ -746,27 +746,27 @@ LABEL_20:
             {
               if (*v29 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(multilingualSet);
               }
 
               v17 = *(*(&v28 + 1) + 8 * v16);
               if ([TIInputModeGetNormalizedIdentifier() isEqualToString:v10])
               {
-                [v5 addObject:v17];
+                [array addObject:v17];
               }
 
               ++v16;
             }
 
             while (v14 != v16);
-            v14 = [(NSArray *)v12 countByEnumeratingWithState:&v28 objects:v37 count:16];
+            v14 = [(NSArray *)multilingualSet countByEnumeratingWithState:&v28 objects:v37 count:16];
           }
 
           while (v14);
         }
 
         ++v9;
-        self = v11;
+        self = selfCopy;
       }
 
       while (v9 != v8);
@@ -799,14 +799,14 @@ LABEL_20:
 
   v20 = [(NSArray *)[(KSSoftwareLayoutDetailControllerViewController *)self multilingualSet] mutableCopy];
   [v20 removeObject:v24];
-  [v20 removeObjectsInArray:v5];
+  [v20 removeObjectsInArray:array];
   [v20 removeObjectsInArray:v18];
   [v20 addObjectsFromArray:v19];
   -[KSSoftwareLayoutDetailControllerViewController setInputMode:](self, "setInputMode:", [v20 firstObject]);
   [(KSSoftwareLayoutDetailControllerViewController *)self setMultilingualSet:v20];
   v21 = [+[KSKeyboardListController inputModes](KSKeyboardListController "inputModes")];
   [v21 removeObject:v24];
-  [v21 removeObjectsInArray:v5];
+  [v21 removeObjectsInArray:array];
   [v21 removeObjectsInArray:v18];
   [v21 addObjectsFromArray:v19];
   [KSKeyboardListController setInputModes:v21];
@@ -826,21 +826,21 @@ LABEL_20:
   }
 }
 
-- (void)reloadSoftwareLayoutSpecifiersWithMultilingualSet:(id)a3
+- (void)reloadSoftwareLayoutSpecifiersWithMultilingualSet:(id)set
 {
-  -[KSSoftwareLayoutDetailControllerViewController setInputMode:](self, "setInputMode:", [a3 firstObject]);
-  [(KSSoftwareLayoutDetailControllerViewController *)self setMultilingualSet:a3];
+  -[KSSoftwareLayoutDetailControllerViewController setInputMode:](self, "setInputMode:", [set firstObject]);
+  [(KSSoftwareLayoutDetailControllerViewController *)self setMultilingualSet:set];
   [(KSSoftwareLayoutDetailControllerViewController *)self reloadSpecifiers];
 
   [(KSSoftwareLayoutDetailControllerViewController *)self reloadKeyboardSpecifiers];
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
   result = 0;
   if ([(KSSoftwareLayoutDetailControllerViewController *)self showingLanguagesSection])
   {
-    if (![a4 section] && objc_msgSend(a4, "row") >= 1)
+    if (![path section] && objc_msgSend(path, "row") >= 1)
     {
       v7 = [-[KSSoftwareLayoutDetailControllerViewController specifiers](self "specifiers")];
       if ([objc_msgSend(v7 propertyForKey:{*MEMORY[0x277D401A8]), "isEqual:", @"language"}])
@@ -853,13 +853,13 @@ LABEL_20:
   return result;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
     if ([(KSSoftwareLayoutDetailControllerViewController *)self showingLanguagesSection])
     {
-      if (![a5 section] && objc_msgSend(a5, "row") >= 1)
+      if (![path section] && objc_msgSend(path, "row") >= 1)
       {
         v7 = [-[KSSoftwareLayoutDetailControllerViewController specifiers](self "specifiers")];
         if ([objc_msgSend(v7 propertyForKey:{*MEMORY[0x277D401A8]), "isEqual:", @"language"}])

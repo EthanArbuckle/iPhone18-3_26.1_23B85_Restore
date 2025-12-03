@@ -1,25 +1,25 @@
 @interface BLTSectionConfigurationItemFactory
-+ (id)itemForSection:(id)a3 dictionary:(id)a4;
++ (id)itemForSection:(id)section dictionary:(id)dictionary;
 @end
 
 @implementation BLTSectionConfigurationItemFactory
 
-+ (id)itemForSection:(id)a3 dictionary:(id)a4
++ (id)itemForSection:(id)section dictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = a4;
+  sectionCopy = section;
+  dictionaryCopy = dictionary;
   if (itemForSection_dictionary__onceToken != -1)
   {
     +[BLTSectionConfigurationItemFactory itemForSection:dictionary:];
   }
 
-  v7 = [itemForSection_dictionary___sectionToItemClassMap objectForKeyedSubscript:v5];
+  v7 = [itemForSection_dictionary___sectionToItemClassMap objectForKeyedSubscript:sectionCopy];
   if (!v7)
   {
     v7 = objc_opt_class();
   }
 
-  v8 = [[v7 alloc] initWithDictionary:v6];
+  v8 = [[v7 alloc] initWithDictionary:dictionaryCopy];
 
   return v8;
 }

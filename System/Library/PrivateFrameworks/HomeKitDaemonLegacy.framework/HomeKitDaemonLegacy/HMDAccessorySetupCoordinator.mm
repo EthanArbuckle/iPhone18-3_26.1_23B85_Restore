@@ -1,94 +1,94 @@
 @interface HMDAccessorySetupCoordinator
 + (id)logCategory;
-- (HMDAccessorySetupCoordinator)initWithWorkQueue:(id)a3 messageDispatcher:(id)a4 chipAccessoryServerBrowser:(id)a5 chipDataSource:(id)a6;
-- (id)_createCHIPSetupAccessoryPayloadWithSetupPayloadDecimalStringRepresentation:(id)a3 error:(id *)a4;
-- (id)_setupPayloadWithCHIPSetupPayload:(id)a3 setupPayloadURL:(id)a4;
-- (id)createCHIPSetupAccessoryPayloadWithSetupPayloadURL:(id)a3 error:(id *)a4;
-- (id)createSetupAccessoryPayloadWithCHIPSetupPayload:(id)a3 error:(id *)a4;
+- (HMDAccessorySetupCoordinator)initWithWorkQueue:(id)queue messageDispatcher:(id)dispatcher chipAccessoryServerBrowser:(id)browser chipDataSource:(id)source;
+- (id)_createCHIPSetupAccessoryPayloadWithSetupPayloadDecimalStringRepresentation:(id)representation error:(id *)error;
+- (id)_setupPayloadWithCHIPSetupPayload:(id)payload setupPayloadURL:(id)l;
+- (id)createCHIPSetupAccessoryPayloadWithSetupPayloadURL:(id)l error:(id *)error;
+- (id)createSetupAccessoryPayloadWithCHIPSetupPayload:(id)payload error:(id *)error;
 - (id)logIdentifier;
-- (void)_handleStagedPairingCommissioneeInfo:(id)a3 forRequest:(id)a4;
-- (void)_handleStagedPairingDeviceCredential:(id)a3 completionHandler:(id)a4 forRequest:(id)a5 activity:(id)a6;
-- (void)_handleStagedPairingProgressState:(int64_t)a3 forRequest:(id)a4;
-- (void)_handleStagedPairingReadyToCancel:(id)a3 forRequest:(id)a4;
-- (void)_handleStagedPairingServer:(id)a3 error:(id)a4 forRequest:(id)a5 activity:(id)a6;
-- (void)_handleStagedPairingThreadNetworkScanResults:(id)a3 completionHandler:(id)a4 forRequest:(id)a5 activity:(id)a6;
-- (void)_handleStagedPairingWiFiNetworkScanResults:(id)a3 completionHandler:(id)a4 forRequest:(id)a5 activity:(id)a6;
+- (void)_handleStagedPairingCommissioneeInfo:(id)info forRequest:(id)request;
+- (void)_handleStagedPairingDeviceCredential:(id)credential completionHandler:(id)handler forRequest:(id)request activity:(id)activity;
+- (void)_handleStagedPairingProgressState:(int64_t)state forRequest:(id)request;
+- (void)_handleStagedPairingReadyToCancel:(id)cancel forRequest:(id)request;
+- (void)_handleStagedPairingServer:(id)server error:(id)error forRequest:(id)request activity:(id)activity;
+- (void)_handleStagedPairingThreadNetworkScanResults:(id)results completionHandler:(id)handler forRequest:(id)request activity:(id)activity;
+- (void)_handleStagedPairingWiFiNetworkScanResults:(id)results completionHandler:(id)handler forRequest:(id)request activity:(id)activity;
 - (void)configure;
-- (void)handleCancelStagedCHIPAccessoryPairingMessage:(id)a3;
-- (void)handleCancelStagingMessage:(id)a3;
-- (void)handleConfirmDeviceCredentialMessage:(id)a3;
-- (void)handleCreateCHIPSetupAccessoryPayloadMessage:(id)a3;
-- (void)handleCreateCHIPSetupPayloadMessage:(id)a3;
-- (void)handleRejectDeviceCredentialMessage:(id)a3;
-- (void)handleSelectThreadNetworkAssociationMessage:(id)a3;
-- (void)handleSelectWiFiNetworkAssociationMessage:(id)a3;
-- (void)handleStageCHIPAccessoryPairingInStepsMessage:(id)a3;
+- (void)handleCancelStagedCHIPAccessoryPairingMessage:(id)message;
+- (void)handleCancelStagingMessage:(id)message;
+- (void)handleConfirmDeviceCredentialMessage:(id)message;
+- (void)handleCreateCHIPSetupAccessoryPayloadMessage:(id)message;
+- (void)handleCreateCHIPSetupPayloadMessage:(id)message;
+- (void)handleRejectDeviceCredentialMessage:(id)message;
+- (void)handleSelectThreadNetworkAssociationMessage:(id)message;
+- (void)handleSelectWiFiNetworkAssociationMessage:(id)message;
+- (void)handleStageCHIPAccessoryPairingInStepsMessage:(id)message;
 - (void)startMetricsForThirdPartyPairing;
-- (void)stopMetricsForThirdPartyPairingWithError:(id)a3;
+- (void)stopMetricsForThirdPartyPairingWithError:(id)error;
 @end
 
 @implementation HMDAccessorySetupCoordinator
 
 - (id)logIdentifier
 {
-  v2 = [MEMORY[0x277CD17C8] UUID];
-  v3 = [v2 UUIDString];
+  uUID = [MEMORY[0x277CD17C8] UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)_handleStagedPairingServer:(id)a3 error:(id)a4 forRequest:(id)a5 activity:(id)a6
+- (void)_handleStagedPairingServer:(id)server error:(id)error forRequest:(id)request activity:(id)activity
 {
   v105 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HMDAccessorySetupCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v14);
+  serverCopy = server;
+  errorCopy = error;
+  requestCopy = request;
+  activityCopy = activity;
+  workQueue = [(HMDAccessorySetupCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v15 = [v10 identifier];
+  identifier = [serverCopy identifier];
   v16 = objc_autoreleasePoolPush();
-  v17 = self;
+  selfCopy = self;
   v18 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     v19 = HMFGetLogIdentifier();
-    v20 = [v12 UUID];
+    uUID = [requestCopy UUID];
     *buf = 138544130;
     v96 = v19;
     v97 = 2112;
-    v98 = v15;
+    v98 = identifier;
     v99 = 2112;
-    v100 = v11;
+    v100 = errorCopy;
     v101 = 2112;
-    v102 = v20;
+    v102 = uUID;
     _os_log_impl(&dword_2531F8000, v18, OS_LOG_TYPE_INFO, "%{public}@Handling staged pairing identifier %@ and error %@ for request UUID: %@", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v16);
-  v87 = v15;
-  if (!v15 || ([v12 pendingRequestMessage], v21 = objc_claimAutoreleasedReturnValue(), v21, v21))
+  v87 = identifier;
+  if (!identifier || ([requestCopy pendingRequestMessage], v21 = objc_claimAutoreleasedReturnValue(), v21, v21))
   {
-    v22 = [v10 productID];
+    productID = [serverCopy productID];
 
-    if (v22)
+    if (productID)
     {
-      v86 = v13;
+      v86 = activityCopy;
       v23 = objc_autoreleasePoolPush();
-      v24 = v17;
-      v25 = HMFGetOSLogHandle();
-      v26 = os_log_type_enabled(v25, OS_LOG_TYPE_INFO);
+      v24 = selfCopy;
+      productID4 = HMFGetOSLogHandle();
+      v26 = os_log_type_enabled(productID4, OS_LOG_TYPE_INFO);
       v27 = MEMORY[0x277D17A50];
       if (v26)
       {
         HMFGetLogIdentifier();
         v28 = v85 = v23;
         v29 = *MEMORY[0x277D17A68];
-        v30 = v12;
-        v31 = v11;
+        v30 = requestCopy;
+        v31 = errorCopy;
         v32 = *v27;
-        v33 = [v10 productID];
+        productID2 = [serverCopy productID];
         *buf = 138544386;
         v96 = v28;
         v97 = 2114;
@@ -97,11 +97,11 @@
         v100 = @"Accessory Info";
         v101 = 2114;
         v102 = v32;
-        v11 = v31;
-        v12 = v30;
+        errorCopy = v31;
+        requestCopy = v30;
         v103 = 2112;
-        v104 = v33;
-        _os_log_impl(&dword_2531F8000, v25, OS_LOG_TYPE_INFO, "%{public}@tag=%{public}@ desc=%@ %{public}@=%@", buf, 0x34u);
+        v104 = productID2;
+        _os_log_impl(&dword_2531F8000, productID4, OS_LOG_TYPE_INFO, "%{public}@tag=%{public}@ desc=%@ %{public}@=%@", buf, 0x34u);
 
         v23 = v85;
       }
@@ -112,14 +112,14 @@
       }
 
       objc_autoreleasePoolPop(v23);
-      v34 = [MEMORY[0x277D17DE8] sharedInstance];
+      mEMORY[0x277D17DE8] = [MEMORY[0x277D17DE8] sharedInstance];
       v35 = objc_alloc(MEMORY[0x277D17DF8]);
-      v36 = [v10 productID];
-      if (v36)
+      productID3 = [serverCopy productID];
+      if (productID3)
       {
         v93 = *MEMORY[0x277D17A50];
-        v25 = [v10 productID];
-        v94 = v25;
+        productID4 = [serverCopy productID];
+        v94 = productID4;
         v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v94 forKeys:&v93 count:1];
       }
 
@@ -129,137 +129,137 @@
       }
 
       v48 = [v35 initWithTag:v29 data:v37];
-      v49 = [v86 tagProcessorList];
-      [v34 submitTaggedEvent:v48 processorList:v49];
+      tagProcessorList = [v86 tagProcessorList];
+      [mEMORY[0x277D17DE8] submitTaggedEvent:v48 processorList:tagProcessorList];
 
-      if (v36)
+      if (productID3)
       {
       }
 
-      v13 = v86;
-      v15 = v87;
+      activityCopy = v86;
+      identifier = v87;
     }
 
-    [v10 startPairingMetricWithActivity:v13];
-    v50 = [(HMDAccessorySetupCoordinator *)v17 stagingRequestsByUUID];
-    v51 = [v12 UUID];
-    [v50 setObject:0 forKeyedSubscript:v51];
+    [serverCopy startPairingMetricWithActivity:activityCopy];
+    stagingRequestsByUUID = [(HMDAccessorySetupCoordinator *)selfCopy stagingRequestsByUUID];
+    uUID2 = [requestCopy UUID];
+    [stagingRequestsByUUID setObject:0 forKeyedSubscript:uUID2];
 
-    if (v15)
+    if (identifier)
     {
       v52 = objc_autoreleasePoolPush();
-      v53 = v17;
+      v53 = selfCopy;
       v54 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
       {
         v55 = HMFGetLogIdentifier();
-        v56 = [v12 UUID];
+        uUID3 = [requestCopy UUID];
         *buf = 138543874;
         v96 = v55;
         v97 = 2112;
-        v98 = v15;
+        v98 = identifier;
         v99 = 2112;
-        v100 = v56;
+        v100 = uUID3;
         _os_log_impl(&dword_2531F8000, v54, OS_LOG_TYPE_INFO, "%{public}@Successfully staged CHIP accessory server with identifier %@ in multiple steps for request UUID: %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v52);
-      v57 = [(HMDAccessorySetupCoordinator *)v53 chipAccessoryServerBrowser];
-      v58 = [v57 systemCommissionerPairingManager];
+      chipAccessoryServerBrowser = [(HMDAccessorySetupCoordinator *)v53 chipAccessoryServerBrowser];
+      systemCommissionerPairingManager = [chipAccessoryServerBrowser systemCommissionerPairingManager];
       v88[0] = MEMORY[0x277D85DD0];
       v88[1] = 3221225472;
       v88[2] = __85__HMDAccessorySetupCoordinator__handleStagedPairingServer_error_forRequest_activity___block_invoke;
       v88[3] = &unk_27972F7A8;
       v88[4] = v53;
-      v89 = v12;
-      v90 = v13;
-      v91 = v15;
-      v92 = v10;
-      [v58 fetchSystemCommissionerPairingsWithCompletionHandler:v88];
+      v89 = requestCopy;
+      v90 = activityCopy;
+      v91 = identifier;
+      v92 = serverCopy;
+      [systemCommissionerPairingManager fetchSystemCommissionerPairingsWithCompletionHandler:v88];
 
       goto LABEL_41;
     }
 
-    v59 = mapHAPPairingErrorToHMError(v11);
+    v59 = mapHAPPairingErrorToHMError(errorCopy);
     v60 = objc_autoreleasePoolPush();
-    v61 = v17;
+    v61 = selfCopy;
     v62 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
     {
       v63 = HMFGetLogIdentifier();
-      v64 = [v12 UUID];
+      uUID4 = [requestCopy UUID];
       *buf = 138543874;
       v96 = v63;
       v97 = 2112;
-      v98 = v64;
+      v98 = uUID4;
       v99 = 2112;
       v100 = v59;
       _os_log_impl(&dword_2531F8000, v62, OS_LOG_TYPE_ERROR, "%{public}@Failed to stage CHIP accessory pairing for request UUID %@: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v60);
-    v65 = [v12 pendingRequestMessage];
+    pendingRequestMessage = [requestCopy pendingRequestMessage];
 
     v66 = objc_autoreleasePoolPush();
     v67 = v61;
     v68 = HMFGetOSLogHandle();
     v69 = os_log_type_enabled(v68, OS_LOG_TYPE_INFO);
-    if (!v65)
+    if (!pendingRequestMessage)
     {
       if (v69)
       {
         v79 = HMFGetLogIdentifier();
-        v80 = [v12 UUID];
+        uUID5 = [requestCopy UUID];
         *buf = 138543874;
         v96 = v79;
         v97 = 2112;
         v98 = v59;
         v99 = 2112;
-        v100 = v80;
+        v100 = uUID5;
         _os_log_impl(&dword_2531F8000, v68, OS_LOG_TYPE_INFO, "%{public}@Queueing staging error %@ for request UUID: %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v66);
       if (v59)
       {
-        [v12 setError:v59];
+        [requestCopy setError:v59];
       }
 
       else
       {
         v83 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-        [v12 setError:v83];
+        [requestCopy setError:v83];
       }
 
-      v15 = v87;
+      identifier = v87;
       goto LABEL_40;
     }
 
     if (v69)
     {
       v70 = HMFGetLogIdentifier();
-      v71 = [v12 UUID];
+      uUID6 = [requestCopy UUID];
       *buf = 138543874;
       v96 = v70;
       v97 = 2112;
-      v98 = v71;
+      v98 = uUID6;
       v99 = 2112;
       v100 = v59;
       _os_log_impl(&dword_2531F8000, v68, OS_LOG_TYPE_INFO, "%{public}@Responding for request UUID %@ with error: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v66);
-    v72 = [v12 pendingRequestMessage];
-    [v72 respondWithError:v59];
+    pendingRequestMessage2 = [requestCopy pendingRequestMessage];
+    [pendingRequestMessage2 respondWithError:v59];
 
-    v73 = [(__CFString *)v59 domain];
-    v74 = v73;
-    if (v73 == *MEMORY[0x277CCFD28])
+    domain = [(__CFString *)v59 domain];
+    v74 = domain;
+    if (domain == *MEMORY[0x277CCFD28])
     {
-      v81 = [(__CFString *)v59 code];
+      code = [(__CFString *)v59 code];
 
-      v15 = v87;
-      if (v81 == 13)
+      identifier = v87;
+      if (code == 13)
       {
 LABEL_40:
 
@@ -270,26 +270,26 @@ LABEL_40:
     else
     {
 
-      v15 = v87;
+      identifier = v87;
     }
 
     v82 = *MEMORY[0x277D17A70];
     HMMLogTagActivityWithError();
-    [v13 invalidate];
+    [activityCopy invalidate];
     goto LABEL_40;
   }
 
   v38 = objc_autoreleasePoolPush();
-  v39 = v17;
+  v39 = selfCopy;
   v40 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
   {
     v41 = HMFGetLogIdentifier();
-    v42 = [v12 UUID];
+    uUID7 = [requestCopy UUID];
     *buf = 138543618;
     v96 = v41;
     v97 = 2112;
-    v98 = v42;
+    v98 = uUID7;
     _os_log_impl(&dword_2531F8000, v40, OS_LOG_TYPE_ERROR, "%{public}@Unexpectedly received staged pairing identifier for request UUID: %@", buf, 0x16u);
   }
 
@@ -316,13 +316,13 @@ LABEL_40:
   }
 
   objc_autoreleasePoolPop(v43);
-  v75 = [MEMORY[0x277D17DE8] sharedInstance];
+  mEMORY[0x277D17DE8]2 = [MEMORY[0x277D17DE8] sharedInstance];
   v76 = objc_alloc(MEMORY[0x277D17DF8]);
   v77 = [v76 initWithTag:v47 data:MEMORY[0x277CBEC10]];
-  v78 = [v13 tagProcessorList];
-  [v75 submitTaggedEvent:v77 processorList:v78];
+  tagProcessorList2 = [activityCopy tagProcessorList];
+  [mEMORY[0x277D17DE8]2 submitTaggedEvent:v77 processorList:tagProcessorList2];
 
-  v15 = v87;
+  identifier = v87;
 LABEL_41:
 
   v84 = *MEMORY[0x277D85DE8];
@@ -514,132 +514,132 @@ uint64_t __85__HMDAccessorySetupCoordinator__handleStagedPairingServer_error_for
   return v6;
 }
 
-- (void)_handleStagedPairingCommissioneeInfo:(id)a3 forRequest:(id)a4
+- (void)_handleStagedPairingCommissioneeInfo:(id)info forRequest:(id)request
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDAccessorySetupCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  infoCopy = info;
+  requestCopy = request;
+  workQueue = [(HMDAccessorySetupCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v7 UUID];
+    uUID = [requestCopy UUID];
     *buf = 138543618;
     v27 = v12;
     v28 = 2112;
-    v29 = v13;
+    v29 = uUID;
     _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@Handling commissionee info for request UUID: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v9);
-  v14 = [v7 UUID];
-  v25[0] = v14;
+  uUID2 = [requestCopy UUID];
+  v25[0] = uUID2;
   v24[1] = *MEMORY[0x277CCEE10];
-  v15 = encodeRootObjectForIncomingXPCMessage(v6, 0);
+  v15 = encodeRootObjectForIncomingXPCMessage(infoCopy, 0);
   v25[1] = v15;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
 
   v17 = [MEMORY[0x277D0F848] entitledMessageWithName:*MEMORY[0x277CCEDE0] messagePayload:v16];
   v18 = objc_alloc(MEMORY[0x277D0F820]);
-  v19 = [(HMDAccessorySetupCoordinator *)v10 messageTargetUUID];
-  v20 = [v18 initWithTarget:v19];
+  messageTargetUUID = [(HMDAccessorySetupCoordinator *)selfCopy messageTargetUUID];
+  v20 = [v18 initWithTarget:messageTargetUUID];
   [v17 setDestination:v20];
 
-  v21 = [(HMDAccessorySetupCoordinator *)v10 messageDispatcher];
+  messageDispatcher = [(HMDAccessorySetupCoordinator *)selfCopy messageDispatcher];
   v22 = [v17 copy];
-  [v21 sendMessage:v22];
+  [messageDispatcher sendMessage:v22];
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleStagedPairingProgressState:(int64_t)a3 forRequest:(id)a4
+- (void)_handleStagedPairingProgressState:(int64_t)state forRequest:(id)request
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(HMDAccessorySetupCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  requestCopy = request;
+  workQueue = [(HMDAccessorySetupCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v6 UUID];
+    uUID = [requestCopy UUID];
     *buf = 138543874;
     v27 = v11;
     v28 = 2048;
-    v29 = a3;
+    stateCopy = state;
     v30 = 2112;
-    v31 = v12;
+    v31 = uUID;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@Handling progress state (%ld) for request UUID: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  if ((a3 - 1) > 0x25)
+  if ((state - 1) > 0x25)
   {
     v13 = 15;
   }
 
   else
   {
-    v13 = qword_253D4B7B8[a3 - 1];
+    v13 = qword_253D4B7B8[state - 1];
   }
 
   v14 = [MEMORY[0x277CCABB0] numberWithInteger:v13];
-  v15 = [v6 UUID];
+  uUID2 = [requestCopy UUID];
   v24[1] = *MEMORY[0x277CCEE30];
-  v25[0] = v15;
+  v25[0] = uUID2;
   v25[1] = v14;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
 
   v17 = [MEMORY[0x277D0F848] entitledMessageWithName:*MEMORY[0x277CCEE98] messagePayload:v16];
   v18 = objc_alloc(MEMORY[0x277D0F820]);
-  v19 = [(HMDAccessorySetupCoordinator *)v9 messageTargetUUID];
-  v20 = [v18 initWithTarget:v19];
+  messageTargetUUID = [(HMDAccessorySetupCoordinator *)selfCopy messageTargetUUID];
+  v20 = [v18 initWithTarget:messageTargetUUID];
   [v17 setDestination:v20];
 
-  v21 = [(HMDAccessorySetupCoordinator *)v9 messageDispatcher];
+  messageDispatcher = [(HMDAccessorySetupCoordinator *)selfCopy messageDispatcher];
   v22 = [v17 copy];
-  [v21 sendMessage:v22];
+  [messageDispatcher sendMessage:v22];
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleStagedPairingReadyToCancel:(id)a3 forRequest:(id)a4
+- (void)_handleStagedPairingReadyToCancel:(id)cancel forRequest:(id)request
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDAccessorySetupCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  cancelCopy = cancel;
+  requestCopy = request;
+  workQueue = [(HMDAccessorySetupCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v7 UUID];
+    uUID = [requestCopy UUID];
     v26 = 138543618;
     v27 = v12;
     v28 = 2112;
-    v29 = v13;
+    v29 = uUID;
     _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@Handling ready to cancel for request UUID: %@", &v26, 0x16u);
   }
 
   objc_autoreleasePoolPop(v9);
-  v14 = [v7 pendingCancelMessage];
+  pendingCancelMessage = [requestCopy pendingCancelMessage];
 
-  if (v14)
+  if (pendingCancelMessage)
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = v10;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -650,79 +650,79 @@ uint64_t __85__HMDAccessorySetupCoordinator__handleStagedPairingServer_error_for
     }
 
     objc_autoreleasePoolPop(v15);
-    v19 = [v7 pendingCancelMessage];
-    [v19 respondWithSuccess];
+    pendingCancelMessage2 = [requestCopy pendingCancelMessage];
+    [pendingCancelMessage2 respondWithSuccess];
 
-    v20 = [v7 pendingRequestMessage];
+    pendingRequestMessage = [requestCopy pendingRequestMessage];
 
-    if (v20)
+    if (pendingRequestMessage)
     {
-      v21 = [v7 pendingRequestMessage];
+      pendingRequestMessage2 = [requestCopy pendingRequestMessage];
       v22 = [MEMORY[0x277CCA9B8] hmErrorWithCode:23];
-      [v21 respondWithError:v22];
+      [pendingRequestMessage2 respondWithError:v22];
     }
 
-    v23 = [(HMDAccessorySetupCoordinator *)v16 stagingRequestsByUUID];
-    v24 = [v7 UUID];
-    [v23 setObject:0 forKeyedSubscript:v24];
+    stagingRequestsByUUID = [(HMDAccessorySetupCoordinator *)v16 stagingRequestsByUUID];
+    uUID2 = [requestCopy UUID];
+    [stagingRequestsByUUID setObject:0 forKeyedSubscript:uUID2];
   }
 
   else
   {
-    [v7 setCancelHandler:v6];
+    [requestCopy setCancelHandler:cancelCopy];
   }
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleStagedPairingThreadNetworkScanResults:(id)a3 completionHandler:(id)a4 forRequest:(id)a5 activity:(id)a6
+- (void)_handleStagedPairingThreadNetworkScanResults:(id)results completionHandler:(id)handler forRequest:(id)request activity:(id)activity
 {
   v56 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HMDAccessorySetupCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v14);
+  resultsCopy = results;
+  handlerCopy = handler;
+  requestCopy = request;
+  activityCopy = activity;
+  workQueue = [(HMDAccessorySetupCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     v18 = HMFGetLogIdentifier();
-    v19 = [v12 UUID];
+    uUID = [requestCopy UUID];
     *buf = 138543874;
     v51 = v18;
     v52 = 2112;
-    v53 = v10;
+    v53 = resultsCopy;
     v54 = 2112;
-    v55 = v19;
+    v55 = uUID;
     _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_INFO, "%{public}@Handling Thread scan results %@ for request UUID: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v15);
-  v20 = [v12 selectWiFiNetworkHandler];
-  if (v20)
+  selectWiFiNetworkHandler = [requestCopy selectWiFiNetworkHandler];
+  if (selectWiFiNetworkHandler)
   {
 
 LABEL_6:
     v22 = objc_autoreleasePoolPush();
-    v23 = v16;
+    v23 = selfCopy;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       v25 = HMFGetLogIdentifier();
-      v26 = [v12 UUID];
+      uUID2 = [requestCopy UUID];
       *buf = 138543618;
       v51 = v25;
       v52 = 2112;
-      v53 = v26;
+      v53 = uUID2;
       _os_log_impl(&dword_2531F8000, v24, OS_LOG_TYPE_ERROR, "%{public}@Unexpectedly received Thread scan results for request UUID: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v22);
-    v11[2](v11, 0);
+    handlerCopy[2](handlerCopy, 0);
     v27 = objc_autoreleasePoolPush();
     v28 = v23;
     v29 = HMFGetOSLogHandle();
@@ -745,52 +745,52 @@ LABEL_6:
     }
 
     objc_autoreleasePoolPop(v27);
-    v32 = [MEMORY[0x277D17DE8] sharedInstance];
+    mEMORY[0x277D17DE8] = [MEMORY[0x277D17DE8] sharedInstance];
     v33 = objc_alloc(MEMORY[0x277D17DF8]);
-    v34 = [v33 initWithTag:v31 data:MEMORY[0x277CBEC10]];
-    v35 = [v13 tagProcessorList];
-    [v32 submitTaggedEvent:v34 processorList:v35];
+    pendingResponsePayloads = [v33 initWithTag:v31 data:MEMORY[0x277CBEC10]];
+    tagProcessorList = [activityCopy tagProcessorList];
+    [mEMORY[0x277D17DE8] submitTaggedEvent:pendingResponsePayloads processorList:tagProcessorList];
     goto LABEL_12;
   }
 
-  v21 = [v12 selectThreadNetworkHandler];
+  selectThreadNetworkHandler = [requestCopy selectThreadNetworkHandler];
 
-  if (v21)
+  if (selectThreadNetworkHandler)
   {
     goto LABEL_6;
   }
 
-  if (v10)
+  if (resultsCopy)
   {
-    v37 = [v12 UUID];
-    v49[0] = v37;
+    uUID3 = [requestCopy UUID];
+    v49[0] = uUID3;
     v48[1] = *MEMORY[0x277CCEE60];
     v38 = encodeRootObject();
     v49[1] = v38;
-    v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:2];
+    mEMORY[0x277D17DE8] = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:2];
   }
 
   else
   {
-    v32 = MEMORY[0x277CBEC10];
+    mEMORY[0x277D17DE8] = MEMORY[0x277CBEC10];
   }
 
-  [v12 setSelectThreadNetworkHandler:v11];
-  v39 = [v12 pendingRequestMessage];
+  [requestCopy setSelectThreadNetworkHandler:handlerCopy];
+  pendingRequestMessage = [requestCopy pendingRequestMessage];
 
-  if (!v39)
+  if (!pendingRequestMessage)
   {
-    v34 = [v12 pendingResponsePayloads];
-    [v34 addObject:v32];
+    pendingResponsePayloads = [requestCopy pendingResponsePayloads];
+    [pendingResponsePayloads addObject:mEMORY[0x277D17DE8]];
     goto LABEL_13;
   }
 
-  v40 = [v12 pendingRequestMessage];
-  [v40 respondWithPayload:v32];
+  pendingRequestMessage2 = [requestCopy pendingRequestMessage];
+  [pendingRequestMessage2 respondWithPayload:mEMORY[0x277D17DE8]];
 
-  [v12 setPendingRequestMessage:0];
+  [requestCopy setPendingRequestMessage:0];
   v41 = objc_autoreleasePoolPush();
-  v42 = v16;
+  v42 = selfCopy;
   v43 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
   {
@@ -811,11 +811,11 @@ LABEL_6:
   }
 
   objc_autoreleasePoolPop(v41);
-  v34 = [MEMORY[0x277D17DE8] sharedInstance];
+  pendingResponsePayloads = [MEMORY[0x277D17DE8] sharedInstance];
   v46 = objc_alloc(MEMORY[0x277D17DF8]);
-  v35 = [v46 initWithTag:v45 data:MEMORY[0x277CBEC10]];
-  v47 = [v13 tagProcessorList];
-  [v34 submitTaggedEvent:v35 processorList:v47];
+  tagProcessorList = [v46 initWithTag:v45 data:MEMORY[0x277CBEC10]];
+  tagProcessorList2 = [activityCopy tagProcessorList];
+  [pendingResponsePayloads submitTaggedEvent:tagProcessorList processorList:tagProcessorList2];
 
 LABEL_12:
 LABEL_13:
@@ -823,50 +823,50 @@ LABEL_13:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleStagedPairingWiFiNetworkScanResults:(id)a3 completionHandler:(id)a4 forRequest:(id)a5 activity:(id)a6
+- (void)_handleStagedPairingWiFiNetworkScanResults:(id)results completionHandler:(id)handler forRequest:(id)request activity:(id)activity
 {
   v45 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HMDAccessorySetupCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v14);
+  resultsCopy = results;
+  handlerCopy = handler;
+  requestCopy = request;
+  activityCopy = activity;
+  workQueue = [(HMDAccessorySetupCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     v18 = HMFGetLogIdentifier();
-    v19 = [v12 UUID];
+    uUID = [requestCopy UUID];
     *buf = 138543874;
     v40 = v18;
     v41 = 2112;
-    v42 = v10;
+    v42 = resultsCopy;
     v43 = 2112;
-    v44 = v19;
+    v44 = uUID;
     _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_INFO, "%{public}@Handling WiFi scan results %@ for request UUID: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v15);
-  v20 = [v12 selectWiFiNetworkHandler];
-  if (v20)
+  selectWiFiNetworkHandler = [requestCopy selectWiFiNetworkHandler];
+  if (selectWiFiNetworkHandler)
   {
   }
 
   else
   {
-    v21 = [v12 selectThreadNetworkHandler];
+    selectThreadNetworkHandler = [requestCopy selectThreadNetworkHandler];
 
-    if (!v21)
+    if (!selectThreadNetworkHandler)
     {
       v28 = *MEMORY[0x277CCEE50];
-      if (v10)
+      if (resultsCopy)
       {
         v37[0] = *MEMORY[0x277CCEE50];
-        v29 = [v12 UUID];
-        v38[0] = v29;
+        uUID2 = [requestCopy UUID];
+        v38[0] = uUID2;
         v37[1] = *MEMORY[0x277CCEE70];
         v30 = encodeRootObject();
         v38[1] = v30;
@@ -875,26 +875,26 @@ LABEL_13:
 
       else
       {
-        v29 = [v12 UUID];
-        v36 = v29;
+        uUID2 = [requestCopy UUID];
+        v36 = uUID2;
         v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
       }
 
-      [v12 setSelectWiFiNetworkHandler:v11];
-      v32 = [v12 pendingRequestMessage];
+      [requestCopy setSelectWiFiNetworkHandler:handlerCopy];
+      pendingRequestMessage = [requestCopy pendingRequestMessage];
 
-      if (v32)
+      if (pendingRequestMessage)
       {
-        v33 = [v12 pendingRequestMessage];
-        [v33 respondWithPayload:v31];
+        pendingRequestMessage2 = [requestCopy pendingRequestMessage];
+        [pendingRequestMessage2 respondWithPayload:v31];
 
-        [v12 setPendingRequestMessage:0];
+        [requestCopy setPendingRequestMessage:0];
       }
 
       else
       {
-        v34 = [v12 pendingResponsePayloads];
-        [v34 addObject:v31];
+        pendingResponsePayloads = [requestCopy pendingResponsePayloads];
+        [pendingResponsePayloads addObject:v31];
       }
 
       goto LABEL_9;
@@ -902,70 +902,70 @@ LABEL_13:
   }
 
   v22 = objc_autoreleasePoolPush();
-  v23 = v16;
+  v23 = selfCopy;
   v24 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
   {
     v25 = HMFGetLogIdentifier();
-    v26 = [v12 UUID];
+    uUID3 = [requestCopy UUID];
     *buf = 138543618;
     v40 = v25;
     v41 = 2112;
-    v42 = v26;
+    v42 = uUID3;
     _os_log_impl(&dword_2531F8000, v24, OS_LOG_TYPE_ERROR, "%{public}@Unexpectedly received WiFi scan results for request UUID: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v22);
-  v11[2](v11, 0);
+  handlerCopy[2](handlerCopy, 0);
 LABEL_9:
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleStagedPairingDeviceCredential:(id)a3 completionHandler:(id)a4 forRequest:(id)a5 activity:(id)a6
+- (void)_handleStagedPairingDeviceCredential:(id)credential completionHandler:(id)handler forRequest:(id)request activity:(id)activity
 {
   v43 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HMDAccessorySetupCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v14);
+  credentialCopy = credential;
+  handlerCopy = handler;
+  requestCopy = request;
+  activityCopy = activity;
+  workQueue = [(HMDAccessorySetupCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     v18 = HMFGetLogIdentifier();
-    v19 = [v12 UUID];
+    uUID = [requestCopy UUID];
     *buf = 138543874;
     v38 = v18;
     v39 = 2112;
-    v40 = v10;
+    v40 = credentialCopy;
     v41 = 2112;
-    v42 = v19;
+    v42 = uUID;
     _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_INFO, "%{public}@Handling device credential %@ for request UUID: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v15);
-  v20 = [v12 UUID];
-  v36[0] = v20;
+  uUID2 = [requestCopy UUID];
+  v36[0] = uUID2;
   v35[1] = *MEMORY[0x277CCEE18];
   v21 = encodeRootObject();
   v36[1] = v21;
   v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:v35 count:2];
 
-  v23 = [v12 pendingRequestMessage];
+  pendingRequestMessage = [requestCopy pendingRequestMessage];
 
-  if (v23)
+  if (pendingRequestMessage)
   {
-    v24 = [v12 pendingRequestMessage];
-    [v24 respondWithPayload:v22];
+    pendingRequestMessage2 = [requestCopy pendingRequestMessage];
+    [pendingRequestMessage2 respondWithPayload:v22];
 
-    [v12 setPendingRequestMessage:0];
+    [requestCopy setPendingRequestMessage:0];
     v25 = objc_autoreleasePoolPush();
-    v26 = v16;
+    v26 = selfCopy;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
@@ -986,83 +986,83 @@ LABEL_9:
     }
 
     objc_autoreleasePoolPop(v25);
-    v30 = [MEMORY[0x277D17DE8] sharedInstance];
+    mEMORY[0x277D17DE8] = [MEMORY[0x277D17DE8] sharedInstance];
     v31 = objc_alloc(MEMORY[0x277D17DF8]);
     v32 = [v31 initWithTag:v29 data:MEMORY[0x277CBEC10]];
-    v33 = [v13 tagProcessorList];
-    [v30 submitTaggedEvent:v32 processorList:v33];
+    tagProcessorList = [activityCopy tagProcessorList];
+    [mEMORY[0x277D17DE8] submitTaggedEvent:v32 processorList:tagProcessorList];
   }
 
   else
   {
-    v30 = [v12 pendingResponsePayloads];
-    [v30 addObject:v22];
+    mEMORY[0x277D17DE8] = [requestCopy pendingResponsePayloads];
+    [mEMORY[0x277D17DE8] addObject:v22];
   }
 
-  [v12 setConfirmDeviceCredentialCompletionHandler:v11];
+  [requestCopy setConfirmDeviceCredentialCompletionHandler:handlerCopy];
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_setupPayloadWithCHIPSetupPayload:(id)a3 setupPayloadURL:(id)a4
+- (id)_setupPayloadWithCHIPSetupPayload:(id)payload setupPayloadURL:(id)l
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  payloadCopy = payload;
+  lCopy = l;
+  if (!payloadCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v8 = v7;
+  v8 = lCopy;
   v9 = objc_alloc(MEMORY[0x277CD1C98]);
-  v10 = [v6 setupCode];
-  v11 = [v10 stringValue];
-  v12 = [v9 initWithSetupCode:v11 communicationProtocol:2];
+  setupCode = [payloadCopy setupCode];
+  stringValue = [setupCode stringValue];
+  v12 = [v9 initWithSetupCode:stringValue communicationProtocol:2];
 
-  v13 = [objc_alloc(MEMORY[0x277CD1C38]) initWithCHIPSetupPayload:v6];
+  v13 = [objc_alloc(MEMORY[0x277CD1C38]) initWithCHIPSetupPayload:payloadCopy];
   [v12 setSetupPayloadURL:v8];
-  v14 = [v6 setupID];
-  [v12 setSetupID:v14];
+  setupID = [payloadCopy setupID];
+  [v12 setSetupID:setupID];
 
-  [v12 setSupportsIP:{objc_msgSend(v6, "supportsIP")}];
-  [v12 setSupportsBTLE:{objc_msgSend(v6, "supportsBLE")}];
-  [v12 setSupportsWAC:{objc_msgSend(v6, "supportsSoftAP")}];
-  v15 = [v6 vendorID];
-  v16 = [v6 productID];
-  v17 = v16;
-  if (v15 && v16)
+  [v12 setSupportsIP:{objc_msgSend(payloadCopy, "supportsIP")}];
+  [v12 setSupportsBTLE:{objc_msgSend(payloadCopy, "supportsBLE")}];
+  [v12 setSupportsWAC:{objc_msgSend(payloadCopy, "supportsSoftAP")}];
+  vendorID = [payloadCopy vendorID];
+  productID = [payloadCopy productID];
+  v17 = productID;
+  if (vendorID && productID)
   {
-    v18 = [(HMDAccessorySetupCoordinator *)self chipDataSource];
-    [v18 vendorMetadataStore];
-    v36 = v15;
+    chipDataSource = [(HMDAccessorySetupCoordinator *)self chipDataSource];
+    [chipDataSource vendorMetadataStore];
+    v36 = vendorID;
     v19 = v17;
     v20 = v13;
     v22 = v21 = v8;
-    v23 = [v6 vendorID];
-    [v6 productID];
+    vendorID2 = [payloadCopy vendorID];
+    [payloadCopy productID];
     v24 = v37 = self;
-    v25 = [v22 retrieveVendorMetadataForVendorID:v23 productID:v24];
+    v25 = [v22 retrieveVendorMetadataForVendorID:vendorID2 productID:v24];
 
     v8 = v21;
     v13 = v20;
     v17 = v19;
-    v15 = v36;
+    vendorID = v36;
 
-    v26 = [v6 productID];
-    v27 = [v25 productWithID:v26];
+    productID2 = [payloadCopy productID];
+    v27 = [v25 productWithID:productID2];
 
-    v28 = [v27 categoryNumber];
-    [v12 setCategoryNumber:v28];
+    categoryNumber = [v27 categoryNumber];
+    [v12 setCategoryNumber:categoryNumber];
 
-    v29 = [v27 deviceTypeID];
-    [v13 setDeviceTypeID:v29];
+    deviceTypeID = [v27 deviceTypeID];
+    [v13 setDeviceTypeID:deviceTypeID];
 
     self = v37;
   }
 
   [v12 setChipAccessorySetupPayload:v13];
   v30 = objc_autoreleasePoolPush();
-  v31 = self;
+  selfCopy = self;
   v32 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
   {
@@ -1080,21 +1080,21 @@ LABEL_9:
   return v12;
 }
 
-- (id)_createCHIPSetupAccessoryPayloadWithSetupPayloadDecimalStringRepresentation:(id)a3 error:(id *)a4
+- (id)_createCHIPSetupAccessoryPayloadWithSetupPayloadDecimalStringRepresentation:(id)representation error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  representationCopy = representation;
+  if (!representationCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v7 = v6;
-  v8 = [(HMDAccessorySetupCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  v7 = representationCopy;
+  workQueue = [(HMDAccessorySetupCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [(HMDAccessorySetupCoordinator *)self decimalStringRepresentationCHIPAccessorySetupPayloadFactory];
-  v10 = (v9)[2](v9, v7);
+  decimalStringRepresentationCHIPAccessorySetupPayloadFactory = [(HMDAccessorySetupCoordinator *)self decimalStringRepresentationCHIPAccessorySetupPayloadFactory];
+  v10 = (decimalStringRepresentationCHIPAccessorySetupPayloadFactory)[2](decimalStringRepresentationCHIPAccessorySetupPayloadFactory, v7);
 
   if (v10)
   {
@@ -1104,7 +1104,7 @@ LABEL_9:
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -1117,10 +1117,10 @@ LABEL_9:
     }
 
     objc_autoreleasePoolPop(v12);
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-      *a4 = v11 = 0;
+      *error = v11 = 0;
     }
 
     else
@@ -1134,16 +1134,16 @@ LABEL_9:
   return v11;
 }
 
-- (void)handleCancelStagedCHIPAccessoryPairingMessage:(id)a3
+- (void)handleCancelStagedCHIPAccessoryPairingMessage:(id)message
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessorySetupCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDAccessorySetupCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 stringForKey:*MEMORY[0x277CCEE00]];
+  v6 = [messageCopy stringForKey:*MEMORY[0x277CCEE00]];
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   v10 = v9;
   if (v6)
@@ -1159,14 +1159,14 @@ LABEL_9:
     }
 
     objc_autoreleasePoolPop(v7);
-    v12 = [(HMDAccessorySetupCoordinator *)v8 chipAccessoryServerBrowser];
+    chipAccessoryServerBrowser = [(HMDAccessorySetupCoordinator *)selfCopy chipAccessoryServerBrowser];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __78__HMDAccessorySetupCoordinator_handleCancelStagedCHIPAccessoryPairingMessage___block_invoke;
     v17[3] = &unk_2797358C8;
-    v17[4] = v8;
-    v18 = v4;
-    [v12 discardStagedAccessoryServerWithIdentifier:v6 completionHandler:v17];
+    v17[4] = selfCopy;
+    v18 = messageCopy;
+    [chipAccessoryServerBrowser discardStagedAccessoryServerWithIdentifier:v6 completionHandler:v17];
   }
 
   else
@@ -1174,17 +1174,17 @@ LABEL_9:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = [v4 messagePayload];
+      messagePayload = [messageCopy messagePayload];
       *buf = 138543618;
       v20 = v13;
       v21 = 2112;
-      v22 = v14;
+      v22 = messagePayload;
       _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_ERROR, "%{public}@Could not find CHIP accessory pairing identifier in message payload: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v7);
     v15 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    [v4 respondWithError:v15];
+    [messageCopy respondWithError:v15];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -1223,31 +1223,31 @@ void __78__HMDAccessorySetupCoordinator_handleCancelStagedCHIPAccessoryPairingMe
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleCreateCHIPSetupPayloadMessage:(id)a3
+- (void)handleCreateCHIPSetupPayloadMessage:(id)message
 {
   v69 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessorySetupCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDAccessorySetupCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 stringForKey:*MEMORY[0x277CCEE00]];
+  v6 = [messageCopy stringForKey:*MEMORY[0x277CCEE00]];
   if (v6)
   {
-    v7 = [(HMDAccessorySetupCoordinator *)self chipAccessoryServerBrowser];
-    v8 = [v7 stagedAccessoryServerWithIdentifier:v6];
+    chipAccessoryServerBrowser = [(HMDAccessorySetupCoordinator *)self chipAccessoryServerBrowser];
+    v8 = [chipAccessoryServerBrowser stagedAccessoryServerWithIdentifier:v6];
 
     if (v8)
     {
-      v9 = [(HMDAccessorySetupCoordinator *)self currentBundleIdentifier];
-      v10 = [v9 isEqualToString:*MEMORY[0x277CCFE40]];
+      currentBundleIdentifier = [(HMDAccessorySetupCoordinator *)self currentBundleIdentifier];
+      v10 = [currentBundleIdentifier isEqualToString:*MEMORY[0x277CCFE40]];
 
       if ((v10 & 1) == 0)
       {
-        v11 = [(HMDAccessorySetupCoordinator *)self metricsActivity];
-        if (!v11 || (v12 = v11, -[HMDAccessorySetupCoordinator metricsActivity](self, "metricsActivity"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 isValid], v13, v12, (v14 & 1) == 0))
+        metricsActivity = [(HMDAccessorySetupCoordinator *)self metricsActivity];
+        if (!metricsActivity || (v12 = metricsActivity, -[HMDAccessorySetupCoordinator metricsActivity](self, "metricsActivity"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 isValid], v13, v12, (v14 & 1) == 0))
         {
           v15 = objc_autoreleasePoolPush();
-          v16 = self;
+          selfCopy = self;
           v17 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
           {
@@ -1258,22 +1258,22 @@ void __78__HMDAccessorySetupCoordinator_handleCancelStagedCHIPAccessoryPairingMe
           }
 
           objc_autoreleasePoolPop(v15);
-          [(HMDAccessorySetupCoordinator *)v16 startMetricsForThirdPartyPairing];
-          v19 = [(HMDAccessorySetupCoordinator *)v16 metricsActivity];
-          [v8 startPairingMetricWithActivity:v19];
+          [(HMDAccessorySetupCoordinator *)selfCopy startMetricsForThirdPartyPairing];
+          metricsActivity2 = [(HMDAccessorySetupCoordinator *)selfCopy metricsActivity];
+          [v8 startPairingMetricWithActivity:metricsActivity2];
 
           v20 = objc_autoreleasePoolPush();
-          v21 = v16;
+          v21 = selfCopy;
           v22 = HMFGetOSLogHandle();
           v23 = os_log_type_enabled(v22, OS_LOG_TYPE_INFO);
           v24 = MEMORY[0x277D17A28];
           if (v23)
           {
             HMFGetLogIdentifier();
-            v25 = v54 = v20;
+            v25 = currentBundleIdentifier4 = v20;
             v26 = *MEMORY[0x277D17A68];
             v27 = *v24;
-            v28 = [(HMDAccessorySetupCoordinator *)v21 currentBundleIdentifier];
+            currentBundleIdentifier2 = [(HMDAccessorySetupCoordinator *)v21 currentBundleIdentifier];
             *buf = 138544386;
             v60 = v25;
             v61 = 2114;
@@ -1283,11 +1283,11 @@ void __78__HMDAccessorySetupCoordinator_handleCancelStagedCHIPAccessoryPairingMe
             v65 = 2114;
             v66 = v27;
             v67 = 2112;
-            v68 = v28;
+            v68 = currentBundleIdentifier2;
             _os_log_impl(&dword_2531F8000, v22, OS_LOG_TYPE_INFO, "%{public}@tag=%{public}@ desc=%@ %{public}@=%@", buf, 0x34u);
 
             v29 = v26;
-            v20 = v54;
+            v20 = currentBundleIdentifier4;
           }
 
           else
@@ -1296,14 +1296,14 @@ void __78__HMDAccessorySetupCoordinator_handleCancelStagedCHIPAccessoryPairingMe
           }
 
           objc_autoreleasePoolPop(v20);
-          v40 = [MEMORY[0x277D17DE8] sharedInstance];
+          mEMORY[0x277D17DE8] = [MEMORY[0x277D17DE8] sharedInstance];
           v41 = objc_alloc(MEMORY[0x277D17DF8]);
-          v42 = [(HMDAccessorySetupCoordinator *)v21 currentBundleIdentifier];
-          if (v42)
+          currentBundleIdentifier3 = [(HMDAccessorySetupCoordinator *)v21 currentBundleIdentifier];
+          if (currentBundleIdentifier3)
           {
             v57 = *MEMORY[0x277D17A28];
-            v54 = [(HMDAccessorySetupCoordinator *)v21 currentBundleIdentifier];
-            v58 = v54;
+            currentBundleIdentifier4 = [(HMDAccessorySetupCoordinator *)v21 currentBundleIdentifier];
+            v58 = currentBundleIdentifier4;
             v43 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
           }
 
@@ -1313,18 +1313,18 @@ void __78__HMDAccessorySetupCoordinator_handleCancelStagedCHIPAccessoryPairingMe
           }
 
           v44 = [v41 initWithTag:v29 data:v43];
-          v45 = [(HMDAccessorySetupCoordinator *)v21 metricsActivity];
-          v46 = [v45 tagProcessorList];
-          [v40 submitTaggedEvent:v44 processorList:v46];
+          metricsActivity3 = [(HMDAccessorySetupCoordinator *)v21 metricsActivity];
+          tagProcessorList = [metricsActivity3 tagProcessorList];
+          [mEMORY[0x277D17DE8] submitTaggedEvent:v44 processorList:tagProcessorList];
 
-          if (v42)
+          if (currentBundleIdentifier3)
           {
           }
         }
       }
 
       v47 = objc_autoreleasePoolPush();
-      v48 = self;
+      selfCopy2 = self;
       v49 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
       {
@@ -1343,15 +1343,15 @@ void __78__HMDAccessorySetupCoordinator_handleCancelStagedCHIPAccessoryPairingMe
       v55[1] = 3221225472;
       v55[2] = __68__HMDAccessorySetupCoordinator_handleCreateCHIPSetupPayloadMessage___block_invoke;
       v55[3] = &unk_2797341F8;
-      v55[4] = v48;
-      v56 = v4;
+      v55[4] = selfCopy2;
+      v56 = messageCopy;
       [v8 openPairingWindowWithPINForDuration:v55 completionHandler:v52];
     }
 
     else
     {
       v35 = objc_autoreleasePoolPush();
-      v36 = self;
+      selfCopy3 = self;
       v37 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
       {
@@ -1365,7 +1365,7 @@ void __78__HMDAccessorySetupCoordinator_handleCancelStagedCHIPAccessoryPairingMe
 
       objc_autoreleasePoolPop(v35);
       v39 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-      [v4 respondWithError:v39];
+      [messageCopy respondWithError:v39];
 
       v8 = 0;
     }
@@ -1374,22 +1374,22 @@ void __78__HMDAccessorySetupCoordinator_handleCancelStagedCHIPAccessoryPairingMe
   else
   {
     v30 = objc_autoreleasePoolPush();
-    v31 = self;
+    selfCopy4 = self;
     v32 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
       v33 = HMFGetLogIdentifier();
-      v34 = [v4 messagePayload];
+      messagePayload = [messageCopy messagePayload];
       *buf = 138543618;
       v60 = v33;
       v61 = 2112;
-      v62 = v34;
+      v62 = messagePayload;
       _os_log_impl(&dword_2531F8000, v32, OS_LOG_TYPE_ERROR, "%{public}@Could not find CHIP accessory pairing identifier in message payload: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v30);
     v8 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    [v4 respondWithError:v8];
+    [messageCopy respondWithError:v8];
   }
 
   v53 = *MEMORY[0x277D85DE8];
@@ -1432,16 +1432,16 @@ void __68__HMDAccessorySetupCoordinator_handleCreateCHIPSetupPayloadMessage___bl
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleCancelStagingMessage:(id)a3
+- (void)handleCancelStagingMessage:(id)message
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessorySetupCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDAccessorySetupCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 uuidForKey:*MEMORY[0x277CCEE50]];
+  v6 = [messageCopy uuidForKey:*MEMORY[0x277CCEE50]];
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   v10 = v9;
   if (v6)
@@ -1457,52 +1457,52 @@ void __68__HMDAccessorySetupCoordinator_handleCreateCHIPSetupPayloadMessage___bl
     }
 
     objc_autoreleasePoolPop(v7);
-    v12 = [(HMDAccessorySetupCoordinator *)v8 stagingRequestsByUUID];
-    v13 = [v12 objectForKeyedSubscript:v6];
+    stagingRequestsByUUID = [(HMDAccessorySetupCoordinator *)selfCopy stagingRequestsByUUID];
+    v13 = [stagingRequestsByUUID objectForKeyedSubscript:v6];
 
     if (v13)
     {
-      v14 = [v13 error];
+      error = [v13 error];
 
-      if (v14)
+      if (error)
       {
         v15 = objc_autoreleasePoolPush();
-        v16 = v8;
+        v16 = selfCopy;
         v17 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
           v18 = HMFGetLogIdentifier();
-          v19 = [v13 error];
+          error2 = [v13 error];
           v38 = 138543618;
           v39 = v18;
           v40 = 2112;
-          v41 = v19;
+          v41 = error2;
           _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_INFO, "%{public}@Responding to cancel staging message with success in presence of queued pairing error: %@", &v38, 0x16u);
         }
 
         objc_autoreleasePoolPop(v15);
-        v20 = [(HMDAccessorySetupCoordinator *)v16 stagingRequestsByUUID];
-        [v20 setObject:0 forKeyedSubscript:v6];
+        stagingRequestsByUUID2 = [(HMDAccessorySetupCoordinator *)v16 stagingRequestsByUUID];
+        [stagingRequestsByUUID2 setObject:0 forKeyedSubscript:v6];
 
-        [v4 respondWithSuccess];
+        [messageCopy respondWithSuccess];
       }
 
       else
       {
-        v28 = [v13 cancelHandler];
+        cancelHandler = [v13 cancelHandler];
 
-        if (v28)
+        if (cancelHandler)
         {
-          v29 = [(HMDAccessorySetupCoordinator *)v8 stagingRequestsByUUID];
-          [v29 setObject:0 forKeyedSubscript:v6];
+          stagingRequestsByUUID3 = [(HMDAccessorySetupCoordinator *)selfCopy stagingRequestsByUUID];
+          [stagingRequestsByUUID3 setObject:0 forKeyedSubscript:v6];
 
-          v30 = [v13 cancelHandler];
-          v30[2]();
+          cancelHandler2 = [v13 cancelHandler];
+          cancelHandler2[2]();
 
-          [v4 respondWithSuccess];
-          v31 = [v13 pendingRequestMessage];
+          [messageCopy respondWithSuccess];
+          pendingRequestMessage = [v13 pendingRequestMessage];
           v32 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-          [v31 respondWithError:v32];
+          [pendingRequestMessage respondWithError:v32];
 
           [v13 setPendingRequestMessage:0];
         }
@@ -1510,7 +1510,7 @@ void __68__HMDAccessorySetupCoordinator_handleCreateCHIPSetupPayloadMessage___bl
         else
         {
           v33 = objc_autoreleasePoolPush();
-          v34 = v8;
+          v34 = selfCopy;
           v35 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
           {
@@ -1523,7 +1523,7 @@ void __68__HMDAccessorySetupCoordinator_handleCreateCHIPSetupPayloadMessage___bl
           }
 
           objc_autoreleasePoolPop(v33);
-          [v13 setPendingCancelMessage:v4];
+          [v13 setPendingCancelMessage:messageCopy];
         }
       }
     }
@@ -1531,7 +1531,7 @@ void __68__HMDAccessorySetupCoordinator_handleCreateCHIPSetupPayloadMessage___bl
     else
     {
       v23 = objc_autoreleasePoolPush();
-      v24 = v8;
+      v24 = selfCopy;
       v25 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
@@ -1545,7 +1545,7 @@ void __68__HMDAccessorySetupCoordinator_handleCreateCHIPSetupPayloadMessage___bl
 
       objc_autoreleasePoolPop(v23);
       v27 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-      [v4 respondWithError:v27];
+      [messageCopy respondWithError:v27];
 
       v13 = 0;
     }
@@ -1556,39 +1556,39 @@ void __68__HMDAccessorySetupCoordinator_handleCreateCHIPSetupPayloadMessage___bl
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v21 = HMFGetLogIdentifier();
-      v22 = [v4 messagePayload];
+      messagePayload = [messageCopy messagePayload];
       v38 = 138543618;
       v39 = v21;
       v40 = 2112;
-      v41 = v22;
+      v41 = messagePayload;
       _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_ERROR, "%{public}@Could not find staging request in cancel staging message payload: %@", &v38, 0x16u);
     }
 
     objc_autoreleasePoolPop(v7);
     v13 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    [v4 respondWithError:v13];
+    [messageCopy respondWithError:v13];
   }
 
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSelectWiFiNetworkAssociationMessage:(id)a3
+- (void)handleSelectWiFiNetworkAssociationMessage:(id)message
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessorySetupCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDAccessorySetupCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 uuidForKey:*MEMORY[0x277CCEE50]];
+  v6 = [messageCopy uuidForKey:*MEMORY[0x277CCEE50]];
   if (v6)
   {
     v7 = *MEMORY[0x277CCEE68];
     v44 = objc_opt_class();
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v44 count:1];
-    v9 = [v4 unarchivedObjectForKey:v7 ofClasses:v8];
+    v9 = [messageCopy unarchivedObjectForKey:v7 ofClasses:v8];
 
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -1601,13 +1601,13 @@ void __68__HMDAccessorySetupCoordinator_handleCreateCHIPSetupPayloadMessage___bl
     }
 
     objc_autoreleasePoolPop(v10);
-    v14 = [(HMDAccessorySetupCoordinator *)v11 stagingRequestsByUUID];
-    v15 = [v14 objectForKeyedSubscript:v6];
+    stagingRequestsByUUID = [(HMDAccessorySetupCoordinator *)selfCopy stagingRequestsByUUID];
+    v15 = [stagingRequestsByUUID objectForKeyedSubscript:v6];
 
     if (!v15)
     {
       v29 = objc_autoreleasePoolPush();
-      v30 = v11;
+      v30 = selfCopy;
       v31 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
@@ -1625,51 +1625,51 @@ void __68__HMDAccessorySetupCoordinator_handleCreateCHIPSetupPayloadMessage___bl
       goto LABEL_23;
     }
 
-    v16 = [v15 error];
+    error = [v15 error];
 
-    if (v16)
+    if (error)
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = v11;
+      v18 = selfCopy;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         v20 = HMFGetLogIdentifier();
-        v21 = [v15 error];
+        error2 = [v15 error];
         *buf = 138543618;
         v46 = v20;
         v47 = 2112;
-        v48 = v21;
+        v48 = error2;
         _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_ERROR, "%{public}@Responding to select wifi network message with queued pairing error: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v17);
-      v22 = [v15 error];
-      [v4 respondWithError:v22];
+      error3 = [v15 error];
+      [messageCopy respondWithError:error3];
 
-      v23 = [(HMDAccessorySetupCoordinator *)v18 stagingRequestsByUUID];
-      [v23 setObject:0 forKeyedSubscript:v6];
+      stagingRequestsByUUID2 = [(HMDAccessorySetupCoordinator *)v18 stagingRequestsByUUID];
+      [stagingRequestsByUUID2 setObject:0 forKeyedSubscript:v6];
       goto LABEL_24;
     }
 
-    v35 = [v15 selectWiFiNetworkHandler];
+    selectWiFiNetworkHandler = [v15 selectWiFiNetworkHandler];
 
-    if (v35)
+    if (selectWiFiNetworkHandler)
     {
-      v36 = [v15 pendingRequestMessage];
+      pendingRequestMessage = [v15 pendingRequestMessage];
 
-      if (!v36)
+      if (!pendingRequestMessage)
       {
-        v43 = [v15 selectWiFiNetworkHandler];
-        (v43)[2](v43, v9);
+        selectWiFiNetworkHandler2 = [v15 selectWiFiNetworkHandler];
+        (selectWiFiNetworkHandler2)[2](selectWiFiNetworkHandler2, v9);
 
         [v15 setSelectWiFiNetworkHandler:0];
-        [v15 setPendingRequestMessage:v4];
+        [v15 setPendingRequestMessage:messageCopy];
         goto LABEL_25;
       }
 
       v37 = objc_autoreleasePoolPush();
-      v38 = v11;
+      v38 = selfCopy;
       v39 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
       {
@@ -1687,7 +1687,7 @@ void __68__HMDAccessorySetupCoordinator_handleCreateCHIPSetupPayloadMessage___bl
     else
     {
       v37 = objc_autoreleasePoolPush();
-      v38 = v11;
+      v38 = selfCopy;
       v39 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
       {
@@ -1697,8 +1697,8 @@ LABEL_22:
         v33 = MEMORY[0x277CCA9B8];
         v34 = 52;
 LABEL_23:
-        v23 = [v33 hmErrorWithCode:v34];
-        [v4 respondWithError:v23];
+        stagingRequestsByUUID2 = [v33 hmErrorWithCode:v34];
+        [messageCopy respondWithError:stagingRequestsByUUID2];
 LABEL_24:
 
 LABEL_25:
@@ -1719,44 +1719,44 @@ LABEL_25:
   }
 
   v24 = objc_autoreleasePoolPush();
-  v25 = self;
+  selfCopy2 = self;
   v26 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
   {
     v27 = HMFGetLogIdentifier();
-    v28 = [v4 messagePayload];
+    messagePayload = [messageCopy messagePayload];
     *buf = 138543618;
     v46 = v27;
     v47 = 2112;
-    v48 = v28;
+    v48 = messagePayload;
     _os_log_impl(&dword_2531F8000, v26, OS_LOG_TYPE_ERROR, "%{public}@Could not find staging request in select-wifi-network message payload: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v24);
   v9 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-  [v4 respondWithError:v9];
+  [messageCopy respondWithError:v9];
 LABEL_26:
 
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSelectThreadNetworkAssociationMessage:(id)a3
+- (void)handleSelectThreadNetworkAssociationMessage:(id)message
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessorySetupCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDAccessorySetupCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 uuidForKey:*MEMORY[0x277CCEE50]];
+  v6 = [messageCopy uuidForKey:*MEMORY[0x277CCEE50]];
   if (v6)
   {
     v7 = *MEMORY[0x277CCEE58];
     v44 = objc_opt_class();
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v44 count:1];
-    v9 = [v4 unarchivedObjectForKey:v7 ofClasses:v8];
+    v9 = [messageCopy unarchivedObjectForKey:v7 ofClasses:v8];
 
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -1769,13 +1769,13 @@ LABEL_26:
     }
 
     objc_autoreleasePoolPop(v10);
-    v14 = [(HMDAccessorySetupCoordinator *)v11 stagingRequestsByUUID];
-    v15 = [v14 objectForKeyedSubscript:v6];
+    stagingRequestsByUUID = [(HMDAccessorySetupCoordinator *)selfCopy stagingRequestsByUUID];
+    v15 = [stagingRequestsByUUID objectForKeyedSubscript:v6];
 
     if (!v15)
     {
       v29 = objc_autoreleasePoolPush();
-      v30 = v11;
+      v30 = selfCopy;
       v31 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
@@ -1793,51 +1793,51 @@ LABEL_26:
       goto LABEL_23;
     }
 
-    v16 = [v15 error];
+    error = [v15 error];
 
-    if (v16)
+    if (error)
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = v11;
+      v18 = selfCopy;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         v20 = HMFGetLogIdentifier();
-        v21 = [v15 error];
+        error2 = [v15 error];
         *buf = 138543618;
         v46 = v20;
         v47 = 2112;
-        v48 = v21;
+        v48 = error2;
         _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_ERROR, "%{public}@Responding to select Thread network message with queued pairing error: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v17);
-      v22 = [v15 error];
-      [v4 respondWithError:v22];
+      error3 = [v15 error];
+      [messageCopy respondWithError:error3];
 
-      v23 = [(HMDAccessorySetupCoordinator *)v18 stagingRequestsByUUID];
-      [v23 setObject:0 forKeyedSubscript:v6];
+      stagingRequestsByUUID2 = [(HMDAccessorySetupCoordinator *)v18 stagingRequestsByUUID];
+      [stagingRequestsByUUID2 setObject:0 forKeyedSubscript:v6];
       goto LABEL_24;
     }
 
-    v35 = [v15 selectThreadNetworkHandler];
+    selectThreadNetworkHandler = [v15 selectThreadNetworkHandler];
 
-    if (v35)
+    if (selectThreadNetworkHandler)
     {
-      v36 = [v15 pendingRequestMessage];
+      pendingRequestMessage = [v15 pendingRequestMessage];
 
-      if (!v36)
+      if (!pendingRequestMessage)
       {
-        v43 = [v15 selectThreadNetworkHandler];
-        (v43)[2](v43, v9);
+        selectThreadNetworkHandler2 = [v15 selectThreadNetworkHandler];
+        (selectThreadNetworkHandler2)[2](selectThreadNetworkHandler2, v9);
 
         [v15 setSelectThreadNetworkHandler:0];
-        [v15 setPendingRequestMessage:v4];
+        [v15 setPendingRequestMessage:messageCopy];
         goto LABEL_25;
       }
 
       v37 = objc_autoreleasePoolPush();
-      v38 = v11;
+      v38 = selfCopy;
       v39 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
       {
@@ -1855,7 +1855,7 @@ LABEL_26:
     else
     {
       v37 = objc_autoreleasePoolPush();
-      v38 = v11;
+      v38 = selfCopy;
       v39 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
       {
@@ -1865,8 +1865,8 @@ LABEL_22:
         v33 = MEMORY[0x277CCA9B8];
         v34 = 52;
 LABEL_23:
-        v23 = [v33 hmErrorWithCode:v34];
-        [v4 respondWithError:v23];
+        stagingRequestsByUUID2 = [v33 hmErrorWithCode:v34];
+        [messageCopy respondWithError:stagingRequestsByUUID2];
 LABEL_24:
 
 LABEL_25:
@@ -1887,37 +1887,37 @@ LABEL_25:
   }
 
   v24 = objc_autoreleasePoolPush();
-  v25 = self;
+  selfCopy2 = self;
   v26 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
   {
     v27 = HMFGetLogIdentifier();
-    v28 = [v4 messagePayload];
+    messagePayload = [messageCopy messagePayload];
     *buf = 138543618;
     v46 = v27;
     v47 = 2112;
-    v48 = v28;
+    v48 = messagePayload;
     _os_log_impl(&dword_2531F8000, v26, OS_LOG_TYPE_ERROR, "%{public}@Could not find staging request in select-thread-network message payload: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v24);
   v9 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-  [v4 respondWithError:v9];
+  [messageCopy respondWithError:v9];
 LABEL_26:
 
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleRejectDeviceCredentialMessage:(id)a3
+- (void)handleRejectDeviceCredentialMessage:(id)message
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessorySetupCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDAccessorySetupCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 uuidForKey:*MEMORY[0x277CCEE50]];
+  v6 = [messageCopy uuidForKey:*MEMORY[0x277CCEE50]];
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   v10 = v9;
   if (v6)
@@ -1933,44 +1933,44 @@ LABEL_26:
     }
 
     objc_autoreleasePoolPop(v7);
-    v12 = [(HMDAccessorySetupCoordinator *)v8 stagingRequestsByUUID];
-    v13 = [v12 objectForKeyedSubscript:v6];
+    stagingRequestsByUUID = [(HMDAccessorySetupCoordinator *)selfCopy stagingRequestsByUUID];
+    v13 = [stagingRequestsByUUID objectForKeyedSubscript:v6];
 
     if (v13)
     {
-      v14 = [v13 error];
+      error = [v13 error];
 
-      if (v14)
+      if (error)
       {
         v15 = objc_autoreleasePoolPush();
-        v16 = v8;
+        v16 = selfCopy;
         v17 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
           v18 = HMFGetLogIdentifier();
-          v19 = [v13 error];
+          error2 = [v13 error];
           v44 = 138543618;
           v45 = v18;
           v46 = 2112;
-          v47 = v19;
+          v47 = error2;
           _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_ERROR, "%{public}@Responding to reject device credential message with queued pairing error: %@", &v44, 0x16u);
         }
 
         objc_autoreleasePoolPop(v15);
-        v20 = [v13 error];
-        [v4 respondWithError:v20];
+        error3 = [v13 error];
+        [messageCopy respondWithError:error3];
 
-        v21 = [(HMDAccessorySetupCoordinator *)v16 stagingRequestsByUUID];
-        [v21 setObject:0 forKeyedSubscript:v6];
+        stagingRequestsByUUID2 = [(HMDAccessorySetupCoordinator *)v16 stagingRequestsByUUID];
+        [stagingRequestsByUUID2 setObject:0 forKeyedSubscript:v6];
         goto LABEL_23;
       }
 
-      v29 = [v13 confirmDeviceCredentialCompletionHandler];
+      confirmDeviceCredentialCompletionHandler = [v13 confirmDeviceCredentialCompletionHandler];
 
-      if (!v29)
+      if (!confirmDeviceCredentialCompletionHandler)
       {
         v31 = objc_autoreleasePoolPush();
-        v32 = v8;
+        v32 = selfCopy;
         v33 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
         {
@@ -1986,19 +1986,19 @@ LABEL_26:
 LABEL_22:
 
         objc_autoreleasePoolPop(v31);
-        v21 = [MEMORY[0x277CCA9B8] hmErrorWithCode:52];
-        [v4 respondWithError:v21];
+        stagingRequestsByUUID2 = [MEMORY[0x277CCA9B8] hmErrorWithCode:52];
+        [messageCopy respondWithError:stagingRequestsByUUID2];
 LABEL_23:
 
         goto LABEL_24;
       }
 
-      v30 = [v13 pendingRequestMessage];
+      pendingRequestMessage = [v13 pendingRequestMessage];
 
-      if (v30)
+      if (pendingRequestMessage)
       {
         v31 = objc_autoreleasePoolPush();
-        v32 = v8;
+        v32 = selfCopy;
         v33 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
         {
@@ -2017,35 +2017,35 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v37 = [v13 confirmDeviceCredentialCompletionHandler];
+      confirmDeviceCredentialCompletionHandler2 = [v13 confirmDeviceCredentialCompletionHandler];
       v38 = [MEMORY[0x277CCA9B8] hmErrorWithCode:52];
-      (v37)[2](v37, v38);
+      (confirmDeviceCredentialCompletionHandler2)[2](confirmDeviceCredentialCompletionHandler2, v38);
 
       [v13 setConfirmDeviceCredentialCompletionHandler:0];
-      v39 = [v13 pendingResponsePayloads];
-      v40 = [v39 count];
+      pendingResponsePayloads = [v13 pendingResponsePayloads];
+      v40 = [pendingResponsePayloads count];
 
       if (v40)
       {
-        v41 = [v13 pendingResponsePayloads];
-        v42 = [v41 objectAtIndexedSubscript:0];
+        pendingResponsePayloads2 = [v13 pendingResponsePayloads];
+        v42 = [pendingResponsePayloads2 objectAtIndexedSubscript:0];
 
-        v43 = [v13 pendingResponsePayloads];
-        [v43 removeObjectAtIndex:0];
+        pendingResponsePayloads3 = [v13 pendingResponsePayloads];
+        [pendingResponsePayloads3 removeObjectAtIndex:0];
 
-        [v4 respondWithPayload:v42];
+        [messageCopy respondWithPayload:v42];
       }
 
       else
       {
-        [v13 setPendingRequestMessage:v4];
+        [v13 setPendingRequestMessage:messageCopy];
       }
     }
 
     else
     {
       v24 = objc_autoreleasePoolPush();
-      v25 = v8;
+      v25 = selfCopy;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
@@ -2059,7 +2059,7 @@ LABEL_21:
 
       objc_autoreleasePoolPop(v24);
       v28 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-      [v4 respondWithError:v28];
+      [messageCopy respondWithError:v28];
 
       v13 = 0;
     }
@@ -2070,17 +2070,17 @@ LABEL_21:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v22 = HMFGetLogIdentifier();
-      v23 = [v4 messagePayload];
+      messagePayload = [messageCopy messagePayload];
       v44 = 138543618;
       v45 = v22;
       v46 = 2112;
-      v47 = v23;
+      v47 = messagePayload;
       _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_ERROR, "%{public}@Could not find staging request in reject device credential message payload: %@", &v44, 0x16u);
     }
 
     objc_autoreleasePoolPop(v7);
     v13 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    [v4 respondWithError:v13];
+    [messageCopy respondWithError:v13];
   }
 
 LABEL_24:
@@ -2088,16 +2088,16 @@ LABEL_24:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleConfirmDeviceCredentialMessage:(id)a3
+- (void)handleConfirmDeviceCredentialMessage:(id)message
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessorySetupCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDAccessorySetupCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 uuidForKey:*MEMORY[0x277CCEE50]];
+  v6 = [messageCopy uuidForKey:*MEMORY[0x277CCEE50]];
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   v10 = v9;
   if (v6)
@@ -2113,46 +2113,46 @@ LABEL_24:
     }
 
     objc_autoreleasePoolPop(v7);
-    v12 = [(HMDAccessorySetupCoordinator *)v8 stagingRequestsByUUID];
-    v13 = [v12 objectForKeyedSubscript:v6];
+    stagingRequestsByUUID = [(HMDAccessorySetupCoordinator *)selfCopy stagingRequestsByUUID];
+    v13 = [stagingRequestsByUUID objectForKeyedSubscript:v6];
 
     if (v13)
     {
-      v14 = [v13 error];
+      error = [v13 error];
 
-      if (v14)
+      if (error)
       {
         v15 = objc_autoreleasePoolPush();
-        v16 = v8;
+        v16 = selfCopy;
         v17 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
           v18 = HMFGetLogIdentifier();
-          v19 = [v13 error];
+          error2 = [v13 error];
           v41 = 138543618;
           v42 = v18;
           v43 = 2112;
-          v44 = v19;
+          v44 = error2;
           _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_ERROR, "%{public}@Responding to confirm device credential message with queued pairing error: %@", &v41, 0x16u);
         }
 
         objc_autoreleasePoolPop(v15);
-        v20 = [v13 error];
-        [v4 respondWithError:v20];
+        error3 = [v13 error];
+        [messageCopy respondWithError:error3];
 
-        v21 = [(HMDAccessorySetupCoordinator *)v16 stagingRequestsByUUID];
-        [v21 setObject:0 forKeyedSubscript:v6];
+        stagingRequestsByUUID2 = [(HMDAccessorySetupCoordinator *)v16 stagingRequestsByUUID];
+        [stagingRequestsByUUID2 setObject:0 forKeyedSubscript:v6];
 LABEL_9:
 
         goto LABEL_16;
       }
 
-      v30 = [v13 confirmDeviceCredentialCompletionHandler];
+      confirmDeviceCredentialCompletionHandler = [v13 confirmDeviceCredentialCompletionHandler];
 
-      if (!v30)
+      if (!confirmDeviceCredentialCompletionHandler)
       {
         v37 = objc_autoreleasePoolPush();
-        v38 = v8;
+        v38 = selfCopy;
         v39 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
         {
@@ -2165,39 +2165,39 @@ LABEL_9:
         }
 
         objc_autoreleasePoolPop(v37);
-        v21 = [MEMORY[0x277CCA9B8] hmErrorWithCode:52];
-        [v4 respondWithError:v21];
+        stagingRequestsByUUID2 = [MEMORY[0x277CCA9B8] hmErrorWithCode:52];
+        [messageCopy respondWithError:stagingRequestsByUUID2];
         goto LABEL_9;
       }
 
-      v31 = [v13 confirmDeviceCredentialCompletionHandler];
-      v31[2](v31, 0);
+      confirmDeviceCredentialCompletionHandler2 = [v13 confirmDeviceCredentialCompletionHandler];
+      confirmDeviceCredentialCompletionHandler2[2](confirmDeviceCredentialCompletionHandler2, 0);
 
       [v13 setConfirmDeviceCredentialCompletionHandler:0];
-      v32 = [v13 pendingResponsePayloads];
-      v33 = [v32 count];
+      pendingResponsePayloads = [v13 pendingResponsePayloads];
+      v33 = [pendingResponsePayloads count];
 
       if (v33)
       {
-        v34 = [v13 pendingResponsePayloads];
-        v35 = [v34 objectAtIndexedSubscript:0];
+        pendingResponsePayloads2 = [v13 pendingResponsePayloads];
+        v35 = [pendingResponsePayloads2 objectAtIndexedSubscript:0];
 
-        v36 = [v13 pendingResponsePayloads];
-        [v36 removeObjectAtIndex:0];
+        pendingResponsePayloads3 = [v13 pendingResponsePayloads];
+        [pendingResponsePayloads3 removeObjectAtIndex:0];
 
-        [v4 respondWithPayload:v35];
+        [messageCopy respondWithPayload:v35];
       }
 
       else
       {
-        [v13 setPendingRequestMessage:v4];
+        [v13 setPendingRequestMessage:messageCopy];
       }
     }
 
     else
     {
       v24 = objc_autoreleasePoolPush();
-      v25 = v8;
+      v25 = selfCopy;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
@@ -2211,7 +2211,7 @@ LABEL_9:
 
       objc_autoreleasePoolPop(v24);
       v28 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-      [v4 respondWithError:v28];
+      [messageCopy respondWithError:v28];
 
       v13 = 0;
     }
@@ -2222,17 +2222,17 @@ LABEL_9:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v22 = HMFGetLogIdentifier();
-      v23 = [v4 messagePayload];
+      messagePayload = [messageCopy messagePayload];
       v41 = 138543618;
       v42 = v22;
       v43 = 2112;
-      v44 = v23;
+      v44 = messagePayload;
       _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_ERROR, "%{public}@Could not find staging request in confirm device credential message payload: %@", &v41, 0x16u);
     }
 
     objc_autoreleasePoolPop(v7);
     v13 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    [v4 respondWithError:v13];
+    [messageCopy respondWithError:v13];
   }
 
 LABEL_16:
@@ -2240,53 +2240,53 @@ LABEL_16:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleStageCHIPAccessoryPairingInStepsMessage:(id)a3
+- (void)handleStageCHIPAccessoryPairingInStepsMessage:(id)message
 {
   v153[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessorySetupCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDAccessorySetupCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   [(HMDAccessorySetupCoordinator *)self startMetricsForThirdPartyPairing];
-  v6 = [(HMDAccessorySetupCoordinator *)self metricsActivity];
+  metricsActivity = [(HMDAccessorySetupCoordinator *)self metricsActivity];
   v7 = *MEMORY[0x277CCEE28];
   v153[0] = objc_opt_class();
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v153 count:1];
-  v9 = [v4 unarchivedObjectForKey:v7 ofClasses:v8];
+  v9 = [messageCopy unarchivedObjectForKey:v7 ofClasses:v8];
 
   if (v9)
   {
-    v93 = [v4 BOOLForKey:*MEMORY[0x277CCEE48]];
-    v10 = [v9 categoryNumber];
+    v93 = [messageCopy BOOLForKey:*MEMORY[0x277CCEE48]];
+    categoryNumber = [v9 categoryNumber];
 
-    if (v10)
+    if (categoryNumber)
     {
-      v11 = [v9 categoryNumber];
+      categoryNumber2 = [v9 categoryNumber];
     }
 
     else
     {
-      v11 = &unk_286629CC8;
+      categoryNumber2 = &unk_286629CC8;
     }
 
-    v20 = [v9 productNumber];
+    productNumber = [v9 productNumber];
 
-    if (v20)
+    if (productNumber)
     {
-      v21 = [v9 productNumber];
+      productNumber2 = [v9 productNumber];
     }
 
     else
     {
-      v21 = @"Unknown";
+      productNumber2 = @"Unknown";
     }
 
-    v105 = v6;
-    v106 = v21;
-    v103 = v4;
-    v104 = v11;
+    v105 = metricsActivity;
+    v106 = productNumber2;
+    v103 = messageCopy;
+    v104 = categoryNumber2;
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy = self;
     v24 = HMFGetOSLogHandle();
     v25 = os_log_type_enabled(v24, OS_LOG_TYPE_INFO);
     v26 = MEMORY[0x277D17A68];
@@ -2304,7 +2304,7 @@ LABEL_16:
       v94 = *v29;
       v31 = *MEMORY[0x277D17A58];
       v32 = *MEMORY[0x277D17A28];
-      v33 = [(HMDAccessorySetupCoordinator *)v23 currentBundleIdentifier];
+      currentBundleIdentifier = [(HMDAccessorySetupCoordinator *)selfCopy currentBundleIdentifier];
       v34 = *MEMORY[0x277D17A60];
       v35 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v9, "requiresMatterCustomCommissioningFlow")}];
       *buf = 138546434;
@@ -2331,7 +2331,7 @@ LABEL_16:
       v145 = 2114;
       v146 = v32;
       v147 = 2112;
-      v148 = v33;
+      v148 = currentBundleIdentifier;
       v149 = 2114;
       v95 = v34;
       v150 = v34;
@@ -2354,44 +2354,44 @@ LABEL_16:
     }
 
     objc_autoreleasePoolPop(v22);
-    v36 = [MEMORY[0x277D17DE8] sharedInstance];
+    mEMORY[0x277D17DE8] = [MEMORY[0x277D17DE8] sharedInstance];
     v37 = objc_alloc(MEMORY[0x277D17DF8]);
     v38 = *v26;
     v39 = *v27;
     v40 = [*(v28 + 2992) numberWithInteger:{objc_msgSend(v9, "communicationProtocol")}];
     v108 = v9;
     v41 = *v29;
-    v42 = [(HMDAccessorySetupCoordinator *)v23 currentBundleIdentifier];
+    currentBundleIdentifier2 = [(HMDAccessorySetupCoordinator *)selfCopy currentBundleIdentifier];
     v43 = [*(v28 + 2992) numberWithBool:{objc_msgSend(v108, "requiresMatterCustomCommissioningFlow")}];
     v87 = v98;
     v18 = v104;
     v84 = v39;
     v44 = HMDTaggedLoggingCreateDictionary();
     v99 = v38;
-    v45 = [v37 initWithTag:v38 data:{v44, v84, v40, v41, v104, v101, v106, v87, v42, v95, v43}];
-    v6 = v105;
-    v46 = [v105 tagProcessorList];
-    [v36 submitTaggedEvent:v45 processorList:v46];
+    v45 = [v37 initWithTag:v38 data:{v44, v84, v40, v41, v104, v101, v106, v87, currentBundleIdentifier2, v95, v43}];
+    metricsActivity = v105;
+    tagProcessorList = [v105 tagProcessorList];
+    [mEMORY[0x277D17DE8] submitTaggedEvent:v45 processorList:tagProcessorList];
 
     v9 = v108;
-    v47 = [v108 chipAccessorySetupPayload];
-    v102 = v47;
-    if (v47)
+    chipAccessorySetupPayload = [v108 chipAccessorySetupPayload];
+    v102 = chipAccessorySetupPayload;
+    if (chipAccessorySetupPayload)
     {
-      v48 = [v47 chipSetupPayload];
+      chipSetupPayload = [chipAccessorySetupPayload chipSetupPayload];
       v49 = objc_autoreleasePoolPush();
-      v50 = v23;
+      v50 = selfCopy;
       v51 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
       {
         v90 = HMFGetLogIdentifier();
         v52 = *MEMORY[0x277D17A98];
-        v88 = [v48 vendorID];
+        vendorID = [chipSetupPayload vendorID];
         v53 = *MEMORY[0x277D17A88];
         v92 = v49;
-        v54 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v48, "supportsSoftAP")}];
+        v54 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(chipSetupPayload, "supportsSoftAP")}];
         v55 = *MEMORY[0x277D17A48];
-        v56 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v48, "hasShortDiscriminator")}];
+        v56 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(chipSetupPayload, "hasShortDiscriminator")}];
         *buf = 138545410;
         v128 = v90;
         v129 = 2114;
@@ -2404,7 +2404,7 @@ LABEL_16:
         v134 = v52;
         v58 = v53;
         v135 = 2112;
-        v136 = v88;
+        v136 = vendorID;
         v137 = 2114;
         v138 = v53;
         v139 = 2112;
@@ -2427,26 +2427,26 @@ LABEL_16:
       }
 
       objc_autoreleasePoolPop(v49);
-      v64 = [MEMORY[0x277D17DE8] sharedInstance];
+      mEMORY[0x277D17DE8]2 = [MEMORY[0x277D17DE8] sharedInstance];
       v65 = objc_alloc(MEMORY[0x277D17DF8]);
-      v66 = [v48 vendorID];
-      v67 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v48, "supportsSoftAP")}];
-      v68 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v48, "hasShortDiscriminator")}];
+      vendorID2 = [chipSetupPayload vendorID];
+      v67 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(chipSetupPayload, "supportsSoftAP")}];
+      v68 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(chipSetupPayload, "hasShortDiscriminator")}];
       v85 = v58;
       v69 = HMDTaggedLoggingCreateDictionary();
-      v70 = [v65 initWithTag:v57 data:{v69, v96, v66, v85, v67, v55, v68}];
-      v71 = [v105 tagProcessorList];
-      [v64 submitTaggedEvent:v70 processorList:v71];
+      v70 = [v65 initWithTag:v57 data:{v69, v96, vendorID2, v85, v67, v55, v68}];
+      tagProcessorList2 = [v105 tagProcessorList];
+      [mEMORY[0x277D17DE8]2 submitTaggedEvent:v70 processorList:tagProcessorList2];
 
       v72 = objc_alloc_init(HMDAccessorySetupCoordinatorStagingRequest);
-      v73 = [MEMORY[0x277CBEB18] array];
-      [(HMDAccessorySetupCoordinatorStagingRequest *)v72 setPendingResponsePayloads:v73];
+      array = [MEMORY[0x277CBEB18] array];
+      [(HMDAccessorySetupCoordinatorStagingRequest *)v72 setPendingResponsePayloads:array];
 
-      v4 = v103;
+      messageCopy = v103;
       [(HMDAccessorySetupCoordinatorStagingRequest *)v72 setPendingRequestMessage:v103];
-      v74 = [(HMDAccessorySetupCoordinator *)v50 stagingRequestsByUUID];
-      v75 = [(HMDAccessorySetupCoordinatorStagingRequest *)v72 UUID];
-      [v74 setObject:v72 forKeyedSubscript:v75];
+      stagingRequestsByUUID = [(HMDAccessorySetupCoordinator *)v50 stagingRequestsByUUID];
+      uUID = [(HMDAccessorySetupCoordinatorStagingRequest *)v72 UUID];
+      [stagingRequestsByUUID setObject:v72 forKeyedSubscript:uUID];
 
       v76 = objc_autoreleasePoolPush();
       v77 = v50;
@@ -2454,18 +2454,18 @@ LABEL_16:
       if (os_log_type_enabled(v78, OS_LOG_TYPE_INFO))
       {
         v79 = HMFGetLogIdentifier();
-        v80 = [(HMDAccessorySetupCoordinatorStagingRequest *)v72 UUID];
+        uUID2 = [(HMDAccessorySetupCoordinatorStagingRequest *)v72 UUID];
         *buf = 138543874;
         v128 = v79;
         v129 = 2112;
-        v130 = v48;
+        v130 = chipSetupPayload;
         v131 = 2112;
-        v132 = v80;
+        v132 = uUID2;
         _os_log_impl(&dword_2531F8000, v78, OS_LOG_TYPE_INFO, "%{public}@Handling stage CHIP accessory pairing in steps message with setup payload: %@, request UUID: %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v76);
-      v81 = [(HMDAccessorySetupCoordinator *)v77 chipAccessoryServerBrowser];
+      chipAccessoryServerBrowser = [(HMDAccessorySetupCoordinator *)v77 chipAccessoryServerBrowser];
       v124[0] = MEMORY[0x277D85DD0];
       v124[1] = 3221225472;
       v124[2] = __78__HMDAccessorySetupCoordinator_handleStageCHIPAccessoryPairingInStepsMessage___block_invoke;
@@ -2514,8 +2514,8 @@ LABEL_16:
       v111 = v120;
       v82 = v113;
       LOBYTE(v86) = v93;
-      v6 = v105;
-      [v81 stageAccessoryServerWithSetupPayload:v48 fabricID:0 deviceCredentialHandler:v124 wifiScanResultsHandler:v121 threadScanResultsHandler:v118 readyToCancelHandler:v116 progressUpdateHandler:v114 commissioneeInfoHandler:v112 scanningNetworks:v86 completionHandler:v109];
+      metricsActivity = v105;
+      [chipAccessoryServerBrowser stageAccessoryServerWithSetupPayload:chipSetupPayload fabricID:0 deviceCredentialHandler:v124 wifiScanResultsHandler:v121 threadScanResultsHandler:v118 readyToCancelHandler:v116 progressUpdateHandler:v114 commissioneeInfoHandler:v112 scanningNetworks:v86 completionHandler:v109];
 
       v9 = v108;
       v18 = v104;
@@ -2524,9 +2524,9 @@ LABEL_16:
     else
     {
       v59 = objc_autoreleasePoolPush();
-      v60 = v23;
+      v60 = selfCopy;
       v61 = HMFGetOSLogHandle();
-      v4 = v103;
+      messageCopy = v103;
       if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
       {
         v62 = HMFGetLogIdentifier();
@@ -2540,8 +2540,8 @@ LABEL_16:
       }
 
       objc_autoreleasePoolPop(v59);
-      v48 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-      [v103 respondWithError:v48];
+      chipSetupPayload = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
+      [v103 respondWithError:chipSetupPayload];
       v63 = *MEMORY[0x277D17A70];
       HMMLogTagActivityWithError();
       [v105 invalidate];
@@ -2551,29 +2551,29 @@ LABEL_16:
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v15 = HMFGetLogIdentifier();
-      [v4 messagePayload];
-      v17 = v16 = v4;
+      [messageCopy messagePayload];
+      v17 = v16 = messageCopy;
       *buf = 138543618;
       v128 = v15;
       v129 = 2112;
       v130 = v17;
       _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_ERROR, "%{public}@Could not find setup accessory payload in message payload: %@", buf, 0x16u);
 
-      v4 = v16;
+      messageCopy = v16;
       v9 = 0;
     }
 
     objc_autoreleasePoolPop(v12);
     v18 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    [v4 respondWithError:v18];
+    [messageCopy respondWithError:v18];
     v19 = *MEMORY[0x277D17A70];
     HMMLogTagActivityWithError();
-    [v6 invalidate];
+    [metricsActivity invalidate];
   }
 
   v83 = *MEMORY[0x277D85DE8];
@@ -2705,36 +2705,36 @@ void __78__HMDAccessorySetupCoordinator_handleStageCHIPAccessoryPairingInStepsMe
   dispatch_async(v8, block);
 }
 
-- (void)handleCreateCHIPSetupAccessoryPayloadMessage:(id)a3
+- (void)handleCreateCHIPSetupAccessoryPayloadMessage:(id)message
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessorySetupCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDAccessorySetupCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v4 messagePayload];
+    messagePayload = [messageCopy messagePayload];
     *buf = 138543618;
     v32 = v9;
     v33 = 2112;
-    v34 = v10;
+    v34 = messagePayload;
     _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@Handling create CHIP setup accessory payload message payload: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v11 = [v4 URLForKey:*MEMORY[0x277CCEE40]];
-  v12 = [v4 stringForKey:*MEMORY[0x277CCEE08]];
+  v11 = [messageCopy URLForKey:*MEMORY[0x277CCEE40]];
+  v12 = [messageCopy stringForKey:*MEMORY[0x277CCEE08]];
   v13 = v12;
   if (v11)
   {
     v28 = 0;
     v14 = &v28;
-    v15 = [(HMDAccessorySetupCoordinator *)v7 createCHIPSetupAccessoryPayloadWithSetupPayloadURL:v11 error:&v28];
+    v15 = [(HMDAccessorySetupCoordinator *)selfCopy createCHIPSetupAccessoryPayloadWithSetupPayloadURL:v11 error:&v28];
   }
 
   else
@@ -2742,16 +2742,16 @@ void __78__HMDAccessorySetupCoordinator_handleStageCHIPAccessoryPairingInStepsMe
     if (!v12)
     {
       v21 = objc_autoreleasePoolPush();
-      v22 = v7;
+      v22 = selfCopy;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
         v24 = HMFGetLogIdentifier();
-        v25 = [v4 messagePayload];
+        messagePayload2 = [messageCopy messagePayload];
         *buf = 138543618;
         v32 = v24;
         v33 = 2112;
-        v34 = v25;
+        v34 = messagePayload2;
         _os_log_impl(&dword_2531F8000, v23, OS_LOG_TYPE_ERROR, "%{public}@Could not find any setup information in message payload: %@", buf, 0x16u);
       }
 
@@ -2762,7 +2762,7 @@ void __78__HMDAccessorySetupCoordinator_handleStageCHIPAccessoryPairingInStepsMe
 
     v27 = 0;
     v14 = &v27;
-    v15 = [(HMDAccessorySetupCoordinator *)v7 _createCHIPSetupAccessoryPayloadWithSetupPayloadDecimalStringRepresentation:v12 error:&v27];
+    v15 = [(HMDAccessorySetupCoordinator *)selfCopy _createCHIPSetupAccessoryPayloadWithSetupPayloadDecimalStringRepresentation:v12 error:&v27];
   }
 
   v16 = v15;
@@ -2770,7 +2770,7 @@ void __78__HMDAccessorySetupCoordinator_handleStageCHIPAccessoryPairingInStepsMe
   if (!v16)
   {
 LABEL_12:
-    [v4 respondWithError:v17];
+    [messageCopy respondWithError:v17];
     goto LABEL_13;
   }
 
@@ -2779,18 +2779,18 @@ LABEL_12:
   v19 = encodeRootObjectForIncomingXPCMessage(v18, 0);
   v30 = v19;
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
-  [v4 respondWithPayload:v20];
+  [messageCopy respondWithPayload:v20];
 
 LABEL_13:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopMetricsForThirdPartyPairingWithError:(id)a3
+- (void)stopMetricsForThirdPartyPairingWithError:(id)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -2798,27 +2798,27 @@ LABEL_13:
     v24 = 138543618;
     v25 = v8;
     v26 = 2112;
-    v27 = v4;
+    v27 = errorCopy;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@Stop metrics for 3rd party pairing, error:%@", &v24, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDAccessorySetupCoordinator *)v6 metricsActivity];
-  v10 = [v9 isValid];
+  metricsActivity = [(HMDAccessorySetupCoordinator *)selfCopy metricsActivity];
+  isValid = [metricsActivity isValid];
 
-  if (v10)
+  if (isValid)
   {
-    if (v4)
+    if (errorCopy)
     {
       v11 = *MEMORY[0x277D17A70];
-      v12 = [(HMDAccessorySetupCoordinator *)v6 metricsActivity];
+      metricsActivity2 = [(HMDAccessorySetupCoordinator *)selfCopy metricsActivity];
       HMMLogTagActivityWithError();
     }
 
     else
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = v6;
+      v14 = selfCopy;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
@@ -2839,16 +2839,16 @@ LABEL_13:
       }
 
       objc_autoreleasePoolPop(v13);
-      v12 = [MEMORY[0x277D17DE8] sharedInstance];
+      metricsActivity2 = [MEMORY[0x277D17DE8] sharedInstance];
       v18 = objc_alloc(MEMORY[0x277D17DF8]);
       v19 = [v18 initWithTag:v17 data:MEMORY[0x277CBEC10]];
-      v20 = [(HMDAccessorySetupCoordinator *)v14 metricsActivity];
-      v21 = [v20 tagProcessorList];
-      [v12 submitTaggedEvent:v19 processorList:v21];
+      metricsActivity3 = [(HMDAccessorySetupCoordinator *)v14 metricsActivity];
+      tagProcessorList = [metricsActivity3 tagProcessorList];
+      [metricsActivity2 submitTaggedEvent:v19 processorList:tagProcessorList];
     }
 
-    v22 = [(HMDAccessorySetupCoordinator *)v6 metricsActivity];
-    [v22 invalidate];
+    metricsActivity4 = [(HMDAccessorySetupCoordinator *)selfCopy metricsActivity];
+    [metricsActivity4 invalidate];
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -2858,7 +2858,7 @@ LABEL_13:
 {
   v30 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -2869,25 +2869,25 @@ LABEL_13:
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDAccessorySetupCoordinator *)v4 metricsActivity];
-  if (v7)
+  metricsActivity = [(HMDAccessorySetupCoordinator *)selfCopy metricsActivity];
+  if (metricsActivity)
   {
-    v8 = v7;
-    v9 = [(HMDAccessorySetupCoordinator *)v4 metricsActivity];
-    v10 = [v9 isValid];
+    v8 = metricsActivity;
+    metricsActivity2 = [(HMDAccessorySetupCoordinator *)selfCopy metricsActivity];
+    isValid = [metricsActivity2 isValid];
 
-    if (v10)
+    if (isValid)
     {
-      v11 = [(HMDAccessorySetupCoordinator *)v4 metricsActivity];
-      [v11 invalidate];
+      metricsActivity3 = [(HMDAccessorySetupCoordinator *)selfCopy metricsActivity];
+      [metricsActivity3 invalidate];
     }
   }
 
   v12 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:@"CHIP Third Party Pairing"];
-  [(HMDAccessorySetupCoordinator *)v4 setMetricsActivity:v12];
+  [(HMDAccessorySetupCoordinator *)selfCopy setMetricsActivity:v12];
 
   v13 = objc_autoreleasePoolPush();
-  v14 = v4;
+  v14 = selfCopy;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
@@ -2908,31 +2908,31 @@ LABEL_13:
   }
 
   objc_autoreleasePoolPop(v13);
-  v18 = [MEMORY[0x277D17DE8] sharedInstance];
+  mEMORY[0x277D17DE8] = [MEMORY[0x277D17DE8] sharedInstance];
   v19 = objc_alloc(MEMORY[0x277D17DF8]);
   v20 = [v19 initWithTag:v17 data:MEMORY[0x277CBEC10]];
-  v21 = [(HMDAccessorySetupCoordinator *)v14 metricsActivity];
-  v22 = [v21 tagProcessorList];
-  [v18 submitTaggedEvent:v20 processorList:v22];
+  metricsActivity4 = [(HMDAccessorySetupCoordinator *)v14 metricsActivity];
+  tagProcessorList = [metricsActivity4 tagProcessorList];
+  [mEMORY[0x277D17DE8] submitTaggedEvent:v20 processorList:tagProcessorList];
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createSetupAccessoryPayloadWithCHIPSetupPayload:(id)a3 error:(id *)a4
+- (id)createSetupAccessoryPayloadWithCHIPSetupPayload:(id)payload error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  payloadCopy = payload;
+  if (!payloadCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v7 = v6;
-  v8 = [(HMDAccessorySetupCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  v7 = payloadCopy;
+  workQueue = [(HMDAccessorySetupCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [(HMDAccessorySetupCoordinator *)self payloadCHIPAccessorySetupPayloadFactory];
-  v10 = (v9)[2](v9, v7);
+  payloadCHIPAccessorySetupPayloadFactory = [(HMDAccessorySetupCoordinator *)self payloadCHIPAccessorySetupPayloadFactory];
+  v10 = (payloadCHIPAccessorySetupPayloadFactory)[2](payloadCHIPAccessorySetupPayloadFactory, v7);
 
   if (v10)
   {
@@ -2942,7 +2942,7 @@ LABEL_13:
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -2955,10 +2955,10 @@ LABEL_13:
     }
 
     objc_autoreleasePoolPop(v12);
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-      *a4 = v11 = 0;
+      *error = v11 = 0;
     }
 
     else
@@ -2972,24 +2972,24 @@ LABEL_13:
   return v11;
 }
 
-- (id)createCHIPSetupAccessoryPayloadWithSetupPayloadURL:(id)a3 error:(id *)a4
+- (id)createCHIPSetupAccessoryPayloadWithSetupPayloadURL:(id)l error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  lCopy = l;
+  if (!lCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v7 = v6;
-  v8 = [(HMDAccessorySetupCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  v7 = lCopy;
+  workQueue = [(HMDAccessorySetupCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [v7 absoluteString];
-  v10 = [v9 stringByRemovingPercentEncoding];
+  absoluteString = [v7 absoluteString];
+  stringByRemovingPercentEncoding = [absoluteString stringByRemovingPercentEncoding];
 
-  v11 = [(HMDAccessorySetupCoordinator *)self urlStringCHIPAccessorySetupPayloadFactory];
-  v12 = (v11)[2](v11, v10);
+  urlStringCHIPAccessorySetupPayloadFactory = [(HMDAccessorySetupCoordinator *)self urlStringCHIPAccessorySetupPayloadFactory];
+  v12 = (urlStringCHIPAccessorySetupPayloadFactory)[2](urlStringCHIPAccessorySetupPayloadFactory, stringByRemovingPercentEncoding);
 
   if (v12)
   {
@@ -2999,7 +2999,7 @@ LABEL_13:
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -3007,15 +3007,15 @@ LABEL_13:
       v20 = 138543618;
       v21 = v17;
       v22 = 2112;
-      v23 = v10;
+      v23 = stringByRemovingPercentEncoding;
       _os_log_impl(&dword_2531F8000, v16, OS_LOG_TYPE_ERROR, "%{public}@Failed to create CHIP accessory setup payload from setup payload URL string: %@", &v20, 0x16u);
     }
 
     objc_autoreleasePoolPop(v14);
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-      *a4 = v13 = 0;
+      *error = v13 = 0;
     }
 
     else
@@ -3033,91 +3033,91 @@ LABEL_13:
 {
   v40[1] = *MEMORY[0x277D85DE8];
   v3 = [HMDXPCMessagePolicy policyWithEntitlements:5];
-  v4 = [(HMDAccessorySetupCoordinator *)self messageDispatcher];
+  messageDispatcher = [(HMDAccessorySetupCoordinator *)self messageDispatcher];
   v5 = *MEMORY[0x277CCEDF0];
   v40[0] = v3;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:1];
-  [v4 registerForMessage:v5 receiver:self policies:v6 selector:sel_handleCreateCHIPSetupAccessoryPayloadMessage_];
+  [messageDispatcher registerForMessage:v5 receiver:self policies:v6 selector:sel_handleCreateCHIPSetupAccessoryPayloadMessage_];
 
-  v7 = [(HMDAccessorySetupCoordinator *)self messageDispatcher];
+  messageDispatcher2 = [(HMDAccessorySetupCoordinator *)self messageDispatcher];
   v8 = *MEMORY[0x277CCEE90];
   v39 = v3;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v39 count:1];
-  [v7 registerForMessage:v8 receiver:self policies:v9 selector:sel_handleStageCHIPAccessoryPairingInStepsMessage_];
+  [messageDispatcher2 registerForMessage:v8 receiver:self policies:v9 selector:sel_handleStageCHIPAccessoryPairingInStepsMessage_];
 
-  v10 = [(HMDAccessorySetupCoordinator *)self messageDispatcher];
+  messageDispatcher3 = [(HMDAccessorySetupCoordinator *)self messageDispatcher];
   v11 = *MEMORY[0x277CCEDE8];
   v38 = v3;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:1];
-  [v10 registerForMessage:v11 receiver:self policies:v12 selector:sel_handleConfirmDeviceCredentialMessage_];
+  [messageDispatcher3 registerForMessage:v11 receiver:self policies:v12 selector:sel_handleConfirmDeviceCredentialMessage_];
 
-  v13 = [(HMDAccessorySetupCoordinator *)self messageDispatcher];
+  messageDispatcher4 = [(HMDAccessorySetupCoordinator *)self messageDispatcher];
   v14 = *MEMORY[0x277CCEE78];
   v37 = v3;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v37 count:1];
-  [v13 registerForMessage:v14 receiver:self policies:v15 selector:sel_handleRejectDeviceCredentialMessage_];
+  [messageDispatcher4 registerForMessage:v14 receiver:self policies:v15 selector:sel_handleRejectDeviceCredentialMessage_];
 
-  v16 = [(HMDAccessorySetupCoordinator *)self messageDispatcher];
+  messageDispatcher5 = [(HMDAccessorySetupCoordinator *)self messageDispatcher];
   v17 = *MEMORY[0x277CCEE80];
   v36 = v3;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v36 count:1];
-  [v16 registerForMessage:v17 receiver:self policies:v18 selector:sel_handleSelectThreadNetworkAssociationMessage_];
+  [messageDispatcher5 registerForMessage:v17 receiver:self policies:v18 selector:sel_handleSelectThreadNetworkAssociationMessage_];
 
-  v19 = [(HMDAccessorySetupCoordinator *)self messageDispatcher];
+  messageDispatcher6 = [(HMDAccessorySetupCoordinator *)self messageDispatcher];
   v20 = *MEMORY[0x277CCEE88];
   v35 = v3;
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&v35 count:1];
-  [v19 registerForMessage:v20 receiver:self policies:v21 selector:sel_handleSelectWiFiNetworkAssociationMessage_];
+  [messageDispatcher6 registerForMessage:v20 receiver:self policies:v21 selector:sel_handleSelectWiFiNetworkAssociationMessage_];
 
-  v22 = [(HMDAccessorySetupCoordinator *)self messageDispatcher];
+  messageDispatcher7 = [(HMDAccessorySetupCoordinator *)self messageDispatcher];
   v23 = *MEMORY[0x277CCEDD8];
   v34 = v3;
   v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v34 count:1];
-  [v22 registerForMessage:v23 receiver:self policies:v24 selector:sel_handleCancelStagingMessage_];
+  [messageDispatcher7 registerForMessage:v23 receiver:self policies:v24 selector:sel_handleCancelStagingMessage_];
 
-  v25 = [(HMDAccessorySetupCoordinator *)self messageDispatcher];
+  messageDispatcher8 = [(HMDAccessorySetupCoordinator *)self messageDispatcher];
   v26 = *MEMORY[0x277CCEDF8];
   v33 = v3;
   v27 = [MEMORY[0x277CBEA60] arrayWithObjects:&v33 count:1];
-  [v25 registerForMessage:v26 receiver:self policies:v27 selector:sel_handleCreateCHIPSetupPayloadMessage_];
+  [messageDispatcher8 registerForMessage:v26 receiver:self policies:v27 selector:sel_handleCreateCHIPSetupPayloadMessage_];
 
-  v28 = [(HMDAccessorySetupCoordinator *)self messageDispatcher];
+  messageDispatcher9 = [(HMDAccessorySetupCoordinator *)self messageDispatcher];
   v29 = *MEMORY[0x277CCEDD0];
   v32 = v3;
   v30 = [MEMORY[0x277CBEA60] arrayWithObjects:&v32 count:1];
-  [v28 registerForMessage:v29 receiver:self policies:v30 selector:sel_handleCancelStagedCHIPAccessoryPairingMessage_];
+  [messageDispatcher9 registerForMessage:v29 receiver:self policies:v30 selector:sel_handleCancelStagedCHIPAccessoryPairingMessage_];
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDAccessorySetupCoordinator)initWithWorkQueue:(id)a3 messageDispatcher:(id)a4 chipAccessoryServerBrowser:(id)a5 chipDataSource:(id)a6
+- (HMDAccessorySetupCoordinator)initWithWorkQueue:(id)queue messageDispatcher:(id)dispatcher chipAccessoryServerBrowser:(id)browser chipDataSource:(id)source
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  queueCopy = queue;
+  dispatcherCopy = dispatcher;
+  browserCopy = browser;
+  sourceCopy = source;
+  if (!queueCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!v12)
+  if (!dispatcherCopy)
   {
 LABEL_9:
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  if (!v13)
+  if (!browserCopy)
   {
 LABEL_10:
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  v15 = v14;
-  if (!v14)
+  v15 = sourceCopy;
+  if (!sourceCopy)
   {
 LABEL_11:
     v25 = _HMFPreconditionFailure();
@@ -3130,13 +3130,13 @@ LABEL_11:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_workQueue, a3);
-    objc_storeStrong(&v17->_messageDispatcher, a4);
-    objc_storeStrong(&v17->_chipAccessoryServerBrowser, a5);
-    objc_storeStrong(&v17->_chipDataSource, a6);
-    v18 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v16->_workQueue, queue);
+    objc_storeStrong(&v17->_messageDispatcher, dispatcher);
+    objc_storeStrong(&v17->_chipAccessoryServerBrowser, browser);
+    objc_storeStrong(&v17->_chipDataSource, source);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     stagingRequestsByUUID = v17->_stagingRequestsByUUID;
-    v17->_stagingRequestsByUUID = v18;
+    v17->_stagingRequestsByUUID = dictionary;
 
     currentBundleIdentifier = v17->_currentBundleIdentifier;
     v17->_currentBundleIdentifier = 0;

@@ -1,12 +1,12 @@
 @interface APMetricEnvironment
-- (id)findInternalContentDataById:(id)a3;
+- (id)findInternalContentDataById:(id)id;
 @end
 
 @implementation APMetricEnvironment
 
-- (id)findInternalContentDataById:(id)a3
+- (id)findInternalContentDataById:(id)id
 {
-  v3 = [APManagedContentData findById:a3];
+  v3 = [APManagedContentData findById:id];
   if (v3)
   {
     v4 = [[APContentDataInternal alloc] initWithContentDataProvider:v3];

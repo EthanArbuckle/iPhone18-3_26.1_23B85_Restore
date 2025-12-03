@@ -1,30 +1,30 @@
 @interface IXPromisedInMemoryDataSeed
-- (IXPromisedInMemoryDataSeed)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (IXPromisedInMemoryDataSeed)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IXPromisedInMemoryDataSeed
 
-- (IXPromisedInMemoryDataSeed)initWithCoder:(id)a3
+- (IXPromisedInMemoryDataSeed)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = IXPromisedInMemoryDataSeed;
-  return [(IXOwnedDataPromiseSeed *)&v4 initWithCoder:a3];
+  return [(IXOwnedDataPromiseSeed *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = IXPromisedInMemoryDataSeed;
-  [(IXOwnedDataPromiseSeed *)&v3 encodeWithCoder:a3];
+  [(IXOwnedDataPromiseSeed *)&v3 encodeWithCoder:coder];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = IXPromisedInMemoryDataSeed;
-  return [(IXOwnedDataPromiseSeed *)&v4 copyWithZone:a3];
+  return [(IXOwnedDataPromiseSeed *)&v4 copyWithZone:zone];
 }
 
 @end

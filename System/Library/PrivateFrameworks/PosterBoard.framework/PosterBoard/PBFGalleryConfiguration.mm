@@ -2,23 +2,23 @@
 - (NSOrderedSet)sectionIdentifiers;
 - (NSSet)posterPreviews;
 - (PBFGalleryConfiguration)init;
-- (PBFGalleryConfiguration)initWithSuggestedLayout:(id)a3 dynamicDescriptorsByExtensionIdentifier:(id)a4 staticDescriptorsByExtensionIdentifier:(id)a5 extensionsByIdentifier:(id)a6;
+- (PBFGalleryConfiguration)initWithSuggestedLayout:(id)layout dynamicDescriptorsByExtensionIdentifier:(id)identifier staticDescriptorsByExtensionIdentifier:(id)extensionIdentifier extensionsByIdentifier:(id)byIdentifier;
 - (PFPosterExtensionProvider)extensionProvider;
-- (id)_posterDescriptorLookupInfoForItem:(id)a3;
-- (id)_posterDescriptorLookupInfoForPreviewItem:(id)a3;
+- (id)_posterDescriptorLookupInfoForItem:(id)item;
+- (id)_posterDescriptorLookupInfoForPreviewItem:(id)item;
 - (id)complicationSnapshotRequests;
-- (id)gallerySnapshotRequestsForDisplayContexts:(id)a3;
-- (id)itemsForSectionWithIdentifier:(id)a3;
-- (id)posterPreviewForUniqueIdentifier:(id)a3;
-- (id)posterSnapshotRequestsForContext:(id)a3;
-- (id)posterSnapshotRequestsForExtensionBundleIdentifier:(id)a3 context:(id)a4;
-- (id)posterSnapshotRequestsForPreview:(id)a3 context:(id)a4;
-- (id)previewForItem:(id)a3 section:(id)a4;
-- (id)prewarmGallerySnapshotRequestsForDisplayContext:(id)a3;
-- (id)sectionForSectionIdentifier:(id)a3;
+- (id)gallerySnapshotRequestsForDisplayContexts:(id)contexts;
+- (id)itemsForSectionWithIdentifier:(id)identifier;
+- (id)posterPreviewForUniqueIdentifier:(id)identifier;
+- (id)posterSnapshotRequestsForContext:(id)context;
+- (id)posterSnapshotRequestsForExtensionBundleIdentifier:(id)identifier context:(id)context;
+- (id)posterSnapshotRequestsForPreview:(id)preview context:(id)context;
+- (id)previewForItem:(id)item section:(id)section;
+- (id)prewarmGallerySnapshotRequestsForDisplayContext:(id)context;
+- (id)sectionForSectionIdentifier:(id)identifier;
 - (void)_hydrateSectionIdentifiersIfNeeded;
 - (void)dealloc;
-- (void)enumeratePreviews:(id)a3;
+- (void)enumeratePreviews:(id)previews;
 - (void)trimComplicationsCache;
 @end
 
@@ -37,7 +37,7 @@
     v10 = 2112;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
     v15 = @"PBFGalleryConfiguration.m";
     v16 = 1024;
@@ -49,13 +49,13 @@
   return result;
 }
 
-- (PBFGalleryConfiguration)initWithSuggestedLayout:(id)a3 dynamicDescriptorsByExtensionIdentifier:(id)a4 staticDescriptorsByExtensionIdentifier:(id)a5 extensionsByIdentifier:(id)a6
+- (PBFGalleryConfiguration)initWithSuggestedLayout:(id)layout dynamicDescriptorsByExtensionIdentifier:(id)identifier staticDescriptorsByExtensionIdentifier:(id)extensionIdentifier extensionsByIdentifier:(id)byIdentifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v11;
+  layoutCopy = layout;
+  identifierCopy = identifier;
+  extensionIdentifierCopy = extensionIdentifier;
+  byIdentifierCopy = byIdentifier;
+  v15 = layoutCopy;
   NSClassFromString(&cfstr_Prspostergalle.isa);
   if (!v15)
   {
@@ -67,7 +67,7 @@
     [PBFGalleryConfiguration initWithSuggestedLayout:a2 dynamicDescriptorsByExtensionIdentifier:? staticDescriptorsByExtensionIdentifier:? extensionsByIdentifier:?];
   }
 
-  v16 = v12;
+  v16 = identifierCopy;
   NSClassFromString(&cfstr_Nsdictionary.isa);
   if (!v16)
   {
@@ -79,7 +79,7 @@
     [PBFGalleryConfiguration initWithSuggestedLayout:a2 dynamicDescriptorsByExtensionIdentifier:? staticDescriptorsByExtensionIdentifier:? extensionsByIdentifier:?];
   }
 
-  v17 = v13;
+  v17 = extensionIdentifierCopy;
   NSClassFromString(&cfstr_Nsdictionary.isa);
   if (!v17)
   {
@@ -91,7 +91,7 @@
     [PBFGalleryConfiguration initWithSuggestedLayout:a2 dynamicDescriptorsByExtensionIdentifier:? staticDescriptorsByExtensionIdentifier:? extensionsByIdentifier:?];
   }
 
-  v18 = v14;
+  v18 = byIdentifierCopy;
   NSClassFromString(&cfstr_Nsdictionary.isa);
   if (!v18)
   {
@@ -186,46 +186,46 @@
   return sectionIdentifiers;
 }
 
-- (id)itemsForSectionWithIdentifier:(id)a3
+- (id)itemsForSectionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(PBFGalleryConfiguration *)self _hydrateSectionIdentifiersIfNeeded];
-  v5 = [(NSDictionary *)self->_sectionIdentifierToItems objectForKey:v4];
+  v5 = [(NSDictionary *)self->_sectionIdentifierToItems objectForKey:identifierCopy];
 
   return v5;
 }
 
-- (id)posterPreviewForUniqueIdentifier:(id)a3
+- (id)posterPreviewForUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(PBFGalleryConfiguration *)self _hydrateSectionIdentifiersIfNeeded];
-  v5 = [(NSDictionary *)self->_previewIdentifierToPreview objectForKey:v4];
+  v5 = [(NSDictionary *)self->_previewIdentifierToPreview objectForKey:identifierCopy];
 
   return v5;
 }
 
-- (id)sectionForSectionIdentifier:(id)a3
+- (id)sectionForSectionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(PBFGalleryConfiguration *)self _hydrateSectionIdentifiersIfNeeded];
-  v5 = [(NSDictionary *)self->_sectionIdentifierToSectionMap objectForKeyedSubscript:v4];
+  v5 = [(NSDictionary *)self->_sectionIdentifierToSectionMap objectForKeyedSubscript:identifierCopy];
 
   return v5;
 }
 
-- (id)posterSnapshotRequestsForPreview:(id)a3 context:(id)a4
+- (id)posterSnapshotRequestsForPreview:(id)preview context:(id)context
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [PBFPosterSnapshotDefinition defaultPreviewDefinitionForPreview:v5];
-  v8 = [PBFPosterSnapshotRequest snapshotRequestForPreview:v5 context:v6 definition:v7];
+  previewCopy = preview;
+  contextCopy = context;
+  v7 = [PBFPosterSnapshotDefinition defaultPreviewDefinitionForPreview:previewCopy];
+  v8 = [PBFPosterSnapshotRequest snapshotRequestForPreview:previewCopy context:contextCopy definition:v7];
 
-  [v5 galleryDisplayStyle];
+  [previewCopy galleryDisplayStyle];
   if (PRPosterGalleryDisplayStyleIsLive())
   {
     v9 = +[PBFPosterSnapshotDefinition gallerySnapshotKeyFrameDefinition];
-    v10 = [PBFPosterSnapshotRequest snapshotRequestForPreview:v5 context:v6 definition:v9];
+    v10 = [PBFPosterSnapshotRequest snapshotRequestForPreview:previewCopy context:contextCopy definition:v9];
 
     v13[0] = v8;
     v13[1] = v10;
@@ -241,57 +241,57 @@
   return v11;
 }
 
-- (id)posterSnapshotRequestsForContext:(id)a3
+- (id)posterSnapshotRequestsForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   [(PBFGalleryConfiguration *)self _hydrateSectionIdentifiersIfNeeded];
-  v5 = [(NSOrderedSet *)self->_previews array];
+  array = [(NSOrderedSet *)self->_previews array];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __60__PBFGalleryConfiguration_posterSnapshotRequestsForContext___block_invoke;
   v13 = &unk_2782C8348;
-  v14 = self;
-  v15 = v4;
-  v6 = v4;
-  v7 = [v5 bs_map:&v10];
-  v8 = [v7 bs_flatten];
+  selfCopy = self;
+  v15 = contextCopy;
+  v6 = contextCopy;
+  v7 = [array bs_map:&v10];
+  bs_flatten = [v7 bs_flatten];
 
-  return v8;
+  return bs_flatten;
 }
 
 - (id)complicationSnapshotRequests
 {
   [(PBFGalleryConfiguration *)self _hydrateSectionIdentifiersIfNeeded];
-  v3 = [(NSOrderedSet *)self->_previews array];
-  v4 = [v3 bs_compactMap:&__block_literal_global_16];
+  array = [(NSOrderedSet *)self->_previews array];
+  v4 = [array bs_compactMap:&__block_literal_global_16];
 
-  v5 = [v4 bs_flatten];
+  bs_flatten = [v4 bs_flatten];
 
-  return v5;
+  return bs_flatten;
 }
 
 - (void)trimComplicationsCache
 {
   complicationSnapshotProvider = self->_complicationSnapshotProvider;
   v3 = MEMORY[0x277CBEB98];
-  v5 = [(PBFGalleryConfiguration *)self complicationSnapshotRequests];
-  v4 = [v3 setWithArray:v5];
+  complicationSnapshotRequests = [(PBFGalleryConfiguration *)self complicationSnapshotRequests];
+  v4 = [v3 setWithArray:complicationSnapshotRequests];
   [(PBFComplicationSnapshotProviding *)complicationSnapshotProvider trimCachedSnapshotsToRequests:v4];
 }
 
-- (id)posterSnapshotRequestsForExtensionBundleIdentifier:(id)a3 context:(id)a4
+- (id)posterSnapshotRequestsForExtensionBundleIdentifier:(id)identifier context:(id)context
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PBFGalleryConfiguration *)self posterPreviews];
+  identifierCopy = identifier;
+  contextCopy = context;
+  posterPreviews = [(PBFGalleryConfiguration *)self posterPreviews];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __86__PBFGalleryConfiguration_posterSnapshotRequestsForExtensionBundleIdentifier_context___block_invoke;
   v23[3] = &unk_2782C8370;
-  v9 = v6;
+  v9 = identifierCopy;
   v24 = v9;
-  v10 = [v8 bs_filter:v23];
+  v10 = [posterPreviews bs_filter:v23];
 
   v11 = objc_opt_new();
   v19 = 0u;
@@ -313,7 +313,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [(PBFGalleryConfiguration *)self posterSnapshotRequestsForPreview:*(*(&v19 + 1) + 8 * i) context:v7, v19];
+        v17 = [(PBFGalleryConfiguration *)self posterSnapshotRequestsForPreview:*(*(&v19 + 1) + 8 * i) context:contextCopy, v19];
         [v11 addObjectsFromArray:v17];
       }
 
@@ -336,42 +336,42 @@ uint64_t __86__PBFGalleryConfiguration_posterSnapshotRequestsForExtensionBundleI
   return v6;
 }
 
-- (id)gallerySnapshotRequestsForDisplayContexts:(id)a3
+- (id)gallerySnapshotRequestsForDisplayContexts:(id)contexts
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __69__PBFGalleryConfiguration_gallerySnapshotRequestsForDisplayContexts___block_invoke;
   v6[3] = &unk_2782C8398;
   v6[4] = self;
-  v3 = [a3 bs_compactMap:v6];
-  v4 = [v3 bs_flatten];
+  v3 = [contexts bs_compactMap:v6];
+  bs_flatten = [v3 bs_flatten];
 
-  return v4;
+  return bs_flatten;
 }
 
-- (id)prewarmGallerySnapshotRequestsForDisplayContext:(id)a3
+- (id)prewarmGallerySnapshotRequestsForDisplayContext:(id)context
 {
   v43 = *MEMORY[0x277D85DE8];
-  v37 = a3;
+  contextCopy = context;
   [(PBFGalleryConfiguration *)self _hydrateSectionIdentifiersIfNeeded];
-  v4 = [(PBFGalleryConfiguration *)self sectionIdentifiers];
-  if ([v4 count])
+  sectionIdentifiers = [(PBFGalleryConfiguration *)self sectionIdentifiers];
+  if ([sectionIdentifiers count])
   {
-    v29 = v4;
-    v5 = [(PBFGalleryConfiguration *)self sectionIdentifiers];
-    v6 = [v5 mutableCopy];
+    v29 = sectionIdentifiers;
+    sectionIdentifiers2 = [(PBFGalleryConfiguration *)self sectionIdentifiers];
+    v6 = [sectionIdentifiers2 mutableCopy];
 
-    v7 = [MEMORY[0x277D3EF28] sharedHostConfigurationManager];
-    v8 = [v7 galleryPrewarmPolicy];
+    mEMORY[0x277D3EF28] = [MEMORY[0x277D3EF28] sharedHostConfigurationManager];
+    galleryPrewarmPolicy = [mEMORY[0x277D3EF28] galleryPrewarmPolicy];
 
-    if ([v8 skipFirstSection])
+    if ([galleryPrewarmPolicy skipFirstSection])
     {
       [v6 removeObjectAtIndex:0];
     }
 
-    v35 = [v8 maxPerSectionToPrewarm];
-    v28 = v8;
-    v34 = [v8 maxTotalItemsToPrewarm];
+    maxPerSectionToPrewarm = [galleryPrewarmPolicy maxPerSectionToPrewarm];
+    v28 = galleryPrewarmPolicy;
+    maxTotalItemsToPrewarm = [galleryPrewarmPolicy maxTotalItemsToPrewarm];
     v9 = objc_opt_new();
     v38 = 0u;
     v39 = 0u;
@@ -382,7 +382,7 @@ uint64_t __86__PBFGalleryConfiguration_posterSnapshotRequestsForExtensionBundleI
     if (v33)
     {
       v31 = *v39;
-      v32 = self;
+      selfCopy = self;
       v10 = 0x2782C4000uLL;
       v11 = 0x2782C4000uLL;
 LABEL_6:
@@ -397,14 +397,14 @@ LABEL_6:
         v36 = v12;
         v13 = [(PBFGalleryConfiguration *)self itemsForSectionWithIdentifier:*(*(&v38 + 1) + 8 * v12)];
         v14 = [v13 count];
-        if (v35 >= v14)
+        if (maxPerSectionToPrewarm >= v14)
         {
           v15 = v14;
         }
 
         else
         {
-          v15 = v35;
+          v15 = maxPerSectionToPrewarm;
         }
 
         if (v15)
@@ -414,7 +414,7 @@ LABEL_6:
             v17 = [v13 objectAtIndexedSubscript:i];
             v18 = *(v10 + 1120);
             v19 = [*(v11 + 1096) defaultPreviewDefinitionForPreview:v17];
-            v20 = [v18 snapshotRequestForPreview:v17 context:v37 definition:v19];
+            v20 = [v18 snapshotRequestForPreview:v17 context:contextCopy definition:v19];
 
             [v9 bs_safeAddObject:v20];
             [v17 galleryDisplayStyle];
@@ -424,7 +424,7 @@ LABEL_6:
               [*(v11 + 1096) gallerySnapshotKeyFrameDefinition];
               v22 = v11;
               v24 = v23 = v10;
-              v25 = [v21 snapshotRequestForPreview:v17 context:v37 definition:v24];
+              v25 = [v21 snapshotRequestForPreview:v17 context:contextCopy definition:v24];
 
               v10 = v23;
               v11 = v22;
@@ -435,8 +435,8 @@ LABEL_6:
 
         v26 = [v9 count];
 
-        self = v32;
-        if (v26 >= v34)
+        self = selfCopy;
+        if (v26 >= maxTotalItemsToPrewarm)
         {
           break;
         }
@@ -455,7 +455,7 @@ LABEL_6:
       }
     }
 
-    v4 = v29;
+    sectionIdentifiers = v29;
   }
 
   else
@@ -466,24 +466,24 @@ LABEL_6:
   return v9;
 }
 
-- (void)enumeratePreviews:(id)a3
+- (void)enumeratePreviews:(id)previews
 {
-  v4 = a3;
-  if (v4)
+  previewsCopy = previews;
+  if (previewsCopy)
   {
     v9[0] = 0;
     v9[1] = v9;
     v9[2] = 0x2020000000;
     v10 = 0;
-    v5 = [(PBFGalleryConfiguration *)self sectionIdentifiers];
+    sectionIdentifiers = [(PBFGalleryConfiguration *)self sectionIdentifiers];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __45__PBFGalleryConfiguration_enumeratePreviews___block_invoke;
     v6[3] = &unk_2782C83E8;
     v6[4] = self;
-    v7 = v4;
+    v7 = previewsCopy;
     v8 = v9;
-    [v5 enumerateObjectsUsingBlock:v6];
+    [sectionIdentifiers enumerateObjectsUsingBlock:v6];
 
     _Block_object_dispose(v9, 8);
   }
@@ -520,11 +520,11 @@ void __45__PBFGalleryConfiguration_enumeratePreviews___block_invoke_2(void *a1, 
 - (void)_hydrateSectionIdentifiersIfNeeded
 {
   v50 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_sectionIdentifiers)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_sectionIdentifiers)
   {
-    v33 = v2;
+    v33 = selfCopy;
     v37 = objc_opt_new();
     v30 = objc_opt_new();
     v31 = objc_opt_new();
@@ -534,14 +534,14 @@ void __45__PBFGalleryConfiguration_enumeratePreviews___block_invoke_2(void *a1, 
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v4 = [(PBFGalleryConfiguration *)v2 suggestedLayout];
-    v5 = [v4 sections];
+    suggestedLayout = [(PBFGalleryConfiguration *)selfCopy suggestedLayout];
+    sections = [suggestedLayout sections];
 
-    v36 = [v5 countByEnumeratingWithState:&v44 objects:v49 count:16];
+    v36 = [sections countByEnumeratingWithState:&v44 objects:v49 count:16];
     if (v36)
     {
       v35 = *v45;
-      obj = v5;
+      obj = sections;
       do
       {
         for (i = 0; i != v36; ++i)
@@ -553,22 +553,22 @@ void __45__PBFGalleryConfiguration_enumeratePreviews___block_invoke_2(void *a1, 
 
           v7 = MEMORY[0x277CCACA8];
           v8 = *(*(&v44 + 1) + 8 * i);
-          v9 = [v8 localizedTitle];
-          v10 = [v8 type];
-          v11 = [v8 unityDescription];
+          localizedTitle = [v8 localizedTitle];
+          type = [v8 type];
+          unityDescription = [v8 unityDescription];
 
-          v12 = [v7 stringWithFormat:@"'%@'-%lu-'%@'", v9, v10, v11];
+          v12 = [v7 stringWithFormat:@"'%@'-%lu-'%@'", localizedTitle, type, unityDescription];
 
           if (([v37 containsObject:v12] & 1) == 0)
           {
-            v13 = [v8 items];
+            items = [v8 items];
             v43[0] = MEMORY[0x277D85DD0];
             v43[1] = 3221225472;
             v43[2] = __61__PBFGalleryConfiguration__hydrateSectionIdentifiersIfNeeded__block_invoke;
             v43[3] = &unk_2782C8410;
             v43[4] = v33;
             v43[5] = v8;
-            v38 = [v13 bs_mapNoNulls:v43];
+            v38 = [items bs_mapNoNulls:v43];
 
             if ([v38 count])
             {
@@ -591,8 +591,8 @@ void __45__PBFGalleryConfiguration_enumeratePreviews___block_invoke_2(void *a1, 
                     }
 
                     v18 = *(*(&v39 + 1) + 8 * j);
-                    v19 = [v18 previewUniqueIdentifier];
-                    [v3 setObject:v18 forKey:v19];
+                    previewUniqueIdentifier = [v18 previewUniqueIdentifier];
+                    [v3 setObject:v18 forKey:previewUniqueIdentifier];
                   }
 
                   v15 = [v14 countByEnumeratingWithState:&v39 objects:v48 count:16];
@@ -609,7 +609,7 @@ void __45__PBFGalleryConfiguration_enumeratePreviews___block_invoke_2(void *a1, 
           }
         }
 
-        v5 = obj;
+        sections = obj;
         v36 = [obj countByEnumeratingWithState:&v44 objects:v49 count:16];
       }
 
@@ -636,21 +636,21 @@ void __45__PBFGalleryConfiguration_enumeratePreviews___block_invoke_2(void *a1, 
     previewIdentifierToPreview = v33->_previewIdentifierToPreview;
     v33->_previewIdentifierToPreview = v28;
 
-    v2 = v33;
+    selfCopy = v33;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)_posterDescriptorLookupInfoForItem:(id)a3
+- (id)_posterDescriptorLookupInfoForItem:(id)item
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v5 = self->_posterDescriptorLookupInfoForItemIdentifier;
   objc_sync_enter(v5);
   posterDescriptorLookupInfoForItemIdentifier = self->_posterDescriptorLookupInfoForItemIdentifier;
-  v7 = [v4 identifier];
-  v8 = [(NSMutableDictionary *)posterDescriptorLookupInfoForItemIdentifier objectForKey:v7];
+  identifier = [itemCopy identifier];
+  v8 = [(NSMutableDictionary *)posterDescriptorLookupInfoForItemIdentifier objectForKey:identifier];
 
   if (v8)
   {
@@ -659,16 +659,16 @@ void __45__PBFGalleryConfiguration_enumeratePreviews___block_invoke_2(void *a1, 
 
   else
   {
-    v28 = [v4 extensionBundleIdentifier];
+    extensionBundleIdentifier = [itemCopy extensionBundleIdentifier];
     v27 = [(NSDictionary *)self->_extensionsByIdentifier objectForKey:?];
     if (v27)
     {
-      v26 = [v4 descriptorIdentifier];
-      v10 = [v26 stringByDeletingPathExtension];
-      if (v26)
+      descriptorIdentifier = [itemCopy descriptorIdentifier];
+      stringByDeletingPathExtension = [descriptorIdentifier stringByDeletingPathExtension];
+      if (descriptorIdentifier)
       {
-        v11 = [v26 pathExtension];
-        v12 = [v11 isEqual:@"STATIC"];
+        pathExtension = [descriptorIdentifier pathExtension];
+        v12 = [pathExtension isEqual:@"STATIC"];
 
         if (v12)
         {
@@ -676,7 +676,7 @@ void __45__PBFGalleryConfiguration_enumeratePreviews___block_invoke_2(void *a1, 
           v36 = 0uLL;
           v33 = 0uLL;
           v34 = 0uLL;
-          v13 = [(NSDictionary *)self->_staticDescriptorsByExtensionIdentifier objectForKey:v28];
+          v13 = [(NSDictionary *)self->_staticDescriptorsByExtensionIdentifier objectForKey:extensionBundleIdentifier];
           v14 = [v13 countByEnumeratingWithState:&v33 objects:v38 count:16];
           if (v14)
           {
@@ -691,13 +691,13 @@ void __45__PBFGalleryConfiguration_enumeratePreviews___block_invoke_2(void *a1, 
                 }
 
                 v17 = *(*(&v33 + 1) + 8 * i);
-                v18 = [v17 descriptorIdentifier];
-                if (v18 && [v10 isEqualToString:v18])
+                descriptorIdentifier2 = [v17 descriptorIdentifier];
+                if (descriptorIdentifier2 && [stringByDeletingPathExtension isEqualToString:descriptorIdentifier2])
                 {
                   v14 = [PBFGenericPosterDescriptorLookupInfo posterDescriptorLookupInfoForPath:v17 extension:v27];
                   v22 = self->_posterDescriptorLookupInfoForItemIdentifier;
-                  v23 = [v4 identifier];
-                  [(NSMutableDictionary *)v22 setObject:v14 forKey:v23];
+                  identifier2 = [itemCopy identifier];
+                  [(NSMutableDictionary *)v22 setObject:v14 forKey:identifier2];
                   goto LABEL_30;
                 }
               }
@@ -719,7 +719,7 @@ void __45__PBFGalleryConfiguration_enumeratePreviews___block_invoke_2(void *a1, 
           v32 = 0uLL;
           v29 = 0uLL;
           v30 = 0uLL;
-          v13 = [(NSDictionary *)self->_dynamicDescriptorsByExtensionIdentifier objectForKey:v28];
+          v13 = [(NSDictionary *)self->_dynamicDescriptorsByExtensionIdentifier objectForKey:extensionBundleIdentifier];
           v14 = [v13 countByEnumeratingWithState:&v29 objects:v37 count:16];
           if (v14)
           {
@@ -734,13 +734,13 @@ void __45__PBFGalleryConfiguration_enumeratePreviews___block_invoke_2(void *a1, 
                 }
 
                 v21 = *(*(&v29 + 1) + 8 * j);
-                v18 = [v21 descriptorIdentifier];
-                if (v18 && [v10 isEqualToString:v18])
+                descriptorIdentifier2 = [v21 descriptorIdentifier];
+                if (descriptorIdentifier2 && [stringByDeletingPathExtension isEqualToString:descriptorIdentifier2])
                 {
                   v14 = [PBFGenericPosterDescriptorLookupInfo posterDescriptorLookupInfoForPath:v21 extension:v27];
                   v24 = self->_posterDescriptorLookupInfoForItemIdentifier;
-                  v23 = [v4 identifier];
-                  [(NSMutableDictionary *)v24 setObject:v14 forKey:v23];
+                  identifier2 = [itemCopy identifier];
+                  [(NSMutableDictionary *)v24 setObject:v14 forKey:identifier2];
 LABEL_30:
 
                   goto LABEL_31;
@@ -780,52 +780,52 @@ LABEL_31:
   return v9;
 }
 
-- (id)_posterDescriptorLookupInfoForPreviewItem:(id)a3
+- (id)_posterDescriptorLookupInfoForPreviewItem:(id)item
 {
   posterDescriptorLookupInfoForItemIdentifier = self->_posterDescriptorLookupInfoForItemIdentifier;
-  v4 = [a3 previewUniqueIdentifier];
-  v5 = [(NSMutableDictionary *)posterDescriptorLookupInfoForItemIdentifier objectForKey:v4];
+  previewUniqueIdentifier = [item previewUniqueIdentifier];
+  v5 = [(NSMutableDictionary *)posterDescriptorLookupInfoForItemIdentifier objectForKey:previewUniqueIdentifier];
 
   return v5;
 }
 
-- (id)previewForItem:(id)a3 section:(id)a4
+- (id)previewForItem:(id)item section:(id)section
 {
   v120 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v106 = a4;
-  v107 = [(PBFGalleryConfiguration *)self _posterDescriptorLookupInfoForItem:v6];
+  itemCopy = item;
+  sectionCopy = section;
+  v107 = [(PBFGalleryConfiguration *)self _posterDescriptorLookupInfoForItem:itemCopy];
   if (!v107)
   {
     v18 = 0;
     goto LABEL_70;
   }
 
-  if (v106 && [v106 type] == 2)
+  if (sectionCopy && [sectionCopy type] == 2)
   {
-    v99 = [v106 unityDescription];
+    unityDescription = [sectionCopy unityDescription];
   }
 
   else
   {
-    v99 = 0;
+    unityDescription = 0;
   }
 
-  v7 = [v6 modeUUID];
-  if (v7 && (v8 = objc_alloc(MEMORY[0x277CCAD78]), [v6 modeUUID], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "initWithUUIDString:", v9), v9, v7, v10))
+  modeUUID = [itemCopy modeUUID];
+  if (modeUUID && (v8 = objc_alloc(MEMORY[0x277CCAD78]), [itemCopy modeUUID], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "initWithUUIDString:", v9), v9, modeUUID, v10))
   {
-    v11 = [MEMORY[0x277D0A9E8] sharedActivityManager];
-    v12 = [v11 availableActivities];
+    mEMORY[0x277D0A9E8] = [MEMORY[0x277D0A9E8] sharedActivityManager];
+    availableActivities = [mEMORY[0x277D0A9E8] availableActivities];
     v108[0] = MEMORY[0x277D85DD0];
     v108[1] = 3221225472;
     v108[2] = __50__PBFGalleryConfiguration_previewForItem_section___block_invoke;
     v108[3] = &unk_2782C57D0;
     v92 = v10;
     v109 = v92;
-    v13 = [v12 bs_firstObjectPassingTest:v108];
+    v13 = [availableActivities bs_firstObjectPassingTest:v108];
 
-    v104 = [v13 activityIdentifier];
-    v101 = [v13 activitySymbolImageName];
+    activityIdentifier = [v13 activityIdentifier];
+    activitySymbolImageName = [v13 activitySymbolImageName];
 
     v82 = 1;
   }
@@ -834,67 +834,67 @@ LABEL_31:
   {
     v82 = 0;
     v92 = 0;
-    v101 = 0;
-    v104 = 0;
+    activitySymbolImageName = 0;
+    activityIdentifier = 0;
   }
 
-  v14 = [v6 subtitleComplication];
-  v98 = complicationLookupInfoForPBFComplication(v14);
+  subtitleComplication = [itemCopy subtitleComplication];
+  v98 = complicationLookupInfoForPBFComplication(subtitleComplication);
 
-  v15 = [v6 complications];
-  v97 = [v15 bs_mapNoNulls:&__block_literal_global_47];
+  complications = [itemCopy complications];
+  v97 = [complications bs_mapNoNulls:&__block_literal_global_47];
 
-  v16 = [v6 layoutType];
-  if ((v16 - 1) > 2)
+  layoutType = [itemCopy layoutType];
+  if ((layoutType - 1) > 2)
   {
     v17 = &PBFComplicationLayoutTypeEmpty;
   }
 
   else
   {
-    v17 = off_2782C8468[v16 - 1];
+    v17 = off_2782C8468[layoutType - 1];
   }
 
   v96 = *v17;
-  v19 = [v6 landscapeComplications];
-  v95 = [v19 bs_mapNoNulls:&__block_literal_global_49];
+  landscapeComplications = [itemCopy landscapeComplications];
+  v95 = [landscapeComplications bs_mapNoNulls:&__block_literal_global_49];
 
-  v103 = [v6 extensionBundleIdentifier];
-  v102 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:v103 error:0];
+  extensionBundleIdentifier = [itemCopy extensionBundleIdentifier];
+  v102 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:extensionBundleIdentifier error:0];
   v105 = [v102 URL];
   if (v105)
   {
-    v91 = [v6 displayNameLocalizationKey];
-    if (v91)
+    displayNameLocalizationKey = [itemCopy displayNameLocalizationKey];
+    if (displayNameLocalizationKey)
     {
       v20 = [MEMORY[0x277CCA8D8] pf_uniqueBundleWithURL:v105];
-      v87 = [v20 localizedStringForKey:v91 value:0 table:0];
+      localizedDisplayName = [v20 localizedStringForKey:displayNameLocalizationKey value:0 table:0];
     }
 
     else
     {
-      v87 = [v6 localizedDisplayName];
+      localizedDisplayName = [itemCopy localizedDisplayName];
     }
 
     v21 = objc_alloc(MEMORY[0x277D3ED80]);
-    v22 = [v107 posterDescriptorPath];
-    v23 = [v21 _initWithPath:v22];
+    posterDescriptorPath = [v107 posterDescriptorPath];
+    v23 = [v21 _initWithPath:posterDescriptorPath];
 
-    v86 = [v23 displayNameLocalizationKey];
-    v94 = [v23 preferredTitleColors];
-    if (v94 && [v94 count])
+    displayNameLocalizationKey2 = [v23 displayNameLocalizationKey];
+    preferredTitleColors = [v23 preferredTitleColors];
+    if (preferredTitleColors && [preferredTitleColors count])
     {
-      v24 = [v94 firstObject];
-      v89 = [v24 contentStyle];
+      firstObject = [preferredTitleColors firstObject];
+      contentStyle = [firstObject contentStyle];
     }
 
     else
     {
-      v89 = [MEMORY[0x277D3EE30] defaultTitleContentStyleForRole:*MEMORY[0x277D3EEF0]];
+      contentStyle = [MEMORY[0x277D3EE30] defaultTitleContentStyleForRole:*MEMORY[0x277D3EEF0]];
     }
 
-    v93 = [v6 titleFontName];
-    if (v93 && (PRTimeFontIdentifiers(), v25 = objc_claimAutoreleasedReturnValue(), v26 = [v25 containsObject:v93], v25, v26) && (v27 = objc_msgSend(objc_alloc(MEMORY[0x277D3EE68]), "initWithTimeFontIdentifier:", v93)) != 0)
+    titleFontName = [itemCopy titleFontName];
+    if (titleFontName && (PRTimeFontIdentifiers(), v25 = objc_claimAutoreleasedReturnValue(), v26 = [v25 containsObject:titleFontName], v25, v26) && (v27 = objc_msgSend(objc_alloc(MEMORY[0x277D3EE68]), "initWithTimeFontIdentifier:", titleFontName)) != 0)
     {
       v81 = v27;
       v90 = v81;
@@ -904,11 +904,11 @@ LABEL_31:
     else
     {
       v28 = [v23 preferredTimeFontConfigurationsWithExtensionBundleURL:v105];
-      v29 = [v28 firstObject];
-      v30 = v29;
-      if (v29)
+      firstObject2 = [v28 firstObject];
+      v30 = firstObject2;
+      if (firstObject2)
       {
-        v90 = v29;
+        v90 = firstObject2;
       }
 
       else
@@ -920,38 +920,38 @@ LABEL_31:
       [MEMORY[0x277D3EE28] configurationWithTimeFontConfiguration:v90 extensionBundleURL:v105 systemItem:1];
     }
     v88 = ;
-    v31 = [MEMORY[0x277D3EE40] sharedPreferences];
-    v32 = [v31 isAlternateCalendarEnabled];
+    mEMORY[0x277D3EE40] = [MEMORY[0x277D3EE40] sharedPreferences];
+    isAlternateCalendarEnabled = [mEMORY[0x277D3EE40] isAlternateCalendarEnabled];
 
-    v33 = [v23 preferredGalleryOptions];
-    v100 = [v33 preferredTitleStyle];
+    preferredGalleryOptions = [v23 preferredGalleryOptions];
+    preferredTitleStyle = [preferredGalleryOptions preferredTitleStyle];
 
     v34 = objc_alloc(MEMORY[0x277D3EE30]);
-    [v100 preferredTimeMaxYPortrait];
+    [preferredTitleStyle preferredTimeMaxYPortrait];
     v36 = v35;
-    [v100 preferredTimeMaxYLandscape];
+    [preferredTitleStyle preferredTimeMaxYLandscape];
     v38 = v37;
     [v23 luminance];
-    LOBYTE(v78) = v32;
-    v85 = [v34 initWithTimeFontConfiguration:v88 preferredTitleAlignment:0 preferredTitleLayout:0 titleContentStyle:v89 timeNumberingSystem:0 userConfigured:0 preferredTimeMaxYPortrait:v36 preferredTimeMaxYLandscape:v38 contentsLuminance:v39 alternateDateEnabled:v78 groupName:0];
-    v40 = [v23 preferredHomeScreenConfiguration];
-    v41 = v40;
-    if (v40)
+    LOBYTE(v78) = isAlternateCalendarEnabled;
+    v85 = [v34 initWithTimeFontConfiguration:v88 preferredTitleAlignment:0 preferredTitleLayout:0 titleContentStyle:contentStyle timeNumberingSystem:0 userConfigured:0 preferredTimeMaxYPortrait:v36 preferredTimeMaxYLandscape:v38 contentsLuminance:v39 alternateDateEnabled:v78 groupName:0];
+    preferredHomeScreenConfiguration = [v23 preferredHomeScreenConfiguration];
+    v41 = preferredHomeScreenConfiguration;
+    if (preferredHomeScreenConfiguration)
     {
-      v42 = [v40 allowsModifyingLegibilityBlur];
-      v43 = [v41 preferredStyle];
-      if (v43 == 2)
+      allowsModifyingLegibilityBlur = [preferredHomeScreenConfiguration allowsModifyingLegibilityBlur];
+      preferredStyle = [v41 preferredStyle];
+      if (preferredStyle == 2)
       {
         v44 = 1;
       }
 
       else
       {
-        v44 = 2 * (v43 == 3);
+        v44 = 2 * (preferredStyle == 3);
       }
 
       v45 = objc_alloc(MEMORY[0x277D3EDB0]);
-      v46 = [objc_alloc(MEMORY[0x277D3EDC8]) initWithLegibilityBlurEnabled:v43 == 1 allowsModifyingLegibilityBlur:v42];
+      v46 = [objc_alloc(MEMORY[0x277D3EDC8]) initWithLegibilityBlurEnabled:preferredStyle == 1 allowsModifyingLegibilityBlur:allowsModifyingLegibilityBlur];
       v47 = objc_alloc_init(MEMORY[0x277D3EE18]);
       v48 = objc_alloc_init(MEMORY[0x277D3EDA0]);
       v49 = objc_alloc_init(MEMORY[0x277D3EDA8]);
@@ -961,11 +961,11 @@ LABEL_31:
 
     else
     {
-      v84 = [MEMORY[0x277D3EDB0] defaultHomeScreenConfigurationForProvider:v103 role:*MEMORY[0x277D3EEF0]];
+      v84 = [MEMORY[0x277D3EDB0] defaultHomeScreenConfigurationForProvider:extensionBundleIdentifier role:*MEMORY[0x277D3EEF0]];
     }
 
     v51 = v82 ^ 1;
-    if (!v104)
+    if (!activityIdentifier)
     {
       v51 = 1;
     }
@@ -977,19 +977,19 @@ LABEL_31:
 
     else
     {
-      v83 = [objc_alloc(MEMORY[0x277D3ED98]) initWithActivityIdentifier:v104 activityUUID:v92];
+      v83 = [objc_alloc(MEMORY[0x277D3ED98]) initWithActivityIdentifier:activityIdentifier activityUUID:v92];
     }
 
-    v52 = [v23 preferredRenderingConfiguration];
+    preferredRenderingConfiguration = [v23 preferredRenderingConfiguration];
     v53 = PBFPreviewTypeDefault;
-    if (v106 && [v106 type] == 3)
+    if (sectionCopy && [sectionCopy type] == 3)
     {
       v54 = &PBFPreviewTypeHero;
     }
 
     else
     {
-      if (![v6 shouldShowAsShuffleStack])
+      if (![itemCopy shouldShowAsShuffleStack])
       {
         goto LABEL_48;
       }
@@ -1002,24 +1002,24 @@ LABEL_31:
     v53 = v55;
 LABEL_48:
     v56 = objc_alloc_init(PBFGalleryOptions);
-    v57 = [v6 proactiveRepresentation];
-    [(PBFGalleryOptions *)v56 setSuggestedGalleryItem:v57];
+    proactiveRepresentation = [itemCopy proactiveRepresentation];
+    [(PBFGalleryOptions *)v56 setSuggestedGalleryItem:proactiveRepresentation];
 
-    if (v104 || ([v6 modeSemanticType], v58 = objc_claimAutoreleasedReturnValue(), v59 = v58 == 0, v58, v59))
+    if (activityIdentifier || ([itemCopy modeSemanticType], v58 = objc_claimAutoreleasedReturnValue(), v59 = v58 == 0, v58, v59))
     {
-      if (v101)
+      if (activitySymbolImageName)
       {
-        [(PBFGalleryOptions *)v56 setModeSymbolImageName:v101];
+        [(PBFGalleryOptions *)v56 setModeSymbolImageName:activitySymbolImageName];
       }
     }
 
     else
     {
-      v60 = [v6 modeSemanticType];
-      [(PBFGalleryOptions *)v56 setModeSemanticTypeToCreate:v60];
+      modeSemanticType = [itemCopy modeSemanticType];
+      [(PBFGalleryOptions *)v56 setModeSemanticTypeToCreate:modeSemanticType];
 
-      v61 = [v6 modeSemanticType];
-      v62 = [v61 integerValue];
+      modeSemanticType2 = [itemCopy modeSemanticType];
+      integerValue = [modeSemanticType2 integerValue];
       v110 = 0;
       v111 = &v110;
       v112 = 0x2020000000;
@@ -1042,18 +1042,18 @@ LABEL_48:
         [PBFGalleryConfiguration previewForItem:section:];
       }
 
-      v64 = v63(v62);
+      v64 = v63(integerValue);
       [(PBFGalleryOptions *)v56 setModeSymbolImageName:v64];
     }
 
     if (PFFeatureEnabled() && ((v65 = PFFeatureEnabled(), v53 != PBFPreviewTypeHero) ? (v66 = v65) : (v66 = 0), v66 == 1))
     {
-      v67 = [v103 isEqualToString:@"com.apple.NanoUniverse.AegirProxyApp.AegirPoster"];
-      [v100 preferredTimeMaxYPortrait];
+      v67 = [extensionBundleIdentifier isEqualToString:@"com.apple.NanoUniverse.AegirProxyApp.AegirPoster"];
+      [preferredTitleStyle preferredTimeMaxYPortrait];
       v69 = v68;
-      if (v52)
+      if (preferredRenderingConfiguration)
       {
-        v70 = [v52 isDepthEffectDisabled] ^ 1;
+        v70 = [preferredRenderingConfiguration isDepthEffectDisabled] ^ 1;
       }
 
       else
@@ -1066,9 +1066,9 @@ LABEL_48:
       if (os_log_type_enabled(v72, OS_LOG_TYPE_INFO))
       {
         v80 = v69 > 0.0;
-        [v100 preferredTimeMaxYPortrait];
+        [preferredTitleStyle preferredTimeMaxYPortrait];
         v74 = v73;
-        v75 = [v6 identifier];
+        identifier = [itemCopy identifier];
         *buf = 67110402;
         *&buf[4] = v71;
         LOWORD(v115) = 2048;
@@ -1078,9 +1078,9 @@ LABEL_48:
         LOWORD(v116) = 1024;
         *(&v116 + 2) = v70;
         HIWORD(v116) = 2112;
-        v117 = v75;
+        v117 = identifier;
         v118 = 2112;
-        v119 = v103;
+        v119 = extensionBundleIdentifier;
         _os_log_impl(&dword_21B526000, v72, OS_LOG_TYPE_INFO, "Complications use bottom layout? %{BOOL}i, Time(%f): %{BOOL}i, Depth: %{BOOL}i, %@:%@", buf, 0x32u);
       }
     }
@@ -1090,9 +1090,9 @@ LABEL_48:
       LOBYTE(v71) = 0;
     }
 
-    v76 = [v6 identifier];
+    identifier2 = [itemCopy identifier];
     LOBYTE(v79) = v71;
-    v18 = [PBFGenericPosterPreview posterPreviewWithUniqueIdentifier:v76 displayNameLocalizationKey:v86 galleryLocalizedTitle:v87 galleryLocalizedDescription:v99 posterDescriptorLookupInfo:v107 titleStyleConfiguration:v85 focusConfiguration:v83 subtitleComplication:v98 suggestedComplications:v97 suggestedLandscapeComplications:v95 complicationLayoutType:v96 complicationsUseBottomLayout:v79 renderingConfiguration:v52 homeScreenConfiguration:v84 previewType:v53 galleryOptions:v56];
+    v18 = [PBFGenericPosterPreview posterPreviewWithUniqueIdentifier:identifier2 displayNameLocalizationKey:displayNameLocalizationKey2 galleryLocalizedTitle:localizedDisplayName galleryLocalizedDescription:unityDescription posterDescriptorLookupInfo:v107 titleStyleConfiguration:v85 focusConfiguration:v83 subtitleComplication:v98 suggestedComplications:v97 suggestedLandscapeComplications:v95 complicationLayoutType:v96 complicationsUseBottomLayout:v79 renderingConfiguration:preferredRenderingConfiguration homeScreenConfiguration:v84 previewType:v53 galleryOptions:v56];
 
     goto LABEL_69;
   }

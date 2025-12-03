@@ -1,22 +1,22 @@
 @interface DNDSLegacyAssertionSyncManager
 + (void)cleanupState;
-- (BOOL)_queue_updateCompanionToggleSyncForGizmoUpdateDate:(id)a3 modeAssertionUpdateContext:(id)a4;
+- (BOOL)_queue_updateCompanionToggleSyncForGizmoUpdateDate:(id)date modeAssertionUpdateContext:(id)context;
 - (DNDSAssertionSyncManagerDelegate)delegate;
-- (DNDSLegacyAssertionSyncManager)initWithClientDetailsProvider:(id)a3 pairedDevice:(id)a4;
+- (DNDSLegacyAssertionSyncManager)initWithClientDetailsProvider:(id)provider pairedDevice:(id)device;
 - (DNDSLegacyAssertionSyncManagerDataSource)dataSource;
 - (id)_queue_gizmoUpdateDate;
 - (void)_beginMonitoringForChanges;
 - (void)_endMonitoringForChanges;
 - (void)_queue_gizmoUpdateDate;
-- (void)_queue_updateCompanionAssertionMirroringForState:(id)a3;
-- (void)_queue_updateGizmoAssertionSyncWithModeAssertionUpdateContext:(id)a3;
-- (void)_queue_updateGizmoToggleSyncForState:(id)a3 companionUpdateDate:(id)a4 reason:(unint64_t)a5;
-- (void)_queue_updateToggleSyncForReason:(unint64_t)a3;
-- (void)_updateForReason:(unint64_t)a3;
+- (void)_queue_updateCompanionAssertionMirroringForState:(id)state;
+- (void)_queue_updateGizmoAssertionSyncWithModeAssertionUpdateContext:(id)context;
+- (void)_queue_updateGizmoToggleSyncForState:(id)state companionUpdateDate:(id)date reason:(unint64_t)reason;
+- (void)_queue_updateToggleSyncForReason:(unint64_t)reason;
+- (void)_updateForReason:(unint64_t)reason;
 - (void)_updateGizmoAssertionSync;
 - (void)dealloc;
 - (void)resume;
-- (void)updateForStateUpdate:(id)a3;
+- (void)updateForStateUpdate:(id)update;
 @end
 
 @implementation DNDSLegacyAssertionSyncManager
@@ -35,13 +35,13 @@
   [v3 removeObjectForKey:@"dndStateDate"];
   [v3 removeObjectForKey:@"dndCompanionAssertActive"];
   [v3 removeObjectForKey:@"dndGizmoAssertActive"];
-  v4 = [v3 synchronize];
+  synchronize = [v3 synchronize];
 }
 
-- (DNDSLegacyAssertionSyncManager)initWithClientDetailsProvider:(id)a3 pairedDevice:(id)a4
+- (DNDSLegacyAssertionSyncManager)initWithClientDetailsProvider:(id)provider pairedDevice:(id)device
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  deviceCopy = device;
   v21.receiver = self;
   v21.super_class = DNDSLegacyAssertionSyncManager;
   v9 = [(DNDSLegacyAssertionSyncManager *)&v21 init];
@@ -57,13 +57,13 @@
     v9->_npsManager = v13;
 
     v15 = objc_alloc(MEMORY[0x277D2BA58]);
-    v16 = [v8 pairingIdentifier];
-    v17 = [v8 pairingDataStore];
-    v18 = [v15 initWithDomain:@"com.apple.nano" pairingID:v16 pairingDataStore:v17];
+    pairingIdentifier = [deviceCopy pairingIdentifier];
+    pairingDataStore = [deviceCopy pairingDataStore];
+    v18 = [v15 initWithDomain:@"com.apple.nano" pairingID:pairingIdentifier pairingDataStore:pairingDataStore];
     accessor = v9->_accessor;
     v9->_accessor = v18;
 
-    objc_storeStrong(&v9->_clientDetailsProvider, a3);
+    objc_storeStrong(&v9->_clientDetailsProvider, provider);
   }
 
   return v9;
@@ -84,14 +84,14 @@
   [(DNDSLegacyAssertionSyncManager *)self _updateForReason:0];
 }
 
-- (void)updateForStateUpdate:(id)a3
+- (void)updateForStateUpdate:(id)update
 {
-  v4 = [a3 reason];
+  reason = [update reason];
 
-  [(DNDSLegacyAssertionSyncManager *)self _updateForReason:v4];
+  [(DNDSLegacyAssertionSyncManager *)self _updateForReason:reason];
 }
 
-- (void)_updateForReason:(unint64_t)a3
+- (void)_updateForReason:(unint64_t)reason
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -99,7 +99,7 @@
   v4[2] = __51__DNDSLegacyAssertionSyncManager__updateForReason___block_invoke;
   v4[3] = &unk_278F8A008;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = reason;
   dispatch_sync(queue, v4);
 }
 
@@ -144,18 +144,18 @@ void __59__DNDSLegacyAssertionSyncManager__updateGizmoAssertionSync__block_invok
   CFNotificationCenterRemoveObserver(v4, self, @"DNDAssertStateChangedNotification", 0);
 }
 
-- (void)_queue_updateToggleSyncForReason:(unint64_t)a3
+- (void)_queue_updateToggleSyncForReason:(unint64_t)reason
 {
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(NPSDomainAccessor *)self->_accessor synchronize];
-  v6 = [(DNDSLegacyAssertionSyncManager *)self delegate];
+  synchronize = [(NPSDomainAccessor *)self->_accessor synchronize];
+  delegate = [(DNDSLegacyAssertionSyncManager *)self delegate];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__DNDSLegacyAssertionSyncManager__queue_updateToggleSyncForReason___block_invoke;
   v7[3] = &unk_278F8AD40;
   v7[4] = self;
-  v7[5] = a3;
-  [v6 syncManager:self performModeAssertionUpdatesWithHandler:v7];
+  v7[5] = reason;
+  [delegate syncManager:self performModeAssertionUpdatesWithHandler:v7];
 }
 
 uint64_t __67__DNDSLegacyAssertionSyncManager__queue_updateToggleSyncForReason___block_invoke(uint64_t a1, void *a2)
@@ -256,9 +256,9 @@ LABEL_15:
       [(DNDSLegacyAssertionSyncManager *)v3 _queue_gizmoUpdateDate];
     }
 
-    v4 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
 
-    v2 = v4;
+    v2 = distantPast;
   }
 
   v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:10.0];
@@ -270,13 +270,13 @@ LABEL_15:
       [(DNDSLegacyAssertionSyncManager *)v2 _queue_gizmoUpdateDate];
     }
 
-    v7 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast2 = [MEMORY[0x277CBEAA8] distantPast];
 
-    v2 = v7;
+    v2 = distantPast2;
   }
 
-  v8 = [MEMORY[0x277CBEAA8] date];
-  if ([v2 compare:v8] != -1)
+  date = [MEMORY[0x277CBEAA8] date];
+  if ([v2 compare:date] != -1)
   {
     v9 = DNDSLogLegacyAssertionSync;
     if (os_log_type_enabled(DNDSLogLegacyAssertionSync, OS_LOG_TYPE_ERROR))
@@ -284,7 +284,7 @@ LABEL_15:
       [(DNDSLegacyAssertionSyncManager *)v2 _queue_gizmoUpdateDate];
     }
 
-    v10 = v8;
+    v10 = date;
 
     v2 = v10;
   }
@@ -292,22 +292,22 @@ LABEL_15:
   return v2;
 }
 
-- (void)_queue_updateGizmoToggleSyncForState:(id)a3 companionUpdateDate:(id)a4 reason:(unint64_t)a5
+- (void)_queue_updateGizmoToggleSyncForState:(id)state companionUpdateDate:(id)date reason:(unint64_t)reason
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  stateCopy = state;
+  dateCopy = date;
   dispatch_assert_queue_V2(self->_queue);
-  if (a5 == 1)
+  if (reason == 1)
   {
     v10 = [(NPSDomainAccessor *)self->_accessor BOOLForKey:@"dndState"];
-    v11 = [v8 activeModeAssertionMetadata];
+    activeModeAssertionMetadata = [stateCopy activeModeAssertionMetadata];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __98__DNDSLegacyAssertionSyncManager__queue_updateGizmoToggleSyncForState_companionUpdateDate_reason___block_invoke;
     v23[3] = &unk_278F8AD68;
     v23[4] = self;
-    v12 = [v11 bs_containsObjectPassingTest:v23];
+    v12 = [activeModeAssertionMetadata bs_containsObjectPassingTest:v23];
 
     v13 = DNDSLogLegacyAssertionSync;
     if (os_log_type_enabled(DNDSLogLegacyAssertionSync, OS_LOG_TYPE_DEFAULT))
@@ -325,9 +325,9 @@ LABEL_15:
 
     [(NPSDomainAccessor *)self->_accessor setBool:v12 forKey:@"dndState"];
     accessor = self->_accessor;
-    [v9 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     [(NPSDomainAccessor *)accessor setDouble:@"dndStateDate" forKey:?];
-    v17 = [(NPSDomainAccessor *)self->_accessor synchronize];
+    synchronize = [(NPSDomainAccessor *)self->_accessor synchronize];
     v18 = [MEMORY[0x277CBEB98] setWithObjects:{@"dndState", @"dndStateDate", 0}];
     [(NPSManager *)self->_npsManager synchronizeNanoDomain:@"com.apple.nano" keys:v18];
   }
@@ -378,11 +378,11 @@ uint64_t __98__DNDSLegacyAssertionSyncManager__queue_updateGizmoToggleSyncForSta
   return v9;
 }
 
-- (BOOL)_queue_updateCompanionToggleSyncForGizmoUpdateDate:(id)a3 modeAssertionUpdateContext:(id)a4
+- (BOOL)_queue_updateCompanionToggleSyncForGizmoUpdateDate:(id)date modeAssertionUpdateContext:(id)context
 {
   v34 = *MEMORY[0x277D85DE8];
-  v29 = a3;
-  v6 = a4;
+  dateCopy = date;
+  contextCopy = context;
   dispatch_assert_queue_V2(self->_queue);
   v7 = [(NPSDomainAccessor *)self->_accessor BOOLForKey:@"dndState"];
   v8 = DNDSLogLegacyAssertionSync;
@@ -394,12 +394,12 @@ uint64_t __98__DNDSLegacyAssertionSyncManager__queue_updateGizmoToggleSyncForSta
   }
 
   v31 = @"com.donotdisturb.server.sync.legacy";
-  v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v31 count:{1, v29}];
+  v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v31 count:{1, dateCopy}];
   v10 = [MEMORY[0x277D05938] predicateForModeAssertionsWithClientIdentifiers:v9];
-  v11 = [v6 modeAssertionsMatchingPredicate:v10];
-  v12 = [v11 firstObject];
+  v11 = [contextCopy modeAssertionsMatchingPredicate:v10];
+  firstObject = [v11 firstObject];
 
-  if (v12)
+  if (firstObject)
   {
     v13 = 0;
   }
@@ -411,12 +411,12 @@ uint64_t __98__DNDSLegacyAssertionSyncManager__queue_updateGizmoToggleSyncForSta
 
   if ((v13 & 1) != 0 || v7 != 1)
   {
-    v16 = [(DNDSLegacyAssertionSyncManager *)self dataSource];
-    v17 = [v16 currentlyActivePairedDeviceForSyncManager:self];
+    dataSource = [(DNDSLegacyAssertionSyncManager *)self dataSource];
+    v17 = [dataSource currentlyActivePairedDeviceForSyncManager:self];
 
     v18 = objc_alloc(MEMORY[0x277D05988]);
-    v19 = [v17 deviceIdentifier];
-    v20 = [v18 initWithClientIdentifier:@"com.donotdisturb.server.sync.legacy" deviceIdentifier:v19];
+    deviceIdentifier = [v17 deviceIdentifier];
+    v20 = [v18 initWithClientIdentifier:@"com.donotdisturb.server.sync.legacy" deviceIdentifier:deviceIdentifier];
 
     if (v13)
     {
@@ -426,9 +426,9 @@ uint64_t __98__DNDSLegacyAssertionSyncManager__queue_updateGizmoToggleSyncForSta
       [v21 setLifetime:v22];
 
       [v21 setReason:1];
-      v23 = [v6 takeAssertionWithDetails:v21 source:v20 startDate:v30];
-      v24 = [v23 assertions];
-      v15 = [v24 count] != 0;
+      v23 = [contextCopy takeAssertionWithDetails:v21 source:v20 startDate:v30];
+      assertions = [v23 assertions];
+      v15 = [assertions count] != 0;
     }
 
     else
@@ -450,7 +450,7 @@ LABEL_18:
 
       v21 = +[DNDSModeAssertionInvalidationPredicate predicateForAnyAssertion];
       v23 = [DNDSModeAssertionInvalidationRequest requestWithPredicate:v21 requestDate:v30 source:v20 reason:2];
-      v26 = [v6 invalidateAssertionsForRequest:v23];
+      v26 = [contextCopy invalidateAssertionsForRequest:v23];
       v15 = 1;
     }
 
@@ -472,20 +472,20 @@ LABEL_19:
   return v15;
 }
 
-- (void)_queue_updateCompanionAssertionMirroringForState:(id)a3
+- (void)_queue_updateCompanionAssertionMirroringForState:(id)state
 {
   v15 = *MEMORY[0x277D85DE8];
   queue = self->_queue;
-  v5 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(queue);
-  v6 = [v5 activeModeAssertionMetadata];
+  activeModeAssertionMetadata = [stateCopy activeModeAssertionMetadata];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __83__DNDSLegacyAssertionSyncManager__queue_updateCompanionAssertionMirroringForState___block_invoke;
   v12[3] = &unk_278F8AD68;
   v12[4] = self;
-  v7 = [v6 bs_containsObjectPassingTest:v12];
+  v7 = [activeModeAssertionMetadata bs_containsObjectPassingTest:v12];
 
   if (v7 != [(NPSDomainAccessor *)self->_accessor BOOLForKey:@"dndCompanionAssertActive"])
   {
@@ -498,7 +498,7 @@ LABEL_19:
     }
 
     [(NPSDomainAccessor *)self->_accessor setBool:v7 forKey:@"dndCompanionAssertActive"];
-    v9 = [(NPSDomainAccessor *)self->_accessor synchronize];
+    synchronize = [(NPSDomainAccessor *)self->_accessor synchronize];
     v10 = [MEMORY[0x277CBEB98] setWithObject:@"dndCompanionAssertActive"];
     [(NPSManager *)self->_npsManager synchronizeNanoDomain:@"com.apple.nano" keys:v10];
   }
@@ -528,20 +528,20 @@ uint64_t __83__DNDSLegacyAssertionSyncManager__queue_updateCompanionAssertionMir
   return v8;
 }
 
-- (void)_queue_updateGizmoAssertionSyncWithModeAssertionUpdateContext:(id)a3
+- (void)_queue_updateGizmoAssertionSyncWithModeAssertionUpdateContext:(id)context
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(NPSDomainAccessor *)self->_accessor synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_accessor synchronize];
   v6 = [(NPSDomainAccessor *)self->_accessor BOOLForKey:@"dndGizmoAssertActive"];
   v27[0] = @"com.donotdisturb.server.sync.legacy.workout";
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
   v8 = [MEMORY[0x277D05938] predicateForModeAssertionsWithClientIdentifiers:v7];
-  v9 = [v4 modeAssertionsMatchingPredicate:v8];
-  v10 = [v9 firstObject];
+  v9 = [contextCopy modeAssertionsMatchingPredicate:v8];
+  firstObject = [v9 firstObject];
 
-  if (v10)
+  if (firstObject)
   {
     v11 = 0;
   }
@@ -551,7 +551,7 @@ uint64_t __83__DNDSLegacyAssertionSyncManager__queue_updateCompanionAssertionMir
     v11 = v6;
   }
 
-  if (v10)
+  if (firstObject)
   {
     v12 = v6;
   }
@@ -563,12 +563,12 @@ uint64_t __83__DNDSLegacyAssertionSyncManager__queue_updateCompanionAssertionMir
 
   if ((v11 & 1) != 0 || !v12)
   {
-    v13 = [(DNDSLegacyAssertionSyncManager *)self dataSource];
-    v14 = [v13 currentlyActivePairedDeviceForSyncManager:self];
+    dataSource = [(DNDSLegacyAssertionSyncManager *)self dataSource];
+    v14 = [dataSource currentlyActivePairedDeviceForSyncManager:self];
 
     v15 = objc_alloc(MEMORY[0x277D05988]);
-    v16 = [v14 deviceIdentifier];
-    v17 = [v15 initWithClientIdentifier:@"com.donotdisturb.server.sync.legacy.workout" deviceIdentifier:v16];
+    deviceIdentifier = [v14 deviceIdentifier];
+    v17 = [v15 initWithClientIdentifier:@"com.donotdisturb.server.sync.legacy.workout" deviceIdentifier:deviceIdentifier];
 
     if (v11)
     {
@@ -579,9 +579,9 @@ uint64_t __83__DNDSLegacyAssertionSyncManager__queue_updateCompanionAssertionMir
         _os_log_impl(&dword_24912E000, v18, OS_LOG_TYPE_DEFAULT, "Gizmo has taken a DND assertion, will mirror locally", v26, 2u);
       }
 
-      v19 = [MEMORY[0x277D05958] detailsWithIdentifier:@"com.apple.donotdisturb.sync.legacy.mirror-assertion" modeIdentifier:@"com.apple.donotdisturb.mode.workout" lifetime:0 reason:1];
-      v20 = [MEMORY[0x277CBEAA8] date];
-      v21 = [v4 takeAssertionWithDetails:v19 source:v17 startDate:v20];
+      date2 = [MEMORY[0x277D05958] detailsWithIdentifier:@"com.apple.donotdisturb.sync.legacy.mirror-assertion" modeIdentifier:@"com.apple.donotdisturb.mode.workout" lifetime:0 reason:1];
+      date = [MEMORY[0x277CBEAA8] date];
+      v21 = [contextCopy takeAssertionWithDetails:date2 source:v17 startDate:date];
     }
 
     else
@@ -600,10 +600,10 @@ LABEL_18:
         _os_log_impl(&dword_24912E000, v22, OS_LOG_TYPE_DEFAULT, "Gizmo has invalidated its DND assertion, will mirror locally", v26, 2u);
       }
 
-      v19 = [MEMORY[0x277CBEAA8] date];
-      v20 = [DNDSModeAssertionInvalidationPredicate predicateForAssertionClientIdentifiers:v7];
-      v23 = [DNDSModeAssertionInvalidationRequest requestWithPredicate:v20 requestDate:v19 source:v17 reason:2];
-      v24 = [v4 invalidateAssertionsForRequest:v23];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      date = [DNDSModeAssertionInvalidationPredicate predicateForAssertionClientIdentifiers:v7];
+      v23 = [DNDSModeAssertionInvalidationRequest requestWithPredicate:date requestDate:date2 source:v17 reason:2];
+      v24 = [contextCopy invalidateAssertionsForRequest:v23];
     }
 
     goto LABEL_18;
@@ -632,7 +632,7 @@ LABEL_19:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_24912E000, a2, OS_LOG_TYPE_ERROR, "Gizmo date is in the future, will reset to now: gizmoUpdateDate=%{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

@@ -1,14 +1,14 @@
 @interface VisitHistoryFilterViewController
-- (_TtC4Maps32VisitHistoryFilterViewController)initWithCoder:(id)a3;
-- (_TtC4Maps32VisitHistoryFilterViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC4Maps32VisitHistoryFilterViewController)initWithCoder:(id)coder;
+- (_TtC4Maps32VisitHistoryFilterViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)didResignCurrent;
 - (void)viewDidLoad;
-- (void)willBecomeCurrent:(BOOL)a3;
+- (void)willBecomeCurrent:(BOOL)current;
 @end
 
 @implementation VisitHistoryFilterViewController
 
-- (_TtC4Maps32VisitHistoryFilterViewController)initWithCoder:(id)a3
+- (_TtC4Maps32VisitHistoryFilterViewController)initWithCoder:(id)coder
 {
   *(&self->super.super._cardPresentationController + OBJC_IVAR____TtC4Maps32VisitHistoryFilterViewController_actionDelegate) = 0;
   swift_unknownObjectWeakInit();
@@ -19,10 +19,10 @@
   return result;
 }
 
-- (void)willBecomeCurrent:(BOOL)a3
+- (void)willBecomeCurrent:(BOOL)current
 {
-  v4 = self;
-  sub_10018F828(a3);
+  selfCopy = self;
+  sub_10018F828(current);
 }
 
 - (void)didResignCurrent
@@ -43,7 +43,7 @@
   sub_10018FA00();
 }
 
-- (_TtC4Maps32VisitHistoryFilterViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Maps32VisitHistoryFilterViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

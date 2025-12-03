@@ -9,13 +9,13 @@
   v37 = *MEMORY[0x277D85DE8];
   v4 = a3;
   v5 = objc_alloc_init(MEMORY[0x277CCAB48]);
-  v6 = [a1 count];
+  v6 = [self count];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = a1;
-  v8 = [v7 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  selfCopy = self;
+  v8 = [selfCopy countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v8)
   {
     v9 = v8;
@@ -35,7 +35,7 @@
       {
         if (*v33 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(selfCopy);
         }
 
         v16 = *(*(&v32 + 1) + 8 * v14);
@@ -48,7 +48,7 @@
             v17 = v11;
             v18 = v12;
             v19 = v5;
-            v20 = v7;
+            v20 = selfCopy;
             v21 = v4;
             v22 = *(v15 + 2776);
             v23 = objc_opt_class();
@@ -56,7 +56,7 @@
             v25 = v24 = v13;
             v26 = v22;
             v4 = v21;
-            v7 = v20;
+            selfCopy = v20;
             v5 = v19;
             v12 = v18;
             v11 = v17;
@@ -85,7 +85,7 @@
 
       while (v9 != v14);
       v10 = v29 + v9;
-      v9 = [v7 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v9 = [selfCopy countByEnumeratingWithState:&v32 objects:v36 count:16];
     }
 
     while (v9);

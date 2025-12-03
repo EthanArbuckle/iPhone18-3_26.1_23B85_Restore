@@ -1,14 +1,14 @@
 @interface ISIcnsIcon
-- (ISIcnsIcon)initWithCoder:(id)a3;
-- (ISIcnsIcon)initWithContentOfURL:(id)a3;
-- (ISIcnsIcon)initWithIcns:(id)a3;
-- (ISIcnsIcon)initWithIcnsData:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ISIcnsIcon)initWithCoder:(id)coder;
+- (ISIcnsIcon)initWithContentOfURL:(id)l;
+- (ISIcnsIcon)initWithIcns:(id)icns;
+- (ISIcnsIcon)initWithIcnsData:(id)data;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ISIcnsIcon
 
-- (ISIcnsIcon)initWithContentOfURL:(id)a3
+- (ISIcnsIcon)initWithContentOfURL:(id)l
 {
   v4 = [MEMORY[0x1E696AFB0] _IF_UUIDWithData:0];
   v9.receiver = self;
@@ -24,9 +24,9 @@
   return v6;
 }
 
-- (ISIcnsIcon)initWithIcns:(id)a3
+- (ISIcnsIcon)initWithIcns:(id)icns
 {
-  v5 = a3;
+  icnsCopy = icns;
   v6 = [MEMORY[0x1E696AFB0] _IF_UUIDWithData:0];
   v11.receiver = self;
   v11.super_class = ISIcnsIcon;
@@ -37,22 +37,22 @@
     icnsData = v7->_icnsData;
     v7->_icnsData = 0;
 
-    objc_storeStrong(&v8->_internalICNS, a3);
+    objc_storeStrong(&v8->_internalICNS, icns);
   }
 
   return v8;
 }
 
-- (ISIcnsIcon)initWithIcnsData:(id)a3
+- (ISIcnsIcon)initWithIcnsData:(id)data
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AFB0] _IF_UUIDWithData:v4];
+  dataCopy = data;
+  v5 = [MEMORY[0x1E696AFB0] _IF_UUIDWithData:dataCopy];
   v10.receiver = self;
   v10.super_class = ISIcnsIcon;
   v6 = [(ISConcreteIcon *)&v10 initWithDigest:v5];
   if (v6)
   {
-    v7 = [v4 copy];
+    v7 = [dataCopy copy];
     icnsData = v6->_icnsData;
     v6->_icnsData = v7;
   }
@@ -60,15 +60,15 @@
   return v6;
 }
 
-- (ISIcnsIcon)initWithCoder:(id)a3
+- (ISIcnsIcon)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ISIcnsIcon;
-  v5 = [(ISConcreteIcon *)&v9 initWithCoder:v4];
+  v5 = [(ISConcreteIcon *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"icnsData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"icnsData"];
     icnsData = v5->_icnsData;
     v5->_icnsData = v6;
   }
@@ -76,13 +76,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = ISIcnsIcon;
-  v4 = a3;
-  [(ISConcreteIcon *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_icnsData forKey:{@"icnsData", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(ISConcreteIcon *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_icnsData forKey:{@"icnsData", v5.receiver, v5.super_class}];
 }
 
 @end

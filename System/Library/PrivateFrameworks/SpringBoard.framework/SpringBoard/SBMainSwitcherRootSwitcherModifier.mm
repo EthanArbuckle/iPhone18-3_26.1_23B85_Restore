@@ -2,24 +2,24 @@
 - (BOOL)_correctFloorModifierToHandleEvent;
 - (SBMainSwitcherRootSwitcherModifier)init;
 - (id)_createNewDefaultFloorModifier;
-- (id)_newMultitaskingModifierForEnvironmentMode:(int64_t)a3;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
-- (id)floorModifierForTransitionEvent:(id)a3;
-- (id)focusedAppModifierForUpdateFocusedAppLayoutEvent:(id)a3;
-- (id)gestureModifierForGestureEvent:(id)a3;
-- (id)handleMoveDisplayItemFromOtherDisplayEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
-- (id)highlightModifierForHighlightEvent:(id)a3;
-- (id)insertionModifierForInsertionEvent:(id)a3;
-- (id)reduceMotionModifierForReduceMotionChangedEvent:(id)a3;
-- (id)removalModifierForRemovalEvent:(id)a3;
-- (id)responseForProposedChildResponse:(id)a3 childModifier:(id)a4 event:(id)a5;
-- (id)shelfModifierForTransitionEvent:(id)a3;
-- (id)swipeToKillModifierForSwipeToKillEvent:(id)a3;
-- (id)transitionModifierForMainTransitionEvent:(id)a3;
-- (id)userScrollingModifierForScrollEvent:(id)a3;
-- (void)_ensureModifier:(id)a3 startsInFinalStateOfEvent:(id)a4;
-- (void)_setCardSizesWithEvent:(id)a3;
+- (id)_newMultitaskingModifierForEnvironmentMode:(int64_t)mode;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
+- (id)floorModifierForTransitionEvent:(id)event;
+- (id)focusedAppModifierForUpdateFocusedAppLayoutEvent:(id)event;
+- (id)gestureModifierForGestureEvent:(id)event;
+- (id)handleMoveDisplayItemFromOtherDisplayEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
+- (id)highlightModifierForHighlightEvent:(id)event;
+- (id)insertionModifierForInsertionEvent:(id)event;
+- (id)reduceMotionModifierForReduceMotionChangedEvent:(id)event;
+- (id)removalModifierForRemovalEvent:(id)event;
+- (id)responseForProposedChildResponse:(id)response childModifier:(id)modifier event:(id)event;
+- (id)shelfModifierForTransitionEvent:(id)event;
+- (id)swipeToKillModifierForSwipeToKillEvent:(id)event;
+- (id)transitionModifierForMainTransitionEvent:(id)event;
+- (id)userScrollingModifierForScrollEvent:(id)event;
+- (void)_ensureModifier:(id)modifier startsInFinalStateOfEvent:(id)event;
+- (void)_setCardSizesWithEvent:(id)event;
 @end
 
 @implementation SBMainSwitcherRootSwitcherModifier
@@ -37,11 +37,11 @@
   return result;
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
   v8.receiver = self;
   v8.super_class = SBMainSwitcherRootSwitcherModifier;
-  v3 = [(SBMainSwitcherRootSwitcherModifier *)&v8 adjustedAppLayoutsForAppLayouts:a3];
+  v3 = [(SBMainSwitcherRootSwitcherModifier *)&v8 adjustedAppLayoutsForAppLayouts:layouts];
   v4 = [v3 bs_filter:&__block_literal_global_56];
   v5 = [v3 bs_filter:&__block_literal_global_4];
   v6 = [v4 arrayByAddingObjectsFromArray:v5];
@@ -49,13 +49,13 @@
   return v6;
 }
 
-- (id)gestureModifierForGestureEvent:(id)a3
+- (id)gestureModifierForGestureEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 gestureID];
-  if (-[SBMainSwitcherRootSwitcherModifier _correctFloorModifierToHandleEvent](self, "_correctFloorModifierToHandleEvent") && [v4 gestureType] == 2)
+  eventCopy = event;
+  gestureID = [eventCopy gestureID];
+  if (-[SBMainSwitcherRootSwitcherModifier _correctFloorModifierToHandleEvent](self, "_correctFloorModifierToHandleEvent") && [eventCopy gestureType] == 2)
   {
-    v6 = [[SBGridSwipeUpGestureSwitcherModifier alloc] initWithGestureID:v5];
+    v6 = [[SBGridSwipeUpGestureSwitcherModifier alloc] initWithGestureID:gestureID];
   }
 
   else
@@ -63,14 +63,14 @@
     v6 = 0;
   }
 
-  if ([v4 gestureType] == 6)
+  if ([eventCopy gestureType] == 6)
   {
     v7 = [[SBDragAndDropGestureRootSwitcherModifier alloc] initWithStartingEnvironmentMode:self->_environmentMode floatingSwitcherVisible:self->_floatingSwitcherVisible fullScreenAppLayout:self->_appLayout];
   }
 
   else
   {
-    if ([v4 gestureType] != 8)
+    if ([eventCopy gestureType] != 8)
     {
       goto LABEL_13;
     }
@@ -88,8 +88,8 @@
     }
 
     v11 = [SBMedusaWindowDragGestureRootSwitcherModifier alloc];
-    v12 = [v4 selectedAppLayout];
-    v7 = [(SBMedusaWindowDragGestureRootSwitcherModifier *)v11 initWithSelectedLeafAppLayout:v12 currentMainAppLayout:v9 currentFloatingAppLayout:self->_floatingAppLayout currentFloatingConfiguration:self->_floatingConfiguration];
+    selectedAppLayout = [eventCopy selectedAppLayout];
+    v7 = [(SBMedusaWindowDragGestureRootSwitcherModifier *)v11 initWithSelectedLeafAppLayout:selectedAppLayout currentMainAppLayout:v9 currentFloatingAppLayout:self->_floatingAppLayout currentFloatingConfiguration:self->_floatingConfiguration];
 
     v6 = v9;
   }
@@ -100,40 +100,40 @@ LABEL_13:
   return v6;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
-  v4 = a3;
-  self->_environmentMode = [v4 toEnvironmentMode];
-  self->_floatingSwitcherVisible = [v4 toFloatingSwitcherVisible];
-  v5 = [v4 toAppLayout];
+  eventCopy = event;
+  self->_environmentMode = [eventCopy toEnvironmentMode];
+  self->_floatingSwitcherVisible = [eventCopy toFloatingSwitcherVisible];
+  toAppLayout = [eventCopy toAppLayout];
   appLayout = self->_appLayout;
-  self->_appLayout = v5;
+  self->_appLayout = toAppLayout;
 
-  v7 = [v4 toFloatingAppLayout];
+  toFloatingAppLayout = [eventCopy toFloatingAppLayout];
   floatingAppLayout = self->_floatingAppLayout;
-  self->_floatingAppLayout = v7;
+  self->_floatingAppLayout = toFloatingAppLayout;
 
-  self->_floatingConfiguration = [v4 toFloatingConfiguration];
-  [(SBMainSwitcherRootSwitcherModifier *)self _setCardSizesWithEvent:v4];
+  self->_floatingConfiguration = [eventCopy toFloatingConfiguration];
+  [(SBMainSwitcherRootSwitcherModifier *)self _setCardSizesWithEvent:eventCopy];
   v11.receiver = self;
   v11.super_class = SBMainSwitcherRootSwitcherModifier;
-  v9 = [(SBFluidSwitcherRootSwitcherModifier *)&v11 handleTransitionEvent:v4];
+  v9 = [(SBFluidSwitcherRootSwitcherModifier *)&v11 handleTransitionEvent:eventCopy];
 
   return v9;
 }
 
-- (id)handleMoveDisplayItemFromOtherDisplayEvent:(id)a3
+- (id)handleMoveDisplayItemFromOtherDisplayEvent:(id)event
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v15.receiver = self;
   v15.super_class = SBMainSwitcherRootSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v15 handleMoveDisplayItemFromOtherDisplayEvent:v4];
-  if (([v4 isHandled] & 1) == 0)
+  v5 = [(SBSwitcherModifier *)&v15 handleMoveDisplayItemFromOtherDisplayEvent:eventCopy];
+  if (([eventCopy isHandled] & 1) == 0)
   {
-    v6 = [v4 displayItem];
+    displayItem = [eventCopy displayItem];
     v7 = [SBAppLayout alloc];
-    v16[0] = v6;
+    v16[0] = displayItem;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
     LOBYTE(v14) = 0;
     v9 = [(SBAppLayout *)v7 initWithItems:v8 centerItem:0 floatingItem:0 configuration:0 centerConfiguration:0 environment:1 hidden:v14 preferredDisplayOrdinal:[(SBMainSwitcherRootSwitcherModifier *)self displayOrdinal]];
@@ -143,18 +143,18 @@ LABEL_13:
     v11 = [[SBPerformTransitionSwitcherEventResponse alloc] initWithTransitionRequest:v10 gestureInitiated:0];
     v12 = SBAppendSwitcherModifierResponse(v11, v5);
 
-    [v4 handleWithReason:@"Main Switcher Root"];
+    [eventCopy handleWithReason:@"Main Switcher Root"];
     v5 = v12;
   }
 
   return v5;
 }
 
-- (id)responseForProposedChildResponse:(id)a3 childModifier:(id)a4 event:(id)a5
+- (id)responseForProposedChildResponse:(id)response childModifier:(id)modifier event:(id)event
 {
   v10.receiver = self;
   v10.super_class = SBMainSwitcherRootSwitcherModifier;
-  v6 = [(SBFluidSwitcherRootSwitcherModifier *)&v10 responseForProposedChildResponse:a3 childModifier:a4 event:a5];
+  v6 = [(SBFluidSwitcherRootSwitcherModifier *)&v10 responseForProposedChildResponse:response childModifier:modifier event:event];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __91__SBMainSwitcherRootSwitcherModifier_responseForProposedChildResponse_childModifier_event___block_invoke;
@@ -183,27 +183,27 @@ id __91__SBMainSwitcherRootSwitcherModifier_responseForProposedChildResponse_chi
   return v3;
 }
 
-- (id)transitionModifierForMainTransitionEvent:(id)a3
+- (id)transitionModifierForMainTransitionEvent:(id)event
 {
-  v5 = a3;
-  v86 = [v5 transitionID];
-  v87 = [v5 fromAppLayout];
-  v88 = [v5 fromFloatingAppLayout];
-  v6 = [v5 toAppLayout];
-  v85 = [v5 toFloatingAppLayout];
-  v7 = [v5 fromAppExposeBundleID];
-  v90 = [v5 toAppExposeBundleID];
-  v89 = [v5 fromEnvironmentMode];
-  v8 = [v5 toEnvironmentMode];
-  v9 = [v5 fromFloatingConfiguration];
-  v10 = [v5 toFloatingConfiguration];
-  v11 = [(SBMainSwitcherRootSwitcherModifier *)self switcherSettings];
-  v12 = [v11 effectiveSwitcherStyle];
+  eventCopy = event;
+  transitionID = [eventCopy transitionID];
+  fromAppLayout = [eventCopy fromAppLayout];
+  fromFloatingAppLayout = [eventCopy fromFloatingAppLayout];
+  toAppLayout = [eventCopy toAppLayout];
+  toFloatingAppLayout = [eventCopy toFloatingAppLayout];
+  fromAppExposeBundleID = [eventCopy fromAppExposeBundleID];
+  toAppExposeBundleID = [eventCopy toAppExposeBundleID];
+  fromEnvironmentMode = [eventCopy fromEnvironmentMode];
+  toEnvironmentMode = [eventCopy toEnvironmentMode];
+  fromFloatingConfiguration = [eventCopy fromFloatingConfiguration];
+  toFloatingConfiguration = [eventCopy toFloatingConfiguration];
+  switcherSettings = [(SBMainSwitcherRootSwitcherModifier *)self switcherSettings];
+  effectiveSwitcherStyle = [switcherSettings effectiveSwitcherStyle];
 
-  if (!v7 && v90 && v8 == 2)
+  if (!fromAppExposeBundleID && toAppExposeBundleID && toEnvironmentMode == 2)
   {
-    v13 = [(SBMainSwitcherRootSwitcherModifier *)self floorModifierForTransitionEvent:v5];
-    v14 = [v13 copy];
+    v13 = [(SBMainSwitcherRootSwitcherModifier *)self floorModifierForTransitionEvent:eventCopy];
+    fromShelf = [v13 copy];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -211,67 +211,67 @@ id __91__SBMainSwitcherRootSwitcherModifier_responseForProposedChildResponse_chi
       [(SBMainSwitcherRootSwitcherModifier *)a2 transitionModifierForMainTransitionEvent:?];
     }
 
-    v15 = v6;
-    if (v89 != 1)
+    v15 = toAppLayout;
+    if (fromEnvironmentMode != 1)
     {
-      v16 = v85;
-      if (v89 != 2)
+      v16 = toFloatingAppLayout;
+      if (fromEnvironmentMode != 2)
       {
-        if (v89 != 3)
+        if (fromEnvironmentMode != 3)
         {
           v26 = 0;
-          v19 = v86;
-          v20 = v87;
+          v19 = transitionID;
+          v20 = fromAppLayout;
           goto LABEL_35;
         }
 
-        v17 = [(SBFluidSwitcherRootSwitcherModifier *)self floorModifier];
-        v18 = [v17 copy];
+        floorModifier = [(SBFluidSwitcherRootSwitcherModifier *)self floorModifier];
+        v18 = [floorModifier copy];
 
-        v19 = v86;
-        v20 = v87;
-        v21 = [[SBAppExposeToFullScreenSwitcherModifier alloc] initWithTransitionID:v86 direction:1 fullScreenAppLayout:v87 floatingAppLayout:v88 bundleIdentifier:v90 appExposeModifier:v14 fullScreenModifier:v18];
+        v19 = transitionID;
+        v20 = fromAppLayout;
+        v21 = [[SBAppExposeToFullScreenSwitcherModifier alloc] initWithTransitionID:transitionID direction:1 fullScreenAppLayout:fromAppLayout floatingAppLayout:fromFloatingAppLayout bundleIdentifier:toAppExposeBundleID appExposeModifier:fromShelf fullScreenModifier:v18];
         goto LABEL_18;
       }
 
       v28 = [SBSwitcherToAppExposeSwitcherModifier alloc];
-      v19 = v86;
-      v29 = v86;
-      v30 = v90;
+      v19 = transitionID;
+      v29 = transitionID;
+      v30 = toAppExposeBundleID;
 LABEL_26:
-      v26 = [(SBSwitcherToAppExposeSwitcherModifier *)v28 initWithTransitionID:v29 bundleIdentifier:v30 appExposeModifier:v14];
-      v20 = v87;
+      v26 = [(SBSwitcherToAppExposeSwitcherModifier *)v28 initWithTransitionID:v29 bundleIdentifier:v30 appExposeModifier:fromShelf];
+      v20 = fromAppLayout;
       goto LABEL_35;
     }
 
-    v19 = v86;
-    v26 = [[SBAppExposeToHomeSwitcherModifier alloc] initWithTransitionID:v86 direction:1 bundleIdentifier:v90 appExposeModifier:v14];
-    v20 = v87;
+    v19 = transitionID;
+    v26 = [[SBAppExposeToHomeSwitcherModifier alloc] initWithTransitionID:transitionID direction:1 bundleIdentifier:toAppExposeBundleID appExposeModifier:fromShelf];
+    v20 = fromAppLayout;
 LABEL_31:
-    v16 = v85;
+    v16 = toFloatingAppLayout;
     goto LABEL_35;
   }
 
-  if (v7 && !v90 && v89 == 2)
+  if (fromAppExposeBundleID && !toAppExposeBundleID && fromEnvironmentMode == 2)
   {
-    v22 = [(SBFluidSwitcherRootSwitcherModifier *)self floorModifier];
-    v14 = [v22 copy];
+    floorModifier2 = [(SBFluidSwitcherRootSwitcherModifier *)self floorModifier];
+    fromShelf = [floorModifier2 copy];
 
     objc_opt_class();
-    v15 = v6;
+    v15 = toAppLayout;
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       [(SBMainSwitcherRootSwitcherModifier *)a2 transitionModifierForMainTransitionEvent:?];
     }
 
-    v23 = v8;
-    v24 = v8 == 1;
-    v19 = v86;
-    v20 = v87;
-    v16 = v85;
+    v23 = toEnvironmentMode;
+    v24 = toEnvironmentMode == 1;
+    v19 = transitionID;
+    v20 = fromAppLayout;
+    v16 = toFloatingAppLayout;
     if (v24)
     {
-      v26 = [[SBAppExposeToHomeSwitcherModifier alloc] initWithTransitionID:v86 direction:0 bundleIdentifier:v7 appExposeModifier:v14];
+      v26 = [[SBAppExposeToHomeSwitcherModifier alloc] initWithTransitionID:transitionID direction:0 bundleIdentifier:fromAppExposeBundleID appExposeModifier:fromShelf];
       goto LABEL_35;
     }
 
@@ -281,11 +281,11 @@ LABEL_31:
       goto LABEL_35;
     }
 
-    v25 = [(SBMainSwitcherRootSwitcherModifier *)self floorModifierForTransitionEvent:v5];
+    v25 = [(SBMainSwitcherRootSwitcherModifier *)self floorModifierForTransitionEvent:eventCopy];
     v18 = [v25 copy];
 
-    [(SBMainSwitcherRootSwitcherModifier *)self _ensureModifier:v18 startsInFinalStateOfEvent:v5];
-    v21 = [[SBAppExposeToFullScreenSwitcherModifier alloc] initWithTransitionID:v86 direction:0 fullScreenAppLayout:v15 floatingAppLayout:v85 bundleIdentifier:v7 appExposeModifier:v14 fullScreenModifier:v18];
+    [(SBMainSwitcherRootSwitcherModifier *)self _ensureModifier:v18 startsInFinalStateOfEvent:eventCopy];
+    v21 = [[SBAppExposeToFullScreenSwitcherModifier alloc] initWithTransitionID:transitionID direction:0 fullScreenAppLayout:v15 floatingAppLayout:toFloatingAppLayout bundleIdentifier:fromAppExposeBundleID appExposeModifier:fromShelf fullScreenModifier:v18];
 LABEL_18:
     v26 = v21;
 
@@ -293,51 +293,51 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  v15 = v6;
-  if (v7 && v90 && v8 == 2)
+  v15 = toAppLayout;
+  if (fromAppExposeBundleID && toAppExposeBundleID && toEnvironmentMode == 2)
   {
-    v27 = [(SBMainSwitcherRootSwitcherModifier *)self floorModifierForTransitionEvent:v5];
-    v14 = [v27 copy];
+    v27 = [(SBMainSwitcherRootSwitcherModifier *)self floorModifierForTransitionEvent:eventCopy];
+    fromShelf = [v27 copy];
 
     objc_opt_class();
-    v16 = v85;
+    v16 = toFloatingAppLayout;
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       [(SBMainSwitcherRootSwitcherModifier *)a2 transitionModifierForMainTransitionEvent:?];
     }
 
     v28 = [SBSwitcherToAppExposeSwitcherModifier alloc];
-    v19 = v86;
-    v29 = v86;
-    v30 = v7;
+    v19 = transitionID;
+    v29 = transitionID;
+    v30 = fromAppExposeBundleID;
     goto LABEL_26;
   }
 
-  v84 = v8;
-  if ([v5 isCenterWindowZoomingUpFromShelfEvent])
+  v84 = toEnvironmentMode;
+  if ([eventCopy isCenterWindowZoomingUpFromShelfEvent])
   {
-    v14 = [v5 fromShelf];
+    fromShelf = [eventCopy fromShelf];
     v31 = [SBShelfZoomTransitionModifier alloc];
-    v19 = v86;
-    v20 = v87;
-    v32 = v86;
+    v19 = transitionID;
+    v20 = fromAppLayout;
+    v32 = transitionID;
     v33 = 1;
-    v34 = v87;
-    v35 = v6;
+    v34 = fromAppLayout;
+    v35 = toAppLayout;
 LABEL_29:
-    v26 = [(SBShelfZoomTransitionModifier *)v31 initWithTransitionID:v32 direction:v33 fromAppLayout:v34 toAppLayout:v35 shelf:v14];
+    v26 = [(SBShelfZoomTransitionModifier *)v31 initWithTransitionID:v32 direction:v33 fromAppLayout:v34 toAppLayout:v35 shelf:fromShelf];
     goto LABEL_31;
   }
 
-  v37 = v89;
-  if (!v7 && v90 && v89 == 3)
+  v37 = fromEnvironmentMode;
+  if (!fromAppExposeBundleID && toAppExposeBundleID && fromEnvironmentMode == 3)
   {
-    v38 = [v87 itemForLayoutRole:4];
+    v38 = [fromAppLayout itemForLayoutRole:4];
     v37 = 3;
     if (v38)
     {
       v39 = v38;
-      v40 = [v6 itemForLayoutRole:4];
+      v40 = [toAppLayout itemForLayoutRole:4];
       if (v40)
       {
 
@@ -347,56 +347,56 @@ LABEL_29:
       else
       {
         v41 = SBLayoutRoleSetForRole2(1, 2);
-        v42 = [v87 hasSameItemsInLayoutRoles:v41 asAppLayout:v6];
+        v42 = [fromAppLayout hasSameItemsInLayoutRoles:v41 asAppLayout:toAppLayout];
 
         v37 = 3;
         if (v42)
         {
           v43 = [SBShelfZoomTransitionModifier alloc];
-          v14 = [v5 toShelf];
+          fromShelf = [eventCopy toShelf];
           v31 = v43;
-          v19 = v86;
-          v20 = v87;
-          v32 = v86;
+          v19 = transitionID;
+          v20 = fromAppLayout;
+          v32 = transitionID;
           v33 = 0;
-          v34 = v87;
-          v15 = v6;
-          v35 = v6;
+          v34 = fromAppLayout;
+          v15 = toAppLayout;
+          v35 = toAppLayout;
           goto LABEL_29;
         }
       }
     }
   }
 
-  else if (v7 && !v90 && v89 == 3)
+  else if (fromAppExposeBundleID && !toAppExposeBundleID && fromEnvironmentMode == 3)
   {
-    v14 = [[SBSwitcherShelf alloc] initWithBundleIdentifier:v7 layoutRole:0 displayMode:0];
-    v19 = v86;
-    v26 = [[SBShelfIconBounceTransitionModifier alloc] initWithTransitionID:v86 shelf:v14];
-    v20 = v87;
-    v15 = v6;
+    fromShelf = [[SBSwitcherShelf alloc] initWithBundleIdentifier:fromAppExposeBundleID layoutRole:0 displayMode:0];
+    v19 = transitionID;
+    v26 = [[SBShelfIconBounceTransitionModifier alloc] initWithTransitionID:transitionID shelf:fromShelf];
+    v20 = fromAppLayout;
+    v15 = toAppLayout;
     goto LABEL_31;
   }
 
-  if (v12 != 2)
+  if (effectiveSwitcherStyle != 2)
   {
     v26 = 0;
-    v19 = v86;
-    v20 = v87;
-    v15 = v6;
-    v16 = v85;
+    v19 = transitionID;
+    v20 = fromAppLayout;
+    v15 = toAppLayout;
+    v16 = toFloatingAppLayout;
     goto LABEL_36;
   }
 
-  v15 = v6;
+  v15 = toAppLayout;
   if (v37 != 2 || v84 != 3)
   {
     if (v37 == 2 && v84 == 1)
     {
-      v44 = [(SBFluidSwitcherRootSwitcherModifier *)self floorModifier];
-      v45 = [v44 copy];
+      floorModifier3 = [(SBFluidSwitcherRootSwitcherModifier *)self floorModifier];
+      fromFloatingAppLayout3 = [floorModifier3 copy];
 
-      v26 = [[SBMixedGridToHomeSwitcherModifier alloc] initWithTransitionID:v86 direction:0 mixedGridModifier:v45];
+      v26 = [[SBMixedGridToHomeSwitcherModifier alloc] initWithTransitionID:transitionID direction:0 mixedGridModifier:fromFloatingAppLayout3];
 LABEL_60:
 
       goto LABEL_74;
@@ -404,31 +404,31 @@ LABEL_60:
 
     if (v84 == 2)
     {
-      v16 = v85;
-      if (SBPeekConfigurationIsValid([v5 toPeekConfiguration]))
+      v16 = toFloatingAppLayout;
+      if (SBPeekConfigurationIsValid([eventCopy toPeekConfiguration]))
       {
 LABEL_63:
         v26 = 0;
         goto LABEL_75;
       }
 
-      switch(v89)
+      switch(fromEnvironmentMode)
       {
         case 1:
           v51 = [(SBMainSwitcherRootSwitcherModifier *)self _newMultitaskingModifierForEnvironmentMode:2];
           v52 = [v51 copy];
 
-          v26 = [[SBMixedGridToHomeSwitcherModifier alloc] initWithTransitionID:v86 direction:1 mixedGridModifier:v52];
+          v26 = [[SBMixedGridToHomeSwitcherModifier alloc] initWithTransitionID:transitionID direction:1 mixedGridModifier:v52];
           break;
         case 2:
-          v26 = [(SBTransitionSwitcherModifier *)[SBGridSwipeUpToSwitcherSwitcherModifier alloc] initWithTransitionID:v86];
+          v26 = [(SBTransitionSwitcherModifier *)[SBGridSwipeUpToSwitcherSwitcherModifier alloc] initWithTransitionID:transitionID];
           goto LABEL_75;
         case 3:
-          v68 = [(SBMainSwitcherRootSwitcherModifier *)self floorModifierForTransitionEvent:v5];
+          v68 = [(SBMainSwitcherRootSwitcherModifier *)self floorModifierForTransitionEvent:eventCopy];
           v52 = [v68 copy];
 
           v69 = [(SBMainSwitcherRootSwitcherModifier *)self _newMultitaskingModifierForEnvironmentMode:2];
-          v26 = [[SBMixedGridToFullScreenSwitcherModifier alloc] initWithTransitionID:v86 direction:1 fullScreenAppLayout:v87 floatingAppLayout:v88 floatingConfiguration:v9 gridModifier:v69 fullScreenModifier:v52];
+          v26 = [[SBMixedGridToFullScreenSwitcherModifier alloc] initWithTransitionID:transitionID direction:1 fullScreenAppLayout:fromAppLayout floatingAppLayout:fromFloatingAppLayout floatingConfiguration:fromFloatingConfiguration gridModifier:v69 fullScreenModifier:v52];
 
           break;
         default:
@@ -438,19 +438,19 @@ LABEL_63:
       goto LABEL_75;
     }
 
-    if ([v5 isPrimaryToSlideOverEvent])
+    if ([eventCopy isPrimaryToSlideOverEvent])
     {
       v49 = [SBSplitViewToSlideOverSwitcherModifier alloc];
       v50 = &SBLayoutRolePrimary;
 LABEL_72:
       v53 = *v50;
-      v54 = [v5 fromAppLayout];
-      v55 = [v5 toFloatingAppLayout];
+      fromAppLayout2 = [eventCopy fromAppLayout];
+      toFloatingAppLayout2 = [eventCopy toFloatingAppLayout];
       v56 = v49;
-      v57 = v86;
+      v57 = transitionID;
       v58 = v53;
-      v59 = v54;
-      v60 = v55;
+      v59 = fromAppLayout2;
+      v60 = toFloatingAppLayout2;
       v61 = 0;
 LABEL_73:
       v26 = [(SBSplitViewToSlideOverSwitcherModifier *)v56 initWithTransitionID:v57 transitioningLayoutRole:v58 splitViewAppLayout:v59 slideOverAppLayout:v60 direction:v61];
@@ -458,129 +458,129 @@ LABEL_73:
       goto LABEL_74;
     }
 
-    if ([v5 isSideToSlideOverEvent])
+    if ([eventCopy isSideToSlideOverEvent])
     {
       v49 = [SBSplitViewToSlideOverSwitcherModifier alloc];
       v50 = &SBLayoutRoleSide;
       goto LABEL_72;
     }
 
-    if ([v5 isSlideOverToSideEvent])
+    if ([eventCopy isSlideOverToSideEvent])
     {
       v66 = [SBSplitViewToSlideOverSwitcherModifier alloc];
       v67 = &SBLayoutRoleSide;
 LABEL_90:
       v70 = *v67;
-      v54 = [v5 toAppLayout];
-      v55 = [v5 fromFloatingAppLayout];
+      fromAppLayout2 = [eventCopy toAppLayout];
+      toFloatingAppLayout2 = [eventCopy fromFloatingAppLayout];
       v56 = v66;
-      v57 = v86;
+      v57 = transitionID;
       v58 = v70;
-      v59 = v54;
-      v60 = v55;
+      v59 = fromAppLayout2;
+      v60 = toFloatingAppLayout2;
       v61 = 1;
       goto LABEL_73;
     }
 
-    if ([v5 isSlideOverToPrimaryEvent])
+    if ([eventCopy isSlideOverToPrimaryEvent])
     {
       v66 = [SBSplitViewToSlideOverSwitcherModifier alloc];
       v67 = &SBLayoutRolePrimary;
       goto LABEL_90;
     }
 
-    if ([v5 isEnteringAnyPeekEvent] && (objc_msgSend(v5, "fromAppLayout"), v71 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v71, "itemForLayoutRole:", 2), v72 = objc_claimAutoreleasedReturnValue(), v72, v71, !v72))
+    if ([eventCopy isEnteringAnyPeekEvent] && (objc_msgSend(eventCopy, "fromAppLayout"), v71 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v71, "itemForLayoutRole:", 2), v72 = objc_claimAutoreleasedReturnValue(), v72, v71, !v72))
     {
       if (([(SBMainSwitcherRootSwitcherModifier *)self isReduceMotionEnabled]& 1) == 0)
       {
         v83 = [SBFullScreenToPeekSwitcherModifier alloc];
-        v77 = [v5 fromAppLayout];
-        v78 = [v5 toAppLayout];
-        v79 = [v5 fromFloatingAppLayout];
-        v80 = [v5 toFloatingAppLayout];
-        v81 = -[SBFullScreenToPeekSwitcherModifier initWithTransitionID:fromAppLayout:toAppLayout:fromFloatingAppLayout:toFloatingAppLayout:peekConfiguration:](v83, "initWithTransitionID:fromAppLayout:toAppLayout:fromFloatingAppLayout:toFloatingAppLayout:peekConfiguration:", v86, v77, v78, v79, v80, [v5 toPeekConfiguration]);
+        fromAppLayout3 = [eventCopy fromAppLayout];
+        toAppLayout2 = [eventCopy toAppLayout];
+        fromFloatingAppLayout2 = [eventCopy fromFloatingAppLayout];
+        toFloatingAppLayout3 = [eventCopy toFloatingAppLayout];
+        v81 = -[SBFullScreenToPeekSwitcherModifier initWithTransitionID:fromAppLayout:toAppLayout:fromFloatingAppLayout:toFloatingAppLayout:peekConfiguration:](v83, "initWithTransitionID:fromAppLayout:toAppLayout:fromFloatingAppLayout:toFloatingAppLayout:peekConfiguration:", transitionID, fromAppLayout3, toAppLayout2, fromFloatingAppLayout2, toFloatingAppLayout3, [eventCopy toPeekConfiguration]);
         goto LABEL_102;
       }
     }
 
     else
     {
-      if ([v5 isSlideOverToFullScreenEvent])
+      if ([eventCopy isSlideOverToFullScreenEvent])
       {
         v73 = [SBSlideOverToFullScreenSwitcherModifier alloc];
-        v45 = [v5 fromFloatingAppLayout];
-        v74 = [v5 toAppLayout];
-        v75 = [v5 fromAppLayout];
-        v26 = [(SBSlideOverToFullScreenSwitcherModifier *)v73 initWithTransitionID:v86 slideOverAppLayout:v45 fullScreenAppLayout:v74 replacingMainAppLayout:v75];
+        fromFloatingAppLayout3 = [eventCopy fromFloatingAppLayout];
+        toAppLayout3 = [eventCopy toAppLayout];
+        fromAppLayout4 = [eventCopy fromAppLayout];
+        v26 = [(SBSlideOverToFullScreenSwitcherModifier *)v73 initWithTransitionID:transitionID slideOverAppLayout:fromFloatingAppLayout3 fullScreenAppLayout:toAppLayout3 replacingMainAppLayout:fromAppLayout4];
 
         goto LABEL_60;
       }
 
-      if ([v5 isCenterWindowToSlideOverEvent])
+      if ([eventCopy isCenterWindowToSlideOverEvent])
       {
         v76 = [SBCenterWindowToSlideOverSwitcherModifier alloc];
-        v77 = [v5 fromAppLayout];
-        v78 = [v5 fromAppLayout];
-        v79 = [v5 fromFloatingAppLayout];
-        v80 = [v5 toFloatingAppLayout];
-        v81 = -[SBCenterWindowToSlideOverSwitcherModifier initWithTransitionID:fromAppLayout:toAppLayout:fromFloatingAppLayout:toFloatingAppLayout:toFloatingConfiguration:direction:](v76, "initWithTransitionID:fromAppLayout:toAppLayout:fromFloatingAppLayout:toFloatingAppLayout:toFloatingConfiguration:direction:", v86, v77, v78, v79, v80, [v5 toFloatingConfiguration], 0);
+        fromAppLayout3 = [eventCopy fromAppLayout];
+        toAppLayout2 = [eventCopy fromAppLayout];
+        fromFloatingAppLayout2 = [eventCopy fromFloatingAppLayout];
+        toFloatingAppLayout3 = [eventCopy toFloatingAppLayout];
+        v81 = -[SBCenterWindowToSlideOverSwitcherModifier initWithTransitionID:fromAppLayout:toAppLayout:fromFloatingAppLayout:toFloatingAppLayout:toFloatingConfiguration:direction:](v76, "initWithTransitionID:fromAppLayout:toAppLayout:fromFloatingAppLayout:toFloatingAppLayout:toFloatingConfiguration:direction:", transitionID, fromAppLayout3, toAppLayout2, fromFloatingAppLayout2, toFloatingAppLayout3, [eventCopy toFloatingConfiguration], 0);
 LABEL_102:
         v26 = v81;
 
         goto LABEL_103;
       }
 
-      if ([v5 isSlideOverToCenterWindowEvent])
+      if ([eventCopy isSlideOverToCenterWindowEvent])
       {
         v82 = [SBCenterWindowToSlideOverSwitcherModifier alloc];
-        v77 = [v5 fromAppLayout];
-        v78 = [v5 toAppLayout];
-        v79 = [v5 fromFloatingAppLayout];
-        v80 = [v5 toFloatingAppLayout];
-        v81 = -[SBCenterWindowToSlideOverSwitcherModifier initWithTransitionID:fromAppLayout:toAppLayout:fromFloatingAppLayout:toFloatingAppLayout:toFloatingConfiguration:direction:](v82, "initWithTransitionID:fromAppLayout:toAppLayout:fromFloatingAppLayout:toFloatingAppLayout:toFloatingConfiguration:direction:", v86, v77, v78, v79, v80, [v5 toFloatingConfiguration], 1);
+        fromAppLayout3 = [eventCopy fromAppLayout];
+        toAppLayout2 = [eventCopy toAppLayout];
+        fromFloatingAppLayout2 = [eventCopy fromFloatingAppLayout];
+        toFloatingAppLayout3 = [eventCopy toFloatingAppLayout];
+        v81 = -[SBCenterWindowToSlideOverSwitcherModifier initWithTransitionID:fromAppLayout:toAppLayout:fromFloatingAppLayout:toFloatingAppLayout:toFloatingConfiguration:direction:](v82, "initWithTransitionID:fromAppLayout:toAppLayout:fromFloatingAppLayout:toFloatingAppLayout:toFloatingConfiguration:direction:", transitionID, fromAppLayout3, toAppLayout2, fromFloatingAppLayout2, toFloatingAppLayout3, [eventCopy toFloatingConfiguration], 1);
         goto LABEL_102;
       }
     }
 
     v26 = 0;
 LABEL_103:
-    v15 = v6;
+    v15 = toAppLayout;
     goto LABEL_74;
   }
 
-  if (SBPeekConfigurationIsValid([v5 fromPeekConfiguration]))
+  if (SBPeekConfigurationIsValid([eventCopy fromPeekConfiguration]))
   {
     v26 = 0;
 LABEL_74:
-    v16 = v85;
+    v16 = toFloatingAppLayout;
     goto LABEL_75;
   }
 
   v46 = [(SBMainSwitcherRootSwitcherModifier *)self _newMultitaskingModifierForEnvironmentMode:2];
-  [(SBMainSwitcherRootSwitcherModifier *)self _ensureModifier:v46 startsInFinalStateOfEvent:v5];
-  v47 = [(SBMainSwitcherRootSwitcherModifier *)self floorModifierForTransitionEvent:v5];
+  [(SBMainSwitcherRootSwitcherModifier *)self _ensureModifier:v46 startsInFinalStateOfEvent:eventCopy];
+  v47 = [(SBMainSwitcherRootSwitcherModifier *)self floorModifierForTransitionEvent:eventCopy];
   v48 = [v47 copy];
 
-  v16 = v85;
-  v26 = [[SBMixedGridToFullScreenSwitcherModifier alloc] initWithTransitionID:v86 direction:0 fullScreenAppLayout:v15 floatingAppLayout:v85 floatingConfiguration:v10 gridModifier:v46 fullScreenModifier:v48];
+  v16 = toFloatingAppLayout;
+  v26 = [[SBMixedGridToFullScreenSwitcherModifier alloc] initWithTransitionID:transitionID direction:0 fullScreenAppLayout:v15 floatingAppLayout:toFloatingAppLayout floatingConfiguration:toFloatingConfiguration gridModifier:v46 fullScreenModifier:v48];
 
 LABEL_75:
-  if ([v5 isKeyboardShortcutInitiated] && v89 == 3)
+  if ([eventCopy isKeyboardShortcutInitiated] && fromEnvironmentMode == 3)
   {
-    v19 = v86;
-    v20 = v87;
+    v19 = transitionID;
+    v20 = fromAppLayout;
     if (v84 == 1)
     {
-      if ([v5 isEnteringAnyPeekEvent])
+      if ([eventCopy isEnteringAnyPeekEvent])
       {
-        v62 = [v5 fromAppLayout];
-        v63 = [v62 isSplitConfiguration];
+        fromAppLayout5 = [eventCopy fromAppLayout];
+        isSplitConfiguration = [fromAppLayout5 isSplitConfiguration];
 
-        if (v63)
+        if (isSplitConfiguration)
         {
           v64 = [SBSplitViewToPeekTransitionSwitcherModifier alloc];
-          v14 = [v5 fromAppLayout];
-          v65 = [(SBSplitViewToPeekTransitionSwitcherModifier *)v64 initWithTransitionID:v86 fromAppLayout:v14];
+          fromShelf = [eventCopy fromAppLayout];
+          v65 = [(SBSplitViewToPeekTransitionSwitcherModifier *)v64 initWithTransitionID:transitionID fromAppLayout:fromShelf];
 
           v26 = v65;
           goto LABEL_35;
@@ -591,8 +591,8 @@ LABEL_75:
 
   else
   {
-    v19 = v86;
-    v20 = v87;
+    v19 = transitionID;
+    v20 = fromAppLayout;
   }
 
 LABEL_36:
@@ -600,14 +600,14 @@ LABEL_36:
   return v26;
 }
 
-- (id)insertionModifierForInsertionEvent:(id)a3
+- (id)insertionModifierForInsertionEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ([(SBMainSwitcherRootSwitcherModifier *)self _correctFloorModifierToHandleEvent])
   {
     v5 = [SBInsertionSwitcherModifier alloc];
-    v6 = [v4 appLayout];
-    v7 = [(SBInsertionSwitcherModifier *)v5 initWithAppLayout:v6];
+    appLayout = [eventCopy appLayout];
+    v7 = [(SBInsertionSwitcherModifier *)v5 initWithAppLayout:appLayout];
   }
 
   else
@@ -618,15 +618,15 @@ LABEL_36:
   return v7;
 }
 
-- (id)swipeToKillModifierForSwipeToKillEvent:(id)a3
+- (id)swipeToKillModifierForSwipeToKillEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ([(SBMainSwitcherRootSwitcherModifier *)self _correctFloorModifierToHandleEvent])
   {
     v5 = [SBSwipeToKillSwitcherModifier alloc];
-    v6 = [v4 layoutRole];
-    v7 = [v4 appLayout];
-    v8 = [(SBSwipeToKillSwitcherModifier *)v5 initWithLayoutRole:v6 inAppLayout:v7 fadeOutSwipedItems:0];
+    layoutRole = [eventCopy layoutRole];
+    appLayout = [eventCopy appLayout];
+    v8 = [(SBSwipeToKillSwitcherModifier *)v5 initWithLayoutRole:layoutRole inAppLayout:appLayout fadeOutSwipedItems:0];
   }
 
   else
@@ -637,15 +637,15 @@ LABEL_36:
   return v8;
 }
 
-- (id)highlightModifierForHighlightEvent:(id)a3
+- (id)highlightModifierForHighlightEvent:(id)event
 {
-  v4 = a3;
-  if (-[SBMainSwitcherRootSwitcherModifier _correctFloorModifierToHandleEvent](self, "_correctFloorModifierToHandleEvent") && ([v4 isHoverEvent] & 1) == 0)
+  eventCopy = event;
+  if (-[SBMainSwitcherRootSwitcherModifier _correctFloorModifierToHandleEvent](self, "_correctFloorModifierToHandleEvent") && ([eventCopy isHoverEvent] & 1) == 0)
   {
     v6 = [SBHighlightSwitcherModifier alloc];
-    v7 = [v4 layoutRole];
-    v8 = [v4 appLayout];
-    v5 = [(SBHighlightSwitcherModifier *)v6 initWithLayoutRole:v7 inAppLayout:v8 listensForHighlightEvents:1];
+    layoutRole = [eventCopy layoutRole];
+    appLayout = [eventCopy appLayout];
+    v5 = [(SBHighlightSwitcherModifier *)v6 initWithLayoutRole:layoutRole inAppLayout:appLayout listensForHighlightEvents:1];
   }
 
   else
@@ -656,15 +656,15 @@ LABEL_36:
   return v5;
 }
 
-- (id)removalModifierForRemovalEvent:(id)a3
+- (id)removalModifierForRemovalEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ([(SBMainSwitcherRootSwitcherModifier *)self _correctFloorModifierToHandleEvent])
   {
     v5 = [SBRemovalSwitcherModifier alloc];
-    v6 = [v4 layoutRole];
-    v7 = [v4 appLayout];
-    v8 = -[SBRemovalSwitcherModifier initWithLayoutRole:inAppLayout:reason:](v5, "initWithLayoutRole:inAppLayout:reason:", v6, v7, [v4 reason]);
+    layoutRole = [eventCopy layoutRole];
+    appLayout = [eventCopy appLayout];
+    v8 = -[SBRemovalSwitcherModifier initWithLayoutRole:inAppLayout:reason:](v5, "initWithLayoutRole:inAppLayout:reason:", layoutRole, appLayout, [eventCopy reason]);
   }
 
   else
@@ -675,25 +675,25 @@ LABEL_36:
   return v8;
 }
 
-- (id)floorModifierForTransitionEvent:(id)a3
+- (id)floorModifierForTransitionEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_opt_class();
-  v6 = SBSafeCast(v5, v4);
+  v6 = SBSafeCast(v5, eventCopy);
 
-  v7 = [v6 toEnvironmentMode];
-  v8 = [(SBFluidSwitcherRootSwitcherModifier *)self floorModifier];
+  toEnvironmentMode = [v6 toEnvironmentMode];
+  floorModifier = [(SBFluidSwitcherRootSwitcherModifier *)self floorModifier];
   if (!v6)
   {
-    v12 = [(SBMainSwitcherRootSwitcherModifier *)self _createNewDefaultFloorModifier];
-    v9 = v8;
+    _createNewDefaultFloorModifier = [(SBMainSwitcherRootSwitcherModifier *)self _createNewDefaultFloorModifier];
+    toAppExposeBundleID = floorModifier;
     goto LABEL_18;
   }
 
-  v9 = [v6 toAppExposeBundleID];
-  if (v9)
+  toAppExposeBundleID = [v6 toAppExposeBundleID];
+  if (toAppExposeBundleID)
   {
-    v10 = v7 == 2;
+    v10 = toEnvironmentMode == 2;
   }
 
   else
@@ -704,21 +704,21 @@ LABEL_36:
   if (v10)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || ([v8 bundleIdentifier], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", v9), v13, (v14 & 1) == 0))
+    if ((objc_opt_isKindOfClass() & 1) == 0 || ([floorModifier bundleIdentifier], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", toAppExposeBundleID), v13, (v14 & 1) == 0))
     {
-      v11 = [[SBAppExposeGridSwitcherModifier alloc] initWithBundleIdentifier:v9 fullScreenCardSize:self->_fullScreenCardSize.width floatingCardSize:self->_fullScreenCardSize.height, self->_floatingCardSize.width, self->_floatingCardSize.height];
+      _createNewDefaultFloorModifier2 = [[SBAppExposeGridSwitcherModifier alloc] initWithBundleIdentifier:toAppExposeBundleID fullScreenCardSize:self->_fullScreenCardSize.width floatingCardSize:self->_fullScreenCardSize.height, self->_floatingCardSize.width, self->_floatingCardSize.height];
       goto LABEL_14;
     }
   }
 
-  else if (v7 == 2)
+  else if (toEnvironmentMode == 2)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0 && !SBPeekConfigurationIsValid([v6 toPeekConfiguration]))
     {
-      v11 = [[SBMixedGridSwitcherModifier alloc] initWithFullScreenCardSize:self->_fullScreenCardSize.width floatingCardSize:self->_fullScreenCardSize.height, self->_floatingCardSize.width, self->_floatingCardSize.height];
+      _createNewDefaultFloorModifier2 = [[SBMixedGridSwitcherModifier alloc] initWithFullScreenCardSize:self->_fullScreenCardSize.width floatingCardSize:self->_fullScreenCardSize.height, self->_floatingCardSize.width, self->_floatingCardSize.height];
 LABEL_14:
-      v12 = v11;
+      _createNewDefaultFloorModifier = _createNewDefaultFloorModifier2;
 
       goto LABEL_18;
     }
@@ -729,18 +729,18 @@ LABEL_14:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v11 = [(SBMainSwitcherRootSwitcherModifier *)self _createNewDefaultFloorModifier];
+      _createNewDefaultFloorModifier2 = [(SBMainSwitcherRootSwitcherModifier *)self _createNewDefaultFloorModifier];
       goto LABEL_14;
     }
   }
 
-  v12 = v8;
+  _createNewDefaultFloorModifier = floorModifier;
 LABEL_18:
 
-  return v12;
+  return _createNewDefaultFloorModifier;
 }
 
-- (id)userScrollingModifierForScrollEvent:(id)a3
+- (id)userScrollingModifierForScrollEvent:(id)event
 {
   if ([(SBMainSwitcherRootSwitcherModifier *)self _correctFloorModifierToHandleEvent])
   {
@@ -755,25 +755,25 @@ LABEL_18:
   return v3;
 }
 
-- (id)shelfModifierForTransitionEvent:(id)a3
+- (id)shelfModifierForTransitionEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 toAppExposeBundleID];
-  if (v5 && [v4 toEnvironmentMode] == 3)
+  eventCopy = event;
+  toAppExposeBundleID = [eventCopy toAppExposeBundleID];
+  if (toAppExposeBundleID && [eventCopy toEnvironmentMode] == 3)
   {
-    v6 = [[SBSwitcherShelf alloc] initWithBundleIdentifier:v5 layoutRole:0 displayMode:0];
-    v7 = [(SBSwitcherShelf *)v6 uniqueIdentifier];
-    v8 = [(SBChainableModifier *)self childModifierByKey:v7];
+    v6 = [[SBSwitcherShelf alloc] initWithBundleIdentifier:toAppExposeBundleID layoutRole:0 displayMode:0];
+    uniqueIdentifier = [(SBSwitcherShelf *)v6 uniqueIdentifier];
+    v8 = [(SBChainableModifier *)self childModifierByKey:uniqueIdentifier];
 
     v9 = 0;
     if (!v8)
     {
-      v10 = [v4 activatingAppLayout];
+      activatingAppLayout = [eventCopy activatingAppLayout];
 
-      if (v10)
+      if (activatingAppLayout)
       {
-        v11 = [v4 toAppLayout];
-        [(SBMainSwitcherRootSwitcherModifier *)self homeScreenIconFrameForAppLayout:v11];
+        toAppLayout = [eventCopy toAppLayout];
+        [(SBMainSwitcherRootSwitcherModifier *)self homeScreenIconFrameForAppLayout:toAppLayout];
         v13 = v12;
         v15 = v14;
         v17 = v16;
@@ -788,12 +788,12 @@ LABEL_18:
         v19 = *(MEMORY[0x277CBF398] + 24);
       }
 
-      v20 = [SBShelfSwitcherModifier contentOptionsForTransitionEvent:v4 context:self];
+      v20 = [SBShelfSwitcherModifier contentOptionsForTransitionEvent:eventCopy context:self];
       v21 = [SBShelfSwitcherModifier alloc];
-      v22 = [v4 toAppLayout];
-      v23 = [v4 toFloatingAppLayout];
-      v24 = [v4 fromAppLayout];
-      v9 = [(SBShelfSwitcherModifier *)v21 initWithShelf:v6 contentOptions:v20 activeFullScreenAppLayout:v22 activeFloatingAppLayout:v23 presentationTargetFrame:v24 presentedFromAppLayout:v13, v15, v17, v19];
+      toAppLayout2 = [eventCopy toAppLayout];
+      toFloatingAppLayout = [eventCopy toFloatingAppLayout];
+      fromAppLayout = [eventCopy fromAppLayout];
+      v9 = [(SBShelfSwitcherModifier *)v21 initWithShelf:v6 contentOptions:v20 activeFullScreenAppLayout:toAppLayout2 activeFloatingAppLayout:toFloatingAppLayout presentationTargetFrame:fromAppLayout presentedFromAppLayout:v13, v15, v17, v19];
     }
   }
 
@@ -805,15 +805,15 @@ LABEL_18:
   return v9;
 }
 
-- (id)reduceMotionModifierForReduceMotionChangedEvent:(id)a3
+- (id)reduceMotionModifierForReduceMotionChangedEvent:(id)event
 {
   if ([(SBMainSwitcherRootSwitcherModifier *)self isReduceMotionEnabled])
   {
-    v4 = [(SBMainSwitcherRootSwitcherModifier *)self switcherSettings];
-    v5 = [v4 effectiveSwitcherStyle];
+    switcherSettings = [(SBMainSwitcherRootSwitcherModifier *)self switcherSettings];
+    effectiveSwitcherStyle = [switcherSettings effectiveSwitcherStyle];
 
     v6 = off_2783A1578;
-    if (v5 != 1)
+    if (effectiveSwitcherStyle != 1)
     {
       v6 = off_2783A1590;
     }
@@ -829,13 +829,13 @@ LABEL_18:
   return v7;
 }
 
-- (id)focusedAppModifierForUpdateFocusedAppLayoutEvent:(id)a3
+- (id)focusedAppModifierForUpdateFocusedAppLayoutEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = [SBFocusedAppLayoutSwitcherModifier alloc];
-  v5 = [v3 appLayout];
+  appLayout = [eventCopy appLayout];
 
-  v6 = [(SBFocusedAppLayoutSwitcherModifier *)v4 initWithFocusedAppLayout:v5];
+  v6 = [(SBFocusedAppLayoutSwitcherModifier *)v4 initWithFocusedAppLayout:appLayout];
 
   return v6;
 }
@@ -849,12 +849,12 @@ LABEL_18:
   return v4;
 }
 
-- (id)_newMultitaskingModifierForEnvironmentMode:(int64_t)a3
+- (id)_newMultitaskingModifierForEnvironmentMode:(int64_t)mode
 {
-  v5 = [(SBMainSwitcherRootSwitcherModifier *)self switcherSettings];
-  v6 = [v5 effectiveSwitcherStyle];
+  switcherSettings = [(SBMainSwitcherRootSwitcherModifier *)self switcherSettings];
+  effectiveSwitcherStyle = [switcherSettings effectiveSwitcherStyle];
 
-  if (a3 == 2)
+  if (mode == 2)
   {
     v7 = [SBMixedGridSwitcherModifier alloc];
     width = self->_fullScreenCardSize.width;
@@ -865,7 +865,7 @@ LABEL_18:
     return [(SBMixedGridSwitcherModifier *)v7 initWithFullScreenCardSize:width floatingCardSize:height, v10, v11];
   }
 
-  else if (v6 == 1)
+  else if (effectiveSwitcherStyle == 1)
   {
 
     return objc_alloc_init(SBDeckSwitcherModifier);
@@ -878,52 +878,52 @@ LABEL_18:
   }
 }
 
-- (void)_setCardSizesWithEvent:(id)a3
+- (void)_setCardSizesWithEvent:(id)event
 {
-  v12 = a3;
+  eventCopy = event;
   [(SBMainSwitcherRootSwitcherModifier *)self containerViewBounds];
   self->_fullScreenCardSize.width = v4;
   self->_fullScreenCardSize.height = v5;
-  if (v12)
+  if (eventCopy)
   {
-    v6 = [v12 toInterfaceOrientation];
-    v7 = [v12 toFloatingConfiguration];
-    v8 = self;
-    v9 = v6;
+    toInterfaceOrientation = [eventCopy toInterfaceOrientation];
+    toFloatingConfiguration = [eventCopy toFloatingConfiguration];
+    selfCopy2 = self;
+    switcherInterfaceOrientation = toInterfaceOrientation;
   }
 
   else
   {
-    v9 = [(SBMainSwitcherRootSwitcherModifier *)self switcherInterfaceOrientation];
-    v8 = self;
-    v7 = 2;
+    switcherInterfaceOrientation = [(SBMainSwitcherRootSwitcherModifier *)self switcherInterfaceOrientation];
+    selfCopy2 = self;
+    toFloatingConfiguration = 2;
   }
 
-  [(SBMainSwitcherRootSwitcherModifier *)v8 floatingApplicationFrameInInterfaceOrientation:v9 floatingConfiguration:v7];
+  [(SBMainSwitcherRootSwitcherModifier *)selfCopy2 floatingApplicationFrameInInterfaceOrientation:switcherInterfaceOrientation floatingConfiguration:toFloatingConfiguration];
   self->_floatingCardSize.width = v10;
   self->_floatingCardSize.height = v11;
 }
 
-- (void)_ensureModifier:(id)a3 startsInFinalStateOfEvent:(id)a4
+- (void)_ensureModifier:(id)modifier startsInFinalStateOfEvent:(id)event
 {
-  v6 = a3;
-  v7 = [a4 unhandledCopy];
-  [v7 setAnimated:0];
-  [v7 setPhase:2];
+  modifierCopy = modifier;
+  unhandledCopy = [event unhandledCopy];
+  [unhandledCopy setAnimated:0];
+  [unhandledCopy setPhase:2];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __80__SBMainSwitcherRootSwitcherModifier__ensureModifier_startsInFinalStateOfEvent___block_invoke;
   v10[3] = &unk_2783A92D8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = modifierCopy;
+  v12 = unhandledCopy;
+  v8 = unhandledCopy;
+  v9 = modifierCopy;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:v9 usingBlock:v10];
 }
 
 - (BOOL)_correctFloorModifierToHandleEvent
 {
-  v3 = [(SBFluidSwitcherRootSwitcherModifier *)self floorModifier];
+  floorModifier = [(SBFluidSwitcherRootSwitcherModifier *)self floorModifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -932,7 +932,7 @@ LABEL_18:
 
   else
   {
-    v5 = [(SBFluidSwitcherRootSwitcherModifier *)self floorModifier];
+    floorModifier2 = [(SBFluidSwitcherRootSwitcherModifier *)self floorModifier];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }

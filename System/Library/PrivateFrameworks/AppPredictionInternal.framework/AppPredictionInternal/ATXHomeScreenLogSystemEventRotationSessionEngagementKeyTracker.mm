@@ -1,50 +1,50 @@
 @interface ATXHomeScreenLogSystemEventRotationSessionEngagementKeyTracker
-+ (id)keyTrackerForRotationSessionStackEngagementStatus:(unint64_t)a3;
-- (ATXHomeScreenLogSystemEventRotationSessionEngagementKeyTracker)initWithStatusAggregationKey:(id)a3 proactiveStatusAggregationKey:(id)a4 proactiveStatusBooleanKey:(id)a5 userScrollStatusBooleanKey:(id)a6 userScrollFinalOutcomeKey:(id)a7;
++ (id)keyTrackerForRotationSessionStackEngagementStatus:(unint64_t)status;
+- (ATXHomeScreenLogSystemEventRotationSessionEngagementKeyTracker)initWithStatusAggregationKey:(id)key proactiveStatusAggregationKey:(id)aggregationKey proactiveStatusBooleanKey:(id)booleanKey userScrollStatusBooleanKey:(id)statusBooleanKey userScrollFinalOutcomeKey:(id)outcomeKey;
 @end
 
 @implementation ATXHomeScreenLogSystemEventRotationSessionEngagementKeyTracker
 
-- (ATXHomeScreenLogSystemEventRotationSessionEngagementKeyTracker)initWithStatusAggregationKey:(id)a3 proactiveStatusAggregationKey:(id)a4 proactiveStatusBooleanKey:(id)a5 userScrollStatusBooleanKey:(id)a6 userScrollFinalOutcomeKey:(id)a7
+- (ATXHomeScreenLogSystemEventRotationSessionEngagementKeyTracker)initWithStatusAggregationKey:(id)key proactiveStatusAggregationKey:(id)aggregationKey proactiveStatusBooleanKey:(id)booleanKey userScrollStatusBooleanKey:(id)statusBooleanKey userScrollFinalOutcomeKey:(id)outcomeKey
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  keyCopy = key;
+  aggregationKeyCopy = aggregationKey;
+  booleanKeyCopy = booleanKey;
+  statusBooleanKeyCopy = statusBooleanKey;
+  outcomeKeyCopy = outcomeKey;
   v21.receiver = self;
   v21.super_class = ATXHomeScreenLogSystemEventRotationSessionEngagementKeyTracker;
   v17 = [(ATXHomeScreenLogSystemEventRotationSessionEngagementKeyTracker *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_statusAggregationKey, a3);
-    objc_storeStrong(&v18->_proactiveStatusAggregationKey, a4);
-    objc_storeStrong(&v18->_proactiveStatusBooleanKey, a5);
-    objc_storeStrong(&v18->_userScrollStatusBooleanKey, a6);
-    objc_storeStrong(&v18->_userScrollFinalOutcomeKey, a7);
+    objc_storeStrong(&v17->_statusAggregationKey, key);
+    objc_storeStrong(&v18->_proactiveStatusAggregationKey, aggregationKey);
+    objc_storeStrong(&v18->_proactiveStatusBooleanKey, booleanKey);
+    objc_storeStrong(&v18->_userScrollStatusBooleanKey, statusBooleanKey);
+    objc_storeStrong(&v18->_userScrollFinalOutcomeKey, outcomeKey);
   }
 
   return v18;
 }
 
-+ (id)keyTrackerForRotationSessionStackEngagementStatus:(unint64_t)a3
++ (id)keyTrackerForRotationSessionStackEngagementStatus:(unint64_t)status
 {
   v3 = 0;
-  if (a3 <= 1)
+  if (status <= 1)
   {
-    if (!a3)
+    if (!status)
     {
       goto LABEL_20;
     }
 
-    if (a3 == 1)
+    if (status == 1)
     {
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __116__ATXHomeScreenLogSystemEventRotationSessionEngagementKeyTracker_keyTrackerForRotationSessionStackEngagementStatus___block_invoke;
       v9[3] = &__block_descriptor_40_e5_v8__0l;
-      v9[4] = a1;
+      v9[4] = self;
       if (keyTrackerForRotationSessionStackEngagementStatus___pasOnceToken7 != -1)
       {
         dispatch_once(&keyTrackerForRotationSessionStackEngagementStatus___pasOnceToken7, v9);
@@ -57,7 +57,7 @@
 
   else
   {
-    switch(a3)
+    switch(status)
     {
       case 2uLL:
         goto LABEL_20;
@@ -66,7 +66,7 @@
         block[1] = 3221225472;
         block[2] = __116__ATXHomeScreenLogSystemEventRotationSessionEngagementKeyTracker_keyTrackerForRotationSessionStackEngagementStatus___block_invoke_2;
         block[3] = &__block_descriptor_40_e5_v8__0l;
-        block[4] = a1;
+        block[4] = self;
         if (keyTrackerForRotationSessionStackEngagementStatus___pasOnceToken8 != -1)
         {
           dispatch_once(&keyTrackerForRotationSessionStackEngagementStatus___pasOnceToken8, block);
@@ -79,7 +79,7 @@
         v7[1] = 3221225472;
         v7[2] = __116__ATXHomeScreenLogSystemEventRotationSessionEngagementKeyTracker_keyTrackerForRotationSessionStackEngagementStatus___block_invoke_3;
         v7[3] = &__block_descriptor_40_e5_v8__0l;
-        v7[4] = a1;
+        v7[4] = self;
         if (keyTrackerForRotationSessionStackEngagementStatus___pasOnceToken9 != -1)
         {
           dispatch_once(&keyTrackerForRotationSessionStackEngagementStatus___pasOnceToken9, v7);

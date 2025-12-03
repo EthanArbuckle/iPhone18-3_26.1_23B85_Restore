@@ -1,17 +1,17 @@
 @interface NTKMagmaFaceView
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4;
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device;
 + (int64_t)uiSensitivity;
 - (BOOL)_wantsStatusBarIconShadow;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
 - (id)createFaceColorPalette;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyDataMode;
 - (void)_applyFrozen;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_finalizeForSnapshotting:(id)a3;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_finalizeForSnapshotting:(id)snapshotting;
 - (void)_handleLogoTap;
 - (void)_loadCornerOverlayView;
 - (void)_loadEffectsView;
@@ -21,10 +21,10 @@
 - (void)_unloadEffectsView;
 - (void)_unloadLogoView;
 - (void)_unloadSnapshotContentViews;
-- (void)_updateViewColorsWithPalette:(id)a3;
+- (void)_updateViewColorsWithPalette:(id)palette;
 - (void)layoutSubviews;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setTimeOffset:(double)a3;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setTimeOffset:(double)offset;
 @end
 
 @implementation NTKMagmaFaceView
@@ -32,7 +32,7 @@
 + (int64_t)uiSensitivity
 {
   v2 = +[CLKRenderingContext sharedRenderingContext];
-  v3 = [v2 device];
+  device = [v2 device];
   v4 = NTKSensitivityForVictoryFaces();
 
   return v4;
@@ -66,21 +66,21 @@
   [(NTKMagmaFaceView *)self _unloadEffectsView];
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
   v7.receiver = self;
   v7.super_class = NTKMagmaFaceView;
-  v6 = a3;
-  [(NTKMagmaFaceView *)&v7 setOverrideDate:v6 duration:a4];
-  [(NTKMagmaEffectsView *)self->_effectsView setOverrideDate:v6 duration:a4, v7.receiver, v7.super_class];
+  dateCopy = date;
+  [(NTKMagmaFaceView *)&v7 setOverrideDate:dateCopy duration:duration];
+  [(NTKMagmaEffectsView *)self->_effectsView setOverrideDate:dateCopy duration:duration, v7.receiver, v7.super_class];
 }
 
-- (void)setTimeOffset:(double)a3
+- (void)setTimeOffset:(double)offset
 {
   v5.receiver = self;
   v5.super_class = NTKMagmaFaceView;
   [(NTKMagmaFaceView *)&v5 setTimeOffset:?];
-  [(NTKMagmaEffectsView *)self->_effectsView setTimeOffset:a3];
+  [(NTKMagmaEffectsView *)self->_effectsView setTimeOffset:offset];
 }
 
 - (BOOL)_wantsStatusBarIconShadow
@@ -102,19 +102,19 @@
 - (void)_loadEffectsView
 {
   v3 = [NTKMagmaEffectsView alloc];
-  v4 = [(NTKMagmaFaceView *)self contentView];
-  [v4 bounds];
+  contentView = [(NTKMagmaFaceView *)self contentView];
+  [contentView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(NTKMagmaFaceView *)self device];
-  v14 = [(NTKMagmaEffectsView *)v3 initWithFrame:v13 device:v6, v8, v10, v12];
+  device = [(NTKMagmaFaceView *)self device];
+  v14 = [(NTKMagmaEffectsView *)v3 initWithFrame:device device:v6, v8, v10, v12];
   effectsView = self->_effectsView;
   self->_effectsView = v14;
 
-  v16 = [(NTKMagmaFaceView *)self contentView];
-  [v16 addSubview:self->_effectsView];
+  contentView2 = [(NTKMagmaFaceView *)self contentView];
+  [contentView2 addSubview:self->_effectsView];
 }
 
 - (void)_unloadEffectsView
@@ -126,13 +126,13 @@
 
 - (void)_loadLogoView
 {
-  v3 = [(NTKMagmaFaceView *)self device];
-  sub_8064(v3, v3);
+  device = [(NTKMagmaFaceView *)self device];
+  sub_8064(device, device);
   v5 = v4;
   v7 = v6;
 
-  v8 = [(NTKMagmaFaceView *)self device];
-  sub_8064(v8, v8);
+  device2 = [(NTKMagmaFaceView *)self device];
+  sub_8064(device2, device2);
   v10 = v9;
 
   v11 = [NTKMagmaButton buttonWithType:0];
@@ -148,14 +148,14 @@
 
   [(NTKMagmaButton *)self->_logoButton setNeedsLayout];
   [(NTKMagmaButton *)self->_logoButton setDelegate:self->_effectsView];
-  v15 = [(NTKMagmaFaceView *)self contentView];
-  [v15 addSubview:self->_logoButton];
+  contentView = [(NTKMagmaFaceView *)self contentView];
+  [contentView addSubview:self->_logoButton];
 }
 
 - (void)_handleLogoTap
 {
-  v3 = [(NTKMagmaFaceView *)self delegate];
-  [NTKVictoryAppLauncher attemptLaunchWithDelegate:v3];
+  delegate = [(NTKMagmaFaceView *)self delegate];
+  [NTKVictoryAppLauncher attemptLaunchWithDelegate:delegate];
 
   logoButton = self->_logoButton;
   [(NTKMagmaButton *)logoButton bounds];
@@ -163,15 +163,15 @@
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(NTKMagmaFaceView *)self contentView];
-  [(NTKMagmaButton *)logoButton convertRect:v13 toView:v6, v8, v10, v12];
+  contentView = [(NTKMagmaFaceView *)self contentView];
+  [(NTKMagmaButton *)logoButton convertRect:contentView toView:v6, v8, v10, v12];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
-  v22 = [(NTKMagmaFaceView *)self delegate];
-  [v22 faceViewRequestedLaunchFromRect:{v15, v17, v19, v21}];
+  delegate2 = [(NTKMagmaFaceView *)self delegate];
+  [delegate2 faceViewRequestedLaunchFromRect:{v15, v17, v19, v21}];
 }
 
 - (void)_unloadLogoView
@@ -184,19 +184,19 @@
 - (void)_loadCornerOverlayView
 {
   v3 = [NTKRoundedCornerOverlayView alloc];
-  v4 = [(NTKMagmaFaceView *)self contentView];
-  [v4 bounds];
+  contentView = [(NTKMagmaFaceView *)self contentView];
+  [contentView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(NTKMagmaFaceView *)self device];
-  v14 = [v3 initWithFrame:v13 forDeviceCornerRadius:{v6, v8, v10, v12}];
+  device = [(NTKMagmaFaceView *)self device];
+  v14 = [v3 initWithFrame:device forDeviceCornerRadius:{v6, v8, v10, v12}];
   cornerOverlayView = self->_cornerOverlayView;
   self->_cornerOverlayView = v14;
 
-  v16 = [(NTKMagmaFaceView *)self contentView];
-  [v16 addSubview:self->_cornerOverlayView];
+  contentView2 = [(NTKMagmaFaceView *)self contentView];
+  [contentView2 addSubview:self->_cornerOverlayView];
 }
 
 - (void)_unloadCornerOverlayView
@@ -206,12 +206,12 @@
   self->_cornerOverlayView = 0;
 }
 
-- (void)_finalizeForSnapshotting:(id)a3
+- (void)_finalizeForSnapshotting:(id)snapshotting
 {
   effectsView = self->_effectsView;
-  v4 = a3;
-  v5 = [(NTKMagmaEffectsView *)effectsView quadView];
-  [v5 renderSynchronouslyWithImageQueueDiscard:1 inGroup:0 completion:v4];
+  snapshottingCopy = snapshotting;
+  quadView = [(NTKMagmaEffectsView *)effectsView quadView];
+  [quadView renderSynchronouslyWithImageQueueDiscard:1 inGroup:0 completion:snapshottingCopy];
 }
 
 - (void)layoutSubviews
@@ -219,12 +219,12 @@
   v16.receiver = self;
   v16.super_class = NTKMagmaFaceView;
   [(NTKMagmaFaceView *)&v16 layoutSubviews];
-  v3 = [(NTKMagmaFaceView *)self device];
-  v4 = sub_8064(v3, v3);
+  device = [(NTKMagmaFaceView *)self device];
+  v4 = sub_8064(device, device);
   v6 = v5;
 
-  v7 = [(NTKMagmaFaceView *)self device];
-  sub_8064(v7, v7);
+  device2 = [(NTKMagmaFaceView *)self device];
+  sub_8064(device2, device2);
   v9 = v8;
 
   [(NTKMagmaButton *)self->_logoButton frame];
@@ -238,105 +238,105 @@
   [(NTKMagmaButton *)self->_logoButton setFrame:v14, v9 + Height - CGRectGetHeight(v19) - v4, v11, v13];
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v16 = a3;
-  v8 = a5;
-  if (a4 == 15)
+  optionCopy = option;
+  slotCopy = slot;
+  if (mode == 15)
   {
-    v11 = [(NTKMagmaFaceView *)self optionForCustomEditMode:15 slot:0];
-    v12 = [v11 backgroundStyle];
-    self->_backgroundStyle = v12;
-    v13 = [(NTKMagmaFaceView *)self colorPalette];
-    [v13 setBackgroundStyle:v12];
+    colorPalette4 = [(NTKMagmaFaceView *)self optionForCustomEditMode:15 slot:0];
+    backgroundStyle = [colorPalette4 backgroundStyle];
+    self->_backgroundStyle = backgroundStyle;
+    colorPalette = [(NTKMagmaFaceView *)self colorPalette];
+    [colorPalette setBackgroundStyle:backgroundStyle];
 
-    v14 = [(NTKMagmaFaceView *)self colorPalette];
-    [(NTKMagmaFaceView *)self _updateViewColorsWithPalette:v14];
+    colorPalette2 = [(NTKMagmaFaceView *)self colorPalette];
+    [(NTKMagmaFaceView *)self _updateViewColorsWithPalette:colorPalette2];
 
-    v15 = [(NTKMagmaFaceView *)self delegate];
-    [v15 faceViewDidChangeWantsStatusBarIconShadow];
+    delegate = [(NTKMagmaFaceView *)self delegate];
+    [delegate faceViewDidChangeWantsStatusBarIconShadow];
   }
 
   else
   {
-    if (a4 != 10)
+    if (mode != 10)
     {
       goto LABEL_6;
     }
 
     backgroundStyle = self->_backgroundStyle;
-    v10 = [(NTKMagmaFaceView *)self colorPalette];
-    [v10 setBackgroundStyle:backgroundStyle];
+    colorPalette3 = [(NTKMagmaFaceView *)self colorPalette];
+    [colorPalette3 setBackgroundStyle:backgroundStyle];
 
-    v11 = [(NTKMagmaFaceView *)self colorPalette];
-    [(NTKMagmaFaceView *)self _updateViewColorsWithPalette:v11];
+    colorPalette4 = [(NTKMagmaFaceView *)self colorPalette];
+    [(NTKMagmaFaceView *)self _updateViewColorsWithPalette:colorPalette4];
   }
 
 LABEL_6:
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v22 = a4;
-  v12 = a5;
-  v13 = a7;
-  if (a6 == 15)
+  optionCopy = option;
+  toOptionCopy = toOption;
+  slotCopy = slot;
+  if (mode == 15)
   {
-    v15 = [v22 backgroundStyle];
-    v16 = [v12 backgroundStyle];
-    v17 = [(NTKMagmaFaceView *)self colorPalette];
-    v14 = [v17 copy];
+    backgroundStyle = [optionCopy backgroundStyle];
+    backgroundStyle2 = [toOptionCopy backgroundStyle];
+    colorPalette = [(NTKMagmaFaceView *)self colorPalette];
+    interpolatedColorPalette = [colorPalette copy];
 
-    [v14 setBackgroundStyle:v15];
-    v18 = [(NTKMagmaFaceView *)self colorPalette];
-    v19 = [v18 copy];
+    [interpolatedColorPalette setBackgroundStyle:backgroundStyle];
+    colorPalette2 = [(NTKMagmaFaceView *)self colorPalette];
+    v19 = [colorPalette2 copy];
 
-    [v19 setBackgroundStyle:v16];
-    v20 = [[NTKInterpolatedColorPalette alloc] initWithFromPalette:v14 toPalette:v19];
-    [v20 setTransitionFraction:a3];
-    if (a3 >= 0.5)
+    [v19 setBackgroundStyle:backgroundStyle2];
+    v20 = [[NTKInterpolatedColorPalette alloc] initWithFromPalette:interpolatedColorPalette toPalette:v19];
+    [v20 setTransitionFraction:fraction];
+    if (fraction >= 0.5)
     {
-      v15 = v16;
+      backgroundStyle = backgroundStyle2;
     }
 
-    self->_backgroundStyle = v15;
-    v21 = [(NTKMagmaFaceView *)self colorPalette];
-    [v21 setBackgroundStyle:v15];
+    self->_backgroundStyle = backgroundStyle;
+    colorPalette3 = [(NTKMagmaFaceView *)self colorPalette];
+    [colorPalette3 setBackgroundStyle:backgroundStyle];
 
     [(NTKMagmaFaceView *)self _updateViewColorsWithPalette:v20];
   }
 
   else
   {
-    if (a6 != 10)
+    if (mode != 10)
     {
       goto LABEL_8;
     }
 
-    v14 = [(NTKMagmaFaceView *)self interpolatedColorPalette];
-    [(NTKMagmaFaceView *)self _updateViewColorsWithPalette:v14];
+    interpolatedColorPalette = [(NTKMagmaFaceView *)self interpolatedColorPalette];
+    [(NTKMagmaFaceView *)self _updateViewColorsWithPalette:interpolatedColorPalette];
   }
 
 LABEL_8:
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a4 == 15 || a4 == 10)
+  if (mode == 15 || mode == 10)
   {
     NTKLargeElementScaleForBreathingFraction();
     memset(&v10, 0, sizeof(v10));
     CGAffineTransformMakeScale(&v10, v6, v6);
     v9 = v10;
-    v7 = [(NTKMagmaFaceView *)self contentView];
+    contentView = [(NTKMagmaFaceView *)self contentView];
     v8 = v9;
-    [v7 setTransform:&v8];
+    [contentView setTransform:&v8];
   }
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a4 == 15 || a4 == 10)
+  if (mode == 15 || mode == 10)
   {
     NTKScaleForRubberBandingFraction();
     v7 = v6;
@@ -345,21 +345,21 @@ LABEL_8:
     memset(&v14, 0, sizeof(v14));
     CGAffineTransformMakeScale(&v14, v7, v7);
     v13 = v14;
-    v10 = [(NTKMagmaFaceView *)self contentView];
+    contentView = [(NTKMagmaFaceView *)self contentView];
     v12 = v13;
-    [v10 setTransform:&v12];
+    [contentView setTransform:&v12];
 
-    v11 = [(NTKMagmaFaceView *)self contentView];
-    [v11 setAlpha:v9];
+    contentView2 = [(NTKMagmaFaceView *)self contentView];
+    [contentView2 setAlpha:v9];
   }
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   v5.receiver = self;
   v5.super_class = NTKMagmaFaceView;
   [(NTKMagmaFaceView *)&v5 _configureForEditMode:?];
-  [(NTKMagmaEffectsView *)self->_effectsView setEditing:a3 != 0];
+  [(NTKMagmaEffectsView *)self->_effectsView setEditing:mode != 0];
 }
 
 - (id)createFaceColorPalette
@@ -369,18 +369,18 @@ LABEL_8:
   return v2;
 }
 
-- (void)_updateViewColorsWithPalette:(id)a3
+- (void)_updateViewColorsWithPalette:(id)palette
 {
-  v5 = a3;
-  v4 = [v5 swoosh];
-  [(NTKMagmaButton *)self->_logoButton setTintColor:v4];
+  paletteCopy = palette;
+  swoosh = [paletteCopy swoosh];
+  [(NTKMagmaButton *)self->_logoButton setTintColor:swoosh];
 
-  [(NTKMagmaEffectsView *)self->_effectsView setColorPalette:v5];
+  [(NTKMagmaEffectsView *)self->_effectsView setColorPalette:paletteCopy];
 }
 
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device
 {
-  if (a3 == 15)
+  if (options == 15)
   {
     return &off_15128;
   }
@@ -391,29 +391,29 @@ LABEL_8:
   }
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 == 15)
+  optionCopy = option;
+  optionsCopy = options;
+  if (mode == 15)
   {
     if (qword_1C1C8 != -1)
     {
       sub_A7D8();
     }
 
-    v10 = v8;
-    v11 = [v9 objectForKeyedSubscript:&off_15098];
+    v10 = optionCopy;
+    v11 = [optionsCopy objectForKeyedSubscript:&off_15098];
     v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v10 backgroundStyle]);
-    v13 = [v11 identifier];
-    v14 = [NSString stringWithFormat:@"%@-%@", v12, v13];
+    identifier = [v11 identifier];
+    v14 = [NSString stringWithFormat:@"%@-%@", v12, identifier];
 
     v15 = [qword_1C1C0 objectForKey:v14];
     if (!v15)
     {
       v16 = [NTKMagmaFaceView alloc];
-      v17 = [(NTKMagmaFaceView *)self device];
-      v18 = [(NTKMagmaFaceView *)v16 initWithFaceStyle:44 forDevice:v17 clientIdentifier:0];
+      device = [(NTKMagmaFaceView *)self device];
+      v18 = [(NTKMagmaFaceView *)v16 initWithFaceStyle:44 forDevice:device clientIdentifier:0];
 
       [(NTKMagmaFaceView *)self bounds];
       [v18 setFrame:?];
@@ -428,12 +428,12 @@ LABEL_8:
       v23 = v22;
       [(NTKMagmaFaceView *)self bounds];
       v24 = CGRectGetHeight(v32) / v23;
-      v25 = [(NTKMagmaFaceView *)self device];
-      [v25 screenScale];
+      device2 = [(NTKMagmaFaceView *)self device];
+      [device2 screenScale];
       v27 = v24 * v26;
 
-      v28 = [v18[2] quadView];
-      v15 = [v28 snapshotInRect:0.0 scale:0.0 time:{v21, v23, v27, 0.0}];
+      quadView = [v18[2] quadView];
+      v15 = [quadView snapshotInRect:0.0 scale:0.0 time:{v21, v23, v27, 0.0}];
 
       [qword_1C1C0 setObject:v15 forKey:v14];
     }
@@ -443,7 +443,7 @@ LABEL_8:
   {
     v30.receiver = self;
     v30.super_class = NTKMagmaFaceView;
-    v15 = [(NTKMagmaFaceView *)&v30 _swatchImageForEditOption:v8 mode:a4 withSelectedOptions:v9];
+    v15 = [(NTKMagmaFaceView *)&v30 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:optionsCopy];
   }
 
   return v15;

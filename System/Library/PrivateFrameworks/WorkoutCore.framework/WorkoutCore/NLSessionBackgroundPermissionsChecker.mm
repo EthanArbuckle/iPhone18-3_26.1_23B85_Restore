@@ -31,7 +31,7 @@
 
 - (void)resetAndFetchMotionCalibrationPermission
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   v6 = MEMORY[0x277D85CD0];
   v2 = MEMORY[0x277D85CD0];
@@ -50,14 +50,14 @@
   }
 
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v17->_motionCalibrationResult, 0);
-  queue = v17->_queue;
+  objc_storeStrong(&selfCopy->_motionCalibrationResult, 0);
+  queue = selfCopy->_queue;
   v8 = MEMORY[0x277D85DD0];
   v9 = -1073741824;
   v10 = 0;
   v11 = __81__NLSessionBackgroundPermissionsChecker_resetAndFetchMotionCalibrationPermission__block_invoke;
   v12 = &unk_277D88890;
-  v13 = MEMORY[0x277D82BE0](v17);
+  v13 = MEMORY[0x277D82BE0](selfCopy);
   dispatch_async(queue, &v8);
   objc_storeStrong(&v13, 0);
 }
@@ -109,7 +109,7 @@ uint64_t __81__NLSessionBackgroundPermissionsChecker_resetAndFetchMotionCalibrat
 
 - (BOOL)_needsMotionCalibrationPermission
 {
-  v28 = self;
+  selfCopy = self;
   v27 = a2;
   v9 = MEMORY[0x277D85CD0];
   v2 = MEMORY[0x277D85CD0];
@@ -203,7 +203,7 @@ void __74__NLSessionBackgroundPermissionsChecker__needsMotionCalibrationPermissi
 - (BOOL)needsMotionCalibrationPermission
 {
   v12 = *MEMORY[0x277D85DE8];
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   if (self->_motionCalibrationResult)
   {
@@ -211,12 +211,12 @@ void __74__NLSessionBackgroundPermissionsChecker__needsMotionCalibrationPermissi
     oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_1_8_66(v11, v9->_motionCalibrationResult);
+      __os_log_helper_16_2_1_8_66(v11, selfCopy->_motionCalibrationResult);
       _os_log_impl(&dword_20AEA4000, oslog, OS_LOG_TYPE_DEFAULT, "[TCC] Returning needsMotionCalibrationPermission=%{public}@", v11, 0xCu);
     }
 
     objc_storeStrong(&oslog, 0);
-    v10 = [(NSNumber *)v9->_motionCalibrationResult BOOLValue];
+    bOOLValue = [(NSNumber *)selfCopy->_motionCalibrationResult BOOLValue];
   }
 
   else
@@ -233,11 +233,11 @@ void __74__NLSessionBackgroundPermissionsChecker__needsMotionCalibrationPermissi
     }
 
     objc_storeStrong(location, 0);
-    v10 = 0;
+    bOOLValue = 0;
   }
 
   *MEMORY[0x277D85DE8];
-  return v10 & 1;
+  return bOOLValue & 1;
 }
 
 @end

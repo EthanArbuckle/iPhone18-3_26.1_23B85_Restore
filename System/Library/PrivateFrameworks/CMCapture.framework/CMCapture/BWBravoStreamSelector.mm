@@ -1,26 +1,26 @@
 @interface BWBravoStreamSelector
 + (void)initialize;
 - ($06E035DAA80D7DA92D7AC3530BEA5F2A)selectionConfiguration;
-- (BOOL)_conditionsAllowSwitchToRecommendedMasterStream:(_BOOL8)result debugOverlayInfo:(void *)a2;
-- (BWBravoStreamSelector)initWithStreamSelectionAttributes:(id)a3 wideStream:(id)a4 teleStream:(id)a5 superWideStream:(id)a6 cameraCalibrationValid:(BOOL)a7;
+- (BOOL)_conditionsAllowSwitchToRecommendedMasterStream:(_BOOL8)result debugOverlayInfo:(void *)info;
+- (BWBravoStreamSelector)initWithStreamSelectionAttributes:(id)attributes wideStream:(id)stream teleStream:(id)teleStream superWideStream:(id)wideStream cameraCalibrationValid:(BOOL)valid;
 - (NSArray)eligibleFallbackPortTypes;
-- (id)preferredMasterPortTypeForFrameStatisticsByPortType:(id)a3 zoomFactor:(float)a4;
-- (id)recommendMasterStreamUsingCurrentMasterStream:(id)a3 frameStatisticsByPortType:(id)a4 zoomFactor:(float)a5 isAutoFlashScene:(BOOL)a6 digitalFlashMode:(int)a7 isStationary:(BOOL)a8 detectedObjects:(id)a9 cameraControlsStatisticsMasterStream:(id)a10;
-- (uint64_t)_exposureAllowsSwitchToRecommendedMasterStream:(uint64_t)result frameStatisticsByPortType:(uint64_t)a2;
-- (uint64_t)_exposureAndFocusStableForSwitchOverTo:(uint64_t)a1 forFrameStatisticsByPortType:(uint64_t)a2 debugOverlayInfo:;
-- (uint64_t)_focusIsStable:(uint64_t)a1;
-- (uint64_t)_selectionBehaviorAllowsSwitchOverTo:(void *)a3 forFrameStatisticsByPortType:(_BYTE *)a4 zoomFactor:blockedByExposureFocusStability:debugOverlayInfo:;
-- (uint64_t)_telephotoLimitsReachedForFrameStatisticsByPortType:(uint64_t)a1 debugOverlayInfo:;
-- (uint64_t)_updateSceneChangeMonitorWithFrameStatisticsByPortType:(uint64_t)result fromMasterStream:(float)a2 zoomFactor:(uint64_t)a3 digitalFlashMode:(void *)a4 debugOverlayInfo:(int)a5;
-- (uint64_t)_updateStateWithFrameStatisticsByPortType:(void *)a3 detectedObjects:;
+- (id)preferredMasterPortTypeForFrameStatisticsByPortType:(id)type zoomFactor:(float)factor;
+- (id)recommendMasterStreamUsingCurrentMasterStream:(id)stream frameStatisticsByPortType:(id)type zoomFactor:(float)factor isAutoFlashScene:(BOOL)scene digitalFlashMode:(int)mode isStationary:(BOOL)stationary detectedObjects:(id)objects cameraControlsStatisticsMasterStream:(id)self0;
+- (uint64_t)_exposureAllowsSwitchToRecommendedMasterStream:(uint64_t)result frameStatisticsByPortType:(uint64_t)type;
+- (uint64_t)_exposureAndFocusStableForSwitchOverTo:(uint64_t)to forFrameStatisticsByPortType:(uint64_t)type debugOverlayInfo:;
+- (uint64_t)_focusIsStable:(uint64_t)stable;
+- (uint64_t)_selectionBehaviorAllowsSwitchOverTo:(void *)to forFrameStatisticsByPortType:(_BYTE *)type zoomFactor:blockedByExposureFocusStability:debugOverlayInfo:;
+- (uint64_t)_telephotoLimitsReachedForFrameStatisticsByPortType:(uint64_t)type debugOverlayInfo:;
+- (uint64_t)_updateSceneChangeMonitorWithFrameStatisticsByPortType:(uint64_t)result fromMasterStream:(float)stream zoomFactor:(uint64_t)factor digitalFlashMode:(void *)mode debugOverlayInfo:(int)info;
+- (uint64_t)_updateStateWithFrameStatisticsByPortType:(void *)type detectedObjects:;
 - (uint64_t)_updateSuperWideFocusIsStableOnceWithFrameStatisticsByPortType:(uint64_t)result;
-- (void)_preferredMasterStreamForFrameStatisticsByPortType:(char)a3 zoomFactor:(int)a4 isAutoFlashScene:(int)a5 digitalFlashMode:(void *)a6 isStationary:(int)a7 debugOverlayInfo:(_BYTE *)a8 ignoreEligibleFallbackPortTypes:(float)a9 requiresFocusExposeStabilityOut:(int *)a10 selectionReasonOut:;
+- (void)_preferredMasterStreamForFrameStatisticsByPortType:(char)type zoomFactor:(int)factor isAutoFlashScene:(int)scene digitalFlashMode:(void *)mode isStationary:(int)stationary debugOverlayInfo:(_BYTE *)info ignoreEligibleFallbackPortTypes:(float)types requiresFocusExposeStabilityOut:(int *)self0 selectionReasonOut:;
 - (void)dealloc;
-- (void)resetWithZoomFactor:(float)a3 currentMasterStream:(id)a4;
-- (void)setEligibleFallbackPortTypes:(id)a3;
-- (void)setSelectionConfiguration:(id)a3;
-- (void)setTeleMaxAEGain:(float)a3;
-- (void)setTeleMaxEIT:(float)a3;
+- (void)resetWithZoomFactor:(float)factor currentMasterStream:(id)stream;
+- (void)setEligibleFallbackPortTypes:(id)types;
+- (void)setSelectionConfiguration:(id)configuration;
+- (void)setTeleMaxAEGain:(float)gain;
+- (void)setTeleMaxEIT:(float)t;
 @end
 
 @implementation BWBravoStreamSelector
@@ -48,7 +48,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -57,32 +57,32 @@
   }
 }
 
-- (BWBravoStreamSelector)initWithStreamSelectionAttributes:(id)a3 wideStream:(id)a4 teleStream:(id)a5 superWideStream:(id)a6 cameraCalibrationValid:(BOOL)a7
+- (BWBravoStreamSelector)initWithStreamSelectionAttributes:(id)attributes wideStream:(id)stream teleStream:(id)teleStream superWideStream:(id)wideStream cameraCalibrationValid:(BOOL)valid
 {
   v48.receiver = self;
   v48.super_class = BWBravoStreamSelector;
-  v11 = [(BWBravoStreamSelector *)&v48 init:a3];
+  v11 = [(BWBravoStreamSelector *)&v48 init:attributes];
   if (v11)
   {
-    *(v11 + 1) = a4;
-    *(v11 + 2) = a5;
-    *(v11 + 3) = a6;
+    *(v11 + 1) = stream;
+    *(v11 + 2) = teleStream;
+    *(v11 + 3) = wideStream;
     *(v11 + 216) = xmmword_1AD046500;
     *(v11 + 232) = *(v11 + 216);
     *(v11 + 62) = 0;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"minFocusDistanceChange", "floatValue"}];
+    [objc_msgSend(attributes objectForKeyedSubscript:{@"minFocusDistanceChange", "floatValue"}];
     *(v11 + 100) = v12;
-    v13 = [MEMORY[0x1E695DF70] array];
-    if (a4 && a5)
+    array = [MEMORY[0x1E695DF70] array];
+    if (stream && teleStream)
     {
-      [v13 addObject:{objc_msgSend(a4, "portType")}];
-      [objc_msgSend(a3 objectForKeyedSubscript:{@"wideToTeleFocusDistance", "floatValue"}];
+      [array addObject:{objc_msgSend(stream, "portType")}];
+      [objc_msgSend(attributes objectForKeyedSubscript:{@"wideToTeleFocusDistance", "floatValue"}];
       *(v11 + 15) = v14;
-      [objc_msgSend(a3 objectForKeyedSubscript:{@"teleToWideFocusDistance", "floatValue"}];
+      [objc_msgSend(attributes objectForKeyedSubscript:{@"teleToWideFocusDistance", "floatValue"}];
       *(v11 + 14) = v15;
-      [objc_msgSend(objc_msgSend(a5 "stream")];
+      [objc_msgSend(objc_msgSend(teleStream "stream")];
       v17 = v16;
-      [objc_msgSend(objc_msgSend(a5 "stream")];
+      [objc_msgSend(objc_msgSend(teleStream "stream")];
       if (v17 > v18)
       {
         v18 = v17;
@@ -95,22 +95,22 @@
         *(v11 + 15) = v19;
       }
 
-      v11[184] = [objc_msgSend(a3 objectForKeyedSubscript:{@"autoFocusRecommendedPrimaryPortTypeEnabled", "BOOLValue"}];
+      v11[184] = [objc_msgSend(attributes objectForKeyedSubscript:{@"autoFocusRecommendedPrimaryPortTypeEnabled", "BOOLValue"}];
     }
 
-    v20 = [a6 hasFocus];
-    if (a4 && v20)
+    hasFocus = [wideStream hasFocus];
+    if (stream && hasFocus)
     {
-      [v13 addObject:{objc_msgSend(a6, "portType")}];
-      [objc_msgSend(a3 objectForKeyedSubscript:{@"superWideMaximumAETargetOffset", "floatValue"}];
+      [array addObject:{objc_msgSend(wideStream, "portType")}];
+      [objc_msgSend(attributes objectForKeyedSubscript:{@"superWideMaximumAETargetOffset", "floatValue"}];
       *(v11 + 21) = v21;
-      [objc_msgSend(a3 objectForKeyedSubscript:{@"superWideMaximumAETargetOffsetHysteresisLag", "floatValue"}];
+      [objc_msgSend(attributes objectForKeyedSubscript:{@"superWideMaximumAETargetOffsetHysteresisLag", "floatValue"}];
       *(v11 + 22) = v22;
       *(v11 + 24) = 10;
-      v11[100] = [objc_msgSend(a3 objectForKeyedSubscript:{@"superWideAllowedInAutoFlashScenes", "BOOLValue"}];
-      [objc_msgSend(objc_msgSend(a4 "stream")];
+      v11[100] = [objc_msgSend(attributes objectForKeyedSubscript:{@"superWideAllowedInAutoFlashScenes", "BOOLValue"}];
+      [objc_msgSend(objc_msgSend(stream "stream")];
       v24 = v23;
-      [objc_msgSend(objc_msgSend(a4 "stream")];
+      [objc_msgSend(objc_msgSend(stream "stream")];
       if (v24 > v25)
       {
         v25 = v24;
@@ -123,37 +123,37 @@
       }
 
       *(v11 + 19) = v26;
-      [objc_msgSend(a3 objectForKeyedSubscript:{@"superWideToWideHysteresisLag", "floatValue"}];
+      [objc_msgSend(attributes objectForKeyedSubscript:{@"superWideToWideHysteresisLag", "floatValue"}];
       *(v11 + 20) = v27 + *(v11 + 19);
-      v28 = [objc_msgSend(a3 objectForKeyedSubscript:{@"autoFocusRecommendedPrimaryPortTypeEnabled", "BOOLValue"}];
+      v28 = [objc_msgSend(attributes objectForKeyedSubscript:{@"autoFocusRecommendedPrimaryPortTypeEnabled", "BOOLValue"}];
       v11[185] = v28;
       v11[432] = v28 ^ 1;
       *(v11 + 117) = 1000;
     }
 
-    *(v11 + 46) = [v13 copy];
-    *(v11 + 47) = [v13 copy];
+    *(v11 + 46) = [array copy];
+    *(v11 + 47) = [array copy];
     *(v11 + 90) = 0;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"gainHysteresisLag", "floatValue"}];
+    [objc_msgSend(attributes objectForKeyedSubscript:{@"gainHysteresisLag", "floatValue"}];
     *(v11 + 9) = v29;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"minLuxLevelChange", "floatValue"}];
+    [objc_msgSend(attributes objectForKeyedSubscript:{@"minLuxLevelChange", "floatValue"}];
     *(v11 + 96) = v30;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"maxLuxLevelForSceneChangeMonitoring", "floatValue"}];
+    [objc_msgSend(attributes objectForKeyedSubscript:{@"maxLuxLevelForSceneChangeMonitoring", "floatValue"}];
     *(v11 + 97) = v31;
     *(v11 + 16) = 2;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"minTeleToWideEITThresholdPercentage", "floatValue"}];
+    [objc_msgSend(attributes objectForKeyedSubscript:{@"minTeleToWideEITThresholdPercentage", "floatValue"}];
     *(v11 + 12) = v32;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"maxTeleToWideEITThresholdPercentage", "floatValue"}];
+    [objc_msgSend(attributes objectForKeyedSubscript:{@"maxTeleToWideEITThresholdPercentage", "floatValue"}];
     *(v11 + 13) = v33;
     LODWORD(v34) = *(v11 + 12);
     v36 = v33 > 0.0 && *&v34 > 0.0;
     v11[40] = v36;
     *(v11 + 17) = 2;
-    v11[72] = [objc_msgSend(a3 objectForKeyedSubscript:{@"teleSwitchBasedOnExposureAndFocusTargetOffsetEnabled", 0.0, v34), "BOOLValue"}];
-    v11[73] = [objc_msgSend(a3 objectForKeyedSubscript:{@"teleSwitchBasedOnFocusTargetOffsetInRestrictedModeEnabled", "BOOLValue"}];
-    v11[74] = [objc_msgSend(a3 objectForKeyedSubscript:{@"teleExposureLimitsDisabled", "BOOLValue"}] ^ 1;
+    v11[72] = [objc_msgSend(attributes objectForKeyedSubscript:{@"teleSwitchBasedOnExposureAndFocusTargetOffsetEnabled", 0.0, v34), "BOOLValue"}];
+    v11[73] = [objc_msgSend(attributes objectForKeyedSubscript:{@"teleSwitchBasedOnFocusTargetOffsetInRestrictedModeEnabled", "BOOLValue"}];
+    v11[74] = [objc_msgSend(attributes objectForKeyedSubscript:{@"teleExposureLimitsDisabled", "BOOLValue"}] ^ 1;
     *(v11 + 476) = 0x3FB333333F4CCCCDLL;
-    v37 = [a3 objectForKeyedSubscript:@"digitalFlash"];
+    v37 = [attributes objectForKeyedSubscript:@"digitalFlash"];
     [objc_msgSend(v37 objectForKeyedSubscript:{@"minTeleToWideEITThreshold", "doubleValue"}];
     *(v11 + 13) = v38;
     [objc_msgSend(v37 objectForKeyedSubscript:{@"maxTeleToWideEITThreshold", "doubleValue"}];
@@ -191,32 +191,32 @@
   [(BWBravoStreamSelector *)&v3 dealloc];
 }
 
-- (void)setTeleMaxAEGain:(float)a3
+- (void)setTeleMaxAEGain:(float)gain
 {
-  if (self->_teleMaxAEGain < a3)
+  if (self->_teleMaxAEGain < gain)
   {
     self->_sceneChangeDetected = 1;
   }
 
-  self->_teleMaxAEGain = a3;
+  self->_teleMaxAEGain = gain;
 }
 
-- (void)setTeleMaxEIT:(float)a3
+- (void)setTeleMaxEIT:(float)t
 {
-  if (self->_teleMaxEIT < a3)
+  if (self->_teleMaxEIT < t)
   {
     self->_sceneChangeDetected = 1;
   }
 
-  self->_teleMaxEIT = a3;
+  self->_teleMaxEIT = t;
 }
 
-- (void)resetWithZoomFactor:(float)a3 currentMasterStream:(id)a4
+- (void)resetWithZoomFactor:(float)factor currentMasterStream:(id)stream
 {
-  self->_currentMasterStream = a4;
-  self->_recommendedMasterStream = a4;
-  self->_preferredMasterStreamIgnoringEligibleFallbackPortTypes = a4;
-  self->_previousZoomFactor = a3;
+  self->_currentMasterStream = stream;
+  self->_recommendedMasterStream = stream;
+  self->_preferredMasterStreamIgnoringEligibleFallbackPortTypes = stream;
+  self->_previousZoomFactor = factor;
   self->_timeOfLastZoomFactorChange = 0;
   self->_resetSceneChangeMonitoring = 0;
   *&self->_teleMaxGainReachedCounter = 0;
@@ -224,38 +224,38 @@
   self->_timeOfLastExposureModeChange = 0;
   self->_waitingForSlaveFocusAfterZoomChange = 0;
   teleStream = self->_teleStream;
-  if (teleStream && ([(BWFigVideoCaptureStream *)teleStream baseZoomFactor], v7 <= a3) || self->_superWideStream && ([(BWFigVideoCaptureStream *)self->_wideStream baseZoomFactor], v8 <= a3))
+  if (teleStream && ([(BWFigVideoCaptureStream *)teleStream baseZoomFactor], v7 <= factor) || self->_superWideStream && ([(BWFigVideoCaptureStream *)self->_wideStream baseZoomFactor], v8 <= factor))
   {
     self->_sceneChangeDetected = 1;
   }
 }
 
-- (void)setSelectionConfiguration:(id)a3
+- (void)setSelectionConfiguration:(id)configuration
 {
   selectionBehavior = self->_pendingSelectionConfiguration.selectionBehavior;
-  if (a3.var0 != selectionBehavior)
+  if (configuration.var0 != selectionBehavior)
   {
     self->_waitingForSlaveFocusAfterZoomChange = 0;
 LABEL_5:
-    if (a3.var0 != 2)
+    if (configuration.var0 != 2)
     {
 LABEL_18:
-      self->_pendingSelectionConfiguration = a3;
+      self->_pendingSelectionConfiguration = configuration;
       return;
     }
 
     if (selectionBehavior == 2)
     {
       restrictedSelectionConditions = self->_pendingSelectionConfiguration.restrictedSelectionConditions;
-      if ((a3.var1 & 2) == 0)
+      if ((configuration.var1 & 2) == 0)
       {
 LABEL_12:
-        if ((a3.var1 & 4) != 0 && (restrictedSelectionConditions & 4) == 0)
+        if ((configuration.var1 & 4) != 0 && (restrictedSelectionConditions & 4) == 0)
         {
           self->_timeOfLastExposureModeChange = 0;
         }
 
-        if ((a3.var1 & 1) != 0 && (restrictedSelectionConditions & 1) == 0)
+        if ((configuration.var1 & 1) != 0 && (restrictedSelectionConditions & 1) == 0)
         {
           self->_timeOfLastZoomFactorChange = 0;
         }
@@ -267,7 +267,7 @@ LABEL_12:
     else
     {
       LOBYTE(restrictedSelectionConditions) = 0;
-      if ((a3.var1 & 2) == 0)
+      if ((configuration.var1 & 2) == 0)
       {
         goto LABEL_12;
       }
@@ -281,85 +281,85 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if (a3.var1 != self->_pendingSelectionConfiguration.restrictedSelectionConditions)
+  if (configuration.var1 != self->_pendingSelectionConfiguration.restrictedSelectionConditions)
   {
     goto LABEL_5;
   }
 }
 
-- (void)setEligibleFallbackPortTypes:(id)a3
+- (void)setEligibleFallbackPortTypes:(id)types
 {
   os_unfair_lock_lock(&self->_eligibleFallbackPortTypesLock);
 
-  self->_eligibleFallbackPortTypes = [a3 copy];
+  self->_eligibleFallbackPortTypes = [types copy];
 
   os_unfair_lock_unlock(&self->_eligibleFallbackPortTypesLock);
 }
 
-- (void)_preferredMasterStreamForFrameStatisticsByPortType:(char)a3 zoomFactor:(int)a4 isAutoFlashScene:(int)a5 digitalFlashMode:(void *)a6 isStationary:(int)a7 debugOverlayInfo:(_BYTE *)a8 ignoreEligibleFallbackPortTypes:(float)a9 requiresFocusExposeStabilityOut:(int *)a10 selectionReasonOut:
+- (void)_preferredMasterStreamForFrameStatisticsByPortType:(char)type zoomFactor:(int)factor isAutoFlashScene:(int)scene digitalFlashMode:(void *)mode isStationary:(int)stationary debugOverlayInfo:(_BYTE *)info ignoreEligibleFallbackPortTypes:(float)types requiresFocusExposeStabilityOut:(int *)self0 selectionReasonOut:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v15 = 200;
-  if (a7)
+  if (stationary)
   {
     v15 = 288;
   }
 
-  v16 = *(a1 + v15);
-  v17 = [a1 eligibleFallbackPortTypes];
-  v87 = v17;
-  if (a7)
+  v16 = *(self + v15);
+  eligibleFallbackPortTypes = [self eligibleFallbackPortTypes];
+  v87 = eligibleFallbackPortTypes;
+  if (stationary)
   {
-    v17 = *(a1 + 376);
+    eligibleFallbackPortTypes = *(self + 376);
   }
 
-  v18 = [MEMORY[0x1E695DF70] array];
-  v19 = *(a1 + 16);
+  array = [MEMORY[0x1E695DF70] array];
+  v19 = *(self + 16);
   if (v19)
   {
     [v19 baseZoomFactor];
-    if (v20 <= a9)
+    if (v20 <= types)
     {
-      [v18 addObject:*(a1 + 16)];
+      [array addObject:*(self + 16)];
     }
   }
 
-  v21 = *(a1 + 8);
+  v21 = *(self + 8);
   if (v21)
   {
     [v21 baseZoomFactor];
-    if (v22 <= a9 && (![v18 count] || objc_msgSend(v17, "containsObject:", objc_msgSend(*(a1 + 8), "portType"))))
+    if (v22 <= types && (![array count] || objc_msgSend(eligibleFallbackPortTypes, "containsObject:", objc_msgSend(*(self + 8), "portType"))))
     {
-      [v18 addObject:*(a1 + 8)];
+      [array addObject:*(self + 8)];
     }
   }
 
-  v23 = *(a1 + 24);
+  v23 = *(self + 24);
   if (v23)
   {
     [v23 baseZoomFactor];
-    if (v24 <= a9 && (![v18 count] || objc_msgSend(v17, "containsObject:", objc_msgSend(*(a1 + 24), "portType"))))
+    if (v24 <= types && (![array count] || objc_msgSend(eligibleFallbackPortTypes, "containsObject:", objc_msgSend(*(self + 24), "portType"))))
     {
-      [v18 addObject:*(a1 + 24)];
+      [array addObject:*(self + 24)];
     }
   }
 
-  v25 = a10;
-  v26 = [v18 containsObject:v16];
-  v27 = v16;
-  if (![v18 count])
+  outCopy3 = out;
+  v26 = [array containsObject:v16];
+  firstObject = v16;
+  if (![array count])
   {
     goto LABEL_113;
   }
 
-  if ([v18 count] <= 1)
+  if ([array count] <= 1)
   {
-    v27 = [v18 firstObject];
-    if (a8)
+    firstObject = [array firstObject];
+    if (info)
     {
       goto LABEL_114;
     }
@@ -367,79 +367,79 @@ LABEL_12:
     goto LABEL_115;
   }
 
-  if (v26 && *(a1 + 216) == 2)
+  if (v26 && *(self + 216) == 2)
   {
     v91[0] = MEMORY[0x1E69E9820];
     v91[1] = 3221225472;
     v91[2] = __234__BWBravoStreamSelector__preferredMasterStreamForFrameStatisticsByPortType_zoomFactor_isAutoFlashScene_digitalFlashMode_isStationary_debugOverlayInfo_ignoreEligibleFallbackPortTypes_requiresFocusExposeStabilityOut_selectionReasonOut___block_invoke;
     v91[3] = &unk_1E798FDF0;
     v91[4] = v16;
-    v91[5] = a1;
-    v91[6] = a6;
-    [v18 filterUsingPredicate:{objc_msgSend(MEMORY[0x1E696AE18], "predicateWithBlock:", v91)}];
+    v91[5] = self;
+    v91[6] = mode;
+    [array filterUsingPredicate:{objc_msgSend(MEMORY[0x1E696AE18], "predicateWithBlock:", v91)}];
   }
 
-  if (!*(a1 + 16) || ![v18 containsObject:?])
+  if (!*(self + 16) || ![array containsObject:?])
   {
     goto LABEL_84;
   }
 
-  v28 = *(a1 + 16);
+  v28 = *(self + 16);
   if (v16 == v28)
   {
-    if (([BWBravoStreamSelector _telephotoLimitsReachedForFrameStatisticsByPortType:a1 debugOverlayInfo:?]& 1) != 0)
+    if (([BWBravoStreamSelector _telephotoLimitsReachedForFrameStatisticsByPortType:self debugOverlayInfo:?]& 1) != 0)
     {
       goto LABEL_84;
     }
 
 LABEL_42:
-    if (*(a1 + 74))
+    if (*(self + 74))
     {
-      if (!a4)
+      if (!factor)
       {
         goto LABEL_82;
       }
     }
 
-    else if (!a4 || (*(a1 + 141) & 1) == 0)
+    else if (!factor || (*(self + 141) & 1) == 0)
     {
       goto LABEL_82;
     }
 
-    v43 = [a2 objectForKeyedSubscript:{objc_msgSend(*(a1 + 16), "portType")}];
+    v43 = [a2 objectForKeyedSubscript:{objc_msgSend(*(self + 16), "portType")}];
     [v43 eit];
     v45 = v44;
-    if (*(a1 + 141) == 1)
+    if (*(self + 141) == 1)
     {
       v46 = 1.0;
       if ([v43 aeTarget] && objc_msgSend(v43, "aeAverage"))
       {
-        v47 = [v43 aeTarget];
-        v46 = v47 / [v43 aeAverage];
+        aeTarget = [v43 aeTarget];
+        v46 = aeTarget / [v43 aeAverage];
       }
 
       v48 = 168;
-      if (a4 == 1)
+      if (factor == 1)
       {
         v48 = 160;
       }
 
       v49 = 152;
-      if (a4 == 1)
+      if (factor == 1)
       {
         v49 = 144;
       }
 
-      if (!a5)
+      if (!scene)
       {
         v48 = v49;
       }
 
-      v50 = *(a1 + v48);
-      v27 = *(a1 + 16);
-      if (v16 != v27)
+      v50 = *(self + v48);
+      firstObject = *(self + 16);
+      if (v16 != firstObject)
       {
-        v50 = v50 - *(a1 + 176);
+        v50 = v50 - *(self + 176);
       }
 
       if (v45 * v46 < v50)
@@ -450,13 +450,13 @@ LABEL_42:
       goto LABEL_84;
     }
 
-    if (*(a1 + 140) == 1)
+    if (*(self + 140) == 1)
     {
       v51 = 1.0;
       if ([v43 aeTarget] && objc_msgSend(v43, "aeAverage"))
       {
-        v52 = [v43 aeTarget];
-        v51 = v52 / [v43 aeAverage];
+        aeTarget2 = [v43 aeTarget];
+        v51 = aeTarget2 / [v43 aeAverage];
       }
 
       [v43 eit];
@@ -466,39 +466,39 @@ LABEL_42:
     }
 
     v56 = 112;
-    if (a4 == 1)
+    if (factor == 1)
     {
       v56 = 104;
     }
 
-    v57 = *(a1 + v56);
+    v57 = *(self + v56);
     v58 = 128;
-    if (a4 == 1)
+    if (factor == 1)
     {
       v58 = 120;
     }
 
-    v59 = v45 < *(a1 + v58) || *(a1 + 356) <= *(a1 + 136);
+    v59 = v45 < *(self + v58) || *(self + 356) <= *(self + 136);
     if (v45 >= v57 || !v59)
     {
       goto LABEL_84;
     }
 
 LABEL_82:
-    v27 = *(a1 + 16);
-    if (!a8)
+    firstObject = *(self + 16);
+    if (!info)
     {
       goto LABEL_115;
     }
 
 LABEL_114:
-    *a8 = v26;
+    *info = v26;
     goto LABEL_115;
   }
 
   v29 = [a2 objectForKeyedSubscript:{objc_msgSend(v28, "portType")}];
   v30 = v29;
-  v31 = *(a1 + 36);
+  v31 = *(self + 36);
   if (v31 == 0.0)
   {
     v32 = 3.4028e38;
@@ -506,12 +506,12 @@ LABEL_114:
 
   else
   {
-    v32 = *(a1 + 32) / v31;
+    v32 = *(self + 32) / v31;
   }
 
   [v29 gain];
   v34 = v33;
-  v35 = *(a1 + 48);
+  v35 = *(self + 48);
   if (v35 == 0.0)
   {
     v36 = 3.40282347e38;
@@ -519,21 +519,21 @@ LABEL_114:
 
   else
   {
-    v36 = ((v35 * *(a1 + 44)) / 100.0);
+    v36 = ((v35 * *(self + 44)) / 100.0);
   }
 
   [v30 eit];
-  if (*(a1 + 74) == 1)
+  if (*(self + 74) == 1)
   {
     v38 = v34 < v32;
-    if (*(a1 + 40))
+    if (*(self + 40))
     {
       v38 = v37 < v36;
     }
 
     if (v38)
     {
-      v39 = [BWBravoStreamSelector _exposureAllowsSwitchToRecommendedMasterStream:a1 frameStatisticsByPortType:*(a1 + 16)];
+      v39 = [BWBravoStreamSelector _exposureAllowsSwitchToRecommendedMasterStream:self frameStatisticsByPortType:*(self + 16)];
     }
 
     else
@@ -547,25 +547,25 @@ LABEL_114:
     v39 = 1;
   }
 
-  if (*(a1 + 184) == 1)
+  if (*(self + 184) == 1)
   {
     v40 = [objc_msgSend(v30 "afRecommendedPrimaryPortType")];
-    v25 = a10;
+    outCopy3 = out;
   }
 
   else
   {
-    [objc_msgSend(a2 objectForKeyedSubscript:{objc_msgSend(*(a1 + 8), "portType")), "focusDistance"}];
-    v25 = a10;
-    if (v41 <= 0.0 || v41 < *(a1 + 60))
+    [objc_msgSend(a2 objectForKeyedSubscript:{objc_msgSend(*(self + 8), "portType")), "focusDistance"}];
+    outCopy3 = out;
+    if (v41 <= 0.0 || v41 < *(self + 60))
     {
       goto LABEL_84;
     }
 
-    if ([v17 containsObject:{objc_msgSend(*(a1 + 24), "portType")}])
+    if ([eligibleFallbackPortTypes containsObject:{objc_msgSend(*(self + 24), "portType")}])
     {
-      [objc_msgSend(a2 objectForKeyedSubscript:{objc_msgSend(*(a1 + 24), "portType")), "focusDistance"}];
-      v40 = v42 >= *(a1 + 76);
+      [objc_msgSend(a2 objectForKeyedSubscript:{objc_msgSend(*(self + 24), "portType")), "focusDistance"}];
+      v40 = v42 >= *(self + 76);
     }
 
     else
@@ -580,96 +580,96 @@ LABEL_114:
   }
 
 LABEL_84:
-  if (*(a1 + 8) && [v18 containsObject:?])
+  if (*(self + 8) && [array containsObject:?])
   {
-    if (([v17 containsObject:{objc_msgSend(*(a1 + 24), "portType")}] & 1) == 0)
+    if (([eligibleFallbackPortTypes containsObject:{objc_msgSend(*(self + 24), "portType")}] & 1) == 0)
     {
       goto LABEL_112;
     }
 
-    v60 = *(a1 + 76);
-    v61 = *(a1 + 24);
-    v62 = *(a1 + 84) / *(a1 + 88);
-    v85 = a6;
+    v60 = *(self + 76);
+    v61 = *(self + 24);
+    v62 = *(self + 84) / *(self + 88);
+    modeCopy = mode;
     if (v16 == v61 && [v87 containsObject:{objc_msgSend(v61, "portType")}])
     {
-      v60 = *(a1 + 80);
-      v62 = *(a1 + 84);
+      v60 = *(self + 80);
+      v62 = *(self + 84);
     }
 
-    v63 = [a2 objectForKeyedSubscript:{objc_msgSend(*(a1 + 24), "portType")}];
+    v63 = [a2 objectForKeyedSubscript:{objc_msgSend(*(self + 24), "portType")}];
     v64 = v63;
-    if (*(a1 + 185) == 1)
+    if (*(self + 185) == 1)
     {
       v65 = [objc_msgSend(v63 "afRecommendedPrimaryPortType")];
     }
 
     else
     {
-      [objc_msgSend(a2 objectForKeyedSubscript:{objc_msgSend(*(a1 + 8), "portType")), "focusDistance"}];
+      [objc_msgSend(a2 objectForKeyedSubscript:{objc_msgSend(*(self + 8), "portType")), "focusDistance"}];
       v67 = v66;
       [v64 focusDistance];
       v65 = v68 > 0.0 && fminf(v68, v67) < v60;
     }
 
-    v69 = a3 ^ 1;
-    if (a4)
+    v69 = type ^ 1;
+    if (factor)
     {
       v69 = 0;
     }
 
-    if ((v69 & 1) != 0 || (*(a1 + 100) & 1) == 0)
+    if ((v69 & 1) != 0 || (*(self + 100) & 1) == 0)
     {
-      v71 = [v64 aeTarget];
-      v73 = v71 / [v64 aeAverage];
+      aeTarget3 = [v64 aeTarget];
+      v73 = aeTarget3 / [v64 aeAverage];
       if (v73 <= v62)
       {
-        *(a1 + 92) = 0;
+        *(self + 92) = 0;
         v70 = 1;
       }
 
-      else if (v16 == *(a1 + 24))
+      else if (v16 == *(self + 24))
       {
-        v74 = *(a1 + 92);
-        v75 = *(a1 + 96);
-        *(a1 + 92) = v74 + 1;
+        v74 = *(self + 92);
+        v75 = *(self + 96);
+        *(self + 92) = v74 + 1;
         v70 = v74 < v75;
       }
 
       else
       {
         v70 = 0;
-        *(a1 + 92) = 0;
+        *(self + 92) = 0;
       }
 
-      if (v85)
+      if (modeCopy)
       {
         *&v72 = v62;
-        [v85 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v72), @"SuperWideAERatioThreshold"}];
+        [modeCopy setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v72), @"SuperWideAERatioThreshold"}];
         *&v76 = v73;
-        [v85 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v76), @"SuperWideAERatio"}];
+        [modeCopy setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v76), @"SuperWideAERatio"}];
       }
     }
 
     else
     {
-      *(a1 + 92) = 0;
+      *(self + 92) = 0;
       v70 = 1;
     }
 
     if ((v65 & v70 & 1) == 0)
     {
 LABEL_112:
-      v27 = *(a1 + 8);
+      firstObject = *(self + 8);
       goto LABEL_113;
     }
   }
 
-  v27 = v16;
-  if (!*(a1 + 24) || (v27 = v16, ![v18 containsObject:?]))
+  firstObject = v16;
+  if (!*(self + 24) || (firstObject = v16, ![array containsObject:?]))
   {
 LABEL_113:
-    if (!a8)
+    if (!info)
     {
       goto LABEL_115;
     }
@@ -677,21 +677,21 @@ LABEL_113:
     goto LABEL_114;
   }
 
-  v27 = *(a1 + 24);
-  if (a8)
+  firstObject = *(self + 24);
+  if (info)
   {
     goto LABEL_114;
   }
 
 LABEL_115:
-  if (v25)
+  if (outCopy3)
   {
-    if (a7)
+    if (stationary)
     {
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"Cannot compute selection reason when ignoreEligibleFallbackPortTypes is YES.", 0}]);
     }
 
-    if ([*(a1 + 280) isEqualToArray:v17])
+    if ([*(self + 280) isEqualToArray:eligibleFallbackPortTypes])
     {
       v77 = 0;
       v78 = 0;
@@ -699,11 +699,11 @@ LABEL_115:
 
     else
     {
-      v79 = [v27 portType];
-      v80 = [v16 portType];
-      if ([v17 containsObject:v79])
+      portType = [firstObject portType];
+      portType2 = [v16 portType];
+      if ([eligibleFallbackPortTypes containsObject:portType])
       {
-        v77 = [*(a1 + 280) containsObject:v79] ^ 1;
+        v77 = [*(self + 280) containsObject:portType] ^ 1;
       }
 
       else
@@ -711,9 +711,9 @@ LABEL_115:
         v77 = 0;
       }
 
-      if ([*(a1 + 280) containsObject:v80])
+      if ([*(self + 280) containsObject:portType2])
       {
-        v78 = [v17 containsObject:v80] ^ 1;
+        v78 = [eligibleFallbackPortTypes containsObject:portType2] ^ 1;
       }
 
       else
@@ -721,27 +721,27 @@ LABEL_115:
         v78 = 0;
       }
 
-      *(a1 + 280) = v17;
+      *(self + 280) = eligibleFallbackPortTypes;
     }
 
-    if ([*(a1 + 272) isEqualToArray:v18])
+    if ([*(self + 272) isEqualToArray:array])
     {
       v81 = 1;
 LABEL_137:
-      *v25 = v81;
-      return v27;
+      *outCopy3 = v81;
+      return firstObject;
     }
 
-    if (*(a1 + 272) || v27 == v16)
+    if (*(self + 272) || firstObject == v16)
     {
-      v83 = (v27 != [v18 firstObject]) | v77 | v78;
-      v82 = *(a1 + 272);
+      v83 = (firstObject != [array firstObject]) | v77 | v78;
+      v82 = *(self + 272);
       if ((v83 & 1) == 0)
       {
         v81 = 0;
 LABEL_136:
 
-        *(a1 + 272) = v18;
+        *(self + 272) = array;
         goto LABEL_137;
       }
     }
@@ -764,31 +764,31 @@ LABEL_136:
     goto LABEL_136;
   }
 
-  return v27;
+  return firstObject;
 }
 
-- (id)preferredMasterPortTypeForFrameStatisticsByPortType:(id)a3 zoomFactor:(float)a4
+- (id)preferredMasterPortTypeForFrameStatisticsByPortType:(id)type zoomFactor:(float)factor
 {
-  v4 = [(BWBravoStreamSelector *)self _preferredMasterStreamForFrameStatisticsByPortType:a3 zoomFactor:0 isAutoFlashScene:0 digitalFlashMode:0 isStationary:0 debugOverlayInfo:1 ignoreEligibleFallbackPortTypes:0 requiresFocusExposeStabilityOut:a4 selectionReasonOut:0];
+  v4 = [(BWBravoStreamSelector *)self _preferredMasterStreamForFrameStatisticsByPortType:type zoomFactor:0 isAutoFlashScene:0 digitalFlashMode:0 isStationary:0 debugOverlayInfo:1 ignoreEligibleFallbackPortTypes:0 requiresFocusExposeStabilityOut:factor selectionReasonOut:0];
 
   return [v4 portType];
 }
 
-- (id)recommendMasterStreamUsingCurrentMasterStream:(id)a3 frameStatisticsByPortType:(id)a4 zoomFactor:(float)a5 isAutoFlashScene:(BOOL)a6 digitalFlashMode:(int)a7 isStationary:(BOOL)a8 detectedObjects:(id)a9 cameraControlsStatisticsMasterStream:(id)a10
+- (id)recommendMasterStreamUsingCurrentMasterStream:(id)stream frameStatisticsByPortType:(id)type zoomFactor:(float)factor isAutoFlashScene:(BOOL)scene digitalFlashMode:(int)mode isStationary:(BOOL)stationary detectedObjects:(id)objects cameraControlsStatisticsMasterStream:(id)self0
 {
   os_unfair_lock_lock(&self->_pendingSelectionConfigurationLock);
   self->_selectionConfiguration = self->_pendingSelectionConfiguration;
   os_unfair_lock_unlock(&self->_pendingSelectionConfigurationLock);
-  if (self->_previousZoomFactor != a5)
+  if (self->_previousZoomFactor != factor)
   {
     self->_timeOfLastZoomFactorChange = mach_absolute_time();
     if (self->_selectionConfiguration.selectionBehavior == 2 && (self->_selectionConfiguration.restrictedSelectionConditions & 1) == 0)
     {
-      if (self->_superWideStream && (p_wideStream = &self->_wideStream, wideStream = self->_wideStream, wideStream != a3) && (previousZoomFactor = self->_previousZoomFactor, [(BWFigVideoCaptureStream *)wideStream baseZoomFactor], previousZoomFactor < v19) && ([(BWFigVideoCaptureStream *)*p_wideStream baseZoomFactor], v20 <= a5) || (p_wideStream = &self->_teleStream, (teleStream = self->_teleStream) != 0) && teleStream != a3 && (v22 = self->_previousZoomFactor, [(BWFigVideoCaptureStream *)teleStream baseZoomFactor], v22 < v23) && ([(BWFigVideoCaptureStream *)*p_wideStream baseZoomFactor], v24 <= a5))
+      if (self->_superWideStream && (p_wideStream = &self->_wideStream, wideStream = self->_wideStream, wideStream != stream) && (previousZoomFactor = self->_previousZoomFactor, [(BWFigVideoCaptureStream *)wideStream baseZoomFactor], previousZoomFactor < v19) && ([(BWFigVideoCaptureStream *)*p_wideStream baseZoomFactor], v20 <= factor) || (p_wideStream = &self->_teleStream, (teleStream = self->_teleStream) != 0) && teleStream != stream && (v22 = self->_previousZoomFactor, [(BWFigVideoCaptureStream *)teleStream baseZoomFactor], v22 < v23) && ([(BWFigVideoCaptureStream *)*p_wideStream baseZoomFactor], v24 <= factor))
       {
-        v25 = [(BWFigVideoCaptureStream *)*p_wideStream portType];
+        portType = [(BWFigVideoCaptureStream *)*p_wideStream portType];
         self->_timeOfLastPortTypeMadeEligibleByZoom = self->_timeOfLastZoomFactorChange;
-        self->_lastPortTypeMadeEligibleByZoom = v25;
+        self->_lastPortTypeMadeEligibleByZoom = portType;
       }
     }
   }
@@ -798,9 +798,9 @@ LABEL_136:
     [BWBravoStreamSelector _updateSuperWideFocusIsStableOnceWithFrameStatisticsByPortType:?];
   }
 
-  [BWBravoStreamSelector _updateSceneChangeMonitorWithFrameStatisticsByPortType:a5 fromMasterStream:a4 zoomFactor:a3 digitalFlashMode:a7 debugOverlayInfo:?];
-  [(BWBravoStreamSelector *)self _updateStateWithFrameStatisticsByPortType:a4 detectedObjects:a9];
-  self->_currentMasterStream = a3;
+  [BWBravoStreamSelector _updateSceneChangeMonitorWithFrameStatisticsByPortType:factor fromMasterStream:type zoomFactor:stream digitalFlashMode:mode debugOverlayInfo:?];
+  [(BWBravoStreamSelector *)self _updateStateWithFrameStatisticsByPortType:type detectedObjects:objects];
+  self->_currentMasterStream = stream;
   v70[0] = self->_lastSelectionReason;
   if (self->_selectionConfiguration.selectionBehavior == 3)
   {
@@ -819,7 +819,7 @@ LABEL_136:
     v36 = [(BWBravoStreamSelector *)v38 _preferredMasterStreamForFrameStatisticsByPortType:v39 zoomFactor:v40 isAutoFlashScene:v41 digitalFlashMode:v42 isStationary:v43 debugOverlayInfo:1 ignoreEligibleFallbackPortTypes:0 requiresFocusExposeStabilityOut:v37 selectionReasonOut:0];
   }
 
-  if (v34 != a3 && v67 == 1)
+  if (v34 != stream && v67 == 1)
   {
     if (v34 == self->_teleStream && !self->_sceneChangeDetected)
     {
@@ -829,7 +829,7 @@ LABEL_136:
     }
 
     LOBYTE(v61) = 0;
-    if (([BWBravoStreamSelector _selectionBehaviorAllowsSwitchOverTo:v34 forFrameStatisticsByPortType:a4 zoomFactor:&v61 blockedByExposureFocusStability:? debugOverlayInfo:?]& 1) != 0)
+    if (([BWBravoStreamSelector _selectionBehaviorAllowsSwitchOverTo:v34 forFrameStatisticsByPortType:type zoomFactor:&v61 blockedByExposureFocusStability:? debugOverlayInfo:?]& 1) != 0)
     {
       superWideStream = 0;
       v59 = v34;
@@ -843,15 +843,15 @@ LABEL_63:
       self->_switchDelayReasons |= 1uLL;
       if (v34 == self->_teleStream)
       {
-        if (a10)
+        if (masterStream)
         {
-          if (self->_superWideStream == a3)
+          if (self->_superWideStream == stream)
           {
             v59 = self->_wideStream;
-            if (v59 == a10)
+            if (v59 == masterStream)
             {
               superWideStream = v34;
-              if (([BWBravoStreamSelector _selectionBehaviorAllowsSwitchOverTo:self->_wideStream forFrameStatisticsByPortType:a4 zoomFactor:&v61 blockedByExposureFocusStability:? debugOverlayInfo:?]& 1) != 0)
+              if (([BWBravoStreamSelector _selectionBehaviorAllowsSwitchOverTo:self->_wideStream forFrameStatisticsByPortType:type zoomFactor:&v61 blockedByExposureFocusStability:? debugOverlayInfo:?]& 1) != 0)
               {
                 goto LABEL_63;
               }
@@ -880,7 +880,7 @@ LABEL_63:
     goto LABEL_31;
   }
 
-  [a3 portType];
+  [stream portType];
   if (![objc_msgSend(OUTLINED_FUNCTION_7() "objectForKeyedSubscript:"afConvergenceRequiresHigherFPSForPortType"")])
   {
     goto LABEL_31;
@@ -922,24 +922,24 @@ LABEL_32:
       v45 = OUTLINED_FUNCTION_2_18();
       if (OUTLINED_FUNCTION_8_12(v45))
       {
-        v46 = a7;
+        modeCopy = mode;
       }
 
       else
       {
-        v46 = a7 & 0xFFFFFFFE;
+        modeCopy = mode & 0xFFFFFFFE;
       }
 
-      if (v46)
+      if (modeCopy)
       {
-        v47 = [(BWFigVideoCaptureStream *)self->_recommendedMasterStream portType];
-        v48 = [(BWFigVideoCaptureStream *)v34 portType];
+        portType2 = [(BWFigVideoCaptureStream *)self->_recommendedMasterStream portType];
+        portType3 = [(BWFigVideoCaptureStream *)v34 portType];
         v61 = 136315906;
         v62 = "[BWBravoStreamSelector recommendMasterStreamUsingCurrentMasterStream:frameStatisticsByPortType:zoomFactor:isAutoFlashScene:digitalFlashMode:isStationary:detectedObjects:cameraControlsStatisticsMasterStream:]";
         v63 = 2112;
-        *v64 = v47;
+        *v64 = portType2;
         *&v64[8] = 2112;
-        *v65 = v48;
+        *v65 = portType3;
         *&v65[8] = 1024;
         v66 = v70[0];
         OUTLINED_FUNCTION_5();
@@ -968,19 +968,19 @@ LABEL_50:
       v49 = OUTLINED_FUNCTION_2_18();
       if (OUTLINED_FUNCTION_8_12(v49))
       {
-        v50 = a7;
+        modeCopy2 = mode;
       }
 
       else
       {
-        v50 = a7 & 0xFFFFFFFE;
+        modeCopy2 = mode & 0xFFFFFFFE;
       }
 
-      if (v50)
+      if (modeCopy2)
       {
         lastSelectionReason = self->_lastSelectionReason;
         v60 = v70[0];
-        v52 = [(BWFigVideoCaptureStream *)v34 portType];
+        portType4 = [(BWFigVideoCaptureStream *)v34 portType];
         v61 = 136315906;
         v62 = "[BWBravoStreamSelector recommendMasterStreamUsingCurrentMasterStream:frameStatisticsByPortType:zoomFactor:isAutoFlashScene:digitalFlashMode:isStationary:detectedObjects:cameraControlsStatisticsMasterStream:]";
         v63 = 1024;
@@ -988,7 +988,7 @@ LABEL_50:
         *&v64[4] = 1024;
         *&v64[6] = v60;
         *v65 = 2112;
-        *&v65[2] = v52;
+        *&v65[2] = portType4;
         OUTLINED_FUNCTION_5();
         OUTLINED_FUNCTION_6_10();
       }
@@ -1021,14 +1021,14 @@ LABEL_51:
 
       if (v55)
       {
-        v56 = [(BWFigVideoCaptureStream *)self->_preferredMasterStreamIgnoringEligibleFallbackPortTypes portType];
-        v57 = [(BWFigVideoCaptureStream *)v36 portType];
+        portType5 = [(BWFigVideoCaptureStream *)self->_preferredMasterStreamIgnoringEligibleFallbackPortTypes portType];
+        portType6 = [(BWFigVideoCaptureStream *)v36 portType];
         v61 = 136315650;
         v62 = "[BWBravoStreamSelector recommendMasterStreamUsingCurrentMasterStream:frameStatisticsByPortType:zoomFactor:isAutoFlashScene:digitalFlashMode:isStationary:detectedObjects:cameraControlsStatisticsMasterStream:]";
         v63 = 2112;
-        *v64 = v56;
+        *v64 = portType5;
         *&v64[8] = 2112;
-        *v65 = v57;
+        *v65 = portType6;
         OUTLINED_FUNCTION_5();
         _os_log_send_and_compose_impl();
       }
@@ -1041,7 +1041,7 @@ LABEL_51:
   }
 
 LABEL_60:
-  self->_previousZoomFactor = a5;
+  self->_previousZoomFactor = factor;
   self->_slaveStreamBlockingFocusAndExposureStability = superWideStream;
   return self->_recommendedMasterStream;
 }
@@ -1111,7 +1111,7 @@ LABEL_60:
   return result;
 }
 
-- (uint64_t)_updateSceneChangeMonitorWithFrameStatisticsByPortType:(uint64_t)result fromMasterStream:(float)a2 zoomFactor:(uint64_t)a3 digitalFlashMode:(void *)a4 debugOverlayInfo:(int)a5
+- (uint64_t)_updateSceneChangeMonitorWithFrameStatisticsByPortType:(uint64_t)result fromMasterStream:(float)stream zoomFactor:(uint64_t)factor digitalFlashMode:(void *)mode debugOverlayInfo:(int)info
 {
   if (!result)
   {
@@ -1119,14 +1119,14 @@ LABEL_60:
   }
 
   v8 = result;
-  [a4 portType];
+  [mode portType];
   v9 = [OUTLINED_FUNCTION_8() objectForKeyedSubscript:?];
-  v10 = [v9 luxLevel];
+  luxLevel = [v9 luxLevel];
   [v9 eit];
   v12 = v11;
   result = [v9 focusDistance];
   v14 = v13;
-  if (a5)
+  if (info)
   {
     v15 = 1;
   }
@@ -1137,8 +1137,8 @@ LABEL_60:
   }
 
   v16 = !v15;
-  *(v8 + 428) = a5;
-  if (*(v8 + 8) == a4 && *(v8 + 200) == *(v8 + 16))
+  *(v8 + 428) = info;
+  if (*(v8 + 8) == mode && *(v8 + 200) == *(v8 + 16))
   {
     *(v8 + 404) = 1;
   }
@@ -1150,15 +1150,15 @@ LABEL_60:
       return result;
     }
 
-    if (*(v8 + 200) != a4)
+    if (*(v8 + 200) != mode)
     {
-      *(v8 + 408) = v10;
+      *(v8 + 408) = luxLevel;
       *(v8 + 416) = v12;
       *(v8 + 424) = v13;
       return result;
     }
 
-    if (*(v8 + 300) != a2)
+    if (*(v8 + 300) != stream)
     {
       goto LABEL_20;
     }
@@ -1185,10 +1185,10 @@ LABEL_20:
 
     v20 = *(v8 + 408);
     v21 = *(v8 + 384);
-    if (v10 >= v20)
+    if (luxLevel >= v20)
     {
-      v22 = v10;
-      if ((v21 * v20) < v10)
+      v22 = luxLevel;
+      if ((v21 * v20) < luxLevel)
       {
         goto LABEL_20;
       }
@@ -1204,13 +1204,13 @@ LABEL_20:
     else
     {
       v22 = v20;
-      v23 = v21 * v10;
+      v23 = v21 * luxLevel;
     }
 
     v19 = v23 < v22;
 LABEL_31:
     *(v8 + 405) = v19;
-    if (a5 && (v19 & 1) == 0 && fabs((*(v8 + 416) - v12) / ((v12 + *(v8 + 416)) * 0.5)) >= *(v8 + 392))
+    if (info && (v19 & 1) == 0 && fabs((*(v8 + 416) - v12) / ((v12 + *(v8 + 416)) * 0.5)) >= *(v8 + 392))
     {
       goto LABEL_20;
     }
@@ -1218,10 +1218,10 @@ LABEL_31:
     goto LABEL_34;
   }
 
-  if (*(v8 + 300) == a2)
+  if (*(v8 + 300) == stream)
   {
     v18 = *(v8 + 388);
-    v17 = v18 > 0.0 && v18 < v10;
+    v17 = v18 > 0.0 && v18 < luxLevel;
   }
 
   else
@@ -1230,14 +1230,14 @@ LABEL_31:
   }
 
   *(v8 + 405) = v17;
-  *(v8 + 408) = v10;
+  *(v8 + 408) = luxLevel;
   *(v8 + 416) = v12;
   *(v8 + 424) = v14;
   *(v8 + 404) = 0;
   return result;
 }
 
-- (uint64_t)_updateStateWithFrameStatisticsByPortType:(void *)a3 detectedObjects:
+- (uint64_t)_updateStateWithFrameStatisticsByPortType:(void *)type detectedObjects:
 {
   if (result)
   {
@@ -1271,7 +1271,7 @@ LABEL_31:
       }
     }
 
-    if (a3 && (v9 = [a3 objectForKeyedSubscript:*off_1E798ACB8], v10 = *off_1E798ACE8, v11 = objc_msgSend(objc_msgSend(v9, "objectForKeyedSubscript:", *off_1E798ACE8), "count"), result = objc_msgSend(objc_msgSend(objc_msgSend(a3, "objectForKeyedSubscript:", *off_1E798ACB0), "objectForKeyedSubscript:", v10), "count"), result + v11 >= 1))
+    if (type && (v9 = [type objectForKeyedSubscript:*off_1E798ACB8], v10 = *off_1E798ACE8, v11 = objc_msgSend(objc_msgSend(v9, "objectForKeyedSubscript:", *off_1E798ACE8), "count"), result = objc_msgSend(objc_msgSend(objc_msgSend(type, "objectForKeyedSubscript:", *off_1E798ACB0), "objectForKeyedSubscript:", v10), "count"), result + v11 >= 1))
     {
       ++*(v4 + 356);
     }
@@ -1285,33 +1285,33 @@ LABEL_31:
   return result;
 }
 
-- (uint64_t)_selectionBehaviorAllowsSwitchOverTo:(void *)a3 forFrameStatisticsByPortType:(_BYTE *)a4 zoomFactor:blockedByExposureFocusStability:debugOverlayInfo:
+- (uint64_t)_selectionBehaviorAllowsSwitchOverTo:(void *)to forFrameStatisticsByPortType:(_BYTE *)type zoomFactor:blockedByExposureFocusStability:debugOverlayInfo:
 {
-  if (!a1)
+  if (!self)
   {
     v14 = 0;
     return v14 & 1;
   }
 
-  v8 = [BWBravoStreamSelector _exposureAndFocusStableForSwitchOverTo:a1 forFrameStatisticsByPortType:a2 debugOverlayInfo:?];
-  v9 = [BWBravoStreamSelector _exposureAllowsSwitchToRecommendedMasterStream:a1 frameStatisticsByPortType:a2];
-  v10 = *(a1 + 16);
-  v11 = v10 == a2 && *(a1 + 72) == 1 && [objc_msgSend(a3 objectForKeyedSubscript:{objc_msgSend(v10, "portType")), "filteredLogicalFocusLensPositionStep"}] < 4;
-  v12 = *(a1 + 216);
+  v8 = [BWBravoStreamSelector _exposureAndFocusStableForSwitchOverTo:self forFrameStatisticsByPortType:a2 debugOverlayInfo:?];
+  v9 = [BWBravoStreamSelector _exposureAllowsSwitchToRecommendedMasterStream:self frameStatisticsByPortType:a2];
+  v10 = *(self + 16);
+  v11 = v10 == a2 && *(self + 72) == 1 && [objc_msgSend(to objectForKeyedSubscript:{objc_msgSend(v10, "portType")), "filteredLogicalFocusLensPositionStep"}] < 4;
+  v12 = *(self + 216);
   if (v12 == 1)
   {
     mach_absolute_time();
     v15 = FigHostTimeToNanoseconds();
-    v17 = *(a1 + 304) > 0 && v15 < 200000000;
+    v17 = *(self + 304) > 0 && v15 < 200000000;
     v14 = v17 & v9 | v8 | v9 & v11;
     v13 = v14 ^ 1;
-    if (!a4)
+    if (!type)
     {
       return v14 & 1;
     }
 
 LABEL_17:
-    *a4 = v13 & 1;
+    *type = v13 & 1;
     return v14 & 1;
   }
 
@@ -1319,7 +1319,7 @@ LABEL_17:
   {
     v13 = 0;
     v14 = 0;
-    if (!a4)
+    if (!type)
     {
       return v14 & 1;
     }
@@ -1327,13 +1327,13 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v19 = [BWBravoStreamSelector _conditionsAllowSwitchToRecommendedMasterStream:a1 debugOverlayInfo:a2];
-  if (*(a1 + 16) != a2 || (*(a1 + 73) & 1) == 0)
+  v19 = [BWBravoStreamSelector _conditionsAllowSwitchToRecommendedMasterStream:self debugOverlayInfo:a2];
+  if (*(self + 16) != a2 || (*(self + 73) & 1) == 0)
   {
-    v20 = [a3 objectForKeyedSubscript:{objc_msgSend(a2, "portType")}];
+    v20 = [to objectForKeyedSubscript:{objc_msgSend(a2, "portType")}];
     if ([a2 hasFocus])
     {
-      v11 = [(BWBravoStreamSelector *)a1 _focusIsStable:v20];
+      v11 = [(BWBravoStreamSelector *)self _focusIsStable:v20];
     }
 
     else
@@ -1344,8 +1344,8 @@ LABEL_17:
 
   v14 = v19 & v9 & v11;
   v13 = v19 & (v14 ^ 1);
-  *(a1 + 344) = v13;
-  if (a4)
+  *(self + 344) = v13;
+  if (type)
   {
     goto LABEL_17;
   }
@@ -1353,7 +1353,7 @@ LABEL_17:
   return v14 & 1;
 }
 
-- (BOOL)_conditionsAllowSwitchToRecommendedMasterStream:(_BOOL8)result debugOverlayInfo:(void *)a2
+- (BOOL)_conditionsAllowSwitchToRecommendedMasterStream:(_BOOL8)result debugOverlayInfo:(void *)info
 {
   if (!result)
   {
@@ -1375,7 +1375,7 @@ LABEL_17:
   {
     if (FigHostTimeToNanoseconds() <= 999999999)
     {
-      [a2 portType];
+      [info portType];
       if ([OUTLINED_FUNCTION_7() isEqualToString:?])
       {
         return 1;
@@ -1412,20 +1412,20 @@ LABEL_19:
   return *(v3 + 336) > 0 && v9 < 1000000000;
 }
 
-- (uint64_t)_telephotoLimitsReachedForFrameStatisticsByPortType:(uint64_t)a1 debugOverlayInfo:
+- (uint64_t)_telephotoLimitsReachedForFrameStatisticsByPortType:(uint64_t)type debugOverlayInfo:
 {
-  if (a1)
+  if (type)
   {
-    if (*(a1 + 74) == 1)
+    if (*(type + 74) == 1)
     {
-      if (*(a1 + 40))
+      if (*(type + 40))
       {
-        v2 = *(a1 + 352) > *(a1 + 68);
+        v2 = *(type + 352) > *(type + 68);
       }
 
       else
       {
-        v2 = *(a1 + 348) > *(a1 + 64);
+        v2 = *(type + 348) > *(type + 64);
       }
     }
 
@@ -1434,15 +1434,15 @@ LABEL_19:
       v2 = 0;
     }
 
-    if (*(a1 + 184) == 1)
+    if (*(type + 184) == 1)
     {
-      [*(a1 + 16) portType];
+      [*(type + 16) portType];
       v3 = [objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_4() "objectForKeyedSubscript:{"afRecommendedPrimaryPortType"), "isEqualToString:", *off_1E798A0D8}")] ^ 1;
     }
 
     else
     {
-      [*(a1 + 8) portType];
+      [*(type + 8) portType];
       v4 = [OUTLINED_FUNCTION_4() objectForKeyedSubscript:?];
       [v4 focusDistance];
       if (v5 <= 0.0)
@@ -1453,7 +1453,7 @@ LABEL_19:
       else
       {
         [v4 focusDistance];
-        LOBYTE(v3) = v6 < *(a1 + 56);
+        LOBYTE(v3) = v6 < *(type + 56);
       }
     }
 
@@ -1468,12 +1468,12 @@ LABEL_19:
   return v7 & 1;
 }
 
-- (uint64_t)_exposureAllowsSwitchToRecommendedMasterStream:(uint64_t)result frameStatisticsByPortType:(uint64_t)a2
+- (uint64_t)_exposureAllowsSwitchToRecommendedMasterStream:(uint64_t)result frameStatisticsByPortType:(uint64_t)type
 {
   if (result)
   {
     v2 = result;
-    if (*(result + 74) == 1 && *(result + 16) == a2 || *(result + 24) == a2)
+    if (*(result + 74) == 1 && *(result + 16) == type || *(result + 24) == type)
     {
       [*(result + 200) portType];
       v3 = [objc_msgSend(OUTLINED_FUNCTION_4() "objectForKeyedSubscript:"aeTarget"")];
@@ -1491,37 +1491,37 @@ LABEL_19:
   return result;
 }
 
-- (uint64_t)_exposureAndFocusStableForSwitchOverTo:(uint64_t)a1 forFrameStatisticsByPortType:(uint64_t)a2 debugOverlayInfo:
+- (uint64_t)_exposureAndFocusStableForSwitchOverTo:(uint64_t)to forFrameStatisticsByPortType:(uint64_t)type debugOverlayInfo:
 {
-  if (!a1)
+  if (!to)
   {
     return 0;
   }
 
-  [*(a1 + 24) portType];
+  [*(to + 24) portType];
   v4 = [OUTLINED_FUNCTION_8() objectForKeyedSubscript:?];
-  [*(a1 + 8) portType];
+  [*(to + 8) portType];
   v5 = [OUTLINED_FUNCTION_8() objectForKeyedSubscript:?];
-  [*(a1 + 16) portType];
+  [*(to + 16) portType];
   v6 = [OUTLINED_FUNCTION_8() objectForKeyedSubscript:?];
-  v7 = [v5 aeStable];
-  v8 = [v6 aeStable];
-  v9 = [(BWBravoStreamSelector *)a1 _focusIsStable:v4];
-  v10 = [(BWBravoStreamSelector *)a1 _focusIsStable:v5];
-  v11 = [(BWBravoStreamSelector *)a1 _focusIsStable:v6];
-  v12 = *(a1 + 200);
-  v13 = *(a1 + 24);
-  v14 = *(a1 + 8);
+  aeStable = [v5 aeStable];
+  aeStable2 = [v6 aeStable];
+  v9 = [(BWBravoStreamSelector *)to _focusIsStable:v4];
+  v10 = [(BWBravoStreamSelector *)to _focusIsStable:v5];
+  v11 = [(BWBravoStreamSelector *)to _focusIsStable:v6];
+  v12 = *(to + 200);
+  v13 = *(to + 24);
+  v14 = *(to + 8);
   if (v12 == v13)
   {
-    if (v14 == a2)
+    if (v14 == type)
     {
       return v9 & v10;
     }
 
-    if (*(a1 + 16) != a2)
+    if (*(to + 16) != type)
     {
-      if (v12 == a2)
+      if (v12 == type)
       {
         return v9;
       }
@@ -1532,18 +1532,18 @@ LABEL_19:
       }
     }
 
-    v15 = *(a1 + 74) ^ 1 | v8;
+    v15 = *(to + 74) ^ 1 | aeStable2;
     v16 = v11 & v10;
     return v16 & v15;
   }
 
   if (v12 == v14)
   {
-    if (*(a1 + 16) != a2)
+    if (*(to + 16) != type)
     {
-      if (v13 != a2)
+      if (v13 != type)
       {
-        if (v12 == a2)
+        if (v12 == type)
         {
           return v10;
         }
@@ -1557,21 +1557,21 @@ LABEL_19:
       return v9;
     }
 
-    v15 = *(a1 + 74) ^ 1 | v7 & v8;
+    v15 = *(to + 74) ^ 1 | aeStable & aeStable2;
     v16 = v10 & v11;
     return v16 & v15;
   }
 
-  if (v14 == a2)
+  if (v14 == type)
   {
     return v10;
   }
 
-  if (v13 != a2)
+  if (v13 != type)
   {
-    if (*(a1 + 16) == a2)
+    if (*(to + 16) == type)
     {
-      return v11 & (*(a1 + 74) ^ 1 | v8);
+      return v11 & (*(to + 74) ^ 1 | aeStable2);
     }
 
     return 0;
@@ -1580,17 +1580,17 @@ LABEL_19:
   return v9;
 }
 
-- (uint64_t)_focusIsStable:(uint64_t)a1
+- (uint64_t)_focusIsStable:(uint64_t)stable
 {
   result = 0;
-  if (a1 && a2)
+  if (stable && a2)
   {
     if ([a2 afStatus] != 4)
     {
       if (([a2 logicalFocusLensPositionStep] & 0x80000000) != 0)
       {
-        v5 = [a2 focusPositionStep];
-        if ((v5 & 0x80000000) != 0)
+        focusPositionStep = [a2 focusPositionStep];
+        if ((focusPositionStep & 0x80000000) != 0)
         {
           goto LABEL_9;
         }
@@ -1598,8 +1598,8 @@ LABEL_19:
 
       else
       {
-        v5 = [a2 logicalFocusLensPositionStep];
-        if ((v5 & 0x80000000) != 0)
+        focusPositionStep = [a2 logicalFocusLensPositionStep];
+        if ((focusPositionStep & 0x80000000) != 0)
         {
 LABEL_9:
           [a2 focusingMethod];
@@ -1607,17 +1607,17 @@ LABEL_9:
         }
       }
 
-      if (v5 >= *(a1 + 188))
+      if (focusPositionStep >= *(stable + 188))
       {
         goto LABEL_9;
       }
     }
 
     [a2 portType];
-    [*(a1 + 24) portType];
-    if ([OUTLINED_FUNCTION_4() isEqualToString:?] && *(a1 + 432) == 1)
+    [*(stable + 24) portType];
+    if ([OUTLINED_FUNCTION_4() isEqualToString:?] && *(stable + 432) == 1)
     {
-      return *(a1 + 472);
+      return *(stable + 472);
     }
 
     else

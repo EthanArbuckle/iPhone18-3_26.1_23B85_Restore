@@ -1,74 +1,74 @@
 @interface DBAnalytics
 + (BOOL)shouldSendAnalyticsEvents;
-+ (id)_axColorFiltersIntensityStringForFloat:(double)a3;
++ (id)_axColorFiltersIntensityStringForFloat:(double)float;
 + (id)_axPhoneColorFiltersAnalyticsString;
-+ (id)_axPhoneSoundRecognitionAnalyticsString:(unint64_t)a3;
-+ (void)biome_CarPlayStarted:(BOOL)a3 wireless:(BOOL)a4;
-- (BOOL)_queue_stateProviderIsReadyForAnalytics:(id)a3;
-- (DBAnalytics)initWithEnvironmentConfiguration:(id)a3;
++ (id)_axPhoneSoundRecognitionAnalyticsString:(unint64_t)string;
++ (void)biome_CarPlayStarted:(BOOL)started wireless:(BOOL)wireless;
+- (BOOL)_queue_stateProviderIsReadyForAnalytics:(id)analytics;
+- (DBAnalytics)initWithEnvironmentConfiguration:(id)configuration;
 - (DBEnvironmentConfiguration)environmentConfiguration;
-- (id)_analyticsInfoPassingTest:(id)a3;
-- (id)_analyticsLayoutInfoPassingTest:(id)a3;
+- (id)_analyticsInfoPassingTest:(id)test;
+- (id)_analyticsLayoutInfoPassingTest:(id)test;
 - (id)announceMessagesState;
-- (id)appAnalyticsInfoForApp:(id)a3;
-- (id)appAnalyticsInfoForBundleIdentifier:(id)a3;
+- (id)appAnalyticsInfoForApp:(id)app;
+- (id)appAnalyticsInfoForBundleIdentifier:(id)identifier;
 - (id)dictionaryFromInterrupt;
 - (id)nowPlayingAppAnalyticsInfo;
-- (id)stringFromInterruptDictionary:(id)a3;
+- (id)stringFromInterruptDictionary:(id)dictionary;
 - (id)stringFromSessionSummary;
-- (void)_DBLayoutMonitor:(id)a3 didUpdateDisplayLayout:(id)a4 withContext:(id)a5;
-- (void)_appEndedNavigation:(id)a3;
-- (void)_appStartedNavigation:(id)a3;
-- (void)_applicationDidLaunch:(id)a3;
-- (void)_carHasMainAudio:(id)a3;
-- (void)_dashboardNowPlayingWidgetTapped:(id)a3;
-- (void)_dashboardSmartWidgetUpdated:(id)a3;
-- (void)_iosHasMainAudio:(id)a3;
+- (void)_DBLayoutMonitor:(id)monitor didUpdateDisplayLayout:(id)layout withContext:(id)context;
+- (void)_appEndedNavigation:(id)navigation;
+- (void)_appStartedNavigation:(id)navigation;
+- (void)_applicationDidLaunch:(id)launch;
+- (void)_carHasMainAudio:(id)audio;
+- (void)_dashboardNowPlayingWidgetTapped:(id)tapped;
+- (void)_dashboardSmartWidgetUpdated:(id)updated;
+- (void)_iosHasMainAudio:(id)audio;
 - (void)_mediaserverdConnectionDied;
-- (void)_queue_applicationWithBundleIdentifier:(id)a3 didStartNavigation:(BOOL)a4;
-- (void)_queue_deviceDidChangeToBundleIdentifier:(id)a3;
-- (void)_queue_didChangeToBundleIdentifier:(id)a3;
+- (void)_queue_applicationWithBundleIdentifier:(id)identifier didStartNavigation:(BOOL)navigation;
+- (void)_queue_deviceDidChangeToBundleIdentifier:(id)identifier;
+- (void)_queue_didChangeToBundleIdentifier:(id)identifier;
 - (void)_queue_fetchLocationBits;
 - (void)_queue_mediaserverdConnectionDied;
-- (void)_queue_navigationOwnershipChangedToOwner:(unint64_t)a3;
-- (void)_queue_nowPlayingUpdatedToApp:(id)a3 isPlaying:(BOOL)a4;
+- (void)_queue_navigationOwnershipChangedToOwner:(unint64_t)owner;
+- (void)_queue_nowPlayingUpdatedToApp:(id)app isPlaying:(BOOL)playing;
 - (void)_queue_powerStateDidChange;
-- (void)_queue_screenViewAreaChanged:(id)a3 screenInfo:(id)a4 configuration:(id)a5 duration:(double)a6;
+- (void)_queue_screenViewAreaChanged:(id)changed screenInfo:(id)info configuration:(id)configuration duration:(double)duration;
 - (void)_queue_sendAnnounceMessagesEvent;
 - (void)_queue_sessionEnded;
 - (void)_queue_sessionStarted;
 - (void)_queue_thermalTrapOccurred;
 - (void)_queue_wifidConnectionDied;
-- (void)_screenBecameAvailable:(id)a3;
-- (void)_screenBecameUnavailable:(id)a3;
-- (void)addSessionAnalyticsValues:(id)a3 toEvent:(unint64_t)a4 completion:(id)a5;
-- (void)applySessionStartedStorage:(id)a3;
-- (void)changedLayout:(id)a3;
-- (void)clusterElementDidChangeVisibility:(id)a3 foreground:(BOOL)a4;
-- (void)dashboardAudioWidgetDidChangeToBundleIdentifier:(id)a3;
-- (void)dashboardNavigationDidChangeToBundleIdentifier:(id)a3;
-- (void)dashboardStateProvider:(id)a3 didChangeActiveBundleIdentifier:(id)a4;
-- (void)dashboardStateProvider:(id)a3 didChangeHomeScreenPageType:(unint64_t)a4;
-- (void)environmentConfigurationPairedVehiclesDidChange:(id)a3;
+- (void)_screenBecameAvailable:(id)available;
+- (void)_screenBecameUnavailable:(id)unavailable;
+- (void)addSessionAnalyticsValues:(id)values toEvent:(unint64_t)event completion:(id)completion;
+- (void)applySessionStartedStorage:(id)storage;
+- (void)changedLayout:(id)layout;
+- (void)clusterElementDidChangeVisibility:(id)visibility foreground:(BOOL)foreground;
+- (void)dashboardAudioWidgetDidChangeToBundleIdentifier:(id)identifier;
+- (void)dashboardNavigationDidChangeToBundleIdentifier:(id)identifier;
+- (void)dashboardStateProvider:(id)provider didChangeActiveBundleIdentifier:(id)identifier;
+- (void)dashboardStateProvider:(id)provider didChangeHomeScreenPageType:(unint64_t)type;
+- (void)environmentConfigurationPairedVehiclesDidChange:(id)change;
 - (void)firstFrameSent;
 - (void)invalidate;
-- (void)keybagMonitorLockStateDidChange:(id)a3;
-- (void)navigationOwnershipChanged:(id)a3;
-- (void)nowPlayingObserver:(id)a3 didChangeNowPlayingApplication:(id)a4;
-- (void)nowPlayingObserver:(id)a3 didUpdatePlaybackState:(BOOL)a4 inApplication:(id)a5;
-- (void)preferences:(id)a3 announceNotificationsInCarPlayTemporarilyDisabledChanged:(BOOL)a4;
-- (void)preferences:(id)a3 carPlayAnnounceEnablementTypeChanged:(int64_t)a4;
-- (void)sendEvent:(unint64_t)a3 withParameters:(id)a4;
-- (void)session:(id)a3 didSetViewArea:(id)a4 forScreenID:(id)a5 withDuration:(double)a6 transitionControlType:(unint64_t)a7;
-- (void)session:(id)a3 openURL:(id)a4;
-- (void)session:(id)a3 showUIForScreenInfo:(id)a4 withURL:(id)a5;
-- (void)setCarplayUIReadyTimestamp:(id)a3;
-- (void)setClusterDisplayReadyTimestamp:(id)a3;
-- (void)setMainDisplayReadyTimestamp:(id)a3;
+- (void)keybagMonitorLockStateDidChange:(id)change;
+- (void)navigationOwnershipChanged:(id)changed;
+- (void)nowPlayingObserver:(id)observer didChangeNowPlayingApplication:(id)application;
+- (void)nowPlayingObserver:(id)observer didUpdatePlaybackState:(BOOL)state inApplication:(id)application;
+- (void)preferences:(id)preferences announceNotificationsInCarPlayTemporarilyDisabledChanged:(BOOL)changed;
+- (void)preferences:(id)preferences carPlayAnnounceEnablementTypeChanged:(int64_t)changed;
+- (void)sendEvent:(unint64_t)event withParameters:(id)parameters;
+- (void)session:(id)session didSetViewArea:(id)area forScreenID:(id)d withDuration:(double)duration transitionControlType:(unint64_t)type;
+- (void)session:(id)session openURL:(id)l;
+- (void)session:(id)session showUIForScreenInfo:(id)info withURL:(id)l;
+- (void)setCarplayUIReadyTimestamp:(id)timestamp;
+- (void)setClusterDisplayReadyTimestamp:(id)timestamp;
+- (void)setMainDisplayReadyTimestamp:(id)timestamp;
 - (void)siriDidDismiss;
 - (void)siriDidPresent;
-- (void)siriDidStartHostingBundleIdentifier:(id)a3;
-- (void)thermalMonitorLevelDidChange:(id)a3;
+- (void)siriDidStartHostingBundleIdentifier:(id)identifier;
+- (void)thermalMonitorLevelDidChange:(id)change;
 - (void)userPressedTransitionControl;
 @end
 
@@ -76,13 +76,13 @@
 
 - (void)siriDidPresent
 {
-  v3 = [(DBAnalytics *)self analyticsQueue];
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __29__DBAnalytics_siriDidPresent__block_invoke;
   v4[3] = &unk_278F01580;
   v4[4] = self;
-  [v3 addOperationWithBlock:v4];
+  [analyticsQueue addOperationWithBlock:v4];
 }
 
 void __29__DBAnalytics_siriDidPresent__block_invoke(uint64_t a1)
@@ -187,9 +187,9 @@ LABEL_12:
   properties = 0;
   if (!IORegistryEntryCreateCFProperties(self->_powerSource, &properties, *MEMORY[0x277CBECE8], 0))
   {
-    v3 = [(DBAnalytics *)self analyticsChargeInfo];
+    analyticsChargeInfo = [(DBAnalytics *)self analyticsChargeInfo];
 
-    if (!v3)
+    if (!analyticsChargeInfo)
     {
       v4 = objc_alloc_init(_DBAnalyticsChargeInfo);
       [(DBAnalytics *)self setAnalyticsChargeInfo:v4];
@@ -203,46 +203,46 @@ LABEL_12:
 
     v6 = Value;
     v7 = CFDictionaryGetValue(properties, @"IsCharging");
-    v8 = [v7 BOOLValue];
-    if (!v8)
+    bOOLValue = [v7 BOOLValue];
+    if (!bOOLValue)
     {
 LABEL_58:
-      v28 = [(DBAnalytics *)self currentChargingState];
+      currentChargingState = [(DBAnalytics *)self currentChargingState];
       v29 = [(DBAnalytics *)self currentChargingState]!= 1;
-      if (v28 == -1 || ((v8 ^ v29) & 1) == 0)
+      if (currentChargingState == -1 || ((bOOLValue ^ v29) & 1) == 0)
       {
-        v30 = [(DBAnalytics *)self analyticsChargeInfo];
-        v31 = v30;
-        if (v8)
+        analyticsChargeInfo2 = [(DBAnalytics *)self analyticsChargeInfo];
+        v31 = analyticsChargeInfo2;
+        if (bOOLValue)
         {
-          [v30 setDidChargeDuringSession:1];
+          [analyticsChargeInfo2 setDidChargeDuringSession:1];
 
-          v32 = [(DBAnalytics *)self analyticsChargeInfo];
-          [v32 startCountingTimeForKey:@"CARAnalyticsChargingTime"];
+          analyticsChargeInfo3 = [(DBAnalytics *)self analyticsChargeInfo];
+          [analyticsChargeInfo3 startCountingTimeForKey:@"CARAnalyticsChargingTime"];
 
           [(DBAnalytics *)self setCurrentChargingState:1];
-          v33 = [(DBAnalytics *)self analyticsChargeInfo];
-          v34 = [v33 sessionChargingStates];
-          v35 = [MEMORY[0x277CBEAA8] date];
-          v36 = [(DBAnalytics *)self sessionStartDate];
-          [v35 timeIntervalSinceDate:v36];
+          analyticsChargeInfo4 = [(DBAnalytics *)self analyticsChargeInfo];
+          sessionChargingStates = [analyticsChargeInfo4 sessionChargingStates];
+          date = [MEMORY[0x277CBEAA8] date];
+          sessionStartDate = [(DBAnalytics *)self sessionStartDate];
+          [date timeIntervalSinceDate:sessionStartDate];
           v38 = v37;
-          v39 = [(DBAnalytics *)self analyticsChargeInfo];
-          v40 = [v39 adapterFamily];
-          [v34 appendFormat:@"(%0.0f, 1, %@)", v38, v40];
+          analyticsChargeInfo5 = [(DBAnalytics *)self analyticsChargeInfo];
+          adapterFamily = [analyticsChargeInfo5 adapterFamily];
+          [sessionChargingStates appendFormat:@"(%0.0f, 1, %@)", v38, adapterFamily];
         }
 
         else
         {
-          [v30 stopCountingTimeForKey:@"CARAnalyticsChargingTime"];
+          [analyticsChargeInfo2 stopCountingTimeForKey:@"CARAnalyticsChargingTime"];
 
           [(DBAnalytics *)self setCurrentChargingState:0];
-          v33 = [(DBAnalytics *)self analyticsChargeInfo];
-          v34 = [v33 sessionChargingStates];
-          v35 = [MEMORY[0x277CBEAA8] date];
-          v36 = [(DBAnalytics *)self sessionStartDate];
-          [v35 timeIntervalSinceDate:v36];
-          [v34 appendFormat:@"(%0.0f, 0, None)", v41];
+          analyticsChargeInfo4 = [(DBAnalytics *)self analyticsChargeInfo];
+          sessionChargingStates = [analyticsChargeInfo4 sessionChargingStates];
+          date = [MEMORY[0x277CBEAA8] date];
+          sessionStartDate = [(DBAnalytics *)self sessionStartDate];
+          [date timeIntervalSinceDate:sessionStartDate];
+          [sessionChargingStates appendFormat:@"(%0.0f, 0, None)", v41];
         }
       }
 
@@ -252,8 +252,8 @@ LABEL_65:
     }
 
     v9 = CFDictionaryGetValue(v6, @"Description");
-    v10 = [(DBAnalytics *)self analyticsChargeInfo];
-    [v10 setAdapterDescription:v9];
+    analyticsChargeInfo6 = [(DBAnalytics *)self analyticsChargeInfo];
+    [analyticsChargeInfo6 setAdapterDescription:v9];
 
     v11 = [CFDictionaryGetValue(v6 @"FamilyCode")];
     if (v11 <= -536854519)
@@ -398,35 +398,35 @@ LABEL_65:
         case -536723456:
           v12 = @"AC";
 LABEL_55:
-          v13 = [(DBAnalytics *)self analyticsChargeInfo];
-          [v13 setAdapterFamily:v12];
+          analyticsChargeInfo7 = [(DBAnalytics *)self analyticsChargeInfo];
+          [analyticsChargeInfo7 setAdapterFamily:v12];
 
           if ([CFDictionaryGetValue(v6 @"IsWireless")])
           {
-            v14 = [(DBAnalytics *)self analyticsChargeInfo];
-            [v14 setWireless:1];
+            analyticsChargeInfo8 = [(DBAnalytics *)self analyticsChargeInfo];
+            [analyticsChargeInfo8 setWireless:1];
           }
 
           v15 = [CFDictionaryGetValue(v6 @"AdapterVoltage")];
           v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d.%d V", (v15 / 1000), (v15 / 100 % 10)];
-          v17 = [(DBAnalytics *)self analyticsChargeInfo];
-          [v17 setVoltage:v16];
+          analyticsChargeInfo9 = [(DBAnalytics *)self analyticsChargeInfo];
+          [analyticsChargeInfo9 setVoltage:v16];
 
           v18 = [CFDictionaryGetValue(v6 @"Current")];
           v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d mA", v18];
-          v20 = [(DBAnalytics *)self analyticsChargeInfo];
-          [v20 setCurrent:v19];
+          analyticsChargeInfo10 = [(DBAnalytics *)self analyticsChargeInfo];
+          [analyticsChargeInfo10 setCurrent:v19];
 
           v21 = [CFDictionaryGetValue(v6 @"PMUConfiguration")];
           v22 = MEMORY[0x277CCACA8];
           v23 = [MEMORY[0x277CCABB0] numberWithInt:v21];
           v24 = [v22 stringWithFormat:@"%@ mA", v23];
-          v25 = [(DBAnalytics *)self analyticsChargeInfo];
-          [v25 setPMUConfiguration:v24];
+          analyticsChargeInfo11 = [(DBAnalytics *)self analyticsChargeInfo];
+          [analyticsChargeInfo11 setPMUConfiguration:v24];
 
           v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d.%d W", (v18 * v15 / 1000000), (((351843721 * v18 * v15) >> 45) + ((351843721 * v18 * v15) >> 63)) % 10];
-          v27 = [(DBAnalytics *)self analyticsChargeInfo];
-          [v27 setWattage:v26];
+          analyticsChargeInfo12 = [(DBAnalytics *)self analyticsChargeInfo];
+          [analyticsChargeInfo12 setWattage:v26];
 
           goto LABEL_58;
       }
@@ -437,45 +437,45 @@ LABEL_55:
   }
 }
 
-- (DBAnalytics)initWithEnvironmentConfiguration:(id)a3
+- (DBAnalytics)initWithEnvironmentConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v80.receiver = self;
   v80.super_class = DBAnalytics;
   v5 = [(DBAnalytics *)&v80 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_environmentConfiguration, v4);
-    [v4 addObserver:v6];
-    v7 = [v4 thermalMonitor];
-    [v7 addObserver:v6];
+    objc_storeWeak(&v5->_environmentConfiguration, configurationCopy);
+    [configurationCopy addObserver:v6];
+    thermalMonitor = [configurationCopy thermalMonitor];
+    [thermalMonitor addObserver:v6];
 
-    v8 = [(DBAnalytics *)v6 environmentConfiguration];
-    v9 = [v8 vehicle];
-    v6->_mapsAppearanceStyle = [v9 mapsAppearancePreference];
+    environmentConfiguration = [(DBAnalytics *)v6 environmentConfiguration];
+    vehicle = [environmentConfiguration vehicle];
+    v6->_mapsAppearanceStyle = [vehicle mapsAppearancePreference];
 
-    v10 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     analyticsAppInfo = v6->_analyticsAppInfo;
-    v6->_analyticsAppInfo = v10;
+    v6->_analyticsAppInfo = array;
 
-    v12 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     analyticsScreenInfo = v6->_analyticsScreenInfo;
-    v6->_analyticsScreenInfo = v12;
+    v6->_analyticsScreenInfo = array2;
 
     v6->_screenOwnershipDuration = 0.0;
     v6->_sessionUnlockCount = 0;
-    v14 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     sessionAppLaunches = v6->_sessionAppLaunches;
-    v6->_sessionAppLaunches = v14;
+    v6->_sessionAppLaunches = dictionary;
 
-    v16 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     sessionDeviceAppLaunches = v6->_sessionDeviceAppLaunches;
-    v6->_sessionDeviceAppLaunches = v16;
+    v6->_sessionDeviceAppLaunches = dictionary2;
 
-    v18 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     sessionNavigationOwners = v6->_sessionNavigationOwners;
-    v6->_sessionNavigationOwners = v18;
+    v6->_sessionNavigationOwners = dictionary3;
 
     v20 = objc_alloc_init(MEMORY[0x277CCAB68]);
     sessionThermalLevels = v6->_sessionThermalLevels;
@@ -483,9 +483,9 @@ LABEL_55:
 
     v6->_audioOwnershipDuration = 0.0;
     v6->_sessionStartedEventSent = 0;
-    v22 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     analyticsLayoutInfo = v6->_analyticsLayoutInfo;
-    v6->_analyticsLayoutInfo = v22;
+    v6->_analyticsLayoutInfo = array3;
 
     v24 = objc_alloc_init(_DBAnalyticsTimeAccumulator);
     analyticsNavOwnershipInfo = v6->_analyticsNavOwnershipInfo;
@@ -497,11 +497,11 @@ LABEL_55:
 
     [(CRSSiriPreferences *)v6->_siriPreferences addObserver:v6];
     objc_initWeak(&location, v6);
-    v28 = [v4 session];
-    v29 = [v28 configuration];
-    v30 = [v29 transportType];
+    session = [configurationCopy session];
+    configuration = [session configuration];
+    transportType = [configuration transportType];
 
-    if (v30 == 3)
+    if (transportType == 3)
     {
       v6->_wifiManager = WiFiManagerClientCreate();
       v31 = objc_alloc_init(MEMORY[0x277D02B18]);
@@ -547,7 +547,7 @@ LABEL_55:
     }
 
     [(DBAnalytics *)v6 navigationOwnershipChanged:0];
-    v38 = [[DBNowPlayingObserver alloc] initWithEnvironmentConfiguration:v4];
+    v38 = [[DBNowPlayingObserver alloc] initWithEnvironmentConfiguration:configurationCopy];
     nowPlayingObserver = v6->_nowPlayingObserver;
     v6->_nowPlayingObserver = v38;
 
@@ -556,8 +556,8 @@ LABEL_55:
     keybagMonitor = v6->_keybagMonitor;
     v6->_keybagMonitor = v40;
 
-    v42 = [(DBAnalytics *)v6 keybagMonitor];
-    [v42 addObserver:v6];
+    keybagMonitor = [(DBAnalytics *)v6 keybagMonitor];
+    [keybagMonitor addObserver:v6];
 
     v43 = objc_alloc_init(MEMORY[0x277CF8988]);
     dndStatus = v6->_dndStatus;
@@ -570,77 +570,77 @@ LABEL_55:
     [(NSOperationQueue *)v6->_analyticsQueue setName:@"CarPlay Analytics Queue"];
     [(NSOperationQueue *)v6->_analyticsQueue setMaxConcurrentOperationCount:1];
     [(NSOperationQueue *)v6->_analyticsQueue setQualityOfService:25];
-    v47 = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
-    [v47 setNeedsUserInteractivePriority:1];
+    configurationForDefaultMainDisplayMonitor = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
+    [configurationForDefaultMainDisplayMonitor setNeedsUserInteractivePriority:1];
     v73[0] = MEMORY[0x277D85DD0];
     v73[1] = 3221225472;
     v73[2] = __48__DBAnalytics_initWithEnvironmentConfiguration___block_invoke_3;
     v73[3] = &unk_278F03E88;
     objc_copyWeak(&v74, &location);
-    [v47 setTransitionHandler:v73];
-    v48 = [MEMORY[0x277D0AD08] monitorWithConfiguration:v47];
+    [configurationForDefaultMainDisplayMonitor setTransitionHandler:v73];
+    v48 = [MEMORY[0x277D0AD08] monitorWithConfiguration:configurationForDefaultMainDisplayMonitor];
     displayLayoutMonitor = v6->_displayLayoutMonitor;
     v6->_displayLayoutMonitor = v48;
 
-    v50 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v50 addObserver:v6 selector:sel__screenBecameAvailable_ name:*MEMORY[0x277CF8940] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__screenBecameAvailable_ name:*MEMORY[0x277CF8940] object:0];
 
-    v51 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v51 addObserver:v6 selector:sel__screenBecameUnavailable_ name:*MEMORY[0x277CF8948] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v6 selector:sel__screenBecameUnavailable_ name:*MEMORY[0x277CF8948] object:0];
 
-    v52 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v52 addObserver:v6 selector:sel__dashboardSmartWidgetUpdated_ name:@"CARSmartWidgetPredictionUpdatedNotification" object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v6 selector:sel__dashboardSmartWidgetUpdated_ name:@"CARSmartWidgetPredictionUpdatedNotification" object:0];
 
-    v53 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v53 addObserver:v6 selector:sel__dashboardNowPlayingWidgetTapped_ name:@"CARNowPlayingWidgetInteractionNotification" object:0];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:v6 selector:sel__dashboardNowPlayingWidgetTapped_ name:@"CARNowPlayingWidgetInteractionNotification" object:0];
 
-    v54 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v54 addObserver:v6 selector:sel__applicationDidLaunch_ name:@"CARApplicationDidLaunchNotification" object:0];
+    defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter5 addObserver:v6 selector:sel__applicationDidLaunch_ name:@"CARApplicationDidLaunchNotification" object:0];
 
-    v55 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v55 addObserver:v6 selector:sel__appStartedNavigation_ name:*MEMORY[0x277CF8910] object:0];
+    defaultCenter6 = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter6 addObserver:v6 selector:sel__appStartedNavigation_ name:*MEMORY[0x277CF8910] object:0];
 
-    v56 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v56 addObserver:v6 selector:sel__appEndedNavigation_ name:*MEMORY[0x277CF8908] object:0];
+    defaultCenter7 = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter7 addObserver:v6 selector:sel__appEndedNavigation_ name:*MEMORY[0x277CF8908] object:0];
 
-    v57 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v57 addObserver:v6 selector:sel__iosHasMainAudio_ name:*MEMORY[0x277CF8960] object:0];
+    defaultCenter8 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter8 addObserver:v6 selector:sel__iosHasMainAudio_ name:*MEMORY[0x277CF8960] object:0];
 
-    v58 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v58 addObserver:v6 selector:sel__carHasMainAudio_ name:*MEMORY[0x277CF8918] object:0];
+    defaultCenter9 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter9 addObserver:v6 selector:sel__carHasMainAudio_ name:*MEMORY[0x277CF8918] object:0];
 
-    v59 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v59 addObserver:v6 selector:sel__mediaserverdConnectionDied name:@"CARSessionServerConnectionDiedNotification" object:0];
+    defaultCenter10 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter10 addObserver:v6 selector:sel__mediaserverdConnectionDied name:@"CARSessionServerConnectionDiedNotification" object:0];
 
-    v60 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v60 addObserver:v6 selector:sel_navigationOwnershipChanged_ name:*MEMORY[0x277CF8938] object:0];
+    defaultCenter11 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter11 addObserver:v6 selector:sel_navigationOwnershipChanged_ name:*MEMORY[0x277CF8938] object:0];
 
-    v61 = [(DBAnalytics *)v6 analyticsQueue];
+    analyticsQueue = [(DBAnalytics *)v6 analyticsQueue];
     v71[0] = MEMORY[0x277D85DD0];
     v71[1] = 3221225472;
     v71[2] = __48__DBAnalytics_initWithEnvironmentConfiguration___block_invoke_4;
     v71[3] = &unk_278F01580;
     v62 = v6;
     v72 = v62;
-    [v61 addOperationWithBlock:v71];
+    [analyticsQueue addOperationWithBlock:v71];
 
     v63 = IOServiceMatching("IOPMPowerSource");
-    LODWORD(v61) = *MEMORY[0x277CD28A0];
+    LODWORD(analyticsQueue) = *MEMORY[0x277CD28A0];
     v62->_powerSource = IOServiceGetMatchingService(*MEMORY[0x277CD28A0], v63);
-    v64 = IONotificationPortCreate(v61);
+    v64 = IONotificationPortCreate(analyticsQueue);
     v62->_powerNotificationPort = v64;
     if (!IOServiceAddInterestNotification(v64, v62->_powerSource, "IOGeneralInterest", DBPowerChangeCallback, v62, &v62->_powerSourceNotification))
     {
       Current = CFRunLoopGetCurrent();
       RunLoopSource = IONotificationPortGetRunLoopSource(v62->_powerNotificationPort);
       CFRunLoopAddSource(Current, RunLoopSource, *MEMORY[0x277CBF058]);
-      v67 = [(DBAnalytics *)v62 analyticsQueue];
+      analyticsQueue2 = [(DBAnalytics *)v62 analyticsQueue];
       v69[0] = MEMORY[0x277D85DD0];
       v69[1] = 3221225472;
       v69[2] = __48__DBAnalytics_initWithEnvironmentConfiguration___block_invoke_5;
       v69[3] = &unk_278F01580;
       v70 = v62;
-      [v67 addOperationWithBlock:v69];
+      [analyticsQueue2 addOperationWithBlock:v69];
     }
 
     objc_destroyWeak(&v74);
@@ -765,29 +765,29 @@ void __48__DBAnalytics_initWithEnvironmentConfiguration___block_invoke_4(uint64_
 
   [v3 setObject:v7 forKey:@"thermalLevel"];
 
-  v8 = [(DBAnalytics *)self mediaserverdDiedDate];
+  mediaserverdDiedDate = [(DBAnalytics *)self mediaserverdDiedDate];
 
-  if (v8)
+  if (mediaserverdDiedDate)
   {
-    v9 = [(DBAnalytics *)self mediaserverdDiedDate];
-    [v3 setObject:v9 forKey:@"mediaserverd"];
+    mediaserverdDiedDate2 = [(DBAnalytics *)self mediaserverdDiedDate];
+    [v3 setObject:mediaserverdDiedDate2 forKey:@"mediaserverd"];
   }
 
-  v10 = [(DBAnalytics *)self thermalTrapDate];
+  thermalTrapDate = [(DBAnalytics *)self thermalTrapDate];
 
-  if (v10)
+  if (thermalTrapDate)
   {
-    v11 = [(DBAnalytics *)self thermalTrapDate];
-    [v3 setObject:v11 forKey:@"thermalTrap"];
+    thermalTrapDate2 = [(DBAnalytics *)self thermalTrapDate];
+    [v3 setObject:thermalTrapDate2 forKey:@"thermalTrap"];
   }
 
-  v12 = [(DBAnalytics *)self wifiLinkDownDate];
+  wifiLinkDownDate = [(DBAnalytics *)self wifiLinkDownDate];
 
-  if (v12)
+  if (wifiLinkDownDate)
   {
-    v13 = [(DBAnalytics *)self wifiLinkDownDate];
-    v14 = [(DBAnalytics *)self wifiLinkDownReason];
-    [v3 setObject:v13 forKey:v14];
+    wifiLinkDownDate2 = [(DBAnalytics *)self wifiLinkDownDate];
+    wifiLinkDownReason = [(DBAnalytics *)self wifiLinkDownReason];
+    [v3 setObject:wifiLinkDownDate2 forKey:wifiLinkDownReason];
   }
 
   if ([v3 count])
@@ -805,19 +805,19 @@ void __48__DBAnalytics_initWithEnvironmentConfiguration___block_invoke_4(uint64_
   return v15;
 }
 
-- (id)stringFromInterruptDictionary:(id)a3
+- (id)stringFromInterruptDictionary:(id)dictionary
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (!v3)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     v23 = 0;
     goto LABEL_25;
   }
 
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v6 = [v5 objectForKey:@"CARAnalyticsPreviousSessionEnd"];
+  array = [MEMORY[0x277CBEB18] array];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v6 = [standardUserDefaults objectForKey:@"CARAnalyticsPreviousSessionEnd"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -825,8 +825,8 @@ void __48__DBAnalytics_initWithEnvironmentConfiguration___block_invoke_4(uint64_
     goto LABEL_22;
   }
 
-  v7 = [MEMORY[0x277CBEAA8] date];
-  [v6 DBSecondsToDate:v7];
+  date = [MEMORY[0x277CBEAA8] date];
+  [v6 DBSecondsToDate:date];
   v9 = v8;
 
   if (v9 >= 300.0)
@@ -839,8 +839,8 @@ void __48__DBAnalytics_initWithEnvironmentConfiguration___block_invoke_4(uint64_
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = [v3 allKeys];
-  v11 = [v10 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  allKeys = [dictionaryCopy allKeys];
+  v11 = [allKeys countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (!v11)
   {
     goto LABEL_19;
@@ -855,27 +855,27 @@ void __48__DBAnalytics_initWithEnvironmentConfiguration___block_invoke_4(uint64_
     {
       if (*v27 != v13)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(allKeys);
       }
 
       v15 = *(*(&v26 + 1) + 8 * v14);
       if (([v15 isEqualToString:@"batteryPercentage"] & 1) != 0 || objc_msgSend(v15, "isEqualToString:", @"thermalLevel"))
       {
         v16 = MEMORY[0x277CCACA8];
-        v17 = [v3 objectForKey:v15];
+        v17 = [dictionaryCopy objectForKey:v15];
         [v16 stringWithFormat:@"%@:%@", v15, v17];
         v18 = LABEL_12:;
-        [v4 addObject:v18];
+        [array addObject:v18];
 
         goto LABEL_13;
       }
 
-      v17 = [v3 objectForKey:v15];
+      v17 = [dictionaryCopy objectForKey:v15];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v19 = [MEMORY[0x277CBEAA8] date];
-        [v17 DBSecondsToDate:v19];
+        date2 = [MEMORY[0x277CBEAA8] date];
+        [v17 DBSecondsToDate:date2];
         v21 = v20;
 
         if (v21 < 300.0)
@@ -891,7 +891,7 @@ LABEL_13:
     }
 
     while (v12 != v14);
-    v22 = [v10 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    v22 = [allKeys countByEnumeratingWithState:&v26 objects:v30 count:16];
     v12 = v22;
   }
 
@@ -900,9 +900,9 @@ LABEL_19:
 
   v6 = v25;
 LABEL_20:
-  if ([v4 count])
+  if ([array count])
   {
-    v23 = [v4 componentsJoinedByString:@" "];
+    v23 = [array componentsJoinedByString:@" "];
     goto LABEL_23;
   }
 
@@ -917,23 +917,23 @@ LABEL_25:
 
 - (id)stringFromSessionSummary
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(DBAnalytics *)self wifidDiedDate];
+  array = [MEMORY[0x277CBEB18] array];
+  wifidDiedDate = [(DBAnalytics *)self wifidDiedDate];
 
-  if (v4)
+  if (wifidDiedDate)
   {
-    v5 = [(DBAnalytics *)self wifidDiedDate];
-    v6 = [MEMORY[0x277CBEAA8] date];
-    [v5 DBSecondsToDate:v6];
+    wifidDiedDate2 = [(DBAnalytics *)self wifidDiedDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    [wifidDiedDate2 DBSecondsToDate:date];
     v8 = v7;
 
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"wifid:%fsecondsAgo", v8];
-    [v3 addObject:v9];
+    [array addObject:v9];
   }
 
-  if ([v3 count])
+  if ([array count])
   {
-    v10 = [v3 componentsJoinedByString:@" "];
+    v10 = [array componentsJoinedByString:@" "];
   }
 
   else
@@ -944,21 +944,21 @@ LABEL_25:
   return v10;
 }
 
-- (void)addSessionAnalyticsValues:(id)a3 toEvent:(unint64_t)a4 completion:(id)a5
+- (void)addSessionAnalyticsValues:(id)values toEvent:(unint64_t)event completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(DBAnalytics *)self analyticsQueue];
+  valuesCopy = values;
+  completionCopy = completion;
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __60__DBAnalytics_addSessionAnalyticsValues_toEvent_completion___block_invoke;
   v13[3] = &unk_278F03EB0;
-  v15 = v9;
-  v16 = a4;
-  v14 = v8;
-  v11 = v9;
-  v12 = v8;
-  [v10 addOperationWithBlock:v13];
+  v15 = completionCopy;
+  eventCopy = event;
+  v14 = valuesCopy;
+  v11 = completionCopy;
+  v12 = valuesCopy;
+  [analyticsQueue addOperationWithBlock:v13];
 }
 
 void __60__DBAnalytics_addSessionAnalyticsValues_toEvent_completion___block_invoke(uint64_t a1)
@@ -1011,18 +1011,18 @@ void __60__DBAnalytics_addSessionAnalyticsValues_toEvent_completion___block_invo
   }
 }
 
-- (void)applySessionStartedStorage:(id)a3
+- (void)applySessionStartedStorage:(id)storage
 {
-  v4 = a3;
-  v5 = [(DBAnalytics *)self analyticsQueue];
+  storageCopy = storage;
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__DBAnalytics_applySessionStartedStorage___block_invoke;
   v7[3] = &unk_278F014B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 addOperationWithBlock:v7];
+  v8 = storageCopy;
+  v6 = storageCopy;
+  [analyticsQueue addOperationWithBlock:v7];
 }
 
 void __42__DBAnalytics_applySessionStartedStorage___block_invoke(uint64_t a1)
@@ -1319,13 +1319,13 @@ void __42__DBAnalytics_applySessionStartedStorage___block_invoke_307(uint64_t a1
 
 - (void)userPressedTransitionControl
 {
-  v3 = [(DBAnalytics *)self analyticsQueue];
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __43__DBAnalytics_userPressedTransitionControl__block_invoke;
   v4[3] = &unk_278F01580;
   v4[4] = self;
-  [v3 addOperationWithBlock:v4];
+  [analyticsQueue addOperationWithBlock:v4];
 }
 
 void __43__DBAnalytics_userPressedTransitionControl__block_invoke(uint64_t a1)
@@ -1364,15 +1364,15 @@ void __43__DBAnalytics_userPressedTransitionControl__block_invoke(uint64_t a1)
   }
 }
 
-+ (void)biome_CarPlayStarted:(BOOL)a3 wireless:(BOOL)a4
++ (void)biome_CarPlayStarted:(BOOL)started wireless:(BOOL)wireless
 {
   v6 = dispatch_get_global_queue(-32768, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__DBAnalytics_biome_CarPlayStarted_wireless___block_invoke;
   block[3] = &__block_descriptor_34_e5_v8__0l;
-  v8 = a4;
-  v9 = a3;
+  wirelessCopy = wireless;
+  startedCopy = started;
   dispatch_async(v6, block);
 }
 
@@ -1395,15 +1395,15 @@ void __45__DBAnalytics_biome_CarPlayStarted_wireless___block_invoke(uint64_t a1)
   [v5 sendEvent:v4];
 }
 
-- (void)_screenBecameAvailable:(id)a3
+- (void)_screenBecameAvailable:(id)available
 {
-  v4 = [(DBAnalytics *)self analyticsQueue];
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __38__DBAnalytics__screenBecameAvailable___block_invoke;
   v5[3] = &unk_278F01580;
   v5[4] = self;
-  [v4 addOperationWithBlock:v5];
+  [analyticsQueue addOperationWithBlock:v5];
 }
 
 void __38__DBAnalytics__screenBecameAvailable___block_invoke(uint64_t a1)
@@ -1519,15 +1519,15 @@ void __38__DBAnalytics__screenBecameAvailable___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_screenBecameUnavailable:(id)a3
+- (void)_screenBecameUnavailable:(id)unavailable
 {
-  v4 = [(DBAnalytics *)self analyticsQueue];
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __40__DBAnalytics__screenBecameUnavailable___block_invoke;
   v5[3] = &unk_278F01580;
   v5[4] = self;
-  [v4 addOperationWithBlock:v5];
+  [analyticsQueue addOperationWithBlock:v5];
 }
 
 void __40__DBAnalytics__screenBecameUnavailable___block_invoke(uint64_t a1)
@@ -1639,15 +1639,15 @@ void __40__DBAnalytics__screenBecameUnavailable___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_iosHasMainAudio:(id)a3
+- (void)_iosHasMainAudio:(id)audio
 {
-  v4 = [(DBAnalytics *)self analyticsQueue];
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __32__DBAnalytics__iosHasMainAudio___block_invoke;
   v5[3] = &unk_278F01580;
   v5[4] = self;
-  [v4 addOperationWithBlock:v5];
+  [analyticsQueue addOperationWithBlock:v5];
 }
 
 void __32__DBAnalytics__iosHasMainAudio___block_invoke(uint64_t a1)
@@ -1670,15 +1670,15 @@ void __32__DBAnalytics__iosHasMainAudio___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_carHasMainAudio:(id)a3
+- (void)_carHasMainAudio:(id)audio
 {
-  v4 = [(DBAnalytics *)self analyticsQueue];
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __32__DBAnalytics__carHasMainAudio___block_invoke;
   v5[3] = &unk_278F01580;
   v5[4] = self;
-  [v4 addOperationWithBlock:v5];
+  [analyticsQueue addOperationWithBlock:v5];
 }
 
 void __32__DBAnalytics__carHasMainAudio___block_invoke(uint64_t a1)
@@ -1708,40 +1708,40 @@ void __32__DBAnalytics__carHasMainAudio___block_invoke(uint64_t a1)
 
 - (void)_queue_sessionStarted
 {
-  v3 = [(DBAnalytics *)self sessionStartDate];
+  sessionStartDate = [(DBAnalytics *)self sessionStartDate];
 
-  if (!v3)
+  if (!sessionStartDate)
   {
-    v4 = [(DBAnalytics *)self environmentConfiguration];
-    v29 = [v4 session];
+    environmentConfiguration = [(DBAnalytics *)self environmentConfiguration];
+    session = [environmentConfiguration session];
 
-    v5 = [MEMORY[0x277CBEAA8] date];
-    [(DBAnalytics *)self setSessionStartDate:v5];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(DBAnalytics *)self setSessionStartDate:date];
 
-    v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v7 = [v6 objectForKey:@"CARStartApplicationBundleID"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v7 = [standardUserDefaults objectForKey:@"CARStartApplicationBundleID"];
     [(DBAnalytics *)self setStartBundleIdentifier:v7];
 
     v8 = objc_alloc_init(_DBAnalyticsChargeInfo);
     [(DBAnalytics *)self setAnalyticsChargeInfo:v8];
 
-    if (([v29 carOwnsScreen] & 1) == 0)
+    if (([session carOwnsScreen] & 1) == 0)
     {
-      v9 = [(DBAnalytics *)self sessionStartDate];
-      v10 = [v9 copy];
+      sessionStartDate2 = [(DBAnalytics *)self sessionStartDate];
+      v10 = [sessionStartDate2 copy];
       [(DBAnalytics *)self setScreenOwnershipDate:v10];
     }
 
-    if (([v29 carOwnsMainAudio] & 1) == 0)
+    if (([session carOwnsMainAudio] & 1) == 0)
     {
-      v11 = [(DBAnalytics *)self sessionStartDate];
-      v12 = [v11 copy];
+      sessionStartDate3 = [(DBAnalytics *)self sessionStartDate];
+      v12 = [sessionStartDate3 copy];
       [(DBAnalytics *)self setAudioOwnershipDate:v12];
     }
 
-    v13 = [(DBAnalytics *)self environmentConfiguration];
-    v14 = [v13 vehicle];
-    v15 = [v29 analytics_dictionaryRepresentationWithVehicle:v14];
+    environmentConfiguration2 = [(DBAnalytics *)self environmentConfiguration];
+    vehicle = [environmentConfiguration2 vehicle];
+    v15 = [session analytics_dictionaryRepresentationWithVehicle:vehicle];
     [(DBAnalytics *)self setVehicleAnalyticsRepresentation:v15];
 
     [(DBAnalytics *)self setSessionRequestUIMapsCount:0];
@@ -1753,31 +1753,31 @@ void __32__DBAnalytics__carHasMainAudio___block_invoke(uint64_t a1)
     [(DBAnalytics *)self setSessionShowUITurnCardCount:0];
     [(DBAnalytics *)self setSessionRequestUIClimateQuickControlsCount:0];
     [(DBAnalytics *)self setSessionRequestUISearchCount:0];
-    v16 = [(DBAnalytics *)self analyticsAppInfo];
-    [v16 removeAllObjects];
+    analyticsAppInfo = [(DBAnalytics *)self analyticsAppInfo];
+    [analyticsAppInfo removeAllObjects];
 
-    v17 = [(DBAnalytics *)self analyticsScreenInfo];
-    [v17 removeAllObjects];
+    analyticsScreenInfo = [(DBAnalytics *)self analyticsScreenInfo];
+    [analyticsScreenInfo removeAllObjects];
 
-    v18 = [(DBAnalytics *)self analyticsLayoutInfo];
-    [v18 removeAllObjects];
+    analyticsLayoutInfo = [(DBAnalytics *)self analyticsLayoutInfo];
+    [analyticsLayoutInfo removeAllObjects];
 
-    v19 = [(DBAnalytics *)self sessionAppLaunches];
-    [v19 removeAllObjects];
+    sessionAppLaunches = [(DBAnalytics *)self sessionAppLaunches];
+    [sessionAppLaunches removeAllObjects];
 
-    v20 = [(DBAnalytics *)self sessionDeviceAppLaunches];
-    [v20 removeAllObjects];
+    sessionDeviceAppLaunches = [(DBAnalytics *)self sessionDeviceAppLaunches];
+    [sessionDeviceAppLaunches removeAllObjects];
 
-    v21 = [(DBAnalytics *)self sessionNavigationOwners];
-    [v21 removeAllObjects];
+    sessionNavigationOwners = [(DBAnalytics *)self sessionNavigationOwners];
+    [sessionNavigationOwners removeAllObjects];
 
-    v22 = [(DBAnalytics *)self environmentConfiguration];
-    v23 = [v22 thermalMonitor];
-    -[DBAnalytics setCurrentThermalLevel:](self, "setCurrentThermalLevel:", [v23 level]);
+    environmentConfiguration3 = [(DBAnalytics *)self environmentConfiguration];
+    thermalMonitor = [environmentConfiguration3 thermalMonitor];
+    -[DBAnalytics setCurrentThermalLevel:](self, "setCurrentThermalLevel:", [thermalMonitor level]);
 
-    v24 = [(DBAnalytics *)self sessionThermalLevels];
+    sessionThermalLevels = [(DBAnalytics *)self sessionThermalLevels];
     v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"(0, %li)", -[DBAnalytics currentThermalLevel](self, "currentThermalLevel")];
-    [v24 setString:v25];
+    [sessionThermalLevels setString:v25];
 
     [(DBAnalytics *)self setCurrentChargingState:-1];
     [(DBAnalytics *)self setSessionUnlockCount:0];
@@ -1802,18 +1802,18 @@ void __32__DBAnalytics__carHasMainAudio___block_invoke(uint64_t a1)
 
 - (void)_queue_sessionEnded
 {
-  v2 = self;
+  selfCopy = self;
   v370 = *MEMORY[0x277D85DE8];
-  v3 = [(DBAnalytics *)self sessionStartDate];
+  sessionStartDate = [(DBAnalytics *)self sessionStartDate];
 
-  if (!v3)
+  if (!sessionStartDate)
   {
     return;
   }
 
-  v4 = [(DBAnalytics *)v2 sessionStartDate];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [v4 DBSecondsToDate:v5];
+  sessionStartDate2 = [(DBAnalytics *)selfCopy sessionStartDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  [sessionStartDate2 DBSecondsToDate:date];
   v7 = v6;
 
   if (v7 < 1.0)
@@ -1825,8 +1825,8 @@ void __32__DBAnalytics__carHasMainAudio___block_invoke(uint64_t a1)
   v358 = 0u;
   v355 = 0u;
   v356 = 0u;
-  v8 = [(DBAnalytics *)v2 analyticsAppInfo];
-  v9 = [v8 countByEnumeratingWithState:&v355 objects:v369 count:16];
+  analyticsAppInfo = [(DBAnalytics *)selfCopy analyticsAppInfo];
+  v9 = [analyticsAppInfo countByEnumeratingWithState:&v355 objects:v369 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1837,55 +1837,55 @@ void __32__DBAnalytics__carHasMainAudio___block_invoke(uint64_t a1)
       {
         if (*v356 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(analyticsAppInfo);
         }
 
         [*(*(&v355 + 1) + 8 * i) stopCountingTimeForAllKeys];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v355 objects:v369 count:16];
+      v10 = [analyticsAppInfo countByEnumeratingWithState:&v355 objects:v369 count:16];
     }
 
     while (v10);
   }
 
-  v13 = [(DBAnalytics *)v2 analyticsChargeInfo];
-  [v13 stopCountingTimeForAllKeys];
+  analyticsChargeInfo = [(DBAnalytics *)selfCopy analyticsChargeInfo];
+  [analyticsChargeInfo stopCountingTimeForAllKeys];
 
-  v14 = [(DBAnalytics *)v2 analyticsNavOwnershipInfo];
-  [v14 stopCountingTimeForAllKeys];
+  analyticsNavOwnershipInfo = [(DBAnalytics *)selfCopy analyticsNavOwnershipInfo];
+  [analyticsNavOwnershipInfo stopCountingTimeForAllKeys];
 
-  v15 = [(DBAnalytics *)v2 screenOwnershipDate];
+  screenOwnershipDate = [(DBAnalytics *)selfCopy screenOwnershipDate];
 
-  if (v15)
+  if (screenOwnershipDate)
   {
-    v16 = [(DBAnalytics *)v2 screenOwnershipDate];
-    v17 = [MEMORY[0x277CBEAA8] date];
-    [v16 DBSecondsToDate:v17];
+    screenOwnershipDate2 = [(DBAnalytics *)selfCopy screenOwnershipDate];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [screenOwnershipDate2 DBSecondsToDate:date2];
     v19 = v18;
-    [(DBAnalytics *)v2 screenOwnershipDuration];
-    [(DBAnalytics *)v2 setScreenOwnershipDuration:v19 + v20];
+    [(DBAnalytics *)selfCopy screenOwnershipDuration];
+    [(DBAnalytics *)selfCopy setScreenOwnershipDuration:v19 + v20];
   }
 
-  v21 = [(DBAnalytics *)v2 audioOwnershipDate];
+  audioOwnershipDate = [(DBAnalytics *)selfCopy audioOwnershipDate];
 
-  if (v21)
+  if (audioOwnershipDate)
   {
-    v22 = [(DBAnalytics *)v2 audioOwnershipDate];
-    v23 = [MEMORY[0x277CBEAA8] date];
-    [v22 DBSecondsToDate:v23];
+    audioOwnershipDate2 = [(DBAnalytics *)selfCopy audioOwnershipDate];
+    date3 = [MEMORY[0x277CBEAA8] date];
+    [audioOwnershipDate2 DBSecondsToDate:date3];
     v25 = v24;
-    [(DBAnalytics *)v2 audioOwnershipDuration];
-    [(DBAnalytics *)v2 setAudioOwnershipDuration:v25 + v26];
+    [(DBAnalytics *)selfCopy audioOwnershipDuration];
+    [(DBAnalytics *)selfCopy setAudioOwnershipDuration:v25 + v26];
   }
 
   v353 = 0u;
   v354 = 0u;
   v351 = 0u;
   v352 = 0u;
-  obj = [(DBAnalytics *)v2 analyticsAppInfo];
+  obj = [(DBAnalytics *)selfCopy analyticsAppInfo];
   v27 = [obj countByEnumeratingWithState:&v351 objects:v368 count:16];
-  v336 = v2;
+  v336 = selfCopy;
   if (v27)
   {
     v28 = v27;
@@ -1901,19 +1901,19 @@ void __32__DBAnalytics__carHasMainAudio___block_invoke(uint64_t a1)
         }
 
         v32 = *(*(&v351 + 1) + 8 * v31);
-        v33 = [MEMORY[0x277CBEB38] dictionary];
-        v34 = [v32 bundleIdentifier];
-        if (v34)
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
+        bundleIdentifier = [v32 bundleIdentifier];
+        if (bundleIdentifier)
         {
-          v35 = v34;
+          bundleIdentifier2 = bundleIdentifier;
         }
 
         else
         {
-          v36 = [v32 appInfo];
-          v35 = [v36 bundleIdentifier];
+          appInfo = [v32 appInfo];
+          bundleIdentifier2 = [appInfo bundleIdentifier];
 
-          if (!v35)
+          if (!bundleIdentifier2)
           {
             goto LABEL_51;
           }
@@ -1931,125 +1931,125 @@ void __32__DBAnalytics__carHasMainAudio___block_invoke(uint64_t a1)
         v46 = v45;
         if (v38 != 0.0 || v42 != 0.0 || v40 != 0.0 || v44 != 0.0 || v45 != 0.0 || [v32 numberOfSiriPresentations])
         {
-          v35 = v35;
-          [v33 setObject:v35 forKeyedSubscript:@"bundleIdentifier"];
+          bundleIdentifier2 = bundleIdentifier2;
+          [dictionary setObject:bundleIdentifier2 forKeyedSubscript:@"bundleIdentifier"];
 
           *&v47 = v40;
           v48 = [MEMORY[0x277CCABB0] numberWithFloat:v47];
-          [v33 setObject:v48 forKeyedSubscript:@"playbackTime"];
+          [dictionary setObject:v48 forKeyedSubscript:@"playbackTime"];
 
           *&v49 = v38;
           v50 = [MEMORY[0x277CCABB0] numberWithFloat:v49];
-          [v33 setObject:v50 forKeyedSubscript:@"visibleTime"];
+          [dictionary setObject:v50 forKeyedSubscript:@"visibleTime"];
 
           *&v51 = v42;
           v52 = [MEMORY[0x277CCABB0] numberWithFloat:v51];
-          [v33 setObject:v52 forKeyedSubscript:@"dashboardVisibleTime"];
+          [dictionary setObject:v52 forKeyedSubscript:@"dashboardVisibleTime"];
 
           *&v53 = v44;
           v54 = [MEMORY[0x277CCABB0] numberWithFloat:v53];
-          [v33 setObject:v54 forKeyedSubscript:@"clusterVisibleTime"];
+          [dictionary setObject:v54 forKeyedSubscript:@"clusterVisibleTime"];
 
           *&v55 = v46;
           v56 = [MEMORY[0x277CCABB0] numberWithFloat:v55];
-          [v33 setObject:v56 forKeyedSubscript:@"navTime"];
+          [dictionary setObject:v56 forKeyedSubscript:@"navTime"];
 
-          v57 = [v32 numberOfSiriPresentations];
-          v58 = [MEMORY[0x277CCABB0] numberWithInteger:v57];
-          [v33 setObject:v58 forKeyedSubscript:@"siriPresentationCount"];
+          numberOfSiriPresentations = [v32 numberOfSiriPresentations];
+          v58 = [MEMORY[0x277CCABB0] numberWithInteger:numberOfSiriPresentations];
+          [dictionary setObject:v58 forKeyedSubscript:@"siriPresentationCount"];
 
           v30 = v7;
           *&v59 = v30;
           v60 = [MEMORY[0x277CCABB0] numberWithFloat:v59];
-          [v33 setObject:v60 forKeyedSubscript:@"sessionDuration"];
+          [dictionary setObject:v60 forKeyedSubscript:@"sessionDuration"];
 
           if ([v32 category])
           {
-            v61 = [v32 category];
-            v62 = [MEMORY[0x277CBEB18] array];
-            v63 = v62;
-            if (v61)
+            category = [v32 category];
+            array = [MEMORY[0x277CBEB18] array];
+            v63 = array;
+            if (category)
             {
-              [v62 addObject:@"All"];
-              if ((v61 & 2) != 0)
+              [array addObject:@"All"];
+              if ((category & 2) != 0)
               {
                 goto LABEL_54;
               }
 
 LABEL_31:
-              if ((v61 & 4) == 0)
+              if ((category & 4) == 0)
               {
                 goto LABEL_32;
               }
 
 LABEL_55:
               [v63 addObject:@"Calling"];
-              if ((v61 & 8) != 0)
+              if ((category & 8) != 0)
               {
                 goto LABEL_56;
               }
 
 LABEL_33:
-              if ((v61 & 0x10) == 0)
+              if ((category & 0x10) == 0)
               {
                 goto LABEL_34;
               }
 
 LABEL_57:
               [v63 addObject:@"Audio"];
-              if ((v61 & 0x20) != 0)
+              if ((category & 0x20) != 0)
               {
                 goto LABEL_58;
               }
 
 LABEL_35:
-              if ((v61 & 0x80) == 0)
+              if ((category & 0x80) == 0)
               {
                 goto LABEL_36;
               }
 
 LABEL_59:
               [v63 addObject:@"QuickOrdering"];
-              if ((v61 & 0x100) != 0)
+              if ((category & 0x100) != 0)
               {
                 goto LABEL_60;
               }
 
 LABEL_37:
-              if ((v61 & 0x200) == 0)
+              if ((category & 0x200) == 0)
               {
                 goto LABEL_38;
               }
 
 LABEL_61:
               [v63 addObject:@"Parking"];
-              if ((v61 & 0x400) != 0)
+              if ((category & 0x400) != 0)
               {
                 goto LABEL_62;
               }
 
 LABEL_39:
-              if ((v61 & 0x800) == 0)
+              if ((category & 0x800) == 0)
               {
                 goto LABEL_40;
               }
 
 LABEL_63:
               [v63 addObject:@"Fueling"];
-              if ((v61 & 0x1000) != 0)
+              if ((category & 0x1000) != 0)
               {
                 goto LABEL_64;
               }
 
 LABEL_41:
-              if ((v61 & 0x2000) == 0)
+              if ((category & 0x2000) == 0)
               {
                 goto LABEL_42;
               }
 
 LABEL_65:
               [v63 addObject:@"PublicSafety"];
-              if ((v61 & 0x4000) != 0)
+              if ((category & 0x4000) != 0)
               {
 LABEL_43:
                 [v63 addObject:@"Video"];
@@ -2058,85 +2058,85 @@ LABEL_43:
 
             else
             {
-              if ((v61 & 2) == 0)
+              if ((category & 2) == 0)
               {
                 goto LABEL_31;
               }
 
 LABEL_54:
               [v63 addObject:@"Messaging"];
-              if ((v61 & 4) != 0)
+              if ((category & 4) != 0)
               {
                 goto LABEL_55;
               }
 
 LABEL_32:
-              if ((v61 & 8) == 0)
+              if ((category & 8) == 0)
               {
                 goto LABEL_33;
               }
 
 LABEL_56:
               [v63 addObject:@"Navigation"];
-              if ((v61 & 0x10) != 0)
+              if ((category & 0x10) != 0)
               {
                 goto LABEL_57;
               }
 
 LABEL_34:
-              if ((v61 & 0x20) == 0)
+              if ((category & 0x20) == 0)
               {
                 goto LABEL_35;
               }
 
 LABEL_58:
               [v63 addObject:@"Automaker"];
-              if ((v61 & 0x80) != 0)
+              if ((category & 0x80) != 0)
               {
                 goto LABEL_59;
               }
 
 LABEL_36:
-              if ((v61 & 0x100) == 0)
+              if ((category & 0x100) == 0)
               {
                 goto LABEL_37;
               }
 
 LABEL_60:
               [v63 addObject:@"Charging"];
-              if ((v61 & 0x200) != 0)
+              if ((category & 0x200) != 0)
               {
                 goto LABEL_61;
               }
 
 LABEL_38:
-              if ((v61 & 0x400) == 0)
+              if ((category & 0x400) == 0)
               {
                 goto LABEL_39;
               }
 
 LABEL_62:
               [v63 addObject:@"Productivity"];
-              if ((v61 & 0x800) != 0)
+              if ((category & 0x800) != 0)
               {
                 goto LABEL_63;
               }
 
 LABEL_40:
-              if ((v61 & 0x1000) == 0)
+              if ((category & 0x1000) == 0)
               {
                 goto LABEL_41;
               }
 
 LABEL_64:
               [v63 addObject:@"DrivingTask"];
-              if ((v61 & 0x2000) != 0)
+              if ((category & 0x2000) != 0)
               {
                 goto LABEL_65;
               }
 
 LABEL_42:
-              if ((v61 & 0x4000) != 0)
+              if ((category & 0x4000) != 0)
               {
                 goto LABEL_43;
               }
@@ -2151,44 +2151,44 @@ LABEL_42:
             }
 
             v66 = v65;
-            [v33 setObject:v66 forKeyedSubscript:@"appCategory"];
+            [dictionary setObject:v66 forKeyedSubscript:@"appCategory"];
           }
 
           else
           {
-            [v33 setObject:v35 forKeyedSubscript:@"appCategory"];
+            [dictionary setObject:bundleIdentifier2 forKeyedSubscript:@"appCategory"];
           }
 
           v67 = round(v38 * 100.0 / v7);
           *&v67 = v67;
           v68 = [MEMORY[0x277CCABB0] numberWithFloat:v67];
-          [v33 setObject:v68 forKeyedSubscript:@"visiblePercentage"];
+          [dictionary setObject:v68 forKeyedSubscript:@"visiblePercentage"];
 
           v69 = round(v40 * 100.0 / v7);
           *&v69 = v69;
           v70 = [MEMORY[0x277CCABB0] numberWithFloat:v69];
-          [v33 setObject:v70 forKeyedSubscript:@"playbackPercentage"];
+          [dictionary setObject:v70 forKeyedSubscript:@"playbackPercentage"];
 
-          [(DBAnalytics *)v2 screenOwnershipDuration];
+          [(DBAnalytics *)selfCopy screenOwnershipDuration];
           *&v71 = v71;
           v72 = [MEMORY[0x277CCABB0] numberWithFloat:v71];
-          [v33 setObject:v72 forKeyedSubscript:@"sessionVisibilityDuration"];
+          [dictionary setObject:v72 forKeyedSubscript:@"sessionVisibilityDuration"];
 
-          v73 = [(DBAnalytics *)v2 environmentConfiguration];
-          v74 = [v73 session];
-          v75 = [v74 configuration];
-          v76 = [v75 supportsVehicleData];
+          environmentConfiguration = [(DBAnalytics *)selfCopy environmentConfiguration];
+          session = [environmentConfiguration session];
+          configuration = [session configuration];
+          supportsVehicleData = [configuration supportsVehicleData];
           v77 = MEMORY[0x277CBEC38];
-          if (!v76)
+          if (!supportsVehicleData)
           {
             v77 = MEMORY[0x277CBEC28];
           }
 
           v78 = v77;
-          [v33 setObject:v78 forKeyedSubscript:@"nextGenCarPlaySession"];
+          [dictionary setObject:v78 forKeyedSubscript:@"nextGenCarPlaySession"];
 
-          v2 = v336;
-          [(DBAnalytics *)v336 sendEvent:1 withParameters:v33];
+          selfCopy = v336;
+          [(DBAnalytics *)v336 sendEvent:1 withParameters:dictionary];
         }
 
 LABEL_51:
@@ -2208,8 +2208,8 @@ LABEL_51:
   v350 = 0u;
   v347 = 0u;
   v348 = 0u;
-  v80 = [(DBAnalytics *)v2 analyticsLayoutInfo];
-  v81 = [v80 countByEnumeratingWithState:&v347 objects:v367 count:16];
+  analyticsLayoutInfo = [(DBAnalytics *)selfCopy analyticsLayoutInfo];
+  v81 = [analyticsLayoutInfo countByEnumeratingWithState:&v347 objects:v367 count:16];
   if (v81)
   {
     v82 = v81;
@@ -2220,43 +2220,43 @@ LABEL_51:
       {
         if (*v348 != v83)
         {
-          objc_enumerationMutation(v80);
+          objc_enumerationMutation(analyticsLayoutInfo);
         }
 
         v85 = *(*(&v347 + 1) + 8 * j);
         [v85 accumulatedTimeForKey:@"DBAnalyticsLayoutVisibilityTime"];
         v87 = v86;
-        v88 = [MEMORY[0x277CBEB38] dictionary];
-        v89 = [v85 layoutDisplayName];
-        [v88 setObject:v89 forKeyedSubscript:@"layout"];
+        dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+        layoutDisplayName = [v85 layoutDisplayName];
+        [dictionary2 setObject:layoutDisplayName forKeyedSubscript:@"layout"];
 
         *&v90 = v87;
         v91 = [MEMORY[0x277CCABB0] numberWithFloat:v90];
-        [v88 setObject:v91 forKeyedSubscript:@"visibleTime"];
+        [dictionary2 setObject:v91 forKeyedSubscript:@"visibleTime"];
 
-        v2 = v336;
-        [(DBAnalytics *)v336 sendEvent:10 withParameters:v88];
+        selfCopy = v336;
+        [(DBAnalytics *)v336 sendEvent:10 withParameters:dictionary2];
       }
 
-      v82 = [v80 countByEnumeratingWithState:&v347 objects:v367 count:16];
+      v82 = [analyticsLayoutInfo countByEnumeratingWithState:&v347 objects:v367 count:16];
     }
 
     while (v82);
   }
 
-  v92 = [(DBAnalytics *)v2 sessionDeviceAppLaunches];
-  v93 = [v92 count];
+  sessionDeviceAppLaunches = [(DBAnalytics *)selfCopy sessionDeviceAppLaunches];
+  v93 = [sessionDeviceAppLaunches count];
 
   if (v93)
   {
-    v94 = [(DBAnalytics *)v2 sessionDeviceAppLaunches];
+    sessionDeviceAppLaunches2 = [(DBAnalytics *)selfCopy sessionDeviceAppLaunches];
     v346[0] = MEMORY[0x277D85DD0];
     v346[1] = 3221225472;
     v346[2] = __34__DBAnalytics__queue_sessionEnded__block_invoke;
     v346[3] = &unk_278F03F40;
     *&v346[5] = v7;
-    v346[4] = v2;
-    [v94 enumerateKeysAndObjectsUsingBlock:v346];
+    v346[4] = selfCopy;
+    [sessionDeviceAppLaunches2 enumerateKeysAndObjectsUsingBlock:v346];
   }
 
   else
@@ -2264,19 +2264,19 @@ LABEL_51:
     v366[0] = @"None";
     v365[0] = @"bundleIdentifier";
     v365[1] = @"launchCount";
-    v94 = [MEMORY[0x277CCABB0] numberWithInteger:0];
-    v366[1] = v94;
+    sessionDeviceAppLaunches2 = [MEMORY[0x277CCABB0] numberWithInteger:0];
+    v366[1] = sessionDeviceAppLaunches2;
     v365[2] = @"sessionDuration";
     *&v95 = v7;
     v96 = [MEMORY[0x277CCABB0] numberWithFloat:v95];
     v366[2] = v96;
     v365[3] = @"nextGenCarPlaySession";
-    v97 = [(DBAnalytics *)v2 environmentConfiguration];
-    v98 = [v97 session];
-    v99 = [v98 configuration];
-    v100 = [v99 supportsVehicleData];
+    environmentConfiguration2 = [(DBAnalytics *)selfCopy environmentConfiguration];
+    session2 = [environmentConfiguration2 session];
+    configuration2 = [session2 configuration];
+    supportsVehicleData2 = [configuration2 supportsVehicleData];
     v101 = MEMORY[0x277CBEC38];
-    if (!v100)
+    if (!supportsVehicleData2)
     {
       v101 = MEMORY[0x277CBEC28];
     }
@@ -2286,21 +2286,21 @@ LABEL_51:
     v103 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v366 forKeys:v365 count:4];
     [(DBAnalytics *)v336 sendEvent:6 withParameters:v103];
 
-    v2 = v336;
+    selfCopy = v336;
   }
 
-  v104 = [(DBAnalytics *)v2 sessionNavigationOwners];
-  v105 = [v104 count];
+  sessionNavigationOwners = [(DBAnalytics *)selfCopy sessionNavigationOwners];
+  v105 = [sessionNavigationOwners count];
 
   if (v105)
   {
-    v106 = [(DBAnalytics *)v2 sessionNavigationOwners];
+    sessionNavigationOwners2 = [(DBAnalytics *)selfCopy sessionNavigationOwners];
     v345[0] = MEMORY[0x277D85DD0];
     v345[1] = 3221225472;
     v345[2] = __34__DBAnalytics__queue_sessionEnded__block_invoke_2;
     v345[3] = &unk_278F03F68;
-    v345[4] = v2;
-    [v106 enumerateKeysAndObjectsUsingBlock:v345];
+    v345[4] = selfCopy;
+    [sessionNavigationOwners2 enumerateKeysAndObjectsUsingBlock:v345];
   }
 
   else
@@ -2308,15 +2308,15 @@ LABEL_51:
     v364[0] = @"None";
     v363[0] = @"bundleIdentifier";
     v363[1] = @"sessionCount";
-    v106 = [MEMORY[0x277CCABB0] numberWithInteger:0];
-    v364[1] = v106;
+    sessionNavigationOwners2 = [MEMORY[0x277CCABB0] numberWithInteger:0];
+    v364[1] = sessionNavigationOwners2;
     v363[2] = @"nextGenCarPlaySession";
-    v107 = [(DBAnalytics *)v2 environmentConfiguration];
-    v108 = [v107 session];
-    v109 = [v108 configuration];
-    v110 = [v109 supportsVehicleData];
+    environmentConfiguration3 = [(DBAnalytics *)selfCopy environmentConfiguration];
+    session3 = [environmentConfiguration3 session];
+    configuration3 = [session3 configuration];
+    supportsVehicleData3 = [configuration3 supportsVehicleData];
     v111 = MEMORY[0x277CBEC38];
-    if (!v110)
+    if (!supportsVehicleData3)
     {
       v111 = MEMORY[0x277CBEC28];
     }
@@ -2326,16 +2326,16 @@ LABEL_51:
     v113 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v364 forKeys:v363 count:3];
     [(DBAnalytics *)v336 sendEvent:7 withParameters:v113];
 
-    v2 = v336;
+    selfCopy = v336;
   }
 
-  v114 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
   if (CRIsInternalInstall())
   {
-    v115 = [MEMORY[0x277CF89D0] allowSessionDurationRecordingEvents];
-    v116 = [v115 internalSettingsState];
+    allowSessionDurationRecordingEvents = [MEMORY[0x277CF89D0] allowSessionDurationRecordingEvents];
+    internalSettingsState = [allowSessionDurationRecordingEvents internalSettingsState];
 
-    if (v116)
+    if (internalSettingsState)
     {
       v117 = DBLogForCategory(0xDuLL);
       if (os_log_type_enabled(v117, OS_LOG_TYPE_DEFAULT))
@@ -2345,98 +2345,98 @@ LABEL_51:
       }
 
       v118 = objc_alloc_init(MEMORY[0x277CF8998]);
-      [(DBAnalytics *)v2 setConnectionTimeStore:v118];
+      [(DBAnalytics *)selfCopy setConnectionTimeStore:v118];
     }
   }
 
-  v119 = [(DBAnalytics *)v2 sessionAppLaunches];
-  v120 = [v119 objectForKeyedSubscript:&unk_285AA4808];
+  sessionAppLaunches = [(DBAnalytics *)selfCopy sessionAppLaunches];
+  v120 = [sessionAppLaunches objectForKeyedSubscript:&unk_285AA4808];
 
   if (v120)
   {
-    v121 = [(DBAnalytics *)v2 sessionAppLaunches];
-    v122 = [v121 objectForKeyedSubscript:&unk_285AA4808];
-    v123 = [v122 integerValue];
-    v124 = [MEMORY[0x277CCABB0] numberWithInteger:v123];
-    [v114 setObject:v124 forKeyedSubscript:@"dock"];
+    sessionAppLaunches2 = [(DBAnalytics *)selfCopy sessionAppLaunches];
+    v122 = [sessionAppLaunches2 objectForKeyedSubscript:&unk_285AA4808];
+    integerValue = [v122 integerValue];
+    v124 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
+    [dictionary3 setObject:v124 forKeyedSubscript:@"dock"];
   }
 
   else
   {
-    v121 = [MEMORY[0x277CCABB0] numberWithInteger:0];
-    [v114 setObject:v121 forKeyedSubscript:@"dock"];
+    sessionAppLaunches2 = [MEMORY[0x277CCABB0] numberWithInteger:0];
+    [dictionary3 setObject:sessionAppLaunches2 forKeyedSubscript:@"dock"];
   }
 
-  v125 = [(DBAnalytics *)v2 sessionAppLaunches];
-  v126 = [v125 objectForKeyedSubscript:&unk_285AA4820];
+  sessionAppLaunches3 = [(DBAnalytics *)selfCopy sessionAppLaunches];
+  v126 = [sessionAppLaunches3 objectForKeyedSubscript:&unk_285AA4820];
 
   if (v126)
   {
-    v127 = [(DBAnalytics *)v2 sessionAppLaunches];
-    v128 = [v127 objectForKeyedSubscript:&unk_285AA4820];
-    v129 = [v128 integerValue];
-    v130 = [MEMORY[0x277CCABB0] numberWithInteger:v129];
-    [v114 setObject:v130 forKeyedSubscript:@"siri"];
+    sessionAppLaunches4 = [(DBAnalytics *)selfCopy sessionAppLaunches];
+    v128 = [sessionAppLaunches4 objectForKeyedSubscript:&unk_285AA4820];
+    integerValue2 = [v128 integerValue];
+    v130 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue2];
+    [dictionary3 setObject:v130 forKeyedSubscript:@"siri"];
   }
 
   else
   {
-    v127 = [MEMORY[0x277CCABB0] numberWithInteger:0];
-    [v114 setObject:v127 forKeyedSubscript:@"siri"];
+    sessionAppLaunches4 = [MEMORY[0x277CCABB0] numberWithInteger:0];
+    [dictionary3 setObject:sessionAppLaunches4 forKeyedSubscript:@"siri"];
   }
 
-  v131 = [(DBAnalytics *)v2 sessionAppLaunches];
-  v132 = [v131 objectForKeyedSubscript:&unk_285AA4838];
+  sessionAppLaunches5 = [(DBAnalytics *)selfCopy sessionAppLaunches];
+  v132 = [sessionAppLaunches5 objectForKeyedSubscript:&unk_285AA4838];
 
   if (v132)
   {
-    v133 = [(DBAnalytics *)v2 sessionAppLaunches];
-    v134 = [v133 objectForKeyedSubscript:&unk_285AA4838];
-    v135 = [v134 integerValue];
-    v136 = [MEMORY[0x277CCABB0] numberWithInteger:v135];
-    [v114 setObject:v136 forKeyedSubscript:@"homescreen"];
+    sessionAppLaunches6 = [(DBAnalytics *)selfCopy sessionAppLaunches];
+    v134 = [sessionAppLaunches6 objectForKeyedSubscript:&unk_285AA4838];
+    integerValue3 = [v134 integerValue];
+    v136 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue3];
+    [dictionary3 setObject:v136 forKeyedSubscript:@"homescreen"];
   }
 
   else
   {
-    v133 = [MEMORY[0x277CCABB0] numberWithInteger:0];
-    [v114 setObject:v133 forKeyedSubscript:@"homescreen"];
+    sessionAppLaunches6 = [MEMORY[0x277CCABB0] numberWithInteger:0];
+    [dictionary3 setObject:sessionAppLaunches6 forKeyedSubscript:@"homescreen"];
   }
 
-  v137 = [(DBAnalytics *)v2 sessionAppLaunches];
-  v138 = [v137 objectForKeyedSubscript:&unk_285AA4850];
+  sessionAppLaunches7 = [(DBAnalytics *)selfCopy sessionAppLaunches];
+  v138 = [sessionAppLaunches7 objectForKeyedSubscript:&unk_285AA4850];
 
   if (v138)
   {
-    v139 = [(DBAnalytics *)v2 sessionAppLaunches];
-    v140 = [v139 objectForKeyedSubscript:&unk_285AA4850];
-    v141 = [v140 integerValue];
-    v142 = [MEMORY[0x277CCABB0] numberWithInteger:v141];
-    [v114 setObject:v142 forKeyedSubscript:@"dashboard"];
+    sessionAppLaunches8 = [(DBAnalytics *)selfCopy sessionAppLaunches];
+    v140 = [sessionAppLaunches8 objectForKeyedSubscript:&unk_285AA4850];
+    integerValue4 = [v140 integerValue];
+    v142 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue4];
+    [dictionary3 setObject:v142 forKeyedSubscript:@"dashboard"];
   }
 
   else
   {
-    v139 = [MEMORY[0x277CCABB0] numberWithInteger:0];
-    [v114 setObject:v139 forKeyedSubscript:@"dashboard"];
+    sessionAppLaunches8 = [MEMORY[0x277CCABB0] numberWithInteger:0];
+    [dictionary3 setObject:sessionAppLaunches8 forKeyedSubscript:@"dashboard"];
   }
 
-  v143 = [(DBAnalytics *)v2 sessionAppLaunches];
-  v144 = [v143 objectForKeyedSubscript:@"total"];
+  sessionAppLaunches9 = [(DBAnalytics *)selfCopy sessionAppLaunches];
+  v144 = [sessionAppLaunches9 objectForKeyedSubscript:@"total"];
 
   if (v144)
   {
-    v145 = [(DBAnalytics *)v2 sessionAppLaunches];
-    v146 = [v145 objectForKeyedSubscript:@"total"];
-    v147 = [v146 integerValue];
-    v148 = [MEMORY[0x277CCABB0] numberWithInteger:v147];
-    [v114 setObject:v148 forKeyedSubscript:@"total"];
+    sessionAppLaunches10 = [(DBAnalytics *)selfCopy sessionAppLaunches];
+    v146 = [sessionAppLaunches10 objectForKeyedSubscript:@"total"];
+    integerValue5 = [v146 integerValue];
+    v148 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue5];
+    [dictionary3 setObject:v148 forKeyedSubscript:@"total"];
   }
 
   else
   {
-    v145 = [MEMORY[0x277CCABB0] numberWithInteger:0];
-    [v114 setObject:v145 forKeyedSubscript:@"total"];
+    sessionAppLaunches10 = [MEMORY[0x277CCABB0] numberWithInteger:0];
+    [dictionary3 setObject:sessionAppLaunches10 forKeyedSubscript:@"total"];
   }
 
   v343 = 0u;
@@ -2458,8 +2458,8 @@ LABEL_51:
         }
 
         v153 = *(*(&v341 + 1) + 8 * k);
-        v154 = [(DBAnalytics *)v336 vehicleAnalyticsRepresentation];
-        v155 = [v154 objectForKeyedSubscript:v153];
+        vehicleAnalyticsRepresentation = [(DBAnalytics *)v336 vehicleAnalyticsRepresentation];
+        v155 = [vehicleAnalyticsRepresentation objectForKeyedSubscript:v153];
         v156 = v155;
         v157 = @"(no value)";
         if (v155)
@@ -2468,7 +2468,7 @@ LABEL_51:
         }
 
         v158 = v157;
-        [v114 setObject:v158 forKeyedSubscript:v153];
+        [dictionary3 setObject:v158 forKeyedSubscript:v153];
       }
 
       v150 = [&unk_285AA4A60 countByEnumeratingWithState:&v341 objects:v362 count:16];
@@ -2478,23 +2478,23 @@ LABEL_51:
   }
 
   v159 = v336;
-  v160 = [(DBAnalytics *)v336 analyticsNavOwnershipInfo];
-  [v160 accumulatedTimeForKey:@"DBAnalyticsNavOwnershipTimeiOS"];
+  analyticsNavOwnershipInfo2 = [(DBAnalytics *)v336 analyticsNavOwnershipInfo];
+  [analyticsNavOwnershipInfo2 accumulatedTimeForKey:@"DBAnalyticsNavOwnershipTimeiOS"];
   *&v161 = v161;
   v162 = [MEMORY[0x277CCABB0] numberWithFloat:v161];
-  [v114 setObject:v162 forKeyedSubscript:@"iosNavTime"];
+  [dictionary3 setObject:v162 forKeyedSubscript:@"iosNavTime"];
 
-  v163 = [(DBAnalytics *)v336 analyticsNavOwnershipInfo];
-  [v163 accumulatedTimeForKey:@"DBAnalyticsNavOwnershipTimeOEM"];
+  analyticsNavOwnershipInfo3 = [(DBAnalytics *)v336 analyticsNavOwnershipInfo];
+  [analyticsNavOwnershipInfo3 accumulatedTimeForKey:@"DBAnalyticsNavOwnershipTimeOEM"];
   *&v164 = v164;
   v165 = [MEMORY[0x277CCABB0] numberWithFloat:v164];
-  [v114 setObject:v165 forKeyedSubscript:@"oemNavTime"];
+  [dictionary3 setObject:v165 forKeyedSubscript:@"oemNavTime"];
 
-  v166 = [(DBAnalytics *)v336 announceMessagesState];
-  v167 = v166;
-  if (v166)
+  announceMessagesState = [(DBAnalytics *)v336 announceMessagesState];
+  v167 = announceMessagesState;
+  if (announceMessagesState)
   {
-    v168 = v166;
+    v168 = announceMessagesState;
   }
 
   else
@@ -2503,79 +2503,79 @@ LABEL_51:
   }
 
   v169 = v168;
-  [v114 setObject:v169 forKeyedSubscript:@"announceMessages"];
+  [dictionary3 setObject:v169 forKeyedSubscript:@"announceMessages"];
 
   *&v170 = v7;
   v171 = [MEMORY[0x277CCABB0] numberWithFloat:v170];
-  [v114 setObject:v171 forKeyedSubscript:@"sessionDuration"];
+  [dictionary3 setObject:v171 forKeyedSubscript:@"sessionDuration"];
 
-  v172 = [(DBAnalytics *)v336 sessionRequestUIMapsCount];
-  v173 = [MEMORY[0x277CCABB0] numberWithInteger:v172];
-  [v114 setObject:v173 forKeyedSubscript:@"requestUIMapsCount"];
+  sessionRequestUIMapsCount = [(DBAnalytics *)v336 sessionRequestUIMapsCount];
+  v173 = [MEMORY[0x277CCABB0] numberWithInteger:sessionRequestUIMapsCount];
+  [dictionary3 setObject:v173 forKeyedSubscript:@"requestUIMapsCount"];
 
-  v174 = [(DBAnalytics *)v336 sessionRequestUIMusicCount];
-  v175 = [MEMORY[0x277CCABB0] numberWithInteger:v174];
-  [v114 setObject:v175 forKeyedSubscript:@"requestUIMusicCount"];
+  sessionRequestUIMusicCount = [(DBAnalytics *)v336 sessionRequestUIMusicCount];
+  v175 = [MEMORY[0x277CCABB0] numberWithInteger:sessionRequestUIMusicCount];
+  [dictionary3 setObject:v175 forKeyedSubscript:@"requestUIMusicCount"];
 
-  v176 = [(DBAnalytics *)v336 sessionRequestUIClimateQuickControlsCount];
-  v177 = [MEMORY[0x277CCABB0] numberWithInteger:v176];
-  [v114 setObject:v177 forKeyedSubscript:@"requestUIClimateQuickControlsCount"];
+  sessionRequestUIClimateQuickControlsCount = [(DBAnalytics *)v336 sessionRequestUIClimateQuickControlsCount];
+  v177 = [MEMORY[0x277CCABB0] numberWithInteger:sessionRequestUIClimateQuickControlsCount];
+  [dictionary3 setObject:v177 forKeyedSubscript:@"requestUIClimateQuickControlsCount"];
 
-  v178 = [(DBAnalytics *)v336 sessionRequestUISearchCount];
-  v179 = [MEMORY[0x277CCABB0] numberWithInteger:v178];
-  [v114 setObject:v179 forKeyedSubscript:@"requestUISearchCount"];
+  sessionRequestUISearchCount = [(DBAnalytics *)v336 sessionRequestUISearchCount];
+  v179 = [MEMORY[0x277CCABB0] numberWithInteger:sessionRequestUISearchCount];
+  [dictionary3 setObject:v179 forKeyedSubscript:@"requestUISearchCount"];
 
-  v180 = [(DBAnalytics *)v336 sessionRequestUIMessagesCount];
-  v181 = [MEMORY[0x277CCABB0] numberWithInteger:v180];
-  [v114 setObject:v181 forKeyedSubscript:@"requestUIMessagesCount"];
+  sessionRequestUIMessagesCount = [(DBAnalytics *)v336 sessionRequestUIMessagesCount];
+  v181 = [MEMORY[0x277CCABB0] numberWithInteger:sessionRequestUIMessagesCount];
+  [dictionary3 setObject:v181 forKeyedSubscript:@"requestUIMessagesCount"];
 
-  v182 = [(DBAnalytics *)v336 sessionRequestUIPhoneCount];
-  v183 = [MEMORY[0x277CCABB0] numberWithInteger:v182];
-  [v114 setObject:v183 forKeyedSubscript:@"requestUIPhoneCount"];
+  sessionRequestUIPhoneCount = [(DBAnalytics *)v336 sessionRequestUIPhoneCount];
+  v183 = [MEMORY[0x277CCABB0] numberWithInteger:sessionRequestUIPhoneCount];
+  [dictionary3 setObject:v183 forKeyedSubscript:@"requestUIPhoneCount"];
 
-  v184 = [(DBAnalytics *)v336 sessionRequestUIBundleIdentifierCount];
-  v185 = [MEMORY[0x277CCABB0] numberWithInteger:v184];
-  [v114 setObject:v185 forKeyedSubscript:@"requestUIBundleIdentifierCount"];
+  sessionRequestUIBundleIdentifierCount = [(DBAnalytics *)v336 sessionRequestUIBundleIdentifierCount];
+  v185 = [MEMORY[0x277CCABB0] numberWithInteger:sessionRequestUIBundleIdentifierCount];
+  [dictionary3 setObject:v185 forKeyedSubscript:@"requestUIBundleIdentifierCount"];
 
-  v186 = [(DBAnalytics *)v336 sessionShowUIMapCount];
-  v187 = [MEMORY[0x277CCABB0] numberWithInteger:v186];
-  [v114 setObject:v187 forKeyedSubscript:@"showUIMapCount"];
+  sessionShowUIMapCount = [(DBAnalytics *)v336 sessionShowUIMapCount];
+  v187 = [MEMORY[0x277CCABB0] numberWithInteger:sessionShowUIMapCount];
+  [dictionary3 setObject:v187 forKeyedSubscript:@"showUIMapCount"];
 
-  v188 = [(DBAnalytics *)v336 sessionShowUITurnCardCount];
-  v189 = [MEMORY[0x277CCABB0] numberWithInteger:v188];
-  [v114 setObject:v189 forKeyedSubscript:@"showUITurnCardCount"];
+  sessionShowUITurnCardCount = [(DBAnalytics *)v336 sessionShowUITurnCardCount];
+  v189 = [MEMORY[0x277CCABB0] numberWithInteger:sessionShowUITurnCardCount];
+  [dictionary3 setObject:v189 forKeyedSubscript:@"showUITurnCardCount"];
 
   [(DBAnalytics *)v336 screenOwnershipDuration];
   *&v190 = v190;
   v191 = [MEMORY[0x277CCABB0] numberWithFloat:v190];
-  [v114 setObject:v191 forKeyedSubscript:@"screenTime"];
+  [dictionary3 setObject:v191 forKeyedSubscript:@"screenTime"];
 
   [(DBAnalytics *)v336 audioOwnershipDuration];
   *&v192 = v192;
   v193 = [MEMORY[0x277CCABB0] numberWithFloat:v192];
-  [v114 setObject:v193 forKeyedSubscript:@"mainAudioTime"];
+  [dictionary3 setObject:v193 forKeyedSubscript:@"mainAudioTime"];
 
   [(DBAnalytics *)v336 screenOwnershipDuration];
   v195 = v194 * 100.0 / v7;
   *&v195 = v195;
   v196 = [MEMORY[0x277CCABB0] numberWithFloat:v195];
-  [v114 setObject:v196 forKeyedSubscript:@"screenPercentage"];
+  [dictionary3 setObject:v196 forKeyedSubscript:@"screenPercentage"];
 
   [(DBAnalytics *)v336 audioOwnershipDuration];
   v198 = v197 * 100.0 / v7;
   *&v198 = v198;
   v199 = [MEMORY[0x277CCABB0] numberWithFloat:v198];
-  [v114 setObject:v199 forKeyedSubscript:@"mainAudioPercentage"];
+  [dictionary3 setObject:v199 forKeyedSubscript:@"mainAudioPercentage"];
 
-  v200 = [(DBAnalytics *)v336 sessionUnlockCount];
-  v201 = [MEMORY[0x277CCABB0] numberWithInteger:v200];
-  [v114 setObject:v201 forKeyedSubscript:@"unlockCount"];
+  sessionUnlockCount = [(DBAnalytics *)v336 sessionUnlockCount];
+  v201 = [MEMORY[0x277CCABB0] numberWithInteger:sessionUnlockCount];
+  [dictionary3 setObject:v201 forKeyedSubscript:@"unlockCount"];
 
-  v202 = [(DBAnalytics *)v336 accessorySupportsLocation];
-  v203 = v202;
-  if (v202)
+  accessorySupportsLocation = [(DBAnalytics *)v336 accessorySupportsLocation];
+  v203 = accessorySupportsLocation;
+  if (accessorySupportsLocation)
   {
-    v204 = v202;
+    v204 = accessorySupportsLocation;
   }
 
   else
@@ -2584,12 +2584,12 @@ LABEL_51:
   }
 
   v205 = v204;
-  [v114 setObject:v205 forKeyedSubscript:@"supportsLocationCapability"];
+  [dictionary3 setObject:v205 forKeyedSubscript:@"supportsLocationCapability"];
 
-  v206 = [(DBAnalytics *)v336 accessorySupportsLocationPASCDSpeed];
+  accessorySupportsLocationPASCDSpeed = [(DBAnalytics *)v336 accessorySupportsLocationPASCDSpeed];
   v207 = MEMORY[0x277CBEC38];
   v208 = MEMORY[0x277CBEC28];
-  if (v206)
+  if (accessorySupportsLocationPASCDSpeed)
   {
     v209 = MEMORY[0x277CBEC38];
   }
@@ -2600,7 +2600,7 @@ LABEL_51:
   }
 
   v210 = v209;
-  [v114 setObject:v210 forKeyedSubscript:@"supportsLocationPASCD"];
+  [dictionary3 setObject:v210 forKeyedSubscript:@"supportsLocationPASCD"];
 
   if ([(DBAnalytics *)v336 accessorySupportsLocationGPGGA])
   {
@@ -2613,7 +2613,7 @@ LABEL_51:
   }
 
   v212 = v211;
-  [v114 setObject:v212 forKeyedSubscript:@"supportsLocationGPGGA"];
+  [dictionary3 setObject:v212 forKeyedSubscript:@"supportsLocationGPGGA"];
 
   if ([(DBAnalytics *)v336 accessorySupportsLocationGPRMC])
   {
@@ -2626,7 +2626,7 @@ LABEL_51:
   }
 
   v214 = v213;
-  [v114 setObject:v214 forKeyedSubscript:@"supportsLocationGPRMC"];
+  [dictionary3 setObject:v214 forKeyedSubscript:@"supportsLocationGPRMC"];
 
   if ([(DBAnalytics *)v336 accessorySupportsLocationDeadReckoning])
   {
@@ -2639,7 +2639,7 @@ LABEL_51:
   }
 
   v216 = v215;
-  [v114 setObject:v216 forKeyedSubscript:@"supportsLocationDeadReckoning"];
+  [dictionary3 setObject:v216 forKeyedSubscript:@"supportsLocationDeadReckoning"];
 
   if ([(DBAnalytics *)v336 accessorySupportsLocationChinaShifted])
   {
@@ -2652,10 +2652,10 @@ LABEL_51:
   }
 
   v218 = v217;
-  [v114 setObject:v218 forKeyedSubscript:@"supportsLocationChinaShifted"];
+  [dictionary3 setObject:v218 forKeyedSubscript:@"supportsLocationChinaShifted"];
 
-  v219 = [(DBAnalytics *)v336 analyticsChargeInfo];
-  if ([v219 didChargeDuringSession])
+  analyticsChargeInfo2 = [(DBAnalytics *)v336 analyticsChargeInfo];
+  if ([analyticsChargeInfo2 didChargeDuringSession])
   {
     v220 = v207;
   }
@@ -2666,10 +2666,10 @@ LABEL_51:
   }
 
   v221 = v220;
-  [v114 setObject:v221 forKeyedSubscript:@"deviceChargedDuringSession"];
+  [dictionary3 setObject:v221 forKeyedSubscript:@"deviceChargedDuringSession"];
 
-  v222 = [(DBAnalytics *)v336 analyticsChargeInfo];
-  if ([v222 isWireless])
+  analyticsChargeInfo3 = [(DBAnalytics *)v336 analyticsChargeInfo];
+  if ([analyticsChargeInfo3 isWireless])
   {
     v223 = v207;
   }
@@ -2680,14 +2680,14 @@ LABEL_51:
   }
 
   v224 = v223;
-  [v114 setObject:v224 forKeyedSubscript:@"deviceChargedWirelessly"];
+  [dictionary3 setObject:v224 forKeyedSubscript:@"deviceChargedWirelessly"];
 
-  v225 = [(DBAnalytics *)v336 analyticsChargeInfo];
-  v226 = [v225 voltage];
-  v227 = v226;
-  if (v226)
+  analyticsChargeInfo4 = [(DBAnalytics *)v336 analyticsChargeInfo];
+  voltage = [analyticsChargeInfo4 voltage];
+  v227 = voltage;
+  if (voltage)
   {
-    v228 = v226;
+    v228 = voltage;
   }
 
   else
@@ -2696,14 +2696,14 @@ LABEL_51:
   }
 
   v229 = v228;
-  [v114 setObject:v229 forKeyedSubscript:@"adapterVoltage"];
+  [dictionary3 setObject:v229 forKeyedSubscript:@"adapterVoltage"];
 
-  v230 = [(DBAnalytics *)v336 analyticsChargeInfo];
-  v231 = [v230 wattage];
-  v232 = v231;
-  if (v231)
+  analyticsChargeInfo5 = [(DBAnalytics *)v336 analyticsChargeInfo];
+  wattage = [analyticsChargeInfo5 wattage];
+  v232 = wattage;
+  if (wattage)
   {
-    v233 = v231;
+    v233 = wattage;
   }
 
   else
@@ -2712,14 +2712,14 @@ LABEL_51:
   }
 
   v234 = v233;
-  [v114 setObject:v234 forKeyedSubscript:@"adapterWattage"];
+  [dictionary3 setObject:v234 forKeyedSubscript:@"adapterWattage"];
 
-  v235 = [(DBAnalytics *)v336 analyticsChargeInfo];
-  v236 = [v235 adapterDescription];
-  v237 = v236;
-  if (v236)
+  analyticsChargeInfo6 = [(DBAnalytics *)v336 analyticsChargeInfo];
+  adapterDescription = [analyticsChargeInfo6 adapterDescription];
+  v237 = adapterDescription;
+  if (adapterDescription)
   {
-    v238 = v236;
+    v238 = adapterDescription;
   }
 
   else
@@ -2728,14 +2728,14 @@ LABEL_51:
   }
 
   v239 = v238;
-  [v114 setObject:v239 forKeyedSubscript:@"adapterDescription"];
+  [dictionary3 setObject:v239 forKeyedSubscript:@"adapterDescription"];
 
-  v240 = [(DBAnalytics *)v336 analyticsChargeInfo];
-  v241 = [v240 PMUConfiguration];
-  v242 = v241;
-  if (v241)
+  analyticsChargeInfo7 = [(DBAnalytics *)v336 analyticsChargeInfo];
+  pMUConfiguration = [analyticsChargeInfo7 PMUConfiguration];
+  v242 = pMUConfiguration;
+  if (pMUConfiguration)
   {
-    v243 = v241;
+    v243 = pMUConfiguration;
   }
 
   else
@@ -2744,14 +2744,14 @@ LABEL_51:
   }
 
   v244 = v243;
-  [v114 setObject:v244 forKeyedSubscript:@"adapterPMUConfiguration"];
+  [dictionary3 setObject:v244 forKeyedSubscript:@"adapterPMUConfiguration"];
 
-  v245 = [(DBAnalytics *)v336 analyticsChargeInfo];
-  v246 = [v245 current];
-  v247 = v246;
-  if (v246)
+  analyticsChargeInfo8 = [(DBAnalytics *)v336 analyticsChargeInfo];
+  current = [analyticsChargeInfo8 current];
+  v247 = current;
+  if (current)
   {
-    v248 = v246;
+    v248 = current;
   }
 
   else
@@ -2760,20 +2760,20 @@ LABEL_51:
   }
 
   v249 = v248;
-  [v114 setObject:v249 forKeyedSubscript:@"adapterCurrent"];
+  [dictionary3 setObject:v249 forKeyedSubscript:@"adapterCurrent"];
 
-  v250 = [(DBAnalytics *)v336 analyticsChargeInfo];
-  [v250 accumulatedTimeForKey:@"CARAnalyticsChargingTime"];
+  analyticsChargeInfo9 = [(DBAnalytics *)v336 analyticsChargeInfo];
+  [analyticsChargeInfo9 accumulatedTimeForKey:@"CARAnalyticsChargingTime"];
   *&v251 = v251;
   v252 = [MEMORY[0x277CCABB0] numberWithFloat:v251];
-  [v114 setObject:v252 forKeyedSubscript:@"deviceChargeDuration"];
+  [dictionary3 setObject:v252 forKeyedSubscript:@"deviceChargeDuration"];
 
-  v253 = [(DBAnalytics *)v336 analyticsChargeInfo];
-  v254 = [v253 sessionChargingStates];
-  v255 = v254;
-  if (v254)
+  analyticsChargeInfo10 = [(DBAnalytics *)v336 analyticsChargeInfo];
+  sessionChargingStates = [analyticsChargeInfo10 sessionChargingStates];
+  v255 = sessionChargingStates;
+  if (sessionChargingStates)
   {
-    v256 = v254;
+    v256 = sessionChargingStates;
   }
 
   else
@@ -2782,14 +2782,14 @@ LABEL_51:
   }
 
   v257 = v256;
-  [v114 setObject:v257 forKeyedSubscript:@"sessionChargingStates"];
+  [dictionary3 setObject:v257 forKeyedSubscript:@"sessionChargingStates"];
 
-  v258 = [(DBAnalytics *)v336 analyticsChargeInfo];
-  v259 = [v258 adapterFamily];
-  v260 = v259;
-  if (v259)
+  analyticsChargeInfo11 = [(DBAnalytics *)v336 analyticsChargeInfo];
+  adapterFamily = [analyticsChargeInfo11 adapterFamily];
+  v260 = adapterFamily;
+  if (adapterFamily)
   {
-    v261 = v259;
+    v261 = adapterFamily;
   }
 
   else
@@ -2798,19 +2798,19 @@ LABEL_51:
   }
 
   v262 = v261;
-  [v114 setObject:v262 forKeyedSubscript:@"deviceChargingAdapterFamily"];
+  [dictionary3 setObject:v262 forKeyedSubscript:@"deviceChargingAdapterFamily"];
 
-  v263 = [(DBAnalytics *)v336 analyticsChargeInfo];
-  v264 = [v263 startingBatteryPercentage];
-  [v114 setObject:v264 forKeyedSubscript:@"startingBatteryPercentage"];
+  analyticsChargeInfo12 = [(DBAnalytics *)v336 analyticsChargeInfo];
+  startingBatteryPercentage = [analyticsChargeInfo12 startingBatteryPercentage];
+  [dictionary3 setObject:startingBatteryPercentage forKeyedSubscript:@"startingBatteryPercentage"];
 
   *buf = 0;
   IOPSGetPercentRemaining();
   v265 = [MEMORY[0x277CCABB0] numberWithInteger:*buf];
-  [v114 setObject:v265 forKeyedSubscript:@"batteryPercentage"];
+  [dictionary3 setObject:v265 forKeyedSubscript:@"batteryPercentage"];
 
-  v266 = [(DBAnalytics *)v336 dictionaryFromInterrupt];
-  v267 = [(DBAnalytics *)v336 stringFromInterruptDictionary:v266];
+  dictionaryFromInterrupt = [(DBAnalytics *)v336 dictionaryFromInterrupt];
+  v267 = [(DBAnalytics *)v336 stringFromInterruptDictionary:dictionaryFromInterrupt];
   v268 = v267;
   if (v267)
   {
@@ -2823,13 +2823,13 @@ LABEL_51:
   }
 
   v270 = v269;
-  [v114 setObject:v270 forKeyedSubscript:@"sessionInterrupt"];
+  [dictionary3 setObject:v270 forKeyedSubscript:@"sessionInterrupt"];
 
-  v271 = [(DBAnalytics *)v336 stringFromSessionSummary];
-  v272 = v271;
-  if (v271)
+  stringFromSessionSummary = [(DBAnalytics *)v336 stringFromSessionSummary];
+  v272 = stringFromSessionSummary;
+  if (stringFromSessionSummary)
   {
-    v273 = v271;
+    v273 = stringFromSessionSummary;
   }
 
   else
@@ -2838,7 +2838,7 @@ LABEL_51:
   }
 
   v274 = v273;
-  [v114 setObject:v274 forKeyedSubscript:@"sessionSummary"];
+  [dictionary3 setObject:v274 forKeyedSubscript:@"sessionSummary"];
 
   v275 = [MEMORY[0x277CF89F0] descriptionForUserInterfaceStyle:{-[DBAnalytics mapsAppearanceStyle](v336, "mapsAppearanceStyle")}];
   v276 = v275;
@@ -2853,13 +2853,13 @@ LABEL_51:
   }
 
   v278 = v277;
-  [v114 setObject:v278 forKeyedSubscript:@"preferredMapsAppearance"];
+  [dictionary3 setObject:v278 forKeyedSubscript:@"preferredMapsAppearance"];
 
-  v279 = [(DBAnalytics *)v336 sessionThermalLevels];
-  v280 = v279;
-  if (v279)
+  sessionThermalLevels = [(DBAnalytics *)v336 sessionThermalLevels];
+  v280 = sessionThermalLevels;
+  if (sessionThermalLevels)
   {
-    v281 = v279;
+    v281 = sessionThermalLevels;
   }
 
   else
@@ -2868,100 +2868,100 @@ LABEL_51:
   }
 
   v282 = v281;
-  [v114 setObject:v282 forKeyedSubscript:@"sessionThermalLevels"];
+  [dictionary3 setObject:v282 forKeyedSubscript:@"sessionThermalLevels"];
 
-  v283 = [(DBAnalytics *)v336 connectionTimeStore];
-  if (v283)
+  connectionTimeStore = [(DBAnalytics *)v336 connectionTimeStore];
+  if (connectionTimeStore)
   {
-    v284 = v283;
+    v284 = connectionTimeStore;
     v285 = CRIsInternalInstall();
 
     if (v285)
     {
       v286 = MEMORY[0x277CF8990];
-      v287 = [MEMORY[0x277CBEAA8] date];
-      v288 = [v114 copy];
-      v289 = [v286 eventWithName:@"CARConnectionEventSessionDetails" type:0 date:v287 payload:v288];
+      date4 = [MEMORY[0x277CBEAA8] date];
+      v288 = [dictionary3 copy];
+      v289 = [v286 eventWithName:@"CARConnectionEventSessionDetails" type:0 date:date4 payload:v288];
 
-      v290 = [(DBAnalytics *)v336 connectionTimeStore];
-      [v290 sendConnectionEvent:v289 completion:&__block_literal_global_547];
+      connectionTimeStore2 = [(DBAnalytics *)v336 connectionTimeStore];
+      [connectionTimeStore2 sendConnectionEvent:v289 completion:&__block_literal_global_547];
     }
   }
 
-  v291 = [(DBAnalytics *)v336 firstFrameTimestamp];
+  firstFrameTimestamp = [(DBAnalytics *)v336 firstFrameTimestamp];
 
-  if (v291)
+  if (firstFrameTimestamp)
   {
     v292 = MEMORY[0x277CCACA8];
-    v293 = [(DBAnalytics *)v336 sessionStartDate];
-    v294 = [(DBAnalytics *)v336 firstFrameTimestamp];
-    [v293 DBSecondsToDate:v294];
-    v296 = [v292 stringWithFormat:@"%.03f", v295];
+    sessionStartDate3 = [(DBAnalytics *)v336 sessionStartDate];
+    firstFrameTimestamp2 = [(DBAnalytics *)v336 firstFrameTimestamp];
+    [sessionStartDate3 DBSecondsToDate:firstFrameTimestamp2];
+    v295 = [v292 stringWithFormat:@"%.03f", v295];
 
     v297 = @"(no value)";
-    if (v296)
+    if (v295)
     {
-      v297 = v296;
+      v297 = v295;
     }
 
     v298 = v297;
-    [v114 setObject:v298 forKeyedSubscript:@"firstVideoFrameOffsetFromEndpointActivation"];
+    [dictionary3 setObject:v298 forKeyedSubscript:@"firstVideoFrameOffsetFromEndpointActivation"];
   }
 
-  v299 = [(DBAnalytics *)v336 mainDisplayReadyTimestamp];
-  if (v299)
+  mainDisplayReadyTimestamp = [(DBAnalytics *)v336 mainDisplayReadyTimestamp];
+  if (mainDisplayReadyTimestamp)
   {
-    v300 = v299;
-    v301 = [(DBAnalytics *)v336 carPlayUIReadyTimestamp];
-    if (!v301)
+    v309 = mainDisplayReadyTimestamp;
+    carPlayUIReadyTimestamp = [(DBAnalytics *)v336 carPlayUIReadyTimestamp];
+    if (!carPlayUIReadyTimestamp)
     {
 LABEL_187:
 
       goto LABEL_188;
     }
 
-    v302 = v301;
-    v303 = [(DBAnalytics *)v336 mainDisplayReadyTimestamp];
-    v304 = [(DBAnalytics *)v336 carPlayUIReadyTimestamp];
-    v305 = [v303 compare:v304];
+    v302 = carPlayUIReadyTimestamp;
+    mainDisplayReadyTimestamp2 = [(DBAnalytics *)v336 mainDisplayReadyTimestamp];
+    carPlayUIReadyTimestamp2 = [(DBAnalytics *)v336 carPlayUIReadyTimestamp];
+    v305 = [mainDisplayReadyTimestamp2 compare:carPlayUIReadyTimestamp2];
 
     v159 = v336;
     if (v305 == -1)
     {
       v306 = MEMORY[0x277CCACA8];
-      v307 = [(DBAnalytics *)v336 mainDisplayReadyTimestamp];
-      v308 = [(DBAnalytics *)v336 carPlayUIReadyTimestamp];
-      [v307 DBSecondsToDate:v308];
-      v300 = [v306 stringWithFormat:@"%.03f", v309];
+      mainDisplayReadyTimestamp3 = [(DBAnalytics *)v336 mainDisplayReadyTimestamp];
+      carPlayUIReadyTimestamp3 = [(DBAnalytics *)v336 carPlayUIReadyTimestamp];
+      [mainDisplayReadyTimestamp3 DBSecondsToDate:carPlayUIReadyTimestamp3];
+      v309 = [v306 stringWithFormat:@"%.03f", v309];
 
       v310 = @"(no value)";
-      if (v300)
+      if (v309)
       {
-        v310 = v300;
+        v310 = v309;
       }
 
       v311 = v310;
-      [v114 setObject:v311 forKeyedSubscript:@"carPlayAppBringUpTimeInterval"];
+      [dictionary3 setObject:v311 forKeyedSubscript:@"carPlayAppBringUpTimeInterval"];
 
       goto LABEL_187;
     }
   }
 
 LABEL_188:
-  v312 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v312 setObject:v266 forKey:@"CARAnalyticsSessionInterruptKey"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setObject:dictionaryFromInterrupt forKey:@"CARAnalyticsSessionInterruptKey"];
 
   v339 = 0u;
   v340 = 0u;
   v337 = 0u;
   v338 = 0u;
-  v313 = [(DBAnalytics *)v159 analyticsScreenInfo];
-  v314 = [v313 countByEnumeratingWithState:&v337 objects:v361 count:16];
+  analyticsScreenInfo = [(DBAnalytics *)v159 analyticsScreenInfo];
+  v314 = [analyticsScreenInfo countByEnumeratingWithState:&v337 objects:v361 count:16];
   v315 = MEMORY[0x277CBEC28];
   if (v314)
   {
     v316 = v314;
-    obja = v266;
+    obja = dictionaryFromInterrupt;
     v317 = 0;
     v318 = *v338;
     do
@@ -2970,24 +2970,24 @@ LABEL_188:
       {
         if (*v338 != v318)
         {
-          objc_enumerationMutation(v313);
+          objc_enumerationMutation(analyticsScreenInfo);
         }
 
         v320 = *(*(&v337 + 1) + 8 * m);
         [v320 stopCountingTimeForAllKeys];
-        v321 = [v320 analytics_sessionEndedDictionaryRepresentation];
-        if (v321)
+        analytics_sessionEndedDictionaryRepresentation = [v320 analytics_sessionEndedDictionaryRepresentation];
+        if (analytics_sessionEndedDictionaryRepresentation)
         {
-          [v114 addEntriesFromDictionary:v321];
+          [dictionary3 addEntriesFromDictionary:analytics_sessionEndedDictionaryRepresentation];
         }
 
-        v322 = [v320 screenInfo];
-        v323 = [v322 screenType] == 1;
+        screenInfo = [v320 screenInfo];
+        v323 = [screenInfo screenType] == 1;
 
         v317 |= v323;
       }
 
-      v316 = [v313 countByEnumeratingWithState:&v337 objects:v361 count:16];
+      v316 = [analyticsScreenInfo countByEnumeratingWithState:&v337 objects:v361 count:16];
     }
 
     while (v316);
@@ -2997,18 +2997,18 @@ LABEL_188:
       v315 = MEMORY[0x277CBEC38];
     }
 
-    v266 = obja;
+    dictionaryFromInterrupt = obja;
   }
 
   v324 = v315;
-  [v114 setObject:v324 forKeyedSubscript:@"secondVideoStream"];
+  [dictionary3 setObject:v324 forKeyedSubscript:@"secondVideoStream"];
 
-  v325 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v326 = [v325 dictionaryForKey:@"DBDefaultsSessionEndedStorageKey"];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v326 = [standardUserDefaults2 dictionaryForKey:@"DBDefaultsSessionEndedStorageKey"];
 
   v327 = [v326 count];
-  v328 = DBLogForCategory(0xDuLL);
-  v329 = os_log_type_enabled(v328, OS_LOG_TYPE_DEFAULT);
+  standardUserDefaults3 = DBLogForCategory(0xDuLL);
+  v329 = os_log_type_enabled(standardUserDefaults3, OS_LOG_TYPE_DEFAULT);
   if (v327)
   {
     v330 = v336;
@@ -3017,12 +3017,12 @@ LABEL_188:
       v331 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v326, "count")}];
       *buf = 138412290;
       v360 = v331;
-      _os_log_impl(&dword_248146000, v328, OS_LOG_TYPE_DEFAULT, "Applying %@ donated values to sessionEnded event", buf, 0xCu);
+      _os_log_impl(&dword_248146000, standardUserDefaults3, OS_LOG_TYPE_DEFAULT, "Applying %@ donated values to sessionEnded event", buf, 0xCu);
     }
 
-    [v114 setValuesForKeysWithDictionary:v326];
-    v328 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v328 removeObjectForKey:@"DBDefaultsSessionEndedStorageKey"];
+    [dictionary3 setValuesForKeysWithDictionary:v326];
+    standardUserDefaults3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults3 removeObjectForKey:@"DBDefaultsSessionEndedStorageKey"];
   }
 
   else
@@ -3032,13 +3032,13 @@ LABEL_188:
     {
       *buf = 138412290;
       v360 = @"DBDefaultsSessionEndedStorageKey";
-      _os_log_impl(&dword_248146000, v328, OS_LOG_TYPE_DEFAULT, "No available donated analytics events for key %@", buf, 0xCu);
+      _os_log_impl(&dword_248146000, standardUserDefaults3, OS_LOG_TYPE_DEFAULT, "No available donated analytics events for key %@", buf, 0xCu);
     }
   }
 
-  [(DBAnalytics *)v330 sendEvent:5 withParameters:v114];
+  [(DBAnalytics *)v330 sendEvent:5 withParameters:dictionary3];
   v332 = objc_opt_class();
-  v333 = [v114 objectForKeyedSubscript:@"transports"];
+  v333 = [dictionary3 objectForKeyedSubscript:@"transports"];
   [v332 biome_CarPlayStarted:0 wireless:{objc_msgSend(v333, "isEqualToString:", @"Wireless"}];
 
   [(DBAnalytics *)v330 setSessionStartDate:0];
@@ -3140,16 +3140,16 @@ void __34__DBAnalytics__queue_sessionEnded__block_invoke_544(uint64_t a1, int a2
   }
 }
 
-- (void)preferences:(id)a3 carPlayAnnounceEnablementTypeChanged:(int64_t)a4
+- (void)preferences:(id)preferences carPlayAnnounceEnablementTypeChanged:(int64_t)changed
 {
-  v6 = [(DBAnalytics *)self analyticsQueue];
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__DBAnalytics_preferences_carPlayAnnounceEnablementTypeChanged___block_invoke;
   v7[3] = &unk_278F02748;
   v7[4] = self;
-  v7[5] = a4;
-  [v6 addOperationWithBlock:v7];
+  v7[5] = changed;
+  [analyticsQueue addOperationWithBlock:v7];
 }
 
 uint64_t __64__DBAnalytics_preferences_carPlayAnnounceEnablementTypeChanged___block_invoke(uint64_t a1)
@@ -3167,16 +3167,16 @@ uint64_t __64__DBAnalytics_preferences_carPlayAnnounceEnablementTypeChanged___bl
   return [*(a1 + 32) _queue_sendAnnounceMessagesEvent];
 }
 
-- (void)preferences:(id)a3 announceNotificationsInCarPlayTemporarilyDisabledChanged:(BOOL)a4
+- (void)preferences:(id)preferences announceNotificationsInCarPlayTemporarilyDisabledChanged:(BOOL)changed
 {
-  v6 = [(DBAnalytics *)self analyticsQueue];
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __84__DBAnalytics_preferences_announceNotificationsInCarPlayTemporarilyDisabledChanged___block_invoke;
   v7[3] = &unk_278F017F8;
-  v8 = a4;
+  changedCopy = changed;
   v7[4] = self;
-  [v6 addOperationWithBlock:v7];
+  [analyticsQueue addOperationWithBlock:v7];
 }
 
 uint64_t __84__DBAnalytics_preferences_announceNotificationsInCarPlayTemporarilyDisabledChanged___block_invoke(uint64_t a1)
@@ -3197,16 +3197,16 @@ uint64_t __84__DBAnalytics_preferences_announceNotificationsInCarPlayTemporarily
 - (void)_queue_sendAnnounceMessagesEvent
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v3 = [(DBAnalytics *)self announceMessagesState];
+  announceMessagesState = [(DBAnalytics *)self announceMessagesState];
   v15[0] = @"announceSettings";
   v15[1] = @"nextGenCarPlaySession";
-  v16[0] = v3;
-  v4 = [(DBAnalytics *)self environmentConfiguration];
-  v5 = [v4 session];
-  v6 = [v5 configuration];
-  v7 = [v6 supportsVehicleData];
+  v16[0] = announceMessagesState;
+  environmentConfiguration = [(DBAnalytics *)self environmentConfiguration];
+  session = [environmentConfiguration session];
+  configuration = [session configuration];
+  supportsVehicleData = [configuration supportsVehicleData];
   v8 = MEMORY[0x277CBEC28];
-  if (v7)
+  if (supportsVehicleData)
   {
     v8 = MEMORY[0x277CBEC38];
   }
@@ -3221,15 +3221,15 @@ uint64_t __84__DBAnalytics_preferences_announceNotificationsInCarPlayTemporarily
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v3;
+    v14 = announceMessagesState;
     _os_log_impl(&dword_248146000, v12, OS_LOG_TYPE_DEFAULT, "Announce Messages: %@", &v13, 0xCu);
   }
 }
 
 - (id)announceMessagesState
 {
-  v3 = [(DBAnalytics *)self siriPreferences];
-  [v3 carPlayAnnounceEnablementType];
+  siriPreferences = [(DBAnalytics *)self siriPreferences];
+  [siriPreferences carPlayAnnounceEnablementType];
   v4 = AFSiriCarPlayAnnounceEnablementTypeGetName();
   v5 = v4;
   v6 = @"unknown";
@@ -3240,10 +3240,10 @@ uint64_t __84__DBAnalytics_preferences_announceNotificationsInCarPlayTemporarily
 
   v7 = v6;
 
-  v8 = [(DBAnalytics *)self siriPreferences];
-  v9 = [v8 announceNotificationsInCarPlayTemporarilyDisabled];
+  siriPreferences2 = [(DBAnalytics *)self siriPreferences];
+  announceNotificationsInCarPlayTemporarilyDisabled = [siriPreferences2 announceNotificationsInCarPlayTemporarilyDisabled];
 
-  if (v9)
+  if (announceNotificationsInCarPlayTemporarilyDisabled)
   {
     v10 = @":Muted";
   }
@@ -3258,18 +3258,18 @@ uint64_t __84__DBAnalytics_preferences_announceNotificationsInCarPlayTemporarily
   return v11;
 }
 
-- (void)environmentConfigurationPairedVehiclesDidChange:(id)a3
+- (void)environmentConfigurationPairedVehiclesDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(DBAnalytics *)self analyticsQueue];
+  changeCopy = change;
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__DBAnalytics_environmentConfigurationPairedVehiclesDidChange___block_invoke;
   v7[3] = &unk_278F014B8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 addOperationWithBlock:v7];
+  v8 = changeCopy;
+  selfCopy = self;
+  v6 = changeCopy;
+  [analyticsQueue addOperationWithBlock:v7];
 }
 
 void __63__DBAnalytics_environmentConfigurationPairedVehiclesDidChange___block_invoke(uint64_t a1)
@@ -3315,11 +3315,11 @@ void __63__DBAnalytics_environmentConfigurationPairedVehiclesDidChange___block_i
   }
 }
 
-- (void)_queue_deviceDidChangeToBundleIdentifier:(id)a3
+- (void)_queue_deviceDidChangeToBundleIdentifier:(id)identifier
 {
-  v8 = a3;
-  v4 = [(DBAnalytics *)self sessionDeviceAppLaunches];
-  v5 = [v4 objectForKey:v8];
+  identifierCopy = identifier;
+  sessionDeviceAppLaunches = [(DBAnalytics *)self sessionDeviceAppLaunches];
+  v5 = [sessionDeviceAppLaunches objectForKey:identifierCopy];
 
   if (v5)
   {
@@ -3331,37 +3331,37 @@ void __63__DBAnalytics_environmentConfigurationPairedVehiclesDidChange___block_i
     v6 = &unk_285AA4868;
   }
 
-  v7 = [(DBAnalytics *)self sessionDeviceAppLaunches];
-  [v7 setObject:v6 forKey:v8];
+  sessionDeviceAppLaunches2 = [(DBAnalytics *)self sessionDeviceAppLaunches];
+  [sessionDeviceAppLaunches2 setObject:v6 forKey:identifierCopy];
 }
 
-- (void)_queue_didChangeToBundleIdentifier:(id)a3
+- (void)_queue_didChangeToBundleIdentifier:(id)identifier
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(DBAnalytics *)self setLastActiveBundleIdentifier:v4];
+  identifierCopy = identifier;
+  [(DBAnalytics *)self setLastActiveBundleIdentifier:identifierCopy];
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
   v40 = __Block_byref_object_copy__6;
   v41 = __Block_byref_object_dispose__6;
-  v42 = v4;
+  v42 = identifierCopy;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__DBAnalytics__queue_didChangeToBundleIdentifier___block_invoke;
   block[3] = &unk_278F03F90;
   block[4] = &v37;
-  v5 = v4;
+  v5 = identifierCopy;
   dispatch_sync(MEMORY[0x277D85CD0], block);
   v6 = v38[5];
 
   if ([v6 isEqualToString:@"com.apple.CarPlay.dashboard"])
   {
-    v7 = [(DBAnalytics *)self lastDashboardNavigationBundleIdentifier];
-    [(DBAnalytics *)self dashboardNavigationDidChangeToBundleIdentifier:v7];
+    lastDashboardNavigationBundleIdentifier = [(DBAnalytics *)self lastDashboardNavigationBundleIdentifier];
+    [(DBAnalytics *)self dashboardNavigationDidChangeToBundleIdentifier:lastDashboardNavigationBundleIdentifier];
 
-    v8 = [(DBAnalytics *)self lastDashboardAudioWidgetBundleIdentifier];
-    [(DBAnalytics *)self dashboardAudioWidgetDidChangeToBundleIdentifier:v8];
+    lastDashboardAudioWidgetBundleIdentifier = [(DBAnalytics *)self lastDashboardAudioWidgetBundleIdentifier];
+    [(DBAnalytics *)self dashboardAudioWidgetDidChangeToBundleIdentifier:lastDashboardAudioWidgetBundleIdentifier];
   }
 
   else
@@ -3370,8 +3370,8 @@ void __63__DBAnalytics_environmentConfigurationPairedVehiclesDidChange___block_i
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v8 = [(DBAnalytics *)self visibleDashboardAppsAnalyticsInfo];
-    v9 = [v8 countByEnumeratingWithState:&v32 objects:v44 count:16];
+    lastDashboardAudioWidgetBundleIdentifier = [(DBAnalytics *)self visibleDashboardAppsAnalyticsInfo];
+    v9 = [lastDashboardAudioWidgetBundleIdentifier countByEnumeratingWithState:&v32 objects:v44 count:16];
     if (v9)
     {
       v10 = *v33;
@@ -3382,14 +3382,14 @@ void __63__DBAnalytics_environmentConfigurationPairedVehiclesDidChange___block_i
         {
           if (*v33 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(lastDashboardAudioWidgetBundleIdentifier);
           }
 
           [*(*(&v32 + 1) + 8 * v11++) stopCountingDashboardVisibleTime];
         }
 
         while (v9 != v11);
-        v9 = [v8 countByEnumeratingWithState:&v32 objects:v44 count:16];
+        v9 = [lastDashboardAudioWidgetBundleIdentifier countByEnumeratingWithState:&v32 objects:v44 count:16];
       }
 
       while (v9);
@@ -3400,8 +3400,8 @@ void __63__DBAnalytics_environmentConfigurationPairedVehiclesDidChange___block_i
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v12 = [(DBAnalytics *)self visibleAppsAnalyticsInfo];
-  v13 = [v12 countByEnumeratingWithState:&v28 objects:v43 count:16];
+  visibleAppsAnalyticsInfo = [(DBAnalytics *)self visibleAppsAnalyticsInfo];
+  v13 = [visibleAppsAnalyticsInfo countByEnumeratingWithState:&v28 objects:v43 count:16];
   if (v13)
   {
     v14 = *v29;
@@ -3412,14 +3412,14 @@ void __63__DBAnalytics_environmentConfigurationPairedVehiclesDidChange___block_i
       {
         if (*v29 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(visibleAppsAnalyticsInfo);
         }
 
         [*(*(&v28 + 1) + 8 * v15++) stopCountingVisibleTime];
       }
 
       while (v13 != v15);
-      v13 = [v12 countByEnumeratingWithState:&v28 objects:v43 count:16];
+      v13 = [visibleAppsAnalyticsInfo countByEnumeratingWithState:&v28 objects:v43 count:16];
     }
 
     while (v13);
@@ -3436,19 +3436,19 @@ void __63__DBAnalytics_environmentConfigurationPairedVehiclesDidChange___block_i
 
   if (v17)
   {
-    v18 = [v17 info];
-    v19 = [(DBAnalytics *)self appAnalyticsInfoForApp:v18];
+    info = [v17 info];
+    v19 = [(DBAnalytics *)self appAnalyticsInfoForApp:info];
 
     if (!v19)
     {
       v20 = [_DBAnalyticsAppInfo alloc];
-      v21 = [v17 info];
+      info2 = [v17 info];
       v22 = +[DBApplicationController sharedInstance];
-      v23 = [v22 _appPolicyEvaluator];
-      v19 = [(_DBAnalyticsAppInfo *)v20 initWithAppInfo:v21 policyEvaluator:v23];
+      _appPolicyEvaluator = [v22 _appPolicyEvaluator];
+      v19 = [(_DBAnalyticsAppInfo *)v20 initWithAppInfo:info2 policyEvaluator:_appPolicyEvaluator];
 
-      v24 = [(DBAnalytics *)self analyticsAppInfo];
-      [v24 addObject:v19];
+      analyticsAppInfo = [(DBAnalytics *)self analyticsAppInfo];
+      [analyticsAppInfo addObject:v19];
       goto LABEL_25;
     }
 
@@ -3467,11 +3467,11 @@ LABEL_26:
 
   v25 = [_DBAnalyticsAppInfo alloc];
   v26 = +[DBApplicationController sharedInstance];
-  v27 = [v26 _appPolicyEvaluator];
-  v19 = [(_DBAnalyticsAppInfo *)v25 initWithBundleIdentifier:v6 appDeclaration:0 policyEvaluator:v27];
+  _appPolicyEvaluator2 = [v26 _appPolicyEvaluator];
+  v19 = [(_DBAnalyticsAppInfo *)v25 initWithBundleIdentifier:v6 appDeclaration:0 policyEvaluator:_appPolicyEvaluator2];
 
-  v24 = [(DBAnalytics *)self analyticsAppInfo];
-  [v24 addObject:v19];
+  analyticsAppInfo = [(DBAnalytics *)self analyticsAppInfo];
+  [analyticsAppInfo addObject:v19];
 LABEL_25:
 
   if (v19)
@@ -3522,49 +3522,49 @@ uint64_t __50__DBAnalytics__queue_didChangeToBundleIdentifier___block_invoke(uin
   return result;
 }
 
-- (void)_queue_nowPlayingUpdatedToApp:(id)a3 isPlaying:(BOOL)a4
+- (void)_queue_nowPlayingUpdatedToApp:(id)app isPlaying:(BOOL)playing
 {
-  v4 = a4;
-  v15 = a3;
-  v6 = [(DBAnalytics *)self nowPlayingAppAnalyticsInfo];
-  v7 = v6;
-  if (v6)
+  playingCopy = playing;
+  appCopy = app;
+  nowPlayingAppAnalyticsInfo = [(DBAnalytics *)self nowPlayingAppAnalyticsInfo];
+  v7 = nowPlayingAppAnalyticsInfo;
+  if (nowPlayingAppAnalyticsInfo)
   {
-    [v6 stopCountingTimeForKey:@"CARAnalyticsPlaybackTime"];
+    [nowPlayingAppAnalyticsInfo stopCountingTimeForKey:@"CARAnalyticsPlaybackTime"];
   }
 
-  if (v4)
+  if (playingCopy)
   {
-    v8 = [v15 info];
-    v9 = [(DBAnalytics *)self appAnalyticsInfoForApp:v8];
+    info = [appCopy info];
+    v9 = [(DBAnalytics *)self appAnalyticsInfoForApp:info];
 
     if (!v9)
     {
       v10 = [_DBAnalyticsAppInfo alloc];
-      v11 = [v15 info];
+      info2 = [appCopy info];
       v12 = +[DBApplicationController sharedInstance];
-      v13 = [v12 _appPolicyEvaluator];
-      v9 = [(_DBAnalyticsAppInfo *)v10 initWithAppInfo:v11 policyEvaluator:v13];
+      _appPolicyEvaluator = [v12 _appPolicyEvaluator];
+      v9 = [(_DBAnalyticsAppInfo *)v10 initWithAppInfo:info2 policyEvaluator:_appPolicyEvaluator];
 
-      v14 = [(DBAnalytics *)self analyticsAppInfo];
-      [v14 addObject:v9];
+      analyticsAppInfo = [(DBAnalytics *)self analyticsAppInfo];
+      [analyticsAppInfo addObject:v9];
     }
 
     [(_DBAnalyticsTimeAccumulator *)v9 startCountingTimeForKey:@"CARAnalyticsPlaybackTime"];
   }
 }
 
-- (void)_queue_screenViewAreaChanged:(id)a3 screenInfo:(id)a4 configuration:(id)a5 duration:(double)a6
+- (void)_queue_screenViewAreaChanged:(id)changed screenInfo:(id)info configuration:(id)configuration duration:(double)duration
 {
   v67 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  changedCopy = changed;
+  infoCopy = info;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v11 = [(DBAnalytics *)self analyticsScreenInfo];
-  v12 = [v11 countByEnumeratingWithState:&v61 objects:v66 count:16];
+  analyticsScreenInfo = [(DBAnalytics *)self analyticsScreenInfo];
+  v12 = [analyticsScreenInfo countByEnumeratingWithState:&v61 objects:v66 count:16];
   if (v12)
   {
     v13 = v12;
@@ -3575,17 +3575,17 @@ uint64_t __50__DBAnalytics__queue_didChangeToBundleIdentifier___block_invoke(uin
       {
         if (*v62 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(analyticsScreenInfo);
         }
 
         v16 = *(*(&v61 + 1) + 8 * i);
-        v17 = [v16 screenInfo];
-        v18 = [v17 isEqual:v10];
+        screenInfo = [v16 screenInfo];
+        v18 = [screenInfo isEqual:infoCopy];
 
         if (v18)
         {
-          v19 = [MEMORY[0x277CBEB38] dictionary];
-          if ([v10 screenType])
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
+          if ([infoCopy screenType])
           {
             v20 = @"Other";
           }
@@ -3595,27 +3595,27 @@ uint64_t __50__DBAnalytics__queue_didChangeToBundleIdentifier___block_invoke(uin
             v20 = @"Main";
           }
 
-          [v19 setObject:v20 forKeyedSubscript:@"screenType"];
-          *&v21 = a6;
+          [dictionary setObject:v20 forKeyedSubscript:@"screenType"];
+          *&v21 = duration;
           v22 = [MEMORY[0x277CCABB0] numberWithFloat:v21];
-          [v19 setObject:v22 forKeyedSubscript:@"duration"];
+          [dictionary setObject:v22 forKeyedSubscript:@"duration"];
 
-          v23 = [v16 indexOfLargestViewArea];
+          indexOfLargestViewArea = [v16 indexOfLargestViewArea];
           v24 = MEMORY[0x277CBEC28];
           v25 = MEMORY[0x277CBEC38];
           v26 = MEMORY[0x277CBEC28];
-          if (v23 != 0x7FFFFFFFFFFFFFFFLL)
+          if (indexOfLargestViewArea != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v27 = v23;
-            v28 = [v10 viewAreas];
-            v29 = [v28 objectAtIndexedSubscript:v27];
+            v27 = indexOfLargestViewArea;
+            viewAreas = [infoCopy viewAreas];
+            v29 = [viewAreas objectAtIndexedSubscript:v27];
             [v29 visibleFrame];
             v31 = v30;
             v33 = v32;
             v35 = v34;
             v37 = v36;
 
-            [v9 visibleFrame];
+            [changedCopy visibleFrame];
             v69.origin.x = v38;
             v69.origin.y = v39;
             v69.size.width = v40;
@@ -3635,16 +3635,16 @@ uint64_t __50__DBAnalytics__queue_didChangeToBundleIdentifier___block_invoke(uin
             }
           }
 
-          [v19 setObject:v26 forKeyedSubscript:@"isFullScreen"];
-          v42 = [v10 viewAreas];
-          v43 = [v42 count];
+          [dictionary setObject:v26 forKeyedSubscript:@"isFullScreen"];
+          viewAreas2 = [infoCopy viewAreas];
+          v43 = [viewAreas2 count];
           v44 = [MEMORY[0x277CCABB0] numberWithInteger:v43];
-          [v19 setObject:v44 forKeyedSubscript:@"viewAreaCount"];
+          [dictionary setObject:v44 forKeyedSubscript:@"viewAreaCount"];
 
-          v45 = [(DBAnalytics *)self environmentConfiguration];
-          v46 = [v45 session];
-          v47 = [v46 configuration];
-          if ([v47 supportsVehicleData])
+          environmentConfiguration = [(DBAnalytics *)self environmentConfiguration];
+          session = [environmentConfiguration session];
+          configuration = [session configuration];
+          if ([configuration supportsVehicleData])
           {
             v48 = v25;
           }
@@ -3654,14 +3654,14 @@ uint64_t __50__DBAnalytics__queue_didChangeToBundleIdentifier___block_invoke(uin
             v48 = v24;
           }
 
-          [v19 setObject:v48 forKeyedSubscript:@"nextGenCarPlaySession"];
+          [dictionary setObject:v48 forKeyedSubscript:@"nextGenCarPlaySession"];
 
-          [(DBAnalytics *)self sendEvent:2 withParameters:v19];
+          [(DBAnalytics *)self sendEvent:2 withParameters:dictionary];
           goto LABEL_21;
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v61 objects:v66 count:16];
+      v13 = [analyticsScreenInfo countByEnumeratingWithState:&v61 objects:v66 count:16];
       if (v13)
       {
         continue;
@@ -3677,8 +3677,8 @@ LABEL_21:
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v49 = [(DBAnalytics *)self analyticsScreenInfo];
-  v50 = [v49 countByEnumeratingWithState:&v57 objects:v65 count:16];
+  analyticsScreenInfo2 = [(DBAnalytics *)self analyticsScreenInfo];
+  v50 = [analyticsScreenInfo2 countByEnumeratingWithState:&v57 objects:v65 count:16];
   if (v50)
   {
     v51 = v50;
@@ -3689,18 +3689,18 @@ LABEL_21:
       {
         if (*v58 != v52)
         {
-          objc_enumerationMutation(v49);
+          objc_enumerationMutation(analyticsScreenInfo2);
         }
 
         v54 = *(*(&v57 + 1) + 8 * j);
-        v55 = [v54 screenInfo];
-        v56 = [v55 isEqual:v10];
+        screenInfo2 = [v54 screenInfo];
+        v56 = [screenInfo2 isEqual:infoCopy];
 
         if (v56)
         {
           [v54 setViewAreaChangeCount:{objc_msgSend(v54, "viewAreaChangeCount") + 1}];
           [v54 stopCountingTimeForAllKeys];
-          [v54 startCountingTimeForViewArea:v9];
+          [v54 startCountingTimeForViewArea:changedCopy];
         }
 
         else
@@ -3709,31 +3709,31 @@ LABEL_21:
         }
       }
 
-      v51 = [v49 countByEnumeratingWithState:&v57 objects:v65 count:16];
+      v51 = [analyticsScreenInfo2 countByEnumeratingWithState:&v57 objects:v65 count:16];
     }
 
     while (v51);
   }
 }
 
-- (void)_applicationDidLaunch:(id)a3
+- (void)_applicationDidLaunch:(id)launch
 {
-  v4 = [a3 object];
-  if (![v4 integerValue])
+  object = [launch object];
+  if (![object integerValue])
   {
 
-    v4 = &unk_285AA4838;
+    object = &unk_285AA4838;
   }
 
-  v5 = [(DBAnalytics *)self analyticsQueue];
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__DBAnalytics__applicationDidLaunch___block_invoke;
   v7[3] = &unk_278F014B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 addOperationWithBlock:v7];
+  v8 = object;
+  v6 = object;
+  [analyticsQueue addOperationWithBlock:v7];
 }
 
 void __37__DBAnalytics__applicationDidLaunch___block_invoke(uint64_t a1)
@@ -3755,18 +3755,18 @@ void __37__DBAnalytics__applicationDidLaunch___block_invoke(uint64_t a1)
   [v10 setObject:v9 forKeyedSubscript:@"total"];
 }
 
-- (void)_dashboardSmartWidgetUpdated:(id)a3
+- (void)_dashboardSmartWidgetUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [(DBAnalytics *)self analyticsQueue];
+  updatedCopy = updated;
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__DBAnalytics__dashboardSmartWidgetUpdated___block_invoke;
   v7[3] = &unk_278F014B8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 addOperationWithBlock:v7];
+  v8 = updatedCopy;
+  selfCopy = self;
+  v6 = updatedCopy;
+  [analyticsQueue addOperationWithBlock:v7];
 }
 
 void __44__DBAnalytics__dashboardSmartWidgetUpdated___block_invoke(uint64_t a1)
@@ -3835,18 +3835,18 @@ LABEL_11:
 LABEL_15:
 }
 
-- (void)_dashboardNowPlayingWidgetTapped:(id)a3
+- (void)_dashboardNowPlayingWidgetTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(DBAnalytics *)self analyticsQueue];
+  tappedCopy = tapped;
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__DBAnalytics__dashboardNowPlayingWidgetTapped___block_invoke;
   v7[3] = &unk_278F014B8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 addOperationWithBlock:v7];
+  v8 = tappedCopy;
+  selfCopy = self;
+  v6 = tappedCopy;
+  [analyticsQueue addOperationWithBlock:v7];
 }
 
 void __48__DBAnalytics__dashboardNowPlayingWidgetTapped___block_invoke(uint64_t a1)
@@ -3886,12 +3886,12 @@ void __48__DBAnalytics__dashboardNowPlayingWidgetTapped___block_invoke(uint64_t 
   [v5 sendEvent:4 withParameters:v13];
 }
 
-- (void)_appStartedNavigation:(id)a3
+- (void)_appStartedNavigation:(id)navigation
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = [a3 object];
-  v5 = v4;
-  if (v4 && ([v4 isEqualToString:@"None"] & 1) == 0)
+  object = [navigation object];
+  v5 = object;
+  if (object && ([object isEqualToString:@"None"] & 1) == 0)
   {
     v6 = DBLogForCategory(0xDuLL);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -3901,23 +3901,23 @@ void __48__DBAnalytics__dashboardNowPlayingWidgetTapped___block_invoke(uint64_t 
       _os_log_impl(&dword_248146000, v6, OS_LOG_TYPE_DEFAULT, "Application started navigation: %{public}@", buf, 0xCu);
     }
 
-    v7 = [(DBAnalytics *)self analyticsQueue];
+    analyticsQueue = [(DBAnalytics *)self analyticsQueue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __37__DBAnalytics__appStartedNavigation___block_invoke;
     v8[3] = &unk_278F014B8;
     v8[4] = self;
     v9 = v5;
-    [v7 addOperationWithBlock:v8];
+    [analyticsQueue addOperationWithBlock:v8];
   }
 }
 
-- (void)_appEndedNavigation:(id)a3
+- (void)_appEndedNavigation:(id)navigation
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = [a3 object];
-  v5 = v4;
-  if (v4 && ([v4 isEqualToString:@"None"] & 1) == 0)
+  object = [navigation object];
+  v5 = object;
+  if (object && ([object isEqualToString:@"None"] & 1) == 0)
   {
     v6 = DBLogForCategory(0xDuLL);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -3927,26 +3927,26 @@ void __48__DBAnalytics__dashboardNowPlayingWidgetTapped___block_invoke(uint64_t 
       _os_log_impl(&dword_248146000, v6, OS_LOG_TYPE_DEFAULT, "Application ended navigation: %{public}@", buf, 0xCu);
     }
 
-    v7 = [(DBAnalytics *)self analyticsQueue];
+    analyticsQueue = [(DBAnalytics *)self analyticsQueue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __35__DBAnalytics__appEndedNavigation___block_invoke;
     v8[3] = &unk_278F014B8;
     v8[4] = self;
     v9 = v5;
-    [v7 addOperationWithBlock:v8];
+    [analyticsQueue addOperationWithBlock:v8];
   }
 }
 
-- (void)navigationOwnershipChanged:(id)a3
+- (void)navigationOwnershipChanged:(id)changed
 {
-  v4 = [(DBAnalytics *)self analyticsQueue];
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __42__DBAnalytics_navigationOwnershipChanged___block_invoke;
   v5[3] = &unk_278F01580;
   v5[4] = self;
-  [v4 addOperationWithBlock:v5];
+  [analyticsQueue addOperationWithBlock:v5];
 }
 
 uint64_t __42__DBAnalytics_navigationOwnershipChanged___block_invoke(uint64_t a1)
@@ -3979,31 +3979,31 @@ uint64_t __42__DBAnalytics_navigationOwnershipChanged___block_invoke(uint64_t a1
   return [*(a1 + 32) _queue_navigationOwnershipChangedToOwner:v4];
 }
 
-- (void)_queue_applicationWithBundleIdentifier:(id)a3 didStartNavigation:(BOOL)a4
+- (void)_queue_applicationWithBundleIdentifier:(id)identifier didStartNavigation:(BOOL)navigation
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(DBAnalytics *)self sessionNavigationOwners];
-  v8 = [v7 objectForKey:v6];
+  navigationCopy = navigation;
+  identifierCopy = identifier;
+  sessionNavigationOwners = [(DBAnalytics *)self sessionNavigationOwners];
+  v8 = [sessionNavigationOwners objectForKey:identifierCopy];
 
-  v9 = [v8 unsignedIntegerValue];
-  v10 = [(DBAnalytics *)self sessionNavigationOwners];
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v9 + 1];
-  [v10 setObject:v11 forKey:v6];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
+  sessionNavigationOwners2 = [(DBAnalytics *)self sessionNavigationOwners];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue + 1];
+  [sessionNavigationOwners2 setObject:v11 forKey:identifierCopy];
 
-  v12 = [(DBAnalytics *)self appAnalyticsInfoForBundleIdentifier:v6];
+  v12 = [(DBAnalytics *)self appAnalyticsInfoForBundleIdentifier:identifierCopy];
   if (!v12)
   {
     v13 = [_DBAnalyticsAppInfo alloc];
     v14 = +[DBApplicationController sharedInstance];
-    v15 = [v14 _appPolicyEvaluator];
-    v12 = [(_DBAnalyticsAppInfo *)v13 initWithBundleIdentifier:v6 appDeclaration:0 policyEvaluator:v15];
+    _appPolicyEvaluator = [v14 _appPolicyEvaluator];
+    v12 = [(_DBAnalyticsAppInfo *)v13 initWithBundleIdentifier:identifierCopy appDeclaration:0 policyEvaluator:_appPolicyEvaluator];
 
-    v16 = [(DBAnalytics *)self analyticsAppInfo];
-    [v16 addObject:v12];
+    analyticsAppInfo = [(DBAnalytics *)self analyticsAppInfo];
+    [analyticsAppInfo addObject:v12];
   }
 
-  if (v4)
+  if (navigationCopy)
   {
     [(_DBAnalyticsAppInfo *)v12 startCountingNavOwnershipTime];
   }
@@ -4021,77 +4021,77 @@ uint64_t __42__DBAnalytics_navigationOwnershipChanged___block_invoke(uint64_t a1
         _os_log_impl(&dword_248146000, v18, OS_LOG_TYPE_DEFAULT, "No remaining navigating apps.", v20, 2u);
       }
 
-      v19 = [(DBAnalytics *)self analyticsNavOwnershipInfo];
-      [v19 stopCountingTimeForKey:@"DBAnalyticsNavOwnershipTimeiOS"];
+      analyticsNavOwnershipInfo = [(DBAnalytics *)self analyticsNavOwnershipInfo];
+      [analyticsNavOwnershipInfo stopCountingTimeForKey:@"DBAnalyticsNavOwnershipTimeiOS"];
     }
   }
 }
 
-- (void)_queue_navigationOwnershipChangedToOwner:(unint64_t)a3
+- (void)_queue_navigationOwnershipChangedToOwner:(unint64_t)owner
 {
-  if (a3 == 2)
+  if (owner == 2)
   {
-    v8 = [(DBAnalytics *)self analyticsNavOwnershipInfo];
-    [v8 stopCountingTimeForKey:@"DBAnalyticsNavOwnershipTimeiOS"];
+    analyticsNavOwnershipInfo = [(DBAnalytics *)self analyticsNavOwnershipInfo];
+    [analyticsNavOwnershipInfo stopCountingTimeForKey:@"DBAnalyticsNavOwnershipTimeiOS"];
 
-    v6 = [(DBAnalytics *)self analyticsNavOwnershipInfo];
+    analyticsNavOwnershipInfo2 = [(DBAnalytics *)self analyticsNavOwnershipInfo];
     v7 = @"DBAnalyticsNavOwnershipTimeOEM";
     goto LABEL_7;
   }
 
-  if (a3 == 1)
+  if (owner == 1)
   {
-    v5 = [(DBAnalytics *)self analyticsNavOwnershipInfo];
-    [v5 stopCountingTimeForKey:@"DBAnalyticsNavOwnershipTimeOEM"];
+    analyticsNavOwnershipInfo3 = [(DBAnalytics *)self analyticsNavOwnershipInfo];
+    [analyticsNavOwnershipInfo3 stopCountingTimeForKey:@"DBAnalyticsNavOwnershipTimeOEM"];
 
-    v6 = [(DBAnalytics *)self analyticsNavOwnershipInfo];
+    analyticsNavOwnershipInfo2 = [(DBAnalytics *)self analyticsNavOwnershipInfo];
     v7 = @"DBAnalyticsNavOwnershipTimeiOS";
 LABEL_7:
-    v9 = v6;
-    [v6 startCountingTimeForKey:v7];
+    analyticsNavOwnershipInfo5 = analyticsNavOwnershipInfo2;
+    [analyticsNavOwnershipInfo2 startCountingTimeForKey:v7];
     goto LABEL_8;
   }
 
-  if (a3)
+  if (owner)
   {
     return;
   }
 
-  v4 = [(DBAnalytics *)self analyticsNavOwnershipInfo];
-  [v4 stopCountingTimeForKey:@"DBAnalyticsNavOwnershipTimeOEM"];
+  analyticsNavOwnershipInfo4 = [(DBAnalytics *)self analyticsNavOwnershipInfo];
+  [analyticsNavOwnershipInfo4 stopCountingTimeForKey:@"DBAnalyticsNavOwnershipTimeOEM"];
 
-  v9 = [(DBAnalytics *)self analyticsNavOwnershipInfo];
-  [v9 stopCountingTimeForKey:@"DBAnalyticsNavOwnershipTimeiOS"];
+  analyticsNavOwnershipInfo5 = [(DBAnalytics *)self analyticsNavOwnershipInfo];
+  [analyticsNavOwnershipInfo5 stopCountingTimeForKey:@"DBAnalyticsNavOwnershipTimeiOS"];
 LABEL_8:
 }
 
 - (void)_mediaserverdConnectionDied
 {
-  v3 = [(DBAnalytics *)self analyticsQueue];
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __42__DBAnalytics__mediaserverdConnectionDied__block_invoke;
   v4[3] = &unk_278F01580;
   v4[4] = self;
-  [v3 addOperationWithBlock:v4];
+  [analyticsQueue addOperationWithBlock:v4];
 }
 
 - (void)_queue_mediaserverdConnectionDied
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [(DBAnalytics *)self setMediaserverdDiedDate:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(DBAnalytics *)self setMediaserverdDiedDate:date];
 }
 
 - (void)_queue_wifidConnectionDied
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [(DBAnalytics *)self setWifidDiedDate:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(DBAnalytics *)self setWifidDiedDate:date];
 }
 
 - (void)_queue_thermalTrapOccurred
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [(DBAnalytics *)self setThermalTrapDate:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(DBAnalytics *)self setThermalTrapDate:date];
 }
 
 - (void)invalidate
@@ -4103,13 +4103,13 @@ LABEL_8:
     _os_log_impl(&dword_248146000, v3, OS_LOG_TYPE_DEFAULT, "Invalidating analytics.", buf, 2u);
   }
 
-  v4 = [(DBAnalytics *)self analyticsQueue];
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __25__DBAnalytics_invalidate__block_invoke;
   v16[3] = &unk_278F01580;
   v16[4] = self;
-  [v4 addOperationWithBlock:v16];
+  [analyticsQueue addOperationWithBlock:v16];
 
   if (self->_wifiManager)
   {
@@ -4124,17 +4124,17 @@ LABEL_8:
     [(CWFInterface *)self->_interface invalidate];
   }
 
-  v6 = [(DBAnalytics *)self displayLayoutMonitor];
-  [v6 invalidate];
+  displayLayoutMonitor = [(DBAnalytics *)self displayLayoutMonitor];
+  [displayLayoutMonitor invalidate];
 
-  v7 = [(DBAnalytics *)self keybagMonitor];
-  [v7 removeObserver:self];
+  keybagMonitor = [(DBAnalytics *)self keybagMonitor];
+  [keybagMonitor removeObserver:self];
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v9 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v9 removeObserver:self];
+  defaultCenter2 = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter2 removeObserver:self];
 
   Current = CFRunLoopGetCurrent();
   RunLoopSource = IONotificationPortGetRunLoopSource(self->_powerNotificationPort);
@@ -4146,13 +4146,13 @@ LABEL_8:
   IOObjectRelease(self->_powerSource);
   self->_powerSource = 0;
   [(DBAnalytics *)self setConnectionTimeStore:0];
-  v12 = [(DBAnalytics *)self environmentConfiguration];
-  v13 = [v12 session];
-  [v13 removeObserver:self];
+  environmentConfiguration = [(DBAnalytics *)self environmentConfiguration];
+  session = [environmentConfiguration session];
+  [session removeObserver:self];
 
-  v14 = [(DBAnalytics *)self environmentConfiguration];
-  v15 = [v14 thermalMonitor];
-  [v15 removeObserver:self];
+  environmentConfiguration2 = [(DBAnalytics *)self environmentConfiguration];
+  thermalMonitor = [environmentConfiguration2 thermalMonitor];
+  [thermalMonitor removeObserver:self];
 }
 
 uint64_t __25__DBAnalytics_invalidate__block_invoke(uint64_t a1)
@@ -4166,17 +4166,17 @@ uint64_t __25__DBAnalytics_invalidate__block_invoke(uint64_t a1)
   return [v4 _queue_sessionEnded];
 }
 
-- (void)keybagMonitorLockStateDidChange:(id)a3
+- (void)keybagMonitorLockStateDidChange:(id)change
 {
-  if (![a3 currentState])
+  if (![change currentState])
   {
-    v4 = [(DBAnalytics *)self analyticsQueue];
+    analyticsQueue = [(DBAnalytics *)self analyticsQueue];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __47__DBAnalytics_keybagMonitorLockStateDidChange___block_invoke;
     v5[3] = &unk_278F01580;
     v5[4] = self;
-    [v4 addOperationWithBlock:v5];
+    [analyticsQueue addOperationWithBlock:v5];
   }
 }
 
@@ -4188,12 +4188,12 @@ uint64_t __47__DBAnalytics_keybagMonitorLockStateDidChange___block_invoke(uint64
   return [v1 setSessionUnlockCount:v2];
 }
 
-- (BOOL)_queue_stateProviderIsReadyForAnalytics:(id)a3
+- (BOOL)_queue_stateProviderIsReadyForAnalytics:(id)analytics
 {
-  v3 = a3;
-  if ([v3 connectionReady])
+  analyticsCopy = analytics;
+  if ([analyticsCopy connectionReady])
   {
-    v4 = [v3 lockoutState] == 2;
+    v4 = [analyticsCopy lockoutState] == 2;
   }
 
   else
@@ -4204,19 +4204,19 @@ uint64_t __47__DBAnalytics_keybagMonitorLockStateDidChange___block_invoke(uint64
   return v4;
 }
 
-- (void)dashboardStateProvider:(id)a3 didChangeHomeScreenPageType:(unint64_t)a4
+- (void)dashboardStateProvider:(id)provider didChangeHomeScreenPageType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [(DBAnalytics *)self analyticsQueue];
+  providerCopy = provider;
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __66__DBAnalytics_dashboardStateProvider_didChangeHomeScreenPageType___block_invoke;
   v9[3] = &unk_278F01820;
   v9[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
-  [v7 addOperationWithBlock:v9];
+  v10 = providerCopy;
+  typeCopy = type;
+  v8 = providerCopy;
+  [analyticsQueue addOperationWithBlock:v9];
 }
 
 void __66__DBAnalytics_dashboardStateProvider_didChangeHomeScreenPageType___block_invoke(uint64_t a1)
@@ -4233,21 +4233,21 @@ void __66__DBAnalytics_dashboardStateProvider_didChangeHomeScreenPageType___bloc
   }
 }
 
-- (void)dashboardStateProvider:(id)a3 didChangeActiveBundleIdentifier:(id)a4
+- (void)dashboardStateProvider:(id)provider didChangeActiveBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DBAnalytics *)self analyticsQueue];
+  providerCopy = provider;
+  identifierCopy = identifier;
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __70__DBAnalytics_dashboardStateProvider_didChangeActiveBundleIdentifier___block_invoke;
   v11[3] = &unk_278F015F8;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 addOperationWithBlock:v11];
+  v12 = providerCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = providerCopy;
+  [analyticsQueue addOperationWithBlock:v11];
 }
 
 void __70__DBAnalytics_dashboardStateProvider_didChangeActiveBundleIdentifier___block_invoke(uint64_t a1)
@@ -4267,19 +4267,19 @@ void __70__DBAnalytics_dashboardStateProvider_didChangeActiveBundleIdentifier___
   }
 }
 
-- (void)session:(id)a3 openURL:(id)a4
+- (void)session:(id)session openURL:(id)l
 {
-  v5 = [a4 absoluteString];
-  if ([v5 length])
+  absoluteString = [l absoluteString];
+  if ([absoluteString length])
   {
-    v6 = [(DBAnalytics *)self analyticsQueue];
+    analyticsQueue = [(DBAnalytics *)self analyticsQueue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __31__DBAnalytics_session_openURL___block_invoke;
     v7[3] = &unk_278F014B8;
-    v8 = v5;
-    v9 = self;
-    [v6 addOperationWithBlock:v7];
+    v8 = absoluteString;
+    selfCopy = self;
+    [analyticsQueue addOperationWithBlock:v7];
   }
 }
 
@@ -4348,19 +4348,19 @@ uint64_t __31__DBAnalytics_session_openURL___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)session:(id)a3 showUIForScreenInfo:(id)a4 withURL:(id)a5
+- (void)session:(id)session showUIForScreenInfo:(id)info withURL:(id)l
 {
-  v6 = [a5 absoluteString];
-  if ([v6 length])
+  absoluteString = [l absoluteString];
+  if ([absoluteString length])
   {
-    v7 = [(DBAnalytics *)self analyticsQueue];
+    analyticsQueue = [(DBAnalytics *)self analyticsQueue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __51__DBAnalytics_session_showUIForScreenInfo_withURL___block_invoke;
     v8[3] = &unk_278F014B8;
-    v9 = v6;
-    v10 = self;
-    [v7 addOperationWithBlock:v8];
+    v9 = absoluteString;
+    selfCopy = self;
+    [analyticsQueue addOperationWithBlock:v8];
   }
 }
 
@@ -4383,51 +4383,51 @@ uint64_t __51__DBAnalytics_session_showUIForScreenInfo_withURL___block_invoke(ui
   }
 }
 
-- (void)session:(id)a3 didSetViewArea:(id)a4 forScreenID:(id)a5 withDuration:(double)a6 transitionControlType:(unint64_t)a7
+- (void)session:(id)session didSetViewArea:(id)area forScreenID:(id)d withDuration:(double)duration transitionControlType:(unint64_t)type
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = [a3 configuration];
-  v14 = [v13 screenInfoForScreenID:v12];
+  areaCopy = area;
+  dCopy = d;
+  configuration = [session configuration];
+  v14 = [configuration screenInfoForScreenID:dCopy];
 
-  v15 = [(DBAnalytics *)self analyticsQueue];
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __85__DBAnalytics_session_didSetViewArea_forScreenID_withDuration_transitionControlType___block_invoke;
   v19[3] = &unk_278F03FB8;
   v19[4] = self;
-  v20 = v11;
+  v20 = areaCopy;
   v21 = v14;
-  v22 = v13;
-  v23 = a6;
-  v16 = v13;
+  v22 = configuration;
+  durationCopy = duration;
+  v16 = configuration;
   v17 = v14;
-  v18 = v11;
-  [v15 addOperationWithBlock:v19];
+  v18 = areaCopy;
+  [analyticsQueue addOperationWithBlock:v19];
 }
 
-- (void)thermalMonitorLevelDidChange:(id)a3
+- (void)thermalMonitorLevelDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(DBAnalytics *)self analyticsQueue];
+  changeCopy = change;
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __44__DBAnalytics_thermalMonitorLevelDidChange___block_invoke;
   v9[3] = &unk_278F014B8;
   v9[4] = self;
-  v6 = v4;
+  v6 = changeCopy;
   v10 = v6;
-  [v5 addOperationWithBlock:v9];
+  [analyticsQueue addOperationWithBlock:v9];
 
   if ([v6 level] == 3)
   {
-    v7 = [(DBAnalytics *)self analyticsQueue];
+    analyticsQueue2 = [(DBAnalytics *)self analyticsQueue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __44__DBAnalytics_thermalMonitorLevelDidChange___block_invoke_2;
     v8[3] = &unk_278F01580;
     v8[4] = self;
-    [v7 addOperationWithBlock:v8];
+    [analyticsQueue2 addOperationWithBlock:v8];
   }
 }
 
@@ -4445,46 +4445,46 @@ void __44__DBAnalytics_thermalMonitorLevelDidChange___block_invoke(uint64_t a1)
   }
 }
 
-- (void)nowPlayingObserver:(id)a3 didChangeNowPlayingApplication:(id)a4
+- (void)nowPlayingObserver:(id)observer didChangeNowPlayingApplication:(id)application
 {
-  v6 = a4;
-  LOBYTE(a3) = [a3 isPlaying];
-  v7 = [(DBAnalytics *)self analyticsQueue];
+  applicationCopy = application;
+  LOBYTE(observer) = [observer isPlaying];
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __65__DBAnalytics_nowPlayingObserver_didChangeNowPlayingApplication___block_invoke;
   v9[3] = &unk_278F03FE0;
   v9[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
-  [v7 addOperationWithBlock:v9];
+  v10 = applicationCopy;
+  observerCopy = observer;
+  v8 = applicationCopy;
+  [analyticsQueue addOperationWithBlock:v9];
 }
 
-- (void)nowPlayingObserver:(id)a3 didUpdatePlaybackState:(BOOL)a4 inApplication:(id)a5
+- (void)nowPlayingObserver:(id)observer didUpdatePlaybackState:(BOOL)state inApplication:(id)application
 {
-  v7 = a5;
-  v8 = [(DBAnalytics *)self analyticsQueue];
+  applicationCopy = application;
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __71__DBAnalytics_nowPlayingObserver_didUpdatePlaybackState_inApplication___block_invoke;
   v10[3] = &unk_278F03FE0;
   v10[4] = self;
-  v11 = v7;
-  v12 = a4;
-  v9 = v7;
-  [v8 addOperationWithBlock:v10];
+  v11 = applicationCopy;
+  stateCopy = state;
+  v9 = applicationCopy;
+  [analyticsQueue addOperationWithBlock:v10];
 }
 
-- (void)_DBLayoutMonitor:(id)a3 didUpdateDisplayLayout:(id)a4 withContext:(id)a5
+- (void)_DBLayoutMonitor:(id)monitor didUpdateDisplayLayout:(id)layout withContext:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [a4 elements];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  elements = [layout elements];
+  v7 = [elements countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -4495,7 +4495,7 @@ LABEL_3:
     {
       if (*v17 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(elements);
       }
 
       v11 = *(*(&v16 + 1) + 8 * v10);
@@ -4509,7 +4509,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [elements countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -4519,40 +4519,40 @@ LABEL_3:
       }
     }
 
-    v12 = [v11 bundleIdentifier];
+    bundleIdentifier = [v11 bundleIdentifier];
 
-    if (!v12)
+    if (!bundleIdentifier)
     {
       return;
     }
 
-    v13 = [(DBAnalytics *)self analyticsQueue];
+    analyticsQueue = [(DBAnalytics *)self analyticsQueue];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __67__DBAnalytics__DBLayoutMonitor_didUpdateDisplayLayout_withContext___block_invoke;
     v14[3] = &unk_278F014B8;
     v14[4] = self;
-    v15 = v12;
-    v6 = v12;
-    [v13 addOperationWithBlock:v14];
+    v15 = bundleIdentifier;
+    elements = bundleIdentifier;
+    [analyticsQueue addOperationWithBlock:v14];
   }
 
 LABEL_13:
 }
 
-- (void)clusterElementDidChangeVisibility:(id)a3 foreground:(BOOL)a4
+- (void)clusterElementDidChangeVisibility:(id)visibility foreground:(BOOL)foreground
 {
-  v6 = a3;
-  v7 = [(DBAnalytics *)self analyticsQueue];
+  visibilityCopy = visibility;
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __60__DBAnalytics_clusterElementDidChangeVisibility_foreground___block_invoke;
   v9[3] = &unk_278F03FE0;
-  v11 = a4;
+  foregroundCopy = foreground;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [v7 addOperationWithBlock:v9];
+  v10 = visibilityCopy;
+  v8 = visibilityCopy;
+  [analyticsQueue addOperationWithBlock:v9];
 }
 
 void __60__DBAnalytics_clusterElementDidChangeVisibility_foreground___block_invoke(uint64_t a1)
@@ -4629,19 +4629,19 @@ void __60__DBAnalytics_clusterElementDidChangeVisibility_foreground___block_invo
   }
 }
 
-- (void)dashboardNavigationDidChangeToBundleIdentifier:(id)a3
+- (void)dashboardNavigationDidChangeToBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(DBAnalytics *)self analyticsQueue];
+    analyticsQueue = [(DBAnalytics *)self analyticsQueue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __62__DBAnalytics_dashboardNavigationDidChangeToBundleIdentifier___block_invoke;
     v6[3] = &unk_278F014B8;
     v6[4] = self;
-    v7 = v4;
-    [v5 addOperationWithBlock:v6];
+    v7 = identifierCopy;
+    [analyticsQueue addOperationWithBlock:v6];
   }
 }
 
@@ -4729,19 +4729,19 @@ void __62__DBAnalytics_dashboardNavigationDidChangeToBundleIdentifier___block_in
   }
 }
 
-- (void)dashboardAudioWidgetDidChangeToBundleIdentifier:(id)a3
+- (void)dashboardAudioWidgetDidChangeToBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(DBAnalytics *)self analyticsQueue];
+    analyticsQueue = [(DBAnalytics *)self analyticsQueue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __63__DBAnalytics_dashboardAudioWidgetDidChangeToBundleIdentifier___block_invoke;
     v6[3] = &unk_278F014B8;
     v6[4] = self;
-    v7 = v4;
-    [v5 addOperationWithBlock:v6];
+    v7 = identifierCopy;
+    [analyticsQueue addOperationWithBlock:v6];
   }
 }
 
@@ -4815,18 +4815,18 @@ void __63__DBAnalytics_dashboardAudioWidgetDidChangeToBundleIdentifier___block_i
   }
 }
 
-- (void)siriDidStartHostingBundleIdentifier:(id)a3
+- (void)siriDidStartHostingBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DBAnalytics *)self analyticsQueue];
+  identifierCopy = identifier;
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__DBAnalytics_siriDidStartHostingBundleIdentifier___block_invoke;
   v7[3] = &unk_278F014B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 addOperationWithBlock:v7];
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  [analyticsQueue addOperationWithBlock:v7];
 }
 
 void __51__DBAnalytics_siriDidStartHostingBundleIdentifier___block_invoke(uint64_t a1)
@@ -4859,13 +4859,13 @@ void __51__DBAnalytics_siriDidStartHostingBundleIdentifier___block_invoke(uint64
 
 - (void)siriDidDismiss
 {
-  v3 = [(DBAnalytics *)self analyticsQueue];
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __29__DBAnalytics_siriDidDismiss__block_invoke;
   v4[3] = &unk_278F01580;
   v4[4] = self;
-  [v3 addOperationWithBlock:v4];
+  [analyticsQueue addOperationWithBlock:v4];
 }
 
 void __29__DBAnalytics_siriDidDismiss__block_invoke(uint64_t a1)
@@ -4886,13 +4886,13 @@ void __29__DBAnalytics_siriDidDismiss__block_invoke_3(uint64_t a1, void *a2)
 
 - (void)firstFrameSent
 {
-  v3 = [(DBAnalytics *)self analyticsQueue];
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __29__DBAnalytics_firstFrameSent__block_invoke;
   v4[3] = &unk_278F01580;
   v4[4] = self;
-  [v3 addOperationWithBlock:v4];
+  [analyticsQueue addOperationWithBlock:v4];
 }
 
 void __29__DBAnalytics_firstFrameSent__block_invoke(uint64_t a1)
@@ -4901,46 +4901,46 @@ void __29__DBAnalytics_firstFrameSent__block_invoke(uint64_t a1)
   [*(a1 + 32) setFirstFrameTimestamp:v2];
 }
 
-- (void)setCarplayUIReadyTimestamp:(id)a3
+- (void)setCarplayUIReadyTimestamp:(id)timestamp
 {
-  v4 = a3;
-  v5 = [(DBAnalytics *)self analyticsQueue];
+  timestampCopy = timestamp;
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__DBAnalytics_setCarplayUIReadyTimestamp___block_invoke;
   v7[3] = &unk_278F014B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 addOperationWithBlock:v7];
+  v8 = timestampCopy;
+  v6 = timestampCopy;
+  [analyticsQueue addOperationWithBlock:v7];
 }
 
-- (void)setMainDisplayReadyTimestamp:(id)a3
+- (void)setMainDisplayReadyTimestamp:(id)timestamp
 {
-  v4 = a3;
-  v5 = [(DBAnalytics *)self analyticsQueue];
+  timestampCopy = timestamp;
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__DBAnalytics_setMainDisplayReadyTimestamp___block_invoke;
   v7[3] = &unk_278F014B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 addOperationWithBlock:v7];
+  v8 = timestampCopy;
+  v6 = timestampCopy;
+  [analyticsQueue addOperationWithBlock:v7];
 }
 
-- (void)setClusterDisplayReadyTimestamp:(id)a3
+- (void)setClusterDisplayReadyTimestamp:(id)timestamp
 {
-  v4 = a3;
-  v5 = [(DBAnalytics *)self analyticsQueue];
+  timestampCopy = timestamp;
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__DBAnalytics_setClusterDisplayReadyTimestamp___block_invoke;
   v7[3] = &unk_278F014B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 addOperationWithBlock:v7];
+  v8 = timestampCopy;
+  v6 = timestampCopy;
+  [analyticsQueue addOperationWithBlock:v7];
 }
 
 + (id)_axPhoneColorFiltersAnalyticsString
@@ -5019,19 +5019,19 @@ LABEL_16:
   return v3;
 }
 
-+ (id)_axColorFiltersIntensityStringForFloat:(double)a3
++ (id)_axColorFiltersIntensityStringForFloat:(double)float
 {
-  if (a3 <= 0.330000013)
+  if (float <= 0.330000013)
   {
     return @"Low";
   }
 
-  if (a3 <= 0.660000026)
+  if (float <= 0.660000026)
   {
     return @"Medium";
   }
 
-  if (a3 >= 1.0)
+  if (float >= 1.0)
   {
     return @"High";
   }
@@ -5039,20 +5039,20 @@ LABEL_16:
   return @"Undefined";
 }
 
-+ (id)_axPhoneSoundRecognitionAnalyticsString:(unint64_t)a3
++ (id)_axPhoneSoundRecognitionAnalyticsString:(unint64_t)string
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = v4;
-  if (v3)
+  stringCopy = string;
+  array = [MEMORY[0x277CBEB18] array];
+  v5 = array;
+  if (stringCopy)
   {
-    [v4 addObject:@"Enabled"];
-    if ((v3 & 2) != 0)
+    [array addObject:@"Enabled"];
+    if ((stringCopy & 2) != 0)
     {
       [v5 addObject:@"CarHorns"];
     }
 
-    if ((v3 & 4) != 0)
+    if ((stringCopy & 4) != 0)
     {
       [v5 addObject:@"Siren"];
     }
@@ -5068,24 +5068,24 @@ LABEL_16:
   return v6;
 }
 
-- (void)sendEvent:(unint64_t)a3 withParameters:(id)a4
+- (void)sendEvent:(unint64_t)event withParameters:(id)parameters
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  parametersCopy = parameters;
   if ([objc_opt_class() shouldSendAnalyticsEvents])
   {
-    if (a3 >= 0xB)
+    if (event >= 0xB)
     {
       v7 = DBLogForCategory(0xDuLL);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        [DBAnalytics sendEvent:a3 withParameters:?];
+        [DBAnalytics sendEvent:event withParameters:?];
       }
 
       goto LABEL_9;
     }
 
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.CarPlay.%@", off_278F04148[a3]];
+    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.CarPlay.%@", off_278F04148[event]];
     if (v6)
     {
       v7 = v6;
@@ -5095,7 +5095,7 @@ LABEL_16:
         *buf = 138412546;
         v10 = v7;
         v11 = 2112;
-        v12 = v5;
+        v12 = parametersCopy;
         _os_log_impl(&dword_248146000, v8, OS_LOG_TYPE_DEFAULT, "Sending CA event %@ with %@", buf, 0x16u);
       }
 
@@ -5105,38 +5105,38 @@ LABEL_9:
   }
 }
 
-- (id)_analyticsLayoutInfoPassingTest:(id)a3
+- (id)_analyticsLayoutInfoPassingTest:(id)test
 {
-  v4 = a3;
-  v5 = [(DBAnalytics *)self analyticsLayoutInfo];
+  testCopy = test;
+  analyticsLayoutInfo = [(DBAnalytics *)self analyticsLayoutInfo];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __47__DBAnalytics__analyticsLayoutInfoPassingTest___block_invoke;
   v11[3] = &unk_278F04028;
-  v12 = v4;
-  v6 = v4;
-  v7 = [v5 indexesOfObjectsPassingTest:v11];
+  v12 = testCopy;
+  v6 = testCopy;
+  v7 = [analyticsLayoutInfo indexesOfObjectsPassingTest:v11];
 
-  v8 = [(DBAnalytics *)self analyticsLayoutInfo];
-  v9 = [v8 objectsAtIndexes:v7];
+  analyticsLayoutInfo2 = [(DBAnalytics *)self analyticsLayoutInfo];
+  v9 = [analyticsLayoutInfo2 objectsAtIndexes:v7];
 
   return v9;
 }
 
-- (id)_analyticsInfoPassingTest:(id)a3
+- (id)_analyticsInfoPassingTest:(id)test
 {
-  v4 = a3;
-  v5 = [(DBAnalytics *)self analyticsAppInfo];
+  testCopy = test;
+  analyticsAppInfo = [(DBAnalytics *)self analyticsAppInfo];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __41__DBAnalytics__analyticsInfoPassingTest___block_invoke;
   v11[3] = &unk_278F04050;
-  v12 = v4;
-  v6 = v4;
-  v7 = [v5 indexesOfObjectsPassingTest:v11];
+  v12 = testCopy;
+  v6 = testCopy;
+  v7 = [analyticsAppInfo indexesOfObjectsPassingTest:v11];
 
-  v8 = [(DBAnalytics *)self analyticsAppInfo];
-  v9 = [v8 objectsAtIndexes:v7];
+  analyticsAppInfo2 = [(DBAnalytics *)self analyticsAppInfo];
+  v9 = [analyticsAppInfo2 objectsAtIndexes:v7];
 
   return v9;
 }
@@ -5144,24 +5144,24 @@ LABEL_9:
 - (id)nowPlayingAppAnalyticsInfo
 {
   v2 = [(DBAnalytics *)self _analyticsInfoPassingTest:&__block_literal_global_690];
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (id)appAnalyticsInfoForApp:(id)a3
+- (id)appAnalyticsInfoForApp:(id)app
 {
-  v4 = a3;
+  appCopy = app;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __38__DBAnalytics_appAnalyticsInfoForApp___block_invoke;
   v9[3] = &unk_278F04078;
-  v10 = v4;
-  v5 = v4;
+  v10 = appCopy;
+  v5 = appCopy;
   v6 = [(DBAnalytics *)self _analyticsInfoPassingTest:v9];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
 uint64_t __38__DBAnalytics_appAnalyticsInfoForApp___block_invoke(uint64_t a1, void *a2)
@@ -5174,19 +5174,19 @@ uint64_t __38__DBAnalytics_appAnalyticsInfoForApp___block_invoke(uint64_t a1, vo
   return v6;
 }
 
-- (id)appAnalyticsInfoForBundleIdentifier:(id)a3
+- (id)appAnalyticsInfoForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __51__DBAnalytics_appAnalyticsInfoForBundleIdentifier___block_invoke;
   v9[3] = &unk_278F04078;
-  v10 = v4;
-  v5 = v4;
+  v10 = identifierCopy;
+  v5 = identifierCopy;
   v6 = [(DBAnalytics *)self _analyticsInfoPassingTest:v9];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
 uint64_t __51__DBAnalytics_appAnalyticsInfoForBundleIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -5197,18 +5197,18 @@ uint64_t __51__DBAnalytics_appAnalyticsInfoForBundleIdentifier___block_invoke(ui
   return v4;
 }
 
-- (void)changedLayout:(id)a3
+- (void)changedLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(DBAnalytics *)self analyticsQueue];
+  layoutCopy = layout;
+  analyticsQueue = [(DBAnalytics *)self analyticsQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __29__DBAnalytics_changedLayout___block_invoke;
   v7[3] = &unk_278F014B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 addOperationWithBlock:v7];
+  v8 = layoutCopy;
+  v6 = layoutCopy;
+  [analyticsQueue addOperationWithBlock:v7];
 }
 
 void __29__DBAnalytics_changedLayout___block_invoke(uint64_t a1)

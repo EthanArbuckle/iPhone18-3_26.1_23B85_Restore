@@ -1,15 +1,15 @@
 @interface SNFeaturePrint
-+ (id)cosineSimilarityBetweenOneFeatureVector:(id)a3 andAnotherFeatureVector:(id)a4 error:(id *)a5;
-+ (id)cosineSimilarityBetweenOneFloat32Array:(float *)a3 andAnotherFloat32Array:(float *)a4 length:(int64_t)a5 error:(id *)a6;
++ (id)cosineSimilarityBetweenOneFeatureVector:(id)vector andAnotherFeatureVector:(id)featureVector error:(id *)error;
++ (id)cosineSimilarityBetweenOneFloat32Array:(float *)array andAnotherFloat32Array:(float *)float32Array length:(int64_t)length error:(id *)error;
 - ($E36B78CDAC119E0352F6B513F3BB0FF8)timeRange;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MLMultiArray)featureVector;
 - (NSString)description;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setFeatureVector:(id)a3;
-- (void)setTimeRange:(id *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setFeatureVector:(id)vector;
+- (void)setTimeRange:(id *)range;
 @end
 
 @implementation SNFeaturePrint
@@ -29,13 +29,13 @@
   return result;
 }
 
-- (void)setTimeRange:(id *)a3
+- (void)setTimeRange:(id *)range
 {
-  var3 = a3->var1.var3;
-  v4[0] = a3->var0.var0;
-  v4[1] = *&a3->var0.var1;
-  v5 = *&a3->var0.var3;
-  v6 = *&a3->var1.var1;
+  var3 = range->var1.var3;
+  v4[0] = range->var0.var0;
+  v4[1] = *&range->var0.var1;
+  v5 = *&range->var0.var3;
+  v6 = *&range->var1.var1;
   v7 = var3;
   SNFeaturePrint.timeRange.setter(v4);
 }
@@ -47,16 +47,16 @@
   return v2;
 }
 
-- (void)setFeatureVector:(id)a3
+- (void)setFeatureVector:(id)vector
 {
-  v4 = a3;
-  v5 = self;
-  SNFeaturePrint.featureVector.setter(v4);
+  vectorCopy = vector;
+  selfCopy = self;
+  SNFeaturePrint.featureVector.setter(vectorCopy);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   SNFeaturePrint.copy(with:)(v6);
 
   sub_1C97A5A8C(v6, v6[3]);
@@ -67,17 +67,17 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SNFeaturePrint.hash.getter();
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1C9A93318();
     swift_unknownObjectRelease();
@@ -86,7 +86,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = SNFeaturePrint.isEqual(_:)(v8);
@@ -95,25 +95,25 @@
   return v6 & 1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SNFeaturePrint.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SNFeaturePrint.encode(with:)(coderCopy);
 }
 
-+ (id)cosineSimilarityBetweenOneFloat32Array:(float *)a3 andAnotherFloat32Array:(float *)a4 length:(int64_t)a5 error:(id *)a6
++ (id)cosineSimilarityBetweenOneFloat32Array:(float *)array andAnotherFloat32Array:(float *)float32Array length:(int64_t)length error:(id *)error
 {
-  v6 = sub_1C99A6B4C(a3, a4, a5);
+  v6 = sub_1C99A6B4C(array, float32Array, length);
 
   return v6;
 }
 
-+ (id)cosineSimilarityBetweenOneFeatureVector:(id)a3 andAnotherFeatureVector:(id)a4 error:(id *)a5
++ (id)cosineSimilarityBetweenOneFeatureVector:(id)vector andAnotherFeatureVector:(id)featureVector error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
-  sub_1C99A6F6C(v6, v7);
+  vectorCopy = vector;
+  featureVectorCopy = featureVector;
+  sub_1C99A6F6C(vectorCopy, featureVectorCopy);
   v9 = v8;
 
   return v9;
@@ -121,7 +121,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   SNFeaturePrint.description.getter();
 
   v3 = sub_1C9A92478();

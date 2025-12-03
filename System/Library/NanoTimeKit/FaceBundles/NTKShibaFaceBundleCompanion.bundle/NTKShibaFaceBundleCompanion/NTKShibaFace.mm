@@ -1,16 +1,16 @@
 @interface NTKShibaFace
-+ (BOOL)isRestrictedForDevice:(id)a3;
++ (BOOL)isRestrictedForDevice:(id)device;
 + (id)_complicationSlotDescriptors;
 + (id)_orderedComplicationSlots;
-+ (id)_richComplicationSlotsForDevice:(id)a3;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
++ (id)_richComplicationSlotsForDevice:(id)device;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_faceDescription;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (int64_t)timeStyle;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (void)selectOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)selectOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKShibaFace
@@ -23,19 +23,19 @@
   return v3;
 }
 
-- (void)selectOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)selectOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(NTKShibaFace *)self selectedOptionForCustomEditMode:a4 slot:v9];
+  optionCopy = option;
+  slotCopy = slot;
+  v10 = [(NTKShibaFace *)self selectedOptionForCustomEditMode:mode slot:slotCopy];
   v12.receiver = self;
   v12.super_class = NTKShibaFace;
-  [(NTKShibaFace *)&v12 selectOption:v8 forCustomEditMode:a4 slot:v9];
+  [(NTKShibaFace *)&v12 selectOption:optionCopy forCustomEditMode:mode slot:slotCopy];
 
-  if (a4 == 15 && (NTKEqualObjects() & 1) == 0)
+  if (mode == 15 && (NTKEqualObjects() & 1) == 0)
   {
     v11 = v10;
-    if (![v8 style] || !objc_msgSend(v11, "style"))
+    if (![optionCopy style] || !objc_msgSend(v11, "style"))
     {
       [(NTKShibaFace *)self _notifyObserversFaceTimeStyleChanged];
     }
@@ -44,10 +44,10 @@
 
 - (id)_faceDescription
 {
-  v2 = [(NTKShibaFace *)self device];
-  v3 = [v2 supportsVictoryFaces];
+  device = [(NTKShibaFace *)self device];
+  supportsVictoryFaces = [device supportsVictoryFaces];
 
-  if (v3)
+  if (supportsVictoryFaces)
   {
     [NTKShibaFaceBundle localizedStringForKey:@"FACE_STYLE_SHIBA_DESCRIPTION_KINCAID" tableSuffix:@"Kincaid" comment:&stru_C448];
   }
@@ -61,17 +61,17 @@
   return v4;
 }
 
-+ (BOOL)isRestrictedForDevice:(id)a3
++ (BOOL)isRestrictedForDevice:(id)device
 {
-  v3 = a3;
-  if ([v3 deviceCategory] == &dword_0 + 1)
+  deviceCopy = device;
+  if ([deviceCopy deviceCategory] == &dword_0 + 1)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 supportsPDRCapability:3588072423];
+    v4 = [deviceCopy supportsPDRCapability:3588072423];
   }
 
   v5 = NTKShowVictoryFaces() & v4;
@@ -79,20 +79,20 @@
   return v5 ^ 1;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  if (a3 == 15)
+  slotCopy = slot;
+  if (mode == 15)
   {
-    v7 = [(NTKShibaFace *)self device];
-    v8 = [NTKShibaStyleEditOption optionWithStyle:0 forDevice:v7];
+    device = [(NTKShibaFace *)self device];
+    v8 = [NTKShibaStyleEditOption optionWithStyle:0 forDevice:device];
     goto LABEL_5;
   }
 
-  if (a3 == 10)
+  if (mode == 10)
   {
-    v7 = [(NTKShibaFace *)self device];
-    v8 = [NTKShibaColorEditOption optionWithColor:3000 forDevice:v7];
+    device = [(NTKShibaFace *)self device];
+    v8 = [NTKShibaColorEditOption optionWithColor:3000 forDevice:device];
 LABEL_5:
     v9 = v8;
 
@@ -105,37 +105,37 @@ LABEL_7:
   return v9;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKShibaFace *)self _optionClassForCustomEditMode:a3, a4];
-  v6 = [(NTKShibaFace *)self device];
-  v7 = [(objc_class *)v5 numberOfOptionsForDevice:v6];
+  slot = [(NTKShibaFace *)self _optionClassForCustomEditMode:mode, slot];
+  device = [(NTKShibaFace *)self device];
+  v7 = [(objc_class *)slot numberOfOptionsForDevice:device];
 
   return v7;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = [(NTKShibaFace *)self _optionClassForCustomEditMode:a4];
-  v8 = [(NTKShibaFace *)self device];
-  v9 = [(objc_class *)v7 optionAtIndex:a3 forDevice:v8];
+  v7 = [(NTKShibaFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKShibaFace *)self device];
+  v9 = [(objc_class *)v7 optionAtIndex:index forDevice:device];
 
   return v9;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  v8 = [(NTKShibaFace *)self _optionClassForCustomEditMode:a4];
-  v9 = [(NTKShibaFace *)self device];
-  v10 = [(objc_class *)v8 indexOfOption:v7 forDevice:v9];
+  optionCopy = option;
+  v8 = [(NTKShibaFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKShibaFace *)self device];
+  v10 = [(objc_class *)v8 indexOfOption:optionCopy forDevice:device];
 
   return v10;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 10)
+  if (mode == 10)
   {
     v4 = off_C1A8;
 LABEL_5:
@@ -145,7 +145,7 @@ LABEL_5:
     return v6;
   }
 
-  if (a3 == 15)
+  if (mode == 15)
   {
     v4 = &off_C1B0;
     goto LABEL_5;
@@ -187,7 +187,7 @@ LABEL_5:
   return v2;
 }
 
-+ (id)_richComplicationSlotsForDevice:(id)a3
++ (id)_richComplicationSlotsForDevice:(id)device
 {
   v5[0] = NTKComplicationSlotTop;
   v5[1] = NTKComplicationSlotCenter;

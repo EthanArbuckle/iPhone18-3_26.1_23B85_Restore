@@ -1,25 +1,25 @@
 @interface SIRINLUINTERNALOvertonKGSpanData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addFeatures:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addFeatures:(id)features;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALOvertonKGSpanData
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 24))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 24))
   {
-    self->_confidence = *(v4 + 1);
+    self->_confidence = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -27,7 +27,7 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -94,24 +94,24 @@
   return [(NSMutableArray *)self->_features hash]^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 24);
+  v5 = *(equalCopy + 24);
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_confidence != *(v4 + 1))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_confidence != *(equalCopy + 1))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
 LABEL_9:
     v7 = 0;
@@ -119,7 +119,7 @@ LABEL_9:
   }
 
   features = self->_features;
-  if (features | *(v4 + 2))
+  if (features | *(equalCopy + 2))
   {
     v7 = [(NSMutableArray *)features isEqual:?];
   }
@@ -134,10 +134,10 @@ LABEL_10:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -165,7 +165,7 @@ LABEL_10:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * v11) copyWithZone:{a3, v15}];
+        v12 = [*(*(&v15 + 1) + 8 * v11) copyWithZone:{zone, v15}];
         [v6 addFeatures:v12];
 
         ++v11;
@@ -182,23 +182,23 @@ LABEL_10:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = *&self->_confidence;
-    *(v4 + 24) |= 1u;
+    toCopy[1] = *&self->_confidence;
+    *(toCopy + 24) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if ([(SIRINLUINTERNALOvertonKGSpanData *)self featuresCount])
   {
     [v9 clearFeatures];
-    v5 = [(SIRINLUINTERNALOvertonKGSpanData *)self featuresCount];
-    if (v5)
+    featuresCount = [(SIRINLUINTERNALOvertonKGSpanData *)self featuresCount];
+    if (featuresCount)
     {
-      v6 = v5;
+      v6 = featuresCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(SIRINLUINTERNALOvertonKGSpanData *)self featuresAtIndex:i];
@@ -208,10 +208,10 @@ LABEL_10:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     confidence = self->_confidence;
@@ -255,20 +255,20 @@ LABEL_10:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_confidence];
-    [v3 setObject:v4 forKey:@"confidence"];
+    [dictionary setObject:v4 forKey:@"confidence"];
   }
 
   features = self->_features;
   if (features)
   {
-    [v3 setObject:features forKey:@"features"];
+    [dictionary setObject:features forKey:@"features"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -277,28 +277,28 @@ LABEL_10:
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALOvertonKGSpanData;
   v4 = [(SIRINLUINTERNALOvertonKGSpanData *)&v8 description];
-  v5 = [(SIRINLUINTERNALOvertonKGSpanData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALOvertonKGSpanData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addFeatures:(id)a3
+- (void)addFeatures:(id)features
 {
-  v4 = a3;
+  featuresCopy = features;
   features = self->_features;
-  v8 = v4;
+  v8 = featuresCopy;
   if (!features)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_features;
     self->_features = v6;
 
-    v4 = v8;
+    featuresCopy = v8;
     features = self->_features;
   }
 
-  [(NSMutableArray *)features addObject:v4];
+  [(NSMutableArray *)features addObject:featuresCopy];
 }
 
 @end

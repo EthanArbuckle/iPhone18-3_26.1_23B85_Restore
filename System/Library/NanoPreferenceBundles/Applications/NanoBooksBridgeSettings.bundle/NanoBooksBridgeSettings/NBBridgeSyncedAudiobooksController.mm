@@ -4,8 +4,8 @@
 - (BOOL)_hasPurchasedAudiobooks;
 - (BOOL)_shouldShowProgress;
 - (BOOL)isOutOfSpace;
-- (BOOL)selectAudiobookAdamIdAlreadyPinned:(id)a3;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
+- (BOOL)selectAudiobookAdamIdAlreadyPinned:(id)pinned;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
 - (NBBridgeSyncedAudiobooksController)init;
 - (NMBUIAlertHeaderView)alertHeaderView;
 - (NMBUISyncInfoController)syncInfoController;
@@ -17,44 +17,44 @@
 - (id)_contentHeaderViewSubtitle;
 - (id)_contentHeaderViewTitle;
 - (id)_pinnedAudiobooks;
-- (id)_recommendationSelected:(id)a3;
+- (id)_recommendationSelected:(id)selected;
 - (id)_recommendationsGroup;
 - (id)_selfOrPresentedViewController;
-- (id)_specifierWithItem:(id)a3 showDownloadInfo:(BOOL)a4 showWarningIfAboveQuota:(BOOL)a5 downloadLimit:(unint64_t)a6;
-- (id)_specifierWithJaliscoItem:(id)a3 showDownloadInfo:(BOOL)a4 showWarningIfAboveQuota:(BOOL)a5 downloadLimit:(unint64_t)a6;
-- (id)_suggestionSpecifierWithRecommendation:(id)a3;
+- (id)_specifierWithItem:(id)item showDownloadInfo:(BOOL)info showWarningIfAboveQuota:(BOOL)quota downloadLimit:(unint64_t)limit;
+- (id)_specifierWithJaliscoItem:(id)item showDownloadInfo:(BOOL)info showWarningIfAboveQuota:(BOOL)quota downloadLimit:(unint64_t)limit;
+- (id)_suggestionSpecifierWithRecommendation:(id)recommendation;
 - (id)specifiers;
-- (id)syncInfoController:(id)a3 containerIdentifierForModelObject:(id)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (unint64_t)_resolvedProgressViewStateForState:(unint64_t)a3;
+- (id)syncInfoController:(id)controller containerIdentifierForModelObject:(id)object;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (unint64_t)_resolvedProgressViewStateForState:(unint64_t)state;
 - (void)_addAudiobookAction;
 - (void)_configureHeaderIfNeeded;
-- (void)_handleApplicationDidEnterBackgroundNotification:(id)a3;
-- (void)_handleApplicationWillEnterForegroundNotification:(id)a3;
-- (void)_handleAudiobookPinningSelectionsDidChangeNotification:(id)a3;
-- (void)_handleSyncInfoDidUpdateNotification:(id)a3;
-- (void)_handleSyncManagerSyncStateDidChangeNotification:(id)a3;
-- (void)_iCloudSignInAction:(id)a3;
-- (void)_iTunesSignInAction:(id)a3;
-- (void)_pinningAudiobooksContentsInvalidated:(id)a3;
+- (void)_handleApplicationDidEnterBackgroundNotification:(id)notification;
+- (void)_handleApplicationWillEnterForegroundNotification:(id)notification;
+- (void)_handleAudiobookPinningSelectionsDidChangeNotification:(id)notification;
+- (void)_handleSyncInfoDidUpdateNotification:(id)notification;
+- (void)_handleSyncManagerSyncStateDidChangeNotification:(id)notification;
+- (void)_iCloudSignInAction:(id)action;
+- (void)_iTunesSignInAction:(id)action;
+- (void)_pinningAudiobooksContentsInvalidated:(id)invalidated;
 - (void)_refreshFamilyOwnedAudiobooks;
 - (void)_reloadContents;
 - (void)_requestAudiobooks;
 - (void)_requestRecommendations;
-- (void)_restrictionsDidChange:(id)a3;
-- (void)_setRecommendationSelected:(id)a3 withSpecifier:(id)a4;
-- (void)_showAudiobookStore:(id)a3;
-- (void)_showReadingNowWantToRead:(id)a3;
+- (void)_restrictionsDidChange:(id)change;
+- (void)_setRecommendationSelected:(id)selected withSpecifier:(id)specifier;
+- (void)_showAudiobookStore:(id)store;
+- (void)_showReadingNowWantToRead:(id)read;
 - (void)_showSyncStorageWarning;
-- (void)_updateFamilyCircle:(id)a3;
+- (void)_updateFamilyCircle:(id)circle;
 - (void)_updateFooterIfNeeded;
 - (void)_updateHeaderAndSyncProgressIfNeeded;
 - (void)_updateHeaderSize;
 - (void)_updateProgressIfNeeded;
 - (void)dealloc;
-- (void)familyCircleDataSource:(id)a3 didFetchFamilyCircle:(id)a4;
-- (void)selectAudiobookDidSelectAudiobookWithAdamId:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
+- (void)familyCircleDataSource:(id)source didFetchFamilyCircle:(id)circle;
+- (void)selectAudiobookDidSelectAudiobookWithAdamId:(id)id;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -83,8 +83,8 @@
     v2->_familyDSIDs = &__NSArray0__struct;
 
     v2->_refreshingFamily = 0;
-    v9 = [(NBBridgeSyncedAudiobooksController *)v2 pinningManager];
-    [v9 setAudiobookDownloadLimit:18000.0];
+    pinningManager = [(NBBridgeSyncedAudiobooksController *)v2 pinningManager];
+    [pinningManager setAudiobookDownloadLimit:18000.0];
 
     [MPMediaQuery setFilteringDisabled:1];
     v10 = +[NSNotificationCenter defaultCenter];
@@ -98,9 +98,9 @@
     v11 = +[NRPairedDeviceRegistry sharedInstance];
     v12 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
     v13 = [v11 getAllDevicesWithArchivedAltAccountDevicesMatching:v12];
-    v14 = [v13 firstObject];
+    firstObject = [v13 firstObject];
     v15 = [[NSUUID alloc] initWithUUIDString:@"4649745E-094C-4F84-80DD-F7AB46F54792"];
-    v16 = [v14 supportsCapability:v15];
+    v16 = [firstObject supportsCapability:v15];
 
     if (v16)
     {
@@ -112,9 +112,9 @@
     v2->_allowsExplicitAudiobooks = +[NBBridgeUtilities isExplicitMaterialAllowed];
     v17 = BUBooksGroupContainerIdentifier;
     v18 = [LSBundleProxy bundleProxyForIdentifier:@"com.apple.iBooks"];
-    v19 = [v18 dataContainerURL];
+    dataContainerURL = [v18 dataContainerURL];
     v20 = +[NSURL bu_booksGroupContainerURL];
-    [BDSUserPreferencesSync copyChangedLocalPreferencesToGroupContainerWithAppSuiteName:@"com.apple.iBooks" container:v19 groupName:v17 groupContainer:v20];
+    [BDSUserPreferencesSync copyChangedLocalPreferencesToGroupContainerWithAppSuiteName:@"com.apple.iBooks" container:dataContainerURL groupName:v17 groupContainer:v20];
     [v10 addObserver:v2 selector:"_handleStoreAccountDidChange:" name:NMBUIITunesAccountDidChangeNotification object:0];
     [v10 addObserver:v2 selector:"_iCloudAccountAvailabilityChangedNotification:" name:NSUbiquityIdentityDidChangeNotification object:0];
     [(NBBridgeSyncedAudiobooksController *)v2 _refreshFamilyOwnedAudiobooks];
@@ -142,22 +142,22 @@
   v9.super_class = NBBridgeSyncedAudiobooksController;
   [(NBBridgeSyncedAudiobooksController *)&v9 viewDidLoad];
   [(NBBridgeSyncedAudiobooksController *)self _configureHeaderIfNeeded];
-  v3 = [(NBBridgeSyncedAudiobooksController *)self table];
-  [v3 setAllowsSelectionDuringEditing:1];
+  table = [(NBBridgeSyncedAudiobooksController *)self table];
+  [table setAllowsSelectionDuringEditing:1];
 
-  v4 = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
-  v5 = [v4 pinnedAudiobooks];
-  -[NBBridgeSyncedAudiobooksController setEditingButtonHidden:animated:](self, "setEditingButtonHidden:animated:", [v5 count] == 0, 0);
+  pinningManager = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
+  pinnedAudiobooks = [pinningManager pinnedAudiobooks];
+  -[NBBridgeSyncedAudiobooksController setEditingButtonHidden:animated:](self, "setEditingButtonHidden:animated:", [pinnedAudiobooks count] == 0, 0);
 
   [(NBBridgeSyncedAudiobooksController *)self _reloadContents];
   v6 = +[NBAudiobookRecommendationManager sharedManager];
-  v7 = [v6 pinningManager];
+  pinningManager2 = [v6 pinningManager];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_7F14;
   v8[3] = &unk_20AC0;
   v8[4] = self;
-  [v7 audiobookStoreEnabledWithCompletion:v8];
+  [pinningManager2 audiobookStoreEnabledWithCompletion:v8];
 }
 
 - (void)viewDidLayoutSubviews
@@ -193,11 +193,11 @@
     v5 = +[NSMutableArray array];
     if (![(NBBridgeSyncedAudiobooksController *)self isStoreAvailable])
     {
-      v9 = NBDefaultLog();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      audiobookSpecifiers = NBDefaultLog();
+      if (os_log_type_enabled(audiobookSpecifiers, OS_LOG_TYPE_DEFAULT))
       {
         *v23 = 0;
-        _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Store is disabled.", v23, 2u);
+        _os_log_impl(&dword_0, audiobookSpecifiers, OS_LOG_TYPE_DEFAULT, "Store is disabled.", v23, 2u);
       }
 
       goto LABEL_15;
@@ -207,17 +207,17 @@
     {
       if ([(NBBridgeSyncedAudiobooksController *)self _hasPurchasedAudiobooks])
       {
-        v6 = [(NBBridgeSyncedAudiobooksController *)self _recommendationsGroup];
-        [v5 addObjectsFromArray:v6];
+        _recommendationsGroup = [(NBBridgeSyncedAudiobooksController *)self _recommendationsGroup];
+        [v5 addObjectsFromArray:_recommendationsGroup];
 
-        v7 = [(NBBridgeSyncedAudiobooksController *)self libraryGroupSpecifier];
-        [v5 addObject:v7];
+        libraryGroupSpecifier = [(NBBridgeSyncedAudiobooksController *)self libraryGroupSpecifier];
+        [v5 addObject:libraryGroupSpecifier];
 
-        v8 = [(NBBridgeSyncedAudiobooksController *)self addAudiobookSpecifier];
-        [v5 addObject:v8];
+        addAudiobookSpecifier = [(NBBridgeSyncedAudiobooksController *)self addAudiobookSpecifier];
+        [v5 addObject:addAudiobookSpecifier];
 
-        v9 = [(NBBridgeSyncedAudiobooksController *)self audiobookSpecifiers];
-        [v5 addObjectsFromArray:v9];
+        audiobookSpecifiers = [(NBBridgeSyncedAudiobooksController *)self audiobookSpecifiers];
+        [v5 addObjectsFromArray:audiobookSpecifiers];
 LABEL_15:
 
 LABEL_16:
@@ -241,10 +241,10 @@ LABEL_16:
         goto LABEL_16;
       }
 
-      v9 = [PSSpecifier groupSpecifierWithID:@"NBNoStoreBooksGroupSpecifierID" name:0];
-      v25[0] = v9;
-      v16 = [(NBBridgeSyncedAudiobooksController *)self audiobookStoreSpecifier];
-      v25[1] = v16;
+      audiobookSpecifiers = [PSSpecifier groupSpecifierWithID:@"NBNoStoreBooksGroupSpecifierID" name:0];
+      v25[0] = audiobookSpecifiers;
+      audiobookStoreSpecifier = [(NBBridgeSyncedAudiobooksController *)self audiobookStoreSpecifier];
+      v25[1] = audiobookStoreSpecifier;
       v17 = v25;
     }
 
@@ -257,7 +257,7 @@ LABEL_16:
         _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "No known store account.", v23, 2u);
       }
 
-      v9 = [PSSpecifier groupSpecifierWithID:@"NBSignIntoITunesGroupSpecifierID" name:0];
+      audiobookSpecifiers = [PSSpecifier groupSpecifierWithID:@"NBSignIntoITunesGroupSpecifierID" name:0];
       v11 = _os_feature_enabled_impl();
       v12 = NBBundle();
       v13 = v12;
@@ -272,11 +272,11 @@ LABEL_16:
       }
 
       v15 = [v12 localizedStringForKey:v14 value:&stru_20DE8 table:0];
-      [v9 setProperty:v15 forKey:PSFooterTextGroupKey];
+      [audiobookSpecifiers setProperty:v15 forKey:PSFooterTextGroupKey];
 
-      v24[0] = v9;
-      v16 = [(NBBridgeSyncedAudiobooksController *)self signInSpecifier];
-      v24[1] = v16;
+      v24[0] = audiobookSpecifiers;
+      audiobookStoreSpecifier = [(NBBridgeSyncedAudiobooksController *)self signInSpecifier];
+      v24[1] = audiobookStoreSpecifier;
       v17 = v24;
     }
 
@@ -299,15 +299,15 @@ LABEL_17:
   [v3 refresh];
 }
 
-- (void)_updateFamilyCircle:(id)a3
+- (void)_updateFamilyCircle:(id)circle
 {
-  v3 = a3;
+  circleCopy = circle;
   v4 = objc_opt_new();
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = v3;
+  v5 = circleCopy;
   v6 = [v5 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v6)
   {
@@ -324,26 +324,26 @@ LABEL_17:
         v9 = *(*(&v26 + 1) + 8 * i);
         if (([v9 isCurrentSignedInUser] & 1) == 0)
         {
-          v10 = [v9 iTunesDSID];
-          v11 = v10 == 0;
+          iTunesDSID = [v9 iTunesDSID];
+          v11 = iTunesDSID == 0;
 
           if (!v11)
           {
-            v12 = [v9 iTunesDSID];
-            [v4 addObject:v12];
+            iTunesDSID2 = [v9 iTunesDSID];
+            [v4 addObject:iTunesDSID2];
           }
 
-          v13 = [v9 iCloudDSID];
-          if (v13)
+          iCloudDSID = [v9 iCloudDSID];
+          if (iCloudDSID)
           {
-            v14 = [v9 iTunesDSID];
-            v15 = [v9 iCloudDSID];
-            v16 = [v14 isEqualToNumber:v15];
+            iTunesDSID3 = [v9 iTunesDSID];
+            iCloudDSID2 = [v9 iCloudDSID];
+            v16 = [iTunesDSID3 isEqualToNumber:iCloudDSID2];
 
             if (v16)
             {
-              v17 = [v9 iCloudDSID];
-              [v4 addObject:v17];
+              iCloudDSID3 = [v9 iCloudDSID];
+              [v4 addObject:iCloudDSID3];
             }
           }
         }
@@ -356,8 +356,8 @@ LABEL_17:
   }
 
   [(NBBridgeSyncedAudiobooksController *)self setFamilyDSIDs:v4];
-  v18 = [(NBBridgeSyncedAudiobooksController *)self familyDSIDs];
-  v19 = [v18 count] == 0;
+  familyDSIDs = [(NBBridgeSyncedAudiobooksController *)self familyDSIDs];
+  v19 = [familyDSIDs count] == 0;
 
   if (v19)
   {
@@ -388,8 +388,8 @@ LABEL_17:
 - (BOOL)_hasPurchasedAudiobooks
 {
   v3 = +[MPMediaQuery nb_storeOnlyAudiobooksQuery];
-  v4 = [v3 collections];
-  v5 = [v4 count];
+  collections = [v3 collections];
+  v5 = [collections count];
 
   if (v5)
   {
@@ -398,14 +398,14 @@ LABEL_17:
 
   else
   {
-    v7 = [(NBBridgeSyncedAudiobooksController *)self familyDSIDs];
-    v8 = [v7 count];
+    familyDSIDs = [(NBBridgeSyncedAudiobooksController *)self familyDSIDs];
+    v8 = [familyDSIDs count];
 
     if (v8)
     {
       v9 = +[BLJaliscoReadOnlyDAAPClient sharedClient];
-      v10 = [(NBBridgeSyncedAudiobooksController *)self familyDSIDs];
-      v11 = [v9 fetchAllServerItemsForDSIDs:v10];
+      familyDSIDs2 = [(NBBridgeSyncedAudiobooksController *)self familyDSIDs];
+      v11 = [v9 fetchAllServerItemsForDSIDs:familyDSIDs2];
       v6 = [v11 count] != 0;
     }
 
@@ -469,8 +469,8 @@ LABEL_17:
   [v4 setProperty:v18 forKey:PSFooterHyperlinkViewTargetKey];
 
   [v3 addObject:v4];
-  v19 = [(NBBridgeSyncedAudiobooksController *)self recommendationSpecifiers];
-  [v3 addObjectsFromArray:v19];
+  recommendationSpecifiers = [(NBBridgeSyncedAudiobooksController *)self recommendationSpecifiers];
+  [v3 addObjectsFromArray:recommendationSpecifiers];
 
   return v3;
 }
@@ -494,8 +494,8 @@ LABEL_17:
     [(PSSpecifier *)v8 setProperty:v10 forKey:NMBUISpecifierTitleKey];
 
     v11 = self->_addAudiobookSpecifier;
-    v12 = [objc_opt_class() _addAudiobookImage];
-    [(PSSpecifier *)v11 setProperty:v12 forKey:NMBUISpecifierPlaceholderImageKey];
+    _addAudiobookImage = [objc_opt_class() _addAudiobookImage];
+    [(PSSpecifier *)v11 setProperty:_addAudiobookImage forKey:NMBUISpecifierPlaceholderImageKey];
 
     [(PSSpecifier *)self->_addAudiobookSpecifier setProperty:&__kCFBooleanFalse forKey:NMBUISpecifierShouldShowSwitchKey];
     addAudiobookSpecifier = self->_addAudiobookSpecifier;
@@ -557,15 +557,15 @@ LABEL_17:
 - (id)_pinnedAudiobooks
 {
   v3 = +[NSMutableSet set];
-  v4 = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
-  v5 = [v4 pinnedAudiobooks];
-  v6 = [v5 array];
-  [v3 addObjectsFromArray:v6];
+  pinningManager = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
+  pinnedAudiobooks = [pinningManager pinnedAudiobooks];
+  array = [pinnedAudiobooks array];
+  [v3 addObjectsFromArray:array];
 
-  v7 = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
-  LODWORD(v5) = [v7 isWantToReadEnabled];
+  pinningManager2 = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
+  LODWORD(pinnedAudiobooks) = [pinningManager2 isWantToReadEnabled];
 
-  if (v5)
+  if (pinnedAudiobooks)
   {
     v8 = NBDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -574,16 +574,16 @@ LABEL_17:
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Want to read is enabled.", buf, 2u);
     }
 
-    v9 = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
-    v10 = [v9 wantToReadAudiobooks];
-    v11 = [v10 array];
-    [v3 addObjectsFromArray:v11];
+    pinningManager3 = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
+    wantToReadAudiobooks = [pinningManager3 wantToReadAudiobooks];
+    array2 = [wantToReadAudiobooks array];
+    [v3 addObjectsFromArray:array2];
   }
 
-  v12 = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
-  v13 = [v12 isReadingNowEnabled];
+  pinningManager4 = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
+  isReadingNowEnabled = [pinningManager4 isReadingNowEnabled];
 
-  if (v13)
+  if (isReadingNowEnabled)
   {
     v14 = NBDefaultLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -592,10 +592,10 @@ LABEL_17:
       _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "Reading now is enabled.", v19, 2u);
     }
 
-    v15 = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
-    v16 = [v15 readingNowAudiobooks];
-    v17 = [v16 array];
-    [v3 addObjectsFromArray:v17];
+    pinningManager5 = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
+    readingNowAudiobooks = [pinningManager5 readingNowAudiobooks];
+    array3 = [readingNowAudiobooks array];
+    [v3 addObjectsFromArray:array3];
   }
 
   return v3;
@@ -603,27 +603,27 @@ LABEL_17:
 
 - (BOOL)_hasPinnedAudiobooks
 {
-  v5 = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
-  v6 = [v5 pinnedAudiobooks];
-  if (![v6 count])
+  pinningManager = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
+  pinnedAudiobooks = [pinningManager pinnedAudiobooks];
+  if (![pinnedAudiobooks count])
   {
-    v8 = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
-    v9 = [v8 isWantToReadEnabled];
-    if (v9 && (-[NBBridgeSyncedAudiobooksController pinningManager](self, "pinningManager"), v2 = objc_claimAutoreleasedReturnValue(), [v2 wantToReadAudiobooks], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "count")))
+    pinningManager2 = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
+    isWantToReadEnabled = [pinningManager2 isWantToReadEnabled];
+    if (isWantToReadEnabled && (-[NBBridgeSyncedAudiobooksController pinningManager](self, "pinningManager"), v2 = objc_claimAutoreleasedReturnValue(), [v2 wantToReadAudiobooks], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "count")))
     {
       v7 = 1;
     }
 
     else
     {
-      v10 = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
-      if ([v10 isReadingNowEnabled])
+      pinningManager3 = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
+      if ([pinningManager3 isReadingNowEnabled])
       {
-        v11 = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
-        v12 = [v11 readingNowAudiobooks];
-        v7 = [v12 count] != 0;
+        pinningManager4 = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
+        readingNowAudiobooks = [pinningManager4 readingNowAudiobooks];
+        v7 = [readingNowAudiobooks count] != 0;
 
-        if ((v9 & 1) == 0)
+        if ((isWantToReadEnabled & 1) == 0)
         {
           goto LABEL_11;
         }
@@ -633,7 +633,7 @@ LABEL_17:
       {
 
         v7 = 0;
-        if (!v9)
+        if (!isWantToReadEnabled)
         {
 LABEL_11:
 
@@ -653,15 +653,15 @@ LABEL_12:
 
 - (void)_reloadContents
 {
-  v3 = [(NBBridgeSyncedAudiobooksController *)self hasStoreAccount];
-  v4 = [(NBBridgeSyncedAudiobooksController *)self hasCloudAccount];
+  hasStoreAccount = [(NBBridgeSyncedAudiobooksController *)self hasStoreAccount];
+  hasCloudAccount = [(NBBridgeSyncedAudiobooksController *)self hasCloudAccount];
   v5 = +[NMBUIAccountUtil sharedInstance];
   -[NBBridgeSyncedAudiobooksController setStoreAccount:](self, "setStoreAccount:", [v5 hasITunesAccount]);
 
   v6 = +[BUAccountsProvider sharedProvider];
   -[NBBridgeSyncedAudiobooksController setCloudAccount:](self, "setCloudAccount:", [v6 isUserSignedInToiCloud]);
 
-  if (v3 != [(NBBridgeSyncedAudiobooksController *)self hasStoreAccount]|| v4 != [(NBBridgeSyncedAudiobooksController *)self hasCloudAccount])
+  if (hasStoreAccount != [(NBBridgeSyncedAudiobooksController *)self hasStoreAccount]|| hasCloudAccount != [(NBBridgeSyncedAudiobooksController *)self hasCloudAccount])
   {
     [(NBBridgeSyncedAudiobooksController *)self reloadSpecifiers];
   }
@@ -712,15 +712,15 @@ LABEL_12:
   return v15;
 }
 
-- (id)_suggestionSpecifierWithRecommendation:(id)a3
+- (id)_suggestionSpecifierWithRecommendation:(id)recommendation
 {
-  v4 = a3;
-  v5 = [v4 title];
-  v6 = [v4 subtitle];
-  v7 = [v4 artworkCatalog];
-  v8 = [(NBBridgeSyncedAudiobooksController *)self _specifierWithTitle:v5 subtitle:v6 artworkCatalog:v7 showSwitch:1 set:"_setRecommendationSelected:withSpecifier:" get:"_recommendationSelected:"];
+  recommendationCopy = recommendation;
+  title = [recommendationCopy title];
+  subtitle = [recommendationCopy subtitle];
+  artworkCatalog = [recommendationCopy artworkCatalog];
+  v8 = [(NBBridgeSyncedAudiobooksController *)self _specifierWithTitle:title subtitle:subtitle artworkCatalog:artworkCatalog showSwitch:1 set:"_setRecommendationSelected:withSpecifier:" get:"_recommendationSelected:"];
 
-  [v8 setProperty:v4 forKey:NMBUISpecifierModelObjectKey];
+  [v8 setProperty:recommendationCopy forKey:NMBUISpecifierModelObjectKey];
   v9 = [NSNumber numberWithBool:[(NBBridgeSyncedAudiobooksController *)self hasCloudAccount]];
   [v8 setProperty:v9 forKey:PSEnabledKey];
 
@@ -734,17 +734,17 @@ LABEL_12:
   v5 = +[NRPairedDeviceRegistry sharedInstance];
   v6 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v7 = [v5 getAllDevicesWithArchivedAltAccountDevicesMatching:v6];
-  v8 = [v7 firstObject];
+  firstObject = [v7 firstObject];
   v9 = [[NSUUID alloc] initWithUUIDString:@"4649745E-094C-4F84-80DD-F7AB46F54792"];
-  v10 = [v8 supportsCapability:v9];
+  v10 = [firstObject supportsCapability:v9];
 
-  v11 = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
-  [v11 audiobookDownloadLimit];
+  pinningManager = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
+  [pinningManager audiobookDownloadLimit];
   v13 = v12;
 
-  v14 = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
-  v15 = [v14 pinnedAudiobooks];
-  v16 = [v15 array];
+  pinningManager2 = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
+  pinnedAudiobooks = [pinningManager2 pinnedAudiobooks];
+  array = [pinnedAudiobooks array];
 
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
@@ -758,7 +758,7 @@ LABEL_12:
   v23 = v4;
   v17 = v4;
   v18 = v3;
-  [v16 enumerateAdamIDsUsingBlock:v21];
+  [array enumerateAdamIDsUsingBlock:v21];
   v19 = [v18 copy];
   [(NBBridgeSyncedAudiobooksController *)self setAudiobookSpecifiers:v19];
 
@@ -784,12 +784,12 @@ LABEL_12:
   objc_destroyWeak(&location);
 }
 
-- (void)_setRecommendationSelected:(id)a3 withSpecifier:(id)a4
+- (void)_setRecommendationSelected:(id)selected withSpecifier:(id)specifier
 {
-  v5 = a4;
-  v6 = a3;
+  specifierCopy = specifier;
+  selectedCopy = selected;
   objc_opt_class();
-  v7 = [v5 propertyForKey:NMBUISpecifierModelObjectKey];
+  v7 = [specifierCopy propertyForKey:NMBUISpecifierModelObjectKey];
 
   v8 = BUDynamicCast();
 
@@ -803,11 +803,11 @@ LABEL_12:
   [v10 persistRecommendationsSelections:v11];
 }
 
-- (id)_recommendationSelected:(id)a3
+- (id)_recommendationSelected:(id)selected
 {
-  v4 = a3;
+  selectedCopy = selected;
   objc_opt_class();
-  v5 = [v4 propertyForKey:NMBUISpecifierModelObjectKey];
+  v5 = [selectedCopy propertyForKey:NMBUISpecifierModelObjectKey];
 
   v6 = BUDynamicCast();
 
@@ -824,7 +824,7 @@ LABEL_12:
   return v7;
 }
 
-- (void)_restrictionsDidChange:(id)a3
+- (void)_restrictionsDidChange:(id)change
 {
   v4 = +[NBBridgeUtilities isExplicitMaterialAllowed];
   if (v4 != [(NBBridgeSyncedAudiobooksController *)self allowsExplicitAudiobooks])
@@ -847,20 +847,20 @@ LABEL_12:
   }
 }
 
-- (void)_pinningAudiobooksContentsInvalidated:(id)a3
+- (void)_pinningAudiobooksContentsInvalidated:(id)invalidated
 {
   [(NBBridgeSyncedAudiobooksController *)self _reloadContents];
   v3 = +[NBAudiobookRecommendationManager sharedManager];
   [v3 reloadRecommendationsIfNeeded:0];
 }
 
-- (void)_handleAudiobookPinningSelectionsDidChangeNotification:(id)a3
+- (void)_handleAudiobookPinningSelectionsDidChangeNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:NMSNotificationUserInfoKeyIsInProcessNotification];
-  v6 = [v5 BOOLValue];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:NMSNotificationUserInfoKeyIsInProcessNotification];
+  bOOLValue = [v5 BOOLValue];
 
-  if ((v6 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v7 = NBDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -872,14 +872,14 @@ LABEL_12:
   }
 }
 
-- (void)_handleSyncInfoDidUpdateNotification:(id)a3
+- (void)_handleSyncInfoDidUpdateNotification:(id)notification
 {
-  v4 = [a3 object];
-  v5 = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
+  object = [notification object];
+  syncInfoController = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
 
   v6 = NBDefaultLog();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
-  if (v4 == v5)
+  if (object == syncInfoController)
   {
     if (v7)
     {
@@ -898,7 +898,7 @@ LABEL_12:
   }
 }
 
-- (void)_handleSyncManagerSyncStateDidChangeNotification:(id)a3
+- (void)_handleSyncManagerSyncStateDidChangeNotification:(id)notification
 {
   v4 = NBDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -909,29 +909,29 @@ LABEL_12:
   [(NBBridgeSyncedAudiobooksController *)self _updateHeaderAndSyncProgressIfNeeded];
 }
 
-- (void)_handleApplicationWillEnterForegroundNotification:(id)a3
+- (void)_handleApplicationWillEnterForegroundNotification:(id)notification
 {
-  v3 = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
-  [v3 beginObservingSyncInfo];
+  syncInfoController = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
+  [syncInfoController beginObservingSyncInfo];
 }
 
-- (void)_handleApplicationDidEnterBackgroundNotification:(id)a3
+- (void)_handleApplicationDidEnterBackgroundNotification:(id)notification
 {
-  v3 = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
-  [v3 endObservingSyncInfo];
+  syncInfoController = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
+  [syncInfoController endObservingSyncInfo];
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NBBridgeSyncedAudiobooksController *)self specifierAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(NBBridgeSyncedAudiobooksController *)self specifierAtIndexPath:pathCopy];
   if ([(NBBridgeSyncedAudiobooksController *)self editable])
   {
-    v9 = [v8 identifier];
+    identifier = [v8 identifier];
     v10 = NBBundle();
     v11 = [v10 localizedStringForKey:@"Add Audiobook\\U2026" value:&stru_20DE8 table:0];
-    v12 = [v9 isEqualToString:v11];
+    v12 = [identifier isEqualToString:v11];
 
     if (v12)
     {
@@ -941,27 +941,27 @@ LABEL_12:
 
   v15.receiver = self;
   v15.super_class = NBBridgeSyncedAudiobooksController;
-  v13 = [(NBBridgeSyncedAudiobooksController *)&v15 tableView:v6 willSelectRowAtIndexPath:v7];
+  v13 = [(NBBridgeSyncedAudiobooksController *)&v15 tableView:viewCopy willSelectRowAtIndexPath:pathCopy];
 
   return v13;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v9 section];
-  if (v10 == [v8 numberOfSections] - 1)
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section == [viewCopy numberOfSections] - 1)
   {
-    v11 = [(NBBridgeSyncedAudiobooksController *)self specifierAtIndexPath:v9];
+    v11 = [(NBBridgeSyncedAudiobooksController *)self specifierAtIndexPath:pathCopy];
     v12 = [v11 propertyForKey:NMBUISpecifierModelObjectKey];
     objc_opt_class();
     v13 = BUDynamicCast();
     v14 = v13;
     if (v13)
     {
-      v15 = [v13 bk_storeID];
-      if (!v15)
+      bk_storeID = [v13 bk_storeID];
+      if (!bk_storeID)
       {
 LABEL_5:
 
@@ -976,23 +976,23 @@ LABEL_5:
       v18 = v17;
       if (v17)
       {
-        v19 = [v17 storeID];
-        v15 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v19 nb_uint64_t]);
+        storeID = [v17 storeID];
+        bk_storeID = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [storeID nb_uint64_t]);
       }
 
       else
       {
-        v15 = 0;
+        bk_storeID = 0;
       }
 
-      if (!v15)
+      if (!bk_storeID)
       {
         goto LABEL_5;
       }
     }
 
-    v16 = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
-    [v16 unpinAudiobook:v15];
+    pinningManager = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
+    [pinningManager unpinAudiobook:bk_storeID];
 
     [(NBBridgeSyncedAudiobooksController *)self _reloadContents];
     goto LABEL_5;
@@ -1001,42 +1001,42 @@ LABEL_5:
 LABEL_6:
   v20.receiver = self;
   v20.super_class = NBBridgeSyncedAudiobooksController;
-  [(NBBridgeSyncedAudiobooksController *)&v20 tableView:v8 commitEditingStyle:a4 forRowAtIndexPath:v9];
+  [(NBBridgeSyncedAudiobooksController *)&v20 tableView:viewCopy commitEditingStyle:style forRowAtIndexPath:pathCopy];
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v4 = [(NBBridgeSyncedAudiobooksController *)self specifierAtIndexPath:a4];
+  v4 = [(NBBridgeSyncedAudiobooksController *)self specifierAtIndexPath:path];
   v5 = [v4 propertyForKey:@"kNanoBooksCellIsEditable"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)selectAudiobookDidSelectAudiobookWithAdamId:(id)a3
+- (void)selectAudiobookDidSelectAudiobookWithAdamId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = +[NBAudiobookRecommendationManager sharedManager];
-  [v5 updateBitRateForAdamID:v4];
+  [v5 updateBitRateForAdamID:idCopy];
 
-  v6 = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
-  [v6 pinAudiobook:v4];
+  pinningManager = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
+  [pinningManager pinAudiobook:idCopy];
 
   [(NBBridgeSyncedAudiobooksController *)self dismissViewControllerAnimated:1 completion:0];
 
   [(NBBridgeSyncedAudiobooksController *)self _reloadContents];
 }
 
-- (BOOL)selectAudiobookAdamIdAlreadyPinned:(id)a3
+- (BOOL)selectAudiobookAdamIdAlreadyPinned:(id)pinned
 {
-  if (!a3)
+  if (!pinned)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(NBBridgeSyncedAudiobooksController *)self manuallyPinnedAudiobookIdentifiers];
-  v6 = [v5 containsObject:v4];
+  pinnedCopy = pinned;
+  manuallyPinnedAudiobookIdentifiers = [(NBBridgeSyncedAudiobooksController *)self manuallyPinnedAudiobookIdentifiers];
+  v6 = [manuallyPinnedAudiobookIdentifiers containsObject:pinnedCopy];
 
   return v6;
 }
@@ -1077,28 +1077,28 @@ LABEL_6:
   return audiobookStoreSpecifier;
 }
 
-- (void)_showReadingNowWantToRead:(id)a3
+- (void)_showReadingNowWantToRead:(id)read
 {
   v4 = [NSURL URLWithString:@"ibooks://show-reading-now"];
   v3 = +[UIApplication sharedApplication];
   [v3 openURL:v4 withCompletionHandler:&stru_20B58];
 }
 
-- (void)_showAudiobookStore:(id)a3
+- (void)_showAudiobookStore:(id)store
 {
   v4 = [NSURL URLWithString:@"ibooks://show-audiobook-store"];
   v3 = +[UIApplication sharedApplication];
   [v3 openURL:v4 withCompletionHandler:&stru_20B78];
 }
 
-- (void)_iTunesSignInAction:(id)a3
+- (void)_iTunesSignInAction:(id)action
 {
   v4 = [NSURL URLWithString:@"prefs:root=APPLE_ACCOUNT&path=STORE_SERVICE"];
   v3 = +[LSApplicationWorkspace defaultWorkspace];
   [v3 openSensitiveURL:v4 withOptions:0];
 }
 
-- (void)_iCloudSignInAction:(id)a3
+- (void)_iCloudSignInAction:(id)action
 {
   v4 = [NSURL URLWithString:@"prefs:root=APPLE_ACCOUNT"];
   v3 = +[LSApplicationWorkspace defaultWorkspace];
@@ -1124,10 +1124,10 @@ LABEL_11:
     return;
   }
 
-  v3 = [(NBBridgeSyncedAudiobooksController *)self view];
-  v4 = [v3 window];
+  view = [(NBBridgeSyncedAudiobooksController *)self view];
+  window = [view window];
 
-  if (!v4)
+  if (!window)
   {
     self->_needsVisibleSpecifiersSyncInfoUpdate = 1;
     v6 = NBDefaultLog();
@@ -1168,8 +1168,8 @@ LABEL_11:
       v4 = 0;
     }
 
-    v3 = [(NBBridgeSyncedAudiobooksController *)self table];
-    [v3 setTableFooterView:v4];
+    table = [(NBBridgeSyncedAudiobooksController *)self table];
+    [table setTableFooterView:v4];
   }
 }
 
@@ -1187,13 +1187,13 @@ LABEL_11:
 
     v7 = NBBundle();
     v8 = [v7 localizedStringForKey:@"Out of Media Storage" value:&stru_20DE8 table:0];
-    v9 = [(NMBUIAlertHeaderView *)self->_alertHeaderView textLabel];
-    [v9 setText:v8];
+    textLabel = [(NMBUIAlertHeaderView *)self->_alertHeaderView textLabel];
+    [textLabel setText:v8];
 
     v10 = NBBundle();
     v11 = [v10 localizedStringForKey:@"The storage space dedicated to media on your Apple\\U00A0Watch is full. To make space available value:you can remove some podcasts table:{music, or audiobooks.", &stru_20DE8, 0}];
-    v12 = [(NMBUIAlertHeaderView *)self->_alertHeaderView detailTextLabel];
-    [v12 setText:v11];
+    detailTextLabel = [(NMBUIAlertHeaderView *)self->_alertHeaderView detailTextLabel];
+    [detailTextLabel setText:v11];
 
     [(NMBUIAlertHeaderView *)self->_alertHeaderView setPreservesSuperviewLayoutMargins:1];
     alertHeaderView = self->_alertHeaderView;
@@ -1213,22 +1213,22 @@ LABEL_11:
     }
 
     v4 = [[NMBUIContentHeaderView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-    v5 = [(NBBridgeSyncedAudiobooksController *)self _contentHeaderViewTitle];
-    v6 = [v4 textLabel];
-    [v6 setText:v5];
+    _contentHeaderViewTitle = [(NBBridgeSyncedAudiobooksController *)self _contentHeaderViewTitle];
+    textLabel = [v4 textLabel];
+    [textLabel setText:_contentHeaderViewTitle];
 
-    v7 = [(NBBridgeSyncedAudiobooksController *)self _contentHeaderViewSubtitle];
-    v8 = [v4 detailTextLabel];
-    [v8 setText:v7];
+    _contentHeaderViewSubtitle = [(NBBridgeSyncedAudiobooksController *)self _contentHeaderViewSubtitle];
+    detailTextLabel = [v4 detailTextLabel];
+    [detailTextLabel setText:_contentHeaderViewSubtitle];
 
     [v4 setPreservesSuperviewLayoutMargins:1];
     if ([(NBBridgeSyncedAudiobooksController *)self _shouldShowProgress])
     {
       [(NBBridgeSyncedAudiobooksController *)self _contentHeaderViewProgress];
       v10 = v9;
-      v11 = [v4 progressView];
+      progressView = [v4 progressView];
       LODWORD(v12) = v10;
-      [v11 setProgress:v12];
+      [progressView setProgress:v12];
 
       v13 = NBDefaultLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -1246,16 +1246,16 @@ LABEL_11:
         sub_11EEC();
       }
 
-      v16 = [(NBBridgeSyncedAudiobooksController *)self alertHeaderView];
-      [v14 addObject:v16];
+      alertHeaderView = [(NBBridgeSyncedAudiobooksController *)self alertHeaderView];
+      [v14 addObject:alertHeaderView];
     }
 
     [v14 addObject:v4];
     v17 = [[UIStackView alloc] initWithArrangedSubviews:v14];
     [v17 setAxis:1];
     [v17 setPreservesSuperviewLayoutMargins:1];
-    v18 = [(NBBridgeSyncedAudiobooksController *)self table];
-    [v18 setTableHeaderView:v17];
+    table = [(NBBridgeSyncedAudiobooksController *)self table];
+    [table setTableHeaderView:v17];
 
     [(NBBridgeSyncedAudiobooksController *)self _updateHeaderSize];
   }
@@ -1265,22 +1265,22 @@ LABEL_11:
 {
   if ([(NBBridgeSyncedAudiobooksController *)self isViewLoaded])
   {
-    v3 = [(NBBridgeSyncedAudiobooksController *)self table];
-    v14 = [v3 tableHeaderView];
+    table = [(NBBridgeSyncedAudiobooksController *)self table];
+    tableHeaderView = [table tableHeaderView];
 
-    v4 = [v14 superview];
-    [v4 bounds];
+    superview = [tableHeaderView superview];
+    [superview bounds];
     v6 = v5;
     v8 = v7;
     LODWORD(v5) = 1148846080;
     LODWORD(v7) = 1112014848;
-    [v14 systemLayoutSizeFittingSize:v6 withHorizontalFittingPriority:v8 verticalFittingPriority:{v5, v7}];
+    [tableHeaderView systemLayoutSizeFittingSize:v6 withHorizontalFittingPriority:v8 verticalFittingPriority:{v5, v7}];
     v10 = v9;
     v12 = v11;
 
-    [v14 setBounds:{0.0, 0.0, v10, v12}];
-    v13 = [(NBBridgeSyncedAudiobooksController *)self table];
-    [v13 setTableHeaderView:v14];
+    [tableHeaderView setBounds:{0.0, 0.0, v10, v12}];
+    table2 = [(NBBridgeSyncedAudiobooksController *)self table];
+    [table2 setTableHeaderView:tableHeaderView];
   }
 }
 
@@ -1290,8 +1290,8 @@ LABEL_11:
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v2 = [(NBBridgeSyncedAudiobooksController *)self specifiers];
-  v3 = [v2 countByEnumeratingWithState:&v44 objects:v58 count:16];
+  specifiers = [(NBBridgeSyncedAudiobooksController *)self specifiers];
+  v3 = [specifiers countByEnumeratingWithState:&v44 objects:v58 count:16];
   if (v3)
   {
     v5 = v3;
@@ -1304,7 +1304,7 @@ LABEL_11:
     *&v4 = 134219010;
     v34 = v4;
     v36 = *v45;
-    v37 = v2;
+    v37 = specifiers;
     v38 = NMBUISpecifierShouldShowDownloadInfoKey;
     do
     {
@@ -1314,18 +1314,18 @@ LABEL_11:
       {
         if (*v45 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(specifiers);
         }
 
         v9 = *(*(&v44 + 1) + 8 * v8);
         v10 = [v9 propertyForKey:{v7, v34}];
-        v11 = [v10 BOOLValue];
+        bOOLValue = [v10 BOOLValue];
 
-        if (v11)
+        if (bOOLValue)
         {
           v12 = [v9 propertyForKey:v39];
           v13 = [v9 propertyForKey:v43];
-          v14 = [v13 unsignedIntegerValue];
+          unsignedIntegerValue = [v13 unsignedIntegerValue];
 
           v15 = [v9 propertyForKey:v42];
           [v15 floatValue];
@@ -1333,20 +1333,20 @@ LABEL_11:
 
           if (v12)
           {
-            v18 = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
-            v19 = -[NBBridgeSyncedAudiobooksController _resolvedProgressViewStateForState:](self, "_resolvedProgressViewStateForState:", [v18 downloadStateForModelObject:v12]);
+            syncInfoController = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
+            v19 = -[NBBridgeSyncedAudiobooksController _resolvedProgressViewStateForState:](self, "_resolvedProgressViewStateForState:", [syncInfoController downloadStateForModelObject:v12]);
 
-            v20 = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
-            [v20 progressForModelObject:v12];
+            syncInfoController2 = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
+            [syncInfoController2 progressForModelObject:v12];
             v22 = v21;
 
-            if (v14 != v19 || vabds_f32(v17, v22) > 0.00000011921)
+            if (unsignedIntegerValue != v19 || vabds_f32(v17, v22) > 0.00000011921)
             {
               v23 = [v9 propertyForKey:v35];
               v24 = NBDefaultLog();
               if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
               {
-                v32 = sub_BA48(v14);
+                v32 = sub_BA48(unsignedIntegerValue);
                 v33 = sub_BA48(v19);
                 *buf = v34;
                 v49 = v17;
@@ -1362,9 +1362,9 @@ LABEL_11:
               }
 
               objc_opt_class();
-              v25 = [(NBBridgeSyncedAudiobooksController *)self table];
+              table = [(NBBridgeSyncedAudiobooksController *)self table];
               v26 = [(NBBridgeSyncedAudiobooksController *)self indexPathForSpecifier:v9];
-              v27 = [v25 cellForRowAtIndexPath:v26];
+              v27 = [table cellForRowAtIndexPath:v26];
               v28 = BUDynamicCast();
 
               v29 = [NSNumber numberWithUnsignedInteger:v19];
@@ -1376,7 +1376,7 @@ LABEL_11:
 
               [v28 refreshCellContentsWithSpecifier:v9];
               v6 = v36;
-              v2 = v37;
+              specifiers = v37;
             }
           }
 
@@ -1388,7 +1388,7 @@ LABEL_11:
       }
 
       while (v5 != v8);
-      v5 = [v2 countByEnumeratingWithState:&v44 objects:v58 count:16];
+      v5 = [specifiers countByEnumeratingWithState:&v44 objects:v58 count:16];
     }
 
     while (v5);
@@ -1400,9 +1400,9 @@ LABEL_11:
   v3 = +[NRPairedDeviceRegistry sharedInstance];
   v4 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v5 = [v3 getAllDevicesWithArchivedAltAccountDevicesMatching:v4];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
   v7 = [[NSUUID alloc] initWithUUIDString:@"4649745E-094C-4F84-80DD-F7AB46F54792"];
-  v8 = [v6 supportsCapability:v7];
+  v8 = [firstObject supportsCapability:v7];
 
   if (!v8)
   {
@@ -1413,11 +1413,11 @@ LABEL_11:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v9 = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
-  v10 = [v9 syncInfo];
-  v11 = [v10 containers];
+  syncInfoController = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
+  syncInfo = [syncInfoController syncInfo];
+  containers = [syncInfo containers];
 
-  v12 = [v11 countByEnumeratingWithState:&v26 objects:v34 count:16];
+  v12 = [containers countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v12)
   {
     v13 = v12;
@@ -1428,22 +1428,22 @@ LABEL_11:
       {
         if (*v27 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(containers);
         }
 
         v16 = *(*(&v26 + 1) + 8 * i);
-        v17 = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
-        v18 = [v17 syncInfo];
-        v19 = [v18 numberOfItemsOverStorageLimitForContainer:v16];
+        syncInfoController2 = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
+        syncInfo2 = [syncInfoController2 syncInfo];
+        v19 = [syncInfo2 numberOfItemsOverStorageLimitForContainer:v16];
 
         if (v19)
         {
           v21 = NBDefaultLog();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
           {
-            v22 = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
-            v23 = [v22 syncInfo];
-            v24 = [v23 numberOfItemsOverStorageLimitForContainer:v16];
+            syncInfoController3 = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
+            syncInfo3 = [syncInfoController3 syncInfo];
+            v24 = [syncInfo3 numberOfItemsOverStorageLimitForContainer:v16];
             *buf = 134218242;
             v31 = v24;
             v32 = 2112;
@@ -1456,7 +1456,7 @@ LABEL_11:
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v26 objects:v34 count:16];
+      v13 = [containers countByEnumeratingWithState:&v26 objects:v34 count:16];
       if (v13)
       {
         continue;
@@ -1482,30 +1482,30 @@ LABEL_15:
     v5 = +[NRPairedDeviceRegistry sharedInstance];
     v6 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
     v7 = [v5 getAllDevicesWithArchivedAltAccountDevicesMatching:v6];
-    v8 = [v7 firstObject];
+    firstObject = [v7 firstObject];
     v9 = [[NSUUID alloc] initWithUUIDString:@"4649745E-094C-4F84-80DD-F7AB46F54792"];
-    v10 = [v8 supportsCapability:v9];
+    v10 = [firstObject supportsCapability:v9];
 
     if (!v10)
     {
-      v13 = [(NBBridgeSyncedAudiobooksController *)self syncManager];
-      v14 = [v13 audiobooksProgressInfo];
-      v15 = [v14 syncState] == &dword_0 + 1;
+      syncManager = [(NBBridgeSyncedAudiobooksController *)self syncManager];
+      audiobooksProgressInfo = [syncManager audiobooksProgressInfo];
+      v15 = [audiobooksProgressInfo syncState] == &dword_0 + 1;
       goto LABEL_9;
     }
 
-    v11 = [(NBBridgeSyncedAudiobooksController *)self _hasPinnedAudiobooks];
+    _hasPinnedAudiobooks = [(NBBridgeSyncedAudiobooksController *)self _hasPinnedAudiobooks];
     v12 = NBDefaultLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      sub_11F20(self, v11, v12);
+      sub_11F20(self, _hasPinnedAudiobooks, v12);
     }
 
-    if (v11)
+    if (_hasPinnedAudiobooks)
     {
-      v13 = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
-      v14 = [v13 syncInfo];
-      v15 = [v14 status] != &dword_4;
+      syncManager = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
+      audiobooksProgressInfo = [syncManager syncInfo];
+      v15 = [audiobooksProgressInfo status] != &dword_4;
 LABEL_9:
 
       return v15;
@@ -1515,18 +1515,18 @@ LABEL_9:
   return 0;
 }
 
-- (unint64_t)_resolvedProgressViewStateForState:(unint64_t)a3
+- (unint64_t)_resolvedProgressViewStateForState:(unint64_t)state
 {
-  v5 = [(NBBridgeSyncedAudiobooksController *)self syncManager];
-  v6 = [v5 audiobooksProgressInfo];
-  if ([v6 syncState] == &dword_0 + 3)
+  syncManager = [(NBBridgeSyncedAudiobooksController *)self syncManager];
+  audiobooksProgressInfo = [syncManager audiobooksProgressInfo];
+  if ([audiobooksProgressInfo syncState] == &dword_0 + 3)
   {
-    v7 = [(NBBridgeSyncedAudiobooksController *)self syncManager];
-    v8 = [v7 audiobooksProgressInfo];
-    v9 = [v8 syncWaitingSubstate];
+    syncManager2 = [(NBBridgeSyncedAudiobooksController *)self syncManager];
+    audiobooksProgressInfo2 = [syncManager2 audiobooksProgressInfo];
+    syncWaitingSubstate = [audiobooksProgressInfo2 syncWaitingSubstate];
 
-    v10 = v9 & 1;
-    if (v9)
+    v10 = syncWaitingSubstate & 1;
+    if (syncWaitingSubstate)
     {
       v11 = 1;
     }
@@ -1550,18 +1550,18 @@ LABEL_9:
     sub_12008(self, v10, v12);
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
-    a3 = v11;
+    state = v11;
   }
 
-  return a3;
+  return state;
 }
 
 - (id)_contentHeaderViewTitle
 {
-  v2 = [(NBBridgeSyncedAudiobooksController *)self _pinnedAudiobooks];
-  v3 = [v2 count];
+  _pinnedAudiobooks = [(NBBridgeSyncedAudiobooksController *)self _pinnedAudiobooks];
+  v3 = [_pinnedAudiobooks count];
   v4 = NBBundle();
   v5 = v4;
   if (v3)
@@ -1594,47 +1594,47 @@ LABEL_9:
 
 - (id)_contentHeaderViewSubtitle
 {
-  v3 = [(NBBridgeSyncedAudiobooksController *)self _pinnedAudiobooks];
-  if ([v3 count])
+  _pinnedAudiobooks = [(NBBridgeSyncedAudiobooksController *)self _pinnedAudiobooks];
+  if ([_pinnedAudiobooks count])
   {
     v4 = +[NRPairedDeviceRegistry sharedInstance];
     v5 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
     v6 = [v4 getAllDevicesWithArchivedAltAccountDevicesMatching:v5];
-    v7 = [v6 firstObject];
+    firstObject = [v6 firstObject];
     v8 = [[NSUUID alloc] initWithUUIDString:@"4649745E-094C-4F84-80DD-F7AB46F54792"];
-    v9 = [v7 supportsCapability:v8];
+    v9 = [firstObject supportsCapability:v8];
 
-    v10 = [(NBBridgeSyncedAudiobooksController *)self syncManager];
-    v11 = [v10 audiobooksProgressInfo];
-    v12 = v11;
+    syncManager = [(NBBridgeSyncedAudiobooksController *)self syncManager];
+    audiobooksProgressInfo = [syncManager audiobooksProgressInfo];
+    v12 = audiobooksProgressInfo;
     if (v9)
     {
-      v13 = [v11 _syncProgressTextForMediaType:2];
+      v13 = [audiobooksProgressInfo _syncProgressTextForMediaType:2];
       v14 = v13;
       if (v13)
       {
-        v15 = v13;
+        syncStatusDetailText = v13;
       }
 
       else
       {
-        v19 = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
-        v15 = [v19 syncStatusDetailText];
+        syncInfoController = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
+        syncStatusDetailText = [syncInfoController syncStatusDetailText];
       }
     }
 
     else
     {
-      v15 = [v11 _trackProgressTextForMediaType:2];
+      syncStatusDetailText = [audiobooksProgressInfo _trackProgressTextForMediaType:2];
     }
   }
 
   else
   {
-    v16 = [(NBBridgeSyncedAudiobooksController *)self isStoreAvailable];
+    isStoreAvailable = [(NBBridgeSyncedAudiobooksController *)self isStoreAvailable];
     v17 = NBBundle();
-    v10 = v17;
-    if (v16)
+    syncManager = v17;
+    if (isStoreAvailable)
     {
       v18 = @"You can choose to automatically download your current audiobooks to your Apple\\U00A0Watch, or manually add them from your library.";
     }
@@ -1644,10 +1644,10 @@ LABEL_9:
       v18 = @"The Audiobook Store isn\\U2019t available in your country or region.";
     }
 
-    v15 = [v17 localizedStringForKey:v18 value:&stru_20DE8 table:0];
+    syncStatusDetailText = [v17 localizedStringForKey:v18 value:&stru_20DE8 table:0];
   }
 
-  return v15;
+  return syncStatusDetailText;
 }
 
 - (float)_contentHeaderViewProgress
@@ -1655,46 +1655,46 @@ LABEL_9:
   v3 = +[NRPairedDeviceRegistry sharedInstance];
   v4 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v5 = [v3 getAllDevicesWithArchivedAltAccountDevicesMatching:v4];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
   v7 = [[NSUUID alloc] initWithUUIDString:@"4649745E-094C-4F84-80DD-F7AB46F54792"];
-  v8 = [v6 supportsCapability:v7];
+  v8 = [firstObject supportsCapability:v7];
 
   if (v8)
   {
-    v9 = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
-    v10 = [v9 syncInfo];
-    v11 = [v10 status];
+    syncInfoController = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
+    syncInfo = [syncInfoController syncInfo];
+    status = [syncInfo status];
 
     v12 = +[NMSSyncManager sharedManager];
-    v13 = [v12 audiobooksProgressInfo];
-    v14 = [v13 _isSyncing];
+    audiobooksProgressInfo = [v12 audiobooksProgressInfo];
+    _isSyncing = [audiobooksProgressInfo _isSyncing];
 
-    if (v11 == &dword_0 + 3 || (v15 = 0.0, v14))
+    if (status == &dword_0 + 3 || (v15 = 0.0, _isSyncing))
     {
-      v16 = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
-      v17 = [v16 syncInfo];
-      [v17 progress];
+      syncInfoController2 = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
+      syncInfo2 = [syncInfoController2 syncInfo];
+      [syncInfo2 progress];
       v15 = v18;
     }
 
     v19 = NBDefaultLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
-      v20 = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
-      v21 = [v20 syncInfo];
-      [v21 progress];
+      syncInfoController3 = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
+      syncInfo3 = [syncInfoController3 syncInfo];
+      [syncInfo3 progress];
       v23 = v22;
-      v24 = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
-      v25 = [v24 syncInfo];
-      v26 = [v25 status];
-      if (v26 > 4)
+      syncInfoController4 = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
+      syncInfo4 = [syncInfoController4 syncInfo];
+      status2 = [syncInfo4 status];
+      if (status2 > 4)
       {
         v27 = @"unknown";
       }
 
       else
       {
-        v27 = off_20BD0[v26];
+        v27 = off_20BD0[status2];
       }
 
       v32 = 134218498;
@@ -1702,16 +1702,16 @@ LABEL_9:
       v34 = 2114;
       v35 = v27;
       v36 = 1024;
-      v37 = v14;
+      v37 = _isSyncing;
       _os_log_impl(&dword_0, v19, OS_LOG_TYPE_INFO, "[progress] calculating syncInfo.progress:%.4f syncInfoStatus:%{public}@ isSyncing:%d", &v32, 0x1Cu);
     }
   }
 
   else
   {
-    v28 = [(NBBridgeSyncedAudiobooksController *)self syncManager];
-    v29 = [v28 audiobooksProgressInfo];
-    [v29 estimatedSyncProgress];
+    syncManager = [(NBBridgeSyncedAudiobooksController *)self syncManager];
+    audiobooksProgressInfo2 = [syncManager audiobooksProgressInfo];
+    [audiobooksProgressInfo2 estimatedSyncProgress];
     v15 = v30;
   }
 
@@ -1723,12 +1723,12 @@ LABEL_9:
   v3 = NBDefaultLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(NBBridgeSyncedAudiobooksController *)self isOutOfSpace];
-    v5 = [(NBBridgeSyncedAudiobooksController *)self _pinnedAudiobooks];
+    isOutOfSpace = [(NBBridgeSyncedAudiobooksController *)self isOutOfSpace];
+    _pinnedAudiobooks = [(NBBridgeSyncedAudiobooksController *)self _pinnedAudiobooks];
     v15[0] = 67109376;
-    v15[1] = v4;
+    v15[1] = isOutOfSpace;
     v16 = 2048;
-    v17 = [v5 count];
+    v17 = [_pinnedAudiobooks count];
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_INFO, "_showSyncStorageWarning - _isOutOfSpace:%d; want <%lu>", v15, 0x12u);
   }
 
@@ -1743,50 +1743,50 @@ LABEL_9:
   v13 = [UIAlertAction actionWithTitle:v12 style:0 handler:0];
   [v10 addAction:v13];
 
-  v14 = [(NBBridgeSyncedAudiobooksController *)self _selfOrPresentedViewController];
-  [v14 presentViewController:v10 animated:1 completion:0];
+  _selfOrPresentedViewController = [(NBBridgeSyncedAudiobooksController *)self _selfOrPresentedViewController];
+  [_selfOrPresentedViewController presentViewController:v10 animated:1 completion:0];
 }
 
-- (void)familyCircleDataSource:(id)a3 didFetchFamilyCircle:(id)a4
+- (void)familyCircleDataSource:(id)source didFetchFamilyCircle:(id)circle
 {
-  v5 = a4;
+  circleCopy = circle;
   if ([(NBBridgeSyncedAudiobooksController *)self isRefreshingFamily])
   {
-    [(NBBridgeSyncedAudiobooksController *)self _updateFamilyCircle:v5];
+    [(NBBridgeSyncedAudiobooksController *)self _updateFamilyCircle:circleCopy];
   }
 }
 
-- (id)syncInfoController:(id)a3 containerIdentifierForModelObject:(id)a4
+- (id)syncInfoController:(id)controller containerIdentifierForModelObject:(id)object
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  objectCopy = object;
   objc_opt_class();
   v7 = BUDynamicCast();
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 bk_storeID];
-    v10 = [v9 stringValue];
+    bk_storeID = [v7 bk_storeID];
+    stringValue = [bk_storeID stringValue];
   }
 
   else
   {
     objc_opt_class();
     v11 = BUDynamicCast();
-    v9 = v11;
+    bk_storeID = v11;
     if (!v11)
     {
       v12 = 0;
       goto LABEL_6;
     }
 
-    v10 = [v11 storeID];
+    stringValue = [v11 storeID];
   }
 
-  v12 = v10;
+  v12 = stringValue;
 LABEL_6:
 
-  if ([v12 length] && (objc_msgSend(v5, "syncInfo"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "containers"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "containsObject:", v12), v14, v13, v15))
+  if ([v12 length] && (objc_msgSend(controllerCopy, "syncInfo"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "containers"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "containsObject:", v12), v14, v13, v15))
   {
     v16 = v12;
   }
@@ -1799,47 +1799,47 @@ LABEL_6:
   return v16;
 }
 
-- (id)_specifierWithItem:(id)a3 showDownloadInfo:(BOOL)a4 showWarningIfAboveQuota:(BOOL)a5 downloadLimit:(unint64_t)a6
+- (id)_specifierWithItem:(id)item showDownloadInfo:(BOOL)info showWarningIfAboveQuota:(BOOL)quota downloadLimit:(unint64_t)limit
 {
-  v36 = a5;
-  v37 = a4;
-  v8 = a3;
-  v9 = [v8 title];
-  v10 = [PSSpecifier preferenceSpecifierNamed:v9 target:self set:0 get:0 detail:0 cell:4 edit:0];
+  quotaCopy = quota;
+  infoCopy = info;
+  itemCopy = item;
+  title = [itemCopy title];
+  v10 = [PSSpecifier preferenceSpecifierNamed:title target:self set:0 get:0 detail:0 cell:4 edit:0];
 
   [v10 setProperty:objc_opt_class() forKey:PSCellClassKey];
-  v11 = [v8 title];
-  [v10 setProperty:v11 forKey:NMBUISpecifierTitleKey];
+  title2 = [itemCopy title];
+  [v10 setProperty:title2 forKey:NMBUISpecifierTitleKey];
 
-  v12 = [v8 artist];
-  [v10 setProperty:v12 forKey:NMBUISpecifierSubtitleKey];
+  artist = [itemCopy artist];
+  [v10 setProperty:artist forKey:NMBUISpecifierSubtitleKey];
 
   [v10 setProperty:&off_21A80 forKey:PSTableCellStyleOverrideKey];
-  v13 = [v8 artworkCatalog];
-  [v10 setProperty:v13 forKey:NMBUISpecifierArtworkCatalogKey];
+  artworkCatalog = [itemCopy artworkCatalog];
+  [v10 setProperty:artworkCatalog forKey:NMBUISpecifierArtworkCatalogKey];
 
   v14 = +[NBBridgeUtilities audiobookArtworkPlaceholderImage];
   [v10 setProperty:v14 forKey:NMBUISpecifierPlaceholderImageKey];
 
-  [v10 setProperty:v8 forKey:NMBUISpecifierModelObjectKey];
-  v15 = [v8 bk_storeID];
-  v16 = [NMSMediaItemGroup itemGroupWithAudiobookIdentifier:v15 downloadLimit:a6 manuallyAdded:1 downloadedItemsOnly:0];
+  [v10 setProperty:itemCopy forKey:NMBUISpecifierModelObjectKey];
+  bk_storeID = [itemCopy bk_storeID];
+  v16 = [NMSMediaItemGroup itemGroupWithAudiobookIdentifier:bk_storeID downloadLimit:limit manuallyAdded:1 downloadedItemsOnly:0];
 
   v17 = +[NRPairedDeviceRegistry sharedInstance];
   v18 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v19 = [v17 getAllDevicesWithArchivedAltAccountDevicesMatching:v18];
-  v20 = [v19 firstObject];
+  firstObject = [v19 firstObject];
   v21 = [[NSUUID alloc] initWithUUIDString:@"4649745E-094C-4F84-80DD-F7AB46F54792"];
-  v22 = [v20 supportsCapability:v21];
+  v22 = [firstObject supportsCapability:v21];
 
-  if (v22 && v37)
+  if (v22 && infoCopy)
   {
-    v23 = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
-    v24 = [v23 downloadStateForModelObject:v8];
+    syncInfoController = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
+    v24 = [syncInfoController downloadStateForModelObject:itemCopy];
 
     v25 = [(NBBridgeSyncedAudiobooksController *)self _resolvedProgressViewStateForState:v24];
-    v26 = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
-    [v26 progressForModelObject:v8];
+    syncInfoController2 = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
+    [syncInfoController2 progressForModelObject:itemCopy];
     v28 = v27;
 
     [v10 setProperty:&__kCFBooleanTrue forKey:NMBUISpecifierShouldShowDownloadInfoKey];
@@ -1855,10 +1855,10 @@ LABEL_4:
     goto LABEL_7;
   }
 
-  if (v36)
+  if (quotaCopy)
   {
-    v33 = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
-    v34 = [v33 isItemGroupWithinQuota:v16];
+    pinningManager = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
+    v34 = [pinningManager isItemGroupWithinQuota:v16];
 
     if ((v34 & 1) == 0)
     {
@@ -1875,49 +1875,49 @@ LABEL_7:
   return v10;
 }
 
-- (id)_specifierWithJaliscoItem:(id)a3 showDownloadInfo:(BOOL)a4 showWarningIfAboveQuota:(BOOL)a5 downloadLimit:(unint64_t)a6
+- (id)_specifierWithJaliscoItem:(id)item showDownloadInfo:(BOOL)info showWarningIfAboveQuota:(BOOL)quota downloadLimit:(unint64_t)limit
 {
-  v36 = a5;
-  v37 = a4;
-  v8 = a3;
-  v9 = [v8 title];
-  v10 = [PSSpecifier preferenceSpecifierNamed:v9 target:self set:0 get:0 detail:0 cell:4 edit:0];
+  quotaCopy = quota;
+  infoCopy = info;
+  itemCopy = item;
+  title = [itemCopy title];
+  v10 = [PSSpecifier preferenceSpecifierNamed:title target:self set:0 get:0 detail:0 cell:4 edit:0];
 
   [v10 setProperty:objc_opt_class() forKey:PSCellClassKey];
-  v11 = [v8 title];
-  [v10 setProperty:v11 forKey:NMBUISpecifierTitleKey];
+  title2 = [itemCopy title];
+  [v10 setProperty:title2 forKey:NMBUISpecifierTitleKey];
 
-  v12 = [v8 artist];
-  [v10 setProperty:v12 forKey:NMBUISpecifierSubtitleKey];
+  artist = [itemCopy artist];
+  [v10 setProperty:artist forKey:NMBUISpecifierSubtitleKey];
 
   [v10 setProperty:&off_21A80 forKey:PSTableCellStyleOverrideKey];
-  v13 = [v8 artworkCatalog];
-  [v10 setProperty:v13 forKey:NMBUISpecifierArtworkCatalogKey];
+  artworkCatalog = [itemCopy artworkCatalog];
+  [v10 setProperty:artworkCatalog forKey:NMBUISpecifierArtworkCatalogKey];
 
   v14 = +[NBBridgeUtilities audiobookArtworkPlaceholderImage];
   [v10 setProperty:v14 forKey:NMBUISpecifierPlaceholderImageKey];
 
-  [v10 setProperty:v8 forKey:NMBUISpecifierModelObjectKey];
-  v15 = [v8 storeID];
-  v16 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v15 nb_uint64_t]);
+  [v10 setProperty:itemCopy forKey:NMBUISpecifierModelObjectKey];
+  storeID = [itemCopy storeID];
+  v16 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [storeID nb_uint64_t]);
 
   v38 = v16;
-  v17 = [NMSMediaItemGroup itemGroupWithAudiobookIdentifier:v16 downloadLimit:a6 manuallyAdded:1 downloadedItemsOnly:0];
+  v17 = [NMSMediaItemGroup itemGroupWithAudiobookIdentifier:v16 downloadLimit:limit manuallyAdded:1 downloadedItemsOnly:0];
   v18 = +[NRPairedDeviceRegistry sharedInstance];
   v19 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v20 = [v18 getAllDevicesWithArchivedAltAccountDevicesMatching:v19];
-  v21 = [v20 firstObject];
+  firstObject = [v20 firstObject];
   v22 = [[NSUUID alloc] initWithUUIDString:@"4649745E-094C-4F84-80DD-F7AB46F54792"];
-  LODWORD(a6) = [v21 supportsCapability:v22];
+  LODWORD(limit) = [firstObject supportsCapability:v22];
 
-  if (a6 && v37)
+  if (limit && infoCopy)
   {
-    v23 = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
-    v24 = [v23 downloadStateForModelObject:v8];
+    syncInfoController = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
+    v24 = [syncInfoController downloadStateForModelObject:itemCopy];
 
     v25 = [(NBBridgeSyncedAudiobooksController *)self _resolvedProgressViewStateForState:v24];
-    v26 = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
-    [v26 progressForModelObject:v8];
+    syncInfoController2 = [(NBBridgeSyncedAudiobooksController *)self syncInfoController];
+    [syncInfoController2 progressForModelObject:itemCopy];
     v28 = v27;
 
     [v10 setProperty:&__kCFBooleanTrue forKey:NMBUISpecifierShouldShowDownloadInfoKey];
@@ -1933,10 +1933,10 @@ LABEL_4:
     goto LABEL_7;
   }
 
-  if (v36)
+  if (quotaCopy)
   {
-    v33 = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
-    v34 = [v33 isItemGroupWithinQuota:v17];
+    pinningManager = [(NBBridgeSyncedAudiobooksController *)self pinningManager];
+    v34 = [pinningManager isItemGroupWithinQuota:v17];
 
     if ((v34 & 1) == 0)
     {
@@ -1955,19 +1955,19 @@ LABEL_7:
 
 - (id)_selfOrPresentedViewController
 {
-  v3 = [(NBBridgeSyncedAudiobooksController *)self presentedViewController];
+  presentedViewController = [(NBBridgeSyncedAudiobooksController *)self presentedViewController];
 
-  if (v3)
+  if (presentedViewController)
   {
-    v4 = [(NBBridgeSyncedAudiobooksController *)self presentedViewController];
+    selfCopy = [(NBBridgeSyncedAudiobooksController *)self presentedViewController];
   }
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 @end

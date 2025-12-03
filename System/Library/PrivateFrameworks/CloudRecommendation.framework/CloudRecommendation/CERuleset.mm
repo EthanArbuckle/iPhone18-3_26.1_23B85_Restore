@@ -1,27 +1,27 @@
 @interface CERuleset
 - (BOOL)ignoreClientSectionRank;
-- (CERuleset)initWithCoder:(id)a3;
-- (CERuleset)initWithDictionary:(id)a3;
+- (CERuleset)initWithCoder:(id)coder;
+- (CERuleset)initWithDictionary:(id)dictionary;
 - (NSArray)context;
 - (NSArray)recommendationRules;
 - (NSNumber)maxRecommendations;
 - (NSString)sectionID;
 - (NSString)userType;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setIgnoreClientSectionRank:(BOOL)a3;
-- (void)setMaxRecommendations:(id)a3;
-- (void)setSectionID:(id)a3;
-- (void)setUserType:(id)a3;
-- (void)sortRecommendationRulesUsingComparator:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setIgnoreClientSectionRank:(BOOL)rank;
+- (void)setMaxRecommendations:(id)recommendations;
+- (void)setSectionID:(id)d;
+- (void)setUserType:(id)type;
+- (void)sortRecommendationRulesUsingComparator:(id)comparator;
 @end
 
 @implementation CERuleset
 
-- (CERuleset)initWithDictionary:(id)a3
+- (CERuleset)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v33.receiver = self;
   v33.super_class = CERuleset;
   v5 = [(CERuleset *)&v33 init];
@@ -29,7 +29,7 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [v4 objectForKeyedSubscript:@"sectionID"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"sectionID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,7 +47,7 @@
       }
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"maxRecommendations"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"maxRecommendations"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,11 +65,11 @@
       }
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"ignoreClientSectionRank"];
-    v14 = [v13 BOOLValue];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"ignoreClientSectionRank"];
+    bOOLValue = [v13 BOOLValue];
 
-    v6->_ignoreClientSectionRank = v14;
-    v15 = [v4 objectForKeyedSubscript:@"context"];
+    v6->_ignoreClientSectionRank = bOOLValue;
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"context"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -95,7 +95,7 @@
       }
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"recommendations"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"recommendations"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -121,7 +121,7 @@
       }
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"userType"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"userType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -164,30 +164,30 @@ void __32__CERuleset_initWithDictionary___block_invoke_20(uint64_t a1, void *a2)
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CERuleset *)self sectionID];
-  [v4 encodeObject:v5 forKey:@"sectionID"];
+  coderCopy = coder;
+  sectionID = [(CERuleset *)self sectionID];
+  [coderCopy encodeObject:sectionID forKey:@"sectionID"];
 
-  v6 = [(CERuleset *)self maxRecommendations];
-  [v4 encodeObject:v6 forKey:@"maxRecommendations"];
+  maxRecommendations = [(CERuleset *)self maxRecommendations];
+  [coderCopy encodeObject:maxRecommendations forKey:@"maxRecommendations"];
 
-  [v4 encodeBool:-[CERuleset ignoreClientSectionRank](self forKey:{"ignoreClientSectionRank"), @"ignoreClientSectionRank"}];
-  v7 = [(CERuleset *)self context];
-  [v4 encodeObject:v7 forKey:@"context"];
+  [coderCopy encodeBool:-[CERuleset ignoreClientSectionRank](self forKey:{"ignoreClientSectionRank"), @"ignoreClientSectionRank"}];
+  context = [(CERuleset *)self context];
+  [coderCopy encodeObject:context forKey:@"context"];
 
-  v8 = [(CERuleset *)self recommendationRules];
-  [v4 encodeObject:v8 forKey:@"recommendationRules"];
+  recommendationRules = [(CERuleset *)self recommendationRules];
+  [coderCopy encodeObject:recommendationRules forKey:@"recommendationRules"];
 
-  v9 = [(CERuleset *)self userType];
-  [v4 encodeObject:v9 forKey:@"userType"];
+  userType = [(CERuleset *)self userType];
+  [coderCopy encodeObject:userType forKey:@"userType"];
 }
 
-- (CERuleset)initWithCoder:(id)a3
+- (CERuleset)initWithCoder:(id)coder
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = CERuleset;
   v5 = [(CERuleset *)&v25 init];
@@ -195,22 +195,22 @@ void __32__CERuleset_initWithDictionary___block_invoke_20(uint64_t a1, void *a2)
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sectionID"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sectionID"];
     sectionID = v6->_sectionID;
     v6->_sectionID = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maxRecommendations"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maxRecommendations"];
     maxRecommendations = v6->_maxRecommendations;
     v6->_maxRecommendations = v9;
 
-    v6->_ignoreClientSectionRank = [v4 decodeBoolForKey:@"ignoreClientSectionRank"];
+    v6->_ignoreClientSectionRank = [coderCopy decodeBoolForKey:@"ignoreClientSectionRank"];
     v11 = MEMORY[0x277CBEB98];
     v27[0] = objc_opt_class();
     v27[1] = objc_opt_class();
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:2];
     v13 = [v11 setWithArray:v12];
 
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"context"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"context"];
     context = v6->_context;
     v6->_context = v14;
 
@@ -220,11 +220,11 @@ void __32__CERuleset_initWithDictionary___block_invoke_20(uint64_t a1, void *a2)
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:2];
     v18 = [v16 setWithArray:v17];
 
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"recommendationRules"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"recommendationRules"];
     recommendationRules = v6->_recommendationRules;
     v6->_recommendationRules = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userType"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userType"];
     userType = v6->_userType;
     v6->_userType = v21;
   }
@@ -233,27 +233,27 @@ void __32__CERuleset_initWithDictionary___block_invoke_20(uint64_t a1, void *a2)
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[CERuleset allocWithZone:](CERuleset init];
   v5->_lock._os_unfair_lock_opaque = 0;
-  v6 = [(CERuleset *)self sectionID];
-  [(CERuleset *)v5 setSectionID:v6];
+  sectionID = [(CERuleset *)self sectionID];
+  [(CERuleset *)v5 setSectionID:sectionID];
 
-  v7 = [(CERuleset *)self maxRecommendations];
-  [(CERuleset *)v5 setMaxRecommendations:v7];
+  maxRecommendations = [(CERuleset *)self maxRecommendations];
+  [(CERuleset *)v5 setMaxRecommendations:maxRecommendations];
 
   [(CERuleset *)v5 setIgnoreClientSectionRank:[(CERuleset *)self ignoreClientSectionRank]];
-  v8 = [(CERuleset *)self userType];
-  [(CERuleset *)v5 setUserType:v8];
+  userType = [(CERuleset *)self userType];
+  [(CERuleset *)v5 setUserType:userType];
 
   os_unfair_lock_lock(&v5->_lock);
-  v9 = [(CERuleset *)self context];
+  context = [(CERuleset *)self context];
   context = v5->_context;
-  v5->_context = v9;
+  v5->_context = context;
 
-  v11 = [(CERuleset *)self recommendationRules];
-  v12 = [v11 copyWithZone:a3];
+  recommendationRules = [(CERuleset *)self recommendationRules];
+  v12 = [recommendationRules copyWithZone:zone];
   recommendationRules = v5->_recommendationRules;
   v5->_recommendationRules = v12;
 
@@ -264,13 +264,13 @@ void __32__CERuleset_initWithDictionary___block_invoke_20(uint64_t a1, void *a2)
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(CERuleset *)self sectionID];
-  v5 = [(CERuleset *)self maxRecommendations];
-  v6 = [(CERuleset *)self ignoreClientSectionRank];
-  v7 = [(CERuleset *)self context];
-  v8 = [(CERuleset *)self recommendationRules];
-  v9 = [(CERuleset *)self userType];
-  v10 = [v3 stringWithFormat:@"Ruleset with sectionID: %@, maxRecommendations: %@, ignoreClientSectionRank: %d, context: %@, rules: %@, userType: %@", v4, v5, v6, v7, v8, v9];
+  sectionID = [(CERuleset *)self sectionID];
+  maxRecommendations = [(CERuleset *)self maxRecommendations];
+  ignoreClientSectionRank = [(CERuleset *)self ignoreClientSectionRank];
+  context = [(CERuleset *)self context];
+  recommendationRules = [(CERuleset *)self recommendationRules];
+  userType = [(CERuleset *)self userType];
+  v10 = [v3 stringWithFormat:@"Ruleset with sectionID: %@, maxRecommendations: %@, ignoreClientSectionRank: %d, context: %@, rules: %@, userType: %@", sectionID, maxRecommendations, ignoreClientSectionRank, context, recommendationRules, userType];
 
   return v10;
 }
@@ -328,49 +328,49 @@ void __32__CERuleset_initWithDictionary___block_invoke_20(uint64_t a1, void *a2)
   return v3;
 }
 
-- (void)setSectionID:(id)a3
+- (void)setSectionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
   sectionID = self->_sectionID;
-  self->_sectionID = v4;
+  self->_sectionID = dCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setMaxRecommendations:(id)a3
+- (void)setMaxRecommendations:(id)recommendations
 {
-  v4 = a3;
+  recommendationsCopy = recommendations;
   os_unfair_lock_lock(&self->_lock);
   maxRecommendations = self->_maxRecommendations;
-  self->_maxRecommendations = v4;
+  self->_maxRecommendations = recommendationsCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setIgnoreClientSectionRank:(BOOL)a3
+- (void)setIgnoreClientSectionRank:(BOOL)rank
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_ignoreClientSectionRank = a3;
+  self->_ignoreClientSectionRank = rank;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setUserType:(id)a3
+- (void)setUserType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   os_unfair_lock_lock(&self->_lock);
   userType = self->_userType;
-  self->_userType = v4;
+  self->_userType = typeCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)sortRecommendationRulesUsingComparator:(id)a3
+- (void)sortRecommendationRulesUsingComparator:(id)comparator
 {
-  v4 = a3;
+  comparatorCopy = comparator;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSArray *)self->_recommendationRules sortedArrayUsingComparator:v4];
+  v5 = [(NSArray *)self->_recommendationRules sortedArrayUsingComparator:comparatorCopy];
 
   recommendationRules = self->_recommendationRules;
   self->_recommendationRules = v5;

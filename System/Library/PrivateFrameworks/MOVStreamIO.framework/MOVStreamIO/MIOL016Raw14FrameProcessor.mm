@@ -1,19 +1,19 @@
 @interface MIOL016Raw14FrameProcessor
-- (MIOL016Raw14FrameProcessor)initWithInputFormatDescription:(opaqueCMFormatDescription *)a3;
-- (__CVBuffer)processPixelBuffer:(__CVBuffer *)a3 preserveAttachments:(id)a4 error:(id *)a5;
+- (MIOL016Raw14FrameProcessor)initWithInputFormatDescription:(opaqueCMFormatDescription *)description;
+- (__CVBuffer)processPixelBuffer:(__CVBuffer *)buffer preserveAttachments:(id)attachments error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation MIOL016Raw14FrameProcessor
 
-- (MIOL016Raw14FrameProcessor)initWithInputFormatDescription:(opaqueCMFormatDescription *)a3
+- (MIOL016Raw14FrameProcessor)initWithInputFormatDescription:(opaqueCMFormatDescription *)description
 {
   v6.receiver = self;
   v6.super_class = MIOL016Raw14FrameProcessor;
   v4 = [(MIOFrameProcessor *)&v6 initWithInputFormatDescription:?];
   if (v4)
   {
-    v4->_formatDescForEncoding = [MOVStreamIOUtility createL010FormatDescriptionFromL016FormatDescription:a3];
+    v4->_formatDescForEncoding = [MOVStreamIOUtility createL010FormatDescriptionFromL016FormatDescription:description];
     [(MIOFrameProcessor *)v4 setFormatDescriptionNeedsUpdate:1];
   }
 
@@ -33,11 +33,11 @@
   [(MIOFrameProcessor *)&v4 dealloc];
 }
 
-- (__CVBuffer)processPixelBuffer:(__CVBuffer *)a3 preserveAttachments:(id)a4 error:(id *)a5
+- (__CVBuffer)processPixelBuffer:(__CVBuffer *)buffer preserveAttachments:(id)attachments error:(id *)error
 {
-  v6 = [MOVStreamVideoEncoderInterface createHEVCCompatiblePixelBuffer:a3, a4, a5];
-  self->_formatDescForEncoding = [(MIOFrameProcessor *)self updatedFormatDescriptionIfNeededWithBuffer:v6 currentFormatDescription:self->_formatDescForEncoding];
-  return v6;
+  error = [MOVStreamVideoEncoderInterface createHEVCCompatiblePixelBuffer:buffer, attachments, error];
+  self->_formatDescForEncoding = [(MIOFrameProcessor *)self updatedFormatDescriptionIfNeededWithBuffer:error currentFormatDescription:self->_formatDescForEncoding];
+  return error;
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface StockFeedViewerViewController
-- (_TtC8StocksUI29StockFeedViewerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didMoveToParentViewController:(id)a3;
+- (_TtC8StocksUI29StockFeedViewerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)didTapAttributionButton;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation StockFeedViewerViewController
 
-- (_TtC8StocksUI29StockFeedViewerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8StocksUI29StockFeedViewerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -22,29 +22,29 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_2205C69C4();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2205C79F4();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_2205C806C(a3);
+  selfCopy = self;
+  sub_2205C806C(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
   v4 = v6.receiver;
-  [(StockFeedViewerViewController *)&v6 viewDidAppear:v3];
+  [(StockFeedViewerViewController *)&v6 viewDidAppear:appearCopy];
   __swift_project_boxed_opaque_existential_1(&v4[OBJC_IVAR____TtC8StocksUI29StockFeedViewerViewController_shareMenuItemManager], *&v4[OBJC_IVAR____TtC8StocksUI29StockFeedViewerViewController_shareMenuItemManager + 24]);
   if (qword_281296F60 != -1)
   {
@@ -56,35 +56,35 @@
   sub_22088CB1C();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_2205C836C(a3);
+  selfCopy = self;
+  sub_2205C836C(disappear);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_2205C8514(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_2205C8514(change);
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_2205C8674(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_2205C8674(controller);
 }
 
 - (void)viewSafeAreaInsetsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_2205C88E4();
 }
 
 - (void)didTapAttributionButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_2206AAD4C();
 }
 

@@ -1,15 +1,15 @@
 @interface PBFAmbientEditingCollectionViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation PBFAmbientEditingCollectionViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PBFAmbientEditingCollectionViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"PBFAmbientEditingCollectionViewController" hasSwiftField:@"editingSceneViewController" withSwiftType:"Optional<PREditingSceneViewController>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PBFAmbientEditingCollectionViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"PBFAmbientEditingCollectionViewController" hasSwiftField:@"editingSceneViewController" withSwiftType:"Optional<PREditingSceneViewController>"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

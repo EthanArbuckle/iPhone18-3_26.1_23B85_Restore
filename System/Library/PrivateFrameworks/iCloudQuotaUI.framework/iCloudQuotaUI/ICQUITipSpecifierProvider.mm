@@ -1,61 +1,61 @@
 @interface ICQUITipSpecifierProvider
 - (AAUISpecifierProviderDelegate)delegate;
-- (BOOL)_tipArrowConfigurationIsEligibleForDisplay:(id)a3;
-- (ICQUITipSpecifierProvider)initWithAccountManager:(id)a3 presenter:(id)a4 sectionAnchorIdentifier:(id)a5 showUpwardPointingTips:(BOOL)a6;
+- (BOOL)_tipArrowConfigurationIsEligibleForDisplay:(id)display;
+- (ICQUITipSpecifierProvider)initWithAccountManager:(id)manager presenter:(id)presenter sectionAnchorIdentifier:(id)identifier showUpwardPointingTips:(BOOL)tips;
 - (NSArray)specifiers;
 - (id)_tipSpecifiers;
-- (id)_valueForSpecifier:(id)a3;
+- (id)_valueForSpecifier:(id)specifier;
 - (id)account;
-- (id)tipForManageStorageFromAttributes:(id)a3 rows:(id)a4 viewController:(id)a5 remoteUIDelegate:(id)a6;
+- (id)tipForManageStorageFromAttributes:(id)attributes rows:(id)rows viewController:(id)controller remoteUIDelegate:(id)delegate;
 - (void)_cleanUpSyncWithiCloudFooterIfApplicable;
 - (void)_dismissPressed;
 - (void)_fetchAndDisplayTipIfNotYetDismissed;
-- (void)_fetchTip:(id)a3;
-- (void)_getEligibleTipFromTips:(id)a3 completion:(id)a4;
-- (void)_launchLegacyRemoteUIWithURL:(id)a3;
-- (void)_launchLiftUIWithURL:(id)a3;
-- (void)_launchRemoteUIWithURL:(id)a3 forDataclasses:(id)a4;
-- (void)_launchUpgradeFlowWithAction:(int64_t)a3 andURL:(id)a4;
-- (void)_launchUpgradeFlowWithActionString:(id)a3 andURL:(id)a4;
-- (void)_openExternalLink:(id)a3;
-- (void)_openLiftUILink:(id)a3;
-- (void)_openRemoteUILink:(id)a3 forDataclasses:(id)a4;
+- (void)_fetchTip:(id)tip;
+- (void)_getEligibleTipFromTips:(id)tips completion:(id)completion;
+- (void)_launchLegacyRemoteUIWithURL:(id)l;
+- (void)_launchLiftUIWithURL:(id)l;
+- (void)_launchRemoteUIWithURL:(id)l forDataclasses:(id)dataclasses;
+- (void)_launchUpgradeFlowWithAction:(int64_t)action andURL:(id)l;
+- (void)_launchUpgradeFlowWithActionString:(id)string andURL:(id)l;
+- (void)_openExternalLink:(id)link;
+- (void)_openLiftUILink:(id)link;
+- (void)_openRemoteUILink:(id)link forDataclasses:(id)dataclasses;
 - (void)_reloadSpecifiers;
 - (void)_removeVisibleTip;
 - (void)_tipDisplayed;
 - (void)_updateSyncWithiCloudFooterIfApplicable;
 - (void)dealloc;
-- (void)liftUIPresenterDidCancel:(id)a3;
-- (void)liftUIPresenterDidComplete:(id)a3;
-- (void)loadFailed:(id)a3 withError:(id)a4;
-- (void)loadFinished:(id)a3;
-- (void)loadStarted:(id)a3;
-- (void)messageViewController:(id)a3 didFailWithError:(id)a4;
-- (void)messageViewController:(id)a3 didLoadDialogRequest:(id)a4;
-- (void)messageViewController:(id)a3 didSelectActionWithDialogResult:(id)a4;
-- (void)messageViewController:(id)a3 didUpdateSize:(CGSize)a4;
-- (void)remoteUIFlowManager:(id)a3 didCompleteFlowWithSuccess:(BOOL)a4 error:(id)a5;
-- (void)upgradeFlowManagerDidCancel:(id)a3;
-- (void)upgradeFlowManagerDidComplete:(id)a3;
+- (void)liftUIPresenterDidCancel:(id)cancel;
+- (void)liftUIPresenterDidComplete:(id)complete;
+- (void)loadFailed:(id)failed withError:(id)error;
+- (void)loadFinished:(id)finished;
+- (void)loadStarted:(id)started;
+- (void)messageViewController:(id)controller didFailWithError:(id)error;
+- (void)messageViewController:(id)controller didLoadDialogRequest:(id)request;
+- (void)messageViewController:(id)controller didSelectActionWithDialogResult:(id)result;
+- (void)messageViewController:(id)controller didUpdateSize:(CGSize)size;
+- (void)remoteUIFlowManager:(id)manager didCompleteFlowWithSuccess:(BOOL)success error:(id)error;
+- (void)upgradeFlowManagerDidCancel:(id)cancel;
+- (void)upgradeFlowManagerDidComplete:(id)complete;
 @end
 
 @implementation ICQUITipSpecifierProvider
 
-- (ICQUITipSpecifierProvider)initWithAccountManager:(id)a3 presenter:(id)a4 sectionAnchorIdentifier:(id)a5 showUpwardPointingTips:(BOOL)a6
+- (ICQUITipSpecifierProvider)initWithAccountManager:(id)manager presenter:(id)presenter sectionAnchorIdentifier:(id)identifier showUpwardPointingTips:(BOOL)tips
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  managerCopy = manager;
+  presenterCopy = presenter;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = ICQUITipSpecifierProvider;
   v14 = [(ICQUITipSpecifierProvider *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_accountManager, a3);
-    objc_storeWeak(&v15->_listController, v12);
-    v15->_showUpwardPointingTips = a6;
-    objc_storeStrong(&v15->_anchorIdentifier, a5);
+    objc_storeStrong(&v14->_accountManager, manager);
+    objc_storeWeak(&v15->_listController, presenterCopy);
+    v15->_showUpwardPointingTips = tips;
+    objc_storeStrong(&v15->_anchorIdentifier, identifier);
     v15->_hasDismissedTip = 0;
     v15->_tipRequestState = 0;
   }
@@ -81,8 +81,8 @@
 
 - (id)account
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v3 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
 
   return v3;
 }
@@ -104,9 +104,9 @@
       case 2:
         if (self->_viewModel)
         {
-          v8 = [(ICQUITipSpecifierProvider *)self _tipSpecifiers];
+          _tipSpecifiers = [(ICQUITipSpecifierProvider *)self _tipSpecifiers];
 
-          v5 = v8;
+          v5 = _tipSpecifiers;
         }
 
         self->_tipRequestState = 0;
@@ -139,15 +139,15 @@
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v4 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"TIP_GROUP"];
-  v5 = [(ICQUIInlineTipViewModel *)self->_viewModel tipArrow];
-  v6 = [v5 arrowDirection];
+  tipArrow = [(ICQUIInlineTipViewModel *)self->_viewModel tipArrow];
+  arrowDirection = [tipArrow arrowDirection];
 
-  if (v6)
+  if (arrowDirection)
   {
-    v7 = [(ICQUIInlineTipViewModel *)self->_viewModel tipArrow];
-    v8 = [v7 arrowDirection];
+    tipArrow2 = [(ICQUIInlineTipViewModel *)self->_viewModel tipArrow];
+    arrowDirection2 = [tipArrow2 arrowDirection];
 
-    if (v8 == 1)
+    if (arrowDirection2 == 1)
     {
       v9 = @"DOWN";
     }
@@ -174,20 +174,20 @@
   [v13 setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
   [v13 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D3FF38]];
   v14 = objc_alloc(MEMORY[0x277CEE8A0]);
-  v15 = [(ICQUIInlineTipViewModel *)self->_viewModel request];
-  v16 = [v14 initWithRequest:v15];
+  request = [(ICQUIInlineTipViewModel *)self->_viewModel request];
+  v16 = [v14 initWithRequest:request];
   inlineTipController = self->_inlineTipController;
   self->_inlineTipController = v16;
 
   WeakRetained = objc_loadWeakRetained(&self->_listController);
   [WeakRetained addChildViewController:self->_inlineTipController];
 
-  v19 = [(ICQUIInlineTipViewModel *)self->_viewModel tipArrow];
-  [(AMSUIBubbleTipViewController *)self->_inlineTipController setInlineAnchorInfo:v19];
+  tipArrow3 = [(ICQUIInlineTipViewModel *)self->_viewModel tipArrow];
+  [(AMSUIBubbleTipViewController *)self->_inlineTipController setInlineAnchorInfo:tipArrow3];
 
   [(AMSUIBubbleTipViewController *)self->_inlineTipController setDelegate:self];
-  v20 = [(AMSUIBubbleTipViewController *)self->_inlineTipController view];
-  [v13 setObject:v20 forKeyedSubscript:@"ICQUITipView"];
+  view = [(AMSUIBubbleTipViewController *)self->_inlineTipController view];
+  [v13 setObject:view forKeyedSubscript:@"ICQUITipView"];
 
   [v3 addObject:v13];
 
@@ -282,10 +282,10 @@ void __65__ICQUITipSpecifierProvider__fetchAndDisplayTipIfNotYetDismissed__block
   }
 }
 
-- (void)_fetchTip:(id)a3
+- (void)_fetchTip:(id)tip
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tipCopy = tip;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -311,8 +311,8 @@ void __65__ICQUITipSpecifierProvider__fetchAndDisplayTipIfNotYetDismissed__block
     v23 = __Block_byref_object_copy__14;
     v24 = __Block_byref_object_dispose__14;
     v8 = objc_alloc(MEMORY[0x277D7F338]);
-    v9 = [(ICQUITipSpecifierProvider *)self account];
-    v25 = [v8 initWithAccount:v9];
+    account = [(ICQUITipSpecifierProvider *)self account];
+    v25 = [v8 initWithAccount:account];
 
     if (self->_hasDismissedTip)
     {
@@ -327,7 +327,7 @@ void __65__ICQUITipSpecifierProvider__fetchAndDisplayTipIfNotYetDismissed__block
     v15[1] = 3221225472;
     v15[2] = __39__ICQUITipSpecifierProvider__fetchTip___block_invoke;
     v15[3] = &unk_27A65C930;
-    v17 = v4;
+    v17 = tipCopy;
     v18 = buf;
     objc_copyWeak(&v19, &location);
     v13 = v10;
@@ -348,7 +348,7 @@ void __65__ICQUITipSpecifierProvider__fetchAndDisplayTipIfNotYetDismissed__block
       [ICQUITipSpecifierProvider _fetchTip:];
     }
 
-    (*(v4 + 2))(v4, 0);
+    (*(tipCopy + 2))(tipCopy, 0);
   }
 }
 
@@ -459,27 +459,27 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)_getEligibleTipFromTips:(id)a3 completion:(id)a4
+- (void)_getEligibleTipFromTips:(id)tips completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x277D7F3A8];
-  v8 = a3;
+  tipsCopy = tips;
   v9 = [v7 alloc];
-  v10 = [(ICQUITipSpecifierProvider *)self account];
-  v11 = [v9 initWithAccount:v10];
+  account = [(ICQUITipSpecifierProvider *)self account];
+  v11 = [v9 initWithAccount:account];
 
   v12 = [ICQUIEligibleTipPicker alloc];
-  v13 = [(ICQUITipSpecifierProvider *)self account];
-  v14 = [(ICQUIEligibleTipPicker *)v12 initWithAccount:v13 planRecommendation:v11];
+  account2 = [(ICQUITipSpecifierProvider *)self account];
+  v14 = [(ICQUIEligibleTipPicker *)v12 initWithAccount:account2 planRecommendation:v11];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __64__ICQUITipSpecifierProvider__getEligibleTipFromTips_completion___block_invoke;
   v16[3] = &unk_27A65C958;
   v16[4] = self;
-  v17 = v6;
-  v15 = v6;
-  [(ICQUIEligibleTipPicker *)v14 getFirstEligibleTipFromTips:v8 completion:v16];
+  v17 = completionCopy;
+  v15 = completionCopy;
+  [(ICQUIEligibleTipPicker *)v14 getFirstEligibleTipFromTips:tipsCopy completion:v16];
 }
 
 void __64__ICQUITipSpecifierProvider__getEligibleTipFromTips_completion___block_invoke(uint64_t a1, void *a2)
@@ -512,11 +512,11 @@ LABEL_7:
   v7();
 }
 
-- (BOOL)_tipArrowConfigurationIsEligibleForDisplay:(id)a3
+- (BOOL)_tipArrowConfigurationIsEligibleForDisplay:(id)display
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D7F368] upwardArrowConfigurationStrings];
-  v6 = [v5 containsObject:v4];
+  displayCopy = display;
+  upwardArrowConfigurationStrings = [MEMORY[0x277D7F368] upwardArrowConfigurationStrings];
+  v6 = [upwardArrowConfigurationStrings containsObject:displayCopy];
 
   if (v6)
   {
@@ -525,8 +525,8 @@ LABEL_7:
 
   else
   {
-    v8 = [MEMORY[0x277D7F368] downwardArrowConfigurationStrings];
-    v9 = [v8 containsObject:v4];
+    downwardArrowConfigurationStrings = [MEMORY[0x277D7F368] downwardArrowConfigurationStrings];
+    v9 = [downwardArrowConfigurationStrings containsObject:displayCopy];
 
     if (v9)
     {
@@ -559,7 +559,7 @@ LABEL_7:
   [WeakRetained reloadSpecifiersForProvider:self oldSpecifiers:v5 animated:1];
 }
 
-- (id)_valueForSpecifier:(id)a3
+- (id)_valueForSpecifier:(id)specifier
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -649,27 +649,27 @@ void __44__ICQUITipSpecifierProvider__dismissPressed__block_invoke(uint64_t a1, 
   }
 }
 
-- (void)_openExternalLink:(id)a3
+- (void)_openExternalLink:(id)link
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  linkCopy = link;
   v5 = _ICQGetLogSystem();
-  v6 = v5;
-  if (v4)
+  defaultWorkspace = v5;
+  if (linkCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(ICQUIInlineTipViewModel *)self->_viewModel request];
-      v8 = [v7 title];
+      request = [(ICQUIInlineTipViewModel *)self->_viewModel request];
+      title = [request title];
       v9 = 138412546;
-      v10 = v4;
+      v10 = linkCopy;
       v11 = 2112;
-      v12 = v8;
-      _os_log_impl(&dword_275623000, v6, OS_LOG_TYPE_DEFAULT, "Opening external link %@ from tip with title: %@", &v9, 0x16u);
+      v12 = title;
+      _os_log_impl(&dword_275623000, defaultWorkspace, OS_LOG_TYPE_DEFAULT, "Opening external link %@ from tip with title: %@", &v9, 0x16u);
     }
 
-    v6 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v6 openSensitiveURL:v4 withOptions:0];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace openSensitiveURL:linkCopy withOptions:0];
   }
 
   else if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -678,27 +678,27 @@ void __44__ICQUITipSpecifierProvider__dismissPressed__block_invoke(uint64_t a1, 
   }
 }
 
-- (void)_openRemoteUILink:(id)a3 forDataclasses:(id)a4
+- (void)_openRemoteUILink:(id)link forDataclasses:(id)dataclasses
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  linkCopy = link;
+  dataclassesCopy = dataclasses;
   v8 = _ICQGetLogSystem();
   v9 = v8;
-  if (v6)
+  if (linkCopy)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(ICQUIInlineTipViewModel *)self->_viewModel request];
-      v11 = [v10 title];
+      request = [(ICQUIInlineTipViewModel *)self->_viewModel request];
+      title = [request title];
       v12 = 138412546;
-      v13 = v6;
+      v13 = linkCopy;
       v14 = 2112;
-      v15 = v11;
+      v15 = title;
       _os_log_impl(&dword_275623000, v9, OS_LOG_TYPE_DEFAULT, "Opening RemoteUI link %@ from tip with title: %@", &v12, 0x16u);
     }
 
-    [(ICQUITipSpecifierProvider *)self _launchRemoteUIWithURL:v6 forDataclasses:v7];
+    [(ICQUITipSpecifierProvider *)self _launchRemoteUIWithURL:linkCopy forDataclasses:dataclassesCopy];
   }
 
   else
@@ -710,26 +710,26 @@ void __44__ICQUITipSpecifierProvider__dismissPressed__block_invoke(uint64_t a1, 
   }
 }
 
-- (void)_openLiftUILink:(id)a3
+- (void)_openLiftUILink:(id)link
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  linkCopy = link;
   v5 = _ICQGetLogSystem();
   v6 = v5;
-  if (v4)
+  if (linkCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(ICQUIInlineTipViewModel *)self->_viewModel request];
-      v8 = [v7 title];
+      request = [(ICQUIInlineTipViewModel *)self->_viewModel request];
+      title = [request title];
       v9 = 138412546;
-      v10 = v4;
+      v10 = linkCopy;
       v11 = 2112;
-      v12 = v8;
+      v12 = title;
       _os_log_impl(&dword_275623000, v6, OS_LOG_TYPE_DEFAULT, "Opening LiftUI link %@ from tip with title: %@", &v9, 0x16u);
     }
 
-    [(ICQUITipSpecifierProvider *)self _launchLiftUIWithURL:v4];
+    [(ICQUITipSpecifierProvider *)self _launchLiftUIWithURL:linkCopy];
   }
 
   else
@@ -741,10 +741,10 @@ void __44__ICQUITipSpecifierProvider__dismissPressed__block_invoke(uint64_t a1, 
   }
 }
 
-- (void)messageViewController:(id)a3 didUpdateSize:(CGSize)a4
+- (void)messageViewController:(id)controller didUpdateSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v10 = *MEMORY[0x277D85DE8];
   v6 = _ICQGetLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -758,34 +758,34 @@ void __44__ICQUITipSpecifierProvider__dismissPressed__block_invoke(uint64_t a1, 
   }
 }
 
-- (void)messageViewController:(id)a3 didSelectActionWithDialogResult:(id)a4
+- (void)messageViewController:(id)controller didSelectActionWithDialogResult:(id)result
 {
   v56 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  resultCopy = result;
   v6 = _ICQGetLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v53 = v5;
+    v53 = resultCopy;
     _os_log_impl(&dword_275623000, v6, OS_LOG_TYPE_DEFAULT, "AMSUIViewController didSelectDialogAction for %@", buf, 0xCu);
   }
 
-  v7 = [v5 selectedActionIdentifier];
-  v8 = [v5 originalRequest];
-  v9 = [v8 locateActionWithIdentifier:v7];
+  selectedActionIdentifier = [resultCopy selectedActionIdentifier];
+  originalRequest = [resultCopy originalRequest];
+  v9 = [originalRequest locateActionWithIdentifier:selectedActionIdentifier];
 
-  v10 = [v9 deepLink];
-  v11 = [v9 userInfo];
-  v51 = [v11 objectForKeyedSubscript:@"actionName"];
-  v12 = [v11 objectForKeyedSubscript:@"isTurnOnApps"];
-  v13 = [v12 BOOLValue];
+  deepLink = [v9 deepLink];
+  userInfo = [v9 userInfo];
+  v51 = [userInfo objectForKeyedSubscript:@"actionName"];
+  v12 = [userInfo objectForKeyedSubscript:@"isTurnOnApps"];
+  bOOLValue = [v12 BOOLValue];
 
-  v50 = v11;
-  if (v13)
+  v50 = userInfo;
+  if (bOOLValue)
   {
     v47 = v9;
-    v48 = v7;
-    v49 = v5;
+    v48 = selectedActionIdentifier;
+    v49 = resultCopy;
     v14 = _ICQGetLogSystem();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -793,7 +793,7 @@ void __44__ICQUITipSpecifierProvider__dismissPressed__block_invoke(uint64_t a1, 
       _os_log_impl(&dword_275623000, v14, OS_LOG_TYPE_DEFAULT, "Handling turn on apps request, appending count to URL", buf, 2u);
     }
 
-    v15 = [v11 objectForKeyedSubscript:@"excludeApps"];
+    v15 = [userInfo objectForKeyedSubscript:@"excludeApps"];
     if (v15)
     {
       v16 = v15;
@@ -804,31 +804,31 @@ void __44__ICQUITipSpecifierProvider__dismissPressed__block_invoke(uint64_t a1, 
       v16 = MEMORY[0x277CBEBF8];
     }
 
-    v17 = self;
-    v18 = [(ICQUITipSpecifierProvider *)self account];
-    v19 = [ICQUIDataclassHelper dataclassesToEnableForAccount:v18 excludedApps:v16];
+    selfCopy2 = self;
+    account = [(ICQUITipSpecifierProvider *)self account];
+    v19 = [ICQUIDataclassHelper dataclassesToEnableForAccount:account excludedApps:v16];
 
-    v20 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v10 resolvingAgainstBaseURL:0];
-    v21 = [v20 queryItems];
-    v22 = v10;
+    v20 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:deepLink resolvingAgainstBaseURL:0];
+    queryItems = [v20 queryItems];
+    v22 = deepLink;
     v23 = objc_alloc(MEMORY[0x277CCAD18]);
     v24 = v19;
     v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v19, "count")}];
-    v26 = [v25 stringValue];
-    v27 = [v23 initWithName:@"appCount" value:v26];
-    v28 = [v21 arrayByAddingObject:v27];
+    stringValue = [v25 stringValue];
+    v27 = [v23 initWithName:@"appCount" value:stringValue];
+    v28 = [queryItems arrayByAddingObject:v27];
     [v20 setQueryItems:v28];
 
-    v10 = [v20 URL];
+    deepLink = [v20 URL];
 
-    v7 = v48;
-    v5 = v49;
+    selectedActionIdentifier = v48;
+    resultCopy = v49;
     v9 = v47;
   }
 
   else
   {
-    v17 = self;
+    selfCopy2 = self;
     v24 = 0;
   }
 
@@ -836,15 +836,15 @@ void __44__ICQUITipSpecifierProvider__dismissPressed__block_invoke(uint64_t a1, 
   v30 = v51;
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = [v10 absoluteString];
+    absoluteString = [deepLink absoluteString];
     *buf = 138412546;
     v53 = v51;
     v54 = 2112;
-    v55 = v31;
+    v55 = absoluteString;
     _os_log_impl(&dword_275623000, v29, OS_LOG_TYPE_DEFAULT, "Handling select action with identifier (%@) with deep link (%@).", buf, 0x16u);
   }
 
-  v32 = v17;
+  v32 = selfCopy2;
   if (![v51 isEqualToString:*MEMORY[0x277CEE180]])
   {
     v33 = v50;
@@ -868,7 +868,7 @@ LABEL_18:
       goto LABEL_20;
     }
 
-    v36 = v10;
+    v36 = deepLink;
     if ([v51 isEqualToString:@"LAUNCH_REMOTE_UI"])
     {
       v37 = [v50 objectForKeyedSubscript:@"id"];
@@ -876,7 +876,7 @@ LABEL_18:
 
       if (!v38)
       {
-        v10 = v36;
+        deepLink = v36;
         [(ICQUITipSpecifierProvider *)v32 _openRemoteUILink:v36 forDataclasses:v24];
 LABEL_38:
         v30 = v51;
@@ -885,13 +885,13 @@ LABEL_38:
 
       v39 = [v50 objectForKeyedSubscript:@"isManageStorageTip"];
 
-      v40 = [v9 deepLink];
+      deepLink2 = [v9 deepLink];
       if (v39)
       {
-        [(ICQUITipSpecifierProvider *)v32 _launchLegacyRemoteUIWithURL:v40];
+        [(ICQUITipSpecifierProvider *)v32 _launchLegacyRemoteUIWithURL:deepLink2];
 LABEL_37:
 
-        v10 = v36;
+        deepLink = v36;
         goto LABEL_38;
       }
     }
@@ -902,8 +902,8 @@ LABEL_37:
       {
         if ([v51 isEqualToString:@"UPGRADE_ICLOUD_STORAGE_DIRECT_TO_OSLO"])
         {
-          v44 = [v9 deepLink];
-          [(ICQUITipSpecifierProvider *)v32 _launchUpgradeFlowWithAction:118 andURL:v44];
+          deepLink3 = [v9 deepLink];
+          [(ICQUITipSpecifierProvider *)v32 _launchUpgradeFlowWithAction:118 andURL:deepLink3];
 
           v30 = v51;
           goto LABEL_39;
@@ -918,14 +918,14 @@ LABEL_37:
             _os_log_impl(&dword_275623000, v45, OS_LOG_TYPE_DEFAULT, "No special  handling for action identifier, launching upgrade flow", buf, 2u);
           }
 
-          v35 = [v9 deepLink];
+          deepLink4 = [v9 deepLink];
           v30 = v51;
-          [(ICQUITipSpecifierProvider *)v32 _launchUpgradeFlowWithActionString:v51 andURL:v35];
+          [(ICQUITipSpecifierProvider *)v32 _launchUpgradeFlowWithActionString:v51 andURL:deepLink4];
           goto LABEL_21;
         }
 
         v30 = v51;
-        if (!v10)
+        if (!deepLink)
         {
           goto LABEL_39;
         }
@@ -949,8 +949,8 @@ LABEL_37:
         }
 
 LABEL_20:
-        v35 = [v9 deepLink];
-        [(ICQUITipSpecifierProvider *)v32 _openExternalLink:v35];
+        deepLink4 = [v9 deepLink];
+        [(ICQUITipSpecifierProvider *)v32 _openExternalLink:deepLink4];
 LABEL_21:
 
         goto LABEL_39;
@@ -968,29 +968,29 @@ LABEL_21:
       v42 = [v50 objectForKeyedSubscript:@"id"];
       v43 = [v42 isEqualToString:*MEMORY[0x277D7F318]];
 
-      v40 = [v9 deepLink];
+      deepLink2 = [v9 deepLink];
       if (!v43)
       {
-        [(ICQUITipSpecifierProvider *)v32 _openLiftUILink:v40];
+        [(ICQUITipSpecifierProvider *)v32 _openLiftUILink:deepLink2];
         goto LABEL_37;
       }
     }
 
-    [(ICQUITipSpecifierProvider *)v32 _launchUpgradeFlowWithActionString:v51 andURL:v40];
+    [(ICQUITipSpecifierProvider *)v32 _launchUpgradeFlowWithActionString:v51 andURL:deepLink2];
 
-    v10 = v36;
+    deepLink = v36;
     v30 = v51;
     goto LABEL_39;
   }
 
-  [(ICQUITipSpecifierProvider *)v17 _dismissPressed];
+  [(ICQUITipSpecifierProvider *)selfCopy2 _dismissPressed];
   v33 = v50;
 LABEL_39:
 }
 
-- (void)messageViewController:(id)a3 didFailWithError:(id)a4
+- (void)messageViewController:(id)controller didFailWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -998,15 +998,15 @@ LABEL_39:
   }
 }
 
-- (void)messageViewController:(id)a3 didLoadDialogRequest:(id)a4
+- (void)messageViewController:(id)controller didLoadDialogRequest:(id)request
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  requestCopy = request;
   v6 = _ICQGetLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v9 = v5;
+    v9 = requestCopy;
     _os_log_impl(&dword_275623000, v6, OS_LOG_TYPE_DEFAULT, "AMSUIViewController finished loading request %@", buf, 0xCu);
   }
 
@@ -1018,9 +1018,9 @@ LABEL_39:
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)_launchLiftUIWithURL:(id)a3
+- (void)_launchLiftUIWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if (self->_liftUIPresenter)
   {
     p_super = _ICQGetLogSystem();
@@ -1035,16 +1035,16 @@ LABEL_8:
   }
 
   v6 = [ICQLiftUIPresenter alloc];
-  v7 = [(ICQUITipSpecifierProvider *)self account];
-  v8 = [(ICQLiftUIPresenter *)v6 initWithURL:v4 account:v7 data:0];
+  account = [(ICQUITipSpecifierProvider *)self account];
+  v8 = [(ICQLiftUIPresenter *)v6 initWithURL:lCopy account:account data:0];
   liftUIPresenter = self->_liftUIPresenter;
   self->_liftUIPresenter = v8;
 
   [(ICQLiftUIPresenter *)self->_liftUIPresenter setDelegate:self];
   v10 = self->_liftUIPresenter;
   WeakRetained = objc_loadWeakRetained(&self->_listController);
-  v12 = [WeakRetained navigationController];
-  LOBYTE(v10) = [(ICQLiftUIPresenter *)v10 pushInNavigationController:v12 animated:1];
+  navigationController = [WeakRetained navigationController];
+  LOBYTE(v10) = [(ICQLiftUIPresenter *)v10 pushInNavigationController:navigationController animated:1];
 
   if ((v10 & 1) == 0)
   {
@@ -1062,27 +1062,27 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)_launchRemoteUIWithURL:(id)a3 forDataclasses:(id)a4
+- (void)_launchRemoteUIWithURL:(id)l forDataclasses:(id)dataclasses
 {
-  v6 = a4;
-  v12 = a3;
+  dataclassesCopy = dataclasses;
+  lCopy = l;
   v7 = [ICQUIRemoteUIPresenter alloc];
-  v8 = [(ICQUITipSpecifierProvider *)self account];
+  account = [(ICQUITipSpecifierProvider *)self account];
   WeakRetained = objc_loadWeakRetained(&self->_listController);
-  v10 = [(ICQUIRemoteUIPresenter *)v7 initWithAccount:v8 presenter:WeakRetained];
+  v10 = [(ICQUIRemoteUIPresenter *)v7 initWithAccount:account presenter:WeakRetained];
   ruiFlowManager = self->_ruiFlowManager;
   self->_ruiFlowManager = v10;
 
   [(ICQUIRemoteUIPresenter *)self->_ruiFlowManager setDelegate:self];
-  [(ICQUIRemoteUIPresenter *)self->_ruiFlowManager setDataclasses:v6];
+  [(ICQUIRemoteUIPresenter *)self->_ruiFlowManager setDataclasses:dataclassesCopy];
 
-  [(ICQUIRemoteUIPresenter *)self->_ruiFlowManager beginRUIFlowWithURL:v12];
+  [(ICQUIRemoteUIPresenter *)self->_ruiFlowManager beginRUIFlowWithURL:lCopy];
 }
 
-- (void)_launchLegacyRemoteUIWithURL:(id)a3
+- (void)_launchLegacyRemoteUIWithURL:(id)l
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_legacyRemoteUIDelegate);
 
   v6 = _ICQGetLogSystem();
@@ -1092,12 +1092,12 @@ LABEL_9:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = lCopy;
       _os_log_impl(&dword_275623000, v7, OS_LOG_TYPE_DEFAULT, "legacyRemoteUIDelegate used to launch url: %@", &v8, 0xCu);
     }
 
     v7 = objc_loadWeakRetained(&self->_legacyRemoteUIDelegate);
-    [v7 loadURL:v4 postBody:0 additionalHeaders:0];
+    [v7 loadURL:lCopy postBody:0 additionalHeaders:0];
   }
 
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1106,15 +1106,15 @@ LABEL_9:
   }
 }
 
-- (void)_launchUpgradeFlowWithActionString:(id)a3 andURL:(id)a4
+- (void)_launchUpgradeFlowWithActionString:(id)string andURL:(id)l
 {
-  v5 = a4;
-  [(ICQUITipSpecifierProvider *)self _launchUpgradeFlowWithAction:_ICQActionForString() andURL:v5];
+  lCopy = l;
+  [(ICQUITipSpecifierProvider *)self _launchUpgradeFlowWithAction:_ICQActionForString() andURL:lCopy];
 }
 
-- (void)_launchUpgradeFlowWithAction:(int64_t)a3 andURL:(id)a4
+- (void)_launchUpgradeFlowWithAction:(int64_t)action andURL:(id)l
 {
-  v6 = a4;
+  lCopy = l;
   if (self->_upgradeFlowManager)
   {
     v7 = _ICQGetLogSystem();
@@ -1131,9 +1131,9 @@ LABEL_9:
     self->_upgradeFlowManager = v8;
 
     [(ICQUpgradeFlowManager *)self->_upgradeFlowManager setDelegate:self];
-    if (v6)
+    if (lCopy)
     {
-      v10 = [objc_alloc(MEMORY[0x277D7F370]) initWithAction:a3 url:v6];
+      v10 = [objc_alloc(MEMORY[0x277D7F370]) initWithAction:action url:lCopy];
       v11 = self->_upgradeFlowManager;
       WeakRetained = objc_loadWeakRetained(&self->_listController);
       [(ICQUpgradeFlowManager *)v11 beginRemoteUpgradeFlowWithICQLink:v10 presenter:WeakRetained];
@@ -1153,28 +1153,28 @@ LABEL_9:
   }
 }
 
-- (void)remoteUIFlowManager:(id)a3 didCompleteFlowWithSuccess:(BOOL)a4 error:(id)a5
+- (void)remoteUIFlowManager:(id)manager didCompleteFlowWithSuccess:(BOOL)success error:(id)error
 {
-  v5 = a4;
+  successCopy = success;
   v12 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  errorCopy = error;
   v8 = _ICQGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9[0] = 67109378;
-    v9[1] = v5;
+    v9[1] = successCopy;
     v10 = 2112;
-    v11 = v7;
+    v11 = errorCopy;
     _os_log_impl(&dword_275623000, v8, OS_LOG_TYPE_DEFAULT, "RUI flow completed with success: %d, error: %@", v9, 0x12u);
   }
 
-  if (!v7)
+  if (!errorCopy)
   {
     [(ICQUITipSpecifierProvider *)self _removeVisibleTip];
   }
 }
 
-- (void)liftUIPresenterDidComplete:(id)a3
+- (void)liftUIPresenterDidComplete:(id)complete
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1184,15 +1184,15 @@ LABEL_9:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_listController);
-  v6 = [WeakRetained navigationController];
-  v7 = [v6 popViewControllerAnimated:1];
+  navigationController = [WeakRetained navigationController];
+  v7 = [navigationController popViewControllerAnimated:1];
 
   [(ICQUITipSpecifierProvider *)self _removeVisibleTip];
   liftUIPresenter = self->_liftUIPresenter;
   self->_liftUIPresenter = 0;
 }
 
-- (void)liftUIPresenterDidCancel:(id)a3
+- (void)liftUIPresenterDidCancel:(id)cancel
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1202,16 +1202,16 @@ LABEL_9:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_listController);
-  v6 = [WeakRetained navigationController];
-  v7 = [v6 popViewControllerAnimated:1];
+  navigationController = [WeakRetained navigationController];
+  v7 = [navigationController popViewControllerAnimated:1];
 
   liftUIPresenter = self->_liftUIPresenter;
   self->_liftUIPresenter = 0;
 }
 
-- (void)loadFailed:(id)a3 withError:(id)a4
+- (void)loadFailed:(id)failed withError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -1219,7 +1219,7 @@ LABEL_9:
   }
 }
 
-- (void)loadFinished:(id)a3
+- (void)loadFinished:(id)finished
 {
   v3 = _ICQGetLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -1229,7 +1229,7 @@ LABEL_9:
   }
 }
 
-- (void)loadStarted:(id)a3
+- (void)loadStarted:(id)started
 {
   v3 = _ICQGetLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -1239,7 +1239,7 @@ LABEL_9:
   }
 }
 
-- (void)upgradeFlowManagerDidCancel:(id)a3
+- (void)upgradeFlowManagerDidCancel:(id)cancel
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1253,7 +1253,7 @@ LABEL_9:
   self->_upgradeFlowManager = 0;
 }
 
-- (void)upgradeFlowManagerDidComplete:(id)a3
+- (void)upgradeFlowManagerDidComplete:(id)complete
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1271,15 +1271,15 @@ LABEL_9:
 
 - (void)_updateSyncWithiCloudFooterIfApplicable
 {
-  v11 = [(ICQUITipSpecifierProvider *)self account];
-  if ([v11 aa_isCloudSubscriber] && self->_anchorIdentifier == *MEMORY[0x277D7F310])
+  account = [(ICQUITipSpecifierProvider *)self account];
+  if ([account aa_isCloudSubscriber] && self->_anchorIdentifier == *MEMORY[0x277D7F310])
   {
     hasDismissedTip = self->_hasDismissedTip;
 
     if (!hasDismissedTip)
     {
-      v4 = [(ICQUITipSpecifierProvider *)self account];
-      v5 = [ICQUIDataclassHelper dataclassesToEnableForAccount:v4 excludedApps:MEMORY[0x277CBEBF8]];
+      account2 = [(ICQUITipSpecifierProvider *)self account];
+      v5 = [ICQUIDataclassHelper dataclassesToEnableForAccount:account2 excludedApps:MEMORY[0x277CBEBF8]];
 
       v6 = _ICQGetLogSystem();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1294,8 +1294,8 @@ LABEL_9:
 
       else
       {
-        v7 = [(ICQUITipSpecifierProvider *)self account];
-        v8 = [ICQUIDataclassHelper footerTextForSyncWithiCloudSpecifiersFromDataclasses:v5 forAccount:v7];
+        account3 = [(ICQUITipSpecifierProvider *)self account];
+        v8 = [ICQUIDataclassHelper footerTextForSyncWithiCloudSpecifiersFromDataclasses:v5 forAccount:account3];
       }
 
       block[0] = MEMORY[0x277D85DD0];
@@ -1390,34 +1390,34 @@ void __69__ICQUITipSpecifierProvider__cleanUpSyncWithiCloudFooterIfApplicable__b
   }
 }
 
-- (id)tipForManageStorageFromAttributes:(id)a3 rows:(id)a4 viewController:(id)a5 remoteUIDelegate:(id)a6
+- (id)tipForManageStorageFromAttributes:(id)attributes rows:(id)rows viewController:(id)controller remoteUIDelegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v10 && v13)
+  attributesCopy = attributes;
+  rowsCopy = rows;
+  controllerCopy = controller;
+  delegateCopy = delegate;
+  v14 = delegateCopy;
+  if (attributesCopy && delegateCopy)
   {
-    objc_storeWeak(&self->_legacyRemoteUIDelegate, v13);
-    v15 = [[ICQUIManageStorageTipViewModel alloc] initWithSectionAttributes:v10 rows:v11];
+    objc_storeWeak(&self->_legacyRemoteUIDelegate, delegateCopy);
+    v15 = [[ICQUIManageStorageTipViewModel alloc] initWithSectionAttributes:attributesCopy rows:rowsCopy];
     v16 = objc_alloc_init(ICQUIInlineTipRow);
     [(RUITableViewRow *)v16 setDelegate:self];
     manageStorageTipController = self->_manageStorageTipController;
     if (!manageStorageTipController)
     {
       v18 = objc_alloc(MEMORY[0x277CEE8A0]);
-      v19 = [(ICQUIManageStorageTipViewModel *)v15 request];
-      v20 = [v18 initWithRequest:v19];
+      request = [(ICQUIManageStorageTipViewModel *)v15 request];
+      v20 = [v18 initWithRequest:request];
       v21 = self->_manageStorageTipController;
       self->_manageStorageTipController = v20;
 
       manageStorageTipController = self->_manageStorageTipController;
     }
 
-    [v12 addChildViewController:manageStorageTipController];
-    v22 = [(AMSUIBubbleTipViewController *)self->_manageStorageTipController view];
-    [(ICQUIInlineTipRow *)v16 setTipView:v22];
+    [controllerCopy addChildViewController:manageStorageTipController];
+    view = [(AMSUIBubbleTipViewController *)self->_manageStorageTipController view];
+    [(ICQUIInlineTipRow *)v16 setTipView:view];
 
     [(AMSUIBubbleTipViewController *)self->_manageStorageTipController setDelegate:self];
   }

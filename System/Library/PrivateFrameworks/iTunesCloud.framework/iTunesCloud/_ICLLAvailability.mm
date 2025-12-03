@@ -1,11 +1,11 @@
 @interface _ICLLAvailability
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _ICLLAvailability
@@ -27,18 +27,18 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || !PBRepeatedInt32IsEqual() || !PBRepeatedInt32IsEqual())
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || !PBRepeatedInt32IsEqual() || !PBRepeatedInt32IsEqual())
   {
     goto LABEL_6;
   }
 
-  v5 = (v4[60] & 1) == 0;
+  v5 = (equalCopy[60] & 1) == 0;
   if (*&self->_has)
   {
-    if ((v4[60] & 1) == 0)
+    if ((equalCopy[60] & 1) == 0)
     {
 LABEL_6:
       v5 = 0;
@@ -47,13 +47,13 @@ LABEL_6:
 
     if (self->_autoPlay)
     {
-      if ((v4[56] & 1) == 0)
+      if ((equalCopy[56] & 1) == 0)
       {
         goto LABEL_6;
       }
     }
 
-    else if (v4[56])
+    else if (equalCopy[56])
     {
       goto LABEL_6;
     }
@@ -66,9 +66,9 @@ LABEL_7:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
   if (*&self->_has)
@@ -80,17 +80,17 @@ LABEL_7:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_repeatModes.count)
   {
     v5 = 0;
     do
     {
       PBDataWriterWriteInt32Field();
-      v4 = v7;
+      toCopy = v7;
       ++v5;
     }
 
@@ -103,7 +103,7 @@ LABEL_7:
     do
     {
       PBDataWriterWriteInt32Field();
-      v4 = v7;
+      toCopy = v7;
       ++v6;
     }
 
@@ -113,26 +113,26 @@ LABEL_7:
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = PBRepeatedInt32NSArray();
-  [v3 setObject:v4 forKey:@"repeatMode"];
+  [dictionary setObject:v4 forKey:@"repeatMode"];
 
   v5 = PBRepeatedInt32NSArray();
-  [v3 setObject:v5 forKey:@"shuffleMode"];
+  [dictionary setObject:v5 forKey:@"shuffleMode"];
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_autoPlay];
-    [v3 setObject:v6 forKey:@"autoPlay"];
+    [dictionary setObject:v6 forKey:@"autoPlay"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -141,8 +141,8 @@ LABEL_7:
   v8.receiver = self;
   v8.super_class = _ICLLAvailability;
   v4 = [(_ICLLAvailability *)&v8 description];
-  v5 = [(_ICLLAvailability *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_ICLLAvailability *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

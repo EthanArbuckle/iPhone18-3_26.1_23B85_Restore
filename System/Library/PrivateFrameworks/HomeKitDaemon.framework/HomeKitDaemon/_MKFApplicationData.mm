@@ -1,12 +1,12 @@
 @interface _MKFApplicationData
-+ (id)appDataDictionaryForContainer:(id)a3;
-+ (id)castIfApplicationDataContainer:(id)a3;
++ (id)appDataDictionaryForContainer:(id)container;
++ (id)castIfApplicationDataContainer:(id)container;
 + (id)hmd_parentAttributeKeyPaths;
-+ (id)modelIDForContainerUUID:(id)a3;
-+ (id)modelIDForParentRelationshipTo:(id)a3;
-+ (void)setAppDataDictionary:(id)a3 forContainer:(id)a4;
++ (id)modelIDForContainerUUID:(id)d;
++ (id)modelIDForParentRelationshipTo:(id)to;
++ (void)setAppDataDictionary:(id)dictionary forContainer:(id)container;
 - (BOOL)hasValidContainer;
-- (BOOL)validateForInsertOrUpdate:(id *)a3;
+- (BOOL)validateForInsertOrUpdate:(id *)update;
 - (MKFApplicationDataDatabaseID)databaseID;
 - (NSUUID)hmd_parentModelID;
 @end
@@ -23,7 +23,7 @@
     _Unwind_Resume(v8);
   }
 
-  v4 = [objc_opt_class() hmd_parentAttributeKeyPaths];
+  hmd_parentAttributeKeyPaths = [objc_opt_class() hmd_parentAttributeKeyPaths];
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -36,21 +36,21 @@
   v9[3] = &unk_27867AFA8;
   v9[4] = self;
   v9[5] = &v10;
-  [v4 hmf_enumerateWithAutoreleasePoolUsingBlock:v9];
+  [hmd_parentAttributeKeyPaths hmf_enumerateWithAutoreleasePoolUsingBlock:v9];
   v5 = v11[5];
   if (v5)
   {
-    v6 = [v5 hmd_modelID];
+    hmd_modelID = [v5 hmd_modelID];
   }
 
   else
   {
-    v6 = 0;
+    hmd_modelID = 0;
   }
 
   _Block_object_dispose(&v10, 8);
 
-  return v6;
+  return hmd_modelID;
 }
 
 - (MKFApplicationDataDatabaseID)databaseID
@@ -107,7 +107,7 @@
   return v10;
 }
 
-- (BOOL)validateForInsertOrUpdate:(id *)a3
+- (BOOL)validateForInsertOrUpdate:(id *)update
 {
   v8.receiver = self;
   v8.super_class = _MKFApplicationData;
@@ -119,12 +119,12 @@
       LOBYTE(v5) = 1;
     }
 
-    else if (a3)
+    else if (update)
     {
       v6 = [MEMORY[0x277CCA9B8] hmd_validationErrorWithDescription:@"Must have exactly one container"];
       v5 = v6;
       LOBYTE(v5) = 0;
-      *a3 = v6;
+      *update = v6;
     }
 
     else
@@ -148,18 +148,18 @@
   return v3;
 }
 
-+ (id)castIfApplicationDataContainer:(id)a3
++ (id)castIfApplicationDataContainer:(id)container
 {
   v3 = castIfApplicationDataContainer___hmf_once_t0;
-  v4 = a3;
+  containerCopy = container;
   if (v3 != -1)
   {
     dispatch_once(&castIfApplicationDataContainer___hmf_once_t0, &__block_literal_global_214689);
   }
 
-  if ([castIfApplicationDataContainer___hmf_once_v1 objectConforms:v4])
+  if ([castIfApplicationDataContainer___hmf_once_v1 objectConforms:containerCopy])
   {
-    v5 = v4;
+    v5 = containerCopy;
   }
 
   else
@@ -172,34 +172,34 @@
   return v5;
 }
 
-+ (id)modelIDForParentRelationshipTo:(id)a3
++ (id)modelIDForParentRelationshipTo:(id)to
 {
-  v4 = [a3 modelID];
-  v5 = [a1 modelIDForContainerUUID:v4];
+  modelID = [to modelID];
+  v5 = [self modelIDForContainerUUID:modelID];
 
   return v5;
 }
 
-+ (id)modelIDForContainerUUID:(id)a3
++ (id)modelIDForContainerUUID:(id)d
 {
   v3 = MEMORY[0x277CCAD78];
-  v4 = a3;
+  dCopy = d;
   v5 = [@"AppData" dataUsingEncoding:4];
-  v6 = [v3 hmf_UUIDWithNamespace:v4 data:v5];
+  v6 = [v3 hmf_UUIDWithNamespace:dCopy data:v5];
 
   return v6;
 }
 
-+ (void)setAppDataDictionary:(id)a3 forContainer:(id)a4
++ (void)setAppDataDictionary:(id)dictionary forContainer:(id)container
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [v6 applicationData];
-  if ([v13 count])
+  dictionaryCopy = dictionary;
+  containerCopy = container;
+  applicationData = [containerCopy applicationData];
+  if ([dictionaryCopy count])
   {
-    if (v7)
+    if (applicationData)
     {
-      v8 = [(_MKFApplicationData *)v7 appDataDictionary];
+      appDataDictionary = [(_MKFApplicationData *)applicationData appDataDictionary];
       v9 = HMFEqualObjects();
 
       if (v9)
@@ -207,45 +207,45 @@
         goto LABEL_9;
       }
 
-      v10 = [v13 copy];
-      [(_MKFApplicationData *)v7 setAppDataDictionary:v10];
+      managedObjectContext = [dictionaryCopy copy];
+      [(_MKFApplicationData *)applicationData setAppDataDictionary:managedObjectContext];
     }
 
     else
     {
-      v10 = [v6 managedObjectContext];
-      v7 = [[_MKFApplicationData alloc] initWithContext:v10];
-      v11 = [a1 modelIDForParentRelationshipTo:v6];
-      [(_MKFApplicationData *)v7 setModelID:v11];
+      managedObjectContext = [containerCopy managedObjectContext];
+      applicationData = [[_MKFApplicationData alloc] initWithContext:managedObjectContext];
+      v11 = [self modelIDForParentRelationshipTo:containerCopy];
+      [(_MKFApplicationData *)applicationData setModelID:v11];
 
-      v12 = [v13 copy];
-      [(_MKFApplicationData *)v7 setAppDataDictionary:v12];
+      v12 = [dictionaryCopy copy];
+      [(_MKFApplicationData *)applicationData setAppDataDictionary:v12];
 
-      [v6 setApplicationData:v7];
+      [containerCopy setApplicationData:applicationData];
     }
   }
 
   else
   {
-    if (!v7)
+    if (!applicationData)
     {
       goto LABEL_9;
     }
 
-    [v6 setApplicationData:0];
-    v10 = [(_MKFApplicationData *)v7 managedObjectContext];
-    [v10 deleteObject:v7];
+    [containerCopy setApplicationData:0];
+    managedObjectContext = [(_MKFApplicationData *)applicationData managedObjectContext];
+    [managedObjectContext deleteObject:applicationData];
   }
 
 LABEL_9:
 }
 
-+ (id)appDataDictionaryForContainer:(id)a3
++ (id)appDataDictionaryForContainer:(id)container
 {
-  v3 = [a3 applicationData];
-  v4 = [v3 appDataDictionary];
+  applicationData = [container applicationData];
+  appDataDictionary = [applicationData appDataDictionary];
 
-  return v4;
+  return appDataDictionary;
 }
 
 @end

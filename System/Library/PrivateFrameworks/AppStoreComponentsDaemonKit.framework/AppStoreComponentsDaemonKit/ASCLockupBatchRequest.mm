@@ -1,43 +1,43 @@
 @interface ASCLockupBatchRequest
-+ (id)lockupBatchRequestsFromRequests:(id)a3;
-- (ASCLockupBatchRequest)initWithCoder:(id)a3;
-- (ASCLockupBatchRequest)initWithIDs:(id)a3 kind:(id)a4 context:(id)a5;
-- (ASCLockupBatchRequest)lockupBatchRequestWithIDs:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)lockupBatchRequestsFromRequests:(id)requests;
+- (ASCLockupBatchRequest)initWithCoder:(id)coder;
+- (ASCLockupBatchRequest)initWithIDs:(id)ds kind:(id)kind context:(id)context;
+- (ASCLockupBatchRequest)lockupBatchRequestWithIDs:(id)ds;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)requests;
-- (id)_initWithIDs:(id)a3 kind:(id)a4 context:(id)a5 clientID:(id)a6 enableAppDistribution:(BOOL)a7 mediaQueryParams:(id)a8 platformOverride:(id)a9 countryCodeOverride:(id)a10;
+- (id)_initWithIDs:(id)ds kind:(id)kind context:(id)context clientID:(id)d enableAppDistribution:(BOOL)distribution mediaQueryParams:(id)params platformOverride:(id)override countryCodeOverride:(id)self0;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCLockupBatchRequest
 
-+ (id)lockupBatchRequestsFromRequests:(id)a3
++ (id)lockupBatchRequestsFromRequests:(id)requests
 {
   v67 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  requestsCopy = requests;
   v54 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [v3 firstObject];
-  v5 = [v4 clientID];
+  firstObject = [requestsCopy firstObject];
+  clientID = [firstObject clientID];
 
-  v6 = [v3 firstObject];
-  v52 = [v6 enableAppDistribution];
+  firstObject2 = [requestsCopy firstObject];
+  enableAppDistribution = [firstObject2 enableAppDistribution];
 
-  v7 = [v3 firstObject];
-  v50 = [v7 mediaQueryParams];
+  firstObject3 = [requestsCopy firstObject];
+  mediaQueryParams = [firstObject3 mediaQueryParams];
 
-  v8 = [v3 firstObject];
-  v9 = [v8 platformOverride];
+  firstObject4 = [requestsCopy firstObject];
+  platformOverride = [firstObject4 platformOverride];
 
-  v10 = [v3 firstObject];
-  v11 = [v10 countryCodeOverride];
+  firstObject5 = [requestsCopy firstObject];
+  countryCodeOverride = [firstObject5 countryCodeOverride];
 
   v64 = 0u;
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v12 = v3;
+  v12 = requestsCopy;
   v53 = [v12 countByEnumeratingWithState:&v62 objects:v66 count:16];
   if (v53)
   {
@@ -54,9 +54,9 @@
         v14 = *(*(&v62 + 1) + 8 * i);
         if ([v12 count] >= 2)
         {
-          v15 = [v14 mediaQueryParams];
+          mediaQueryParams2 = [v14 mediaQueryParams];
 
-          if (v15)
+          if (mediaQueryParams2)
           {
             v47 = objc_alloc(MEMORY[0x277CBEAD8]);
             v48 = *MEMORY[0x277CBE660];
@@ -66,11 +66,11 @@ LABEL_37:
           }
         }
 
-        v16 = [v14 clientID];
-        v17 = v16;
-        if (v5 && v16)
+        clientID2 = [v14 clientID];
+        v17 = clientID2;
+        if (clientID && clientID2)
         {
-          v18 = [v16 isEqual:v5];
+          v18 = [clientID2 isEqual:clientID];
 
           if ((v18 & 1) == 0)
           {
@@ -81,28 +81,28 @@ LABEL_37:
         else
         {
 
-          if (v17 != v5)
+          if (v17 != clientID)
           {
 LABEL_31:
             v41 = MEMORY[0x277CCACA8];
-            v42 = [v14 clientID];
-            v43 = [v41 stringWithFormat:@"Requests with different clientID cannot be included in batch request: %@ != %@", v42, v5];
+            clientID3 = [v14 clientID];
+            v43 = [v41 stringWithFormat:@"Requests with different clientID cannot be included in batch request: %@ != %@", clientID3, clientID];
 
             goto LABEL_36;
           }
         }
 
-        if (v52 != [v14 enableAppDistribution])
+        if (enableAppDistribution != [v14 enableAppDistribution])
         {
-          v43 = [MEMORY[0x277CCACA8] stringWithFormat:@"Requests with different AppDistribution options cannot be included in batch request: %d != %d", objc_msgSend(v14, "enableAppDistribution"), v52];
+          v43 = [MEMORY[0x277CCACA8] stringWithFormat:@"Requests with different AppDistribution options cannot be included in batch request: %d != %d", objc_msgSend(v14, "enableAppDistribution"), enableAppDistribution];
           goto LABEL_36;
         }
 
-        v19 = [v14 platformOverride];
-        v20 = v19;
-        if (v9 && v19)
+        platformOverride2 = [v14 platformOverride];
+        v20 = platformOverride2;
+        if (platformOverride && platformOverride2)
         {
-          v21 = [v19 isEqual:v9];
+          v21 = [platformOverride2 isEqual:platformOverride];
 
           if ((v21 & 1) == 0)
           {
@@ -113,21 +113,21 @@ LABEL_31:
         else
         {
 
-          if (v20 != v9)
+          if (v20 != platformOverride)
           {
 LABEL_32:
             v44 = MEMORY[0x277CCACA8];
-            v45 = [v14 platformOverride];
-            [v44 stringWithFormat:@"Requests with different platformOverride options cannot be included in batch request: %@ != %@", v45, v9];
+            platformOverride3 = [v14 platformOverride];
+            [v44 stringWithFormat:@"Requests with different platformOverride options cannot be included in batch request: %@ != %@", platformOverride3, platformOverride];
             goto LABEL_34;
           }
         }
 
-        v22 = [v14 countryCodeOverride];
-        v23 = v22;
-        if (v11 && v22)
+        countryCodeOverride2 = [v14 countryCodeOverride];
+        v23 = countryCodeOverride2;
+        if (countryCodeOverride && countryCodeOverride2)
         {
-          v24 = [v22 isEqual:v11];
+          v24 = [countryCodeOverride2 isEqual:countryCodeOverride];
 
           if ((v24 & 1) == 0)
           {
@@ -138,12 +138,12 @@ LABEL_32:
         else
         {
 
-          if (v23 != v11)
+          if (v23 != countryCodeOverride)
           {
 LABEL_33:
             v46 = MEMORY[0x277CCACA8];
-            v45 = [v14 countryCodeOverride];
-            [v46 stringWithFormat:@"Requests with different countryCodeOverride options cannot be included in batch request: %@ != %@", v45, v11];
+            platformOverride3 = [v14 countryCodeOverride];
+            [v46 stringWithFormat:@"Requests with different countryCodeOverride options cannot be included in batch request: %@ != %@", platformOverride3, countryCodeOverride];
             v43 = LABEL_34:;
 
 LABEL_36:
@@ -155,9 +155,9 @@ LABEL_36:
         }
 
         v25 = [ASCPair alloc];
-        v26 = [v14 kind];
-        v27 = [v14 context];
-        v28 = [(ASCPair *)v25 initWithFirst:v26 second:v27];
+        kind = [v14 kind];
+        context = [v14 context];
+        v28 = [(ASCPair *)v25 initWithFirst:kind second:context];
 
         v29 = [v54 objectForKeyedSubscript:v28];
         if (!v29)
@@ -183,17 +183,17 @@ LABEL_36:
   v55[1] = 3221225472;
   v55[2] = __57__ASCLockupBatchRequest_lockupBatchRequestsFromRequests___block_invoke;
   v55[3] = &unk_2784B1600;
-  v61 = v52;
-  v56 = v5;
-  v57 = v50;
-  v58 = v9;
-  v59 = v11;
+  v61 = enableAppDistribution;
+  v56 = clientID;
+  v57 = mediaQueryParams;
+  v58 = platformOverride;
+  v59 = countryCodeOverride;
   v60 = v32;
   v33 = v32;
-  v34 = v11;
-  v35 = v9;
-  v36 = v50;
-  v37 = v5;
+  v34 = countryCodeOverride;
+  v35 = platformOverride;
+  v36 = mediaQueryParams;
+  v37 = clientID;
   [v54 enumerateKeysAndObjectsUsingBlock:v55];
   v38 = [v33 copy];
 
@@ -214,25 +214,25 @@ void __57__ASCLockupBatchRequest_lockupBatchRequestsFromRequests___block_invoke(
   [*(a1 + 64) addObject:v10];
 }
 
-- (ASCLockupBatchRequest)initWithIDs:(id)a3 kind:(id)a4 context:(id)a5
+- (ASCLockupBatchRequest)initWithIDs:(id)ds kind:(id)kind context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  kindCopy = kind;
+  contextCopy = context;
   v19.receiver = self;
   v19.super_class = ASCLockupBatchRequest;
   v11 = [(ASCLockupBatchRequest *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dsCopy copy];
     ids = v11->_ids;
     v11->_ids = v12;
 
-    v14 = [v9 copy];
+    v14 = [kindCopy copy];
     kind = v11->_kind;
     v11->_kind = v14;
 
-    v16 = [v10 copy];
+    v16 = [contextCopy copy];
     context = v11->_context;
     v11->_context = v16;
   }
@@ -240,68 +240,68 @@ void __57__ASCLockupBatchRequest_lockupBatchRequestsFromRequests___block_invoke(
   return v11;
 }
 
-- (id)_initWithIDs:(id)a3 kind:(id)a4 context:(id)a5 clientID:(id)a6 enableAppDistribution:(BOOL)a7 mediaQueryParams:(id)a8 platformOverride:(id)a9 countryCodeOverride:(id)a10
+- (id)_initWithIDs:(id)ds kind:(id)kind context:(id)context clientID:(id)d enableAppDistribution:(BOOL)distribution mediaQueryParams:(id)params platformOverride:(id)override countryCodeOverride:(id)self0
 {
-  v23 = a6;
-  v22 = a8;
-  v16 = a9;
-  v17 = a10;
-  v18 = [(ASCLockupBatchRequest *)self initWithIDs:a3 kind:a4 context:a5];
+  dCopy = d;
+  paramsCopy = params;
+  overrideCopy = override;
+  codeOverrideCopy = codeOverride;
+  v18 = [(ASCLockupBatchRequest *)self initWithIDs:ds kind:kind context:context];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_clientID, a6);
-    v19->_enableAppDistribution = a7;
-    objc_storeStrong(&v19->_mediaQueryParams, a8);
-    objc_storeStrong(&v19->_platformOverride, a9);
-    objc_storeStrong(&v19->_countryCodeOverride, a10);
+    objc_storeStrong(&v18->_clientID, d);
+    v19->_enableAppDistribution = distribution;
+    objc_storeStrong(&v19->_mediaQueryParams, params);
+    objc_storeStrong(&v19->_platformOverride, override);
+    objc_storeStrong(&v19->_countryCodeOverride, codeOverride);
   }
 
   return v19;
 }
 
-- (ASCLockupBatchRequest)initWithCoder:(id)a3
+- (ASCLockupBatchRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277CBEB98];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"ids"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"ids"];
 
   if (v8)
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
     if (v9)
     {
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"context"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"context"];
       if (v10)
       {
         v11 = [(ASCLockupBatchRequest *)self initWithIDs:v8 kind:v9 context:v10];
         if (v11)
         {
-          v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientID"];
+          v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientID"];
           clientID = v11->_clientID;
           v11->_clientID = v12;
 
-          v11->_enableAppDistribution = [v4 decodeBoolForKey:@"enableAppDistribution"];
+          v11->_enableAppDistribution = [coderCopy decodeBoolForKey:@"enableAppDistribution"];
           v14 = objc_alloc(MEMORY[0x277CBEB98]);
           v15 = objc_opt_class();
           v16 = [v14 initWithObjects:{v15, objc_opt_class(), 0}];
-          v17 = [v4 decodeObjectOfClasses:v16 forKey:@"mediaQueryParams"];
+          v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"mediaQueryParams"];
           mediaQueryParams = v11->_mediaQueryParams;
           v11->_mediaQueryParams = v17;
 
-          v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"platformOverride"];
+          v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"platformOverride"];
           platformOverride = v11->_platformOverride;
           v11->_platformOverride = v19;
 
-          v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"countryCodeOverride"];
+          v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"countryCodeOverride"];
           countryCodeOverride = v11->_countryCodeOverride;
           v11->_countryCodeOverride = v21;
         }
 
         self = v11;
-        v23 = self;
+        selfCopy = self;
       }
 
       else
@@ -312,7 +312,7 @@ void __57__ASCLockupBatchRequest_lockupBatchRequestsFromRequests___block_invoke(
           [(ASCLockupBatchRequest *)v40 initWithCoder:v41, v42, v43, v44, v45, v46, v47];
         }
 
-        v23 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -324,7 +324,7 @@ void __57__ASCLockupBatchRequest_lockupBatchRequestsFromRequests___block_invoke(
         [(ASCLockupBatchRequest *)v32 initWithCoder:v33, v34, v35, v36, v37, v38, v39];
       }
 
-      v23 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -336,36 +336,36 @@ void __57__ASCLockupBatchRequest_lockupBatchRequestsFromRequests___block_invoke(
       [(ASCLockupBatchRequest *)v24 initWithCoder:v25, v26, v27, v28, v29, v30, v31];
     }
 
-    v23 = 0;
+    selfCopy = 0;
   }
 
-  return v23;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ASCLockupBatchRequest *)self ids];
-  [v4 encodeObject:v5 forKey:@"ids"];
+  [coderCopy encodeObject:v5 forKey:@"ids"];
 
-  v6 = [(ASCLockupBatchRequest *)self kind];
-  [v4 encodeObject:v6 forKey:@"kind"];
+  kind = [(ASCLockupBatchRequest *)self kind];
+  [coderCopy encodeObject:kind forKey:@"kind"];
 
-  v7 = [(ASCLockupBatchRequest *)self context];
-  [v4 encodeObject:v7 forKey:@"context"];
+  context = [(ASCLockupBatchRequest *)self context];
+  [coderCopy encodeObject:context forKey:@"context"];
 
-  v8 = [(ASCLockupBatchRequest *)self clientID];
-  [v4 encodeObject:v8 forKey:@"clientID"];
+  clientID = [(ASCLockupBatchRequest *)self clientID];
+  [coderCopy encodeObject:clientID forKey:@"clientID"];
 
-  [v4 encodeBool:-[ASCLockupBatchRequest enableAppDistribution](self forKey:{"enableAppDistribution"), @"enableAppDistribution"}];
-  v9 = [(ASCLockupBatchRequest *)self mediaQueryParams];
-  [v4 encodeObject:v9 forKey:@"mediaQueryParams"];
+  [coderCopy encodeBool:-[ASCLockupBatchRequest enableAppDistribution](self forKey:{"enableAppDistribution"), @"enableAppDistribution"}];
+  mediaQueryParams = [(ASCLockupBatchRequest *)self mediaQueryParams];
+  [coderCopy encodeObject:mediaQueryParams forKey:@"mediaQueryParams"];
 
-  v10 = [(ASCLockupBatchRequest *)self platformOverride];
-  [v4 encodeObject:v10 forKey:@"platformOverride"];
+  platformOverride = [(ASCLockupBatchRequest *)self platformOverride];
+  [coderCopy encodeObject:platformOverride forKey:@"platformOverride"];
 
-  v11 = [(ASCLockupBatchRequest *)self countryCodeOverride];
-  [v4 encodeObject:v11 forKey:@"countryCodeOverride"];
+  countryCodeOverride = [(ASCLockupBatchRequest *)self countryCodeOverride];
+  [coderCopy encodeObject:countryCodeOverride forKey:@"countryCodeOverride"];
 }
 
 - (unint64_t)hash
@@ -374,36 +374,36 @@ void __57__ASCLockupBatchRequest_lockupBatchRequestsFromRequests___block_invoke(
   v4 = [(ASCLockupBatchRequest *)self ids];
   [(ASCHasher *)v3 combineObject:v4];
 
-  v5 = [(ASCLockupBatchRequest *)self kind];
-  [(ASCHasher *)v3 combineObject:v5];
+  kind = [(ASCLockupBatchRequest *)self kind];
+  [(ASCHasher *)v3 combineObject:kind];
 
-  v6 = [(ASCLockupBatchRequest *)self context];
-  [(ASCHasher *)v3 combineObject:v6];
+  context = [(ASCLockupBatchRequest *)self context];
+  [(ASCHasher *)v3 combineObject:context];
 
-  v7 = [(ASCLockupBatchRequest *)self clientID];
-  [(ASCHasher *)v3 combineObject:v7];
+  clientID = [(ASCLockupBatchRequest *)self clientID];
+  [(ASCHasher *)v3 combineObject:clientID];
 
   [(ASCHasher *)v3 combineBool:[(ASCLockupBatchRequest *)self enableAppDistribution]];
-  v8 = [(ASCLockupBatchRequest *)self mediaQueryParams];
-  [(ASCHasher *)v3 combineObject:v8];
+  mediaQueryParams = [(ASCLockupBatchRequest *)self mediaQueryParams];
+  [(ASCHasher *)v3 combineObject:mediaQueryParams];
 
-  v9 = [(ASCLockupBatchRequest *)self platformOverride];
-  [(ASCHasher *)v3 combineObject:v9];
+  platformOverride = [(ASCLockupBatchRequest *)self platformOverride];
+  [(ASCHasher *)v3 combineObject:platformOverride];
 
-  v10 = [(ASCLockupBatchRequest *)self countryCodeOverride];
-  [(ASCHasher *)v3 combineObject:v10];
+  countryCodeOverride = [(ASCLockupBatchRequest *)self countryCodeOverride];
+  [(ASCHasher *)v3 combineObject:countryCodeOverride];
 
-  v11 = [(ASCHasher *)v3 finalizeHash];
-  return v11;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self != v4)
+  equalCopy = equal;
+  if (self != equalCopy)
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -440,41 +440,41 @@ LABEL_54:
       if ([v9 isEqual:v10])
       {
 LABEL_12:
-        v12 = [(ASCLockupBatchRequest *)self kind];
-        v13 = [(ASCLockupBatchRequest *)v8 kind];
-        v14 = v13;
-        if (v12 && v13)
+        kind = [(ASCLockupBatchRequest *)self kind];
+        kind2 = [(ASCLockupBatchRequest *)v8 kind];
+        v14 = kind2;
+        if (kind && kind2)
         {
-          if ([v12 isEqual:v13])
+          if ([kind isEqual:kind2])
           {
 LABEL_15:
-            v15 = [(ASCLockupBatchRequest *)self context];
-            v16 = [(ASCLockupBatchRequest *)v8 context];
-            v17 = v16;
-            if (v15 && v16)
+            context = [(ASCLockupBatchRequest *)self context];
+            context2 = [(ASCLockupBatchRequest *)v8 context];
+            v17 = context2;
+            if (context && context2)
             {
-              if ([v15 isEqual:v16])
+              if ([context isEqual:context2])
               {
 LABEL_18:
                 v45 = v17;
-                v18 = [(ASCLockupBatchRequest *)self clientID];
-                v19 = [(ASCLockupBatchRequest *)v8 clientID];
-                v20 = v19;
-                if (v18 && v19)
+                clientID = [(ASCLockupBatchRequest *)self clientID];
+                clientID2 = [(ASCLockupBatchRequest *)v8 clientID];
+                v20 = clientID2;
+                if (clientID && clientID2)
                 {
-                  if ([v18 isEqual:v19])
+                  if ([clientID isEqual:clientID2])
                   {
                     goto LABEL_21;
                   }
                 }
 
-                else if (v18 == v19)
+                else if (clientID == clientID2)
                 {
 LABEL_21:
                   v42 = v20;
-                  v43 = v18;
-                  v21 = [(ASCLockupBatchRequest *)self enableAppDistribution];
-                  if (v21 != [(ASCLockupBatchRequest *)v8 enableAppDistribution])
+                  v43 = clientID;
+                  enableAppDistribution = [(ASCLockupBatchRequest *)self enableAppDistribution];
+                  if (enableAppDistribution != [(ASCLockupBatchRequest *)v8 enableAppDistribution])
                   {
                     v7 = 0;
 LABEL_49:
@@ -482,28 +482,28 @@ LABEL_49:
                     goto LABEL_50;
                   }
 
-                  v22 = [(ASCLockupBatchRequest *)self mediaQueryParams];
-                  v23 = [(ASCLockupBatchRequest *)v8 mediaQueryParams];
-                  v24 = v23;
-                  if (v22 && v23)
+                  mediaQueryParams = [(ASCLockupBatchRequest *)self mediaQueryParams];
+                  mediaQueryParams2 = [(ASCLockupBatchRequest *)v8 mediaQueryParams];
+                  v24 = mediaQueryParams2;
+                  if (mediaQueryParams && mediaQueryParams2)
                   {
-                    v25 = v23;
-                    v26 = [v22 isEqual:v23];
+                    v25 = mediaQueryParams2;
+                    v26 = [mediaQueryParams isEqual:mediaQueryParams2];
                     v24 = v25;
-                    v18 = v43;
+                    clientID = v43;
                     if (v26)
                     {
 LABEL_35:
-                      v40 = v22;
+                      v40 = mediaQueryParams;
                       v41 = v24;
-                      v27 = [(ASCLockupBatchRequest *)self platformOverride];
-                      v28 = [(ASCLockupBatchRequest *)v8 platformOverride];
-                      v29 = v28;
-                      v44 = v27;
-                      if (v27 && v28)
+                      platformOverride = [(ASCLockupBatchRequest *)self platformOverride];
+                      platformOverride2 = [(ASCLockupBatchRequest *)v8 platformOverride];
+                      v29 = platformOverride2;
+                      v44 = platformOverride;
+                      if (platformOverride && platformOverride2)
                       {
-                        v30 = v28;
-                        v31 = [v44 isEqual:v28];
+                        v30 = platformOverride2;
+                        v31 = [v44 isEqual:platformOverride2];
                         v29 = v30;
                         if (v31)
                         {
@@ -511,35 +511,35 @@ LABEL_35:
                         }
                       }
 
-                      else if (v27 == v28)
+                      else if (platformOverride == platformOverride2)
                       {
 LABEL_38:
                         v39 = v29;
-                        v32 = [(ASCLockupBatchRequest *)self countryCodeOverride];
-                        v33 = [(ASCLockupBatchRequest *)v8 countryCodeOverride];
-                        v34 = v33;
-                        v38 = v32;
-                        if (v32 && v33)
+                        countryCodeOverride = [(ASCLockupBatchRequest *)self countryCodeOverride];
+                        countryCodeOverride2 = [(ASCLockupBatchRequest *)v8 countryCodeOverride];
+                        v34 = countryCodeOverride2;
+                        v38 = countryCodeOverride;
+                        if (countryCodeOverride && countryCodeOverride2)
                         {
-                          v35 = v33;
-                          v36 = [v32 isEqual:v33];
+                          v35 = countryCodeOverride2;
+                          v36 = [countryCodeOverride isEqual:countryCodeOverride2];
                           v34 = v35;
                           v7 = v36;
                         }
 
                         else
                         {
-                          v7 = v32 == v33;
+                          v7 = countryCodeOverride == countryCodeOverride2;
                         }
 
-                        v22 = v40;
+                        mediaQueryParams = v40;
 
                         v29 = v39;
                         goto LABEL_47;
                       }
 
                       v7 = 0;
-                      v22 = v40;
+                      mediaQueryParams = v40;
 LABEL_47:
 
                       v24 = v41;
@@ -547,7 +547,7 @@ LABEL_47:
                     }
                   }
 
-                  else if (v22 == v23)
+                  else if (mediaQueryParams == mediaQueryParams2)
                   {
                     goto LABEL_35;
                   }
@@ -566,7 +566,7 @@ LABEL_50:
               }
             }
 
-            else if (v15 == v16)
+            else if (context == context2)
             {
               goto LABEL_18;
             }
@@ -578,7 +578,7 @@ LABEL_51:
           }
         }
 
-        else if (v12 == v13)
+        else if (kind == kind2)
         {
           goto LABEL_15;
         }
@@ -613,43 +613,43 @@ LABEL_55:
   v4 = [(ASCLockupBatchRequest *)self ids];
   [(ASCDescriber *)v3 addObject:v4 withName:@"ids"];
 
-  v5 = [(ASCLockupBatchRequest *)self kind];
-  [(ASCDescriber *)v3 addObject:v5 withName:@"kind"];
+  kind = [(ASCLockupBatchRequest *)self kind];
+  [(ASCDescriber *)v3 addObject:kind withName:@"kind"];
 
-  v6 = [(ASCLockupBatchRequest *)self context];
-  [(ASCDescriber *)v3 addObject:v6 withName:@"context"];
+  context = [(ASCLockupBatchRequest *)self context];
+  [(ASCDescriber *)v3 addObject:context withName:@"context"];
 
-  v7 = [(ASCLockupBatchRequest *)self clientID];
-  [(ASCDescriber *)v3 addObject:v7 withName:@"clientID"];
+  clientID = [(ASCLockupBatchRequest *)self clientID];
+  [(ASCDescriber *)v3 addObject:clientID withName:@"clientID"];
 
   [(ASCDescriber *)v3 addBool:[(ASCLockupBatchRequest *)self enableAppDistribution] withName:@"enableAppDistribution"];
-  v8 = [(ASCLockupBatchRequest *)self mediaQueryParams];
+  mediaQueryParams = [(ASCLockupBatchRequest *)self mediaQueryParams];
 
-  if (v8)
+  if (mediaQueryParams)
   {
-    v9 = [(ASCLockupBatchRequest *)self mediaQueryParams];
-    [(ASCDescriber *)v3 addObject:v9 withName:@"mediaQueryParams"];
+    mediaQueryParams2 = [(ASCLockupBatchRequest *)self mediaQueryParams];
+    [(ASCDescriber *)v3 addObject:mediaQueryParams2 withName:@"mediaQueryParams"];
   }
 
-  v10 = [(ASCLockupBatchRequest *)self platformOverride];
+  platformOverride = [(ASCLockupBatchRequest *)self platformOverride];
 
-  if (v10)
+  if (platformOverride)
   {
-    v11 = [(ASCLockupBatchRequest *)self platformOverride];
-    [(ASCDescriber *)v3 addObject:v11 withName:@"platformOverride"];
+    platformOverride2 = [(ASCLockupBatchRequest *)self platformOverride];
+    [(ASCDescriber *)v3 addObject:platformOverride2 withName:@"platformOverride"];
   }
 
-  v12 = [(ASCLockupBatchRequest *)self countryCodeOverride];
+  countryCodeOverride = [(ASCLockupBatchRequest *)self countryCodeOverride];
 
-  if (v12)
+  if (countryCodeOverride)
   {
-    v13 = [(ASCLockupBatchRequest *)self countryCodeOverride];
-    [(ASCDescriber *)v3 addObject:v13 withName:@"countryCodeOverride"];
+    countryCodeOverride2 = [(ASCLockupBatchRequest *)self countryCodeOverride];
+    [(ASCDescriber *)v3 addObject:countryCodeOverride2 withName:@"countryCodeOverride"];
   }
 
-  v14 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v14;
+  return finalizeDescription;
 }
 
 - (NSArray)requests
@@ -680,37 +680,37 @@ LABEL_55:
 
         v10 = *(*(&v29 + 1) + 8 * i);
         v11 = [ASCLockupRequest alloc];
-        v12 = [(ASCLockupBatchRequest *)self kind];
-        v13 = [(ASCLockupBatchRequest *)self context];
-        v14 = [(ASCLockupBatchRequest *)self clientID];
-        v15 = [(ASCLockupRequest *)v11 _initWithID:v10 kind:v12 context:v13 clientID:v14 enableAppDistribution:[(ASCLockupBatchRequest *)self enableAppDistribution]];
+        kind = [(ASCLockupBatchRequest *)self kind];
+        context = [(ASCLockupBatchRequest *)self context];
+        clientID = [(ASCLockupBatchRequest *)self clientID];
+        v15 = [(ASCLockupRequest *)v11 _initWithID:v10 kind:kind context:context clientID:clientID enableAppDistribution:[(ASCLockupBatchRequest *)self enableAppDistribution]];
 
-        v16 = [(ASCLockupBatchRequest *)self mediaQueryParams];
+        mediaQueryParams = [(ASCLockupBatchRequest *)self mediaQueryParams];
 
-        if (v16)
+        if (mediaQueryParams)
         {
-          v17 = [(ASCLockupBatchRequest *)self mediaQueryParams];
-          v18 = [v15 lockupRequestWithMediaQueryParams:v17];
+          mediaQueryParams2 = [(ASCLockupBatchRequest *)self mediaQueryParams];
+          v18 = [v15 lockupRequestWithMediaQueryParams:mediaQueryParams2];
 
           v15 = v18;
         }
 
-        v19 = [(ASCLockupBatchRequest *)self platformOverride];
+        platformOverride = [(ASCLockupBatchRequest *)self platformOverride];
 
-        if (v19)
+        if (platformOverride)
         {
-          v20 = [(ASCLockupBatchRequest *)self platformOverride];
-          v21 = [v15 _lockupRequestWithPlatformOverride:v20];
+          platformOverride2 = [(ASCLockupBatchRequest *)self platformOverride];
+          v21 = [v15 _lockupRequestWithPlatformOverride:platformOverride2];
 
           v15 = v21;
         }
 
-        v22 = [(ASCLockupBatchRequest *)self countryCodeOverride];
+        countryCodeOverride = [(ASCLockupBatchRequest *)self countryCodeOverride];
 
-        if (v22)
+        if (countryCodeOverride)
         {
-          v23 = [(ASCLockupBatchRequest *)self countryCodeOverride];
-          v24 = [v15 _lockupRequestWithCountryCodeOverride:v23];
+          countryCodeOverride2 = [(ASCLockupBatchRequest *)self countryCodeOverride];
+          v24 = [v15 _lockupRequestWithCountryCodeOverride:countryCodeOverride2];
 
           v15 = v24;
         }
@@ -730,18 +730,18 @@ LABEL_55:
   return v25;
 }
 
-- (ASCLockupBatchRequest)lockupBatchRequestWithIDs:(id)a3
+- (ASCLockupBatchRequest)lockupBatchRequestWithIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = [ASCLockupBatchRequest alloc];
-  v6 = [(ASCLockupBatchRequest *)self kind];
-  v7 = [(ASCLockupBatchRequest *)self context];
-  v8 = [(ASCLockupBatchRequest *)self clientID];
-  v9 = [(ASCLockupBatchRequest *)self enableAppDistribution];
-  v10 = [(ASCLockupBatchRequest *)self mediaQueryParams];
-  v11 = [(ASCLockupBatchRequest *)self platformOverride];
-  v12 = [(ASCLockupBatchRequest *)self countryCodeOverride];
-  v13 = [(ASCLockupBatchRequest *)v5 _initWithIDs:v4 kind:v6 context:v7 clientID:v8 enableAppDistribution:v9 mediaQueryParams:v10 platformOverride:v11 countryCodeOverride:v12];
+  kind = [(ASCLockupBatchRequest *)self kind];
+  context = [(ASCLockupBatchRequest *)self context];
+  clientID = [(ASCLockupBatchRequest *)self clientID];
+  enableAppDistribution = [(ASCLockupBatchRequest *)self enableAppDistribution];
+  mediaQueryParams = [(ASCLockupBatchRequest *)self mediaQueryParams];
+  platformOverride = [(ASCLockupBatchRequest *)self platformOverride];
+  countryCodeOverride = [(ASCLockupBatchRequest *)self countryCodeOverride];
+  v13 = [(ASCLockupBatchRequest *)v5 _initWithIDs:dsCopy kind:kind context:context clientID:clientID enableAppDistribution:enableAppDistribution mediaQueryParams:mediaQueryParams platformOverride:platformOverride countryCodeOverride:countryCodeOverride];
 
   return v13;
 }

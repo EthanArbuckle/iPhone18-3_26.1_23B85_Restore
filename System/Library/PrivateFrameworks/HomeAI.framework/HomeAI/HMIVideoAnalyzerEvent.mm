@@ -1,26 +1,26 @@
 @interface HMIVideoAnalyzerEvent
-+ (Class)eventClassForShortName:(id)a3;
++ (Class)eventClassForShortName:(id)name;
 + (NSArray)eventClassesArray;
 + (NSSet)eventClasses;
-+ (id)defaultConfidenceThreshold:(Class)a3 confidenceLevel:(int64_t)a4;
++ (id)defaultConfidenceThreshold:(Class)threshold confidenceLevel:(int64_t)level;
 + (id)defaultConfidenceThresholdsFeedback;
 + (id)defaultConfidenceThresholdsHigh;
 + (id)defaultConfidenceThresholdsMedium;
 + (id)eventConfidenceThresholdsHigh;
 + (id)eventConfidenceThresholdsMedium;
-+ (id)eventsWithContentsOfFile:(id)a3;
-+ (id)rgbColorCodeForEventClass:(Class)a3;
-+ (id)shortNameForEventClass:(Class)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventsWithContentsOfFile:(id)file;
++ (id)rgbColorCodeForEventClass:(Class)class;
++ (id)shortNameForEventClass:(Class)class;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)boundingBox;
-- (HMIVideoAnalyzerEvent)initWithCoder:(id)a3;
-- (HMIVideoAnalyzerEvent)initWithConfidence:(id)a3 boundingBox:(CGRect)a4 userInfo:(id)a5;
+- (HMIVideoAnalyzerEvent)initWithCoder:(id)coder;
+- (HMIVideoAnalyzerEvent)initWithConfidence:(id)confidence boundingBox:(CGRect)box userInfo:(id)info;
 - (NSArray)allEvents;
 - (id)attributeDescriptions;
 - (id)shortDescription;
 - (int64_t)confidenceLevel;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMIVideoAnalyzerEvent
@@ -55,35 +55,35 @@ void __42__HMIVideoAnalyzerEvent_eventClassesArray__block_invoke()
 + (NSSet)eventClasses
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [a1 eventClassesArray];
-  v4 = [v2 setWithArray:v3];
+  eventClassesArray = [self eventClassesArray];
+  v4 = [v2 setWithArray:eventClassesArray];
 
   return v4;
 }
 
-- (HMIVideoAnalyzerEvent)initWithConfidence:(id)a3 boundingBox:(CGRect)a4 userInfo:(id)a5
+- (HMIVideoAnalyzerEvent)initWithConfidence:(id)confidence boundingBox:(CGRect)box userInfo:(id)info
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3;
-  v13 = a5;
-  if (v12)
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  confidenceCopy = confidence;
+  infoCopy = info;
+  if (confidenceCopy)
   {
-    v14 = v13;
+    v14 = infoCopy;
     v20.receiver = self;
     v20.super_class = HMIVideoAnalyzerEvent;
     v15 = [(HMIVideoAnalyzerEvent *)&v20 init];
     v16 = v15;
     if (v15)
     {
-      objc_storeStrong(&v15->_confidence, a3);
+      objc_storeStrong(&v15->_confidence, confidence);
       v16->_boundingBox.origin.x = x;
       v16->_boundingBox.origin.y = y;
       v16->_boundingBox.size.width = width;
       v16->_boundingBox.size.height = height;
-      objc_storeStrong(&v16->_userInfo, a5);
+      objc_storeStrong(&v16->_userInfo, info);
     }
 
     return v16;
@@ -110,8 +110,8 @@ void __42__HMIVideoAnalyzerEvent_eventClassesArray__block_invoke()
   v13[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
   v4 = MEMORY[0x277CCABB0];
-  v5 = [(HMIVideoAnalyzerEvent *)self confidence];
-  [v5 value];
+  confidence = [(HMIVideoAnalyzerEvent *)self confidence];
+  [confidence value];
   v6 = [v4 numberWithDouble:?];
   v7 = [v3 initWithName:@"Confidence" value:v6];
   v13[0] = v7;
@@ -131,25 +131,25 @@ void __42__HMIVideoAnalyzerEvent_eventClassesArray__block_invoke()
   v4 = [HMIVideoAnalyzerEvent shortNameForEventClass:objc_opt_class()];
   [(HMIVideoAnalyzerEvent *)self boundingBox];
   v9 = HMICGRectDescription(v5, v6, v7, v8);
-  v10 = [(HMIVideoAnalyzerEvent *)self confidence];
-  v11 = [v10 shortDescription];
-  v12 = [v3 stringWithFormat:@"P(%@|[%@])=%@", v4, v9, v11];
+  confidence = [(HMIVideoAnalyzerEvent *)self confidence];
+  shortDescription = [confidence shortDescription];
+  v12 = [v3 stringWithFormat:@"P(%@|[%@])=%@", v4, v9, shortDescription];
 
   return v12;
 }
 
 - (int64_t)confidenceLevel
 {
-  v2 = [(HMIVideoAnalyzerEvent *)self confidence];
-  v3 = [v2 level];
+  confidence = [(HMIVideoAnalyzerEvent *)self confidence];
+  level = [confidence level];
 
-  return v3;
+  return level;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v25) = 1;
   }
@@ -159,9 +159,9 @@ void __42__HMIVideoAnalyzerEvent_eventClassesArray__block_invoke()
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HMIVideoAnalyzerEvent *)self confidence];
-      v7 = [(HMIVideoAnalyzerEvent *)v5 confidence];
+      v5 = equalCopy;
+      confidence = [(HMIVideoAnalyzerEvent *)self confidence];
+      confidence2 = [(HMIVideoAnalyzerEvent *)v5 confidence];
       v8 = HMFEqualObjects();
 
       [(HMIVideoAnalyzerEvent *)self boundingBox];
@@ -197,24 +197,24 @@ void __42__HMIVideoAnalyzerEvent_eventClassesArray__block_invoke()
 
 - (unint64_t)hash
 {
-  v3 = [(HMIVideoAnalyzerEvent *)self confidence];
-  v4 = [v3 hash];
+  confidence = [(HMIVideoAnalyzerEvent *)self confidence];
+  v4 = [confidence hash];
   [(HMIVideoAnalyzerEvent *)self boundingBox];
   v12 = HMIHashCGRect(v5, v6, v7, v8, v9, v10, v11);
 
   return v12 ^ v4;
 }
 
-- (HMIVideoAnalyzerEvent)initWithCoder:(id)a3
+- (HMIVideoAnalyzerEvent)initWithCoder:(id)coder
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_confidence);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = NSStringFromSelector(sel_boundingBox);
-  [v4 decodeRectForKey:v8];
+  [coderCopy decodeRectForKey:v8];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -226,18 +226,18 @@ void __42__HMIVideoAnalyzerEvent_eventClassesArray__block_invoke()
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:2];
   v19 = [v17 setWithArray:v18];
   v20 = NSStringFromSelector(sel_userInfo);
-  v21 = [v4 decodeObjectOfClasses:v19 forKey:v20];
+  v21 = [coderCopy decodeObjectOfClasses:v19 forKey:v20];
 
   v22 = [(HMIVideoAnalyzerEvent *)self initWithConfidence:v7 boundingBox:v21 userInfo:v10, v12, v14, v16];
   return v22;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMIVideoAnalyzerEvent *)self confidence];
+  coderCopy = coder;
+  confidence = [(HMIVideoAnalyzerEvent *)self confidence];
   v6 = NSStringFromSelector(sel_confidence);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:confidence forKey:v6];
 
   [(HMIVideoAnalyzerEvent *)self boundingBox];
   v8 = v7;
@@ -245,24 +245,24 @@ void __42__HMIVideoAnalyzerEvent_eventClassesArray__block_invoke()
   v12 = v11;
   v14 = v13;
   v15 = NSStringFromSelector(sel_boundingBox);
-  [v4 encodeRect:v15 forKey:{v8, v10, v12, v14}];
+  [coderCopy encodeRect:v15 forKey:{v8, v10, v12, v14}];
 
-  v17 = [(HMIVideoAnalyzerEvent *)self userInfo];
+  userInfo = [(HMIVideoAnalyzerEvent *)self userInfo];
   v16 = NSStringFromSelector(sel_userInfo);
-  [v4 encodeObject:v17 forKey:v16];
+  [coderCopy encodeObject:userInfo forKey:v16];
 }
 
-+ (id)eventsWithContentsOfFile:(id)a3
++ (id)eventsWithContentsOfFile:(id)file
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [v5 fileExistsAtPath:v4];
+  fileCopy = file;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v6 = [defaultManager fileExistsAtPath:fileCopy];
 
   if (v6)
   {
     v22 = 0;
-    v7 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v4 options:0 error:&v22];
+    v7 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:fileCopy options:0 error:&v22];
     v8 = v22;
     if (v7)
     {
@@ -291,7 +291,7 @@ void __42__HMIVideoAnalyzerEvent_eventClassesArray__block_invoke()
     else
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = a1;
+      selfCopy = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
@@ -299,7 +299,7 @@ void __42__HMIVideoAnalyzerEvent_eventClassesArray__block_invoke()
         *buf = 138543874;
         v26 = v20;
         v27 = 2112;
-        v28 = v4;
+        v28 = fileCopy;
         v29 = 2112;
         v30 = v8;
         _os_log_impl(&dword_22D12F000, v19, OS_LOG_TYPE_ERROR, "%{public}@Cannot read events from file %@, error: %@", buf, 0x20u);
@@ -313,7 +313,7 @@ void __42__HMIVideoAnalyzerEvent_eventClassesArray__block_invoke()
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = a1;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -321,7 +321,7 @@ void __42__HMIVideoAnalyzerEvent_eventClassesArray__block_invoke()
       *buf = 138543618;
       v26 = v16;
       v27 = 2112;
-      v28 = v4;
+      v28 = fileCopy;
       _os_log_impl(&dword_22D12F000, v15, OS_LOG_TYPE_ERROR, "%{public}@Events file %@ does not exist.", buf, 0x16u);
     }
 
@@ -332,7 +332,7 @@ void __42__HMIVideoAnalyzerEvent_eventClassesArray__block_invoke()
   return v12;
 }
 
-+ (id)shortNameForEventClass:(Class)a3
++ (id)shortNameForEventClass:(Class)class
 {
   if (shortNameForEventClass__onceToken != -1)
   {
@@ -341,7 +341,7 @@ void __42__HMIVideoAnalyzerEvent_eventClassesArray__block_invoke()
 
   v4 = shortNameForEventClass__map;
 
-  return [v4 objectForKeyedSubscript:a3];
+  return [v4 objectForKeyedSubscript:class];
 }
 
 void __48__HMIVideoAnalyzerEvent_shortNameForEventClass___block_invoke()
@@ -368,19 +368,19 @@ void __48__HMIVideoAnalyzerEvent_shortNameForEventClass___block_invoke()
   shortNameForEventClass__map = v0;
 }
 
-+ (Class)eventClassForShortName:(id)a3
++ (Class)eventClassForShortName:(id)name
 {
   v3 = eventClassForShortName__onceToken;
-  v4 = a3;
+  nameCopy = name;
   if (v3 != -1)
   {
     +[HMIVideoAnalyzerEvent eventClassForShortName:];
   }
 
   v5 = eventClassForShortName__map;
-  v6 = [v4 lowercaseString];
+  lowercaseString = [nameCopy lowercaseString];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [v5 objectForKeyedSubscript:lowercaseString];
 
   return v7;
 }
@@ -409,7 +409,7 @@ void __48__HMIVideoAnalyzerEvent_eventClassForShortName___block_invoke()
   eventClassForShortName__map = v0;
 }
 
-+ (id)rgbColorCodeForEventClass:(Class)a3
++ (id)rgbColorCodeForEventClass:(Class)class
 {
   if (rgbColorCodeForEventClass__onceToken != -1)
   {
@@ -418,7 +418,7 @@ void __48__HMIVideoAnalyzerEvent_eventClassForShortName___block_invoke()
 
   v4 = rgbColorCodeForEventClass__map;
 
-  return [v4 objectForKeyedSubscript:a3];
+  return [v4 objectForKeyedSubscript:class];
 }
 
 void __51__HMIVideoAnalyzerEvent_rgbColorCodeForEventClass___block_invoke()
@@ -529,20 +529,20 @@ void __56__HMIVideoAnalyzerEvent_defaultConfidenceThresholdsHigh__block_invoke()
   defaultConfidenceThresholdsHigh_confidenceThresholdsHigh = v0;
 }
 
-+ (id)defaultConfidenceThreshold:(Class)a3 confidenceLevel:(int64_t)a4
++ (id)defaultConfidenceThreshold:(Class)threshold confidenceLevel:(int64_t)level
 {
-  if (a4 == 1)
+  if (level == 1)
   {
-    v5 = [a1 defaultConfidenceThresholdsMedium];
+    defaultConfidenceThresholdsMedium = [self defaultConfidenceThresholdsMedium];
     goto LABEL_5;
   }
 
-  if (a4 == 2)
+  if (level == 2)
   {
-    v5 = [a1 defaultConfidenceThresholdsHigh];
+    defaultConfidenceThresholdsMedium = [self defaultConfidenceThresholdsHigh];
 LABEL_5:
-    v6 = v5;
-    v7 = [v5 objectForKeyedSubscript:a3];
+    v6 = defaultConfidenceThresholdsMedium;
+    v7 = [defaultConfidenceThresholdsMedium objectForKeyedSubscript:threshold];
 
     goto LABEL_7;
   }
@@ -561,8 +561,8 @@ LABEL_7:
   }
 
   v3 = [eventConfidenceThresholdsMedium_eventClassToConfidenceKey na_dictionaryByMappingValues:&__block_literal_global_139];
-  v4 = [a1 defaultConfidenceThresholdsMedium];
-  v5 = [v4 mutableCopy];
+  defaultConfidenceThresholdsMedium = [self defaultConfidenceThresholdsMedium];
+  v5 = [defaultConfidenceThresholdsMedium mutableCopy];
 
   [v5 addEntriesFromDictionary:v3];
 
@@ -606,8 +606,8 @@ id __56__HMIVideoAnalyzerEvent_eventConfidenceThresholdsMedium__block_invoke_2(u
   }
 
   v3 = [eventConfidenceThresholdsHigh_eventClassToConfidenceKey na_dictionaryByMappingValues:&__block_literal_global_144];
-  v4 = [a1 defaultConfidenceThresholdsHigh];
-  v5 = [v4 mutableCopy];
+  defaultConfidenceThresholdsHigh = [self defaultConfidenceThresholdsHigh];
+  v5 = [defaultConfidenceThresholdsHigh mutableCopy];
 
   [v5 addEntriesFromDictionary:v3];
 

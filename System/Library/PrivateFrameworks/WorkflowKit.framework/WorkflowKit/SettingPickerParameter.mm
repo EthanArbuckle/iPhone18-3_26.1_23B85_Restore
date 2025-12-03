@@ -7,7 +7,7 @@
 
 - (BOOL)preferParameterValuePicker
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1CA5675E4();
 
   return v3 & 1;
@@ -15,7 +15,7 @@
 
 - (NSArray)possibleStates
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1CA5676A0();
 
   if (v3)

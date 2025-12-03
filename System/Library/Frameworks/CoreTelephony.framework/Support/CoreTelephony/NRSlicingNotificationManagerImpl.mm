@@ -1,18 +1,18 @@
 @interface NRSlicingNotificationManagerImpl
-- (NRSlicingNotificationManagerImpl)initWithQueue:(dispatch_queue_s *)a3;
-- (void)sendNotification:(id)a3 body:(id)a4 identifier:(id)a5;
+- (NRSlicingNotificationManagerImpl)initWithQueue:(dispatch_queue_s *)queue;
+- (void)sendNotification:(id)notification body:(id)body identifier:(id)identifier;
 @end
 
 @implementation NRSlicingNotificationManagerImpl
 
-- (NRSlicingNotificationManagerImpl)initWithQueue:(dispatch_queue_s *)a3
+- (NRSlicingNotificationManagerImpl)initWithQueue:(dispatch_queue_s *)queue
 {
   v8.receiver = self;
   v8.super_class = NRSlicingNotificationManagerImpl;
   v4 = [(NRSlicingNotificationManagerImpl *)&v8 init];
   if (v4)
   {
-    v5 = [[UNUserNotificationCenter alloc] initWithBundleIdentifier:@"com.apple.SIMSetupUIService" queue:a3];
+    v5 = [[UNUserNotificationCenter alloc] initWithBundleIdentifier:@"com.apple.SIMSetupUIService" queue:queue];
     fUserNotificationCenter = v4->fUserNotificationCenter;
     v4->fUserNotificationCenter = v5;
 
@@ -23,14 +23,14 @@
   return v4;
 }
 
-- (void)sendNotification:(id)a3 body:(id)a4 identifier:(id)a5
+- (void)sendNotification:(id)notification body:(id)body identifier:(id)identifier
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
+  notificationCopy = notification;
+  bodyCopy = body;
+  identifierCopy = identifier;
   v10 = objc_alloc_init(UNMutableNotificationContent);
-  [v10 setTitle:v14];
-  [v10 setBody:v8];
+  [v10 setTitle:notificationCopy];
+  [v10 setBody:bodyCopy];
   v11 = [UNNotificationIcon iconForApplicationIdentifier:@"com.apple.Preferences"];
   [v10 setIcon:v11];
 
@@ -42,7 +42,7 @@
   v12 = [NSURL URLWithString:@"prefs:root=MOBILE_DATA_SETTINGS_ID"];
   [v10 setDefaultActionURL:v12];
 
-  v13 = [UNNotificationRequest requestWithIdentifier:v9 content:v10 trigger:0];
+  v13 = [UNNotificationRequest requestWithIdentifier:identifierCopy content:v10 trigger:0];
   [(UNUserNotificationCenter *)self->fUserNotificationCenter addNotificationRequest:v13 withCompletionHandler:&stru_101E48288];
 }
 

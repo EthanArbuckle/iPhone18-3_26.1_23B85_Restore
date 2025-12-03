@@ -1,18 +1,18 @@
 @interface SNNMILFunction
 - (NSArray)inputNames;
 - (NSArray)outputNames;
-- (SNNMILFunction)initWithFunction:(shared_ptr<MIL:()basic_string<char :()std:(std::allocator<char>> *)a4 :char_traits<char> IRFunction>)a3 name:;
+- (SNNMILFunction)initWithFunction:(shared_ptr<MIL:()basic_string<char :()std:(std::allocator<char>> *)std :char_traits<char> IRFunction>)a3 name:;
 - (basic_string<char,)name;
 - (id).cxx_construct;
-- (id)inputWithName:(id)a3;
-- (id)operationAtIndex:(int64_t)a3;
+- (id)inputWithName:(id)name;
+- (id)operationAtIndex:(int64_t)index;
 - (int64_t)operationCount;
 - (shared_ptr<MIL::IRFunction>)milFunction;
 @end
 
 @implementation SNNMILFunction
 
-- (SNNMILFunction)initWithFunction:(shared_ptr<MIL:()basic_string<char :()std:(std::allocator<char>> *)a4 :char_traits<char> IRFunction>)a3 name:
+- (SNNMILFunction)initWithFunction:(shared_ptr<MIL:()basic_string<char :()std:(std::allocator<char>> *)std :char_traits<char> IRFunction>)a3 name:
 {
   cntrl = a3.__cntrl_;
   ptr = a3.__ptr_;
@@ -109,13 +109,13 @@
   return v3;
 }
 
-- (id)inputWithName:(id)a3
+- (id)inputWithName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  nameCopy = name;
+  v5 = nameCopy;
+  if (nameCopy)
   {
-    [v4 cxxString];
+    [nameCopy cxxString];
   }
 
   else
@@ -263,10 +263,10 @@ LABEL_24:
   return (*(*v3 + 8) - **v3) >> 4;
 }
 
-- (id)operationAtIndex:(int64_t)a3
+- (id)operationAtIndex:(int64_t)index
 {
   v4 = (*(*self->_function.__ptr_ + 48))(self->_function.__ptr_, a2);
-  v5 = *(**(*(*v4 + 64))(v4) + 16 * a3);
+  v5 = *(**(*(*v4 + 64))(v4) + 16 * index);
   v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCXXString:(*(*v5 + 56))(v5)];
   v40 = [MEMORY[0x277CBEBF8] mutableCopy];
   v7 = (*(*v5 + 160))(v5);

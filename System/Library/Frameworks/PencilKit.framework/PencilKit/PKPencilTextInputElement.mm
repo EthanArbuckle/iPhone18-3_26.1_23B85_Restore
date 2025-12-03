@@ -1,24 +1,24 @@
 @interface PKPencilTextInputElement
 - (CGRect)frame;
-- (PKPencilTextInputElement)initWithIdentifier:(id)a3 frame:(CGRect)a4;
+- (PKPencilTextInputElement)initWithIdentifier:(id)identifier frame:(CGRect)frame;
 - (id)description;
 @end
 
 @implementation PKPencilTextInputElement
 
-- (PKPencilTextInputElement)initWithIdentifier:(id)a3 frame:(CGRect)a4
+- (PKPencilTextInputElement)initWithIdentifier:(id)identifier frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = PKPencilTextInputElement;
   v10 = [(PKPencilTextInputElement *)&v14 init];
   if (v10)
   {
-    v11 = [v9 copyWithZone:0];
+    v11 = [identifierCopy copyWithZone:0];
     identifier = v10->_identifier;
     v10->_identifier = v11;
 
@@ -36,10 +36,10 @@
   v8.receiver = self;
   v8.super_class = PKPencilTextInputElement;
   v3 = [(PKPencilTextInputElement *)&v8 description];
-  v4 = [(PKPencilTextInputElement *)self identifier];
+  identifier = [(PKPencilTextInputElement *)self identifier];
   [(PKPencilTextInputElement *)self frame];
   v5 = NSStringFromCGRect(v10);
-  v6 = [v3 stringByAppendingFormat:@" ID: %@, frame: %@", v4, v5];
+  v6 = [v3 stringByAppendingFormat:@" ID: %@, frame: %@", identifier, v5];
 
   return v6;
 }

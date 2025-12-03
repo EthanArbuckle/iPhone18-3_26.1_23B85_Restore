@@ -9,10 +9,10 @@
   v153 = *MEMORY[0x277D85DE8];
   v4 = a3;
   v128 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [(__CFString *)v4 representedResource];
-  v127 = [v5 identifier];
+  representedResource = [(__CFString *)v4 representedResource];
+  identifier = [representedResource identifier];
 
-  if (!v127)
+  if (!identifier)
   {
     _HKInitializeLogging();
     v6 = *MEMORY[0x277CCC2C0];
@@ -29,11 +29,11 @@
     [v128 addObject:v9];
   }
 
-  v107 = [objc_alloc(MEMORY[0x277CCD600]) initWithFHIRIdentifier:v127];
-  v10 = [(__CFString *)v4 rulesVersion];
-  v108 = [v10 integerValue];
+  v107 = [objc_alloc(MEMORY[0x277CCD600]) initWithFHIRIdentifier:identifier];
+  rulesVersion = [(__CFString *)v4 rulesVersion];
+  integerValue = [rulesVersion integerValue];
 
-  if (v108 <= 0)
+  if (integerValue <= 0)
   {
     _HKInitializeLogging();
     v11 = *MEMORY[0x277CCC2C0];
@@ -77,7 +77,7 @@
     [v128 addObject:v126];
   }
 
-  v106 = [(__CFString *)v4 country];
+  country = [(__CFString *)v4 country];
   v137 = 0;
   v119 = [(__CFString *)v4 medicalRecordPropertyValueForKey:@"note" expectedClass:objc_opt_class() isArray:0 error:&v137];
   v125 = v137;
@@ -126,8 +126,8 @@
     [v128 addObject:v124];
   }
 
-  v28 = [(__CFString *)v4 representedResource];
-  v104 = [v28 extractionHints];
+  representedResource2 = [(__CFString *)v4 representedResource];
+  extractionHints = [representedResource2 extractionHints];
 
   v135 = 0;
   v29 = [(__CFString *)v4 medicalRecordPropertyValueForKey:@"statusCoding" expectedClass:objc_opt_class() isArray:0 error:&v135];
@@ -364,29 +364,29 @@
   v84 = v77;
   if (![v128 count])
   {
-    v92 = [(__CFString *)v4 representedResource];
-    v93 = [v92 receivedDate];
-    v94 = v93;
-    if (v93)
+    representedResource3 = [(__CFString *)v4 representedResource];
+    receivedDate = [representedResource3 receivedDate];
+    v94 = receivedDate;
+    if (receivedDate)
     {
-      v95 = v93;
+      date = receivedDate;
     }
 
     else
     {
-      v95 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
 
-    v96 = v95;
+    v96 = date;
 
-    v97 = [v118 BOOLValue];
-    v89 = [MEMORY[0x277CCD2E8] localDevice];
-    v98 = [(__CFString *)v4 medicalRecordMetadata];
-    v99 = [MEMORY[0x277CCD108] clinicalNoteRecordType];
-    v91 = [MEMORY[0x277CCD100] clinicalNoteRecordWithType:v99 note:v119 enteredInError:v97 modifiedDate:v96 originIdentifier:v107 locale:v120 extractionVersion:v108 device:v89 metadata:v98 country:v106 state:(v104 >> 2) & 1 statusCoding:v112 documentTypeCodingCollection:v113 noteCreationDate:v114 categoriesCodingCollections:v115 relevantStartDate:v116 relevantEndDate:v117 authors:v84];
-    v100 = [(__CFString *)v4 representedResource];
-    v101 = [v100 firstSeenDate];
-    [v91 _setCreationDate:v101];
+    bOOLValue = [v118 BOOLValue];
+    localDevice = [MEMORY[0x277CCD2E8] localDevice];
+    medicalRecordMetadata = [(__CFString *)v4 medicalRecordMetadata];
+    clinicalNoteRecordType = [MEMORY[0x277CCD108] clinicalNoteRecordType];
+    v91 = [MEMORY[0x277CCD100] clinicalNoteRecordWithType:clinicalNoteRecordType note:v119 enteredInError:bOOLValue modifiedDate:v96 originIdentifier:v107 locale:v120 extractionVersion:integerValue device:localDevice metadata:medicalRecordMetadata country:country state:(extractionHints >> 2) & 1 statusCoding:v112 documentTypeCodingCollection:v113 noteCreationDate:v114 categoriesCodingCollections:v115 relevantStartDate:v116 relevantEndDate:v117 authors:v84];
+    representedResource4 = [(__CFString *)v4 representedResource];
+    firstSeenDate = [representedResource4 firstSeenDate];
+    [v91 _setCreationDate:firstSeenDate];
 
     goto LABEL_76;
   }
@@ -398,7 +398,7 @@
   v87 = [v85 errorWithDomain:@"HDHealthRecordsServiceErrorDomain" code:201 userInfo:v86];
 
   v88 = v87;
-  v89 = v88;
+  localDevice = v88;
   if (!v88)
   {
     goto LABEL_72;
@@ -414,9 +414,9 @@ LABEL_72:
 
   v90 = v88;
   v91 = 0;
-  *a4 = v89;
+  *a4 = localDevice;
 LABEL_73:
-  v96 = v89;
+  v96 = localDevice;
 LABEL_76:
 
   v102 = *MEMORY[0x277D85DE8];

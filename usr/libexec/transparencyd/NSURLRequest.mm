@@ -6,8 +6,8 @@
 
 - (id)kt_requestId
 {
-  v2 = [(NSURLRequest *)self allHTTPHeaderFields];
-  v3 = [v2 objectForKey:off_10038B9D8];
+  allHTTPHeaderFields = [(NSURLRequest *)self allHTTPHeaderFields];
+  v3 = [allHTTPHeaderFields objectForKey:off_10038B9D8];
 
   if (v3)
   {

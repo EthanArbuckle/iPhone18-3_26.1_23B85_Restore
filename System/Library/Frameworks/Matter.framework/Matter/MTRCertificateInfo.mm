@@ -1,5 +1,5 @@
 @interface MTRCertificateInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTRCertificateInfo)initWithTLVBytes:(MTRCertificateTLVBytes)bytes;
 - (MTRDistinguishedNameInfo)issuer;
 - (MTRDistinguishedNameInfo)subject;
@@ -94,10 +94,10 @@ LABEL_6:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -107,7 +107,7 @@ LABEL_6:
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v6 = [(NSData *)self->_bytes isEqual:v4->_bytes];
+      v6 = [(NSData *)self->_bytes isEqual:equalCopy->_bytes];
     }
 
     else

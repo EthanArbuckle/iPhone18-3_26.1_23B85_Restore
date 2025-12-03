@@ -3,17 +3,17 @@
 + (id)_smallWeekdayFont;
 + (id)_weekNumberFont;
 + (id)_weekdayFont;
-- (BOOL)isPointAllDay:(CGPoint)a3 requireAllDayRegionInsistence:(BOOL)a4;
-- (EKDayViewWithGutters)initWithFrame:(CGRect)a3 dayView:(id)a4 sizeClass:(int64_t)a5 showWeekDayLabel:(BOOL)a6 showWeekNumberLabel:(BOOL)a7;
+- (BOOL)isPointAllDay:(CGPoint)day requireAllDayRegionInsistence:(BOOL)insistence;
+- (EKDayViewWithGutters)initWithFrame:(CGRect)frame dayView:(id)view sizeClass:(int64_t)class showWeekDayLabel:(BOOL)label showWeekNumberLabel:(BOOL)numberLabel;
 - (id)_createAllDayView;
 - (void)_updateTopLabelsContainerHeight;
 - (void)_updateWeekNumberLabel;
 - (void)layoutSubviews;
-- (void)setAllDayHeight:(double)a3;
-- (void)setCurrentDate:(id)a3;
-- (void)setDayView:(id)a3;
-- (void)setGutterWidth:(double)a3;
-- (void)timeZoneChangedWithNewDate:(id)a3;
+- (void)setAllDayHeight:(double)height;
+- (void)setCurrentDate:(id)date;
+- (void)setDayView:(id)view;
+- (void)setGutterWidth:(double)width;
+- (void)timeZoneChangedWithNewDate:(id)date;
 - (void)updateDividerLineVisibility;
 - (void)updateLabelTexts;
 @end
@@ -55,8 +55,8 @@
   [(UILabel *)self->_weekNumberLabel bounds];
   [(UILabel *)self->_weekNumberLabel setFrame:v7, 8.0, v9];
   calendar = self->_calendar;
-  v11 = [(EKDayViewWithGutters *)self currentDate];
-  [(NSCalendar *)calendar component:0x2000 fromDate:v11];
+  currentDate = [(EKDayViewWithGutters *)self currentDate];
+  [(NSCalendar *)calendar component:0x2000 fromDate:currentDate];
 
   v12 = MEMORY[0x1E696AEC0];
   v13 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -65,20 +65,20 @@
   v16 = [v12 localizedStringWithFormat:v14, v15];
   [(UILabel *)self->_weekNumberLabel setText:v16];
 
-  v17 = [objc_opt_class() _weekNumberFont];
-  [(UILabel *)self->_weekNumberLabel setFont:v17];
+  _weekNumberFont = [objc_opt_class() _weekNumberFont];
+  [(UILabel *)self->_weekNumberLabel setFont:_weekNumberFont];
 }
 
 + (id)_weekdayFont
 {
-  v3 = [MEMORY[0x1E6993470] sharedPreferences];
-  if ([v3 showWeekNumbers])
+  mEMORY[0x1E6993470] = [MEMORY[0x1E6993470] sharedPreferences];
+  if ([mEMORY[0x1E6993470] showWeekNumbers])
   {
     v4 = CUIKGetOverlayCalendar();
 
     if (v4)
     {
-      v5 = [a1 _smallWeekdayFont];
+      _smallWeekdayFont = [self _smallWeekdayFont];
       goto LABEL_6;
     }
   }
@@ -87,17 +87,17 @@
   {
   }
 
-  v5 = [a1 _normalWeekdayFont];
+  _smallWeekdayFont = [self _normalWeekdayFont];
 LABEL_6:
 
-  return v5;
+  return _smallWeekdayFont;
 }
 
 + (id)_normalWeekdayFont
 {
   [EKUILargeTextUtilities contentSizeCategoryScaledValueForDefaultValue:0 maximumValue:15.0 shouldScaleForSmallerSizes:20.0];
 
-  return [a1 _weekdayFontOfSize:?];
+  return [self _weekdayFontOfSize:?];
 }
 
 - (void)updateLabelTexts
@@ -106,11 +106,11 @@ LABEL_6:
   v3 = CUIKGetOverlayCalendar();
   [(DayTwoPartLabel *)self->_weekDayLabel setShowOverlayDate:v3 != 0];
 
-  v4 = [(EKDayViewWithGutters *)self currentDate];
-  [(DayTwoPartLabel *)self->_weekDayLabel setDate:v4];
+  currentDate = [(EKDayViewWithGutters *)self currentDate];
+  [(DayTwoPartLabel *)self->_weekDayLabel setDate:currentDate];
 
-  v5 = [objc_opt_class() _weekdayFont];
-  [(DayTwoPartLabel *)self->_weekDayLabel setFont:v5];
+  _weekdayFont = [objc_opt_class() _weekdayFont];
+  [(DayTwoPartLabel *)self->_weekDayLabel setFont:_weekdayFont];
 
   [(DayTwoPartLabel *)self->_weekDayLabel sizeToFit];
   [(EKDayViewWithGutters *)self _updateTopLabelsContainerHeight];
@@ -176,113 +176,113 @@ LABEL_6:
 {
   [EKUILargeTextUtilities contentSizeCategoryScaledValueForDefaultValue:0 maximumValue:13.0 shouldScaleForSmallerSizes:18.0];
 
-  return [a1 _weekdayFontOfSize:?];
+  return [self _weekdayFontOfSize:?];
 }
 
-- (EKDayViewWithGutters)initWithFrame:(CGRect)a3 dayView:(id)a4 sizeClass:(int64_t)a5 showWeekDayLabel:(BOOL)a6 showWeekNumberLabel:(BOOL)a7
+- (EKDayViewWithGutters)initWithFrame:(CGRect)frame dayView:(id)view sizeClass:(int64_t)class showWeekDayLabel:(BOOL)label showWeekNumberLabel:(BOOL)numberLabel
 {
-  v7 = a7;
-  v8 = a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = a4;
+  numberLabelCopy = numberLabel;
+  labelCopy = label;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v58.receiver = self;
   v58.super_class = EKDayViewWithGutters;
-  v16 = [(EKDayViewWithGutters *)&v58 initWithFrame:x, y, width, height];
-  if (v16)
+  height = [(EKDayViewWithGutters *)&v58 initWithFrame:x, y, width, height];
+  if (height)
   {
     v17 = CUIKCalendar();
-    calendar = v16->_calendar;
-    v16->_calendar = v17;
+    calendar = height->_calendar;
+    height->_calendar = v17;
 
-    v16->_showWeekDayLabel = v8;
-    v16->_showWeekNumberLabel = v7;
-    [(EKDayViewWithGutters *)v16 addSubview:v15];
+    height->_showWeekDayLabel = labelCopy;
+    height->_showWeekNumberLabel = numberLabelCopy;
+    [(EKDayViewWithGutters *)height addSubview:viewCopy];
     v19 = objc_alloc(MEMORY[0x1E69DD250]);
     +[EKDayViewWithGutters defaultTopLabelContainerHeight];
     v21 = [v19 initWithFrame:{0.0, 0.0, width, v20}];
-    topLabelsContainer = v16->_topLabelsContainer;
-    v16->_topLabelsContainer = v21;
+    topLabelsContainer = height->_topLabelsContainer;
+    height->_topLabelsContainer = v21;
 
-    [(UIView *)v16->_topLabelsContainer setClipsToBounds:1];
-    [(UIView *)v16->_topLabelsContainer setAutoresizingMask:2];
-    [(UIView *)v16->_topLabelsContainer setHidden:!v8];
-    [(EKDayViewWithGutters *)v16 addSubview:v16->_topLabelsContainer];
+    [(UIView *)height->_topLabelsContainer setClipsToBounds:1];
+    [(UIView *)height->_topLabelsContainer setAutoresizingMask:2];
+    [(UIView *)height->_topLabelsContainer setHidden:!labelCopy];
+    [(EKDayViewWithGutters *)height addSubview:height->_topLabelsContainer];
     if (CalSolariumEnabled())
     {
-      [v15 addViewToScollerTopPocket:v16->_topLabelsContainer];
+      [viewCopy addViewToScollerTopPocket:height->_topLabelsContainer];
     }
 
-    v23 = v16->_calendar;
-    v24 = [v15 displayDate];
-    v25 = [(NSCalendar *)v23 dateFromComponents:v24];
+    v23 = height->_calendar;
+    displayDate = [viewCopy displayDate];
+    v25 = [(NSCalendar *)v23 dateFromComponents:displayDate];
 
-    objc_storeStrong(&v16->_currentDate, v25);
+    objc_storeStrong(&height->_currentDate, v25);
     v26 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{16.0, 8.0, 50.0, 20.0}];
-    weekNumberLabel = v16->_weekNumberLabel;
-    v16->_weekNumberLabel = v26;
+    weekNumberLabel = height->_weekNumberLabel;
+    height->_weekNumberLabel = v26;
 
-    [(UILabel *)v16->_weekNumberLabel setAdjustsFontSizeToFitWidth:1];
-    [(UILabel *)v16->_weekNumberLabel setMinimumScaleFactor:0.75];
-    [(UILabel *)v16->_weekNumberLabel setAutoresizingMask:38];
-    v28 = [objc_opt_class() _weekNumberFont];
-    [(UILabel *)v16->_weekNumberLabel setFont:v28];
+    [(UILabel *)height->_weekNumberLabel setAdjustsFontSizeToFitWidth:1];
+    [(UILabel *)height->_weekNumberLabel setMinimumScaleFactor:0.75];
+    [(UILabel *)height->_weekNumberLabel setAutoresizingMask:38];
+    _weekNumberFont = [objc_opt_class() _weekNumberFont];
+    [(UILabel *)height->_weekNumberLabel setFont:_weekNumberFont];
 
-    v29 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v16->_weekNumberLabel setTextColor:v29];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)height->_weekNumberLabel setTextColor:secondaryLabelColor];
 
-    [(EKDayViewWithGutters *)v16 _updateWeekNumberLabel];
-    [(UILabel *)v16->_weekNumberLabel setHidden:!v7];
-    [(UIView *)v16->_topLabelsContainer addSubview:v16->_weekNumberLabel];
+    [(EKDayViewWithGutters *)height _updateWeekNumberLabel];
+    [(UILabel *)height->_weekNumberLabel setHidden:!numberLabelCopy];
+    [(UIView *)height->_topLabelsContainer addSubview:height->_weekNumberLabel];
     v30 = [DayTwoPartLabel alloc];
     +[EKDayViewWithGutters defaultTopLabelContainerHeight];
     v32 = [(DayTwoPartLabel *)v30 initWithFrame:0 useSeparateFormat:0.0, 0.0, width, v31];
-    weekDayLabel = v16->_weekDayLabel;
-    v16->_weekDayLabel = v32;
+    weekDayLabel = height->_weekDayLabel;
+    height->_weekDayLabel = v32;
 
-    [(DayTwoPartLabel *)v16->_weekDayLabel setAccessibilityIdentifier:@"current-day"];
-    [(DayTwoPartLabel *)v16->_weekDayLabel setUseEmDashFormat:1];
-    [(UIView *)v16->_topLabelsContainer center];
-    [(DayTwoPartLabel *)v16->_weekDayLabel setCenter:?];
-    [(DayTwoPartLabel *)v16->_weekDayLabel setDate:v25];
-    [(DayTwoPartLabel *)v16->_weekDayLabel sizeToFit];
-    [(DayTwoPartLabel *)v16->_weekDayLabel setAutoresizingMask:5];
-    v34 = [objc_opt_class() _weekdayFont];
-    [(DayTwoPartLabel *)v16->_weekDayLabel setFont:v34];
+    [(DayTwoPartLabel *)height->_weekDayLabel setAccessibilityIdentifier:@"current-day"];
+    [(DayTwoPartLabel *)height->_weekDayLabel setUseEmDashFormat:1];
+    [(UIView *)height->_topLabelsContainer center];
+    [(DayTwoPartLabel *)height->_weekDayLabel setCenter:?];
+    [(DayTwoPartLabel *)height->_weekDayLabel setDate:v25];
+    [(DayTwoPartLabel *)height->_weekDayLabel sizeToFit];
+    [(DayTwoPartLabel *)height->_weekDayLabel setAutoresizingMask:5];
+    _weekdayFont = [objc_opt_class() _weekdayFont];
+    [(DayTwoPartLabel *)height->_weekDayLabel setFont:_weekdayFont];
 
-    [(UIView *)v16->_topLabelsContainer addSubview:v16->_weekDayLabel];
-    [(EKDayViewWithGutters *)v16 _updateTopLabelsContainerHeight];
+    [(UIView *)height->_topLabelsContainer addSubview:height->_weekDayLabel];
+    [(EKDayViewWithGutters *)height _updateTopLabelsContainerHeight];
     CalRoundToScreenScale(0.5);
     v36 = v35;
     v37 = objc_alloc(MEMORY[0x1E69DD250]);
     +[EKDayViewWithGutters defaultTopLabelContainerHeight];
     v39 = [v37 initWithFrame:{0.0, v38 - v36, width, v36}];
-    dividerLine = v16->_dividerLine;
-    v16->_dividerLine = v39;
+    dividerLine = height->_dividerLine;
+    height->_dividerLine = v39;
 
-    [(UIView *)v16->_dividerLine setAutoresizingMask:42];
-    v41 = [MEMORY[0x1E69DC888] separatorColor];
-    [(UIView *)v16->_dividerLine setBackgroundColor:v41];
+    [(UIView *)height->_dividerLine setAutoresizingMask:42];
+    separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+    [(UIView *)height->_dividerLine setBackgroundColor:separatorColor];
 
-    [(UIView *)v16->_dividerLine setHidden:1];
-    [(UIView *)v16->_topLabelsContainer addSubview:v16->_dividerLine];
-    objc_initWeak(&location, v16);
+    [(UIView *)height->_dividerLine setHidden:1];
+    [(UIView *)height->_topLabelsContainer addSubview:height->_dividerLine];
+    objc_initWeak(&location, height);
     v55[0] = MEMORY[0x1E69E9820];
     v55[1] = 3221225472;
     v55[2] = __93__EKDayViewWithGutters_initWithFrame_dayView_sizeClass_showWeekDayLabel_showWeekNumberLabel___block_invoke;
     v55[3] = &unk_1E84429A0;
     objc_copyWeak(&v56, &location);
-    [v15 setDisplayDateDidChangeCallback:v55];
+    [viewCopy setDisplayDateDidChangeCallback:v55];
     v53[0] = MEMORY[0x1E69E9820];
     v53[1] = 3221225472;
     v53[2] = __93__EKDayViewWithGutters_initWithFrame_dayView_sizeClass_showWeekDayLabel_showWeekNumberLabel___block_invoke_2;
     v53[3] = &unk_1E843F058;
     objc_copyWeak(&v54, &location);
-    [v15 setContentDidChangeCallback:v53];
-    [v15 setAutoresizingMask:18];
-    [v15 frame];
+    [viewCopy setContentDidChangeCallback:v53];
+    [viewCopy setAutoresizingMask:18];
+    [viewCopy frame];
     v42 = v59.origin.x;
     v43 = v59.origin.y;
     v44 = v59.size.width;
@@ -293,32 +293,32 @@ LABEL_6:
     v60.size.width = v44;
     v60.size.height = v45;
     v47 = CGRectGetHeight(v60) - v43;
-    v48 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, v43, v16->_gutterWidth, v47}];
-    v49 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [v48 setBackgroundColor:v49];
+    v48 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, v43, height->_gutterWidth, v47}];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [v48 setBackgroundColor:systemBackgroundColor];
 
     [v48 setClipsToBounds:0];
-    v50 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v42 + v46, v43, v16->_gutterWidth, v47}];
+    v50 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v42 + v46, v43, height->_gutterWidth, v47}];
     [v50 setAutoresizingMask:1];
-    v51 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [v50 setBackgroundColor:v51];
+    systemBackgroundColor2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [v50 setBackgroundColor:systemBackgroundColor2];
 
     [v50 setClipsToBounds:0];
-    [(EKDayViewWithGutters *)v16 setAutoresizingMask:18];
-    [(EKDayViewWithGutters *)v16 addSubview:v48];
-    [(EKDayViewWithGutters *)v16 addSubview:v50];
-    objc_storeStrong(&v16->_leftGutter, v48);
-    objc_storeStrong(&v16->_rightGutter, v50);
-    v16->_targetSizeClass = a5;
-    [(EKDayViewWithGutters *)v16 setDayView:v15];
-    [(EKDayViewWithGutters *)v16 setClipsToBounds:0];
+    [(EKDayViewWithGutters *)height setAutoresizingMask:18];
+    [(EKDayViewWithGutters *)height addSubview:v48];
+    [(EKDayViewWithGutters *)height addSubview:v50];
+    objc_storeStrong(&height->_leftGutter, v48);
+    objc_storeStrong(&height->_rightGutter, v50);
+    height->_targetSizeClass = class;
+    [(EKDayViewWithGutters *)height setDayView:viewCopy];
+    [(EKDayViewWithGutters *)height setClipsToBounds:0];
 
     objc_destroyWeak(&v54);
     objc_destroyWeak(&v56);
     objc_destroyWeak(&location);
   }
 
-  return v16;
+  return height;
 }
 
 void __93__EKDayViewWithGutters_initWithFrame_dayView_sizeClass_showWeekDayLabel_showWeekNumberLabel___block_invoke(uint64_t a1, void *a2)
@@ -336,35 +336,35 @@ void __93__EKDayViewWithGutters_initWithFrame_dayView_sizeClass_showWeekDayLabel
   [WeakRetained setShowDividerLine:a2 == 0];
 }
 
-- (void)setDayView:(id)a3
+- (void)setDayView:(id)view
 {
-  objc_storeStrong(&self->_dayView, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_dayView, view);
+  viewCopy = view;
   calendar = self->_calendar;
-  v7 = [v5 displayDate];
-  v8 = [(NSCalendar *)calendar dateFromComponents:v7];
+  displayDate = [viewCopy displayDate];
+  v8 = [(NSCalendar *)calendar dateFromComponents:displayDate];
 
   [(EKDayViewWithGutters *)self setCurrentDate:v8];
 
   [(EKDayViewWithGutters *)self updateDividerLineVisibility];
 }
 
-- (void)setCurrentDate:(id)a3
+- (void)setCurrentDate:(id)date
 {
-  objc_storeStrong(&self->_currentDate, a3);
+  objc_storeStrong(&self->_currentDate, date);
 
   [(EKDayViewWithGutters *)self updateLabelTexts];
 }
 
-- (void)timeZoneChangedWithNewDate:(id)a3
+- (void)timeZoneChangedWithNewDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = CUIKCalendar();
   calendar = self->_calendar;
   self->_calendar = v5;
 
   currentDate = self->_currentDate;
-  self->_currentDate = v4;
+  self->_currentDate = dateCopy;
 
   [(EKDayViewWithGutters *)self updateLabelTexts];
 }
@@ -394,65 +394,65 @@ void __93__EKDayViewWithGutters_initWithFrame_dayView_sizeClass_showWeekDayLabel
   }
 }
 
-- (void)setGutterWidth:(double)a3
+- (void)setGutterWidth:(double)width
 {
-  self->_gutterWidth = a3;
-  v5 = [(EKDayViewWithGutters *)self leftGutter];
-  [v5 frame];
+  self->_gutterWidth = width;
+  leftGutter = [(EKDayViewWithGutters *)self leftGutter];
+  [leftGutter frame];
   v27 = v6;
   v28 = v7;
   v9 = v8;
 
-  v10 = [(EKDayViewWithGutters *)self dayView];
-  [v10 frame];
+  dayView = [(EKDayViewWithGutters *)self dayView];
+  [dayView frame];
   v12 = v11;
   v14 = v13;
 
-  v15 = [(EKDayViewWithGutters *)self rightGutter];
-  [v15 frame];
+  rightGutter = [(EKDayViewWithGutters *)self rightGutter];
+  [rightGutter frame];
   v17 = v16;
   v19 = v18;
 
   [(EKDayViewWithGutters *)self bounds];
-  v21 = v20 + a3 * -2.0;
-  v22 = [(EKDayViewWithGutters *)self dayView];
-  [v22 setFrame:{a3, v12, v21, v14}];
+  v21 = v20 + width * -2.0;
+  dayView2 = [(EKDayViewWithGutters *)self dayView];
+  [dayView2 setFrame:{width, v12, v21, v14}];
 
-  v23 = [(EKDayViewWithGutters *)self leftGutter];
-  [v23 setFrame:{v27, v9, a3, v28}];
+  leftGutter2 = [(EKDayViewWithGutters *)self leftGutter];
+  [leftGutter2 setFrame:{v27, v9, width, v28}];
 
-  v24 = [(EKDayViewWithGutters *)self rightGutter];
-  [v24 setFrame:{v21 + a3, v17, a3, v19}];
+  rightGutter2 = [(EKDayViewWithGutters *)self rightGutter];
+  [rightGutter2 setFrame:{v21 + width, v17, width, v19}];
 
-  v25 = [(EKDayViewWithGutters *)self dayView];
-  [v25 setNeedsLayout];
+  dayView3 = [(EKDayViewWithGutters *)self dayView];
+  [dayView3 setNeedsLayout];
 
   allDayHeight = self->_allDayHeight;
 
   [(EKDayViewWithGutters *)self setAllDayHeight:allDayHeight];
 }
 
-- (void)setAllDayHeight:(double)a3
+- (void)setAllDayHeight:(double)height
 {
-  self->_allDayHeight = a3;
+  self->_allDayHeight = height;
   if (!self->_leftAllDayView)
   {
-    v4 = [(EKDayViewWithGutters *)self _createAllDayView];
+    _createAllDayView = [(EKDayViewWithGutters *)self _createAllDayView];
     leftAllDayView = self->_leftAllDayView;
-    self->_leftAllDayView = v4;
+    self->_leftAllDayView = _createAllDayView;
 
-    v6 = [(EKDayViewWithGutters *)self leftGutter];
-    [v6 addSubview:self->_leftAllDayView];
+    leftGutter = [(EKDayViewWithGutters *)self leftGutter];
+    [leftGutter addSubview:self->_leftAllDayView];
   }
 
   if (!self->_rightAllDayView)
   {
-    v7 = [(EKDayViewWithGutters *)self _createAllDayView];
+    _createAllDayView2 = [(EKDayViewWithGutters *)self _createAllDayView];
     rightAllDayView = self->_rightAllDayView;
-    self->_rightAllDayView = v7;
+    self->_rightAllDayView = _createAllDayView2;
 
-    v9 = [(EKDayViewWithGutters *)self rightGutter];
-    [v9 addSubview:self->_rightAllDayView];
+    rightGutter = [(EKDayViewWithGutters *)self rightGutter];
+    [rightGutter addSubview:self->_rightAllDayView];
   }
 
   gutterWidth = self->_gutterWidth;
@@ -464,11 +464,11 @@ void __93__EKDayViewWithGutters_initWithFrame_dayView_sizeClass_showWeekDayLabel
   [(EKDayAllDayView *)v13 setFrame:0.0, 0.0, v11, allDayHeight];
 }
 
-- (BOOL)isPointAllDay:(CGPoint)a3 requireAllDayRegionInsistence:(BOOL)a4
+- (BOOL)isPointAllDay:(CGPoint)day requireAllDayRegionInsistence:(BOOL)insistence
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  insistenceCopy = insistence;
+  y = day.y;
+  x = day.x;
   [(UIView *)self->_topLabelsContainer frame];
   v12.x = x;
   v12.y = y;
@@ -482,7 +482,7 @@ void __93__EKDayViewWithGutters_initWithFrame_dayView_sizeClass_showWeekDayLabel
     v11 = 0;
     dayView = self->_dayView;
     [(EKDayView *)dayView convertPoint:self fromView:x, y];
-    [(EKDayView *)dayView dateAtPoint:&v11 isAllDay:v4 requireAllDayRegionInsistence:?];
+    [(EKDayView *)dayView dateAtPoint:&v11 isAllDay:insistenceCopy requireAllDayRegionInsistence:?];
     v8 = v11;
   }
 

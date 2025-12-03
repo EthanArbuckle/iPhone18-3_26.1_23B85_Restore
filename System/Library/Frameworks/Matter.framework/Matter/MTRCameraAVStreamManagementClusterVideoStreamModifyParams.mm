@@ -1,8 +1,8 @@
 @interface MTRCameraAVStreamManagementClusterVideoStreamModifyParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRCameraAVStreamManagementClusterVideoStreamModifyParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -35,23 +35,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCameraAVStreamManagementClusterVideoStreamModifyParams);
-  v5 = [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)self videoStreamID];
-  [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)v4 setVideoStreamID:v5];
+  videoStreamID = [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)self videoStreamID];
+  [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)v4 setVideoStreamID:videoStreamID];
 
-  v6 = [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)self watermarkEnabled];
-  [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)v4 setWatermarkEnabled:v6];
+  watermarkEnabled = [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)self watermarkEnabled];
+  [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)v4 setWatermarkEnabled:watermarkEnabled];
 
-  v7 = [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)self osdEnabled];
-  [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)v4 setOsdEnabled:v7];
+  osdEnabled = [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)self osdEnabled];
+  [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)v4 setOsdEnabled:osdEnabled];
 
-  v8 = [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)self timedInvokeTimeoutMs];
-  [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)v4 setTimedInvokeTimeoutMs:v8];
+  timedInvokeTimeoutMs = [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)self timedInvokeTimeoutMs];
+  [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v9 = [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)self serverSideProcessingTimeout];
-  [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)v4 setServerSideProcessingTimeout:v9];
+  serverSideProcessingTimeout = [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)self serverSideProcessingTimeout];
+  [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -66,33 +66,33 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
-  v26 = 0;
+  unsignedShortValue = 0;
   LOBYTE(v27) = 0;
   LOBYTE(v28) = 0;
   v25[0] = 0;
   v25[1] = 0;
   v24 = v25;
-  v5 = [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)self videoStreamID];
-  v26 = [v5 unsignedShortValue];
+  videoStreamID = [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)self videoStreamID];
+  unsignedShortValue = [videoStreamID unsignedShortValue];
 
-  v6 = [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)self watermarkEnabled];
+  watermarkEnabled = [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)self watermarkEnabled];
 
-  if (v6)
+  if (watermarkEnabled)
   {
     v27 = 1;
-    v7 = [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)self watermarkEnabled];
-    HIBYTE(v27) = [v7 BOOLValue];
+    watermarkEnabled2 = [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)self watermarkEnabled];
+    HIBYTE(v27) = [watermarkEnabled2 BOOLValue];
   }
 
-  v8 = [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)self osdEnabled];
+  osdEnabled = [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)self osdEnabled];
 
-  if (v8)
+  if (osdEnabled)
   {
     v28 = 1;
-    v9 = [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)self osdEnabled];
-    HIBYTE(v28) = [v9 BOOLValue];
+    osdEnabled2 = [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)self osdEnabled];
+    HIBYTE(v28) = [osdEnabled2 BOOLValue];
   }
 
   sub_2393D9C18(0x62FuLL, 0, &v23);
@@ -105,7 +105,7 @@
     v22 = 0;
     sub_238EA16C4(&v19, &v23, 0);
     sub_2393C7BF0(v18, &v19, 0xFFFFFFFF);
-    v10 = sub_238F03C30(&v26, v18, 0x100uLL);
+    v10 = sub_238F03C30(&unsignedShortValue, v18, 0x100uLL);
     v12 = v10;
     if (v10 || (v10 = sub_238DD2EFC(v18, &v23), v12 = v10, v10))
     {
@@ -114,8 +114,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v23);
-      v10 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v23);
+      v10 = sub_2393C7114(reader, 21, 256);
       v13 = v17;
       v12 = v10;
     }
@@ -143,19 +143,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRCameraAVStreamManagementClusterVideoStreamModifyParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -166,7 +166,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x86AF00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

@@ -1,19 +1,19 @@
 @interface TRIXPCHandlerWrapper
-- (TRIXPCHandlerWrapper)initWithUnderlyingHandler:(id)a3 forProtocol:(id)a4;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
+- (TRIXPCHandlerWrapper)initWithUnderlyingHandler:(id)handler forProtocol:(id)protocol;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation TRIXPCHandlerWrapper
 
-- (TRIXPCHandlerWrapper)initWithUnderlyingHandler:(id)a3 forProtocol:(id)a4
+- (TRIXPCHandlerWrapper)initWithUnderlyingHandler:(id)handler forProtocol:(id)protocol
 {
-  v8 = a3;
-  v9 = a4;
-  if (([v8 conformsToProtocol:v9] & 1) == 0)
+  handlerCopy = handler;
+  protocolCopy = protocol;
+  if (([handlerCopy conformsToProtocol:protocolCopy] & 1) == 0)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"TRIXPCHandlerWrapper.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"[handler conformsToProtocol:protocol]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCHandlerWrapper.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"[handler conformsToProtocol:protocol]"}];
   }
 
   v14.receiver = self;
@@ -22,16 +22,16 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_underlying, a3);
-    objc_storeStrong(&v11->_protocol, a4);
+    objc_storeStrong(&v10->_underlying, handler);
+    objc_storeStrong(&v11->_protocol, protocol);
   }
 
   return v11;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  MethodDescription = protocol_getMethodDescription(self->_protocol, a3, 1, 1);
+  MethodDescription = protocol_getMethodDescription(self->_protocol, selector, 1, 1);
   if (MethodDescription.types)
   {
     v4 = [MEMORY[0x277CBEB08] signatureWithObjCTypes:MethodDescription.types];
@@ -45,20 +45,20 @@
   return v4;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   v7 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (protocol_getMethodDescription(self[16], [v4 selector], 1, 1).types)
+  invocationCopy = invocation;
+  if (protocol_getMethodDescription(self[16], [invocationCopy selector], 1, 1).types)
   {
-    [v4 invokeWithTarget:self->_underlying];
+    [invocationCopy invokeWithTarget:self->_underlying];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = TRIXPCHandlerWrapper;
-    [(TRIXPCHandlerWrapper *)&v6 forwardInvocation:v4];
+    [(TRIXPCHandlerWrapper *)&v6 forwardInvocation:invocationCopy];
   }
 
   v5 = *MEMORY[0x277D85DE8];

@@ -1,59 +1,59 @@
 @interface ICQUIPreferencesLiftUIDelegate
-- (ICQUIPreferencesLiftUIDelegate)initWithNavigationController:(id)a3 account:(id)a4;
+- (ICQUIPreferencesLiftUIDelegate)initWithNavigationController:(id)controller account:(id)account;
 - (PreferencesRemoteUIDelegateProtocol)delegate;
-- (void)liftUIPresenterDidCancel:(id)a3;
-- (void)liftUIPresenterDidComplete:(id)a3;
-- (void)loadURL:(id)a3;
+- (void)liftUIPresenterDidCancel:(id)cancel;
+- (void)liftUIPresenterDidComplete:(id)complete;
+- (void)loadURL:(id)l;
 @end
 
 @implementation ICQUIPreferencesLiftUIDelegate
 
-- (ICQUIPreferencesLiftUIDelegate)initWithNavigationController:(id)a3 account:(id)a4
+- (ICQUIPreferencesLiftUIDelegate)initWithNavigationController:(id)controller account:(id)account
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  accountCopy = account;
   v12.receiver = self;
   v12.super_class = ICQUIPreferencesLiftUIDelegate;
   v9 = [(ICQUIPreferencesLiftUIDelegate *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_navigation, a3);
-    objc_storeStrong(&v10->_account, a4);
+    objc_storeStrong(&v9->_navigation, controller);
+    objc_storeStrong(&v10->_account, account);
   }
 
   return v10;
 }
 
-- (void)loadURL:(id)a3
+- (void)loadURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [ICQLiftUIPresenter alloc];
-  v6 = [(ICQUIPreferencesLiftUIDelegate *)self account];
-  v7 = [(ICQLiftUIPresenter *)v5 initWithURL:v4 account:v6 data:0];
+  account = [(ICQUIPreferencesLiftUIDelegate *)self account];
+  v7 = [(ICQLiftUIPresenter *)v5 initWithURL:lCopy account:account data:0];
 
   [(ICQUIPreferencesLiftUIDelegate *)self setPresenter:v7];
-  v8 = [(ICQUIPreferencesLiftUIDelegate *)self presenter];
-  [v8 setDelegate:self];
+  presenter = [(ICQUIPreferencesLiftUIDelegate *)self presenter];
+  [presenter setDelegate:self];
 
-  v10 = [(ICQUIPreferencesLiftUIDelegate *)self presenter];
-  v9 = [(ICQUIPreferencesLiftUIDelegate *)self navigation];
-  [v10 pushInNavigationController:v9 animated:1];
+  presenter2 = [(ICQUIPreferencesLiftUIDelegate *)self presenter];
+  navigation = [(ICQUIPreferencesLiftUIDelegate *)self navigation];
+  [presenter2 pushInNavigationController:navigation animated:1];
 }
 
-- (void)liftUIPresenterDidCancel:(id)a3
+- (void)liftUIPresenterDidCancel:(id)cancel
 {
-  v4 = [(ICQUIPreferencesLiftUIDelegate *)self navigation];
-  v3 = [v4 popViewControllerAnimated:1];
+  navigation = [(ICQUIPreferencesLiftUIDelegate *)self navigation];
+  v3 = [navigation popViewControllerAnimated:1];
 }
 
-- (void)liftUIPresenterDidComplete:(id)a3
+- (void)liftUIPresenterDidComplete:(id)complete
 {
-  v4 = [(ICQUIPreferencesLiftUIDelegate *)self navigation];
-  v5 = [v4 popViewControllerAnimated:1];
+  navigation = [(ICQUIPreferencesLiftUIDelegate *)self navigation];
+  v5 = [navigation popViewControllerAnimated:1];
 
-  v6 = [(ICQUIPreferencesLiftUIDelegate *)self delegate];
-  [v6 reloadTopControllerWithAdditionalHeaders:0];
+  delegate = [(ICQUIPreferencesLiftUIDelegate *)self delegate];
+  [delegate reloadTopControllerWithAdditionalHeaders:0];
 }
 
 - (PreferencesRemoteUIDelegateProtocol)delegate

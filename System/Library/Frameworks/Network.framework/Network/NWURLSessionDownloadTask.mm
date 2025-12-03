@@ -1,21 +1,21 @@
 @interface NWURLSessionDownloadTask
-+ (BOOL)isSubclassOfClass:(Class)a3;
-- (BOOL)isKindOfClass:(Class)a3;
++ (BOOL)isSubclassOfClass:(Class)class;
+- (BOOL)isKindOfClass:(Class)class;
 - (NSURL)fileURL;
 - (id)createResumeData;
-- (id)errorWithResumeData:(id)a3;
-- (id)initWithLoader:(int)a3 identifier:(void *)a4 session:;
-- (void)cancelByProducingResumeData:(id)a3;
+- (id)errorWithResumeData:(id)data;
+- (id)initWithLoader:(int)loader identifier:(void *)identifier session:;
+- (void)cancelByProducingResumeData:(id)data;
 @end
 
 @implementation NWURLSessionDownloadTask
 
-- (id)initWithLoader:(int)a3 identifier:(void *)a4 session:
+- (id)initWithLoader:(int)loader identifier:(void *)identifier session:
 {
   v8 = a2;
-  if (a1)
+  if (self)
   {
-    v9 = [(NWURLSessionTask *)a1 initWithRequest:a3 identifier:a4 session:?];
+    v9 = [(NWURLSessionTask *)self initWithRequest:loader identifier:identifier session:?];
     v10 = v9;
     if (v9)
     {
@@ -41,9 +41,9 @@
   return [(NWURLSessionDownloadTask *)self downloadFileURL];
 }
 
-- (void)cancelByProducingResumeData:(id)a3
+- (void)cancelByProducingResumeData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (self)
   {
     queue = self->super._queue;
@@ -59,8 +59,8 @@
   v7[2] = __56__NWURLSessionDownloadTask_cancelByProducingResumeData___block_invoke;
   v7[3] = &unk_1E6A3D710;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_async(queue, v7);
 }
 
@@ -149,20 +149,20 @@ void __56__NWURLSessionDownloadTask_cancelByProducingResumeData___block_invoke(u
 
 - (id)createResumeData
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 currentRequest];
-    v3 = [v2 URL];
+    currentRequest = [self currentRequest];
+    v3 = [currentRequest URL];
     if ([(NSURL *)v3 _NW_isHTTPish])
     {
-      v4 = [v2 URL];
+      v4 = [currentRequest URL];
       isWeb = [(NSURL *)v4 _NW_isWebSocket];
 
       if (!isWeb)
       {
-        v6 = [v2 HTTPMethod];
-        v7 = [v6 caseInsensitiveCompare:@"GET"];
+        hTTPMethod = [currentRequest HTTPMethod];
+        v7 = [hTTPMethod caseInsensitiveCompare:@"GET"];
 
         if (v7)
         {
@@ -183,14 +183,14 @@ void __56__NWURLSessionDownloadTask_cancelByProducingResumeData___block_invoke(u
 LABEL_14:
           _os_log_impl(&dword_181A37000, v8, OS_LOG_TYPE_DEBUG, v9, v10, 2u);
 LABEL_15:
-          v1 = 0;
+          selfCopy = 0;
 LABEL_16:
 
           goto LABEL_17;
         }
 
-        v12 = [v1 originalRequest];
-        v8 = [v12 valueForHTTPHeaderField:@"Range"];
+        originalRequest = [selfCopy originalRequest];
+        v8 = [originalRequest valueForHTTPHeaderField:@"Range"];
 
         if (v8 && (-[NSObject componentsSeparatedByString:](v8, "componentsSeparatedByString:", @"-"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 count], v13, v14 >= 3))
         {
@@ -199,8 +199,8 @@ LABEL_16:
             dispatch_once(&__nwlog_url_log::onceToken, &__block_literal_global_72);
           }
 
-          v15 = gurlLogObj;
-          if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+          response3 = gurlLogObj;
+          if (!os_log_type_enabled(response3, OS_LOG_TYPE_DEBUG))
           {
             goto LABEL_45;
           }
@@ -212,9 +212,9 @@ LABEL_16:
 
         else
         {
-          v18 = [v1 response];
+          response = [selfCopy response];
 
-          if (!v18)
+          if (!response)
           {
             if (__nwlog_url_log::onceToken != -1)
             {
@@ -228,19 +228,19 @@ LABEL_16:
               _os_log_impl(&dword_181A37000, v24, OS_LOG_TYPE_DEBUG, "Creating download resume data with nil response", v31, 2u);
             }
 
-            v15 = [NWURLSessionDownloadResumeInfo infoWithTask:v1];
-            v1 = [v15 serialize];
+            response3 = [NWURLSessionDownloadResumeInfo infoWithTask:selfCopy];
+            selfCopy = [response3 serialize];
             goto LABEL_55;
           }
 
-          v19 = [v1 response];
+          response2 = [selfCopy response];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v15 = [v1 response];
-            v21 = [v15 valueForHTTPHeaderField:@"Content-Encoding"];
+            response3 = [selfCopy response];
+            v21 = [response3 valueForHTTPHeaderField:@"Content-Encoding"];
             v22 = v21;
             if (v21 && [v21 caseInsensitiveCompare:@"identity"])
             {
@@ -256,17 +256,17 @@ LABEL_16:
                 _os_log_impl(&dword_181A37000, v23, OS_LOG_TYPE_DEBUG, "Cannot create download resume data due to Content-Encoding", v29, 2u);
               }
 
-              v1 = 0;
+              selfCopy = 0;
             }
 
             else
             {
-              v23 = [v15 valueForHTTPHeaderField:@"ETag"];
-              v25 = [v15 valueForHTTPHeaderField:@"Last-Modified"];
+              v23 = [response3 valueForHTTPHeaderField:@"ETag"];
+              v25 = [response3 valueForHTTPHeaderField:@"Last-Modified"];
               if (v23 | v25)
               {
-                v27 = [NWURLSessionDownloadResumeInfo infoWithTask:v1];
-                v1 = [v27 serialize];
+                v27 = [NWURLSessionDownloadResumeInfo infoWithTask:selfCopy];
+                selfCopy = [v27 serialize];
               }
 
               else
@@ -283,7 +283,7 @@ LABEL_16:
                   _os_log_impl(&dword_181A37000, v26, OS_LOG_TYPE_DEBUG, "Cannot create download resume data without ETag or Last-Modified", v28, 2u);
                 }
 
-                v1 = 0;
+                selfCopy = 0;
               }
             }
 
@@ -295,11 +295,11 @@ LABEL_16:
             dispatch_once(&__nwlog_url_log::onceToken, &__block_literal_global_72);
           }
 
-          v15 = gurlLogObj;
-          if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+          response3 = gurlLogObj;
+          if (!os_log_type_enabled(response3, OS_LOG_TYPE_DEBUG))
           {
 LABEL_45:
-            v1 = 0;
+            selfCopy = 0;
 LABEL_55:
 
             goto LABEL_16;
@@ -310,7 +310,7 @@ LABEL_55:
           v17 = v30;
         }
 
-        _os_log_impl(&dword_181A37000, v15, OS_LOG_TYPE_DEBUG, v16, v17, 2u);
+        _os_log_impl(&dword_181A37000, response3, OS_LOG_TYPE_DEBUG, v16, v17, 2u);
         goto LABEL_45;
       }
     }
@@ -338,31 +338,31 @@ LABEL_55:
 
 LABEL_17:
 
-  return v1;
+  return selfCopy;
 }
 
-- (id)errorWithResumeData:(id)a3
+- (id)errorWithResumeData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = v4;
+  dataCopy = data;
+  v5 = dataCopy;
+  createResumeData = dataCopy;
   if (self)
   {
-    v6 = v4;
-    if (v4)
+    createResumeData = dataCopy;
+    if (dataCopy)
     {
-      v6 = v4;
-      if ([v4 code] != -999)
+      createResumeData = dataCopy;
+      if ([dataCopy code] != -999)
       {
-        v7 = [v5 downloadTaskResumeData];
+        downloadTaskResumeData = [v5 downloadTaskResumeData];
 
-        if (v7)
+        if (downloadTaskResumeData)
         {
           goto LABEL_7;
         }
 
-        v6 = [(NWURLSessionDownloadTask *)self createResumeData];
-        [v5 setDownloadTaskResumeData:v6];
+        createResumeData = [(NWURLSessionDownloadTask *)self createResumeData];
+        [v5 setDownloadTaskResumeData:createResumeData];
       }
     }
   }
@@ -372,7 +372,7 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   v5.receiver = self;
   v5.super_class = NWURLSessionDownloadTask;
@@ -383,13 +383,13 @@ LABEL_7:
 
   else
   {
-    return [(objc_class *)a3 isEqual:objc_opt_class()];
+    return [(objc_class *)class isEqual:objc_opt_class()];
   }
 }
 
-+ (BOOL)isSubclassOfClass:(Class)a3
++ (BOOL)isSubclassOfClass:(Class)class
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___NWURLSessionDownloadTask;
   if (objc_msgSendSuper2(&v5, sel_isSubclassOfClass_))
   {
@@ -398,7 +398,7 @@ LABEL_7:
 
   else
   {
-    return [(objc_class *)a3 isEqual:objc_opt_class()];
+    return [(objc_class *)class isEqual:objc_opt_class()];
   }
 }
 

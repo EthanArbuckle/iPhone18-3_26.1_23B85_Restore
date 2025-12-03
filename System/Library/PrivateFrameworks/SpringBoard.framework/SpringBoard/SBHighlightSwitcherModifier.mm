@@ -1,51 +1,51 @@
 @interface SBHighlightSwitcherModifier
-- (BOOL)shouldAccessoryDrawShadowForAppLayout:(id)a3;
-- (SBHighlightSwitcherModifier)initWithLayoutRole:(int64_t)a3 inAppLayout:(id)a4 listensForHighlightEvents:(BOOL)a5;
-- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withCornerRadii:(UIRectCornerRadii)a5;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleHighlightEvent:(id)a3;
+- (BOOL)shouldAccessoryDrawShadowForAppLayout:(id)layout;
+- (SBHighlightSwitcherModifier)initWithLayoutRole:(int64_t)role inAppLayout:(id)layout listensForHighlightEvents:(BOOL)events;
+- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)role inAppLayout:(id)layout withCornerRadii:(UIRectCornerRadii)radii;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleHighlightEvent:(id)event;
 - (id)topMostLayoutElements;
-- (id)topMostLayoutRolesForAppLayout:(id)a3;
+- (id)topMostLayoutRolesForAppLayout:(id)layout;
 @end
 
 @implementation SBHighlightSwitcherModifier
 
-- (SBHighlightSwitcherModifier)initWithLayoutRole:(int64_t)a3 inAppLayout:(id)a4 listensForHighlightEvents:(BOOL)a5
+- (SBHighlightSwitcherModifier)initWithLayoutRole:(int64_t)role inAppLayout:(id)layout listensForHighlightEvents:(BOOL)events
 {
-  v9 = a4;
+  layoutCopy = layout;
   v15.receiver = self;
   v15.super_class = SBHighlightSwitcherModifier;
   v10 = [(SBSwitcherModifier *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    v10->_layoutRole = a3;
-    objc_storeStrong(&v10->_appLayout, a4);
+    v10->_layoutRole = role;
+    objc_storeStrong(&v10->_appLayout, layout);
     v12 = [(SBAppLayout *)v11->_appLayout leafAppLayoutForRole:v11->_layoutRole];
     leafAppLayout = v11->_leafAppLayout;
     v11->_leafAppLayout = v12;
 
-    v11->_listensForHighlightEvents = a5;
+    v11->_listensForHighlightEvents = events;
     v11->_stylesCornerRadii = 1;
   }
 
   return v11;
 }
 
-- (id)handleHighlightEvent:(id)a3
+- (id)handleHighlightEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v12.receiver = self;
   v12.super_class = SBHighlightSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v12 handleHighlightEvent:v4];
+  v5 = [(SBSwitcherModifier *)&v12 handleHighlightEvent:eventCopy];
   if (self->_listensForHighlightEvents)
   {
-    v6 = [v4 appLayout];
-    v7 = [v6 leafAppLayoutForRole:{objc_msgSend(v4, "layoutRole")}];
+    appLayout = [eventCopy appLayout];
+    v7 = [appLayout leafAppLayoutForRole:{objc_msgSend(eventCopy, "layoutRole")}];
 
     if (v7 == self->_leafAppLayout)
     {
-      phase = [v4 phase];
+      phase = [eventCopy phase];
       self->_phase = phase;
       if (!phase)
       {
@@ -66,16 +66,16 @@
   return v5;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v9.receiver = self;
   v9.super_class = SBHighlightSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBHighlightSwitcherModifier *)&v9 animationAttributesForLayoutElement:v4];
+  elementCopy = element;
+  v5 = [(SBHighlightSwitcherModifier *)&v9 animationAttributesForLayoutElement:elementCopy];
   v6 = [v5 mutableCopy];
 
   appLayout = self->_appLayout;
-  if (appLayout == v4 && ([(SBHighlightSwitcherModifier *)self shouldTetherItemsAndAccessoriesInAppLayout:appLayout]& 1) == 0)
+  if (appLayout == elementCopy && ([(SBHighlightSwitcherModifier *)self shouldTetherItemsAndAccessoriesInAppLayout:appLayout]& 1) == 0)
   {
     [v6 setUpdateMode:3];
   }
@@ -83,10 +83,10 @@
   return v6;
 }
 
-- (BOOL)shouldAccessoryDrawShadowForAppLayout:(id)a3
+- (BOOL)shouldAccessoryDrawShadowForAppLayout:(id)layout
 {
-  v4 = a3;
-  if ([v4 isOrContainsAppLayout:self->_appLayout] && !-[SBHighlightSwitcherModifier shouldTetherItemsAndAccessoriesInAppLayout:](self, "shouldTetherItemsAndAccessoriesInAppLayout:", self->_appLayout))
+  layoutCopy = layout;
+  if ([layoutCopy isOrContainsAppLayout:self->_appLayout] && !-[SBHighlightSwitcherModifier shouldTetherItemsAndAccessoriesInAppLayout:](self, "shouldTetherItemsAndAccessoriesInAppLayout:", self->_appLayout))
   {
     v5 = 0;
   }
@@ -95,36 +95,36 @@
   {
     v7.receiver = self;
     v7.super_class = SBHighlightSwitcherModifier;
-    v5 = [(SBHighlightSwitcherModifier *)&v7 shouldAccessoryDrawShadowForAppLayout:v4];
+    v5 = [(SBHighlightSwitcherModifier *)&v7 shouldAccessoryDrawShadowForAppLayout:layoutCopy];
   }
 
   return v5;
 }
 
-- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withCornerRadii:(UIRectCornerRadii)a5
+- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)role inAppLayout:(id)layout withCornerRadii:(UIRectCornerRadii)radii
 {
-  topRight = a5.topRight;
-  bottomRight = a5.bottomRight;
-  bottomLeft = a5.bottomLeft;
-  topLeft = a5.topLeft;
-  v11 = a4;
+  topRight = radii.topRight;
+  bottomRight = radii.bottomRight;
+  bottomLeft = radii.bottomLeft;
+  topLeft = radii.topLeft;
+  layoutCopy = layout;
   v31.receiver = self;
   v31.super_class = SBHighlightSwitcherModifier;
-  [(SBHighlightSwitcherModifier *)&v31 cornerRadiiForLayoutRole:a3 inAppLayout:v11 withCornerRadii:topLeft, bottomLeft, bottomRight, topRight];
+  [(SBHighlightSwitcherModifier *)&v31 cornerRadiiForLayoutRole:role inAppLayout:layoutCopy withCornerRadii:topLeft, bottomLeft, bottomRight, topRight];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  if (self->_stylesCornerRadii && self->_appLayout == v11 && [(SBAppLayout *)v11 environment]== 1)
+  if (self->_stylesCornerRadii && self->_appLayout == layoutCopy && [(SBAppLayout *)layoutCopy environment]== 1)
   {
-    if ([(SBAppLayout *)v11 isSplitConfiguration])
+    if ([(SBAppLayout *)layoutCopy isSplitConfiguration])
     {
-      v20 = [(SBAppLayout *)v11 itemForLayoutRole:4];
+      v20 = [(SBAppLayout *)layoutCopy itemForLayoutRole:4];
 
       if (!v20)
       {
-        v21 = [(SBHighlightSwitcherModifier *)self appLayouts];
-        v22 = [v21 indexOfObject:v11];
+        appLayouts = [(SBHighlightSwitcherModifier *)self appLayouts];
+        v22 = [appLayouts indexOfObject:layoutCopy];
 
         [(SBHighlightSwitcherModifier *)self cornerRadiiForIndex:v22];
         SBRectCornerRadiiForRadius();
@@ -154,24 +154,24 @@
   {
     v9.receiver = self;
     v9.super_class = SBHighlightSwitcherModifier;
-    v3 = [(SBHighlightSwitcherModifier *)&v9 topMostLayoutElements];
-    v4 = v3;
-    if (v3)
+    topMostLayoutElements = [(SBHighlightSwitcherModifier *)&v9 topMostLayoutElements];
+    v4 = topMostLayoutElements;
+    if (topMostLayoutElements)
     {
-      v5 = [v3 mutableCopy];
-      v6 = [v5 indexOfObject:self->_appLayout];
+      topMostLayoutElements2 = [topMostLayoutElements mutableCopy];
+      v6 = [topMostLayoutElements2 indexOfObject:self->_appLayout];
       if (v6 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        [v5 removeObjectAtIndex:v6];
+        [topMostLayoutElements2 removeObjectAtIndex:v6];
       }
 
-      [v5 insertObject:self->_appLayout atIndex:0];
+      [topMostLayoutElements2 insertObject:self->_appLayout atIndex:0];
     }
 
     else
     {
       v10[0] = self->_appLayout;
-      v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
+      topMostLayoutElements2 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
     }
   }
 
@@ -179,22 +179,22 @@
   {
     v8.receiver = self;
     v8.super_class = SBHighlightSwitcherModifier;
-    v5 = [(SBHighlightSwitcherModifier *)&v8 topMostLayoutElements];
+    topMostLayoutElements2 = [(SBHighlightSwitcherModifier *)&v8 topMostLayoutElements];
   }
 
-  return v5;
+  return topMostLayoutElements2;
 }
 
-- (id)topMostLayoutRolesForAppLayout:(id)a3
+- (id)topMostLayoutRolesForAppLayout:(id)layout
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  layoutCopy = layout;
   v11.receiver = self;
   v11.super_class = SBHighlightSwitcherModifier;
-  v5 = [(SBHighlightSwitcherModifier *)&v11 topMostLayoutRolesForAppLayout:v4];
-  if (self->_appLayout == v4)
+  v5 = [(SBHighlightSwitcherModifier *)&v11 topMostLayoutRolesForAppLayout:layoutCopy];
+  if (self->_appLayout == layoutCopy)
   {
-    v6 = [(SBAppLayout *)v4 itemForLayoutRole:4];
+    v6 = [(SBAppLayout *)layoutCopy itemForLayoutRole:4];
 
     if (!v6)
     {

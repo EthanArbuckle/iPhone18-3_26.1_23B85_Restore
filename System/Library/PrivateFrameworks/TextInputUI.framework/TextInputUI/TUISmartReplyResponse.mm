@@ -6,13 +6,13 @@
 - (NSString)threadIdentifier;
 - (TCSmartRepliesResponse)srResponse;
 - (_TtC11TextInputUI21TUISmartReplyResponse)init;
-- (_TtC11TextInputUI21TUISmartReplyResponse)initWithSrResponse:(id)a3 threadIdentifier:(id)a4 type:(int64_t)a5 contentWarning:(int64_t)a6 error:(id)a7 modelInfoString:(id)a8 userFeedbackInputString:(id)a9 responseFromCache:(id)a10 modelPromptTokenCount:(id)a11 modelOutputTokenCount:(id)a12;
+- (_TtC11TextInputUI21TUISmartReplyResponse)initWithSrResponse:(id)response threadIdentifier:(id)identifier type:(int64_t)type contentWarning:(int64_t)warning error:(id)error modelInfoString:(id)string userFeedbackInputString:(id)inputString responseFromCache:(id)self0 modelPromptTokenCount:(id)self1 modelOutputTokenCount:(id)self2;
 - (int64_t)contentWarning;
 - (int64_t)type;
 - (void)printValues;
-- (void)setContentWarning:(int64_t)a3;
-- (void)setThreadIdentifier:(id)a3;
-- (void)setType:(int64_t)a3;
+- (void)setContentWarning:(int64_t)warning;
+- (void)setThreadIdentifier:(id)identifier;
+- (void)setType:(int64_t)type;
 @end
 
 @implementation TUISmartReplyResponse
@@ -40,7 +40,7 @@
   return v2;
 }
 
-- (void)setThreadIdentifier:(id)a3
+- (void)setThreadIdentifier:(id)identifier
 {
   v4 = sub_1900B1610();
   v6 = v5;
@@ -57,11 +57,11 @@
   return *(self + v3);
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
   v5 = OBJC_IVAR____TtC11TextInputUI21TUISmartReplyResponse_type;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = type;
 }
 
 - (int64_t)contentWarning
@@ -71,11 +71,11 @@
   return *(self + v3);
 }
 
-- (void)setContentWarning:(int64_t)a3
+- (void)setContentWarning:(int64_t)warning
 {
   v5 = OBJC_IVAR____TtC11TextInputUI21TUISmartReplyResponse_contentWarning;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = warning;
 }
 
 - (NSNumber)responseFromCache
@@ -99,13 +99,13 @@
   return *(self + v3);
 }
 
-- (_TtC11TextInputUI21TUISmartReplyResponse)initWithSrResponse:(id)a3 threadIdentifier:(id)a4 type:(int64_t)a5 contentWarning:(int64_t)a6 error:(id)a7 modelInfoString:(id)a8 userFeedbackInputString:(id)a9 responseFromCache:(id)a10 modelPromptTokenCount:(id)a11 modelOutputTokenCount:(id)a12
+- (_TtC11TextInputUI21TUISmartReplyResponse)initWithSrResponse:(id)response threadIdentifier:(id)identifier type:(int64_t)type contentWarning:(int64_t)warning error:(id)error modelInfoString:(id)string userFeedbackInputString:(id)inputString responseFromCache:(id)self0 modelPromptTokenCount:(id)self1 modelOutputTokenCount:(id)self2
 {
-  v15 = a9;
+  inputStringCopy = inputString;
   v16 = sub_1900B1610();
   v31 = v17;
   v32 = v16;
-  if (a8)
+  if (string)
   {
     v18 = sub_1900B1610();
     v29 = v19;
@@ -118,10 +118,10 @@
     v30 = 0;
   }
 
-  if (a9)
+  if (inputString)
   {
     v28 = sub_1900B1610();
-    v15 = v20;
+    inputStringCopy = v20;
   }
 
   else
@@ -129,19 +129,19 @@
     v28 = 0;
   }
 
-  v27 = a3;
-  v21 = a7;
-  v22 = a10;
-  v23 = a11;
-  v24 = a12;
-  v25 = sub_18FFFFF78(a3, v32, v31, a5, a6, a7, v30, v29, v28, v15, a10, a11, a12);
+  responseCopy = response;
+  errorCopy = error;
+  cacheCopy = cache;
+  countCopy = count;
+  tokenCountCopy = tokenCount;
+  v25 = sub_18FFFFF78(response, v32, v31, type, warning, error, v30, v29, v28, inputStringCopy, cache, count, tokenCount);
 
   return v25;
 }
 
 - (void)printValues
 {
-  v2 = self;
+  selfCopy = self;
   sub_18FFFF9EC();
 }
 

@@ -1,66 +1,66 @@
 @interface PAMediaConversionServiceResourceURLCollection
-+ (BOOL)getSignatureString:(id *)a3 filenameSummary:(id *)a4 forDictionaryRepresentation:(id)a5;
-+ (PAMediaConversionServiceResourceURLCollection)collectionWithMainResourceURL:(id)a3;
-+ (id)collectionForBookmarkDataDictionaryRepresentation:(id)a3 accessProvider:(id)a4 error:(id *)a5;
-+ (id)filenameSummaryStringForDictionaryRepresentation:(id)a3;
++ (BOOL)getSignatureString:(id *)string filenameSummary:(id *)summary forDictionaryRepresentation:(id)representation;
++ (PAMediaConversionServiceResourceURLCollection)collectionWithMainResourceURL:(id)l;
++ (id)collectionForBookmarkDataDictionaryRepresentation:(id)representation accessProvider:(id)provider error:(id *)error;
++ (id)filenameSummaryStringForDictionaryRepresentation:(id)representation;
 - (BOOL)allURLsAreReadable;
-- (BOOL)containsAllRoles:(id)a3;
-- (BOOL)containsAnyRole:(id)a3;
-- (BOOL)copyURL:(id)a3 forRole:(id)a4 toDirectory:(id)a5 error:(id *)a6;
-- (BOOL)ensureFilesExistWithError:(id *)a3;
+- (BOOL)containsAllRoles:(id)roles;
+- (BOOL)containsAnyRole:(id)role;
+- (BOOL)copyURL:(id)l forRole:(id)role toDirectory:(id)directory error:(id *)error;
+- (BOOL)ensureFilesExistWithError:(id *)error;
 - (BOOL)isBlastDoorAccessRequired;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)removeExistingEmptyFilesWithError:(id *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)removeExistingEmptyFilesWithError:(id *)error;
 - (NSDictionary)blastDoorMainSourceProperties;
 - (NSDictionary)blastDoorVideoComplementProperties;
 - (NSError)blastDoorError;
 - (NSURL)blastDoorSourceURL;
 - (PAMediaConversionServiceResourceURLCollection)init;
-- (id)bookmarkDataDictionaryRepresentationWithError:(id *)a3;
+- (id)bookmarkDataDictionaryRepresentationWithError:(id *)error;
 - (id)fileSizeSummary;
-- (id)filenameExtensionAndPathHashForRole:(id)a3;
-- (id)logMessageSummaryWithFullPath:(BOOL)a3;
-- (id)resourceURLForRole:(id)a3;
-- (id)typeIdentifierForResourceURLWithRole:(id)a3;
-- (id)urlForDebugDumpWithDirectoryName:(id)a3 inExistingParentDirectory:(id)a4 error:(id *)a5;
+- (id)filenameExtensionAndPathHashForRole:(id)role;
+- (id)logMessageSummaryWithFullPath:(BOOL)path;
+- (id)resourceURLForRole:(id)role;
+- (id)typeIdentifierForResourceURLWithRole:(id)role;
+- (id)urlForDebugDumpWithDirectoryName:(id)name inExistingParentDirectory:(id)directory error:(id *)error;
 - (unint64_t)hash;
-- (void)enumerateResourceURLReferences:(id)a3;
-- (void)enumerateResourceURLs:(id)a3;
-- (void)setResourceURL:(id)a3 forRole:(id)a4;
+- (void)enumerateResourceURLReferences:(id)references;
+- (void)enumerateResourceURLs:(id)ls;
+- (void)setResourceURL:(id)l forRole:(id)role;
 @end
 
 @implementation PAMediaConversionServiceResourceURLCollection
 
-- (BOOL)copyURL:(id)a3 forRole:(id)a4 toDirectory:(id)a5 error:(id *)a6
+- (BOOL)copyURL:(id)l forRole:(id)role toDirectory:(id)directory error:(id *)error
 {
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  directoryCopy = directory;
   v10 = +[NSFileManager defaultManager];
   v17 = NSFileOwnerAccountName;
   v18 = @"mobile";
   v11 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-  v12 = [v10 createDirectoryAtURL:v9 withIntermediateDirectories:0 attributes:v11 error:a6];
+  v12 = [v10 createDirectoryAtURL:directoryCopy withIntermediateDirectories:0 attributes:v11 error:error];
 
   v13 = 0;
   if (v12)
   {
-    v14 = [v8 lastPathComponent];
-    v15 = [v9 URLByAppendingPathComponent:v14];
+    lastPathComponent = [lCopy lastPathComponent];
+    v15 = [directoryCopy URLByAppendingPathComponent:lastPathComponent];
 
-    v13 = [v10 copyItemAtURL:v8 toURL:v15 error:a6];
+    v13 = [v10 copyItemAtURL:lCopy toURL:v15 error:error];
   }
 
   return v13;
 }
 
-- (id)urlForDebugDumpWithDirectoryName:(id)a3 inExistingParentDirectory:(id)a4 error:(id *)a5
+- (id)urlForDebugDumpWithDirectoryName:(id)name inExistingParentDirectory:(id)directory error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  nameCopy = name;
+  directoryCopy = directory;
+  v11 = directoryCopy;
+  if (nameCopy)
   {
-    if (v10)
+    if (directoryCopy)
     {
       goto LABEL_3;
     }
@@ -83,8 +83,8 @@
 LABEL_3:
   v12 = +[NSFileManager defaultManager];
   v43 = 0;
-  v13 = [v11 path];
-  v14 = [v12 fileExistsAtPath:v13 isDirectory:&v43];
+  path = [v11 path];
+  v14 = [v12 fileExistsAtPath:path isDirectory:&v43];
 
   if ((v14 & v43 & 1) == 0)
   {
@@ -92,7 +92,7 @@ LABEL_3:
     [v26 handleFailureInMethod:a2 object:self file:@"PAMediaConversionServiceResourceURLCollection.m" lineNumber:546 description:{@"Invalid parameter not satisfying: %@", @"exists && isDirectory"}];
   }
 
-  v15 = [v11 URLByAppendingPathComponent:v9];
+  v15 = [v11 URLByAppendingPathComponent:nameCopy];
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
@@ -112,8 +112,8 @@ LABEL_3:
     goto LABEL_6;
   }
 
-  v21 = [v38[5] domain];
-  if ([v21 isEqualToString:NSCocoaErrorDomain])
+  domain = [v38[5] domain];
+  if ([domain isEqualToString:NSCocoaErrorDomain])
   {
     v22 = [v38[5] code] == 516;
 
@@ -130,16 +130,16 @@ LABEL_6:
       v27[3] = &unk_10003CF28;
       v19 = v15;
       v28 = v19;
-      v29 = self;
+      selfCopy = self;
       v30 = &v37;
       v31 = &v32;
       [(PAMediaConversionServiceResourceURLCollection *)self enumerateResourceURLs:v27];
       if (*(v33 + 24) == 1)
       {
         v20 = 0;
-        if (a5)
+        if (error)
         {
-          *a5 = v38[5];
+          *error = v38[5];
         }
       }
 
@@ -158,9 +158,9 @@ LABEL_6:
   }
 
   v20 = 0;
-  if (a5)
+  if (error)
   {
-    *a5 = v38[5];
+    *error = v38[5];
   }
 
 LABEL_18:
@@ -169,26 +169,26 @@ LABEL_18:
   return v20;
 }
 
-- (void)enumerateResourceURLs:(id)a3
+- (void)enumerateResourceURLs:(id)ls
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100005ABC;
   v5[3] = &unk_10003CF00;
-  v6 = a3;
-  v4 = v6;
+  lsCopy = ls;
+  v4 = lsCopy;
   [(PAMediaConversionServiceResourceURLCollection *)self enumerateResourceURLReferences:v5];
 }
 
-- (void)enumerateResourceURLReferences:(id)a3
+- (void)enumerateResourceURLReferences:(id)references
 {
-  v4 = a3;
+  referencesCopy = references;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(NSMutableDictionary *)self->_urlReferencesByRole allKeys];
-  v6 = [v5 sortedArrayUsingComparator:&stru_10003CED8];
+  allKeys = [(NSMutableDictionary *)self->_urlReferencesByRole allKeys];
+  v6 = [allKeys sortedArrayUsingComparator:&stru_10003CED8];
 
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
@@ -207,7 +207,7 @@ LABEL_3:
       v11 = *(*(&v14 + 1) + 8 * v10);
       v12 = [(NSMutableDictionary *)self->_urlReferencesByRole objectForKeyedSubscript:v11];
       v13 = 0;
-      v4[2](v4, v11, v12, &v13);
+      referencesCopy[2](referencesCopy, v11, v12, &v13);
       LOBYTE(v11) = v13;
 
       if (v11)
@@ -249,7 +249,7 @@ LABEL_3:
   return v3;
 }
 
-- (id)logMessageSummaryWithFullPath:(BOOL)a3
+- (id)logMessageSummaryWithFullPath:(BOOL)path
 {
   v5 = [NSMutableString stringWithString:@"<"];
   +[NSMutableArray array];
@@ -257,7 +257,7 @@ LABEL_3:
   v10 = 3221225472;
   v11 = sub_10000606C;
   v13 = v12 = &unk_10003CE90;
-  v14 = a3;
+  pathCopy = path;
   v6 = v13;
   [(PAMediaConversionServiceResourceURLCollection *)self enumerateResourceURLs:&v9];
   v7 = [v6 componentsJoinedByString:{@"|", v9, v10, v11, v12}];
@@ -288,7 +288,7 @@ LABEL_3:
   return self;
 }
 
-- (BOOL)removeExistingEmptyFilesWithError:(id *)a3
+- (BOOL)removeExistingEmptyFilesWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -312,9 +312,9 @@ LABEL_3:
   v11 = v7;
   [(NSMutableDictionary *)urlReferencesByRole enumerateKeysAndObjectsUsingBlock:v10];
   v8 = *(v15 + 24);
-  if (a3 && *(v15 + 24))
+  if (error && *(v15 + 24))
   {
-    *a3 = v19[5];
+    *error = v19[5];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -323,7 +323,7 @@ LABEL_3:
   return v8 ^ 1;
 }
 
-- (BOOL)ensureFilesExistWithError:(id *)a3
+- (BOOL)ensureFilesExistWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -347,9 +347,9 @@ LABEL_3:
   v13 = &v18;
   [(NSMutableDictionary *)urlReferencesByRole enumerateKeysAndObjectsUsingBlock:v10];
   v8 = *(v15 + 24);
-  if (a3 && *(v15 + 24))
+  if (error && *(v15 + 24))
   {
-    *a3 = v19[5];
+    *error = v19[5];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -358,9 +358,9 @@ LABEL_3:
   return v8 ^ 1;
 }
 
-- (id)filenameExtensionAndPathHashForRole:(id)a3
+- (id)filenameExtensionAndPathHashForRole:(id)role
 {
-  v3 = [(NSMutableDictionary *)self->_urlReferencesByRole objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_urlReferencesByRole objectForKeyedSubscript:role];
   v4 = v3;
   if (v3)
   {
@@ -368,8 +368,8 @@ LABEL_3:
     v10 = 0;
     [v3 getPathHash:&v10 lastPathComponent:&v9];
     v5 = v9;
-    v6 = [v5 pathExtension];
-    v7 = [NSString stringWithFormat:@"%@|%lx", v6, v10];
+    pathExtension = [v5 pathExtension];
+    v7 = [NSString stringWithFormat:@"%@|%lx", pathExtension, v10];
   }
 
   else
@@ -380,7 +380,7 @@ LABEL_3:
   return v7;
 }
 
-- (id)bookmarkDataDictionaryRepresentationWithError:(id *)a3
+- (id)bookmarkDataDictionaryRepresentationWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -406,9 +406,9 @@ LABEL_3:
   if (*(v15 + 24) == 1)
   {
     v8 = 0;
-    if (a3)
+    if (error)
     {
-      *a3 = v19[5];
+      *error = v19[5];
     }
   }
 
@@ -423,16 +423,16 @@ LABEL_3:
   return v8;
 }
 
-- (id)typeIdentifierForResourceURLWithRole:(id)a3
+- (id)typeIdentifierForResourceURLWithRole:(id)role
 {
-  v5 = a3;
-  if (!v5)
+  roleCopy = role;
+  if (!roleCopy)
   {
     v29 = +[NSAssertionHandler currentHandler];
     [v29 handleFailureInMethod:a2 object:self file:@"PAMediaConversionServiceResourceURLCollection.m" lineNumber:305 description:{@"Invalid parameter not satisfying: %@", @"role"}];
   }
 
-  v6 = [(NSMutableDictionary *)self->_urlReferencesByRole objectForKeyedSubscript:v5];
+  v6 = [(NSMutableDictionary *)self->_urlReferencesByRole objectForKeyedSubscript:roleCopy];
   v7 = v6;
   if (!v6)
   {
@@ -455,14 +455,14 @@ LABEL_3:
   v12 = v11;
   if ((v9 & 1) == 0)
   {
-    v14 = [v11 domain];
-    v15 = [v14 isEqualToString:NSCocoaErrorDomain];
+    domain = [v11 domain];
+    v15 = [domain isEqualToString:NSCocoaErrorDomain];
     v13 = v15;
     if (v15)
     {
-      v16 = [v12 code];
+      code = [v12 code];
 
-      if (v16 != 260)
+      if (code != 260)
       {
         v13 = 0;
         if (v10)
@@ -473,12 +473,12 @@ LABEL_3:
         goto LABEL_21;
       }
 
-      v14 = [v8 lastPathComponent];
-      v17 = [v14 pathExtension];
-      v18 = [UTType typeWithFilenameExtension:v17];
-      v19 = [v18 identifier];
+      domain = [v8 lastPathComponent];
+      pathExtension = [domain pathExtension];
+      v18 = [UTType typeWithFilenameExtension:pathExtension];
+      identifier = [v18 identifier];
 
-      v10 = v19;
+      v10 = identifier;
     }
 
     if (v10)
@@ -489,11 +489,11 @@ LABEL_3:
 LABEL_21:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      v28 = [v8 path];
+      path = [v8 path];
       *buf = 138543874;
-      v34 = v5;
+      v34 = roleCopy;
       v35 = 2112;
-      v36 = v28;
+      v36 = path;
       v37 = 2114;
       v38 = v12;
       _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Unable to determine type identifier for URL with role %{public}@ %@: %{public}@", buf, 0x20u);
@@ -540,10 +540,10 @@ LABEL_25:
   return v10;
 }
 
-- (BOOL)containsAnyRole:(id)a3
+- (BOOL)containsAnyRole:(id)role
 {
-  v5 = a3;
-  if (![v5 count])
+  roleCopy = role;
+  if (![roleCopy count])
   {
     v14 = +[NSAssertionHandler currentHandler];
     [v14 handleFailureInMethod:a2 object:self file:@"PAMediaConversionServiceResourceURLCollection.m" lineNumber:294 description:{@"Invalid parameter not satisfying: %@", @"[roles count]"}];
@@ -553,7 +553,7 @@ LABEL_25:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v5;
+  v6 = roleCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -593,10 +593,10 @@ LABEL_13:
   return v12;
 }
 
-- (BOOL)containsAllRoles:(id)a3
+- (BOOL)containsAllRoles:(id)roles
 {
-  v5 = a3;
-  if (![v5 count])
+  rolesCopy = roles;
+  if (![rolesCopy count])
   {
     v14 = +[NSAssertionHandler currentHandler];
     [v14 handleFailureInMethod:a2 object:self file:@"PAMediaConversionServiceResourceURLCollection.m" lineNumber:283 description:{@"Invalid parameter not satisfying: %@", @"[roles count]"}];
@@ -606,7 +606,7 @@ LABEL_13:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v5;
+  v6 = rolesCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -646,24 +646,24 @@ LABEL_13:
   return v12;
 }
 
-- (id)resourceURLForRole:(id)a3
+- (id)resourceURLForRole:(id)role
 {
-  v5 = a3;
-  if (!v5)
+  roleCopy = role;
+  if (!roleCopy)
   {
     v12 = +[NSAssertionHandler currentHandler];
     [v12 handleFailureInMethod:a2 object:self file:@"PAMediaConversionServiceResourceURLCollection.m" lineNumber:266 description:{@"Invalid parameter not satisfying: %@", @"role"}];
   }
 
-  v6 = [(NSMutableDictionary *)self->_urlReferencesByRole objectForKeyedSubscript:v5];
+  v6 = [(NSMutableDictionary *)self->_urlReferencesByRole objectForKeyedSubscript:roleCopy];
   v7 = [v6 url];
 
-  v8 = [(PAMediaConversionServiceResourceURLCollection *)self accessProviderDelegate];
+  accessProviderDelegate = [(PAMediaConversionServiceResourceURLCollection *)self accessProviderDelegate];
 
-  if (v8)
+  if (accessProviderDelegate)
   {
-    v9 = [(PAMediaConversionServiceResourceURLCollection *)self accessProviderDelegate];
-    v10 = [v9 validateAccessForURL:v7 role:v5];
+    accessProviderDelegate2 = [(PAMediaConversionServiceResourceURLCollection *)self accessProviderDelegate];
+    v10 = [accessProviderDelegate2 validateAccessForURL:v7 role:roleCopy];
 
     v7 = v10;
   }
@@ -671,13 +671,13 @@ LABEL_13:
   return v7;
 }
 
-- (void)setResourceURL:(id)a3 forRole:(id)a4
+- (void)setResourceURL:(id)l forRole:(id)role
 {
-  v13 = a3;
-  v7 = a4;
-  if (v13)
+  lCopy = l;
+  roleCopy = role;
+  if (lCopy)
   {
-    if (v7)
+    if (roleCopy)
     {
       goto LABEL_3;
     }
@@ -688,7 +688,7 @@ LABEL_13:
     v10 = +[NSAssertionHandler currentHandler];
     [v10 handleFailureInMethod:a2 object:self file:@"PAMediaConversionServiceResourceURLCollection.m" lineNumber:251 description:{@"Invalid parameter not satisfying: %@", @"url"}];
 
-    if (v7)
+    if (roleCopy)
     {
       goto LABEL_3;
     }
@@ -698,16 +698,16 @@ LABEL_13:
   [v11 handleFailureInMethod:a2 object:self file:@"PAMediaConversionServiceResourceURLCollection.m" lineNumber:252 description:{@"Invalid parameter not satisfying: %@", @"role"}];
 
 LABEL_3:
-  v8 = [(NSMutableDictionary *)self->_urlReferencesByRole objectForKeyedSubscript:v7];
+  v8 = [(NSMutableDictionary *)self->_urlReferencesByRole objectForKeyedSubscript:roleCopy];
 
   if (v8)
   {
     v12 = +[NSAssertionHandler currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PAMediaConversionServiceResourceURLCollection.m" lineNumber:253 description:{@"This resource URL collection already has a URL for role '%@'", v7}];
+    [v12 handleFailureInMethod:a2 object:self file:@"PAMediaConversionServiceResourceURLCollection.m" lineNumber:253 description:{@"This resource URL collection already has a URL for role '%@'", roleCopy}];
   }
 
-  v9 = [PAMediaConversionServiceResourceURLReference referenceWithURL:v13];
-  [(NSMutableDictionary *)self->_urlReferencesByRole setObject:v9 forKeyedSubscript:v7];
+  v9 = [PAMediaConversionServiceResourceURLReference referenceWithURL:lCopy];
+  [(NSMutableDictionary *)self->_urlReferencesByRole setObject:v9 forKeyedSubscript:roleCopy];
 }
 
 - (unint64_t)hash
@@ -727,11 +727,11 @@ LABEL_3:
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   urlReferencesByRole = self->_urlReferencesByRole;
-  v4 = [a3 urlReferencesByRole];
-  LOBYTE(urlReferencesByRole) = [(NSMutableDictionary *)urlReferencesByRole isEqual:v4];
+  urlReferencesByRole = [equal urlReferencesByRole];
+  LOBYTE(urlReferencesByRole) = [(NSMutableDictionary *)urlReferencesByRole isEqual:urlReferencesByRole];
 
   return urlReferencesByRole;
 }
@@ -751,22 +751,22 @@ LABEL_3:
   return v2;
 }
 
-+ (id)filenameSummaryStringForDictionaryRepresentation:(id)a3
++ (id)filenameSummaryStringForDictionaryRepresentation:(id)representation
 {
-  v3 = [a3 allValues];
-  v4 = [v3 valueForKey:@"lastPathComponent"];
+  allValues = [representation allValues];
+  v4 = [allValues valueForKey:@"lastPathComponent"];
   v5 = [v4 componentsJoinedByString:@"|"];
 
   return v5;
 }
 
-+ (BOOL)getSignatureString:(id *)a3 filenameSummary:(id *)a4 forDictionaryRepresentation:(id)a5
++ (BOOL)getSignatureString:(id *)string filenameSummary:(id *)summary forDictionaryRepresentation:(id)representation
 {
-  v9 = a5;
-  if (!v9)
+  representationCopy = representation;
+  if (!representationCopy)
   {
     v25 = +[NSAssertionHandler currentHandler];
-    [v25 handleFailureInMethod:a2 object:a1 file:@"PAMediaConversionServiceResourceURLCollection.m" lineNumber:200 description:{@"Invalid parameter not satisfying: %@", @"bookmarkDictionary"}];
+    [v25 handleFailureInMethod:a2 object:self file:@"PAMediaConversionServiceResourceURLCollection.m" lineNumber:200 description:{@"Invalid parameter not satisfying: %@", @"bookmarkDictionary"}];
   }
 
   v10 = +[NSMutableArray array];
@@ -774,15 +774,15 @@ LABEL_3:
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v11 = [v9 allKeys];
-  v12 = [v11 sortedArrayUsingComparator:&stru_10003CDF0];
+  allKeys = [representationCopy allKeys];
+  v12 = [allKeys sortedArrayUsingComparator:&stru_10003CDF0];
 
   v13 = [v12 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v13)
   {
     v14 = v13;
-    v26 = a3;
-    v27 = a4;
+    stringCopy = string;
+    summaryCopy = summary;
     v15 = 0;
     v16 = *v32;
     v28 = 1;
@@ -798,8 +798,8 @@ LABEL_3:
         v18 = *(*(&v31 + 1) + 8 * i);
         v29 = 0;
         v30 = 0;
-        v19 = v9;
-        v20 = [v9 objectForKeyedSubscript:v18];
+        v19 = representationCopy;
+        v20 = [representationCopy objectForKeyedSubscript:v18];
         v21 = [PAMediaConversionServiceResourceURLReference getPathHash:&v30 lastPathComponent:&v29 forDictionaryRepresentation:v20];
         v22 = v29;
 
@@ -814,7 +814,7 @@ LABEL_3:
           v28 = 0;
         }
 
-        v9 = v19;
+        representationCopy = v19;
       }
 
       v14 = [v12 countByEnumeratingWithState:&v31 objects:v35 count:16];
@@ -822,8 +822,8 @@ LABEL_3:
 
     while (v14);
 
-    a3 = v26;
-    a4 = v27;
+    string = stringCopy;
+    summary = summaryCopy;
     if ((v28 & 1) == 0)
     {
       v23 = 0;
@@ -837,14 +837,14 @@ LABEL_3:
     v15 = 0;
   }
 
-  if (a3)
+  if (string)
   {
-    *a3 = [NSString stringWithFormat:@"%lx", v15];
+    *string = [NSString stringWithFormat:@"%lx", v15];
   }
 
-  if (a4)
+  if (summary)
   {
-    *a4 = [v10 componentsJoinedByString:@"|"];
+    *summary = [v10 componentsJoinedByString:@"|"];
   }
 
   v23 = 1;
@@ -853,14 +853,14 @@ LABEL_21:
   return v23;
 }
 
-+ (id)collectionForBookmarkDataDictionaryRepresentation:(id)a3 accessProvider:(id)a4 error:(id *)a5
++ (id)collectionForBookmarkDataDictionaryRepresentation:(id)representation accessProvider:(id)provider error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  representationCopy = representation;
+  providerCopy = provider;
+  if (!representationCopy)
   {
     v14 = +[NSAssertionHandler currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"PAMediaConversionServiceResourceURLCollection.m" lineNumber:169 description:{@"Invalid parameter not satisfying: %@", @"bookmarkDictionary"}];
+    [v14 handleFailureInMethod:a2 object:self file:@"PAMediaConversionServiceResourceURLCollection.m" lineNumber:169 description:{@"Invalid parameter not satisfying: %@", @"bookmarkDictionary"}];
   }
 
   v23 = 0;
@@ -881,21 +881,21 @@ LABEL_21:
   v11 = objc_opt_new();
   v16 = v11;
   v18 = &v19;
-  [v9 enumerateKeysAndObjectsUsingBlock:v15];
+  [representationCopy enumerateKeysAndObjectsUsingBlock:v15];
   if (*(v20 + 24) == 1)
   {
     v12 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = v24[5];
+      *error = v24[5];
     }
   }
 
   else
   {
-    if (v10)
+    if (providerCopy)
     {
-      [v11 setAccessProviderDelegate:v10];
+      [v11 setAccessProviderDelegate:providerCopy];
     }
 
     v12 = v11;
@@ -907,29 +907,29 @@ LABEL_21:
   return v12;
 }
 
-+ (PAMediaConversionServiceResourceURLCollection)collectionWithMainResourceURL:(id)a3
++ (PAMediaConversionServiceResourceURLCollection)collectionWithMainResourceURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = objc_opt_new();
-  [v4 setResourceURL:v3 forRole:@"PAMediaConversionResourceRoleMainResource"];
+  [v4 setResourceURL:lCopy forRole:@"PAMediaConversionResourceRoleMainResource"];
 
   return v4;
 }
 
 - (NSError)blastDoorError
 {
-  v2 = [(PAMediaConversionServiceResourceURLCollection *)self accessProviderDelegate];
-  v3 = [v2 error];
+  accessProviderDelegate = [(PAMediaConversionServiceResourceURLCollection *)self accessProviderDelegate];
+  error = [accessProviderDelegate error];
 
-  return v3;
+  return error;
 }
 
 - (NSURL)blastDoorSourceURL
 {
-  v2 = [(PAMediaConversionServiceResourceURLCollection *)self accessProviderDelegate];
-  v3 = [v2 blastDoorSourceURL];
+  accessProviderDelegate = [(PAMediaConversionServiceResourceURLCollection *)self accessProviderDelegate];
+  blastDoorSourceURL = [accessProviderDelegate blastDoorSourceURL];
 
-  return v3;
+  return blastDoorSourceURL;
 }
 
 - (NSDictionary)blastDoorVideoComplementProperties
@@ -937,26 +937,26 @@ LABEL_21:
   v3 = [(NSMutableDictionary *)self->_urlReferencesByRole objectForKeyedSubscript:@"PAMediaConversionResourceRoleVideoComplement"];
   v4 = [v3 url];
 
-  v5 = [(PAMediaConversionServiceResourceURLCollection *)self accessProviderDelegate];
-  v6 = [v5 propertiesForVideoComplementURL:v4];
+  accessProviderDelegate = [(PAMediaConversionServiceResourceURLCollection *)self accessProviderDelegate];
+  v6 = [accessProviderDelegate propertiesForVideoComplementURL:v4];
 
   return v6;
 }
 
 - (NSDictionary)blastDoorMainSourceProperties
 {
-  v2 = [(PAMediaConversionServiceResourceURLCollection *)self accessProviderDelegate];
-  v3 = [v2 blastDoorMainSourceProperties];
+  accessProviderDelegate = [(PAMediaConversionServiceResourceURLCollection *)self accessProviderDelegate];
+  blastDoorMainSourceProperties = [accessProviderDelegate blastDoorMainSourceProperties];
 
-  return v3;
+  return blastDoorMainSourceProperties;
 }
 
 - (BOOL)isBlastDoorAccessRequired
 {
-  v2 = [(PAMediaConversionServiceResourceURLCollection *)self accessProviderDelegate];
-  v3 = [v2 isBlastDoorAccessRequired];
+  accessProviderDelegate = [(PAMediaConversionServiceResourceURLCollection *)self accessProviderDelegate];
+  isBlastDoorAccessRequired = [accessProviderDelegate isBlastDoorAccessRequired];
 
-  return v3;
+  return isBlastDoorAccessRequired;
 }
 
 @end

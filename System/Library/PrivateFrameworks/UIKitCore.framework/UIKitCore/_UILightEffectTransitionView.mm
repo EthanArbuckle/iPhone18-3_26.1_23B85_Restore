@@ -1,23 +1,23 @@
 @interface _UILightEffectTransitionView
-- (_TtC5UIKit28_UILightEffectTransitionView)initWithCoder:(id)a3;
-- (_TtC5UIKit28_UILightEffectTransitionView)initWithFrame:(CGRect)a3;
-- (void)_didRemoveSubview:(id)a3;
+- (_TtC5UIKit28_UILightEffectTransitionView)initWithCoder:(id)coder;
+- (_TtC5UIKit28_UILightEffectTransitionView)initWithFrame:(CGRect)frame;
+- (void)_didRemoveSubview:(id)subview;
 - (void)layoutSubviews;
 @end
 
 @implementation _UILightEffectTransitionView
 
-- (void)_didRemoveSubview:(id)a3
+- (void)_didRemoveSubview:(id)subview
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for _UILightEffectTransitionView();
   v4 = v7.receiver;
-  v5 = a3;
-  [(UIView *)&v7 _didRemoveSubview:v5];
-  if (v5)
+  subviewCopy = subview;
+  [(UIView *)&v7 _didRemoveSubview:subviewCopy];
+  if (subviewCopy)
   {
     swift_beginAccess();
-    v6 = sub_188DD15C0(v5);
+    v6 = sub_188DD15C0(subviewCopy);
     swift_endAccess();
   }
 
@@ -29,11 +29,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_188DEE4D0();
 }
 
-- (_TtC5UIKit28_UILightEffectTransitionView)initWithCoder:(id)a3
+- (_TtC5UIKit28_UILightEffectTransitionView)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC5UIKit28_UILightEffectTransitionView_activationTransition;
   *v3 = 0u;
@@ -48,7 +48,7 @@
   return result;
 }
 
-- (_TtC5UIKit28_UILightEffectTransitionView)initWithFrame:(CGRect)a3
+- (_TtC5UIKit28_UILightEffectTransitionView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

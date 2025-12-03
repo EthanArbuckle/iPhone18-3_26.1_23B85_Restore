@@ -1,17 +1,17 @@
 @interface ML3CompoundPredicate
-+ (id)predicateMatchingPredicates:(id)a3;
-- (BOOL)containsPropertyPredicate:(id)a3 matchingValue:(id)a4 usingComparison:(int)a5;
-- (BOOL)isDynamicForEntityClass:(Class)a3;
-- (BOOL)isEqual:(id)a3;
-- (ML3CompoundPredicate)initWithCoder:(id)a3;
-- (ML3CompoundPredicate)initWithPredicates:(id)a3;
-- (id)SQLJoinClausesForClass:(Class)a3;
++ (id)predicateMatchingPredicates:(id)predicates;
+- (BOOL)containsPropertyPredicate:(id)predicate matchingValue:(id)value usingComparison:(int)comparison;
+- (BOOL)isDynamicForEntityClass:(Class)class;
+- (BOOL)isEqual:(id)equal;
+- (ML3CompoundPredicate)initWithCoder:(id)coder;
+- (ML3CompoundPredicate)initWithPredicates:(id)predicates;
+- (id)SQLJoinClausesForClass:(Class)class;
 - (id)databaseStatementParameters;
 - (id)description;
 - (id)spotlightPredicate;
 - (unint64_t)hash;
-- (void)appendSQLToMutableString:(id)a3 entityClass:(Class)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendSQLToMutableString:(id)string entityClass:(Class)class;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ML3CompoundPredicate
@@ -38,10 +38,10 @@
           objc_enumerationMutation(v2);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * i) spotlightPredicate];
-        if (v7)
+        spotlightPredicate = [*(*(&v10 + 1) + 8 * i) spotlightPredicate];
+        if (spotlightPredicate)
         {
-          v8 = v7;
+          v8 = spotlightPredicate;
           goto LABEL_11;
         }
       }
@@ -85,8 +85,8 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) databaseStatementParameters];
-        [v3 addObjectsFromArray:v9];
+        databaseStatementParameters = [*(*(&v11 + 1) + 8 * i) databaseStatementParameters];
+        [v3 addObjectsFromArray:databaseStatementParameters];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -98,12 +98,12 @@ LABEL_11:
   return v3;
 }
 
-- (BOOL)containsPropertyPredicate:(id)a3 matchingValue:(id)a4 usingComparison:(int)a5
+- (BOOL)containsPropertyPredicate:(id)predicate matchingValue:(id)value usingComparison:(int)comparison
 {
-  v5 = *&a5;
+  v5 = *&comparison;
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  predicateCopy = predicate;
+  valueCopy = value;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -123,7 +123,7 @@ LABEL_11:
           objc_enumerationMutation(v10);
         }
 
-        if ([*(*(&v17 + 1) + 8 * i) containsPropertyPredicate:v8 matchingValue:v9 usingComparison:{v5, v17}])
+        if ([*(*(&v17 + 1) + 8 * i) containsPropertyPredicate:predicateCopy matchingValue:valueCopy usingComparison:{v5, v17}])
         {
           v15 = 1;
           goto LABEL_11;
@@ -146,7 +146,7 @@ LABEL_11:
   return v15;
 }
 
-- (BOOL)isDynamicForEntityClass:(Class)a3
+- (BOOL)isDynamicForEntityClass:(Class)class
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
@@ -168,7 +168,7 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) isDynamicForEntityClass:{a3, v11}])
+        if ([*(*(&v11 + 1) + 8 * i) isDynamicForEntityClass:{class, v11}])
         {
           v9 = 1;
           goto LABEL_11;
@@ -191,13 +191,13 @@ LABEL_11:
   return v9;
 }
 
-- (void)appendSQLToMutableString:(id)a3 entityClass:(Class)a4
+- (void)appendSQLToMutableString:(id)string entityClass:(Class)class
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  stringCopy = string;
   if ([(NSArray *)self->_predicates count])
   {
-    objc_msgSend(v6, "appendString:", @"(");
+    objc_msgSend(stringCopy, "appendString:", @"(");
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
@@ -222,11 +222,11 @@ LABEL_11:
           v13 = *(*(&v16 + 1) + 8 * v12);
           if (v10)
           {
-            v14 = [(ML3CompoundPredicate *)self compoundOperatorJoiner];
-            [v6 appendString:v14];
+            compoundOperatorJoiner = [(ML3CompoundPredicate *)self compoundOperatorJoiner];
+            [stringCopy appendString:compoundOperatorJoiner];
           }
 
-          [v13 appendSQLToMutableString:v6 entityClass:{a4, v16}];
+          [v13 appendSQLToMutableString:stringCopy entityClass:{class, v16}];
           ++v12;
           v10 = 1;
         }
@@ -246,10 +246,10 @@ LABEL_11:
     v15 = @"1";
   }
 
-  [v6 appendString:{v15, v16}];
+  [stringCopy appendString:{v15, v16}];
 }
 
-- (id)SQLJoinClausesForClass:(Class)a3
+- (id)SQLJoinClausesForClass:(Class)class
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
@@ -261,7 +261,7 @@ LABEL_11:
   if (v5)
   {
     v6 = v5;
-    v7 = 0;
+    orderedSet = 0;
     v8 = *v13;
     do
     {
@@ -272,15 +272,15 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) SQLJoinClausesForClass:{a3, v12}];
+        v10 = [*(*(&v12 + 1) + 8 * i) SQLJoinClausesForClass:{class, v12}];
         if ([v10 count])
         {
-          if (!v7)
+          if (!orderedSet)
           {
-            v7 = [MEMORY[0x277CBEB40] orderedSet];
+            orderedSet = [MEMORY[0x277CBEB40] orderedSet];
           }
 
-          [v7 unionOrderedSet:v10];
+          [orderedSet unionOrderedSet:v10];
         }
       }
 
@@ -292,10 +292,10 @@ LABEL_11:
 
   else
   {
-    v7 = 0;
+    orderedSet = 0;
   }
 
-  return v7;
+  return orderedSet;
 }
 
 - (id)description
@@ -304,8 +304,8 @@ LABEL_11:
   v8.receiver = self;
   v8.super_class = ML3CompoundPredicate;
   v4 = [(ML3CompoundPredicate *)&v8 description];
-  v5 = [(ML3CompoundPredicate *)self predicates];
-  v6 = [v3 stringWithFormat:@"%@(%@)", v4, v5];
+  predicates = [(ML3CompoundPredicate *)self predicates];
+  v6 = [v3 stringWithFormat:@"%@(%@)", v4, predicates];
 
   return v6;
 }
@@ -315,16 +315,16 @@ LABEL_11:
   v7.receiver = self;
   v7.super_class = ML3CompoundPredicate;
   v3 = [(ML3Predicate *)&v7 hash];
-  v4 = [(ML3CompoundPredicate *)self predicates];
-  v5 = [v4 hash];
+  predicates = [(ML3CompoundPredicate *)self predicates];
+  v5 = [predicates hash];
 
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -333,18 +333,18 @@ LABEL_11:
   {
     v9.receiver = self;
     v9.super_class = ML3CompoundPredicate;
-    if ([(ML3Predicate *)&v9 isEqual:v4])
+    if ([(ML3Predicate *)&v9 isEqual:equalCopy])
     {
-      v5 = [(ML3CompoundPredicate *)self predicates];
-      v6 = [(ML3CompoundPredicate *)v4 predicates];
-      if (v5 == v6)
+      predicates = [(ML3CompoundPredicate *)self predicates];
+      predicates2 = [(ML3CompoundPredicate *)equalCopy predicates];
+      if (predicates == predicates2)
       {
         v7 = 1;
       }
 
       else
       {
-        v7 = [v5 isEqual:v6];
+        v7 = [predicates isEqual:predicates2];
       }
     }
 
@@ -357,60 +357,60 @@ LABEL_11:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ML3CompoundPredicate;
-  v4 = a3;
-  [(ML3Predicate *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(ML3Predicate *)&v6 encodeWithCoder:coderCopy];
   v5 = [(ML3CompoundPredicate *)self predicates:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"predicates"];
+  [coderCopy encodeObject:v5 forKey:@"predicates"];
 }
 
-- (ML3CompoundPredicate)initWithCoder:(id)a3
+- (ML3CompoundPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = ML3CompoundPredicate;
-  v5 = [(ML3Predicate *)&v11 initWithCoder:v4];
+  v5 = [(ML3Predicate *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"predicates"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"predicates"];
     [(ML3CompoundPredicate *)v5 setPredicates:v9];
   }
 
   return v5;
 }
 
-- (ML3CompoundPredicate)initWithPredicates:(id)a3
+- (ML3CompoundPredicate)initWithPredicates:(id)predicates
 {
-  v4 = a3;
+  predicatesCopy = predicates;
   v8.receiver = self;
   v8.super_class = ML3CompoundPredicate;
   v5 = [(ML3CompoundPredicate *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ML3CompoundPredicate *)v5 setPredicates:v4];
+    [(ML3CompoundPredicate *)v5 setPredicates:predicatesCopy];
   }
 
   return v6;
 }
 
-+ (id)predicateMatchingPredicates:(id)a3
++ (id)predicateMatchingPredicates:(id)predicates
 {
-  v5 = a3;
+  predicatesCopy = predicates;
   v6 = objc_opt_class();
   if (v6 == objc_opt_class())
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"ML3Predicate.m" lineNumber:1072 description:@"ML3CompoundPredicate is an abstract class; use ML3AllCompoundPredicate or ML3AnyCompoundPredicate"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3Predicate.m" lineNumber:1072 description:@"ML3CompoundPredicate is an abstract class; use ML3AllCompoundPredicate or ML3AnyCompoundPredicate"];
   }
 
-  v7 = [[v6 alloc] initWithPredicates:v5];
+  v7 = [[v6 alloc] initWithPredicates:predicatesCopy];
 
   return v7;
 }

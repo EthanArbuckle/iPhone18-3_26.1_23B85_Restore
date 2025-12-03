@@ -1,30 +1,30 @@
 @interface THFlowLayoutAnchor
 - (CGPoint)deltaFromOriginalOffset;
 - (CGPoint)originalAbsoluteOffset;
-- (THFlowLayoutAnchor)initWithPageController:(id)a3 absoluteOffset:(CGPoint)a4;
+- (THFlowLayoutAnchor)initWithPageController:(id)controller absoluteOffset:(CGPoint)offset;
 - (void)dealloc;
 @end
 
 @implementation THFlowLayoutAnchor
 
-- (THFlowLayoutAnchor)initWithPageController:(id)a3 absoluteOffset:(CGPoint)a4
+- (THFlowLayoutAnchor)initWithPageController:(id)controller absoluteOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v16.receiver = self;
   v16.super_class = THFlowLayoutAnchor;
   v7 = [(THFlowLayoutAnchor *)&v16 init];
   if (v7)
   {
-    v7->_pageController = a3;
+    v7->_pageController = controller;
     v7->_originalAbsoluteOffset.x = x;
     v7->_originalAbsoluteOffset.y = y;
-    [a3 i_rectForSectionLayout];
+    [controller i_rectForSectionLayout];
     TSDSubtractPoints();
     v9 = v8;
-    v10 = [a3 bodyIndexClosestToPoint:?];
+    v10 = [controller bodyIndexClosestToPoint:?];
     v7->_bodyIndex = v10;
-    [a3 bodyTopAtIndex:v10];
+    [controller bodyTopAtIndex:v10];
     v7->_offsetFromBodyTop = v9 - v11;
     [(THFlowLayoutAnchor *)v7 deltaFromOriginalOffset];
     if (v13 != CGPointZero.x || v12 != CGPointZero.y)

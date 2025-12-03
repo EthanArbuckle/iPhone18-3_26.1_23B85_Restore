@@ -1,21 +1,21 @@
 @interface PSUsageBundleCategory
-+ (id)categoryNamed:(id)a3 withIdentifier:(id)a4 forUsageBundleApp:(id)a5;
++ (id)categoryNamed:(id)named withIdentifier:(id)identifier forUsageBundleApp:(id)app;
 - (PSUsageBundleApp)usageBundleApp;
 - (id)description;
 @end
 
 @implementation PSUsageBundleCategory
 
-+ (id)categoryNamed:(id)a3 withIdentifier:(id)a4 forUsageBundleApp:(id)a5
++ (id)categoryNamed:(id)named withIdentifier:(id)identifier forUsageBundleApp:(id)app
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  appCopy = app;
+  identifierCopy = identifier;
+  namedCopy = named;
   v10 = objc_alloc_init(PSUsageBundleCategory);
-  [(PSUsageBundleCategory *)v10 setIdentifier:v8];
+  [(PSUsageBundleCategory *)v10 setIdentifier:identifierCopy];
 
-  [(PSUsageBundleCategory *)v10 setName:v9];
-  [(PSUsageBundleCategory *)v10 setUsageBundleApp:v7];
+  [(PSUsageBundleCategory *)v10 setName:namedCopy];
+  [(PSUsageBundleCategory *)v10 setUsageBundleApp:appCopy];
 
   return v10;
 }
@@ -23,11 +23,11 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PSUsageBundleCategory *)self usageBundleApp];
-  v5 = [v4 name];
-  v6 = [(PSUsageBundleCategory *)self identifier];
-  v7 = [(PSUsageBundleCategory *)self name];
-  v8 = [v3 stringWithFormat:@"%@: %@ (%@)", v5, v6, v7];
+  usageBundleApp = [(PSUsageBundleCategory *)self usageBundleApp];
+  name = [usageBundleApp name];
+  identifier = [(PSUsageBundleCategory *)self identifier];
+  name2 = [(PSUsageBundleCategory *)self name];
+  v8 = [v3 stringWithFormat:@"%@: %@ (%@)", name, identifier, name2];
 
   return v8;
 }

@@ -1,13 +1,13 @@
 @interface FMPlusButtonTableViewCell
-- (_TtC6FindMy25FMPlusButtonTableViewCell)initWithCoder:(id)a3;
-- (_TtC6FindMy25FMPlusButtonTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC6FindMy25FMPlusButtonTableViewCell)initWithCoder:(id)coder;
+- (_TtC6FindMy25FMPlusButtonTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation FMPlusButtonTableViewCell
 
-- (_TtC6FindMy25FMPlusButtonTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC6FindMy25FMPlusButtonTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -21,7 +21,7 @@
   return sub_100097610(v4, v5);
 }
 
-- (_TtC6FindMy25FMPlusButtonTableViewCell)initWithCoder:(id)a3
+- (_TtC6FindMy25FMPlusButtonTableViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC6FindMy25FMPlusButtonTableViewCell_addButton;
   if (qword_1006AEB28 != -1)

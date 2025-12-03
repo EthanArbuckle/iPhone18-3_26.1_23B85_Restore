@@ -1,22 +1,22 @@
 @interface NSPersistentStoreMap
-- (NSPersistentStoreMap)initWithStore:(id)a3;
-- (id)_updatedMetadataWithSeed:(int)a3 includeVersioning:;
-- (id)dataForKey:(id)a3;
-- (id)handleFetchRequest:(id)a3;
-- (id)retainedObjectIDsForRelationship:(id)a3 forObjectID:(id)a4;
+- (NSPersistentStoreMap)initWithStore:(id)store;
+- (id)_updatedMetadataWithSeed:(int)seed includeVersioning:;
+- (id)dataForKey:(id)key;
+- (id)handleFetchRequest:(id)request;
+- (id)retainedObjectIDsForRelationship:(id)relationship forObjectID:(id)d;
 - (uint64_t)_setMetadata:(uint64_t)result;
 - (uint64_t)databaseUUID;
 - (unint64_t)nextPK64;
-- (void)addObject:(id)a3 objectIDMap:(id)a4;
+- (void)addObject:(id)object objectIDMap:(id)map;
 - (void)dealloc;
-- (void)removeObject:(id)a3 objectIDMap:(id)a4;
+- (void)removeObject:(id)object objectIDMap:(id)map;
 - (void)setMetadata:(void *)result;
-- (void)updateObject:(id)a3 objectIDMap:(id)a4;
+- (void)updateObject:(id)object objectIDMap:(id)map;
 @end
 
 @implementation NSPersistentStoreMap
 
-- (NSPersistentStoreMap)initWithStore:(id)a3
+- (NSPersistentStoreMap)initWithStore:(id)store
 {
   v10.receiver = self;
   v10.super_class = NSPersistentStoreMap;
@@ -24,20 +24,20 @@
   v5 = v4;
   if (v4)
   {
-    v4->_store = a3;
+    v4->_store = store;
     v6 = objc_alloc_init(MEMORY[0x1E696AAC8]);
     v7 = +[NSStoreMappingGenerator defaultMappingGenerator];
     if ([(NSPersistentStoreMap *)v5 configurationName])
     {
-      v8 = [(NSPersistentStoreMap *)v5 configurationName];
+      configurationName = [(NSPersistentStoreMap *)v5 configurationName];
     }
 
     else
     {
-      v8 = @"PF_DEFAULT_CONFIGURATION_NAME";
+      configurationName = @"PF_DEFAULT_CONFIGURATION_NAME";
     }
 
-    v5->_mappings = -[NSStoreMappingGenerator mappingsDictForConfigurationWithName:inModel:](v7, v8, [objc_msgSend(a3 "_persistentStoreCoordinator")]);
+    v5->_mappings = -[NSStoreMappingGenerator mappingsDictForConfigurationWithName:inModel:](v7, configurationName, [objc_msgSend(store "_persistentStoreCoordinator")]);
     [v6 drain];
   }
 
@@ -57,42 +57,42 @@
   [(NSPersistentStoreMap *)&v3 dealloc];
 }
 
-- (id)dataForKey:(id)a3
+- (id)dataForKey:(id)key
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
   return 0;
 }
 
-- (void)addObject:(id)a3 objectIDMap:(id)a4
+- (void)addObject:(id)object objectIDMap:(id)map
 {
   objc_opt_class();
 
   NSRequestConcreteImplementation();
 }
 
-- (void)removeObject:(id)a3 objectIDMap:(id)a4
+- (void)removeObject:(id)object objectIDMap:(id)map
 {
   objc_opt_class();
 
   NSRequestConcreteImplementation();
 }
 
-- (void)updateObject:(id)a3 objectIDMap:(id)a4
+- (void)updateObject:(id)object objectIDMap:(id)map
 {
   objc_opt_class();
 
   NSRequestConcreteImplementation();
 }
 
-- (id)handleFetchRequest:(id)a3
+- (id)handleFetchRequest:(id)request
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
   return 0;
 }
 
-- (id)retainedObjectIDsForRelationship:(id)a3 forObjectID:(id)a4
+- (id)retainedObjectIDsForRelationship:(id)relationship forObjectID:(id)d
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
@@ -124,7 +124,7 @@
   return result;
 }
 
-- (id)_updatedMetadataWithSeed:(int)a3 includeVersioning:
+- (id)_updatedMetadataWithSeed:(int)seed includeVersioning:
 {
   if (!result)
   {
@@ -138,13 +138,13 @@
     v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:5];
   }
 
-  v7 = [*(v5 + 1) type];
-  if (!v7)
+  type = [*(v5 + 1) type];
+  if (!type)
   {
-    v7 = [a2 objectForKey:@"NSStoreType"];
+    type = [a2 objectForKey:@"NSStoreType"];
   }
 
-  [v6 setObject:v7 forKey:@"NSStoreType"];
+  [v6 setObject:type forKey:@"NSStoreType"];
   v8 = [a2 objectForKey:@"NSStoreUUID"];
   if (v8)
   {
@@ -166,7 +166,7 @@ LABEL_7:
   }
 
   [v6 setObject:v9 forKey:@"NSStoreUUID"];
-  if (a3)
+  if (seed)
   {
     PFBundleVersion = +[_PFRoutines _getPFBundleVersionNumber];
     [v6 setObject:PFBundleVersion forKey:0x1EF3FD408];
@@ -176,16 +176,16 @@ LABEL_7:
       [v6 setObject:PFBundleVersion forKey:0x1EF3FD428];
     }
 
-    v12 = [*(v5 + 1) _persistentStoreCoordinator];
-    if (v12)
+    _persistentStoreCoordinator = [*(v5 + 1) _persistentStoreCoordinator];
+    if (_persistentStoreCoordinator)
     {
-      v13 = [v12 managedObjectModel];
-      v14 = [v13 entityVersionHashesByName];
+      managedObjectModel = [_persistentStoreCoordinator managedObjectModel];
+      entityVersionHashesByName = [managedObjectModel entityVersionHashesByName];
       [v6 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", 3), 0x1EF3FD3E8}];
-      [v6 setObject:v14 forKey:@"NSStoreModelVersionHashes"];
-      if (v13)
+      [v6 setObject:entityVersionHashesByName forKey:@"NSStoreModelVersionHashes"];
+      if (managedObjectModel)
       {
-        v15 = [objc_msgSend(v13 "versionIdentifiers")];
+        v15 = [objc_msgSend(managedObjectModel "versionIdentifiers")];
       }
 
       else
@@ -194,8 +194,8 @@ LABEL_7:
       }
 
       [v6 setObject:v15 forKey:@"NSStoreModelVersionIdentifiers"];
-      [v6 setObject:-[NSManagedObjectModel _entityVersionHashesDigestFrom:](v13 forKey:{v14), 0x1EF3FCE28}];
-      v16 = [v13 versionChecksum];
+      [v6 setObject:-[NSManagedObjectModel _entityVersionHashesDigestFrom:](managedObjectModel forKey:{entityVersionHashesByName), 0x1EF3FCE28}];
+      versionChecksum = [managedObjectModel versionChecksum];
       v17 = v6;
     }
 
@@ -226,11 +226,11 @@ LABEL_7:
         goto LABEL_27;
       }
 
-      v16 = [*(v5 + 3) objectForKey:@"NSStoreModelVersionChecksumKey"];
+      versionChecksum = [*(v5 + 3) objectForKey:@"NSStoreModelVersionChecksumKey"];
       v17 = v6;
     }
 
-    [v17 setObject:v16 forKey:@"NSStoreModelVersionChecksumKey"];
+    [v17 setObject:versionChecksum forKey:@"NSStoreModelVersionChecksumKey"];
   }
 
 LABEL_27:

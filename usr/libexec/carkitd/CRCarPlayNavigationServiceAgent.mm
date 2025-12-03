@@ -1,31 +1,31 @@
 @interface CRCarPlayNavigationServiceAgent
 - (BOOL)_work_queue_doWeHaveOwners;
-- (BOOL)_work_queue_navigationOwnerExistsForIdentifier:(id)a3;
+- (BOOL)_work_queue_navigationOwnerExistsForIdentifier:(id)identifier;
 - (BOOL)_work_queue_updateOwnershipToiOSIfNecessary;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (CRCarPlayNavigationServiceAgent)initWithSessionStatus:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (CRCarPlayNavigationServiceAgent)initWithSessionStatus:(id)status;
 - (id)_work_queue_activeNavigationIdentifiers;
-- (id)_work_queue_ownersForIdentifier:(id)a3 pid:(int)a4;
-- (void)_navigationOwnershipChangedFromCar:(id)a3;
-- (void)_removeConnection:(id)a3;
-- (void)_work_queue_addNavigationIdentifer:(id)a3 accNavRole:(unint64_t)a4 forConnection:(id)a5;
+- (id)_work_queue_ownersForIdentifier:(id)identifier pid:(int)pid;
+- (void)_navigationOwnershipChangedFromCar:(id)car;
+- (void)_removeConnection:(id)connection;
+- (void)_work_queue_addNavigationIdentifer:(id)identifer accNavRole:(unint64_t)role forConnection:(id)connection;
 - (void)_work_queue_navigationOwnershipChangedFromCar;
-- (void)_work_queue_removeNavigationOwner:(id)a3;
-- (void)_work_queue_removeNavigationOwnerForConnection:(id)a3;
-- (void)_work_queue_removeOwnerWithIdentifier:(id)a3 forConnection:(id)a4;
-- (void)_work_queue_updateActiveComponents:(id)a3 forOwner:(id)a4;
+- (void)_work_queue_removeNavigationOwner:(id)owner;
+- (void)_work_queue_removeNavigationOwnerForConnection:(id)connection;
+- (void)_work_queue_removeOwnerWithIdentifier:(id)identifier forConnection:(id)connection;
+- (void)_work_queue_updateActiveComponents:(id)components forOwner:(id)owner;
 - (void)_work_queue_updateNavigationStateForRemoval;
-- (void)addNavigationOwnerWithIdentifier:(id)a3 accNavRole:(unint64_t)a4;
+- (void)addNavigationOwnerWithIdentifier:(id)identifier accNavRole:(unint64_t)role;
 - (void)beginObserving;
 - (void)dealloc;
-- (void)fetchNavigationIdentifierWithReply:(id)a3;
-- (void)fetchNavigationIdentifiersWithReply:(id)a3;
-- (void)fetchNavigationOwnerWithReply:(id)a3;
-- (void)removeNavigationOwnerWithIdentifier:(id)a3;
-- (void)sendInfo:(id)a3 toComponentUID:(id)a4;
-- (void)session:(id)a3 didUpdateActiveComponents:(id)a4;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
+- (void)fetchNavigationIdentifierWithReply:(id)reply;
+- (void)fetchNavigationIdentifiersWithReply:(id)reply;
+- (void)fetchNavigationOwnerWithReply:(id)reply;
+- (void)removeNavigationOwnerWithIdentifier:(id)identifier;
+- (void)sendInfo:(id)info toComponentUID:(id)d;
+- (void)session:(id)session didUpdateActiveComponents:(id)components;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
 @end
 
 @implementation CRCarPlayNavigationServiceAgent
@@ -35,37 +35,37 @@
   v3 = +[NSXPCConnection currentConnection];
   if (v3)
   {
-    v4 = [(CRCarPlayNavigationServiceAgent *)self workQueue];
+    workQueue = [(CRCarPlayNavigationServiceAgent *)self workQueue];
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_100002C70;
     v5[3] = &unk_1000DD580;
     v5[4] = self;
     v6 = v3;
-    dispatch_async(v4, v5);
+    dispatch_async(workQueue, v5);
   }
 }
 
 - (id)_work_queue_activeNavigationIdentifiers
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(CRCarPlayNavigationServiceAgent *)self owners];
+  owners = [(CRCarPlayNavigationServiceAgent *)self owners];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100044FB0;
   v8[3] = &unk_1000DEBC8;
   v9 = v3;
   v5 = v3;
-  [v4 enumerateObjectsUsingBlock:v8];
+  [owners enumerateObjectsUsingBlock:v8];
 
   v6 = [v5 copy];
 
   return v6;
 }
 
-- (CRCarPlayNavigationServiceAgent)initWithSessionStatus:(id)a3
+- (CRCarPlayNavigationServiceAgent)initWithSessionStatus:(id)status
 {
-  v5 = a3;
+  statusCopy = status;
   v22.receiver = self;
   v22.super_class = CRCarPlayNavigationServiceAgent;
   v6 = [(CRCarPlayNavigationServiceAgent *)&v22 init];
@@ -77,7 +77,7 @@
     workQueue = v7->_workQueue;
     v7->_workQueue = v8;
 
-    objc_storeStrong(&v7->_sessionStatus, a3);
+    objc_storeStrong(&v7->_sessionStatus, status);
     v10 = objc_alloc_init(NSMutableOrderedSet);
     owners = v7->_owners;
     v7->_owners = v10;
@@ -114,8 +114,8 @@
     [v18 addObserver:v7 selector:"_navigationOwnershipChangedFromCar:" name:CARSessionOwnsTurnByTurnNavigationChangedNotification object:0];
 
     [(CARSessionStatus *)v7->_sessionStatus addSessionObserver:v7];
-    v19 = [(CARSessionStatus *)v7->_sessionStatus currentSession];
-    [(CRCarPlayNavigationServiceAgent *)v7 sessionDidConnect:v19];
+    currentSession = [(CARSessionStatus *)v7->_sessionStatus currentSession];
+    [(CRCarPlayNavigationServiceAgent *)v7 sessionDidConnect:currentSession];
 
     v20 = sub_100002A68(1uLL);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -138,49 +138,49 @@
   [(CRCarPlayNavigationServiceAgent *)&v4 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 serviceName];
-  v9 = [v8 isEqualToString:@"com.apple.carkit.navowners.service"];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  serviceName = [connectionCopy serviceName];
+  v9 = [serviceName isEqualToString:@"com.apple.carkit.navowners.service"];
 
   if (v9)
   {
     v10 = CRCarPlayNavigationOwnersServiceInterface();
-    [v7 setExportedInterface:v10];
+    [connectionCopy setExportedInterface:v10];
 
     v11 = CRCarPlayNavigationOwnerClientInterface();
-    [v7 setRemoteObjectInterface:v11];
+    [connectionCopy setRemoteObjectInterface:v11];
 
     v12 = sub_100002A68(1uLL);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v7;
+      *(&buf + 4) = connectionCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Receiving navigation ownership connection: %{public}@", &buf, 0xCu);
     }
 
 LABEL_14:
 
-    [v7 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     objc_initWeak(&buf, self);
-    objc_initWeak(&location, v7);
+    objc_initWeak(&location, connectionCopy);
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
     v32[2] = sub_100042F24;
     v32[3] = &unk_1000DEAE0;
     objc_copyWeak(&v33, &location);
     objc_copyWeak(&v34, &buf);
-    [v7 setInterruptionHandler:v32];
+    [connectionCopy setInterruptionHandler:v32];
     v26 = _NSConcreteStackBlock;
     v27 = 3221225472;
     v28 = sub_100042FA0;
     v29 = &unk_1000DEAE0;
     objc_copyWeak(&v30, &location);
     objc_copyWeak(&v31, &buf);
-    [v7 setInvalidationHandler:&v26];
-    [v7 resume];
+    [connectionCopy setInvalidationHandler:&v26];
+    [connectionCopy resume];
     objc_destroyWeak(&v31);
     objc_destroyWeak(&v30);
     objc_destroyWeak(&v34);
@@ -191,8 +191,8 @@ LABEL_14:
     goto LABEL_18;
   }
 
-  v13 = [v7 serviceName];
-  v14 = [v13 isEqualToString:@"com.apple.carkit.navigation.service"];
+  serviceName2 = [connectionCopy serviceName];
+  v14 = [serviceName2 isEqualToString:@"com.apple.carkit.navigation.service"];
 
   v15 = sub_100002A68(1uLL);
   v16 = v15;
@@ -201,7 +201,7 @@ LABEL_14:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v7;
+      *(&buf + 4) = connectionCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Receiving accessory navigation connection: %{public}@", &buf, 0xCu);
     }
 
@@ -231,7 +231,7 @@ LABEL_14:
     }
 
     v20 = v17();
-    [v7 setExportedInterface:v20];
+    [connectionCopy setExportedInterface:v20];
 
     location = 0;
     p_location = &location;
@@ -261,7 +261,7 @@ LABEL_19:
     }
 
     v12 = v21();
-    [v7 setRemoteObjectInterface:v12];
+    [connectionCopy setRemoteObjectInterface:v12];
     goto LABEL_14;
   }
 
@@ -276,62 +276,62 @@ LABEL_18:
   return v24;
 }
 
-- (void)_removeConnection:(id)a3
+- (void)_removeConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = sub_100002A68(1uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = v4;
+    v12 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Removing owners requested for connection: %{public}@", buf, 0xCu);
   }
 
-  v6 = [(CRCarPlayNavigationServiceAgent *)self workQueue];
+  workQueue = [(CRCarPlayNavigationServiceAgent *)self workQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100043150;
   v8[3] = &unk_1000DD580;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = connectionCopy;
+  selfCopy = self;
+  v7 = connectionCopy;
+  dispatch_async(workQueue, v8);
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
-  v4 = a3;
-  if (v4)
+  connectCopy = connect;
+  if (connectCopy)
   {
     v5 = sub_100002A68(1uLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v9 = v4;
+      v9 = connectCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "connected session: %{public}@", buf, 0xCu);
     }
 
     os_unfair_lock_lock(&self->_sessionLock);
-    [(CRCarPlayNavigationServiceAgent *)self setLock_session:v4];
+    [(CRCarPlayNavigationServiceAgent *)self setLock_session:connectCopy];
     os_unfair_lock_unlock(&self->_sessionLock);
-    v6 = [(CRCarPlayNavigationServiceAgent *)self workQueue];
+    workQueue = [(CRCarPlayNavigationServiceAgent *)self workQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100043360;
     block[3] = &unk_1000DD480;
     block[4] = self;
-    dispatch_async(v6, block);
+    dispatch_async(workQueue, block);
   }
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = sub_100002A68(1uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = disconnectCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "disconnected session: %{public}@", &v6, 0xCu);
   }
 
@@ -340,7 +340,7 @@ LABEL_18:
   os_unfair_lock_unlock(&self->_sessionLock);
 }
 
-- (void)_navigationOwnershipChangedFromCar:(id)a3
+- (void)_navigationOwnershipChangedFromCar:(id)car
 {
   v4 = sub_100002A68(1uLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -349,114 +349,114 @@ LABEL_18:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Notified ownership changed by car", buf, 2u);
   }
 
-  v5 = [(CRCarPlayNavigationServiceAgent *)self workQueue];
+  workQueue = [(CRCarPlayNavigationServiceAgent *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100043514;
   block[3] = &unk_1000DD480;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(workQueue, block);
 }
 
-- (void)addNavigationOwnerWithIdentifier:(id)a3 accNavRole:(unint64_t)a4
+- (void)addNavigationOwnerWithIdentifier:(id)identifier accNavRole:(unint64_t)role
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = +[NSXPCConnection currentConnection];
-  v8 = [(CRCarPlayNavigationServiceAgent *)self workQueue];
+  workQueue = [(CRCarPlayNavigationServiceAgent *)self workQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100043610;
   v11[3] = &unk_1000DEB08;
   v11[4] = self;
-  v12 = v6;
+  v12 = identifierCopy;
   v13 = v7;
-  v14 = a4;
+  roleCopy = role;
   v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v10 = identifierCopy;
+  dispatch_async(workQueue, v11);
 }
 
-- (void)removeNavigationOwnerWithIdentifier:(id)a3
+- (void)removeNavigationOwnerWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[NSXPCConnection currentConnection];
-  v6 = [(CRCarPlayNavigationServiceAgent *)self workQueue];
+  workQueue = [(CRCarPlayNavigationServiceAgent *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100043700;
   block[3] = &unk_1000DD6F0;
   block[4] = self;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = v5;
   v7 = v5;
-  v8 = v4;
-  dispatch_async(v6, block);
+  v8 = identifierCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)fetchNavigationOwnerWithReply:(id)a3
+- (void)fetchNavigationOwnerWithReply:(id)reply
 {
-  v6 = a3;
+  replyCopy = reply;
   os_unfair_lock_lock(&self->_sessionLock);
-  v4 = [(CRCarPlayNavigationServiceAgent *)self lock_session];
-  v5 = [v4 navigationOwner];
+  lock_session = [(CRCarPlayNavigationServiceAgent *)self lock_session];
+  navigationOwner = [lock_session navigationOwner];
 
   os_unfair_lock_unlock(&self->_sessionLock);
-  v6[2](v6, v5);
+  replyCopy[2](replyCopy, navigationOwner);
 }
 
-- (void)fetchNavigationIdentifierWithReply:(id)a3
+- (void)fetchNavigationIdentifierWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   os_unfair_lock_lock(&self->_sessionLock);
-  v5 = [(CRCarPlayNavigationServiceAgent *)self lock_session];
-  v6 = [v5 navigationOwner];
+  lock_session = [(CRCarPlayNavigationServiceAgent *)self lock_session];
+  navigationOwner = [lock_session navigationOwner];
 
   os_unfair_lock_unlock(&self->_sessionLock);
-  if (v6 == 1)
+  if (navigationOwner == 1)
   {
-    v7 = [(CRCarPlayNavigationServiceAgent *)self workQueue];
+    workQueue = [(CRCarPlayNavigationServiceAgent *)self workQueue];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100043884;
     v8[3] = &unk_1000DD988;
     v8[4] = self;
-    v9 = v4;
-    dispatch_async(v7, v8);
+    v9 = replyCopy;
+    dispatch_async(workQueue, v8);
   }
 }
 
-- (void)fetchNavigationIdentifiersWithReply:(id)a3
+- (void)fetchNavigationIdentifiersWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(CRCarPlayNavigationServiceAgent *)self workQueue];
+  replyCopy = reply;
+  workQueue = [(CRCarPlayNavigationServiceAgent *)self workQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000439C0;
   v7[3] = &unk_1000DD988;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = replyCopy;
+  v6 = replyCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (id)_work_queue_ownersForIdentifier:(id)a3 pid:(int)a4
+- (id)_work_queue_ownersForIdentifier:(id)identifier pid:(int)pid
 {
-  v6 = a3;
-  v7 = [(CRCarPlayNavigationServiceAgent *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  identifierCopy = identifier;
+  workQueue = [(CRCarPlayNavigationServiceAgent *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v8 = objc_opt_new();
-  v9 = [(CRCarPlayNavigationServiceAgent *)self owners];
+  owners = [(CRCarPlayNavigationServiceAgent *)self owners];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100043B28;
   v15[3] = &unk_1000DEB30;
-  v18 = a4;
-  v16 = v6;
+  pidCopy = pid;
+  v16 = identifierCopy;
   v10 = v8;
   v17 = v10;
-  v11 = v6;
-  [v9 enumerateObjectsUsingBlock:v15];
+  v11 = identifierCopy;
+  [owners enumerateObjectsUsingBlock:v15];
 
   v12 = v17;
   v13 = v10;
@@ -464,16 +464,16 @@ LABEL_18:
   return v10;
 }
 
-- (void)_work_queue_addNavigationIdentifer:(id)a3 accNavRole:(unint64_t)a4 forConnection:(id)a5
+- (void)_work_queue_addNavigationIdentifer:(id)identifer accNavRole:(unint64_t)role forConnection:(id)connection
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(CRCarPlayNavigationServiceAgent *)self workQueue];
-  dispatch_assert_queue_V2(v10);
+  identiferCopy = identifer;
+  connectionCopy = connection;
+  workQueue = [(CRCarPlayNavigationServiceAgent *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (v8 && v9)
+  if (identiferCopy && connectionCopy)
   {
-    v11 = -[CRCarPlayNavigationServiceAgent _work_queue_ownersForIdentifier:pid:](self, "_work_queue_ownersForIdentifier:pid:", v8, [v9 processIdentifier]);
+    v11 = -[CRCarPlayNavigationServiceAgent _work_queue_ownersForIdentifier:pid:](self, "_work_queue_ownersForIdentifier:pid:", identiferCopy, [connectionCopy processIdentifier]);
     v12 = [v11 count];
 
     if (v12)
@@ -481,20 +481,20 @@ LABEL_18:
       v13 = sub_100002A68(1uLL);
       if (os_log_type_enabled(&v13->super, OS_LOG_TYPE_ERROR))
       {
-        sub_100086DE0(v8, v9);
+        sub_100086DE0(identiferCopy, connectionCopy);
       }
     }
 
     else
     {
       v13 = objc_alloc_init(_CRAppStateNavigationOwner);
-      [(_CRAppStateNavigationOwner *)v13 setIdentifier:v8];
-      [(_CRAppStateNavigationOwner *)v13 setConnection:v9];
-      [(_CRAppStateNavigationOwner *)v13 setAccNavRole:a4];
+      [(_CRAppStateNavigationOwner *)v13 setIdentifier:identiferCopy];
+      [(_CRAppStateNavigationOwner *)v13 setConnection:connectionCopy];
+      [(_CRAppStateNavigationOwner *)v13 setAccNavRole:role];
       v14 = sub_100002A68(1uLL);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = sub_100042438(a4);
+        v15 = sub_100042438(role);
         *buf = 138543618;
         v41 = v13;
         v42 = 2114;
@@ -502,66 +502,66 @@ LABEL_18:
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[addNavigationIdentifer] Adding navigation owner: %{public}@ accNavRole: %{public}@", buf, 0x16u);
       }
 
-      v16 = [(CRCarPlayNavigationServiceAgent *)self owners];
-      [v16 addObject:v13];
+      owners = [(CRCarPlayNavigationServiceAgent *)self owners];
+      [owners addObject:v13];
 
       if (![(CRCarPlayNavigationServiceAgent *)self _work_queue_updateOwnershipToiOSIfNecessary])
       {
         os_unfair_lock_lock(&self->_sessionLock);
-        v17 = [(CRCarPlayNavigationServiceAgent *)self lock_session];
-        v18 = [v17 navigationOwner];
+        lock_session = [(CRCarPlayNavigationServiceAgent *)self lock_session];
+        navigationOwner = [lock_session navigationOwner];
 
         os_unfair_lock_unlock(&self->_sessionLock);
         v19 = sub_100002A68(1uLL);
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [(_CRAppStateNavigationOwner *)v13 identifier];
+          identifier = [(_CRAppStateNavigationOwner *)v13 identifier];
           v21 = @"None";
-          if (v18 == 1)
+          if (navigationOwner == 1)
           {
             v21 = @"iOS";
           }
 
-          if (v18 == 2)
+          if (navigationOwner == 2)
           {
             v21 = @"Car";
           }
 
           v22 = v21;
           *buf = 138543618;
-          v41 = v20;
+          v41 = identifier;
           v42 = 2114;
           v43 = v22;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "[addNavigationIdentifer] Informing navigation owner: %{public}@ ownership is %{public}@", buf, 0x16u);
         }
 
-        v23 = [v9 remoteObjectProxy];
-        [v23 navigationOwnershipChangedTo:v18];
+        remoteObjectProxy = [connectionCopy remoteObjectProxy];
+        [remoteObjectProxy navigationOwnershipChangedTo:navigationOwner];
       }
 
-      v24 = [(CRCarPlayNavigationServiceAgent *)self owners];
-      v25 = [v24 count];
+      owners2 = [(CRCarPlayNavigationServiceAgent *)self owners];
+      v25 = [owners2 count];
 
       if (v25 > [(CRCarPlayNavigationServiceAgent *)self maximumConcurrentNavigationOwners])
       {
         [(CRCarPlayNavigationServiceAgent *)self setMaximumConcurrentNavigationOwners:v25];
       }
 
-      v26 = [(_CRAppStateNavigationOwner *)v13 accNavRole];
+      accNavRole = [(_CRAppStateNavigationOwner *)v13 accNavRole];
       v27 = sub_100002A68(1uLL);
       v28 = os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT);
-      if (v26)
+      if (accNavRole)
       {
         if (v28)
         {
           *buf = 138543362;
-          v41 = v8;
+          v41 = identiferCopy;
           _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "[addNavigationIdentifer] Updating new owner with components: %{public}@", buf, 0xCu);
         }
 
-        v29 = [(CRCarPlayNavigationServiceAgent *)self accNavProvider];
-        v30 = [v29 activeComponents];
-        [(CRCarPlayNavigationServiceAgent *)self _work_queue_updateActiveComponents:v30 forOwner:v13];
+        accNavProvider = [(CRCarPlayNavigationServiceAgent *)self accNavProvider];
+        activeComponents = [accNavProvider activeComponents];
+        [(CRCarPlayNavigationServiceAgent *)self _work_queue_updateActiveComponents:activeComponents forOwner:v13];
       }
 
       else
@@ -569,44 +569,44 @@ LABEL_18:
         if (v28)
         {
           *buf = 138543362;
-          v41 = v8;
+          v41 = identiferCopy;
           _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "[addNavigationIdentifer] Sending app identifier as no ACCNav support after adding: %{public}@", buf, 0xCu);
         }
 
-        v29 = [(CRCarPlayNavigationServiceAgent *)self accNavProvider];
-        v30 = [(_CRAppStateNavigationOwner *)v13 identifier];
-        [v29 sendNoSupportForAppIdentifier:v30];
+        accNavProvider = [(CRCarPlayNavigationServiceAgent *)self accNavProvider];
+        activeComponents = [(_CRAppStateNavigationOwner *)v13 identifier];
+        [accNavProvider sendNoSupportForAppIdentifier:activeComponents];
       }
 
       v31 = sub_100002A68(1uLL);
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v41 = v8;
+        v41 = identiferCopy;
         _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "[addNavigationIdentifer] Informing navigation observers of new arrival: %{public}@", buf, 0xCu);
       }
 
       v32 = +[NSDistributedNotificationCenter defaultCenter];
-      [v32 postNotificationName:CARNavigationOwnerRequestedNotificationName object:v8];
+      [v32 postNotificationName:CARNavigationOwnerRequestedNotificationName object:identiferCopy];
 
-      v33 = [(CRCarPlayNavigationServiceAgent *)self _work_queue_activeNavigationIdentifiers];
+      _work_queue_activeNavigationIdentifiers = [(CRCarPlayNavigationServiceAgent *)self _work_queue_activeNavigationIdentifiers];
       v34 = sub_100002A68(1uLL);
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v41 = v33;
+        v41 = _work_queue_activeNavigationIdentifiers;
         _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "[addNavigationIdentifer] Active navigation owners after addition: %{public}@", buf, 0xCu);
       }
 
-      v35 = [(CRCarPlayNavigationServiceAgent *)self observers];
+      observers = [(CRCarPlayNavigationServiceAgent *)self observers];
       v37[0] = _NSConcreteStackBlock;
       v37[1] = 3221225472;
       v37[2] = sub_10004417C;
       v37[3] = &unk_1000DEB58;
-      v38 = v33;
-      v39 = self;
-      v36 = v33;
-      [v35 enumerateObjectsUsingBlock:v37];
+      v38 = _work_queue_activeNavigationIdentifiers;
+      selfCopy = self;
+      v36 = _work_queue_activeNavigationIdentifiers;
+      [observers enumerateObjectsUsingBlock:v37];
     }
   }
 
@@ -615,30 +615,30 @@ LABEL_18:
     v13 = sub_100002A68(1uLL);
     if (os_log_type_enabled(&v13->super, OS_LOG_TYPE_ERROR))
     {
-      sub_100086D58(v8, v9);
+      sub_100086D58(identiferCopy, connectionCopy);
     }
   }
 }
 
-- (void)_work_queue_removeOwnerWithIdentifier:(id)a3 forConnection:(id)a4
+- (void)_work_queue_removeOwnerWithIdentifier:(id)identifier forConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRCarPlayNavigationServiceAgent *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  identifierCopy = identifier;
+  connectionCopy = connection;
+  workQueue = [(CRCarPlayNavigationServiceAgent *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (v6 && v7)
+  if (identifierCopy && connectionCopy)
   {
-    v9 = -[CRCarPlayNavigationServiceAgent _work_queue_ownersForIdentifier:pid:](self, "_work_queue_ownersForIdentifier:pid:", v6, [v7 processIdentifier]);
+    v9 = -[CRCarPlayNavigationServiceAgent _work_queue_ownersForIdentifier:pid:](self, "_work_queue_ownersForIdentifier:pid:", identifierCopy, [connectionCopy processIdentifier]);
     v10 = sub_100002A68(1uLL);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218498;
       v22 = [v9 count];
       v23 = 2114;
-      v24 = v6;
+      v24 = identifierCopy;
       v25 = 1024;
-      v26 = [v7 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[removeNavigationOwner] Removing %lu owners for %{public}@(%d)", buf, 0x1Cu);
     }
 
@@ -684,20 +684,20 @@ LABEL_18:
   }
 }
 
-- (void)_work_queue_removeNavigationOwnerForConnection:(id)a3
+- (void)_work_queue_removeNavigationOwnerForConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(CRCarPlayNavigationServiceAgent *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  connectionCopy = connection;
+  workQueue = [(CRCarPlayNavigationServiceAgent *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = -[CRCarPlayNavigationServiceAgent _work_queue_ownersForIdentifier:pid:](self, "_work_queue_ownersForIdentifier:pid:", 0, [v4 processIdentifier]);
+  v6 = -[CRCarPlayNavigationServiceAgent _work_queue_ownersForIdentifier:pid:](self, "_work_queue_ownersForIdentifier:pid:", 0, [connectionCopy processIdentifier]);
   v7 = sub_100002A68(1uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
     v19 = [v6 count];
     v20 = 2114;
-    v21 = v4;
+    v21 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[removeNavigationOwner] Removing %lu owners for %{public}@", buf, 0x16u);
   }
 
@@ -733,107 +733,107 @@ LABEL_18:
   }
 }
 
-- (void)_work_queue_removeNavigationOwner:(id)a3
+- (void)_work_queue_removeNavigationOwner:(id)owner
 {
-  v4 = a3;
-  v5 = [(CRCarPlayNavigationServiceAgent *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  ownerCopy = owner;
+  workQueue = [(CRCarPlayNavigationServiceAgent *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = sub_100002A68(1uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v28 = v4;
+    v28 = ownerCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[removeNavigationOwner] Removing navigation owner: %{public}@", buf, 0xCu);
   }
 
-  v7 = [(CRCarPlayNavigationServiceAgent *)self owners];
-  [v7 removeObject:v4];
+  owners = [(CRCarPlayNavigationServiceAgent *)self owners];
+  [owners removeObject:ownerCopy];
 
   [(CRCarPlayNavigationServiceAgent *)self _work_queue_updateNavigationStateForRemoval];
   v8 = sub_100002A68(1uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v4 identifier];
+    identifier = [ownerCopy identifier];
     *buf = 138543362;
-    v28 = v9;
+    v28 = identifier;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[removeNavigationOwner] Informing navigation observers of released owner: %{public}@", buf, 0xCu);
   }
 
   v10 = +[NSDistributedNotificationCenter defaultCenter];
   v11 = CARNavigationOwnerReleasedNotificationName;
-  v12 = [v4 identifier];
-  [v10 postNotificationName:v11 object:v12];
+  identifier2 = [ownerCopy identifier];
+  [v10 postNotificationName:v11 object:identifier2];
 
-  v13 = [(CRCarPlayNavigationServiceAgent *)self accNavProvider];
-  [v13 resetActiveComponents];
+  accNavProvider = [(CRCarPlayNavigationServiceAgent *)self accNavProvider];
+  [accNavProvider resetActiveComponents];
 
-  v14 = [(CRCarPlayNavigationServiceAgent *)self owners];
-  v15 = [v14 lastObject];
+  owners2 = [(CRCarPlayNavigationServiceAgent *)self owners];
+  lastObject = [owners2 lastObject];
 
-  if ([v15 accNavRole])
+  if ([lastObject accNavRole])
   {
     v16 = sub_100002A68(1uLL);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v15 identifier];
+      identifier3 = [lastObject identifier];
       *buf = 138543362;
-      v28 = v17;
+      v28 = identifier3;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[removeNavigationOwner] Updating new owner with components: %{public}@", buf, 0xCu);
     }
 
-    v18 = [(CRCarPlayNavigationServiceAgent *)self accNavProvider];
-    v19 = [v18 activeComponents];
-    [(CRCarPlayNavigationServiceAgent *)self _work_queue_updateActiveComponents:v19 forOwner:v15];
+    accNavProvider2 = [(CRCarPlayNavigationServiceAgent *)self accNavProvider];
+    activeComponents = [accNavProvider2 activeComponents];
+    [(CRCarPlayNavigationServiceAgent *)self _work_queue_updateActiveComponents:activeComponents forOwner:lastObject];
   }
 
   else
   {
-    v20 = [v15 identifier];
+    identifier4 = [lastObject identifier];
 
-    if (!v20)
+    if (!identifier4)
     {
       goto LABEL_12;
     }
 
-    v18 = [(CRCarPlayNavigationServiceAgent *)self accNavProvider];
-    v19 = [v15 identifier];
-    [v18 sendNoSupportForAppIdentifier:v19];
+    accNavProvider2 = [(CRCarPlayNavigationServiceAgent *)self accNavProvider];
+    activeComponents = [lastObject identifier];
+    [accNavProvider2 sendNoSupportForAppIdentifier:activeComponents];
   }
 
 LABEL_12:
-  v21 = [(CRCarPlayNavigationServiceAgent *)self _work_queue_activeNavigationIdentifiers];
+  _work_queue_activeNavigationIdentifiers = [(CRCarPlayNavigationServiceAgent *)self _work_queue_activeNavigationIdentifiers];
   v22 = sub_100002A68(1uLL);
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v28 = v21;
+    v28 = _work_queue_activeNavigationIdentifiers;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "[removeNavigationOwner] Active navigation owners after removal: %{public}@", buf, 0xCu);
   }
 
-  v23 = [(CRCarPlayNavigationServiceAgent *)self observers];
+  observers = [(CRCarPlayNavigationServiceAgent *)self observers];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_100044AE0;
   v25[3] = &unk_1000DEB80;
-  v26 = v21;
-  v24 = v21;
-  [v23 enumerateObjectsUsingBlock:v25];
+  v26 = _work_queue_activeNavigationIdentifiers;
+  v24 = _work_queue_activeNavigationIdentifiers;
+  [observers enumerateObjectsUsingBlock:v25];
 }
 
 - (void)_work_queue_navigationOwnershipChangedFromCar
 {
   os_unfair_lock_lock(&self->_sessionLock);
-  v3 = [(CRCarPlayNavigationServiceAgent *)self lock_session];
-  v4 = [v3 navigationOwner];
+  lock_session = [(CRCarPlayNavigationServiceAgent *)self lock_session];
+  navigationOwner = [lock_session navigationOwner];
 
   os_unfair_lock_unlock(&self->_sessionLock);
-  if (v4 == 1)
+  if (navigationOwner == 1)
   {
     v6 = @"iOS";
   }
 
-  else if (v4 == 2)
+  else if (navigationOwner == 2)
   {
     v5 = +[NSDistributedNotificationCenter defaultCenter];
     [v5 postNotificationName:CARNavigationOwnerRequestedNotificationName object:@"OEM"];
@@ -854,24 +854,24 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[navigationOwnershipChangedFromCar] Received notification indicating ownership changed to %{public}@", buf, 0xCu);
   }
 
-  v8 = [(CRCarPlayNavigationServiceAgent *)self owners];
+  owners = [(CRCarPlayNavigationServiceAgent *)self owners];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100044D58;
   v9[3] = &unk_1000DEBA0;
-  v9[4] = v4;
-  [v8 enumerateObjectsUsingBlock:v9];
+  v9[4] = navigationOwner;
+  [owners enumerateObjectsUsingBlock:v9];
 }
 
-- (BOOL)_work_queue_navigationOwnerExistsForIdentifier:(id)a3
+- (BOOL)_work_queue_navigationOwnerExistsForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(CRCarPlayNavigationServiceAgent *)self owners];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  owners = [(CRCarPlayNavigationServiceAgent *)self owners];
+  v6 = [owners countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -881,11 +881,11 @@ LABEL_12:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(owners);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) identifier];
-        v10 = [v9 isEqualToString:v4];
+        identifier = [*(*(&v12 + 1) + 8 * i) identifier];
+        v10 = [identifier isEqualToString:identifierCopy];
 
         if (v10)
         {
@@ -894,7 +894,7 @@ LABEL_12:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [owners countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -911,24 +911,24 @@ LABEL_11:
 
 - (BOOL)_work_queue_doWeHaveOwners
 {
-  v3 = [(CRCarPlayNavigationServiceAgent *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(CRCarPlayNavigationServiceAgent *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(CRCarPlayNavigationServiceAgent *)self owners];
-  LOBYTE(v3) = [v4 count] != 0;
+  owners = [(CRCarPlayNavigationServiceAgent *)self owners];
+  LOBYTE(workQueue) = [owners count] != 0;
 
-  return v3;
+  return workQueue;
 }
 
 - (BOOL)_work_queue_updateOwnershipToiOSIfNecessary
 {
-  v3 = [(CRCarPlayNavigationServiceAgent *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(CRCarPlayNavigationServiceAgent *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   os_unfair_lock_lock(&self->_sessionLock);
-  v4 = [(CRCarPlayNavigationServiceAgent *)self lock_session];
+  lock_session = [(CRCarPlayNavigationServiceAgent *)self lock_session];
   os_unfair_lock_unlock(&self->_sessionLock);
-  if (!v4)
+  if (!lock_session)
   {
     v11 = sub_100002A68(1uLL);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -939,18 +939,18 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  v5 = [v4 navigationOwner];
-  v6 = [(CRCarPlayNavigationServiceAgent *)self _work_queue_doWeHaveOwners];
+  navigationOwner = [lock_session navigationOwner];
+  _work_queue_doWeHaveOwners = [(CRCarPlayNavigationServiceAgent *)self _work_queue_doWeHaveOwners];
   v7 = sub_100002A68(1uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(CRCarPlayNavigationServiceAgent *)self owners];
+    owners = [(CRCarPlayNavigationServiceAgent *)self owners];
     v14 = 138543362;
-    v15 = v8;
+    v15 = owners;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[updateOwnershipToiOSIfNecessary] Owners: %{public}@", &v14, 0xCu);
   }
 
-  if (!v6)
+  if (!_work_queue_doWeHaveOwners)
   {
     v11 = sub_100002A68(1uLL);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -968,7 +968,7 @@ LABEL_14:
 
   v9 = sub_100002A68(1uLL);
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v5 == 1)
+  if (navigationOwner == 1)
   {
     if (v10)
     {
@@ -985,7 +985,7 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[updateOwnershipToiOSIfNecessary] Requesting iOS ownership", &v14, 2u);
   }
 
-  [v4 requestTurnByTurnOwnership];
+  [lock_session requestTurnByTurnOwnership];
   [(CRCarPlayNavigationServiceAgent *)self _work_queue_navigationOwnershipChangedFromCar];
   v12 = 1;
 LABEL_15:
@@ -996,27 +996,27 @@ LABEL_15:
 - (void)_work_queue_updateNavigationStateForRemoval
 {
   os_unfair_lock_lock(&self->_sessionLock);
-  v3 = [(CRCarPlayNavigationServiceAgent *)self lock_session];
+  lock_session = [(CRCarPlayNavigationServiceAgent *)self lock_session];
   os_unfair_lock_unlock(&self->_sessionLock);
-  v4 = [(CRCarPlayNavigationServiceAgent *)self _work_queue_doWeHaveOwners];
-  if (!v3)
+  _work_queue_doWeHaveOwners = [(CRCarPlayNavigationServiceAgent *)self _work_queue_doWeHaveOwners];
+  if (!lock_session)
   {
     goto LABEL_12;
   }
 
-  v5 = [v3 navigationOwner];
+  navigationOwner = [lock_session navigationOwner];
   v6 = sub_100002A68(1uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(CRCarPlayNavigationServiceAgent *)self owners];
+    owners = [(CRCarPlayNavigationServiceAgent *)self owners];
     v11 = 138543362;
-    v12 = v7;
+    v12 = owners;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[updateNavigationStateForRemoval] Owners: %{public}@", &v11, 0xCu);
   }
 
   v8 = sub_100002A68(1uLL);
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v5 != 1)
+  if (navigationOwner != 1)
   {
     if (v9)
     {
@@ -1025,7 +1025,7 @@ LABEL_15:
     }
 
 LABEL_12:
-    if (v4)
+    if (_work_queue_doWeHaveOwners)
     {
       goto LABEL_19;
     }
@@ -1033,7 +1033,7 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  if (v4)
+  if (_work_queue_doWeHaveOwners)
   {
     if (v9)
     {
@@ -1050,7 +1050,7 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[updateNavigationStateForRemoval] Releasing iOS ownership", &v11, 2u);
   }
 
-  [v3 releaseTurnByTurnOwnership];
+  [lock_session releaseTurnByTurnOwnership];
   [(CRCarPlayNavigationServiceAgent *)self setCachedDoWeOwnNavigation:0];
 LABEL_17:
   if ([(CRCarPlayNavigationServiceAgent *)self maximumConcurrentNavigationOwners])
@@ -1064,22 +1064,22 @@ LABEL_17:
 LABEL_19:
 }
 
-- (void)sendInfo:(id)a3 toComponentUID:(id)a4
+- (void)sendInfo:(id)info toComponentUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRCarPlayNavigationServiceAgent *)self owners];
-  v9 = [v8 lastObject];
+  infoCopy = info;
+  dCopy = d;
+  owners = [(CRCarPlayNavigationServiceAgent *)self owners];
+  lastObject = [owners lastObject];
 
-  v10 = [v9 connection];
+  connection = [lastObject connection];
   v11 = +[NSXPCConnection currentConnection];
 
-  if (v10 == v11)
+  if (connection == v11)
   {
-    if ([v9 accNavRole] != 2)
+    if ([lastObject accNavRole] != 2)
     {
-      v17 = [(CRCarPlayNavigationServiceAgent *)self accNavProvider];
-      [v17 sendInfo:v6 toComponentUID:v7];
+      accNavProvider = [(CRCarPlayNavigationServiceAgent *)self accNavProvider];
+      [accNavProvider sendInfo:infoCopy toComponentUID:dCopy];
 
       goto LABEL_9;
     }
@@ -1088,13 +1088,13 @@ LABEL_19:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v16 = objc_opt_class();
-      v14 = [v9 identifier];
+      identifier = [lastObject identifier];
       v18 = 138543874;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2114;
       v21 = v16;
       v22 = 2114;
-      v23 = v14;
+      v23 = identifier;
       v15 = "%{public}@ %{public}@ not sent. %{public}@ controls their own accNav";
       goto LABEL_7;
     }
@@ -1106,13 +1106,13 @@ LABEL_19:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = objc_opt_class();
-      v14 = [v9 identifier];
+      identifier = [lastObject identifier];
       v18 = 138543874;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2114;
       v21 = v13;
       v22 = 2114;
-      v23 = v14;
+      v23 = identifier;
       v15 = "%{public}@ %{public}@ not sent.  NavOwner=%{public}@";
 LABEL_7:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, v15, &v18, 0x20u);
@@ -1122,34 +1122,34 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)session:(id)a3 didUpdateActiveComponents:(id)a4
+- (void)session:(id)session didUpdateActiveComponents:(id)components
 {
-  v5 = a4;
-  v6 = [(CRCarPlayNavigationServiceAgent *)self workQueue];
+  componentsCopy = components;
+  workQueue = [(CRCarPlayNavigationServiceAgent *)self workQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10004585C;
   v8[3] = &unk_1000DD580;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = componentsCopy;
+  selfCopy = self;
+  v7 = componentsCopy;
+  dispatch_async(workQueue, v8);
 }
 
-- (void)_work_queue_updateActiveComponents:(id)a3 forOwner:(id)a4
+- (void)_work_queue_updateActiveComponents:(id)components forOwner:(id)owner
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRCarPlayNavigationServiceAgent *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  componentsCopy = components;
+  ownerCopy = owner;
+  workQueue = [(CRCarPlayNavigationServiceAgent *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if ([v7 accNavRole])
+  if ([ownerCopy accNavRole])
   {
-    v9 = [v7 connection];
-    v10 = [v9 remoteObjectProxy];
-    if ([v10 conformsToProtocol:&OBJC_PROTOCOL___CRNavigationClient])
+    connection = [ownerCopy connection];
+    remoteObjectProxy = [connection remoteObjectProxy];
+    if ([remoteObjectProxy conformsToProtocol:&OBJC_PROTOCOL___CRNavigationClient])
     {
-      v11 = v10;
+      v11 = remoteObjectProxy;
     }
 
     else
@@ -1163,31 +1163,31 @@ LABEL_9:
     {
       if (v13)
       {
-        v14 = [v7 identifier];
-        v15 = [v7 connection];
+        identifier = [ownerCopy identifier];
+        connection2 = [ownerCopy connection];
         v19 = 138543618;
-        v20 = v14;
+        v20 = identifier;
         v21 = 1024;
-        LODWORD(v22) = [v15 processIdentifier];
+        LODWORD(v22) = [connection2 processIdentifier];
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[updateActiveComponents] Informing navigation owner: %{public}@(%d)", &v19, 0x12u);
       }
 
-      [v11 didUpdateActiveComponents:v6];
+      [v11 didUpdateActiveComponents:componentsCopy];
     }
 
     else
     {
       if (v13)
       {
-        v16 = sub_100042438([v7 accNavRole]);
-        v17 = [v7 identifier];
-        v18 = [v7 connection];
+        v16 = sub_100042438([ownerCopy accNavRole]);
+        identifier2 = [ownerCopy identifier];
+        connection3 = [ownerCopy connection];
         v19 = 138412802;
         v20 = v16;
         v21 = 2114;
-        v22 = v17;
+        v22 = identifier2;
         v23 = 1024;
-        v24 = [v18 processIdentifier];
+        processIdentifier = [connection3 processIdentifier];
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[updateActiveComponents] Navigation %@ accNav but is not client: %{public}@(%d)", &v19, 0x1Cu);
       }
     }

@@ -1,12 +1,12 @@
 @interface HAPBTLERequest
 - (HAPBTLERequest)init;
 - (HMFBlockOperation)operation;
-- (id)_initWithCharacteristic:(id)a3 requestType:(unsigned __int8)a4 bodyData:(id)a5 shouldEncrypt:(BOOL)a6 timeoutInterval:(double)a7;
+- (id)_initWithCharacteristic:(id)characteristic requestType:(unsigned __int8)type bodyData:(id)data shouldEncrypt:(BOOL)encrypt timeoutInterval:(double)interval;
 - (id)_serializeHeader;
-- (id)descriptionWithPointer:(BOOL)a3;
+- (id)descriptionWithPointer:(BOOL)pointer;
 - (id)serialize;
 - (id)shortDescription;
-- (void)cancelWithError:(id)a3;
+- (void)cancelWithError:(id)error;
 @end
 
 @implementation HAPBTLERequest
@@ -21,15 +21,15 @@
   objc_exception_throw(v4);
 }
 
-- (id)_initWithCharacteristic:(id)a3 requestType:(unsigned __int8)a4 bodyData:(id)a5 shouldEncrypt:(BOOL)a6 timeoutInterval:(double)a7
+- (id)_initWithCharacteristic:(id)characteristic requestType:(unsigned __int8)type bodyData:(id)data shouldEncrypt:(BOOL)encrypt timeoutInterval:(double)interval
 {
-  v10 = a4;
-  v13 = a3;
-  v14 = a5;
-  v15 = v14;
-  if (v10)
+  typeCopy = type;
+  characteristicCopy = characteristic;
+  dataCopy = data;
+  v15 = dataCopy;
+  if (typeCopy)
   {
-    if (a7 <= 0.0)
+    if (interval <= 0.0)
     {
       v16 = sub_10007FAA0();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -44,7 +44,7 @@
       goto LABEL_11;
     }
 
-    if ([v14 length] >= 0x10000)
+    if ([dataCopy length] >= 0x10000)
     {
       v16 = sub_10007FAA0();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -67,19 +67,19 @@ LABEL_10:
     v21 = [(HAPBTLERequest *)&v29 init];
     if (v21)
     {
-      v22 = [v13 service];
+      service = [characteristicCopy service];
       service = v21->_service;
-      v21->_service = v22;
+      v21->_service = service;
 
-      objc_storeStrong(&v21->_characteristic, a3);
-      v21->_type = v10;
+      objc_storeStrong(&v21->_characteristic, characteristic);
+      v21->_type = typeCopy;
       v24 = [v15 copy];
       body = v21->_body;
       v21->_body = v24;
 
-      v21->_encrypted = a6;
-      v21->_timeoutInterval = a7;
-      if (v10 != 255)
+      v21->_encrypted = encrypt;
+      v21->_timeoutInterval = interval;
+      if (typeCopy != 255)
       {
         v26 = +[HAPBTLETransactionIdentifier randomTransactionIdentifier];
 LABEL_18:
@@ -101,7 +101,7 @@ LABEL_18:
 
 LABEL_19:
     self = v21;
-    v19 = self;
+    selfCopy = self;
     goto LABEL_12;
   }
 
@@ -117,10 +117,10 @@ LABEL_19:
 
 LABEL_11:
 
-  v19 = 0;
+  selfCopy = 0;
 LABEL_12:
 
-  return v19;
+  return selfCopy;
 }
 
 - (id)shortDescription
@@ -130,11 +130,11 @@ LABEL_12:
   return NSStringFromClass(v2);
 }
 
-- (id)descriptionWithPointer:(BOOL)a3
+- (id)descriptionWithPointer:(BOOL)pointer
 {
-  v3 = a3;
-  v5 = [(HAPBTLERequest *)self shortDescription];
-  if (v3)
+  pointerCopy = pointer;
+  shortDescription = [(HAPBTLERequest *)self shortDescription];
+  if (pointerCopy)
   {
     v6 = [NSString stringWithFormat:@" %p", self];
   }
@@ -167,29 +167,29 @@ LABEL_12:
     v11 = @"NO";
   }
 
-  v12 = [(HAPBTLERequest *)self identifier];
-  v13 = [(HAPBTLERequest *)self body];
-  v14 = [v13 length];
-  v15 = [(HAPBTLERequest *)self characteristic];
-  v16 = [NSString stringWithFormat:@"<%@%@, Type = %@, Timeout = %f, Encrypted = %@, Request Identifier = %@, Body Length = %tu, Characteristic = %@>", v5, v6, v8, v10, v11, v12, v14, v15];
+  identifier = [(HAPBTLERequest *)self identifier];
+  body = [(HAPBTLERequest *)self body];
+  v14 = [body length];
+  characteristic = [(HAPBTLERequest *)self characteristic];
+  v16 = [NSString stringWithFormat:@"<%@%@, Type = %@, Timeout = %f, Encrypted = %@, Request Identifier = %@, Body Length = %tu, Characteristic = %@>", shortDescription, v6, v8, v10, v11, identifier, v14, characteristic];
 
-  if (v3)
+  if (pointerCopy)
   {
   }
 
   return v16;
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v6 = a3;
+  errorCopy = error;
   if (![(HAPBTLERequest *)self isFinished])
   {
-    v4 = [(HAPBTLERequest *)self operation];
-    [v4 cancelWithError:v6];
+    operation = [(HAPBTLERequest *)self operation];
+    [operation cancelWithError:errorCopy];
 
-    v5 = [(HAPBTLERequest *)self responseTimer];
-    [v5 suspend];
+    responseTimer = [(HAPBTLERequest *)self responseTimer];
+    [responseTimer suspend];
   }
 }
 
@@ -197,25 +197,25 @@ LABEL_12:
 {
   if ([(HAPBTLERequest *)self type]== 255)
   {
-    v7 = [(HAPBTLERequest *)self body];
-    v4 = [v7 mutableCopy];
+    body = [(HAPBTLERequest *)self body];
+    v4 = [body mutableCopy];
   }
 
   else
   {
-    v3 = [(HAPBTLERequest *)self _serializeHeader];
-    v4 = [v3 mutableCopy];
+    _serializeHeader = [(HAPBTLERequest *)self _serializeHeader];
+    v4 = [_serializeHeader mutableCopy];
 
-    v5 = [(HAPBTLERequest *)self body];
-    v6 = [v5 length];
+    body2 = [(HAPBTLERequest *)self body];
+    v6 = [body2 length];
 
     if (!v6)
     {
       goto LABEL_6;
     }
 
-    v7 = [(HAPBTLERequest *)self body];
-    [v4 appendData:v7];
+    body = [(HAPBTLERequest *)self body];
+    [v4 appendData:body];
   }
 
 LABEL_6:
@@ -226,49 +226,49 @@ LABEL_6:
 - (id)_serializeHeader
 {
   v3 = [NSMutableData dataWithCapacity:6];
-  v23 = [(HAPBTLERequest *)self type];
-  [v3 appendBytes:&v23 length:1];
-  v4 = [(HAPBTLERequest *)self identifier];
-  v5 = [v4 unsignedCharValue];
+  type = [(HAPBTLERequest *)self type];
+  [v3 appendBytes:&type length:1];
+  identifier = [(HAPBTLERequest *)self identifier];
+  unsignedCharValue = [identifier unsignedCharValue];
 
-  v22 = v5;
+  v22 = unsignedCharValue;
   [v3 appendBytes:&v22 length:1];
   if ([(HAPBTLERequest *)self type]== 6 || [(HAPBTLERequest *)self type]== 8)
   {
-    v6 = [(HAPBTLERequest *)self service];
-    v7 = [v6 instanceID];
-    v8 = [v7 unsignedShortValue];
+    service = [(HAPBTLERequest *)self service];
+    instanceID = [service instanceID];
+    unsignedShortValue = [instanceID unsignedShortValue];
 
-    v21 = v8;
+    v21 = unsignedShortValue;
     [v3 appendBytes:&v21 length:2];
   }
 
   else
   {
-    v9 = [(HAPBTLERequest *)self characteristic];
-    v10 = v9;
-    if (v9)
+    characteristic = [(HAPBTLERequest *)self characteristic];
+    v10 = characteristic;
+    if (characteristic)
     {
-      v11 = [v9 instanceID];
-      v12 = [v11 unsignedShortValue];
+      instanceID2 = [characteristic instanceID];
+      unsignedShortValue2 = [instanceID2 unsignedShortValue];
     }
 
     else
     {
-      v12 = 0;
+      unsignedShortValue2 = 0;
     }
 
-    v20 = v12;
+    v20 = unsignedShortValue2;
     [v3 appendBytes:&v20 length:2];
   }
 
-  v13 = [(HAPBTLERequest *)self body];
-  v14 = [v13 length];
+  body = [(HAPBTLERequest *)self body];
+  v14 = [body length];
 
   if (v14)
   {
-    v15 = [(HAPBTLERequest *)self body];
-    v16 = [v15 length];
+    body2 = [(HAPBTLERequest *)self body];
+    v16 = [body2 length];
 
     v19 = v16;
     [v3 appendBytes:&v19 length:2];

@@ -1,30 +1,30 @@
 @interface _UserInterfaceStyleSceneComponentProvider
 - (_TtC14WidgetRenderer41_UserInterfaceStyleSceneComponentProvider)init;
-- (void)_sceneWillInvalidate:(id)a3;
-- (void)_setScene:(id)a3;
-- (void)set_traitOverrides:(id)a3;
+- (void)_sceneWillInvalidate:(id)invalidate;
+- (void)_setScene:(id)scene;
+- (void)set_traitOverrides:(id)overrides;
 @end
 
 @implementation _UserInterfaceStyleSceneComponentProvider
 
-- (void)_setScene:(id)a3
+- (void)_setScene:(id)scene
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC14WidgetRenderer41_UserInterfaceStyleSceneComponentProvider__scene);
-  *(&self->super.isa + OBJC_IVAR____TtC14WidgetRenderer41_UserInterfaceStyleSceneComponentProvider__scene) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC14WidgetRenderer41_UserInterfaceStyleSceneComponentProvider__scene) = scene;
+  sceneCopy = scene;
 }
 
-- (void)set_traitOverrides:(id)a3
+- (void)set_traitOverrides:(id)overrides
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC14WidgetRenderer41_UserInterfaceStyleSceneComponentProvider__traitOverrides);
-  *(&self->super.isa + OBJC_IVAR____TtC14WidgetRenderer41_UserInterfaceStyleSceneComponentProvider__traitOverrides) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC14WidgetRenderer41_UserInterfaceStyleSceneComponentProvider__traitOverrides) = overrides;
+  overridesCopy = overrides;
 }
 
-- (void)_sceneWillInvalidate:(id)a3
+- (void)_sceneWillInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = self;
+  invalidateCopy = invalidate;
+  selfCopy = self;
   sub_1DAE00AA0();
 }
 

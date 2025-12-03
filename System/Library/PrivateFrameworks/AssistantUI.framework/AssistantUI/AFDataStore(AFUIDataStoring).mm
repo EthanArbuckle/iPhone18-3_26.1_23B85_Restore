@@ -21,17 +21,17 @@
     v11 = v10;
 
     [v12 setScale:v11];
-    [a1 setImageData:v12 forKey:v7];
+    [self setImageData:v12 forKey:v7];
   }
 }
 
 - (id)imageForKey:()AFUIDataStoring
 {
-  v1 = [a1 imageDataForKey:?];
+  v1 = [self imageDataForKey:?];
   v2 = objc_alloc(MEMORY[0x277D755B8]);
-  v3 = [v1 imageData];
+  imageData = [v1 imageData];
   [v1 scale];
-  v4 = [v2 initWithData:v3 scale:?];
+  v4 = [v2 initWithData:imageData scale:?];
 
   return v4;
 }
@@ -39,8 +39,8 @@
 - (_AFUIDataStoringShim)afui_dataStoringShim
 {
   v2 = [_AFUIDataStoringShim alloc];
-  v3 = [a1 propertyListRepresentation];
-  v4 = [(_AFUIDataStoringShim *)v2 initWithPropertyListRepresentation:v3];
+  propertyListRepresentation = [self propertyListRepresentation];
+  v4 = [(_AFUIDataStoringShim *)v2 initWithPropertyListRepresentation:propertyListRepresentation];
 
   return v4;
 }

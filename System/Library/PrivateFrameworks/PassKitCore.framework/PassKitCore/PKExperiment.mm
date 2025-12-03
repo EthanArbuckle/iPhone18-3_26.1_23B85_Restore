@@ -1,14 +1,14 @@
 @interface PKExperiment
-- (BOOL)BOOLeanForFactor:(id)a3;
-- (BOOL)isTaggedForFactor:(id)a3;
+- (BOOL)BOOLeanForFactor:(id)factor;
+- (BOOL)isTaggedForFactor:(id)factor;
 - (PKExperiment)init;
-- (PKExperiment)initWithClient:(id)a3;
+- (PKExperiment)initWithClient:(id)client;
 - (id)description;
 - (id)experimentDetails;
-- (id)filePathForFactor:(id)a3;
-- (id)levelForFactor:(id)a3;
-- (id)metadataForFactor:(id)a3;
-- (id)stringForFactor:(id)a3;
+- (id)filePathForFactor:(id)factor;
+- (id)levelForFactor:(id)factor;
+- (id)metadataForFactor:(id)factor;
+- (id)stringForFactor:(id)factor;
 - (void)trackExperimentExposure;
 @end
 
@@ -55,16 +55,16 @@
   return v3;
 }
 
-- (PKExperiment)initWithClient:(id)a3
+- (PKExperiment)initWithClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v9.receiver = self;
   v9.super_class = PKExperiment;
   v6 = [(PKExperiment *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_trialClient, a3);
+    objc_storeStrong(&v6->_trialClient, client);
   }
 
   return v7;
@@ -73,8 +73,8 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
-  v4 = [(PKExperiment *)self namespaceName];
-  [v3 appendFormat:@"namespaceName: '%@'; ", v4];
+  namespaceName = [(PKExperiment *)self namespaceName];
+  [v3 appendFormat:@"namespaceName: '%@'; ", namespaceName];
 
   [v3 appendString:@">"];
   v5 = [v3 copy];
@@ -84,24 +84,24 @@
 
 - (id)experimentDetails
 {
-  v3 = [(PKExperiment *)self namespaceName];
-  if (v3)
+  namespaceName = [(PKExperiment *)self namespaceName];
+  if (namespaceName)
   {
-    v4 = [(TRIClient *)self->_trialClient experimentIdentifiersWithNamespaceName:v3];
+    v4 = [(TRIClient *)self->_trialClient experimentIdentifiersWithNamespaceName:namespaceName];
     if (v4)
     {
       v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v6 = [v4 experimentId];
-      [v5 safelySetObject:v6 forKey:@"experimentIdentifier"];
+      experimentId = [v4 experimentId];
+      [v5 safelySetObject:experimentId forKey:@"experimentIdentifier"];
 
-      v7 = [v4 treatmentId];
-      [v5 safelySetObject:v7 forKey:@"treatmentIdentifier"];
+      treatmentId = [v4 treatmentId];
+      [v5 safelySetObject:treatmentId forKey:@"treatmentIdentifier"];
 
       v8 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "deploymentId")}];
       [v5 safelySetObject:v8 forKey:@"deploymentIdentifier"];
 
-      v9 = [(PKExperiment *)self namespaceName];
-      [v5 safelySetObject:v9 forKey:@"namespaceName"];
+      namespaceName2 = [(PKExperiment *)self namespaceName];
+      [v5 safelySetObject:namespaceName2 forKey:@"namespaceName"];
 
       v10 = [v5 copy];
     }
@@ -122,24 +122,24 @@
 
 - (void)trackExperimentExposure
 {
-  v3 = [(PKExperiment *)self experimentDetails];
-  if (v3 && !self->_isExposed)
+  experimentDetails = [(PKExperiment *)self experimentDetails];
+  if (experimentDetails && !self->_isExposed)
   {
-    v5 = v3;
+    v5 = experimentDetails;
     AnalyticsSendEvent();
     v4 = [v5 mutableCopy];
     [v4 setObject:@"userViewedExperiment" forKey:@"eventType"];
     [PKAnalyticsReporter subject:@"inApp" sendEvent:v4];
     self->_isExposed = 1;
 
-    v3 = v5;
+    experimentDetails = v5;
   }
 }
 
-- (id)levelForFactor:(id)a3
+- (id)levelForFactor:(id)factor
 {
   v5 = PKLogFacilityTypeGetObject(0x24uLL);
-  v6 = a3;
+  factorCopy = factor;
   v7 = os_signpost_id_make_with_pointer(v5, self);
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
@@ -152,8 +152,8 @@
   }
 
   trialClient = self->_trialClient;
-  v10 = [(PKExperiment *)self namespaceName];
-  v11 = [(TRIClient *)trialClient levelForFactor:v6 withNamespaceName:v10];
+  namespaceName = [(PKExperiment *)self namespaceName];
+  v11 = [(TRIClient *)trialClient levelForFactor:factorCopy withNamespaceName:namespaceName];
 
   v12 = v5;
   v13 = os_signpost_id_make_with_pointer(v12, self);
@@ -170,51 +170,51 @@
   return v11;
 }
 
-- (id)filePathForFactor:(id)a3
+- (id)filePathForFactor:(id)factor
 {
-  v3 = [(PKExperiment *)self levelForFactor:a3];
-  v4 = [v3 fileValue];
+  v3 = [(PKExperiment *)self levelForFactor:factor];
+  fileValue = [v3 fileValue];
 
-  if ([v4 hasPath])
+  if ([fileValue hasPath])
   {
-    v5 = [v4 path];
+    path = [fileValue path];
   }
 
   else
   {
-    v5 = 0;
+    path = 0;
   }
 
-  return v5;
+  return path;
 }
 
-- (id)stringForFactor:(id)a3
+- (id)stringForFactor:(id)factor
 {
-  v3 = [(PKExperiment *)self levelForFactor:a3];
-  v4 = [v3 stringValue];
+  v3 = [(PKExperiment *)self levelForFactor:factor];
+  stringValue = [v3 stringValue];
 
-  return v4;
+  return stringValue;
 }
 
-- (BOOL)BOOLeanForFactor:(id)a3
+- (BOOL)BOOLeanForFactor:(id)factor
 {
-  v3 = [(PKExperiment *)self levelForFactor:a3];
-  v4 = [v3 BOOLeanValue];
+  v3 = [(PKExperiment *)self levelForFactor:factor];
+  bOOLeanValue = [v3 BOOLeanValue];
 
-  return v4;
+  return bOOLeanValue;
 }
 
-- (id)metadataForFactor:(id)a3
+- (id)metadataForFactor:(id)factor
 {
-  v3 = [(PKExperiment *)self levelForFactor:a3];
-  v4 = [v3 metadata];
+  v3 = [(PKExperiment *)self levelForFactor:factor];
+  metadata = [v3 metadata];
 
-  return v4;
+  return metadata;
 }
 
-- (BOOL)isTaggedForFactor:(id)a3
+- (BOOL)isTaggedForFactor:(id)factor
 {
-  v3 = [(PKExperiment *)self metadataForFactor:a3];
+  v3 = [(PKExperiment *)self metadataForFactor:factor];
   v4 = [v3 objectForKeyedSubscript:@"tag"];
   v5 = [v4 length] != 0;
 

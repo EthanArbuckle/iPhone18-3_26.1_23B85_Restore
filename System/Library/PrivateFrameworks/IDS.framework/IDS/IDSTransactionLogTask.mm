@@ -1,18 +1,18 @@
 @interface IDSTransactionLogTask
-- (void)_completeWithError:(id)a3;
+- (void)_completeWithError:(id)error;
 @end
 
 @implementation IDSTransactionLogTask
 
-- (void)_completeWithError:(id)a3
+- (void)_completeWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(IDSTransactionLogTask *)self completionBlock];
+  errorCopy = error;
+  completionBlock = [(IDSTransactionLogTask *)self completionBlock];
 
-  if (v4)
+  if (completionBlock)
   {
-    v5 = [(IDSTransactionLogTask *)self completionBlock];
-    (v5)[2](v5, v6);
+    completionBlock2 = [(IDSTransactionLogTask *)self completionBlock];
+    (completionBlock2)[2](completionBlock2, errorCopy);
 
     [(IDSTransactionLogTask *)self setCompletionBlock:0];
   }

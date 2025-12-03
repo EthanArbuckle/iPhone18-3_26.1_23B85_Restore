@@ -1,32 +1,32 @@
 @interface CMContinuityCaptureDiscoverySession
-+ (id)rapportDeviceIdentifier:(id)a3;
++ (id)rapportDeviceIdentifier:(id)identifier;
 + (id)sharedInstance;
 + (void)invalidate;
-+ (void)unscheduleAllNotificationForDeviceIdentifier:(id)a3;
-- (BOOL)_isSignedInDevice:(id)a3;
++ (void)unscheduleAllNotificationForDeviceIdentifier:(id)identifier;
+- (BOOL)_isSignedInDevice:(id)device;
 - (BOOL)setupRPClient;
-- (BOOL)validateSessionInfoForEvent:(id)a3;
-- (CMContinuityCaptureDiscoverySession)initWithQueue:(id)a3;
+- (BOOL)validateSessionInfoForEvent:(id)event;
+- (CMContinuityCaptureDiscoverySession)initWithQueue:(id)queue;
 - (NSArray)availableClientDevices;
-- (id)_deviceForIdentifier:(id)a3;
+- (id)_deviceForIdentifier:(id)identifier;
 - (id)currentDeviceList;
 - (id)currentUserSelectedInSessionDeviceIdentifier;
 - (id)description;
-- (id)discoveredCompatibleDevices:(id)a3 rapportDevices:(id)a4;
+- (id)discoveredCompatibleDevices:(id)devices rapportDevices:(id)rapportDevices;
 - (id)discoveredLocalDevices;
 - (id)discoveredRapportDevices;
 - (id)rpRemoteDisplayDiscovery;
-- (id)validateCapabilitiesAndCacheIncompatibleNotificationIfApplicable:(id)a3 majorVersion:(unint64_t)a4;
+- (id)validateCapabilitiesAndCacheIncompatibleNotificationIfApplicable:(id)applicable majorVersion:(unint64_t)version;
 - (unint64_t)transportErrorFlags;
 - (void)activate;
-- (void)addSidebandMessageNotificationHandler:(id)a3 forDeviceIdentifier:(id)a4;
-- (void)boostDiscoveryForReason:(id)a3 completion:(id)a4;
+- (void)addSidebandMessageNotificationHandler:(id)handler forDeviceIdentifier:(id)identifier;
+- (void)boostDiscoveryForReason:(id)reason completion:(id)completion;
 - (void)cancel;
 - (void)currentDeviceList;
-- (void)device:(id)a3 isNearby:(BOOL)a4;
-- (void)discardUserSelectedDeviceIfApplicableWithReason:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeSidebandMessageNotificationHandlerForDeviceIdentifier:(id)a3;
+- (void)device:(id)device isNearby:(BOOL)nearby;
+- (void)discardUserSelectedDeviceIfApplicableWithReason:(id)reason;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeSidebandMessageNotificationHandlerForDeviceIdentifier:(id)identifier;
 - (void)setupProxyMonitoring;
 - (void)setupRPRemoteDisplayDiscovery;
 - (void)showIncompatibleDeviceNotificationIfApplicable;
@@ -75,35 +75,35 @@ uint64_t __53__CMContinuityCaptureDiscoverySession_sharedInstance__block_invoke(
 
 - (unint64_t)transportErrorFlags
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(RPCompanionLinkClient *)v2->_rpCompanionLinkClient errorFlags];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  errorFlags = [(RPCompanionLinkClient *)selfCopy->_rpCompanionLinkClient errorFlags];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return errorFlags;
 }
 
 - (id)currentUserSelectedInSessionDeviceIdentifier
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_currentUserSelectedInSessionDeviceIdentifier;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_currentUserSelectedInSessionDeviceIdentifier;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (id)rpRemoteDisplayDiscovery
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_rpRemoteDisplayDiscovery;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_rpRemoteDisplayDiscovery;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)discardUserSelectedDeviceIfApplicableWithReason:(id)a3
+- (void)discardUserSelectedDeviceIfApplicableWithReason:(id)reason
 {
   obj = self;
   objc_sync_enter(obj);
@@ -126,10 +126,10 @@ uint64_t __53__CMContinuityCaptureDiscoverySession_sharedInstance__block_invoke(
   return v6;
 }
 
-- (void)boostDiscoveryForReason:(id)a3 completion:(id)a4
+- (void)boostDiscoveryForReason:(id)reason completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   rpCompanionLinkClient = self->_rpCompanionLinkClient;
   if (rpCompanionLinkClient)
@@ -139,8 +139,8 @@ uint64_t __53__CMContinuityCaptureDiscoverySession_sharedInstance__block_invoke(
     v10[2] = __74__CMContinuityCaptureDiscoverySession_boostDiscoveryForReason_completion___block_invoke;
     v10[3] = &unk_278D5C548;
     objc_copyWeak(&v13, &location);
-    v11 = v6;
-    v12 = v7;
+    v11 = reasonCopy;
+    v12 = completionCopy;
     [(RPCompanionLinkClient *)rpCompanionLinkClient triggerEnhancedDiscoveryForReason:v11 useCase:131079 completion:v10];
 
     objc_destroyWeak(&v13);
@@ -149,7 +149,7 @@ uint64_t __53__CMContinuityCaptureDiscoverySession_sharedInstance__block_invoke(
   else
   {
     v9 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"ContinuityCapture" code:-536870911 userInfo:0];
-    (*(v7 + 2))(v7, v9);
+    (*(completionCopy + 2))(completionCopy, v9);
   }
 
   objc_destroyWeak(&location);
@@ -188,12 +188,12 @@ void __74__CMContinuityCaptureDiscoverySession_boostDiscoveryForReason_completio
 {
   objc_initWeak(&location, self);
   v3 = objc_alloc_init(MEMORY[0x277D441E0]);
-  v4 = self;
-  objc_sync_enter(v4);
-  objc_storeStrong(&v4->_rpRemoteDisplayDiscovery, v3);
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_rpRemoteDisplayDiscovery, v3);
+  objc_sync_exit(selfCopy);
 
-  [v3 setDispatchQueue:v4->_queue];
+  [v3 setDispatchQueue:selfCopy->_queue];
   [v3 setDiscoveryFlags:{objc_msgSend(v3, "discoveryFlags") | 3}];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -413,44 +413,44 @@ LABEL_8:
 LABEL_13:
 }
 
-- (void)addSidebandMessageNotificationHandler:(id)a3 forDeviceIdentifier:(id)a4
+- (void)addSidebandMessageNotificationHandler:(id)handler forDeviceIdentifier:(id)identifier
 {
-  v9 = a3;
-  v6 = a4;
-  if (v9 && v6)
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  if (handlerCopy && identifierCopy)
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    v8 = MEMORY[0x245D12020](v9);
-    [(NSMutableDictionary *)v7->_sidebandNotificationHandlersForIdentifier setObject:v8 forKeyedSubscript:v6];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v8 = MEMORY[0x245D12020](handlerCopy);
+    [(NSMutableDictionary *)selfCopy->_sidebandNotificationHandlersForIdentifier setObject:v8 forKeyedSubscript:identifierCopy];
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)removeSidebandMessageNotificationHandlerForDeviceIdentifier:(id)a3
+- (void)removeSidebandMessageNotificationHandlerForDeviceIdentifier:(id)identifier
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableDictionary *)v4->_sidebandNotificationHandlersForIdentifier removeObjectForKey:v5];
-  objc_sync_exit(v4);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_sidebandNotificationHandlersForIdentifier removeObjectForKey:identifierCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)validateSessionInfoForEvent:(id)a3
+- (BOOL)validateSessionInfoForEvent:(id)event
 {
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"ContinuityCaptureRapportClientShieldSessionIDKey"];
-  v8 = [v6 objectForKeyedSubscript:@"ContinuityCaptureRapportClientEventOriginTimeInNativeClockKey"];
+  eventCopy = event;
+  v7 = [eventCopy objectForKeyedSubscript:@"ContinuityCaptureRapportClientShieldSessionIDKey"];
+  v8 = [eventCopy objectForKeyedSubscript:@"ContinuityCaptureRapportClientEventOriginTimeInNativeClockKey"];
   v9 = CMContinuityCaptureLog(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = +[CMContinuityCaptureSessionStateManager sharedInstance];
-    v11 = [v10 activeSession];
+    activeSession = [v10 activeSession];
     *buf = 138413058;
-    v34 = self;
+    selfCopy = self;
     v35 = 2114;
-    v36 = v11;
+    v36 = activeSession;
     v37 = 2114;
     v38 = v7;
     v39 = 2114;
@@ -458,16 +458,16 @@ LABEL_13:
     _os_log_impl(&dword_242545000, v9, OS_LOG_TYPE_DEFAULT, "%@ %{public}@ received shield sessionID %{public}@ originTime %{public}@", buf, 0x2Au);
   }
 
-  v32 = self;
+  selfCopy2 = self;
 
   v12 = +[CMContinuityCaptureSessionStateManager sharedInstance];
-  v13 = [v12 activeSession];
-  if (v13)
+  activeSession2 = [v12 activeSession];
+  if (activeSession2)
   {
     v14 = +[CMContinuityCaptureSessionStateManager sharedInstance];
-    v3 = [v14 activeSession];
-    v15 = [v3 shieldSessionID];
-    if (!v15)
+    activeSession3 = [v14 activeSession];
+    shieldSessionID = [activeSession3 shieldSessionID];
+    if (!shieldSessionID)
     {
 
       v25 = 1;
@@ -476,7 +476,7 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v4 = v15;
+    v4 = shieldSessionID;
     v30 = v14;
     if (!v7)
     {
@@ -491,13 +491,13 @@ LABEL_20:
 
   v31 = v8;
   v16 = +[CMContinuityCaptureSessionStateManager sharedInstance];
-  v17 = [v16 activeSession];
-  v18 = [v17 shieldSessionID];
-  if (!v18)
+  activeSession4 = [v16 activeSession];
+  shieldSessionID2 = [activeSession4 shieldSessionID];
+  if (!shieldSessionID2)
   {
 
     v8 = v31;
-    if (v13)
+    if (activeSession2)
     {
 LABEL_15:
     }
@@ -509,9 +509,9 @@ LABEL_17:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v34 = v32;
+      selfCopy = selfCopy2;
       v35 = 2112;
-      v36 = v6;
+      v36 = eventCopy;
       _os_log_impl(&dword_242545000, v12, OS_LOG_TYPE_DEFAULT, "%@ out of session event %@", buf, 0x16u);
     }
 
@@ -519,22 +519,22 @@ LABEL_17:
     goto LABEL_20;
   }
 
-  v19 = v18;
-  v29 = v6;
+  v19 = shieldSessionID2;
+  v29 = eventCopy;
   v20 = +[CMContinuityCaptureSessionStateManager sharedInstance];
-  v21 = [v20 activeSession];
-  v22 = [v21 shieldSessionID];
+  activeSession5 = [v20 activeSession];
+  shieldSessionID3 = [activeSession5 shieldSessionID];
   v23 = v7;
-  v24 = v22;
+  v24 = shieldSessionID3;
   v28 = v23;
-  v27 = [v22 isEqualToString:?];
+  v27 = [shieldSessionID3 isEqualToString:?];
 
-  if (v13)
+  if (activeSession2)
   {
   }
 
   v7 = v28;
-  v6 = v29;
+  eventCopy = v29;
   v8 = v31;
   if ((v27 & 1) == 0)
   {
@@ -573,12 +573,12 @@ LABEL_21:
   v7 = MEMORY[0x245D12020](v12);
   if (v6)
   {
-    v8 = self;
-    objc_sync_enter(v8);
-    objc_storeStrong(&v8->_rpCompanionLinkClient, v3);
-    objc_sync_exit(v8);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_rpCompanionLinkClient, v3);
+    objc_sync_exit(selfCopy);
 
-    [v6 setDispatchQueue:v8->_queue];
+    [v6 setDispatchQueue:selfCopy->_queue];
     [v6 setInvalidationHandler:v4];
     [v6 setInterruptionHandler:v5];
     [v6 setErrorFlagsChangedHandler:v7];
@@ -587,7 +587,7 @@ LABEL_21:
     v10[2] = __52__CMContinuityCaptureDiscoverySession_setupRPClient__block_invoke_54;
     v10[3] = &unk_278D5C5E8;
     objc_copyWeak(&v11, location);
-    v10[4] = v8;
+    v10[4] = selfCopy;
     [v6 registerEventID:@"ContinuityCaptureCompanionSessionEventID" options:0 handler:v10];
     objc_destroyWeak(&v11);
   }
@@ -1111,32 +1111,32 @@ void __52__CMContinuityCaptureDiscoverySession_setupRPClient__block_invoke_59(ui
 
 - (NSArray)availableClientDevices
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  availableClientDeviceByIdentifiers = v2->_availableClientDeviceByIdentifiers;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  availableClientDeviceByIdentifiers = selfCopy->_availableClientDeviceByIdentifiers;
   if (availableClientDeviceByIdentifiers)
   {
-    v4 = [(NSDictionary *)availableClientDeviceByIdentifiers allValues];
+    allValues = [(NSDictionary *)availableClientDeviceByIdentifiers allValues];
   }
 
   else
   {
-    v4 = 0;
+    allValues = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return allValues;
 }
 
-- (BOOL)_isSignedInDevice:(id)a3
+- (BOOL)_isSignedInDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = *MEMORY[0x277D442E8];
-  v5 = [v3 objectForKeyedSubscript:*MEMORY[0x277D442E8]];
+  v5 = [deviceCopy objectForKeyedSubscript:*MEMORY[0x277D442E8]];
   if (v5)
   {
-    v6 = [v3 objectForKeyedSubscript:v4];
+    v6 = [deviceCopy objectForKeyedSubscript:v4];
     v7 = ([v6 unsignedIntValue] >> 19) & 1;
   }
 
@@ -1148,40 +1148,40 @@ void __52__CMContinuityCaptureDiscoverySession_setupRPClient__block_invoke_59(ui
   return v7;
 }
 
-- (id)_deviceForIdentifier:(id)a3
+- (id)_deviceForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSDictionary *)v5->_availableClientDeviceByIdentifiers objectForKey:v4];
-  objc_sync_exit(v5);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSDictionary *)selfCopy->_availableClientDeviceByIdentifiers objectForKey:identifierCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (void)device:(id)a3 isNearby:(BOOL)a4
+- (void)device:(id)device isNearby:(BOOL)nearby
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CMContinuityCaptureDiscoverySession *)self _deviceForIdentifier:v6];
-  v8 = [(CMContinuityCaptureDiscoverySession *)self queue];
-  dispatch_assert_queue_V2(v8);
+  nearbyCopy = nearby;
+  deviceCopy = device;
+  v7 = [(CMContinuityCaptureDiscoverySession *)self _deviceForIdentifier:deviceCopy];
+  queue = [(CMContinuityCaptureDiscoverySession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (!v7 || [v7 nearby] != v4)
+  if (!v7 || [v7 nearby] != nearbyCopy)
   {
     v9 = CMContinuityCaptureLog(0);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = "LEFT";
       v11 = 138412802;
-      v12 = self;
-      if (v4)
+      selfCopy = self;
+      if (nearbyCopy)
       {
         v10 = "ENTERED";
       }
 
       v13 = 2114;
-      v14 = v6;
+      v14 = deviceCopy;
       v15 = 2082;
       v16 = v10;
       _os_log_impl(&dword_242545000, v9, OS_LOG_TYPE_DEFAULT, "%@ device %{public}@ %{public}s nearby range", &v11, 0x20u);
@@ -1198,7 +1198,7 @@ void __52__CMContinuityCaptureDiscoverySession_setupRPClient__block_invoke_59(ui
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2080;
     v10 = "[CMContinuityCaptureDiscoverySession activate]";
     _os_log_impl(&dword_242545000, v3, OS_LOG_TYPE_DEFAULT, "%@ %s", buf, 0x16u);
@@ -1308,7 +1308,7 @@ void __47__CMContinuityCaptureDiscoverySession_activate__block_invoke_69(uint64_
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2080;
     v10 = "[CMContinuityCaptureDiscoverySession cancel]";
     _os_log_impl(&dword_242545000, v3, OS_LOG_TYPE_DEFAULT, "%@ %s", buf, 0x16u);
@@ -1371,37 +1371,37 @@ void __45__CMContinuityCaptureDiscoverySession_cancel__block_invoke(uint64_t a1)
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   v12 = CMContinuityCaptureLog(0);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v52 = self;
+    selfCopy = self;
     v53 = 2080;
     v54 = "[CMContinuityCaptureDiscoverySession observeValueForKeyPath:ofObject:change:context:]";
     v55 = 2114;
-    v56 = v9;
+    v56 = pathCopy;
     v57 = 2114;
-    v58 = v10;
+    v58 = objectCopy;
     _os_log_impl(&dword_242545000, v12, OS_LOG_TYPE_DEFAULT, "%@ %s %{public}@ %{public}@", buf, 0x2Au);
   }
 
   objc_initWeak(buf, self);
-  if (![v9 isEqualToString:@"state"])
+  if (![pathCopy isEqualToString:@"state"])
   {
-    if ([v9 isEqualToString:@"userDisconnected"])
+    if ([pathCopy isEqualToString:@"userDisconnected"])
     {
-      v19 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      v19 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
       if ([v19 BOOLValue])
       {
-        v20 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-        v21 = [v20 BOOLValue];
+        v20 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+        bOOLValue = [v20 BOOLValue];
 
-        if ((v21 & 1) == 0)
+        if ((bOOLValue & 1) == 0)
         {
           queue = self->_queue;
           v46[0] = MEMORY[0x277D85DD0];
@@ -1409,11 +1409,11 @@ void __45__CMContinuityCaptureDiscoverySession_cancel__block_invoke(uint64_t a1)
           v46[2] = __86__CMContinuityCaptureDiscoverySession_observeValueForKeyPath_ofObject_change_context___block_invoke_2;
           v46[3] = &unk_278D5C0A8;
           objc_copyWeak(&v48, buf);
-          v23 = v10;
+          v23 = objectCopy;
           v47 = v23;
           dispatch_async(queue, v46);
-          v24 = [v23 deviceModel];
-          v25 = continuityCaptureNotificationCenter_isiPhone(v24);
+          deviceModel = [v23 deviceModel];
+          v25 = continuityCaptureNotificationCenter_isiPhone(deviceModel);
 
           v40 = +[CMContinuityCaptureUserNotificationCenter sharedInstance];
           v26 = @"DISCONNECT_NOTIFICATION_TITLE_IPAD";
@@ -1425,8 +1425,8 @@ void __45__CMContinuityCaptureDiscoverySession_cancel__block_invoke(uint64_t a1)
           v45[0] = v26;
           v44[0] = @"kContinuityCaptureNotificationKeyTitle";
           v44[1] = @"kContinuityCaptureNotificationKeyTitleArgs";
-          v27 = [v23 deviceName];
-          v43 = v27;
+          deviceName = [v23 deviceName];
+          v43 = deviceName;
           v28 = [MEMORY[0x277CBEA60] arrayWithObjects:&v43 count:1];
           v29 = v28;
           v30 = @"DISCONNECT_NOTIFICATION_BODY_IPAD";
@@ -1440,15 +1440,15 @@ void __45__CMContinuityCaptureDiscoverySession_cancel__block_invoke(uint64_t a1)
           v44[2] = @"kContinuityCaptureNotificationKeyBody";
           v44[3] = @"kContinuityCaptureNotificationKeyIdentifier";
           v31 = MEMORY[0x277CCACA8];
-          v32 = [v23 deviceIdentifier];
-          v33 = [v32 UUIDString];
-          v34 = [v31 stringWithFormat:@"%@%@", @"CMContinuityCaptureDisconnectNotification", v33];
+          deviceIdentifier = [v23 deviceIdentifier];
+          uUIDString = [deviceIdentifier UUIDString];
+          v34 = [v31 stringWithFormat:@"%@%@", @"CMContinuityCaptureDisconnectNotification", uUIDString];
           v45[3] = v34;
           v45[4] = MEMORY[0x277CBEC38];
           v44[4] = @"kContinuityCaptureNotificationKeyOneTime";
           v44[5] = @"kContinuityCaptureNotificationKeyDeviceModel";
-          v35 = [v23 deviceModel];
-          v45[5] = v35;
+          deviceModel2 = [v23 deviceModel];
+          v45[5] = deviceModel2;
           v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:v44 count:6];
           [v40 scheduleNotification:1 data:v36];
 
@@ -1462,22 +1462,22 @@ void __45__CMContinuityCaptureDiscoverySession_cancel__block_invoke(uint64_t a1)
       }
     }
 
-    if (![v9 isEqualToString:@"streamIntent"])
+    if (![pathCopy isEqualToString:@"streamIntent"])
     {
       goto LABEL_22;
     }
 
-    v37 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v37 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
     if ([v37 BOOLValue])
     {
 
       goto LABEL_22;
     }
 
-    v38 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-    v39 = [v38 BOOLValue];
+    v38 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+    bOOLValue2 = [v38 BOOLValue];
 
-    if (!v39)
+    if (!bOOLValue2)
     {
       goto LABEL_22;
     }
@@ -1498,10 +1498,10 @@ LABEL_7:
     goto LABEL_22;
   }
 
-  v13 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-  v14 = [v13 integerValue];
+  v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+  integerValue = [v13 integerValue];
 
-  if (v14 == 1)
+  if (integerValue == 1)
   {
     v15 = self->_queue;
     v16 = block;
@@ -1578,19 +1578,19 @@ void __86__CMContinuityCaptureDiscoverySession_observeValueForKeyPath_ofObject_c
   }
 }
 
-+ (id)rapportDeviceIdentifier:(id)a3
++ (id)rapportDeviceIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [v4 idsDeviceIdentifier];
-  if (v5 && ([v4 idsDeviceIdentifier], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "length")))
+  identifierCopy = identifier;
+  idsDeviceIdentifier = [identifierCopy idsDeviceIdentifier];
+  if (idsDeviceIdentifier && ([identifierCopy idsDeviceIdentifier], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "length")))
   {
-    v6 = [v4 idsDeviceIdentifier];
+    idsDeviceIdentifier2 = [identifierCopy idsDeviceIdentifier];
   }
 
   else
   {
-    v6 = [v4 identifier];
-    if (!v5)
+    idsDeviceIdentifier2 = [identifierCopy identifier];
+    if (!idsDeviceIdentifier)
     {
       goto LABEL_6;
     }
@@ -1598,31 +1598,31 @@ void __86__CMContinuityCaptureDiscoverySession_observeValueForKeyPath_ofObject_c
 
 LABEL_6:
 
-  return v6;
+  return idsDeviceIdentifier2;
 }
 
 - (id)currentDeviceList
 {
   CFPreferenceBooleanWithDefault = FigGetCFPreferenceBooleanWithDefault();
-  v4 = [(CMContinuityCaptureDiscoverySession *)self rpRemoteDisplayDiscovery];
-  v5 = v4;
+  rpRemoteDisplayDiscovery = [(CMContinuityCaptureDiscoverySession *)self rpRemoteDisplayDiscovery];
+  discoveredDevices = rpRemoteDisplayDiscovery;
   if (CFPreferenceBooleanWithDefault)
   {
-    v6 = [v4 currentState];
+    currentState = [rpRemoteDisplayDiscovery currentState];
 
-    if (v6)
+    if (currentState)
     {
-      v7 = [(CMContinuityCaptureDiscoverySession *)self currentUserSelectedInSessionDeviceIdentifier];
-      if (!v7)
+      currentUserSelectedInSessionDeviceIdentifier = [(CMContinuityCaptureDiscoverySession *)self currentUserSelectedInSessionDeviceIdentifier];
+      if (!currentUserSelectedInSessionDeviceIdentifier)
       {
         goto LABEL_17;
       }
 
-      v8 = v7;
-      v9 = [(CMContinuityCaptureDiscoverySession *)self currentUserSelectedInSessionDeviceIdentifier];
-      v10 = [(CMContinuityCaptureDiscoverySession *)self rpRemoteDisplayDiscovery];
-      v11 = [v10 peerDeviceIdentifier];
-      v12 = [v9 isEqualToString:v11];
+      v8 = currentUserSelectedInSessionDeviceIdentifier;
+      currentUserSelectedInSessionDeviceIdentifier2 = [(CMContinuityCaptureDiscoverySession *)self currentUserSelectedInSessionDeviceIdentifier];
+      rpRemoteDisplayDiscovery2 = [(CMContinuityCaptureDiscoverySession *)self rpRemoteDisplayDiscovery];
+      peerDeviceIdentifier = [rpRemoteDisplayDiscovery2 peerDeviceIdentifier];
+      v12 = [currentUserSelectedInSessionDeviceIdentifier2 isEqualToString:peerDeviceIdentifier];
 
       if (v12)
       {
@@ -1630,10 +1630,10 @@ LABEL_6:
         v38 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v13 = [(CMContinuityCaptureDiscoverySession *)self rpRemoteDisplayDiscovery];
-        v5 = [v13 discoveredDevices];
+        rpRemoteDisplayDiscovery3 = [(CMContinuityCaptureDiscoverySession *)self rpRemoteDisplayDiscovery];
+        discoveredDevices = [rpRemoteDisplayDiscovery3 discoveredDevices];
 
-        v14 = [v5 countByEnumeratingWithState:&v35 objects:v34 count:16];
+        v14 = [discoveredDevices countByEnumeratingWithState:&v35 objects:v34 count:16];
         if (v14)
         {
           v15 = v14;
@@ -1644,14 +1644,14 @@ LABEL_6:
             {
               if (*v36 != v16)
               {
-                objc_enumerationMutation(v5);
+                objc_enumerationMutation(discoveredDevices);
               }
 
               v18 = *(*(&v35 + 1) + 8 * i);
-              v19 = [v18 identifier];
-              v20 = [(CMContinuityCaptureDiscoverySession *)self rpRemoteDisplayDiscovery];
-              v21 = [v20 peerDeviceIdentifier];
-              v22 = [v19 isEqualToString:v21];
+              identifier = [v18 identifier];
+              rpRemoteDisplayDiscovery4 = [(CMContinuityCaptureDiscoverySession *)self rpRemoteDisplayDiscovery];
+              peerDeviceIdentifier2 = [rpRemoteDisplayDiscovery4 peerDeviceIdentifier];
+              v22 = [identifier isEqualToString:peerDeviceIdentifier2];
 
               if (v22)
               {
@@ -1659,24 +1659,24 @@ LABEL_6:
                 if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412546;
-                  v31 = self;
+                  selfCopy = self;
                   v32 = 2114;
                   v33 = v18;
                   _os_log_impl(&dword_242545000, v27, OS_LOG_TYPE_DEFAULT, "%@ found selected device %{public}@", buf, 0x16u);
                 }
 
-                v28 = self;
-                objc_sync_enter(v28);
-                objc_storeStrong(&v28->_currentUserSelectedInSessionDevice, v18);
-                objc_sync_exit(v28);
+                selfCopy2 = self;
+                objc_sync_enter(selfCopy2);
+                objc_storeStrong(&selfCopy2->_currentUserSelectedInSessionDevice, v18);
+                objc_sync_exit(selfCopy2);
 
                 v29 = v18;
-                v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v29 count:1];
+                discoveredDevices2 = [MEMORY[0x277CBEA60] arrayWithObjects:&v29 count:1];
                 goto LABEL_16;
               }
             }
 
-            v15 = [v5 countByEnumeratingWithState:&v35 objects:v34 count:16];
+            v15 = [discoveredDevices countByEnumeratingWithState:&v35 objects:v34 count:16];
             if (v15)
             {
               continue;
@@ -1718,9 +1718,9 @@ LABEL_17:
 
   else
   {
-    v24 = [v4 discoveredDevices];
+    discoveredDevices2 = [rpRemoteDisplayDiscovery discoveredDevices];
 LABEL_16:
-    v25 = v24;
+    v25 = discoveredDevices2;
   }
 
   return v25;
@@ -1737,8 +1737,8 @@ LABEL_16:
   v3 = discoveredLocalDevices_localDevice;
   if (discoveredLocalDevices_localDevice)
   {
-    v4 = [discoveredLocalDevices_identifier UUIDString];
-    [v2 setObject:v3 forKeyedSubscript:v4];
+    uUIDString = [discoveredLocalDevices_identifier UUIDString];
+    [v2 setObject:v3 forKeyedSubscript:uUIDString];
   }
 
   return v2;
@@ -1767,7 +1767,7 @@ void __61__CMContinuityCaptureDiscoverySession_discoveredLocalDevices__block_inv
 - (id)discoveredRapportDevices
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(CMContinuityCaptureDiscoverySession *)self currentDeviceList];
+  currentDeviceList = [(CMContinuityCaptureDiscoverySession *)self currentDeviceList];
   v100 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v124 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v122 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -1775,9 +1775,9 @@ void __61__CMContinuityCaptureDiscoverySession_discoveredLocalDevices__block_inv
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v127 = self;
+    selfCopy11 = self;
     v128 = 2114;
-    v129 = v3;
+    v129 = currentDeviceList;
     _os_log_impl(&dword_242545000, v4, OS_LOG_TYPE_DEFAULT, "%@ RapportDevices : %{public}@", buf, 0x16u);
   }
 
@@ -1785,7 +1785,7 @@ void __61__CMContinuityCaptureDiscoverySession_discoveredLocalDevices__block_inv
   v169 = 0u;
   v166 = 0u;
   v167 = 0u;
-  v5 = v3;
+  v5 = currentDeviceList;
   v6 = [v5 countByEnumeratingWithState:&v166 objects:v165 count:16];
   if (v6)
   {
@@ -1817,8 +1817,8 @@ void __61__CMContinuityCaptureDiscoverySession_discoveredLocalDevices__block_inv
         }
 
         v13 = [v11 numberWithInteger:v12];
-        v14 = [v10 idsDeviceIdentifier];
-        [v124 setObject:v13 forKeyedSubscript:v14];
+        idsDeviceIdentifier = [v10 idsDeviceIdentifier];
+        [v124 setObject:v13 forKeyedSubscript:idsDeviceIdentifier];
 
         v15 = MEMORY[0x277CCABB0];
         if (v10)
@@ -1836,8 +1836,8 @@ void __61__CMContinuityCaptureDiscoverySession_discoveredLocalDevices__block_inv
         }
 
         v17 = [v15 numberWithInteger:v16];
-        v18 = [v10 idsDeviceIdentifier];
-        [v122 setObject:v17 forKeyedSubscript:v18];
+        idsDeviceIdentifier2 = [v10 idsDeviceIdentifier];
+        [v122 setObject:v17 forKeyedSubscript:idsDeviceIdentifier2];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v166 objects:v165 count:16];
@@ -1867,16 +1867,16 @@ void __61__CMContinuityCaptureDiscoverySession_discoveredLocalDevices__block_inv
 
         v21 = *(*(&v155 + 1) + 8 * j);
         v22 = [CMContinuityCaptureDiscoverySession rapportDeviceIdentifier:v21];
-        v23 = [v21 name];
-        v24 = [v21 statusFlags];
-        v25 = [v21 statusFlags];
-        v26 = [v21 cameraState];
-        v27 = [v21 model];
-        v28 = v27;
+        name = [v21 name];
+        statusFlags = [v21 statusFlags];
+        statusFlags2 = [v21 statusFlags];
+        cameraState = [v21 cameraState];
+        model = [v21 model];
+        v28 = model;
         if (v22)
         {
-          v123 = v27;
-          v121 = v23;
+          v123 = model;
+          v121 = name;
           v29 = [v19 objectForKey:v22];
 
           v30 = v19;
@@ -1886,7 +1886,7 @@ void __61__CMContinuityCaptureDiscoverySession_discoveredLocalDevices__block_inv
             if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              v127 = self;
+              selfCopy11 = self;
               v128 = 2114;
               v129 = v22;
               _os_log_impl(&dword_242545000, v31, OS_LOG_TYPE_DEFAULT, "%@ (%{public}@) Missing device from rp display device list", buf, 0x16u);
@@ -1896,27 +1896,27 @@ void __61__CMContinuityCaptureDiscoverySession_discoveredLocalDevices__block_inv
           }
 
           v119 = v21;
-          v32 = v24 & 0x1000000;
-          v114 = v25 & 0x200;
-          v33 = [(CMContinuityCaptureDiscoverySession *)self rpRemoteDisplayDiscovery];
-          v35 = [v33 dedicatedDevice];
-          v34 = [v35 idsDeviceIdentifier];
-          v109 = [v34 isEqual:v22];
+          v32 = statusFlags & 0x1000000;
+          v114 = statusFlags2 & 0x200;
+          rpRemoteDisplayDiscovery = [(CMContinuityCaptureDiscoverySession *)self rpRemoteDisplayDiscovery];
+          dedicatedDevice = [rpRemoteDisplayDiscovery dedicatedDevice];
+          idsDeviceIdentifier3 = [dedicatedDevice idsDeviceIdentifier];
+          v109 = [idsDeviceIdentifier3 isEqual:v22];
 
-          LODWORD(v35) = [(CMContinuityCaptureProximityMonitor *)self->_proximityMonitor isDeviceNearby:v22];
+          LODWORD(dedicatedDevice) = [(CMContinuityCaptureProximityMonitor *)self->_proximityMonitor isDeviceNearby:v22];
           v36 = [v30 objectForKeyedSubscript:v22];
-          v37 = [v36 unsignedLongValue];
+          unsignedLongValue = [v36 unsignedLongValue];
 
           v38 = [v122 objectForKeyedSubscript:v22];
-          v112 = [v38 unsignedLongValue];
+          unsignedLongValue2 = [v38 unsignedLongValue];
 
           v39 = CMContinuityCaptureLog(0);
           if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
           {
-            v107 = [v119 cameraCapabilities];
-            v40 = [v119 statusFlags];
+            cameraCapabilities = [v119 cameraCapabilities];
+            statusFlags3 = [v119 statusFlags];
             *buf = 138415618;
-            v127 = self;
+            selfCopy11 = self;
             v128 = 2114;
             v129 = v22;
             v130 = 2114;
@@ -1928,19 +1928,19 @@ void __61__CMContinuityCaptureDiscoverySession_discoveredLocalDevices__block_inv
             v136 = 1024;
             v137 = v114 >> 9;
             v138 = 1024;
-            v139 = v26 == 1;
+            v139 = cameraState == 1;
             v140 = 1024;
-            v141 = v35;
+            v141 = dedicatedDevice;
             v142 = 1024;
-            v143 = v107 != 0;
+            v143 = cameraCapabilities != 0;
             v144 = 2048;
-            v145 = v37;
+            v145 = unsignedLongValue;
             v146 = 2048;
-            v147 = v112;
+            v147 = unsignedLongValue2;
             v148 = 2048;
             v149 = v119;
             v150 = 2048;
-            v151 = v40;
+            v151 = statusFlags3;
             v152 = 1024;
             v153 = v109;
             _os_log_impl(&dword_242545000, v39, OS_LOG_TYPE_DEFAULT, "%@ Client Device Identifier:%{public}@ Name:%{public}@ Model:%{public}@ Wired:%d Wireless:%d Magic:%d Nearby:%d Capabilities:%d Version:%llu.%llu devicePtr:%p status:%lx isDedicated:%d", buf, 0x76u);
@@ -1951,12 +1951,12 @@ void __61__CMContinuityCaptureDiscoverySession_discoveredLocalDevices__block_inv
           {
             [(NSMutableDictionary *)self->_availableCapabilitiesByIdentifiers removeObjectForKey:v22];
             v19 = v124;
-            v23 = v121;
+            name = v121;
             goto LABEL_105;
           }
 
-          v108 = v37;
-          v42 = [(CMContinuityCaptureDiscoverySession *)self validateCapabilitiesAndCacheIncompatibleNotificationIfApplicable:v119 majorVersion:v37];
+          v108 = unsignedLongValue;
+          v42 = [(CMContinuityCaptureDiscoverySession *)self validateCapabilitiesAndCacheIncompatibleNotificationIfApplicable:v119 majorVersion:unsignedLongValue];
           v43 = [(CMContinuityCaptureDiscoverySession *)self _deviceForIdentifier:v22];
           if (v43)
           {
@@ -1981,7 +1981,7 @@ LABEL_38:
               if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412546;
-                v127 = self;
+                selfCopy11 = self;
                 v128 = 2114;
                 v129 = v22;
                 v45 = v44;
@@ -1998,7 +1998,7 @@ LABEL_38:
               if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412546;
-                v127 = self;
+                selfCopy11 = self;
                 v128 = 2114;
                 v129 = v22;
                 v45 = v44;
@@ -2010,7 +2010,7 @@ LABEL_44:
 LABEL_45:
 
               [(NSMutableDictionary *)self->_availableCapabilitiesByIdentifiers removeObjectForKey:v22];
-              v23 = v121;
+              name = v121;
 LABEL_104:
 
               v19 = v124;
@@ -2027,7 +2027,7 @@ LABEL_49:
                 if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412546;
-                  v127 = self;
+                  selfCopy11 = self;
                   v128 = 2114;
                   v129 = v22;
                   _os_log_impl(&dword_242545000, v48, OS_LOG_TYPE_DEFAULT, "%@ (%{public}@) RPError : USB inactive and WifiOff", buf, 0x16u);
@@ -2039,7 +2039,7 @@ LABEL_49:
                   if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
                   {
                     *buf = 138412546;
-                    v127 = self;
+                    selfCopy11 = self;
                     v128 = 2114;
                     v129 = v22;
                     v50 = v49;
@@ -2072,13 +2072,13 @@ LABEL_49:
             v28 = v123;
             if (objc_opt_isKindOfClass())
             {
-              v105 = v35;
+              v105 = dedicatedDevice;
               v110 = v42;
               v53 = CMContinuityCaptureLog(0);
               if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412802;
-                v127 = self;
+                selfCopy11 = self;
                 v128 = 2114;
                 v129 = v43;
                 v130 = 2114;
@@ -2087,25 +2087,25 @@ LABEL_49:
               }
 
               v54 = +[CMContinuityCaptureSessionStateManager sharedInstance];
-              v55 = [v54 activeSession];
-              if (!v55)
+              activeSession = [v54 activeSession];
+              if (!activeSession)
               {
                 v42 = v110;
-                v35 = v35;
+                dedicatedDevice = dedicatedDevice;
                 goto LABEL_82;
               }
 
-              v102 = v55;
+              v102 = activeSession;
               v56 = +[CMContinuityCaptureSessionStateManager sharedInstance];
-              v57 = [v56 activeSession];
-              [v57 device];
+              activeSession2 = [v56 activeSession];
+              [activeSession2 device];
               v58 = v98 = v54;
-              v59 = [v58 deviceIdentifier];
-              v60 = [v59 UUIDString];
-              v97 = [v60 isEqualToString:v22];
+              deviceIdentifier = [v58 deviceIdentifier];
+              uUIDString = [deviceIdentifier UUIDString];
+              v97 = [uUIDString isEqualToString:v22];
 
               v42 = v110;
-              v35 = v105;
+              dedicatedDevice = v105;
               if (v97)
               {
                 if (v32)
@@ -2119,15 +2119,15 @@ LABEL_49:
                 }
 
                 v62 = +[CMContinuityCaptureSessionStateManager sharedInstance];
-                v63 = [v62 activeSession];
-                [v63 setTransport:v61];
+                activeSession3 = [v62 activeSession];
+                [activeSession3 setTransport:v61];
 
                 v54 = v62;
 LABEL_82:
               }
 
-              v77 = [v43 device];
-              v78 = [v119 isEqual:v77];
+              device = [v43 device];
+              v78 = [v119 isEqual:device];
 
               if ((v78 & 1) == 0)
               {
@@ -2136,13 +2136,13 @@ LABEL_82:
 
               [v100 setObject:v43 forKeyedSubscript:v22];
               v79 = [v100 objectForKeyedSubscript:v22];
-              [v79 setNearby:v35];
+              [v79 setNearby:dedicatedDevice];
 
               v80 = [v100 objectForKeyedSubscript:v22];
               [v80 setDeviceMajorVersion:v108];
 
               v81 = [v100 objectForKeyedSubscript:v22];
-              [v81 setDeviceMinorVersion:v112];
+              [v81 setDeviceMinorVersion:unsignedLongValue2];
 
               v82 = [v100 objectForKeyedSubscript:v22];
               [v82 notifyDeviceStateChange];
@@ -2150,7 +2150,7 @@ LABEL_82:
               v28 = v123;
             }
 
-            v23 = v121;
+            name = v121;
             if (!v115)
             {
               goto LABEL_104;
@@ -2166,7 +2166,7 @@ LABEL_103:
           {
             v75 = [(NSMutableDictionary *)self->_availableCapabilitiesByIdentifiers objectForKey:v22];
 
-            v23 = v121;
+            name = v121;
             if (!v75)
             {
               [(NSMutableDictionary *)self->_availableCapabilitiesByIdentifiers setObject:MEMORY[0x277CBEC10] forKeyedSubscript:v22];
@@ -2190,7 +2190,7 @@ LABEL_103:
           if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138413314;
-            v127 = self;
+            selfCopy11 = self;
             v128 = 2114;
             v129 = v22;
             v130 = 2114;
@@ -2215,7 +2215,7 @@ LABEL_103:
             if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              v127 = self;
+              selfCopy11 = self;
               v128 = 2114;
               v129 = v22;
               v50 = v49;
@@ -2227,53 +2227,53 @@ LABEL_90:
 LABEL_91:
 
             [(NSMutableDictionary *)self->_availableCapabilitiesByIdentifiers removeObjectForKey:v22];
-            v23 = v121;
+            name = v121;
             v28 = v123;
             goto LABEL_104;
           }
 
-          v106 = v35;
+          v106 = dedicatedDevice;
           v111 = v42;
           v67 = +[CMContinuityCaptureSessionStateManager sharedInstance];
-          v68 = [v67 activeSession];
+          activeSession4 = [v67 activeSession];
           v120 = v66;
           v96 = v32;
-          if (v68)
+          if (activeSession4)
           {
-            v116 = v68;
+            v116 = activeSession4;
             v69 = +[CMContinuityCaptureSessionStateManager sharedInstance];
-            v103 = [v69 activeSession];
-            v99 = [v103 device];
-            v70 = [v99 deviceIdentifier];
-            v71 = [v70 UUIDString];
-            if ([v71 isEqualToString:v22])
+            activeSession5 = [v69 activeSession];
+            device2 = [activeSession5 device];
+            deviceIdentifier2 = [device2 deviceIdentifier];
+            uUIDString2 = [deviceIdentifier2 UUIDString];
+            if ([uUIDString2 isEqualToString:v22])
             {
               v94 = +[CMContinuityCaptureSessionStateManager sharedInstance];
-              v72 = [v94 activeSession];
-              v73 = [v72 device];
-              v95 = [v73 isEqual:v120];
+              activeSession6 = [v94 activeSession];
+              device3 = [activeSession6 device];
+              v95 = [device3 isEqual:v120];
 
               v28 = v123;
               if ((v95 & 1) == 0)
               {
                 v67 = +[CMContinuityCaptureSessionStateManager sharedInstance];
-                v74 = [v67 activeSession];
-                [v74 setDevice:v120];
+                activeSession7 = [v67 activeSession];
+                [activeSession7 setDevice:v120];
                 goto LABEL_93;
               }
 
 LABEL_95:
               v83 = +[CMContinuityCaptureSessionStateManager sharedInstance];
-              v84 = [v83 activeSession];
-              if (v84)
+              activeSession8 = [v83 activeSession];
+              if (activeSession8)
               {
-                v117 = v84;
+                v117 = activeSession8;
                 v85 = +[CMContinuityCaptureSessionStateManager sharedInstance];
-                v86 = [v85 activeSession];
-                v87 = [v86 device];
-                v88 = [v87 deviceIdentifier];
-                v89 = [v88 UUIDString];
-                v104 = [v89 isEqualToString:v22];
+                activeSession9 = [v85 activeSession];
+                device4 = [activeSession9 device];
+                deviceIdentifier3 = [device4 deviceIdentifier];
+                uUIDString3 = [deviceIdentifier3 UUIDString];
+                v104 = [uUIDString3 isEqualToString:v22];
 
                 v28 = v123;
                 if (v104)
@@ -2289,8 +2289,8 @@ LABEL_95:
                   }
 
                   v83 = +[CMContinuityCaptureSessionStateManager sharedInstance];
-                  v91 = [v83 activeSession];
-                  [v91 setTransport:v90];
+                  activeSession10 = [v83 activeSession];
+                  [activeSession10 setTransport:v90];
 
                   v28 = v123;
                   goto LABEL_101;
@@ -2303,19 +2303,19 @@ LABEL_101:
               }
 
               [(CMContinuityCaptureTransportRapportDevice *)v120 setDeviceMajorVersion:v108];
-              [(CMContinuityCaptureTransportRapportDevice *)v120 setDeviceMinorVersion:v112];
+              [(CMContinuityCaptureTransportRapportDevice *)v120 setDeviceMinorVersion:unsignedLongValue2];
               [(CMContinuityCaptureTransportRapportDevice *)v120 setNearby:v106];
               [(NSMutableDictionary *)self->_availableCapabilitiesByIdentifiers removeObjectForKey:v22];
               [v100 setObject:v120 forKeyedSubscript:v22];
               v92 = [v100 objectForKeyedSubscript:v22];
               [v92 notifyDeviceStateChange];
 
-              v23 = v121;
+              name = v121;
               v42 = v111;
               goto LABEL_103;
             }
 
-            v74 = v116;
+            activeSession7 = v116;
 LABEL_93:
           }
 
@@ -2326,7 +2326,7 @@ LABEL_93:
         if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v127 = self;
+          selfCopy11 = self;
           _os_log_impl(&dword_242545000, v41, OS_LOG_TYPE_DEFAULT, "%@ Missing device identifier", buf, 0xCu);
         }
 
@@ -2342,23 +2342,23 @@ LABEL_105:
   return v100;
 }
 
-- (id)validateCapabilitiesAndCacheIncompatibleNotificationIfApplicable:(id)a3 majorVersion:(unint64_t)a4
+- (id)validateCapabilitiesAndCacheIncompatibleNotificationIfApplicable:(id)applicable majorVersion:(unint64_t)version
 {
-  v5 = a3;
-  v6 = [CMContinuityCaptureDiscoverySession rapportDeviceIdentifier:v5];
+  applicableCopy = applicable;
+  v6 = [CMContinuityCaptureDiscoverySession rapportDeviceIdentifier:applicableCopy];
   if (!v6)
   {
     v10 = 0;
     goto LABEL_21;
   }
 
-  v7 = [v5 cameraCapabilities];
+  cameraCapabilities = [applicableCopy cameraCapabilities];
 
-  if (v7)
+  if (cameraCapabilities)
   {
     v8 = [CMContinuityCaptureCapabilities alloc];
-    v9 = [v5 cameraCapabilities];
-    v10 = [(CMContinuityCaptureCapabilities *)v8 initWithDictionaryRepresentation:v9];
+    cameraCapabilities2 = [applicableCopy cameraCapabilities];
+    v10 = [(CMContinuityCaptureCapabilities *)v8 initWithDictionaryRepresentation:cameraCapabilities2];
 
     if (v10)
     {
@@ -2384,7 +2384,7 @@ LABEL_14:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v24 = 138412546;
-    v25 = self;
+    selfCopy2 = self;
     v26 = 2114;
     v27 = v6;
     _os_log_impl(&dword_242545000, v17, OS_LOG_TYPE_DEFAULT, "%@ Use queried capabilities for %{public}@", &v24, 0x16u);
@@ -2397,12 +2397,12 @@ LABEL_14:
   }
 
 LABEL_10:
-  v18 = [(CMContinuityCaptureCapabilities *)v10 devicesCapabilities];
-  if (![v18 count])
+  devicesCapabilities = [(CMContinuityCaptureCapabilities *)v10 devicesCapabilities];
+  if (![devicesCapabilities count])
   {
-    v21 = [(CMContinuityCaptureCapabilities *)v10 userDisabled];
+    userDisabled = [(CMContinuityCaptureCapabilities *)v10 userDisabled];
 
-    if (v21)
+    if (userDisabled)
     {
       goto LABEL_19;
     }
@@ -2413,7 +2413,7 @@ LABEL_15:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       v24 = 138412802;
-      v25 = self;
+      selfCopy2 = self;
       v26 = 2114;
       v27 = v6;
       v28 = 2114;
@@ -2438,22 +2438,22 @@ LABEL_21:
   return v10;
 }
 
-- (id)discoveredCompatibleDevices:(id)a3 rapportDevices:(id)a4
+- (id)discoveredCompatibleDevices:(id)devices rapportDevices:(id)rapportDevices
 {
-  v5 = a3;
-  v6 = a4;
+  devicesCopy = devices;
+  rapportDevicesCopy = rapportDevices;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v8 = objc_alloc(MEMORY[0x277CBEB58]);
-  v9 = v5;
-  v10 = [v5 allKeys];
-  v11 = [v8 initWithArray:v10];
+  v9 = devicesCopy;
+  allKeys = [devicesCopy allKeys];
+  v11 = [v8 initWithArray:allKeys];
 
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v12 = [v6 allKeys];
-  v13 = [v12 countByEnumeratingWithState:&v40 objects:v39 count:16];
+  allKeys2 = [rapportDevicesCopy allKeys];
+  v13 = [allKeys2 countByEnumeratingWithState:&v40 objects:v39 count:16];
   if (v13)
   {
     v14 = v13;
@@ -2464,7 +2464,7 @@ LABEL_21:
       {
         if (*v41 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allKeys2);
         }
 
         v17 = *(*(&v40 + 1) + 8 * i);
@@ -2472,18 +2472,18 @@ LABEL_21:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v36 = self;
+          selfCopy2 = self;
           v37 = 2114;
           v38 = v17;
           _os_log_impl(&dword_242545000, v18, OS_LOG_TYPE_DEFAULT, "%@ Support with rapport for %{public}@", buf, 0x16u);
         }
 
         [v11 removeObject:v17];
-        v19 = [v6 objectForKeyedSubscript:v17];
+        v19 = [rapportDevicesCopy objectForKeyedSubscript:v17];
         [v7 setObject:v19 forKeyedSubscript:v17];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v40 objects:v39 count:16];
+      v14 = [allKeys2 countByEnumeratingWithState:&v40 objects:v39 count:16];
     }
 
     while (v14);
@@ -2493,8 +2493,8 @@ LABEL_21:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v20 = [v11 allObjects];
-  v21 = [v20 countByEnumeratingWithState:&v31 objects:v30 count:16];
+  allObjects = [v11 allObjects];
+  v21 = [allObjects countByEnumeratingWithState:&v31 objects:v30 count:16];
   if (v21)
   {
     v22 = v21;
@@ -2505,7 +2505,7 @@ LABEL_21:
       {
         if (*v32 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(allObjects);
         }
 
         v25 = *(*(&v31 + 1) + 8 * j);
@@ -2513,7 +2513,7 @@ LABEL_21:
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v36 = self;
+          selfCopy2 = self;
           v37 = 2114;
           v38 = v25;
           _os_log_impl(&dword_242545000, v26, OS_LOG_TYPE_DEFAULT, "%@ Support with sidecar for %{public}@", buf, 0x16u);
@@ -2523,7 +2523,7 @@ LABEL_21:
         [v7 setObject:v27 forKeyedSubscript:v25];
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v31 objects:v30 count:16];
+      v22 = [allObjects countByEnumeratingWithState:&v31 objects:v30 count:16];
     }
 
     while (v22);
@@ -2532,32 +2532,32 @@ LABEL_21:
   return v7;
 }
 
-+ (void)unscheduleAllNotificationForDeviceIdentifier:(id)a3
++ (void)unscheduleAllNotificationForDeviceIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[CMContinuityCaptureUserNotificationCenter sharedInstance];
-  [v4 unscheduleNotificationForDeviceIdentifier:v3 type:8 clearHistory:0];
+  [v4 unscheduleNotificationForDeviceIdentifier:identifierCopy type:8 clearHistory:0];
 
   v5 = +[CMContinuityCaptureUserNotificationCenter sharedInstance];
-  [v5 unscheduleNotificationForDeviceIdentifier:v3 type:9 clearHistory:0];
+  [v5 unscheduleNotificationForDeviceIdentifier:identifierCopy type:9 clearHistory:0];
 
   v6 = +[CMContinuityCaptureUserNotificationCenter sharedInstance];
-  [v6 unscheduleNotificationForDeviceIdentifier:v3 type:13 clearHistory:0];
+  [v6 unscheduleNotificationForDeviceIdentifier:identifierCopy type:13 clearHistory:0];
 
   v7 = +[CMContinuityCaptureUserNotificationCenter sharedInstance];
-  [v7 unscheduleNotificationForDeviceIdentifier:v3 type:14 clearHistory:0];
+  [v7 unscheduleNotificationForDeviceIdentifier:identifierCopy type:14 clearHistory:0];
 
   v8 = +[CMContinuityCaptureUserNotificationCenter sharedInstance];
-  [v8 unscheduleNotificationForDeviceIdentifier:v3 type:2 clearHistory:0];
+  [v8 unscheduleNotificationForDeviceIdentifier:identifierCopy type:2 clearHistory:0];
 
   v9 = +[CMContinuityCaptureUserNotificationCenter sharedInstance];
-  [v9 unscheduleNotificationForDeviceIdentifier:v3 type:3 clearHistory:0];
+  [v9 unscheduleNotificationForDeviceIdentifier:identifierCopy type:3 clearHistory:0];
 
   v10 = +[CMContinuityCaptureUserNotificationCenter sharedInstance];
-  [v10 unscheduleNotificationForDeviceIdentifier:v3 type:1 clearHistory:0];
+  [v10 unscheduleNotificationForDeviceIdentifier:identifierCopy type:1 clearHistory:0];
 
   v11 = +[CMContinuityCaptureUserNotificationCenter sharedInstance];
-  [v11 unscheduleNotificationForDeviceIdentifier:v3 type:11 clearHistory:0];
+  [v11 unscheduleNotificationForDeviceIdentifier:identifierCopy type:11 clearHistory:0];
 }
 
 - (void)updateState
@@ -2566,11 +2566,11 @@ LABEL_21:
   v3 = CMContinuityCaptureLog(0);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(RPCompanionLinkClient *)self->_rpCompanionLinkClient errorFlags];
+    errorFlags = [(RPCompanionLinkClient *)self->_rpCompanionLinkClient errorFlags];
     *buf = 138412546;
-    v102 = self;
+    selfCopy3 = self;
     v103 = 2048;
-    v104 = v4;
+    v104 = errorFlags;
     _os_log_impl(&dword_242545000, v3, OS_LOG_TYPE_DEFAULT, "%@ RapportErrorFlags : %llu", buf, 0x16u);
   }
 
@@ -2579,8 +2579,8 @@ LABEL_21:
   v98 = 0u;
   v99 = 0u;
   v81 = v100 = 0u;
-  v5 = [v81 allValues];
-  v6 = [v5 countByEnumeratingWithState:&v97 objects:v96 count:16];
+  allValues = [v81 allValues];
+  v6 = [allValues countByEnumeratingWithState:&v97 objects:v96 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2591,14 +2591,14 @@ LABEL_21:
       {
         if (*v98 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v97 + 1) + 8 * i);
         availableClientDeviceByIdentifiers = self->_availableClientDeviceByIdentifiers;
-        v12 = [v10 deviceIdentifier];
-        v13 = [v12 UUIDString];
-        v14 = [(NSDictionary *)availableClientDeviceByIdentifiers objectForKey:v13];
+        deviceIdentifier = [v10 deviceIdentifier];
+        uUIDString = [deviceIdentifier UUIDString];
+        v14 = [(NSDictionary *)availableClientDeviceByIdentifiers objectForKey:uUIDString];
         if (v14)
         {
         }
@@ -2609,22 +2609,22 @@ LABEL_21:
 
           if ((v15 & 1) == 0)
           {
-            v16 = [v10 magicStateMonitor];
-            [v16 setupMagicStateListener];
+            magicStateMonitor = [v10 magicStateMonitor];
+            [magicStateMonitor setupMagicStateListener];
 
             v17 = +[CMContinuityCaptureSessionStateManager sharedInstance];
-            v18 = [v17 queue];
-            dispatch_assert_queue_not_V2(v18);
+            queue = [v17 queue];
+            dispatch_assert_queue_not_V2(queue);
 
             v19 = +[CMContinuityCaptureSessionStateManager sharedInstance];
-            v20 = [v19 queue];
+            queue2 = [v19 queue];
             block[0] = MEMORY[0x277D85DD0];
             block[1] = 3221225472;
             block[2] = __50__CMContinuityCaptureDiscoverySession_updateState__block_invoke;
             block[3] = &unk_278D5C008;
             block[4] = v10;
             block[5] = self;
-            dispatch_async_and_wait(v20, block);
+            dispatch_async_and_wait(queue2, block);
 
             [v10 addObserver:self forKeyPath:@"userDisconnected" options:3 context:0];
             [(NSMutableSet *)self->_observedDevices addObject:v10];
@@ -2632,7 +2632,7 @@ LABEL_21:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v97 objects:v96 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v97 objects:v96 count:16];
     }
 
     while (v7);
@@ -2642,8 +2642,8 @@ LABEL_21:
   v94 = 0u;
   v91 = 0u;
   v92 = 0u;
-  v21 = [(NSDictionary *)self->_availableClientDeviceByIdentifiers allKeys];
-  v22 = [v21 countByEnumeratingWithState:&v91 objects:v90 count:16];
+  allKeys = [(NSDictionary *)self->_availableClientDeviceByIdentifiers allKeys];
+  v22 = [allKeys countByEnumeratingWithState:&v91 objects:v90 count:16];
   if (v22)
   {
     v23 = v22;
@@ -2654,7 +2654,7 @@ LABEL_21:
       {
         if (*v92 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(allKeys);
         }
 
         v26 = *(*(&v91 + 1) + 8 * j);
@@ -2670,7 +2670,7 @@ LABEL_21:
             {
               v30 = [(NSDictionary *)self->_availableClientDeviceByIdentifiers objectForKeyedSubscript:v26];
               *buf = 138412546;
-              v102 = self;
+              selfCopy3 = self;
               v103 = 2114;
               v104 = v30;
               _os_log_impl(&dword_242545000, v29, OS_LOG_TYPE_DEFAULT, "%@ mark %{public}@ as deferred", buf, 0x16u);
@@ -2704,7 +2704,7 @@ LABEL_21:
           {
             v35 = [(NSDictionary *)self->_availableClientDeviceByIdentifiers objectForKeyedSubscript:v26];
             *buf = 138412546;
-            v102 = self;
+            selfCopy3 = self;
             v103 = 2114;
             v104 = v35;
             _os_log_impl(&dword_242545000, v34, OS_LOG_TYPE_DEFAULT, "%@ mark %{public}@ as un-deferred", buf, 0x16u);
@@ -2740,22 +2740,22 @@ LABEL_31:
         }
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v91 objects:v90 count:16];
+      v23 = [allKeys countByEnumeratingWithState:&v91 objects:v90 count:16];
     }
 
     while (v23);
   }
 
   [(CMContinuityCaptureDiscoverySession *)self willChangeValueForKey:@"availableClientDevices"];
-  v39 = self;
-  objc_sync_enter(v39);
+  selfCopy4 = self;
+  objc_sync_enter(selfCopy4);
   v40 = self->_availableClientDeviceByIdentifiers;
   v41 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:v81];
   v42 = self->_availableClientDeviceByIdentifiers;
   self->_availableClientDeviceByIdentifiers = v41;
 
-  objc_sync_exit(v39);
-  [(CMContinuityCaptureDiscoverySession *)v39 didChangeValueForKey:@"availableClientDevices"];
+  objc_sync_exit(selfCopy4);
+  [(CMContinuityCaptureDiscoverySession *)selfCopy4 didChangeValueForKey:@"availableClientDevices"];
   v88 = 0u;
   v89 = 0u;
   v86 = 0u;
@@ -2790,7 +2790,7 @@ LABEL_31:
           if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v102 = v39;
+            selfCopy3 = selfCopy4;
             v103 = 2114;
             v104 = v49;
             _os_log_impl(&dword_242545000, v50, OS_LOG_TYPE_DEFAULT, "%@ terminate %{public}@", buf, 0x16u);
@@ -2798,27 +2798,27 @@ LABEL_31:
 
           [CMContinuityCaptureDiscoverySession unscheduleAllNotificationForDeviceIdentifier:v47];
           v51 = +[CMContinuityCaptureSessionStateManager sharedInstance];
-          v52 = [v51 activeSession];
-          if (v52)
+          activeSession = [v51 activeSession];
+          if (activeSession)
           {
-            v53 = v52;
+            v53 = activeSession;
             v79 = +[CMContinuityCaptureSessionStateManager sharedInstance];
-            v54 = [v79 activeSession];
-            v55 = [v54 device];
-            v56 = [v55 deviceIdentifier];
-            [v56 UUIDString];
+            activeSession2 = [v79 activeSession];
+            device = [activeSession2 device];
+            deviceIdentifier2 = [device deviceIdentifier];
+            [deviceIdentifier2 UUIDString];
             v57 = v49;
-            v59 = v58 = v39;
+            v59 = v58 = selfCopy4;
             v78 = [v59 isEqualToString:v47];
 
-            v39 = v58;
+            selfCopy4 = v58;
             v49 = v57;
 
             v40 = v75;
             if (v78)
             {
-              v60 = [v49 capabilities];
-              if (!v60 || (v61 = v60, [v49 capabilities], v62 = objc_claimAutoreleasedReturnValue(), v63 = objc_msgSend(v62, "userDisabled"), v62, v61, v64 = v74, (v63 & 1) == 0))
+              capabilities = [v49 capabilities];
+              if (!capabilities || (v61 = capabilities, [v49 capabilities], v62 = objc_claimAutoreleasedReturnValue(), v63 = objc_msgSend(v62, "userDisabled"), v62, v61, v64 = v74, (v63 & 1) == 0))
               {
                 v64 = @"Device lost";
               }
@@ -2834,14 +2834,14 @@ LABEL_31:
 LABEL_53:
           }
 
-          if ([(NSMutableSet *)v39->_observedDevices containsObject:v49])
+          if ([(NSMutableSet *)selfCopy4->_observedDevices containsObject:v49])
           {
             v65 = +[CMContinuityCaptureSessionStateManager sharedInstance];
-            v66 = [v65 queue];
-            dispatch_assert_queue_not_V2(v66);
+            queue3 = [v65 queue];
+            dispatch_assert_queue_not_V2(queue3);
 
             v67 = +[CMContinuityCaptureSessionStateManager sharedInstance];
-            v68 = [v67 queue];
+            queue4 = [v67 queue];
             v82[0] = MEMORY[0x277D85DD0];
             v82[1] = 3221225472;
             v82[2] = __50__CMContinuityCaptureDiscoverySession_updateState__block_invoke_100;
@@ -2849,21 +2849,21 @@ LABEL_53:
             v69 = v49;
             v70 = v49;
             v83 = v70;
-            v84 = v39;
-            dispatch_async_and_wait(v68, v82);
+            v84 = selfCopy4;
+            dispatch_async_and_wait(queue4, v82);
 
-            [v70 removeObserver:v39 forKeyPath:@"userDisconnected" context:0];
+            [v70 removeObserver:selfCopy4 forKeyPath:@"userDisconnected" context:0];
             v71 = v70;
             v49 = v69;
-            [(NSMutableSet *)v39->_observedDevices removeObject:v71];
+            [(NSMutableSet *)selfCopy4->_observedDevices removeObject:v71];
           }
 
-          [(CMContinuityCaptureProximityMonitor *)v39->_proximityMonitor endTracking:v47];
+          [(CMContinuityCaptureProximityMonitor *)selfCopy4->_proximityMonitor endTracking:v47];
           v72 = [(NSDictionary *)v40 objectForKeyedSubscript:v47];
-          v73 = [v72 magicStateMonitor];
-          [v73 invalidate];
+          magicStateMonitor2 = [v72 magicStateMonitor];
+          [magicStateMonitor2 invalidate];
 
-          [(NSMutableDictionary *)v39->_availableCapabilitiesByIdentifiers removeObjectForKey:v47];
+          [(NSMutableDictionary *)selfCopy4->_availableCapabilitiesByIdentifiers removeObjectForKey:v47];
           v45 = v76;
           v44 = v77;
         }
@@ -2918,9 +2918,9 @@ LABEL_53:
   }
 }
 
-- (CMContinuityCaptureDiscoverySession)initWithQueue:(id)a3
+- (CMContinuityCaptureDiscoverySession)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v27.receiver = self;
   v27.super_class = CMContinuityCaptureDiscoverySession;
   v6 = [(CMContinuityCaptureDiscoverySession *)&v27 init];
@@ -2943,7 +2943,7 @@ LABEL_8:
   v12 = *(v6 + 18);
   *(v6 + 18) = v11;
 
-  objc_storeStrong(v6 + 3, a3);
+  objc_storeStrong(v6 + 3, queue);
   v13 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v14 = *(v6 + 12);
   *(v6 + 12) = v13;
@@ -2985,8 +2985,8 @@ LABEL_4:
 
 - (void)currentDeviceList
 {
-  v3 = [a1 rpRemoteDisplayDiscovery];
-  v4 = [v3 peerDeviceIdentifier];
+  rpRemoteDisplayDiscovery = [self rpRemoteDisplayDiscovery];
+  peerDeviceIdentifier = [rpRemoteDisplayDiscovery peerDeviceIdentifier];
   OUTLINED_FUNCTION_0_1();
   v7 = v5;
   _os_log_error_impl(&dword_242545000, a2, OS_LOG_TYPE_ERROR, "%@ out of session for %{public}@", v6, 0x16u);

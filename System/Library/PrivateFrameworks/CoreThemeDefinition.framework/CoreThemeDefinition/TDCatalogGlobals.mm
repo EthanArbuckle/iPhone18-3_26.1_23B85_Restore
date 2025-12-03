@@ -7,13 +7,13 @@
 - (BOOL)supportsWhitePointAdjustments;
 - (id)dictionaryForArchiving;
 - (unint64_t)defaultBlendMode;
-- (void)setAllowsCustomTintColors:(BOOL)a3;
-- (void)setAllowsSystemTintColors:(BOOL)a3;
-- (void)setAllowsVibrancy:(BOOL)a3;
-- (void)setDefaultBlendMode:(unint64_t)a3;
-- (void)setSupportsBrightnessAdjustments:(BOOL)a3;
-- (void)setSupportsMultipleAppearancesForEffects:(BOOL)a3;
-- (void)setSupportsWhitePointAdjustments:(BOOL)a3;
+- (void)setAllowsCustomTintColors:(BOOL)colors;
+- (void)setAllowsSystemTintColors:(BOOL)colors;
+- (void)setAllowsVibrancy:(BOOL)vibrancy;
+- (void)setDefaultBlendMode:(unint64_t)mode;
+- (void)setSupportsBrightnessAdjustments:(BOOL)adjustments;
+- (void)setSupportsMultipleAppearancesForEffects:(BOOL)effects;
+- (void)setSupportsWhitePointAdjustments:(BOOL)adjustments;
 @end
 
 @implementation TDCatalogGlobals
@@ -26,10 +26,10 @@
   return defaultBlendMode;
 }
 
-- (void)setDefaultBlendMode:(unint64_t)a3
+- (void)setDefaultBlendMode:(unint64_t)mode
 {
   [(TDCatalogGlobals *)self willChangeValueForKey:@"defaultBlendMode"];
-  self->_defaultBlendMode = a3;
+  self->_defaultBlendMode = mode;
 
   [(TDCatalogGlobals *)self didChangeValueForKey:@"defaultBlendMode"];
 }
@@ -42,10 +42,10 @@
   return allowsVibrancy;
 }
 
-- (void)setAllowsVibrancy:(BOOL)a3
+- (void)setAllowsVibrancy:(BOOL)vibrancy
 {
   [(TDCatalogGlobals *)self willChangeValueForKey:@"allowsVibrancy"];
-  self->_allowsVibrancy = a3;
+  self->_allowsVibrancy = vibrancy;
 
   [(TDCatalogGlobals *)self didChangeValueForKey:@"allowsVibrancy"];
 }
@@ -58,10 +58,10 @@
   return supportsBrightnessAdjustments;
 }
 
-- (void)setSupportsWhitePointAdjustments:(BOOL)a3
+- (void)setSupportsWhitePointAdjustments:(BOOL)adjustments
 {
   [(TDCatalogGlobals *)self willChangeValueForKey:@"supportsWhitePointAdjustments"];
-  self->_supportsBrightnessAdjustments = a3;
+  self->_supportsBrightnessAdjustments = adjustments;
 
   [(TDCatalogGlobals *)self didChangeValueForKey:@"supportsWhitePointAdjustments"];
 }
@@ -74,10 +74,10 @@
   return supportsBrightnessAdjustments;
 }
 
-- (void)setSupportsBrightnessAdjustments:(BOOL)a3
+- (void)setSupportsBrightnessAdjustments:(BOOL)adjustments
 {
   [(TDCatalogGlobals *)self willChangeValueForKey:@"supportsBrightnessAdjustments"];
-  self->_supportsBrightnessAdjustments = a3;
+  self->_supportsBrightnessAdjustments = adjustments;
 
   [(TDCatalogGlobals *)self didChangeValueForKey:@"supportsBrightnessAdjustments"];
 }
@@ -90,10 +90,10 @@
   return allowsSystemTintColors;
 }
 
-- (void)setAllowsSystemTintColors:(BOOL)a3
+- (void)setAllowsSystemTintColors:(BOOL)colors
 {
   [(TDCatalogGlobals *)self willChangeValueForKey:@"allowsSystemTintColors"];
-  self->_allowsSystemTintColors = a3;
+  self->_allowsSystemTintColors = colors;
 
   [(TDCatalogGlobals *)self didChangeValueForKey:@"allowsSystemTintColors"];
 }
@@ -106,10 +106,10 @@
   return allowsCustomTintColors;
 }
 
-- (void)setAllowsCustomTintColors:(BOOL)a3
+- (void)setAllowsCustomTintColors:(BOOL)colors
 {
   [(TDCatalogGlobals *)self willChangeValueForKey:@"allowsCustomTintColors"];
-  self->_allowsCustomTintColors = a3;
+  self->_allowsCustomTintColors = colors;
 
   [(TDCatalogGlobals *)self didChangeValueForKey:@"allowsCustomTintColors"];
 }
@@ -122,10 +122,10 @@
   return supportsMultipleAppearancesForEffects;
 }
 
-- (void)setSupportsMultipleAppearancesForEffects:(BOOL)a3
+- (void)setSupportsMultipleAppearancesForEffects:(BOOL)effects
 {
   [(TDCatalogGlobals *)self willChangeValueForKey:@"supportsMultipleAppearancesForEffects"];
-  self->_supportsMultipleAppearancesForEffects = a3;
+  self->_supportsMultipleAppearancesForEffects = effects;
 
   [(TDCatalogGlobals *)self didChangeValueForKey:@"supportsMultipleAppearancesForEffects"];
 }

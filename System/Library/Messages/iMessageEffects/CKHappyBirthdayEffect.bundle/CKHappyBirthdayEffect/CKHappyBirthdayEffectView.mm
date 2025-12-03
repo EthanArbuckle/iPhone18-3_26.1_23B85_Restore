@@ -1,32 +1,32 @@
 @interface CKHappyBirthdayEffectView
 - (CGPoint)focusPoint;
 - (CGRect)messageRect;
-- (void)animateBalloonLayer:(id)a3 withIndex:(unint64_t)a4;
+- (void)animateBalloonLayer:(id)layer withIndex:(unint64_t)index;
 - (void)startAnimation;
 - (void)stopAnimation;
 @end
 
 @implementation CKHappyBirthdayEffectView
 
-- (void)animateBalloonLayer:(id)a3 withIndex:(unint64_t)a4
+- (void)animateBalloonLayer:(id)layer withIndex:(unint64_t)index
 {
-  v6 = a3;
-  if (a4 >= 6)
+  layerCopy = layer;
+  if (index >= 6)
   {
-    v7 = 6;
+    indexCopy = 6;
   }
 
   else
   {
-    v7 = a4;
+    indexCopy = index;
   }
 
-  sx = dbl_3718[v7];
-  v87 = dbl_3750[v7];
-  v8 = (&unk_3910 + 16 * v7);
+  sx = dbl_3718[indexCopy];
+  v87 = dbl_3750[indexCopy];
+  v8 = (&unk_3910 + 16 * indexCopy);
   v10 = *v8;
   v9 = v8[1];
-  v11 = (&unk_3980 + 16 * v7);
+  v11 = (&unk_3980 + 16 * indexCopy);
   v12 = *v11;
   v13 = v11[1];
   [(CKHappyBirthdayEffectView *)self bounds];
@@ -37,20 +37,20 @@
   v19 = v18;
   [(CKHappyBirthdayEffectView *)self bounds];
   v21 = v20;
-  v80 = dbl_38D8[v7];
-  v22 = (&unk_3788 + 16 * v7);
+  v80 = dbl_38D8[indexCopy];
+  v22 = (&unk_3788 + 16 * indexCopy);
   v85 = v22[1];
   v86 = *v22;
-  v23 = (&unk_37F8 + 16 * v7);
+  v23 = (&unk_37F8 + 16 * indexCopy);
   v24 = v23[1];
   v90 = *v23;
-  v25 = (&unk_3868 + 16 * v7);
+  v25 = (&unk_3868 + 16 * indexCopy);
   v82 = *v25;
   v83 = v24;
   v81 = v25[1];
-  [v6 bounds];
+  [layerCopy bounds];
   v27 = -0.5;
-  if (a4 > 5)
+  if (index > 5)
   {
     v27 = 0.5;
   }
@@ -60,8 +60,8 @@
   v29 = v12 * v19;
   v30 = v10 * v15;
   angle = fmax(fmin((atan2(v28 - v9 * v17, v29 - v30) + 1.57079633) * 0.3, 0.15), -0.15);
-  [v6 setPosition:{CGPointZero.x, CGPointZero.y}];
-  [v6 setHidden:1];
+  [layerCopy setPosition:{CGPointZero.x, CGPointZero.y}];
+  [layerCopy setHidden:1];
   v92 = [CABasicAnimation animationWithKeyPath:@"hidden"];
   [v92 setFrameInterval:0.0166666667];
   [v92 setFromValue:&__kCFBooleanFalse];
@@ -93,8 +93,8 @@
   v39 = [NSValue valueWithCATransform3D:&v93];
   [v91 setFromValue:v39];
 
-  v40 = [v91 fromValue];
-  [v91 setToValue:v40];
+  fromValue = [v91 fromValue];
+  [v91 setToValue:fromValue];
 
   [v91 setDuration:v80];
   [v91 setAdditive:1];
@@ -169,8 +169,8 @@
   v66 = [NSValue valueWithCATransform3D:&v93];
   [v65 setFromValue:v66];
 
-  v67 = [v65 fromValue];
-  [v65 setToValue:v67];
+  fromValue2 = [v65 fromValue];
+  [v65 setToValue:fromValue2];
 
   [v65 setDuration:v80];
   [v65 setAdditive:1];
@@ -197,14 +197,14 @@
   v76 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
   [v68 setTimingFunction:v76];
 
-  [v6 addAnimation:v31 forKey:@"position"];
-  [v6 addAnimation:v92 forKey:@"unhide"];
-  [v6 addAnimation:v91 forKey:@"toAttachment"];
-  [v6 addAnimation:v49 forKey:@"wobble"];
-  [v6 addAnimation:v58 forKey:@"rotation"];
-  [v6 addAnimation:v65 forKey:@"direction"];
-  [v6 addAnimation:v41 forKey:@"size"];
-  [v6 addAnimation:v68 forKey:@"sideWiggle"];
+  [layerCopy addAnimation:v31 forKey:@"position"];
+  [layerCopy addAnimation:v92 forKey:@"unhide"];
+  [layerCopy addAnimation:v91 forKey:@"toAttachment"];
+  [layerCopy addAnimation:v49 forKey:@"wobble"];
+  [layerCopy addAnimation:v58 forKey:@"rotation"];
+  [layerCopy addAnimation:v65 forKey:@"direction"];
+  [layerCopy addAnimation:v41 forKey:@"size"];
+  [layerCopy addAnimation:v68 forKey:@"sideWiggle"];
   CATransform3DMakeRotation(&v93, -(v56 * -0.17), 0.0, 0.0, 1.0);
   v77 = [NSValue valueWithCATransform3D:&v93];
   [v58 setFromValue:v77];
@@ -213,8 +213,8 @@
   v78 = [NSValue valueWithCATransform3D:&v93];
   [v58 setToValue:v78];
 
-  v79 = [v6 stringLayer];
-  [v79 addAnimation:v58 forKey:@"rotation"];
+  stringLayer = [layerCopy stringLayer];
+  [stringLayer addAnimation:v58 forKey:@"rotation"];
 }
 
 - (void)startAnimation
@@ -239,8 +239,8 @@
     do
     {
       v7 = objc_opt_new();
-      v8 = [(CKHappyBirthdayEffectView *)self layer];
-      [v8 addSublayer:v7];
+      layer = [(CKHappyBirthdayEffectView *)self layer];
+      [layer addSublayer:v7];
 
       [(NSMutableArray *)self->_balloons addObject:v7];
       --v6;

@@ -1,15 +1,15 @@
 @interface ShelfBackgroundFillView
-- (_TtC23ShelfKitCollectionViews23ShelfBackgroundFillView)initWithFrame:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViews23ShelfBackgroundFillView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ShelfBackgroundFillView
 
-- (_TtC23ShelfKitCollectionViews23ShelfBackgroundFillView)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews23ShelfBackgroundFillView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews23ShelfBackgroundFillView_gradientView) = 0;
   v7 = (self + OBJC_IVAR____TtC23ShelfKitCollectionViews23ShelfBackgroundFillView_gradient);
   *v7 = 0u;

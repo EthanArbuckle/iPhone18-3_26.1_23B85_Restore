@@ -6,13 +6,13 @@
 
 - (id)uiColor
 {
-  v1 = [a1 CGColor];
-  if (v1)
+  cGColor = [self CGColor];
+  if (cGColor)
   {
-    v1 = [MEMORY[0x1E69DC888] colorWithCGColor:v1];
+    cGColor = [MEMORY[0x1E69DC888] colorWithCGColor:cGColor];
   }
 
-  return v1;
+  return cGColor;
 }
 
 @end

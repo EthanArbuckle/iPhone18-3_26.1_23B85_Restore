@@ -1,9 +1,9 @@
 @interface _UIDisplayObserver
 + (id)sharedObserver;
-- (void)connectDisplayWithConfiguration:(id)a3;
-- (void)displayMonitor:(id)a3 didConnectIdentity:(id)a4 withConfiguration:(id)a5;
-- (void)displayMonitor:(id)a3 didUpdateIdentity:(id)a4 withConfiguration:(id)a5;
-- (void)displayMonitor:(id)a3 willDisconnectIdentity:(id)a4;
+- (void)connectDisplayWithConfiguration:(id)configuration;
+- (void)displayMonitor:(id)monitor didConnectIdentity:(id)identity withConfiguration:(id)configuration;
+- (void)displayMonitor:(id)monitor didUpdateIdentity:(id)identity withConfiguration:(id)configuration;
+- (void)displayMonitor:(id)monitor willDisconnectIdentity:(id)identity;
 @end
 
 @implementation _UIDisplayObserver
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __36___UIDisplayObserver_sharedObserver__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED49E1B8 != -1)
   {
     dispatch_once(&qword_1ED49E1B8, block);
@@ -25,29 +25,29 @@
   return v2;
 }
 
-- (void)connectDisplayWithConfiguration:(id)a3
+- (void)connectDisplayWithConfiguration:(id)configuration
 {
   v3 = UIApp;
-  v4 = a3;
-  +[UIScreen _FBSDisplayConfigurationConnected:andNotify:](UIScreen, "_FBSDisplayConfigurationConnected:andNotify:", v4, [v3 _hasCalledRunWithMainScene]);
+  configurationCopy = configuration;
+  +[UIScreen _FBSDisplayConfigurationConnected:andNotify:](UIScreen, "_FBSDisplayConfigurationConnected:andNotify:", configurationCopy, [v3 _hasCalledRunWithMainScene]);
 }
 
-- (void)displayMonitor:(id)a3 didConnectIdentity:(id)a4 withConfiguration:(id)a5
+- (void)displayMonitor:(id)monitor didConnectIdentity:(id)identity withConfiguration:(id)configuration
 {
-  v7 = a4;
-  v8 = a5;
-  if (([v8 isCarDisplay] & 1) != 0 || objc_msgSend(v8, "isCarInstrumentsDisplay"))
+  identityCopy = identity;
+  configurationCopy = configuration;
+  if (([configurationCopy isCarDisplay] & 1) != 0 || objc_msgSend(configurationCopy, "isCarInstrumentsDisplay"))
   {
-    v9 = [(_UIDisplayObserver *)self pendingCarDisplays];
+    pendingCarDisplays = [(_UIDisplayObserver *)self pendingCarDisplays];
 
-    if (!v9)
+    if (!pendingCarDisplays)
     {
       v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
       [(_UIDisplayObserver *)self setPendingCarDisplays:v10];
     }
 
-    v11 = [(_UIDisplayObserver *)self pendingCarDisplays];
-    [v11 setObject:v8 forKeyedSubscript:v7];
+    pendingCarDisplays2 = [(_UIDisplayObserver *)self pendingCarDisplays];
+    [pendingCarDisplays2 setObject:configurationCopy forKeyedSubscript:identityCopy];
 
     v12 = +[_UICarPlaySession sharedInstance];
     v13[0] = MEMORY[0x1E69E9820];
@@ -55,40 +55,40 @@
     v13[2] = __74___UIDisplayObserver_displayMonitor_didConnectIdentity_withConfiguration___block_invoke;
     v13[3] = &unk_1E710ACB8;
     v13[4] = self;
-    v14 = v7;
+    v14 = identityCopy;
     [(_UICarPlaySession *)v12 getCurrentSessionWithTimeout:v13 completion:2.0];
   }
 
   else
   {
-    [(_UIDisplayObserver *)self connectDisplayWithConfiguration:v8];
+    [(_UIDisplayObserver *)self connectDisplayWithConfiguration:configurationCopy];
   }
 }
 
-- (void)displayMonitor:(id)a3 didUpdateIdentity:(id)a4 withConfiguration:(id)a5
+- (void)displayMonitor:(id)monitor didUpdateIdentity:(id)identity withConfiguration:(id)configuration
 {
-  v11 = a4;
-  v7 = a5;
-  if ((([v7 isCarDisplay] & 1) != 0 || objc_msgSend(v7, "isCarInstrumentsDisplay")) && (-[_UIDisplayObserver pendingCarDisplays](self, "pendingCarDisplays"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "objectForKeyedSubscript:", v11), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
+  identityCopy = identity;
+  configurationCopy = configuration;
+  if ((([configurationCopy isCarDisplay] & 1) != 0 || objc_msgSend(configurationCopy, "isCarInstrumentsDisplay")) && (-[_UIDisplayObserver pendingCarDisplays](self, "pendingCarDisplays"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "objectForKeyedSubscript:", identityCopy), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
   {
-    v10 = [(_UIDisplayObserver *)self pendingCarDisplays];
-    [v10 setObject:v7 forKeyedSubscript:v11];
+    pendingCarDisplays = [(_UIDisplayObserver *)self pendingCarDisplays];
+    [pendingCarDisplays setObject:configurationCopy forKeyedSubscript:identityCopy];
   }
 
   else
   {
-    v10 = [UIScreen _screenWithFBSDisplayIdentity:v11];
-    [v10 _updateDisplayConfiguration:v7];
+    pendingCarDisplays = [UIScreen _screenWithFBSDisplayIdentity:identityCopy];
+    [pendingCarDisplays _updateDisplayConfiguration:configurationCopy];
   }
 }
 
-- (void)displayMonitor:(id)a3 willDisconnectIdentity:(id)a4
+- (void)displayMonitor:(id)monitor willDisconnectIdentity:(id)identity
 {
-  v6 = a4;
-  v5 = [(_UIDisplayObserver *)self pendingCarDisplays];
-  [v5 setObject:0 forKeyedSubscript:v6];
+  identityCopy = identity;
+  pendingCarDisplays = [(_UIDisplayObserver *)self pendingCarDisplays];
+  [pendingCarDisplays setObject:0 forKeyedSubscript:identityCopy];
 
-  [UIScreen _FBSDisplayIdentityDisconnected:v6];
+  [UIScreen _FBSDisplayIdentityDisconnected:identityCopy];
 }
 
 @end

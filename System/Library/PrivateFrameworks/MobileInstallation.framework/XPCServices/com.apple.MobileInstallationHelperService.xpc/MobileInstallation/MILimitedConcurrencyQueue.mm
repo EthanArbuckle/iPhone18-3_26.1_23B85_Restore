@@ -1,25 +1,25 @@
 @interface MILimitedConcurrencyQueue
-- (MILimitedConcurrencyQueue)initWithName:(id)a3 width:(unint64_t)a4;
+- (MILimitedConcurrencyQueue)initWithName:(id)name width:(unint64_t)width;
 - (void)_onQueue_deQueueIfNeeded;
-- (void)_onQueue_runAsyncForIdentifier:(id)a3 description:(id)a4 operation:(id)a5;
-- (void)runAsyncForIdentifier:(id)a3 description:(id)a4 operation:(id)a5;
+- (void)_onQueue_runAsyncForIdentifier:(id)identifier description:(id)description operation:(id)operation;
+- (void)runAsyncForIdentifier:(id)identifier description:(id)description operation:(id)operation;
 @end
 
 @implementation MILimitedConcurrencyQueue
 
-- (MILimitedConcurrencyQueue)initWithName:(id)a3 width:(unint64_t)a4
+- (MILimitedConcurrencyQueue)initWithName:(id)name width:(unint64_t)width
 {
-  v6 = a3;
+  nameCopy = name;
   v20.receiver = self;
   v20.super_class = MILimitedConcurrencyQueue;
   v7 = [(MILimitedConcurrencyQueue *)&v20 init];
   v8 = v7;
   if (v7)
   {
-    v7->_width = a4;
-    v9 = [v6 UTF8String];
+    v7->_width = width;
+    uTF8String = [nameCopy UTF8String];
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v11 = dispatch_queue_create(v9, v10);
+    v11 = dispatch_queue_create(uTF8String, v10);
     internalQueue = v8->_internalQueue;
     v8->_internalQueue = v11;
 
@@ -39,46 +39,46 @@
   return v8;
 }
 
-- (void)runAsyncForIdentifier:(id)a3 description:(id)a4 operation:(id)a5
+- (void)runAsyncForIdentifier:(id)identifier description:(id)description operation:(id)operation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MILimitedConcurrencyQueue *)self internalQueue];
+  identifierCopy = identifier;
+  descriptionCopy = description;
+  operationCopy = operation;
+  internalQueue = [(MILimitedConcurrencyQueue *)self internalQueue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10000BCE4;
   v15[3] = &unk_100024B48;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = identifierCopy;
+  v17 = descriptionCopy;
+  v18 = operationCopy;
+  v12 = operationCopy;
+  v13 = descriptionCopy;
+  v14 = identifierCopy;
+  dispatch_async(internalQueue, v15);
 }
 
 - (void)_onQueue_deQueueIfNeeded
 {
-  v3 = [(MILimitedConcurrencyQueue *)self internalQueue];
-  dispatch_assert_queue_V2(v3);
+  internalQueue = [(MILimitedConcurrencyQueue *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v4 = [(MILimitedConcurrencyQueue *)self waitingOperations];
-  v5 = [v4 count];
+  waitingOperations = [(MILimitedConcurrencyQueue *)self waitingOperations];
+  v5 = [waitingOperations count];
 
   if (v5)
   {
-    v6 = [(MILimitedConcurrencyQueue *)self activeIdentifiers];
-    v7 = [v6 count];
-    v8 = [(MILimitedConcurrencyQueue *)self width];
+    activeIdentifiers = [(MILimitedConcurrencyQueue *)self activeIdentifiers];
+    v7 = [activeIdentifiers count];
+    width = [(MILimitedConcurrencyQueue *)self width];
 
-    if (v7 >= v8)
+    if (v7 >= width)
     {
       if (gLogHandle && *(gLogHandle + 44) >= 7)
       {
-        v32 = [(MILimitedConcurrencyQueue *)self activeIdentifiers];
-        [v32 count];
+        activeIdentifiers2 = [(MILimitedConcurrencyQueue *)self activeIdentifiers];
+        [activeIdentifiers2 count];
         [(MILimitedConcurrencyQueue *)self width];
         MOLogWrite();
       }
@@ -90,8 +90,8 @@
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v9 = [(MILimitedConcurrencyQueue *)self identifierQueue];
-      v10 = [v9 countByEnumeratingWithState:&v37 objects:v41 count:16];
+      identifierQueue = [(MILimitedConcurrencyQueue *)self identifierQueue];
+      v10 = [identifierQueue countByEnumeratingWithState:&v37 objects:v41 count:16];
       if (v10)
       {
         v11 = v10;
@@ -102,12 +102,12 @@ LABEL_5:
         {
           if (*v38 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(identifierQueue);
           }
 
           v14 = *(*(&v37 + 1) + 8 * v13);
-          v15 = [(MILimitedConcurrencyQueue *)self activeIdentifiers];
-          v16 = [v15 containsObject:v14];
+          activeIdentifiers3 = [(MILimitedConcurrencyQueue *)self activeIdentifiers];
+          v16 = [activeIdentifiers3 containsObject:v14];
 
           if (!v16)
           {
@@ -122,7 +122,7 @@ LABEL_5:
 
           if (v11 == ++v13)
           {
-            v11 = [v9 countByEnumeratingWithState:&v37 objects:v41 count:16];
+            v11 = [identifierQueue countByEnumeratingWithState:&v37 objects:v41 count:16];
             if (v11)
             {
               goto LABEL_5;
@@ -139,8 +139,8 @@ LABEL_5:
           goto LABEL_34;
         }
 
-        v18 = [(MILimitedConcurrencyQueue *)self waitingOperations];
-        v19 = [v18 objectForKeyedSubscript:v17];
+        waitingOperations2 = [(MILimitedConcurrencyQueue *)self waitingOperations];
+        v19 = [waitingOperations2 objectForKeyedSubscript:v17];
 
         if (v19)
         {
@@ -150,8 +150,8 @@ LABEL_5:
             [v19 removeObjectAtIndex:0];
             if ([v19 count])
             {
-              v21 = [(MILimitedConcurrencyQueue *)self identifierQueue];
-              v22 = [v21 count];
+              identifierQueue2 = [(MILimitedConcurrencyQueue *)self identifierQueue];
+              v22 = [identifierQueue2 count];
 
               if (v22 == 1)
               {
@@ -164,11 +164,11 @@ LABEL_5:
                 MOLogWrite();
               }
 
-              v23 = [(MILimitedConcurrencyQueue *)self identifierQueue];
-              [v23 removeObject:v17];
+              identifierQueue3 = [(MILimitedConcurrencyQueue *)self identifierQueue];
+              [identifierQueue3 removeObject:v17];
 
-              v24 = [(MILimitedConcurrencyQueue *)self identifierQueue];
-              [v24 addObject:v17];
+              identifierQueue4 = [(MILimitedConcurrencyQueue *)self identifierQueue];
+              [identifierQueue4 addObject:v17];
             }
 
             else
@@ -179,11 +179,11 @@ LABEL_5:
                 MOLogWrite();
               }
 
-              v25 = [(MILimitedConcurrencyQueue *)self waitingOperations];
-              [v25 removeObjectForKey:v17];
+              waitingOperations3 = [(MILimitedConcurrencyQueue *)self waitingOperations];
+              [waitingOperations3 removeObjectForKey:v17];
 
-              v24 = [(MILimitedConcurrencyQueue *)self identifierQueue];
-              [v24 removeObject:v17];
+              identifierQueue4 = [(MILimitedConcurrencyQueue *)self identifierQueue];
+              [identifierQueue4 removeObject:v17];
             }
 
 LABEL_48:
@@ -204,7 +204,7 @@ LABEL_48:
             block[2] = sub_10000C2D8;
             block[3] = &unk_100024B70;
             v34 = v20;
-            v35 = self;
+            selfCopy = self;
             v36 = v17;
             v29 = v20;
             dispatch_async(v28, block);
@@ -249,41 +249,41 @@ LABEL_34:
   }
 }
 
-- (void)_onQueue_runAsyncForIdentifier:(id)a3 description:(id)a4 operation:(id)a5
+- (void)_onQueue_runAsyncForIdentifier:(id)identifier description:(id)description operation:(id)operation
 {
-  v20 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MILimitedConcurrencyQueue *)self internalQueue];
-  dispatch_assert_queue_V2(v10);
+  identifierCopy = identifier;
+  descriptionCopy = description;
+  operationCopy = operation;
+  internalQueue = [(MILimitedConcurrencyQueue *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   if (gLogHandle && *(gLogHandle + 44) >= 7)
   {
-    v18 = v20;
-    v19 = v8;
+    v18 = identifierCopy;
+    v19 = descriptionCopy;
     MOLogWrite();
   }
 
   v11 = [(MILimitedConcurrencyQueue *)self waitingOperations:v18];
-  v12 = [v11 objectForKeyedSubscript:v20];
+  v12 = [v11 objectForKeyedSubscript:identifierCopy];
 
   if (!v12)
   {
     v12 = [NSMutableArray arrayWithCapacity:1];
-    v13 = [(MILimitedConcurrencyQueue *)self waitingOperations];
-    [v13 setObject:v12 forKeyedSubscript:v20];
+    waitingOperations = [(MILimitedConcurrencyQueue *)self waitingOperations];
+    [waitingOperations setObject:v12 forKeyedSubscript:identifierCopy];
   }
 
-  v14 = [[MILimitedConcurrencyOperation alloc] initWithBlock:v9 description:v8];
+  v14 = [[MILimitedConcurrencyOperation alloc] initWithBlock:operationCopy description:descriptionCopy];
 
   [v12 addObject:v14];
-  v15 = [(MILimitedConcurrencyQueue *)self identifierQueue];
-  v16 = [v15 containsObject:v20];
+  identifierQueue = [(MILimitedConcurrencyQueue *)self identifierQueue];
+  v16 = [identifierQueue containsObject:identifierCopy];
 
   if ((v16 & 1) == 0)
   {
-    v17 = [(MILimitedConcurrencyQueue *)self identifierQueue];
-    [v17 addObject:v20];
+    identifierQueue2 = [(MILimitedConcurrencyQueue *)self identifierQueue];
+    [identifierQueue2 addObject:identifierCopy];
   }
 
   [(MILimitedConcurrencyQueue *)self _onQueue_deQueueIfNeeded];

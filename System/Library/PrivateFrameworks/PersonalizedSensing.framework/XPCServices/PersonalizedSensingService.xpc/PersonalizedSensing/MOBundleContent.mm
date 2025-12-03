@@ -1,154 +1,154 @@
 @interface MOBundleContent
-- (BOOL)isEqual:(id)a3;
-- (MOBundleContent)initWithBundleContentIdentifier:(id)a3;
-- (MOBundleContent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (MOBundleContent)initWithBundleContentIdentifier:(id)identifier;
+- (MOBundleContent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)metadataDict;
-- (unint64_t)compareMetadataWith:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (unint64_t)compareMetadataWith:(id)with;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOBundleContent
 
-- (MOBundleContent)initWithBundleContentIdentifier:(id)a3
+- (MOBundleContent)initWithBundleContentIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = MOBundleContent;
   v6 = [(MOBundleContent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundleContentIdentifier, a3);
+    objc_storeStrong(&v6->_bundleContentIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundleContentIdentifier = self->_bundleContentIdentifier;
-  v6 = a3;
-  [v6 encodeObject:bundleContentIdentifier forKey:@"bundleContentIdentifier"];
-  [v6 encodeInteger:self->_patternType forKey:@"patternType"];
-  [v6 encodeInteger:self->_placeType forKey:@"placeType"];
-  [v6 encodeInteger:self->_bundleType forKey:@"bundleType"];
-  [v6 encodeInteger:self->_peopleClassification forKey:@"peopleClassification"];
-  [v6 encodeInteger:self->_time forKey:@"time"];
-  [v6 encodeInteger:self->_activityType forKey:@"activityType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bundleContentIdentifier forKey:@"bundleContentIdentifier"];
+  [coderCopy encodeInteger:self->_patternType forKey:@"patternType"];
+  [coderCopy encodeInteger:self->_placeType forKey:@"placeType"];
+  [coderCopy encodeInteger:self->_bundleType forKey:@"bundleType"];
+  [coderCopy encodeInteger:self->_peopleClassification forKey:@"peopleClassification"];
+  [coderCopy encodeInteger:self->_time forKey:@"time"];
+  [coderCopy encodeInteger:self->_activityType forKey:@"activityType"];
   v5 = [MODictionaryEncoder encodeDictionary:self->_llmInputDictionary];
-  [v6 encodeObject:v5 forKey:@"llmInputDictionary"];
+  [coderCopy encodeObject:v5 forKey:@"llmInputDictionary"];
 
-  [v6 encodeBool:self->_hasPersonName forKey:@"hasPersonName"];
-  [v6 encodeBool:self->_hasPlaceName forKey:@"hasPlaceName"];
-  [v6 encodeBool:self->_hasCityName forKey:@"hasCityName"];
-  [v6 encodeBool:self->_hasTimeReference forKey:@"hasTimeReference"];
-  [v6 encodeObject:self->_personNames forKey:@"personNames"];
-  [v6 encodeObject:self->_placeName forKey:@"placeName"];
-  [v6 encodeObject:self->_cityName forKey:@"cityName"];
-  [v6 encodeObject:self->_timeReference forKey:@"timeReference"];
-  [v6 encodeObject:self->_startDate forKey:@"startDate"];
-  [v6 encodeObject:self->_endDate forKey:@"endDate"];
-  [v6 encodeObject:self->_musicSuggestionSongTitle forKey:@"musicSuggestionSongTitle"];
-  [v6 encodeObject:self->_musicSuggestionArtistName forKey:@"musicSuggestionArtistName"];
-  [v6 encodeObject:self->_musicSuggestionTrackID forKey:@"musicSuggestionTrackID"];
-  [v6 encodeObject:self->_musicSuggestionContentRating forKey:@"musicSuggestionContentRating"];
-  [v6 encodeObject:self->_suggestionLabel forKey:@"suggestionLabel"];
-  [v6 encodeObject:self->_associatedBundleID forKey:@"associatedBundleID"];
-  [v6 encodeObject:self->_associatedSuggestionID forKey:@"associatedSuggestionID"];
-  [v6 encodeObject:self->_bundleContentIdentifier forKey:@"bundleContentIdentifier"];
-  [v6 encodeInteger:self->_photoTrait forKey:@"photoTrait"];
-  [v6 encodeObject:self->_location forKey:@"location"];
+  [coderCopy encodeBool:self->_hasPersonName forKey:@"hasPersonName"];
+  [coderCopy encodeBool:self->_hasPlaceName forKey:@"hasPlaceName"];
+  [coderCopy encodeBool:self->_hasCityName forKey:@"hasCityName"];
+  [coderCopy encodeBool:self->_hasTimeReference forKey:@"hasTimeReference"];
+  [coderCopy encodeObject:self->_personNames forKey:@"personNames"];
+  [coderCopy encodeObject:self->_placeName forKey:@"placeName"];
+  [coderCopy encodeObject:self->_cityName forKey:@"cityName"];
+  [coderCopy encodeObject:self->_timeReference forKey:@"timeReference"];
+  [coderCopy encodeObject:self->_startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"endDate"];
+  [coderCopy encodeObject:self->_musicSuggestionSongTitle forKey:@"musicSuggestionSongTitle"];
+  [coderCopy encodeObject:self->_musicSuggestionArtistName forKey:@"musicSuggestionArtistName"];
+  [coderCopy encodeObject:self->_musicSuggestionTrackID forKey:@"musicSuggestionTrackID"];
+  [coderCopy encodeObject:self->_musicSuggestionContentRating forKey:@"musicSuggestionContentRating"];
+  [coderCopy encodeObject:self->_suggestionLabel forKey:@"suggestionLabel"];
+  [coderCopy encodeObject:self->_associatedBundleID forKey:@"associatedBundleID"];
+  [coderCopy encodeObject:self->_associatedSuggestionID forKey:@"associatedSuggestionID"];
+  [coderCopy encodeObject:self->_bundleContentIdentifier forKey:@"bundleContentIdentifier"];
+  [coderCopy encodeInteger:self->_photoTrait forKey:@"photoTrait"];
+  [coderCopy encodeObject:self->_location forKey:@"location"];
 }
 
-- (MOBundleContent)initWithCoder:(id)a3
+- (MOBundleContent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v44.receiver = self;
   v44.super_class = MOBundleContent;
   v5 = [(MOBundleContent *)&v44 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleContentIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleContentIdentifier"];
     bundleContentIdentifier = v5->_bundleContentIdentifier;
     v5->_bundleContentIdentifier = v6;
 
-    v5->_patternType = [v4 decodeIntegerForKey:@"patternType"];
-    v5->_placeType = [v4 decodeIntegerForKey:@"placeType"];
-    v5->_bundleType = [v4 decodeIntegerForKey:@"bundleType"];
-    v5->_peopleClassification = [v4 decodeIntegerForKey:@"peopleClassification"];
-    v5->_time = [v4 decodeIntegerForKey:@"time"];
-    v5->_activityType = [v4 decodeIntegerForKey:@"activityType"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"llmInputDictionary"];
+    v5->_patternType = [coderCopy decodeIntegerForKey:@"patternType"];
+    v5->_placeType = [coderCopy decodeIntegerForKey:@"placeType"];
+    v5->_bundleType = [coderCopy decodeIntegerForKey:@"bundleType"];
+    v5->_peopleClassification = [coderCopy decodeIntegerForKey:@"peopleClassification"];
+    v5->_time = [coderCopy decodeIntegerForKey:@"time"];
+    v5->_activityType = [coderCopy decodeIntegerForKey:@"activityType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"llmInputDictionary"];
     v9 = [MODictionaryEncoder decodeToDictionary:v8];
     llmInputDictionary = v5->_llmInputDictionary;
     v5->_llmInputDictionary = v9;
 
-    v5->_hasPersonName = [v4 decodeBoolForKey:@"hasPersonName"];
-    v5->_hasPlaceName = [v4 decodeBoolForKey:@"hasPlaceName"];
-    v5->_hasCityName = [v4 decodeBoolForKey:@"hasCityName"];
-    v5->_hasTimeReference = [v4 decodeBoolForKey:@"hasTimeReference"];
+    v5->_hasPersonName = [coderCopy decodeBoolForKey:@"hasPersonName"];
+    v5->_hasPlaceName = [coderCopy decodeBoolForKey:@"hasPlaceName"];
+    v5->_hasCityName = [coderCopy decodeBoolForKey:@"hasCityName"];
+    v5->_hasTimeReference = [coderCopy decodeBoolForKey:@"hasTimeReference"];
     v11 = objc_opt_class();
     v12 = [NSSet setWithObjects:v11, objc_opt_class(), 0];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"personNames"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"personNames"];
     personNames = v5->_personNames;
     v5->_personNames = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"placeName"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"placeName"];
     placeName = v5->_placeName;
     v5->_placeName = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cityName"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cityName"];
     cityName = v5->_cityName;
     v5->_cityName = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeReference"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeReference"];
     timeReference = v5->_timeReference;
     v5->_timeReference = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
     startDate = v5->_startDate;
     v5->_startDate = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
     endDate = v5->_endDate;
     v5->_endDate = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"musicSuggestionSongTitle"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"musicSuggestionSongTitle"];
     musicSuggestionSongTitle = v5->_musicSuggestionSongTitle;
     v5->_musicSuggestionSongTitle = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"musicSuggestionArtistName"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"musicSuggestionArtistName"];
     musicSuggestionArtistName = v5->_musicSuggestionArtistName;
     v5->_musicSuggestionArtistName = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"musicSuggestionTrackID"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"musicSuggestionTrackID"];
     musicSuggestionTrackID = v5->_musicSuggestionTrackID;
     v5->_musicSuggestionTrackID = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"musicSuggestionContentRating"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"musicSuggestionContentRating"];
     musicSuggestionContentRating = v5->_musicSuggestionContentRating;
     v5->_musicSuggestionContentRating = v31;
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suggestionLabel"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suggestionLabel"];
     suggestionLabel = v5->_suggestionLabel;
     v5->_suggestionLabel = v33;
 
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"associatedBundleID"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"associatedBundleID"];
     associatedBundleID = v5->_associatedBundleID;
     v5->_associatedBundleID = v35;
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"associatedSuggestionID"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"associatedSuggestionID"];
     associatedSuggestionID = v5->_associatedSuggestionID;
     v5->_associatedSuggestionID = v37;
 
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleContentIdentifier"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleContentIdentifier"];
     v40 = v5->_bundleContentIdentifier;
     v5->_bundleContentIdentifier = v39;
 
-    v5->_photoTrait = [v4 decodeIntegerForKey:@"photoTrait"];
-    v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+    v5->_photoTrait = [coderCopy decodeIntegerForKey:@"photoTrait"];
+    v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
     location = v5->_location;
     v5->_location = v41;
   }
@@ -156,7 +156,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MOBundleContent);
   objc_storeStrong(&v4->_bundleContentIdentifier, self->_bundleContentIdentifier);
@@ -196,53 +196,53 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  v7 = v6;
-  if (self == v6)
+  equalCopy = equal;
+  v7 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v6)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v8 = v7;
-        v9 = [(MOBundleContent *)self bundleContentIdentifier];
-        if (v9 || ([(MOBundleContent *)v8 bundleContentIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        bundleContentIdentifier = [(MOBundleContent *)self bundleContentIdentifier];
+        if (bundleContentIdentifier || ([(MOBundleContent *)v8 bundleContentIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v4 = [(MOBundleContent *)self bundleContentIdentifier];
-          v10 = [(MOBundleContent *)v8 bundleContentIdentifier];
-          v11 = [v4 isEqual:v10];
+          bundleContentIdentifier2 = [(MOBundleContent *)self bundleContentIdentifier];
+          bundleContentIdentifier3 = [(MOBundleContent *)v8 bundleContentIdentifier];
+          v11 = [bundleContentIdentifier2 isEqual:bundleContentIdentifier3];
 
-          if (v9)
+          if (bundleContentIdentifier)
           {
 LABEL_12:
 
-            v13 = [(MOBundleContent *)self associatedBundleID];
-            if (v13 || ([(MOBundleContent *)v8 associatedBundleID], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+            associatedBundleID = [(MOBundleContent *)self associatedBundleID];
+            if (associatedBundleID || ([(MOBundleContent *)v8 associatedBundleID], (bundleContentIdentifier2 = objc_claimAutoreleasedReturnValue()) != 0))
             {
-              v14 = [(MOBundleContent *)self associatedBundleID];
-              v15 = [(MOBundleContent *)v8 associatedBundleID];
-              v16 = [v14 isEqual:v15];
+              associatedBundleID2 = [(MOBundleContent *)self associatedBundleID];
+              associatedBundleID3 = [(MOBundleContent *)v8 associatedBundleID];
+              v16 = [associatedBundleID2 isEqual:associatedBundleID3];
 
-              if (v13)
+              if (associatedBundleID)
               {
 LABEL_18:
 
-                v17 = [(MOBundleContent *)self associatedSuggestionID];
-                if (v17 || ([(MOBundleContent *)v8 associatedSuggestionID], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+                associatedSuggestionID = [(MOBundleContent *)self associatedSuggestionID];
+                if (associatedSuggestionID || ([(MOBundleContent *)v8 associatedSuggestionID], (bundleContentIdentifier2 = objc_claimAutoreleasedReturnValue()) != 0))
                 {
-                  v18 = [(MOBundleContent *)self associatedSuggestionID];
-                  v19 = [(MOBundleContent *)v8 associatedSuggestionID];
-                  v20 = [v18 isEqual:v19];
+                  associatedSuggestionID2 = [(MOBundleContent *)self associatedSuggestionID];
+                  associatedSuggestionID3 = [(MOBundleContent *)v8 associatedSuggestionID];
+                  v20 = [associatedSuggestionID2 isEqual:associatedSuggestionID3];
 
-                  if (v17)
+                  if (associatedSuggestionID)
                   {
 LABEL_24:
 
@@ -286,25 +286,25 @@ LABEL_25:
   return v12;
 }
 
-- (unint64_t)compareMetadataWith:(id)a3
+- (unint64_t)compareMetadataWith:(id)with
 {
-  v4 = a3;
-  if (!v4)
+  withCopy = with;
+  if (!withCopy)
   {
     v22 = 0;
     goto LABEL_40;
   }
 
-  v5 = [(MOBundleContent *)self metadataDict];
-  v28 = v4;
-  v6 = [v4 metadataDict];
-  v27 = [v5 count];
-  v26 = [v6 count];
+  metadataDict = [(MOBundleContent *)self metadataDict];
+  v28 = withCopy;
+  metadataDict2 = [withCopy metadataDict];
+  v27 = [metadataDict count];
+  v26 = [metadataDict2 count];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = v5;
+  v7 = metadataDict;
   v8 = [v7 countByEnumeratingWithState:&v29 objects:v43 count:16];
   if (!v8)
   {
@@ -327,7 +327,7 @@ LABEL_25:
       v13 = *(*(&v29 + 1) + 8 * i);
       if ([&off_1000C9B20 containsObject:v13])
       {
-        v14 = [v6 objectForKeyedSubscript:v13];
+        v14 = [metadataDict2 objectForKeyedSubscript:v13];
         if (!v14)
         {
           continue;
@@ -335,14 +335,14 @@ LABEL_25:
 
         v15 = v14;
         v16 = [v7 objectForKeyedSubscript:v13];
-        v17 = [v6 objectForKeyedSubscript:v13];
+        v17 = [metadataDict2 objectForKeyedSubscript:v13];
         v18 = [v16 isEqualToNumber:v17];
         goto LABEL_16;
       }
 
       if ([&off_1000C9B38 containsObject:v13])
       {
-        v19 = [v6 objectForKeyedSubscript:v13];
+        v19 = [metadataDict2 objectForKeyedSubscript:v13];
         if (!v19)
         {
           continue;
@@ -350,19 +350,19 @@ LABEL_25:
 
         v15 = v19;
         v16 = [v7 objectForKeyedSubscript:v13];
-        v17 = [v6 objectForKeyedSubscript:v13];
+        v17 = [metadataDict2 objectForKeyedSubscript:v13];
         v18 = [v16 isEqualToString:v17];
         goto LABEL_16;
       }
 
       if ([&off_1000C9B50 containsObject:v13])
       {
-        v20 = [v6 objectForKeyedSubscript:v13];
+        v20 = [metadataDict2 objectForKeyedSubscript:v13];
         if (v20)
         {
           v15 = v20;
           v16 = [v7 objectForKeyedSubscript:v13];
-          v17 = [v6 objectForKeyedSubscript:v13];
+          v17 = [metadataDict2 objectForKeyedSubscript:v13];
           v18 = [v16 isEqualToSet:v17];
 LABEL_16:
           v21 = v18;
@@ -385,7 +385,7 @@ LABEL_22:
     *buf = 138413314;
     v34 = v7;
     v35 = 2112;
-    v36 = v6;
+    v36 = metadataDict2;
     v37 = 2048;
     v38 = v27;
     v39 = 2048;
@@ -423,7 +423,7 @@ LABEL_22:
     v22 = 2;
   }
 
-  v4 = v28;
+  withCopy = v28;
 LABEL_40:
 
   return v22;
@@ -464,27 +464,27 @@ LABEL_40:
 
   if ([(MOBundleContent *)self hasPersonName])
   {
-    v9 = [(MOBundleContent *)self personNames];
-    v10 = [NSSet setWithArray:v9];
+    personNames = [(MOBundleContent *)self personNames];
+    v10 = [NSSet setWithArray:personNames];
     [v3 setObject:v10 forKeyedSubscript:@"personNames"];
   }
 
   if ([(MOBundleContent *)self hasPlaceName])
   {
-    v11 = [(MOBundleContent *)self placeName];
-    [v3 setObject:v11 forKeyedSubscript:@"placeName"];
+    placeName = [(MOBundleContent *)self placeName];
+    [v3 setObject:placeName forKeyedSubscript:@"placeName"];
   }
 
   if ([(MOBundleContent *)self hasCityName])
   {
-    v12 = [(MOBundleContent *)self cityName];
-    [v3 setObject:v12 forKeyedSubscript:@"cityName"];
+    cityName = [(MOBundleContent *)self cityName];
+    [v3 setObject:cityName forKeyedSubscript:@"cityName"];
   }
 
   if ([(MOBundleContent *)self hasLocation])
   {
-    v13 = [(MOBundleContent *)self location];
-    [v3 setObject:v13 forKeyedSubscript:@"location"];
+    location = [(MOBundleContent *)self location];
+    [v3 setObject:location forKeyedSubscript:@"location"];
   }
 
   if ([(MOBundleContent *)self photoTrait])
@@ -493,12 +493,12 @@ LABEL_40:
     [v3 setObject:v14 forKeyedSubscript:@"photoTrait"];
   }
 
-  v15 = [(MOBundleContent *)self musicSuggestionArtistName];
+  musicSuggestionArtistName = [(MOBundleContent *)self musicSuggestionArtistName];
 
-  if (v15)
+  if (musicSuggestionArtistName)
   {
-    v16 = [(MOBundleContent *)self musicSuggestionArtistName];
-    [v3 setObject:v16 forKeyedSubscript:@"musicSuggestionArtistName"];
+    musicSuggestionArtistName2 = [(MOBundleContent *)self musicSuggestionArtistName];
+    [v3 setObject:musicSuggestionArtistName2 forKeyedSubscript:@"musicSuggestionArtistName"];
   }
 
   return v3;

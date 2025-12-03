@@ -1,48 +1,48 @@
 @interface CSAppearance
-+ (CSAppearance)appearanceWithIdentifier:(id)a3;
-+ (id)appearanceForProvider:(id)a3;
-- (BOOL)isEqualToAppearance:(id)a3;
-- (CSAppearance)initWithIdentifier:(id)a3;
-- (id)componentForType:(int64_t)a3 identifier:(id)a4;
-- (id)componentForType:(int64_t)a3 property:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
++ (CSAppearance)appearanceWithIdentifier:(id)identifier;
++ (id)appearanceForProvider:(id)provider;
+- (BOOL)isEqualToAppearance:(id)appearance;
+- (CSAppearance)initWithIdentifier:(id)identifier;
+- (id)componentForType:(int64_t)type identifier:(id)identifier;
+- (id)componentForType:(int64_t)type property:(unint64_t)property;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (int64_t)flagForComponentType:(int64_t)a3;
-- (void)addComponent:(id)a3;
-- (void)removeAllComponentsWithIdentifier:(id)a3;
-- (void)removeComponent:(id)a3;
+- (int64_t)flagForComponentType:(int64_t)type;
+- (void)addComponent:(id)component;
+- (void)removeAllComponentsWithIdentifier:(id)identifier;
+- (void)removeComponent:(id)component;
 - (void)reset;
-- (void)setComponents:(id)a3;
-- (void)unionAppearance:(id)a3;
+- (void)setComponents:(id)components;
+- (void)unionAppearance:(id)appearance;
 @end
 
 @implementation CSAppearance
 
-+ (CSAppearance)appearanceWithIdentifier:(id)a3
++ (CSAppearance)appearanceWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[self alloc] initWithIdentifier:identifierCopy];
 
   return v5;
 }
 
-+ (id)appearanceForProvider:(id)a3
++ (id)appearanceForProvider:(id)provider
 {
-  if (a3)
+  if (provider)
   {
-    v4 = a3;
-    v5 = [v4 appearanceIdentifier];
-    v6 = [a1 appearanceWithIdentifier:v5];
+    providerCopy = provider;
+    appearanceIdentifier = [providerCopy appearanceIdentifier];
+    v6 = [self appearanceWithIdentifier:appearanceIdentifier];
 
-    v7 = [v4 components];
-    [v6 setComponents:v7];
+    components = [providerCopy components];
+    [v6 setComponents:components];
 
-    v8 = [v4 legibilitySettings];
+    legibilitySettings = [providerCopy legibilitySettings];
 
-    [v6 setLegibilitySettings:v8];
+    [v6 setLegibilitySettings:legibilitySettings];
   }
 
   else
@@ -53,11 +53,11 @@
   return v6;
 }
 
-- (CSAppearance)initWithIdentifier:(id)a3
+- (CSAppearance)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v5)
+  if (!identifierCopy)
   {
     [CSAppearance initWithIdentifier:a2];
   }
@@ -76,7 +76,7 @@
     components = v6->_components;
     v6->_components = v7;
 
-    v9 = [v5 copy];
+    v9 = [identifierCopy copy];
     identifier = v6->_identifier;
     v6->_identifier = v9;
 
@@ -97,22 +97,22 @@
   [(NSMutableSet *)components removeAllObjects];
 }
 
-- (void)unionAppearance:(id)a3
+- (void)unionAppearance:(id)appearance
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 legibilitySettings];
-  if (v5)
+  appearanceCopy = appearance;
+  legibilitySettings = [appearanceCopy legibilitySettings];
+  if (legibilitySettings)
   {
-    objc_storeStrong(&self->_legibilitySettings, v5);
+    objc_storeStrong(&self->_legibilitySettings, legibilitySettings);
   }
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [v4 components];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  components = [appearanceCopy components];
+  v7 = [components countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -124,34 +124,34 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(components);
         }
 
         [(CSAppearance *)self addComponent:*(*(&v11 + 1) + 8 * v10++)];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [components countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (BOOL)isEqualToAppearance:(id)a3
+- (BOOL)isEqualToAppearance:(id)appearance
 {
-  v4 = a3;
-  if (self == v4)
+  appearanceCopy = appearance;
+  if (self == appearanceCopy)
   {
     v7 = 1;
   }
 
-  else if ([(CSAppearance *)v4 isMemberOfClass:objc_opt_class()]&& (transitional = self->_transitional, transitional == [(CSAppearance *)v4 isTransitional]))
+  else if ([(CSAppearance *)appearanceCopy isMemberOfClass:objc_opt_class()]&& (transitional = self->_transitional, transitional == [(CSAppearance *)appearanceCopy isTransitional]))
   {
-    v6 = [(CSAppearance *)v4 legibilitySettings];
+    legibilitySettings = [(CSAppearance *)appearanceCopy legibilitySettings];
     v7 = 0;
     legibilitySettings = self->_legibilitySettings;
-    if (v6)
+    if (legibilitySettings)
     {
       v9 = 1;
     }
@@ -168,12 +168,12 @@
 
     else
     {
-      v10 = v6 != 0;
+      v10 = legibilitySettings != 0;
     }
 
     if (v9 && !v10)
     {
-      if (legibilitySettings && ![(_UILegibilitySettings *)legibilitySettings sb_isEqualToLegibilitySettings:v6])
+      if (legibilitySettings && ![(_UILegibilitySettings *)legibilitySettings sb_isEqualToLegibilitySettings:legibilitySettings])
       {
         v7 = 0;
       }
@@ -181,8 +181,8 @@
       else
       {
         components = self->_components;
-        v12 = [(CSAppearance *)v4 components];
-        v7 = [(NSMutableSet *)components isEqual:v12];
+        components = [(CSAppearance *)appearanceCopy components];
+        v7 = [(NSMutableSet *)components isEqual:components];
       }
     }
   }
@@ -195,10 +195,10 @@
   return v7;
 }
 
-- (id)componentForType:(int64_t)a3 identifier:(id)a4
+- (id)componentForType:(int64_t)type identifier:(id)identifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  identifierCopy = identifier;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -219,9 +219,9 @@
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        if ([v12 type] == a3)
+        if ([v12 type] == type)
         {
-          v13 = [v12 identifier];
+          identifier = [v12 identifier];
           v14 = BSEqualObjects();
 
           if (v14)
@@ -248,7 +248,7 @@ LABEL_12:
   return v15;
 }
 
-- (id)componentForType:(int64_t)a3 property:(unint64_t)a4
+- (id)componentForType:(int64_t)type property:(unint64_t)property
 {
   v25 = *MEMORY[0x277D85DE8];
   v20 = 0u;
@@ -273,13 +273,13 @@ LABEL_12:
         }
 
         v12 = *(*(&v20 + 1) + 8 * v11);
-        if ([v12 type] == a3 && (a4 & ~objc_msgSend(v12, "properties")) == 0)
+        if ([v12 type] == type && (property & ~objc_msgSend(v12, "properties")) == 0)
         {
           if (v9 && (v13 = [v12 priority], v13 <= objc_msgSend(v9, "priority")))
           {
-            v15 = [v12 priority];
-            v16 = [v9 priority];
-            if (a3 == 1 && v15 == v16)
+            priority = [v12 priority];
+            priority2 = [v9 priority];
+            if (type == 1 && priority == priority2)
             {
               v17 = [v9 combiningWithEquivalent:v12];
             }
@@ -312,52 +312,52 @@ LABEL_12:
   return v9;
 }
 
-- (int64_t)flagForComponentType:(int64_t)a3
+- (int64_t)flagForComponentType:(int64_t)type
 {
-  v3 = [(CSAppearance *)self componentForType:a3 property:8];
+  v3 = [(CSAppearance *)self componentForType:type property:8];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 flag];
+    flag = [v3 flag];
   }
 
   else
   {
-    v5 = 0x7FFFFFFFFFFFFFFFLL;
+    flag = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v5;
+  return flag;
 }
 
-- (void)addComponent:(id)a3
+- (void)addComponent:(id)component
 {
-  if (a3)
+  if (component)
   {
-    v6 = [a3 copy];
-    v4 = [v6 identifier];
+    v6 = [component copy];
+    identifier = [v6 identifier];
 
-    if (!v4)
+    if (!identifier)
     {
-      v5 = [(CSAppearance *)self identifier];
-      [v6 setIdentifier:v5];
+      identifier2 = [(CSAppearance *)self identifier];
+      [v6 setIdentifier:identifier2];
     }
 
     [(NSMutableSet *)self->_components addObject:v6];
   }
 }
 
-- (void)removeComponent:(id)a3
+- (void)removeComponent:(id)component
 {
-  if (a3)
+  if (component)
   {
     [(NSMutableSet *)self->_components removeObject:?];
   }
 }
 
-- (void)removeAllComponentsWithIdentifier:(id)a3
+- (void)removeAllComponentsWithIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -378,7 +378,7 @@ LABEL_12:
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 identifier];
+        identifier = [v10 identifier];
         v12 = BSEqualObjects();
 
         if (v12)
@@ -394,16 +394,16 @@ LABEL_12:
   }
 }
 
-- (void)setComponents:(id)a3
+- (void)setComponents:(id)components
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  componentsCopy = components;
   [(NSMutableSet *)self->_components removeAllObjects];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = v4;
+  v5 = componentsCopy;
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -430,7 +430,7 @@ LABEL_12:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_opt_class() appearanceForProvider:self];
   [v4 setTransitional:{-[CSAppearance isTransitional](self, "isTransitional")}];
@@ -439,10 +439,10 @@ LABEL_12:
 
 - (id)succinctDescription
 {
-  v2 = [(CSAppearance *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CSAppearance *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -454,26 +454,26 @@ LABEL_12:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CSAppearance *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CSAppearance *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(CSAppearance *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(CSAppearance *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __54__CSAppearance_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_27838B838;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

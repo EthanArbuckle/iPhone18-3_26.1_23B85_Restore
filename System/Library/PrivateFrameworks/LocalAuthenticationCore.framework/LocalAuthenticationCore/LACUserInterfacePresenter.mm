@@ -1,14 +1,14 @@
 @interface LACUserInterfacePresenter
-- (LACUserInterfacePresenter)initWithReplyQueue:(id)a3 uiController:(id)a4;
-- (void)presentUIForIdentifier:(int64_t)a3 request:(id)a4 completion:(id)a5;
+- (LACUserInterfacePresenter)initWithReplyQueue:(id)queue uiController:(id)controller;
+- (void)presentUIForIdentifier:(int64_t)identifier request:(id)request completion:(id)completion;
 @end
 
 @implementation LACUserInterfacePresenter
 
-- (LACUserInterfacePresenter)initWithReplyQueue:(id)a3 uiController:(id)a4
+- (LACUserInterfacePresenter)initWithReplyQueue:(id)queue uiController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  controllerCopy = controller;
   v15.receiver = self;
   v15.super_class = LACUserInterfacePresenter;
   v9 = [(LACUserInterfacePresenter *)&v15 init];
@@ -20,33 +20,33 @@
     workQueue = v9->_workQueue;
     v9->_workQueue = v12;
 
-    objc_storeStrong(&v9->_replyQueue, a3);
-    objc_storeStrong(&v9->_uiController, a4);
+    objc_storeStrong(&v9->_replyQueue, queue);
+    objc_storeStrong(&v9->_uiController, controller);
   }
 
   return v9;
 }
 
-- (void)presentUIForIdentifier:(int64_t)a3 request:(id)a4 completion:(id)a5
+- (void)presentUIForIdentifier:(int64_t)identifier request:(id)request completion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  if ((a3 & 0xFFFFFFFFFFFFFFFBLL) != 0)
+  requestCopy = request;
+  completionCopy = completion;
+  if ((identifier & 0xFFFFFFFFFFFFFFFBLL) != 0)
   {
-    v10 = [v8 options];
+    options = [requestCopy options];
     v11 = [MEMORY[0x1E696AD98] numberWithInteger:1000];
-    v12 = [v10 objectForKey:v11];
-    v13 = [v12 BOOLValue];
+    v12 = [options objectForKey:v11];
+    bOOLValue = [v12 BOOLValue];
 
     v14 = LACLogUI();
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-    if (v13)
+    if (bOOLValue)
     {
       if (v15)
       {
-        v16 = NSStringFromLACUserInterfaceRequestIdentifier(a3);
-        v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v8, "identifier")}];
+        v16 = NSStringFromLACUserInterfaceRequestIdentifier(identifier);
+        v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(requestCopy, "identifier")}];
         *buf = 138412546;
         v39 = v16;
         v40 = 2114;
@@ -59,7 +59,7 @@
       block[1] = 3221225472;
       block[2] = __71__LACUserInterfacePresenter_presentUIForIdentifier_request_completion___block_invoke_5;
       block[3] = &unk_1E7A96630;
-      v34 = v9;
+      v34 = completionCopy;
       dispatch_async(replyQueue, block);
     }
 
@@ -67,7 +67,7 @@
     {
       if (v15)
       {
-        v26 = NSStringFromLACUserInterfaceRequestIdentifier(a3);
+        v26 = NSStringFromLACUserInterfaceRequestIdentifier(identifier);
         *buf = 138412290;
         v39 = v26;
         _os_log_impl(&dword_1B0233000, v14, OS_LOG_TYPE_DEFAULT, "Will present UI for %@", buf, 0xCu);
@@ -80,9 +80,9 @@
       v29[2] = __71__LACUserInterfacePresenter_presentUIForIdentifier_request_completion___block_invoke_6;
       v29[3] = &unk_1E7A95EF0;
       objc_copyWeak(v32, buf);
-      v30 = v8;
-      v32[1] = a3;
-      v31 = v9;
+      v30 = requestCopy;
+      v32[1] = identifier;
+      v31 = completionCopy;
       dispatch_async(workQueue, v29);
 
       objc_destroyWeak(v32);
@@ -95,11 +95,11 @@
     v19 = LACLogUI();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      [LACUserInterfacePresenter presentUIForIdentifier:a3 request:v19 completion:?];
+      [LACUserInterfacePresenter presentUIForIdentifier:identifier request:v19 completion:?];
     }
 
     v20 = MEMORY[0x1E696AEC0];
-    v21 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v21 = [MEMORY[0x1E696AD98] numberWithInteger:identifier];
     v22 = [v20 stringWithFormat:@"Unsupported user interface request: %@", v21];
 
     v23 = [LACError errorWithCode:-1000 debugDescription:v22];
@@ -109,7 +109,7 @@
     v35[2] = __71__LACUserInterfacePresenter_presentUIForIdentifier_request_completion___block_invoke;
     v35[3] = &unk_1E7A95798;
     v36 = v23;
-    v37 = v9;
+    v37 = completionCopy;
     v25 = v23;
     dispatch_async(v24, v35);
   }

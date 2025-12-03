@@ -8,30 +8,30 @@
 {
   v6 = a3;
   v39 = 0;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v6 path];
-  v9 = [v7 fileExistsAtPath:v8 isDirectory:&v39];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v6 path];
+  v9 = [defaultManager fileExistsAtPath:path isDirectory:&v39];
   v10 = v39;
 
   if (!v9 || (v10 & 1) == 0)
   {
-    v13 = [v6 URLByDeletingLastPathComponent];
+    uRLByDeletingLastPathComponent = [v6 URLByDeletingLastPathComponent];
     v16 = MEMORY[0x1E696AEC0];
-    v17 = [MEMORY[0x1E696AFB0] UUID];
-    v18 = [v17 UUIDString];
-    v19 = [v18 substringToIndex:8];
-    v20 = [v6 lastPathComponent];
-    v21 = [v16 stringWithFormat:@".temp-%@-%@", v19, v20];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v19 = [uUIDString substringToIndex:8];
+    lastPathComponent = [v6 lastPathComponent];
+    v21 = [v16 stringWithFormat:@".temp-%@-%@", v19, lastPathComponent];
 
-    v22 = [v13 URLByAppendingPathComponent:v21];
+    v22 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v21];
     v38 = 0;
-    LOBYTE(v18) = [a1 writeToURL:v22 options:0 error:&v38];
+    LOBYTE(uUIDString) = [self writeToURL:v22 options:0 error:&v38];
     v23 = v38;
-    if (v18)
+    if (uUIDString)
     {
-      v24 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
       v37 = v23;
-      v25 = [v24 replaceItemAtURL:v6 withItemAtURL:v22 backupItemName:0 options:1 resultingItemURL:0 error:&v37];
+      v25 = [defaultManager2 replaceItemAtURL:v6 withItemAtURL:v22 backupItemName:0 options:1 resultingItemURL:0 error:&v37];
       v26 = v37;
 
       v27 = +[RMLog nsdata_rm];
@@ -60,9 +60,9 @@
           *a4 = v26;
         }
 
-        v32 = [MEMORY[0x1E696AC08] defaultManager];
+        defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
         v36 = v26;
-        v33 = [v32 removeItemAtURL:v22 error:&v36];
+        v33 = [defaultManager3 removeItemAtURL:v22 error:&v36];
         v23 = v36;
 
         if ((v33 & 1) == 0)
@@ -107,12 +107,12 @@
   if (a4)
   {
     v12 = +[RMErrorUtilities createInternalError];
-    v13 = v12;
+    uRLByDeletingLastPathComponent = v12;
     if (v12)
     {
       v14 = v12;
       v15 = 0;
-      *a4 = v13;
+      *a4 = uRLByDeletingLastPathComponent;
     }
 
     else

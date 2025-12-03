@@ -1,8 +1,8 @@
 @interface CCDGatekeeper
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CCDGatekeeper)init;
 - (CCDServer)server;
-- (void)idleTimerDidFire:(id)a3;
+- (void)idleTimerDidFire:(id)fire;
 - (void)resetIdleTimer;
 @end
 
@@ -22,22 +22,22 @@
   return v3;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   [(CCDGatekeeper *)self resetIdleTimer];
-  v6 = [v5 valueForEntitlement:kCCServiceEntitlement];
+  v6 = [connectionCopy valueForEntitlement:kCCServiceEntitlement];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ([v6 BOOLValue] & 1) != 0)
   {
     v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___DEPXPCProtocol];
-    [v5 setExportedInterface:v7];
+    [connectionCopy setExportedInterface:v7];
 
     v8 = [CCDServicer alloc];
-    v9 = [(CCDGatekeeper *)self server];
-    v10 = [(CCDServicer *)v8 initWithXPCConnection:v5 server:v9];
-    [v5 setExportedObject:v10];
+    server = [(CCDGatekeeper *)self server];
+    v10 = [(CCDServicer *)v8 initWithXPCConnection:connectionCopy server:server];
+    [connectionCopy setExportedObject:v10];
 
-    [v5 resume];
+    [connectionCopy resume];
     v11 = *(DEPLogObjects() + 8);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -63,7 +63,7 @@
   return v12;
 }
 
-- (void)idleTimerDidFire:(id)a3
+- (void)idleTimerDidFire:(id)fire
 {
   v3 = *(DEPLogObjects() + 8);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))

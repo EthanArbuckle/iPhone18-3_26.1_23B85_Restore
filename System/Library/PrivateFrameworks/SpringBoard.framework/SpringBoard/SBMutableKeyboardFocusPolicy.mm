@@ -1,17 +1,17 @@
 @interface SBMutableKeyboardFocusPolicy
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setAdvicePolicy:(int64_t)a3;
-- (void)setKeyboardFocusTarget:(id)a3;
-- (void)setShouldSuppressRemoteDeferring:(BOOL)a3;
-- (void)setWindowSceneAncestor:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setAdvicePolicy:(int64_t)policy;
+- (void)setKeyboardFocusTarget:(id)target;
+- (void)setShouldSuppressRemoteDeferring:(BOOL)deferring;
+- (void)setWindowSceneAncestor:(id)ancestor;
 @end
 
 @implementation SBMutableKeyboardFocusPolicy
 
-- (void)setKeyboardFocusTarget:(id)a3
+- (void)setKeyboardFocusTarget:(id)target
 {
-  v6 = a3;
-  if (v6)
+  targetCopy = target;
+  if (targetCopy)
   {
     NSClassFromString(&cfstr_Sbkeyboardfocu_32.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -22,30 +22,30 @@
 
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->super._keyboardFocusTarget, a3);
-    [(BSAuditHistory *)self->super._auditHistory addItemWithFormat:@"Updated Target: %@", v6];
+    objc_storeStrong(&self->super._keyboardFocusTarget, target);
+    [(BSAuditHistory *)self->super._auditHistory addItemWithFormat:@"Updated Target: %@", targetCopy];
   }
 }
 
-- (void)setAdvicePolicy:(int64_t)a3
+- (void)setAdvicePolicy:(int64_t)policy
 {
-  if (self->super._selectionPolicy != a3)
+  if (self->super._selectionPolicy != policy)
   {
-    self->super._selectionPolicy = a3;
+    self->super._selectionPolicy = policy;
     auditHistory = self->super._auditHistory;
-    v5 = NSStringFromSBKeyboardFocusAdviceAcceptancePolicy(a3);
+    v5 = NSStringFromSBKeyboardFocusAdviceAcceptancePolicy(policy);
     [(BSAuditHistory *)auditHistory addItemWithFormat:@"Updated advice: %@", v5];
   }
 }
 
-- (void)setShouldSuppressRemoteDeferring:(BOOL)a3
+- (void)setShouldSuppressRemoteDeferring:(BOOL)deferring
 {
-  if (self->super._shouldSuppressRemoteDeferring != a3)
+  if (self->super._shouldSuppressRemoteDeferring != deferring)
   {
-    self->super._shouldSuppressRemoteDeferring = a3;
+    self->super._shouldSuppressRemoteDeferring = deferring;
     auditHistory = self->super._auditHistory;
     v4 = @"NO";
-    if (a3)
+    if (deferring)
     {
       v4 = @"YES";
     }
@@ -54,9 +54,9 @@
   }
 }
 
-- (void)setWindowSceneAncestor:(id)a3
+- (void)setWindowSceneAncestor:(id)ancestor
 {
-  obj = a3;
+  obj = ancestor;
   WeakRetained = objc_loadWeakRetained(&self->super._sbWindowSceneAncestor);
 
   v5 = obj;
@@ -67,7 +67,7 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SBKeyboardFocusPolicy alloc];
 

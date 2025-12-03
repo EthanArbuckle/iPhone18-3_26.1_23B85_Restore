@@ -1,47 +1,47 @@
 @interface RBLayer
-+ (id)defaultValueForKey:(id)a3;
++ (id)defaultValueForKey:(id)key;
 + (void)willEnterForeground;
 - ($C28CD4A45FD07A4F97CC9D5F91F25271)clearColor;
-- (BOOL)_willMoveSubsurface:(unsigned int)a3;
+- (BOOL)_willMoveSubsurface:(unsigned int)subsurface;
 - (BOOL)displayHeadroomMayHaveChanged;
-- (BOOL)displayWithBounds:(CGRect)a3 callback:(id)a4;
+- (BOOL)displayWithBounds:(CGRect)bounds callback:(id)callback;
 - (BOOL)isDrawableAvailable;
 - (NSDictionary)statistics;
 - (RBDevice)device;
 - (RBLayer)init;
-- (RBLayer)initWithCoder:(id)a3;
-- (RBLayer)initWithLayer:(id)a3;
+- (RBLayer)initWithCoder:(id)coder;
+- (RBLayer)initWithLayer:(id)layer;
 - (double)effectiveDisplayHeadroom;
 - (id).cxx_construct;
-- (id)actionForKey:(id)a3;
+- (id)actionForKey:(id)key;
 - (id)statisticsHandler;
 - (uint64_t)_statisticsMask;
 - (uint64_t)_updateSubsurface:(uint64_t)result;
 - (uint64_t)updateColor;
 - (uint64_t)waitUntilAsyncRenderingCompleted;
 - (void)_clearSubsurface;
-- (void)_commandBufferError:(id)a3 failedBefore:(BOOL)a4;
-- (void)_moveSubsurface:(void *)a3;
-- (void)_renderForegroundInContext:(CGContext *)a3;
-- (void)copyImageInRect:(CGRect)a3 options:(id)a4 completionQueue:(id)a5 handler:(id)a6;
+- (void)_commandBufferError:(id)error failedBefore:(BOOL)before;
+- (void)_moveSubsurface:(void *)subsurface;
+- (void)_renderForegroundInContext:(CGContext *)context;
+- (void)copyImageInRect:(CGRect)rect options:(id)options completionQueue:(id)queue handler:(id)handler;
 - (void)dealloc;
 - (void)display;
 - (void)displayIfNeeded;
-- (void)drawInDisplayList:(id)a3;
-- (void)layerDidBecomeVisible:(BOOL)a3;
+- (void)drawInDisplayList:(id)list;
+- (void)layerDidBecomeVisible:(BOOL)visible;
 - (void)rb_init;
-- (void)renderInContext:(CGContext *)a3;
-- (void)resetStatistics:(unint64_t)a3 alpha:(double)a4;
-- (void)setAsynchronousGroup:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setContents:(id)a3;
-- (void)setDevice:(id)a3;
-- (void)setMaxDrawableCount:(int64_t)a3;
-- (void)setPixelFormat:(unint64_t)a3;
-- (void)setStatisticsHandler:(id)a3;
-- (void)setSubsurface:(int)a3 rotated:(uint64_t)a4 bounds:(double)a5 contentsScale:(float)a6 contentHeadroom:(float)a7 displayHeadroom:;
+- (void)renderInContext:(CGContext *)context;
+- (void)resetStatistics:(unint64_t)statistics alpha:(double)alpha;
+- (void)setAsynchronousGroup:(id)group;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContents:(id)contents;
+- (void)setDevice:(id)device;
+- (void)setMaxDrawableCount:(int64_t)count;
+- (void)setPixelFormat:(unint64_t)format;
+- (void)setStatisticsHandler:(id)handler;
+- (void)setSubsurface:(int)subsurface rotated:(uint64_t)rotated bounds:(double)bounds contentsScale:(float)scale contentHeadroom:(float)headroom displayHeadroom:;
 - (void)updateColor;
-- (void)updateDisplayHeadroom:(char)a3 contentHeadroom:(float)a4 contentsLayer:(float)a5 locked:;
+- (void)updateDisplayHeadroom:(char)headroom contentHeadroom:(float)contentHeadroom contentsLayer:(float)layer locked:;
 - (void)waitUntilAsyncRenderingCompleted;
 @end
 
@@ -80,19 +80,19 @@
 
 - (void)rb_init
 {
-  if (a1)
+  if (self)
   {
-    *(a1 + 180) = 0;
-    *(a1 + 184) = 0;
-    *(a1 + 188) = 1065353216;
-    *(a1 + 192) = 0;
-    *(a1 + 175) = 1;
-    *(a1 + 176) = 1;
-    *(a1 + 208) = 0;
-    *(a1 + 216) = 0;
-    *(a1 + 174) = 1;
-    *(a1 + 200) = 3;
-    *(a1 + 177) = 1;
+    *(self + 180) = 0;
+    *(self + 184) = 0;
+    *(self + 188) = 1065353216;
+    *(self + 192) = 0;
+    *(self + 175) = 1;
+    *(self + 176) = 1;
+    *(self + 208) = 0;
+    *(self + 216) = 0;
+    *(self + 174) = 1;
+    *(self + 200) = 3;
+    *(self + 177) = 1;
     os_unfair_lock_lock(v2);
     v3 = *(v2 + 16);
     if (*(v2 + 24) < (v3 + 1))
@@ -101,7 +101,7 @@
       v3 = *(v2 + 16);
     }
 
-    *(*(v2 + 8) + 8 * v3) = a1;
+    *(*(v2 + 8) + 8 * v3) = self;
     ++*(v2 + 16);
 
     os_unfair_lock_unlock(v2);
@@ -202,7 +202,7 @@ LABEL_9:
 
 - (void)updateColor
 {
-  if (a1)
+  if (self)
   {
     {
       v3 = RB::debug_BOOL("RB_COLOR_LAYERS", v2);
@@ -225,24 +225,24 @@ LABEL_9:
         }
       }
 
-      [(RBLayer *)a1 updateColor];
+      [(RBLayer *)self updateColor];
     }
   }
 }
 
 - (void)_clearSubsurface
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 104))
+    if (*(self + 104))
     {
-      RB::SharedSubsurface::reset((a1 + 104));
-      *(a1 + 172) &= ~0x40u;
-      *(a1 + 88) = 0;
-      *(a1 + 174) = 1;
-      [*(a1 + 80) removeFromSuperlayer];
+      RB::SharedSubsurface::reset((self + 104));
+      *(self + 172) &= ~0x40u;
+      *(self + 88) = 0;
+      *(self + 174) = 1;
+      [*(self + 80) removeFromSuperlayer];
 
-      *(a1 + 80) = 0;
+      *(self + 80) = 0;
     }
   }
 }
@@ -354,11 +354,11 @@ LABEL_9:
   }
 }
 
-- (RBLayer)initWithCoder:(id)a3
+- (RBLayer)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = RBLayer;
-  v3 = [(RBLayer *)&v6 initWithCoder:a3];
+  v3 = [(RBLayer *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -368,7 +368,7 @@ LABEL_9:
   return v4;
 }
 
-- (RBLayer)initWithLayer:(id)a3
+- (RBLayer)initWithLayer:(id)layer
 {
   v9.receiver = self;
   v9.super_class = RBLayer;
@@ -376,7 +376,7 @@ LABEL_9:
   v5 = v4;
   if (v4)
   {
-    v6 = *(a3 + 7);
+    v6 = *(layer + 7);
     p = v4->_device._p;
     if (p != v6)
     {
@@ -384,59 +384,59 @@ LABEL_9:
       v5->_device._p = v6;
     }
 
-    v5->_rendersAsynchronously = *(a3 + 173);
-    v5->_colorMode = *(a3 + 45);
-    v5->_HDRMode = *(a3 + 46);
-    v5->_displayHeadroomLimit = *(a3 + 47);
+    v5->_rendersAsynchronously = *(layer + 173);
+    v5->_colorMode = *(layer + 45);
+    v5->_HDRMode = *(layer + 46);
+    v5->_displayHeadroomLimit = *(layer + 47);
     v5->_pixelFormat = 0;
-    v5->_promotesFramebuffer = *(a3 + 175);
-    v5->_clearsBackground = *(a3 + 176);
-    v5->_clearColor = *(a3 + 13);
-    v5->_maxDrawableCount = *(a3 + 25);
-    v5->_allowsPackedDrawable = *(a3 + 177);
-    v5->_allowsBottomLeftOrigin = *(a3 + 178);
+    v5->_promotesFramebuffer = *(layer + 175);
+    v5->_clearsBackground = *(layer + 176);
+    v5->_clearColor = *(layer + 13);
+    v5->_maxDrawableCount = *(layer + 25);
+    v5->_allowsPackedDrawable = *(layer + 177);
+    v5->_allowsBottomLeftOrigin = *(layer + 178);
   }
 
   return v5;
 }
 
-+ (id)defaultValueForKey:(id)a3
++ (id)defaultValueForKey:(id)key
 {
-  if ([a3 isEqualToString:@"opaque"])
+  if ([key isEqualToString:@"opaque"])
   {
     return MEMORY[0x1E695E118];
   }
 
-  if ([a3 isEqualToString:@"needsLayoutOnGeometryChange"])
+  if ([key isEqualToString:@"needsLayoutOnGeometryChange"])
   {
     return MEMORY[0x1E695E110];
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___RBLayer;
-  return objc_msgSendSuper2(&v6, sel_defaultValueForKey_, a3);
+  return objc_msgSendSuper2(&v6, sel_defaultValueForKey_, key);
 }
 
-- (id)actionForKey:(id)a3
+- (id)actionForKey:(id)key
 {
-  if ([a3 isEqualToString:@"contents"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"sublayers"))
+  if ([key isEqualToString:@"contents"] & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"sublayers"))
   {
     return 0;
   }
 
   v6.receiver = self;
   v6.super_class = RBLayer;
-  return [(RBLayer *)&v6 actionForKey:a3];
+  return [(RBLayer *)&v6 actionForKey:key];
 }
 
-- (void)setDevice:(id)a3
+- (void)setDevice:(id)device
 {
   os_unfair_lock_lock(&self->_lock._lock);
   p = self->_device._p;
-  if (p != a3)
+  if (p != device)
   {
 
-    self->_device._p = a3;
+    self->_device._p = device;
   }
 
   os_unfair_lock_unlock(&self->_lock._lock);
@@ -450,13 +450,13 @@ LABEL_9:
   return p;
 }
 
-- (void)setAsynchronousGroup:(id)a3
+- (void)setAsynchronousGroup:(id)group
 {
   p = self->_async_group._p;
-  if (p != a3)
+  if (p != group)
   {
 
-    self->_async_group._p = a3;
+    self->_async_group._p = group;
   }
 }
 
@@ -473,46 +473,46 @@ LABEL_9:
   return v3;
 }
 
-- (void)setPixelFormat:(unint64_t)a3
+- (void)setPixelFormat:(unint64_t)format
 {
-  if (RB::pixel_format_traits(a3, a2)[3])
+  if (RB::pixel_format_traits(format, a2)[3])
   {
-    v5 = a3;
+    formatCopy = format;
   }
 
   else
   {
-    v5 = 0;
+    formatCopy = 0;
   }
 
-  self->_pixelFormat = v5;
+  self->_pixelFormat = formatCopy;
 }
 
-- (void)setMaxDrawableCount:(int64_t)a3
+- (void)setMaxDrawableCount:(int64_t)count
 {
-  v3 = 2;
-  if (a3 > 2)
+  countCopy = 2;
+  if (count > 2)
   {
-    v3 = a3;
+    countCopy = count;
   }
 
-  if (v3 >= 3)
+  if (countCopy >= 3)
   {
-    v3 = 3;
+    countCopy = 3;
   }
 
-  self->_maxDrawableCount = v3;
+  self->_maxDrawableCount = countCopy;
 }
 
-- (BOOL)displayWithBounds:(CGRect)a3 callback:(id)a4
+- (BOOL)displayWithBounds:(CGRect)bounds callback:(id)callback
 {
-  width = a3.size.width;
-  height = a3.size.height;
+  width = bounds.size.width;
+  height = bounds.size.height;
   v156 = *MEMORY[0x1E69E9840];
   if ((*(self + 172) & 2) != 0)
   {
-    y = a3.origin.y;
-    x = a3.origin.x;
+    y = bounds.origin.y;
+    x = bounds.origin.x;
     if (!+[RBDevice isRunningInBackground])
     {
       os_unfair_lock_lock(&self->_lock._lock);
@@ -532,12 +532,12 @@ LABEL_9:
           v12 = vclez_s32(v105);
           if ((vpmax_u32(v12, v12).u32[0] & 0x80000000) == 0)
           {
-            v13 = [(RBLayer *)self allowsDisplayCompositing];
+            allowsDisplayCompositing = [(RBLayer *)self allowsDisplayCompositing];
             if ([(RBLayer *)self rendersAsynchronously])
             {
-              v14 = [(RBLayer *)self needsSynchronousUpdate];
+              needsSynchronousUpdate = [(RBLayer *)self needsSynchronousUpdate];
               self->_needsSynchronousUpdate = 0;
-              if (v14)
+              if (needsSynchronousUpdate)
               {
                 v103 = 0;
                 p = 0;
@@ -571,7 +571,7 @@ LABEL_9:
 
             if (![(RBLayer *)self allowsPackedDrawable]|| [(RBLayer *)self _statisticsMask]|| p || ([RBLayer displayWithBounds:callback:]::disable_subsurfaces & 1) != 0 || ((v16 = [(RBDecodedFontMetadata *)v9 fontUID], v17 = RB::Device::shared_surfaces(v16), v18 = vcgt_s32(vdup_lane_s32(v105, 1), v105).u8[0], v19 = vrev64_s32(v105), (v18 & 1) == 0) ? (v20 = 0) : (v20 = -1), !RB::SharedSurfaceGroup::preflight_subsurface(v17, vadd_s32(vbsl_s8(vdup_n_s32(v20), v19, v105), 0x200000002))))
             {
-              if (((self->_queueLayer._p != 0) & v13) == 1)
+              if (((self->_queueLayer._p != 0) & allowsDisplayCompositing) == 1)
               {
                 os_unfair_lock_lock(&self->_lock._lock);
                 RotationFlags = CAImageQueueGetRotationFlags();
@@ -675,11 +675,11 @@ LABEL_9:
               v108 = *&v105;
             }
 
-            v106 = [(RBLayer *)self promotesFramebuffer];
-            v35 = [(RBLayer *)self colorMode];
+            promotesFramebuffer = [(RBLayer *)self promotesFramebuffer];
+            colorMode = [(RBLayer *)self colorMode];
             v101 = RotationFlags;
-            v100 = v35;
-            RB::ColorMode::ColorMode(&t1, v35);
+            v100 = colorMode;
+            RB::ColorMode::ColorMode(&t1, colorMode);
             v36 = objc_opt_new();
             [v36 setProfile:2];
             [v36 setDefaultColorSpace:rb_color_space(BYTE1(t1.a) | 0x100u)];
@@ -696,12 +696,12 @@ LABEL_9:
             v155.ty = ty;
             [v36 concat:&v155];
             v42 = RBDeviceSwapCurrent(v9);
-            (*(a4 + 2))(a4, v36);
+            (*(callback + 2))(callback, v36);
             RBDeviceSwapCurrent(v42);
-            v43 = [v36 _rb_contents];
-            if (v43)
+            _rb_contents = [v36 _rb_contents];
+            if (_rb_contents)
             {
-              v45 = RB::DisplayList::Layer::color_info((v43 + 320), v44);
+              v45 = RB::DisplayList::Layer::color_info((_rb_contents + 320), v44);
               v46 = v45;
               _S12 = v45 >> 16;
               _H0 = WORD2(v45);
@@ -715,12 +715,12 @@ LABEL_9:
               LOWORD(_S12) = 0;
             }
 
-            v54 = [(RBLayer *)self HDRMode];
-            v55 = v54;
-            if (v54)
+            hDRMode = [(RBLayer *)self HDRMode];
+            v55 = hDRMode;
+            if (hDRMode)
             {
               v56 = 0.0;
-              if (v54 == 1)
+              if (hDRMode == 1)
               {
                 __asm
                 {
@@ -734,13 +734,13 @@ LABEL_9:
                 }
 
 LABEL_64:
-                if (v106)
+                if (promotesFramebuffer)
                 {
                   RB::ColorMode::merge_depth(&t1, v46);
                 }
 
-                v60 = [(RBLayer *)self isOpaque];
-                if (v60)
+                isOpaque = [(RBLayer *)self isOpaque];
+                if (isOpaque)
                 {
                   v61 = 2;
                 }
@@ -750,7 +750,7 @@ LABEL_64:
                   v61 = 3;
                 }
 
-                if (v13)
+                if (allowsDisplayCompositing)
                 {
                   v62 = v61 | 4;
                 }
@@ -760,9 +760,9 @@ LABEL_64:
                   v62 = v61;
                 }
 
-                v63 = [(RBLayer *)self clearsBackground];
-                v64 = v63;
-                if (v63)
+                clearsBackground = [(RBLayer *)self clearsBackground];
+                v64 = clearsBackground;
+                if (clearsBackground)
                 {
                   v65 = 2;
                 }
@@ -774,7 +774,7 @@ LABEL_64:
 
                 v99 = v65;
                 v102 = 0u;
-                if (v63)
+                if (clearsBackground)
                 {
                   [(RBLayer *)self clearColor];
                   __asm { FMOV            V4.4S, #1.0 }
@@ -782,7 +782,7 @@ LABEL_64:
                   _Q4.i64[0] = __PAIR64__(v67, v66);
                   _Q4.i32[2] = v68;
                   v71 = vmulq_n_f32(_Q4, v70);
-                  if (v60)
+                  if (isOpaque)
                   {
                     v72 = -1;
                   }
@@ -795,18 +795,18 @@ LABEL_64:
                   v102 = vbslq_s8(vdupq_n_s32(v72), _Q4, v71);
                 }
 
-                v73 = [(RBLayer *)self pixelFormat];
+                pixelFormat = [(RBLayer *)self pixelFormat];
                 LODWORD(t2.a) = 0;
-                if (!v73)
+                if (!pixelFormat)
                 {
-                  v74 = [(RBDecodedFontMetadata *)v9 fontUID];
-                  v73 = RB::ColorMode::pixel_format(&t1, v74, v62, &t2);
+                  fontUID = [(RBDecodedFontMetadata *)v9 fontUID];
+                  pixelFormat = RB::ColorMode::pixel_format(&t1, fontUID, v62, &t2);
                 }
 
                 valid = [(RBDecodedFontMetadata *)v9 fontUID];
-                if ((v73 & 0x80000000) != 0)
+                if ((pixelFormat & 0x80000000) != 0)
                 {
-                  valid = RB::Device::valid_texture_size_nonnative(valid, v73, *&v108);
+                  valid = RB::Device::valid_texture_size_nonnative(valid, pixelFormat, *&v108);
                   if ((valid & 1) == 0)
                   {
                     goto LABEL_84;
@@ -824,7 +824,7 @@ LABEL_84:
                     v79 = RB::error_log(valid);
                     if (os_log_type_enabled(v79, OS_LOG_TYPE_FAULT))
                     {
-                      v81 = RB::pixel_format_name(v73, v80);
+                      v81 = RB::pixel_format_name(pixelFormat, v80);
                       [(RBLayer *)v81 displayWithBounds:v79 callback:v108];
                     }
 
@@ -850,12 +850,12 @@ LABEL_84:
                     v82 |= 8u;
                   }
 
-                  v83 = self;
+                  selfCopy = self;
                   v142[0] = MEMORY[0x1E69E9820];
                   v142[1] = 3321888768;
                   v142[2] = __38__RBLayer_displayWithBounds_callback___block_invoke;
                   v142[3] = &__block_descriptor_92_e8_32c29_ZTSN2RB8objc_ptrIP7RBLayerEE_e9_v16__0_v8l;
-                  v143 = v83;
+                  v143 = selfCopy;
                   v149 = v101;
                   v144 = x;
                   v145 = y;
@@ -873,11 +873,11 @@ LABEL_84:
 
                   RB::refcounted_ptr<RB::SharedSurfaceClient>::operator=(&v155, &self->_surface_client);
                   os_unfair_lock_unlock(&self->_lock._lock);
-                  v84 = [(RBDecodedFontMetadata *)v9 fontUID];
-                  v85 = RB::Device::shared_surfaces(v84);
+                  fontUID2 = [(RBDecodedFontMetadata *)v9 fontUID];
+                  v85 = RB::Device::shared_surfaces(fontUID2);
                   v86 = v107;
-                  v13 = v13;
-                  if (RB::SharedSurfaceGroup::add_subsurface(v85, *&v155.a, v73, SBYTE2(t1.a), LODWORD(t2.a), v36, v82, v142, v56, vadd_s32(*&v108, 0x200000002), v86, v102))
+                  allowsDisplayCompositing = allowsDisplayCompositing;
+                  if (RB::SharedSurfaceGroup::add_subsurface(v85, *&v155.a, pixelFormat, SBYTE2(t1.a), LODWORD(t2.a), v36, v82, v142, v56, vadd_s32(*&v108, 0x200000002), v86, v102))
                   {
                     os_unfair_lock_lock(&self->_lock._lock);
                     *(self + 172) |= 0x40u;
@@ -894,7 +894,7 @@ LABEL_84:
                       [RBLayer displayWithBounds:callback:];
                     }
 
-                    v87 = v83;
+                    v87 = selfCopy;
 LABEL_140:
 
                     v8 = 1;
@@ -906,7 +906,7 @@ LABEL_141:
                   if (*&v155.a && atomic_fetch_add_explicit((*&v155.a + 8), 0xFFFFFFFF, memory_order_release) == 1)
                   {
                     [RBLayer displayWithBounds:callback:];
-                    v13 = v13;
+                    allowsDisplayCompositing = allowsDisplayCompositing;
                   }
                 }
 
@@ -937,7 +937,7 @@ LABEL_141:
                 v103 = 0;
 LABEL_113:
                 [(RBImageQueueLayer *)self->_queueLayer._p setPosition:x, y];
-                [(RBImageQueueLayer *)self->_queueLayer._p setAllowsDisplayCompositing:v13];
+                [(RBImageQueueLayer *)self->_queueLayer._p setAllowsDisplayCompositing:allowsDisplayCompositing];
                 if (v101)
                 {
                   v91 = 0;
@@ -945,7 +945,7 @@ LABEL_113:
 
                 else
                 {
-                  v91 = v13 ^ 1;
+                  v91 = allowsDisplayCompositing ^ 1;
                 }
 
                 if (v91 && [(RBLayer *)self contentsAreFlipped])
@@ -953,7 +953,7 @@ LABEL_113:
                   LODWORD(t2.a) |= 0x80u;
                 }
 
-                v111 = self;
+                selfCopy2 = self;
                 v92 = self->_queueLayer._p;
                 v93 = self->_drawable._p;
                 if (v93)
@@ -968,10 +968,10 @@ LABEL_113:
                 v134[2] = __38__RBLayer_displayWithBounds_callback___block_invoke_28;
                 v134[3] = &__block_descriptor_69_e8_32c40_ZTSN2RB8objc_ptrIP17RBImageQueueLayerEE48c29_ZTSN2RB8objc_ptrIP7RBLayerEE_e9_v16__0_v8l;
                 v135 = v92;
-                v141 = v60;
+                v141 = isOpaque;
                 v136 = v108;
                 v138 = v101;
-                v137 = v111;
+                v137 = selfCopy2;
                 v139 = v56;
                 v140 = _S11;
                 v94 = v103;
@@ -984,7 +984,7 @@ LABEL_113:
                 {
                   if (v104)
                   {
-                    v95 = [(RBLayerGroup *)v104 beginInstance];
+                    beginInstance = [(RBLayerGroup *)v104 beginInstance];
 LABEL_128:
                     block[0] = MEMORY[0x1E69E9820];
                     block[1] = 3321888768;
@@ -994,14 +994,14 @@ LABEL_128:
                     v129 = v91;
                     v116 = v9;
                     v117 = v92;
-                    v118 = v73;
+                    v118 = pixelFormat;
                     a_low = LODWORD(t1.a);
                     v123 = v56;
                     v124 = _S11;
-                    v119 = v111;
+                    v119 = selfCopy2;
                     v125 = LODWORD(t2.a);
                     v120 = v104;
-                    v126 = v95;
+                    v126 = beginInstance;
                     if (v93)
                     {
                       atomic_fetch_add_explicit(v93 + 2, 1u, memory_order_relaxed);
@@ -1010,8 +1010,8 @@ LABEL_128:
                     v121 = v93;
                     v131 = v103;
                     v127 = v100;
-                    v132 = v60;
-                    v133 = v106;
+                    v132 = isOpaque;
+                    v133 = promotesFramebuffer;
                     v128 = v99;
                     v113 = v102;
                     v122 = v36;
@@ -1040,7 +1040,7 @@ LABEL_128:
                       [RBDrawable initWithDevice:];
                     }
 
-                    v87 = v111;
+                    v87 = selfCopy2;
                     goto LABEL_140;
                   }
                 }
@@ -1050,11 +1050,11 @@ LABEL_128:
                 }
 
                 v104 = 0;
-                v95 = 0;
+                beginInstance = 0;
                 goto LABEL_128;
               }
 
-              if (v54 != 3)
+              if (hDRMode != 3)
               {
                 _S11 = 0.0;
                 goto LABEL_64;
@@ -1062,10 +1062,10 @@ LABEL_128:
             }
 
             v56 = 0.0;
-            if (!v54 && *&_S12 > COERCE_SHORT_FLOAT(COERCE_UNSIGNED_INT(1.0)))
+            if (!hDRMode && *&_S12 > COERCE_SHORT_FLOAT(COERCE_UNSIGNED_INT(1.0)))
             {
-              v57 = [(RBLayer *)self effectiveDisplayHeadroom];
-              v56 = *&v57;
+              effectiveDisplayHeadroom = [(RBLayer *)self effectiveDisplayHeadroom];
+              v56 = *&effectiveDisplayHeadroom;
             }
 
             if (v46 == 4)
@@ -1080,7 +1080,7 @@ LABEL_128:
                 v58 = v56;
               }
 
-              v46 = RB::headroom_color_depth(v54, v58);
+              v46 = RB::headroom_color_depth(hDRMode, v58);
             }
 
             goto LABEL_64;
@@ -1109,16 +1109,16 @@ LABEL_142:
 
 - (uint64_t)_statisticsMask
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    os_unfair_lock_lock(a1 + 12);
-    v2 = *(v1 + 64);
+    os_unfair_lock_lock(self + 12);
+    v2 = *(selfCopy + 64);
     if (v2)
     {
       atomic_fetch_add_explicit(&v2[2], 1u, memory_order_relaxed);
-      os_unfair_lock_unlock((v1 + 48));
-      v1 = RB::Drawable::statistics_mask(v2);
+      os_unfair_lock_unlock((selfCopy + 48));
+      selfCopy = RB::Drawable::statistics_mask(v2);
       if (atomic_fetch_add_explicit(&v2[2], 0xFFFFFFFF, memory_order_release) == 1)
       {
         __copy_helper_block_e8_48c58_ZTSN2RB8objc_ptrIPU21objcproto10MTLTexture11objc_objectEE56c66_ZTSN2RB8objc_ptrIPU29objcproto18RBDrawableDelegate11objc_objectEE64c30_ZTSN2RB8objc_ptrIP8RBDeviceEE72c40_ZTSN2RB14refcounted_ptrINS_8DrawableEEE80c30_ZTSN2RB8objc_ptrIP8NSStringEE120c40_ZTSN2RB8objc_ptrIU13block_pointerFvvEEE128c40_ZTSN2RB8objc_ptrIU13block_pointerFvvEEE136c48_ZTSN2RB8objc_ptrIU13block_pointerFvP7NSErrorEEE144c55_ZTSN2RB8objc_ptrIPU18objcproto8MTLEvent11objc_objectEE_cold_1();
@@ -1127,28 +1127,28 @@ LABEL_142:
 
     else
     {
-      os_unfair_lock_unlock((v1 + 48));
+      os_unfair_lock_unlock((selfCopy + 48));
       return 0;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)setSubsurface:(int)a3 rotated:(uint64_t)a4 bounds:(double)a5 contentsScale:(float)a6 contentHeadroom:(float)a7 displayHeadroom:
+- (void)setSubsurface:(int)subsurface rotated:(uint64_t)rotated bounds:(double)bounds contentsScale:(float)scale contentHeadroom:(float)headroom displayHeadroom:
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 48));
-    *(a1 + 172) &= ~0x40u;
-    *(a1 + 88) = 0;
-    [(RBLayer *)a1 _updateSubsurface:a2];
-    v24 = vmlaq_n_f64(vmulq_n_f64(xmmword_195E42760, *a4), xmmword_195E42770, *(a4 + 8));
-    if (a3)
+    os_unfair_lock_lock((self + 48));
+    *(self + 172) &= ~0x40u;
+    *(self + 88) = 0;
+    [(RBLayer *)self _updateSubsurface:a2];
+    v24 = vmlaq_n_f64(vmulq_n_f64(xmmword_195E42760, *rotated), xmmword_195E42770, *(rotated + 8));
+    if (subsurface)
     {
-      v14 = [a1 contentsAreFlipped];
-      v15 = *(a4 + 16);
-      if (v14)
+      contentsAreFlipped = [self contentsAreFlipped];
+      v15 = *(rotated + 16);
+      if (contentsAreFlipped)
       {
         v16 = xmmword_195E42770;
         v17 = xmmword_195E42760;
@@ -1167,65 +1167,65 @@ LABEL_142:
       v20.f64[0] = NAN;
       v20.f64[1] = NAN;
       v24 = vmlaq_f64(vaddq_f64(vbslq_s8(vnegq_f64(v20), 0, v16), v19), v17, v18);
-      [*(a1 + 80) setContentsScale:{a5, vnegq_f64(v17), *&v16}];
+      [*(self + 80) setContentsScale:{bounds, vnegq_f64(v17), *&v16}];
     }
 
     else
     {
-      [*(a1 + 80) setContentsScale:{a5, 0, 0x3FF0000000000000, 0x3FF0000000000000, 0}];
+      [*(self + 80) setContentsScale:{bounds, 0, 0x3FF0000000000000, 0x3FF0000000000000, 0}];
     }
 
-    v21 = *(a1 + 80);
+    v21 = *(self + 80);
     v25[0] = v23;
     v25[1] = v22;
     v25[2] = v24;
     [v21 setAffineTransform:v25];
-    [(RBLayer *)a1 updateDisplayHeadroom:1 contentHeadroom:a7 contentsLayer:a6 locked:?];
-    os_unfair_lock_unlock((a1 + 48));
+    [(RBLayer *)self updateDisplayHeadroom:1 contentHeadroom:headroom contentsLayer:scale locked:?];
+    os_unfair_lock_unlock((self + 48));
   }
 }
 
-- (void)updateDisplayHeadroom:(char)a3 contentHeadroom:(float)a4 contentsLayer:(float)a5 locked:
+- (void)updateDisplayHeadroom:(char)headroom contentHeadroom:(float)contentHeadroom contentsLayer:(float)layer locked:
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  [a1 displayHeadroomLimit];
+  [self displayHeadroomLimit];
   v11 = fmaxf(v10, 1.0);
-  if (v11 >= a5)
+  if (v11 >= layer)
   {
-    v12 = a5;
+    layerCopy = layer;
   }
 
   else
   {
-    v12 = v11;
+    layerCopy = v11;
   }
 
   if (a2)
   {
-    v13 = [a1 HDRMode];
-    v14 = v13;
-    v16 = a4 != 0.0 || v13 == 3;
+    hDRMode = [self HDRMode];
+    v14 = hDRMode;
+    v16 = contentHeadroom != 0.0 || hDRMode == 3;
     if (v16)
     {
-      v17 = v12 > 1.0;
+      v17 = layerCopy > 1.0;
     }
 
     else
     {
-      v17 = a5 > 1.0;
+      v17 = layer > 1.0;
     }
 
-    v18 = [a2 wantsExtendedDynamicRangeContent];
-    if (v18 != v17)
+    wantsExtendedDynamicRangeContent = [a2 wantsExtendedDynamicRangeContent];
+    if (wantsExtendedDynamicRangeContent != v17)
     {
       [a2 setWantsExtendedDynamicRangeContent:v17];
     }
 
-    if (v18 | v17)
+    if (wantsExtendedDynamicRangeContent | v17)
     {
       v19 = MEMORY[0x1E69792E0];
       if (!v16)
@@ -1235,7 +1235,7 @@ LABEL_142:
 
       if (v17)
       {
-        v20 = v12;
+        v20 = layerCopy;
       }
 
       else
@@ -1244,11 +1244,11 @@ LABEL_142:
         v20 = 0.0;
       }
 
-      [a2 setToneMapMode:{*v19, v12}];
+      [a2 setToneMapMode:{*v19, layerCopy}];
       [a2 setContentsMaximumDesiredEDR:v20];
     }
 
-    v21 = v12 > 1.0 && v16;
+    v21 = layerCopy > 1.0 && v16;
     if (v14)
     {
       v22 = 0;
@@ -1259,19 +1259,19 @@ LABEL_142:
       v22 = v21;
     }
 
-    if (a3)
+    if (headroom)
     {
       goto LABEL_31;
     }
 
 LABEL_33:
-    v23 = (a1 + 48);
-    os_unfair_lock_lock((a1 + 48));
+    v23 = (self + 48);
+    os_unfair_lock_lock((self + 48));
     goto LABEL_34;
   }
 
   v22 = 0;
-  if ((a3 & 1) == 0)
+  if ((headroom & 1) == 0)
   {
     goto LABEL_33;
   }
@@ -1279,19 +1279,19 @@ LABEL_33:
 LABEL_31:
   v23 = 0;
 LABEL_34:
-  if (v22 != (*(a1 + 172) & 1))
+  if (v22 != (*(self + 172) & 1))
   {
-    [(CALayer *)a1 observeDisplayHeadroomChanges:v22];
-    *(a1 + 172) = *(a1 + 172) & 0xFE | v22;
+    [(CALayer *)self observeDisplayHeadroomChanges:v22];
+    *(self + 172) = *(self + 172) & 0xFE | v22;
   }
 
   if (a2)
   {
-    *(a1 + 164) = a4;
-    *(a1 + 168) = v12;
+    *(self + 164) = contentHeadroom;
+    *(self + 168) = layerCopy;
   }
 
-  if ((a3 & 1) == 0)
+  if ((headroom & 1) == 0)
   {
 
     os_unfair_lock_unlock(v23);
@@ -1503,25 +1503,25 @@ void __38__RBLayer_displayWithBounds_callback___block_invoke_40(uint64_t a1, id 
   }
 }
 
-- (void)_commandBufferError:(id)a3 failedBefore:(BOOL)a4
+- (void)_commandBufferError:(id)error failedBefore:(BOOL)before
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (error)
   {
-    v4 = a4;
-    v7 = [a3 domain];
-    if ([v7 isEqual:*MEMORY[0x1E6973F68]])
+    beforeCopy = before;
+    domain = [error domain];
+    if ([domain isEqual:*MEMORY[0x1E6973F68]])
     {
-      v8 = [a3 code];
-      if (v8 - 1 >= 2)
+      code = [error code];
+      if (code - 1 >= 2)
       {
-        if (v8 == 7)
+        if (code == 7)
         {
           v10 = RB::misc_log(7);
           if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
           {
             v11 = 134217984;
-            v12 = self;
+            selfCopy2 = self;
             _os_log_impl(&dword_195CE8000, v10, OS_LOG_TYPE_DEFAULT, "RBLayer %p: access error, redraw when visible", &v11, 0xCu);
           }
 
@@ -1531,17 +1531,17 @@ void __38__RBLayer_displayWithBounds_callback___block_invoke_40(uint64_t a1, id 
 
       else
       {
-        v9 = RB::misc_log(v8);
+        v9 = RB::misc_log(code);
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
           v11 = 134218240;
-          v12 = self;
+          selfCopy2 = self;
           v13 = 1024;
-          v14 = v4;
+          v14 = beforeCopy;
           _os_log_impl(&dword_195CE8000, v9, OS_LOG_TYPE_DEFAULT, "RBLayer %p: error, failed before %{BOOL}d", &v11, 0x12u);
         }
 
-        if (!v4)
+        if (!beforeCopy)
         {
           [(RBLayer *)self setNeedsDisplay];
         }
@@ -1550,12 +1550,12 @@ void __38__RBLayer_displayWithBounds_callback___block_invoke_40(uint64_t a1, id 
   }
 }
 
-- (BOOL)_willMoveSubsurface:(unsigned int)a3
+- (BOOL)_willMoveSubsurface:(unsigned int)subsurface
 {
   v5 = os_unfair_lock_trylock(&self->_lock._lock);
   if (v5)
   {
-    if (self->_deallocating.__a_.__a_value || *&self->_anon_70[32] != a3)
+    if (self->_deallocating.__a_.__a_value || *&self->_anon_70[32] != subsurface)
     {
       os_unfair_lock_unlock(&self->_lock._lock);
       LOBYTE(v5) = 0;
@@ -1570,13 +1570,13 @@ void __38__RBLayer_displayWithBounds_callback___block_invoke_40(uint64_t a1, id 
   return v5;
 }
 
-- (void)drawInDisplayList:(id)a3
+- (void)drawInDisplayList:(id)list
 {
-  v5 = [(RBLayer *)self delegate];
+  delegate = [(RBLayer *)self delegate];
   if (objc_opt_respondsToSelector())
   {
 
-    [v5 RBLayer:self draw:a3];
+    [delegate RBLayer:self draw:list];
   }
 }
 
@@ -1594,15 +1594,15 @@ void __38__RBLayer_displayWithBounds_callback___block_invoke_40(uint64_t a1, id 
       v4 = 1.0;
       if (v5 > 1.0)
       {
-        v7 = [(CALayer *)self displayHeadroom];
-        if (v7 >= v6)
+        displayHeadroom = [(CALayer *)self displayHeadroom];
+        if (displayHeadroom >= v6)
         {
           v4 = v6;
         }
 
         else
         {
-          v4 = v7;
+          v4 = displayHeadroom;
         }
       }
     }
@@ -1680,7 +1680,7 @@ void __38__RBLayer_displayWithBounds_callback___block_invoke_40(uint64_t a1, id 
   }
 }
 
-- (void)setContents:(id)a3
+- (void)setContents:(id)contents
 {
   os_unfair_lock_lock(&self->_lock._lock);
   p = self->_queueLayer._p;
@@ -1692,15 +1692,15 @@ void __38__RBLayer_displayWithBounds_callback___block_invoke_40(uint64_t a1, id 
   [(RBImageQueueLayer *)p removeFromSuperlayer];
   v6.receiver = self;
   v6.super_class = RBLayer;
-  [(RBLayer *)&v6 setContents:a3];
+  [(RBLayer *)&v6 setContents:contents];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   os_unfair_lock_lock(&self->_lock._lock);
   if ((*(self + 172) & 2) != 0 && self->_queueLayer._p)
   {
@@ -1725,10 +1725,10 @@ void __38__RBLayer_displayWithBounds_callback___block_invoke_40(uint64_t a1, id 
   [(RBLayer *)&v12 setBounds:x, y, width, height];
 }
 
-- (void)layerDidBecomeVisible:(BOOL)a3
+- (void)layerDidBecomeVisible:(BOOL)visible
 {
-  v3 = a3;
-  if (a3)
+  visibleCopy = visible;
+  if (visible)
   {
     if ((*(self + 172) & 4) != 0 && !+[RBDevice isRunningInBackground])
     {
@@ -1753,7 +1753,7 @@ void __38__RBLayer_displayWithBounds_callback___block_invoke_40(uint64_t a1, id 
   *(self + 172) = *(self + 172) & 0xFD | v5;
   v6.receiver = self;
   v6.super_class = RBLayer;
-  [(RBLayer *)&v6 layerDidBecomeVisible:v3];
+  [(RBLayer *)&v6 layerDidBecomeVisible:visibleCopy];
 }
 
 void __33__RBLayer_layerDidBecomeVisible___block_invoke(uint64_t a1)
@@ -1780,10 +1780,10 @@ void __33__RBLayer_layerDidBecomeVisible___block_invoke(uint64_t a1)
   }
 }
 
-- (void)resetStatistics:(unint64_t)a3 alpha:(double)a4
+- (void)resetStatistics:(unint64_t)statistics alpha:(double)alpha
 {
   os_unfair_lock_lock(&self->_lock._lock);
-  if (a3)
+  if (statistics)
   {
     ensure_drawable_locked(self);
   }
@@ -1793,7 +1793,7 @@ void __33__RBLayer_layerDidBecomeVisible___block_invoke(uint64_t a1)
   {
     atomic_fetch_add_explicit(p + 2, 1u, memory_order_relaxed);
     os_unfair_lock_unlock(&self->_lock._lock);
-    RB::Drawable::reset_statistics(p, a3, a4);
+    RB::Drawable::reset_statistics(p, statistics, alpha);
     if (atomic_fetch_add_explicit(p + 2, 0xFFFFFFFF, memory_order_release) == 1)
     {
       __copy_helper_block_e8_48c58_ZTSN2RB8objc_ptrIPU21objcproto10MTLTexture11objc_objectEE56c66_ZTSN2RB8objc_ptrIPU29objcproto18RBDrawableDelegate11objc_objectEE64c30_ZTSN2RB8objc_ptrIP8RBDeviceEE72c40_ZTSN2RB14refcounted_ptrINS_8DrawableEEE80c30_ZTSN2RB8objc_ptrIP8NSStringEE120c40_ZTSN2RB8objc_ptrIU13block_pointerFvvEEE128c40_ZTSN2RB8objc_ptrIU13block_pointerFvvEEE136c48_ZTSN2RB8objc_ptrIU13block_pointerFvP7NSErrorEEE144c55_ZTSN2RB8objc_ptrIPU18objcproto8MTLEvent11objc_objectEE_cold_1();
@@ -1831,10 +1831,10 @@ void __33__RBLayer_layerDidBecomeVisible___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setStatisticsHandler:(id)a3
+- (void)setStatisticsHandler:(id)handler
 {
   os_unfair_lock_lock(&self->_lock._lock);
-  if (a3)
+  if (handler)
   {
     ensure_drawable_locked(self);
   }
@@ -1844,7 +1844,7 @@ void __33__RBLayer_layerDidBecomeVisible___block_invoke(uint64_t a1)
   {
     atomic_fetch_add_explicit(p + 2, 1u, memory_order_relaxed);
     os_unfair_lock_unlock(&self->_lock._lock);
-    if (a3)
+    if (handler)
     {
       operator new();
     }
@@ -1863,26 +1863,26 @@ void __33__RBLayer_layerDidBecomeVisible___block_invoke(uint64_t a1)
   }
 }
 
-- (void)copyImageInRect:(CGRect)a3 options:(id)a4 completionQueue:(id)a5 handler:(id)a6
+- (void)copyImageInRect:(CGRect)rect options:(id)options completionQueue:(id)queue handler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (+[RBDevice isRunningInBackground])
   {
     v87[0] = MEMORY[0x1E69E9820];
     v87[1] = 3221225472;
     v87[2] = __59__RBLayer_copyImageInRect_options_completionQueue_handler___block_invoke;
     v87[3] = &unk_1E744C698;
-    v87[4] = a6;
+    v87[4] = handler;
     v14 = v87;
 LABEL_15:
-    dispatch_async(a5, v14);
+    dispatch_async(queue, v14);
     return;
   }
 
-  v15 = [a4 objectForKeyedSubscript:RBLayerCopyImageScale];
+  v15 = [options objectForKeyedSubscript:RBLayerCopyImageScale];
   if (!v15 || ([v15 doubleValue], v17 = v16, v16 <= 0.0))
   {
     [(RBLayer *)self contentsScale];
@@ -1896,7 +1896,7 @@ LABEL_15:
     block[1] = 3221225472;
     block[2] = __59__RBLayer_copyImageInRect_options_completionQueue_handler___block_invoke_2;
     block[3] = &unk_1E744C698;
-    block[4] = a6;
+    block[4] = handler;
     v14 = block;
     goto LABEL_15;
   }
@@ -1914,19 +1914,19 @@ LABEL_15:
 
     v60 = p;
     os_unfair_lock_unlock(&self->_lock._lock);
-    v24 = [a4 objectForKeyedSubscript:RBLayerCopyImageColorMode];
+    v24 = [options objectForKeyedSubscript:RBLayerCopyImageColorMode];
     if (v24)
     {
-      v25 = [v24 intValue];
+      intValue = [v24 intValue];
     }
 
     else
     {
-      v25 = [(RBLayer *)self colorMode];
+      intValue = [(RBLayer *)self colorMode];
     }
 
-    v26 = v25;
-    RB::ColorMode::ColorMode(&v84, v25);
+    v26 = intValue;
+    RB::ColorMode::ColorMode(&v84, intValue);
     v27 = objc_opt_new();
     [v27 setProfile:2];
     [v27 setDefaultColorSpace:rb_color_space(BYTE1(v84) | 0x100u)];
@@ -1939,41 +1939,41 @@ LABEL_15:
     v83 = y;
     [v27 concat:&v78];
     [(RBLayer *)self drawInDisplayList:v27];
-    v28 = [a4 objectForKeyedSubscript:RBLayerCopyImagePromotesFramebuffer];
+    v28 = [options objectForKeyedSubscript:RBLayerCopyImagePromotesFramebuffer];
     if (v28)
     {
-      v29 = [v28 BOOLValue];
+      bOOLValue = [v28 BOOLValue];
     }
 
     else
     {
-      v29 = [(RBLayer *)self promotesFramebuffer];
+      bOOLValue = [(RBLayer *)self promotesFramebuffer];
     }
 
-    v30 = v29;
-    if (v29)
+    v30 = bOOLValue;
+    if (bOOLValue)
     {
-      v31 = [v27 _rb_contents];
-      if (v31)
+      _rb_contents = [v27 _rb_contents];
+      if (_rb_contents)
       {
-        v33 = RB::DisplayList::Layer::color_info((v31 + 320), v32);
+        v33 = RB::DisplayList::Layer::color_info((_rb_contents + 320), v32);
         RB::ColorMode::merge_depth(&v84, v33);
       }
     }
 
-    v34 = [a4 objectForKeyedSubscript:RBLayerCopyImageOpaque];
+    v34 = [options objectForKeyedSubscript:RBLayerCopyImageOpaque];
     if (v34)
     {
-      v35 = [v34 BOOLValue];
+      bOOLValue2 = [v34 BOOLValue];
     }
 
     else
     {
-      v35 = [(RBLayer *)self isOpaque];
+      bOOLValue2 = [(RBLayer *)self isOpaque];
     }
 
-    v36 = v35;
-    if (v35)
+    v36 = bOOLValue2;
+    if (bOOLValue2)
     {
       v37 = 8;
     }
@@ -1983,22 +1983,22 @@ LABEL_15:
       v37 = 9;
     }
 
-    v38 = [a4 objectForKeyedSubscript:RBLayerCopyImageClearsBackground];
+    v38 = [options objectForKeyedSubscript:RBLayerCopyImageClearsBackground];
     if (v38)
     {
-      v39 = [v38 BOOLValue];
+      bOOLValue3 = [v38 BOOLValue];
     }
 
     else
     {
-      v39 = [(RBLayer *)self clearsBackground];
+      bOOLValue3 = [(RBLayer *)self clearsBackground];
     }
 
     v57 = v30;
     v58 = v36;
-    if (v39)
+    if (bOOLValue3)
     {
-      v40 = [a4 objectForKeyedSubscript:RBLayerCopyImageClearColor];
+      v40 = [options objectForKeyedSubscript:RBLayerCopyImageClearColor];
       if (v40)
       {
         [v40 getValue:&v78 size:16];
@@ -2020,29 +2020,29 @@ LABEL_15:
       _Q4.i64[0] = __PAIR64__(v43, v42);
       _Q4.i32[2] = v44;
       v46 = 2;
-      v47 = [a4 objectForKeyedSubscript:{RBLayerCopyImageDisableIgnoreAlphaBlendModes, vmulq_n_f32(_Q4, v45)}];
+      v47 = [options objectForKeyedSubscript:{RBLayerCopyImageDisableIgnoreAlphaBlendModes, vmulq_n_f32(_Q4, v45)}];
     }
 
     else
     {
       v41 = v26;
       v46 = 0;
-      v47 = [a4 objectForKeyedSubscript:{RBLayerCopyImageDisableIgnoreAlphaBlendModes, 0, 0}];
+      v47 = [options objectForKeyedSubscript:{RBLayerCopyImageDisableIgnoreAlphaBlendModes, 0, 0}];
     }
 
     if (v47)
     {
-      v53 = [v47 BOOLValue];
+      bOOLValue4 = [v47 BOOLValue];
     }
 
     else
     {
-      v53 = 0;
+      bOOLValue4 = 0;
     }
 
-    v59 = a5;
-    v54 = [a6 copy];
-    v55 = [(RBLayer *)self name];
+    queueCopy = queue;
+    v54 = [handler copy];
+    name = [(RBLayer *)self name];
     v61[0] = MEMORY[0x1E69E9820];
     v61[1] = 3321888768;
     v61[2] = __59__RBLayer_copyImageInRect_options_completionQueue_handler___block_invoke_4;
@@ -2052,7 +2052,7 @@ LABEL_15:
     v71 = v37;
     v64 = v19;
     v65 = v20;
-    v66 = v59;
+    v66 = queueCopy;
     v67 = v54;
     v75 = v58;
     if (v60)
@@ -2061,10 +2061,10 @@ LABEL_15:
     }
 
     v68 = v60;
-    v69 = v55;
+    v69 = name;
     v72 = v41;
     v76 = v57;
-    v77 = v53;
+    v77 = bOOLValue4;
     v70 = v27;
     v73 = v46;
     v62 = v56;
@@ -2092,8 +2092,8 @@ LABEL_15:
     v85[1] = 3221225472;
     v85[2] = __59__RBLayer_copyImageInRect_options_completionQueue_handler___block_invoke_3;
     v85[3] = &unk_1E744C698;
-    v85[4] = a6;
-    dispatch_async(a5, v85);
+    v85[4] = handler;
+    dispatch_async(queue, v85);
     os_unfair_lock_unlock(&self->_lock._lock);
     v22 = 0;
   }
@@ -2460,16 +2460,16 @@ void __59__RBLayer_copyImageInRect_options_completionQueue_handler___block_invok
   }
 }
 
-- (void)renderInContext:(CGContext *)a3
+- (void)renderInContext:(CGContext *)context
 {
   *(self + 172) |= 0x20u;
   v4.receiver = self;
   v4.super_class = RBLayer;
-  [(RBLayer *)&v4 renderInContext:a3];
+  [(RBLayer *)&v4 renderInContext:context];
   *(self + 172) &= ~0x20u;
 }
 
-- (void)_renderForegroundInContext:(CGContext *)a3
+- (void)_renderForegroundInContext:(CGContext *)context
 {
   [(RBLayer *)self bounds];
   v6 = v5;
@@ -2507,35 +2507,35 @@ void __59__RBLayer_copyImageInRect_options_completionQueue_handler___block_invok
   [(RBLayer *)self drawInDisplayList:v13];
   LODWORD(v29) = 1.0;
   [v13 drawLayerWithAlpha:0 blendMode:v29];
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   v31.origin.x = v6;
   v31.origin.y = v8;
   v31.size.width = v10;
   v31.size.height = v12;
-  CGContextClipToRect(a3, v31);
+  CGContextClipToRect(context, v31);
   if (([(RBLayer *)self contentsAreFlipped]& 1) == 0)
   {
-    CGContextTranslateCTM(a3, 0.0, v12);
-    CGContextScaleCTM(a3, 1.0, -1.0);
+    CGContextTranslateCTM(context, 0.0, v12);
+    CGContextScaleCTM(context, 1.0, -1.0);
   }
 
-  [v13 renderInContext:a3 options:0];
-  CGContextRestoreGState(a3);
+  [v13 renderInContext:context options:0];
+  CGContextRestoreGState(context);
 }
 
 - (double)effectiveDisplayHeadroom
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  [a1 displayHeadroomLimit];
+  [self displayHeadroomLimit];
   v2 = *&result;
   LODWORD(result) = 1.0;
   if (v2 > 1.0)
   {
-    *&result = [(CALayer *)a1 displayHeadroom];
+    *&result = [(CALayer *)self displayHeadroom];
     if (*&result >= v2)
     {
       *&result = v2;
@@ -2661,9 +2661,9 @@ LABEL_9:
   return result;
 }
 
-- (void)_moveSubsurface:(void *)a3
+- (void)_moveSubsurface:(void *)subsurface
 {
-  [(RBLayer *)self _updateSubsurface:a3];
+  [(RBLayer *)self _updateSubsurface:subsurface];
 
   os_unfair_lock_unlock(&self->_lock._lock);
 }
@@ -2693,12 +2693,12 @@ LABEL_9:
 
 - (uint64_t)updateColor
 {
-  if (*(a1 + 72))
+  if (*(self + 72))
   {
     v2 = &_MergedGlobals_6;
   }
 
-  else if (*(a1 + 104))
+  else if (*(self + 104))
   {
     v2 = &qword_1ED6D53F0;
   }
@@ -2706,15 +2706,15 @@ LABEL_9:
   else
   {
     v2 = &qword_1ED6D53F0;
-    if ((*(a1 + 172) & 0x40) == 0 && !*(a1 + 88))
+    if ((*(self + 172) & 0x40) == 0 && !*(self + 88))
     {
       v2 = &qword_1ED6D53F8;
     }
   }
 
-  [a1 setBorderColor:*v2];
+  [self setBorderColor:*v2];
 
-  return [a1 setBorderWidth:1.0];
+  return [self setBorderWidth:1.0];
 }
 
 BOOL __38__RBLayer_displayWithBounds_callback___block_invoke_2_cold_1(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)

@@ -1,17 +1,17 @@
 @interface ICMusicKitRequestContext
-- (BOOL)isEqual:(id)a3;
-- (ICMusicKitRequestContext)initWithBlock:(id)a3;
-- (ICMusicKitRequestContext)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (ICMusicKitRequestContext)initWithBlock:(id)block;
+- (ICMusicKitRequestContext)initWithCoder:(id)coder;
 - (id)_description;
-- (id)copyWithBlock:(id)a3;
+- (id)copyWithBlock:(id)block;
 - (id)description;
 - (int64_t)_storeRequestPersonalizationStyle;
 - (int64_t)personalizationStyle;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDeveloperTokenProvider:(id)a3;
-- (void)setPersonalizationMethod:(int64_t)a3;
-- (void)setPersonalizationStyle:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDeveloperTokenProvider:(id)provider;
+- (void)setPersonalizationMethod:(int64_t)method;
+- (void)setPersonalizationStyle:(int64_t)style;
 @end
 
 @implementation ICMusicKitRequestContext
@@ -23,22 +23,22 @@
   return [(ICStoreRequestContext *)&v3 personalizationStyle];
 }
 
-- (void)setPersonalizationStyle:(int64_t)a3
+- (void)setPersonalizationStyle:(int64_t)style
 {
   if (![(ICRequestContext *)self _allowsMutation])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"ICMusicKitRequestContext.m" lineNumber:234 description:@"Mutation not allowed beyond initialization."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMusicKitRequestContext.m" lineNumber:234 description:@"Mutation not allowed beyond initialization."];
   }
 
-  if (a3 == 2)
+  if (style == 2)
   {
     v6 = 2;
   }
 
   else
   {
-    v6 = a3 == 1;
+    v6 = style == 1;
   }
 
   v8.receiver = self;
@@ -59,52 +59,52 @@
   return result;
 }
 
-- (void)setPersonalizationMethod:(int64_t)a3
+- (void)setPersonalizationMethod:(int64_t)method
 {
   if (![(ICRequestContext *)self _allowsMutation])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"ICMusicKitRequestContext.m" lineNumber:212 description:@"Mutation not allowed beyond initialization."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMusicKitRequestContext.m" lineNumber:212 description:@"Mutation not allowed beyond initialization."];
   }
 
-  self->_personalizationMethod = a3;
+  self->_personalizationMethod = method;
 }
 
-- (void)setDeveloperTokenProvider:(id)a3
+- (void)setDeveloperTokenProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   if (![(ICRequestContext *)self _allowsMutation])
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"ICMusicKitRequestContext.m" lineNumber:201 description:@"Mutation not allowed beyond initialization."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMusicKitRequestContext.m" lineNumber:201 description:@"Mutation not allowed beyond initialization."];
   }
 
   v10 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v6 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   if (([v10 isEqual:v6] & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"ICMusicKitRequestContext.m" lineNumber:206 description:@"Setting up a MusicKit request context with a developer token provider that is not provided by iTunesCloud.framework is not supported."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"ICMusicKitRequestContext.m" lineNumber:206 description:@"Setting up a MusicKit request context with a developer token provider that is not provided by iTunesCloud.framework is not supported."];
   }
 
   developerTokenProvider = self->_developerTokenProvider;
-  self->_developerTokenProvider = v5;
+  self->_developerTokenProvider = providerCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ICMusicKitRequestContext;
-  [(ICStoreRequestContext *)&v9 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_personalizationMethod forKey:@"personalizationMethod"];
+  [(ICStoreRequestContext *)&v9 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_personalizationMethod forKey:@"personalizationMethod"];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   if (_ICDeveloperTokenProviderIsAllowedForClassName(v6))
   {
-    [v4 encodeObject:v6 forKey:@"developerTokenProviderClassName"];
-    [v4 encodeObject:self->_developerTokenProvider forKey:@"developerTokenProvider"];
+    [coderCopy encodeObject:v6 forKey:@"developerTokenProviderClassName"];
+    [coderCopy encodeObject:self->_developerTokenProvider forKey:@"developerTokenProvider"];
   }
 
   else
@@ -118,27 +118,27 @@
     }
 
     v8 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"ICError" code:-7005 debugDescription:{@"Attempted to encode an instance of ICMusicKitRequestContext with an unallowed class name for developerTokenProvider: %@.", v6}];
-    [v4 failWithError:v8];
+    [coderCopy failWithError:v8];
   }
 }
 
-- (ICMusicKitRequestContext)initWithCoder:(id)a3
+- (ICMusicKitRequestContext)initWithCoder:(id)coder
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = ICMusicKitRequestContext;
-  v5 = [(ICStoreRequestContext *)&v14 initWithCoder:v4];
+  v5 = [(ICStoreRequestContext *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_personalizationMethod = [v4 decodeIntegerForKey:@"personalizationMethod"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"developerTokenProviderClassName"];
+    v5->_personalizationMethod = [coderCopy decodeIntegerForKey:@"personalizationMethod"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"developerTokenProviderClassName"];
     if (_ICDeveloperTokenProviderIsAllowedForClassName(v6))
     {
       v7 = NSClassFromString(v6);
       if (v7)
       {
-        v8 = [v4 decodeObjectOfClass:v7 forKey:@"developerTokenProvider"];
+        v8 = [coderCopy decodeObjectOfClass:v7 forKey:@"developerTokenProvider"];
         developerTokenProvider = v5->_developerTokenProvider;
         v5->_developerTokenProvider = v8;
         goto LABEL_13;
@@ -177,7 +177,7 @@ LABEL_14:
     }
 
     developerTokenProvider = v12;
-    [v4 failWithError:v12];
+    [coderCopy failWithError:v12];
 
     v5 = 0;
 LABEL_13:
@@ -190,19 +190,19 @@ LABEL_15:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    if ([(ICMusicKitRequestContext *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(ICMusicKitRequestContext *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
+      v5 = equalCopy;
       v12.receiver = self;
       v12.super_class = ICMusicKitRequestContext;
       if ([(ICStoreRequestContext *)&v12 isEqual:v5])
@@ -320,8 +320,8 @@ LABEL_12:
   v3 = self->_cachedDescription;
   if (!v3)
   {
-    v4 = [(ICMusicKitRequestContext *)self _description];
-    v5 = [v4 copy];
+    _description = [(ICMusicKitRequestContext *)self _description];
+    v5 = [_description copy];
     cachedDescription = self->_cachedDescription;
     self->_cachedDescription = v5;
 
@@ -338,10 +338,10 @@ LABEL_12:
   v5 = NSStringFromClass(v4);
   v6 = [v3 initWithFormat:@"<%@: %p", v5, self];
 
-  v7 = [(ICRequestContext *)self clientInfo];
-  v8 = [v7 clientIdentifier];
-  v9 = [v7 clientVersion];
-  [v6 appendFormat:@"; client = %@/%@", v8, v9];
+  clientInfo = [(ICRequestContext *)self clientInfo];
+  clientIdentifier = [clientInfo clientIdentifier];
+  clientVersion = [clientInfo clientVersion];
+  [v6 appendFormat:@"; client = %@/%@", clientIdentifier, clientVersion];
 
   personalizationMethod = self->_personalizationMethod;
   if (personalizationMethod)
@@ -361,15 +361,15 @@ LABEL_12:
 
   [v6 appendFormat:@"; personalizationMethod = %@", v11];
 LABEL_6:
-  v12 = [(ICMusicKitRequestContext *)self personalizationStyle];
-  if (v12 == 1)
+  personalizationStyle = [(ICMusicKitRequestContext *)self personalizationStyle];
+  if (personalizationStyle == 1)
   {
     v13 = @"automatic";
   }
 
   else
   {
-    if (v12 != 2)
+    if (personalizationStyle != 2)
     {
       goto LABEL_11;
     }
@@ -389,18 +389,18 @@ LABEL_11:
   return v6;
 }
 
-- (id)copyWithBlock:(id)a3
+- (id)copyWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __42__ICMusicKitRequestContext_copyWithBlock___block_invoke;
   v9[3] = &unk_1E7BF49A0;
   v9[4] = self;
-  v10 = v4;
+  v10 = blockCopy;
   v8.receiver = self;
   v8.super_class = ICMusicKitRequestContext;
-  v5 = v4;
+  v5 = blockCopy;
   v6 = [(ICStoreRequestContext *)&v8 copyWithBlock:v9];
 
   return v6;
@@ -414,18 +414,18 @@ void __42__ICMusicKitRequestContext_copyWithBlock___block_invoke(uint64_t a1, id
   (*(*(a1 + 40) + 16))();
 }
 
-- (ICMusicKitRequestContext)initWithBlock:(id)a3
+- (ICMusicKitRequestContext)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __42__ICMusicKitRequestContext_initWithBlock___block_invoke;
   v9[3] = &unk_1E7BF49A0;
-  v11 = v4;
-  v10 = self;
-  v8.receiver = v10;
+  v11 = blockCopy;
+  selfCopy = self;
+  v8.receiver = selfCopy;
   v8.super_class = ICMusicKitRequestContext;
-  v5 = v4;
+  v5 = blockCopy;
   v6 = [(ICStoreRequestContext *)&v8 initWithBlock:v9];
 
   return v6;

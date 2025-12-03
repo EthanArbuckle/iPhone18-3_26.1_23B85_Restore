@@ -1,9 +1,9 @@
 @interface IconArtworkGridView
 - (CGRect)frame;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (_TtC18ASMessagesProvider19IconArtworkGridView)initWithFrame:(CGRect)a3;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (_TtC18ASMessagesProvider19IconArtworkGridView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation IconArtworkGridView
@@ -20,29 +20,29 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v22.receiver = self;
   v22.super_class = ObjectType;
-  v9 = self;
+  selfCopy = self;
   [(IconArtworkGridView *)&v22 frame];
   v11 = v10;
   v13 = v12;
-  v21.receiver = v9;
+  v21.receiver = selfCopy;
   v21.super_class = ObjectType;
   [(IconArtworkGridView *)&v21 setFrame:x, y, width, height];
-  v20.receiver = v9;
+  v20.receiver = selfCopy;
   v20.super_class = ObjectType;
   [(IconArtworkGridView *)&v20 frame];
   if (v11 != v15 || v13 != v14)
   {
     sub_1FF0FC();
-    v19.receiver = v9;
+    v19.receiver = selfCopy;
     v19.super_class = ObjectType;
     [(IconArtworkGridView *)&v19 frame];
     sub_1FF26C(v17, v18);
@@ -51,18 +51,18 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1FF65C();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
-  height = a3.height;
-  width = a3.width;
+  height = fitting.height;
+  width = fitting.width;
   v7 = OBJC_IVAR____TtC18ASMessagesProvider19IconArtworkGridView_layoutMetrics;
   swift_beginAccess();
   sub_18BC54(self + v7, v18);
-  v8 = self;
+  selfCopy = self;
 
   v10 = sub_140EDC(v9);
 
@@ -100,7 +100,7 @@
   return result;
 }
 
-- (_TtC18ASMessagesProvider19IconArtworkGridView)initWithFrame:(CGRect)a3
+- (_TtC18ASMessagesProvider19IconArtworkGridView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,6 +1,6 @@
 @interface CSKeywordAnalyzerNDEAPIResult
 - (CSKeywordAnalyzerNDEAPIResult)init;
-- (CSKeywordAnalyzerNDEAPIResult)initWithBlob:(id)a3 isEarlyDetected:(BOOL)a4;
+- (CSKeywordAnalyzerNDEAPIResult)initWithBlob:(id)blob isEarlyDetected:(BOOL)detected;
 - (NSDictionary)dictionary;
 @end
 
@@ -35,25 +35,25 @@
   return v10;
 }
 
-- (CSKeywordAnalyzerNDEAPIResult)initWithBlob:(id)a3 isEarlyDetected:(BOOL)a4
+- (CSKeywordAnalyzerNDEAPIResult)initWithBlob:(id)blob isEarlyDetected:(BOOL)detected
 {
-  v6 = a3;
+  blobCopy = blob;
   v12.receiver = self;
   v12.super_class = CSKeywordAnalyzerNDEAPIResult;
   v7 = [(CSKeywordAnalyzerNDEAPIResult *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    if (v6)
+    if (blobCopy)
     {
-      v9 = [v6 bytes];
-      *&v10 = *v9;
-      *(&v10 + 1) = HIDWORD(*v9);
+      bytes = [blobCopy bytes];
+      *&v10 = *bytes;
+      *(&v10 + 1) = HIDWORD(*bytes);
       *&v8->_samplesFed = v10;
-      v8->_bestEnd = *(v9 + 8);
-      v8->_bestScore = *(v9 + 12);
-      v8->_isSecondChance = *(v9 + 16);
-      v8->_isEarlyDetect = a4;
+      v8->_bestEnd = *(bytes + 8);
+      v8->_bestScore = *(bytes + 12);
+      v8->_isSecondChance = *(bytes + 16);
+      v8->_isEarlyDetect = detected;
     }
 
     else

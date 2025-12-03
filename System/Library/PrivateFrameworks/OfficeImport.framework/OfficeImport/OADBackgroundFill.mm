@@ -1,7 +1,7 @@
 @interface OADBackgroundFill
 + (id)defaultProperties;
 - (OADBackgroundFill)initWithDefaults;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation OADBackgroundFill
@@ -31,9 +31,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [OADBackgroundFill allocWithZone:a3];
+  v3 = [OADBackgroundFill allocWithZone:zone];
 
   return [(OADBackgroundFill *)v3 initWithDefaults];
 }

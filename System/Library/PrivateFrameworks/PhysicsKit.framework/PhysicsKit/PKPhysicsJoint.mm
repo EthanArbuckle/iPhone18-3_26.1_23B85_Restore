@@ -1,62 +1,62 @@
 @interface PKPhysicsJoint
-- (BOOL)isEqualToJoint:(id)a3;
+- (BOOL)isEqualToJoint:(id)joint;
 - (CGVector)reactionForce;
 - (PKPhysicsJoint)init;
-- (PKPhysicsJoint)initWithCoder:(id)a3;
+- (PKPhysicsJoint)initWithCoder:(id)coder;
 - (double)reactionTorque;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPhysicsJoint
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(PKPhysicsJoint *)self bodyA];
-  [v7 encodeObject:v4 forKey:@"_bodyA"];
+  coderCopy = coder;
+  bodyA = [(PKPhysicsJoint *)self bodyA];
+  [coderCopy encodeObject:bodyA forKey:@"_bodyA"];
 
-  v5 = [(PKPhysicsJoint *)self bodyB];
-  [v7 encodeObject:v5 forKey:@"_bodyB"];
+  bodyB = [(PKPhysicsJoint *)self bodyB];
+  [coderCopy encodeObject:bodyB forKey:@"_bodyB"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_implicit];
-  [v7 encodeObject:v6 forKey:@"_implicit"];
+  [coderCopy encodeObject:v6 forKey:@"_implicit"];
 }
 
-- (PKPhysicsJoint)initWithCoder:(id)a3
+- (PKPhysicsJoint)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKPhysicsJoint *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_bodyA"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_bodyA"];
     bodyA = v5->_bodyA;
     v5->_bodyA = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_bodyB"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_bodyB"];
     bodyB = v5->_bodyB;
     v5->_bodyB = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_implicit"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_implicit"];
     v5->_implicit = [v10 BOOLValue];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToJoint:(id)a3
+- (BOOL)isEqualToJoint:(id)joint
 {
-  v4 = a3;
-  if (self == v4)
+  jointCopy = joint;
+  if (self == jointCopy)
   {
     goto LABEL_17;
   }
 
-  if ([(PKPhysicsBody *)self->_bodyA isEqualToBody:v4->_bodyA]&& [(PKPhysicsBody *)self->_bodyB isEqualToBody:v4->_bodyB]&& self->_implicit == v4->_implicit)
+  if ([(PKPhysicsBody *)self->_bodyA isEqualToBody:jointCopy->_bodyA]&& [(PKPhysicsBody *)self->_bodyB isEqualToBody:jointCopy->_bodyB]&& self->_implicit == jointCopy->_implicit)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(PKPhysicsJoint *)self isEqualToRevoluteJoint:v4];
+      v5 = [(PKPhysicsJoint *)self isEqualToRevoluteJoint:jointCopy];
 LABEL_16:
       v6 = v5;
       goto LABEL_18;
@@ -65,28 +65,28 @@ LABEL_16:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(PKPhysicsJoint *)self isEqualToDistanceJoint:v4];
+      v5 = [(PKPhysicsJoint *)self isEqualToDistanceJoint:jointCopy];
       goto LABEL_16;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(PKPhysicsJoint *)self isEqualToRopeJoint:v4];
+      v5 = [(PKPhysicsJoint *)self isEqualToRopeJoint:jointCopy];
       goto LABEL_16;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(PKPhysicsJoint *)self isEqualToWeldJoint:v4];
+      v5 = [(PKPhysicsJoint *)self isEqualToWeldJoint:jointCopy];
       goto LABEL_16;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(PKPhysicsJoint *)self isEqualToPrismaticJoint:v4];
+      v5 = [(PKPhysicsJoint *)self isEqualToPrismaticJoint:jointCopy];
       goto LABEL_16;
     }
 

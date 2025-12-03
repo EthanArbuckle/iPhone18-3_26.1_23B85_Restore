@@ -7,8 +7,8 @@
 - (void)_replyTimerDidTimeout;
 - (void)invalidate;
 - (void)invalidateReplyTimer;
-- (void)setPbRequest:(id)a3;
-- (void)setPbResponseHandler:(id)a3;
+- (void)setPbRequest:(id)request;
+- (void)setPbResponseHandler:(id)handler;
 - (void)startReplyTimer;
 @end
 
@@ -16,7 +16,7 @@
 
 + (id)request
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -68,8 +68,8 @@
     location[5] = v2;
     location[6] = v3;
     WeakRetained = objc_loadWeakRetained(&self->_messageCenter);
-    v6 = [WeakRetained _queue];
-    v7 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v6);
+    _queue = [WeakRetained _queue];
+    v7 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, _queue);
     replyTimer = self->_replyTimer;
     self->_replyTimer = v7;
 
@@ -101,13 +101,13 @@
   }
 }
 
-- (void)setPbRequest:(id)a3
+- (void)setPbRequest:(id)request
 {
-  objc_storeStrong(&self->_pbRequest, a3);
-  v7 = a3;
-  v5 = [self->_pbRequest data];
+  objc_storeStrong(&self->_pbRequest, request);
+  requestCopy = request;
+  data = [self->_pbRequest data];
   data = self->_data;
-  self->_data = v5;
+  self->_data = data;
 }
 
 - (id)pbResponseHandler
@@ -117,10 +117,10 @@
   return v2;
 }
 
-- (void)setPbResponseHandler:(id)a3
+- (void)setPbResponseHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  handlerCopy = handler;
+  v5 = [handlerCopy copy];
   pbResponseHandler = self->_pbResponseHandler;
   self->_pbResponseHandler = v5;
 

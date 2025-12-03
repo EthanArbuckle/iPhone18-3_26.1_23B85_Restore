@@ -1,8 +1,8 @@
 @interface PTUIRowTableViewCell
 - (void)dealloc;
 - (void)prepareForReuse;
-- (void)rowDidReload:(id)a3;
-- (void)setRow:(id)a3;
+- (void)rowDidReload:(id)reload;
+- (void)setRow:(id)row;
 - (void)updateCellCharacteristics;
 - (void)updateDisplayedContent;
 @end
@@ -25,13 +25,13 @@
   [(PTUIRowTableViewCell *)&v3 prepareForReuse];
 }
 
-- (void)setRow:(id)a3
+- (void)setRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   [(PTRow *)self->_row removeObserver:self];
   row = self->_row;
-  self->_row = v4;
-  v6 = v4;
+  self->_row = rowCopy;
+  v6 = rowCopy;
 
   [(PTRow *)self->_row addObserver:self];
   [(PTUIRowTableViewCell *)self updateCellCharacteristics];
@@ -42,28 +42,28 @@
 
 - (void)updateDisplayedContent
 {
-  v3 = [(PTUIRowTableViewCell *)self textLabel];
+  textLabel = [(PTUIRowTableViewCell *)self textLabel];
   v4 = [(PTUIRowTableViewCell *)self row];
-  v5 = [v4 title];
-  [v3 setText:v5];
+  title = [v4 title];
+  [textLabel setText:title];
 
-  v8 = [(PTUIRowTableViewCell *)self imageView];
+  imageView = [(PTUIRowTableViewCell *)self imageView];
   v6 = [(PTUIRowTableViewCell *)self row];
-  v7 = [v6 image];
-  [v8 setImage:v7];
+  image = [v6 image];
+  [imageView setImage:image];
 }
 
 - (void)updateCellCharacteristics
 {
-  v3 = [(PTUIRowTableViewCell *)self textLabel];
+  textLabel = [(PTUIRowTableViewCell *)self textLabel];
   v4 = [MEMORY[0x277D74300] systemFontOfSize:17.0];
-  [v3 setFont:v4];
+  [textLabel setFont:v4];
 
   v8 = [(PTUIRowTableViewCell *)self row];
-  v5 = [v8 action];
-  if (v5 || ([v8 defaultUIAction], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  action = [v8 action];
+  if (action || ([v8 defaultUIAction], (action = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v6 = v5;
+    v6 = action;
     v7 = [(PTUIRowTableViewCell *)self isEditing]^ 1;
   }
 
@@ -75,7 +75,7 @@
   [(PTUIRowTableViewCell *)self setSelectionStyle:v7];
 }
 
-- (void)rowDidReload:(id)a3
+- (void)rowDidReload:(id)reload
 {
   [(PTUIRowTableViewCell *)self updateDisplayedValue];
 

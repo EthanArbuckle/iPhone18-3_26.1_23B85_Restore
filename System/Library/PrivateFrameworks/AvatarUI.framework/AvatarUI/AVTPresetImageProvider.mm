@@ -1,40 +1,40 @@
 @interface AVTPresetImageProvider
-+ (id)configurationToRenderForPreset:(id)a3 overrides:(id)a4 baseConfiguration:(id)a5;
-+ (id)presetImageCacheWithEnvironment:(id)a3;
++ (id)configurationToRenderForPreset:(id)preset overrides:(id)overrides baseConfiguration:(id)configuration;
++ (id)presetImageCacheWithEnvironment:(id)environment;
 - (AVTDeviceResourceConsumerDelegate)consumerDelegate;
-- (AVTPresetImageProvider)initWithCache:(id)a3 environment:(id)a4;
-- (AVTPresetImageProvider)initWithCache:(id)a3 renderingScheduler:(id)a4 environment:(id)a5;
-- (AVTPresetImageProvider)initWithCache:(id)a3 renderingScheduler:(id)a4 renderingQueueProvider:(id)a5 callbackQueue:(id)a6 renderer:(id)a7 defaultScope:(id)a8 environment:(id)a9;
-- (AVTPresetImageProvider)initWithRenderingScheduler:(id)a3 environment:(id)a4;
-- (id)providerForImageForItem:(id)a3 scope:(id)a4 queue:(id)a5 renderingHandler:(id)a6;
-- (id)providerForThumbnailForModelColor:(id)a3;
-- (id)providerForThumbnailForModelPreset:(id)a3 presetOverrides:(id)a4 poseOverride:(id)a5 avatarConfiguration:(id)a6 framingMode:(id)a7;
-- (id)renderThumbnailForModelColor:(id)a3;
+- (AVTPresetImageProvider)initWithCache:(id)cache environment:(id)environment;
+- (AVTPresetImageProvider)initWithCache:(id)cache renderingScheduler:(id)scheduler environment:(id)environment;
+- (AVTPresetImageProvider)initWithCache:(id)cache renderingScheduler:(id)scheduler renderingQueueProvider:(id)provider callbackQueue:(id)queue renderer:(id)renderer defaultScope:(id)scope environment:(id)environment;
+- (AVTPresetImageProvider)initWithRenderingScheduler:(id)scheduler environment:(id)environment;
+- (id)providerForImageForItem:(id)item scope:(id)scope queue:(id)queue renderingHandler:(id)handler;
+- (id)providerForThumbnailForModelColor:(id)color;
+- (id)providerForThumbnailForModelPreset:(id)preset presetOverrides:(id)overrides poseOverride:(id)override avatarConfiguration:(id)configuration framingMode:(id)mode;
+- (id)renderThumbnailForModelColor:(id)color;
 @end
 
 @implementation AVTPresetImageProvider
 
-+ (id)presetImageCacheWithEnvironment:(id)a3
++ (id)presetImageCacheWithEnvironment:(id)environment
 {
-  v3 = a3;
+  environmentCopy = environment;
   if (AVTUIThumbnailCaching_once())
   {
     if (AVTUIFlushThumbnailCache())
     {
-      v4 = [v3 imageCacheStoreLocation];
-      v5 = [v3 logger];
-      [AVTImageStore clearContentAtLocation:v4 logger:v5];
+      imageCacheStoreLocation = [environmentCopy imageCacheStoreLocation];
+      logger = [environmentCopy logger];
+      [AVTImageStore clearContentAtLocation:imageCacheStoreLocation logger:logger];
 
       AVTUISetFlushThumbnailCache();
     }
 
-    v6 = [v3 inMemoryImageCache];
+    inMemoryImageCache = [environmentCopy inMemoryImageCache];
     v7 = [AVTImageStore alloc];
-    v8 = [v3 coreEnvironment];
-    v9 = [v3 imageCacheStoreLocation];
-    v10 = [(AVTImageStore *)v7 initWithEnvironment:v8 validateImages:0 location:v9];
+    coreEnvironment = [environmentCopy coreEnvironment];
+    imageCacheStoreLocation2 = [environmentCopy imageCacheStoreLocation];
+    v10 = [(AVTImageStore *)v7 initWithEnvironment:coreEnvironment validateImages:0 location:imageCacheStoreLocation2];
 
-    v11 = [[AVTTwoLevelsImageCache alloc] initWithFirstLevelCache:v6 secondLevelCache:v10 environment:v3];
+    v11 = [[AVTTwoLevelsImageCache alloc] initWithFirstLevelCache:inMemoryImageCache secondLevelCache:v10 environment:environmentCopy];
   }
 
   else
@@ -45,101 +45,101 @@
   return v11;
 }
 
-- (AVTPresetImageProvider)initWithRenderingScheduler:(id)a3 environment:(id)a4
+- (AVTPresetImageProvider)initWithRenderingScheduler:(id)scheduler environment:(id)environment
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() presetImageCacheWithEnvironment:v6];
-  v9 = [(AVTPresetImageProvider *)self initWithCache:v8 renderingScheduler:v7 environment:v6];
+  environmentCopy = environment;
+  schedulerCopy = scheduler;
+  v8 = [objc_opt_class() presetImageCacheWithEnvironment:environmentCopy];
+  v9 = [(AVTPresetImageProvider *)self initWithCache:v8 renderingScheduler:schedulerCopy environment:environmentCopy];
 
   return v9;
 }
 
-- (AVTPresetImageProvider)initWithCache:(id)a3 environment:(id)a4
+- (AVTPresetImageProvider)initWithCache:(id)cache environment:(id)environment
 {
-  v6 = a4;
-  v7 = a3;
+  environmentCopy = environment;
+  cacheCopy = cache;
   v8 = objc_alloc_init(AVTImmediateTaskScheduler);
-  v9 = [(AVTPresetImageProvider *)self initWithCache:v7 renderingScheduler:v8 environment:v6];
+  v9 = [(AVTPresetImageProvider *)self initWithCache:cacheCopy renderingScheduler:v8 environment:environmentCopy];
 
   return v9;
 }
 
-- (AVTPresetImageProvider)initWithCache:(id)a3 renderingScheduler:(id)a4 environment:(id)a5
+- (AVTPresetImageProvider)initWithCache:(id)cache renderingScheduler:(id)scheduler environment:(id)environment
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 renderer];
+  environmentCopy = environment;
+  schedulerCopy = scheduler;
+  cacheCopy = cache;
+  renderer = [environmentCopy renderer];
   v12 = [AVTRenderingScope alloc];
-  [v8 mainScreenScale];
+  [environmentCopy mainScreenScale];
   v14 = v13;
-  v15 = [AVTRenderingScope scopeOptionsForEnvironment:v8];
-  v16 = [MEMORY[0x1E698E288] friendlyPose];
-  v17 = [(AVTRenderingScope *)v12 initWithRenderingType:100 scale:v15 options:0 framingMode:v16 pose:v14];
+  v15 = [AVTRenderingScope scopeOptionsForEnvironment:environmentCopy];
+  friendlyPose = [MEMORY[0x1E698E288] friendlyPose];
+  v17 = [(AVTRenderingScope *)v12 initWithRenderingType:100 scale:v15 options:0 framingMode:friendlyPose pose:v14];
 
-  v18 = [v8 serialQueueProvider];
-  v19 = [(AVTPresetImageProvider *)self initWithCache:v10 renderingScheduler:v9 renderingQueueProvider:v18 callbackQueue:MEMORY[0x1E69E96A0] renderer:v11 defaultScope:v17 environment:v8];
+  serialQueueProvider = [environmentCopy serialQueueProvider];
+  v19 = [(AVTPresetImageProvider *)self initWithCache:cacheCopy renderingScheduler:schedulerCopy renderingQueueProvider:serialQueueProvider callbackQueue:MEMORY[0x1E69E96A0] renderer:renderer defaultScope:v17 environment:environmentCopy];
 
   return v19;
 }
 
-- (AVTPresetImageProvider)initWithCache:(id)a3 renderingScheduler:(id)a4 renderingQueueProvider:(id)a5 callbackQueue:(id)a6 renderer:(id)a7 defaultScope:(id)a8 environment:(id)a9
+- (AVTPresetImageProvider)initWithCache:(id)cache renderingScheduler:(id)scheduler renderingQueueProvider:(id)provider callbackQueue:(id)queue renderer:(id)renderer defaultScope:(id)scope environment:(id)environment
 {
-  v34 = a3;
-  v33 = a4;
-  v16 = a5;
-  v32 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  cacheCopy = cache;
+  schedulerCopy = scheduler;
+  providerCopy = provider;
+  queueCopy = queue;
+  rendererCopy = renderer;
+  scopeCopy = scope;
+  environmentCopy = environment;
   v35.receiver = self;
   v35.super_class = AVTPresetImageProvider;
   v20 = [(AVTPresetImageProvider *)&v35 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_cache, a3);
-    objc_storeStrong(&v21->_renderer, a7);
-    v22 = v16[2](v16, "com.apple.AvatarUI.AVTPresetImageProvider.presetQueue");
+    objc_storeStrong(&v20->_cache, cache);
+    objc_storeStrong(&v21->_renderer, renderer);
+    v22 = providerCopy[2](providerCopy, "com.apple.AvatarUI.AVTPresetImageProvider.presetQueue");
     presetQueue = v21->_presetQueue;
     v21->_presetQueue = v22;
 
-    v24 = v16[2](v16, "com.apple.AvatarUI.AVTPresetImageProvider.colorQueue");
+    v24 = providerCopy[2](providerCopy, "com.apple.AvatarUI.AVTPresetImageProvider.colorQueue");
     colorQueue = v21->_colorQueue;
     v21->_colorQueue = v24;
 
-    objc_storeStrong(&v21->_renderingScheduler, a4);
-    objc_storeStrong(&v21->_callbackQueue, a6);
-    v26 = [v19 logger];
+    objc_storeStrong(&v21->_renderingScheduler, scheduler);
+    objc_storeStrong(&v21->_callbackQueue, queue);
+    logger = [environmentCopy logger];
     logger = v21->_logger;
-    v21->_logger = v26;
+    v21->_logger = logger;
 
     v28 = [AVTRenderingScope alloc];
-    [v19 mainScreenScale];
+    [environmentCopy mainScreenScale];
     v29 = [(AVTRenderingScope *)v28 initWithRenderingType:200 scale:?];
     colorScope = v21->_colorScope;
     v21->_colorScope = v29;
 
-    objc_storeStrong(&v21->_defaultScope, a8);
+    objc_storeStrong(&v21->_defaultScope, scope);
   }
 
   return v21;
 }
 
-- (id)providerForThumbnailForModelColor:(id)a3
+- (id)providerForThumbnailForModelColor:(id)color
 {
-  v4 = a3;
-  v5 = [(AVTPresetImageProvider *)self colorScope];
-  v6 = [(AVTPresetImageProvider *)self colorQueue];
+  colorCopy = color;
+  colorScope = [(AVTPresetImageProvider *)self colorScope];
+  colorQueue = [(AVTPresetImageProvider *)self colorQueue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __60__AVTPresetImageProvider_providerForThumbnailForModelColor___block_invoke;
   v14[3] = &unk_1E7F3A6A8;
   v14[4] = self;
-  v15 = v4;
-  v7 = v4;
-  v8 = [(AVTPresetImageProvider *)self providerForImageForItem:v7 scope:v5 queue:v6 renderingHandler:v14];
+  v15 = colorCopy;
+  v7 = colorCopy;
+  v8 = [(AVTPresetImageProvider *)self providerForImageForItem:v7 scope:colorScope queue:colorQueue renderingHandler:v14];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -152,37 +152,37 @@
   return v10;
 }
 
-- (id)renderThumbnailForModelColor:(id)a3
+- (id)renderThumbnailForModelColor:(id)color
 {
-  v4 = a3;
-  v5 = [(AVTPresetImageProvider *)self logger];
-  v6 = [v4 description];
-  [v5 logRenderingModelColor:v6];
+  colorCopy = color;
+  logger = [(AVTPresetImageProvider *)self logger];
+  v6 = [colorCopy description];
+  [logger logRenderingModelColor:v6];
 
-  v7 = [v4 thumbnail];
+  thumbnail = [colorCopy thumbnail];
 
-  return v7;
+  return thumbnail;
 }
 
-- (id)providerForImageForItem:(id)a3 scope:(id)a4 queue:(id)a5 renderingHandler:(id)a6
+- (id)providerForImageForItem:(id)item scope:(id)scope queue:(id)queue renderingHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  itemCopy = item;
+  scopeCopy = scope;
+  queueCopy = queue;
+  handlerCopy = handler;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __79__AVTPresetImageProvider_providerForImageForItem_scope_queue_renderingHandler___block_invoke;
   v20[3] = &unk_1E7F3A6F8;
   v20[4] = self;
-  v21 = v10;
-  v23 = v12;
-  v24 = v13;
-  v22 = v11;
-  v14 = v12;
-  v15 = v13;
-  v16 = v11;
-  v17 = v10;
+  v21 = itemCopy;
+  v23 = queueCopy;
+  v24 = handlerCopy;
+  v22 = scopeCopy;
+  v14 = queueCopy;
+  v15 = handlerCopy;
+  v16 = scopeCopy;
+  v17 = itemCopy;
   v18 = [v20 copy];
 
   return v18;
@@ -211,44 +211,44 @@ id __79__AVTPresetImageProvider_providerForImageForItem_scope_queue_renderingHan
   return v10;
 }
 
-- (id)providerForThumbnailForModelPreset:(id)a3 presetOverrides:(id)a4 poseOverride:(id)a5 avatarConfiguration:(id)a6 framingMode:(id)a7
+- (id)providerForThumbnailForModelPreset:(id)preset presetOverrides:(id)overrides poseOverride:(id)override avatarConfiguration:(id)configuration framingMode:(id)mode
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
-  v15 = a6;
-  v16 = a4;
-  v17 = [(AVTPresetImageProvider *)self defaultScope];
-  v18 = v17;
-  if (v14)
+  presetCopy = preset;
+  overrideCopy = override;
+  modeCopy = mode;
+  configurationCopy = configuration;
+  overridesCopy = overrides;
+  defaultScope = [(AVTPresetImageProvider *)self defaultScope];
+  v18 = defaultScope;
+  if (modeCopy)
   {
-    v19 = [v17 copyWithFramingMode:v14];
+    v19 = [defaultScope copyWithFramingMode:modeCopy];
 
     v18 = v19;
   }
 
-  if (v13)
+  if (overrideCopy)
   {
-    v20 = [v18 copyApplyingPoseOverride:v13];
+    v20 = [v18 copyApplyingPoseOverride:overrideCopy];
 
     v18 = v20;
   }
 
-  v21 = [objc_opt_class() configurationToRenderForPreset:v12 overrides:v16 baseConfiguration:v15];
+  v21 = [objc_opt_class() configurationToRenderForPreset:presetCopy overrides:overridesCopy baseConfiguration:configurationCopy];
 
-  v22 = [(AVTPresetImageProvider *)self presetQueue];
+  presetQueue = [(AVTPresetImageProvider *)self presetQueue];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __122__AVTPresetImageProvider_providerForThumbnailForModelPreset_presetOverrides_poseOverride_avatarConfiguration_framingMode___block_invoke;
   v28[3] = &unk_1E7F3A720;
   v28[4] = self;
-  v29 = v12;
+  v29 = presetCopy;
   v30 = v21;
   v31 = v18;
   v23 = v18;
   v24 = v21;
-  v25 = v12;
-  v26 = [(AVTPresetImageProvider *)self providerForImageForItem:v24 scope:v23 queue:v22 renderingHandler:v28];
+  v25 = presetCopy;
+  v26 = [(AVTPresetImageProvider *)self providerForImageForItem:v24 scope:v23 queue:presetQueue renderingHandler:v28];
 
   return v26;
 }
@@ -268,20 +268,20 @@ id __122__AVTPresetImageProvider_providerForThumbnailForModelPreset_presetOverri
   return v6;
 }
 
-+ (id)configurationToRenderForPreset:(id)a3 overrides:(id)a4 baseConfiguration:(id)a5
++ (id)configurationToRenderForPreset:(id)preset overrides:(id)overrides baseConfiguration:(id)configuration
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [a5 copy];
+  overridesCopy = overrides;
+  presetCopy = preset;
+  v9 = [configuration copy];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __85__AVTPresetImageProvider_configurationToRenderForPreset_overrides_baseConfiguration___block_invoke;
   v12[3] = &unk_1E7F3A748;
   v10 = v9;
   v13 = v10;
-  [v7 enumerateObjectsUsingBlock:v12];
+  [overridesCopy enumerateObjectsUsingBlock:v12];
 
-  [v10 addPreset:v8];
+  [v10 addPreset:presetCopy];
 
   return v10;
 }

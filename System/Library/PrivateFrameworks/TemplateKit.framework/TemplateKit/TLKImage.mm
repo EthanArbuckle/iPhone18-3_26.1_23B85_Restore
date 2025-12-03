@@ -1,13 +1,13 @@
 @interface TLKImage
-+ (id)keyForScale:(double)a3 isDarkStyle:(BOOL)a4;
-+ (id)templateImageForImage:(id)a3;
++ (id)keyForScale:(double)scale isDarkStyle:(BOOL)style;
++ (id)templateImageForImage:(id)image;
 - (CGSize)size;
-- (TLKImage)initWithImage:(id)a3;
+- (TLKImage)initWithImage:(id)image;
 - (double)aspectRatio;
-- (id)cachedImageForScale:(double)a3 isDarkStyle:(BOOL)a4;
-- (void)cacheImage:(id)a3 forScale:(double)a4 isDarkStyle:(BOOL)a5;
-- (void)clearImagesWithNotification:(id)a3;
-- (void)loadImageWithScale:(double)a3 isDarkStyle:(BOOL)a4 completionHandler:(id)a5;
+- (id)cachedImageForScale:(double)scale isDarkStyle:(BOOL)style;
+- (void)cacheImage:(id)image forScale:(double)scale isDarkStyle:(BOOL)style;
+- (void)clearImagesWithNotification:(id)notification;
+- (void)loadImageWithScale:(double)scale isDarkStyle:(BOOL)style completionHandler:(id)handler;
 @end
 
 @implementation TLKImage
@@ -21,91 +21,91 @@
   return result;
 }
 
-- (TLKImage)initWithImage:(id)a3
+- (TLKImage)initWithImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v8.receiver = self;
   v8.super_class = TLKImage;
   v5 = [(TLKImage *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(TLKImage *)v5 setUiImage:v4];
-    if (([objc_opt_class() imageIsSymbol:v4] & 1) == 0)
+    [(TLKImage *)v5 setUiImage:imageCopy];
+    if (([objc_opt_class() imageIsSymbol:imageCopy] & 1) == 0)
     {
-      [v4 size];
+      [imageCopy size];
       [(TLKImage *)v6 setSize:?];
     }
 
-    -[TLKImage setIsTemplate:](v6, "setIsTemplate:", [objc_opt_class() isTemplateImage:v4]);
+    -[TLKImage setIsTemplate:](v6, "setIsTemplate:", [objc_opt_class() isTemplateImage:imageCopy]);
   }
 
   return v6;
 }
 
-+ (id)templateImageForImage:(id)a3
++ (id)templateImageForImage:(id)image
 {
-  v4 = a3;
-  if (([a1 isTemplateImage:v4] & 1) == 0)
+  imageCopy = image;
+  if (([self isTemplateImage:imageCopy] & 1) == 0)
   {
-    v5 = [v4 imageWithRenderingMode:2];
+    v5 = [imageCopy imageWithRenderingMode:2];
 
-    v4 = v5;
+    imageCopy = v5;
   }
 
-  return v4;
+  return imageCopy;
 }
 
-- (void)clearImagesWithNotification:(id)a3
+- (void)clearImagesWithNotification:(id)notification
 {
-  v6 = a3;
+  notificationCopy = notification;
   v4 = objc_autoreleasePoolPush();
-  v5 = [(TLKImage *)self imageCache];
-  [v5 removeAllObjects];
+  imageCache = [(TLKImage *)self imageCache];
+  [imageCache removeAllObjects];
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)loadImageWithScale:(double)a3 isDarkStyle:(BOOL)a4 completionHandler:(id)a5
+- (void)loadImageWithScale:(double)scale isDarkStyle:(BOOL)style completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = [(TLKImage *)self uiImage];
-  (*(a5 + 2))(v7, v8, 1);
+  handlerCopy = handler;
+  uiImage = [(TLKImage *)self uiImage];
+  (*(handler + 2))(handlerCopy, uiImage, 1);
 }
 
-- (id)cachedImageForScale:(double)a3 isDarkStyle:(BOOL)a4
+- (id)cachedImageForScale:(double)scale isDarkStyle:(BOOL)style
 {
-  v4 = a4;
-  v6 = [(TLKImage *)self imageCache];
-  v7 = [objc_opt_class() keyForScale:v4 isDarkStyle:a3];
-  v8 = [v6 objectForKey:v7];
+  styleCopy = style;
+  imageCache = [(TLKImage *)self imageCache];
+  v7 = [objc_opt_class() keyForScale:styleCopy isDarkStyle:scale];
+  v8 = [imageCache objectForKey:v7];
 
   return v8;
 }
 
-- (void)cacheImage:(id)a3 forScale:(double)a4 isDarkStyle:(BOOL)a5
+- (void)cacheImage:(id)image forScale:(double)scale isDarkStyle:(BOOL)style
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(TLKImage *)self imageCache];
+  styleCopy = style;
+  imageCopy = image;
+  imageCache = [(TLKImage *)self imageCache];
 
-  if (!v9)
+  if (!imageCache)
   {
     v10 = objc_opt_new();
     [(TLKImage *)self setImageCache:v10];
   }
 
-  v12 = [(TLKImage *)self imageCache];
-  v11 = [objc_opt_class() keyForScale:v5 isDarkStyle:a4];
-  [v12 setObject:v8 forKey:v11];
+  imageCache2 = [(TLKImage *)self imageCache];
+  v11 = [objc_opt_class() keyForScale:styleCopy isDarkStyle:scale];
+  [imageCache2 setObject:imageCopy forKey:v11];
 }
 
-+ (id)keyForScale:(double)a3 isDarkStyle:(BOOL)a4
++ (id)keyForScale:(double)scale isDarkStyle:(BOOL)style
 {
-  v4 = a4;
+  styleCopy = style;
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v7 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:scale];
+  v7 = [MEMORY[0x1E696AD98] numberWithBool:styleCopy];
   v8 = [v5 stringWithFormat:@"%@-%@", v6, v7];
 
   return v8;

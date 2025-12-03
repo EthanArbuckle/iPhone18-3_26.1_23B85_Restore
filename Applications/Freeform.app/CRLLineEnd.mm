@@ -1,9 +1,9 @@
 @interface CRLLineEnd
-+ (CRLLineEnd)lineEndWithIdentifier:(id)a3;
-+ (CRLLineEnd)lineEndWithPath:(CGPath *)a3 endPoint:(CGPoint)a4 isFilled:(BOOL)a5 identifier:(id)a6;
-+ (CRLLineEnd)lineEndWithPath:(CGPath *)a3 wrapPath:(CGPath *)a4 endPoint:(CGPoint)a5 isFilled:(BOOL)a6 identifier:(id)a7;
-+ (CRLLineEnd)lineEndWithType:(int64_t)a3;
-+ (id)accessibilityDescriptionFor:(int64_t)a3;
++ (CRLLineEnd)lineEndWithIdentifier:(id)identifier;
++ (CRLLineEnd)lineEndWithPath:(CGPath *)path endPoint:(CGPoint)point isFilled:(BOOL)filled identifier:(id)identifier;
++ (CRLLineEnd)lineEndWithPath:(CGPath *)path wrapPath:(CGPath *)wrapPath endPoint:(CGPoint)point isFilled:(BOOL)filled identifier:(id)identifier;
++ (CRLLineEnd)lineEndWithType:(int64_t)type;
++ (id)accessibilityDescriptionFor:(int64_t)for;
 + (id)filledArrow;
 + (id)filledCircle;
 + (id)filledDiamond;
@@ -14,18 +14,18 @@
 + (id)openCircle;
 + (id)openSquare;
 + (id)simpleArrow;
-+ (int64_t)lineEndTypeFromLineEnd:(id)a3;
++ (int64_t)lineEndTypeFromLineEnd:(id)end;
 - (BOOL)isArrow;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isNone;
-- (CGImage)newLineEndImageOnRight:(BOOL)a3 forContentsScale:(double)a4 withSize:(CGSize)a5;
+- (CGImage)newLineEndImageOnRight:(BOOL)right forContentsScale:(double)scale withSize:(CGSize)size;
 - (CGPoint)endPoint;
 - (CRLBezierPath)wrapPath;
-- (CRLLineEnd)initWithBezierPath:(id)a3 wrapPath:(id)a4 endPoint:(CGPoint)a5 isFilled:(BOOL)a6 identifier:(id)a7 lineJoin:(int)a8;
-- (CRLLineEnd)initWithPath:(CGPath *)a3 wrapPath:(CGPath *)a4 endPoint:(CGPoint)a5 isFilled:(BOOL)a6 identifier:(id)a7 lineJoin:(int)a8;
+- (CRLLineEnd)initWithBezierPath:(id)path wrapPath:(id)wrapPath endPoint:(CGPoint)point isFilled:(BOOL)filled identifier:(id)identifier lineJoin:(int)join;
+- (CRLLineEnd)initWithPath:(CGPath *)path wrapPath:(CGPath *)wrapPath endPoint:(CGPoint)point isFilled:(BOOL)filled identifier:(id)identifier lineJoin:(int)join;
 - (NSString)accessibilityDescription;
 - (double)scaleForStrokeWidth:(double)result;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -260,25 +260,25 @@
   return v3;
 }
 
-+ (CRLLineEnd)lineEndWithType:(int64_t)a3
++ (CRLLineEnd)lineEndWithType:(int64_t)type
 {
-  if (a3 > 5)
+  if (type > 5)
   {
-    if (a3 > 8)
+    if (type > 8)
     {
-      if (a3 == 9)
+      if (type == 9)
       {
-        a1 = +[CRLLineEnd line];
+        self = +[CRLLineEnd line];
         goto LABEL_35;
       }
 
-      if (a3 == 10)
+      if (type == 10)
       {
-        a1 = +[CRLLineEnd none];
+        self = +[CRLLineEnd none];
         goto LABEL_35;
       }
 
-      if (a3 != 11)
+      if (type != 11)
       {
         goto LABEL_35;
       }
@@ -311,17 +311,17 @@
       [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:194 isFatal:0 description:"Should not ask for line end with this type (count)"];
 
 LABEL_27:
-      a1 = +[CRLLineEnd simpleArrow];
+      self = +[CRLLineEnd simpleArrow];
       goto LABEL_35;
     }
 
-    if (a3 == 6)
+    if (type == 6)
     {
-      a1 = +[CRLLineEnd openSquare];
+      self = +[CRLLineEnd openSquare];
       goto LABEL_35;
     }
 
-    if (a3 == 7)
+    if (type == 7)
     {
       +[CRLLineEnd openCircle];
     }
@@ -331,19 +331,19 @@ LABEL_27:
       +[CRLLineEnd invertedArrow];
     }
 
-    a1 = LABEL_11:;
+    self = LABEL_11:;
     goto LABEL_35;
   }
 
-  if (a3 > 2)
+  if (type > 2)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
-      a1 = +[CRLLineEnd openArrow];
+      self = +[CRLLineEnd openArrow];
       goto LABEL_35;
     }
 
-    if (a3 == 4)
+    if (type == 4)
     {
       +[CRLLineEnd filledArrow];
     }
@@ -356,27 +356,27 @@ LABEL_27:
     goto LABEL_11;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 0:
       goto LABEL_27;
     case 1:
-      a1 = +[CRLLineEnd filledCircle];
+      self = +[CRLLineEnd filledCircle];
       break;
     case 2:
-      a1 = +[CRLLineEnd filledDiamond];
+      self = +[CRLLineEnd filledDiamond];
       break;
   }
 
 LABEL_35:
 
-  return a1;
+  return self;
 }
 
-+ (CRLLineEnd)lineEndWithIdentifier:(id)a3
++ (CRLLineEnd)lineEndWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"simple arrow"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"simple arrow"])
   {
     v4 = +[CRLLineEnd simpleArrow];
 LABEL_23:
@@ -384,61 +384,61 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if ([v3 isEqualToString:@"filled circle"])
+  if ([identifierCopy isEqualToString:@"filled circle"])
   {
     v4 = +[CRLLineEnd filledCircle];
     goto LABEL_23;
   }
 
-  if ([v3 isEqualToString:@"filled diamond"])
+  if ([identifierCopy isEqualToString:@"filled diamond"])
   {
     v4 = +[CRLLineEnd filledDiamond];
     goto LABEL_23;
   }
 
-  if ([v3 isEqualToString:@"open arrow"])
+  if ([identifierCopy isEqualToString:@"open arrow"])
   {
     v4 = +[CRLLineEnd openArrow];
     goto LABEL_23;
   }
 
-  if ([v3 isEqualToString:@"filled arrow"])
+  if ([identifierCopy isEqualToString:@"filled arrow"])
   {
     v4 = +[CRLLineEnd filledArrow];
     goto LABEL_23;
   }
 
-  if ([v3 isEqualToString:@"filled square"])
+  if ([identifierCopy isEqualToString:@"filled square"])
   {
     v4 = +[CRLLineEnd filledSquare];
     goto LABEL_23;
   }
 
-  if ([v3 isEqualToString:@"open square"])
+  if ([identifierCopy isEqualToString:@"open square"])
   {
     v4 = +[CRLLineEnd openSquare];
     goto LABEL_23;
   }
 
-  if ([v3 isEqualToString:@"open circle"])
+  if ([identifierCopy isEqualToString:@"open circle"])
   {
     v4 = +[CRLLineEnd openCircle];
     goto LABEL_23;
   }
 
-  if ([v3 isEqualToString:@"inverted arrow"])
+  if ([identifierCopy isEqualToString:@"inverted arrow"])
   {
     v4 = +[CRLLineEnd invertedArrow];
     goto LABEL_23;
   }
 
-  if ([v3 isEqualToString:@"line"])
+  if ([identifierCopy isEqualToString:@"line"])
   {
     v4 = +[CRLLineEnd line];
     goto LABEL_23;
   }
 
-  if ([v3 isEqualToString:@"none"])
+  if ([identifierCopy isEqualToString:@"none"])
   {
     v4 = +[CRLLineEnd none];
     goto LABEL_23;
@@ -450,62 +450,62 @@ LABEL_24:
   return v5;
 }
 
-+ (int64_t)lineEndTypeFromLineEnd:(id)a3
++ (int64_t)lineEndTypeFromLineEnd:(id)end
 {
-  v3 = [a3 identifier];
-  if ([v3 isEqualToString:@"simple arrow"])
+  identifier = [end identifier];
+  if ([identifier isEqualToString:@"simple arrow"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"filled circle"])
+  else if ([identifier isEqualToString:@"filled circle"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"filled diamond"])
+  else if ([identifier isEqualToString:@"filled diamond"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"open arrow"])
+  else if ([identifier isEqualToString:@"open arrow"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"filled arrow"])
+  else if ([identifier isEqualToString:@"filled arrow"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"filled square"])
+  else if ([identifier isEqualToString:@"filled square"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"open square"])
+  else if ([identifier isEqualToString:@"open square"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"open circle"])
+  else if ([identifier isEqualToString:@"open circle"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"inverted arrow"])
+  else if ([identifier isEqualToString:@"inverted arrow"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"line"])
+  else if ([identifier isEqualToString:@"line"])
   {
     v4 = 9;
   }
 
   else
   {
-    [v3 isEqualToString:@"none"];
+    [identifier isEqualToString:@"none"];
     v4 = 10;
   }
 
@@ -519,16 +519,16 @@ LABEL_24:
   return [CRLLineEnd accessibilityDescriptionFor:v2];
 }
 
-+ (id)accessibilityDescriptionFor:(int64_t)a3
++ (id)accessibilityDescriptionFor:(int64_t)for
 {
   v3 = 0;
-  if (a3 <= 4)
+  if (for <= 4)
   {
-    if (a3 <= 1)
+    if (for <= 1)
     {
-      if (a3)
+      if (for)
       {
-        if (a3 != 1)
+        if (for != 1)
         {
           goto LABEL_26;
         }
@@ -546,14 +546,14 @@ LABEL_24:
       }
     }
 
-    else if (a3 == 2)
+    else if (for == 2)
     {
       v4 = +[NSBundle mainBundle];
       v5 = v4;
       v6 = @"Filled diamond";
     }
 
-    else if (a3 == 3)
+    else if (for == 3)
     {
       v4 = +[NSBundle mainBundle];
       v5 = v4;
@@ -568,9 +568,9 @@ LABEL_24:
     }
   }
 
-  else if (a3 > 7)
+  else if (for > 7)
   {
-    switch(a3)
+    switch(for)
     {
       case 8:
         v4 = +[NSBundle mainBundle];
@@ -593,14 +593,14 @@ LABEL_24:
     }
   }
 
-  else if (a3 == 5)
+  else if (for == 5)
   {
     v4 = +[NSBundle mainBundle];
     v5 = v4;
     v6 = @"Filled square";
   }
 
-  else if (a3 == 6)
+  else if (for == 6)
   {
     v4 = +[NSBundle mainBundle];
     v5 = v4;
@@ -623,87 +623,87 @@ LABEL_26:
   return v3;
 }
 
-+ (CRLLineEnd)lineEndWithPath:(CGPath *)a3 endPoint:(CGPoint)a4 isFilled:(BOOL)a5 identifier:(id)a6
++ (CRLLineEnd)lineEndWithPath:(CGPath *)path endPoint:(CGPoint)point isFilled:(BOOL)filled identifier:(id)identifier
 {
-  v6 = a5;
-  y = a4.y;
-  x = a4.x;
-  v10 = a6;
-  v11 = [objc_alloc(objc_opt_class()) initWithPath:a3 endPoint:v6 isFilled:v10 identifier:{x, y}];
+  filledCopy = filled;
+  y = point.y;
+  x = point.x;
+  identifierCopy = identifier;
+  v11 = [objc_alloc(objc_opt_class()) initWithPath:path endPoint:filledCopy isFilled:identifierCopy identifier:{x, y}];
 
   return v11;
 }
 
-+ (CRLLineEnd)lineEndWithPath:(CGPath *)a3 wrapPath:(CGPath *)a4 endPoint:(CGPoint)a5 isFilled:(BOOL)a6 identifier:(id)a7
++ (CRLLineEnd)lineEndWithPath:(CGPath *)path wrapPath:(CGPath *)wrapPath endPoint:(CGPoint)point isFilled:(BOOL)filled identifier:(id)identifier
 {
-  v7 = a6;
-  y = a5.y;
-  x = a5.x;
-  v12 = a7;
-  v13 = [objc_alloc(objc_opt_class()) initWithPath:a3 wrapPath:a4 endPoint:v7 isFilled:v12 identifier:0 lineJoin:{x, y}];
+  filledCopy = filled;
+  y = point.y;
+  x = point.x;
+  identifierCopy = identifier;
+  v13 = [objc_alloc(objc_opt_class()) initWithPath:path wrapPath:wrapPath endPoint:filledCopy isFilled:identifierCopy identifier:0 lineJoin:{x, y}];
 
   return v13;
 }
 
-- (CRLLineEnd)initWithBezierPath:(id)a3 wrapPath:(id)a4 endPoint:(CGPoint)a5 isFilled:(BOOL)a6 identifier:(id)a7 lineJoin:(int)a8
+- (CRLLineEnd)initWithBezierPath:(id)path wrapPath:(id)wrapPath endPoint:(CGPoint)point isFilled:(BOOL)filled identifier:(id)identifier lineJoin:(int)join
 {
-  y = a5.y;
-  x = a5.x;
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
+  y = point.y;
+  x = point.x;
+  pathCopy = path;
+  wrapPathCopy = wrapPath;
+  identifierCopy = identifier;
   v26.receiver = self;
   v26.super_class = CRLLineEnd;
   v18 = [(CRLLineEnd *)&v26 init];
   if (v18)
   {
-    v19 = [v17 copy];
+    v19 = [identifierCopy copy];
     identifier = v18->_identifier;
     v18->_identifier = v19;
 
-    v18->_lineJoin = a8;
-    v21 = [v15 copy];
+    v18->_lineJoin = join;
+    v21 = [pathCopy copy];
     path = v18->_path;
     v18->_path = v21;
 
-    v23 = [v16 copy];
+    v23 = [wrapPathCopy copy];
     wrapPath = v18->_wrapPath;
     v18->_wrapPath = v23;
 
     v18->_endPoint.x = x;
     v18->_endPoint.y = y;
-    v18->_isFilled = a6;
+    v18->_isFilled = filled;
   }
 
   return v18;
 }
 
-- (CRLLineEnd)initWithPath:(CGPath *)a3 wrapPath:(CGPath *)a4 endPoint:(CGPoint)a5 isFilled:(BOOL)a6 identifier:(id)a7 lineJoin:(int)a8
+- (CRLLineEnd)initWithPath:(CGPath *)path wrapPath:(CGPath *)wrapPath endPoint:(CGPoint)point isFilled:(BOOL)filled identifier:(id)identifier lineJoin:(int)join
 {
-  v8 = *&a8;
-  v9 = a6;
-  y = a5.y;
-  x = a5.x;
-  v15 = a7;
-  if (a3)
+  v8 = *&join;
+  filledCopy = filled;
+  y = point.y;
+  x = point.x;
+  identifierCopy = identifier;
+  if (path)
   {
-    a3 = [CRLBezierPath bezierPathWithCGPath:a3];
+    path = [CRLBezierPath bezierPathWithCGPath:path];
   }
 
-  if (a4)
+  if (wrapPath)
   {
-    a4 = [CRLBezierPath bezierPathWithCGPath:a4];
+    wrapPath = [CRLBezierPath bezierPathWithCGPath:wrapPath];
   }
 
-  v16 = [(CRLLineEnd *)self initWithBezierPath:a3 wrapPath:a4 endPoint:v9 isFilled:v15 identifier:v8 lineJoin:x, y];
+  v16 = [(CRLLineEnd *)self initWithBezierPath:path wrapPath:wrapPath endPoint:filledCopy isFilled:identifierCopy identifier:v8 lineJoin:x, y];
 
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 0;
 LABEL_10:
@@ -711,18 +711,18 @@ LABEL_10:
     goto LABEL_16;
   }
 
-  if (![(CRLLineEnd *)v4 isMemberOfClass:objc_opt_class()])
+  if (![(CRLLineEnd *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     v12 = 0;
     v5 = 0;
     goto LABEL_16;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   if ([(NSString *)self->_identifier isEqualToString:@"none"])
   {
-    v6 = [(CRLLineEnd *)v5 identifier];
-    v7 = [v6 isEqualToString:@"none"];
+    identifier = [(CRLLineEnd *)v5 identifier];
+    v7 = [identifier isEqualToString:@"none"];
 
     if (v7)
     {
@@ -734,8 +734,8 @@ LABEL_10:
   if (lineJoin == [(CRLLineEnd *)v5 lineJoin])
   {
     identifier = self->_identifier;
-    v10 = [(CRLLineEnd *)v5 identifier];
-    if ([(NSString *)identifier isEqualToString:v10])
+    identifier2 = [(CRLLineEnd *)v5 identifier];
+    if ([(NSString *)identifier isEqualToString:identifier2])
     {
       path = self->_path;
       if (path | v5->_path)
@@ -765,7 +765,7 @@ LABEL_16:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   path = self->_path;
@@ -779,13 +779,13 @@ LABEL_16:
   return [v4 initWithBezierPath:path wrapPath:wrapPath endPoint:isFilled isFilled:identifier identifier:lineJoin lineJoin:{x, y}];
 }
 
-- (CGImage)newLineEndImageOnRight:(BOOL)a3 forContentsScale:(double)a4 withSize:(CGSize)a5
+- (CGImage)newLineEndImageOnRight:(BOOL)right forContentsScale:(double)scale withSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v8 = a3;
-  v10 = sub_10050DF80(11, a5.width * a4, a5.height * a4);
-  CGContextScaleCTM(v10, a4, a4);
+  height = size.height;
+  width = size.width;
+  rightCopy = right;
+  v10 = sub_10050DF80(11, size.width * scale, size.height * scale);
+  CGContextScaleCTM(v10, scale, scale);
   CGContextSetRGBFillColor(v10, 0.0, 0.0, 0.0, 1.0);
   CGContextSetRGBStrokeColor(v10, 0.0, 0.0, 0.0, 1.0);
   v11 = *&CGAffineTransformIdentity.a;
@@ -795,7 +795,7 @@ LABEL_16:
   v13 = *&CGAffineTransformIdentity.tx;
   *&v32.tx = v13;
   v14 = -width;
-  if (v8)
+  if (rightCopy)
   {
     *&transform.a = v11;
     *&transform.c = v12;
@@ -863,8 +863,8 @@ LABEL_16:
   CGContextConcatCTM(v10, &transform);
   CGContextSetLineJoin(v10, [(CRLLineEnd *)self lineJoin]);
   CGContextSetLineWidth(v10, 0.5);
-  v23 = [(CRLLineEnd *)self path];
-  CGContextAddPath(v10, [v23 CGPath]);
+  path = [(CRLLineEnd *)self path];
+  CGContextAddPath(v10, [path CGPath]);
 
   if ([(CRLLineEnd *)self isFilled])
   {
@@ -890,32 +890,32 @@ LABEL_16:
 
 - (BOOL)isNone
 {
-  v2 = [(CRLLineEnd *)self identifier];
-  v3 = [v2 isEqualToString:@"none"];
+  identifier = [(CRLLineEnd *)self identifier];
+  v3 = [identifier isEqualToString:@"none"];
 
   return v3;
 }
 
 - (BOOL)isArrow
 {
-  v3 = [(CRLLineEnd *)self identifier];
-  if ([v3 isEqualToString:@"simple arrow"])
+  identifier = [(CRLLineEnd *)self identifier];
+  if ([identifier isEqualToString:@"simple arrow"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(CRLLineEnd *)self identifier];
-    if ([v5 isEqualToString:@"open arrow"])
+    identifier2 = [(CRLLineEnd *)self identifier];
+    if ([identifier2 isEqualToString:@"open arrow"])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(CRLLineEnd *)self identifier];
-      v4 = [v6 isEqualToString:@"filled arrow"];
+      identifier3 = [(CRLLineEnd *)self identifier];
+      v4 = [identifier3 isEqualToString:@"filled arrow"];
     }
   }
 
@@ -926,8 +926,8 @@ LABEL_16:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(CRLLineEnd *)self identifier];
-  v6 = [NSString stringWithFormat:@"<%@ %p %@>", v4, self, v5];
+  identifier = [(CRLLineEnd *)self identifier];
+  v6 = [NSString stringWithFormat:@"<%@ %p %@>", v4, self, identifier];
 
   return v6;
 }

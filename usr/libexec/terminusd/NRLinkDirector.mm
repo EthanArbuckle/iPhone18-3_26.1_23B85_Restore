@@ -1,23 +1,23 @@
 @interface NRLinkDirector
-- (BOOL)perpetualStandaloneMeadowEnabledForNRUUID:(id)a3;
+- (BOOL)perpetualStandaloneMeadowEnabledForNRUUID:(id)d;
 - (BOOL)preferWiFiP2PRequestUpdated;
 - (BOOL)preferWiFiRequestAvailable;
 - (BOOL)preferWiFiRequestUnavailable;
 - (void)directToCloudRequestAvailable;
 - (void)directToCloudRequestUnavailable;
-- (void)linkDidReceiveData:(id)a3 data:(id)a4;
-- (void)linkIsAvailable:(id)a3;
-- (void)linkIsReady:(id)a3;
-- (void)linkIsSuspended:(id)a3;
-- (void)linkIsUnavailable:(id)a3;
-- (void)localAWDLEndpointChanged:(id)a3;
+- (void)linkDidReceiveData:(id)data data:(id)a4;
+- (void)linkIsAvailable:(id)available;
+- (void)linkIsReady:(id)ready;
+- (void)linkIsSuspended:(id)suspended;
+- (void)linkIsUnavailable:(id)unavailable;
+- (void)localAWDLEndpointChanged:(id)changed;
 @end
 
 @implementation NRLinkDirector
 
-- (BOOL)perpetualStandaloneMeadowEnabledForNRUUID:(id)a3
+- (BOOL)perpetualStandaloneMeadowEnabledForNRUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (_NRIsAppleInternal())
   {
     if (self)
@@ -30,7 +30,7 @@
       conductors = 0;
     }
 
-    v6 = [(NSMutableDictionary *)conductors objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)conductors objectForKeyedSubscript:dCopy];
     if (v6)
     {
       v7 = v6[11];
@@ -50,9 +50,9 @@
   return v7 & 1;
 }
 
-- (void)localAWDLEndpointChanged:(id)a3
+- (void)localAWDLEndpointChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if (self)
   {
     dispatch_assert_queue_V2(self->_queue);
@@ -92,7 +92,7 @@
           }
 
           v11 = [(NSMutableDictionary *)self->_conductors objectForKeyedSubscript:*(*(&v14 + 1) + 8 * v10), v14];
-          [v11 localAWDLEndpointChanged:v4];
+          [v11 localAWDLEndpointChanged:changedCopy];
 
           v10 = v10 + 1;
         }
@@ -117,7 +117,7 @@
           }
 
           v13 = [0 objectForKeyedSubscript:{*(*(&v14 + 1) + 8 * v12), v14}];
-          [v13 localAWDLEndpointChanged:v4];
+          [v13 localAWDLEndpointChanged:changedCopy];
 
           v12 = v12 + 1;
         }
@@ -313,9 +313,9 @@
           }
 
           v11 = [(NSMutableDictionary *)self->_conductors objectForKeyedSubscript:*(*(&v17 + 1) + 8 * i), v17];
-          v12 = [v11 preferWiFiP2PRequestUpdated];
+          preferWiFiP2PRequestUpdated = [v11 preferWiFiP2PRequestUpdated];
 
-          v9 &= v12;
+          v9 &= preferWiFiP2PRequestUpdated;
         }
 
         v7 = [(NSMutableDictionary *)v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -336,9 +336,9 @@
           }
 
           v15 = [0 objectForKeyedSubscript:{*(*(&v17 + 1) + 8 * j), v17}];
-          v16 = [v15 preferWiFiP2PRequestUpdated];
+          preferWiFiP2PRequestUpdated2 = [v15 preferWiFiP2PRequestUpdated];
 
-          v9 &= v16;
+          v9 &= preferWiFiP2PRequestUpdated2;
         }
 
         v7 = [(NSMutableDictionary *)v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -394,9 +394,9 @@
           }
 
           v11 = [(NSMutableDictionary *)self->_conductors objectForKeyedSubscript:*(*(&v17 + 1) + 8 * i), v17];
-          v12 = [v11 preferWiFiRequestUnavailable];
+          preferWiFiRequestUnavailable = [v11 preferWiFiRequestUnavailable];
 
-          v9 &= v12;
+          v9 &= preferWiFiRequestUnavailable;
         }
 
         v7 = [(NSMutableDictionary *)v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -417,9 +417,9 @@
           }
 
           v15 = [0 objectForKeyedSubscript:{*(*(&v17 + 1) + 8 * j), v17}];
-          v16 = [v15 preferWiFiRequestUnavailable];
+          preferWiFiRequestUnavailable2 = [v15 preferWiFiRequestUnavailable];
 
-          v9 &= v16;
+          v9 &= preferWiFiRequestUnavailable2;
         }
 
         v7 = [(NSMutableDictionary *)v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -475,9 +475,9 @@
           }
 
           v11 = [(NSMutableDictionary *)self->_conductors objectForKeyedSubscript:*(*(&v17 + 1) + 8 * i), v17];
-          v12 = [v11 preferWiFiRequestAvailable];
+          preferWiFiRequestAvailable = [v11 preferWiFiRequestAvailable];
 
-          v9 &= v12;
+          v9 &= preferWiFiRequestAvailable;
         }
 
         v7 = [(NSMutableDictionary *)v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -498,9 +498,9 @@
           }
 
           v15 = [0 objectForKeyedSubscript:{*(*(&v17 + 1) + 8 * j), v17}];
-          v16 = [v15 preferWiFiRequestAvailable];
+          preferWiFiRequestAvailable2 = [v15 preferWiFiRequestAvailable];
 
-          v9 &= v16;
+          v9 &= preferWiFiRequestAvailable2;
         }
 
         v7 = [(NSMutableDictionary *)v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -518,14 +518,14 @@
   return v9;
 }
 
-- (void)linkDidReceiveData:(id)a3 data:(id)a4
+- (void)linkDidReceiveData:(id)data data:(id)a4
 {
-  v23 = a3;
+  dataCopy = data;
   v6 = a4;
   v7 = sub_100003490();
   dispatch_assert_queue_V2(v7);
 
-  if (v23)
+  if (dataCopy)
   {
     if (v6)
     {
@@ -540,19 +540,19 @@
       }
 
       v9 = conductors;
-      v10 = [v23 nrUUID];
-      v11 = [(NSMutableDictionary *)v9 objectForKeyedSubscript:v10];
+      nrUUID = [dataCopy nrUUID];
+      v11 = [(NSMutableDictionary *)v9 objectForKeyedSubscript:nrUUID];
 
       if (v11)
       {
-        [v11 linkDidReceiveData:v23 data:v6];
+        [v11 linkDidReceiveData:dataCopy data:v6];
       }
 
       else
       {
-        v12 = [v23 nrUUID];
-        v22 = [v12 UUIDString];
-        sub_1000B926C(self, 1014, @"linkDidReceiveData %@ %@", v13, v14, v15, v16, v17, v23);
+        nrUUID2 = [dataCopy nrUUID];
+        uUIDString = [nrUUID2 UUIDString];
+        sub_1000B926C(self, 1014, @"linkDidReceiveData %@ %@", v13, v14, v15, v16, v17, dataCopy);
 
         v11 = 0;
       }
@@ -584,13 +584,13 @@ LABEL_8:
   }
 }
 
-- (void)linkIsUnavailable:(id)a3
+- (void)linkIsUnavailable:(id)unavailable
 {
-  v18 = a3;
+  unavailableCopy = unavailable;
   v4 = sub_100003490();
   dispatch_assert_queue_V2(v4);
 
-  if (v18)
+  if (unavailableCopy)
   {
     if (self)
     {
@@ -603,20 +603,20 @@ LABEL_8:
     }
 
     v6 = conductors;
-    v7 = [v18 nrUUID];
-    v8 = [(NSMutableDictionary *)v6 objectForKeyedSubscript:v7];
+    nrUUID = [unavailableCopy nrUUID];
+    v8 = [(NSMutableDictionary *)v6 objectForKeyedSubscript:nrUUID];
 
     if (v8)
     {
-      [v8 linkIsUnavailable:v18];
+      [v8 linkIsUnavailable:unavailableCopy];
       sub_1000B98D8(self);
     }
 
     else
     {
-      v9 = [v18 nrUUID];
-      v17 = [v9 UUIDString];
-      sub_1000B926C(self, 1014, @"linkUnavailable %@ %@", v10, v11, v12, v13, v14, v18);
+      nrUUID2 = [unavailableCopy nrUUID];
+      uUIDString = [nrUUID2 UUIDString];
+      sub_1000B926C(self, 1014, @"linkUnavailable %@ %@", v10, v11, v12, v13, v14, unavailableCopy);
 
       v8 = 0;
     }
@@ -635,13 +635,13 @@ LABEL_7:
   }
 }
 
-- (void)linkIsSuspended:(id)a3
+- (void)linkIsSuspended:(id)suspended
 {
-  v18 = a3;
+  suspendedCopy = suspended;
   v4 = sub_100003490();
   dispatch_assert_queue_V2(v4);
 
-  if (v18)
+  if (suspendedCopy)
   {
     if (self)
     {
@@ -654,20 +654,20 @@ LABEL_7:
     }
 
     v6 = conductors;
-    v7 = [v18 nrUUID];
-    v8 = [(NSMutableDictionary *)v6 objectForKeyedSubscript:v7];
+    nrUUID = [suspendedCopy nrUUID];
+    v8 = [(NSMutableDictionary *)v6 objectForKeyedSubscript:nrUUID];
 
     if (v8)
     {
-      [v8 linkIsSuspended:v18];
+      [v8 linkIsSuspended:suspendedCopy];
       sub_1000B98D8(self);
     }
 
     else
     {
-      v9 = [v18 nrUUID];
-      v17 = [v9 UUIDString];
-      sub_1000B926C(self, 1014, @"linkSuspended %@ %@", v10, v11, v12, v13, v14, v18);
+      nrUUID2 = [suspendedCopy nrUUID];
+      uUIDString = [nrUUID2 UUIDString];
+      sub_1000B926C(self, 1014, @"linkSuspended %@ %@", v10, v11, v12, v13, v14, suspendedCopy);
 
       v8 = 0;
     }
@@ -686,13 +686,13 @@ LABEL_7:
   }
 }
 
-- (void)linkIsReady:(id)a3
+- (void)linkIsReady:(id)ready
 {
-  v18 = a3;
+  readyCopy = ready;
   v4 = sub_100003490();
   dispatch_assert_queue_V2(v4);
 
-  if (v18)
+  if (readyCopy)
   {
     if (self)
     {
@@ -705,20 +705,20 @@ LABEL_7:
     }
 
     v6 = conductors;
-    v7 = [v18 nrUUID];
-    v8 = [(NSMutableDictionary *)v6 objectForKeyedSubscript:v7];
+    nrUUID = [readyCopy nrUUID];
+    v8 = [(NSMutableDictionary *)v6 objectForKeyedSubscript:nrUUID];
 
     if (v8)
     {
-      [v8 linkIsReady:v18];
+      [v8 linkIsReady:readyCopy];
       sub_1000B98D8(self);
     }
 
     else
     {
-      v9 = [v18 nrUUID];
-      v17 = [v9 UUIDString];
-      sub_1000B926C(self, 1014, @"linkReady %@ %@", v10, v11, v12, v13, v14, v18);
+      nrUUID2 = [readyCopy nrUUID];
+      uUIDString = [nrUUID2 UUIDString];
+      sub_1000B926C(self, 1014, @"linkReady %@ %@", v10, v11, v12, v13, v14, readyCopy);
 
       v8 = 0;
     }
@@ -737,13 +737,13 @@ LABEL_7:
   }
 }
 
-- (void)linkIsAvailable:(id)a3
+- (void)linkIsAvailable:(id)available
 {
-  v18 = a3;
+  availableCopy = available;
   v4 = sub_100003490();
   dispatch_assert_queue_V2(v4);
 
-  if (v18)
+  if (availableCopy)
   {
     if (self)
     {
@@ -756,19 +756,19 @@ LABEL_7:
     }
 
     v6 = conductors;
-    v7 = [v18 nrUUID];
-    v8 = [(NSMutableDictionary *)v6 objectForKeyedSubscript:v7];
+    nrUUID = [availableCopy nrUUID];
+    v8 = [(NSMutableDictionary *)v6 objectForKeyedSubscript:nrUUID];
 
     if (v8)
     {
-      [v8 linkIsAvailable:v18];
+      [v8 linkIsAvailable:availableCopy];
     }
 
     else
     {
-      v9 = [v18 nrUUID];
-      v17 = [v9 UUIDString];
-      sub_1000B926C(self, 1014, @"linkAvailable %@ %@", v10, v11, v12, v13, v14, v18);
+      nrUUID2 = [availableCopy nrUUID];
+      uUIDString = [nrUUID2 UUIDString];
+      sub_1000B926C(self, 1014, @"linkAvailable %@ %@", v10, v11, v12, v13, v14, availableCopy);
 
       v8 = 0;
     }

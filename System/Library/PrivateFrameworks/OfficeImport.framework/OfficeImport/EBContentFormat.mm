@@ -1,38 +1,38 @@
 @interface EBContentFormat
-+ (id)edContentFormatFromXlDXfUserFmt:(XlDXfUserFmt *)a3 edResources:(id)a4;
-+ (id)edContentFormatFromXlFormat:(XlFormat *)a3 edResources:(id)a4;
++ (id)edContentFormatFromXlDXfUserFmt:(XlDXfUserFmt *)fmt edResources:(id)resources;
++ (id)edContentFormatFromXlFormat:(XlFormat *)format edResources:(id)resources;
 @end
 
 @implementation EBContentFormat
 
-+ (id)edContentFormatFromXlFormat:(XlFormat *)a3 edResources:(id)a4
++ (id)edContentFormatFromXlFormat:(XlFormat *)format edResources:(id)resources
 {
-  v5 = a4;
-  if (a3)
+  resourcesCopy = resources;
+  if (format)
   {
-    v6 = [EBString edStringFromXlString:a3->var2 edResources:v5];
-    v7 = [v6 string];
-    if (![v7 caseInsensitiveCompare:@"General"] && (objc_msgSend(v7, "isEqualToString:", @"General") & 1) == 0)
+    v6 = [EBString edStringFromXlString:format->var2 edResources:resourcesCopy];
+    string = [v6 string];
+    if (![string caseInsensitiveCompare:@"General"] && (objc_msgSend(string, "isEqualToString:", @"General") & 1) == 0)
     {
       [v6 setString:@"General"];
     }
 
-    a3 = [EDContentFormat contentFormatWithFormatString:v6 formatId:a3->var3];
+    format = [EDContentFormat contentFormatWithFormatString:v6 formatId:format->var3];
   }
 
-  return a3;
+  return format;
 }
 
-+ (id)edContentFormatFromXlDXfUserFmt:(XlDXfUserFmt *)a3 edResources:(id)a4
++ (id)edContentFormatFromXlDXfUserFmt:(XlDXfUserFmt *)fmt edResources:(id)resources
 {
-  v5 = a4;
-  if (a3)
+  resourcesCopy = resources;
+  if (fmt)
   {
-    v6 = [EBString edStringFromXlString:a3->var3 edResources:v5];
-    a3 = [EDContentFormat contentFormatWithFormatString:v6 formatId:a3->var2];
+    v6 = [EBString edStringFromXlString:fmt->var3 edResources:resourcesCopy];
+    fmt = [EDContentFormat contentFormatWithFormatString:v6 formatId:fmt->var2];
   }
 
-  return a3;
+  return fmt;
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface NCALSubsectionSettingsController
-- (id)_showAlerts:(id)a3;
-- (id)_sound:(id)a3;
+- (id)_showAlerts:(id)alerts;
+- (id)_sound:(id)_sound;
 - (id)_subsectionId;
-- (id)_vibration:(id)a3;
+- (id)_vibration:(id)_vibration;
 - (id)specifiers;
-- (void)_setShowAlerts:(id)a3 withSpecifier:(id)a4;
-- (void)_setSound:(id)a3 withSpecifier:(id)a4;
-- (void)_setVibration:(id)a3 withSpecifier:(id)a4;
+- (void)_setShowAlerts:(id)alerts withSpecifier:(id)specifier;
+- (void)_setSound:(id)sound withSpecifier:(id)specifier;
+- (void)_setVibration:(id)vibration withSpecifier:(id)specifier;
 @end
 
 @implementation NCALSubsectionSettingsController
@@ -18,8 +18,8 @@
   if (!v4)
   {
     v5 = +[NSMutableArray array];
-    v6 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
-    v7 = [v6 objectForKeyedSubscript:@"SpecifierUserInfoShowAlertString"];
+    userInfo = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+    v7 = [userInfo objectForKeyedSubscript:@"SpecifierUserInfoShowAlertString"];
     v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:self set:"_setShowAlerts:withSpecifier:" get:"_showAlerts:" detail:0 cell:6 edit:0];
 
     v9 = PSAllowMultilineTitleKey;
@@ -28,9 +28,9 @@
     v10 = +[PSSpecifier emptyGroupSpecifier];
     [v5 addObject:v10];
     v11 = [(NCALSubsectionSettingsController *)self _showAlerts:v8];
-    v12 = [v11 BOOLValue];
+    bOOLValue = [v11 BOOLValue];
 
-    if (v12)
+    if (bOOLValue)
     {
       v13 = v5;
       v14 = [NSBundle bundleForClass:objc_opt_class()];
@@ -58,28 +58,28 @@
   return v4;
 }
 
-- (void)_setShowAlerts:(id)a3 withSpecifier:(id)a4
+- (void)_setShowAlerts:(id)alerts withSpecifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
+  bOOLValue = [alerts BOOLValue];
   WeakRetained = objc_loadWeakRetained(&self->PSListController_opaque[OBJC_IVAR___PSViewController__parentController]);
-  v6 = [(NCALSubsectionSettingsController *)self _subsectionId];
-  [WeakRetained setShowAlerts:v5 forSubsectionId:v6];
+  _subsectionId = [(NCALSubsectionSettingsController *)self _subsectionId];
+  [WeakRetained setShowAlerts:bOOLValue forSubsectionId:_subsectionId];
 
   [(NCALSubsectionSettingsController *)self reloadSpecifiers];
 }
 
-- (id)_showAlerts:(id)a3
+- (id)_showAlerts:(id)alerts
 {
   WeakRetained = objc_loadWeakRetained(&self->PSListController_opaque[OBJC_IVAR___PSViewController__parentController]);
-  v5 = [(NCALSubsectionSettingsController *)self _subsectionId];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [WeakRetained showAlertsForSubsectionId:v5]);
+  _subsectionId = [(NCALSubsectionSettingsController *)self _subsectionId];
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [WeakRetained showAlertsForSubsectionId:_subsectionId]);
 
   return v6;
 }
 
-- (void)_setSound:(id)a3 withSpecifier:(id)a4
+- (void)_setSound:(id)sound withSpecifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([sound BOOLValue])
   {
     v5 = 1;
   }
@@ -90,22 +90,22 @@
   }
 
   v7 = +[TLToneManager sharedToneManager];
-  v6 = [(NCALSubsectionSettingsController *)self _subsectionId];
-  [v7 _setCurrentToneWatchAlertPolicy:v5 forAlertType:10 accountIdentifier:v6];
+  _subsectionId = [(NCALSubsectionSettingsController *)self _subsectionId];
+  [v7 _setCurrentToneWatchAlertPolicy:v5 forAlertType:10 accountIdentifier:_subsectionId];
 }
 
-- (id)_sound:(id)a3
+- (id)_sound:(id)_sound
 {
   v4 = +[TLToneManager sharedToneManager];
-  v5 = [(NCALSubsectionSettingsController *)self _subsectionId];
-  v6 = [v4 _currentToneWatchAlertPolicyForAlertType:10 accountIdentifier:v5];
+  _subsectionId = [(NCALSubsectionSettingsController *)self _subsectionId];
+  v6 = [v4 _currentToneWatchAlertPolicyForAlertType:10 accountIdentifier:_subsectionId];
 
   return [NSNumber numberWithInt:v6 == &dword_0 + 1];
 }
 
-- (void)_setVibration:(id)a3 withSpecifier:(id)a4
+- (void)_setVibration:(id)vibration withSpecifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([vibration BOOLValue])
   {
     v5 = 1;
   }
@@ -116,23 +116,23 @@
   }
 
   v7 = +[TLVibrationManager sharedVibrationManager];
-  v6 = [(NCALSubsectionSettingsController *)self _subsectionId];
-  [v7 _setCurrentVibrationWatchAlertPolicy:v5 forAlertType:10 accountIdentifier:v6];
+  _subsectionId = [(NCALSubsectionSettingsController *)self _subsectionId];
+  [v7 _setCurrentVibrationWatchAlertPolicy:v5 forAlertType:10 accountIdentifier:_subsectionId];
 }
 
-- (id)_vibration:(id)a3
+- (id)_vibration:(id)_vibration
 {
   v4 = +[TLVibrationManager sharedVibrationManager];
-  v5 = [(NCALSubsectionSettingsController *)self _subsectionId];
-  v6 = [v4 _currentVibrationWatchAlertPolicyForAlertType:10 accountIdentifier:v5];
+  _subsectionId = [(NCALSubsectionSettingsController *)self _subsectionId];
+  v6 = [v4 _currentVibrationWatchAlertPolicyForAlertType:10 accountIdentifier:_subsectionId];
 
   return [NSNumber numberWithInt:v6 == &dword_0 + 1];
 }
 
 - (id)_subsectionId
 {
-  v2 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"SpecifierUserInfoSubsectionID"];
+  userInfo = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"SpecifierUserInfoSubsectionID"];
 
   return v3;
 }

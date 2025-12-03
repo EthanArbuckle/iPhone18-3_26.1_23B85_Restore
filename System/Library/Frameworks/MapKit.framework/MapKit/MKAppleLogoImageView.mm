@@ -1,35 +1,35 @@
 @interface MKAppleLogoImageView
-+ (id)logoForMapType:(unint64_t)a3 forDarkMode:(BOOL)a4;
-- (id)initForMapType:(unint64_t)a3 forDarkMode:(BOOL)a4;
-- (void)setImage:(id)a3;
-- (void)updateForMapType:(unint64_t)a3 darkMode:(BOOL)a4;
++ (id)logoForMapType:(unint64_t)type forDarkMode:(BOOL)mode;
+- (id)initForMapType:(unint64_t)type forDarkMode:(BOOL)mode;
+- (void)setImage:(id)image;
+- (void)updateForMapType:(unint64_t)type darkMode:(BOOL)mode;
 @end
 
 @implementation MKAppleLogoImageView
 
-- (void)updateForMapType:(unint64_t)a3 darkMode:(BOOL)a4
+- (void)updateForMapType:(unint64_t)type darkMode:(BOOL)mode
 {
-  v5 = [MKAppleLogoImageView logoForMapType:a3 forDarkMode:a4];
+  v5 = [MKAppleLogoImageView logoForMapType:type forDarkMode:mode];
   [(MKAppleLogoImageView *)self setImage:v5];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   v4.receiver = self;
   v4.super_class = MKAppleLogoImageView;
-  [(MKAppleLogoImageView *)&v4 setImage:a3];
+  [(MKAppleLogoImageView *)&v4 setImage:image];
   [(MKAppleLogoImageView *)self sizeToFit];
 }
 
-- (id)initForMapType:(unint64_t)a3 forDarkMode:(BOOL)a4
+- (id)initForMapType:(unint64_t)type forDarkMode:(BOOL)mode
 {
-  v4 = a4;
+  modeCopy = mode;
   v10.receiver = self;
   v10.super_class = MKAppleLogoImageView;
   v6 = [(MKAppleLogoImageView *)&v10 init];
   if (v6)
   {
-    v7 = [MKAppleLogoImageView logoForMapType:a3 forDarkMode:v4];
+    v7 = [MKAppleLogoImageView logoForMapType:type forDarkMode:modeCopy];
     [(MKAppleLogoImageView *)v6 setImage:v7];
 
     v8 = v6;
@@ -38,20 +38,20 @@
   return v6;
 }
 
-+ (id)logoForMapType:(unint64_t)a3 forDarkMode:(BOOL)a4
++ (id)logoForMapType:(unint64_t)type forDarkMode:(BOOL)mode
 {
   v4 = @"Apple_Maps_blk";
-  if (a4)
+  if (mode)
   {
     v4 = @"Apple_Maps_wht";
   }
 
-  if (a3 == 107)
+  if (type == 107)
   {
     v4 = @"Apple_Maps_wht";
   }
 
-  if (a3 - 1 >= 4)
+  if (type - 1 >= 4)
   {
     v5 = v4;
   }

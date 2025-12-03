@@ -1,18 +1,18 @@
 @interface TSCH3DChartRotationTouchHandler
-+ (tvec3<float>)clampRotation:(void *)a3 chartType:(id)a4;
++ (tvec3<float>)clampRotation:(void *)rotation chartType:(id)type;
 @end
 
 @implementation TSCH3DChartRotationTouchHandler
 
-+ (tvec3<float>)clampRotation:(void *)a3 chartType:(id)a4
++ (tvec3<float>)clampRotation:(void *)rotation chartType:(id)type
 {
   v9 = v4;
-  v10 = objc_msgSend_rotation3DLimit(a4, a2, v5, v6, v7);
-  v12 = *(a3 + 2);
+  v10 = objc_msgSend_rotation3DLimit(type, a2, v5, v6, v7);
+  v12 = *(rotation + 2);
   v14.f32[0] = -v13;
   v16.f32[0] = -v15;
   v16.i32[1] = v17;
-  v18 = vbsl_s8(vcgt_f32(v16, *a3), *a3, v16);
+  v18 = vbsl_s8(vcgt_f32(v16, *rotation), *rotation, v16);
   v14.i32[1] = v19;
   *v9 = vbsl_s8(vcgt_f32(v18, v14), v18, v14);
   v9[1].i32[0] = v12;

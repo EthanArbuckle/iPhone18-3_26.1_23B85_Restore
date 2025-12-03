@@ -1,5 +1,5 @@
 @interface MSVFinally
-- (MSVFinally)initWithBlock:(id)a3;
+- (MSVFinally)initWithBlock:(id)block;
 - (void)dealloc;
 @end
 
@@ -13,15 +13,15 @@
   [(MSVFinally *)&v3 dealloc];
 }
 
-- (MSVFinally)initWithBlock:(id)a3
+- (MSVFinally)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = MSVFinally;
   v5 = [(MSVFinally *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     block = v5->_block;
     v5->_block = v6;
   }

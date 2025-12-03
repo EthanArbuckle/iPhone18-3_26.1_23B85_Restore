@@ -1,20 +1,20 @@
 @interface _UIPickerViewStyle
 - (CATransform3D)perspectiveTransform;
-- (CATransform3D)transformForCellAtY:(SEL)a3 inBounds:(double)a4 rowHeight:(CGRect)a5 selectionBarRect:(double)a6;
-- (CGSize)defaultSizeForTraitCollection:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3 forTraitCollection:(id)a4;
+- (CATransform3D)transformForCellAtY:(SEL)y inBounds:(double)bounds rowHeight:(CGRect)height selectionBarRect:(double)rect;
+- (CGSize)defaultSizeForTraitCollection:(id)collection;
+- (CGSize)sizeThatFits:(CGSize)fits forTraitCollection:(id)collection;
 - (UIEdgeInsets)columnContentEdgeInsets;
-- (id)centerCellDigitFontWithTraitCollection:(id)a3;
-- (id)centerCellFontWithTraitCollection:(id)a3;
-- (id)nonCenterCellDigitFontWithTraitCollection:(id)a3;
-- (id)nonCenterCellFontWithTraitCollection:(id)a3;
-- (void)_resetFontCacheForLegibilityWeightIfNeeded:(int64_t)a3;
-- (void)configureMaskGradientLayer:(id)a3;
+- (id)centerCellDigitFontWithTraitCollection:(id)collection;
+- (id)centerCellFontWithTraitCollection:(id)collection;
+- (id)nonCenterCellDigitFontWithTraitCollection:(id)collection;
+- (id)nonCenterCellFontWithTraitCollection:(id)collection;
+- (void)_resetFontCacheForLegibilityWeightIfNeeded:(int64_t)needed;
+- (void)configureMaskGradientLayer:(id)layer;
 @end
 
 @implementation _UIPickerViewStyle
 
-- (CGSize)defaultSizeForTraitCollection:(id)a3
+- (CGSize)defaultSizeForTraitCollection:(id)collection
 {
   v3 = *MEMORY[0x1E695F060];
   v4 = *(MEMORY[0x1E695F060] + 8);
@@ -23,7 +23,7 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 forTraitCollection:(id)a4
+- (CGSize)sizeThatFits:(CGSize)fits forTraitCollection:(id)collection
 {
   v4 = *MEMORY[0x1E695F060];
   v5 = *(MEMORY[0x1E695F060] + 8);
@@ -50,7 +50,7 @@
   return self;
 }
 
-- (CATransform3D)transformForCellAtY:(SEL)a3 inBounds:(double)a4 rowHeight:(CGRect)a5 selectionBarRect:(double)a6
+- (CATransform3D)transformForCellAtY:(SEL)y inBounds:(double)bounds rowHeight:(CGRect)height selectionBarRect:(double)rect
 {
   v7 = MEMORY[0x1E69792E8];
   v8 = *(MEMORY[0x1E69792E8] + 80);
@@ -68,12 +68,12 @@
   return self;
 }
 
-- (void)configureMaskGradientLayer:(id)a3
+- (void)configureMaskGradientLayer:(id)layer
 {
-  v3 = a3;
+  layerCopy = layer;
   v5 = +[UIColor blackColor];
   v4 = v5;
-  [v3 setBackgroundColor:{objc_msgSend(v5, "CGColor")}];
+  [layerCopy setBackgroundColor:{objc_msgSend(v5, "CGColor")}];
 }
 
 - (UIEdgeInsets)columnContentEdgeInsets
@@ -89,12 +89,12 @@
   return result;
 }
 
-- (void)_resetFontCacheForLegibilityWeightIfNeeded:(int64_t)a3
+- (void)_resetFontCacheForLegibilityWeightIfNeeded:(int64_t)needed
 {
-  if (_MergedGlobals_1373 != a3)
+  if (_MergedGlobals_1373 != needed)
   {
     v4 = qword_1ED4A2A10;
-    _MergedGlobals_1373 = a3;
+    _MergedGlobals_1373 = needed;
     qword_1ED4A2A10 = 0;
 
     v5 = qword_1ED4A2A18;
@@ -108,9 +108,9 @@
   }
 }
 
-- (id)centerCellFontWithTraitCollection:(id)a3
+- (id)centerCellFontWithTraitCollection:(id)collection
 {
-  -[_UIPickerViewStyle _resetFontCacheForLegibilityWeightIfNeeded:](self, "_resetFontCacheForLegibilityWeightIfNeeded:", [a3 legibilityWeight]);
+  -[_UIPickerViewStyle _resetFontCacheForLegibilityWeightIfNeeded:](self, "_resetFontCacheForLegibilityWeightIfNeeded:", [collection legibilityWeight]);
   v3 = qword_1ED4A2A10;
   if (!qword_1ED4A2A10)
   {
@@ -124,9 +124,9 @@
   return v3;
 }
 
-- (id)nonCenterCellFontWithTraitCollection:(id)a3
+- (id)nonCenterCellFontWithTraitCollection:(id)collection
 {
-  -[_UIPickerViewStyle _resetFontCacheForLegibilityWeightIfNeeded:](self, "_resetFontCacheForLegibilityWeightIfNeeded:", [a3 legibilityWeight]);
+  -[_UIPickerViewStyle _resetFontCacheForLegibilityWeightIfNeeded:](self, "_resetFontCacheForLegibilityWeightIfNeeded:", [collection legibilityWeight]);
   v3 = qword_1ED4A2A18;
   if (!qword_1ED4A2A18)
   {
@@ -140,9 +140,9 @@
   return v3;
 }
 
-- (id)centerCellDigitFontWithTraitCollection:(id)a3
+- (id)centerCellDigitFontWithTraitCollection:(id)collection
 {
-  -[_UIPickerViewStyle _resetFontCacheForLegibilityWeightIfNeeded:](self, "_resetFontCacheForLegibilityWeightIfNeeded:", [a3 legibilityWeight]);
+  -[_UIPickerViewStyle _resetFontCacheForLegibilityWeightIfNeeded:](self, "_resetFontCacheForLegibilityWeightIfNeeded:", [collection legibilityWeight]);
   v3 = qword_1ED4A2A20;
   if (!qword_1ED4A2A20)
   {
@@ -156,9 +156,9 @@
   return v3;
 }
 
-- (id)nonCenterCellDigitFontWithTraitCollection:(id)a3
+- (id)nonCenterCellDigitFontWithTraitCollection:(id)collection
 {
-  -[_UIPickerViewStyle _resetFontCacheForLegibilityWeightIfNeeded:](self, "_resetFontCacheForLegibilityWeightIfNeeded:", [a3 legibilityWeight]);
+  -[_UIPickerViewStyle _resetFontCacheForLegibilityWeightIfNeeded:](self, "_resetFontCacheForLegibilityWeightIfNeeded:", [collection legibilityWeight]);
   v3 = qword_1ED4A2A28;
   if (!qword_1ED4A2A28)
   {

@@ -1,18 +1,18 @@
 @interface BoxedPhysicsShape
 + (id)boxPhysicsShape:;
-+ (id)boxPhysicsShape:(PKPhysicsShape *)a3;
++ (id)boxPhysicsShape:(PKPhysicsShape *)shape;
 + (uint64_t)boxPhysicsShape:;
 + (void)boxPhysicsShape:;
 @end
 
 @implementation BoxedPhysicsShape
 
-+ (id)boxPhysicsShape:(PKPhysicsShape *)a3
++ (id)boxPhysicsShape:(PKPhysicsShape *)shape
 {
   v40[4] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(BoxedPhysicsShape);
-  var0 = a3->var0.var0;
-  v6 = *(a3->var0.var0 + 2);
+  var0 = shape->var0.var0;
+  v6 = *(shape->var0.var0 + 2);
   v4->shapeType = v6;
   LODWORD(v7) = 1;
   if (v6 <= 1)
@@ -173,7 +173,7 @@ LABEL_32:
 {
   v3 = *a2;
   v4 = *a3;
-  v5 = *(a1 + 8);
+  v5 = *(self + 8);
   v6 = (v3 * PKGet_PTM_RATIO());
   v9.y = (v4 * PKGet_PTM_RATIO());
   v9.x = v6;
@@ -184,7 +184,7 @@ LABEL_32:
 + (id)boxPhysicsShape:
 {
   *a2 = &unk_28707A620;
-  result = *(a1 + 8);
+  result = *(self + 8);
   a2[1] = result;
   return result;
 }
@@ -192,7 +192,7 @@ LABEL_32:
 + (uint64_t)boxPhysicsShape:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else

@@ -1,23 +1,23 @@
 @interface AAUIServerHookHandlerDelegate
-- (BOOL)serverHookHandler:(id)a3 isUserCancelError:(id)a4;
+- (BOOL)serverHookHandler:(id)handler isUserCancelError:(id)error;
 @end
 
 @implementation AAUIServerHookHandlerDelegate
 
-- (BOOL)serverHookHandler:(id)a3 isUserCancelError:(id)a4
+- (BOOL)serverHookHandler:(id)handler isUserCancelError:(id)error
 {
-  v4 = a4;
-  if ([v4 aa_isAAErrorWithCode:-1] & 1) != 0 || (objc_msgSend(v4, "ak_isUserCancelError") & 1) != 0 || (objc_msgSend(v4, "cdp_isCDPErrorWithCode:", -5307))
+  errorCopy = error;
+  if ([errorCopy aa_isAAErrorWithCode:-1] & 1) != 0 || (objc_msgSend(errorCopy, "ak_isUserCancelError") & 1) != 0 || (objc_msgSend(errorCopy, "cdp_isCDPErrorWithCode:", -5307))
   {
-    v5 = 1;
+    ak_isLAUserCancelError = 1;
   }
 
   else
   {
-    v5 = [v4 ak_isLAUserCancelError];
+    ak_isLAUserCancelError = [errorCopy ak_isLAUserCancelError];
   }
 
-  return v5;
+  return ak_isLAUserCancelError;
 }
 
 @end

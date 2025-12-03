@@ -2,8 +2,8 @@
 + (id)sharedWorkspaceObserver;
 - (NanoWeatherAppWorkSpaceObserver)init;
 - (NanoWeatherAppWorkSpaceObserverDelegate)delegate;
-- (id)_weatherApplicationProxyFromProxies:(id)a3;
-- (void)_weatherApplicationStateDidChange:(unint64_t)a3 forApplicationProxies:(id)a4;
+- (id)_weatherApplicationProxyFromProxies:(id)proxies;
+- (void)_weatherApplicationStateDidChange:(unint64_t)change forApplicationProxies:(id)proxies;
 - (void)dealloc;
 - (void)startObservingAppInstallation;
 - (void)stopObservingAppInstallation;
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = sub_100001568;
   block[3] = &unk_10000C440;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100011488 != -1)
   {
     dispatch_once(&qword_100011488, block);
@@ -51,10 +51,10 @@
   [(NanoWeatherAppWorkSpaceObserver *)&v3 dealloc];
 }
 
-- (id)_weatherApplicationProxyFromProxies:(id)a3
+- (id)_weatherApplicationProxyFromProxies:(id)proxies
 {
-  v3 = a3;
-  v4 = [v3 indexOfObjectPassingTest:&stru_10000C480];
+  proxiesCopy = proxies;
+  v4 = [proxiesCopy indexOfObjectPassingTest:&stru_10000C480];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -62,25 +62,25 @@
 
   else
   {
-    v5 = [v3 objectAtIndexedSubscript:v4];
+    v5 = [proxiesCopy objectAtIndexedSubscript:v4];
   }
 
   return v5;
 }
 
-- (void)_weatherApplicationStateDidChange:(unint64_t)a3 forApplicationProxies:(id)a4
+- (void)_weatherApplicationStateDidChange:(unint64_t)change forApplicationProxies:(id)proxies
 {
-  v6 = a4;
-  v7 = [(NanoWeatherAppWorkSpaceObserver *)self delegate];
+  proxiesCopy = proxies;
+  delegate = [(NanoWeatherAppWorkSpaceObserver *)self delegate];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000017C4;
   v9[3] = &unk_10000C4D0;
   v9[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
-  [v7 performBlockAsXPCXaction:v9];
+  v10 = proxiesCopy;
+  changeCopy = change;
+  v8 = proxiesCopy;
+  [delegate performBlockAsXPCXaction:v9];
 }
 
 - (void)startObservingAppInstallation
@@ -92,8 +92,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Start observing for Weather App installation", v5, 2u);
   }
 
-  v4 = [(NanoWeatherAppWorkSpaceObserver *)self defaultAppWorkspace];
-  [v4 addObserver:self];
+  defaultAppWorkspace = [(NanoWeatherAppWorkSpaceObserver *)self defaultAppWorkspace];
+  [defaultAppWorkspace addObserver:self];
 }
 
 - (void)stopObservingAppInstallation
@@ -105,8 +105,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Stop observing for Weather App installation", v5, 2u);
   }
 
-  v4 = [(NanoWeatherAppWorkSpaceObserver *)self defaultAppWorkspace];
-  [v4 removeObserver:self];
+  defaultAppWorkspace = [(NanoWeatherAppWorkSpaceObserver *)self defaultAppWorkspace];
+  [defaultAppWorkspace removeObserver:self];
 }
 
 - (NanoWeatherAppWorkSpaceObserverDelegate)delegate

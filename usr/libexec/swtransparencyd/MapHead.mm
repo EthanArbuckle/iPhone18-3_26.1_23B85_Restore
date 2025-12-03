@@ -26,12 +26,12 @@
   [v3 setObject:v4 forKeyedSubscript:@"logBeginningMs"];
 
   v5 = [NSDate dateWithTimeIntervalSince1970:([(MapHead *)self logBeginningMs]/ 0x3E8)];
-  v6 = [v5 kt_toISO_8601_UTCString];
-  [v3 setObject:v6 forKeyedSubscript:@"logBeginningDateReadable"];
+  kt_toISO_8601_UTCString = [v5 kt_toISO_8601_UTCString];
+  [v3 setObject:kt_toISO_8601_UTCString forKeyedSubscript:@"logBeginningDateReadable"];
 
-  v7 = [(MapHead *)self mapHeadHash];
-  v8 = [v7 kt_hexString];
-  [v3 setObject:v8 forKeyedSubscript:@"mapHeadHash"];
+  mapHeadHash = [(MapHead *)self mapHeadHash];
+  kt_hexString = [mapHeadHash kt_hexString];
+  [v3 setObject:kt_hexString forKeyedSubscript:@"mapHeadHash"];
 
   v9 = Application_EnumDescriptor();
   v10 = [v9 textFormatNameForValue:{-[MapHead application](self, "application")}];
@@ -51,8 +51,8 @@
   [v3 setObject:v15 forKeyedSubscript:@"timestampMs"];
 
   v16 = [NSDate dateWithTimeIntervalSince1970:([(MapHead *)self timestampMs]/ 0x3E8)];
-  v17 = [v16 kt_toISO_8601_UTCString];
-  [v3 setObject:v17 forKeyedSubscript:@"timestampReadable"];
+  kt_toISO_8601_UTCString2 = [v16 kt_toISO_8601_UTCString];
+  [v3 setObject:kt_toISO_8601_UTCString2 forKeyedSubscript:@"timestampReadable"];
 
   v18 = [NSNumber numberWithBool:[(MapHead *)self populating]];
   [v3 setObject:v18 forKeyedSubscript:@"populating"];

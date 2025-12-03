@@ -1,14 +1,14 @@
 @interface OverlayCallCenter
-- (void)callCenterCallStatusChangedWithNotification:(id)a3;
+- (void)callCenterCallStatusChangedWithNotification:(id)notification;
 @end
 
 @implementation OverlayCallCenter
 
-- (void)callCenterCallStatusChangedWithNotification:(id)a3
+- (void)callCenterCallStatusChangedWithNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
 
-  sub_24F1D5B7C(v3);
+  sub_24F1D5B7C(notificationCopy);
 }
 
 @end

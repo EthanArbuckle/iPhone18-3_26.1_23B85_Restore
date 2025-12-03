@@ -1,34 +1,34 @@
 @interface CKDPRecordField
-+ (id)emptyFieldWithKey:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)emptyFieldWithKey:(id)key;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAction:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAction:(id)action;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPRecordField
 
-- (void)addAction:(id)a3
+- (void)addAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   actions = self->_actions;
-  v8 = v4;
+  v8 = actionCopy;
   if (!actions)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_actions;
     self->_actions = v6;
 
-    v4 = v8;
+    actionCopy = v8;
     actions = self->_actions;
   }
 
-  objc_msgSend_addObject_(actions, v4, v4);
+  objc_msgSend_addObject_(actions, actionCopy, actionCopy);
 }
 
 - (id)description
@@ -103,10 +103,10 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
     PBDataWriterWriteSubmessage();
@@ -152,24 +152,24 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v17 = a3;
+  toCopy = to;
   identifier = self->_identifier;
   if (identifier)
   {
-    objc_msgSend_setIdentifier_(v17, v4, identifier);
+    objc_msgSend_setIdentifier_(toCopy, v4, identifier);
   }
 
   value = self->_value;
   if (value)
   {
-    objc_msgSend_setValue_(v17, v4, value);
+    objc_msgSend_setValue_(toCopy, v4, value);
   }
 
   if (objc_msgSend_actionsCount(self, v4, value))
   {
-    objc_msgSend_clearActions(v17, v7, v8);
+    objc_msgSend_clearActions(toCopy, v7, v8);
     v11 = objc_msgSend_actionsCount(self, v9, v10);
     if (v11)
     {
@@ -177,23 +177,23 @@
       for (i = 0; i != v13; ++i)
       {
         v15 = objc_msgSend_actionAtIndex_(self, v12, i);
-        objc_msgSend_addAction_(v17, v16, v15);
+        objc_msgSend_addAction_(toCopy, v16, v15);
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v33 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_identifier, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_identifier, v11, zone);
   v13 = v10[2];
   v10[2] = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_value, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_value, v14, zone);
   v16 = v10[3];
   v10[3] = v15;
 
@@ -217,7 +217,7 @@
           objc_enumerationMutation(v17);
         }
 
-        v24 = objc_msgSend_copyWithZone_(*(*(&v28 + 1) + 8 * v23), v20, a3, v28);
+        v24 = objc_msgSend_copyWithZone_(*(*(&v28 + 1) + 8 * v23), v20, zone, v28);
         objc_msgSend_addAction_(v10, v25, v24);
 
         ++v23;
@@ -234,14 +234,14 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5) && ((identifier = self->_identifier, v9 = v4[2], !(identifier | v9)) || objc_msgSend_isEqual_(identifier, v7, v9)) && ((value = self->_value, v11 = v4[3], !(value | v11)) || objc_msgSend_isEqual_(value, v7, v11)))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5) && ((identifier = self->_identifier, v9 = equalCopy[2], !(identifier | v9)) || objc_msgSend_isEqual_(identifier, v7, v9)) && ((value = self->_value, v11 = equalCopy[3], !(value | v11)) || objc_msgSend_isEqual_(value, v7, v11)))
   {
     actions = self->_actions;
-    v13 = v4[1];
+    v13 = equalCopy[1];
     if (actions | v13)
     {
       isEqual = objc_msgSend_isEqual_(actions, v7, v13);
@@ -268,12 +268,12 @@
   return v7 ^ objc_msgSend_hash(self->_actions, v8, v9);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  fromCopy = from;
   identifier = self->_identifier;
-  v7 = *(v5 + 2);
+  v7 = *(fromCopy + 2);
   if (identifier)
   {
     if (v7)
@@ -288,7 +288,7 @@
   }
 
   value = self->_value;
-  v9 = *(v5 + 3);
+  v9 = *(fromCopy + 3);
   if (value)
   {
     if (v9)
@@ -306,7 +306,7 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = *(v5 + 1);
+  v10 = *(fromCopy + 1);
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v18, v22, 16);
   if (v12)
   {
@@ -333,15 +333,15 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)emptyFieldWithKey:(id)a3
++ (id)emptyFieldWithKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = objc_opt_new();
   v5 = objc_opt_new();
   objc_msgSend_setIdentifier_(v4, v6, v5);
 
   v9 = objc_msgSend_identifier(v4, v7, v8);
-  objc_msgSend_setName_(v9, v10, v3);
+  objc_msgSend_setName_(v9, v10, keyCopy);
 
   v11 = objc_opt_new();
   objc_msgSend_setValue_(v4, v12, v11);

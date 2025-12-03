@@ -1,7 +1,7 @@
 @interface NEDNSProxyManager
 + (NEDNSProxyManager)sharedManager;
 + (id)globalConfigurationManager;
-+ (void)loadAllFromPreferencesWithCompletionHandler:(id)a3;
++ (void)loadAllFromPreferencesWithCompletionHandler:(id)handler;
 - (BOOL)isEnabled;
 - (BOOL)isFromMDM;
 - (BOOL)isFromProfile;
@@ -14,7 +14,7 @@
 - (NSUUID)identifier;
 - (void)createEmptyConfiguration;
 - (void)dealloc;
-- (void)fetchStatusWithCompletionHandler:(id)a3;
+- (void)fetchStatusWithCompletionHandler:(id)handler;
 - (void)loadFromPreferencesWithCompletionHandler:(void *)completionHandler;
 - (void)removeFromPreferencesWithCompletionHandler:(void *)completionHandler;
 - (void)saveToPreferencesWithCompletionHandler:(void *)completionHandler;
@@ -31,9 +31,9 @@
   return WeakRetained;
 }
 
-- (void)fetchStatusWithCompletionHandler:(id)a3
+- (void)fetchStatusWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self)
   {
     connection = self->_connection;
@@ -49,8 +49,8 @@
   v7[2] = __54__NEDNSProxyManager_fetchStatusWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7F0B110;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(NEVPNConnection *)connection updateSessionInfoForce:0 notify:v7 withCompletionHandler:?];
 }
 
@@ -80,10 +80,10 @@ uint64_t __54__NEDNSProxyManager_fetchStatusWithCompletionHandler___block_invoke
 
 - (NEProfileIngestionPayloadInfo)configurationPayloadInfo
 {
-  v2 = [(NEDNSProxyManager *)self configuration];
-  v3 = [v2 payloadInfo];
+  configuration = [(NEDNSProxyManager *)self configuration];
+  payloadInfo = [configuration payloadInfo];
 
-  return v3;
+  return payloadInfo;
 }
 
 - (BOOL)isFromMDM
@@ -93,137 +93,137 @@ uint64_t __54__NEDNSProxyManager_fetchStatusWithCompletionHandler___block_invoke
     return 0;
   }
 
-  v3 = [(NEDNSProxyManager *)self configuration];
-  v4 = [v3 payloadInfo];
-  v5 = [v4 profileSource] == 2;
+  configuration = [(NEDNSProxyManager *)self configuration];
+  payloadInfo = [configuration payloadInfo];
+  v5 = [payloadInfo profileSource] == 2;
 
   return v5;
 }
 
 - (BOOL)isFromProfile
 {
-  v2 = [(NEDNSProxyManager *)self configuration];
-  v3 = [v2 payloadInfo];
-  v4 = v3 != 0;
+  configuration = [(NEDNSProxyManager *)self configuration];
+  payloadInfo = [configuration payloadInfo];
+  v4 = payloadInfo != 0;
 
   return v4;
 }
 
 - (NSString)appBundleIdentifier
 {
-  v2 = [(NEDNSProxyManager *)self configuration];
-  v3 = [v2 application];
+  configuration = [(NEDNSProxyManager *)self configuration];
+  application = [configuration application];
 
-  return v3;
+  return application;
 }
 
 - (NSUUID)identifier
 {
-  v2 = [(NEDNSProxyManager *)self configuration];
-  v3 = [v2 identifier];
+  configuration = [(NEDNSProxyManager *)self configuration];
+  identifier = [configuration identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (void)setLocalizedDescription:(NSString *)localizedDescription
 {
   v6 = localizedDescription;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NEDNSProxyManager *)v4 configuration];
-  [v5 setName:v6];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configuration = [(NEDNSProxyManager *)selfCopy configuration];
+  [configuration setName:v6];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSString)localizedDescription
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NEDNSProxyManager *)v2 configuration];
-  v4 = [v3 name];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configuration = [(NEDNSProxyManager *)selfCopy configuration];
+  name = [configuration name];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return name;
 }
 
 - (BOOL)isEnabled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NEDNSProxyManager *)v2 configuration];
-  v4 = [v3 dnsProxy];
-  v5 = [v4 isEnabled];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configuration = [(NEDNSProxyManager *)selfCopy configuration];
+  dnsProxy = [configuration dnsProxy];
+  isEnabled = [dnsProxy isEnabled];
 
-  objc_sync_exit(v2);
-  return v5;
+  objc_sync_exit(selfCopy);
+  return isEnabled;
 }
 
 - (void)setProviderProtocol:(NEDNSProxyProviderProtocol *)providerProtocol
 {
   v7 = providerProtocol;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NEDNSProxyManager *)v4 configuration];
-  v6 = [v5 dnsProxy];
-  [v6 setProtocol:v7];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configuration = [(NEDNSProxyManager *)selfCopy configuration];
+  dnsProxy = [configuration dnsProxy];
+  [dnsProxy setProtocol:v7];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NEDNSProxyProviderProtocol)providerProtocol
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NEDNSProxyManager *)v2 configuration];
-  v4 = [v3 dnsProxy];
-  v5 = [v4 protocol];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configuration = [(NEDNSProxyManager *)selfCopy configuration];
+  dnsProxy = [configuration dnsProxy];
+  protocol = [dnsProxy protocol];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v5;
+  return protocol;
 }
 
 - (void)saveToPreferencesWithCompletionHandler:(void *)completionHandler
 {
   v4 = completionHandler;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5 && v5->_hasLoaded)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy && selfCopy->_hasLoaded)
   {
-    v6 = [(NEDNSProxyManager *)v5 providerProtocol];
+    providerProtocol = [(NEDNSProxyManager *)selfCopy providerProtocol];
 
-    if (v6)
+    if (providerProtocol)
     {
-      v7 = [(NEDNSProxyManager *)v5 providerProtocol];
-      v8 = [v7 providerBundleIdentifier];
+      providerProtocol2 = [(NEDNSProxyManager *)selfCopy providerProtocol];
+      providerBundleIdentifier = [providerProtocol2 providerBundleIdentifier];
 
       objc_opt_self();
-      v9 = v8;
+      v9 = providerBundleIdentifier;
 
-      v10 = [(NEDNSProxyManager *)v5 providerProtocol];
-      [v10 setProviderBundleIdentifier:v9];
+      providerProtocol3 = [(NEDNSProxyManager *)selfCopy providerProtocol];
+      [providerProtocol3 setProviderBundleIdentifier:v9];
 
-      v12 = objc_getProperty(v5, v11, 16, 1);
-      v13 = [v12 pluginType];
+      v12 = objc_getProperty(selfCopy, v11, 16, 1);
+      pluginType = [v12 pluginType];
 
-      if (v13)
+      if (pluginType)
       {
-        v15 = objc_getProperty(v5, v14, 16, 1);
-        v16 = [v15 pluginType];
-        v17 = [(NEDNSProxyManager *)v5 providerProtocol];
-        [v17 setPluginType:v16];
+        v15 = objc_getProperty(selfCopy, v14, 16, 1);
+        pluginType2 = [v15 pluginType];
+        providerProtocol4 = [(NEDNSProxyManager *)selfCopy providerProtocol];
+        [providerProtocol4 setPluginType:pluginType2];
       }
 
-      v18 = [(NEDNSProxyManager *)v5 configuration];
-      if (v18)
+      configuration = [(NEDNSProxyManager *)selfCopy configuration];
+      if (configuration)
       {
-        v18[22] = 0;
+        configuration[22] = 0;
       }
 
-      v20 = objc_getProperty(v5, v19, 16, 1);
-      v21 = [(NEDNSProxyManager *)v5 configuration];
+      v20 = objc_getProperty(selfCopy, v19, 16, 1);
+      configuration2 = [(NEDNSProxyManager *)selfCopy configuration];
       v22 = MEMORY[0x1E69E96A0];
       v23 = MEMORY[0x1E69E96A0];
       v24[0] = MEMORY[0x1E69E9820];
@@ -231,7 +231,7 @@ uint64_t __54__NEDNSProxyManager_fetchStatusWithCompletionHandler___block_invoke
       v24[2] = __60__NEDNSProxyManager_saveToPreferencesWithCompletionHandler___block_invoke_3;
       v24[3] = &unk_1E7F097A8;
       v25 = v4;
-      [v20 saveConfiguration:v21 withCompletionQueue:v22 handler:v24];
+      [v20 saveConfiguration:configuration2 withCompletionQueue:v22 handler:v24];
 
       goto LABEL_13;
     }
@@ -261,7 +261,7 @@ uint64_t __54__NEDNSProxyManager_fetchStatusWithCompletionHandler___block_invoke
 LABEL_13:
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __60__NEDNSProxyManager_saveToPreferencesWithCompletionHandler___block_invoke(uint64_t a1)
@@ -321,20 +321,20 @@ void __60__NEDNSProxyManager_saveToPreferencesWithCompletionHandler___block_invo
 - (void)removeFromPreferencesWithCompletionHandler:(void *)completionHandler
 {
   v4 = completionHandler;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NEDNSProxyManager *)v5 configuration];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configuration = [(NEDNSProxyManager *)selfCopy configuration];
 
-  if (v6)
+  if (configuration)
   {
-    v7 = [(NEDNSProxyManager *)v5 configuration];
-    v8 = [v7 payloadInfo];
+    configuration2 = [(NEDNSProxyManager *)selfCopy configuration];
+    payloadInfo = [configuration2 payloadInfo];
 
-    if (!v8)
+    if (!payloadInfo)
     {
-      if (v5)
+      if (selfCopy)
       {
-        Property = objc_getProperty(v5, v9, 16, 1);
+        Property = objc_getProperty(selfCopy, v9, 16, 1);
       }
 
       else
@@ -343,7 +343,7 @@ void __60__NEDNSProxyManager_saveToPreferencesWithCompletionHandler___block_invo
       }
 
       v14 = Property;
-      v15 = [(NEDNSProxyManager *)v5 configuration];
+      configuration3 = [(NEDNSProxyManager *)selfCopy configuration];
       v16 = MEMORY[0x1E69E96A0];
       v17 = MEMORY[0x1E69E96A0];
       v18[0] = MEMORY[0x1E69E9820];
@@ -351,7 +351,7 @@ void __60__NEDNSProxyManager_saveToPreferencesWithCompletionHandler___block_invo
       v18[2] = __64__NEDNSProxyManager_removeFromPreferencesWithCompletionHandler___block_invoke_3;
       v18[3] = &unk_1E7F097A8;
       v19 = v4;
-      [v14 removeConfiguration:v15 withCompletionQueue:v16 handler:v18];
+      [v14 removeConfiguration:configuration3 withCompletionQueue:v16 handler:v18];
       v10 = &v19;
 
       goto LABEL_11;
@@ -386,7 +386,7 @@ LABEL_11:
     goto LABEL_7;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __64__NEDNSProxyManager_removeFromPreferencesWithCompletionHandler___block_invoke(uint64_t a1)
@@ -447,11 +447,11 @@ void __64__NEDNSProxyManager_removeFromPreferencesWithCompletionHandler___block_
   v4 = completionHandler;
   if (v4)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    if (v5)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy)
     {
-      Property = objc_getProperty(v5, v6, 16, 1);
+      Property = objc_getProperty(selfCopy, v6, 16, 1);
     }
 
     else
@@ -466,11 +466,11 @@ void __64__NEDNSProxyManager_removeFromPreferencesWithCompletionHandler___block_
     v11[1] = 3221225472;
     v11[2] = __62__NEDNSProxyManager_loadFromPreferencesWithCompletionHandler___block_invoke;
     v11[3] = &unk_1E7F0B5B0;
-    v11[4] = v5;
+    v11[4] = selfCopy;
     v12 = v4;
     [v8 loadConfigurationsWithCompletionQueue:v9 handler:v11];
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -580,38 +580,38 @@ LABEL_22:
 
 - (void)createEmptyConfiguration
 {
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x1E696AAE8] mainBundle];
-    v3 = [v2 infoDictionary];
-    v18 = [v3 objectForKey:*MEMORY[0x1E695E120]];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    infoDictionary = [mainBundle infoDictionary];
+    bundleIdentifier = [infoDictionary objectForKey:*MEMORY[0x1E695E120]];
 
-    if (!v18)
+    if (!bundleIdentifier)
     {
-      v4 = [MEMORY[0x1E696AAE8] mainBundle];
-      v18 = [v4 bundleIdentifier];
+      mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle2 bundleIdentifier];
     }
 
-    v5 = [[NEConfiguration alloc] initWithName:v18 grade:1];
-    [a1 setConfiguration:v5];
+    v5 = [[NEConfiguration alloc] initWithName:bundleIdentifier grade:1];
+    [self setConfiguration:v5];
 
     v6 = objc_alloc_init(NEDNSProxy);
-    v7 = [a1 configuration];
-    [v7 setDnsProxy:v6];
+    configuration = [self configuration];
+    [configuration setDnsProxy:v6];
 
     v8 = [NEDNSProxyProviderProtocol alloc];
-    v10 = [objc_getProperty(a1 v9];
+    v10 = [objc_getProperty(self v9];
     v11 = [(NEDNSProxyProviderProtocol *)v8 initWithPluginType:v10];
-    v12 = [a1 configuration];
-    v13 = [v12 dnsProxy];
-    [v13 setProtocol:v11];
+    configuration2 = [self configuration];
+    dnsProxy = [configuration2 dnsProxy];
+    [dnsProxy setProtocol:v11];
 
-    v15 = [objc_getProperty(a1 v14];
-    v16 = [a1 configuration];
-    [v16 setApplication:v15];
+    v15 = [objc_getProperty(self v14];
+    configuration3 = [self configuration];
+    [configuration3 setApplication:v15];
 
-    v17 = [a1 configuration];
-    [v17 setApplicationName:v18];
+    configuration4 = [self configuration];
+    [configuration4 setApplicationName:bundleIdentifier];
   }
 }
 
@@ -626,9 +626,9 @@ void __62__NEDNSProxyManager_loadFromPreferencesWithCompletionHandler___block_in
 {
   if (self && self->_statusObserver)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v4 = self->_statusObserver;
-    [v3 removeObserver:v4 name:@"com.apple.networkextension.statuschanged" object:self->_connection];
+    [defaultCenter removeObserver:v4 name:@"com.apple.networkextension.statuschanged" object:self->_connection];
   }
 
   v5.receiver = self;
@@ -648,17 +648,17 @@ void __62__NEDNSProxyManager_loadFromPreferencesWithCompletionHandler___block_in
   return 0;
 }
 
-+ (void)loadAllFromPreferencesWithCompletionHandler:(id)a3
++ (void)loadAllFromPreferencesWithCompletionHandler:(id)handler
 {
-  v3 = a3;
-  if (v3)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v4 = +[NEDNSProxyManager globalConfigurationManager];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __65__NEDNSProxyManager_loadAllFromPreferencesWithCompletionHandler___block_invoke;
     v5[3] = &unk_1E7F0B510;
-    v6 = v3;
+    v6 = handlerCopy;
     [v4 loadConfigurationsWithCompletionQueue:MEMORY[0x1E69E96A0] handler:v5];
   }
 }

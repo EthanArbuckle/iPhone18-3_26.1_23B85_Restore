@@ -1,20 +1,20 @@
 @interface _UIZoomEffectViewEntry
 - (id)description;
-- (void)applyIdentityEffectToView:(id)a3;
-- (void)applyRequestedEffectToView:(id)a3;
-- (void)removeEffectFromView:(id)a3;
+- (void)applyIdentityEffectToView:(id)view;
+- (void)applyRequestedEffectToView:(id)view;
+- (void)removeEffectFromView:(id)view;
 @end
 
 @implementation _UIZoomEffectViewEntry
 
-- (void)applyRequestedEffectToView:(id)a3
+- (void)applyRequestedEffectToView:(id)view
 {
   zoomAmount = self->_zoomAmount;
-  v4 = [a3 layer];
+  layer = [view layer];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = layer;
   }
 
   else
@@ -27,13 +27,13 @@
   [v6 setZoom:zoomAmount];
 }
 
-- (void)applyIdentityEffectToView:(id)a3
+- (void)applyIdentityEffectToView:(id)view
 {
-  v3 = [a3 layer];
+  layer = [view layer];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = layer;
   }
 
   else
@@ -46,13 +46,13 @@
   [v5 setZoom:0.0];
 }
 
-- (void)removeEffectFromView:(id)a3
+- (void)removeEffectFromView:(id)view
 {
-  v3 = [a3 layer];
+  layer = [view layer];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = layer;
   }
 
   else

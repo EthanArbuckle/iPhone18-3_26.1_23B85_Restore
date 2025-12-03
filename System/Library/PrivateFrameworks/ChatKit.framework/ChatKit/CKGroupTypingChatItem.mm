@@ -1,14 +1,14 @@
 @interface CKGroupTypingChatItem
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 @end
 
 @implementation CKGroupTypingChatItem
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
   v11.receiver = self;
   v11.super_class = CKGroupTypingChatItem;
-  [(CKTypingChatItem *)&v11 loadSizeThatFits:a4 textAlignmentInsets:a3.width, a3.height];
+  [(CKTypingChatItem *)&v11 loadSizeThatFits:insets textAlignmentInsets:fits.width, fits.height];
   v5 = v4;
   v6 = +[CKUIBehavior sharedBehaviors];
   [v6 transcriptGroupTypingContactImageDiameter];

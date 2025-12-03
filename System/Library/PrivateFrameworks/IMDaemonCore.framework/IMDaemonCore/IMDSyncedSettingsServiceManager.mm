@@ -1,11 +1,11 @@
 @interface IMDSyncedSettingsServiceManager
 + (IMDSyncedSettingsServiceManager)sharedManager;
-- (BOOL)settingExplicitlySetForKey:(int64_t)a3;
-- (IMDSyncedSettingsServiceManager)initWithLocalDomain:(id)a3 remoteDomain:(id)a4 localStorageDelegate:(id)a5 remoteStorageDelegate:(id)a6 watchSyncDelegate:(id)a7 syncConfigurationDelegate:(id)a8;
-- (id)settingValueForKey:(int64_t)a3;
+- (BOOL)settingExplicitlySetForKey:(int64_t)key;
+- (IMDSyncedSettingsServiceManager)initWithLocalDomain:(id)domain remoteDomain:(id)remoteDomain localStorageDelegate:(id)delegate remoteStorageDelegate:(id)storageDelegate watchSyncDelegate:(id)syncDelegate syncConfigurationDelegate:(id)configurationDelegate;
+- (id)settingValueForKey:(int64_t)key;
 - (unint64_t)npsDefaultsChanged;
 - (void)migrateNotificationSettingsV1toV2IfNecessary;
-- (void)setSettingValue:(id)a3 forKey:(int64_t)a4;
+- (void)setSettingValue:(id)value forKey:(int64_t)key;
 @end
 
 @implementation IMDSyncedSettingsServiceManager
@@ -22,7 +22,7 @@
   return v3;
 }
 
-- (IMDSyncedSettingsServiceManager)initWithLocalDomain:(id)a3 remoteDomain:(id)a4 localStorageDelegate:(id)a5 remoteStorageDelegate:(id)a6 watchSyncDelegate:(id)a7 syncConfigurationDelegate:(id)a8
+- (IMDSyncedSettingsServiceManager)initWithLocalDomain:(id)domain remoteDomain:(id)remoteDomain localStorageDelegate:(id)delegate remoteStorageDelegate:(id)storageDelegate watchSyncDelegate:(id)syncDelegate syncConfigurationDelegate:(id)configurationDelegate
 {
   v12 = sub_22B7DB6A8();
   v14 = v13;
@@ -32,19 +32,19 @@
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  return sub_22B743280(v12, v14, v15, v17, a5, a6, a7, a8);
+  return sub_22B743280(v12, v14, v15, v17, delegate, storageDelegate, syncDelegate, configurationDelegate);
 }
 
 - (void)migrateNotificationSettingsV1toV2IfNecessary
 {
-  v2 = self;
+  selfCopy = self;
   sub_22B7437F0();
 }
 
-- (id)settingValueForKey:(int64_t)a3
+- (id)settingValueForKey:(int64_t)key
 {
-  v4 = self;
-  sub_22B744130(a3, v13);
+  selfCopy = self;
+  sub_22B744130(key, v13);
 
   v5 = v14;
   if (v14)
@@ -68,21 +68,21 @@
   return v11;
 }
 
-- (BOOL)settingExplicitlySetForKey:(int64_t)a3
+- (BOOL)settingExplicitlySetForKey:(int64_t)key
 {
-  v4 = self;
-  LOBYTE(a3) = sub_22B744638(a3);
+  selfCopy = self;
+  LOBYTE(key) = sub_22B744638(key);
 
-  return a3 & 1;
+  return key & 1;
 }
 
-- (void)setSettingValue:(id)a3 forKey:(int64_t)a4
+- (void)setSettingValue:(id)value forKey:(int64_t)key
 {
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_22B7DC118();
   swift_unknownObjectRelease();
-  sub_22B7448FC(v7, a4);
+  sub_22B7448FC(v7, key);
 
   sub_22B4CFB78(v7);
 }
@@ -100,7 +100,7 @@
     while (1)
     {
       v4 = *(v0 + v2);
-      v5 = [v31 defaultCenter];
+      defaultCenter = [v31 defaultCenter];
       v6 = sub_22B7DBE28();
       *&v32[0] = 0x6E6F73616572;
       *(&v32[0] + 1) = 0xE600000000000000;
@@ -136,7 +136,7 @@
       sub_22B4D0D64(v35, &unk_27D8CD7D0, &qword_22B7FA3F0);
       v16 = sub_22B7DB568();
 
-      [v5 postNotificationName:v6 object:0 userInfo:v16];
+      [defaultCenter postNotificationName:v6 object:0 userInfo:v16];
 
       v2 += 8;
       if (!--v1)
@@ -157,7 +157,7 @@ LABEL_6:
     result = [objc_opt_self() sharedProvider];
     if (result)
     {
-      v17 = [result broadcasterForSyncedSettingsListeners];
+      broadcasterForSyncedSettingsListeners = [result broadcasterForSyncedSettingsListeners];
       swift_unknownObjectRelease();
       v18 = sub_22B7DBE38();
       v19 = *(v18 + 16);
@@ -197,7 +197,7 @@ LABEL_6:
 
       v30 = sub_22B7DB8F8();
 
-      [v17 didUpdateSettingsKeys_];
+      [broadcasterForSyncedSettingsListeners didUpdateSettingsKeys_];
 
       return swift_unknownObjectRelease();
     }

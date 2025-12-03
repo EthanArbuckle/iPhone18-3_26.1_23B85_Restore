@@ -1,21 +1,21 @@
 @interface PKPaymentSetupDevicePickerListSectionController
-- (PKPaymentSetupDevicePickerListSectionController)initWithWebServices:(id)a3 title:(id)a4 subtitle:(id)a5 image:(id)a6;
+- (PKPaymentSetupDevicePickerListSectionController)initWithWebServices:(id)services title:(id)title subtitle:(id)subtitle image:(id)image;
 - (PKPaymentSetupDevicePickerListSectionControllerDelegate)delegate;
-- (id)decorateListCell:(id)a3 forRowItem:(id)a4;
+- (id)decorateListCell:(id)cell forRowItem:(id)item;
 - (id)defaultListLayout;
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)didSelectItem:(id)a3;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)didSelectItem:(id)item;
 @end
 
 @implementation PKPaymentSetupDevicePickerListSectionController
 
-- (PKPaymentSetupDevicePickerListSectionController)initWithWebServices:(id)a3 title:(id)a4 subtitle:(id)a5 image:(id)a6
+- (PKPaymentSetupDevicePickerListSectionController)initWithWebServices:(id)services title:(id)title subtitle:(id)subtitle image:(id)image
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  servicesCopy = services;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  imageCopy = image;
   v27.receiver = self;
   v27.super_class = PKPaymentSetupDevicePickerListSectionController;
   v15 = [(PKPaymentSetupDevicePickerListSectionController *)&v27 init];
@@ -23,10 +23,10 @@
   if (v15)
   {
     [(PKDynamicListSectionController *)v15 setIdentifiers:&unk_1F3CC8450];
-    objc_storeStrong(&v16->_items, a3);
-    objc_storeStrong(&v16->_title, a4);
-    objc_storeStrong(&v16->_subtitle, a5);
-    objc_storeStrong(&v16->_cardImage, a6);
+    objc_storeStrong(&v16->_items, services);
+    objc_storeStrong(&v16->_title, title);
+    objc_storeStrong(&v16->_subtitle, subtitle);
+    objc_storeStrong(&v16->_cardImage, image);
     objc_initWeak(&location, v16);
     v17 = MEMORY[0x1E69DC800];
     v18 = objc_opt_class();
@@ -57,26 +57,26 @@ void __92__PKPaymentSetupDevicePickerListSectionController_initWithWebServices_t
   }
 }
 
-- (id)decorateListCell:(id)a3 forRowItem:(id)a4
+- (id)decorateListCell:(id)cell forRowItem:(id)item
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E69DCC28];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 subtitleCellConfiguration];
-  v9 = [v6 targetDevice];
-  v10 = [v9 deviceDescriptionForPaymentWebService:v6];
+  itemCopy = item;
+  cellCopy = cell;
+  subtitleCellConfiguration = [v5 subtitleCellConfiguration];
+  targetDevice = [itemCopy targetDevice];
+  v10 = [targetDevice deviceDescriptionForPaymentWebService:itemCopy];
 
-  [v8 setText:v10];
-  [v8 setDirectionalLayoutMargins:{10.0, 0.0, 10.0, 0.0}];
-  [v7 setContentConfiguration:v8];
-  [v7 setConfigurationUpdateHandler:&__block_literal_global_118];
+  [subtitleCellConfiguration setText:v10];
+  [subtitleCellConfiguration setDirectionalLayoutMargins:{10.0, 0.0, 10.0, 0.0}];
+  [cellCopy setContentConfiguration:subtitleCellConfiguration];
+  [cellCopy setConfigurationUpdateHandler:&__block_literal_global_118];
   v11 = objc_alloc_init(MEMORY[0x1E69DC7A8]);
   v14[0] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  [v7 setAccessories:v12];
+  [cellCopy setAccessories:v12];
 
-  return v8;
+  return subtitleCellConfiguration;
 }
 
 void __79__PKPaymentSetupDevicePickerListSectionController_decorateListCell_forRowItem___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -101,7 +101,7 @@ void __79__PKPaymentSetupDevicePickerListSectionController_decorateListCell_forR
   [v5 setBackgroundConfiguration:v6];
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v5 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
   [v5 appendItems:self->_items];
@@ -109,14 +109,14 @@ void __79__PKPaymentSetupDevicePickerListSectionController_decorateListCell_forR
   return v5;
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained didSelectWebService:v5];
+    [WeakRetained didSelectWebService:itemCopy];
   }
 }
 
@@ -129,12 +129,12 @@ void __79__PKPaymentSetupDevicePickerListSectionController_decorateListCell_forR
   return v2;
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = [(PKPaymentSetupDevicePickerListSectionController *)self defaultListLayout];
-  [v6 setHeaderMode:1];
-  v7 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v6 layoutEnvironment:v5];
+  environmentCopy = environment;
+  defaultListLayout = [(PKPaymentSetupDevicePickerListSectionController *)self defaultListLayout];
+  [defaultListLayout setHeaderMode:1];
+  v7 = [MEMORY[0x1E6995580] sectionWithListConfiguration:defaultListLayout layoutEnvironment:environmentCopy];
 
   [v7 contentInsets];
   [v7 setContentInsets:PKSetupViewConstantsListSectionInset(v8)];

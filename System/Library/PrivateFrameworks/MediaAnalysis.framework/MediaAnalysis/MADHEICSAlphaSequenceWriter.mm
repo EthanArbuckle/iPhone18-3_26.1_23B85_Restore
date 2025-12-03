@@ -1,30 +1,30 @@
 @interface MADHEICSAlphaSequenceWriter
-+ (id)transcodeSequenceData:(id)a3 maxDimension:(unint64_t)a4 outputWidth:(unint64_t *)a5 outputHeight:(unint64_t *)a6;
-+ (int)getOutputWidth:(unint64_t *)a3 outputHeight:(unint64_t *)a4 sequenceData:(id)a5;
-- (MADHEICSAlphaSequenceWriter)initWithFrameCount:(unint64_t)a3 crop:(CGRect *)a4;
++ (id)transcodeSequenceData:(id)data maxDimension:(unint64_t)dimension outputWidth:(unint64_t *)width outputHeight:(unint64_t *)height;
++ (int)getOutputWidth:(unint64_t *)width outputHeight:(unint64_t *)height sequenceData:(id)data;
+- (MADHEICSAlphaSequenceWriter)initWithFrameCount:(unint64_t)count crop:(CGRect *)crop;
 - (id).cxx_construct;
-- (id)finishWithEndTime:(id *)a3;
-- (int)_addPixelBuffer420Alpha:(__CVBuffer *)a3 withTime:(id *)a4;
-- (int)_addPixelBufferBGRA:(__CVBuffer *)a3 withTime:(id *)a4;
+- (id)finishWithEndTime:(id *)time;
+- (int)_addPixelBuffer420Alpha:(__CVBuffer *)alpha withTime:(id *)time;
+- (int)_addPixelBufferBGRA:(__CVBuffer *)a withTime:(id *)time;
 - (int)_createCompressionSessionLazy;
-- (int)_finishWithEndTime:(id *)a3 outputData:(id *)a4;
-- (int)addPixelBuffer:(__CVBuffer *)a3 withTime:(id *)a4;
-- (int)copyInputPlaneIndex:(unint64_t)a3 inputPixelBuffer:(__CVBuffer *)a4 toOutputPlaneIndex:(unint64_t)a5 outputPixelBuffer:(__CVBuffer *)a6 bytesPerPixel:(unint64_t)a7;
-- (int)createPixelBufferPool:(__CVPixelBufferPool *)a3 width:(unint64_t)a4 height:(unint64_t)a5 pixelFormat:(int)a6;
-- (int)demuxPixelBuffer:(__CVBuffer *)a3 imagePixelBuffer:(__CVBuffer *)a4 alphaPixelBuffer:(__CVBuffer *)a5;
+- (int)_finishWithEndTime:(id *)time outputData:(id *)data;
+- (int)addPixelBuffer:(__CVBuffer *)buffer withTime:(id *)time;
+- (int)copyInputPlaneIndex:(unint64_t)index inputPixelBuffer:(__CVBuffer *)buffer toOutputPlaneIndex:(unint64_t)planeIndex outputPixelBuffer:(__CVBuffer *)pixelBuffer bytesPerPixel:(unint64_t)pixel;
+- (int)createPixelBufferPool:(__CVPixelBufferPool *)pool width:(unint64_t)width height:(unint64_t)height pixelFormat:(int)format;
+- (int)demuxPixelBuffer:(__CVBuffer *)buffer imagePixelBuffer:(__CVBuffer *)pixelBuffer alphaPixelBuffer:(__CVBuffer *)alphaPixelBuffer;
 @end
 
 @implementation MADHEICSAlphaSequenceWriter
 
-- (MADHEICSAlphaSequenceWriter)initWithFrameCount:(unint64_t)a3 crop:(CGRect *)a4
+- (MADHEICSAlphaSequenceWriter)initWithFrameCount:(unint64_t)count crop:(CGRect *)crop
 {
   v10.receiver = self;
   v10.super_class = MADHEICSAlphaSequenceWriter;
   v5 = [(MADHEICSAlphaSequenceWriter *)&v10 init];
   v6 = v5;
-  if (a4 && v5)
+  if (crop && v5)
   {
-    DictionaryRepresentation = CGRectCreateDictionaryRepresentation(*a4);
+    DictionaryRepresentation = CGRectCreateDictionaryRepresentation(*crop);
     crop = v6->_crop;
     v6->_crop = DictionaryRepresentation;
   }
@@ -32,23 +32,23 @@
   return v6;
 }
 
-- (int)createPixelBufferPool:(__CVPixelBufferPool *)a3 width:(unint64_t)a4 height:(unint64_t)a5 pixelFormat:(int)a6
+- (int)createPixelBufferPool:(__CVPixelBufferPool *)pool width:(unint64_t)width height:(unint64_t)height pixelFormat:(int)format
 {
   v17[4] = *MEMORY[0x1E69E9840];
   v16[0] = *MEMORY[0x1E6966130];
-  v9 = [MEMORY[0x1E696AD98] numberWithInt:*&a6];
+  v9 = [MEMORY[0x1E696AD98] numberWithInt:*&format];
   v17[0] = v9;
   v16[1] = *MEMORY[0x1E6966208];
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:a4];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:width];
   v17[1] = v10;
   v16[2] = *MEMORY[0x1E69660B8];
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:a5];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:height];
   v16[3] = *MEMORY[0x1E69660D8];
   v17[2] = v11;
   v17[3] = MEMORY[0x1E695E0F8];
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:4];
 
-  v13 = CVPixelBufferPoolCreate(0, 0, v12, a3);
+  v13 = CVPixelBufferPoolCreate(0, 0, v12, pool);
   if (v13 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     *v15 = 0;
@@ -58,23 +58,23 @@
   return v13;
 }
 
-- (int)copyInputPlaneIndex:(unint64_t)a3 inputPixelBuffer:(__CVBuffer *)a4 toOutputPlaneIndex:(unint64_t)a5 outputPixelBuffer:(__CVBuffer *)a6 bytesPerPixel:(unint64_t)a7
+- (int)copyInputPlaneIndex:(unint64_t)index inputPixelBuffer:(__CVBuffer *)buffer toOutputPlaneIndex:(unint64_t)planeIndex outputPixelBuffer:(__CVBuffer *)pixelBuffer bytesPerPixel:(unint64_t)pixel
 {
-  WidthOfPlane = CVPixelBufferGetWidthOfPlane(a4, a3);
-  HeightOfPlane = CVPixelBufferGetHeightOfPlane(a4, a3);
-  if (WidthOfPlane != CVPixelBufferGetWidthOfPlane(a6, a5) || HeightOfPlane != CVPixelBufferGetHeightOfPlane(a6, a5))
+  WidthOfPlane = CVPixelBufferGetWidthOfPlane(buffer, index);
+  HeightOfPlane = CVPixelBufferGetHeightOfPlane(buffer, index);
+  if (WidthOfPlane != CVPixelBufferGetWidthOfPlane(pixelBuffer, planeIndex) || HeightOfPlane != CVPixelBufferGetHeightOfPlane(pixelBuffer, planeIndex))
   {
     return -50;
   }
 
-  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a4, a3);
-  v15 = CVPixelBufferGetBytesPerRowOfPlane(a6, a5);
-  v16 = WidthOfPlane * a7;
+  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(buffer, index);
+  v15 = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, planeIndex);
+  v16 = WidthOfPlane * pixel;
   result = -50;
   if (v16 <= BytesPerRowOfPlane && v16 <= v15)
   {
-    BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a4, a3);
-    v19 = CVPixelBufferGetBaseAddressOfPlane(a6, a5);
+    BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(buffer, index);
+    v19 = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, planeIndex);
     if (HeightOfPlane)
     {
       v20 = v19;
@@ -95,18 +95,18 @@
   return result;
 }
 
-- (int)demuxPixelBuffer:(__CVBuffer *)a3 imagePixelBuffer:(__CVBuffer *)a4 alphaPixelBuffer:(__CVBuffer *)a5
+- (int)demuxPixelBuffer:(__CVBuffer *)buffer imagePixelBuffer:(__CVBuffer *)pixelBuffer alphaPixelBuffer:(__CVBuffer *)alphaPixelBuffer
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (CVPixelBufferGetPixelFormatType(a3) != 1982882104)
+  if (CVPixelBufferGetPixelFormatType(buffer) != 1982882104)
   {
     return -50;
   }
 
   if (!self->_imagePixelBufferPool.value_)
   {
-    Width = CVPixelBufferGetWidth(a3);
-    v11 = [(MADHEICSAlphaSequenceWriter *)self createPixelBufferPool:&self->_imagePixelBufferPool width:Width height:CVPixelBufferGetHeight(a3) pixelFormat:875704438];
+    Width = CVPixelBufferGetWidth(buffer);
+    v11 = [(MADHEICSAlphaSequenceWriter *)self createPixelBufferPool:&self->_imagePixelBufferPool width:Width height:CVPixelBufferGetHeight(buffer) pixelFormat:875704438];
     if (v11)
     {
       return v11;
@@ -115,8 +115,8 @@
 
   if (!self->_alphaPixelBufferPool.value_)
   {
-    v12 = CVPixelBufferGetWidth(a3);
-    v11 = [(MADHEICSAlphaSequenceWriter *)self createPixelBufferPool:&self->_alphaPixelBufferPool width:v12 height:CVPixelBufferGetHeight(a3) pixelFormat:1278226488];
+    v12 = CVPixelBufferGetWidth(buffer);
+    v11 = [(MADHEICSAlphaSequenceWriter *)self createPixelBufferPool:&self->_alphaPixelBufferPool width:v12 height:CVPixelBufferGetHeight(buffer) pixelFormat:1278226488];
     if (v11)
     {
       return v11;
@@ -132,11 +132,11 @@
     if (!v9)
     {
       v17 = 0;
-      pixelBuffer = a3;
+      pixelBuffer = buffer;
       unlockFlags = 1;
-      if (a3)
+      if (buffer)
       {
-        v9 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+        v9 = CVPixelBufferLockBaseAddress(buffer, 1uLL);
         v17 = v9;
         if (!v9 || os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR) && (*buf = 134218240, v23 = pixelBuffer, v24 = 1024, v25 = v9, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", buf, 0x12u), (v9 = v17) == 0))
         {
@@ -144,10 +144,10 @@
           v9 = *buf;
           if (!*buf)
           {
-            v9 = [(MADHEICSAlphaSequenceWriter *)self copyInputPlaneIndex:0 inputPixelBuffer:a3 toOutputPlaneIndex:0 outputPixelBuffer:pixelBufferOut bytesPerPixel:1];
+            v9 = [(MADHEICSAlphaSequenceWriter *)self copyInputPlaneIndex:0 inputPixelBuffer:buffer toOutputPlaneIndex:0 outputPixelBuffer:pixelBufferOut bytesPerPixel:1];
             if (!v9)
             {
-              v9 = [(MADHEICSAlphaSequenceWriter *)self copyInputPlaneIndex:1 inputPixelBuffer:a3 toOutputPlaneIndex:1 outputPixelBuffer:pixelBufferOut bytesPerPixel:2];
+              v9 = [(MADHEICSAlphaSequenceWriter *)self copyInputPlaneIndex:1 inputPixelBuffer:buffer toOutputPlaneIndex:1 outputPixelBuffer:pixelBufferOut bytesPerPixel:2];
               if (!v9)
               {
                 v9 = CVPixelBufferLock::Unlock(buf);
@@ -157,7 +157,7 @@
                   v9 = v16[0];
                   if (!v16[0])
                   {
-                    v9 = [(MADHEICSAlphaSequenceWriter *)self copyInputPlaneIndex:2 inputPixelBuffer:a3 toOutputPlaneIndex:0 outputPixelBuffer:v20 bytesPerPixel:1];
+                    v9 = [(MADHEICSAlphaSequenceWriter *)self copyInputPlaneIndex:2 inputPixelBuffer:buffer toOutputPlaneIndex:0 outputPixelBuffer:v20 bytesPerPixel:1];
                     if (!v9)
                     {
                       v9 = CVPixelBufferLock::Unlock(v16);
@@ -172,7 +172,7 @@
                             v14 = CFRetain(pixelBufferOut);
                           }
 
-                          *a4 = v14;
+                          *pixelBuffer = v14;
                           v15 = v20;
                           if (v20)
                           {
@@ -180,7 +180,7 @@
                           }
 
                           v9 = 0;
-                          *a5 = v15;
+                          *alphaPixelBuffer = v15;
                         }
                       }
                     }
@@ -245,16 +245,16 @@
   return started;
 }
 
-- (int)_addPixelBuffer420Alpha:(__CVBuffer *)a3 withTime:(id *)a4
+- (int)_addPixelBuffer420Alpha:(__CVBuffer *)alpha withTime:(id *)time
 {
   v20[3] = *MEMORY[0x1E69E9840];
-  v6 = [(MADHEICSAlphaSequenceWriter *)self _createCompressionSessionLazy];
-  if (!v6)
+  _createCompressionSessionLazy = [(MADHEICSAlphaSequenceWriter *)self _createCompressionSessionLazy];
+  if (!_createCompressionSessionLazy)
   {
     v15 = 0;
     v16 = 0;
-    v6 = [(MADHEICSAlphaSequenceWriter *)self demuxPixelBuffer:a3 imagePixelBuffer:&v16 alphaPixelBuffer:&v15];
-    if (!v6)
+    _createCompressionSessionLazy = [(MADHEICSAlphaSequenceWriter *)self demuxPixelBuffer:alpha imagePixelBuffer:&v16 alphaPixelBuffer:&v15];
+    if (!_createCompressionSessionLazy)
     {
       v7 = MEMORY[0x1E695DF90];
       v8 = *MEMORY[0x1E6991978];
@@ -278,10 +278,10 @@
 
       v13 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v11];
       [v13 setObject:&unk_1F49BB980 forKeyedSubscript:*MEMORY[0x1E6991918]];
-      v6 = CMPhotoCompressionSessionAddImageToSequence();
-      if (!v6)
+      _createCompressionSessionLazy = CMPhotoCompressionSessionAddImageToSequence();
+      if (!_createCompressionSessionLazy)
       {
-        v6 = CMPhotoCompressionSessionAddAuxiliaryImage();
+        _createCompressionSessionLazy = CMPhotoCompressionSessionAddAuxiliaryImage();
       }
     }
 
@@ -289,14 +289,14 @@
     CF<__CVBuffer *>::~CF(&v16);
   }
 
-  return v6;
+  return _createCompressionSessionLazy;
 }
 
-- (int)_addPixelBufferBGRA:(__CVBuffer *)a3 withTime:(id *)a4
+- (int)_addPixelBufferBGRA:(__CVBuffer *)a withTime:(id *)time
 {
   v17[3] = *MEMORY[0x1E69E9840];
-  v5 = [(MADHEICSAlphaSequenceWriter *)self _createCompressionSessionLazy];
-  if (!v5)
+  _createCompressionSessionLazy = [(MADHEICSAlphaSequenceWriter *)self _createCompressionSessionLazy];
+  if (!_createCompressionSessionLazy)
   {
     v6 = MEMORY[0x1E695DF90];
     v7 = *MEMORY[0x1E6991978];
@@ -321,24 +321,24 @@
     v12 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v10];
     [v12 setObject:&unk_1F49BB980 forKeyedSubscript:*MEMORY[0x1E6991918]];
     [v12 setObject:v10 forKeyedSubscript:*MEMORY[0x1E6991920]];
-    v5 = CMPhotoCompressionSessionAddImageToSequence();
+    _createCompressionSessionLazy = CMPhotoCompressionSessionAddImageToSequence();
   }
 
-  return v5;
+  return _createCompressionSessionLazy;
 }
 
-- (int)addPixelBuffer:(__CVBuffer *)a3 withTime:(id *)a4
+- (int)addPixelBuffer:(__CVBuffer *)buffer withTime:(id *)time
 {
   v14 = *MEMORY[0x1E69E9840];
   result = self->_status;
   if (!result)
   {
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+    PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
     if (PixelFormatType == 1111970369)
     {
-      v10 = *&a4->var0;
-      *v11 = a4->var3;
-      result = [(MADHEICSAlphaSequenceWriter *)self _addPixelBufferBGRA:a3 withTime:&v10];
+      v10 = *&time->var0;
+      *v11 = time->var3;
+      result = [(MADHEICSAlphaSequenceWriter *)self _addPixelBufferBGRA:buffer withTime:&v10];
     }
 
     else
@@ -346,9 +346,9 @@
       v9 = PixelFormatType;
       if (PixelFormatType == 1982882104)
       {
-        v10 = *&a4->var0;
-        *v11 = a4->var3;
-        result = [(MADHEICSAlphaSequenceWriter *)self _addPixelBuffer420Alpha:a3 withTime:&v10];
+        v10 = *&time->var0;
+        *v11 = time->var3;
+        result = [(MADHEICSAlphaSequenceWriter *)self _addPixelBuffer420Alpha:buffer withTime:&v10];
       }
 
       else
@@ -378,7 +378,7 @@
   return result;
 }
 
-- (int)_finishWithEndTime:(id *)a3 outputData:(id *)a4
+- (int)_finishWithEndTime:(id *)time outputData:(id *)data
 {
   v5 = CMPhotoCompressionSessionEndImageSequence();
   if (!v5)
@@ -387,7 +387,7 @@
     v5 = CMPhotoCompressionSessionCloseContainerAndCopyBacking();
     if (!v5)
     {
-      objc_storeStrong(a4, obj);
+      objc_storeStrong(data, obj);
     }
 
     CF<__CVBuffer *>::~CF(&obj);
@@ -396,7 +396,7 @@
   return v5;
 }
 
-- (id)finishWithEndTime:(id *)a3
+- (id)finishWithEndTime:(id *)time
 {
   if (self->_status)
   {
@@ -405,7 +405,7 @@
 
   else
   {
-    v6 = *a3;
+    v6 = *time;
     v7 = 0;
     if ([(MADHEICSAlphaSequenceWriter *)self _finishWithEndTime:&v6 outputData:&v7]&& MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -420,11 +420,11 @@
   return v3;
 }
 
-+ (int)getOutputWidth:(unint64_t *)a3 outputHeight:(unint64_t *)a4 sequenceData:(id)a5
++ (int)getOutputWidth:(unint64_t *)width outputHeight:(unint64_t *)height sequenceData:(id)data
 {
-  v7 = a5;
-  *a4 = 0;
-  *a3 = 0;
+  dataCopy = data;
+  *height = 0;
+  *width = 0;
   v11 = 0;
   Container = CMPhotoDecompressionSessionCreate();
   if (!Container)
@@ -436,8 +436,8 @@
       Container = CMPhotoDecompressionContainerGetImageGeometryForIndex();
       if (!Container)
       {
-        *a3 = 0;
-        *a4 = 0;
+        *width = 0;
+        *height = 0;
       }
     }
 
@@ -449,14 +449,14 @@
   return Container;
 }
 
-+ (id)transcodeSequenceData:(id)a3 maxDimension:(unint64_t)a4 outputWidth:(unint64_t *)a5 outputHeight:(unint64_t *)a6
++ (id)transcodeSequenceData:(id)data maxDimension:(unint64_t)dimension outputWidth:(unint64_t *)width outputHeight:(unint64_t *)height
 {
-  v9 = a3;
-  v10 = [[MADHEICSAlphaSequenceTranscoder alloc] initWithSequenceData:v9 maxDimension:a4 qualityValue:0.5];
+  dataCopy = data;
+  v10 = [[MADHEICSAlphaSequenceTranscoder alloc] initWithSequenceData:dataCopy maxDimension:dimension qualityValue:0.5];
   v11 = [(MADHEICSAlphaSequenceTranscoder *)v10 run];
   if (v11)
   {
-    if ([objc_opt_class() getOutputWidth:a5 outputHeight:a6 sequenceData:v11] && MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
+    if ([objc_opt_class() getOutputWidth:width outputHeight:height sequenceData:v11] && MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       *v14 = 0;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Failed to query HEIC sequence output dimensions", v14, 2u);

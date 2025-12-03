@@ -1,25 +1,25 @@
 @interface MKCALayerCompletionDelegate
-+ (id)delegateWithCompletion:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
++ (id)delegateWithCompletion:(id)completion;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 @end
 
 @implementation MKCALayerCompletionDelegate
 
-+ (id)delegateWithCompletion:(id)a3
++ (id)delegateWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 setCompletion:v3];
+  [v4 setCompletion:completionCopy];
 
   return v4;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
   completion = self->_completion;
   if (completion)
   {
-    completion[2](completion, a4, a3);
+    completion[2](completion, finished, stop);
     completion = self->_completion;
   }
 

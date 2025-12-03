@@ -1,91 +1,91 @@
 @interface _UIDiffableDataSourceTransaction
-+ (id)applyTransactionWithInitialSnapshot:(id)a3 finalSnapshot:(id)a4 difference:(id)a5 sectionTransactions:(id)a6;
-+ (id)reorderingTransactionWithInitialSnapshot:(id)a3 finalSnapshot:(id)a4 difference:(id)a5 sectionTransactions:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (_NSRange)finalSectionGlobalItemRangeForSection:(int64_t)a3;
-- (_NSRange)initalSectionGlobalItemRangeForSection:(int64_t)a3;
-- (_UIDiffableDataSourceTransaction)initWithInitialSnapshot:(id)a3 finalSnapshot:(id)a4 source:(int64_t)a5 reorderedItemIdentifiers:(id)a6 difference:(id)a7 sectionTransactions:(id)a8;
++ (id)applyTransactionWithInitialSnapshot:(id)snapshot finalSnapshot:(id)finalSnapshot difference:(id)difference sectionTransactions:(id)transactions;
++ (id)reorderingTransactionWithInitialSnapshot:(id)snapshot finalSnapshot:(id)finalSnapshot difference:(id)difference sectionTransactions:(id)transactions;
+- (BOOL)isEqual:(id)equal;
+- (_NSRange)finalSectionGlobalItemRangeForSection:(int64_t)section;
+- (_NSRange)initalSectionGlobalItemRangeForSection:(int64_t)section;
+- (_UIDiffableDataSourceTransaction)initWithInitialSnapshot:(id)snapshot finalSnapshot:(id)finalSnapshot source:(int64_t)source reorderedItemIdentifiers:(id)identifiers difference:(id)difference sectionTransactions:(id)transactions;
 - (id)description;
 - (id)finalDataSourceSnapshotter;
-- (id)finalIndexPathForInitialIndexPath:(id)a3;
+- (id)finalIndexPathForInitialIndexPath:(id)path;
 - (id)initialDataSourceSnapshotter;
-- (id)initialIndexPathForFinalIndexPath:(id)a3;
+- (id)initialIndexPathForFinalIndexPath:(id)path;
 - (id)performDiffGeneratingUpdates;
-- (int64_t)finalGlobalIndexForInitialGlobalIndex:(int64_t)a3;
+- (int64_t)finalGlobalIndexForInitialGlobalIndex:(int64_t)index;
 - (int64_t)finalSectionCount;
-- (int64_t)finalSectionIndexForInitialSectionIndex:(int64_t)a3;
-- (int64_t)initialGlobalIndexForFinalGlobalIndex:(int64_t)a3;
+- (int64_t)finalSectionIndexForInitialSectionIndex:(int64_t)index;
+- (int64_t)initialGlobalIndexForFinalGlobalIndex:(int64_t)index;
 - (int64_t)initialSectionCount;
-- (int64_t)initialSectionIndexForFinalSectionIndex:(int64_t)a3;
+- (int64_t)initialSectionIndexForFinalSectionIndex:(int64_t)index;
 @end
 
 @implementation _UIDiffableDataSourceTransaction
 
-- (_UIDiffableDataSourceTransaction)initWithInitialSnapshot:(id)a3 finalSnapshot:(id)a4 source:(int64_t)a5 reorderedItemIdentifiers:(id)a6 difference:(id)a7 sectionTransactions:(id)a8
+- (_UIDiffableDataSourceTransaction)initWithInitialSnapshot:(id)snapshot finalSnapshot:(id)finalSnapshot source:(int64_t)source reorderedItemIdentifiers:(id)identifiers difference:(id)difference sectionTransactions:(id)transactions
 {
-  v22 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  snapshotCopy = snapshot;
+  finalSnapshotCopy = finalSnapshot;
+  identifiersCopy = identifiers;
+  differenceCopy = difference;
+  transactionsCopy = transactions;
   v23.receiver = self;
   v23.super_class = _UIDiffableDataSourceTransaction;
   v18 = [(_UIDiffableDataSourceTransaction *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_initialSnapshot, a3);
-    objc_storeStrong(&v19->_finalSnapshot, a4);
-    v19->_source = a5;
-    objc_storeStrong(&v19->_reorderedItemIdentifiers, a6);
-    objc_storeStrong(&v19->_difference, a7);
-    objc_storeStrong(&v19->_sectionTransactions, a8);
+    objc_storeStrong(&v18->_initialSnapshot, snapshot);
+    objc_storeStrong(&v19->_finalSnapshot, finalSnapshot);
+    v19->_source = source;
+    objc_storeStrong(&v19->_reorderedItemIdentifiers, identifiers);
+    objc_storeStrong(&v19->_difference, difference);
+    objc_storeStrong(&v19->_sectionTransactions, transactions);
   }
 
   return v19;
 }
 
-+ (id)applyTransactionWithInitialSnapshot:(id)a3 finalSnapshot:(id)a4 difference:(id)a5 sectionTransactions:(id)a6
++ (id)applyTransactionWithInitialSnapshot:(id)snapshot finalSnapshot:(id)finalSnapshot difference:(id)difference sectionTransactions:(id)transactions
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [objc_alloc(objc_opt_class()) initWithInitialSnapshot:v12 finalSnapshot:v11 source:0 reorderedItemIdentifiers:MEMORY[0x1E695E0F0] difference:v10 sectionTransactions:v9];
+  transactionsCopy = transactions;
+  differenceCopy = difference;
+  finalSnapshotCopy = finalSnapshot;
+  snapshotCopy = snapshot;
+  v13 = [objc_alloc(objc_opt_class()) initWithInitialSnapshot:snapshotCopy finalSnapshot:finalSnapshotCopy source:0 reorderedItemIdentifiers:MEMORY[0x1E695E0F0] difference:differenceCopy sectionTransactions:transactionsCopy];
 
   return v13;
 }
 
-+ (id)reorderingTransactionWithInitialSnapshot:(id)a3 finalSnapshot:(id)a4 difference:(id)a5 sectionTransactions:(id)a6
++ (id)reorderingTransactionWithInitialSnapshot:(id)snapshot finalSnapshot:(id)finalSnapshot difference:(id)difference sectionTransactions:(id)transactions
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v11 insertions];
-  v16 = [v15 count];
-  v17 = [v11 removals];
-  v18 = [v17 count] + v16;
+  differenceCopy = difference;
+  transactionsCopy = transactions;
+  finalSnapshotCopy = finalSnapshot;
+  snapshotCopy = snapshot;
+  insertions = [differenceCopy insertions];
+  v16 = [insertions count];
+  removals = [differenceCopy removals];
+  v18 = [removals count] + v16;
 
   if (v18 >= 3)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:a1 file:@"UIDiffableDataSourceTransaction.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"difference.insertions.count + difference.removals.count <= 2"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDiffableDataSourceTransaction.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"difference.insertions.count + difference.removals.count <= 2"}];
   }
 
-  v19 = [v11 insertions];
-  v20 = [v19 count];
-  v21 = [v11 removals];
-  v22 = [v21 count];
+  insertions2 = [differenceCopy insertions];
+  v20 = [insertions2 count];
+  removals2 = [differenceCopy removals];
+  v22 = [removals2 count];
 
   if (v20 == v22)
   {
-    v23 = [v11 insertions];
-    v24 = [v23 objectAtIndexedSubscript:0];
+    insertions3 = [differenceCopy insertions];
+    v24 = [insertions3 objectAtIndexedSubscript:0];
 
-    v25 = [v24 object];
-    v30[0] = v25;
+    object = [v24 object];
+    v30[0] = object;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
   }
 
@@ -94,7 +94,7 @@
     v26 = MEMORY[0x1E695E0F0];
   }
 
-  v27 = [objc_alloc(objc_opt_class()) initWithInitialSnapshot:v14 finalSnapshot:v13 source:1 reorderedItemIdentifiers:v26 difference:v11 sectionTransactions:v12];
+  v27 = [objc_alloc(objc_opt_class()) initWithInitialSnapshot:snapshotCopy finalSnapshot:finalSnapshotCopy source:1 reorderedItemIdentifiers:v26 difference:differenceCopy sectionTransactions:transactionsCopy];
 
   return v27;
 }
@@ -110,26 +110,26 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       v16 = 1;
     }
 
     else
     {
-      v6 = v4;
+      v6 = equalCopy;
       source = self->_source;
       if (source == [(_UIDiffableDataSourceTransaction *)v6 source]&& (difference = self->_difference, [(_UIDiffableDataSourceTransaction *)v6 difference], v9 = objc_claimAutoreleasedReturnValue(), LODWORD(difference) = [(NSOrderedCollectionDifference *)difference isEqual:v9], v9, difference) && (initialSnapshot = self->_initialSnapshot, [(_UIDiffableDataSourceTransaction *)v6 initialSnapshot], v11 = objc_claimAutoreleasedReturnValue(), LODWORD(initialSnapshot) = [(NSDiffableDataSourceSnapshot *)initialSnapshot isEqual:v11], v11, initialSnapshot) && (finalSnapshot = self->_finalSnapshot, [(_UIDiffableDataSourceTransaction *)v6 finalSnapshot], v13 = objc_claimAutoreleasedReturnValue(), LODWORD(finalSnapshot) = [(NSDiffableDataSourceSnapshot *)finalSnapshot isEqual:v13], v13, finalSnapshot))
       {
         sectionTransactions = self->_sectionTransactions;
-        v15 = [(_UIDiffableDataSourceTransaction *)v6 sectionTransactions];
-        v16 = [(NSArray *)sectionTransactions isEqualToArray:v15];
+        sectionTransactions = [(_UIDiffableDataSourceTransaction *)v6 sectionTransactions];
+        v16 = [(NSArray *)sectionTransactions isEqualToArray:sectionTransactions];
       }
 
       else
@@ -173,9 +173,9 @@
 
 - (id)performDiffGeneratingUpdates
 {
-  v3 = [(NSDiffableDataSourceSnapshot *)self->_initialSnapshot state];
-  v4 = [(NSDiffableDataSourceSnapshot *)self->_finalSnapshot state];
-  v5 = [_UIDiffableDataSourceDiffer differWithBeforeDataSourceState:v3 afterDataSourceState:v4];
+  state = [(NSDiffableDataSourceSnapshot *)self->_initialSnapshot state];
+  state2 = [(NSDiffableDataSourceSnapshot *)self->_finalSnapshot state];
+  v5 = [_UIDiffableDataSourceDiffer differWithBeforeDataSourceState:state afterDataSourceState:state2];
 
   if (v5)
   {
@@ -192,60 +192,60 @@
   return v6;
 }
 
-- (int64_t)finalGlobalIndexForInitialGlobalIndex:(int64_t)a3
+- (int64_t)finalGlobalIndexForInitialGlobalIndex:(int64_t)index
 {
-  v6 = [(_UIDiffableDataSourceTransaction *)self initialSnapshot];
-  v7 = [v6 numberOfItems];
+  initialSnapshot = [(_UIDiffableDataSourceTransaction *)self initialSnapshot];
+  numberOfItems = [initialSnapshot numberOfItems];
 
-  if (v7 <= a3)
+  if (numberOfItems <= index)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"UIDiffableDataSourceTransaction.m" lineNumber:159 description:{@"Invalid parameter not satisfying: %@", @"initialGlobalIndex < self.initialSnapshot.numberOfItems"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDiffableDataSourceTransaction.m" lineNumber:159 description:{@"Invalid parameter not satisfying: %@", @"initialGlobalIndex < self.initialSnapshot.numberOfItems"}];
   }
 
-  v8 = [(_UIDiffableDataSourceTransaction *)self initialSnapshot];
-  v9 = [v8 itemIdentifiers];
-  v10 = [v9 objectAtIndexedSubscript:a3];
+  initialSnapshot2 = [(_UIDiffableDataSourceTransaction *)self initialSnapshot];
+  itemIdentifiers = [initialSnapshot2 itemIdentifiers];
+  v10 = [itemIdentifiers objectAtIndexedSubscript:index];
 
-  v11 = [(_UIDiffableDataSourceTransaction *)self finalSnapshot];
-  v12 = [v11 indexOfItemIdentifier:v10];
+  finalSnapshot = [(_UIDiffableDataSourceTransaction *)self finalSnapshot];
+  v12 = [finalSnapshot indexOfItemIdentifier:v10];
 
   return v12;
 }
 
-- (int64_t)initialGlobalIndexForFinalGlobalIndex:(int64_t)a3
+- (int64_t)initialGlobalIndexForFinalGlobalIndex:(int64_t)index
 {
-  v6 = [(_UIDiffableDataSourceTransaction *)self finalSnapshot];
-  v7 = [v6 numberOfItems];
+  finalSnapshot = [(_UIDiffableDataSourceTransaction *)self finalSnapshot];
+  numberOfItems = [finalSnapshot numberOfItems];
 
-  if (v7 <= a3)
+  if (numberOfItems <= index)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"UIDiffableDataSourceTransaction.m" lineNumber:166 description:{@"Invalid parameter not satisfying: %@", @"finalGlobalIndex < self.finalSnapshot.numberOfItems"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDiffableDataSourceTransaction.m" lineNumber:166 description:{@"Invalid parameter not satisfying: %@", @"finalGlobalIndex < self.finalSnapshot.numberOfItems"}];
   }
 
-  v8 = [(_UIDiffableDataSourceTransaction *)self finalSnapshot];
-  v9 = [v8 itemIdentifiers];
-  v10 = [v9 objectAtIndexedSubscript:a3];
+  finalSnapshot2 = [(_UIDiffableDataSourceTransaction *)self finalSnapshot];
+  itemIdentifiers = [finalSnapshot2 itemIdentifiers];
+  v10 = [itemIdentifiers objectAtIndexedSubscript:index];
 
-  v11 = [(_UIDiffableDataSourceTransaction *)self initialSnapshot];
-  v12 = [v11 indexOfItemIdentifier:v10];
+  initialSnapshot = [(_UIDiffableDataSourceTransaction *)self initialSnapshot];
+  v12 = [initialSnapshot indexOfItemIdentifier:v10];
 
   return v12;
 }
 
-- (id)finalIndexPathForInitialIndexPath:(id)a3
+- (id)finalIndexPathForInitialIndexPath:(id)path
 {
-  v4 = a3;
-  if ([v4 length] >= 2)
+  pathCopy = path;
+  if ([pathCopy length] >= 2)
   {
-    v6 = [(_UIDiffableDataSourceTransaction *)self initialSnapshot];
-    v7 = [v6 identifierForIndexPath:v4];
+    initialSnapshot = [(_UIDiffableDataSourceTransaction *)self initialSnapshot];
+    v7 = [initialSnapshot identifierForIndexPath:pathCopy];
 
     if (v7)
     {
-      v8 = [(_UIDiffableDataSourceTransaction *)self finalSnapshot];
-      v5 = [v8 indexPathForIdentifier:v7];
+      finalSnapshot = [(_UIDiffableDataSourceTransaction *)self finalSnapshot];
+      v5 = [finalSnapshot indexPathForIdentifier:v7];
     }
 
     else
@@ -262,18 +262,18 @@
   return v5;
 }
 
-- (id)initialIndexPathForFinalIndexPath:(id)a3
+- (id)initialIndexPathForFinalIndexPath:(id)path
 {
-  v4 = a3;
-  if ([v4 length] >= 2)
+  pathCopy = path;
+  if ([pathCopy length] >= 2)
   {
-    v6 = [(_UIDiffableDataSourceTransaction *)self finalSnapshot];
-    v7 = [v6 identifierForIndexPath:v4];
+    finalSnapshot = [(_UIDiffableDataSourceTransaction *)self finalSnapshot];
+    v7 = [finalSnapshot identifierForIndexPath:pathCopy];
 
     if (v7)
     {
-      v8 = [(_UIDiffableDataSourceTransaction *)self initialSnapshot];
-      v5 = [v8 indexPathForIdentifier:v7];
+      initialSnapshot = [(_UIDiffableDataSourceTransaction *)self initialSnapshot];
+      v5 = [initialSnapshot indexPathForIdentifier:v7];
     }
 
     else
@@ -290,54 +290,54 @@
   return v5;
 }
 
-- (int64_t)finalSectionIndexForInitialSectionIndex:(int64_t)a3
+- (int64_t)finalSectionIndexForInitialSectionIndex:(int64_t)index
 {
-  v6 = [(_UIDiffableDataSourceTransaction *)self initialSnapshot];
-  v7 = [v6 sectionIdentifiers];
-  v8 = [v7 count];
+  initialSnapshot = [(_UIDiffableDataSourceTransaction *)self initialSnapshot];
+  sectionIdentifiers = [initialSnapshot sectionIdentifiers];
+  v8 = [sectionIdentifiers count];
 
-  if (v8 <= a3)
+  if (v8 <= index)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"UIDiffableDataSourceTransaction.m" lineNumber:199 description:{@"Invalid parameter not satisfying: %@", @"initialSectionIndex < self.initialSnapshot.sectionIdentifiers.count"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDiffableDataSourceTransaction.m" lineNumber:199 description:{@"Invalid parameter not satisfying: %@", @"initialSectionIndex < self.initialSnapshot.sectionIdentifiers.count"}];
   }
 
-  v9 = [(_UIDiffableDataSourceTransaction *)self initialSnapshot];
-  v10 = [v9 sectionIdentifiers];
-  v11 = [v10 objectAtIndexedSubscript:a3];
+  initialSnapshot2 = [(_UIDiffableDataSourceTransaction *)self initialSnapshot];
+  sectionIdentifiers2 = [initialSnapshot2 sectionIdentifiers];
+  v11 = [sectionIdentifiers2 objectAtIndexedSubscript:index];
 
-  v12 = [(_UIDiffableDataSourceTransaction *)self finalSnapshot];
-  v13 = [v12 indexOfSectionIdentifier:v11];
+  finalSnapshot = [(_UIDiffableDataSourceTransaction *)self finalSnapshot];
+  v13 = [finalSnapshot indexOfSectionIdentifier:v11];
 
   return v13;
 }
 
-- (int64_t)initialSectionIndexForFinalSectionIndex:(int64_t)a3
+- (int64_t)initialSectionIndexForFinalSectionIndex:(int64_t)index
 {
-  v6 = [(_UIDiffableDataSourceTransaction *)self finalSnapshot];
-  v7 = [v6 sectionIdentifiers];
-  v8 = [v7 count];
+  finalSnapshot = [(_UIDiffableDataSourceTransaction *)self finalSnapshot];
+  sectionIdentifiers = [finalSnapshot sectionIdentifiers];
+  v8 = [sectionIdentifiers count];
 
-  if (v8 <= a3)
+  if (v8 <= index)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"UIDiffableDataSourceTransaction.m" lineNumber:206 description:{@"Invalid parameter not satisfying: %@", @"finalSectionIndex < self.finalSnapshot.sectionIdentifiers.count"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDiffableDataSourceTransaction.m" lineNumber:206 description:{@"Invalid parameter not satisfying: %@", @"finalSectionIndex < self.finalSnapshot.sectionIdentifiers.count"}];
   }
 
-  v9 = [(_UIDiffableDataSourceTransaction *)self finalSnapshot];
-  v10 = [v9 sectionIdentifiers];
-  v11 = [v10 objectAtIndexedSubscript:a3];
+  finalSnapshot2 = [(_UIDiffableDataSourceTransaction *)self finalSnapshot];
+  sectionIdentifiers2 = [finalSnapshot2 sectionIdentifiers];
+  v11 = [sectionIdentifiers2 objectAtIndexedSubscript:index];
 
-  v12 = [(_UIDiffableDataSourceTransaction *)self initialSnapshot];
-  v13 = [v12 indexOfSectionIdentifier:v11];
+  initialSnapshot = [(_UIDiffableDataSourceTransaction *)self initialSnapshot];
+  v13 = [initialSnapshot indexOfSectionIdentifier:v11];
 
   return v13;
 }
 
-- (_NSRange)initalSectionGlobalItemRangeForSection:(int64_t)a3
+- (_NSRange)initalSectionGlobalItemRangeForSection:(int64_t)section
 {
-  v4 = [(_UIDiffableDataSourceTransaction *)self initialSnapshot];
-  v5 = [v4 sectionGlobalItemRangeForSection:a3];
+  initialSnapshot = [(_UIDiffableDataSourceTransaction *)self initialSnapshot];
+  v5 = [initialSnapshot sectionGlobalItemRangeForSection:section];
   v7 = v6;
 
   v8 = v5;
@@ -347,10 +347,10 @@
   return result;
 }
 
-- (_NSRange)finalSectionGlobalItemRangeForSection:(int64_t)a3
+- (_NSRange)finalSectionGlobalItemRangeForSection:(int64_t)section
 {
-  v4 = [(_UIDiffableDataSourceTransaction *)self finalSnapshot];
-  v5 = [v4 sectionGlobalItemRangeForSection:a3];
+  finalSnapshot = [(_UIDiffableDataSourceTransaction *)self finalSnapshot];
+  v5 = [finalSnapshot sectionGlobalItemRangeForSection:section];
   v7 = v6;
 
   v8 = v5;
@@ -362,18 +362,18 @@
 
 - (int64_t)initialSectionCount
 {
-  v2 = [(_UIDiffableDataSourceTransaction *)self initialSnapshot];
-  v3 = [v2 numberOfSections];
+  initialSnapshot = [(_UIDiffableDataSourceTransaction *)self initialSnapshot];
+  numberOfSections = [initialSnapshot numberOfSections];
 
-  return v3;
+  return numberOfSections;
 }
 
 - (int64_t)finalSectionCount
 {
-  v2 = [(_UIDiffableDataSourceTransaction *)self finalSnapshot];
-  v3 = [v2 numberOfSections];
+  finalSnapshot = [(_UIDiffableDataSourceTransaction *)self finalSnapshot];
+  numberOfSections = [finalSnapshot numberOfSections];
 
-  return v3;
+  return numberOfSections;
 }
 
 @end

@@ -1,36 +1,36 @@
 @interface RTAssetManager
-- (RTAssetManager)initWithDefaultsManager:(id)a3 assetProcessor:(id)a4 xpcActivityManager:(id)a5;
+- (RTAssetManager)initWithDefaultsManager:(id)manager assetProcessor:(id)processor xpcActivityManager:(id)activityManager;
 - (id)defaultAssetDownloadOptions;
 - (id)defaultCatalogDownloadOptions;
 - (id)defaultXPCActivityCriteria;
-- (id)latestAssetFromAssets:(id)a3;
-- (void)_copyRoutineAssetFromCoreLocationConfig:(id)a3;
-- (void)_downloadAsset:(id)a3 handler:(id)a4;
-- (void)_finalizeAssetUpdateOperationWithError:(id)a3;
-- (void)_handleAssetDownloadResult:(int64_t)a3 asset:(id)a4 handler:(id)a5;
-- (void)_handleCatalogDownloadWithType:(id)a3 downloadResult:(int64_t)a4 handler:(id)a5;
-- (void)_handleMetadataQueryResult:(int64_t)a3 assetQuery:(id)a4 handler:(id)a5;
+- (id)latestAssetFromAssets:(id)assets;
+- (void)_copyRoutineAssetFromCoreLocationConfig:(id)config;
+- (void)_downloadAsset:(id)asset handler:(id)handler;
+- (void)_finalizeAssetUpdateOperationWithError:(id)error;
+- (void)_handleAssetDownloadResult:(int64_t)result asset:(id)asset handler:(id)handler;
+- (void)_handleCatalogDownloadWithType:(id)type downloadResult:(int64_t)result handler:(id)handler;
+- (void)_handleMetadataQueryResult:(int64_t)result assetQuery:(id)query handler:(id)handler;
 - (void)_handleRoutineConfigAssetChangedNotification;
-- (void)_installAsset:(id)a3 fileManager:(id)a4 handler:(id)a5;
-- (void)_performUpdateOfAssetsWithTypeAssetType:(id)a3 handler:(id)a4;
+- (void)_installAsset:(id)asset fileManager:(id)manager handler:(id)handler;
+- (void)_performUpdateOfAssetsWithTypeAssetType:(id)type handler:(id)handler;
 - (void)_setupRoutineConfigAssetChangedNotification;
-- (void)_shutdownWithHandler:(id)a3;
-- (void)copyRoutineAssetFromCoreLocationConfigWithHandler:(id)a3;
+- (void)_shutdownWithHandler:(id)handler;
+- (void)copyRoutineAssetFromCoreLocationConfigWithHandler:(id)handler;
 - (void)handleRoutineConfigAssetChangedNotification;
-- (void)performUpdateOfAssetsWithTypeAssetType:(id)a3 handler:(id)a4;
+- (void)performUpdateOfAssetsWithTypeAssetType:(id)type handler:(id)handler;
 - (void)setupRoutineConfigAssetChangedNotification;
-- (void)updateAssetServerURL:(id)a3 assetType:(id)a4 handler:(id)a5;
+- (void)updateAssetServerURL:(id)l assetType:(id)type handler:(id)handler;
 @end
 
 @implementation RTAssetManager
 
-- (RTAssetManager)initWithDefaultsManager:(id)a3 assetProcessor:(id)a4 xpcActivityManager:(id)a5
+- (RTAssetManager)initWithDefaultsManager:(id)manager assetProcessor:(id)processor xpcActivityManager:(id)activityManager
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (!v10)
+  managerCopy = manager;
+  processorCopy = processor;
+  activityManagerCopy = activityManager;
+  v13 = activityManagerCopy;
+  if (!managerCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -45,7 +45,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!v11)
+  if (!processorCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -58,7 +58,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if (!v12)
+  if (!activityManagerCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -70,7 +70,7 @@ LABEL_15:
 
 LABEL_16:
 
-    v23 = 0;
+    selfCopy = 0;
     goto LABEL_17;
   }
 
@@ -80,9 +80,9 @@ LABEL_16:
   p_isa = &v14->super.super.super.isa;
   if (v14)
   {
-    objc_storeStrong(&v14->_defaultsManager, a3);
-    objc_storeStrong(p_isa + 4, a4);
-    objc_storeStrong(p_isa + 7, a5);
+    objc_storeStrong(&v14->_defaultsManager, manager);
+    objc_storeStrong(p_isa + 4, processor);
+    objc_storeStrong(p_isa + 7, activityManager);
     v16 = [p_isa[5] objectForKey:@"LastAssetContentVersionDownloaded"];
     if (v16)
     {
@@ -95,7 +95,7 @@ LABEL_16:
       AnalyticsSendEvent();
     }
 
-    v21 = [p_isa defaultXPCActivityCriteria];
+    defaultXPCActivityCriteria = [p_isa defaultXPCActivityCriteria];
     objc_initWeak(location, p_isa);
     v22 = p_isa[7];
     v27[0] = MEMORY[0x277D85DD0];
@@ -104,17 +104,17 @@ LABEL_16:
     v27[3] = &unk_2788C6A18;
     v28[1] = a2;
     objc_copyWeak(v28, location);
-    [v22 registerActivityWithIdentifier:@"com.apple.routined.assets" criteria:v21 handler:v27];
+    [v22 registerActivityWithIdentifier:@"com.apple.routined.assets" criteria:defaultXPCActivityCriteria handler:v27];
     [p_isa setupRoutineConfigAssetChangedNotification];
     objc_destroyWeak(v28);
     objc_destroyWeak(location);
   }
 
   self = p_isa;
-  v23 = self;
+  selfCopy = self;
 LABEL_17:
 
-  return v23;
+  return selfCopy;
 }
 
 void __76__RTAssetManager_initWithDefaultsManager_assetProcessor_xpcActivityManager___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -175,29 +175,29 @@ uint64_t __76__RTAssetManager_initWithDefaultsManager_assetProcessor_xpcActivity
   return result;
 }
 
-- (void)copyRoutineAssetFromCoreLocationConfigWithHandler:(id)a3
+- (void)copyRoutineAssetFromCoreLocationConfigWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__RTAssetManager_copyRoutineAssetFromCoreLocationConfigWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
 - (void)setupRoutineConfigAssetChangedNotification
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__RTAssetManager_setupRoutineConfigAssetChangedNotification__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_setupRoutineConfigAssetChangedNotification
@@ -229,22 +229,22 @@ void __61__RTAssetManager__setupRoutineConfigAssetChangedNotification__block_inv
   }
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   [(RTXPCActivityManager *)self->_xpcActivityManager unregisterActivityWithIdentifier:@"com.apple.routined.assets" handler:0];
-  v4 = v5;
-  if (v5)
+  v4 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v5 + 2))(v5, 0);
-    v4 = v5;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v4 = handlerCopy;
   }
 }
 
-- (void)_copyRoutineAssetFromCoreLocationConfig:(id)a3
+- (void)_copyRoutineAssetFromCoreLocationConfig:(id)config
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  configCopy = config;
   v25 = 0;
   v6 = CLCopyRoutineAssetSettings();
   v7 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
@@ -278,28 +278,28 @@ void __61__RTAssetManager__setupRoutineConfigAssetChangedNotification__block_inv
     if (v13)
     {
       defaultsManager = self->_defaultsManager;
-      v16 = [v12 path];
-      [(RTDefaultsManager *)defaultsManager addDomain:v16];
+      path = [v12 path];
+      [(RTDefaultsManager *)defaultsManager addDomain:path];
       v17 = 0;
     }
 
     else
     {
-      v16 = _rt_log_facility_get_os_log(RTLogFacilityAsset);
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      path = _rt_log_facility_get_os_log(RTLogFacilityAsset);
+      if (os_log_type_enabled(path, OS_LOG_TYPE_ERROR))
       {
         v23 = NSStringFromSelector(a2);
         *buf = 138412546;
         v27 = v23;
         v28 = 2112;
         *v29 = v14;
-        _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "%@, Encountered error in creating assets defaults.plist file: %@", buf, 0x16u);
+        _os_log_error_impl(&dword_2304B3000, path, OS_LOG_TYPE_ERROR, "%@, Encountered error in creating assets defaults.plist file: %@", buf, 0x16u);
       }
 
       v17 = v14;
     }
 
-    (v5)[2](v5, v17);
+    (configCopy)[2](configCopy, v17);
   }
 
   else
@@ -323,19 +323,19 @@ void __61__RTAssetManager__setupRoutineConfigAssetChangedNotification__block_inv
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:&v32 count:1];
     v6 = [v20 errorWithDomain:v21 code:7 userInfo:v22];
 
-    (v5)[2](v5, v6);
+    (configCopy)[2](configCopy, v6);
   }
 }
 
 - (void)handleRoutineConfigAssetChangedNotification
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__RTAssetManager_handleRoutineConfigAssetChangedNotification__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_handleRoutineConfigAssetChangedNotification
@@ -377,21 +377,21 @@ void __62__RTAssetManager__handleRoutineConfigAssetChangedNotification__block_in
   }
 }
 
-- (void)performUpdateOfAssetsWithTypeAssetType:(id)a3 handler:(id)a4
+- (void)performUpdateOfAssetsWithTypeAssetType:(id)type handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  typeCopy = type;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__RTAssetManager_performUpdateOfAssetsWithTypeAssetType_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = typeCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = typeCopy;
+  dispatch_async(queue, block);
 }
 
 void __65__RTAssetManager_performUpdateOfAssetsWithTypeAssetType_handler___block_invoke(uint64_t a1)
@@ -418,15 +418,15 @@ void __65__RTAssetManager_performUpdateOfAssetsWithTypeAssetType_handler___block
   }
 }
 
-- (void)_performUpdateOfAssetsWithTypeAssetType:(id)a3 handler:(id)a4
+- (void)_performUpdateOfAssetsWithTypeAssetType:(id)type handler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  typeCopy = type;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (typeCopy)
   {
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_10;
     }
@@ -466,21 +466,21 @@ LABEL_10:
     v13 = _rt_log_facility_get_os_log(RTLogFacilityAsset);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [v11 stringFromDate];
-      v15 = [v12 stringFromDate];
+      stringFromDate = [v11 stringFromDate];
+      stringFromDate2 = [v12 stringFromDate];
       *buf = 138412546;
-      v28 = v14;
+      v28 = stringFromDate;
       v29 = 2112;
-      v30 = v15;
+      v30 = stringFromDate2;
       _os_log_impl(&dword_2304B3000, v13, OS_LOG_TYPE_INFO, "Checking for new assets to download, date of last attempt, %@, last success, %@", buf, 0x16u);
     }
   }
 
   if (v8)
   {
-    if (v6)
+    if (typeCopy)
     {
-      v16 = [(RTAssetManager *)self defaultCatalogDownloadOptions];
+      defaultCatalogDownloadOptions = [(RTAssetManager *)self defaultCatalogDownloadOptions];
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v17 = _rt_log_facility_get_os_log(RTLogFacilityAsset);
@@ -497,24 +497,24 @@ LABEL_10:
       v22[2] = __66__RTAssetManager__performUpdateOfAssetsWithTypeAssetType_handler___block_invoke;
       v22[3] = &unk_2788C7690;
       v22[4] = self;
-      v23 = v6;
+      v23 = typeCopy;
       v24 = v8;
-      [v18 startCatalogDownload:v23 options:v16 then:v22];
+      [v18 startCatalogDownload:v23 options:defaultCatalogDownloadOptions then:v22];
     }
 
     else
     {
-      v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Asset type is nil, returning."];
+      defaultCatalogDownloadOptions = [MEMORY[0x277CCACA8] stringWithFormat:@"Asset type is nil, returning."];
       v19 = _rt_log_facility_get_os_log(RTLogFacilityAsset);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v28 = v16;
+        v28 = defaultCatalogDownloadOptions;
         _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
 
       v25 = *MEMORY[0x277CCA450];
-      v26 = v16;
+      v26 = defaultCatalogDownloadOptions;
       v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
       v21 = [MEMORY[0x277CCA9B8] errorWithDomain:@"RTAssetManagerErrorDomain" code:1 userInfo:v20];
       (v8)[2](v8, v21);
@@ -561,13 +561,13 @@ void __66__RTAssetManager__performUpdateOfAssetsWithTypeAssetType_handler___bloc
   return v2;
 }
 
-- (void)_handleCatalogDownloadWithType:(id)a3 downloadResult:(int64_t)a4 handler:(id)a5
+- (void)_handleCatalogDownloadWithType:(id)type downloadResult:(int64_t)result handler:(id)handler
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (!v8)
+  typeCopy = type;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  if (!typeCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -581,17 +581,17 @@ void __66__RTAssetManager__performUpdateOfAssetsWithTypeAssetType_handler___bloc
 
     if (v10)
     {
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Asset type is nil, returning."];
+      result = [MEMORY[0x277CCACA8] stringWithFormat:@"Asset type is nil, returning."];
       v17 = _rt_log_facility_get_os_log(RTLogFacilityAsset);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v37 = v11;
+        v37 = result;
         _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
 
       v34 = *MEMORY[0x277CCA450];
-      v35 = v11;
+      v35 = result;
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
       v14 = MEMORY[0x277CCA9B8];
       v15 = 1;
@@ -601,35 +601,35 @@ void __66__RTAssetManager__performUpdateOfAssetsWithTypeAssetType_handler___bloc
     goto LABEL_14;
   }
 
-  if (!v9)
+  if (!handlerCopy)
   {
 LABEL_14:
-    v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    result = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(result, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315394;
       v37 = "[RTAssetManager _handleCatalogDownloadWithType:downloadResult:handler:]";
       v38 = 1024;
       v39 = 313;
-      _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler (in %s:%d)", buf, 0x12u);
+      _os_log_error_impl(&dword_2304B3000, result, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler (in %s:%d)", buf, 0x12u);
     }
 
     goto LABEL_29;
   }
 
-  if (a4)
+  if (result)
   {
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"The catalog download for asset type, %@, failed with result, %lu.", v8, a4];
+    result = [MEMORY[0x277CCACA8] stringWithFormat:@"The catalog download for asset type, %@, failed with result, %lu.", typeCopy, result];
     v12 = _rt_log_facility_get_os_log(RTLogFacilityAsset);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v37 = v11;
+      v37 = result;
       _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
     }
 
     v32 = *MEMORY[0x277CCA450];
-    v33 = v11;
+    v33 = result;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
     v14 = MEMORY[0x277CCA9B8];
     v15 = 4;
@@ -650,7 +650,7 @@ LABEL_13:
     }
   }
 
-  v20 = [objc_alloc(MEMORY[0x277D289D8]) initWithType:v8];
+  v20 = [objc_alloc(MEMORY[0x277D289D8]) initWithType:typeCopy];
   if (v20)
   {
     v21 = v20;
@@ -660,7 +660,7 @@ LABEL_13:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v37 = v8;
+        v37 = typeCopy;
         _os_log_impl(&dword_2304B3000, v22, OS_LOG_TYPE_INFO, "Querying metadata for asset type %@.", buf, 0xCu);
       }
     }
@@ -670,10 +670,10 @@ LABEL_13:
     v27[2] = __72__RTAssetManager__handleCatalogDownloadWithType_downloadResult_handler___block_invoke;
     v27[3] = &unk_2788C7690;
     v27[4] = self;
-    v11 = v21;
-    v28 = v11;
+    result = v21;
+    v28 = result;
     v29 = v10;
-    [v11 queryMetaData:v27];
+    [result queryMetaData:v27];
   }
 
   else
@@ -693,7 +693,7 @@ LABEL_13:
     v26 = [MEMORY[0x277CCA9B8] errorWithDomain:@"RTAssetManagerErrorDomain" code:2 userInfo:v25];
     (v10)[2](v10, v26);
 
-    v11 = 0;
+    result = 0;
   }
 
 LABEL_29:
@@ -714,29 +714,29 @@ void __72__RTAssetManager__handleCatalogDownloadWithType_downloadResult_handler_
   dispatch_async(v4, v6);
 }
 
-- (void)_handleMetadataQueryResult:(int64_t)a3 assetQuery:(id)a4 handler:(id)a5
+- (void)_handleMetadataQueryResult:(int64_t)result assetQuery:(id)query handler:(id)handler
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  queryCopy = query;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  if (queryCopy)
   {
-    if (v9)
+    if (handlerCopy)
     {
-      if (a3)
+      if (result)
       {
-        v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"The asset query failed with result, %lu", a3];
+        result = [MEMORY[0x277CCACA8] stringWithFormat:@"The asset query failed with result, %lu", result];
         v12 = _rt_log_facility_get_os_log(RTLogFacilityAsset);
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v36 = v11;
+          unsignedIntegerValue = result;
           _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
         }
 
         v31 = *MEMORY[0x277CCA450];
-        v32 = v11;
+        v32 = result;
         v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
         v14 = MEMORY[0x277CCA9B8];
         v15 = 5;
@@ -744,18 +744,18 @@ void __72__RTAssetManager__handleCatalogDownloadWithType_downloadResult_handler_
 
       else
       {
-        v19 = [v8 results];
-        v20 = [v19 count];
+        results = [queryCopy results];
+        v20 = [results count];
 
         if (v20)
         {
-          v21 = [v8 results];
-          v11 = [(RTAssetManager *)self latestAssetFromAssets:v21];
+          results2 = [queryCopy results];
+          result = [(RTAssetManager *)self latestAssetFromAssets:results2];
 
-          if (v11)
+          if (result)
           {
-            v22 = [v11 attributes];
-            v13 = [v22 objectForKey:*MEMORY[0x277D28900]];
+            attributes = [result attributes];
+            v13 = [attributes objectForKey:*MEMORY[0x277D28900]];
 
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
             {
@@ -763,12 +763,12 @@ void __72__RTAssetManager__handleCatalogDownloadWithType_downloadResult_handler_
               if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
               {
                 *buf = 134217984;
-                v36 = [v13 unsignedIntegerValue];
+                unsignedIntegerValue = [v13 unsignedIntegerValue];
                 _os_log_impl(&dword_2304B3000, v23, OS_LOG_TYPE_INFO, "Chose asset with version number %lu", buf, 0xCu);
               }
             }
 
-            [(RTAssetManager *)self _downloadAsset:v11 handler:v10];
+            [(RTAssetManager *)self _downloadAsset:result handler:v10];
             goto LABEL_15;
           }
 
@@ -777,7 +777,7 @@ void __72__RTAssetManager__handleCatalogDownloadWithType_downloadResult_handler_
           if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v36 = v13;
+            unsignedIntegerValue = v13;
             _os_log_error_impl(&dword_2304B3000, v25, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
           }
 
@@ -793,17 +793,17 @@ LABEL_15:
           goto LABEL_18;
         }
 
-        v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"No results for query."];
+        result = [MEMORY[0x277CCACA8] stringWithFormat:@"No results for query."];
         v24 = _rt_log_facility_get_os_log(RTLogFacilityAsset);
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v36 = v11;
+          unsignedIntegerValue = result;
           _os_log_error_impl(&dword_2304B3000, v24, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
         }
 
         v29 = *MEMORY[0x277CCA450];
-        v30 = v11;
+        v30 = result;
         v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
         v14 = MEMORY[0x277CCA9B8];
         v15 = 8;
@@ -822,7 +822,7 @@ LABEL_13:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315394;
-      v36 = "[RTAssetManager _handleMetadataQueryResult:assetQuery:handler:]";
+      unsignedIntegerValue = "[RTAssetManager _handleMetadataQueryResult:assetQuery:handler:]";
       v37 = 1024;
       v38 = 374;
       _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: assetQuery (in %s:%d)", buf, 0x12u);
@@ -830,17 +830,17 @@ LABEL_13:
 
     if (v10)
     {
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid asset query."];
+      result = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid asset query."];
       v17 = _rt_log_facility_get_os_log(RTLogFacilityAsset);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v36 = v11;
+        unsignedIntegerValue = result;
         _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
 
       v33 = *MEMORY[0x277CCA450];
-      v34 = v11;
+      v34 = result;
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
       v14 = MEMORY[0x277CCA9B8];
       v15 = 2;
@@ -848,25 +848,25 @@ LABEL_13:
     }
   }
 
-  v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+  result = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+  if (os_log_type_enabled(result, OS_LOG_TYPE_ERROR))
   {
     *buf = 136315394;
-    v36 = "[RTAssetManager _handleMetadataQueryResult:assetQuery:handler:]";
+    unsignedIntegerValue = "[RTAssetManager _handleMetadataQueryResult:assetQuery:handler:]";
     v37 = 1024;
     v38 = 375;
-    _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler (in %s:%d)", buf, 0x12u);
+    _os_log_error_impl(&dword_2304B3000, result, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler (in %s:%d)", buf, 0x12u);
   }
 
 LABEL_18:
 }
 
-- (id)latestAssetFromAssets:(id)a3
+- (id)latestAssetFromAssets:(id)assets
 {
-  v3 = [a3 sortedArrayUsingComparator:&__block_literal_global_25];
-  v4 = [v3 lastObject];
+  v3 = [assets sortedArrayUsingComparator:&__block_literal_global_25];
+  lastObject = [v3 lastObject];
 
-  return v4;
+  return lastObject;
 }
 
 uint64_t __40__RTAssetManager_latestAssetFromAssets___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -884,26 +884,26 @@ uint64_t __40__RTAssetManager_latestAssetFromAssets___block_invoke(uint64_t a1, 
   return v10;
 }
 
-- (void)_finalizeAssetUpdateOperationWithError:(id)a3
+- (void)_finalizeAssetUpdateOperationWithError:(id)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [(RTDefaultsManager *)self->_defaultsManager setObject:v5 forKey:@"LastAssetUpdateDate"];
-  if (v4)
+  errorCopy = error;
+  date = [MEMORY[0x277CBEAA8] date];
+  [(RTDefaultsManager *)self->_defaultsManager setObject:date forKey:@"LastAssetUpdateDate"];
+  if (errorCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityAsset);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = errorCopy;
       _os_log_error_impl(&dword_2304B3000, v6, OS_LOG_TYPE_ERROR, "Error while updating assets, %@", &v10, 0xCu);
     }
   }
 
   else
   {
-    [(RTDefaultsManager *)self->_defaultsManager setObject:v5 forKey:@"LastSuccessfulAssetUpdateDate"];
+    [(RTDefaultsManager *)self->_defaultsManager setObject:date forKey:@"LastSuccessfulAssetUpdateDate"];
   }
 
   v7 = [(RTDefaultsManager *)self->_defaultsManager objectForKey:@"LastSuccessfulAssetUpdateDate"];
@@ -912,23 +912,23 @@ uint64_t __40__RTAssetManager_latestAssetFromAssets___block_invoke(uint64_t a1, 
     v8 = _rt_log_facility_get_os_log(RTLogFacilityAsset);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [v7 stringFromDate];
+      stringFromDate = [v7 stringFromDate];
       v10 = 138412546;
-      v11 = v5;
+      v11 = date;
       v12 = 2112;
-      v13 = v9;
+      v13 = stringFromDate;
       _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "Finished asset update, date of last attempt, %@, last success, %@", &v10, 0x16u);
     }
   }
 }
 
-- (void)_downloadAsset:(id)a3 handler:(id)a4
+- (void)_downloadAsset:(id)asset handler:(id)handler
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  assetCopy = asset;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (!assetCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -971,7 +971,7 @@ LABEL_16:
     goto LABEL_22;
   }
 
-  if (!v7)
+  if (!handlerCopy)
   {
     goto LABEL_16;
   }
@@ -998,7 +998,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if ([v6 state] == 2)
+  if ([assetCopy state] == 2)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -1010,14 +1010,14 @@ LABEL_22:
       }
     }
 
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
-    [(RTAssetManager *)self _installAsset:v6 fileManager:v10 handler:v8];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    [(RTAssetManager *)self _installAsset:assetCopy fileManager:defaultManager handler:v8];
   }
 
   else
   {
     v26 = 0;
-    if ([v6 spaceCheck:&v26])
+    if ([assetCopy spaceCheck:&v26])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -1030,8 +1030,8 @@ LABEL_22:
         }
       }
 
-      [v6 attachProgressCallBack:&__block_literal_global_361];
-      v10 = [(RTAssetManager *)self defaultAssetDownloadOptions];
+      [assetCopy attachProgressCallBack:&__block_literal_global_361];
+      defaultManager = [(RTAssetManager *)self defaultAssetDownloadOptions];
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v19 = _rt_log_facility_get_os_log(RTLogFacilityAsset);
@@ -1047,27 +1047,27 @@ LABEL_22:
       v23[2] = __41__RTAssetManager__downloadAsset_handler___block_invoke_362;
       v23[3] = &unk_2788C7690;
       v23[4] = self;
-      v24 = v6;
+      v24 = assetCopy;
       v25 = v8;
-      [v24 startDownload:v10 then:v23];
+      [v24 startDownload:defaultManager then:v23];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Insufficient space to download the asset, requires %ld bytes.", v26];
+      defaultManager = [MEMORY[0x277CCACA8] stringWithFormat:@"Insufficient space to download the asset, requires %ld bytes.", v26];
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v20 = _rt_log_facility_get_os_log(RTLogFacilityAsset);
         if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v34 = v10;
+          v34 = defaultManager;
           _os_log_impl(&dword_2304B3000, v20, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
         }
       }
 
       v27 = *MEMORY[0x277CCA450];
-      v28 = v10;
+      v28 = defaultManager;
       v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
       v22 = [MEMORY[0x277CCA9B8] errorWithDomain:@"RTAssetManagerErrorDomain" code:6 userInfo:v21];
       (v8)[2](v8, v22);
@@ -1114,13 +1114,13 @@ void __41__RTAssetManager__downloadAsset_handler___block_invoke_362(uint64_t a1,
   dispatch_async(v4, v6);
 }
 
-- (void)_handleAssetDownloadResult:(int64_t)a3 asset:(id)a4 handler:(id)a5
+- (void)_handleAssetDownloadResult:(int64_t)result asset:(id)asset handler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!v8)
+  assetCopy = asset;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  if (!assetCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -1134,20 +1134,20 @@ void __41__RTAssetManager__downloadAsset_handler___block_invoke_362(uint64_t a1,
 
     if (v10)
     {
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"An asset must be provided to download."];
+      result = [MEMORY[0x277CCACA8] stringWithFormat:@"An asset must be provided to download."];
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v17 = _rt_log_facility_get_os_log(RTLogFacilityAsset);
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v25 = v11;
+          v25 = result;
           _os_log_impl(&dword_2304B3000, v17, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
         }
       }
 
       v22 = *MEMORY[0x277CCA450];
-      v23 = v11;
+      v23 = result;
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
       v14 = MEMORY[0x277CCA9B8];
       v15 = 0;
@@ -1157,35 +1157,35 @@ void __41__RTAssetManager__downloadAsset_handler___block_invoke_362(uint64_t a1,
     goto LABEL_16;
   }
 
-  if (!v9)
+  if (!handlerCopy)
   {
 LABEL_16:
-    v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    result = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(result, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315394;
       v25 = "[RTAssetManager _handleAssetDownloadResult:asset:handler:]";
       v26 = 1024;
       v27 = 554;
-      _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler (in %s:%d)", buf, 0x12u);
+      _os_log_error_impl(&dword_2304B3000, result, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler (in %s:%d)", buf, 0x12u);
     }
 
     goto LABEL_23;
   }
 
-  if (a3)
+  if (result)
   {
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"The asset downlaod failed with result, %ld", a3];
+    result = [MEMORY[0x277CCACA8] stringWithFormat:@"The asset downlaod failed with result, %ld", result];
     v12 = _rt_log_facility_get_os_log(RTLogFacilityAsset);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v25 = v11;
+      v25 = result;
       _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
     }
 
     v20 = *MEMORY[0x277CCA450];
-    v21 = v11;
+    v21 = result;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
     v14 = MEMORY[0x277CCA9B8];
     v15 = 4;
@@ -1206,20 +1206,20 @@ LABEL_15:
     }
   }
 
-  v11 = [MEMORY[0x277CCAA00] defaultManager];
-  [(RTAssetManager *)self _installAsset:v8 fileManager:v11 handler:v10];
+  result = [MEMORY[0x277CCAA00] defaultManager];
+  [(RTAssetManager *)self _installAsset:assetCopy fileManager:result handler:v10];
 LABEL_23:
 }
 
-- (void)_installAsset:(id)a3 fileManager:(id)a4 handler:(id)a5
+- (void)_installAsset:(id)asset fileManager:(id)manager handler:(id)handler
 {
   v115[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  assetCopy = asset;
+  managerCopy = manager;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v9)
+    if (assetCopy)
     {
       goto LABEL_3;
     }
@@ -1237,10 +1237,10 @@ LABEL_23:
       _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler (in %s:%d)", buf, 0x12u);
     }
 
-    if (v9)
+    if (assetCopy)
     {
 LABEL_3:
-      if (v10)
+      if (managerCopy)
       {
         goto LABEL_4;
       }
@@ -1259,42 +1259,42 @@ LABEL_3:
     _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: asset (in %s:%d)", buf, 0x12u);
   }
 
-  if (v10)
+  if (managerCopy)
   {
 LABEL_4:
-    if (!v11)
+    if (!handlerCopy)
     {
       goto LABEL_48;
     }
 
 LABEL_15:
-    if (!v9)
+    if (!assetCopy)
     {
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"An asset must be provided to download."];
+      getLocalFileUrl = [MEMORY[0x277CCACA8] stringWithFormat:@"An asset must be provided to download."];
       v42 = _rt_log_facility_get_os_log(RTLogFacilityAsset);
       if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v101 = v15;
+        v101 = getLocalFileUrl;
         _os_log_error_impl(&dword_2304B3000, v42, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
 
       v114 = *MEMORY[0x277CCA450];
-      v115[0] = v15;
+      v115[0] = getLocalFileUrl;
       v43 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v115 forKeys:&v114 count:1];
       v44 = [MEMORY[0x277CCA9B8] errorWithDomain:@"RTAssetManagerErrorDomain" code:0 userInfo:v43];
-      v11[2](v11, v44);
+      handlerCopy[2](handlerCopy, v44);
 
       goto LABEL_47;
     }
 
-    if (!v10)
+    if (!managerCopy)
     {
       v45 = MEMORY[0x277CCA9B8];
       v112 = *MEMORY[0x277CCA450];
       v113 = @"fileManager cannot be nil";
       v46 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v113 forKeys:&v112 count:1];
-      v15 = [v45 errorWithDomain:@"RTAssetManagerErrorDomain" code:7 userInfo:v46];
+      getLocalFileUrl = [v45 errorWithDomain:@"RTAssetManagerErrorDomain" code:7 userInfo:v46];
 
       v47 = _rt_log_facility_get_os_log(RTLogFacilityAsset);
       if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
@@ -1303,23 +1303,23 @@ LABEL_15:
         *buf = 138412546;
         v101 = v62;
         v102 = 2112;
-        v103 = v15;
+        v103 = getLocalFileUrl;
         _os_log_error_impl(&dword_2304B3000, v47, OS_LOG_TYPE_ERROR, "%@, error, %@", buf, 0x16u);
       }
 
-      v11[2](v11, v15);
+      handlerCopy[2](handlerCopy, getLocalFileUrl);
       goto LABEL_47;
     }
 
-    v15 = [v9 getLocalFileUrl];
-    v16 = [v9 assetType];
-    v17 = [v16 isEqualToString:@"com.apple.MobileAsset.routined.defaults"];
+    getLocalFileUrl = [assetCopy getLocalFileUrl];
+    assetType = [assetCopy assetType];
+    v17 = [assetType isEqualToString:@"com.apple.MobileAsset.routined.defaults"];
 
     if (v17)
     {
-      v18 = [v15 URLByAppendingPathComponent:@"defaults.plist"];
+      v18 = [getLocalFileUrl URLByAppendingPathComponent:@"defaults.plist"];
 
-      v15 = v18;
+      getLocalFileUrl = v18;
     }
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1327,23 +1327,23 @@ LABEL_15:
       v19 = _rt_log_facility_get_os_log(RTLogFacilityAsset);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
-        v20 = [v15 path];
-        v21 = [v9 attributes];
-        v22 = [v21 objectForKey:*MEMORY[0x277D28900]];
-        v23 = [v22 unsignedIntegerValue];
+        path = [getLocalFileUrl path];
+        attributes = [assetCopy attributes];
+        v22 = [attributes objectForKey:*MEMORY[0x277D28900]];
+        unsignedIntegerValue = [v22 unsignedIntegerValue];
         *buf = 138412546;
-        v101 = v20;
+        v101 = path;
         v102 = 1024;
-        LODWORD(v103) = v23;
+        LODWORD(v103) = unsignedIntegerValue;
         _os_log_impl(&dword_2304B3000, v19, OS_LOG_TYPE_INFO, "Asset, located at %@, with content version %u is downloaded, installing now.", buf, 0x12u);
       }
     }
 
-    v24 = [v15 path];
-    if ([v10 fileExistsAtPath:v24])
+    path2 = [getLocalFileUrl path];
+    if ([managerCopy fileExistsAtPath:path2])
     {
-      v25 = [v15 path];
-      v26 = [v10 isReadableFileAtPath:v25];
+      path3 = [getLocalFileUrl path];
+      v26 = [managerCopy isReadableFileAtPath:path3];
 
       if (v26)
       {
@@ -1374,7 +1374,7 @@ LABEL_15:
           v111 = @"pathToRawAssetsInCacheDirectory is nil";
           v55 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v111 forKeys:&v110 count:1];
           v56 = [v54 initWithDomain:@"RTAssetManagerErrorDomain" code:9 userInfo:v55];
-          v11[2](v11, v56);
+          handlerCopy[2](handlerCopy, v56);
 
           goto LABEL_47;
         }
@@ -1396,12 +1396,12 @@ LABEL_15:
           v109 = @"urlToRawAssetsInCacheDirectory is nil";
           v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v109 forKeys:&v108 count:1];
           v41 = [v58 initWithDomain:@"RTAssetManagerErrorDomain" code:9 userInfo:v32];
-          v11[2](v11, v41);
+          handlerCopy[2](handlerCopy, v41);
           goto LABEL_84;
         }
 
-        v31 = [v29 path];
-        if (!v31)
+        path4 = [v29 path];
+        if (!path4)
         {
           v59 = _rt_log_facility_get_os_log(RTLogFacilityAsset);
           if (os_log_type_enabled(v59, OS_LOG_TYPE_FAULT))
@@ -1416,25 +1416,25 @@ LABEL_15:
           v107 = @"urlToRawAssetsInCacheDirectory.path is nil";
           v41 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v107 forKeys:&v106 count:1];
           v61 = [v60 initWithDomain:@"RTAssetManagerErrorDomain" code:9 userInfo:v41];
-          v11[2](v11, v61);
+          handlerCopy[2](handlerCopy, v61);
 
           v32 = 0;
           goto LABEL_84;
         }
 
-        v32 = v31;
+        v32 = path4;
         v94 = v27;
-        if ([v10 fileExistsAtPath:v31])
+        if ([managerCopy fileExistsAtPath:path4])
         {
           v89 = v32;
           v33 = MEMORY[0x277CBEA90];
           v92 = v30;
-          v34 = [v30 absoluteString];
-          v35 = [v33 dataWithContentsOfFile:v34];
+          absoluteString = [v30 absoluteString];
+          v35 = [v33 dataWithContentsOfFile:absoluteString];
 
           v36 = MEMORY[0x277CBEA90];
-          v37 = [v15 path];
-          v38 = [v36 dataWithContentsOfFile:v37];
+          path5 = [getLocalFileUrl path];
+          v38 = [v36 dataWithContentsOfFile:path5];
 
           v90 = v35;
           v88 = v38;
@@ -1455,7 +1455,7 @@ LABEL_15:
               }
             }
 
-            v11[2](v11, 0);
+            handlerCopy[2](handlerCopy, 0);
             v41 = 0;
 LABEL_66:
 
@@ -1477,7 +1477,7 @@ LABEL_84:
           }
 
           v97 = 0;
-          [v10 removeItemAtPath:v89 error:&v97];
+          [managerCopy removeItemAtPath:v89 error:&v97];
           v64 = v97;
           if (v64)
           {
@@ -1492,14 +1492,14 @@ LABEL_84:
               _os_log_error_impl(&dword_2304B3000, v65, OS_LOG_TYPE_ERROR, "Could not delete asset at path, %@, error, %@.", buf, 0x16u);
             }
 
-            v11[2](v11, v41);
+            handlerCopy[2](handlerCopy, v41);
             goto LABEL_66;
           }
         }
 
-        v66 = [v15 path];
+        path6 = [getLocalFileUrl path];
         v96 = 0;
-        [v10 copyItemAtPath:v66 toPath:v32 error:&v96];
+        [managerCopy copyItemAtPath:path6 toPath:v32 error:&v96];
         v41 = v96;
 
         if (v41)
@@ -1507,9 +1507,9 @@ LABEL_84:
           v67 = _rt_log_facility_get_os_log(RTLogFacilityAsset);
           if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
           {
-            v86 = [v15 path];
+            path7 = [getLocalFileUrl path];
             *buf = 138412802;
-            v101 = v86;
+            v101 = path7;
             v102 = 2112;
             v103 = v32;
             v104 = 2112;
@@ -1517,7 +1517,7 @@ LABEL_84:
             _os_log_error_impl(&dword_2304B3000, v67, OS_LOG_TYPE_ERROR, "Could not copy asset at path, %@, to path, %@, error, %@.", buf, 0x20u);
           }
 
-          v11[2](v11, v41);
+          handlerCopy[2](handlerCopy, v41);
           v27 = v94;
         }
 
@@ -1528,9 +1528,9 @@ LABEL_84:
           v70 = [v68 fileURLWithPath:v69 isDirectory:0];
 
           assetProcessor = self->_assetProcessor;
-          v72 = [v70 path];
+          path8 = [v70 path];
           v95 = 0;
-          [(RTAssetProcessor *)assetProcessor processAssetsAtPath:v32 intoPath:v72 outError:&v95];
+          [(RTAssetProcessor *)assetProcessor processAssetsAtPath:v32 intoPath:path8 outError:&v95];
           v41 = v95;
 
           if (v41)
@@ -1539,11 +1539,11 @@ LABEL_84:
             v27 = v94;
             if (os_log_type_enabled(v73, OS_LOG_TYPE_ERROR))
             {
-              v87 = [v70 path];
+              path9 = [v70 path];
               *buf = 138412802;
               v101 = v32;
               v102 = 2112;
-              v103 = v87;
+              v103 = path9;
               v104 = 2112;
               v105 = v41;
               _os_log_error_impl(&dword_2304B3000, v73, OS_LOG_TYPE_ERROR, "Error processing asset at path, %@, into path, %@, error, %@.", buf, 0x20u);
@@ -1551,7 +1551,7 @@ LABEL_84:
               v27 = v94;
             }
 
-            v11[2](v11, v41);
+            handlerCopy[2](handlerCopy, v41);
           }
 
           else
@@ -1559,11 +1559,11 @@ LABEL_84:
             v74 = v70;
             v91 = v70;
             defaultsManager = self->_defaultsManager;
-            v76 = [v74 path];
-            [(RTDefaultsManager *)defaultsManager addDomain:v76];
+            path10 = [v74 path];
+            [(RTDefaultsManager *)defaultsManager addDomain:path10];
 
-            v77 = [v9 attributes];
-            v78 = [v77 objectForKey:*MEMORY[0x277D28900]];
+            attributes2 = [assetCopy attributes];
+            v78 = [attributes2 objectForKey:*MEMORY[0x277D28900]];
 
             v79 = self->_defaultsManager;
             v80 = v78;
@@ -1596,7 +1596,7 @@ LABEL_84:
               v80 = v93;
             }
 
-            v11[2](v11, 0);
+            handlerCopy[2](handlerCopy, 0);
           }
         }
 
@@ -1610,13 +1610,13 @@ LABEL_84:
 
     v98 = *MEMORY[0x277CCA450];
     v48 = MEMORY[0x277CCACA8];
-    v49 = [v15 path];
-    v50 = [v48 stringWithFormat:@"File not readable or path does not exist, %@.", v49];
+    path11 = [getLocalFileUrl path];
+    v50 = [v48 stringWithFormat:@"File not readable or path does not exist, %@.", path11];
     v99 = v50;
     v51 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v99 forKeys:&v98 count:1];
 
     v52 = [MEMORY[0x277CCA9B8] errorWithDomain:@"RTAssetManagerErrorDomain" code:3 userInfo:v51];
-    v11[2](v11, v52);
+    handlerCopy[2](handlerCopy, v52);
 
 LABEL_47:
     goto LABEL_48;
@@ -1633,7 +1633,7 @@ LABEL_12:
     _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: fileManager (in %s:%d)", buf, 0x12u);
   }
 
-  if (v11)
+  if (handlerCopy)
   {
     goto LABEL_15;
   }
@@ -1641,15 +1641,15 @@ LABEL_12:
 LABEL_48:
 }
 
-- (void)updateAssetServerURL:(id)a3 assetType:(id)a4 handler:(id)a5
+- (void)updateAssetServerURL:(id)l assetType:(id)type handler:(id)handler
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  lCopy = l;
+  typeCopy = type;
+  handlerCopy = handler;
+  if (lCopy)
   {
-    if (v8)
+    if (typeCopy)
     {
       goto LABEL_3;
     }
@@ -1665,7 +1665,7 @@ LABEL_12:
       _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: assetType (in %s:%d)", &v19, 0x12u);
     }
 
-    if (v9)
+    if (handlerCopy)
     {
       v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid asset type."];
       v16 = _rt_log_facility_get_os_log(RTLogFacilityAsset);
@@ -1680,7 +1680,7 @@ LABEL_12:
       v24[0] = v15;
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:&v23 count:1];
       v18 = [MEMORY[0x277CCA9B8] errorWithDomain:@"RTAssetManagerErrorDomain" code:1 userInfo:v17];
-      v9[2](v9, v18);
+      handlerCopy[2](handlerCopy, v18);
 
       goto LABEL_20;
     }
@@ -1711,19 +1711,19 @@ LABEL_20:
     _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: url (in %s:%d)", &v19, 0x12u);
   }
 
-  if (!v8)
+  if (!typeCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_3:
-  if (!v9)
+  if (!handlerCopy)
   {
     goto LABEL_18;
   }
 
-  v10 = [v7 absoluteString];
-  v11 = MEMORY[0x23191AB40](v8, v10);
+  absoluteString = [lCopy absoluteString];
+  v11 = MEMORY[0x23191AB40](typeCopy, absoluteString);
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -1731,14 +1731,14 @@ LABEL_3:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v19 = 138412546;
-      v20 = v8;
+      v20 = typeCopy;
       v21 = 2048;
       v22 = v11;
       _os_log_impl(&dword_2304B3000, v12, OS_LOG_TYPE_INFO, "Setting mobile asset server to %@, status, %lld", &v19, 0x16u);
     }
   }
 
-  v9[2](v9, 0);
+  handlerCopy[2](handlerCopy, 0);
 LABEL_21:
 }
 

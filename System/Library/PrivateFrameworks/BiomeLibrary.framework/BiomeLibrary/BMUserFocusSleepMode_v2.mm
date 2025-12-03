@@ -8,10 +8,10 @@
 {
   v4.receiver = self;
   v4.super_class = BMUserFocusSleepMode_v2;
-  v2 = [(BMUserFocusSleepMode *)&v4 state];
-  if (v2 < 3)
+  state = [(BMUserFocusSleepMode *)&v4 state];
+  if (state < 3)
   {
-    return v2 + 1;
+    return state + 1;
   }
 
   else

@@ -1,30 +1,30 @@
 @interface BRCContainerMetadataSyncDownOperation
-- (BOOL)shouldRetryForError:(id)a3;
-- (BRCContainerMetadataSyncDownOperation)initWithSessionContext:(id)a3 syncContext:(id)a4 state:(id)a5 containerSyncDownCallback:(id)a6;
+- (BOOL)shouldRetryForError:(id)error;
+- (BRCContainerMetadataSyncDownOperation)initWithSessionContext:(id)context syncContext:(id)syncContext state:(id)state containerSyncDownCallback:(id)callback;
 - (id)createActivity;
-- (void)_completedWithServerChangeToken:(id)a3 requestID:(unint64_t)a4;
-- (void)_updateContainerMetadataFromRecord:(id)a3 appLibrary:(id)a4 stripIcons:(BOOL)a5;
+- (void)_completedWithServerChangeToken:(id)token requestID:(unint64_t)d;
+- (void)_updateContainerMetadataFromRecord:(id)record appLibrary:(id)library stripIcons:(BOOL)icons;
 - (void)main;
-- (void)performAfterCreatingZoneIfNeeded:(id)a3;
-- (void)performAfterFetchingAssetContents:(id)a3;
-- (void)performAfterFetchingRecordChanges:(id)a3;
+- (void)performAfterCreatingZoneIfNeeded:(id)needed;
+- (void)performAfterFetchingAssetContents:(id)contents;
+- (void)performAfterFetchingRecordChanges:(id)changes;
 @end
 
 @implementation BRCContainerMetadataSyncDownOperation
 
-- (BRCContainerMetadataSyncDownOperation)initWithSessionContext:(id)a3 syncContext:(id)a4 state:(id)a5 containerSyncDownCallback:(id)a6
+- (BRCContainerMetadataSyncDownOperation)initWithSessionContext:(id)context syncContext:(id)syncContext state:(id)state containerSyncDownCallback:(id)callback
 {
-  v11 = a5;
-  v12 = a6;
+  stateCopy = state;
+  callbackCopy = callback;
   v16.receiver = self;
   v16.super_class = BRCContainerMetadataSyncDownOperation;
-  v13 = [(_BRCOperation *)&v16 initWithName:@"sync-down/container-metadata" syncContext:a4 sessionContext:a3];
+  v13 = [(_BRCOperation *)&v16 initWithName:@"sync-down/container-metadata" syncContext:syncContext sessionContext:context];
   v14 = v13;
   if (v13)
   {
     [(_BRCOperation *)v13 setNonDiscretionary:[(BRCContainerMetadataSyncPersistedState *)v13->_state hasCaughtUpAtLeastOnce]^ 1];
-    objc_storeStrong(&v14->_state, a5);
-    objc_storeStrong(&v14->_containerSyncDownCallback, a6);
+    objc_storeStrong(&v14->_state, state);
+    objc_storeStrong(&v14->_containerSyncDownCallback, callback);
   }
 
   return v14;
@@ -37,87 +37,87 @@
   return v2;
 }
 
-- (void)performAfterCreatingZoneIfNeeded:(id)a3
+- (void)performAfterCreatingZoneIfNeeded:(id)needed
 {
-  v9 = a3;
-  v4 = [(BRCContainerMetadataSyncPersistedState *)self->_state serverChangeToken];
+  neededCopy = needed;
+  serverChangeToken = [(BRCContainerMetadataSyncPersistedState *)self->_state serverChangeToken];
 
-  if (v4)
+  if (serverChangeToken)
   {
-    v9[2](v9, 0);
+    neededCopy[2](neededCopy, 0);
   }
 
   else
   {
     v5 = [BRCCreateZoneAndSubscribeOperation alloc];
     sessionContext = self->super._sessionContext;
-    v7 = [MEMORY[0x277CBC5F8] brc_containerMetadataZoneID];
-    v8 = [(BRCCreateZoneAndSubscribeOperation *)v5 initWithSessionContext:sessionContext zoneID:v7];
+    brc_containerMetadataZoneID = [MEMORY[0x277CBC5F8] brc_containerMetadataZoneID];
+    v8 = [(BRCCreateZoneAndSubscribeOperation *)v5 initWithSessionContext:sessionContext zoneID:brc_containerMetadataZoneID];
 
     [(BRCCreateZoneAndSubscribeOperation *)v8 setOptimisticSubscribe:1];
-    [(BRCCreateZoneAndSubscribeOperation *)v8 setCreateZoneAndSubscribeCompletionBlock:v9];
+    [(BRCCreateZoneAndSubscribeOperation *)v8 setCreateZoneAndSubscribeCompletionBlock:neededCopy];
     [(_BRCOperation *)self addSubOperation:v8];
   }
 }
 
-- (void)_updateContainerMetadataFromRecord:(id)a3 appLibrary:(id)a4 stripIcons:(BOOL)a5
+- (void)_updateContainerMetadataFromRecord:(id)record appLibrary:(id)library stripIcons:(BOOL)icons
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(BRCSessionContext *)self->super._sessionContext clientReadWriteDatabaseFacade];
-  v11 = [v10 serialQueue];
+  recordCopy = record;
+  libraryCopy = library;
+  clientReadWriteDatabaseFacade = [(BRCSessionContext *)self->super._sessionContext clientReadWriteDatabaseFacade];
+  serialQueue = [clientReadWriteDatabaseFacade serialQueue];
 
-  if (v11)
+  if (serialQueue)
   {
-    v12 = [v8 brc_containerMetadataPropertiesData];
-    if (v12)
+    brc_containerMetadataPropertiesData = [recordCopy brc_containerMetadataPropertiesData];
+    if (brc_containerMetadataPropertiesData)
     {
-      if (![v9 shouldSaveContainerMetadataServerside])
+      if (![libraryCopy shouldSaveContainerMetadataServerside])
       {
 LABEL_16:
-        objc_initWeak(buf, v9);
+        objc_initWeak(buf, libraryCopy);
         v22[0] = MEMORY[0x277D85DD0];
         v22[1] = 3221225472;
         v22[2] = __98__BRCContainerMetadataSyncDownOperation__updateContainerMetadataFromRecord_appLibrary_stripIcons___block_invoke_3;
         v22[3] = &unk_2784FFDF8;
         objc_copyWeak(&v24, buf);
-        v23 = v8;
-        dispatch_async(v11, v22);
+        v23 = recordCopy;
+        dispatch_async(serialQueue, v22);
 
         objc_destroyWeak(&v24);
         objc_destroyWeak(buf);
         goto LABEL_17;
       }
 
-      if (a5)
+      if (icons)
       {
-        v13 = 0;
+        brc_containerMetadataIconPaths = 0;
       }
 
       else
       {
-        v13 = [v8 brc_containerMetadataIconPaths];
+        brc_containerMetadataIconPaths = [recordCopy brc_containerMetadataIconPaths];
       }
 
-      v16 = [v9 containerMetadata];
-      v17 = [v16 isDocumentScopePublic];
+      containerMetadata = [libraryCopy containerMetadata];
+      isDocumentScopePublic = [containerMetadata isDocumentScopePublic];
 
-      v18 = [v9 containerMetadata];
-      [v18 updateMetadataWithRecordData:v12 iconPaths:v13];
+      containerMetadata2 = [libraryCopy containerMetadata];
+      [containerMetadata2 updateMetadataWithRecordData:brc_containerMetadataPropertiesData iconPaths:brc_containerMetadataIconPaths];
 
-      v19 = [v9 containerMetadata];
-      v20 = [v19 isDocumentScopePublic];
+      containerMetadata3 = [libraryCopy containerMetadata];
+      isDocumentScopePublic2 = [containerMetadata3 isDocumentScopePublic];
 
-      if (v17 != v20)
+      if (isDocumentScopePublic != isDocumentScopePublic2)
       {
-        objc_initWeak(buf, v9);
+        objc_initWeak(buf, libraryCopy);
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __98__BRCContainerMetadataSyncDownOperation__updateContainerMetadataFromRecord_appLibrary_stripIcons___block_invoke;
         block[3] = &unk_2784FF400;
         objc_copyWeak(&v26, buf);
-        dispatch_async(v11, block);
+        dispatch_async(serialQueue, block);
         objc_destroyWeak(&v26);
         objc_destroyWeak(buf);
       }
@@ -125,14 +125,14 @@ LABEL_16:
 
     else
     {
-      v13 = brc_bread_crumbs();
+      brc_containerMetadataIconPaths = brc_bread_crumbs();
       v15 = brc_default_log();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v28 = v8;
+        v28 = recordCopy;
         v29 = 2112;
-        v30 = v13;
+        v30 = brc_containerMetadataIconPaths;
         _os_log_impl(&dword_223E7A000, v15, OS_LOG_TYPE_DEFAULT, "[WARNING] no data in record %@%@", buf, 0x16u);
       }
     }
@@ -140,12 +140,12 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v12 = brc_bread_crumbs();
+  brc_containerMetadataPropertiesData = brc_bread_crumbs();
   v14 = brc_default_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v28 = v12;
+    v28 = brc_containerMetadataPropertiesData;
     _os_log_impl(&dword_223E7A000, v14, OS_LOG_TYPE_DEFAULT, "[WARNING] Serial queue is nil%@", buf, 0xCu);
   }
 
@@ -166,10 +166,10 @@ void __98__BRCContainerMetadataSyncDownOperation__updateContainerMetadataFromRec
   [WeakRetained setContainerMetadataEtag:v2];
 }
 
-- (void)performAfterFetchingRecordChanges:(id)a3
+- (void)performAfterFetchingRecordChanges:(id)changes
 {
   v75[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changesCopy = changes;
   v69[0] = 0;
   v69[1] = v69;
   v69[2] = 0x2020000000;
@@ -178,11 +178,11 @@ void __98__BRCContainerMetadataSyncDownOperation__updateContainerMetadataFromRec
   v67[1] = v67;
   v67[2] = 0x2020000000;
   v68 = 0;
-  v5 = [(_BRCOperation *)self group];
-  v6 = [v5 name];
-  v7 = [MEMORY[0x277CBC4F8] br_syncDownPeriodic];
-  v8 = [v7 name];
-  v9 = [v6 isEqualToString:v8];
+  group = [(_BRCOperation *)self group];
+  name = [group name];
+  br_syncDownPeriodic = [MEMORY[0x277CBC4F8] br_syncDownPeriodic];
+  name2 = [br_syncDownPeriodic name];
+  v9 = [name isEqualToString:name2];
 
   if (v9)
   {
@@ -194,23 +194,23 @@ void __98__BRCContainerMetadataSyncDownOperation__updateContainerMetadataFromRec
     }
   }
 
-  v12 = [MEMORY[0x277CBC5F8] brc_containerMetadataZoneID];
+  brc_containerMetadataZoneID = [MEMORY[0x277CBC5F8] brc_containerMetadataZoneID];
   v13 = objc_opt_new();
   v14 = +[BRCUserDefaults defaultsForMetadataContainer];
   [v13 setResultsLimit:{objc_msgSend(v14, "maxRecordCountInFetchRecordsOperation")}];
 
   v15 = BRContainerIconCKAssetKeys();
-  v16 = [v15 allObjects];
-  v17 = [v16 arrayByAddingObject:@"infoPlist"];
+  allObjects = [v15 allObjects];
+  v17 = [allObjects arrayByAddingObject:@"infoPlist"];
   [v13 setDesiredKeys:v17];
 
-  v18 = [(BRCContainerMetadataSyncPersistedState *)self->_state serverChangeToken];
-  [v13 setPreviousServerChangeToken:v18];
+  serverChangeToken = [(BRCContainerMetadataSyncPersistedState *)self->_state serverChangeToken];
+  [v13 setPreviousServerChangeToken:serverChangeToken];
 
   v19 = objc_alloc(MEMORY[0x277CBC3B8]);
-  v75[0] = v12;
+  v75[0] = brc_containerMetadataZoneID;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v75 count:1];
-  v73 = v12;
+  v73 = brc_containerMetadataZoneID;
   v74 = v13;
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v74 forKeys:&v73 count:1];
   v22 = [v19 initWithRecordZoneIDs:v20 optionsByRecordZoneID:v21];
@@ -218,8 +218,8 @@ void __98__BRCContainerMetadataSyncDownOperation__updateContainerMetadataFromRec
   v23 = objc_opt_new();
   [v22 setConfiguration:v23];
 
-  v24 = [v22 configuration];
-  [v24 setSourceApplicationBundleIdentifier:*MEMORY[0x277CFAD58]];
+  configuration = [v22 configuration];
+  [configuration setSourceApplicationBundleIdentifier:*MEMORY[0x277CFAD58]];
 
   [v22 setShouldFetchAssetContents:0];
   v63 = 0uLL;
@@ -264,10 +264,10 @@ void __98__BRCContainerMetadataSyncDownOperation__updateContainerMetadataFromRec
   v58 = v66;
   v55 = buf;
   v52[4] = self;
-  v27 = v12;
+  v27 = brc_containerMetadataZoneID;
   v53 = v27;
   v56 = v69;
-  v28 = v4;
+  v28 = changesCopy;
   v54 = v28;
   [v22 setRecordZoneFetchCompletionBlock:v52];
   v40 = MEMORY[0x277D85DD0];
@@ -278,24 +278,24 @@ void __98__BRCContainerMetadataSyncDownOperation__updateContainerMetadataFromRec
   v50 = v66;
   v51 = v9;
   v47 = v67;
-  v44 = self;
+  selfCopy = self;
   v29 = v27;
   v45 = v29;
   v48 = buf;
   v30 = v28;
   v46 = v30;
   [v22 setFetchRecordZoneChangesCompletionBlock:&v40];
-  v31 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   recordIDsForDesiredAssets = self->_recordIDsForDesiredAssets;
-  self->_recordIDsForDesiredAssets = v31;
+  self->_recordIDsForDesiredAssets = array;
 
-  v33 = [MEMORY[0x277CBEB18] arrayWithObjects:{@"infoPlist", 0, v40, v41, v42, v43, v44}];
+  v33 = [MEMORY[0x277CBEB18] arrayWithObjects:{@"infoPlist", 0, v40, v41, v42, v43, selfCopy}];
   desiredKeysForDesiredAssets = self->_desiredKeysForDesiredAssets;
   self->_desiredKeysForDesiredAssets = v33;
 
-  v35 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   recordIDsToVersionETagsForDesiredAssets = self->_recordIDsToVersionETagsForDesiredAssets;
-  self->_recordIDsToVersionETagsForDesiredAssets = v35;
+  self->_recordIDsToVersionETagsForDesiredAssets = dictionary;
 
   v37 = [MEMORY[0x277CBEB58] set];
   containerIDsUpdated = self->_containerIDsUpdated;
@@ -638,14 +638,14 @@ void __75__BRCContainerMetadataSyncDownOperation_performAfterFetchingRecordChang
   __brc_leave_section(&v8);
 }
 
-- (void)performAfterFetchingAssetContents:(id)a3
+- (void)performAfterFetchingAssetContents:(id)contents
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contentsCopy = contents;
   v5 = [objc_alloc(MEMORY[0x277CBC3E0]) initWithRecordIDs:self->_recordIDsForDesiredAssets];
   [v5 setRecordIDsToVersionETags:self->_recordIDsToVersionETagsForDesiredAssets];
   [v5 setDesiredKeys:self->_desiredKeysForDesiredAssets];
-  v6 = [v5 operationID];
+  operationID = [v5 operationID];
   v27 = 0uLL;
   v28 = 0;
   __brc_create_section(0, "[BRCContainerMetadataSyncDownOperation performAfterFetchingAssetContents:]", 256, 0, &v27);
@@ -681,10 +681,10 @@ void __75__BRCContainerMetadataSyncDownOperation_performAfterFetchingRecordChang
   v19 = &unk_278502758;
   v22 = *buf;
   v23 = *&buf[16];
-  v20 = v6;
-  v21 = v4;
-  v9 = v4;
-  v10 = v6;
+  v20 = operationID;
+  v21 = contentsCopy;
+  v9 = contentsCopy;
+  v10 = operationID;
   [v5 setFetchRecordsCompletionBlock:&v16];
   v11 = self->_recordIDsForDesiredAssets;
   self->_recordIDsForDesiredAssets = 0;
@@ -828,10 +828,10 @@ void __75__BRCContainerMetadataSyncDownOperation_performAfterFetchingAssetConten
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldRetryForError:(id)a3
+- (BOOL)shouldRetryForError:(id)error
 {
-  v4 = a3;
-  if ([v4 brc_isResetError])
+  errorCopy = error;
+  if ([errorCopy brc_isResetError])
   {
     v5 = 0;
   }
@@ -840,15 +840,15 @@ void __75__BRCContainerMetadataSyncDownOperation_performAfterFetchingAssetConten
   {
     v7.receiver = self;
     v7.super_class = BRCContainerMetadataSyncDownOperation;
-    v5 = [(_BRCOperation *)&v7 shouldRetryForError:v4];
+    v5 = [(_BRCOperation *)&v7 shouldRetryForError:errorCopy];
   }
 
   return v5;
 }
 
-- (void)_completedWithServerChangeToken:(id)a3 requestID:(unint64_t)a4
+- (void)_completedWithServerChangeToken:(id)token requestID:(unint64_t)d
 {
-  v6 = a3;
+  tokenCopy = token;
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x2020000000;
@@ -860,18 +860,18 @@ void __75__BRCContainerMetadataSyncDownOperation_performAfterFetchingAssetConten
   v11[3] = &unk_2785027A0;
   v11[4] = self;
   v13 = v15;
-  v14 = a4;
-  v8 = v6;
+  dCopy = d;
+  v8 = tokenCopy;
   v12 = v8;
   [(BRCSessionContext *)sessionContext performAsyncOnClientReadWriteDatabaseWorkloop:v11];
-  v9 = [(_BRCOperation *)self callbackQueue];
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __83__BRCContainerMetadataSyncDownOperation__completedWithServerChangeToken_requestID___block_invoke_37;
   v10[3] = &unk_278502000;
   v10[4] = self;
   v10[5] = v15;
-  dispatch_async(v9, v10);
+  dispatch_async(callbackQueue, v10);
 
   _Block_object_dispose(v15, 8);
 }
@@ -1013,7 +1013,7 @@ uint64_t __83__BRCContainerMetadataSyncDownOperation__completedWithServerChangeT
 - (void)main
 {
   v5 = *MEMORY[0x277D85DE8];
-  v1 = *a1;
+  v1 = *self;
   OUTLINED_FUNCTION_2_0();
   OUTLINED_FUNCTION_4(&dword_223E7A000, v2, v3, "[DEBUG] ┏%llx Sync: syncing down container metadata%@");
   v4 = *MEMORY[0x277D85DE8];

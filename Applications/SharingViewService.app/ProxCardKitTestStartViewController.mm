@@ -1,16 +1,16 @@
 @interface ProxCardKitTestStartViewController
 - (ProxCardKitTestStartViewController)init;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation ProxCardKitTestStartViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v13.receiver = self;
   v13.super_class = ProxCardKitTestStartViewController;
-  [(ProxCardKitTestStartViewController *)&v13 viewDidAppear:a3];
+  [(ProxCardKitTestStartViewController *)&v13 viewDidAppear:appear];
   memset(&v12, 0, sizeof(v12));
   CGAffineTransformMakeScale(&v12, 1.2, 1.2);
   v9[0] = _NSConcreteStackBlock;
@@ -95,8 +95,8 @@
         v25 = *(*(&v55 + 1) + 8 * i);
         [v25 setPreferredSymbolConfiguration:v18];
         [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
-        v26 = [(ProxCardKitTestStartViewController *)self contentView];
-        [v26 addSubview:v25];
+        contentView = [(ProxCardKitTestStartViewController *)self contentView];
+        [contentView addSubview:v25];
       }
 
       v22 = [v20 countByEnumeratingWithState:&v55 objects:v62 count:16];
@@ -105,41 +105,41 @@
     while (v22);
   }
 
-  v27 = [(ProxCardKitTestStartViewController *)self contentView];
-  v28 = [v27 mainContentGuide];
+  contentView2 = [(ProxCardKitTestStartViewController *)self contentView];
+  mainContentGuide = [contentView2 mainContentGuide];
 
-  v53 = [(UIImageView *)self->_pView centerYAnchor];
-  v52 = [(UIImageView *)self->_rView centerYAnchor];
-  v51 = [v53 constraintEqualToAnchor:v52];
+  centerYAnchor = [(UIImageView *)self->_pView centerYAnchor];
+  centerYAnchor2 = [(UIImageView *)self->_rView centerYAnchor];
+  v51 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v60[0] = v51;
-  v50 = [(UIImageView *)self->_rView centerYAnchor];
-  v49 = [v28 centerYAnchor];
-  v48 = [v50 constraintEqualToAnchor:v49];
+  centerYAnchor3 = [(UIImageView *)self->_rView centerYAnchor];
+  centerYAnchor4 = [mainContentGuide centerYAnchor];
+  v48 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v60[1] = v48;
-  v47 = [(UIImageView *)self->_xView centerYAnchor];
-  v46 = [(UIImageView *)self->_rView centerYAnchor];
-  v45 = [v47 constraintEqualToAnchor:v46];
+  centerYAnchor5 = [(UIImageView *)self->_xView centerYAnchor];
+  centerYAnchor6 = [(UIImageView *)self->_rView centerYAnchor];
+  v45 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
   v60[2] = v45;
-  v44 = [(UIImageView *)self->_rView leadingAnchor];
-  v54 = [(UIImageView *)self->_pView trailingAnchor];
-  v43 = [v44 constraintEqualToSystemSpacingAfterAnchor:v54 multiplier:1.0];
+  leadingAnchor = [(UIImageView *)self->_rView leadingAnchor];
+  trailingAnchor = [(UIImageView *)self->_pView trailingAnchor];
+  v43 = [leadingAnchor constraintEqualToSystemSpacingAfterAnchor:trailingAnchor multiplier:1.0];
   v60[3] = v43;
-  v41 = [(UIImageView *)self->_xView leadingAnchor];
-  v40 = [(UIImageView *)self->_rView trailingAnchor];
-  v39 = [v41 constraintEqualToSystemSpacingAfterAnchor:v40 multiplier:1.0];
+  leadingAnchor2 = [(UIImageView *)self->_xView leadingAnchor];
+  trailingAnchor2 = [(UIImageView *)self->_rView trailingAnchor];
+  v39 = [leadingAnchor2 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor2 multiplier:1.0];
   v60[4] = v39;
-  v38 = [(UIImageView *)self->_rView centerXAnchor];
-  v42 = v28;
-  v37 = [v28 centerXAnchor];
-  v29 = [v38 constraintEqualToAnchor:v37];
+  centerXAnchor = [(UIImageView *)self->_rView centerXAnchor];
+  v42 = mainContentGuide;
+  centerXAnchor2 = [mainContentGuide centerXAnchor];
+  v29 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v60[5] = v29;
-  v30 = [(UIImageView *)self->_rView topAnchor];
-  v31 = [v28 topAnchor];
-  v32 = [v30 constraintGreaterThanOrEqualToAnchor:v31];
+  topAnchor = [(UIImageView *)self->_rView topAnchor];
+  topAnchor2 = [mainContentGuide topAnchor];
+  v32 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   v60[6] = v32;
-  v33 = [v28 bottomAnchor];
-  v34 = [(UIImageView *)self->_rView bottomAnchor];
-  v35 = [v33 constraintGreaterThanOrEqualToAnchor:v34];
+  bottomAnchor = [mainContentGuide bottomAnchor];
+  bottomAnchor2 = [(UIImageView *)self->_rView bottomAnchor];
+  v35 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2];
   v60[7] = v35;
   v36 = [NSArray arrayWithObjects:v60 count:8];
   [NSLayoutConstraint activateConstraints:v36];
@@ -164,8 +164,8 @@
     v5 = [PRXAction actionWithTitle:&stru_100195CA8 style:0 handler:v14];
     [(ProxCardKitTestStartViewController *)v4 setInfoButtonAction:v5];
 
-    v6 = [(ProxCardKitTestStartViewController *)v4 infoButton];
-    [v6 setAlpha:0.0];
+    infoButton = [(ProxCardKitTestStartViewController *)v4 infoButton];
+    [infoButton setAlpha:0.0];
 
     objc_initWeak(&location, v4);
     v11[0] = _NSConcreteStackBlock;

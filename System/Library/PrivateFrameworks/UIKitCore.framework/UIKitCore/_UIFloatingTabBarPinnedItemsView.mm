@@ -1,56 +1,56 @@
 @interface _UIFloatingTabBarPinnedItemsView
-- (CGRect)itemFrameForItemAtIndex:(int64_t)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_UIFloatingTabBarPinnedItemsView)initWithFrame:(CGRect)a3;
-- (id)_itemViewForItem:(id)a3;
-- (id)_itemViewForItemAtIndex:(int64_t)a3;
-- (id)tabForSelectionAtItemIndex:(int64_t)a3;
-- (int64_t)itemIndexForItemAtLocation:(CGPoint)a3;
-- (int64_t)itemIndexForTab:(id)a3;
-- (void)_reloadItemViewsWithDifference:(id)a3 animated:(BOOL)a4;
+- (CGRect)itemFrameForItemAtIndex:(int64_t)index;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_UIFloatingTabBarPinnedItemsView)initWithFrame:(CGRect)frame;
+- (id)_itemViewForItem:(id)item;
+- (id)_itemViewForItemAtIndex:(int64_t)index;
+- (id)tabForSelectionAtItemIndex:(int64_t)index;
+- (int64_t)itemIndexForItemAtLocation:(CGPoint)location;
+- (int64_t)itemIndexForTab:(id)tab;
+- (void)_reloadItemViewsWithDifference:(id)difference animated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)reloadItemViewForTab:(id)a3;
-- (void)setEditing:(BOOL)a3;
-- (void)setHighlightedIndex:(int64_t)a3;
-- (void)setItems:(id)a3 animated:(BOOL)a4;
-- (void)setSelectionViewIndex:(int64_t)a3;
+- (void)reloadItemViewForTab:(id)tab;
+- (void)setEditing:(BOOL)editing;
+- (void)setHighlightedIndex:(int64_t)index;
+- (void)setItems:(id)items animated:(BOOL)animated;
+- (void)setSelectionViewIndex:(int64_t)index;
 @end
 
 @implementation _UIFloatingTabBarPinnedItemsView
 
-- (_UIFloatingTabBarPinnedItemsView)initWithFrame:(CGRect)a3
+- (_UIFloatingTabBarPinnedItemsView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = _UIFloatingTabBarPinnedItemsView;
-  v3 = [(UIView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v3->_selectionViewIndex = 0x7FFFFFFFFFFFFFFFLL;
     v3->_highlightedIndex = 0x7FFFFFFFFFFFFFFFLL;
-    v5 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
     items = v4->_items;
-    v4->_items = v5;
+    v4->_items = array;
   }
 
   return v4;
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
-    v3 = a3;
-    self->_editing = a3;
+    editingCopy = editing;
+    self->_editing = editing;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(_UIFloatingTabBarPinnedItemsView *)self itemViews];
-    v5 = [v4 objectEnumerator];
+    itemViews = [(_UIFloatingTabBarPinnedItemsView *)self itemViews];
+    objectEnumerator = [itemViews objectEnumerator];
 
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    v6 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -61,13 +61,13 @@
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(objectEnumerator);
           }
 
-          [*(*(&v10 + 1) + 8 * i) setEditing:v3];
+          [*(*(&v10 + 1) + 8 * i) setEditing:editingCopy];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -75,12 +75,12 @@
   }
 }
 
-- (void)setItems:(id)a3 animated:(BOOL)a4
+- (void)setItems:(id)items animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  itemsCopy = items;
   v8 = self->_items;
-  v9 = v7;
+  v9 = itemsCopy;
   v12 = v9;
   if (v8 == v9)
   {
@@ -102,19 +102,19 @@ LABEL_9:
   if ((v10 & 1) == 0)
   {
 LABEL_8:
-    objc_storeStrong(&self->_items, a3);
+    objc_storeStrong(&self->_items, items);
     v11 = [(NSArray *)v12 differenceFromArray:v8 withOptions:0 usingEquivalenceTest:&__block_literal_global_74];
-    [(_UIFloatingTabBarPinnedItemsView *)self _reloadItemViewsWithDifference:v11 animated:v4];
+    [(_UIFloatingTabBarPinnedItemsView *)self _reloadItemViewsWithDifference:v11 animated:animatedCopy];
     goto LABEL_9;
   }
 
 LABEL_10:
 }
 
-- (void)setSelectionViewIndex:(int64_t)a3
+- (void)setSelectionViewIndex:(int64_t)index
 {
   selectionViewIndex = self->_selectionViewIndex;
-  if (selectionViewIndex != a3)
+  if (selectionViewIndex != index)
   {
     if (selectionViewIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -122,19 +122,19 @@ LABEL_10:
       [v6 setHasSelectionHighlight:0];
     }
 
-    self->_selectionViewIndex = a3;
-    if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+    self->_selectionViewIndex = index;
+    if (index != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v7 = [(_UIFloatingTabBarPinnedItemsView *)self _itemViewForItemAtIndex:a3];
+      v7 = [(_UIFloatingTabBarPinnedItemsView *)self _itemViewForItemAtIndex:index];
       [v7 setHasSelectionHighlight:1];
     }
   }
 }
 
-- (void)setHighlightedIndex:(int64_t)a3
+- (void)setHighlightedIndex:(int64_t)index
 {
   highlightedIndex = self->_highlightedIndex;
-  if (highlightedIndex != a3)
+  if (highlightedIndex != index)
   {
     if (highlightedIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -142,18 +142,18 @@ LABEL_10:
       [v6 setHighlighted:0];
     }
 
-    self->_highlightedIndex = a3;
-    if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+    self->_highlightedIndex = index;
+    if (index != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v7 = [(_UIFloatingTabBarPinnedItemsView *)self _itemViewForItemAtIndex:a3];
+      v7 = [(_UIFloatingTabBarPinnedItemsView *)self _itemViewForItemAtIndex:index];
       [v7 setHighlighted:1];
     }
   }
 }
 
-- (CGRect)itemFrameForItemAtIndex:(int64_t)a3
+- (CGRect)itemFrameForItemAtIndex:(int64_t)index
 {
-  v3 = [(_UIFloatingTabBarPinnedItemsView *)self itemViewForItemAtIndex:a3];
+  v3 = [(_UIFloatingTabBarPinnedItemsView *)self itemViewForItemAtIndex:index];
   v4 = v3;
   if (v3)
   {
@@ -183,15 +183,15 @@ LABEL_10:
   return result;
 }
 
-- (int64_t)itemIndexForItemAtLocation:(CGPoint)a3
+- (int64_t)itemIndexForItemAtLocation:(CGPoint)location
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __63___UIFloatingTabBarPinnedItemsView_itemIndexForItemAtLocation___block_invoke;
   aBlock[3] = &__block_descriptor_48_e16_B16__0__UIView_8l;
-  v12 = a3;
+  locationCopy = location;
   v4 = _Block_copy(aBlock);
-  v5 = [(_UIFloatingTabBarPinnedItemsView *)self items];
+  items = [(_UIFloatingTabBarPinnedItemsView *)self items];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __63___UIFloatingTabBarPinnedItemsView_itemIndexForItemAtLocation___block_invoke_2;
@@ -199,22 +199,22 @@ LABEL_10:
   v9[4] = self;
   v10 = v4;
   v6 = v4;
-  v7 = [v5 indexOfObjectPassingTest:v9];
+  v7 = [items indexOfObjectPassingTest:v9];
 
   return v7;
 }
 
-- (id)_itemViewForItemAtIndex:(int64_t)a3
+- (id)_itemViewForItemAtIndex:(int64_t)index
 {
-  if (a3 < 0 || (-[_UIFloatingTabBarPinnedItemsView items](self, "items"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 <= a3))
+  if (index < 0 || (-[_UIFloatingTabBarPinnedItemsView items](self, "items"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 <= index))
   {
     v9 = 0;
   }
 
   else
   {
-    v7 = [(_UIFloatingTabBarPinnedItemsView *)self items];
-    v8 = [v7 objectAtIndex:a3];
+    items = [(_UIFloatingTabBarPinnedItemsView *)self items];
+    v8 = [items objectAtIndex:index];
 
     v9 = [(_UIFloatingTabBarPinnedItemsView *)self _itemViewForItem:v8];
   }
@@ -222,10 +222,10 @@ LABEL_10:
   return v9;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v22 = *MEMORY[0x1E69E9840];
   v6 = *MEMORY[0x1E695F060];
   v5 = *(MEMORY[0x1E695F060] + 8);
@@ -233,10 +233,10 @@ LABEL_10:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [(_UIFloatingTabBarPinnedItemsView *)self itemViews];
-  v8 = [v7 allValues];
+  itemViews = [(_UIFloatingTabBarPinnedItemsView *)self itemViews];
+  allValues = [itemViews allValues];
 
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v9 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -248,7 +248,7 @@ LABEL_10:
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v17 + 1) + 8 * v12) sizeThatFits:{width, height}];
@@ -258,7 +258,7 @@ LABEL_10:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v10);
@@ -277,9 +277,9 @@ LABEL_10:
   v29.receiver = self;
   v29.super_class = _UIFloatingTabBarPinnedItemsView;
   [(UIView *)&v29 layoutSubviews];
-  v3 = [(UIView *)self _shouldReverseLayoutDirection];
-  v4 = [(UIView *)self traitCollection];
-  v5 = _UIFloatingTabBarGetPlatformMetrics([v4 userInterfaceIdiom]);
+  _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
+  traitCollection = [(UIView *)self traitCollection];
+  v5 = _UIFloatingTabBarGetPlatformMetrics([traitCollection userInterfaceIdiom]);
   [v5 backgroundInsets];
   v7 = v6;
   v9 = v8;
@@ -296,13 +296,13 @@ LABEL_10:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v15 = [(_UIFloatingTabBarPinnedItemsView *)self items];
-  v16 = [v15 countByEnumeratingWithState:&v23 objects:v30 count:16];
+  items = [(_UIFloatingTabBarPinnedItemsView *)self items];
+  v16 = [items countByEnumeratingWithState:&v23 objects:v30 count:16];
   if (v16)
   {
     v17 = v16;
     v18 = *v24;
-    if (v3)
+    if (_shouldReverseLayoutDirection)
     {
       v19 = CGRectMaxXEdge;
     }
@@ -319,7 +319,7 @@ LABEL_10:
       {
         if (*v24 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(items);
         }
 
         v21 = [(_UIFloatingTabBarPinnedItemsView *)self _itemViewForItem:*(*(&v23 + 1) + 8 * v20)];
@@ -331,42 +331,42 @@ LABEL_10:
       }
 
       while (v17 != v20);
-      v17 = [v15 countByEnumeratingWithState:&v23 objects:v30 count:16];
+      v17 = [items countByEnumeratingWithState:&v23 objects:v30 count:16];
     }
 
     while (v17);
   }
 }
 
-- (void)reloadItemViewForTab:(id)a3
+- (void)reloadItemViewForTab:(id)tab
 {
-  v3 = [(_UIFloatingTabBarPinnedItemsView *)self _itemViewForItemAtIndex:[(_UIFloatingTabBarPinnedItemsView *)self itemIndexForTab:a3]];
+  v3 = [(_UIFloatingTabBarPinnedItemsView *)self _itemViewForItemAtIndex:[(_UIFloatingTabBarPinnedItemsView *)self itemIndexForTab:tab]];
   [v3 reloadItemView];
 }
 
-- (void)_reloadItemViewsWithDifference:(id)a3 animated:(BOOL)a4
+- (void)_reloadItemViewsWithDifference:(id)difference animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  differenceCopy = difference;
   v7 = objc_alloc(MEMORY[0x1E695DF70]);
-  v8 = [v6 removals];
-  v9 = [v7 initWithCapacity:{objc_msgSend(v8, "count")}];
+  removals = [differenceCopy removals];
+  v9 = [v7 initWithCapacity:{objc_msgSend(removals, "count")}];
 
   v10 = objc_alloc(MEMORY[0x1E695DF70]);
-  v11 = [v6 insertions];
-  v12 = [v10 initWithCapacity:{objc_msgSend(v11, "count")}];
+  insertions = [differenceCopy insertions];
+  v12 = [v10 initWithCapacity:{objc_msgSend(insertions, "count")}];
 
   v13 = objc_alloc(MEMORY[0x1E695DF90]);
-  v14 = [(_UIFloatingTabBarPinnedItemsView *)self items];
-  v15 = [v13 initWithCapacity:{objc_msgSend(v14, "count")}];
+  items = [(_UIFloatingTabBarPinnedItemsView *)self items];
+  v15 = [v13 initWithCapacity:{objc_msgSend(items, "count")}];
 
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __76___UIFloatingTabBarPinnedItemsView__reloadItemViewsWithDifference_animated___block_invoke;
   v33[3] = &unk_1E70F8868;
-  v16 = v6;
+  v16 = differenceCopy;
   v34 = v16;
-  v35 = self;
+  selfCopy = self;
   v17 = v9;
   v36 = v17;
   v18 = v12;
@@ -391,7 +391,7 @@ LABEL_10:
   v23 = v20;
   v29 = v23;
   v24 = _Block_copy(&v25);
-  if (v4)
+  if (animatedCopy)
   {
     [UIView animateWithDuration:v22 animations:v24 completion:0.2, v25, v26, v27, v28];
   }
@@ -403,49 +403,49 @@ LABEL_10:
   }
 }
 
-- (int64_t)itemIndexForTab:(id)a3
+- (int64_t)itemIndexForTab:(id)tab
 {
-  v4 = a3;
-  v5 = [(_UIFloatingTabBarPinnedItemsView *)self items];
+  tabCopy = tab;
+  items = [(_UIFloatingTabBarPinnedItemsView *)self items];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __52___UIFloatingTabBarPinnedItemsView_itemIndexForTab___block_invoke;
   v9[3] = &unk_1E70F8890;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 indexOfObjectPassingTest:v9];
+  v10 = tabCopy;
+  v6 = tabCopy;
+  v7 = [items indexOfObjectPassingTest:v9];
 
   return v7;
 }
 
-- (id)tabForSelectionAtItemIndex:(int64_t)a3
+- (id)tabForSelectionAtItemIndex:(int64_t)index
 {
-  v5 = [(_UIFloatingTabBarPinnedItemsView *)self items];
-  v6 = [v5 count];
+  items = [(_UIFloatingTabBarPinnedItemsView *)self items];
+  v6 = [items count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
-    v9 = 0;
+    tabForSelection = 0;
   }
 
   else
   {
-    v7 = [(_UIFloatingTabBarPinnedItemsView *)self items];
-    v8 = [v7 objectAtIndex:a3];
-    v9 = [v8 tabForSelection];
+    items2 = [(_UIFloatingTabBarPinnedItemsView *)self items];
+    v8 = [items2 objectAtIndex:index];
+    tabForSelection = [v8 tabForSelection];
   }
 
-  return v9;
+  return tabForSelection;
 }
 
-- (id)_itemViewForItem:(id)a3
+- (id)_itemViewForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(_UIFloatingTabBarPinnedItemsView *)self itemViews];
-  v6 = [v4 contentTab];
+  itemCopy = item;
+  itemViews = [(_UIFloatingTabBarPinnedItemsView *)self itemViews];
+  contentTab = [itemCopy contentTab];
 
-  v7 = [v6 identifier];
-  v8 = [v5 objectForKey:v7];
+  identifier = [contentTab identifier];
+  v8 = [itemViews objectForKey:identifier];
 
   return v8;
 }

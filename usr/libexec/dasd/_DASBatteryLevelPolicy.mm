@@ -1,13 +1,13 @@
 @interface _DASBatteryLevelPolicy
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
-- (BOOL)backgroundTaskAllowedWithType:(id)a3 withRationale:(id)a4 withBatteryLevel:(double)a5 isPluggedIn:(BOOL)a6;
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4;
+- (BOOL)appliesToActivity:(id)activity;
+- (BOOL)backgroundTaskAllowedWithType:(id)type withRationale:(id)rationale withBatteryLevel:(double)level isPluggedIn:(BOOL)in;
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state;
 - (_DASBatteryLevelPolicy)init;
-- (double)getScoreForActivity:(id)a3 forBatteryLevel:(double)a4 isPluggedIn:(BOOL)a5;
+- (double)getScoreForActivity:(id)activity forBatteryLevel:(double)level isPluggedIn:(BOOL)in;
 - (id)initializeTriggers;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
-- (void)updateSystemConstraintsWithContext:(id)a3;
+- (id)responseForActivity:(id)activity withState:(id)state;
+- (void)updateSystemConstraintsWithContext:(id)context;
 @end
 
 @implementation _DASBatteryLevelPolicy
@@ -69,9 +69,9 @@
     v3->_defaultPairedPluginKeyPath = v11;
 
     v3->_isiPad = +[_DASConfig isiPad];
-    v13 = [(_DASBatteryLevelPolicy *)v3 initializeTriggers];
+    initializeTriggers = [(_DASBatteryLevelPolicy *)v3 initializeTriggers];
     triggers = v3->_triggers;
-    v3->_triggers = v13;
+    v3->_triggers = initializeTriggers;
 
     v3->_lastSavedBatteryLevel = 0;
   }
@@ -91,16 +91,16 @@
   return v3;
 }
 
-- (void)updateSystemConstraintsWithContext:(id)a3
+- (void)updateSystemConstraintsWithContext:(id)context
 {
-  v3 = [a3 objectForKeyedSubscript:self->_batteryLevelKeyPath];
-  v4 = [v3 integerValue];
+  v3 = [context objectForKeyedSubscript:self->_batteryLevelKeyPath];
+  integerValue = [v3 integerValue];
 
   v5 = +[_DASDaemon sharedInstance];
   v6 = v5;
-  if (v4 > 9)
+  if (integerValue > 9)
   {
-    if (v4 > 0x13)
+    if (integerValue > 0x13)
     {
       [v5 removeConstraint:1 forSchedulingPriority:_DASSchedulingPriorityMaintenance];
     }
@@ -120,20 +120,20 @@
   }
 }
 
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state
 {
-  v6 = a4;
-  if ([a3 isEqualToString:@"com.apple.das.batterylevelpolicy.batterylevelchange"])
+  stateCopy = state;
+  if ([trigger isEqualToString:@"com.apple.das.batterylevelpolicy.batterylevelchange"])
   {
-    v7 = [v6 objectForKeyedSubscript:self->_batteryLevelKeyPath];
-    v8 = [v7 integerValue];
+    v7 = [stateCopy objectForKeyedSubscript:self->_batteryLevelKeyPath];
+    integerValue = [v7 integerValue];
 
-    [(_DASBatteryLevelPolicy *)self updateSystemConstraintsWithContext:v6];
+    [(_DASBatteryLevelPolicy *)self updateSystemConstraintsWithContext:stateCopy];
     lastSavedBatteryLevel = self->_lastSavedBatteryLevel;
-    v10 = v8 - lastSavedBatteryLevel < 5;
-    if (v8 - lastSavedBatteryLevel > 4 || v8 < lastSavedBatteryLevel)
+    v10 = integerValue - lastSavedBatteryLevel < 5;
+    if (integerValue - lastSavedBatteryLevel > 4 || integerValue < lastSavedBatteryLevel)
     {
-      self->_lastSavedBatteryLevel = v8;
+      self->_lastSavedBatteryLevel = integerValue;
     }
 
     else
@@ -150,36 +150,36 @@
   return v10;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v3 = a3;
-  if ([v3 allowsUnrestrictedBackgroundLaunches])
+  activityCopy = activity;
+  if ([activityCopy allowsUnrestrictedBackgroundLaunches])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [v3 schedulingPriority];
-    v4 = v5 < _DASSchedulingPriorityUserInitiated;
+    schedulingPriority = [activityCopy schedulingPriority];
+    v4 = schedulingPriority < _DASSchedulingPriorityUserInitiated;
   }
 
   return v4;
 }
 
-- (double)getScoreForActivity:(id)a3 forBatteryLevel:(double)a4 isPluggedIn:(BOOL)a5
+- (double)getScoreForActivity:(id)activity forBatteryLevel:(double)level isPluggedIn:(BOOL)in
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = [v7 userInfo];
-  v9 = [v8 objectForKeyedSubscript:_DASCTSMinBatteryLevelKey];
-  v10 = [v9 integerValue];
+  inCopy = in;
+  activityCopy = activity;
+  userInfo = [activityCopy userInfo];
+  v9 = [userInfo objectForKeyedSubscript:_DASCTSMinBatteryLevelKey];
+  integerValue = [v9 integerValue];
 
   v11 = 0.0;
-  if (v10 <= a4)
+  if (integerValue <= level)
   {
-    v12 = [v7 schedulingPriority];
-    if (v12 >= _DASSchedulingPriorityUserInitiated)
+    schedulingPriority = [activityCopy schedulingPriority];
+    if (schedulingPriority >= _DASSchedulingPriorityUserInitiated)
     {
       v15 = 5.0;
       v14 = 0.25;
@@ -187,22 +187,22 @@
 
     else
     {
-      v13 = [v7 schedulingPriority];
+      schedulingPriority2 = [activityCopy schedulingPriority];
       v14 = 0.5;
-      if (v13 >= _DASSchedulingPriorityUtility)
+      if (schedulingPriority2 >= _DASSchedulingPriorityUtility)
       {
         v14 = 0.4;
       }
 
       v15 = 10.0;
-      if (v13 < _DASSchedulingPriorityUtility)
+      if (schedulingPriority2 < _DASSchedulingPriorityUtility)
       {
         v15 = 20.0;
       }
     }
 
-    v16 = pow((a4 - v15) / (100.0 - v15), v14);
-    if (v5)
+    v16 = pow((level - v15) / (100.0 - v15), v14);
+    if (inCopy)
     {
       v16 = v16 * 1.2;
     }
@@ -218,16 +218,16 @@
   return v11;
 }
 
-- (BOOL)backgroundTaskAllowedWithType:(id)a3 withRationale:(id)a4 withBatteryLevel:(double)a5 isPluggedIn:(BOOL)a6
+- (BOOL)backgroundTaskAllowedWithType:(id)type withRationale:(id)rationale withBatteryLevel:(double)level isPluggedIn:(BOOL)in
 {
-  v10 = a4;
-  v11 = [a3 isEqualToString:_DASLaunchReasonBackgroundProcessing];
+  rationaleCopy = rationale;
+  v11 = [type isEqualToString:_DASLaunchReasonBackgroundProcessing];
   v12 = 1;
-  if (v11 && !a6 && (a5 < 75.0 || !self->_isiPad))
+  if (v11 && !in && (level < 75.0 || !self->_isiPad))
   {
-    v13 = [NSNumber numberWithDouble:a5];
+    v13 = [NSNumber numberWithDouble:level];
     v14 = [NSPredicate predicateWithFormat:@"launchType == PROCESSING AND batteryLevel == %@", v13];
-    [v10 addRationaleWithCondition:v14];
+    [rationaleCopy addRationaleWithCondition:v14];
 
     v12 = 0;
   }
@@ -235,23 +235,23 @@
   return v12;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v6 = a3;
+  activityCopy = activity;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000456E8;
   block[3] = &unk_1001B56E0;
   block[4] = self;
-  v7 = a4;
-  v36 = v7;
+  stateCopy = state;
+  v36 = stateCopy;
   if (qword_10020B058 != -1)
   {
     dispatch_once(&qword_10020B058, block);
   }
 
   v8 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:self->_policyName];
-  v9 = [v7 objectForKeyedSubscript:self->_batteryLevelKeyPath];
+  v9 = [stateCopy objectForKeyedSubscript:self->_batteryLevelKeyPath];
   [v9 doubleValue];
   if (v10 == 0.0)
   {
@@ -263,22 +263,22 @@ LABEL_5:
     goto LABEL_17;
   }
 
-  v15 = [v9 unsignedIntegerValue];
-  v16 = [NSPredicate predicateWithFormat:@"batteryLevel == %ld", v15];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
+  v16 = [NSPredicate predicateWithFormat:@"batteryLevel == %ld", unsignedIntegerValue];
   [(_DASPolicyResponseRationale *)v8 addRationaleWithCondition:v16];
 
-  v17 = [v7 objectForKeyedSubscript:self->_pluginStatusKeyPath];
-  v18 = [v17 BOOLValue];
+  v17 = [stateCopy objectForKeyedSubscript:self->_pluginStatusKeyPath];
+  bOOLValue = [v17 BOOLValue];
 
-  v19 = [NSNumber numberWithBool:v18];
+  v19 = [NSNumber numberWithBool:bOOLValue];
   v20 = [NSPredicate predicateWithFormat:@"pluggedIn == %@", v19];
   [(_DASPolicyResponseRationale *)v8 addRationaleWithCondition:v20];
 
-  if ([v6 requestsApplicationLaunch])
+  if ([activityCopy requestsApplicationLaunch])
   {
-    v21 = [v6 launchReason];
-    v22 = v15;
-    v23 = [(_DASBatteryLevelPolicy *)self backgroundTaskAllowedWithType:v21 withRationale:v8 withBatteryLevel:v18 isPluggedIn:v15];
+    launchReason = [activityCopy launchReason];
+    v22 = unsignedIntegerValue;
+    v23 = [(_DASBatteryLevelPolicy *)self backgroundTaskAllowedWithType:launchReason withRationale:v8 withBatteryLevel:bOOLValue isPluggedIn:unsignedIntegerValue];
 
     if ((v23 & 1) == 0)
     {
@@ -291,25 +291,25 @@ LABEL_5:
 
   else
   {
-    v22 = v15;
+    v22 = unsignedIntegerValue;
   }
 
-  [(_DASBatteryLevelPolicy *)self getScoreForActivity:v6 forBatteryLevel:v18 isPluggedIn:v22];
+  [(_DASBatteryLevelPolicy *)self getScoreForActivity:activityCopy forBatteryLevel:bOOLValue isPluggedIn:v22];
   v25 = v24;
-  if ([v6 targetDevice] == 1 || objc_msgSend(v6, "targetDevice") == 2)
+  if ([activityCopy targetDevice] == 1 || objc_msgSend(activityCopy, "targetDevice") == 2)
   {
-    v26 = [v7 objectForKeyedSubscript:self->_defaultPairedBatteryKeyPath];
+    v26 = [stateCopy objectForKeyedSubscript:self->_defaultPairedBatteryKeyPath];
     v27 = v26;
     if (v26)
     {
-      v28 = [v26 unsignedIntegerValue];
-      v29 = [NSPredicate predicateWithFormat:@"watchBatteryLevel == %ld", v28];
+      unsignedIntegerValue2 = [v26 unsignedIntegerValue];
+      v29 = [NSPredicate predicateWithFormat:@"watchBatteryLevel == %ld", unsignedIntegerValue2];
       [(_DASPolicyResponseRationale *)v8 addRationaleWithCondition:v29];
 
-      v30 = [v7 objectForKeyedSubscript:self->_defaultPairedPluginKeyPath];
-      v31 = [v30 BOOLValue];
+      v30 = [stateCopy objectForKeyedSubscript:self->_defaultPairedPluginKeyPath];
+      bOOLValue2 = [v30 BOOLValue];
 
-      [(_DASBatteryLevelPolicy *)self getScoreForActivity:v6 forBatteryLevel:v31 isPluggedIn:v28];
+      [(_DASBatteryLevelPolicy *)self getScoreForActivity:activityCopy forBatteryLevel:bOOLValue2 isPluggedIn:unsignedIntegerValue2];
       if (v25 >= v32)
       {
         v25 = v32;

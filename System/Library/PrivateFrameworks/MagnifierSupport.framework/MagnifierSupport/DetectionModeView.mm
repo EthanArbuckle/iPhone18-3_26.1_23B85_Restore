@@ -1,15 +1,15 @@
 @interface DetectionModeView
 - (NSArray)accessibilityCustomActions;
-- (_TtC16MagnifierSupport17DetectionModeView)initWithFrame:(CGRect)a3;
+- (_TtC16MagnifierSupport17DetectionModeView)initWithFrame:(CGRect)frame;
 - (id)_accessibilitySupplementaryFooterViews;
 - (uint64_t)toggleDetection;
-- (void)didPanPreviewView:(id)a3;
-- (void)didPinchToZoom:(id)a3;
-- (void)didTapRecordButton:(id)a3;
-- (void)didTapRestartButton:(id)a3;
-- (void)didTapTapToRadarButton:(id)a3;
+- (void)didPanPreviewView:(id)view;
+- (void)didPinchToZoom:(id)zoom;
+- (void)didTapRecordButton:(id)button;
+- (void)didTapRestartButton:(id)button;
+- (void)didTapTapToRadarButton:(id)button;
 - (void)pauseSpeech;
-- (void)setAccessibilityCustomActions:(id)a3;
+- (void)setAccessibilityCustomActions:(id)actions;
 @end
 
 @implementation DetectionModeView
@@ -17,7 +17,7 @@
 - (void)pauseSpeech
 {
   v2 = qword_281544FE0;
-  v3 = self;
+  selfCopy = self;
   if (v2 != -1)
   {
     swift_once();
@@ -35,7 +35,7 @@
 
 - (NSArray)accessibilityCustomActions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_257E7EC98();
 
   if (v3)
@@ -52,30 +52,30 @@
   return v4;
 }
 
-- (void)setAccessibilityCustomActions:(id)a3
+- (void)setAccessibilityCustomActions:(id)actions
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (actions)
   {
     sub_257BD2C2C(0, &qword_281543E70);
     sub_257ECF810();
-    v6 = self;
-    a3 = sub_257ECF7F0();
+    selfCopy = self;
+    actions = sub_257ECF7F0();
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;
   v8.super_class = ObjectType;
-  [(DetectionModeView *)&v8 setAccessibilityCustomActions:a3];
+  [(DetectionModeView *)&v8 setAccessibilityCustomActions:actions];
 }
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_257E7F92C();
 
   if (v3)
@@ -91,14 +91,14 @@
   return v4;
 }
 
-- (void)didTapRecordButton:(id)a3
+- (void)didTapRecordButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
+  buttonCopy = button;
+  selfCopy = self;
   sub_257E811EC();
 }
 
-- (void)didTapTapToRadarButton:(id)a3
+- (void)didTapTapToRadarButton:(id)button
 {
   v4 = self + OBJC_IVAR____TtC16MagnifierSupport17DetectionModeView_arDelegate;
   if (swift_unknownObjectWeakLoadStrong())
@@ -106,13 +106,13 @@
     v5 = *(v4 + 1);
     ObjectType = swift_getObjectType();
     v7 = *(v5 + 24);
-    v8 = self;
+    selfCopy = self;
     v7(ObjectType, v5);
     swift_unknownObjectRelease();
   }
 }
 
-- (void)didTapRestartButton:(id)a3
+- (void)didTapRestartButton:(id)button
 {
   v4 = self + OBJC_IVAR____TtC16MagnifierSupport17DetectionModeView_arDelegate;
   if (swift_unknownObjectWeakLoadStrong())
@@ -120,27 +120,27 @@
     v5 = *(v4 + 1);
     ObjectType = swift_getObjectType();
     v7 = *(v5 + 32);
-    v8 = self;
+    selfCopy = self;
     v7(ObjectType, v5);
     swift_unknownObjectRelease();
   }
 }
 
-- (void)didPanPreviewView:(id)a3
+- (void)didPanPreviewView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_257E80114(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_257E80114(viewCopy);
 }
 
-- (void)didPinchToZoom:(id)a3
+- (void)didPinchToZoom:(id)zoom
 {
-  v4 = a3;
-  v5 = self;
-  sub_257E80AF0(v4);
+  zoomCopy = zoom;
+  selfCopy = self;
+  sub_257E80AF0(zoomCopy);
 }
 
-- (_TtC16MagnifierSupport17DetectionModeView)initWithFrame:(CGRect)a3
+- (_TtC16MagnifierSupport17DetectionModeView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,32 +1,32 @@
 @interface CCUIPPTTest
-+ (id)testWithName:(id)a3 beginSignpost:(unint64_t)a4 endSignpost:(unint64_t)a5;
-- (id)_initWithName:(id)a3 beginSignpost:(unint64_t)a4 endSignpost:(unint64_t)a5;
++ (id)testWithName:(id)name beginSignpost:(unint64_t)signpost endSignpost:(unint64_t)endSignpost;
+- (id)_initWithName:(id)name beginSignpost:(unint64_t)signpost endSignpost:(unint64_t)endSignpost;
 @end
 
 @implementation CCUIPPTTest
 
-+ (id)testWithName:(id)a3 beginSignpost:(unint64_t)a4 endSignpost:(unint64_t)a5
++ (id)testWithName:(id)name beginSignpost:(unint64_t)signpost endSignpost:(unint64_t)endSignpost
 {
-  v8 = a3;
-  v9 = [[a1 alloc] _initWithName:v8 beginSignpost:a4 endSignpost:a5];
+  nameCopy = name;
+  v9 = [[self alloc] _initWithName:nameCopy beginSignpost:signpost endSignpost:endSignpost];
 
   return v9;
 }
 
-- (id)_initWithName:(id)a3 beginSignpost:(unint64_t)a4 endSignpost:(unint64_t)a5
+- (id)_initWithName:(id)name beginSignpost:(unint64_t)signpost endSignpost:(unint64_t)endSignpost
 {
-  v8 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = CCUIPPTTest;
   v9 = [(CCUIPPTTest *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [nameCopy copy];
     name = v9->_name;
     v9->_name = v10;
 
-    v9->_beginSignpost = a4;
-    v9->_endSignpost = a5;
+    v9->_beginSignpost = signpost;
+    v9->_endSignpost = endSignpost;
   }
 
   return v9;

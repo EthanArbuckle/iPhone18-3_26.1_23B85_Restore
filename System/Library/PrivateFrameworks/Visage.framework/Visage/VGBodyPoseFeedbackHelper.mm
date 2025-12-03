@@ -1,19 +1,19 @@
 @interface VGBodyPoseFeedbackHelper
-+ (id)feedbackToString:(unint64_t)a3;
++ (id)feedbackToString:(unint64_t)string;
 @end
 
 @implementation VGBodyPoseFeedbackHelper
 
-+ (id)feedbackToString:(unint64_t)a3
++ (id)feedbackToString:(unint64_t)string
 {
-  if (a3 > 7)
+  if (string > 7)
   {
     return @"unknown";
   }
 
   else
   {
-    return *(&off_279E28EC0 + a3);
+    return *(&off_279E28EC0 + string);
   }
 }
 

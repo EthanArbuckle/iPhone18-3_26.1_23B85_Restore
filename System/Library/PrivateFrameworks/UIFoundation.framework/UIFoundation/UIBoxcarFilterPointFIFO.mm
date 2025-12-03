@@ -1,5 +1,5 @@
 @interface UIBoxcarFilterPointFIFO
-- (UIBoxcarFilterPointFIFO)initWithFIFO:(id)a3 width:(unint64_t)a4 spacing:(float)a5;
+- (UIBoxcarFilterPointFIFO)initWithFIFO:(id)o width:(unint64_t)width spacing:(float)spacing;
 - (void)addPoint:(UIBoxcarFilterPointFIFO *)self;
 - (void)clear;
 - (void)dealloc;
@@ -9,21 +9,21 @@
 
 @implementation UIBoxcarFilterPointFIFO
 
-- (UIBoxcarFilterPointFIFO)initWithFIFO:(id)a3 width:(unint64_t)a4 spacing:(float)a5
+- (UIBoxcarFilterPointFIFO)initWithFIFO:(id)o width:(unint64_t)width spacing:(float)spacing
 {
   v10.receiver = self;
   v10.super_class = UIBoxcarFilterPointFIFO;
-  v7 = [(UIPointFIFO *)&v10 initWithFIFO:a3];
+  v7 = [(UIPointFIFO *)&v10 initWithFIFO:o];
   v8 = v7;
   if (v7)
   {
-    if (a4 <= 1)
+    if (width <= 1)
     {
       [UIBoxcarFilterPointFIFO initWithFIFO:width:spacing:];
     }
 
-    v7->_width = a4;
-    v7->_spacing = a5;
+    v7->_width = width;
+    v7->_spacing = spacing;
     v7->_prevPoints = objc_alloc_init(_UIPointVector);
   }
 
@@ -62,10 +62,10 @@
 {
   v9 = v2;
   v4 = [(_UIPointVector *)[(UIBoxcarFilterPointFIFO *)self prevPoints] count];
-  v5 = [(UIBoxcarFilterPointFIFO *)self prevPoints];
+  prevPoints = [(UIBoxcarFilterPointFIFO *)self prevPoints];
   if (v4)
   {
-    [(_UIPointVector *)v5 lastVector];
+    [(_UIPointVector *)prevPoints lastVector];
     v7 = vsubq_f32(v6, v9);
     v8 = vmulq_f32(v7, v7);
     if (sqrtf(vaddv_f32(vadd_f32(*v8.i8, *&vextq_s8(v8, v8, 8uLL)))) >= self->_spacing)
@@ -82,7 +82,7 @@
 
   else
   {
-    [(_UIPointVector *)v5 addVector:*v9.i64];
+    [(_UIPointVector *)prevPoints addVector:*v9.i64];
 
     [(UIPointFIFO *)self emitPoint:*v9.i64];
   }

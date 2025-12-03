@@ -27,7 +27,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [a1 addDependency:*(*(&v10 + 1) + 8 * v8++)];
+        [self addDependency:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);

@@ -1,14 +1,14 @@
 @interface DirectUploadRequest
-- (DirectUploadRequest)initWithEntity:(id)a3 accountIdentifier:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (DirectUploadRequest)initWithEntity:(id)entity accountIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation DirectUploadRequest
 
-- (DirectUploadRequest)initWithEntity:(id)a3 accountIdentifier:(id)a4
+- (DirectUploadRequest)initWithEntity:(id)entity accountIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  entityCopy = entity;
+  identifierCopy = identifier;
   v27.receiver = self;
   v27.super_class = DirectUploadRequest;
   v8 = [(DirectUploadRequest *)&v27 init];
@@ -23,7 +23,7 @@
     v29 = 0u;
     v30 = 0u;
     v28 = 0u;
-    [v6 getValues:&v28 forProperties:v31 count:6];
+    [entityCopy getValues:&v28 forProperties:v31 count:6];
     if (v28)
     {
       v9 = [NSURL alloc];
@@ -32,7 +32,7 @@
       v8->_localAssetURL = v10;
     }
 
-    v8->_databaseIdentifier = [v6 persistentID];
+    v8->_databaseIdentifier = [entityCopy persistentID];
     v12 = [v29 copy];
     parentRelationshipType = v8->_parentRelationshipType;
     v8->_parentRelationshipType = v12;
@@ -46,9 +46,9 @@
     uti = v8->_uti;
     v8->_uti = v16;
 
-    if (v7)
+    if (identifierCopy)
     {
-      v18 = [v7 copy];
+      v18 = [identifierCopy copy];
       accountIdentifier = v8->_accountIdentifier;
       v8->_accountIdentifier = v18;
     }
@@ -56,9 +56,9 @@
     else
     {
       v20 = [MediaSocialPostEntity alloc];
-      v21 = [*(&v29 + 1) longLongValue];
-      v22 = [v6 database];
-      accountIdentifier = [(MediaSocialPostEntity *)v20 initWithPersistentID:v21 inDatabase:v22];
+      longLongValue = [*(&v29 + 1) longLongValue];
+      database = [entityCopy database];
+      accountIdentifier = [(MediaSocialPostEntity *)v20 initWithPersistentID:longLongValue inDatabase:database];
 
       v23 = [(MediaSocialPostEntity *)accountIdentifier valueForProperty:@"account_id"];
       v24 = v8->_accountIdentifier;
@@ -73,9 +73,9 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setAccountIdentifier:self->_accountIdentifier];
   [v4 setDatabaseIdentifier:self->_databaseIdentifier];
   [v4 setLocalAssetURL:self->_localAssetURL];

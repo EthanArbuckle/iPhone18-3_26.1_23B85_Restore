@@ -1,22 +1,22 @@
 @interface ASCSkeletonTextView
-- (ASCSkeletonTextView)initWithCoder:(id)a3;
-- (ASCSkeletonTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (ASCSkeletonTextView)initWithCoder:(id)coder;
+- (ASCSkeletonTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIColor)skeletonColor;
-- (void)drawRect:(CGRect)a3;
-- (void)setSkeleton:(id)a3;
-- (void)setSkeletonColor:(id)a3;
-- (void)setSkeletonNumberOfLines:(int64_t)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setSkeleton:(id)skeleton;
+- (void)setSkeletonColor:(id)color;
+- (void)setSkeletonNumberOfLines:(int64_t)lines;
 @end
 
 @implementation ASCSkeletonTextView
 
-- (ASCSkeletonTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (ASCSkeletonTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
   v5.receiver = self;
   v5.super_class = ASCSkeletonTextView;
-  result = [(ASCSkeletonTextView *)&v5 initWithFrame:a4 textContainer:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(ASCSkeletonTextView *)&v5 initWithFrame:container textContainer:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_skeletonNumberOfLines = 1;
@@ -25,18 +25,18 @@
   return result;
 }
 
-- (ASCSkeletonTextView)initWithCoder:(id)a3
+- (ASCSkeletonTextView)initWithCoder:(id)coder
 {
   [(ASCSkeletonTextView *)self doesNotRecognizeSelector:a2];
 
   return 0;
 }
 
-- (void)setSkeletonNumberOfLines:(int64_t)a3
+- (void)setSkeletonNumberOfLines:(int64_t)lines
 {
-  if (self->_skeletonNumberOfLines != a3)
+  if (self->_skeletonNumberOfLines != lines)
   {
-    self->_skeletonNumberOfLines = a3;
+    self->_skeletonNumberOfLines = lines;
     [(ASCSkeletonTextView *)self invalidateIntrinsicContentSize];
 
     [(ASCSkeletonTextView *)self setNeedsDisplay];
@@ -48,25 +48,25 @@
   skeletonColor = self->_skeletonColor;
   if (skeletonColor)
   {
-    v3 = skeletonColor;
+    textColor = skeletonColor;
   }
 
   else
   {
-    v3 = [(ASCSkeletonTextView *)self textColor];
+    textColor = [(ASCSkeletonTextView *)self textColor];
   }
 
-  return v3;
+  return textColor;
 }
 
-- (void)setSkeletonColor:(id)a3
+- (void)setSkeletonColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   skeletonColor = self->_skeletonColor;
-  v9 = v4;
-  if (!v4 || !skeletonColor)
+  v9 = colorCopy;
+  if (!colorCopy || !skeletonColor)
   {
-    if (skeletonColor == v4)
+    if (skeletonColor == colorCopy)
     {
       goto LABEL_7;
     }
@@ -74,12 +74,12 @@
     goto LABEL_6;
   }
 
-  v6 = [(UIColor *)skeletonColor isEqual:v4];
-  v4 = v9;
+  v6 = [(UIColor *)skeletonColor isEqual:colorCopy];
+  colorCopy = v9;
   if ((v6 & 1) == 0)
   {
 LABEL_6:
-    v7 = [(UIColor *)v4 copy];
+    v7 = [(UIColor *)colorCopy copy];
     v8 = self->_skeletonColor;
     self->_skeletonColor = v7;
 
@@ -91,14 +91,14 @@ LABEL_7:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setSkeleton:(id)a3
+- (void)setSkeleton:(id)skeleton
 {
-  v4 = a3;
+  skeletonCopy = skeleton;
   skeleton = self->_skeleton;
-  v9 = v4;
-  if (!v4 || !skeleton)
+  v9 = skeletonCopy;
+  if (!skeletonCopy || !skeleton)
   {
-    if (skeleton == v4)
+    if (skeleton == skeletonCopy)
     {
       goto LABEL_7;
     }
@@ -106,12 +106,12 @@ LABEL_7:
     goto LABEL_6;
   }
 
-  v6 = [(ASCContentSkeleton *)skeleton isEqual:v4];
-  v4 = v9;
+  v6 = [(ASCContentSkeleton *)skeleton isEqual:skeletonCopy];
+  skeletonCopy = v9;
   if (!v6)
   {
 LABEL_6:
-    v7 = [(ASCContentSkeleton *)v4 copy];
+    v7 = [(ASCContentSkeleton *)skeletonCopy copy];
     v8 = self->_skeleton;
     self->_skeleton = v7;
 
@@ -126,13 +126,13 @@ LABEL_7:
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(ASCSkeletonTextView *)self skeleton];
+  skeleton = [(ASCSkeletonTextView *)self skeleton];
 
-  if (v3)
+  if (skeleton)
   {
     v4 = *MEMORY[0x277D77260];
-    v5 = [(ASCSkeletonTextView *)self skeleton];
-    [v5 skeletonHeightFromContext:self];
+    skeleton2 = [(ASCSkeletonTextView *)self skeleton];
+    [skeleton2 skeletonHeightFromContext:self];
     v7 = v6;
   }
 
@@ -152,16 +152,16 @@ LABEL_7:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(ASCSkeletonTextView *)self skeleton];
+  height = fits.height;
+  width = fits.width;
+  skeleton = [(ASCSkeletonTextView *)self skeleton];
 
-  if (v6)
+  if (skeleton)
   {
-    v7 = [(ASCSkeletonTextView *)self skeleton];
-    [v7 skeletonHeightFromContext:self];
+    skeleton2 = [(ASCSkeletonTextView *)self skeleton];
+    [skeleton2 skeletonHeightFromContext:self];
     v9 = v8;
   }
 
@@ -181,18 +181,18 @@ LABEL_7:
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(ASCSkeletonTextView *)self skeleton];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  skeleton = [(ASCSkeletonTextView *)self skeleton];
 
-  if (v8)
+  if (skeleton)
   {
-    v9 = [(ASCSkeletonTextView *)self skeleton];
-    [v9 drawSkeletonInRect:self usingSkeletonContext:{x, y, width, height}];
+    skeleton2 = [(ASCSkeletonTextView *)self skeleton];
+    [skeleton2 drawSkeletonInRect:self usingSkeletonContext:{x, y, width, height}];
   }
 
   else

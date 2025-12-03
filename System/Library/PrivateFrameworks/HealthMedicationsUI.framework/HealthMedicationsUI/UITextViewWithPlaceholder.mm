@@ -1,9 +1,9 @@
 @interface UITextViewWithPlaceholder
 - (NSString)text;
-- (_TtC19HealthMedicationsUI25UITextViewWithPlaceholder)initWithCoder:(id)a3;
-- (_TtC19HealthMedicationsUI25UITextViewWithPlaceholder)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (_TtC19HealthMedicationsUI25UITextViewWithPlaceholder)initWithCoder:(id)coder;
+- (_TtC19HealthMedicationsUI25UITextViewWithPlaceholder)initWithFrame:(CGRect)frame textContainer:(id)container;
 - (void)layoutSubviews;
-- (void)setText:(id)a3;
+- (void)setText:(id)text;
 @end
 
 @implementation UITextViewWithPlaceholder
@@ -13,10 +13,10 @@
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v2 = v7.receiver;
-  v3 = [(UITextViewWithPlaceholder *)&v7 text];
-  if (v3)
+  text = [(UITextViewWithPlaceholder *)&v7 text];
+  if (text)
   {
-    v4 = v3;
+    v4 = text;
     sub_228392000();
 
     v5 = sub_228391FC0();
@@ -31,56 +31,56 @@
   return v5;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (text)
   {
     sub_228392000();
-    v6 = self;
-    a3 = sub_228391FC0();
+    selfCopy = self;
+    text = sub_228391FC0();
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v11.receiver = self;
   v11.super_class = ObjectType;
-  [(UITextViewWithPlaceholder *)&v11 setText:a3];
+  [(UITextViewWithPlaceholder *)&v11 setText:text];
 
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v8 = [(UITextViewWithPlaceholder *)&v10 text];
+  text = [(UITextViewWithPlaceholder *)&v10 text];
   v9.receiver = self;
   v9.super_class = ObjectType;
-  [(UITextViewWithPlaceholder *)&v9 setText:v8];
+  [(UITextViewWithPlaceholder *)&v9 setText:text];
 
   sub_2283255A4();
 }
 
-- (_TtC19HealthMedicationsUI25UITextViewWithPlaceholder)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC19HealthMedicationsUI25UITextViewWithPlaceholder)initWithFrame:(CGRect)frame textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI25UITextViewWithPlaceholder____lazy_storage___placeholderLabel) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI25UITextViewWithPlaceholder_textDidChangeSubscription) = 0;
   v15.receiver = self;
   v15.super_class = ObjectType;
-  v11 = a4;
-  v12 = [(UITextViewWithPlaceholder *)&v15 initWithFrame:v11 textContainer:x, y, width, height];
+  containerCopy = container;
+  height = [(UITextViewWithPlaceholder *)&v15 initWithFrame:containerCopy textContainer:x, y, width, height];
   v13 = sub_2283251B8();
-  [(UITextViewWithPlaceholder *)v12 addSubview:v13, v15.receiver, v15.super_class];
+  [(UITextViewWithPlaceholder *)height addSubview:v13, v15.receiver, v15.super_class];
 
   sub_228325AE0();
-  return v12;
+  return height;
 }
 
-- (_TtC19HealthMedicationsUI25UITextViewWithPlaceholder)initWithCoder:(id)a3
+- (_TtC19HealthMedicationsUI25UITextViewWithPlaceholder)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI25UITextViewWithPlaceholder____lazy_storage___placeholderLabel) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI25UITextViewWithPlaceholder_textDidChangeSubscription) = 0;
@@ -91,7 +91,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   UITextViewWithPlaceholder.layoutSubviews()();
 }
 

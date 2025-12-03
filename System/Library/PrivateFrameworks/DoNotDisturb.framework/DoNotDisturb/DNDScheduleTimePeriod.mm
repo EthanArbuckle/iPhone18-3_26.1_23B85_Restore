@@ -1,46 +1,46 @@
 @interface DNDScheduleTimePeriod
-- (BOOL)isEqual:(id)a3;
-- (DNDScheduleTimePeriod)initWithCoder:(id)a3;
-- (id)_initWithPeriod:(id)a3;
-- (id)_initWithStartTime:(id)a3 endTime:(id)a4 weekdays:(unint64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (DNDScheduleTimePeriod)initWithCoder:(id)coder;
+- (id)_initWithPeriod:(id)period;
+- (id)_initWithStartTime:(id)time endTime:(id)endTime weekdays:(unint64_t)weekdays;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DNDScheduleTimePeriod
 
-- (id)_initWithPeriod:(id)a3
+- (id)_initWithPeriod:(id)period
 {
-  v4 = a3;
-  v5 = [v4 startTime];
-  v6 = [v4 endTime];
-  if (v4)
+  periodCopy = period;
+  startTime = [periodCopy startTime];
+  endTime = [periodCopy endTime];
+  if (periodCopy)
   {
-    v7 = [v4 weekdays];
+    weekdays = [periodCopy weekdays];
   }
 
   else
   {
-    v7 = 0xFFFFFFFFLL;
+    weekdays = 0xFFFFFFFFLL;
   }
 
-  v8 = [(DNDScheduleTimePeriod *)self _initWithStartTime:v5 endTime:v6 weekdays:v7];
+  v8 = [(DNDScheduleTimePeriod *)self _initWithStartTime:startTime endTime:endTime weekdays:weekdays];
 
   return v8;
 }
 
-- (id)_initWithStartTime:(id)a3 endTime:(id)a4 weekdays:(unint64_t)a5
+- (id)_initWithStartTime:(id)time endTime:(id)endTime weekdays:(unint64_t)weekdays
 {
-  v8 = a3;
-  v9 = a4;
+  timeCopy = time;
+  endTimeCopy = endTime;
   v21.receiver = self;
   v21.super_class = DNDScheduleTimePeriod;
   v10 = [(DNDScheduleTimePeriod *)&v21 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [timeCopy copy];
     v12 = v11;
     if (v11)
     {
@@ -55,7 +55,7 @@
     startTime = v10->_startTime;
     v10->_startTime = v13;
 
-    v15 = [v9 copy];
+    v15 = [endTimeCopy copy];
     v16 = v15;
     if (v15)
     {
@@ -70,13 +70,13 @@
     endTime = v10->_endTime;
     v10->_endTime = v17;
 
-    v19 = 127;
-    if (a5 != 0xFFFFFFFF)
+    weekdaysCopy = 127;
+    if (weekdays != 0xFFFFFFFF)
     {
-      v19 = a5;
+      weekdaysCopy = weekdays;
     }
 
-    v10->_weekdays = v19;
+    v10->_weekdays = weekdaysCopy;
   }
 
   return v10;
@@ -84,19 +84,19 @@
 
 - (unint64_t)hash
 {
-  v3 = [(DNDScheduleTimePeriod *)self startTime];
-  v4 = [v3 hash];
-  v5 = [(DNDScheduleTimePeriod *)self endTime];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(DNDScheduleTimePeriod *)self weekdays];
+  startTime = [(DNDScheduleTimePeriod *)self startTime];
+  v4 = [startTime hash];
+  endTime = [(DNDScheduleTimePeriod *)self endTime];
+  v6 = [endTime hash] ^ v4;
+  weekdays = [(DNDScheduleTimePeriod *)self weekdays];
 
-  return v6 ^ v7;
+  return v6 ^ weekdays;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v7 = a3;
-  if (self == v7)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -106,21 +106,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
-      v9 = [(DNDScheduleTimePeriod *)self startTime];
-      v10 = [(DNDScheduleTimePeriod *)v8 startTime];
-      if (v9 != v10)
+      v8 = equalCopy;
+      startTime = [(DNDScheduleTimePeriod *)self startTime];
+      startTime2 = [(DNDScheduleTimePeriod *)v8 startTime];
+      if (startTime != startTime2)
       {
-        v11 = [(DNDScheduleTimePeriod *)self startTime];
-        if (!v11)
+        startTime3 = [(DNDScheduleTimePeriod *)self startTime];
+        if (!startTime3)
         {
           v14 = 0;
           goto LABEL_27;
         }
 
-        v3 = v11;
-        v12 = [(DNDScheduleTimePeriod *)v8 startTime];
-        if (!v12)
+        v3 = startTime3;
+        startTime4 = [(DNDScheduleTimePeriod *)v8 startTime];
+        if (!startTime4)
         {
           v14 = 0;
 LABEL_26:
@@ -128,10 +128,10 @@ LABEL_26:
           goto LABEL_27;
         }
 
-        v4 = v12;
-        v13 = [(DNDScheduleTimePeriod *)self startTime];
-        v5 = [(DNDScheduleTimePeriod *)v8 startTime];
-        if (![v13 isEqual:v5])
+        v4 = startTime4;
+        startTime5 = [(DNDScheduleTimePeriod *)self startTime];
+        startTime6 = [(DNDScheduleTimePeriod *)v8 startTime];
+        if (![startTime5 isEqual:startTime6])
         {
           v14 = 0;
 LABEL_25:
@@ -139,54 +139,54 @@ LABEL_25:
           goto LABEL_26;
         }
 
-        v26 = v5;
-        v27 = v13;
+        v26 = startTime6;
+        v27 = startTime5;
         v28 = v4;
       }
 
-      v15 = [(DNDScheduleTimePeriod *)self endTime];
-      v16 = [(DNDScheduleTimePeriod *)v8 endTime];
-      if (v15 == v16)
+      endTime = [(DNDScheduleTimePeriod *)self endTime];
+      endTime2 = [(DNDScheduleTimePeriod *)v8 endTime];
+      if (endTime == endTime2)
       {
         goto LABEL_16;
       }
 
-      v17 = [(DNDScheduleTimePeriod *)self endTime];
-      if (!v17)
+      endTime3 = [(DNDScheduleTimePeriod *)self endTime];
+      if (!endTime3)
       {
 
         v14 = 0;
         goto LABEL_24;
       }
 
-      v5 = v17;
-      v18 = [(DNDScheduleTimePeriod *)v8 endTime];
-      if (!v18)
+      startTime6 = endTime3;
+      endTime4 = [(DNDScheduleTimePeriod *)v8 endTime];
+      if (!endTime4)
       {
         v14 = 0;
         goto LABEL_22;
       }
 
-      v24 = v18;
-      v19 = [(DNDScheduleTimePeriod *)self endTime];
-      v20 = [(DNDScheduleTimePeriod *)v8 endTime];
-      v25 = v19;
-      v21 = v19;
-      v4 = v20;
-      if ([v21 isEqual:v20])
+      v24 = endTime4;
+      endTime5 = [(DNDScheduleTimePeriod *)self endTime];
+      endTime6 = [(DNDScheduleTimePeriod *)v8 endTime];
+      v25 = endTime5;
+      v21 = endTime5;
+      v4 = endTime6;
+      if ([v21 isEqual:endTime6])
       {
 LABEL_16:
-        v22 = [(DNDScheduleTimePeriod *)self weekdays];
-        v14 = v22 == [(DNDScheduleTimePeriod *)v8 weekdays];
-        if (v15 == v16)
+        weekdays = [(DNDScheduleTimePeriod *)self weekdays];
+        v14 = weekdays == [(DNDScheduleTimePeriod *)v8 weekdays];
+        if (endTime == endTime2)
         {
 LABEL_23:
 
 LABEL_24:
-          v13 = v27;
+          startTime5 = v27;
           v4 = v28;
-          v5 = v26;
-          if (v9 != v10)
+          startTime6 = v26;
+          if (startTime != startTime2)
           {
             goto LABEL_25;
           }
@@ -217,29 +217,29 @@ LABEL_28:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(DNDScheduleTimePeriod *)self startTime];
-  v5 = [(DNDScheduleTimePeriod *)self endTime];
+  startTime = [(DNDScheduleTimePeriod *)self startTime];
+  endTime = [(DNDScheduleTimePeriod *)self endTime];
   v6 = NSStringFromDNDWeekdays([(DNDScheduleTimePeriod *)self weekdays]);
-  v7 = [v3 stringWithFormat:@"<period: s: %@ e: %@; weekdays: %@>", v4, v5, v6];;
+  v7 = [v3 stringWithFormat:@"<period: s: %@ e: %@; weekdays: %@>", startTime, endTime, v6];;
 
   return v7;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [DNDMutableScheduleTimePeriod alloc];
 
   return [(DNDScheduleTimePeriod *)v4 _initWithPeriod:self];
 }
 
-- (DNDScheduleTimePeriod)initWithCoder:(id)a3
+- (DNDScheduleTimePeriod)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startTime"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endTime"];
-  if ([v4 containsValueForKey:@"weekdays"])
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startTime"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endTime"];
+  if ([coderCopy containsValueForKey:@"weekdays"])
   {
-    v7 = [v4 decodeIntegerForKey:@"weekdays"];
+    v7 = [coderCopy decodeIntegerForKey:@"weekdays"];
   }
 
   else
@@ -252,16 +252,16 @@ LABEL_28:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(DNDScheduleTimePeriod *)self startTime];
-  [v6 encodeObject:v4 forKey:@"startTime"];
+  coderCopy = coder;
+  startTime = [(DNDScheduleTimePeriod *)self startTime];
+  [coderCopy encodeObject:startTime forKey:@"startTime"];
 
-  v5 = [(DNDScheduleTimePeriod *)self endTime];
-  [v6 encodeObject:v5 forKey:@"endTime"];
+  endTime = [(DNDScheduleTimePeriod *)self endTime];
+  [coderCopy encodeObject:endTime forKey:@"endTime"];
 
-  [v6 encodeInteger:-[DNDScheduleTimePeriod weekdays](self forKey:{"weekdays"), @"weekdays"}];
+  [coderCopy encodeInteger:-[DNDScheduleTimePeriod weekdays](self forKey:{"weekdays"), @"weekdays"}];
 }
 
 @end

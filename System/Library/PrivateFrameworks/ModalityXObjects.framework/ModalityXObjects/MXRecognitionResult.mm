@@ -1,90 +1,90 @@
 @interface MXRecognitionResult
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addChoiceAlignments:(id)a3;
-- (void)addPostItnNbestChoices:(id)a3;
-- (void)addPreItnNbestChoices:(id)a3;
-- (void)addPreItnTokenToPostItnCharAlignment:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addChoiceAlignments:(id)alignments;
+- (void)addPostItnNbestChoices:(id)choices;
+- (void)addPreItnNbestChoices:(id)choices;
+- (void)addPreItnTokenToPostItnCharAlignment:(id)alignment;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MXRecognitionResult
 
-- (void)addPreItnNbestChoices:(id)a3
+- (void)addPreItnNbestChoices:(id)choices
 {
-  v4 = a3;
+  choicesCopy = choices;
   preItnNbestChoices = self->_preItnNbestChoices;
-  v8 = v4;
+  v8 = choicesCopy;
   if (!preItnNbestChoices)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_preItnNbestChoices;
     self->_preItnNbestChoices = v6;
 
-    v4 = v8;
+    choicesCopy = v8;
     preItnNbestChoices = self->_preItnNbestChoices;
   }
 
-  [(NSMutableArray *)preItnNbestChoices addObject:v4];
+  [(NSMutableArray *)preItnNbestChoices addObject:choicesCopy];
 }
 
-- (void)addPostItnNbestChoices:(id)a3
+- (void)addPostItnNbestChoices:(id)choices
 {
-  v4 = a3;
+  choicesCopy = choices;
   postItnNbestChoices = self->_postItnNbestChoices;
-  v8 = v4;
+  v8 = choicesCopy;
   if (!postItnNbestChoices)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_postItnNbestChoices;
     self->_postItnNbestChoices = v6;
 
-    v4 = v8;
+    choicesCopy = v8;
     postItnNbestChoices = self->_postItnNbestChoices;
   }
 
-  [(NSMutableArray *)postItnNbestChoices addObject:v4];
+  [(NSMutableArray *)postItnNbestChoices addObject:choicesCopy];
 }
 
-- (void)addPreItnTokenToPostItnCharAlignment:(id)a3
+- (void)addPreItnTokenToPostItnCharAlignment:(id)alignment
 {
-  v4 = a3;
+  alignmentCopy = alignment;
   preItnTokenToPostItnCharAlignments = self->_preItnTokenToPostItnCharAlignments;
-  v8 = v4;
+  v8 = alignmentCopy;
   if (!preItnTokenToPostItnCharAlignments)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_preItnTokenToPostItnCharAlignments;
     self->_preItnTokenToPostItnCharAlignments = v6;
 
-    v4 = v8;
+    alignmentCopy = v8;
     preItnTokenToPostItnCharAlignments = self->_preItnTokenToPostItnCharAlignments;
   }
 
-  [(NSMutableArray *)preItnTokenToPostItnCharAlignments addObject:v4];
+  [(NSMutableArray *)preItnTokenToPostItnCharAlignments addObject:alignmentCopy];
 }
 
-- (void)addChoiceAlignments:(id)a3
+- (void)addChoiceAlignments:(id)alignments
 {
-  v4 = a3;
+  alignmentsCopy = alignments;
   choiceAlignments = self->_choiceAlignments;
-  v8 = v4;
+  v8 = alignmentsCopy;
   if (!choiceAlignments)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_choiceAlignments;
     self->_choiceAlignments = v6;
 
-    v4 = v8;
+    alignmentsCopy = v8;
     choiceAlignments = self->_choiceAlignments;
   }
 
-  [(NSMutableArray *)choiceAlignments addObject:v4];
+  [(NSMutableArray *)choiceAlignments addObject:alignmentsCopy];
 }
 
 - (id)description
@@ -93,8 +93,8 @@
   v8.receiver = self;
   v8.super_class = MXRecognitionResult;
   v4 = [(MXRecognitionResult *)&v8 description];
-  v5 = [(MXRecognitionResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MXRecognitionResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -102,19 +102,19 @@
 - (id)dictionaryRepresentation
 {
   v58 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   preItn = self->_preItn;
   if (preItn)
   {
-    v5 = [(MXRecognitionSausage *)preItn dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"pre_itn"];
+    dictionaryRepresentation = [(MXRecognitionSausage *)preItn dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"pre_itn"];
   }
 
   postItn = self->_postItn;
   if (postItn)
   {
-    v7 = [(MXRecognitionSausage *)postItn dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"post_itn"];
+    dictionaryRepresentation2 = [(MXRecognitionSausage *)postItn dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"post_itn"];
   }
 
   if ([(NSMutableArray *)self->_preItnNbestChoices count])
@@ -139,8 +139,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v50 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation3 = [*(*(&v50 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation3];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v50 objects:v57 count:16];
@@ -149,7 +149,7 @@
       while (v11);
     }
 
-    [v3 setObject:v8 forKey:@"pre_itn_nbest_choices"];
+    [dictionary setObject:v8 forKey:@"pre_itn_nbest_choices"];
   }
 
   if ([(NSMutableArray *)self->_postItnNbestChoices count])
@@ -174,8 +174,8 @@
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v46 + 1) + 8 * j) dictionaryRepresentation];
-          [v15 addObject:v21];
+          dictionaryRepresentation4 = [*(*(&v46 + 1) + 8 * j) dictionaryRepresentation];
+          [v15 addObject:dictionaryRepresentation4];
         }
 
         v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v46 objects:v56 count:16];
@@ -184,7 +184,7 @@
       while (v18);
     }
 
-    [v3 setObject:v15 forKey:@"post_itn_nbest_choices"];
+    [dictionary setObject:v15 forKey:@"post_itn_nbest_choices"];
   }
 
   if ([(NSMutableArray *)self->_preItnTokenToPostItnCharAlignments count])
@@ -209,8 +209,8 @@
             objc_enumerationMutation(v23);
           }
 
-          v28 = [*(*(&v42 + 1) + 8 * k) dictionaryRepresentation];
-          [v22 addObject:v28];
+          dictionaryRepresentation5 = [*(*(&v42 + 1) + 8 * k) dictionaryRepresentation];
+          [v22 addObject:dictionaryRepresentation5];
         }
 
         v25 = [(NSMutableArray *)v23 countByEnumeratingWithState:&v42 objects:v55 count:16];
@@ -219,7 +219,7 @@
       while (v25);
     }
 
-    [v3 setObject:v22 forKey:@"pre_itn_token_to_post_itn_char_alignment"];
+    [dictionary setObject:v22 forKey:@"pre_itn_token_to_post_itn_char_alignment"];
   }
 
   if ([(NSMutableArray *)self->_choiceAlignments count])
@@ -244,8 +244,8 @@
             objc_enumerationMutation(v30);
           }
 
-          v35 = [*(*(&v38 + 1) + 8 * m) dictionaryRepresentation];
-          [v29 addObject:v35];
+          dictionaryRepresentation6 = [*(*(&v38 + 1) + 8 * m) dictionaryRepresentation];
+          [v29 addObject:dictionaryRepresentation6];
         }
 
         v32 = [(NSMutableArray *)v30 countByEnumeratingWithState:&v38 objects:v54 count:16];
@@ -254,18 +254,18 @@
       while (v32);
     }
 
-    [v3 setObject:v29 forKey:@"choice_alignments"];
+    [dictionary setObject:v29 forKey:@"choice_alignments"];
   }
 
   v36 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_preItn)
   {
     PBDataWriterWriteSubmessage();
@@ -407,89 +407,89 @@
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v20 = a3;
+  toCopy = to;
   if (self->_preItn)
   {
-    [v20 setPreItn:?];
+    [toCopy setPreItn:?];
   }
 
   if (self->_postItn)
   {
-    [v20 setPostItn:?];
+    [toCopy setPostItn:?];
   }
 
   if ([(MXRecognitionResult *)self preItnNbestChoicesCount])
   {
-    [v20 clearPreItnNbestChoices];
-    v4 = [(MXRecognitionResult *)self preItnNbestChoicesCount];
-    if (v4)
+    [toCopy clearPreItnNbestChoices];
+    preItnNbestChoicesCount = [(MXRecognitionResult *)self preItnNbestChoicesCount];
+    if (preItnNbestChoicesCount)
     {
-      v5 = v4;
+      v5 = preItnNbestChoicesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(MXRecognitionResult *)self preItnNbestChoicesAtIndex:i];
-        [v20 addPreItnNbestChoices:v7];
+        [toCopy addPreItnNbestChoices:v7];
       }
     }
   }
 
   if ([(MXRecognitionResult *)self postItnNbestChoicesCount])
   {
-    [v20 clearPostItnNbestChoices];
-    v8 = [(MXRecognitionResult *)self postItnNbestChoicesCount];
-    if (v8)
+    [toCopy clearPostItnNbestChoices];
+    postItnNbestChoicesCount = [(MXRecognitionResult *)self postItnNbestChoicesCount];
+    if (postItnNbestChoicesCount)
     {
-      v9 = v8;
+      v9 = postItnNbestChoicesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(MXRecognitionResult *)self postItnNbestChoicesAtIndex:j];
-        [v20 addPostItnNbestChoices:v11];
+        [toCopy addPostItnNbestChoices:v11];
       }
     }
   }
 
   if ([(MXRecognitionResult *)self preItnTokenToPostItnCharAlignmentsCount])
   {
-    [v20 clearPreItnTokenToPostItnCharAlignments];
-    v12 = [(MXRecognitionResult *)self preItnTokenToPostItnCharAlignmentsCount];
-    if (v12)
+    [toCopy clearPreItnTokenToPostItnCharAlignments];
+    preItnTokenToPostItnCharAlignmentsCount = [(MXRecognitionResult *)self preItnTokenToPostItnCharAlignmentsCount];
+    if (preItnTokenToPostItnCharAlignmentsCount)
     {
-      v13 = v12;
+      v13 = preItnTokenToPostItnCharAlignmentsCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(MXRecognitionResult *)self preItnTokenToPostItnCharAlignmentAtIndex:k];
-        [v20 addPreItnTokenToPostItnCharAlignment:v15];
+        [toCopy addPreItnTokenToPostItnCharAlignment:v15];
       }
     }
   }
 
   if ([(MXRecognitionResult *)self choiceAlignmentsCount])
   {
-    [v20 clearChoiceAlignments];
-    v16 = [(MXRecognitionResult *)self choiceAlignmentsCount];
-    if (v16)
+    [toCopy clearChoiceAlignments];
+    choiceAlignmentsCount = [(MXRecognitionResult *)self choiceAlignmentsCount];
+    if (choiceAlignmentsCount)
     {
-      v17 = v16;
+      v17 = choiceAlignmentsCount;
       for (m = 0; m != v17; ++m)
       {
         v19 = [(MXRecognitionResult *)self choiceAlignmentsAtIndex:m];
-        [v20 addChoiceAlignments:v19];
+        [toCopy addChoiceAlignments:v19];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v56 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(MXRecognitionSausage *)self->_preItn copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(MXRecognitionSausage *)self->_preItn copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(MXRecognitionSausage *)self->_postItn copyWithZone:a3];
+  v8 = [(MXRecognitionSausage *)self->_postItn copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
@@ -513,7 +513,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v48 + 1) + 8 * v14) copyWithZone:a3];
+        v15 = [*(*(&v48 + 1) + 8 * v14) copyWithZone:zone];
         [v5 addPreItnNbestChoices:v15];
 
         ++v14;
@@ -546,7 +546,7 @@
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v44 + 1) + 8 * v20) copyWithZone:a3];
+        v21 = [*(*(&v44 + 1) + 8 * v20) copyWithZone:zone];
         [v5 addPostItnNbestChoices:v21];
 
         ++v20;
@@ -579,7 +579,7 @@
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v40 + 1) + 8 * v26) copyWithZone:a3];
+        v27 = [*(*(&v40 + 1) + 8 * v26) copyWithZone:zone];
         [v5 addPreItnTokenToPostItnCharAlignment:v27];
 
         ++v26;
@@ -612,7 +612,7 @@
           objc_enumerationMutation(v28);
         }
 
-        v33 = [*(*(&v36 + 1) + 8 * v32) copyWithZone:{a3, v36}];
+        v33 = [*(*(&v36 + 1) + 8 * v32) copyWithZone:{zone, v36}];
         [v5 addChoiceAlignments:v33];
 
         ++v32;
@@ -629,13 +629,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((preItn = self->_preItn, !(preItn | v4[4])) || -[MXRecognitionSausage isEqual:](preItn, "isEqual:")) && ((postItn = self->_postItn, !(postItn | v4[2])) || -[MXRecognitionSausage isEqual:](postItn, "isEqual:")) && ((preItnNbestChoices = self->_preItnNbestChoices, !(preItnNbestChoices | v4[5])) || -[NSMutableArray isEqual:](preItnNbestChoices, "isEqual:")) && ((postItnNbestChoices = self->_postItnNbestChoices, !(postItnNbestChoices | v4[3])) || -[NSMutableArray isEqual:](postItnNbestChoices, "isEqual:")) && ((preItnTokenToPostItnCharAlignments = self->_preItnTokenToPostItnCharAlignments, !(preItnTokenToPostItnCharAlignments | v4[6])) || -[NSMutableArray isEqual:](preItnTokenToPostItnCharAlignments, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((preItn = self->_preItn, !(preItn | equalCopy[4])) || -[MXRecognitionSausage isEqual:](preItn, "isEqual:")) && ((postItn = self->_postItn, !(postItn | equalCopy[2])) || -[MXRecognitionSausage isEqual:](postItn, "isEqual:")) && ((preItnNbestChoices = self->_preItnNbestChoices, !(preItnNbestChoices | equalCopy[5])) || -[NSMutableArray isEqual:](preItnNbestChoices, "isEqual:")) && ((postItnNbestChoices = self->_postItnNbestChoices, !(postItnNbestChoices | equalCopy[3])) || -[NSMutableArray isEqual:](postItnNbestChoices, "isEqual:")) && ((preItnTokenToPostItnCharAlignments = self->_preItnTokenToPostItnCharAlignments, !(preItnTokenToPostItnCharAlignments | equalCopy[6])) || -[NSMutableArray isEqual:](preItnTokenToPostItnCharAlignments, "isEqual:")))
   {
     choiceAlignments = self->_choiceAlignments;
-    if (choiceAlignments | v4[1])
+    if (choiceAlignments | equalCopy[1])
     {
       v11 = [(NSMutableArray *)choiceAlignments isEqual:?];
     }
@@ -664,12 +664,12 @@
   return v6 ^ v7 ^ [(NSMutableArray *)self->_choiceAlignments hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   preItn = self->_preItn;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (preItn)
   {
     if (v6)
@@ -684,7 +684,7 @@
   }
 
   postItn = self->_postItn;
-  v8 = *(v4 + 2);
+  v8 = *(fromCopy + 2);
   if (postItn)
   {
     if (v8)
@@ -702,7 +702,7 @@
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v9 = *(v4 + 5);
+  v9 = *(fromCopy + 5);
   v10 = [v9 countByEnumeratingWithState:&v42 objects:v49 count:16];
   if (v10)
   {
@@ -730,7 +730,7 @@
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v14 = *(v4 + 3);
+  v14 = *(fromCopy + 3);
   v15 = [v14 countByEnumeratingWithState:&v38 objects:v48 count:16];
   if (v15)
   {
@@ -758,7 +758,7 @@
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v19 = *(v4 + 6);
+  v19 = *(fromCopy + 6);
   v20 = [v19 countByEnumeratingWithState:&v34 objects:v47 count:16];
   if (v20)
   {
@@ -786,7 +786,7 @@
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v24 = *(v4 + 1);
+  v24 = *(fromCopy + 1);
   v25 = [v24 countByEnumeratingWithState:&v30 objects:v46 count:16];
   if (v25)
   {

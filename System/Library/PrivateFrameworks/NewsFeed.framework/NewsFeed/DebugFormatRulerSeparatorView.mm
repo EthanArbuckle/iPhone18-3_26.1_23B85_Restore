@@ -1,12 +1,12 @@
 @interface DebugFormatRulerSeparatorView
-- (_TtC8NewsFeed29DebugFormatRulerSeparatorView)initWithCoder:(id)a3;
-- (_TtC8NewsFeed29DebugFormatRulerSeparatorView)initWithFrame:(CGRect)a3;
+- (_TtC8NewsFeed29DebugFormatRulerSeparatorView)initWithCoder:(id)coder;
+- (_TtC8NewsFeed29DebugFormatRulerSeparatorView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation DebugFormatRulerSeparatorView
 
-- (_TtC8NewsFeed29DebugFormatRulerSeparatorView)initWithCoder:(id)a3
+- (_TtC8NewsFeed29DebugFormatRulerSeparatorView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8NewsFeed29DebugFormatRulerSeparatorView_isSelected) = 0;
   v3 = OBJC_IVAR____TtC8NewsFeed29DebugFormatRulerSeparatorView_label;
@@ -18,11 +18,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7161348();
 }
 
-- (_TtC8NewsFeed29DebugFormatRulerSeparatorView)initWithFrame:(CGRect)a3
+- (_TtC8NewsFeed29DebugFormatRulerSeparatorView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

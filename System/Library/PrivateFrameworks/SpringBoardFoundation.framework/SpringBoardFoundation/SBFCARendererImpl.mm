@@ -1,15 +1,15 @@
 @interface SBFCARendererImpl
-+ (id)_actuallyRenderImage:(CGImage *)a3 requiresBGRA:(BOOL)a4 downsampleFactor:(double)a5 layerCustomizer:(id)a6;
++ (id)_actuallyRenderImage:(CGImage *)image requiresBGRA:(BOOL)a downsampleFactor:(double)factor layerCustomizer:(id)customizer;
 + (id)luminanceTreatmentFilters;
-+ (id)renderMaterialImage:(CGImage *)a3 recipeName:(id)a4 containingBundle:(id)a5 weighting:(double)a6 downsampleFactor:(double)a7 scaleAdjustment:(id)a8;
-+ (id)renderTreatedWallpaperImage:(CGImage *)a3 needsLuminanceTreatment:(BOOL)a4 needsDimmingTreatment:(BOOL)a5 downsampleFactor:(double)a6 averageColor:(id)a7;
++ (id)renderMaterialImage:(CGImage *)image recipeName:(id)name containingBundle:(id)bundle weighting:(double)weighting downsampleFactor:(double)factor scaleAdjustment:(id)adjustment;
++ (id)renderTreatedWallpaperImage:(CGImage *)image needsLuminanceTreatment:(BOOL)treatment needsDimmingTreatment:(BOOL)dimmingTreatment downsampleFactor:(double)factor averageColor:(id)color;
 @end
 
 @implementation SBFCARendererImpl
 
-+ (id)renderTreatedWallpaperImage:(CGImage *)a3 needsLuminanceTreatment:(BOOL)a4 needsDimmingTreatment:(BOOL)a5 downsampleFactor:(double)a6 averageColor:(id)a7
++ (id)renderTreatedWallpaperImage:(CGImage *)image needsLuminanceTreatment:(BOOL)treatment needsDimmingTreatment:(BOOL)dimmingTreatment downsampleFactor:(double)factor averageColor:(id)color
 {
-  v12 = a7;
+  colorCopy = color;
   if (*MEMORY[0x1E69DDA98] && [*MEMORY[0x1E69DDA98] isFrontBoard])
   {
     +[SBFCARendererImpl renderTreatedWallpaperImage:needsLuminanceTreatment:needsDimmingTreatment:downsampleFactor:averageColor:];
@@ -19,13 +19,13 @@
   v17[1] = 3221225472;
   v17[2] = __125__SBFCARendererImpl_renderTreatedWallpaperImage_needsLuminanceTreatment_needsDimmingTreatment_downsampleFactor_averageColor___block_invoke;
   v17[3] = &unk_1E807FE98;
-  v20 = a4;
-  v21 = a5;
-  v18 = v12;
-  v19 = a1;
-  v13 = v12;
+  treatmentCopy = treatment;
+  dimmingTreatmentCopy = dimmingTreatment;
+  v18 = colorCopy;
+  selfCopy = self;
+  v13 = colorCopy;
   v14 = MEMORY[0x1BFB4D9B0](v17);
-  v15 = [a1 _actuallyRenderImage:a3 requiresBGRA:0 downsampleFactor:v14 layerCustomizer:a6];
+  v15 = [self _actuallyRenderImage:image requiresBGRA:0 downsampleFactor:v14 layerCustomizer:factor];
 
   return v15;
 }
@@ -120,23 +120,23 @@ void __125__SBFCARendererImpl_renderTreatedWallpaperImage_needsLuminanceTreatmen
   }
 }
 
-+ (id)renderMaterialImage:(CGImage *)a3 recipeName:(id)a4 containingBundle:(id)a5 weighting:(double)a6 downsampleFactor:(double)a7 scaleAdjustment:(id)a8
++ (id)renderMaterialImage:(CGImage *)image recipeName:(id)name containingBundle:(id)bundle weighting:(double)weighting downsampleFactor:(double)factor scaleAdjustment:(id)adjustment
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a8;
+  nameCopy = name;
+  bundleCopy = bundle;
+  adjustmentCopy = adjustment;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __112__SBFCARendererImpl_renderMaterialImage_recipeName_containingBundle_weighting_downsampleFactor_scaleAdjustment___block_invoke;
   v22[3] = &unk_1E807FEC0;
-  v23 = v13;
-  v24 = v14;
-  v25 = v15;
-  v16 = v15;
-  v17 = v14;
-  v18 = v13;
+  v23 = nameCopy;
+  v24 = bundleCopy;
+  v25 = adjustmentCopy;
+  v16 = adjustmentCopy;
+  v17 = bundleCopy;
+  v18 = nameCopy;
   v19 = MEMORY[0x1BFB4D9B0](v22);
-  v20 = [a1 _actuallyRenderImage:a3 requiresBGRA:0 downsampleFactor:v19 layerCustomizer:a7];
+  v20 = [self _actuallyRenderImage:image requiresBGRA:0 downsampleFactor:v19 layerCustomizer:factor];
 
   return v20;
 }
@@ -174,26 +174,26 @@ void __112__SBFCARendererImpl_renderMaterialImage_recipeName_containingBundle_we
   }
 }
 
-+ (id)_actuallyRenderImage:(CGImage *)a3 requiresBGRA:(BOOL)a4 downsampleFactor:(double)a5 layerCustomizer:(id)a6
++ (id)_actuallyRenderImage:(CGImage *)image requiresBGRA:(BOOL)a downsampleFactor:(double)factor layerCustomizer:(id)customizer
 {
   v41[2] = *MEMORY[0x1E69E9840];
-  v8 = a6;
+  customizerCopy = customizer;
   if (*MEMORY[0x1E69DDA98] && [*MEMORY[0x1E69DDA98] isFrontBoard])
   {
     +[SBFCARendererImpl _actuallyRenderImage:requiresBGRA:downsampleFactor:layerCustomizer:];
   }
 
-  if (!a3)
+  if (!image)
   {
     +[SBFCARendererImpl _actuallyRenderImage:requiresBGRA:downsampleFactor:layerCustomizer:];
   }
 
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
-  v11 = Height / a5;
-  if ((Width / a5))
+  Width = CGImageGetWidth(image);
+  Height = CGImageGetHeight(image);
+  v11 = Height / factor;
+  if ((Width / factor))
   {
-    v12 = (Height / a5) == 0;
+    v12 = (Height / factor) == 0;
   }
 
   else
@@ -203,10 +203,10 @@ void __112__SBFCARendererImpl_renderMaterialImage_recipeName_containingBundle_we
 
   if (v12)
   {
-    v14 = SBLogWallpaper();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    layer = SBLogWallpaper();
+    if (os_log_type_enabled(layer, OS_LOG_TYPE_ERROR))
     {
-      [SBFCARendererImpl _actuallyRenderImage:v14 requiresBGRA:Width / a5 downsampleFactor:v11 layerCustomizer:?];
+      [SBFCARendererImpl _actuallyRenderImage:layer requiresBGRA:Width / factor downsampleFactor:v11 layerCustomizer:?];
     }
 
     v13 = 0;
@@ -214,27 +214,27 @@ void __112__SBFCARendererImpl_renderMaterialImage_recipeName_containingBundle_we
 
   else
   {
-    v14 = [MEMORY[0x1E6979398] layer];
-    v15 = [MEMORY[0x1E6979398] layer];
-    [v14 setContents:a3];
-    [v15 addSublayer:v14];
-    v37 = v15;
-    [v15 setFrame:{0.0, 0.0, Width / a5, v11}];
-    [v14 setFrame:0.0, 0.0, Width, Height];
+    layer = [MEMORY[0x1E6979398] layer];
+    layer2 = [MEMORY[0x1E6979398] layer];
+    [layer setContents:image];
+    [layer2 addSublayer:layer];
+    v37 = layer2;
+    [layer2 setFrame:{0.0, 0.0, Width / factor, v11}];
+    [layer setFrame:0.0, 0.0, Width, Height];
     memset(&v39, 0, sizeof(v39));
-    CGAffineTransformMakeScale(&v39, 1.0 / a5, -1.0 / a5);
+    CGAffineTransformMakeScale(&v39, 1.0 / factor, -1.0 / factor);
     v38 = v39;
-    [v14 setAffineTransform:&v38];
-    [v14 setPosition:Width / a5 * 0.5, v11 * 0.5];
-    if (v8)
+    [layer setAffineTransform:&v38];
+    [layer setPosition:Width / factor * 0.5, v11 * 0.5];
+    if (customizerCopy)
     {
-      v8[2](v8, v14, 0.0, 0.0, Width, Height);
+      customizerCopy[2](customizerCopy, layer, 0.0, 0.0, Width, Height);
     }
 
     v16 = MTLCreateSystemDefaultDevice();
     *&v38.a = 1;
-    v13 = [MEMORY[0x1E696CDE8] bs_IOSurfaceWithWidth:(Width / a5) height:v11 options:&v38];
-    v17 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:80 width:(Width / a5) height:v11 mipmapped:0];
+    v13 = [MEMORY[0x1E696CDE8] bs_IOSurfaceWithWidth:(Width / factor) height:v11 options:&v38];
+    v17 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:80 width:(Width / factor) height:v11 mipmapped:0];
     [v17 setUsage:4];
     v36 = [v16 newTextureWithDescriptor:v17 iosurface:v13 plane:0];
     v18 = MGGetBoolAnswer();
@@ -246,42 +246,42 @@ void __112__SBFCARendererImpl_renderMaterialImage_recipeName_containingBundle_we
 
     v20 = CGColorSpaceCreateWithName(*v19);
     v35 = v16;
-    v21 = [v16 newCommandQueue];
+    newCommandQueue = [v16 newCommandQueue];
     if (objc_opt_respondsToSelector())
     {
-      v22 = [MEMORY[0x1E698E698] serial];
-      v23 = [v22 serviceClass:33];
+      serial = [MEMORY[0x1E698E698] serial];
+      v23 = [serial serviceClass:33];
       v24 = BSDispatchQueueCreate();
 
-      [v21 setSubmissionQueue:v24];
+      [newCommandQueue setSubmissionQueue:v24];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v25 = [MEMORY[0x1E698E698] serial];
-      v26 = [v25 serviceClass:33];
+      serial2 = [MEMORY[0x1E698E698] serial];
+      v26 = [serial2 serviceClass:33];
       v27 = BSDispatchQueueCreate();
 
-      [v21 setCompletionQueue:v27];
+      [newCommandQueue setCompletionQueue:v27];
     }
 
     v28 = *MEMORY[0x1E6979F10];
     v40[0] = *MEMORY[0x1E6979F08];
     v40[1] = v28;
     v41[0] = v20;
-    v41[1] = v21;
+    v41[1] = newCommandQueue;
     v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:v40 count:2];
     v30 = [MEMORY[0x1E6979428] rendererWithMTLTexture:v36 options:v29];
     [v30 setLayer:v37];
-    [v30 setBounds:{0.0, 0.0, Width / a5, v11}];
+    [v30 setBounds:{0.0, 0.0, Width / factor, v11}];
     [MEMORY[0x1E6979518] flush];
     [v30 beginFrameAtTime:0 timeStamp:0.0];
     [v30 render];
     [v30 endFrame];
-    v31 = [v21 commandBuffer];
-    [v31 enqueue];
-    [v31 commit];
-    [v31 waitUntilCompleted];
+    commandBuffer = [newCommandQueue commandBuffer];
+    [commandBuffer enqueue];
+    [commandBuffer commit];
+    [commandBuffer waitUntilCompleted];
     v32 = CGColorSpaceCopyPropertyList(v20);
     if (v32)
     {

@@ -4,7 +4,7 @@
 - (unsigned)discoveryMode;
 - (void)_onWorkerQueue_reload;
 - (void)_onWorkerQueue_scheduleReload;
-- (void)setDiscoveryMode:(unsigned int)a3;
+- (void)setDiscoveryMode:(unsigned int)mode;
 @end
 
 @implementation MRDIDSDiscoverySession
@@ -18,9 +18,9 @@
   if (v4)
   {
     v5 = [[NSString alloc] initWithFormat:@"com.apple.mediaremote.%@", objc_opt_class()];
-    v6 = [v5 UTF8String];
+    uTF8String = [v5 UTF8String];
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v8 = dispatch_queue_create(v6, v7);
+    v8 = dispatch_queue_create(uTF8String, v7);
     workerQueue = v4->_workerQueue;
     v4->_workerQueue = v8;
   }
@@ -30,68 +30,68 @@
 
 - (NSString)debugDescription
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [[NSMutableString alloc] initWithFormat:@"<%@ %p {\n", objc_opt_class(), v2];
-  discoveryMode = v2->_discoveryMode;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy = [[NSMutableString alloc] initWithFormat:@"<%@ %p {\n", objc_opt_class(), selfCopy];
+  discoveryMode = selfCopy->_discoveryMode;
   v5 = MRMediaRemoteCopyRouteDiscoveryModeDescription();
-  [v3 appendFormat:@"  discoveryMode = %@\n", v5];
+  [selfCopy appendFormat:@"  discoveryMode = %@\n", v5];
 
-  v6 = [(IDSService *)v2->_idsService devices];
+  devices = [(IDSService *)selfCopy->_idsService devices];
   v7 = MRCreateIndentedDebugDescriptionFromArray();
-  [v3 appendFormat:@"  idsService = %@\n", v7];
+  [selfCopy appendFormat:@"  idsService = %@\n", v7];
 
-  v8 = [(MRDIDSDiscoverySession *)v2 availableOutputDevices];
+  availableOutputDevices = [(MRDIDSDiscoverySession *)selfCopy availableOutputDevices];
   v9 = MRCreateIndentedDebugDescriptionFromArray();
-  [v3 appendFormat:@"  outputDevices = %@\n", v9];
+  [selfCopy appendFormat:@"  outputDevices = %@\n", v9];
 
-  [v3 appendString:@"}>"];
-  objc_sync_exit(v2);
+  [selfCopy appendString:@"}>"];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)setDiscoveryMode:(unsigned int)a3
+- (void)setDiscoveryMode:(unsigned int)mode
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  idsService = v4->_idsService;
-  if (a3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  idsService = selfCopy->_idsService;
+  if (mode)
   {
     if (!idsService)
     {
       v6 = +[IDSService mr_sharedIDSService];
-      v7 = v4->_idsService;
-      v4->_idsService = v6;
+      v7 = selfCopy->_idsService;
+      selfCopy->_idsService = v6;
 
-      [(IDSService *)v4->_idsService addDelegate:v4 queue:v4->_workerQueue];
+      [(IDSService *)selfCopy->_idsService addDelegate:selfCopy queue:selfCopy->_workerQueue];
     }
   }
 
   else
   {
-    [(IDSService *)idsService removeDelegate:v4];
-    v8 = v4->_idsService;
-    v4->_idsService = 0;
+    [(IDSService *)idsService removeDelegate:selfCopy];
+    v8 = selfCopy->_idsService;
+    selfCopy->_idsService = 0;
   }
 
-  v4->_discoveryMode = a3;
-  workerQueue = v4->_workerQueue;
+  selfCopy->_discoveryMode = mode;
+  workerQueue = selfCopy->_workerQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10008F808;
   block[3] = &unk_1004B6D08;
-  block[4] = v4;
+  block[4] = selfCopy;
   dispatch_async(workerQueue, block);
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (unsigned)discoveryMode
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  discoveryMode = v2->_discoveryMode;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  discoveryMode = selfCopy->_discoveryMode;
+  objc_sync_exit(selfCopy);
 
   return discoveryMode;
 }
@@ -99,8 +99,8 @@
 - (void)_onWorkerQueue_reload
 {
   dispatch_assert_queue_V2(self->_workerQueue);
-  v3 = [(IDSService *)self->_idsService devices];
-  v4 = [v3 msv_map:&stru_1004B9470];
+  devices = [(IDSService *)self->_idsService devices];
+  v4 = [devices msv_map:&stru_1004B9470];
 
   [(MRDIDSDiscoverySession *)self notifyOutputDevicesChanged:v4];
 }

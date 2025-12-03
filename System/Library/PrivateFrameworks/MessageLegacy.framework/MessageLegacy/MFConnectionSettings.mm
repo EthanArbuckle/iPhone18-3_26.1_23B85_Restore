@@ -1,8 +1,8 @@
 @interface MFConnectionSettings
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)setConnectionServiceType:(__CFString *)a3;
+- (void)setConnectionServiceType:(__CFString *)type;
 @end
 
 @implementation MFConnectionSettings
@@ -20,7 +20,7 @@
   [(MFConnectionSettings *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setHostname:{-[MFConnectionSettings hostname](self, "hostname")}];
@@ -38,19 +38,19 @@
   return v4;
 }
 
-- (void)setConnectionServiceType:(__CFString *)a3
+- (void)setConnectionServiceType:(__CFString *)type
 {
   connectionServiceType = self->_connectionServiceType;
-  if (connectionServiceType != a3)
+  if (connectionServiceType != type)
   {
     if (connectionServiceType)
     {
       CFRelease(connectionServiceType);
     }
 
-    if (a3)
+    if (type)
     {
-      v6 = CFRetain(a3);
+      v6 = CFRetain(type);
     }
 
     else

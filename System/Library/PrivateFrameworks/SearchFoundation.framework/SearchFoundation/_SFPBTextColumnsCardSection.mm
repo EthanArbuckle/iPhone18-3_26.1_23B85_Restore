@@ -1,33 +1,33 @@
 @interface _SFPBTextColumnsCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBTextColumnsCardSection)initWithDictionary:(id)a3;
-- (_SFPBTextColumnsCardSection)initWithFacade:(id)a3;
-- (_SFPBTextColumnsCardSection)initWithJSON:(id)a3;
+- (_SFPBTextColumnsCardSection)initWithDictionary:(id)dictionary;
+- (_SFPBTextColumnsCardSection)initWithFacade:(id)facade;
+- (_SFPBTextColumnsCardSection)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addColumns:(id)a3;
-- (void)addPunchoutOptions:(id)a3;
-- (void)setColumns:(id)a3;
-- (void)setPunchoutOptions:(id)a3;
-- (void)setPunchoutPickerDismissText:(id)a3;
-- (void)setPunchoutPickerTitle:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setType:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addColumns:(id)columns;
+- (void)addPunchoutOptions:(id)options;
+- (void)setColumns:(id)columns;
+- (void)setPunchoutOptions:(id)options;
+- (void)setPunchoutPickerDismissText:(id)text;
+- (void)setPunchoutPickerTitle:(id)title;
+- (void)setTitle:(id)title;
+- (void)setType:(id)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBTextColumnsCardSection
 
-- (_SFPBTextColumnsCardSection)initWithFacade:(id)a3
+- (_SFPBTextColumnsCardSection)initWithFacade:(id)facade
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBTextColumnsCardSection *)self init];
   if (v5)
   {
-    v6 = [v4 punchoutOptions];
-    if (v6)
+    punchoutOptions = [facadeCopy punchoutOptions];
+    if (punchoutOptions)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -41,8 +41,8 @@
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v8 = [v4 punchoutOptions];
-    v9 = [v8 countByEnumeratingWithState:&v41 objects:v46 count:16];
+    punchoutOptions2 = [facadeCopy punchoutOptions];
+    v9 = [punchoutOptions2 countByEnumeratingWithState:&v41 objects:v46 count:16];
     if (v9)
     {
       v10 = v9;
@@ -53,7 +53,7 @@
         {
           if (*v42 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(punchoutOptions2);
           }
 
           v13 = [[_SFPBPunchout alloc] initWithFacade:*(*(&v41 + 1) + 8 * i)];
@@ -63,82 +63,82 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v41 objects:v46 count:16];
+        v10 = [punchoutOptions2 countByEnumeratingWithState:&v41 objects:v46 count:16];
       }
 
       while (v10);
     }
 
     [(_SFPBTextColumnsCardSection *)v5 setPunchoutOptions:v7];
-    v14 = [v4 punchoutPickerTitle];
+    punchoutPickerTitle = [facadeCopy punchoutPickerTitle];
 
-    if (v14)
+    if (punchoutPickerTitle)
     {
-      v15 = [v4 punchoutPickerTitle];
-      [(_SFPBTextColumnsCardSection *)v5 setPunchoutPickerTitle:v15];
+      punchoutPickerTitle2 = [facadeCopy punchoutPickerTitle];
+      [(_SFPBTextColumnsCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle2];
     }
 
-    v16 = [v4 punchoutPickerDismissText];
+    punchoutPickerDismissText = [facadeCopy punchoutPickerDismissText];
 
-    if (v16)
+    if (punchoutPickerDismissText)
     {
-      v17 = [v4 punchoutPickerDismissText];
-      [(_SFPBTextColumnsCardSection *)v5 setPunchoutPickerDismissText:v17];
+      punchoutPickerDismissText2 = [facadeCopy punchoutPickerDismissText];
+      [(_SFPBTextColumnsCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText2];
     }
 
-    if ([v4 hasCanBeHidden])
+    if ([facadeCopy hasCanBeHidden])
     {
-      -[_SFPBTextColumnsCardSection setCanBeHidden:](v5, "setCanBeHidden:", [v4 canBeHidden]);
+      -[_SFPBTextColumnsCardSection setCanBeHidden:](v5, "setCanBeHidden:", [facadeCopy canBeHidden]);
     }
 
-    if ([v4 hasHasTopPadding])
+    if ([facadeCopy hasHasTopPadding])
     {
-      -[_SFPBTextColumnsCardSection setHasTopPadding:](v5, "setHasTopPadding:", [v4 hasTopPadding]);
+      -[_SFPBTextColumnsCardSection setHasTopPadding:](v5, "setHasTopPadding:", [facadeCopy hasTopPadding]);
     }
 
-    if ([v4 hasHasBottomPadding])
+    if ([facadeCopy hasHasBottomPadding])
     {
-      -[_SFPBTextColumnsCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [v4 hasBottomPadding]);
+      -[_SFPBTextColumnsCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [facadeCopy hasBottomPadding]);
     }
 
-    v18 = [v4 type];
+    type = [facadeCopy type];
 
-    if (v18)
+    if (type)
     {
-      v19 = [v4 type];
-      [(_SFPBTextColumnsCardSection *)v5 setType:v19];
+      type2 = [facadeCopy type];
+      [(_SFPBTextColumnsCardSection *)v5 setType:type2];
     }
 
-    if ([v4 hasSeparatorStyle])
+    if ([facadeCopy hasSeparatorStyle])
     {
-      -[_SFPBTextColumnsCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [v4 separatorStyle]);
+      -[_SFPBTextColumnsCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [facadeCopy separatorStyle]);
     }
 
-    v20 = [v4 backgroundColor];
+    backgroundColor = [facadeCopy backgroundColor];
 
-    if (v20)
+    if (backgroundColor)
     {
       v21 = [_SFPBColor alloc];
-      v22 = [v4 backgroundColor];
-      v23 = [(_SFPBColor *)v21 initWithFacade:v22];
+      backgroundColor2 = [facadeCopy backgroundColor];
+      v23 = [(_SFPBColor *)v21 initWithFacade:backgroundColor2];
       [(_SFPBTextColumnsCardSection *)v5 setBackgroundColor:v23];
     }
 
-    v24 = [v4 title];
+    title = [facadeCopy title];
 
-    if (v24)
+    if (title)
     {
-      v25 = [v4 title];
-      [(_SFPBTextColumnsCardSection *)v5 setTitle:v25];
+      title2 = [facadeCopy title];
+      [(_SFPBTextColumnsCardSection *)v5 setTitle:title2];
     }
 
-    if ([v4 hasTitleWeight])
+    if ([facadeCopy hasTitleWeight])
     {
-      -[_SFPBTextColumnsCardSection setTitleWeight:](v5, "setTitleWeight:", [v4 titleWeight]);
+      -[_SFPBTextColumnsCardSection setTitleWeight:](v5, "setTitleWeight:", [facadeCopy titleWeight]);
     }
 
-    v26 = [v4 columns];
-    if (v26)
+    columns = [facadeCopy columns];
+    if (columns)
     {
       v27 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -152,8 +152,8 @@
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v28 = [v4 columns];
-    v29 = [v28 countByEnumeratingWithState:&v37 objects:v45 count:16];
+    columns2 = [facadeCopy columns];
+    v29 = [columns2 countByEnumeratingWithState:&v37 objects:v45 count:16];
     if (v29)
     {
       v30 = v29;
@@ -164,7 +164,7 @@
         {
           if (*v38 != v31)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(columns2);
           }
 
           v33 = [[_SFPBTextColumn alloc] initWithFacade:*(*(&v37 + 1) + 8 * j)];
@@ -174,7 +174,7 @@
           }
         }
 
-        v30 = [v28 countByEnumeratingWithState:&v37 objects:v45 count:16];
+        v30 = [columns2 countByEnumeratingWithState:&v37 objects:v45 count:16];
       }
 
       while (v30);
@@ -188,16 +188,16 @@
   return v5;
 }
 
-- (_SFPBTextColumnsCardSection)initWithDictionary:(id)a3
+- (_SFPBTextColumnsCardSection)initWithDictionary:(id)dictionary
 {
   v63 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v60.receiver = self;
   v60.super_class = _SFPBTextColumnsCardSection;
   v5 = [(_SFPBTextColumnsCardSection *)&v60 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"punchoutOptions"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"punchoutOptions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -236,7 +236,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"punchoutPickerTitle"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"punchoutPickerTitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -244,7 +244,7 @@
       [(_SFPBTextColumnsCardSection *)v5 setPunchoutPickerTitle:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"punchoutPickerDismissText"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"punchoutPickerDismissText"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -252,7 +252,7 @@
       [(_SFPBTextColumnsCardSection *)v5 setPunchoutPickerDismissText:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"canBeHidden"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"canBeHidden"];
     objc_opt_class();
     v51 = v18;
     if (objc_opt_isKindOfClass())
@@ -260,7 +260,7 @@
       -[_SFPBTextColumnsCardSection setCanBeHidden:](v5, "setCanBeHidden:", [v18 BOOLValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"hasTopPadding"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"hasTopPadding"];
     objc_opt_class();
     v50 = v19;
     if (objc_opt_isKindOfClass())
@@ -268,7 +268,7 @@
       -[_SFPBTextColumnsCardSection setHasTopPadding:](v5, "setHasTopPadding:", [v19 BOOLValue]);
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"hasBottomPadding"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"hasBottomPadding"];
     objc_opt_class();
     v49 = v20;
     if (objc_opt_isKindOfClass())
@@ -276,7 +276,7 @@
       -[_SFPBTextColumnsCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [v20 BOOLValue]);
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"type"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     objc_opt_class();
     v48 = v21;
     if (objc_opt_isKindOfClass())
@@ -285,14 +285,14 @@
       [(_SFPBTextColumnsCardSection *)v5 setType:v22];
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"separatorStyle"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"separatorStyle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBTextColumnsCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [v23 intValue]);
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"backgroundColor"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"backgroundColor"];
     objc_opt_class();
     v47 = v24;
     if (objc_opt_isKindOfClass())
@@ -306,7 +306,7 @@
       v23 = v25;
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"title"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     v46 = v28;
     if (objc_opt_isKindOfClass())
@@ -315,14 +315,14 @@
       [(_SFPBTextColumnsCardSection *)v5 setTitle:v29];
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"titleWeight"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"titleWeight"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBTextColumnsCardSection setTitleWeight:](v5, "setTitleWeight:", [v30 unsignedIntValue]);
     }
 
-    v31 = [v4 objectForKeyedSubscript:@"columns"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"columns"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -377,30 +377,30 @@
   return v5;
 }
 
-- (_SFPBTextColumnsCardSection)initWithJSON:(id)a3
+- (_SFPBTextColumnsCardSection)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBTextColumnsCardSection *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBTextColumnsCardSection *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBTextColumnsCardSection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -414,32 +414,32 @@
 - (id)dictionaryRepresentation
 {
   v49 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_backgroundColor)
   {
-    v4 = [(_SFPBTextColumnsCardSection *)self backgroundColor];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    backgroundColor = [(_SFPBTextColumnsCardSection *)self backgroundColor];
+    dictionaryRepresentation = [backgroundColor dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"backgroundColor"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"backgroundColor"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"backgroundColor"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"backgroundColor"];
     }
   }
 
   if (self->_canBeHidden)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBTextColumnsCardSection canBeHidden](self, "canBeHidden")}];
-    [v3 setObject:v7 forKeyedSubscript:@"canBeHidden"];
+    [dictionary setObject:v7 forKeyedSubscript:@"canBeHidden"];
   }
 
   if ([(NSArray *)self->_columns count])
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
@@ -459,16 +459,16 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v43 + 1) + 8 * i) dictionaryRepresentation];
-          if (v14)
+          dictionaryRepresentation2 = [*(*(&v43 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v8 addObject:v14];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v15 = [MEMORY[0x1E695DFB0] null];
-            [v8 addObject:v15];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -478,24 +478,24 @@
       while (v11);
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"columns"];
+    [dictionary setObject:array forKeyedSubscript:@"columns"];
   }
 
   if (self->_hasBottomPadding)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBTextColumnsCardSection hasBottomPadding](self, "hasBottomPadding")}];
-    [v3 setObject:v16 forKeyedSubscript:@"hasBottomPadding"];
+    [dictionary setObject:v16 forKeyedSubscript:@"hasBottomPadding"];
   }
 
   if (self->_hasTopPadding)
   {
     v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBTextColumnsCardSection hasTopPadding](self, "hasTopPadding")}];
-    [v3 setObject:v17 forKeyedSubscript:@"hasTopPadding"];
+    [dictionary setObject:v17 forKeyedSubscript:@"hasTopPadding"];
   }
 
   if ([(NSArray *)self->_punchoutOptions count])
   {
-    v18 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
@@ -515,16 +515,16 @@
             objc_enumerationMutation(v19);
           }
 
-          v24 = [*(*(&v39 + 1) + 8 * j) dictionaryRepresentation];
-          if (v24)
+          dictionaryRepresentation3 = [*(*(&v39 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation3)
           {
-            [v18 addObject:v24];
+            [array2 addObject:dictionaryRepresentation3];
           }
 
           else
           {
-            v25 = [MEMORY[0x1E695DFB0] null];
-            [v18 addObject:v25];
+            null3 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null3];
           }
         }
 
@@ -534,62 +534,62 @@
       while (v21);
     }
 
-    [v3 setObject:v18 forKeyedSubscript:@"punchoutOptions"];
+    [dictionary setObject:array2 forKeyedSubscript:@"punchoutOptions"];
   }
 
   if (self->_punchoutPickerDismissText)
   {
-    v26 = [(_SFPBTextColumnsCardSection *)self punchoutPickerDismissText];
-    v27 = [v26 copy];
-    [v3 setObject:v27 forKeyedSubscript:@"punchoutPickerDismissText"];
+    punchoutPickerDismissText = [(_SFPBTextColumnsCardSection *)self punchoutPickerDismissText];
+    v27 = [punchoutPickerDismissText copy];
+    [dictionary setObject:v27 forKeyedSubscript:@"punchoutPickerDismissText"];
   }
 
   if (self->_punchoutPickerTitle)
   {
-    v28 = [(_SFPBTextColumnsCardSection *)self punchoutPickerTitle];
-    v29 = [v28 copy];
-    [v3 setObject:v29 forKeyedSubscript:@"punchoutPickerTitle"];
+    punchoutPickerTitle = [(_SFPBTextColumnsCardSection *)self punchoutPickerTitle];
+    v29 = [punchoutPickerTitle copy];
+    [dictionary setObject:v29 forKeyedSubscript:@"punchoutPickerTitle"];
   }
 
   if (self->_separatorStyle)
   {
-    v30 = [(_SFPBTextColumnsCardSection *)self separatorStyle];
-    if (v30 >= 6)
+    separatorStyle = [(_SFPBTextColumnsCardSection *)self separatorStyle];
+    if (separatorStyle >= 6)
     {
-      v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v30];
+      v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", separatorStyle];
     }
 
     else
     {
-      v31 = off_1E7ACE580[v30];
+      v31 = off_1E7ACE580[separatorStyle];
     }
 
-    [v3 setObject:v31 forKeyedSubscript:@"separatorStyle"];
+    [dictionary setObject:v31 forKeyedSubscript:@"separatorStyle"];
   }
 
   if (self->_title)
   {
-    v32 = [(_SFPBTextColumnsCardSection *)self title];
-    v33 = [v32 copy];
-    [v3 setObject:v33 forKeyedSubscript:@"title"];
+    title = [(_SFPBTextColumnsCardSection *)self title];
+    v33 = [title copy];
+    [dictionary setObject:v33 forKeyedSubscript:@"title"];
   }
 
   if (self->_titleWeight)
   {
     v34 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[_SFPBTextColumnsCardSection titleWeight](self, "titleWeight")}];
-    [v3 setObject:v34 forKeyedSubscript:@"titleWeight"];
+    [dictionary setObject:v34 forKeyedSubscript:@"titleWeight"];
   }
 
   if (self->_type)
   {
-    v35 = [(_SFPBTextColumnsCardSection *)self type];
-    v36 = [v35 copy];
-    [v3 setObject:v36 forKeyedSubscript:@"type"];
+    type = [(_SFPBTextColumnsCardSection *)self type];
+    v36 = [type copy];
+    [dictionary setObject:v36 forKeyedSubscript:@"type"];
   }
 
   v37 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -635,28 +635,28 @@
   return v11 ^ v12 ^ [(NSArray *)self->_columns hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_42;
   }
 
-  v5 = [(_SFPBTextColumnsCardSection *)self punchoutOptions];
-  v6 = [v4 punchoutOptions];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBTextColumnsCardSection *)self punchoutOptions];
+  punchoutOptions2 = [equalCopy punchoutOptions];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_41;
   }
 
-  v7 = [(_SFPBTextColumnsCardSection *)self punchoutOptions];
-  if (v7)
+  punchoutOptions3 = [(_SFPBTextColumnsCardSection *)self punchoutOptions];
+  if (punchoutOptions3)
   {
-    v8 = v7;
-    v9 = [(_SFPBTextColumnsCardSection *)self punchoutOptions];
-    v10 = [v4 punchoutOptions];
-    v11 = [v9 isEqual:v10];
+    v8 = punchoutOptions3;
+    punchoutOptions4 = [(_SFPBTextColumnsCardSection *)self punchoutOptions];
+    punchoutOptions5 = [equalCopy punchoutOptions];
+    v11 = [punchoutOptions4 isEqual:punchoutOptions5];
 
     if (!v11)
     {
@@ -668,20 +668,20 @@
   {
   }
 
-  v5 = [(_SFPBTextColumnsCardSection *)self punchoutPickerTitle];
-  v6 = [v4 punchoutPickerTitle];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBTextColumnsCardSection *)self punchoutPickerTitle];
+  punchoutOptions2 = [equalCopy punchoutPickerTitle];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_41;
   }
 
-  v12 = [(_SFPBTextColumnsCardSection *)self punchoutPickerTitle];
-  if (v12)
+  punchoutPickerTitle = [(_SFPBTextColumnsCardSection *)self punchoutPickerTitle];
+  if (punchoutPickerTitle)
   {
-    v13 = v12;
-    v14 = [(_SFPBTextColumnsCardSection *)self punchoutPickerTitle];
-    v15 = [v4 punchoutPickerTitle];
-    v16 = [v14 isEqual:v15];
+    v13 = punchoutPickerTitle;
+    punchoutPickerTitle2 = [(_SFPBTextColumnsCardSection *)self punchoutPickerTitle];
+    punchoutPickerTitle3 = [equalCopy punchoutPickerTitle];
+    v16 = [punchoutPickerTitle2 isEqual:punchoutPickerTitle3];
 
     if (!v16)
     {
@@ -693,20 +693,20 @@
   {
   }
 
-  v5 = [(_SFPBTextColumnsCardSection *)self punchoutPickerDismissText];
-  v6 = [v4 punchoutPickerDismissText];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBTextColumnsCardSection *)self punchoutPickerDismissText];
+  punchoutOptions2 = [equalCopy punchoutPickerDismissText];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_41;
   }
 
-  v17 = [(_SFPBTextColumnsCardSection *)self punchoutPickerDismissText];
-  if (v17)
+  punchoutPickerDismissText = [(_SFPBTextColumnsCardSection *)self punchoutPickerDismissText];
+  if (punchoutPickerDismissText)
   {
-    v18 = v17;
-    v19 = [(_SFPBTextColumnsCardSection *)self punchoutPickerDismissText];
-    v20 = [v4 punchoutPickerDismissText];
-    v21 = [v19 isEqual:v20];
+    v18 = punchoutPickerDismissText;
+    punchoutPickerDismissText2 = [(_SFPBTextColumnsCardSection *)self punchoutPickerDismissText];
+    punchoutPickerDismissText3 = [equalCopy punchoutPickerDismissText];
+    v21 = [punchoutPickerDismissText2 isEqual:punchoutPickerDismissText3];
 
     if (!v21)
     {
@@ -719,37 +719,37 @@
   }
 
   canBeHidden = self->_canBeHidden;
-  if (canBeHidden != [v4 canBeHidden])
+  if (canBeHidden != [equalCopy canBeHidden])
   {
     goto LABEL_42;
   }
 
   hasTopPadding = self->_hasTopPadding;
-  if (hasTopPadding != [v4 hasTopPadding])
+  if (hasTopPadding != [equalCopy hasTopPadding])
   {
     goto LABEL_42;
   }
 
   hasBottomPadding = self->_hasBottomPadding;
-  if (hasBottomPadding != [v4 hasBottomPadding])
+  if (hasBottomPadding != [equalCopy hasBottomPadding])
   {
     goto LABEL_42;
   }
 
-  v5 = [(_SFPBTextColumnsCardSection *)self type];
-  v6 = [v4 type];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBTextColumnsCardSection *)self type];
+  punchoutOptions2 = [equalCopy type];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_41;
   }
 
-  v25 = [(_SFPBTextColumnsCardSection *)self type];
-  if (v25)
+  type = [(_SFPBTextColumnsCardSection *)self type];
+  if (type)
   {
-    v26 = v25;
-    v27 = [(_SFPBTextColumnsCardSection *)self type];
-    v28 = [v4 type];
-    v29 = [v27 isEqual:v28];
+    v26 = type;
+    type2 = [(_SFPBTextColumnsCardSection *)self type];
+    type3 = [equalCopy type];
+    v29 = [type2 isEqual:type3];
 
     if (!v29)
     {
@@ -762,25 +762,25 @@
   }
 
   separatorStyle = self->_separatorStyle;
-  if (separatorStyle != [v4 separatorStyle])
+  if (separatorStyle != [equalCopy separatorStyle])
   {
     goto LABEL_42;
   }
 
-  v5 = [(_SFPBTextColumnsCardSection *)self backgroundColor];
-  v6 = [v4 backgroundColor];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBTextColumnsCardSection *)self backgroundColor];
+  punchoutOptions2 = [equalCopy backgroundColor];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_41;
   }
 
-  v31 = [(_SFPBTextColumnsCardSection *)self backgroundColor];
-  if (v31)
+  backgroundColor = [(_SFPBTextColumnsCardSection *)self backgroundColor];
+  if (backgroundColor)
   {
-    v32 = v31;
-    v33 = [(_SFPBTextColumnsCardSection *)self backgroundColor];
-    v34 = [v4 backgroundColor];
-    v35 = [v33 isEqual:v34];
+    v32 = backgroundColor;
+    backgroundColor2 = [(_SFPBTextColumnsCardSection *)self backgroundColor];
+    backgroundColor3 = [equalCopy backgroundColor];
+    v35 = [backgroundColor2 isEqual:backgroundColor3];
 
     if (!v35)
     {
@@ -792,20 +792,20 @@
   {
   }
 
-  v5 = [(_SFPBTextColumnsCardSection *)self title];
-  v6 = [v4 title];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBTextColumnsCardSection *)self title];
+  punchoutOptions2 = [equalCopy title];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_41;
   }
 
-  v36 = [(_SFPBTextColumnsCardSection *)self title];
-  if (v36)
+  title = [(_SFPBTextColumnsCardSection *)self title];
+  if (title)
   {
-    v37 = v36;
-    v38 = [(_SFPBTextColumnsCardSection *)self title];
-    v39 = [v4 title];
-    v40 = [v38 isEqual:v39];
+    v37 = title;
+    title2 = [(_SFPBTextColumnsCardSection *)self title];
+    title3 = [equalCopy title];
+    v40 = [title2 isEqual:title3];
 
     if (!v40)
     {
@@ -818,22 +818,22 @@
   }
 
   titleWeight = self->_titleWeight;
-  if (titleWeight != [v4 titleWeight])
+  if (titleWeight != [equalCopy titleWeight])
   {
     goto LABEL_42;
   }
 
-  v5 = [(_SFPBTextColumnsCardSection *)self columns];
-  v6 = [v4 columns];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBTextColumnsCardSection *)self columns];
+  punchoutOptions2 = [equalCopy columns];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
 LABEL_41:
 
     goto LABEL_42;
   }
 
-  v42 = [(_SFPBTextColumnsCardSection *)self columns];
-  if (!v42)
+  columns = [(_SFPBTextColumnsCardSection *)self columns];
+  if (!columns)
   {
 
 LABEL_45:
@@ -841,10 +841,10 @@ LABEL_45:
     goto LABEL_43;
   }
 
-  v43 = v42;
-  v44 = [(_SFPBTextColumnsCardSection *)self columns];
-  v45 = [v4 columns];
-  v46 = [v44 isEqual:v45];
+  v43 = columns;
+  columns2 = [(_SFPBTextColumnsCardSection *)self columns];
+  columns3 = [equalCopy columns];
+  v46 = [columns2 isEqual:columns3];
 
   if (v46)
   {
@@ -858,16 +858,16 @@ LABEL_43:
   return v47;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBTextColumnsCardSection *)self punchoutOptions];
+  toCopy = to;
+  punchoutOptions = [(_SFPBTextColumnsCardSection *)self punchoutOptions];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  v6 = [punchoutOptions countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v6)
   {
     v7 = v6;
@@ -879,7 +879,7 @@ LABEL_43:
       {
         if (*v28 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(punchoutOptions);
         }
 
         v10 = *(*(&v27 + 1) + 8 * v9);
@@ -888,20 +888,20 @@ LABEL_43:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v7 = [punchoutOptions countByEnumeratingWithState:&v27 objects:v32 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [(_SFPBTextColumnsCardSection *)self punchoutPickerTitle];
-  if (v11)
+  punchoutPickerTitle = [(_SFPBTextColumnsCardSection *)self punchoutPickerTitle];
+  if (punchoutPickerTitle)
   {
     PBDataWriterWriteStringField();
   }
 
-  v12 = [(_SFPBTextColumnsCardSection *)self punchoutPickerDismissText];
-  if (v12)
+  punchoutPickerDismissText = [(_SFPBTextColumnsCardSection *)self punchoutPickerDismissText];
+  if (punchoutPickerDismissText)
   {
     PBDataWriterWriteStringField();
   }
@@ -921,8 +921,8 @@ LABEL_43:
     PBDataWriterWriteBOOLField();
   }
 
-  v13 = [(_SFPBTextColumnsCardSection *)self type];
-  if (v13)
+  type = [(_SFPBTextColumnsCardSection *)self type];
+  if (type)
   {
     PBDataWriterWriteStringField();
   }
@@ -932,14 +932,14 @@ LABEL_43:
     PBDataWriterWriteInt32Field();
   }
 
-  v14 = [(_SFPBTextColumnsCardSection *)self backgroundColor];
-  if (v14)
+  backgroundColor = [(_SFPBTextColumnsCardSection *)self backgroundColor];
+  if (backgroundColor)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v15 = [(_SFPBTextColumnsCardSection *)self title];
-  if (v15)
+  title = [(_SFPBTextColumnsCardSection *)self title];
+  if (title)
   {
     PBDataWriterWriteStringField();
   }
@@ -949,12 +949,12 @@ LABEL_43:
     PBDataWriterWriteUint32Field();
   }
 
-  v16 = [(_SFPBTextColumnsCardSection *)self columns];
+  columns = [(_SFPBTextColumnsCardSection *)self columns];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v17 = [v16 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  v17 = [columns countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v17)
   {
     v18 = v17;
@@ -966,7 +966,7 @@ LABEL_43:
       {
         if (*v24 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(columns);
         }
 
         v21 = *(*(&v23 + 1) + 8 * v20);
@@ -975,7 +975,7 @@ LABEL_43:
       }
 
       while (v18 != v20);
-      v18 = [v16 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v18 = [columns countByEnumeratingWithState:&v23 objects:v31 count:16];
     }
 
     while (v18);
@@ -984,90 +984,90 @@ LABEL_43:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addColumns:(id)a3
+- (void)addColumns:(id)columns
 {
-  v4 = a3;
+  columnsCopy = columns;
   columns = self->_columns;
-  v8 = v4;
+  v8 = columnsCopy;
   if (!columns)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_columns;
-    self->_columns = v6;
+    self->_columns = array;
 
-    v4 = v8;
+    columnsCopy = v8;
     columns = self->_columns;
   }
 
-  [(NSArray *)columns addObject:v4];
+  [(NSArray *)columns addObject:columnsCopy];
 }
 
-- (void)setColumns:(id)a3
+- (void)setColumns:(id)columns
 {
-  v4 = [a3 copy];
+  v4 = [columns copy];
   columns = self->_columns;
   self->_columns = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   title = self->_title;
   self->_title = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setType:(id)a3
+- (void)setType:(id)type
 {
-  v4 = [a3 copy];
+  v4 = [type copy];
   type = self->_type;
   self->_type = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPunchoutPickerDismissText:(id)a3
+- (void)setPunchoutPickerDismissText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   punchoutPickerDismissText = self->_punchoutPickerDismissText;
   self->_punchoutPickerDismissText = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPunchoutPickerTitle:(id)a3
+- (void)setPunchoutPickerTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   punchoutPickerTitle = self->_punchoutPickerTitle;
   self->_punchoutPickerTitle = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addPunchoutOptions:(id)a3
+- (void)addPunchoutOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   punchoutOptions = self->_punchoutOptions;
-  v8 = v4;
+  v8 = optionsCopy;
   if (!punchoutOptions)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_punchoutOptions;
-    self->_punchoutOptions = v6;
+    self->_punchoutOptions = array;
 
-    v4 = v8;
+    optionsCopy = v8;
     punchoutOptions = self->_punchoutOptions;
   }
 
-  [(NSArray *)punchoutOptions addObject:v4];
+  [(NSArray *)punchoutOptions addObject:optionsCopy];
 }
 
-- (void)setPunchoutOptions:(id)a3
+- (void)setPunchoutOptions:(id)options
 {
-  v4 = [a3 copy];
+  v4 = [options copy];
   punchoutOptions = self->_punchoutOptions;
   self->_punchoutOptions = v4;
 

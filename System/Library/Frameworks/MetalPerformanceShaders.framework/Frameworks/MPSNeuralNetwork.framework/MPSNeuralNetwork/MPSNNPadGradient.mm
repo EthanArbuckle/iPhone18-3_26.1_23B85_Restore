@@ -1,9 +1,9 @@
 @interface MPSNNPadGradient
 - (MPSNNPadGradient)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSNNPadGradient)initWithDevice:(id)device;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNNPadGradient
@@ -24,11 +24,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v5.receiver = self;
   v5.super_class = MPSNNPadGradient;
-  return [(MPSCNNGradientKernel *)&v5 copyWithZone:a3 device:a4];
+  return [(MPSCNNGradientKernel *)&v5 copyWithZone:zone device:device];
 }
 
 - (MPSNNPadGradient)initWithCoder:(NSCoder *)aDecoder device:(id)device
@@ -59,19 +59,19 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v3.receiver = self;
   v3.super_class = MPSNNPadGradient;
-  [(MPSCNNGradientKernel *)&v3 encodeWithCoder:a3];
+  [(MPSCNNGradientKernel *)&v3 encodeWithCoder:coder];
 }
 
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states
 {
   v5.receiver = self;
   v5.super_class = MPSNNPadGradient;
-  return [(MPSCNNGradientKernel *)&v5 destinationImageDescriptorForSourceImages:a3 sourceStates:a4];
+  return [(MPSCNNGradientKernel *)&v5 destinationImageDescriptorForSourceImages:images sourceStates:states];
 }
 
 @end

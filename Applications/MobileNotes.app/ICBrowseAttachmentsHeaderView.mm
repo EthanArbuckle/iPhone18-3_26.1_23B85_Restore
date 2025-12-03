@@ -6,9 +6,9 @@
 - (id)constraintsForRegularTextSizes;
 - (void)awakeFromNib;
 - (void)contentSizeCategoryDidChange;
-- (void)seeAll:(id)a3;
-- (void)setLeadingMargin:(double)a3;
-- (void)setTrailingMargin:(double)a3;
+- (void)seeAll:(id)all;
+- (void)setLeadingMargin:(double)margin;
+- (void)setTrailingMargin:(double)margin;
 - (void)updateConstraints;
 @end
 
@@ -19,71 +19,71 @@
   v7.receiver = self;
   v7.super_class = ICBrowseAttachmentsHeaderView;
   [(ICBrowseAttachmentsHeaderView *)&v7 awakeFromNib];
-  v3 = [(ICBrowseAttachmentsHeaderView *)self sectionLabel];
-  v4 = [v3 accessibilityTraits];
-  [v3 setAccessibilityTraits:UIAccessibilityTraitHeader | v4];
+  sectionLabel = [(ICBrowseAttachmentsHeaderView *)self sectionLabel];
+  accessibilityTraits = [sectionLabel accessibilityTraits];
+  [sectionLabel setAccessibilityTraits:UIAccessibilityTraitHeader | accessibilityTraits];
 
   v5 = +[UIColor labelColor];
-  v6 = [(ICBrowseAttachmentsHeaderView *)self sectionLabel];
-  [v6 setTextColor:v5];
+  sectionLabel2 = [(ICBrowseAttachmentsHeaderView *)self sectionLabel];
+  [sectionLabel2 setTextColor:v5];
 
   [(ICBrowseAttachmentsHeaderView *)self setClipsToBounds:0];
 }
 
-- (void)seeAll:(id)a3
+- (void)seeAll:(id)all
 {
-  v4 = [(ICBrowseAttachmentsHeaderView *)self delegate];
-  [v4 showAllForAttachmentSection:{-[ICBrowseAttachmentsHeaderView attachmentSection](self, "attachmentSection")}];
+  delegate = [(ICBrowseAttachmentsHeaderView *)self delegate];
+  [delegate showAllForAttachmentSection:{-[ICBrowseAttachmentsHeaderView attachmentSection](self, "attachmentSection")}];
 }
 
 - (void)contentSizeCategoryDidChange
 {
   v7 = +[UIFont ic_attachmentBrowserTitleFont];
-  v3 = [(ICBrowseAttachmentsHeaderView *)self sectionLabel];
-  [v3 setFont:v7];
+  sectionLabel = [(ICBrowseAttachmentsHeaderView *)self sectionLabel];
+  [sectionLabel setFont:v7];
 
   v4 = +[UIFont ic_attachmentBrowserSeeAllButtonFont];
-  v5 = [(ICBrowseAttachmentsHeaderView *)self seeAllButton];
-  v6 = [v5 titleLabel];
-  [v6 setFont:v4];
+  seeAllButton = [(ICBrowseAttachmentsHeaderView *)self seeAllButton];
+  titleLabel = [seeAllButton titleLabel];
+  [titleLabel setFont:v4];
 
   [(ICBrowseAttachmentsHeaderView *)self setNeedsUpdateConstraints];
 }
 
 - (void)updateConstraints
 {
-  v3 = [(ICBrowseAttachmentsHeaderView *)self window];
-  v4 = [v3 windowScene];
-  v5 = [v4 interfaceOrientation];
+  window = [(ICBrowseAttachmentsHeaderView *)self window];
+  windowScene = [window windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  v6 = [(ICBrowseAttachmentsHeaderView *)self traitCollection];
-  v7 = [v6 horizontalSizeClass];
+  traitCollection = [(ICBrowseAttachmentsHeaderView *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
   v8 = ICAccessibilityAccessibilityLargerTextSizesEnabled();
-  v9 = [(ICBrowseAttachmentsHeaderView *)self sectionLabel];
-  v10 = v9;
-  if (v8 && (v5 - 3) >= 0xFFFFFFFFFFFFFFFELL && v7 == 1)
+  sectionLabel = [(ICBrowseAttachmentsHeaderView *)self sectionLabel];
+  v10 = sectionLabel;
+  if (v8 && (interfaceOrientation - 3) >= 0xFFFFFFFFFFFFFFFELL && horizontalSizeClass == 1)
   {
-    [v9 setNumberOfLines:0];
+    [sectionLabel setNumberOfLines:0];
 
-    v11 = [(ICBrowseAttachmentsHeaderView *)self constraintsForRegularTextSizes];
-    [NSLayoutConstraint deactivateConstraints:v11];
+    constraintsForRegularTextSizes = [(ICBrowseAttachmentsHeaderView *)self constraintsForRegularTextSizes];
+    [NSLayoutConstraint deactivateConstraints:constraintsForRegularTextSizes];
 
-    v12 = [(ICBrowseAttachmentsHeaderView *)self constraintsForAXLargerTextSizes];
+    constraintsForAXLargerTextSizes = [(ICBrowseAttachmentsHeaderView *)self constraintsForAXLargerTextSizes];
   }
 
   else
   {
-    [v9 setNumberOfLines:1];
+    [sectionLabel setNumberOfLines:1];
 
-    v13 = [(ICBrowseAttachmentsHeaderView *)self constraintsForAXLargerTextSizes];
-    [NSLayoutConstraint deactivateConstraints:v13];
+    constraintsForAXLargerTextSizes2 = [(ICBrowseAttachmentsHeaderView *)self constraintsForAXLargerTextSizes];
+    [NSLayoutConstraint deactivateConstraints:constraintsForAXLargerTextSizes2];
 
-    v12 = [(ICBrowseAttachmentsHeaderView *)self constraintsForRegularTextSizes];
+    constraintsForAXLargerTextSizes = [(ICBrowseAttachmentsHeaderView *)self constraintsForRegularTextSizes];
   }
 
-  v14 = v12;
-  [NSLayoutConstraint activateConstraints:v12];
+  v14 = constraintsForAXLargerTextSizes;
+  [NSLayoutConstraint activateConstraints:constraintsForAXLargerTextSizes];
 
   v15.receiver = self;
   v15.super_class = ICBrowseAttachmentsHeaderView;
@@ -93,17 +93,17 @@
 - (id)constraintsForRegularTextSizes
 {
   v3 = +[NSMutableArray array];
-  v4 = [(ICBrowseAttachmentsHeaderView *)self sectionLabelBottomConstraint];
-  [v3 ic_addNonNilObject:v4];
+  sectionLabelBottomConstraint = [(ICBrowseAttachmentsHeaderView *)self sectionLabelBottomConstraint];
+  [v3 ic_addNonNilObject:sectionLabelBottomConstraint];
 
-  v5 = [(ICBrowseAttachmentsHeaderView *)self seeAllButtonLeadingConstraint];
-  [v3 ic_addNonNilObject:v5];
+  seeAllButtonLeadingConstraint = [(ICBrowseAttachmentsHeaderView *)self seeAllButtonLeadingConstraint];
+  [v3 ic_addNonNilObject:seeAllButtonLeadingConstraint];
 
-  v6 = [(ICBrowseAttachmentsHeaderView *)self seeAllButtonTrailingConstraint];
-  [v3 ic_addNonNilObject:v6];
+  seeAllButtonTrailingConstraint = [(ICBrowseAttachmentsHeaderView *)self seeAllButtonTrailingConstraint];
+  [v3 ic_addNonNilObject:seeAllButtonTrailingConstraint];
 
-  v7 = [(ICBrowseAttachmentsHeaderView *)self seeAllButtonBaselineConstraint];
-  [v3 ic_addNonNilObject:v7];
+  seeAllButtonBaselineConstraint = [(ICBrowseAttachmentsHeaderView *)self seeAllButtonBaselineConstraint];
+  [v3 ic_addNonNilObject:seeAllButtonBaselineConstraint];
 
   v8 = [v3 copy];
 
@@ -113,30 +113,30 @@
 - (id)constraintsForAXLargerTextSizes
 {
   v3 = +[NSMutableArray array];
-  v4 = [(ICBrowseAttachmentsHeaderView *)self seeAllButtonAXTopConstraint];
-  [v3 ic_addNonNilObject:v4];
+  seeAllButtonAXTopConstraint = [(ICBrowseAttachmentsHeaderView *)self seeAllButtonAXTopConstraint];
+  [v3 ic_addNonNilObject:seeAllButtonAXTopConstraint];
 
-  v5 = [(ICBrowseAttachmentsHeaderView *)self seeAllButtonAXLeadingConstraint];
-  [v3 ic_addNonNilObject:v5];
+  seeAllButtonAXLeadingConstraint = [(ICBrowseAttachmentsHeaderView *)self seeAllButtonAXLeadingConstraint];
+  [v3 ic_addNonNilObject:seeAllButtonAXLeadingConstraint];
 
   v6 = [v3 copy];
 
   return v6;
 }
 
-- (void)setLeadingMargin:(double)a3
+- (void)setLeadingMargin:(double)margin
 {
-  v5 = [(ICBrowseAttachmentsHeaderView *)self sectionLabelLeadingConstraint];
-  [v5 setConstant:a3];
+  sectionLabelLeadingConstraint = [(ICBrowseAttachmentsHeaderView *)self sectionLabelLeadingConstraint];
+  [sectionLabelLeadingConstraint setConstant:margin];
 
-  v6 = [(ICBrowseAttachmentsHeaderView *)self seeAllButtonAXLeadingConstraint];
-  [v6 setConstant:a3];
+  seeAllButtonAXLeadingConstraint = [(ICBrowseAttachmentsHeaderView *)self seeAllButtonAXLeadingConstraint];
+  [seeAllButtonAXLeadingConstraint setConstant:margin];
 }
 
-- (void)setTrailingMargin:(double)a3
+- (void)setTrailingMargin:(double)margin
 {
-  v4 = [(ICBrowseAttachmentsHeaderView *)self seeAllButtonTrailingConstraint];
-  [v4 setConstant:a3];
+  seeAllButtonTrailingConstraint = [(ICBrowseAttachmentsHeaderView *)self seeAllButtonTrailingConstraint];
+  [seeAllButtonTrailingConstraint setConstant:margin];
 }
 
 - (UILabel)sectionLabel

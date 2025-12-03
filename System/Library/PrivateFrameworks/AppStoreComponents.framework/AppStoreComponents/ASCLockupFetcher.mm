@@ -1,15 +1,15 @@
 @interface ASCLockupFetcher
 + (ASCLockupFetcher)sharedFetcher;
-- (ASCLockupFetcher)initWithConnection:(id)a3;
-- (id)collectionWithRequest:(id)a3;
-- (id)loadedLockupWithRequest:(id)a3;
-- (id)lockupForBundleID:(id)a3 withContext:(id)a4 enableAppDistribution:(BOOL)a5;
-- (id)lockupFromMediaAPIResponse:(id)a3 withContext:(id)a4;
-- (id)lockupWithRequest:(id)a3;
-- (void)daemonConnectionWasLost:(id)a3;
-- (void)daemonDidRebootstrap:(id)a3;
+- (ASCLockupFetcher)initWithConnection:(id)connection;
+- (id)collectionWithRequest:(id)request;
+- (id)loadedLockupWithRequest:(id)request;
+- (id)lockupForBundleID:(id)d withContext:(id)context enableAppDistribution:(BOOL)distribution;
+- (id)lockupFromMediaAPIResponse:(id)response withContext:(id)context;
+- (id)lockupWithRequest:(id)request;
+- (void)daemonConnectionWasLost:(id)lost;
+- (void)daemonDidRebootstrap:(id)rebootstrap;
 - (void)dealloc;
-- (void)submitBatchRequest:(id)a3;
+- (void)submitBatchRequest:(id)request;
 @end
 
 @implementation ASCLockupFetcher
@@ -35,16 +35,16 @@ void __33__ASCLockupFetcher_sharedFetcher__block_invoke()
   sharedFetcher_sharedFetcher_0 = v1;
 }
 
-- (ASCLockupFetcher)initWithConnection:(id)a3
+- (ASCLockupFetcher)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v19.receiver = self;
   v19.super_class = ASCLockupFetcher;
   v6 = [(ASCLockupFetcher *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v8 = objc_alloc_init(ASCPendingPromises);
     pendingRequests = v7->_pendingRequests;
     v7->_pendingRequests = v8;
@@ -57,15 +57,15 @@ void __33__ASCLockupFetcher_sharedFetcher__block_invoke()
     bundleCoordinator = v7->_bundleCoordinator;
     v7->_bundleCoordinator = v12;
 
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:v7 selector:sel_daemonConnectionWasLost_ name:0x2827A4CB8 object:v5];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_daemonConnectionWasLost_ name:0x2827A4CB8 object:connectionCopy];
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v7 selector:sel_daemonConnectionWasLost_ name:0x2827A4CD8 object:v5];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel_daemonConnectionWasLost_ name:0x2827A4CD8 object:connectionCopy];
 
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
     v17 = +[ASCRebootstrapNotifier sharedNotifier];
-    [v16 addObserver:v7 selector:sel_daemonDidRebootstrap_ name:0x2827A4C98 object:v17];
+    [defaultCenter3 addObserver:v7 selector:sel_daemonDidRebootstrap_ name:0x2827A4C98 object:v17];
   }
 
   return v7;
@@ -80,15 +80,15 @@ ASCTaskCoordinator *__39__ASCLockupFetcher_initWithConnection___block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ASCLockupFetcher;
   [(ASCLockupFetcher *)&v4 dealloc];
 }
 
-- (void)daemonConnectionWasLost:(id)a3
+- (void)daemonConnectionWasLost:(id)lost
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc(MEMORY[0x277CCA9B8]);
@@ -97,21 +97,21 @@ ASCTaskCoordinator *__39__ASCLockupFetcher_initWithConnection___block_invoke()
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   v6 = [v4 initWithDomain:@"ASCLockupFetcherErrorDomain" code:1 userInfo:v5];
 
-  v7 = [(ASCLockupFetcher *)self pendingRequests];
-  [v7 finishAllWithError:v6];
+  pendingRequests = [(ASCLockupFetcher *)self pendingRequests];
+  [pendingRequests finishAllWithError:v6];
 }
 
-- (void)daemonDidRebootstrap:(id)a3
+- (void)daemonDidRebootstrap:(id)rebootstrap
 {
-  v3 = [(ASCLockupFetcher *)self requestCoordinator];
-  [v3 removeAllFinishedTasks];
+  requestCoordinator = [(ASCLockupFetcher *)self requestCoordinator];
+  [requestCoordinator removeAllFinishedTasks];
 }
 
-- (id)loadedLockupWithRequest:(id)a3
+- (id)loadedLockupWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(ASCLockupFetcher *)self requestCoordinator];
-  v6 = [v5 taskForKey:v4];
+  requestCopy = request;
+  requestCoordinator = [(ASCLockupFetcher *)self requestCoordinator];
+  v6 = [requestCoordinator taskForKey:requestCopy];
 
   if (v6 && [v6 isFinished])
   {
@@ -126,18 +126,18 @@ ASCTaskCoordinator *__39__ASCLockupFetcher_initWithConnection___block_invoke()
   return v7;
 }
 
-- (id)lockupWithRequest:(id)a3
+- (id)lockupWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(ASCLockupFetcher *)self requestCoordinator];
+  requestCopy = request;
+  requestCoordinator = [(ASCLockupFetcher *)self requestCoordinator];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __38__ASCLockupFetcher_lockupWithRequest___block_invoke;
   v9[3] = &unk_2781CB968;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 taskForKey:v6 withCreatorBlock:v9];
+  v10 = requestCopy;
+  v6 = requestCopy;
+  v7 = [requestCoordinator taskForKey:v6 withCreatorBlock:v9];
 
   return v7;
 }
@@ -180,37 +180,37 @@ id __38__ASCLockupFetcher_lockupWithRequest___block_invoke_2(uint64_t a1, void *
   return v5;
 }
 
-- (void)submitBatchRequest:(id)a3
+- (void)submitBatchRequest:(id)request
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 ids];
+  requestCopy = request;
+  v4 = [requestCopy ids];
   v5 = [v4 mutableCopy];
 
-  v6 = [(ASCLockupFetcher *)self requestCoordinator];
+  requestCoordinator = [(ASCLockupFetcher *)self requestCoordinator];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __39__ASCLockupFetcher_submitBatchRequest___block_invoke;
   v36[3] = &unk_2781CB9D8;
-  v21 = v3;
+  v21 = requestCopy;
   v37 = v21;
-  v38 = self;
+  selfCopy = self;
   v22 = v5;
   v39 = v22;
-  [v6 withLock:v36];
+  [requestCoordinator withLock:v36];
 
   v23 = [v21 lockupBatchRequestWithIDs:v22];
   v7 = [v23 ids];
-  LOBYTE(v3) = [v7 count] == 0;
+  LOBYTE(requestCopy) = [v7 count] == 0;
 
-  if ((v3 & 1) == 0)
+  if ((requestCopy & 1) == 0)
   {
-    v8 = [(ASCLockupFetcher *)self pendingRequests];
-    objc_initWeak(&location, v8);
+    pendingRequests = [(ASCLockupFetcher *)self pendingRequests];
+    objc_initWeak(&location, pendingRequests);
 
-    v9 = [(ASCLockupFetcher *)self connection];
-    v10 = [v9 lockupFetcherService];
-    v20 = [v10 mutablePromiseAdapter];
+    connection = [(ASCLockupFetcher *)self connection];
+    lockupFetcherService = [connection lockupFetcherService];
+    mutablePromiseAdapter = [lockupFetcherService mutablePromiseAdapter];
 
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
@@ -219,13 +219,13 @@ id __38__ASCLockupFetcher_lockupWithRequest___block_invoke_2(uint64_t a1, void *
     objc_copyWeak(&v34, &location);
     v11 = v23;
     v33 = v11;
-    v12 = [v20 thenWithBlock:v32];
+    v12 = [mutablePromiseAdapter thenWithBlock:v32];
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v13 = [v11 requests];
-    v14 = [v13 countByEnumeratingWithState:&v28 objects:v40 count:16];
+    requests = [v11 requests];
+    v14 = [requests countByEnumeratingWithState:&v28 objects:v40 count:16];
     if (v14)
     {
       v15 = *v29;
@@ -236,24 +236,24 @@ id __38__ASCLockupFetcher_lockupWithRequest___block_invoke_2(uint64_t a1, void *
         {
           if (*v29 != v15)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(requests);
           }
 
           v17 = *(*(&v28 + 1) + 8 * v16);
-          v18 = [(ASCLockupFetcher *)self requestCoordinator];
+          requestCoordinator2 = [(ASCLockupFetcher *)self requestCoordinator];
           v25[0] = MEMORY[0x277D85DD0];
           v25[1] = 3221225472;
           v25[2] = __39__ASCLockupFetcher_submitBatchRequest___block_invoke_3;
           v25[3] = &unk_2781CB968;
           v26 = v12;
           v27 = v17;
-          v19 = [v18 taskForKey:v17 withCreatorBlock:v25];
+          v19 = [requestCoordinator2 taskForKey:v17 withCreatorBlock:v25];
 
           ++v16;
         }
 
         while (v14 != v16);
-        v14 = [v13 countByEnumeratingWithState:&v28 objects:v40 count:16];
+        v14 = [requests countByEnumeratingWithState:&v28 objects:v40 count:16];
       }
 
       while (v14);
@@ -364,24 +364,24 @@ id __39__ASCLockupFetcher_submitBatchRequest___block_invoke_4(uint64_t a1, void 
   return v4;
 }
 
-- (id)lockupForBundleID:(id)a3 withContext:(id)a4 enableAppDistribution:(BOOL)a5
+- (id)lockupForBundleID:(id)d withContext:(id)context enableAppDistribution:(BOOL)distribution
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [[ASCPair alloc] initWithFirst:v8 second:v9];
-  v11 = [(ASCLockupFetcher *)self bundleCoordinator];
-  v12 = [v11 object];
+  dCopy = d;
+  contextCopy = context;
+  v10 = [[ASCPair alloc] initWithFirst:dCopy second:contextCopy];
+  bundleCoordinator = [(ASCLockupFetcher *)self bundleCoordinator];
+  object = [bundleCoordinator object];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __72__ASCLockupFetcher_lockupForBundleID_withContext_enableAppDistribution___block_invoke;
   v17[3] = &unk_2781CBAA0;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = a5;
-  v13 = v9;
-  v14 = v8;
-  v15 = [v12 taskForKey:v10 withCreatorBlock:v17];
+  v18 = dCopy;
+  v19 = contextCopy;
+  distributionCopy = distribution;
+  v13 = contextCopy;
+  v14 = dCopy;
+  v15 = [object taskForKey:v10 withCreatorBlock:v17];
 
   return v15;
 }
@@ -468,23 +468,23 @@ void __72__ASCLockupFetcher_lockupForBundleID_withContext_enableAppDistribution_
   v11 = [WeakRetained taskForKey:v7 withCreatorBlock:v12];
 }
 
-- (id)lockupFromMediaAPIResponse:(id)a3 withContext:(id)a4
+- (id)lockupFromMediaAPIResponse:(id)response withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ASCLockupFetcher *)self connection];
-  v9 = [v8 lockupFetcherService];
-  v10 = [v9 mutablePromiseAdapter];
+  responseCopy = response;
+  contextCopy = context;
+  connection = [(ASCLockupFetcher *)self connection];
+  lockupFetcherService = [connection lockupFetcherService];
+  mutablePromiseAdapter = [lockupFetcherService mutablePromiseAdapter];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __59__ASCLockupFetcher_lockupFromMediaAPIResponse_withContext___block_invoke;
   v15[3] = &unk_2781CBAC8;
-  v16 = v6;
-  v17 = v7;
-  v11 = v7;
-  v12 = v6;
-  v13 = [v10 thenWithBlock:v15];
+  v16 = responseCopy;
+  v17 = contextCopy;
+  v11 = contextCopy;
+  v12 = responseCopy;
+  v13 = [mutablePromiseAdapter thenWithBlock:v15];
 
   return v13;
 }
@@ -502,27 +502,27 @@ id __59__ASCLockupFetcher_lockupFromMediaAPIResponse_withContext___block_invoke(
   return v5;
 }
 
-- (id)collectionWithRequest:(id)a3
+- (id)collectionWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(ASCLockupFetcher *)self pendingRequests];
-  objc_initWeak(&location, v5);
+  requestCopy = request;
+  pendingRequests = [(ASCLockupFetcher *)self pendingRequests];
+  objc_initWeak(&location, pendingRequests);
 
-  v6 = [(ASCLockupFetcher *)self requestCoordinator];
-  objc_initWeak(&from, v6);
+  requestCoordinator = [(ASCLockupFetcher *)self requestCoordinator];
+  objc_initWeak(&from, requestCoordinator);
 
-  v7 = [(ASCLockupFetcher *)self connection];
-  v8 = [v7 lockupFetcherService];
+  connection = [(ASCLockupFetcher *)self connection];
+  lockupFetcherService = [connection lockupFetcherService];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __42__ASCLockupFetcher_collectionWithRequest___block_invoke;
   v12[3] = &unk_2781CBB18;
   objc_copyWeak(&v14, &location);
-  v9 = v4;
+  v9 = requestCopy;
   v13 = v9;
   objc_copyWeak(&v15, &from);
-  v10 = [v8 thenWithBlock:v12];
+  v10 = [lockupFetcherService thenWithBlock:v12];
   objc_destroyWeak(&v15);
 
   objc_destroyWeak(&v14);

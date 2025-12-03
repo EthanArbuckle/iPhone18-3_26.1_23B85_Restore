@@ -1,55 +1,55 @@
 @interface CPObject
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CPObject)init;
-- (id)ancestorOfClass:(Class)a3;
-- (id)childrenNotOfClass:(Class)a3;
-- (id)childrenOfClass:(Class)a3;
-- (id)copyAndSplitChildrenAtIndex:(unsigned int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)ancestorOfClass:(Class)class;
+- (id)childrenNotOfClass:(Class)class;
+- (id)childrenOfClass:(Class)class;
+- (id)copyAndSplitChildrenAtIndex:(unsigned int)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyWithoutChildren;
-- (id)descendantsOfClass:(Class)a3 deep:(BOOL)a4;
-- (id)descendantsOfClass:(Class)a3 omitTraversing:(Class)a4;
+- (id)descendantsOfClass:(Class)class deep:(BOOL)deep;
+- (id)descendantsOfClass:(Class)class omitTraversing:(Class)traversing;
 - (id)firstChild;
-- (id)firstDescendantOfClass:(Class)a3;
-- (id)firstDescendantsOfClass:(Class)a3;
+- (id)firstDescendantOfClass:(Class)class;
+- (id)firstDescendantsOfClass:(Class)class;
 - (id)firstSibling;
 - (id)initSuper;
 - (id)lastChild;
-- (id)lastDescendantOfClass:(Class)a3;
+- (id)lastDescendantOfClass:(Class)class;
 - (id)lastSibling;
 - (id)newTakeChildren;
-- (id)newTakeChildrenAmong:(id)a3;
+- (id)newTakeChildrenAmong:(id)among;
 - (id)nextSibling;
 - (id)page;
 - (id)previousSibling;
 - (int)depth;
-- (unsigned)countOfClass:(Class)a3;
-- (unsigned)countOfFirstDescendantsOfClass:(Class)a3;
-- (void)_printWithIndent:(int)a3;
-- (void)add:(id)a3;
-- (void)add:(id)a3 atIndex:(unsigned int)a4;
-- (void)addChildren:(id)a3;
-- (void)addChildrenOf:(id)a3;
-- (void)childrenOfClass:(Class)a3 into:(id)a4;
+- (unsigned)countOfClass:(Class)class;
+- (unsigned)countOfFirstDescendantsOfClass:(Class)class;
+- (void)_printWithIndent:(int)indent;
+- (void)add:(id)add;
+- (void)add:(id)add atIndex:(unsigned int)index;
+- (void)addChildren:(id)children;
+- (void)addChildrenOf:(id)of;
+- (void)childrenOfClass:(Class)class into:(id)into;
 - (void)clearCachedInfo;
-- (void)commonMapFuncCall:(SEL)a3 target:(id)a4 childrenOfClass:(Class)a5 ofCount:(int)a6;
+- (void)commonMapFuncCall:(SEL)call target:(id)target childrenOfClass:(Class)class ofCount:(int)count;
 - (void)dealloc;
-- (void)descendantsOfClass:(Class)a3 to:(id)a4;
+- (void)descendantsOfClass:(Class)class to:(id)to;
 - (void)disposeDescendants;
-- (void)map:(SEL)a3 target:(id)a4;
-- (void)map:(SEL)a3 target:(id)a4 childrenOfClass:(Class)a5;
-- (void)map:(SEL)a3 target:(id)a4 childrenOfClass:(Class)a5 last:(BOOL)a6;
-- (void)map:(SEL)a3 target:(id)a4 last:(BOOL)a5;
-- (void)mapSafely:(SEL)a3 target:(id)a4 childrenOfClass:(Class)a5;
+- (void)map:(SEL)map target:(id)target;
+- (void)map:(SEL)map target:(id)target childrenOfClass:(Class)class;
+- (void)map:(SEL)map target:(id)target childrenOfClass:(Class)class last:(BOOL)last;
+- (void)map:(SEL)map target:(id)target last:(BOOL)last;
+- (void)mapSafely:(SEL)safely target:(id)target childrenOfClass:(Class)class;
 - (void)promoteChildren;
 - (void)recomputeZOrder;
 - (void)remove;
-- (void)remove:(id)a3;
+- (void)remove:(id)remove;
 - (void)removeFirstChild;
 - (void)removeLastChild;
-- (void)removeObjectAtIndex:(unsigned int)a3;
-- (void)setDocument:(id)a3;
-- (void)updateZOrder:(int64_t)a3;
+- (void)removeObjectAtIndex:(unsigned int)index;
+- (void)setDocument:(id)document;
+- (void)updateZOrder:(int64_t)order;
 @end
 
 @implementation CPObject
@@ -120,7 +120,7 @@
   return result;
 }
 
-- (id)firstDescendantsOfClass:(Class)a3
+- (id)firstDescendantsOfClass:(Class)class
 {
   v5 = [(NSMutableArray *)self->children count];
   v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:v5];
@@ -141,7 +141,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v6 addObjectsFromArray:{objc_msgSend(v9, "firstDescendantsOfClass:", a3)}];
+          [v6 addObjectsFromArray:{objc_msgSend(v9, "firstDescendantsOfClass:", class)}];
         }
       }
 
@@ -163,11 +163,11 @@
   }
 }
 
-- (void)updateZOrder:(int64_t)a3
+- (void)updateZOrder:(int64_t)order
 {
-  if (self->zOrder < a3)
+  if (self->zOrder < order)
   {
-    self->zOrder = a3;
+    self->zOrder = order;
     parent = self->parent;
     if (parent)
     {
@@ -204,18 +204,18 @@
   }
 }
 
-- (void)setDocument:(id)a3
+- (void)setDocument:(id)document
 {
-  if (self->document != a3)
+  if (self->document != document)
   {
-    self->document = a3;
+    self->document = document;
     v5 = [(NSMutableArray *)self->children count];
     if (v5 >= 1)
     {
       v6 = 0;
       do
       {
-        [-[CPObject childAtIndex:](self childAtIndex:{v6), "setDocument:", a3}];
+        [-[CPObject childAtIndex:](self childAtIndex:{v6), "setDocument:", document}];
         v6 = (v6 + 1);
       }
 
@@ -224,14 +224,14 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v4.receiver = self;
   v4.super_class = CPObject;
-  return [(CPObject *)&v4 isEqual:a3];
+  return [(CPObject *)&v4 isEqual:equal];
 }
 
-- (unsigned)countOfFirstDescendantsOfClass:(Class)a3
+- (unsigned)countOfFirstDescendantsOfClass:(Class)class
 {
   v5 = [(NSMutableArray *)self->children count];
   v6 = v5;
@@ -255,7 +255,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 += [v9 countOfFirstDescendantsOfClass:a3];
+        v8 += [v9 countOfFirstDescendantsOfClass:class];
       }
     }
 
@@ -266,7 +266,7 @@
   return v8;
 }
 
-- (id)lastDescendantOfClass:(Class)a3
+- (id)lastDescendantOfClass:(Class)class
 {
   v5 = [(CPObject *)self count];
   v6 = v5 - 1;
@@ -278,7 +278,7 @@
   do
   {
     v7 = [(CPObject *)self childAtIndex:v6];
-    result = [v7 lastDescendantOfClass:a3];
+    result = [v7 lastDescendantOfClass:class];
     if (result)
     {
       break;
@@ -297,7 +297,7 @@
   return result;
 }
 
-- (id)firstDescendantOfClass:(Class)a3
+- (id)firstDescendantOfClass:(Class)class
 {
   v5 = [(NSMutableArray *)self->children count];
   if (v5 < 1)
@@ -315,7 +315,7 @@
       break;
     }
 
-    v9 = [v8 firstDescendantOfClass:a3];
+    v9 = [v8 firstDescendantOfClass:class];
     if (v9)
     {
       return v9;
@@ -330,7 +330,7 @@
   return v8;
 }
 
-- (id)descendantsOfClass:(Class)a3 omitTraversing:(Class)a4
+- (id)descendantsOfClass:(Class)class omitTraversing:(Class)traversing
 {
   v7 = [(NSMutableArray *)self->children count];
   v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:v7];
@@ -349,7 +349,7 @@
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_isKindOfClass() & 1) == 0)
       {
-        [v8 addObjectsFromArray:{objc_msgSend(v11, "descendantsOfClass:omitTraversing:", a3, a4)}];
+        [v8 addObjectsFromArray:{objc_msgSend(v11, "descendantsOfClass:omitTraversing:", class, traversing)}];
       }
 
       ++v9;
@@ -361,13 +361,13 @@
   return v8;
 }
 
-- (void)descendantsOfClass:(Class)a3 to:(id)a4
+- (void)descendantsOfClass:(Class)class to:(id)to
 {
-  if (a4)
+  if (to)
   {
     if (objc_opt_isKindOfClass())
     {
-      [a4 addObject:self];
+      [to addObject:self];
     }
 
     v7 = [(CPObject *)self count];
@@ -377,7 +377,7 @@
       v9 = 0;
       do
       {
-        [-[CPObject childAtIndex:](self childAtIndex:{v9), "descendantsOfClass:to:", a3, a4}];
+        [-[CPObject childAtIndex:](self childAtIndex:{v9), "descendantsOfClass:to:", class, to}];
         v9 = (v9 + 1);
       }
 
@@ -386,9 +386,9 @@
   }
 }
 
-- (id)descendantsOfClass:(Class)a3 deep:(BOOL)a4
+- (id)descendantsOfClass:(Class)class deep:(BOOL)deep
 {
-  v4 = a4;
+  deepCopy = deep;
   v7 = [(NSMutableArray *)self->children count];
   v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:v7];
   if (v7 >= 1)
@@ -399,14 +399,14 @@
     {
       v11 = [(NSMutableArray *)self->children objectAtIndex:v9];
       isKindOfClass = objc_opt_isKindOfClass();
-      v13 = v4;
+      v13 = deepCopy;
       if ((isKindOfClass & 1) == 0)
       {
         goto LABEL_6;
       }
 
-      [v8 addObject:{v11, v4}];
-      if (v4)
+      [v8 addObject:{v11, deepCopy}];
+      if (deepCopy)
       {
         break;
       }
@@ -420,26 +420,26 @@ LABEL_7:
 
     v13 = 1;
 LABEL_6:
-    [v8 addObjectsFromArray:{objc_msgSend(v11, "descendantsOfClass:deep:", a3, v13)}];
+    [v8 addObjectsFromArray:{objc_msgSend(v11, "descendantsOfClass:deep:", class, v13)}];
     goto LABEL_7;
   }
 
   return v8;
 }
 
-- (void)map:(SEL)a3 target:(id)a4 last:(BOOL)a5
+- (void)map:(SEL)map target:(id)target last:(BOOL)last
 {
-  v8 = [(NSMutableArray *)self->children count]- !a5;
+  v8 = [(NSMutableArray *)self->children count]- !last;
   if (v8 >= 1)
   {
     for (i = 0; i != v8; ++i)
     {
-      [a4 a3];
+      [target map];
     }
   }
 }
 
-- (void)map:(SEL)a3 target:(id)a4
+- (void)map:(SEL)map target:(id)target
 {
   v7 = [(NSMutableArray *)self->children count];
   if (v7 >= 1)
@@ -448,14 +448,14 @@ LABEL_6:
     v9 = v7 & 0x7FFFFFFF;
     do
     {
-      [a4 a3];
+      [target map];
     }
 
     while (v9 != v8);
   }
 }
 
-- (void)mapSafely:(SEL)a3 target:(id)a4 childrenOfClass:(Class)a5
+- (void)mapSafely:(SEL)safely target:(id)target childrenOfClass:(Class)class
 {
   v8 = [(NSMutableArray *)self->children count];
   v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v8];
@@ -484,30 +484,30 @@ LABEL_6:
     v14 = v12 & 0x7FFFFFFF;
     do
     {
-      [a4 a3];
+      [target safely];
     }
 
     while (v14 != v13);
   }
 }
 
-- (void)map:(SEL)a3 target:(id)a4 childrenOfClass:(Class)a5
+- (void)map:(SEL)map target:(id)target childrenOfClass:(Class)class
 {
   v9 = [(NSMutableArray *)self->children count];
 
-  [(CPObject *)self commonMapFuncCall:a3 target:a4 childrenOfClass:a5 ofCount:v9];
+  [(CPObject *)self commonMapFuncCall:map target:target childrenOfClass:class ofCount:v9];
 }
 
-- (void)map:(SEL)a3 target:(id)a4 childrenOfClass:(Class)a5 last:(BOOL)a6
+- (void)map:(SEL)map target:(id)target childrenOfClass:(Class)class last:(BOOL)last
 {
-  v10 = [(NSMutableArray *)self->children count]- !a6;
+  v10 = [(NSMutableArray *)self->children count]- !last;
 
-  [(CPObject *)self commonMapFuncCall:a3 target:a4 childrenOfClass:a5 ofCount:v10];
+  [(CPObject *)self commonMapFuncCall:map target:target childrenOfClass:class ofCount:v10];
 }
 
-- (void)commonMapFuncCall:(SEL)a3 target:(id)a4 childrenOfClass:(Class)a5 ofCount:(int)a6
+- (void)commonMapFuncCall:(SEL)call target:(id)target childrenOfClass:(Class)class ofCount:(int)count
 {
-  if (a6 >= 1)
+  if (count >= 1)
   {
     v22 = v13;
     v23 = v12;
@@ -520,23 +520,23 @@ LABEL_6:
     v30 = v14;
     v31 = v15;
     v19 = 0;
-    v20 = a6;
+    countCopy = count;
     do
     {
-      v21 = [(NSMutableArray *)self->children objectAtIndex:v19, a4, a5, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31];
+      v21 = [(NSMutableArray *)self->children objectAtIndex:v19, target, class, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31];
       if (objc_opt_isKindOfClass())
       {
-        [a4 a3];
+        [target call];
       }
 
       ++v19;
     }
 
-    while (v20 != v19);
+    while (countCopy != v19);
   }
 }
 
-- (id)childrenNotOfClass:(Class)a3
+- (id)childrenNotOfClass:(Class)class
 {
   v4 = [(NSMutableArray *)self->children count];
   v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:v4];
@@ -555,7 +555,7 @@ LABEL_6:
   return v5;
 }
 
-- (id)childrenOfClass:(Class)a3
+- (id)childrenOfClass:(Class)class
 {
   v4 = [(NSMutableArray *)self->children count];
   v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:v4];
@@ -574,7 +574,7 @@ LABEL_6:
   return v5;
 }
 
-- (void)childrenOfClass:(Class)a3 into:(id)a4
+- (void)childrenOfClass:(Class)class into:(id)into
 {
   v6 = [(NSMutableArray *)self->children count];
   v7 = v6;
@@ -586,7 +586,7 @@ LABEL_6:
       v9 = [(NSMutableArray *)self->children objectAtIndex:v8];
       if (objc_opt_isKindOfClass())
       {
-        [a4 addObject:v9];
+        [into addObject:v9];
       }
 
       ++v8;
@@ -596,7 +596,7 @@ LABEL_6:
   }
 }
 
-- (id)ancestorOfClass:(Class)a3
+- (id)ancestorOfClass:(Class)class
 {
   result = self->parent;
   if (result)
@@ -606,7 +606,7 @@ LABEL_6:
     if ((isKindOfClass & 1) == 0)
     {
 
-      return [result ancestorOfClass:a3];
+      return [result ancestorOfClass:class];
     }
   }
 
@@ -637,13 +637,13 @@ LABEL_6:
   [(CPObject *)self removeAll];
 }
 
-- (void)removeObjectAtIndex:(unsigned int)a3
+- (void)removeObjectAtIndex:(unsigned int)index
 {
-  v4 = a3;
-  [-[NSMutableArray objectAtIndex:](self->children objectAtIndex:{a3), "setParent:", 0}];
+  indexCopy = index;
+  [-[NSMutableArray objectAtIndex:](self->children objectAtIndex:{index), "setParent:", 0}];
   children = self->children;
 
-  [(NSMutableArray *)children removeObjectAtIndex:v4];
+  [(NSMutableArray *)children removeObjectAtIndex:indexCopy];
 }
 
 - (void)remove
@@ -659,9 +659,9 @@ LABEL_6:
 {
   if ([(NSMutableArray *)self->children count])
   {
-    v3 = [(NSMutableArray *)self->children lastObject];
+    lastObject = [(NSMutableArray *)self->children lastObject];
 
-    [(CPObject *)self remove:v3];
+    [(CPObject *)self remove:lastObject];
   }
 }
 
@@ -675,66 +675,66 @@ LABEL_6:
   }
 }
 
-- (void)remove:(id)a3
+- (void)remove:(id)remove
 {
-  [a3 setParent:0];
+  [remove setParent:0];
   children = self->children;
 
-  [(NSMutableArray *)children removeObject:a3];
+  [(NSMutableArray *)children removeObject:remove];
 }
 
-- (void)addChildrenOf:(id)a3
+- (void)addChildrenOf:(id)of
 {
-  v5 = [a3 count];
-  v6 = [a3 children];
+  v5 = [of count];
+  children = [of children];
   if (v5)
   {
       ;
     }
   }
 
-  [(NSMutableArray *)self->children addObjectsFromArray:v6];
-  [a3 removeAll];
+  [(NSMutableArray *)self->children addObjectsFromArray:children];
+  [of removeAll];
 
   [(CPObject *)self recomputeZOrder];
 }
 
-- (void)addChildren:(id)a3
+- (void)addChildren:(id)children
 {
-  v5 = [a3 count];
+  v5 = [children count];
   v6 = v5;
   if (v5)
   {
     v7 = 0;
     do
     {
-      -[CPObject add:](self, "add:", [a3 objectAtIndex:v7++]);
+      -[CPObject add:](self, "add:", [children objectAtIndex:v7++]);
     }
 
     while (v6 != v7);
   }
 }
 
-- (void)add:(id)a3 atIndex:(unsigned int)a4
+- (void)add:(id)add atIndex:(unsigned int)index
 {
-  v6 = a3;
-  if ([a3 parent])
+  addCopy = add;
+  if ([add parent])
   {
-    [a3 remove];
+    [add remove];
   }
 
-  [(NSMutableArray *)self->children insertObject:a3 atIndex:a4];
-  [a3 setParent:self];
-  [a3 setDocument:self->document];
+  [(NSMutableArray *)self->children insertObject:add atIndex:index];
+  [add setParent:self];
+  [add setDocument:self->document];
 }
 
-- (void)add:(id)a3
+- (void)add:(id)add
 {
-  v4 = a3;
-  [a3 remove];
-  [(NSMutableArray *)self->children addObject:a3];
-  [a3 setParent:self];
-  [a3 setDocument:self->document];
+  addCopy = add;
+  [add remove];
+  [(NSMutableArray *)self->children addObject:add];
+  [add setParent:self];
+  [add setDocument:self->document];
 }
 
 - (id)firstSibling
@@ -774,9 +774,9 @@ LABEL_6:
     return 0;
   }
 
-  v4 = [(CPObject *)self parent];
+  parent = [(CPObject *)self parent];
 
-  return [v4 childAtIndex:(v3 - 1)];
+  return [parent childAtIndex:(v3 - 1)];
 }
 
 - (id)nextSibling
@@ -792,9 +792,9 @@ LABEL_6:
     return 0;
   }
 
-  v4 = [(CPObject *)self parent];
+  parent = [(CPObject *)self parent];
 
-  return [v4 childAtIndex:v3];
+  return [parent childAtIndex:v3];
 }
 
 - (id)lastChild
@@ -821,7 +821,7 @@ LABEL_6:
   return result;
 }
 
-- (unsigned)countOfClass:(Class)a3
+- (unsigned)countOfClass:(Class)class
 {
   v4 = [(NSMutableArray *)self->children count];
   v5 = v4;
@@ -843,17 +843,17 @@ LABEL_6:
   return v7;
 }
 
-- (id)newTakeChildrenAmong:(id)a3
+- (id)newTakeChildrenAmong:(id)among
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [a3 count];
+  v6 = [among count];
   v7 = v6;
   if (v6)
   {
     v8 = 0;
     do
     {
-      v9 = [a3 objectAtIndex:v8];
+      v9 = [among objectAtIndex:v8];
       if ([v9 parent] == self)
       {
         [v9 setParent:0];
@@ -912,30 +912,30 @@ LABEL_6:
   return children;
 }
 
-- (id)copyAndSplitChildrenAtIndex:(unsigned int)a3
+- (id)copyAndSplitChildrenAtIndex:(unsigned int)index
 {
-  v5 = [(CPObject *)self copyWithoutChildren];
+  copyWithoutChildren = [(CPObject *)self copyWithoutChildren];
   v6 = [(NSMutableArray *)self->children count];
-  v7 = v6 - a3;
-  if (v6 > a3)
+  v7 = v6 - index;
+  if (v6 > index)
   {
-    v8 = v6 - a3;
-    v9 = a3;
+    v8 = v6 - index;
+    indexCopy = index;
     do
     {
-      v10 = [(NSMutableArray *)self->children objectAtIndex:v9];
-      *(v10 + 8) = v5;
-      [v5[2] addObject:v10];
-      ++v9;
+      v10 = [(NSMutableArray *)self->children objectAtIndex:indexCopy];
+      *(v10 + 8) = copyWithoutChildren;
+      [copyWithoutChildren[2] addObject:v10];
+      ++indexCopy;
       --v8;
     }
 
     while (v8);
-    v11 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{a3, v7}];
+    v11 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{index, v7}];
     [(NSMutableArray *)self->children removeObjectsAtIndexes:v11];
   }
 
-  return v5;
+  return copyWithoutChildren;
 }
 
 - (id)copyWithoutChildren
@@ -947,9 +947,9 @@ LABEL_6:
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = CPCopyObject(self, a3);
+  v5 = CPCopyObject(self, zone);
   if (v5)
   {
     v5[4] = [(CPObject *)self page];
@@ -964,7 +964,7 @@ LABEL_6:
         v8 = 0;
         do
         {
-          v9 = [-[NSMutableArray objectAtIndex:](self->children objectAtIndex:{v8), "copyWithZone:", a3}];
+          v9 = [-[NSMutableArray objectAtIndex:](self->children objectAtIndex:{v8), "copyWithZone:", zone}];
           [v5 add:v9];
 
           ++v8;
@@ -1049,24 +1049,24 @@ LABEL_6:
   return v2;
 }
 
-- (void)_printWithIndent:(int)a3
+- (void)_printWithIndent:(int)indent
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a3 >= 1)
+  if (indent >= 1)
   {
-    v5 = a3;
+    indentCopy = indent;
     do
     {
       printf("    ");
-      --v5;
+      --indentCopy;
     }
 
-    while (v5);
+    while (indentCopy);
   }
 
   v6 = objc_opt_class();
-  v7 = [NSStringFromClass(v6) UTF8String];
-  printf("(%s) %p", v7, self);
+  uTF8String = [NSStringFromClass(v6) UTF8String];
+  printf("(%s) %p", uTF8String, self);
   if (objc_opt_respondsToSelector())
   {
     [(CPObject *)self zoneBounds];
@@ -1104,7 +1104,7 @@ LABEL_9:
           objc_enumerationMutation(children);
         }
 
-        [*(*(&v17 + 1) + 8 * i) _printWithIndent:(a3 + 1)];
+        [*(*(&v17 + 1) + 8 * i) _printWithIndent:(indent + 1)];
       }
 
       v14 = [(NSMutableArray *)children countByEnumeratingWithState:&v17 objects:v21 count:16];

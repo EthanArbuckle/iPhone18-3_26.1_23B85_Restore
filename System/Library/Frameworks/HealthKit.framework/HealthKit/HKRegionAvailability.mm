@@ -1,15 +1,15 @@
 @interface HKRegionAvailability
-+ (id)allowedInSomeCountries:(id)a3;
++ (id)allowedInSomeCountries:(id)countries;
 + (id)anyCountryAvailability;
 + (id)uncheckedAvailability;
-- (BOOL)isEqual:(id)a3;
-- (HKRegionAvailability)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKRegionAvailability)initWithCoder:(id)coder;
 - (NSString)prettyPrintedDescription;
-- (id)onboardingEligibilityForCountryCode:(id)a3;
+- (id)onboardingEligibilityForCountryCode:(id)code;
 - (unint64_t)hash;
-- (unint64_t)ineligibilityReasonsForOnboardingCountryCode:(id)a3;
-- (void)_initWithCategory:(void *)a3 version:(void *)a4 allowedCountries:;
-- (void)encodeWithCoder:(id)a3;
+- (unint64_t)ineligibilityReasonsForOnboardingCountryCode:(id)code;
+- (void)_initWithCategory:(void *)category version:(void *)version allowedCountries:;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKRegionAvailability
@@ -28,22 +28,22 @@
   return v2;
 }
 
-+ (id)allowedInSomeCountries:(id)a3
++ (id)allowedInSomeCountries:(id)countries
 {
-  v3 = a3;
-  v4 = [[_HKAllowedInSomeCountriesAvailability alloc] initWithAllowedCountries:v3];
+  countriesCopy = countries;
+  v4 = [[_HKAllowedInSomeCountriesAvailability alloc] initWithAllowedCountries:countriesCopy];
 
   return v4;
 }
 
-- (id)onboardingEligibilityForCountryCode:(id)a3
+- (id)onboardingEligibilityForCountryCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   v5 = [HKFeatureAvailabilityOnboardingEligibility alloc];
-  v6 = [(HKRegionAvailability *)self ineligibilityReasonsForOnboardingCountryCode:v4];
+  v6 = [(HKRegionAvailability *)self ineligibilityReasonsForOnboardingCountryCode:codeCopy];
 
-  v7 = [(HKRegionAvailability *)self version];
-  v8 = [(HKFeatureAvailabilityOnboardingEligibility *)v5 initWithIneligibilityReasons:v6 countryAvailabilityVersion:v7];
+  version = [(HKRegionAvailability *)self version];
+  v8 = [(HKFeatureAvailabilityOnboardingEligibility *)v5 initWithIneligibilityReasons:v6 countryAvailabilityVersion:version];
 
   return v8;
 }
@@ -51,19 +51,19 @@
 - (NSString)prettyPrintedDescription
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v4 = [(HKRegionAvailability *)self version];
-  [v3 appendFormat:@"Version: %@\n", v4];
+  version = [(HKRegionAvailability *)self version];
+  [v3 appendFormat:@"Version: %@\n", version];
 
-  v5 = [(HKRegionAvailability *)self category];
-  switch(v5)
+  category = [(HKRegionAvailability *)self category];
+  switch(category)
   {
     case 3:
-      v7 = [(HKRegionAvailability *)self allowedCountries];
-      v8 = [v7 prettyPrintedDescription];
-      v9 = v8;
-      if (v8)
+      allowedCountries = [(HKRegionAvailability *)self allowedCountries];
+      prettyPrintedDescription = [allowedCountries prettyPrintedDescription];
+      v9 = prettyPrintedDescription;
+      if (prettyPrintedDescription)
       {
-        v10 = v8;
+        v10 = prettyPrintedDescription;
       }
 
       else
@@ -91,12 +91,12 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = HKRegionAvailability;
-  if (![(HKRegionAvailability *)&v12 isEqual:v4])
+  if (![(HKRegionAvailability *)&v12 isEqual:equalCopy])
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -105,7 +105,7 @@ LABEL_11:
       goto LABEL_14;
     }
 
-    v6 = v4;
+    v6 = equalCopy;
     allowedCountries = self->_allowedCountries;
     v8 = v6[3];
     if (allowedCountries != v8 && (!v8 || ![(HKAllowedCountries *)allowedCountries isEqual:?]) || self->_category != v6[1])
@@ -151,26 +151,26 @@ LABEL_14:
   return v5 ^ [(NSString *)version hash];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   allowedCountries = self->_allowedCountries;
-  v5 = a3;
-  [v5 encodeObject:allowedCountries forKey:@"allowedCountries"];
-  [v5 encodeInteger:self->_category forKey:@"category"];
-  [v5 encodeObject:self->_version forKey:@"version"];
+  coderCopy = coder;
+  [coderCopy encodeObject:allowedCountries forKey:@"allowedCountries"];
+  [coderCopy encodeInteger:self->_category forKey:@"category"];
+  [coderCopy encodeObject:self->_version forKey:@"version"];
 }
 
-- (HKRegionAvailability)initWithCoder:(id)a3
+- (HKRegionAvailability)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"category"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowedCountries"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"category"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowedCountries"];
 
   if (v6)
   {
     self = [(HKRegionAvailability *)self _initWithCategory:v5 version:v6 allowedCountries:v7];
-    v9 = self;
+    selfCopy = self;
   }
 
   else
@@ -182,37 +182,37 @@ LABEL_14:
       [(HKRegionAvailability *)self initWithCoder:v8];
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)_initWithCategory:(void *)a3 version:(void *)a4 allowedCountries:
+- (void)_initWithCategory:(void *)category version:(void *)version allowedCountries:
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (a1)
+  categoryCopy = category;
+  versionCopy = version;
+  if (self)
   {
-    v24.receiver = a1;
+    v24.receiver = self;
     v24.super_class = HKRegionAvailability;
     v9 = objc_msgSendSuper2(&v24, sel_init);
-    a1 = v9;
+    self = v9;
     if (v9)
     {
       if ((a2 - 4) > 0xFFFFFFFFFFFFFFFCLL)
       {
-        if (a2 != 3 || v8)
+        if (a2 != 3 || versionCopy)
         {
           v9[1] = a2;
-          v13 = [v7 copy];
-          v14 = a1[2];
-          a1[2] = v13;
+          v13 = [categoryCopy copy];
+          v14 = self[2];
+          self[2] = v13;
 
-          v15 = [v8 copy];
-          v12 = a1[3];
-          a1[3] = v15;
+          v15 = [versionCopy copy];
+          selfCopy = self[3];
+          self[3] = v15;
           goto LABEL_14;
         }
 
@@ -246,17 +246,17 @@ LABEL_14:
         }
       }
 
-      v12 = a1;
-      a1 = 0;
+      selfCopy = self;
+      self = 0;
 LABEL_14:
     }
   }
 
   v16 = *MEMORY[0x1E69E9840];
-  return a1;
+  return self;
 }
 
-- (unint64_t)ineligibilityReasonsForOnboardingCountryCode:(id)a3
+- (unint64_t)ineligibilityReasonsForOnboardingCountryCode:(id)code
 {
   objc_opt_class();
   objc_opt_class();

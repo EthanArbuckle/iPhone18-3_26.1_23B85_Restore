@@ -1,42 +1,42 @@
 @interface DYDeviceInfo
-- (BOOL)supportsCapabilitiesOfGraphicsAPI:(id)a3 allowedClass:(Class)a4;
-- (DYDeviceInfo)initWithCoder:(id)a3;
+- (BOOL)supportsCapabilitiesOfGraphicsAPI:(id)i allowedClass:(Class)class;
+- (DYDeviceInfo)initWithCoder:(id)coder;
 - (NSString)descriptionForBugReport;
 - (NSString)summaryForBugReport;
 - (id)debugDescription;
-- (id)descriptionWithProfileName:(id)a3 showingProductType:(BOOL)a4 showingPermanentIdentifier:(BOOL)a5;
+- (id)descriptionWithProfileName:(id)name showingProductType:(BOOL)type showingPermanentIdentifier:(BOOL)identifier;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setMainScreenDescriptor:(id *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setMainScreenDescriptor:(id *)descriptor;
 @end
 
 @implementation DYDeviceInfo
 
-- (DYDeviceInfo)initWithCoder:(id)a3
+- (DYDeviceInfo)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = DYDeviceInfo;
   v4 = [(DYDeviceInfo *)&v10 init];
   if (v4)
   {
-    v4->_permanentIdentifier = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-    v4->_runtimeIdentifier = [a3 decodeInt64ForKey:@"runtimeIdentifier"];
-    v4->_name = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-    v4->_productType = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"productType"];
-    v4->_version = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
-    v4->_build = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"build"];
-    v4->_platform = [a3 decodeInt32ForKey:@"platform"];
-    v4->_metalVersion = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"metalVersion"];
-    v4->_mainScreenDescriptor.width = [a3 decodeInt32ForKey:@"mainScreenResolution.width"];
-    v4->_mainScreenDescriptor.height = [a3 decodeInt32ForKey:@"mainScreenResolution.height"];
-    v4->_mainScreenDescriptor.scale = [a3 decodeInt32ForKey:@"mainScreenResolution.scale"];
-    [a3 decodeDoubleForKey:@"mainScreenDescriptor.orientation"];
+    v4->_permanentIdentifier = [coder decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v4->_runtimeIdentifier = [coder decodeInt64ForKey:@"runtimeIdentifier"];
+    v4->_name = [coder decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v4->_productType = [coder decodeObjectOfClass:objc_opt_class() forKey:@"productType"];
+    v4->_version = [coder decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+    v4->_build = [coder decodeObjectOfClass:objc_opt_class() forKey:@"build"];
+    v4->_platform = [coder decodeInt32ForKey:@"platform"];
+    v4->_metalVersion = [coder decodeObjectOfClass:objc_opt_class() forKey:@"metalVersion"];
+    v4->_mainScreenDescriptor.width = [coder decodeInt32ForKey:@"mainScreenResolution.width"];
+    v4->_mainScreenDescriptor.height = [coder decodeInt32ForKey:@"mainScreenResolution.height"];
+    v4->_mainScreenDescriptor.scale = [coder decodeInt32ForKey:@"mainScreenResolution.scale"];
+    [coder decodeDoubleForKey:@"mainScreenDescriptor.orientation"];
     v4->_mainScreenDescriptor.orientation = v5;
-    v4->_mainScreenDescriptor.type = [a3 decodeInt32ForKey:@"mainScreenDescriptor.type"];
-    v4->_supportedGraphicsAPIInfos = [a3 decodeObjectOfClasses:objc_msgSend(MEMORY[0x277D0AFD8] forKey:{"graphicsAPIInfosClassSet"), @"supportedGLProfileContextsInfo"}];
-    if ([a3 containsValueForKey:@"nativePointerSize"])
+    v4->_mainScreenDescriptor.type = [coder decodeInt32ForKey:@"mainScreenDescriptor.type"];
+    v4->_supportedGraphicsAPIInfos = [coder decodeObjectOfClasses:objc_msgSend(MEMORY[0x277D0AFD8] forKey:{"graphicsAPIInfosClassSet"), @"supportedGLProfileContextsInfo"}];
+    if ([coder containsValueForKey:@"nativePointerSize"])
     {
-      v6 = [a3 decodeInt32ForKey:@"nativePointerSize"];
+      v6 = [coder decodeInt32ForKey:@"nativePointerSize"];
     }
 
     else
@@ -70,18 +70,18 @@ LABEL_9:
   [(DYDeviceInfo *)&v3 dealloc];
 }
 
-- (id)descriptionWithProfileName:(id)a3 showingProductType:(BOOL)a4 showingPermanentIdentifier:(BOOL)a5
+- (id)descriptionWithProfileName:(id)name showingProductType:(BOOL)type showingPermanentIdentifier:(BOOL)identifier
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = [MEMORY[0x277CBEB18] array];
-  v10 = v9;
+  identifierCopy = identifier;
+  typeCopy = type;
+  array = [MEMORY[0x277CBEB18] array];
+  v10 = array;
   if (self->_name)
   {
-    [v9 addObject:?];
+    [array addObject:?];
   }
 
-  if (!v6)
+  if (!typeCopy)
   {
     if (!self->_name)
     {
@@ -103,9 +103,9 @@ LABEL_10:
   }
 
 LABEL_11:
-  if (a3)
+  if (name)
   {
-    [v10 addObject:a3];
+    [v10 addObject:name];
     [v10 addObject:@"-"];
   }
 
@@ -125,7 +125,7 @@ LABEL_11:
     [v10 addObject:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"(%@)", self->_build)}];
   }
 
-  if (v5 && [(NSString *)self->_permanentIdentifier length])
+  if (identifierCopy && [(NSString *)self->_permanentIdentifier length])
   {
     [v10 addObject:@"-"];
     [v10 addObject:self->_permanentIdentifier];
@@ -178,15 +178,15 @@ LABEL_11:
           v9 = *(*(&v13 + 1) + 8 * v8);
           if (objc_opt_respondsToSelector())
           {
-            v10 = [v9 descriptionForBugReport];
+            descriptionForBugReport = [v9 descriptionForBugReport];
           }
 
           else
           {
-            v10 = [v9 description];
+            descriptionForBugReport = [v9 description];
           }
 
-          [v3 appendFormat:@"  %@\n", v10];
+          [v3 appendFormat:@"  %@\n", descriptionForBugReport];
           ++v8;
         }
 
@@ -209,31 +209,31 @@ LABEL_11:
   return [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n\trid=%llu\n\tpid=%@\n\tname=%@\n\tproductType=%@\nhostProductType=%@\tplatform=%d\n\tmetalVersion=%@\n\tversion=%@\n\thostVersion=%@\n\tbuild=%@\n\tnativePointerSize=%u\n\t_supportedGraphicsAPIInfos=%@", -[DYDeviceInfo debugDescription](&v3, sel_debugDescription), self->_runtimeIdentifier, -[NSString debugDescription](self->_permanentIdentifier, "debugDescription"), -[NSString debugDescription](self->_name, "debugDescription"), -[NSString debugDescription](self->_productType, "debugDescription"), -[NSString debugDescription](self->_hostProductType, "debugDescription"), self->_platform, -[NSString debugDescription](self->_metalVersion, "debugDescription"), -[NSString debugDescription](self->_version, "debugDescription"), -[NSString debugDescription](self->_hostVersion, "debugDescription"), -[NSString debugDescription](self->_build, "debugDescription"), self->_nativePointerSize, -[NSArray debugDescription](self->_supportedGraphicsAPIInfos, "debugDescription")];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_permanentIdentifier forKey:@"identifier"];
-  [a3 encodeInt64:self->_runtimeIdentifier forKey:@"runtimeIdentifier"];
-  [a3 encodeObject:self->_name forKey:@"name"];
-  [a3 encodeObject:self->_productType forKey:@"productType"];
-  [a3 encodeObject:self->_version forKey:@"version"];
-  [a3 encodeObject:self->_build forKey:@"build"];
-  [a3 encodeInt32:self->_platform forKey:@"platform"];
-  [a3 encodeObject:self->_metalVersion forKey:@"metalVersion"];
-  [a3 encodeInt32:self->_mainScreenDescriptor.width forKey:@"mainScreenResolution.width"];
-  [a3 encodeInt32:self->_mainScreenDescriptor.height forKey:@"mainScreenResolution.height"];
-  [a3 encodeInt32:self->_mainScreenDescriptor.scale forKey:@"mainScreenResolution.scale"];
-  [a3 encodeDouble:@"mainScreenDescriptor.orientation" forKey:self->_mainScreenDescriptor.orientation];
-  [a3 encodeInt32:self->_mainScreenDescriptor.type forKey:@"mainScreenDescriptor.type"];
-  [a3 encodeObject:self->_supportedGraphicsAPIInfos forKey:@"supportedGLProfileContextsInfo"];
+  [coder encodeObject:self->_permanentIdentifier forKey:@"identifier"];
+  [coder encodeInt64:self->_runtimeIdentifier forKey:@"runtimeIdentifier"];
+  [coder encodeObject:self->_name forKey:@"name"];
+  [coder encodeObject:self->_productType forKey:@"productType"];
+  [coder encodeObject:self->_version forKey:@"version"];
+  [coder encodeObject:self->_build forKey:@"build"];
+  [coder encodeInt32:self->_platform forKey:@"platform"];
+  [coder encodeObject:self->_metalVersion forKey:@"metalVersion"];
+  [coder encodeInt32:self->_mainScreenDescriptor.width forKey:@"mainScreenResolution.width"];
+  [coder encodeInt32:self->_mainScreenDescriptor.height forKey:@"mainScreenResolution.height"];
+  [coder encodeInt32:self->_mainScreenDescriptor.scale forKey:@"mainScreenResolution.scale"];
+  [coder encodeDouble:@"mainScreenDescriptor.orientation" forKey:self->_mainScreenDescriptor.orientation];
+  [coder encodeInt32:self->_mainScreenDescriptor.type forKey:@"mainScreenDescriptor.type"];
+  [coder encodeObject:self->_supportedGraphicsAPIInfos forKey:@"supportedGLProfileContextsInfo"];
   nativePointerSize = self->_nativePointerSize;
 
-  [a3 encodeInt32:nativePointerSize forKey:@"nativePointerSize"];
+  [coder encodeInt32:nativePointerSize forKey:@"nativePointerSize"];
 }
 
-- (BOOL)supportsCapabilitiesOfGraphicsAPI:(id)a3 allowedClass:(Class)a4
+- (BOOL)supportsCapabilitiesOfGraphicsAPI:(id)i allowedClass:(Class)class
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!i)
   {
     [DYDeviceInfo supportsCapabilitiesOfGraphicsAPI:allowedClass:];
   }
@@ -242,8 +242,8 @@ LABEL_11:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(DYDeviceInfo *)self supportedGraphicsAPIInfos];
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  supportedGraphicsAPIInfos = [(DYDeviceInfo *)self supportedGraphicsAPIInfos];
+  v6 = [(NSArray *)supportedGraphicsAPIInfos countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -255,11 +255,11 @@ LABEL_11:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(supportedGraphicsAPIInfos);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
-        if (objc_opt_isKindOfClass() & 1) != 0 && ([v10 supportsCapabilitiesOfGraphicsAPI:a3])
+        if (objc_opt_isKindOfClass() & 1) != 0 && ([v10 supportsCapabilitiesOfGraphicsAPI:i])
         {
           LOBYTE(v6) = 1;
           goto LABEL_13;
@@ -269,7 +269,7 @@ LABEL_11:
       }
 
       while (v7 != v9);
-      v6 = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [(NSArray *)supportedGraphicsAPIInfos countByEnumeratingWithState:&v13 objects:v17 count:16];
       v7 = v6;
       if (v6)
       {
@@ -285,10 +285,10 @@ LABEL_13:
   return v6;
 }
 
-- (void)setMainScreenDescriptor:(id *)a3
+- (void)setMainScreenDescriptor:(id *)descriptor
 {
-  v3 = *&a3->var0;
-  *&self->_mainScreenDescriptor.scale = *&a3->var3;
+  v3 = *&descriptor->var0;
+  *&self->_mainScreenDescriptor.scale = *&descriptor->var3;
   *&self->_mainScreenDescriptor.orientation = v3;
 }
 

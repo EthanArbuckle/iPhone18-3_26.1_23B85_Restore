@@ -3,14 +3,14 @@
 - (BKCloudQuotaUIServices)init;
 - (id)getUpgradeStorageFlowManager;
 - (void)_updateWithNewOffer;
-- (void)_upgradeOfferReceived:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_upgradeOfferReceived:(id)received;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)goToSettingsManagePane;
 - (void)goToSettingsUpgradePane;
-- (void)managerDidCancel:(id)a3;
-- (void)presentUpgradeOfferWithNavigationController:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)managerDidCancel:(id)cancel;
+- (void)presentUpgradeOfferWithNavigationController:(id)controller;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation BKCloudQuotaUIServices
@@ -64,7 +64,7 @@
   [(BKCloudQuotaUIServices *)&v4 dealloc];
 }
 
-- (void)_upgradeOfferReceived:(id)a3
+- (void)_upgradeOfferReceived:(id)received
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -77,37 +77,37 @@
 - (void)_updateWithNewOffer
 {
   v3 = +[ICQOfferManager sharedOfferManager];
-  v4 = [v3 fetchOfferIfNeeded];
+  fetchOfferIfNeeded = [v3 fetchOfferIfNeeded];
 
-  if ((v4 & 1) == 0)
+  if ((fetchOfferIfNeeded & 1) == 0)
   {
     v5 = +[ICQOfferManager sharedOfferManager];
-    v10 = [v5 currentOffer];
+    currentOffer = [v5 currentOffer];
 
-    if (v10)
+    if (currentOffer)
     {
-      if ([ICQUpgradeFlowManager shouldShowForOffer:v10])
+      if ([ICQUpgradeFlowManager shouldShowForOffer:currentOffer])
       {
-        v6 = [(BKCloudQuotaUIServices *)self upgradeFlowManager];
+        upgradeFlowManager = [(BKCloudQuotaUIServices *)self upgradeFlowManager];
 
-        if (!v6)
+        if (!upgradeFlowManager)
         {
-          v7 = [[ICQUpgradeFlowManager alloc] initWithOffer:v10];
+          v7 = [[ICQUpgradeFlowManager alloc] initWithOffer:currentOffer];
           [(BKCloudQuotaUIServices *)self setUpgradeFlowManager:v7];
         }
       }
     }
 
-    v8 = [(BKCloudQuotaUIServices *)self upgradeFlowManagerFuture];
-    v9 = [(BKCloudQuotaUIServices *)self upgradeFlowManager];
-    [v8 set:v9 error:0];
+    upgradeFlowManagerFuture = [(BKCloudQuotaUIServices *)self upgradeFlowManagerFuture];
+    upgradeFlowManager2 = [(BKCloudQuotaUIServices *)self upgradeFlowManager];
+    [upgradeFlowManagerFuture set:upgradeFlowManager2 error:0];
   }
 }
 
 - (id)getUpgradeStorageFlowManager
 {
-  v3 = [(BKCloudQuotaUIServices *)self upgradeFlowManagerFuture];
-  [v3 cancel];
+  upgradeFlowManagerFuture = [(BKCloudQuotaUIServices *)self upgradeFlowManagerFuture];
+  [upgradeFlowManagerFuture cancel];
 
   [(BKCloudQuotaUIServices *)self setUpgradeFlowManagerFuture:0];
   v4 = objc_opt_new();
@@ -134,18 +134,18 @@
   [v3 openSensitiveURL:v2 withOptions:0 error:&v4];
 }
 
-- (void)presentUpgradeOfferWithNavigationController:(id)a3
+- (void)presentUpgradeOfferWithNavigationController:(id)controller
 {
-  v4 = a3;
-  v5 = [(BKCloudQuotaUIServices *)self offersManager];
-  [v5 beginFlowWithNavigationController:v4 modally:1];
+  controllerCopy = controller;
+  offersManager = [(BKCloudQuotaUIServices *)self offersManager];
+  [offersManager beginFlowWithNavigationController:controllerCopy modally:1];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     serialQueue = self->_serialQueue;
     v7[0] = _NSConcreteStackBlock;
@@ -153,7 +153,7 @@
     v7[2] = sub_100171504;
     v7[3] = &unk_100A03440;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_async(serialQueue, v7);
   }
 
@@ -163,11 +163,11 @@
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     serialQueue = self->_serialQueue;
     v7[0] = _NSConcreteStackBlock;
@@ -175,7 +175,7 @@
     v7[2] = sub_100171644;
     v7[3] = &unk_100A03440;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_async(serialQueue, v7);
   }
 
@@ -185,7 +185,7 @@
   }
 }
 
-- (void)managerDidCancel:(id)a3
+- (void)managerDidCancel:(id)cancel
 {
   serialQueue = self->_serialQueue;
   block[0] = _NSConcreteStackBlock;

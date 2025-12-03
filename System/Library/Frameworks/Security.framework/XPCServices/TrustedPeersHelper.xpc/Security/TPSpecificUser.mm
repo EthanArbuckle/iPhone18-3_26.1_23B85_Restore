@@ -1,28 +1,28 @@
 @interface TPSpecificUser
-- (BOOL)isEqual:(id)a3;
-- (TPSpecificUser)initWithCloudkitContainerName:(id)a3 octagonContextID:(id)a4 appleAccountID:(id)a5 altDSID:(id)a6 isPrimaryPersona:(BOOL)a7 personaUniqueString:(id)a8;
-- (TPSpecificUser)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TPSpecificUser)initWithCloudkitContainerName:(id)name octagonContextID:(id)d appleAccountID:(id)iD altDSID:(id)sID isPrimaryPersona:(BOOL)persona personaUniqueString:(id)string;
+- (TPSpecificUser)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)makeCKContainer;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TPSpecificUser
 
 - (id)makeCKContainer
 {
-  v3 = [(TPSpecificUser *)self cloudkitContainerName];
-  v4 = [CKContainer containerIDForContainerIdentifier:v3];
+  cloudkitContainerName = [(TPSpecificUser *)self cloudkitContainerName];
+  v4 = [CKContainer containerIDForContainerIdentifier:cloudkitContainerName];
 
   v5 = objc_alloc_init(CKContainerOptions);
   [v5 setBypassPCSEncryption:1];
   if (![(TPSpecificUser *)self isPrimaryAccount])
   {
     v6 = [CKAccountOverrideInfo alloc];
-    v7 = [(TPSpecificUser *)self appleAccountID];
-    v8 = [v6 initWithAccountID:v7];
+    appleAccountID = [(TPSpecificUser *)self appleAccountID];
+    v8 = [v6 initWithAccountID:appleAccountID];
     [v5 setAccountOverrideInfo:v8];
   }
 
@@ -33,44 +33,44 @@
 
 - (unint64_t)hash
 {
-  v3 = [(TPSpecificUser *)self cloudkitContainerName];
-  v4 = [v3 hash];
-  v5 = [(TPSpecificUser *)self octagonContextID];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(TPSpecificUser *)self appleAccountID];
-  v8 = [v7 hash];
-  v9 = [(TPSpecificUser *)self altDSID];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(TPSpecificUser *)self personaUniqueString];
-  v12 = [v11 hash];
+  cloudkitContainerName = [(TPSpecificUser *)self cloudkitContainerName];
+  v4 = [cloudkitContainerName hash];
+  octagonContextID = [(TPSpecificUser *)self octagonContextID];
+  v6 = [octagonContextID hash] ^ v4;
+  appleAccountID = [(TPSpecificUser *)self appleAccountID];
+  v8 = [appleAccountID hash];
+  altDSID = [(TPSpecificUser *)self altDSID];
+  v10 = v6 ^ v8 ^ [altDSID hash];
+  personaUniqueString = [(TPSpecificUser *)self personaUniqueString];
+  v12 = [personaUniqueString hash];
 
   return v10 ^ v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TPSpecificUser allocWithZone:a3];
-  v5 = [(TPSpecificUser *)self cloudkitContainerName];
-  v6 = [(TPSpecificUser *)self octagonContextID];
-  v7 = [(TPSpecificUser *)self appleAccountID];
-  v8 = [(TPSpecificUser *)self altDSID];
-  v9 = [(TPSpecificUser *)self isPrimaryAccount];
-  v10 = [(TPSpecificUser *)self personaUniqueString];
-  v11 = [(TPSpecificUser *)v4 initWithCloudkitContainerName:v5 octagonContextID:v6 appleAccountID:v7 altDSID:v8 isPrimaryPersona:v9 personaUniqueString:v10];
+  v4 = [TPSpecificUser allocWithZone:zone];
+  cloudkitContainerName = [(TPSpecificUser *)self cloudkitContainerName];
+  octagonContextID = [(TPSpecificUser *)self octagonContextID];
+  appleAccountID = [(TPSpecificUser *)self appleAccountID];
+  altDSID = [(TPSpecificUser *)self altDSID];
+  isPrimaryAccount = [(TPSpecificUser *)self isPrimaryAccount];
+  personaUniqueString = [(TPSpecificUser *)self personaUniqueString];
+  v11 = [(TPSpecificUser *)v4 initWithCloudkitContainerName:cloudkitContainerName octagonContextID:octagonContextID appleAccountID:appleAccountID altDSID:altDSID isPrimaryPersona:isPrimaryAccount personaUniqueString:personaUniqueString];
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(TPSpecificUser *)self cloudkitContainerName];
-    v7 = [v5 cloudkitContainerName];
-    if (![v6 isEqualToString:v7])
+    v5 = equalCopy;
+    cloudkitContainerName = [(TPSpecificUser *)self cloudkitContainerName];
+    cloudkitContainerName2 = [v5 cloudkitContainerName];
+    if (![cloudkitContainerName isEqualToString:cloudkitContainerName2])
     {
       v14 = 0;
 LABEL_23:
@@ -78,9 +78,9 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v8 = [(TPSpecificUser *)self octagonContextID];
-    v9 = [v5 octagonContextID];
-    if (![v8 isEqualToString:v9])
+    octagonContextID = [(TPSpecificUser *)self octagonContextID];
+    octagonContextID2 = [v5 octagonContextID];
+    if (![octagonContextID isEqualToString:octagonContextID2])
     {
       v14 = 0;
 LABEL_22:
@@ -88,9 +88,9 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v10 = [(TPSpecificUser *)self appleAccountID];
-    v11 = [v5 appleAccountID];
-    if (![v10 isEqualToString:v11])
+    appleAccountID = [(TPSpecificUser *)self appleAccountID];
+    appleAccountID2 = [v5 appleAccountID];
+    if (![appleAccountID isEqualToString:appleAccountID2])
     {
       v14 = 0;
 LABEL_21:
@@ -98,35 +98,35 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v12 = [(TPSpecificUser *)self altDSID];
-    v23 = [v5 altDSID];
-    if (![v12 isEqualToString:?])
+    altDSID = [(TPSpecificUser *)self altDSID];
+    altDSID2 = [v5 altDSID];
+    if (![altDSID isEqualToString:?])
     {
       v14 = 0;
       goto LABEL_20;
     }
 
-    v22 = v12;
-    v13 = [(TPSpecificUser *)self isPrimaryAccount];
-    if (v13 != [v5 isPrimaryAccount])
+    v22 = altDSID;
+    isPrimaryAccount = [(TPSpecificUser *)self isPrimaryAccount];
+    if (isPrimaryAccount != [v5 isPrimaryAccount])
     {
       v14 = 0;
-      v12 = v22;
+      altDSID = v22;
 LABEL_20:
 
       goto LABEL_21;
     }
 
-    v15 = [(TPSpecificUser *)self personaUniqueString];
-    if (v15 || ([v5 personaUniqueString], (v19 = objc_claimAutoreleasedReturnValue()) != 0))
+    personaUniqueString = [(TPSpecificUser *)self personaUniqueString];
+    if (personaUniqueString || ([v5 personaUniqueString], (v19 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v20 = [(TPSpecificUser *)self personaUniqueString];
+      personaUniqueString2 = [(TPSpecificUser *)self personaUniqueString];
       [v5 personaUniqueString];
-      v16 = v21 = v15;
-      v14 = [v20 isEqualToString:v16];
+      v16 = v21 = personaUniqueString;
+      v14 = [personaUniqueString2 isEqualToString:v16];
 
       v17 = v21;
-      v12 = v22;
+      altDSID = v22;
       if (v21)
       {
 LABEL_19:
@@ -139,7 +139,7 @@ LABEL_19:
     {
       v19 = 0;
       v14 = 1;
-      v12 = v22;
+      altDSID = v22;
     }
 
     v17 = v19;
@@ -152,52 +152,52 @@ LABEL_24:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TPSpecificUser *)self cloudkitContainerName];
-  [v4 encodeObject:v5 forKey:@"cloudkit"];
+  coderCopy = coder;
+  cloudkitContainerName = [(TPSpecificUser *)self cloudkitContainerName];
+  [coderCopy encodeObject:cloudkitContainerName forKey:@"cloudkit"];
 
-  v6 = [(TPSpecificUser *)self octagonContextID];
-  [v4 encodeObject:v6 forKey:@"octagon"];
+  octagonContextID = [(TPSpecificUser *)self octagonContextID];
+  [coderCopy encodeObject:octagonContextID forKey:@"octagon"];
 
-  v7 = [(TPSpecificUser *)self appleAccountID];
-  [v4 encodeObject:v7 forKey:@"aaID"];
+  appleAccountID = [(TPSpecificUser *)self appleAccountID];
+  [coderCopy encodeObject:appleAccountID forKey:@"aaID"];
 
-  v8 = [(TPSpecificUser *)self altDSID];
-  [v4 encodeObject:v8 forKey:@"altDSID"];
+  altDSID = [(TPSpecificUser *)self altDSID];
+  [coderCopy encodeObject:altDSID forKey:@"altDSID"];
 
-  [v4 encodeBool:-[TPSpecificUser isPrimaryAccount](self forKey:{"isPrimaryAccount"), @"isPrimary"}];
-  v9 = [(TPSpecificUser *)self personaUniqueString];
-  [v4 encodeObject:v9 forKey:@"persona"];
+  [coderCopy encodeBool:-[TPSpecificUser isPrimaryAccount](self forKey:{"isPrimaryAccount"), @"isPrimary"}];
+  personaUniqueString = [(TPSpecificUser *)self personaUniqueString];
+  [coderCopy encodeObject:personaUniqueString forKey:@"persona"];
 }
 
-- (TPSpecificUser)initWithCoder:(id)a3
+- (TPSpecificUser)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = TPSpecificUser;
   v5 = [(TPSpecificUser *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cloudkit"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cloudkit"];
     cloudkitContainerName = v5->_cloudkitContainerName;
     v5->_cloudkitContainerName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"octagon"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"octagon"];
     octagonContextID = v5->_octagonContextID;
     v5->_octagonContextID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"aaID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"aaID"];
     appleAccountID = v5->_appleAccountID;
     v5->_appleAccountID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v12;
 
-    v5->_isPrimaryAccount = [v4 decodeBoolForKey:@"isPrimary"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"persona"];
+    v5->_isPrimaryAccount = [coderCopy decodeBoolForKey:@"isPrimary"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"persona"];
     personaUniqueString = v5->_personaUniqueString;
     v5->_personaUniqueString = v14;
   }
@@ -207,10 +207,10 @@ LABEL_24:
 
 - (id)description
 {
-  v3 = [(TPSpecificUser *)self altDSID];
-  v4 = [(TPSpecificUser *)self octagonContextID];
-  v5 = [(TPSpecificUser *)self cloudkitContainerName];
-  v6 = [(TPSpecificUser *)self personaUniqueString];
+  altDSID = [(TPSpecificUser *)self altDSID];
+  octagonContextID = [(TPSpecificUser *)self octagonContextID];
+  cloudkitContainerName = [(TPSpecificUser *)self cloudkitContainerName];
+  personaUniqueString = [(TPSpecificUser *)self personaUniqueString];
   if ([(TPSpecificUser *)self isPrimaryAccount])
   {
     v7 = @"primary";
@@ -221,43 +221,43 @@ LABEL_24:
     v7 = @"secondary";
   }
 
-  v8 = [(TPSpecificUser *)self appleAccountID];
-  v9 = [NSString stringWithFormat:@"<TPSpecificUser: altDSID:%@ o:%@ ck:%@ p:%@/%@ aaID:%@>", v3, v4, v5, v6, v7, v8];
+  appleAccountID = [(TPSpecificUser *)self appleAccountID];
+  v9 = [NSString stringWithFormat:@"<TPSpecificUser: altDSID:%@ o:%@ ck:%@ p:%@/%@ aaID:%@>", altDSID, octagonContextID, cloudkitContainerName, personaUniqueString, v7, appleAccountID];
 
   return v9;
 }
 
-- (TPSpecificUser)initWithCloudkitContainerName:(id)a3 octagonContextID:(id)a4 appleAccountID:(id)a5 altDSID:(id)a6 isPrimaryPersona:(BOOL)a7 personaUniqueString:(id)a8
+- (TPSpecificUser)initWithCloudkitContainerName:(id)name octagonContextID:(id)d appleAccountID:(id)iD altDSID:(id)sID isPrimaryPersona:(BOOL)persona personaUniqueString:(id)string
 {
-  v24 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  nameCopy = name;
+  dCopy = d;
+  iDCopy = iD;
+  sIDCopy = sID;
+  stringCopy = string;
   v25.receiver = self;
   v25.super_class = TPSpecificUser;
   v19 = [(TPSpecificUser *)&v25 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_cloudkitContainerName, a3);
-    if (a7 || [v15 hasSuffix:v17])
+    objc_storeStrong(&v19->_cloudkitContainerName, name);
+    if (persona || [dCopy hasSuffix:sIDCopy])
     {
-      v21 = v15;
+      sIDCopy = dCopy;
     }
 
     else
     {
-      v21 = [NSString stringWithFormat:@"%@_%@", v15, v17];
+      sIDCopy = [NSString stringWithFormat:@"%@_%@", dCopy, sIDCopy];
     }
 
     octagonContextID = v20->_octagonContextID;
-    v20->_octagonContextID = v21;
+    v20->_octagonContextID = sIDCopy;
 
-    objc_storeStrong(&v20->_appleAccountID, a5);
-    objc_storeStrong(&v20->_altDSID, a6);
-    v20->_isPrimaryAccount = a7;
-    objc_storeStrong(&v20->_personaUniqueString, a8);
+    objc_storeStrong(&v20->_appleAccountID, iD);
+    objc_storeStrong(&v20->_altDSID, sID);
+    v20->_isPrimaryAccount = persona;
+    objc_storeStrong(&v20->_personaUniqueString, string);
   }
 
   return v20;

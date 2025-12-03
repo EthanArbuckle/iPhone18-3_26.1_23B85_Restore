@@ -1,7 +1,7 @@
 @interface TSPClassRegistry
-- (Class)classForMessage:(const Message *)a3;
+- (Class)classForMessage:(const Message *)message;
 - (TSPClassRegistry)init;
-- (TSPClassRegistry)initWithName:(id)a3;
+- (TSPClassRegistry)initWithName:(id)name;
 @end
 
 @implementation TSPClassRegistry
@@ -22,15 +22,15 @@
   objc_exception_throw(v13);
 }
 
-- (TSPClassRegistry)initWithName:(id)a3
+- (TSPClassRegistry)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = TSPClassRegistry;
   v7 = [(TSPClassRegistry *)&v13 init];
   if (v7)
   {
-    v8 = objc_msgSend_copy(v4, v5, v6);
+    v8 = objc_msgSend_copy(nameCopy, v5, v6);
     name = v7->_name;
     v7->_name = v8;
 
@@ -42,9 +42,9 @@
   return v7;
 }
 
-- (Class)classForMessage:(const Message *)a3
+- (Class)classForMessage:(const Message *)message
 {
-  ExtensionFieldInMessage = objc_msgSend_tagNumberForLastExtensionFieldInMessage_(TSPArchivingUtility, a2, a3);
+  ExtensionFieldInMessage = objc_msgSend_tagNumberForLastExtensionFieldInMessage_(TSPArchivingUtility, a2, message);
   if (ExtensionFieldInMessage)
   {
     v7 = ExtensionFieldInMessage;
@@ -56,7 +56,7 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    (*(a3->var0 + 19))(a3);
+    (*(message->var0 + 19))(message);
     KnownExtensionByNumber = google::protobuf::Reflection::FindKnownExtensionByNumber(v9, v7);
     v11 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "[TSPClassRegistry classForMessage:]");
@@ -88,7 +88,7 @@ LABEL_11:
   v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSPClassRegistry classForMessage:]");
   v22 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v21, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPClassRegistry.mm");
   v23 = self->_name;
-  v24 = (*(a3->var0 + 19))(a3);
+  v24 = (*(message->var0 + 19))(message);
   v26 = *v24;
   if (*(*v24 + 23) < 0)
   {

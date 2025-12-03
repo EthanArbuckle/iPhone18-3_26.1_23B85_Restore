@@ -1,33 +1,33 @@
 @interface AVTViewThrottler
 - (AVTDeviceResourceConsumerDelegate)consumerDelegate;
-- (AVTViewThrottler)initWithAVTView:(id)a3 environment:(id)a4;
+- (AVTViewThrottler)initWithAVTView:(id)view environment:(id)environment;
 - (void)applyThrottling;
 - (void)autoUnthrottle;
 - (void)cancelAutoUnthrottling;
 - (void)dealloc;
-- (void)releaseRenderingResourceForEstimatedDuration:(double)a3;
-- (void)scheduleAutoUnthrottlingAfterDelay:(double)a3;
+- (void)releaseRenderingResourceForEstimatedDuration:(double)duration;
+- (void)scheduleAutoUnthrottlingAfterDelay:(double)delay;
 - (void)throttle;
-- (void)throttleForDelay:(double)a3;
+- (void)throttleForDelay:(double)delay;
 - (void)unthrottle;
 @end
 
 @implementation AVTViewThrottler
 
-- (AVTViewThrottler)initWithAVTView:(id)a3 environment:(id)a4
+- (AVTViewThrottler)initWithAVTView:(id)view environment:(id)environment
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  environmentCopy = environment;
   v14.receiver = self;
   v14.super_class = AVTViewThrottler;
   v9 = [(AVTViewThrottler *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_avtView, a3);
-    v11 = [v8 logger];
+    objc_storeStrong(&v9->_avtView, view);
+    logger = [environmentCopy logger];
     logger = v10->_logger;
-    v10->_logger = v11;
+    v10->_logger = logger;
   }
 
   return v10;
@@ -35,8 +35,8 @@
 
 - (void)dealloc
 {
-  v3 = [(AVTViewThrottler *)self autoUnthrottlingTimer];
-  [v3 invalidate];
+  autoUnthrottlingTimer = [(AVTViewThrottler *)self autoUnthrottlingTimer];
+  [autoUnthrottlingTimer invalidate];
 
   v4.receiver = self;
   v4.super_class = AVTViewThrottler;
@@ -52,24 +52,24 @@
 
 - (void)cancelAutoUnthrottling
 {
-  v3 = [(AVTViewThrottler *)self autoUnthrottlingTimer];
+  autoUnthrottlingTimer = [(AVTViewThrottler *)self autoUnthrottlingTimer];
 
-  if (v3)
+  if (autoUnthrottlingTimer)
   {
-    v4 = [(AVTViewThrottler *)self autoUnthrottlingTimer];
-    [v4 invalidate];
+    autoUnthrottlingTimer2 = [(AVTViewThrottler *)self autoUnthrottlingTimer];
+    [autoUnthrottlingTimer2 invalidate];
 
     [(AVTViewThrottler *)self setAutoUnthrottlingTimer:0];
   }
 }
 
-- (void)throttleForDelay:(double)a3
+- (void)throttleForDelay:(double)delay
 {
   if (![(AVTViewThrottler *)self throttling]|| ([(AVTViewThrottler *)self autoUnthrottlingTimer], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     [(AVTViewThrottler *)self applyThrottling];
 
-    [(AVTViewThrottler *)self scheduleAutoUnthrottlingAfterDelay:a3];
+    [(AVTViewThrottler *)self scheduleAutoUnthrottlingAfterDelay:delay];
   }
 }
 
@@ -83,15 +83,15 @@
   if (![(AVTViewThrottler *)self throttling])
   {
     [(AVTViewThrottler *)self setThrottling:1];
-    v3 = [(AVTViewThrottler *)self logger];
-    [v3 logThrottlingAVTView];
+    logger = [(AVTViewThrottler *)self logger];
+    [logger logThrottlingAVTView];
 
-    v4 = [(AVTViewThrottler *)self avtView];
-    [v4 setPreferredFramesPerSecond:30];
+    avtView = [(AVTViewThrottler *)self avtView];
+    [avtView setPreferredFramesPerSecond:30];
 
-    v6 = [(AVTViewThrottler *)self avtView];
-    v5 = [v6 faceTracker];
-    [v5 decreaseFrameRate];
+    avtView2 = [(AVTViewThrottler *)self avtView];
+    faceTracker = [avtView2 faceTracker];
+    [faceTracker decreaseFrameRate];
   }
 }
 
@@ -106,25 +106,25 @@
   if ([(AVTViewThrottler *)self throttling])
   {
     [(AVTViewThrottler *)self setThrottling:0];
-    v3 = [(AVTViewThrottler *)self logger];
-    [v3 logUnthrottlingAVTView];
+    logger = [(AVTViewThrottler *)self logger];
+    [logger logUnthrottlingAVTView];
 
-    v4 = [(AVTViewThrottler *)self consumerDelegate];
-    [v4 consumer:self willConsumeRenderingResourceForEstimatedDuration:0.0];
+    consumerDelegate = [(AVTViewThrottler *)self consumerDelegate];
+    [consumerDelegate consumer:self willConsumeRenderingResourceForEstimatedDuration:0.0];
 
-    v5 = [(AVTViewThrottler *)self avtView];
-    [v5 setPreferredFramesPerSecond:0];
+    avtView = [(AVTViewThrottler *)self avtView];
+    [avtView setPreferredFramesPerSecond:0];
 
-    v7 = [(AVTViewThrottler *)self avtView];
-    v6 = [v7 faceTracker];
-    [v6 increaseFrameRateToMaximum];
+    avtView2 = [(AVTViewThrottler *)self avtView];
+    faceTracker = [avtView2 faceTracker];
+    [faceTracker increaseFrameRateToMaximum];
   }
 }
 
-- (void)scheduleAutoUnthrottlingAfterDelay:(double)a3
+- (void)scheduleAutoUnthrottlingAfterDelay:(double)delay
 {
   [(AVTViewThrottler *)self cancelAutoUnthrottling];
-  if (a3 > 0.0)
+  if (delay > 0.0)
   {
     objc_initWeak(&location, self);
     v5 = MEMORY[0x1E695DFF0];
@@ -133,7 +133,7 @@
     v9 = __55__AVTViewThrottler_scheduleAutoUnthrottlingAfterDelay___block_invoke;
     v10 = &unk_1E7F3B938;
     objc_copyWeak(&v11, &location);
-    v6 = [v5 scheduledTimerWithTimeInterval:0 repeats:&v7 block:a3];
+    v6 = [v5 scheduledTimerWithTimeInterval:0 repeats:&v7 block:delay];
     [(AVTViewThrottler *)self setAutoUnthrottlingTimer:v6, v7, v8, v9, v10];
 
     objc_destroyWeak(&v11);
@@ -154,14 +154,14 @@ void __55__AVTViewThrottler_scheduleAutoUnthrottlingAfterDelay___block_invoke(ui
   [(AVTViewThrottler *)self unthrottle];
 }
 
-- (void)releaseRenderingResourceForEstimatedDuration:(double)a3
+- (void)releaseRenderingResourceForEstimatedDuration:(double)duration
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __65__AVTViewThrottler_releaseRenderingResourceForEstimatedDuration___block_invoke;
   v3[3] = &unk_1E7F3C300;
   v3[4] = self;
-  *&v3[5] = a3;
+  *&v3[5] = duration;
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 

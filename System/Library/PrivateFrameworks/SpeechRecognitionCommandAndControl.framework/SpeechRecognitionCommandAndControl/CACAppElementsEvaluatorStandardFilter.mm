@@ -1,19 +1,19 @@
 @interface CACAppElementsEvaluatorStandardFilter
-- (id)actionableAXElementsFromAXElements:(id)a3;
+- (id)actionableAXElementsFromAXElements:(id)elements;
 @end
 
 @implementation CACAppElementsEvaluatorStandardFilter
 
-- (id)actionableAXElementsFromAXElements:(id)a3
+- (id)actionableAXElementsFromAXElements:(id)elements
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  elementsCopy = elements;
+  array = [MEMORY[0x277CBEB18] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = elementsCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v6)
   {
@@ -35,7 +35,7 @@
         v13 = *(*(&v18 + 1) + 8 * i);
         if ([v13 hasAnyTraits:{v10 | v11, v17, v18}])
         {
-          [v4 addObject:v13];
+          [array addObject:v13];
         }
 
         else
@@ -60,7 +60,7 @@
     while (v8);
   }
 
-  return v4;
+  return array;
 }
 
 @end

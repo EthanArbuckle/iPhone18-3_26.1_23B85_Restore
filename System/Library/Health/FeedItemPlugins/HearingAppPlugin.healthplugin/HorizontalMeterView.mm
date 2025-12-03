@@ -1,12 +1,12 @@
 @interface HorizontalMeterView
-- (_TtC16HearingAppPlugin19HorizontalMeterView)initWithCoder:(id)a3;
-- (_TtC16HearingAppPlugin19HorizontalMeterView)initWithFrame:(CGRect)a3;
+- (_TtC16HearingAppPlugin19HorizontalMeterView)initWithCoder:(id)coder;
+- (_TtC16HearingAppPlugin19HorizontalMeterView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation HorizontalMeterView
 
-- (_TtC16HearingAppPlugin19HorizontalMeterView)initWithCoder:(id)a3
+- (_TtC16HearingAppPlugin19HorizontalMeterView)initWithCoder:(id)coder
 {
   sub_29D6600C4();
   sub_29D6600B4();
@@ -33,11 +33,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   HorizontalMeterView.layoutSubviews()();
 }
 
-- (_TtC16HearingAppPlugin19HorizontalMeterView)initWithFrame:(CGRect)a3
+- (_TtC16HearingAppPlugin19HorizontalMeterView)initWithFrame:(CGRect)frame
 {
   sub_29D6600C4();
   sub_29D6600B4();

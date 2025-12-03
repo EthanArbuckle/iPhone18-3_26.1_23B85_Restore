@@ -1,16 +1,16 @@
 @interface RPTapToRadarContext
-- (RPTapToRadarContext)initWithDictionary:(id)a3;
-- (RPTapToRadarContext)initWithTitle:(id)a3 problemDescription:(id)a4;
+- (RPTapToRadarContext)initWithDictionary:(id)dictionary;
+- (RPTapToRadarContext)initWithTitle:(id)title problemDescription:(id)description;
 - (id)getTapToRadarURL;
 @end
 
 @implementation RPTapToRadarContext
 
-- (RPTapToRadarContext)initWithTitle:(id)a3 problemDescription:(id)a4
+- (RPTapToRadarContext)initWithTitle:(id)title problemDescription:(id)description
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  descriptionCopy = description;
   v13.receiver = self;
   v13.super_class = RPTapToRadarContext;
   v8 = [(RPTapToRadarContext *)&v13 init];
@@ -18,8 +18,8 @@
   {
     v14[0] = @"Title";
     v14[1] = @"Description";
-    v15[0] = v6;
-    v15[1] = v7;
+    v15[0] = titleCopy;
+    v15[1] = descriptionCopy;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:2];
     rawContext = v8->_rawContext;
     v8->_rawContext = v9;
@@ -29,16 +29,16 @@
   return v8;
 }
 
-- (RPTapToRadarContext)initWithDictionary:(id)a3
+- (RPTapToRadarContext)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = RPTapToRadarContext;
   v6 = [(RPTapToRadarContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rawContext, a3);
+    objc_storeStrong(&v6->_rawContext, dictionary);
   }
 
   return v7;
@@ -141,7 +141,7 @@ LABEL_7:
 
   [v3 setObject:v24 forKeyedSubscript:@"Keywords"];
 
-  v25 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
@@ -165,7 +165,7 @@ LABEL_7:
         v32 = MEMORY[0x1E696AF60];
         v33 = [v26 objectForKeyedSubscript:v31];
         v34 = [v32 queryItemWithName:v31 value:v33];
-        [v25 addObject:v34];
+        [array addObject:v34];
       }
 
       v28 = [v26 countByEnumeratingWithState:&v40 objects:v44 count:16];
@@ -174,7 +174,7 @@ LABEL_7:
     while (v28);
   }
 
-  [v39 setQueryItems:v25];
+  [v39 setQueryItems:array];
   v35 = [v39 URL];
 
   v36 = *MEMORY[0x1E69E9840];

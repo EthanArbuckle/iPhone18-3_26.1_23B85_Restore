@@ -1,15 +1,15 @@
 @interface ControlTemplateRequest
 - (_TtC9WidgetKit22ControlTemplateRequest)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ControlTemplateRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_19220E3E4(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_19220E3E4(coderCopy);
 }
 
 - (_TtC9WidgetKit22ControlTemplateRequest)init

@@ -1,31 +1,31 @@
 @interface EPSagaOperandPairingReport
-- (EPSagaOperandPairingReport)initWithCoder:(id)a3;
-- (EPSagaOperandPairingReport)initWithPairingReport:(id)a3;
+- (EPSagaOperandPairingReport)initWithCoder:(id)coder;
+- (EPSagaOperandPairingReport)initWithPairingReport:(id)report;
 - (NSString)description;
 @end
 
 @implementation EPSagaOperandPairingReport
 
-- (EPSagaOperandPairingReport)initWithPairingReport:(id)a3
+- (EPSagaOperandPairingReport)initWithPairingReport:(id)report
 {
-  v5 = a3;
+  reportCopy = report;
   v6 = [(EPSagaOperandPairingReport *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pairingReport, a3);
+    objc_storeStrong(&v6->_pairingReport, report);
   }
 
   return v7;
 }
 
-- (EPSagaOperandPairingReport)initWithCoder:(id)a3
+- (EPSagaOperandPairingReport)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(EPSagaOperandPairingReport *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pairingReport"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pairingReport"];
     pairingReport = v5->_pairingReport;
     v5->_pairingReport = v6;
   }
@@ -37,8 +37,8 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(EPSagaOperandPairingReport *)self pairingReport];
-  v6 = [NSString stringWithFormat:@"%@: %@", v4, v5];
+  pairingReport = [(EPSagaOperandPairingReport *)self pairingReport];
+  v6 = [NSString stringWithFormat:@"%@: %@", v4, pairingReport];
 
   return v6;
 }

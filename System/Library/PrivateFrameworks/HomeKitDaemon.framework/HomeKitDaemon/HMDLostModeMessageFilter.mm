@@ -1,23 +1,23 @@
 @interface HMDLostModeMessageFilter
-+ (int64_t)filterMessage:(id)a3 withPolicies:(id)a4 error:(id *)a5;
++ (int64_t)filterMessage:(id)message withPolicies:(id)policies error:(id *)error;
 @end
 
 @implementation HMDLostModeMessageFilter
 
-+ (int64_t)filterMessage:(id)a3 withPolicies:(id)a4 error:(id *)a5
++ (int64_t)filterMessage:(id)message withPolicies:(id)policies error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  messageCopy = message;
+  policiesCopy = policies;
+  if (messageCopy)
   {
     v10 = +[HMDLostModeManager sharedManager];
-    v11 = [v10 isLost];
+    isLost = [v10 isLost];
 
-    if (v11)
+    if (isLost)
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = a1;
+      selfCopy = self;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
@@ -28,9 +28,9 @@
       }
 
       objc_autoreleasePoolPop(v12);
-      if (a5)
+      if (error)
       {
-        *a5 = [MEMORY[0x277CCA9B8] hmErrorWithCode:10 description:0 reason:@"Device is in Lost Mode." suggestion:0];
+        *error = [MEMORY[0x277CCA9B8] hmErrorWithCode:10 description:0 reason:@"Device is in Lost Mode." suggestion:0];
       }
 
       v16 = -1;

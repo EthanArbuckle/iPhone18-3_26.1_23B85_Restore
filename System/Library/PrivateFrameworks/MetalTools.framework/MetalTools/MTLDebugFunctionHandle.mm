@@ -1,47 +1,47 @@
 @interface MTLDebugFunctionHandle
-- (MTLDebugFunctionHandle)initWithBaseObject:(id)a3 parent:(id)a4 binaryFunction:(id)a5 stage:(unint64_t)a6;
-- (MTLDebugFunctionHandle)initWithBaseObject:(id)a3 parent:(id)a4 function:(id)a5 stage:(unint64_t)a6;
-- (MTLDebugFunctionHandle)initWithBaseObject:(id)a3 parent:(id)a4 stage:(unint64_t)a5;
+- (MTLDebugFunctionHandle)initWithBaseObject:(id)object parent:(id)parent binaryFunction:(id)function stage:(unint64_t)stage;
+- (MTLDebugFunctionHandle)initWithBaseObject:(id)object parent:(id)parent function:(id)function stage:(unint64_t)stage;
+- (MTLDebugFunctionHandle)initWithBaseObject:(id)object parent:(id)parent stage:(unint64_t)stage;
 - (MTLResourceID)gpuResourceID;
 - (unint64_t)resourceIndex;
 @end
 
 @implementation MTLDebugFunctionHandle
 
-- (MTLDebugFunctionHandle)initWithBaseObject:(id)a3 parent:(id)a4 function:(id)a5 stage:(unint64_t)a6
+- (MTLDebugFunctionHandle)initWithBaseObject:(id)object parent:(id)parent function:(id)function stage:(unint64_t)stage
 {
   v8.receiver = self;
   v8.super_class = MTLDebugFunctionHandle;
-  result = [(MTLToolsFunctionHandle *)&v8 initWithBaseObject:a3 parent:a4 function:a5];
+  result = [(MTLToolsFunctionHandle *)&v8 initWithBaseObject:object parent:parent function:function];
   if (result)
   {
-    result->_stage = a6;
+    result->_stage = stage;
   }
 
   return result;
 }
 
-- (MTLDebugFunctionHandle)initWithBaseObject:(id)a3 parent:(id)a4 stage:(unint64_t)a5
+- (MTLDebugFunctionHandle)initWithBaseObject:(id)object parent:(id)parent stage:(unint64_t)stage
 {
   v7.receiver = self;
   v7.super_class = MTLDebugFunctionHandle;
-  result = [(MTLToolsObject *)&v7 initWithBaseObject:a3 parent:a4];
+  result = [(MTLToolsObject *)&v7 initWithBaseObject:object parent:parent];
   if (result)
   {
-    result->_stage = a5;
+    result->_stage = stage;
   }
 
   return result;
 }
 
-- (MTLDebugFunctionHandle)initWithBaseObject:(id)a3 parent:(id)a4 binaryFunction:(id)a5 stage:(unint64_t)a6
+- (MTLDebugFunctionHandle)initWithBaseObject:(id)object parent:(id)parent binaryFunction:(id)function stage:(unint64_t)stage
 {
   v8.receiver = self;
   v8.super_class = MTLDebugFunctionHandle;
-  result = [(MTLToolsFunctionHandle *)&v8 initWithBaseObject:a3 parent:a4 binaryFunction:a5];
+  result = [(MTLToolsFunctionHandle *)&v8 initWithBaseObject:object parent:parent binaryFunction:function];
   if (result)
   {
-    result->_stage = a6;
+    result->_stage = stage;
   }
 
   return result;
@@ -50,16 +50,16 @@
 - (MTLResourceID)gpuResourceID
 {
   [[(MTLToolsFunctionHandle *)self function] validateIsIFBFunction];
-  v3 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v3 gpuResourceID];
+  return [baseObject gpuResourceID];
 }
 
 - (unint64_t)resourceIndex
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 resourceIndex];
+  return [baseObject resourceIndex];
 }
 
 @end

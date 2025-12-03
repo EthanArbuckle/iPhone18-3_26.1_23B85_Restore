@@ -1,45 +1,45 @@
 @interface RTITextInputKeyboardActionButtonConfiguration
-+ (id)actionButtonWithSystemImageData:(id)a3 backgroundColor:(id)a4 accessibilityTitle:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (RTITextInputKeyboardActionButtonConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initButtonWith:(id)a3 backgroundColor:(id)a4 accessibilityTitle:(id)a5 isEnabled:(BOOL)a6;
-- (void)encodeWithCoder:(id)a3;
++ (id)actionButtonWithSystemImageData:(id)data backgroundColor:(id)color accessibilityTitle:(id)title;
+- (BOOL)isEqual:(id)equal;
+- (RTITextInputKeyboardActionButtonConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initButtonWith:(id)with backgroundColor:(id)color accessibilityTitle:(id)title isEnabled:(BOOL)enabled;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTITextInputKeyboardActionButtonConfiguration
 
-- (id)initButtonWith:(id)a3 backgroundColor:(id)a4 accessibilityTitle:(id)a5 isEnabled:(BOOL)a6
+- (id)initButtonWith:(id)with backgroundColor:(id)color accessibilityTitle:(id)title isEnabled:(BOOL)enabled
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  withCopy = with;
+  colorCopy = color;
+  titleCopy = title;
   v17.receiver = self;
   v17.super_class = RTITextInputKeyboardActionButtonConfiguration;
   v14 = [(RTITextInputKeyboardActionButtonConfiguration *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_imageData, a3);
-    objc_storeStrong(&v15->_backgroundColor, a4);
-    objc_storeStrong(&v15->_accessibilityTitle, a5);
-    v15->_isEnabled = a6;
+    objc_storeStrong(&v14->_imageData, with);
+    objc_storeStrong(&v15->_backgroundColor, color);
+    objc_storeStrong(&v15->_accessibilityTitle, title);
+    v15->_isEnabled = enabled;
   }
 
   return v15;
 }
 
-+ (id)actionButtonWithSystemImageData:(id)a3 backgroundColor:(id)a4 accessibilityTitle:(id)a5
++ (id)actionButtonWithSystemImageData:(id)data backgroundColor:(id)color accessibilityTitle:(id)title
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initButtonWith:v10 backgroundColor:v9 accessibilityTitle:v8 isEnabled:1];
+  titleCopy = title;
+  colorCopy = color;
+  dataCopy = data;
+  v11 = [[self alloc] initButtonWith:dataCopy backgroundColor:colorCopy accessibilityTitle:titleCopy isEnabled:1];
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(RTITextInputKeyboardActionButtonConfiguration);
   if (v4)
@@ -62,71 +62,71 @@
   return v4;
 }
 
-- (RTITextInputKeyboardActionButtonConfiguration)initWithCoder:(id)a3
+- (RTITextInputKeyboardActionButtonConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = RTITextInputKeyboardActionButtonConfiguration;
   v5 = [(RTITextInputKeyboardActionButtonConfiguration *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageData"];
     v7 = [v6 copy];
     imageData = v5->_imageData;
     v5->_imageData = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColor"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColor"];
     v10 = [v9 copy];
     backgroundColor = v5->_backgroundColor;
     v5->_backgroundColor = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessibilityTitle"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessibilityTitle"];
     v13 = [v12 copy];
     accessibilityTitle = v5->_accessibilityTitle;
     v5->_accessibilityTitle = v13;
 
-    v5->_isEnabled = [v4 decodeBoolForKey:@"isEnabled"];
+    v5->_isEnabled = [coderCopy decodeBoolForKey:@"isEnabled"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   imageData = self->_imageData;
-  v8 = v4;
+  v8 = coderCopy;
   if (imageData)
   {
-    [v4 encodeObject:imageData forKey:@"imageData"];
-    v4 = v8;
+    [coderCopy encodeObject:imageData forKey:@"imageData"];
+    coderCopy = v8;
   }
 
   backgroundColor = self->_backgroundColor;
   if (backgroundColor)
   {
     [v8 encodeObject:backgroundColor forKey:@"backgroundColor"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   accessibilityTitle = self->_accessibilityTitle;
   if (accessibilityTitle)
   {
     [v8 encodeObject:accessibilityTitle forKey:@"accessibilityTitle"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   if (self->_isEnabled)
   {
     [v8 encodeBool:1 forKey:@"isEnabled"];
-    v4 = v8;
+    coderCopy = v8;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -136,19 +136,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(RTITextInputKeyboardActionButtonConfiguration *)self imageData];
-      v7 = [(RTITextInputKeyboardActionButtonConfiguration *)v5 imageData];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      imageData = [(RTITextInputKeyboardActionButtonConfiguration *)self imageData];
+      imageData2 = [(RTITextInputKeyboardActionButtonConfiguration *)v5 imageData];
+      v8 = imageData2;
+      if (imageData == imageData2)
       {
       }
 
       else
       {
-        v9 = [(RTITextInputKeyboardActionButtonConfiguration *)self imageData];
-        v10 = [(RTITextInputKeyboardActionButtonConfiguration *)v5 imageData];
-        v11 = [v9 isEqualToData:v10];
+        imageData3 = [(RTITextInputKeyboardActionButtonConfiguration *)self imageData];
+        imageData4 = [(RTITextInputKeyboardActionButtonConfiguration *)v5 imageData];
+        v11 = [imageData3 isEqualToData:imageData4];
 
         if (!v11)
         {
@@ -156,18 +156,18 @@
         }
       }
 
-      v13 = [(RTITextInputKeyboardActionButtonConfiguration *)self backgroundColor];
-      v14 = [(RTITextInputKeyboardActionButtonConfiguration *)v5 backgroundColor];
-      v15 = v14;
-      if (v13 == v14)
+      backgroundColor = [(RTITextInputKeyboardActionButtonConfiguration *)self backgroundColor];
+      backgroundColor2 = [(RTITextInputKeyboardActionButtonConfiguration *)v5 backgroundColor];
+      v15 = backgroundColor2;
+      if (backgroundColor == backgroundColor2)
       {
       }
 
       else
       {
-        v16 = [(RTITextInputKeyboardActionButtonConfiguration *)self backgroundColor];
-        v17 = [(RTITextInputKeyboardActionButtonConfiguration *)v5 backgroundColor];
-        v18 = [v16 isEqual:v17];
+        backgroundColor3 = [(RTITextInputKeyboardActionButtonConfiguration *)self backgroundColor];
+        backgroundColor4 = [(RTITextInputKeyboardActionButtonConfiguration *)v5 backgroundColor];
+        v18 = [backgroundColor3 isEqual:backgroundColor4];
 
         if (!v18)
         {
@@ -175,19 +175,19 @@
         }
       }
 
-      v19 = [(RTITextInputKeyboardActionButtonConfiguration *)self accessibilityTitle];
-      v20 = [(RTITextInputKeyboardActionButtonConfiguration *)v5 accessibilityTitle];
-      v21 = v20;
-      if (v19 == v20)
+      accessibilityTitle = [(RTITextInputKeyboardActionButtonConfiguration *)self accessibilityTitle];
+      accessibilityTitle2 = [(RTITextInputKeyboardActionButtonConfiguration *)v5 accessibilityTitle];
+      v21 = accessibilityTitle2;
+      if (accessibilityTitle == accessibilityTitle2)
       {
       }
 
       else
       {
         v22 = MEMORY[0x1E696AEC0];
-        v23 = [(RTITextInputKeyboardActionButtonConfiguration *)self accessibilityTitle];
-        v24 = [(RTITextInputKeyboardActionButtonConfiguration *)v5 accessibilityTitle];
-        LODWORD(v22) = [v22 _string:v23 matchesString:v24];
+        accessibilityTitle3 = [(RTITextInputKeyboardActionButtonConfiguration *)self accessibilityTitle];
+        accessibilityTitle4 = [(RTITextInputKeyboardActionButtonConfiguration *)v5 accessibilityTitle];
+        LODWORD(v22) = [v22 _string:accessibilityTitle3 matchesString:accessibilityTitle4];
 
         if (!v22)
         {
@@ -199,8 +199,8 @@ LABEL_18:
         }
       }
 
-      v25 = [(RTITextInputKeyboardActionButtonConfiguration *)self isEnabled];
-      v12 = v25 ^ [(RTITextInputKeyboardActionButtonConfiguration *)v5 isEnabled]^ 1;
+      isEnabled = [(RTITextInputKeyboardActionButtonConfiguration *)self isEnabled];
+      v12 = isEnabled ^ [(RTITextInputKeyboardActionButtonConfiguration *)v5 isEnabled]^ 1;
       goto LABEL_18;
     }
 

@@ -1,9 +1,9 @@
 @interface BBThumbnailSizeConstraints
-- (BBThumbnailSizeConstraints)initWithCoder:(id)a3;
+- (BBThumbnailSizeConstraints)initWithCoder:(id)coder;
 - (BOOL)areReasonable;
-- (CGSize)sizeFromAspectRatio:(double)a3;
+- (CGSize)sizeFromAspectRatio:(double)ratio;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BBThumbnailSizeConstraints
@@ -78,9 +78,9 @@ LABEL_14:
   [v6 appendFormat:v14, *(&self->super.isa + v13)];
   [v6 appendFormat:v11, *(&self->super.isa + v12)];
 LABEL_15:
-  v15 = [(BBThumbnailSizeConstraints *)self areReasonable];
+  areReasonable = [(BBThumbnailSizeConstraints *)self areReasonable];
   v16 = @"NO";
-  if (v15)
+  if (areReasonable)
   {
     v16 = @"YES";
   }
@@ -90,48 +90,48 @@ LABEL_15:
   return v6;
 }
 
-- (BBThumbnailSizeConstraints)initWithCoder:(id)a3
+- (BBThumbnailSizeConstraints)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = BBThumbnailSizeConstraints;
   v5 = [(BBThumbnailSizeConstraints *)&v7 init];
   if (v5)
   {
-    -[BBThumbnailSizeConstraints setConstraintType:](v5, "setConstraintType:", [v4 decodeIntegerForKey:@"constraintType"]);
-    [v4 decodeFloatForKey:@"fixedWidth"];
+    -[BBThumbnailSizeConstraints setConstraintType:](v5, "setConstraintType:", [coderCopy decodeIntegerForKey:@"constraintType"]);
+    [coderCopy decodeFloatForKey:@"fixedWidth"];
     [(BBThumbnailSizeConstraints *)v5 setFixedWidth:?];
-    [v4 decodeFloatForKey:@"fixedHeight"];
+    [coderCopy decodeFloatForKey:@"fixedHeight"];
     [(BBThumbnailSizeConstraints *)v5 setFixedHeight:?];
-    [v4 decodeFloatForKey:@"fixedDimension"];
+    [coderCopy decodeFloatForKey:@"fixedDimension"];
     [(BBThumbnailSizeConstraints *)v5 setFixedDimension:?];
-    [v4 decodeFloatForKey:@"minAspectRatio"];
+    [coderCopy decodeFloatForKey:@"minAspectRatio"];
     [(BBThumbnailSizeConstraints *)v5 setMinAspectRatio:?];
-    [v4 decodeFloatForKey:@"maxAspectRatio"];
+    [coderCopy decodeFloatForKey:@"maxAspectRatio"];
     [(BBThumbnailSizeConstraints *)v5 setMaxAspectRatio:?];
-    [v4 decodeFloatForKey:@"thumbnailScale"];
+    [coderCopy decodeFloatForKey:@"thumbnailScale"];
     [(BBThumbnailSizeConstraints *)v5 setThumbnailScale:?];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[BBThumbnailSizeConstraints constraintType](self forKey:{"constraintType"), @"constraintType"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[BBThumbnailSizeConstraints constraintType](self forKey:{"constraintType"), @"constraintType"}];
   [(BBThumbnailSizeConstraints *)self fixedWidth];
-  [v4 encodeFloat:@"fixedWidth" forKey:?];
+  [coderCopy encodeFloat:@"fixedWidth" forKey:?];
   [(BBThumbnailSizeConstraints *)self fixedHeight];
-  [v4 encodeFloat:@"fixedHeight" forKey:?];
+  [coderCopy encodeFloat:@"fixedHeight" forKey:?];
   [(BBThumbnailSizeConstraints *)self fixedDimension];
-  [v4 encodeFloat:@"fixedDimension" forKey:?];
+  [coderCopy encodeFloat:@"fixedDimension" forKey:?];
   [(BBThumbnailSizeConstraints *)self minAspectRatio];
-  [v4 encodeFloat:@"minAspectRatio" forKey:?];
+  [coderCopy encodeFloat:@"minAspectRatio" forKey:?];
   [(BBThumbnailSizeConstraints *)self maxAspectRatio];
-  [v4 encodeFloat:@"maxAspectRatio" forKey:?];
+  [coderCopy encodeFloat:@"maxAspectRatio" forKey:?];
   [(BBThumbnailSizeConstraints *)self thumbnailScale];
-  [v4 encodeFloat:@"thumbnailScale" forKey:?];
+  [coderCopy encodeFloat:@"thumbnailScale" forKey:?];
 }
 
 - (BOOL)areReasonable
@@ -185,10 +185,10 @@ LABEL_15:
   return v14;
 }
 
-- (CGSize)sizeFromAspectRatio:(double)a3
+- (CGSize)sizeFromAspectRatio:(double)ratio
 {
   v3 = 0.0;
-  if (a3 <= 0.0)
+  if (ratio <= 0.0)
   {
     v11 = 0.0;
     goto LABEL_12;
@@ -197,21 +197,21 @@ LABEL_15:
   [(BBThumbnailSizeConstraints *)self minAspectRatio];
   v7 = v6;
   [(BBThumbnailSizeConstraints *)self maxAspectRatio];
-  v9 = v8;
-  if (v9 >= a3)
+  ratioCopy = v8;
+  if (ratioCopy >= ratio)
   {
-    v9 = a3;
+    ratioCopy = ratio;
   }
 
-  if (v9 > v7)
+  if (ratioCopy > v7)
   {
-    v7 = v9;
+    v7 = ratioCopy;
   }
 
-  v10 = [(BBThumbnailSizeConstraints *)self constraintType];
-  if (v10 > 1)
+  constraintType = [(BBThumbnailSizeConstraints *)self constraintType];
+  if (constraintType > 1)
   {
-    if (v10 == 4)
+    if (constraintType == 4)
     {
       v17 = v7;
       [(BBThumbnailSizeConstraints *)self fixedDimension];
@@ -224,10 +224,10 @@ LABEL_15:
 
     else
     {
-      if (v10 != 3)
+      if (constraintType != 3)
       {
         v11 = 0.0;
-        if (v10 == 2)
+        if (constraintType == 2)
         {
           [(BBThumbnailSizeConstraints *)self fixedWidth];
           v11 = v12;
@@ -254,10 +254,10 @@ LABEL_19:
     goto LABEL_12;
   }
 
-  if (v10)
+  if (constraintType)
   {
     v11 = 0.0;
-    if (v10 == 1)
+    if (constraintType == 1)
     {
       [(BBThumbnailSizeConstraints *)self fixedHeight];
       v3 = v16;

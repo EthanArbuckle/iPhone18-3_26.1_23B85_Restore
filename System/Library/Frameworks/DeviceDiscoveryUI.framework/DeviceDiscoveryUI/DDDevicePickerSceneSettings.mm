@@ -1,11 +1,11 @@
 @interface DDDevicePickerSceneSettings
 - (NSString)serviceIdentifier;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation DDDevicePickerSceneSettings
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [DDDevicePickerMutableSceneSettings alloc];
 
@@ -14,8 +14,8 @@
 
 - (NSString)serviceIdentifier
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:18492849];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:18492849];
 
   return v3;
 }

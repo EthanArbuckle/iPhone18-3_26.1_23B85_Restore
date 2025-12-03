@@ -1,5 +1,5 @@
 @interface DOCTagEditorTagCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)_axCellTextField;
@@ -11,18 +11,18 @@
 
 @implementation DOCTagEditorTagCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DocumentManagerExecutables.DOCTagEditorTagCell" hasSwiftField:@"mixedSelection" withSwiftType:"Bool"];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCTagEditorTagCell" isKindOfClass:@"UICollectionViewCell"];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCTagEditorTagCell" hasSwiftField:@"inNewTagMode" withSwiftType:"Bool"];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCTagEditorTagCell" hasSwiftField:@"tagDotButton" withSwiftType:"Optional<UIButton>"];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCTagEditorTagCell" hasSwiftField:@"tagValue" withSwiftType:"Optional<DOCTag>"];
-  [v3 validateClass:@"DOCTag" hasInstanceMethod:@"labelIndex" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCTagEditorTagCell" hasSwiftField:@"newTagColor" withSwiftType:"DOCTagColor"];
-  [v3 validateClass:@"_UIContentViewEditingTextField"];
-  [v3 validateClass:@"UICollectionViewCell" hasInstanceMethod:@"_setSelected:animated:" withFullSignature:{"v", "B", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCTagEditorTagCell" hasSwiftField:@"mixedSelection" withSwiftType:"Bool"];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCTagEditorTagCell" isKindOfClass:@"UICollectionViewCell"];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCTagEditorTagCell" hasSwiftField:@"inNewTagMode" withSwiftType:"Bool"];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCTagEditorTagCell" hasSwiftField:@"tagDotButton" withSwiftType:"Optional<UIButton>"];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCTagEditorTagCell" hasSwiftField:@"tagValue" withSwiftType:"Optional<DOCTag>"];
+  [validationsCopy validateClass:@"DOCTag" hasInstanceMethod:@"labelIndex" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCTagEditorTagCell" hasSwiftField:@"newTagColor" withSwiftType:"DOCTagColor"];
+  [validationsCopy validateClass:@"_UIContentViewEditingTextField"];
+  [validationsCopy validateClass:@"UICollectionViewCell" hasInstanceMethod:@"_setSelected:animated:" withFullSignature:{"v", "B", "B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -64,30 +64,30 @@ uint64_t __78__DOCTagEditorTagCellAccessibility__accessibilityLoadAccessibilityI
 {
   if ([(DOCTagEditorTagCellAccessibility *)self _axIsInNewTagMode])
   {
-    v3 = [(DOCTagEditorTagCellAccessibility *)self _axCellTextField];
-    v4 = [v3 text];
-    v5 = [v4 length];
+    _axCellTextField = [(DOCTagEditorTagCellAccessibility *)self _axCellTextField];
+    text = [_axCellTextField text];
+    v5 = [text length];
 
     if (v5)
     {
-      [v3 text];
+      [_axCellTextField text];
     }
 
     else
     {
-      [v3 placeholder];
+      [_axCellTextField placeholder];
     }
-    v6 = ;
+    accessibilityLabel = ;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = DOCTagEditorTagCellAccessibility;
-    v6 = [(DOCTagEditorTagCellAccessibility *)&v8 accessibilityLabel];
+    accessibilityLabel = [(DOCTagEditorTagCellAccessibility *)&v8 accessibilityLabel];
   }
 
-  return v6;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
@@ -132,13 +132,13 @@ uint64_t __78__DOCTagEditorTagCellAccessibility__accessibilityLoadAccessibilityI
     {
       if (v5 == 7)
       {
-        v6 = [MEMORY[0x29EDC7A00] systemOrangeColor];
+        systemOrangeColor = [MEMORY[0x29EDC7A00] systemOrangeColor];
         goto LABEL_22;
       }
 
       if (v5 == 6)
       {
-        v6 = [MEMORY[0x29EDC7A00] systemRedColor];
+        systemOrangeColor = [MEMORY[0x29EDC7A00] systemRedColor];
         goto LABEL_22;
       }
 
@@ -155,7 +155,7 @@ uint64_t __78__DOCTagEditorTagCellAccessibility__accessibilityLoadAccessibilityI
       [MEMORY[0x29EDC7A00] systemYellowColor];
     }
 
-    v6 = LABEL_13:;
+    systemOrangeColor = LABEL_13:;
     goto LABEL_22;
   }
 
@@ -181,9 +181,9 @@ uint64_t __78__DOCTagEditorTagCellAccessibility__accessibilityLoadAccessibilityI
 
   if (v5 == 1)
   {
-    v6 = [MEMORY[0x29EDC7A00] systemGrayColor];
+    systemOrangeColor = [MEMORY[0x29EDC7A00] systemGrayColor];
 LABEL_22:
-    v3 = v6;
+    v3 = systemOrangeColor;
   }
 
 LABEL_23:
@@ -211,7 +211,7 @@ void __54__DOCTagEditorTagCellAccessibility_accessibilityValue__block_invoke(uin
     v7 = 3221225472;
     v8 = __57__DOCTagEditorTagCellAccessibility_accessibilityActivate__block_invoke;
     v9 = &unk_29F2BBB10;
-    v10 = self;
+    selfCopy = self;
     v11 = v3;
     AXPerformSafeBlock();
     return 1;
@@ -229,13 +229,13 @@ void __54__DOCTagEditorTagCellAccessibility_accessibilityValue__block_invoke(uin
 {
   v7.receiver = self;
   v7.super_class = DOCTagEditorTagCellAccessibility;
-  v3 = [(DOCTagEditorTagCellAccessibility *)&v7 _accessibilitySupplementaryFooterViews];
-  v4 = [v3 mutableCopy];
+  _accessibilitySupplementaryFooterViews = [(DOCTagEditorTagCellAccessibility *)&v7 _accessibilitySupplementaryFooterViews];
+  v4 = [_accessibilitySupplementaryFooterViews mutableCopy];
 
   if ([(DOCTagEditorTagCellAccessibility *)self _axIsInNewTagMode])
   {
-    v5 = [(DOCTagEditorTagCellAccessibility *)self _axCellTextField];
-    [v4 axSafelyAddObject:v5];
+    _axCellTextField = [(DOCTagEditorTagCellAccessibility *)self _axCellTextField];
+    [v4 axSafelyAddObject:_axCellTextField];
   }
 
   return v4;

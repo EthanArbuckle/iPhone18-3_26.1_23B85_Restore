@@ -1,35 +1,35 @@
 @interface CDPTTSUChannel
-- (CDPTTSUChannel)initWithContext:(id)a3;
-- (void)listenForPayloadsWithHandler:(id)a3;
-- (void)sendPayload:(id)a3 completion:(id)a4;
+- (CDPTTSUChannel)initWithContext:(id)context;
+- (void)listenForPayloadsWithHandler:(id)handler;
+- (void)sendPayload:(id)payload completion:(id)completion;
 @end
 
 @implementation CDPTTSUChannel
 
-- (CDPTTSUChannel)initWithContext:(id)a3
+- (CDPTTSUChannel)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v6 = [(CDPTTSUChannel *)self init];
   if (v6)
   {
     v7 = objc_alloc(MEMORY[0x277D02880]);
-    v8 = [v5 sharingChannel];
-    v9 = [v7 initWithTemplate:v8];
+    sharingChannel = [contextCopy sharingChannel];
+    v9 = [v7 initWithTemplate:sharingChannel];
     sharingSession = v6->_sharingSession;
     v6->_sharingSession = v9;
 
     v6->_sentInitialResponse = 0;
-    objc_storeStrong(&v6->_cdpContext, a3);
+    objc_storeStrong(&v6->_cdpContext, context);
   }
 
   return v6;
 }
 
-- (void)sendPayload:(id)a3 completion:(id)a4
+- (void)sendPayload:(id)payload completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  completionCopy = completion;
   v8 = _CDPSignpostLogSystem();
   v9 = _CDPSignpostCreate();
   v11 = v10;
@@ -52,13 +52,13 @@
 
   v15 = MEMORY[0x277CBEB38];
   v28 = @"CDPChannelTTSUPayloadKey";
-  v29 = v6;
+  v29 = payloadCopy;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
   v17 = [v15 dictionaryWithDictionary:v16];
 
-  v18 = [(CDPContext *)self->_cdpContext telemetryFlowID];
-  v19 = [(CDPContext *)self->_cdpContext telemetryDeviceSessionID];
-  if (v18)
+  telemetryFlowID = [(CDPContext *)self->_cdpContext telemetryFlowID];
+  telemetryDeviceSessionID = [(CDPContext *)self->_cdpContext telemetryDeviceSessionID];
+  if (telemetryFlowID)
   {
     v20 = _CDPLogSystem();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -67,7 +67,7 @@
       _os_log_impl(&dword_24510B000, v20, OS_LOG_TYPE_DEFAULT, "CDPTTSUChannel: Flow ID exists on the requesting proxy, attaching to payload.", buf, 2u);
     }
 
-    [v17 setObject:v18 forKeyedSubscript:@"CDPChannelTTSUTelemetryFlowId"];
+    [v17 setObject:telemetryFlowID forKeyedSubscript:@"CDPChannelTTSUTelemetryFlowId"];
   }
 
   sharingSession = self->_sharingSession;
@@ -78,8 +78,8 @@
   v26 = v9;
   v27 = v11;
   v24[4] = self;
-  v25 = v7;
-  v22 = v7;
+  v25 = completionCopy;
+  v22 = completionCopy;
   [(CUMessageSession *)sharingSession sendRequestID:@"CDPChannelTTSURequestID" options:MEMORY[0x277CBEC10] request:v17 responseHandler:v24];
 
   v23 = *MEMORY[0x277D85DE8];
@@ -224,9 +224,9 @@ LABEL_33:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)listenForPayloadsWithHandler:(id)a3
+- (void)listenForPayloadsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -239,9 +239,9 @@ LABEL_33:
   v9 = 3221225472;
   v10 = __47__CDPTTSUChannel_listenForPayloadsWithHandler___block_invoke;
   v11 = &unk_278E24D68;
-  v12 = self;
-  v13 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v7 = handlerCopy;
   [(CUMessageSession *)sharingSession registerRequestID:@"CDPChannelTTSURequestID" options:MEMORY[0x277CBEC10] handler:&v8];
   [(CUMessageSession *)self->_sharingSession activate:v8];
 }

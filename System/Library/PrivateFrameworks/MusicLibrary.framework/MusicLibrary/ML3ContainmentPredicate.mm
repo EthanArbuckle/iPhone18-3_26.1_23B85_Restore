@@ -1,27 +1,27 @@
 @interface ML3ContainmentPredicate
-+ (id)predicateWithProperty:(id)a3 values:(id)a4;
-- (BOOL)containsPropertyPredicate:(id)a3 matchingValue:(id)a4 usingComparison:(int)a5;
-- (BOOL)isEqual:(id)a3;
-- (ML3ContainmentPredicate)initWithCoder:(id)a3;
-- (ML3ContainmentPredicate)initWithProperty:(id)a3 values:(id)a4;
++ (id)predicateWithProperty:(id)property values:(id)values;
+- (BOOL)containsPropertyPredicate:(id)predicate matchingValue:(id)value usingComparison:(int)comparison;
+- (BOOL)isEqual:(id)equal;
+- (ML3ContainmentPredicate)initWithCoder:(id)coder;
+- (ML3ContainmentPredicate)initWithProperty:(id)property values:(id)values;
 - (id)_orderedValues;
 - (id)databaseStatementParameters;
 - (id)description;
 - (unint64_t)hash;
-- (void)appendSQLToMutableString:(id)a3 entityClass:(Class)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendSQLToMutableString:(id)string entityClass:(Class)class;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ML3ContainmentPredicate
 
-- (BOOL)containsPropertyPredicate:(id)a3 matchingValue:(id)a4 usingComparison:(int)a5
+- (BOOL)containsPropertyPredicate:(id)predicate matchingValue:(id)value usingComparison:(int)comparison
 {
-  v5 = *&a5;
+  v5 = *&comparison;
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(ML3PropertyPredicate *)self property];
-  v11 = [v10 isEqualToString:v8];
+  predicateCopy = predicate;
+  valueCopy = value;
+  property = [(ML3PropertyPredicate *)self property];
+  v11 = [property isEqualToString:predicateCopy];
 
   if (v11)
   {
@@ -29,8 +29,8 @@
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v12 = [(ML3ContainmentPredicate *)self values];
-    v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    values = [(ML3ContainmentPredicate *)self values];
+    v13 = [values countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v13)
     {
       v14 = v13;
@@ -41,17 +41,17 @@
         {
           if (*v20 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(values);
           }
 
-          if ([v9 ml_matchesValue:*(*(&v19 + 1) + 8 * i) usingComparison:v5])
+          if ([valueCopy ml_matchesValue:*(*(&v19 + 1) + 8 * i) usingComparison:v5])
           {
             v17 = 1;
             goto LABEL_13;
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v14 = [values countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v14)
         {
           continue;
@@ -75,29 +75,29 @@ LABEL_13:
 
 - (id)databaseStatementParameters
 {
-  v2 = [(ML3ContainmentPredicate *)self _orderedValues];
-  v3 = [v2 copy];
+  _orderedValues = [(ML3ContainmentPredicate *)self _orderedValues];
+  v3 = [_orderedValues copy];
 
   return v3;
 }
 
-- (void)appendSQLToMutableString:(id)a3 entityClass:(Class)a4
+- (void)appendSQLToMutableString:(id)string entityClass:(Class)class
 {
-  v11 = a3;
-  v6 = [(objc_class *)a4 disambiguatedSQLForProperty:self->super._property];
-  v7 = [(ML3ContainmentPredicate *)self _orderedValues];
-  [v11 appendString:v6];
-  if ([v7 count] == 1)
+  stringCopy = string;
+  v6 = [(objc_class *)class disambiguatedSQLForProperty:self->super._property];
+  _orderedValues = [(ML3ContainmentPredicate *)self _orderedValues];
+  [stringCopy appendString:v6];
+  if ([_orderedValues count] == 1)
   {
-    [v11 appendString:@" = "];
-    [v11 appendString:@" ? "];
+    [stringCopy appendString:@" = "];
+    [stringCopy appendString:@" ? "];
   }
 
   else
   {
-    objc_msgSend(v11, "appendString:", @" IN (");
-    v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
-    if ([v7 count])
+    objc_msgSend(stringCopy, "appendString:", @" IN (");
+    v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(_orderedValues, "count")}];
+    if ([_orderedValues count])
     {
       v9 = 0;
       do
@@ -106,31 +106,31 @@ LABEL_13:
         ++v9;
       }
 
-      while (v9 < [v7 count]);
+      while (v9 < [_orderedValues count]);
     }
 
     if ([v8 count])
     {
       v10 = [v8 componentsJoinedByString:{@", "}];
-      [v11 appendString:v10];
+      [stringCopy appendString:v10];
     }
 
-    [v11 appendString:@""]);
+    [stringCopy appendString:@""]);
   }
 }
 
 - (id)description
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(ML3ContainmentPredicate *)self _orderedValues];
+  _orderedValues = [(ML3ContainmentPredicate *)self _orderedValues];
   if ([(NSString *)self->super._property isEqualToString:@"media_type"])
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v5 = v3;
+    v5 = _orderedValues;
     v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v6)
     {
@@ -146,7 +146,7 @@ LABEL_13:
           }
 
           v10 = NSStringFromMLMediaType([*(*(&v19 + 1) + 8 * i) integerValue]);
-          [v4 addObject:v10];
+          [array addObject:v10];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -156,7 +156,7 @@ LABEL_13:
     }
 
     v11 = MEMORY[0x277CCACA8];
-    v12 = [v4 componentsJoinedByString:{@", "}];
+    v12 = [array componentsJoinedByString:{@", "}];
     v13 = [v11 stringWithFormat:@" [%@]", v12];
   }
 
@@ -169,34 +169,34 @@ LABEL_13:
   v18.receiver = self;
   v18.super_class = ML3ContainmentPredicate;
   v15 = [(ML3PropertyPredicate *)&v18 description];
-  v16 = objc_msgSend(v14, "stringWithFormat:", @"%@(%@ IN (%@)%@"), v15, self->super._property, v3, v13;
+  v16 = objc_msgSend(v14, "stringWithFormat:", @"%@(%@ IN (%@)%@"), v15, self->super._property, _orderedValues, v13;
 
   return v16;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(ML3PropertyPredicate *)self property];
-  v4 = [v3 hash];
-  v5 = [(ML3ContainmentPredicate *)self values];
-  v6 = [v5 hash];
+  property = [(ML3PropertyPredicate *)self property];
+  v4 = [property hash];
+  values = [(ML3ContainmentPredicate *)self values];
+  v6 = [values hash];
 
   return v6 + v4;
 }
 
 - (id)_orderedValues
 {
-  v2 = [(ML3ContainmentPredicate *)self values];
-  v3 = [v2 allObjects];
-  v4 = [v3 sortedArrayUsingSelector:sel_compare_];
+  values = [(ML3ContainmentPredicate *)self values];
+  allObjects = [values allObjects];
+  v4 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -205,18 +205,18 @@ LABEL_13:
   {
     v9.receiver = self;
     v9.super_class = ML3ContainmentPredicate;
-    if ([(ML3PropertyPredicate *)&v9 isEqual:v4])
+    if ([(ML3PropertyPredicate *)&v9 isEqual:equalCopy])
     {
-      v5 = [(ML3ContainmentPredicate *)self values];
-      v6 = [(ML3ContainmentPredicate *)v4 values];
-      if (v5 == v6)
+      values = [(ML3ContainmentPredicate *)self values];
+      values2 = [(ML3ContainmentPredicate *)equalCopy values];
+      if (values == values2)
       {
         v7 = 1;
       }
 
       else
       {
-        v7 = [v5 isEqual:v6];
+        v7 = [values isEqual:values2];
       }
     }
 
@@ -229,22 +229,22 @@ LABEL_13:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ML3ContainmentPredicate;
-  v4 = a3;
-  [(ML3PropertyPredicate *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(ML3PropertyPredicate *)&v6 encodeWithCoder:coderCopy];
   v5 = [(ML3ContainmentPredicate *)self values:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"values"];
+  [coderCopy encodeObject:v5 forKey:@"values"];
 }
 
-- (ML3ContainmentPredicate)initWithCoder:(id)a3
+- (ML3ContainmentPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = ML3ContainmentPredicate;
-  v5 = [(ML3PropertyPredicate *)&v13 initWithCoder:v4];
+  v5 = [(ML3PropertyPredicate *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
@@ -252,39 +252,39 @@ LABEL_13:
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v6 setWithObjects:{v7, v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"values"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"values"];
     [(ML3ContainmentPredicate *)v5 setValues:v11];
   }
 
   return v5;
 }
 
-- (ML3ContainmentPredicate)initWithProperty:(id)a3 values:(id)a4
+- (ML3ContainmentPredicate)initWithProperty:(id)property values:(id)values
 {
-  v7 = a3;
-  v8 = a4;
+  propertyCopy = property;
+  valuesCopy = values;
   v12.receiver = self;
   v12.super_class = ML3ContainmentPredicate;
-  v9 = [(ML3PropertyPredicate *)&v12 initWithProperty:v7];
+  v9 = [(ML3PropertyPredicate *)&v12 initWithProperty:propertyCopy];
   if (v9)
   {
-    if (!v8)
+    if (!valuesCopy)
     {
-      v11 = [MEMORY[0x277CCA890] currentHandler];
-      [v11 handleFailureInMethod:a2 object:v9 file:@"ML3Predicate.m" lineNumber:329 description:{@"invalid value (nil) for property %@.", v7}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v9 file:@"ML3Predicate.m" lineNumber:329 description:{@"invalid value (nil) for property %@.", propertyCopy}];
     }
 
-    [(ML3ContainmentPredicate *)v9 setValues:v8];
+    [(ML3ContainmentPredicate *)v9 setValues:valuesCopy];
   }
 
   return v9;
 }
 
-+ (id)predicateWithProperty:(id)a3 values:(id)a4
++ (id)predicateWithProperty:(id)property values:(id)values
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithProperty:v6 values:v5];
+  valuesCopy = values;
+  propertyCopy = property;
+  v7 = [objc_alloc(objc_opt_class()) initWithProperty:propertyCopy values:valuesCopy];
 
   return v7;
 }

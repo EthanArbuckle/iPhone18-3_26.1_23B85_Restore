@@ -1,20 +1,20 @@
 @interface CellOutrankMetrics
-- (CellOutrankMetrics)initWithQueue:(id)a3;
+- (CellOutrankMetrics)initWithQueue:(id)queue;
 - (id)_dailyOutrankMetricDictionary;
-- (id)_outrankMetricForNew:(id)a3 old:(id)a4 withDelayedItems:(BOOL)a5;
-- (id)getState:(BOOL)a3;
-- (void)_captureOutrankEntryAdditionalState:(id)a3 flags:(unint64_t)a4;
+- (id)_outrankMetricForNew:(id)new old:(id)old withDelayedItems:(BOOL)items;
+- (id)getState:(BOOL)state;
+- (void)_captureOutrankEntryAdditionalState:(id)state flags:(unint64_t)flags;
 - (void)_resetDailyTelemetryMetrics;
 - (void)_sendDailyOutrankMetric;
-- (void)_sendOutrankMetricNew:(id)a3 old:(id)a4 withDelayedItems:(BOOL)a5;
+- (void)_sendOutrankMetricNew:(id)new old:(id)old withDelayedItems:(BOOL)items;
 - (void)_setupDailyTelemetryTimer;
-- (void)_updateStateDeltas:(id)a3 duration:(double)a4;
-- (void)_updateStateTransitionMetricsForNewState:(unsigned int)a3 oldState:(unsigned int)a4;
+- (void)_updateStateDeltas:(id)deltas duration:(double)duration;
+- (void)_updateStateTransitionMetricsForNewState:(unsigned int)state oldState:(unsigned int)oldState;
 - (void)didSampleFlows;
-- (void)reportABCCase:(id)a3;
-- (void)setConfiguration:(id)a3;
-- (void)updateMetricsForState:(id)a3;
-- (void)updateOutrankExitMetrics:(id)a3;
+- (void)reportABCCase:(id)case;
+- (void)setConfiguration:(id)configuration;
+- (void)updateMetricsForState:(id)state;
+- (void)updateOutrankExitMetrics:(id)metrics;
 @end
 
 @implementation CellOutrankMetrics
@@ -75,14 +75,14 @@
   }
 }
 
-- (id)_outrankMetricForNew:(id)a3 old:(id)a4 withDelayedItems:(BOOL)a5
+- (id)_outrankMetricForNew:(id)new old:(id)old withDelayedItems:(BOOL)items
 {
-  v5 = a5;
+  itemsCopy = items;
   v102 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = +[COSMStateSummary primaryReasonFromFlags:state:](COSMStateSummary, "primaryReasonFromFlags:state:", [v8 reasonFlags], objc_msgSend(v8, "cosmState"));
-  v11 = +[COSMStateSummary primaryReasonFromFlags:state:](COSMStateSummary, "primaryReasonFromFlags:state:", [v9 reasonFlags], objc_msgSend(v9, "cosmState"));
+  newCopy = new;
+  oldCopy = old;
+  v10 = +[COSMStateSummary primaryReasonFromFlags:state:](COSMStateSummary, "primaryReasonFromFlags:state:", [newCopy reasonFlags], objc_msgSend(newCopy, "cosmState"));
+  v11 = +[COSMStateSummary primaryReasonFromFlags:state:](COSMStateSummary, "primaryReasonFromFlags:state:", [oldCopy reasonFlags], objc_msgSend(oldCopy, "cosmState"));
   v12 = v11;
   if (v10 == -1 || v11 == -1)
   {
@@ -93,11 +93,11 @@
       *buf = 67109888;
       *v93 = v10;
       *&v93[4] = 1024;
-      *&v93[6] = [v8 cosmState];
+      *&v93[6] = [newCopy cosmState];
       LOWORD(v94) = 1024;
       *(&v94 + 2) = v12;
       HIWORD(v94) = 1024;
-      *v95 = [v9 cosmState];
+      *v95 = [oldCopy cosmState];
       _os_log_impl(&dword_23255B000, v15, OS_LOG_TYPE_ERROR, "COSM Metrics primary reason error. Former %d state %d current %d state %d", buf, 0x1Au);
     }
 
@@ -105,7 +105,7 @@
     if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_ERROR))
     {
       v17 = v16;
-      v18 = +[COSMStateSummary summaryFromFlags:](COSMStateSummary, "summaryFromFlags:", [v8 reasonFlags]);
+      v18 = +[COSMStateSummary summaryFromFlags:](COSMStateSummary, "summaryFromFlags:", [newCopy reasonFlags]);
       *buf = 138412290;
       *v93 = v18;
       _os_log_impl(&dword_23255B000, v17, OS_LOG_TYPE_ERROR, "COSM Metrics new flags %@", buf, 0xCu);
@@ -115,7 +115,7 @@
     if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_ERROR))
     {
       v20 = v19;
-      v21 = +[COSMStateSummary summaryFromFlags:](COSMStateSummary, "summaryFromFlags:", [v9 reasonFlags]);
+      v21 = +[COSMStateSummary summaryFromFlags:](COSMStateSummary, "summaryFromFlags:", [oldCopy reasonFlags]);
       *buf = 138412290;
       *v93 = v21;
       _os_log_impl(&dword_23255B000, v20, OS_LOG_TYPE_ERROR, "COSM Metrics old flags %@", buf, 0xCu);
@@ -125,7 +125,7 @@
     if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      *v93 = v8;
+      *v93 = newCopy;
       _os_log_impl(&dword_23255B000, v22, OS_LOG_TYPE_ERROR, "COSM Metrics new items %{public}@", buf, 0xCu);
     }
 
@@ -133,7 +133,7 @@
     if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      *v93 = v9;
+      *v93 = oldCopy;
       _os_log_impl(&dword_23255B000, v23, OS_LOG_TYPE_ERROR, "COSM Metrics old items %{public}@", buf, 0xCu);
     }
 
@@ -141,65 +141,65 @@
   }
 
   v24 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v25 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v8, "cellularBandwidth")}];
+  v25 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(newCopy, "cellularBandwidth")}];
   [v24 setObject:v25 forKeyedSubscript:@"cellularBandwidth"];
 
-  v26 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v8, "cellularExpensive")}];
+  v26 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(newCopy, "cellularExpensive")}];
   [v24 setObject:v26 forKeyedSubscript:@"cellularExpensive"];
 
-  v27 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v8, "cellularNRFrequencyBand")}];
+  v27 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(newCopy, "cellularNRFrequencyBand")}];
   [v24 setObject:v27 forKeyedSubscript:@"cellularNRFrequencyBand"];
 
-  v28 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v8, "cellularRAT")}];
+  v28 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(newCopy, "cellularRAT")}];
   [v24 setObject:v28 forKeyedSubscript:@"cellularRAT"];
 
-  v29 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v8, "cellularRSRP")}];
+  v29 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(newCopy, "cellularRSRP")}];
   [v24 setObject:v29 forKeyedSubscript:@"cellularRSRP"];
 
-  v30 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v8, "cellularWRMExpensive")}];
+  v30 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(newCopy, "cellularWRMExpensive")}];
   [v24 setObject:v30 forKeyedSubscript:@"cellularWRMExpensive"];
 
-  v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v8, "cosmState")}];
+  v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(newCopy, "cosmState")}];
   [v24 setObject:v31 forKeyedSubscript:@"cosmCurrentState"];
 
   v32 = [MEMORY[0x277CCABB0] numberWithInt:v10];
   [v24 setObject:v32 forKeyedSubscript:@"cosmCurrentStateEntryPrimaryReason"];
 
-  v33 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v8, "reasonFlags")}];
+  v33 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(newCopy, "reasonFlags")}];
   [v24 setObject:v33 forKeyedSubscript:@"cosmCurrentStateEntryReason"];
 
-  v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v9, "cosmState")}];
+  v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(oldCopy, "cosmState")}];
   [v24 setObject:v34 forKeyedSubscript:@"cosmFormerState"];
 
-  [v8 timestamp];
+  [newCopy timestamp];
   v36 = v35;
-  [v9 timestamp];
+  [oldCopy timestamp];
   v38 = [(CellOutrankMetrics *)self secondsToMetricsAccuracy:v36 - v37];
   [v24 setObject:v38 forKeyedSubscript:@"cosmFormerStateDuration"];
 
   v39 = [MEMORY[0x277CCABB0] numberWithInt:v12];
   [v24 setObject:v39 forKeyedSubscript:@"cosmFormerStateEntryPrimaryReason"];
 
-  v40 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v9, "reasonFlags")}];
+  v40 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(oldCopy, "reasonFlags")}];
   [v24 setObject:v40 forKeyedSubscript:@"cosmFormerStateEntryReason"];
 
   [v24 setObject:&unk_2847EFD40 forKeyedSubscript:@"cosmReasonRevision"];
-  v41 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v8, "wifiSecure")}];
+  v41 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(newCopy, "wifiSecure")}];
   [v24 setObject:v41 forKeyedSubscript:@"wifiGoodSecurity"];
 
-  v42 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{+[COSMStateSummary wifiPublicTypeFromFlags:](COSMStateSummary, "wifiPublicTypeFromFlags:", objc_msgSend(v8, "reasonFlags"))}];
+  v42 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{+[COSMStateSummary wifiPublicTypeFromFlags:](COSMStateSummary, "wifiPublicTypeFromFlags:", objc_msgSend(newCopy, "reasonFlags"))}];
   [v24 setObject:v42 forKeyedSubscript:@"wifiPublicType"];
 
-  v43 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v8, "wifiRAT")}];
+  v43 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(newCopy, "wifiRAT")}];
   [v24 setObject:v43 forKeyedSubscript:@"wifiRAT"];
 
-  v44 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v8, "wifiRSSI")}];
+  v44 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(newCopy, "wifiRSSI")}];
   [v24 setObject:v44 forKeyedSubscript:@"wifiRSSI"];
 
-  v45 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v8, "outrankPercentIconShown")}];
+  v45 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(newCopy, "outrankPercentIconShown")}];
   [v24 setObject:v45 forKeyedSubscript:@"outrankPercentIconShown"];
 
-  v46 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v8, "outrankNumIconOnTransitions")}];
+  v46 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(newCopy, "outrankNumIconOnTransitions")}];
   [v24 setObject:v46 forKeyedSubscript:@"outrankNumIconOnTransitions"];
 
   [v24 setObject:&unk_2847EFD58 forKeyedSubscript:@"delayedCellularBandwidth"];
@@ -214,7 +214,7 @@
   [v24 setObject:&unk_2847EFD58 forKeyedSubscript:@"outrankNumFGAppsNonExploiting"];
   [v24 setObject:&unk_2847EFD58 forKeyedSubscript:@"outrankPercentFGExploited"];
   [v24 setObject:&unk_2847EFD58 forKeyedSubscript:@"outrankPercentFGNonExploited"];
-  v47 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v8, "cellPrivateNetworkActive")}];
+  v47 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(newCopy, "cellPrivateNetworkActive")}];
   [v24 setObject:v47 forKeyedSubscript:@"cellPrivateNetworkActive"];
 
   [v24 setObject:&unk_2847EFD58 forKeyedSubscript:@"numSISFlows"];
@@ -223,56 +223,56 @@
   [v24 setObject:&unk_2847EFD58 forKeyedSubscript:@"wifiLargeTransferInitiatingCount"];
   [v24 setObject:&unk_2847EFE40 forKeyedSubscript:@"wifiLargeTransferHysteresisDuration"];
   [v24 setObject:&unk_2847EFD58 forKeyedSubscript:@"wifiLargeTransferHysteresisWins"];
-  if ([v9 cosmState] == 3)
+  if ([oldCopy cosmState] == 3)
   {
-    v48 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v8, "outrankNumFGAppsExploiting")}];
+    v48 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(newCopy, "outrankNumFGAppsExploiting")}];
     [v24 setObject:v48 forKeyedSubscript:@"outrankNumFGAppsExploiting"];
 
-    v49 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v8, "outrankNumFGAppsNonExploiting")}];
+    v49 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(newCopy, "outrankNumFGAppsNonExploiting")}];
     [v24 setObject:v49 forKeyedSubscript:@"outrankNumFGAppsNonExploiting"];
 
-    v50 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v8, "outrankPercentFGExploited")}];
+    v50 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(newCopy, "outrankPercentFGExploited")}];
     [v24 setObject:v50 forKeyedSubscript:@"outrankPercentFGExploited"];
 
-    v51 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v8, "outrankPercentFGNonExploited")}];
+    v51 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(newCopy, "outrankPercentFGNonExploited")}];
     [v24 setObject:v51 forKeyedSubscript:@"outrankPercentFGNonExploited"];
 
-    v52 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v8, "openedSISFlows") - objc_msgSend(v9, "openedSISFlows")}];
+    v52 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(newCopy, "openedSISFlows") - objc_msgSend(oldCopy, "openedSISFlows")}];
     [v24 setObject:v52 forKeyedSubscript:@"numSISFlows"];
 
-    v53 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v8, "openedNonAppleStackFlows") - objc_msgSend(v9, "openedNonAppleStackFlows")}];
+    v53 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(newCopy, "openedNonAppleStackFlows") - objc_msgSend(oldCopy, "openedNonAppleStackFlows")}];
     [v24 setObject:v53 forKeyedSubscript:@"numNonAppleStackFlows"];
 
-    v54 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v8, "openedAppleStackFlows") - objc_msgSend(v9, "openedAppleStackFlows")}];
+    v54 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(newCopy, "openedAppleStackFlows") - objc_msgSend(oldCopy, "openedAppleStackFlows")}];
     [v24 setObject:v54 forKeyedSubscript:@"numAppleStackFlows"];
 
-    v55 = [v9 wifiLargeTransferInitiatingName];
+    wifiLargeTransferInitiatingName = [oldCopy wifiLargeTransferInitiatingName];
 
-    if (v55)
+    if (wifiLargeTransferInitiatingName)
     {
-      v56 = [v9 wifiLargeTransferInitiatingName];
-      [v24 setObject:v56 forKeyedSubscript:@"wifiLargeTransferInitiatingName"];
+      wifiLargeTransferInitiatingName2 = [oldCopy wifiLargeTransferInitiatingName];
+      [v24 setObject:wifiLargeTransferInitiatingName2 forKeyedSubscript:@"wifiLargeTransferInitiatingName"];
 
-      v57 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{objc_msgSend(v9, "wifiLargeTransferInitiatingCount")}];
+      v57 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{objc_msgSend(oldCopy, "wifiLargeTransferInitiatingCount")}];
       [v24 setObject:v57 forKeyedSubscript:@"wifiLargeTransferInitiatingCount"];
 
       v58 = MEMORY[0x277CCABB0];
-      [v8 largeTransferHysteresisTime];
+      [newCopy largeTransferHysteresisTime];
       v60 = v59;
-      [v9 largeTransferHysteresisTime];
+      [oldCopy largeTransferHysteresisTime];
       v62 = [v58 numberWithDouble:v60 - v61];
       [v24 setObject:v62 forKeyedSubscript:@"wifiLargeTransferHysteresisDuration"];
 
-      v63 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v8, "largeTransferHysteresisWins") - objc_msgSend(v9, "largeTransferHysteresisWins")}];
+      v63 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(newCopy, "largeTransferHysteresisWins") - objc_msgSend(oldCopy, "largeTransferHysteresisWins")}];
       [v24 setObject:v63 forKeyedSubscript:@"wifiLargeTransferHysteresisWins"];
     }
   }
 
-  if (v5)
+  if (itemsCopy)
   {
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     v65 = v64;
-    [v8 timestamp];
+    [newCopy timestamp];
     v67 = (v65 + 0.5 - v66);
     v68 = [MEMORY[0x277CCABB0] numberWithInt:{-[CellularStateRelay cellBandwidth](self->_cellRelay, "cellBandwidth")}];
     [v24 setObject:v68 forKeyedSubscript:@"delayedCellularBandwidth"];
@@ -300,11 +300,11 @@
       v77 = v75 - self->_sampledCellGrandTally;
       v90 = v76 - self->_sampledWifiGrandTally;
       v91 = v76;
-      v78 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:(8 * (v77 / v74) + 999) / 0x3E8];
-      [v24 setObject:v78 forKeyedSubscript:@"delayedCellularThroughput"];
+      0x3E8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:(8 * (v77 / v74) + 999) / 0x3E8];
+      [v24 setObject:0x3E8 forKeyedSubscript:@"delayedCellularThroughput"];
 
-      v79 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:(8 * (v90 / v74) + 999) / 0x3E8];
-      [v24 setObject:v79 forKeyedSubscript:@"delayedWiFiThroughput"];
+      0x3E82 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:(8 * (v90 / v74) + 999) / 0x3E8];
+      [v24 setObject:0x3E82 forKeyedSubscript:@"delayedWiFiThroughput"];
 
       v80 = outrankLogHandle;
       if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_DEBUG))
@@ -355,10 +355,10 @@
   return v24;
 }
 
-- (void)_sendOutrankMetricNew:(id)a3 old:(id)a4 withDelayedItems:(BOOL)a5
+- (void)_sendOutrankMetricNew:(id)new old:(id)old withDelayedItems:(BOOL)items
 {
-  v6 = a3;
-  v7 = a4;
+  newCopy = new;
+  oldCopy = old;
   v8 = outrankLogHandle;
   if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_DEFAULT))
   {
@@ -366,9 +366,9 @@
     _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_DEFAULT, "COSM Metrics calling AnalyticsSendEventLazy", buf, 2u);
   }
 
-  v11 = v6;
-  v9 = v7;
-  v10 = v6;
+  v11 = newCopy;
+  v9 = oldCopy;
+  v10 = newCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -389,44 +389,44 @@ id __65__CellOutrankMetrics__sendOutrankMetricNew_old_withDelayedItems___block_i
   return v1;
 }
 
-- (void)_updateStateDeltas:(id)a3 duration:(double)a4
+- (void)_updateStateDeltas:(id)deltas duration:(double)duration
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  deltasCopy = deltas;
   [(CellOutrankController *)self->_cellOutrankController cellOutrankIconSetDuration];
   v8 = v7;
   [(CellOutrankController *)self->_cellOutrankController cellOutrankFGExploitDuration];
   v10 = v9;
   [(CellOutrankController *)self->_cellOutrankController cellOutrankFGNonExploitDuration];
   v12 = v11;
-  if (a4 <= 0.0)
+  if (duration <= 0.0)
   {
 LABEL_24:
-    [v6 setOutrankPercentIconShown:0xFFFFFFFFLL];
-    [v6 setOutrankPercentFGExploited:0xFFFFFFFFLL];
-    [v6 setOutrankPercentFGNonExploited:0xFFFFFFFFLL];
+    [deltasCopy setOutrankPercentIconShown:0xFFFFFFFFLL];
+    [deltasCopy setOutrankPercentFGExploited:0xFFFFFFFFLL];
+    [deltasCopy setOutrankPercentFGNonExploited:0xFFFFFFFFLL];
     goto LABEL_25;
   }
 
   v13 = v8 - self->_prevCellOutrankIconSetDuration;
   v14 = v10 - self->_prevCellOutrankFGExploitDuration;
   v15 = v11 - self->_prevCellOutrankFGNonExploitDuration;
-  [v6 setOutrankPercentIconShown:(v13 * 100.0 / a4)];
-  [v6 setOutrankPercentFGExploited:(v14 * 100.0 / a4)];
-  [v6 setOutrankPercentFGNonExploited:(v15 * 100.0 / a4)];
-  if (![v6 outrankPercentIconShown] && v13 > 0.0)
+  [deltasCopy setOutrankPercentIconShown:(v13 * 100.0 / duration)];
+  [deltasCopy setOutrankPercentFGExploited:(v14 * 100.0 / duration)];
+  [deltasCopy setOutrankPercentFGNonExploited:(v15 * 100.0 / duration)];
+  if (![deltasCopy outrankPercentIconShown] && v13 > 0.0)
   {
-    [v6 setOutrankPercentIconShown:1];
+    [deltasCopy setOutrankPercentIconShown:1];
   }
 
-  if (![v6 outrankPercentFGExploited] && v14 > 0.0)
+  if (![deltasCopy outrankPercentFGExploited] && v14 > 0.0)
   {
-    [v6 setOutrankPercentFGExploited:1];
+    [deltasCopy setOutrankPercentFGExploited:1];
   }
 
-  if (![v6 outrankPercentFGNonExploited] && v15 > 0.0)
+  if (![deltasCopy outrankPercentFGNonExploited] && v15 > 0.0)
   {
-    [v6 setOutrankPercentFGNonExploited:1];
+    [deltasCopy setOutrankPercentFGNonExploited:1];
   }
 
   v16 = outrankLogHandle;
@@ -434,22 +434,22 @@ LABEL_24:
   {
     v17 = v16;
     v39 = 67109632;
-    *v40 = [v6 outrankPercentIconShown];
+    *v40 = [deltasCopy outrankPercentIconShown];
     *&v40[4] = 1024;
-    *&v40[6] = [v6 outrankPercentFGExploited];
+    *&v40[6] = [deltasCopy outrankPercentFGExploited];
     LOWORD(v41) = 1024;
-    *(&v41 + 2) = [v6 outrankPercentFGNonExploited];
+    *(&v41 + 2) = [deltasCopy outrankPercentFGNonExploited];
     _os_log_impl(&dword_23255B000, v17, OS_LOG_TYPE_DEFAULT, "COSM Metrics _updateStateDeltas percent icon shown %d fg-exploit %d fg-non-exploit %d", &v39, 0x14u);
   }
 
-  v18 = [v6 outrankPercentFGExploited];
-  if (([v6 outrankPercentFGNonExploited] + v18) > 100 || objc_msgSend(v6, "outrankPercentIconShown") >= 101)
+  outrankPercentFGExploited = [deltasCopy outrankPercentFGExploited];
+  if (([deltasCopy outrankPercentFGNonExploited] + outrankPercentFGExploited) > 100 || objc_msgSend(deltasCopy, "outrankPercentIconShown") >= 101)
   {
     v19 = outrankLogHandle;
     if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_ERROR))
     {
       v39 = 134217984;
-      *v40 = a4;
+      *v40 = duration;
       _os_log_impl(&dword_23255B000, v19, OS_LOG_TYPE_ERROR, "COSM Metrics percentage error, measurement duration %.3f", &v39, 0xCu);
     }
 
@@ -458,7 +458,7 @@ LABEL_24:
     {
       prevCellOutrankIconSetDuration = self->_prevCellOutrankIconSetDuration;
       v22 = v20;
-      v23 = [v6 outrankPercentIconShown];
+      outrankPercentIconShown = [deltasCopy outrankPercentIconShown];
       v39 = 134218752;
       *v40 = prevCellOutrankIconSetDuration;
       *&v40[8] = 2048;
@@ -466,7 +466,7 @@ LABEL_24:
       v42 = 2048;
       v43 = v13;
       v44 = 1024;
-      v45 = v23;
+      v45 = outrankPercentIconShown;
       _os_log_impl(&dword_23255B000, v22, OS_LOG_TYPE_ERROR, "COSM Metrics possible icon set prev %.3f new %.3f diff %.3f percent %d", &v39, 0x26u);
     }
 
@@ -475,7 +475,7 @@ LABEL_24:
     {
       prevCellOutrankFGExploitDuration = self->_prevCellOutrankFGExploitDuration;
       v26 = v24;
-      v27 = [v6 outrankPercentFGExploited];
+      outrankPercentFGExploited2 = [deltasCopy outrankPercentFGExploited];
       v39 = 134218752;
       *v40 = prevCellOutrankFGExploitDuration;
       *&v40[8] = 2048;
@@ -483,7 +483,7 @@ LABEL_24:
       v42 = 2048;
       v43 = v14;
       v44 = 1024;
-      v45 = v27;
+      v45 = outrankPercentFGExploited2;
       _os_log_impl(&dword_23255B000, v26, OS_LOG_TYPE_ERROR, "COSM Metrics fg exploit duration prev %.3f new %.3f diff %.3f percent %d", &v39, 0x26u);
     }
 
@@ -492,7 +492,7 @@ LABEL_24:
     {
       prevCellOutrankFGNonExploitDuration = self->_prevCellOutrankFGNonExploitDuration;
       v30 = v28;
-      v31 = [v6 outrankPercentFGNonExploited];
+      outrankPercentFGNonExploited = [deltasCopy outrankPercentFGNonExploited];
       v39 = 134218752;
       *v40 = prevCellOutrankFGNonExploitDuration;
       *&v40[8] = 2048;
@@ -500,7 +500,7 @@ LABEL_24:
       v42 = 2048;
       v43 = v15;
       v44 = 1024;
-      v45 = v31;
+      v45 = outrankPercentFGNonExploited;
       _os_log_impl(&dword_23255B000, v30, OS_LOG_TYPE_ERROR, "COSM Metrics fg non-exploit duration prev %.3f new %.3f diff %.3f percent %d", &v39, 0x26u);
     }
 
@@ -517,56 +517,56 @@ LABEL_25:
   {
     cellOutrankController = self->_cellOutrankController;
     v34 = v32;
-    v35 = [(CellOutrankController *)cellOutrankController cellOutrankIconSetEvents];
+    cellOutrankIconSetEvents = [(CellOutrankController *)cellOutrankController cellOutrankIconSetEvents];
     prevCellOutrankIconSetEvents = self->_prevCellOutrankIconSetEvents;
     v39 = 67109376;
-    *v40 = v35;
+    *v40 = cellOutrankIconSetEvents;
     *&v40[4] = 1024;
     *&v40[6] = prevCellOutrankIconSetEvents;
     _os_log_impl(&dword_23255B000, v34, OS_LOG_TYPE_DEFAULT, "COSM Metrics _updateStateDeltas current set events %d, prev %d", &v39, 0xEu);
   }
 
-  v37 = [(CellOutrankController *)self->_cellOutrankController cellOutrankIconSetEvents];
-  [v6 setOutrankNumIconOnTransitions:v37 - self->_prevCellOutrankIconSetEvents];
-  self->_prevCellOutrankIconSetEvents = v37;
+  cellOutrankIconSetEvents2 = [(CellOutrankController *)self->_cellOutrankController cellOutrankIconSetEvents];
+  [deltasCopy setOutrankNumIconOnTransitions:cellOutrankIconSetEvents2 - self->_prevCellOutrankIconSetEvents];
+  self->_prevCellOutrankIconSetEvents = cellOutrankIconSetEvents2;
 
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateOutrankExitMetrics:(id)a3
+- (void)updateOutrankExitMetrics:(id)metrics
 {
   cellOutrankController = self->_cellOutrankController;
-  v5 = a3;
-  [v5 setOutrankNumFGAppsExploiting:{-[CellOutrankController numForegroundAppsExploitingOutrank](cellOutrankController, "numForegroundAppsExploitingOutrank")}];
-  [v5 setOutrankNumFGAppsNonExploiting:{-[CellOutrankController numForegroundAppsNonExploitingOutrank](self->_cellOutrankController, "numForegroundAppsNonExploitingOutrank")}];
+  metricsCopy = metrics;
+  [metricsCopy setOutrankNumFGAppsExploiting:{-[CellOutrankController numForegroundAppsExploitingOutrank](cellOutrankController, "numForegroundAppsExploitingOutrank")}];
+  [metricsCopy setOutrankNumFGAppsNonExploiting:{-[CellOutrankController numForegroundAppsNonExploitingOutrank](self->_cellOutrankController, "numForegroundAppsNonExploitingOutrank")}];
 }
 
-- (void)_captureOutrankEntryAdditionalState:(id)a3 flags:(unint64_t)a4
+- (void)_captureOutrankEntryAdditionalState:(id)state flags:(unint64_t)flags
 {
-  v4 = a4;
+  flagsCopy = flags;
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ((v4 & 0x200) != 0)
+  stateCopy = state;
+  if ((flagsCopy & 0x200) != 0)
   {
     wifiThroughputAdviser = self->_wifiThroughputAdviser;
     if (wifiThroughputAdviser)
     {
-      v8 = [(WiFiThroughputAdviser *)wifiThroughputAdviser largeTransferAssessor];
+      largeTransferAssessor = [(WiFiThroughputAdviser *)wifiThroughputAdviser largeTransferAssessor];
 
-      if (v8)
+      if (largeTransferAssessor)
       {
         v24 = 0u;
         v25 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v9 = [(WiFiThroughputAdviser *)self->_wifiThroughputAdviser largeTransferAssessor];
-        v10 = [v9 currentActiveTransferApps];
+        largeTransferAssessor2 = [(WiFiThroughputAdviser *)self->_wifiThroughputAdviser largeTransferAssessor];
+        currentActiveTransferApps = [largeTransferAssessor2 currentActiveTransferApps];
 
-        v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v11 = [currentActiveTransferApps countByEnumeratingWithState:&v22 objects:v26 count:16];
         if (v11)
         {
           v12 = v11;
-          v13 = 0;
+          totalWiFiRxTransferSize = 0;
           v14 = *v23;
           do
           {
@@ -575,25 +575,25 @@ LABEL_25:
             {
               if (*v23 != v14)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(currentActiveTransferApps);
               }
 
               v16 = *(*(&v22 + 1) + 8 * v15);
-              v17 = [v6 wifiLargeTransferInitiatingName];
-              if (!v17 || (v18 = v17, v19 = [v16 totalWiFiRxTransferSize], v18, v19 > v13))
+              wifiLargeTransferInitiatingName = [stateCopy wifiLargeTransferInitiatingName];
+              if (!wifiLargeTransferInitiatingName || (v18 = wifiLargeTransferInitiatingName, v19 = [v16 totalWiFiRxTransferSize], v18, v19 > totalWiFiRxTransferSize))
               {
-                v13 = [v16 totalWiFiRxTransferSize];
-                v20 = [v16 name];
-                [v6 setWifiLargeTransferInitiatingName:v20];
+                totalWiFiRxTransferSize = [v16 totalWiFiRxTransferSize];
+                name = [v16 name];
+                [stateCopy setWifiLargeTransferInitiatingName:name];
 
-                [v6 setWifiLargeTransferInitiatingCount:{objc_msgSend(v16, "totalWiFiRxTransferSize")}];
+                [stateCopy setWifiLargeTransferInitiatingCount:{objc_msgSend(v16, "totalWiFiRxTransferSize")}];
               }
 
               ++v15;
             }
 
             while (v12 != v15);
-            v12 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+            v12 = [currentActiveTransferApps countByEnumeratingWithState:&v22 objects:v26 count:16];
           }
 
           while (v12);
@@ -605,14 +605,14 @@ LABEL_25:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportABCCase:(id)a3
+- (void)reportABCCase:(id)case
 {
-  v3 = a3;
+  caseCopy = case;
   v4 = +[CellOutrankHandler sharedInstance];
-  [v4 reportOutrankABCCase:v3 singleShot:1];
+  [v4 reportOutrankABCCase:caseCopy singleShot:1];
 }
 
-- (id)getState:(BOOL)a3
+- (id)getState:(BOOL)state
 {
   v28 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -640,13 +640,13 @@ LABEL_25:
         v11 = *(*(&v23 + 1) + 8 * i);
         if ([v11 cosmState])
         {
-          v12 = [v11 cosmState];
+          cosmState = [v11 cosmState];
           v13 = @"<armed>  ";
-          if (v12 != 2)
+          if (cosmState != 2)
           {
-            v14 = [v11 cosmState];
+            cosmState2 = [v11 cosmState];
             v13 = @"<unknown>";
-            if (v14 == 3)
+            if (cosmState2 == 3)
             {
               v13 = @"<outrank>";
             }
@@ -707,26 +707,26 @@ LABEL_25:
   *&self->_lastCellInexpensive = _Q0;
 }
 
-- (void)_updateStateTransitionMetricsForNewState:(unsigned int)a3 oldState:(unsigned int)a4
+- (void)_updateStateTransitionMetricsForNewState:(unsigned int)state oldState:(unsigned int)oldState
 {
   v28 = *MEMORY[0x277D85DE8];
   v4 = outrankLogHandle;
-  if (a3 != a4)
+  if (state != oldState)
   {
     if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v24 = 67109376;
-      v25 = a4;
+      stateCopy2 = oldState;
       v26 = 1024;
-      v27 = a3;
+      stateCopy = state;
       _os_log_impl(&dword_23255B000, v4, OS_LOG_TYPE_DEFAULT, "COSM Daily Metrics: Updating metrics on state transition %d -> %d", &v24, 0xEu);
     }
 
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-    if (a3 == 3)
+    if (state == 3)
     {
       self->_lastTransitionToOutrankState = v11;
-      if (a4)
+      if (oldState)
       {
         lastTransitionToArmedState = self->_lastTransitionToArmedState;
         if (lastTransitionToArmedState == -1.0)
@@ -766,10 +766,10 @@ LABEL_25:
       }
     }
 
-    else if (a3 == 2)
+    else if (state == 2)
     {
       self->_lastTransitionToArmedState = v11;
-      if (a4)
+      if (oldState)
       {
         lastTransitionToOutrankState = self->_lastTransitionToOutrankState;
         if (lastTransitionToOutrankState == -1.0)
@@ -809,7 +809,7 @@ LABEL_25:
 
     else
     {
-      if (a3)
+      if (state)
       {
         v18 = outrankLogHandle;
         if (!os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_ERROR))
@@ -818,7 +818,7 @@ LABEL_25:
         }
 
         v24 = 67109120;
-        v25 = a3;
+        stateCopy2 = state;
         v5 = "COSM Daily Metrics: Got undefined COSM state %d";
         v6 = v18;
         v7 = 8;
@@ -826,7 +826,7 @@ LABEL_25:
       }
 
       self->_lastTransitionToIdleState = v11;
-      if (a4 == 3)
+      if (oldState == 3)
       {
         startedCollectingMetricsFrom = self->_lastTransitionToOutrankState;
         if (startedCollectingMetricsFrom == -1.0)
@@ -870,7 +870,7 @@ LABEL_25:
       }
     }
 
-    self->_currentCOSMState = a3;
+    self->_currentCOSMState = state;
     goto LABEL_48;
   }
 
@@ -888,15 +888,15 @@ LABEL_48:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateMetricsForState:(id)a3
+- (void)updateMetricsForState:(id)state
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   v5 = outrankLogHandle;
   if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v24 = 138477827;
-    v25 = v4;
+    v25 = stateCopy;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEFAULT, "COSM Daily Metrics: Updating metrics for state %{private}@", &v24, 0xCu);
   }
 
@@ -904,56 +904,56 @@ LABEL_48:
   numTimesCellEligible = self->_numTimesCellEligible;
   numTimesWiFiAndCellEligible = self->_numTimesWiFiAndCellEligible;
   prevWiFiEligible = self->_prevWiFiEligible;
-  if (prevWiFiEligible != [v4 wifiEligible])
+  if (prevWiFiEligible != [stateCopy wifiEligible])
   {
-    if ([v4 wifiEligible])
+    if ([stateCopy wifiEligible])
     {
       ++self->_numTimesWiFiEligible;
     }
 
-    self->_prevWiFiEligible = [v4 wifiEligible];
+    self->_prevWiFiEligible = [stateCopy wifiEligible];
   }
 
   prevCellEligible = self->_prevCellEligible;
-  if (prevCellEligible != [v4 cellEligible])
+  if (prevCellEligible != [stateCopy cellEligible])
   {
-    if ([v4 cellEligible])
+    if ([stateCopy cellEligible])
     {
       ++self->_numTimesCellEligible;
     }
 
-    self->_prevCellEligible = [v4 cellEligible];
+    self->_prevCellEligible = [stateCopy cellEligible];
   }
 
-  if (self->_numTimesCellEligible + self->_numTimesWiFiEligible != numTimesCellEligible + numTimesWiFiEligible && [v4 cellEligible] && objc_msgSend(v4, "wifiEligible"))
+  if (self->_numTimesCellEligible + self->_numTimesWiFiEligible != numTimesCellEligible + numTimesWiFiEligible && [stateCopy cellEligible] && objc_msgSend(stateCopy, "wifiEligible"))
   {
     ++self->_numTimesWiFiAndCellEligible;
   }
 
   prevDeviceEligible = self->_prevDeviceEligible;
-  if (prevDeviceEligible != [v4 deviceEligible])
+  if (prevDeviceEligible != [stateCopy deviceEligible])
   {
-    if (([v4 deviceEligible] & 1) == 0 && self->_numTimesWiFiAndCellEligible > numTimesWiFiAndCellEligible)
+    if (([stateCopy deviceEligible] & 1) == 0 && self->_numTimesWiFiAndCellEligible > numTimesWiFiAndCellEligible)
     {
       ++self->_numTimesWiFiAndCellEligibleDeviceIneligible;
     }
 
-    self->_prevDeviceEligible = [v4 deviceEligible];
+    self->_prevDeviceEligible = [stateCopy deviceEligible];
   }
 
   prevCellPrivateNetworkActive = self->_prevCellPrivateNetworkActive;
-  if (prevCellPrivateNetworkActive != [v4 cellPrivateNetworkActive])
+  if (prevCellPrivateNetworkActive != [stateCopy cellPrivateNetworkActive])
   {
-    if ([v4 cellPrivateNetworkActive])
+    if ([stateCopy cellPrivateNetworkActive])
     {
       ++self->_numTimesCellPrivateNetworkActive;
     }
 
-    self->_prevCellPrivateNetworkActive = [v4 cellPrivateNetworkActive];
+    self->_prevCellPrivateNetworkActive = [stateCopy cellPrivateNetworkActive];
   }
 
   sporadicIsKnown = self->_sporadicIsKnown;
-  if (sporadicIsKnown != [v4 wifiKnowableSporadic] && objc_msgSend(v4, "wifiKnowableSporadic"))
+  if (sporadicIsKnown != [stateCopy wifiKnowableSporadic] && objc_msgSend(stateCopy, "wifiKnowableSporadic"))
   {
     self->_sporadicIsKnown = 1;
   }
@@ -961,9 +961,9 @@ LABEL_48:
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v15 = v14;
   prevWiFiSporadic = self->_prevWiFiSporadic;
-  if (prevWiFiSporadic != [v4 wifiSporadic])
+  if (prevWiFiSporadic != [stateCopy wifiSporadic])
   {
-    if ([v4 wifiSporadic])
+    if ([stateCopy wifiSporadic])
     {
       self->_lastEntryToSporadicNetwork = v15;
     }
@@ -983,15 +983,15 @@ LABEL_48:
       self->_durationOnSporadicNetwork = self->_durationOnSporadicNetwork + v15 - lastEntryToSporadicNetwork;
     }
 
-    self->_prevWiFiSporadic = [v4 wifiSporadic];
+    self->_prevWiFiSporadic = [stateCopy wifiSporadic];
   }
 
-  v18 = [v4 cellExpensive];
-  v19 = [v4 cellWRMExpensive];
-  v20 = v19 ^ 1;
-  if (self->_prevCellInexpensive != (v18 ^ 1))
+  cellExpensive = [stateCopy cellExpensive];
+  cellWRMExpensive = [stateCopy cellWRMExpensive];
+  v20 = cellWRMExpensive ^ 1;
+  if (self->_prevCellInexpensive != (cellExpensive ^ 1))
   {
-    if (v18)
+    if (cellExpensive)
     {
       lastCellInexpensive = self->_lastCellInexpensive;
       if (lastCellInexpensive == -1.0)
@@ -1011,12 +1011,12 @@ LABEL_48:
       self->_lastCellInexpensive = v15;
     }
 
-    self->_prevCellInexpensive = v18 ^ 1;
+    self->_prevCellInexpensive = cellExpensive ^ 1;
   }
 
   if (self->_prevCellWRMInexpensive != v20)
   {
-    if (v19)
+    if (cellWRMExpensive)
     {
       lastCellWRMInexpensive = self->_lastCellWRMInexpensive;
       if (lastCellWRMInexpensive == -1.0)
@@ -1349,21 +1349,21 @@ LABEL_42:
   return v14;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = outrankLogHandle;
   if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v4;
+    v9 = configurationCopy;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEFAULT, "CellOutrankHandler new configuration parameters %{public}@", &v8, 0xCu);
   }
 
-  [v4 extractKey:@"metricsMeasurementDelay" toDouble:&self->_delayedMeasurementInterval defaultTo:5.0];
-  [v4 extractKey:@"metricsMaxHistory" toUint32:&self->_maxStateHistory defaultTo:12];
-  v6 = [v4 objectForKey:@"restoreDefaults"];
+  [configurationCopy extractKey:@"metricsMeasurementDelay" toDouble:&self->_delayedMeasurementInterval defaultTo:5.0];
+  [configurationCopy extractKey:@"metricsMaxHistory" toUint32:&self->_maxStateHistory defaultTo:12];
+  v6 = [configurationCopy objectForKey:@"restoreDefaults"];
   if (v6)
   {
     [(CellOutrankMetrics *)self restoreDefaults];
@@ -1372,16 +1372,16 @@ LABEL_42:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (CellOutrankMetrics)initWithQueue:(id)a3
+- (CellOutrankMetrics)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = CellOutrankMetrics;
   v6 = [(CellOutrankMetrics *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = [NetworkStateRelay getStateRelayFor:5];
     cellRelay = v7->_cellRelay;
     v7->_cellRelay = v8;

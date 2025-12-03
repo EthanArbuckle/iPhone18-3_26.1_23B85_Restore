@@ -1,96 +1,96 @@
 @interface BRFieldContentSignature
-+ (unint64_t)localEditCounterFromVersionIdentifier:(id)a3;
-- (BOOL)contentDiffersWithSignature:(id)a3;
-- (BOOL)hasOnlyLocalEditsOnTopOfSignature:(id)a3;
++ (unint64_t)localEditCounterFromVersionIdentifier:(id)identifier;
+- (BOOL)contentDiffersWithSignature:(id)signature;
+- (BOOL)hasOnlyLocalEditsOnTopOfSignature:(id)signature;
 - (BOOL)hasPopulatedVersionAndSignature;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEquivalentToSignature:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEquivalentToSignature:(id)signature;
 - (BOOL)isPackage;
 - (BOOL)isPendingSignature;
-- (BRFieldContentSignature)initWithLocalVersion:(id)a3;
-- (BRFieldContentSignature)initWithLoserEtag:(id)a3;
+- (BRFieldContentSignature)initWithLocalVersion:(id)version;
+- (BRFieldContentSignature)initWithLoserEtag:(id)etag;
 - (NSString)description;
-- (id)_initWithVersionIdentifier:(id)a3 size:(int64_t)a4 oldVersionIdentifier:(id)a5 contentSignature:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithVersionIdentifier:(id)identifier size:(int64_t)size oldVersionIdentifier:(id)versionIdentifier contentSignature:(id)signature;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (id)equivalentVersions;
 - (unint64_t)_localEditCounter;
 - (unint64_t)_oldVersionLocalEditCounter;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BRFieldContentSignature
 
 - (id)equivalentVersions
 {
-  v3 = [(BRFieldContentSignature *)self contentSignature];
+  contentSignature = [(BRFieldContentSignature *)self contentSignature];
 
-  if (v3)
+  if (contentSignature)
   {
-    v3 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:4];
+    contentSignature = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:4];
     v4 = objc_opt_class();
-    v5 = [(BRFieldContentSignature *)self versionIdentifier];
-    if ([v4 localEditCounterFromVersionIdentifier:v5])
+    versionIdentifier = [(BRFieldContentSignature *)self versionIdentifier];
+    if ([v4 localEditCounterFromVersionIdentifier:versionIdentifier])
     {
-      v6 = [(BRFieldContentSignature *)self oldVersionIdentifier];
-      if (!v6)
+      oldVersionIdentifier = [(BRFieldContentSignature *)self oldVersionIdentifier];
+      if (!oldVersionIdentifier)
       {
 
 LABEL_19:
         v35 = [BRFieldContentSignature alloc];
-        v36 = [(BRFieldContentSignature *)self versionIdentifier];
-        v27 = [(BRFieldContentSignature *)v35 _initWithVersionIdentifier:v36 size:[(BRFieldContentSignature *)self size] contentSignature:0];
+        versionIdentifier2 = [(BRFieldContentSignature *)self versionIdentifier];
+        v27 = [(BRFieldContentSignature *)v35 _initWithVersionIdentifier:versionIdentifier2 size:[(BRFieldContentSignature *)self size] contentSignature:0];
 
         v37 = [BRFieldContentSignature alloc];
-        v38 = [(BRFieldContentSignature *)self versionIdentifier];
-        v32 = [(BRFieldContentSignature *)v37 _initWithVersionIdentifier:v38 size:[(BRFieldContentSignature *)self size] oldVersionIdentifier:&stru_2837504F0 contentSignature:0];
+        versionIdentifier3 = [(BRFieldContentSignature *)self versionIdentifier];
+        v32 = [(BRFieldContentSignature *)v37 _initWithVersionIdentifier:versionIdentifier3 size:[(BRFieldContentSignature *)self size] oldVersionIdentifier:&stru_2837504F0 contentSignature:0];
 
         if (![(BRFieldContentSignature *)self isEqual:v27])
         {
-          v39 = [v27 data];
-          [v3 addObject:v39];
+          data = [v27 data];
+          [contentSignature addObject:data];
         }
 
         if (![(BRFieldContentSignature *)self isEqual:v32])
         {
-          v40 = [v32 data];
-          [v3 addObject:v40];
+          data2 = [v32 data];
+          [contentSignature addObject:data2];
         }
 
         v41 = [BRFieldContentSignature alloc];
-        v42 = [(BRFieldContentSignature *)self versionIdentifier];
+        versionIdentifier4 = [(BRFieldContentSignature *)self versionIdentifier];
         v43 = [(BRFieldContentSignature *)self size];
-        v44 = [(BRFieldContentSignature *)self contentSignature];
-        v34 = [(BRFieldContentSignature *)v41 _initWithVersionIdentifier:v42 size:v43 contentSignature:v44];
+        contentSignature2 = [(BRFieldContentSignature *)self contentSignature];
+        data8 = [(BRFieldContentSignature *)v41 _initWithVersionIdentifier:versionIdentifier4 size:v43 contentSignature:contentSignature2];
 
         v45 = [BRFieldContentSignature alloc];
-        v46 = [(BRFieldContentSignature *)self versionIdentifier];
+        versionIdentifier5 = [(BRFieldContentSignature *)self versionIdentifier];
         v47 = [(BRFieldContentSignature *)self size];
-        v48 = [(BRFieldContentSignature *)self contentSignature];
-        v49 = [(BRFieldContentSignature *)v45 _initWithVersionIdentifier:v46 size:v47 oldVersionIdentifier:&stru_2837504F0 contentSignature:v48];
+        contentSignature3 = [(BRFieldContentSignature *)self contentSignature];
+        v49 = [(BRFieldContentSignature *)v45 _initWithVersionIdentifier:versionIdentifier5 size:v47 oldVersionIdentifier:&stru_2837504F0 contentSignature:contentSignature3];
 
 LABEL_31:
-        if (![(BRFieldContentSignature *)self isEqual:v34])
+        if (![(BRFieldContentSignature *)self isEqual:data8])
         {
-          v62 = [v34 data];
-          [v3 addObject:v62];
+          data3 = [data8 data];
+          [contentSignature addObject:data3];
         }
 
         if (![(BRFieldContentSignature *)self isEqual:v49])
         {
-          v63 = [v49 data];
-          [v3 addObject:v63];
+          data4 = [v49 data];
+          [contentSignature addObject:data4];
         }
 
         goto LABEL_36;
       }
 
-      v7 = v6;
-      v8 = [(BRFieldContentSignature *)self oldVersionIdentifier];
-      v9 = [v8 length];
+      v7 = oldVersionIdentifier;
+      oldVersionIdentifier2 = [(BRFieldContentSignature *)self oldVersionIdentifier];
+      v9 = [oldVersionIdentifier2 length];
 
       if (!v9)
       {
@@ -102,54 +102,54 @@ LABEL_31:
     {
     }
 
-    v10 = [(BRFieldContentSignature *)self oldVersionIdentifier];
-    v11 = [v10 length];
+    oldVersionIdentifier3 = [(BRFieldContentSignature *)self oldVersionIdentifier];
+    v11 = [oldVersionIdentifier3 length];
 
     if (v11)
     {
       v12 = objc_opt_class();
-      v13 = [(BRFieldContentSignature *)self oldVersionIdentifier];
-      v14 = [v12 localEditCounterFromVersionIdentifier:v13];
+      oldVersionIdentifier4 = [(BRFieldContentSignature *)self oldVersionIdentifier];
+      v14 = [v12 localEditCounterFromVersionIdentifier:oldVersionIdentifier4];
 
       if (v14)
       {
         v15 = [BRFieldContentSignature alloc];
-        v16 = [(BRFieldContentSignature *)self oldVersionIdentifier];
-        v17 = [(BRFieldContentSignature *)v15 _initWithVersionIdentifier:v16 size:[(BRFieldContentSignature *)self size] contentSignature:0];
+        oldVersionIdentifier5 = [(BRFieldContentSignature *)self oldVersionIdentifier];
+        v17 = [(BRFieldContentSignature *)v15 _initWithVersionIdentifier:oldVersionIdentifier5 size:[(BRFieldContentSignature *)self size] contentSignature:0];
 
         v18 = [BRFieldContentSignature alloc];
-        v19 = [(BRFieldContentSignature *)self oldVersionIdentifier];
-        v20 = [(BRFieldContentSignature *)v18 _initWithVersionIdentifier:v19 size:[(BRFieldContentSignature *)self size] oldVersionIdentifier:&stru_2837504F0 contentSignature:0];
+        oldVersionIdentifier6 = [(BRFieldContentSignature *)self oldVersionIdentifier];
+        v20 = [(BRFieldContentSignature *)v18 _initWithVersionIdentifier:oldVersionIdentifier6 size:[(BRFieldContentSignature *)self size] oldVersionIdentifier:&stru_2837504F0 contentSignature:0];
 
         if (![(BRFieldContentSignature *)self isEqual:v17])
         {
-          v21 = [v17 data];
-          [v3 addObject:v21];
+          data5 = [v17 data];
+          [contentSignature addObject:data5];
         }
 
         if (![(BRFieldContentSignature *)self isEqual:v20])
         {
-          v22 = [v20 data];
-          [v3 addObject:v22];
+          data6 = [v20 data];
+          [contentSignature addObject:data6];
         }
       }
 
       v23 = [BRFieldContentSignature alloc];
-      v24 = [(BRFieldContentSignature *)self oldVersionIdentifier];
+      oldVersionIdentifier7 = [(BRFieldContentSignature *)self oldVersionIdentifier];
       v25 = [(BRFieldContentSignature *)self size];
-      v26 = [(BRFieldContentSignature *)self contentSignature];
-      v27 = [(BRFieldContentSignature *)v23 _initWithVersionIdentifier:v24 size:v25 contentSignature:v26];
+      contentSignature4 = [(BRFieldContentSignature *)self contentSignature];
+      v27 = [(BRFieldContentSignature *)v23 _initWithVersionIdentifier:oldVersionIdentifier7 size:v25 contentSignature:contentSignature4];
 
       v28 = [BRFieldContentSignature alloc];
-      v29 = [(BRFieldContentSignature *)self oldVersionIdentifier];
+      oldVersionIdentifier8 = [(BRFieldContentSignature *)self oldVersionIdentifier];
       v30 = [(BRFieldContentSignature *)self size];
-      v31 = [(BRFieldContentSignature *)self contentSignature];
-      v32 = [(BRFieldContentSignature *)v28 _initWithVersionIdentifier:v29 size:v30 oldVersionIdentifier:&stru_2837504F0 contentSignature:v31];
+      contentSignature5 = [(BRFieldContentSignature *)self contentSignature];
+      v32 = [(BRFieldContentSignature *)v28 _initWithVersionIdentifier:oldVersionIdentifier8 size:v30 oldVersionIdentifier:&stru_2837504F0 contentSignature:contentSignature5];
 
       if (![(BRFieldContentSignature *)self isEqual:v27])
       {
-        v33 = [v27 data];
-        [v3 addObject:v33];
+        data7 = [v27 data];
+        [contentSignature addObject:data7];
       }
 
       if ([(BRFieldContentSignature *)self isEqual:v32])
@@ -157,40 +157,40 @@ LABEL_31:
         goto LABEL_37;
       }
 
-      v34 = [v32 data];
-      [v3 addObject:v34];
+      data8 = [v32 data];
+      [contentSignature addObject:data8];
 LABEL_36:
 
 LABEL_37:
       goto LABEL_38;
     }
 
-    v50 = [(BRFieldContentSignature *)self oldVersionIdentifier];
-    if (!v50 || (v51 = v50, -[BRFieldContentSignature oldVersionIdentifier](self, "oldVersionIdentifier"), v52 = objc_claimAutoreleasedReturnValue(), v53 = [v52 length], v52, v51, !v53))
+    oldVersionIdentifier9 = [(BRFieldContentSignature *)self oldVersionIdentifier];
+    if (!oldVersionIdentifier9 || (v51 = oldVersionIdentifier9, -[BRFieldContentSignature oldVersionIdentifier](self, "oldVersionIdentifier"), v52 = objc_claimAutoreleasedReturnValue(), v53 = [v52 length], v52, v51, !v53))
     {
       v27 = [[BRFieldContentSignature alloc] _initWithVersionIdentifier:&stru_2837504F0 size:[(BRFieldContentSignature *)self size] contentSignature:0];
       v32 = [[BRFieldContentSignature alloc] _initWithVersionIdentifier:&stru_2837504F0 size:[(BRFieldContentSignature *)self size] oldVersionIdentifier:&stru_2837504F0 contentSignature:0];
       if (![(BRFieldContentSignature *)self isEqual:v27])
       {
-        v54 = [v27 data];
-        [v3 addObject:v54];
+        data9 = [v27 data];
+        [contentSignature addObject:data9];
       }
 
       if (![(BRFieldContentSignature *)self isEqual:v32])
       {
-        v55 = [v32 data];
-        [v3 addObject:v55];
+        data10 = [v32 data];
+        [contentSignature addObject:data10];
       }
 
       v56 = [BRFieldContentSignature alloc];
       v57 = [(BRFieldContentSignature *)self size];
-      v58 = [(BRFieldContentSignature *)self contentSignature];
-      v34 = [(BRFieldContentSignature *)v56 _initWithVersionIdentifier:&stru_2837504F0 size:v57 contentSignature:v58];
+      contentSignature6 = [(BRFieldContentSignature *)self contentSignature];
+      data8 = [(BRFieldContentSignature *)v56 _initWithVersionIdentifier:&stru_2837504F0 size:v57 contentSignature:contentSignature6];
 
       v59 = [BRFieldContentSignature alloc];
       v60 = [(BRFieldContentSignature *)self size];
-      v61 = [(BRFieldContentSignature *)self contentSignature];
-      v49 = [(BRFieldContentSignature *)v59 _initWithVersionIdentifier:&stru_2837504F0 size:v60 oldVersionIdentifier:&stru_2837504F0 contentSignature:v61];
+      contentSignature7 = [(BRFieldContentSignature *)self contentSignature];
+      v49 = [(BRFieldContentSignature *)v59 _initWithVersionIdentifier:&stru_2837504F0 size:v60 oldVersionIdentifier:&stru_2837504F0 contentSignature:contentSignature7];
 
       goto LABEL_31;
     }
@@ -198,22 +198,22 @@ LABEL_37:
 
 LABEL_38:
 
-  return v3;
+  return contentSignature;
 }
 
-- (BOOL)contentDiffersWithSignature:(id)a3
+- (BOOL)contentDiffersWithSignature:(id)signature
 {
-  v4 = a3;
-  if ([(BRFieldContentSignature *)self isEquivalentToSignature:v4])
+  signatureCopy = signature;
+  if ([(BRFieldContentSignature *)self isEquivalentToSignature:signatureCopy])
   {
     v5 = 0;
   }
 
-  else if (-[BRFieldContentSignature hasContentSignature](self, "hasContentSignature") && [v4 hasContentSignature])
+  else if (-[BRFieldContentSignature hasContentSignature](self, "hasContentSignature") && [signatureCopy hasContentSignature])
   {
-    v6 = [(BRFieldContentSignature *)self contentSignature];
-    v7 = [v4 contentSignature];
-    v8 = [v6 isEqualToData:v7];
+    contentSignature = [(BRFieldContentSignature *)self contentSignature];
+    contentSignature2 = [signatureCopy contentSignature];
+    v8 = [contentSignature isEqualToData:contentSignature2];
 
     v5 = v8 ^ 1;
   }
@@ -226,20 +226,20 @@ LABEL_38:
   return v5 & 1;
 }
 
-- (BOOL)hasOnlyLocalEditsOnTopOfSignature:(id)a3
+- (BOOL)hasOnlyLocalEditsOnTopOfSignature:(id)signature
 {
-  v6 = a3;
-  v7 = [(BRFieldContentSignature *)self etag];
-  v8 = [v6 etag];
-  if (v7 == v8 || (-[BRFieldContentSignature etag](self, "etag"), v3 = objc_claimAutoreleasedReturnValue(), [v6 etag], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqualToString:", v4)))
+  signatureCopy = signature;
+  etag = [(BRFieldContentSignature *)self etag];
+  etag2 = [signatureCopy etag];
+  if (etag == etag2 || (-[BRFieldContentSignature etag](self, "etag"), v3 = objc_claimAutoreleasedReturnValue(), [signatureCopy etag], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqualToString:", v4)))
   {
-    v9 = [(BRFieldContentSignature *)self _localEditCounter];
-    v10 = [v6 _localEditCounter];
-    if (v7 != v8)
+    _localEditCounter = [(BRFieldContentSignature *)self _localEditCounter];
+    _localEditCounter2 = [signatureCopy _localEditCounter];
+    if (etag != etag2)
     {
     }
 
-    if (v9 > v10)
+    if (_localEditCounter > _localEditCounter2)
     {
       v11 = 1;
       goto LABEL_16;
@@ -252,13 +252,13 @@ LABEL_38:
 
   if ([(BRFieldContentSignature *)self hasOldVersionIdentifier])
   {
-    v12 = [(BRFieldContentSignature *)self _oldVersionEtag];
-    v13 = [v6 etag];
-    if (v12 == v13 || (-[BRFieldContentSignature _oldVersionEtag](self, "_oldVersionEtag"), v3 = objc_claimAutoreleasedReturnValue(), [v6 etag], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqualToString:", v4)))
+    _oldVersionEtag = [(BRFieldContentSignature *)self _oldVersionEtag];
+    etag3 = [signatureCopy etag];
+    if (_oldVersionEtag == etag3 || (-[BRFieldContentSignature _oldVersionEtag](self, "_oldVersionEtag"), v3 = objc_claimAutoreleasedReturnValue(), [signatureCopy etag], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqualToString:", v4)))
     {
-      v14 = [(BRFieldContentSignature *)self _oldVersionLocalEditCounter];
-      v11 = v14 > [v6 _localEditCounter];
-      if (v12 == v13)
+      _oldVersionLocalEditCounter = [(BRFieldContentSignature *)self _oldVersionLocalEditCounter];
+      v11 = _oldVersionLocalEditCounter > [signatureCopy _localEditCounter];
+      if (_oldVersionEtag == etag3)
       {
 LABEL_15:
 
@@ -280,21 +280,21 @@ LABEL_16:
   return v11;
 }
 
-+ (unint64_t)localEditCounterFromVersionIdentifier:(id)a3
++ (unint64_t)localEditCounterFromVersionIdentifier:(id)identifier
 {
-  v3 = [a3 componentsSeparatedByString:@""];;
+  v3 = [identifier componentsSeparatedByString:@""];;
   if ([v3 count] >= 2)
   {
     v5 = [v3 objectAtIndex:1];
-    v4 = [v5 longLongValue];
+    longLongValue = [v5 longLongValue];
   }
 
   else
   {
-    v4 = 0;
+    longLongValue = 0;
   }
 
-  return v4;
+  return longLongValue;
 }
 
 - (unint64_t)_localEditCounter
@@ -317,8 +317,8 @@ LABEL_16:
 {
   if ([(NSString *)self->_versionIdentifier length])
   {
-    v3 = [(BRFieldContentSignature *)self etag];
-    if (v3 || [(BRFieldContentSignature *)self hasOldVersionIdentifier])
+    etag = [(BRFieldContentSignature *)self etag];
+    if (etag || [(BRFieldContentSignature *)self hasOldVersionIdentifier])
     {
       LOBYTE(v4) = 0;
     }
@@ -353,47 +353,47 @@ LABEL_16:
   return v3;
 }
 
-- (BOOL)isEquivalentToSignature:(id)a3
+- (BOOL)isEquivalentToSignature:(id)signature
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!areSignaturesEquivalent(self, v4))
+  signatureCopy = signature;
+  if (!areSignaturesEquivalent(self, signatureCopy))
   {
     goto LABEL_8;
   }
 
-  if (!-[BRFieldContentSignature hasContentSignature](self, "hasContentSignature") || ![v4 hasContentSignature])
+  if (!-[BRFieldContentSignature hasContentSignature](self, "hasContentSignature") || ![signatureCopy hasContentSignature])
   {
     goto LABEL_10;
   }
 
-  v5 = [(BRFieldContentSignature *)self contentSignature];
-  if ([v5 brc_signatureIsPendingPlaceHolder])
+  contentSignature = [(BRFieldContentSignature *)self contentSignature];
+  if ([contentSignature brc_signatureIsPendingPlaceHolder])
   {
     goto LABEL_5;
   }
 
-  v6 = [v4 contentSignature];
-  v7 = [v6 brc_signatureIsPendingPlaceHolder];
+  contentSignature2 = [signatureCopy contentSignature];
+  brc_signatureIsPendingPlaceHolder = [contentSignature2 brc_signatureIsPendingPlaceHolder];
 
-  if (v7)
+  if (brc_signatureIsPendingPlaceHolder)
   {
     goto LABEL_8;
   }
 
-  v8 = [(BRFieldContentSignature *)self contentSignature];
-  v9 = [v8 brc_signatureIsPackage];
-  v10 = [v4 contentSignature];
-  v11 = [v10 brc_signatureIsPackage];
+  contentSignature3 = [(BRFieldContentSignature *)self contentSignature];
+  brc_signatureIsPackage = [contentSignature3 brc_signatureIsPackage];
+  contentSignature4 = [signatureCopy contentSignature];
+  brc_signatureIsPackage2 = [contentSignature4 brc_signatureIsPackage];
 
-  if (v9 != v11)
+  if (brc_signatureIsPackage != brc_signatureIsPackage2)
   {
     goto LABEL_8;
   }
 
-  v13 = [(BRFieldContentSignature *)self contentSignature];
-  v14 = [v4 contentSignature];
-  v15 = [v13 isEqualToData:v14];
+  contentSignature5 = [(BRFieldContentSignature *)self contentSignature];
+  contentSignature6 = [signatureCopy contentSignature];
+  v15 = [contentSignature5 isEqualToData:contentSignature6];
 
   if (v15)
   {
@@ -407,16 +407,16 @@ LABEL_10:
     goto LABEL_8;
   }
 
-  v5 = brc_bread_crumbs();
+  contentSignature = brc_bread_crumbs();
   v18 = brc_default_log();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
   {
     v19 = 138412802;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
-    v22 = v4;
+    v22 = signatureCopy;
     v23 = 2112;
-    v24 = v5;
+    v24 = contentSignature;
     _os_log_fault_impl(&dword_223E7A000, v18, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: Signatures are equivalent but content is different %@ vs %@%@", &v19, 0x20u);
   }
 
@@ -429,33 +429,33 @@ LABEL_11:
   return v12;
 }
 
-- (BRFieldContentSignature)initWithLocalVersion:(id)a3
+- (BRFieldContentSignature)initWithLocalVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   v19.receiver = self;
   v19.super_class = BRFieldContentSignature;
   v5 = [(BRFieldContentSignature *)&v19 init];
   if (v5)
   {
-    v6 = [v4 oldVersionIdentifier];
-    [(BRFieldContentSignature *)v5 setOldVersionIdentifier:v6];
+    oldVersionIdentifier = [versionCopy oldVersionIdentifier];
+    [(BRFieldContentSignature *)v5 setOldVersionIdentifier:oldVersionIdentifier];
 
-    v7 = [v4 contentSignature];
-    if ([v7 brc_signatureIsPendingPlaceHolder])
+    contentSignature = [versionCopy contentSignature];
+    if ([contentSignature brc_signatureIsPendingPlaceHolder])
     {
       [(BRFieldContentSignature *)v5 setContentSignature:0];
     }
 
     else
     {
-      v8 = [v4 contentSignature];
-      [(BRFieldContentSignature *)v5 setContentSignature:v8];
+      contentSignature2 = [versionCopy contentSignature];
+      [(BRFieldContentSignature *)v5 setContentSignature:contentSignature2];
     }
 
-    v9 = [v4 ckInfo];
-    v10 = [v9 etag];
-    v11 = [v4 localChangeCount];
-    v12 = v10;
+    ckInfo = [versionCopy ckInfo];
+    etag = [ckInfo etag];
+    localChangeCount = [versionCopy localChangeCount];
+    v12 = etag;
     v13 = v12;
     v14 = &stru_2837504F0;
     if (v12)
@@ -465,32 +465,32 @@ LABEL_11:
 
     v15 = v14;
     v16 = v15;
-    if (v11)
+    if (localChangeCount)
     {
-      v17 = [(__CFString *)v15 stringByAppendingFormat:@"%llu", v11];;
+      v17 = [(__CFString *)v15 stringByAppendingFormat:@"%llu", localChangeCount];;
 
       v16 = v17;
     }
 
     [(BRFieldContentSignature *)v5 setVersionIdentifier:v16];
-    -[BRFieldContentSignature setSize:](v5, "setSize:", [v4 size]);
+    -[BRFieldContentSignature setSize:](v5, "setSize:", [versionCopy size]);
   }
 
   return v5;
 }
 
-- (BRFieldContentSignature)initWithLoserEtag:(id)a3
+- (BRFieldContentSignature)initWithLoserEtag:(id)etag
 {
-  v4 = a3;
+  etagCopy = etag;
   v9.receiver = self;
   v9.super_class = BRFieldContentSignature;
   v5 = [(BRFieldContentSignature *)&v9 init];
   if (v5)
   {
     v6 = &stru_2837504F0;
-    if (v4)
+    if (etagCopy)
     {
-      v6 = v4;
+      v6 = etagCopy;
     }
 
     v7 = v6;
@@ -502,40 +502,40 @@ LABEL_11:
 
 - (BOOL)isPackage
 {
-  v3 = [(BRFieldContentSignature *)self hasContentSignature];
-  if (v3)
+  hasContentSignature = [(BRFieldContentSignature *)self hasContentSignature];
+  if (hasContentSignature)
   {
-    v4 = [(BRFieldContentSignature *)self contentSignature];
-    v5 = [v4 brc_signatureIsPackage];
+    contentSignature = [(BRFieldContentSignature *)self contentSignature];
+    brc_signatureIsPackage = [contentSignature brc_signatureIsPackage];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(hasContentSignature) = brc_signatureIsPackage;
   }
 
-  return v3;
+  return hasContentSignature;
 }
 
-- (id)_initWithVersionIdentifier:(id)a3 size:(int64_t)a4 oldVersionIdentifier:(id)a5 contentSignature:(id)a6
+- (id)_initWithVersionIdentifier:(id)identifier size:(int64_t)size oldVersionIdentifier:(id)versionIdentifier contentSignature:(id)signature
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  versionIdentifierCopy = versionIdentifier;
+  signatureCopy = signature;
   v17.receiver = self;
   v17.super_class = BRFieldContentSignature;
   v13 = [(BRFieldContentSignature *)&v17 init];
   v14 = v13;
   if (v13)
   {
-    [(BRFieldContentSignature *)v13 setOldVersionIdentifier:v11];
-    [(BRFieldContentSignature *)v14 setVersionIdentifier:v10];
-    [(BRFieldContentSignature *)v14 setSize:a4];
-    if ([v12 brc_signatureIsPendingPlaceHolder])
+    [(BRFieldContentSignature *)v13 setOldVersionIdentifier:versionIdentifierCopy];
+    [(BRFieldContentSignature *)v14 setVersionIdentifier:identifierCopy];
+    [(BRFieldContentSignature *)v14 setSize:size];
+    if ([signatureCopy brc_signatureIsPendingPlaceHolder])
     {
       v15 = 0;
     }
 
     else
     {
-      v15 = v12;
+      v15 = signatureCopy;
     }
 
     [(BRFieldContentSignature *)v14 setContentSignature:v15];
@@ -550,20 +550,20 @@ LABEL_11:
   v8.receiver = self;
   v8.super_class = BRFieldContentSignature;
   v4 = [(BRFieldContentSignature *)&v8 description];
-  v5 = [(BRFieldContentSignature *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BRFieldContentSignature *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   versionIdentifier = self->_versionIdentifier;
   if (versionIdentifier)
   {
-    [v3 setObject:versionIdentifier forKey:@"versionIdentifier"];
+    [dictionary setObject:versionIdentifier forKey:@"versionIdentifier"];
   }
 
   contentSignature = self->_contentSignature;
@@ -587,15 +587,15 @@ LABEL_11:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_versionIdentifier)
   {
     [BRFieldContentSignature writeTo:];
   }
 
-  v7 = v4;
+  v7 = toCopy;
   PBDataWriterWriteStringField();
   if (self->_contentSignature)
   {
@@ -616,39 +616,39 @@ LABEL_11:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  [v4 setVersionIdentifier:self->_versionIdentifier];
+  toCopy = to;
+  [toCopy setVersionIdentifier:self->_versionIdentifier];
   if (self->_contentSignature)
   {
-    [v4 setContentSignature:?];
+    [toCopy setContentSignature:?];
   }
 
   if (self->_oldVersionIdentifier)
   {
-    [v4 setOldVersionIdentifier:?];
+    [toCopy setOldVersionIdentifier:?];
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_size;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = self->_size;
+    *(toCopy + 40) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_versionIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_versionIdentifier copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSData *)self->_contentSignature copyWithZone:a3];
+  v8 = [(NSData *)self->_contentSignature copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
-  v10 = [(NSString *)self->_oldVersionIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_oldVersionIdentifier copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
@@ -661,16 +661,16 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   versionIdentifier = self->_versionIdentifier;
-  if (versionIdentifier | *(v4 + 4))
+  if (versionIdentifier | *(equalCopy + 4))
   {
     if (![(NSString *)versionIdentifier isEqual:?])
     {
@@ -679,7 +679,7 @@ LABEL_11:
   }
 
   contentSignature = self->_contentSignature;
-  if (contentSignature | *(v4 + 2))
+  if (contentSignature | *(equalCopy + 2))
   {
     if (![(NSData *)contentSignature isEqual:?])
     {
@@ -688,7 +688,7 @@ LABEL_11:
   }
 
   oldVersionIdentifier = self->_oldVersionIdentifier;
-  if (oldVersionIdentifier | *(v4 + 3))
+  if (oldVersionIdentifier | *(equalCopy + 3))
   {
     if (![(NSString *)oldVersionIdentifier isEqual:?])
     {
@@ -696,10 +696,10 @@ LABEL_11:
     }
   }
 
-  v8 = (*(v4 + 40) & 1) == 0;
+  v8 = (*(equalCopy + 40) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) != 0 && self->_size == *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) != 0 && self->_size == *(equalCopy + 1))
     {
       v8 = 1;
       goto LABEL_13;
@@ -732,31 +732,31 @@ LABEL_13:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[4])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[4])
   {
     [(BRFieldContentSignature *)self setVersionIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(BRFieldContentSignature *)self setContentSignature:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(BRFieldContentSignature *)self setOldVersionIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
-    self->_size = v4[1];
+    self->_size = fromCopy[1];
     *&self->_has |= 1u;
   }
 }

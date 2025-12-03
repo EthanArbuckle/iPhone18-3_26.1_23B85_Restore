@@ -12,7 +12,7 @@
   v15 = v14;
   v17 = v16;
   MTResizableAreaForCornerDimensionsInBounds();
-  v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%f.%f.%f.%f.%f.%f.%i.%f.%f.%f.%f", *a7, *(a7 + 1), *(a7 + 2), *(a7 + 3), *&a1, *&a2, a8, v15, v17, v18, v19];
+  v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%f.%f.%f.%f.%f.%f.%i.%f.%f.%f.%f", *a7, *(a7 + 1), *(a7 + 2), *(a7 + 3), *&self, *&a2, a8, v15, v17, v18, v19];
   v21 = +[MTMappedImageCache sharedCache];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
@@ -21,7 +21,7 @@
   v29[2] = __136__UIImage_MaterialKitPrivateAdditions__mt_resizableShadowTemplateImageWithAttributes_scale_maskCornerRadius_continuousCorners_maskSize___block_invoke;
   v29[3] = &unk_27835D2B0;
   v32 = v22;
-  v33 = a1;
+  selfCopy = self;
   v34 = a2;
   v37 = a8;
   v35 = a3;
@@ -40,12 +40,12 @@
 
 - (id)_mt_imageWithShadowWithAttributes:()MaterialKitPrivateAdditions userInterfaceStyle:
 {
-  v6 = a1;
-  v8 = v6;
+  selfCopy = self;
+  v8 = selfCopy;
   if (*a3 > 0.0)
   {
     LODWORD(v7) = *a3;
-    [v6 size];
+    [selfCopy size];
     v10 = v9;
     v12 = v11;
     v13 = a3[2];
@@ -61,8 +61,8 @@
 
     v14 = v13 + a3[3] * 2.8;
     v15 = objc_alloc(MEMORY[0x277D75560]);
-    v16 = [MEMORY[0x277D75568] preferredFormat];
-    v17 = [v15 initWithSize:v16 format:{v14 + v10 + v14, v14 + v12 + v14}];
+    preferredFormat = [MEMORY[0x277D75568] preferredFormat];
+    v17 = [v15 initWithSize:preferredFormat format:{v14 + v10 + v14, v14 + v12 + v14}];
 
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
@@ -94,7 +94,7 @@
   v5 = 1050253722;
   v6 = xmmword_21E612000;
   v7 = 0x3FE3333333333333;
-  v3 = [a1 _mt_imageWithShadowWithAttributes:&v5 userInterfaceStyle:a3];
+  v3 = [self _mt_imageWithShadowWithAttributes:&v5 userInterfaceStyle:a3];
 
   return v3;
 }

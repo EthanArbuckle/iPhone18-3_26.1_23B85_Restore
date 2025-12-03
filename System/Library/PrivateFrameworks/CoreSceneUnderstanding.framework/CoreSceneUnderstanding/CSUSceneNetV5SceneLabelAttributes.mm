@@ -1,25 +1,25 @@
 @interface CSUSceneNetV5SceneLabelAttributes
 - (BOOL)isSearchable;
-- (CSUSceneNetV5SceneLabelAttributes)initWithTaxonomyAttributes:(id)a3 forLabel:(id)a4;
+- (CSUSceneNetV5SceneLabelAttributes)initWithTaxonomyAttributes:(id)attributes forLabel:(id)label;
 - (float)photosSearchThreshold;
 @end
 
 @implementation CSUSceneNetV5SceneLabelAttributes
 
-- (CSUSceneNetV5SceneLabelAttributes)initWithTaxonomyAttributes:(id)a3 forLabel:(id)a4
+- (CSUSceneNetV5SceneLabelAttributes)initWithTaxonomyAttributes:(id)attributes forLabel:(id)label
 {
-  v7 = a3;
-  v8 = a4;
+  attributesCopy = attributes;
+  labelCopy = label;
   v18.receiver = self;
   v18.super_class = CSUSceneNetV5SceneLabelAttributes;
   v13 = [(CSUSceneNetV5SceneLabelAttributes *)&v18 init];
   if (v13)
   {
-    v14 = objc_msgSend_copy(v8, v9, v10, v11, v12);
+    v14 = objc_msgSend_copy(labelCopy, v9, v10, v11, v12);
     label = v13->_label;
     v13->_label = v14;
 
-    objc_storeStrong(&v13->_attributeManager, a3);
+    objc_storeStrong(&v13->_attributeManager, attributes);
     v16 = v13;
   }
 

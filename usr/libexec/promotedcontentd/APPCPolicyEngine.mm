@@ -1,6 +1,6 @@
 @interface APPCPolicyEngine
 + (BOOL)isSubscriber;
-+ (id)policiesForContainerType:(id)a3 adType:(id)a4 adFormatType:(id)a5;
++ (id)policiesForContainerType:(id)type adType:(id)adType adFormatType:(id)formatType;
 + (id)policiesToEnforce;
 + (id)savedPolicies;
 @end
@@ -16,11 +16,11 @@
   return v3;
 }
 
-+ (id)policiesForContainerType:(id)a3 adType:(id)a4 adFormatType:(id)a5
++ (id)policiesForContainerType:(id)type adType:(id)adType adFormatType:(id)formatType
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typeCopy = type;
+  adTypeCopy = adType;
+  formatTypeCopy = formatType;
   v11 = +[APPCPolicyEngine savedPolicies];
   v12 = APLogForCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -36,20 +36,20 @@
   v14 = +[NSMutableArray array];
   if ([v11 count])
   {
-    v35 = v8;
-    v32 = [NSPredicate predicateWithFormat:@"containerType = %@ OR containerType = nil", v8];
+    v35 = typeCopy;
+    typeCopy = [NSPredicate predicateWithFormat:@"containerType = %@ OR containerType = nil", typeCopy];
     v15 = [v11 filteredArrayUsingPredicate:?];
-    v34 = v9;
-    v30 = [NSPredicate predicateWithFormat:@"adType = %@ OR adType = nil", v9];
+    v34 = adTypeCopy;
+    adTypeCopy = [NSPredicate predicateWithFormat:@"adType = %@ OR adType = nil", adTypeCopy];
     v31 = v15;
     v16 = [v15 filteredArrayUsingPredicate:?];
-    v33 = v10;
-    v17 = [NSPredicate predicateWithFormat:@"adFormatType = %@ OR adFormatType = nil", v10];
+    v33 = formatTypeCopy;
+    formatTypeCopy = [NSPredicate predicateWithFormat:@"adFormatType = %@ OR adFormatType = nil", formatTypeCopy];
     v29 = v16;
-    v18 = [v16 filteredArrayUsingPredicate:v17];
-    v19 = [a1 isSubscriber];
+    v18 = [v16 filteredArrayUsingPredicate:formatTypeCopy];
+    isSubscriber = [self isSubscriber];
     v20 = @"non-subscriber";
-    if (v19)
+    if (isSubscriber)
     {
       v20 = @"subscriber";
     }
@@ -74,8 +74,8 @@
             objc_enumerationMutation(v22);
           }
 
-          v27 = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
-          [v14 addObject:v27];
+          dictionaryRepresentation = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation];
         }
 
         v24 = [v22 countByEnumeratingWithState:&v36 objects:v40 count:16];
@@ -84,9 +84,9 @@
       while (v24);
     }
 
-    v9 = v34;
-    v8 = v35;
-    v10 = v33;
+    adTypeCopy = v34;
+    typeCopy = v35;
+    formatTypeCopy = v33;
   }
 
   return v14;
@@ -95,9 +95,9 @@
 + (id)policiesToEnforce
 {
   v3 = +[APPCPolicyEngine savedPolicies];
-  v4 = [a1 isSubscriber];
+  isSubscriber = [self isSubscriber];
   v5 = @"non-subscriber";
-  if (v4)
+  if (isSubscriber)
   {
     v5 = @"subscriber";
   }
@@ -124,8 +124,8 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-        [v8 addObject:v14];
+        dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+        [v8 addObject:dictionaryRepresentation];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];

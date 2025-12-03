@@ -8,10 +8,10 @@
 
 - (id)nl_lastUnbalancedPauseEvent
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
-  v5 = [a1 workoutEvents];
-  v4 = [v5 nl_filteredArrayUsingBlock:&__block_literal_global_6];
+  workoutEvents = [self workoutEvents];
+  v4 = [workoutEvents nl_filteredArrayUsingBlock:&__block_literal_global_6];
   location[0] = [v4 lastObject];
   MEMORY[0x277D82BD8](v4);
   if ([location[0] type] == 1)
@@ -32,40 +32,40 @@
 
 - (id)nl_currentActivityStartDate
 {
-  v15 = a1;
+  selfCopy = self;
   v14[1] = a2;
   v14[0] = 0;
-  v10 = [a1 workoutConfiguration];
+  workoutConfiguration = [self workoutConfiguration];
   v12 = 0;
   v11 = 0;
-  if ([v10 activityType] == 82)
+  if ([workoutConfiguration activityType] == 82)
   {
-    v13 = [v15 currentWorkoutActivity];
+    currentWorkoutActivity = [selfCopy currentWorkoutActivity];
     v12 = 1;
-    v11 = v13 != 0;
+    v11 = currentWorkoutActivity != 0;
   }
 
   if (v12)
   {
-    MEMORY[0x277D82BD8](v13);
+    MEMORY[0x277D82BD8](currentWorkoutActivity);
   }
 
-  *&v2 = MEMORY[0x277D82BD8](v10).n128_u64[0];
+  *&v2 = MEMORY[0x277D82BD8](workoutConfiguration).n128_u64[0];
   if (v11)
   {
-    v9 = [v15 currentWorkoutActivity];
-    v3 = [v9 startDate];
+    currentWorkoutActivity2 = [selfCopy currentWorkoutActivity];
+    startDate = [currentWorkoutActivity2 startDate];
     v4 = v14[0];
-    v14[0] = v3;
+    v14[0] = startDate;
     MEMORY[0x277D82BD8](v4);
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](currentWorkoutActivity2);
   }
 
   else
   {
-    v5 = [v15 startDate];
+    startDate2 = [selfCopy startDate];
     v6 = v14[0];
-    v14[0] = v5;
+    v14[0] = startDate2;
     MEMORY[0x277D82BD8](v6);
   }
 
@@ -78,16 +78,16 @@
 - (id)nl_dateForElapsedTime:()WorkoutSupport
 {
   v49 = *MEMORY[0x277D85DE8];
-  v44 = a1;
+  selfCopy = self;
   v43 = a2;
   v42 = a3;
-  v41 = [a1 nl_currentActivityStartDate];
-  if (v41)
+  nl_currentActivityStartDate = [self nl_currentActivityStartDate];
+  if (nl_currentActivityStartDate)
   {
-    v22 = [v44 workoutEvents];
-    v36 = [v22 nl_filteredArrayUsingBlock:&__block_literal_global_294_0];
-    MEMORY[0x277D82BD8](v22);
-    v35 = MEMORY[0x277D82BE0](v41);
+    workoutEvents = [selfCopy workoutEvents];
+    v36 = [workoutEvents nl_filteredArrayUsingBlock:&__block_literal_global_294_0];
+    MEMORY[0x277D82BD8](workoutEvents);
+    v35 = MEMORY[0x277D82BE0](nl_currentActivityStartDate);
     v34 = v42;
     v33 = 0;
     memset(__b, 0, sizeof(__b));
@@ -111,12 +111,12 @@
         {
           if ([v32 type] == 2)
           {
-            v17 = [v32 dateInterval];
-            v3 = [v17 startDate];
+            dateInterval = [v32 dateInterval];
+            startDate = [dateInterval startDate];
             v4 = v35;
-            v35 = v3;
+            v35 = startDate;
             MEMORY[0x277D82BD8](v4);
-            MEMORY[0x277D82BD8](v17);
+            MEMORY[0x277D82BD8](dateInterval);
             v33 = 0;
           }
 
@@ -139,12 +139,12 @@
 
         else
         {
-          v13 = [v32 dateInterval];
-          v12 = [v13 startDate];
-          [v12 timeIntervalSinceDate:v35];
+          dateInterval2 = [v32 dateInterval];
+          startDate2 = [dateInterval2 startDate];
+          [startDate2 timeIntervalSinceDate:v35];
           v14 = v5;
-          MEMORY[0x277D82BD8](v12);
-          MEMORY[0x277D82BD8](v13);
+          MEMORY[0x277D82BD8](startDate2);
+          MEMORY[0x277D82BD8](dateInterval2);
           v28 = v14;
           if (v14 >= v34)
           {
@@ -152,12 +152,12 @@
             goto LABEL_25;
           }
 
-          v11 = [v32 dateInterval];
-          v6 = [v11 startDate];
+          dateInterval3 = [v32 dateInterval];
+          startDate3 = [dateInterval3 startDate];
           v7 = v35;
-          v35 = v6;
+          v35 = startDate3;
           MEMORY[0x277D82BD8](v7);
-          MEMORY[0x277D82BD8](v11);
+          MEMORY[0x277D82BD8](dateInterval3);
           v34 = v34 - v28;
           if ([v32 type] == 1)
           {
@@ -195,7 +195,7 @@
     v37 = 0;
 LABEL_25:
     MEMORY[0x277D82BD8](obj);
-    v45 = [v35 dateByAddingTimeInterval:v34];
+    date = [v35 dateByAddingTimeInterval:v34];
     v37 = 1;
     objc_storeStrong(&v35, 0);
     objc_storeStrong(&v36, 0);
@@ -215,13 +215,13 @@ LABEL_25:
     }
 
     objc_storeStrong(&location, 0);
-    v45 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v37 = 1;
   }
 
-  objc_storeStrong(&v41, 0);
+  objc_storeStrong(&nl_currentActivityStartDate, 0);
   *MEMORY[0x277D85DE8];
-  v8 = v45;
+  v8 = date;
 
   return v8;
 }

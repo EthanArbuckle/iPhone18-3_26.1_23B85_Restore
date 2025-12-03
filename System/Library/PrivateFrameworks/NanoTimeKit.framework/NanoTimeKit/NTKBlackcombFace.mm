@@ -1,14 +1,14 @@
 @interface NTKBlackcombFace
 + (id)_complicationSlotDescriptors;
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
 + (id)_orderedComplicationSlots;
-+ (id)_richComplicationSlotsForDevice:(id)a3;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (id)allowedComplicationsForSlot:(id)a3 includingComplication:(id)a4;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
++ (id)_richComplicationSlotsForDevice:(id)device;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)allowedComplicationsForSlot:(id)slot includingComplication:(id)complication;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKBlackcombFace
@@ -51,23 +51,23 @@
   return v2;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  if (a3 == 10)
+  slotCopy = slot;
+  if (mode == 10)
   {
-    v9 = [(NTKFace *)self device];
-    v10 = NTKDefaultFaceColorForDeviceCollection(v9, 200);
+    device = [(NTKFace *)self device];
+    v10 = NTKDefaultFaceColorForDeviceCollection(device, 200);
 
-    v7 = [(NTKFace *)self device];
-    v8 = [(NTKFaceColorEditOption *)NTKFaceColorMonochromeEditOption optionWithFaceColor:v10 forDevice:v7];
+    device2 = [(NTKFace *)self device];
+    v8 = [(NTKFaceColorEditOption *)NTKFaceColorMonochromeEditOption optionWithFaceColor:v10 forDevice:device2];
     goto LABEL_5;
   }
 
-  if (a3 == 15)
+  if (mode == 15)
   {
-    v7 = [(NTKFace *)self device];
-    v8 = [NTKBlackcombDialColorEditOption optionWithBlackcombDialColor:0 forDevice:v7];
+    device2 = [(NTKFace *)self device];
+    v8 = [NTKBlackcombDialColorEditOption optionWithBlackcombDialColor:0 forDevice:device2];
 LABEL_5:
     v11 = v8;
 
@@ -80,37 +80,37 @@ LABEL_7:
   return v11;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKBlackcombFace *)self _optionClassForCustomEditMode:a3, a4];
-  v6 = [(NTKFace *)self device];
-  v7 = [(objc_class *)v5 numberOfOptionsForDevice:v6];
+  slot = [(NTKBlackcombFace *)self _optionClassForCustomEditMode:mode, slot];
+  device = [(NTKFace *)self device];
+  v7 = [(objc_class *)slot numberOfOptionsForDevice:device];
 
   return v7;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = [(NTKBlackcombFace *)self _optionClassForCustomEditMode:a4];
-  v8 = [(NTKFace *)self device];
-  v9 = [(objc_class *)v7 optionAtIndex:a3 forDevice:v8];
+  v7 = [(NTKBlackcombFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKFace *)self device];
+  v9 = [(objc_class *)v7 optionAtIndex:index forDevice:device];
 
   return v9;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  v8 = [(NTKBlackcombFace *)self _optionClassForCustomEditMode:a4];
-  v9 = [(NTKFace *)self device];
-  v10 = [(objc_class *)v8 indexOfOption:v7 forDevice:v9];
+  optionCopy = option;
+  v8 = [(NTKBlackcombFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKFace *)self device];
+  v10 = [(objc_class *)v8 indexOfOption:optionCopy forDevice:device];
 
   return v10;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 15 || a3 == 10)
+  if (mode == 15 || mode == 10)
   {
     v4 = objc_opt_class();
   }
@@ -123,25 +123,25 @@ LABEL_7:
   return v4;
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  if (a3 == 15)
+  if (mode == 15)
   {
-    v4 = [@"EDIT_MODE_BLACKCOMB_LABEL_STYLE" stringByAppendingString:{@"_COMPANION", a4}];
+    v4 = [@"EDIT_MODE_BLACKCOMB_LABEL_STYLE" stringByAppendingString:{@"_COMPANION", device}];
     v5 = NTKCompanionClockFaceLocalizedString(v4, @"edit mode");
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___NTKBlackcombFace;
-    v5 = objc_msgSendSuper2(&v7, sel__localizedNameOverrideForCustomEditMode_forDevice_, a3, a4);
+    v5 = objc_msgSendSuper2(&v7, sel__localizedNameOverrideForCustomEditMode_forDevice_, mode, device);
   }
 
   return v5;
 }
 
-+ (id)_richComplicationSlotsForDevice:(id)a3
++ (id)_richComplicationSlotsForDevice:(id)device
 {
   v5[4] = *MEMORY[0x277D85DE8];
   v5[0] = @"subdial-top";
@@ -153,21 +153,21 @@ LABEL_7:
   return v3;
 }
 
-- (id)allowedComplicationsForSlot:(id)a3 includingComplication:(id)a4
+- (id)allowedComplicationsForSlot:(id)slot includingComplication:(id)complication
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  slotCopy = slot;
   v27.receiver = self;
   v27.super_class = NTKBlackcombFace;
-  v7 = [(NTKFace *)&v27 allowedComplicationsForSlot:v6 includingComplication:a4];
-  if (([v6 isEqualToString:@"subdial-top"] & 1) == 0)
+  v7 = [(NTKFace *)&v27 allowedComplicationsForSlot:slotCopy includingComplication:complication];
+  if (([slotCopy isEqualToString:@"subdial-top"] & 1) == 0)
   {
     v18 = v7;
     goto LABEL_19;
   }
 
   v21 = v7;
-  v22 = v6;
+  v22 = slotCopy;
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
@@ -204,9 +204,9 @@ LABEL_4:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [v14 complication];
-      v16 = [v15 bundleIdentifier];
-      v17 = [v16 isEqualToString:@"com.apple.NanoTimeKit.DigitalTime"];
+      complication = [v14 complication];
+      bundleIdentifier = [complication bundleIdentifier];
+      v17 = [bundleIdentifier isEqualToString:@"com.apple.NanoTimeKit.DigitalTime"];
 
       if (v17)
       {
@@ -238,7 +238,7 @@ LABEL_11:
 
 LABEL_18:
   v7 = v21;
-  v6 = v22;
+  slotCopy = v22;
 LABEL_19:
 
   return v18;

@@ -1,11 +1,11 @@
 @interface NSString
-- (id)localizedStringForTableName:(id)a3 arguments:(id)a4;
-- (id)stringByReplacingReservedURLCharactersUsingEncoding:(unint64_t)a3;
+- (id)localizedStringForTableName:(id)name arguments:(id)arguments;
+- (id)stringByReplacingReservedURLCharactersUsingEncoding:(unint64_t)encoding;
 @end
 
 @implementation NSString
 
-- (id)stringByReplacingReservedURLCharactersUsingEncoding:(unint64_t)a3
+- (id)stringByReplacingReservedURLCharactersUsingEncoding:(unint64_t)encoding
 {
   v4 = [(NSString *)self lengthOfBytesUsingEncoding:1];
   v5 = malloc_type_malloc(v4 + 1, 0xFD54B8B3uLL);
@@ -48,9 +48,9 @@
   return v12;
 }
 
-- (id)localizedStringForTableName:(id)a3 arguments:(id)a4
+- (id)localizedStringForTableName:(id)name arguments:(id)arguments
 {
-  if (a4)
+  if (arguments)
   {
     v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -60,9 +60,9 @@
     v6 = 0;
   }
 
-  v7 = a3;
-  v8 = self;
-  v9 = sub_1000499F0(a3, v6);
+  nameCopy = name;
+  selfCopy = self;
+  v9 = sub_1000499F0(name, v6);
 
   return v9;
 }

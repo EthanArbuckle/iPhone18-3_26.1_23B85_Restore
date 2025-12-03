@@ -1,71 +1,71 @@
 @interface PKToolPickerPaletteViewDelegateProxy
-- (BOOL)paletteView:(id)a3 shouldChangeSelectedToolColor:(id)a4;
-- (BOOL)shouldHandlePencilInteractionWhenNotVisible:(id)a3;
-- (BOOL)toggleLassoToolEditingViewColorPickerForPaletteView:(id)a3;
-- (CGRect)paletteViewColorPickerPopoverPresentationSourceRect:(id)a3;
-- (id)initWithToolPicker:(id *)a1;
-- (id)paletteViewColorPickerPopoverPresentationSourceView:(id)a3;
-- (id)paletteViewCurrentFirstResponder:(id)a3;
-- (id)paletteViewCurrentSelectionColor:(id)a3;
-- (id)paletteViewUndoManager:(id)a3;
-- (void)imageWandOnboardingControllerDidHideView:(id)a3;
-- (void)paletteView:(id)a3 didChangeColor:(id)a4;
-- (void)paletteView:(id)a3 didChangeTraitCollection:(id)a4;
-- (void)paletteView:(id)a3 didReceivePencilInteractionDidTap:(id)a4;
-- (void)paletteView:(id)a3 didSelectTool:(id)a4 atIndex:(unint64_t)a5;
-- (void)paletteViewContentSizeDidChange:(id)a3;
-- (void)paletteViewDidChangeInterItemToolsSpacingInCompactSize:(id)a3;
-- (void)paletteViewDidChangePosition:(id)a3 fromPosition:(int64_t)a4 toPosition:(int64_t)a5;
-- (void)paletteViewDidChangeScaleFactor:(id)a3;
-- (void)paletteViewDidTapCloseButton:(id)a3;
-- (void)paletteViewDidToggleRuler:(id)a3;
-- (void)paletteViewFirstResponderDidUpdate:(id)a3;
-- (void)paletteViewToolsDidChange:(id)a3;
+- (BOOL)paletteView:(id)view shouldChangeSelectedToolColor:(id)color;
+- (BOOL)shouldHandlePencilInteractionWhenNotVisible:(id)visible;
+- (BOOL)toggleLassoToolEditingViewColorPickerForPaletteView:(id)view;
+- (CGRect)paletteViewColorPickerPopoverPresentationSourceRect:(id)rect;
+- (id)initWithToolPicker:(id *)picker;
+- (id)paletteViewColorPickerPopoverPresentationSourceView:(id)view;
+- (id)paletteViewCurrentFirstResponder:(id)responder;
+- (id)paletteViewCurrentSelectionColor:(id)color;
+- (id)paletteViewUndoManager:(id)manager;
+- (void)imageWandOnboardingControllerDidHideView:(id)view;
+- (void)paletteView:(id)view didChangeColor:(id)color;
+- (void)paletteView:(id)view didChangeTraitCollection:(id)collection;
+- (void)paletteView:(id)view didReceivePencilInteractionDidTap:(id)tap;
+- (void)paletteView:(id)view didSelectTool:(id)tool atIndex:(unint64_t)index;
+- (void)paletteViewContentSizeDidChange:(id)change;
+- (void)paletteViewDidChangeInterItemToolsSpacingInCompactSize:(id)size;
+- (void)paletteViewDidChangePosition:(id)position fromPosition:(int64_t)fromPosition toPosition:(int64_t)toPosition;
+- (void)paletteViewDidChangeScaleFactor:(id)factor;
+- (void)paletteViewDidTapCloseButton:(id)button;
+- (void)paletteViewDidToggleRuler:(id)ruler;
+- (void)paletteViewFirstResponderDidUpdate:(id)update;
+- (void)paletteViewToolsDidChange:(id)change;
 @end
 
 @implementation PKToolPickerPaletteViewDelegateProxy
 
-- (id)initWithToolPicker:(id *)a1
+- (id)initWithToolPicker:(id *)picker
 {
   v3 = a2;
-  if (a1)
+  if (picker)
   {
-    v6.receiver = a1;
+    v6.receiver = picker;
     v6.super_class = PKToolPickerPaletteViewDelegateProxy;
     v4 = objc_msgSendSuper2(&v6, sel_init);
-    a1 = v4;
+    picker = v4;
     if (v4)
     {
       objc_storeWeak(v4 + 1, v3);
     }
   }
 
-  return a1;
+  return picker;
 }
 
-- (void)paletteViewContentSizeDidChange:(id)a3
+- (void)paletteViewContentSizeDidChange:(id)change
 {
   if (self)
   {
     self = objc_loadWeakRetained(&self->_toolPicker);
   }
 
-  v3 = self;
+  selfCopy = self;
   [(PKToolPickerPaletteViewDelegateProxy *)self _paletteContentSizeDidChange];
 }
 
-- (void)paletteViewDidChangeScaleFactor:(id)a3
+- (void)paletteViewDidChangeScaleFactor:(id)factor
 {
   if (self)
   {
     self = objc_loadWeakRetained(&self->_toolPicker);
   }
 
-  v3 = self;
+  selfCopy = self;
   [(PKToolPickerPaletteViewDelegateProxy *)self _notifyScaleFactorDidChange];
 }
 
-- (id)paletteViewCurrentFirstResponder:(id)a3
+- (id)paletteViewCurrentFirstResponder:(id)responder
 {
   if (self)
   {
@@ -77,17 +77,17 @@
     WeakRetained = 0;
   }
 
-  v4 = [WeakRetained _currentFirstResponder];
+  _currentFirstResponder = [WeakRetained _currentFirstResponder];
 
-  return v4;
+  return _currentFirstResponder;
 }
 
-- (void)paletteViewFirstResponderDidUpdate:(id)a3
+- (void)paletteViewFirstResponderDidUpdate:(id)update
 {
-  v4 = [a3 windowFirstResponder];
-  if ([v4 isVisible] && ((objc_msgSend(v4, "isEditableTextInput") & 1) != 0 || objc_msgSend(v4, "hasScribbleInteraction")))
+  windowFirstResponder = [update windowFirstResponder];
+  if ([windowFirstResponder isVisible] && ((objc_msgSend(windowFirstResponder, "isEditableTextInput") & 1) != 0 || objc_msgSend(windowFirstResponder, "hasScribbleInteraction")))
   {
-    if ([v4 textInputSource] == 3)
+    if ([windowFirstResponder textInputSource] == 3)
     {
       v5 = 1;
       if (!self)
@@ -100,7 +100,7 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    v5 = [v4 textInputSource] == 0;
+    v5 = [windowFirstResponder textInputSource] == 0;
     if (self)
     {
       goto LABEL_8;
@@ -151,7 +151,7 @@ LABEL_9:
     v9 = 0;
   }
 
-  v10 = [v9 isVisible];
+  isVisible = [v9 isVisible];
 
   if (self)
   {
@@ -167,9 +167,9 @@ LABEL_9:
     v12 = 0;
   }
 
-  v13 = [v12 isVisible];
+  isVisible2 = [v12 isVisible];
 
-  if (v10 != v13)
+  if (isVisible != isVisible2)
   {
     if (self)
     {
@@ -183,9 +183,9 @@ LABEL_9:
   }
 }
 
-- (id)paletteViewUndoManager:(id)a3
+- (id)paletteViewUndoManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_toolPicker);
@@ -205,7 +205,7 @@ LABEL_9:
       self = objc_loadWeakRetained(&self->_toolPicker);
     }
 
-    v7 = [v6 _toolPickerUndoManager:self];
+    undoManager = [v6 _toolPickerUndoManager:self];
   }
 
   else
@@ -215,17 +215,17 @@ LABEL_9:
       self = objc_loadWeakRetained(&self->_toolPicker);
     }
 
-    v8 = [(PKToolPickerPaletteViewDelegateProxy *)self _currentFirstResponder];
-    v7 = [v8 undoManager];
+    _currentFirstResponder = [(PKToolPickerPaletteViewDelegateProxy *)self _currentFirstResponder];
+    undoManager = [_currentFirstResponder undoManager];
   }
 
-  return v7;
+  return undoManager;
 }
 
-- (void)paletteView:(id)a3 didReceivePencilInteractionDidTap:(id)a4
+- (void)paletteView:(id)view didReceivePencilInteractionDidTap:(id)tap
 {
-  v9 = a3;
-  v6 = a4;
+  viewCopy = view;
+  tapCopy = tap;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_toolPicker);
@@ -236,23 +236,23 @@ LABEL_9:
     WeakRetained = 0;
   }
 
-  v8 = [WeakRetained isVisible];
+  isVisible = [WeakRetained isVisible];
 
-  if ((v8 & 1) == 0)
+  if ((isVisible & 1) == 0)
   {
     if (self)
     {
       self = objc_loadWeakRetained(&self->_toolPicker);
     }
 
-    [(PKToolPickerPaletteViewDelegateProxy *)self _updatePaletteView:v9 onUpdateLink:0];
+    [(PKToolPickerPaletteViewDelegateProxy *)self _updatePaletteView:viewCopy onUpdateLink:0];
   }
 }
 
-- (BOOL)paletteView:(id)a3 shouldChangeSelectedToolColor:(id)a4
+- (BOOL)paletteView:(id)view shouldChangeSelectedToolColor:(id)color
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  colorCopy = color;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_toolPicker);
@@ -277,7 +277,7 @@ LABEL_9:
       v10 = 0;
     }
 
-    v11 = [v9 _toolPicker:v10 shouldChangeSelectedToolColor:v7];
+    v11 = [v9 _toolPicker:v10 shouldChangeSelectedToolColor:colorCopy];
   }
 
   else
@@ -288,9 +288,9 @@ LABEL_9:
   return v11;
 }
 
-- (id)paletteViewCurrentSelectionColor:(id)a3
+- (id)paletteViewCurrentSelectionColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_toolPicker);
@@ -326,10 +326,10 @@ LABEL_9:
   return v8;
 }
 
-- (void)paletteView:(id)a3 didSelectTool:(id)a4 atIndex:(unint64_t)a5
+- (void)paletteView:(id)view didSelectTool:(id)tool atIndex:(unint64_t)index
 {
-  v7 = a4;
-  v8 = [a3 selectedTool];
+  toolCopy = tool;
+  selectedTool = [view selectedTool];
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_toolPicker);
@@ -340,20 +340,20 @@ LABEL_9:
     WeakRetained = 0;
   }
 
-  v10 = [WeakRetained selectedTool];
-  v11 = [v10 _configuration];
-  v12 = v11;
-  if (v11 && (*(v11 + 20) & 1) != 0)
+  selectedTool2 = [WeakRetained selectedTool];
+  _configuration = [selectedTool2 _configuration];
+  v12 = _configuration;
+  if (_configuration && (*(_configuration + 20) & 1) != 0)
   {
     v13 = 1;
   }
 
   else
   {
-    v14 = [v8 _configuration];
-    if (v14)
+    _configuration2 = [selectedTool _configuration];
+    if (_configuration2)
     {
-      v13 = v14[20];
+      v13 = _configuration2[20];
     }
 
     else
@@ -372,9 +372,9 @@ LABEL_9:
     v15 = 0;
   }
 
-  [v15 _setSelectedTool:v8 saveState:1 updateUI:v13 & 1];
+  [v15 _setSelectedTool:selectedTool saveState:1 updateUI:v13 & 1];
 
-  v16 = [v7 ink];
+  v16 = [toolCopy ink];
 
   if ([v16 _isGenerationTool])
   {
@@ -383,14 +383,14 @@ LABEL_9:
     if (v17)
     {
       v18 = objc_loadWeakRetained(&self->_toolPicker);
-      v19 = [v18 _applicationWindow];
-      v20 = [v19 rootViewController];
+      _applicationWindow = [v18 _applicationWindow];
+      rootViewController = [_applicationWindow rootViewController];
 
-      if (v20)
+      if (rootViewController)
       {
         v21 = [PKImageWandOnboardingController alloc];
         v22 = objc_loadWeakRetained(&self->_toolPicker);
-        v23 = [(PKImageWandOnboardingController *)&v21->super.isa initWithPresentationViewController:v20 toolPicker:v22];
+        v23 = [(PKImageWandOnboardingController *)&v21->super.isa initWithPresentationViewController:rootViewController toolPicker:v22];
         imageWandOnboardingController = self->_imageWandOnboardingController;
         self->_imageWandOnboardingController = v23;
 
@@ -426,31 +426,31 @@ LABEL_9:
   }
 }
 
-- (void)paletteViewToolsDidChange:(id)a3
+- (void)paletteViewToolsDidChange:(id)change
 {
-  v4 = a3;
-  v7 = [v4 tools];
-  v5 = [v4 selectedTool];
+  changeCopy = change;
+  tools = [changeCopy tools];
+  selectedTool = [changeCopy selectedTool];
 
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_toolPicker);
-    [WeakRetained _resetTools:v7 selectedTool:v5];
+    [WeakRetained _resetTools:tools selectedTool:selectedTool];
 
     self = objc_loadWeakRetained(&self->_toolPicker);
   }
 
   else
   {
-    [0 _resetTools:v7 selectedTool:v5];
+    [0 _resetTools:tools selectedTool:selectedTool];
   }
 
   [(PKToolPickerPaletteViewDelegateProxy *)self _saveToolPickerState];
 }
 
-- (void)paletteViewDidToggleRuler:(id)a3
+- (void)paletteViewDidToggleRuler:(id)ruler
 {
-  v10 = a3;
+  rulerCopy = ruler;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_toolPicker);
@@ -468,9 +468,9 @@ LABEL_9:
     if ([0 _isHandwritingToolSelected])
     {
 LABEL_4:
-      v6 = [v5 isRulerActive];
+      isRulerActive = [v5 isRulerActive];
 
-      if (!v6)
+      if (!isRulerActive)
       {
         goto LABEL_11;
       }
@@ -498,29 +498,29 @@ LABEL_11:
     self = objc_loadWeakRetained(&self->_toolPicker);
   }
 
-  v8 = [(PKToolPickerPaletteViewDelegateProxy *)self isRulerActive];
+  isRulerActive2 = [(PKToolPickerPaletteViewDelegateProxy *)self isRulerActive];
 
-  if (v8)
+  if (isRulerActive2)
   {
     v9 = +[PKStatisticsManager sharedStatisticsManager];
     [(PKStatisticsManager *)v9 recordShowRuler];
   }
 }
 
-- (void)paletteView:(id)a3 didChangeTraitCollection:(id)a4
+- (void)paletteView:(id)view didChangeTraitCollection:(id)collection
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 horizontalSizeClass];
-  v9 = [v6 traitCollection];
-  if (v8 == [v9 horizontalSizeClass])
+  viewCopy = view;
+  collectionCopy = collection;
+  horizontalSizeClass = [collectionCopy horizontalSizeClass];
+  traitCollection = [viewCopy traitCollection];
+  if (horizontalSizeClass == [traitCollection horizontalSizeClass])
   {
-    v10 = [v7 verticalSizeClass];
-    v11 = [v6 traitCollection];
-    v12 = [v11 verticalSizeClass];
+    verticalSizeClass = [collectionCopy verticalSizeClass];
+    traitCollection2 = [viewCopy traitCollection];
+    verticalSizeClass2 = [traitCollection2 verticalSizeClass];
 
-    if (v10 == v12)
+    if (verticalSizeClass == verticalSizeClass2)
     {
       goto LABEL_21;
     }
@@ -534,7 +534,7 @@ LABEL_11:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v23 = v6;
+  v23 = viewCopy;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_toolPicker);
@@ -545,8 +545,8 @@ LABEL_11:
     WeakRetained = 0;
   }
 
-  v14 = [WeakRetained _observers];
-  v15 = [v14 copy];
+  _observers = [WeakRetained _observers];
+  v15 = [_observers copy];
 
   v16 = [v15 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v16)
@@ -590,14 +590,14 @@ LABEL_11:
     while (v22);
   }
 
-  v6 = v23;
+  viewCopy = v23;
 LABEL_21:
 }
 
-- (void)paletteViewDidChangePosition:(id)a3 fromPosition:(int64_t)a4 toPosition:(int64_t)a5
+- (void)paletteViewDidChangePosition:(id)position fromPosition:(int64_t)fromPosition toPosition:(int64_t)toPosition
 {
   v26 = *MEMORY[0x1E69E9840];
-  v18 = a3;
+  positionCopy = position;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -612,8 +612,8 @@ LABEL_21:
     WeakRetained = 0;
   }
 
-  v8 = [WeakRetained _observers];
-  v9 = [v8 copy];
+  _observers = [WeakRetained _observers];
+  v9 = [_observers copy];
 
   v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
@@ -658,7 +658,7 @@ LABEL_21:
             v16 = 0;
           }
 
-          [v14 _toolPickerDidChangePosition:v16 fromPosition:a4 toPosition:a5];
+          [v14 _toolPickerDidChangePosition:v16 fromPosition:fromPosition toPosition:toPosition];
         }
 
         ++v13;
@@ -673,18 +673,18 @@ LABEL_21:
   }
 }
 
-- (void)paletteView:(id)a3 didChangeColor:(id)a4
+- (void)paletteView:(id)view didChangeColor:(id)color
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  viewCopy = view;
+  colorCopy = color;
+  if (colorCopy)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v18 = v6;
+    v18 = viewCopy;
     if (self)
     {
       WeakRetained = objc_loadWeakRetained(&self->_toolPicker);
@@ -695,8 +695,8 @@ LABEL_21:
       WeakRetained = 0;
     }
 
-    v9 = [WeakRetained _observers];
-    v10 = [v9 copy];
+    _observers = [WeakRetained _observers];
+    v10 = [_observers copy];
 
     v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v11)
@@ -726,7 +726,7 @@ LABEL_21:
               v16 = 0;
             }
 
-            [v15 _toolPicker:v16 didChangeColor:v7];
+            [v15 _toolPicker:v16 didChangeColor:colorCopy];
           }
 
           ++v14;
@@ -745,14 +745,14 @@ LABEL_21:
       self = objc_loadWeakRetained(&self->_toolPicker);
     }
 
-    v6 = v18;
+    viewCopy = v18;
     [(PKToolPickerPaletteViewDelegateProxy *)self _saveToolPickerState];
   }
 }
 
-- (CGRect)paletteViewColorPickerPopoverPresentationSourceRect:(id)a3
+- (CGRect)paletteViewColorPickerPopoverPresentationSourceRect:(id)rect
 {
-  v4 = a3;
+  rectCopy = rect;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_toolPicker);
@@ -826,7 +826,7 @@ LABEL_14:
   return result;
 }
 
-- (id)paletteViewColorPickerPopoverPresentationSourceView:(id)a3
+- (id)paletteViewColorPickerPopoverPresentationSourceView:(id)view
 {
   v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
   if (self)
@@ -850,7 +850,7 @@ LABEL_14:
 
     v7 = [v6 _colorPickerPopoverPresentationBarButtonItem:self];
 
-    v8 = [v7 view];
+    view = [v7 view];
   }
 
   else
@@ -884,27 +884,27 @@ LABEL_14:
       goto LABEL_14;
     }
 
-    v8 = v4;
+    view = v4;
   }
 
-  v9 = v8;
+  v9 = view;
 LABEL_14:
 
   return v9;
 }
 
-- (BOOL)shouldHandlePencilInteractionWhenNotVisible:(id)a3
+- (BOOL)shouldHandlePencilInteractionWhenNotVisible:(id)visible
 {
   v22 = *MEMORY[0x1E69E9840];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = [a3 window];
-  v4 = [v3 windowScene];
-  v5 = [v4 windows];
+  window = [visible window];
+  windowScene = [window windowScene];
+  windows = [windowScene windows];
 
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v6 = [windows countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -915,20 +915,20 @@ LABEL_14:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(windows);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
         if ([v10 isKeyWindow])
         {
-          v11 = [v10 firstResponder];
-          if (v11)
+          firstResponder = [v10 firstResponder];
+          if (firstResponder)
           {
-            if ([PKTextInputUtilities isTextInputResponder:v11])
+            if ([PKTextInputUtilities isTextInputResponder:firstResponder])
             {
-              v12 = [MEMORY[0x1E696AAE8] mainBundle];
-              v13 = [v12 bundleIdentifier];
-              v14 = [v13 isEqualToString:@"com.apple.freeform"];
+              mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+              bundleIdentifier = [mainBundle bundleIdentifier];
+              v14 = [bundleIdentifier isEqualToString:@"com.apple.freeform"];
 
               if (!v14)
               {
@@ -941,7 +941,7 @@ LABEL_14:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [windows countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v7)
       {
         continue;
@@ -957,9 +957,9 @@ LABEL_15:
   return v15;
 }
 
-- (BOOL)toggleLassoToolEditingViewColorPickerForPaletteView:(id)a3
+- (BOOL)toggleLassoToolEditingViewColorPickerForPaletteView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_toolPicker);
@@ -985,7 +985,7 @@ LABEL_15:
   return v6 != 0;
 }
 
-- (void)paletteViewDidTapCloseButton:(id)a3
+- (void)paletteViewDidTapCloseButton:(id)button
 {
   *&v15[13] = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.pencilkit", "ToolPicker");
@@ -998,27 +998,27 @@ LABEL_15:
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_toolPicker);
-    v6 = [WeakRetained _currentFirstResponder];
+    _currentFirstResponder = [WeakRetained _currentFirstResponder];
     v7 = os_log_create("com.apple.pencilkit", "ToolPicker");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 _pkDebugStringRepresentation];
+      _pkDebugStringRepresentation = [_currentFirstResponder _pkDebugStringRepresentation];
       v12 = 138412546;
-      v13 = v8;
+      v13 = _pkDebugStringRepresentation;
       v14 = 2112;
       *v15 = WeakRetained;
       _os_log_impl(&dword_1C7CCA000, v7, OS_LOG_TYPE_DEFAULT, "Resigning current first responder: %@, toolPicker: %@", &v12, 0x16u);
     }
 
-    v9 = [v6 resignFirstResponder];
+    resignFirstResponder = [_currentFirstResponder resignFirstResponder];
     v10 = os_log_create("com.apple.pencilkit", "ToolPicker");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v6 _pkDebugStringRepresentation];
+      _pkDebugStringRepresentation2 = [_currentFirstResponder _pkDebugStringRepresentation];
       v12 = 138412802;
-      v13 = v11;
+      v13 = _pkDebugStringRepresentation2;
       v14 = 1024;
-      *v15 = v9;
+      *v15 = resignFirstResponder;
       v15[2] = 2112;
       *&v15[3] = WeakRetained;
       _os_log_impl(&dword_1C7CCA000, v10, OS_LOG_TYPE_DEFAULT, "First responder: %@, did resign responder: %d, toolPicker: %@", &v12, 0x1Cu);
@@ -1026,9 +1026,9 @@ LABEL_15:
   }
 }
 
-- (void)paletteViewDidChangeInterItemToolsSpacingInCompactSize:(id)a3
+- (void)paletteViewDidChangeInterItemToolsSpacingInCompactSize:(id)size
 {
-  [a3 interItemToolsSpacingInCompactSize];
+  [size interItemToolsSpacingInCompactSize];
   v5 = v4;
   if (self)
   {
@@ -1044,9 +1044,9 @@ LABEL_15:
   [WeakRetained _setInterItemToolsSpacingInCompactSize:v5];
 }
 
-- (void)imageWandOnboardingControllerDidHideView:(id)a3
+- (void)imageWandOnboardingControllerDidHideView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = os_log_create("com.apple.pencilkit", "ToolPicker");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1055,7 +1055,7 @@ LABEL_15:
   }
 
   imageWandOnboardingController = self->_imageWandOnboardingController;
-  if (imageWandOnboardingController == v4)
+  if (imageWandOnboardingController == viewCopy)
   {
     self->_imageWandOnboardingController = 0;
   }

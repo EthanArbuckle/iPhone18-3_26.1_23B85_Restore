@@ -1,19 +1,19 @@
 @interface HKDisplayTypeController
 + (HKDisplayTypeController)sharedInstance;
 + (NSMutableDictionary)controllers;
-+ (id)displayTypeForObjectType:(id)a3 wheelchairUse:(int64_t)a4;
-+ (id)sharedInstanceForHealthStore:(id)a3;
++ (id)displayTypeForObjectType:(id)type wheelchairUse:(int64_t)use;
++ (id)sharedInstanceForHealthStore:(id)store;
 + (void)_computeSharedDisplayTypes;
 + (void)_unitTest_resetSharedDisplayTypes;
 + (void)initializeSharedDisplayTypes;
 - (HKDisplayTypeController)init;
-- (HKDisplayTypeController)initWithHealthStore:(id)a3;
-- (id)_displayTypeWithUpdatedWheelchairUserIfNecessary:(id)a3;
-- (id)displayTypeForObjectType:(id)a3;
-- (id)displayTypeForObjectTypeUnifyingBloodPressureTypes:(id)a3;
-- (id)displayTypeWithIdentifier:(id)a3;
-- (id)displayTypesForCategoryIdentifier:(int64_t)a3;
-- (void)wheelchairUseCharacteristicCache:(id)a3 wheelchairUsageDidChange:(BOOL)a4;
+- (HKDisplayTypeController)initWithHealthStore:(id)store;
+- (id)_displayTypeWithUpdatedWheelchairUserIfNecessary:(id)necessary;
+- (id)displayTypeForObjectType:(id)type;
+- (id)displayTypeForObjectTypeUnifyingBloodPressureTypes:(id)types;
+- (id)displayTypeWithIdentifier:(id)identifier;
+- (id)displayTypesForCategoryIdentifier:(int64_t)identifier;
+- (void)wheelchairUseCharacteristicCache:(id)cache wheelchairUsageDidChange:(BOOL)change;
 @end
 
 @implementation HKDisplayTypeController
@@ -40,7 +40,7 @@
   block[1] = 3221225472;
   block[2] = __55__HKDisplayTypeController_initializeSharedDisplayTypes__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initializeSharedDisplayTypes_onceToken != -1)
   {
     dispatch_once(&initializeSharedDisplayTypes_onceToken, block);
@@ -55,9 +55,9 @@
   v4 = _sharedDisplayTypes;
   _sharedDisplayTypes = v3;
 
-  v29 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v28 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
@@ -78,20 +78,20 @@
 
         v7 = *(*(&v35 + 1) + 8 * i);
         v8 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "displayTypeIdentifier")}];
-        [v29 setObject:v7 forKeyedSubscript:v8];
+        [dictionary setObject:v7 forKeyedSubscript:v8];
 
-        v9 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "categoryIdentifier")}];
-        [v9 addObject:v10];
+        [array addObject:v10];
 
-        v11 = [v7 secondaryCategoryIdentifiers];
-        [v9 addObjectsFromArray:v11];
+        secondaryCategoryIdentifiers = [v7 secondaryCategoryIdentifiers];
+        [array addObjectsFromArray:secondaryCategoryIdentifiers];
 
         v33 = 0u;
         v34 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v12 = v9;
+        v12 = array;
         v13 = [v12 countByEnumeratingWithState:&v31 objects:v39 count:16];
         if (v13)
         {
@@ -107,14 +107,14 @@
               }
 
               v17 = *(*(&v31 + 1) + 8 * j);
-              v18 = [v5 objectForKeyedSubscript:v17];
-              if (!v18)
+              array2 = [dictionary2 objectForKeyedSubscript:v17];
+              if (!array2)
               {
-                v18 = [MEMORY[0x1E695DF70] array];
-                [v5 setObject:v18 forKeyedSubscript:v17];
+                array2 = [MEMORY[0x1E695DF70] array];
+                [dictionary2 setObject:array2 forKeyedSubscript:v17];
               }
 
-              [v18 addObject:v7];
+              [array2 addObject:v7];
             }
 
             v14 = [v12 countByEnumeratingWithState:&v31 objects:v39 count:16];
@@ -123,8 +123,8 @@
           while (v14);
         }
 
-        v19 = [v7 objectType];
-        [v28 setObject:v7 forKeyedSubscript:v19];
+        objectType = [v7 objectType];
+        [dictionary3 setObject:v7 forKeyedSubscript:objectType];
       }
 
       v30 = [obj countByEnumeratingWithState:&v35 objects:v40 count:16];
@@ -133,15 +133,15 @@
     while (v30);
   }
 
-  v20 = [v29 copy];
+  v20 = [dictionary copy];
   v21 = _sharedDisplayTypesByIdentifier;
   _sharedDisplayTypesByIdentifier = v20;
 
-  v22 = [v5 copy];
+  v22 = [dictionary2 copy];
   v23 = _sharedDisplayTypesByCategoryIdentifier;
   _sharedDisplayTypesByCategoryIdentifier = v22;
 
-  v24 = [v28 copy];
+  v24 = [dictionary3 copy];
   v25 = _sharedDisplayTypesByObjectType;
   _sharedDisplayTypesByObjectType = v24;
 }
@@ -175,8 +175,8 @@ uint64_t __53__HKDisplayTypeController__computeSharedDisplayTypes__block_invoke(
 + (HKDisplayTypeController)sharedInstance
 {
   os_unfair_lock_lock(&_controllersLock);
-  v3 = [a1 controllers];
-  v4 = [v3 count];
+  controllers = [self controllers];
+  v4 = [controllers count];
 
   if (v4 >= 0xA)
   {
@@ -188,21 +188,21 @@ uint64_t __53__HKDisplayTypeController__computeSharedDisplayTypes__block_invoke(
       _os_log_impl(&dword_1C3942000, v5, OS_LOG_TYPE_DEFAULT, "Shared controllers reached more than 10, removing all cached controllers", v14, 2u);
     }
 
-    v6 = [a1 controllers];
-    [v6 removeAllObjects];
+    controllers2 = [self controllers];
+    [controllers2 removeAllObjects];
   }
 
-  v7 = [a1 controllers];
-  v8 = [MEMORY[0x1E696C1C8] primaryStoreIdentifier];
-  v9 = [v7 objectForKey:v8];
+  controllers3 = [self controllers];
+  primaryStoreIdentifier = [MEMORY[0x1E696C1C8] primaryStoreIdentifier];
+  v9 = [controllers3 objectForKey:primaryStoreIdentifier];
 
   if (!v9)
   {
     v10 = objc_alloc_init(MEMORY[0x1E696C1C0]);
     v9 = [[HKDisplayTypeController alloc] initWithHealthStore:v10];
-    v11 = [a1 controllers];
-    v12 = [MEMORY[0x1E696C1C8] primaryStoreIdentifier];
-    [v11 setObject:v9 forKey:v12];
+    controllers4 = [self controllers];
+    primaryStoreIdentifier2 = [MEMORY[0x1E696C1C8] primaryStoreIdentifier];
+    [controllers4 setObject:v9 forKey:primaryStoreIdentifier2];
   }
 
   os_unfair_lock_unlock(&_controllersLock);
@@ -216,17 +216,17 @@ uint64_t __53__HKDisplayTypeController__computeSharedDisplayTypes__block_invoke(
   v3 = _controllers;
   _controllers = 0;
 
-  [a1 _computeSharedDisplayTypes];
+  [self _computeSharedDisplayTypes];
 
   os_unfair_lock_unlock(&_controllersLock);
 }
 
-+ (id)sharedInstanceForHealthStore:(id)a3
++ (id)sharedInstanceForHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   os_unfair_lock_lock(&_controllersLock);
-  v5 = [a1 controllers];
-  v6 = [v5 count];
+  controllers = [self controllers];
+  v6 = [controllers count];
 
   if (v6 >= 0xA)
   {
@@ -238,20 +238,20 @@ uint64_t __53__HKDisplayTypeController__computeSharedDisplayTypes__block_invoke(
       _os_log_impl(&dword_1C3942000, v7, OS_LOG_TYPE_DEFAULT, "Shared controllers reached more than 10, removing all cached controllers", v15, 2u);
     }
 
-    v8 = [a1 controllers];
-    [v8 removeAllObjects];
+    controllers2 = [self controllers];
+    [controllers2 removeAllObjects];
   }
 
-  v9 = [a1 controllers];
-  v10 = [v4 identifier];
-  v11 = [v9 objectForKey:v10];
+  controllers3 = [self controllers];
+  identifier = [storeCopy identifier];
+  v11 = [controllers3 objectForKey:identifier];
 
   if (!v11)
   {
-    v11 = [[HKDisplayTypeController alloc] initWithHealthStore:v4];
-    v12 = [a1 controllers];
-    v13 = [v4 identifier];
-    [v12 setObject:v11 forKey:v13];
+    v11 = [[HKDisplayTypeController alloc] initWithHealthStore:storeCopy];
+    controllers4 = [self controllers];
+    identifier2 = [storeCopy identifier];
+    [controllers4 setObject:v11 forKey:identifier2];
   }
 
   os_unfair_lock_unlock(&_controllersLock);
@@ -259,13 +259,13 @@ uint64_t __53__HKDisplayTypeController__computeSharedDisplayTypes__block_invoke(
   return v11;
 }
 
-+ (id)displayTypeForObjectType:(id)a3 wheelchairUse:(int64_t)a4
++ (id)displayTypeForObjectType:(id)type wheelchairUse:(int64_t)use
 {
-  v5 = a3;
+  typeCopy = type;
   +[HKDisplayTypeController initializeSharedDisplayTypes];
-  v6 = [_sharedDisplayTypesByObjectType objectForKeyedSubscript:v5];
+  v6 = [_sharedDisplayTypesByObjectType objectForKeyedSubscript:typeCopy];
 
-  if (a4 && ([v6 _isWheelchairUser] & 1) == 0)
+  if (use && ([v6 _isWheelchairUser] & 1) == 0)
   {
     v7 = [v6 copyWithIsWheelchairUser:1];
   }
@@ -290,15 +290,15 @@ uint64_t __53__HKDisplayTypeController__computeSharedDisplayTypes__block_invoke(
   return 0;
 }
 
-- (HKDisplayTypeController)initWithHealthStore:(id)a3
+- (HKDisplayTypeController)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = HKDisplayTypeController;
   v5 = [(HKDisplayTypeController *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E696C678]) initWithHealthStore:v4];
+    v6 = [objc_alloc(MEMORY[0x1E696C678]) initWithHealthStore:storeCopy];
     wheelchairUseCharacteristicCache = v5->_wheelchairUseCharacteristicCache;
     v5->_wheelchairUseCharacteristicCache = v6;
 
@@ -314,31 +314,31 @@ uint64_t __53__HKDisplayTypeController__computeSharedDisplayTypes__block_invoke(
   return v5;
 }
 
-- (void)wheelchairUseCharacteristicCache:(id)a3 wheelchairUsageDidChange:(BOOL)a4
+- (void)wheelchairUseCharacteristicCache:(id)cache wheelchairUsageDidChange:(BOOL)change
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"HKDisplayTypeControllerDisplayTypeStringValuesChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"HKDisplayTypeControllerDisplayTypeStringValuesChangedNotification" object:0];
 }
 
-- (id)displayTypeForObjectType:(id)a3
+- (id)displayTypeForObjectType:(id)type
 {
-  v4 = [(NSDictionary *)self->_displayTypesByObjectType objectForKeyedSubscript:a3];
+  v4 = [(NSDictionary *)self->_displayTypesByObjectType objectForKeyedSubscript:type];
   v5 = [(HKDisplayTypeController *)self _displayTypeWithUpdatedWheelchairUserIfNecessary:v4];
 
   return v5;
 }
 
-- (id)_displayTypeWithUpdatedWheelchairUserIfNecessary:(id)a3
+- (id)_displayTypeWithUpdatedWheelchairUserIfNecessary:(id)necessary
 {
-  v4 = a3;
-  if (-[_HKWheelchairUseCharacteristicCache isWheelchairUser](self->_wheelchairUseCharacteristicCache, "isWheelchairUser") && ([v4 _isWheelchairUser] & 1) == 0)
+  necessaryCopy = necessary;
+  if (-[_HKWheelchairUseCharacteristicCache isWheelchairUser](self->_wheelchairUseCharacteristicCache, "isWheelchairUser") && ([necessaryCopy _isWheelchairUser] & 1) == 0)
   {
-    v5 = [v4 copyWithIsWheelchairUser:1];
+    v5 = [necessaryCopy copyWithIsWheelchairUser:1];
   }
 
   else
   {
-    v5 = [v4 copy];
+    v5 = [necessaryCopy copy];
   }
 
   v6 = v5;
@@ -346,33 +346,33 @@ uint64_t __53__HKDisplayTypeController__computeSharedDisplayTypes__block_invoke(
   return v6;
 }
 
-- (id)displayTypeForObjectTypeUnifyingBloodPressureTypes:(id)a3
+- (id)displayTypeForObjectTypeUnifyingBloodPressureTypes:(id)types
 {
-  v4 = a3;
-  if ([v4 code] == 17 || objc_msgSend(v4, "code") == 16)
+  typesCopy = types;
+  if ([typesCopy code] == 17 || objc_msgSend(typesCopy, "code") == 16)
   {
     v5 = [MEMORY[0x1E696C060] correlationTypeForIdentifier:*MEMORY[0x1E696B730]];
 
-    v4 = v5;
+    typesCopy = v5;
   }
 
-  v6 = [(HKDisplayTypeController *)self displayTypeForObjectType:v4];
+  v6 = [(HKDisplayTypeController *)self displayTypeForObjectType:typesCopy];
 
   return v6;
 }
 
-- (id)displayTypeWithIdentifier:(id)a3
+- (id)displayTypeWithIdentifier:(id)identifier
 {
-  v4 = [(NSDictionary *)self->_displayTypesByIdentifier objectForKeyedSubscript:a3];
+  v4 = [(NSDictionary *)self->_displayTypesByIdentifier objectForKeyedSubscript:identifier];
   v5 = [(HKDisplayTypeController *)self _displayTypeWithUpdatedWheelchairUserIfNecessary:v4];
 
   return v5;
 }
 
-- (id)displayTypesForCategoryIdentifier:(int64_t)a3
+- (id)displayTypesForCategoryIdentifier:(int64_t)identifier
 {
   displayTypesByCategoryIdentifier = self->_displayTypesByCategoryIdentifier;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:identifier];
   v5 = [(NSDictionary *)displayTypesByCategoryIdentifier objectForKeyedSubscript:v4];
 
   return v5;

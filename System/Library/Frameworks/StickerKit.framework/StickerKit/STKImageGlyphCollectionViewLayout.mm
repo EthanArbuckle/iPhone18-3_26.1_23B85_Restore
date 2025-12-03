@@ -1,42 +1,42 @@
 @interface STKImageGlyphCollectionViewLayout
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3;
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)result withScrollingVelocity:(CGPoint)a4;
-- (CGRect)targetRectForSectionIndex:(int64_t)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)result withScrollingVelocity:(CGPoint)velocity;
+- (CGRect)targetRectForSectionIndex:(int64_t)index;
 - (CGSize)collectionViewContentSize;
-- (STKImageGlyphCollectionViewLayout)initWithSection:(id)a3;
-- (STKImageGlyphCollectionViewLayout)initWithSection:(id)a3 configuration:(id)a4;
-- (STKImageGlyphCollectionViewLayout)initWithSectionProvider:(id)a3;
-- (STKImageGlyphCollectionViewLayout)initWithSectionProvider:(id)a3 configuration:(id)a4;
+- (STKImageGlyphCollectionViewLayout)initWithSection:(id)section;
+- (STKImageGlyphCollectionViewLayout)initWithSection:(id)section configuration:(id)configuration;
+- (STKImageGlyphCollectionViewLayout)initWithSectionProvider:(id)provider;
+- (STKImageGlyphCollectionViewLayout)initWithSectionProvider:(id)provider configuration:(id)configuration;
 - (id)currentlyFocusedIndexPath;
-- (id)invalidationContextForEndingInteractiveMovementOfItemsToFinalIndexPaths:(id)a3 previousIndexPaths:(id)a4 movementCancelled:(BOOL)a5;
-- (id)invalidationContextForInteractivelyMovingItems:(id)a3 withTargetPosition:(CGPoint)a4 previousIndexPaths:(id)a5 previousPosition:(CGPoint)a6;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForInteractivelyMovingItemAtIndexPath:(id)a3 withTargetPosition:(CGPoint)a4;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (id)paginationOriginForCurrentOffset:(CGPoint)a3;
-- (id)targetIndexPathForInteractivelyMovingItem:(id)a3 withPosition:(CGPoint)a4;
+- (id)invalidationContextForEndingInteractiveMovementOfItemsToFinalIndexPaths:(id)paths previousIndexPaths:(id)indexPaths movementCancelled:(BOOL)cancelled;
+- (id)invalidationContextForInteractivelyMovingItems:(id)items withTargetPosition:(CGPoint)position previousIndexPaths:(id)paths previousPosition:(CGPoint)previousPosition;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForInteractivelyMovingItemAtIndexPath:(id)path withTargetPosition:(CGPoint)position;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
+- (id)paginationOriginForCurrentOffset:(CGPoint)offset;
+- (id)targetIndexPathForInteractivelyMovingItem:(id)item withPosition:(CGPoint)position;
 - (int64_t)currentlyFocusedSectionIndex;
 - (void)finalizeCollectionViewUpdates;
 - (void)invalidateLayout;
-- (void)prepareForCollectionViewUpdates:(id)a3;
+- (void)prepareForCollectionViewUpdates:(id)updates;
 - (void)prepareLayout;
 @end
 
 @implementation STKImageGlyphCollectionViewLayout
 
-- (STKImageGlyphCollectionViewLayout)initWithSectionProvider:(id)a3 configuration:(id)a4
+- (STKImageGlyphCollectionViewLayout)initWithSectionProvider:(id)provider configuration:(id)configuration
 {
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(provider);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
-  return sub_19A7260E4(sub_19A72A8E4, v6, a4);
+  return sub_19A7260E4(sub_19A72A8E4, v6, configuration);
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_19A725FAC();
   v5 = *&v4[OBJC_IVAR____TtC10StickerKit22ImageGlyphLayoutSolver_lock];
   os_unfair_lock_lock(v5 + 4);
@@ -49,33 +49,33 @@
   return v6;
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset
 {
-  [(STKImageGlyphCollectionViewLayout *)self targetContentOffsetForProposedContentOffset:a3.x withScrollingVelocity:a3.y, 0.0, 0.0];
+  [(STKImageGlyphCollectionViewLayout *)self targetContentOffsetForProposedContentOffset:offset.x withScrollingVelocity:offset.y, 0.0, 0.0];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)result withScrollingVelocity:(CGPoint)a4
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)result withScrollingVelocity:(CGPoint)velocity
 {
   if ((*(&self->super.super.super.isa + OBJC_IVAR___STKImageGlyphCollectionViewLayout_isRearranging) & 1) == 0)
   {
-    x = a4.x;
-    y = a4.y;
+    x = velocity.x;
+    y = velocity.y;
     v6 = result.x;
     v7 = result.y;
-    v8 = self;
+    selfCopy = self;
     v9 = sub_19A725FAC();
-    v10 = [(STKImageGlyphCollectionViewLayout *)v8 collectionView];
-    if (v10)
+    collectionView = [(STKImageGlyphCollectionViewLayout *)selfCopy collectionView];
+    if (collectionView)
     {
-      v11 = v10;
-      [v10 contentOffset];
+      v11 = collectionView;
+      [collectionView contentOffset];
       v13 = v12;
       v15 = v14;
 
-      v10 = v13;
+      collectionView = v13;
       v16 = v15;
     }
 
@@ -84,7 +84,7 @@
       v16 = 0;
     }
 
-    sub_19A6D719C(v10, v16, 0, v6, v7, x, y);
+    sub_19A6D719C(collectionView, v16, 0, v6, v7, x, y);
     v18 = v17;
     v20 = v19;
 
@@ -95,13 +95,13 @@
   return result;
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
+  selfCopy = self;
   v8 = sub_19A726788(x, y, width, height);
 
   return v8;
@@ -109,7 +109,7 @@
 
 - (CGSize)collectionViewContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_19A725FAC();
   sub_19A6D6CB0();
   v5 = v4;
@@ -122,14 +122,14 @@
   return result;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v4 = sub_19A7A9094();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_19A7A9024();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_19A726A50();
 
   (*(v5 + 8))(v7, v4);
@@ -137,14 +137,14 @@
   return v9;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
   v5 = sub_19A7A9094();
   v6 = *(v5 - 8);
   MEMORY[0x1EEE9AC00](v5);
   v8 = &v19 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_19A7A9024();
-  v9 = self;
+  selfCopy = self;
   v10 = sub_19A725FAC();
   v11 = sub_19A7A9064();
   v12 = sub_19A6D7E98(v11);
@@ -180,10 +180,10 @@ LABEL_7:
   return v14;
 }
 
-- (id)targetIndexPathForInteractivelyMovingItem:(id)a3 withPosition:(CGPoint)a4
+- (id)targetIndexPathForInteractivelyMovingItem:(id)item withPosition:(CGPoint)position
 {
-  y = a4.y;
-  x = a4.x;
+  y = position.y;
+  x = position.x;
   v7 = sub_19A7A9094();
   v8 = *(v7 - 8);
   v9 = MEMORY[0x1EEE9AC00](v7);
@@ -191,7 +191,7 @@ LABEL_7:
   MEMORY[0x1EEE9AC00](v9);
   v13 = &v18 - v12;
   sub_19A7A9024();
-  v14 = self;
+  selfCopy = self;
   sub_19A726FA4(x, y);
 
   v15 = *(v8 + 8);
@@ -202,20 +202,20 @@ LABEL_7:
   return v16;
 }
 
-- (id)layoutAttributesForInteractivelyMovingItemAtIndexPath:(id)a3 withTargetPosition:(CGPoint)a4
+- (id)layoutAttributesForInteractivelyMovingItemAtIndexPath:(id)path withTargetPosition:(CGPoint)position
 {
-  y = a4.y;
-  x = a4.x;
+  y = position.y;
+  x = position.x;
   v7 = sub_19A7A9094();
   v8 = *(v7 - 8);
   MEMORY[0x1EEE9AC00](v7);
   v10 = &v16 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_19A7A9024();
   *(&self->super.super.super.isa + OBJC_IVAR___STKImageGlyphCollectionViewLayout_isRearranging) = 1;
-  v11 = self;
+  selfCopy = self;
   v12 = sub_19A7A9014();
   v13 = type metadata accessor for ImageGlyphCollectionViewLayout();
-  v16.receiver = v11;
+  v16.receiver = selfCopy;
   v16.super_class = v13;
   v14 = [(STKImageGlyphCollectionViewLayout *)&v16 layoutAttributesForInteractivelyMovingItemAtIndexPath:v12 withTargetPosition:x, y];
 
@@ -224,67 +224,67 @@ LABEL_7:
   return v14;
 }
 
-- (id)invalidationContextForInteractivelyMovingItems:(id)a3 withTargetPosition:(CGPoint)a4 previousIndexPaths:(id)a5 previousPosition:(CGPoint)a6
+- (id)invalidationContextForInteractivelyMovingItems:(id)items withTargetPosition:(CGPoint)position previousIndexPaths:(id)paths previousPosition:(CGPoint)previousPosition
 {
-  y = a6.y;
-  x = a6.x;
-  v9 = a4.y;
-  v10 = a4.x;
+  y = previousPosition.y;
+  x = previousPosition.x;
+  v9 = position.y;
+  v10 = position.x;
   *(&self->super.super.super.isa + OBJC_IVAR___STKImageGlyphCollectionViewLayout_isRearranging) = 0;
   v14.receiver = self;
   v14.super_class = type metadata accessor for ImageGlyphCollectionViewLayout();
-  v12 = [(STKImageGlyphCollectionViewLayout *)&v14 invalidationContextForInteractivelyMovingItems:a3 withTargetPosition:a5 previousIndexPaths:v10 previousPosition:v9, x, y];
+  v12 = [(STKImageGlyphCollectionViewLayout *)&v14 invalidationContextForInteractivelyMovingItems:items withTargetPosition:paths previousIndexPaths:v10 previousPosition:v9, x, y];
 
   return v12;
 }
 
-- (id)invalidationContextForEndingInteractiveMovementOfItemsToFinalIndexPaths:(id)a3 previousIndexPaths:(id)a4 movementCancelled:(BOOL)a5
+- (id)invalidationContextForEndingInteractiveMovementOfItemsToFinalIndexPaths:(id)paths previousIndexPaths:(id)indexPaths movementCancelled:(BOOL)cancelled
 {
-  v5 = a5;
+  cancelledCopy = cancelled;
   *(&self->super.super.super.isa + OBJC_IVAR___STKImageGlyphCollectionViewLayout_isRearranging) = 0;
   v10.receiver = self;
   v10.super_class = type metadata accessor for ImageGlyphCollectionViewLayout();
-  v8 = [(STKImageGlyphCollectionViewLayout *)&v10 invalidationContextForEndingInteractiveMovementOfItemsToFinalIndexPaths:a3 previousIndexPaths:a4 movementCancelled:v5];
+  v8 = [(STKImageGlyphCollectionViewLayout *)&v10 invalidationContextForEndingInteractiveMovementOfItemsToFinalIndexPaths:paths previousIndexPaths:indexPaths movementCancelled:cancelledCopy];
 
   return v8;
 }
 
 - (void)invalidateLayout
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_19A725FAC();
   sub_19A6D8040();
 
-  v4.receiver = v2;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for ImageGlyphCollectionViewLayout();
   [(STKImageGlyphCollectionViewLayout *)&v4 invalidateLayout];
 }
 
 - (void)prepareLayout
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A7277DC();
 }
 
-- (void)prepareForCollectionViewUpdates:(id)a3
+- (void)prepareForCollectionViewUpdates:(id)updates
 {
   sub_19A5F5028(0, &qword_1EAFCF1C0);
   v4 = sub_19A7AB254();
-  v5 = self;
+  selfCopy = self;
   sub_19A7278F8(v4);
 }
 
 - (void)finalizeCollectionViewUpdates
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A728300();
 }
 
-- (id)paginationOriginForCurrentOffset:(CGPoint)a3
+- (id)paginationOriginForCurrentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = offset.y;
+  x = offset.x;
+  selfCopy = self;
   v6 = sub_19A725FAC();
   v7 = sub_19A6D75E4(x, y);
   v9 = v8;
@@ -303,11 +303,11 @@ LABEL_7:
   return v12;
 }
 
-- (CGRect)targetRectForSectionIndex:(int64_t)a3
+- (CGRect)targetRectForSectionIndex:(int64_t)index
 {
-  v4 = self;
+  selfCopy = self;
   v5 = sub_19A725FAC();
-  v6 = sub_19A6D7E98(a3);
+  v6 = sub_19A6D7E98(index);
   if (v6)
   {
     v7 = v6;
@@ -343,7 +343,7 @@ LABEL_7:
   v4 = *(v3 - 8);
   MEMORY[0x1EEE9AC00](v3);
   v6 = &v10 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
+  selfCopy = self;
   sub_19A728698();
 
   v8 = sub_19A7A9014();
@@ -354,13 +354,13 @@ LABEL_7:
 
 - (int64_t)currentlyFocusedSectionIndex
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_19A725FAC();
-  v4 = [(STKImageGlyphCollectionViewLayout *)v2 collectionView];
-  if (v4)
+  collectionView = [(STKImageGlyphCollectionViewLayout *)selfCopy collectionView];
+  if (collectionView)
   {
-    v5 = v4;
-    [v4 contentOffset];
+    v5 = collectionView;
+    [collectionView contentOffset];
     v7 = v6;
     v9 = v8;
   }
@@ -376,23 +376,23 @@ LABEL_7:
   return v10;
 }
 
-- (STKImageGlyphCollectionViewLayout)initWithSection:(id)a3
+- (STKImageGlyphCollectionViewLayout)initWithSection:(id)section
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (STKImageGlyphCollectionViewLayout)initWithSection:(id)a3 configuration:(id)a4
+- (STKImageGlyphCollectionViewLayout)initWithSection:(id)section configuration:(id)configuration
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (STKImageGlyphCollectionViewLayout)initWithSectionProvider:(id)a3
+- (STKImageGlyphCollectionViewLayout)initWithSectionProvider:(id)provider
 {
-  _Block_copy(a3);
+  _Block_copy(provider);
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;

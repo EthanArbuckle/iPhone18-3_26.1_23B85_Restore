@@ -1,9 +1,9 @@
 @interface IPLocalizationSwitcherServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (IPLocalizationSwitcherServiceDelegate)init;
-- (void)addSubscriber:(unint64_t)a3;
-- (void)preferredLanguageChangedForBundleID:(id)a3;
-- (void)removeSubscriber:(unint64_t)a3;
+- (void)addSubscriber:(unint64_t)subscriber;
+- (void)preferredLanguageChangedForBundleID:(id)d;
+- (void)removeSubscriber:(unint64_t)subscriber;
 @end
 
 @implementation IPLocalizationSwitcherServiceDelegate
@@ -27,19 +27,19 @@
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___IPLocalizationSwitcherProtocol];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
   v7 = objc_opt_new();
   [v7 setDelegate:self];
-  [v5 setExportedObject:v7];
-  v8 = [v5 valueForEntitlement:@"com.apple.localizationswitcher"];
+  [connectionCopy setExportedObject:v7];
+  v8 = [connectionCopy valueForEntitlement:@"com.apple.localizationswitcher"];
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v8 BOOLValue])
   {
-    [v5 resume];
+    [connectionCopy resume];
     v9 = 1;
   }
 
@@ -50,30 +50,30 @@
       sub_100004E74();
     }
 
-    [v5 invalidate];
+    [connectionCopy invalidate];
     v9 = 0;
   }
 
   return v9;
 }
 
-- (void)addSubscriber:(unint64_t)a3
+- (void)addSubscriber:(unint64_t)subscriber
 {
-  v5 = [(IPLocalizationSwitcherServiceDelegate *)self subscribers];
-  v4 = [NSNumber numberWithUnsignedLongLong:a3];
-  [v5 addObject:v4];
+  subscribers = [(IPLocalizationSwitcherServiceDelegate *)self subscribers];
+  v4 = [NSNumber numberWithUnsignedLongLong:subscriber];
+  [subscribers addObject:v4];
 }
 
-- (void)removeSubscriber:(unint64_t)a3
+- (void)removeSubscriber:(unint64_t)subscriber
 {
-  v5 = [(IPLocalizationSwitcherServiceDelegate *)self subscribers];
-  v4 = [NSNumber numberWithUnsignedLongLong:a3];
-  [v5 removeObject:v4];
+  subscribers = [(IPLocalizationSwitcherServiceDelegate *)self subscribers];
+  v4 = [NSNumber numberWithUnsignedLongLong:subscriber];
+  [subscribers removeObject:v4];
 }
 
-- (void)preferredLanguageChangedForBundleID:(id)a3
+- (void)preferredLanguageChangedForBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -95,16 +95,16 @@
           objc_enumerationMutation(obj);
         }
 
-        v10 = [*(*(&v16 + 1) + 8 * i) unsignedLongLongValue];
-        v11 = [(IPLocalizationSwitcherServiceDelegate *)self publisher];
-        v12 = [(IPLocalizationSwitcherServiceDelegate *)self queue];
-        v15 = v4;
+        unsignedLongLongValue = [*(*(&v16 + 1) + 8 * i) unsignedLongLongValue];
+        publisher = [(IPLocalizationSwitcherServiceDelegate *)self publisher];
+        queue = [(IPLocalizationSwitcherServiceDelegate *)self queue];
+        v15 = dCopy;
         xpc_event_publisher_fire_with_reply();
 
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
         {
           *buf = v13;
-          v21 = v10;
+          v21 = unsignedLongLongValue;
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Fired initial XPC event to ping the subscriber [%llu]", buf, 0xCu);
         }
       }

@@ -1,61 +1,61 @@
 @interface TSWPSearchReference
-+ (id)searchReferenceWithStorage:(id)a3 range:(_NSRange)a4;
-+ (id)searchReferenceWithStorage:(id)a3 selection:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)searchReferenceWithStorage:(id)storage range:(_NSRange)range;
++ (id)searchReferenceWithStorage:(id)storage selection:(id)selection;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isInsertionPoint;
 - (BOOL)isReplaceable;
 - (BOOL)isSelectable;
 - (CGPoint)searchReferencePoint;
 - (NSString)description;
-- (TSWPSearchReference)initWithStorage:(id)a3 range:(_NSRange)a4;
-- (TSWPSearchReference)initWithStorage:(id)a3 selection:(id)a4;
+- (TSWPSearchReference)initWithStorage:(id)storage range:(_NSRange)range;
+- (TSWPSearchReference)initWithStorage:(id)storage selection:(id)selection;
 - (_NSRange)range;
 - (_NSRange)smartFieldRange;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)searchReferenceEnd;
 - (id)searchReferenceStart;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (void)dealloc;
 - (void)pUpdateSelection;
-- (void)setRange:(_NSRange)a3;
-- (void)setRefersToSmartField:(BOOL)a3;
-- (void)setSelection:(id)a3;
-- (void)setSmartField:(id)a3;
-- (void)setSmartFieldRange:(_NSRange)a3;
+- (void)setRange:(_NSRange)range;
+- (void)setRefersToSmartField:(BOOL)field;
+- (void)setSelection:(id)selection;
+- (void)setSmartField:(id)field;
+- (void)setSmartFieldRange:(_NSRange)range;
 @end
 
 @implementation TSWPSearchReference
 
-+ (id)searchReferenceWithStorage:(id)a3 range:(_NSRange)a4
++ (id)searchReferenceWithStorage:(id)storage range:(_NSRange)range
 {
-  v4 = [[TSWPSearchReference alloc] initWithStorage:a3 range:a4.location, a4.length];
+  v4 = [[TSWPSearchReference alloc] initWithStorage:storage range:range.location, range.length];
 
   return v4;
 }
 
-+ (id)searchReferenceWithStorage:(id)a3 selection:(id)a4
++ (id)searchReferenceWithStorage:(id)storage selection:(id)selection
 {
-  v4 = [[a1 alloc] initWithStorage:a3 selection:a4];
+  v4 = [[self alloc] initWithStorage:storage selection:selection];
 
   return v4;
 }
 
-- (TSWPSearchReference)initWithStorage:(id)a3 range:(_NSRange)a4
+- (TSWPSearchReference)initWithStorage:(id)storage range:(_NSRange)range
 {
-  v6 = [TSWPSelection selectionWithRange:a4.location, a4.length];
+  v6 = [TSWPSelection selectionWithRange:range.location, range.length];
 
-  return [(TSWPSearchReference *)self initWithStorage:a3 selection:v6];
+  return [(TSWPSearchReference *)self initWithStorage:storage selection:v6];
 }
 
-- (TSWPSearchReference)initWithStorage:(id)a3 selection:(id)a4
+- (TSWPSearchReference)initWithStorage:(id)storage selection:(id)selection
 {
   v8.receiver = self;
   v8.super_class = TSWPSearchReference;
   v6 = [(TSWPSearchReference *)&v8 init];
   if (v6)
   {
-    *(v6 + 1) = a3;
-    [v6 setSelection:a4];
+    *(v6 + 1) = storage;
+    [v6 setSelection:selection];
     *(v6 + 24) = xmmword_26CA637B0;
     *(v6 + 6) = 0;
     [v6 setSearchReferencePoint:{1.79769313e308, 1.79769313e308}];
@@ -75,29 +75,29 @@
 {
   if ([(TSWPSearchReference *)self refersToSmartField])
   {
-    v3 = 6;
+    type = 6;
   }
 
   else
   {
-    v3 = [(TSWPSelection *)[(TSWPSearchReference *)self selection] type];
+    type = [(TSWPSelection *)[(TSWPSearchReference *)self selection] type];
   }
 
-  if (v3 != [(TSWPSelection *)[(TSWPSearchReference *)self selection] type]|| (v4 = [(TSWPSearchReference *)self smartFieldRange], v6 = v5, v4 != [(TSWPSelection *)self->_selection smartFieldRange]) || v6 != v7)
+  if (type != [(TSWPSelection *)[(TSWPSearchReference *)self selection] type]|| (v4 = [(TSWPSearchReference *)self smartFieldRange], v6 = v5, v4 != [(TSWPSelection *)self->_selection smartFieldRange]) || v6 != v7)
   {
     selection = self->_selection;
-    v9 = [(TSWPSearchReference *)self smartFieldRange];
-    v11 = [(TSWPSelection *)selection copyWithNewType:v3 smartFieldRange:v9, v10];
+    smartFieldRange = [(TSWPSearchReference *)self smartFieldRange];
+    v11 = [(TSWPSelection *)selection copyWithNewType:type smartFieldRange:smartFieldRange, v10];
 
     self->_selection = v11;
   }
 }
 
-- (void)setSmartFieldRange:(_NSRange)a3
+- (void)setSmartFieldRange:(_NSRange)range
 {
-  if (self->_smartFieldRange.location != a3.location || self->_smartFieldRange.length != a3.length)
+  if (self->_smartFieldRange.location != range.location || self->_smartFieldRange.length != range.length)
   {
-    self->_smartFieldRange = a3;
+    self->_smartFieldRange = range;
     [(TSWPSearchReference *)self pUpdateSelection];
   }
 }
@@ -111,11 +111,11 @@
   return result;
 }
 
-- (void)setRefersToSmartField:(BOOL)a3
+- (void)setRefersToSmartField:(BOOL)field
 {
-  if (self->_refersToSmartField != a3)
+  if (self->_refersToSmartField != field)
   {
-    self->_refersToSmartField = a3;
+    self->_refersToSmartField = field;
     [(TSWPSearchReference *)self setSmartFieldRange:0x7FFFFFFFFFFFFFFFLL, 0];
     [(TSWPSearchReference *)self setSmartField:0];
 
@@ -123,19 +123,19 @@
   }
 }
 
-- (void)setSmartField:(id)a3
+- (void)setSmartField:(id)field
 {
-  if (self->_smartField != a3)
+  if (self->_smartField != field)
   {
-    v6 = a3;
+    fieldCopy = field;
 
-    self->_smartField = a3;
+    self->_smartField = field;
 
     [(TSWPSearchReference *)self pUpdateSelection];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
@@ -144,8 +144,8 @@
     goto LABEL_8;
   }
 
-  v5 = [(TSWPSearchReference *)self storage];
-  if (v5 != [v4 storage])
+  storage = [(TSWPSearchReference *)self storage];
+  if (storage != [v4 storage])
   {
     goto LABEL_8;
   }
@@ -155,25 +155,25 @@
     goto LABEL_8;
   }
 
-  v6 = [(TSWPSearchReference *)self refersToSmartField];
-  if (v6 != [v4 refersToSmartField])
+  refersToSmartField = [(TSWPSearchReference *)self refersToSmartField];
+  if (refersToSmartField != [v4 refersToSmartField])
   {
     goto LABEL_8;
   }
 
-  v7 = [(TSWPSearchReference *)self smartFieldRange];
+  smartFieldRange = [(TSWPSearchReference *)self smartFieldRange];
   v9 = v8;
   v11 = 0;
-  if (v7 != [v4 smartFieldRange] || v9 != v10)
+  if (smartFieldRange != [v4 smartFieldRange] || v9 != v10)
   {
     goto LABEL_9;
   }
 
-  v12 = [(TSWPSearchReference *)self smartField];
-  if (v12 == [v4 smartField])
+  smartField = [(TSWPSearchReference *)self smartField];
+  if (smartField == [v4 smartField])
   {
-    v26 = [(TSWPSearchReference *)self annotation];
-    v11 = v26 == [v4 annotation];
+    annotation = [(TSWPSearchReference *)self annotation];
+    v11 = annotation == [v4 annotation];
   }
 
   else
@@ -209,15 +209,15 @@ LABEL_9:
   return result;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v5 = [(TSWPSearchReference *)self storage];
-  v6 = [a3 storage];
-  if (v5 == v6)
+  storage = [(TSWPSearchReference *)self storage];
+  storage2 = [compare storage];
+  if (storage == storage2)
   {
-    v10 = [(TSWPSelection *)[(TSWPSearchReference *)self selection] range];
+    range = [(TSWPSelection *)[(TSWPSearchReference *)self selection] range];
     v12 = v11;
-    v13 = [objc_msgSend(a3 "selection")];
+    v13 = [objc_msgSend(compare "selection")];
     v15 = 1;
     v16 = -1;
     if (v12 >= v14)
@@ -225,12 +225,12 @@ LABEL_9:
       v16 = v14 < v12;
     }
 
-    if (v13 >= v10)
+    if (v13 >= range)
     {
       v15 = v16;
     }
 
-    if (v10 >= v13)
+    if (range >= v13)
     {
       return v15;
     }
@@ -243,24 +243,24 @@ LABEL_9:
 
   else
   {
-    v7 = v6;
-    v8 = [v5 wpKind];
-    if (v8 < [v7 wpKind])
+    v7 = storage2;
+    wpKind = [storage wpKind];
+    if (wpKind < [v7 wpKind])
     {
       return -1;
     }
 
-    v17 = [v7 wpKind];
-    if (v17 >= [v5 wpKind])
+    wpKind2 = [v7 wpKind];
+    if (wpKind2 >= [storage wpKind])
     {
-      v18 = [v5 length];
+      v18 = [storage length];
       if (v18 < [v7 length])
       {
         return -1;
       }
 
       v19 = [v7 length];
-      return v19 < [v5 length];
+      return v19 < [storage length];
     }
 
     else
@@ -270,16 +270,16 @@ LABEL_9:
   }
 }
 
-- (void)setRange:(_NSRange)a3
+- (void)setRange:(_NSRange)range
 {
-  v4 = [[TSWPSelection alloc] initWithRange:a3.location, a3.length];
+  v4 = [[TSWPSelection alloc] initWithRange:range.location, range.length];
   [(TSWPSearchReference *)self setSelection:v4];
 }
 
-- (void)setSelection:(id)a3
+- (void)setSelection:(id)selection
 {
   selection = self->_selection;
-  if (selection != a3)
+  if (selection != selection)
   {
     v15 = v5;
     v16 = v4;
@@ -287,12 +287,12 @@ LABEL_9:
 
     if ([(TSWPSearchReference *)self refersToSmartField])
     {
-      v12 = 6;
+      type = 6;
     }
 
     else
     {
-      v12 = [a3 type];
+      type = [selection type];
     }
 
     v13 = [(TSWPSearchReference *)self refersToSmartField:v6];
@@ -302,36 +302,36 @@ LABEL_9:
       p_smartFieldRange = MEMORY[0x277D6C268];
     }
 
-    self->_selection = [a3 copyWithNewType:v12 smartFieldRange:{p_smartFieldRange->location, p_smartFieldRange->length}];
+    self->_selection = [selection copyWithNewType:type smartFieldRange:{p_smartFieldRange->location, p_smartFieldRange->length}];
   }
 }
 
 - (_NSRange)range
 {
-  v2 = [(TSWPSearchReference *)self selection];
+  selection = [(TSWPSearchReference *)self selection];
 
-  v3 = [(TSWPSelection *)v2 range];
+  range = [(TSWPSelection *)selection range];
   result.length = v4;
-  result.location = v3;
+  result.location = range;
   return result;
 }
 
 - (BOOL)isInsertionPoint
 {
-  v2 = [(TSWPSearchReference *)self selection];
+  selection = [(TSWPSearchReference *)self selection];
 
-  return [(TSWPSelection *)v2 isInsertionPoint];
+  return [(TSWPSelection *)selection isInsertionPoint];
 }
 
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(TSWPSearchReference *)self storage];
+  storage = [(TSWPSearchReference *)self storage];
   [(TSWPSearchReference *)self searchReferencePoint];
   v6 = v5;
   [(TSWPSearchReference *)self searchReferencePoint];
   v8 = v7;
-  v9 = [(TSWPSearchReference *)self selection];
+  selection = [(TSWPSearchReference *)self selection];
   if ([(TSWPSearchReference *)self refersToSmartField])
   {
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Smart Field: %@", NSStringFromRange(self->_smartFieldRange)];
@@ -342,47 +342,47 @@ LABEL_9:
     v10 = &stru_287D36338;
   }
 
-  return [v3 stringWithFormat:@"[TSWPSearchReference %p] storage=%p, loc: %f, %f selection: %@, %@", self, v4, v6, v8, v9, v10];
+  return [v3 stringWithFormat:@"[TSWPSearchReference %p] storage=%p, loc: %f, %f selection: %@, %@", self, storage, v6, v8, selection, v10];
 }
 
 - (id)searchReferenceStart
 {
   storage = self->_storage;
-  v3 = [(TSWPSearchReference *)self range];
+  range = [(TSWPSearchReference *)self range];
 
-  return [TSWPSearchReference searchReferenceWithStorage:storage range:v3, 0];
+  return [TSWPSearchReference searchReferenceWithStorage:storage range:range, 0];
 }
 
 - (id)searchReferenceEnd
 {
   storage = self->_storage;
-  v3 = [(TSWPSearchReference *)self range];
+  range = [(TSWPSearchReference *)self range];
 
-  return [TSWPSearchReference searchReferenceWithStorage:storage range:v3 + v4, 0];
+  return [TSWPSearchReference searchReferenceWithStorage:storage range:range + v4, 0];
 }
 
 - (BOOL)isReplaceable
 {
-  v3 = [(TSWPSearchReference *)self selection];
+  selection = [(TSWPSearchReference *)self selection];
   v4 = [-[TSWPSearchReference storage](self "storage")];
   if (v4)
   {
-    v5 = v4;
+    parentInfo = v4;
     do
     {
       objc_opt_class();
-      if (objc_opt_isKindOfClass() & 1) != 0 && ([v5 isLocked])
+      if (objc_opt_isKindOfClass() & 1) != 0 && ([parentInfo isLocked])
       {
         goto LABEL_12;
       }
 
-      v5 = [v5 parentInfo];
+      parentInfo = [parentInfo parentInfo];
     }
 
-    while (v5);
+    while (parentInfo);
   }
 
-  if (v3 && (v6 = -[TSWPSelection range](v3, "range"), v8 = v7, [-[TSWPSearchReference storage](self "storage")]))
+  if (selection && (v6 = -[TSWPSelection range](selection, "range"), v8 = v7, [-[TSWPSearchReference storage](self "storage")]))
   {
     v9 = [-[TSWPSearchReference storage](self "storage")];
     if (v9)
@@ -412,28 +412,28 @@ LABEL_12:
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 1;
-  v3 = [(TSWPSearchReference *)self selection];
-  v4 = v3;
-  LODWORD(v5) = *(v15 + 24);
-  if (v5 == 1 && v3 != 0)
+  selection = [(TSWPSearchReference *)self selection];
+  v4 = selection;
+  LODWORD(range) = *(v15 + 24);
+  if (range == 1 && selection != 0)
   {
-    v5 = [(TSWPSelection *)v3 range];
+    range = [(TSWPSelection *)selection range];
     v8 = v7;
-    v9 = [(TSWPSearchReference *)self storage];
-    v10 = [(TSWPSelection *)v4 range];
+    storage = [(TSWPSearchReference *)self storage];
+    range2 = [(TSWPSelection *)v4 range];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __35__TSWPSearchReference_isSelectable__block_invoke;
     v13[3] = &unk_279D4A010;
-    v13[5] = v5;
+    v13[5] = range;
     v13[6] = v8;
     v13[4] = &v14;
-    [v9 enumerateSmartFieldsWithAttributeKind:6 inRange:v10 usingBlock:{v11, v13}];
-    LOBYTE(v5) = *(v15 + 24);
+    [storage enumerateSmartFieldsWithAttributeKind:6 inRange:range2 usingBlock:{v11, v13}];
+    LOBYTE(range) = *(v15 + 24);
   }
 
   _Block_object_dispose(&v14, 8);
-  return v5 & 1;
+  return range & 1;
 }
 
 void *__35__TSWPSearchReference_isSelectable__block_invoke(void *result, uint64_t a2, unint64_t a3, uint64_t a4, _BYTE *a5)
@@ -448,14 +448,14 @@ void *__35__TSWPSearchReference_isSelectable__block_invoke(void *result, uint64_
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[TSWPSearchReference alloc] initWithStorage:self->_storage selection:[(TSWPSearchReference *)self selection]];
   [(TSWPSearchReference *)self searchReferencePoint];
   [(TSWPSearchReference *)v4 setSearchReferencePoint:?];
   [(TSWPSearchReference *)v4 setRefersToSmartField:[(TSWPSearchReference *)self refersToSmartField]];
-  v5 = [(TSWPSearchReference *)self smartFieldRange];
-  [(TSWPSearchReference *)v4 setSmartFieldRange:v5, v6];
+  smartFieldRange = [(TSWPSearchReference *)self smartFieldRange];
+  [(TSWPSearchReference *)v4 setSmartFieldRange:smartFieldRange, v6];
   [(TSWPSearchReference *)v4 setSmartField:[(TSWPSearchReference *)self smartField]];
   return v4;
 }

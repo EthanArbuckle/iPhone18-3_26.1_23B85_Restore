@@ -1,22 +1,22 @@
 @interface TPSWidgetTipViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
 @end
 
 @implementation TPSWidgetTipViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TPSWidgetTipView" hasInstanceMethod:@"tip" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TPSWidgetTip" isKindOfClass:@"TPSTip"];
-  [v3 validateClass:@"TPSWidgetTipView" hasInstanceMethod:@"updateTitleLabel" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TPSWidgetTipView" hasInstanceMethod:@"tip" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TPSWidgetTip" isKindOfClass:@"TPSTip"];
+  [validationsCopy validateClass:@"TPSWidgetTipView" hasInstanceMethod:@"updateTitleLabel" withFullSignature:{"v", 0}];
 }
 
 - (CGRect)accessibilityFrame
 {
-  v2 = [(TPSWidgetTipViewAccessibility *)self superview];
-  [v2 accessibilityFrame];
+  superview = [(TPSWidgetTipViewAccessibility *)self superview];
+  [superview accessibilityFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;

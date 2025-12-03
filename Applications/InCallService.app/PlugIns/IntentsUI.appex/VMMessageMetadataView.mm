@@ -1,21 +1,21 @@
 @interface VMMessageMetadataView
-- (VMMessageMetadataView)initWithAccessibleLayout:(BOOL)a3;
+- (VMMessageMetadataView)initWithAccessibleLayout:(BOOL)layout;
 - (VMMessageMetadataViewDelegate)delegate;
 - (id)createConstraintsForAccessibleExpandedLayout;
-- (id)createConstraintsForAccessibleNonExpandedLayoutForEditing:(BOOL)a3;
+- (id)createConstraintsForAccessibleNonExpandedLayoutForEditing:(BOOL)editing;
 - (id)createConstraintsForNonAccessibleExpandedLayout;
-- (id)createConstraintsForNonAccessibleNonExpandedLayoutForEditing:(BOOL)a3;
+- (id)createConstraintsForNonAccessibleNonExpandedLayoutForEditing:(BOOL)editing;
 - (id)createFixedConstraintsForAccessibleLayout;
 - (id)createFixedConstraintsForNonAccessibleLayout;
-- (void)configureWithViewModel:(id)a3;
+- (void)configureWithViewModel:(id)model;
 - (void)createConstraints;
-- (void)didTapAction:(id)a3;
-- (void)didTapInfo:(id)a3;
-- (void)removeConstraints:(id)a3;
-- (void)setEditing:(BOOL)a3;
-- (void)setExpanded:(BOOL)a3;
-- (void)setLayoutIsAccessible:(BOOL)a3;
-- (void)setPriorityOfConstraints:(id)a3 to:(float)a4;
+- (void)didTapAction:(id)action;
+- (void)didTapInfo:(id)info;
+- (void)removeConstraints:(id)constraints;
+- (void)setEditing:(BOOL)editing;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setLayoutIsAccessible:(BOOL)accessible;
+- (void)setPriorityOfConstraints:(id)constraints to:(float)to;
 - (void)tintColorDidChange;
 - (void)updateLabelColors;
 - (void)updateSubviewConfiguration;
@@ -23,7 +23,7 @@
 
 @implementation VMMessageMetadataView
 
-- (VMMessageMetadataView)initWithAccessibleLayout:(BOOL)a3
+- (VMMessageMetadataView)initWithAccessibleLayout:(BOOL)layout
 {
   v77.receiver = self;
   v77.super_class = VMMessageMetadataView;
@@ -31,7 +31,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_layoutIsAccessible = a3;
+    v4->_layoutIsAccessible = layout;
     [(VMMessageMetadataView *)v4 setDirectionalLayoutMargins:12.0, 0.0, 12.0, 0.0];
     v6 = +[TPActionButton button];
     infoButton = v5->_infoButton;
@@ -157,36 +157,36 @@
     v5->_buttonLayoutGuide = v48;
 
     [(VMMessageMetadataView *)v5 addLayoutGuide:v5->_buttonLayoutGuide];
-    v76 = [(UILayoutGuide *)v5->_buttonLayoutGuide topAnchor];
-    v75 = [(UIDateLabel *)v5->_shortDateLabel bottomAnchor];
-    v74 = [v76 constraintEqualToAnchor:v75];
+    topAnchor = [(UILayoutGuide *)v5->_buttonLayoutGuide topAnchor];
+    bottomAnchor = [(UIDateLabel *)v5->_shortDateLabel bottomAnchor];
+    v74 = [topAnchor constraintEqualToAnchor:bottomAnchor];
     v78[0] = v74;
-    v73 = [(UILayoutGuide *)v5->_buttonLayoutGuide bottomAnchor];
-    v72 = [(UILabel *)v5->_shortDurationLabel topAnchor];
-    v71 = [v73 constraintEqualToAnchor:v72];
+    bottomAnchor2 = [(UILayoutGuide *)v5->_buttonLayoutGuide bottomAnchor];
+    topAnchor2 = [(UILabel *)v5->_shortDurationLabel topAnchor];
+    v71 = [bottomAnchor2 constraintEqualToAnchor:topAnchor2];
     v78[1] = v71;
-    v50 = [(TPBadgeView *)v5->_badgeView leadingAnchor];
-    v51 = [(VMMessageMetadataView *)v5 layoutMarginsGuide];
-    v52 = [v51 leadingAnchor];
-    v53 = [v50 constraintEqualToAnchor:v52];
+    leadingAnchor = [(TPBadgeView *)v5->_badgeView leadingAnchor];
+    layoutMarginsGuide = [(VMMessageMetadataView *)v5 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v53 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v78[2] = v53;
-    v54 = [(TPBadgeView *)v5->_badgeView centerYAnchor];
-    v55 = [(UILabel *)v5->_subtitleLabel centerYAnchor];
-    v56 = [v54 constraintEqualToAnchor:v55];
+    centerYAnchor = [(TPBadgeView *)v5->_badgeView centerYAnchor];
+    centerYAnchor2 = [(UILabel *)v5->_subtitleLabel centerYAnchor];
+    v56 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v78[3] = v56;
     v57 = [NSArray arrayWithObjects:v78 count:4];
     [NSLayoutConstraint activateConstraints:v57];
 
-    v58 = [(UILabel *)v5->_subtitleLabel leadingAnchor];
-    v59 = [(VMMessageMetadataView *)v5 layoutMarginsGuide];
-    v60 = [v59 leadingAnchor];
-    v61 = [v58 constraintEqualToAnchor:v60];
+    leadingAnchor3 = [(UILabel *)v5->_subtitleLabel leadingAnchor];
+    layoutMarginsGuide2 = [(VMMessageMetadataView *)v5 layoutMarginsGuide];
+    leadingAnchor4 = [layoutMarginsGuide2 leadingAnchor];
+    v61 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     subtitleLeadingToLayoutMarginConstrant = v5->_subtitleLeadingToLayoutMarginConstrant;
     v5->_subtitleLeadingToLayoutMarginConstrant = v61;
 
-    v63 = [(TPBadgeView *)v5->_badgeView trailingAnchor];
-    v64 = [(UILabel *)v5->_subtitleLabel leadingAnchor];
-    v65 = [v63 constraintEqualToAnchor:v64 constant:-8.0];
+    trailingAnchor = [(TPBadgeView *)v5->_badgeView trailingAnchor];
+    leadingAnchor5 = [(UILabel *)v5->_subtitleLabel leadingAnchor];
+    v65 = [trailingAnchor constraintEqualToAnchor:leadingAnchor5 constant:-8.0];
     badgeViewTrailingToSubtitleLeadingConstrant = v5->_badgeViewTrailingToSubtitleLeadingConstrant;
     v5->_badgeViewTrailingToSubtitleLeadingConstrant = v65;
 
@@ -206,50 +206,50 @@
   return v5;
 }
 
-- (void)configureWithViewModel:(id)a3
+- (void)configureWithViewModel:(id)model
 {
-  v22 = a3;
-  v4 = [(VMMessageMetadataView *)self currentViewModel];
-  v5 = [v22 isEqual:v4];
+  modelCopy = model;
+  currentViewModel = [(VMMessageMetadataView *)self currentViewModel];
+  v5 = [modelCopy isEqual:currentViewModel];
 
   if ((v5 & 1) == 0)
   {
-    [(VMMessageMetadataView *)self setCurrentViewModel:v22];
-    v6 = [v22 localizedTitle];
-    v7 = [(VMMessageMetadataView *)self titleLabel];
-    [v7 setText:v6];
+    [(VMMessageMetadataView *)self setCurrentViewModel:modelCopy];
+    localizedTitle = [modelCopy localizedTitle];
+    titleLabel = [(VMMessageMetadataView *)self titleLabel];
+    [titleLabel setText:localizedTitle];
 
-    v8 = [v22 localizedSubtitle];
-    v9 = [(VMMessageMetadataView *)self subtitleLabel];
-    [v9 setText:v8];
+    localizedSubtitle = [modelCopy localizedSubtitle];
+    subtitleLabel = [(VMMessageMetadataView *)self subtitleLabel];
+    [subtitleLabel setText:localizedSubtitle];
 
-    v10 = [v22 date];
-    v11 = [(VMMessageMetadataView *)self shortDateLabel];
-    [v11 setDate:v10];
+    date = [modelCopy date];
+    shortDateLabel = [(VMMessageMetadataView *)self shortDateLabel];
+    [shortDateLabel setDate:date];
 
-    v12 = [v22 localizedDuration];
-    v13 = [(VMMessageMetadataView *)self shortDurationLabel];
-    [v13 setText:v12];
+    localizedDuration = [modelCopy localizedDuration];
+    shortDurationLabel = [(VMMessageMetadataView *)self shortDurationLabel];
+    [shortDurationLabel setText:localizedDuration];
 
-    v14 = [v22 localizedDate];
-    v15 = [(VMMessageMetadataView *)self fullDateLabel];
-    [v15 setText:v14];
+    localizedDate = [modelCopy localizedDate];
+    fullDateLabel = [(VMMessageMetadataView *)self fullDateLabel];
+    [fullDateLabel setText:localizedDate];
 
-    LODWORD(v14) = [v22 showsRestrictedAlertView];
-    v16 = [(VMMessageMetadataView *)self actionButton];
-    [v16 setEnabled:v14 ^ 1];
+    LODWORD(localizedDate) = [modelCopy showsRestrictedAlertView];
+    actionButton = [(VMMessageMetadataView *)self actionButton];
+    [actionButton setEnabled:localizedDate ^ 1];
 
-    v17 = [v22 localizedSenderIdentityTitle];
+    localizedSenderIdentityTitle = [modelCopy localizedSenderIdentityTitle];
 
-    v18 = [(VMMessageMetadataView *)self badgeView];
-    v19 = v18;
-    if (v17)
+    badgeView = [(VMMessageMetadataView *)self badgeView];
+    v19 = badgeView;
+    if (localizedSenderIdentityTitle)
     {
-      v20 = [v22 localizedSenderIdentityTitle];
-      [v19 setTitle:v20];
+      localizedSenderIdentityTitle2 = [modelCopy localizedSenderIdentityTitle];
+      [v19 setTitle:localizedSenderIdentityTitle2];
 
-      v18 = [(VMMessageMetadataView *)self badgeView];
-      v19 = v18;
+      badgeView = [(VMMessageMetadataView *)self badgeView];
+      v19 = badgeView;
       v21 = 0;
     }
 
@@ -258,83 +258,83 @@
       v21 = 1;
     }
 
-    [v18 setHidden:v21];
+    [badgeView setHidden:v21];
 
     [(VMMessageMetadataView *)self updateSubviewConfiguration];
   }
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  if (self->_expanded != a3)
+  if (self->_expanded != expanded)
   {
-    self->_expanded = a3;
+    self->_expanded = expanded;
     [(VMMessageMetadataView *)self updateSubviewConfiguration];
   }
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
-    self->_editing = a3;
+    self->_editing = editing;
     [(VMMessageMetadataView *)self updateSubviewConfiguration];
   }
 }
 
-- (void)setLayoutIsAccessible:(BOOL)a3
+- (void)setLayoutIsAccessible:(BOOL)accessible
 {
-  if (self->_layoutIsAccessible != a3)
+  if (self->_layoutIsAccessible != accessible)
   {
-    self->_layoutIsAccessible = a3;
+    self->_layoutIsAccessible = accessible;
     [(VMMessageMetadataView *)self createConstraints];
 
     [(VMMessageMetadataView *)self updateSubviewConfiguration];
   }
 }
 
-- (void)didTapInfo:(id)a3
+- (void)didTapInfo:(id)info
 {
-  v4 = [(VMMessageMetadataView *)self delegate];
-  [v4 messageMetadataView:self didTapButtonType:2];
+  delegate = [(VMMessageMetadataView *)self delegate];
+  [delegate messageMetadataView:self didTapButtonType:2];
 }
 
-- (void)didTapAction:(id)a3
+- (void)didTapAction:(id)action
 {
-  v4 = [(VMMessageMetadataView *)self delegate];
-  [v4 messageMetadataView:self didTapButtonType:1];
+  delegate = [(VMMessageMetadataView *)self delegate];
+  [delegate messageMetadataView:self didTapButtonType:1];
 }
 
 - (void)updateSubviewConfiguration
 {
   v34 = [objc_opt_class() constraintsKeyForAccessibleLayout:-[VMMessageMetadataView layoutIsAccessible](self expanded:"layoutIsAccessible") editing:{-[VMMessageMetadataView isExpanded](self, "isExpanded"), -[VMMessageMetadataView isEditing](self, "isEditing")}];
-  v3 = [(VMMessageMetadataView *)self currentRequiredConstraintsKey];
-  v4 = [v34 isEqualToString:v3];
+  currentRequiredConstraintsKey = [(VMMessageMetadataView *)self currentRequiredConstraintsKey];
+  v4 = [v34 isEqualToString:currentRequiredConstraintsKey];
 
   if ((v4 & 1) == 0)
   {
-    v5 = [(VMMessageMetadataView *)self currentRequiredConstraints];
+    currentRequiredConstraints = [(VMMessageMetadataView *)self currentRequiredConstraints];
     LODWORD(v6) = 1132068864;
-    [(VMMessageMetadataView *)self setPriorityOfConstraints:v5 to:v6];
+    [(VMMessageMetadataView *)self setPriorityOfConstraints:currentRequiredConstraints to:v6];
 
-    v7 = [(VMMessageMetadataView *)self constraintsForLayouts];
-    v8 = [v7 objectForKeyedSubscript:v34];
+    constraintsForLayouts = [(VMMessageMetadataView *)self constraintsForLayouts];
+    v8 = [constraintsForLayouts objectForKeyedSubscript:v34];
     [(VMMessageMetadataView *)self setCurrentRequiredConstraints:v8];
 
     [(VMMessageMetadataView *)self setCurrentRequiredConstraintsKey:v34];
-    v9 = [(VMMessageMetadataView *)self currentRequiredConstraints];
+    currentRequiredConstraints2 = [(VMMessageMetadataView *)self currentRequiredConstraints];
     LODWORD(v10) = 1148846080;
-    [(VMMessageMetadataView *)self setPriorityOfConstraints:v9 to:v10];
+    [(VMMessageMetadataView *)self setPriorityOfConstraints:currentRequiredConstraints2 to:v10];
   }
 
-  v11 = [(VMMessageMetadataView *)self badgeView];
-  v12 = [v11 isHidden];
+  badgeView = [(VMMessageMetadataView *)self badgeView];
+  isHidden = [badgeView isHidden];
 
-  v13 = [(VMMessageMetadataView *)self subtitleLeadingToLayoutMarginConstrant];
-  [v13 setActive:v12];
+  subtitleLeadingToLayoutMarginConstrant = [(VMMessageMetadataView *)self subtitleLeadingToLayoutMarginConstrant];
+  [subtitleLeadingToLayoutMarginConstrant setActive:isHidden];
 
-  v14 = [(VMMessageMetadataView *)self badgeViewTrailingToSubtitleLeadingConstrant];
-  [v14 setActive:v12 ^ 1];
+  badgeViewTrailingToSubtitleLeadingConstrant = [(VMMessageMetadataView *)self badgeViewTrailingToSubtitleLeadingConstrant];
+  [badgeViewTrailingToSubtitleLeadingConstrant setActive:isHidden ^ 1];
 
   if ([(VMMessageMetadataView *)self isExpanded])
   {
@@ -346,8 +346,8 @@
     v15 = 1.0;
   }
 
-  v16 = [(VMMessageMetadataView *)self shortDateLabel];
-  [v16 setAlpha:v15];
+  shortDateLabel = [(VMMessageMetadataView *)self shortDateLabel];
+  [shortDateLabel setAlpha:v15];
 
   if ([(VMMessageMetadataView *)self isExpanded])
   {
@@ -359,8 +359,8 @@
     v17 = 1.0;
   }
 
-  v18 = [(VMMessageMetadataView *)self shortDurationLabel];
-  [v18 setAlpha:v17];
+  shortDurationLabel = [(VMMessageMetadataView *)self shortDurationLabel];
+  [shortDurationLabel setAlpha:v17];
 
   if ([(VMMessageMetadataView *)self isExpanded])
   {
@@ -372,8 +372,8 @@
     v19 = 0.0;
   }
 
-  v20 = [(VMMessageMetadataView *)self fullDateLabel];
-  [v20 setAlpha:v19];
+  fullDateLabel = [(VMMessageMetadataView *)self fullDateLabel];
+  [fullDateLabel setAlpha:v19];
 
   if ([(VMMessageMetadataView *)self isExpanded])
   {
@@ -385,8 +385,8 @@
     v21 = 0.0;
   }
 
-  v22 = [(VMMessageMetadataView *)self actionButton];
-  [v22 setAlpha:v21];
+  actionButton = [(VMMessageMetadataView *)self actionButton];
+  [actionButton setAlpha:v21];
 
   if ([(VMMessageMetadataView *)self isEditing])
   {
@@ -398,12 +398,12 @@
     v23 = 1.0;
   }
 
-  v24 = [(VMMessageMetadataView *)self infoButton];
-  [v24 setAlpha:v23];
+  infoButton = [(VMMessageMetadataView *)self infoButton];
+  [infoButton setAlpha:v23];
 
   [(VMMessageMetadataView *)self updateLabelColors];
-  v25 = [(VMMessageMetadataView *)self traitCollection];
-  if ([v25 preferredContentSizeCategoryAllowsMultilineTitleForDoubleLineCells])
+  traitCollection = [(VMMessageMetadataView *)self traitCollection];
+  if ([traitCollection preferredContentSizeCategoryAllowsMultilineTitleForDoubleLineCells])
   {
     v26 = 0;
   }
@@ -413,18 +413,18 @@
     v26 = 2;
   }
 
-  v27 = [(VMMessageMetadataView *)self titleLabel];
-  [v27 setNumberOfLines:v26];
+  titleLabel = [(VMMessageMetadataView *)self titleLabel];
+  [titleLabel setNumberOfLines:v26];
 
   v28 = [(VMMessageMetadataView *)self layoutIsAccessible]^ 1;
-  v29 = [(VMMessageMetadataView *)self subtitleLabel];
-  [v29 setNumberOfLines:v28];
+  subtitleLabel = [(VMMessageMetadataView *)self subtitleLabel];
+  [subtitleLabel setNumberOfLines:v28];
 
-  v30 = [(VMMessageMetadataView *)self shortDateLabel];
-  [v30 setNumberOfLines:1];
+  shortDateLabel2 = [(VMMessageMetadataView *)self shortDateLabel];
+  [shortDateLabel2 setNumberOfLines:1];
 
-  v31 = [(VMMessageMetadataView *)self shortDurationLabel];
-  [v31 setNumberOfLines:1];
+  shortDurationLabel2 = [(VMMessageMetadataView *)self shortDurationLabel];
+  [shortDurationLabel2 setNumberOfLines:1];
 
   if ([(VMMessageMetadataView *)self layoutIsAccessible])
   {
@@ -436,8 +436,8 @@
     v32 = 1;
   }
 
-  v33 = [(VMMessageMetadataView *)self fullDateLabel];
-  [v33 setNumberOfLines:v32];
+  fullDateLabel2 = [(VMMessageMetadataView *)self fullDateLabel];
+  [fullDateLabel2 setNumberOfLines:v32];
 }
 
 - (void)tintColorDidChange
@@ -453,31 +453,31 @@
   v3 = +[UIColor dynamicSecondaryLabelColor];
   v7 = [(VMMessageMetadataView *)self _accessibilityHigherContrastTintColorForColor:v3];
 
-  v4 = [(VMMessageMetadataView *)self subtitleLabel];
-  [v4 setTextColor:v7];
+  subtitleLabel = [(VMMessageMetadataView *)self subtitleLabel];
+  [subtitleLabel setTextColor:v7];
 
-  v5 = [(VMMessageMetadataView *)self shortDurationLabel];
-  [v5 setTextColor:v7];
+  shortDurationLabel = [(VMMessageMetadataView *)self shortDurationLabel];
+  [shortDurationLabel setTextColor:v7];
 
-  v6 = [(VMMessageMetadataView *)self fullDateLabel];
-  [v6 setTextColor:v7];
+  fullDateLabel = [(VMMessageMetadataView *)self fullDateLabel];
+  [fullDateLabel setTextColor:v7];
 }
 
 - (void)createConstraints
 {
   [(VMMessageMetadataView *)self setCurrentRequiredConstraints:&__NSArray0__struct];
   [(VMMessageMetadataView *)self setCurrentRequiredConstraintsKey:0];
-  v3 = [(VMMessageMetadataView *)self currentActiveFixedConstraints];
-  [(VMMessageMetadataView *)self removeConstraints:v3];
+  currentActiveFixedConstraints = [(VMMessageMetadataView *)self currentActiveFixedConstraints];
+  [(VMMessageMetadataView *)self removeConstraints:currentActiveFixedConstraints];
 
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v4 = [(VMMessageMetadataView *)self constraintsForLayouts];
-  v5 = [v4 allValues];
+  constraintsForLayouts = [(VMMessageMetadataView *)self constraintsForLayouts];
+  allValues = [constraintsForLayouts allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v37 objects:v44 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v37 objects:v44 count:16];
   if (v6)
   {
     v7 = v6;
@@ -488,13 +488,13 @@
       {
         if (*v38 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         [(VMMessageMetadataView *)self removeConstraints:*(*(&v37 + 1) + 8 * i)];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v37 objects:v44 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v37 objects:v44 count:16];
     }
 
     while (v7);
@@ -510,8 +510,8 @@
   v43[1] = v29;
   v10 = [objc_opt_class() constraintsKeyForAccessibleLayout:0 expanded:1 editing:0];
   v42[2] = v10;
-  v11 = [(VMMessageMetadataView *)self createConstraintsForNonAccessibleExpandedLayout];
-  v43[2] = v11;
+  createConstraintsForNonAccessibleExpandedLayout = [(VMMessageMetadataView *)self createConstraintsForNonAccessibleExpandedLayout];
+  v43[2] = createConstraintsForNonAccessibleExpandedLayout;
   v12 = [objc_opt_class() constraintsKeyForAccessibleLayout:1 expanded:0 editing:0];
   v42[3] = v12;
   v13 = [(VMMessageMetadataView *)self createConstraintsForAccessibleNonExpandedLayoutForEditing:0];
@@ -522,8 +522,8 @@
   v43[4] = v15;
   v16 = [objc_opt_class() constraintsKeyForAccessibleLayout:1 expanded:1 editing:0];
   v42[5] = v16;
-  v17 = [(VMMessageMetadataView *)self createConstraintsForAccessibleExpandedLayout];
-  v43[5] = v17;
+  createConstraintsForAccessibleExpandedLayout = [(VMMessageMetadataView *)self createConstraintsForAccessibleExpandedLayout];
+  v43[5] = createConstraintsForAccessibleExpandedLayout;
   v18 = [NSDictionary dictionaryWithObjects:v43 forKeys:v42 count:6];
   [(VMMessageMetadataView *)self setConstraintsForLayouts:v18];
 
@@ -531,10 +531,10 @@
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v19 = [(VMMessageMetadataView *)self constraintsForLayouts];
-  v20 = [v19 allValues];
+  constraintsForLayouts2 = [(VMMessageMetadataView *)self constraintsForLayouts];
+  allValues2 = [constraintsForLayouts2 allValues];
 
-  v21 = [v20 countByEnumeratingWithState:&v33 objects:v41 count:16];
+  v21 = [allValues2 countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (v21)
   {
     v23 = v21;
@@ -545,7 +545,7 @@
       {
         if (*v34 != v24)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(allValues2);
         }
 
         v26 = *(*(&v33 + 1) + 8 * j);
@@ -554,7 +554,7 @@
         [NSLayoutConstraint activateConstraints:v26];
       }
 
-      v23 = [v20 countByEnumeratingWithState:&v33 objects:v41 count:16];
+      v23 = [allValues2 countByEnumeratingWithState:&v33 objects:v41 count:16];
     }
 
     while (v23);
@@ -572,18 +572,18 @@
   v27 = ;
   [(VMMessageMetadataView *)self setCurrentActiveFixedConstraints:v27, v29];
 
-  v28 = [(VMMessageMetadataView *)self currentActiveFixedConstraints];
-  [NSLayoutConstraint activateConstraints:v28];
+  currentActiveFixedConstraints2 = [(VMMessageMetadataView *)self currentActiveFixedConstraints];
+  [NSLayoutConstraint activateConstraints:currentActiveFixedConstraints2];
 }
 
-- (void)removeConstraints:(id)a3
+- (void)removeConstraints:(id)constraints
 {
-  v3 = a3;
+  constraintsCopy = constraints;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v23 count:16];
+  v4 = [constraintsCopy countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v4)
   {
     v6 = v4;
@@ -596,30 +596,30 @@
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(constraintsCopy);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 firstItem];
+        firstItem = [v9 firstItem];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v12 = [v9 firstItem];
+          firstItem2 = [v9 firstItem];
 LABEL_10:
-          v15 = v12;
-          [v12 removeConstraint:v9];
+          v15 = firstItem2;
+          [firstItem2 removeConstraint:v9];
           goto LABEL_13;
         }
 
-        v13 = [v9 secondItem];
+        secondItem = [v9 secondItem];
         objc_opt_class();
         v14 = objc_opt_isKindOfClass();
 
         if (v14)
         {
-          v12 = [v9 secondItem];
+          firstItem2 = [v9 secondItem];
           goto LABEL_10;
         }
 
@@ -634,21 +634,21 @@ LABEL_10:
 LABEL_13:
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v17 objects:v23 count:16];
+      v6 = [constraintsCopy countByEnumeratingWithState:&v17 objects:v23 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)setPriorityOfConstraints:(id)a3 to:(float)a4
+- (void)setPriorityOfConstraints:(id)constraints to:(float)to
 {
-  v5 = a3;
+  constraintsCopy = constraints;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [constraintsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v8 = v6;
@@ -660,16 +660,16 @@ LABEL_13:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(constraintsCopy);
         }
 
-        *&v7 = a4;
+        *&v7 = to;
         [*(*(&v11 + 1) + 8 * v10) setPriority:v7];
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [constraintsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
@@ -678,137 +678,137 @@ LABEL_13:
 
 - (id)createFixedConstraintsForNonAccessibleLayout
 {
-  v64 = [(VMMessageMetadataView *)self infoButton];
-  v62 = [v64 centerYAnchor];
-  v63 = [(VMMessageMetadataView *)self buttonLayoutGuide];
-  v61 = [v63 centerYAnchor];
-  v60 = [v62 constraintEqualToAnchor:v61];
+  infoButton = [(VMMessageMetadataView *)self infoButton];
+  centerYAnchor = [infoButton centerYAnchor];
+  buttonLayoutGuide = [(VMMessageMetadataView *)self buttonLayoutGuide];
+  centerYAnchor2 = [buttonLayoutGuide centerYAnchor];
+  v60 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v65[0] = v60;
-  v59 = [(VMMessageMetadataView *)self infoButton];
-  v57 = [v59 trailingAnchor];
-  v58 = [(VMMessageMetadataView *)self layoutMarginsGuide];
-  v56 = [v58 trailingAnchor];
-  v55 = [v57 constraintEqualToAnchor:v56];
+  infoButton2 = [(VMMessageMetadataView *)self infoButton];
+  trailingAnchor = [infoButton2 trailingAnchor];
+  layoutMarginsGuide = [(VMMessageMetadataView *)self layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+  v55 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v65[1] = v55;
-  v54 = [(VMMessageMetadataView *)self actionButton];
-  v52 = [v54 firstBaselineAnchor];
-  v53 = [(VMMessageMetadataView *)self infoButton];
-  v51 = [v53 firstBaselineAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51];
+  actionButton = [(VMMessageMetadataView *)self actionButton];
+  firstBaselineAnchor = [actionButton firstBaselineAnchor];
+  infoButton3 = [(VMMessageMetadataView *)self infoButton];
+  firstBaselineAnchor2 = [infoButton3 firstBaselineAnchor];
+  v50 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
   v65[2] = v50;
-  v49 = [(VMMessageMetadataView *)self actionButton];
-  v47 = [v49 trailingAnchor];
-  v48 = [(VMMessageMetadataView *)self infoButton];
-  v46 = [v48 leadingAnchor];
-  v45 = [v47 constraintEqualToAnchor:v46 constant:-24.0];
+  actionButton2 = [(VMMessageMetadataView *)self actionButton];
+  trailingAnchor3 = [actionButton2 trailingAnchor];
+  infoButton4 = [(VMMessageMetadataView *)self infoButton];
+  leadingAnchor = [infoButton4 leadingAnchor];
+  v45 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor constant:-24.0];
   v65[3] = v45;
-  v44 = [(VMMessageMetadataView *)self titleLabel];
-  v42 = [v44 topAnchor];
-  v43 = [(VMMessageMetadataView *)self layoutMarginsGuide];
-  v41 = [v43 topAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  titleLabel = [(VMMessageMetadataView *)self titleLabel];
+  topAnchor = [titleLabel topAnchor];
+  layoutMarginsGuide2 = [(VMMessageMetadataView *)self layoutMarginsGuide];
+  topAnchor2 = [layoutMarginsGuide2 topAnchor];
+  v40 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v65[4] = v40;
-  v39 = [(VMMessageMetadataView *)self titleLabel];
-  v37 = [v39 leadingAnchor];
-  v38 = [(VMMessageMetadataView *)self layoutMarginsGuide];
-  v36 = [v38 leadingAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  titleLabel2 = [(VMMessageMetadataView *)self titleLabel];
+  leadingAnchor2 = [titleLabel2 leadingAnchor];
+  layoutMarginsGuide3 = [(VMMessageMetadataView *)self layoutMarginsGuide];
+  leadingAnchor3 = [layoutMarginsGuide3 leadingAnchor];
+  v35 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
   v65[5] = v35;
-  v34 = [(VMMessageMetadataView *)self subtitleLabel];
-  v32 = [v34 firstBaselineAnchor];
-  v33 = [(VMMessageMetadataView *)self titleLabel];
-  v31 = [v33 lastBaselineAnchor];
-  v30 = [v32 constraintEqualToSystemSpacingBelowAnchor:v31 multiplier:1.0];
+  subtitleLabel = [(VMMessageMetadataView *)self subtitleLabel];
+  firstBaselineAnchor3 = [subtitleLabel firstBaselineAnchor];
+  titleLabel3 = [(VMMessageMetadataView *)self titleLabel];
+  lastBaselineAnchor = [titleLabel3 lastBaselineAnchor];
+  v30 = [firstBaselineAnchor3 constraintEqualToSystemSpacingBelowAnchor:lastBaselineAnchor multiplier:1.0];
   v65[6] = v30;
-  v29 = [(VMMessageMetadataView *)self shortDateLabel];
-  v27 = [v29 firstBaselineAnchor];
-  v28 = [(VMMessageMetadataView *)self titleLabel];
-  v26 = [v28 firstBaselineAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  shortDateLabel = [(VMMessageMetadataView *)self shortDateLabel];
+  firstBaselineAnchor4 = [shortDateLabel firstBaselineAnchor];
+  titleLabel4 = [(VMMessageMetadataView *)self titleLabel];
+  firstBaselineAnchor5 = [titleLabel4 firstBaselineAnchor];
+  v25 = [firstBaselineAnchor4 constraintEqualToAnchor:firstBaselineAnchor5];
   v65[7] = v25;
-  v24 = [(VMMessageMetadataView *)self shortDurationLabel];
-  v22 = [v24 firstBaselineAnchor];
-  v23 = [(VMMessageMetadataView *)self subtitleLabel];
-  v21 = [v23 firstBaselineAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  shortDurationLabel = [(VMMessageMetadataView *)self shortDurationLabel];
+  firstBaselineAnchor6 = [shortDurationLabel firstBaselineAnchor];
+  subtitleLabel2 = [(VMMessageMetadataView *)self subtitleLabel];
+  firstBaselineAnchor7 = [subtitleLabel2 firstBaselineAnchor];
+  v20 = [firstBaselineAnchor6 constraintEqualToAnchor:firstBaselineAnchor7];
   v65[8] = v20;
-  v19 = [(VMMessageMetadataView *)self fullDateLabel];
-  v17 = [v19 firstBaselineAnchor];
-  v18 = [(VMMessageMetadataView *)self subtitleLabel];
-  v16 = [v18 lastBaselineAnchor];
-  v15 = [v17 constraintEqualToSystemSpacingBelowAnchor:v16 multiplier:1.0];
+  fullDateLabel = [(VMMessageMetadataView *)self fullDateLabel];
+  firstBaselineAnchor8 = [fullDateLabel firstBaselineAnchor];
+  subtitleLabel3 = [(VMMessageMetadataView *)self subtitleLabel];
+  lastBaselineAnchor2 = [subtitleLabel3 lastBaselineAnchor];
+  v15 = [firstBaselineAnchor8 constraintEqualToSystemSpacingBelowAnchor:lastBaselineAnchor2 multiplier:1.0];
   v65[9] = v15;
-  v3 = [(VMMessageMetadataView *)self fullDateLabel];
-  v4 = [v3 leadingAnchor];
-  v5 = [(VMMessageMetadataView *)self layoutMarginsGuide];
-  v6 = [v5 leadingAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  fullDateLabel2 = [(VMMessageMetadataView *)self fullDateLabel];
+  leadingAnchor4 = [fullDateLabel2 leadingAnchor];
+  layoutMarginsGuide4 = [(VMMessageMetadataView *)self layoutMarginsGuide];
+  leadingAnchor5 = [layoutMarginsGuide4 leadingAnchor];
+  v7 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
   v65[10] = v7;
-  v8 = [(VMMessageMetadataView *)self fullDateLabel];
-  v9 = [v8 trailingAnchor];
-  v10 = [(VMMessageMetadataView *)self layoutMarginsGuide];
-  v11 = [v10 trailingAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  fullDateLabel3 = [(VMMessageMetadataView *)self fullDateLabel];
+  trailingAnchor4 = [fullDateLabel3 trailingAnchor];
+  layoutMarginsGuide5 = [(VMMessageMetadataView *)self layoutMarginsGuide];
+  trailingAnchor5 = [layoutMarginsGuide5 trailingAnchor];
+  v12 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
   v65[11] = v12;
   v14 = [NSArray arrayWithObjects:v65 count:12];
 
   return v14;
 }
 
-- (id)createConstraintsForNonAccessibleNonExpandedLayoutForEditing:(BOOL)a3
+- (id)createConstraintsForNonAccessibleNonExpandedLayoutForEditing:(BOOL)editing
 {
-  v3 = a3;
-  v33 = [(VMMessageMetadataView *)self shortDateLabel];
-  v5 = [v33 trailingAnchor];
-  if (v3)
+  editingCopy = editing;
+  shortDateLabel = [(VMMessageMetadataView *)self shortDateLabel];
+  trailingAnchor = [shortDateLabel trailingAnchor];
+  if (editingCopy)
   {
-    v6 = [(VMMessageMetadataView *)self layoutMarginsGuide];
-    v7 = [v6 trailingAnchor];
-    v8 = [v5 constraintEqualToAnchor:v7];
+    layoutMarginsGuide = [(VMMessageMetadataView *)self layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+    v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v37[0] = v8;
-    v9 = [(VMMessageMetadataView *)self shortDurationLabel];
-    v10 = [v9 trailingAnchor];
-    v11 = [(VMMessageMetadataView *)self layoutMarginsGuide];
-    v12 = [v11 trailingAnchor];
-    v13 = [v10 constraintEqualToAnchor:v12];
+    shortDurationLabel = [(VMMessageMetadataView *)self shortDurationLabel];
+    trailingAnchor3 = [shortDurationLabel trailingAnchor];
+    layoutMarginsGuide2 = [(VMMessageMetadataView *)self layoutMarginsGuide];
+    trailingAnchor4 = [layoutMarginsGuide2 trailingAnchor];
+    v13 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v37[1] = v13;
     v14 = v37;
   }
 
   else
   {
-    v6 = [(VMMessageMetadataView *)self infoButton];
-    v7 = [v6 leadingAnchor];
-    v8 = [v5 constraintEqualToAnchor:v7 constant:-8.0];
+    layoutMarginsGuide = [(VMMessageMetadataView *)self infoButton];
+    trailingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-8.0];
     v36[0] = v8;
-    v9 = [(VMMessageMetadataView *)self shortDurationLabel];
-    v10 = [v9 trailingAnchor];
-    v11 = [(VMMessageMetadataView *)self infoButton];
-    v12 = [v11 leadingAnchor];
-    v13 = [v10 constraintEqualToAnchor:v12 constant:-8.0];
+    shortDurationLabel = [(VMMessageMetadataView *)self shortDurationLabel];
+    trailingAnchor3 = [shortDurationLabel trailingAnchor];
+    layoutMarginsGuide2 = [(VMMessageMetadataView *)self infoButton];
+    trailingAnchor4 = [layoutMarginsGuide2 leadingAnchor];
+    v13 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-8.0];
     v36[1] = v13;
     v14 = v36;
   }
 
   v31 = [NSArray arrayWithObjects:v14 count:2];
 
-  v34 = [(VMMessageMetadataView *)self titleLabel];
-  v30 = [v34 trailingAnchor];
-  v32 = [(VMMessageMetadataView *)self shortDateLabel];
-  v29 = [v32 leadingAnchor];
-  v28 = [v30 constraintLessThanOrEqualToAnchor:v29 constant:-8.0];
+  titleLabel = [(VMMessageMetadataView *)self titleLabel];
+  trailingAnchor5 = [titleLabel trailingAnchor];
+  shortDateLabel2 = [(VMMessageMetadataView *)self shortDateLabel];
+  leadingAnchor = [shortDateLabel2 leadingAnchor];
+  v28 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:leadingAnchor constant:-8.0];
   v35[0] = v28;
-  v27 = [(VMMessageMetadataView *)self subtitleLabel];
-  v26 = [v27 trailingAnchor];
-  v15 = [(VMMessageMetadataView *)self shortDurationLabel];
-  v16 = [v15 leadingAnchor];
-  v17 = [v26 constraintLessThanOrEqualToAnchor:v16 constant:-8.0];
+  subtitleLabel = [(VMMessageMetadataView *)self subtitleLabel];
+  trailingAnchor6 = [subtitleLabel trailingAnchor];
+  shortDurationLabel2 = [(VMMessageMetadataView *)self shortDurationLabel];
+  leadingAnchor2 = [shortDurationLabel2 leadingAnchor];
+  v17 = [trailingAnchor6 constraintLessThanOrEqualToAnchor:leadingAnchor2 constant:-8.0];
   v35[1] = v17;
-  v18 = [(VMMessageMetadataView *)self layoutMarginsGuide];
-  v19 = [v18 bottomAnchor];
-  v20 = [(VMMessageMetadataView *)self shortDurationLabel];
-  v21 = [v20 bottomAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  layoutMarginsGuide3 = [(VMMessageMetadataView *)self layoutMarginsGuide];
+  bottomAnchor = [layoutMarginsGuide3 bottomAnchor];
+  shortDurationLabel3 = [(VMMessageMetadataView *)self shortDurationLabel];
+  bottomAnchor2 = [shortDurationLabel3 bottomAnchor];
+  v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v35[2] = v22;
   v23 = [NSArray arrayWithObjects:v35 count:3];
   v25 = [v23 arrayByAddingObjectsFromArray:v31];
@@ -818,35 +818,35 @@ LABEL_13:
 
 - (id)createConstraintsForNonAccessibleExpandedLayout
 {
-  v29 = [(VMMessageMetadataView *)self titleLabel];
-  v27 = [v29 trailingAnchor];
-  v28 = [(VMMessageMetadataView *)self actionButton];
-  v26 = [v28 leadingAnchor];
-  v25 = [v27 constraintLessThanOrEqualToAnchor:v26 constant:-8.0];
+  titleLabel = [(VMMessageMetadataView *)self titleLabel];
+  trailingAnchor = [titleLabel trailingAnchor];
+  actionButton = [(VMMessageMetadataView *)self actionButton];
+  leadingAnchor = [actionButton leadingAnchor];
+  v25 = [trailingAnchor constraintLessThanOrEqualToAnchor:leadingAnchor constant:-8.0];
   v30[0] = v25;
-  v24 = [(VMMessageMetadataView *)self subtitleLabel];
-  v22 = [v24 trailingAnchor];
-  v23 = [(VMMessageMetadataView *)self actionButton];
-  v21 = [v23 leadingAnchor];
-  v20 = [v22 constraintLessThanOrEqualToAnchor:v21 constant:-8.0];
+  subtitleLabel = [(VMMessageMetadataView *)self subtitleLabel];
+  trailingAnchor2 = [subtitleLabel trailingAnchor];
+  actionButton2 = [(VMMessageMetadataView *)self actionButton];
+  leadingAnchor2 = [actionButton2 leadingAnchor];
+  v20 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:leadingAnchor2 constant:-8.0];
   v30[1] = v20;
-  v19 = [(VMMessageMetadataView *)self shortDateLabel];
-  v17 = [v19 trailingAnchor];
-  v18 = [(VMMessageMetadataView *)self infoButton];
-  v16 = [v18 leadingAnchor];
-  v15 = [v17 constraintEqualToAnchor:v16 constant:-8.0];
+  shortDateLabel = [(VMMessageMetadataView *)self shortDateLabel];
+  trailingAnchor3 = [shortDateLabel trailingAnchor];
+  infoButton = [(VMMessageMetadataView *)self infoButton];
+  leadingAnchor3 = [infoButton leadingAnchor];
+  v15 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor3 constant:-8.0];
   v30[2] = v15;
-  v3 = [(VMMessageMetadataView *)self shortDurationLabel];
-  v4 = [v3 trailingAnchor];
-  v5 = [(VMMessageMetadataView *)self infoButton];
-  v6 = [v5 leadingAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6 constant:-8.0];
+  shortDurationLabel = [(VMMessageMetadataView *)self shortDurationLabel];
+  trailingAnchor4 = [shortDurationLabel trailingAnchor];
+  infoButton2 = [(VMMessageMetadataView *)self infoButton];
+  leadingAnchor4 = [infoButton2 leadingAnchor];
+  v7 = [trailingAnchor4 constraintEqualToAnchor:leadingAnchor4 constant:-8.0];
   v30[3] = v7;
-  v8 = [(VMMessageMetadataView *)self layoutMarginsGuide];
-  v9 = [v8 bottomAnchor];
-  v10 = [(VMMessageMetadataView *)self fullDateLabel];
-  v11 = [v10 bottomAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  layoutMarginsGuide = [(VMMessageMetadataView *)self layoutMarginsGuide];
+  bottomAnchor = [layoutMarginsGuide bottomAnchor];
+  fullDateLabel = [(VMMessageMetadataView *)self fullDateLabel];
+  bottomAnchor2 = [fullDateLabel bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v30[4] = v12;
   v14 = [NSArray arrayWithObjects:v30 count:5];
 
@@ -855,142 +855,142 @@ LABEL_13:
 
 - (id)createFixedConstraintsForAccessibleLayout
 {
-  v89 = [(VMMessageMetadataView *)self infoButton];
-  v87 = [v89 firstBaselineAnchor];
-  v88 = [(VMMessageMetadataView *)self titleLabel];
-  v86 = [v88 firstBaselineAnchor];
-  v85 = [v87 constraintEqualToAnchor:v86];
+  infoButton = [(VMMessageMetadataView *)self infoButton];
+  firstBaselineAnchor = [infoButton firstBaselineAnchor];
+  titleLabel = [(VMMessageMetadataView *)self titleLabel];
+  firstBaselineAnchor2 = [titleLabel firstBaselineAnchor];
+  v85 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
   v90[0] = v85;
-  v84 = [(VMMessageMetadataView *)self infoButton];
-  v82 = [v84 trailingAnchor];
-  v83 = [(VMMessageMetadataView *)self layoutMarginsGuide];
-  v81 = [v83 trailingAnchor];
-  v80 = [v82 constraintEqualToAnchor:v81];
+  infoButton2 = [(VMMessageMetadataView *)self infoButton];
+  trailingAnchor = [infoButton2 trailingAnchor];
+  layoutMarginsGuide = [(VMMessageMetadataView *)self layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+  v80 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v90[1] = v80;
-  v79 = [(VMMessageMetadataView *)self actionButton];
-  v77 = [v79 firstBaselineAnchor];
-  v78 = [(VMMessageMetadataView *)self titleLabel];
-  v76 = [v78 firstBaselineAnchor];
-  v75 = [v77 constraintEqualToAnchor:v76];
+  actionButton = [(VMMessageMetadataView *)self actionButton];
+  firstBaselineAnchor3 = [actionButton firstBaselineAnchor];
+  titleLabel2 = [(VMMessageMetadataView *)self titleLabel];
+  firstBaselineAnchor4 = [titleLabel2 firstBaselineAnchor];
+  v75 = [firstBaselineAnchor3 constraintEqualToAnchor:firstBaselineAnchor4];
   v90[2] = v75;
-  v74 = [(VMMessageMetadataView *)self actionButton];
-  v72 = [v74 trailingAnchor];
-  v73 = [(VMMessageMetadataView *)self infoButton];
-  v71 = [v73 leadingAnchor];
-  v70 = [v72 constraintEqualToAnchor:v71 constant:-24.0];
+  actionButton2 = [(VMMessageMetadataView *)self actionButton];
+  trailingAnchor3 = [actionButton2 trailingAnchor];
+  infoButton3 = [(VMMessageMetadataView *)self infoButton];
+  leadingAnchor = [infoButton3 leadingAnchor];
+  v70 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor constant:-24.0];
   v90[3] = v70;
-  v69 = [(VMMessageMetadataView *)self titleLabel];
-  v67 = [v69 topAnchor];
-  v68 = [(VMMessageMetadataView *)self layoutMarginsGuide];
-  v66 = [v68 topAnchor];
-  v65 = [v67 constraintEqualToAnchor:v66];
+  titleLabel3 = [(VMMessageMetadataView *)self titleLabel];
+  topAnchor = [titleLabel3 topAnchor];
+  layoutMarginsGuide2 = [(VMMessageMetadataView *)self layoutMarginsGuide];
+  topAnchor2 = [layoutMarginsGuide2 topAnchor];
+  v65 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v90[4] = v65;
-  v64 = [(VMMessageMetadataView *)self titleLabel];
-  v62 = [v64 leadingAnchor];
-  v63 = [(VMMessageMetadataView *)self layoutMarginsGuide];
-  v61 = [v63 leadingAnchor];
-  v60 = [v62 constraintEqualToAnchor:v61];
+  titleLabel4 = [(VMMessageMetadataView *)self titleLabel];
+  leadingAnchor2 = [titleLabel4 leadingAnchor];
+  layoutMarginsGuide3 = [(VMMessageMetadataView *)self layoutMarginsGuide];
+  leadingAnchor3 = [layoutMarginsGuide3 leadingAnchor];
+  v60 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
   v90[5] = v60;
-  v59 = [(VMMessageMetadataView *)self subtitleLabel];
-  v57 = [v59 firstBaselineAnchor];
-  v58 = [(VMMessageMetadataView *)self titleLabel];
-  v56 = [v58 lastBaselineAnchor];
-  v55 = [v57 constraintEqualToSystemSpacingBelowAnchor:v56 multiplier:1.0];
+  subtitleLabel = [(VMMessageMetadataView *)self subtitleLabel];
+  firstBaselineAnchor5 = [subtitleLabel firstBaselineAnchor];
+  titleLabel5 = [(VMMessageMetadataView *)self titleLabel];
+  lastBaselineAnchor = [titleLabel5 lastBaselineAnchor];
+  v55 = [firstBaselineAnchor5 constraintEqualToSystemSpacingBelowAnchor:lastBaselineAnchor multiplier:1.0];
   v90[6] = v55;
-  v54 = [(VMMessageMetadataView *)self subtitleLabel];
-  v52 = [v54 trailingAnchor];
-  v53 = [(VMMessageMetadataView *)self layoutMarginsGuide];
-  v51 = [v53 trailingAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51];
+  subtitleLabel2 = [(VMMessageMetadataView *)self subtitleLabel];
+  trailingAnchor4 = [subtitleLabel2 trailingAnchor];
+  layoutMarginsGuide4 = [(VMMessageMetadataView *)self layoutMarginsGuide];
+  trailingAnchor5 = [layoutMarginsGuide4 trailingAnchor];
+  v50 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
   v90[7] = v50;
-  v49 = [(VMMessageMetadataView *)self shortDateLabel];
-  v47 = [v49 firstBaselineAnchor];
-  v48 = [(VMMessageMetadataView *)self subtitleLabel];
-  v46 = [v48 lastBaselineAnchor];
-  v45 = [v47 constraintEqualToSystemSpacingBelowAnchor:v46 multiplier:1.0];
+  shortDateLabel = [(VMMessageMetadataView *)self shortDateLabel];
+  firstBaselineAnchor6 = [shortDateLabel firstBaselineAnchor];
+  subtitleLabel3 = [(VMMessageMetadataView *)self subtitleLabel];
+  lastBaselineAnchor2 = [subtitleLabel3 lastBaselineAnchor];
+  v45 = [firstBaselineAnchor6 constraintEqualToSystemSpacingBelowAnchor:lastBaselineAnchor2 multiplier:1.0];
   v90[8] = v45;
-  v44 = [(VMMessageMetadataView *)self shortDateLabel];
-  v42 = [v44 leadingAnchor];
-  v43 = [(VMMessageMetadataView *)self layoutMarginsGuide];
-  v41 = [v43 leadingAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  shortDateLabel2 = [(VMMessageMetadataView *)self shortDateLabel];
+  leadingAnchor4 = [shortDateLabel2 leadingAnchor];
+  layoutMarginsGuide5 = [(VMMessageMetadataView *)self layoutMarginsGuide];
+  leadingAnchor5 = [layoutMarginsGuide5 leadingAnchor];
+  v40 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
   v90[9] = v40;
-  v39 = [(VMMessageMetadataView *)self shortDateLabel];
-  v37 = [v39 trailingAnchor];
-  v38 = [(VMMessageMetadataView *)self layoutMarginsGuide];
-  v36 = [v38 trailingAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  shortDateLabel3 = [(VMMessageMetadataView *)self shortDateLabel];
+  trailingAnchor6 = [shortDateLabel3 trailingAnchor];
+  layoutMarginsGuide6 = [(VMMessageMetadataView *)self layoutMarginsGuide];
+  trailingAnchor7 = [layoutMarginsGuide6 trailingAnchor];
+  v35 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
   v90[10] = v35;
-  v34 = [(VMMessageMetadataView *)self shortDurationLabel];
-  v32 = [v34 firstBaselineAnchor];
-  v33 = [(VMMessageMetadataView *)self shortDateLabel];
-  v31 = [v33 lastBaselineAnchor];
-  v30 = [v32 constraintEqualToSystemSpacingBelowAnchor:v31 multiplier:1.0];
+  shortDurationLabel = [(VMMessageMetadataView *)self shortDurationLabel];
+  firstBaselineAnchor7 = [shortDurationLabel firstBaselineAnchor];
+  shortDateLabel4 = [(VMMessageMetadataView *)self shortDateLabel];
+  lastBaselineAnchor3 = [shortDateLabel4 lastBaselineAnchor];
+  v30 = [firstBaselineAnchor7 constraintEqualToSystemSpacingBelowAnchor:lastBaselineAnchor3 multiplier:1.0];
   v90[11] = v30;
-  v29 = [(VMMessageMetadataView *)self shortDurationLabel];
-  v27 = [v29 leadingAnchor];
-  v28 = [(VMMessageMetadataView *)self layoutMarginsGuide];
-  v26 = [v28 leadingAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  shortDurationLabel2 = [(VMMessageMetadataView *)self shortDurationLabel];
+  leadingAnchor6 = [shortDurationLabel2 leadingAnchor];
+  layoutMarginsGuide7 = [(VMMessageMetadataView *)self layoutMarginsGuide];
+  leadingAnchor7 = [layoutMarginsGuide7 leadingAnchor];
+  v25 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
   v90[12] = v25;
-  v24 = [(VMMessageMetadataView *)self shortDurationLabel];
-  v22 = [v24 trailingAnchor];
-  v23 = [(VMMessageMetadataView *)self layoutMarginsGuide];
-  v21 = [v23 trailingAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  shortDurationLabel3 = [(VMMessageMetadataView *)self shortDurationLabel];
+  trailingAnchor8 = [shortDurationLabel3 trailingAnchor];
+  layoutMarginsGuide8 = [(VMMessageMetadataView *)self layoutMarginsGuide];
+  trailingAnchor9 = [layoutMarginsGuide8 trailingAnchor];
+  v20 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9];
   v90[13] = v20;
-  v19 = [(VMMessageMetadataView *)self fullDateLabel];
-  v17 = [v19 firstBaselineAnchor];
-  v18 = [(VMMessageMetadataView *)self subtitleLabel];
-  v16 = [v18 lastBaselineAnchor];
-  v15 = [v17 constraintEqualToSystemSpacingBelowAnchor:v16 multiplier:1.0];
+  fullDateLabel = [(VMMessageMetadataView *)self fullDateLabel];
+  firstBaselineAnchor8 = [fullDateLabel firstBaselineAnchor];
+  subtitleLabel4 = [(VMMessageMetadataView *)self subtitleLabel];
+  lastBaselineAnchor4 = [subtitleLabel4 lastBaselineAnchor];
+  v15 = [firstBaselineAnchor8 constraintEqualToSystemSpacingBelowAnchor:lastBaselineAnchor4 multiplier:1.0];
   v90[14] = v15;
-  v3 = [(VMMessageMetadataView *)self fullDateLabel];
-  v4 = [v3 leadingAnchor];
-  v5 = [(VMMessageMetadataView *)self layoutMarginsGuide];
-  v6 = [v5 leadingAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  fullDateLabel2 = [(VMMessageMetadataView *)self fullDateLabel];
+  leadingAnchor8 = [fullDateLabel2 leadingAnchor];
+  layoutMarginsGuide9 = [(VMMessageMetadataView *)self layoutMarginsGuide];
+  leadingAnchor9 = [layoutMarginsGuide9 leadingAnchor];
+  v7 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9];
   v90[15] = v7;
-  v8 = [(VMMessageMetadataView *)self fullDateLabel];
-  v9 = [v8 trailingAnchor];
-  v10 = [(VMMessageMetadataView *)self layoutMarginsGuide];
-  v11 = [v10 trailingAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  fullDateLabel3 = [(VMMessageMetadataView *)self fullDateLabel];
+  trailingAnchor10 = [fullDateLabel3 trailingAnchor];
+  layoutMarginsGuide10 = [(VMMessageMetadataView *)self layoutMarginsGuide];
+  trailingAnchor11 = [layoutMarginsGuide10 trailingAnchor];
+  v12 = [trailingAnchor10 constraintEqualToAnchor:trailingAnchor11];
   v90[16] = v12;
   v14 = [NSArray arrayWithObjects:v90 count:17];
 
   return v14;
 }
 
-- (id)createConstraintsForAccessibleNonExpandedLayoutForEditing:(BOOL)a3
+- (id)createConstraintsForAccessibleNonExpandedLayoutForEditing:(BOOL)editing
 {
-  v3 = a3;
-  v18 = [(VMMessageMetadataView *)self titleLabel];
-  v5 = [v18 trailingAnchor];
-  v17 = v5;
-  if (v3)
+  editingCopy = editing;
+  titleLabel = [(VMMessageMetadataView *)self titleLabel];
+  trailingAnchor = [titleLabel trailingAnchor];
+  v17 = trailingAnchor;
+  if (editingCopy)
   {
-    v6 = [(VMMessageMetadataView *)self layoutMarginsGuide];
-    v7 = [v6 trailingAnchor];
-    v8 = [v5 constraintLessThanOrEqualToAnchor:v7];
+    layoutMarginsGuide = [(VMMessageMetadataView *)self layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+    v8 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
     v20 = v8;
     v9 = &v20;
   }
 
   else
   {
-    v6 = [(VMMessageMetadataView *)self infoButton];
-    v7 = [v6 leadingAnchor];
-    v8 = [v5 constraintLessThanOrEqualToAnchor:v7 constant:-8.0];
+    layoutMarginsGuide = [(VMMessageMetadataView *)self infoButton];
+    trailingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v8 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2 constant:-8.0];
     v19 = v8;
     v9 = &v19;
   }
 
-  v10 = [(VMMessageMetadataView *)self layoutMarginsGuide];
-  v11 = [v10 bottomAnchor];
-  v12 = [(VMMessageMetadataView *)self shortDurationLabel];
-  v13 = [v12 bottomAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  layoutMarginsGuide2 = [(VMMessageMetadataView *)self layoutMarginsGuide];
+  bottomAnchor = [layoutMarginsGuide2 bottomAnchor];
+  shortDurationLabel = [(VMMessageMetadataView *)self shortDurationLabel];
+  bottomAnchor2 = [shortDurationLabel bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v9[1] = v14;
   v15 = [NSArray arrayWithObjects:v9 count:2];
 
@@ -999,17 +999,17 @@ LABEL_13:
 
 - (id)createConstraintsForAccessibleExpandedLayout
 {
-  v14 = [(VMMessageMetadataView *)self titleLabel];
-  v3 = [v14 trailingAnchor];
-  v4 = [(VMMessageMetadataView *)self actionButton];
-  v5 = [v4 leadingAnchor];
-  v6 = [v3 constraintLessThanOrEqualToAnchor:v5 constant:-8.0];
+  titleLabel = [(VMMessageMetadataView *)self titleLabel];
+  trailingAnchor = [titleLabel trailingAnchor];
+  actionButton = [(VMMessageMetadataView *)self actionButton];
+  leadingAnchor = [actionButton leadingAnchor];
+  v6 = [trailingAnchor constraintLessThanOrEqualToAnchor:leadingAnchor constant:-8.0];
   v15[0] = v6;
-  v7 = [(VMMessageMetadataView *)self layoutMarginsGuide];
-  v8 = [v7 bottomAnchor];
-  v9 = [(VMMessageMetadataView *)self fullDateLabel];
-  v10 = [v9 bottomAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  layoutMarginsGuide = [(VMMessageMetadataView *)self layoutMarginsGuide];
+  bottomAnchor = [layoutMarginsGuide bottomAnchor];
+  fullDateLabel = [(VMMessageMetadataView *)self fullDateLabel];
+  bottomAnchor2 = [fullDateLabel bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v15[1] = v11;
   v12 = [NSArray arrayWithObjects:v15 count:2];
 

@@ -1,20 +1,20 @@
 @interface _UIPanOrFlickGestureRecognizer
-- (BOOL)_shouldTryToBeginWithEvent:(id)a3;
+- (BOOL)_shouldTryToBeginWithEvent:(id)event;
 - (BOOL)isValidLongPress;
 - (CGPoint)initialCentroidLocation;
-- (_UIPanOrFlickGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_UIPanOrFlickGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (_UIPanOrFlickGestureRecognizerDelegate)panOrFlickDelegate;
 - (unint64_t)recognizedFlickDirection;
 - (void)clearTimer;
 - (void)dealloc;
-- (void)enoughTimeElapsed:(id)a3;
+- (void)enoughTimeElapsed:(id)elapsed;
 - (void)reset;
-- (void)responsivenessTimeElapsed:(id)a3;
+- (void)responsivenessTimeElapsed:(id)elapsed;
 - (void)startTimer;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation _UIPanOrFlickGestureRecognizer
@@ -28,11 +28,11 @@
   [(UIGestureRecognizer *)&v3 dealloc];
 }
 
-- (_UIPanOrFlickGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_UIPanOrFlickGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v5.receiver = self;
   v5.super_class = _UIPanOrFlickGestureRecognizer;
-  result = [(UIPanGestureRecognizer *)&v5 initWithTarget:a3 action:a4];
+  result = [(UIPanGestureRecognizer *)&v5 initWithTarget:target action:action];
   if (result)
   {
     result->_minimumPressDuration = 0.5;
@@ -55,20 +55,20 @@
 
 - (_UIPanOrFlickGestureRecognizerDelegate)panOrFlickDelegate
 {
-  v3 = [(UIGestureRecognizer *)self delegate];
-  v4 = [v3 conformsToProtocol:&unk_1F00544A8];
+  delegate = [(UIGestureRecognizer *)self delegate];
+  v4 = [delegate conformsToProtocol:&unk_1F00544A8];
 
   if (v4)
   {
-    v5 = [(UIGestureRecognizer *)self delegate];
+    delegate2 = [(UIGestureRecognizer *)self delegate];
   }
 
   else
   {
-    v5 = 0;
+    delegate2 = 0;
   }
 
-  return v5;
+  return delegate2;
 }
 
 - (unint64_t)recognizedFlickDirection
@@ -78,8 +78,8 @@
     return 0;
   }
 
-  v3 = [(UIGestureRecognizer *)self view];
-  [(UIPanGestureRecognizer *)self translationInView:v3];
+  view = [(UIGestureRecognizer *)self view];
+  [(UIPanGestureRecognizer *)self translationInView:view];
   v5 = v4;
   v7 = v6;
 
@@ -125,8 +125,8 @@
 
 - (BOOL)isValidLongPress
 {
-  v3 = [(UIGestureRecognizer *)self view];
-  [(UIPanGestureRecognizer *)self locationInView:v3];
+  view = [(UIGestureRecognizer *)self view];
+  [(UIPanGestureRecognizer *)self locationInView:view];
   v5 = v4;
   v7 = v6;
 
@@ -146,7 +146,7 @@
   return touchCount == [(UIPanGestureRecognizer *)self minimumNumberOfTouches];
 }
 
-- (void)responsivenessTimeElapsed:(id)a3
+- (void)responsivenessTimeElapsed:(id)elapsed
 {
   if ([(_UIPanOrFlickGestureRecognizer *)self isValidLongPress]&& [(UIGestureRecognizer *)self state]== UIGestureRecognizerStatePossible)
   {
@@ -155,18 +155,18 @@
       [(UIGestureRecognizer *)self setState:1];
     }
 
-    v4 = [(_UIPanOrFlickGestureRecognizer *)self panOrFlickDelegate];
+    panOrFlickDelegate = [(_UIPanOrFlickGestureRecognizer *)self panOrFlickDelegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(_UIPanOrFlickGestureRecognizer *)self panOrFlickDelegate];
-      [v6 gestureRecognizerShouldBeginResponse:self];
+      panOrFlickDelegate2 = [(_UIPanOrFlickGestureRecognizer *)self panOrFlickDelegate];
+      [panOrFlickDelegate2 gestureRecognizerShouldBeginResponse:self];
     }
   }
 }
 
-- (void)enoughTimeElapsed:(id)a3
+- (void)enoughTimeElapsed:(id)elapsed
 {
   if ([(_UIPanOrFlickGestureRecognizer *)self isValidLongPress])
   {
@@ -186,7 +186,7 @@
   }
 }
 
-- (BOOL)_shouldTryToBeginWithEvent:(id)a3
+- (BOOL)_shouldTryToBeginWithEvent:(id)event
 {
   if (self->_longPressOnly)
   {
@@ -197,7 +197,7 @@
   v8 = v4;
   v6.receiver = self;
   v6.super_class = _UIPanOrFlickGestureRecognizer;
-  return [(UIPanGestureRecognizer *)&v6 _shouldTryToBeginWithEvent:a3];
+  return [(UIPanGestureRecognizer *)&v6 _shouldTryToBeginWithEvent:event];
 }
 
 - (void)clearTimer
@@ -214,14 +214,14 @@
 - (void)startTimer
 {
   [(_UIPanOrFlickGestureRecognizer *)self clearTimer];
-  v3 = [(_UIPanOrFlickGestureRecognizer *)self panOrFlickDelegate];
+  panOrFlickDelegate = [(_UIPanOrFlickGestureRecognizer *)self panOrFlickDelegate];
   v4 = objc_opt_respondsToSelector();
 
   v5 = 0.0;
   if (v4)
   {
-    v6 = [(_UIPanOrFlickGestureRecognizer *)self panOrFlickDelegate];
-    [v6 additionalPressDurationForTypingCadence:self];
+    panOrFlickDelegate2 = [(_UIPanOrFlickGestureRecognizer *)self panOrFlickDelegate];
+    [panOrFlickDelegate2 additionalPressDurationForTypingCadence:self];
     v5 = v7;
   }
 
@@ -245,85 +245,85 @@
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 timestamp];
+  eventCopy = event;
+  beganCopy = began;
+  [eventCopy timestamp];
   [(_UIPanOrFlickGestureRecognizer *)self setTimestampOfLastEvent:?];
   if ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStatePossible)
   {
-    [v6 timestamp];
+    [eventCopy timestamp];
     [(_UIPanOrFlickGestureRecognizer *)self setTimestampBeforeGestureBegan:?];
   }
 
   [(_UIPanOrFlickGestureRecognizer *)self startTimer];
   v10.receiver = self;
   v10.super_class = _UIPanOrFlickGestureRecognizer;
-  [(UIPanGestureRecognizer *)&v10 touchesBegan:v7 withEvent:v6];
-  v8 = [v7 count];
+  [(UIPanGestureRecognizer *)&v10 touchesBegan:beganCopy withEvent:eventCopy];
+  v8 = [beganCopy count];
 
   self->_touchCount += v8;
-  v9 = [(UIGestureRecognizer *)self view];
-  [(UIPanGestureRecognizer *)self locationInView:v9];
+  view = [(UIGestureRecognizer *)self view];
+  [(UIPanGestureRecognizer *)self locationInView:view];
   [(_UIPanOrFlickGestureRecognizer *)self setInitialCentroidLocation:?];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 timestamp];
+  movedCopy = moved;
+  eventCopy = event;
+  [eventCopy timestamp];
   [(_UIPanOrFlickGestureRecognizer *)self setTimestampOfLastEvent:?];
   if ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStatePossible)
   {
-    [v7 timestamp];
+    [eventCopy timestamp];
     [(_UIPanOrFlickGestureRecognizer *)self setTimestampBeforeGestureBegan:?];
   }
 
   v8.receiver = self;
   v8.super_class = _UIPanOrFlickGestureRecognizer;
-  [(UIPanGestureRecognizer *)&v8 touchesMoved:v6 withEvent:v7];
+  [(UIPanGestureRecognizer *)&v8 touchesMoved:movedCopy withEvent:eventCopy];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 timestamp];
+  eventCopy = event;
+  endedCopy = ended;
+  [eventCopy timestamp];
   [(_UIPanOrFlickGestureRecognizer *)self setTimestampOfLastEvent:?];
   if ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStatePossible)
   {
-    [v6 timestamp];
+    [eventCopy timestamp];
     [(_UIPanOrFlickGestureRecognizer *)self setTimestampBeforeGestureBegan:?];
   }
 
   [(_UIPanOrFlickGestureRecognizer *)self clearTimer];
   v9.receiver = self;
   v9.super_class = _UIPanOrFlickGestureRecognizer;
-  [(UIPanGestureRecognizer *)&v9 touchesEnded:v7 withEvent:v6];
-  v8 = [v7 count];
+  [(UIPanGestureRecognizer *)&v9 touchesEnded:endedCopy withEvent:eventCopy];
+  v8 = [endedCopy count];
 
   self->_touchCount -= v8;
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 timestamp];
+  eventCopy = event;
+  cancelledCopy = cancelled;
+  [eventCopy timestamp];
   [(_UIPanOrFlickGestureRecognizer *)self setTimestampOfLastEvent:?];
   if ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStatePossible)
   {
-    [v6 timestamp];
+    [eventCopy timestamp];
     [(_UIPanOrFlickGestureRecognizer *)self setTimestampBeforeGestureBegan:?];
   }
 
   [(_UIPanOrFlickGestureRecognizer *)self clearTimer];
   v9.receiver = self;
   v9.super_class = _UIPanOrFlickGestureRecognizer;
-  [(UIPanGestureRecognizer *)&v9 touchesCancelled:v7 withEvent:v6];
-  v8 = [v7 count];
+  [(UIPanGestureRecognizer *)&v9 touchesCancelled:cancelledCopy withEvent:eventCopy];
+  v8 = [cancelledCopy count];
 
   self->_touchCount -= v8;
 }

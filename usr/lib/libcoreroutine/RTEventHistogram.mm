@@ -1,30 +1,30 @@
 @interface RTEventHistogram
-+ (BOOL)highProbabilityHistogramItem:(id)a3 withOptions:(id)a4;
-+ (BOOL)relativeHighProbabilityHistogramItem:(id)a3 toItem:(id)a4 withOptions:(id)a5;
-+ (double)getOverlapTimeForIntervalStart1:(id)a3 intervalEnd1:(id)a4 intervalStart2:(id)a5 intervalEnd2:(id)a6;
-- (RTEventHistogram)initWithDictionary:(id)a3 options:(id)a4;
-- (RTEventHistogram)initWithEvents:(id)a3 locationsOfInterest:(id)a4 options:(id)a5;
-- (id)_loiHistogramForEventLocation:(id)a3;
-- (id)getLOIHistogramForEvents:(id)a3 andLocationsOfInterest:(id)a4;
-- (id)getObjectWithName:(id)a3 source:(unint64_t)a4 calendarIdentifier:(id)a5 fromDictionary:(id)a6;
-- (id)locationsOfInterestAssociatedToIdentifier:(id)a3;
-- (id)predictedLocationsOfInterestAssociatedToTitle:(id)a3 location:(id)a4 calendarIdentifier:(id)a5;
-- (void)addEvent:(id)a3 toIdentifierDict:(id)a4 useCalendarIdentifier:(BOOL)a5;
++ (BOOL)highProbabilityHistogramItem:(id)item withOptions:(id)options;
++ (BOOL)relativeHighProbabilityHistogramItem:(id)item toItem:(id)toItem withOptions:(id)options;
++ (double)getOverlapTimeForIntervalStart1:(id)start1 intervalEnd1:(id)end1 intervalStart2:(id)start2 intervalEnd2:(id)end2;
+- (RTEventHistogram)initWithDictionary:(id)dictionary options:(id)options;
+- (RTEventHistogram)initWithEvents:(id)events locationsOfInterest:(id)interest options:(id)options;
+- (id)_loiHistogramForEventLocation:(id)location;
+- (id)getLOIHistogramForEvents:(id)events andLocationsOfInterest:(id)interest;
+- (id)getObjectWithName:(id)name source:(unint64_t)source calendarIdentifier:(id)identifier fromDictionary:(id)dictionary;
+- (id)locationsOfInterestAssociatedToIdentifier:(id)identifier;
+- (id)predictedLocationsOfInterestAssociatedToTitle:(id)title location:(id)location calendarIdentifier:(id)identifier;
+- (void)addEvent:(id)event toIdentifierDict:(id)dict useCalendarIdentifier:(BOOL)identifier;
 @end
 
 @implementation RTEventHistogram
 
-+ (BOOL)highProbabilityHistogramItem:(id)a3 withOptions:(id)a4
++ (BOOL)highProbabilityHistogramItem:(id)item withOptions:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  [v5 probability];
+  itemCopy = item;
+  optionsCopy = options;
+  [itemCopy probability];
   v8 = v7;
-  [v6 highProbabilityItemMinProbability];
+  [optionsCopy highProbabilityItemMinProbability];
   if (v8 >= v9)
   {
-    v11 = [v5 numOfEvents];
-    v10 = v11 >= [v6 highProbabilityItemMinNumOfEvents];
+    numOfEvents = [itemCopy numOfEvents];
+    v10 = numOfEvents >= [optionsCopy highProbabilityItemMinNumOfEvents];
   }
 
   else
@@ -35,21 +35,21 @@
   return v10;
 }
 
-+ (BOOL)relativeHighProbabilityHistogramItem:(id)a3 toItem:(id)a4 withOptions:(id)a5
++ (BOOL)relativeHighProbabilityHistogramItem:(id)item toItem:(id)toItem withOptions:(id)options
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  [v7 probability];
+  itemCopy = item;
+  optionsCopy = options;
+  toItemCopy = toItem;
+  [itemCopy probability];
   v11 = v10;
-  [v9 probability];
+  [toItemCopy probability];
   v13 = v12;
 
-  [v8 relativeHighProbabilityItemMinDifference];
+  [optionsCopy relativeHighProbabilityItemMinDifference];
   if (v11 - v13 >= v14)
   {
-    v16 = [v7 numOfEvents];
-    v15 = v16 >= [v8 highProbabilityItemMinNumOfEvents];
+    numOfEvents = [itemCopy numOfEvents];
+    v15 = numOfEvents >= [optionsCopy highProbabilityItemMinNumOfEvents];
   }
 
   else
@@ -60,24 +60,24 @@
   return v15;
 }
 
-- (id)_loiHistogramForEventLocation:(id)a3
+- (id)_loiHistogramForEventLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(RTEventHistogram *)self getObjectWithName:v4 source:1 calendarIdentifier:0 fromDictionary:self->_locationOfInterestHistograms];
+  locationCopy = location;
+  v5 = [(RTEventHistogram *)self getObjectWithName:locationCopy source:1 calendarIdentifier:0 fromDictionary:self->_locationOfInterestHistograms];
   if (!v5)
   {
-    v5 = [(RTEventHistogram *)self getObjectWithName:v4 source:2 calendarIdentifier:0 fromDictionary:self->_locationOfInterestHistograms];
+    v5 = [(RTEventHistogram *)self getObjectWithName:locationCopy source:2 calendarIdentifier:0 fromDictionary:self->_locationOfInterestHistograms];
   }
 
   return v5;
 }
 
-+ (double)getOverlapTimeForIntervalStart1:(id)a3 intervalEnd1:(id)a4 intervalStart2:(id)a5 intervalEnd2:(id)a6
++ (double)getOverlapTimeForIntervalStart1:(id)start1 intervalEnd1:(id)end1 intervalStart2:(id)start2 intervalEnd2:(id)end2
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = [a3 laterDate:a5];
-  v12 = [v10 earlierDate:v9];
+  end2Copy = end2;
+  end1Copy = end1;
+  v11 = [start1 laterDate:start2];
+  v12 = [end1Copy earlierDate:end2Copy];
 
   [v12 timeIntervalSinceDate:v11];
   v14 = fmax(v13, 0.0);
@@ -85,22 +85,22 @@
   return v14;
 }
 
-- (id)getLOIHistogramForEvents:(id)a3 andLocationsOfInterest:(id)a4
+- (id)getLOIHistogramForEvents:(id)events andLocationsOfInterest:(id)interest
 {
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  interestCopy = interest;
   v8 = objc_opt_new();
   v9 = objc_opt_new();
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __68__RTEventHistogram_getLOIHistogramForEvents_andLocationsOfInterest___block_invoke;
   v21[3] = &unk_2788CE100;
-  v10 = v7;
+  v10 = interestCopy;
   v22 = v10;
-  v23 = self;
+  selfCopy = self;
   v11 = v9;
   v24 = v11;
-  [v6 enumerateObjectsUsingBlock:v21];
+  [eventsCopy enumerateObjectsUsingBlock:v21];
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x2020000000;
@@ -242,52 +242,52 @@ uint64_t __68__RTEventHistogram_getLOIHistogramForEvents_andLocationsOfInterest_
   return v9;
 }
 
-- (RTEventHistogram)initWithDictionary:(id)a3 options:(id)a4
+- (RTEventHistogram)initWithDictionary:(id)dictionary options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = RTEventHistogram;
   v9 = [(RTEventHistogram *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_locationOfInterestHistograms, a3);
-    [(RTEventHistogram *)v10 setOptions:v8];
+    objc_storeStrong(&v9->_locationOfInterestHistograms, dictionary);
+    [(RTEventHistogram *)v10 setOptions:optionsCopy];
   }
 
   return v10;
 }
 
-- (RTEventHistogram)initWithEvents:(id)a3 locationsOfInterest:(id)a4 options:(id)a5
+- (RTEventHistogram)initWithEvents:(id)events locationsOfInterest:(id)interest options:(id)options
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  interestCopy = interest;
+  optionsCopy = options;
+  eventsCopy = events;
   v11 = objc_opt_new();
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __63__RTEventHistogram_initWithEvents_locationsOfInterest_options___block_invoke;
   v24[3] = &unk_2788C4A48;
-  v12 = self;
-  v25 = v12;
+  selfCopy = self;
+  v25 = selfCopy;
   v26 = v11;
   v13 = v11;
-  [v10 enumerateObjectsUsingBlock:v24];
+  [eventsCopy enumerateObjectsUsingBlock:v24];
 
   v14 = objc_opt_new();
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __63__RTEventHistogram_initWithEvents_locationsOfInterest_options___block_invoke_2;
   v20[3] = &unk_2788CF3D0;
-  v15 = v12;
+  v15 = selfCopy;
   v21 = v15;
-  v22 = v8;
+  v22 = interestCopy;
   v23 = v14;
   v16 = v14;
-  v17 = v8;
+  v17 = interestCopy;
   [v13 enumerateKeysAndObjectsUsingBlock:v20];
-  v18 = [(RTEventHistogram *)v15 initWithDictionary:v16 options:v9];
+  v18 = [(RTEventHistogram *)v15 initWithDictionary:v16 options:optionsCopy];
 
   return v18;
 }
@@ -327,30 +327,30 @@ void __63__RTEventHistogram_initWithEvents_locationsOfInterest_options___block_i
   }
 }
 
-- (id)getObjectWithName:(id)a3 source:(unint64_t)a4 calendarIdentifier:(id)a5 fromDictionary:(id)a6
+- (id)getObjectWithName:(id)name source:(unint64_t)source calendarIdentifier:(id)identifier fromDictionary:(id)dictionary
 {
   reusableLookupIdentifier = self->_reusableLookupIdentifier;
-  v12 = a6;
-  v13 = a5;
-  v14 = a3;
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
+  nameCopy = name;
   if (reusableLookupIdentifier)
   {
-    [(RTEventLocationIdentifier *)reusableLookupIdentifier setName:v14];
+    [(RTEventLocationIdentifier *)reusableLookupIdentifier setName:nameCopy];
 
-    [(RTEventLocationIdentifier *)self->_reusableLookupIdentifier setSource:a4];
-    [(RTEventLocationIdentifier *)self->_reusableLookupIdentifier setCalendarIdentifier:v13];
+    [(RTEventLocationIdentifier *)self->_reusableLookupIdentifier setSource:source];
+    [(RTEventLocationIdentifier *)self->_reusableLookupIdentifier setCalendarIdentifier:identifierCopy];
   }
 
   else
   {
-    v15 = [[RTEventLocationIdentifier alloc] initWithName:v14 source:a4 calendarIdentifier:v13];
+    v15 = [[RTEventLocationIdentifier alloc] initWithName:nameCopy source:source calendarIdentifier:identifierCopy];
 
-    v13 = self->_reusableLookupIdentifier;
+    identifierCopy = self->_reusableLookupIdentifier;
     self->_reusableLookupIdentifier = v15;
   }
 
-  v16 = [(RTEventLocationIdentifier *)self->_reusableLookupIdentifier normalize];
-  v17 = [a6 objectForKey:self->_reusableLookupIdentifier];
+  normalize = [(RTEventLocationIdentifier *)self->_reusableLookupIdentifier normalize];
+  v17 = [dictionary objectForKey:self->_reusableLookupIdentifier];
 
   [(RTEventLocationIdentifier *)self->_reusableLookupIdentifier setName:0];
   [(RTEventLocationIdentifier *)self->_reusableLookupIdentifier setSource:0];
@@ -359,81 +359,81 @@ void __63__RTEventHistogram_initWithEvents_locationsOfInterest_options___block_i
   return v17;
 }
 
-- (void)addEvent:(id)a3 toIdentifierDict:(id)a4 useCalendarIdentifier:(BOOL)a5
+- (void)addEvent:(id)event toIdentifierDict:(id)dict useCalendarIdentifier:(BOOL)identifier
 {
-  v5 = a5;
-  v23 = a3;
-  v8 = a4;
-  if (v5)
+  identifierCopy = identifier;
+  eventCopy = event;
+  dictCopy = dict;
+  if (identifierCopy)
   {
-    v9 = [v23 calendar];
-    v10 = [v9 calendarIdentifier];
+    calendar = [eventCopy calendar];
+    calendarIdentifier = [calendar calendarIdentifier];
   }
 
   else
   {
-    v10 = 0;
+    calendarIdentifier = 0;
   }
 
-  v11 = [v23 locationWithoutPrediction];
-  if ([v11 length])
+  locationWithoutPrediction = [eventCopy locationWithoutPrediction];
+  if ([locationWithoutPrediction length])
   {
-    v12 = [v23 locationsWithoutPrediction];
-    v13 = [v12 count];
+    locationsWithoutPrediction = [eventCopy locationsWithoutPrediction];
+    v13 = [locationsWithoutPrediction count];
 
     if (v13 > 1)
     {
       goto LABEL_10;
     }
 
-    v14 = [v23 locationWithoutPrediction];
-    v11 = [(RTEventHistogram *)self getObjectWithName:v14 source:1 calendarIdentifier:v10 fromDictionary:v8];
+    locationWithoutPrediction2 = [eventCopy locationWithoutPrediction];
+    locationWithoutPrediction = [(RTEventHistogram *)self getObjectWithName:locationWithoutPrediction2 source:1 calendarIdentifier:calendarIdentifier fromDictionary:dictCopy];
 
-    if (!v11)
+    if (!locationWithoutPrediction)
     {
-      v15 = [[RTEventLocationIdentifier alloc] initWithEvent:v23 source:1 useCalendarIdentifier:v5];
-      v16 = [(RTEventLocationIdentifier *)v15 normalize];
+      v15 = [[RTEventLocationIdentifier alloc] initWithEvent:eventCopy source:1 useCalendarIdentifier:identifierCopy];
+      normalize = [(RTEventLocationIdentifier *)v15 normalize];
 
-      v11 = objc_opt_new();
-      [v8 setObject:v11 forKey:v16];
+      locationWithoutPrediction = objc_opt_new();
+      [dictCopy setObject:locationWithoutPrediction forKey:normalize];
     }
 
-    [v11 addObject:v23];
+    [locationWithoutPrediction addObject:eventCopy];
   }
 
 LABEL_10:
-  v17 = [v23 title];
-  v18 = [v17 length];
+  title = [eventCopy title];
+  v18 = [title length];
 
   if (v18)
   {
-    v19 = [v23 title];
-    v20 = [(RTEventHistogram *)self getObjectWithName:v19 source:2 calendarIdentifier:v10 fromDictionary:v8];
+    title2 = [eventCopy title];
+    v20 = [(RTEventHistogram *)self getObjectWithName:title2 source:2 calendarIdentifier:calendarIdentifier fromDictionary:dictCopy];
 
     if (!v20)
     {
-      v21 = [[RTEventLocationIdentifier alloc] initWithEvent:v23 source:2 useCalendarIdentifier:v5];
-      v22 = [(RTEventLocationIdentifier *)v21 normalize];
+      v21 = [[RTEventLocationIdentifier alloc] initWithEvent:eventCopy source:2 useCalendarIdentifier:identifierCopy];
+      normalize2 = [(RTEventLocationIdentifier *)v21 normalize];
 
       v20 = objc_opt_new();
-      [v8 setObject:v20 forKey:v22];
+      [dictCopy setObject:v20 forKey:normalize2];
     }
 
-    [v20 addObject:v23];
+    [v20 addObject:eventCopy];
   }
 }
 
-- (id)locationsOfInterestAssociatedToIdentifier:(id)a3
+- (id)locationsOfInterestAssociatedToIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RTEventHistogram *)self _loiHistogramForEventLocation:v4];
+  identifierCopy = identifier;
+  v5 = [(RTEventHistogram *)self _loiHistogramForEventLocation:identifierCopy];
   v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v5, "count")}];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __62__RTEventHistogram_locationsOfInterestAssociatedToIdentifier___block_invoke;
   v16 = &unk_2788C4A48;
-  v17 = self;
+  selfCopy = self;
   v7 = v6;
   v18 = v7;
   [v5 enumerateObjectsUsingBlock:&v13];
@@ -446,7 +446,7 @@ LABEL_10:
       *buf = 134218242;
       v20 = v12;
       v21 = 2112;
-      v22 = v4;
+      v22 = identifierCopy;
       _os_log_debug_impl(&dword_2304B3000, v8, OS_LOG_TYPE_DEBUG, "found %lu locations of interest associated with identifer, %@", buf, 0x16u);
     }
   }
@@ -472,44 +472,44 @@ void __62__RTEventHistogram_locationsOfInterestAssociatedToIdentifier___block_in
   }
 }
 
-- (id)predictedLocationsOfInterestAssociatedToTitle:(id)a3 location:(id)a4 calendarIdentifier:(id)a5
+- (id)predictedLocationsOfInterestAssociatedToTitle:(id)title location:(id)location calendarIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 length];
+  titleCopy = title;
+  locationCopy = location;
+  identifierCopy = identifier;
+  v11 = [locationCopy length];
   locationOfInterestHistograms = self->_locationOfInterestHistograms;
   if (v11)
   {
-    v13 = [(RTEventHistogram *)self getObjectWithName:v9 source:1 calendarIdentifier:v10 fromDictionary:locationOfInterestHistograms];
+    v13 = [(RTEventHistogram *)self getObjectWithName:locationCopy source:1 calendarIdentifier:identifierCopy fromDictionary:locationOfInterestHistograms];
 
     v14 = self->_locationOfInterestHistograms;
-    v15 = self;
-    v16 = v9;
+    selfCopy2 = self;
+    v16 = locationCopy;
     v17 = 1;
   }
 
   else
   {
-    v13 = [(RTEventHistogram *)self getObjectWithName:v8 source:2 calendarIdentifier:v10 fromDictionary:locationOfInterestHistograms];
+    v13 = [(RTEventHistogram *)self getObjectWithName:titleCopy source:2 calendarIdentifier:identifierCopy fromDictionary:locationOfInterestHistograms];
 
     v14 = self->_locationOfInterestHistograms;
-    v15 = self;
-    v16 = v8;
+    selfCopy2 = self;
+    v16 = titleCopy;
     v17 = 2;
   }
 
-  v18 = [(RTEventHistogram *)v15 getObjectWithName:v16 source:v17 calendarIdentifier:0 fromDictionary:v14];
+  v18 = [(RTEventHistogram *)selfCopy2 getObjectWithName:v16 source:v17 calendarIdentifier:0 fromDictionary:v14];
   v19 = objc_opt_new();
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __94__RTEventHistogram_predictedLocationsOfInterestAssociatedToTitle_location_calendarIdentifier___block_invoke;
   aBlock[3] = &unk_2788CF3F8;
   aBlock[4] = self;
-  v34 = v9;
+  v34 = locationCopy;
   v35 = v19;
   v20 = v19;
-  v21 = v9;
+  v21 = locationCopy;
   v22 = _Block_copy(aBlock);
   v22[2](v22, v13);
   v22[2](v22, v18);

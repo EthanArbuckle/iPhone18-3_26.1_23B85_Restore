@@ -1,26 +1,26 @@
 @interface HVPBContentState
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addConsumers:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addConsumers:(id)consumers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HVPBContentState
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -46,9 +46,9 @@
     while (v7);
   }
 
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
-    self->_levelOfService = *(v4 + 4);
+    self->_levelOfService = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
@@ -71,16 +71,16 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   consumers = self->_consumers;
-  if (consumers | *(v4 + 1))
+  if (consumers | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)consumers isEqual:?])
     {
@@ -88,10 +88,10 @@
     }
   }
 
-  v6 = (*(v4 + 20) & 1) == 0;
+  v6 = (*(equalCopy + 20) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) != 0 && self->_levelOfService == *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) != 0 && self->_levelOfService == *(equalCopy + 4))
     {
       v6 = 1;
       goto LABEL_9;
@@ -106,10 +106,10 @@ LABEL_9:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -130,7 +130,7 @@ LABEL_9:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{a3, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{zone, v14}];
         [v5 addConsumers:v11];
 
         ++v10;
@@ -153,35 +153,35 @@ LABEL_9:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(HVPBContentState *)self consumersCount])
   {
-    [v8 clearConsumers];
-    v4 = [(HVPBContentState *)self consumersCount];
-    if (v4)
+    [toCopy clearConsumers];
+    consumersCount = [(HVPBContentState *)self consumersCount];
+    if (consumersCount)
     {
-      v5 = v4;
+      v5 = consumersCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HVPBContentState *)self consumersAtIndex:i];
-        [v8 addConsumers:v7];
+        [toCopy addConsumers:v7];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v8 + 4) = self->_levelOfService;
-    *(v8 + 20) |= 1u;
+    *(toCopy + 4) = self->_levelOfService;
+    *(toCopy + 20) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -225,12 +225,12 @@ LABEL_9:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   consumers = self->_consumers;
   if (consumers)
   {
-    [v3 setObject:consumers forKey:@"consumers"];
+    [dictionary setObject:consumers forKey:@"consumers"];
   }
 
   if (*&self->_has)
@@ -248,28 +248,28 @@ LABEL_9:
   v8.receiver = self;
   v8.super_class = HVPBContentState;
   v4 = [(HVPBContentState *)&v8 description];
-  v5 = [(HVPBContentState *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HVPBContentState *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addConsumers:(id)a3
+- (void)addConsumers:(id)consumers
 {
-  v4 = a3;
+  consumersCopy = consumers;
   consumers = self->_consumers;
-  v8 = v4;
+  v8 = consumersCopy;
   if (!consumers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_consumers;
     self->_consumers = v6;
 
-    v4 = v8;
+    consumersCopy = v8;
     consumers = self->_consumers;
   }
 
-  [(NSMutableArray *)consumers addObject:v4];
+  [(NSMutableArray *)consumers addObject:consumersCopy];
 }
 
 @end

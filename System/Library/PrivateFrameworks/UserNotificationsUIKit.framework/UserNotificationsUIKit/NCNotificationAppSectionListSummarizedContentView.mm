@@ -1,15 +1,15 @@
 @interface NCNotificationAppSectionListSummarizedContentView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NCNotificationAppSectionListSummarizedContentViewDelegate)delegate;
-- (double)_allowedWidthForTextInRect:(CGRect)a3;
-- (double)_countBackgroundDimensionInRect:(CGRect)a3;
-- (id)_newContentStringLabelForText:(id)a3;
+- (double)_allowedWidthForTextInRect:(CGRect)rect;
+- (double)_countBackgroundDimensionInRect:(CGRect)rect;
+- (id)_newContentStringLabelForText:(id)text;
 - (unint64_t)_maximumNumberOfLinesForContentText;
 - (unint64_t)_maximumNumberOfLinesForTitleText;
-- (unint64_t)_numberOfLinesForContentTextInFrame:(CGRect)a3;
-- (unint64_t)_numberOfLinesForTitleTextInFrame:(CGRect)a3;
+- (unint64_t)_numberOfLinesForContentTextInFrame:(CGRect)frame;
+- (unint64_t)_numberOfLinesForTitleTextInFrame:(CGRect)frame;
 - (void)_configureBackgroundViewIfNecessary;
-- (void)_configureShadowForAttachmentView:(id)a3;
+- (void)_configureShadowForAttachmentView:(id)view;
 - (void)_configureTapGestureRecognizerIfNecessary;
 - (void)_layoutAttachmentImageViews;
 - (void)_layoutBackgroundView;
@@ -20,23 +20,23 @@
 - (void)_updateTextAttributesForCountLabel;
 - (void)_updateTextAttributesForTitleAndContentStringLabels;
 - (void)_updateTextAttributesForTitleLabel;
-- (void)_visualStylingProviderDidChange:(id)a3 forCategory:(int64_t)a4 outgoingProvider:(id)a5;
+- (void)_visualStylingProviderDidChange:(id)change forCategory:(int64_t)category outgoingProvider:(id)provider;
 - (void)didMoveToWindow;
-- (void)handleTap:(id)a3;
+- (void)handleTap:(id)tap;
 - (void)layoutSubviews;
-- (void)setAttachmentImageViews:(id)a3;
+- (void)setAttachmentImageViews:(id)views;
 - (void)setCount:(unint64_t)count;
-- (void)setTitle:(id)a3;
-- (void)setTitleAndContentStrings:(id)a3;
+- (void)setTitle:(id)title;
+- (void)setTitleAndContentStrings:(id)strings;
 @end
 
 @implementation NCNotificationAppSectionListSummarizedContentView
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v10 = a3;
-  v4 = [(UILabel *)self->_titleLabel text];
-  v5 = [v4 isEqualToString:v10];
+  titleCopy = title;
+  text = [(UILabel *)self->_titleLabel text];
+  v5 = [text isEqualToString:titleCopy];
 
   if ((v5 & 1) == 0)
   {
@@ -51,7 +51,7 @@
       titleLabel = self->_titleLabel;
     }
 
-    [(UILabel *)titleLabel setText:v10];
+    [(UILabel *)titleLabel setText:titleCopy];
     [(NCNotificationAppSectionListSummarizedContentView *)self _updateTextAttributesForTitleLabel];
     v9 = [(NCNotificationListBaseContentView *)self visualStylingProviderForCategory:1];
     [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_titleLabel style:0 visualStylingProvider:v9 outgoingProvider:0];
@@ -73,13 +73,13 @@
         countBackgroundView = self->_countBackgroundView;
         self->_countBackgroundView = v5;
 
-        v7 = [(UIView *)self->_countBackgroundView layer];
-        [v7 setCornerCurve:*MEMORY[0x277CDA130]];
+        layer = [(UIView *)self->_countBackgroundView layer];
+        [layer setCornerCurve:*MEMORY[0x277CDA130]];
 
         [(NCNotificationAppSectionListSummarizedContentView *)self addSubview:self->_countBackgroundView];
         v8 = self->_countBackgroundView;
-        v9 = [MEMORY[0x277D75348] blackColor];
-        [(UIView *)v8 setBackgroundColor:v9];
+        blackColor = [MEMORY[0x277D75348] blackColor];
+        [(UIView *)v8 setBackgroundColor:blackColor];
 
         [(UIView *)self->_countBackgroundView setAlpha:0.25];
         v10 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -88,8 +88,8 @@
 
         [(UILabel *)self->_countLabel setTextAlignment:1];
         v12 = self->_countLabel;
-        v13 = [MEMORY[0x277D75348] systemWhiteColor];
-        [(UILabel *)v12 setTextColor:v13];
+        systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+        [(UILabel *)v12 setTextColor:systemWhiteColor];
 
         [(NCNotificationAppSectionListSummarizedContentView *)self addSubview:self->_countLabel];
         [(NCNotificationAppSectionListSummarizedContentView *)self _updateTextAttributesForCountLabel];
@@ -118,26 +118,26 @@
   }
 }
 
-- (void)setTitleAndContentStrings:(id)a3
+- (void)setTitleAndContentStrings:(id)strings
 {
-  v4 = a3;
-  if (([v4 isEqualToArray:self->_titleAndContentStrings] & 1) == 0)
+  stringsCopy = strings;
+  if (([stringsCopy isEqualToArray:self->_titleAndContentStrings] & 1) == 0)
   {
     [(NSArray *)self->_titleAndContentStringLabels enumerateObjectsUsingBlock:&__block_literal_global_15];
     titleAndContentStringLabels = self->_titleAndContentStringLabels;
     self->_titleAndContentStringLabels = 0;
 
-    if ([v4 count])
+    if ([stringsCopy count])
     {
       v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v10 = MEMORY[0x277D85DD0];
       v11 = 3221225472;
       v12 = __79__NCNotificationAppSectionListSummarizedContentView_setTitleAndContentStrings___block_invoke_3;
       v13 = &unk_278371460;
-      v14 = self;
+      selfCopy = self;
       v7 = v6;
       v15 = v7;
-      [v4 enumerateObjectsUsingBlock:&v10];
+      [stringsCopy enumerateObjectsUsingBlock:&v10];
       v8 = self->_titleAndContentStringLabels;
       self->_titleAndContentStringLabels = v7;
       v9 = v7;
@@ -168,10 +168,10 @@ void __79__NCNotificationAppSectionListSummarizedContentView_setTitleAndContentS
   [v10 addObject:v11];
 }
 
-- (void)setAttachmentImageViews:(id)a3
+- (void)setAttachmentImageViews:(id)views
 {
-  v5 = a3;
-  if (([v5 isEqualToArray:self->_attachmentImageViews] & 1) == 0)
+  viewsCopy = views;
+  if (([viewsCopy isEqualToArray:self->_attachmentImageViews] & 1) == 0)
   {
     [(NSArray *)self->_attachmentImageViews enumerateObjectsUsingBlock:&__block_literal_global_12_0];
     attachmentImageViews = self->_attachmentImageViews;
@@ -181,7 +181,7 @@ void __79__NCNotificationAppSectionListSummarizedContentView_setTitleAndContentS
     attachmentImageBoundingView = self->_attachmentImageBoundingView;
     self->_attachmentImageBoundingView = 0;
 
-    if ([v5 count])
+    if ([viewsCopy count])
     {
       v8 = objc_alloc_init(MEMORY[0x277D75D18]);
       v9 = self->_attachmentImageBoundingView;
@@ -193,19 +193,19 @@ void __79__NCNotificationAppSectionListSummarizedContentView_setTitleAndContentS
       v10[2] = __77__NCNotificationAppSectionListSummarizedContentView_setAttachmentImageViews___block_invoke_2;
       v10[3] = &unk_2783714A8;
       v10[4] = self;
-      [v5 enumerateObjectsUsingBlock:v10];
-      objc_storeStrong(&self->_attachmentImageViews, a3);
+      [viewsCopy enumerateObjectsUsingBlock:v10];
+      objc_storeStrong(&self->_attachmentImageViews, views);
     }
 
     [(NCNotificationAppSectionListSummarizedContentView *)self setNeedsLayout];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  [(NCNotificationAppSectionListSummarizedContentView *)self _countBackgroundDimensionInRect:0.0, 0.0, a3.width, a3.height];
+  height = fits.height;
+  width = fits.width;
+  [(NCNotificationAppSectionListSummarizedContentView *)self _countBackgroundDimensionInRect:0.0, 0.0, fits.width, fits.height];
   [(NCNotificationAppSectionListSummarizedContentView *)self _allowedWidthForTextInRect:0.0, 0.0, width, height];
   v7 = v6;
   titleLabel = self->_titleLabel;
@@ -216,10 +216,10 @@ void __79__NCNotificationAppSectionListSummarizedContentView_setTitleAndContentS
 
   if ([(NSArray *)self->_titleAndContentStringLabels count])
   {
-    v9 = [(NSArray *)self->_titleAndContentStringLabels firstObject];
-    v10 = [v9 firstObject];
+    firstObject = [(NSArray *)self->_titleAndContentStringLabels firstObject];
+    v9FirstObject = [firstObject firstObject];
 
-    [(NCNotificationListBaseContentView *)self _sizeMeasuringHeightForLabel:v10 withNumberOfLines:[(NCNotificationAppSectionListSummarizedContentView *)self _numberOfLinesForContentTextInFrame:0.0, 0.0, v7, height]];
+    [(NCNotificationListBaseContentView *)self _sizeMeasuringHeightForLabel:v9FirstObject withNumberOfLines:[(NCNotificationAppSectionListSummarizedContentView *)self _numberOfLinesForContentTextInFrame:0.0, 0.0, v7, height]];
   }
 
   if (self->_attachmentImageBoundingView)
@@ -227,8 +227,8 @@ void __79__NCNotificationAppSectionListSummarizedContentView_setTitleAndContentS
     [(NSArray *)self->_attachmentImageViews count];
   }
 
-  v11 = [(NCNotificationAppSectionListSummarizedContentView *)self traitCollection];
-  [v11 displayScale];
+  traitCollection = [(NCNotificationAppSectionListSummarizedContentView *)self traitCollection];
+  [traitCollection displayScale];
   UICeilToScale();
   v13 = v12;
 
@@ -267,9 +267,9 @@ uint64_t __67__NCNotificationAppSectionListSummarizedContentView_layoutSubviews_
 
 - (void)didMoveToWindow
 {
-  v3 = [(NCNotificationAppSectionListSummarizedContentView *)self window];
+  window = [(NCNotificationAppSectionListSummarizedContentView *)self window];
 
-  if (v3)
+  if (window)
   {
 
     [(NCNotificationListBaseContentView *)self adjustForContentSizeCategoryChange];
@@ -285,8 +285,8 @@ uint64_t __67__NCNotificationAppSectionListSummarizedContentView_layoutSubviews_
     [(UIView *)v3 setBackgroundView:v4];
 
     [(UIView *)v3 _setContinuousCornerRadius:23.5];
-    v5 = [(NCNotificationAppSectionListSummarizedContentView *)self delegate];
-    v6 = [v5 backgroundGroupNameBaseForAppSectionListSummarizedContentView:self];
+    delegate = [(NCNotificationAppSectionListSummarizedContentView *)self delegate];
+    v6 = [delegate backgroundGroupNameBaseForAppSectionListSummarizedContentView:self];
     [(UIView *)v3 setMaterialGroupNameBase:v6];
 
     [(NCNotificationAppSectionListSummarizedContentView *)self addSubview:v3];
@@ -347,8 +347,8 @@ uint64_t __67__NCNotificationAppSectionListSummarizedContentView_layoutSubviews_
     UIRectCenteredYInRect();
     UIRectIntegralWithScale();
     [(UIView *)self->_countBackgroundView setFrame:?];
-    v13 = [(UIView *)self->_countBackgroundView layer];
-    [v13 setCornerRadius:v12 * 0.5];
+    layer = [(UIView *)self->_countBackgroundView layer];
+    [layer setCornerRadius:v12 * 0.5];
 
     [(UILabel *)self->_countLabel frame];
     UIRectCenteredRect();
@@ -391,13 +391,13 @@ uint64_t __67__NCNotificationAppSectionListSummarizedContentView_layoutSubviews_
     attachmentImageViews = self->_attachmentImageViews;
     if (v12 == 1)
     {
-      v25 = [(NSArray *)attachmentImageViews firstObject];
-      [v25 setFrame:{v15, v17, v19, v21}];
+      firstObject = [(NSArray *)attachmentImageViews firstObject];
+      [firstObject setFrame:{v15, v17, v19, v21}];
     }
 
     else
     {
-      v25 = [(NSArray *)attachmentImageViews objectAtIndex:0];
+      firstObject = [(NSArray *)attachmentImageViews objectAtIndex:0];
       if ([(NCNotificationAppSectionListSummarizedContentView *)self _shouldReverseLayoutDirection])
       {
         v28.origin.x = v15;
@@ -408,8 +408,8 @@ uint64_t __67__NCNotificationAppSectionListSummarizedContentView_layoutSubviews_
       }
 
       v23 = 0.0;
-      [v25 setFrame:{v13, 0.0, 44.0, 44.0}];
-      [(NCNotificationAppSectionListSummarizedContentView *)self _configureShadowForAttachmentView:v25];
+      [firstObject setFrame:{v13, 0.0, 44.0, 44.0}];
+      [(NCNotificationAppSectionListSummarizedContentView *)self _configureShadowForAttachmentView:firstObject];
       v24 = [(NSArray *)self->_attachmentImageViews objectAtIndex:1];
       if (([(NCNotificationAppSectionListSummarizedContentView *)self _shouldReverseLayoutDirection]& 1) == 0)
       {
@@ -445,9 +445,9 @@ uint64_t __67__NCNotificationAppSectionListSummarizedContentView_layoutSubviews_
     v11 = v10;
     [(UILabel *)self->_titleLabel unui_measuringHeightWithNumberOfLines:[(NCNotificationAppSectionListSummarizedContentView *)self _numberOfLinesForTitleTextInFrame:v5, v7, v10, v9]];
     v13 = v12;
-    v14 = [(NCNotificationAppSectionListSummarizedContentView *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(NCNotificationAppSectionListSummarizedContentView *)self _shouldReverseLayoutDirection];
     v15 = &OBJC_IVAR___NCNotificationAppSectionListSummarizedContentView__countBackgroundView;
-    if (v14)
+    if (_shouldReverseLayoutDirection)
     {
       v15 = &OBJC_IVAR___NCNotificationAppSectionListSummarizedContentView__attachmentImageBoundingView;
     }
@@ -494,9 +494,9 @@ uint64_t __67__NCNotificationAppSectionListSummarizedContentView_layoutSubviews_
     v10 = v9;
     [(NCNotificationAppSectionListSummarizedContentView *)self _allowedWidthForTextInRect:?];
     v12 = v11;
-    v13 = [(NCNotificationAppSectionListSummarizedContentView *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(NCNotificationAppSectionListSummarizedContentView *)self _shouldReverseLayoutDirection];
     v14 = &OBJC_IVAR___NCNotificationAppSectionListSummarizedContentView__countBackgroundView;
-    if (v13)
+    if (_shouldReverseLayoutDirection)
     {
       v14 = &OBJC_IVAR___NCNotificationAppSectionListSummarizedContentView__attachmentImageBoundingView;
     }
@@ -630,21 +630,21 @@ LABEL_14:
   *(*(*(a1 + 40) + 8) + 24) = CGRectGetMaxY(v43) + 0.0;
 }
 
-- (void)_visualStylingProviderDidChange:(id)a3 forCategory:(int64_t)a4 outgoingProvider:(id)a5
+- (void)_visualStylingProviderDidChange:(id)change forCategory:(int64_t)category outgoingProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a5;
-  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_titleLabel style:0 visualStylingProvider:v7 outgoingProvider:v8];
+  changeCopy = change;
+  providerCopy = provider;
+  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_titleLabel style:0 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
   titleAndContentStringLabels = self->_titleAndContentStringLabels;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __114__NCNotificationAppSectionListSummarizedContentView__visualStylingProviderDidChange_forCategory_outgoingProvider___block_invoke;
   v12[3] = &unk_278371520;
   v12[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = changeCopy;
+  v14 = providerCopy;
+  v10 = providerCopy;
+  v11 = changeCopy;
   [(NSArray *)titleAndContentStringLabels enumerateObjectsUsingBlock:v12];
 }
 
@@ -675,8 +675,8 @@ void __114__NCNotificationAppSectionListSummarizedContentView__visualStylingProv
 {
   if (self->_countLabel)
   {
-    v3 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+    preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
     v5 = MEMORY[0x277D76918];
     if (!IsAccessibilityCategory)
     {
@@ -695,8 +695,8 @@ void __114__NCNotificationAppSectionListSummarizedContentView__visualStylingProv
 {
   if (self->_titleLabel)
   {
-    v3 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+    preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
     v5 = MEMORY[0x277D76918];
     if (!IsAccessibilityCategory)
     {
@@ -715,8 +715,8 @@ void __114__NCNotificationAppSectionListSummarizedContentView__visualStylingProv
 {
   if ([(NSArray *)self->_titleAndContentStringLabels count])
   {
-    v3 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+    preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
     v5 = MEMORY[0x277D76918];
     if (!IsAccessibilityCategory)
     {
@@ -732,7 +732,7 @@ void __114__NCNotificationAppSectionListSummarizedContentView__visualStylingProv
     v12 = 3221225472;
     v13 = __104__NCNotificationAppSectionListSummarizedContentView__updateTextAttributesForTitleAndContentStringLabels__block_invoke;
     v14 = &unk_278371548;
-    v15 = self;
+    selfCopy = self;
     v16 = v6;
     v17 = v7;
     v18 = v8;
@@ -754,16 +754,16 @@ void __104__NCNotificationAppSectionListSummarizedContentView__updateTextAttribu
 
 - (unint64_t)_maximumNumberOfLinesForTitleText
 {
-  v2 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-  v3 = !UIContentSizeCategoryIsAccessibilityCategory(v2);
+  preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+  v3 = !UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   return v3;
 }
 
 - (unint64_t)_maximumNumberOfLinesForContentText
 {
-  v2 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v2))
+  preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v3 = 2;
   }
@@ -776,40 +776,40 @@ void __104__NCNotificationAppSectionListSummarizedContentView__updateTextAttribu
   return v3;
 }
 
-- (unint64_t)_numberOfLinesForTitleTextInFrame:(CGRect)a3
+- (unint64_t)_numberOfLinesForTitleTextInFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   titleLabel = self->_titleLabel;
-  v9 = [(NCNotificationAppSectionListSummarizedContentView *)self _maximumNumberOfLinesForTitleText];
+  _maximumNumberOfLinesForTitleText = [(NCNotificationAppSectionListSummarizedContentView *)self _maximumNumberOfLinesForTitleText];
 
-  return [(NCNotificationListBaseContentView *)self _numberOfLinesForLabel:titleLabel maximumNumberOfLines:v9 inFrame:x, y, width, height];
+  return [(NCNotificationListBaseContentView *)self _numberOfLinesForLabel:titleLabel maximumNumberOfLines:_maximumNumberOfLinesForTitleText inFrame:x, y, width, height];
 }
 
-- (unint64_t)_numberOfLinesForContentTextInFrame:(CGRect)a3
+- (unint64_t)_numberOfLinesForContentTextInFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(NSArray *)self->_titleAndContentStringLabels firstObject];
-  v9 = [v8 objectAtIndex:1];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  firstObject = [(NSArray *)self->_titleAndContentStringLabels firstObject];
+  v9 = [firstObject objectAtIndex:1];
 
-  v10 = [(NCNotificationListBaseContentView *)self _numberOfLinesForLabel:v9 maximumNumberOfLines:[(NCNotificationAppSectionListSummarizedContentView *)self _maximumNumberOfLinesForContentText] inFrame:x, y, width, height];
-  return v10;
+  height = [(NCNotificationListBaseContentView *)self _numberOfLinesForLabel:v9 maximumNumberOfLines:[(NCNotificationAppSectionListSummarizedContentView *)self _maximumNumberOfLinesForContentText] inFrame:x, y, width, height];
+  return height;
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v4 = [(NCNotificationAppSectionListSummarizedContentView *)self delegate];
-  [v4 appSectionListSummarizedContentViewDidRecognizeTapGesture:self];
+  delegate = [(NCNotificationAppSectionListSummarizedContentView *)self delegate];
+  [delegate appSectionListSummarizedContentViewDidRecognizeTapGesture:self];
 }
 
-- (id)_newContentStringLabelForText:(id)a3
+- (id)_newContentStringLabelForText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = objc_alloc_init(MEMORY[0x277D756B8]);
   [v5 _setTextAlignmentFollowsWritingDirection:1];
   [v5 setLineBreakMode:4];
@@ -821,24 +821,24 @@ void __104__NCNotificationAppSectionListSummarizedContentView__updateTextAttribu
     [v6 automaticallyUpdateView:v5 withStyle:0];
   }
 
-  [v5 setText:v4];
+  [v5 setText:textCopy];
 
   return v5;
 }
 
-- (void)_configureShadowForAttachmentView:(id)a3
+- (void)_configureShadowForAttachmentView:(id)view
 {
-  v4 = [a3 layer];
-  [v4 setShadowColor:CGColorGetConstantColor(*MEMORY[0x277CBF3B8])];
-  [v4 setShadowRadius:5.0];
+  layer = [view layer];
+  [layer setShadowColor:CGColorGetConstantColor(*MEMORY[0x277CBF3B8])];
+  [layer setShadowRadius:5.0];
   LODWORD(v3) = 1050253722;
-  [v4 setShadowOpacity:v3];
-  [v4 setShadowOffset:{2.0, 3.0}];
+  [layer setShadowOpacity:v3];
+  [layer setShadowOffset:{2.0, 3.0}];
 }
 
-- (double)_countBackgroundDimensionInRect:(CGRect)a3
+- (double)_countBackgroundDimensionInRect:(CGRect)rect
 {
-  [(UILabel *)self->_countLabel sizeThatFits:a3.size.width, a3.size.height];
+  [(UILabel *)self->_countLabel sizeThatFits:rect.size.width, rect.size.height];
   if (v3 < v4)
   {
     v3 = v4;
@@ -853,15 +853,15 @@ void __104__NCNotificationAppSectionListSummarizedContentView__updateTextAttribu
   return result;
 }
 
-- (double)_allowedWidthForTextInRect:(CGRect)a3
+- (double)_allowedWidthForTextInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (self->_countBackgroundView)
   {
-    [(NCNotificationAppSectionListSummarizedContentView *)self _countBackgroundDimensionInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+    [(NCNotificationAppSectionListSummarizedContentView *)self _countBackgroundDimensionInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
     v9 = v8 + 12.0 + 12.0;
   }
 

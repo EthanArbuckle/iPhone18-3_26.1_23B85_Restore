@@ -1,18 +1,18 @@
 @interface SliderView.VerticalSlider
 - (CGSize)intrinsicContentSize;
-- (_TtCV5CAFUI10SliderView14VerticalSlider)initWithFrame:(CGRect)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (_TtCV5CAFUI10SliderView14VerticalSlider)initWithFrame:(CGRect)frame;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
-- (void)sliderTapped:(id)a3;
-- (void)trackingEnter:(id)a3;
-- (void)valueChanged:(id)a3;
+- (void)sliderTapped:(id)tapped;
+- (void)trackingEnter:(id)enter;
+- (void)valueChanged:(id)changed;
 @end
 
 @implementation SliderView.VerticalSlider
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   SliderView.VerticalSlider.layoutSubviews()();
 }
 
@@ -20,7 +20,7 @@
 {
   v3 = OBJC_IVAR____TtCV5CAFUI10SliderView14VerticalSlider_slider;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtCV5CAFUI10SliderView14VerticalSlider_slider);
-  v5 = self;
+  selfCopy = self;
   [v4 intrinsicContentSize];
   v7 = v6;
   [*(&self->super.super.super.isa + v3) intrinsicContentSize];
@@ -33,36 +33,36 @@
   return result;
 }
 
-- (void)valueChanged:(id)a3
+- (void)valueChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  SliderView.VerticalSlider.valueChanged(_:)(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  SliderView.VerticalSlider.valueChanged(_:)(changedCopy);
 }
 
-- (void)sliderTapped:(id)a3
+- (void)sliderTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
-  SliderView.VerticalSlider.sliderTapped(_:)(v4);
+  tappedCopy = tapped;
+  selfCopy = self;
+  SliderView.VerticalSlider.sliderTapped(_:)(tappedCopy);
 }
 
-- (void)trackingEnter:(id)a3
+- (void)trackingEnter:(id)enter
 {
-  v3 = self;
+  selfCopy = self;
   PassthroughSubject.send(_:)();
-  *(&v3->super.super.super.isa + OBJC_IVAR____TtCV5CAFUI10SliderView14VerticalSlider_isTracking) = 1;
+  *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtCV5CAFUI10SliderView14VerticalSlider_isTracking) = 1;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  SliderView.VerticalSlider.didUpdateFocus(in:with:)(v6, v7);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  SliderView.VerticalSlider.didUpdateFocus(in:with:)(contextCopy, coordinatorCopy);
 }
 
-- (_TtCV5CAFUI10SliderView14VerticalSlider)initWithFrame:(CGRect)a3
+- (_TtCV5CAFUI10SliderView14VerticalSlider)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

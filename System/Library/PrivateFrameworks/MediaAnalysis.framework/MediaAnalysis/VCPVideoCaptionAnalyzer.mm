@@ -1,19 +1,19 @@
 @interface VCPVideoCaptionAnalyzer
-+ (id)sharedCVNLPCaptionDecoderWithOptions:(id)a3 identifier:(id)a4;
-+ (id)sharedCaptionerWithConfig:(id)a3 identifier:(id)a4;
++ (id)sharedCVNLPCaptionDecoderWithOptions:(id)options identifier:(id)identifier;
++ (id)sharedCaptionerWithConfig:(id)config identifier:(id)identifier;
 + (int64_t)mode;
-- (VCPVideoCaptionAnalyzer)initWithModelType:(int64_t)a3 frameNumber:(unint64_t)a4;
-- (VCPVideoCaptionAnalyzer)initWithModelType:(int64_t)a3 frameRate:(float)a4 timeRange:(id *)a5;
+- (VCPVideoCaptionAnalyzer)initWithModelType:(int64_t)type frameNumber:(unint64_t)number;
+- (VCPVideoCaptionAnalyzer)initWithModelType:(int64_t)type frameRate:(float)rate timeRange:(id *)range;
 - (id)results;
 - (id)segmentCaptionResults;
-- (int)analyzeFrame:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 flags:(unint64_t *)a6;
+- (int)analyzeFrame:(__CVBuffer *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration flags:(unint64_t *)flags;
 - (int)configInputBasedOnDevice;
 - (int)configVideoCaptionModels;
-- (int)copyImage:(__CVBuffer *)a3 withChannels:(int)a4;
-- (int)copyMUBBImage:(__CVBuffer *)a3 withChannels:(int)a4;
-- (int)finishAnalysisPass:(id *)a3;
-- (int)generateCaptionWithEmbedding:(id)a3 startTime:(id *)a4 duration:(id *)a5;
-- (int)inference:(id *)a3 duration:(id *)a4;
+- (int)copyImage:(__CVBuffer *)image withChannels:(int)channels;
+- (int)copyMUBBImage:(__CVBuffer *)image withChannels:(int)channels;
+- (int)finishAnalysisPass:(id *)pass;
+- (int)generateCaptionWithEmbedding:(id)embedding startTime:(id *)time duration:(id *)duration;
+- (int)inference:(id *)inference duration:(id *)duration;
 - (void)dealloc;
 @end
 
@@ -45,9 +45,9 @@ void __31__VCPVideoCaptionAnalyzer_mode__block_invoke()
   }
 }
 
-- (VCPVideoCaptionAnalyzer)initWithModelType:(int64_t)a3 frameRate:(float)a4 timeRange:(id *)a5
+- (VCPVideoCaptionAnalyzer)initWithModelType:(int64_t)type frameRate:(float)rate timeRange:(id *)range
 {
-  if (a4 <= 0.0)
+  if (rate <= 0.0)
   {
     if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -60,10 +60,10 @@ void __31__VCPVideoCaptionAnalyzer_mode__block_invoke()
     goto LABEL_10;
   }
 
-  v9 = *&a5->var0.var3;
-  *&v15.start.value = *&a5->var0.var0;
+  v9 = *&range->var0.var3;
+  *&v15.start.value = *&range->var0.var0;
   *&v15.start.epoch = v9;
-  *&v15.duration.timescale = *&a5->var1.var1;
+  *&v15.duration.timescale = *&range->var1.var1;
   CMTimeRangeGetEnd(&time, &v15);
   if (CMTimeGetSeconds(&time) <= 0.0)
   {
@@ -78,30 +78,30 @@ void __31__VCPVideoCaptionAnalyzer_mode__block_invoke()
 LABEL_10:
     _os_log_impl(&dword_1C9B70000, v12, OS_LOG_TYPE_ERROR, v13, &v15, 2u);
 LABEL_11:
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
-  v10 = *&a5->var0.var3;
-  *&v15.start.value = *&a5->var0.var0;
+  v10 = *&range->var0.var3;
+  *&v15.start.value = *&range->var0.var0;
   *&v15.start.epoch = v10;
-  *&v15.duration.timescale = *&a5->var1.var1;
+  *&v15.duration.timescale = *&range->var1.var1;
   CMTimeRangeGetEnd(&time, &v15);
-  self = [(VCPVideoCaptionAnalyzer *)self initWithModelType:a3 frameNumber:vcvtmd_u64_f64(CMTimeGetSeconds(&time) * a4) + 1];
-  v11 = self;
+  self = [(VCPVideoCaptionAnalyzer *)self initWithModelType:type frameNumber:vcvtmd_u64_f64(CMTimeGetSeconds(&time) * rate) + 1];
+  selfCopy = self;
 LABEL_12:
 
-  return v11;
+  return selfCopy;
 }
 
-- (VCPVideoCaptionAnalyzer)initWithModelType:(int64_t)a3 frameNumber:(unint64_t)a4
+- (VCPVideoCaptionAnalyzer)initWithModelType:(int64_t)type frameNumber:(unint64_t)number
 {
   v43.receiver = self;
   v43.super_class = VCPVideoCaptionAnalyzer;
   v6 = [(VCPVideoCaptionAnalyzer *)&v43 init];
   v7 = v6;
   v8 = v6;
-  if (!v6 || (v9 = MEMORY[0x1E6960C80], v10 = *(MEMORY[0x1E6960C80] + 16), *(v6 + 84) = *MEMORY[0x1E6960C80], *(v6 + 100) = v10, v11 = *(MEMORY[0x1E6960C70] + 16), *(v6 + 108) = *MEMORY[0x1E6960C70], *(v6 + 124) = v11, v12 = objc_alloc_init(MEMORY[0x1E695DF70]), v13 = *(v8 + 24), *(v8 + 24) = v12, v13, v14 = objc_alloc_init(MEMORY[0x1E695DF70]), v15 = *(v8 + 22), *(v8 + 22) = v14, v15, v16 = *(v8 + 21), *(v8 + 21) = &stru_1F496CB30, v16, *(v8 + 6) = 0, v17 = *(v8 + 7), *(v8 + 7) = 0, v17, v8[39] = 0, v18 = v7 + 132, v19 = *v9, *(v7 + 148) = *(v9 + 2), *(v7 + 132) = v19, v20 = *v9, *(v7 + 27) = *(v9 + 2), *(v7 + 200) = v20, *(v8 + 164) = 0, v21 = *(v8 + 29), *(v8 + 29) = 0, v21, v22 = *(v8 + 30), *(v8 + 30) = 0, v22, v23 = *(v8 + 2), *(v8 + 2) = 0, v23, *(v8 + 4) = a3, v24 = *(v8 + 5), *(v8 + 5) = 0, v24, [v8 configVideoCaptionModels]) || objc_msgSend(v8, "configInputBasedOnDevice"))
+  if (!v6 || (v9 = MEMORY[0x1E6960C80], v10 = *(MEMORY[0x1E6960C80] + 16), *(v6 + 84) = *MEMORY[0x1E6960C80], *(v6 + 100) = v10, v11 = *(MEMORY[0x1E6960C70] + 16), *(v6 + 108) = *MEMORY[0x1E6960C70], *(v6 + 124) = v11, v12 = objc_alloc_init(MEMORY[0x1E695DF70]), v13 = *(v8 + 24), *(v8 + 24) = v12, v13, v14 = objc_alloc_init(MEMORY[0x1E695DF70]), v15 = *(v8 + 22), *(v8 + 22) = v14, v15, v16 = *(v8 + 21), *(v8 + 21) = &stru_1F496CB30, v16, *(v8 + 6) = 0, v17 = *(v8 + 7), *(v8 + 7) = 0, v17, v8[39] = 0, v18 = v7 + 132, v19 = *v9, *(v7 + 148) = *(v9 + 2), *(v7 + 132) = v19, v20 = *v9, *(v7 + 27) = *(v9 + 2), *(v7 + 200) = v20, *(v8 + 164) = 0, v21 = *(v8 + 29), *(v8 + 29) = 0, v21, v22 = *(v8 + 30), *(v8 + 30) = 0, v22, v23 = *(v8 + 2), *(v8 + 2) = 0, v23, *(v8 + 4) = type, v24 = *(v8 + 5), *(v8 + 5) = 0, v24, [v8 configVideoCaptionModels]) || objc_msgSend(v8, "configInputBasedOnDevice"))
   {
     v25 = 0;
   }
@@ -113,9 +113,9 @@ LABEL_12:
     *(v8 + 3) = v28;
 
     v30 = v8[20];
-    if (v30 >= a4)
+    if (v30 >= number)
     {
-      if (a4)
+      if (number)
       {
         v37 = 0;
         do
@@ -127,7 +127,7 @@ LABEL_12:
           ++v37;
         }
 
-        while (a4 != v37);
+        while (number != v37);
       }
     }
 
@@ -138,7 +138,7 @@ LABEL_12:
       {
         v32 = 0;
         v33 = 0;
-        v34 = (a4 - v30) / v31;
+        v34 = (number - v30) / v31;
         do
         {
           v35 = *(v8 + 24);
@@ -176,7 +176,7 @@ LABEL_12:
 
 - (int)configVideoCaptionModels
 {
-  v2 = self;
+  selfCopy = self;
   v29[2] = *MEMORY[0x1E69E9840];
   modelType = self->_modelType;
   if (modelType != 1)
@@ -184,15 +184,15 @@ LABEL_12:
     if (modelType != 2)
     {
 LABEL_45:
-      LODWORD(v2) = 0;
-      return v2;
+      LODWORD(selfCopy) = 0;
+      return selfCopy;
     }
 
     v4 = [[VCPVideoTransformerBackbone alloc] initWithConfig:*&self->_enoughFrames];
-    videoTransformerBackbone = v2->_videoTransformerBackbone;
-    v2->_videoTransformerBackbone = v4;
+    videoTransformerBackbone = selfCopy->_videoTransformerBackbone;
+    selfCopy->_videoTransformerBackbone = v4;
 
-    if (!v2->_videoTransformerBackbone)
+    if (!selfCopy->_videoTransformerBackbone)
     {
       goto LABEL_35;
     }
@@ -223,24 +223,24 @@ LABEL_45:
 LABEL_18:
     if ([objc_opt_class() greedySearchEnabled])
     {
-      v21 = [v19 beamSearch];
-      [v21 setBeamWidth:&unk_1F49BBDB8];
+      beamSearch = [v19 beamSearch];
+      [beamSearch setBeamWidth:&unk_1F49BBDB8];
     }
 
     else
     {
-      v21 = [v19 beamSearch];
-      [v21 setBeamWidth:&unk_1F49BBDD0];
+      beamSearch = [v19 beamSearch];
+      [beamSearch setBeamWidth:&unk_1F49BBDD0];
     }
 
     if (v19 && !v20)
     {
       v22 = [objc_opt_class() sharedCaptionerWithConfig:v19 identifier:@"CSUVideoCaptioner_MiCa"];
-      captioner = v2->_captioner;
-      v2->_captioner = v22;
+      captioner = selfCopy->_captioner;
+      selfCopy->_captioner = v22;
     }
 
-    if (v2->_captioner)
+    if (selfCopy->_captioner)
     {
 
       goto LABEL_45;
@@ -253,8 +253,8 @@ LABEL_18:
     }
 
 LABEL_35:
-    LODWORD(v2) = -108;
-    return v2;
+    LODWORD(selfCopy) = -108;
+    return selfCopy;
   }
 
   v8 = +[VCPMobileAssetManager sharedManager];
@@ -278,10 +278,10 @@ LABEL_35:
   v29[1] = @"CPU";
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:2];
   v12 = [objc_opt_class() sharedCVNLPCaptionDecoderWithOptions:v11 identifier:@"CVNLPVideoCaptionDecoder_AX"];
-  epoch = v2->_timeEnd.epoch;
-  v2->_timeEnd.epoch = v12;
+  epoch = selfCopy->_timeEnd.epoch;
+  selfCopy->_timeEnd.epoch = v12;
 
-  if (!v2->_timeEnd.epoch)
+  if (!selfCopy->_timeEnd.epoch)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -290,8 +290,8 @@ LABEL_35:
     }
 
 LABEL_30:
-    LODWORD(v2) = -18;
-    return v2;
+    LODWORD(selfCopy) = -18;
+    return selfCopy;
   }
 
   v14 = +[VCPMobileAssetManager sharedManager];
@@ -300,10 +300,10 @@ LABEL_30:
   if (v15)
   {
     v16 = [[VCPVideoCaptionEncoder alloc] initWithModelPath:v15];
-    backbone = v2->_backbone;
-    v2->_backbone = v16;
+    backbone = selfCopy->_backbone;
+    selfCopy->_backbone = v16;
 
-    if (v2->_backbone)
+    if (selfCopy->_backbone)
     {
       v18 = 1;
     }
@@ -317,7 +317,7 @@ LABEL_30:
       }
 
       v18 = 0;
-      LODWORD(v2) = -108;
+      LODWORD(selfCopy) = -108;
     }
   }
 
@@ -330,7 +330,7 @@ LABEL_30:
     }
 
     v18 = 0;
-    LODWORD(v2) = -18;
+    LODWORD(selfCopy) = -18;
   }
 
   if (v18)
@@ -338,7 +338,7 @@ LABEL_30:
     goto LABEL_45;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (int)configInputBasedOnDevice
@@ -461,12 +461,12 @@ LABEL_30:
   [(VCPVideoCaptionAnalyzer *)&v4 dealloc];
 }
 
-+ (id)sharedCaptionerWithConfig:(id)a3 identifier:(id)a4
++ (id)sharedCaptionerWithConfig:(id)config identifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  configCopy = config;
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  if (configCopy && identifierCopy)
   {
     v8 = +[VCPSharedInstanceManager sharedManager];
     v11[0] = MEMORY[0x1E69E9820];
@@ -474,7 +474,7 @@ LABEL_30:
     v11[2] = __64__VCPVideoCaptionAnalyzer_sharedCaptionerWithConfig_identifier___block_invoke;
     v11[3] = &unk_1E834D6E0;
     v12 = v7;
-    v13 = v5;
+    v13 = configCopy;
     v9 = [v8 sharedInstanceWithIdentifier:v12 andCreationBlock:v11];
   }
 
@@ -522,19 +522,19 @@ id __64__VCPVideoCaptionAnalyzer_sharedCaptionerWithConfig_identifier___block_in
   return v6;
 }
 
-+ (id)sharedCVNLPCaptionDecoderWithOptions:(id)a3 identifier:(id)a4
++ (id)sharedCVNLPCaptionDecoderWithOptions:(id)options identifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  optionsCopy = options;
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  if (optionsCopy && identifierCopy)
   {
     v8 = +[VCPSharedInstanceManager sharedManager];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __75__VCPVideoCaptionAnalyzer_sharedCVNLPCaptionDecoderWithOptions_identifier___block_invoke;
     v11[3] = &unk_1E834D708;
-    v12 = v5;
+    v12 = optionsCopy;
     v9 = [v8 sharedInstanceWithIdentifier:v7 andCreationBlock:v11];
   }
 
@@ -577,25 +577,25 @@ id __75__VCPVideoCaptionAnalyzer_sharedCVNLPCaptionDecoderWithOptions_identifier
   return v4;
 }
 
-- (int)copyImage:(__CVBuffer *)a3 withChannels:(int)a4
+- (int)copyImage:(__CVBuffer *)image withChannels:(int)channels
 {
-  if (a4 != 3)
+  if (channels != 3)
   {
     return -50;
   }
 
   frameIndex = self->_frameIndex;
   inputNumFrames = self->_inputNumFrames;
-  if (CVPixelBufferGetPixelFormatType(a3) != 1111970369)
+  if (CVPixelBufferGetPixelFormatType(image) != 1111970369)
   {
     return -50;
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  pixelBuffer = a3;
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
+  pixelBuffer = image;
   unlockFlags = 1;
-  if (!a3)
+  if (!image)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -606,7 +606,7 @@ id __75__VCPVideoCaptionAnalyzer_sharedCVNLPCaptionDecoderWithOptions_identifier
   }
 
   v10 = Height;
-  v11 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+  v11 = CVPixelBufferLockBaseAddress(image, 1uLL);
   v31 = v11;
   if (v11)
   {
@@ -619,8 +619,8 @@ id __75__VCPVideoCaptionAnalyzer_sharedCVNLPCaptionDecoderWithOptions_identifier
 
   else
   {
-    BaseAddress = CVPixelBufferGetBaseAddress(a3);
-    BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+    BaseAddress = CVPixelBufferGetBaseAddress(image);
+    BytesPerRow = CVPixelBufferGetBytesPerRow(image);
     if (v10 >= 1)
     {
       v17 = 0;
@@ -676,20 +676,20 @@ id __75__VCPVideoCaptionAnalyzer_sharedCVNLPCaptionDecoderWithOptions_identifier
   return v12;
 }
 
-- (int)copyMUBBImage:(__CVBuffer *)a3 withChannels:(int)a4
+- (int)copyMUBBImage:(__CVBuffer *)image withChannels:(int)channels
 {
-  if (a4 != 3 || CVPixelBufferGetPixelFormatType(a3) != 1111970369)
+  if (channels != 3 || CVPixelBufferGetPixelFormatType(image) != 1111970369)
   {
     return -50;
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  pixelBuffer = a3;
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
+  pixelBuffer = image;
   unlockFlags = 1;
-  if (a3)
+  if (image)
   {
-    v7 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+    v7 = CVPixelBufferLockBaseAddress(image, 1uLL);
     v29 = v7;
     if (v7)
     {
@@ -702,8 +702,8 @@ id __75__VCPVideoCaptionAnalyzer_sharedCVNLPCaptionDecoderWithOptions_identifier
 
     else
     {
-      BaseAddress = CVPixelBufferGetBaseAddress(a3);
-      BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+      BaseAddress = CVPixelBufferGetBaseAddress(image);
+      BytesPerRow = CVPixelBufferGetBytesPerRow(image);
       v13 = self->_frameIndex % self->_inputNumFrames;
       mubbSampleScale = self->_mubbSampleScale;
       if (v13 % mubbSampleScale)
@@ -777,10 +777,10 @@ id __75__VCPVideoCaptionAnalyzer_sharedCVNLPCaptionDecoderWithOptions_identifier
   return v8;
 }
 
-- (int)analyzeFrame:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 flags:(unint64_t *)a6
+- (int)analyzeFrame:(__CVBuffer *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration flags:(unint64_t *)flags
 {
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(frame);
+  Height = CVPixelBufferGetHeight(frame);
   v11 = *MEMORY[0x1E695F058];
   v12 = *(MEMORY[0x1E695F058] + 8);
   v13 = *(MEMORY[0x1E695F058] + 16);
@@ -795,8 +795,8 @@ id __75__VCPVideoCaptionAnalyzer_sharedCVNLPCaptionDecoderWithOptions_identifier
   {
     if ((self->_timeLastDetection.timescale & 1) == 0)
     {
-      v20 = *&a4->var0;
-      *&self->_timeLastDetection.flags = a4->var3;
+      v20 = *&timestamp->var0;
+      *&self->_timeLastDetection.flags = timestamp->var3;
       *(&self->_timeLastProcess.epoch + 4) = v20;
     }
 
@@ -829,7 +829,7 @@ id __75__VCPVideoCaptionAnalyzer_sharedCVNLPCaptionDecoderWithOptions_identifier
       v12 = 0.0;
     }
 
-    v23 = [(VCPTransforms *)self->_transformImage cropAndScale:a3 regionCrop:v11, v12, v13, v14];
+    v23 = [(VCPTransforms *)self->_transformImage cropAndScale:frame regionCrop:v11, v12, v13, v14];
     if (!v23)
     {
       return -18;
@@ -864,14 +864,14 @@ LABEL_24:
     if (v27 >= self->_inputNumFrames)
     {
       LOBYTE(self->_validFrames) = 1;
-      var3 = a4->var3;
-      *&self->_activeFrameIndices = *&a4->var0;
+      var3 = timestamp->var3;
+      *&self->_activeFrameIndices = *&timestamp->var0;
       *&self->_timeEnd.timescale = var3;
     }
 
     v18 = 0;
-    v29 = a4->var3;
-    *(&self->_skipNumFramesBothEnds + 1) = *&a4->var0;
+    v29 = timestamp->var3;
+    *(&self->_skipNumFramesBothEnds + 1) = *&timestamp->var0;
     *&self->_timeLastProcess.flags = v29;
     goto LABEL_24;
   }
@@ -879,7 +879,7 @@ LABEL_24:
   return 0;
 }
 
-- (int)inference:(id *)a3 duration:(id *)a4
+- (int)inference:(id *)inference duration:(id *)duration
 {
   v91 = *MEMORY[0x1E69E9840];
   modelType = self->_modelType;
@@ -902,9 +902,9 @@ LABEL_24:
       v11 = [(VCPVideoTransformerBackbone *)self->_videoTransformerBackbone inference:self->_inputDataMUB];
       if (v11)
       {
-        v12 = 0;
+        caption = 0;
         v13 = 0;
-        v14 = 0;
+        spatialEmbedding = 0;
         v15 = 4;
         goto LABEL_79;
       }
@@ -917,8 +917,8 @@ LABEL_24:
         _os_signpost_emit_with_name_impl(&dword_1C9B70000, v21, OS_SIGNPOST_INTERVAL_END, v8, "VCPVideoCaptionAnalyzer_backBoneInference_MiCa", "", buf, 2u);
       }
 
-      v14 = [(VCPVideoTransformerBackbone *)self->_videoTransformerBackbone spatialEmbedding];
-      if (!v14)
+      spatialEmbedding = [(VCPVideoTransformerBackbone *)self->_videoTransformerBackbone spatialEmbedding];
+      if (!spatialEmbedding)
       {
         if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
@@ -926,9 +926,9 @@ LABEL_24:
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[VideoCaption] Video embedding for caption generation is nil", buf, 2u);
         }
 
-        v12 = 0;
+        caption = 0;
         v13 = 0;
-        v14 = 0;
+        spatialEmbedding = 0;
         v15 = 1;
 LABEL_79:
         objc_autoreleasePoolPop(v6);
@@ -944,10 +944,10 @@ LABEL_80:
 
       if ([objc_opt_class() writeSpatialEmbeddingToFile])
       {
-        v22 = [MEMORY[0x1E696AC08] defaultManager];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
         v23 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/tmp/com.apple.mediaanalysisd/" isDirectory:1];
-        v24 = [v23 path];
-        v25 = [v22 fileExistsAtPath:v24];
+        path = [v23 path];
+        v25 = [defaultManager fileExistsAtPath:path];
 
         if (v25)
         {
@@ -956,22 +956,22 @@ LABEL_80:
 
         else
         {
-          v43 = [v23 path];
+          path2 = [v23 path];
           v78 = 0;
-          v44 = [v22 createDirectoryAtPath:v43 withIntermediateDirectories:1 attributes:0 error:&v78];
+          v44 = [defaultManager createDirectoryAtPath:path2 withIntermediateDirectories:1 attributes:0 error:&v78];
           v26 = v78;
 
           if ((v44 & 1) == 0)
           {
-            v45 = [v26 localizedDescription];
-            NSLog(&cfstr_VideocaptionFa.isa, v23, v45);
+            localizedDescription = [v26 localizedDescription];
+            NSLog(&cfstr_VideocaptionFa.isa, v23, localizedDescription);
           }
         }
 
         v46 = [v23 URLByAppendingPathComponent:@"videoSpatialEmbedding.dat" isDirectory:0];
 
         v77 = v26;
-        v47 = [v14 writeToURL:v46 options:1 error:&v77];
+        v47 = [spatialEmbedding writeToURL:v46 options:1 error:&v77];
         v48 = v77;
 
         if (v47)
@@ -1009,7 +1009,7 @@ LABEL_80:
 
       captioner = self->_captioner;
       v76 = 0;
-      v55 = [(CSUVideoCaptioner *)captioner computeCaptionForVideoEmbedding:v14 error:&v76];
+      v55 = [(CSUVideoCaptioner *)captioner computeCaptionForVideoEmbedding:spatialEmbedding error:&v76];
       v13 = v76;
       v56 = VCPSignPostLog();
       v57 = v56;
@@ -1035,28 +1035,28 @@ LABEL_80:
 
       else
       {
-        v58 = [v55 results];
-        v59 = [v58 count] == 0;
+        results = [v55 results];
+        v59 = [results count] == 0;
 
         if (!v59)
         {
-          v60 = [v55 results];
-          v61 = [v60 objectAtIndexedSubscript:0];
-          v12 = [v61 caption];
+          results2 = [v55 results];
+          v61 = [results2 objectAtIndexedSubscript:0];
+          caption = [v61 caption];
 
-          v62 = [v55 results];
-          v63 = [v62 objectAtIndexedSubscript:0];
+          results3 = [v55 results];
+          v63 = [results3 objectAtIndexedSubscript:0];
           [v63 score];
           v65 = v64;
 
-          if (v12)
+          if (caption)
           {
             if (v65 != 0.0)
             {
               if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138412546;
-                v88 = v12;
+                v88 = caption;
                 v89 = 2048;
                 v90 = v65;
                 _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[VideoCaption] Computed CSU video caption: (%@), with score: %f", buf, 0x16u);
@@ -1066,7 +1066,7 @@ LABEL_80:
               v85 = @"attributes";
               v83[0] = @"videoCaptionText";
               v83[1] = @"videoCaptionConfidence";
-              v84[0] = v12;
+              v84[0] = caption;
               *&v66 = v65;
               v68 = [MEMORY[0x1E696AD98] numberWithFloat:v66];
               v84[1] = v68;
@@ -1096,7 +1096,7 @@ LABEL_78:
         if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
 LABEL_76:
-          v12 = 0;
+          caption = 0;
           goto LABEL_77;
         }
 
@@ -1110,11 +1110,11 @@ LABEL_76:
       goto LABEL_76;
     }
 
-    v12 = 0;
+    caption = 0;
     v13 = 0;
     v11 = 0;
 LABEL_14:
-    v14 = 0;
+    spatialEmbedding = 0;
     goto LABEL_81;
   }
 
@@ -1132,7 +1132,7 @@ LABEL_14:
   v11 = [(VCPVideoCaptionEncoder *)self->_backbone inference:self->_inputData];
   if (v11)
   {
-    v12 = 0;
+    caption = 0;
     v13 = 0;
     goto LABEL_14;
   }
@@ -1145,11 +1145,11 @@ LABEL_14:
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v28, OS_SIGNPOST_INTERVAL_END, v17, "VCPVideoCaptionAnalyzer_backBoneInference", "", buf, 2u);
   }
 
-  v29 = [(VCPVideoCaptionEncoder *)self->_backbone embeddingHeight];
-  v30 = [(VCPVideoCaptionEncoder *)self->_backbone embeddingWidth];
-  v31 = [(VCPVideoCaptionEncoder *)self->_backbone embeddingChannels];
-  v32 = [(VCPVideoCaptionEncoder *)self->_backbone embeddingSequenceLength];
-  v14 = [MEMORY[0x1E695DEF0] dataWithBytes:-[VCPVideoCaptionEncoder videoEmbedding](self->_backbone length:{"videoEmbedding"), 4 * v30 * v29 * v31 * v32}];
+  embeddingHeight = [(VCPVideoCaptionEncoder *)self->_backbone embeddingHeight];
+  embeddingWidth = [(VCPVideoCaptionEncoder *)self->_backbone embeddingWidth];
+  embeddingChannels = [(VCPVideoCaptionEncoder *)self->_backbone embeddingChannels];
+  embeddingSequenceLength = [(VCPVideoCaptionEncoder *)self->_backbone embeddingSequenceLength];
+  spatialEmbedding = [MEMORY[0x1E695DEF0] dataWithBytes:-[VCPVideoCaptionEncoder videoEmbedding](self->_backbone length:{"videoEmbedding"), 4 * embeddingWidth * embeddingHeight * embeddingChannels * embeddingSequenceLength}];
   v33 = VCPSignPostLog();
   v34 = os_signpost_id_generate(v33);
 
@@ -1163,7 +1163,7 @@ LABEL_14:
 
   epoch = self->_timeEnd.epoch;
   v75 = 0;
-  v12 = [epoch generateCaption:v14 error:&v75];
+  caption = [epoch generateCaption:spatialEmbedding error:&v75];
   v13 = v75;
   v38 = VCPSignPostLog();
   v39 = v38;
@@ -1185,7 +1185,7 @@ LABEL_14:
     goto LABEL_80;
   }
 
-  if (!v12)
+  if (!caption)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -1193,7 +1193,7 @@ LABEL_14:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[VideoCaption] No AX caption text generated", buf, 2u);
     }
 
-    v12 = 0;
+    caption = 0;
     v13 = 0;
     goto LABEL_80;
   }
@@ -1201,12 +1201,12 @@ LABEL_14:
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v88 = v12;
+    v88 = caption;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[VideoCaption] Computed AX video caption: (%@)", buf, 0xCu);
   }
 
   v40 = self->_resConfig;
-  v80 = v12;
+  v80 = caption;
   v81 = @"attributes";
   v79 = @"videoCaptionText";
   v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v80 forKeys:&v79 count:1];
@@ -1221,11 +1221,11 @@ LABEL_81:
   return v11;
 }
 
-- (int)generateCaptionWithEmbedding:(id)a3 startTime:(id *)a4 duration:(id *)a5
+- (int)generateCaptionWithEmbedding:(id)embedding startTime:(id *)time duration:(id *)duration
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (v8)
+  embeddingCopy = embedding;
+  if (embeddingCopy)
   {
     if (!self->_videoCaptionResult)
     {
@@ -1238,7 +1238,7 @@ LABEL_81:
     {
       context = objc_autoreleasePoolPush();
       v34 = 0;
-      v11 = [(CSUVideoCaptioner *)self->_captioner computeCaptionForVideoEmbedding:v8 error:&v34];
+      v11 = [(CSUVideoCaptioner *)self->_captioner computeCaptionForVideoEmbedding:embeddingCopy error:&v34];
       v12 = v34;
       v13 = v12;
       if (v11)
@@ -1253,39 +1253,39 @@ LABEL_81:
 
       if (v14)
       {
-        v17 = [v11 results];
-        v18 = [v17 count] == 0;
+        results = [v11 results];
+        v18 = [results count] == 0;
 
         if (v18)
         {
           v16 = 0;
-          v15 = 0;
+          caption = 0;
         }
 
         else
         {
-          v19 = [v11 results];
-          v20 = [v19 objectAtIndexedSubscript:0];
-          v15 = [v20 caption];
+          results2 = [v11 results];
+          v20 = [results2 objectAtIndexedSubscript:0];
+          caption = [v20 caption];
 
-          v21 = [v11 results];
-          v22 = [v21 objectAtIndexedSubscript:0];
+          results3 = [v11 results];
+          v22 = [results3 objectAtIndexedSubscript:0];
           [v22 score];
           v24 = v23;
 
           v25 = self->_videoCaptionResult;
           v37[0] = @"start";
-          buf = *a4;
+          buf = *time;
           v32 = CMTimeCopyAsDictionary(&buf, 0);
           v38[0] = v32;
           v37[1] = @"duration";
-          buf = *a5;
+          buf = *duration;
           v26 = CMTimeCopyAsDictionary(&buf, 0);
           v38[1] = v26;
           v37[2] = @"attributes";
           v35[0] = @"videoCaptionText";
           v35[1] = @"videoCaptionConfidence";
-          v36[0] = v15;
+          v36[0] = caption;
           LODWORD(v27) = v24;
           v28 = [MEMORY[0x1E696AD98] numberWithFloat:v27];
           v36[1] = v28;
@@ -1307,7 +1307,7 @@ LABEL_81:
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[VideoCaption] Error to compute caption with CSUVideoCaptioner: (%@)", &buf, 0xCu);
         }
 
-        v15 = 0;
+        caption = 0;
         v16 = -18;
       }
 
@@ -1316,7 +1316,7 @@ LABEL_81:
 
     else
     {
-      v15 = 0;
+      caption = 0;
       v13 = 0;
     }
   }
@@ -1335,7 +1335,7 @@ LABEL_81:
   return v16;
 }
 
-- (int)finishAnalysisPass:(id *)a3
+- (int)finishAnalysisPass:(id *)pass
 {
   v11 = *MEMORY[0x1E69E9840];
   if ((self->_validFrames & 1) == 0 && MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
@@ -1357,7 +1357,7 @@ LABEL_81:
 - (id)results
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   resConfig = self->_resConfig;
   if (resConfig)
   {
@@ -1367,7 +1367,7 @@ LABEL_81:
       v8 = @"VideoCaptionResults";
       v9 = resConfig;
       v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v9 forKeys:&v8 count:1];
-      [v3 addEntriesFromDictionary:v6];
+      [dictionary addEntriesFromDictionary:v6];
     }
 
     else
@@ -1380,13 +1380,13 @@ LABEL_81:
       v10 = @"MiCaVideoCaptionResults";
       v11[0] = resConfig;
       v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-      [v3 addEntriesFromDictionary:v6];
+      [dictionary addEntriesFromDictionary:v6];
     }
   }
 
 LABEL_7:
 
-  return v3;
+  return dictionary;
 }
 
 - (id)segmentCaptionResults

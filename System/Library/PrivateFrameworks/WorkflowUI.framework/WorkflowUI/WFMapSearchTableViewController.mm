@@ -1,9 +1,9 @@
 @interface WFMapSearchTableViewController
 - (WFMapSearchTableViewControllerDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
 @end
 
@@ -16,15 +16,15 @@
   return WeakRetained;
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = [a3 searchBar];
-  v5 = [v4 text];
+  searchBar = [controller searchBar];
+  text = [searchBar text];
 
-  if (v5)
+  if (text)
   {
     v6 = objc_alloc_init(MEMORY[0x277CD4E38]);
-    [v6 setNaturalLanguageQuery:v5];
+    [v6 setNaturalLanguageQuery:text];
     v7 = [objc_alloc(MEMORY[0x277CD4E20]) initWithRequest:v6];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
@@ -47,46 +47,46 @@ void __73__WFMapSearchTableViewController_updateSearchResultsForSearchController
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v10 = a4;
-  [a3 deselectRowAtIndexPath:? animated:?];
-  v6 = [(WFMapSearchTableViewController *)self delegate];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:? animated:?];
+  delegate = [(WFMapSearchTableViewController *)self delegate];
 
-  if (v6)
+  if (delegate)
   {
-    v7 = [(WFMapSearchTableViewController *)self delegate];
-    v8 = [(WFMapSearchTableViewController *)self mapItems];
-    v9 = [v8 objectAtIndex:{objc_msgSend(v10, "row")}];
-    [v7 mapSearchViewController:self didSelectMapItem:v9];
+    delegate2 = [(WFMapSearchTableViewController *)self delegate];
+    mapItems = [(WFMapSearchTableViewController *)self mapItems];
+    v9 = [mapItems objectAtIndex:{objc_msgSend(pathCopy, "row")}];
+    [delegate2 mapSearchViewController:self didSelectMapItem:v9];
   }
 
   [(WFMapSearchTableViewController *)self dismissViewControllerAnimated:0 completion:0];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [v7 dequeueReusableCellWithIdentifier:v9 forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9 forIndexPath:pathCopy];
 
-  v11 = [(WFMapSearchTableViewController *)self mapItems];
-  v12 = [v6 row];
+  mapItems = [(WFMapSearchTableViewController *)self mapItems];
+  v12 = [pathCopy row];
 
-  v13 = [v11 objectAtIndex:v12];
-  v14 = [v13 name];
+  v13 = [mapItems objectAtIndex:v12];
+  name = [v13 name];
 
-  v15 = [v10 textLabel];
-  [v15 setText:v14];
+  textLabel = [v10 textLabel];
+  [textLabel setText:name];
 
   return v10;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(WFMapSearchTableViewController *)self mapItems:a3];
+  v4 = [(WFMapSearchTableViewController *)self mapItems:view];
   v5 = [v4 count];
 
   return v5;
@@ -97,11 +97,11 @@ void __73__WFMapSearchTableViewController_updateSearchResultsForSearchController
   v7.receiver = self;
   v7.super_class = WFMapSearchTableViewController;
   [(WFMapSearchTableViewController *)&v7 viewDidLoad];
-  v3 = [(WFMapSearchTableViewController *)self tableView];
+  tableView = [(WFMapSearchTableViewController *)self tableView];
   v4 = objc_opt_class();
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v3 registerClass:v4 forCellReuseIdentifier:v6];
+  [tableView registerClass:v4 forCellReuseIdentifier:v6];
 }
 
 @end

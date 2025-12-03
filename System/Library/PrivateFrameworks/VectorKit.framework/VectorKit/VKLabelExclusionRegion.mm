@@ -1,8 +1,8 @@
 @interface VKLabelExclusionRegion
 - (CGRect)rect;
-- (VKLabelExclusionRegion)initWithCoder:(id)a3;
-- (VKLabelExclusionRegion)initWithRect:(CGRect)a3;
-- (void)encodeWithCoder:(id)a3;
+- (VKLabelExclusionRegion)initWithCoder:(id)coder;
+- (VKLabelExclusionRegion)initWithRect:(CGRect)rect;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VKLabelExclusionRegion
@@ -20,53 +20,53 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v9 = a3;
-  [v9 encodeInt32:type forKey:@"type"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:type forKey:@"type"];
   x = self->_rect.origin.x;
   *&x = x;
-  [v9 encodeFloat:@"rect.origin.x" forKey:x];
+  [coderCopy encodeFloat:@"rect.origin.x" forKey:x];
   y = self->_rect.origin.y;
   *&y = y;
-  [v9 encodeFloat:@"rect.origin.y" forKey:y];
+  [coderCopy encodeFloat:@"rect.origin.y" forKey:y];
   width = self->_rect.size.width;
   *&width = width;
-  [v9 encodeFloat:@"rect.size.width" forKey:width];
+  [coderCopy encodeFloat:@"rect.size.width" forKey:width];
   height = self->_rect.size.height;
   *&height = height;
-  [v9 encodeFloat:@"rect.size.height" forKey:height];
+  [coderCopy encodeFloat:@"rect.size.height" forKey:height];
 }
 
-- (VKLabelExclusionRegion)initWithCoder:(id)a3
+- (VKLabelExclusionRegion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = VKLabelExclusionRegion;
   v5 = [(VKLabelExclusionRegion *)&v11 init];
   if (v5)
   {
-    v5->_type = [v4 decodeInt32ForKey:@"type"];
-    [v4 decodeFloatForKey:@"rect.origin.x"];
+    v5->_type = [coderCopy decodeInt32ForKey:@"type"];
+    [coderCopy decodeFloatForKey:@"rect.origin.x"];
     v5->_rect.origin.x = v6;
-    [v4 decodeFloatForKey:@"rect.origin.y"];
+    [coderCopy decodeFloatForKey:@"rect.origin.y"];
     v5->_rect.origin.y = v7;
-    [v4 decodeFloatForKey:@"rect.size.width"];
+    [coderCopy decodeFloatForKey:@"rect.size.width"];
     v5->_rect.size.width = v8;
-    [v4 decodeFloatForKey:@"rect.size.height"];
+    [coderCopy decodeFloatForKey:@"rect.size.height"];
     v5->_rect.size.height = v9;
   }
 
   return v5;
 }
 
-- (VKLabelExclusionRegion)initWithRect:(CGRect)a3
+- (VKLabelExclusionRegion)initWithRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8.receiver = self;
   v8.super_class = VKLabelExclusionRegion;
   result = [(VKLabelExclusionRegion *)&v8 init];

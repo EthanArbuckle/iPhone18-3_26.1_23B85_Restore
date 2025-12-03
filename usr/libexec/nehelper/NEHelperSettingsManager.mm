@@ -1,15 +1,15 @@
 @interface NEHelperSettingsManager
-- (NEHelperSettingsManager)initWithFirstMessage:(id)a3;
-- (void)handleMessage:(id)a3;
+- (NEHelperSettingsManager)initWithFirstMessage:(id)message;
+- (void)handleMessage:(id)message;
 @end
 
 @implementation NEHelperSettingsManager
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  v3 = a3;
-  string = xpc_dictionary_get_string(v3, "setting-name");
-  int64 = xpc_dictionary_get_int64(v3, "setting-type");
+  messageCopy = message;
+  string = xpc_dictionary_get_string(messageCopy, "setting-name");
+  int64 = xpc_dictionary_get_int64(messageCopy, "setting-type");
   if (string)
   {
     v6 = strcmp(string, "CriticalDomains") == 0;
@@ -45,7 +45,7 @@
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to lock SCPreferences for %s: %@", buf, 0x16u);
       }
 
-      sub_10000BA0C(NEHelperServer, v3, 22, 0);
+      sub_10000BA0C(NEHelperServer, messageCopy, 22, 0);
       goto LABEL_56;
     }
 
@@ -56,7 +56,7 @@
       {
         if (int64 == 2)
         {
-          *buf = xpc_dictionary_get_int64(v3, "setting-value");
+          *buf = xpc_dictionary_get_int64(messageCopy, "setting-value");
           v33 = CFNumberCreate(kCFAllocatorDefault, kCFNumberSInt64Type, buf);
           SCPreferencesSetValue(v9, v10, v33);
           myCFRelease();
@@ -66,7 +66,7 @@
         goto LABEL_23;
       }
 
-      v16 = xpc_dictionary_get_BOOL(v3, "setting-value");
+      v16 = xpc_dictionary_get_BOOL(messageCopy, "setting-value");
       v17 = &kCFBooleanTrue;
       if (!v16)
       {
@@ -77,7 +77,7 @@
 LABEL_43:
       if (SCPreferencesCommitChanges(v9))
       {
-        sub_10000BA0C(NEHelperServer, v3, 0, 0);
+        sub_10000BA0C(NEHelperServer, messageCopy, 0, 0);
         if (v6)
         {
           v25 = notify_post("com.apple.neconfigurationchanged");
@@ -129,13 +129,13 @@ LABEL_49:
         _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "Failed to change %s: %@", buf, 0x16u);
       }
 
-      sub_10000BA0C(NEHelperServer, v3, 22, 0);
+      sub_10000BA0C(NEHelperServer, messageCopy, 22, 0);
       goto LABEL_52;
     }
 
     if (int64 == 3)
     {
-      v18 = xpc_dictionary_get_value(v3, "setting-value");
+      v18 = xpc_dictionary_get_value(messageCopy, "setting-value");
       v15 = v18;
       if (!v18 || xpc_get_type(v18) != &_xpc_type_array)
       {
@@ -230,19 +230,19 @@ LABEL_42:
     _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Failed to create SCPreferences for %s: %@", buf, 0x16u);
   }
 
-  sub_10000BA0C(NEHelperServer, v3, 22, 0);
+  sub_10000BA0C(NEHelperServer, messageCopy, 22, 0);
 LABEL_57:
 }
 
-- (NEHelperSettingsManager)initWithFirstMessage:(id)a3
+- (NEHelperSettingsManager)initWithFirstMessage:(id)message
 {
-  v4 = xpc_dictionary_get_remote_connection(a3);
+  v4 = xpc_dictionary_get_remote_connection(message);
   if (sub_10000E080(NEHelperServer, v4))
   {
     v9.receiver = self;
     v9.super_class = NEHelperSettingsManager;
     self = [(NEHelperSettingsManager *)&v9 init];
-    v5 = self;
+    selfCopy = self;
   }
 
   else
@@ -258,10 +258,10 @@ LABEL_57:
       _os_log_error_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "Denying settings manager connection because %@ does not have the %s entitlement", buf, 0x16u);
     }
 
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 @end

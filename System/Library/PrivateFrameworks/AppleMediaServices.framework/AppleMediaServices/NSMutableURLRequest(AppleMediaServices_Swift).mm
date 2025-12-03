@@ -15,25 +15,25 @@
   }
 
   v10 = v4;
-  v5 = [v4 bundleIdentifier];
-  v6 = v5;
-  if (v5)
+  bundleIdentifier = [v4 bundleIdentifier];
+  v6 = bundleIdentifier;
+  if (bundleIdentifier)
   {
-    v7 = v5;
+    processName = bundleIdentifier;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AE30] processInfo];
-    v7 = [v8 processName];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
   }
 
-  if ([v7 length])
+  if ([processName length])
   {
     v9 = [AMSUserAgent userAgentForProcessInfo:v10];
     if (v9)
     {
-      [a1 setValue:v9 forHTTPHeaderField:@"User-Agent"];
+      [self setValue:v9 forHTTPHeaderField:@"User-Agent"];
     }
   }
 }
@@ -43,8 +43,8 @@
   v5 = a3;
   if (os_variant_has_internal_content())
   {
-    v4 = [v5 bundleIdentifier];
-    [a1 setValue:v4 forHTTPHeaderField:@"X-Apple-Requesting-Process"];
+    bundleIdentifier = [v5 bundleIdentifier];
+    [self setValue:bundleIdentifier forHTTPHeaderField:@"X-Apple-Requesting-Process"];
   }
 }
 
@@ -53,8 +53,8 @@
   if (os_variant_has_internal_content())
   {
     v3 = +[AMSProcessInfo currentProcess];
-    v2 = [v3 bundleIdentifier];
-    [a1 setValue:v2 forHTTPHeaderField:@"X-Apple-Issuing-Process"];
+    bundleIdentifier = [v3 bundleIdentifier];
+    [self setValue:bundleIdentifier forHTTPHeaderField:@"X-Apple-Issuing-Process"];
   }
 }
 

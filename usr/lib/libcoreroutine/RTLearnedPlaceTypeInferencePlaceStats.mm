@@ -1,26 +1,26 @@
 @interface RTLearnedPlaceTypeInferencePlaceStats
-+ (double)extractTopMedianDwellTimeFromVisits:(id)a3;
-+ (id)extractDailyStatsFromVisits:(id)a3;
-+ (id)extractWeeklyStatsFromDailyStats:(id)a3;
-+ (id)visitsWithDwellTimeBetweenDateRange:(id)a3 start:(id)a4 end:(id)a5;
-- (RTLearnedPlaceTypeInferencePlaceStats)initWithLearnedLocationStore:(id)a3 place:(id)a4 visits:(id)a5;
++ (double)extractTopMedianDwellTimeFromVisits:(id)visits;
++ (id)extractDailyStatsFromVisits:(id)visits;
++ (id)extractWeeklyStatsFromDailyStats:(id)stats;
++ (id)visitsWithDwellTimeBetweenDateRange:(id)range start:(id)start end:(id)end;
+- (RTLearnedPlaceTypeInferencePlaceStats)initWithLearnedLocationStore:(id)store place:(id)place visits:(id)visits;
 - (id)description;
 - (id)getMlFeatures;
-- (id)localDeviceVisitsForVisits:(id)a3;
-- (id)visitIntervalsForVisits:(id)a3 place:(id)a4;
-- (id)visitsPredatingCurrentDeviceFromVisits:(id)a3;
+- (id)localDeviceVisitsForVisits:(id)visits;
+- (id)visitIntervalsForVisits:(id)visits place:(id)place;
+- (id)visitsPredatingCurrentDeviceFromVisits:(id)visits;
 - (void)log;
 @end
 
 @implementation RTLearnedPlaceTypeInferencePlaceStats
 
-+ (id)visitsWithDwellTimeBetweenDateRange:(id)a3 start:(id)a4 end:(id)a5
++ (id)visitsWithDwellTimeBetweenDateRange:(id)range start:(id)start end:(id)end
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v7 = MEMORY[0x277CCAC30];
-  v8 = a3;
-  v9 = [v7 predicateWithFormat:@"%K <= %@ and %@ <= %K", @"entryDate", a5, a4, @"exitDate"];
-  v10 = [v8 filteredArrayUsingPredicate:v9];
+  rangeCopy = range;
+  v9 = [v7 predicateWithFormat:@"%K <= %@ and %@ <= %K", @"entryDate", end, start, @"exitDate"];
+  v10 = [rangeCopy filteredArrayUsingPredicate:v9];
 
   v11 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"entryDate" ascending:1];
   v15[0] = v11;
@@ -30,25 +30,25 @@
   return v13;
 }
 
-+ (double)extractTopMedianDwellTimeFromVisits:(id)a3
++ (double)extractTopMedianDwellTimeFromVisits:(id)visits
 {
   v45 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [MEMORY[0x277CBEA80] currentCalendar];
-  v6 = [v5 startOfDayForDate:v4];
+  visitsCopy = visits;
+  date = [MEMORY[0x277CBEAA8] date];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v6 = [currentCalendar startOfDayForDate:date];
 
   v7 = objc_opt_new();
   [v7 setWeekOfYear:-5];
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
   v37 = v7;
-  v9 = [v8 dateByAddingComponents:v7 toDate:v6 options:0];
+  v9 = [currentCalendar2 dateByAddingComponents:v7 toDate:v6 options:0];
 
   v10 = v6;
-  v38 = v3;
+  v38 = visitsCopy;
   v36 = v9;
-  v11 = [objc_opt_class() visitsWithDwellTimeBetweenDateRange:v3 start:v9 end:v10];
-  v12 = [MEMORY[0x277CBEB18] array];
+  v11 = [objc_opt_class() visitsWithDwellTimeBetweenDateRange:visitsCopy start:v9 end:v10];
+  array = [MEMORY[0x277CBEB18] array];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
@@ -70,11 +70,11 @@
 
         v18 = *(*(&v39 + 1) + 8 * i);
         v19 = MEMORY[0x277CCABB0];
-        v20 = [v18 exitDate];
-        v21 = [v18 entryDate];
-        [v20 timeIntervalSinceDate:v21];
+        exitDate = [v18 exitDate];
+        entryDate = [v18 entryDate];
+        [exitDate timeIntervalSinceDate:entryDate];
         v22 = [v19 numberWithDouble:?];
-        [v12 addObject:v22];
+        [array addObject:v22];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v39 objects:v44 count:16];
@@ -86,26 +86,26 @@
   v23 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"self" ascending:0];
   v43 = v23;
   v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v43 count:1];
-  [v12 sortUsingDescriptors:v24];
+  [array sortUsingDescriptors:v24];
 
-  v25 = [v13 lastObject];
-  v26 = [v25 exitDate];
-  v27 = [v13 firstObject];
-  v28 = [v27 entryDate];
-  [v26 timeIntervalSinceDate:v28];
+  lastObject = [v13 lastObject];
+  exitDate2 = [lastObject exitDate];
+  firstObject = [v13 firstObject];
+  entryDate2 = [firstObject entryDate];
+  [exitDate2 timeIntervalSinceDate:entryDate2];
   v30 = v29 / 604800.0;
 
   v31 = vcvtmd_u64_f64(v30 * 0.5);
   v32 = 0.0;
-  if ([v12 count] > v31)
+  if ([array count] > v31)
   {
     if (v31 <= 1)
     {
-      if ([v12 count] <= 2)
+      if ([array count] <= 2)
       {
-        if ([v12 count])
+        if ([array count])
         {
-          v31 = [v12 count] - 1;
+          v31 = [array count] - 1;
         }
       }
 
@@ -115,7 +115,7 @@
       }
     }
 
-    v33 = [v12 objectAtIndex:v31];
+    v33 = [array objectAtIndex:v31];
     [v33 doubleValue];
     v32 = v34;
   }
@@ -123,32 +123,32 @@
   return v32;
 }
 
-+ (id)extractDailyStatsFromVisits:(id)a3
++ (id)extractDailyStatsFromVisits:(id)visits
 {
   v45 = *MEMORY[0x277D85DE8];
-  v38 = a3;
-  v3 = [MEMORY[0x277CBEAA8] date];
+  visitsCopy = visits;
+  date = [MEMORY[0x277CBEAA8] date];
   v4 = 0x277CBE000uLL;
-  v5 = [MEMORY[0x277CBEA80] currentCalendar];
-  v34 = v3;
-  v6 = [v5 startOfDayForDate:v3];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v34 = date;
+  v6 = [currentCalendar startOfDayForDate:date];
 
   v7 = objc_opt_new();
   [v7 setWeekOfYear:-5];
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
   v33 = v7;
-  v9 = [v8 dateByAddingComponents:v7 toDate:v6 options:0];
+  v9 = [currentCalendar2 dateByAddingComponents:v7 toDate:v6 options:0];
 
   v10 = objc_opt_new();
   [v10 setDay:1];
   [v10 setSecond:-1];
-  v11 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar3 = [MEMORY[0x277CBEA80] currentCalendar];
   v32 = v10;
-  v12 = [v11 dateByAddingComponents:v10 toDate:v9 options:0];
+  v12 = [currentCalendar3 dateByAddingComponents:v10 toDate:v9 options:0];
 
   v36 = objc_opt_new();
   [v36 setDay:1];
-  v35 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v37 = v6;
   if ([v12 compare:v6] == -1)
   {
@@ -156,7 +156,7 @@
     {
       v15 = v4;
       context = objc_autoreleasePoolPush();
-      v16 = [objc_opt_class() visitsWithDwellTimeBetweenDateRange:v38 start:v9 end:v12];
+      v16 = [objc_opt_class() visitsWithDwellTimeBetweenDateRange:visitsCopy start:v9 end:v12];
       v40 = 0u;
       v41 = 0u;
       v42 = 0u;
@@ -177,11 +177,11 @@
             }
 
             v22 = *(*(&v40 + 1) + 8 * i);
-            v23 = [v22 entryDate];
-            v24 = [v23 laterDate:v9];
+            entryDate = [v22 entryDate];
+            v24 = [entryDate laterDate:v9];
 
-            v25 = [v22 exitDate];
-            v26 = [v25 earlierDate:v12];
+            exitDate = [v22 exitDate];
+            v26 = [exitDate earlierDate:v12];
 
             [v26 timeIntervalSinceDate:v24];
             v20 = v20 + v27;
@@ -201,15 +201,15 @@
       v28 = -[RTLearnedPlaceTypeInferenceDailyStats initWithStart:end:visitCount:aggregateDwellTimeBetweenDateRange:]([RTLearnedPlaceTypeInferenceDailyStats alloc], "initWithStart:end:visitCount:aggregateDwellTimeBetweenDateRange:", v9, v12, [v16 count], v20);
       if (v28)
       {
-        [v35 addObject:v28];
+        [array addObject:v28];
       }
 
       v4 = v15;
-      v29 = [*(v15 + 2688) currentCalendar];
-      v14 = [v29 dateByAddingComponents:v36 toDate:v9 options:0];
+      currentCalendar4 = [*(v15 + 2688) currentCalendar];
+      v14 = [currentCalendar4 dateByAddingComponents:v36 toDate:v9 options:0];
 
-      v30 = [*(v15 + 2688) currentCalendar];
-      v13 = [v30 dateByAddingComponents:v36 toDate:v12 options:0];
+      currentCalendar5 = [*(v15 + 2688) currentCalendar];
+      v13 = [currentCalendar5 dateByAddingComponents:v36 toDate:v12 options:0];
 
       objc_autoreleasePoolPop(context);
       v9 = v14;
@@ -225,14 +225,14 @@
     v14 = v9;
   }
 
-  return v35;
+  return array;
 }
 
-+ (id)extractWeeklyStatsFromDailyStats:(id)a3
++ (id)extractWeeklyStatsFromDailyStats:(id)stats
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  if ([v3 count] >= 7)
+  statsCopy = stats;
+  array = [MEMORY[0x277CBEB18] array];
+  if ([statsCopy count] >= 7)
   {
     v5 = 0;
     v6 = 0;
@@ -240,12 +240,12 @@
     {
       v7 = objc_autoreleasePoolPush();
       v8 = [RTLearnedPlaceTypeInferenceWeeklyStats alloc];
-      v9 = [v3 subarrayWithRange:{v5, 7}];
+      v9 = [statsCopy subarrayWithRange:{v5, 7}];
       v10 = [(RTLearnedPlaceTypeInferenceWeeklyStats *)v8 initWithDailyStats:v9];
 
       if (v10)
       {
-        [v4 addObject:v10];
+        [array addObject:v10];
       }
 
       objc_autoreleasePoolPop(v7);
@@ -253,21 +253,21 @@
       v5 += 7;
     }
 
-    while (v6 < [v3 count] / 7uLL);
+    while (v6 < [statsCopy count] / 7uLL);
   }
 
-  return v4;
+  return array;
 }
 
-- (id)localDeviceVisitsForVisits:(id)a3
+- (id)localDeviceVisitsForVisits:(id)visits
 {
   v76 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v48 = v3;
-  if (v3 && [v3 count])
+  visitsCopy = visits;
+  v48 = visitsCopy;
+  if (visitsCopy && [visitsCopy count])
   {
-    v4 = [(RTLearnedPlaceTypeInferencePlaceStats *)self learnedLocationStore];
-    oslog = [v4 predicateForObjectsFromCurrentDevice];
+    learnedLocationStore = [(RTLearnedPlaceTypeInferencePlaceStats *)self learnedLocationStore];
+    oslog = [learnedLocationStore predicateForObjectsFromCurrentDevice];
 
     *v70 = 0;
     *&v70[8] = v70;
@@ -305,17 +305,17 @@
 
           v13 = *(*(&v64 + 1) + 8 * v9);
           context = objc_autoreleasePoolPush();
-          v14 = [(RTLearnedPlaceTypeInferencePlaceStats *)self learnedLocationStore];
-          v15 = [v13 location];
-          v16 = [v15 location];
-          v58 = [v14 predicateForVisitsWithinDistance:v16 location:500.0];
+          learnedLocationStore2 = [(RTLearnedPlaceTypeInferencePlaceStats *)self learnedLocationStore];
+          location = [v13 location];
+          v15Location = [location location];
+          v58 = [learnedLocationStore2 predicateForVisitsWithinDistance:v15Location location:500.0];
 
-          v17 = [(RTLearnedPlaceTypeInferencePlaceStats *)self learnedLocationStore];
-          v18 = [v13 entryDate];
-          v19 = [v18 dateByAddingTimeInterval:-1800.0];
-          v20 = [v13 exitDate];
-          v21 = [v20 dateByAddingTimeInterval:1800.0];
-          v57 = [v17 predicateForVisitsFromEntryDate:v19 exitDate:v21];
+          learnedLocationStore3 = [(RTLearnedPlaceTypeInferencePlaceStats *)self learnedLocationStore];
+          entryDate = [v13 entryDate];
+          v19 = [entryDate dateByAddingTimeInterval:-1800.0];
+          exitDate = [v13 exitDate];
+          v21 = [exitDate dateByAddingTimeInterval:1800.0];
+          v57 = [learnedLocationStore3 predicateForVisitsFromEntryDate:v19 exitDate:v21];
 
           v22 = MEMORY[0x277CCA920];
           v68[0] = oslog;
@@ -325,7 +325,7 @@
           v8 = [v22 andPredicateWithSubpredicates:v23];
 
           v24 = dispatch_semaphore_create(0);
-          v25 = [(RTLearnedPlaceTypeInferencePlaceStats *)self learnedLocationStore];
+          learnedLocationStore4 = [(RTLearnedPlaceTypeInferencePlaceStats *)self learnedLocationStore];
           v60[0] = MEMORY[0x277D85DD0];
           v60[1] = 3221225472;
           v60[2] = __68__RTLearnedPlaceTypeInferencePlaceStats_localDeviceVisitsForVisits___block_invoke;
@@ -335,7 +335,7 @@
           v63 = a2;
           v26 = v24;
           v61 = v26;
-          [v25 fetchVisitsWithPredicate:v8 handler:v60];
+          [learnedLocationStore4 fetchVisitsWithPredicate:v8 handler:v60];
 
           v27 = v26;
           v28 = [MEMORY[0x277CBEAA8] now];
@@ -347,11 +347,11 @@
             v32 = v31;
             v33 = objc_opt_new();
             v34 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_561];
-            v35 = [MEMORY[0x277CCACC8] callStackSymbols];
-            v36 = [v35 filteredArrayUsingPredicate:v34];
-            v37 = [v36 firstObject];
+            callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+            v36 = [callStackSymbols filteredArrayUsingPredicate:v34];
+            firstObject = [v36 firstObject];
 
-            [v33 submitToCoreAnalytics:v37 type:1 duration:v32];
+            [v33 submitToCoreAnalytics:firstObject type:1 duration:v32];
             v38 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
             if (os_log_type_enabled(v38, OS_LOG_TYPE_FAULT))
             {
@@ -452,12 +452,12 @@ void __68__RTLearnedPlaceTypeInferencePlaceStats_localDeviceVisitsForVisits___bl
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (id)visitsPredatingCurrentDeviceFromVisits:(id)a3
+- (id)visitsPredatingCurrentDeviceFromVisits:(id)visits
 {
   v75[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5 && [v5 count])
+  visitsCopy = visits;
+  v6 = visitsCopy;
+  if (visitsCopy && [visitsCopy count])
   {
     aSelector = a2;
     *buf = 0;
@@ -473,7 +473,7 @@ void __68__RTLearnedPlaceTypeInferencePlaceStats_localDeviceVisitsForVisits___bl
     v64 = __Block_byref_object_dispose__190;
     v65 = 0;
     v7 = dispatch_semaphore_create(0);
-    v8 = [(RTLearnedPlaceTypeInferencePlaceStats *)self learnedLocationStore];
+    learnedLocationStore = [(RTLearnedPlaceTypeInferencePlaceStats *)self learnedLocationStore];
     v56[0] = MEMORY[0x277D85DD0];
     v56[1] = 3221225472;
     v56[2] = __80__RTLearnedPlaceTypeInferencePlaceStats_visitsPredatingCurrentDeviceFromVisits___block_invoke;
@@ -482,7 +482,7 @@ void __68__RTLearnedPlaceTypeInferencePlaceStats_localDeviceVisitsForVisits___bl
     v59 = &v60;
     v9 = v7;
     v57 = v9;
-    [v8 fetchCurrentDeviceWithHandler:v56];
+    [learnedLocationStore fetchCurrentDeviceWithHandler:v56];
 
     v10 = v9;
     v11 = [MEMORY[0x277CBEAA8] now];
@@ -494,11 +494,11 @@ void __68__RTLearnedPlaceTypeInferencePlaceStats_localDeviceVisitsForVisits___bl
       v15 = v14;
       v16 = objc_opt_new();
       v17 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_561];
-      v18 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v19 = [v18 filteredArrayUsingPredicate:v17];
-      v20 = [v19 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v19 = [callStackSymbols filteredArrayUsingPredicate:v17];
+      firstObject = [v19 firstObject];
 
-      [v16 submitToCoreAnalytics:v20 type:1 duration:v15];
+      [v16 submitToCoreAnalytics:firstObject type:1 duration:v15];
       v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
       {
@@ -566,8 +566,8 @@ void __68__RTLearnedPlaceTypeInferencePlaceStats_localDeviceVisitsForVisits___bl
       v40 = *(*&buf[8] + 40);
       if (v40)
       {
-        v41 = [v40 creationDate];
-        v42 = v41 == 0;
+        creationDate = [v40 creationDate];
+        v42 = creationDate == 0;
 
         if (!v42)
         {
@@ -579,21 +579,21 @@ void __68__RTLearnedPlaceTypeInferencePlaceStats_localDeviceVisitsForVisits___bl
               v44 = objc_opt_class();
               v45 = NSStringFromClass(v44);
               v46 = NSStringFromSelector(aSelector);
-              v47 = [*(*&buf[8] + 40) creationDate];
-              v48 = [v47 stringFromDate];
+              creationDate2 = [*(*&buf[8] + 40) creationDate];
+              stringFromDate = [creationDate2 stringFromDate];
               *v66 = 138412802;
               *&v66[4] = v45;
               v67 = 2112;
               v68 = v46;
               v69 = 2112;
-              v70 = v48;
+              v70 = stringFromDate;
               _os_log_impl(&dword_2304B3000, v43, OS_LOG_TYPE_INFO, "%@, %@, filtering for remote device visits predating device creation date on %@", v66, 0x20u);
             }
           }
 
           v49 = MEMORY[0x277CCAC30];
-          v50 = [*(*&buf[8] + 40) creationDate];
-          v32 = [v49 predicateWithFormat:@"%K < %@", @"exitDate", v50];
+          creationDate3 = [*(*&buf[8] + 40) creationDate];
+          v32 = [v49 predicateWithFormat:@"%K < %@", @"exitDate", creationDate3];
 
           v30 = [v6 filteredArrayUsingPredicate:v32];
           goto LABEL_30;
@@ -661,14 +661,14 @@ void __80__RTLearnedPlaceTypeInferencePlaceStats_visitsPredatingCurrentDeviceFro
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)visitIntervalsForVisits:(id)a3 place:(id)a4
+- (id)visitIntervalsForVisits:(id)visits place:(id)place
 {
   v99 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v59 = a4;
-  if (v5)
+  visitsCopy = visits;
+  placeCopy = place;
+  if (visitsCopy)
   {
-    v49 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     log = [MEMORY[0x277CBEAA8] date];
     v56 = [log dateByAddingTimeInterval:-3628800.0];
     v58 = objc_opt_new();
@@ -676,8 +676,8 @@ void __80__RTLearnedPlaceTypeInferencePlaceStats_visitsPredatingCurrentDeviceFro
     v69 = 0u;
     v70 = 0u;
     v71 = 0u;
-    v47 = v5;
-    obj = v5;
+    v47 = visitsCopy;
+    obj = visitsCopy;
     v64 = [obj countByEnumeratingWithState:&v68 objects:v98 count:16];
     if (!v64)
     {
@@ -703,20 +703,20 @@ void __80__RTLearnedPlaceTypeInferencePlaceStats_visitsPredatingCurrentDeviceFro
         v10 = *(*(&v68 + 1) + 8 * i);
         context = objc_autoreleasePoolPush();
         v11 = objc_alloc(MEMORY[0x277CCA970]);
-        v12 = [v10 entryDate];
-        v13 = [v10 exitDate];
+        entryDate = [v10 entryDate];
+        exitDate = [v10 exitDate];
         v67 = 0;
-        v6 = [v11 rt_initWithStartDate:v12 endDate:v13 error:&v67];
+        v6 = [v11 rt_initWithStartDate:entryDate endDate:exitDate error:&v67];
         v14 = v67;
 
         if (!v14)
         {
-          v23 = [v10 location];
-          v24 = [v23 location];
-          v25 = [v59 mapItem];
-          v26 = [v25 location];
+          location = [v10 location];
+          v23Location = [location location];
+          mapItem = [placeCopy mapItem];
+          location2 = [mapItem location];
           v66 = v61;
-          [v58 distanceFromLocation:v24 toLocation:v26 error:&v66];
+          [v58 distanceFromLocation:v23Location toLocation:location2 error:&v66];
           v28 = v27;
           v63 = v66;
 
@@ -728,34 +728,34 @@ void __80__RTLearnedPlaceTypeInferencePlaceStats_visitsPredatingCurrentDeviceFro
               v30 = objc_opt_class();
               v62 = NSStringFromClass(v30);
               v55 = NSStringFromSelector(a2);
-              v50 = [v59 identifier];
-              v53 = [v59 mapItem];
-              v31 = [v53 name];
-              v52 = [v59 mapItem];
-              v32 = [v52 location];
-              v51 = [v10 location];
-              v33 = [v51 location];
-              v34 = [v6 startDate];
-              v35 = [v6 endDate];
+              identifier = [placeCopy identifier];
+              mapItem2 = [placeCopy mapItem];
+              name = [mapItem2 name];
+              mapItem3 = [placeCopy mapItem];
+              location3 = [mapItem3 location];
+              location4 = [v10 location];
+              v51Location = [location4 location];
+              startDate = [v6 startDate];
+              endDate = [v6 endDate];
               [v6 duration];
               *buf = 138415363;
               v73 = v62;
               v74 = 2112;
               v75 = v55;
               v76 = 2112;
-              v77 = v50;
+              v77 = identifier;
               v78 = 2117;
-              v79 = v31;
+              v79 = name;
               v80 = 2117;
-              v81 = v32;
+              v81 = location3;
               v82 = 2117;
-              v83 = v33;
+              v83 = v51Location;
               v84 = 2048;
               v85 = v28;
               v86 = 2112;
-              v87 = v34;
+              v87 = startDate;
               v88 = 2112;
-              v89 = v35;
+              v89 = endDate;
               v90 = 2048;
               v91 = v36;
               v92 = 2112;
@@ -772,8 +772,8 @@ void __80__RTLearnedPlaceTypeInferencePlaceStats_visitsPredatingCurrentDeviceFro
 
           if (v28 <= 300.0)
           {
-            v43 = [v6 endDate];
-            v44 = [v43 compare:v56];
+            endDate2 = [v6 endDate];
+            v44 = [endDate2 compare:v56];
 
             if (v44 == -1)
             {
@@ -801,7 +801,7 @@ LABEL_26:
 
             else
             {
-              [v49 addObject:v6];
+              [array addObject:v6];
             }
           }
 
@@ -837,18 +837,18 @@ LABEL_26:
             v16 = objc_opt_class();
             v17 = NSStringFromClass(v16);
             v18 = NSStringFromSelector(a2);
-            v19 = [v10 entryDate];
-            v20 = [v19 stringFromDate];
-            v21 = [v10 exitDate];
-            v22 = [v21 stringFromDate];
+            entryDate2 = [v10 entryDate];
+            stringFromDate = [entryDate2 stringFromDate];
+            exitDate2 = [v10 exitDate];
+            stringFromDate2 = [exitDate2 stringFromDate];
             *buf = 138413314;
             v73 = v17;
             v74 = 2112;
             v75 = v18;
             v76 = 2112;
-            v77 = v20;
+            v77 = stringFromDate;
             v78 = 2112;
-            v79 = v22;
+            v79 = stringFromDate2;
             v80 = 2112;
             v81 = v14;
             _os_log_impl(&dword_2304B3000, v15, OS_LOG_TYPE_INFO, "%@, %@, error occurred while initializing visit date interval with start date %@ and end date %@, error, %@. Skipping visit interval.", buf, 0x34u);
@@ -867,7 +867,7 @@ LABEL_28:
       {
 LABEL_35:
 
-        v5 = v47;
+        visitsCopy = v47;
         goto LABEL_36;
       }
     }
@@ -880,19 +880,19 @@ LABEL_35:
     _os_log_error_impl(&dword_2304B3000, log, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: visits", buf, 2u);
   }
 
-  v49 = 0;
+  array = 0;
 LABEL_36:
 
-  return v49;
+  return array;
 }
 
-- (RTLearnedPlaceTypeInferencePlaceStats)initWithLearnedLocationStore:(id)a3 place:(id)a4 visits:(id)a5
+- (RTLearnedPlaceTypeInferencePlaceStats)initWithLearnedLocationStore:(id)store place:(id)place visits:(id)visits
 {
   v56 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v11)
+  storeCopy = store;
+  placeCopy = place;
+  visitsCopy = visits;
+  if (placeCopy)
   {
     v41.receiver = self;
     v41.super_class = RTLearnedPlaceTypeInferencePlaceStats;
@@ -901,26 +901,26 @@ LABEL_36:
     if (v13)
     {
       aSelector = a2;
-      objc_storeStrong(&v13->_learnedLocationStore, a3);
-      objc_storeStrong(&v14->_place, a4);
-      v14->_visitsCount = [v12 count];
+      objc_storeStrong(&v13->_learnedLocationStore, store);
+      objc_storeStrong(&v14->_place, place);
+      v14->_visitsCount = [visitsCopy count];
       mlFeatures = v14->_mlFeatures;
       v14->_mlFeatures = 0;
 
-      v16 = [objc_opt_class() extractDailyStatsFromVisits:v12];
+      v16 = [objc_opt_class() extractDailyStatsFromVisits:visitsCopy];
       v17 = [objc_opt_class() extractWeeklyStatsFromDailyStats:v16];
-      [objc_opt_class() extractTopMedianDwellTimeFromVisits:v12];
+      [objc_opt_class() extractTopMedianDwellTimeFromVisits:visitsCopy];
       v40 = v17;
       v19 = [[RTLearnedPlaceTypeInferenceStats alloc] initWithWeeklyStats:v17 topMedianDwellTime:v18];
       stats = v14->_stats;
       v14->_stats = v19;
 
-      v21 = [(RTLearnedPlaceTypeInferencePlaceStats *)v14 localDeviceVisitsForVisits:v12];
-      v22 = [MEMORY[0x277CBEB18] arrayWithArray:v12];
+      v21 = [(RTLearnedPlaceTypeInferencePlaceStats *)v14 localDeviceVisitsForVisits:visitsCopy];
+      v22 = [MEMORY[0x277CBEB18] arrayWithArray:visitsCopy];
       [v22 removeObjectsInArray:v21];
       v23 = [(RTLearnedPlaceTypeInferencePlaceStats *)v14 visitsPredatingCurrentDeviceFromVisits:v22];
       v24 = [v21 arrayByAddingObjectsFromArray:v23];
-      v25 = [(RTLearnedPlaceTypeInferencePlaceStats *)v14 visitIntervalsForVisits:v24 place:v11];
+      v25 = [(RTLearnedPlaceTypeInferencePlaceStats *)v14 visitIntervalsForVisits:v24 place:placeCopy];
       visitIntervals = v14->_visitIntervals;
       v14->_visitIntervals = v25;
 
@@ -934,7 +934,7 @@ LABEL_36:
           v29 = objc_opt_class();
           v36 = NSStringFromClass(v29);
           aSelectora = NSStringFromSelector(aSelector);
-          v35 = [v12 count];
+          v35 = [visitsCopy count];
           v34 = [v21 count];
           v30 = [v23 count];
           *buf = 138413827;
@@ -950,7 +950,7 @@ LABEL_36:
           v52 = 2112;
           v53 = v27;
           v54 = 2117;
-          v55 = v11;
+          v55 = placeCopy;
           _os_log_impl(&dword_2304B3000, v28, OS_LOG_TYPE_INFO, "%@, %@, overall visits count, %lu, local device visits count, %lu, earlier remote device visits count, %lu, total considered dwell time, %@, place, %{sensitive}@", buf, 0x48u);
         }
 
@@ -959,7 +959,7 @@ LABEL_36:
     }
 
     self = v14;
-    v31 = self;
+    selfCopy = self;
   }
 
   else
@@ -974,10 +974,10 @@ LABEL_36:
       _os_log_error_impl(&dword_2304B3000, v32, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: place (in %s:%d)", buf, 0x12u);
     }
 
-    v31 = 0;
+    selfCopy = 0;
   }
 
-  return v31;
+  return selfCopy;
 }
 
 - (id)getMlFeatures
@@ -1011,14 +1011,14 @@ LABEL_36:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       v6 = 138739971;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&dword_2304B3000, v3, OS_LOG_TYPE_INFO, "%{sensitive}@", &v6, 0xCu);
     }
   }
 
-  v4 = [(RTLearnedPlaceTypeInferencePlaceStats *)self stats];
-  v5 = [v4 weeklyStats];
-  [v5 enumerateObjectsUsingBlock:&__block_literal_global_150];
+  stats = [(RTLearnedPlaceTypeInferencePlaceStats *)self stats];
+  weeklyStats = [stats weeklyStats];
+  [weeklyStats enumerateObjectsUsingBlock:&__block_literal_global_150];
 }
 
 void __44__RTLearnedPlaceTypeInferencePlaceStats_log__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1042,10 +1042,10 @@ void __44__RTLearnedPlaceTypeInferencePlaceStats_log__block_invoke(uint64_t a1, 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(RTLearnedPlaceTypeInferencePlaceStats *)self place];
-  v5 = [(RTLearnedPlaceTypeInferencePlaceStats *)self visitsCount];
-  v6 = [(RTLearnedPlaceTypeInferencePlaceStats *)self stats];
-  v7 = [v3 stringWithFormat:@"place, %@, visits, %lu, stats, %@", v4, v5, v6];
+  place = [(RTLearnedPlaceTypeInferencePlaceStats *)self place];
+  visitsCount = [(RTLearnedPlaceTypeInferencePlaceStats *)self visitsCount];
+  stats = [(RTLearnedPlaceTypeInferencePlaceStats *)self stats];
+  v7 = [v3 stringWithFormat:@"place, %@, visits, %lu, stats, %@", place, visitsCount, stats];
 
   return v7;
 }

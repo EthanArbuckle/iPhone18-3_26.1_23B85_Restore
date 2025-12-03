@@ -1,26 +1,26 @@
 @interface MFMailDropAttachmentPreviewDataProvider
-+ (id)fullResolutionAttachmentForAttachment:(id)a3;
-+ (id)fullResolutionAttachmentURLForAttachmentURL:(id)a3;
-- (id)storageLocationForAttachment:(id)a3 withMessage:(id)a4;
-- (void)fetchDataForAttachment:(id)a3 consumer:(id)a4 progress:(id)a5 completion:(id)a6;
++ (id)fullResolutionAttachmentForAttachment:(id)attachment;
++ (id)fullResolutionAttachmentURLForAttachmentURL:(id)l;
+- (id)storageLocationForAttachment:(id)attachment withMessage:(id)message;
+- (void)fetchDataForAttachment:(id)attachment consumer:(id)consumer progress:(id)progress completion:(id)completion;
 @end
 
 @implementation MFMailDropAttachmentPreviewDataProvider
 
-- (void)fetchDataForAttachment:(id)a3 consumer:(id)a4 progress:(id)a5 completion:(id)a6
+- (void)fetchDataForAttachment:(id)attachment consumer:(id)consumer progress:(id)progress completion:(id)completion
 {
-  v14 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  if (v14)
+  attachmentCopy = attachment;
+  consumerCopy = consumer;
+  progressCopy = progress;
+  completionCopy = completion;
+  if (attachmentCopy)
   {
-    v12 = [v14 readFromDisk];
-    v13 = v12 != 0;
-    if (v12)
+    readFromDisk = [attachmentCopy readFromDisk];
+    v13 = readFromDisk != 0;
+    if (readFromDisk)
     {
-      [v9 appendData:v12];
-      [v10 setCompletedUnitCount:{objc_msgSend(v10, "totalUnitCount")}];
+      [consumerCopy appendData:readFromDisk];
+      [progressCopy setCompletedUnitCount:{objc_msgSend(progressCopy, "totalUnitCount")}];
     }
   }
 
@@ -29,30 +29,30 @@
     v13 = 0;
   }
 
-  (*(v11 + 2))(v11, v13, 0, 0);
+  (*(completionCopy + 2))(completionCopy, v13, 0, 0);
 }
 
-- (id)storageLocationForAttachment:(id)a3 withMessage:(id)a4
+- (id)storageLocationForAttachment:(id)attachment withMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  attachmentCopy = attachment;
+  messageCopy = message;
   v8 = objc_opt_class();
-  v9 = [v6 part];
-  v10 = [v8 fullResolutionStorageLocationForAttachmentWithMimePart:v9 withMessage:v7];
+  part = [attachmentCopy part];
+  v10 = [v8 fullResolutionStorageLocationForAttachmentWithMimePart:part withMessage:messageCopy];
 
   if (!v10)
   {
     v12.receiver = self;
     v12.super_class = MFMailDropAttachmentPreviewDataProvider;
-    v10 = [(MFAttachmentLibraryDataProvider *)&v12 storageLocationForAttachment:v6 withMessage:v7];
+    v10 = [(MFAttachmentLibraryDataProvider *)&v12 storageLocationForAttachment:attachmentCopy withMessage:messageCopy];
   }
 
   return v10;
 }
 
-+ (id)fullResolutionAttachmentForAttachment:(id)a3
++ (id)fullResolutionAttachmentForAttachment:(id)attachment
 {
-  v3 = [a3 url];
+  v3 = [attachment url];
   v4 = [MFMailDropAttachmentPreviewDataProvider fullResolutionAttachmentURLForAttachmentURL:v3];
 
   if (v4)
@@ -69,12 +69,12 @@
   return v6;
 }
 
-+ (id)fullResolutionAttachmentURLForAttachmentURL:(id)a3
++ (id)fullResolutionAttachmentURLForAttachmentURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
-    v4 = [MEMORY[0x1E696AF20] componentsWithURL:v3 resolvingAgainstBaseURL:0];
+    v4 = [MEMORY[0x1E696AF20] componentsWithURL:lCopy resolvingAgainstBaseURL:0];
     [v4 setScheme:@"x-attach-maildrop-image"];
     v5 = [v4 URL];
   }

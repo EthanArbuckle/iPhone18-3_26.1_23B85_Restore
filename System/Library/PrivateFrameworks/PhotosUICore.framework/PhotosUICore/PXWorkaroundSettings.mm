@@ -23,8 +23,8 @@
 
   else
   {
-    v4 = [MEMORY[0x1E69DC938] currentDevice];
-    v3 = [v4 userInterfaceIdiom] == 0;
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    v3 = [currentDevice userInterfaceIdiom] == 0;
   }
 
   [(PXWorkaroundSettings *)self setShouldWorkAround53118165:v3];
@@ -115,8 +115,8 @@ void __38__PXWorkaroundSettings_sharedInstance__block_invoke()
   v21 = v2;
   v22 = [v2 sectionWithRows:v20];
   v48[0] = v22;
-  v23 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
-  v48[1] = v23;
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  v48[1] = px_restoreDefaultsSection;
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:2];
   v25 = [v21 moduleWithTitle:@"Workarounds" contents:v24];
 

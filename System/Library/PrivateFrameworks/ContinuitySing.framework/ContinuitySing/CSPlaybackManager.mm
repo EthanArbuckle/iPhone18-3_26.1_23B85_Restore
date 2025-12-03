@@ -7,18 +7,18 @@
 - (float)currentValue;
 - (float)maxValue;
 - (float)minValue;
-- (id)_stringFromSeconds:(float)a3;
-- (void)_handleNewPlaybackState:(id)a3;
-- (void)_sendRequest:(id)a3;
+- (id)_stringFromSeconds:(float)seconds;
+- (void)_handleNewPlaybackState:(id)state;
+- (void)_sendRequest:(id)request;
 - (void)_setupMediaPlayerResponseController;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)backward;
-- (void)controller:(id)a3 defersResponseReplacement:(id)a4;
+- (void)controller:(id)controller defersResponseReplacement:(id)replacement;
 - (void)forward;
 - (void)pause;
 - (void)play;
-- (void)removeObserver:(id)a3;
-- (void)setVocalAttenuationLevel:(double)a3;
+- (void)removeObserver:(id)observer;
+- (void)setVocalAttenuationLevel:(double)level;
 @end
 
 @implementation CSPlaybackManager
@@ -30,9 +30,9 @@
   v2 = [(CSPlaybackManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
     [(CSPlaybackManager *)v2 _setupMediaPlayerResponseController];
   }
@@ -40,24 +40,24 @@
   return v2;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(NSHashTable *)v5->_observers addObject:v4];
-  if (v5->_currentState)
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_observers addObject:observerCopy];
+  if (selfCopy->_currentState)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __33__CSPlaybackManager_addObserver___block_invoke;
     v6[3] = &unk_278E0AD78;
-    v7 = v4;
-    v8 = v5;
+    v7 = observerCopy;
+    v8 = selfCopy;
     dispatch_async(MEMORY[0x277D85CD0], v6);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __33__CSPlaybackManager_addObserver___block_invoke(uint64_t a1)
@@ -75,21 +75,21 @@ uint64_t __33__CSPlaybackManager_addObserver___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSHashTable *)v4->_observers removeObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_observers removeObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (MPCPlayerResponseTracklist)tracklist
 {
-  v2 = [(MPRequestResponseController *)self->_mediaPlayerResponseController response];
-  v3 = [v2 tracklist];
+  response = [(MPRequestResponseController *)self->_mediaPlayerResponseController response];
+  tracklist = [response tracklist];
 
-  return v3;
+  return tracklist;
 }
 
 - (void)play
@@ -103,10 +103,10 @@ uint64_t __33__CSPlaybackManager_addObserver___block_invoke(uint64_t a1)
     _os_log_impl(&dword_2441FB000, v3, OS_LOG_TYPE_DEFAULT, "%s: Requesting play", &v6, 0xCu);
   }
 
-  v4 = [(MPRequestResponseController *)self->_mediaPlayerResponseController response];
-  v5 = [v4 play];
+  response = [(MPRequestResponseController *)self->_mediaPlayerResponseController response];
+  play = [response play];
 
-  [(CSPlaybackManager *)self _sendRequest:v5];
+  [(CSPlaybackManager *)self _sendRequest:play];
 }
 
 - (void)pause
@@ -120,10 +120,10 @@ uint64_t __33__CSPlaybackManager_addObserver___block_invoke(uint64_t a1)
     _os_log_impl(&dword_2441FB000, v3, OS_LOG_TYPE_DEFAULT, "%s: Requesting pause", &v6, 0xCu);
   }
 
-  v4 = [(MPRequestResponseController *)self->_mediaPlayerResponseController response];
-  v5 = [v4 pause];
+  response = [(MPRequestResponseController *)self->_mediaPlayerResponseController response];
+  pause = [response pause];
 
-  [(CSPlaybackManager *)self _sendRequest:v5];
+  [(CSPlaybackManager *)self _sendRequest:pause];
 }
 
 - (void)forward
@@ -137,12 +137,12 @@ uint64_t __33__CSPlaybackManager_addObserver___block_invoke(uint64_t a1)
     _os_log_impl(&dword_2441FB000, v3, OS_LOG_TYPE_DEFAULT, "%s: Requesting forward", &v8, 0xCu);
   }
 
-  v4 = [(MPRequestResponseController *)self->_mediaPlayerResponseController response];
-  v5 = [v4 tracklist];
-  v6 = [v5 changeItemCommand];
-  v7 = [v6 nextItem];
+  response = [(MPRequestResponseController *)self->_mediaPlayerResponseController response];
+  tracklist = [response tracklist];
+  changeItemCommand = [tracklist changeItemCommand];
+  nextItem = [changeItemCommand nextItem];
 
-  [(CSPlaybackManager *)self _sendRequest:v7];
+  [(CSPlaybackManager *)self _sendRequest:nextItem];
 }
 
 - (void)backward
@@ -156,36 +156,36 @@ uint64_t __33__CSPlaybackManager_addObserver___block_invoke(uint64_t a1)
     _os_log_impl(&dword_2441FB000, v3, OS_LOG_TYPE_DEFAULT, "%s: Requesting back", &v8, 0xCu);
   }
 
-  v4 = [(MPRequestResponseController *)self->_mediaPlayerResponseController response];
-  v5 = [v4 tracklist];
-  v6 = [v5 changeItemCommand];
-  v7 = [v6 previousItem];
+  response = [(MPRequestResponseController *)self->_mediaPlayerResponseController response];
+  tracklist = [response tracklist];
+  changeItemCommand = [tracklist changeItemCommand];
+  previousItem = [changeItemCommand previousItem];
 
-  [(CSPlaybackManager *)self _sendRequest:v7];
+  [(CSPlaybackManager *)self _sendRequest:previousItem];
 }
 
-- (void)setVocalAttenuationLevel:(double)a3
+- (void)setVocalAttenuationLevel:(double)level
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [(MPRequestResponseController *)self->_mediaPlayerResponseController response];
-  v6 = [v5 tracklist];
-  v7 = [v6 vocalsControlCommand];
+  response = [(MPRequestResponseController *)self->_mediaPlayerResponseController response];
+  tracklist = [response tracklist];
+  vocalsControlCommand = [tracklist vocalsControlCommand];
 
-  if (([v7 isActive] & 1) == 0)
+  if (([vocalsControlCommand isActive] & 1) == 0)
   {
-    v8 = [v7 activateVocalsControl:1];
+    v8 = [vocalsControlCommand activateVocalsControl:1];
     [(CSPlaybackManager *)self _sendRequest:v8];
   }
 
-  [v7 minLevel];
+  [vocalsControlCommand minLevel];
   v10 = v9;
-  [v7 maxLevel];
+  [vocalsControlCommand maxLevel];
   v12 = v11;
   v13 = v10;
   if (v11 != v10)
   {
-    v14 = a3;
-    v15 = fmax(fmin(v14, 1.0), 0.0);
+    levelCopy = level;
+    v15 = fmax(fmin(levelCopy, 1.0), 0.0);
     v13 = v10 + (v15 * (v12 - v10));
   }
 
@@ -195,7 +195,7 @@ uint64_t __33__CSPlaybackManager_addObserver___block_invoke(uint64_t a1)
     v19 = 136316162;
     v20 = "[CSPlaybackManager setVocalAttenuationLevel:]";
     v21 = 2048;
-    v22 = a3;
+    levelCopy2 = level;
     v23 = 2048;
     v24 = v13;
     v25 = 2048;
@@ -206,15 +206,15 @@ uint64_t __33__CSPlaybackManager_addObserver___block_invoke(uint64_t a1)
   }
 
   *&v17 = v13;
-  v18 = [v7 setVocalsLevel:v17];
+  v18 = [vocalsControlCommand setVocalsLevel:v17];
   [(CSPlaybackManager *)self _sendRequest:v18];
 }
 
-- (void)_handleNewPlaybackState:(id)a3
+- (void)_handleNewPlaybackState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   [(CSPlaybackManager *)self willChangeValueForKey:@"playing"];
-  objc_storeStrong(&self->_currentState, a3);
+  objc_storeStrong(&self->_currentState, state);
   [(CSPlaybackManager *)self didChangeValueForKey:@"playing"];
   v16 = 0u;
   v17 = 0u;
@@ -239,13 +239,13 @@ uint64_t __33__CSPlaybackManager_addObserver___block_invoke(uint64_t a1)
         v11 = *(*(&v14 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 playbackManager:self didUpdateState:v5];
+          [v11 playbackManager:self didUpdateState:stateCopy];
         }
 
         if (objc_opt_respondsToSelector())
         {
-          v12 = [(CSPlaybackManager *)self tracklist];
-          [v11 playbackManager:self didUpdateTracklist:v12];
+          tracklist = [(CSPlaybackManager *)self tracklist];
+          [v11 playbackManager:self didUpdateTracklist:tracklist];
         }
 
         ++v10;
@@ -331,18 +331,18 @@ void __56__CSPlaybackManager__setupMediaPlayerResponseController__block_invoke_2
   [*(*(a1 + 40) + 16) beginAutomaticResponseLoading];
 }
 
-- (void)_sendRequest:(id)a3
+- (void)_sendRequest:(id)request
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  requestCopy = request;
+  v4 = requestCopy;
+  if (requestCopy)
   {
     v5 = MEMORY[0x277D278B8];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __34__CSPlaybackManager__sendRequest___block_invoke;
     v7[3] = &unk_278E0ADC8;
-    v8 = v3;
+    v8 = requestCopy;
     [v5 performRequest:v8 completion:v7];
     v6 = v8;
   }
@@ -381,19 +381,19 @@ void __34__CSPlaybackManager__sendRequest___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)controller:(id)a3 defersResponseReplacement:(id)a4
+- (void)controller:(id)controller defersResponseReplacement:(id)replacement
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  replacementCopy = replacement;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__CSPlaybackManager_controller_defersResponseReplacement___block_invoke;
   block[3] = &unk_278E0ADF0;
-  v11 = v6;
-  v12 = v7;
+  v11 = controllerCopy;
+  v12 = replacementCopy;
   block[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = controllerCopy;
+  v9 = replacementCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -485,20 +485,20 @@ void __58__CSPlaybackManager_controller_defersResponseReplacement___block_invoke
 
 - (BOOL)isPlaying
 {
-  v2 = [(CSPlaybackManager *)self currentState];
-  v3 = [v2 playerState] == 2;
+  currentState = [(CSPlaybackManager *)self currentState];
+  v3 = [currentState playerState] == 2;
 
   return v3;
 }
 
 - (float)minValue
 {
-  v2 = [(MPCPlayerResponse *)self->_currentResponse tracklist];
-  v3 = [v2 playingItem];
-  v4 = v3;
-  if (v3)
+  tracklist = [(MPCPlayerResponse *)self->_currentResponse tracklist];
+  playingItem = [tracklist playingItem];
+  v4 = playingItem;
+  if (playingItem)
   {
-    [v3 duration];
+    [playingItem duration];
     v5 = v7;
   }
 
@@ -514,12 +514,12 @@ void __58__CSPlaybackManager_controller_defersResponseReplacement___block_invoke
 {
   [(CSPlaybackManager *)self minValue];
   v4 = v3;
-  v5 = [(MPCPlayerResponse *)self->_currentResponse tracklist];
-  v6 = [v5 playingItem];
-  v7 = v6;
-  if (v6)
+  tracklist = [(MPCPlayerResponse *)self->_currentResponse tracklist];
+  playingItem = [tracklist playingItem];
+  v7 = playingItem;
+  if (playingItem)
   {
-    [v6 duration];
+    [playingItem duration];
     v8 = v11;
   }
 
@@ -545,12 +545,12 @@ void __58__CSPlaybackManager_controller_defersResponseReplacement___block_invoke
 
   [(CSPlaybackManager *)self minValue];
   v7 = v6;
-  v8 = [(MPCPlayerResponse *)self->_currentResponse tracklist];
-  v9 = [v8 playingItem];
-  v10 = v9;
-  if (v9)
+  tracklist = [(MPCPlayerResponse *)self->_currentResponse tracklist];
+  playingItem = [tracklist playingItem];
+  v10 = playingItem;
+  if (playingItem)
   {
-    [v9 duration];
+    [playingItem duration];
     v11 = v15;
   }
 
@@ -595,16 +595,16 @@ void __58__CSPlaybackManager_controller_defersResponseReplacement___block_invoke
   return v9;
 }
 
-- (id)_stringFromSeconds:(float)a3
+- (id)_stringFromSeconds:(float)seconds
 {
-  v3 = a3;
+  secondsCopy = seconds;
   v4 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v4 setDateFormat:@"m:ss"];
   v5 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-  [v5 setMinute:v3 / 60];
-  [v5 setSecond:v3 % 60];
-  v6 = [MEMORY[0x277CBEA80] currentCalendar];
-  v7 = [v6 dateFromComponents:v5];
+  [v5 setMinute:secondsCopy / 60];
+  [v5 setSecond:secondsCopy % 60];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v7 = [currentCalendar dateFromComponents:v5];
   v8 = [v4 stringFromDate:v7];
 
   return v8;

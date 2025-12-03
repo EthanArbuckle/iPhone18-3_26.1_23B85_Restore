@@ -1,18 +1,18 @@
 @interface COSSetupFinishedViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation COSSetupFinishedViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PBBridgeProgressView"];
-  [v3 validateClass:@"PBBridgeProgressView" hasInstanceMethod:@"currentProgress" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"COSSetupFinishedViewController" hasInstanceMethod:@"illustratedSyncView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"COSSetupFinishedViewController" hasInstanceMethod:@"progressView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"COSSetupFinishedViewController" hasInstanceMethod:@"progress" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PBBridgeProgressView"];
+  [validationsCopy validateClass:@"PBBridgeProgressView" hasInstanceMethod:@"currentProgress" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"COSSetupFinishedViewController" hasInstanceMethod:@"illustratedSyncView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"COSSetupFinishedViewController" hasInstanceMethod:@"progressView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"COSSetupFinishedViewController" hasInstanceMethod:@"progress" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

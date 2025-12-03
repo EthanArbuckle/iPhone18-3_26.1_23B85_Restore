@@ -8,28 +8,28 @@
 - (double)locationInNode:()SKNodeTouches
 {
   v4 = a3;
-  v5 = [v4 scene];
-  v6 = v5;
-  if (v5)
+  scene = [v4 scene];
+  v6 = scene;
+  if (scene)
   {
-    v7 = [(SKScene *)v5 view];
+    view = [(SKScene *)scene view];
   }
 
   else
   {
-    v7 = 0;
+    view = 0;
   }
 
-  v8 = [(SKScene *)v6 view];
-  [a1 locationInView:v8];
+  view2 = [(SKScene *)v6 view];
+  [self locationInView:view2];
   v10 = v9;
   v12 = v11;
 
-  if (v7)
+  if (view)
   {
     v15.x = v10;
     v15.y = v12;
-    [v4 convertPoint:v6 fromNode:{CGPointConvertFromViewToScene(v7, v6, v15).n128_f64[0]}];
+    [v4 convertPoint:v6 fromNode:{CGPointConvertFromViewToScene(view, v6, v15).n128_f64[0]}];
     v10 = v13;
   }
 
@@ -39,28 +39,28 @@
 - (double)previousLocationInNode:()SKNodeTouches
 {
   v4 = a3;
-  v5 = [v4 scene];
-  v6 = v5;
-  if (v5)
+  scene = [v4 scene];
+  v6 = scene;
+  if (scene)
   {
-    v7 = [(SKScene *)v5 view];
+    view = [(SKScene *)scene view];
   }
 
   else
   {
-    v7 = 0;
+    view = 0;
   }
 
-  v8 = [(SKScene *)v6 view];
-  [a1 previousLocationInView:v8];
+  view2 = [(SKScene *)v6 view];
+  [self previousLocationInView:view2];
   v10 = v9;
   v12 = v11;
 
-  if (v7)
+  if (view)
   {
     v15.x = v10;
     v15.y = v12;
-    [v4 convertPoint:v6 fromNode:{CGPointConvertFromViewToScene(v7, v6, v15).n128_f64[0]}];
+    [v4 convertPoint:v6 fromNode:{CGPointConvertFromViewToScene(view, v6, v15).n128_f64[0]}];
     v10 = v13;
   }
 

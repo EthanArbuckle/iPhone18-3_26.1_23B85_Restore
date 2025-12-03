@@ -1,18 +1,18 @@
 @interface SFMediaCaptureStatusBarManager
 - (BOOL)isRecording;
-- (BOOL)statusBarCoordinator:(id)a3 receivedTapWithContext:(id)a4 completionBlock:(id)a5;
+- (BOOL)statusBarCoordinator:(id)coordinator receivedTapWithContext:(id)context completionBlock:(id)block;
 - (NSString)simplifiedURLString;
 - (SFMediaRecordingDocument)_recordingDocument;
-- (unint64_t)overrideStyleForAudioOnly:(BOOL)a3;
-- (void)_acquireStatusBarOverrideWithAudioOnly:(BOOL)a3;
+- (unint64_t)overrideStyleForAudioOnly:(BOOL)only;
+- (void)_acquireStatusBarOverrideWithAudioOnly:(BOOL)only;
 - (void)_cleanUpStatusBarOverride;
-- (void)_didAcquireStatusBarOverrideSuccessfully:(BOOL)a3;
+- (void)_didAcquireStatusBarOverrideSuccessfully:(BOOL)successfully;
 - (void)_didInvalidateStatusBarOverride;
 - (void)cancelStatusBarOverride;
-- (void)recordingDocumentDidBeginMediaCapture:(id)a3 audioOnly:(BOOL)a4;
-- (void)recordingDocumentDidEndMediaCapture:(id)a3;
-- (void)setRecordingDocument:(id)a3;
-- (void)statusBarCoordinator:(id)a3 invalidatedRegistrationWithError:(id)a4;
+- (void)recordingDocumentDidBeginMediaCapture:(id)capture audioOnly:(BOOL)only;
+- (void)recordingDocumentDidEndMediaCapture:(id)capture;
+- (void)setRecordingDocument:(id)document;
+- (void)statusBarCoordinator:(id)coordinator invalidatedRegistrationWithError:(id)error;
 @end
 
 @implementation SFMediaCaptureStatusBarManager
@@ -24,9 +24,9 @@
   return WeakRetained;
 }
 
-- (void)setRecordingDocument:(id)a3
+- (void)setRecordingDocument:(id)document
 {
-  obj = a3;
+  obj = document;
   WeakRetained = objc_loadWeakRetained(&self->_recordingDocument);
 
   v5 = obj;
@@ -55,21 +55,21 @@
   return v3;
 }
 
-- (void)recordingDocumentDidBeginMediaCapture:(id)a3 audioOnly:(BOOL)a4
+- (void)recordingDocumentDidBeginMediaCapture:(id)capture audioOnly:(BOOL)only
 {
-  v4 = a4;
-  v6 = a3;
-  [(SFMediaCaptureStatusBarManager *)self setRecordingDocument:v6];
-  v7 = [v6 canOverrideStatusBar];
+  onlyCopy = only;
+  captureCopy = capture;
+  [(SFMediaCaptureStatusBarManager *)self setRecordingDocument:captureCopy];
+  canOverrideStatusBar = [captureCopy canOverrideStatusBar];
 
-  if (v7)
+  if (canOverrideStatusBar)
   {
 
-    [(SFMediaCaptureStatusBarManager *)self _acquireStatusBarOverrideWithAudioOnly:v4];
+    [(SFMediaCaptureStatusBarManager *)self _acquireStatusBarOverrideWithAudioOnly:onlyCopy];
   }
 }
 
-- (void)recordingDocumentDidEndMediaCapture:(id)a3
+- (void)recordingDocumentDidEndMediaCapture:(id)capture
 {
   if (self->_hasStatusBarOverride)
   {
@@ -89,9 +89,9 @@
   [(SFMediaCaptureStatusBarManager *)self _cleanUpStatusBarOverride];
 }
 
-- (unint64_t)overrideStyleForAudioOnly:(BOOL)a3
+- (unint64_t)overrideStyleForAudioOnly:(BOOL)only
 {
-  if (a3)
+  if (only)
   {
     return 0x1000000;
   }
@@ -102,16 +102,16 @@
   }
 }
 
-- (void)_acquireStatusBarOverrideWithAudioOnly:(BOOL)a3
+- (void)_acquireStatusBarOverrideWithAudioOnly:(BOOL)only
 {
   if (!self->_statusBarStyleOverride)
   {
-    v4 = a3;
+    onlyCopy = only;
     objc_initWeak(&location, self);
-    v5 = [(SFMediaCaptureStatusBarManager *)self overrideStyleForAudioOnly:v4];
+    v5 = [(SFMediaCaptureStatusBarManager *)self overrideStyleForAudioOnly:onlyCopy];
     v6 = MEMORY[0x1E69D42E0];
-    v7 = [MEMORY[0x1E696AE30] processInfo];
-    v8 = [v6 assertionWithStatusBarStyleOverrides:v5 forPID:objc_msgSend(v7 exclusive:"processIdentifier") showsWhenForeground:{1, 1}];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    v8 = [v6 assertionWithStatusBarStyleOverrides:v5 forPID:objc_msgSend(processInfo exclusive:"processIdentifier") showsWhenForeground:{1, 1}];
     statusBarStyleOverride = self->_statusBarStyleOverride;
     self->_statusBarStyleOverride = v8;
 
@@ -131,8 +131,8 @@
     objc_destroyWeak(&location);
   }
 
-  v13 = [(SFMediaCaptureStatusBarManager *)self statusString];
-  [(SBSStatusBarStyleOverridesAssertion *)self->_statusBarStyleOverride setStatusString:v13];
+  statusString = [(SFMediaCaptureStatusBarManager *)self statusString];
+  [(SBSStatusBarStyleOverridesAssertion *)self->_statusBarStyleOverride setStatusString:statusString];
 
   v14 = self->_statusBarStyleOverride;
   v15[4] = self;
@@ -176,18 +176,18 @@ void __73__SFMediaCaptureStatusBarManager__acquireStatusBarOverrideWithAudioOnly
 - (NSString)simplifiedURLString
 {
   WeakRetained = objc_loadWeakRetained(&self->_recordingDocument);
-  v3 = [WeakRetained URLString];
-  v4 = [v3 safari_simplifiedUserVisibleURLStringWithSimplifications:511 forDisplayOnly:1 simplifiedStringOffset:0];
+  uRLString = [WeakRetained URLString];
+  v4 = [uRLString safari_simplifiedUserVisibleURLStringWithSimplifications:511 forDisplayOnly:1 simplifiedStringOffset:0];
 
   return v4;
 }
 
-- (void)_didAcquireStatusBarOverrideSuccessfully:(BOOL)a3
+- (void)_didAcquireStatusBarOverrideSuccessfully:(BOOL)successfully
 {
-  v3 = a3;
+  successfullyCopy = successfully;
   v5 = WBS_LOG_CHANNEL_PREFIXMediaCapture();
   v6 = v5;
-  if (v3)
+  if (successfullyCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -232,9 +232,9 @@ void __73__SFMediaCaptureStatusBarManager__acquireStatusBarOverrideWithAudioOnly
   self->_hasStatusBarOverride = 0;
 }
 
-- (BOOL)statusBarCoordinator:(id)a3 receivedTapWithContext:(id)a4 completionBlock:(id)a5
+- (BOOL)statusBarCoordinator:(id)coordinator receivedTapWithContext:(id)context completionBlock:(id)block
 {
-  v6 = a5;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_recordingDocument);
   [(SFMediaCaptureStatusBarManager *)self activateApp];
   block[0] = MEMORY[0x1E69E9820];
@@ -244,23 +244,23 @@ void __73__SFMediaCaptureStatusBarManager__acquireStatusBarOverrideWithAudioOnly
   v11 = WeakRetained;
   v8 = WeakRetained;
   dispatch_async(MEMORY[0x1E69E96A0], block);
-  v6[2](v6);
+  blockCopy[2](blockCopy);
 
   return 1;
 }
 
-- (void)statusBarCoordinator:(id)a3 invalidatedRegistrationWithError:(id)a4
+- (void)statusBarCoordinator:(id)coordinator invalidatedRegistrationWithError:(id)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_recordingDocument);
   v7 = WBS_LOG_CHANNEL_PREFIXMediaCapture();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [v5 safari_privacyPreservingDescription];
+    safari_privacyPreservingDescription = [errorCopy safari_privacyPreservingDescription];
     v10 = 138543362;
-    v11 = v9;
+    v11 = safari_privacyPreservingDescription;
     _os_log_impl(&dword_18B7AC000, v8, OS_LOG_TYPE_DEFAULT, "Status bar coordinator invalidated: %{public}@", &v10, 0xCu);
   }
 

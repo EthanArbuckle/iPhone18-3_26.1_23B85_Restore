@@ -1,25 +1,25 @@
 @interface CLPInstSchemaCLPClientEventMetadata
-- (BOOL)isEqual:(id)a3;
-- (CLPInstSchemaCLPClientEventMetadata)initWithDictionary:(id)a3;
-- (CLPInstSchemaCLPClientEventMetadata)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CLPInstSchemaCLPClientEventMetadata)initWithDictionary:(id)dictionary;
+- (CLPInstSchemaCLPClientEventMetadata)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CLPInstSchemaCLPClientEventMetadata
 
-- (CLPInstSchemaCLPClientEventMetadata)initWithDictionary:(id)a3
+- (CLPInstSchemaCLPClientEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = CLPInstSchemaCLPClientEventMetadata;
   v5 = [(CLPInstSchemaCLPClientEventMetadata *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"clpId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"clpId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,30 +33,30 @@
   return v5;
 }
 
-- (CLPInstSchemaCLPClientEventMetadata)initWithJSON:(id)a3
+- (CLPInstSchemaCLPClientEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CLPInstSchemaCLPClientEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CLPInstSchemaCLPClientEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CLPInstSchemaCLPClientEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -69,40 +69,40 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_clpId)
   {
-    v4 = [(CLPInstSchemaCLPClientEventMetadata *)self clpId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    clpId = [(CLPInstSchemaCLPClientEventMetadata *)self clpId];
+    dictionaryRepresentation = [clpId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"clpId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"clpId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"clpId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"clpId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(CLPInstSchemaCLPClientEventMetadata *)self clpId];
-    v6 = [v4 clpId];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    clpId = [(CLPInstSchemaCLPClientEventMetadata *)self clpId];
+    clpId2 = [equalCopy clpId];
+    v7 = clpId2;
+    if ((clpId != 0) != (clpId2 == 0))
     {
-      v8 = [(CLPInstSchemaCLPClientEventMetadata *)self clpId];
-      if (!v8)
+      clpId3 = [(CLPInstSchemaCLPClientEventMetadata *)self clpId];
+      if (!clpId3)
       {
 
 LABEL_10:
@@ -110,10 +110,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(CLPInstSchemaCLPClientEventMetadata *)self clpId];
-      v11 = [v4 clpId];
-      v12 = [v10 isEqual:v11];
+      v9 = clpId3;
+      clpId4 = [(CLPInstSchemaCLPClientEventMetadata *)self clpId];
+      clpId5 = [equalCopy clpId];
+      v12 = [clpId4 isEqual:clpId5];
 
       if (v12)
       {
@@ -132,29 +132,29 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(CLPInstSchemaCLPClientEventMetadata *)self clpId];
+  toCopy = to;
+  clpId = [(CLPInstSchemaCLPClientEventMetadata *)self clpId];
 
-  if (v4)
+  if (clpId)
   {
-    v5 = [(CLPInstSchemaCLPClientEventMetadata *)self clpId];
+    clpId2 = [(CLPInstSchemaCLPClientEventMetadata *)self clpId];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = CLPInstSchemaCLPClientEventMetadata;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(CLPInstSchemaCLPClientEventMetadata *)self clpId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(CLPInstSchemaCLPClientEventMetadata *)self deleteClpId];
   }

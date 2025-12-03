@@ -1,10 +1,10 @@
 @interface MADTextInputSegment
-- (MADTextInputSegment)initWithCoder:(id)a3;
+- (MADTextInputSegment)initWithCoder:(id)coder;
 @end
 
 @implementation MADTextInputSegment
 
-- (MADTextInputSegment)initWithCoder:(id)a3
+- (MADTextInputSegment)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = MADTextInputSegment;

@@ -1,16 +1,16 @@
 @interface PDDPAggregatedValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTotalSampleCount:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasTotalSampleCount:(BOOL)count;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPAggregatedValue
@@ -28,9 +28,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -43,25 +43,25 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"SUM"];
+    v4 = [typeCopy isEqualToString:@"SUM"];
   }
 
   return v4;
 }
 
-- (void)setHasTotalSampleCount:(BOOL)a3
+- (void)setHasTotalSampleCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -79,8 +79,8 @@
   v7.receiver = self;
   v7.super_class = PDDPAggregatedValue;
   v3 = [(PDDPAggregatedValue *)&v7 description];
-  v4 = [(PDDPAggregatedValue *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPAggregatedValue *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -132,16 +132,16 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if ((has & 4) != 0)
   {
     type = self->_type;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -162,26 +162,26 @@ LABEL_3:
 
   value = self->_value;
   PBDataWriterWriteDoubleField();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
     totalSampleCount = self->_totalSampleCount;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[5] = self->_type;
-    *(v4 + 24) |= 4u;
+    toCopy[5] = self->_type;
+    *(toCopy + 24) |= 4u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -200,21 +200,21 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 1) = *&self->_value;
-  *(v4 + 24) |= 1u;
+  *(toCopy + 1) = *&self->_value;
+  *(toCopy + 24) |= 1u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
-    v4[4] = self->_totalSampleCount;
-    *(v4 + 24) |= 2u;
+    toCopy[4] = self->_totalSampleCount;
+    *(toCopy + 24) |= 2u;
   }
 
 LABEL_5:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -251,23 +251,23 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 24) & 4) == 0 || self->_type != *(v4 + 5))
+    if ((*(equalCopy + 24) & 4) == 0 || self->_type != *(equalCopy + 5))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 24) & 4) != 0)
+  else if ((*(equalCopy + 24) & 4) != 0)
   {
 LABEL_16:
     v5 = 0;
@@ -276,21 +276,21 @@ LABEL_16:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_value != *(v4 + 1))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_value != *(equalCopy + 1))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
     goto LABEL_16;
   }
 
-  v5 = (*(v4 + 24) & 2) == 0;
+  v5 = (*(equalCopy + 24) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) == 0 || self->_totalSampleCount != *(v4 + 4))
+    if ((*(equalCopy + 24) & 2) == 0 || self->_totalSampleCount != *(equalCopy + 4))
     {
       goto LABEL_16;
     }
@@ -364,15 +364,15 @@ LABEL_9:
   return v8 ^ v4 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 24);
+  fromCopy = from;
+  v5 = *(fromCopy + 24);
   if ((v5 & 4) != 0)
   {
-    self->_type = *(v4 + 5);
+    self->_type = *(fromCopy + 5);
     *&self->_has |= 4u;
-    v5 = *(v4 + 24);
+    v5 = *(fromCopy + 24);
     if ((v5 & 1) == 0)
     {
 LABEL_3:
@@ -385,17 +385,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 24) & 1) == 0)
+  else if ((*(fromCopy + 24) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_value = *(v4 + 1);
+  self->_value = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 24) & 2) != 0)
+  if ((*(fromCopy + 24) & 2) != 0)
   {
 LABEL_4:
-    self->_totalSampleCount = *(v4 + 4);
+    self->_totalSampleCount = *(fromCopy + 4);
     *&self->_has |= 2u;
   }
 

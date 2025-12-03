@@ -1,16 +1,16 @@
 @interface CPNowPlayingTemplate
 + (CPNowPlayingTemplate)sharedTemplate;
 - (CPNowPlayingTemplate)init;
-- (CPNowPlayingTemplate)initWithCoder:(id)a3;
-- (id)_updateLowerRegionButtons:(id)a3;
-- (void)_updateNowPlayingTemplateWithThrottle:(BOOL)a3;
+- (CPNowPlayingTemplate)initWithCoder:(id)coder;
+- (id)_updateLowerRegionButtons:(id)buttons;
+- (void)_updateNowPlayingTemplateWithThrottle:(BOOL)throttle;
 - (void)addObserver:(id)observer;
 - (void)albumArtistButtonTapped;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleAction:(int64_t)a3 forControlIdentifier:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleAction:(int64_t)action forControlIdentifier:(id)identifier;
 - (void)removeObserver:(id)observer;
 - (void)setAlbumArtistButtonEnabled:(BOOL)albumArtistButtonEnabled;
-- (void)setNowPlayingMode:(id)a3;
+- (void)setNowPlayingMode:(id)mode;
 - (void)setUpNextButtonEnabled:(BOOL)upNextButtonEnabled;
 - (void)setUpNextTitle:(NSString *)upNextTitle;
 - (void)upNextButtonTapped;
@@ -54,12 +54,12 @@ uint64_t __38__CPNowPlayingTemplate_sharedTemplate__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (CPNowPlayingTemplate)initWithCoder:(id)a3
+- (CPNowPlayingTemplate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = CPNowPlayingTemplate;
-  v5 = [(CPTemplate *)&v25 initWithCoder:v4];
+  v5 = [(CPTemplate *)&v25 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
@@ -71,20 +71,20 @@ uint64_t __38__CPNowPlayingTemplate_sharedTemplate__block_invoke()
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = [v6 setWithObjects:{v7, v8, v9, v10, v11, v12, v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"kCPTemplateLowerRegionButtons"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"kCPTemplateLowerRegionButtons"];
     nowPlayingButtons = v5->_nowPlayingButtons;
     v5->_nowPlayingButtons = v15;
 
-    v5->_upNextButtonEnabled = [v4 decodeBoolForKey:@"kCPTemplateUpNextEnabledKey"];
-    v5->_albumArtistButtonEnabled = [v4 decodeBoolForKey:@"kCPTemplateAlbumArtistButtonEnabledKey"];
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPTemplateUpNextTitleKey"];
+    v5->_upNextButtonEnabled = [coderCopy decodeBoolForKey:@"kCPTemplateUpNextEnabledKey"];
+    v5->_albumArtistButtonEnabled = [coderCopy decodeBoolForKey:@"kCPTemplateAlbumArtistButtonEnabledKey"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPTemplateUpNextTitleKey"];
     upNextTitle = v5->_upNextTitle;
     v5->_upNextTitle = v17;
 
     v19 = MEMORY[0x277CBEB98];
     v20 = objc_opt_class();
     v21 = [v19 setWithObjects:{v20, objc_opt_class(), 0}];
-    v22 = [v4 decodeObjectOfClasses:v21 forKey:@"kCPTemplateNowPlayingModeKey"];
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"kCPTemplateNowPlayingModeKey"];
     nowPlayingMode = v5->_nowPlayingMode;
     v5->_nowPlayingMode = v22;
   }
@@ -92,40 +92,40 @@ uint64_t __38__CPNowPlayingTemplate_sharedTemplate__block_invoke()
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = CPNowPlayingTemplate;
-  v4 = a3;
-  [(CPTemplate *)&v10 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CPTemplate *)&v10 encodeWithCoder:coderCopy];
   v5 = [(CPNowPlayingTemplate *)self nowPlayingButtons:v10.receiver];
-  [v4 encodeObject:v5 forKey:@"kCPTemplateLowerRegionButtons"];
+  [coderCopy encodeObject:v5 forKey:@"kCPTemplateLowerRegionButtons"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[CPNowPlayingTemplate isUpNextButtonEnabled](self, "isUpNextButtonEnabled")}];
-  [v4 encodeObject:v6 forKey:@"kCPTemplateUpNextEnabledKey"];
+  [coderCopy encodeObject:v6 forKey:@"kCPTemplateUpNextEnabledKey"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[CPNowPlayingTemplate isAlbumArtistButtonEnabled](self, "isAlbumArtistButtonEnabled")}];
-  [v4 encodeObject:v7 forKey:@"kCPTemplateAlbumArtistButtonEnabledKey"];
+  [coderCopy encodeObject:v7 forKey:@"kCPTemplateAlbumArtistButtonEnabledKey"];
 
-  v8 = [(CPNowPlayingTemplate *)self upNextTitle];
-  [v4 encodeObject:v8 forKey:@"kCPTemplateUpNextTitleKey"];
+  upNextTitle = [(CPNowPlayingTemplate *)self upNextTitle];
+  [coderCopy encodeObject:upNextTitle forKey:@"kCPTemplateUpNextTitleKey"];
 
-  v9 = [(CPNowPlayingTemplate *)self nowPlayingMode];
-  [v4 encodeObject:v9 forKey:@"kCPTemplateNowPlayingModeKey"];
+  nowPlayingMode = [(CPNowPlayingTemplate *)self nowPlayingMode];
+  [coderCopy encodeObject:nowPlayingMode forKey:@"kCPTemplateNowPlayingModeKey"];
 }
 
 - (void)addObserver:(id)observer
 {
   v4 = observer;
-  v5 = [(CPNowPlayingTemplate *)self nowPlayingObservers];
-  [v5 registerObserver:v4];
+  nowPlayingObservers = [(CPNowPlayingTemplate *)self nowPlayingObservers];
+  [nowPlayingObservers registerObserver:v4];
 }
 
 - (void)removeObserver:(id)observer
 {
   v4 = observer;
-  v5 = [(CPNowPlayingTemplate *)self nowPlayingObservers];
-  [v5 unregisterObserver:v4];
+  nowPlayingObservers = [(CPNowPlayingTemplate *)self nowPlayingObservers];
+  [nowPlayingObservers unregisterObserver:v4];
 }
 
 - (void)updateNowPlayingButtons:(NSArray *)nowPlayingButtons
@@ -138,11 +138,11 @@ uint64_t __38__CPNowPlayingTemplate_sharedTemplate__block_invoke()
   v6 = CarPlayFrameworkGeneralLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(CPNowPlayingTemplate *)self nowPlayingButtons];
+    nowPlayingButtons = [(CPNowPlayingTemplate *)self nowPlayingButtons];
     v9 = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v7;
+    v12 = nowPlayingButtons;
     _os_log_impl(&dword_236ED4000, v6, OS_LOG_TYPE_DEFAULT, "%@: Update now playing buttons %@", &v9, 0x16u);
   }
 
@@ -178,17 +178,17 @@ uint64_t __38__CPNowPlayingTemplate_sharedTemplate__block_invoke()
   }
 }
 
-- (void)handleAction:(int64_t)a3 forControlIdentifier:(id)a4
+- (void)handleAction:(int64_t)action forControlIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__CPNowPlayingTemplate_handleAction_forControlIdentifier___block_invoke;
   block[3] = &unk_278A10D48;
   block[4] = self;
-  v9 = v6;
-  v10 = a3;
-  v7 = v6;
+  v9 = identifierCopy;
+  actionCopy = action;
+  v7 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -294,28 +294,28 @@ void __58__CPNowPlayingTemplate_handleAction_forControlIdentifier___block_invoke
 
 - (void)upNextButtonTapped
 {
-  v3 = [(CPNowPlayingTemplate *)self nowPlayingObservers];
-  [v3 nowPlayingTemplateUpNextButtonTapped:self];
+  nowPlayingObservers = [(CPNowPlayingTemplate *)self nowPlayingObservers];
+  [nowPlayingObservers nowPlayingTemplateUpNextButtonTapped:self];
 }
 
 - (void)albumArtistButtonTapped
 {
-  v3 = [(CPNowPlayingTemplate *)self nowPlayingObservers];
-  [v3 nowPlayingTemplateAlbumArtistButtonTapped:self];
+  nowPlayingObservers = [(CPNowPlayingTemplate *)self nowPlayingObservers];
+  [nowPlayingObservers nowPlayingTemplateAlbumArtistButtonTapped:self];
 }
 
-- (id)_updateLowerRegionButtons:(id)a3
+- (id)_updateLowerRegionButtons:(id)buttons
 {
-  v4 = a3;
-  if ([v4 count] < 6)
+  buttonsCopy = buttons;
+  if ([buttonsCopy count] < 6)
   {
-    v6 = v4;
+    v6 = buttonsCopy;
   }
 
   else
   {
     v5 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, 5}];
-    v6 = [v4 objectsAtIndexes:v5];
+    v6 = [buttonsCopy objectsAtIndexes:v5];
   }
 
   v8[0] = MEMORY[0x277D85DD0];
@@ -328,7 +328,7 @@ void __58__CPNowPlayingTemplate_handleAction_forControlIdentifier___block_invoke
   return v6;
 }
 
-- (void)_updateNowPlayingTemplateWithThrottle:(BOOL)a3
+- (void)_updateNowPlayingTemplateWithThrottle:(BOOL)throttle
 {
   v16 = *MEMORY[0x277D85DE8];
   objc_initWeak(&location, self);
@@ -341,14 +341,14 @@ void __58__CPNowPlayingTemplate_handleAction_forControlIdentifier___block_invoke
     _os_log_impl(&dword_236ED4000, v5, OS_LOG_TYPE_DEFAULT, "%@: Updating now playing template", buf, 0xCu);
   }
 
-  v7 = [(CPTemplate *)self templateProviderFuture];
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __62__CPNowPlayingTemplate__updateNowPlayingTemplateWithThrottle___block_invoke;
   v10[3] = &unk_278A10D98;
   objc_copyWeak(&v11, &location);
-  v12 = a3;
-  v8 = [v7 addSuccessBlock:v10];
+  throttleCopy = throttle;
+  v8 = [templateProviderFuture addSuccessBlock:v10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -378,14 +378,14 @@ void __62__CPNowPlayingTemplate__updateNowPlayingTemplateWithThrottle___block_in
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setNowPlayingMode:(id)a3
+- (void)setNowPlayingMode:(id)mode
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  modeCopy = mode;
   if (_os_feature_enabled_impl())
   {
-    v6 = [(CPNowPlayingTemplate *)self nowPlayingMode];
-    v7 = [v5 isEqual:v6];
+    nowPlayingMode = [(CPNowPlayingTemplate *)self nowPlayingMode];
+    v7 = [modeCopy isEqual:nowPlayingMode];
 
     if ((v7 & 1) == 0)
     {
@@ -393,13 +393,13 @@ void __62__CPNowPlayingTemplate__updateNowPlayingTemplateWithThrottle___block_in
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v10 = 138412546;
-        v11 = self;
+        selfCopy = self;
         v12 = 2112;
-        v13 = v5;
+        v13 = modeCopy;
         _os_log_impl(&dword_236ED4000, v8, OS_LOG_TYPE_DEFAULT, "%@: Update now playing mode %@", &v10, 0x16u);
       }
 
-      objc_storeStrong(&self->_nowPlayingMode, a3);
+      objc_storeStrong(&self->_nowPlayingMode, mode);
       [(CPNowPlayingTemplate *)self _updateNowPlayingTemplateWithThrottle:0];
     }
   }

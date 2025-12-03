@@ -1,35 +1,35 @@
 @interface _UICollectionLayoutAuxillaryItemSolver
-- (double)_frameForSupplementaryItem:(void *)a3 container:(int)a4 primaryContentFrame:(double)a5 supplementaryItemSize:(double)a6 frameOffset:(double)a7 layoutRTL:(double)a8;
-- (double)_requiredContentSizeForSupplementaryFrames:(uint64_t)a3 forLayoutAxis:(double)a4 containerSize:(double)a5;
-- (double)_sizeForSupplementaryItem:(uint64_t)a3 container:(uint64_t)a4 preferredSizes:(uint64_t)a5 preferredIndex:;
-- (double)_visiblePinningRectFromVisibleRect:(CGFloat)a3 auxillaryHost:(CGFloat)a4;
-- (id)_rearrangedFramesForFrames:(void *)a3 container:(uint64_t)a4 primaryContentFrame:(int)a5 frameOffset:(void *)a6 preferredSizes:(double)a7 layoutRTL:(double)a8 supplementaryKind:(double)a9;
-- (id)queryFramesIntersectingRect:(float64_t)a3 frameOffset:(float64_t)a4;
-- (id)supplementaryFrameWithKind:(uint64_t)a3 index:;
-- (id)supplementaryFrameWithKind:(uint64_t)a3 index:(double)a4 additionalFrameOffset:(double)a5;
+- (double)_frameForSupplementaryItem:(void *)item container:(int)container primaryContentFrame:(double)frame supplementaryItemSize:(double)size frameOffset:(double)offset layoutRTL:(double)l;
+- (double)_requiredContentSizeForSupplementaryFrames:(uint64_t)frames forLayoutAxis:(double)axis containerSize:(double)size;
+- (double)_sizeForSupplementaryItem:(uint64_t)item container:(uint64_t)container preferredSizes:(uint64_t)sizes preferredIndex:;
+- (double)_visiblePinningRectFromVisibleRect:(CGFloat)rect auxillaryHost:(CGFloat)host;
+- (id)_rearrangedFramesForFrames:(void *)frames container:(uint64_t)container primaryContentFrame:(int)frame frameOffset:(void *)offset preferredSizes:(double)sizes layoutRTL:(double)l supplementaryKind:(double)kind;
+- (id)queryFramesIntersectingRect:(float64_t)rect frameOffset:(float64_t)offset;
+- (id)supplementaryFrameWithKind:(uint64_t)kind index:;
+- (id)supplementaryFrameWithKind:(uint64_t)kind index:(double)index additionalFrameOffset:(double)offset;
 - (id)supplementaryFrames;
 - (id)unpinnedFramesOfPinnedSupplementaries;
-- (uint64_t)initWithAuxillaryHost:(void *)a1;
+- (uint64_t)initWithAuxillaryHost:(void *)host;
 - (uint64_t)memoizedSupplementaryKind;
-- (void)_updateSupplementaryFrames:(void *)a3 atIndexes:(CGFloat)a4 forPinningToVisibleRect:(CGFloat)a5;
+- (void)_updateSupplementaryFrames:(void *)frames atIndexes:(CGFloat)indexes forPinningToVisibleRect:(CGFloat)rect;
 - (void)elementKinds;
 - (void)resolve;
-- (void)resolveSupplementaryItemsForVisibleBounds:(CGFloat)a3;
-- (void)setFrames:(uint64_t)a1;
-- (void)unpinnedSupplementaryFrameWithKind:(uint64_t)a3 index:;
+- (void)resolveSupplementaryItemsForVisibleBounds:(CGFloat)bounds;
+- (void)setFrames:(uint64_t)frames;
+- (void)unpinnedSupplementaryFrameWithKind:(uint64_t)kind index:;
 @end
 
 @implementation _UICollectionLayoutAuxillaryItemSolver
 
 - (uint64_t)memoizedSupplementaryKind
 {
-  result = *(a1 + 8);
+  result = *(self + 8);
   if (!result)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 64));
-    *(a1 + 8) = [WeakRetained auxillaryHostAuxillaryKind];
+    WeakRetained = objc_loadWeakRetained((self + 64));
+    *(self + 8) = [WeakRetained auxillaryHostAuxillaryKind];
 
-    return *(a1 + 8);
+    return *(self + 8);
   }
 
   return result;
@@ -38,11 +38,11 @@
 - (void)resolve
 {
   v204 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    WeakRetained = objc_loadWeakRetained((a1 + 64));
-    *(v1 + 56) = 0;
+    selfCopy = self;
+    WeakRetained = objc_loadWeakRetained((self + 64));
+    *(selfCopy + 56) = 0;
     if (!WeakRetained)
     {
 LABEL_109:
@@ -50,17 +50,17 @@ LABEL_109:
       return;
     }
 
-    v3 = objc_loadWeakRetained((v1 + 64));
+    v3 = objc_loadWeakRetained((selfCopy + 64));
 
     v140 = WeakRetained;
-    v149 = v1;
+    v149 = selfCopy;
     if (!v3)
     {
-      v126 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v126 handleFailureInMethod:sel_memoizedSupplementaryItems object:v1 file:@"_UICollectionLayoutAuxillaryItemSolver.m" lineNumber:850 description:{@"Invalid parameter not satisfying: %@", @"self.auxillaryHost"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_memoizedSupplementaryItems object:selfCopy file:@"_UICollectionLayoutAuxillaryItemSolver.m" lineNumber:850 description:{@"Invalid parameter not satisfying: %@", @"self.auxillaryHost"}];
     }
 
-    v4 = *(v1 + 16);
+    v4 = *(selfCopy + 16);
     if (!v4)
     {
       v146 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -68,7 +68,7 @@ LABEL_109:
       v200 = 0u;
       v201 = 0u;
       v202 = 0u;
-      v5 = objc_loadWeakRetained((v1 + 64));
+      v5 = objc_loadWeakRetained((selfCopy + 64));
       obj = [v5 auxillaryHostAuxillaryItems];
 
       v6 = [obj countByEnumeratingWithState:&v199 objects:v203 count:16];
@@ -88,14 +88,14 @@ LABEL_109:
           }
 
           v8 = *(*(&v199 + 1) + 8 * i);
-          v9 = [v8 boundarySupplementaryItem];
-          if (v9)
+          boundarySupplementaryItem = [v8 boundarySupplementaryItem];
+          if (boundarySupplementaryItem)
           {
             v10 = objc_loadWeakRetained((v149 + 64));
-            v11 = [v10 auxillaryHostLayoutAxis];
-            if ((v11 - 3) > 0xFFFFFFFFFFFFFFFDLL && (v12 = [v9 alignment]) != 0)
+            auxillaryHostLayoutAxis = [v10 auxillaryHostLayoutAxis];
+            if ((auxillaryHostLayoutAxis - 3) > 0xFFFFFFFFFFFFFFFDLL && (v12 = [boundarySupplementaryItem alignment]) != 0)
             {
-              if (v11 == 2)
+              if (auxillaryHostLayoutAxis == 2)
               {
                 if (v12 >= 9)
                 {
@@ -158,9 +158,9 @@ LABEL_31:
 
 LABEL_32:
               v17 = (v13 & v15) != 0;
-              [v9 offset];
+              [boundarySupplementaryItem offset];
               v18 = [off_1E70ECB00 layoutAnchorWithEdges:v16 | v13 absoluteOffset:?];
-              if ((v17 & [v9 extendsBoundary]) == 1)
+              if ((v17 & [boundarySupplementaryItem extendsBoundary]) == 1)
               {
                 if ((v13 - 1) > 7)
                 {
@@ -180,12 +180,12 @@ LABEL_32:
                 v20 = 0;
               }
 
-              v14 = [v9 copyWithContainerAnchor:v18 itemAnchor:v20];
+              v14 = [boundarySupplementaryItem copyWithContainerAnchor:v18 itemAnchor:v20];
             }
 
             else
             {
-              v14 = v9;
+              v14 = boundarySupplementaryItem;
             }
 
             [v146 addObject:v14];
@@ -197,9 +197,9 @@ LABEL_40:
           if ((*(v149 + 32) & 1) == 0)
           {
             v21 = [v8 size];
-            v22 = [v21 isEstimated];
+            isEstimated = [v21 isEstimated];
 
-            if (v22)
+            if (isEstimated)
             {
               *(v149 + 32) = 1;
             }
@@ -216,7 +216,7 @@ LABEL_45:
 
           v4 = *(v149 + 16);
           WeakRetained = v140;
-          v1 = v149;
+          selfCopy = v149;
           break;
         }
       }
@@ -231,14 +231,14 @@ LABEL_108:
       goto LABEL_109;
     }
 
-    v147 = [WeakRetained auxillaryHostShouldLayoutRTL];
-    v25 = [WeakRetained auxillaryHostLayoutAxis];
-    v144 = [(_UICollectionLayoutAuxillaryItemSolver *)v1 memoizedSupplementaryKind];
-    v26 = [WeakRetained auxillaryHostContainer];
-    if (!v26)
+    auxillaryHostShouldLayoutRTL = [WeakRetained auxillaryHostShouldLayoutRTL];
+    auxillaryHostLayoutAxis2 = [WeakRetained auxillaryHostLayoutAxis];
+    memoizedSupplementaryKind = [(_UICollectionLayoutAuxillaryItemSolver *)selfCopy memoizedSupplementaryKind];
+    auxillaryHostContainer = [WeakRetained auxillaryHostContainer];
+    if (!auxillaryHostContainer)
     {
-      v127 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v127 handleFailureInMethod:sel_resolve object:v149 file:@"_UICollectionLayoutAuxillaryItemSolver.m" lineNumber:254 description:{@"CompositionalLayout internal bug: Auxiliary host %@ returned a nil host container", v140}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:sel_resolve object:v149 file:@"_UICollectionLayoutAuxillaryItemSolver.m" lineNumber:254 description:{@"CompositionalLayout internal bug: Auxiliary host %@ returned a nil host container", v140}];
     }
 
     v27 = *MEMORY[0x1E695EFF8];
@@ -246,19 +246,19 @@ LABEL_108:
     [v140 auxillaryHostContentSize];
     v30 = v29;
     v32 = v31;
-    v133 = v25 - 1;
-    if (v25 == 1)
+    v133 = auxillaryHostLayoutAxis2 - 1;
+    if (auxillaryHostLayoutAxis2 == 1)
     {
       v33 = 2;
     }
 
     else
     {
-      v33 = v25 == 2;
+      v33 = auxillaryHostLayoutAxis2 == 2;
     }
 
     v34 = MEMORY[0x1E695F060];
-    if (v25)
+    if (auxillaryHostLayoutAxis2)
     {
       v205.origin.x = v27;
       v205.origin.y = v28;
@@ -271,13 +271,13 @@ LABEL_108:
       v206.size.height = v32;
       if (fabs(Width * CGRectGetHeight(v206)) < 2.22044605e-16)
       {
-        [v26 contentSize];
+        [auxillaryHostContainer contentSize];
         v38 = _UISizeValueForAxis(v33, v36, v37);
         v30 = _UISetSizeValueForAxis(v33, v30, v32, v38);
         v32 = v39;
       }
 
-      v30 = _UISizeClampToMinimumSizeForAxis(v25, v30, v32, *v34, v34[1]);
+      v30 = _UISizeClampToMinimumSizeForAxis(auxillaryHostLayoutAxis2, v30, v32, *v34, v34[1]);
       v32 = v40;
     }
 
@@ -290,17 +290,17 @@ LABEL_108:
       v41 = v44;
     }
 
-    v45 = [v140 auxillaryHostSupplementaryEnroller];
-    if (!v45)
+    auxillaryHostSupplementaryEnroller = [v140 auxillaryHostSupplementaryEnroller];
+    if (!auxillaryHostSupplementaryEnroller)
     {
-      v128 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v128 handleFailureInMethod:sel_resolve object:v149 file:@"_UICollectionLayoutAuxillaryItemSolver.m" lineNumber:278 description:{@"Invalid parameter not satisfying: %@", @"supplementaryEnroller"}];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:sel_resolve object:v149 file:@"_UICollectionLayoutAuxillaryItemSolver.m" lineNumber:278 description:{@"Invalid parameter not satisfying: %@", @"supplementaryEnroller"}];
     }
 
-    v46 = [v140 auxillaryHostPreferredSizes];
+    auxillaryHostPreferredSizes = [v140 auxillaryHostPreferredSizes];
     v47 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v48 = objc_alloc_init(_UICollectionLayoutAuxillaryOffsets);
-    v49 = v25;
+    v49 = auxillaryHostLayoutAxis2;
     v50 = objc_alloc_init(MEMORY[0x1E696AD50]);
     v191 = 0;
     v192 = &v191;
@@ -324,11 +324,11 @@ LABEL_108:
     v163[3] = &unk_1E70FB400;
     v173 = sel_resolve;
     v163[4] = v149;
-    v137 = v45;
+    v137 = auxillaryHostSupplementaryEnroller;
     v164 = v137;
-    v51 = v26;
+    v51 = auxillaryHostContainer;
     v165 = v51;
-    obja = v46;
+    obja = auxillaryHostPreferredSizes;
     v166 = obja;
     v174 = v27;
     v175 = v28;
@@ -338,9 +338,9 @@ LABEL_108:
     v178 = v42;
     v179 = v41;
     v52 = v41;
-    v182 = v147;
-    v53 = v144;
-    v180 = v144;
+    v182 = auxillaryHostShouldLayoutRTL;
+    v53 = memoizedSupplementaryKind;
+    v180 = memoizedSupplementaryKind;
     v54 = v47;
     v167 = v54;
     v139 = v50;
@@ -393,7 +393,7 @@ LABEL_108:
       v157 = v59;
       v158 = v134;
       v159 = v52;
-      v162 = v147;
+      v162 = auxillaryHostShouldLayoutRTL;
       v160 = v49;
       v161 = sel_resolve;
       v152 = v54;
@@ -401,7 +401,7 @@ LABEL_108:
       [v152 enumerateObjectsUsingBlock:v150];
 
       v61 = v149;
-      v53 = v144;
+      v53 = memoizedSupplementaryKind;
     }
 
     v145 = 0.0;
@@ -506,8 +506,8 @@ LABEL_87:
                   v117 = 0.0;
                 }
 
-                v120 = [(_UICollectionLayoutFramesQueryResult *)v114 copyWithFrame:v119 index:v115 - v103, v116 - v102, v117, v118];
-                [v109 addObject:v120];
+                v118 = [(_UICollectionLayoutFramesQueryResult *)v114 copyWithFrame:v119 index:v115 - v103, v116 - v102, v117, v118];
+                [v109 addObject:v118];
 
                 ++v113;
               }
@@ -580,13 +580,13 @@ LABEL_86:
 
       v85 = _UISetSizeValueForAxis(1, v76, v77, 1000000.0);
       v87 = v86;
-      v81 = [(_UICollectionLayoutAuxillaryItemSolver *)v61 _rearrangedFramesForFrames:v54 container:v51 primaryContentFrame:obja frameOffset:v147 preferredSizes:v53 layoutRTL:v27 supplementaryKind:v28, v85, v86, v27, v28];
+      v81 = [(_UICollectionLayoutAuxillaryItemSolver *)v61 _rearrangedFramesForFrames:v54 container:v51 primaryContentFrame:obja frameOffset:auxillaryHostShouldLayoutRTL preferredSizes:v53 layoutRTL:v27 supplementaryKind:v28, v85, v86, v27, v28];
       v88 = [(_UICollectionLayoutAuxillaryItemSolver *)v61 _requiredContentSizeForSupplementaryFrames:v81 forLayoutAxis:1 containerSize:v85, v87];
       v129 = v89;
       v130 = v88;
       v90 = _UISetSizeValueForAxis(2, v131, v132, 1000000.0);
       v92 = v91;
-      v93 = [(_UICollectionLayoutAuxillaryItemSolver *)v61 _rearrangedFramesForFrames:v54 container:v51 primaryContentFrame:obja frameOffset:v147 preferredSizes:v53 layoutRTL:v27 supplementaryKind:v28, v90, v91, v27, v28];
+      v93 = [(_UICollectionLayoutAuxillaryItemSolver *)v61 _rearrangedFramesForFrames:v54 container:v51 primaryContentFrame:obja frameOffset:auxillaryHostShouldLayoutRTL preferredSizes:v53 layoutRTL:v27 supplementaryKind:v28, v90, v91, v27, v28];
       v94 = [(_UICollectionLayoutAuxillaryItemSolver *)v61 _requiredContentSizeForSupplementaryFrames:v93 forLayoutAxis:2 containerSize:v90, v92];
       v148 = v95;
       v96 = v94;
@@ -617,7 +617,7 @@ LABEL_86:
     {
       v78 = _UISetSizeValueForAxis(v56, v76, v77, 1000000.0);
       v80 = v79;
-      v81 = [(_UICollectionLayoutAuxillaryItemSolver *)v61 _rearrangedFramesForFrames:v54 container:v51 primaryContentFrame:obja frameOffset:v147 preferredSizes:v53 layoutRTL:v27 supplementaryKind:v28, v78, v79, v27, v28];
+      v81 = [(_UICollectionLayoutAuxillaryItemSolver *)v61 _rearrangedFramesForFrames:v54 container:v51 primaryContentFrame:obja frameOffset:auxillaryHostShouldLayoutRTL preferredSizes:v53 layoutRTL:v27 supplementaryKind:v28, v78, v79, v27, v28];
       v82 = [(_UICollectionLayoutAuxillaryItemSolver *)v61 _requiredContentSizeForSupplementaryFrames:v81 forLayoutAxis:v56 containerSize:v78, v80];
       v84 = v83;
       v135 = *v62;
@@ -631,22 +631,22 @@ LABEL_86:
 
 - (id)supplementaryFrames
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[9];
+    self = self[9];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)elementKinds
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    v2 = a1[3];
+    selfCopy = self;
+    v2 = self[3];
     if (!v2)
     {
       v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -654,7 +654,7 @@ LABEL_86:
       v14 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v4 = v1[9];
+      v4 = selfCopy[9];
       v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
@@ -670,11 +670,11 @@ LABEL_86:
               objc_enumerationMutation(v4);
             }
 
-            v9 = [(_UICollectionLayoutFramesQueryResult *)*(*(&v13 + 1) + 8 * v8) auxillaryItem];
-            v10 = [v9 elementKind];
-            if ([v10 length])
+            auxillaryItem = [(_UICollectionLayoutFramesQueryResult *)*(*(&v13 + 1) + 8 * v8) auxillaryItem];
+            elementKind = [auxillaryItem elementKind];
+            if ([elementKind length])
             {
-              [v3 addObject:v10];
+              [v3 addObject:elementKind];
             }
 
             ++v8;
@@ -687,26 +687,26 @@ LABEL_86:
         while (v6);
       }
 
-      v11 = v1[3];
-      v1[3] = v3;
+      v11 = selfCopy[3];
+      selfCopy[3] = v3;
 
-      v2 = v1[3];
+      v2 = selfCopy[3];
     }
 
-    a1 = v2;
+    self = v2;
   }
 
-  return a1;
+  return self;
 }
 
-- (uint64_t)initWithAuxillaryHost:(void *)a1
+- (uint64_t)initWithAuxillaryHost:(void *)host
 {
-  if (!a1)
+  if (!host)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = host;
   v6.super_class = _UICollectionLayoutAuxillaryItemSolver;
   v3 = objc_msgSendSuper2(&v6, sel_init);
   v4 = v3;
@@ -721,14 +721,14 @@ LABEL_86:
   return v4;
 }
 
-- (void)setFrames:(uint64_t)a1
+- (void)setFrames:(uint64_t)frames
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (frames)
   {
-    objc_storeStrong((a1 + 72), a2);
-    v4 = *(a1 + 104);
-    *(a1 + 104) = 0;
+    objc_storeStrong((frames + 72), a2);
+    v4 = *(frames + 104);
+    *(frames + 104) = 0;
 
     v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -766,8 +766,8 @@ LABEL_86:
           v14 = v13;
           [v5 setObject:v12 forKeyedSubscript:{v14, v20}];
 
-          v15 = [(_UICollectionLayoutFramesQueryResult *)v12 kindIndexKey];
-          [v6 setObject:v12 forKeyedSubscript:v15];
+          kindIndexKey = [(_UICollectionLayoutFramesQueryResult *)v12 kindIndexKey];
+          [v6 setObject:v12 forKeyedSubscript:kindIndexKey];
 
           ++v11;
         }
@@ -780,32 +780,32 @@ LABEL_86:
       while (v16);
     }
 
-    v17 = *(a1 + 88);
-    *(a1 + 88) = v5;
+    v17 = *(frames + 88);
+    *(frames + 88) = v5;
     v18 = v5;
 
-    v19 = *(a1 + 96);
-    *(a1 + 96) = v6;
+    v19 = *(frames + 96);
+    *(frames + 96) = v6;
   }
 }
 
-- (void)resolveSupplementaryItemsForVisibleBounds:(CGFloat)a3
+- (void)resolveSupplementaryItemsForVisibleBounds:(CGFloat)bounds
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 8);
+    WeakRetained = objc_loadWeakRetained(self + 8);
     if (WeakRetained)
     {
       v17 = WeakRetained;
-      v11 = a1[5];
+      v11 = self[5];
       if ([v11 count])
       {
-        v12 = [a1[10] mutableCopy];
+        v12 = [self[10] mutableCopy];
         if ([v12 count])
         {
-          v13 = [(_UICollectionLayoutAuxillaryItemSolver *)a1 _visiblePinningRectFromVisibleRect:v17 auxillaryHost:a2, a3, a4, a5];
-          [(_UICollectionLayoutAuxillaryItemSolver *)a1 _updateSupplementaryFrames:v12 atIndexes:v11 forPinningToVisibleRect:v13, v14, v15, v16];
-          [(_UICollectionLayoutAuxillaryItemSolver *)a1 setFrames:v12];
+          v13 = [(_UICollectionLayoutAuxillaryItemSolver *)self _visiblePinningRectFromVisibleRect:v17 auxillaryHost:a2, bounds, a4, a5];
+          [(_UICollectionLayoutAuxillaryItemSolver *)self _updateSupplementaryFrames:v12 atIndexes:v11 forPinningToVisibleRect:v13, v14, v15, v16];
+          [(_UICollectionLayoutAuxillaryItemSolver *)self setFrames:v12];
         }
       }
 
@@ -814,9 +814,9 @@ LABEL_86:
   }
 }
 
-- (double)_visiblePinningRectFromVisibleRect:(CGFloat)a3 auxillaryHost:(CGFloat)a4
+- (double)_visiblePinningRectFromVisibleRect:(CGFloat)rect auxillaryHost:(CGFloat)host
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
@@ -826,8 +826,8 @@ LABEL_86:
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v19.origin.x = a3;
-  v19.origin.y = a4;
+  v19.origin.x = rect;
+  v19.origin.y = host;
   v19.size.width = a5;
   v19.size.height = a6;
   if (CGRectIsEmpty(v19))
@@ -835,8 +835,8 @@ LABEL_86:
     return *MEMORY[0x1E695F050];
   }
 
-  v20.origin.x = a3;
-  v20.origin.y = a4;
+  v20.origin.x = rect;
+  v20.origin.y = host;
   v20.size.width = a5;
   v20.size.height = a6;
   v22.origin.x = v11;
@@ -848,8 +848,8 @@ LABEL_86:
     return *MEMORY[0x1E695F050];
   }
 
-  v21.origin.x = a3;
-  v21.origin.y = a4;
+  v21.origin.x = rect;
+  v21.origin.y = host;
   v21.size.width = a5;
   v21.size.height = a6;
   v23.origin.x = v11;
@@ -860,28 +860,28 @@ LABEL_86:
   return result;
 }
 
-- (void)_updateSupplementaryFrames:(void *)a3 atIndexes:(CGFloat)a4 forPinningToVisibleRect:(CGFloat)a5
+- (void)_updateSupplementaryFrames:(void *)frames atIndexes:(CGFloat)indexes forPinningToVisibleRect:(CGFloat)rect
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 64));
+    WeakRetained = objc_loadWeakRetained((self + 64));
     if (WeakRetained)
     {
-      if ([a3 count])
+      if ([frames count])
       {
-        v22.origin.x = a4;
-        v22.origin.y = a5;
+        v22.origin.x = indexes;
+        v22.origin.y = rect;
         v22.size.width = a6;
         v22.size.height = a7;
         if (!CGRectIsNull(v22))
         {
-          v13 = [a2 objectsAtIndexes:a3];
+          v13 = [a2 objectsAtIndexes:frames];
           if ([v13 count])
           {
-            v14 = [WeakRetained auxillaryHostWantsOverlapAdjustmentForMatchingAlignmentsOnly];
+            auxillaryHostWantsOverlapAdjustmentForMatchingAlignmentsOnly = [WeakRetained auxillaryHostWantsOverlapAdjustmentForMatchingAlignmentsOnly];
             [WeakRetained auxillaryHostPinningRect];
-            v19 = _UIPinnedNonOverlappingFramesForContentFrameVisibleFrame(v13, v14, v15, v16, v17, v18, a4, a5, a6, a7);
-            [a2 replaceObjectsAtIndexes:a3 withObjects:v19];
+            v19 = _UIPinnedNonOverlappingFramesForContentFrameVisibleFrame(v13, auxillaryHostWantsOverlapAdjustmentForMatchingAlignmentsOnly, v15, v16, v17, v18, indexes, rect, a6, a7);
+            [a2 replaceObjectsAtIndexes:frames withObjects:v19];
           }
         }
       }
@@ -889,18 +889,18 @@ LABEL_86:
   }
 }
 
-- (id)queryFramesIntersectingRect:(float64_t)a3 frameOffset:(float64_t)a4
+- (id)queryFramesIntersectingRect:(float64_t)rect frameOffset:(float64_t)offset
 {
-  if (a1)
+  if (self)
   {
-    v10 = [(_UICollectionLayoutAuxillaryItemSolver *)a1 memoizedSupplementaryKind];
+    memoizedSupplementaryKind = [(_UICollectionLayoutAuxillaryItemSolver *)self memoizedSupplementaryKind];
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v12 = *(a1 + 72);
-    v13 = *(a1 + 104);
+    v12 = *(self + 72);
+    v13 = *(self + 104);
     if (!v13)
     {
       v14 = objc_alloc_init(_UIRTree);
-      v15 = *(a1 + 72);
+      v15 = *(self + 72);
       *&v40.f64[0] = MEMORY[0x1E69E9820];
       *&v40.f64[1] = 3221225472;
       *&v41.f64[0] = __65___UICollectionLayoutAuxillaryItemSolver__updateGeometricIndexer__block_invoke;
@@ -908,11 +908,11 @@ LABEL_86:
       v16 = v14;
       v42 = v16;
       [v15 enumerateObjectsUsingBlock:&v40];
-      v17 = *(a1 + 104);
-      *(a1 + 104) = v16;
+      v17 = *(self + 104);
+      *(self + 104) = v16;
       v18 = v16;
 
-      v13 = *(a1 + 104);
+      v13 = *(self + 104);
     }
 
     v19 = v13;
@@ -923,12 +923,12 @@ LABEL_86:
     v30[3] = &unk_1E70FB3D8;
     v32 = v12;
     v33 = a2;
-    v34 = a3;
-    v35 = a4;
+    rectCopy = rect;
+    offsetCopy = offset;
     v36 = a5;
     v37 = a6;
     v38 = a7;
-    v39 = v10;
+    v39 = memoizedSupplementaryKind;
     v20 = v11;
     v31 = v20;
     v21 = v20;
@@ -937,8 +937,8 @@ LABEL_86:
       v43 = 0;
       v22 = v19[1];
       v23.f64[0] = a2;
-      v24.f64[0] = a4;
-      v23.f64[1] = a3;
+      v24.f64[0] = offset;
+      v23.f64[1] = rect;
       v24.f64[1] = a5;
       v40 = vaddq_f64(v23, vminnmq_f64(v24, 0));
       v41 = vabsq_f64(v24);
@@ -957,68 +957,68 @@ LABEL_86:
 
 - (id)unpinnedFramesOfPinnedSupplementaries
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[10];
+    self = self[10];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)supplementaryFrameWithKind:(uint64_t)a3 index:
+- (id)supplementaryFrameWithKind:(uint64_t)kind index:
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(_UICollectionLayoutAuxillaryItemSolver *)a1 supplementaryFrameWithKind:a2 index:a3 additionalFrameOffset:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
+    self = [(_UICollectionLayoutAuxillaryItemSolver *)self supplementaryFrameWithKind:a2 index:kind additionalFrameOffset:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
     v3 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)supplementaryFrameWithKind:(uint64_t)a3 index:(double)a4 additionalFrameOffset:(double)a5
+- (id)supplementaryFrameWithKind:(uint64_t)kind index:(double)index additionalFrameOffset:(double)offset
 {
-  v5 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     if (![a2 length])
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:sel_supplementaryFrameWithKind_index_additionalFrameOffset_ object:v5 file:@"_UICollectionLayoutAuxillaryItemSolver.m" lineNumber:198 description:{@"Invalid parameter not satisfying: %@", @"kind.length"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_supplementaryFrameWithKind_index_additionalFrameOffset_ object:selfCopy file:@"_UICollectionLayoutAuxillaryItemSolver.m" lineNumber:198 description:{@"Invalid parameter not satisfying: %@", @"kind.length"}];
     }
 
-    v10 = [_UICollectionLayoutFramesQueryResult kindIndexKeyForKind:a2 index:a3];
-    v11 = [v5[12] objectForKeyedSubscript:v10];
-    v5 = v11;
-    if (a4 != *MEMORY[0x1E695EFF8] || a5 != *(MEMORY[0x1E695EFF8] + 8))
+    v10 = [_UICollectionLayoutFramesQueryResult kindIndexKeyForKind:a2 index:kind];
+    v11 = [selfCopy[12] objectForKeyedSubscript:v10];
+    selfCopy = v11;
+    if (index != *MEMORY[0x1E695EFF8] || offset != *(MEMORY[0x1E695EFF8] + 8))
     {
-      v13 = [(_UICollectionLayoutFramesQueryResult *)v11 copyWithOffset:a4, a5];
+      offset = [(_UICollectionLayoutFramesQueryResult *)v11 copyWithOffset:index, offset];
 
-      v5 = v13;
+      selfCopy = offset;
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)unpinnedSupplementaryFrameWithKind:(uint64_t)a3 index:
+- (void)unpinnedSupplementaryFrameWithKind:(uint64_t)kind index:
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
 LABEL_17:
     v17 = 0;
     goto LABEL_20;
   }
 
-  if ([a1[10] count])
+  if ([self[10] count])
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = a1[10];
+    v6 = self[10];
     v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v7)
     {
@@ -1045,11 +1045,11 @@ LABEL_17:
             v12 = 0;
           }
 
-          if (v12 == a3)
+          if (v12 == kind)
           {
-            v13 = [(_UICollectionLayoutFramesQueryResult *)*(*(&v19 + 1) + 8 * v10) auxillaryItem];
-            v14 = [v13 elementKind];
-            v15 = [v14 isEqualToString:a2];
+            auxillaryItem = [(_UICollectionLayoutFramesQueryResult *)*(*(&v19 + 1) + 8 * v10) auxillaryItem];
+            elementKind = [auxillaryItem elementKind];
+            v15 = [elementKind isEqualToString:a2];
 
             if (v15)
             {
@@ -1073,78 +1073,78 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v17 = [(_UICollectionLayoutAuxillaryItemSolver *)a1 supplementaryFrameWithKind:a2 index:a3];
+  v17 = [(_UICollectionLayoutAuxillaryItemSolver *)self supplementaryFrameWithKind:a2 index:kind];
 LABEL_20:
 
   return v17;
 }
 
-- (double)_sizeForSupplementaryItem:(uint64_t)a3 container:(uint64_t)a4 preferredSizes:(uint64_t)a5 preferredIndex:
+- (double)_sizeForSupplementaryItem:(uint64_t)item container:(uint64_t)container preferredSizes:(uint64_t)sizes preferredIndex:
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v10 = objc_loadWeakRetained((a1 + 64));
-  v11 = [v10 auxillaryHostTraitCollection];
-  [v11 displayScale];
+  v10 = objc_loadWeakRetained((self + 64));
+  auxillaryHostTraitCollection = [v10 auxillaryHostTraitCollection];
+  [auxillaryHostTraitCollection displayScale];
   v13 = v12;
 
   v14 = [a2 size];
-  [v14 _effectiveSizeForContainer:a3 displayScale:0 ignoringInsets:v13];
-  v16 = v15;
+  [v14 _effectiveSizeForContainer:item displayScale:0 ignoringInsets:v13];
+  fittingSize = v15;
   v18 = v17;
 
-  if (a4)
+  if (container)
   {
-    v19 = [a2 elementKind];
-    v20 = [(_UICollectionPreferredSizes *)a4 objectForKeyedSubscript:v19];
-    v21 = [(_UICollectionPreferredSizes *)v20 objectAtIndexedSubscript:a5];
+    elementKind = [a2 elementKind];
+    v20 = [(_UICollectionPreferredSizes *)container objectForKeyedSubscript:elementKind];
+    v21 = [(_UICollectionPreferredSizes *)v20 objectAtIndexedSubscript:sizes];
 
     if (v21)
     {
       if (_UICollectionViewCompositionalLayoutShouldRespectPreferredSizeOnEstimatedAxisOnly())
       {
         v22 = [a2 size];
-        v16 = [(_UICollectionPreferredSize *)v21 preferredSizeForOriginalSize:v22 layoutSize:v16, v18];
+        fittingSize = [(_UICollectionPreferredSize *)v21 preferredSizeForOriginalSize:v22 layoutSize:fittingSize, v18];
         v18 = v23;
       }
 
       else if ((v21[48] & 1) == 0)
       {
-        v16 = [(_UICollectionPreferredSize *)v21 fittingSize];
+        fittingSize = [(_UICollectionPreferredSize *)v21 fittingSize];
         v18 = v24;
       }
 
-      if (v16 == *MEMORY[0x1E695F060] && v18 == *(MEMORY[0x1E695F060] + 8))
+      if (fittingSize == *MEMORY[0x1E695F060] && v18 == *(MEMORY[0x1E695F060] + 8))
       {
-        v26 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v26 handleFailureInMethod:sel__sizeForSupplementaryItem_container_preferredSizes_preferredIndex_ object:a1 file:@"_UICollectionLayoutAuxillaryItemSolver.m" lineNumber:632 description:{@"Preferred size is ZERO for auxiliary item %@ in container %@", a2, a3}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:sel__sizeForSupplementaryItem_container_preferredSizes_preferredIndex_ object:self file:@"_UICollectionLayoutAuxillaryItemSolver.m" lineNumber:632 description:{@"Preferred size is ZERO for auxiliary item %@ in container %@", a2, item}];
       }
     }
   }
 
-  return v16;
+  return fittingSize;
 }
 
-- (double)_frameForSupplementaryItem:(void *)a3 container:(int)a4 primaryContentFrame:(double)a5 supplementaryItemSize:(double)a6 frameOffset:(double)a7 layoutRTL:(double)a8
+- (double)_frameForSupplementaryItem:(void *)item container:(int)container primaryContentFrame:(double)frame supplementaryItemSize:(double)size frameOffset:(double)offset layoutRTL:(double)l
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 64));
-  v24 = [WeakRetained auxillaryHostLayoutAxis];
+  WeakRetained = objc_loadWeakRetained((self + 64));
+  auxillaryHostLayoutAxis = [WeakRetained auxillaryHostLayoutAxis];
   v25 = 0.0;
   v26 = 0.0;
   v27 = 0.0;
   v28 = 0.0;
-  if ((v24 - 3) >= 0xFFFFFFFFFFFFFFFELL)
+  if ((auxillaryHostLayoutAxis - 3) >= 0xFFFFFFFFFFFFFFFELL)
   {
-    v29 = v24;
-    [a3 contentInsets];
+    v29 = auxillaryHostLayoutAxis;
+    [item contentInsets];
     if (v29 == 1)
     {
       v25 = 0.0;
@@ -1166,16 +1166,16 @@ LABEL_20:
     }
   }
 
-  v30 = a5 + v27;
-  v31 = a7 - (v25 + v27);
-  v32 = a6 + v28;
-  v33 = a8 - (v26 + v28);
-  [a3 effectiveContentSize];
+  v30 = frame + v27;
+  v31 = offset - (v25 + v27);
+  v32 = size + v28;
+  v33 = l - (v26 + v28);
+  [item effectiveContentSize];
   v62 = v35;
   v63 = v34;
-  v36 = [a2 containerAnchor];
-  v37 = [a2 itemAnchor];
-  [v36 _itemFrameForContainerRect:v37 itemSize:v30 itemLayoutAnchor:{v32, v31, v33, a9, a10}];
+  containerAnchor = [a2 containerAnchor];
+  itemAnchor = [a2 itemAnchor];
+  [containerAnchor _itemFrameForContainerRect:itemAnchor itemSize:v30 itemLayoutAnchor:{v32, v31, v33, a9, a10}];
   v39 = v38;
   v41 = v40;
   v43 = v42;
@@ -1198,12 +1198,12 @@ LABEL_20:
   v65.size.width = v49;
   v65.size.height = v53;
   Height = CGRectGetHeight(v65);
-  if (a4)
+  if (container)
   {
-    v58 = [a2 item];
-    v59 = [v58 ignoresRTL];
+    item = [a2 item];
+    ignoresRTL = [item ignoresRTL];
 
-    if ((v59 & 1) == 0 && fabs(v63 * v62) >= 2.22044605e-16)
+    if ((ignoresRTL & 1) == 0 && fabs(v63 * v62) >= 2.22044605e-16)
     {
       _UIApplyRTLTransformForFrameWithDimension(v54, v55, Width, Height, v63);
       v54 = v60;
@@ -1213,7 +1213,7 @@ LABEL_20:
   return v54;
 }
 
-- (id)_rearrangedFramesForFrames:(void *)a3 container:(uint64_t)a4 primaryContentFrame:(int)a5 frameOffset:(void *)a6 preferredSizes:(double)a7 layoutRTL:(double)a8 supplementaryKind:(double)a9
+- (id)_rearrangedFramesForFrames:(void *)frames container:(uint64_t)container primaryContentFrame:(int)frame frameOffset:(void *)offset preferredSizes:(double)sizes layoutRTL:(double)l supplementaryKind:(double)kind
 {
   v60 = *MEMORY[0x1E69E9840];
   v53 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1237,8 +1237,8 @@ LABEL_20:
         }
 
         v17 = *(*(&v55 + 1) + 8 * v16);
-        v18 = [(_UICollectionLayoutFramesQueryResult *)v17 auxillaryItem];
-        if (v18)
+        auxillaryItem = [(_UICollectionLayoutFramesQueryResult *)v17 auxillaryItem];
+        if (auxillaryItem)
         {
           if (v17)
           {
@@ -1248,8 +1248,8 @@ LABEL_20:
 
         else
         {
-          v40 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v40 handleFailureInMethod:sel__rearrangedFramesForFrames_container_primaryContentFrame_frameOffset_preferredSizes_layoutRTL_supplementaryKind_ object:a1 file:@"_UICollectionLayoutAuxillaryItemSolver.m" lineNumber:509 description:@"Failed to retrieve auxillary item from result."];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:sel__rearrangedFramesForFrames_container_primaryContentFrame_frameOffset_preferredSizes_layoutRTL_supplementaryKind_ object:self file:@"_UICollectionLayoutAuxillaryItemSolver.m" lineNumber:509 description:@"Failed to retrieve auxillary item from result."];
 
           if (v17)
           {
@@ -1261,8 +1261,8 @@ LABEL_8:
 
         v19 = 0;
 LABEL_9:
-        v20 = [(_UICollectionLayoutAuxillaryItemSolver *)a1 _sizeForSupplementaryItem:v18 container:a3 preferredSizes:a4 preferredIndex:v19];
-        v22 = [(_UICollectionLayoutAuxillaryItemSolver *)a1 _frameForSupplementaryItem:v18 container:a3 primaryContentFrame:a5 supplementaryItemSize:a7 frameOffset:a8 layoutRTL:a9, a10, v20, v21, a11, a12];
+        v20 = [(_UICollectionLayoutAuxillaryItemSolver *)self _sizeForSupplementaryItem:auxillaryItem container:frames preferredSizes:container preferredIndex:v19];
+        v22 = [(_UICollectionLayoutAuxillaryItemSolver *)self _frameForSupplementaryItem:auxillaryItem container:frames primaryContentFrame:frame supplementaryItemSize:sizes frameOffset:l layoutRTL:kind, a10, v20, v21, a11, a12];
         v24 = v23;
         v26 = v25;
         v28 = v27;
@@ -1284,13 +1284,13 @@ LABEL_9:
           }
 
           v35 = *(v17 + 32);
-          v36 = [v18 item];
+          item = [auxillaryItem item];
           v37 = *(v17 + 56);
         }
 
         else
         {
-          v36 = [v18 item];
+          item = [auxillaryItem item];
           v35 = 0;
           v33 = 0;
           v31 = 0;
@@ -1301,7 +1301,7 @@ LABEL_9:
         }
 
         v38 = v37;
-        v39 = [(_UICollectionLayoutFramesQueryResult *)&v29->super.isa initWithFrame:v30 pinningAlignment:v31 & 1 adjustedForPinning:v33 visibleRectDisplacement:v34 index:v35 zIndex:v36 resultKind:a6 item:v22 auxillaryKind:v24 supplementaryEnrollmentIdentifier:v26, v28, v32, v38];
+        v39 = [(_UICollectionLayoutFramesQueryResult *)&v29->super.isa initWithFrame:v30 pinningAlignment:v31 & 1 adjustedForPinning:v33 visibleRectDisplacement:v34 index:v35 zIndex:item resultKind:offset item:v22 auxillaryKind:v24 supplementaryEnrollmentIdentifier:v26, v28, v32, v38];
 
         [v53 addObject:v39];
         ++v16;
@@ -1318,13 +1318,13 @@ LABEL_9:
   return v53;
 }
 
-- (double)_requiredContentSizeForSupplementaryFrames:(uint64_t)a3 forLayoutAxis:(double)a4 containerSize:(double)a5
+- (double)_requiredContentSizeForSupplementaryFrames:(uint64_t)frames forLayoutAxis:(double)axis containerSize:(double)size
 {
   v64 = *MEMORY[0x1E69E9840];
-  if ((a3 - 3) <= 0xFFFFFFFFFFFFFFFDLL)
+  if ((frames - 3) <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v45 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v45 handleFailureInMethod:sel__requiredContentSizeForSupplementaryFrames_forLayoutAxis_containerSize_ object:a1 file:@"_UICollectionLayoutAuxillaryItemSolver.m" lineNumber:756 description:{@"Invalid parameter not satisfying: %@", @"layoutAxis == UIAxisVertical || layoutAxis == UIAxisHorizontal"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__requiredContentSizeForSupplementaryFrames_forLayoutAxis_containerSize_ object:self file:@"_UICollectionLayoutAuxillaryItemSolver.m" lineNumber:756 description:{@"Invalid parameter not satisfying: %@", @"layoutAxis == UIAxisVertical || layoutAxis == UIAxisHorizontal"}];
   }
 
   if (![a2 count])
@@ -1332,8 +1332,8 @@ LABEL_9:
     return *MEMORY[0x1E695F060];
   }
 
-  v46 = a4;
-  v47 = a5;
+  axisCopy = axis;
+  sizeCopy = size;
   v60 = 0u;
   v61 = 0u;
   v58 = 0u;
@@ -1367,7 +1367,7 @@ LABEL_9:
           v15 = 0.0;
         }
 
-        v17 = _UIPointValueForAxis(a3, v15, v16);
+        v17 = _UIPointValueForAxis(frames, v15, v16);
         v18 = fabs(v17);
         if (v18 > v12 && v17 < 0.0)
         {
@@ -1390,7 +1390,7 @@ LABEL_9:
     v12 = 0.0;
   }
 
-  v48 = _UISetPointValueForAxis(a3, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v12);
+  v48 = _UISetPointValueForAxis(frames, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v12);
   v23 = v22;
   if (dyld_program_sdk_at_least())
   {
@@ -1460,7 +1460,7 @@ LABEL_9:
         v37 = v31;
         v38 = v33;
         v39 = Height;
-        if (a3 == 2)
+        if (frames == 2)
         {
           MinY = CGRectGetMinY(*&v36);
           v67.origin.x = v32;
@@ -1503,7 +1503,7 @@ LABEL_9:
   v49[4] = &v50;
   *&v49[5] = v24;
   [v25 enumerateRangesUsingBlock:v49];
-  v21 = _UISetSizeValueForAxis(a3, v46, v47, v51[3]);
+  v21 = _UISetSizeValueForAxis(frames, axisCopy, sizeCopy, v51[3]);
   _Block_object_dispose(&v50, 8);
 
   return v21;

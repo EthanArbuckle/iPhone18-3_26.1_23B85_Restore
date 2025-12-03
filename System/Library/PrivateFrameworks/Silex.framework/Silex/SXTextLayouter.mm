@@ -2,17 +2,17 @@
 - (CGRect)typographicBounds;
 - (CGSize)boundingSize;
 - (NSArray)paragraphRanges;
-- (SXTextLayouter)initWithTextSource:(id)a3 andDocumentRoot:(id)a4;
-- (_NSRange)validAnchorRangeForRange:(_NSRange)a3;
+- (SXTextLayouter)initWithTextSource:(id)source andDocumentRoot:(id)root;
+- (_NSRange)validAnchorRangeForRange:(_NSRange)range;
 - (double)baselineForLastLine;
-- (double)calculateHeightForWidth:(double)a3;
-- (double)verticalLocationOfCharacterAtIndex:(unint64_t)a3;
+- (double)calculateHeightForWidth:(double)width;
+- (double)verticalLocationOfCharacterAtIndex:(unint64_t)index;
 - (id)exclusionPathIndexes;
 - (id)firstColumn;
 - (id)textLayout;
 - (id)wpLayout;
 - (id)wpStorage;
-- (void)addExclusionPath:(id)a3;
+- (void)addExclusionPath:(id)path;
 - (void)assignExclusionPaths;
 - (void)createTextInfoIfNeeded;
 - (void)invalidate;
@@ -21,22 +21,22 @@
 
 @implementation SXTextLayouter
 
-- (SXTextLayouter)initWithTextSource:(id)a3 andDocumentRoot:(id)a4
+- (SXTextLayouter)initWithTextSource:(id)source andDocumentRoot:(id)root
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  rootCopy = root;
   v16.receiver = self;
   v16.super_class = SXTextLayouter;
   v9 = [(SXTextLayouter *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_textSource, a3);
+    objc_storeStrong(&v9->_textSource, source);
     v11 = [MEMORY[0x1E695DFD8] set];
     exclusionPaths = v10->_exclusionPaths;
     v10->_exclusionPaths = v11;
 
-    objc_storeStrong(&v10->_documentRoot, a4);
+    objc_storeStrong(&v10->_documentRoot, root);
     +[SXTextTangierApplicationDelegate setup];
     v13 = [objc_alloc(MEMORY[0x1E69D5660]) initWithCanvas:0];
     layoutController = v10->_layoutController;
@@ -46,23 +46,23 @@
   return v10;
 }
 
-- (double)calculateHeightForWidth:(double)a3
+- (double)calculateHeightForWidth:(double)width
 {
   [(SXTextLayouter *)self createTextInfoIfNeeded];
   [(SXTextLayouter *)self assignExclusionPaths];
-  v5 = [objc_alloc(MEMORY[0x1E69D5648]) initWithSize:{a3, 10000000.0}];
-  v6 = [(SXTextLayouter *)self textInfo];
-  [v6 setGeometry:v5];
+  v5 = [objc_alloc(MEMORY[0x1E69D5648]) initWithSize:{width, 10000000.0}];
+  textInfo = [(SXTextLayouter *)self textInfo];
+  [textInfo setGeometry:v5];
 
-  v7 = [(SXTextLayouter *)self layoutController];
-  v8 = [(SXTextLayouter *)self textInfo];
-  v9 = [v7 validatedLayoutForInfo:v8];
+  layoutController = [(SXTextLayouter *)self layoutController];
+  textInfo2 = [(SXTextLayouter *)self textInfo];
+  v9 = [layoutController validatedLayoutForInfo:textInfo2];
 
-  v10 = [v9 children];
-  v11 = [v10 firstObject];
+  children = [v9 children];
+  firstObject = [children firstObject];
 
-  v12 = [v11 geometry];
-  [v12 size];
+  geometry = [firstObject geometry];
+  [geometry size];
   v14 = v13;
 
   return v14;
@@ -75,33 +75,33 @@
     v4 = objc_alloc(MEMORY[0x1E69D5648]);
     v20 = [v4 initWithPosition:*MEMORY[0x1E695EFF8] size:{*(MEMORY[0x1E695EFF8] + 8), *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
     v5 = [SXTextTangierContainerInfo alloc];
-    v6 = [(SXTextLayouter *)self documentRoot];
-    v7 = [v6 context];
-    v8 = [(SXTextLayouter *)self documentRoot];
-    v9 = [v8 stylesheet];
-    v10 = [(SXTextLayouter *)self textSource];
-    v11 = [v10 string];
-    v12 = [(SXTextLayouter *)self textSource];
-    v13 = [v12 locale];
-    v14 = [(SXTextTangierContainerInfo *)v5 initWithContext:v7 geometry:v20 stylesheet:v9 string:v11 locale:v13];
+    documentRoot = [(SXTextLayouter *)self documentRoot];
+    context = [documentRoot context];
+    documentRoot2 = [(SXTextLayouter *)self documentRoot];
+    stylesheet = [documentRoot2 stylesheet];
+    textSource = [(SXTextLayouter *)self textSource];
+    string = [textSource string];
+    textSource2 = [(SXTextLayouter *)self textSource];
+    locale = [textSource2 locale];
+    v14 = [(SXTextTangierContainerInfo *)v5 initWithContext:context geometry:v20 stylesheet:stylesheet string:string locale:locale];
     textInfo = self->_textInfo;
     self->_textInfo = v14;
 
-    v16 = [(SXTextLayouter *)self textSource];
-    v17 = [(SXTextTangierContainerInfo *)self->_textInfo storage];
-    [v16 applyStylingOnTextTangierStorage:v17];
+    textSource3 = [(SXTextLayouter *)self textSource];
+    storage = [(SXTextTangierContainerInfo *)self->_textInfo storage];
+    [textSource3 applyStylingOnTextTangierStorage:storage];
 
-    v18 = [(SXTextLayouter *)self textSource];
-    v19 = [(SXTextTangierContainerInfo *)self->_textInfo storage];
-    [v18 applyAdditionsOnTextTangierStorage:v19];
+    textSource4 = [(SXTextLayouter *)self textSource];
+    storage2 = [(SXTextTangierContainerInfo *)self->_textInfo storage];
+    [textSource4 applyAdditionsOnTextTangierStorage:storage2];
   }
 }
 
 - (void)invalidate
 {
   [(SXTextLayouter *)self assignExclusionPaths];
-  v3 = [(SXTextLayouter *)self textLayout];
-  [v3 invalidate];
+  textLayout = [(SXTextLayouter *)self textLayout];
+  [textLayout invalidate];
 }
 
 - (void)assignExclusionPaths
@@ -113,8 +113,8 @@
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [(SXTextLayouter *)self exclusionPaths];
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  exclusionPaths = [(SXTextLayouter *)self exclusionPaths];
+  v6 = [exclusionPaths countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v6)
   {
     v7 = v6;
@@ -125,17 +125,17 @@
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(exclusionPaths);
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
-        v11 = [(SXTextExclusionPath *)v10 type];
+        type = [(SXTextExclusionPath *)v10 type];
         v12 = v3;
-        if (v11 != 1)
+        if (type != 1)
         {
-          v13 = [(SXTextExclusionPath *)v10 type];
+          type2 = [(SXTextExclusionPath *)v10 type];
           v12 = v4;
-          if (v13 != 2)
+          if (type2 != 2)
           {
             continue;
           }
@@ -144,44 +144,44 @@
         [v12 addObject:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v7 = [exclusionPaths countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v7);
   }
 
-  v14 = [(SXTextLayouter *)self textInfo];
-  v15 = [v14 rangedExclusionPaths];
-  v16 = [v15 isEqual:v4];
+  textInfo = [(SXTextLayouter *)self textInfo];
+  rangedExclusionPaths = [textInfo rangedExclusionPaths];
+  v16 = [rangedExclusionPaths isEqual:v4];
 
   if ((v16 & 1) == 0)
   {
-    v17 = [(SXTextLayouter *)self textInfo];
-    [v17 setRangedExclusionPaths:v4];
+    textInfo2 = [(SXTextLayouter *)self textInfo];
+    [textInfo2 setRangedExclusionPaths:v4];
   }
 
-  v18 = [(SXTextLayouter *)self textInfo];
-  v19 = [v18 fixedExclusionPaths];
-  v20 = [v19 isEqual:v3];
+  textInfo3 = [(SXTextLayouter *)self textInfo];
+  fixedExclusionPaths = [textInfo3 fixedExclusionPaths];
+  v20 = [fixedExclusionPaths isEqual:v3];
 
   if ((v20 & 1) == 0)
   {
-    v21 = [(SXTextLayouter *)self textInfo];
-    [v21 setFixedExclusionPaths:v3];
+    textInfo4 = [(SXTextLayouter *)self textInfo];
+    [textInfo4 setFixedExclusionPaths:v3];
   }
 }
 
-- (void)addExclusionPath:(id)a3
+- (void)addExclusionPath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v28 = v4;
-    if ([(SXTextExclusionPath *)v4 type]== 2)
+    v28 = pathCopy;
+    if ([(SXTextExclusionPath *)pathCopy type]== 2)
     {
-      v5 = [(SXTextLayouter *)self textSource];
-      v6 = [(SXTextExclusionPath *)v28 range];
-      v8 = [v5 rangeForRange:{v6, v7}];
+      textSource = [(SXTextLayouter *)self textSource];
+      range = [(SXTextExclusionPath *)v28 range];
+      v8 = [textSource rangeForRange:{range, v7}];
       v10 = v9;
 
       [(SXTextExclusionPath *)v28 setRange:v8, v10];
@@ -189,28 +189,28 @@
 
     v11 = [(SXTextLayouter *)self validAnchorRangeForRange:[(SXTextExclusionPath *)v28 range], 1];
     [(SXTextExclusionPath *)v28 setRange:v11, v12];
-    v13 = [(SXTextLayouter *)self wpStorage];
-    v14 = [v13 paragraphStartAtCharIndex:-[SXTextExclusionPath range](v28)];
+    wpStorage = [(SXTextLayouter *)self wpStorage];
+    v14 = [wpStorage paragraphStartAtCharIndex:-[SXTextExclusionPath range](v28)];
 
     if (v14)
     {
-      v15 = [(SXTextExclusionPath *)v28 range];
+      range2 = [(SXTextExclusionPath *)v28 range];
       if ([(SXTangierTextRenderCollectorItem *)v28 selectable])
       {
-        if (v15 >= v14 - 1 && v15 - (v14 - 1) <= 1)
+        if (range2 >= v14 - 1 && range2 - (v14 - 1) <= 1)
         {
-          v16 = [(SXTextLayouter *)self wpStorage];
-          v17 = [v16 paragraphIndexAtCharIndex:-[SXTextExclusionPath range](v28) - 1];
+          wpStorage2 = [(SXTextLayouter *)self wpStorage];
+          v17 = [wpStorage2 paragraphIndexAtCharIndex:-[SXTextExclusionPath range](v28) - 1];
 
           if (v17)
           {
-            v18 = [(SXTextLayouter *)self wpStorage];
-            v19 = [v18 paragraphStyleAtParIndex:v17 - 1 effectiveRange:0];
+            wpStorage3 = [(SXTextLayouter *)self wpStorage];
+            v19 = [wpStorage3 paragraphStyleAtParIndex:v17 - 1 effectiveRange:0];
 
             [v19 floatValueForProperty:88];
             v21 = v20;
-            v22 = [(SXTextExclusionPath *)v28 exclusionRect];
-            [(SXTextExclusionPath *)v28 setExclusionRect:v22, v24, v25, v23 + v21];
+            exclusionRect = [(SXTextExclusionPath *)v28 exclusionRect];
+            [(SXTextExclusionPath *)v28 setExclusionRect:exclusionRect, v24, v25, v23 + v21];
           }
         }
       }
@@ -220,42 +220,42 @@
     exclusionPaths = self->_exclusionPaths;
     self->_exclusionPaths = v26;
 
-    v4 = v28;
+    pathCopy = v28;
   }
 }
 
-- (_NSRange)validAnchorRangeForRange:(_NSRange)a3
+- (_NSRange)validAnchorRangeForRange:(_NSRange)range
 {
-  location = a3.location;
-  if (a3.location <= 10)
+  location = range.location;
+  if (range.location <= 10)
   {
     v5 = 10;
   }
 
   else
   {
-    v5 = a3.location;
+    v5 = range.location;
   }
 
-  if (a3.location >= 0xA)
+  if (range.location >= 0xA)
   {
     v6 = 10;
   }
 
   else
   {
-    v6 = a3.location;
+    v6 = range.location;
   }
 
-  v7 = [(SXTextLayouter *)self textSource];
-  v8 = [v7 string];
-  v9 = [v8 substringWithRange:{v5 - 10, v6}];
+  textSource = [(SXTextLayouter *)self textSource];
+  string = [textSource string];
+  v9 = [string substringWithRange:{v5 - 10, v6}];
 
   v43 = v9;
   v10 = [v9 rangeOfString:@"\n"];
-  v11 = [(SXTextLayouter *)self textSource];
-  v12 = [v11 string];
-  v13 = [v12 length] - 1;
+  textSource2 = [(SXTextLayouter *)self textSource];
+  string2 = [textSource2 string];
+  v13 = [string2 length] - 1;
 
   if (location + 10 >= v13)
   {
@@ -268,9 +268,9 @@
   }
 
   v15 = v14 - location;
-  v16 = [(SXTextLayouter *)self textSource];
-  v17 = [v16 string];
-  v18 = [v17 substringWithRange:{location + 1, v15}];
+  textSource3 = [(SXTextLayouter *)self textSource];
+  string3 = [textSource3 string];
+  v18 = [string3 substringWithRange:{location + 1, v15}];
 
   v19 = [v18 rangeOfString:@"\n"];
   v20 = v5 + v10 - 9;
@@ -304,20 +304,20 @@
 
   while (1)
   {
-    v24 = [(SXTextLayouter *)self textSource];
-    v25 = [v24 string];
-    v26 = [v25 length];
+    textSource4 = [(SXTextLayouter *)self textSource];
+    string4 = [textSource4 string];
+    v26 = [string4 length];
 
     if (location >= v26)
     {
       break;
     }
 
-    v27 = [(SXTextLayouter *)self textSource];
-    v28 = [v27 string];
-    v29 = [v28 substringWithRange:{location, 1}];
-    v30 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v31 = [v29 rangeOfCharacterFromSet:v30];
+    textSource5 = [(SXTextLayouter *)self textSource];
+    string5 = [textSource5 string];
+    v29 = [string5 substringWithRange:{location, 1}];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v31 = [v29 rangeOfCharacterFromSet:whitespaceAndNewlineCharacterSet];
 
     ++location;
     if (v31 == 0x7FFFFFFFFFFFFFFFLL)
@@ -328,19 +328,19 @@
   }
 
   v32 = location + 1;
-  v33 = [(SXTextLayouter *)self exclusionPathIndexes];
-  if ([v33 containsIndex:v32])
+  exclusionPathIndexes = [(SXTextLayouter *)self exclusionPathIndexes];
+  if ([exclusionPathIndexes containsIndex:v32])
   {
     while (1)
     {
-      v34 = [(SXTextLayouter *)self textSource];
-      v35 = [v34 string];
-      if (v32 >= [v35 length] - 1)
+      textSource6 = [(SXTextLayouter *)self textSource];
+      string6 = [textSource6 string];
+      if (v32 >= [string6 length] - 1)
       {
         break;
       }
 
-      v36 = [v33 containsIndex:v32];
+      v36 = [exclusionPathIndexes containsIndex:v32];
 
       if (!v36)
       {
@@ -352,9 +352,9 @@
   }
 
 LABEL_31:
-  v37 = [(SXTextLayouter *)self textSource];
-  v38 = [v37 string];
-  v39 = [v38 length] - 1;
+  textSource7 = [(SXTextLayouter *)self textSource];
+  string7 = [textSource7 string];
+  v39 = [string7 length] - 1;
 
   if (v32 >= v39)
   {
@@ -384,29 +384,29 @@ LABEL_31:
 
 - (id)textLayout
 {
-  v3 = [(SXTextLayouter *)self layoutController];
-  v4 = [(SXTextLayouter *)self textInfo];
-  v5 = [v3 layoutForInfo:v4];
+  layoutController = [(SXTextLayouter *)self layoutController];
+  textInfo = [(SXTextLayouter *)self textInfo];
+  v5 = [layoutController layoutForInfo:textInfo];
 
   return v5;
 }
 
 - (id)firstColumn
 {
-  v2 = [(SXTextLayouter *)self wpLayout];
-  v3 = [v2 columns];
-  v4 = [v3 firstObject];
+  wpLayout = [(SXTextLayouter *)self wpLayout];
+  columns = [wpLayout columns];
+  firstObject = [columns firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (double)baselineForLastLine
 {
-  v2 = [(SXTextLayouter *)self textLayout];
-  v3 = [v2 children];
-  v4 = [v3 firstObject];
+  textLayout = [(SXTextLayouter *)self textLayout];
+  children = [textLayout children];
+  firstObject = [children firstObject];
 
-  [v4 baselineForLastLine];
+  [firstObject baselineForLastLine];
   v6 = v5;
 
   return v6;
@@ -414,10 +414,10 @@ LABEL_31:
 
 - (CGRect)typographicBounds
 {
-  v3 = [(SXTextLayouter *)self firstColumn];
-  v4 = [(SXTextLayouter *)self textSource];
-  v5 = [v4 string];
-  [v3 glyphRectForRange:0 includingLabel:{objc_msgSend(v5, "length"), 1}];
+  firstColumn = [(SXTextLayouter *)self firstColumn];
+  textSource = [(SXTextLayouter *)self textSource];
+  string = [textSource string];
+  [firstColumn glyphRectForRange:0 includingLabel:{objc_msgSend(string, "length"), 1}];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -436,9 +436,9 @@ LABEL_31:
 
 - (CGSize)boundingSize
 {
-  v2 = [(SXTextLayouter *)self wpLayout];
-  v3 = [v2 geometry];
-  [v3 size];
+  wpLayout = [(SXTextLayouter *)self wpLayout];
+  geometry = [wpLayout geometry];
+  [geometry size];
   v5 = v4;
   v7 = v6;
 
@@ -451,25 +451,25 @@ LABEL_31:
 
 - (NSArray)paragraphRanges
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(SXTextLayouter *)self firstColumn];
-  v5 = [v4 storage];
-  v6 = [(SXTextLayouter *)self firstColumn];
-  v7 = [v6 range];
-  v9 = [v5 paragraphIndexRangeForCharRange:{v7, v8}];
+  array = [MEMORY[0x1E695DF70] array];
+  firstColumn = [(SXTextLayouter *)self firstColumn];
+  storage = [firstColumn storage];
+  firstColumn2 = [(SXTextLayouter *)self firstColumn];
+  range = [firstColumn2 range];
+  v9 = [storage paragraphIndexRangeForCharRange:{range, v8}];
   v11 = v10;
 
   if (v9 < v9 + v11)
   {
     do
     {
-      v12 = [(SXTextLayouter *)self firstColumn];
-      v13 = [v12 storage];
-      v14 = [v13 textRangeForParagraphAtIndex:v9];
+      firstColumn3 = [(SXTextLayouter *)self firstColumn];
+      storage2 = [firstColumn3 storage];
+      v14 = [storage2 textRangeForParagraphAtIndex:v9];
       v16 = v15;
 
       v17 = [MEMORY[0x1E696B098] valueWithRange:{v14, v16}];
-      [v3 addObject:v17];
+      [array addObject:v17];
 
       ++v9;
       --v11;
@@ -478,22 +478,22 @@ LABEL_31:
     while (v11);
   }
 
-  return v3;
+  return array;
 }
 
-- (double)verticalLocationOfCharacterAtIndex:(unint64_t)a3
+- (double)verticalLocationOfCharacterAtIndex:(unint64_t)index
 {
-  v5 = [(SXTextLayouter *)self textSource];
-  v6 = [v5 string];
-  v7 = [v6 length];
+  textSource = [(SXTextLayouter *)self textSource];
+  string = [textSource string];
+  v7 = [string length];
 
-  if (v7 <= a3)
+  if (v7 <= index)
   {
     return 0.0;
   }
 
-  v8 = [(SXTextLayouter *)self firstColumn];
-  [v8 topOfLineAtCharIndex:a3];
+  firstColumn = [(SXTextLayouter *)self firstColumn];
+  [firstColumn topOfLineAtCharIndex:index];
   v10 = v9;
 
   return v10;
@@ -502,22 +502,22 @@ LABEL_31:
 - (id)wpStorage
 {
   [(SXTextLayouter *)self createTextInfoIfNeeded];
-  v3 = [(SXTextLayouter *)self textInfo];
-  v4 = [v3 storage];
+  textInfo = [(SXTextLayouter *)self textInfo];
+  storage = [textInfo storage];
 
-  return v4;
+  return storage;
 }
 
 - (id)wpLayout
 {
-  v2 = [(SXTextLayouter *)self textLayout];
-  v3 = [v2 children];
-  v4 = [v3 firstObject];
+  textLayout = [(SXTextLayouter *)self textLayout];
+  children = [textLayout children];
+  firstObject = [children firstObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = firstObject;
   }
 
   else
@@ -531,13 +531,13 @@ LABEL_31:
 - (id)exclusionPathIndexes
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(SXTextLayouter *)self exclusionPaths];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  exclusionPaths = [(SXTextLayouter *)self exclusionPaths];
+  v5 = [exclusionPaths countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -548,20 +548,20 @@ LABEL_31:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(exclusionPaths);
         }
 
-        v9 = [(SXTextExclusionPath *)*(*(&v12 + 1) + 8 * i) range];
-        [v3 addIndexesInRange:{v9, v10}];
+        range = [(SXTextExclusionPath *)*(*(&v12 + 1) + 8 * i) range];
+        [indexSet addIndexesInRange:{range, v10}];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [exclusionPaths countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return indexSet;
 }
 
 @end

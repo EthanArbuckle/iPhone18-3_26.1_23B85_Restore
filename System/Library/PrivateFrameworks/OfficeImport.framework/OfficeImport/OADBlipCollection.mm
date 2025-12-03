@@ -1,7 +1,7 @@
 @interface OADBlipCollection
 - (OADBlipCollection)init;
-- (id)blipAtIndex:(int)a3;
-- (unsigned)addBlip:(id)a3;
+- (id)blipAtIndex:(int)index;
+- (unsigned)addBlip:(id)blip;
 @end
 
 @implementation OADBlipCollection
@@ -21,10 +21,10 @@
   return v2;
 }
 
-- (id)blipAtIndex:(int)a3
+- (id)blipAtIndex:(int)index
 {
-  v3 = (a3 - 1);
-  if (a3 >= 1 && [(NSMutableArray *)self->mBlips count]>= a3)
+  v3 = (index - 1);
+  if (index >= 1 && [(NSMutableArray *)self->mBlips count]>= index)
   {
     v5 = [(NSMutableArray *)self->mBlips objectAtIndex:v3];
   }
@@ -37,10 +37,10 @@
   return v5;
 }
 
-- (unsigned)addBlip:(id)a3
+- (unsigned)addBlip:(id)blip
 {
-  v4 = a3;
-  [(NSMutableArray *)self->mBlips addObject:v4];
+  blipCopy = blip;
+  [(NSMutableArray *)self->mBlips addObject:blipCopy];
   LODWORD(self) = [(NSMutableArray *)self->mBlips count];
 
   return self;

@@ -1,56 +1,56 @@
 @interface AKFontSizePicker
-- (AKFontSizePicker)initWithFrame:(CGRect)a3 style:(int64_t)a4;
+- (AKFontSizePicker)initWithFrame:(CGRect)frame style:(int64_t)style;
 - (CGSize)_itemSizeInContainer;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
-- (void)_decreaseSize:(id)a3;
-- (void)_handleValueChanged:(id)a3;
-- (void)_increaseSize:(id)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
+- (void)_decreaseSize:(id)size;
+- (void)_handleValueChanged:(id)changed;
+- (void)_increaseSize:(id)size;
 - (void)_selectSizeInList;
-- (void)_sliderTouchDown:(id)a3;
-- (void)_sliderTouchUp:(id)a3;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)setStyle:(int64_t)a3;
-- (void)setValue:(double)a3;
+- (void)_sliderTouchDown:(id)down;
+- (void)_sliderTouchUp:(id)up;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)setStyle:(int64_t)style;
+- (void)setValue:(double)value;
 @end
 
 @implementation AKFontSizePicker
 
-- (AKFontSizePicker)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (AKFontSizePicker)initWithFrame:(CGRect)frame style:(int64_t)style
 {
   v9.receiver = self;
   v9.super_class = AKFontSizePicker;
-  v5 = [(AKFontSizePicker *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(AKFontSizePicker *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
     sizeListValues = v5->_sizeListValues;
     v5->_sizeListValues = &unk_2851BAE60;
 
-    [(AKFontSizePicker *)v6 setStyle:a4];
+    [(AKFontSizePicker *)v6 setStyle:style];
   }
 
   return v6;
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
   v69[4] = *MEMORY[0x277D85DE8];
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    v5 = [(AKFontSizePicker *)self label];
-    [v5 removeFromSuperview];
+    label = [(AKFontSizePicker *)self label];
+    [label removeFromSuperview];
 
-    v6 = [(AKFontSizePicker *)self stepper];
-    [v6 removeFromSuperview];
+    stepper = [(AKFontSizePicker *)self stepper];
+    [stepper removeFromSuperview];
 
-    v7 = [(AKFontSizePicker *)self sizeList];
-    [v7 removeFromSuperview];
+    sizeList = [(AKFontSizePicker *)self sizeList];
+    [sizeList removeFromSuperview];
 
-    switch(a3)
+    switch(style)
     {
       case 3:
         firstValuea = [MEMORY[0x277D755B8] systemImageNamed:@"textformat.size.smaller"];
@@ -72,16 +72,16 @@
         [v42 addTarget:self action:sel__sliderTouchDown_ forControlEvents:1];
         [(AKFontSizePicker *)self setSlider:v42];
         v46 = [MEMORY[0x277D75220] buttonWithType:1];
-        v47 = [MEMORY[0x277D75348] labelColor];
-        [v46 setTintColor:v47];
+        labelColor = [MEMORY[0x277D75348] labelColor];
+        [v46 setTintColor:labelColor];
 
         [v46 setTranslatesAutoresizingMaskIntoConstraints:0];
         [v46 setImage:firstValuea forState:0];
         v65 = v46;
         [v46 addTarget:self action:sel__decreaseSize_ forControlEvents:64];
         v48 = [MEMORY[0x277D75220] buttonWithType:1];
-        v49 = [MEMORY[0x277D75348] labelColor];
-        [v48 setTintColor:v49];
+        labelColor2 = [MEMORY[0x277D75348] labelColor];
+        [v48 setTintColor:labelColor2];
 
         [v48 setTranslatesAutoresizingMaskIntoConstraints:0];
         [v48 setImage:v66 forState:0];
@@ -96,21 +96,21 @@
         [v50 setAxis:0];
         [v50 setAlignment:3];
         v59 = MEMORY[0x277CCAAD0];
-        v64 = [v50 topAnchor];
-        v63 = [(AKFontSizePicker *)self topAnchor];
-        v62 = [v64 constraintEqualToAnchor:v63];
+        topAnchor = [v50 topAnchor];
+        topAnchor2 = [(AKFontSizePicker *)self topAnchor];
+        v62 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v69[0] = v62;
-        v61 = [v50 bottomAnchor];
-        v60 = [(AKFontSizePicker *)self bottomAnchor];
-        v58 = [v61 constraintEqualToAnchor:v60];
+        bottomAnchor = [v50 bottomAnchor];
+        bottomAnchor2 = [(AKFontSizePicker *)self bottomAnchor];
+        v58 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         v69[1] = v58;
-        v51 = [v50 trailingAnchor];
-        v52 = [(AKFontSizePicker *)self trailingAnchor];
-        v53 = [v51 constraintEqualToAnchor:v52 constant:-10.0];
+        trailingAnchor = [v50 trailingAnchor];
+        trailingAnchor2 = [(AKFontSizePicker *)self trailingAnchor];
+        v53 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-10.0];
         v69[2] = v53;
-        v54 = [v50 leadingAnchor];
-        v55 = [(AKFontSizePicker *)self leadingAnchor];
-        v56 = [v54 constraintEqualToAnchor:v55 constant:10.0];
+        leadingAnchor = [v50 leadingAnchor];
+        leadingAnchor2 = [(AKFontSizePicker *)self leadingAnchor];
+        v56 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
         v69[3] = v56;
         v57 = [MEMORY[0x277CBEA60] arrayWithObjects:v69 count:4];
         [v59 activateConstraints:v57];
@@ -128,33 +128,33 @@
         v25 = [v24 initWithFrame:firstValue collectionViewLayout:?];
         [(AKFontSizePicker *)self setSizeList:v25];
 
-        v26 = [(AKFontSizePicker *)self sizeList];
-        [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
+        sizeList2 = [(AKFontSizePicker *)self sizeList];
+        [sizeList2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-        v27 = [(AKFontSizePicker *)self sizeList];
-        [v27 setDelegate:self];
+        sizeList3 = [(AKFontSizePicker *)self sizeList];
+        [sizeList3 setDelegate:self];
 
-        v28 = [(AKFontSizePicker *)self sizeList];
-        [v28 setDataSource:self];
+        sizeList4 = [(AKFontSizePicker *)self sizeList];
+        [sizeList4 setDataSource:self];
 
-        v29 = [(AKFontSizePicker *)self sizeList];
-        [v29 setPagingEnabled:1];
+        sizeList5 = [(AKFontSizePicker *)self sizeList];
+        [sizeList5 setPagingEnabled:1];
 
-        v30 = [(AKFontSizePicker *)self sizeList];
-        [v30 setShowsHorizontalScrollIndicator:0];
+        sizeList6 = [(AKFontSizePicker *)self sizeList];
+        [sizeList6 setShowsHorizontalScrollIndicator:0];
 
-        v31 = [(AKFontSizePicker *)self sizeList];
-        [v31 setShowsVerticalScrollIndicator:0];
+        sizeList7 = [(AKFontSizePicker *)self sizeList];
+        [sizeList7 setShowsVerticalScrollIndicator:0];
 
-        v32 = [MEMORY[0x277D75348] clearColor];
-        v33 = [(AKFontSizePicker *)self sizeList];
-        [v33 setBackgroundColor:v32];
+        clearColor = [MEMORY[0x277D75348] clearColor];
+        sizeList8 = [(AKFontSizePicker *)self sizeList];
+        [sizeList8 setBackgroundColor:clearColor];
 
-        v34 = [(AKFontSizePicker *)self sizeList];
-        [v34 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"AnnotationKit.fontSizePickerIdentifier"];
+        sizeList9 = [(AKFontSizePicker *)self sizeList];
+        [sizeList9 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"AnnotationKit.fontSizePickerIdentifier"];
 
-        v35 = [(AKFontSizePicker *)self sizeList];
-        [(AKFontSizePicker *)self addSubview:v35];
+        sizeList10 = [(AKFontSizePicker *)self sizeList];
+        [(AKFontSizePicker *)self addSubview:sizeList10];
 
         v36 = _NSDictionaryOfVariableBindings(&cfstr_Sizelist.isa, self->_sizeList, 0);
         v37 = MEMORY[0x277CCAAD0];
@@ -212,46 +212,46 @@
   }
 }
 
-- (void)setValue:(double)a3
+- (void)setValue:(double)value
 {
-  if (self->_value != a3)
+  if (self->_value != value)
   {
-    self->_value = a3;
+    self->_value = value;
     v4 = +[AKTextAttributesViewController fontSizeNumberFormatter];
     v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_value];
     v11 = [v4 stringFromNumber:v5];
 
-    v6 = [(AKFontSizePicker *)self label];
-    [v6 setText:v11];
+    label = [(AKFontSizePicker *)self label];
+    [label setText:v11];
 
     value = self->_value;
-    v8 = [(AKFontSizePicker *)self stepper];
-    [v8 setValue:value];
+    stepper = [(AKFontSizePicker *)self stepper];
+    [stepper setValue:value];
 
     *&value = self->_value;
-    v9 = [(AKFontSizePicker *)self slider];
+    slider = [(AKFontSizePicker *)self slider];
     LODWORD(v10) = LODWORD(value);
-    [v9 setValue:v10];
+    [slider setValue:v10];
 
     [(AKFontSizePicker *)self _selectSizeInList];
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   if ([(AKFontSizePicker *)self style]!= 1)
   {
     v20.receiver = self;
     v20.super_class = AKFontSizePicker;
-    v17 = [(AKFontSizePicker *)&v20 hitTest:v7 withEvent:x, y];
+    stepper2 = [(AKFontSizePicker *)&v20 hitTest:eventCopy withEvent:x, y];
     goto LABEL_5;
   }
 
-  v8 = [(AKFontSizePicker *)self stepper];
-  [v8 frame];
+  stepper = [(AKFontSizePicker *)self stepper];
+  [stepper frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -265,9 +265,9 @@
   v22.y = y;
   if (CGRectContainsPoint(v23, v22))
   {
-    v17 = [(AKFontSizePicker *)self stepper];
+    stepper2 = [(AKFontSizePicker *)self stepper];
 LABEL_5:
-    v18 = v17;
+    v18 = stepper2;
     goto LABEL_7;
   }
 
@@ -277,37 +277,37 @@ LABEL_7:
   return v18;
 }
 
-- (void)_handleValueChanged:(id)a3
+- (void)_handleValueChanged:(id)changed
 {
-  [a3 value];
+  [changed value];
   [(AKFontSizePicker *)self setValue:v4];
 
   [(AKFontSizePicker *)self sendActionsForControlEvents:4096];
 }
 
-- (void)_sliderTouchDown:(id)a3
+- (void)_sliderTouchDown:(id)down
 {
-  v4 = [(AKFontSizePicker *)self willBeginTrackingUpdates];
+  willBeginTrackingUpdates = [(AKFontSizePicker *)self willBeginTrackingUpdates];
 
-  if (v4)
+  if (willBeginTrackingUpdates)
   {
-    v5 = [(AKFontSizePicker *)self willBeginTrackingUpdates];
-    v5[2]();
+    willBeginTrackingUpdates2 = [(AKFontSizePicker *)self willBeginTrackingUpdates];
+    willBeginTrackingUpdates2[2]();
   }
 }
 
-- (void)_sliderTouchUp:(id)a3
+- (void)_sliderTouchUp:(id)up
 {
-  v4 = [(AKFontSizePicker *)self didEndTrackingUpdates];
+  didEndTrackingUpdates = [(AKFontSizePicker *)self didEndTrackingUpdates];
 
-  if (v4)
+  if (didEndTrackingUpdates)
   {
-    v5 = [(AKFontSizePicker *)self didEndTrackingUpdates];
-    v5[2]();
+    didEndTrackingUpdates2 = [(AKFontSizePicker *)self didEndTrackingUpdates];
+    didEndTrackingUpdates2[2]();
   }
 }
 
-- (void)_decreaseSize:(id)a3
+- (void)_decreaseSize:(id)size
 {
   [(AKFontSizePicker *)self value];
   v5 = fmax(v4 + -1.0, 4.0);
@@ -320,7 +320,7 @@ LABEL_7:
   }
 }
 
-- (void)_increaseSize:(id)a3
+- (void)_increaseSize:(id)size
 {
   [(AKFontSizePicker *)self value];
   v5 = v4 + 1.0;
@@ -345,8 +345,8 @@ LABEL_7:
 
 - (CGSize)_itemSizeInContainer
 {
-  v3 = [(AKFontSizePicker *)self sizeListValues];
-  v4 = [v3 objectAtIndexedSubscript:0];
+  sizeListValues = [(AKFontSizePicker *)self sizeListValues];
+  v4 = [sizeListValues objectAtIndexedSubscript:0];
   v5 = [v4 count];
 
   [(AKFontSizePicker *)self frame];
@@ -361,20 +361,20 @@ LABEL_7:
 
 - (void)_selectSizeInList
 {
-  v3 = [(AKFontSizePicker *)self sizeList];
+  sizeList = [(AKFontSizePicker *)self sizeList];
 
-  if (v3)
+  if (sizeList)
   {
-    v4 = [(AKFontSizePicker *)self sizeListValues];
-    v5 = [v4 count];
+    sizeListValues = [(AKFontSizePicker *)self sizeListValues];
+    v5 = [sizeListValues count];
 
     if (v5)
     {
       v6 = 0;
       do
       {
-        v7 = [(AKFontSizePicker *)self sizeListValues];
-        v8 = [v7 objectAtIndexedSubscript:v6];
+        sizeListValues2 = [(AKFontSizePicker *)self sizeListValues];
+        v8 = [sizeListValues2 objectAtIndexedSubscript:v6];
 
         v9 = MEMORY[0x277CCABB0];
         [(AKFontSizePicker *)self value];
@@ -384,13 +384,13 @@ LABEL_7:
         if (v11 != 0x7FFFFFFFFFFFFFFFLL)
         {
           v12 = [MEMORY[0x277CCAA70] indexPathForRow:v11 inSection:v6];
-          v13 = [(AKFontSizePicker *)self sizeList];
-          [v13 selectItemAtIndexPath:v12 animated:1 scrollPosition:0];
+          sizeList2 = [(AKFontSizePicker *)self sizeList];
+          [sizeList2 selectItemAtIndexPath:v12 animated:1 scrollPosition:0];
         }
 
         ++v6;
-        v14 = [(AKFontSizePicker *)self sizeListValues];
-        v15 = [v14 count];
+        sizeListValues3 = [(AKFontSizePicker *)self sizeListValues];
+        v15 = [sizeListValues3 count];
       }
 
       while (v6 < v15);
@@ -398,12 +398,12 @@ LABEL_7:
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(AKFontSizePicker *)self sizeListValues];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
-  v8 = [v5 row];
+  pathCopy = path;
+  sizeListValues = [(AKFontSizePicker *)self sizeListValues];
+  v7 = [sizeListValues objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+  v8 = [pathCopy row];
 
   v9 = [v7 objectAtIndexedSubscript:v8];
   [v9 doubleValue];
@@ -412,54 +412,54 @@ LABEL_7:
   [(AKFontSizePicker *)self sendActionsForControlEvents:4096];
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
-  v7 = [a3 cellForItemAtIndexPath:a4];
-  v4 = [v7 contentView];
-  v5 = [v4 viewWithTag:1001];
+  v7 = [view cellForItemAtIndexPath:path];
+  contentView = [v7 contentView];
+  v5 = [contentView viewWithTag:1001];
 
   [v5 setHighlighted:0];
-  v6 = [MEMORY[0x277D75348] blackColor];
-  [v5 setTextColor:v6];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [v5 setTextColor:blackColor];
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
-  v3 = [(AKFontSizePicker *)self sizeListValues];
-  v4 = [v3 count];
+  sizeListValues = [(AKFontSizePicker *)self sizeListValues];
+  v4 = [sizeListValues count];
 
   return v4;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v5 = [(AKFontSizePicker *)self sizeListValues];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  sizeListValues = [(AKFontSizePicker *)self sizeListValues];
+  v6 = [sizeListValues objectAtIndexedSubscript:section];
   v7 = [v6 count];
 
   return v7;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"AnnotationKit.fontSizePickerIdentifier" forIndexPath:v6];
-  v8 = [(AKFontSizePicker *)self sizeListValues];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v6, "section")}];
-  v10 = [v6 row];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"AnnotationKit.fontSizePickerIdentifier" forIndexPath:pathCopy];
+  sizeListValues = [(AKFontSizePicker *)self sizeListValues];
+  v9 = [sizeListValues objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+  v10 = [pathCopy row];
 
   v11 = [v9 objectAtIndexedSubscript:v10];
 
-  v12 = [v7 contentView];
-  v13 = [v12 viewWithTag:1001];
+  contentView = [v7 contentView];
+  v13 = [contentView viewWithTag:1001];
 
   if (!v13)
   {
     v14 = objc_alloc(MEMORY[0x277D75D18]);
     [v7 bounds];
     v15 = [v14 initWithFrame:?];
-    v16 = [(AKFontSizePicker *)self tintColor];
-    [v15 setBackgroundColor:v16];
+    tintColor = [(AKFontSizePicker *)self tintColor];
+    [v15 setBackgroundColor:tintColor];
 
     [v7 setSelectedBackgroundView:v15];
     v17 = objc_alloc(MEMORY[0x277D756B8]);
@@ -468,11 +468,11 @@ LABEL_7:
     [v13 setTextAlignment:1];
     [v13 setUserInteractionEnabled:0];
     [v13 setTag:1001];
-    v18 = [MEMORY[0x277D75348] whiteColor];
-    [v13 setHighlightedTextColor:v18];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [v13 setHighlightedTextColor:whiteColor];
 
-    v19 = [v7 contentView];
-    [v19 addSubview:v13];
+    contentView2 = [v7 contentView];
+    [contentView2 addSubview:v13];
   }
 
   v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v11];

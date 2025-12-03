@@ -1,43 +1,43 @@
 @interface _INPBUserActivity
-- (BOOL)isEqual:(id)a3;
-- (_INPBUserActivity)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBUserActivity)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setData:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setUri:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setData:(id)data;
+- (void)setTitle:(id)title;
+- (void)setUri:(id)uri;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBUserActivity
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_data)
   {
-    v4 = [(_INPBUserActivity *)self data];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"data"];
+    data = [(_INPBUserActivity *)self data];
+    v5 = [data copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"data"];
   }
 
   if (self->_title)
   {
-    v6 = [(_INPBUserActivity *)self title];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"title"];
+    title = [(_INPBUserActivity *)self title];
+    v7 = [title copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"title"];
   }
 
   if (self->_uri)
   {
     v8 = [(_INPBUserActivity *)self uri];
     v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"uri"];
+    [dictionary setObject:v9 forKeyedSubscript:@"uri"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -47,28 +47,28 @@
   return v4 ^ [(NSString *)self->_uri hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_INPBUserActivity *)self data];
-  v6 = [v4 data];
-  if ((v5 != 0) == (v6 == 0))
+  data = [(_INPBUserActivity *)self data];
+  data2 = [equalCopy data];
+  if ((data != 0) == (data2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_INPBUserActivity *)self data];
-  if (v7)
+  data3 = [(_INPBUserActivity *)self data];
+  if (data3)
   {
-    v8 = v7;
-    v9 = [(_INPBUserActivity *)self data];
-    v10 = [v4 data];
-    v11 = [v9 isEqual:v10];
+    v8 = data3;
+    data4 = [(_INPBUserActivity *)self data];
+    data5 = [equalCopy data];
+    v11 = [data4 isEqual:data5];
 
     if (!v11)
     {
@@ -80,20 +80,20 @@
   {
   }
 
-  v5 = [(_INPBUserActivity *)self title];
-  v6 = [v4 title];
-  if ((v5 != 0) == (v6 == 0))
+  data = [(_INPBUserActivity *)self title];
+  data2 = [equalCopy title];
+  if ((data != 0) == (data2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_INPBUserActivity *)self title];
-  if (v12)
+  title = [(_INPBUserActivity *)self title];
+  if (title)
   {
-    v13 = v12;
-    v14 = [(_INPBUserActivity *)self title];
-    v15 = [v4 title];
-    v16 = [v14 isEqual:v15];
+    v13 = title;
+    title2 = [(_INPBUserActivity *)self title];
+    title3 = [equalCopy title];
+    v16 = [title2 isEqual:title3];
 
     if (!v16)
     {
@@ -105,9 +105,9 @@
   {
   }
 
-  v5 = [(_INPBUserActivity *)self uri];
-  v6 = [v4 uri];
-  if ((v5 != 0) != (v6 == 0))
+  data = [(_INPBUserActivity *)self uri];
+  data2 = [equalCopy uri];
+  if ((data != 0) != (data2 == 0))
   {
     v17 = [(_INPBUserActivity *)self uri];
     if (!v17)
@@ -120,7 +120,7 @@ LABEL_20:
 
     v18 = v17;
     v19 = [(_INPBUserActivity *)self uri];
-    v20 = [v4 uri];
+    v20 = [equalCopy uri];
     v21 = [v19 isEqual:v20];
 
     if (v21)
@@ -141,59 +141,59 @@ LABEL_18:
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBUserActivity allocWithZone:](_INPBUserActivity init];
-  v6 = [(NSData *)self->_data copyWithZone:a3];
+  v6 = [(NSData *)self->_data copyWithZone:zone];
   [(_INPBUserActivity *)v5 setData:v6];
 
-  v7 = [(NSString *)self->_title copyWithZone:a3];
+  v7 = [(NSString *)self->_title copyWithZone:zone];
   [(_INPBUserActivity *)v5 setTitle:v7];
 
-  v8 = [(NSString *)self->_uri copyWithZone:a3];
+  v8 = [(NSString *)self->_uri copyWithZone:zone];
   [(_INPBUserActivity *)v5 setUri:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBUserActivity *)self data];
+  coderCopy = coder;
+  data = [(_INPBUserActivity *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBUserActivity)initWithCoder:(id)a3
+- (_INPBUserActivity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBUserActivity *)self initWithData:v6];
+    self = [(_INPBUserActivity *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(_INPBUserActivity *)self data];
+  toCopy = to;
+  data = [(_INPBUserActivity *)self data];
 
-  if (v4)
+  if (data)
   {
     data = self->_data;
     PBDataWriterWriteDataField();
   }
 
-  v6 = [(_INPBUserActivity *)self title];
+  title = [(_INPBUserActivity *)self title];
 
-  if (v6)
+  if (title)
   {
     title = self->_title;
     PBDataWriterWriteStringField();
@@ -201,36 +201,36 @@ LABEL_18:
 
   v8 = [(_INPBUserActivity *)self uri];
 
-  v9 = v11;
+  v9 = toCopy;
   if (v8)
   {
     uri = self->_uri;
     PBDataWriterWriteStringField();
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
-- (void)setUri:(id)a3
+- (void)setUri:(id)uri
 {
-  v4 = [a3 copy];
+  v4 = [uri copy];
   uri = self->_uri;
   self->_uri = v4;
 
   MEMORY[0x1EEE66BB8](v4, uri);
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   title = self->_title;
   self->_title = v4;
 
   MEMORY[0x1EEE66BB8](v4, title);
 }
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   data = self->_data;
   self->_data = v4;
 

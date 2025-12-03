@@ -1,15 +1,15 @@
 @interface SKRFlowExtensionUserInputResultXPC
 - (SKRFlowExtensionUserInputResultXPC)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKRFlowExtensionUserInputResultXPC
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  FlowExtensionUserInputResultXPC.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  FlowExtensionUserInputResultXPC.encode(with:)(coderCopy);
 }
 
 - (SKRFlowExtensionUserInputResultXPC)init

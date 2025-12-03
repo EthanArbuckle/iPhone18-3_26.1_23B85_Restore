@@ -1,30 +1,30 @@
 @interface ABSCallbackInvoker
-+ (void)invokeOnThread:(id)a3 callback:(void *)a4 withAddressBook:(void *)a5 context:(void *)a6;
++ (void)invokeOnThread:(id)thread callback:(void *)callback withAddressBook:(void *)book context:(void *)context;
 - (void)invoke;
 @end
 
 @implementation ABSCallbackInvoker
 
-+ (void)invokeOnThread:(id)a3 callback:(void *)a4 withAddressBook:(void *)a5 context:(void *)a6
++ (void)invokeOnThread:(id)thread callback:(void *)callback withAddressBook:(void *)book context:(void *)context
 {
-  v9 = a3;
+  threadCopy = thread;
   v12 = objc_alloc_init(ABSCallbackInvoker);
-  v10 = [MEMORY[0x277CCACC8] currentThread];
-  v11 = v10 == v9;
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  v11 = currentThread == threadCopy;
 
-  CFRetain(a5);
-  v12->addressBook = a5;
-  v12->callback = a4;
-  v12->context = a6;
-  [(ABSCallbackInvoker *)v12 performSelector:sel_invoke onThread:v9 withObject:0 waitUntilDone:v11];
+  CFRetain(book);
+  v12->addressBook = book;
+  v12->callback = callback;
+  v12->context = context;
+  [(ABSCallbackInvoker *)v12 performSelector:sel_invoke onThread:threadCopy withObject:0 waitUntilDone:v11];
 }
 
 - (void)invoke
 {
-  v5 = [self->addressBook changeCallbacks];
+  changeCallbacks = [self->addressBook changeCallbacks];
   callback = self->callback;
-  v4 = [MEMORY[0x277CCACC8] currentThread];
-  LODWORD(callback) = [v5 hasExternalCallback:callback onThread:v4 withContext:self->context];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  LODWORD(callback) = [changeCallbacks hasExternalCallback:callback onThread:currentThread withContext:self->context];
 
   if (callback)
   {

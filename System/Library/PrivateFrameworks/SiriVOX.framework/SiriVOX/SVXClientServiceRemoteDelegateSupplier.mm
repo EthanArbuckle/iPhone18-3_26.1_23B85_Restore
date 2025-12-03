@@ -1,17 +1,17 @@
 @interface SVXClientServiceRemoteDelegateSupplier
-- (id)remoteServiceDelegateWithConnection:(id)a3 errorHandler:(id)a4;
+- (id)remoteServiceDelegateWithConnection:(id)connection errorHandler:(id)handler;
 @end
 
 @implementation SVXClientServiceRemoteDelegateSupplier
 
-- (id)remoteServiceDelegateWithConnection:(id)a3 errorHandler:(id)a4
+- (id)remoteServiceDelegateWithConnection:(id)connection errorHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  connectionCopy = connection;
+  handlerCopy = handler;
+  if (connectionCopy)
   {
-    v8 = [v6 remoteObjectProxyWithErrorHandler:v7];
+    v8 = [connectionCopy remoteObjectProxyWithErrorHandler:handlerCopy];
     goto LABEL_7;
   }
 
@@ -21,9 +21,9 @@
     v13 = 136315394;
     v14 = "[SVXClientServiceRemoteDelegateSupplier remoteServiceDelegateWithConnection:errorHandler:]";
     v15 = 2112;
-    v16 = self;
+    selfCopy = self;
     _os_log_error_impl(&dword_2695B9000, v9, OS_LOG_TYPE_ERROR, "%s %@ is already invalidated.", &v13, 0x16u);
-    if (!v7)
+    if (!handlerCopy)
     {
       goto LABEL_6;
     }
@@ -31,11 +31,11 @@
     goto LABEL_5;
   }
 
-  if (v7)
+  if (handlerCopy)
   {
 LABEL_5:
     v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SiriVOXErrorDomain" code:6 userInfo:0];
-    v7[2](v7, v10);
+    handlerCopy[2](handlerCopy, v10);
   }
 
 LABEL_6:

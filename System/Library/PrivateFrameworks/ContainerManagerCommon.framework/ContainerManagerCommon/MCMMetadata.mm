@@ -1,13 +1,13 @@
 @interface MCMMetadata
-- (BOOL)_initFromMetadataInDictionary:(id)a3 containerPath:(id)a4 userIdentity:(id)a5 containerClass:(unint64_t)a6 fsNode:(id)a7 fileURL:(id)a8 userIdentityCache:(id)a9 error:(id *)a10;
+- (BOOL)_initFromMetadataInDictionary:(id)dictionary containerPath:(id)path userIdentity:(id)identity containerClass:(unint64_t)class fsNode:(id)node fileURL:(id)l userIdentityCache:(id)cache error:(id *)self0;
 - (BOOL)_persisted;
-- (BOOL)_writeFileURL:(id)a3 dictionary:(id)a4 options:(unint64_t)a5 error:(id *)a6;
-- (BOOL)verifyWithError:(id *)a3;
-- (BOOL)writeMetadataToDiskWithError:(id *)a3;
-- (BOOL)writeMetadataToFileURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
+- (BOOL)_writeFileURL:(id)l dictionary:(id)dictionary options:(unint64_t)options error:(id *)error;
+- (BOOL)verifyWithError:(id *)error;
+- (BOOL)writeMetadataToDiskWithError:(id *)error;
+- (BOOL)writeMetadataToFileURL:(id)l options:(unint64_t)options error:(id *)error;
 - (MCMFSNode)fsNode;
-- (MCMMetadata)initWithContainerIdentity:(id)a3 containerPath:(id)a4 schemaVersion:(id)a5 userIdentityCache:(id)a6;
-- (MCMMetadata)initWithContainerIdentity:(id)a3 info:(id)a4 containerPath:(id)a5 userManagedAssetsDirName:(id)a6 schemaVersion:(id)a7 dataProtectionClass:(int)a8 fsNode:(id)a9 creator:(id)a10 userIdentityCache:(id)a11;
+- (MCMMetadata)initWithContainerIdentity:(id)identity containerPath:(id)path schemaVersion:(id)version userIdentityCache:(id)cache;
+- (MCMMetadata)initWithContainerIdentity:(id)identity info:(id)info containerPath:(id)path userManagedAssetsDirName:(id)name schemaVersion:(id)version dataProtectionClass:(int)class fsNode:(id)node creator:(id)self0 userIdentityCache:(id)self1;
 - (NSDictionary)info;
 - (NSString)creator;
 - (NSString)debugDescription;
@@ -15,16 +15,16 @@
 - (NSString)shortDescription;
 - (NSString)userManagedAssetsDirName;
 - (NSURL)fileURL;
-- (container_object_s)createLibsystemContainerWithError:(id *)a3;
-- (id)_modifiedDictBySettingValue:(id)a3 forKey:(id)a4 onInfo:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initByReadingAndValidatingMetadataAtFileURL:(id)a3 containerPath:(id)a4 userIdentity:(id)a5 containerClass:(unint64_t)a6 userIdentityCache:(id)a7 error:(id *)a8;
-- (id)metadataByChangingDataProtectionClass:(int)a3;
-- (id)metadataByDeletingInfoDictKeys:(id)a3;
-- (id)metadataBySettingCreator:(id)a3;
-- (id)metadataBySettingInfoValue:(id)a3 forKey:(id)a4;
-- (id)metadataBySettingUserManagedAssetsDirName:(id)a3;
-- (id)metadataBySettingValuesWithInfoDict:(id)a3 fullReplace:(BOOL)a4;
+- (container_object_s)createLibsystemContainerWithError:(id *)error;
+- (id)_modifiedDictBySettingValue:(id)value forKey:(id)key onInfo:(id)info;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initByReadingAndValidatingMetadataAtFileURL:(id)l containerPath:(id)path userIdentity:(id)identity containerClass:(unint64_t)class userIdentityCache:(id)cache error:(id *)error;
+- (id)metadataByChangingDataProtectionClass:(int)class;
+- (id)metadataByDeletingInfoDictKeys:(id)keys;
+- (id)metadataBySettingCreator:(id)creator;
+- (id)metadataBySettingInfoValue:(id)value forKey:(id)key;
+- (id)metadataBySettingUserManagedAssetsDirName:(id)name;
+- (id)metadataBySettingValuesWithInfoDict:(id)dict fullReplace:(BOOL)replace;
 - (int)dataProtectionClass;
 - (void)_clearPersistedStatus;
 @end
@@ -79,32 +79,32 @@
   return result;
 }
 
-- (BOOL)_writeFileURL:(id)a3 dictionary:(id)a4 options:(unint64_t)a5 error:(id *)a6
+- (BOOL)_writeFileURL:(id)l dictionary:(id)dictionary options:(unint64_t)options error:(id *)error
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a3;
-  v12 = [(MCMMetadataMinimal *)self userIdentityCache];
-  v13 = [(MCMMetadataMinimal *)self userIdentity];
-  v14 = [v12 libraryRepairForUserIdentity:v13];
+  dictionaryCopy = dictionary;
+  lCopy = l;
+  userIdentityCache = [(MCMMetadataMinimal *)self userIdentityCache];
+  userIdentity = [(MCMMetadataMinimal *)self userIdentity];
+  v14 = [userIdentityCache libraryRepairForUserIdentity:userIdentity];
 
-  v15 = [(MCMMetadataMinimal *)self containerPath];
-  v16 = [(MCMMetadataMinimal *)self identifier];
+  containerPath = [(MCMMetadataMinimal *)self containerPath];
+  identifier = [(MCMMetadataMinimal *)self identifier];
   v26[0] = 0;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __54__MCMMetadata__writeFileURL_dictionary_options_error___block_invoke;
   v23[3] = &unk_1E86B0690;
-  v17 = v10;
+  v17 = dictionaryCopy;
   v24 = v17;
-  v25 = a5;
-  v18 = [v14 fixAndRetryIfPermissionsErrorWithURL:v11 containerPath:v15 containerIdentifier:v16 error:v26 duringBlock:v23];
+  optionsCopy = options;
+  v18 = [v14 fixAndRetryIfPermissionsErrorWithURL:lCopy containerPath:containerPath containerIdentifier:identifier error:v26 duringBlock:v23];
 
   v19 = v26[0];
-  if (a6 && (v18 & 1) == 0)
+  if (error && (v18 & 1) == 0)
   {
     v20 = v19;
-    *a6 = v19;
+    *error = v19;
   }
 
   v21 = *MEMORY[0x1E69E9840];
@@ -123,8 +123,8 @@ uint64_t __54__MCMMetadata__writeFileURL_dictionary_options_error___block_invoke
 - (BOOL)_persisted
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMMetadata *)self fsNode];
-  v3 = v2 != 0;
+  fsNode = [(MCMMetadata *)self fsNode];
+  v3 = fsNode != 0;
 
   v4 = *MEMORY[0x1E69E9840];
   return v3;
@@ -139,10 +139,10 @@ uint64_t __54__MCMMetadata__writeFileURL_dictionary_options_error___block_invoke
   fsNode = self->_fsNode;
   self->_fsNode = 0;
 
-  v4 = [(MCMMetadataMinimal *)self containerPath];
-  v5 = [v4 metadataURL];
+  containerPath = [(MCMMetadataMinimal *)self containerPath];
+  metadataURL = [containerPath metadataURL];
   fileURL = self->_fileURL;
-  self->_fileURL = v5;
+  self->_fileURL = metadataURL;
 
   v7 = *MEMORY[0x1E69E9840];
 }
@@ -300,12 +300,12 @@ id __31__MCMMetadata_debugDescription__block_invoke(uint64_t a1, int a2)
   return v20;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = MCMMetadata;
-  v4 = [(MCMMetadataMinimal *)&v8 copyWithZone:a3];
+  v4 = [(MCMMetadataMinimal *)&v8 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -320,13 +320,13 @@ id __31__MCMMetadata_debugDescription__block_invoke(uint64_t a1, int a2)
   return v5;
 }
 
-- (id)metadataBySettingCreator:(id)a3
+- (id)metadataBySettingCreator:(id)creator
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  creatorCopy = creator;
   v5 = [(MCMMetadata *)self copy];
   v6 = v5[10];
-  v5[10] = v4;
+  v5[10] = creatorCopy;
 
   [v5 _clearPersistedStatus];
   v7 = *MEMORY[0x1E69E9840];
@@ -334,13 +334,13 @@ id __31__MCMMetadata_debugDescription__block_invoke(uint64_t a1, int a2)
   return v5;
 }
 
-- (id)metadataBySettingUserManagedAssetsDirName:(id)a3
+- (id)metadataBySettingUserManagedAssetsDirName:(id)name
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v5 = [(MCMMetadata *)self copy];
   v6 = v5[7];
-  v5[7] = v4;
+  v5[7] = nameCopy;
 
   [v5 _clearPersistedStatus];
   v7 = *MEMORY[0x1E69E9840];
@@ -348,47 +348,47 @@ id __31__MCMMetadata_debugDescription__block_invoke(uint64_t a1, int a2)
   return v5;
 }
 
-- (id)metadataByChangingDataProtectionClass:(int)a3
+- (id)metadataByChangingDataProtectionClass:(int)class
 {
   v7 = *MEMORY[0x1E69E9840];
   v4 = [(MCMMetadata *)self copy];
-  v4[10] = a3;
+  v4[10] = class;
   [v4 _clearPersistedStatus];
   v5 = *MEMORY[0x1E69E9840];
 
   return v4;
 }
 
-- (container_object_s)createLibsystemContainerWithError:(id *)a3
+- (container_object_s)createLibsystemContainerWithError:(id *)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v12[0] = 1;
-  v5 = [(MCMMetadataMinimal *)self containerIdentity];
-  v6 = [(MCMMetadataMinimal *)self containerPath];
-  v7 = [v6 containerPathIdentifier];
-  v8 = [v5 createLibsystemContainerWithContainerPathIdentifier:v7 existed:-[MCMMetadataMinimal existed](self error:{"existed"), v12}];
+  containerIdentity = [(MCMMetadataMinimal *)self containerIdentity];
+  containerPath = [(MCMMetadataMinimal *)self containerPath];
+  containerPathIdentifier = [containerPath containerPathIdentifier];
+  v8 = [containerIdentity createLibsystemContainerWithContainerPathIdentifier:containerPathIdentifier existed:-[MCMMetadataMinimal existed](self error:{"existed"), v12}];
 
-  if (a3 && v12[0] != 1 && !v8)
+  if (error && v12[0] != 1 && !v8)
   {
     v9 = [MCMError alloc];
-    *a3 = [(MCMError *)v9 initWithErrorType:v12[0]];
+    *error = [(MCMError *)v9 initWithErrorType:v12[0]];
   }
 
   v10 = *MEMORY[0x1E69E9840];
   return v8;
 }
 
-- (id)metadataByDeletingInfoDictKeys:(id)a3
+- (id)metadataByDeletingInfoDictKeys:(id)keys
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  v6 = [(MCMMetadata *)v5 info];
+  keysCopy = keys;
+  selfCopy = self;
+  info = [(MCMMetadata *)selfCopy info];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = v4;
+  v7 = keysCopy;
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v21 count:16];
   if (v8)
   {
@@ -404,14 +404,14 @@ id __31__MCMMetadata_debugDescription__block_invoke(uint64_t a1, int a2)
           objc_enumerationMutation(v7);
         }
 
-        v13 = [(MCMMetadata *)v5 _modifiedDictBySettingValue:0 forKey:*(*(&v22 + 1) + 8 * i) onInfo:v6];
+        v13 = [(MCMMetadata *)selfCopy _modifiedDictBySettingValue:0 forKey:*(*(&v22 + 1) + 8 * i) onInfo:info];
         v14 = v13;
         if (v13)
         {
           v15 = v13;
 
           v10 = 1;
-          v6 = v15;
+          info = v15;
         }
       }
 
@@ -422,14 +422,14 @@ id __31__MCMMetadata_debugDescription__block_invoke(uint64_t a1, int a2)
 
     if (v10)
     {
-      v16 = [(MCMMetadata *)v5 copy];
+      v16 = [(MCMMetadata *)selfCopy copy];
 
-      v17 = [v6 copy];
+      v17 = [info copy];
       info = v16->_info;
       v16->_info = v17;
 
       [(MCMMetadata *)v16 _clearPersistedStatus];
-      v5 = v16;
+      selfCopy = v16;
     }
   }
 
@@ -439,30 +439,30 @@ id __31__MCMMetadata_debugDescription__block_invoke(uint64_t a1, int a2)
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)metadataBySettingValuesWithInfoDict:(id)a3 fullReplace:(BOOL)a4
+- (id)metadataBySettingValuesWithInfoDict:(id)dict fullReplace:(BOOL)replace
 {
-  v4 = a4;
+  replaceCopy = replace;
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = self;
-  v8 = [(MCMMetadata *)v7 info];
-  if (v4)
+  dictCopy = dict;
+  selfCopy = self;
+  info = [(MCMMetadata *)selfCopy info];
+  if (replaceCopy)
   {
-    v9 = v6;
+    v9 = dictCopy;
 
-    v8 = v9;
+    info = v9;
 LABEL_13:
-    v20 = [(MCMMetadata *)v7 copy];
+    v20 = [(MCMMetadata *)selfCopy copy];
 
-    v21 = [v8 copy];
+    v21 = [info copy];
     info = v20->_info;
     v20->_info = v21;
 
     [(MCMMetadata *)v20 _clearPersistedStatus];
-    v7 = v20;
+    selfCopy = v20;
     goto LABEL_15;
   }
 
@@ -470,7 +470,7 @@ LABEL_13:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = v6;
+  v10 = dictCopy;
   v11 = [v10 countByEnumeratingWithState:&v26 objects:v25 count:16];
   if (v11)
   {
@@ -488,14 +488,14 @@ LABEL_13:
 
         v16 = *(*(&v26 + 1) + 8 * i);
         v17 = [v10 objectForKeyedSubscript:v16];
-        v18 = [(MCMMetadata *)v7 _modifiedDictBySettingValue:v17 forKey:v16 onInfo:v8];
+        v18 = [(MCMMetadata *)selfCopy _modifiedDictBySettingValue:v17 forKey:v16 onInfo:info];
 
         if (v18)
         {
           v19 = v18;
 
           v13 = 1;
-          v8 = v19;
+          info = v19;
         }
       }
 
@@ -518,51 +518,51 @@ LABEL_15:
 
   v23 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)metadataBySettingInfoValue:(id)a3 forKey:(id)a4
+- (id)metadataBySettingInfoValue:(id)value forKey:(id)key
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = self;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(MCMMetadata *)v6 info];
-  v10 = [(MCMMetadata *)v6 _modifiedDictBySettingValue:v8 forKey:v7 onInfo:v9];
+  selfCopy = self;
+  keyCopy = key;
+  valueCopy = value;
+  info = [(MCMMetadata *)selfCopy info];
+  v10 = [(MCMMetadata *)selfCopy _modifiedDictBySettingValue:valueCopy forKey:keyCopy onInfo:info];
 
   if (v10)
   {
-    v11 = [(MCMMetadata *)v6 copy];
+    v11 = [(MCMMetadata *)selfCopy copy];
 
     v12 = [v10 copy];
     info = v11->_info;
     v11->_info = v12;
 
     [(MCMMetadata *)v11 _clearPersistedStatus];
-    v6 = v11;
+    selfCopy = v11;
   }
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return selfCopy;
 }
 
-- (id)_modifiedDictBySettingValue:(id)a3 forKey:(id)a4 onInfo:(id)a5
+- (id)_modifiedDictBySettingValue:(id)value forKey:(id)key onInfo:(id)info
 {
   v17 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!v7)
+  valueCopy = value;
+  keyCopy = key;
+  infoCopy = info;
+  v10 = infoCopy;
+  if (!valueCopy)
   {
-    if (v9)
+    if (infoCopy)
     {
-      v13 = [v9 objectForKeyedSubscript:v8];
+      v13 = [infoCopy objectForKeyedSubscript:keyCopy];
       if (v13)
       {
         v14 = [v10 mutableCopy];
-        [v14 removeObjectForKey:v8];
+        [v14 removeObjectForKey:keyCopy];
       }
 
       else
@@ -576,11 +576,11 @@ LABEL_15:
     goto LABEL_10;
   }
 
-  if (v9)
+  if (infoCopy)
   {
-    v11 = [v9 objectForKeyedSubscript:v8];
+    v11 = [infoCopy objectForKeyedSubscript:keyCopy];
     v12 = v11;
-    if (v11 && ([v11 isEqual:v7] & 1) != 0)
+    if (v11 && ([v11 isEqual:valueCopy] & 1) != 0)
     {
 
 LABEL_10:
@@ -596,7 +596,7 @@ LABEL_10:
     v14 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:1];
   }
 
-  [v14 setValue:v7 forKey:v8];
+  [v14 setValue:valueCopy forKey:keyCopy];
 LABEL_15:
 
   v15 = *MEMORY[0x1E69E9840];
@@ -604,12 +604,12 @@ LABEL_15:
   return v14;
 }
 
-- (BOOL)verifyWithError:(id *)a3
+- (BOOL)verifyWithError:(id *)error
 {
   v65 = *MEMORY[0x1E69E9840];
-  v5 = [(MCMMetadataMinimal *)self userIdentityCache];
-  v6 = [(MCMMetadataMinimal *)self userIdentity];
-  v7 = [v5 libraryRepairForUserIdentity:v6];
+  userIdentityCache = [(MCMMetadataMinimal *)self userIdentityCache];
+  userIdentity = [(MCMMetadataMinimal *)self userIdentity];
+  v7 = [userIdentityCache libraryRepairForUserIdentity:userIdentity];
 
   v57 = 0;
   v58 = &v57;
@@ -625,9 +625,9 @@ LABEL_15:
   v50 = __Block_byref_object_copy__3288;
   v51 = __Block_byref_object_dispose__3289;
   v52 = 0;
-  v8 = [(MCMMetadata *)self fileURL];
-  v9 = [(MCMMetadataMinimal *)self containerPath];
-  v10 = [(MCMMetadataMinimal *)self identifier];
+  fileURL = [(MCMMetadata *)self fileURL];
+  containerPath = [(MCMMetadataMinimal *)self containerPath];
+  identifier = [(MCMMetadataMinimal *)self identifier];
   v45[0] = MEMORY[0x1E69E9820];
   v45[1] = 3221225472;
   v45[2] = __31__MCMMetadata_verifyWithError___block_invoke;
@@ -636,24 +636,24 @@ LABEL_15:
   v45[5] = &v53;
   v45[6] = &v47;
   v46 = 0;
-  v11 = [v7 fixAndRetryIfPermissionsErrorWithURL:v8 containerPath:v9 containerIdentifier:v10 error:&v46 duringBlock:v45];
+  v11 = [v7 fixAndRetryIfPermissionsErrorWithURL:fileURL containerPath:containerPath containerIdentifier:identifier error:&v46 duringBlock:v45];
   v12 = v46;
 
   if ((v11 & 1) == 0)
   {
     v18 = [MCMError alloc];
-    v19 = [(MCMMetadata *)self fileURL];
-    v17 = [(MCMError *)v18 initWithNSError:v12 url:v19 defaultErrorType:12];
+    fileURL2 = [(MCMMetadata *)self fileURL];
+    v17 = [(MCMError *)v18 initWithNSError:v12 url:fileURL2 defaultErrorType:12];
 
-    v15 = container_log_handle_for_category();
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    fileURL4 = container_log_handle_for_category();
+    if (os_log_type_enabled(fileURL4, OS_LOG_TYPE_ERROR))
     {
-      v20 = [(MCMMetadata *)self shortDescription];
+      shortDescription = [(MCMMetadata *)self shortDescription];
       *buf = 138412546;
-      v62 = v20;
+      v62 = shortDescription;
       v63 = 2112;
       v64 = v12;
-      _os_log_error_impl(&dword_1DF2C3000, v15, OS_LOG_TYPE_ERROR, "Could not check existance of metadata for [%@]; error = %@", buf, 0x16u);
+      _os_log_error_impl(&dword_1DF2C3000, fileURL4, OS_LOG_TYPE_ERROR, "Could not check existance of metadata for [%@]; error = %@", buf, 0x16u);
     }
 
     goto LABEL_23;
@@ -664,17 +664,17 @@ LABEL_15:
     v21 = container_log_handle_for_category();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v39 = [(MCMMetadata *)self fileURL];
-      v40 = [v39 path];
+      fileURL3 = [(MCMMetadata *)self fileURL];
+      path = [fileURL3 path];
       *buf = 138412290;
-      v62 = v40;
+      v62 = path;
       _os_log_error_impl(&dword_1DF2C3000, v21, OS_LOG_TYPE_ERROR, "Metadata failed verification, URL doesn't exist; URL = [%@]", buf, 0xCu);
     }
 
     v22 = [MCMError alloc];
-    v15 = [(MCMMetadata *)self fileURL];
-    v23 = [v15 path];
-    v17 = [(MCMError *)v22 initWithErrorType:127 category:1 path:v23 POSIXerrno:2];
+    fileURL4 = [(MCMMetadata *)self fileURL];
+    path2 = [fileURL4 path];
+    v17 = [(MCMError *)v22 initWithErrorType:127 category:1 path:path2 POSIXerrno:2];
 
     goto LABEL_23;
   }
@@ -684,24 +684,24 @@ LABEL_15:
     v13 = container_log_handle_for_category();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v41 = [(MCMMetadata *)self fileURL];
-      v42 = [v41 path];
+      fileURL5 = [(MCMMetadata *)self fileURL];
+      path3 = [fileURL5 path];
       *buf = 138412290;
-      v62 = v42;
+      v62 = path3;
       _os_log_error_impl(&dword_1DF2C3000, v13, OS_LOG_TYPE_ERROR, "Metadata failed verification, URL is a directory; URL = [%@]", buf, 0xCu);
     }
 
     v14 = [MCMError alloc];
-    v15 = [(MCMMetadata *)self fileURL];
-    v16 = [v15 path];
-    v17 = [(MCMError *)v14 initWithErrorType:127 category:1 path:v16 POSIXerrno:21];
+    fileURL4 = [(MCMMetadata *)self fileURL];
+    path4 = [fileURL4 path];
+    v17 = [(MCMError *)v14 initWithErrorType:127 category:1 path:path4 POSIXerrno:21];
 
     goto LABEL_23;
   }
 
-  v24 = [(MCMMetadata *)self fsNode];
+  fsNode = [(MCMMetadata *)self fsNode];
 
-  if (!v24)
+  if (!fsNode)
   {
 LABEL_16:
     objc_storeStrong(&self->_fsNode, v48[5]);
@@ -710,17 +710,17 @@ LABEL_16:
     goto LABEL_26;
   }
 
-  v25 = [(MCMMetadata *)self fsNode];
-  v26 = [v25 isEqual:v48[5]];
+  fsNode2 = [(MCMMetadata *)self fsNode];
+  v26 = [fsNode2 isEqual:v48[5]];
 
   if (v26)
   {
-    v27 = [(MCMMetadata *)self fsNode];
-    v28 = [v27 ctime];
-    if (v28 == [v48[5] ctime])
+    fsNode3 = [(MCMMetadata *)self fsNode];
+    ctime = [fsNode3 ctime];
+    if (ctime == [v48[5] ctime])
     {
-      v29 = [(MCMMetadata *)self fsNode];
-      [v29 ctime];
+      fsNode4 = [(MCMMetadata *)self fsNode];
+      [fsNode4 ctime];
       v31 = v30;
       [v48[5] ctime];
       LOBYTE(v31) = v31 == v32;
@@ -735,42 +735,42 @@ LABEL_16:
     {
     }
 
-    v15 = container_log_handle_for_category();
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    fileURL4 = container_log_handle_for_category();
+    if (os_log_type_enabled(fileURL4, OS_LOG_TYPE_ERROR))
     {
-      v43 = [(MCMMetadata *)self shortDescription];
+      shortDescription2 = [(MCMMetadata *)self shortDescription];
       v44 = v48[5];
       *buf = 138412546;
-      v62 = v43;
+      v62 = shortDescription2;
       v63 = 2112;
       v64 = v44;
-      _os_log_error_impl(&dword_1DF2C3000, v15, OS_LOG_TYPE_ERROR, "Metadata failed verification, ctime changed; cacheEntry = %@, current fsNode = %@", buf, 0x16u);
+      _os_log_error_impl(&dword_1DF2C3000, fileURL4, OS_LOG_TYPE_ERROR, "Metadata failed verification, ctime changed; cacheEntry = %@, current fsNode = %@", buf, 0x16u);
     }
   }
 
   else
   {
-    v15 = container_log_handle_for_category();
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    fileURL4 = container_log_handle_for_category();
+    if (os_log_type_enabled(fileURL4, OS_LOG_TYPE_ERROR))
     {
-      v34 = [(MCMMetadata *)self shortDescription];
+      shortDescription3 = [(MCMMetadata *)self shortDescription];
       v35 = v48[5];
       *buf = 138412546;
-      v62 = v34;
+      v62 = shortDescription3;
       v63 = 2112;
       v64 = v35;
-      _os_log_error_impl(&dword_1DF2C3000, v15, OS_LOG_TYPE_ERROR, "Metadata failed verification, fs node changed; metadata = %@, current fsNode = %@", buf, 0x16u);
+      _os_log_error_impl(&dword_1DF2C3000, fileURL4, OS_LOG_TYPE_ERROR, "Metadata failed verification, fs node changed; metadata = %@, current fsNode = %@", buf, 0x16u);
     }
   }
 
   v17 = 0;
 LABEL_23:
 
-  if (a3)
+  if (error)
   {
     v36 = v17;
     v33 = 0;
-    *a3 = v17;
+    *error = v17;
   }
 
   else
@@ -804,14 +804,14 @@ uint64_t __31__MCMMetadata_verifyWithError___block_invoke(void *a1, void *a2, ui
   return v10;
 }
 
-- (BOOL)writeMetadataToFileURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)writeMetadataToFileURL:(id)l options:(unint64_t)options error:(id *)error
 {
   v76 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = self;
-  objc_sync_enter(v9);
-  LOBYTE(self) = [(MCMMetadata *)v9 _persisted];
-  objc_sync_exit(v9);
+  lCopy = l;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  LOBYTE(self) = [(MCMMetadata *)selfCopy _persisted];
+  objc_sync_exit(selfCopy);
 
   if (self)
   {
@@ -824,64 +824,64 @@ LABEL_21:
 
   v11 = objc_autoreleasePoolPush();
   v12 = objc_opt_new();
-  v13 = [(MCMMetadata *)v9 info];
+  info = [(MCMMetadata *)selfCopy info];
 
-  if (v13)
+  if (info)
   {
-    v14 = [(MCMMetadata *)v9 info];
-    [v12 setValue:v14 forKey:@"MCMMetadataInfo"];
+    info2 = [(MCMMetadata *)selfCopy info];
+    [v12 setValue:info2 forKey:@"MCMMetadataInfo"];
   }
 
-  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MCMMetadataMinimal containerClass](v9, "containerClass")}];
+  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MCMMetadataMinimal containerClass](selfCopy, "containerClass")}];
   [v12 setValue:v15 forKey:@"MCMMetadataContentClass"];
 
-  if ([MCMUserIdentity isUserIdentityRequiredForContainerClass:[(MCMMetadataMinimal *)v9 containerClass]])
+  if ([MCMUserIdentity isUserIdentityRequiredForContainerClass:[(MCMMetadataMinimal *)selfCopy containerClass]])
   {
-    v16 = [(MCMMetadataMinimal *)v9 userIdentity];
-    v17 = [v16 plist];
-    [v12 setValue:v17 forKey:@"MCMMetadataUserIdentity"];
+    userIdentity = [(MCMMetadataMinimal *)selfCopy userIdentity];
+    plist = [userIdentity plist];
+    [v12 setValue:plist forKey:@"MCMMetadataUserIdentity"];
   }
 
-  v18 = [(MCMMetadataMinimal *)v9 identifier];
-  [v12 setValue:v18 forKey:@"MCMMetadataIdentifier"];
+  identifier = [(MCMMetadataMinimal *)selfCopy identifier];
+  [v12 setValue:identifier forKey:@"MCMMetadataIdentifier"];
 
-  v19 = [(MCMMetadataMinimal *)v9 uuid];
-  v20 = [v19 UUIDString];
-  [v12 setValue:v20 forKey:@"MCMMetadataUUID"];
+  uuid = [(MCMMetadataMinimal *)selfCopy uuid];
+  uUIDString = [uuid UUIDString];
+  [v12 setValue:uUIDString forKey:@"MCMMetadataUUID"];
 
   [v12 setValue:&unk_1F5A765A0 forKey:@"MCMMetadataVersion"];
-  v21 = [(MCMMetadataMinimal *)v9 schemaVersion];
-  [v12 setValue:v21 forKey:@"MCMMetadataSchemaVersion"];
+  schemaVersion = [(MCMMetadataMinimal *)selfCopy schemaVersion];
+  [v12 setValue:schemaVersion forKey:@"MCMMetadataSchemaVersion"];
 
-  v22 = [MEMORY[0x1E696AD98] numberWithInt:{-[MCMMetadata dataProtectionClass](v9, "dataProtectionClass")}];
+  v22 = [MEMORY[0x1E696AD98] numberWithInt:{-[MCMMetadata dataProtectionClass](selfCopy, "dataProtectionClass")}];
   [v12 setValue:v22 forKey:@"MCMMetadataActiveDPClass"];
 
-  v23 = [(MCMMetadata *)v9 userManagedAssetsDirName];
+  userManagedAssetsDirName = [(MCMMetadata *)selfCopy userManagedAssetsDirName];
 
-  if (v23)
+  if (userManagedAssetsDirName)
   {
-    v24 = [(MCMMetadata *)v9 userManagedAssetsDirName];
-    [v12 setValue:v24 forKey:@"MCMMetadataUserManagedAssetsDirName"];
+    userManagedAssetsDirName2 = [(MCMMetadata *)selfCopy userManagedAssetsDirName];
+    [v12 setValue:userManagedAssetsDirName2 forKey:@"MCMMetadataUserManagedAssetsDirName"];
   }
 
-  v25 = [(MCMMetadata *)v9 creator];
+  creator = [(MCMMetadata *)selfCopy creator];
 
-  if (v25)
+  if (creator)
   {
-    v26 = [(MCMMetadata *)v9 creator];
-    [v12 setValue:v26 forKey:@"MCMMetadataCreator"];
+    creator2 = [(MCMMetadata *)selfCopy creator];
+    [v12 setValue:creator2 forKey:@"MCMMetadataCreator"];
   }
 
-  v27 = v9;
+  v27 = selfCopy;
   objc_sync_enter(v27);
   v61 = 0;
-  v28 = [(MCMMetadata *)v27 _writeFileURL:v8 dictionary:v12 options:a4 error:&v61];
+  v28 = [(MCMMetadata *)v27 _writeFileURL:lCopy dictionary:v12 options:options error:&v61];
   v10 = v61;
   if (v28)
   {
     v29 = +[MCMFileManager defaultManager];
     v60 = 0;
-    v30 = [v29 fsNodeOfURL:v8 followSymlinks:0 error:&v60];
+    v30 = [v29 fsNodeOfURL:lCopy followSymlinks:0 error:&v60];
     v31 = v60;
 
     if (v30)
@@ -896,36 +896,36 @@ LABEL_21:
       p_super = container_log_handle_for_category();
       if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
       {
-        v57 = [(MCMMetadataMinimal *)v27 uuid];
-        v59 = [(MCMMetadataMinimal *)v27 containerPath];
-        v55 = [v59 containerPathIdentifier];
-        v51 = [(MCMMetadataMinimal *)v27 identifier];
-        v49 = [(MCMMetadataMinimal *)v27 containerClass];
+        uuid2 = [(MCMMetadataMinimal *)v27 uuid];
+        containerPath = [(MCMMetadataMinimal *)v27 containerPath];
+        containerPathIdentifier = [containerPath containerPathIdentifier];
+        identifier2 = [(MCMMetadataMinimal *)v27 identifier];
+        containerClass = [(MCMMetadataMinimal *)v27 containerClass];
         v53 = [(MCMMetadata *)v27 conformsToProtocol:&unk_1F5A81C70];
         if (v53)
         {
-          v47 = [(MCMMetadata *)v27 fsNode];
-          v45 = [v47 inode];
+          fsNode = [(MCMMetadata *)v27 fsNode];
+          inode = [fsNode inode];
         }
 
         else
         {
-          v45 = 0;
+          inode = 0;
         }
 
-        v46 = [v8 path];
+        path = [lCopy path];
         *buf = 138544898;
-        v63 = v57;
+        v63 = uuid2;
         v64 = 2114;
-        v65 = v55;
+        v65 = containerPathIdentifier;
         v66 = 2112;
-        v67 = v51;
+        v67 = identifier2;
         v68 = 2050;
-        v69 = v49;
+        v69 = containerClass;
         v70 = 2048;
-        v71 = v45;
+        v71 = inode;
         v72 = 2112;
-        v73 = v46;
+        v73 = path;
         v74 = 2114;
         v75 = v31;
         _os_log_error_impl(&dword_1DF2C3000, p_super, OS_LOG_TYPE_ERROR, "[u %{public}@:p %{public}@:c %@(%{public}llu):i%llu] Could not fetch fsNode for [%@]: %{public}@", buf, 0x48u);
@@ -940,39 +940,39 @@ LABEL_21:
     v38 = container_log_handle_for_category();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
     {
-      v56 = [(MCMMetadataMinimal *)v27 uuid];
-      v58 = [(MCMMetadataMinimal *)v27 containerPath];
-      v52 = [v58 containerPathIdentifier];
-      v50 = [(MCMMetadataMinimal *)v27 identifier];
-      v48 = [(MCMMetadataMinimal *)v27 containerClass];
+      uuid3 = [(MCMMetadataMinimal *)v27 uuid];
+      containerPath2 = [(MCMMetadataMinimal *)v27 containerPath];
+      containerPathIdentifier2 = [containerPath2 containerPathIdentifier];
+      identifier3 = [(MCMMetadataMinimal *)v27 identifier];
+      containerClass2 = [(MCMMetadataMinimal *)v27 containerClass];
       v54 = [(MCMMetadata *)v27 conformsToProtocol:&unk_1F5A81C70];
       if (v54)
       {
-        v47 = [(MCMMetadata *)v27 fsNode];
-        v42 = [v47 inode];
+        fsNode = [(MCMMetadata *)v27 fsNode];
+        inode2 = [fsNode inode];
       }
 
       else
       {
-        v42 = 0;
+        inode2 = 0;
       }
 
-      v43 = [v8 path];
-      v44 = [(MCMMetadata *)v27 shortDescription];
+      path2 = [lCopy path];
+      shortDescription = [(MCMMetadata *)v27 shortDescription];
       *buf = 138544898;
-      v63 = v56;
+      v63 = uuid3;
       v64 = 2114;
-      v65 = v52;
+      v65 = containerPathIdentifier2;
       v66 = 2112;
-      v67 = v50;
+      v67 = identifier3;
       v68 = 2050;
-      v69 = v48;
+      v69 = containerClass2;
       v70 = 2048;
-      v71 = v42;
+      v71 = inode2;
       v72 = 2112;
-      v73 = v43;
+      v73 = path2;
       v74 = 2112;
-      v75 = v44;
+      v75 = shortDescription;
       _os_log_debug_impl(&dword_1DF2C3000, v38, OS_LOG_TYPE_DEBUG, "[u %{public}@:p %{public}@:c %@(%{public}llu):i%llu] Wrote metadata to [%@]: %@", buf, 0x48u);
 
       if (v54)
@@ -984,13 +984,13 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v34 = [[MCMError alloc] initWithNSError:v10 url:v8 defaultErrorType:34];
+  v34 = [[MCMError alloc] initWithNSError:v10 url:lCopy defaultErrorType:34];
   v35 = container_log_handle_for_category();
   if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
   {
-    v41 = [v8 path];
+    path3 = [lCopy path];
     *buf = 138412546;
-    v63 = v41;
+    v63 = path3;
     v64 = 2112;
     v65 = v10;
     _os_log_error_impl(&dword_1DF2C3000, v35, OS_LOG_TYPE_ERROR, "Failed to write metadata dictionary to URL %@: %@", buf, 0x16u);
@@ -998,11 +998,11 @@ LABEL_21:
 
   objc_sync_exit(v27);
   objc_autoreleasePoolPop(v11);
-  if (a5)
+  if (error)
   {
     v36 = v34;
     v37 = 0;
-    *a5 = v34;
+    *error = v34;
   }
 
   else
@@ -1016,39 +1016,39 @@ LABEL_22:
   return v37;
 }
 
-- (BOOL)writeMetadataToDiskWithError:(id *)a3
+- (BOOL)writeMetadataToDiskWithError:(id *)error
 {
   v11 = *MEMORY[0x1E69E9840];
   v5 = +[MCMFileManager defaultManager];
-  v6 = [(MCMMetadata *)self fileURL];
-  v7 = [v5 dataWritingOptionsForFileAtURL:v6];
+  fileURL = [(MCMMetadata *)self fileURL];
+  v7 = [v5 dataWritingOptionsForFileAtURL:fileURL];
 
-  v8 = [(MCMMetadata *)self fileURL];
-  LOBYTE(a3) = [(MCMMetadata *)self writeMetadataToFileURL:v8 options:v7 error:a3];
+  fileURL2 = [(MCMMetadata *)self fileURL];
+  LOBYTE(error) = [(MCMMetadata *)self writeMetadataToFileURL:fileURL2 options:v7 error:error];
 
   v9 = *MEMORY[0x1E69E9840];
-  return a3;
+  return error;
 }
 
-- (BOOL)_initFromMetadataInDictionary:(id)a3 containerPath:(id)a4 userIdentity:(id)a5 containerClass:(unint64_t)a6 fsNode:(id)a7 fileURL:(id)a8 userIdentityCache:(id)a9 error:(id *)a10
+- (BOOL)_initFromMetadataInDictionary:(id)dictionary containerPath:(id)path userIdentity:(id)identity containerClass:(unint64_t)class fsNode:(id)node fileURL:(id)l userIdentityCache:(id)cache error:(id *)self0
 {
   v61 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a7;
-  v19 = a8;
+  dictionaryCopy = dictionary;
+  pathCopy = path;
+  nodeCopy = node;
+  lCopy = l;
   v57.receiver = self;
   v57.super_class = MCMMetadata;
   v58 = 0;
-  LODWORD(a5) = [(MCMMetadataMinimal *)&v57 _initFromMetadataInDictionary:v16 containerPath:v17 userIdentity:a5 containerClass:a6 fsNode:v18 fileURL:v19 userIdentityCache:a9 error:&v58];
+  LODWORD(identity) = [(MCMMetadataMinimal *)&v57 _initFromMetadataInDictionary:dictionaryCopy containerPath:pathCopy userIdentity:identity containerClass:class fsNode:nodeCopy fileURL:lCopy userIdentityCache:cache error:&v58];
   v20 = v58;
-  if (!a5)
+  if (!identity)
   {
     goto LABEL_33;
   }
 
-  objc_storeStrong(&self->_fsNode, a7);
-  v21 = [v16 objectForKeyedSubscript:@"MCMMetadataUserManagedAssetsDirName"];
+  objc_storeStrong(&self->_fsNode, node);
+  v21 = [dictionaryCopy objectForKeyedSubscript:@"MCMMetadataUserManagedAssetsDirName"];
   userManagedAssetsDirName = self->_userManagedAssetsDirName;
   self->_userManagedAssetsDirName = v21;
 
@@ -1062,8 +1062,8 @@ LABEL_22:
     if (!v25)
     {
       v36 = [MCMError alloc];
-      v37 = [v19 path];
-      v38 = [(MCMError *)v36 initWithErrorType:29 category:5 path:v37 POSIXerrno:0];
+      path = [lCopy path];
+      v38 = [(MCMError *)v36 initWithErrorType:29 category:5 path:path POSIXerrno:0];
 
       v39 = container_log_handle_for_category();
       if (!os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -1081,7 +1081,7 @@ LABEL_31:
     }
   }
 
-  v26 = [v16 objectForKeyedSubscript:@"MCMMetadataCreator"];
+  v26 = [dictionaryCopy objectForKeyedSubscript:@"MCMMetadataCreator"];
   creator = self->_creator;
   self->_creator = v26;
 
@@ -1095,8 +1095,8 @@ LABEL_31:
     if (!v30)
     {
       v45 = [MCMError alloc];
-      v46 = [v19 path];
-      v38 = [(MCMError *)v45 initWithErrorType:29 category:5 path:v46 POSIXerrno:0];
+      path2 = [lCopy path];
+      v38 = [(MCMError *)v45 initWithErrorType:29 category:5 path:path2 POSIXerrno:0];
 
       v39 = container_log_handle_for_category();
       if (!os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -1112,7 +1112,7 @@ LABEL_31:
     }
   }
 
-  v31 = [v16 objectForKeyedSubscript:@"MCMMetadataInfo"];
+  v31 = [dictionaryCopy objectForKeyedSubscript:@"MCMMetadataInfo"];
   info = self->_info;
   self->_info = v31;
 
@@ -1126,8 +1126,8 @@ LABEL_31:
     if (!v35)
     {
       v51 = [MCMError alloc];
-      v52 = [v19 path];
-      v38 = [(MCMError *)v51 initWithErrorType:29 category:5 path:v52 POSIXerrno:0];
+      path3 = [lCopy path];
+      v38 = [(MCMError *)v51 initWithErrorType:29 category:5 path:path3 POSIXerrno:0];
 
       v39 = container_log_handle_for_category();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -1143,11 +1143,11 @@ LABEL_32:
 
       v20 = v38;
 LABEL_33:
-      if (a10)
+      if (error)
       {
         v54 = v20;
         v50 = 0;
-        *a10 = v20;
+        *error = v20;
       }
 
       else
@@ -1160,7 +1160,7 @@ LABEL_33:
   }
 
   self->_dataProtectionClass = -1;
-  v42 = [v16 objectForKeyedSubscript:@"MCMMetadataActiveDPClass"];
+  v42 = [dictionaryCopy objectForKeyedSubscript:@"MCMMetadataActiveDPClass"];
   objc_opt_class();
   v43 = v42;
   if (objc_opt_isKindOfClass())
@@ -1180,10 +1180,10 @@ LABEL_33:
 
   else
   {
-    v48 = [v17 containerClassPath];
-    v49 = [v48 supportsDataProtection];
+    containerClassPath = [pathCopy containerClassPath];
+    supportsDataProtection = [containerClassPath supportsDataProtection];
 
-    if (v49)
+    if (supportsDataProtection)
     {
       self->_dataProtectionClass = 0;
     }
@@ -1196,62 +1196,62 @@ LABEL_36:
   return v50;
 }
 
-- (id)initByReadingAndValidatingMetadataAtFileURL:(id)a3 containerPath:(id)a4 userIdentity:(id)a5 containerClass:(unint64_t)a6 userIdentityCache:(id)a7 error:(id *)a8
+- (id)initByReadingAndValidatingMetadataAtFileURL:(id)l containerPath:(id)path userIdentity:(id)identity containerClass:(unint64_t)class userIdentityCache:(id)cache error:(id *)error
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v15 = a3;
+  lCopy = l;
   v22.receiver = self;
   v22.super_class = MCMMetadata;
   v23[0] = 0;
-  v16 = [(MCMMetadataMinimal *)&v22 initByReadingAndValidatingMetadataAtFileURL:v15 containerPath:a4 userIdentity:a5 containerClass:a6 userIdentityCache:a7 error:v23];
+  v16 = [(MCMMetadataMinimal *)&v22 initByReadingAndValidatingMetadataAtFileURL:lCopy containerPath:path userIdentity:identity containerClass:class userIdentityCache:cache error:v23];
   v17 = v23[0];
   v18 = v17;
   if (v16)
   {
-    objc_storeStrong(v16 + 9, a3);
+    objc_storeStrong(v16 + 9, l);
   }
 
-  else if (a8)
+  else if (error)
   {
     v19 = v17;
-    *a8 = v18;
+    *error = v18;
   }
 
   v20 = *MEMORY[0x1E69E9840];
   return v16;
 }
 
-- (MCMMetadata)initWithContainerIdentity:(id)a3 info:(id)a4 containerPath:(id)a5 userManagedAssetsDirName:(id)a6 schemaVersion:(id)a7 dataProtectionClass:(int)a8 fsNode:(id)a9 creator:(id)a10 userIdentityCache:(id)a11
+- (MCMMetadata)initWithContainerIdentity:(id)identity info:(id)info containerPath:(id)path userManagedAssetsDirName:(id)name schemaVersion:(id)version dataProtectionClass:(int)class fsNode:(id)node creator:(id)self0 userIdentityCache:(id)self1
 {
   v30 = *MEMORY[0x1E69E9840];
-  v28 = a4;
-  v17 = a5;
-  v27 = a6;
-  v26 = a9;
-  v18 = a10;
+  infoCopy = info;
+  pathCopy = path;
+  nameCopy = name;
+  nodeCopy = node;
+  creatorCopy = creator;
   v29.receiver = self;
   v29.super_class = MCMMetadata;
-  v19 = [(MCMMetadataMinimal *)&v29 initWithContainerIdentity:a3 containerPath:v17 schemaVersion:a7 userIdentityCache:a11];
+  v19 = [(MCMMetadataMinimal *)&v29 initWithContainerIdentity:identity containerPath:pathCopy schemaVersion:version userIdentityCache:cache];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_info, a4);
-    objc_storeStrong(&v20->_userManagedAssetsDirName, a6);
-    v20->_dataProtectionClass = a8;
-    objc_storeStrong(&v20->_fsNode, a9);
-    objc_storeStrong(&v20->_creator, a10);
-    v21 = [v17 metadataURL];
+    objc_storeStrong(&v19->_info, info);
+    objc_storeStrong(&v20->_userManagedAssetsDirName, name);
+    v20->_dataProtectionClass = class;
+    objc_storeStrong(&v20->_fsNode, node);
+    objc_storeStrong(&v20->_creator, creator);
+    metadataURL = [pathCopy metadataURL];
     fileURL = v20->_fileURL;
-    v20->_fileURL = v21;
+    v20->_fileURL = metadataURL;
   }
 
   v23 = *MEMORY[0x1E69E9840];
   return v20;
 }
 
-- (MCMMetadata)initWithContainerIdentity:(id)a3 containerPath:(id)a4 schemaVersion:(id)a5 userIdentityCache:(id)a6
+- (MCMMetadata)initWithContainerIdentity:(id)identity containerPath:(id)path schemaVersion:(id)version userIdentityCache:(id)cache
 {
-  result = [(MCMMetadata *)self initWithContainerIdentity:a3 info:MEMORY[0x1E695E0F8] containerPath:a4 userManagedAssetsDirName:0 schemaVersion:a5 dataProtectionClass:0xFFFFFFFFLL fsNode:0 creator:0 userIdentityCache:a6, *MEMORY[0x1E69E9840]];
+  result = [(MCMMetadata *)self initWithContainerIdentity:identity info:MEMORY[0x1E695E0F8] containerPath:path userManagedAssetsDirName:0 schemaVersion:version dataProtectionClass:0xFFFFFFFFLL fsNode:0 creator:0 userIdentityCache:cache, *MEMORY[0x1E69E9840]];
   v7 = *MEMORY[0x1E69E9840];
   return result;
 }

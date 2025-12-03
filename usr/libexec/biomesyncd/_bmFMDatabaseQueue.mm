@@ -1,39 +1,39 @@
 @interface _bmFMDatabaseQueue
-+ (id)databaseQueueWithPath:(id)a3;
-+ (id)databaseQueueWithURL:(id)a3;
-- (BOOL)checkpoint:(int)a3 name:(id)a4 logFrameCount:(int *)a5 checkpointCount:(int *)a6 error:(id *)a7;
-- (_bmFMDatabaseQueue)initWithURL:(id)a3;
++ (id)databaseQueueWithPath:(id)path;
++ (id)databaseQueueWithURL:(id)l;
+- (BOOL)checkpoint:(int)checkpoint name:(id)name logFrameCount:(int *)count checkpointCount:(int *)checkpointCount error:(id *)error;
+- (_bmFMDatabaseQueue)initWithURL:(id)l;
 - (id)database;
-- (id)inSavePoint:(id)a3;
-- (void)beginTransaction:(int64_t)a3 withBlock:(id)a4;
+- (id)inSavePoint:(id)point;
+- (void)beginTransaction:(int64_t)transaction withBlock:(id)block;
 - (void)close;
 - (void)dealloc;
-- (void)inDatabase:(id)a3;
+- (void)inDatabase:(id)database;
 - (void)interrupt;
 @end
 
 @implementation _bmFMDatabaseQueue
 
-+ (id)databaseQueueWithPath:(id)a3
++ (id)databaseQueueWithPath:(id)path
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithPath:v4];
+  pathCopy = path;
+  v5 = [[self alloc] initWithPath:pathCopy];
 
   return v5;
 }
 
-+ (id)databaseQueueWithURL:(id)a3
++ (id)databaseQueueWithURL:(id)l
 {
-  v4 = [a3 path];
-  v5 = [a1 databaseQueueWithPath:v4];
+  path = [l path];
+  v5 = [self databaseQueueWithPath:path];
 
   return v5;
 }
 
-- (_bmFMDatabaseQueue)initWithURL:(id)a3
+- (_bmFMDatabaseQueue)initWithURL:(id)l
 {
-  v4 = [a3 path];
-  v5 = [(_bmFMDatabaseQueue *)self initWithPath:v4];
+  path = [l path];
+  v5 = [(_bmFMDatabaseQueue *)self initWithPath:path];
 
   return v5;
 }
@@ -64,8 +64,8 @@
 
 - (void)interrupt
 {
-  v2 = [(_bmFMDatabaseQueue *)self database];
-  [v2 interrupt];
+  database = [(_bmFMDatabaseQueue *)self database];
+  [database interrupt];
 }
 
 - (id)database
@@ -103,9 +103,9 @@ LABEL_5:
   return v6;
 }
 
-- (void)inDatabase:(id)a3
+- (void)inDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = dispatch_get_specific(&off_100079AB0);
   if (v5 == self)
   {
@@ -119,29 +119,29 @@ LABEL_5:
   v9[2] = sub_100046C88;
   v9[3] = &unk_100078B98;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = databaseCopy;
+  v8 = databaseCopy;
   dispatch_sync(queue, v9);
 }
 
-- (void)beginTransaction:(int64_t)a3 withBlock:(id)a4
+- (void)beginTransaction:(int64_t)transaction withBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100046DA8;
   block[3] = &unk_100079AC0;
-  v10 = v6;
-  v11 = a3;
+  v10 = blockCopy;
+  transactionCopy = transaction;
   block[4] = self;
-  v8 = v6;
+  v8 = blockCopy;
   dispatch_sync(queue, block);
 }
 
-- (id)inSavePoint:(id)a3
+- (id)inSavePoint:(id)point
 {
-  v4 = a3;
+  pointCopy = point;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -153,10 +153,10 @@ LABEL_5:
   block[1] = 3221225472;
   block[2] = sub_100046FEC;
   block[3] = &unk_100079AE8;
-  v10 = v4;
+  v10 = pointCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = pointCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -165,9 +165,9 @@ LABEL_5:
   return v7;
 }
 
-- (BOOL)checkpoint:(int)a3 name:(id)a4 logFrameCount:(int *)a5 checkpointCount:(int *)a6 error:(id *)a7
+- (BOOL)checkpoint:(int)checkpoint name:(id)name logFrameCount:(int *)count checkpointCount:(int *)checkpointCount error:(id *)error
 {
-  v12 = a4;
+  nameCopy = name;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -177,19 +177,19 @@ LABEL_5:
   block[1] = 3221225472;
   block[2] = sub_100047268;
   block[3] = &unk_100079B10;
-  v22 = a3;
+  checkpointCopy = checkpoint;
   block[4] = self;
-  v17 = v12;
+  v17 = nameCopy;
   v18 = &v23;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v14 = v12;
+  countCopy = count;
+  checkpointCountCopy = checkpointCount;
+  errorCopy = error;
+  v14 = nameCopy;
   dispatch_sync(queue, block);
-  LOBYTE(a6) = *(v24 + 24);
+  LOBYTE(checkpointCount) = *(v24 + 24);
 
   _Block_object_dispose(&v23, 8);
-  return a6;
+  return checkpointCount;
 }
 
 @end

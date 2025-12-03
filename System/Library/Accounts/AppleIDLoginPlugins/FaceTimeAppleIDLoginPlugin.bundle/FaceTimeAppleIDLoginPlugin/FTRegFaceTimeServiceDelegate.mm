@@ -7,9 +7,9 @@
 - (BOOL)serviceIsAvailable
 {
   v2 = +[FTDeviceSupport sharedInstance];
-  v3 = [v2 faceTimeAvailable];
+  faceTimeAvailable = [v2 faceTimeAvailable];
 
-  return v3;
+  return faceTimeAvailable;
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface CBMutableCharacteristic
-- (BOOL)handleCentralSubscribed:(id)a3;
-- (BOOL)handleCentralUnsubscribed:(id)a3;
-- (CBMutableCharacteristic)initWithService:(id)a3 dictionary:(id)a4;
+- (BOOL)handleCentralSubscribed:(id)subscribed;
+- (BOOL)handleCentralUnsubscribed:(id)unsubscribed;
+- (CBMutableCharacteristic)initWithService:(id)service dictionary:(id)dictionary;
 - (CBMutableCharacteristic)initWithType:(CBUUID *)UUID properties:(CBCharacteristicProperties)properties value:(NSData *)value permissions:(CBAttributePermissions)permissions;
 - (id)description;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation CBMutableCharacteristic
@@ -33,23 +33,23 @@
   return v12;
 }
 
-- (CBMutableCharacteristic)initWithService:(id)a3 dictionary:(id)a4
+- (CBMutableCharacteristic)initWithService:(id)service dictionary:(id)dictionary
 {
-  v5 = a4;
-  v6 = [v5 objectForKeyedSubscript:@"kCBMsgArgUUID"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"kCBMsgArgUUID"];
   v7 = [CBUUID UUIDWithData:v6];
 
-  v8 = [v5 objectForKeyedSubscript:@"kCBMsgArgCharacteristicProperties"];
-  v9 = [v8 integerValue];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"kCBMsgArgCharacteristicProperties"];
+  integerValue = [v8 integerValue];
 
-  v10 = [v5 objectForKeyedSubscript:@"kCBMsgArgAttributePermissions"];
-  v11 = [v10 integerValue];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"kCBMsgArgAttributePermissions"];
+  integerValue2 = [v10 integerValue];
 
-  v12 = [v5 objectForKeyedSubscript:@"kCBMsgArgData"];
-  v13 = [(CBMutableCharacteristic *)self initWithType:v7 properties:v9 value:v12 permissions:v11];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"kCBMsgArgData"];
+  v13 = [(CBMutableCharacteristic *)self initWithType:v7 properties:integerValue value:v12 permissions:integerValue2];
   if (v13)
   {
-    v14 = [v5 objectForKeyedSubscript:@"kCBMsgArgAttributeID"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"kCBMsgArgAttributeID"];
     ID = v13->_ID;
     v13->_ID = v14;
   }
@@ -66,14 +66,14 @@
   [(CBMutableCharacteristic *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if ([v8 isEqualToString:@"descriptors"])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"descriptors"])
   {
     v23 = a2;
-    v24 = v8;
+    v24 = pathCopy;
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
@@ -92,47 +92,47 @@
         v25 = v10;
         do
         {
-          v13 = self;
+          selfCopy = self;
           if (*v30 != v28)
           {
             objc_enumerationMutation(obj);
           }
 
           v14 = *(*(&v29 + 1) + 8 * v12);
-          v15 = [v14 UUID];
+          uUID = [v14 UUID];
           v16 = [CBUUID UUIDWithString:@"2901"];
-          v17 = [v15 isEqual:v16];
+          v17 = [uUID isEqual:v16];
 
           if (v17)
           {
-            self = v13;
+            self = selfCopy;
             if ((v11 & 1) == 0)
             {
               v11 = 1;
               goto LABEL_8;
             }
 
-            [CBMutableCharacteristic observeValueForKeyPath:v23 ofObject:v13 change:&v33 context:?];
+            [CBMutableCharacteristic observeValueForKeyPath:v23 ofObject:selfCopy change:&v33 context:?];
             v21 = v33;
             v11 = 1;
           }
 
           else
           {
-            v18 = [v14 UUID];
+            uUID2 = [v14 UUID];
             v19 = [CBUUID UUIDWithString:@"2904"];
-            v20 = [v18 isEqual:v19];
+            v20 = [uUID2 isEqual:v19];
 
             if ((v20 & v27) != 1)
             {
               v27 |= v20;
-              self = v13;
+              self = selfCopy;
               v10 = v25;
               goto LABEL_8;
             }
 
-            self = v13;
-            [CBMutableCharacteristic observeValueForKeyPath:v23 ofObject:v13 change:&v33 context:?];
+            self = selfCopy;
+            [CBMutableCharacteristic observeValueForKeyPath:v23 ofObject:selfCopy change:&v33 context:?];
             v21 = v33;
             v27 = 1;
             v10 = v25;
@@ -150,10 +150,10 @@ LABEL_8:
       while (v10);
     }
 
-    v8 = v24;
+    pathCopy = v24;
   }
 
-  else if ([v8 isEqualToString:@"properties"])
+  else if ([pathCopy isEqualToString:@"properties"])
   {
     if (([(CBCharacteristic *)self properties]& 1) != 0)
     {
@@ -177,25 +177,25 @@ LABEL_22:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)handleCentralSubscribed:(id)a3
+- (BOOL)handleCentralSubscribed:(id)subscribed
 {
-  v4 = a3;
-  v5 = [(NSMutableArray *)self->_subscribedCentrals containsObject:v4];
+  subscribedCopy = subscribed;
+  v5 = [(NSMutableArray *)self->_subscribedCentrals containsObject:subscribedCopy];
   if ((v5 & 1) == 0)
   {
-    [(NSMutableArray *)self->_subscribedCentrals addObject:v4];
+    [(NSMutableArray *)self->_subscribedCentrals addObject:subscribedCopy];
   }
 
   return v5 ^ 1;
 }
 
-- (BOOL)handleCentralUnsubscribed:(id)a3
+- (BOOL)handleCentralUnsubscribed:(id)unsubscribed
 {
-  v4 = a3;
-  v5 = [(NSMutableArray *)self->_subscribedCentrals containsObject:v4];
+  unsubscribedCopy = unsubscribed;
+  v5 = [(NSMutableArray *)self->_subscribedCentrals containsObject:unsubscribedCopy];
   if (v5)
   {
-    [(NSMutableArray *)self->_subscribedCentrals removeObject:v4];
+    [(NSMutableArray *)self->_subscribedCentrals removeObject:unsubscribedCopy];
   }
 
   return v5;
@@ -205,12 +205,12 @@ LABEL_22:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CBAttribute *)self UUID];
-  v6 = [(CBCharacteristic *)self value];
-  v7 = [(CBCharacteristic *)self properties];
-  v8 = [(CBMutableCharacteristic *)self permissions];
-  v9 = [(CBCharacteristic *)self descriptors];
-  v10 = [v3 stringWithFormat:@"<%@: %p UUID = %@, Value = %@, Properties = 0x%lX, Permissions = 0x%lX, Descriptors = %@, SubscribedCentrals = %@>", v4, self, v5, v6, v7, v8, v9, self->_subscribedCentrals];
+  uUID = [(CBAttribute *)self UUID];
+  value = [(CBCharacteristic *)self value];
+  properties = [(CBCharacteristic *)self properties];
+  permissions = [(CBMutableCharacteristic *)self permissions];
+  descriptors = [(CBCharacteristic *)self descriptors];
+  v10 = [v3 stringWithFormat:@"<%@: %p UUID = %@, Value = %@, Properties = 0x%lX, Permissions = 0x%lX, Descriptors = %@, SubscribedCentrals = %@>", v4, self, uUID, value, properties, permissions, descriptors, self->_subscribedCentrals];
 
   return v10;
 }

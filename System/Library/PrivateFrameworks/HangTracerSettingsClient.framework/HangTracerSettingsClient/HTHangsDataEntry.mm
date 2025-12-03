@@ -1,47 +1,47 @@
 @interface HTHangsDataEntry
-+ (id)sortedHangIDsByCreationDate:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (HTHangsDataEntry)initWithPath:(id)a3 hangID:(id)a4 creationDate:(id)a5 duration:(double)a6 processBundleID:(id)a7 processPath:(id)a8 processRecord:(id)a9;
++ (id)sortedHangIDsByCreationDate:(id)date;
+- (BOOL)isEqual:(id)equal;
+- (HTHangsDataEntry)initWithPath:(id)path hangID:(id)d creationDate:(id)date duration:(double)duration processBundleID:(id)iD processPath:(id)processPath processRecord:(id)record;
 - (NSString)displayName;
 - (unint64_t)fileSize;
 @end
 
 @implementation HTHangsDataEntry
 
-- (HTHangsDataEntry)initWithPath:(id)a3 hangID:(id)a4 creationDate:(id)a5 duration:(double)a6 processBundleID:(id)a7 processPath:(id)a8 processRecord:(id)a9
+- (HTHangsDataEntry)initWithPath:(id)path hangID:(id)d creationDate:(id)date duration:(double)duration processBundleID:(id)iD processPath:(id)processPath processRecord:(id)record
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  pathCopy = path;
+  dCopy = d;
+  dateCopy = date;
+  iDCopy = iD;
+  processPathCopy = processPath;
+  recordCopy = record;
   v37.receiver = self;
   v37.super_class = HTHangsDataEntry;
   v22 = [(HTHangsDataEntry *)&v37 init];
   if (v22)
   {
-    v23 = [v16 copy];
+    v23 = [pathCopy copy];
     path = v22->_path;
     v22->_path = v23;
 
-    v25 = [v17 copy];
+    v25 = [dCopy copy];
     hangID = v22->_hangID;
     v22->_hangID = v25;
 
-    objc_storeStrong(&v22->_creationDate, a5);
-    v22->_duration = a6;
-    v27 = [v19 copy];
-    v28 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v29 = [v27 stringByTrimmingCharactersInSet:v28];
+    objc_storeStrong(&v22->_creationDate, date);
+    v22->_duration = duration;
+    v27 = [iDCopy copy];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v29 = [v27 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
     processBundleID = v22->_processBundleID;
     v22->_processBundleID = v29;
 
-    v31 = [v20 copy];
+    v31 = [processPathCopy copy];
     processPath = v22->_processPath;
     v22->_processPath = v31;
 
-    objc_storeStrong(&v22->_processRecord, a9);
+    objc_storeStrong(&v22->_processRecord, record);
     if ([(NSString *)v22->_path hasSuffix:@"ips"])
     {
       v33 = 1;
@@ -70,10 +70,10 @@
   return v22;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -83,7 +83,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(NSString *)v4->_hangID isEqual:self->_hangID];
+      v5 = [(NSString *)equalCopy->_hangID isEqual:self->_hangID];
     }
 
     else
@@ -105,40 +105,40 @@
   processRecord = self->_processRecord;
   if (processRecord)
   {
-    v4 = [(LSApplicationRecord *)processRecord localizedName];
+    localizedName = [(LSApplicationRecord *)processRecord localizedName];
   }
 
   else
   {
-    v4 = 0;
+    localizedName = 0;
   }
 
-  v5 = [v4 stringByTrimmingCharactersInSet:displayName_characterSet];
+  v5 = [localizedName stringByTrimmingCharactersInSet:displayName_characterSet];
   v6 = [v5 length];
 
   if (!v6)
   {
     v7 = [(NSString *)self->_processBundleID componentsSeparatedByString:@"."];
-    v8 = [v7 lastObject];
+    lastObject = [v7 lastObject];
 
-    v4 = v8;
+    localizedName = lastObject;
   }
 
-  v9 = [v4 stringByTrimmingCharactersInSet:displayName_characterSet];
+  v9 = [localizedName stringByTrimmingCharactersInSet:displayName_characterSet];
   v10 = [v9 length];
 
   if (!v10)
   {
     v11 = [(NSString *)self->_processPath componentsSeparatedByString:@"/"];
-    v12 = [v11 lastObject];
+    lastObject2 = [v11 lastObject];
 
-    v4 = v12;
+    localizedName = lastObject2;
   }
 
-  v13 = [v4 stringByTrimmingCharactersInSet:displayName_characterSet];
+  v13 = [localizedName stringByTrimmingCharactersInSet:displayName_characterSet];
   if ([v13 length])
   {
-    v14 = v4;
+    v14 = localizedName;
   }
 
   else
@@ -165,12 +165,12 @@ void __31__HTHangsDataEntry_displayName__block_invoke()
 
 - (unint64_t)fileSize
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   path = self->_path;
   v10 = 0;
-  v5 = [v3 attributesOfItemAtPath:path error:&v10];
+  v5 = [defaultManager attributesOfItemAtPath:path error:&v10];
   v6 = v10;
-  v7 = [v5 fileSize];
+  fileSize = [v5 fileSize];
 
   if (v6)
   {
@@ -179,29 +179,29 @@ void __31__HTHangsDataEntry_displayName__block_invoke()
 
   else
   {
-    v8 = v7 == 0;
+    v8 = fileSize == 0;
   }
 
   if (v8)
   {
     NSLog(&cfstr_UnableToRetrie.isa, self->_path, v6);
-    v7 = 0;
+    fileSize = 0;
   }
 
-  return v7;
+  return fileSize;
 }
 
-+ (id)sortedHangIDsByCreationDate:(id)a3
++ (id)sortedHangIDsByCreationDate:(id)date
 {
-  v3 = a3;
-  v4 = [v3 allKeys];
+  dateCopy = date;
+  allKeys = [dateCopy allKeys];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __48__HTHangsDataEntry_sortedHangIDsByCreationDate___block_invoke;
   v8[3] = &unk_2796A91F0;
-  v9 = v3;
-  v5 = v3;
-  v6 = [v4 sortedArrayUsingComparator:v8];
+  v9 = dateCopy;
+  v5 = dateCopy;
+  v6 = [allKeys sortedArrayUsingComparator:v8];
 
   return v6;
 }

@@ -7,12 +7,12 @@
 - (id)_convertedLocation
 {
   v3 = objc_alloc_init(SFLatLng);
-  v4 = [(SALocation *)self latitude];
-  [v4 doubleValue];
+  latitude = [(SALocation *)self latitude];
+  [latitude doubleValue];
   [v3 setLat:?];
 
-  v5 = [(SALocation *)self longitude];
-  [v5 doubleValue];
+  longitude = [(SALocation *)self longitude];
+  [longitude doubleValue];
   [v3 setLng:?];
 
   return v3;

@@ -1,22 +1,22 @@
 @interface CAFRouteLeg
-- (CAFRouteLeg)initWithCoordinates:(id)a3 destination:(id)a4 origin:(id)a5;
-- (CAFRouteLeg)initWithDictionary:(id)a3;
+- (CAFRouteLeg)initWithCoordinates:(id)coordinates destination:(id)destination origin:(id)origin;
+- (CAFRouteLeg)initWithDictionary:(id)dictionary;
 - (NSDictionary)dictionaryRepresentation;
 - (id)description;
 @end
 
 @implementation CAFRouteLeg
 
-- (CAFRouteLeg)initWithDictionary:(id)a3
+- (CAFRouteLeg)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = CAFRouteLeg;
   v5 = [(CAFRouteLeg *)&v16 init];
   if (v5)
   {
     objc_opt_class();
-    v6 = [v4 objectForKey:@"coordinates"];
+    v6 = [dictionaryCopy objectForKey:@"coordinates"];
     if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v7 = v6;
@@ -31,7 +31,7 @@
     v5->_coordinates = v7;
 
     objc_opt_class();
-    v9 = [v4 objectForKey:@"destination"];
+    v9 = [dictionaryCopy objectForKey:@"destination"];
     if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v10 = v9;
@@ -46,7 +46,7 @@
     v5->_destination = v10;
 
     objc_opt_class();
-    v12 = [v4 objectForKey:@"origin"];
+    v12 = [dictionaryCopy objectForKey:@"origin"];
     if (v12 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v13 = v12;
@@ -64,20 +64,20 @@
   return v5;
 }
 
-- (CAFRouteLeg)initWithCoordinates:(id)a3 destination:(id)a4 origin:(id)a5
+- (CAFRouteLeg)initWithCoordinates:(id)coordinates destination:(id)destination origin:(id)origin
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  coordinatesCopy = coordinates;
+  destinationCopy = destination;
+  originCopy = origin;
   v15.receiver = self;
   v15.super_class = CAFRouteLeg;
   v12 = [(CAFRouteLeg *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_coordinates, a3);
-    objc_storeStrong(&v13->_destination, a4);
-    objc_storeStrong(&v13->_origin, a5);
+    objc_storeStrong(&v12->_coordinates, coordinates);
+    objc_storeStrong(&v13->_destination, destination);
+    objc_storeStrong(&v13->_origin, origin);
   }
 
   return v13;
@@ -87,45 +87,45 @@
 {
   v16[3] = *MEMORY[0x277D85DE8];
   v15[0] = @"coordinates";
-  v3 = [(CAFRouteLeg *)self coordinates];
-  v4 = [v3 arrayRepresentation];
-  v5 = v4;
-  if (!v4)
+  coordinates = [(CAFRouteLeg *)self coordinates];
+  arrayRepresentation = [coordinates arrayRepresentation];
+  null = arrayRepresentation;
+  if (!arrayRepresentation)
   {
-    v5 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v16[0] = v5;
+  v16[0] = null;
   v15[1] = @"destination";
-  v6 = [(CAFRouteLeg *)self destination];
-  v7 = [v6 dictionaryRepresentation];
-  v8 = v7;
-  if (!v7)
+  destination = [(CAFRouteLeg *)self destination];
+  dictionaryRepresentation = [destination dictionaryRepresentation];
+  null2 = dictionaryRepresentation;
+  if (!dictionaryRepresentation)
   {
-    v8 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v16[1] = v8;
+  v16[1] = null2;
   v15[2] = @"origin";
-  v9 = [(CAFRouteLeg *)self origin];
-  v10 = [v9 dictionaryRepresentation];
-  v11 = v10;
-  if (!v10)
+  origin = [(CAFRouteLeg *)self origin];
+  dictionaryRepresentation2 = [origin dictionaryRepresentation];
+  null3 = dictionaryRepresentation2;
+  if (!dictionaryRepresentation2)
   {
-    v11 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
   }
 
-  v16[2] = v11;
+  v16[2] = null3;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:3];
-  if (!v10)
+  if (!dictionaryRepresentation2)
   {
   }
 
-  if (!v7)
+  if (!dictionaryRepresentation)
   {
   }
 
-  if (!v4)
+  if (!arrayRepresentation)
   {
   }
 
@@ -138,10 +138,10 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CAFRouteLeg *)self coordinates];
-  v6 = [(CAFRouteLeg *)self destination];
-  v7 = [(CAFRouteLeg *)self origin];
-  v8 = [v3 stringWithFormat:@"<%@: %p { %@: %@, %@: %@, %@: %@ }>", v4, self, @"coordinates", v5, @"destination", v6, @"origin", v7];
+  coordinates = [(CAFRouteLeg *)self coordinates];
+  destination = [(CAFRouteLeg *)self destination];
+  origin = [(CAFRouteLeg *)self origin];
+  v8 = [v3 stringWithFormat:@"<%@: %p { %@: %@, %@: %@, %@: %@ }>", v4, self, @"coordinates", coordinates, @"destination", destination, @"origin", origin];
 
   return v8;
 }

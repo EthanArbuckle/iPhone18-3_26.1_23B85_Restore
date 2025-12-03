@@ -1,39 +1,39 @@
 @interface FileDownloadAction
-- (BOOL)shouldCancelAction:(id)a3;
+- (BOOL)shouldCancelAction:(id)action;
 - (FMDServerInteractionController)serverInteractionController;
-- (FileDownloadAction)initWithAsset:(id)a3 serverInteractionController:(id)a4 assetRegistry:(id)a5;
-- (void)_saveAsset:(id)a3 fromLocation:(id)a4;
-- (void)runWithCompletion:(id)a3;
+- (FileDownloadAction)initWithAsset:(id)asset serverInteractionController:(id)controller assetRegistry:(id)registry;
+- (void)_saveAsset:(id)asset fromLocation:(id)location;
+- (void)runWithCompletion:(id)completion;
 - (void)willCancelAction;
 @end
 
 @implementation FileDownloadAction
 
-- (FileDownloadAction)initWithAsset:(id)a3 serverInteractionController:(id)a4 assetRegistry:(id)a5
+- (FileDownloadAction)initWithAsset:(id)asset serverInteractionController:(id)controller assetRegistry:(id)registry
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetCopy = asset;
+  controllerCopy = controller;
+  registryCopy = registry;
   v14.receiver = self;
   v14.super_class = FileDownloadAction;
   v11 = [(FileDownloadAction *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(FileDownloadAction *)v11 setAsset:v8];
-    [(FileDownloadAction *)v12 setServerInteractionController:v9];
-    [(FileDownloadAction *)v12 setAssetRegistry:v10];
+    [(FileDownloadAction *)v11 setAsset:assetCopy];
+    [(FileDownloadAction *)v12 setServerInteractionController:controllerCopy];
+    [(FileDownloadAction *)v12 setAssetRegistry:registryCopy];
   }
 
   return v12;
 }
 
-- (void)runWithCompletion:(id)a3
+- (void)runWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [FMFileDownloadRequest alloc];
-  v6 = [(FileDownloadAction *)self asset];
-  v7 = [(FMFileDownloadRequest *)v5 initWithAsset:v6];
+  asset = [(FileDownloadAction *)self asset];
+  v7 = [(FMFileDownloadRequest *)v5 initWithAsset:asset];
 
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
@@ -41,57 +41,57 @@
   v10[2] = sub_10014505C;
   v10[3] = &unk_1002CE000;
   objc_copyWeak(&v12, &location);
-  v8 = v4;
+  v8 = completionCopy;
   v11 = v8;
   [(FMDRequest *)v7 setCompletionHandler:v10];
   [(FileDownloadAction *)self setRequest:v7];
-  v9 = [(FileDownloadAction *)self serverInteractionController];
-  [v9 enqueueRequest:v7];
+  serverInteractionController = [(FileDownloadAction *)self serverInteractionController];
+  [serverInteractionController enqueueRequest:v7];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
 }
 
-- (void)_saveAsset:(id)a3 fromLocation:(id)a4
+- (void)_saveAsset:(id)asset fromLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  assetCopy = asset;
+  locationCopy = location;
+  if (locationCopy)
   {
-    v8 = [(FileDownloadAction *)self assetRegistry];
-    [v8 storeAsset:v6 fromLocation:v7];
+    assetRegistry = [(FileDownloadAction *)self assetRegistry];
+    [assetRegistry storeAsset:assetCopy fromLocation:locationCopy];
   }
 
   else
   {
-    v8 = sub_100002880();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    assetRegistry = sub_100002880();
+    if (os_log_type_enabled(assetRegistry, OS_LOG_TYPE_ERROR))
     {
-      sub_1002271C0(v8);
+      sub_1002271C0(assetRegistry);
     }
   }
 }
 
 - (void)willCancelAction
 {
-  v4 = [(FileDownloadAction *)self serverInteractionController];
-  v3 = [(FileDownloadAction *)self request];
-  [v4 cancelRequest:v3];
+  serverInteractionController = [(FileDownloadAction *)self serverInteractionController];
+  request = [(FileDownloadAction *)self request];
+  [serverInteractionController cancelRequest:request];
 }
 
-- (BOOL)shouldCancelAction:(id)a3
+- (BOOL)shouldCancelAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 asset];
-    v6 = [v5 url];
-    v7 = [v6 absoluteString];
-    v8 = [(FileDownloadAction *)self asset];
-    v9 = [v8 url];
-    v10 = [v9 absoluteString];
-    v11 = [v7 isEqualToString:v10];
+    asset = [actionCopy asset];
+    v6 = [asset url];
+    absoluteString = [v6 absoluteString];
+    asset2 = [(FileDownloadAction *)self asset];
+    v9 = [asset2 url];
+    absoluteString2 = [v9 absoluteString];
+    v11 = [absoluteString isEqualToString:absoluteString2];
   }
 
   else

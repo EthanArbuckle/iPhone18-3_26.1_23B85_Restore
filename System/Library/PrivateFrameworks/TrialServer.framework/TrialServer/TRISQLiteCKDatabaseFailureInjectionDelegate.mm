@@ -1,21 +1,21 @@
 @interface TRISQLiteCKDatabaseFailureInjectionDelegate
-- (BOOL)shouldProcessFetchOperation:(id)a3 error:(id *)a4;
-- (BOOL)shouldProcessQueryOperation:(id)a3 error:(id *)a4;
-- (TRISQLiteCKDatabaseFailureInjectionDelegate)initWithCoder:(id)a3;
-- (TRISQLiteCKDatabaseFailureInjectionDelegate)initWithErrorForAllOperations:(id)a3;
-- (TRISQLiteCKDatabaseFailureInjectionDelegate)initWithQueryErrors:(id)a3 fetchErrors:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)shouldProcessFetchOperation:(id)operation error:(id *)error;
+- (BOOL)shouldProcessQueryOperation:(id)operation error:(id *)error;
+- (TRISQLiteCKDatabaseFailureInjectionDelegate)initWithCoder:(id)coder;
+- (TRISQLiteCKDatabaseFailureInjectionDelegate)initWithErrorForAllOperations:(id)operations;
+- (TRISQLiteCKDatabaseFailureInjectionDelegate)initWithQueryErrors:(id)errors fetchErrors:(id)fetchErrors;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRISQLiteCKDatabaseFailureInjectionDelegate
 
-- (TRISQLiteCKDatabaseFailureInjectionDelegate)initWithErrorForAllOperations:(id)a3
+- (TRISQLiteCKDatabaseFailureInjectionDelegate)initWithErrorForAllOperations:(id)operations
 {
-  v5 = a3;
-  if (!v5)
+  operationsCopy = operations;
+  if (!operationsCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"TRISQLiteCKDatabaseFailureInjectionDelegate.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"error"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRISQLiteCKDatabaseFailureInjectionDelegate.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"error"}];
   }
 
   v13.receiver = self;
@@ -23,11 +23,11 @@
   v6 = [(TRISQLiteCKDatabaseFailureInjectionDelegate *)&v13 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CBEB18] arrayWithObject:v5];
+    v7 = [MEMORY[0x277CBEB18] arrayWithObject:operationsCopy];
     queryErrors = v6->_queryErrors;
     v6->_queryErrors = v7;
 
-    v9 = [MEMORY[0x277CBEB18] arrayWithObject:v5];
+    v9 = [MEMORY[0x277CBEB18] arrayWithObject:operationsCopy];
     fetchErrors = v6->_fetchErrors;
     v6->_fetchErrors = v9;
   }
@@ -35,20 +35,20 @@
   return v6;
 }
 
-- (TRISQLiteCKDatabaseFailureInjectionDelegate)initWithQueryErrors:(id)a3 fetchErrors:(id)a4
+- (TRISQLiteCKDatabaseFailureInjectionDelegate)initWithQueryErrors:(id)errors fetchErrors:(id)fetchErrors
 {
-  v6 = a3;
-  v7 = a4;
+  errorsCopy = errors;
+  fetchErrorsCopy = fetchErrors;
   v14.receiver = self;
   v14.super_class = TRISQLiteCKDatabaseFailureInjectionDelegate;
   v8 = [(TRISQLiteCKDatabaseFailureInjectionDelegate *)&v14 init];
   if (v8)
   {
-    v9 = [v6 mutableCopy];
+    v9 = [errorsCopy mutableCopy];
     queryErrors = v8->_queryErrors;
     v8->_queryErrors = v9;
 
-    v11 = [v7 mutableCopy];
+    v11 = [fetchErrorsCopy mutableCopy];
     fetchErrors = v8->_fetchErrors;
     v8->_fetchErrors = v11;
   }
@@ -56,37 +56,37 @@
   return v8;
 }
 
-- (BOOL)shouldProcessQueryOperation:(id)a3 error:(id *)a4
+- (BOOL)shouldProcessQueryOperation:(id)operation error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [(TRISQLiteCKDatabaseFailureInjectionDelegate *)self queryErrors];
-  if (v8 && (v9 = v8, -[TRISQLiteCKDatabaseFailureInjectionDelegate queryErrors](self, "queryErrors"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 count], v10, v9, v11))
+  operationCopy = operation;
+  queryErrors = [(TRISQLiteCKDatabaseFailureInjectionDelegate *)self queryErrors];
+  if (queryErrors && (v9 = queryErrors, -[TRISQLiteCKDatabaseFailureInjectionDelegate queryErrors](self, "queryErrors"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 count], v10, v9, v11))
   {
-    v12 = [(TRISQLiteCKDatabaseFailureInjectionDelegate *)self queryErrors];
-    v13 = [v12 firstObject];
+    queryErrors2 = [(TRISQLiteCKDatabaseFailureInjectionDelegate *)self queryErrors];
+    firstObject = [queryErrors2 firstObject];
 
-    v14 = [(TRISQLiteCKDatabaseFailureInjectionDelegate *)self queryErrors];
-    [v14 removeObjectAtIndex:0];
+    queryErrors3 = [(TRISQLiteCKDatabaseFailureInjectionDelegate *)self queryErrors];
+    [queryErrors3 removeObjectAtIndex:0];
 
     v15 = TRILogCategory_XCTest();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v22 = v7;
+      v22 = operationCopy;
       v23 = 2112;
-      v24 = v13;
+      v24 = firstObject;
       _os_log_impl(&dword_26F567000, v15, OS_LOG_TYPE_DEFAULT, "Query operation %@ being rejected with error %@", buf, 0x16u);
     }
 
-    if (!a4)
+    if (!error)
     {
-      v20 = [MEMORY[0x277CCA890] currentHandler];
-      [v20 handleFailureInMethod:a2 object:self file:@"TRISQLiteCKDatabaseFailureInjectionDelegate.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"error"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"TRISQLiteCKDatabaseFailureInjectionDelegate.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"error"}];
     }
 
-    v16 = *a4;
-    *a4 = v13;
+    v16 = *error;
+    *error = firstObject;
 
     v17 = 0;
   }
@@ -100,37 +100,37 @@
   return v17;
 }
 
-- (BOOL)shouldProcessFetchOperation:(id)a3 error:(id *)a4
+- (BOOL)shouldProcessFetchOperation:(id)operation error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [(TRISQLiteCKDatabaseFailureInjectionDelegate *)self fetchErrors];
-  if (v8 && (v9 = v8, -[TRISQLiteCKDatabaseFailureInjectionDelegate fetchErrors](self, "fetchErrors"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 count], v10, v9, v11))
+  operationCopy = operation;
+  fetchErrors = [(TRISQLiteCKDatabaseFailureInjectionDelegate *)self fetchErrors];
+  if (fetchErrors && (v9 = fetchErrors, -[TRISQLiteCKDatabaseFailureInjectionDelegate fetchErrors](self, "fetchErrors"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 count], v10, v9, v11))
   {
-    v12 = [(TRISQLiteCKDatabaseFailureInjectionDelegate *)self fetchErrors];
-    v13 = [v12 firstObject];
+    fetchErrors2 = [(TRISQLiteCKDatabaseFailureInjectionDelegate *)self fetchErrors];
+    firstObject = [fetchErrors2 firstObject];
 
-    v14 = [(TRISQLiteCKDatabaseFailureInjectionDelegate *)self fetchErrors];
-    [v14 removeObjectAtIndex:0];
+    fetchErrors3 = [(TRISQLiteCKDatabaseFailureInjectionDelegate *)self fetchErrors];
+    [fetchErrors3 removeObjectAtIndex:0];
 
     v15 = TRILogCategory_XCTest();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v22 = v7;
+      v22 = operationCopy;
       v23 = 2112;
-      v24 = v13;
+      v24 = firstObject;
       _os_log_impl(&dword_26F567000, v15, OS_LOG_TYPE_DEFAULT, "Fetch operation %@ being rejected with error %@", buf, 0x16u);
     }
 
-    if (!a4)
+    if (!error)
     {
-      v20 = [MEMORY[0x277CCA890] currentHandler];
-      [v20 handleFailureInMethod:a2 object:self file:@"TRISQLiteCKDatabaseFailureInjectionDelegate.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"error"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"TRISQLiteCKDatabaseFailureInjectionDelegate.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"error"}];
     }
 
-    v16 = *a4;
-    *a4 = v13;
+    v16 = *error;
+    *error = firstObject;
 
     v17 = 0;
   }
@@ -144,27 +144,27 @@
   return v17;
 }
 
-- (TRISQLiteCKDatabaseFailureInjectionDelegate)initWithCoder:(id)a3
+- (TRISQLiteCKDatabaseFailureInjectionDelegate)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEB58];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"queryErrors"];
-  v9 = [v5 decodeObjectOfClasses:v7 forKey:@"fetchErrors"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"queryErrors"];
+  v9 = [coderCopy decodeObjectOfClasses:v7 forKey:@"fetchErrors"];
 
   v10 = [(TRISQLiteCKDatabaseFailureInjectionDelegate *)self initWithQueryErrors:v8 fetchErrors:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TRISQLiteCKDatabaseFailureInjectionDelegate *)self queryErrors];
-  [v4 encodeObject:v5 forKey:@"queryErrors"];
+  coderCopy = coder;
+  queryErrors = [(TRISQLiteCKDatabaseFailureInjectionDelegate *)self queryErrors];
+  [coderCopy encodeObject:queryErrors forKey:@"queryErrors"];
 
-  v6 = [(TRISQLiteCKDatabaseFailureInjectionDelegate *)self fetchErrors];
-  [v4 encodeObject:v6 forKey:@"fetchErrors"];
+  fetchErrors = [(TRISQLiteCKDatabaseFailureInjectionDelegate *)self fetchErrors];
+  [coderCopy encodeObject:fetchErrors forKey:@"fetchErrors"];
 }
 
 @end

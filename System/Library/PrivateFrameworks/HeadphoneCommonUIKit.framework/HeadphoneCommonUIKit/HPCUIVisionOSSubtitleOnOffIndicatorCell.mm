@@ -1,9 +1,9 @@
 @interface HPCUIVisionOSSubtitleOnOffIndicatorCell
 + (NSString)cellDisabledKey;
 + (NSString)onOffKey;
-- (_TtC20HeadphoneCommonUIKit39HPCUIVisionOSSubtitleOnOffIndicatorCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (_TtC20HeadphoneCommonUIKit39HPCUIVisionOSSubtitleOnOffIndicatorCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (_TtC20HeadphoneCommonUIKit39HPCUIVisionOSSubtitleOnOffIndicatorCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (_TtC20HeadphoneCommonUIKit39HPCUIVisionOSSubtitleOnOffIndicatorCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation HPCUIVisionOSSubtitleOnOffIndicatorCell
@@ -28,15 +28,15 @@
   return v3;
 }
 
-- (_TtC20HeadphoneCommonUIKit39HPCUIVisionOSSubtitleOnOffIndicatorCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (_TtC20HeadphoneCommonUIKit39HPCUIVisionOSSubtitleOnOffIndicatorCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  MEMORY[0x1E69E5928](a4);
-  MEMORY[0x1E69E5928](a5);
-  if (a4)
+  MEMORY[0x1E69E5928](identifier);
+  MEMORY[0x1E69E5928](specifier);
+  if (identifier)
   {
     v7 = sub_1AC3B7EF4();
     v8 = v5;
-    MEMORY[0x1E69E5920](a4);
+    MEMORY[0x1E69E5920](identifier);
     v9 = v7;
     v10 = v8;
   }
@@ -47,17 +47,17 @@
     v10 = 0;
   }
 
-  return sub_1AC3917CC(a3, v9, v10, a5);
+  return sub_1AC3917CC(style, v9, v10, specifier);
 }
 
-- (_TtC20HeadphoneCommonUIKit39HPCUIVisionOSSubtitleOnOffIndicatorCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC20HeadphoneCommonUIKit39HPCUIVisionOSSubtitleOnOffIndicatorCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  MEMORY[0x1E69E5928](a4);
-  if (a4)
+  MEMORY[0x1E69E5928](identifier);
+  if (identifier)
   {
     v6 = sub_1AC3B7EF4();
     v7 = v4;
-    MEMORY[0x1E69E5920](a4);
+    MEMORY[0x1E69E5920](identifier);
     v8 = v6;
     v9 = v7;
   }
@@ -68,16 +68,16 @@
     v9 = 0;
   }
 
-  return sub_1AC391B38(a3, v8, v9);
+  return sub_1AC391B38(style, v8, v9);
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](specifier);
   MEMORY[0x1E69E5928](self);
-  sub_1AC391E74(a3);
+  sub_1AC391E74(specifier);
   MEMORY[0x1E69E5920](self);
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](specifier);
 }
 
 @end

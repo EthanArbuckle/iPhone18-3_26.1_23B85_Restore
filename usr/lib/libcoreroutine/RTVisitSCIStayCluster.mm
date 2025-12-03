@@ -1,35 +1,35 @@
 @interface RTVisitSCIStayCluster
-+ (double)evalMaxUncFromMotionDevMotionInducedDev:(double)a3 andMeasInducedDev:(double)a4;
-+ (double)evaluateClustThresFromClustThresSlv:(double)result motionInducedDev:(double)a4 adaptionBasis:(double)a5 adaptionSampleCnt:(int64_t)a6 adaptionRate:(double)a7;
++ (double)evalMaxUncFromMotionDevMotionInducedDev:(double)dev andMeasInducedDev:(double)inducedDev;
++ (double)evaluateClustThresFromClustThresSlv:(double)result motionInducedDev:(double)dev adaptionBasis:(double)basis adaptionSampleCnt:(int64_t)cnt adaptionRate:(double)rate;
 - (RTVisitSCIStayCluster)init;
-- (double)dwellTimeIntervalWithDate:(id)a3;
-- (double)getRadiusForDate:(id)a3;
-- (id)centroidForVisitType:(int64_t)a3 confidence:(double)a4;
-- (id)createVisit:(int64_t)a3 confidence:(double)a4;
+- (double)dwellTimeIntervalWithDate:(id)date;
+- (double)getRadiusForDate:(id)date;
+- (id)centroidForVisitType:(int64_t)type confidence:(double)confidence;
+- (id)createVisit:(int64_t)visit confidence:(double)confidence;
 - (id)description;
-- (void)addNewPoint:(id)a3 event:(unint64_t)a4 lcFSMState:(unint64_t)a5 fsmState:(unint64_t)a6;
-- (void)addOutlier:(id)a3;
-- (void)updateLastTrustedLocation:(id)a3;
+- (void)addNewPoint:(id)point event:(unint64_t)event lcFSMState:(unint64_t)state fsmState:(unint64_t)fsmState;
+- (void)addOutlier:(id)outlier;
+- (void)updateLastTrustedLocation:(id)location;
 @end
 
 @implementation RTVisitSCIStayCluster
 
-+ (double)evaluateClustThresFromClustThresSlv:(double)result motionInducedDev:(double)a4 adaptionBasis:(double)a5 adaptionSampleCnt:(int64_t)a6 adaptionRate:(double)a7
++ (double)evaluateClustThresFromClustThresSlv:(double)result motionInducedDev:(double)dev adaptionBasis:(double)basis adaptionSampleCnt:(int64_t)cnt adaptionRate:(double)rate
 {
   v7 = result;
-  if (a7 > 0.0)
+  if (rate > 0.0)
   {
-    v8 = fmin(a4, 100.0);
-    v9 = pow(a5, -a6 / a7);
+    v8 = fmin(dev, 100.0);
+    v9 = pow(basis, -cnt / rate);
     return v8 * 1.65 * (1.0 - v9) + v7 * 0.5 * (v9 + 1.0);
   }
 
   return result;
 }
 
-+ (double)evalMaxUncFromMotionDevMotionInducedDev:(double)a3 andMeasInducedDev:(double)a4
++ (double)evalMaxUncFromMotionDevMotionInducedDev:(double)dev andMeasInducedDev:(double)inducedDev
 {
-  result = a3 + a4;
+  result = dev + inducedDev;
   if (result > 200.0 || result < 0.0)
   {
     return 200.0;
@@ -66,29 +66,29 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCAB68];
-  v4 = [(RTVisitSCIStayCluster *)self numOfDataPoints];
-  v5 = [(RTVisitSCIStayCluster *)self numOfResiduePoints];
-  v6 = [(RTVisitSCIStayCluster *)self numOfOutliers];
-  v7 = [(RTVisitSCIStayCluster *)self lastTrustedLocation];
-  v8 = [v3 stringWithFormat:@"n_point, %lu, n_residue, %lu, n_outlier, %lu, last_trusted_location, %@", v4, v5, v6, v7];
+  numOfDataPoints = [(RTVisitSCIStayCluster *)self numOfDataPoints];
+  numOfResiduePoints = [(RTVisitSCIStayCluster *)self numOfResiduePoints];
+  numOfOutliers = [(RTVisitSCIStayCluster *)self numOfOutliers];
+  lastTrustedLocation = [(RTVisitSCIStayCluster *)self lastTrustedLocation];
+  v8 = [v3 stringWithFormat:@"n_point, %lu, n_residue, %lu, n_outlier, %lu, last_trusted_location, %@", numOfDataPoints, numOfResiduePoints, numOfOutliers, lastTrustedLocation];
 
   if (self->_numOfDataPoints)
   {
     v9 = MEMORY[0x277CCACA8];
-    v10 = [(NSDate *)self->_potentialEntry stringFromDate];
-    v11 = [(NSDate *)self->_potentialExit stringFromDate];
-    v12 = [v9 stringWithFormat:@", entry, %@, exit, %@, mean, %@, ", v10, v11, self->_centroid];
+    stringFromDate = [(NSDate *)self->_potentialEntry stringFromDate];
+    stringFromDate2 = [(NSDate *)self->_potentialExit stringFromDate];
+    v12 = [v9 stringWithFormat:@", entry, %@, exit, %@, mean, %@, ", stringFromDate, stringFromDate2, self->_centroid];
     [v8 appendString:v12];
   }
 
   return v8;
 }
 
-- (double)dwellTimeIntervalWithDate:(id)a3
+- (double)dwellTimeIntervalWithDate:(id)date
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  dateCopy = date;
+  v5 = dateCopy;
+  if (!dateCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -107,18 +107,18 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  [v4 timeIntervalSinceDate:?];
+  [dateCopy timeIntervalSinceDate:?];
   v7 = v6;
 LABEL_8:
 
   return v7;
 }
 
-- (id)centroidForVisitType:(int64_t)a3 confidence:(double)a4
+- (id)centroidForVisitType:(int64_t)type confidence:(double)confidence
 {
   v46 = *MEMORY[0x277D85DE8];
-  v8 = [(RTLocation *)self->_lastTrustedLocation date];
-  [(RTVisitSCIStayCluster *)self dwellTimeIntervalWithDate:v8];
+  date = [(RTLocation *)self->_lastTrustedLocation date];
+  [(RTVisitSCIStayCluster *)self dwellTimeIntervalWithDate:date];
   v10 = v9;
 
   if (self->_lastTrustedLocation)
@@ -155,7 +155,7 @@ LABEL_8:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       v21 = NSStringFromSelector(a2);
-      v22 = [MEMORY[0x277D01428] stringFromVisitIncidentType:a3];
+      v22 = [MEMORY[0x277D01428] stringFromVisitIncidentType:type];
       numOfDataPoints = self->_numOfDataPoints;
       centroid = self->_centroid;
       lastTrustedLocation = self->_lastTrustedLocation;
@@ -165,7 +165,7 @@ LABEL_8:
       v30 = 2112;
       v31 = v22;
       v32 = 2048;
-      v33 = a4;
+      confidenceCopy = confidence;
       v34 = 2048;
       v35 = numOfDataPoints;
       v36 = 2048;
@@ -185,7 +185,7 @@ LABEL_8:
   return v18;
 }
 
-- (id)createVisit:(int64_t)a3 confidence:(double)a4
+- (id)createVisit:(int64_t)visit confidence:(double)confidence
 {
   v46 = *MEMORY[0x277D85DE8];
   if (self->_numOfDataPoints)
@@ -197,7 +197,7 @@ LABEL_8:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     *buf = 136315394;
-    v39 = "[RTVisitSCIStayCluster createVisit:confidence:]";
+    selfCopy = "[RTVisitSCIStayCluster createVisit:confidence:]";
     v40 = 1024;
     LODWORD(v41) = 179;
     _os_log_error_impl(&dword_2304B3000, v7, OS_LOG_TYPE_ERROR, "zero points (in %s:%d)", buf, 0x12u);
@@ -212,12 +212,12 @@ LABEL_39:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138739971;
-        v39 = self;
+        selfCopy = self;
         _os_log_debug_impl(&dword_2304B3000, v8, OS_LOG_TYPE_DEBUG, "working hypothesis, %{sensitive}@", buf, 0xCu);
       }
     }
 
-    if (a3 == 3)
+    if (visit == 3)
     {
       potentialExit = self->_potentialExit;
     }
@@ -229,9 +229,9 @@ LABEL_39:
 
     v10 = potentialExit;
     v11 = objc_alloc(MEMORY[0x277D01428]);
-    v12 = [MEMORY[0x277CBEAA8] date];
-    v13 = [(RTVisitSCIStayCluster *)self centroidForVisitType:a3 confidence:a4];
-    v14 = [v11 initWithDate:v12 type:a3 location:v13 entry:self->_potentialEntry exit:v10 dataPointCount:self->_numOfDataPoints confidence:a4 placeInference:0];
+    date = [MEMORY[0x277CBEAA8] date];
+    v13 = [(RTVisitSCIStayCluster *)self centroidForVisitType:visit confidence:confidence];
+    v14 = [v11 initWithDate:date type:visit location:v13 entry:self->_potentialEntry exit:v10 dataPointCount:self->_numOfDataPoints confidence:confidence placeInference:0];
 
     if ([(NSMutableArray *)self->_residuePoints count])
     {
@@ -246,8 +246,8 @@ LABEL_39:
       v15 = 0;
     }
 
-    v18 = [v14 exit];
-    v19 = v18 | v15;
+    exit = [v14 exit];
+    v19 = exit | v15;
 
     if (!v19)
     {
@@ -255,15 +255,15 @@ LABEL_39:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315394;
-        v39 = "[RTVisitSCIStayCluster createVisit:confidence:]";
+        selfCopy = "[RTVisitSCIStayCluster createVisit:confidence:]";
         v40 = 1024;
         LODWORD(v41) = 198;
         _os_log_error_impl(&dword_2304B3000, v20, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: visit.exit || points (in %s:%d)", buf, 0x12u);
       }
     }
 
-    v21 = [v14 exit];
-    v22 = (v21 | v15);
+    exit2 = [v14 exit];
+    v22 = (exit2 | v15);
 
     if (!v22)
     {
@@ -271,19 +271,19 @@ LABEL_39:
     }
 
     v22 = [[RTVisitCluster alloc] initWithPoints:v15 visit:v14];
-    v23 = [(RTVisitCluster *)v22 visit];
-    v24 = [v23 entry];
-    v25 = [v24 isEqualToDate:self->_potentialEntry];
+    visit = [(RTVisitCluster *)v22 visit];
+    entry = [visit entry];
+    v25 = [entry isEqualToDate:self->_potentialEntry];
 
     if ((v25 & 1) == 0)
     {
       v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
-        v35 = [v14 entry];
+        entry2 = [v14 entry];
         v36 = self->_potentialExit;
         *buf = 138413058;
-        v39 = v35;
+        selfCopy = entry2;
         v40 = 2112;
         v41 = v36;
         v42 = 2080;
@@ -294,22 +294,22 @@ LABEL_39:
       }
     }
 
-    v27 = [(RTVisitCluster *)v22 visit];
-    v28 = [v27 exit];
-    v29 = v28;
-    if (a3 == 3)
+    visit2 = [(RTVisitCluster *)v22 visit];
+    exit3 = [visit2 exit];
+    v29 = exit3;
+    if (visit == 3)
     {
-      v30 = [v28 isEqualToDate:self->_potentialExit];
+      v30 = [exit3 isEqualToDate:self->_potentialExit];
 
       if ((v30 & 1) == 0)
       {
         v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
         {
-          v32 = [v14 exit];
+          exit4 = [v14 exit];
           v33 = self->_potentialExit;
           *buf = 138413058;
-          v39 = v32;
+          selfCopy = exit4;
           v40 = 2112;
           v41 = v33;
           v42 = 2080;
@@ -331,9 +331,9 @@ LABEL_31:
         v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
         {
-          v37 = [(RTVisitCluster *)v22 visit];
+          visit3 = [(RTVisitCluster *)v22 visit];
           *buf = 138412802;
-          v39 = v37;
+          selfCopy = visit3;
           v40 = 2080;
           v41 = "[RTVisitSCIStayCluster createVisit:confidence:]";
           v42 = 1024;
@@ -356,10 +356,10 @@ LABEL_33:
   return v22;
 }
 
-- (void)addNewPoint:(id)a3 event:(unint64_t)a4 lcFSMState:(unint64_t)a5 fsmState:(unint64_t)a6
+- (void)addNewPoint:(id)point event:(unint64_t)event lcFSMState:(unint64_t)state fsmState:(unint64_t)fsmState
 {
   v62 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  pointCopy = point;
   if (self->_numOfDataPoints != -1)
   {
     goto LABEL_5;
@@ -371,14 +371,14 @@ LABEL_33:
     v52 = 136315394;
     v53 = "[RTVisitSCIStayCluster addNewPoint:event:lcFSMState:fsmState:]";
     v54 = 1024;
-    LODWORD(v55) = 219;
+    LODWORD(eventCopy) = 219;
     _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "_numOfDataPoints hit max value? (in %s:%d)", &v52, 0x12u);
   }
 
   if (self->_numOfDataPoints != -1)
   {
 LABEL_5:
-    if (v10)
+    if (pointCopy)
     {
       if ([(NSMutableArray *)self->_outliers count])
       {
@@ -388,9 +388,9 @@ LABEL_5:
         self->_outliers = v12;
       }
 
-      v14 = [v10 date];
+      date = [pointCopy date];
       lastProcessedSample = self->_lastProcessedSample;
-      self->_lastProcessedSample = v14;
+      self->_lastProcessedSample = date;
 
       if (self->_numOfDataPoints)
       {
@@ -409,9 +409,9 @@ LABEL_5:
             v52 = 138412802;
             v53 = potentialEntry;
             v54 = 2080;
-            v55 = "[RTVisitSCIStayCluster addNewPoint:event:lcFSMState:fsmState:]";
+            eventCopy = "[RTVisitSCIStayCluster addNewPoint:event:lcFSMState:fsmState:]";
             v56 = 1024;
-            LODWORD(v57) = 235;
+            LODWORD(fsmStateCopy) = 235;
             _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "when n_point = 0, _potentialEntry, %@ (in %s:%d)", &v52, 0x1Cu);
           }
         }
@@ -425,9 +425,9 @@ LABEL_5:
             v52 = 138412802;
             v53 = potentialExit;
             v54 = 2080;
-            v55 = "[RTVisitSCIStayCluster addNewPoint:event:lcFSMState:fsmState:]";
+            eventCopy = "[RTVisitSCIStayCluster addNewPoint:event:lcFSMState:fsmState:]";
             v56 = 1024;
-            LODWORD(v57) = 236;
+            LODWORD(fsmStateCopy) = 236;
             _os_log_error_impl(&dword_2304B3000, v20, OS_LOG_TYPE_ERROR, "when n_point = 0, _potentialExit, %@ (in %s:%d)", &v52, 0x1Cu);
           }
         }
@@ -439,7 +439,7 @@ LABEL_5:
       objc_storeStrong(&self->_potentialExit, self->_lastProcessedSample);
       residuePoints = self->_residuePoints;
       ++self->_numOfDataPoints;
-      [(NSMutableArray *)residuePoints addObject:v10];
+      [(NSMutableArray *)residuePoints addObject:pointCopy];
       v22 = [(NSMutableArray *)self->_residuePoints count]- 5000;
       if (v22 >= 0 && !(v22 % 0x64uLL))
       {
@@ -449,25 +449,25 @@ LABEL_5:
           v52 = 134218752;
           v53 = v22;
           v54 = 2048;
-          v55 = a4;
+          eventCopy = event;
           v56 = 2048;
-          v57 = a6;
+          fsmStateCopy = fsmState;
           v58 = 2048;
-          v59 = a5;
+          stateCopy = state;
           _os_log_fault_impl(&dword_2304B3000, v23, OS_LOG_TYPE_FAULT, "Exceeded allowable cached locations count by %ld in SCI, event: %lu, fsmState: %lu, lcFSMState: %lu", &v52, 0x2Au);
         }
       }
 
-      [v10 latitude];
+      [pointCopy latitude];
       v25 = v24 - v17;
       numOfDataPoints = self->_numOfDataPoints;
       meanOfSquaredLat_deg = self->_meanOfSquaredLat_deg;
-      [v10 latitude];
+      [pointCopy latitude];
       meanOfSquaredLon_deg = self->_meanOfSquaredLon_deg;
       self->_meanOfSquaredLat_deg = meanOfSquaredLat_deg + (v28 * v28 - self->_meanOfSquaredLat_deg) / self->_numOfDataPoints;
-      [v10 longitude];
+      [pointCopy longitude];
       self->_meanOfSquaredLon_deg = meanOfSquaredLon_deg + (v30 * v30 - self->_meanOfSquaredLon_deg) / self->_numOfDataPoints;
-      [v10 longitude];
+      [pointCopy longitude];
       v32 = v31 * 3.14159265 / 180.0;
       v63.c[0] = v32 * 0.0;
       v63.c[1] = v32 + 0.0;
@@ -485,9 +485,9 @@ LABEL_5:
           v52 = 134218498;
           v53 = *&v35;
           v54 = 2080;
-          v55 = "[RTVisitSCIStayCluster addNewPoint:event:lcFSMState:fsmState:]";
+          eventCopy = "[RTVisitSCIStayCluster addNewPoint:event:lcFSMState:fsmState:]";
           v56 = 1024;
-          LODWORD(v57) = 260;
+          LODWORD(fsmStateCopy) = 260;
           _os_log_error_impl(&dword_2304B3000, v36, OS_LOG_TYPE_ERROR, "mean longitude is out of range, >=max, lon_deg, %.7f (in %s:%d)", &v52, 0x1Cu);
         }
       }
@@ -501,9 +501,9 @@ LABEL_5:
           v52 = 134218498;
           v53 = *&v35;
           v54 = 2080;
-          v55 = "[RTVisitSCIStayCluster addNewPoint:event:lcFSMState:fsmState:]";
+          eventCopy = "[RTVisitSCIStayCluster addNewPoint:event:lcFSMState:fsmState:]";
           v56 = 1024;
-          LODWORD(v57) = 261;
+          LODWORD(fsmStateCopy) = 261;
           _os_log_error_impl(&dword_2304B3000, v38, OS_LOG_TYPE_ERROR, "mean longitude is out of range, <=min, lon_deg, %.7f (in %s:%d)", &v52, 0x1Cu);
         }
       }
@@ -511,7 +511,7 @@ LABEL_5:
       [RTVisitSCIStayCluster evaluateMotionInducedDeviationFromMeanLat:v37 meanOfSquaredLat_deg:self->_meanOfSquaredLat_deg meanLon_deg:v35 meanOfSquaredLon_deg:self->_meanOfSquaredLon_deg];
       self->_motionInducedDev_m = fmin(v39, 100.0);
       [RTVisitSCIStayCluster evalMaxUncFromMotionDevMotionInducedDev:200.0 / sqrt(self->_numOfDataPoints) andMeasInducedDev:?];
-      v41 = [objc_alloc(MEMORY[0x277D01160]) initWithLatitude:0 longitude:objc_msgSend(v10 horizontalUncertainty:"referenceFrame") date:v37 referenceFrame:{v35, v40}];
+      v41 = [objc_alloc(MEMORY[0x277D01160]) initWithLatitude:0 longitude:objc_msgSend(pointCopy horizontalUncertainty:"referenceFrame") date:v37 referenceFrame:{v35, v40}];
       centroid = self->_centroid;
       self->_centroid = v41;
 
@@ -520,8 +520,8 @@ LABEL_5:
         objc_storeStrong(&self->_lastProcessedSampleDateForAdaption, self->_lastProcessedSample);
       }
 
-      [v10 latitude];
-      [v10 longitude];
+      [pointCopy latitude];
+      [pointCopy longitude];
       [(RTLocation *)self->_centroid latitude];
       [(RTLocation *)self->_centroid longitude];
       RTCommonCalculateDistance();
@@ -538,18 +538,18 @@ LABEL_5:
           v52 = 134219010;
           v53 = v47;
           v54 = 2048;
-          v55 = v48;
+          eventCopy = v48;
           v56 = 2112;
-          v57 = v49;
+          fsmStateCopy = v49;
           v58 = 2080;
-          v59 = "[RTVisitSCIStayCluster addNewPoint:event:lcFSMState:fsmState:]";
+          stateCopy = "[RTVisitSCIStayCluster addNewPoint:event:lcFSMState:fsmState:]";
           v60 = 1024;
           v61 = 281;
           _os_log_error_impl(&dword_2304B3000, v46, OS_LOG_TYPE_ERROR, "centroid computation is incorrect sum vector is, %f + %fi, centroid, %@ (in %s:%d)", &v52, 0x30u);
         }
       }
 
-      [(RTVisitSCIStayCluster *)self updateLastTrustedLocation:v10];
+      [(RTVisitSCIStayCluster *)self updateLastTrustedLocation:pointCopy];
     }
 
     else
@@ -560,39 +560,39 @@ LABEL_5:
         v52 = 136315394;
         v53 = "[RTVisitSCIStayCluster addNewPoint:event:lcFSMState:fsmState:]";
         v54 = 1024;
-        LODWORD(v55) = 223;
+        LODWORD(eventCopy) = 223;
         _os_log_error_impl(&dword_2304B3000, v18, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: point (in %s:%d)", &v52, 0x12u);
       }
     }
   }
 }
 
-- (void)updateLastTrustedLocation:(id)a3
+- (void)updateLastTrustedLocation:(id)location
 {
-  v5 = a3;
-  if (v5)
+  locationCopy = location;
+  if (locationCopy)
   {
-    v7 = v5;
-    [v5 horizontalUncertainty];
-    v5 = v7;
+    v7 = locationCopy;
+    [locationCopy horizontalUncertainty];
+    locationCopy = v7;
     if (v6 <= 250.0)
     {
-      objc_storeStrong(&self->_lastTrustedLocation, a3);
-      v5 = v7;
+      objc_storeStrong(&self->_lastTrustedLocation, location);
+      locationCopy = v7;
     }
   }
 }
 
-- (void)addOutlier:(id)a3
+- (void)addOutlier:(id)outlier
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  outlierCopy = outlier;
+  v5 = outlierCopy;
+  if (outlierCopy)
   {
-    v6 = [v4 date];
+    date = [outlierCopy date];
     lastProcessedSample = self->_lastProcessedSample;
-    self->_lastProcessedSample = v6;
+    self->_lastProcessedSample = date;
 
     [(NSMutableArray *)self->_outliers addObject:v5];
   }
@@ -611,18 +611,18 @@ LABEL_5:
   }
 }
 
-- (double)getRadiusForDate:(id)a3
+- (double)getRadiusForDate:(id)date
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  dateCopy = date;
+  v6 = dateCopy;
+  if (dateCopy)
   {
-    [v5 timeIntervalSinceDate:self->_lastProcessedSampleDateForAdaption];
+    [dateCopy timeIntervalSinceDate:self->_lastProcessedSampleDateForAdaption];
     if (v7 > 600.0)
     {
       ++self->_numOfAdaptionSample;
-      objc_storeStrong(&self->_lastProcessedSampleDateForAdaption, a3);
+      objc_storeStrong(&self->_lastProcessedSampleDateForAdaption, date);
     }
 
     [RTVisitSCIStayCluster evaluateClustThresFromClustThresSlv:self->_numOfAdaptionSample motionInducedDev:200.0 adaptionBasis:self->_motionInducedDev_m adaptionSampleCnt:1.4 adaptionRate:10.0];

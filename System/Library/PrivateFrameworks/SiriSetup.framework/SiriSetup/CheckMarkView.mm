@@ -1,13 +1,13 @@
 @interface CheckMarkView
 - (CGSize)intrinsicContentSize;
-- (_TtC9SiriSetup13CheckMarkView)initWithFrame:(CGRect)a3;
+- (_TtC9SiriSetup13CheckMarkView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation CheckMarkView
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_26901C4BC();
   [v3 bounds];
   v5 = v4;
@@ -20,12 +20,12 @@
   return result;
 }
 
-- (_TtC9SiriSetup13CheckMarkView)initWithFrame:(CGRect)a3
+- (_TtC9SiriSetup13CheckMarkView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9SiriSetup13CheckMarkView_colorLayer) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9SiriSetup13CheckMarkView_checkMaskLayer) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9SiriSetup13CheckMarkView_xMaskLayer) = 0;

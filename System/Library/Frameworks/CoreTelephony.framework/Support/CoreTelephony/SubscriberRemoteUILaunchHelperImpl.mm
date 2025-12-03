@@ -1,20 +1,20 @@
 @interface SubscriberRemoteUILaunchHelperImpl
-- (SubscriberRemoteUILaunchHelperImpl)initWithQueue:(const queue *)a3 logger:(const void *)a4;
+- (SubscriberRemoteUILaunchHelperImpl)initWithQueue:(const queue *)queue logger:(const void *)logger;
 - (id).cxx_construct;
 - (void)_releaseRemoteAlertHandle;
-- (void)bootstrapWithDelegate:(weak_ptr<SubscriberUserAlertManagerInterface>)a3;
+- (void)bootstrapWithDelegate:(weak_ptr<SubscriberUserAlertManagerInterface>)delegate;
 - (void)dismissSimUnlockView;
-- (void)launchSimSetupViewWithOptions:(unsigned __int8)a3 userInfo:(id)a4;
-- (void)launchSimUnlockViewForSlot:(int)a3 suppressCancellation:(BOOL)a4;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)launchSimSetupViewWithOptions:(unsigned __int8)options userInfo:(id)info;
+- (void)launchSimUnlockViewForSlot:(int)slot suppressCancellation:(BOOL)cancellation;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 - (void)start;
 @end
 
 @implementation SubscriberRemoteUILaunchHelperImpl
 
-- (SubscriberRemoteUILaunchHelperImpl)initWithQueue:(const queue *)a3 logger:(const void *)a4
+- (SubscriberRemoteUILaunchHelperImpl)initWithQueue:(const queue *)queue logger:(const void *)logger
 {
   v11.receiver = self;
   v11.super_class = SubscriberRemoteUILaunchHelperImpl;
@@ -22,8 +22,8 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->fQueue.fObj.fObj, a3->fObj.fObj);
-    v7->logger = a4;
+    objc_storeStrong(&v6->fQueue.fObj.fObj, queue->fObj.fObj);
+    v7->logger = logger;
     fRemoteAlertHandle = v7->fRemoteAlertHandle;
     v7->fRemoteAlertHandle = 0;
 
@@ -34,11 +34,11 @@
   return v7;
 }
 
-- (void)bootstrapWithDelegate:(weak_ptr<SubscriberUserAlertManagerInterface>)a3
+- (void)bootstrapWithDelegate:(weak_ptr<SubscriberUserAlertManagerInterface>)delegate
 {
-  v4 = *a3.__ptr_;
-  *a3.__ptr_ = 0;
-  *(a3.__ptr_ + 1) = 0;
+  v4 = *delegate.__ptr_;
+  *delegate.__ptr_ = 0;
+  *(delegate.__ptr_ + 1) = 0;
   cntrl = self->fDelegate.__cntrl_;
   self->fDelegate = v4;
   if (cntrl)
@@ -74,17 +74,17 @@
 
 - (void)start
 {
-  v3 = [(BYTelephonyStateNotifier *)self->fBuddySIMUnlockStateHandle currentSIMUnlockState];
+  currentSIMUnlockState = [(BYTelephonyStateNotifier *)self->fBuddySIMUnlockStateHandle currentSIMUnlockState];
   v4 = sub_100032AC8(self->logger);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = "BYTelephonySIMUnlockStateUnknown";
-    if (v3 == 1)
+    if (currentSIMUnlockState == 1)
     {
       v5 = "BYTelephonySIMUnlockStateAllowed";
     }
 
-    if (v3 == 2)
+    if (currentSIMUnlockState == 2)
     {
       v5 = "BYTelephonySIMUnlockStateDisallowed";
     }
@@ -103,7 +103,7 @@
       ptr = self->fDelegate.__ptr_;
       if (ptr)
       {
-        (*(*ptr + 32))(ptr, v3 == 1);
+        (*(*ptr + 32))(ptr, currentSIMUnlockState == 1);
 LABEL_15:
         sub_100004A34(v7);
         return;
@@ -129,12 +129,12 @@ LABEL_15:
   }
 }
 
-- (void)launchSimSetupViewWithOptions:(unsigned __int8)a3 userInfo:(id)a4
+- (void)launchSimSetupViewWithOptions:(unsigned __int8)options userInfo:(id)info
 {
-  v4 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  infoCopy = info;
   v7 = @"TSSIMSetupSupportViewController";
-  if (v4)
+  if (optionsCopy)
   {
     v8 = @"SIM Device Info Flow";
   }
@@ -145,20 +145,20 @@ LABEL_15:
     v8 = @"SIM Unlock Flow";
   }
 
-  if (v4)
+  if (optionsCopy)
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v9 = self;
+    selfCopy = self;
   }
 
   v10 = v7;
   v11 = v8;
-  v12 = v9;
-  v13 = [RemoteUILaunchHelper launchRemoteUI:@"com.apple.SIMSetupUIService" viewController:v10 reason:v11 userInfo:v6 observer:v12];
+  v12 = selfCopy;
+  v13 = [RemoteUILaunchHelper launchRemoteUI:@"com.apple.SIMSetupUIService" viewController:v10 reason:v11 userInfo:infoCopy observer:v12];
   fRemoteAlertHandle = self->fRemoteAlertHandle;
   self->fRemoteAlertHandle = v13;
 
@@ -172,12 +172,12 @@ LABEL_15:
   }
 }
 
-- (void)launchSimUnlockViewForSlot:(int)a3 suppressCancellation:(BOOL)a4
+- (void)launchSimUnlockViewForSlot:(int)slot suppressCancellation:(BOOL)cancellation
 {
-  v4 = a4;
-  v7 = a3 == 2;
+  cancellationCopy = cancellation;
+  v7 = slot == 2;
   v8 = objc_opt_new();
-  if (a3 == 1)
+  if (slot == 1)
   {
     v9 = 1;
   }
@@ -190,7 +190,7 @@ LABEL_15:
   v10 = [NSNumber numberWithInteger:v9];
   [v8 setObject:v10 forKey:kCTSubscriberUnlockPromptReasonKey];
 
-  v11 = [NSNumber numberWithBool:v4];
+  v11 = [NSNumber numberWithBool:cancellationCopy];
   [v8 setObject:v11 forKey:kCTSubscriberSuppressUnlockCancellationKey];
 
   v12 = [RemoteUILaunchHelper launchRemoteUI:@"com.apple.SIMSetupUIService" viewController:@"TSSIMUnlockViewController" reason:@"SIM Unlock Flow" userInfo:v8 observer:self];
@@ -241,48 +241,48 @@ LABEL_7:
   }
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
-  v4 = a3;
+  activateCopy = activate;
   v5 = sub_100032AC8(&self->fQueue.fObj.fObj);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_101424818;
   v7[3] = &unk_101F0F6C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = activateCopy;
+  v6 = activateCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
+  deactivateCopy = deactivate;
   v5 = sub_100032AC8(&self->fQueue.fObj.fObj);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1014249E8;
   v7[3] = &unk_101F0F6C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = deactivateCopy;
+  v6 = deactivateCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  errorCopy = error;
   v8 = sub_100032AC8(&self->fQueue.fObj.fObj);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_101424CC8;
   block[3] = &unk_101EA6A98;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = errorCopy;
+  selfCopy = self;
+  v14 = handleCopy;
+  v9 = handleCopy;
+  v10 = errorCopy;
   dispatch_async(v8, block);
 }
 

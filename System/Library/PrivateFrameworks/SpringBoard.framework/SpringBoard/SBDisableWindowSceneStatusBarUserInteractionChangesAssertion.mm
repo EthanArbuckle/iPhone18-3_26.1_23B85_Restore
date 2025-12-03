@@ -1,16 +1,16 @@
 @interface SBDisableWindowSceneStatusBarUserInteractionChangesAssertion
-- (id)_initWithWindowSceneStatusBarAssertionManager:(id)a3 reason:(id)a4;
+- (id)_initWithWindowSceneStatusBarAssertionManager:(id)manager reason:(id)reason;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation SBDisableWindowSceneStatusBarUserInteractionChangesAssertion
 
-- (id)_initWithWindowSceneStatusBarAssertionManager:(id)a3 reason:(id)a4
+- (id)_initWithWindowSceneStatusBarAssertionManager:(id)manager reason:(id)reason
 {
   v8.receiver = self;
   v8.super_class = SBDisableWindowSceneStatusBarUserInteractionChangesAssertion;
-  v4 = [(SBBaseWindowSceneStatusBarChangeAssertion *)&v8 _initWithWindowSceneStatusBarAssertionManager:a3 reason:a4];
+  v4 = [(SBBaseWindowSceneStatusBarChangeAssertion *)&v8 _initWithWindowSceneStatusBarAssertionManager:manager reason:reason];
   v5 = v4;
   if (v4)
   {

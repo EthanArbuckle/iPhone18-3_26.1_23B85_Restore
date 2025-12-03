@@ -1,30 +1,30 @@
 @interface VCPProtoLivePhotoEffectsRecipe
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
-- (id)exportToLegacyDictionaryFromFrameInstruction:(id)a3;
-- (id)exportToLegacyDictionaryFromParam:(id)a3 withLoopFlavor:(id)a4;
+- (id)exportToLegacyDictionaryFromFrameInstruction:(id)instruction;
+- (id)exportToLegacyDictionaryFromParam:(id)param withLoopFlavor:(id)flavor;
 - (unint64_t)hash;
-- (void)addFrameInstructions:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFlags:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addFrameInstructions:(id)instructions;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFlags:(BOOL)flags;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoLivePhotoEffectsRecipe
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dictionaryCopy = dictionary;
+  v4 = dictionaryCopy;
+  if (dictionaryCopy)
   {
-    v27 = [v3 objectForKeyedSubscript:@"AutoLoop"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"AutoLoop"];
     v26 = [v4 objectForKeyedSubscript:@"Bounce"];
     v25 = [v4 objectForKeyedSubscript:@"LongExposure"];
     v24 = [v4 objectForKeyedSubscript:@"Stabilize"];
@@ -131,64 +131,64 @@
   v31[3] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:4];
 
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   for (i = 0; [(VCPProtoLivePhotoEffectsRecipe *)self frameInstructionsCount]> i; ++i)
   {
-    v10 = [(VCPProtoLivePhotoEffectsRecipe *)self frameInstructions];
-    v11 = [v10 objectAtIndex:i];
+    frameInstructions = [(VCPProtoLivePhotoEffectsRecipe *)self frameInstructions];
+    v11 = [frameInstructions objectAtIndex:i];
 
     v12 = [(VCPProtoLivePhotoEffectsRecipe *)self exportToLegacyDictionaryFromFrameInstruction:v11];
-    [v8 addObject:v12];
+    [array addObject:v12];
   }
 
-  v13 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   time = v28;
   v14 = CMTimeCopyAsDictionary(&time, 0);
-  [v13 setObject:v14 forKeyedSubscript:@"outputFrameDur"];
+  [dictionary setObject:v14 forKeyedSubscript:@"outputFrameDur"];
 
-  [v13 setObject:v7 forKeyedSubscript:@"stabCropRect"];
+  [dictionary setObject:v7 forKeyedSubscript:@"stabCropRect"];
   v15 = [MEMORY[0x1E696AD98] numberWithInt:{-[VCPProtoLivePhotoEffectsRecipe stabilizeResult](self, "stabilizeResult")}];
-  [v13 setObject:v15 forKeyedSubscript:@"stabilizeResult"];
+  [dictionary setObject:v15 forKeyedSubscript:@"stabilizeResult"];
 
-  [v13 setObject:v8 forKeyedSubscript:@"frameInstructions"];
-  v16 = [MEMORY[0x1E695DF90] dictionary];
-  v17 = [(VCPProtoLivePhotoEffectsRecipe *)self autoloop];
-  v18 = [(VCPProtoLivePhotoEffectsRecipe *)self exportToLegacyDictionaryFromParam:v17 withLoopFlavor:@"AutoLoop"];
-  [v16 setObject:v18 forKeyedSubscript:@"AutoLoop"];
+  [dictionary setObject:array forKeyedSubscript:@"frameInstructions"];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  autoloop = [(VCPProtoLivePhotoEffectsRecipe *)self autoloop];
+  v18 = [(VCPProtoLivePhotoEffectsRecipe *)self exportToLegacyDictionaryFromParam:autoloop withLoopFlavor:@"AutoLoop"];
+  [dictionary2 setObject:v18 forKeyedSubscript:@"AutoLoop"];
 
-  v19 = [(VCPProtoLivePhotoEffectsRecipe *)self bounce];
-  v20 = [(VCPProtoLivePhotoEffectsRecipe *)self exportToLegacyDictionaryFromParam:v19 withLoopFlavor:@"Bounce"];
-  [v16 setObject:v20 forKeyedSubscript:@"Bounce"];
+  bounce = [(VCPProtoLivePhotoEffectsRecipe *)self bounce];
+  v20 = [(VCPProtoLivePhotoEffectsRecipe *)self exportToLegacyDictionaryFromParam:bounce withLoopFlavor:@"Bounce"];
+  [dictionary2 setObject:v20 forKeyedSubscript:@"Bounce"];
 
-  v21 = [(VCPProtoLivePhotoEffectsRecipe *)self longexposure];
-  v22 = [(VCPProtoLivePhotoEffectsRecipe *)self exportToLegacyDictionaryFromParam:v21 withLoopFlavor:@"LongExposure"];
-  [v16 setObject:v22 forKeyedSubscript:@"LongExposure"];
+  longexposure = [(VCPProtoLivePhotoEffectsRecipe *)self longexposure];
+  v22 = [(VCPProtoLivePhotoEffectsRecipe *)self exportToLegacyDictionaryFromParam:longexposure withLoopFlavor:@"LongExposure"];
+  [dictionary2 setObject:v22 forKeyedSubscript:@"LongExposure"];
 
-  v23 = [(VCPProtoLivePhotoEffectsRecipe *)self stabilize];
-  v24 = [(VCPProtoLivePhotoEffectsRecipe *)self exportToLegacyDictionaryFromParam:v23 withLoopFlavor:@"Stabilize"];
-  [v16 setObject:v24 forKeyedSubscript:@"Stabilize"];
+  stabilize = [(VCPProtoLivePhotoEffectsRecipe *)self stabilize];
+  v24 = [(VCPProtoLivePhotoEffectsRecipe *)self exportToLegacyDictionaryFromParam:stabilize withLoopFlavor:@"Stabilize"];
+  [dictionary2 setObject:v24 forKeyedSubscript:@"Stabilize"];
 
   v25 = [MEMORY[0x1E696AD98] numberWithInt:{-[VCPProtoLivePhotoEffectsRecipe version](self, "version")}];
-  [v16 setObject:v25 forKeyedSubscript:@"Version"];
+  [dictionary2 setObject:v25 forKeyedSubscript:@"Version"];
 
   v26 = [MEMORY[0x1E696AD98] numberWithInt:{-[VCPProtoLivePhotoEffectsRecipe minVersion](self, "minVersion")}];
-  [v16 setObject:v26 forKeyedSubscript:@"MinVersion"];
+  [dictionary2 setObject:v26 forKeyedSubscript:@"MinVersion"];
 
-  [v16 setObject:v13 forKeyedSubscript:@"NormStabilizeInstructions"];
+  [dictionary2 setObject:dictionary forKeyedSubscript:@"NormStabilizeInstructions"];
 
-  return v16;
+  return dictionary2;
 }
 
-- (id)exportToLegacyDictionaryFromFrameInstruction:(id)a3
+- (id)exportToLegacyDictionaryFromFrameInstruction:(id)instruction
 {
-  v3 = a3;
-  v4 = [v3 exportToLegacyDictionary];
-  v5 = [v4 mutableCopy];
+  instructionCopy = instruction;
+  exportToLegacyDictionary = [instructionCopy exportToLegacyDictionary];
+  v5 = [exportToLegacyDictionary mutableCopy];
 
   memset(&v8, 0, sizeof(v8));
-  CMTimeMake(&v8, [v3 timeValue], objc_msgSend(v3, "timeScale"));
-  v8.epoch = [v3 epoch];
-  v8.flags = [v3 flags];
+  CMTimeMake(&v8, [instructionCopy timeValue], objc_msgSend(instructionCopy, "timeScale"));
+  v8.epoch = [instructionCopy epoch];
+  v8.flags = [instructionCopy flags];
   time = v8;
   v6 = CMTimeCopyAsDictionary(&time, 0);
   [v5 setObject:v6 forKeyedSubscript:@"rawTime"];
@@ -196,25 +196,25 @@
   return v5;
 }
 
-- (id)exportToLegacyDictionaryFromParam:(id)a3 withLoopFlavor:(id)a4
+- (id)exportToLegacyDictionaryFromParam:(id)param withLoopFlavor:(id)flavor
 {
-  v5 = a4;
-  v6 = [a3 exportToLegacyDictionary];
-  v7 = [v6 mutableCopy];
+  flavorCopy = flavor;
+  exportToLegacyDictionary = [param exportToLegacyDictionary];
+  v7 = [exportToLegacyDictionary mutableCopy];
 
   v8 = [v7 objectForKeyedSubscript:@"Params"];
   v9 = [v8 mutableCopy];
 
-  [v9 setObject:v5 forKeyedSubscript:@"loopFlavor"];
+  [v9 setObject:flavorCopy forKeyedSubscript:@"loopFlavor"];
   [v9 setObject:&unk_1F49BB118 forKeyedSubscript:@"loopEnergy"];
   [v7 setObject:v9 forKeyedSubscript:@"Params"];
 
   return v7;
 }
 
-- (void)setHasFlags:(BOOL)a3
+- (void)setHasFlags:(BOOL)flags
 {
-  if (a3)
+  if (flags)
   {
     v3 = 2;
   }
@@ -227,22 +227,22 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addFrameInstructions:(id)a3
+- (void)addFrameInstructions:(id)instructions
 {
-  v4 = a3;
+  instructionsCopy = instructions;
   frameInstructions = self->_frameInstructions;
-  v8 = v4;
+  v8 = instructionsCopy;
   if (!frameInstructions)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_frameInstructions;
     self->_frameInstructions = v6;
 
-    v4 = v8;
+    instructionsCopy = v8;
     frameInstructions = self->_frameInstructions;
   }
 
-  [(NSMutableArray *)frameInstructions addObject:v4];
+  [(NSMutableArray *)frameInstructions addObject:instructionsCopy];
 }
 
 - (id)description
@@ -251,8 +251,8 @@
   v8.receiver = self;
   v8.super_class = VCPProtoLivePhotoEffectsRecipe;
   v4 = [(VCPProtoLivePhotoEffectsRecipe *)&v8 description];
-  v5 = [(VCPProtoLivePhotoEffectsRecipe *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoLivePhotoEffectsRecipe *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -260,33 +260,33 @@
 - (id)dictionaryRepresentation
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:self->_stabilizeResult];
-  [v3 setObject:v4 forKey:@"stabilizeResult"];
+  [dictionary setObject:v4 forKey:@"stabilizeResult"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_outputFrameDurValue];
-  [v3 setObject:v5 forKey:@"outputFrameDurValue"];
+  [dictionary setObject:v5 forKey:@"outputFrameDurValue"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithInt:self->_cropRectX];
-  [v3 setObject:v6 forKey:@"cropRectX"];
+  [dictionary setObject:v6 forKey:@"cropRectX"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithInt:self->_cropRectY];
-  [v3 setObject:v7 forKey:@"cropRectY"];
+  [dictionary setObject:v7 forKey:@"cropRectY"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithInt:self->_cropRectHeight];
-  [v3 setObject:v8 forKey:@"cropRectHeight"];
+  [dictionary setObject:v8 forKey:@"cropRectHeight"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithInt:self->_cropRectWidth];
-  [v3 setObject:v9 forKey:@"cropRectWidth"];
+  [dictionary setObject:v9 forKey:@"cropRectWidth"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithInt:self->_timeScale];
-  [v3 setObject:v10 forKey:@"timeScale"];
+  [dictionary setObject:v10 forKey:@"timeScale"];
 
   has = self->_has;
   if (has)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_epoch];
-    [v3 setObject:v12 forKey:@"epoch"];
+    [dictionary setObject:v12 forKey:@"epoch"];
 
     has = self->_has;
   }
@@ -294,7 +294,7 @@
   if ((has & 2) != 0)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithInt:self->_flags];
-    [v3 setObject:v13 forKey:@"flags"];
+    [dictionary setObject:v13 forKey:@"flags"];
   }
 
   if ([(NSMutableArray *)self->_frameInstructions count])
@@ -319,8 +319,8 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v32 + 1) + 8 * i) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation = [*(*(&v32 + 1) + 8 * i) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v32 objects:v36 count:16];
@@ -329,50 +329,50 @@
       while (v17);
     }
 
-    [v3 setObject:v14 forKey:@"frameInstructions"];
+    [dictionary setObject:v14 forKey:@"frameInstructions"];
   }
 
   autoloop = self->_autoloop;
   if (autoloop)
   {
-    v22 = [(VCPProtoLivePhotoVariationParams *)autoloop dictionaryRepresentation];
-    [v3 setObject:v22 forKey:@"autoloop"];
+    dictionaryRepresentation2 = [(VCPProtoLivePhotoVariationParams *)autoloop dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"autoloop"];
   }
 
   bounce = self->_bounce;
   if (bounce)
   {
-    v24 = [(VCPProtoLivePhotoVariationParams *)bounce dictionaryRepresentation];
-    [v3 setObject:v24 forKey:@"bounce"];
+    dictionaryRepresentation3 = [(VCPProtoLivePhotoVariationParams *)bounce dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"bounce"];
   }
 
   longexposure = self->_longexposure;
   if (longexposure)
   {
-    v26 = [(VCPProtoLivePhotoVariationParams *)longexposure dictionaryRepresentation];
-    [v3 setObject:v26 forKey:@"longexposure"];
+    dictionaryRepresentation4 = [(VCPProtoLivePhotoVariationParams *)longexposure dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"longexposure"];
   }
 
   stabilize = self->_stabilize;
   if (stabilize)
   {
-    v28 = [(VCPProtoLivePhotoVariationParams *)stabilize dictionaryRepresentation];
-    [v3 setObject:v28 forKey:@"stabilize"];
+    dictionaryRepresentation5 = [(VCPProtoLivePhotoVariationParams *)stabilize dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"stabilize"];
   }
 
   v29 = [MEMORY[0x1E696AD98] numberWithInt:{self->_minVersion, v32}];
-  [v3 setObject:v29 forKey:@"minVersion"];
+  [dictionary setObject:v29 forKey:@"minVersion"];
 
   v30 = [MEMORY[0x1E696AD98] numberWithInt:self->_version];
-  [v3 setObject:v30 forKey:@"version"];
+  [dictionary setObject:v30 forKey:@"version"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteInt32Field();
   PBDataWriterWriteInt64Field();
   PBDataWriterWriteInt32Field();
@@ -428,38 +428,38 @@
   PBDataWriterWriteInt32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[24] = self->_stabilizeResult;
-  *(v4 + 2) = self->_outputFrameDurValue;
-  v4[12] = self->_cropRectX;
-  v4[13] = self->_cropRectY;
-  v4[10] = self->_cropRectHeight;
-  v4[11] = self->_cropRectWidth;
-  v4[25] = self->_timeScale;
+  toCopy = to;
+  toCopy[24] = self->_stabilizeResult;
+  *(toCopy + 2) = self->_outputFrameDurValue;
+  toCopy[12] = self->_cropRectX;
+  toCopy[13] = self->_cropRectY;
+  toCopy[10] = self->_cropRectHeight;
+  toCopy[11] = self->_cropRectWidth;
+  toCopy[25] = self->_timeScale;
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = self->_epoch;
-    *(v4 + 108) |= 1u;
+    *(toCopy + 1) = self->_epoch;
+    *(toCopy + 108) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[14] = self->_flags;
-    *(v4 + 108) |= 2u;
+    toCopy[14] = self->_flags;
+    *(toCopy + 108) |= 2u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if ([(VCPProtoLivePhotoEffectsRecipe *)self frameInstructionsCount])
   {
     [v10 clearFrameInstructions];
-    v6 = [(VCPProtoLivePhotoEffectsRecipe *)self frameInstructionsCount];
-    if (v6)
+    frameInstructionsCount = [(VCPProtoLivePhotoEffectsRecipe *)self frameInstructionsCount];
+    if (frameInstructionsCount)
     {
-      v7 = v6;
+      v7 = frameInstructionsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(VCPProtoLivePhotoEffectsRecipe *)self frameInstructionsAtIndex:i];
@@ -476,10 +476,10 @@
   v10[26] = self->_version;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   *(v5 + 96) = self->_stabilizeResult;
   *(v5 + 16) = self->_outputFrameDurValue;
@@ -521,7 +521,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v23 + 1) + 8 * i) copyWithZone:{a3, v23}];
+        v13 = [*(*(&v23 + 1) + 8 * i) copyWithZone:{zone, v23}];
         [v6 addFrameInstructions:v13];
       }
 
@@ -531,19 +531,19 @@
     while (v10);
   }
 
-  v14 = [(VCPProtoLivePhotoVariationParams *)self->_autoloop copyWithZone:a3];
+  v14 = [(VCPProtoLivePhotoVariationParams *)self->_autoloop copyWithZone:zone];
   v15 = *(v6 + 24);
   *(v6 + 24) = v14;
 
-  v16 = [(VCPProtoLivePhotoVariationParams *)self->_bounce copyWithZone:a3];
+  v16 = [(VCPProtoLivePhotoVariationParams *)self->_bounce copyWithZone:zone];
   v17 = *(v6 + 32);
   *(v6 + 32) = v16;
 
-  v18 = [(VCPProtoLivePhotoVariationParams *)self->_longexposure copyWithZone:a3];
+  v18 = [(VCPProtoLivePhotoVariationParams *)self->_longexposure copyWithZone:zone];
   v19 = *(v6 + 72);
   *(v6 + 72) = v18;
 
-  v20 = [(VCPProtoLivePhotoVariationParams *)self->_stabilize copyWithZone:a3];
+  v20 = [(VCPProtoLivePhotoVariationParams *)self->_stabilize copyWithZone:zone];
   v21 = *(v6 + 88);
   *(v6 + 88) = v20;
 
@@ -552,23 +552,23 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || self->_stabilizeResult != *(v4 + 24) || self->_outputFrameDurValue != *(v4 + 2) || self->_cropRectX != *(v4 + 12) || self->_cropRectY != *(v4 + 13) || self->_cropRectHeight != *(v4 + 10) || self->_cropRectWidth != *(v4 + 11) || self->_timeScale != *(v4 + 25))
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || self->_stabilizeResult != *(equalCopy + 24) || self->_outputFrameDurValue != *(equalCopy + 2) || self->_cropRectX != *(equalCopy + 12) || self->_cropRectY != *(equalCopy + 13) || self->_cropRectHeight != *(equalCopy + 10) || self->_cropRectWidth != *(equalCopy + 11) || self->_timeScale != *(equalCopy + 25))
   {
     goto LABEL_31;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 108) & 1) == 0 || self->_epoch != *(v4 + 1))
+    if ((*(equalCopy + 108) & 1) == 0 || self->_epoch != *(equalCopy + 1))
     {
       goto LABEL_31;
     }
   }
 
-  else if (*(v4 + 108))
+  else if (*(equalCopy + 108))
   {
 LABEL_31:
     v10 = 0;
@@ -577,25 +577,25 @@ LABEL_31:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 108) & 2) == 0 || self->_flags != *(v4 + 14))
+    if ((*(equalCopy + 108) & 2) == 0 || self->_flags != *(equalCopy + 14))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 108) & 2) != 0)
+  else if ((*(equalCopy + 108) & 2) != 0)
   {
     goto LABEL_31;
   }
 
   frameInstructions = self->_frameInstructions;
-  if (frameInstructions | *(v4 + 8) && ![(NSMutableArray *)frameInstructions isEqual:?])
+  if (frameInstructions | *(equalCopy + 8) && ![(NSMutableArray *)frameInstructions isEqual:?])
   {
     goto LABEL_31;
   }
 
   autoloop = self->_autoloop;
-  if (autoloop | *(v4 + 3))
+  if (autoloop | *(equalCopy + 3))
   {
     if (![(VCPProtoLivePhotoVariationParams *)autoloop isEqual:?])
     {
@@ -604,7 +604,7 @@ LABEL_31:
   }
 
   bounce = self->_bounce;
-  if (bounce | *(v4 + 4))
+  if (bounce | *(equalCopy + 4))
   {
     if (![(VCPProtoLivePhotoVariationParams *)bounce isEqual:?])
     {
@@ -613,7 +613,7 @@ LABEL_31:
   }
 
   longexposure = self->_longexposure;
-  if (longexposure | *(v4 + 9))
+  if (longexposure | *(equalCopy + 9))
   {
     if (![(VCPProtoLivePhotoVariationParams *)longexposure isEqual:?])
     {
@@ -622,7 +622,7 @@ LABEL_31:
   }
 
   stabilize = self->_stabilize;
-  if (stabilize | *(v4 + 11))
+  if (stabilize | *(equalCopy + 11))
   {
     if (![(VCPProtoLivePhotoVariationParams *)stabilize isEqual:?])
     {
@@ -630,12 +630,12 @@ LABEL_31:
     }
   }
 
-  if (self->_minVersion != *(v4 + 20))
+  if (self->_minVersion != *(equalCopy + 20))
   {
     goto LABEL_31;
   }
 
-  v10 = self->_version == *(v4 + 26);
+  v10 = self->_version == *(equalCopy + 26);
 LABEL_32:
 
   return v10;
@@ -671,29 +671,29 @@ LABEL_32:
   return v5 ^ v9 ^ [(VCPProtoLivePhotoVariationParams *)self->_stabilize hash]^ (2654435761 * self->_minVersion) ^ (2654435761 * self->_version);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  self->_stabilizeResult = *(v4 + 24);
-  self->_outputFrameDurValue = *(v4 + 2);
-  self->_cropRectX = *(v4 + 12);
-  self->_cropRectY = *(v4 + 13);
-  self->_cropRectHeight = *(v4 + 10);
-  self->_cropRectWidth = *(v4 + 11);
-  self->_timeScale = *(v4 + 25);
-  v6 = *(v4 + 108);
+  fromCopy = from;
+  v5 = fromCopy;
+  self->_stabilizeResult = *(fromCopy + 24);
+  self->_outputFrameDurValue = *(fromCopy + 2);
+  self->_cropRectX = *(fromCopy + 12);
+  self->_cropRectY = *(fromCopy + 13);
+  self->_cropRectHeight = *(fromCopy + 10);
+  self->_cropRectWidth = *(fromCopy + 11);
+  self->_timeScale = *(fromCopy + 25);
+  v6 = *(fromCopy + 108);
   if (v6)
   {
-    self->_epoch = *(v4 + 1);
+    self->_epoch = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 108);
+    v6 = *(fromCopy + 108);
   }
 
   if ((v6 & 2) != 0)
   {
-    self->_flags = *(v4 + 14);
+    self->_flags = *(fromCopy + 14);
     *&self->_has |= 2u;
   }
 
@@ -701,7 +701,7 @@ LABEL_32:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = *(v4 + 8);
+  v7 = *(fromCopy + 8);
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {

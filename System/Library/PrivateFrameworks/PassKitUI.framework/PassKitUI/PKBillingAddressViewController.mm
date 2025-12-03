@@ -1,68 +1,68 @@
 @interface PKBillingAddressViewController
 - (BOOL)_showCurrentAddress;
-- (BOOL)shouldMapSection:(unint64_t)a3;
-- (PKBillingAddressViewController)initWithConfiguration:(id)a3 handler:(id)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)_currentBillingAddressCellForRowIndex:(int64_t)a3 tableView:(id)a4;
-- (id)_enterNewBillingAddressCellForRowIndex:(int64_t)a3 tableView:(id)a4;
+- (BOOL)shouldMapSection:(unint64_t)section;
+- (PKBillingAddressViewController)initWithConfiguration:(id)configuration handler:(id)handler;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)_currentBillingAddressCellForRowIndex:(int64_t)index tableView:(id)view;
+- (id)_enterNewBillingAddressCellForRowIndex:(int64_t)index tableView:(id)view;
 - (id)requiredBillingAddressKeys;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
 - (int64_t)modalPresentationStyle;
 - (void)_cancelButtonTapped;
 - (void)_didSelectChangeAddress;
 - (void)_loadUserInfo;
-- (void)addressEditorViewController:(id)a3 selectedContact:(id)a4;
-- (void)addressEditorViewControllerDidCancel:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)addressEditorViewController:(id)controller selectedContact:(id)contact;
+- (void)addressEditorViewControllerDidCancel:(id)cancel;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation PKBillingAddressViewController
 
-- (PKBillingAddressViewController)initWithConfiguration:(id)a3 handler:(id)a4
+- (PKBillingAddressViewController)initWithConfiguration:(id)configuration handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v29.receiver = self;
   v29.super_class = PKBillingAddressViewController;
   v8 = -[PKSectionTableViewController initWithStyle:numberOfSections:](&v29, sel_initWithStyle_numberOfSections_, [MEMORY[0x1E69DD020] pkui_groupedStyleDefaultRoundedCornerBehavior], 2);
   if (v8)
   {
-    v8->_featureIdentifier = [v6 featureIdentifier];
-    v8->_detailViewStyle = [v6 detailViewStyle];
-    v9 = [v7 copy];
+    v8->_featureIdentifier = [configurationCopy featureIdentifier];
+    v8->_detailViewStyle = [configurationCopy detailViewStyle];
+    v9 = [handlerCopy copy];
     handler = v8->_handler;
     v8->_handler = v9;
 
-    v11 = [v6 billingAddress];
+    billingAddress = [configurationCopy billingAddress];
     currentBillingAddress = v8->_currentBillingAddress;
-    v8->_currentBillingAddress = v11;
+    v8->_currentBillingAddress = billingAddress;
 
-    v13 = [v6 accountService];
+    accountService = [configurationCopy accountService];
     accountService = v8->_accountService;
-    v8->_accountService = v13;
+    v8->_accountService = accountService;
 
-    v15 = [v6 account];
+    account = [configurationCopy account];
     account = v8->_account;
-    v8->_account = v15;
+    v8->_account = account;
 
-    v17 = [v6 userInfo];
+    userInfo = [configurationCopy userInfo];
     peerPaymentUserInfo = v8->_peerPaymentUserInfo;
-    v8->_peerPaymentUserInfo = v17;
+    v8->_peerPaymentUserInfo = userInfo;
 
-    v19 = [v6 peerPaymentAccount];
+    peerPaymentAccount = [configurationCopy peerPaymentAccount];
     peerPaymentAccount = v8->_peerPaymentAccount;
-    v8->_peerPaymentAccount = v19;
+    v8->_peerPaymentAccount = peerPaymentAccount;
 
-    v21 = [v6 peerPaymentService];
+    peerPaymentService = [configurationCopy peerPaymentService];
     peerPaymentService = v8->_peerPaymentService;
-    v8->_peerPaymentService = v21;
+    v8->_peerPaymentService = peerPaymentService;
 
-    v23 = [v6 paymentPass];
+    paymentPass = [configurationCopy paymentPass];
     paymentPass = v8->_paymentPass;
-    v8->_paymentPass = v23;
+    v8->_paymentPass = paymentPass;
 
     [(PKBillingAddressViewController *)v8 _loadUserInfo];
     v25 = v8->_peerPaymentService;
@@ -71,11 +71,11 @@
       [(PKPeerPaymentService *)v25 registerObserver:v8];
     }
 
-    if ([v6 showCancelButton])
+    if ([configurationCopy showCancelButton])
     {
-      v26 = [(PKBillingAddressViewController *)v8 navigationItem];
+      navigationItem = [(PKBillingAddressViewController *)v8 navigationItem];
       v27 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:v8 action:sel__cancelButtonTapped];
-      [v26 setLeftBarButtonItem:v27];
+      [navigationItem setLeftBarButtonItem:v27];
     }
   }
 
@@ -87,21 +87,21 @@
   v6.receiver = self;
   v6.super_class = PKBillingAddressViewController;
   [(PKSectionTableViewController *)&v6 viewDidLoad];
-  v3 = [(PKBillingAddressViewController *)self tableView];
-  [v3 setRowHeight:*MEMORY[0x1E69DE3D0]];
-  v4 = [(PKBillingAddressViewController *)self navigationItem];
+  tableView = [(PKBillingAddressViewController *)self tableView];
+  [tableView setRowHeight:*MEMORY[0x1E69DE3D0]];
+  navigationItem = [(PKBillingAddressViewController *)self navigationItem];
   v5 = PKLocalizedFeatureString();
-  [v4 setTitle:v5];
+  [navigationItem setTitle:v5];
 }
 
-- (BOOL)shouldMapSection:(unint64_t)a3
+- (BOOL)shouldMapSection:(unint64_t)section
 {
-  if (a3 == 1)
+  if (section == 1)
   {
     return 1;
   }
 
-  if (a3)
+  if (section)
   {
     return 0;
   }
@@ -109,20 +109,20 @@
   return [(PKBillingAddressViewController *)self _showCurrentAddress];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [pathCopy section]);
   if (v8 == 1)
   {
-    v9 = -[PKBillingAddressViewController _enterNewBillingAddressCellForRowIndex:tableView:](self, "_enterNewBillingAddressCellForRowIndex:tableView:", [v7 row], v6);
+    v9 = -[PKBillingAddressViewController _enterNewBillingAddressCellForRowIndex:tableView:](self, "_enterNewBillingAddressCellForRowIndex:tableView:", [pathCopy row], viewCopy);
     goto LABEL_5;
   }
 
   if (!v8)
   {
-    v9 = -[PKBillingAddressViewController _currentBillingAddressCellForRowIndex:tableView:](self, "_currentBillingAddressCellForRowIndex:tableView:", [v7 row], v6);
+    v9 = -[PKBillingAddressViewController _currentBillingAddressCellForRowIndex:tableView:](self, "_currentBillingAddressCellForRowIndex:tableView:", [pathCopy row], viewCopy);
 LABEL_5:
     v10 = v9;
     goto LABEL_7;
@@ -134,10 +134,10 @@ LABEL_7:
   return v10;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 && (a4 != 1 || (peerPaymentAccount = self->_peerPaymentAccount) != 0 && ![(PKPeerPaymentAccount *)peerPaymentAccount isEligibleForUserInfoUpdates]))
+  viewCopy = view;
+  if (section && (section != 1 || (peerPaymentAccount = self->_peerPaymentAccount) != 0 && ![(PKPeerPaymentAccount *)peerPaymentAccount isEligibleForUserInfoUpdates]))
   {
     v8 = 0;
   }
@@ -150,48 +150,48 @@ LABEL_7:
   return v8;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  if (a4 <= 2)
+  if (section <= 2)
   {
-    [a3 sectionHeaderHeight];
+    [view sectionHeaderHeight];
   }
 
   return result;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v7 = a3;
-  v6 = a4;
-  if (-[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [v6 section]) == 1)
+  viewCopy = view;
+  pathCopy = path;
+  if (-[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [pathCopy section]) == 1)
   {
     [(PKBillingAddressViewController *)self _didSelectChangeAddress];
   }
 
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point
 {
-  v7 = a3;
-  v8 = a4;
-  if (-[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [v8 section]) || self->_loadingNewBillingContact)
+  viewCopy = view;
+  pathCopy = path;
+  if (-[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [pathCopy section]) || self->_loadingNewBillingContact)
   {
     v9 = 0;
-    v10 = 0;
+    text = 0;
   }
 
   else
   {
-    v14 = [v7 cellForRowAtIndexPath:v8];
-    v15 = [v14 contentConfiguration];
-    v10 = [v15 text];
+    v14 = [viewCopy cellForRowAtIndexPath:pathCopy];
+    contentConfiguration = [v14 contentConfiguration];
+    text = [contentConfiguration text];
 
     v9 = 1;
   }
 
-  if ([v10 length])
+  if ([text length])
   {
     if (v9)
     {
@@ -201,7 +201,7 @@ LABEL_6:
       v16[1] = 3221225472;
       v16[2] = __92__PKBillingAddressViewController_tableView_contextMenuConfigurationForRowAtIndexPath_point___block_invoke;
       v16[3] = &unk_1E8016090;
-      v17 = v10;
+      v17 = text;
       v12 = [v11 configurationWithIdentifier:0 previewProvider:0 actionProvider:v16];
 
       goto LABEL_9;
@@ -211,7 +211,7 @@ LABEL_6:
   else
   {
 
-    v10 = 0;
+    text = 0;
     if (v9)
     {
       goto LABEL_6;
@@ -250,12 +250,12 @@ void __92__PKBillingAddressViewController_tableView_contextMenuConfigurationForR
   [v2 setString:*(a1 + 32)];
 }
 
-- (void)addressEditorViewController:(id)a3 selectedContact:(id)a4
+- (void)addressEditorViewController:(id)controller selectedContact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 presentingViewController];
-  [v8 dismissViewControllerAnimated:1 completion:0];
+  controllerCopy = controller;
+  contactCopy = contact;
+  presentingViewController = [controllerCopy presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
   v9 = self->_currentBillingAddress;
   currentBillingAddress = self->_currentBillingAddress;
@@ -267,7 +267,7 @@ void __92__PKBillingAddressViewController_tableView_contextMenuConfigurationForR
     [(PKSectionTableViewController *)self reloadSection:0];
     objc_initWeak(&location, self);
     accountService = self->_accountService;
-    v12 = [(PKAccount *)self->_account accountIdentifier];
+    accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
     v13 = v22;
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
@@ -275,7 +275,7 @@ void __92__PKBillingAddressViewController_tableView_contextMenuConfigurationForR
     v22[3] = &unk_1E80223C0;
     objc_copyWeak(&v24, &location);
     v23 = v9;
-    [(PKAccountService *)accountService updateUserInfoForAccountIdentifier:v12 contact:v7 completion:v22];
+    [(PKAccountService *)accountService updateUserInfoForAccountIdentifier:accountIdentifier contact:contactCopy completion:v22];
 
     v14 = v23;
 LABEL_5:
@@ -287,11 +287,11 @@ LABEL_5:
 
   if (self->_peerPaymentService)
   {
-    v15 = [MEMORY[0x1E69B9018] userInfoFromContact:v7];
+    v15 = [MEMORY[0x1E69B9018] userInfoFromContact:contactCopy];
     peerPaymentUserInfo = self->_peerPaymentUserInfo;
     self->_peerPaymentUserInfo = v15;
 
-    objc_storeStrong(&self->_currentBillingAddress, a4);
+    objc_storeStrong(&self->_currentBillingAddress, contact);
     objc_initWeak(&location, self);
     peerPaymentService = self->_peerPaymentService;
     v18 = self->_peerPaymentUserInfo;
@@ -301,7 +301,7 @@ LABEL_5:
     v19[2] = __78__PKBillingAddressViewController_addressEditorViewController_selectedContact___block_invoke_3;
     v19[3] = &unk_1E80110E0;
     objc_copyWeak(&v21, &location);
-    v20 = v7;
+    v20 = contactCopy;
     [(PKPeerPaymentService *)peerPaymentService insertOrUpdateUserInfo:v18 completion:v19];
     v14 = v20;
     goto LABEL_5;
@@ -390,10 +390,10 @@ void __78__PKBillingAddressViewController_addressEditorViewController_selectedCo
   }
 }
 
-- (void)addressEditorViewControllerDidCancel:(id)a3
+- (void)addressEditorViewControllerDidCancel:(id)cancel
 {
-  v3 = [a3 presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [cancel presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)_loadUserInfo
@@ -424,14 +424,14 @@ void __78__PKBillingAddressViewController_addressEditorViewController_selectedCo
     self->_loadingNewBillingContact = 1;
     objc_initWeak(&location, self);
     accountService = self->_accountService;
-    v5 = [(PKAccount *)self->_account accountIdentifier];
+    accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __47__PKBillingAddressViewController__loadUserInfo__block_invoke;
     v10[3] = &unk_1E80223E8;
     objc_copyWeak(&v11, &location);
     v10[4] = self;
-    [(PKAccountService *)accountService userInfoForAccountIdentifier:v5 forceFetch:1 completion:v10];
+    [(PKAccountService *)accountService userInfoForAccountIdentifier:accountIdentifier forceFetch:1 completion:v10];
 
     v6 = &v11;
 LABEL_7:
@@ -568,7 +568,7 @@ void __47__PKBillingAddressViewController__loadUserInfo__block_invoke_2_171(uint
     objc_initWeak(&location, self);
     v5 = [PKPeerPaymentUpdateUserInfoCoordinator alloc];
     v6 = self->_peerPaymentAccount;
-    v7 = [MEMORY[0x1E69B9020] sharedService];
+    mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
     detailViewStyle = self->_detailViewStyle;
     v9 = 3;
     if (detailViewStyle != 1)
@@ -586,7 +586,7 @@ void __47__PKBillingAddressViewController__loadUserInfo__block_invoke_2_171(uint
       v10 = v9;
     }
 
-    v11 = [(PKPeerPaymentUpdateUserInfoCoordinator *)v5 initWithAccount:v6 webService:v7 setupContext:v10];
+    v11 = [(PKPeerPaymentUpdateUserInfoCoordinator *)v5 initWithAccount:v6 webService:mEMORY[0x1E69B9020] setupContext:v10];
     updateUserInfoCoordinator = self->_updateUserInfoCoordinator;
     self->_updateUserInfoCoordinator = v11;
 
@@ -610,9 +610,9 @@ void __47__PKBillingAddressViewController__loadUserInfo__block_invoke_2_171(uint
   else
   {
     v14 = objc_alloc_init(MEMORY[0x1E695CF30]);
-    v15 = [(PKAccount *)self->_account creditDetails];
-    v16 = [v15 countryCode];
-    [v14 setISOCountryCode:v16];
+    creditDetails = [(PKAccount *)self->_account creditDetails];
+    countryCode = [creditDetails countryCode];
+    [v14 setISOCountryCode:countryCode];
 
     v17 = objc_alloc_init(MEMORY[0x1E695CF18]);
     v18 = MEMORY[0x1E695CEE0];
@@ -626,19 +626,19 @@ void __47__PKBillingAddressViewController__loadUserInfo__block_invoke_2_171(uint
 
     v23 = [PKAddressEditorViewController alloc];
     v24 = [v17 copy];
-    v25 = [(PKBillingAddressViewController *)self requiredBillingAddressKeys];
-    v26 = [(PKAddressEditorViewController *)v23 initWithContact:v24 requiredKeys:v25 highlightedKeys:MEMORY[0x1E695E0F0] errors:MEMORY[0x1E695E0F0] style:1];
+    requiredBillingAddressKeys = [(PKBillingAddressViewController *)self requiredBillingAddressKeys];
+    v26 = [(PKAddressEditorViewController *)v23 initWithContact:v24 requiredKeys:requiredBillingAddressKeys highlightedKeys:MEMORY[0x1E695E0F0] errors:MEMORY[0x1E695E0F0] style:1];
 
     [(PKAddressEditorViewController *)v26 setDelegate:self];
     [(PKAddressEditorViewController *)v26 setCountryIsEditable:0];
     [(PKAddressEditorViewController *)v26 setModalPresentationStyle:[(PKBillingAddressViewController *)self modalPresentationStyle]];
-    v27 = [(PKAddressEditorViewController *)v26 view];
-    v28 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [v27 setBackgroundColor:v28];
+    view = [(PKAddressEditorViewController *)v26 view];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [view setBackgroundColor:systemBackgroundColor];
 
     v29 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v26];
-    v30 = [(PKBillingAddressViewController *)self navigationController];
-    [v30 presentViewController:v29 animated:1 completion:0];
+    navigationController = [(PKBillingAddressViewController *)self navigationController];
+    [navigationController presentViewController:v29 animated:1 completion:0];
   }
 }
 
@@ -673,9 +673,9 @@ void __57__PKBillingAddressViewController__didSelectChangeAddress__block_invoke_
   }
 }
 
-- (id)_currentBillingAddressCellForRowIndex:(int64_t)a3 tableView:(id)a4
+- (id)_currentBillingAddressCellForRowIndex:(int64_t)index tableView:(id)view
 {
-  v5 = [a4 dequeueReusableCellWithIdentifier:@"PKBillingAddressCurrentAddress"];
+  v5 = [view dequeueReusableCellWithIdentifier:@"PKBillingAddressCurrentAddress"];
   if (!v5)
   {
     v5 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:3 reuseIdentifier:@"PKBillingAddressCurrentAddress"];
@@ -683,21 +683,21 @@ void __57__PKBillingAddressViewController__didSelectChangeAddress__block_invoke_
 
   if (self->_loadingNewBillingContact)
   {
-    v6 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
-    [v6 startAnimating];
-    [v5 setEditingAccessoryView:v6];
-    [v5 setAccessoryView:v6];
+    valueCellConfiguration = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
+    [valueCellConfiguration startAnimating];
+    [v5 setEditingAccessoryView:valueCellConfiguration];
+    [v5 setAccessoryView:valueCellConfiguration];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
-    v7 = [v6 textProperties];
-    [v7 setNumberOfLines:0];
-    v8 = [(CNContact *)self->_currentBillingAddress pkFormattedContactAddressWithoutName];
-    [v6 setText:v8];
+    valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+    textProperties = [valueCellConfiguration textProperties];
+    [textProperties setNumberOfLines:0];
+    pkFormattedContactAddressWithoutName = [(CNContact *)self->_currentBillingAddress pkFormattedContactAddressWithoutName];
+    [valueCellConfiguration setText:pkFormattedContactAddressWithoutName];
 
-    [v5 setContentConfiguration:v6];
+    [v5 setContentConfiguration:valueCellConfiguration];
     [v5 setEditingAccessoryView:0];
     [v5 setAccessoryView:0];
   }
@@ -705,21 +705,21 @@ void __57__PKBillingAddressViewController__didSelectChangeAddress__block_invoke_
   return v5;
 }
 
-- (id)_enterNewBillingAddressCellForRowIndex:(int64_t)a3 tableView:(id)a4
+- (id)_enterNewBillingAddressCellForRowIndex:(int64_t)index tableView:(id)view
 {
-  v5 = [a4 dequeueReusableCellWithIdentifier:@"PKBillingAddressUpdateAddress"];
+  v5 = [view dequeueReusableCellWithIdentifier:@"PKBillingAddressUpdateAddress"];
   if (!v5)
   {
     v5 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:1 reuseIdentifier:@"PKBillingAddressUpdateAddress"];
-    v6 = [v5 textLabel];
-    v7 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [v6 setTextColor:v7];
+    textLabel = [v5 textLabel];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [textLabel setTextColor:systemBlueColor];
   }
 
   [(PKBillingAddressViewController *)self _showCurrentAddress];
-  v8 = [v5 textLabel];
+  textLabel2 = [v5 textLabel];
   v9 = PKLocalizedFeatureString();
-  [v8 setText:v9];
+  [textLabel2 setText:v9];
 
   return v5;
 }
@@ -753,8 +753,8 @@ void __57__PKBillingAddressViewController__didSelectChangeAddress__block_invoke_
 
 - (void)_cancelButtonTapped
 {
-  v2 = [(PKBillingAddressViewController *)self presentingViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(PKBillingAddressViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (BOOL)_showCurrentAddress
@@ -764,8 +764,8 @@ void __57__PKBillingAddressViewController__didSelectChangeAddress__block_invoke_
     return 1;
   }
 
-  v2 = [(PKPeerPaymentUserInfo *)self->_peerPaymentUserInfo billingAddress];
-  v3 = v2 != 0;
+  billingAddress = [(PKPeerPaymentUserInfo *)self->_peerPaymentUserInfo billingAddress];
+  v3 = billingAddress != 0;
 
   return v3;
 }

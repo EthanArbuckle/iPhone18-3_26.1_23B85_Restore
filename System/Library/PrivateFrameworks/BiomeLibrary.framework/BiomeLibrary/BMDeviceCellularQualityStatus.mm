@@ -1,15 +1,15 @@
 @interface BMDeviceCellularQualityStatus
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMDeviceCellularQualityStatus)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMDeviceCellularQualityStatus)initWithStarting:(id)a3 rat:(int)a4 deviceRegistrationState:(int)a5 quality:(id)a6 rrcStatus:(int)a7;
-- (BOOL)isEqual:(id)a3;
+- (BMDeviceCellularQualityStatus)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMDeviceCellularQualityStatus)initWithStarting:(id)starting rat:(int)rat deviceRegistrationState:(int)state quality:(id)quality rrcStatus:(int)status;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMDeviceCellularQualityStatus
@@ -34,17 +34,17 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if ((!-[BMDeviceCellularQualityStatus hasStarting](self, "hasStarting") && ![v5 hasStarting] || -[BMDeviceCellularQualityStatus hasStarting](self, "hasStarting") && objc_msgSend(v5, "hasStarting") && (v6 = -[BMDeviceCellularQualityStatus starting](self, "starting"), v6 == objc_msgSend(v5, "starting"))) && (v7 = -[BMDeviceCellularQualityStatus rat](self, "rat"), v7 == objc_msgSend(v5, "rat")) && (v8 = -[BMDeviceCellularQualityStatus deviceRegistrationState](self, "deviceRegistrationState"), v8 == objc_msgSend(v5, "deviceRegistrationState")) && (!-[BMDeviceCellularQualityStatus hasQuality](self, "hasQuality") && !objc_msgSend(v5, "hasQuality") || -[BMDeviceCellularQualityStatus hasQuality](self, "hasQuality") && objc_msgSend(v5, "hasQuality") && (v9 = -[BMDeviceCellularQualityStatus quality](self, "quality"), v9 == objc_msgSend(v5, "quality"))))
     {
-      v10 = [(BMDeviceCellularQualityStatus *)self rrcStatus];
-      v11 = v10 == [v5 rrcStatus];
+      rrcStatus = [(BMDeviceCellularQualityStatus *)self rrcStatus];
+      v11 = rrcStatus == [v5 rrcStatus];
     }
 
     else
@@ -88,46 +88,46 @@
 
   v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMDeviceCellularQualityStatus rrcStatus](self, "rrcStatus")}];
   v18 = @"starting";
-  v8 = v3;
+  null = v3;
   if (!v3)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16 = v8;
-  v23[0] = v8;
+  v16 = null;
+  v23[0] = null;
   v19 = @"rat";
-  v9 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[1] = v9;
+  v23[1] = null2;
   v20 = @"deviceRegistrationState";
-  v10 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[2] = v10;
+  v23[2] = null3;
   v21 = @"quality";
-  v11 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v11;
+  v23[3] = null4;
   v22 = @"rrcStatus";
-  v12 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v12;
+  v23[4] = null5;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v18 count:{5, v16}];
   if (v7)
   {
@@ -191,21 +191,21 @@ LABEL_22:
   return v13;
 }
 
-- (BMDeviceCellularQualityStatus)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMDeviceCellularQualityStatus)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"starting"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"starting"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v38 = 0;
         v13 = 0;
-        v21 = self;
+        selfCopy5 = self;
         goto LABEL_43;
       }
 
@@ -217,7 +217,7 @@ LABEL_22:
       v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:&v47 count:1];
       v38 = 0;
       v13 = 0;
-      *a4 = [v11 initWithDomain:v12 code:2 userInfo:v7];
+      *error = [v11 initWithDomain:v12 code:2 userInfo:v7];
       goto LABEL_56;
     }
 
@@ -229,7 +229,7 @@ LABEL_22:
     v38 = 0;
   }
 
-  v7 = [v5 objectForKeyedSubscript:@"rat"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"rat"];
   if (v7)
   {
     objc_opt_class();
@@ -249,7 +249,7 @@ LABEL_22:
         goto LABEL_7;
       }
 
-      if (a4)
+      if (error)
       {
         v24 = objc_alloc(MEMORY[0x1E696ABC0]);
         v25 = *MEMORY[0x1E698F240];
@@ -259,21 +259,21 @@ LABEL_22:
         v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
         v37 = 0;
         v13 = 0;
-        *a4 = [v24 initWithDomain:v25 code:2 userInfo:v8];
+        *error = [v24 initWithDomain:v25 code:2 userInfo:v8];
         goto LABEL_58;
       }
 
       v37 = 0;
       v13 = 0;
 LABEL_56:
-      v21 = self;
+      selfCopy5 = self;
       goto LABEL_42;
     }
   }
 
   v37 = 0;
 LABEL_7:
-  v8 = [v5 objectForKeyedSubscript:@"deviceRegistrationState"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"deviceRegistrationState"];
   v35 = v6;
   if (v8)
   {
@@ -296,10 +296,10 @@ LABEL_22:
         goto LABEL_22;
       }
 
-      if (a4)
+      if (error)
       {
         v26 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v27 = a4;
+        errorCopy = error;
         v28 = *MEMORY[0x1E698F240];
         v43 = *MEMORY[0x1E696A578];
         v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"deviceRegistrationState"];
@@ -307,21 +307,21 @@ LABEL_22:
         v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
         v9 = 0;
         v13 = 0;
-        *v27 = [v26 initWithDomain:v28 code:2 userInfo:v14];
+        *errorCopy = [v26 initWithDomain:v28 code:2 userInfo:v14];
         goto LABEL_54;
       }
 
       v9 = 0;
       v13 = 0;
 LABEL_58:
-      v21 = self;
+      selfCopy5 = self;
       goto LABEL_41;
     }
   }
 
   v9 = 0;
 LABEL_23:
-  v14 = [v5 objectForKeyedSubscript:@"quality"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"quality"];
   if (v14)
   {
     objc_opt_class();
@@ -334,33 +334,33 @@ LABEL_23:
         goto LABEL_26;
       }
 
-      if (a4)
+      if (error)
       {
         v33 = objc_alloc(MEMORY[0x1E696ABC0]);
         v18 = *MEMORY[0x1E698F240];
         v41 = *MEMORY[0x1E696A578];
-        v19 = a4;
-        a4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"quality"];
-        v42 = a4;
-        v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
+        errorCopy2 = error;
+        error = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"quality"];
+        errorCopy3 = error;
+        v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&errorCopy3 forKeys:&v41 count:1];
         v20 = [v33 initWithDomain:v18 code:2 userInfo:v16];
         v15 = 0;
         v13 = 0;
-        *v19 = v20;
+        *errorCopy2 = v20;
         goto LABEL_52;
       }
 
       v15 = 0;
       v13 = 0;
 LABEL_54:
-      v21 = self;
+      selfCopy5 = self;
       goto LABEL_40;
     }
   }
 
   v15 = 0;
 LABEL_26:
-  v16 = [v5 objectForKeyedSubscript:@"rrcStatus"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"rrcStatus"];
   if (v16)
   {
     objc_opt_class();
@@ -371,7 +371,7 @@ LABEL_26:
       {
         v17 = v16;
 LABEL_37:
-        a4 = v17;
+        error = v17;
         goto LABEL_38;
       }
 
@@ -382,31 +382,31 @@ LABEL_37:
         goto LABEL_37;
       }
 
-      if (a4)
+      if (error)
       {
-        v29 = a4;
+        errorCopy4 = error;
         v34 = objc_alloc(MEMORY[0x1E696ABC0]);
         v32 = *MEMORY[0x1E698F240];
         v39 = *MEMORY[0x1E696A578];
         v30 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"rrcStatus"];
         v40 = v30;
         v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
-        *v29 = [v34 initWithDomain:v32 code:2 userInfo:v31];
+        *errorCopy4 = [v34 initWithDomain:v32 code:2 userInfo:v31];
 
-        a4 = 0;
+        error = 0;
       }
 
       v13 = 0;
 LABEL_52:
-      v21 = self;
+      selfCopy5 = self;
       goto LABEL_39;
     }
   }
 
-  a4 = 0;
+  error = 0;
 LABEL_38:
-  v21 = -[BMDeviceCellularQualityStatus initWithStarting:rat:deviceRegistrationState:quality:rrcStatus:](self, "initWithStarting:rat:deviceRegistrationState:quality:rrcStatus:", v38, [v37 intValue], objc_msgSend(v9, "intValue"), v15, objc_msgSend(a4, "intValue"));
-  v13 = v21;
+  selfCopy5 = -[BMDeviceCellularQualityStatus initWithStarting:rat:deviceRegistrationState:quality:rrcStatus:](self, "initWithStarting:rat:deviceRegistrationState:quality:rrcStatus:", v38, [v37 intValue], objc_msgSend(v9, "intValue"), v15, objc_msgSend(error, "intValue"));
+  v13 = selfCopy5;
 LABEL_39:
 
 LABEL_40:
@@ -424,14 +424,14 @@ LABEL_43:
 {
   v3 = objc_opt_new();
   [(BMDeviceCellularQualityStatus *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_hasStarting)
   {
     starting = self->_starting;
@@ -452,9 +452,9 @@ LABEL_43:
   PBDataWriterWriteUint32Field();
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v51.receiver = self;
   v51.super_class = BMDeviceCellularQualityStatus;
   v5 = [(BMEventBase *)&v51 init];
@@ -463,12 +463,12 @@ LABEL_43:
     goto LABEL_93;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -479,18 +479,18 @@ LABEL_43:
       while (1)
       {
         v52 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v52 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v52 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v52 & 0x7F) << v7;
@@ -508,9 +508,9 @@ LABEL_43:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -527,18 +527,18 @@ LABEL_16:
           while (1)
           {
             v52 = 0;
-            v43 = [v4 position] + 1;
-            if (v43 >= [v4 position] && (v44 = objc_msgSend(v4, "position") + 1, v44 <= objc_msgSend(v4, "length")))
+            v43 = [fromCopy position] + 1;
+            if (v43 >= [fromCopy position] && (v44 = objc_msgSend(fromCopy, "position") + 1, v44 <= objc_msgSend(fromCopy, "length")))
             {
-              v45 = [v4 data];
-              [v45 getBytes:&v52 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v52 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v42 |= (v52 & 0x7F) << v40;
@@ -556,7 +556,7 @@ LABEL_16:
             }
           }
 
-          v46 = (v42 != 0) & ~[v4 hasError];
+          v46 = (v42 != 0) & ~[fromCopy hasError];
 LABEL_80:
           v5->_starting = v46;
           goto LABEL_90;
@@ -579,18 +579,18 @@ LABEL_69:
         while (1)
         {
           v52 = 0;
-          v25 = [v4 position] + 1;
-          if (v25 >= [v4 position] && (v26 = objc_msgSend(v4, "position") + 1, v26 <= objc_msgSend(v4, "length")))
+          v25 = [fromCopy position] + 1;
+          if (v25 >= [fromCopy position] && (v26 = objc_msgSend(fromCopy, "position") + 1, v26 <= objc_msgSend(fromCopy, "length")))
           {
-            v27 = [v4 data];
-            [v27 getBytes:&v52 range:{objc_msgSend(v4, "position"), 1}];
+            data3 = [fromCopy data];
+            [data3 getBytes:&v52 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v18 |= (v52 & 0x7F) << v23;
@@ -607,7 +607,7 @@ LABEL_69:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v18 > 6)
+        if (([fromCopy hasError] & 1) != 0 || v18 > 6)
         {
 LABEL_87:
           LODWORD(v18) = 0;
@@ -627,18 +627,18 @@ LABEL_87:
             while (1)
             {
               v52 = 0;
-              v30 = [v4 position] + 1;
-              if (v30 >= [v4 position] && (v31 = objc_msgSend(v4, "position") + 1, v31 <= objc_msgSend(v4, "length")))
+              v30 = [fromCopy position] + 1;
+              if (v30 >= [fromCopy position] && (v31 = objc_msgSend(fromCopy, "position") + 1, v31 <= objc_msgSend(fromCopy, "length")))
               {
-                v32 = [v4 data];
-                [v32 getBytes:&v52 range:{objc_msgSend(v4, "position"), 1}];
+                data4 = [fromCopy data];
+                [data4 getBytes:&v52 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v52 & 0x7F) << v28;
@@ -655,7 +655,7 @@ LABEL_87:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v18 > 4)
+            if (([fromCopy hasError] & 1) != 0 || v18 > 4)
             {
 LABEL_73:
               LODWORD(v18) = 0;
@@ -671,18 +671,18 @@ LABEL_73:
             while (1)
             {
               v52 = 0;
-              v36 = [v4 position] + 1;
-              if (v36 >= [v4 position] && (v37 = objc_msgSend(v4, "position") + 1, v37 <= objc_msgSend(v4, "length")))
+              v36 = [fromCopy position] + 1;
+              if (v36 >= [fromCopy position] && (v37 = objc_msgSend(fromCopy, "position") + 1, v37 <= objc_msgSend(fromCopy, "length")))
               {
-                v38 = [v4 data];
-                [v38 getBytes:&v52 range:{objc_msgSend(v4, "position"), 1}];
+                data5 = [fromCopy data];
+                [data5 getBytes:&v52 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v35 |= (v52 & 0x7F) << v33;
@@ -700,7 +700,7 @@ LABEL_73:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v39 = 0;
             }
@@ -720,18 +720,18 @@ LABEL_78:
             while (1)
             {
               v52 = 0;
-              v19 = [v4 position] + 1;
-              if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+              v19 = [fromCopy position] + 1;
+              if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
               {
-                v21 = [v4 data];
-                [v21 getBytes:&v52 range:{objc_msgSend(v4, "position"), 1}];
+                data6 = [fromCopy data];
+                [data6 getBytes:&v52 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v52 & 0x7F) << v16;
@@ -748,7 +748,7 @@ LABEL_78:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v18 > 2)
+            if (([fromCopy hasError] & 1) != 0 || v18 > 2)
             {
 LABEL_83:
               LODWORD(v18) = 0;
@@ -763,13 +763,13 @@ LABEL_83:
 
       *(&v5->super.super.isa + v47) = v18;
 LABEL_90:
-      v48 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v48 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_92:
     v49 = 0;
@@ -797,20 +797,20 @@ LABEL_93:
   return v9;
 }
 
-- (BMDeviceCellularQualityStatus)initWithStarting:(id)a3 rat:(int)a4 deviceRegistrationState:(int)a5 quality:(id)a6 rrcStatus:(int)a7
+- (BMDeviceCellularQualityStatus)initWithStarting:(id)starting rat:(int)rat deviceRegistrationState:(int)state quality:(id)quality rrcStatus:(int)status
 {
-  v12 = a3;
-  v13 = a6;
+  startingCopy = starting;
+  qualityCopy = quality;
   v17.receiver = self;
   v17.super_class = BMDeviceCellularQualityStatus;
   v14 = [(BMEventBase *)&v17 init];
   if (v14)
   {
     v14->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v12)
+    if (startingCopy)
     {
       v14->_hasStarting = 1;
-      v14->_starting = [v12 BOOLValue];
+      v14->_starting = [startingCopy BOOLValue];
     }
 
     else
@@ -819,22 +819,22 @@ LABEL_93:
       v14->_starting = 0;
     }
 
-    v14->_rat = a4;
-    v14->_deviceRegistrationState = a5;
-    if (v13)
+    v14->_rat = rat;
+    v14->_deviceRegistrationState = state;
+    if (qualityCopy)
     {
       v14->_hasQuality = 1;
-      v15 = [v13 intValue];
+      intValue = [qualityCopy intValue];
     }
 
     else
     {
       v14->_hasQuality = 0;
-      v15 = -1;
+      intValue = -1;
     }
 
-    v14->_quality = v15;
-    v14->_rrcStatus = a7;
+    v14->_quality = intValue;
+    v14->_rrcStatus = status;
   }
 
   return v14;
@@ -859,9 +859,9 @@ LABEL_93:
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -869,8 +869,8 @@ LABEL_93:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMDeviceCellularQualityStatus alloc] initByReadFrom:v7];
     v4 = v8;

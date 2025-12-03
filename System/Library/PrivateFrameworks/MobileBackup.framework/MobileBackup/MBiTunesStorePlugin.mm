@@ -1,28 +1,28 @@
 @interface MBiTunesStorePlugin
-- (BOOL)_mkdir:(id)a3;
-- (id)backingUpSQLiteFileCopyAtPath:(id)a3 temporaryPath:(id)a4;
-- (id)endingRestoreWithPolicy:(id)a3 engine:(id)a4;
+- (BOOL)_mkdir:(id)_mkdir;
+- (id)backingUpSQLiteFileCopyAtPath:(id)path temporaryPath:(id)temporaryPath;
+- (id)endingRestoreWithPolicy:(id)policy engine:(id)engine;
 @end
 
 @implementation MBiTunesStorePlugin
 
-- (id)backingUpSQLiteFileCopyAtPath:(id)a3 temporaryPath:(id)a4
+- (id)backingUpSQLiteFileCopyAtPath:(id)path temporaryPath:(id)temporaryPath
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:@"/var/mobile/Library/com.apple.itunesstored/kvs.sqlitedb"])
+  pathCopy = path;
+  temporaryPathCopy = temporaryPath;
+  if ([pathCopy isEqualToString:@"/var/mobile/Library/com.apple.itunesstored/kvs.sqlitedb"])
   {
     v7 = MBGetDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      *&buf[4] = v5;
+      *&buf[4] = pathCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Deleting unneeded domains from %@", buf, 0xCu);
       _MBLog();
     }
 
     *buf = 0;
-    sqlite3_open_v2([v6 fileSystemRepresentation], buf, 2, 0);
+    sqlite3_open_v2([temporaryPathCopy fileSystemRepresentation], buf, 2, 0);
     v8 = [NSString stringWithFormat:@"delete from kvs_value where domain not in ('%@', '%@') vacuum;", @"com.apple.itunesstored", @"com.apple.mobile.iTunes.store"];;
     sqlite3_exec(*buf, [v8 UTF8String], 0, 0, 0);
     sqlite3_close(*buf);
@@ -31,18 +31,18 @@
   return 0;
 }
 
-- (id)endingRestoreWithPolicy:(id)a3 engine:(id)a4
+- (id)endingRestoreWithPolicy:(id)policy engine:(id)engine
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 restoresPrimaryAccount])
+  policyCopy = policy;
+  engineCopy = engine;
+  if ([engineCopy restoresPrimaryAccount])
   {
-    v8 = [v7 settingsContext];
-    v9 = [v8 shouldRestoreSystemFiles];
+    settingsContext = [engineCopy settingsContext];
+    shouldRestoreSystemFiles = [settingsContext shouldRestoreSystemFiles];
 
     v10 = MBGetDefaultLog();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_INFO);
-    if ((v9 & 1) == 0)
+    if ((shouldRestoreSystemFiles & 1) == 0)
     {
       if (v11)
       {
@@ -61,21 +61,21 @@
       _MBLog();
     }
 
-    v12 = [v7 persona];
-    if (!v12)
+    persona = [engineCopy persona];
+    if (!persona)
     {
       __assert_rtn("[MBiTunesStorePlugin endingRestoreWithPolicy:engine:]", "MBiTunesStorePlugin.m", 64, "persona");
     }
 
-    v13 = v12;
+    v13 = persona;
     v14 = +[MBiTunesStoreKVS iTunesStoreKVS];
-    v15 = [v13 userIncompleteRestoreDirectory];
-    v16 = [v15 stringByAppendingPathComponent:@"/var/mobile/Library/com.apple.itunesstored"];
+    userIncompleteRestoreDirectory = [v13 userIncompleteRestoreDirectory];
+    v16 = [userIncompleteRestoreDirectory stringByAppendingPathComponent:@"/var/mobile/Library/com.apple.itunesstored"];
 
-    v17 = [v13 userIncompleteRestoreDirectory];
-    v18 = [v17 stringByAppendingPathComponent:@"/var/mobile/Library/com.apple.itunesstored/kvs.sqlitedb"];
+    userIncompleteRestoreDirectory2 = [v13 userIncompleteRestoreDirectory];
+    v18 = [userIncompleteRestoreDirectory2 stringByAppendingPathComponent:@"/var/mobile/Library/com.apple.itunesstored/kvs.sqlitedb"];
 
-    v36 = [v14 knownAccountsByDSID];
+    knownAccountsByDSID = [v14 knownAccountsByDSID];
     v19 = +[NSFileManager defaultManager];
     v20 = [v19 fileExistsAtPath:v18];
 
@@ -110,9 +110,9 @@ LABEL_27:
       v10 = 0;
     }
 
-    v23 = [v7 properties];
-    v24 = [v23 lockdownKeys];
-    v22 = [v24 objectForKeyedSubscript:@"com.apple.itunesstored"];
+    properties = [engineCopy properties];
+    lockdownKeys = [properties lockdownKeys];
+    v22 = [lockdownKeys objectForKeyedSubscript:@"com.apple.itunesstored"];
 
     if ([v22 count])
     {
@@ -132,10 +132,10 @@ LABEL_27:
       }
     }
 
-    v26 = [v14 knownAccountsByDSID];
-    v27 = [MBiTunesStoreKVS mergeKnownAccountsByDSID:v36 into:v26];
-    v28 = [v27 allValues];
-    [v14 setKnownAccounts:v28];
+    knownAccountsByDSID2 = [v14 knownAccountsByDSID];
+    v27 = [MBiTunesStoreKVS mergeKnownAccountsByDSID:knownAccountsByDSID into:knownAccountsByDSID2];
+    allValues = [v27 allValues];
+    [v14 setKnownAccounts:allValues];
 
     v16 = v34;
     if ([(MBiTunesStorePlugin *)self _mkdir:v34])
@@ -173,12 +173,12 @@ LABEL_28:
   return 0;
 }
 
-- (BOOL)_mkdir:(id)a3
+- (BOOL)_mkdir:(id)_mkdir
 {
-  v3 = a3;
+  _mkdirCopy = _mkdir;
   v18 = 0;
   v4 = +[NSFileManager defaultManager];
-  v5 = [v4 fileExistsAtPath:v3 isDirectory:&v18];
+  v5 = [v4 fileExistsAtPath:_mkdirCopy isDirectory:&v18];
 
   if (!v5)
   {
@@ -191,7 +191,7 @@ LABEL_28:
 LABEL_6:
     v8 = +[NSFileManager defaultManager];
     v17 = 0;
-    v9 = [v8 removeItemAtPath:v3 error:&v17];
+    v9 = [v8 removeItemAtPath:_mkdirCopy error:&v17];
     v6 = v17;
 
     if ((v9 & 1) == 0)
@@ -200,7 +200,7 @@ LABEL_6:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v20 = v3;
+        v20 = _mkdirCopy;
         v21 = 2112;
         v22 = v6;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Error removing directory: %@: %@", buf, 0x16u);
@@ -219,7 +219,7 @@ LABEL_7:
     v12 = MBMobileFileAttributes();
     v16 = v6;
     v7 = 1;
-    v13 = [v11 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:v12 error:&v16];
+    v13 = [v11 createDirectoryAtPath:_mkdirCopy withIntermediateDirectories:1 attributes:v12 error:&v16];
     v6 = v16;
 
     if (v13)
@@ -231,7 +231,7 @@ LABEL_7:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v20 = v3;
+      v20 = _mkdirCopy;
       v21 = 2112;
       v22 = v6;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Error creating directory: %@: %@", buf, 0x16u);

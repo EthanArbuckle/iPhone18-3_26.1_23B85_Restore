@@ -1,28 +1,28 @@
 @interface DBSColorScheduleController
-- (DBSColorScheduleController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)datePickerForSpecifier:(id)a3;
+- (DBSColorScheduleController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)datePickerForSpecifier:(id)specifier;
 - (id)endTime;
 - (id)specifiers;
 - (id)startTime;
 - (int)blueLightMode;
-- (void)datePickerChanged:(id)a3;
+- (void)datePickerChanged:(id)changed;
 - (void)dealloc;
-- (void)handleBlueLightStatusChanged:(id *)a3;
-- (void)showScheduleSpecifiers:(BOOL)a3 animated:(BOOL)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)handleBlueLightStatusChanged:(id *)changed;
+- (void)showScheduleSpecifiers:(BOOL)specifiers animated:(BOOL)animated;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)willResignActive;
 @end
 
 @implementation DBSColorScheduleController
 
-- (DBSColorScheduleController)initWithNibName:(id)a3 bundle:(id)a4
+- (DBSColorScheduleController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v21.receiver = self;
   v21.super_class = DBSColorScheduleController;
-  v8 = [(DBSColorScheduleController *)&v21 initWithNibName:v6 bundle:v7];
+  v8 = [(DBSColorScheduleController *)&v21 initWithNibName:nameCopy bundle:bundleCopy];
   if (v8)
   {
     v9 = objc_alloc_init(MEMORY[0x277CFD3A8]);
@@ -30,13 +30,13 @@
     v8->_brightnessClient = v9;
 
     objc_initWeak(&location, v8);
-    v11 = [(CBClient *)v8->_brightnessClient blueLightClient];
+    blueLightClient = [(CBClient *)v8->_brightnessClient blueLightClient];
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __53__DBSColorScheduleController_initWithNibName_bundle___block_invoke;
     v18 = &unk_278459440;
     objc_copyWeak(&v19, &location);
-    [v11 setStatusNotificationBlock:&v15];
+    [blueLightClient setStatusNotificationBlock:&v15];
 
     v12 = objc_alloc_init(MEMORY[0x277CCA968]);
     timeFormatter = v8->_timeFormatter;
@@ -59,40 +59,40 @@ void __53__DBSColorScheduleController_initWithNibName_bundle___block_invoke(uint
 
 - (void)dealloc
 {
-  v3 = [(CBClient *)self->_brightnessClient blueLightClient];
-  [v3 setStatusNotificationBlock:0];
+  blueLightClient = [(CBClient *)self->_brightnessClient blueLightClient];
+  [blueLightClient setStatusNotificationBlock:0];
 
   v4.receiver = self;
   v4.super_class = DBSColorScheduleController;
   [(DBSColorScheduleController *)&v4 dealloc];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v22[2] = *MEMORY[0x277D85DE8];
   v21.receiver = self;
   v21.super_class = DBSColorScheduleController;
-  [(DBSColorScheduleController *)&v21 viewDidAppear:a3];
+  [(DBSColorScheduleController *)&v21 viewDidAppear:appear];
   v4 = [MEMORY[0x277CBEBC0] URLWithString:@"settings-navigation://com.apple.Settings.Display/BLUE_LIGHT_REDUCTION/SCHEDULE"];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x277CCAEB8]);
-    v6 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
     v7 = DBS_BundleForDisplayAndBrightnessSettingsFramework();
-    v8 = [v7 bundleURL];
-    v9 = [v5 initWithKey:@"DISPLAY_AND_BRIGHTNESS" defaultValue:0 table:@"Display" locale:v6 bundleURL:v8];
+    bundleURL = [v7 bundleURL];
+    v9 = [v5 initWithKey:@"DISPLAY_AND_BRIGHTNESS" defaultValue:0 table:@"Display" locale:currentLocale bundleURL:bundleURL];
 
     v10 = objc_alloc(MEMORY[0x277CCAEB8]);
-    v11 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
     v12 = DBS_BundleForDisplayAndBrightnessSettingsFramework();
-    v13 = [v12 bundleURL];
-    v14 = [v10 initWithKey:@"BLUE_LIGHT_REDUCTION" defaultValue:0 table:@"Display" locale:v11 bundleURL:v13];
+    bundleURL2 = [v12 bundleURL];
+    v14 = [v10 initWithKey:@"BLUE_LIGHT_REDUCTION" defaultValue:0 table:@"Display" locale:currentLocale2 bundleURL:bundleURL2];
 
     v15 = objc_alloc(MEMORY[0x277CCAEB8]);
-    v16 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale3 = [MEMORY[0x277CBEAF8] currentLocale];
     v17 = DBS_BundleForDisplayAndBrightnessSettingsFramework();
-    v18 = [v17 bundleURL];
-    v19 = [v15 initWithKey:@"SCHEDULE_TITLE" defaultValue:0 table:@"ColorSchedule" locale:v16 bundleURL:v18];
+    bundleURL3 = [v17 bundleURL];
+    v19 = [v15 initWithKey:@"SCHEDULE_TITLE" defaultValue:0 table:@"ColorSchedule" locale:currentLocale3 bundleURL:bundleURL3];
 
     v22[0] = v9;
     v22[1] = v14;
@@ -103,8 +103,8 @@ void __53__DBSColorScheduleController_initWithNibName_bundle___block_invoke(uint
 
 - (void)willResignActive
 {
-  v2 = [(DBSColorScheduleController *)self view];
-  [v2 endEditing:1];
+  view = [(DBSColorScheduleController *)self view];
+  [view endEditing:1];
 }
 
 - (id)specifiers
@@ -157,8 +157,8 @@ void __53__DBSColorScheduleController_initWithNibName_bundle___block_invoke(uint
 
   v46 = 0;
   memset(v45, 0, sizeof(v45));
-  v15 = [(CBClient *)self->_brightnessClient blueLightClient];
-  [v15 getBlueLightStatus:v45];
+  blueLightClient = [(CBClient *)self->_brightnessClient blueLightClient];
+  [blueLightClient getBlueLightStatus:v45];
 
   if ((BYTE2(v45[0]) & 1) == 0)
   {
@@ -241,26 +241,26 @@ LABEL_16:
   return v4;
 }
 
-- (void)showScheduleSpecifiers:(BOOL)a3 animated:(BOOL)a4
+- (void)showScheduleSpecifiers:(BOOL)specifiers animated:(BOOL)animated
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  if (self->_showingScheduleSpecifiers != a3)
+  if (self->_showingScheduleSpecifiers != specifiers)
   {
-    v4 = a4;
-    v5 = a3;
-    self->_showingScheduleSpecifiers = a3;
+    animatedCopy = animated;
+    specifiersCopy = specifiers;
+    self->_showingScheduleSpecifiers = specifiers;
     endTimePickerSpecifier = self->_endTimePickerSpecifier;
     v9[0] = self->_startTimePickerSpecifier;
     v9[1] = endTimePickerSpecifier;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:2];
-    if (v5)
+    if (specifiersCopy)
     {
-      [(DBSColorScheduleController *)self insertContiguousSpecifiers:v8 atIndex:[(DBSColorScheduleController *)self indexOfSpecifierID:@"TIME_GROUP"]+ 1 animated:v4];
+      [(DBSColorScheduleController *)self insertContiguousSpecifiers:v8 atIndex:[(DBSColorScheduleController *)self indexOfSpecifierID:@"TIME_GROUP"]+ 1 animated:animatedCopy];
     }
 
     else
     {
-      [(DBSColorScheduleController *)self removeContiguousSpecifiers:v8 animated:v4];
+      [(DBSColorScheduleController *)self removeContiguousSpecifiers:v8 animated:animatedCopy];
     }
   }
 }
@@ -269,8 +269,8 @@ LABEL_16:
 {
   v11 = 0;
   memset(v10, 0, sizeof(v10));
-  v3 = [(CBClient *)self->_brightnessClient blueLightClient];
-  [v3 getBlueLightStatus:v10];
+  blueLightClient = [(CBClient *)self->_brightnessClient blueLightClient];
+  [blueLightClient getBlueLightStatus:v10];
 
   v4 = objc_alloc_init(MEMORY[0x277CBEAB8]);
   [v4 setHour:SDWORD2(v10[0])];
@@ -309,7 +309,7 @@ LABEL_16:
   return DWORD1(v4);
 }
 
-- (void)handleBlueLightStatusChanged:(id *)a3
+- (void)handleBlueLightStatusChanged:(id *)changed
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -319,15 +319,15 @@ LABEL_16:
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   brightnessClient = self->_brightnessClient;
-  v8 = a3;
-  v9 = [(CBClient *)brightnessClient blueLightClient];
-  [v9 suspendNotifications:1];
+  viewCopy = view;
+  blueLightClient = [(CBClient *)brightnessClient blueLightClient];
+  [blueLightClient suspendNotifications:1];
 
-  v10 = [(DBSColorScheduleController *)self indexForIndexPath:v6];
+  v10 = [(DBSColorScheduleController *)self indexForIndexPath:pathCopy];
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = 0;
@@ -348,68 +348,68 @@ LABEL_16:
   {
     v12 = 2;
 LABEL_8:
-    v13 = [(CBClient *)self->_brightnessClient blueLightClient];
-    [v13 setMode:v12];
+    blueLightClient2 = [(CBClient *)self->_brightnessClient blueLightClient];
+    [blueLightClient2 setMode:v12];
   }
 
   v18 = 0;
   memset(v17, 0, sizeof(v17));
-  v14 = [(CBClient *)self->_brightnessClient blueLightClient];
-  [v14 getBlueLightStatus:v17];
+  blueLightClient3 = [(CBClient *)self->_brightnessClient blueLightClient];
+  [blueLightClient3 getBlueLightStatus:v17];
 
   [(DBSColorScheduleController *)self showScheduleSpecifiers:DWORD1(v17[0]) == 2 animated:1];
-  v15 = [(CBClient *)self->_brightnessClient blueLightClient];
-  [v15 suspendNotifications:0];
+  blueLightClient4 = [(CBClient *)self->_brightnessClient blueLightClient];
+  [blueLightClient4 suspendNotifications:0];
 
   v16.receiver = self;
   v16.super_class = DBSColorScheduleController;
-  [(DBSColorScheduleController *)&v16 tableView:v8 didSelectRowAtIndexPath:v6];
+  [(DBSColorScheduleController *)&v16 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
-- (void)datePickerChanged:(id)a3
+- (void)datePickerChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(CBClient *)self->_brightnessClient blueLightClient];
-  [v5 suspendNotifications:1];
+  changedCopy = changed;
+  blueLightClient = [(CBClient *)self->_brightnessClient blueLightClient];
+  [blueLightClient suspendNotifications:1];
 
-  v6 = v4;
-  v7 = [(UIDatePicker *)v6 calendar];
-  v8 = [(UIDatePicker *)v6 date];
-  v9 = [v7 components:96 fromDate:v8];
+  v6 = changedCopy;
+  calendar = [(UIDatePicker *)v6 calendar];
+  date = [(UIDatePicker *)v6 date];
+  v9 = [calendar components:96 fromDate:date];
 
-  v10 = [v9 hour];
-  v11 = [v9 minute];
+  hour = [v9 hour];
+  minute = [v9 minute];
   v18 = 0;
   memset(v17, 0, sizeof(v17));
-  v12 = [(CBClient *)self->_brightnessClient blueLightClient];
-  [v12 getBlueLightStatus:v17];
+  blueLightClient2 = [(CBClient *)self->_brightnessClient blueLightClient];
+  [blueLightClient2 getBlueLightStatus:v17];
 
   v16 = *(v17 + 8);
   if (self->_startTimePicker == v6)
   {
     v13 = &v16 + 1;
-    LODWORD(v16) = v10;
+    LODWORD(v16) = hour;
     goto LABEL_5;
   }
 
   if (self->_endTimePicker == v6)
   {
     v13 = (&v16 | 0xC);
-    DWORD2(v16) = v10;
+    DWORD2(v16) = hour;
 LABEL_5:
-    *v13 = v11;
+    *v13 = minute;
   }
 
-  v14 = [(CBClient *)self->_brightnessClient blueLightClient];
-  [v14 setSchedule:&v16];
+  blueLightClient3 = [(CBClient *)self->_brightnessClient blueLightClient];
+  [blueLightClient3 setSchedule:&v16];
 
-  v15 = [(CBClient *)self->_brightnessClient blueLightClient];
-  [v15 suspendNotifications:0];
+  blueLightClient4 = [(CBClient *)self->_brightnessClient blueLightClient];
+  [blueLightClient4 suspendNotifications:0];
 }
 
-- (id)datePickerForSpecifier:(id)a3
+- (id)datePickerForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = objc_alloc(MEMORY[0x277D753E8]);
   v6 = [v5 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [v6 setDatePickerMode:0];
@@ -417,7 +417,7 @@ LABEL_5:
   v7 = [(CBClient *)self->_brightnessClient blueLightClient:0];
   [v7 getBlueLightStatus:&v17];
 
-  if (self->_startTimePickerSpecifier == v4)
+  if (self->_startTimePickerSpecifier == specifierCopy)
   {
     v9 = (&v17 | 0xC);
     v8 = (&v17 + 8);
@@ -426,7 +426,7 @@ LABEL_5:
 
   else
   {
-    if (self->_endTimePickerSpecifier != v4)
+    if (self->_endTimePickerSpecifier != specifierCopy)
     {
       [DBSColorScheduleController datePickerForSpecifier:];
     }
@@ -442,8 +442,8 @@ LABEL_5:
   v13 = objc_alloc_init(MEMORY[0x277CBEAB8]);
   [v13 setHour:v11];
   [v13 setMinute:v12];
-  v14 = [v6 calendar];
-  v15 = [v14 dateFromComponents:v13];
+  calendar = [v6 calendar];
+  v15 = [calendar dateFromComponents:v13];
   [v6 setDate:v15];
 
   return v6;

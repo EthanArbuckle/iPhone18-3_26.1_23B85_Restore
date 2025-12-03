@@ -16,112 +16,112 @@
 - (void)deactivateConstraints
 {
   v30 = objc_alloc_init(NSMutableArray);
-  v3 = [(_TransitDirectionsInstructionsCellConstraints *)self minimumCellHeightConstraint];
+  minimumCellHeightConstraint = [(_TransitDirectionsInstructionsCellConstraints *)self minimumCellHeightConstraint];
 
-  if (v3)
+  if (minimumCellHeightConstraint)
   {
-    v4 = [(_TransitDirectionsInstructionsCellConstraints *)self minimumCellHeightConstraint];
-    [v30 addObject:v4];
+    minimumCellHeightConstraint2 = [(_TransitDirectionsInstructionsCellConstraints *)self minimumCellHeightConstraint];
+    [v30 addObject:minimumCellHeightConstraint2];
   }
 
-  v5 = [(_TransitDirectionsInstructionsCellConstraints *)self topToPrimaryConstraint];
+  topToPrimaryConstraint = [(_TransitDirectionsInstructionsCellConstraints *)self topToPrimaryConstraint];
 
-  if (v5)
+  if (topToPrimaryConstraint)
   {
-    v6 = [(_TransitDirectionsInstructionsCellConstraints *)self topToPrimaryConstraint];
-    [v30 addObject:v6];
+    topToPrimaryConstraint2 = [(_TransitDirectionsInstructionsCellConstraints *)self topToPrimaryConstraint];
+    [v30 addObject:topToPrimaryConstraint2];
   }
 
-  v7 = [(_TransitDirectionsInstructionsCellConstraints *)self contentLayoutGuideToPrimaryLeadingConstraint];
+  contentLayoutGuideToPrimaryLeadingConstraint = [(_TransitDirectionsInstructionsCellConstraints *)self contentLayoutGuideToPrimaryLeadingConstraint];
 
-  if (v7)
+  if (contentLayoutGuideToPrimaryLeadingConstraint)
   {
-    v8 = [(_TransitDirectionsInstructionsCellConstraints *)self contentLayoutGuideToPrimaryLeadingConstraint];
-    [v30 addObject:v8];
+    contentLayoutGuideToPrimaryLeadingConstraint2 = [(_TransitDirectionsInstructionsCellConstraints *)self contentLayoutGuideToPrimaryLeadingConstraint];
+    [v30 addObject:contentLayoutGuideToPrimaryLeadingConstraint2];
   }
 
-  v9 = [(_TransitDirectionsInstructionsCellConstraints *)self primaryBaselineToBottomConstraint];
+  primaryBaselineToBottomConstraint = [(_TransitDirectionsInstructionsCellConstraints *)self primaryBaselineToBottomConstraint];
 
-  if (v9)
+  if (primaryBaselineToBottomConstraint)
   {
-    v10 = [(_TransitDirectionsInstructionsCellConstraints *)self primaryBaselineToBottomConstraint];
-    [v30 addObject:v10];
+    primaryBaselineToBottomConstraint2 = [(_TransitDirectionsInstructionsCellConstraints *)self primaryBaselineToBottomConstraint];
+    [v30 addObject:primaryBaselineToBottomConstraint2];
   }
 
-  v11 = [(_TransitDirectionsInstructionsCellConstraints *)self primaryAccessoryToSecondaryAccessoryConstraint];
+  primaryAccessoryToSecondaryAccessoryConstraint = [(_TransitDirectionsInstructionsCellConstraints *)self primaryAccessoryToSecondaryAccessoryConstraint];
 
-  if (v11)
+  if (primaryAccessoryToSecondaryAccessoryConstraint)
   {
-    v12 = [(_TransitDirectionsInstructionsCellConstraints *)self primaryAccessoryToSecondaryAccessoryConstraint];
-    [v30 addObject:v12];
+    primaryAccessoryToSecondaryAccessoryConstraint2 = [(_TransitDirectionsInstructionsCellConstraints *)self primaryAccessoryToSecondaryAccessoryConstraint];
+    [v30 addObject:primaryAccessoryToSecondaryAccessoryConstraint2];
   }
 
-  v13 = [(_TransitDirectionsInstructionsCellConstraints *)self platformArtworkBottomToBottomConstraint];
+  platformArtworkBottomToBottomConstraint = [(_TransitDirectionsInstructionsCellConstraints *)self platformArtworkBottomToBottomConstraint];
 
-  if (v13)
+  if (platformArtworkBottomToBottomConstraint)
   {
-    v14 = [(_TransitDirectionsInstructionsCellConstraints *)self platformArtworkBottomToBottomConstraint];
-    [v30 addObject:v14];
+    platformArtworkBottomToBottomConstraint2 = [(_TransitDirectionsInstructionsCellConstraints *)self platformArtworkBottomToBottomConstraint];
+    [v30 addObject:platformArtworkBottomToBottomConstraint2];
   }
 
-  v15 = [(_TransitDirectionsInstructionsCellConstraints *)self platformArtworkTrailingToTextStackLabelLeadingConstraint];
+  platformArtworkTrailingToTextStackLabelLeadingConstraint = [(_TransitDirectionsInstructionsCellConstraints *)self platformArtworkTrailingToTextStackLabelLeadingConstraint];
 
-  if (v15)
+  if (platformArtworkTrailingToTextStackLabelLeadingConstraint)
   {
-    v16 = [(_TransitDirectionsInstructionsCellConstraints *)self platformArtworkTrailingToTextStackLabelLeadingConstraint];
-    [v30 addObject:v16];
+    platformArtworkTrailingToTextStackLabelLeadingConstraint2 = [(_TransitDirectionsInstructionsCellConstraints *)self platformArtworkTrailingToTextStackLabelLeadingConstraint];
+    [v30 addObject:platformArtworkTrailingToTextStackLabelLeadingConstraint2];
   }
 
-  v17 = [(_TransitDirectionsInstructionsCellConstraints *)self textStackLeadingToPrimaryLabelLeadingConstraint];
+  textStackLeadingToPrimaryLabelLeadingConstraint = [(_TransitDirectionsInstructionsCellConstraints *)self textStackLeadingToPrimaryLabelLeadingConstraint];
 
-  if (v17)
+  if (textStackLeadingToPrimaryLabelLeadingConstraint)
   {
-    v18 = [(_TransitDirectionsInstructionsCellConstraints *)self textStackLeadingToPrimaryLabelLeadingConstraint];
-    [v30 addObject:v18];
+    textStackLeadingToPrimaryLabelLeadingConstraint2 = [(_TransitDirectionsInstructionsCellConstraints *)self textStackLeadingToPrimaryLabelLeadingConstraint];
+    [v30 addObject:textStackLeadingToPrimaryLabelLeadingConstraint2];
   }
 
-  v19 = [(_TransitDirectionsInstructionsCellConstraints *)self secondaryLabelFirstBaselineToPlatformArtworkBottomConstraint];
+  secondaryLabelFirstBaselineToPlatformArtworkBottomConstraint = [(_TransitDirectionsInstructionsCellConstraints *)self secondaryLabelFirstBaselineToPlatformArtworkBottomConstraint];
 
-  if (v19)
+  if (secondaryLabelFirstBaselineToPlatformArtworkBottomConstraint)
   {
-    v20 = [(_TransitDirectionsInstructionsCellConstraints *)self secondaryLabelFirstBaselineToPlatformArtworkBottomConstraint];
-    [v30 addObject:v20];
+    secondaryLabelFirstBaselineToPlatformArtworkBottomConstraint2 = [(_TransitDirectionsInstructionsCellConstraints *)self secondaryLabelFirstBaselineToPlatformArtworkBottomConstraint];
+    [v30 addObject:secondaryLabelFirstBaselineToPlatformArtworkBottomConstraint2];
   }
 
-  v21 = [(_TransitDirectionsInstructionsCellConstraints *)self primaryLabelTrailingToTrailingContentConstraint];
+  primaryLabelTrailingToTrailingContentConstraint = [(_TransitDirectionsInstructionsCellConstraints *)self primaryLabelTrailingToTrailingContentConstraint];
 
-  if (v21)
+  if (primaryLabelTrailingToTrailingContentConstraint)
   {
-    v22 = [(_TransitDirectionsInstructionsCellConstraints *)self primaryLabelTrailingToTrailingContentConstraint];
-    [v30 addObject:v22];
+    primaryLabelTrailingToTrailingContentConstraint2 = [(_TransitDirectionsInstructionsCellConstraints *)self primaryLabelTrailingToTrailingContentConstraint];
+    [v30 addObject:primaryLabelTrailingToTrailingContentConstraint2];
   }
 
-  v23 = [(_TransitDirectionsInstructionsCellConstraints *)self secondaryLabelTrailingToTrailingContentConstraint];
+  secondaryLabelTrailingToTrailingContentConstraint = [(_TransitDirectionsInstructionsCellConstraints *)self secondaryLabelTrailingToTrailingContentConstraint];
 
-  if (v23)
+  if (secondaryLabelTrailingToTrailingContentConstraint)
   {
-    v24 = [(_TransitDirectionsInstructionsCellConstraints *)self secondaryLabelTrailingToTrailingContentConstraint];
-    [v30 addObject:v24];
+    secondaryLabelTrailingToTrailingContentConstraint2 = [(_TransitDirectionsInstructionsCellConstraints *)self secondaryLabelTrailingToTrailingContentConstraint];
+    [v30 addObject:secondaryLabelTrailingToTrailingContentConstraint2];
   }
 
-  v25 = [(_TransitDirectionsInstructionsCellConstraints *)self primaryAccessoryToTrailingConstraint];
+  primaryAccessoryToTrailingConstraint = [(_TransitDirectionsInstructionsCellConstraints *)self primaryAccessoryToTrailingConstraint];
 
-  if (v25)
+  if (primaryAccessoryToTrailingConstraint)
   {
-    v26 = [(_TransitDirectionsInstructionsCellConstraints *)self primaryAccessoryToTrailingConstraint];
-    [v30 addObject:v26];
+    primaryAccessoryToTrailingConstraint2 = [(_TransitDirectionsInstructionsCellConstraints *)self primaryAccessoryToTrailingConstraint];
+    [v30 addObject:primaryAccessoryToTrailingConstraint2];
   }
 
-  v27 = [(_TransitDirectionsInstructionsCellConstraints *)self primaryAccessoryMaximumWidthFactorConstraint];
+  primaryAccessoryMaximumWidthFactorConstraint = [(_TransitDirectionsInstructionsCellConstraints *)self primaryAccessoryMaximumWidthFactorConstraint];
 
-  if (v27)
+  if (primaryAccessoryMaximumWidthFactorConstraint)
   {
-    v28 = [(_TransitDirectionsInstructionsCellConstraints *)self primaryAccessoryMaximumWidthFactorConstraint];
-    [v30 addObject:v28];
+    primaryAccessoryMaximumWidthFactorConstraint2 = [(_TransitDirectionsInstructionsCellConstraints *)self primaryAccessoryMaximumWidthFactorConstraint];
+    [v30 addObject:primaryAccessoryMaximumWidthFactorConstraint2];
   }
 
-  v29 = [(_TransitDirectionsInstructionsCellConstraints *)self initialConstraints];
-  [v30 addObjectsFromArray:v29];
+  initialConstraints = [(_TransitDirectionsInstructionsCellConstraints *)self initialConstraints];
+  [v30 addObjectsFromArray:initialConstraints];
 
   [NSLayoutConstraint deactivateConstraints:v30];
 }

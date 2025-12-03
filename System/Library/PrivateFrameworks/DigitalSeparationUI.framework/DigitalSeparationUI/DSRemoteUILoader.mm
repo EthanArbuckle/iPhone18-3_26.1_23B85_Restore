@@ -1,23 +1,23 @@
 @interface DSRemoteUILoader
 + (void)initialize;
 - (DSNavigationDelegate)delegate;
-- (DSRemoteUILoader)initWithAccountManager:(id)a3 presenter:(id)a4 delegate:(id)a5;
-- (DSRemoteUILoader)initWithPresenter:(id)a3 delegate:(id)a4;
-- (DSRemoteUILoader)initWithPresenter:(id)a3 delegate:(id)a4 URL:(id)a5;
-- (id)accountsForAccountManager:(id)a3;
+- (DSRemoteUILoader)initWithAccountManager:(id)manager presenter:(id)presenter delegate:(id)delegate;
+- (DSRemoteUILoader)initWithPresenter:(id)presenter delegate:(id)delegate;
+- (DSRemoteUILoader)initWithPresenter:(id)presenter delegate:(id)delegate URL:(id)l;
+- (id)accountsForAccountManager:(id)manager;
 - (void)loadRemoteUI;
-- (void)remoteUIDidEndFlow:(id)a3;
-- (void)remoteUIDidReceiveHTTPResponse:(id)a3;
-- (void)remoteUIRequestComplete:(id)a3 error:(id)a4;
-- (void)remoteUIWillLoadRequest:(id)a3;
-- (void)remoteUIWillPresentObjectModel:(id)a3 modally:(BOOL)a4;
+- (void)remoteUIDidEndFlow:(id)flow;
+- (void)remoteUIDidReceiveHTTPResponse:(id)response;
+- (void)remoteUIRequestComplete:(id)complete error:(id)error;
+- (void)remoteUIWillLoadRequest:(id)request;
+- (void)remoteUIWillPresentObjectModel:(id)model modally:(BOOL)modally;
 @end
 
 @implementation DSRemoteUILoader
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     DSLog_0 = os_log_create("com.apple.DigitalSeparation", "DSRemoteUILoader");
 
@@ -25,27 +25,27 @@
   }
 }
 
-- (DSRemoteUILoader)initWithPresenter:(id)a3 delegate:(id)a4
+- (DSRemoteUILoader)initWithPresenter:(id)presenter delegate:(id)delegate
 {
   v6 = MEMORY[0x277CB8F48];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 defaultStore];
-  v10 = [objc_alloc(MEMORY[0x277CED1D0]) initWithAccountStore:v9];
+  delegateCopy = delegate;
+  presenterCopy = presenter;
+  defaultStore = [v6 defaultStore];
+  v10 = [objc_alloc(MEMORY[0x277CED1D0]) initWithAccountStore:defaultStore];
   [v10 setDelegate:self];
-  v11 = [(DSRemoteUILoader *)self initWithAccountManager:v10 presenter:v8 delegate:v7];
+  v11 = [(DSRemoteUILoader *)self initWithAccountManager:v10 presenter:presenterCopy delegate:delegateCopy];
 
   return v11;
 }
 
-- (DSRemoteUILoader)initWithPresenter:(id)a3 delegate:(id)a4 URL:(id)a5
+- (DSRemoteUILoader)initWithPresenter:(id)presenter delegate:(id)delegate URL:(id)l
 {
-  v8 = a5;
-  v9 = [(DSRemoteUILoader *)self initWithPresenter:a3 delegate:a4];
+  lCopy = l;
+  v9 = [(DSRemoteUILoader *)self initWithPresenter:presenter delegate:delegate];
   v10 = v9;
-  if (v8 && v9)
+  if (lCopy && v9)
   {
-    v11 = [MEMORY[0x277CBEBC0] URLWithString:v8];
+    v11 = [MEMORY[0x277CBEBC0] URLWithString:lCopy];
     dynamicURL = v10->_dynamicURL;
     v10->_dynamicURL = v11;
   }
@@ -53,12 +53,12 @@
   return v10;
 }
 
-- (DSRemoteUILoader)initWithAccountManager:(id)a3 presenter:(id)a4 delegate:(id)a5
+- (DSRemoteUILoader)initWithAccountManager:(id)manager presenter:(id)presenter delegate:(id)delegate
 {
   v43[3] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  presenterCopy = presenter;
+  delegateCopy = delegate;
   v33.receiver = self;
   v33.super_class = DSRemoteUILoader;
   v12 = [(DSRemoteUILoader *)&v33 init];
@@ -71,16 +71,16 @@
       _os_log_impl(&dword_248C7E000, v13, OS_LOG_TYPE_INFO, "Initializing DSRemoteUILoader", buf, 2u);
     }
 
-    objc_storeStrong(&v12->_accountManager, a3);
-    objc_storeWeak(&v12->_delegate, v11);
+    objc_storeStrong(&v12->_accountManager, manager);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
     v14 = objc_alloc_init(MEMORY[0x277D18728]);
     queryController = v12->_queryController;
     v12->_queryController = v14;
 
-    v16 = [v9 accountStore];
-    v17 = [v16 aa_primaryAppleAccount];
+    accountStore = [managerCopy accountStore];
+    aa_primaryAppleAccount = [accountStore aa_primaryAppleAccount];
     currentAccount = v12->_currentAccount;
-    v12->_currentAccount = v17;
+    v12->_currentAccount = aa_primaryAppleAccount;
 
     v39 = 0;
     v40 = &v39;
@@ -101,8 +101,8 @@
     v20 = v19;
     _Block_object_dispose(&v39, 8);
     v21 = [v19 alloc];
-    v22 = [(ACAccount *)v12->_currentAccount aa_altDSID];
-    v23 = [v21 initWithAltDSID:v22];
+    aa_altDSID = [(ACAccount *)v12->_currentAccount aa_altDSID];
+    v23 = [v21 initWithAltDSID:aa_altDSID];
 
     v43[0] = v23;
     v24 = objc_opt_new();
@@ -129,7 +129,7 @@
 
     v28 = v27;
     _Block_object_dispose(&v39, 8);
-    v29 = [[v27 alloc] initWithAccountManager:v12->_accountManager presenter:v10 hooks:v26];
+    v29 = [[v27 alloc] initWithAccountManager:v12->_accountManager presenter:presenterCopy hooks:v26];
     privacyRepairPresenter = v12->_privacyRepairPresenter;
     v12->_privacyRepairPresenter = v29;
 
@@ -146,17 +146,17 @@
   dynamicURL = self->_dynamicURL;
   if (dynamicURL)
   {
-    v4 = dynamicURL;
+    privacyRepairURL = dynamicURL;
   }
 
   else
   {
     v5 = [MEMORY[0x277CF02F0] bagForAltDSID:0];
-    v4 = [v5 privacyRepairURL];
+    privacyRepairURL = [v5 privacyRepairURL];
   }
 
   v6 = objc_alloc_init(MEMORY[0x277CCAB70]);
-  [v6 setURL:v4];
+  [v6 setURL:privacyRepairURL];
   [v6 setHTTPMethod:@"GET"];
   v7 = DSLog_0;
   if (os_log_type_enabled(DSLog_0, OS_LOG_TYPE_INFO))
@@ -171,33 +171,33 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteUIWillLoadRequest:(id)a3
+- (void)remoteUIWillLoadRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(DSRemoteUILoader *)self delegate];
-  if (([v5 isNetworkReachable] & 1) == 0)
+  requestCopy = request;
+  delegate = [(DSRemoteUILoader *)self delegate];
+  if (([delegate isNetworkReachable] & 1) == 0)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __44__DSRemoteUILoader_remoteUIWillLoadRequest___block_invoke;
     block[3] = &unk_278F75408;
-    v7 = v5;
+    v7 = delegate;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
-  [v4 setValue:@"digitalseparation" forHTTPHeaderField:@"X-Apple-I-App-Provided-Context"];
+  [requestCopy setValue:@"digitalseparation" forHTTPHeaderField:@"X-Apple-I-App-Provided-Context"];
 }
 
-- (void)remoteUIDidReceiveHTTPResponse:(id)a3
+- (void)remoteUIDidReceiveHTTPResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = DSLog_0;
   if (os_log_type_enabled(DSLog_0, OS_LOG_TYPE_ERROR))
   {
-    [(DSRemoteUILoader *)v4 remoteUIDidReceiveHTTPResponse:v5];
+    [(DSRemoteUILoader *)responseCopy remoteUIDidReceiveHTTPResponse:v5];
   }
 
-  if ([v4 statusCode] == 401 || objc_msgSend(v4, "statusCode") == 302 || (v6 = objc_msgSend(v4, "statusCode"), !v4) || v6 == 200)
+  if ([responseCopy statusCode] == 401 || objc_msgSend(responseCopy, "statusCode") == 302 || (v6 = objc_msgSend(responseCopy, "statusCode"), !responseCopy) || v6 == 200)
   {
     [(IDSIDQueryController *)self->_queryController flushQueryCache];
   }
@@ -214,40 +214,40 @@
     v13 = [v11 actionWithTitle:v12 style:1 handler:&__block_literal_global_3];
     [v10 addAction:v13];
 
-    v14 = [(DSRemoteUILoader *)self delegate];
+    delegate = [(DSRemoteUILoader *)self delegate];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v14 presentViewController:v10 animated:1 completion:0];
+      [delegate presentViewController:v10 animated:1 completion:0];
     }
   }
 }
 
-- (void)remoteUIRequestComplete:(id)a3 error:(id)a4
+- (void)remoteUIRequestComplete:(id)complete error:(id)error
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  completeCopy = complete;
+  errorCopy = error;
   v7 = DSLog_0;
-  if (v6)
+  if (errorCopy)
   {
     if (os_log_type_enabled(DSLog_0, OS_LOG_TYPE_ERROR))
     {
-      [(DSRemoteUILoader *)v5 remoteUIRequestComplete:v6 error:v7];
+      [(DSRemoteUILoader *)completeCopy remoteUIRequestComplete:errorCopy error:v7];
     }
   }
 
   else if (os_log_type_enabled(DSLog_0, OS_LOG_TYPE_INFO))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = completeCopy;
     _os_log_impl(&dword_248C7E000, v7, OS_LOG_TYPE_INFO, "Loading Remote UI request, %@,  success", &v9, 0xCu);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteUIDidEndFlow:(id)a3
+- (void)remoteUIDidEndFlow:(id)flow
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = DSLog_0;
@@ -266,7 +266,7 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)accountsForAccountManager:(id)a3
+- (id)accountsForAccountManager:(id)manager
 {
   v8[1] = *MEMORY[0x277D85DE8];
   currentAccount = self->_currentAccount;
@@ -278,17 +278,17 @@
   return v4;
 }
 
-- (void)remoteUIWillPresentObjectModel:(id)a3 modally:(BOOL)a4
+- (void)remoteUIWillPresentObjectModel:(id)model modally:(BOOL)modally
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (modally)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v4 = [a3 allPages];
-    v5 = [v4 countByEnumeratingWithState:&v23 objects:v29 count:16];
+    allPages = [model allPages];
+    v5 = [allPages countByEnumeratingWithState:&v23 objects:v29 count:16];
     if (v5)
     {
       v6 = v5;
@@ -299,13 +299,13 @@
         {
           if (*v24 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allPages);
           }
 
           v9 = *(*(&v23 + 1) + 8 * i);
-          v10 = [v9 rightNavigationBarButtonItem];
+          rightNavigationBarButtonItem = [v9 rightNavigationBarButtonItem];
 
-          if (!v10)
+          if (!rightNavigationBarButtonItem)
           {
             v11 = objc_alloc(MEMORY[0x277D461B8]);
             v27[0] = @"label";
@@ -318,22 +318,22 @@
             v28[2] = @"right";
             v28[3] = @"linkBarItem";
             v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:4];
-            v14 = [v9 pageElement];
-            v15 = [v11 initWithAttributes:v13 parent:v14];
+            pageElement = [v9 pageElement];
+            v15 = [v11 initWithAttributes:v13 parent:pageElement];
             [v9 setRightNavigationBarButtonItem:v15];
 
-            v16 = [v9 rightNavigationBarButtonItem];
-            v17 = [v16 barButtonItem];
-            [v17 setAction:sel_quickExit];
+            rightNavigationBarButtonItem2 = [v9 rightNavigationBarButtonItem];
+            barButtonItem = [rightNavigationBarButtonItem2 barButtonItem];
+            [barButtonItem setAction:sel_quickExit];
 
-            v18 = [(DSRemoteUILoader *)self delegate];
-            v19 = [v9 rightNavigationBarButtonItem];
-            v20 = [v19 barButtonItem];
-            [v20 setTarget:v18];
+            delegate = [(DSRemoteUILoader *)self delegate];
+            rightNavigationBarButtonItem3 = [v9 rightNavigationBarButtonItem];
+            barButtonItem2 = [rightNavigationBarButtonItem3 barButtonItem];
+            [barButtonItem2 setTarget:delegate];
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v23 objects:v29 count:16];
+        v6 = [allPages countByEnumeratingWithState:&v23 objects:v29 count:16];
       }
 
       while (v6);

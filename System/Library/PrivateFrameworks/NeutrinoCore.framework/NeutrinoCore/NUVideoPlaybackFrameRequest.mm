@@ -2,17 +2,17 @@
 - ($0AC6E346AE4835514AAA8AC86D8F4844)renderScale;
 - (id)newRenderJob;
 - (void)dealloc;
-- (void)setEvaluationTime:(id *)a3;
-- (void)setFrameDuration:(id *)a3;
-- (void)submit:(id)a3;
+- (void)setEvaluationTime:(id *)time;
+- (void)setFrameDuration:(id *)duration;
+- (void)submit:(id)submit;
 @end
 
 @implementation NUVideoPlaybackFrameRequest
 
-- (void)setFrameDuration:(id *)a3
+- (void)setFrameDuration:(id *)duration
 {
-  var3 = a3->var3;
-  *&self->_frameDuration.value = *&a3->var0;
+  var3 = duration->var3;
+  *&self->_frameDuration.value = *&duration->var0;
   self->_frameDuration.epoch = var3;
 }
 
@@ -26,19 +26,19 @@
   return result;
 }
 
-- (void)setEvaluationTime:(id *)a3
+- (void)setEvaluationTime:(id *)time
 {
-  var3 = a3->var3;
-  *&self->_evaluationTime.value = *&a3->var0;
+  var3 = time->var3;
+  *&self->_evaluationTime.value = *&time->var0;
   self->_evaluationTime.epoch = var3;
 }
 
-- (void)submit:(id)a3
+- (void)submit:(id)submit
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NURenderRequest *)self renderContext];
-  if ([v5 purpose] == 1)
+  submitCopy = submit;
+  renderContext = [(NURenderRequest *)self renderContext];
+  if ([renderContext purpose] == 1)
   {
     if (_NULogOnceToken != -1)
     {
@@ -82,8 +82,8 @@ LABEL_9:
         v17 = MEMORY[0x1E696AF00];
         v18 = specific;
         v19 = v11;
-        v20 = [v17 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *v27 = 138543618;
         *&v27[4] = specific;
         v28 = 2114;
@@ -101,8 +101,8 @@ LABEL_15:
     {
       v23 = MEMORY[0x1E696AF00];
       v24 = v22;
-      v25 = [v23 callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v23 callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *v27 = 138543362;
       *&v27[4] = v26;
       _os_log_error_impl(&dword_1C0184000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v27, 0xCu);
@@ -113,7 +113,7 @@ LABEL_15:
 
 LABEL_16:
 
-  [(NURenderRequest *)self submitGeneric:v4];
+  [(NURenderRequest *)self submitGeneric:submitCopy];
 }
 
 - (id)newRenderJob

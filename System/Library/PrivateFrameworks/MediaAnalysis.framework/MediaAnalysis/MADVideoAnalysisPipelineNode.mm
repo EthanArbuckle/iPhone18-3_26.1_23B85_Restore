@@ -1,21 +1,21 @@
 @interface MADVideoAnalysisPipelineNode
-- (BOOL)processInput:(id)a3 outputs:(id *)a4 error:(id *)a5;
-- (MADVideoAnalysisPipelineNode)initWithQueue:(id)a3 pipelineBlock:(id)a4;
-- (id)collectResultsWithError:(id *)a3;
-- (id)combineResults:(id)a3 withOtherResults:(id)a4;
+- (BOOL)processInput:(id)input outputs:(id *)outputs error:(id *)error;
+- (MADVideoAnalysisPipelineNode)initWithQueue:(id)queue pipelineBlock:(id)block;
+- (id)collectResultsWithError:(id *)error;
+- (id)combineResults:(id)results withOtherResults:(id)otherResults;
 @end
 
 @implementation MADVideoAnalysisPipelineNode
 
-- (MADVideoAnalysisPipelineNode)initWithQueue:(id)a3 pipelineBlock:(id)a4
+- (MADVideoAnalysisPipelineNode)initWithQueue:(id)queue pipelineBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v11.receiver = self;
   v11.super_class = MADVideoAnalysisPipelineNode;
-  v7 = [(MADProcessingNode *)&v11 initWithQueue:a3];
+  v7 = [(MADProcessingNode *)&v11 initWithQueue:queue];
   if (v7)
   {
-    v8 = _Block_copy(v6);
+    v8 = _Block_copy(blockCopy);
     pipelineBlock = v7->_pipelineBlock;
     v7->_pipelineBlock = v8;
 
@@ -25,12 +25,12 @@
   return v7;
 }
 
-- (BOOL)processInput:(id)a3 outputs:(id *)a4 error:(id *)a5
+- (BOOL)processInput:(id)input outputs:(id *)outputs error:(id *)error
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [v8 currentFrame];
-  [v8 nextSample];
+  inputCopy = input;
+  currentFrame = [inputCopy currentFrame];
+  [inputCopy nextSample];
   v10 = (*(self->_pipelineBlock + 2))();
   if (v10)
   {
@@ -40,8 +40,8 @@
     v26[0] = v12;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
     v14 = [v11 errorWithDomain:*MEMORY[0x1E696A768] code:v10 userInfo:v13];
-    v15 = *a5;
-    *a5 = v14;
+    v15 = *error;
+    *error = v14;
 
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -56,17 +56,17 @@
 
   else
   {
-    self->_flags |= [v9 frameFlags];
-    v20 = v8;
+    self->_flags |= [currentFrame frameFlags];
+    v20 = inputCopy;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
-    v18 = *a4;
-    *a4 = v17;
+    v18 = *outputs;
+    *outputs = v17;
   }
 
   return v10 == 0;
 }
 
-- (id)collectResultsWithError:(id *)a3
+- (id)collectResultsWithError:(id *)error
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v4 = +[MADVideoAnalysisPipelineNode flagsKey];
@@ -78,21 +78,21 @@
   return v6;
 }
 
-- (id)combineResults:(id)a3 withOtherResults:(id)a4
+- (id)combineResults:(id)results withOtherResults:(id)otherResults
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 mutableCopy];
-  [v7 addEntriesFromDictionary:v6];
+  resultsCopy = results;
+  otherResultsCopy = otherResults;
+  v7 = [resultsCopy mutableCopy];
+  [v7 addEntriesFromDictionary:otherResultsCopy];
   v8 = +[MADVideoAnalysisPipelineNode flagsKey];
-  v9 = [v5 objectForKeyedSubscript:v8];
-  v10 = [v9 unsignedLongLongValue];
+  v9 = [resultsCopy objectForKeyedSubscript:v8];
+  unsignedLongLongValue = [v9 unsignedLongLongValue];
 
   v11 = +[MADVideoAnalysisPipelineNode flagsKey];
-  v12 = [v6 objectForKeyedSubscript:v11];
-  v13 = [v12 unsignedLongLongValue];
+  v12 = [otherResultsCopy objectForKeyedSubscript:v11];
+  unsignedLongLongValue2 = [v12 unsignedLongLongValue];
 
-  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v13 | v10];
+  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:unsignedLongLongValue2 | unsignedLongLongValue];
   v15 = +[MADVideoAnalysisPipelineNode flagsKey];
   [v7 setObject:v14 forKeyedSubscript:v15];
 

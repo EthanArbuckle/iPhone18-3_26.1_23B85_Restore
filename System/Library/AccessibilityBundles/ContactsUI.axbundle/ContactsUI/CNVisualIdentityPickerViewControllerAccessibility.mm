@@ -1,27 +1,27 @@
 @interface CNVisualIdentityPickerViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation CNVisualIdentityPickerViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNVisualIdentityPickerViewController"];
-  [v3 validateClass:@"CNVisualIdentityPickerViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"CNVisualIdentityPickerViewController" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNVisualIdentityPickerViewController" hasInstanceMethod:@"collectionView:cellForItemAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"CNVisualIdentityPickerViewController" hasProperty:@"collectionView" withType:"@"];
-  [v3 validateClass:@"CNPhotoPickerDataSource"];
-  [v3 validateClass:@"CNPhotoPickerDataSource" hasInstanceMethod:@"isItemAtIndexPathAddItem:" withFullSignature:{"B", "@", 0}];
-  [v3 validateClass:@"CNPhotoPickerDataSource" hasInstanceMethod:@"providerItemAtIndexPath:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"CNPhotoPickerDataSource" hasInstanceMethod:@"providerGroupAtIndexPath:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"CNPhotoPickerProviderGroup"];
-  [v3 validateClass:@"CNPhotoPickerProviderGroup" hasProperty:@"groupType" withType:"q"];
-  [v3 validateClass:@"CNPhotoPickerCollectionViewCell"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNVisualIdentityPickerViewController"];
+  [validationsCopy validateClass:@"CNVisualIdentityPickerViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"CNVisualIdentityPickerViewController" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNVisualIdentityPickerViewController" hasInstanceMethod:@"collectionView:cellForItemAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"CNVisualIdentityPickerViewController" hasProperty:@"collectionView" withType:"@"];
+  [validationsCopy validateClass:@"CNPhotoPickerDataSource"];
+  [validationsCopy validateClass:@"CNPhotoPickerDataSource" hasInstanceMethod:@"isItemAtIndexPathAddItem:" withFullSignature:{"B", "@", 0}];
+  [validationsCopy validateClass:@"CNPhotoPickerDataSource" hasInstanceMethod:@"providerItemAtIndexPath:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"CNPhotoPickerDataSource" hasInstanceMethod:@"providerGroupAtIndexPath:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"CNPhotoPickerProviderGroup"];
+  [validationsCopy validateClass:@"CNPhotoPickerProviderGroup" hasProperty:@"groupType" withType:"q"];
+  [validationsCopy validateClass:@"CNPhotoPickerCollectionViewCell"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -42,17 +42,17 @@
   [(CNVisualIdentityPickerViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v39.receiver = self;
   v39.super_class = CNVisualIdentityPickerViewControllerAccessibility;
-  v8 = [(CNVisualIdentityPickerViewControllerAccessibility *)&v39 collectionView:v6 cellForItemAtIndexPath:v7];
+  v8 = [(CNVisualIdentityPickerViewControllerAccessibility *)&v39 collectionView:viewCopy cellForItemAtIndexPath:pathCopy];
   MEMORY[0x29C2D1D40](@"CNPhotoPickerCollectionViewCell");
   if (objc_opt_isKindOfClass())
   {
-    objc_initWeak(&location, v6);
+    objc_initWeak(&location, viewCopy);
     v9 = [(CNVisualIdentityPickerViewControllerAccessibility *)self safeValueForKey:@"dataSource"];
     v32 = 0;
     v33 = &v32;
@@ -66,7 +66,7 @@
     v28 = &unk_29F2B5A70;
     v31 = &v32;
     v29 = v9;
-    v30 = v7;
+    v30 = pathCopy;
     AXPerformSafeBlock();
     v10 = v33[5];
 

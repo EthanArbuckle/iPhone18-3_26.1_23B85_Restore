@@ -7,11 +7,11 @@
 
 - (double)tooltipLandscapeMargin
 {
-  v2 = [(PUViewControllerSpec *)self currentLayoutStyle];
+  currentLayoutStyle = [(PUViewControllerSpec *)self currentLayoutStyle];
   result = 0.0;
-  if (v2 <= 4)
+  if (currentLayoutStyle <= 4)
   {
-    return dbl_1B3D0D630[v2];
+    return dbl_1B3D0D630[currentLayoutStyle];
   }
 
   return result;
@@ -19,11 +19,11 @@
 
 - (double)tooltipPortraitMargin
 {
-  v2 = [(PUViewControllerSpec *)self currentLayoutStyle];
+  currentLayoutStyle = [(PUViewControllerSpec *)self currentLayoutStyle];
   result = 0.0;
-  if (v2 <= 4)
+  if (currentLayoutStyle <= 4)
   {
-    return dbl_1B3D0D608[v2];
+    return dbl_1B3D0D608[currentLayoutStyle];
   }
 
   return result;

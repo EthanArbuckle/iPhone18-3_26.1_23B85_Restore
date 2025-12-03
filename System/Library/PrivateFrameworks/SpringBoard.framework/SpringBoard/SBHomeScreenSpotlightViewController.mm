@@ -1,11 +1,11 @@
 @interface SBHomeScreenSpotlightViewController
 - (SBHomeScreenSpotlightDismissalDelegate)homescreenSpotlightDelegate;
-- (SBHomeScreenSpotlightViewController)initWithDelegate:(id)a3;
+- (SBHomeScreenSpotlightViewController)initWithDelegate:(id)delegate;
 - (unint64_t)remoteSearchViewPresentationSource;
-- (void)_setDisplayLayoutElementActive:(BOOL)a3;
+- (void)_setDisplayLayoutElementActive:(BOOL)active;
 - (void)dealloc;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SBHomeScreenSpotlightViewController
@@ -27,16 +27,16 @@
   return v5;
 }
 
-- (SBHomeScreenSpotlightViewController)initWithDelegate:(id)a3
+- (SBHomeScreenSpotlightViewController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = SBHomeScreenSpotlightViewController;
   v5 = [(SBHomeScreenSpotlightViewController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_homescreenSpotlightDelegate, v4);
+    objc_storeWeak(&v5->_homescreenSpotlightDelegate, delegateCopy);
   }
 
   return v6;
@@ -50,26 +50,26 @@
   [(SBSpotlightMultiplexingViewController *)&v3 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SBHomeScreenSpotlightViewController;
-  [(SBSpotlightMultiplexingViewController *)&v4 viewWillAppear:a3];
+  [(SBSpotlightMultiplexingViewController *)&v4 viewWillAppear:appear];
   [(SBHomeScreenSpotlightViewController *)self _setDisplayLayoutElementActive:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SBHomeScreenSpotlightViewController;
-  [(SBSpotlightMultiplexingViewController *)&v4 viewDidDisappear:a3];
+  [(SBSpotlightMultiplexingViewController *)&v4 viewDidDisappear:disappear];
   [(SBHomeScreenSpotlightViewController *)self _setDisplayLayoutElementActive:0];
 }
 
-- (void)_setDisplayLayoutElementActive:(BOOL)a3
+- (void)_setDisplayLayoutElementActive:(BOOL)active
 {
   displayLayoutAssertion = self->_displayLayoutAssertion;
-  if (a3)
+  if (active)
   {
     if (displayLayoutAssertion)
     {
@@ -81,8 +81,8 @@
     [v10 setLevel:0];
     [v10 setFillsDisplayBounds:1];
     [v10 setLayoutRole:6];
-    v6 = [MEMORY[0x277D0AAA0] sharedInstance];
-    v7 = [v6 addElement:v10];
+    mEMORY[0x277D0AAA0] = [MEMORY[0x277D0AAA0] sharedInstance];
+    v7 = [mEMORY[0x277D0AAA0] addElement:v10];
     v8 = self->_displayLayoutAssertion;
     self->_displayLayoutAssertion = v7;
 

@@ -1,25 +1,25 @@
 @interface CSRemoteAssetManagerDarwinExclave
 + (id)sharedManager;
 - (CSRemoteAssetManagerDarwinExclave)init;
-- (CSRemoteAssetManagerDarwinExclave)initWithExclaveAssetsController:(id)a3;
+- (CSRemoteAssetManagerDarwinExclave)initWithExclaveAssetsController:(id)controller;
 - (id)_languageCode;
-- (id)assetConfigVersionForAssetType:(unint64_t)a3;
-- (id)assetForCurrentLanguageOfType:(unint64_t)a3;
-- (id)assetHashForAssetType:(unint64_t)a3;
+- (id)assetConfigVersionForAssetType:(unint64_t)type;
+- (id)assetForCurrentLanguageOfType:(unint64_t)type;
+- (id)assetHashForAssetType:(unint64_t)type;
 - (id)languageCode;
-- (id)resourcePathForAssetType:(unint64_t)a3;
-- (void)addObserver:(id)a3 forAssetType:(unint64_t)a4;
-- (void)removeObserver:(id)a3 forAssetType:(unint64_t)a4;
-- (void)setLanguageCode:(id)a3 resourcePath:(id)a4 configVersion:(id)a5 assetHash:(id)a6 assetType:(unint64_t)a7;
+- (id)resourcePathForAssetType:(unint64_t)type;
+- (void)addObserver:(id)observer forAssetType:(unint64_t)type;
+- (void)removeObserver:(id)observer forAssetType:(unint64_t)type;
+- (void)setLanguageCode:(id)code resourcePath:(id)path configVersion:(id)version assetHash:(id)hash assetType:(unint64_t)type;
 @end
 
 @implementation CSRemoteAssetManagerDarwinExclave
 
-- (void)removeObserver:(id)a3 forAssetType:(unint64_t)a4
+- (void)removeObserver:(id)observer forAssetType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = v6;
-  if (!a4)
+  observerCopy = observer;
+  v7 = observerCopy;
+  if (!type)
   {
     queue = self->_queue;
     v9[0] = MEMORY[0x1E69E9820];
@@ -27,7 +27,7 @@
     v9[2] = __65__CSRemoteAssetManagerDarwinExclave_removeObserver_forAssetType___block_invoke;
     v9[3] = &unk_1E865C970;
     v9[4] = self;
-    v10 = v6;
+    v10 = observerCopy;
     dispatch_async(queue, v9);
   }
 }
@@ -42,11 +42,11 @@ uint64_t __65__CSRemoteAssetManagerDarwinExclave_removeObserver_forAssetType___b
   return result;
 }
 
-- (void)addObserver:(id)a3 forAssetType:(unint64_t)a4
+- (void)addObserver:(id)observer forAssetType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = v6;
-  if (!a4)
+  observerCopy = observer;
+  v7 = observerCopy;
+  if (!type)
   {
     queue = self->_queue;
     v9[0] = MEMORY[0x1E69E9820];
@@ -54,7 +54,7 @@ uint64_t __65__CSRemoteAssetManagerDarwinExclave_removeObserver_forAssetType___b
     v9[2] = __62__CSRemoteAssetManagerDarwinExclave_addObserver_forAssetType___block_invoke;
     v9[3] = &unk_1E865C970;
     v9[4] = self;
-    v10 = v6;
+    v10 = observerCopy;
     dispatch_async(queue, v9);
   }
 }
@@ -77,7 +77,7 @@ uint64_t __62__CSRemoteAssetManagerDarwinExclave_addObserver_forAssetType___bloc
   return [v2 addObject:v6];
 }
 
-- (id)resourcePathForAssetType:(unint64_t)a3
+- (id)resourcePathForAssetType:(unint64_t)type
 {
   v3 = 0;
   v8 = 0;
@@ -86,7 +86,7 @@ uint64_t __62__CSRemoteAssetManagerDarwinExclave_addObserver_forAssetType___bloc
   v11 = __Block_byref_object_copy__1382;
   v12 = __Block_byref_object_dispose__1383;
   v13 = 0;
-  if (!a3)
+  if (!type)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -114,7 +114,7 @@ void __62__CSRemoteAssetManagerDarwinExclave_resourcePathForAssetType___block_in
   *(v3 + 40) = v2;
 }
 
-- (id)assetHashForAssetType:(unint64_t)a3
+- (id)assetHashForAssetType:(unint64_t)type
 {
   v3 = 0;
   v8 = 0;
@@ -123,7 +123,7 @@ void __62__CSRemoteAssetManagerDarwinExclave_resourcePathForAssetType___block_in
   v11 = __Block_byref_object_copy__1382;
   v12 = __Block_byref_object_dispose__1383;
   v13 = 0;
-  if (!a3)
+  if (!type)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -151,7 +151,7 @@ void __59__CSRemoteAssetManagerDarwinExclave_assetHashForAssetType___block_invok
   *(v3 + 40) = v2;
 }
 
-- (id)assetConfigVersionForAssetType:(unint64_t)a3
+- (id)assetConfigVersionForAssetType:(unint64_t)type
 {
   v3 = 0;
   v8 = 0;
@@ -160,7 +160,7 @@ void __59__CSRemoteAssetManagerDarwinExclave_assetHashForAssetType___block_invok
   v11 = __Block_byref_object_copy__1382;
   v12 = __Block_byref_object_dispose__1383;
   v13 = 0;
-  if (!a3)
+  if (!type)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -220,30 +220,30 @@ uint64_t __49__CSRemoteAssetManagerDarwinExclave_languageCode__block_invoke(uint
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setLanguageCode:(id)a3 resourcePath:(id)a4 configVersion:(id)a5 assetHash:(id)a6 assetType:(unint64_t)a7
+- (void)setLanguageCode:(id)code resourcePath:(id)path configVersion:(id)version assetHash:(id)hash assetType:(unint64_t)type
 {
   v30 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  codeCopy = code;
+  pathCopy = path;
+  versionCopy = version;
+  hashCopy = hash;
   v16 = CSLogCategoryAsset;
   if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136316162;
     v21 = "[CSRemoteAssetManagerDarwinExclave setLanguageCode:resourcePath:configVersion:assetHash:assetType:]";
     v22 = 2114;
-    v23 = v12;
+    v23 = codeCopy;
     v24 = 2114;
-    v25 = v13;
+    v25 = pathCopy;
     v26 = 2114;
-    v27 = v14;
+    v27 = versionCopy;
     v28 = 2114;
-    v29 = v15;
+    v29 = hashCopy;
     _os_log_impl(&dword_1DDA4B000, v16, OS_LOG_TYPE_DEFAULT, "%s LanguageCode : %{public}@, resourcePath : %{public}@, configVersion : %{public}@, assetHash : %{public}@", buf, 0x34u);
   }
 
-  if (!a7)
+  if (!type)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
@@ -303,9 +303,9 @@ void __100__CSRemoteAssetManagerDarwinExclave_setLanguageCode_resourcePath_confi
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)assetForCurrentLanguageOfType:(unint64_t)a3
+- (id)assetForCurrentLanguageOfType:(unint64_t)type
 {
-  v5 = [(CSRemoteAssetManagerDarwinExclave *)self _languageCode];
+  _languageCode = [(CSRemoteAssetManagerDarwinExclave *)self _languageCode];
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -313,7 +313,7 @@ void __100__CSRemoteAssetManagerDarwinExclave_setLanguageCode_resourcePath_confi
   v18 = __Block_byref_object_dispose__1383;
   v19 = 0;
   objc_initWeak(&location, self);
-  if (!a3)
+  if (!type)
   {
     queue = self->_queue;
     v9[0] = MEMORY[0x1E69E9820];
@@ -321,7 +321,7 @@ void __100__CSRemoteAssetManagerDarwinExclave_setLanguageCode_resourcePath_confi
     v9[2] = __67__CSRemoteAssetManagerDarwinExclave_assetForCurrentLanguageOfType___block_invoke;
     v9[3] = &unk_1E865A870;
     v9[4] = self;
-    v10 = v5;
+    v10 = _languageCode;
     v11 = &v14;
     objc_copyWeak(v12, &location);
     v12[1] = 0;
@@ -511,7 +511,7 @@ void __67__CSRemoteAssetManagerDarwinExclave_assetForCurrentLanguageOfType___blo
   if (+[CSUtils isDarwinOS](CSUtils, "isDarwinOS") && (+[CSFPreferences sharedPreferences](CSFPreferences, "sharedPreferences"), v2 = objc_claimAutoreleasedReturnValue(), [v2 languageCodeDarwin], v3 = objc_claimAutoreleasedReturnValue(), v3, v2, v3))
   {
     v4 = +[CSFPreferences sharedPreferences];
-    v5 = [v4 languageCodeDarwin];
+    languageCodeDarwin = [v4 languageCodeDarwin];
   }
 
   else
@@ -524,12 +524,12 @@ void __67__CSRemoteAssetManagerDarwinExclave_assetForCurrentLanguageOfType___blo
       _os_log_impl(&dword_1DDA4B000, v6, OS_LOG_TYPE_DEFAULT, "%s LanguageCode setting not found. Falling back to en-US asset", &v9, 0xCu);
     }
 
-    v5 = @"en-US";
+    languageCodeDarwin = @"en-US";
   }
 
   v7 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return languageCodeDarwin;
 }
 
 - (CSRemoteAssetManagerDarwinExclave)init
@@ -540,9 +540,9 @@ void __67__CSRemoteAssetManagerDarwinExclave_assetForCurrentLanguageOfType___blo
   return v4;
 }
 
-- (CSRemoteAssetManagerDarwinExclave)initWithExclaveAssetsController:(id)a3
+- (CSRemoteAssetManagerDarwinExclave)initWithExclaveAssetsController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = CSRemoteAssetManagerDarwinExclave;
   v5 = [(CSRemoteAssetManagerDarwinExclave *)&v14 init];
@@ -552,13 +552,13 @@ void __67__CSRemoteAssetManagerDarwinExclave_assetForCurrentLanguageOfType___blo
     queue = v5->_queue;
     v5->_queue = v6;
 
-    v8 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v5->_observers;
-    v5->_observers = v8;
+    v5->_observers = weakObjectsHashTable;
 
-    if (v4)
+    if (controllerCopy)
     {
-      v10 = v4;
+      v10 = controllerCopy;
     }
 
     else

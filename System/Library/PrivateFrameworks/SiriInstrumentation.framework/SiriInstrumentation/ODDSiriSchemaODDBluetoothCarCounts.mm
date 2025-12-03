@@ -1,26 +1,26 @@
 @interface ODDSiriSchemaODDBluetoothCarCounts
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDBluetoothCarCounts)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDBluetoothCarCounts)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODDSiriSchemaODDBluetoothCarCounts)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDBluetoothCarCounts)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDBluetoothCarCounts
 
-- (ODDSiriSchemaODDBluetoothCarCounts)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDBluetoothCarCounts)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = ODDSiriSchemaODDBluetoothCarCounts;
   v5 = [(ODDSiriSchemaODDBluetoothCarCounts *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"siriInBTCarTurnCounts"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"siriInBTCarTurnCounts"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(ODDSiriSchemaODDBluetoothCarCounts *)v5 setSiriInBTCarTurnCounts:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"bluetoothCarConnectionsInTheLast24Hours"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"bluetoothCarConnectionsInTheLast24Hours"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDBluetoothCarCounts)initWithJSON:(id)a3
+- (ODDSiriSchemaODDBluetoothCarCounts)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDBluetoothCarCounts *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDBluetoothCarCounts *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDBluetoothCarCounts *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,32 +77,32 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODDSiriSchemaODDBluetoothCarCounts bluetoothCarConnectionsInTheLast24Hours](self, "bluetoothCarConnectionsInTheLast24Hours")}];
-    [v3 setObject:v4 forKeyedSubscript:@"bluetoothCarConnectionsInTheLast24Hours"];
+    [dictionary setObject:v4 forKeyedSubscript:@"bluetoothCarConnectionsInTheLast24Hours"];
   }
 
   if (self->_siriInBTCarTurnCounts)
   {
-    v5 = [(ODDSiriSchemaODDBluetoothCarCounts *)self siriInBTCarTurnCounts];
-    v6 = [v5 dictionaryRepresentation];
-    if (v6)
+    siriInBTCarTurnCounts = [(ODDSiriSchemaODDBluetoothCarCounts *)self siriInBTCarTurnCounts];
+    dictionaryRepresentation = [siriInBTCarTurnCounts dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"siriInBTCarTurnCounts"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"siriInBTCarTurnCounts"];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v7 forKeyedSubscript:@"siriInBTCarTurnCounts"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"siriInBTCarTurnCounts"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -121,18 +121,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(ODDSiriSchemaODDBluetoothCarCounts *)self siriInBTCarTurnCounts];
-  v6 = [v4 siriInBTCarTurnCounts];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  siriInBTCarTurnCounts = [(ODDSiriSchemaODDBluetoothCarCounts *)self siriInBTCarTurnCounts];
+  siriInBTCarTurnCounts2 = [equalCopy siriInBTCarTurnCounts];
+  v7 = siriInBTCarTurnCounts2;
+  if ((siriInBTCarTurnCounts != 0) == (siriInBTCarTurnCounts2 == 0))
   {
 
 LABEL_12:
@@ -140,13 +140,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(ODDSiriSchemaODDBluetoothCarCounts *)self siriInBTCarTurnCounts];
-  if (v8)
+  siriInBTCarTurnCounts3 = [(ODDSiriSchemaODDBluetoothCarCounts *)self siriInBTCarTurnCounts];
+  if (siriInBTCarTurnCounts3)
   {
-    v9 = v8;
-    v10 = [(ODDSiriSchemaODDBluetoothCarCounts *)self siriInBTCarTurnCounts];
-    v11 = [v4 siriInBTCarTurnCounts];
-    v12 = [v10 isEqual:v11];
+    v9 = siriInBTCarTurnCounts3;
+    siriInBTCarTurnCounts4 = [(ODDSiriSchemaODDBluetoothCarCounts *)self siriInBTCarTurnCounts];
+    siriInBTCarTurnCounts5 = [equalCopy siriInBTCarTurnCounts];
+    v12 = [siriInBTCarTurnCounts4 isEqual:siriInBTCarTurnCounts5];
 
     if (!v12)
     {
@@ -158,7 +158,7 @@ LABEL_12:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[20] & 1))
+  if ((*&self->_has & 1) != (equalCopy[20] & 1))
   {
     goto LABEL_12;
   }
@@ -166,7 +166,7 @@ LABEL_12:
   if (*&self->_has)
   {
     bluetoothCarConnectionsInTheLast24Hours = self->_bluetoothCarConnectionsInTheLast24Hours;
-    if (bluetoothCarConnectionsInTheLast24Hours != [v4 bluetoothCarConnectionsInTheLast24Hours])
+    if (bluetoothCarConnectionsInTheLast24Hours != [equalCopy bluetoothCarConnectionsInTheLast24Hours])
     {
       goto LABEL_12;
     }
@@ -178,14 +178,14 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(ODDSiriSchemaODDBluetoothCarCounts *)self siriInBTCarTurnCounts];
+  toCopy = to;
+  siriInBTCarTurnCounts = [(ODDSiriSchemaODDBluetoothCarCounts *)self siriInBTCarTurnCounts];
 
-  if (v4)
+  if (siriInBTCarTurnCounts)
   {
-    v5 = [(ODDSiriSchemaODDBluetoothCarCounts *)self siriInBTCarTurnCounts];
+    siriInBTCarTurnCounts2 = [(ODDSiriSchemaODDBluetoothCarCounts *)self siriInBTCarTurnCounts];
     PBDataWriterWriteSubmessage();
   }
 
@@ -195,17 +195,17 @@ LABEL_13:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ODDSiriSchemaODDBluetoothCarCounts;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ODDSiriSchemaODDBluetoothCarCounts *)self siriInBTCarTurnCounts:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ODDSiriSchemaODDBluetoothCarCounts *)self deleteSiriInBTCarTurnCounts];
   }

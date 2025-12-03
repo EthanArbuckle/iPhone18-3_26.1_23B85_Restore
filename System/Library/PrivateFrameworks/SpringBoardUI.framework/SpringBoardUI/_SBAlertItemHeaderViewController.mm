@@ -1,15 +1,15 @@
 @interface _SBAlertItemHeaderViewController
 - (CGSize)_expectedSize;
-- (_SBAlertItemHeaderViewController)initWithImage:(id)a3;
+- (_SBAlertItemHeaderViewController)initWithImage:(id)image;
 - (void)loadView;
 @end
 
 @implementation _SBAlertItemHeaderViewController
 
-- (_SBAlertItemHeaderViewController)initWithImage:(id)a3
+- (_SBAlertItemHeaderViewController)initWithImage:(id)image
 {
-  v5 = a3;
-  if (!v5)
+  imageCopy = image;
+  if (!imageCopy)
   {
     [(_SBAlertItemHeaderViewController *)a2 initWithImage:?];
   }
@@ -19,7 +19,7 @@
   v6 = [(_SBAlertItemHeaderViewController *)&v10 init];
   if (v6)
   {
-    v7 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v5];
+    v7 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:imageCopy];
     imageView = v6->_imageView;
     v6->_imageView = v7;
   }
@@ -29,8 +29,8 @@
 
 - (void)loadView
 {
-  v14 = [(_SBAlertItemHeaderViewController *)self image];
-  [v14 size];
+  image = [(_SBAlertItemHeaderViewController *)self image];
+  [image size];
   v4 = v3;
   v6 = v5;
   [(_SBAlertItemHeaderViewController *)self _expectedSize];

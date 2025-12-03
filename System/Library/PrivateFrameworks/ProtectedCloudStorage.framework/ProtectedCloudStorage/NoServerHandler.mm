@@ -1,19 +1,19 @@
 @interface NoServerHandler
-- (NoServerHandler)initWithHandler:(id)a3;
+- (NoServerHandler)initWithHandler:(id)handler;
 - (void)call;
 @end
 
 @implementation NoServerHandler
 
-- (NoServerHandler)initWithHandler:(id)a3
+- (NoServerHandler)initWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9.receiver = self;
   v9.super_class = NoServerHandler;
   v5 = [(NoServerHandler *)&v9 init];
   if (v5)
   {
-    v6 = MEMORY[0x1B2745320](v4);
+    v6 = MEMORY[0x1B2745320](handlerCopy);
     handler = v5->_handler;
     v5->_handler = v6;
   }

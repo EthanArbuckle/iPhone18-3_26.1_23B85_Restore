@@ -1,6 +1,6 @@
 @interface AEAssessmentModeRestrictionEnforcementSession
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (id)initWithRestrictionEnforcer:(void *)a3 machServiceName:;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (id)initWithRestrictionEnforcer:(void *)enforcer machServiceName:;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -15,38 +15,38 @@
   [(AEAssessmentModeRestrictionEnforcementSession *)&v3 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 valueForEntitlement:@"com.apple.private.automatic-assessment-configuration.restrictor"];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = [connectionCopy valueForEntitlement:@"com.apple.private.automatic-assessment-configuration.restrictor"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && ([v8 BOOLValue] & 1) == 0)
   {
-    [v7 invalidate];
+    [connectionCopy invalidate];
     v10 = 0;
   }
 
   else
   {
-    objc_initWeak(&location, v7);
+    objc_initWeak(&location, connectionCopy);
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __84__AEAssessmentModeRestrictionEnforcementSession_listener_shouldAcceptNewConnection___block_invoke;
     v15 = &unk_278BB6CF0;
     objc_copyWeak(&v16, &location);
-    [v7 setInterruptionHandler:&v12];
+    [connectionCopy setInterruptionHandler:&v12];
     if (self)
     {
       self = objc_loadWeakRetained(&self->_enforcer);
     }
 
-    [v7 setExportedObject:{self, v12, v13, v14, v15}];
+    [connectionCopy setExportedObject:{self, v12, v13, v14, v15}];
 
     v9 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284EFA8C0];
-    [v7 setExportedInterface:v9];
+    [connectionCopy setExportedInterface:v9];
 
-    [v7 activate];
+    [connectionCopy activate];
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
     v10 = 1;
@@ -67,30 +67,30 @@ void __84__AEAssessmentModeRestrictionEnforcementSession_listener_shouldAcceptNe
   [WeakRetained invalidate];
 }
 
-- (id)initWithRestrictionEnforcer:(void *)a3 machServiceName:
+- (id)initWithRestrictionEnforcer:(void *)enforcer machServiceName:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  enforcerCopy = enforcer;
+  if (self)
   {
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = AEAssessmentModeRestrictionEnforcementSession;
     v7 = objc_msgSendSuper2(&v11, sel_init);
-    a1 = v7;
+    self = v7;
     if (v7)
     {
-      objc_storeStrong(v7 + 1, a3);
-      objc_storeWeak(a1 + 2, v5);
-      v8 = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:v6];
-      v9 = a1[3];
-      a1[3] = v8;
+      objc_storeStrong(v7 + 1, enforcer);
+      objc_storeWeak(self + 2, v5);
+      v8 = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:enforcerCopy];
+      v9 = self[3];
+      self[3] = v8;
 
-      [a1[3] setDelegate:a1];
-      [a1[3] activate];
+      [self[3] setDelegate:self];
+      [self[3] activate];
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)invalidate

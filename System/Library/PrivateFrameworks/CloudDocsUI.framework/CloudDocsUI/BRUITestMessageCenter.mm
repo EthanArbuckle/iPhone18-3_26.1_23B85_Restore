@@ -2,8 +2,8 @@
 + (id)defaultCenter;
 - (BRUITestMessageCenter)init;
 - (id)_init;
-- (void)_sendMessageNamed:(id)a3 userInfo:(id)a4 isReply:(BOOL)a5 messageUUID:(id)a6 reply:(id)a7;
-- (void)didReceiveMessage:(id)a3;
+- (void)_sendMessageNamed:(id)named userInfo:(id)info isReply:(BOOL)reply messageUUID:(id)d reply:(id)a7;
+- (void)didReceiveMessage:(id)message;
 - (void)startReceiver;
 - (void)startSender;
 - (void)stop;
@@ -30,13 +30,13 @@
   v2 = [(BRUITestMessageCenter *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     pendingReplies = v2->_pendingReplies;
-    v2->_pendingReplies = v3;
+    v2->_pendingReplies = dictionary;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     messageHandlers = v2->_messageHandlers;
-    v2->_messageHandlers = v5;
+    v2->_messageHandlers = dictionary2;
 
     v7 = dispatch_queue_create("BRUITestMessageCenter-message-queue", 0);
     messageQueue = v2->_messageQueue;
@@ -70,43 +70,43 @@ uint64_t __38__BRUITestMessageCenter_defaultCenter__block_invoke()
 - (void)startSender
 {
   self->_isSender = 1;
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v3 addObserver:self selector:sel_didReceiveMessage_ name:@"_BRUITestMessageReceiver" object:0];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_didReceiveMessage_ name:@"_BRUITestMessageReceiver" object:0];
 }
 
 - (void)startReceiver
 {
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v3 addObserver:self selector:sel_didReceiveMessage_ name:@"_BRUITestMessageSender" object:0];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_didReceiveMessage_ name:@"_BRUITestMessageSender" object:0];
 }
 
 - (void)stop
 {
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
-- (void)_sendMessageNamed:(id)a3 userInfo:(id)a4 isReply:(BOOL)a5 messageUUID:(id)a6 reply:(id)a7
+- (void)_sendMessageNamed:(id)named userInfo:(id)info isReply:(BOOL)reply messageUUID:(id)d reply:(id)a7
 {
-  v9 = a5;
+  replyCopy = reply;
   v29[4] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  namedCopy = named;
+  infoCopy = info;
+  dCopy = d;
   v15 = a7;
-  if (!v14)
+  if (!dCopy)
   {
-    v14 = [MEMORY[0x277CCAD78] UUID];
+    dCopy = [MEMORY[0x277CCAD78] UUID];
   }
 
   v28[0] = @"_kBRUITestMessageUUID";
-  v16 = [v14 UUIDString];
-  v29[0] = v16;
-  v29[1] = v12;
-  v25 = v12;
+  uUIDString = [dCopy UUIDString];
+  v29[0] = uUIDString;
+  v29[1] = namedCopy;
+  v25 = namedCopy;
   v28[1] = @"_kBRUITestMessageName";
   v28[2] = @"_kBRUITestMessageIsReply";
-  v17 = [MEMORY[0x277CCABB0] numberWithBool:v9];
+  v17 = [MEMORY[0x277CCABB0] numberWithBool:replyCopy];
   v29[2] = v17;
   v28[3] = @"_kBRUITestPid";
   v18 = [MEMORY[0x277CCABB0] numberWithInt:getpid()];
@@ -114,25 +114,25 @@ uint64_t __38__BRUITestMessageCenter_defaultCenter__block_invoke()
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:4];
   v20 = [v19 mutableCopy];
 
-  if (v13)
+  if (infoCopy)
   {
-    [v20 setObject:v13 forKeyedSubscript:@"_kBRUITestMessagePayload"];
+    [v20 setObject:infoCopy forKeyedSubscript:@"_kBRUITestMessagePayload"];
   }
 
-  if (!v9)
+  if (!replyCopy)
   {
     if (v15)
     {
-      v21 = MEMORY[0x245D41DF0](v15);
+      null = MEMORY[0x245D41DF0](v15);
     }
 
     else
     {
-      v21 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
     }
 
-    v22 = v21;
-    [(NSMutableDictionary *)self->_pendingReplies setObject:v21 forKeyedSubscript:v14];
+    v22 = null;
+    [(NSMutableDictionary *)self->_pendingReplies setObject:null forKeyedSubscript:dCopy];
   }
 
   messageQueue = self->_messageQueue;
@@ -163,27 +163,27 @@ void __78__BRUITestMessageCenter__sendMessageNamed_userInfo_isReply_messageUUID_
   [v2 postNotificationName:v3 object:0 userInfo:*(a1 + 40)];
 }
 
-- (void)didReceiveMessage:(id)a3
+- (void)didReceiveMessage:(id)message
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"_kBRUITestPid"];
-  v6 = [v5 integerValue];
+  userInfo = [message userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"_kBRUITestPid"];
+  integerValue = [v5 integerValue];
   v7 = getpid();
 
-  if (v6 != v7)
+  if (integerValue != v7)
   {
-    v8 = [v4 objectForKeyedSubscript:@"_kBRUITestMessagePayload"];
-    v9 = [v4 objectForKeyedSubscript:@"_kBRUITestMessageUUID"];
+    v8 = [userInfo objectForKeyedSubscript:@"_kBRUITestMessagePayload"];
+    v9 = [userInfo objectForKeyedSubscript:@"_kBRUITestMessageUUID"];
     v10 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v9];
-    v11 = [v4 objectForKeyedSubscript:@"_kBRUITestMessageIsReply"];
-    v12 = [v11 BOOLValue];
+    v11 = [userInfo objectForKeyedSubscript:@"_kBRUITestMessageIsReply"];
+    bOOLValue = [v11 BOOLValue];
 
-    if (v12)
+    if (bOOLValue)
     {
       v13 = [(NSMutableDictionary *)self->_pendingReplies objectForKeyedSubscript:v10];
       [(NSMutableDictionary *)self->_pendingReplies setObject:0 forKeyedSubscript:v10];
-      v14 = [MEMORY[0x277CBEB68] null];
-      v15 = [v13 isEqual:v14];
+      null = [MEMORY[0x277CBEB68] null];
+      v15 = [v13 isEqual:null];
 
       if (v15)
       {
@@ -198,7 +198,7 @@ LABEL_7:
 
     else
     {
-      v17 = [v4 objectForKeyedSubscript:@"_kBRUITestMessageName"];
+      v17 = [userInfo objectForKeyedSubscript:@"_kBRUITestMessageName"];
       v18 = [(NSMutableDictionary *)self->_messageHandlers objectForKeyedSubscript:v17];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
@@ -207,7 +207,7 @@ LABEL_7:
       v20 = v18;
       v21 = v17;
       v22 = v8;
-      v23 = self;
+      selfCopy = self;
       v24 = v10;
       v16 = v17;
       v13 = v18;

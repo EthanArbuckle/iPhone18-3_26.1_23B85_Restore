@@ -1,28 +1,28 @@
 @interface BKSHIDUISensorCharacteristics
 + (BKSHIDUISensorCharacteristics)new;
 - (BKSHIDUISensorCharacteristics)init;
-- (BKSHIDUISensorCharacteristics)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BKSHIDUISensorCharacteristics)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)mutableCopy;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BKSHIDUISensorCharacteristics
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __62__BKSHIDUISensorCharacteristics_appendDescriptionToFormatter___block_invoke;
   v6[3] = &unk_1E6F47C78;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = formatterCopy;
+  selfCopy = self;
+  v5 = formatterCopy;
   [v5 appendProem:self block:v6];
 }
 
@@ -54,7 +54,7 @@ void __47__BKSHIDUISensorCharacteristics_protobufSchema__block_invoke(uint64_t a
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = a1;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSHIDUISensorCharacteristics.m";
     v17 = 1024;
@@ -70,7 +70,7 @@ void __47__BKSHIDUISensorCharacteristics_protobufSchema__block_invoke(uint64_t a
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [[BKSHIDUISensorCharacteristics allocWithZone:?]];
   *(result + 16) = self->_hasDiscreteProximitySensor;
@@ -78,11 +78,11 @@ void __47__BKSHIDUISensorCharacteristics_protobufSchema__block_invoke(uint64_t a
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -119,22 +119,22 @@ void __47__BKSHIDUISensorCharacteristics_protobufSchema__block_invoke(uint64_t a
   return BSHashPurifyNS();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   hasDiscreteProximitySensor = self->_hasDiscreteProximitySensor;
-  v5 = a3;
-  [v5 encodeBool:hasDiscreteProximitySensor forKey:@"hasDiscreteProximitySensor"];
-  [v5 encodeInteger:self->_suggestedSystemApertureGracePeriodForScreenOff forKey:@"suggestedSystemApertureGracePeriodForScreenOff"];
+  coderCopy = coder;
+  [coderCopy encodeBool:hasDiscreteProximitySensor forKey:@"hasDiscreteProximitySensor"];
+  [coderCopy encodeInteger:self->_suggestedSystemApertureGracePeriodForScreenOff forKey:@"suggestedSystemApertureGracePeriodForScreenOff"];
 }
 
-- (BKSHIDUISensorCharacteristics)initWithCoder:(id)a3
+- (BKSHIDUISensorCharacteristics)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = BKSHIDUISensorCharacteristics;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(BKSHIDUISensorCharacteristics *)&v7 init];
-  v4->_hasDiscreteProximitySensor = [v3 decodeBoolForKey:{@"hasDiscreteProximitySensor", v7.receiver, v7.super_class}];
-  v5 = [v3 decodeIntegerForKey:@"suggestedSystemApertureGracePeriodForScreenOff"];
+  v4->_hasDiscreteProximitySensor = [coderCopy decodeBoolForKey:{@"hasDiscreteProximitySensor", v7.receiver, v7.super_class}];
+  v5 = [coderCopy decodeIntegerForKey:@"suggestedSystemApertureGracePeriodForScreenOff"];
 
   v4->_suggestedSystemApertureGracePeriodForScreenOff = v5;
   return v4;
@@ -160,7 +160,7 @@ void __47__BKSHIDUISensorCharacteristics_protobufSchema__block_invoke(uint64_t a
         v15 = 2114;
         v16 = v11;
         v17 = 2048;
-        v18 = self;
+        selfCopy = self;
         v19 = 2114;
         v20 = @"BKSHIDUISensorCharacteristics.m";
         v21 = 1024;
@@ -198,7 +198,7 @@ void __47__BKSHIDUISensorCharacteristics_protobufSchema__block_invoke(uint64_t a
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSHIDUISensorCharacteristics.m";
     v17 = 1024;

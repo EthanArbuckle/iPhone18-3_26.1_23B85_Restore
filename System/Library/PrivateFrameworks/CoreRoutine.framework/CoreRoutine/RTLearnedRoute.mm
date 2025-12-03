@@ -1,73 +1,73 @@
 @interface RTLearnedRoute
-- (BOOL)isEqual:(id)a3;
-- (RTLearnedRoute)initWithCoder:(id)a3;
-- (RTLearnedRoute)initWithLearnedRouteId:(id)a3 routeStartLocation:(id)a4 routeEndLocation:(id)a5 travelTimeEntireRouteSec:(float)a6 travelDistanceEntireRouteMeter:(float)a7 travelModeRoutes:(id)a8 routeStartLocationWithReferenceFrame:(id)a9 routeEndLocationWithReferenceFrame:(id)a10;
+- (BOOL)isEqual:(id)equal;
+- (RTLearnedRoute)initWithCoder:(id)coder;
+- (RTLearnedRoute)initWithLearnedRouteId:(id)id routeStartLocation:(id)location routeEndLocation:(id)endLocation travelTimeEntireRouteSec:(float)sec travelDistanceEntireRouteMeter:(float)meter travelModeRoutes:(id)routes routeStartLocationWithReferenceFrame:(id)frame routeEndLocationWithReferenceFrame:(id)self0;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTLearnedRoute
 
-- (RTLearnedRoute)initWithLearnedRouteId:(id)a3 routeStartLocation:(id)a4 routeEndLocation:(id)a5 travelTimeEntireRouteSec:(float)a6 travelDistanceEntireRouteMeter:(float)a7 travelModeRoutes:(id)a8 routeStartLocationWithReferenceFrame:(id)a9 routeEndLocationWithReferenceFrame:(id)a10
+- (RTLearnedRoute)initWithLearnedRouteId:(id)id routeStartLocation:(id)location routeEndLocation:(id)endLocation travelTimeEntireRouteSec:(float)sec travelDistanceEntireRouteMeter:(float)meter travelModeRoutes:(id)routes routeStartLocationWithReferenceFrame:(id)frame routeEndLocationWithReferenceFrame:(id)self0
 {
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
+  idCopy = id;
+  locationCopy = location;
+  endLocationCopy = endLocation;
+  routesCopy = routes;
+  frameCopy = frame;
+  referenceFrameCopy = referenceFrame;
   v28.receiver = self;
   v28.super_class = RTLearnedRoute;
   v22 = [(RTLearnedRoute *)&v28 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_learnedRouteIdentifier, a3);
-    objc_storeStrong(&v23->_learnedRouteStartLocation, a4);
-    objc_storeStrong(&v23->_learnedRouteEndLocation, a5);
-    v23->_travelTimeEstimateForEntireRouteInSeconds = a6;
-    v23->_travelledDistanceEstimateForEntireRouteInMeters = a7;
-    objc_storeStrong(&v23->_travelModeRoutes, a8);
-    objc_storeStrong(&v23->_learnedRouteStartLocationWithReferenceFrame, a9);
-    objc_storeStrong(&v23->_learnedRouteEndLocationWithReferenceFrame, a10);
+    objc_storeStrong(&v22->_learnedRouteIdentifier, id);
+    objc_storeStrong(&v23->_learnedRouteStartLocation, location);
+    objc_storeStrong(&v23->_learnedRouteEndLocation, endLocation);
+    v23->_travelTimeEstimateForEntireRouteInSeconds = sec;
+    v23->_travelledDistanceEstimateForEntireRouteInMeters = meter;
+    objc_storeStrong(&v23->_travelModeRoutes, routes);
+    objc_storeStrong(&v23->_learnedRouteStartLocationWithReferenceFrame, frame);
+    objc_storeStrong(&v23->_learnedRouteEndLocationWithReferenceFrame, referenceFrame);
   }
 
   return v23;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   learnedRouteIdentifier = self->_learnedRouteIdentifier;
-  v7 = a3;
-  [v7 encodeObject:learnedRouteIdentifier forKey:@"routeId"];
-  [v7 encodeObject:self->_learnedRouteStartLocation forKey:@"routeStartLocation"];
-  [v7 encodeObject:self->_learnedRouteEndLocation forKey:@"routeEndLocation"];
-  [v7 encodeObject:self->_travelModeRoutes forKey:@"travelModeRoutes"];
+  coderCopy = coder;
+  [coderCopy encodeObject:learnedRouteIdentifier forKey:@"routeId"];
+  [coderCopy encodeObject:self->_learnedRouteStartLocation forKey:@"routeStartLocation"];
+  [coderCopy encodeObject:self->_learnedRouteEndLocation forKey:@"routeEndLocation"];
+  [coderCopy encodeObject:self->_travelModeRoutes forKey:@"travelModeRoutes"];
   *&v5 = self->_travelTimeEstimateForEntireRouteInSeconds;
-  [v7 encodeFloat:@"travelTimeEntireRouteSec" forKey:v5];
+  [coderCopy encodeFloat:@"travelTimeEntireRouteSec" forKey:v5];
   *&v6 = self->_travelledDistanceEstimateForEntireRouteInMeters;
-  [v7 encodeFloat:@"travelDistanceEntireRouteMeter" forKey:v6];
-  [v7 encodeObject:self->_learnedRouteStartLocationWithReferenceFrame forKey:@"routeStartLocationWithReferenceFrame"];
-  [v7 encodeObject:self->_learnedRouteEndLocationWithReferenceFrame forKey:@"routeEndLocationWithReferenceFrame"];
+  [coderCopy encodeFloat:@"travelDistanceEntireRouteMeter" forKey:v6];
+  [coderCopy encodeObject:self->_learnedRouteStartLocationWithReferenceFrame forKey:@"routeStartLocationWithReferenceFrame"];
+  [coderCopy encodeObject:self->_learnedRouteEndLocationWithReferenceFrame forKey:@"routeEndLocationWithReferenceFrame"];
 }
 
-- (RTLearnedRoute)initWithCoder:(id)a3
+- (RTLearnedRoute)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeFloatForKey:@"travelDistanceEntireRouteMeter"];
+  coderCopy = coder;
+  [coderCopy decodeFloatForKey:@"travelDistanceEntireRouteMeter"];
   v6 = v5;
-  [v4 decodeFloatForKey:@"travelTimeEntireRouteSec"];
+  [coderCopy decodeFloatForKey:@"travelTimeEntireRouteSec"];
   v8 = v7;
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"routeId"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"routeStartLocation"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"routeEndLocation"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"routeId"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"routeStartLocation"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"routeEndLocation"];
   v12 = MEMORY[0x1E695DFD8];
   v13 = objc_opt_class();
   v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-  v15 = [v4 decodeObjectOfClasses:v14 forKey:@"travelModeRoutes"];
+  v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"travelModeRoutes"];
 
-  v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"routeStartLocationWithReferenceFrame"];
-  v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"routeEndLocationWithReferenceFrame"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"routeStartLocationWithReferenceFrame"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"routeEndLocationWithReferenceFrame"];
 
   LODWORD(v18) = v8;
   LODWORD(v19) = v6;
@@ -76,28 +76,28 @@
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v9 = a3;
-  v10 = v9;
-  if (!(self | v9))
+  equalCopy = equal;
+  v10 = equalCopy;
+  if (!(self | equalCopy))
   {
     v11 = 1;
     goto LABEL_76;
   }
 
   v11 = 0;
-  if (self && v9)
+  if (self && equalCopy)
   {
-    v49 = [v9 isMemberOfClass:objc_opt_class()];
+    v49 = [equalCopy isMemberOfClass:objc_opt_class()];
     learnedRouteIdentifier = self->_learnedRouteIdentifier;
     if (learnedRouteIdentifier)
     {
       goto LABEL_6;
     }
 
-    v3 = [v10 learnedRouteIdentifier];
-    if (!v3)
+    learnedRouteIdentifier = [v10 learnedRouteIdentifier];
+    if (!learnedRouteIdentifier)
     {
       v48 = 1;
       goto LABEL_15;
@@ -106,13 +106,13 @@
     if (self->_learnedRouteIdentifier)
     {
 LABEL_6:
-      v13 = [v10 learnedRouteIdentifier];
-      if (v13)
+      learnedRouteIdentifier2 = [v10 learnedRouteIdentifier];
+      if (learnedRouteIdentifier2)
       {
-        v4 = v13;
+        learnedRouteStartLocation = learnedRouteIdentifier2;
         v14 = self->_learnedRouteIdentifier;
-        v5 = [v10 learnedRouteIdentifier];
-        v48 = [(NSUUID *)v14 isEqual:v5];
+        learnedRouteIdentifier3 = [v10 learnedRouteIdentifier];
+        v48 = [(NSUUID *)v14 isEqual:learnedRouteIdentifier3];
 
         if (learnedRouteIdentifier)
         {
@@ -144,19 +144,19 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v4 = [v10 learnedRouteStartLocation];
-    if (v4)
+    learnedRouteStartLocation = [v10 learnedRouteStartLocation];
+    if (learnedRouteStartLocation)
     {
       if (self->_learnedRouteStartLocation)
       {
 LABEL_17:
-        v16 = [v10 learnedRouteStartLocation];
-        if (v16)
+        learnedRouteStartLocation2 = [v10 learnedRouteStartLocation];
+        if (learnedRouteStartLocation2)
         {
-          v5 = v16;
+          learnedRouteIdentifier3 = learnedRouteStartLocation2;
           v17 = self->_learnedRouteStartLocation;
-          v6 = [v10 learnedRouteStartLocation];
-          v47 = [(CLLocation *)v17 isEqual:v6];
+          learnedRouteStartLocation3 = [v10 learnedRouteStartLocation];
+          v47 = [(CLLocation *)v17 isEqual:learnedRouteStartLocation3];
 
           if (!learnedRouteStartLocation)
           {
@@ -180,8 +180,8 @@ LABEL_27:
           goto LABEL_28;
         }
 
-        v5 = [v10 learnedRouteEndLocation];
-        if (!v5)
+        learnedRouteIdentifier3 = [v10 learnedRouteEndLocation];
+        if (!learnedRouteIdentifier3)
         {
           v21 = 1;
           goto LABEL_37;
@@ -190,13 +190,13 @@ LABEL_27:
         if (self->_learnedRouteEndLocation)
         {
 LABEL_28:
-          v19 = [v10 learnedRouteEndLocation];
-          if (v19)
+          learnedRouteEndLocation = [v10 learnedRouteEndLocation];
+          if (learnedRouteEndLocation)
           {
-            v6 = v19;
+            learnedRouteStartLocation3 = learnedRouteEndLocation;
             v20 = self->_learnedRouteEndLocation;
-            v7 = [v10 learnedRouteEndLocation];
-            v21 = [(CLLocation *)v20 isEqual:v7];
+            learnedRouteEndLocation2 = [v10 learnedRouteEndLocation];
+            v21 = [(CLLocation *)v20 isEqual:learnedRouteEndLocation2];
 
             if (learnedRouteEndLocation)
             {
@@ -228,19 +228,19 @@ LABEL_38:
           goto LABEL_39;
         }
 
-        v6 = [v10 travelModeRoutes];
-        if (v6)
+        learnedRouteStartLocation3 = [v10 travelModeRoutes];
+        if (learnedRouteStartLocation3)
         {
           if (self->_travelModeRoutes)
           {
 LABEL_39:
-            v23 = [v10 travelModeRoutes];
-            if (v23)
+            travelModeRoutes = [v10 travelModeRoutes];
+            if (travelModeRoutes)
             {
-              v7 = v23;
+              learnedRouteEndLocation2 = travelModeRoutes;
               v24 = self->_travelModeRoutes;
-              v25 = [v10 travelModeRoutes];
-              v26 = [(NSArray *)v24 isEqual:v25];
+              travelModeRoutes2 = [v10 travelModeRoutes];
+              v26 = [(NSArray *)v24 isEqual:travelModeRoutes2];
 
               if (!travelModeRoutes)
               {
@@ -270,8 +270,8 @@ LABEL_49:
               goto LABEL_50;
             }
 
-            v7 = [v10 learnedRouteStartLocationWithReferenceFrame];
-            if (!v7)
+            learnedRouteEndLocation2 = [v10 learnedRouteStartLocationWithReferenceFrame];
+            if (!learnedRouteEndLocation2)
             {
               v38 = 1;
               goto LABEL_59;
@@ -280,13 +280,13 @@ LABEL_49:
             if (self->_learnedRouteStartLocationWithReferenceFrame)
             {
 LABEL_50:
-              v34 = [v10 learnedRouteStartLocationWithReferenceFrame];
-              if (v34)
+              learnedRouteStartLocationWithReferenceFrame = [v10 learnedRouteStartLocationWithReferenceFrame];
+              if (learnedRouteStartLocationWithReferenceFrame)
               {
-                v35 = v34;
+                v35 = learnedRouteStartLocationWithReferenceFrame;
                 v36 = self->_learnedRouteStartLocationWithReferenceFrame;
-                v37 = [v10 learnedRouteStartLocationWithReferenceFrame];
-                v38 = [(RTLearnedRouteLocation *)v36 isEqual:v37];
+                learnedRouteStartLocationWithReferenceFrame2 = [v10 learnedRouteStartLocationWithReferenceFrame];
+                v38 = [(RTLearnedRouteLocation *)v36 isEqual:learnedRouteStartLocationWithReferenceFrame2];
 
                 if (learnedRouteStartLocationWithReferenceFrame)
                 {
@@ -318,19 +318,19 @@ LABEL_60:
               goto LABEL_61;
             }
 
-            v7 = [v10 learnedRouteEndLocationWithReferenceFrame];
-            if (v7)
+            learnedRouteEndLocation2 = [v10 learnedRouteEndLocationWithReferenceFrame];
+            if (learnedRouteEndLocation2)
             {
               if (self->_learnedRouteEndLocationWithReferenceFrame)
               {
 LABEL_61:
-                v40 = [v10 learnedRouteEndLocationWithReferenceFrame];
-                if (v40)
+                learnedRouteEndLocationWithReferenceFrame = [v10 learnedRouteEndLocationWithReferenceFrame];
+                if (learnedRouteEndLocationWithReferenceFrame)
                 {
-                  v41 = v40;
+                  v41 = learnedRouteEndLocationWithReferenceFrame;
                   v42 = self->_learnedRouteEndLocationWithReferenceFrame;
-                  v43 = [v10 learnedRouteEndLocationWithReferenceFrame];
-                  v44 = [(RTLearnedRouteLocation *)v42 isEqual:v43];
+                  learnedRouteEndLocationWithReferenceFrame2 = [v10 learnedRouteEndLocationWithReferenceFrame];
+                  v44 = [(RTLearnedRouteLocation *)v42 isEqual:learnedRouteEndLocationWithReferenceFrame2];
 
                   if (!learnedRouteEndLocationWithReferenceFrame)
                   {
@@ -410,15 +410,15 @@ LABEL_76:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(RTLearnedRoute *)self learnedRouteIdentifier];
-  v5 = [(RTLearnedRoute *)self learnedRouteStartLocation];
-  v6 = [(RTLearnedRoute *)self learnedRouteEndLocation];
+  learnedRouteIdentifier = [(RTLearnedRoute *)self learnedRouteIdentifier];
+  learnedRouteStartLocation = [(RTLearnedRoute *)self learnedRouteStartLocation];
+  learnedRouteEndLocation = [(RTLearnedRoute *)self learnedRouteEndLocation];
   [(RTLearnedRoute *)self travelTimeEstimateForEntireRouteInSeconds];
   v8 = v7;
   [(RTLearnedRoute *)self travelledDistanceEstimateForEntireRouteInMeters];
   v10 = v9;
-  v11 = [(RTLearnedRoute *)self travelModeRoutes];
-  if (v11)
+  travelModeRoutes = [(RTLearnedRoute *)self travelModeRoutes];
+  if (travelModeRoutes)
   {
     v12 = [(NSArray *)self->_travelModeRoutes count];
   }
@@ -428,9 +428,9 @@ LABEL_76:
     v12 = 0;
   }
 
-  v13 = [(RTLearnedRoute *)self learnedRouteStartLocationWithReferenceFrame];
-  v14 = [(RTLearnedRoute *)self learnedRouteEndLocationWithReferenceFrame];
-  v15 = [v3 stringWithFormat:@"routeId, %@, startLocation, %@, endLocation, %@, totalRouteTimeSec, %0.6f, totalRouteDistanceMeters, %0.6f, numberOfTravelModeRoutes, %lu, startLocationWithRefFrame, %@, endLocationWithRefFrame, %@", v4, v5, v6, v8, v10, v12, v13, v14];
+  learnedRouteStartLocationWithReferenceFrame = [(RTLearnedRoute *)self learnedRouteStartLocationWithReferenceFrame];
+  learnedRouteEndLocationWithReferenceFrame = [(RTLearnedRoute *)self learnedRouteEndLocationWithReferenceFrame];
+  v15 = [v3 stringWithFormat:@"routeId, %@, startLocation, %@, endLocation, %@, totalRouteTimeSec, %0.6f, totalRouteDistanceMeters, %0.6f, numberOfTravelModeRoutes, %lu, startLocationWithRefFrame, %@, endLocationWithRefFrame, %@", learnedRouteIdentifier, learnedRouteStartLocation, learnedRouteEndLocation, v8, v10, v12, learnedRouteStartLocationWithReferenceFrame, learnedRouteEndLocationWithReferenceFrame];
 
   return v15;
 }

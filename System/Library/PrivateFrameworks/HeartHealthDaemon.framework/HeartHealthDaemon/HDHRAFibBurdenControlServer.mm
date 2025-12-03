@@ -1,68 +1,68 @@
 @interface HDHRAFibBurdenControlServer
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7;
-- (HDHRAFibBurdenControlServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 scheduler:(id)a7 notificationManager:(id)a8;
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error;
+- (HDHRAFibBurdenControlServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate scheduler:(id)scheduler notificationManager:(id)manager;
 - (id)_clientRemoteObjectProxy;
-- (void)_addTachogramsForStartDayIndex:(int64_t)a3 endDayIndex:(int64_t)a4 chanceOfAFib:(double)a5 chanceOfWrite:(double)a6 minutesBetweenSamples:(int64_t)a7 startingHour:(int64_t)a8 endingHour:(int64_t)a9 completion:(id)a10;
-- (void)remote_addTachogramClassificationForSampleUUID:(id)a3 hasAFib:(BOOL)a4 completion:(id)a5;
-- (void)remote_addTachogramsForStartDayIndex:(int64_t)a3 endDayIndex:(int64_t)a4 chanceOfAFib:(id)a5 chanceOfWrite:(id)a6 minutesBetweenSamples:(id)a7 startingHour:(id)a8 endingHour:(id)a9 completion:(id)a10;
-- (void)remote_deleteAllTachogramClassificationsWithCompletion:(id)a3;
-- (void)remote_deleteTachogramClassificationForSampleUUID:(id)a3 completion:(id)a4;
-- (void)remote_determineIfAnalysisCanRunWithFeatureStatus:(id)a3 completion:(id)a4;
-- (void)remote_determineMajorityTimeZoneForStartDayIndex:(int64_t)a3 endDayIndex:(int64_t)a4 completion:(id)a5;
-- (void)remote_fetchSevenDayAnalysisBreadcrumbsWithCompletion:(id)a3;
-- (void)remote_injectBurdenValues:(id)a3 completion:(id)a4;
-- (void)remote_performAnalysisForWeekContainingDayIndex:(int64_t)a3 completion:(id)a4;
-- (void)remote_queryAllTachogramClassificationsWithCompletion:(id)a3;
-- (void)remote_queryEligibleTachogramsForPreviousSixWeeksForTimeOfDayBucket:(int64_t)a3 completion:(id)a4;
-- (void)remote_queryEligibleTachogramsForPreviousSixWeeksForWeekday:(int64_t)a3 completion:(id)a4;
-- (void)remote_queryEligibleTachogramsForStartDayIndex:(int64_t)a3 endDayIndex:(int64_t)a4 completion:(id)a5;
-- (void)remote_queryTachogramClassificationForSampleUUID:(id)a3 completion:(id)a4;
+- (void)_addTachogramsForStartDayIndex:(int64_t)index endDayIndex:(int64_t)dayIndex chanceOfAFib:(double)fib chanceOfWrite:(double)write minutesBetweenSamples:(int64_t)samples startingHour:(int64_t)hour endingHour:(int64_t)endingHour completion:(id)self0;
+- (void)remote_addTachogramClassificationForSampleUUID:(id)d hasAFib:(BOOL)fib completion:(id)completion;
+- (void)remote_addTachogramsForStartDayIndex:(int64_t)index endDayIndex:(int64_t)dayIndex chanceOfAFib:(id)fib chanceOfWrite:(id)write minutesBetweenSamples:(id)samples startingHour:(id)hour endingHour:(id)endingHour completion:(id)self0;
+- (void)remote_deleteAllTachogramClassificationsWithCompletion:(id)completion;
+- (void)remote_deleteTachogramClassificationForSampleUUID:(id)d completion:(id)completion;
+- (void)remote_determineIfAnalysisCanRunWithFeatureStatus:(id)status completion:(id)completion;
+- (void)remote_determineMajorityTimeZoneForStartDayIndex:(int64_t)index endDayIndex:(int64_t)dayIndex completion:(id)completion;
+- (void)remote_fetchSevenDayAnalysisBreadcrumbsWithCompletion:(id)completion;
+- (void)remote_injectBurdenValues:(id)values completion:(id)completion;
+- (void)remote_performAnalysisForWeekContainingDayIndex:(int64_t)index completion:(id)completion;
+- (void)remote_queryAllTachogramClassificationsWithCompletion:(id)completion;
+- (void)remote_queryEligibleTachogramsForPreviousSixWeeksForTimeOfDayBucket:(int64_t)bucket completion:(id)completion;
+- (void)remote_queryEligibleTachogramsForPreviousSixWeeksForWeekday:(int64_t)weekday completion:(id)completion;
+- (void)remote_queryEligibleTachogramsForStartDayIndex:(int64_t)index endDayIndex:(int64_t)dayIndex completion:(id)completion;
+- (void)remote_queryTachogramClassificationForSampleUUID:(id)d completion:(id)completion;
 @end
 
 @implementation HDHRAFibBurdenControlServer
 
-- (HDHRAFibBurdenControlServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 scheduler:(id)a7 notificationManager:(id)a8
+- (HDHRAFibBurdenControlServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate scheduler:(id)scheduler notificationManager:(id)manager
 {
-  v15 = a7;
-  v16 = a8;
+  schedulerCopy = scheduler;
+  managerCopy = manager;
   v20.receiver = self;
   v20.super_class = HDHRAFibBurdenControlServer;
-  v17 = [(HDStandardTaskServer *)&v20 initWithUUID:a3 configuration:a4 client:a5 delegate:a6];
+  v17 = [(HDStandardTaskServer *)&v20 initWithUUID:d configuration:configuration client:client delegate:delegate];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_scheduler, a7);
-    objc_storeStrong(&v18->_notificationManager, a8);
+    objc_storeStrong(&v17->_scheduler, scheduler);
+    objc_storeStrong(&v18->_notificationManager, manager);
   }
 
   return v18;
 }
 
-- (void)remote_determineIfAnalysisCanRunWithFeatureStatus:(id)a3 completion:(id)a4
+- (void)remote_determineIfAnalysisCanRunWithFeatureStatus:(id)status completion:(id)completion
 {
   v6 = MEMORY[0x277CCABB0];
   scheduler = self->_scheduler;
-  v8 = a4;
-  v9 = [v6 numberWithBool:{-[HKHRAFibBurdenSevenDayAnalysisScheduling _shouldAllowFeatureStatus:](scheduler, "_shouldAllowFeatureStatus:", a3)}];
-  (*(a4 + 2))(v8, v9, 0);
+  completionCopy = completion;
+  v9 = [v6 numberWithBool:{-[HKHRAFibBurdenSevenDayAnalysisScheduling _shouldAllowFeatureStatus:](scheduler, "_shouldAllowFeatureStatus:", status)}];
+  (*(completion + 2))(completionCopy, v9, 0);
 }
 
-- (void)remote_addTachogramClassificationForSampleUUID:(id)a3 hasAFib:(BOOL)a4 completion:(id)a5
+- (void)remote_addTachogramClassificationForSampleUUID:(id)d hasAFib:(BOOL)fib completion:(id)completion
 {
-  v6 = a4;
+  fibCopy = fib;
   v39[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  dCopy = d;
   v9 = MEMORY[0x277D10848];
   v10 = MEMORY[0x277CCD920];
-  v11 = a5;
-  v12 = [v10 heartbeatSeriesType];
-  v13 = [(HDStandardTaskServer *)self profile];
+  completionCopy = completion;
+  heartbeatSeriesType = [v10 heartbeatSeriesType];
+  profile = [(HDStandardTaskServer *)self profile];
   v38 = *MEMORY[0x277D10400];
   v39[0] = MEMORY[0x277CBEC38];
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:&v38 count:1];
   v15 = HDDataEntityPredicateForDataUUID();
   v37 = 0;
-  v16 = [v9 mostRecentSampleWithType:v12 profile:v13 encodingOptions:v14 predicate:v15 anchor:0 error:&v37];
+  v16 = [v9 mostRecentSampleWithType:heartbeatSeriesType profile:profile encodingOptions:v14 predicate:v15 anchor:0 error:&v37];
   v17 = v37;
 
   if (v16)
@@ -79,15 +79,15 @@
 
     v19 = objc_alloc(MEMORY[0x277D12FF8]);
     v20 = objc_alloc(MEMORY[0x277CCA970]);
-    v21 = [v16 startDate];
-    v22 = [v16 endDate];
-    v23 = [v20 initWithStartDate:v21 endDate:v22];
+    startDate = [v16 startDate];
+    endDate = [v16 endDate];
+    v23 = [v20 initWithStartDate:startDate endDate:endDate];
     [v16 _timeZone];
     v24 = v33 = v17;
-    v25 = [v19 initWithSampleUUID:v8 classification:v6 sampleDateInterval:v23 sampleTimeZone:v24];
+    v25 = [v19 initWithSampleUUID:dCopy classification:fibCopy sampleDateInterval:v23 sampleTimeZone:v24];
 
-    v26 = [(HDStandardTaskServer *)self profile];
-    v27 = [v26 database];
+    profile2 = [(HDStandardTaskServer *)self profile];
+    database = [profile2 database];
     v35 = v25;
     v36 = 0;
     v34[0] = MEMORY[0x277D85DD0];
@@ -95,20 +95,20 @@
     v34[2] = __97__HDHRAFibBurdenControlServer_remote_addTachogramClassificationForSampleUUID_hasAFib_completion___block_invoke;
     v34[3] = &unk_278660DE8;
     v28 = v25;
-    v29 = [(HDHealthEntity *)HDHRSampleClassificationEntity performWriteTransactionWithHealthDatabase:v27 error:&v36 block:v34];
+    v29 = [(HDHealthEntity *)HDHRSampleClassificationEntity performWriteTransactionWithHealthDatabase:database error:&v36 block:v34];
     v30 = v36;
 
     v31 = v29;
     v17 = v33;
-    v11[2](v11, v31, v30);
+    completionCopy[2](completionCopy, v31, v30);
 
-    v11 = v30;
+    completionCopy = v30;
   }
 
   else
   {
-    v28 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"No sample found for given UUID %@", v8}];
-    v11[2](v11, 0, v28);
+    v28 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"No sample found for given UUID %@", dCopy}];
+    completionCopy[2](completionCopy, 0, v28);
   }
 
   v32 = *MEMORY[0x277D85DE8];
@@ -122,24 +122,24 @@ BOOL __97__HDHRAFibBurdenControlServer_remote_addTachogramClassificationForSampl
   return v4;
 }
 
-- (void)remote_queryAllTachogramClassificationsWithCompletion:(id)a3
+- (void)remote_queryAllTachogramClassificationsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__7;
   v17 = __Block_byref_object_dispose__7;
   v18 = 0;
-  v5 = [(HDStandardTaskServer *)self profile];
-  v6 = [v5 database];
+  profile = [(HDStandardTaskServer *)self profile];
+  database = [profile database];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __85__HDHRAFibBurdenControlServer_remote_queryAllTachogramClassificationsWithCompletion___block_invoke;
   v11[3] = &unk_278660E10;
   v11[4] = &v13;
   v12 = 0;
-  v7 = [(HDHealthEntity *)HDHRSampleClassificationEntity performReadTransactionWithHealthDatabase:v6 error:&v12 block:v11];
+  v7 = [(HDHealthEntity *)HDHRSampleClassificationEntity performReadTransactionWithHealthDatabase:database error:&v12 block:v11];
   v8 = v12;
 
   if (v7)
@@ -153,7 +153,7 @@ BOOL __97__HDHRAFibBurdenControlServer_remote_addTachogramClassificationForSampl
     v10 = 0;
   }
 
-  v4[2](v4, v10, v8);
+  completionCopy[2](completionCopy, v10, v8);
   if (v7)
   {
   }
@@ -171,27 +171,27 @@ BOOL __85__HDHRAFibBurdenControlServer_remote_queryAllTachogramClassificationsWi
   return *(*(*(a1 + 32) + 8) + 40) != 0;
 }
 
-- (void)remote_queryTachogramClassificationForSampleUUID:(id)a3 completion:(id)a4
+- (void)remote_queryTachogramClassificationForSampleUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__7;
   v22 = __Block_byref_object_dispose__7;
   v23 = 0;
-  v8 = [(HDStandardTaskServer *)self profile];
-  v9 = [v8 database];
+  profile = [(HDStandardTaskServer *)self profile];
+  database = [profile database];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __91__HDHRAFibBurdenControlServer_remote_queryTachogramClassificationForSampleUUID_completion___block_invoke;
   v14[3] = &unk_278660CB0;
   v16 = &v18;
   v17 = 0;
-  v10 = v6;
+  v10 = dCopy;
   v15 = v10;
-  v11 = [(HDHealthEntity *)HDHRSampleClassificationEntity performReadTransactionWithHealthDatabase:v9 error:&v17 block:v14];
+  v11 = [(HDHealthEntity *)HDHRSampleClassificationEntity performReadTransactionWithHealthDatabase:database error:&v17 block:v14];
   v12 = v17;
 
   if (v11)
@@ -204,7 +204,7 @@ BOOL __85__HDHRAFibBurdenControlServer_remote_queryAllTachogramClassificationsWi
     v13 = 0;
   }
 
-  v7[2](v7, v13, v12);
+  completionCopy[2](completionCopy, v13, v12);
 
   _Block_object_dispose(&v18, 8);
 }
@@ -219,63 +219,63 @@ BOOL __91__HDHRAFibBurdenControlServer_remote_queryTachogramClassificationForSam
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (void)remote_deleteAllTachogramClassificationsWithCompletion:(id)a3
+- (void)remote_deleteAllTachogramClassificationsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HDStandardTaskServer *)self profile];
-  v6 = [v5 database];
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  database = [profile database];
   v9 = 0;
-  v7 = [(HDHealthEntity *)HDHRSampleClassificationEntity performWriteTransactionWithHealthDatabase:v6 error:&v9 block:&__block_literal_global_16];
+  v7 = [(HDHealthEntity *)HDHRSampleClassificationEntity performWriteTransactionWithHealthDatabase:database error:&v9 block:&__block_literal_global_16];
   v8 = v9;
 
-  v4[2](v4, v7, v8);
+  completionCopy[2](completionCopy, v7, v8);
 }
 
-- (void)remote_deleteTachogramClassificationForSampleUUID:(id)a3 completion:(id)a4
+- (void)remote_deleteTachogramClassificationForSampleUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HDStandardTaskServer *)self profile];
-  v9 = [v8 database];
-  v14 = v6;
+  dCopy = d;
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  database = [profile database];
+  v14 = dCopy;
   v15 = 0;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __92__HDHRAFibBurdenControlServer_remote_deleteTachogramClassificationForSampleUUID_completion___block_invoke;
   v13[3] = &unk_278660DE8;
-  v10 = v6;
-  v11 = [(HDHealthEntity *)HDHRSampleClassificationEntity performWriteTransactionWithHealthDatabase:v9 error:&v15 block:v13];
+  v10 = dCopy;
+  v11 = [(HDHealthEntity *)HDHRSampleClassificationEntity performWriteTransactionWithHealthDatabase:database error:&v15 block:v13];
   v12 = v15;
 
-  v7[2](v7, v11, v12);
+  completionCopy[2](completionCopy, v11, v12);
 }
 
-- (void)remote_determineMajorityTimeZoneForStartDayIndex:(int64_t)a3 endDayIndex:(int64_t)a4 completion:(id)a5
+- (void)remote_determineMajorityTimeZoneForStartDayIndex:(int64_t)index endDayIndex:(int64_t)dayIndex completion:(id)completion
 {
   v42 = *MEMORY[0x277D85DE8];
-  v30 = a5;
+  completionCopy = completion;
   v8 = [HKHRAFibBurdenJulianDayMajorityTimeZoneDeterminer alloc];
-  v9 = [(HDStandardTaskServer *)self profile];
+  profile = [(HDStandardTaskServer *)self profile];
   v10 = objc_alloc_init(MEMORY[0x277CCD0A0]);
-  v11 = [(HKHRAFibBurdenJulianDayMajorityTimeZoneDeterminer *)v8 initWithProfile:v9 calendarCache:v10];
+  v11 = [(HKHRAFibBurdenJulianDayMajorityTimeZoneDeterminer *)v8 initWithProfile:profile calendarCache:v10];
 
   v40 = 0;
   v29 = v11;
-  v12 = [(HKHRAFibBurdenJulianDayMajorityTimeZoneDeterminer *)v11 determineJulianDayToMajorityTimeZoneForRange:a3 error:a4 - a3 + 1, &v40];
+  v12 = [(HKHRAFibBurdenJulianDayMajorityTimeZoneDeterminer *)v11 determineJulianDayToMajorityTimeZoneForRange:index error:dayIndex - index + 1, &v40];
   v28 = v40;
   v35 = v12;
-  v13 = [v12 hk_sortedKeys];
+  hk_sortedKeys = [v12 hk_sortedKeys];
   v34 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v14 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v14 setTimeStyle:0];
   v33 = v14;
   [v14 setDateStyle:1];
-  v32 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v13;
+  obj = hk_sortedKeys;
   v15 = [obj countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v15)
   {
@@ -292,12 +292,12 @@ BOOL __91__HDHRAFibBurdenControlServer_remote_queryTachogramClassificationForSam
 
         v19 = *(*(&v36 + 1) + 8 * i);
         v20 = [v35 objectForKeyedSubscript:v19];
-        v21 = [MEMORY[0x277CBEAA8] hk_noonWithDayIndex:objc_msgSend(v19 calendar:{"integerValue"), v32}];
+        v21 = [MEMORY[0x277CBEAA8] hk_noonWithDayIndex:objc_msgSend(v19 calendar:{"integerValue"), currentCalendar}];
         v22 = MEMORY[0x277CCACA8];
         v23 = [v33 stringFromDate:v21];
-        v24 = [v20 name];
+        name = [v20 name];
         v25 = [v20 abbreviationForDate:v21];
-        v26 = [v22 stringWithFormat:@"Day index: %@, Date: %@, Majority Time Zone: %@ (%@)", v19, v23, v24, v25];
+        v26 = [v22 stringWithFormat:@"Day index: %@, Date: %@, Majority Time Zone: %@ (%@)", v19, v23, name, v25];
 
         [v34 addObject:v26];
       }
@@ -308,22 +308,22 @@ BOOL __91__HDHRAFibBurdenControlServer_remote_queryTachogramClassificationForSam
     while (v16);
   }
 
-  v30[2](v30, v34, v28);
+  completionCopy[2](completionCopy, v34, v28);
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_queryEligibleTachogramsForStartDayIndex:(int64_t)a3 endDayIndex:(int64_t)a4 completion:(id)a5
+- (void)remote_queryEligibleTachogramsForStartDayIndex:(int64_t)index endDayIndex:(int64_t)dayIndex completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v9 = objc_alloc_init(MEMORY[0x277CCD0A0]);
   v10 = [HKHRAFibBurdenTachogramClassificationsRetriever alloc];
-  v11 = [(HDStandardTaskServer *)self profile];
-  v12 = [(HKHRAFibBurdenTachogramClassificationsRetriever *)v10 initWithProfile:v11 calendarCache:v9];
+  profile = [(HDStandardTaskServer *)self profile];
+  v12 = [(HKHRAFibBurdenTachogramClassificationsRetriever *)v10 initWithProfile:profile calendarCache:v9];
 
   v13 = objc_alloc_init(HKHRAFibBurdenTachogramClassifierFactory);
-  v14 = [(HKHRAFibBurdenTachogramClassifierFactory *)v13 createTachogramClassifier];
+  createTachogramClassifier = [(HKHRAFibBurdenTachogramClassifierFactory *)v13 createTachogramClassifier];
   v25 = 0;
-  v15 = [(HKHRAFibBurdenTachogramClassificationsRetriever *)v12 tachogramClassificationsDayIndexRange:a3 tachogramClassifier:a4 - a3 + 1 error:v14, &v25];
+  v15 = [(HKHRAFibBurdenTachogramClassificationsRetriever *)v12 tachogramClassificationsDayIndexRange:index tachogramClassifier:dayIndex - index + 1 error:createTachogramClassifier, &v25];
   v16 = v25;
 
   if (v15)
@@ -343,7 +343,7 @@ BOOL __91__HDHRAFibBurdenControlServer_remote_queryTachogramClassificationForSam
     v19 = 0;
   }
 
-  v8[2](v8, v19, v16);
+  completionCopy[2](completionCopy, v19, v16);
 }
 
 id __101__HDHRAFibBurdenControlServer_remote_queryEligibleTachogramsForStartDayIndex_endDayIndex_completion___block_invoke(uint64_t a1, void *a2)
@@ -374,18 +374,18 @@ id __101__HDHRAFibBurdenControlServer_remote_queryEligibleTachogramsForStartDayI
   return v14;
 }
 
-- (void)remote_queryEligibleTachogramsForPreviousSixWeeksForWeekday:(int64_t)a3 completion:(id)a4
+- (void)remote_queryEligibleTachogramsForPreviousSixWeeksForWeekday:(int64_t)weekday completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = objc_alloc_init(MEMORY[0x277CCD0A0]);
   v8 = [HKHRAFibBurdenTachogramClassificationsRetriever alloc];
-  v9 = [(HDStandardTaskServer *)self profile];
-  v10 = [(HKHRAFibBurdenTachogramClassificationsRetriever *)v8 initWithProfile:v9 calendarCache:v7];
+  profile = [(HDStandardTaskServer *)self profile];
+  v10 = [(HKHRAFibBurdenTachogramClassificationsRetriever *)v8 initWithProfile:profile calendarCache:v7];
 
   v11 = objc_alloc_init(HKHRAFibBurdenTachogramClassifierFactory);
-  v12 = [(HKHRAFibBurdenTachogramClassifierFactory *)v11 createTachogramClassifier];
+  createTachogramClassifier = [(HKHRAFibBurdenTachogramClassifierFactory *)v11 createTachogramClassifier];
   v23 = 0;
-  v13 = [(HKHRAFibBurdenTachogramClassificationsRetriever *)v10 tachogramClassificationsForLastSixWeeksOfWeekday:a3 tachogramClassifier:v12 error:&v23];
+  v13 = [(HKHRAFibBurdenTachogramClassificationsRetriever *)v10 tachogramClassificationsForLastSixWeeksOfWeekday:weekday tachogramClassifier:createTachogramClassifier error:&v23];
   v14 = v23;
 
   if (v13)
@@ -405,7 +405,7 @@ id __101__HDHRAFibBurdenControlServer_remote_queryEligibleTachogramsForStartDayI
     v17 = 0;
   }
 
-  v6[2](v6, v17, v14);
+  completionCopy[2](completionCopy, v17, v14);
 }
 
 id __102__HDHRAFibBurdenControlServer_remote_queryEligibleTachogramsForPreviousSixWeeksForWeekday_completion___block_invoke(uint64_t a1, void *a2)
@@ -436,24 +436,24 @@ id __102__HDHRAFibBurdenControlServer_remote_queryEligibleTachogramsForPreviousS
   return v14;
 }
 
-- (void)remote_queryEligibleTachogramsForPreviousSixWeeksForTimeOfDayBucket:(int64_t)a3 completion:(id)a4
+- (void)remote_queryEligibleTachogramsForPreviousSixWeeksForTimeOfDayBucket:(int64_t)bucket completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = objc_alloc_init(MEMORY[0x277CCD0A0]);
   v8 = [HKHRAFibBurdenJulianDayMajorityTimeZoneDeterminer alloc];
-  v9 = [(HDStandardTaskServer *)self profile];
-  v10 = [(HKHRAFibBurdenJulianDayMajorityTimeZoneDeterminer *)v8 initWithProfile:v9 calendarCache:v7];
+  profile = [(HDStandardTaskServer *)self profile];
+  v10 = [(HKHRAFibBurdenJulianDayMajorityTimeZoneDeterminer *)v8 initWithProfile:profile calendarCache:v7];
 
   v11 = [HKHRAFibBurdenTachogramClassificationsRetriever alloc];
-  v12 = [(HDStandardTaskServer *)self profile];
-  v13 = [(HKHRAFibBurdenTachogramClassificationsRetriever *)v11 initWithProfile:v12 calendarCache:v7];
+  profile2 = [(HDStandardTaskServer *)self profile];
+  v13 = [(HKHRAFibBurdenTachogramClassificationsRetriever *)v11 initWithProfile:profile2 calendarCache:v7];
 
-  v14 = [v7 currentCalendar];
-  v15 = [MEMORY[0x277CBEAA8] date];
-  v16 = [v14 startOfDayForDate:v15];
+  currentCalendar = [v7 currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v16 = [currentCalendar startOfDayForDate:date];
 
-  v17 = [v7 currentCalendar];
-  v18 = [v16 hk_dayIndexWithCalendar:v17];
+  currentCalendar2 = [v7 currentCalendar];
+  v18 = [v16 hk_dayIndexWithCalendar:currentCalendar2];
 
   v34 = 0;
   v19 = [(HKHRAFibBurdenJulianDayMajorityTimeZoneDeterminer *)v10 determineJulianDayToMajorityTimeZoneForRange:v18 - 42 error:42, &v34];
@@ -461,15 +461,15 @@ id __102__HDHRAFibBurdenControlServer_remote_queryEligibleTachogramsForPreviousS
   if (v20)
   {
     v21 = v20;
-    v6[2](v6, 0, v20);
+    completionCopy[2](completionCopy, 0, v20);
   }
 
   else
   {
     v22 = objc_alloc_init(HKHRAFibBurdenTachogramClassifierFactory);
-    v23 = [(HKHRAFibBurdenTachogramClassifierFactory *)v22 createTachogramClassifier];
+    createTachogramClassifier = [(HKHRAFibBurdenTachogramClassifierFactory *)v22 createTachogramClassifier];
     v33 = 0;
-    v24 = [(HKHRAFibBurdenTachogramClassificationsRetriever *)v13 tachogramClassificationsForLastSixWeeksOfHoursFrom:4 * a3 to:4 * a3 + 4 julianDayToMajorityTimeZone:v19 tachogramClassifier:v23 error:&v33];
+    v24 = [(HKHRAFibBurdenTachogramClassificationsRetriever *)v13 tachogramClassificationsForLastSixWeeksOfHoursFrom:4 * bucket to:4 * bucket + 4 julianDayToMajorityTimeZone:v19 tachogramClassifier:createTachogramClassifier error:&v33];
     v21 = v33;
 
     if (v24)
@@ -496,7 +496,7 @@ id __102__HDHRAFibBurdenControlServer_remote_queryEligibleTachogramsForPreviousS
       v28 = 0;
     }
 
-    (v6)[2](v6, v28, v21);
+    (completionCopy)[2](completionCopy, v28, v21);
   }
 }
 
@@ -532,36 +532,36 @@ id __110__HDHRAFibBurdenControlServer_remote_queryEligibleTachogramsForPreviousS
   return v16;
 }
 
-- (void)remote_addTachogramsForStartDayIndex:(int64_t)a3 endDayIndex:(int64_t)a4 chanceOfAFib:(id)a5 chanceOfWrite:(id)a6 minutesBetweenSamples:(id)a7 startingHour:(id)a8 endingHour:(id)a9 completion:(id)a10
+- (void)remote_addTachogramsForStartDayIndex:(int64_t)index endDayIndex:(int64_t)dayIndex chanceOfAFib:(id)fib chanceOfWrite:(id)write minutesBetweenSamples:(id)samples startingHour:(id)hour endingHour:(id)endingHour completion:(id)self0
 {
-  v31 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  if (a4 < a3)
+  fibCopy = fib;
+  writeCopy = write;
+  samplesCopy = samples;
+  hourCopy = hour;
+  endingHourCopy = endingHour;
+  completionCopy = completion;
+  if (dayIndex < index)
   {
     v21 = MEMORY[0x277CCA9B8];
     v22 = @"End day index must be greater than or equal to start day index";
 LABEL_25:
     v30 = [v21 hk_error:3 description:v22];
-    v20[2](v20, 0, v30);
+    completionCopy[2](completionCopy, 0, v30);
 
     goto LABEL_26;
   }
 
-  if (!v31)
+  if (!fibCopy)
   {
     v24 = 0.5;
-    if (v16)
+    if (writeCopy)
     {
       goto LABEL_7;
     }
 
 LABEL_14:
     v26 = 1.0;
-    if (v17)
+    if (samplesCopy)
     {
       goto LABEL_10;
     }
@@ -569,7 +569,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  [v31 doubleValue];
+  [fibCopy doubleValue];
   if (v23 < 0.0 || (v24 = v23, v23 > 1.0))
   {
     v21 = MEMORY[0x277CCA9B8];
@@ -577,13 +577,13 @@ LABEL_14:
     goto LABEL_25;
   }
 
-  if (!v16)
+  if (!writeCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_7:
-  [v16 doubleValue];
+  [writeCopy doubleValue];
   if (v25 < 0.0 || (v26 = v25, v25 > 1.0))
   {
     v21 = MEMORY[0x277CCA9B8];
@@ -591,30 +591,30 @@ LABEL_7:
     goto LABEL_25;
   }
 
-  if (v17)
+  if (samplesCopy)
   {
 LABEL_10:
-    v27 = [v17 integerValue];
-    if (v18)
+    integerValue = [samplesCopy integerValue];
+    if (hourCopy)
     {
       goto LABEL_11;
     }
 
 LABEL_16:
-    v28 = 0;
+    integerValue2 = 0;
     goto LABEL_17;
   }
 
 LABEL_15:
-  v27 = 15;
-  if (!v18)
+  integerValue = 15;
+  if (!hourCopy)
   {
     goto LABEL_16;
   }
 
 LABEL_11:
-  v28 = [v18 integerValue];
-  if (v28 >= 0x19)
+  integerValue2 = [hourCopy integerValue];
+  if (integerValue2 >= 0x19)
   {
     v21 = MEMORY[0x277CCA9B8];
     v22 = @"Starting hour must be between 0 and 24";
@@ -622,10 +622,10 @@ LABEL_11:
   }
 
 LABEL_17:
-  if (v19)
+  if (endingHourCopy)
   {
-    v29 = [v19 integerValue];
-    if (v29 >= 0x18)
+    integerValue3 = [endingHourCopy integerValue];
+    if (integerValue3 >= 0x18)
     {
       v21 = MEMORY[0x277CCA9B8];
       v22 = @"Ending hour must be between 0 and 24";
@@ -635,43 +635,43 @@ LABEL_17:
 
   else
   {
-    v29 = 23;
+    integerValue3 = 23;
   }
 
-  if (v29 < v28)
+  if (integerValue3 < integerValue2)
   {
     v21 = MEMORY[0x277CCA9B8];
     v22 = @"Ending hour must be on or after starting hour";
     goto LABEL_25;
   }
 
-  [HDHRAFibBurdenControlServer _addTachogramsForStartDayIndex:"_addTachogramsForStartDayIndex:endDayIndex:chanceOfAFib:chanceOfWrite:minutesBetweenSamples:startingHour:endingHour:completion:" endDayIndex:a3 chanceOfAFib:a4 chanceOfWrite:v27 minutesBetweenSamples:v28 startingHour:v24 endingHour:v26 completion:?];
+  [HDHRAFibBurdenControlServer _addTachogramsForStartDayIndex:"_addTachogramsForStartDayIndex:endDayIndex:chanceOfAFib:chanceOfWrite:minutesBetweenSamples:startingHour:endingHour:completion:" endDayIndex:index chanceOfAFib:dayIndex chanceOfWrite:integerValue minutesBetweenSamples:integerValue2 startingHour:v24 endingHour:v26 completion:?];
 LABEL_26:
 }
 
-- (void)_addTachogramsForStartDayIndex:(int64_t)a3 endDayIndex:(int64_t)a4 chanceOfAFib:(double)a5 chanceOfWrite:(double)a6 minutesBetweenSamples:(int64_t)a7 startingHour:(int64_t)a8 endingHour:(int64_t)a9 completion:(id)a10
+- (void)_addTachogramsForStartDayIndex:(int64_t)index endDayIndex:(int64_t)dayIndex chanceOfAFib:(double)fib chanceOfWrite:(double)write minutesBetweenSamples:(int64_t)samples startingHour:(int64_t)hour endingHour:(int64_t)endingHour completion:(id)self0
 {
-  v18 = a10;
-  v19 = [(HDStandardTaskServer *)self profile];
-  v20 = [v19 database];
-  v21 = [MEMORY[0x277D106B8] contextForWritingProtectedData];
-  v24[11] = a9;
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  database = [profile database];
+  contextForWritingProtectedData = [MEMORY[0x277D106B8] contextForWritingProtectedData];
+  v24[11] = endingHour;
   v25 = 0;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __158__HDHRAFibBurdenControlServer__addTachogramsForStartDayIndex_endDayIndex_chanceOfAFib_chanceOfWrite_minutesBetweenSamples_startingHour_endingHour_completion___block_invoke;
   v24[3] = &unk_278660EC8;
-  v24[6] = a4;
-  v24[7] = a8;
-  v24[8] = a7;
-  *&v24[9] = a6;
-  *&v24[10] = a5;
+  v24[6] = dayIndex;
+  v24[7] = hour;
+  v24[8] = samples;
+  *&v24[9] = write;
+  *&v24[10] = fib;
   v24[4] = self;
-  v24[5] = a3;
-  v22 = [v20 performTransactionWithContext:v21 error:&v25 block:v24 inaccessibilityHandler:0];
+  v24[5] = index;
+  v22 = [database performTransactionWithContext:contextForWritingProtectedData error:&v25 block:v24 inaccessibilityHandler:0];
   v23 = v25;
 
-  v18[2](v18, v22, v23);
+  completionCopy[2](completionCopy, v22, v23);
 }
 
 uint64_t __158__HDHRAFibBurdenControlServer__addTachogramsForStartDayIndex_endDayIndex_chanceOfAFib_chanceOfWrite_minutesBetweenSamples_startingHour_endingHour_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -792,30 +792,30 @@ LABEL_21:
   return v11;
 }
 
-- (void)remote_performAnalysisForWeekContainingDayIndex:(int64_t)a3 completion:(id)a4
+- (void)remote_performAnalysisForWeekContainingDayIndex:(int64_t)index completion:(id)completion
 {
   v6 = MEMORY[0x277CCD0A0];
-  v7 = a4;
+  completionCopy = completion;
   v8 = objc_alloc_init(v6);
   v9 = MEMORY[0x277CBEAA8];
-  v10 = [v8 currentCalendar];
-  v11 = [v9 hk_dateOnDayIndex:a3 + 7 atHour:0 calendar:v10];
+  currentCalendar = [v8 currentCalendar];
+  v11 = [v9 hk_dateOnDayIndex:index + 7 atHour:0 calendar:currentCalendar];
 
   v12 = [HKHRAFibBurdenSevenDayAnalysisManager alloc];
-  v13 = [(HDStandardTaskServer *)self profile];
+  profile = [(HDStandardTaskServer *)self profile];
   v14 = [HKHRStubbedAFibBurdenSevenDayAnalysisModeDeterminer alloc];
-  v15 = [(HDStandardTaskServer *)self profile];
-  v16 = [(HKHRAFibBurdenSevenDayAnalysisModeDeterminer *)v14 initWithProfile:v15 calendarCache:v8];
+  profile2 = [(HDStandardTaskServer *)self profile];
+  v16 = [(HKHRAFibBurdenSevenDayAnalysisModeDeterminer *)v14 initWithProfile:profile2 calendarCache:v8];
   v17 = [HKHRAFibBurdenAnalyzer alloc];
-  v18 = [(HDStandardTaskServer *)self profile];
-  v19 = [(HKHRAFibBurdenAnalyzer *)v17 initWithProfile:v18];
+  profile3 = [(HDStandardTaskServer *)self profile];
+  v19 = [(HKHRAFibBurdenAnalyzer *)v17 initWithProfile:profile3];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __90__HDHRAFibBurdenControlServer_remote_performAnalysisForWeekContainingDayIndex_completion___block_invoke;
   v28[3] = &unk_278660EF0;
   v29 = v11;
   v20 = v11;
-  v21 = [(HKHRAFibBurdenSevenDayAnalysisManager *)v12 initWithProfile:v13 modeDeterminer:v16 analyzer:v19 calendarCache:v8 dateGenerator:v28];
+  v21 = [(HKHRAFibBurdenSevenDayAnalysisManager *)v12 initWithProfile:profile modeDeterminer:v16 analyzer:v19 calendarCache:v8 dateGenerator:v28];
 
   v22 = objc_alloc(MEMORY[0x277CCD458]);
   v23 = [objc_alloc(MEMORY[0x277CCD448]) initWithOnboardingState:1 onboardingCompletion:0 featureSettings:0];
@@ -824,15 +824,15 @@ LABEL_21:
   v27 = 0;
   v25 = [(HKHRAFibBurdenSevenDayAnalysisManager *)v21 analyzePreviousCalendarWeekWithFeatureStatus:v24 shouldSaveSampleToDatabase:0 breadcrumbManager:0 error:&v27];
   v26 = v27;
-  v7[2](v7, v25, v26);
+  completionCopy[2](completionCopy, v25, v26);
 }
 
-- (void)remote_injectBurdenValues:(id)a3 completion:(id)a4
+- (void)remote_injectBurdenValues:(id)values completion:(id)completion
 {
-  v44 = self;
+  selfCopy = self;
   v59 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v45 = a4;
+  valuesCopy = values;
+  completionCopy = completion;
   v6 = [MEMORY[0x277CBEA80] calendarWithIdentifier:*MEMORY[0x277CBE5C0]];
   v7 = [MEMORY[0x277CBEAA8] now];
   v49 = v6;
@@ -844,8 +844,8 @@ LABEL_21:
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v46 = v5;
-  obj = [v5 reverseObjectEnumerator];
+  v46 = valuesCopy;
+  obj = [valuesCopy reverseObjectEnumerator];
   v51 = [obj countByEnumeratingWithState:&v54 objects:v58 count:16];
   if (v51)
   {
@@ -861,19 +861,19 @@ LABEL_21:
         }
 
         v13 = *(*(&v54 + 1) + 8 * i);
-        v14 = [v13 burdenPercentage];
+        burdenPercentage = [v13 burdenPercentage];
 
-        if (v14)
+        if (burdenPercentage)
         {
           v15 = [MEMORY[0x277CBEAA8] hk_dateOnDayIndex:v8 atHour:0 calendar:v49];
           v16 = [MEMORY[0x277CBEAA8] hk_dateOnDayIndex:v8 + v10 atHour:0 calendar:v49];
-          v17 = [v13 burdenPercentage];
-          v18 = [v17 integerValue];
+          burdenPercentage2 = [v13 burdenPercentage];
+          integerValue = [burdenPercentage2 integerValue];
 
           v19 = 100;
-          if (v18 < 100)
+          if (integerValue < 100)
           {
-            v19 = v18;
+            v19 = integerValue;
           }
 
           v20 = v11;
@@ -888,16 +888,16 @@ LABEL_21:
           }
 
           v22 = MEMORY[0x277CCD7E8];
-          v23 = [MEMORY[0x277CCDAB0] percentUnit];
-          v24 = [v22 quantityWithUnit:v23 doubleValue:v21 / 100.0];
+          percentUnit = [MEMORY[0x277CCDAB0] percentUnit];
+          v24 = [v22 quantityWithUnit:percentUnit doubleValue:v21 / 100.0];
 
-          v25 = [v13 timeZone];
+          timeZone = [v13 timeZone];
           v26 = HKHRAFibBurdenSevenDayAnalysisMetadataWithTimeZoneAndWasClamped();
 
           v27 = MEMORY[0x277CCD800];
           v28 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:v48];
-          v29 = [MEMORY[0x277CCD2E8] localDevice];
-          v30 = [v27 quantitySampleWithType:v28 quantity:v24 startDate:v15 endDate:v16 device:v29 metadata:v26];
+          localDevice = [MEMORY[0x277CCD2E8] localDevice];
+          v30 = [v27 quantitySampleWithType:v28 quantity:v24 startDate:v15 endDate:v16 device:localDevice metadata:v26];
 
           v11 = v20;
           [v20 addObject:v30];
@@ -914,102 +914,102 @@ LABEL_21:
     while (v51);
   }
 
-  v31 = [(HDStandardTaskServer *)v44 profile];
-  v32 = [v31 deviceManager];
+  profile = [(HDStandardTaskServer *)selfCopy profile];
+  deviceManager = [profile deviceManager];
   v53 = 0;
-  v33 = [v32 currentDeviceEntityWithError:&v53];
+  v33 = [deviceManager currentDeviceEntityWithError:&v53];
   v34 = v53;
 
   if (v33)
   {
-    v35 = [(HDStandardTaskServer *)v44 profile];
-    v36 = [v35 dataProvenanceManager];
-    v37 = [v36 defaultLocalDataProvenanceWithDeviceEntity:v33];
+    profile2 = [(HDStandardTaskServer *)selfCopy profile];
+    dataProvenanceManager = [profile2 dataProvenanceManager];
+    v37 = [dataProvenanceManager defaultLocalDataProvenanceWithDeviceEntity:v33];
 
-    v38 = [(HDStandardTaskServer *)v44 profile];
-    v39 = [v38 dataManager];
+    profile3 = [(HDStandardTaskServer *)selfCopy profile];
+    dataManager = [profile3 dataManager];
     v52 = v34;
-    v40 = [v39 insertDataObjects:v11 withProvenance:v37 creationDate:&v52 error:CFAbsoluteTimeGetCurrent()];
+    v40 = [dataManager insertDataObjects:v11 withProvenance:v37 creationDate:&v52 error:CFAbsoluteTimeGetCurrent()];
     v41 = v52;
 
-    v42 = v45;
-    (*(v45 + 2))(v45, v40, v41);
+    v42 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, v40, v41);
 
     v34 = v41;
   }
 
   else
   {
-    v42 = v45;
-    (*(v45 + 2))(v45, 0, v34);
+    v42 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0, v34);
   }
 
   v43 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_fetchSevenDayAnalysisBreadcrumbsWithCompletion:(id)a3
+- (void)remote_fetchSevenDayAnalysisBreadcrumbsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [HDHRAFibBurdenSevenDayAnalysisBreadcrumbManager alloc];
-  v6 = [(HDStandardTaskServer *)self profile];
-  v7 = [(HDHRAFibBurdenSevenDayAnalysisBreadcrumbManager *)v5 initWithProfile:v6];
+  profile = [(HDStandardTaskServer *)self profile];
+  v7 = [(HDHRAFibBurdenSevenDayAnalysisBreadcrumbManager *)v5 initWithProfile:profile];
 
   v10 = 0;
   v8 = [(HDHRAFibBurdenSevenDayAnalysisBreadcrumbManager *)v7 fetchBreadcrumbsWithError:&v10];
   v9 = v10;
-  v4[2](v4, v8, v9);
+  completionCopy[2](completionCopy, v8, v9);
 }
 
 - (id)_clientRemoteObjectProxy
 {
-  v2 = [(HDStandardTaskServer *)self client];
-  v3 = [v2 connection];
-  v4 = [v3 remoteObjectProxy];
+  client = [(HDStandardTaskServer *)self client];
+  connection = [client connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
 
-  return v4;
+  return remoteObjectProxy;
 }
 
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v13 profile];
-  v16 = [v15 profileExtensionWithIdentifier:*MEMORY[0x277D12F10]];
+  dCopy = d;
+  configurationCopy = configuration;
+  clientCopy = client;
+  delegateCopy = delegate;
+  profile = [clientCopy profile];
+  v16 = [profile profileExtensionWithIdentifier:*MEMORY[0x277D12F10]];
 
   if (v16)
   {
-    v17 = [v16 aFibBurdenComponents];
-    v18 = [v17 notificationManager];
-    v19 = v18;
-    if (v18)
+    aFibBurdenComponents = [v16 aFibBurdenComponents];
+    notificationManager = [aFibBurdenComponents notificationManager];
+    v19 = notificationManager;
+    if (notificationManager)
     {
-      v20 = v18;
+      v20 = notificationManager;
     }
 
     else
     {
       v24 = [HDHRAFibBurdenNotificationManager alloc];
-      v25 = [v13 profile];
-      v20 = [(HDHRAFibBurdenNotificationManager *)v24 initWithProfile:v25];
+      profile2 = [clientCopy profile];
+      v20 = [(HDHRAFibBurdenNotificationManager *)v24 initWithProfile:profile2];
     }
 
     v26 = [HDHRAFibBurdenControlServer alloc];
-    v21 = [v16 aFibBurdenComponents];
-    v27 = [(HDHRAFibBurdenNotificationManager *)v21 sevenDayAnalysisScheduler];
-    v23 = [(HDHRAFibBurdenControlServer *)v26 initWithUUID:v11 configuration:v12 client:v13 delegate:v14 scheduler:v27 notificationManager:v20];
+    aFibBurdenComponents2 = [v16 aFibBurdenComponents];
+    sevenDayAnalysisScheduler = [(HDHRAFibBurdenNotificationManager *)aFibBurdenComponents2 sevenDayAnalysisScheduler];
+    v23 = [(HDHRAFibBurdenControlServer *)v26 initWithUUID:dCopy configuration:configurationCopy client:clientCopy delegate:delegateCopy scheduler:sevenDayAnalysisScheduler notificationManager:v20];
 
     goto LABEL_12;
   }
 
-  v21 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"No profile extension found for %@", objc_opt_class()}];
-  if (!v21)
+  aFibBurdenComponents2 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"No profile extension found for %@", objc_opt_class()}];
+  if (!aFibBurdenComponents2)
   {
     goto LABEL_10;
   }
 
-  if (!a7)
+  if (!error)
   {
     _HKLogDroppedError();
 LABEL_10:
@@ -1017,11 +1017,11 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v22 = v21;
+  v22 = aFibBurdenComponents2;
   v23 = 0;
-  *a7 = v21;
+  *error = aFibBurdenComponents2;
 LABEL_11:
-  v20 = v21;
+  v20 = aFibBurdenComponents2;
 LABEL_12:
 
   return v23;

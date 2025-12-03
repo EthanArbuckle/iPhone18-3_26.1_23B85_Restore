@@ -7,8 +7,8 @@
 
 - (id)px_formattedCount
 {
-  v2 = [a1 count];
-  v3 = [a1 hasApproximateCount];
+  v2 = [self count];
+  hasApproximateCount = [self hasApproximateCount];
   if (v2 > 0x186A0)
   {
     v4 = 1;
@@ -16,7 +16,7 @@
 
   else
   {
-    v4 = v3;
+    v4 = hasApproximateCount;
   }
 
   v5 = v2;
@@ -80,15 +80,15 @@ LABEL_16:
 
 - (__CFString)px_symbolName
 {
-  v1 = [a1 categoriesType];
-  if ((v1 - 1) > 0x2A)
+  categoriesType = [self categoriesType];
+  if ((categoriesType - 1) > 0x2A)
   {
     return &stru_1F1741150;
   }
 
   else
   {
-    return off_1E773C050[v1 - 1];
+    return off_1E773C050[categoriesType - 1];
   }
 }
 

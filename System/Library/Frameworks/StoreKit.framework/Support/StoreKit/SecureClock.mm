@@ -1,18 +1,18 @@
 @interface SecureClock
 + (id)_dateFormatter;
-+ (id)_dateFromHeaderValue:(id)a3;
++ (id)_dateFromHeaderValue:(id)value;
 + (id)_global;
-+ (id)_hashForServerDate:(double)a3 systemUptime:(double)a4;
++ (id)_hashForServerDate:(double)date systemUptime:(double)uptime;
 + (id)_persistentStatePath;
 + (id)now;
-+ (void)synchronizeWithURLResult:(id)a3;
++ (void)synchronizeWithURLResult:(id)result;
 - (double)_timeIntervalSinceLastServerResponse;
 - (id)_currentTime;
 - (id)_currentTimeSynchronized;
 - (id)_init;
 - (void)_logState;
 - (void)_readState;
-- (void)_synchronizeWithURLResult:(id)a3;
+- (void)_synchronizeWithURLResult:(id)result;
 - (void)_writeState;
 @end
 
@@ -20,17 +20,17 @@
 
 + (id)now
 {
-  v2 = [a1 _global];
-  v3 = [v2 _currentTimeSynchronized];
+  _global = [self _global];
+  _currentTimeSynchronized = [_global _currentTimeSynchronized];
 
-  return v3;
+  return _currentTimeSynchronized;
 }
 
-+ (void)synchronizeWithURLResult:(id)a3
++ (void)synchronizeWithURLResult:(id)result
 {
-  v4 = a3;
-  v5 = [a1 _global];
-  [v5 _synchronizeWithURLResult:v4];
+  resultCopy = result;
+  _global = [self _global];
+  [_global _synchronizeWithURLResult:resultCopy];
 }
 
 + (id)_global
@@ -57,21 +57,21 @@
   return v3;
 }
 
-+ (id)_dateFromHeaderValue:(id)a3
++ (id)_dateFromHeaderValue:(id)value
 {
-  v4 = a3;
-  v5 = [a1 _dateFormatter];
-  v6 = [v5 dateFromString:v4];
+  valueCopy = value;
+  _dateFormatter = [self _dateFormatter];
+  v6 = [_dateFormatter dateFromString:valueCopy];
 
   return v6;
 }
 
-+ (id)_hashForServerDate:(double)a3 systemUptime:(double)a4
++ (id)_hashForServerDate:(double)date systemUptime:(double)uptime
 {
   v10[0] = 0;
   v10[1] = 0;
-  *data = a3;
-  *&data[1] = a4;
+  *data = date;
+  *&data[1] = uptime;
   v4 = +[AMSDevice sk_bootSession];
   v5 = v4;
   if (v4)
@@ -103,8 +103,8 @@
 + (id)_persistentStatePath
 {
   v2 = +[NSFileManager defaultManager];
-  v3 = [v2 sk_persistedDataURL];
-  v4 = [v3 URLByAppendingPathComponent:@"sc" isDirectory:0];
+  sk_persistedDataURL = [v2 sk_persistedDataURL];
+  v4 = [sk_persistedDataURL URLByAppendingPathComponent:@"sc" isDirectory:0];
 
   return v4;
 }
@@ -129,17 +129,17 @@
   return v2;
 }
 
-- (void)_synchronizeWithURLResult:(id)a3
+- (void)_synchronizeWithURLResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = +[NSProcessInfo processInfo];
   [v5 systemUptime];
   v7 = v6;
 
-  v8 = [v4 responseHeaders];
-  v9 = [v8 tcr_stringForKey:@"date"];
+  responseHeaders = [resultCopy responseHeaders];
+  v9 = [responseHeaders tcr_stringForKey:@"date"];
 
-  if (v9 && ([v4 response], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "URL"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "scheme"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", @"https"), v12, v11, v10, v13))
+  if (v9 && ([resultCopy response], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "URL"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "scheme"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", @"https"), v12, v11, v10, v13))
   {
     v14 = [SecureClock _dateFromHeaderValue:v9];
     v15 = v14;
@@ -166,7 +166,7 @@
       v18 = qword_1003D4100;
       if (os_log_type_enabled(qword_1003D4100, OS_LOG_TYPE_ERROR))
       {
-        sub_1002CB200(v18, v4, v9);
+        sub_1002CB200(v18, resultCopy, v9);
       }
     }
   }
@@ -181,7 +181,7 @@
     v17 = qword_1003D4100;
     if (os_log_type_enabled(qword_1003D4100, OS_LOG_TYPE_ERROR))
     {
-      sub_1002CB2BC(v17, v4);
+      sub_1002CB2BC(v17, resultCopy);
     }
   }
 
@@ -386,14 +386,14 @@ LABEL_26:
     if (os_log_type_enabled(qword_1003D4100, OS_LOG_TYPE_DEFAULT))
     {
       v4 = v3;
-      v5 = [(SecureClock *)self _currentTime];
+      _currentTime = [(SecureClock *)self _currentTime];
       v6 = +[NSDate date];
       [(SecureClock *)self _timeIntervalSinceLastServerResponse];
       v8 = v7;
       v9 = +[NSProcessInfo processInfo];
       [v9 systemUptime];
       v11 = 138544130;
-      v12 = v5;
+      v12 = _currentTime;
       v13 = 2114;
       v14 = v6;
       v15 = 2050;

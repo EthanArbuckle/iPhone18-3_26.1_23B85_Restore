@@ -1,16 +1,16 @@
 @interface BKUIButtonTrayAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation BKUIButtonTrayAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BKUIButtonTray" hasInstanceVariable:@"_nextStateButton" withType:"UIButton"];
-  [v3 validateClass:@"BKUIButtonTray" hasInstanceVariable:@"_bottomLinkButton" withType:"UIButton"];
-  [v3 validateClass:@"BKUIButtonTray" hasInstanceMethod:@"initWithFrame:willUseActionDelegate:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BKUIButtonTray" hasInstanceVariable:@"_nextStateButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"BKUIButtonTray" hasInstanceVariable:@"_bottomLinkButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"BKUIButtonTray" hasInstanceMethod:@"initWithFrame:willUseActionDelegate:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

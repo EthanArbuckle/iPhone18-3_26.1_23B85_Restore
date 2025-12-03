@@ -1,40 +1,40 @@
 @interface ASKClient
-+ (id)getStorefrontIdentifierPromise:(id)a3;
-- (ASKClient)initWithRestrictions:(id)a3;
-- (BOOL)canDevicePerformAppAction:(id)a3 withAppCapabilities:(id)a4;
++ (id)getStorefrontIdentifierPromise:(id)promise;
+- (ASKClient)initWithRestrictions:(id)restrictions;
+- (BOOL)canDevicePerformAppAction:(id)action withAppCapabilities:(id)capabilities;
 - (BOOL)canUpdateNotificationAuthorizationStatus;
-- (BOOL)isActivePairedWatchSystemVersionAtLeastMajorVersion:(id)a3 minorVersion:(id)a4 patchVersion:(id)a5;
+- (BOOL)isActivePairedWatchSystemVersionAtLeastMajorVersion:(id)version minorVersion:(id)minorVersion patchVersion:(id)patchVersion;
 - (BOOL)isAutomaticDownloadingEnabled;
 - (CGSize)screenSize;
 - (NSString)storefrontIdentifier;
-- (id)isPairedSystemVersionAtLeast:(id)a3;
+- (id)isPairedSystemVersionAtLeast:(id)least;
 - (int64_t)maxAppContentRating;
-- (void)accountStoreDidChange:(id)a3;
+- (void)accountStoreDidChange:(id)change;
 - (void)dealloc;
-- (void)remoteDownloadIdentifiersDidChange:(id)a3;
+- (void)remoteDownloadIdentifiersDidChange:(id)change;
 - (void)updateNotificationAuthorizationStatus;
 @end
 
 @implementation ASKClient
 
-- (ASKClient)initWithRestrictions:(id)a3
+- (ASKClient)initWithRestrictions:(id)restrictions
 {
-  v4 = a3;
+  restrictionsCopy = restrictions;
   v11.receiver = self;
   v11.super_class = ASKClient;
   v5 = [(ASKClient *)&v11 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
-    v7 = [ASKClient getStorefrontIdentifierPromise:v6];
+    ams_sharedAccountStore = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
+    v7 = [ASKClient getStorefrontIdentifierPromise:ams_sharedAccountStore];
     [(ASKClient *)v5 setStorefrontIdentifierPromise:v7];
 
-    [(ASKClient *)v5 setRestrictions:v4];
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v5 selector:sel_accountStoreDidChange_ name:*MEMORY[0x277CB8B78] object:v6];
+    [(ASKClient *)v5 setRestrictions:restrictionsCopy];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_accountStoreDidChange_ name:*MEMORY[0x277CB8B78] object:ams_sharedAccountStore];
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v5 selector:sel_applicationDidForeground_ name:*MEMORY[0x277D76648] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v5 selector:sel_applicationDidForeground_ name:*MEMORY[0x277D76648] object:0];
 
     [(ASKClient *)v5 updateNotificationAuthorizationStatus];
   }
@@ -44,21 +44,21 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ASKClient;
   [(ASKClient *)&v4 dealloc];
 }
 
-- (void)accountStoreDidChange:(id)a3
+- (void)accountStoreDidChange:(id)change
 {
-  v4 = [a3 object];
+  object = [change object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
+    v6 = object;
   }
 
   else
@@ -78,19 +78,19 @@
   }
 }
 
-- (void)remoteDownloadIdentifiersDidChange:(id)a3
+- (void)remoteDownloadIdentifiersDidChange:(id)change
 {
-  v5 = [a3 userInfo];
-  v4 = [v5 objectForKeyedSubscript:@"ASKClient.remoteDownloadIdentifiers"];
+  userInfo = [change userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"ASKClient.remoteDownloadIdentifiers"];
   [(ASKClient *)self set_remoteDownloadIdentifiers:v4];
 }
 
 - (int64_t)maxAppContentRating
 {
-  v2 = [(ASKClient *)self restrictions];
-  v3 = [v2 maximumAppContentRating];
+  restrictions = [(ASKClient *)self restrictions];
+  maximumAppContentRating = [restrictions maximumAppContentRating];
 
-  return v3;
+  return maximumAppContentRating;
 }
 
 - (CGSize)screenSize
@@ -103,23 +103,23 @@
 
 - (NSString)storefrontIdentifier
 {
-  v2 = [(ASKClient *)self storefrontIdentifierPromise];
-  v3 = [v2 resultWithError:0];
+  storefrontIdentifierPromise = [(ASKClient *)self storefrontIdentifierPromise];
+  v3 = [storefrontIdentifierPromise resultWithError:0];
 
   return v3;
 }
 
-+ (id)getStorefrontIdentifierPromise:(id)a3
++ (id)getStorefrontIdentifierPromise:(id)promise
 {
-  v3 = a3;
-  v4 = [v3 ams_mediaType];
-  v5 = [v3 ams_activeiTunesAccountForMediaType:v4];
+  promiseCopy = promise;
+  ams_mediaType = [promiseCopy ams_mediaType];
+  v5 = [promiseCopy ams_activeiTunesAccountForMediaType:ams_mediaType];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __44__ASKClient_getStorefrontIdentifierPromise___block_invoke;
   v9[3] = &unk_27968B698;
-  v10 = v3;
-  v6 = v3;
+  v10 = promiseCopy;
+  v6 = promiseCopy;
   v7 = [v5 continueWithBlock:v9];
 
   return v7;
@@ -200,11 +200,11 @@ id __44__ASKClient_getStorefrontIdentifierPromise___block_invoke_2(uint64_t a1, 
   return v6;
 }
 
-- (BOOL)isActivePairedWatchSystemVersionAtLeastMajorVersion:(id)a3 minorVersion:(id)a4 patchVersion:(id)a5
+- (BOOL)isActivePairedWatchSystemVersionAtLeastMajorVersion:(id)version minorVersion:(id)minorVersion patchVersion:(id)patchVersion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  versionCopy = version;
+  minorVersionCopy = minorVersion;
+  patchVersionCopy = patchVersion;
   v10 = +[ASKMobileGestalt activePairedSystemVersion];
   if (v10)
   {
@@ -213,47 +213,47 @@ id __44__ASKClient_getStorefrontIdentifierPromise___block_invoke_2(uint64_t a1, 
     if ([v11 count])
     {
       v12 = [v11 objectAtIndexedSubscript:0];
-      v28 = [v12 integerValue];
+      integerValue = [v12 integerValue];
     }
 
     else
     {
-      v28 = 0;
+      integerValue = 0;
     }
 
     if ([v11 count] < 2)
     {
-      v15 = 0;
+      integerValue2 = 0;
     }
 
     else
     {
       v14 = [v11 objectAtIndexedSubscript:1];
-      v15 = [v14 integerValue];
+      integerValue2 = [v14 integerValue];
     }
 
     if ([v11 count] < 3)
     {
-      v17 = 0;
+      integerValue3 = 0;
     }
 
     else
     {
       v16 = [v11 objectAtIndexedSubscript:2];
-      v17 = [v16 integerValue];
+      integerValue3 = [v16 integerValue];
     }
 
-    v18 = [v7 toInt32];
-    v19 = [v8 toInt32];
-    v20 = [v9 toInt32];
-    v21 = v9;
-    v22 = v7;
-    v23 = v20;
-    v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld.%ld.%ld", v28, v15, v17];
+    toInt32 = [versionCopy toInt32];
+    toInt322 = [minorVersionCopy toInt32];
+    toInt323 = [patchVersionCopy toInt32];
+    v21 = patchVersionCopy;
+    v22 = versionCopy;
+    v23 = toInt323;
+    v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld.%ld.%ld", integerValue, integerValue2, integerValue3];
     v27 = v23;
-    v7 = v22;
-    v9 = v21;
-    v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld.%ld.%ld", v18, v19, v27];
+    versionCopy = v22;
+    patchVersionCopy = v21;
+    v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld.%ld.%ld", toInt32, toInt322, v27];
     v13 = [v24 compare:v25 options:64] != -1;
 
     v10 = v29;
@@ -267,24 +267,24 @@ id __44__ASKClient_getStorefrontIdentifierPromise___block_invoke_2(uint64_t a1, 
   return v13;
 }
 
-- (id)isPairedSystemVersionAtLeast:(id)a3
+- (id)isPairedSystemVersionAtLeast:(id)least
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CD4640] currentContext];
-  if (!v4)
+  leastCopy = least;
+  currentContext = [MEMORY[0x277CD4640] currentContext];
+  if (!currentContext)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"%s called with no active JSContext", "-[ASKClient isPairedSystemVersionAtLeast:]"}];
   }
 
-  if ([v3 isString])
+  if ([leastCopy isString])
   {
     v5 = +[ASKMobileGestalt activePairedSystemVersion];
     v6 = __42__ASKClient_isPairedSystemVersionAtLeast___block_invoke(v5, v5);
 
     if (v6)
     {
-      v7 = [v3 toString];
-      v8 = __42__ASKClient_isPairedSystemVersionAtLeast___block_invoke(v7, v7);
+      toString = [leastCopy toString];
+      v8 = __42__ASKClient_isPairedSystemVersionAtLeast___block_invoke(toString, toString);
       v9 = [v6 compare:v8 options:64] != -1;
     }
 
@@ -293,15 +293,15 @@ id __44__ASKClient_getStorefrontIdentifierPromise___block_invoke_2(uint64_t a1, 
       v9 = 0;
     }
 
-    v11 = [MEMORY[0x277CD4658] valueWithBool:v9 inContext:v4];
+    v11 = [MEMORY[0x277CD4658] valueWithBool:v9 inContext:currentContext];
   }
 
   else
     v6 = {;
-    v10 = [MEMORY[0x277CD4658] valueWithNewErrorFromMessage:v6 inContext:v4];
-    [v4 setException:v10];
+    v10 = [MEMORY[0x277CD4658] valueWithNewErrorFromMessage:v6 inContext:currentContext];
+    [currentContext setException:v10];
 
-    v11 = [MEMORY[0x277CD4658] valueWithUndefinedInContext:v4];
+    v11 = [MEMORY[0x277CD4658] valueWithUndefinedInContext:currentContext];
   }
 
   v12 = v11;
@@ -353,36 +353,36 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)canDevicePerformAppAction:(id)a3 withAppCapabilities:(id)a4
+- (BOOL)canDevicePerformAppAction:(id)action withAppCapabilities:(id)capabilities
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v6 count] || !objc_msgSend(v5, "length"))
+  actionCopy = action;
+  capabilitiesCopy = capabilities;
+  if (![capabilitiesCopy count] || !objc_msgSend(actionCopy, "length"))
   {
     goto LABEL_14;
   }
 
-  if (([@"install" isEqualToString:v5] & 1) == 0)
+  if (([@"install" isEqualToString:actionCopy] & 1) == 0)
   {
-    if ([@"update" isEqualToString:v5])
+    if ([@"update" isEqualToString:actionCopy])
     {
       v7 = 1;
       goto LABEL_13;
     }
 
-    if ([@"restore" isEqualToString:v5])
+    if ([@"restore" isEqualToString:actionCopy])
     {
       v7 = 2;
       goto LABEL_13;
     }
 
-    if ([@"launch" isEqualToString:v5])
+    if ([@"launch" isEqualToString:actionCopy])
     {
       v7 = 3;
       goto LABEL_13;
     }
 
-    if ([@"advertise" isEqualToString:v5])
+    if ([@"advertise" isEqualToString:actionCopy])
     {
       v7 = 4;
       goto LABEL_13;
@@ -395,7 +395,7 @@ LABEL_14:
 
   v7 = 0;
 LABEL_13:
-  v8 = [MEMORY[0x277CEC330] isCapableOfAction:v7 capabilities:v6];
+  v8 = [MEMORY[0x277CEC330] isCapableOfAction:v7 capabilities:capabilitiesCopy];
 LABEL_15:
 
   return v8;
@@ -403,10 +403,10 @@ LABEL_15:
 
 - (BOOL)isAutomaticDownloadingEnabled
 {
-  v2 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
-  v3 = [v2 ams_activeiTunesAccount];
+  ams_sharedAccountStore = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
+  ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
 
-  v4 = [v3 accountPropertyForKey:@"automaticDownloadKinds"];
+  v4 = [ams_activeiTunesAccount accountPropertyForKey:@"automaticDownloadKinds"];
   v5 = [v4 containsObject:@"software"];
 
   return v5;
@@ -450,13 +450,13 @@ void __53__ASKClient_canUpdateNotificationAuthorizationStatus__block_invoke()
 {
   if ([(ASKClient *)self canUpdateNotificationAuthorizationStatus])
   {
-    v3 = [MEMORY[0x277CE2028] currentNotificationCenter];
+    currentNotificationCenter = [MEMORY[0x277CE2028] currentNotificationCenter];
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __50__ASKClient_updateNotificationAuthorizationStatus__block_invoke;
     v4[3] = &unk_27968B6C0;
     v4[4] = self;
-    [v3 getNotificationSettingsWithCompletionHandler:v4];
+    [currentNotificationCenter getNotificationSettingsWithCompletionHandler:v4];
   }
 }
 

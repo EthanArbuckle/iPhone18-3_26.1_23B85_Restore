@@ -1,124 +1,124 @@
 @interface ARRemoteService
-- (ARRemoteService)initWithDaemon:(id)a3 startConnection:(BOOL)a4 dispatchChannelQueue:(id)a5 fixedPriorityQueueForXPC:(BOOL)a6 deviceEndpoint:(id)a7;
-- (ARRemoteService)initWithDeviceEndpoint:(id)a3;
-- (ARRemoteService)initWithDispatchChannelQueue:(id)a3 fixedPriorityQueueForXPC:(BOOL)a4;
-- (ARRemoteService)initWithEndpoint:(id)a3;
-- (ARRemoteService)initWithEndpoint:(id)a3 deviceEndpoint:(id)a4;
-- (ARRemoteService)initWithEndpoint:(id)a3 startConnection:(BOOL)a4 dispatchChannelQueue:(id)a5;
-- (ARRemoteService)initWithEndpoint:(id)a3 startConnection:(BOOL)a4 dispatchChannelQueue:(id)a5 fixedPriorityQueueForXPC:(BOOL)a6;
-- (ARRemoteService)initWithMachServiceName:(id)a3 exportedInterface:(id)a4 remoteObjectInterface:(id)a5 endpoint:(id)a6 startConnection:(BOOL)a7 dispatchChannelQueue:(id)a8 fixedPriorityQueueForXPC:(BOOL)a9 deviceEndpoint:(id)a10;
+- (ARRemoteService)initWithDaemon:(id)daemon startConnection:(BOOL)connection dispatchChannelQueue:(id)queue fixedPriorityQueueForXPC:(BOOL)c deviceEndpoint:(id)endpoint;
+- (ARRemoteService)initWithDeviceEndpoint:(id)endpoint;
+- (ARRemoteService)initWithDispatchChannelQueue:(id)queue fixedPriorityQueueForXPC:(BOOL)c;
+- (ARRemoteService)initWithEndpoint:(id)endpoint;
+- (ARRemoteService)initWithEndpoint:(id)endpoint deviceEndpoint:(id)deviceEndpoint;
+- (ARRemoteService)initWithEndpoint:(id)endpoint startConnection:(BOOL)connection dispatchChannelQueue:(id)queue;
+- (ARRemoteService)initWithEndpoint:(id)endpoint startConnection:(BOOL)connection dispatchChannelQueue:(id)queue fixedPriorityQueueForXPC:(BOOL)c;
+- (ARRemoteService)initWithMachServiceName:(id)name exportedInterface:(id)interface remoteObjectInterface:(id)objectInterface endpoint:(id)endpoint startConnection:(BOOL)connection dispatchChannelQueue:(id)queue fixedPriorityQueueForXPC:(BOOL)c deviceEndpoint:(id)self0;
 - (ARRemoteServiceAnchorDelegate)anchorDelegate;
-- (BOOL)_waitUntilStarted:(unint64_t)a3;
-- (BOOL)waitUntilStarted:(unint64_t)a3;
+- (BOOL)_waitUntilStarted:(unint64_t)started;
+- (BOOL)waitUntilStarted:(unint64_t)started;
 - (__n128)originFromWorld;
 - (__n128)worldFromOrigin;
 - (id)clientProcessName;
 - (int)clientProcessIdentifier;
-- (int64_t)_waitForDispatchGroup:(unint64_t)a3;
+- (int64_t)_waitForDispatchGroup:(unint64_t)group;
 - (void)_serverConnectionInvalidated;
-- (void)_startServiceSynchronous:(BOOL)a3;
-- (void)asyncServiceWithCallback:(id)a3;
+- (void)_startServiceSynchronous:(BOOL)synchronous;
+- (void)asyncServiceWithCallback:(id)callback;
 - (void)connectionDispatchGroupLeave;
-- (void)createDispatchChannelWithRequest:(id)a3 completion:(id)a4;
-- (void)createRTChannelWithRequest:(id)a3 completion:(id)a4;
+- (void)createDispatchChannelWithRequest:(id)request completion:(id)completion;
+- (void)createRTChannelWithRequest:(id)request completion:(id)completion;
 - (void)dealloc;
-- (void)handleDispatchChannelMessage:(void *)a3 size:(unint64_t)a4 type:(unsigned int)a5;
+- (void)handleDispatchChannelMessage:(void *)message size:(unint64_t)size type:(unsigned int)type;
 - (void)invalidate;
 - (void)reconnect;
 - (void)serverConnectionInterrupted;
-- (void)serviceConfiguredWithError:(id)a3;
-- (void)serviceFailedWithError:(id)a3;
-- (void)setService:(id)a3 syncService:(id)a4;
-- (void)syncServiceWithTimeout:(unint64_t)a3 callback:(id)a4;
+- (void)serviceConfiguredWithError:(id)error;
+- (void)serviceFailedWithError:(id)error;
+- (void)setService:(id)service syncService:(id)syncService;
+- (void)syncServiceWithTimeout:(unint64_t)timeout callback:(id)callback;
 @end
 
 @implementation ARRemoteService
 
-- (ARRemoteService)initWithDispatchChannelQueue:(id)a3 fixedPriorityQueueForXPC:(BOOL)a4
+- (ARRemoteService)initWithDispatchChannelQueue:(id)queue fixedPriorityQueueForXPC:(BOOL)c
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() serviceName];
-  v8 = [objc_opt_class() remoteServiceInterface];
-  v9 = [objc_opt_class() daemonServiceInterface];
-  v10 = [(ARRemoteService *)self initWithMachServiceName:v7 exportedInterface:v8 remoteObjectInterface:v9 dispatchChannelQueue:v6 fixedPriorityQueueForXPC:v4];
+  cCopy = c;
+  queueCopy = queue;
+  serviceName = [objc_opt_class() serviceName];
+  remoteServiceInterface = [objc_opt_class() remoteServiceInterface];
+  daemonServiceInterface = [objc_opt_class() daemonServiceInterface];
+  v10 = [(ARRemoteService *)self initWithMachServiceName:serviceName exportedInterface:remoteServiceInterface remoteObjectInterface:daemonServiceInterface dispatchChannelQueue:queueCopy fixedPriorityQueueForXPC:cCopy];
 
   return v10;
 }
 
-- (ARRemoteService)initWithEndpoint:(id)a3
+- (ARRemoteService)initWithEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [objc_opt_class() serviceName];
-  v6 = [objc_opt_class() remoteServiceInterface];
-  v7 = [objc_opt_class() daemonServiceInterface];
-  v8 = [(ARRemoteService *)self initWithMachServiceName:v5 exportedInterface:v6 remoteObjectInterface:v7 endpoint:v4 startConnection:0 dispatchChannelQueue:0];
+  endpointCopy = endpoint;
+  serviceName = [objc_opt_class() serviceName];
+  remoteServiceInterface = [objc_opt_class() remoteServiceInterface];
+  daemonServiceInterface = [objc_opt_class() daemonServiceInterface];
+  v8 = [(ARRemoteService *)self initWithMachServiceName:serviceName exportedInterface:remoteServiceInterface remoteObjectInterface:daemonServiceInterface endpoint:endpointCopy startConnection:0 dispatchChannelQueue:0];
 
   return v8;
 }
 
-- (ARRemoteService)initWithEndpoint:(id)a3 deviceEndpoint:(id)a4
+- (ARRemoteService)initWithEndpoint:(id)endpoint deviceEndpoint:(id)deviceEndpoint
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() serviceName];
-  v9 = [objc_opt_class() remoteServiceInterface];
-  v10 = [objc_opt_class() daemonServiceInterface];
+  deviceEndpointCopy = deviceEndpoint;
+  endpointCopy = endpoint;
+  serviceName = [objc_opt_class() serviceName];
+  remoteServiceInterface = [objc_opt_class() remoteServiceInterface];
+  daemonServiceInterface = [objc_opt_class() daemonServiceInterface];
   LOBYTE(v13) = 0;
-  v11 = [(ARRemoteService *)self initWithMachServiceName:v8 exportedInterface:v9 remoteObjectInterface:v10 endpoint:v7 startConnection:0 dispatchChannelQueue:0 fixedPriorityQueueForXPC:v13 deviceEndpoint:v6];
+  v11 = [(ARRemoteService *)self initWithMachServiceName:serviceName exportedInterface:remoteServiceInterface remoteObjectInterface:daemonServiceInterface endpoint:endpointCopy startConnection:0 dispatchChannelQueue:0 fixedPriorityQueueForXPC:v13 deviceEndpoint:deviceEndpointCopy];
 
   return v11;
 }
 
-- (ARRemoteService)initWithEndpoint:(id)a3 startConnection:(BOOL)a4 dispatchChannelQueue:(id)a5
+- (ARRemoteService)initWithEndpoint:(id)endpoint startConnection:(BOOL)connection dispatchChannelQueue:(id)queue
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [objc_opt_class() serviceName];
-  v11 = [objc_opt_class() remoteServiceInterface];
-  v12 = [objc_opt_class() daemonServiceInterface];
-  v13 = [(ARRemoteService *)self initWithMachServiceName:v10 exportedInterface:v11 remoteObjectInterface:v12 endpoint:v9 startConnection:v5 dispatchChannelQueue:v8];
+  connectionCopy = connection;
+  queueCopy = queue;
+  endpointCopy = endpoint;
+  serviceName = [objc_opt_class() serviceName];
+  remoteServiceInterface = [objc_opt_class() remoteServiceInterface];
+  daemonServiceInterface = [objc_opt_class() daemonServiceInterface];
+  v13 = [(ARRemoteService *)self initWithMachServiceName:serviceName exportedInterface:remoteServiceInterface remoteObjectInterface:daemonServiceInterface endpoint:endpointCopy startConnection:connectionCopy dispatchChannelQueue:queueCopy];
 
   return v13;
 }
 
-- (ARRemoteService)initWithEndpoint:(id)a3 startConnection:(BOOL)a4 dispatchChannelQueue:(id)a5 fixedPriorityQueueForXPC:(BOOL)a6
+- (ARRemoteService)initWithEndpoint:(id)endpoint startConnection:(BOOL)connection dispatchChannelQueue:(id)queue fixedPriorityQueueForXPC:(BOOL)c
 {
-  v7 = a4;
-  v10 = a5;
-  v11 = a3;
-  v12 = [objc_opt_class() serviceName];
-  v13 = [objc_opt_class() remoteServiceInterface];
-  v14 = [objc_opt_class() daemonServiceInterface];
-  LOBYTE(v17) = a6;
-  v15 = [(ARRemoteService *)self initWithMachServiceName:v12 exportedInterface:v13 remoteObjectInterface:v14 endpoint:v11 startConnection:v7 dispatchChannelQueue:v10 fixedPriorityQueueForXPC:v17 deviceEndpoint:0];
+  connectionCopy = connection;
+  queueCopy = queue;
+  endpointCopy = endpoint;
+  serviceName = [objc_opt_class() serviceName];
+  remoteServiceInterface = [objc_opt_class() remoteServiceInterface];
+  daemonServiceInterface = [objc_opt_class() daemonServiceInterface];
+  LOBYTE(v17) = c;
+  v15 = [(ARRemoteService *)self initWithMachServiceName:serviceName exportedInterface:remoteServiceInterface remoteObjectInterface:daemonServiceInterface endpoint:endpointCopy startConnection:connectionCopy dispatchChannelQueue:queueCopy fixedPriorityQueueForXPC:v17 deviceEndpoint:0];
 
   return v15;
 }
 
-- (ARRemoteService)initWithDeviceEndpoint:(id)a3
+- (ARRemoteService)initWithDeviceEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [objc_opt_class() serviceName];
-  v6 = [objc_opt_class() remoteServiceInterface];
-  v7 = [objc_opt_class() daemonServiceInterface];
+  endpointCopy = endpoint;
+  serviceName = [objc_opt_class() serviceName];
+  remoteServiceInterface = [objc_opt_class() remoteServiceInterface];
+  daemonServiceInterface = [objc_opt_class() daemonServiceInterface];
   LOBYTE(v10) = 0;
-  v8 = [(ARRemoteService *)self initWithMachServiceName:v5 exportedInterface:v6 remoteObjectInterface:v7 endpoint:0 startConnection:1 dispatchChannelQueue:0 fixedPriorityQueueForXPC:v10 deviceEndpoint:v4];
+  v8 = [(ARRemoteService *)self initWithMachServiceName:serviceName exportedInterface:remoteServiceInterface remoteObjectInterface:daemonServiceInterface endpoint:0 startConnection:1 dispatchChannelQueue:0 fixedPriorityQueueForXPC:v10 deviceEndpoint:endpointCopy];
 
   return v8;
 }
 
-- (ARRemoteService)initWithMachServiceName:(id)a3 exportedInterface:(id)a4 remoteObjectInterface:(id)a5 endpoint:(id)a6 startConnection:(BOOL)a7 dispatchChannelQueue:(id)a8 fixedPriorityQueueForXPC:(BOOL)a9 deviceEndpoint:(id)a10
+- (ARRemoteService)initWithMachServiceName:(id)name exportedInterface:(id)interface remoteObjectInterface:(id)objectInterface endpoint:(id)endpoint startConnection:(BOOL)connection dispatchChannelQueue:(id)queue fixedPriorityQueueForXPC:(BOOL)c deviceEndpoint:(id)self0
 {
-  v58 = a7;
+  connectionCopy = connection;
   v74 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v61 = a4;
-  v16 = a5;
-  v17 = a6;
-  v59 = a8;
-  v60 = a10;
+  nameCopy = name;
+  interfaceCopy = interface;
+  objectInterfaceCopy = objectInterface;
+  endpointCopy = endpoint;
+  queueCopy = queue;
+  deviceEndpointCopy = deviceEndpoint;
   v68.receiver = self;
   v68.super_class = ARRemoteService;
   v18 = [(ARRemoteService *)&v68 init];
@@ -134,7 +134,7 @@
     *(v18 + 4) = v21;
 
     *(v18 + 232) = 0;
-    objc_storeStrong(v18 + 30, a10);
+    objc_storeStrong(v18 + 30, deviceEndpoint);
     dispatch_group_enter(*(v18 + 4));
     state.opaque[0] = 0;
     state.opaque[1] = 0;
@@ -153,14 +153,14 @@
       _os_log_impl(&dword_1C241C000, v24, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Remote service init", buf, 0x16u);
     }
 
-    if (v17)
+    if (endpointCopy)
     {
-      v27 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v17];
+      v27 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:endpointCopy];
     }
 
     else
     {
-      v27 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:v15 options:4096];
+      v27 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:nameCopy options:4096];
     }
 
     v28 = *(v18 + 32);
@@ -169,8 +169,8 @@
     v29 = [ARWeakReference weakReferenceWithObject:v18];
     [*(v18 + 32) setExportedObject:v29];
 
-    [*(v18 + 32) setExportedInterface:v61];
-    [*(v18 + 32) setRemoteObjectInterface:v16];
+    [*(v18 + 32) setExportedInterface:interfaceCopy];
+    [*(v18 + 32) setRemoteObjectInterface:objectInterfaceCopy];
     objc_initWeak(&location, v18);
     v30 = *(v18 + 32);
     v64[0] = MEMORY[0x1E69E9820];
@@ -186,15 +186,15 @@
     v62[3] = &unk_1E817BD88;
     objc_copyWeak(&v63, &location);
     [v31 setInvalidationHandler:v62];
-    v32 = [v15 stringByAppendingString:@".asyncServiceQueue"];
+    v32 = [nameCopy stringByAppendingString:@".asyncServiceQueue"];
     v33 = v32;
-    if (a9)
+    if (c)
     {
       v34 = ARCreateFixedPriorityDispatchQueueWithPropagatedQOS([v32 UTF8String], QOS_CLASS_USER_INITIATED, 0);
       v35 = *(v18 + 3);
       *(v18 + 3) = v34;
 
-      v36 = [v15 stringByAppendingString:@".xpc"];
+      v36 = [nameCopy stringByAppendingString:@".xpc"];
       v37 = _ARLogGeneral_46();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
       {
@@ -217,9 +217,9 @@
 
     else
     {
-      v43 = [v32 UTF8String];
+      uTF8String = [v32 UTF8String];
       v36 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-      v44 = dispatch_queue_create(v43, v36);
+      v44 = dispatch_queue_create(uTF8String, v36);
       v42 = *(v18 + 3);
       *(v18 + 3) = v44;
     }
@@ -232,10 +232,10 @@
 
     *(v18 + 4) = 0;
     *(v18 + 64) = [v18 conformsToProtocol:&unk_1F4284858];
-    v47 = [v15 componentsSeparatedByString:@"."];
-    v48 = [v47 lastObject];
+    v47 = [nameCopy componentsSeparatedByString:@"."];
+    lastObject = [v47 lastObject];
     *buf = 0;
-    v49 = v48;
+    v49 = lastObject;
     v50 = [v49 getBytes:buf maxLength:8 usedLength:0 encoding:1 options:0 range:0 remainingRange:{objc_msgSend(v49, "length"), 0}];
 
     v51 = *buf;
@@ -261,10 +261,10 @@
     *(v18 + 12) = v56;
     *(v18 + 52) = 0;
     [v18 setUpdateUnmodifiedAnchors:1];
-    objc_storeStrong(v18 + 42, a8);
+    objc_storeStrong(v18 + 42, queue);
     *(v18 + 248) = 0;
     [v18 _commonInit];
-    if (v58)
+    if (connectionCopy)
     {
       [v18 _startService];
     }
@@ -306,7 +306,7 @@ void __169__ARRemoteService_initWithMachServiceName_exportedInterface_remoteObje
     *buf = 138543618;
     v11 = v6;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v4, OS_LOG_TYPE_INFO, "%{public}@ <%p>: dealloc", buf, 0x16u);
   }
 
@@ -342,9 +342,9 @@ void __169__ARRemoteService_initWithMachServiceName_exportedInterface_remoteObje
   os_unfair_lock_unlock(&self->_connectionDispatchGroupLock);
 }
 
-- (void)_startServiceSynchronous:(BOOL)a3
+- (void)_startServiceSynchronous:(BOOL)synchronous
 {
-  v3 = a3;
+  synchronousCopy = synchronous;
   v30 = *MEMORY[0x1E69E9840];
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -359,13 +359,13 @@ void __169__ARRemoteService_initWithMachServiceName_exportedInterface_remoteObje
     v9 = &stru_1F4208A80;
     *buf = 138543874;
     v25 = v8;
-    if (v3)
+    if (synchronousCopy)
     {
       v9 = @": synchronous";
     }
 
     v26 = 2048;
-    v27 = self;
+    selfCopy = self;
     v28 = 2112;
     v29 = v9;
     _os_log_impl(&dword_1C241C000, v6, OS_LOG_TYPE_INFO, "%{public}@ <%p>: _startService%@", buf, 0x20u);
@@ -385,10 +385,10 @@ void __169__ARRemoteService_initWithMachServiceName_exportedInterface_remoteObje
   service = self->_service;
   self->_service = v13;
 
-  if (v3)
+  if (synchronousCopy)
   {
-    v15 = [(ARRemoteService *)self connection];
-    v16 = [v15 synchronousRemoteObjectProxyWithErrorHandler:v11];
+    connection = [(ARRemoteService *)self connection];
+    v16 = [connection synchronousRemoteObjectProxyWithErrorHandler:v11];
 
     if (v16)
     {
@@ -547,7 +547,7 @@ void __44__ARRemoteService__startServiceSynchronous___block_invoke_67(uint64_t a
     *buf = 138543618;
     v14 = v6;
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v4, OS_LOG_TYPE_INFO, "%{public}@ <%p>: invalidate", buf, 0x16u);
   }
 
@@ -561,25 +561,25 @@ void __44__ARRemoteService__startServiceSynchronous___block_invoke_67(uint64_t a
   syncService = self->_syncService;
   self->_syncService = 0;
 
-  v10 = [(ARRemoteService *)self serviceDidInvalidateBlock];
+  serviceDidInvalidateBlock = [(ARRemoteService *)self serviceDidInvalidateBlock];
 
-  if (v10)
+  if (serviceDidInvalidateBlock)
   {
-    v11 = [(ARRemoteService *)self serviceDidInvalidateBlock];
-    (v11)[2](v11, self);
+    serviceDidInvalidateBlock2 = [(ARRemoteService *)self serviceDidInvalidateBlock];
+    (serviceDidInvalidateBlock2)[2](serviceDidInvalidateBlock2, self);
   }
 
   os_activity_scope_leave(&v12);
 }
 
-- (int64_t)_waitForDispatchGroup:(unint64_t)a3
+- (int64_t)_waitForDispatchGroup:(unint64_t)group
 {
   os_unfair_lock_lock(&self->_connectionDispatchGroupLock);
   v5 = self->_connectionDispatchGroup;
   os_unfair_lock_unlock(&self->_connectionDispatchGroupLock);
   if (v5)
   {
-    v6 = dispatch_group_wait(v5, a3);
+    v6 = dispatch_group_wait(v5, group);
   }
 
   else
@@ -590,12 +590,12 @@ void __44__ARRemoteService__startServiceSynchronous___block_invoke_67(uint64_t a
   return v6;
 }
 
-- (BOOL)_waitUntilStarted:(unint64_t)a3
+- (BOOL)_waitUntilStarted:(unint64_t)started
 {
   objc_initWeak(&location, self);
-  v5 = [(ARRemoteService *)self _waitForDispatchGroup:a3];
+  v5 = [(ARRemoteService *)self _waitForDispatchGroup:started];
   v6 = objc_loadWeakRetained(&location);
-  v7 = [v6 status];
+  status = [v6 status];
 
   if (v5)
   {
@@ -604,7 +604,7 @@ void __44__ARRemoteService__startServiceSynchronous___block_invoke_67(uint64_t a
 
   else
   {
-    v8 = (v7 - 3) >= 2;
+    v8 = (status - 3) >= 2;
   }
 
   v9 = !v8;
@@ -612,7 +612,7 @@ void __44__ARRemoteService__startServiceSynchronous___block_invoke_67(uint64_t a
   return v9;
 }
 
-- (BOOL)waitUntilStarted:(unint64_t)a3
+- (BOOL)waitUntilStarted:(unint64_t)started
 {
   v6 = 0;
   v7 = &v6;
@@ -623,7 +623,7 @@ void __44__ARRemoteService__startServiceSynchronous___block_invoke_67(uint64_t a
   v5[2] = __36__ARRemoteService_waitUntilStarted___block_invoke;
   v5[3] = &unk_1E817E9E0;
   v5[4] = &v6;
-  [(ARRemoteService *)self syncServiceWithTimeout:a3 callback:v5];
+  [(ARRemoteService *)self syncServiceWithTimeout:started callback:v5];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -645,7 +645,7 @@ void __44__ARRemoteService__startServiceSynchronous___block_invoke_67(uint64_t a
     *buf = 138543618;
     v18 = v6;
     v19 = 2048;
-    v20 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_1C241C000, v4, OS_LOG_TYPE_INFO, "%{public}@ <%p>: reconnect", buf, 0x16u);
   }
 
@@ -661,7 +661,7 @@ void __44__ARRemoteService__startServiceSynchronous___block_invoke_67(uint64_t a
         *buf = 138543618;
         v18 = v9;
         v19 = 2048;
-        v20 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_1C241C000, v7, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Service not started - delaying reconnection attempt", buf, 0x16u);
       }
 
@@ -685,7 +685,7 @@ void __44__ARRemoteService__startServiceSynchronous___block_invoke_67(uint64_t a
       *buf = 138543618;
       v18 = v13;
       v19 = 2048;
-      v20 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1C241C000, v11, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Attempting reconnection", buf, 0x16u);
     }
 
@@ -714,12 +714,12 @@ void __28__ARRemoteService_reconnect__block_invoke_76()
   }
 }
 
-- (void)syncServiceWithTimeout:(unint64_t)a3 callback:(id)a4
+- (void)syncServiceWithTimeout:(unint64_t)timeout callback:(id)callback
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  callbackCopy = callback;
   objc_initWeak(&location, self);
-  if (![(ARRemoteService *)self _waitUntilStarted:a3])
+  if (![(ARRemoteService *)self _waitUntilStarted:timeout])
   {
     if (ARShouldUseLogTypeError_onceToken_52 != -1)
     {
@@ -790,21 +790,21 @@ LABEL_19:
       goto LABEL_19;
     }
 
-    v7[2](v7, 0);
+    callbackCopy[2](callbackCopy, 0);
     goto LABEL_21;
   }
 
   v8 = objc_loadWeakRetained(&location);
-  v9 = [v8 syncService];
-  (v7)[2](v7, v9);
+  syncService = [v8 syncService];
+  (callbackCopy)[2](callbackCopy, syncService);
 
 LABEL_21:
   objc_destroyWeak(&location);
 }
 
-- (void)asyncServiceWithCallback:(id)a3
+- (void)asyncServiceWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   objc_initWeak(&location, self);
   asyncServiceQueue = self->_asyncServiceQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -812,8 +812,8 @@ LABEL_21:
   block[2] = __44__ARRemoteService_asyncServiceWithCallback___block_invoke;
   block[3] = &unk_1E817EA08;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = callbackCopy;
+  v6 = callbackCopy;
   dispatch_async(asyncServiceQueue, block);
 
   objc_destroyWeak(&v9);
@@ -842,16 +842,16 @@ void __44__ARRemoteService_asyncServiceWithCallback___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setService:(id)a3 syncService:(id)a4
+- (void)setService:(id)service syncService:(id)syncService
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  syncServiceCopy = syncService;
   service = self->_service;
-  self->_service = v6;
-  v10 = v6;
+  self->_service = serviceCopy;
+  v10 = serviceCopy;
 
   syncService = self->_syncService;
-  self->_syncService = v7;
+  self->_syncService = syncServiceCopy;
 }
 
 - (void)serverConnectionInterrupted
@@ -870,13 +870,13 @@ void __44__ARRemoteService_asyncServiceWithCallback___block_invoke(uint64_t a1)
     *buf = 138543618;
     v12 = v6;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v4, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Connection interrupted", buf, 0x16u);
   }
 
   v7 = [(ARRemoteService *)self connection:v10.opaque[0]];
-  v8 = [v7 endpoint];
-  if (v8)
+  endpoint = [v7 endpoint];
+  if (endpoint)
   {
   }
 
@@ -910,7 +910,7 @@ void __44__ARRemoteService_asyncServiceWithCallback___block_invoke(uint64_t a1)
     *buf = 138543618;
     v9 = v6;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v4, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Connection invalidated", buf, 0x16u);
   }
 
@@ -921,23 +921,23 @@ void __44__ARRemoteService_asyncServiceWithCallback___block_invoke(uint64_t a1)
 - (id)clientProcessName
 {
   v2 = objc_opt_new();
-  v3 = [v2 processName];
+  processName = [v2 processName];
 
-  return v3;
+  return processName;
 }
 
 - (int)clientProcessIdentifier
 {
   v2 = objc_opt_new();
-  v3 = [v2 processIdentifier];
+  processIdentifier = [v2 processIdentifier];
 
-  return v3;
+  return processIdentifier;
 }
 
-- (void)serviceFailedWithError:(id)a3
+- (void)serviceFailedWithError:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v9.opaque[0] = 0;
   v9.opaque[1] = 0;
   v5 = _os_activity_create(&dword_1C241C000, "serviceFailedWithError", self->_remoteServiceActivity, OS_ACTIVITY_FLAG_DEFAULT);
@@ -951,9 +951,9 @@ void __44__ARRemoteService_asyncServiceWithCallback___block_invoke(uint64_t a1)
     *buf = 138543874;
     v11 = v8;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v4;
+    v15 = errorCopy;
     _os_log_impl(&dword_1C241C000, v6, OS_LOG_TYPE_INFO, "%{public}@ <%p>: serviceFailedWithError: %@", buf, 0x20u);
   }
 
@@ -962,11 +962,11 @@ void __44__ARRemoteService_asyncServiceWithCallback___block_invoke(uint64_t a1)
   os_activity_scope_leave(&v9);
 }
 
-- (void)serviceConfiguredWithError:(id)a3
+- (void)serviceConfiguredWithError:(id)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
     if (ARShouldUseLogTypeError_onceToken_52 != -1)
     {
@@ -987,7 +987,7 @@ void __44__ARRemoteService_asyncServiceWithCallback___block_invoke(uint64_t a1)
         *&buf[12] = 2048;
         *&buf[14] = self;
         v24 = 2112;
-        v25 = v4;
+        v25 = errorCopy;
         _os_log_impl(&dword_1C241C000, v7, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Service configured with error: %@", buf, 0x20u);
       }
     }
@@ -1001,7 +1001,7 @@ void __44__ARRemoteService_asyncServiceWithCallback___block_invoke(uint64_t a1)
       *&buf[12] = 2048;
       *&buf[14] = self;
       v24 = 2112;
-      v25 = v4;
+      v25 = errorCopy;
       _os_log_impl(&dword_1C241C000, v7, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Service configured with error: %@", buf, 0x20u);
     }
   }
@@ -1023,13 +1023,13 @@ void __44__ARRemoteService_asyncServiceWithCallback___block_invoke(uint64_t a1)
 
   if ([(ARRemoteService *)self status]== 4)
   {
-    [(ARRemoteService *)self serviceDidReconnect:v4 == 0];
+    [(ARRemoteService *)self serviceDidReconnect:errorCopy == 0];
   }
 
-  if (v4)
+  if (errorCopy)
   {
     [(ARRemoteService *)self invalidate];
-    [(ARRemoteService *)self serviceFailedWithError:v4];
+    [(ARRemoteService *)self serviceFailedWithError:errorCopy];
   }
 
   else
@@ -1051,8 +1051,8 @@ void __44__ARRemoteService_asyncServiceWithCallback___block_invoke(uint64_t a1)
 
     if (v15)
     {
-      v16 = [(ARRemoteService *)self serviceDidConfigureBlock];
-      (v16)[2](v16, self);
+      serviceDidConfigureBlock = [(ARRemoteService *)self serviceDidConfigureBlock];
+      (serviceDidConfigureBlock)[2](serviceDidConfigureBlock, self);
     }
 
     objc_destroyWeak(&v21);
@@ -1134,18 +1134,18 @@ LABEL_8:
   }
 }
 
-- (void)createRTChannelWithRequest:(id)a3 completion:(id)a4
+- (void)createRTChannelWithRequest:(id)request completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  requestCopy = request;
   v8 = xpc_dictionary_create(0, 0, 0);
   v9 = channel_rt_create_from_request();
 
   [(ARRemoteService *)self setChannel:v9];
-  v10 = [(ARRemoteService *)self channel];
+  channel = [(ARRemoteService *)self channel];
 
-  if (!v10)
+  if (!channel)
   {
     if (ARShouldUseLogTypeError_onceToken_52 != -1)
     {
@@ -1189,31 +1189,31 @@ LABEL_9:
   }
 
   [(ARRemoteService *)self setupCompleteForRTChannel:*v20];
-  v6[2](v6, v8);
+  completionCopy[2](completionCopy, v8);
 }
 
-- (void)createDispatchChannelWithRequest:(id)a3 completion:(id)a4
+- (void)createDispatchChannelWithRequest:(id)request completion:(id)completion
 {
   v75 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = xpc_dictionary_create(0, 0, 0);
-  v9 = [v6 dictionary];
-  v10 = [(ARRemoteService *)self dispatchChannelQueue];
+  dictionary = [requestCopy dictionary];
+  dispatchChannelQueue = [(ARRemoteService *)self dispatchChannelQueue];
 
-  v11 = [(ARRemoteService *)self dispatchChannelQueue];
+  dispatchChannelQueue2 = [(ARRemoteService *)self dispatchChannelQueue];
 
-  if (!v11)
+  if (!dispatchChannelQueue2)
   {
-    v12 = [objc_opt_class() serviceName];
-    v13 = [v12 stringByAppendingString:@".dispatchChannelQueue"];
+    serviceName = [objc_opt_class() serviceName];
+    v13 = [serviceName stringByAppendingString:@".dispatchChannelQueue"];
 
     v14 = ARCreateFixedPriorityDispatchQueueWithQOS([v13 UTF8String]);
     [(ARRemoteService *)self setDispatchChannelQueue:v14];
   }
 
   v15 = @"Reusing";
-  if (!v10)
+  if (!dispatchChannelQueue)
   {
     v15 = @"Creating";
   }
@@ -1224,20 +1224,20 @@ LABEL_9:
   {
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
-    v20 = [(ARRemoteService *)self dispatchChannelQueue];
+    dispatchChannelQueue3 = [(ARRemoteService *)self dispatchChannelQueue];
     *buf = 138544130;
     v68 = v19;
     v69 = 2048;
-    v70 = self;
+    selfCopy11 = self;
     v71 = 2112;
     v72 = v16;
     v73 = 2112;
-    v74 = v20;
+    v74 = dispatchChannelQueue3;
     _os_log_impl(&dword_1C241C000, v17, OS_LOG_TYPE_INFO, "%{public}@ <%p>: %@ dispatch channel with queue: %@", buf, 0x2Au);
   }
 
-  v21 = [v6 dictionary];
-  v22 = [(ARRemoteService *)self dispatchChannelQueue];
+  dictionary2 = [requestCopy dictionary];
+  dispatchChannelQueue4 = [(ARRemoteService *)self dispatchChannelQueue];
   v23 = channel_dispatch_create_from_request();
   dispatchChannel = self->_dispatchChannel;
   self->_dispatchChannel = v23;
@@ -1245,9 +1245,9 @@ LABEL_9:
   if (self->_dispatchChannel)
   {
     v25 = [ARXPCDictionaryWrapper wrapperWithDictionary:v8];
-    v7[2](v7, v25);
+    completionCopy[2](completionCopy, v25);
 
-    uint64 = xpc_dictionary_get_uint64(v9, [@"ARDispatchChannelMessageSizeKey" UTF8String]);
+    uint64 = xpc_dictionary_get_uint64(dictionary, [@"ARDispatchChannelMessageSizeKey" UTF8String]);
     if (!uint64)
     {
       if (ARShouldUseLogTypeError_onceToken_52 != -1)
@@ -1267,7 +1267,7 @@ LABEL_9:
           *buf = 138543618;
           v68 = v31;
           v69 = 2048;
-          v70 = self;
+          selfCopy11 = self;
           _os_log_impl(&dword_1C241C000, v29, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Creating a dispatch channel with dispatchChannelDataSize equal to 0.", buf, 0x16u);
         }
       }
@@ -1279,7 +1279,7 @@ LABEL_9:
         *buf = 138543618;
         v68 = v40;
         v69 = 2048;
-        v70 = self;
+        selfCopy11 = self;
         _os_log_impl(&dword_1C241C000, v29, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Creating a dispatch channel with dispatchChannelDataSize equal to 0.", buf, 0x16u);
       }
     }
@@ -1315,7 +1315,7 @@ LABEL_37:
               *buf = 138543618;
               v68 = v54;
               v69 = 2048;
-              v70 = self;
+              selfCopy11 = self;
               _os_log_impl(&dword_1C241C000, v52, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Error setting message handler for Dispatch Channel", buf, 0x16u);
             }
           }
@@ -1327,7 +1327,7 @@ LABEL_37:
             *buf = 138543618;
             v68 = v56;
             v69 = 2048;
-            v70 = self;
+            selfCopy11 = self;
             _os_log_impl(&dword_1C241C000, v52, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Error setting message handler for Dispatch Channel", buf, 0x16u);
           }
         }
@@ -1360,7 +1360,7 @@ LABEL_37:
               *buf = 138543618;
               v68 = v61;
               v69 = 2048;
-              v70 = self;
+              selfCopy11 = self;
               _os_log_impl(&dword_1C241C000, v59, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Error setting cancel handler for Dispatch Channel", buf, 0x16u);
             }
           }
@@ -1372,7 +1372,7 @@ LABEL_37:
             *buf = 138543618;
             v68 = v63;
             v69 = 2048;
-            v70 = self;
+            selfCopy11 = self;
             _os_log_impl(&dword_1C241C000, v59, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Error setting cancel handler for Dispatch Channel", buf, 0x16u);
           }
         }
@@ -1400,7 +1400,7 @@ LABEL_37:
           *buf = 138543618;
           v68 = v45;
           v69 = 2048;
-          v70 = self;
+          selfCopy11 = self;
           _os_log_impl(&dword_1C241C000, v43, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: dispatchDataSize changed on _messageBuffer. _messageBuffer is being resized.", buf, 0x16u);
         }
       }
@@ -1412,7 +1412,7 @@ LABEL_37:
         *buf = 138543618;
         v68 = v48;
         v69 = 2048;
-        v70 = self;
+        selfCopy11 = self;
         _os_log_impl(&dword_1C241C000, v43, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: dispatchDataSize changed on _messageBuffer. _messageBuffer is being resized.", buf, 0x16u);
       }
 
@@ -1448,7 +1448,7 @@ LABEL_37:
       *buf = 138543618;
       v68 = v36;
       v69 = 2048;
-      v70 = self;
+      selfCopy11 = self;
       _os_log_impl(&dword_1C241C000, v34, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Failed to create dispatch channel from request", buf, 0x16u);
     }
   }
@@ -1460,11 +1460,11 @@ LABEL_37:
     *buf = 138543618;
     v68 = v38;
     v69 = 2048;
-    v70 = self;
+    selfCopy11 = self;
     _os_log_impl(&dword_1C241C000, v34, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Failed to create dispatch channel from request", buf, 0x16u);
   }
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 LABEL_58:
 }
 
@@ -1549,38 +1549,38 @@ void __63__ARRemoteService_createDispatchChannelWithRequest_completion___block_i
   }
 }
 
-- (void)handleDispatchChannelMessage:(void *)a3 size:(unint64_t)a4 type:(unsigned int)a5
+- (void)handleDispatchChannelMessage:(void *)message size:(unint64_t)size type:(unsigned int)type
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D940];
-  v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"-[ARRemoteService handleDispatchChannelMessage:size:type:]", a4, *&a5}];
+  v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"-[ARRemoteService handleDispatchChannelMessage:size:type:]", size, *&type}];
   [v5 raise:v6 format:{@"Subclass needs to override %@ and not call super", v7}];
 }
 
-- (ARRemoteService)initWithDaemon:(id)a3 startConnection:(BOOL)a4 dispatchChannelQueue:(id)a5 fixedPriorityQueueForXPC:(BOOL)a6 deviceEndpoint:(id)a7
+- (ARRemoteService)initWithDaemon:(id)daemon startConnection:(BOOL)connection dispatchChannelQueue:(id)queue fixedPriorityQueueForXPC:(BOOL)c deviceEndpoint:(id)endpoint
 {
-  v9 = a4;
-  v12 = a7;
-  v13 = a5;
-  v14 = a3;
+  connectionCopy = connection;
+  endpointCopy = endpoint;
+  queueCopy = queue;
+  daemonCopy = daemon;
   v15 = [objc_opt_class() performSelector:sel_serviceName];
-  v16 = [v14 listenerEndPointForServiceNamed:v15];
+  v16 = [daemonCopy listenerEndPointForServiceNamed:v15];
 
-  v17 = [objc_opt_class() serviceName];
-  v18 = [objc_opt_class() remoteServiceInterface];
-  v19 = [objc_opt_class() daemonServiceInterface];
+  serviceName = [objc_opt_class() serviceName];
+  remoteServiceInterface = [objc_opt_class() remoteServiceInterface];
+  daemonServiceInterface = [objc_opt_class() daemonServiceInterface];
   if (v16)
   {
-    v20 = 0;
+    cCopy = 0;
   }
 
   else
   {
-    v20 = a6;
+    cCopy = c;
   }
 
-  LOBYTE(v23) = v20;
-  v21 = [(ARRemoteService *)self initWithMachServiceName:v17 exportedInterface:v18 remoteObjectInterface:v19 endpoint:v16 startConnection:v9 dispatchChannelQueue:v13 fixedPriorityQueueForXPC:v23 deviceEndpoint:v12];
+  LOBYTE(v23) = cCopy;
+  v21 = [(ARRemoteService *)self initWithMachServiceName:serviceName exportedInterface:remoteServiceInterface remoteObjectInterface:daemonServiceInterface endpoint:v16 startConnection:connectionCopy dispatchChannelQueue:queueCopy fixedPriorityQueueForXPC:v23 deviceEndpoint:endpointCopy];
 
   return v21;
 }
@@ -1594,11 +1594,11 @@ void __63__ARRemoteService_createDispatchChannelWithRequest_completion___block_i
 
 - (__n128)worldFromOrigin
 {
-  if (a1)
+  if (self)
   {
     os_unfair_lock_lock_with_options();
-    v3 = *(a1 + 80);
-    os_unfair_lock_unlock((a1 + 208));
+    v3 = *(self + 80);
+    os_unfair_lock_unlock((self + 208));
   }
 
   else
@@ -1611,11 +1611,11 @@ void __63__ARRemoteService_createDispatchChannelWithRequest_completion___block_i
 
 - (__n128)originFromWorld
 {
-  if (a1)
+  if (self)
   {
     os_unfair_lock_lock_with_options();
-    v3 = *(a1 + 144);
-    os_unfair_lock_unlock((a1 + 208));
+    v3 = *(self + 144);
+    os_unfair_lock_unlock((self + 208));
   }
 
   else

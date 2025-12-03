@@ -1,15 +1,15 @@
 @interface CKCDPCodeServiceRequestClientConfig
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)serviceTypeAsString:(int)a3;
-- (int)StringAsServiceType:(id)a3;
+- (id)serviceTypeAsString:(int)string;
+- (int)StringAsServiceType:(id)type;
 - (int)serviceType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKCDPCodeServiceRequestClientConfig
@@ -27,50 +27,50 @@
   }
 }
 
-- (id)serviceTypeAsString:(int)a3
+- (id)serviceTypeAsString:(int)string
 {
-  if ((a3 - 1) >= 6)
+  if ((string - 1) >= 6)
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   else
   {
-    v4 = off_27854C720[a3 - 1];
+    v4 = off_27854C720[string - 1];
   }
 
   return v4;
 }
 
-- (int)StringAsServiceType:(id)a3
+- (int)StringAsServiceType:(id)type
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"PUSH"))
+  typeCopy = type;
+  if (objc_msgSend_isEqualToString_(typeCopy, v4, @"PUSH"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"DATABASE"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v5, @"DATABASE"))
   {
     v6 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"CONTENT"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v7, @"CONTENT"))
   {
     v6 = 3;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v8, @"CALDAV"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v8, @"CALDAV"))
   {
     v6 = 4;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v9, @"ESCROWPROXY"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v9, @"ESCROWPROXY"))
   {
     v6 = 5;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v10, @"QUOTA"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v10, @"QUOTA"))
   {
     v6 = 6;
   }
@@ -124,46 +124,46 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     serviceType = self->_serviceType;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_config)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_serviceType;
-    *(v4 + 20) |= 1u;
+    toCopy[4] = self->_serviceType;
+    *(toCopy + 20) |= 1u;
   }
 
   config = self->_config;
   if (config)
   {
-    v7 = v4;
-    objc_msgSend_setConfig_(v4, v5, config);
-    v4 = v7;
+    v7 = toCopy;
+    objc_msgSend_setConfig_(toCopy, v5, config);
+    toCopy = v7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v12 = v10;
   if (*&self->_has)
@@ -172,32 +172,32 @@
     *(v10 + 20) |= 1u;
   }
 
-  v13 = objc_msgSend_copyWithZone_(self->_config, v11, a3);
+  v13 = objc_msgSend_copyWithZone_(self->_config, v11, zone);
   v14 = v12[1];
   v12[1] = v13;
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_9;
   }
 
-  v8 = *(v4 + 20);
+  v8 = *(equalCopy + 20);
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_serviceType != *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_serviceType != *(equalCopy + 4))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
 LABEL_9:
     isEqual = 0;
@@ -205,7 +205,7 @@ LABEL_9:
   }
 
   config = self->_config;
-  v10 = v4[1];
+  v10 = equalCopy[1];
   if (config | v10)
   {
     isEqual = objc_msgSend_isEqual_(config, v7, v10);
@@ -236,13 +236,13 @@ LABEL_10:
   return objc_msgSend_hash(self->_config, a2, v2) ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[20])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[20])
   {
-    self->_serviceType = *(v4 + 4);
+    self->_serviceType = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 

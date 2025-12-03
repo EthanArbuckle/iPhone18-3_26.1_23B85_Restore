@@ -1,23 +1,23 @@
 @interface SKUIOfferCollectionViewCell
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (SKUIOfferCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (SKUIOfferCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setBackgroundColor:(id)a3;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation SKUIOfferCollectionViewCell
 
-- (SKUIOfferCollectionViewCell)initWithFrame:(CGRect)a3
+- (SKUIOfferCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -32,39 +32,39 @@
 
   v23.receiver = self;
   v23.super_class = SKUIOfferCollectionViewCell;
-  v16 = [(SKUICollectionViewCell *)&v23 initWithFrame:x, y, width, height];
-  v17 = v16;
-  if (v16)
+  height = [(SKUICollectionViewCell *)&v23 initWithFrame:x, y, width, height];
+  v17 = height;
+  if (height)
   {
-    v18 = [(SKUIOfferCollectionViewCell *)v16 contentView];
+    contentView = [(SKUIOfferCollectionViewCell *)height contentView];
     v19 = [SKUIOfferView alloc];
-    [v18 bounds];
+    [contentView bounds];
     v20 = [(SKUIOfferView *)v19 initWithFrame:?];
     offerView = v17->_offerView;
     v17->_offerView = v20;
 
-    [v18 addSubview:v17->_offerView];
+    [contentView addSubview:v17->_offerView];
   }
 
   return v17;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   offerView = self->_offerView;
-  v5 = a3;
-  v6 = [v5 backgroundColor];
-  [(SKUIViewReuseView *)offerView setBackgroundColor:v6];
+  attributesCopy = attributes;
+  backgroundColor = [attributesCopy backgroundColor];
+  [(SKUIViewReuseView *)offerView setBackgroundColor:backgroundColor];
 
   v7.receiver = self;
   v7.super_class = SKUIOfferCollectionViewCell;
-  [(SKUICollectionViewCell *)&v7 applyLayoutAttributes:v5];
+  [(SKUICollectionViewCell *)&v7 applyLayoutAttributes:attributesCopy];
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -77,15 +77,15 @@
     }
   }
 
-  v17 = [SKUIOfferView prefetchResourcesForViewElement:v7 reason:a4 context:v8];
+  v17 = [SKUIOfferView prefetchResourcesForViewElement:elementCopy reason:reason context:contextCopy];
 
   return v17;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -98,7 +98,7 @@
     }
   }
 
-  [SKUIOfferView preferredSizeForViewElement:v5 context:v6];
+  [SKUIOfferView preferredSizeForViewElement:elementCopy context:contextCopy];
   v16 = v15;
   v18 = v17;
 
@@ -109,10 +109,10 @@
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -125,13 +125,13 @@
     }
   }
 
-  [SKUIOfferView requestLayoutForViewElement:v7 width:v8 context:a4];
+  [SKUIOfferView requestLayoutForViewElement:elementCopy width:contextCopy context:width];
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -144,13 +144,13 @@
     }
   }
 
-  [(SKUIOfferView *)self->_offerView reloadWithViewElement:v8 width:v9 context:a4];
+  [(SKUIOfferView *)self->_offerView reloadWithViewElement:elementCopy width:contextCopy context:width];
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -163,7 +163,7 @@
     }
   }
 
-  [SKUIOfferView sizeThatFitsWidth:v7 viewElement:v8 context:a3];
+  [SKUIOfferView sizeThatFitsWidth:elementCopy viewElement:contextCopy context:width];
   v18 = v17;
   v20 = v19;
 
@@ -180,19 +180,19 @@
   v5.super_class = SKUIOfferCollectionViewCell;
   [(SKUICollectionViewCell *)&v5 layoutSubviews];
   offerView = self->_offerView;
-  v4 = [(SKUIOfferCollectionViewCell *)self contentView];
-  [v4 bounds];
+  contentView = [(SKUIOfferCollectionViewCell *)self contentView];
+  [contentView bounds];
   [(SKUIOfferView *)offerView setFrame:?];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   offerView = self->_offerView;
-  v5 = a3;
-  [(SKUIViewReuseView *)offerView setBackgroundColor:v5];
+  colorCopy = color;
+  [(SKUIViewReuseView *)offerView setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SKUIOfferCollectionViewCell;
-  [(SKUICollectionViewCell *)&v6 setBackgroundColor:v5];
+  [(SKUICollectionViewCell *)&v6 setBackgroundColor:colorCopy];
 }
 
 @end

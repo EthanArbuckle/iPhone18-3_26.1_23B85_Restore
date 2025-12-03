@@ -1,24 +1,24 @@
 @interface _UIActivityResourceLoader
-- (_UIActivityResourceLoader)initWithQueue:(id)a3 loadBlock:(id)a4;
-- (void)_loadResourceWithBlock:(id)a3;
-- (void)getResourceWithBlock:(id)a3;
+- (_UIActivityResourceLoader)initWithQueue:(id)queue loadBlock:(id)block;
+- (void)_loadResourceWithBlock:(id)block;
+- (void)getResourceWithBlock:(id)block;
 - (void)loadResourceIfNeeded;
 @end
 
 @implementation _UIActivityResourceLoader
 
-- (_UIActivityResourceLoader)initWithQueue:(id)a3 loadBlock:(id)a4
+- (_UIActivityResourceLoader)initWithQueue:(id)queue loadBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  blockCopy = block;
   v17.receiver = self;
   v17.super_class = _UIActivityResourceLoader;
   v9 = [(_UIActivityResourceLoader *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    v11 = MEMORY[0x18CFF58E0](v8);
+    objc_storeStrong(&v9->_queue, queue);
+    v11 = MEMORY[0x18CFF58E0](blockCopy);
     loadBlock = v10->_loadBlock;
     v10->_loadBlock = v11;
 
@@ -33,9 +33,9 @@
   return v10;
 }
 
-- (void)_loadResourceWithBlock:(id)a3
+- (void)_loadResourceWithBlock:(id)block
 {
-  v4 = (*(a3 + 2))(a3, a2);
+  v4 = (*(block + 2))(block, a2);
   resource = self->_resource;
   self->_resource = v4;
 }
@@ -66,9 +66,9 @@
   }
 }
 
-- (void)getResourceWithBlock:(id)a3
+- (void)getResourceWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (self->_loadBlock)
   {
     [(_UIActivityResourceLoader *)self loadResourceIfNeeded];
@@ -76,7 +76,7 @@
 
   else if (!dispatch_group_wait(self->_group, 0))
   {
-    v4[2](v4, self->_resource);
+    blockCopy[2](blockCopy, self->_resource);
     goto LABEL_5;
   }
 
@@ -87,7 +87,7 @@
   block[2] = __50___UIActivityResourceLoader_getResourceWithBlock___block_invoke;
   block[3] = &unk_1E71FA408;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
+  v7 = blockCopy;
   dispatch_group_notify(group, MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v8);

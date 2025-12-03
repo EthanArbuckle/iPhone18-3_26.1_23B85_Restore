@@ -2,23 +2,23 @@
 - (Class)editorClass;
 - (Class)layoutClass;
 - (Class)repClass;
-- (_TtC8Freeform14CRLSurfaceItem)initWithStore:(id)a3 parentContainerUUID:(id)a4 geometry:(id)a5;
-- (_TtC8Freeform14CRLSurfaceItem)initWithStore:(id)a3 rootContainer:(id)a4 geometry:(id)a5;
-- (id)_duplicateEmptyWithNewParentContainerUUID:(id)a3 uuidRemapHelper:(id)a4 error:(id *)a5;
+- (_TtC8Freeform14CRLSurfaceItem)initWithStore:(id)store parentContainerUUID:(id)d geometry:(id)geometry;
+- (_TtC8Freeform14CRLSurfaceItem)initWithStore:(id)store rootContainer:(id)container geometry:(id)geometry;
+- (id)_duplicateEmptyWithNewParentContainerUUID:(id)d uuidRemapHelper:(id)helper error:(id *)error;
 - (void)setAspectRatioLocked:;
 @end
 
 @implementation CRLSurfaceItem
 
-- (_TtC8Freeform14CRLSurfaceItem)initWithStore:(id)a3 rootContainer:(id)a4 geometry:(id)a5
+- (_TtC8Freeform14CRLSurfaceItem)initWithStore:(id)store rootContainer:(id)container geometry:(id)geometry
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  return sub_100AE1128(v7, v8, a5);
+  storeCopy = store;
+  containerCopy = container;
+  geometryCopy = geometry;
+  return sub_100AE1128(storeCopy, containerCopy, geometry);
 }
 
-- (_TtC8Freeform14CRLSurfaceItem)initWithStore:(id)a3 parentContainerUUID:(id)a4 geometry:(id)a5
+- (_TtC8Freeform14CRLSurfaceItem)initWithStore:(id)store parentContainerUUID:(id)d geometry:(id)geometry
 {
   v5 = type metadata accessor for UUID();
   __chkstk_darwin(v5 - 8);
@@ -28,7 +28,7 @@
   return result;
 }
 
-- (id)_duplicateEmptyWithNewParentContainerUUID:(id)a3 uuidRemapHelper:(id)a4 error:(id *)a5
+- (id)_duplicateEmptyWithNewParentContainerUUID:(id)d uuidRemapHelper:(id)helper error:(id *)error
 {
   v8 = type metadata accessor for UUID();
   v9 = *(v8 - 8);
@@ -37,7 +37,7 @@
   v12 = sub_1005B981C(&qword_1019F6990);
   __chkstk_darwin(v12 - 8);
   v14 = &v19[-v13];
-  if (a3)
+  if (d)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     (*(v9 + 32))(v14, v11, v8);
@@ -49,9 +49,9 @@
     (*(v9 + 56))(v14, 1, 1, v8);
   }
 
-  v15 = a4;
-  v16 = self;
-  v17 = sub_100AE2454(v14, v15);
+  helperCopy = helper;
+  selfCopy = self;
+  v17 = sub_100AE2454(v14, helperCopy);
   sub_10000CAAC(v14, &qword_1019F6990);
 
   return v17;
@@ -81,7 +81,7 @@
 - (void)setAspectRatioLocked:
 {
   v0 = objc_opt_self();
-  v1 = [v0 _atomicIncrementAssertCount];
+  _atomicIncrementAssertCount = [v0 _atomicIncrementAssertCount];
   v23 = [objc_allocWithZone(NSString) init];
   sub_100604538(_swiftEmptyArrayStorage, &v23);
   StaticString.description.getter();
@@ -90,7 +90,7 @@
   StaticString.description.getter();
   v3 = String._bridgeToObjectiveC()();
 
-  v4 = [v3 lastPathComponent];
+  lastPathComponent = [v3 lastPathComponent];
 
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
@@ -106,7 +106,7 @@
   *(inited + 16) = xmmword_10146CA70;
   *(inited + 56) = &type metadata for Int32;
   *(inited + 64) = &protocol witness table for Int32;
-  *(inited + 32) = v1;
+  *(inited + 32) = _atomicIncrementAssertCount;
   v10 = sub_1005CF000();
   *(inited + 96) = v10;
   v11 = sub_100AE430C(&qword_1019F52E0, sub_1005CF000);

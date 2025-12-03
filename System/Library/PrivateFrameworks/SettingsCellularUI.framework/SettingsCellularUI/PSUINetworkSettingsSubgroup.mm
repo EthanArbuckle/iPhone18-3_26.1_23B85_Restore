@@ -1,34 +1,34 @@
 @interface PSUINetworkSettingsSubgroup
 - (PSListController)listController;
 - (PSSpecifier)parentSpecifier;
-- (PSUINetworkSettingsSubgroup)initWithListController:(id)a3 groupSpecifier:(id)a4;
-- (PSUINetworkSettingsSubgroup)initWithListController:(id)a3 groupSpecifier:(id)a4 parentSpecifier:(id)a5;
+- (PSUINetworkSettingsSubgroup)initWithListController:(id)controller groupSpecifier:(id)specifier;
+- (PSUINetworkSettingsSubgroup)initWithListController:(id)controller groupSpecifier:(id)specifier parentSpecifier:(id)parentSpecifier;
 - (id)specifiers;
 @end
 
 @implementation PSUINetworkSettingsSubgroup
 
-- (PSUINetworkSettingsSubgroup)initWithListController:(id)a3 groupSpecifier:(id)a4 parentSpecifier:(id)a5
+- (PSUINetworkSettingsSubgroup)initWithListController:(id)controller groupSpecifier:(id)specifier parentSpecifier:(id)parentSpecifier
 {
-  v7 = a3;
-  v8 = a5;
+  controllerCopy = controller;
+  parentSpecifierCopy = parentSpecifier;
   v12.receiver = self;
   v12.super_class = PSUINetworkSettingsSubgroup;
   v9 = [(PSUINetworkSettingsSubgroup *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_listController, v7);
-    objc_storeWeak(&v10->_parentSpecifier, v8);
+    objc_storeWeak(&v9->_listController, controllerCopy);
+    objc_storeWeak(&v10->_parentSpecifier, parentSpecifierCopy);
   }
 
   return v10;
 }
 
-- (PSUINetworkSettingsSubgroup)initWithListController:(id)a3 groupSpecifier:(id)a4
+- (PSUINetworkSettingsSubgroup)initWithListController:(id)controller groupSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  specifierCopy = specifier;
   objc_exception_throw([objc_alloc(MEMORY[0x277CBEAD8]) initWithName:@"Unsupported initializer called" reason:@"Unsupported initializer called" userInfo:0]);
 }
 
@@ -40,23 +40,23 @@
   bundleControllers = self->_bundleControllers;
   self->_bundleControllers = v3;
 
-  v5 = [MEMORY[0x277D4D868] sharedInstance];
-  v6 = [(PSUIVoiceAndDataSpecifier *)v5 subscriptionContexts];
-  if ([v6 count] <= 1)
+  mEMORY[0x277D4D868] = [MEMORY[0x277D4D868] sharedInstance];
+  subscriptionContexts = [(PSUIVoiceAndDataSpecifier *)mEMORY[0x277D4D868] subscriptionContexts];
+  if ([subscriptionContexts count] <= 1)
   {
   }
 
   else
   {
     v30 = +[PSUICellularPlanManagerCache sharedInstance];
-    v7 = [v30 planItems];
-    v8 = [v7 count];
+    planItems = [v30 planItems];
+    v8 = [planItems count];
     v9 = +[PSUICellularPlanManagerCache sharedInstance];
-    v10 = [v9 danglingPlanItems];
-    v11 = [v10 count] + v8;
+    danglingPlanItems = [v9 danglingPlanItems];
+    v11 = [danglingPlanItems count] + v8;
     v12 = +[PSUICellularPlanManagerCache sharedInstance];
-    v13 = [v12 plansPendingTransfer];
-    v14 = v11 + [v13 count];
+    plansPendingTransfer = [v12 plansPendingTransfer];
+    v14 = v11 + [plansPendingTransfer count];
 
     if (v14 < 2)
     {
@@ -67,11 +67,11 @@
     WeakRetained = objc_loadWeakRetained(&self->_listController);
     v17 = objc_loadWeakRetained(&self->_parentSpecifier);
     v18 = [v17 propertyForKey:*MEMORY[0x277D40128]];
-    v5 = [(PSUIVoiceAndDataSpecifier *)v15 initWithHostController:WeakRetained subscriptionContext:v18 groupSpecifierToUpdateFooterFor:0];
+    mEMORY[0x277D4D868] = [(PSUIVoiceAndDataSpecifier *)v15 initWithHostController:WeakRetained subscriptionContext:v18 groupSpecifierToUpdateFooterFor:0];
 
-    if (v5)
+    if (mEMORY[0x277D4D868])
     {
-      [v31 addObject:v5];
+      [v31 addObject:mEMORY[0x277D4D868]];
     }
   }
 
@@ -86,7 +86,7 @@ LABEL_7:
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
   v22 = objc_loadWeakRetained(&self->_parentSpecifier);
   v23 = objc_loadWeakRetained(&self->_listController);
-  v24 = [v23 bundle];
+  bundle = [v23 bundle];
   v25 = objc_loadWeakRetained(&self->_listController);
   v32 = 0;
   v26 = SpecifiersFromPlist();

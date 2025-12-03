@@ -1,23 +1,23 @@
 @interface BRCFetchCKShareMetadataOperation
-- (BRCFetchCKShareMetadataOperation)initWithShareLink:(id)a3 sessionContext:(id)a4;
+- (BRCFetchCKShareMetadataOperation)initWithShareLink:(id)link sessionContext:(id)context;
 - (void)main;
 @end
 
 @implementation BRCFetchCKShareMetadataOperation
 
-- (BRCFetchCKShareMetadataOperation)initWithShareLink:(id)a3 sessionContext:(id)a4
+- (BRCFetchCKShareMetadataOperation)initWithShareLink:(id)link sessionContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 syncContextProvider];
-  v10 = [v9 sharedMetadataSyncContext];
+  linkCopy = link;
+  contextCopy = context;
+  syncContextProvider = [contextCopy syncContextProvider];
+  sharedMetadataSyncContext = [syncContextProvider sharedMetadataSyncContext];
   v13.receiver = self;
   v13.super_class = BRCFetchCKShareMetadataOperation;
-  v11 = [(_BRCOperation *)&v13 initWithName:@"fetch-ck-share" syncContext:v10 sessionContext:v8];
+  v11 = [(_BRCOperation *)&v13 initWithName:@"fetch-ck-share" syncContext:sharedMetadataSyncContext sessionContext:contextCopy];
 
   if (v11)
   {
-    objc_storeStrong(&v11->_shareLink, a3);
+    objc_storeStrong(&v11->_shareLink, link);
     [(_BRCOperation *)v11 setNonDiscretionary:1];
   }
 

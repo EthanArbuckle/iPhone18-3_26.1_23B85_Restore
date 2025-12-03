@@ -1,23 +1,23 @@
 @interface FKBackgroundRefreshConfirmationPromptDecision
-- (BOOL)isEqual:(id)a3;
-- (FKBackgroundRefreshConfirmationPromptDecision)initWithShouldShowPrompt:(BOOL)a3 token:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (FKBackgroundRefreshConfirmationPromptDecision)initWithShouldShowPrompt:(BOOL)prompt token:(id)token;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation FKBackgroundRefreshConfirmationPromptDecision
 
-- (FKBackgroundRefreshConfirmationPromptDecision)initWithShouldShowPrompt:(BOOL)a3 token:(id)a4
+- (FKBackgroundRefreshConfirmationPromptDecision)initWithShouldShowPrompt:(BOOL)prompt token:(id)token
 {
-  v6 = a4;
+  tokenCopy = token;
   v12.receiver = self;
   v12.super_class = FKBackgroundRefreshConfirmationPromptDecision;
   v7 = [(FKBackgroundRefreshConfirmationPromptDecision *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_shouldShowPrompt = a3;
-    v9 = [v6 copy];
+    v7->_shouldShowPrompt = prompt;
+    v9 = [tokenCopy copy];
     token = v8->_token;
     v8->_token = v9;
   }
@@ -25,7 +25,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [FKBackgroundRefreshConfirmationPromptDecision alloc];
   shouldShowPrompt = self->_shouldShowPrompt;
@@ -46,16 +46,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_shouldShowPrompt == v5->_shouldShowPrompt)
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_shouldShowPrompt == v5->_shouldShowPrompt)
   {
     v6 = FKEqualObjects(self->_token, v5->_token);
   }

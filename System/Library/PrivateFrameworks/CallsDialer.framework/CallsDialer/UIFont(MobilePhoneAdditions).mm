@@ -13,44 +13,44 @@
 {
   v0 = [MEMORY[0x277D74310] phPreferredFontDescriptorForTextStyle:?];
   v1 = [MEMORY[0x277D74300] fontWithDescriptor:v0 size:0.0];
-  v2 = [v1 withCaseSensitiveAttribute];
+  withCaseSensitiveAttribute = [v1 withCaseSensitiveAttribute];
 
-  return v2;
+  return withCaseSensitiveAttribute;
 }
 
 + (id)phPreferredBoldFontForTextStyle:()MobilePhoneAdditions
 {
   v3 = [MEMORY[0x277D74310] phPreferredFontDescriptorForTextStyle:a3 addingSymbolicTraits:2];
   v4 = [MEMORY[0x277D74300] fontWithDescriptor:v3 size:0.0];
-  v5 = [v4 withCaseSensitiveAttribute];
+  withCaseSensitiveAttribute = [v4 withCaseSensitiveAttribute];
 
-  return v5;
+  return withCaseSensitiveAttribute;
 }
 
 + (id)phPreferredItalicFontForTextStyle:()MobilePhoneAdditions
 {
   v3 = [MEMORY[0x277D74310] phPreferredFontDescriptorForTextStyle:a3 addingSymbolicTraits:1];
   v4 = [MEMORY[0x277D74300] fontWithDescriptor:v3 size:0.0];
-  v5 = [v4 withCaseSensitiveAttribute];
+  withCaseSensitiveAttribute = [v4 withCaseSensitiveAttribute];
 
-  return v5;
+  return withCaseSensitiveAttribute;
 }
 
 + (id)phPreferredTightLeadingFontForTextStyle:()MobilePhoneAdditions
 {
   v3 = [MEMORY[0x277D74310] phPreferredFontDescriptorForTextStyle:a3 addingSymbolicTraits:0x8000];
   v4 = [MEMORY[0x277D74300] fontWithDescriptor:v3 size:0.0];
-  v5 = [v4 withCaseSensitiveAttribute];
+  withCaseSensitiveAttribute = [v4 withCaseSensitiveAttribute];
 
-  return v5;
+  return withCaseSensitiveAttribute;
 }
 
 + (id)_thinSystemFontWithDialerCharacteristicsOfSize:()MobilePhoneAdditions
 {
   v0 = [MEMORY[0x277D74300] _thinSystemFontOfSize:?];
-  v1 = [v0 withCaseSensitiveAttribute];
+  withCaseSensitiveAttribute = [v0 withCaseSensitiveAttribute];
 
-  return v1;
+  return withCaseSensitiveAttribute;
 }
 
 - (id)withCaseSensitiveAttribute
@@ -68,8 +68,8 @@
   v15[0] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
 
-  v6 = [a1 fontDescriptor];
-  v7 = [v6 fontDescriptorByAddingAttributes:v5];
+  fontDescriptor = [self fontDescriptor];
+  v7 = [fontDescriptor fontDescriptorByAddingAttributes:v5];
 
   v8 = [MEMORY[0x277D74300] fontWithDescriptor:v7 size:0.0];
 

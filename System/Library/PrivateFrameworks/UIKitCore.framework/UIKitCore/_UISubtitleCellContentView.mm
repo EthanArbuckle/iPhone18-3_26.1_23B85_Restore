@@ -2,37 +2,37 @@
 - (BOOL)_needsDoubleUpdateConstraintsPass;
 - (BOOL)becomeFirstResponder;
 - (CGRect)_primaryTextLayoutFrame;
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (NSLayoutRect)_primaryTextLayoutRect;
 - (NSString)description;
 - (UIImageView)imageView;
 - (UILabel)subtitleLabel;
 - (UILabel)textLabel;
-- (_UISubtitleCellContentView)initWithCoder:(id)a3;
-- (_UISubtitleCellContentView)initWithConfiguration:(id)a3;
+- (_UISubtitleCellContentView)initWithCoder:(id)coder;
+- (_UISubtitleCellContentView)initWithConfiguration:(id)configuration;
 - (_UISubtitleCellContentViewConfiguration)configuration;
 - (double)_preferredMaxLayoutWidth;
-- (void)_applyConfiguration:(id *)a1;
-- (void)_computeSizesForAvailableSpace:(double)a3;
-- (void)_layoutMarginsDidChangeFromOldMargins:(UIEdgeInsets)a3;
+- (void)_applyConfiguration:(id *)configuration;
+- (void)_computeSizesForAvailableSpace:(double)space;
+- (void)_layoutMarginsDidChangeFromOldMargins:(UIEdgeInsets)margins;
 - (void)_prepareForFirstIntrinsicContentSizeCalculation;
-- (void)_prepareForSecondIntrinsicContentSizeCalculationWithLayoutEngineBounds:(CGRect)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_prepareForSecondIntrinsicContentSizeCalculationWithLayoutEngineBounds:(CGRect)bounds;
+- (void)encodeWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setConfiguration:(id)a3;
+- (void)setConfiguration:(id)configuration;
 @end
 
 @implementation _UISubtitleCellContentView
 
-- (_UISubtitleCellContentView)initWithConfiguration:(id)a3
+- (_UISubtitleCellContentView)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (!v5)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_UISubtitleCellContentView.m" lineNumber:443 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UISubtitleCellContentView.m" lineNumber:443 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
   }
 
   v13.receiver = self;
@@ -46,17 +46,17 @@
     v10[2] = __52___UISubtitleCellContentView_initWithConfiguration___block_invoke;
     v10[3] = &unk_1E70F35B8;
     v11 = v6;
-    v12 = v5;
+    v12 = configurationCopy;
     [UIView performWithoutAnimation:v10];
   }
 
   return v7;
 }
 
-- (_UISubtitleCellContentView)initWithCoder:(id)a3
+- (_UISubtitleCellContentView)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
   if (!v5)
   {
 
@@ -65,7 +65,7 @@
 
   v12.receiver = self;
   v12.super_class = _UISubtitleCellContentView;
-  v6 = [(UIView *)&v12 initWithCoder:v4];
+  v6 = [(UIView *)&v12 initWithCoder:coderCopy];
   if (!v6)
   {
 LABEL_5:
@@ -86,13 +86,13 @@ LABEL_6:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _UISubtitleCellContentView;
-  v4 = a3;
-  [(UIView *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_configuration forKey:{@"configuration", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(UIView *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_configuration forKey:{@"configuration", v5.receiver, v5.super_class}];
 }
 
 - (NSString)description
@@ -124,19 +124,19 @@ LABEL_6:
   return v3;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (!v5)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_UISubtitleCellContentView.m" lineNumber:496 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UISubtitleCellContentView.m" lineNumber:496 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
   }
 
   animatingToConfiguration = self->_animatingToConfiguration;
-  if ([(_UIContentViewEditingController *)self->_editingController isDisplayingEditedText]|| ![(_UISubtitleCellContentViewConfiguration *)self->_configuration _isEqualToConfigurationQuick:v5]|| animatingToConfiguration && ([(_UISubtitleCellContentViewConfiguration *)self->_animatingToConfiguration _isEqualToConfigurationQuick:v5]& 1) == 0)
+  if ([(_UIContentViewEditingController *)self->_editingController isDisplayingEditedText]|| ![(_UISubtitleCellContentViewConfiguration *)self->_configuration _isEqualToConfigurationQuick:configurationCopy]|| animatingToConfiguration && ([(_UISubtitleCellContentViewConfiguration *)self->_animatingToConfiguration _isEqualToConfigurationQuick:configurationCopy]& 1) == 0)
   {
-    v7 = [v5 copy];
+    v7 = [configurationCopy copy];
     if (+[UIView _isInAnimationBlockWithAnimationsEnabled])
     {
       objc_storeStrong(&self->_animatingToConfiguration, v7);
@@ -182,38 +182,38 @@ LABEL_6:
   }
 }
 
-- (void)_applyConfiguration:(id *)a1
+- (void)_applyConfiguration:(id *)configuration
 {
   v4 = a2;
-  if (a1)
+  if (configuration)
   {
     v26 = v4;
     if (!v4)
     {
-      v25 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v25 handleFailureInMethod:sel__applyConfiguration_ object:a1 file:@"_UISubtitleCellContentView.m" lineNumber:552 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__applyConfiguration_ object:configuration file:@"_UISubtitleCellContentView.m" lineNumber:552 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
     }
 
-    objc_storeStrong(a1 + 55, a2);
-    v5 = [v26 axesPreservingSuperviewLayoutMargins];
-    if ((v5 & 2) != 0)
+    objc_storeStrong(configuration + 55, a2);
+    axesPreservingSuperviewLayoutMargins = [v26 axesPreservingSuperviewLayoutMargins];
+    if ((axesPreservingSuperviewLayoutMargins & 2) != 0)
     {
-      v6 = (v5 << 63 >> 63) & 0xA | 5;
+      v6 = (axesPreservingSuperviewLayoutMargins << 63 >> 63) & 0xA | 5;
     }
 
     else
     {
-      v6 = (v5 << 63 >> 63) & 0xA;
+      v6 = (axesPreservingSuperviewLayoutMargins << 63 >> 63) & 0xA;
     }
 
-    [a1 setEdgesPreservingSuperviewLayoutMargins:v6];
+    [configuration setEdgesPreservingSuperviewLayoutMargins:v6];
     [v26 directionalLayoutMargins];
-    [a1 setDirectionalLayoutMargins:?];
-    v7 = [v26 imageView];
-    v8 = a1;
-    v9 = a1[56];
+    [configuration setDirectionalLayoutMargins:?];
+    imageView = [v26 imageView];
+    configurationCopy = configuration;
+    v9 = configuration[56];
     v10 = v9;
-    if (v7 && (v7[2] || v7[6]))
+    if (imageView && (imageView[2] || imageView[6]))
     {
       if (v9)
       {
@@ -226,13 +226,13 @@ LABEL_6:
       else
       {
         v10 = objc_alloc_init(UIImageView);
-        v11 = a1[56];
-        a1[56] = v10;
+        v11 = configuration[56];
+        configuration[56] = v10;
 
-        [v8 addSubview:v10];
+        [configurationCopy addSubview:v10];
       }
 
-      [v7 applyToImageView:v10];
+      [imageView applyToImageView:v10];
     }
 
     else if (v9 && ![(UIView *)v9 isHidden])
@@ -240,43 +240,43 @@ LABEL_6:
       [(UIImageView *)v10 setHidden:1];
     }
 
-    v12 = [v26 textLabel];
-    _UIUpdateLabelUsingConfiguration(v8, v8 + 57, v12);
+    textLabel = [v26 textLabel];
+    _UIUpdateLabelUsingConfiguration(configurationCopy, configurationCopy + 57, textLabel);
 
-    v13 = [v26 subtitleLabel];
-    _UIUpdateLabelUsingConfiguration(v8, v8 + 58, v13);
+    subtitleLabel = [v26 subtitleLabel];
+    _UIUpdateLabelUsingConfiguration(configurationCopy, configurationCopy + 58, subtitleLabel);
 
-    v14 = [v26 _textLabelEditingConfiguration];
-    if (v14)
+    _textLabelEditingConfiguration = [v26 _textLabelEditingConfiguration];
+    if (_textLabelEditingConfiguration)
     {
-      v15 = v8[54];
+      v15 = configurationCopy[54];
 
       if (!v15)
       {
         v16 = [_UIContentViewEditingController alloc];
-        v17 = [v8 textLabel];
-        v18 = [(_UIContentViewEditingController *)v16 initWithContentView:v8 editableLabel:v17];
-        v19 = v8[54];
-        v8[54] = v18;
+        textLabel2 = [configurationCopy textLabel];
+        v18 = [(_UIContentViewEditingController *)v16 initWithContentView:configurationCopy editableLabel:textLabel2];
+        v19 = configurationCopy[54];
+        configurationCopy[54] = v18;
       }
     }
 
-    v20 = v8[54];
-    v21 = [v26 textLabel];
-    v22 = [v26 _textLabelEditingConfiguration];
-    [v20 updateLabelProperties:v21 editingConfiguration:v22];
+    v20 = configurationCopy[54];
+    textLabel3 = [v26 textLabel];
+    _textLabelEditingConfiguration2 = [v26 _textLabelEditingConfiguration];
+    [v20 updateLabelProperties:textLabel3 editingConfiguration:_textLabelEditingConfiguration2];
 
-    v23 = [v26 _textLabelEditingConfiguration];
+    _textLabelEditingConfiguration3 = [v26 _textLabelEditingConfiguration];
 
-    if (!v23)
+    if (!_textLabelEditingConfiguration3)
     {
-      v24 = v8[54];
-      v8[54] = 0;
+      v24 = configurationCopy[54];
+      configurationCopy[54] = 0;
     }
 
-    v8[53] = 0x7FEFFFFFFFFFFFFFLL;
-    [v8 invalidateIntrinsicContentSize];
-    [v8 setNeedsLayout];
+    configurationCopy[53] = 0x7FEFFFFFFFFFFFFFLL;
+    [configurationCopy invalidateIntrinsicContentSize];
+    [configurationCopy setNeedsLayout];
     v4 = v26;
   }
 }
@@ -330,17 +330,17 @@ LABEL_6:
 {
   if ((*(&self->super._viewFlags + 6) & 0x10) != 0)
   {
-    v5 = [(_UISubtitleCellContentView *)self textLabel];
-    if (!v5 || (-[_UISubtitleCellContentView textLabel](self, "textLabel"), v2 = objc_claimAutoreleasedReturnValue(), [v2 numberOfLines] == 1))
+    textLabel = [(_UISubtitleCellContentView *)self textLabel];
+    if (!textLabel || (-[_UISubtitleCellContentView textLabel](self, "textLabel"), v2 = objc_claimAutoreleasedReturnValue(), [v2 numberOfLines] == 1))
     {
-      v6 = [(_UISubtitleCellContentView *)self subtitleLabel];
-      if (v6)
+      subtitleLabel = [(_UISubtitleCellContentView *)self subtitleLabel];
+      if (subtitleLabel)
       {
-        v7 = v6;
-        v8 = [(_UISubtitleCellContentView *)self subtitleLabel];
-        v3 = [v8 numberOfLines] != 1;
+        v7 = subtitleLabel;
+        subtitleLabel2 = [(_UISubtitleCellContentView *)self subtitleLabel];
+        v3 = [subtitleLabel2 numberOfLines] != 1;
 
-        if (!v5)
+        if (!textLabel)
         {
 LABEL_9:
 
@@ -351,7 +351,7 @@ LABEL_9:
       else
       {
         v3 = 0;
-        if (!v5)
+        if (!textLabel)
         {
           goto LABEL_9;
         }
@@ -377,12 +377,12 @@ LABEL_9:
   [(UIView *)&v2 _prepareForFirstIntrinsicContentSizeCalculation];
 }
 
-- (void)_prepareForSecondIntrinsicContentSizeCalculationWithLayoutEngineBounds:(CGRect)a3
+- (void)_prepareForSecondIntrinsicContentSizeCalculationWithLayoutEngineBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self alignmentRectForFrame:?];
   self->_preferredMaxLayoutWidth = v8;
   v9.receiver = self;
@@ -401,32 +401,32 @@ LABEL_9:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  if (a3.width <= 0.0)
+  if (fits.width <= 0.0)
   {
-    a3.width = 1.79769313e308;
+    fits.width = 1.79769313e308;
   }
 
-  if (a3.height <= 0.0)
+  if (fits.height <= 0.0)
   {
-    a3.height = 1.79769313e308;
+    fits.height = 1.79769313e308;
   }
 
-  [(_UISubtitleCellContentView *)self _intrinsicSizeWithinSize:a3.width, a3.height];
+  [(_UISubtitleCellContentView *)self _intrinsicSizeWithinSize:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9 = 1.79769313e308;
-  if (a3.width <= 0.0)
+  if (size.width <= 0.0)
   {
-    a3.width = 1.79769313e308;
+    size.width = 1.79769313e308;
   }
 
   if (height > 0.0)
@@ -434,13 +434,13 @@ LABEL_9:
     v9 = height;
   }
 
-  [(_UISubtitleCellContentView *)self _intrinsicSizeWithinSize:a3.width, v9];
-  if (a4 >= 1000.0)
+  [(_UISubtitleCellContentView *)self _intrinsicSizeWithinSize:size.width, v9];
+  if (priority >= 1000.0)
   {
     v10 = width;
   }
 
-  if (a5 >= 1000.0)
+  if (fittingPriority >= 1000.0)
   {
     v11 = height;
   }
@@ -450,53 +450,53 @@ LABEL_9:
   return result;
 }
 
-- (void)_computeSizesForAvailableSpace:(double)a3
+- (void)_computeSizesForAvailableSpace:(double)space
 {
   if (!a2)
   {
-    *(a1 + 112) = 0;
-    *(a1 + 80) = 0u;
-    *(a1 + 96) = 0u;
-    *(a1 + 48) = 0u;
-    *(a1 + 64) = 0u;
-    *(a1 + 16) = 0u;
-    *(a1 + 32) = 0u;
-    *a1 = 0u;
+    *(self + 112) = 0;
+    *(self + 80) = 0u;
+    *(self + 96) = 0u;
+    *(self + 48) = 0u;
+    *(self + 64) = 0u;
+    *(self + 16) = 0u;
+    *(self + 32) = 0u;
+    *self = 0u;
     return;
   }
 
-  *a1 = 0;
+  *self = 0;
   v7 = MEMORY[0x1E695F060];
   v8 = *MEMORY[0x1E695F060];
-  *(a1 + 8) = *MEMORY[0x1E695F060];
-  *(a1 + 24) = v8;
-  *(a1 + 40) = 0;
-  *(a1 + 48) = v8;
-  *(a1 + 64) = v8;
-  *(a1 + 80) = v8;
-  *(a1 + 96) = v8;
+  *(self + 8) = *MEMORY[0x1E695F060];
+  *(self + 24) = v8;
+  *(self + 40) = 0;
+  *(self + 48) = v8;
+  *(self + 64) = v8;
+  *(self + 80) = v8;
+  *(self + 96) = v8;
   v61 = v8;
-  *(a1 + 112) = 0;
-  v9 = [a2 traitCollection];
-  v10 = [a2 imageView];
-  v11 = [a2[55] imageView];
-  [v11 maximumSize];
+  *(self + 112) = 0;
+  traitCollection = [a2 traitCollection];
+  imageView = [a2 imageView];
+  imageView2 = [a2[55] imageView];
+  [imageView2 maximumSize];
   v65.f64[0] = v12;
   v65.f64[1] = v13;
 
   v14 = 0;
-  if (_UIContentViewShouldUseAccessibilityLargeTextLayout(v9))
+  if (_UIContentViewShouldUseAccessibilityLargeTextLayout(traitCollection))
   {
-    v15 = [a2[55] textLabel];
-    ShouldUseAccessibilityTextWrappingLayout = _UIContentViewShouldUseAccessibilityTextWrappingLayout(v15, v10, &v65);
+    textLabel = [a2[55] textLabel];
+    ShouldUseAccessibilityTextWrappingLayout = _UIContentViewShouldUseAccessibilityTextWrappingLayout(textLabel, imageView, &v65);
 
     if (ShouldUseAccessibilityTextWrappingLayout)
     {
       v14 = 2;
-      *a1 = 2;
-      if (!v10)
+      *self = 2;
+      if (!imageView)
       {
-        v63 = *(a1 + 8);
+        v63 = *(self + 8);
         goto LABEL_26;
       }
 
@@ -505,28 +505,28 @@ LABEL_9:
     }
 
     v14 = 1;
-    *a1 = 1;
+    *self = 1;
   }
 
-  if (!v10)
+  if (!imageView)
   {
     goto LABEL_24;
   }
 
   v17 = 0;
 LABEL_9:
-  [v10 _intrinsicSizeWithinSize:{a3, a4}];
+  [imageView _intrinsicSizeWithinSize:{space, a4}];
   v60 = v18;
   v62 = v19;
-  v20 = [v10 image];
-  v21 = [a2[55] imageView];
-  [v21 reservedLayoutSize];
-  v23 = _UIContentViewImageViewLayoutHeight(v20, v9, v62, v22, v65.f64[1]);
-  *(a1 + 32) = v23;
+  image = [imageView image];
+  imageView3 = [a2[55] imageView];
+  [imageView3 reservedLayoutSize];
+  v23 = _UIContentViewImageViewLayoutHeight(image, traitCollection, v62, v22, v65.f64[1]);
+  *(self + 32) = v23;
 
   [a2 directionalLayoutMargins];
   v26 = a4 + v24 + v25;
-  v27.f64[0] = a3;
+  v27.f64[0] = space;
   if (v23 >= v62)
   {
     v26 = a4;
@@ -554,11 +554,11 @@ LABEL_9:
     v29 = vmulq_n_f64(v28, v31);
   }
 
-  *(a1 + 8) = v29;
+  *(self + 8) = v29;
   v63 = v29.f64[0];
   if (v17)
   {
-    *(a1 + 40) = 0;
+    *(self + 40) = 0;
 LABEL_26:
     [a2[55] imageToTextPadding];
     v40 = v63 + v41;
@@ -566,9 +566,9 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v32 = [v10 image];
-  v33 = [a2[55] imageView];
-  [v33 reservedLayoutSize];
+  image2 = [imageView image];
+  imageView4 = [a2[55] imageView];
+  [imageView4 reservedLayoutSize];
   v35 = a2[55];
   if (v35)
   {
@@ -580,74 +580,74 @@ LABEL_26:
     v36 = 0;
   }
 
-  v37 = _UIContentViewImageViewHorizontalCenteringOffset(v32, v9, v36, v63, v34);
-  *(a1 + 40) = v37;
+  v37 = _UIContentViewImageViewHorizontalCenteringOffset(image2, traitCollection, v36, v63, v34);
+  *(self + 40) = v37;
 
   v38 = v63 + v37 + v37;
-  *(a1 + 24) = v38;
+  *(self + 24) = v38;
   [a2[55] imageToTextPadding];
-  a3 = a3 - (v38 + v39);
+  space = space - (v38 + v39);
 LABEL_24:
   v40 = 0.0;
 LABEL_27:
-  v42 = [a2 textLabel];
-  v43 = [a2[55] textLabel];
-  _UIContentViewUpdateLabelAttributesForAccessibilityLayout(v42, v43, v14, v40);
+  textLabel2 = [a2 textLabel];
+  textLabel3 = [a2[55] textLabel];
+  _UIContentViewUpdateLabelAttributesForAccessibilityLayout(textLabel2, textLabel3, v14, v40);
 
-  v44 = [a2 subtitleLabel];
-  v45 = [a2[55] subtitleLabel];
-  _UIContentViewUpdateLabelAttributesForAccessibilityLayout(v44, v45, v14, 0.0);
+  subtitleLabel = [a2 subtitleLabel];
+  subtitleLabel2 = [a2[55] subtitleLabel];
+  _UIContentViewUpdateLabelAttributesForAccessibilityLayout(subtitleLabel, subtitleLabel2, v14, 0.0);
 
-  *(a1 + 112) = v40;
-  if (v42)
+  *(self + 112) = v40;
+  if (textLabel2)
   {
-    [v42 _intrinsicSizeWithinSize:{a3, a4}];
+    [textLabel2 _intrinsicSizeWithinSize:{space, a4}];
     v48 = fmax(v7[1], fmin(v47, a4));
-    *(a1 + 48) = fmax(*v7, fmin(v46, a3));
-    *(a1 + 56) = v48;
-    *(a1 + 80) = *(a1 + 48);
+    *(self + 48) = fmax(*v7, fmin(v46, space));
+    *(self + 56) = v48;
+    *(self + 80) = *(self + 48);
   }
 
-  if (v44)
+  if (subtitleLabel)
   {
-    v49 = *(a1 + 88);
+    v49 = *(self + 88);
     [a2[55] textToSubtitlePadding];
     v51 = a4 - (v49 + v50);
-    [v44 _intrinsicSizeWithinSize:{a3, v51}];
-    v53 = fmax(*v7, fmin(v52, a3));
+    [subtitleLabel _intrinsicSizeWithinSize:{space, v51}];
+    v53 = fmax(*v7, fmin(v52, space));
     v55 = fmax(v7[1], fmin(v54, v51));
-    *(a1 + 64) = v53;
-    *(a1 + 72) = v55;
-    if (*(a1 + 80) >= v53)
+    *(self + 64) = v53;
+    *(self + 72) = v55;
+    if (*(self + 80) >= v53)
     {
-      v53 = *(a1 + 80);
+      v53 = *(self + 80);
     }
 
-    *(a1 + 80) = v53;
+    *(self + 80) = v53;
     [a2[55] textToSubtitlePadding];
-    *(a1 + 88) = v49 + v55 + v56;
+    *(self + 88) = v49 + v55 + v56;
   }
 
-  v57 = [a2[54] textInputView];
+  textInputView = [a2[54] textInputView];
 
-  if (v57)
+  if (textInputView)
   {
-    if (!v42 || [v42 isHidden])
+    if (!textLabel2 || [textLabel2 isHidden])
     {
-      v59 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v59 handleFailureInMethod:sel__computeSizesForAvailableSpace_ object:a2 file:@"_UISubtitleCellContentView.m" lineNumber:708 description:@"The text label should exist if there is a text input view"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__computeSizesForAvailableSpace_ object:a2 file:@"_UISubtitleCellContentView.m" lineNumber:708 description:@"The text label should exist if there is a text input view"];
     }
 
-    v58 = *(a1 + 56);
-    *(a1 + 96) = a3 - v40;
-    *(a1 + 104) = v58;
+    v58 = *(self + 56);
+    *(self + 96) = space - v40;
+    *(self + 104) = v58;
   }
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (self && (animatingToConfiguration = self->_animatingToConfiguration) != 0 && (configuration = self->_configuration, configuration != animatingToConfiguration))
   {
     v8 = configuration;
@@ -659,8 +659,8 @@ LABEL_27:
     v8 = 0;
   }
 
-  v9 = [(UIView *)self traitCollection];
-  v10 = _UITableConstantsForTraitCollection(v9);
+  traitCollection = [(UIView *)self traitCollection];
+  v10 = _UITableConstantsForTraitCollection(traitCollection);
   if (width >= self->_preferredMaxLayoutWidth)
   {
     preferredMaxLayoutWidth = self->_preferredMaxLayoutWidth;
@@ -704,18 +704,18 @@ LABEL_27:
     v20 = v22;
   }
 
-  v24 = [(_UISubtitleCellContentView *)self textLabel];
-  v25 = [v24 font];
-  v26 = v25;
-  if (v25)
+  textLabel = [(_UISubtitleCellContentView *)self textLabel];
+  font = [textLabel font];
+  v26 = font;
+  if (font)
   {
-    v27 = v25;
+    font2 = font;
   }
 
   else
   {
-    v28 = [(_UISubtitleCellContentViewConfiguration *)self->_configuration textLabel];
-    v27 = [v28 font];
+    textLabel2 = [(_UISubtitleCellContentViewConfiguration *)self->_configuration textLabel];
+    font2 = [textLabel2 font];
   }
 
   v29 = self->_configuration;
@@ -729,7 +729,7 @@ LABEL_27:
     v30 = 0;
   }
 
-  [v10 minimumContentViewHeightForFont:v27 traitCollection:v9 isSidebarStyle:v30];
+  [v10 minimumContentViewHeightForFont:font2 traitCollection:traitCollection isSidebarStyle:v30];
   v32 = v31;
   if (v8)
   {
@@ -768,11 +768,11 @@ LABEL_27:
   return result;
 }
 
-- (void)_layoutMarginsDidChangeFromOldMargins:(UIEdgeInsets)a3
+- (void)_layoutMarginsDidChangeFromOldMargins:(UIEdgeInsets)margins
 {
   v4.receiver = self;
   v4.super_class = _UISubtitleCellContentView;
-  [(UIView *)&v4 _layoutMarginsDidChangeFromOldMargins:a3.top, a3.left, a3.bottom, a3.right];
+  [(UIView *)&v4 _layoutMarginsDidChangeFromOldMargins:margins.top, margins.left, margins.bottom, margins.right];
   [(UIView *)self invalidateIntrinsicContentSize];
   [(UIView *)self setNeedsLayout];
 }
@@ -806,12 +806,12 @@ LABEL_27:
   v133 = 0u;
   memset(v132, 0, sizeof(v132));
   [(_UISubtitleCellContentView *)v132 _computeSizesForAvailableSpace:v13 - v18 - v20, v22];
-  v23 = [(_UISubtitleCellContentView *)self imageView];
+  imageView = [(_UISubtitleCellContentView *)self imageView];
   v24 = *&v132[0];
   v121 = v6;
   v113 = v15;
   v114 = v13;
-  if (!v23 || *&v132[0] == 2)
+  if (!imageView || *&v132[0] == 2)
   {
     v39 = 2;
     v124 = v123;
@@ -834,7 +834,7 @@ LABEL_27:
     v15 = v36;
     v124 = v34;
     v125 = v37;
-    [v23 setFrame:?];
+    [imageView setFrame:?];
     [(_UISubtitleCellContentViewConfiguration *)self->_configuration imageToTextPadding];
     v19 = v25 + v38;
     v6 = v121;
@@ -843,9 +843,9 @@ LABEL_27:
 
   v140.origin.x = UIRectCenteredYInRectScale(0.0, 0.0, *&v136, *(&v136 + 1), 0.0, v17, 0.0, v22, v9);
   MinY = CGRectGetMinY(v140);
-  v41 = [(_UISubtitleCellContentView *)self textLabel];
+  textLabel = [(_UISubtitleCellContentView *)self textLabel];
   v42 = MinY;
-  if (v41)
+  if (textLabel)
   {
     v126 = v124;
     v127 = v125;
@@ -861,7 +861,7 @@ LABEL_27:
     v49 = v48;
     v51 = v50;
     v53 = v52;
-    [v41 setFrame:?];
+    [textLabel setFrame:?];
     v141.origin.x = v47;
     v141.origin.y = v49;
     v141.size.width = v51;
@@ -871,19 +871,19 @@ LABEL_27:
     v42 = MaxY + v55;
     if (v24)
     {
-      [v23 frame];
+      [imageView frame];
       v57 = v56;
       v59 = v58;
       v61 = v60;
       v63 = v62;
-      LineOfLabel = _UIContentViewRectForVerticalCenteringWithFirstLineOfLabel(v41);
+      LineOfLabel = _UIContentViewRectForVerticalCenteringWithFirstLineOfLabel(textLabel);
       if (v24 == 2)
       {
         v68 = v67;
         v69 = v66;
         v70 = v65;
         v71 = LineOfLabel;
-        [(UIView *)self bringSubviewToFront:v23];
+        [(UIView *)self bringSubviewToFront:imageView];
         v126 = v124;
         v127 = v125;
         v128 = v116;
@@ -918,7 +918,7 @@ LABEL_27:
         }
       }
 
-      [v23 setFrame:{UIRectIntegralWithScale(v77, v76, v79, v81, v9)}];
+      [imageView setFrame:{UIRectIntegralWithScale(v77, v76, v79, v81, v9)}];
     }
 
     v6 = v121;
@@ -927,15 +927,15 @@ LABEL_27:
     MinY = v115;
   }
 
-  if (v23)
+  if (imageView)
   {
-    v87 = [(_UISubtitleCellContentViewConfiguration *)self->_configuration imageView];
-    [v87 cornerRadius];
-    _UIApplyCornerRadiusToView(v23, v88);
+    imageView2 = [(_UISubtitleCellContentViewConfiguration *)self->_configuration imageView];
+    [imageView2 cornerRadius];
+    _UIApplyCornerRadiusToView(imageView, v88);
   }
 
-  v89 = [(_UISubtitleCellContentView *)self subtitleLabel];
-  if (v89)
+  subtitleLabel = [(_UISubtitleCellContentView *)self subtitleLabel];
+  if (subtitleLabel)
   {
     v126 = v124;
     v127 = v125;
@@ -944,12 +944,12 @@ LABEL_27:
     v130 = v39;
     v131 = v19;
     v90 = [(UIView *)self _applyDirectionalRelativePosition:0.0 toRect:v42, *&v135];
-    [v89 setFrame:{UIRectIntegralWithScale(v90, v91, v92, v93, v9)}];
+    [subtitleLabel setFrame:{UIRectIntegralWithScale(v90, v91, v92, v93, v9)}];
   }
 
-  v94 = [(_UIContentViewEditingController *)self->_editingController textInputView];
+  textInputView = [(_UIContentViewEditingController *)self->_editingController textInputView];
 
-  if (v94)
+  if (textInputView)
   {
     v126 = v124;
     v127 = v125;
@@ -963,10 +963,10 @@ LABEL_27:
     v102 = v101;
     v104 = v103;
     v106 = v105;
-    v107 = [(_UIContentViewEditingController *)self->_editingController textInputView];
+    textInputView2 = [(_UIContentViewEditingController *)self->_editingController textInputView];
     v108 = v102;
     v6 = v100;
-    [v107 setFrame:{v99, v108, v104, v106}];
+    [textInputView2 setFrame:{v99, v108, v104, v106}];
   }
 
   if (self->_primaryTextFrameDidChangeHandler)
@@ -1010,19 +1010,19 @@ LABEL_27:
 
 - (NSLayoutRect)_primaryTextLayoutRect
 {
-  v2 = [(_UISubtitleCellContentView *)self textLabel];
-  v3 = [v2 _layoutRect];
+  textLabel = [(_UISubtitleCellContentView *)self textLabel];
+  _layoutRect = [textLabel _layoutRect];
 
-  return v3;
+  return _layoutRect;
 }
 
 - (CGRect)_primaryTextLayoutFrame
 {
-  v2 = [(_UISubtitleCellContentView *)self textLabel];
-  v3 = v2;
-  if (v2)
+  textLabel = [(_UISubtitleCellContentView *)self textLabel];
+  v3 = textLabel;
+  if (textLabel)
   {
-    [v2 frame];
+    [textLabel frame];
     v5 = v4;
     v7 = v6;
     v9 = v8;

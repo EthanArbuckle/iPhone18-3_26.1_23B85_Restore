@@ -1,20 +1,20 @@
 @interface VideoHostingView
-- (_TtC17BridgePreferences16VideoHostingView)initWithCoder:(id)a3;
-- (_TtC17BridgePreferences16VideoHostingView)initWithFrame:(CGRect)a3;
+- (_TtC17BridgePreferences16VideoHostingView)initWithCoder:(id)coder;
+- (_TtC17BridgePreferences16VideoHostingView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)playerDidFinishPlaying;
-- (void)playerItemFailedToPlayWithNotification:(id)a3;
+- (void)playerItemFailedToPlayWithNotification:(id)notification;
 @end
 
 @implementation VideoHostingView
 
-- (_TtC17BridgePreferences16VideoHostingView)initWithFrame:(CGRect)a3
+- (_TtC17BridgePreferences16VideoHostingView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_241EA9E38();
   sub_241EA9E28();
   sub_241EA9E18();
@@ -28,7 +28,7 @@
   return v7;
 }
 
-- (_TtC17BridgePreferences16VideoHostingView)initWithCoder:(id)a3
+- (_TtC17BridgePreferences16VideoHostingView)initWithCoder:(id)coder
 {
   sub_241EA9E38();
   sub_241EA9E28();
@@ -38,7 +38,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = sub_241E9DFD0(a3);
+  v4 = sub_241E9DFD0(coder);
 
   return v4;
 }
@@ -53,7 +53,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_241EA9E28();
   sub_241EA9E18();
 
@@ -70,11 +70,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_241E9FF2C();
 }
 
-- (void)playerItemFailedToPlayWithNotification:(id)a3
+- (void)playerItemFailedToPlayWithNotification:(id)notification
 {
   v4 = sub_241EA9BA8();
   v5 = *(v4 - 8);
@@ -89,7 +89,7 @@
   }
 
   sub_241EA9B88();
-  v8 = self;
+  selfCopy = self;
   sub_241EA0448();
 
   (*(v5 + 8))(v7, v4);
@@ -107,13 +107,13 @@
 
   v6.receiver = self;
   v6.super_class = type metadata accessor for VideoHostingView();
-  v3 = self;
+  selfCopy = self;
   [(VideoHostingView *)&v6 layoutSubviews];
-  v4 = *(&v3->super.super.super.isa + OBJC_IVAR____TtC17BridgePreferences16VideoHostingView_playerLayer);
+  v4 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC17BridgePreferences16VideoHostingView_playerLayer);
   if (v4)
   {
     v5 = v4;
-    [(VideoHostingView *)v3 bounds:v6.receiver];
+    [(VideoHostingView *)selfCopy bounds:v6.receiver];
     [v5 setFrame_];
   }
 

@@ -1,7 +1,7 @@
 @interface NRCallbackArray
 - (NRCallbackArray)init;
-- (void)addObject:(id)a3;
-- (void)sweepWithCollection:(id)a3;
+- (void)addObject:(id)object;
+- (void)sweepWithCollection:(id)collection;
 @end
 
 @implementation NRCallbackArray
@@ -19,21 +19,21 @@
   return result;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v9 = a3;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_lock);
   callbacks = self->_callbacks;
   if (callbacks)
   {
-    v5 = MEMORY[0x1E12E7560](v9);
+    v5 = MEMORY[0x1E12E7560](objectCopy);
     [(NSMutableArray *)callbacks addObject:v5];
   }
 
   else
   {
     v6 = objc_alloc(MEMORY[0x1E695DF70]);
-    v5 = MEMORY[0x1E12E7560](v9);
+    v5 = MEMORY[0x1E12E7560](objectCopy);
     v7 = [v6 initWithObjects:{v5, 0}];
     v8 = self->_callbacks;
     self->_callbacks = v7;
@@ -42,9 +42,9 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)sweepWithCollection:(id)a3
+- (void)sweepWithCollection:(id)collection
 {
-  v12 = a3;
+  collectionCopy = collection;
   os_unfair_lock_lock(&self->_lock);
   p_callbacks = &self->_callbacks;
   callbacks = self->_callbacks;
@@ -62,7 +62,7 @@
       do
       {
         v10 = [(NSMutableArray *)v6 objectAtIndexedSubscript:v8];
-        v11 = (v10)[2](v10, v12);
+        v11 = (v10)[2](v10, collectionCopy);
 
         if (v11)
         {

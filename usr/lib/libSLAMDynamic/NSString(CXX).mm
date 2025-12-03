@@ -17,8 +17,8 @@
 
 - (size_t)asCXXString
 {
-  v3 = [a1 UTF8String];
-  result = strlen(v3);
+  uTF8String = [self UTF8String];
+  result = strlen(uTF8String);
   if (result >= 0x7FFFFFFFFFFFFFF8)
   {
     std::string::__throw_length_error[abi:ne200100]();
@@ -33,7 +33,7 @@
   a2[23] = result;
   if (result)
   {
-    result = memmove(a2, v3, result);
+    result = memmove(a2, uTF8String, result);
   }
 
   a2[v5] = 0;

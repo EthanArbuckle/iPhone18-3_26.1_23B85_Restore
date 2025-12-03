@@ -1,39 +1,39 @@
 @interface BBDismissalSyncBulletinMatch
-- (BBDismissalSyncBulletinMatch)initWithDismissalDictionaryItem:(id)a3;
-- (BBDismissalSyncBulletinMatch)initWithDismissalID:(id)a3 andItem:(id)a4;
+- (BBDismissalSyncBulletinMatch)initWithDismissalDictionaryItem:(id)item;
+- (BBDismissalSyncBulletinMatch)initWithDismissalID:(id)d andItem:(id)item;
 @end
 
 @implementation BBDismissalSyncBulletinMatch
 
-- (BBDismissalSyncBulletinMatch)initWithDismissalID:(id)a3 andItem:(id)a4
+- (BBDismissalSyncBulletinMatch)initWithDismissalID:(id)d andItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  itemCopy = item;
   v12.receiver = self;
   v12.super_class = BBDismissalSyncBulletinMatch;
   v8 = [(BBDismissalSyncBulletinMatch *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     dismissalID = v8->_dismissalID;
     v8->_dismissalID = v9;
 
-    objc_storeStrong(&v8->_dismissalItem, a4);
+    objc_storeStrong(&v8->_dismissalItem, item);
   }
 
   return v8;
 }
 
-- (BBDismissalSyncBulletinMatch)initWithDismissalDictionaryItem:(id)a3
+- (BBDismissalSyncBulletinMatch)initWithDismissalDictionaryItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = BBDismissalSyncBulletinMatch;
   v6 = [(BBDismissalSyncBulletinMatch *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dismissalItem, a3);
+    objc_storeStrong(&v6->_dismissalItem, item);
   }
 
   return v7;

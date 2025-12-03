@@ -1,20 +1,20 @@
 @interface THGlossaryController
-- (THGlossaryController)initWithModel:(id)a3 documentRoot:(id)a4;
+- (THGlossaryController)initWithModel:(id)model documentRoot:(id)root;
 - (id)alphabeticalTermIndex;
 - (void)dealloc;
 @end
 
 @implementation THGlossaryController
 
-- (THGlossaryController)initWithModel:(id)a3 documentRoot:(id)a4
+- (THGlossaryController)initWithModel:(id)model documentRoot:(id)root
 {
   v7.receiver = self;
   v7.super_class = THGlossaryController;
   result = [(THGlossaryController *)&v7 init];
   if (result)
   {
-    result->mDocumentRoot = a4;
-    result->mModel = a3;
+    result->mDocumentRoot = root;
+    result->mModel = model;
   }
 
   return result;

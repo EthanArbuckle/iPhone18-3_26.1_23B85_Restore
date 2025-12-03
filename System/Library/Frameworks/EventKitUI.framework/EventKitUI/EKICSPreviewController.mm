@@ -1,71 +1,71 @@
 @interface EKICSPreviewController
-- (BOOL)_calendarSupportsImport:(id)a3;
+- (BOOL)_calendarSupportsImport:(id)import;
 - (BOOL)_shouldShowCalendarChooser;
-- (BOOL)eventViewControllerShouldDismissSelf:(id)a3;
-- (EKICSPreviewController)initWithData:(id)a3 eventStore:(id)a4 options:(unint64_t)a5;
-- (EKICSPreviewController)initWithEventObjectID:(id)a3 eventStore:(id)a4;
-- (EKICSPreviewController)initWithEventUID:(int)a3 eventStore:(id)a4;
-- (EKICSPreviewController)initWithURL:(id)a3 eventStore:(id)a4 options:(unint64_t)a5;
+- (BOOL)eventViewControllerShouldDismissSelf:(id)self;
+- (EKICSPreviewController)initWithData:(id)data eventStore:(id)store options:(unint64_t)options;
+- (EKICSPreviewController)initWithEventObjectID:(id)d eventStore:(id)store;
+- (EKICSPreviewController)initWithEventUID:(int)d eventStore:(id)store;
+- (EKICSPreviewController)initWithURL:(id)l eventStore:(id)store options:(unint64_t)options;
 - (EKICSPreviewControllerDelegate)previewDelegate;
 - (id)_defaultCalendarForImport;
-- (id)detailViewForEvent:(id)a3 eventInRealStore:(BOOL)a4 showUpdate:(BOOL)a5 showDelete:(BOOL)a6;
+- (id)detailViewForEvent:(id)event eventInRealStore:(BOOL)store showUpdate:(BOOL)update showDelete:(BOOL)delete;
 - (id)singleExistingEventUniqueID;
 - (id)viewController;
 - (unint64_t)_countOfCalendarsSupportingImport;
-- (void)_createCancelButtonWithType:(int64_t)a3 target:(id)a4 action:(SEL)a5;
-- (void)_enumerateSupportedCalendarsUsingBlock:(id)a3;
+- (void)_createCancelButtonWithType:(int64_t)type target:(id)target action:(SEL)action;
+- (void)_enumerateSupportedCalendarsUsingBlock:(id)block;
 - (void)_updateCancelButton;
 - (void)addEventsToCalendar;
 - (void)attemptDisplayReviewPrompt;
-- (void)calendarChooserDidCancel:(id)a3;
-- (void)calendarChooserDidFinish:(id)a3;
+- (void)calendarChooserDidCancel:(id)cancel;
+- (void)calendarChooserDidFinish:(id)finish;
 - (void)dealloc;
-- (void)eventViewController:(id)a3 didCompleteWithAction:(int64_t)a4;
-- (void)eventViewControllerDidRequestAddToCalendar:(id)a3;
-- (void)handleDidImportEvent:(id)a3 fromController:(id)a4 intoCalendar:(id)a5;
+- (void)eventViewController:(id)controller didCompleteWithAction:(int64_t)action;
+- (void)eventViewControllerDidRequestAddToCalendar:(id)calendar;
+- (void)handleDidImportEvent:(id)event fromController:(id)controller intoCalendar:(id)calendar;
 - (void)handleImportEventError;
-- (void)icsPreviewListController:(id)a3 didSelectEvent:(id)a4;
-- (void)importAllIntoCalendar:(id)a3;
-- (void)importAllRequested:(id)a3;
-- (void)importEventFromController:(id)a3 intoCalendar:(id)a4;
-- (void)presentCalendarChooserForController:(id)a3;
-- (void)setCancelButtonWithTarget:(id)a3 action:(SEL)a4;
+- (void)icsPreviewListController:(id)controller didSelectEvent:(id)event;
+- (void)importAllIntoCalendar:(id)calendar;
+- (void)importAllRequested:(id)requested;
+- (void)importEventFromController:(id)controller intoCalendar:(id)calendar;
+- (void)presentCalendarChooserForController:(id)controller;
+- (void)setCancelButtonWithTarget:(id)target action:(SEL)action;
 @end
 
 @implementation EKICSPreviewController
 
-- (EKICSPreviewController)initWithURL:(id)a3 eventStore:(id)a4 options:(unint64_t)a5
+- (EKICSPreviewController)initWithURL:(id)l eventStore:(id)store options:(unint64_t)options
 {
-  v8 = a4;
-  if (a3)
+  storeCopy = store;
+  if (l)
   {
-    v9 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:a3];
+    v9 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:l];
     if (v9)
     {
-      self = [(EKICSPreviewController *)self initWithData:v9 eventStore:v8 options:a5];
-      v10 = self;
+      self = [(EKICSPreviewController *)self initWithData:v9 eventStore:storeCopy options:options];
+      selfCopy = self;
     }
 
     else
     {
       NSLog(&cfstr_UnableToGetIcs.isa);
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Can't pass nil URL"];
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (EKICSPreviewController)initWithData:(id)a3 eventStore:(id)a4 options:(unint64_t)a5
+- (EKICSPreviewController)initWithData:(id)data eventStore:(id)store options:(unint64_t)options
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  storeCopy = store;
   v18.receiver = self;
   v18.super_class = EKICSPreviewController;
   v10 = [(EKICSPreviewController *)&v18 init];
@@ -77,10 +77,10 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (v8)
+  if (dataCopy)
   {
-    objc_storeStrong(&v10->_eventStore, a4);
-    v12 = [[EKICSPreviewModel alloc] initWithICSData:v8 eventStore:v11->_eventStore options:a5];
+    objc_storeStrong(&v10->_eventStore, store);
+    v12 = [[EKICSPreviewModel alloc] initWithICSData:dataCopy eventStore:v11->_eventStore options:options];
     model = v11->_model;
     v11->_model = v12;
 
@@ -89,17 +89,17 @@ LABEL_11:
       if (v11->_eventStore)
       {
         *&v11->_allowsEditing = 257;
-        v14 = [(EKICSPreviewModel *)v11->_model actionsState];
+        actionsState = [(EKICSPreviewModel *)v11->_model actionsState];
       }
 
       else
       {
-        v14 = 1;
+        actionsState = 1;
       }
 
-      v11->_actionsState = v14;
-      v16 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v16 addObserver:v11 selector:sel__databaseChanged_ name:*MEMORY[0x1E6966928] object:v11->_eventStore];
+      v11->_actionsState = actionsState;
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v11 selector:sel__databaseChanged_ name:*MEMORY[0x1E6966928] object:v11->_eventStore];
 
       goto LABEL_11;
     }
@@ -118,11 +118,11 @@ LABEL_12:
   return v15;
 }
 
-- (EKICSPreviewController)initWithEventObjectID:(id)a3 eventStore:(id)a4
+- (EKICSPreviewController)initWithEventObjectID:(id)d eventStore:(id)store
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  storeCopy = store;
   v18.receiver = self;
   v18.super_class = EKICSPreviewController;
   v8 = [(EKICSPreviewController *)&v18 init];
@@ -132,19 +132,19 @@ LABEL_12:
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v8->_eventStore, a4);
-  v10 = [MEMORY[0x1E695DFE8] calendarTimeZone];
-  [(EKEventStore *)v9->_eventStore setTimeZone:v10];
+  objc_storeStrong(&v8->_eventStore, store);
+  calendarTimeZone = [MEMORY[0x1E695DFE8] calendarTimeZone];
+  [(EKEventStore *)v9->_eventStore setTimeZone:calendarTimeZone];
 
-  v11 = [(EKEventStore *)v9->_eventStore eventForObjectID:v6 occurrenceDate:0];
+  v11 = [(EKEventStore *)v9->_eventStore eventForObjectID:dCopy occurrenceDate:0];
   if (v11)
   {
     eventFromUID = v9->_eventFromUID;
     v9->_eventFromUID = v11;
     v13 = v11;
 
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 addObserver:v9 selector:sel__databaseChanged_ name:*MEMORY[0x1E6966928] object:v9->_eventStore];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__databaseChanged_ name:*MEMORY[0x1E6966928] object:v9->_eventStore];
 
 LABEL_4:
     v15 = v9;
@@ -155,7 +155,7 @@ LABEL_4:
   if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v20 = v6;
+    v20 = dCopy;
     _os_log_impl(&dword_1D3400000, v16, OS_LOG_TYPE_ERROR, "EKICSPreviewController cannot be initialized with no event; Could not find event with object id: %@", buf, 0xCu);
   }
 
@@ -165,22 +165,22 @@ LABEL_8:
   return v15;
 }
 
-- (EKICSPreviewController)initWithEventUID:(int)a3 eventStore:(id)a4
+- (EKICSPreviewController)initWithEventUID:(int)d eventStore:(id)store
 {
-  v4 = *&a3;
+  v4 = *&d;
   v6 = MEMORY[0x1E6966A68];
   v7 = *MEMORY[0x1E6992E18];
-  v8 = a4;
+  storeCopy = store;
   v9 = [v6 objectIDWithEntityType:2 rowID:v4 databaseID:v7];
-  v10 = [(EKICSPreviewController *)self initWithEventObjectID:v9 eventStore:v8];
+  v10 = [(EKICSPreviewController *)self initWithEventObjectID:v9 eventStore:storeCopy];
 
   return v10;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E6966928] object:self->_eventStore];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E6966928] object:self->_eventStore];
 
   v4.receiver = self;
   v4.super_class = EKICSPreviewController;
@@ -191,30 +191,30 @@ LABEL_8:
 {
   if ([(EKICSPreviewModel *)self->_model totalEventCount]== 1 && [(EKICSPreviewModel *)self->_model importedEventCount]== 1)
   {
-    v3 = [(EKICSPreviewModel *)self->_model importedEvents];
-    v4 = [v3 firstObject];
+    importedEvents = [(EKICSPreviewModel *)self->_model importedEvents];
+    firstObject = [importedEvents firstObject];
 
-    v5 = [(EKICSPreviewModel *)self->_model eventStore];
-    v6 = [v4 uniqueId];
-    v7 = [v5 eventWithUniqueId:v6];
+    eventStore = [(EKICSPreviewModel *)self->_model eventStore];
+    uniqueId = [firstObject uniqueId];
+    v7 = [eventStore eventWithUniqueId:uniqueId];
 
-    if (v7 && (v8 = [v7 sequenceNumber], v8 >= objc_msgSend(v4, "sequenceNumber")))
+    if (v7 && (v8 = [v7 sequenceNumber], v8 >= objc_msgSend(firstObject, "sequenceNumber")))
     {
-      v9 = [v7 uniqueID];
+      uniqueID = [v7 uniqueID];
     }
 
     else
     {
-      v9 = 0;
+      uniqueID = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    uniqueID = 0;
   }
 
-  return v9;
+  return uniqueID;
 }
 
 - (void)addEventsToCalendar
@@ -269,29 +269,29 @@ LABEL_8:
   }
 }
 
-- (id)detailViewForEvent:(id)a3 eventInRealStore:(BOOL)a4 showUpdate:(BOOL)a5 showDelete:(BOOL)a6
+- (id)detailViewForEvent:(id)event eventInRealStore:(BOOL)store showUpdate:(BOOL)update showDelete:(BOOL)delete
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
+  deleteCopy = delete;
+  updateCopy = update;
+  storeCopy = store;
+  eventCopy = event;
   v11 = [[EKEventViewController alloc] initWithRemoteUI:0];
-  [(EKEventViewController *)v11 setICSPreview:!v8];
-  [(EKEventViewController *)v11 setEvent:v10];
+  [(EKEventViewController *)v11 setICSPreview:!storeCopy];
+  [(EKEventViewController *)v11 setEvent:eventCopy];
 
-  v12 = 0;
+  _anyCalendarsSupportingImport = 0;
   if (self->_allowsImport)
   {
-    v12 = 0;
-    if (!self->_actionsState && !v8)
+    _anyCalendarsSupportingImport = 0;
+    if (!self->_actionsState && !storeCopy)
     {
-      v12 = [(EKICSPreviewController *)self _anyCalendarsSupportingImport];
+      _anyCalendarsSupportingImport = [(EKICSPreviewController *)self _anyCalendarsSupportingImport];
     }
   }
 
-  [(EKEventViewController *)v11 setShowsAddToCalendarForICSPreview:v12 && !v7];
-  [(EKEventViewController *)v11 setShowsUpdateCalendarForICSPreview:v12 & v7];
-  [(EKEventViewController *)v11 setShowsDeleteForICSPreview:v12 & v6];
+  [(EKEventViewController *)v11 setShowsAddToCalendarForICSPreview:_anyCalendarsSupportingImport && !updateCopy];
+  [(EKEventViewController *)v11 setShowsUpdateCalendarForICSPreview:_anyCalendarsSupportingImport & updateCopy];
+  [(EKEventViewController *)v11 setShowsDeleteForICSPreview:_anyCalendarsSupportingImport & deleteCopy];
   actionsState = self->_actionsState;
   switch(actionsState)
   {
@@ -312,15 +312,15 @@ LABEL_8:
   [(EKEventViewController *)v11 setDelegate:self];
   [(EKEventViewController *)v11 setModalInPresentation:0];
   [(EKEventViewController *)v11 setShowsDoneButton:0];
-  v14 = [(EKEventViewController *)v11 view];
-  [v14 frame];
+  view = [(EKEventViewController *)v11 view];
+  [view frame];
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
   v21 = EKUIContainedControllerIdealWidth();
-  v22 = [(EKEventViewController *)v11 view];
-  [v22 setFrame:{v16, v18, v21, v20}];
+  view2 = [(EKEventViewController *)v11 view];
+  [view2 setFrame:{v16, v18, v21, v20}];
 
   [(EKEventViewController *)v11 preferredContentSize];
   [(EKEventViewController *)v11 setPreferredContentSize:?];
@@ -347,23 +347,23 @@ LABEL_8:
 
     else if ([(EKICSPreviewModel *)self->_model totalEventCount]== 1 && !self->_showListViewForOneEvent)
     {
-      v19 = [(EKICSPreviewModel *)self->_model importedEvents];
-      v20 = [v19 count];
+      importedEvents = [(EKICSPreviewModel *)self->_model importedEvents];
+      v20 = [importedEvents count];
 
-      v21 = [(EKICSPreviewModel *)self->_model allEvents];
-      contentViewController = [v21 firstObject];
+      allEvents = [(EKICSPreviewModel *)self->_model allEvents];
+      contentViewController = [allEvents firstObject];
 
       if ([contentViewController isPhantom])
       {
-        v22 = [contentViewController detachedItems];
-        v23 = [v22 count];
+        detachedItems = [contentViewController detachedItems];
+        v23 = [detachedItems count];
 
         if (v23)
         {
-          v24 = [contentViewController detachedItems];
-          v25 = [v24 anyObject];
+          detachedItems2 = [contentViewController detachedItems];
+          anyObject = [detachedItems2 anyObject];
 
-          contentViewController = v25;
+          contentViewController = anyObject;
         }
       }
 
@@ -385,14 +385,14 @@ LABEL_8:
       v7 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
       [v7 _scaledValueForValue:65.0];
       v9 = v8;
-      v10 = [(EKICSPreviewListController *)v5 tableView];
-      [v10 setEstimatedRowHeight:v9];
+      tableView = [(EKICSPreviewListController *)v5 tableView];
+      [tableView setEstimatedRowHeight:v9];
 
       v11 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v6];
       [v11 _scaledValueForValue:28.0];
       v13 = v12;
-      v14 = [(EKICSPreviewListController *)v5 tableView];
-      [v14 setEstimatedSectionHeaderHeight:v13];
+      tableView2 = [(EKICSPreviewListController *)v5 tableView];
+      [tableView2 setEstimatedSectionHeaderHeight:v13];
 
       v15 = self->_contentViewController;
       self->_contentViewController = &v5->super.super;
@@ -409,18 +409,18 @@ LABEL_8:
   return v17;
 }
 
-- (void)_createCancelButtonWithType:(int64_t)a3 target:(id)a4 action:(SEL)a5
+- (void)_createCancelButtonWithType:(int64_t)type target:(id)target action:(SEL)action
 {
   if (self->_hasCustomCancelButton)
   {
-    self->_cancelButtonType = a3;
+    self->_cancelButtonType = type;
     v9 = MEMORY[0x1E69DC708];
-    v10 = a4;
-    v13 = [[v9 alloc] initWithBarButtonSystemItem:a3 target:v10 action:a5];
+    targetCopy = target;
+    v13 = [[v9 alloc] initWithBarButtonSystemItem:type target:targetCopy action:action];
 
-    v11 = [(EKICSPreviewController *)self viewController];
-    v12 = [v11 navigationItem];
-    [v12 setLeftBarButtonItem:v13];
+    viewController = [(EKICSPreviewController *)self viewController];
+    navigationItem = [viewController navigationItem];
+    [navigationItem setLeftBarButtonItem:v13];
   }
 }
 
@@ -431,26 +431,26 @@ LABEL_8:
     v3 = [(EKICSPreviewModel *)self->_model unimportedEventCount]&& self->_allowsImport;
     if (v3 != self->_cancelButtonType)
     {
-      v4 = [(EKICSPreviewController *)self viewController];
-      v5 = [v4 navigationItem];
-      v6 = [v5 leftBarButtonItem];
-      v11 = [v6 target];
+      viewController = [(EKICSPreviewController *)self viewController];
+      navigationItem = [viewController navigationItem];
+      leftBarButtonItem = [navigationItem leftBarButtonItem];
+      target = [leftBarButtonItem target];
 
-      v7 = [(EKICSPreviewController *)self viewController];
-      v8 = [v7 navigationItem];
-      v9 = [v8 leftBarButtonItem];
-      v10 = [v9 action];
+      viewController2 = [(EKICSPreviewController *)self viewController];
+      navigationItem2 = [viewController2 navigationItem];
+      leftBarButtonItem2 = [navigationItem2 leftBarButtonItem];
+      action = [leftBarButtonItem2 action];
 
-      [(EKICSPreviewController *)self _createCancelButtonWithType:v3 target:v11 action:v10];
+      [(EKICSPreviewController *)self _createCancelButtonWithType:v3 target:target action:action];
     }
   }
 }
 
-- (void)setCancelButtonWithTarget:(id)a3 action:(SEL)a4
+- (void)setCancelButtonWithTarget:(id)target action:(SEL)action
 {
   self->_hasCustomCancelButton = 1;
   model = self->_model;
-  v8 = a3;
+  targetCopy = target;
   if ([(EKICSPreviewModel *)model unimportedEventCount])
   {
     allowsImport = self->_allowsImport;
@@ -461,25 +461,25 @@ LABEL_8:
     allowsImport = 0;
   }
 
-  [(EKICSPreviewController *)self _createCancelButtonWithType:allowsImport target:v8 action:a4];
+  [(EKICSPreviewController *)self _createCancelButtonWithType:allowsImport target:targetCopy action:action];
 }
 
-- (void)icsPreviewListController:(id)a3 didSelectEvent:(id)a4
+- (void)icsPreviewListController:(id)controller didSelectEvent:(id)event
 {
   model = self->_model;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(EKICSPreviewModel *)model importedEvents];
-  v11 = -[EKICSPreviewController detailViewForEvent:eventInRealStore:showUpdate:showDelete:](self, "detailViewForEvent:eventInRealStore:showUpdate:showDelete:", v7, [v9 containsObject:v7], -[EKICSPreviewModel shouldAllowUpdateEvent:](self->_model, "shouldAllowUpdateEvent:", v7), -[EKICSPreviewModel shouldAllowDeleteEvent:](self->_model, "shouldAllowDeleteEvent:", v7));
+  eventCopy = event;
+  controllerCopy = controller;
+  importedEvents = [(EKICSPreviewModel *)model importedEvents];
+  v11 = -[EKICSPreviewController detailViewForEvent:eventInRealStore:showUpdate:showDelete:](self, "detailViewForEvent:eventInRealStore:showUpdate:showDelete:", eventCopy, [importedEvents containsObject:eventCopy], -[EKICSPreviewModel shouldAllowUpdateEvent:](self->_model, "shouldAllowUpdateEvent:", eventCopy), -[EKICSPreviewModel shouldAllowDeleteEvent:](self->_model, "shouldAllowDeleteEvent:", eventCopy));
 
-  v10 = [v8 navigationController];
+  navigationController = [controllerCopy navigationController];
 
-  [v10 pushViewController:v11 animated:1];
+  [navigationController pushViewController:v11 animated:1];
 }
 
-- (void)presentCalendarChooserForController:(id)a3
+- (void)presentCalendarChooserForController:(id)controller
 {
-  v24 = a3;
+  controllerCopy = controller;
   v4 = [[EKCalendarChooser alloc] initWithSelectionStyle:0 displayStyle:1 eventStore:self->_eventStore];
   v5 = v4;
   if (v4)
@@ -492,40 +492,40 @@ LABEL_8:
     v7 = [v6 localizedStringForKey:@"Choose Calendar" value:&stru_1F4EF6790 table:0];
     [(EKCalendarChooser *)v5 setTitle:v7];
 
-    v8 = [(EKICSPreviewController *)self _defaultCalendarForImport];
-    [(EKCalendarChooser *)v5 setSelectedCalendar:v8];
+    _defaultCalendarForImport = [(EKICSPreviewController *)self _defaultCalendarForImport];
+    [(EKCalendarChooser *)v5 setSelectedCalendar:_defaultCalendarForImport];
 
     [(EKCalendarChooser *)v5 setShowDetailAccessories:1];
-    v9 = [(EKCalendarChooser *)v5 view];
-    [v9 frame];
+    view = [(EKCalendarChooser *)v5 view];
+    [view frame];
     v11 = v10;
     v13 = v12;
     v15 = v14;
 
     v16 = EKUIContainedControllerIdealWidth();
-    v17 = [(EKCalendarChooser *)v5 view];
-    [v17 setFrame:{v11, v13, v16, v15}];
+    view2 = [(EKCalendarChooser *)v5 view];
+    [view2 setFrame:{v11, v13, v16, v15}];
 
     v18 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v5];
     v19 = v18;
     if (v18)
     {
       [v18 setModalPresentationStyle:3];
-      v20 = [v24 navigationController];
-      v21 = [v20 navigationController];
-      if (v20)
+      navigationController = [controllerCopy navigationController];
+      v20NavigationController = [navigationController navigationController];
+      if (navigationController)
       {
-        v22 = v20;
+        v22 = navigationController;
       }
 
       else
       {
-        v22 = v24;
+        v22 = controllerCopy;
       }
 
-      if (v21)
+      if (v20NavigationController)
       {
-        v22 = v21;
+        v22 = v20NavigationController;
       }
 
       v23 = v22;
@@ -534,27 +534,27 @@ LABEL_8:
   }
 }
 
-- (BOOL)_calendarSupportsImport:(id)a3
+- (BOOL)_calendarSupportsImport:(id)import
 {
-  v3 = a3;
-  v4 = [v3 source];
-  v5 = [v4 constraints];
-  if ([v5 prohibitsICSImport])
+  importCopy = import;
+  source = [importCopy source];
+  constraints = [source constraints];
+  if ([constraints prohibitsICSImport])
   {
-    v6 = 0;
+    allowsContentModifications = 0;
   }
 
   else
   {
-    v6 = [v3 allowsContentModifications];
+    allowsContentModifications = [importCopy allowsContentModifications];
   }
 
-  return v6;
+  return allowsContentModifications;
 }
 
-- (void)_enumerateSupportedCalendarsUsingBlock:(id)a3
+- (void)_enumerateSupportedCalendarsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(EKEventStore *)self->_eventStore readWriteCalendarsForEntityType:0];
   v10[0] = 0;
   v10[1] = v10;
@@ -565,7 +565,7 @@ LABEL_8:
   v7[2] = __65__EKICSPreviewController__enumerateSupportedCalendarsUsingBlock___block_invoke;
   v7[3] = &unk_1E8442498;
   v7[4] = self;
-  v6 = v4;
+  v6 = blockCopy;
   v8 = v6;
   v9 = v10;
   [v5 enumerateObjectsUsingBlock:v7];
@@ -610,10 +610,10 @@ void __65__EKICSPreviewController__enumerateSupportedCalendarsUsingBlock___block
 
 - (id)_defaultCalendarForImport
 {
-  v3 = [(EKEventStore *)self->_eventStore defaultCalendarForNewEvents];
-  if ([(EKICSPreviewController *)self _calendarSupportsImport:v3])
+  defaultCalendarForNewEvents = [(EKEventStore *)self->_eventStore defaultCalendarForNewEvents];
+  if ([(EKICSPreviewController *)self _calendarSupportsImport:defaultCalendarForNewEvents])
   {
-    v4 = v3;
+    v4 = defaultCalendarForNewEvents;
   }
 
   else
@@ -637,55 +637,55 @@ void __65__EKICSPreviewController__enumerateSupportedCalendarsUsingBlock___block
   return v4;
 }
 
-- (void)importAllRequested:(id)a3
+- (void)importAllRequested:(id)requested
 {
-  v5 = a3;
+  requestedCopy = requested;
   if ([(EKICSPreviewController *)self _shouldShowCalendarChooser])
   {
-    [(EKICSPreviewController *)self presentCalendarChooserForController:v5];
+    [(EKICSPreviewController *)self presentCalendarChooserForController:requestedCopy];
   }
 
   else
   {
-    v4 = [(EKEventStore *)self->_eventStore defaultCalendarForNewEvents];
-    [(EKICSPreviewController *)self importAllIntoCalendar:v4];
+    defaultCalendarForNewEvents = [(EKEventStore *)self->_eventStore defaultCalendarForNewEvents];
+    [(EKICSPreviewController *)self importAllIntoCalendar:defaultCalendarForNewEvents];
   }
 }
 
-- (void)calendarChooserDidFinish:(id)a3
+- (void)calendarChooserDidFinish:(id)finish
 {
   currentImport = self->_currentImport;
-  v5 = a3;
-  v6 = [v5 selectedCalendar];
+  finishCopy = finish;
+  selectedCalendar = [finishCopy selectedCalendar];
   if (currentImport)
   {
-    [(EKICSPreviewController *)self importEventFromController:currentImport intoCalendar:v6];
+    [(EKICSPreviewController *)self importEventFromController:currentImport intoCalendar:selectedCalendar];
   }
 
   else
   {
-    [(EKICSPreviewController *)self importAllIntoCalendar:v6];
+    [(EKICSPreviewController *)self importAllIntoCalendar:selectedCalendar];
   }
 
-  [v5 dismissViewControllerAnimated:0 completion:0];
+  [finishCopy dismissViewControllerAnimated:0 completion:0];
   v7 = self->_currentImport;
   self->_currentImport = 0;
 }
 
-- (void)calendarChooserDidCancel:(id)a3
+- (void)calendarChooserDidCancel:(id)cancel
 {
-  [a3 dismissViewControllerAnimated:1 completion:0];
+  [cancel dismissViewControllerAnimated:1 completion:0];
   currentImport = self->_currentImport;
   self->_currentImport = 0;
 }
 
-- (void)importAllIntoCalendar:(id)a3
+- (void)importAllIntoCalendar:(id)calendar
 {
-  v4 = a3;
+  calendarCopy = calendar;
   if (!self->_importing)
   {
     self->_importing = 1;
-    [(EKICSPreviewModel *)self->_model importAllIntoCalendar:v4];
+    [(EKICSPreviewModel *)self->_model importAllIntoCalendar:calendarCopy];
     self->_importing = 0;
     WeakRetained = objc_loadWeakRetained(&self->_previewDelegate);
     if (WeakRetained)
@@ -715,10 +715,10 @@ void __48__EKICSPreviewController_importAllIntoCalendar___block_invoke(uint64_t 
   [WeakRetained icsPreviewControllerImportDidImportEvents:*(a1 + 32)];
 }
 
-- (void)importEventFromController:(id)a3 intoCalendar:(id)a4
+- (void)importEventFromController:(id)controller intoCalendar:(id)calendar
 {
-  v15 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  calendarCopy = calendar;
   if (!self->_importing)
   {
     self->_importing = 1;
@@ -737,12 +737,12 @@ void __48__EKICSPreviewController_importAllIntoCalendar___block_invoke(uint64_t 
     }
 
     model = self->_model;
-    v13 = [v15 event];
-    v14 = [(EKICSPreviewModel *)model importEvent:v13 intoCalendar:v6];
+    event = [controllerCopy event];
+    v14 = [(EKICSPreviewModel *)model importEvent:event intoCalendar:calendarCopy];
 
     if (v14)
     {
-      [(EKICSPreviewController *)self handleDidImportEvent:v14 fromController:v15 intoCalendar:v6];
+      [(EKICSPreviewController *)self handleDidImportEvent:v14 fromController:controllerCopy intoCalendar:calendarCopy];
     }
 
     else
@@ -756,15 +756,15 @@ void __48__EKICSPreviewController_importAllIntoCalendar___block_invoke(uint64_t 
   [(EKICSPreviewController *)self _updateCancelButton];
 }
 
-- (void)handleDidImportEvent:(id)a3 fromController:(id)a4 intoCalendar:(id)a5
+- (void)handleDidImportEvent:(id)event fromController:(id)controller intoCalendar:(id)calendar
 {
-  v7 = a4;
-  v8 = a3;
-  [v7 setICSPreview:0];
-  [v7 setEvent:v8];
+  controllerCopy = controller;
+  eventCopy = event;
+  [controllerCopy setICSPreview:0];
+  [controllerCopy setEvent:eventCopy];
 
-  [v7 preferredContentSize];
-  [v7 setPreferredContentSize:?];
+  [controllerCopy preferredContentSize];
+  [controllerCopy setPreferredContentSize:?];
 
   WeakRetained = objc_loadWeakRetained(&self->_previewDelegate);
   if (WeakRetained)
@@ -796,8 +796,8 @@ void __48__EKICSPreviewController_importAllIntoCalendar___block_invoke(uint64_t 
   v9 = [MEMORY[0x1E69DC648] actionWithTitle:v7 style:1 handler:0];
   [v8 addAction:v9];
 
-  v10 = [(EKICSPreviewController *)self viewController];
-  [v10 presentViewController:v8 animated:1 completion:0];
+  viewController = [(EKICSPreviewController *)self viewController];
+  [viewController presentViewController:v8 animated:1 completion:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_previewDelegate);
   v12 = objc_opt_respondsToSelector();
@@ -809,57 +809,57 @@ void __48__EKICSPreviewController_importAllIntoCalendar___block_invoke(uint64_t 
   }
 }
 
-- (void)eventViewControllerDidRequestAddToCalendar:(id)a3
+- (void)eventViewControllerDidRequestAddToCalendar:(id)calendar
 {
-  v5 = a3;
+  calendarCopy = calendar;
   model = self->_model;
-  v15 = v5;
-  v7 = [v5 event];
-  v8 = [(EKICSPreviewModel *)model shouldAllowUpdateEvent:v7];
+  v15 = calendarCopy;
+  event = [calendarCopy event];
+  v8 = [(EKICSPreviewModel *)model shouldAllowUpdateEvent:event];
 
   if (![(EKICSPreviewController *)self _shouldShowCalendarChooser]|| v8)
   {
-    v9 = [(EKEventStore *)self->_eventStore defaultCalendarForNewEvents];
+    defaultCalendarForNewEvents = [(EKEventStore *)self->_eventStore defaultCalendarForNewEvents];
     if (v8)
     {
-      v10 = [(EKICSPreviewModel *)self->_model eventStore];
-      v11 = [v15 event];
-      v12 = [v11 uniqueId];
-      v13 = [v10 eventWithUniqueId:v12];
+      eventStore = [(EKICSPreviewModel *)self->_model eventStore];
+      event2 = [v15 event];
+      uniqueId = [event2 uniqueId];
+      v13 = [eventStore eventWithUniqueId:uniqueId];
 
-      v14 = [v13 calendar];
+      calendar = [v13 calendar];
 
-      v9 = v14;
+      defaultCalendarForNewEvents = calendar;
     }
 
-    [(EKICSPreviewController *)self importEventFromController:v15 intoCalendar:v9];
+    [(EKICSPreviewController *)self importEventFromController:v15 intoCalendar:defaultCalendarForNewEvents];
   }
 
   else
   {
-    objc_storeStrong(&self->_currentImport, a3);
+    objc_storeStrong(&self->_currentImport, calendar);
     [(EKICSPreviewController *)self presentCalendarChooserForController:v15];
   }
 }
 
-- (BOOL)eventViewControllerShouldDismissSelf:(id)a3
+- (BOOL)eventViewControllerShouldDismissSelf:(id)self
 {
-  v3 = [(EKICSPreviewController *)self previewDelegate];
+  previewDelegate = [(EKICSPreviewController *)self previewDelegate];
   v4 = objc_opt_respondsToSelector();
 
   return (v4 & 1) == 0;
 }
 
-- (void)eventViewController:(id)a3 didCompleteWithAction:(int64_t)a4
+- (void)eventViewController:(id)controller didCompleteWithAction:(int64_t)action
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = [(EKICSPreviewController *)self previewDelegate:a3];
+  v5 = [(EKICSPreviewController *)self previewDelegate:controller];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v10 = [(EKICSPreviewController *)self previewDelegate];
-    [v10 icsPreviewControllerWantsDismissal:self];
+    previewDelegate = [(EKICSPreviewController *)self previewDelegate];
+    [previewDelegate icsPreviewControllerWantsDismissal:self];
   }
 
   else
@@ -868,11 +868,11 @@ void __48__EKICSPreviewController_importAllIntoCalendar___block_invoke(uint64_t 
     if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_ERROR))
     {
       v8 = v7;
-      v9 = [(EKICSPreviewController *)self previewDelegate];
+      previewDelegate2 = [(EKICSPreviewController *)self previewDelegate];
       *buf = 136315394;
       v12 = "[EKICSPreviewController eventViewController:didCompleteWithAction:]";
       v13 = 2112;
-      v14 = v9;
+      v14 = previewDelegate2;
       _os_log_impl(&dword_1D3400000, v8, OS_LOG_TYPE_ERROR, "%s called on EKICSPreviewController but the preview delegate [%@] doesn't implement [EKICSPreviewControllerDelegate icsPreviewControllerWantsDismissal]", buf, 0x16u);
     }
   }

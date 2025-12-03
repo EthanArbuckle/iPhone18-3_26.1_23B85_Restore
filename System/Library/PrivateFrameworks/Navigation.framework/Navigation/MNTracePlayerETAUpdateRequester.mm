@@ -1,14 +1,14 @@
 @interface MNTracePlayerETAUpdateRequester
-- (void)triggerETAUpdateWithETARow:(id)a3;
+- (void)triggerETAUpdateWithETARow:(id)row;
 @end
 
 @implementation MNTracePlayerETAUpdateRequester
 
-- (void)triggerETAUpdateWithETARow:(id)a3
+- (void)triggerETAUpdateWithETARow:(id)row
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D314BFF4(v4);
+  rowCopy = row;
+  selfCopy = self;
+  sub_1D314BFF4(rowCopy);
 }
 
 @end

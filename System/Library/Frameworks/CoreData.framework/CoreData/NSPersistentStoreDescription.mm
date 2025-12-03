@@ -1,7 +1,7 @@
 @interface NSPersistentStoreDescription
 + (NSPersistentStoreDescription)persistentStoreDescriptionWithURL:(NSURL *)URL;
 + (id)inMemoryPersistentStoreDescription;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isReadOnly;
 - (BOOL)shouldAddStoreAsynchronously;
 - (BOOL)shouldInferMappingModelAutomatically;
@@ -14,14 +14,14 @@
 - (NSPersistentStoreDescription)init;
 - (NSPersistentStoreDescription)initWithURL:(NSURL *)url;
 - (NSTimeInterval)timeout;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)mirroringDelegate;
 - (id)mirroringOptions;
 - (unint64_t)hash;
 - (void)dealloc;
 - (void)setOption:(NSObject *)option forKey:(NSString *)key;
-- (void)setOption:(id)a3 forMirroringKey:(id)a4;
+- (void)setOption:(id)option forMirroringKey:(id)key;
 - (void)setTimeout:(NSTimeInterval)timeout;
 - (void)setValue:(NSObject *)value forPragmaNamed:(NSString *)name;
 @end
@@ -67,9 +67,9 @@
 
 - (NSPersistentCloudKitContainerOptions)cloudKitContainerOptions
 {
-  v2 = [(NSPersistentStoreDescription *)self options];
+  options = [(NSPersistentStoreDescription *)self options];
 
-  return [(NSDictionary *)v2 objectForKey:@"NSPersistentCloudKitContainerOptionsKey"];
+  return [(NSDictionary *)options objectForKey:@"NSPersistentCloudKitContainerOptionsKey"];
 }
 
 - (NSDictionary)options
@@ -148,9 +148,9 @@
 
 - (id)mirroringDelegate
 {
-  v2 = [(NSPersistentStoreDescription *)self mirroringOptions];
+  mirroringOptions = [(NSPersistentStoreDescription *)self mirroringOptions];
 
-  return [v2 objectForKey:@"NSPersistentStoreMirroringDelegateOptionKey"];
+  return [mirroringOptions objectForKey:@"NSPersistentStoreMirroringDelegateOptionKey"];
 }
 
 - (BOOL)shouldMigrateStoreAutomatically
@@ -167,14 +167,14 @@
 
 + (NSPersistentStoreDescription)persistentStoreDescriptionWithURL:(NSURL *)URL
 {
-  v3 = [[a1 alloc] initWithURL:URL];
+  v3 = [[self alloc] initWithURL:URL];
 
   return v3;
 }
 
 + (id)inMemoryPersistentStoreDescription
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 setType:@"SQLite"];
   [v2 setURL:{objc_msgSend(MEMORY[0x1E695DFF8], "fileURLWithPath:isDirectory:", @"/dev/null", 0)}];
 
@@ -270,9 +270,9 @@
   return [v2 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v7) = 1;
   }
@@ -283,19 +283,19 @@
     if (objc_opt_isKindOfClass())
     {
       v5 = standardizedURL([(NSPersistentStoreDescription *)self URL]);
-      v6 = standardizedURL([a3 URL]);
+      v6 = standardizedURL([equal URL]);
       if (v5 == v6 || (v7 = [v5 isEqual:v6]) != 0)
       {
-        v8 = [(NSPersistentStoreDescription *)self type];
-        if (v8 == [a3 type] || (v7 = -[NSString isEqualToString:](-[NSPersistentStoreDescription type](self, "type"), "isEqualToString:", objc_msgSend(a3, "type"))) != 0)
+        type = [(NSPersistentStoreDescription *)self type];
+        if (type == [equal type] || (v7 = -[NSString isEqualToString:](-[NSPersistentStoreDescription type](self, "type"), "isEqualToString:", objc_msgSend(equal, "type"))) != 0)
         {
-          v9 = [(NSPersistentStoreDescription *)self configuration];
-          if (v9 == [a3 configuration] || (v7 = -[NSString isEqual:](-[NSPersistentStoreDescription configuration](self, "configuration"), "isEqual:", objc_msgSend(a3, "configuration"))) != 0)
+          configuration = [(NSPersistentStoreDescription *)self configuration];
+          if (configuration == [equal configuration] || (v7 = -[NSString isEqual:](-[NSPersistentStoreDescription configuration](self, "configuration"), "isEqual:", objc_msgSend(equal, "configuration"))) != 0)
           {
-            v10 = [(NSPersistentStoreDescription *)self options];
-            v11 = [a3 options];
+            options = [(NSPersistentStoreDescription *)self options];
+            options2 = [equal options];
 
-            LOBYTE(v7) = [(NSDictionary *)v10 isEqual:v11];
+            LOBYTE(v7) = [(NSDictionary *)options isEqual:options2];
           }
         }
       }
@@ -310,7 +310,7 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithURL:self->_url];
 
@@ -321,7 +321,7 @@
   return v4;
 }
 
-- (void)setOption:(id)a3 forMirroringKey:(id)a4
+- (void)setOption:(id)option forMirroringKey:(id)key
 {
   v7 = [-[NSMutableDictionary objectForKey:](self->_options objectForKey:{@"NSPersistentStoreMirroringOptionsKey", "mutableCopy"}];
   if (!v7)
@@ -329,14 +329,14 @@
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  if (a3)
+  if (option)
   {
-    [v7 setObject:a3 forKey:a4];
+    [v7 setObject:option forKey:key];
   }
 
   else
   {
-    [v7 removeObjectForKey:a4];
+    [v7 removeObjectForKey:key];
   }
 
   v8 = [v7 copy];

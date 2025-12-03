@@ -1,15 +1,15 @@
 @interface VNDetectContoursRequestConfiguration
-- (VNDetectContoursRequestConfiguration)initWithRequestClass:(Class)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VNDetectContoursRequestConfiguration)initWithRequestClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VNDetectContoursRequestConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = VNDetectContoursRequestConfiguration;
-  v4 = [(VNImageBasedRequestConfiguration *)&v8 copyWithZone:a3];
+  v4 = [(VNImageBasedRequestConfiguration *)&v8 copyWithZone:zone];
   v6 = v4;
   if (v4)
   {
@@ -25,11 +25,11 @@
   return v6;
 }
 
-- (VNDetectContoursRequestConfiguration)initWithRequestClass:(Class)a3
+- (VNDetectContoursRequestConfiguration)initWithRequestClass:(Class)class
 {
   v9.receiver = self;
   v9.super_class = VNDetectContoursRequestConfiguration;
-  v3 = [(VNImageBasedRequestConfiguration *)&v9 initWithRequestClass:a3];
+  v3 = [(VNImageBasedRequestConfiguration *)&v9 initWithRequestClass:class];
   v5 = v3;
   if (v3)
   {

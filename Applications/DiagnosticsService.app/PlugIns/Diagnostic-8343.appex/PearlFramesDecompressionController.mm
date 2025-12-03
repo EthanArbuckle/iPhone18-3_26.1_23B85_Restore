@@ -76,7 +76,7 @@ LABEL_9:
 
   [v3 resume];
   v5 = dispatch_semaphore_create(0);
-  v6 = [v3 remoteObjectProxy];
+  remoteObjectProxy = [v3 remoteObjectProxy];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000013A4;
@@ -86,7 +86,7 @@ LABEL_9:
   v15 = v7;
   v8 = v5;
   v16 = v8;
-  [v6 decompressPearlFramesWithReply:v14];
+  [remoteObjectProxy decompressPearlFramesWithReply:v14];
 
   v9 = dispatch_time(0, 120000000000);
   if (dispatch_semaphore_wait(v8, v9))
@@ -125,7 +125,7 @@ LABEL_9:
 
   [v3 resume];
   v5 = dispatch_semaphore_create(0);
-  v6 = [v3 remoteObjectProxy];
+  remoteObjectProxy = [v3 remoteObjectProxy];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100001728;
@@ -135,7 +135,7 @@ LABEL_9:
   v15 = v7;
   v8 = v5;
   v16 = v8;
-  [v6 updateSavageDATFirmwareWithReply:v14];
+  [remoteObjectProxy updateSavageDATFirmwareWithReply:v14];
 
   v9 = dispatch_time(0, 120000000000);
   if (dispatch_semaphore_wait(v8, v9))
@@ -174,7 +174,7 @@ LABEL_9:
 
   [v3 resume];
   v5 = dispatch_semaphore_create(0);
-  v6 = [v3 remoteObjectProxy];
+  remoteObjectProxy = [v3 remoteObjectProxy];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100001AAC;
@@ -184,7 +184,7 @@ LABEL_9:
   v15 = v7;
   v8 = v5;
   v16 = v8;
-  [v6 updateBrunorDATFirmwareWithReply:v14];
+  [remoteObjectProxy updateBrunorDATFirmwareWithReply:v14];
 
   v9 = dispatch_time(0, 120000000000);
   if (dispatch_semaphore_wait(v8, v9))
@@ -223,7 +223,7 @@ LABEL_9:
 
   [v3 resume];
   v5 = dispatch_semaphore_create(0);
-  v6 = [v3 remoteObjectProxy];
+  remoteObjectProxy = [v3 remoteObjectProxy];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100001E30;
@@ -233,7 +233,7 @@ LABEL_9:
   v15 = v7;
   v8 = v5;
   v16 = v8;
-  [v6 verifyPSD3WithReply:v14];
+  [remoteObjectProxy verifyPSD3WithReply:v14];
 
   v9 = dispatch_time(0, 120000000000);
   if (dispatch_semaphore_wait(v8, v9))
@@ -294,8 +294,8 @@ LABEL_9:
           _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Start to decompress Pearl frames ...", &buf, 2u);
         }
 
-        v9 = [(PearlFramesDecompressionController *)self decompressPearlFrames];
-        if (!v9)
+        decompressPearlFrames = [(PearlFramesDecompressionController *)self decompressPearlFrames];
+        if (!decompressPearlFrames)
         {
           if ([CRFDRUtils isDataClassSupported:@"psd3"])
           {
@@ -326,14 +326,14 @@ LABEL_9:
               v32 = 5;
               while (1)
               {
-                v33 = [(PearlFramesDecompressionController *)self updateBrunorDATFirmware];
+                updateBrunorDATFirmware = [(PearlFramesDecompressionController *)self updateBrunorDATFirmware];
 
-                if (!v33)
+                if (!updateBrunorDATFirmware)
                 {
                   break;
                 }
 
-                v34 = v33;
+                v34 = updateBrunorDATFirmware;
 
                 sleep(1u);
                 v14 = v34;
@@ -362,14 +362,14 @@ LABEL_54:
             v36 = 30;
             while (1)
             {
-              v37 = [(PearlFramesDecompressionController *)self verifyPSD3];
+              verifyPSD3 = [(PearlFramesDecompressionController *)self verifyPSD3];
 
-              if (!v37)
+              if (!verifyPSD3)
               {
                 break;
               }
 
-              v34 = v37;
+              v34 = verifyPSD3;
 
               sleep(1u);
               v14 = v34;
@@ -413,8 +413,8 @@ LABEL_25:
             _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Start to update Savage/Yonkers firmware ...", &buf, 2u);
           }
 
-          v9 = [(PearlFramesDecompressionController *)self updateSavageDATFirmware];
-          if (!v9)
+          decompressPearlFrames = [(PearlFramesDecompressionController *)self updateSavageDATFirmware];
+          if (!decompressPearlFrames)
           {
             v16 = handleForCategory();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -429,7 +429,7 @@ LABEL_25:
           }
         }
 
-        v34 = v9;
+        v34 = decompressPearlFrames;
         v14 = 0;
         v10 = 0;
         goto LABEL_55;
@@ -458,21 +458,21 @@ LABEL_25:
   if (!v34)
   {
 LABEL_27:
-    v19 = [(PearlFramesDecompressionController *)self result];
-    [v19 setStatusCode:&off_100008498];
+    result = [(PearlFramesDecompressionController *)self result];
+    [result setStatusCode:&off_100008498];
 
     if (v14)
     {
       v56 = v10;
       v57 = 0;
-      v20 = 0;
+      localizedDescription2 = 0;
       v21 = 0;
 LABEL_57:
       v41 = [CRUtils getInnermostNSError:v14];
 
       v42 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v41 code]);
       v58 = v41;
-      v43 = [v41 localizedDescription];
+      localizedDescription = [v41 localizedDescription];
       v66[0] = @"PearlFramesDecompressionErrorCode";
       v44 = v21;
       v55 = v21;
@@ -484,9 +484,9 @@ LABEL_57:
       v54 = v44;
       v67[0] = v44;
       v66[1] = @"PearlFramesDecompressionErrorDescription";
-      v45 = v20;
-      v60 = v20;
-      if (!v20)
+      v45 = localizedDescription2;
+      v60 = localizedDescription2;
+      if (!localizedDescription2)
       {
         v45 = +[NSNull null];
       }
@@ -510,18 +510,18 @@ LABEL_57:
       v48 = v4;
       v67[3] = v47;
       v66[4] = @"PearlFramesDecompressionLastSeenErrorDescription";
-      v49 = v43;
-      if (!v43)
+      v49 = localizedDescription;
+      if (!localizedDescription)
       {
         v49 = +[NSNull null];
       }
 
       v67[4] = v49;
       v50 = [NSDictionary dictionaryWithObjects:v67 forKeys:v66 count:5];
-      v51 = [(PearlFramesDecompressionController *)self result];
-      [v51 setData:v50];
+      result2 = [(PearlFramesDecompressionController *)self result];
+      [result2 setData:v50];
 
-      if (!v43)
+      if (!localizedDescription)
       {
       }
 
@@ -552,21 +552,21 @@ LABEL_78:
       goto LABEL_79;
     }
 
-    v20 = 0;
+    localizedDescription2 = 0;
     v64[0] = @"PearlFramesDecompressionErrorCode";
     goto LABEL_30;
   }
 
 LABEL_55:
   v38 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v34 code]);
-  v39 = [(PearlFramesDecompressionController *)self result];
-  [v39 setStatusCode:v38];
+  result3 = [(PearlFramesDecompressionController *)self result];
+  [result3 setStatusCode:v38];
 
   v40 = [CRUtils getInnermostNSError:v34];
 
   v21 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v40 code]);
   v57 = v40;
-  v20 = [v40 localizedDescription];
+  localizedDescription2 = [v40 localizedDescription];
   if (v14)
   {
     v56 = v10;
@@ -591,14 +591,14 @@ LABEL_31:
   v58 = v22;
   v65[0] = v22;
   v64[1] = @"PearlFramesDecompressionErrorDescription";
-  v23 = v20;
-  if (!v20)
+  v23 = localizedDescription2;
+  if (!localizedDescription2)
   {
     v23 = +[NSNull null];
   }
 
   v24 = v21;
-  v25 = v20;
+  v25 = localizedDescription2;
   v26 = v10;
   v65[1] = v23;
   v64[2] = @"PearlFramesDecompressionSensorSerialNumber";
@@ -610,8 +610,8 @@ LABEL_31:
 
   v65[2] = v27;
   v28 = [NSDictionary dictionaryWithObjects:v65 forKeys:v64 count:3];
-  v29 = [(PearlFramesDecompressionController *)self result];
-  [v29 setData:v28];
+  result4 = [(PearlFramesDecompressionController *)self result];
+  [result4 setData:v28];
 
   if (!v4)
   {

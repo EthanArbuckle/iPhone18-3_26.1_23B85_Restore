@@ -1,27 +1,27 @@
 @interface PRSPosterGalleryLayout
-- (BOOL)isEqual:(id)a3;
-- (PRSPosterGalleryLayout)initWithCoder:(id)a3;
-- (PRSPosterGalleryLayout)initWithProactiveRepresentation:(id)a3;
-- (PRSPosterGalleryLayout)initWithSections:(id)a3 locale:(id)a4 source:(int64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PRSPosterGalleryLayout)initWithCoder:(id)coder;
+- (PRSPosterGalleryLayout)initWithProactiveRepresentation:(id)representation;
+- (PRSPosterGalleryLayout)initWithSections:(id)sections locale:(id)locale source:(int64_t)source;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)proactiveRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRSPosterGalleryLayout
 
-- (PRSPosterGalleryLayout)initWithSections:(id)a3 locale:(id)a4 source:(int64_t)a5
+- (PRSPosterGalleryLayout)initWithSections:(id)sections locale:(id)locale source:(int64_t)source
 {
-  v8 = a3;
-  v9 = a4;
+  sectionsCopy = sections;
+  localeCopy = locale;
   v17.receiver = self;
   v17.super_class = PRSPosterGalleryLayout;
   v10 = [(PRSPosterGalleryLayout *)&v17 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [sectionsCopy copy];
     v12 = v11;
     if (v11)
     {
@@ -35,35 +35,35 @@
 
     objc_storeStrong(&v10->_sections, v13);
 
-    if (v9)
+    if (localeCopy)
     {
-      v14 = v9;
+      currentLocale = localeCopy;
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DF58] currentLocale];
+      currentLocale = [MEMORY[0x1E695DF58] currentLocale];
     }
 
     locale = v10->_locale;
-    v10->_locale = v14;
+    v10->_locale = currentLocale;
 
-    v10->_source = a5;
+    v10->_source = source;
   }
 
   return v10;
 }
 
-- (PRSPosterGalleryLayout)initWithProactiveRepresentation:(id)a3
+- (PRSPosterGalleryLayout)initWithProactiveRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 sections];
-  v6 = [v5 bs_map:&__block_literal_global_5];
+  representationCopy = representation;
+  sections = [representationCopy sections];
+  v6 = [sections bs_map:&__block_literal_global_5];
 
-  v7 = [v4 locale];
-  v8 = [v4 source];
+  locale = [representationCopy locale];
+  source = [representationCopy source];
 
-  v9 = [(PRSPosterGalleryLayout *)self initWithSections:v6 locale:v7 source:v8 != 0];
+  v9 = [(PRSPosterGalleryLayout *)self initWithSections:v6 locale:locale source:source != 0];
   return v9;
 }
 
@@ -74,9 +74,9 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   sections = self->_sections;
   locale = self->_locale;
   source = self->_source;
@@ -84,10 +84,10 @@
   return [v4 initWithSections:sections locale:locale source:source];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -95,7 +95,7 @@
   else
   {
     v5 = objc_opt_class();
-    v6 = v4;
+    v6 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -118,7 +118,7 @@
 
     if (v9)
     {
-      v10 = [MEMORY[0x1E698E6A0] builder];
+      builder = [MEMORY[0x1E698E6A0] builder];
       sections = self->_sections;
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
@@ -126,7 +126,7 @@
       v24[3] = &unk_1E818CD58;
       v12 = v9;
       v25 = v12;
-      v13 = [v10 appendObject:sections counterpart:v24];
+      v13 = [builder appendObject:sections counterpart:v24];
       locale = self->_locale;
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
@@ -134,15 +134,15 @@
       v22[3] = &unk_1E818CD58;
       v15 = v12;
       v23 = v15;
-      v16 = [v10 appendObject:locale counterpart:v22];
+      v16 = [builder appendObject:locale counterpart:v22];
       source = self->_source;
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __34__PRSPosterGalleryLayout_isEqual___block_invoke_3;
       v20[3] = &unk_1E818CDA8;
       v21 = v15;
-      v18 = [v10 appendInteger:source counterpart:v20];
-      v8 = [v10 isEqual];
+      v18 = [builder appendInteger:source counterpart:v20];
+      v8 = [builder isEqual];
     }
 
     else
@@ -157,7 +157,7 @@
 - (unint64_t)hash
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E698E6B8] builder];
+  builder = [MEMORY[0x1E698E6B8] builder];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -178,7 +178,7 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [v3 appendObject:{*(*(&v15 + 1) + 8 * v8++), v15}];
+        v9 = [builder appendObject:{*(*(&v15 + 1) + 8 * v8++), v15}];
       }
 
       while (v6 != v8);
@@ -188,9 +188,9 @@
     while (v6);
   }
 
-  v10 = [v3 appendObject:self->_locale];
-  v11 = [v3 appendInteger:self->_source];
-  v12 = [v3 hash];
+  v10 = [builder appendObject:self->_locale];
+  v11 = [builder appendInteger:self->_source];
+  v12 = [builder hash];
 
   v13 = *MEMORY[0x1E69E9840];
   return v12;
@@ -219,8 +219,8 @@
           objc_enumerationMutation(v3);
         }
 
-        v9 = [*(*(&v20 + 1) + 8 * i) items];
-        v6 += [v9 count];
+        items = [*(*(&v20 + 1) + 8 * i) items];
+        v6 += [items count];
       }
 
       v5 = [(NSArray *)v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -238,8 +238,8 @@
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
   v13 = [(NSArray *)self->_sections count];
-  v14 = [(NSLocale *)self->_locale localeIdentifier];
-  v15 = v14;
+  localeIdentifier = [(NSLocale *)self->_locale localeIdentifier];
+  v15 = localeIdentifier;
   if (self->_source == 1)
   {
     v16 = @"Proactive";
@@ -250,45 +250,45 @@
     v16 = @"Unknown";
   }
 
-  v17 = [v10 stringWithFormat:@"<%@(%p): %lu sections, %lu items, locale=%@, source=%@>", v12, self, v13, v6, v14, v16, v20];
+  v17 = [v10 stringWithFormat:@"<%@(%p): %lu sections, %lu items, locale=%@, source=%@>", v12, self, v13, v6, localeIdentifier, v16, v20];
 
   v18 = *MEMORY[0x1E69E9840];
 
   return v17;
 }
 
-- (PRSPosterGalleryLayout)initWithCoder:(id)a3
+- (PRSPosterGalleryLayout)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_sections);
-  v7 = [v4 decodeArrayOfObjectsOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeArrayOfObjectsOfClass:v5 forKey:v6];
 
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_locale);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
   v11 = NSStringFromSelector(sel_source);
-  v12 = [v4 decodeIntegerForKey:v11];
+  v12 = [coderCopy decodeIntegerForKey:v11];
 
   v13 = [(PRSPosterGalleryLayout *)self initWithSections:v7 locale:v10 source:v12];
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sections = self->_sections;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_sections);
-  [v5 encodeObject:sections forKey:v6];
+  [coderCopy encodeObject:sections forKey:v6];
 
   locale = self->_locale;
   v8 = NSStringFromSelector(sel_locale);
-  [v5 encodeObject:locale forKey:v8];
+  [coderCopy encodeObject:locale forKey:v8];
 
   source = self->_source;
   v10 = NSStringFromSelector(sel_source);
-  [v5 encodeInteger:source forKey:v10];
+  [coderCopy encodeInteger:source forKey:v10];
 }
 
 @end

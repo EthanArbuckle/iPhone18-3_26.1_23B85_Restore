@@ -17,9 +17,9 @@
   v2 = OBJC_IVAR___BooksSettings_defaults;
   if (qword_2810D56C8 != -1)
   {
-    v6 = self;
+    selfCopy = self;
     swift_once();
-    self = v6;
+    self = selfCopy;
   }
 
   v3 = qword_2810D56D0;

@@ -1,8 +1,8 @@
 @interface DATrafficLogger
-- (DATrafficLogger)initWithFilename:(id)a3;
+- (DATrafficLogger)initWithFilename:(id)filename;
 - (void)_ensureCustomLogFile;
-- (void)logSnippet:(id)a3;
-- (void)slurpAndRemoveLookasideFile:(id)a3 prefixString:(id)a4 suffixString:(id)a5;
+- (void)logSnippet:(id)snippet;
+- (void)slurpAndRemoveLookasideFile:(id)file prefixString:(id)string suffixString:(id)suffixString;
 @end
 
 @implementation DATrafficLogger
@@ -14,9 +14,9 @@
     [DATrafficLogger _ensureCustomLogFile];
   }
 
-  v3 = [(DATrafficLogger *)self filename];
+  filename = [(DATrafficLogger *)self filename];
 
-  if (v3)
+  if (filename)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -92,31 +92,31 @@ void __39__DATrafficLogger__ensureCustomLogFile__block_invoke_2(uint64_t a1)
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (DATrafficLogger)initWithFilename:(id)a3
+- (DATrafficLogger)initWithFilename:(id)filename
 {
-  v4 = a3;
+  filenameCopy = filename;
   v8.receiver = self;
   v8.super_class = DATrafficLogger;
   v5 = [(DATrafficLogger *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(DATrafficLogger *)v5 setFilename:v4];
+    [(DATrafficLogger *)v5 setFilename:filenameCopy];
     [(DATrafficLogger *)v6 _ensureCustomLogFile];
   }
 
   return v6;
 }
 
-- (void)logSnippet:(id)a3
+- (void)logSnippet:(id)snippet
 {
-  v4 = a3;
+  snippetCopy = snippet;
   if (+[DATrafficLogger enabled])
   {
-    v5 = [v4 copy];
+    v5 = [snippetCopy copy];
 
-    v4 = v5;
-    v6 = [(DATrafficLogger *)self filename];
+    snippetCopy = v5;
+    filename = [(DATrafficLogger *)self filename];
     DACPLoggingAppendDataToLogFile();
   }
 }
@@ -130,15 +130,15 @@ void __30__DATrafficLogger_logSnippet___block_invoke(uint64_t a1)
   }
 }
 
-- (void)slurpAndRemoveLookasideFile:(id)a3 prefixString:(id)a4 suffixString:(id)a5
+- (void)slurpAndRemoveLookasideFile:(id)file prefixString:(id)string suffixString:(id)suffixString
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fileCopy = file;
+  stringCopy = string;
+  suffixStringCopy = suffixString;
   if (+[DATrafficLogger enabled])
   {
-    v11 = [(DATrafficLogger *)self filename];
-    v12 = v8;
+    filename = [(DATrafficLogger *)self filename];
+    v12 = fileCopy;
     DACPLoggingSlurpFileIntoLogFile();
   }
 }

@@ -1,6 +1,6 @@
 @interface AVCameraSource
 - (_TtC6Tamale14AVCameraSource)init;
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5;
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection;
 @end
 
 @implementation AVCameraSource
@@ -12,13 +12,13 @@
   return result;
 }
 
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_100060AE8(v9);
+  outputCopy = output;
+  bufferCopy = buffer;
+  connectionCopy = connection;
+  selfCopy = self;
+  sub_100060AE8(bufferCopy);
 }
 
 @end

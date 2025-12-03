@@ -1,15 +1,15 @@
 @interface SFShareAudioBringCloseViewController
 - (void)_cycleProductImage;
-- (void)eventCancel:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)eventCancel:(id)cancel;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SFShareAudioBringCloseViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (gLogCategory_SFShareAudioViewController <= 30 && (gLogCategory_SFShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     [SFShareAudioBringCloseViewController viewWillAppear:];
@@ -17,8 +17,8 @@
 
   v11.receiver = self;
   v11.super_class = SFShareAudioBringCloseViewController;
-  [(SFShareAudioBaseViewController *)&v11 viewWillAppear:v3];
-  v5 = [(SFShareAudioViewController *)self->super._mainController mainBundle];
+  [(SFShareAudioBaseViewController *)&v11 viewWillAppear:appearCopy];
+  mainBundle = [(SFShareAudioViewController *)self->super._mainController mainBundle];
   v6 = SFLocalizedStringEx();
   [(UILabel *)self->super._titleLabel setText:v6];
 
@@ -32,9 +32,9 @@
   [(UIButton *)cancelButton setTitle:v10 forState:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (gLogCategory_SFShareAudioViewController <= 30 && (gLogCategory_SFShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     [SFShareAudioBringCloseViewController viewWillDisappear:];
@@ -42,7 +42,7 @@
 
   v8.receiver = self;
   v8.super_class = SFShareAudioBringCloseViewController;
-  [(SFShareAudioBaseViewController *)&v8 viewWillDisappear:v3];
+  [(SFShareAudioBaseViewController *)&v8 viewWillDisappear:disappearCopy];
   cycleImageTimer = self->_cycleImageTimer;
   if (cycleImageTimer)
   {
@@ -53,9 +53,9 @@
   }
 }
 
-- (void)eventCancel:(id)a3
+- (void)eventCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   if (gLogCategory_SFShareAudioViewController <= 30 && (gLogCategory_SFShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     [SFShareAudioBringCloseViewController eventCancel:];
@@ -106,27 +106,27 @@
     }
 
     v10 = MEMORY[0x1E69DCAD8];
-    v11 = [MEMORY[0x1E69DC888] whiteColor];
-    v12 = [v10 configurationWithHierarchicalColor:v11];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v12 = [v10 configurationWithHierarchicalColor:whiteColor];
 
     v13 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:3 weight:2 scale:120.0];
     v14 = [v12 configurationByApplyingConfiguration:v13];
     [(UIImageView *)self->_shareImageView setPreferredSymbolConfiguration:v14];
-    v15 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIImageView *)self->_shareImageView setTintColor:v15];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIImageView *)self->_shareImageView setTintColor:whiteColor2];
   }
 
   if (self->_cycleImageTimer)
   {
-    v16 = [MEMORY[0x1E6979538] animation];
-    [v16 setDuration:0.5];
-    [v16 setType:*MEMORY[0x1E697A050]];
-    [v16 setSubtype:*MEMORY[0x1E697A040]];
+    animation = [MEMORY[0x1E6979538] animation];
+    [animation setDuration:0.5];
+    [animation setType:*MEMORY[0x1E697A050]];
+    [animation setSubtype:*MEMORY[0x1E697A040]];
     v17 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
-    [v16 setTimingFunction:v17];
+    [animation setTimingFunction:v17];
 
-    v18 = [(UIImageView *)self->_shareImageView layer];
-    [v18 addAnimation:v16 forKey:0];
+    layer = [(UIImageView *)self->_shareImageView layer];
+    [layer addAnimation:animation forKey:0];
   }
 
   else
@@ -134,16 +134,16 @@
     v19 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, MEMORY[0x1E69E96A0]);
     cycleImageTimer = self->_cycleImageTimer;
     self->_cycleImageTimer = v19;
-    v16 = v19;
+    animation = v19;
 
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = __58__SFShareAudioBringCloseViewController__cycleProductImage__block_invoke;
     handler[3] = &unk_1E7EE3720;
     handler[4] = self;
-    dispatch_source_set_event_handler(v16, handler);
+    dispatch_source_set_event_handler(animation, handler);
     CUDispatchTimerSet();
-    dispatch_activate(v16);
+    dispatch_activate(animation);
   }
 
   cycleNextIndex = self->_cycleNextIndex;

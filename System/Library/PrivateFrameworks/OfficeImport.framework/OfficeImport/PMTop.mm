@@ -1,7 +1,7 @@
 @interface PMTop
-- (Class)mapperClassForIndexing:(BOOL)a3;
+- (Class)mapperClassForIndexing:(BOOL)indexing;
 - (void)initializeClasses;
-- (void)readFile:(id)a3 orData:(id)a4 dataFileName:(id)a5 format:(unint64_t)a6 archiver:(id)a7 forIndexing:(BOOL)a8;
+- (void)readFile:(id)file orData:(id)data dataFileName:(id)name format:(unint64_t)format archiver:(id)archiver forIndexing:(BOOL)indexing;
 @end
 
 @implementation PMTop
@@ -15,20 +15,20 @@
   [(QLTop *)&v3 initializeClasses];
 }
 
-- (void)readFile:(id)a3 orData:(id)a4 dataFileName:(id)a5 format:(unint64_t)a6 archiver:(id)a7 forIndexing:(BOOL)a8
+- (void)readFile:(id)file orData:(id)data dataFileName:(id)name format:(unint64_t)format archiver:(id)archiver forIndexing:(BOOL)indexing
 {
-  v8 = a8;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  [v17 setAutoCommit:0];
+  indexingCopy = indexing;
+  fileCopy = file;
+  dataCopy = data;
+  nameCopy = name;
+  archiverCopy = archiver;
+  [archiverCopy setAutoCommit:0];
   v18.receiver = self;
   v18.super_class = PMTop;
-  [(QLTop *)&v18 readFile:v14 orData:v15 dataFileName:v16 format:a6 archiver:v17 forIndexing:v8];
+  [(QLTop *)&v18 readFile:fileCopy orData:dataCopy dataFileName:nameCopy format:format archiver:archiverCopy forIndexing:indexingCopy];
 }
 
-- (Class)mapperClassForIndexing:(BOOL)a3
+- (Class)mapperClassForIndexing:(BOOL)indexing
 {
   v3 = objc_opt_class();
 

@@ -2,7 +2,7 @@
 - (NSDictionary)coreAnalyticsEventDictionary;
 - (NSString)coreAnalyticsEventName;
 - (_TtC13HomeKitDaemon33ThermostatSuggestedPresetLogEvent)init;
-- (_TtC13HomeKitDaemon33ThermostatSuggestedPresetLogEvent)initWithStartTime:(double)a3;
+- (_TtC13HomeKitDaemon33ThermostatSuggestedPresetLogEvent)initWithStartTime:(double)time;
 @end
 
 @implementation ThermostatSuggestedPresetLogEvent
@@ -19,7 +19,7 @@
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v2 = self;
+  selfCopy = self;
   sub_22970D804();
 
   sub_22956540C();
@@ -35,7 +35,7 @@
   return result;
 }
 
-- (_TtC13HomeKitDaemon33ThermostatSuggestedPresetLogEvent)initWithStartTime:(double)a3
+- (_TtC13HomeKitDaemon33ThermostatSuggestedPresetLogEvent)initWithStartTime:(double)time
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

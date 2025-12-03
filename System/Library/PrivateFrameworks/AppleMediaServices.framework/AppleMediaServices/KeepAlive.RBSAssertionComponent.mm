@@ -1,23 +1,23 @@
 @interface KeepAlive.RBSAssertionComponent
-- (void)assertion:(id)a3 didInvalidateWithError:(id)a4;
-- (void)assertionWillInvalidate:(id)a3;
+- (void)assertion:(id)assertion didInvalidateWithError:(id)error;
+- (void)assertionWillInvalidate:(id)invalidate;
 @end
 
 @implementation KeepAlive.RBSAssertionComponent
 
-- (void)assertionWillInvalidate:(id)a3
+- (void)assertionWillInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = self;
-  sub_192CBD178(v4);
+  invalidateCopy = invalidate;
+  selfCopy = self;
+  sub_192CBD178(invalidateCopy);
 }
 
-- (void)assertion:(id)a3 didInvalidateWithError:(id)a4
+- (void)assertion:(id)assertion didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_192CBD618(v6, a4);
+  assertionCopy = assertion;
+  selfCopy = self;
+  errorCopy = error;
+  sub_192CBD618(assertionCopy, error);
 }
 
 @end

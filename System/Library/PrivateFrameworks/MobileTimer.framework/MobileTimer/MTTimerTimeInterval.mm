@@ -1,31 +1,31 @@
 @interface MTTimerTimeInterval
-- (BOOL)isEqual:(id)a3;
-- (MTTimerTimeInterval)initWithCoder:(id)a3;
-- (MTTimerTimeInterval)initWithTimeInterval:(double)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MTTimerTimeInterval)initWithCoder:(id)coder;
+- (MTTimerTimeInterval)initWithTimeInterval:(double)interval;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTTimerTimeInterval
 
-- (MTTimerTimeInterval)initWithTimeInterval:(double)a3
+- (MTTimerTimeInterval)initWithTimeInterval:(double)interval
 {
   v5.receiver = self;
   v5.super_class = MTTimerTimeInterval;
   result = [(MTTimerTimeInterval *)&v5 init];
   if (result)
   {
-    result->_remainingTime = a3;
+    result->_remainingTime = interval;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_1F297C498])
+  equalCopy = equal;
+  if ([equalCopy conformsToProtocol:&unk_1F297C498])
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -47,24 +47,24 @@
   return v7;
 }
 
-- (MTTimerTimeInterval)initWithCoder:(id)a3
+- (MTTimerTimeInterval)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(MTTimerTimeInterval *)self initWithTimeInterval:0.0];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"MTTimerTimeInterval"];
+    [coderCopy decodeDoubleForKey:@"MTTimerTimeInterval"];
     v5->_remainingTime = v6;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(MTTimerTimeInterval *)self remainingTime];
-  [v4 encodeDouble:@"MTTimerTimeInterval" forKey:?];
+  [coderCopy encodeDouble:@"MTTimerTimeInterval" forKey:?];
 }
 
 @end

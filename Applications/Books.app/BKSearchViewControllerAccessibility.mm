@@ -2,24 +2,24 @@
 - (BKSearchViewController)_bkaxTarget;
 - (BKSearchViewControllerDelegate)_bkaxSearchDelegate;
 - (BOOL)accessibilityPerformEscape;
-- (void)revealSearchResult:(id)a3 animated:(BOOL)a4;
+- (void)revealSearchResult:(id)result animated:(BOOL)animated;
 @end
 
 @implementation BKSearchViewControllerAccessibility
 
-- (void)revealSearchResult:(id)a3 animated:(BOOL)a4
+- (void)revealSearchResult:(id)result animated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = BKSearchViewControllerAccessibility;
-  [(BKSearchViewControllerAccessibility *)&v4 revealSearchResult:a3 animated:a4];
+  [(BKSearchViewControllerAccessibility *)&v4 revealSearchResult:result animated:animated];
   IMAccessibilityPerformBlockOnMainThreadAfterDelay();
 }
 
 - (BOOL)accessibilityPerformEscape
 {
-  v3 = [(BKSearchViewControllerAccessibility *)self _bkaxSearchDelegate];
-  v4 = [(BKSearchViewControllerAccessibility *)self _bkaxTarget];
-  [v3 searchViewController:v4 revealSearchResult:0 animated:1];
+  _bkaxSearchDelegate = [(BKSearchViewControllerAccessibility *)self _bkaxSearchDelegate];
+  _bkaxTarget = [(BKSearchViewControllerAccessibility *)self _bkaxTarget];
+  [_bkaxSearchDelegate searchViewController:_bkaxTarget revealSearchResult:0 animated:1];
 
   return 1;
 }

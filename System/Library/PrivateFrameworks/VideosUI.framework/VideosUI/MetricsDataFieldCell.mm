@@ -1,17 +1,17 @@
 @interface MetricsDataFieldCell
-- (_TtC8VideosUI20MetricsDataFieldCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC8VideosUI20MetricsDataFieldCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation MetricsDataFieldCell
 
-- (_TtC8VideosUI20MetricsDataFieldCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC8VideosUI20MetricsDataFieldCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     sub_1E4205F14();
   }
 
-  return sub_1E4019B28(a3);
+  return sub_1E4019B28(style);
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface BoopToMeetFlowViewController
-- (BoopToMeetFlowViewController)initWithCoder:(id)a3;
-- (BoopToMeetFlowViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)handleButtonActions:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (BoopToMeetFlowViewController)initWithCoder:(id)coder;
+- (BoopToMeetFlowViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)handleButtonActions:(id)actions;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation BoopToMeetFlowViewController
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -25,34 +25,34 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
-  sub_1000A042C(a3, v6);
+  contextCopy = context;
+  selfCopy = self;
+  sub_1000A042C(context, v6);
   sub_100025EF4(v6, v7);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
-  v4 = self;
-  sub_1000A07D4(v3);
+  appearCopy = appear;
+  selfCopy = self;
+  sub_1000A07D4(appearCopy);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1000A1074(a3);
+  selfCopy = self;
+  sub_1000A1074(disappear);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000A12BC();
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  if (a3)
+  if (actions)
   {
     sub_1000122EC(0, &qword_1001BC220);
     sub_1000A1F20(&qword_1001BBC40, &qword_1001BC220);
@@ -64,42 +64,42 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_1000A1420(v4);
 }
 
-- (BoopToMeetFlowViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (BoopToMeetFlowViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     *&self->super.SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR___BoopToMeetFlowViewController_replyAction] = 0;
-    v8 = a4;
-    a3 = String._bridgeToObjectiveC()();
+    bundleCopy = bundle;
+    name = String._bridgeToObjectiveC()();
   }
 
   else
   {
     *&self->super.SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR___BoopToMeetFlowViewController_replyAction] = 0;
-    v9 = a4;
+    bundleCopy2 = bundle;
   }
 
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = [(BoopToMeetFlowViewController *)&v12 initWithNibName:a3 bundle:a4];
+  v10 = [(BoopToMeetFlowViewController *)&v12 initWithNibName:name bundle:bundle];
 
   return v10;
 }
 
-- (BoopToMeetFlowViewController)initWithCoder:(id)a3
+- (BoopToMeetFlowViewController)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *&self->super.SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR___BoopToMeetFlowViewController_replyAction] = 0;
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = a3;
-  v7 = [(BoopToMeetFlowViewController *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(BoopToMeetFlowViewController *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

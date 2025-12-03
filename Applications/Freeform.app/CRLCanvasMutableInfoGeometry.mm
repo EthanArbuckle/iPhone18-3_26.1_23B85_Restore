@@ -1,17 +1,17 @@
 @interface CRLCanvasMutableInfoGeometry
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setCenter:(CGPoint)a3;
-- (void)setHeightValid:(BOOL)a3;
-- (void)setHorizontalFlip:(BOOL)a3;
-- (void)setPosition:(CGPoint)a3;
-- (void)setSize:(CGSize)a3;
-- (void)setTransformedBoundsOrigin:(CGPoint)a3;
-- (void)setVerticalFlip:(BOOL)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setCenter:(CGPoint)center;
+- (void)setHeightValid:(BOOL)valid;
+- (void)setHorizontalFlip:(BOOL)flip;
+- (void)setPosition:(CGPoint)position;
+- (void)setSize:(CGSize)size;
+- (void)setTransformedBoundsOrigin:(CGPoint)origin;
+- (void)setVerticalFlip:(BOOL)flip;
 @end
 
 @implementation CRLCanvasMutableInfoGeometry
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CRLCanvasInfoGeometry alloc];
   flags = self->super._flags;
@@ -24,11 +24,11 @@
   return [(CRLCanvasInfoGeometry *)v4 initWithPosition:*&flags & 1 size:(*&flags >> 1) & 1 widthValid:(*&flags >> 2) & 1 heightValid:(*&flags >> 3) & 1 horizontalFlip:x verticalFlip:y angle:width, height, angle];
 }
 
-- (void)setPosition:(CGPoint)a3
+- (void)setPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
-  if (!sub_100120888(a3.x, a3.y))
+  y = position.y;
+  x = position.x;
+  if (!sub_100120888(position.x, position.y))
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -64,10 +64,10 @@
   self->super._position.y = y;
 }
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (sub_10012287C())
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -146,9 +146,9 @@
   self->super._size.height = height;
 }
 
-- (void)setHeightValid:(BOOL)a3
+- (void)setHeightValid:(BOOL)valid
 {
-  if (a3)
+  if (valid)
   {
     v3 = 2;
   }
@@ -161,9 +161,9 @@
   *&self->super._flags = *&self->super._flags & 0xFD | v3;
 }
 
-- (void)setHorizontalFlip:(BOOL)a3
+- (void)setHorizontalFlip:(BOOL)flip
 {
-  if (a3)
+  if (flip)
   {
     v3 = 4;
   }
@@ -176,9 +176,9 @@
   *&self->super._flags = *&self->super._flags & 0xFB | v3;
 }
 
-- (void)setVerticalFlip:(BOOL)a3
+- (void)setVerticalFlip:(BOOL)flip
 {
-  if (a3)
+  if (flip)
   {
     v3 = 8;
   }
@@ -191,18 +191,18 @@
   *&self->super._flags = *&self->super._flags & 0xF7 | v3;
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
   __asm { FMOV            V3.2D, #-0.5 }
 
-  y = a3.y;
-  self->super._position = vaddq_f64(a3, vmulq_f64(self->super._size, _Q3));
+  y = center.y;
+  self->super._position = vaddq_f64(center, vmulq_f64(self->super._size, _Q3));
 }
 
-- (void)setTransformedBoundsOrigin:(CGPoint)a3
+- (void)setTransformedBoundsOrigin:(CGPoint)origin
 {
-  y = a3.y;
-  x = a3.x;
+  y = origin.y;
+  x = origin.x;
   [(CRLCanvasInfoGeometry *)self transformedBoundsOrigin];
   v7 = sub_10011F31C(self->super._position.x, self->super._position.y, v6);
   self->super._position.x = sub_10011F334(x, y, v7);

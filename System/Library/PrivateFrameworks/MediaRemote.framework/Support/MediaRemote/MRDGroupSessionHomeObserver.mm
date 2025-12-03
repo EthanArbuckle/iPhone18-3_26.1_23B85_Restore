@@ -1,8 +1,8 @@
 @interface MRDGroupSessionHomeObserver
 + (MRDGroupSessionHomeObserver)shared;
 - (MRDGroupSessionHomeObserver)init;
-- (void)currentHomeUserIdentifiersWithCompletionHandler:(id)a3;
-- (void)currentUserHomeIdentifiersWithCompletionHandler:(id)a3;
+- (void)currentHomeUserIdentifiersWithCompletionHandler:(id)handler;
+- (void)currentUserHomeIdentifiersWithCompletionHandler:(id)handler;
 @end
 
 @implementation MRDGroupSessionHomeObserver
@@ -19,13 +19,13 @@
   return v3;
 }
 
-- (void)currentHomeUserIdentifiersWithCompletionHandler:(id)a3
+- (void)currentHomeUserIdentifiersWithCompletionHandler:(id)handler
 {
   v5 = sub_1001BC5A8(&qword_100521B60, &qword_10044F1A0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -41,17 +41,17 @@
   v13[3] = 0;
   v13[4] = &unk_10045ADE8;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1001D34BC(0, 0, v8, &unk_10045ADF0, v13);
 }
 
-- (void)currentUserHomeIdentifiersWithCompletionHandler:(id)a3
+- (void)currentUserHomeIdentifiersWithCompletionHandler:(id)handler
 {
   v5 = sub_1001BC5A8(&qword_100521B60, &qword_10044F1A0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -67,7 +67,7 @@
   v13[3] = 0;
   v13[4] = &unk_10045ADB8;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1001D34BC(0, 0, v8, &unk_10045ADC8, v13);
 }
 

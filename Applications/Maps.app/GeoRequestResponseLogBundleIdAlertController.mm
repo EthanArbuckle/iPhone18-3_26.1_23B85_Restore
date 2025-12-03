@@ -1,21 +1,21 @@
 @interface GeoRequestResponseLogBundleIdAlertController
-+ (id)alertControllerWithBundleId:(id)a3 completionHandler:(id)a4;
-- (void)_textFieldValueDidChange:(id)a3;
++ (id)alertControllerWithBundleId:(id)id completionHandler:(id)handler;
+- (void)_textFieldValueDidChange:(id)change;
 @end
 
 @implementation GeoRequestResponseLogBundleIdAlertController
 
-- (void)_textFieldValueDidChange:(id)a3
+- (void)_textFieldValueDidChange:(id)change
 {
-  v4 = [a3 text];
-  -[UIAlertAction setEnabled:](self->_action, "setEnabled:", [v4 length] != 0);
+  text = [change text];
+  -[UIAlertAction setEnabled:](self->_action, "setEnabled:", [text length] != 0);
 }
 
-+ (id)alertControllerWithBundleId:(id)a3 completionHandler:(id)a4
++ (id)alertControllerWithBundleId:(id)id completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 alertControllerWithTitle:@"Edit" message:0 preferredStyle:1];
+  idCopy = id;
+  handlerCopy = handler;
+  v8 = [self alertControllerWithTitle:@"Edit" message:0 preferredStyle:1];
   objc_initWeak(&location, v8);
   v23[0] = 0;
   v23[1] = v23;
@@ -28,7 +28,7 @@
   v19[2] = sub_1005C6084;
   v19[3] = &unk_101631A30;
   objc_copyWeak(&v22, &location);
-  v9 = v6;
+  v9 = idCopy;
   v20 = v9;
   v21 = v23;
   [v8 addTextFieldWithConfigurationHandler:v19];
@@ -40,7 +40,7 @@
   v15[2] = sub_1005C612C;
   v15[3] = &unk_101631A58;
   objc_copyWeak(&v18, &location);
-  v11 = v7;
+  v11 = handlerCopy;
   v16 = v11;
   v17 = v23;
   v12 = [UIAlertAction actionWithTitle:@"Save" style:0 handler:v15];

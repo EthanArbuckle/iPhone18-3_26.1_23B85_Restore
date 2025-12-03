@@ -1,26 +1,26 @@
 @interface BLSHLocalCountingAssertionAttributeHandler
 + (Class)attributeBaseClass;
 + (id)attributeClasses;
-- (id)entriesForCountingTarget:(id)a3;
-- (id)initForService:(id)a3;
-- (void)activateWithFirstEntry:(id)a3;
-- (void)deactivateWithFinalEntry:(id)a3;
-- (void)decrementCountWithEntry:(uint64_t)a1;
-- (void)incrementCountWithEntry:(uint64_t)a1;
+- (id)entriesForCountingTarget:(id)target;
+- (id)initForService:(id)service;
+- (void)activateWithFirstEntry:(id)entry;
+- (void)deactivateWithFinalEntry:(id)entry;
+- (void)decrementCountWithEntry:(uint64_t)entry;
+- (void)incrementCountWithEntry:(uint64_t)entry;
 @end
 
 @implementation BLSHLocalCountingAssertionAttributeHandler
 
-- (id)initForService:(id)a3
+- (id)initForService:(id)service
 {
   v7.receiver = self;
   v7.super_class = BLSHLocalCountingAssertionAttributeHandler;
-  v3 = [(BLSHLocalAssertionAttributeHandler *)&v7 initForService:a3];
+  v3 = [(BLSHLocalAssertionAttributeHandler *)&v7 initForService:service];
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v5 = v3[4];
-    v3[4] = v4;
+    v3[4] = dictionary;
 
     *(v3 + 10) = 0;
   }
@@ -32,7 +32,7 @@
 {
   v4 = MEMORY[0x277CCACA8];
   v5 = NSStringFromSelector(a2);
-  v6 = [v4 stringWithFormat:@"%@ must subclass BLSHLocalCountingAssertionAttributeHandler and override %@", a1, v5];
+  v6 = [v4 stringWithFormat:@"%@ must subclass BLSHLocalCountingAssertionAttributeHandler and override %@", self, v5];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -44,7 +44,7 @@
     v13 = 2114;
     v14 = v9;
     v15 = 2048;
-    v16 = a1;
+    selfCopy = self;
     v17 = 2114;
     v18 = @"BLSHLocalCountingAssertionAttributeHandler.m";
     v19 = 1024;
@@ -64,7 +64,7 @@
 {
   v4 = MEMORY[0x277CCACA8];
   v5 = NSStringFromSelector(a2);
-  v6 = [v4 stringWithFormat:@"%@ must subclass BLSHLocalCountingAssertionAttributeHandler and override %@", a1, v5];
+  v6 = [v4 stringWithFormat:@"%@ must subclass BLSHLocalCountingAssertionAttributeHandler and override %@", self, v5];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -76,7 +76,7 @@
     v13 = 2114;
     v14 = v9;
     v15 = 2048;
-    v16 = a1;
+    selfCopy = self;
     v17 = 2114;
     v18 = @"BLSHLocalCountingAssertionAttributeHandler.m";
     v19 = 1024;
@@ -92,9 +92,9 @@
   return result;
 }
 
-- (void)activateWithFirstEntry:(id)a3
+- (void)activateWithFirstEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   v6 = MEMORY[0x277CCACA8];
   v7 = NSStringFromSelector(a2);
   v8 = [v6 stringWithFormat:@"%@ must subclass BLSHLocalCountingAssertionAttributeHandler and override %@", self, v7];
@@ -109,7 +109,7 @@
     v14 = 2114;
     v15 = v11;
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
     v19 = @"BLSHLocalCountingAssertionAttributeHandler.m";
     v20 = 1024;
@@ -124,9 +124,9 @@
   __break(0);
 }
 
-- (void)deactivateWithFinalEntry:(id)a3
+- (void)deactivateWithFinalEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   v6 = MEMORY[0x277CCACA8];
   v7 = NSStringFromSelector(a2);
   v8 = [v6 stringWithFormat:@"%@ must subclass BLSHLocalCountingAssertionAttributeHandler and override %@", self, v7];
@@ -141,7 +141,7 @@
     v14 = 2114;
     v15 = v11;
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
     v19 = @"BLSHLocalCountingAssertionAttributeHandler.m";
     v20 = 1024;
@@ -156,34 +156,34 @@
   __break(0);
 }
 
-- (id)entriesForCountingTarget:(id)a3
+- (id)entriesForCountingTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   os_unfair_lock_lock(&self->_countingDictionaryLock);
-  v5 = [(NSMutableDictionary *)self->_lock_entryDictionary objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_lock_entryDictionary objectForKey:targetCopy];
 
-  v6 = [v5 allObjects];
-  v7 = [v6 copy];
+  allObjects = [v5 allObjects];
+  v7 = [allObjects copy];
 
   os_unfair_lock_unlock(&self->_countingDictionaryLock);
 
   return v7;
 }
 
-- (void)incrementCountWithEntry:(uint64_t)a1
+- (void)incrementCountWithEntry:(uint64_t)entry
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (entry)
   {
     v4 = [OUTLINED_FUNCTION_2_7() countingTargetForEntry:?];
     v5 = OUTLINED_FUNCTION_1_9();
     os_unfair_lock_lock(v5);
-    v6 = [*(a1 + 32) objectForKey:v4];
+    v6 = [*(entry + 32) objectForKey:v4];
     if (!v6)
     {
       v6 = [objc_alloc(MEMORY[0x277CCAA50]) initWithOptions:517 capacity:2];
-      [*(a1 + 32) setObject:v6 forKey:v4];
+      [*(entry + 32) setObject:v6 forKey:v4];
     }
 
     v7 = [v6 count];
@@ -217,16 +217,16 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)decrementCountWithEntry:(uint64_t)a1
+- (void)decrementCountWithEntry:(uint64_t)entry
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (entry)
   {
     v4 = [OUTLINED_FUNCTION_2_7() countingTargetForEntry:?];
     v5 = OUTLINED_FUNCTION_1_9();
     os_unfair_lock_lock(v5);
-    v6 = [*(a1 + 32) objectForKey:v4];
+    v6 = [*(entry + 32) objectForKey:v4];
     v7 = [v6 count];
     [v6 removeObject:v3];
     v8 = [v6 count];

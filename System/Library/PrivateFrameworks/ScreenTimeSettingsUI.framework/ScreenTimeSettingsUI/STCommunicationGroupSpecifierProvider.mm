@@ -3,18 +3,18 @@
 - (STCommunicationGroupSpecifierProvider)init;
 - (id)_communicationLimitsDetailText;
 - (id)_communicationSafetyDetailText;
-- (void)_communicationLimitsDidChangeFrom:(id)a3 to:(id)a4;
+- (void)_communicationLimitsDidChangeFrom:(id)from to:(id)to;
 - (void)_communicationSafetyDetailText;
 - (void)_communicationSafetyDidChange;
-- (void)_isRemoteUserDidChangeFrom:(BOOL)a3 to:(BOOL)a4;
+- (void)_isRemoteUserDidChangeFrom:(BOOL)from to:(BOOL)to;
 - (void)_resetCommunicationLimitsDetailText;
-- (void)_showCommunicationLimitsViewController:(id)a3;
-- (void)_userTypeDidChange:(unint64_t)a3;
+- (void)_showCommunicationLimitsViewController:(id)controller;
+- (void)_userTypeDidChange:(unint64_t)change;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)setCoordinator:(id)a3;
-- (void)showCommunicationSafetyViewController:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
+- (void)setCoordinator:(id)coordinator;
+- (void)showCommunicationSafetyViewController:(id)controller;
 @end
 
 @implementation STCommunicationGroupSpecifierProvider
@@ -27,7 +27,7 @@
   if (v2)
   {
     v3 = +[STScreenTimeSettingsUIBundle bundle];
-    v19 = [(STGroupSpecifierProvider *)v2 mutableSpecifiers];
+    mutableSpecifiers = [(STGroupSpecifierProvider *)v2 mutableSpecifiers];
     v4 = MEMORY[0x277D3FAD8];
     v5 = [v3 localizedStringForKey:@"CommunicationGroupSpecifierName" value:&stru_28766E5A8 table:0];
     v6 = [v4 groupSpecifierWithName:v5];
@@ -39,9 +39,9 @@
     [v7 setIdentifier:@"COMMUNICATION_LIMITS"];
     v20 = *MEMORY[0x277D40170];
     [v7 setObject:v22 forKeyedSubscript:?];
-    v8 = [(STCommunicationGroupSpecifierProvider *)v2 _communicationLimitsDetailText];
+    _communicationLimitsDetailText = [(STCommunicationGroupSpecifierProvider *)v2 _communicationLimitsDetailText];
     v9 = *MEMORY[0x277D40160];
-    [v7 setObject:v8 forKeyedSubscript:*MEMORY[0x277D40160]];
+    [v7 setObject:_communicationLimitsDetailText forKeyedSubscript:*MEMORY[0x277D40160]];
 
     v10 = objc_opt_class();
     v11 = *MEMORY[0x277D3FE58];
@@ -52,22 +52,22 @@
     [v7 setObject:@"com.apple.graphic-icon.communication-limits" forKeyedSubscript:*MEMORY[0x277D3FFD8]];
     [v7 setControllerLoadAction:sel__showCommunicationLimitsViewController_];
     [(STCommunicationGroupSpecifierProvider *)v2 setCommunicationLimitsSpecifier:v7];
-    [v19 addObject:v7];
+    [mutableSpecifiers addObject:v7];
     v14 = [v3 localizedStringForKey:@"CommunicationSafetyTitle" value:&stru_28766E5A8 table:0];
-    v15 = [(STCommunicationGroupSpecifierProvider *)v2 _communicationSafetyDetailText];
+    _communicationSafetyDetailText = [(STCommunicationGroupSpecifierProvider *)v2 _communicationSafetyDetailText];
     v16 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v14 target:v2 set:0 get:0 detail:0 cell:2 edit:0];
     [v16 setIdentifier:@"COMMUNICATION_SAFETY"];
     [v16 setObject:v14 forKeyedSubscript:v20];
-    [v16 setObject:v15 forKeyedSubscript:v9];
+    [v16 setObject:_communicationSafetyDetailText forKeyedSubscript:v9];
     [v16 setObject:@"COMMUNICATION_SAFETY" forKeyedSubscript:*MEMORY[0x277D3FFB8]];
     [v16 setObject:objc_opt_class() forKeyedSubscript:v11];
     [v16 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v12];
     [v16 setObject:@"com.apple.graphic-icon.communication-safety" forKeyedSubscript:v13];
     [v16 setControllerLoadAction:sel_showCommunicationSafetyViewController_];
     [(STCommunicationGroupSpecifierProvider *)v2 setCommunicationSafetySpecifier:v16];
-    [v19 addObject:v16];
-    v17 = [MEMORY[0x277D262A0] sharedConnection];
-    [v17 registerObserver:v2];
+    [mutableSpecifiers addObject:v16];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    [mEMORY[0x277D262A0] registerObserver:v2];
   }
 
   return v2;
@@ -78,66 +78,66 @@
   v5.receiver = self;
   v5.super_class = STCommunicationGroupSpecifierProvider;
   [(STRootGroupSpecifierProvider *)&v5 invalidate];
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  [v3 unregisterObserver:self];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] unregisterObserver:self];
 
   v4.receiver = self;
   v4.super_class = STCommunicationGroupSpecifierProvider;
   [(STGroupSpecifierProvider *)&v4 dealloc];
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STRootGroupSpecifierProvider *)self coordinator];
-  [v5 removeObserver:self forKeyPath:@"viewModel.isLocalOrRemotelyManagedUser" context:"STCommunicationGroupSpecifierProviderObservationContext"];
-  [v5 removeObserver:self forKeyPath:@"viewModel.me.isRemoteUser"];
-  [v5 removeObserver:self forKeyPath:@"viewModel.me.type"];
-  [v5 removeObserver:self forKeyPath:@"contentPrivacyCoordinator.viewModel.communicationLimits"];
-  [v5 removeObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyReceivingRestricted"];
-  [v5 removeObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetySendingRestricted"];
-  [v5 removeObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyNotificationEnabled"];
-  [v5 removeObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyAnalyticsEnabled"];
+  coordinatorCopy = coordinator;
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  [coordinator removeObserver:self forKeyPath:@"viewModel.isLocalOrRemotelyManagedUser" context:"STCommunicationGroupSpecifierProviderObservationContext"];
+  [coordinator removeObserver:self forKeyPath:@"viewModel.me.isRemoteUser"];
+  [coordinator removeObserver:self forKeyPath:@"viewModel.me.type"];
+  [coordinator removeObserver:self forKeyPath:@"contentPrivacyCoordinator.viewModel.communicationLimits"];
+  [coordinator removeObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyReceivingRestricted"];
+  [coordinator removeObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetySendingRestricted"];
+  [coordinator removeObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyNotificationEnabled"];
+  [coordinator removeObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyAnalyticsEnabled"];
   v12.receiver = self;
   v12.super_class = STCommunicationGroupSpecifierProvider;
-  [(STRootGroupSpecifierProvider *)&v12 setCoordinator:v4];
-  v6 = [v5 contentPrivacyCoordinator];
-  v7 = [v6 viewModel];
-  v8 = [v7 communicationLimits];
-  v9 = [v4 contentPrivacyCoordinator];
-  v10 = [v9 viewModel];
-  v11 = [v10 communicationLimits];
-  [(STCommunicationGroupSpecifierProvider *)self _communicationLimitsDidChangeFrom:v8 to:v11];
+  [(STRootGroupSpecifierProvider *)&v12 setCoordinator:coordinatorCopy];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
+  communicationLimits = [viewModel communicationLimits];
+  contentPrivacyCoordinator2 = [coordinatorCopy contentPrivacyCoordinator];
+  viewModel2 = [contentPrivacyCoordinator2 viewModel];
+  communicationLimits2 = [viewModel2 communicationLimits];
+  [(STCommunicationGroupSpecifierProvider *)self _communicationLimitsDidChangeFrom:communicationLimits to:communicationLimits2];
 
   [(STCommunicationGroupSpecifierProvider *)self _communicationSafetyDidChange];
-  [v4 addObserver:self forKeyPath:@"viewModel.isLocalOrRemotelyManagedUser" options:4 context:"STCommunicationGroupSpecifierProviderObservationContext"];
-  [v4 addObserver:self forKeyPath:@"viewModel.me.isRemoteUser" options:7 context:"STCommunicationGroupSpecifierProviderObservationContext"];
-  [v4 addObserver:self forKeyPath:@"viewModel.me.type" options:5 context:"STCommunicationGroupSpecifierProviderObservationContext"];
-  [v4 addObserver:self forKeyPath:@"contentPrivacyCoordinator.viewModel.communicationLimits" options:3 context:"STCommunicationGroupSpecifierProviderObservationContext"];
-  [v4 addObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyReceivingRestricted" options:5 context:"STCommunicationGroupSpecifierProviderObservationContext"];
-  [v4 addObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetySendingRestricted" options:5 context:"STCommunicationGroupSpecifierProviderObservationContext"];
-  [v4 addObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyNotificationEnabled" options:5 context:"STCommunicationGroupSpecifierProviderObservationContext"];
-  [v4 addObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyAnalyticsEnabled" options:5 context:"STCommunicationGroupSpecifierProviderObservationContext"];
+  [coordinatorCopy addObserver:self forKeyPath:@"viewModel.isLocalOrRemotelyManagedUser" options:4 context:"STCommunicationGroupSpecifierProviderObservationContext"];
+  [coordinatorCopy addObserver:self forKeyPath:@"viewModel.me.isRemoteUser" options:7 context:"STCommunicationGroupSpecifierProviderObservationContext"];
+  [coordinatorCopy addObserver:self forKeyPath:@"viewModel.me.type" options:5 context:"STCommunicationGroupSpecifierProviderObservationContext"];
+  [coordinatorCopy addObserver:self forKeyPath:@"contentPrivacyCoordinator.viewModel.communicationLimits" options:3 context:"STCommunicationGroupSpecifierProviderObservationContext"];
+  [coordinatorCopy addObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyReceivingRestricted" options:5 context:"STCommunicationGroupSpecifierProviderObservationContext"];
+  [coordinatorCopy addObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetySendingRestricted" options:5 context:"STCommunicationGroupSpecifierProviderObservationContext"];
+  [coordinatorCopy addObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyNotificationEnabled" options:5 context:"STCommunicationGroupSpecifierProviderObservationContext"];
+  [coordinatorCopy addObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyAnalyticsEnabled" options:5 context:"STCommunicationGroupSpecifierProviderObservationContext"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a5;
-  if (a6 == "STCommunicationGroupSpecifierProviderObservationContext")
+  pathCopy = path;
+  changeCopy = change;
+  if (context == "STCommunicationGroupSpecifierProviderObservationContext")
   {
-    v12 = [MEMORY[0x277D262A0] sharedConnection];
-    v13 = [v12 effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    v13 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
 
-    v14 = [(STRootGroupSpecifierProvider *)self coordinator];
-    if ([v10 isEqualToString:@"viewModel.isLocalOrRemotelyManagedUser"])
+    coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+    if ([pathCopy isEqualToString:@"viewModel.isLocalOrRemotelyManagedUser"])
     {
-      v15 = [(STRootGroupSpecifierProvider *)self coordinator];
-      v16 = [v15 viewModel];
-      if ([v16 isLocalOrRemotelyManagedUser])
+      coordinator2 = [(STRootGroupSpecifierProvider *)self coordinator];
+      viewModel = [coordinator2 viewModel];
+      if ([viewModel isLocalOrRemotelyManagedUser])
       {
-        v17 = [(STGroupSpecifierProvider *)self mutableSpecifiers];
-        if ([v17 count])
+        mutableSpecifiers = [(STGroupSpecifierProvider *)self mutableSpecifiers];
+        if ([mutableSpecifiers count])
         {
           v18 = v13 == 2;
         }
@@ -159,12 +159,12 @@
 
     else
     {
-      if ([v10 isEqualToString:@"viewModel.me.type"])
+      if ([pathCopy isEqualToString:@"viewModel.me.type"])
       {
-        v20 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-        v21 = [MEMORY[0x277CBEB68] null];
+        v20 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+        null = [MEMORY[0x277CBEB68] null];
 
-        if (v20 == v21)
+        if (v20 == null)
         {
 
           v20 = 0;
@@ -175,21 +175,21 @@
 
       else
       {
-        if ([v10 isEqualToString:@"viewModel.me.isRemoteUser"])
+        if ([pathCopy isEqualToString:@"viewModel.me.isRemoteUser"])
         {
-          v20 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-          v22 = [MEMORY[0x277CBEB68] null];
+          v20 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+          null2 = [MEMORY[0x277CBEB68] null];
 
-          if (v20 == v22)
+          if (v20 == null2)
           {
 
             v20 = 0;
           }
 
-          v23 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-          v24 = [MEMORY[0x277CBEB68] null];
+          v23 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+          null3 = [MEMORY[0x277CBEB68] null];
 
-          if (v23 == v24)
+          if (v23 == null3)
           {
 
             v23 = 0;
@@ -200,9 +200,9 @@
 
         else
         {
-          if (![v10 isEqualToString:@"contentPrivacyCoordinator.viewModel.communicationLimits"])
+          if (![pathCopy isEqualToString:@"contentPrivacyCoordinator.viewModel.communicationLimits"])
           {
-            if (([v10 isEqualToString:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyReceivingRestricted"] & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"communicationSafetyCoordinator.viewModel.isCommunicationSafetySendingRestricted") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"communicationSafetyCoordinator.viewModel.isCommunicationSafetyNotificationEnabled") & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"communicationSafetyCoordinator.viewModel.isCommunicationSafetyAnalyticsEnabled"))
+            if (([pathCopy isEqualToString:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyReceivingRestricted"] & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"communicationSafetyCoordinator.viewModel.isCommunicationSafetySendingRestricted") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"communicationSafetyCoordinator.viewModel.isCommunicationSafetyNotificationEnabled") & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"communicationSafetyCoordinator.viewModel.isCommunicationSafetyAnalyticsEnabled"))
             {
               [(STCommunicationGroupSpecifierProvider *)self _communicationSafetyDidChange];
             }
@@ -210,19 +210,19 @@
             goto LABEL_32;
           }
 
-          v20 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-          v25 = [MEMORY[0x277CBEB68] null];
+          v20 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+          null4 = [MEMORY[0x277CBEB68] null];
 
-          if (v20 == v25)
+          if (v20 == null4)
           {
 
             v20 = 0;
           }
 
-          v23 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-          v26 = [MEMORY[0x277CBEB68] null];
+          v23 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+          null5 = [MEMORY[0x277CBEB68] null];
 
-          if (v23 == v26)
+          if (v23 == null5)
           {
 
             v23 = 0;
@@ -240,21 +240,21 @@ LABEL_32:
 
   v27.receiver = self;
   v27.super_class = STCommunicationGroupSpecifierProvider;
-  [(STCommunicationGroupSpecifierProvider *)&v27 observeValueForKeyPath:v10 ofObject:a4 change:v11 context:a6];
+  [(STCommunicationGroupSpecifierProvider *)&v27 observeValueForKeyPath:pathCopy ofObject:object change:changeCopy context:context];
 LABEL_33:
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
-  v5 = [MEMORY[0x277D262A0] sharedConnection];
-  v6 = [v5 effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v6 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
 
-  v11 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v7 = [v11 viewModel];
-  if ([v7 isLocalOrRemotelyManagedUser])
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel = [coordinator viewModel];
+  if ([viewModel isLocalOrRemotelyManagedUser])
   {
-    v8 = [(STGroupSpecifierProvider *)self mutableSpecifiers];
-    if ([v8 count])
+    mutableSpecifiers = [(STGroupSpecifierProvider *)self mutableSpecifiers];
+    if ([mutableSpecifiers count])
     {
       v9 = v6 == 2;
     }
@@ -274,23 +274,23 @@ LABEL_33:
   }
 }
 
-- (void)_userTypeDidChange:(unint64_t)a3
+- (void)_userTypeDidChange:(unint64_t)change
 {
-  if (!a3)
+  if (!change)
   {
-    v5 = [(STGroupSpecifierProvider *)self mutableSpecifiers];
-    v6 = [(STCommunicationGroupSpecifierProvider *)self communicationLimitsSpecifier];
-    [v5 removeObject:v6];
+    mutableSpecifiers = [(STGroupSpecifierProvider *)self mutableSpecifiers];
+    communicationLimitsSpecifier = [(STCommunicationGroupSpecifierProvider *)self communicationLimitsSpecifier];
+    [mutableSpecifiers removeObject:communicationLimitsSpecifier];
 
-    v7 = [MEMORY[0x277D262A0] sharedConnection];
-    v8 = [v7 effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    v8 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
 
-    v13 = [(STRootGroupSpecifierProvider *)self coordinator];
-    v9 = [v13 viewModel];
-    if ([v9 isLocalOrRemotelyManagedUser])
+    coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+    viewModel = [coordinator viewModel];
+    if ([viewModel isLocalOrRemotelyManagedUser])
     {
-      v10 = [(STGroupSpecifierProvider *)self mutableSpecifiers];
-      if ([v10 count])
+      mutableSpecifiers2 = [(STGroupSpecifierProvider *)self mutableSpecifiers];
+      if ([mutableSpecifiers2 count])
       {
         v11 = v8 == 2;
       }
@@ -311,19 +311,19 @@ LABEL_33:
   }
 }
 
-- (void)_isRemoteUserDidChangeFrom:(BOOL)a3 to:(BOOL)a4
+- (void)_isRemoteUserDidChangeFrom:(BOOL)from to:(BOOL)to
 {
-  if (a3 != a4)
+  if (from != to)
   {
     [(STCommunicationGroupSpecifierProvider *)self _resetCommunicationLimitsDetailText];
   }
 }
 
-- (void)_communicationLimitsDidChangeFrom:(id)a3 to:(id)a4
+- (void)_communicationLimitsDidChangeFrom:(id)from to:(id)to
 {
-  v7 = a3;
-  v6 = a4;
-  if (v7 != v6 && ([v7 isEqual:v6] & 1) == 0)
+  fromCopy = from;
+  toCopy = to;
+  if (fromCopy != toCopy && ([fromCopy isEqual:toCopy] & 1) == 0)
   {
     [(STCommunicationGroupSpecifierProvider *)self _resetCommunicationLimitsDetailText];
   }
@@ -331,33 +331,33 @@ LABEL_33:
 
 - (void)_resetCommunicationLimitsDetailText
 {
-  v4 = [(STCommunicationGroupSpecifierProvider *)self communicationLimitsSpecifier];
-  v3 = [(STCommunicationGroupSpecifierProvider *)self _communicationLimitsDetailText];
-  [v4 setObject:v3 forKeyedSubscript:*MEMORY[0x277D40160]];
+  communicationLimitsSpecifier = [(STCommunicationGroupSpecifierProvider *)self communicationLimitsSpecifier];
+  _communicationLimitsDetailText = [(STCommunicationGroupSpecifierProvider *)self _communicationLimitsDetailText];
+  [communicationLimitsSpecifier setObject:_communicationLimitsDetailText forKeyedSubscript:*MEMORY[0x277D40160]];
 
-  [(STGroupSpecifierProvider *)self reloadSpecifier:v4 animated:0];
+  [(STGroupSpecifierProvider *)self reloadSpecifier:communicationLimitsSpecifier animated:0];
 }
 
 - (id)_communicationLimitsDetailText
 {
-  v2 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v3 = [v2 contentPrivacyCoordinator];
-  v4 = [v3 viewModel];
-  v5 = [v4 communicationLimits];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
+  communicationLimits = [viewModel communicationLimits];
 
-  if ([v5 screenTimeCommunicationLimit] || objc_msgSend(v5, "downtimeCommunicationLimit"))
+  if ([communicationLimits screenTimeCommunicationLimit] || objc_msgSend(communicationLimits, "downtimeCommunicationLimit"))
   {
     v6 = +[STScreenTimeSettingsUIBundle bundle];
     v7 = v6;
     v8 = @"CommunicationLimitsOnDetailText";
   }
 
-  else if ([v5 contactManagementState] || !objc_msgSend(v5, "contactsEditable"))
+  else if ([communicationLimits contactManagementState] || !objc_msgSend(communicationLimits, "contactsEditable"))
   {
-    v11 = [v5 contactManagementState];
+    contactManagementState = [communicationLimits contactManagementState];
     v6 = +[STScreenTimeSettingsUIBundle bundle];
     v7 = v6;
-    if (v11)
+    if (contactManagementState)
     {
       v8 = @"CommunicationLimitsManagingContactsDetailText";
     }
@@ -380,63 +380,63 @@ LABEL_33:
   return v9;
 }
 
-- (void)_showCommunicationLimitsViewController:(id)a3
+- (void)_showCommunicationLimitsViewController:(id)controller
 {
-  v11 = a3;
+  controllerCopy = controller;
   if (![(STCommunicationGroupSpecifierProvider *)self showDemoModeAlertIfNeeded])
   {
-    v4 = [(STRootGroupSpecifierProvider *)self coordinator];
-    v5 = [[STCommunicationLimitsListController alloc] initWithRootViewModelCoordinator:v4];
-    v6 = [v4 viewModel];
-    v7 = [v6 me];
-    v8 = [v7 isRemoteUser];
+    coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+    v5 = [[STCommunicationLimitsListController alloc] initWithRootViewModelCoordinator:coordinator];
+    viewModel = [coordinator viewModel];
+    v7 = [viewModel me];
+    isRemoteUser = [v7 isRemoteUser];
 
-    if (v8)
+    if (isRemoteUser)
     {
       [MEMORY[0x277CBDA28] requestAccountSyncWithOptions:1];
     }
 
-    v9 = [(STGroupSpecifierProvider *)self delegate];
-    [(STCommunicationLimitsListController *)v5 setParentController:v9];
-    v10 = [v9 rootController];
-    [(STCommunicationLimitsListController *)v5 setRootController:v10];
+    delegate = [(STGroupSpecifierProvider *)self delegate];
+    [(STCommunicationLimitsListController *)v5 setParentController:delegate];
+    rootController = [delegate rootController];
+    [(STCommunicationLimitsListController *)v5 setRootController:rootController];
 
-    [(STCommunicationLimitsListController *)v5 setSpecifier:v11];
+    [(STCommunicationLimitsListController *)v5 setSpecifier:controllerCopy];
     [(STGroupSpecifierProvider *)self showController:v5 animated:1];
   }
 }
 
-- (void)showCommunicationSafetyViewController:(id)a3
+- (void)showCommunicationSafetyViewController:(id)controller
 {
-  v8 = a3;
+  controllerCopy = controller;
   if (![(STCommunicationGroupSpecifierProvider *)self showDemoModeAlertIfNeeded])
   {
     v4 = objc_opt_new();
-    v5 = [(STRootGroupSpecifierProvider *)self coordinator];
-    [v4 setCoordinator:v5];
+    coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+    [v4 setCoordinator:coordinator];
 
-    v6 = [(STGroupSpecifierProvider *)self delegate];
-    [v4 setParentController:v6];
-    v7 = [v6 rootController];
-    [v4 setRootController:v7];
+    delegate = [(STGroupSpecifierProvider *)self delegate];
+    [v4 setParentController:delegate];
+    rootController = [delegate rootController];
+    [v4 setRootController:rootController];
 
-    [v4 setSpecifier:v8];
+    [v4 setSpecifier:controllerCopy];
     [(STGroupSpecifierProvider *)self showController:v4 animated:1];
   }
 }
 
 - (void)_communicationSafetyDidChange
 {
-  v3 = [(STCommunicationGroupSpecifierProvider *)self communicationSafetySpecifier];
-  v4 = v3;
-  if (v3)
+  communicationSafetySpecifier = [(STCommunicationGroupSpecifierProvider *)self communicationSafetySpecifier];
+  v4 = communicationSafetySpecifier;
+  if (communicationSafetySpecifier)
   {
     v5 = *MEMORY[0x277D40160];
-    v6 = [v3 objectForKeyedSubscript:*MEMORY[0x277D40160]];
-    v7 = [(STCommunicationGroupSpecifierProvider *)self _communicationSafetyDetailText];
-    if (([v6 isEqualToString:v7] & 1) == 0)
+    v6 = [communicationSafetySpecifier objectForKeyedSubscript:*MEMORY[0x277D40160]];
+    _communicationSafetyDetailText = [(STCommunicationGroupSpecifierProvider *)self _communicationSafetyDetailText];
+    if (([v6 isEqualToString:_communicationSafetyDetailText] & 1) == 0)
     {
-      [v4 setObject:v7 forKeyedSubscript:v5];
+      [v4 setObject:_communicationSafetyDetailText forKeyedSubscript:v5];
       v8 = +[STUILog communicationSafety];
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
@@ -450,20 +450,20 @@ LABEL_33:
 
 - (id)_communicationSafetyDetailText
 {
-  v2 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v3 = [v2 communicationSafetyCoordinator];
-  v4 = [v3 viewModel];
-  v5 = [v4 isCommunicationSafetySendingRestricted];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  communicationSafetyCoordinator = [coordinator communicationSafetyCoordinator];
+  viewModel = [communicationSafetyCoordinator viewModel];
+  isCommunicationSafetySendingRestricted = [viewModel isCommunicationSafetySendingRestricted];
 
   v6 = +[STUILog communicationSafety];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(STCommunicationGroupSpecifierProvider *)v5 _communicationSafetyDetailText];
+    [(STCommunicationGroupSpecifierProvider *)isCommunicationSafetySendingRestricted _communicationSafetyDetailText];
   }
 
   v7 = +[STScreenTimeSettingsUIBundle bundle];
   v8 = v7;
-  if (v5)
+  if (isCommunicationSafetySendingRestricted)
   {
     v9 = @"CommunicationSafetyOnSubtitle";
   }
@@ -480,19 +480,19 @@ LABEL_33:
 
 - (BOOL)showDemoModeAlertIfNeeded
 {
-  v3 = [MEMORY[0x277D75128] isRunningInStoreDemoMode];
-  if (v3)
+  isRunningInStoreDemoMode = [MEMORY[0x277D75128] isRunningInStoreDemoMode];
+  if (isRunningInStoreDemoMode)
   {
     [(STGroupSpecifierProvider *)self showStoreDemoAlert];
   }
 
-  return v3;
+  return isRunningInStoreDemoMode;
 }
 
 - (void)_communicationSafetyDetailText
 {
   v6 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCABB0] numberWithBool:a1 & 1];
+  v3 = [MEMORY[0x277CCABB0] numberWithBool:self & 1];
   v4 = 138412290;
   v5 = v3;
   _os_log_debug_impl(&dword_264BA2000, a2, OS_LOG_TYPE_DEBUG, "Top-level specifier fetching 'communication safety sending restricted' flag from viewmodel: %@", &v4, 0xCu);

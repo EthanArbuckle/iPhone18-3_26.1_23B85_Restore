@@ -1,19 +1,19 @@
 @interface SBFluidSwitcherModifierTimelineController
-+ (BOOL)_isNoisyEvent:(id)a3;
-- (BOOL)wantsEvent:(id)a3;
-- (SBFluidSwitcherModifierTimelineController)initWithDelegate:(id)a3;
++ (BOOL)_isNoisyEvent:(id)event;
+- (BOOL)wantsEvent:(id)event;
+- (SBFluidSwitcherModifierTimelineController)initWithDelegate:(id)delegate;
 - (SBFluidSwitcherModifierTimelineControllerDelegate)delegate;
 - (double)_windowLevel;
 - (id)_windowScene;
-- (void)setVisible:(BOOL)a3;
+- (void)setVisible:(BOOL)visible;
 @end
 
 @implementation SBFluidSwitcherModifierTimelineController
 
-+ (BOOL)_isNoisyEvent:(id)a3
++ (BOOL)_isNoisyEvent:(id)event
 {
   v3 = _isNoisyEvent__onceToken;
-  v4 = a3;
+  eventCopy = event;
   if (v3 != -1)
   {
     +[SBFluidSwitcherModifierTimelineController _isNoisyEvent:];
@@ -21,9 +21,9 @@
 
   v5 = _isNoisyEvent__noisyEventTypeNums;
   v6 = MEMORY[0x277CCABB0];
-  v7 = [v4 type];
+  type = [eventCopy type];
 
-  v8 = [v6 numberWithInteger:v7];
+  v8 = [v6 numberWithInteger:type];
   LOBYTE(v5) = [v5 containsObject:v8];
 
   return v5;
@@ -36,26 +36,26 @@ void __59__SBFluidSwitcherModifierTimelineController__isNoisyEvent___block_invok
   _isNoisyEvent__noisyEventTypeNums = v0;
 }
 
-- (SBFluidSwitcherModifierTimelineController)initWithDelegate:(id)a3
+- (SBFluidSwitcherModifierTimelineController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = SBFluidSwitcherModifierTimelineController;
   v5 = [(SBFluidSwitcherModifierTimelineController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (void)setVisible:(BOOL)a3
+- (void)setVisible:(BOOL)visible
 {
-  self->_visible = a3;
+  self->_visible = visible;
   window = self->_window;
-  if (a3)
+  if (visible)
   {
     if (!window)
     {
@@ -64,10 +64,10 @@ void __59__SBFluidSwitcherModifierTimelineController__isNoisyEvent___block_invok
       self->_rootViewController = v5;
 
       v7 = objc_alloc(MEMORY[0x277D65F88]);
-      v8 = [(SBFluidSwitcherModifierTimelineController *)self _windowScene];
+      _windowScene = [(SBFluidSwitcherModifierTimelineController *)self _windowScene];
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
-      v11 = [v7 initWithWindowScene:v8 role:@"SBTraitsParticipantRoleModifierTimeline" debugName:v10];
+      v11 = [v7 initWithWindowScene:_windowScene role:@"SBTraitsParticipantRoleModifierTimeline" debugName:v10];
       v12 = self->_window;
       self->_window = v11;
 
@@ -95,12 +95,12 @@ void __59__SBFluidSwitcherModifierTimelineController__isNoisyEvent___block_invok
   }
 }
 
-- (BOOL)wantsEvent:(id)a3
+- (BOOL)wantsEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ([(SBFluidSwitcherModifierTimelineViewController *)self->_rootViewController ignoreNoisyEvents])
   {
-    v5 = [objc_opt_class() _isNoisyEvent:v4] ^ 1;
+    v5 = [objc_opt_class() _isNoisyEvent:eventCopy] ^ 1;
   }
 
   else
@@ -113,16 +113,16 @@ void __59__SBFluidSwitcherModifierTimelineController__isNoisyEvent___block_invok
 
 - (id)_windowScene
 {
-  v3 = [(SBFluidSwitcherModifierTimelineController *)self delegate];
-  v4 = [v3 windowSceneForModifierTimelineController:self];
+  delegate = [(SBFluidSwitcherModifierTimelineController *)self delegate];
+  v4 = [delegate windowSceneForModifierTimelineController:self];
 
   return v4;
 }
 
 - (double)_windowLevel
 {
-  v3 = [(SBFluidSwitcherModifierTimelineController *)self delegate];
-  [v3 windowLevelForModifierTimelineController:self];
+  delegate = [(SBFluidSwitcherModifierTimelineController *)self delegate];
+  [delegate windowLevelForModifierTimelineController:self];
   v5 = v4;
 
   return v5;

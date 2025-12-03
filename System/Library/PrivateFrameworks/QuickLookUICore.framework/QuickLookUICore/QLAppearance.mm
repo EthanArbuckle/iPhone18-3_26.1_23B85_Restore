@@ -1,28 +1,28 @@
 @interface QLAppearance
-- (QLAppearance)initWithCoder:(id)a3;
-- (QLAppearance)initWithTopInset:(double)a3 bottomInset:(double)a4 presentationMode:(unint64_t)a5 peripheryInsets:(UIEdgeInsets)a6;
+- (QLAppearance)initWithCoder:(id)coder;
+- (QLAppearance)initWithTopInset:(double)inset bottomInset:(double)bottomInset presentationMode:(unint64_t)mode peripheryInsets:(UIEdgeInsets)insets;
 - (UIEdgeInsets)peripheryInsets;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation QLAppearance
 
-- (QLAppearance)initWithTopInset:(double)a3 bottomInset:(double)a4 presentationMode:(unint64_t)a5 peripheryInsets:(UIEdgeInsets)a6
+- (QLAppearance)initWithTopInset:(double)inset bottomInset:(double)bottomInset presentationMode:(unint64_t)mode peripheryInsets:(UIEdgeInsets)insets
 {
-  right = a6.right;
-  bottom = a6.bottom;
-  left = a6.left;
-  top = a6.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v17.receiver = self;
   v17.super_class = QLAppearance;
   v13 = [(QLAppearance *)&v17 init];
   v14 = v13;
   if (v13)
   {
-    v13->_topInset = a3;
-    v13->_bottomInset = a4;
-    v13->_presentationMode = a5;
+    v13->_topInset = inset;
+    v13->_bottomInset = bottomInset;
+    v13->_presentationMode = mode;
     v13->_peripheryInsets.top = top;
     v13->_peripheryInsets.left = left;
     v13->_peripheryInsets.bottom = bottom;
@@ -33,33 +33,33 @@
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   topInset = self->_topInset;
-  v7 = a3;
+  coderCopy = coder;
   *&v5 = topInset;
-  [v7 encodeFloat:@"topInset" forKey:v5];
+  [coderCopy encodeFloat:@"topInset" forKey:v5];
   bottomInset = self->_bottomInset;
   *&bottomInset = bottomInset;
-  [v7 encodeFloat:@"bottomInset" forKey:bottomInset];
-  [v7 encodeInteger:self->_presentationMode forKey:@"presentationMode"];
-  [v7 encodeUIEdgeInsets:@"peripheryInsets" forKey:{self->_peripheryInsets.top, self->_peripheryInsets.left, self->_peripheryInsets.bottom, self->_peripheryInsets.right}];
+  [coderCopy encodeFloat:@"bottomInset" forKey:bottomInset];
+  [coderCopy encodeInteger:self->_presentationMode forKey:@"presentationMode"];
+  [coderCopy encodeUIEdgeInsets:@"peripheryInsets" forKey:{self->_peripheryInsets.top, self->_peripheryInsets.left, self->_peripheryInsets.bottom, self->_peripheryInsets.right}];
 }
 
-- (QLAppearance)initWithCoder:(id)a3
+- (QLAppearance)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = QLAppearance;
   v5 = [(QLAppearance *)&v14 init];
   if (v5)
   {
-    [v4 decodeFloatForKey:@"topInset"];
+    [coderCopy decodeFloatForKey:@"topInset"];
     v5->_topInset = v6;
-    [v4 decodeFloatForKey:@"bottomInset"];
+    [coderCopy decodeFloatForKey:@"bottomInset"];
     v5->_bottomInset = v7;
-    v5->_presentationMode = [v4 decodeIntegerForKey:@"presentationMode"];
-    [v4 decodeUIEdgeInsetsForKey:@"peripheryInsets"];
+    v5->_presentationMode = [coderCopy decodeIntegerForKey:@"presentationMode"];
+    [coderCopy decodeUIEdgeInsetsForKey:@"peripheryInsets"];
     v5->_peripheryInsets.top = v8;
     v5->_peripheryInsets.left = v9;
     v5->_peripheryInsets.bottom = v10;

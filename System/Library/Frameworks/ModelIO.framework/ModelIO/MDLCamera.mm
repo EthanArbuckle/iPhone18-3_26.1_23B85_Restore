@@ -1,25 +1,25 @@
 @interface MDLCamera
 - (MDLCamera)init;
 - (MDLTexture)bokehKernelWithSize:(vector_int2)size;
-- (float)circleOfConfusionForDistance:(float)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (float)circleOfConfusionForDistance:(float)distance;
+- (id)copyWithZone:(_NSZone *)zone;
 - (matrix_float4x4)projectionMatrix;
 - (vector_float3)exposure;
 - (vector_float3)flash;
 - (vector_float3)rayTo:(vector_int2)pixel forViewPort:(vector_int2)size;
 - (void)dealloc;
 - (void)lookAt:(vector_float3)focusPosition from:(vector_float3)cameraPosition;
-- (void)setAperture:(float)a3;
-- (void)setAspect:(float)a3;
+- (void)setAperture:(float)aperture;
+- (void)setAspect:(float)aspect;
 - (void)setFarVisibilityDistance:(float)farVisibilityDistance;
 - (void)setFieldOfView:(float)fieldOfView;
 - (void)setFocalLength:(float)focalLength;
-- (void)setFov:(float)a3;
+- (void)setFov:(float)fov;
 - (void)setNearVisibilityDistance:(float)nearVisibilityDistance;
 - (void)setSensorAspect:(float)sensorAspect;
 - (void)setSensorVerticalAperture:(float)sensorVerticalAperture;
-- (void)setZFar:(float)a3;
-- (void)setZNear:(float)a3;
+- (void)setZFar:(float)far;
+- (void)setZNear:(float)near;
 @end
 
 @implementation MDLCamera
@@ -40,10 +40,10 @@
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v13 = objc_msgSend_transform(self, v11, v12);
   v14 = objc_opt_class();
@@ -53,7 +53,7 @@
   if (v14)
   {
     v19 = objc_msgSend_transform(self, v17, v18);
-    v21 = objc_msgSend_copyWithZone_(v19, v20, a3);
+    v21 = objc_msgSend_copyWithZone_(v19, v20, zone);
     objc_msgSend_setTransform_(v10, v22, v21);
   }
 
@@ -61,7 +61,7 @@
   focalDistanceAnimation = self->_focalDistanceAnimation;
   if (focalDistanceAnimation)
   {
-    v24 = objc_msgSend_copyWithZone_(focalDistanceAnimation, v17, a3);
+    v24 = objc_msgSend_copyWithZone_(focalDistanceAnimation, v17, zone);
     v25 = *(v10 + 72);
     *(v10 + 72) = v24;
   }
@@ -69,7 +69,7 @@
   fStopAnimation = self->_fStopAnimation;
   if (fStopAnimation)
   {
-    v27 = objc_msgSend_copyWithZone_(fStopAnimation, v17, a3);
+    v27 = objc_msgSend_copyWithZone_(fStopAnimation, v17, zone);
     v28 = *(v10 + 80);
     *(v10 + 80) = v27;
   }
@@ -77,7 +77,7 @@
   focalLengthAnimation = self->_focalLengthAnimation;
   if (focalLengthAnimation)
   {
-    v30 = objc_msgSend_copyWithZone_(focalLengthAnimation, v17, a3);
+    v30 = objc_msgSend_copyWithZone_(focalLengthAnimation, v17, zone);
     v31 = *(v10 + 88);
     *(v10 + 88) = v30;
   }
@@ -85,7 +85,7 @@
   apertureAnimation = self->_apertureAnimation;
   if (apertureAnimation)
   {
-    v33 = objc_msgSend_copyWithZone_(apertureAnimation, v17, a3);
+    v33 = objc_msgSend_copyWithZone_(apertureAnimation, v17, zone);
     v34 = *(v10 + 96);
     *(v10 + 96) = v33;
   }
@@ -93,7 +93,7 @@
   apertureAspectAnimation = self->_apertureAspectAnimation;
   if (apertureAspectAnimation)
   {
-    v36 = objc_msgSend_copyWithZone_(apertureAspectAnimation, v17, a3);
+    v36 = objc_msgSend_copyWithZone_(apertureAspectAnimation, v17, zone);
     v37 = *(v10 + 104);
     *(v10 + 104) = v36;
   }
@@ -146,11 +146,11 @@
   sub_239F15C58(camera);
 }
 
-- (void)setAperture:(float)a3
+- (void)setAperture:(float)aperture
 {
   camera = self->_camera;
-  camera[3].columns[2].f32[2] = a3;
-  camera[3].columns[2].f32[3] = atanf(a3 / (camera[3].columns[0].f32[2] + camera[3].columns[0].f32[2])) * 114.59;
+  camera[3].columns[2].f32[2] = aperture;
+  camera[3].columns[2].f32[3] = atanf(aperture / (camera[3].columns[0].f32[2] + camera[3].columns[0].f32[2])) * 114.59;
 
   sub_239F15C58(camera);
 }
@@ -164,13 +164,13 @@
   sub_239F15C58(camera);
 }
 
-- (void)setFov:(float)a3
+- (void)setFov:(float)fov
 {
   camera = self->_camera;
-  camera[3].columns[2].f32[3] = a3;
-  camera[3].columns[2].f32[0] = 0.5 / tanf(a3 * 0.017453);
+  camera[3].columns[2].f32[3] = fov;
+  camera[3].columns[2].f32[0] = 0.5 / tanf(fov * 0.017453);
   v5 = camera[3].columns[2].f32[2];
-  v6 = tanf(a3 * 0.0087266);
+  v6 = tanf(fov * 0.0087266);
   camera[3].columns[0].f32[2] = v5 / (v6 + v6);
 
   sub_239F15C58(camera);
@@ -188,10 +188,10 @@
   sub_239F15C58(camera);
 }
 
-- (void)setAspect:(float)a3
+- (void)setAspect:(float)aspect
 {
   camera = self->_camera;
-  camera[3].columns[3].f32[0] = a3;
+  camera[3].columns[3].f32[0] = aspect;
   sub_239F15C58(camera);
 }
 
@@ -202,9 +202,9 @@
   sub_239F15C58(camera);
 }
 
-- (float)circleOfConfusionForDistance:(float)a3
+- (float)circleOfConfusionForDistance:(float)distance
 {
-  result = (self->_camera[1].var19 * self->_camera[2].var3) / (a3 - self->_camera[1].var19);
+  result = (self->_camera[1].var19 * self->_camera[2].var3) / (distance - self->_camera[1].var19);
   if (result >= self->_maximumCircleOfConfusion)
   {
     return self->_maximumCircleOfConfusion;
@@ -213,17 +213,17 @@
   return result;
 }
 
-- (void)setZNear:(float)a3
+- (void)setZNear:(float)near
 {
   camera = self->_camera;
-  camera[4].columns[1].f32[0] = a3;
+  camera[4].columns[1].f32[0] = near;
   sub_239F15C58(camera);
 }
 
-- (void)setZFar:(float)a3
+- (void)setZFar:(float)far
 {
   camera = self->_camera;
-  camera[4].columns[1].f32[1] = a3;
+  camera[4].columns[1].f32[1] = far;
   sub_239F15C58(camera);
 }
 

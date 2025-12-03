@@ -1,5 +1,5 @@
 @interface SiriTTSSynthesisEngineRequest
-+ (id)synthesisIssueCauseString:(int64_t)a3;
++ (id)synthesisIssueCauseString:(int64_t)string;
 - (SiriTTSSynthesisEngineRequest)init;
 @end
 
@@ -16,16 +16,16 @@
   return v2;
 }
 
-+ (id)synthesisIssueCauseString:(int64_t)a3
++ (id)synthesisIssueCauseString:(int64_t)string
 {
-  if (a3 > 2)
+  if (string > 2)
   {
     return @"UnhandledReason";
   }
 
   else
   {
-    return off_1E7AF3830[a3];
+    return off_1E7AF3830[string];
   }
 }
 

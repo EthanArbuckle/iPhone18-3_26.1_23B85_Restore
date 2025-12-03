@@ -1,28 +1,28 @@
 @interface SBFixedLayoutModeSwitcherModifier
-- (SBFixedLayoutModeSwitcherModifier)initWithUpdateMode:(int64_t)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
+- (SBFixedLayoutModeSwitcherModifier)initWithUpdateMode:(int64_t)mode;
+- (id)animationAttributesForLayoutElement:(id)element;
 @end
 
 @implementation SBFixedLayoutModeSwitcherModifier
 
-- (SBFixedLayoutModeSwitcherModifier)initWithUpdateMode:(int64_t)a3
+- (SBFixedLayoutModeSwitcherModifier)initWithUpdateMode:(int64_t)mode
 {
   v5.receiver = self;
   v5.super_class = SBFixedLayoutModeSwitcherModifier;
   result = [(SBSwitcherModifier *)&v5 init];
   if (result)
   {
-    result->_updateMode = a3;
+    result->_updateMode = mode;
   }
 
   return result;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v7.receiver = self;
   v7.super_class = SBFixedLayoutModeSwitcherModifier;
-  v4 = [(SBFixedLayoutModeSwitcherModifier *)&v7 animationAttributesForLayoutElement:a3];
+  v4 = [(SBFixedLayoutModeSwitcherModifier *)&v7 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
   [v5 setUpdateMode:self->_updateMode];

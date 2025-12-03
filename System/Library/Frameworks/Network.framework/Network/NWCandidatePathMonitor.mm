@@ -1,34 +1,34 @@
 @interface NWCandidatePathMonitor
 - (NSArray)candidatePaths;
 - (NSArray)interfaces;
-- (NWCandidatePathMonitor)initWithParameters:(id)a3;
+- (NWCandidatePathMonitor)initWithParameters:(id)parameters;
 - (NWParameters)parameters;
 - (id)cParameters;
 - (id)interfacesLocked;
 - (void)cancelCandidatePathEvaluators;
-- (void)cancelWithHandler:(id)a3;
+- (void)cancelWithHandler:(id)handler;
 - (void)dealloc;
 - (void)resetCandidatePathEvaluators;
-- (void)startWithQueue:(id)a3 updateHandler:(id)a4;
-- (void)updateRemoteEndpoints:(id)a3;
+- (void)startWithQueue:(id)queue updateHandler:(id)handler;
+- (void)updateRemoteEndpoints:(id)endpoints;
 @end
 
 @implementation NWCandidatePathMonitor
 
-- (void)updateRemoteEndpoints:(id)a3
+- (void)updateRemoteEndpoints:(id)endpoints
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  endpointsCopy = endpoints;
+  v5 = endpointsCopy;
+  if (endpointsCopy)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __48__NWCandidatePathMonitor_updateRemoteEndpoints___block_invoke;
     v14[3] = &unk_1E6A3D760;
     v14[4] = self;
-    v15 = v4;
-    v6 = self;
+    v15 = endpointsCopy;
+    selfCopy = self;
     os_unfair_lock_lock(&self->lock);
     __48__NWCandidatePathMonitor_updateRemoteEndpoints___block_invoke(v14);
     os_unfair_lock_unlock(&self->lock);
@@ -134,7 +134,7 @@ uint64_t __48__NWCandidatePathMonitor_updateRemoteEndpoints___block_invoke(uint6
   v9[4] = self;
   v4 = v3;
   v10 = v4;
-  v5 = self;
+  selfCopy = self;
   os_unfair_lock_lock(&self->lock);
   __40__NWCandidatePathMonitor_candidatePaths__block_invoke(v9);
   os_unfair_lock_unlock(&self->lock);
@@ -247,13 +247,13 @@ void __40__NWCandidatePathMonitor_candidatePaths__block_invoke(uint64_t a1)
   v6[1] = 3221225472;
   v7 = __36__NWCandidatePathMonitor_interfaces__block_invoke;
   v8 = &unk_1E6A3D738;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
-  v2 = self;
+  selfCopy2 = self;
   v3 = v6;
-  os_unfair_lock_lock(&v2->lock);
+  os_unfair_lock_lock(&selfCopy2->lock);
   v7(v3);
-  os_unfair_lock_unlock(&v2->lock);
+  os_unfair_lock_unlock(&selfCopy2->lock);
 
   v4 = v12[5];
   _Block_object_dispose(&v11, 8);
@@ -273,11 +273,11 @@ void __36__NWCandidatePathMonitor_interfaces__block_invoke(uint64_t a1)
 {
   os_unfair_lock_assert_owner(&self->lock);
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(NWCandidatePathMonitor *)self primaryEvaluator];
-  v5 = v4;
-  if (v4)
+  primaryEvaluator = [(NWCandidatePathMonitor *)self primaryEvaluator];
+  v5 = primaryEvaluator;
+  if (primaryEvaluator)
   {
-    v6 = v4;
+    v6 = primaryEvaluator;
     os_unfair_lock_lock(v5 + 24);
     v7 = v6[6];
     os_unfair_lock_unlock(v5 + 24);
@@ -309,47 +309,47 @@ uint64_t __42__NWCandidatePathMonitor_interfacesLocked__block_invoke(uint64_t a1
   return 1;
 }
 
-- (void)cancelWithHandler:(id)a3
+- (void)cancelWithHandler:(id)handler
 {
-  block = a3;
+  block = handler;
   [(NWCandidatePathMonitor *)self cancelCandidatePathEvaluators];
-  v4 = [(NWCandidatePathMonitor *)self primaryEvaluator];
+  primaryEvaluator = [(NWCandidatePathMonitor *)self primaryEvaluator];
 
-  if (v4)
+  if (primaryEvaluator)
   {
     if (block)
     {
-      v5 = [(NWCandidatePathMonitor *)self primaryEvaluator];
-      nw_path_evaluator_set_cancel_handler(v5, block);
+      primaryEvaluator2 = [(NWCandidatePathMonitor *)self primaryEvaluator];
+      nw_path_evaluator_set_cancel_handler(primaryEvaluator2, block);
     }
 
-    v6 = [(NWCandidatePathMonitor *)self primaryEvaluator];
-    nw_path_evaluator_cancel(v6);
+    primaryEvaluator3 = [(NWCandidatePathMonitor *)self primaryEvaluator];
+    nw_path_evaluator_cancel(primaryEvaluator3);
 
     [(NWCandidatePathMonitor *)self setPrimaryEvaluator:0];
     goto LABEL_8;
   }
 
-  v7 = [(NWCandidatePathMonitor *)self queue];
+  queue = [(NWCandidatePathMonitor *)self queue];
 
   v8 = block;
-  if (block && v7)
+  if (block && queue)
   {
-    v9 = [(NWCandidatePathMonitor *)self queue];
-    dispatch_async(v9, block);
+    queue2 = [(NWCandidatePathMonitor *)self queue];
+    dispatch_async(queue2, block);
 
 LABEL_8:
     v8 = block;
   }
 }
 
-- (void)startWithQueue:(id)a3 updateHandler:(id)a4
+- (void)startWithQueue:(id)queue updateHandler:(id)handler
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  queueCopy = queue;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (!queueCopy)
   {
     v11 = __nwlog_obj();
     *location = 136446210;
@@ -429,21 +429,21 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    [(NWCandidatePathMonitor *)self setQueue:v6];
+    [(NWCandidatePathMonitor *)self setQueue:queueCopy];
     [(NWCandidatePathMonitor *)self setUpdateHandler:v8];
     objc_initWeak(location, self);
-    v9 = [(NWCandidatePathMonitor *)self primaryEvaluator];
+    primaryEvaluator = [(NWCandidatePathMonitor *)self primaryEvaluator];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __55__NWCandidatePathMonitor_startWithQueue_updateHandler___block_invoke;
     v25[3] = &unk_1E6A3D2D8;
     objc_copyWeak(&v26, location);
-    nw_path_evaluator_set_update_handler(v9, v6, v25);
+    nw_path_evaluator_set_update_handler(primaryEvaluator, queueCopy, v25);
 
-    v10 = [(NWCandidatePathMonitor *)self primaryEvaluator];
-    nw_path_evaluator_call_update_handler(v10);
+    primaryEvaluator2 = [(NWCandidatePathMonitor *)self primaryEvaluator];
+    nw_path_evaluator_call_update_handler(primaryEvaluator2);
 
     objc_destroyWeak(&v26);
     objc_destroyWeak(location);
@@ -554,8 +554,8 @@ void __55__NWCandidatePathMonitor_startWithQueue_updateHandler___block_invoke(ui
   v184 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->lock);
   val = self;
-  v3 = [(NWCandidatePathMonitor *)self primaryEvaluator];
-  v4 = nw_path_evaluator_copy_path(v3);
+  primaryEvaluator = [(NWCandidatePathMonitor *)self primaryEvaluator];
+  v4 = nw_path_evaluator_copy_path(primaryEvaluator);
 
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   enumerate_block[0] = MEMORY[0x1E69E9820];
@@ -567,9 +567,9 @@ void __55__NWCandidatePathMonitor_startWithQueue_updateHandler___block_invoke(ui
   v94 = v4;
   nw_path_enumerate_interfaces(v4, enumerate_block);
   v6 = MEMORY[0x1E695DFD8];
-  v7 = [(NWCandidatePathMonitor *)val candidatePathEvaluators];
-  v8 = [v7 allKeys];
-  v96 = [v6 setWithArray:v8];
+  candidatePathEvaluators = [(NWCandidatePathMonitor *)val candidatePathEvaluators];
+  allKeys = [candidatePathEvaluators allKeys];
+  v96 = [v6 setWithArray:allKeys];
 
   pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
   networkd_settings_init();
@@ -612,11 +612,11 @@ void __55__NWCandidatePathMonitor_startWithQueue_updateHandler___block_invoke(ui
         v16 = gLogObj;
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
         {
-          v17 = [v15 internalInterface];
+          internalInterface = [v15 internalInterface];
           *buf = 136446466;
           v175 = "[NWCandidatePathMonitor resetCandidatePathEvaluators]";
           v176 = 2112;
-          v177 = v17;
+          v177 = internalInterface;
           _os_log_impl(&dword_181A37000, v16, OS_LOG_TYPE_DEBUG, "%{public}s Current interface: %@", buf, 0x16u);
         }
       }
@@ -651,11 +651,11 @@ void __55__NWCandidatePathMonitor_startWithQueue_updateHandler___block_invoke(ui
         v23 = gLogObj;
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
         {
-          v24 = [v22 internalInterface];
+          internalInterface2 = [v22 internalInterface];
           *buf = 136446466;
           v175 = "[NWCandidatePathMonitor resetCandidatePathEvaluators]";
           v176 = 2112;
-          v177 = v24;
+          v177 = internalInterface2;
           _os_log_impl(&dword_181A37000, v23, OS_LOG_TYPE_DEBUG, "%{public}s Existing interface: %@", buf, 0x16u);
         }
       }
@@ -674,7 +674,7 @@ LABEL_23:
   v100 = [v96 mutableCopy];
   [v100 intersectSet:v97];
   objc_initWeak(&location, val);
-  v119 = [(NWCandidatePathMonitor *)val cParameters];
+  cParameters = [(NWCandidatePathMonitor *)val cParameters];
   v155 = 0u;
   v156 = 0u;
   v153 = 0u;
@@ -699,11 +699,11 @@ LABEL_23:
         v27 = gLogObj;
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
         {
-          v28 = [v26 internalInterface];
+          internalInterface3 = [v26 internalInterface];
           *buf = 136446466;
           v175 = "[NWCandidatePathMonitor resetCandidatePathEvaluators]";
           v176 = 2112;
-          v177 = v28;
+          v177 = internalInterface3;
           _os_log_impl(&dword_181A37000, v27, OS_LOG_TYPE_DEBUG, "%{public}s Adding interface %@", buf, 0x16u);
         }
 
@@ -712,12 +712,12 @@ LABEL_23:
         v152 = 0u;
         v149 = 0u;
         v150 = 0u;
-        v29 = [(NWCandidatePathMonitor *)val remoteEndpoints];
-        v30 = [v29 countByEnumeratingWithState:&v149 objects:v180 count:16];
+        remoteEndpoints = [(NWCandidatePathMonitor *)val remoteEndpoints];
+        v30 = [remoteEndpoints countByEnumeratingWithState:&v149 objects:v180 count:16];
         if (v30)
         {
           v31 = *v150;
-          v113 = v29;
+          v113 = remoteEndpoints;
           do
           {
             for (m = 0; m != v30; ++m)
@@ -733,43 +733,43 @@ LABEL_23:
               v34 = gLogObj;
               if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
               {
-                v35 = [v26 internalInterface];
+                internalInterface4 = [v26 internalInterface];
                 *buf = 136446722;
                 v175 = "[NWCandidatePathMonitor resetCandidatePathEvaluators]";
                 v176 = 2112;
                 v177 = v33;
                 v178 = 2112;
-                v179 = v35;
+                v179 = internalInterface4;
                 _os_log_impl(&dword_181A37000, v34, OS_LOG_TYPE_DEBUG, "%{public}s Adding %@ over interface %@", buf, 0x20u);
               }
 
-              v36 = [v33 internalEndpoint];
-              v37 = _nw_parameters_copy(v119);
-              v38 = [v26 internalInterface];
-              nw_parameters_require_interface(v37, v38);
+              internalEndpoint = [v33 internalEndpoint];
+              v37 = _nw_parameters_copy(cParameters);
+              internalInterface5 = [v26 internalInterface];
+              nw_parameters_require_interface(v37, internalInterface5);
 
-              evaluator_for_endpoint = nw_path_create_evaluator_for_endpoint(v36, v37);
-              v40 = [(NWCandidatePathMonitor *)val queue];
+              evaluator_for_endpoint = nw_path_create_evaluator_for_endpoint(internalEndpoint, v37);
+              queue = [(NWCandidatePathMonitor *)val queue];
               v147[0] = MEMORY[0x1E69E9820];
               v147[1] = 3221225472;
               v147[2] = __54__NWCandidatePathMonitor_resetCandidatePathEvaluators__block_invoke_8;
               v147[3] = &unk_1E6A3D2D8;
               objc_copyWeak(&v148, &location);
-              nw_path_evaluator_set_update_handler(evaluator_for_endpoint, v40, v147);
+              nw_path_evaluator_set_update_handler(evaluator_for_endpoint, queue, v147);
 
               [v117 setObject:evaluator_for_endpoint forKeyedSubscript:v33];
               objc_destroyWeak(&v148);
             }
 
-            v29 = v113;
+            remoteEndpoints = v113;
             v30 = [v113 countByEnumeratingWithState:&v149 objects:v180 count:16];
           }
 
           while (v30);
         }
 
-        v41 = [(NWCandidatePathMonitor *)val candidatePathEvaluators];
-        [v41 setObject:v117 forKeyedSubscript:v26];
+        candidatePathEvaluators2 = [(NWCandidatePathMonitor *)val candidatePathEvaluators];
+        [candidatePathEvaluators2 setObject:v117 forKeyedSubscript:v26];
       }
 
       v108 = [obj countByEnumeratingWithState:&v153 objects:v181 count:16];
@@ -802,23 +802,23 @@ LABEL_23:
         v43 = gLogObj;
         if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
         {
-          v44 = [v42 internalInterface];
+          internalInterface6 = [v42 internalInterface];
           *buf = 136446466;
           v175 = "[NWCandidatePathMonitor resetCandidatePathEvaluators]";
           v176 = 2112;
-          v177 = v44;
+          v177 = internalInterface6;
           _os_log_impl(&dword_181A37000, v43, OS_LOG_TYPE_DEBUG, "%{public}s Removing interface %@", buf, 0x16u);
         }
 
-        v45 = [(NWCandidatePathMonitor *)val candidatePathEvaluators];
-        v46 = [v45 objectForKeyedSubscript:v42];
+        candidatePathEvaluators3 = [(NWCandidatePathMonitor *)val candidatePathEvaluators];
+        v46 = [candidatePathEvaluators3 objectForKeyedSubscript:v42];
 
         v141 = 0u;
         v142 = 0u;
         v139 = 0u;
         v140 = 0u;
-        v47 = [v46 allKeys];
-        v48 = [v47 countByEnumeratingWithState:&v139 objects:v172 count:16];
+        allKeys2 = [v46 allKeys];
+        v48 = [allKeys2 countByEnumeratingWithState:&v139 objects:v172 count:16];
         if (v48)
         {
           v49 = *v140;
@@ -828,7 +828,7 @@ LABEL_23:
             {
               if (*v140 != v49)
               {
-                objc_enumerationMutation(v47);
+                objc_enumerationMutation(allKeys2);
               }
 
               v51 = *(*(&v139 + 1) + 8 * ii);
@@ -837,13 +837,13 @@ LABEL_23:
               v52 = gLogObj;
               if (os_log_type_enabled(v52, OS_LOG_TYPE_DEBUG))
               {
-                v53 = [v42 internalInterface];
+                internalInterface7 = [v42 internalInterface];
                 *buf = 136446722;
                 v175 = "[NWCandidatePathMonitor resetCandidatePathEvaluators]";
                 v176 = 2112;
                 v177 = v51;
                 v178 = 2112;
-                v179 = v53;
+                v179 = internalInterface7;
                 _os_log_impl(&dword_181A37000, v52, OS_LOG_TYPE_DEBUG, "%{public}s Removing %@ from interface %@", buf, 0x20u);
               }
 
@@ -852,14 +852,14 @@ LABEL_23:
               [v46 setObject:0 forKeyedSubscript:v51];
             }
 
-            v48 = [v47 countByEnumeratingWithState:&v139 objects:v172 count:16];
+            v48 = [allKeys2 countByEnumeratingWithState:&v139 objects:v172 count:16];
           }
 
           while (v48);
         }
 
-        v55 = [(NWCandidatePathMonitor *)val candidatePathEvaluators];
-        [v55 setObject:0 forKeyedSubscript:v42];
+        candidatePathEvaluators4 = [(NWCandidatePathMonitor *)val candidatePathEvaluators];
+        [candidatePathEvaluators4 setObject:0 forKeyedSubscript:v42];
       }
 
       v114 = [v107 countByEnumeratingWithState:&v143 objects:v173 count:16];
@@ -869,8 +869,8 @@ LABEL_23:
   }
 
   v56 = MEMORY[0x1E695DFD8];
-  v57 = [(NWCandidatePathMonitor *)val remoteEndpoints];
-  v103 = [v56 setWithArray:v57];
+  remoteEndpoints2 = [(NWCandidatePathMonitor *)val remoteEndpoints];
+  v103 = [v56 setWithArray:remoteEndpoints2];
 
   v137 = 0u;
   v138 = 0u;
@@ -896,20 +896,20 @@ LABEL_23:
         v58 = gLogObj;
         if (os_log_type_enabled(v58, OS_LOG_TYPE_DEBUG))
         {
-          v59 = [v116 internalInterface];
+          internalInterface8 = [v116 internalInterface];
           *buf = 136446466;
           v175 = "[NWCandidatePathMonitor resetCandidatePathEvaluators]";
           v176 = 2112;
-          v177 = v59;
+          v177 = internalInterface8;
           _os_log_impl(&dword_181A37000, v58, OS_LOG_TYPE_DEBUG, "%{public}s Keeping interface %@", buf, 0x16u);
         }
 
-        v60 = [(NWCandidatePathMonitor *)val candidatePathEvaluators];
-        v118 = [v60 objectForKeyedSubscript:v116];
+        candidatePathEvaluators5 = [(NWCandidatePathMonitor *)val candidatePathEvaluators];
+        v118 = [candidatePathEvaluators5 objectForKeyedSubscript:v116];
 
         v61 = MEMORY[0x1E695DFD8];
-        v62 = [v118 allKeys];
-        v109 = [v61 setWithArray:v62];
+        allKeys3 = [v118 allKeys];
+        v109 = [v61 setWithArray:allKeys3];
 
         v63 = [v103 mutableCopy];
         [v63 minusSet:v109];
@@ -940,29 +940,29 @@ LABEL_23:
               v69 = gLogObj;
               if (os_log_type_enabled(v69, OS_LOG_TYPE_DEBUG))
               {
-                v70 = [v116 internalInterface];
+                internalInterface9 = [v116 internalInterface];
                 *buf = 136446722;
                 v175 = "[NWCandidatePathMonitor resetCandidatePathEvaluators]";
                 v176 = 2112;
                 v177 = v68;
                 v178 = 2112;
-                v179 = v70;
+                v179 = internalInterface9;
                 _os_log_impl(&dword_181A37000, v69, OS_LOG_TYPE_DEBUG, "%{public}s Adding %@ over interface %@", buf, 0x20u);
               }
 
-              v71 = [v68 internalEndpoint];
-              v72 = _nw_parameters_copy(v119);
-              v73 = [v116 internalInterface];
-              nw_parameters_require_interface(v72, v73);
+              internalEndpoint2 = [v68 internalEndpoint];
+              v72 = _nw_parameters_copy(cParameters);
+              internalInterface10 = [v116 internalInterface];
+              nw_parameters_require_interface(v72, internalInterface10);
 
-              v74 = nw_path_create_evaluator_for_endpoint(v71, v72);
-              v75 = [(NWCandidatePathMonitor *)val queue];
+              v74 = nw_path_create_evaluator_for_endpoint(internalEndpoint2, v72);
+              queue2 = [(NWCandidatePathMonitor *)val queue];
               v129[0] = MEMORY[0x1E69E9820];
               v129[1] = 3221225472;
               v129[2] = __54__NWCandidatePathMonitor_resetCandidatePathEvaluators__block_invoke_10;
               v129[3] = &unk_1E6A3D2D8;
               objc_copyWeak(&v130, &location);
-              nw_path_evaluator_set_update_handler(v74, v75, v129);
+              nw_path_evaluator_set_update_handler(v74, queue2, v129);
 
               [v118 setObject:v74 forKeyedSubscript:v68];
               objc_destroyWeak(&v130);
@@ -998,13 +998,13 @@ LABEL_23:
               v81 = gLogObj;
               if (os_log_type_enabled(v81, OS_LOG_TYPE_DEBUG))
               {
-                v82 = [v116 internalInterface];
+                internalInterface11 = [v116 internalInterface];
                 *buf = 136446722;
                 v175 = "[NWCandidatePathMonitor resetCandidatePathEvaluators]";
                 v176 = 2112;
                 v177 = v80;
                 v178 = 2112;
-                v179 = v82;
+                v179 = internalInterface11;
                 _os_log_impl(&dword_181A37000, v81, OS_LOG_TYPE_DEBUG, "%{public}s Removing %@ from interface %@", buf, 0x20u);
               }
 
@@ -1062,13 +1062,13 @@ LABEL_23:
               v92 = gLogObj;
               if (os_log_type_enabled(v92, OS_LOG_TYPE_DEBUG))
               {
-                v93 = [v116 internalInterface];
+                internalInterface12 = [v116 internalInterface];
                 *buf = 136446722;
                 v175 = "[NWCandidatePathMonitor resetCandidatePathEvaluators]";
                 v176 = 2112;
                 v177 = v91;
                 v178 = 2112;
-                v179 = v93;
+                v179 = internalInterface12;
                 _os_log_impl(&dword_181A37000, v92, OS_LOG_TYPE_DEBUG, "%{public}s Keeping %@ on interface %@", buf, 0x20u);
               }
             }
@@ -1142,19 +1142,19 @@ void __54__NWCandidatePathMonitor_resetCandidatePathEvaluators__block_invoke_10(
 - (NWParameters)parameters
 {
   v3 = [NWParameters alloc];
-  v4 = [(NWCandidatePathMonitor *)self cParameters];
-  v5 = [(NWParameters *)v3 initWithParameters:v4];
+  cParameters = [(NWCandidatePathMonitor *)self cParameters];
+  v5 = [(NWParameters *)v3 initWithParameters:cParameters];
 
   return v5;
 }
 
 - (id)cParameters
 {
-  v2 = [(NWCandidatePathMonitor *)self primaryEvaluator];
-  v3 = v2;
-  if (v2)
+  primaryEvaluator = [(NWCandidatePathMonitor *)self primaryEvaluator];
+  v3 = primaryEvaluator;
+  if (primaryEvaluator)
   {
-    v4 = v2;
+    v4 = primaryEvaluator;
     os_unfair_lock_lock(v3 + 24);
     v5 = v4[6];
     os_unfair_lock_unlock(v3 + 24);
@@ -1173,12 +1173,12 @@ void __54__NWCandidatePathMonitor_resetCandidatePathEvaluators__block_invoke_10(
 - (void)dealloc
 {
   [(NWCandidatePathMonitor *)self cancelCandidatePathEvaluators];
-  v3 = [(NWCandidatePathMonitor *)self primaryEvaluator];
+  primaryEvaluator = [(NWCandidatePathMonitor *)self primaryEvaluator];
 
-  if (v3)
+  if (primaryEvaluator)
   {
-    v4 = [(NWCandidatePathMonitor *)self primaryEvaluator];
-    nw_path_evaluator_cancel(v4);
+    primaryEvaluator2 = [(NWCandidatePathMonitor *)self primaryEvaluator];
+    nw_path_evaluator_cancel(primaryEvaluator2);
 
     [(NWCandidatePathMonitor *)self setPrimaryEvaluator:0];
   }
@@ -1195,7 +1195,7 @@ void __54__NWCandidatePathMonitor_resetCandidatePathEvaluators__block_invoke_10(
   v4[2] = __55__NWCandidatePathMonitor_cancelCandidatePathEvaluators__block_invoke;
   v4[3] = &unk_1E6A3D868;
   v4[4] = self;
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(&self->lock);
   __55__NWCandidatePathMonitor_cancelCandidatePathEvaluators__block_invoke(v4);
   os_unfair_lock_unlock(&self->lock);
@@ -1271,27 +1271,27 @@ void __55__NWCandidatePathMonitor_cancelCandidatePathEvaluators__block_invoke(ui
   }
 }
 
-- (NWCandidatePathMonitor)initWithParameters:(id)a3
+- (NWCandidatePathMonitor)initWithParameters:(id)parameters
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  parametersCopy = parameters;
   v21.receiver = self;
   v21.super_class = NWCandidatePathMonitor;
   v5 = [(NWCandidatePathMonitor *)&v21 init];
   if (v5)
   {
-    if (v4)
+    if (parametersCopy)
     {
-      v6 = [v4 copyCParameters];
+      copyCParameters = [parametersCopy copyCParameters];
     }
 
     else
     {
-      v6 = _nw_parameters_create();
+      copyCParameters = _nw_parameters_create();
     }
 
-    v7 = v6;
-    nw_parameters_set_multipath_service(v6, nw_multipath_service_handover);
+    v7 = copyCParameters;
+    nw_parameters_set_multipath_service(copyCParameters, nw_multipath_service_handover);
     evaluator_for_endpoint = nw_path_create_evaluator_for_endpoint(0, v7);
     [(NWCandidatePathMonitor *)v5 setPrimaryEvaluator:evaluator_for_endpoint];
 

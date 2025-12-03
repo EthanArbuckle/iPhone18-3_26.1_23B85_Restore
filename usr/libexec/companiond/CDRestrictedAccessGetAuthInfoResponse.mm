@@ -1,14 +1,14 @@
 @interface CDRestrictedAccessGetAuthInfoResponse
-- (CDRestrictedAccessGetAuthInfoResponse)initWithRapportDictionary:(id)a3;
+- (CDRestrictedAccessGetAuthInfoResponse)initWithRapportDictionary:(id)dictionary;
 - (NSString)description;
 - (id)makeRapportDictionary;
 @end
 
 @implementation CDRestrictedAccessGetAuthInfoResponse
 
-- (CDRestrictedAccessGetAuthInfoResponse)initWithRapportDictionary:(id)a3
+- (CDRestrictedAccessGetAuthInfoResponse)initWithRapportDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = CDRestrictedAccessGetAuthInfoResponse;
   v5 = [(CDRestrictedAccessGetAuthInfoResponse *)&v14 init];
@@ -57,9 +57,9 @@
   [v3 appendString:self->_deviceName withName:@"deviceName" skipIfEmpty:1];
   [v3 appendString:self->_currentUserName withName:@"currentUserName" skipIfEmpty:1];
   v4 = [v3 appendInteger:self->_restrictionType withName:@"restrictionType"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 @end

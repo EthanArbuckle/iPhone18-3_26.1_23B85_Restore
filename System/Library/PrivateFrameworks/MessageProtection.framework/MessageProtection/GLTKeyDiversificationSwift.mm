@@ -1,51 +1,51 @@
 @interface GLTKeyDiversificationSwift
-+ (__SecKey)diversifyWithPrivateKey:(__SecKey *)a3 docId:(id)a4 trackingPreventionSalt:(id)a5 error:(id *)a6;
-+ (id)diversifyWithPublicKey:(__SecKey *)a3 trackingPreventionSalt:(id)a4 docId:(id)a5 error:(id *)a6;
++ (__SecKey)diversifyWithPrivateKey:(__SecKey *)key docId:(id)id trackingPreventionSalt:(id)salt error:(id *)error;
++ (id)diversifyWithPublicKey:(__SecKey *)key trackingPreventionSalt:(id)salt docId:(id)id error:(id *)error;
 - (_TtC17MessageProtection26GLTKeyDiversificationSwift)init;
 @end
 
 @implementation GLTKeyDiversificationSwift
 
-+ (id)diversifyWithPublicKey:(__SecKey *)a3 trackingPreventionSalt:(id)a4 docId:(id)a5 error:(id *)a6
++ (id)diversifyWithPublicKey:(__SecKey *)key trackingPreventionSalt:(id)salt docId:(id)id error:(id *)error
 {
-  v7 = a4;
-  if (a4)
+  saltCopy = salt;
+  if (salt)
   {
-    v9 = a3;
-    v10 = a5;
-    v11 = v7;
-    v7 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
+    keyCopy = key;
+    idCopy = id;
+    v11 = saltCopy;
+    saltCopy = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v13 = v12;
   }
 
   else
   {
-    v14 = a3;
-    v15 = a5;
+    keyCopy2 = key;
+    idCopy2 = id;
     v13 = 0xF000000000000000;
   }
 
   v16 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v18 = v17;
 
-  specialized static GLTKeyDiversificationSwift.diversify(publicKey:trackingPreventionSalt:docId:)(a3, v7, v13, v16, v18);
+  specialized static GLTKeyDiversificationSwift.diversify(publicKey:trackingPreventionSalt:docId:)(key, saltCopy, v13, v16, v18);
   v20 = v19;
 
-  outlined consume of Data?(v7, v13);
+  outlined consume of Data?(saltCopy, v13);
 
   return v20;
 }
 
-+ (__SecKey)diversifyWithPrivateKey:(__SecKey *)a3 docId:(id)a4 trackingPreventionSalt:(id)a5 error:(id *)a6
++ (__SecKey)diversifyWithPrivateKey:(__SecKey *)key docId:(id)id trackingPreventionSalt:(id)salt error:(id *)error
 {
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
-  v11 = a3;
-  v12 = a5;
+  keyCopy = key;
+  saltCopy = salt;
   v13 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v15 = v14;
 
-  specialized static GLTKeyDiversificationSwift.diversify(privateKey:docId:trackingPreventionSalt:)(v11, v8, v10, v13, v15);
+  specialized static GLTKeyDiversificationSwift.diversify(privateKey:docId:trackingPreventionSalt:)(keyCopy, v8, v10, v13, v15);
   v17 = v16;
 
   outlined consume of Data._Representation(v13, v15);

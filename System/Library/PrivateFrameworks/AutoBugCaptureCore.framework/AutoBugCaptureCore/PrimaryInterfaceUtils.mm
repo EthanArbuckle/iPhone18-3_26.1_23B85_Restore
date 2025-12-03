@@ -5,12 +5,12 @@
 - (NSDate)interfaceBecamePrimaryDate;
 - (PrimaryInterfaceUtils)init;
 - (int64_t)primaryInterfaceType;
-- (void)_setEstimatedInterfaceBecamePrimaryDate:(id)a3;
-- (void)_setHasPrimaryInterface:(BOOL)a3;
-- (void)_setInterfaceBecamePrimaryDate:(id)a3;
-- (void)_setPrimaryInterfaceType:(int64_t)a3;
+- (void)_setEstimatedInterfaceBecamePrimaryDate:(id)date;
+- (void)_setHasPrimaryInterface:(BOOL)interface;
+- (void)_setInterfaceBecamePrimaryDate:(id)date;
+- (void)_setPrimaryInterfaceType:(int64_t)type;
 - (void)getDefaultPathInfoUsingSecondsSinceChange;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation PrimaryInterfaceUtils
@@ -45,8 +45,8 @@ uint64_t __39__PrimaryInterfaceUtils_sharedInstance__block_invoke()
   if (v2)
   {
     v2->_hasPrimaryInterface = 0;
-    v4 = [MEMORY[0x277CD9200] sharedDefaultEvaluator];
-    [v4 addObserver:v3 forKeyPath:@"path" options:7 context:0];
+    mEMORY[0x277CD9200] = [MEMORY[0x277CD9200] sharedDefaultEvaluator];
+    [mEMORY[0x277CD9200] addObserver:v3 forKeyPath:@"path" options:7 context:0];
   }
 
   return v3;
@@ -55,38 +55,38 @@ uint64_t __39__PrimaryInterfaceUtils_sharedInstance__block_invoke()
 - (void)getDefaultPathInfoUsingSecondsSinceChange
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CD9200] sharedDefaultEvaluator];
-  v4 = [v3 path];
-  v5 = [v4 status];
+  mEMORY[0x277CD9200] = [MEMORY[0x277CD9200] sharedDefaultEvaluator];
+  path = [mEMORY[0x277CD9200] path];
+  status = [path status];
 
-  if (v5 == 1)
+  if (status == 1)
   {
-    v6 = [v3 path];
-    v7 = [v6 interface];
-    v8 = [v7 type];
+    path2 = [mEMORY[0x277CD9200] path];
+    interface = [path2 interface];
+    type = [interface type];
 
-    v9 = [v3 path];
-    v10 = [v9 secondsSinceInterfaceChange];
+    path3 = [mEMORY[0x277CD9200] path];
+    secondsSinceInterfaceChange = [path3 secondsSinceInterfaceChange];
 
-    v11 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-v10];
-    v12 = [MEMORY[0x277CBEAA8] date];
+    v11 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-secondsSinceInterfaceChange];
+    date = [MEMORY[0x277CBEAA8] date];
     v13 = symptomsLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [InterfaceUtils stringForInterfaceType:v8];
+      v14 = [InterfaceUtils stringForInterfaceType:type];
       v18 = 138412802;
       v19 = v14;
       v20 = 2048;
-      v21 = *&v10;
+      status2 = *&secondsSinceInterfaceChange;
       v22 = 2112;
       v23 = v11;
       _os_log_impl(&dword_241804000, v13, OS_LOG_TYPE_INFO, "PrimaryInterfaceUtils: Informed that interfaceType %@ became primary %.1fs ago at %@", &v18, 0x20u);
     }
 
-    [(PrimaryInterfaceUtils *)self _setHasPrimaryInterface:(v8 & 0xFFFFFFFFFFFFFFFBLL) != 0];
-    [(PrimaryInterfaceUtils *)self _setPrimaryInterfaceType:v8];
+    [(PrimaryInterfaceUtils *)self _setHasPrimaryInterface:(type & 0xFFFFFFFFFFFFFFFBLL) != 0];
+    [(PrimaryInterfaceUtils *)self _setPrimaryInterfaceType:type];
     [(PrimaryInterfaceUtils *)self _setInterfaceBecamePrimaryDate:v11];
-    [(PrimaryInterfaceUtils *)self _setEstimatedInterfaceBecamePrimaryDate:v12];
+    [(PrimaryInterfaceUtils *)self _setEstimatedInterfaceBecamePrimaryDate:date];
   }
 
   else
@@ -94,12 +94,12 @@ uint64_t __39__PrimaryInterfaceUtils_sharedInstance__block_invoke()
     v11 = symptomsLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v15 = [v3 path];
-      v16 = [v3 path];
+      path4 = [mEMORY[0x277CD9200] path];
+      path5 = [mEMORY[0x277CD9200] path];
       v18 = 138412546;
-      v19 = v15;
+      v19 = path4;
       v20 = 2048;
-      v21 = [v16 status];
+      status2 = [path5 status];
       _os_log_impl(&dword_241804000, v11, OS_LOG_TYPE_INFO, "PrimaryInterfaceUtils: path [%@] not satisfied (%ld)", &v18, 0x16u);
     }
   }
@@ -107,14 +107,14 @@ uint64_t __39__PrimaryInterfaceUtils_sharedInstance__block_invoke()
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v15 = a3;
-  v9 = a4;
+  pathCopy = path;
+  objectCopy = object;
   v10 = *MEMORY[0x277CCA2F0];
-  v11 = a5;
-  v12 = [v11 objectForKeyedSubscript:v10];
-  v13 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+  changeCopy = change;
+  v12 = [changeCopy objectForKeyedSubscript:v10];
+  v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
 
   v14 = v13 == 0;
   objc_opt_class();
@@ -127,7 +127,7 @@ uint64_t __39__PrimaryInterfaceUtils_sharedInstance__block_invoke()
     }
   }
 
-  if ([v15 isEqualToString:@"path"])
+  if ([pathCopy isEqualToString:@"path"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass() & v14)
@@ -137,15 +137,15 @@ uint64_t __39__PrimaryInterfaceUtils_sharedInstance__block_invoke()
   }
 }
 
-- (void)_setHasPrimaryInterface:(BOOL)a3
+- (void)_setHasPrimaryInterface:(BOOL)interface
 {
-  v3 = a3;
+  interfaceCopy = interface;
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_hasPrimaryInterface != v3)
+  if (obj->_hasPrimaryInterface != interfaceCopy)
   {
     [(PrimaryInterfaceUtils *)obj willChangeValueForKey:@"hasPrimaryInterface"];
-    obj->_hasPrimaryInterface = v3;
+    obj->_hasPrimaryInterface = interfaceCopy;
     [(PrimaryInterfaceUtils *)obj didChangeValueForKey:@"hasPrimaryInterface"];
   }
 
@@ -154,22 +154,22 @@ uint64_t __39__PrimaryInterfaceUtils_sharedInstance__block_invoke()
 
 - (BOOL)hasPrimaryInterface
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  hasPrimaryInterface = v2->_hasPrimaryInterface;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  hasPrimaryInterface = selfCopy->_hasPrimaryInterface;
+  objc_sync_exit(selfCopy);
 
   return hasPrimaryInterface;
 }
 
-- (void)_setPrimaryInterfaceType:(int64_t)a3
+- (void)_setPrimaryInterfaceType:(int64_t)type
 {
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_primaryInterfaceType != a3)
+  if (obj->_primaryInterfaceType != type)
   {
     [(PrimaryInterfaceUtils *)obj willChangeValueForKey:@"primaryInterfaceType"];
-    obj->_primaryInterfaceType = a3;
+    obj->_primaryInterfaceType = type;
     [(PrimaryInterfaceUtils *)obj didChangeValueForKey:@"primaryInterfaceType"];
   }
 
@@ -178,60 +178,60 @@ uint64_t __39__PrimaryInterfaceUtils_sharedInstance__block_invoke()
 
 - (int64_t)primaryInterfaceType
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  primaryInterfaceType = v2->_primaryInterfaceType;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  primaryInterfaceType = selfCopy->_primaryInterfaceType;
+  objc_sync_exit(selfCopy);
 
   return primaryInterfaceType;
 }
 
-- (void)_setInterfaceBecamePrimaryDate:(id)a3
+- (void)_setInterfaceBecamePrimaryDate:(id)date
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_interfaceBecamePrimaryDate != v6)
+  dateCopy = date;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_interfaceBecamePrimaryDate != dateCopy)
   {
-    [(PrimaryInterfaceUtils *)v5 willChangeValueForKey:@"interfaceBecamePrimaryDate"];
-    objc_storeStrong(&v5->_interfaceBecamePrimaryDate, a3);
-    [(PrimaryInterfaceUtils *)v5 didChangeValueForKey:@"interfaceBecamePrimaryDate"];
+    [(PrimaryInterfaceUtils *)selfCopy willChangeValueForKey:@"interfaceBecamePrimaryDate"];
+    objc_storeStrong(&selfCopy->_interfaceBecamePrimaryDate, date);
+    [(PrimaryInterfaceUtils *)selfCopy didChangeValueForKey:@"interfaceBecamePrimaryDate"];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSDate)interfaceBecamePrimaryDate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_interfaceBecamePrimaryDate;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_interfaceBecamePrimaryDate;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_setEstimatedInterfaceBecamePrimaryDate:(id)a3
+- (void)_setEstimatedInterfaceBecamePrimaryDate:(id)date
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_estimatedInterfaceBecamePrimaryDate != v6)
+  dateCopy = date;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_estimatedInterfaceBecamePrimaryDate != dateCopy)
   {
-    [(PrimaryInterfaceUtils *)v5 willChangeValueForKey:@"estimatedInterfaceBecamePrimaryDate"];
-    objc_storeStrong(&v5->_estimatedInterfaceBecamePrimaryDate, a3);
-    [(PrimaryInterfaceUtils *)v5 didChangeValueForKey:@"estimatedInterfaceBecamePrimaryDate"];
+    [(PrimaryInterfaceUtils *)selfCopy willChangeValueForKey:@"estimatedInterfaceBecamePrimaryDate"];
+    objc_storeStrong(&selfCopy->_estimatedInterfaceBecamePrimaryDate, date);
+    [(PrimaryInterfaceUtils *)selfCopy didChangeValueForKey:@"estimatedInterfaceBecamePrimaryDate"];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSDate)estimatedInterfaceBecamePrimaryDate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_estimatedInterfaceBecamePrimaryDate;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_estimatedInterfaceBecamePrimaryDate;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }

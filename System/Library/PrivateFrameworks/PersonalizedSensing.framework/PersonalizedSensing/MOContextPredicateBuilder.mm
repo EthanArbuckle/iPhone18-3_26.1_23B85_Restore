@@ -1,78 +1,78 @@
 @interface MOContextPredicateBuilder
-+ (id)createPredicateForValue:(id)a3 inCollection:(id)a4;
-+ (id)createPredicateWithLeftExpression:(id)a3 rightExpression:(id)a4 operation:(unint64_t)a5;
-+ (id)extractFirstValueForKeyPath:(id)a3 fromPredicates:(id)a4;
-+ (id)stringForCompoundPredicateType:(unint64_t)a3;
-+ (id)stringForOperatorType:(unint64_t)a3;
-+ (unint64_t)predicateOperatorFromType:(unint64_t)a3;
-+ (void)disassemblePredicate:(id)a3;
-+ (void)inspectExpression:(id)a3;
++ (id)createPredicateForValue:(id)value inCollection:(id)collection;
++ (id)createPredicateWithLeftExpression:(id)expression rightExpression:(id)rightExpression operation:(unint64_t)operation;
++ (id)extractFirstValueForKeyPath:(id)path fromPredicates:(id)predicates;
++ (id)stringForCompoundPredicateType:(unint64_t)type;
++ (id)stringForOperatorType:(unint64_t)type;
++ (unint64_t)predicateOperatorFromType:(unint64_t)type;
++ (void)disassemblePredicate:(id)predicate;
++ (void)inspectExpression:(id)expression;
 @end
 
 @implementation MOContextPredicateBuilder
 
-+ (unint64_t)predicateOperatorFromType:(unint64_t)a3
++ (unint64_t)predicateOperatorFromType:(unint64_t)type
 {
-  if (a3 - 1 > 5)
+  if (type - 1 > 5)
   {
     return 4;
   }
 
   else
   {
-    return qword_25E4A2728[a3 - 1];
+    return qword_25E4A2728[type - 1];
   }
 }
 
-+ (id)createPredicateWithLeftExpression:(id)a3 rightExpression:(id)a4 operation:(unint64_t)a5
++ (id)createPredicateWithLeftExpression:(id)expression rightExpression:(id)rightExpression operation:(unint64_t)operation
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [MEMORY[0x277CCA918] predicateWithLeftExpression:v8 rightExpression:v7 modifier:0 type:objc_msgSend(objc_opt_class() options:{"predicateOperatorFromType:", a5), 0}];
+  rightExpressionCopy = rightExpression;
+  expressionCopy = expression;
+  v9 = [MEMORY[0x277CCA918] predicateWithLeftExpression:expressionCopy rightExpression:rightExpressionCopy modifier:0 type:objc_msgSend(objc_opt_class() options:{"predicateOperatorFromType:", operation), 0}];
 
   return v9;
 }
 
-+ (id)createPredicateForValue:(id)a3 inCollection:(id)a4
++ (id)createPredicateForValue:(id)value inCollection:(id)collection
 {
-  v5 = a4;
-  v6 = a3;
+  collectionCopy = collection;
+  valueCopy = value;
   v7 = [objc_opt_class() predicateOperatorFromType:6];
-  v8 = [MEMORY[0x277CCA9C0] expressionForKeyPath:v6];
+  v8 = [MEMORY[0x277CCA9C0] expressionForKeyPath:valueCopy];
 
-  v9 = [MEMORY[0x277CCA9C0] expressionForConstantValue:v5];
+  v9 = [MEMORY[0x277CCA9C0] expressionForConstantValue:collectionCopy];
 
   v10 = [MEMORY[0x277CCA918] predicateWithLeftExpression:v8 rightExpression:v9 modifier:0 type:v7 options:0];
 
   return v10;
 }
 
-+ (void)inspectExpression:(id)a3
++ (void)inspectExpression:(id)expression
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 expressionType];
-  v6 = _mo_log_facility_get_os_log(MOLogFacilityPersonalizedSensing);
-  v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
-  if (v5 > 2)
+  expressionCopy = expression;
+  expressionType = [expressionCopy expressionType];
+  arguments = _mo_log_facility_get_os_log(MOLogFacilityPersonalizedSensing);
+  v7 = os_log_type_enabled(arguments, OS_LOG_TYPE_DEBUG);
+  if (expressionType > 2)
   {
-    switch(v5)
+    switch(expressionType)
     {
       case 3:
         if (v7)
         {
-          [MOContextPredicateBuilder inspectExpression:v4];
+          [MOContextPredicateBuilder inspectExpression:expressionCopy];
         }
 
         break;
       case 4:
         if (v7)
         {
-          [MOContextPredicateBuilder inspectExpression:v4];
+          [MOContextPredicateBuilder inspectExpression:expressionCopy];
         }
 
-        v6 = [v4 arguments];
-        v12 = [v6 count];
+        arguments = [expressionCopy arguments];
+        v12 = [arguments count];
         v13 = _mo_log_facility_get_os_log(MOLogFacilityPersonalizedSensing);
         v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG);
         if (v12)
@@ -86,7 +86,7 @@
           v27 = 0u;
           v24 = 0u;
           v25 = 0u;
-          v13 = v6;
+          v13 = arguments;
           v15 = [v13 countByEnumeratingWithState:&v24 objects:v29 count:16];
           if (v15)
           {
@@ -101,7 +101,7 @@
                   objc_enumerationMutation(v13);
                 }
 
-                [a1 inspectExpression:*(*(&v24 + 1) + 8 * i)];
+                [self inspectExpression:*(*(&v24 + 1) + 8 * i)];
               }
 
               v16 = [v13 countByEnumeratingWithState:&v24 objects:v29 count:16];
@@ -123,12 +123,12 @@
           +[MOContextPredicateBuilder inspectExpression:];
         }
 
-        v6 = [v4 collection];
+        arguments = [expressionCopy collection];
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v8 = [v6 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        v8 = [arguments countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v8)
         {
           v9 = v8;
@@ -139,13 +139,13 @@
             {
               if (*v21 != v10)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(arguments);
               }
 
-              [a1 inspectExpression:*(*(&v20 + 1) + 8 * j)];
+              [self inspectExpression:*(*(&v20 + 1) + 8 * j)];
             }
 
-            v9 = [v6 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v9 = [arguments countByEnumeratingWithState:&v20 objects:v28 count:16];
           }
 
           while (v9);
@@ -163,15 +163,15 @@ LABEL_24:
     }
   }
 
-  else if (v5)
+  else if (expressionType)
   {
-    if (v5 != 1)
+    if (expressionType != 1)
     {
-      if (v5 == 2)
+      if (expressionType == 2)
       {
         if (v7)
         {
-          [MOContextPredicateBuilder inspectExpression:v4];
+          [MOContextPredicateBuilder inspectExpression:expressionCopy];
         }
 
         goto LABEL_44;
@@ -188,7 +188,7 @@ LABEL_24:
 
   else if (v7)
   {
-    [MOContextPredicateBuilder inspectExpression:v4];
+    [MOContextPredicateBuilder inspectExpression:expressionCopy];
   }
 
 LABEL_44:
@@ -196,17 +196,17 @@ LABEL_44:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)disassemblePredicate:(id)a3
++ (void)disassemblePredicate:(id)predicate
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predicateCopy = predicate;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 leftExpression];
-    v7 = [v5 rightExpression];
-    v8 = [v5 predicateOperatorType];
+    v5 = predicateCopy;
+    leftExpression = [v5 leftExpression];
+    rightExpression = [v5 rightExpression];
+    predicateOperatorType = [v5 predicateOperatorType];
     v9 = _mo_log_facility_get_os_log(MOLogFacilityPersonalizedSensing);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
@@ -222,7 +222,7 @@ LABEL_44:
     v11 = _mo_log_facility_get_os_log(MOLogFacilityPersonalizedSensing);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      [(MOContextPredicateBuilder *)a1 disassemblePredicate:v8];
+      [(MOContextPredicateBuilder *)self disassemblePredicate:predicateOperatorType];
     }
 
 LABEL_19:
@@ -232,20 +232,20 @@ LABEL_19:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v12 = [v5 compoundPredicateType];
+    v5 = predicateCopy;
+    compoundPredicateType = [v5 compoundPredicateType];
     v13 = _mo_log_facility_get_os_log(MOLogFacilityPersonalizedSensing);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      [(MOContextPredicateBuilder *)a1 disassemblePredicate:v12];
+      [(MOContextPredicateBuilder *)self disassemblePredicate:compoundPredicateType];
     }
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = [v5 subpredicates];
-    v14 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    leftExpression = [v5 subpredicates];
+    v14 = [leftExpression countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v14)
     {
       v15 = v14;
@@ -257,14 +257,14 @@ LABEL_19:
         {
           if (*v20 != v16)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(leftExpression);
           }
 
-          [a1 disassemblePredicate:*(*(&v19 + 1) + 8 * v17++)];
+          [self disassemblePredicate:*(*(&v19 + 1) + 8 * v17++)];
         }
 
         while (v15 != v17);
-        v15 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v15 = [leftExpression countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v15);
@@ -284,13 +284,13 @@ LABEL_22:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)stringForOperatorType:(unint64_t)a3
++ (id)stringForOperatorType:(unint64_t)type
 {
-  if (a3 <= 6)
+  if (type <= 6)
   {
-    if (a3 > 2)
+    if (type > 2)
     {
-      switch(a3)
+      switch(type)
       {
         case 3uLL:
           return @">=";
@@ -303,7 +303,7 @@ LABEL_22:
 
     else
     {
-      switch(a3)
+      switch(type)
       {
         case 0uLL:
           return @"<";
@@ -317,9 +317,9 @@ LABEL_22:
     return @"UNKNOWN";
   }
 
-  if (a3 > 9)
+  if (type > 9)
   {
-    switch(a3)
+    switch(type)
     {
       case 0xAuLL:
         return @"IN";
@@ -332,12 +332,12 @@ LABEL_22:
     return @"UNKNOWN";
   }
 
-  if (a3 == 7)
+  if (type == 7)
   {
     return @"LIKE";
   }
 
-  if (a3 == 8)
+  if (type == 8)
   {
     return @"BEGINSWITH";
   }
@@ -345,29 +345,29 @@ LABEL_22:
   return @"ENDSWITH";
 }
 
-+ (id)stringForCompoundPredicateType:(unint64_t)a3
++ (id)stringForCompoundPredicateType:(unint64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     return @"UNKNOWN";
   }
 
   else
   {
-    return off_279A1F3A0[a3];
+    return off_279A1F3A0[type];
   }
 }
 
-+ (id)extractFirstValueForKeyPath:(id)a3 fromPredicates:(id)a4
++ (id)extractFirstValueForKeyPath:(id)path fromPredicates:(id)predicates
 {
   v38 = *MEMORY[0x277D85DE8];
-  v32 = a3;
+  pathCopy = path;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v5 = a4;
-  v6 = [v5 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  predicatesCopy = predicates;
+  v6 = [predicatesCopy countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v6)
   {
     v7 = v6;
@@ -380,7 +380,7 @@ LABEL_3:
     {
       if (*v34 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(predicatesCopy);
       }
 
       v12 = *(*(&v33 + 1) + 8 * v11);
@@ -395,10 +395,10 @@ LABEL_3:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v25 = [v12 subpredicates];
-        v27 = [a1 extractFirstValueForKeyPath:v32 fromPredicates:v25];
+        subpredicates = [v12 subpredicates];
+        constantValue = [self extractFirstValueForKeyPath:pathCopy fromPredicates:subpredicates];
 
-        if (v27)
+        if (constantValue)
         {
           goto LABEL_19;
         }
@@ -408,7 +408,7 @@ LABEL_15:
 
       if (v7 == ++v11)
       {
-        v7 = [v5 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v7 = [predicatesCopy countByEnumeratingWithState:&v33 objects:v37 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -419,18 +419,18 @@ LABEL_15:
     }
 
     v14 = v12;
-    v15 = [v14 leftExpression];
-    if ([v15 expressionType] == 3)
+    leftExpression = [v14 leftExpression];
+    if ([leftExpression expressionType] == 3)
     {
-      v16 = [v14 leftExpression];
-      [v16 keyPath];
+      leftExpression2 = [v14 leftExpression];
+      [leftExpression2 keyPath];
       v17 = v7;
       v18 = v8;
       v19 = v9;
-      v21 = v20 = v5;
-      v31 = [v21 isEqualToString:v32];
+      v21 = v20 = predicatesCopy;
+      v31 = [v21 isEqualToString:pathCopy];
 
-      v5 = v20;
+      predicatesCopy = v20;
       v9 = v19;
       v8 = v18;
       v7 = v17;
@@ -438,13 +438,13 @@ LABEL_15:
 
       if (v31)
       {
-        v22 = [v14 rightExpression];
-        v23 = [v22 expressionType];
+        rightExpression = [v14 rightExpression];
+        expressionType = [rightExpression expressionType];
 
-        if (!v23)
+        if (!expressionType)
         {
-          v26 = [v14 rightExpression];
-          v27 = [v26 constantValue];
+          rightExpression2 = [v14 rightExpression];
+          constantValue = [rightExpression2 constantValue];
 
 LABEL_19:
           goto LABEL_20;
@@ -460,12 +460,12 @@ LABEL_19:
   }
 
 LABEL_18:
-  v27 = 0;
+  constantValue = 0;
 LABEL_20:
 
   v28 = *MEMORY[0x277D85DE8];
 
-  return v27;
+  return constantValue;
 }
 
 + (void)inspectExpression:(void *)a1 .cold.1(void *a1)

@@ -1,11 +1,11 @@
 @interface QuoteCollectionViewCell
-- (_TtC22SubscribePageExtension23QuoteCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC22SubscribePageExtension23QuoteCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation QuoteCollectionViewCell
 
-- (_TtC22SubscribePageExtension23QuoteCollectionViewCell)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension23QuoteCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC22SubscribePageExtension23QuoteCollectionViewCell_itemLayoutContext;
   v5 = sub_1007469A4();
@@ -25,7 +25,7 @@
   v2 = v13.receiver;
   [(QuoteCollectionViewCell *)&v13 layoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC22SubscribePageExtension23QuoteCollectionViewCell_quoteView];
-  v4 = [v2 contentView];
+  contentView = [v2 contentView];
   sub_100016C60(0, &qword_100922300);
   sub_1007477B4();
   v6 = v5;

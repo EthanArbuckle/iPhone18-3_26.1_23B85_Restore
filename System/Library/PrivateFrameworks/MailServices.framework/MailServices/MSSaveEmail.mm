@@ -1,40 +1,40 @@
 @interface MSSaveEmail
-+ (void)deletePlaceholderAttachmentForURL:(id)a3 completionBlock:(id)a4;
-+ (void)placeholderAttachmentForFileName:(id)a3 fileSize:(int64_t)a4 mimeType:(id)a5 contentID:(id)a6 completionBlock:(id)a7;
-+ (void)saveEmail:(id)a3 completionBlock:(id)a4;
-+ (void)saveMessageData:(id)a3 forAccountWithID:(id)a4 autosaveIdentifier:(id)a5 completionBlock:(id)a6;
-+ (void)securityScopeForPlaceholderURL:(id)a3 completionBlock:(id)a4;
-- (void)_saveEmail:(id)a3 completionBlock:(id)a4;
-- (void)_saveMessageData:(id)a3 forAccountWithID:(id)a4 autosaveIdentifier:(id)a5 completionBlock:(id)a6;
-- (void)_simulateServicesMethod:(id)a3 arguments:(id)a4 callback:(id)a5;
++ (void)deletePlaceholderAttachmentForURL:(id)l completionBlock:(id)block;
++ (void)placeholderAttachmentForFileName:(id)name fileSize:(int64_t)size mimeType:(id)type contentID:(id)d completionBlock:(id)block;
++ (void)saveEmail:(id)email completionBlock:(id)block;
++ (void)saveMessageData:(id)data forAccountWithID:(id)d autosaveIdentifier:(id)identifier completionBlock:(id)block;
++ (void)securityScopeForPlaceholderURL:(id)l completionBlock:(id)block;
+- (void)_saveEmail:(id)email completionBlock:(id)block;
+- (void)_saveMessageData:(id)data forAccountWithID:(id)d autosaveIdentifier:(id)identifier completionBlock:(id)block;
+- (void)_simulateServicesMethod:(id)method arguments:(id)arguments callback:(id)callback;
 @end
 
 @implementation MSSaveEmail
 
-+ (void)saveMessageData:(id)a3 forAccountWithID:(id)a4 autosaveIdentifier:(id)a5 completionBlock:(id)a6
++ (void)saveMessageData:(id)data forAccountWithID:(id)d autosaveIdentifier:(id)identifier completionBlock:(id)block
 {
-  v13 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  dataCopy = data;
+  dCopy = d;
+  identifierCopy = identifier;
+  blockCopy = block;
   v12 = objc_alloc_init(MSSaveEmail);
-  [(MSSaveEmail *)v12 _saveMessageData:v13 forAccountWithID:v9 autosaveIdentifier:v10 completionBlock:v11];
+  [(MSSaveEmail *)v12 _saveMessageData:dataCopy forAccountWithID:dCopy autosaveIdentifier:identifierCopy completionBlock:blockCopy];
 }
 
-+ (void)saveEmail:(id)a3 completionBlock:(id)a4
++ (void)saveEmail:(id)email completionBlock:(id)block
 {
-  v7 = a3;
-  v5 = a4;
+  emailCopy = email;
+  blockCopy = block;
   v6 = objc_alloc_init(MSSaveEmail);
-  [(MSSaveEmail *)v6 _saveEmail:v7 completionBlock:v5];
+  [(MSSaveEmail *)v6 _saveEmail:emailCopy completionBlock:blockCopy];
 }
 
-- (void)_saveEmail:(id)a3 completionBlock:(id)a4
+- (void)_saveEmail:(id)email completionBlock:(id)block
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
-  v8 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
+  v8 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:email requiringSecureCoding:1 error:0];
   if (v8)
   {
     v9 = [MEMORY[0x1E695DF90] dictionaryWithObject:v8 forKey:@"email"];
@@ -42,7 +42,7 @@
     v12[1] = 3221225472;
     v12[2] = __42__MSSaveEmail__saveEmail_completionBlock___block_invoke;
     v12[3] = &unk_1E855E998;
-    v13 = v6;
+    v13 = blockCopy;
     [(MSService *)self _callServicesMethod:@"SaveEmail" arguments:v9 callback:v12];
   }
 
@@ -57,7 +57,7 @@
     }
 
     v9 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:0];
-    (*(v6 + 2))(v6, 0, v9);
+    (*(blockCopy + 2))(blockCopy, 0, v9);
   }
 
   objc_autoreleasePoolPop(v7);
@@ -80,25 +80,25 @@ void __42__MSSaveEmail__saveEmail_completionBlock___block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)_saveMessageData:(id)a3 forAccountWithID:(id)a4 autosaveIdentifier:(id)a5 completionBlock:(id)a6
+- (void)_saveMessageData:(id)data forAccountWithID:(id)d autosaveIdentifier:(id)identifier completionBlock:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  dataCopy = data;
+  dCopy = d;
+  identifierCopy = identifier;
+  blockCopy = block;
+  if (!dataCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"MSSaveEmail.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"messageData"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSSaveEmail.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"messageData"}];
   }
 
   v15 = objc_autoreleasePoolPush();
-  v16 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{v11, @"RFC822Data", v12, @"UniqueID", v13, @"autosaveidentifier", 0}];
+  v16 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{dataCopy, @"RFC822Data", dCopy, @"UniqueID", identifierCopy, @"autosaveidentifier", 0}];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __84__MSSaveEmail__saveMessageData_forAccountWithID_autosaveIdentifier_completionBlock___block_invoke;
   v19[3] = &unk_1E855E998;
-  v17 = v14;
+  v17 = blockCopy;
   v20 = v17;
   [(MSService *)self _callServicesMethod:@"MailSaveMessage" arguments:v16 callback:v19];
 
@@ -118,39 +118,39 @@ void __84__MSSaveEmail__saveMessageData_forAccountWithID_autosaveIdentifier_comp
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_simulateServicesMethod:(id)a3 arguments:(id)a4 callback:(id)a5
+- (void)_simulateServicesMethod:(id)method arguments:(id)arguments callback:(id)callback
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isEqualToString:@"MailSaveMessage"])
+  methodCopy = method;
+  argumentsCopy = arguments;
+  callbackCopy = callback;
+  if ([methodCopy isEqualToString:@"MailSaveMessage"])
   {
     v14 = @"success";
     v15[0] = &unk_1F541F278;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-    v10[2](v10, v11, 0);
+    callbackCopy[2](callbackCopy, v11, 0);
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = MSSaveEmail;
-    [(MSService *)&v13 _simulateServicesMethod:v8 arguments:v9 callback:v10];
+    [(MSService *)&v13 _simulateServicesMethod:methodCopy arguments:argumentsCopy callback:callbackCopy];
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)placeholderAttachmentForFileName:(id)a3 fileSize:(int64_t)a4 mimeType:(id)a5 contentID:(id)a6 completionBlock:(id)a7
++ (void)placeholderAttachmentForFileName:(id)name fileSize:(int64_t)size mimeType:(id)type contentID:(id)d completionBlock:(id)block
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v13)
+  nameCopy = name;
+  typeCopy = type;
+  dCopy = d;
+  blockCopy = block;
+  if (nameCopy)
   {
-    if (a4)
+    if (size)
     {
       goto LABEL_3;
     }
@@ -158,45 +158,45 @@ void __84__MSSaveEmail__saveMessageData_forAccountWithID_autosaveIdentifier_comp
 
   else
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:a1 file:@"MSSaveEmail.m" lineNumber:100 description:{@"Invalid parameter not satisfying: %@", @"fileName"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSSaveEmail.m" lineNumber:100 description:{@"Invalid parameter not satisfying: %@", @"fileName"}];
 
-    if (a4)
+    if (size)
     {
       goto LABEL_3;
     }
   }
 
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:a1 file:@"MSSaveEmail.m" lineNumber:101 description:{@"Invalid parameter not satisfying: %@", @"fileSize"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"MSSaveEmail.m" lineNumber:101 description:{@"Invalid parameter not satisfying: %@", @"fileSize"}];
 
 LABEL_3:
-  if (!v15)
+  if (!dCopy)
   {
-    v15 = &stru_1F541BFA8;
+    dCopy = &stru_1F541BFA8;
   }
 
   v17 = objc_autoreleasePoolPush();
   v18 = objc_alloc_init(MSSaveEmail);
-  v19 = [MEMORY[0x1E695DF90] dictionary];
-  [v19 setObject:&unk_1F541F290 forKeyedSubscript:@"MSAttachmentRequestKeyOperation"];
-  [v19 setObject:v13 forKeyedSubscript:@"MSAttachmentRequestKeyNameType"];
-  v20 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [v19 setObject:v20 forKeyedSubscript:@"MSAttachmentRequestKeySizeType"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:&unk_1F541F290 forKeyedSubscript:@"MSAttachmentRequestKeyOperation"];
+  [dictionary setObject:nameCopy forKeyedSubscript:@"MSAttachmentRequestKeyNameType"];
+  v20 = [MEMORY[0x1E696AD98] numberWithInteger:size];
+  [dictionary setObject:v20 forKeyedSubscript:@"MSAttachmentRequestKeySizeType"];
 
-  if (v14)
+  if (typeCopy)
   {
-    [v19 setObject:v14 forKeyedSubscript:@"MSAttachmentRequestKeyMimeType"];
+    [dictionary setObject:typeCopy forKeyedSubscript:@"MSAttachmentRequestKeyMimeType"];
   }
 
-  [v19 setObject:v15 forKeyedSubscript:@"MSAttachmentRequestKeyContentID"];
+  [dictionary setObject:dCopy forKeyedSubscript:@"MSAttachmentRequestKeyContentID"];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __92__MSSaveEmail_placeholderAttachmentForFileName_fileSize_mimeType_contentID_completionBlock___block_invoke;
   v24[3] = &unk_1E855E998;
-  v21 = v16;
+  v21 = blockCopy;
   v25 = v21;
-  [(MSService *)v18 _callServicesMethod:@"MSAttachmentRequest" arguments:v19 callback:v24];
+  [(MSService *)v18 _callServicesMethod:@"MSAttachmentRequest" arguments:dictionary callback:v24];
 
   objc_autoreleasePoolPop(v17);
 }
@@ -228,15 +228,15 @@ void __92__MSSaveEmail_placeholderAttachmentForFileName_fileSize_mimeType_conten
   }
 }
 
-+ (void)deletePlaceholderAttachmentForURL:(id)a3 completionBlock:(id)a4
++ (void)deletePlaceholderAttachmentForURL:(id)l completionBlock:(id)block
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  lCopy = l;
+  blockCopy = block;
+  if (!lCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"MSSaveEmail.m" lineNumber:133 description:{@"Invalid parameter not satisfying: %@", @"url"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSSaveEmail.m" lineNumber:133 description:{@"Invalid parameter not satisfying: %@", @"url"}];
   }
 
   v9 = objc_autoreleasePoolPush();
@@ -244,13 +244,13 @@ void __92__MSSaveEmail_placeholderAttachmentForFileName_fileSize_mimeType_conten
   v17[0] = @"MSAttachmentRequestKeyOperation";
   v17[1] = @"MSAttachmentRequestKeyURL";
   v18[0] = &unk_1F541F2A8;
-  v18[1] = v7;
+  v18[1] = lCopy;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __65__MSSaveEmail_deletePlaceholderAttachmentForURL_completionBlock___block_invoke;
   v15[3] = &unk_1E855E998;
-  v12 = v8;
+  v12 = blockCopy;
   v16 = v12;
   [(MSService *)v10 _callServicesMethod:@"MSAttachmentRequest" arguments:v11 callback:v15];
 
@@ -285,15 +285,15 @@ void __65__MSSaveEmail_deletePlaceholderAttachmentForURL_completionBlock___block
   }
 }
 
-+ (void)securityScopeForPlaceholderURL:(id)a3 completionBlock:(id)a4
++ (void)securityScopeForPlaceholderURL:(id)l completionBlock:(id)block
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  lCopy = l;
+  blockCopy = block;
+  if (!lCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"MSSaveEmail.m" lineNumber:155 description:{@"Invalid parameter not satisfying: %@", @"url"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSSaveEmail.m" lineNumber:155 description:{@"Invalid parameter not satisfying: %@", @"url"}];
   }
 
   v9 = objc_autoreleasePoolPush();
@@ -301,13 +301,13 @@ void __65__MSSaveEmail_deletePlaceholderAttachmentForURL_completionBlock___block
   v17[0] = @"MSAttachmentRequestKeyOperation";
   v17[1] = @"MSAttachmentRequestKeyURL";
   v18[0] = &unk_1F541F2C0;
-  v18[1] = v7;
+  v18[1] = lCopy;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __62__MSSaveEmail_securityScopeForPlaceholderURL_completionBlock___block_invoke;
   v15[3] = &unk_1E855E998;
-  v12 = v8;
+  v12 = blockCopy;
   v16 = v12;
   [(MSService *)v10 _callServicesMethod:@"MSAttachmentRequest" arguments:v11 callback:v15];
 

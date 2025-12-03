@@ -1,18 +1,18 @@
 @interface WFContentAlertButton
-+ (id)buttonWithContentItem:(id)a3 selected:(BOOL)a4 stickySelection:(BOOL)a5 contextAwareHandler:(id)a6;
-+ (id)buttonWithContentItem:(id)a3 selected:(BOOL)a4 stickySelection:(BOOL)a5 handler:(id)a6;
-+ (void)processContentAlertButtonSubtitles:(id)a3;
-- (BOOL)addSubtitleCompletionHandler:(id)a3;
++ (id)buttonWithContentItem:(id)item selected:(BOOL)selected stickySelection:(BOOL)selection contextAwareHandler:(id)handler;
++ (id)buttonWithContentItem:(id)item selected:(BOOL)selected stickySelection:(BOOL)selection handler:(id)handler;
++ (void)processContentAlertButtonSubtitles:(id)subtitles;
+- (BOOL)addSubtitleCompletionHandler:(id)handler;
 - (BOOL)hasContentSubtitle;
-- (void)getSubtitle:(id)a3;
+- (void)getSubtitle:(id)subtitle;
 - (void)start;
 @end
 
 @implementation WFContentAlertButton
 
-- (BOOL)addSubtitleCompletionHandler:(id)a3
+- (BOOL)addSubtitleCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   group = self->_group;
   if (!group)
   {
@@ -25,8 +25,8 @@
   v8[2] = __53__WFContentAlertButton_addSubtitleCompletionHandler___block_invoke;
   v8[3] = &unk_278347B38;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_group_notify(group, MEMORY[0x277D85CD0], v8);
 
   return 0;
@@ -39,13 +39,13 @@
   self->_group = v3;
 
   dispatch_group_enter(self->_group);
-  v5 = [(WFContentAlertButton *)self contentItem];
+  contentItem = [(WFContentAlertButton *)self contentItem];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __29__WFContentAlertButton_start__block_invoke;
   v6[3] = &unk_2783481E8;
   v6[4] = self;
-  self->_hasContentSubtitle = [v5 getListSubtitle:v6];
+  self->_hasContentSubtitle = [contentItem getListSubtitle:v6];
 
   if (!self->_hasContentSubtitle)
   {
@@ -65,16 +65,16 @@ void __29__WFContentAlertButton_start__block_invoke(uint64_t a1, void *a2)
   dispatch_group_leave(v6);
 }
 
-- (void)getSubtitle:(id)a3
+- (void)getSubtitle:(id)subtitle
 {
-  v4 = a3;
+  subtitleCopy = subtitle;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36__WFContentAlertButton_getSubtitle___block_invoke;
   v6[3] = &unk_2783477C8;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = subtitleCopy;
   v7 = v5;
   [(WFContentAlertButton *)self addSubtitleCompletionHandler:v6];
 
@@ -120,11 +120,11 @@ void __36__WFContentAlertButton_getSubtitle___block_invoke(uint64_t a1, void *a2
   return self->_hasContentSubtitle;
 }
 
-+ (void)processContentAlertButtonSubtitles:(id)a3
++ (void)processContentAlertButtonSubtitles:(id)subtitles
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectsMatchingClass:objc_opt_class()];
+  subtitlesCopy = subtitles;
+  v4 = [subtitlesCopy objectsMatchingClass:objc_opt_class()];
   v5 = objc_opt_new();
   v24 = 0u;
   v25 = 0u;
@@ -147,7 +147,7 @@ void __36__WFContentAlertButton_getSubtitle___block_invoke(uint64_t a1, void *a2
         }
 
         v12 = *(*(&v24 + 1) + 8 * i);
-        v13 = [v12 contentItem];
+        contentItem = [v12 contentItem];
         [v5 addObject:objc_opt_class()];
 
         v9 |= [v12 hasContentSubtitle];
@@ -200,37 +200,37 @@ LABEL_12:
   }
 }
 
-+ (id)buttonWithContentItem:(id)a3 selected:(BOOL)a4 stickySelection:(BOOL)a5 handler:(id)a6
++ (id)buttonWithContentItem:(id)item selected:(BOOL)selected stickySelection:(BOOL)selection handler:(id)handler
 {
-  v6 = a5;
-  v7 = a4;
-  v10 = a6;
+  selectionCopy = selection;
+  selectedCopy = selected;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __79__WFContentAlertButton_buttonWithContentItem_selected_stickySelection_handler___block_invoke;
   v14[3] = &unk_2783494B8;
-  v15 = v10;
-  v11 = v10;
-  v12 = [a1 buttonWithContentItem:a3 selected:v7 stickySelection:v6 contextAwareHandler:v14];
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = [self buttonWithContentItem:item selected:selectedCopy stickySelection:selectionCopy contextAwareHandler:v14];
 
   return v12;
 }
 
-+ (id)buttonWithContentItem:(id)a3 selected:(BOOL)a4 stickySelection:(BOOL)a5 contextAwareHandler:(id)a6
++ (id)buttonWithContentItem:(id)item selected:(BOOL)selected stickySelection:(BOOL)selection contextAwareHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v11 = a3;
-  v12 = a6;
-  v13 = [v11 name];
-  v14 = [MEMORY[0x277D7A168] parseAnnotatedString:v13];
-  v15 = [v14 displayString];
+  selectionCopy = selection;
+  selectedCopy = selected;
+  itemCopy = item;
+  handlerCopy = handler;
+  name = [itemCopy name];
+  v14 = [MEMORY[0x277D7A168] parseAnnotatedString:name];
+  displayString = [v14 displayString];
 
-  v16 = [a1 buttonWithTitle:v15 subtitle:0 selected:v8 stickySelection:v7 style:0 contextAwareHandler:v12 image:0];
+  v16 = [self buttonWithTitle:displayString subtitle:0 selected:selectedCopy stickySelection:selectionCopy style:0 contextAwareHandler:handlerCopy image:0];
 
   if (v16)
   {
-    objc_storeStrong(v16 + 12, a3);
+    objc_storeStrong(v16 + 12, item);
     v17 = v16;
   }
 

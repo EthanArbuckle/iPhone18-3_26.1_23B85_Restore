@@ -1,10 +1,10 @@
 @interface MUTransitDeparturesSectionViewProvider
 - (BOOL)needsRebuild;
 - (MUTransitDeparturesSectionViewProvider)init;
-- (MUTransitDeparturesSectionViewProvider)initWithDataSource:(id)a3 userInteractionDelegate:(id)a4;
+- (MUTransitDeparturesSectionViewProvider)initWithDataSource:(id)source userInteractionDelegate:(id)delegate;
 - (id)sectionViewsForCurrentState;
-- (void)filterView:(id)a3 didChangeSystemSelection:(id)a4;
-- (void)setNeedsRebuild:(BOOL)a3;
+- (void)filterView:(id)view didChangeSystemSelection:(id)selection;
+- (void)setNeedsRebuild:(BOOL)rebuild;
 @end
 
 @implementation MUTransitDeparturesSectionViewProvider
@@ -16,18 +16,18 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setNeedsRebuild:(BOOL)a3
+- (void)setNeedsRebuild:(BOOL)rebuild
 {
   v5 = OBJC_IVAR___MUTransitDeparturesSectionViewProvider_needsRebuild;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = rebuild;
 }
 
-- (MUTransitDeparturesSectionViewProvider)initWithDataSource:(id)a3 userInteractionDelegate:(id)a4
+- (MUTransitDeparturesSectionViewProvider)initWithDataSource:(id)source userInteractionDelegate:(id)delegate
 {
-  v4 = a3;
+  sourceCopy = source;
   swift_unknownObjectRetain();
-  v5 = sub_1C5720138(v4);
+  v5 = sub_1C5720138(sourceCopy);
 
   swift_unknownObjectRelease();
   return v5;
@@ -35,7 +35,7 @@
 
 - (id)sectionViewsForCurrentState
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5720700();
 
   sub_1C57221B8();
@@ -44,12 +44,12 @@
   return v3;
 }
 
-- (void)filterView:(id)a3 didChangeSystemSelection:(id)a4
+- (void)filterView:(id)view didChangeSystemSelection:(id)selection
 {
   v6 = *(&self->super.isa + OBJC_IVAR___MUTransitDeparturesSectionViewProvider_dataSource);
   swift_unknownObjectRetain_n();
-  v7 = self;
-  sub_1C57103C4(a4);
+  selfCopy = self;
+  sub_1C57103C4(selection);
 
   swift_unknownObjectRelease();
 }

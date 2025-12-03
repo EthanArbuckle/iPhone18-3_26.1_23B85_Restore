@@ -1,67 +1,67 @@
 @interface AACustodianController
-- (AACustodianController)initWithDaemonConnectionProvider:(id)a3 analyticsReporter:(id)a4;
-- (AACustodianController)initWithDaemonXPCEndpoint:(id)a3;
-- (BOOL)cancelCustodianRecoveryWithSessionID:(id)a3 error:(id *)a4;
-- (void)_retryingGenerateCustodianRecoveryCodeWithContext:(id)a3 completion:(id)a4;
-- (void)_retryingValidateCustodianRecoveryCodeWithContext:(id)a3 completion:(id)a4;
-- (void)availableRecoveryFactorsWithCompletion:(id)a3;
-- (void)cancelCustodianRecoveryWithContext:(id)a3 completion:(id)a4;
-- (void)displayInvitationUIWithUUID:(id)a3 completion:(id)a4;
-- (void)displayTrustedContactFlowWithModel:(id)a3 completion:(id)a4;
-- (void)fetchCachedTrustedContactsWithCompletion:(id)a3;
-- (void)fetchCustodianHealthStatusWithCompletion:(id)a3;
-- (void)fetchCustodianPasswordResetInformationWithSessionID:(id)a3 completion:(id)a4;
-- (void)fetchCustodianRecoveryConfigurationWithCompletion:(id)a3;
-- (void)fetchCustodianRecoveryKeysWithContext:(id)a3 completion:(id)a4;
-- (void)fetchCustodianRecoveryKeysWithSessionID:(id)a3 completion:(id)a4;
-- (void)fetchCustodianshipInfoWithCompletion:(id)a3;
-- (void)fetchCustodianshipInfoWithUUID:(id)a3 completion:(id)a4;
-- (void)fetchSuggestedCustodiansForUpsellWithTelemetryFlowID:(id)a3 completion:(id)a4;
-- (void)fetchSuggestedCustodiansWithCompletion:(id)a3;
-- (void)fetchTrustedContactsWithCompletion:(id)a3;
-- (void)fetchTrustedContactsWithRequest:(id)a3 completion:(id)a4;
-- (void)generateCustodianRecoveryCodeWithContext:(id)a3 completion:(id)a4;
-- (void)preflightCustodianRecoveryWithCompletion:(id)a3;
-- (void)pullTrustedContactsFromCloudKitWithCompletion:(id)a3;
-- (void)reSendCustodianInvitationWithCustodianID:(id)a3 completion:(id)a4;
-- (void)removeCustodian:(id)a3 completion:(id)a4;
-- (void)removeCustodianWithContext:(id)a3 completion:(id)a4;
-- (void)repairCustodians:(id)a3 completion:(id)a4;
-- (void)respondToCustodianRequestWithResponse:(id)a3 completion:(id)a4;
-- (void)setupCustodianshipWithContext:(id)a3 completion:(id)a4;
-- (void)startCustodianRecoveryWithContext:(id)a3 completion:(id)a4;
-- (void)startHealthCheckWithCompletion:(id)a3;
-- (void)startManateeMigrationWithCompletion:(id)a3;
-- (void)stopBeingCustodian:(id)a3 completion:(id)a4;
-- (void)stopBeingCustodianWithContext:(id)a3 completion:(id)a4;
-- (void)validateCustodianRecoveryCodeWithContext:(id)a3 completion:(id)a4;
+- (AACustodianController)initWithDaemonConnectionProvider:(id)provider analyticsReporter:(id)reporter;
+- (AACustodianController)initWithDaemonXPCEndpoint:(id)endpoint;
+- (BOOL)cancelCustodianRecoveryWithSessionID:(id)d error:(id *)error;
+- (void)_retryingGenerateCustodianRecoveryCodeWithContext:(id)context completion:(id)completion;
+- (void)_retryingValidateCustodianRecoveryCodeWithContext:(id)context completion:(id)completion;
+- (void)availableRecoveryFactorsWithCompletion:(id)completion;
+- (void)cancelCustodianRecoveryWithContext:(id)context completion:(id)completion;
+- (void)displayInvitationUIWithUUID:(id)d completion:(id)completion;
+- (void)displayTrustedContactFlowWithModel:(id)model completion:(id)completion;
+- (void)fetchCachedTrustedContactsWithCompletion:(id)completion;
+- (void)fetchCustodianHealthStatusWithCompletion:(id)completion;
+- (void)fetchCustodianPasswordResetInformationWithSessionID:(id)d completion:(id)completion;
+- (void)fetchCustodianRecoveryConfigurationWithCompletion:(id)completion;
+- (void)fetchCustodianRecoveryKeysWithContext:(id)context completion:(id)completion;
+- (void)fetchCustodianRecoveryKeysWithSessionID:(id)d completion:(id)completion;
+- (void)fetchCustodianshipInfoWithCompletion:(id)completion;
+- (void)fetchCustodianshipInfoWithUUID:(id)d completion:(id)completion;
+- (void)fetchSuggestedCustodiansForUpsellWithTelemetryFlowID:(id)d completion:(id)completion;
+- (void)fetchSuggestedCustodiansWithCompletion:(id)completion;
+- (void)fetchTrustedContactsWithCompletion:(id)completion;
+- (void)fetchTrustedContactsWithRequest:(id)request completion:(id)completion;
+- (void)generateCustodianRecoveryCodeWithContext:(id)context completion:(id)completion;
+- (void)preflightCustodianRecoveryWithCompletion:(id)completion;
+- (void)pullTrustedContactsFromCloudKitWithCompletion:(id)completion;
+- (void)reSendCustodianInvitationWithCustodianID:(id)d completion:(id)completion;
+- (void)removeCustodian:(id)custodian completion:(id)completion;
+- (void)removeCustodianWithContext:(id)context completion:(id)completion;
+- (void)repairCustodians:(id)custodians completion:(id)completion;
+- (void)respondToCustodianRequestWithResponse:(id)response completion:(id)completion;
+- (void)setupCustodianshipWithContext:(id)context completion:(id)completion;
+- (void)startCustodianRecoveryWithContext:(id)context completion:(id)completion;
+- (void)startHealthCheckWithCompletion:(id)completion;
+- (void)startManateeMigrationWithCompletion:(id)completion;
+- (void)stopBeingCustodian:(id)custodian completion:(id)completion;
+- (void)stopBeingCustodianWithContext:(id)context completion:(id)completion;
+- (void)validateCustodianRecoveryCodeWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation AACustodianController
 
-- (AACustodianController)initWithDaemonXPCEndpoint:(id)a3
+- (AACustodianController)initWithDaemonXPCEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [[AACustodianDaemonConnection alloc] initWithListenerEndpoint:v4];
+  endpointCopy = endpoint;
+  v5 = [[AACustodianDaemonConnection alloc] initWithListenerEndpoint:endpointCopy];
 
   v6 = [(AACustodianController *)self initWithDaemonConnectionProvider:v5 analyticsReporter:0];
   return v6;
 }
 
-- (AACustodianController)initWithDaemonConnectionProvider:(id)a3 analyticsReporter:(id)a4
+- (AACustodianController)initWithDaemonConnectionProvider:(id)provider analyticsReporter:(id)reporter
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  reporterCopy = reporter;
   v14.receiver = self;
   v14.super_class = AACustodianController;
   v9 = [(AACustodianController *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_daemonConnection, a3);
-    if (v8)
+    objc_storeStrong(&v9->_daemonConnection, provider);
+    if (reporterCopy)
     {
-      v11 = v8;
+      v11 = reporterCopy;
     }
 
     else
@@ -76,11 +76,11 @@
   return v10;
 }
 
-- (void)setupCustodianshipWithContext:(id)a3 completion:(id)a4
+- (void)setupCustodianshipWithContext:(id)context completion:(id)completion
 {
   v52 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1B6F6A000, "custodian-appleaccount/set-up-custodianship", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -107,9 +107,9 @@
 
   v16 = self->_analyticsReporter;
   v17 = MEMORY[0x1E6985DB0];
-  v18 = [v6 altDSID];
-  v19 = [v6 telemetryFlowID];
-  v20 = [v17 analyticsEventWithName:@"com.apple.appleaccount.custodian.setup.newCustodian" altDSID:v18 flowID:v19];
+  altDSID = [contextCopy altDSID];
+  telemetryFlowID = [contextCopy telemetryFlowID];
+  v20 = [v17 analyticsEventWithName:@"com.apple.appleaccount.custodian.setup.newCustodian" altDSID:altDSID flowID:telemetryFlowID];
 
   [v20 setObject:&unk_1F2F24B20 forKeyedSubscript:@"contextType"];
   *&buf = 0;
@@ -117,8 +117,8 @@
   v48 = 0x3032000000;
   v49 = __Block_byref_object_copy__2;
   v50 = __Block_byref_object_dispose__2;
-  v21 = self;
-  v51 = v21;
+  selfCopy = self;
+  v51 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __66__AACustodianController_setupCustodianshipWithContext_completion___block_invoke;
@@ -130,10 +130,10 @@
   v39 = v23;
   v42 = v10;
   v43 = v12;
-  v24 = v7;
+  v24 = completionCopy;
   v40 = v24;
   v25 = _Block_copy(aBlock);
-  daemonConnection = v21->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __66__AACustodianController_setupCustodianshipWithContext_completion___block_invoke_35;
@@ -144,7 +144,7 @@
   v29 = _AALogSystem();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
-    v30 = [v6 debugDescription];
+    v30 = [contextCopy debugDescription];
     *v45 = 138412290;
     v46 = v30;
     _os_log_impl(&dword_1B6F6A000, v29, OS_LOG_TYPE_DEFAULT, "Setting up custodianship: %@", v45, 0xCu);
@@ -156,7 +156,7 @@
   v33[3] = &unk_1E7C9B4C8;
   v31 = v27;
   v34 = v31;
-  [v28 setupCustodianshipWithContext:v6 completion:v33];
+  [v28 setupCustodianshipWithContext:contextCopy completion:v33];
 
   _Block_object_dispose(&buf, 8);
   os_activity_scope_leave(&state);
@@ -240,11 +240,11 @@ void __66__AACustodianController_setupCustodianshipWithContext_completion___bloc
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)respondToCustodianRequestWithResponse:(id)a3 completion:(id)a4
+- (void)respondToCustodianRequestWithResponse:(id)response completion:(id)completion
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1B6F6A000, "custodian-appleaccount/custodian-invitation-response", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -271,17 +271,17 @@ void __66__AACustodianController_setupCustodianshipWithContext_completion___bloc
 
   v16 = self->_analyticsReporter;
   v17 = MEMORY[0x1E6985DB0];
-  v18 = [v6 altDSID];
-  v19 = [v6 telemetryFlowID];
-  v20 = [v17 analyticsEventWithName:@"com.apple.appleaccount.custodian.setup.respondToInvite" altDSID:v18 flowID:v19];
+  altDSID = [responseCopy altDSID];
+  telemetryFlowID = [responseCopy telemetryFlowID];
+  v20 = [v17 analyticsEventWithName:@"com.apple.appleaccount.custodian.setup.respondToInvite" altDSID:altDSID flowID:telemetryFlowID];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
   v46 = 0x3032000000;
   v47 = __Block_byref_object_copy__2;
   v48 = __Block_byref_object_dispose__2;
-  v21 = self;
-  v49 = v21;
+  selfCopy = self;
+  v49 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __74__AACustodianController_respondToCustodianRequestWithResponse_completion___block_invoke;
@@ -293,10 +293,10 @@ void __66__AACustodianController_setupCustodianshipWithContext_completion___bloc
   v39 = v23;
   v42 = v10;
   v43 = v12;
-  v24 = v7;
+  v24 = completionCopy;
   v40 = v24;
   v25 = _Block_copy(aBlock);
-  daemonConnection = v21->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __74__AACustodianController_respondToCustodianRequestWithResponse_completion___block_invoke_38;
@@ -317,7 +317,7 @@ void __66__AACustodianController_setupCustodianshipWithContext_completion___bloc
   v32[3] = &unk_1E7C9B078;
   v30 = v27;
   v33 = v30;
-  [v28 respondToInviteWithContext:v6 completion:v32];
+  [v28 respondToInviteWithContext:responseCopy completion:v32];
 
   _Block_object_dispose(&buf, 8);
   os_activity_scope_leave(&state);
@@ -406,25 +406,25 @@ void __74__AACustodianController_respondToCustodianRequestWithResponse_completio
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)removeCustodian:(id)a3 completion:(id)a4
+- (void)removeCustodian:(id)custodian completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v11 = [[AACustodianUpdateRequestContext alloc] initWithCustodianID:v7];
+  completionCopy = completion;
+  custodianCopy = custodian;
+  v11 = [[AACustodianUpdateRequestContext alloc] initWithCustodianID:custodianCopy];
 
-  v8 = [MEMORY[0x1E698DC80] sharedInstance];
-  v9 = [v8 primaryAuthKitAccount];
-  v10 = [v9 aa_altDSID];
-  [(AACustodianUpdateRequestContext *)v11 setAltDSID:v10];
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  primaryAuthKitAccount = [mEMORY[0x1E698DC80] primaryAuthKitAccount];
+  aa_altDSID = [primaryAuthKitAccount aa_altDSID];
+  [(AACustodianUpdateRequestContext *)v11 setAltDSID:aa_altDSID];
 
-  [(AACustodianController *)self removeCustodianWithContext:v11 completion:v6];
+  [(AACustodianController *)self removeCustodianWithContext:v11 completion:completionCopy];
 }
 
-- (void)removeCustodianWithContext:(id)a3 completion:(id)a4
+- (void)removeCustodianWithContext:(id)context completion:(id)completion
 {
   v57 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v35 = _os_activity_create(&dword_1B6F6A000, "custodian-appleaccount/custodian-remove", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -432,7 +432,7 @@ void __74__AACustodianController_respondToCustodianRequestWithResponse_completio
   v8 = _AASignpostLogSystem();
   v9 = _AASignpostCreate(v8);
   v11 = v10;
-  v36 = v7;
+  v36 = completionCopy;
 
   v12 = _AASignpostLogSystem();
   v13 = v12;
@@ -453,17 +453,17 @@ void __74__AACustodianController_respondToCustodianRequestWithResponse_completio
   v15 = @"com.apple.appleaccount.custodian.remove";
   v16 = self->_analyticsReporter;
   v17 = MEMORY[0x1E6985DB0];
-  v18 = [v6 altDSID];
-  v19 = [v6 telemetryFlowID];
-  v20 = [v17 analyticsEventWithName:v15 altDSID:v18 flowID:v19];
+  altDSID = [contextCopy altDSID];
+  telemetryFlowID = [contextCopy telemetryFlowID];
+  v20 = [v17 analyticsEventWithName:v15 altDSID:altDSID flowID:telemetryFlowID];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
   v53 = 0x3032000000;
   v54 = __Block_byref_object_copy__2;
   v55 = __Block_byref_object_dispose__2;
-  v21 = self;
-  v56 = v21;
+  selfCopy = self;
+  v56 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __63__AACustodianController_removeCustodianWithContext_completion___block_invoke;
@@ -478,7 +478,7 @@ void __74__AACustodianController_respondToCustodianRequestWithResponse_completio
   v24 = v36;
   v45 = v24;
   v25 = _Block_copy(aBlock);
-  daemonConnection = v21->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __63__AACustodianController_removeCustodianWithContext_completion___block_invoke_42;
@@ -489,10 +489,10 @@ void __74__AACustodianController_respondToCustodianRequestWithResponse_completio
   v29 = _AALogSystem();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
-    v30 = [v6 custodianID];
-    v31 = [v30 UUIDString];
+    custodianID = [contextCopy custodianID];
+    uUIDString = [custodianID UUIDString];
     *v50 = 138412290;
-    v51 = v31;
+    v51 = uUIDString;
     _os_log_impl(&dword_1B6F6A000, v29, OS_LOG_TYPE_DEFAULT, "Removing custodian with ID %@.", v50, 0xCu);
   }
 
@@ -500,7 +500,7 @@ void __74__AACustodianController_respondToCustodianRequestWithResponse_completio
   v37[1] = 3221225472;
   v37[2] = __63__AACustodianController_removeCustodianWithContext_completion___block_invoke_43;
   v37[3] = &unk_1E7C9B518;
-  v32 = v6;
+  v32 = contextCopy;
   v38 = v32;
   v33 = v27;
   v39 = v33;
@@ -598,25 +598,25 @@ void __63__AACustodianController_removeCustodianWithContext_completion___block_i
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stopBeingCustodian:(id)a3 completion:(id)a4
+- (void)stopBeingCustodian:(id)custodian completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v11 = [[AACustodianUpdateRequestContext alloc] initWithCustodianID:v7];
+  completionCopy = completion;
+  custodianCopy = custodian;
+  v11 = [[AACustodianUpdateRequestContext alloc] initWithCustodianID:custodianCopy];
 
-  v8 = [MEMORY[0x1E698DC80] sharedInstance];
-  v9 = [v8 primaryAuthKitAccount];
-  v10 = [v9 aa_altDSID];
-  [(AACustodianUpdateRequestContext *)v11 setAltDSID:v10];
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  primaryAuthKitAccount = [mEMORY[0x1E698DC80] primaryAuthKitAccount];
+  aa_altDSID = [primaryAuthKitAccount aa_altDSID];
+  [(AACustodianUpdateRequestContext *)v11 setAltDSID:aa_altDSID];
 
-  [(AACustodianController *)self stopBeingCustodianWithContext:v11 completion:v6];
+  [(AACustodianController *)self stopBeingCustodianWithContext:v11 completion:completionCopy];
 }
 
-- (void)stopBeingCustodianWithContext:(id)a3 completion:(id)a4
+- (void)stopBeingCustodianWithContext:(id)context completion:(id)completion
 {
   v57 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v35 = _os_activity_create(&dword_1B6F6A000, "custodian-appleaccount/stop-being-custodian", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -624,7 +624,7 @@ void __63__AACustodianController_removeCustodianWithContext_completion___block_i
   v8 = _AASignpostLogSystem();
   v9 = _AASignpostCreate(v8);
   v11 = v10;
-  v36 = v7;
+  v36 = completionCopy;
 
   v12 = _AASignpostLogSystem();
   v13 = v12;
@@ -645,17 +645,17 @@ void __63__AACustodianController_removeCustodianWithContext_completion___block_i
   v15 = self->_analyticsReporter;
   v16 = @"com.apple.appleaccount.custodian.setup.stopBeingCustodian";
   v17 = MEMORY[0x1E6985DB0];
-  v18 = [v6 altDSID];
-  v19 = [v6 telemetryFlowID];
-  v20 = [v17 analyticsEventWithName:v16 altDSID:v18 flowID:v19];
+  altDSID = [contextCopy altDSID];
+  telemetryFlowID = [contextCopy telemetryFlowID];
+  v20 = [v17 analyticsEventWithName:v16 altDSID:altDSID flowID:telemetryFlowID];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
   v53 = 0x3032000000;
   v54 = __Block_byref_object_copy__2;
   v55 = __Block_byref_object_dispose__2;
-  v21 = self;
-  v56 = v21;
+  selfCopy = self;
+  v56 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __66__AACustodianController_stopBeingCustodianWithContext_completion___block_invoke;
@@ -670,7 +670,7 @@ void __63__AACustodianController_removeCustodianWithContext_completion___block_i
   v24 = v36;
   v45 = v24;
   v25 = _Block_copy(aBlock);
-  daemonConnection = v21->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __66__AACustodianController_stopBeingCustodianWithContext_completion___block_invoke_44;
@@ -681,10 +681,10 @@ void __63__AACustodianController_removeCustodianWithContext_completion___block_i
   v29 = _AALogSystem();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
-    v30 = [v6 custodianID];
-    v31 = [v30 UUIDString];
+    custodianID = [contextCopy custodianID];
+    uUIDString = [custodianID UUIDString];
     *v50 = 138412290;
-    v51 = v31;
+    v51 = uUIDString;
     _os_log_impl(&dword_1B6F6A000, v29, OS_LOG_TYPE_DEFAULT, "Ending custodianship with ID %@.", v50, 0xCu);
   }
 
@@ -692,7 +692,7 @@ void __63__AACustodianController_removeCustodianWithContext_completion___block_i
   v37[1] = 3221225472;
   v37[2] = __66__AACustodianController_stopBeingCustodianWithContext_completion___block_invoke_45;
   v37[3] = &unk_1E7C9B518;
-  v32 = v6;
+  v32 = contextCopy;
   v38 = v32;
   v33 = v27;
   v39 = v33;
@@ -790,25 +790,25 @@ void __66__AACustodianController_stopBeingCustodianWithContext_completion___bloc
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchCachedTrustedContactsWithCompletion:(id)a3
+- (void)fetchCachedTrustedContactsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [[AATrustedContactFetchRequest alloc] initWithContactType:0 cachePolicy:0];
-  [(AACustodianController *)self fetchTrustedContactsWithRequest:v5 completion:v4];
+  [(AACustodianController *)self fetchTrustedContactsWithRequest:v5 completion:completionCopy];
 }
 
-- (void)fetchTrustedContactsWithCompletion:(id)a3
+- (void)fetchTrustedContactsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [[AATrustedContactFetchRequest alloc] initWithContactType:0 cachePolicy:1];
-  [(AACustodianController *)self fetchTrustedContactsWithRequest:v5 completion:v4];
+  [(AACustodianController *)self fetchTrustedContactsWithRequest:v5 completion:completionCopy];
 }
 
-- (void)fetchTrustedContactsWithRequest:(id)a3 completion:(id)a4
+- (void)fetchTrustedContactsWithRequest:(id)request completion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1B6F6A000, "custodian-appleaccount/fetch-trusted-contacts", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -838,8 +838,8 @@ void __66__AACustodianController_stopBeingCustodianWithContext_completion___bloc
   v37 = 0x3032000000;
   v38 = __Block_byref_object_copy__2;
   v39 = __Block_byref_object_dispose__2;
-  v16 = self;
-  v40 = v16;
+  selfCopy = self;
+  v40 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __68__AACustodianController_fetchTrustedContactsWithRequest_completion___block_invoke;
@@ -847,10 +847,10 @@ void __66__AACustodianController_stopBeingCustodianWithContext_completion___bloc
   p_buf = &buf;
   v33 = v10;
   v34 = v12;
-  v17 = v7;
+  v17 = completionCopy;
   v31 = v17;
   v18 = _Block_copy(aBlock);
-  daemonConnection = v16->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __68__AACustodianController_fetchTrustedContactsWithRequest_completion___block_invoke_48;
@@ -871,7 +871,7 @@ void __66__AACustodianController_stopBeingCustodianWithContext_completion___bloc
   v25[3] = &unk_1E7C9B290;
   v23 = v20;
   v26 = v23;
-  [v21 fetchTrustedContactsWithRequest:v6 completion:v25];
+  [v21 fetchTrustedContactsWithRequest:requestCopy completion:v25];
 
   _Block_object_dispose(&buf, 8);
   os_activity_scope_leave(&state);
@@ -960,10 +960,10 @@ void __68__AACustodianController_fetchTrustedContactsWithRequest_completion___bl
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchCustodianshipInfoWithCompletion:(id)a3
+- (void)fetchCustodianshipInfoWithCompletion:(id)completion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = _os_activity_create(&dword_1B6F6A000, "custodian-appleaccount/fetch-custodianship-info", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -993,8 +993,8 @@ void __68__AACustodianController_fetchTrustedContactsWithRequest_completion___bl
   v34 = 0x3032000000;
   v35 = __Block_byref_object_copy__2;
   v36 = __Block_byref_object_dispose__2;
-  v13 = self;
-  v37 = v13;
+  selfCopy = self;
+  v37 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __62__AACustodianController_fetchCustodianshipInfoWithCompletion___block_invoke;
@@ -1002,10 +1002,10 @@ void __68__AACustodianController_fetchTrustedContactsWithRequest_completion___bl
   p_buf = &buf;
   v30 = v7;
   v31 = v9;
-  v14 = v4;
+  v14 = completionCopy;
   v28 = v14;
   v15 = _Block_copy(aBlock);
-  daemonConnection = v13->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __62__AACustodianController_fetchCustodianshipInfoWithCompletion___block_invoke_50;
@@ -1115,11 +1115,11 @@ void __62__AACustodianController_fetchCustodianshipInfoWithCompletion___block_in
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchCustodianshipInfoWithUUID:(id)a3 completion:(id)a4
+- (void)fetchCustodianshipInfoWithUUID:(id)d completion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1B6F6A000, "custodian-appleaccount/fetch-custodianship-info-with-uuid", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1149,8 +1149,8 @@ void __62__AACustodianController_fetchCustodianshipInfoWithCompletion___block_in
   v37 = 0x3032000000;
   v38 = __Block_byref_object_copy__2;
   v39 = __Block_byref_object_dispose__2;
-  v16 = self;
-  v40 = v16;
+  selfCopy = self;
+  v40 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __67__AACustodianController_fetchCustodianshipInfoWithUUID_completion___block_invoke;
@@ -1158,10 +1158,10 @@ void __62__AACustodianController_fetchCustodianshipInfoWithCompletion___block_in
   p_buf = &buf;
   v33 = v10;
   v34 = v12;
-  v17 = v7;
+  v17 = completionCopy;
   v31 = v17;
   v18 = _Block_copy(aBlock);
-  daemonConnection = v16->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __67__AACustodianController_fetchCustodianshipInfoWithUUID_completion___block_invoke_53;
@@ -1182,7 +1182,7 @@ void __62__AACustodianController_fetchCustodianshipInfoWithCompletion___block_in
   v25[3] = &unk_1E7C9B590;
   v23 = v20;
   v26 = v23;
-  [v21 fetchCustodianshipInfoWithUUID:v6 completion:v25];
+  [v21 fetchCustodianshipInfoWithUUID:dCopy completion:v25];
 
   _Block_object_dispose(&buf, 8);
   os_activity_scope_leave(&state);
@@ -1271,10 +1271,10 @@ void __67__AACustodianController_fetchCustodianshipInfoWithUUID_completion___blo
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchSuggestedCustodiansWithCompletion:(id)a3
+- (void)fetchSuggestedCustodiansWithCompletion:(id)completion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = _os_activity_create(&dword_1B6F6A000, "custodian-appleaccount/fetch-suggested-custodians", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1304,8 +1304,8 @@ void __67__AACustodianController_fetchCustodianshipInfoWithUUID_completion___blo
   v34 = 0x3032000000;
   v35 = __Block_byref_object_copy__2;
   v36 = __Block_byref_object_dispose__2;
-  v13 = self;
-  v37 = v13;
+  selfCopy = self;
+  v37 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __64__AACustodianController_fetchSuggestedCustodiansWithCompletion___block_invoke;
@@ -1313,10 +1313,10 @@ void __67__AACustodianController_fetchCustodianshipInfoWithUUID_completion___blo
   p_buf = &buf;
   v30 = v7;
   v31 = v9;
-  v14 = v4;
+  v14 = completionCopy;
   v28 = v14;
   v15 = _Block_copy(aBlock);
-  daemonConnection = v13->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __64__AACustodianController_fetchSuggestedCustodiansWithCompletion___block_invoke_55;
@@ -1426,11 +1426,11 @@ void __64__AACustodianController_fetchSuggestedCustodiansWithCompletion___block_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchSuggestedCustodiansForUpsellWithTelemetryFlowID:(id)a3 completion:(id)a4
+- (void)fetchSuggestedCustodiansForUpsellWithTelemetryFlowID:(id)d completion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1B6F6A000, "custodian-appleaccount/fetch-suggested-custodians-for-upsell", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1460,8 +1460,8 @@ void __64__AACustodianController_fetchSuggestedCustodiansWithCompletion___block_
   v37 = 0x3032000000;
   v38 = __Block_byref_object_copy__2;
   v39 = __Block_byref_object_dispose__2;
-  v16 = self;
-  v40 = v16;
+  selfCopy = self;
+  v40 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __89__AACustodianController_fetchSuggestedCustodiansForUpsellWithTelemetryFlowID_completion___block_invoke;
@@ -1469,10 +1469,10 @@ void __64__AACustodianController_fetchSuggestedCustodiansWithCompletion___block_
   p_buf = &buf;
   v33 = v10;
   v34 = v12;
-  v17 = v7;
+  v17 = completionCopy;
   v31 = v17;
   v18 = _Block_copy(aBlock);
-  daemonConnection = v16->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __89__AACustodianController_fetchSuggestedCustodiansForUpsellWithTelemetryFlowID_completion___block_invoke_57;
@@ -1493,7 +1493,7 @@ void __64__AACustodianController_fetchSuggestedCustodiansWithCompletion___block_
   v25[3] = &unk_1E7C9B290;
   v23 = v20;
   v26 = v23;
-  [v21 fetchSuggestedCustodiansForUpsellWithTelemetryFlowID:v6 completion:v25];
+  [v21 fetchSuggestedCustodiansForUpsellWithTelemetryFlowID:dCopy completion:v25];
 
   _Block_object_dispose(&buf, 8);
   os_activity_scope_leave(&state);
@@ -1582,10 +1582,10 @@ void __89__AACustodianController_fetchSuggestedCustodiansForUpsellWithTelemetryF
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchCustodianHealthStatusWithCompletion:(id)a3
+- (void)fetchCustodianHealthStatusWithCompletion:(id)completion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = _os_activity_create(&dword_1B6F6A000, "custodian-appleaccount/fetch-custodian-health", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1615,8 +1615,8 @@ void __89__AACustodianController_fetchSuggestedCustodiansForUpsellWithTelemetryF
   v34 = 0x3032000000;
   v35 = __Block_byref_object_copy__2;
   v36 = __Block_byref_object_dispose__2;
-  v13 = self;
-  v37 = v13;
+  selfCopy = self;
+  v37 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __66__AACustodianController_fetchCustodianHealthStatusWithCompletion___block_invoke;
@@ -1624,10 +1624,10 @@ void __89__AACustodianController_fetchSuggestedCustodiansForUpsellWithTelemetryF
   p_buf = &buf;
   v30 = v7;
   v31 = v9;
-  v14 = v4;
+  v14 = completionCopy;
   v28 = v14;
   v15 = _Block_copy(aBlock);
-  daemonConnection = v13->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __66__AACustodianController_fetchCustodianHealthStatusWithCompletion___block_invoke_59;
@@ -1737,11 +1737,11 @@ void __66__AACustodianController_fetchCustodianHealthStatusWithCompletion___bloc
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)startCustodianRecoveryWithContext:(id)a3 completion:(id)a4
+- (void)startCustodianRecoveryWithContext:(id)context completion:(id)completion
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1B6F6A000, "custodian-appleaccount/start-recovery", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1768,17 +1768,17 @@ void __66__AACustodianController_fetchCustodianHealthStatusWithCompletion___bloc
 
   v16 = self->_analyticsReporter;
   v17 = MEMORY[0x1E6985DB0];
-  v18 = [v6 altDSID];
-  v19 = [v6 telemetryFlowID];
-  v20 = [v17 analyticsEventWithName:@"com.apple.appleaccount.custodian.recovery.ownerCreateSession" altDSID:v18 flowID:v19];
+  altDSID = [contextCopy altDSID];
+  telemetryFlowID = [contextCopy telemetryFlowID];
+  v20 = [v17 analyticsEventWithName:@"com.apple.appleaccount.custodian.recovery.ownerCreateSession" altDSID:altDSID flowID:telemetryFlowID];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
   v43 = 0x3032000000;
   v44 = __Block_byref_object_copy__2;
   v45 = __Block_byref_object_dispose__2;
-  v21 = self;
-  v46 = v21;
+  selfCopy = self;
+  v46 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __70__AACustodianController_startCustodianRecoveryWithContext_completion___block_invoke;
@@ -1790,10 +1790,10 @@ void __66__AACustodianController_fetchCustodianHealthStatusWithCompletion___bloc
   p_buf = &buf;
   v39 = v10;
   v40 = v12;
-  v24 = v7;
+  v24 = completionCopy;
   v37 = v24;
   v25 = _Block_copy(aBlock);
-  daemonConnection = v21->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __70__AACustodianController_startCustodianRecoveryWithContext_completion___block_invoke_62;
@@ -1808,7 +1808,7 @@ void __66__AACustodianController_fetchCustodianHealthStatusWithCompletion___bloc
     _os_log_impl(&dword_1B6F6A000, v29, OS_LOG_TYPE_DEFAULT, "Initiating custodian recovery request.", &v31, 2u);
   }
 
-  [v28 startCustodianRecoveryWithContext:v6 completion:v27];
+  [v28 startCustodianRecoveryWithContext:contextCopy completion:v27];
   _Block_object_dispose(&buf, 8);
 
   os_activity_scope_leave(&state);
@@ -1892,10 +1892,10 @@ void __70__AACustodianController_startCustodianRecoveryWithContext_completion___
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchCustodianRecoveryConfigurationWithCompletion:(id)a3
+- (void)fetchCustodianRecoveryConfigurationWithCompletion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = _os_activity_create(&dword_1B6F6A000, "custodian-appleaccount/fetch-configuration", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1925,8 +1925,8 @@ void __70__AACustodianController_startCustodianRecoveryWithContext_completion___
   v31 = 0x3032000000;
   v32 = __Block_byref_object_copy__2;
   v33 = __Block_byref_object_dispose__2;
-  v13 = self;
-  v34 = v13;
+  selfCopy = self;
+  v34 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __75__AACustodianController_fetchCustodianRecoveryConfigurationWithCompletion___block_invoke;
@@ -1934,10 +1934,10 @@ void __70__AACustodianController_startCustodianRecoveryWithContext_completion___
   p_buf = &buf;
   v27 = v7;
   v28 = v9;
-  v14 = v4;
+  v14 = completionCopy;
   v25 = v14;
   v15 = _Block_copy(aBlock);
-  daemonConnection = v13->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __75__AACustodianController_fetchCustodianRecoveryConfigurationWithCompletion___block_invoke_64;
@@ -2034,11 +2034,11 @@ void __75__AACustodianController_fetchCustodianRecoveryConfigurationWithCompleti
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)generateCustodianRecoveryCodeWithContext:(id)a3 completion:(id)a4
+- (void)generateCustodianRecoveryCodeWithContext:(id)context completion:(id)completion
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1B6F6A000, "custodian-appleaccount/generate-code", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -2068,8 +2068,8 @@ void __75__AACustodianController_fetchCustodianRecoveryConfigurationWithCompleti
   v43 = 0x3032000000;
   v44 = __Block_byref_object_copy__2;
   v45 = __Block_byref_object_dispose__2;
-  v16 = self;
-  v46 = v16;
+  selfCopy = self;
+  v46 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __77__AACustodianController_generateCustodianRecoveryCodeWithContext_completion___block_invoke;
@@ -2077,12 +2077,12 @@ void __75__AACustodianController_fetchCustodianRecoveryConfigurationWithCompleti
   p_buf = &buf;
   v39 = v10;
   v40 = v12;
-  v17 = v6;
+  v17 = contextCopy;
   v36 = v17;
-  v18 = v7;
+  v18 = completionCopy;
   v37 = v18;
   v19 = _Block_copy(aBlock);
-  objc_initWeak(&location, v16);
+  objc_initWeak(&location, selfCopy);
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __77__AACustodianController_generateCustodianRecoveryCodeWithContext_completion___block_invoke_65;
@@ -2224,14 +2224,14 @@ void __77__AACustodianController_generateCustodianRecoveryCodeWithContext_comple
   (*(v6 + 16))(v6, v8, v7);
 }
 
-- (void)_retryingGenerateCustodianRecoveryCodeWithContext:(id)a3 completion:(id)a4
+- (void)_retryingGenerateCustodianRecoveryCodeWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = MEMORY[0x1E6985DB0];
-  v9 = [v6 altDSID];
-  v10 = [v6 telemetryFlowID];
-  v11 = [v8 analyticsEventWithName:@"com.apple.appleaccount.custodian.generate" altDSID:v9 flowID:v10];
+  altDSID = [contextCopy altDSID];
+  telemetryFlowID = [contextCopy telemetryFlowID];
+  v11 = [v8 analyticsEventWithName:@"com.apple.appleaccount.custodian.generate" altDSID:altDSID flowID:telemetryFlowID];
 
   v12 = self->_analyticsReporter;
   daemonConnection = self->_daemonConnection;
@@ -2243,7 +2243,7 @@ void __77__AACustodianController_generateCustodianRecoveryCodeWithContext_comple
   v28 = v14;
   v15 = v12;
   v29 = v15;
-  v16 = v7;
+  v16 = completionCopy;
   v30 = v16;
   v17 = [(AACustodianDaemonConnectionProviding *)daemonConnection remoteObjectProxyWithErrorHandler:v27];
   v18 = _AALogSystem();
@@ -2263,7 +2263,7 @@ void __77__AACustodianController_generateCustodianRecoveryCodeWithContext_comple
   v19 = v16;
   v20 = v15;
   v21 = v14;
-  [v17 generateCustodianRecoveryCodeWithContext:v6 completion:v22];
+  [v17 generateCustodianRecoveryCodeWithContext:contextCopy completion:v22];
 }
 
 void __86__AACustodianController__retryingGenerateCustodianRecoveryCodeWithContext_completion___block_invoke(uint64_t a1, void *a2)
@@ -2290,11 +2290,11 @@ void __86__AACustodianController__retryingGenerateCustodianRecoveryCodeWithConte
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)validateCustodianRecoveryCodeWithContext:(id)a3 completion:(id)a4
+- (void)validateCustodianRecoveryCodeWithContext:(id)context completion:(id)completion
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1B6F6A000, "custodian-appleaccount/validate-code", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -2324,8 +2324,8 @@ void __86__AACustodianController__retryingGenerateCustodianRecoveryCodeWithConte
   v41 = 0x3032000000;
   v42 = __Block_byref_object_copy__2;
   v43 = __Block_byref_object_dispose__2;
-  v16 = self;
-  v44 = v16;
+  selfCopy = self;
+  v44 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __77__AACustodianController_validateCustodianRecoveryCodeWithContext_completion___block_invoke;
@@ -2333,16 +2333,16 @@ void __86__AACustodianController__retryingGenerateCustodianRecoveryCodeWithConte
   p_buf = &buf;
   v37 = v10;
   v38 = v12;
-  v17 = v7;
+  v17 = completionCopy;
   v35 = v17;
   v18 = _Block_copy(aBlock);
-  objc_initWeak(&location, v16);
+  objc_initWeak(&location, selfCopy);
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __77__AACustodianController_validateCustodianRecoveryCodeWithContext_completion___block_invoke_73;
   v30[3] = &unk_1E7C9B630;
   objc_copyWeak(&v32, &location);
-  v19 = v6;
+  v19 = contextCopy;
   v31 = v19;
   v20 = _Block_copy(v30);
   v21 = [objc_alloc(MEMORY[0x1E6985E78]) initWithMaxRetries:1];
@@ -2476,10 +2476,10 @@ void __77__AACustodianController_validateCustodianRecoveryCodeWithContext_comple
   (*(v6 + 16))(v6, v8, v7);
 }
 
-- (void)_retryingValidateCustodianRecoveryCodeWithContext:(id)a3 completion:(id)a4
+- (void)_retryingValidateCustodianRecoveryCodeWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  contextCopy = context;
   v8 = _AALogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -2488,9 +2488,9 @@ void __77__AACustodianController_validateCustodianRecoveryCodeWithContext_comple
   }
 
   v9 = MEMORY[0x1E6985DB0];
-  v10 = [v7 altDSID];
-  v11 = [v7 telemetryFlowID];
-  v12 = [v9 analyticsEventWithName:@"com.apple.appleaccount.custodian.recovery.ownerValidateCode" altDSID:v10 flowID:v11];
+  altDSID = [contextCopy altDSID];
+  telemetryFlowID = [contextCopy telemetryFlowID];
+  v12 = [v9 analyticsEventWithName:@"com.apple.appleaccount.custodian.recovery.ownerValidateCode" altDSID:altDSID flowID:telemetryFlowID];
 
   v13 = self->_analyticsReporter;
   daemonConnection = self->_daemonConnection;
@@ -2502,7 +2502,7 @@ void __77__AACustodianController_validateCustodianRecoveryCodeWithContext_comple
   v27 = v15;
   v16 = v13;
   v28 = v16;
-  v17 = v6;
+  v17 = completionCopy;
   v29 = v17;
   v18 = [(AACustodianDaemonConnectionProviding *)daemonConnection remoteObjectProxyWithErrorHandler:v26];
   v22[0] = MEMORY[0x1E69E9820];
@@ -2515,7 +2515,7 @@ void __77__AACustodianController_validateCustodianRecoveryCodeWithContext_comple
   v19 = v17;
   v20 = v16;
   v21 = v15;
-  [v18 validateCustodianRecoveryCodeWithContext:v7 completion:v22];
+  [v18 validateCustodianRecoveryCodeWithContext:contextCopy completion:v22];
 }
 
 void __86__AACustodianController__retryingValidateCustodianRecoveryCodeWithContext_completion___block_invoke(uint64_t a1, void *a2)
@@ -2542,21 +2542,21 @@ void __86__AACustodianController__retryingValidateCustodianRecoveryCodeWithConte
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)fetchCustodianRecoveryKeysWithSessionID:(id)a3 completion:(id)a4
+- (void)fetchCustodianRecoveryKeysWithSessionID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dCopy = d;
   v8 = objc_alloc_init(AACustodianRecoveryRequestContext);
-  [(AACustodianRecoveryRequestContext *)v8 setRecoverySessionID:v7];
+  [(AACustodianRecoveryRequestContext *)v8 setRecoverySessionID:dCopy];
 
-  [(AACustodianController *)self fetchCustodianRecoveryKeysWithContext:v8 completion:v6];
+  [(AACustodianController *)self fetchCustodianRecoveryKeysWithContext:v8 completion:completionCopy];
 }
 
-- (void)fetchCustodianRecoveryKeysWithContext:(id)a3 completion:(id)a4
+- (void)fetchCustodianRecoveryKeysWithContext:(id)context completion:(id)completion
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1B6F6A000, "custodian-appleaccount/fetch-keys", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -2582,9 +2582,9 @@ void __86__AACustodianController__retryingValidateCustodianRecoveryCodeWithConte
   }
 
   v16 = MEMORY[0x1E6985DB0];
-  v17 = [v6 altDSID];
-  v18 = [v6 telemetryFlowID];
-  v19 = [v16 analyticsEventWithName:@"com.apple.appleaccount.custodian.recovery.ownerFetchCustodianRecoveryKeys" altDSID:v17 flowID:v18];
+  altDSID = [contextCopy altDSID];
+  telemetryFlowID = [contextCopy telemetryFlowID];
+  v19 = [v16 analyticsEventWithName:@"com.apple.appleaccount.custodian.recovery.ownerFetchCustodianRecoveryKeys" altDSID:altDSID flowID:telemetryFlowID];
 
   v20 = self->_analyticsReporter;
   *&buf = 0;
@@ -2592,8 +2592,8 @@ void __86__AACustodianController__retryingValidateCustodianRecoveryCodeWithConte
   v43 = 0x3032000000;
   v44 = __Block_byref_object_copy__2;
   v45 = __Block_byref_object_dispose__2;
-  v21 = self;
-  v46 = v21;
+  selfCopy = self;
+  v46 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __74__AACustodianController_fetchCustodianRecoveryKeysWithContext_completion___block_invoke;
@@ -2605,10 +2605,10 @@ void __86__AACustodianController__retryingValidateCustodianRecoveryCodeWithConte
   p_buf = &buf;
   v39 = v10;
   v40 = v12;
-  v24 = v7;
+  v24 = completionCopy;
   v37 = v24;
   v25 = _Block_copy(aBlock);
-  daemonConnection = v21->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __74__AACustodianController_fetchCustodianRecoveryKeysWithContext_completion___block_invoke_78;
@@ -2623,7 +2623,7 @@ void __86__AACustodianController__retryingValidateCustodianRecoveryCodeWithConte
     _os_log_impl(&dword_1B6F6A000, v29, OS_LOG_TYPE_DEFAULT, "Calling daemon service to fetch custodian recovery keys", &v31, 2u);
   }
 
-  [v28 fetchCustodianRecoveryKeysWithContext:v6 completion:v27];
+  [v28 fetchCustodianRecoveryKeysWithContext:contextCopy completion:v27];
   _Block_object_dispose(&buf, 8);
 
   os_activity_scope_leave(&state);
@@ -2707,11 +2707,11 @@ void __74__AACustodianController_fetchCustodianRecoveryKeysWithContext_completio
   (*(*(a1 + 32) + 16))();
 }
 
-- (BOOL)cancelCustodianRecoveryWithSessionID:(id)a3 error:(id *)a4
+- (BOOL)cancelCustodianRecoveryWithSessionID:(id)d error:(id *)error
 {
-  v5 = a3;
+  dCopy = d;
   v6 = objc_alloc_init(AACustodianRecoveryRequestContext);
-  [(AACustodianRecoveryRequestContext *)v6 setRecoverySessionID:v5];
+  [(AACustodianRecoveryRequestContext *)v6 setRecoverySessionID:dCopy];
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -2728,11 +2728,11 @@ void __74__AACustodianController_fetchCustodianRecoveryKeysWithContext_completio
   return self;
 }
 
-- (void)cancelCustodianRecoveryWithContext:(id)a3 completion:(id)a4
+- (void)cancelCustodianRecoveryWithContext:(id)context completion:(id)completion
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1B6F6A000, "custodian-appleaccount/custodian-cancel-recovery", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -2758,9 +2758,9 @@ void __74__AACustodianController_fetchCustodianRecoveryKeysWithContext_completio
   }
 
   v16 = MEMORY[0x1E6985DB0];
-  v17 = [v6 altDSID];
-  v18 = [v6 telemetryFlowID];
-  v19 = [v16 analyticsEventWithName:@"com.apple.appleaccount.custodian.recovery.cancel" altDSID:v17 flowID:v18];
+  altDSID = [contextCopy altDSID];
+  telemetryFlowID = [contextCopy telemetryFlowID];
+  v19 = [v16 analyticsEventWithName:@"com.apple.appleaccount.custodian.recovery.cancel" altDSID:altDSID flowID:telemetryFlowID];
 
   v20 = self->_analyticsReporter;
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -2773,7 +2773,7 @@ void __74__AACustodianController_fetchCustodianRecoveryKeysWithContext_completio
   v37 = v22;
   v39 = v10;
   v40 = v12;
-  v23 = v7;
+  v23 = completionCopy;
   v38 = v23;
   v24 = _Block_copy(aBlock);
   daemonConnection = self->_daemonConnection;
@@ -2797,7 +2797,7 @@ void __74__AACustodianController_fetchCustodianRecoveryKeysWithContext_completio
   v31[3] = &unk_1E7C9B078;
   v29 = v26;
   v32 = v29;
-  [v27 cancelCustodianRecoveryWithContext:v6 completion:v31];
+  [v27 cancelCustodianRecoveryWithContext:contextCopy completion:v31];
 
   os_activity_scope_leave(&state);
   v30 = *MEMORY[0x1E69E9840];
@@ -2861,11 +2861,11 @@ void __71__AACustodianController_cancelCustodianRecoveryWithContext_completion__
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchCustodianPasswordResetInformationWithSessionID:(id)a3 completion:(id)a4
+- (void)fetchCustodianPasswordResetInformationWithSessionID:(id)d completion:(id)completion
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1B6F6A000, "custodian-appleaccount/fetch-recovery-token", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -2895,8 +2895,8 @@ void __71__AACustodianController_cancelCustodianRecoveryWithContext_completion__
   v36 = 0x3032000000;
   v37 = __Block_byref_object_copy__2;
   v38 = __Block_byref_object_dispose__2;
-  v16 = self;
-  v39 = v16;
+  selfCopy = self;
+  v39 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __88__AACustodianController_fetchCustodianPasswordResetInformationWithSessionID_completion___block_invoke;
@@ -2904,12 +2904,12 @@ void __71__AACustodianController_cancelCustodianRecoveryWithContext_completion__
   p_buf = &buf;
   v32 = v10;
   v33 = v12;
-  v17 = v6;
+  v17 = dCopy;
   v29 = v17;
-  v18 = v7;
+  v18 = completionCopy;
   v30 = v18;
   v19 = _Block_copy(aBlock);
-  daemonConnection = v16->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __88__AACustodianController_fetchCustodianPasswordResetInformationWithSessionID_completion___block_invoke_82;
@@ -3007,10 +3007,10 @@ void __88__AACustodianController_fetchCustodianPasswordResetInformationWithSessi
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)startHealthCheckWithCompletion:(id)a3
+- (void)startHealthCheckWithCompletion:(id)completion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = _os_activity_create(&dword_1B6F6A000, "custodian-appleaccount/custodian-health-check", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -3040,8 +3040,8 @@ void __88__AACustodianController_fetchCustodianPasswordResetInformationWithSessi
   v34 = 0x3032000000;
   v35 = __Block_byref_object_copy__2;
   v36 = __Block_byref_object_dispose__2;
-  v13 = self;
-  v37 = v13;
+  selfCopy = self;
+  v37 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __56__AACustodianController_startHealthCheckWithCompletion___block_invoke;
@@ -3049,10 +3049,10 @@ void __88__AACustodianController_fetchCustodianPasswordResetInformationWithSessi
   p_buf = &buf;
   v30 = v7;
   v31 = v9;
-  v14 = v4;
+  v14 = completionCopy;
   v28 = v14;
   v15 = _Block_copy(aBlock);
-  daemonConnection = v13->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __56__AACustodianController_startHealthCheckWithCompletion___block_invoke_83;
@@ -3153,10 +3153,10 @@ void __56__AACustodianController_startHealthCheckWithCompletion___block_invoke_8
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)startManateeMigrationWithCompletion:(id)a3
+- (void)startManateeMigrationWithCompletion:(id)completion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = _os_activity_create(&dword_1B6F6A000, "custodian-appleaccount/start-manatee-migration", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -3186,8 +3186,8 @@ void __56__AACustodianController_startHealthCheckWithCompletion___block_invoke_8
   v34 = 0x3032000000;
   v35 = __Block_byref_object_copy__2;
   v36 = __Block_byref_object_dispose__2;
-  v13 = self;
-  v37 = v13;
+  selfCopy = self;
+  v37 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __61__AACustodianController_startManateeMigrationWithCompletion___block_invoke;
@@ -3195,10 +3195,10 @@ void __56__AACustodianController_startHealthCheckWithCompletion___block_invoke_8
   p_buf = &buf;
   v30 = v7;
   v31 = v9;
-  v14 = v4;
+  v14 = completionCopy;
   v28 = v14;
   v15 = _Block_copy(aBlock);
-  daemonConnection = v13->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __61__AACustodianController_startManateeMigrationWithCompletion___block_invoke_85;
@@ -3305,10 +3305,10 @@ void __61__AACustodianController_startManateeMigrationWithCompletion___block_inv
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)pullTrustedContactsFromCloudKitWithCompletion:(id)a3
+- (void)pullTrustedContactsFromCloudKitWithCompletion:(id)completion
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = _os_activity_create(&dword_1B6F6A000, "custodian-appleaccount/pull-trusted-contacts", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -3338,8 +3338,8 @@ void __61__AACustodianController_startManateeMigrationWithCompletion___block_inv
   v33 = 0x3032000000;
   v34 = __Block_byref_object_copy__2;
   v35 = __Block_byref_object_dispose__2;
-  v13 = self;
-  v36 = v13;
+  selfCopy = self;
+  v36 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __71__AACustodianController_pullTrustedContactsFromCloudKitWithCompletion___block_invoke;
@@ -3347,10 +3347,10 @@ void __61__AACustodianController_startManateeMigrationWithCompletion___block_inv
   p_buf = &buf;
   v29 = v7;
   v30 = v9;
-  v14 = v4;
+  v14 = completionCopy;
   v27 = v14;
   v15 = _Block_copy(aBlock);
-  daemonConnection = v13->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __71__AACustodianController_pullTrustedContactsFromCloudKitWithCompletion___block_invoke_87;
@@ -3450,11 +3450,11 @@ void __71__AACustodianController_pullTrustedContactsFromCloudKitWithCompletion__
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)displayTrustedContactFlowWithModel:(id)a3 completion:(id)a4
+- (void)displayTrustedContactFlowWithModel:(id)model completion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1B6F6A000, "custodian-appleaccount/display-trusted-contact-flow-ui", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -3484,8 +3484,8 @@ void __71__AACustodianController_pullTrustedContactsFromCloudKitWithCompletion__
   v37 = 0x3032000000;
   v38 = __Block_byref_object_copy__2;
   v39 = __Block_byref_object_dispose__2;
-  v16 = self;
-  v40 = v16;
+  selfCopy = self;
+  v40 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __71__AACustodianController_displayTrustedContactFlowWithModel_completion___block_invoke;
@@ -3493,10 +3493,10 @@ void __71__AACustodianController_pullTrustedContactsFromCloudKitWithCompletion__
   p_buf = &buf;
   v33 = v10;
   v34 = v12;
-  v17 = v7;
+  v17 = completionCopy;
   v31 = v17;
   v18 = _Block_copy(aBlock);
-  daemonConnection = v16->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __71__AACustodianController_displayTrustedContactFlowWithModel_completion___block_invoke_89;
@@ -3517,7 +3517,7 @@ void __71__AACustodianController_pullTrustedContactsFromCloudKitWithCompletion__
   v25[3] = &unk_1E7C9B078;
   v23 = v20;
   v26 = v23;
-  [v21 displayTrustedContactFlowWithModel:v6 completion:v25];
+  [v21 displayTrustedContactFlowWithModel:modelCopy completion:v25];
 
   _Block_object_dispose(&buf, 8);
   os_activity_scope_leave(&state);
@@ -3604,11 +3604,11 @@ void __71__AACustodianController_displayTrustedContactFlowWithModel_completion__
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)displayInvitationUIWithUUID:(id)a3 completion:(id)a4
+- (void)displayInvitationUIWithUUID:(id)d completion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1B6F6A000, "custodian-appleaccount/display-invitation-ui", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -3638,8 +3638,8 @@ void __71__AACustodianController_displayTrustedContactFlowWithModel_completion__
   v37 = 0x3032000000;
   v38 = __Block_byref_object_copy__2;
   v39 = __Block_byref_object_dispose__2;
-  v16 = self;
-  v40 = v16;
+  selfCopy = self;
+  v40 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __64__AACustodianController_displayInvitationUIWithUUID_completion___block_invoke;
@@ -3647,10 +3647,10 @@ void __71__AACustodianController_displayTrustedContactFlowWithModel_completion__
   p_buf = &buf;
   v33 = v10;
   v34 = v12;
-  v17 = v7;
+  v17 = completionCopy;
   v31 = v17;
   v18 = _Block_copy(aBlock);
-  daemonConnection = v16->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __64__AACustodianController_displayInvitationUIWithUUID_completion___block_invoke_91;
@@ -3671,7 +3671,7 @@ void __71__AACustodianController_displayTrustedContactFlowWithModel_completion__
   v25[3] = &unk_1E7C9B078;
   v23 = v20;
   v26 = v23;
-  [v21 displayCustodianInviteWithUUID:v6 completion:v25];
+  [v21 displayCustodianInviteWithUUID:dCopy completion:v25];
 
   _Block_object_dispose(&buf, 8);
   os_activity_scope_leave(&state);
@@ -3758,10 +3758,10 @@ void __64__AACustodianController_displayInvitationUIWithUUID_completion___block_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)reSendCustodianInvitationWithCustodianID:(id)a3 completion:(id)a4
+- (void)reSendCustodianInvitationWithCustodianID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1B6F6A000, "custodian-appleaccount/resend-invite", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -3773,8 +3773,8 @@ void __64__AACustodianController_displayInvitationUIWithUUID_completion___block_
   v28[2] = 0x3032000000;
   v28[3] = __Block_byref_object_copy__2;
   v28[4] = __Block_byref_object_dispose__2;
-  v11 = self;
-  v29 = v11;
+  selfCopy = self;
+  v29 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __77__AACustodianController_reSendCustodianInvitationWithCustodianID_completion___block_invoke;
@@ -3784,10 +3784,10 @@ void __64__AACustodianController_displayInvitationUIWithUUID_completion___block_
   v13 = v9;
   v25 = v13;
   v27 = v28;
-  v14 = v7;
+  v14 = completionCopy;
   v26 = v14;
   v15 = _Block_copy(aBlock);
-  daemonConnection = v11->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __77__AACustodianController_reSendCustodianInvitationWithCustodianID_completion___block_invoke_2;
@@ -3802,7 +3802,7 @@ void __64__AACustodianController_displayInvitationUIWithUUID_completion___block_
     _os_log_impl(&dword_1B6F6A000, v19, OS_LOG_TYPE_DEFAULT, "Calling daemon service to resend invitation.", &v20, 2u);
   }
 
-  [v18 reSendCustodianInvitationWithCustodianID:v6 completion:v17];
+  [v18 reSendCustodianInvitationWithCustodianID:dCopy completion:v17];
   _Block_object_dispose(v28, 8);
 
   os_activity_scope_leave(&state);
@@ -3836,11 +3836,11 @@ void __77__AACustodianController_reSendCustodianInvitationWithCustodianID_comple
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)availableRecoveryFactorsWithCompletion:(id)a3
+- (void)availableRecoveryFactorsWithCompletion:(id)completion
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [(AACustodianController *)a2 availableRecoveryFactorsWithCompletion:?];
   }
@@ -3874,8 +3874,8 @@ void __77__AACustodianController_reSendCustodianInvitationWithCustodianID_comple
   v35 = 0x3032000000;
   v36 = __Block_byref_object_copy__2;
   v37 = __Block_byref_object_dispose__2;
-  v14 = self;
-  v38 = v14;
+  selfCopy = self;
+  v38 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __64__AACustodianController_availableRecoveryFactorsWithCompletion___block_invoke;
@@ -3883,10 +3883,10 @@ void __77__AACustodianController_reSendCustodianInvitationWithCustodianID_comple
   p_buf = &buf;
   v31 = v8;
   v32 = v10;
-  v15 = v5;
+  v15 = completionCopy;
   v29 = v15;
   v16 = _Block_copy(aBlock);
-  daemonConnection = v14->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __64__AACustodianController_availableRecoveryFactorsWithCompletion___block_invoke_104;
@@ -3994,11 +3994,11 @@ void __64__AACustodianController_availableRecoveryFactorsWithCompletion___block_
   v6();
 }
 
-- (void)repairCustodians:(id)a3 completion:(id)a4
+- (void)repairCustodians:(id)custodians completion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  custodiansCopy = custodians;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1B6F6A000, "custodian-appleaccount/custodian-repair", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -4028,8 +4028,8 @@ void __64__AACustodianController_availableRecoveryFactorsWithCompletion___block_
   v38 = 0x3032000000;
   v39 = __Block_byref_object_copy__2;
   v40 = __Block_byref_object_dispose__2;
-  v16 = self;
-  v41 = v16;
+  selfCopy = self;
+  v41 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __53__AACustodianController_repairCustodians_completion___block_invoke;
@@ -4037,10 +4037,10 @@ void __64__AACustodianController_availableRecoveryFactorsWithCompletion___block_
   p_buf = &buf;
   v32 = v10;
   v33 = v12;
-  v17 = v7;
+  v17 = completionCopy;
   v30 = v17;
   v18 = _Block_copy(aBlock);
-  daemonConnection = v16->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __53__AACustodianController_repairCustodians_completion___block_invoke_106;
@@ -4052,7 +4052,7 @@ void __64__AACustodianController_availableRecoveryFactorsWithCompletion___block_
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *v35 = 138412290;
-    v36 = v6;
+    v36 = custodiansCopy;
     _os_log_impl(&dword_1B6F6A000, v22, OS_LOG_TYPE_DEFAULT, "Repairing custodians %@", v35, 0xCu);
   }
 
@@ -4062,7 +4062,7 @@ void __64__AACustodianController_availableRecoveryFactorsWithCompletion___block_
   v25[3] = &unk_1E7C9B078;
   v23 = v20;
   v26 = v23;
-  [v21 repairCustodians:v6 completion:v25];
+  [v21 repairCustodians:custodiansCopy completion:v25];
 
   _Block_object_dispose(&buf, 8);
   os_activity_scope_leave(&state);
@@ -4149,10 +4149,10 @@ void __53__AACustodianController_repairCustodians_completion___block_invoke_107(
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)preflightCustodianRecoveryWithCompletion:(id)a3
+- (void)preflightCustodianRecoveryWithCompletion:(id)completion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = _os_activity_create(&dword_1B6F6A000, "custodian-appleaccount/preflight-custodian-recovery", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -4182,8 +4182,8 @@ void __53__AACustodianController_repairCustodians_completion___block_invoke_107(
   v34 = 0x3032000000;
   v35 = __Block_byref_object_copy__2;
   v36 = __Block_byref_object_dispose__2;
-  v13 = self;
-  v37 = v13;
+  selfCopy = self;
+  v37 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __66__AACustodianController_preflightCustodianRecoveryWithCompletion___block_invoke;
@@ -4191,10 +4191,10 @@ void __53__AACustodianController_repairCustodians_completion___block_invoke_107(
   p_buf = &buf;
   v30 = v7;
   v31 = v9;
-  v14 = v4;
+  v14 = completionCopy;
   v28 = v14;
   v15 = _Block_copy(aBlock);
-  daemonConnection = v13->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __66__AACustodianController_preflightCustodianRecoveryWithCompletion___block_invoke_108;

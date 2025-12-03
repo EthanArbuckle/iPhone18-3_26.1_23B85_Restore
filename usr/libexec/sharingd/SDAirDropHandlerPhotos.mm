@@ -1,28 +1,28 @@
 @interface SDAirDropHandlerPhotos
 - (BOOL)canHandleTransfer;
 - (BOOL)supportsAutoOpen;
-- (BOOL)transferContainsAssetBundles:(id)a3;
-- (SDAirDropHandlerPhotos)initWithTransfer:(id)a3;
+- (BOOL)transferContainsAssetBundles:(id)bundles;
+- (SDAirDropHandlerPhotos)initWithTransfer:(id)transfer;
 - (id)actionsForModernReadyForOpen;
 - (id)createDestination;
 - (id)suitableContentsDescription;
-- (id)transformPhotosAssetBundlesToFoldersIfNeededInCompletedURLs:(id)a3;
+- (id)transformPhotosAssetBundlesToFoldersIfNeededInCompletedURLs:(id)ls;
 - (int64_t)transferTypes;
 - (void)handleMoveToAppShareSheetSucceeded;
-- (void)performViewActionWithImportedURLs:(id)a3 completion:(id)a4;
-- (void)prepareForAcceptWithCompletion:(id)a3;
+- (void)performViewActionWithImportedURLs:(id)ls completion:(id)completion;
+- (void)prepareForAcceptWithCompletion:(id)completion;
 - (void)triggerImport;
-- (void)triggerImportWithCompletedURLs:(id)a3 completion:(id)a4;
+- (void)triggerImportWithCompletedURLs:(id)ls completion:(id)completion;
 - (void)updatePossibleActions;
 @end
 
 @implementation SDAirDropHandlerPhotos
 
-- (SDAirDropHandlerPhotos)initWithTransfer:(id)a3
+- (SDAirDropHandlerPhotos)initWithTransfer:(id)transfer
 {
   v4.receiver = self;
   v4.super_class = SDAirDropHandlerPhotos;
-  return [(SDAirDropHandler *)&v4 initWithTransfer:a3 bundleIdentifier:@"com.apple.mobileslideshow"];
+  return [(SDAirDropHandler *)&v4 initWithTransfer:transfer bundleIdentifier:@"com.apple.mobileslideshow"];
 }
 
 - (BOOL)canHandleTransfer
@@ -36,12 +36,12 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = [(SDAirDropHandler *)self transfer];
-  v4 = [v3 metaData];
-  v5 = [v4 items];
+  transfer = [(SDAirDropHandler *)self transfer];
+  metaData = [transfer metaData];
+  items = [metaData items];
 
-  obj = v5;
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  obj = items;
+  v6 = [items countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -56,15 +56,15 @@
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v10 type];
-        v12 = [v10 type];
+        type = [v10 type];
+        type2 = [v10 type];
         v13 = SFIsPhotosAssetBundle();
 
         if (v13)
         {
-          v14 = [v10 subtype];
+          subtype = [v10 subtype];
 
-          v11 = v14;
+          type = subtype;
         }
 
         if (!self->_hasPhotos)
@@ -118,24 +118,24 @@ LABEL_21:
 
 - (id)suitableContentsDescription
 {
-  v18 = [(SDAirDropHandler *)self senderName];
-  v17 = [(SDAirDropHandler *)self totalSharedItemsCount];
-  v20 = [(SDAirDropHandler *)self transfer];
-  v19 = [v20 metaData];
-  v16 = [v19 items];
-  v3 = [(SDAirDropHandler *)self transfer];
-  v4 = [v3 metaData];
-  v5 = [v4 senderIsMe];
-  v6 = [(SDAirDropHandler *)self transfer];
-  v7 = [v6 metaData];
-  v8 = [v7 isVerifiableIdentity];
+  senderName = [(SDAirDropHandler *)self senderName];
+  totalSharedItemsCount = [(SDAirDropHandler *)self totalSharedItemsCount];
+  transfer = [(SDAirDropHandler *)self transfer];
+  metaData = [transfer metaData];
+  items = [metaData items];
+  transfer2 = [(SDAirDropHandler *)self transfer];
+  metaData2 = [transfer2 metaData];
+  senderIsMe = [metaData2 senderIsMe];
+  transfer3 = [(SDAirDropHandler *)self transfer];
+  metaData3 = [transfer3 metaData];
+  isVerifiableIdentity = [metaData3 isVerifiableIdentity];
   hasPhotos = self->_hasPhotos;
   hasVideos = self->_hasVideos;
-  v11 = [(SDAirDropHandler *)self isModernProgress];
-  v12 = [(SDAirDropHandler *)self transfer];
-  BYTE1(v15) = v11;
+  isModernProgress = [(SDAirDropHandler *)self isModernProgress];
+  transfer4 = [(SDAirDropHandler *)self transfer];
+  BYTE1(v15) = isModernProgress;
   LOBYTE(v15) = hasVideos;
-  v13 = +[SDAirDropHandlerPhotos suitableContentsDescriptionWithSenderName:itemsCount:items:senderIsMe:isVerifiableIdentity:hasPhotos:hasVideos:isModernProgress:transferState:](SDAirDropHandlerPhotos, "suitableContentsDescriptionWithSenderName:itemsCount:items:senderIsMe:isVerifiableIdentity:hasPhotos:hasVideos:isModernProgress:transferState:", v18, v17, v16, v5, v8, hasPhotos, v15, [v12 transferState]);
+  v13 = +[SDAirDropHandlerPhotos suitableContentsDescriptionWithSenderName:itemsCount:items:senderIsMe:isVerifiableIdentity:hasPhotos:hasVideos:isModernProgress:transferState:](SDAirDropHandlerPhotos, "suitableContentsDescriptionWithSenderName:itemsCount:items:senderIsMe:isVerifiableIdentity:hasPhotos:hasVideos:isModernProgress:transferState:", senderName, totalSharedItemsCount, items, senderIsMe, isVerifiableIdentity, hasPhotos, v15, [transfer4 transferState]);
 
   return v13;
 }
@@ -144,23 +144,23 @@ LABEL_21:
 {
   v2 = [RBSProcessPredicate predicateMatchingBundleIdentifier:@"com.apple.mobileslideshow"];
   v3 = [RBSProcessHandle handleForPredicate:v2 error:0];
-  v4 = [v3 currentState];
-  v5 = [v4 endowmentNamespaces];
-  v6 = [v5 containsObject:@"com.apple.frontboard.visibility"];
+  currentState = [v3 currentState];
+  endowmentNamespaces = [currentState endowmentNamespaces];
+  v6 = [endowmentNamespaces containsObject:@"com.apple.frontboard.visibility"];
 
   return v6 ^ 1;
 }
 
-- (id)transformPhotosAssetBundlesToFoldersIfNeededInCompletedURLs:(id)a3
+- (id)transformPhotosAssetBundlesToFoldersIfNeededInCompletedURLs:(id)ls
 {
-  v3 = a3;
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  lsCopy = ls;
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [lsCopy count]);
   v26 = +[NSFileManager defaultManager];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v3;
+  obj = lsCopy;
   v29 = [obj countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v29)
   {
@@ -181,16 +181,16 @@ LABEL_21:
         }
 
         v10 = *(*(&v32 + 1) + 8 * i);
-        v11 = [v10 pathExtension];
-        v12 = [v8[337] typeWithFilenameExtension:v11 conformingToType:v7];
-        v13 = [v12 identifier];
+        pathExtension = [v10 pathExtension];
+        v12 = [v8[337] typeWithFilenameExtension:pathExtension conformingToType:v7];
+        identifier = [v12 identifier];
 
         if (SFIsPhotosAssetBundle())
         {
           v14 = [[PFAssetBundle alloc] initWithAssetBundleAtURL:v10];
-          v15 = [v10 URLByDeletingLastPathComponent];
+          uRLByDeletingLastPathComponent = [v10 URLByDeletingLastPathComponent];
           v31 = 0;
-          v16 = [v14 writeFolderRepresentationToDirectory:v15 error:&v31];
+          v16 = [v14 writeFolderRepresentationToDirectory:uRLByDeletingLastPathComponent error:&v31];
           v17 = v31;
           v18 = airdrop_log();
           v19 = v18;
@@ -264,8 +264,8 @@ LABEL_21:
   v13.receiver = self;
   v13.super_class = SDAirDropHandlerPhotos;
   [(SDAirDropHandler *)&v13 updatePossibleActions];
-  v3 = [(SDAirDropHandler *)self bundleProxy];
-  v4 = [(SDAirDropHandler *)self defaultActionForBundleProxy:v3];
+  bundleProxy = [(SDAirDropHandler *)self bundleProxy];
+  v4 = [(SDAirDropHandler *)self defaultActionForBundleProxy:bundleProxy];
 
   [v4 setRequiresUnlockedUI:0];
   objc_initWeak(&location, self);
@@ -277,17 +277,17 @@ LABEL_21:
   [v4 setActionHandler:&v7];
   v14 = v4;
   v5 = [NSArray arrayWithObjects:&v14 count:1, v7, v8, v9, v10];
-  v6 = [(SDAirDropHandler *)self transfer];
-  [v6 setPossibleActions:v5];
+  transfer = [(SDAirDropHandler *)self transfer];
+  [transfer setPossibleActions:v5];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)transferContainsAssetBundles:(id)a3
+- (BOOL)transferContainsAssetBundles:(id)bundles
 {
-  v3 = [a3 metaData];
-  [v3 items];
+  metaData = [bundles metaData];
+  [metaData items];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -305,7 +305,7 @@ LABEL_21:
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) type];
+        type = [*(*(&v11 + 1) + 8 * i) type];
         v9 = SFIsPhotosAssetBundle();
 
         if (v9)
@@ -330,9 +330,9 @@ LABEL_11:
   return v5;
 }
 
-- (void)prepareForAcceptWithCompletion:(id)a3
+- (void)prepareForAcceptWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = airdrop_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -340,14 +340,14 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Preparing AirDrop for accept", v5, 2u);
   }
 
-  v3[2](v3, 1);
+  completionCopy[2](completionCopy, 1);
 }
 
 - (void)triggerImport
 {
-  v3 = [(SDAirDropHandler *)self transfer];
-  v4 = [v3 completedURLs];
-  v5 = [v4 copy];
+  transfer = [(SDAirDropHandler *)self transfer];
+  completedURLs = [transfer completedURLs];
+  v5 = [completedURLs copy];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10026E628;
@@ -356,16 +356,16 @@ LABEL_11:
   [(SDAirDropHandlerPhotos *)self triggerImportWithCompletedURLs:v5 completion:v6];
 }
 
-- (void)performViewActionWithImportedURLs:(id)a3 completion:(id)a4
+- (void)performViewActionWithImportedURLs:(id)ls completion:(id)completion
 {
-  v6 = a4;
-  v6[2](v6, [(SDAirDropHandler *)self openURLs:a3], 0);
+  completionCopy = completion;
+  completionCopy[2](completionCopy, [(SDAirDropHandler *)self openURLs:ls], 0);
 }
 
-- (void)triggerImportWithCompletedURLs:(id)a3 completion:(id)a4
+- (void)triggerImportWithCompletedURLs:(id)ls completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lsCopy = ls;
+  completionCopy = completion;
   v33[0] = 0;
   v33[1] = v33;
   v33[2] = 0x3032000000;
@@ -374,17 +374,17 @@ LABEL_11:
   v34 = 0;
   v8 = +[PHPhotoLibrary sharedPhotoLibrary];
   v9 = +[NSUUID UUID];
-  v10 = [v9 UUIDString];
+  uUIDString = [v9 UUIDString];
 
-  v11 = [(SDAirDropHandler *)self transfer];
-  v12 = [SDAirDropHandler transferURLForTransfer:v11];
+  transfer = [(SDAirDropHandler *)self transfer];
+  v12 = [SDAirDropHandler transferURLForTransfer:transfer];
 
   v13 = +[SFAirDropUserDefaults_objc moveToAppEnabled];
   v14 = +[NSFileManager defaultManager];
   v15 = airdrop_log();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v6 count];
+    v16 = [lsCopy count];
     *buf = 67109120;
     v36 = v16;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "PHPhotoLibrary preparing import of %d items", buf, 8u);
@@ -394,12 +394,12 @@ LABEL_11:
   v26[1] = 3221225472;
   v26[2] = sub_10026EBF0;
   v26[3] = &unk_1008D65D8;
-  v27 = v6;
+  v27 = lsCopy;
   v32 = v13;
   v17 = v12;
   v28 = v17;
-  v18 = v10;
-  v30 = self;
+  v18 = uUIDString;
+  selfCopy = self;
   v31 = v33;
   v29 = v18;
   v21[0] = _NSConcreteStackBlock;
@@ -408,9 +408,9 @@ LABEL_11:
   v21[3] = &unk_1008D6600;
   v19 = v27;
   v22 = v19;
-  v23 = self;
+  selfCopy2 = self;
   v25 = v33;
-  v20 = v7;
+  v20 = completionCopy;
   v24 = v20;
   [v8 performChanges:v26 completionHandler:v21];
 
@@ -419,13 +419,13 @@ LABEL_11:
 
 - (void)handleMoveToAppShareSheetSucceeded
 {
-  v3 = [(SDAirDropHandlerPhotos *)self assetIdentifiers];
-  v4 = [v3 count];
+  assetIdentifiers = [(SDAirDropHandlerPhotos *)self assetIdentifiers];
+  v4 = [assetIdentifiers count];
 
   if (v4)
   {
-    v5 = [(SDAirDropHandlerPhotos *)self assetIdentifiers];
-    v6 = [v5 copy];
+    assetIdentifiers2 = [(SDAirDropHandlerPhotos *)self assetIdentifiers];
+    v6 = [assetIdentifiers2 copy];
 
     v7 = airdrop_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -461,17 +461,17 @@ LABEL_11:
   v3 = +[NSMutableArray array];
   objc_initWeak(&location, self);
   v4 = SFLocalizedStringForKey();
-  v5 = [(SDAirDropHandler *)self bundleProxy];
-  v6 = [v5 localizedName];
-  v7 = [NSString stringWithFormat:v4, v6];
+  bundleProxy = [(SDAirDropHandler *)self bundleProxy];
+  localizedName = [bundleProxy localizedName];
+  v7 = [NSString stringWithFormat:v4, localizedName];
 
   v8 = [SFAirDropAction alloc];
-  v9 = [(SDAirDropHandler *)self transfer];
-  v10 = [v9 identifier];
-  v11 = [(SDAirDropHandler *)self bundleProxy];
-  v12 = [v11 bundleIdentifier];
-  v13 = [(SDAirDropHandler *)self singleItemActionTitle];
-  v14 = [v8 initWithTransferIdentifier:v10 actionIdentifier:v12 title:v7 singleItemTitle:v13 type:3];
+  transfer = [(SDAirDropHandler *)self transfer];
+  identifier = [transfer identifier];
+  bundleProxy2 = [(SDAirDropHandler *)self bundleProxy];
+  bundleIdentifier = [bundleProxy2 bundleIdentifier];
+  singleItemActionTitle = [(SDAirDropHandler *)self singleItemActionTitle];
+  v14 = [v8 initWithTransferIdentifier:identifier actionIdentifier:bundleIdentifier title:v7 singleItemTitle:singleItemActionTitle type:3];
 
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
@@ -483,10 +483,10 @@ LABEL_11:
   [v3 addObject:v14];
   v15 = SFLocalizedStringForKey();
   v16 = [SFAirDropAction alloc];
-  v17 = [(SDAirDropHandler *)self transfer];
-  v18 = [v17 identifier];
-  v19 = [(SDAirDropHandler *)self singleItemActionTitle];
-  v20 = [v16 initWithTransferIdentifier:v18 actionIdentifier:@"SDMoveToAppActionIdentifier" title:v15 singleItemTitle:v19 type:3];
+  transfer2 = [(SDAirDropHandler *)self transfer];
+  identifier2 = [transfer2 identifier];
+  singleItemActionTitle2 = [(SDAirDropHandler *)self singleItemActionTitle];
+  v20 = [v16 initWithTransferIdentifier:identifier2 actionIdentifier:@"SDMoveToAppActionIdentifier" title:v15 singleItemTitle:singleItemActionTitle2 type:3];
 
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;

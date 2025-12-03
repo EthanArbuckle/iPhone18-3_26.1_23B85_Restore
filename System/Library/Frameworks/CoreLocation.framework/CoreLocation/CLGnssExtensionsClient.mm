@@ -1,13 +1,13 @@
 @interface CLGnssExtensionsClient
-+ (id)newAssertionForBundle:(id)a3 withReason:(id)a4 withCallbackQueue:(id)a5 andBlock:(id)a6;
-- (CLGnssExtensionsClient)initWithRegistrationMessageName:(const char *)a3 messageDictionary:(id)a4 dispatchQueue:(id)a5 codeBlock:(id)a6;
++ (id)newAssertionForBundle:(id)bundle withReason:(id)reason withCallbackQueue:(id)queue andBlock:(id)block;
+- (CLGnssExtensionsClient)initWithRegistrationMessageName:(const char *)name messageDictionary:(id)dictionary dispatchQueue:(id)queue codeBlock:(id)block;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation CLGnssExtensionsClient
 
-- (CLGnssExtensionsClient)initWithRegistrationMessageName:(const char *)a3 messageDictionary:(id)a4 dispatchQueue:(id)a5 codeBlock:(id)a6
+- (CLGnssExtensionsClient)initWithRegistrationMessageName:(const char *)name messageDictionary:(id)dictionary dispatchQueue:(id)queue codeBlock:(id)block
 {
   v7.receiver = self;
   v7.super_class = CLGnssExtensionsClient;
@@ -43,11 +43,11 @@
   [(CLGnssExtensionsClient *)&v4 dealloc];
 }
 
-+ (id)newAssertionForBundle:(id)a3 withReason:(id)a4 withCallbackQueue:(id)a5 andBlock:(id)a6
++ (id)newAssertionForBundle:(id)bundle withReason:(id)reason withCallbackQueue:(id)queue andBlock:(id)block
 {
-  v9 = [a3 bundlePath];
+  bundlePath = [bundle bundlePath];
 
-  return sub_19B96A90C(&stru_1F0E6F140, v9, a4, a5, a6);
+  return sub_19B96A90C(&stru_1F0E6F140, bundlePath, reason, queue, block);
 }
 
 @end

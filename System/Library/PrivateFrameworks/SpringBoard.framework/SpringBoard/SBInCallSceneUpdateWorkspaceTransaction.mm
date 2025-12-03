@@ -1,20 +1,20 @@
 @interface SBInCallSceneUpdateWorkspaceTransaction
-- (SBInCallSceneUpdateWorkspaceTransaction)initWithApplicationSceneEntity:(id)a3 transitionRequest:(id)a4;
+- (SBInCallSceneUpdateWorkspaceTransaction)initWithApplicationSceneEntity:(id)entity transitionRequest:(id)request;
 - (void)_begin;
 @end
 
 @implementation SBInCallSceneUpdateWorkspaceTransaction
 
-- (SBInCallSceneUpdateWorkspaceTransaction)initWithApplicationSceneEntity:(id)a3 transitionRequest:(id)a4
+- (SBInCallSceneUpdateWorkspaceTransaction)initWithApplicationSceneEntity:(id)entity transitionRequest:(id)request
 {
-  v7 = a3;
+  entityCopy = entity;
   v11.receiver = self;
   v11.super_class = SBInCallSceneUpdateWorkspaceTransaction;
-  v8 = [(SBMainWorkspaceTransaction *)&v11 initWithTransitionRequest:a4];
+  v8 = [(SBMainWorkspaceTransaction *)&v11 initWithTransitionRequest:request];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_applicationSceneEntity, a3);
+    objc_storeStrong(&v8->_applicationSceneEntity, entity);
   }
 
   return v9;
@@ -35,18 +35,18 @@
   }
 
   [(SBInCallSceneUpdateWorkspaceTransaction *)self addMilestone:@"_SBInCallSceneUpdateWorkspaceTransactionMilestoneSceneUpdate"];
-  v5 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v6 = [[SBApplicationSceneUpdateTransaction alloc] initWithApplicationSceneEntity:self->_applicationSceneEntity transitionRequest:v5];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  v6 = [[SBApplicationSceneUpdateTransaction alloc] initWithApplicationSceneEntity:self->_applicationSceneEntity transitionRequest:transitionRequest];
   [(FBApplicationUpdateScenesTransaction *)v6 setWaitsForSceneCommits:1];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __49__SBInCallSceneUpdateWorkspaceTransaction__begin__block_invoke;
   v11 = &unk_2783B3B78;
-  v12 = self;
+  selfCopy = self;
   v13 = v3;
   v7 = v3;
   [(SBApplicationSceneUpdateTransaction *)v6 setCompletionBlock:&v8];
-  [(SBInCallSceneUpdateWorkspaceTransaction *)self addChildTransaction:v6 withSchedulingPolicy:0, v8, v9, v10, v11, v12];
+  [(SBInCallSceneUpdateWorkspaceTransaction *)self addChildTransaction:v6 withSchedulingPolicy:0, v8, v9, v10, v11, selfCopy];
 }
 
 uint64_t __49__SBInCallSceneUpdateWorkspaceTransaction__begin__block_invoke(uint64_t a1, uint64_t a2)

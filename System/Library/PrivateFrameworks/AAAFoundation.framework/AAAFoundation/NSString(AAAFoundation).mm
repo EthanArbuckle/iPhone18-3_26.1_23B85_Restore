@@ -25,8 +25,8 @@
 
 - (id)aaf_urlEncoded
 {
-  v2 = [MEMORY[0x1E696AEC0] URLQueryValueAllowedCharacterSet];
-  v3 = [a1 stringByAddingPercentEncodingWithAllowedCharacters:v2];
+  uRLQueryValueAllowedCharacterSet = [MEMORY[0x1E696AEC0] URLQueryValueAllowedCharacterSet];
+  v3 = [self stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryValueAllowedCharacterSet];
 
   return v3;
 }
@@ -34,23 +34,23 @@
 - (id)aaf_toBase64DecodedData
 {
   v2 = objc_alloc(MEMORY[0x1E695DEF0]);
-  v3 = [a1 aaf_base64Padded];
-  v4 = [v2 initWithBase64EncodedString:v3 options:0];
+  aaf_base64Padded = [self aaf_base64Padded];
+  v4 = [v2 initWithBase64EncodedString:aaf_base64Padded options:0];
 
   return v4;
 }
 
 - (id)aaf_toBase64DecodedString
 {
-  v1 = [a1 aaf_toBase64DecodedData];
-  v2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v1 encoding:4];
+  aaf_toBase64DecodedData = [self aaf_toBase64DecodedData];
+  v2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:aaf_toBase64DecodedData encoding:4];
 
   return v2;
 }
 
 - (id)aaf_toBase64EncodedString
 {
-  v1 = [a1 dataUsingEncoding:4 allowLossyConversion:0];
+  v1 = [self dataUsingEncoding:4 allowLossyConversion:0];
   v2 = [v1 base64EncodedStringWithOptions:0];
 
   return v2;
@@ -58,7 +58,7 @@
 
 - (id)aaf_base64Padded
 {
-  v2 = [a1 length] & 3;
+  v2 = [self length] & 3;
   if (v2 == 3)
   {
     v3 = @"=";
@@ -69,22 +69,22 @@
   {
     v3 = @"==";
 LABEL_5:
-    v4 = [a1 stringByAppendingString:v3];
+    selfCopy = [self stringByAppendingString:v3];
     goto LABEL_7;
   }
 
-  v4 = a1;
+  selfCopy = self;
 LABEL_7:
 
-  return v4;
+  return selfCopy;
 }
 
 - (id)aaf_toSHA256Data
 {
   v7 = *MEMORY[0x1E69E9840];
-  v1 = [a1 UTF8String];
-  v2 = strlen(v1);
-  CC_SHA256(v1, v2, md);
+  uTF8String = [self UTF8String];
+  v2 = strlen(uTF8String);
+  CC_SHA256(uTF8String, v2, md);
   v3 = [MEMORY[0x1E695DEF0] dataWithBytes:md length:32];
   v4 = *MEMORY[0x1E69E9840];
 
@@ -93,10 +93,10 @@ LABEL_7:
 
 - (id)aaf_toSHA256String
 {
-  v1 = [a1 aaf_toSHA256Data];
-  v2 = [v1 aaf_toHexString];
+  aaf_toSHA256Data = [self aaf_toSHA256Data];
+  aaf_toHexString = [aaf_toSHA256Data aaf_toHexString];
 
-  return v2;
+  return aaf_toHexString;
 }
 
 @end

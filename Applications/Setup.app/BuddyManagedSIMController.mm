@@ -1,33 +1,33 @@
 @interface BuddyManagedSIMController
 - (BFFFlowItemDelegate)delegate;
 - (BOOL)controllerNeedsToRun;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
 @end
 
 @implementation BuddyManagedSIMController
 
 - (BOOL)controllerNeedsToRun
 {
-  v2 = [(BuddyManagedSIMController *)self runState];
-  v3 = [(BYRunState *)v2 hasCompletedInitialRun];
+  runState = [(BuddyManagedSIMController *)self runState];
+  hasCompletedInitialRun = [(BYRunState *)runState hasCompletedInitialRun];
 
-  if (v3)
+  if (hasCompletedInitialRun)
   {
     return BYIsRunningInStoreDemoMode() & 1;
   }
 
-  v4 = [(BuddyManagedSIMController *)self managedConfiguration];
-  v5 = [(MCProfileConnection *)v4 activationRecordIndicatesCloudConfigurationIsAvailable];
+  managedConfiguration = [(BuddyManagedSIMController *)self managedConfiguration];
+  activationRecordIndicatesCloudConfigurationIsAvailable = [(MCProfileConnection *)managedConfiguration activationRecordIndicatesCloudConfigurationIsAvailable];
   v8 = 0;
-  v6 = 1;
-  if ((v5 & 1) == 0)
+  impliesDemod = 1;
+  if ((activationRecordIndicatesCloudConfigurationIsAvailable & 1) == 0)
   {
-    v9 = [(BuddyManagedSIMController *)self activationRecord];
+    activationRecord = [(BuddyManagedSIMController *)self activationRecord];
     v8 = 1;
-    v6 = [(BuddyActivationRecord *)v9 impliesDemod];
+    impliesDemod = [(BuddyActivationRecord *)activationRecord impliesDemod];
   }
 
-  v11 = v6 & 1;
+  v11 = impliesDemod & 1;
   if (v8)
   {
   }
@@ -35,27 +35,27 @@
   return v11;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v24 = 0;
   v22 = 0;
-  v3 = 1;
+  impliesDemod = 1;
   if ((BYIsRunningInStoreDemoMode() & 1) == 0)
   {
-    v23 = [(BuddyManagedSIMController *)v26 activationRecord];
+    activationRecord = [(BuddyManagedSIMController *)selfCopy activationRecord];
     v22 = 1;
-    v3 = [v23 impliesDemod];
+    impliesDemod = [activationRecord impliesDemod];
   }
 
   if (v22)
   {
   }
 
-  if (v3)
+  if (impliesDemod)
   {
     v24 = 1;
   }
@@ -70,15 +70,15 @@
   v28[1] = v7;
   v8 = sub_10015F7C4();
   v27[2] = v8;
-  v9 = [(BuddyManagedSIMController *)v26 networkProvider];
-  v10 = [NSNumber numberWithInt:![(BuddyNetworkProvider *)v9 connectedOverWiFiAndNetworkReachable]];
+  networkProvider = [(BuddyManagedSIMController *)selfCopy networkProvider];
+  v10 = [NSNumber numberWithInt:![(BuddyNetworkProvider *)networkProvider connectedOverWiFiAndNetworkReachable]];
   v28[2] = v10;
   v11 = [NSDictionary dictionaryWithObjects:v28 forKeys:v27 count:3];
   v12 = [v4 flowWithOptions:v11];
-  [(BuddyManagedSIMController *)v26 setSetupFlow:v12];
+  [(BuddyManagedSIMController *)selfCopy setSetupFlow:v12];
 
-  v13 = [(BuddyManagedSIMController *)v26 setupFlow];
-  LOBYTE(v5) = v13 == 0;
+  setupFlow = [(BuddyManagedSIMController *)selfCopy setupFlow];
+  LOBYTE(v5) = setupFlow == 0;
 
   if (v5)
   {
@@ -88,14 +88,14 @@
 
   else
   {
-    v14 = [(BuddyManagedSIMController *)v26 setupFlow];
+    setupFlow2 = [(BuddyManagedSIMController *)selfCopy setupFlow];
     v15 = _NSConcreteStackBlock;
     v16 = -1073741824;
     v17 = 0;
     v18 = sub_10015F8CC;
     v19 = &unk_10032DB78;
     v20 = location[0];
-    [(TSSIMSetupFlow *)v14 firstViewController:&v15];
+    [(TSSIMSetupFlow *)setupFlow2 firstViewController:&v15];
 
     objc_storeStrong(&v20, 0);
     v21 = 0;

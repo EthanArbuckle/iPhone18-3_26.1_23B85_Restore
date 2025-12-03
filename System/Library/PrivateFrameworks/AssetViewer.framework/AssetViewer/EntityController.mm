@@ -1,46 +1,46 @@
 @interface EntityController
-- (CGRect)calculateAssetScreenBoundingRectIn:(id)a3;
+- (CGRect)calculateAssetScreenBoundingRectIn:(id)in;
 - (NSArray)entityAccessibilityWrappers;
 - (NSString)description;
 - (NSURL)accessibilityAssetURL;
 - (_TtC11AssetViewer16EntityController)init;
 - (__n128)assetTransform;
 - (__n128)assetWorldPosition;
-- (double)assetHeadScreenPositionForScale:(void *)a1;
+- (double)assetHeadScreenPositionForScale:(void *)scale;
 - (double)assetScreenPosition;
 - (float)assetScale;
 - (void)dealloc;
-- (void)rotateByDeltaYaw:(float)a3 deltaPitch:(float)a4;
-- (void)scaleTo:(float)a3 updateARScale:(BOOL)a4;
-- (void)setAccessibilityAssetURL:(id)a3;
-- (void)setWorldGestureRecognizer:(id)a3;
-- (void)turntableGestureRecognizer:(id)a3 rotatedAssetByDeltaYaw:(float)a4 deltaPitch:(float)a5;
-- (void)unifiedGestureRecognizer:(id)a3 doubleTappedAtScreenPoint:(BOOL)a4 onAsset:;
-- (void)unifiedGestureRecognizer:(id)a3 rotatedAssetByDeltaYaw:(float)a4;
-- (void)unifiedGestureRecognizer:(id)a3 scaledAssetToScale:(float)a4;
-- (void)unifiedGestureRecognizer:(id)a3 singleTappedAtScreenPoint:(BOOL)a4 onAsset:;
-- (void)unifiedGestureRecognizerBeganRotation:(id)a3;
-- (void)unifiedGestureRecognizerBeganScaling:(id)a3;
-- (void)unifiedGestureRecognizerEndedRotation:(id)a3;
-- (void)unifiedGestureRecognizerEndedScaling:(id)a3;
-- (void)worldGestureRecognizer:(id)a3 decelerationTranslationDelta:;
-- (void)worldGestureRecognizer:(id)a3 levitatedAssetToScreenPoint:;
-- (void)worldGestureRecognizer:(id)a3 translatedAssetToScreenPoint:;
-- (void)worldGestureRecognizerBeganLevitation:(id)a3;
-- (void)worldGestureRecognizerBeganTranslation:(id)a3;
-- (void)worldGestureRecognizerBeganTranslationDeceleration:(id)a3;
-- (void)worldGestureRecognizerEndedLevitation:(id)a3;
-- (void)worldGestureRecognizerEndedTranslation:(id)a3;
-- (void)worldGestureRecognizerEndedTranslationDeceleration:(id)a3;
+- (void)rotateByDeltaYaw:(float)yaw deltaPitch:(float)pitch;
+- (void)scaleTo:(float)to updateARScale:(BOOL)scale;
+- (void)setAccessibilityAssetURL:(id)l;
+- (void)setWorldGestureRecognizer:(id)recognizer;
+- (void)turntableGestureRecognizer:(id)recognizer rotatedAssetByDeltaYaw:(float)yaw deltaPitch:(float)pitch;
+- (void)unifiedGestureRecognizer:(id)recognizer doubleTappedAtScreenPoint:(BOOL)point onAsset:;
+- (void)unifiedGestureRecognizer:(id)recognizer rotatedAssetByDeltaYaw:(float)yaw;
+- (void)unifiedGestureRecognizer:(id)recognizer scaledAssetToScale:(float)scale;
+- (void)unifiedGestureRecognizer:(id)recognizer singleTappedAtScreenPoint:(BOOL)point onAsset:;
+- (void)unifiedGestureRecognizerBeganRotation:(id)rotation;
+- (void)unifiedGestureRecognizerBeganScaling:(id)scaling;
+- (void)unifiedGestureRecognizerEndedRotation:(id)rotation;
+- (void)unifiedGestureRecognizerEndedScaling:(id)scaling;
+- (void)worldGestureRecognizer:(id)recognizer decelerationTranslationDelta:;
+- (void)worldGestureRecognizer:(id)recognizer levitatedAssetToScreenPoint:;
+- (void)worldGestureRecognizer:(id)recognizer translatedAssetToScreenPoint:;
+- (void)worldGestureRecognizerBeganLevitation:(id)levitation;
+- (void)worldGestureRecognizerBeganTranslation:(id)translation;
+- (void)worldGestureRecognizerBeganTranslationDeceleration:(id)deceleration;
+- (void)worldGestureRecognizerEndedLevitation:(id)levitation;
+- (void)worldGestureRecognizerEndedTranslation:(id)translation;
+- (void)worldGestureRecognizerEndedTranslationDeceleration:(id)deceleration;
 @end
 
 @implementation EntityController
 
-- (void)setWorldGestureRecognizer:(id)a3
+- (void)setWorldGestureRecognizer:(id)recognizer
 {
   v4 = *(self + OBJC_IVAR____TtC11AssetViewer16EntityController_worldGestureRecognizer);
-  *(self + OBJC_IVAR____TtC11AssetViewer16EntityController_worldGestureRecognizer) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC11AssetViewer16EntityController_worldGestureRecognizer) = recognizer;
+  recognizerCopy = recognizer;
 }
 
 - (NSURL)accessibilityAssetURL
@@ -65,12 +65,12 @@
   return v10;
 }
 
-- (void)setAccessibilityAssetURL:(id)a3
+- (void)setAccessibilityAssetURL:(id)l
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E538750);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v12 - v6;
-  if (a3)
+  if (l)
   {
     sub_2413514AC();
     v8 = sub_24135152C();
@@ -85,14 +85,14 @@
 
   v10 = OBJC_IVAR____TtC11AssetViewer16EntityController_accessibilityAssetURL;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   sub_24124AF2C(v7, self + v10);
   swift_endAccess();
 }
 
 - (NSArray)entityAccessibilityWrappers
 {
-  v2 = self;
+  selfCopy = self;
   sub_241352BBC();
 
   sub_2413523BC();
@@ -103,7 +103,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_241352C0C();
   MEMORY[0x245CE20D0](v3);
 
@@ -116,23 +116,23 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_24124954C();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for EntityController();
   [(EntityController *)&v3 dealloc];
 }
 
-- (void)rotateByDeltaYaw:(float)a3 deltaPitch:(float)a4
+- (void)rotateByDeltaYaw:(float)yaw deltaPitch:(float)pitch
 {
-  v6 = self;
-  sub_241247088(a3, a4);
+  selfCopy = self;
+  sub_241247088(yaw, pitch);
 }
 
-- (CGRect)calculateAssetScreenBoundingRectIn:(id)a3
+- (CGRect)calculateAssetScreenBoundingRectIn:(id)in
 {
-  v4 = a3;
-  v5 = self;
+  inCopy = in;
+  selfCopy = self;
   sub_241352BDC();
   v7 = v6;
   v9 = v8;
@@ -150,10 +150,10 @@
   return result;
 }
 
-- (void)scaleTo:(float)a3 updateARScale:(BOOL)a4
+- (void)scaleTo:(float)to updateARScale:(BOOL)scale
 {
-  v5 = self;
-  sub_241249F70(a3);
+  selfCopy = self;
+  sub_241249F70(to);
 }
 
 - (_TtC11AssetViewer16EntityController)init
@@ -166,7 +166,7 @@
 - (__n128)assetTransform
 {
   sub_241352C5C();
-  v2 = a1;
+  selfCopy = self;
   sub_24135193C();
   v5 = v3;
 
@@ -175,7 +175,7 @@
 
 - (__n128)assetWorldPosition
 {
-  v1 = a1;
+  selfCopy = self;
   sub_241249AA0();
   v4 = v2;
 
@@ -184,15 +184,15 @@
 
 - (double)assetScreenPosition
 {
-  v1 = a1;
+  selfCopy = self;
   v2 = sub_241249B64();
 
   return v2;
 }
 
-- (double)assetHeadScreenPositionForScale:(void *)a1
+- (double)assetHeadScreenPositionForScale:(void *)scale
 {
-  v1 = a1;
+  scaleCopy = scale;
   v2 = sub_24124A8CC();
 
   return v2;
@@ -200,107 +200,107 @@
 
 - (float)assetScale
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_241249C9C();
 
   return v3;
 }
 
-- (void)worldGestureRecognizerBeganTranslation:(id)a3
+- (void)worldGestureRecognizerBeganTranslation:(id)translation
 {
-  v4 = a3;
-  v5 = self;
+  translationCopy = translation;
+  selfCopy = self;
   sub_2412D2A64();
 }
 
-- (void)worldGestureRecognizerEndedTranslation:(id)a3
+- (void)worldGestureRecognizerEndedTranslation:(id)translation
 {
-  v4 = a3;
-  v5 = self;
+  translationCopy = translation;
+  selfCopy = self;
   sub_2412D2B60();
 }
 
-- (void)worldGestureRecognizerBeganTranslationDeceleration:(id)a3
+- (void)worldGestureRecognizerBeganTranslationDeceleration:(id)deceleration
 {
-  v3 = self;
+  selfCopy = self;
   sub_24124954C();
 }
 
-- (void)worldGestureRecognizer:(id)a3 decelerationTranslationDelta:
+- (void)worldGestureRecognizer:(id)recognizer decelerationTranslationDelta:
 {
-  v4 = a3;
-  v5 = self;
+  recognizerCopy = recognizer;
+  selfCopy = self;
   sub_2412D2CA8();
 }
 
-- (void)worldGestureRecognizerEndedTranslationDeceleration:(id)a3
+- (void)worldGestureRecognizerEndedTranslationDeceleration:(id)deceleration
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v4 = self;
-    sub_24130EE30(v4);
+    selfCopy = self;
+    sub_24130EE30(selfCopy);
     swift_unknownObjectRelease();
   }
 }
 
-- (void)worldGestureRecognizer:(id)a3 translatedAssetToScreenPoint:
+- (void)worldGestureRecognizer:(id)recognizer translatedAssetToScreenPoint:
 {
   v4 = v3;
-  v6 = a3;
-  v8 = self;
+  recognizerCopy = recognizer;
+  selfCopy = self;
   v7.i64[0] = v4;
   sub_2412D2DEC(v7);
 }
 
-- (void)worldGestureRecognizerBeganLevitation:(id)a3
+- (void)worldGestureRecognizerBeganLevitation:(id)levitation
 {
-  v4 = a3;
-  v5 = self;
+  levitationCopy = levitation;
+  selfCopy = self;
   sub_2412D38F4();
 }
 
-- (void)worldGestureRecognizerEndedLevitation:(id)a3
+- (void)worldGestureRecognizerEndedLevitation:(id)levitation
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v4 = self;
-    sub_24130EE30(v4);
+    selfCopy = self;
+    sub_24130EE30(selfCopy);
     sub_2413233C4();
     swift_unknownObjectRelease();
   }
 }
 
-- (void)worldGestureRecognizer:(id)a3 levitatedAssetToScreenPoint:
+- (void)worldGestureRecognizer:(id)recognizer levitatedAssetToScreenPoint:
 {
   v4 = v3;
-  v6 = a3;
-  v7 = self;
-  sub_2412D1FC0(v6, v4);
+  recognizerCopy = recognizer;
+  selfCopy = self;
+  sub_2412D1FC0(recognizerCopy, v4);
 }
 
-- (void)turntableGestureRecognizer:(id)a3 rotatedAssetByDeltaYaw:(float)a4 deltaPitch:(float)a5
+- (void)turntableGestureRecognizer:(id)recognizer rotatedAssetByDeltaYaw:(float)yaw deltaPitch:(float)pitch
 {
   v8 = *(self + OBJC_IVAR____TtC11AssetViewer16EntityController_shouldDisableGesturesHandler);
   if (!v8)
   {
-    v13 = a3;
-    v14 = self;
+    recognizerCopy = recognizer;
+    selfCopy = self;
     goto LABEL_5;
   }
 
-  v9 = a3;
-  v10 = self;
+  recognizerCopy2 = recognizer;
+  selfCopy2 = self;
   v11 = sub_24124AD38(v8);
   v12 = v8(v11);
   sub_24124B1F0(v8);
   if ((v12 & 1) == 0)
   {
 LABEL_5:
-    sub_241247088(a4, a5);
+    sub_241247088(yaw, pitch);
   }
 }
 
-- (void)unifiedGestureRecognizer:(id)a3 doubleTappedAtScreenPoint:(BOOL)a4 onAsset:
+- (void)unifiedGestureRecognizer:(id)recognizer doubleTappedAtScreenPoint:(BOOL)point onAsset:
 {
   v5 = v4;
   Strong = swift_unknownObjectWeakLoadStrong();
@@ -312,77 +312,77 @@ LABEL_5:
   }
 }
 
-- (void)unifiedGestureRecognizer:(id)a3 singleTappedAtScreenPoint:(BOOL)a4 onAsset:
+- (void)unifiedGestureRecognizer:(id)recognizer singleTappedAtScreenPoint:(BOOL)point onAsset:
 {
   v8 = v4;
   if (swift_unknownObjectWeakLoadStrong())
   {
     v6 = *&v8;
     v7 = *(&v8 + 1);
-    v9 = self;
+    selfCopy = self;
     sub_2412AF808(v6, v7);
     swift_unknownObjectRelease();
   }
 }
 
-- (void)unifiedGestureRecognizerBeganRotation:(id)a3
+- (void)unifiedGestureRecognizerBeganRotation:(id)rotation
 {
   v3 = (self + OBJC_IVAR____TtC11AssetViewer16EntityController_physicsStateManager);
   v4 = *(self + OBJC_IVAR____TtC11AssetViewer16EntityController_physicsStateManager + 8);
-  v5 = self;
+  selfCopy = self;
   sub_24133CDB4(v4);
   sub_24133AFBC(*v3, v3[1]);
 }
 
-- (void)unifiedGestureRecognizer:(id)a3 rotatedAssetByDeltaYaw:(float)a4
+- (void)unifiedGestureRecognizer:(id)recognizer rotatedAssetByDeltaYaw:(float)yaw
 {
-  v6 = a3;
-  v7 = self;
-  sub_2412D3A08(a4);
+  recognizerCopy = recognizer;
+  selfCopy = self;
+  sub_2412D3A08(yaw);
 }
 
-- (void)unifiedGestureRecognizerEndedRotation:(id)a3
+- (void)unifiedGestureRecognizerEndedRotation:(id)rotation
 {
-  v4 = a3;
-  v5 = self;
+  rotationCopy = rotation;
+  selfCopy = self;
   sub_2412D3B28();
 }
 
-- (void)unifiedGestureRecognizerBeganScaling:(id)a3
+- (void)unifiedGestureRecognizerBeganScaling:(id)scaling
 {
-  v4 = a3;
-  v5 = self;
+  scalingCopy = scaling;
+  selfCopy = self;
   sub_2412D3BC0();
 }
 
-- (void)unifiedGestureRecognizer:(id)a3 scaledAssetToScale:(float)a4
+- (void)unifiedGestureRecognizer:(id)recognizer scaledAssetToScale:(float)scale
 {
   v6 = *(self + OBJC_IVAR____TtC11AssetViewer16EntityController_shouldDisableGesturesHandler);
   if (!v6)
   {
-    v11 = a3;
-    v12 = self;
+    recognizerCopy = recognizer;
+    selfCopy = self;
     goto LABEL_5;
   }
 
-  v7 = a3;
-  v8 = self;
+  recognizerCopy2 = recognizer;
+  selfCopy2 = self;
   v9 = sub_24124AD38(v6);
   v10 = v6(v9);
   sub_24124B1F0(v6);
   if ((v10 & 1) == 0)
   {
 LABEL_5:
-    sub_241249F70(a4);
+    sub_241249F70(scale);
   }
 }
 
-- (void)unifiedGestureRecognizerEndedScaling:(id)a3
+- (void)unifiedGestureRecognizerEndedScaling:(id)scaling
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v4 = self;
-    sub_241297D88(v4, 1);
+    selfCopy = self;
+    sub_241297D88(selfCopy, 1);
     swift_unknownObjectRelease();
   }
 }

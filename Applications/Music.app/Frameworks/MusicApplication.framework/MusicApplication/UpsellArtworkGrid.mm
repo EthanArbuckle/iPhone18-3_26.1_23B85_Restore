@@ -1,11 +1,11 @@
 @interface UpsellArtworkGrid
-- (_TtC16MusicApplication17UpsellArtworkGrid)initWithCoder:(id)a3;
-- (_TtC16MusicApplication17UpsellArtworkGrid)initWithFrame:(CGRect)a3;
+- (_TtC16MusicApplication17UpsellArtworkGrid)initWithCoder:(id)coder;
+- (_TtC16MusicApplication17UpsellArtworkGrid)initWithFrame:(CGRect)frame;
 @end
 
 @implementation UpsellArtworkGrid
 
-- (_TtC16MusicApplication17UpsellArtworkGrid)initWithCoder:(id)a3
+- (_TtC16MusicApplication17UpsellArtworkGrid)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication17UpsellArtworkGrid_artworks) = _swiftEmptyArrayStorage;
   v4 = OBJC_IVAR____TtC16MusicApplication17UpsellArtworkGrid_artworkCachingReference;
@@ -16,7 +16,7 @@
   return result;
 }
 
-- (_TtC16MusicApplication17UpsellArtworkGrid)initWithFrame:(CGRect)a3
+- (_TtC16MusicApplication17UpsellArtworkGrid)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

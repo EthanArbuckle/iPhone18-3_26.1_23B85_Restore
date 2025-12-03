@@ -1,16 +1,16 @@
 @interface CRLProgressStage
-- (CRLProgressStage)initWithSteps:(double)a3 takingSteps:(double)a4 inContext:(id)a5;
+- (CRLProgressStage)initWithSteps:(double)steps takingSteps:(double)takingSteps inContext:(id)context;
 - (double)overallProgress;
-- (id)initRootStageInContext:(id)a3;
+- (id)initRootStageInContext:(id)context;
 - (void)dealloc;
 - (void)setProgress:(double)m_totalSteps;
 @end
 
 @implementation CRLProgressStage
 
-- (id)initRootStageInContext:(id)a3
+- (id)initRootStageInContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = CRLProgressStage;
   v6 = [(CRLProgressStage *)&v10 init];
@@ -22,31 +22,31 @@
     *(v6 + 5) = 0x3FF0000000000000;
     *(v6 + 6) = 0;
 
-    objc_storeStrong(v7 + 7, a3);
+    objc_storeStrong(v7 + 7, context);
   }
 
   return v7;
 }
 
-- (CRLProgressStage)initWithSteps:(double)a3 takingSteps:(double)a4 inContext:(id)a5
+- (CRLProgressStage)initWithSteps:(double)steps takingSteps:(double)takingSteps inContext:(id)context
 {
-  v9 = a5;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = CRLProgressStage;
   v10 = [(CRLProgressStage *)&v15 init];
   if (v10)
   {
-    v11 = [v9 currentStage];
+    currentStage = [contextCopy currentStage];
     m_parentStage = v10->m_parentStage;
-    v10->m_parentStage = v11;
+    v10->m_parentStage = currentStage;
 
     v10->m_currentPosition = 0.0;
-    v10->m_totalSteps = a3;
-    v10->m_stepsInParent = a4;
+    v10->m_totalSteps = steps;
+    v10->m_stepsInParent = takingSteps;
     [(CRLProgressStage *)v10->m_parentStage currentPosition];
     v10->m_startInParent = v13;
     v10->m_nextSubStageParentSize = 1.0;
-    objc_storeStrong(&v10->m_context, a5);
+    objc_storeStrong(&v10->m_context, context);
   }
 
   return v10;
@@ -75,15 +75,15 @@
 
   else
   {
-    v5 = self;
+    selfCopy = self;
     do
     {
-      v6 = [(CRLProgressStage *)v5 parentStage];
+      parentStage = [(CRLProgressStage *)selfCopy parentStage];
 
-      v5 = v6;
+      selfCopy = parentStage;
     }
 
-    while (v6);
+    while (parentStage);
     m_totalSteps = self->m_totalSteps;
   }
 

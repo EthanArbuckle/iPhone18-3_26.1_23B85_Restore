@@ -1,6 +1,6 @@
 @interface AVTPhysicsRig
-- (__n128)setConeConstraintAnchorB:(__n128)a3;
-- (__n128)setConeConstraintBasis_chainParent:(__n128)a3;
+- (__n128)setConeConstraintAnchorB:(__n128)b;
+- (__n128)setConeConstraintBasis_chainParent:(__n128)parent;
 - (__n128)setRestGravityVector_chainRoot:(__n128 *)result;
 - (__n128)setRestPosition_chainRoot:(__n128 *)result;
 - (double)coneConstraintAnchorB;
@@ -17,10 +17,10 @@
 - (uint64_t)setConeConstraintLength:(uint64_t)result;
 - (uint64_t)setConeConstraintSinusAngularLimit:(uint64_t)result;
 - (uint64_t)setDownForceFactor:(uint64_t)result;
-- (void)setChainRoot:(uint64_t)a1;
-- (void)setPhysicsBehavior:(uint64_t)a1;
-- (void)setPhysicsBody:(uint64_t)a1;
-- (void)setRig:(uint64_t)a1;
+- (void)setChainRoot:(uint64_t)root;
+- (void)setPhysicsBehavior:(uint64_t)behavior;
+- (void)setPhysicsBody:(uint64_t)body;
+- (void)setRig:(uint64_t)rig;
 @end
 
 @implementation AVTPhysicsRig
@@ -35,11 +35,11 @@
   return result;
 }
 
-- (void)setRig:(uint64_t)a1
+- (void)setRig:(uint64_t)rig
 {
-  if (a1)
+  if (rig)
   {
-    objc_storeStrong((a1 + 16), a2);
+    objc_storeStrong((rig + 16), a2);
   }
 }
 
@@ -53,11 +53,11 @@
   return result;
 }
 
-- (void)setChainRoot:(uint64_t)a1
+- (void)setChainRoot:(uint64_t)root
 {
-  if (a1)
+  if (root)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((root + 24), a2);
   }
 }
 
@@ -71,11 +71,11 @@
   return result;
 }
 
-- (void)setPhysicsBody:(uint64_t)a1
+- (void)setPhysicsBody:(uint64_t)body
 {
-  if (a1)
+  if (body)
   {
-    objc_storeStrong((a1 + 32), a2);
+    objc_storeStrong((body + 32), a2);
   }
 }
 
@@ -89,19 +89,19 @@
   return result;
 }
 
-- (void)setPhysicsBehavior:(uint64_t)a1
+- (void)setPhysicsBehavior:(uint64_t)behavior
 {
-  if (a1)
+  if (behavior)
   {
-    objc_storeStrong((a1 + 40), a2);
+    objc_storeStrong((behavior + 40), a2);
   }
 }
 
 - (double)restPosition_chainRoot
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 64);
+    v1 = *(self + 64);
   }
 
   else
@@ -124,9 +124,9 @@
 
 - (double)restGravityVector_chainRoot
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 80);
+    v1 = *(self + 80);
   }
 
   else
@@ -149,9 +149,9 @@
 
 - (double)downForceFactor
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 48);
+    return *(self + 48);
   }
 
   else
@@ -172,12 +172,12 @@
 
 - (double)coneConstraintLength
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  LODWORD(result) = *(a1 + 8);
+  LODWORD(result) = *(self + 8);
   return result;
 }
 
@@ -193,12 +193,12 @@
 
 - (double)coneConstraintSinusAngularLimit
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  LODWORD(result) = *(a1 + 12);
+  LODWORD(result) = *(self + 12);
   return result;
 }
 
@@ -214,11 +214,11 @@
 
 - (double)coneConstraintBasis_chainParent
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1[6];
-    v2 = a1[7];
-    v3 = a1[8];
+    v1 = self[6];
+    v2 = self[7];
+    v3 = self[8];
   }
 
   else
@@ -229,12 +229,12 @@
   return *&v1;
 }
 
-- (__n128)setConeConstraintBasis_chainParent:(__n128)a3
+- (__n128)setConeConstraintBasis_chainParent:(__n128)parent
 {
   if (result)
   {
     result[6] = a2;
-    result[7] = a3;
+    result[7] = parent;
     result[8] = a4;
   }
 
@@ -243,12 +243,12 @@
 
 - (double)coneConstraintAnchorB
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1[9];
-    v2 = a1[10];
-    v3 = a1[11];
-    v4 = a1[12];
+    v1 = self[9];
+    v2 = self[10];
+    v3 = self[11];
+    v4 = self[12];
   }
 
   else
@@ -259,12 +259,12 @@
   return *&v1;
 }
 
-- (__n128)setConeConstraintAnchorB:(__n128)a3
+- (__n128)setConeConstraintAnchorB:(__n128)b
 {
   if (result)
   {
     result[9] = a2;
-    result[10] = a3;
+    result[10] = b;
     result[11] = a4;
     result[12] = a5;
   }

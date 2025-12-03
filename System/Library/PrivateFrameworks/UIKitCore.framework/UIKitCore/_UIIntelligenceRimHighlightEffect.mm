@@ -1,52 +1,52 @@
 @interface _UIIntelligenceRimHighlightEffect
-- (BOOL)_needsUpdateForTransitionFromEnvironment:(id)a3 toEnvironment:(id)a4 usage:(int64_t)a5;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_needsUpdateForTransitionFromEnvironment:(id)environment toEnvironment:(id)toEnvironment usage:(int64_t)usage;
+- (BOOL)isEqual:(id)equal;
 - (_UIIntelligenceRimHighlightEffect)init;
-- (_UIIntelligenceRimHighlightEffect)initWithCoder:(id)a3;
-- (_UIIntelligenceRimHighlightEffect)initWithThickness:(double)a3 activationDirection:(unint64_t)a4;
-- (void)_updateEffectDescriptor:(id)a3 forEnvironment:(id)a4 usage:(int64_t)a5;
+- (_UIIntelligenceRimHighlightEffect)initWithCoder:(id)coder;
+- (_UIIntelligenceRimHighlightEffect)initWithThickness:(double)thickness activationDirection:(unint64_t)direction;
+- (void)_updateEffectDescriptor:(id)descriptor forEnvironment:(id)environment usage:(int64_t)usage;
 @end
 
 @implementation _UIIntelligenceRimHighlightEffect
 
-- (void)_updateEffectDescriptor:(id)a3 forEnvironment:(id)a4 usage:(int64_t)a5
+- (void)_updateEffectDescriptor:(id)descriptor forEnvironment:(id)environment usage:(int64_t)usage
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  _UIIntelligenceRimHighlightEffect._update(_:for:usage:)(a3, a4, a5);
+  descriptorCopy = descriptor;
+  environmentCopy = environment;
+  selfCopy = self;
+  _UIIntelligenceRimHighlightEffect._update(_:for:usage:)(descriptor, environment, usage);
 }
 
-- (_UIIntelligenceRimHighlightEffect)initWithThickness:(double)a3 activationDirection:(unint64_t)a4
+- (_UIIntelligenceRimHighlightEffect)initWithThickness:(double)thickness activationDirection:(unint64_t)direction
 {
-  v7 = [objc_opt_self() whiteColor];
-  v8 = [(_UIIntelligenceRimHighlightEffect *)self initWithThickness:v7 color:0 softRadius:a4 region:a3 activationDirection:0.0];
+  whiteColor = [objc_opt_self() whiteColor];
+  v8 = [(_UIIntelligenceRimHighlightEffect *)self initWithThickness:whiteColor color:0 softRadius:direction region:thickness activationDirection:0.0];
 
   return v8;
 }
 
-- (_UIIntelligenceRimHighlightEffect)initWithCoder:(id)a3
+- (_UIIntelligenceRimHighlightEffect)initWithCoder:(id)coder
 {
   type metadata accessor for _UIIntelligenceRimHighlightEffect();
   swift_deallocPartialClassInstance();
   return 0;
 }
 
-- (BOOL)_needsUpdateForTransitionFromEnvironment:(id)a3 toEnvironment:(id)a4 usage:(int64_t)a5
+- (BOOL)_needsUpdateForTransitionFromEnvironment:(id)environment toEnvironment:(id)toEnvironment usage:(int64_t)usage
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  LOBYTE(a5) = _UIIntelligenceRimHighlightEffect._needsUpdateForTransition(from:to:usage:)(a3, a4, a5);
+  environmentCopy = environment;
+  toEnvironmentCopy = toEnvironment;
+  selfCopy = self;
+  LOBYTE(usage) = _UIIntelligenceRimHighlightEffect._needsUpdateForTransition(from:to:usage:)(environment, toEnvironment, usage);
 
-  return a5 & 1;
+  return usage & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18A4A7DE8();
     swift_unknownObjectRelease();
@@ -55,7 +55,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = _UIIntelligenceRimHighlightEffect.isEqual(_:)(v8);

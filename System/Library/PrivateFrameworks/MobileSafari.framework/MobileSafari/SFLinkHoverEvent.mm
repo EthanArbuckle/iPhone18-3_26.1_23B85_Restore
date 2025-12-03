@@ -1,34 +1,34 @@
 @interface SFLinkHoverEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSAttributedString)attributedMessageString;
-- (SFLinkHoverEvent)initWithHoveredLinkURL:(id)a3 forCurrentURL:(id)a4 modifierFlags:(int64_t)a5 frame:(id)a6 targetFrame:(id)a7;
+- (SFLinkHoverEvent)initWithHoveredLinkURL:(id)l forCurrentURL:(id)rL modifierFlags:(int64_t)flags frame:(id)frame targetFrame:(id)targetFrame;
 - (id)_formattedMessage;
 @end
 
 @implementation SFLinkHoverEvent
 
-- (SFLinkHoverEvent)initWithHoveredLinkURL:(id)a3 forCurrentURL:(id)a4 modifierFlags:(int64_t)a5 frame:(id)a6 targetFrame:(id)a7
+- (SFLinkHoverEvent)initWithHoveredLinkURL:(id)l forCurrentURL:(id)rL modifierFlags:(int64_t)flags frame:(id)frame targetFrame:(id)targetFrame
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  lCopy = l;
+  rLCopy = rL;
+  frameCopy = frame;
+  targetFrameCopy = targetFrame;
   v24.receiver = self;
   v24.super_class = SFLinkHoverEvent;
   v17 = [(SFLinkHoverEvent *)&v24 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_url, a3);
-    v18->_modifierFlags = a5;
-    v18->_hasTargetFrame = v16 != 0;
-    v19 = [v15 frameID];
-    v18->_targetFrameIsSameAsFrame = v19 == [v16 frameID];
-    v20 = [v13 fragment];
-    v21 = [v20 length];
+    objc_storeStrong(&v17->_url, l);
+    v18->_modifierFlags = flags;
+    v18->_hasTargetFrame = targetFrameCopy != 0;
+    frameID = [frameCopy frameID];
+    v18->_targetFrameIsSameAsFrame = frameID == [targetFrameCopy frameID];
+    fragment = [lCopy fragment];
+    v21 = [fragment length];
     if (v21)
     {
-      LOBYTE(v21) = [v13 safari_isSameAsURLRemovingFragment:v14];
+      LOBYTE(v21) = [lCopy safari_isSameAsURLRemovingFragment:rLCopy];
     }
 
     v18->_hasFragmentOnSamePage = v21;
@@ -42,39 +42,39 @@
 - (id)_formattedMessage
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v3 = [(NSURL *)self->_url safari_defaultStatusMessageString];
-  if (v3)
+  safari_defaultStatusMessageString = [(NSURL *)self->_url safari_defaultStatusMessageString];
+  if (safari_defaultStatusMessageString)
   {
-    v4 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v3];
+    v4 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:safari_defaultStatusMessageString];
   }
 
   else
   {
     v5 = self->_url;
-    v6 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v7 = [v6 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v7 = [defaultParagraphStyle mutableCopy];
 
     [v7 setLineSpacing:1.5];
     [v7 setBaseWritingDirection:0];
     [v7 setAlignment:0];
     v21[0] = *MEMORY[0x1E69DB650];
     v8 = v21[0];
-    v9 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     v21[1] = *MEMORY[0x1E69DB688];
-    v22[0] = v9;
+    v22[0] = labelColor;
     v22[1] = v7;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:2];
 
     v19 = v8;
-    v11 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v20 = v11;
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v20 = secondaryLabelColor;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
 
     if ([(NSURL *)v5 safari_isURLTooLongToDisplay])
     {
       v13 = objc_alloc(MEMORY[0x1E696AAB0]);
-      v14 = [(NSURL *)v5 safari_userVisibleStringConsideringLongURLs];
-      v15 = [v13 initWithString:v14 attributes:v10];
+      safari_userVisibleStringConsideringLongURLs = [(NSURL *)v5 safari_userVisibleStringConsideringLongURLs];
+      v15 = [v13 initWithString:safari_userVisibleStringConsideringLongURLs attributes:v10];
     }
 
     else
@@ -95,9 +95,9 @@
   attributedMessage = self->_attributedMessage;
   if (!attributedMessage)
   {
-    v4 = [(SFLinkHoverEvent *)self _formattedMessage];
+    _formattedMessage = [(SFLinkHoverEvent *)self _formattedMessage];
     v5 = self->_attributedMessage;
-    self->_attributedMessage = v4;
+    self->_attributedMessage = _formattedMessage;
 
     attributedMessage = self->_attributedMessage;
   }
@@ -105,10 +105,10 @@
   return attributedMessage;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -118,7 +118,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = [(SFLinkHoverEvent *)v5 url];
       if (WBSIsEqual())
       {

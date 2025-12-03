@@ -1,25 +1,25 @@
 @interface CAMLocationController
 + (id)_sharedGPSDatestampFormatter;
 + (id)_sharedGPSTimestampFormatter;
-+ (id)locationMetadataForLocation:(id)a3 heading:(id)a4 device:(int64_t)a5;
++ (id)locationMetadataForLocation:(id)location heading:(id)heading device:(int64_t)device;
 - (CAMLocationController)init;
-- (id)headingForOrientation:(int64_t)a3;
+- (id)headingForOrientation:(int64_t)orientation;
 - (void)_authorizeOrStartLocationManager;
-- (void)_notifyListenersForAuthorizationStatusUpdate:(int)a3;
-- (void)_notifyListenersWaitingOnLocation:(id)a3;
-- (void)_performBlock:(id)a3 andLogIfExecutionExceeds:(double)a4 logPrefix:(id)a5;
-- (void)_setCurrentLocation:(id)a3;
+- (void)_notifyListenersForAuthorizationStatusUpdate:(int)update;
+- (void)_notifyListenersWaitingOnLocation:(id)location;
+- (void)_performBlock:(id)block andLogIfExecutionExceeds:(double)exceeds logPrefix:(id)prefix;
+- (void)_setCurrentLocation:(id)location;
 - (void)_startMonitoringLocationUpdates;
 - (void)_stopMonitoringLocationUpdates;
 - (void)_updateLocationMonitoring;
-- (void)addListenerForLocationUpdates:(id)a3;
+- (void)addListenerForLocationUpdates:(id)updates;
 - (void)dealloc;
-- (void)locationManager:(id)a3 didUpdateHeading:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)removeListenerForLocationUpdates:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHeadingEnabled:(BOOL)a3;
+- (void)locationManager:(id)manager didUpdateHeading:(id)heading;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)removeListenerForLocationUpdates:(id)updates;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHeadingEnabled:(BOOL)enabled;
 @end
 
 @implementation CAMLocationController
@@ -36,15 +36,15 @@
     listenersQueue = v2->__listenersQueue;
     v2->__listenersQueue = v4;
 
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     listenersWaitingForLocation = v2->__listenersWaitingForLocation;
-    v2->__listenersWaitingForLocation = v6;
+    v2->__listenersWaitingForLocation = weakObjectsHashTable;
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v2 selector:sel__updateLocationMonitoring name:*MEMORY[0x1E69DDBC8] object:0];
-    [v8 addObserver:v2 selector:sel__updateLocationMonitoring name:*MEMORY[0x1E69DDAB0] object:0];
-    [v8 addObserver:v2 selector:sel__updateLocationMonitoring name:*MEMORY[0x1E69DDB98] object:0];
-    [v8 addObserver:v2 selector:sel__resetDidRequestLocation name:*MEMORY[0x1E69DDAC8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__updateLocationMonitoring name:*MEMORY[0x1E69DDBC8] object:0];
+    [defaultCenter addObserver:v2 selector:sel__updateLocationMonitoring name:*MEMORY[0x1E69DDAB0] object:0];
+    [defaultCenter addObserver:v2 selector:sel__updateLocationMonitoring name:*MEMORY[0x1E69DDB98] object:0];
+    [defaultCenter addObserver:v2 selector:sel__resetDidRequestLocation name:*MEMORY[0x1E69DDAC8] object:0];
     v9 = v2;
   }
 
@@ -53,11 +53,11 @@
 
 - (void)_updateLocationMonitoring
 {
-  v3 = [(CAMLocationController *)self _isMonitoringLocation];
+  _isMonitoringLocation = [(CAMLocationController *)self _isMonitoringLocation];
   if ([(CAMLocationController *)self isEnabled])
   {
     v4 = +[CAMApplication isAppOrPlugInSuspended];
-    if (!v4 && !v3)
+    if (!v4 && !_isMonitoringLocation)
     {
 
       [(CAMLocationController *)self _startMonitoringLocationUpdates];
@@ -70,7 +70,7 @@
     v4 = 1;
   }
 
-  if (v4 && v3)
+  if (v4 && _isMonitoringLocation)
   {
 
     [(CAMLocationController *)self _stopMonitoringLocationUpdates];
@@ -108,9 +108,9 @@
 
 - (void)_authorizeOrStartLocationManager
 {
-  v3 = [(CAMLocationController *)self _locationManager];
-  v4 = [(CAMLocationController *)self lastKnownAuthorizationStatus];
-  if (v4 == 4)
+  _locationManager = [(CAMLocationController *)self _locationManager];
+  lastKnownAuthorizationStatus = [(CAMLocationController *)self lastKnownAuthorizationStatus];
+  if (lastKnownAuthorizationStatus == 4)
   {
     if (![(CAMLocationController *)self _isMonitoringLocation])
     {
@@ -120,7 +120,7 @@
       v9[2] = __57__CAMLocationController__authorizeOrStartLocationManager__block_invoke_2;
       v9[3] = &unk_1E76F7960;
       v9[4] = self;
-      v6 = v3;
+      v6 = _locationManager;
       v10 = v6;
       [(CAMLocationController *)self _performBlock:v9 andLogIfExecutionExceeds:@"[CLLocationManager startUpdatingLocation]" logPrefix:0.2];
       if ([(CAMLocationController *)self isHeadingEnabled])
@@ -138,14 +138,14 @@
     }
   }
 
-  else if (!v4 && ![(CAMLocationController *)self _didRequestLocation])
+  else if (!lastKnownAuthorizationStatus && ![(CAMLocationController *)self _didRequestLocation])
   {
     [(CAMLocationController *)self _setDidRequestLocation:1];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __57__CAMLocationController__authorizeOrStartLocationManager__block_invoke;
     v11[3] = &unk_1E76F77B0;
-    v12 = v3;
+    v12 = _locationManager;
     [(CAMLocationController *)self _performBlock:v11 andLogIfExecutionExceeds:@"[CLLocationManager requestWhenInUseAuthorization]" logPrefix:0.2];
     v5 = v12;
 LABEL_9:
@@ -235,39 +235,39 @@ uint64_t __53__CAMLocationController__sharedGPSDatestampFormatter__block_invoke(
 - (void)dealloc
 {
   [(CAMLocationController *)self _stopMonitoringLocationUpdates];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CAMLocationController;
   [(CAMLocationController *)&v4 dealloc];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(CAMLocationController *)self _updateLocationMonitoring];
   }
 }
 
-- (void)setHeadingEnabled:(BOOL)a3
+- (void)setHeadingEnabled:(BOOL)enabled
 {
-  if (self->_headingEnabled != a3)
+  if (self->_headingEnabled != enabled)
   {
     v19 = v3;
     v20 = v4;
-    self->_headingEnabled = a3;
+    self->_headingEnabled = enabled;
     if (self->__monitoringLocation)
     {
-      if (a3)
+      if (enabled)
       {
         v14 = MEMORY[0x1E69E9820];
         v15 = 3221225472;
         v16 = __43__CAMLocationController_setHeadingEnabled___block_invoke;
         v17 = &unk_1E76F77B0;
-        v18 = self;
+        selfCopy = self;
         v6 = @"[CLLocationManager startUpdatingHeading]";
         v7 = &v14;
       }
@@ -278,12 +278,12 @@ uint64_t __53__CAMLocationController__sharedGPSDatestampFormatter__block_invoke(
         v10 = 3221225472;
         v11 = __43__CAMLocationController_setHeadingEnabled___block_invoke_2;
         v12 = &unk_1E76F77B0;
-        v13 = self;
+        selfCopy2 = self;
         v6 = @"[CLLocationManager stopUpdatingHeading]";
         v7 = &v9;
       }
 
-      [(CAMLocationController *)self _performBlock:v7 andLogIfExecutionExceeds:v6 logPrefix:0.2, v9, v10, v11, v12, v13, v14, v15, v16, v17, v18];
+      [(CAMLocationController *)self _performBlock:v7 andLogIfExecutionExceeds:v6 logPrefix:0.2, v9, v10, v11, v12, selfCopy2, v14, v15, v16, v17, selfCopy];
     }
 
     if (!self->_headingEnabled)
@@ -294,14 +294,14 @@ uint64_t __53__CAMLocationController__sharedGPSDatestampFormatter__block_invoke(
   }
 }
 
-- (void)_setCurrentLocation:(id)a3
+- (void)_setCurrentLocation:(id)location
 {
-  v5 = a3;
-  v6 = v5;
-  v10 = v5;
-  if (v5)
+  locationCopy = location;
+  v6 = locationCopy;
+  v10 = locationCopy;
+  if (locationCopy)
   {
-    [v5 horizontalAccuracy];
+    [locationCopy horizontalAccuracy];
     v8 = v7;
     [(CLLocation *)v10 verticalAccuracy];
     if (v8 >= v9)
@@ -315,18 +315,18 @@ uint64_t __53__CAMLocationController__sharedGPSDatestampFormatter__block_invoke(
 
   if (self->_currentLocation != v6)
   {
-    v5 = [(CLLocation *)v6 isEqual:?];
+    locationCopy = [(CLLocation *)v6 isEqual:?];
     v6 = v10;
-    if ((v5 & 1) == 0)
+    if ((locationCopy & 1) == 0)
     {
       [(CAMLocationController *)self willChangeValueForKey:@"currentLocation"];
-      objc_storeStrong(&self->_currentLocation, a3);
-      v5 = [(CAMLocationController *)self didChangeValueForKey:@"currentLocation"];
+      objc_storeStrong(&self->_currentLocation, location);
+      locationCopy = [(CAMLocationController *)self didChangeValueForKey:@"currentLocation"];
       v6 = v10;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](locationCopy, v6);
 }
 
 uint64_t __56__CAMLocationController__startMonitoringLocationUpdates__block_invoke()
@@ -370,21 +370,21 @@ uint64_t __56__CAMLocationController__startMonitoringLocationUpdates__block_invo
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v18 = a4;
-  v5 = [(CAMLocationController *)self _isMonitoringLocation];
-  v6 = v18;
-  if (v5)
+  locationsCopy = locations;
+  _isMonitoringLocation = [(CAMLocationController *)self _isMonitoringLocation];
+  v6 = locationsCopy;
+  if (_isMonitoringLocation)
   {
-    v7 = [v18 lastObject];
-    v8 = v7;
-    if (v7)
+    lastObject = [locationsCopy lastObject];
+    v8 = lastObject;
+    if (lastObject)
     {
-      [v7 horizontalAccuracy];
+      [lastObject horizontalAccuracy];
       v10 = v9;
-      v11 = [v8 timestamp];
-      [v11 timeIntervalSinceNow];
+      timestamp = [v8 timestamp];
+      [timestamp timeIntervalSinceNow];
       v13 = v12;
 
       if (v13 < -60.0 || v10 < 0.0)
@@ -395,9 +395,9 @@ uint64_t __56__CAMLocationController__startMonitoringLocationUpdates__block_invo
 
       else
       {
-        v14 = [(CAMLocationController *)self currentLocation];
+        currentLocation = [(CAMLocationController *)self currentLocation];
 
-        if (!v14)
+        if (!currentLocation)
         {
           [v8 horizontalAccuracy];
           v16 = v15;
@@ -411,31 +411,31 @@ uint64_t __56__CAMLocationController__startMonitoringLocationUpdates__block_invo
     [(CAMLocationController *)self _notifyListenersWaitingOnLocation:v8];
     [(CAMLocationController *)self _updateAssetsWaitingOnLocation];
 
-    v6 = v18;
+    v6 = locationsCopy;
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](_isMonitoringLocation, v6);
 }
 
-- (void)locationManager:(id)a3 didUpdateHeading:(id)a4
+- (void)locationManager:(id)manager didUpdateHeading:(id)heading
 {
-  v7 = a4;
+  headingCopy = heading;
   if ([(CAMLocationController *)self isHeadingEnabled])
   {
-    [v7 headingAccuracy];
+    [headingCopy headingAccuracy];
     if (v6 > 0.0)
     {
       [(CAMLocationController *)self willChangeValueForKey:@"currentHeading"];
-      objc_storeStrong(&self->_currentHeading, a4);
+      objc_storeStrong(&self->_currentHeading, heading);
       [(CAMLocationController *)self didChangeValueForKey:@"currentHeading"];
     }
   }
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  authorizationCopy = authorization;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -445,7 +445,7 @@ uint64_t __56__CAMLocationController__startMonitoringLocationUpdates__block_invo
   v11 = __63__CAMLocationController_locationManagerDidChangeAuthorization___block_invoke;
   v12 = &unk_1E76FAFF0;
   v14 = &v15;
-  v5 = v4;
+  v5 = authorizationCopy;
   v13 = v5;
   [(CAMLocationController *)self _performBlock:&v9 andLogIfExecutionExceeds:@"[CLLocationManager authorizationStatus]" logPrefix:0.2];
   [(CAMLocationController *)self _setLastKnownAuthorizationStatus:*(v16 + 6), v9, v10, v11, v12];
@@ -486,20 +486,20 @@ uint64_t __63__CAMLocationController_locationManagerDidChangeAuthorization___blo
   return result;
 }
 
-+ (id)locationMetadataForLocation:(id)a3 heading:(id)a4 device:(int64_t)a5
++ (id)locationMetadataForLocation:(id)location heading:(id)heading device:(int64_t)device
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  locationCopy = location;
+  headingCopy = heading;
+  if (!locationCopy)
   {
     v10 = 0;
     goto LABEL_40;
   }
 
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [v8 coordinate];
+  [locationCopy coordinate];
   v12 = v11;
-  [v8 coordinate];
+  [locationCopy coordinate];
   v14 = v13;
   *&v15 = fabsf(v12);
   if (v12 >= 0.0)
@@ -547,35 +547,35 @@ uint64_t __63__CAMLocationController_locationManagerDidChangeAuthorization___blo
   [v10 setObject:v22 forKey:*MEMORY[0x1E696DC28]];
 
   [v10 setObject:v18 forKey:*MEMORY[0x1E696DC30]];
-  v23 = [v8 timestamp];
-  if (v23)
+  timestamp = [locationCopy timestamp];
+  if (timestamp)
   {
-    v24 = [a1 _sharedGPSTimestampFormatter];
-    v25 = [v24 stringFromDate:v23];
+    _sharedGPSTimestampFormatter = [self _sharedGPSTimestampFormatter];
+    v25 = [_sharedGPSTimestampFormatter stringFromDate:timestamp];
     if (v25)
     {
       [v10 setObject:v25 forKey:*MEMORY[0x1E696DC70]];
     }
 
-    v26 = [a1 _sharedGPSDatestampFormatter];
-    v27 = [v26 stringFromDate:v23];
+    _sharedGPSDatestampFormatter = [self _sharedGPSDatestampFormatter];
+    v27 = [_sharedGPSDatestampFormatter stringFromDate:timestamp];
     if (v27)
     {
       [v10 setObject:v27 forKey:*MEMORY[0x1E696DBA8]];
     }
   }
 
-  [v8 horizontalAccuracy];
+  [locationCopy horizontalAccuracy];
   if (v28 >= 0.0)
   {
     v29 = [MEMORY[0x1E696AD98] numberWithDouble:?];
     [v10 setObject:v29 forKey:*MEMORY[0x1E696DC00]];
   }
 
-  [v8 verticalAccuracy];
+  [locationCopy verticalAccuracy];
   if (v30 >= 0.0)
   {
-    [v8 altitude];
+    [locationCopy altitude];
     v32 = v31 < 0.0;
     v33 = fabs(v31);
     if (v31 < 0.0)
@@ -590,21 +590,21 @@ uint64_t __63__CAMLocationController_locationManagerDidChangeAuthorization___blo
     [v10 setObject:v35 forKey:*MEMORY[0x1E696DB90]];
   }
 
-  if (v9)
+  if (headingCopy)
   {
-    [v9 headingAccuracy];
+    [headingCopy headingAccuracy];
     if (v36 >= 0.0)
     {
-      if (CFPreferencesGetAppBooleanValue(@"kMagneticNorth", @"com.apple.compass", 0) || ([v9 trueHeading], v37 < 0.0))
+      if (CFPreferencesGetAppBooleanValue(@"kMagneticNorth", @"com.apple.compass", 0) || ([headingCopy trueHeading], v37 < 0.0))
       {
-        [v9 magneticHeading];
+        [headingCopy magneticHeading];
         v39 = v38;
         v40 = @"M";
       }
 
       else
       {
-        [v9 trueHeading];
+        [headingCopy trueHeading];
         v39 = v48;
         v40 = @"T";
       }
@@ -613,7 +613,7 @@ uint64_t __63__CAMLocationController_locationManagerDidChangeAuthorization___blo
       [v10 setObject:v41 forKey:*MEMORY[0x1E696DBB0]];
 
       [v10 setObject:v40 forKey:*MEMORY[0x1E696DBB8]];
-      if ((a5 - 8) >= 4 && a5 != 1)
+      if ((device - 8) >= 4 && device != 1)
       {
         goto LABEL_38;
       }
@@ -640,7 +640,7 @@ LABEL_38:
   }
 
   v44 = MEMORY[0x1E696AD98];
-  [v8 speed];
+  [locationCopy speed];
   v45 = [v44 numberWithDouble:?];
   [v10 setObject:v45 forKey:*MEMORY[0x1E696DC58]];
 
@@ -651,9 +651,9 @@ LABEL_40:
   return v46;
 }
 
-- (id)headingForOrientation:(int64_t)a3
+- (id)headingForOrientation:(int64_t)orientation
 {
-  v3 = a3;
+  orientationCopy = orientation;
   if ([(CAMLocationController *)self _isMonitoringLocation])
   {
     v14[0] = MEMORY[0x1E69E9820];
@@ -661,7 +661,7 @@ LABEL_40:
     v14[2] = __47__CAMLocationController_headingForOrientation___block_invoke;
     v14[3] = &unk_1E76FC3A8;
     v14[4] = self;
-    v15 = v3;
+    v15 = orientationCopy;
     [(CAMLocationController *)self _performBlock:v14 andLogIfExecutionExceeds:@"[CLLocationManager setHeadingOrientation:]" logPrefix:0.2];
     v8 = 0;
     v9 = &v8;
@@ -703,22 +703,22 @@ void __47__CAMLocationController_headingForOrientation___block_invoke_86(uint64_
   *(v3 + 40) = v2;
 }
 
-- (void)_performBlock:(id)a3 andLogIfExecutionExceeds:(double)a4 logPrefix:(id)a5
+- (void)_performBlock:(id)block andLogIfExecutionExceeds:(double)exceeds logPrefix:(id)prefix
 {
   v16 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = a3;
+  prefixCopy = prefix;
+  blockCopy = block;
   Current = CFAbsoluteTimeGetCurrent();
-  v8[2](v8);
+  blockCopy[2](blockCopy);
 
   v10 = CFAbsoluteTimeGetCurrent() - Current;
-  if (v10 > a4)
+  if (v10 > exceeds)
   {
     v11 = os_log_create("com.apple.camera", "Location");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543618;
-      v13 = v7;
+      v13 = prefixCopy;
       v14 = 2048;
       v15 = v10;
       _os_log_impl(&dword_1A3640000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ took %.3f seconds", &v12, 0x16u);
@@ -726,7 +726,7 @@ void __47__CAMLocationController_headingForOrientation___block_invoke_86(uint64_
   }
 }
 
-- (void)_notifyListenersForAuthorizationStatusUpdate:(int)a3
+- (void)_notifyListenersForAuthorizationStatusUpdate:(int)update
 {
   listenersQueue = self->__listenersQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -734,7 +734,7 @@ void __47__CAMLocationController_headingForOrientation___block_invoke_86(uint64_
   v4[2] = __70__CAMLocationController__notifyListenersForAuthorizationStatusUpdate___block_invoke;
   v4[3] = &unk_1E76FC3A8;
   v4[4] = self;
-  v5 = a3;
+  updateCopy = update;
   dispatch_async(listenersQueue, v4);
 }
 
@@ -785,17 +785,17 @@ void __70__CAMLocationController__notifyListenersForAuthorizationStatusUpdate___
   }
 }
 
-- (void)_notifyListenersWaitingOnLocation:(id)a3
+- (void)_notifyListenersWaitingOnLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   listenersQueue = self->__listenersQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__CAMLocationController__notifyListenersWaitingOnLocation___block_invoke;
   v7[3] = &unk_1E76F7960;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = locationCopy;
+  v6 = locationCopy;
   dispatch_async(listenersQueue, v7);
 }
 
@@ -846,17 +846,17 @@ void __59__CAMLocationController__notifyListenersWaitingOnLocation___block_invok
   }
 }
 
-- (void)addListenerForLocationUpdates:(id)a3
+- (void)addListenerForLocationUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   listenersQueue = self->__listenersQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__CAMLocationController_addListenerForLocationUpdates___block_invoke;
   v7[3] = &unk_1E76F7960;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = updatesCopy;
+  v6 = updatesCopy;
   dispatch_async(listenersQueue, v7);
 }
 
@@ -922,17 +922,17 @@ uint64_t __55__CAMLocationController_addListenerForLocationUpdates___block_invok
   return result;
 }
 
-- (void)removeListenerForLocationUpdates:(id)a3
+- (void)removeListenerForLocationUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   listenersQueue = self->__listenersQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__CAMLocationController_removeListenerForLocationUpdates___block_invoke;
   v7[3] = &unk_1E76F7960;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = updatesCopy;
+  v6 = updatesCopy;
   dispatch_async(listenersQueue, v7);
 }
 

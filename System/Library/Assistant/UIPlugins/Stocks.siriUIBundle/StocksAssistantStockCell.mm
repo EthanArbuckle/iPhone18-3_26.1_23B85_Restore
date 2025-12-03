@@ -1,9 +1,9 @@
 @interface StocksAssistantStockCell
 + (id)infoAttributes;
-- (StocksAssistantStockCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (StocksAssistantStockCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (StocksAssistantStockSnippetController)snippetController;
-- (id)valueForAttribute:(unint64_t)a3;
-- (void)setStockObject:(id)a3;
+- (id)valueForAttribute:(unint64_t)attribute;
+- (void)setStockObject:(id)object;
 @end
 
 @implementation StocksAssistantStockCell
@@ -49,11 +49,11 @@
   return v22;
 }
 
-- (StocksAssistantStockCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (StocksAssistantStockCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = StocksAssistantStockCell;
-  v4 = [(StocksAssistantStockCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(StocksAssistantStockCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -64,43 +64,43 @@
   return v5;
 }
 
-- (id)valueForAttribute:(unint64_t)a3
+- (id)valueForAttribute:(unint64_t)attribute
 {
-  if (a3 > 4)
+  if (attribute > 4)
   {
-    if (a3 <= 6)
+    if (attribute <= 6)
     {
-      if (a3 != 5)
+      if (attribute != 5)
       {
-        v4 = +[StockDataFormatter sharedDataFormatter];
-        v5 = [(StocksAssistantStockCell *)self stock];
-        v6 = [v5 yearHigh];
+        stock2 = +[StockDataFormatter sharedDataFormatter];
+        stock = [(StocksAssistantStockCell *)self stock];
+        yearHigh = [stock yearHigh];
         goto LABEL_23;
       }
 
-      v4 = [(StocksAssistantStockCell *)self stock];
-      v7 = [v4 marketcap];
+      stock2 = [(StocksAssistantStockCell *)self stock];
+      marketcap = [stock2 marketcap];
 LABEL_20:
-      v5 = v7;
-      v8 = [Stock localizedMagnitudeAbbreviatedStringWithString:v7];
+      stock = marketcap;
+      v8 = [Stock localizedMagnitudeAbbreviatedStringWithString:marketcap];
       goto LABEL_24;
     }
 
-    switch(a3)
+    switch(attribute)
     {
       case 7uLL:
-        v4 = +[StockDataFormatter sharedDataFormatter];
-        v5 = [(StocksAssistantStockCell *)self stock];
-        v6 = [v5 yearLow];
+        stock2 = +[StockDataFormatter sharedDataFormatter];
+        stock = [(StocksAssistantStockCell *)self stock];
+        yearHigh = [stock yearLow];
         goto LABEL_23;
       case 8uLL:
-        v4 = [(StocksAssistantStockCell *)self stock];
-        v7 = [v4 averageVolume];
+        stock2 = [(StocksAssistantStockCell *)self stock];
+        marketcap = [stock2 averageVolume];
         goto LABEL_20;
       case 9uLL:
-        v4 = +[StockDataFormatter sharedDataFormatter];
-        v5 = [(StocksAssistantStockCell *)self stock];
-        v6 = [v5 dividendYield];
+        stock2 = +[StockDataFormatter sharedDataFormatter];
+        stock = [(StocksAssistantStockCell *)self stock];
+        yearHigh = [stock dividendYield];
         goto LABEL_23;
     }
 
@@ -108,60 +108,60 @@ LABEL_27:
     sub_5518();
   }
 
-  if (a3 <= 1)
+  if (attribute <= 1)
   {
-    if (!a3)
+    if (!attribute)
     {
-      v4 = +[StockDataFormatter sharedDataFormatter];
-      v5 = [(StocksAssistantStockCell *)self stock];
-      v6 = [v5 open];
+      stock2 = +[StockDataFormatter sharedDataFormatter];
+      stock = [(StocksAssistantStockCell *)self stock];
+      yearHigh = [stock open];
       goto LABEL_23;
     }
 
-    if (a3 == 1)
+    if (attribute == 1)
     {
-      v4 = +[StockDataFormatter sharedDataFormatter];
-      v5 = [(StocksAssistantStockCell *)self stock];
-      v6 = [v5 high];
+      stock2 = +[StockDataFormatter sharedDataFormatter];
+      stock = [(StocksAssistantStockCell *)self stock];
+      yearHigh = [stock high];
       goto LABEL_23;
     }
 
     goto LABEL_27;
   }
 
-  if (a3 == 2)
+  if (attribute == 2)
   {
-    v4 = +[StockDataFormatter sharedDataFormatter];
-    v5 = [(StocksAssistantStockCell *)self stock];
-    v6 = [v5 low];
+    stock2 = +[StockDataFormatter sharedDataFormatter];
+    stock = [(StocksAssistantStockCell *)self stock];
+    yearHigh = [stock low];
     goto LABEL_23;
   }
 
-  if (a3 == 3)
+  if (attribute == 3)
   {
-    v4 = [(StocksAssistantStockCell *)self stock];
-    v7 = [v4 volume];
+    stock2 = [(StocksAssistantStockCell *)self stock];
+    marketcap = [stock2 volume];
     goto LABEL_20;
   }
 
-  v4 = +[StockDataFormatter sharedDataFormatter];
-  v5 = [(StocksAssistantStockCell *)self stock];
-  v6 = [v5 peRatio];
+  stock2 = +[StockDataFormatter sharedDataFormatter];
+  stock = [(StocksAssistantStockCell *)self stock];
+  yearHigh = [stock peRatio];
 LABEL_23:
-  v9 = v6;
-  [v6 floatValue];
+  v9 = yearHigh;
+  [yearHigh floatValue];
   v10 = [NSNumber numberWithFloat:?];
-  v8 = [v4 formattedNumber:v10 withPrecision:2 useGroupSeparator:1];
+  v8 = [stock2 formattedNumber:v10 withPrecision:2 useGroupSeparator:1];
 
 LABEL_24:
 
   return v8;
 }
 
-- (void)setStockObject:(id)a3
+- (void)setStockObject:(id)object
 {
-  v4 = a3;
-  v5 = [[Stock alloc] initWithSiriStockObject:v4];
+  objectCopy = object;
+  v5 = [[Stock alloc] initWithSiriStockObject:objectCopy];
 
   [(StocksAssistantStockCell *)self setStock:v5];
 }

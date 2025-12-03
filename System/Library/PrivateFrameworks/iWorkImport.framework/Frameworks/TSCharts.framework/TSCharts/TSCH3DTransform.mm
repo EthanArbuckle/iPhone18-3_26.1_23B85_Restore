@@ -4,22 +4,22 @@
 - (Transform)asTSCH3DCPPTransform;
 - (const)transform;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (tquat<float>)rotation;
 - (tvec3<float>)center;
 - (tvec3<float>)scaleFactor;
 - (tvec3<float>)translation;
-- (void)setCenter:(tvec3<float>)a3;
-- (void)setRotation:(tquat<float>)a3;
-- (void)setScaleFactor:(tvec3<float>)a3;
-- (void)setTranslation:(tvec3<float>)a3;
+- (void)setCenter:(tvec3<float>)center;
+- (void)setRotation:(tquat<float>)rotation;
+- (void)setScaleFactor:(tvec3<float>)factor;
+- (void)setTranslation:(tvec3<float>)translation;
 @end
 
 @implementation TSCH3DTransform
 
 + (id)transform
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -50,7 +50,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   if (result)
@@ -103,39 +103,39 @@
   return self;
 }
 
-- (void)setTranslation:(tvec3<float>)a3
+- (void)setTranslation:(tvec3<float>)translation
 {
-  if (self->_translation.var0.var0 != **&a3.var0.var0 || self->_translation.var1.var0 != *(*&a3.var0.var0 + 4) || self->_translation.var2.var0 != *(*&a3.var0.var0 + 8))
+  if (self->_translation.var0.var0 != **&translation.var0.var0 || self->_translation.var1.var0 != *(*&translation.var0.var0 + 4) || self->_translation.var2.var0 != *(*&translation.var0.var0 + 8))
   {
     self->_dirty = 1;
-    self->_translation = **&a3.var0.var0;
+    self->_translation = **&translation.var0.var0;
   }
 }
 
-- (void)setScaleFactor:(tvec3<float>)a3
+- (void)setScaleFactor:(tvec3<float>)factor
 {
-  if (self->_scaleFactor.var0.var0 != **&a3.var0.var0 || self->_scaleFactor.var1.var0 != *(*&a3.var0.var0 + 4) || self->_scaleFactor.var2.var0 != *(*&a3.var0.var0 + 8))
+  if (self->_scaleFactor.var0.var0 != **&factor.var0.var0 || self->_scaleFactor.var1.var0 != *(*&factor.var0.var0 + 4) || self->_scaleFactor.var2.var0 != *(*&factor.var0.var0 + 8))
   {
     self->_dirty = 1;
-    self->_scaleFactor = **&a3.var0.var0;
+    self->_scaleFactor = **&factor.var0.var0;
   }
 }
 
-- (void)setCenter:(tvec3<float>)a3
+- (void)setCenter:(tvec3<float>)center
 {
-  if (self->_center.var0.var0 != **&a3.var0.var0 || self->_center.var1.var0 != *(*&a3.var0.var0 + 4) || self->_center.var2.var0 != *(*&a3.var0.var0 + 8))
+  if (self->_center.var0.var0 != **&center.var0.var0 || self->_center.var1.var0 != *(*&center.var0.var0 + 4) || self->_center.var2.var0 != *(*&center.var0.var0 + 8))
   {
     self->_dirty = 1;
-    self->_center = **&a3.var0.var0;
+    self->_center = **&center.var0.var0;
   }
 }
 
-- (void)setRotation:(tquat<float>)a3
+- (void)setRotation:(tquat<float>)rotation
 {
-  if (self->_rotation.x != a3.x || self->_rotation.y != a3.y || self->_rotation.z != a3.z || self->_rotation.w != a3.w)
+  if (self->_rotation.x != rotation.x || self->_rotation.y != rotation.y || self->_rotation.z != rotation.z || self->_rotation.w != rotation.w)
   {
     self->_dirty = 1;
-    self->_rotation = a3;
+    self->_rotation = rotation;
   }
 }
 

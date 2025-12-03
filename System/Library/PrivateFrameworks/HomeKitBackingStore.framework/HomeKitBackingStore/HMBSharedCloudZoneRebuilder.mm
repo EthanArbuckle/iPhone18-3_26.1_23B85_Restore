@@ -1,7 +1,7 @@
 @interface HMBSharedCloudZoneRebuilder
 + (id)logCategory;
 - (HMBCloudZone)cloudZone;
-- (HMBSharedCloudZoneRebuilder)initWithCloudZone:(id)a3;
+- (HMBSharedCloudZoneRebuilder)initWithCloudZone:(id)zone;
 - (id)logIdentifier;
 - (void)handleIdentityLost;
 - (void)rebuild;
@@ -18,11 +18,11 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMBSharedCloudZoneRebuilder *)self cloudZone];
-  v3 = [v2 zoneID];
-  v4 = [v3 name];
+  cloudZone = [(HMBSharedCloudZoneRebuilder *)self cloudZone];
+  zoneID = [cloudZone zoneID];
+  name = [zoneID name];
 
-  return v4;
+  return name;
 }
 
 - (void)handleIdentityLost
@@ -31,21 +31,21 @@
   v3 = objc_alloc_init(MEMORY[0x277D2C900]);
   [(HMBSharedCloudZoneRebuilder *)self setRebuildCompleteFuture:v3];
 
-  v4 = [(HMBSharedCloudZoneRebuilder *)self rebuilderStatus];
-  v5 = [v4 rebuildState];
+  rebuilderStatus = [(HMBSharedCloudZoneRebuilder *)self rebuilderStatus];
+  rebuildState = [rebuilderStatus rebuildState];
 
   v6 = [[HMBCloudZoneRebuilderStatus alloc] initWithState:1 message:@"Lost key on shared zone."];
   [(HMBSharedCloudZoneRebuilder *)self setRebuilderStatus:v6];
 
-  v7 = [(HMBSharedCloudZoneRebuilder *)self cloudZone];
-  v8 = [(HMBSharedCloudZoneRebuilder *)self rebuilderStatus];
-  v9 = [v8 rebuildState];
+  cloudZone = [(HMBSharedCloudZoneRebuilder *)self cloudZone];
+  rebuilderStatus2 = [(HMBSharedCloudZoneRebuilder *)self rebuilderStatus];
+  rebuildState2 = [rebuilderStatus2 rebuildState];
 
-  if (v5 != v9)
+  if (rebuildState != rebuildState2)
   {
-    v10 = [v7 delegate];
+    delegate = [cloudZone delegate];
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -58,19 +58,19 @@
     objc_autoreleasePoolPop(v11);
     if (objc_opt_respondsToSelector())
     {
-      v15 = [(HMBSharedCloudZoneRebuilder *)v12 rebuilderStatus];
-      [v10 cloudZone:v7 didChangeRebuildStatus:v15];
+      rebuilderStatus3 = [(HMBSharedCloudZoneRebuilder *)selfCopy rebuilderStatus];
+      [delegate cloudZone:cloudZone didChangeRebuildStatus:rebuilderStatus3];
     }
   }
 
-  v16 = [v7 leaveCloudShareRequestingNewInvitationToken:1];
+  v16 = [cloudZone leaveCloudShareRequestingNewInvitationToken:1];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __49__HMBSharedCloudZoneRebuilder_handleIdentityLost__block_invoke;
   v22[3] = &unk_2786E13C0;
   v22[4] = self;
-  v23 = v7;
-  v17 = v7;
+  v23 = cloudZone;
+  v17 = cloudZone;
   v18 = [v16 addSuccessBlock:v22];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -134,7 +134,7 @@ void __49__HMBSharedCloudZoneRebuilder_handleIdentityLost__block_invoke_10(uint6
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -148,24 +148,24 @@ void __49__HMBSharedCloudZoneRebuilder_handleIdentityLost__block_invoke_10(uint6
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (HMBSharedCloudZoneRebuilder)initWithCloudZone:(id)a3
+- (HMBSharedCloudZoneRebuilder)initWithCloudZone:(id)zone
 {
-  v4 = a3;
+  zoneCopy = zone;
   v13.receiver = self;
   v13.super_class = HMBSharedCloudZoneRebuilder;
   v5 = [(HMBSharedCloudZoneRebuilder *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_cloudZone, v4);
+    objc_storeWeak(&v5->_cloudZone, zoneCopy);
     v7 = [[HMBCloudZoneRebuilderStatus alloc] initWithState:7 message:@"Zone believed to be functional."];
     rebuilderStatus = v6->_rebuilderStatus;
     v6->_rebuilderStatus = v7;
     v9 = v7;
 
-    v10 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
     rebuildCompleteFuture = v6->_rebuildCompleteFuture;
-    v6->_rebuildCompleteFuture = v10;
+    v6->_rebuildCompleteFuture = futureWithNoResult;
   }
 
   return v6;

@@ -1,14 +1,14 @@
 @interface PKDashboardRewardsBalanceDetailsViewHosting
-+ (id)makeViewControllerWithRewardsBalanceItem:(id)a3;
++ (id)makeViewControllerWithRewardsBalanceItem:(id)item;
 - (PKDashboardRewardsBalanceDetailsViewHosting)init;
 @end
 
 @implementation PKDashboardRewardsBalanceDetailsViewHosting
 
-+ (id)makeViewControllerWithRewardsBalanceItem:(id)a3
++ (id)makeViewControllerWithRewardsBalanceItem:(id)item
 {
-  v3 = a3;
-  v4 = _s9PassKitUI43PKDashboardRewardsBalanceDetailsViewHostingC04makeH10Controller07rewardsF4ItemSo06UIViewK0CSo0defM0C_tFZ_0(v3);
+  itemCopy = item;
+  v4 = _s9PassKitUI43PKDashboardRewardsBalanceDetailsViewHostingC04makeH10Controller07rewardsF4ItemSo06UIViewK0CSo0defM0C_tFZ_0(itemCopy);
 
   return v4;
 }

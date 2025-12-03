@@ -1,79 +1,79 @@
 @interface SymbolValidator
-- (SymbolValidator)initWithDelegate:(id)a3;
+- (SymbolValidator)initWithDelegate:(id)delegate;
 - (id)delegate;
 - (void)didParseData;
-- (void)failWithError:(id)a3;
-- (void)parseData:(id)a3;
-- (void)validateSymbol:(id)a3 withMaxResults:(int)a4;
+- (void)failWithError:(id)error;
+- (void)parseData:(id)data;
+- (void)validateSymbol:(id)symbol withMaxResults:(int)results;
 @end
 
 @implementation SymbolValidator
 
-- (SymbolValidator)initWithDelegate:(id)a3
+- (SymbolValidator)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = SymbolValidator;
   v5 = [(YQLRequest *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (void)validateSymbol:(id)a3 withMaxResults:(int)a4
+- (void)validateSymbol:(id)symbol withMaxResults:(int)results
 {
   v23[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  symbolCopy = symbol;
   v6 = +[NetPreferences sharedPreferences];
-  v7 = [v6 isNetworkReachable];
+  isNetworkReachable = [v6 isNetworkReachable];
 
-  if (v7)
+  if (isNetworkReachable)
   {
-    if (!v5)
+    if (!symbolCopy)
     {
       return;
     }
 
-    v8 = [(__CFString *)v5 mutableCopy];
+    v8 = [(__CFString *)symbolCopy mutableCopy];
 
     CFStringTransform(v8, 0, *MEMORY[0x277CBF108], 0);
     v9 = +[NetPreferences sharedPreferences];
-    v10 = [(YQLRequest *)self YQLLanguageCode];
-    v11 = [(YQLRequest *)self YQLCountryCode];
+    yQLLanguageCode = [(YQLRequest *)self YQLLanguageCode];
+    yQLCountryCode = [(YQLRequest *)self YQLCountryCode];
     v22[0] = @"format";
     v22[1] = @"ticker";
     v23[0] = @"json";
     v23[1] = v8;
     v22[2] = @"lang";
     v22[3] = @"region";
-    v23[2] = v10;
-    v23[3] = v11;
+    v23[2] = yQLLanguageCode;
+    v23[3] = yQLCountryCode;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:4];
-    v13 = [v9 stocksYQLBaseURL];
-    v14 = [v13 URLByAppendingPathComponent:@"/applewf/autocomplete"];
+    stocksYQLBaseURL = [v9 stocksYQLBaseURL];
+    v14 = [stocksYQLBaseURL URLByAppendingPathComponent:@"/applewf/autocomplete"];
 
     v15 = [v9 signedRequestForURL:v14 parameters:v12];
     if ([v9 serviceDebugging])
     {
       v16 = [v15 URL];
       [v16 absoluteString];
-      v21 = v11;
-      v18 = v17 = v10;
+      v21 = yQLCountryCode;
+      v18 = v17 = yQLLanguageCode;
       [YQLRequest appendDebugString:v18];
 
       v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v12];
-      v10 = v17;
-      v11 = v21;
+      yQLLanguageCode = v17;
+      yQLCountryCode = v21;
       [YQLRequest appendDebugString:v19];
     }
 
     [(YQLRequest *)self loadRequest:v15];
 
-    v5 = v8;
+    symbolCopy = v8;
   }
 
   else
@@ -83,17 +83,17 @@
   }
 }
 
-- (void)parseData:(id)a3
+- (void)parseData:(id)data
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   symbols = self->_symbols;
-  v21 = self;
+  selfCopy = self;
   self->_symbols = 0;
 
   v30 = 0;
-  v23 = v4;
-  v6 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v4 options:0 error:&v30];
+  v23 = dataCopy;
+  v6 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:&v30];
   v7 = v30;
   v22 = v6;
   if (v7)
@@ -108,7 +108,7 @@
 
   if (v8 || (objc_opt_respondsToSelector() & 1) == 0)
   {
-    [(YQLRequest *)v21 failToParseWithData:v23];
+    [(YQLRequest *)selfCopy failToParseWithData:v23];
   }
 
   else
@@ -179,15 +179,15 @@
         while (v9);
       }
 
-      v19 = v21->_symbols;
-      v21->_symbols = v24;
+      v19 = selfCopy->_symbols;
+      selfCopy->_symbols = v24;
 
-      [(SymbolValidator *)v21 didParseData];
+      [(SymbolValidator *)selfCopy didParseData];
     }
 
     else
     {
-      [(YQLRequest *)v21 failToParseWithData:v23, 0];
+      [(YQLRequest *)selfCopy failToParseWithData:v23, 0];
     }
   }
 }
@@ -198,14 +198,14 @@
   [WeakRetained symbolValidator:self didValidateSymbols:self->_symbols];
 }
 
-- (void)failWithError:(id)a3
+- (void)failWithError:(id)error
 {
   v6.receiver = self;
   v6.super_class = SymbolValidator;
-  v4 = a3;
-  [(YQLRequest *)&v6 failWithError:v4];
+  errorCopy = error;
+  [(YQLRequest *)&v6 failWithError:errorCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained symbolValidator:self didFailWithError:{v4, v6.receiver, v6.super_class}];
+  [WeakRetained symbolValidator:self didFailWithError:{errorCopy, v6.receiver, v6.super_class}];
 }
 
 - (id)delegate

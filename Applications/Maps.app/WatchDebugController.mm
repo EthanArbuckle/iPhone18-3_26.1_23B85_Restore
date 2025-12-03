@@ -1,23 +1,23 @@
 @interface WatchDebugController
 - (WatchDebugController)init;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)dealloc;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation WatchDebugController
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 deselectRowAtIndexPath:v7 animated:1];
-  if ([v7 section] == 1)
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  if ([pathCopy section] == 1)
   {
-    v8 = [v6 cellForRowAtIndexPath:v7];
+    v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
     v9 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
     [v9 sizeToFit];
     [v8 setAccessoryView:v9];
@@ -60,35 +60,35 @@
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = [a4 section];
-  if (v5 == 1)
+  section = [path section];
+  if (section == 1)
   {
     v6 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
     [v6 setAccessoryView:0];
     v12 = +[UIColor blackColor];
-    v13 = [v6 textLabel];
-    [v13 setTextColor:v12];
+    textLabel = [v6 textLabel];
+    [textLabel setTextColor:v12];
 
-    v9 = [v6 textLabel];
-    [v9 setText:@"Copy Diagnostics"];
+    textLabel2 = [v6 textLabel];
+    [textLabel2 setText:@"Copy Diagnostics"];
     goto LABEL_5;
   }
 
-  if (!v5)
+  if (!section)
   {
     v6 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
     [v6 setAccessoryView:0];
     v7 = +[UIColor blackColor];
-    v8 = [v6 textLabel];
-    [v8 setTextColor:v7];
+    textLabel3 = [v6 textLabel];
+    [textLabel3 setTextColor:v7];
 
     [v6 setSelectionStyle:0];
-    v9 = [(GEOActiveTileGroup *)self->_activeTileGroup releaseInfo];
-    v10 = [NSString stringWithFormat:@"%@ - %i", v9, [(GEOActiveTileGroup *)self->_activeTileGroup identifier]];
-    v11 = [v6 textLabel];
-    [v11 setText:v10];
+    textLabel2 = [(GEOActiveTileGroup *)self->_activeTileGroup releaseInfo];
+    v10 = [NSString stringWithFormat:@"%@ - %i", textLabel2, [(GEOActiveTileGroup *)self->_activeTileGroup identifier]];
+    textLabel4 = [v6 textLabel];
+    [textLabel4 setText:v10];
 
 LABEL_5:
     goto LABEL_7;
@@ -100,43 +100,43 @@ LABEL_7:
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4 > 2)
+  if (section > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_101215590[a4];
+    return qword_101215590[section];
   }
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 == 1)
+  viewCopy = view;
+  if (section == 1)
   {
-    v7 = @"Copy diagnostic information to the pasteboard. Maps must be in the foreground on the paired Watch";
+    uniqueIdentifier = @"Copy diagnostic information to the pasteboard. Maps must be in the foreground on the paired Watch";
   }
 
-  else if (a4)
+  else if (section)
   {
-    v7 = 0;
+    uniqueIdentifier = 0;
   }
 
   else
   {
-    v7 = [(GEOActiveTileGroup *)self->_activeTileGroup uniqueIdentifier];
+    uniqueIdentifier = [(GEOActiveTileGroup *)self->_activeTileGroup uniqueIdentifier];
   }
 
-  return v7;
+  return uniqueIdentifier;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 0;
   }
@@ -179,8 +179,8 @@ LABEL_7:
     [(NSXPCConnection *)v2->_connection resume];
     v7 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
     [v7 sizeToFit];
-    v8 = [(WatchDebugController *)v2 tableView];
-    [v8 setTableHeaderView:v7];
+    tableView = [(WatchDebugController *)v2 tableView];
+    [tableView setTableHeaderView:v7];
 
     [v7 startAnimating];
     objc_initWeak(&location, v2);

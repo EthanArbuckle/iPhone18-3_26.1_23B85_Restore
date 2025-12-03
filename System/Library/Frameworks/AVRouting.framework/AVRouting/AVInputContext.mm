@@ -1,41 +1,41 @@
 @interface AVInputContext
-+ (id)inputContextForID:(id)a3;
++ (id)inputContextForID:(id)d;
 + (id)sharedSystemAudioInputContext;
 + (void)initialize;
 - (AVInputContext)init;
-- (AVInputContext)initWithCoder:(id)a3;
-- (AVInputContext)initWithInputContextImpl:(id)a3;
+- (AVInputContext)initWithCoder:(id)coder;
+- (AVInputContext)initWithInputContextImpl:(id)impl;
 - (AVInputDevice)inputDevice;
 - (BOOL)canSetInputGain;
-- (BOOL)clearUserPreferredInputDevice:(id)a3 error:(id *)a4;
-- (BOOL)getApplicationProcessID:(int *)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)setInputGain:(float)a3 error:(id *)a4;
+- (BOOL)clearUserPreferredInputDevice:(id)device error:(id *)error;
+- (BOOL)getApplicationProcessID:(int *)d;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)setInputGain:(float)gain error:(id *)error;
 - (NSString)contextID;
 - (NSString)inputContextType;
 - (float)inputGain;
 - (id)description;
 - (id)deviceName;
 - (id)impl;
-- (id)userPreferredInputDevice:(id)a3;
+- (id)userPreferredInputDevice:(id)device;
 - (int)applicationProcessID;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)inputContextImpl:(id)a3 didChangeInputDeviceWithInitiator:(id)a4;
-- (void)inputContextImpl:(id)a3 didExpireWithReplacement:(id)a4;
-- (void)inputContextImpl:(id)a3 didInitiateDestinationChange:(id)a4;
-- (void)inputContextImplDidChangeCanSetInputGain:(id)a3;
-- (void)inputContextImplDidChangeInputGain:(id)a3;
-- (void)setApplicationProcessID:(int)a3;
-- (void)setInputDevice:(id)a3 options:(id)a4 completionHandler:(id)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)inputContextImpl:(id)impl didChangeInputDeviceWithInitiator:(id)initiator;
+- (void)inputContextImpl:(id)impl didExpireWithReplacement:(id)replacement;
+- (void)inputContextImpl:(id)impl didInitiateDestinationChange:(id)change;
+- (void)inputContextImplDidChangeCanSetInputGain:(id)gain;
+- (void)inputContextImplDidChangeInputGain:(id)gain;
+- (void)setApplicationProcessID:(int)d;
+- (void)setInputDevice:(id)device options:(id)options completionHandler:(id)handler;
 @end
 
 @implementation AVInputContext
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work();
@@ -46,28 +46,28 @@
 
 + (id)sharedSystemAudioInputContext
 {
-  v2 = [[a1 alloc] initWithInputContextImpl:{objc_msgSend(objc_msgSend(a1, "defaultInputContextImplClass"), "sharedSystemAudioInputContext")}];
+  v2 = [[self alloc] initWithInputContextImpl:{objc_msgSend(objc_msgSend(self, "defaultInputContextImplClass"), "sharedSystemAudioInputContext")}];
 
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = [(AVInputContext *)self contextID];
-  v6 = [(AVInputContext *)self inputContextType];
-  [a3 encodeObject:v5 forKey:@"AVInputContextSerializationKeyContextID"];
+  contextID = [(AVInputContext *)self contextID];
+  inputContextType = [(AVInputContext *)self inputContextType];
+  [coder encodeObject:contextID forKey:@"AVInputContextSerializationKeyContextID"];
 
-  [a3 encodeObject:v6 forKey:@"AVInputContextSerializationKeyContextType"];
+  [coder encodeObject:inputContextType forKey:@"AVInputContextSerializationKeyContextType"];
 }
 
-+ (id)inputContextForID:(id)a3
++ (id)inputContextForID:(id)d
 {
-  if (!a3)
+  if (!d)
   {
     return 0;
   }
 
-  v3 = [[a1 alloc] initWithInputContextImpl:{objc_msgSend(objc_msgSend(a1, "defaultInputContextImplClass"), "inputContextImplForID:type:", a3, 0)}];
+  v3 = [[self alloc] initWithInputContextImpl:{objc_msgSend(objc_msgSend(self, "defaultInputContextImplClass"), "inputContextImplForID:type:", d, 0)}];
 
   return v3;
 }
@@ -134,7 +134,7 @@ id __22__AVInputContext_impl__block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -142,31 +142,31 @@ id __22__AVInputContext_impl__block_invoke(uint64_t a1)
     return 0;
   }
 
-  v5 = [(AVInputContext *)self impl];
-  v6 = [a3 impl];
+  impl = [(AVInputContext *)self impl];
+  impl2 = [equal impl];
 
-  return [v5 isEqual:v6];
+  return [impl isEqual:impl2];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(AVInputContext *)self impl];
+  impl = [(AVInputContext *)self impl];
 
-  return [v2 hash];
+  return [impl hash];
 }
 
 - (NSString)contextID
 {
-  v2 = [(AVInputContext *)self impl];
+  impl = [(AVInputContext *)self impl];
 
-  return [v2 ID];
+  return [impl ID];
 }
 
 - (NSString)inputContextType
 {
-  v2 = [(AVInputContext *)self impl];
+  impl = [(AVInputContext *)self impl];
 
-  return [v2 inputContextType];
+  return [impl inputContextType];
 }
 
 - (int)applicationProcessID
@@ -176,7 +176,7 @@ id __22__AVInputContext_impl__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (BOOL)getApplicationProcessID:(int *)a3
+- (BOOL)getApplicationProcessID:(int *)d
 {
   v12 = 0;
   v13 = &v12;
@@ -198,7 +198,7 @@ id __22__AVInputContext_impl__block_invoke(uint64_t a1)
   v5 = *(v13 + 24);
   if (v5 == 1)
   {
-    *a3 = *(v9 + 6);
+    *d = *(v9 + 6);
   }
 
   _Block_object_dispose(&v8, 8);
@@ -213,7 +213,7 @@ void *__42__AVInputContext_getApplicationProcessID___block_invoke(void *result)
   return result;
 }
 
-- (void)setApplicationProcessID:(int)a3
+- (void)setApplicationProcessID:(int)d
 {
   v12 = *MEMORY[0x1E69E9840];
   if (dword_1ED6F6B28)
@@ -231,7 +231,7 @@ void *__42__AVInputContext_getApplicationProcessID___block_invoke(void *result)
   block[2] = __42__AVInputContext_setApplicationProcessID___block_invoke;
   block[3] = &unk_1E794F028;
   block[4] = self;
-  v9 = a3;
+  dCopy = d;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, block);
   [-[AVInputContext impl](self "impl")];
   v7 = *MEMORY[0x1E69E9840];
@@ -258,16 +258,16 @@ uint64_t __42__AVInputContext_setApplicationProcessID___block_invoke(uint64_t re
 
 - (AVInputDevice)inputDevice
 {
-  v2 = [(AVInputContext *)self impl];
+  impl = [(AVInputContext *)self impl];
 
-  return [v2 inputDevice];
+  return [impl inputDevice];
 }
 
-- (void)inputContextImpl:(id)a3 didInitiateDestinationChange:(id)a4
+- (void)inputContextImpl:(id)impl didInitiateDestinationChange:(id)change
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v10 = @"AVInputContextDestinationChangeKey";
-  v11[0] = a4;
+  v11[0] = change;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   if (dword_1ED6F6B28)
   {
@@ -280,13 +280,13 @@ uint64_t __42__AVInputContext_setApplicationProcessID___block_invoke(uint64_t re
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)inputContextImpl:(id)a3 didChangeInputDeviceWithInitiator:(id)a4
+- (void)inputContextImpl:(id)impl didChangeInputDeviceWithInitiator:(id)initiator
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (initiator)
   {
     v10 = @"AVInputContextDestinationChangeInitiatorKey";
-    v11[0] = a4;
+    v11[0] = initiator;
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   }
 
@@ -306,7 +306,7 @@ uint64_t __42__AVInputContext_setApplicationProcessID___block_invoke(uint64_t re
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)inputContextImpl:(id)a3 didExpireWithReplacement:(id)a4
+- (void)inputContextImpl:(id)impl didExpireWithReplacement:(id)replacement
 {
   v8 = 0;
   v9 = &v8;
@@ -319,12 +319,12 @@ uint64_t __42__AVInputContext_setApplicationProcessID___block_invoke(uint64_t re
   block[1] = 3221225472;
   block[2] = __60__AVInputContext_inputContextImpl_didExpireWithReplacement___block_invoke;
   block[3] = &unk_1E794EE90;
-  block[5] = a4;
+  block[5] = replacement;
   block[6] = &v8;
   block[4] = self;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, block);
   [v9[5] setParentInputContext:0];
-  [a4 setParentInputContext:self];
+  [replacement setParentInputContext:self];
   [(AVInputContext *)self inputContextImpl:[(AVInputContext *)self impl] didChangeInputDeviceWithInitiator:@"server death"];
   [(AVInputContext *)self inputContextImpl:[(AVInputContext *)self impl] didChangeInputDeviceWithInitiator:@"server death"];
 
@@ -340,12 +340,12 @@ id __60__AVInputContext_inputContextImpl_didExpireWithReplacement___block_invoke
   return result;
 }
 
-- (void)setInputDevice:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)setInputDevice:(id)device options:(id)options completionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v9 = [a4 objectForKeyedSubscript:@"AVInputContextSetInputDeviceInitiatorKey"];
+  v9 = [options objectForKeyedSubscript:@"AVInputContextSetInputDeviceInitiatorKey"];
   UpTimeNanoseconds = FigGetUpTimeNanoseconds();
-  v11 = [a3 description];
+  v11 = [device description];
   if (dword_1ED6F6B28)
   {
     v19 = 0;
@@ -360,12 +360,12 @@ id __60__AVInputContext_inputContextImpl_didExpireWithReplacement___block_invoke
   v17[1] = 3221225472;
   v17[2] = __59__AVInputContext_setInputDevice_options_completionHandler___block_invoke;
   v17[3] = &unk_1E794F050;
-  v17[7] = a5;
+  v17[7] = handler;
   v17[8] = UpTimeNanoseconds;
   v17[4] = self;
   v17[5] = v11;
   v17[6] = v9;
-  [v13 setInputDevice:a3 options:a4 completionHandler:v17];
+  [v13 setInputDevice:device options:options completionHandler:v17];
   v14 = *MEMORY[0x1E69E9840];
 }
 
@@ -391,21 +391,21 @@ uint64_t __59__AVInputContext_setInputDevice_options_completionHandler___block_i
   return result;
 }
 
-- (id)userPreferredInputDevice:(id)a3
+- (id)userPreferredInputDevice:(id)device
 {
-  v4 = [(AVInputContext *)self impl];
+  impl = [(AVInputContext *)self impl];
 
-  return [v4 userPreferredInputDevice:a3];
+  return [impl userPreferredInputDevice:device];
 }
 
-- (BOOL)clearUserPreferredInputDevice:(id)a3 error:(id *)a4
+- (BOOL)clearUserPreferredInputDevice:(id)device error:(id *)error
 {
-  v6 = [(AVInputContext *)self impl];
+  impl = [(AVInputContext *)self impl];
 
-  return [v6 clearUserPreferredInputDevice:a3 error:a4];
+  return [impl clearUserPreferredInputDevice:device error:error];
 }
 
-- (void)inputContextImplDidChangeCanSetInputGain:(id)a3
+- (void)inputContextImplDidChangeCanSetInputGain:(id)gain
 {
   v8 = *MEMORY[0x1E69E9840];
   if (dword_1ED6F6B28)
@@ -419,7 +419,7 @@ uint64_t __59__AVInputContext_setInputDevice_options_completionHandler___block_i
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)inputContextImplDidChangeInputGain:(id)a3
+- (void)inputContextImplDidChangeInputGain:(id)gain
 {
   v8 = *MEMORY[0x1E69E9840];
   if (dword_1ED6F6B28)
@@ -435,31 +435,31 @@ uint64_t __59__AVInputContext_setInputDevice_options_completionHandler___block_i
 
 - (BOOL)canSetInputGain
 {
-  v2 = [(AVInputContext *)self impl];
+  impl = [(AVInputContext *)self impl];
 
-  return [v2 canSetInputGain];
+  return [impl canSetInputGain];
 }
 
 - (float)inputGain
 {
-  v2 = [(AVInputContext *)self impl];
+  impl = [(AVInputContext *)self impl];
 
-  [v2 inputGain];
+  [impl inputGain];
   return result;
 }
 
-- (BOOL)setInputGain:(float)a3 error:(id *)a4
+- (BOOL)setInputGain:(float)gain error:(id *)error
 {
-  v6 = [(AVInputContext *)self impl];
-  *&v7 = a3;
+  impl = [(AVInputContext *)self impl];
+  *&v7 = gain;
 
-  return [v6 setInputGain:a4 error:v7];
+  return [impl setInputGain:error error:v7];
 }
 
-- (AVInputContext)initWithCoder:(id)a3
+- (AVInputContext)initWithCoder:(id)coder
 {
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"AVInputContextSerializationKeyContextID"];
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"AVInputContextSerializationKeyContextType"];
+  v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"AVInputContextSerializationKeyContextID"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"AVInputContextSerializationKeyContextType"];
   if (v5)
   {
     v7 = [objc_msgSend(objc_opt_class() "defaultInputContextImplClass")];
@@ -477,12 +477,12 @@ uint64_t __59__AVInputContext_setInputDevice_options_completionHandler___block_i
   return v5;
 }
 
-- (AVInputContext)initWithInputContextImpl:(id)a3
+- (AVInputContext)initWithInputContextImpl:(id)impl
 {
   v9.receiver = self;
   v9.super_class = AVInputContext;
   v4 = [(AVInputContext *)&v9 init];
-  if (v4 && (v5 = objc_alloc_init(AVInputContextInternal), (v4->_inputContext = v5) != 0) && (v4->_inputContext->ivarAccessQueue = av_readwrite_dispatch_queue_create("com.apple.avfoundation.inputcontext.ivars"), v4->_inputContext->impl = a3, (impl = v4->_inputContext->impl) != 0))
+  if (v4 && (v5 = objc_alloc_init(AVInputContextInternal), (v4->_inputContext = v5) != 0) && (v4->_inputContext->ivarAccessQueue = av_readwrite_dispatch_queue_create("com.apple.avfoundation.inputcontext.ivars"), v4->_inputContext->impl = impl, (impl = v4->_inputContext->impl) != 0))
   {
     [(AVInputContextImpl *)impl setParentInputContext:v4];
     v7 = v4;

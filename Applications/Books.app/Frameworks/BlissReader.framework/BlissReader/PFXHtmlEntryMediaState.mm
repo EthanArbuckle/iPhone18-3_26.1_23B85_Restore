@@ -1,16 +1,16 @@
 @interface PFXHtmlEntryMediaState
-- (void)setPropertySet:(id)a3;
+- (void)setPropertySet:(id)set;
 @end
 
 @implementation PFXHtmlEntryMediaState
 
-- (void)setPropertySet:(id)a3
+- (void)setPropertySet:(id)set
 {
   mPropertySet = self->mPropertySet;
-  if (mPropertySet != a3)
+  if (mPropertySet != set)
   {
 
-    self->mPropertySet = a3;
+    self->mPropertySet = set;
   }
 }
 

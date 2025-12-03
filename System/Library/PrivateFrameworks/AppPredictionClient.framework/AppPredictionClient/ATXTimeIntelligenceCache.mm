@@ -1,7 +1,7 @@
 @interface ATXTimeIntelligenceCache
 - (ATXTimeIntelligenceCache)init;
 - (id)cachedEvents;
-- (void)cacheEvents:(id)a3;
+- (void)cacheEvents:(id)events;
 - (void)evictCachedEvents;
 @end
 
@@ -14,8 +14,8 @@
   v2 = [(ATXTimeIntelligenceCache *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E698B010] appPredictionCacheDirectory];
-    v4 = [v3 stringByAppendingPathComponent:@"TimeIntelligence"];
+    appPredictionCacheDirectory = [MEMORY[0x1E698B010] appPredictionCacheDirectory];
+    v4 = [appPredictionCacheDirectory stringByAppendingPathComponent:@"TimeIntelligence"];
 
     v5 = objc_alloc(MEMORY[0x1E698AFF0]);
     v6 = __atxlog_handle_time_intelligence();
@@ -26,32 +26,32 @@
   return v2;
 }
 
-- (void)cacheEvents:(id)a3
+- (void)cacheEvents:(id)events
 {
-  v4 = a3;
-  v6 = [(ATXTimeIntelligenceCache *)self cache];
-  v5 = [v4 copy];
+  eventsCopy = events;
+  cache = [(ATXTimeIntelligenceCache *)self cache];
+  v5 = [eventsCopy copy];
 
-  [v6 storeSecureCodedObject:v5 error:0];
+  [cache storeSecureCodedObject:v5 error:0];
 }
 
 - (id)cachedEvents
 {
-  v2 = [(ATXTimeIntelligenceCache *)self cache];
+  cache = [(ATXTimeIntelligenceCache *)self cache];
   v3 = objc_autoreleasePoolPush();
   v4 = objc_alloc(MEMORY[0x1E695DFD8]);
   v5 = objc_opt_class();
   v6 = [v4 initWithObjects:{v5, objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v3);
-  v7 = [v2 readSecureCodedObjectWithMaxValidAge:v6 allowableClasses:0 error:86400.0];
+  v7 = [cache readSecureCodedObjectWithMaxValidAge:v6 allowableClasses:0 error:86400.0];
 
   return v7;
 }
 
 - (void)evictCachedEvents
 {
-  v2 = [(ATXTimeIntelligenceCache *)self cache];
-  [v2 evict];
+  cache = [(ATXTimeIntelligenceCache *)self cache];
+  [cache evict];
 }
 
 @end

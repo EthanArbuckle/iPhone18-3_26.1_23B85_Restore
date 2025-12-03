@@ -1,26 +1,26 @@
 @interface CAMBufferKeyValueObserverObservanceChange
-- (CAMBufferKeyValueObserverObservanceChange)initWithKeyPath:(id)a3 ofObject:(id)a4 withChange:(id)a5;
+- (CAMBufferKeyValueObserverObservanceChange)initWithKeyPath:(id)path ofObject:(id)object withChange:(id)change;
 - (NSObject)object;
 @end
 
 @implementation CAMBufferKeyValueObserverObservanceChange
 
-- (CAMBufferKeyValueObserverObservanceChange)initWithKeyPath:(id)a3 ofObject:(id)a4 withChange:(id)a5
+- (CAMBufferKeyValueObserverObservanceChange)initWithKeyPath:(id)path ofObject:(id)object withChange:(id)change
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   v18.receiver = self;
   v18.super_class = CAMBufferKeyValueObserverObservanceChange;
   v11 = [(CAMBufferKeyValueObserverObservanceChange *)&v18 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [pathCopy copy];
     keyPath = v11->_keyPath;
     v11->_keyPath = v12;
 
-    objc_storeWeak(&v11->_object, v9);
-    v14 = [v10 copy];
+    objc_storeWeak(&v11->_object, objectCopy);
+    v14 = [changeCopy copy];
     change = v11->_change;
     v11->_change = v14;
 

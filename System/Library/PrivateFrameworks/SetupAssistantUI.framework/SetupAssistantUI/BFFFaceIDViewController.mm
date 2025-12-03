@@ -5,23 +5,23 @@
 - (BOOL)isAnimating;
 - (void)_didSelectEnroll;
 - (void)_didSelectSkip;
-- (void)_userDidTapCancelButton:(id)a3;
+- (void)_userDidTapCancelButton:(id)button;
 - (void)controllerWasPopped;
-- (void)pearlEnrollController:(id)a3 finishedEnrollWithError:(id)a4;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)resetColorsAnimated:(BOOL)a3;
-- (void)setCompletesOnCancel:(BOOL)a3;
+- (void)pearlEnrollController:(id)controller finishedEnrollWithError:(id)error;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)resetColorsAnimated:(BOOL)animated;
+- (void)setCompletesOnCancel:(BOOL)cancel;
 - (void)startIndeterminateProgressIndicator;
 - (void)stopIndeterminateProgressIndicator;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BFFFaceIDViewController
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   BKUIPearlEnrollControllerClass = getBKUIPearlEnrollControllerClass();
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -29,9 +29,9 @@
   v6[3] = &unk_279BB4AC0;
   v6[4] = self;
   [BKUIPearlEnrollControllerClass preloadWithCompletion:v6];
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, 1);
+    completionCopy[2](completionCopy, 1);
   }
 }
 
@@ -68,8 +68,8 @@ void __71__BFFFaceIDViewController_performExtendedInitializationWithCompletion__
   [(BFFFaceIDViewController *)&v48 viewDidLoad];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"BACK_BUTTON_TITLE" value:&stru_287761F90 table:@"Pearl"];
-  v5 = [(BFFFaceIDViewController *)self navigationItem];
-  [v5 setBackButtonTitle:v4];
+  navigationItem = [(BFFFaceIDViewController *)self navigationItem];
+  [navigationItem setBackButtonTitle:v4];
 
   v54 = 0;
   v55 = &v54;
@@ -187,32 +187,32 @@ void __71__BFFFaceIDViewController_performExtendedInitializationWithCompletion__
 
   objc_destroyWeak(v16);
   objc_destroyWeak(v15);
-  v21 = [(BFFFaceIDViewController *)self contentController];
-  [(BFFFaceIDViewController *)self addChildViewController:v21];
+  contentController = [(BFFFaceIDViewController *)self contentController];
+  [(BFFFaceIDViewController *)self addChildViewController:contentController];
 
-  v22 = [(BFFFaceIDViewController *)self contentController];
-  v23 = [v22 view];
-  [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
+  contentController2 = [(BFFFaceIDViewController *)self contentController];
+  view = [contentController2 view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v24 = [(BFFFaceIDViewController *)self view];
-  v25 = [(BFFFaceIDViewController *)self contentController];
-  v26 = [v25 view];
-  [v24 addSubview:v26];
+  view2 = [(BFFFaceIDViewController *)self view];
+  contentController3 = [(BFFFaceIDViewController *)self contentController];
+  view3 = [contentController3 view];
+  [view2 addSubview:view3];
 
-  v27 = [(BFFFaceIDViewController *)self contentController];
-  v28 = [v27 view];
-  v29 = [(BFFFaceIDViewController *)self view];
-  [v28 pinToEdges:v29];
+  contentController4 = [(BFFFaceIDViewController *)self contentController];
+  view4 = [contentController4 view];
+  view5 = [(BFFFaceIDViewController *)self view];
+  [view4 pinToEdges:view5];
 
-  v30 = [(BFFFaceIDViewController *)self contentController];
-  [v30 didMoveToParentViewController:self];
+  contentController5 = [(BFFFaceIDViewController *)self contentController];
+  [contentController5 didMoveToParentViewController:self];
 
-  v31 = [(BFFFaceIDViewController *)self contentController];
-  v32 = [v31 headerView];
+  contentController6 = [(BFFFaceIDViewController *)self contentController];
+  headerView = [contentController6 headerView];
   v33 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v34 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"FACE_ID_DETAIL"];
   v35 = [v33 localizedStringForKey:v34 value:&stru_287761F90 table:@"Pearl"];
-  [v32 setDetailText:v35];
+  [headerView setDetailText:v35];
 
   objc_destroyWeak(&location);
 }
@@ -261,27 +261,27 @@ void __38__BFFFaceIDViewController_viewDidLoad__block_invoke_4(uint64_t a1)
   }
 }
 
-- (void)setCompletesOnCancel:(BOOL)a3
+- (void)setCompletesOnCancel:(BOOL)cancel
 {
-  if (self->_completesOnCancel != a3)
+  if (self->_completesOnCancel != cancel)
   {
-    self->_completesOnCancel = a3;
-    if (a3)
+    self->_completesOnCancel = cancel;
+    if (cancel)
     {
-      v6 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__userDidTapCancelButton_];
-      v5 = [(BFFFaceIDViewController *)self navigationItem];
-      [v5 setLeftBarButtonItem:v6 animated:1];
+      navigationItem2 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__userDidTapCancelButton_];
+      navigationItem = [(BFFFaceIDViewController *)self navigationItem];
+      [navigationItem setLeftBarButtonItem:navigationItem2 animated:1];
     }
 
     else
     {
-      v6 = [(BFFFaceIDViewController *)self navigationItem];
-      [v6 setLeftBarButtonItem:0 animated:1];
+      navigationItem2 = [(BFFFaceIDViewController *)self navigationItem];
+      [navigationItem2 setLeftBarButtonItem:0 animated:1];
     }
   }
 }
 
-- (void)_userDidTapCancelButton:(id)a3
+- (void)_userDidTapCancelButton:(id)button
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v4 = _BYLoggingFacility();
@@ -292,13 +292,13 @@ void __38__BFFFaceIDViewController_viewDidLoad__block_invoke_4(uint64_t a1)
   }
 
   [(BFFFaceIDViewController *)self resetColorsAnimated:0];
-  v5 = [(BFFFaceIDViewController *)self faceIDViewControllerDelegate];
+  faceIDViewControllerDelegate = [(BFFFaceIDViewController *)self faceIDViewControllerDelegate];
   v8[0] = self;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
-  [v5 faceIDViewController:self didCompleteWithResult:2 pushedViewControllers:v6];
+  [faceIDViewControllerDelegate faceIDViewController:self didCompleteWithResult:2 pushedViewControllers:v6];
 }
 
-- (void)resetColorsAnimated:(BOOL)a3
+- (void)resetColorsAnimated:(BOOL)animated
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
@@ -330,9 +330,9 @@ void __47__BFFFaceIDViewController_resetColorsAnimated___block_invoke_2(uint64_t
   [v3 applyThemeToNavigationController:v2];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = BFFFaceIDViewController;
   [(BFFFaceIDViewController *)&v7 viewWillAppear:?];
@@ -347,7 +347,7 @@ void __47__BFFFaceIDViewController_resetColorsAnimated___block_invoke_2(uint64_t
     [BKUIPearlEnrollControllerClass preloadWithCompletion:v6];
   }
 
-  [(BFFFaceIDViewController *)self resetColorsAnimated:v3];
+  [(BFFFaceIDViewController *)self resetColorsAnimated:appearCopy];
 }
 
 void __42__BFFFaceIDViewController_viewWillAppear___block_invoke(uint64_t a1, void *a2)
@@ -375,19 +375,19 @@ void __42__BFFFaceIDViewController_viewWillAppear___block_invoke(uint64_t a1, vo
 
 - (void)_didSelectEnroll
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  preloadedState = v2->_preloadedState;
-  v2->_preloadedState = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  preloadedState = selfCopy->_preloadedState;
+  selfCopy->_preloadedState = 0;
   v4 = preloadedState;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v14 = [objc_alloc(getBKUIPearlEnrollControllerClass()) initWithPreloadedState:v4];
 
-  [v14 setInSheet:{-[BFFFaceIDViewController _sheetMode](v2, "_sheetMode")}];
-  [v14 setEnrollmentConfiguration:{-[BFFFaceIDViewController enrollmentConfiguration](v2, "enrollmentConfiguration")}];
-  v5 = [(BFFFaceIDViewController *)v2 faceIDViewControllerDelegate];
-  v6 = [v5 passcodeForFaceIDViewController:v2];
+  [v14 setInSheet:{-[BFFFaceIDViewController _sheetMode](selfCopy, "_sheetMode")}];
+  [v14 setEnrollmentConfiguration:{-[BFFFaceIDViewController enrollmentConfiguration](selfCopy, "enrollmentConfiguration")}];
+  faceIDViewControllerDelegate = [(BFFFaceIDViewController *)selfCopy faceIDViewControllerDelegate];
+  v6 = [faceIDViewControllerDelegate passcodeForFaceIDViewController:selfCopy];
   v7 = [v6 copy];
 
   if ([v7 length])
@@ -397,61 +397,61 @@ void __42__BFFFaceIDViewController_viewWillAppear___block_invoke(uint64_t a1, vo
 
   else
   {
-    v8 = [(BFFFaceIDViewController *)v2 authContext];
+    authContext = [(BFFFaceIDViewController *)selfCopy authContext];
 
-    if (v8)
+    if (authContext)
     {
-      v9 = [(BFFFaceIDViewController *)v2 authContext];
-      v10 = [v9 externalizedContext];
-      [v14 primeWithExternalizedAuthContext:v10];
+      authContext2 = [(BFFFaceIDViewController *)selfCopy authContext];
+      externalizedContext = [authContext2 externalizedContext];
+      [v14 primeWithExternalizedAuthContext:externalizedContext];
     }
   }
 
-  [v14 setDelegate:v2];
+  [v14 setDelegate:selfCopy];
   [v14 setInBuddy:1];
   v11 = objc_alloc_init(MEMORY[0x277D75788]);
   [v11 configureWithTransparentBackground];
-  v12 = [v14 navigationItem];
-  [v12 setStandardAppearance:v11];
+  navigationItem = [v14 navigationItem];
+  [navigationItem setStandardAppearance:v11];
 
-  v13 = [(BFFFaceIDViewController *)v2 navigationController];
-  [v13 pushViewController:v14 animated:1];
+  navigationController = [(BFFFaceIDViewController *)selfCopy navigationController];
+  [navigationController pushViewController:v14 animated:1];
 }
 
 - (void)_didSelectSkip
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  preloadedState = v2->_preloadedState;
-  v2->_preloadedState = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  preloadedState = selfCopy->_preloadedState;
+  selfCopy->_preloadedState = 0;
 
-  objc_sync_exit(v2);
-  v4 = [(BFFFaceIDViewController *)v2 faceIDViewControllerDelegate];
-  v6[0] = v2;
+  objc_sync_exit(selfCopy);
+  faceIDViewControllerDelegate = [(BFFFaceIDViewController *)selfCopy faceIDViewControllerDelegate];
+  v6[0] = selfCopy;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  [v4 faceIDViewController:v2 didCompleteWithResult:1 pushedViewControllers:v5];
+  [faceIDViewControllerDelegate faceIDViewController:selfCopy didCompleteWithResult:1 pushedViewControllers:v5];
 }
 
-- (void)pearlEnrollController:(id)a3 finishedEnrollWithError:(id)a4
+- (void)pearlEnrollController:(id)controller finishedEnrollWithError:(id)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  errorCopy = error;
   v9 = _BYLoggingFacility();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     if (_BYIsInternalInstall())
     {
       v10 = 0;
-      v11 = v8;
+      v11 = errorCopy;
     }
 
-    else if (v8)
+    else if (errorCopy)
     {
       v12 = MEMORY[0x277CCACA8];
-      v4 = [v8 domain];
-      v11 = [v12 stringWithFormat:@"<Error domain: %@, code %ld>", v4, objc_msgSend(v8, "code")];
+      domain = [errorCopy domain];
+      v11 = [v12 stringWithFormat:@"<Error domain: %@, code %ld>", domain, objc_msgSend(errorCopy, "code")];
       v10 = 1;
     }
 
@@ -469,75 +469,75 @@ void __42__BFFFaceIDViewController_viewWillAppear___block_invoke(uint64_t a1, vo
     }
   }
 
-  if (!v8)
+  if (!errorCopy)
   {
     [(BFFFaceIDViewController *)self resetColorsAnimated:0];
-    v19 = [(BFFFaceIDViewController *)self faceIDViewControllerDelegate];
+    faceIDViewControllerDelegate = [(BFFFaceIDViewController *)self faceIDViewControllerDelegate];
     v34[0] = self;
-    v34[1] = v7;
-    v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:2];
-    v24 = v19;
-    v25 = self;
+    v34[1] = controllerCopy;
+    faceIDViewControllerDelegate2 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:2];
+    v24 = faceIDViewControllerDelegate;
+    selfCopy2 = self;
     v26 = 0;
 LABEL_21:
-    [v24 faceIDViewController:v25 didCompleteWithResult:v26 pushedViewControllers:v23];
+    [v24 faceIDViewController:selfCopy2 didCompleteWithResult:v26 pushedViewControllers:faceIDViewControllerDelegate2];
 LABEL_31:
 
     goto LABEL_32;
   }
 
-  v13 = [v8 domain];
+  domain2 = [errorCopy domain];
   v14 = getBKUIPearlEnrollErrorDomain();
-  if (![v13 isEqualToString:v14] || objc_msgSend(v8, "code") != -1)
+  if (![domain2 isEqualToString:v14] || objc_msgSend(errorCopy, "code") != -1)
   {
 
     goto LABEL_13;
   }
 
-  v32 = [(BFFFaceIDViewController *)self completesOnCancel];
+  completesOnCancel = [(BFFFaceIDViewController *)self completesOnCancel];
 
-  if (v32)
+  if (completesOnCancel)
   {
     [(BFFFaceIDViewController *)self resetColorsAnimated:0];
-    v19 = [(BFFFaceIDViewController *)self faceIDViewControllerDelegate];
+    faceIDViewControllerDelegate = [(BFFFaceIDViewController *)self faceIDViewControllerDelegate];
     v36[0] = self;
-    v36[1] = v7;
-    v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:2];
-    v24 = v19;
-    v25 = self;
+    v36[1] = controllerCopy;
+    faceIDViewControllerDelegate2 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:2];
+    v24 = faceIDViewControllerDelegate;
+    selfCopy2 = self;
     v26 = 2;
     goto LABEL_21;
   }
 
 LABEL_13:
-  v15 = [v8 domain];
+  domain3 = [errorCopy domain];
   v16 = getBKUIPearlEnrollErrorDomain();
-  if ([v15 isEqualToString:v16])
+  if ([domain3 isEqualToString:v16])
   {
-    v17 = [v8 code];
+    code = [errorCopy code];
 
-    if (v17 == -2)
+    if (code == -2)
     {
       [(BFFFaceIDViewController *)self resetColorsAnimated:0];
-      v18 = [v8 userInfo];
-      v19 = [v18 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+      userInfo = [errorCopy userInfo];
+      faceIDViewControllerDelegate = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
-      v20 = [v19 domain];
-      if ([v20 isEqualToString:@"com.apple.preferences.biokit"])
+      domain4 = [faceIDViewControllerDelegate domain];
+      if ([domain4 isEqualToString:@"com.apple.preferences.biokit"])
       {
-        v21 = [v19 code];
+        code2 = [faceIDViewControllerDelegate code];
 
-        if (v21 != 8)
+        if (code2 != 8)
         {
           v22 = 1;
           goto LABEL_30;
         }
 
-        v20 = _BYLoggingFacility();
-        if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+        domain4 = _BYLoggingFacility();
+        if (os_log_type_enabled(domain4, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&dword_265AC5000, v20, OS_LOG_TYPE_DEFAULT, "Enroll observed interlock error", buf, 2u);
+          _os_log_impl(&dword_265AC5000, domain4, OS_LOG_TYPE_DEFAULT, "Enroll observed interlock error", buf, 2u);
         }
 
         v22 = 3;
@@ -549,11 +549,11 @@ LABEL_13:
       }
 
 LABEL_30:
-      v23 = [(BFFFaceIDViewController *)self faceIDViewControllerDelegate];
+      faceIDViewControllerDelegate2 = [(BFFFaceIDViewController *)self faceIDViewControllerDelegate];
       v35[0] = self;
-      v35[1] = v7;
+      v35[1] = controllerCopy;
       v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:2];
-      [v23 faceIDViewController:self didCompleteWithResult:v22 pushedViewControllers:v33];
+      [faceIDViewControllerDelegate2 faceIDViewController:self didCompleteWithResult:v22 pushedViewControllers:v33];
 
       goto LABEL_31;
     }
@@ -563,16 +563,16 @@ LABEL_30:
   {
   }
 
-  v27 = [(BFFFaceIDViewController *)self navigationController];
-  v28 = [v27 topViewController];
+  navigationController = [(BFFFaceIDViewController *)self navigationController];
+  topViewController = [navigationController topViewController];
   getBKUIPearlEnrollControllerClass();
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v30 = [(BFFFaceIDViewController *)self navigationController];
-    v31 = [v30 popToViewController:self animated:1];
+    navigationController2 = [(BFFFaceIDViewController *)self navigationController];
+    v31 = [navigationController2 popToViewController:self animated:1];
 
     [(BFFFaceIDViewController *)self resetColorsAnimated:1];
   }
@@ -582,15 +582,15 @@ LABEL_32:
 
 - (BOOL)_sheetMode
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  if ([v3 userInterfaceIdiom] == 1)
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 1)
   {
-    v4 = [(BFFFaceIDViewController *)self navigationController];
-    if ([v4 modalPresentationStyle] == 2)
+    navigationController = [(BFFFaceIDViewController *)self navigationController];
+    if ([navigationController modalPresentationStyle] == 2)
     {
-      v5 = [(BFFFaceIDViewController *)self navigationController];
-      v6 = [v5 presentingViewController];
-      v7 = v6 != 0;
+      navigationController2 = [(BFFFaceIDViewController *)self navigationController];
+      presentingViewController = [navigationController2 presentingViewController];
+      v7 = presentingViewController != 0;
     }
 
     else
@@ -609,25 +609,25 @@ LABEL_32:
 
 - (void)startIndeterminateProgressIndicator
 {
-  v3 = [(BFFFaceIDViewController *)self contentController];
-  v2 = [v3 buttonTray];
-  [v2 showButtonsBusy];
+  contentController = [(BFFFaceIDViewController *)self contentController];
+  buttonTray = [contentController buttonTray];
+  [buttonTray showButtonsBusy];
 }
 
 - (void)stopIndeterminateProgressIndicator
 {
-  v3 = [(BFFFaceIDViewController *)self contentController];
-  v2 = [v3 buttonTray];
-  [v2 showButtonsAvailable];
+  contentController = [(BFFFaceIDViewController *)self contentController];
+  buttonTray = [contentController buttonTray];
+  [buttonTray showButtonsAvailable];
 }
 
 - (BOOL)isAnimating
 {
-  v2 = [(BFFFaceIDViewController *)self contentController];
-  v3 = [v2 buttonTray];
-  v4 = [v3 allButtons];
+  contentController = [(BFFFaceIDViewController *)self contentController];
+  buttonTray = [contentController buttonTray];
+  allButtons = [buttonTray allButtons];
   v5 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_0];
-  v6 = [v4 filteredArrayUsingPredicate:v5];
+  v6 = [allButtons filteredArrayUsingPredicate:v5];
   v7 = [v6 count] != 0;
 
   return v7;

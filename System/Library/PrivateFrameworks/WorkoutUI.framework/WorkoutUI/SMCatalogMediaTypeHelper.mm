@@ -1,11 +1,11 @@
 @interface SMCatalogMediaTypeHelper
-+ (id)mediaTypeBridgeRawValueFrom:(id)a3;
++ (id)mediaTypeBridgeRawValueFrom:(id)from;
 - (SMCatalogMediaTypeHelper)init;
 @end
 
 @implementation SMCatalogMediaTypeHelper
 
-+ (id)mediaTypeBridgeRawValueFrom:(id)a3
++ (id)mediaTypeBridgeRawValueFrom:(id)from
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v4 = MEMORY[0x20F3030F0](v3);
@@ -34,14 +34,14 @@
   {
     v5 = 4;
 LABEL_9:
-    v6 = [objc_allocWithZone(MEMORY[0x277CCABB0]) initWithInteger_];
+    initWithInteger_ = [objc_allocWithZone(MEMORY[0x277CCABB0]) initWithInteger_];
     goto LABEL_10;
   }
 
-  v6 = 0;
+  initWithInteger_ = 0;
 LABEL_10:
 
-  return v6;
+  return initWithInteger_;
 }
 
 - (SMCatalogMediaTypeHelper)init

@@ -1,17 +1,17 @@
 @interface WFAccessResourcesSmartPromptsCustomModificationsStep
-- (BOOL)performModificationsWithContext:(id)a3 error:(id *)a4;
-- (BOOL)shortcutHasSmartPromptsData:(id)a3 context:(id)a4;
+- (BOOL)performModificationsWithContext:(id)context error:(id *)error;
+- (BOOL)shortcutHasSmartPromptsData:(id)data context:(id)context;
 - (NSDictionary)accessResourceIdentifiersByContentDestination;
 - (NSDictionary)actionIdentifiersByContentDestination;
 - (NSDictionary)contentDestinationsByAccessResourceIdentifier;
 - (NSDictionary)contentDestinationsByActionIdentifier;
-- (id)actionIdentifiersThatRequireMigrationForAccessResourceIdentifiers:(id)a3;
-- (id)bundleIdentifierForIntentBasedActionIdentifier:(id)a3 accessResourceIdentifiers:(id)a4;
-- (id)contentLocationForActionIdentifier:(id)a3 statesByAccessResourceIdentifier:(id)a4;
-- (id)extractBundleIdentifierFromIntentsAccessResourceIdentifier:(id)a3;
-- (id)fetchMigrationEligibleActionUUIDsForWorkflow:(id)a3 context:(id)a4 workflowAccessResourceIdentifiers:(id)a5;
-- (id)fetchStatesByAccessResourceIdentifierForWorkflow:(id)a3 context:(id)a4;
-- (void)migrateAccessResourcesToSmartPromptsForWorkflow:(id)a3 context:(id)a4;
+- (id)actionIdentifiersThatRequireMigrationForAccessResourceIdentifiers:(id)identifiers;
+- (id)bundleIdentifierForIntentBasedActionIdentifier:(id)identifier accessResourceIdentifiers:(id)identifiers;
+- (id)contentLocationForActionIdentifier:(id)identifier statesByAccessResourceIdentifier:(id)resourceIdentifier;
+- (id)extractBundleIdentifierFromIntentsAccessResourceIdentifier:(id)identifier;
+- (id)fetchMigrationEligibleActionUUIDsForWorkflow:(id)workflow context:(id)context workflowAccessResourceIdentifiers:(id)identifiers;
+- (id)fetchStatesByAccessResourceIdentifierForWorkflow:(id)workflow context:(id)context;
+- (void)migrateAccessResourcesToSmartPromptsForWorkflow:(id)workflow context:(id)context;
 @end
 
 @implementation WFAccessResourcesSmartPromptsCustomModificationsStep
@@ -22,14 +22,14 @@
   if (!contentDestinationsByActionIdentifier)
   {
     v4 = objc_opt_new();
-    v5 = [(WFAccessResourcesSmartPromptsCustomModificationsStep *)self actionIdentifiersByContentDestination];
+    actionIdentifiersByContentDestination = [(WFAccessResourcesSmartPromptsCustomModificationsStep *)self actionIdentifiersByContentDestination];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __93__WFAccessResourcesSmartPromptsCustomModificationsStep_contentDestinationsByActionIdentifier__block_invoke;
     v10[3] = &unk_1E837EBB0;
     v6 = v4;
     v11 = v6;
-    [v5 enumerateKeysAndObjectsUsingBlock:v10];
+    [actionIdentifiersByContentDestination enumerateKeysAndObjectsUsingBlock:v10];
 
     v7 = self->_contentDestinationsByActionIdentifier;
     self->_contentDestinationsByActionIdentifier = v6;
@@ -84,14 +84,14 @@ void __93__WFAccessResourcesSmartPromptsCustomModificationsStep_contentDestinati
   accessResourceIdentifiersByContentDestination = self->_accessResourceIdentifiersByContentDestination;
   if (!accessResourceIdentifiersByContentDestination)
   {
-    v4 = [(WFAccessResourcesSmartPromptsCustomModificationsStep *)self contentDestinationsByAccessResourceIdentifier];
-    v5 = [v4 count];
+    contentDestinationsByAccessResourceIdentifier = [(WFAccessResourcesSmartPromptsCustomModificationsStep *)self contentDestinationsByAccessResourceIdentifier];
+    v5 = [contentDestinationsByAccessResourceIdentifier count];
 
     v6 = v12 - ((8 * v5 + 15) & 0xFFFFFFFFFFFFFFF0);
     bzero(v6, 8 * v5);
     bzero(v6, 8 * v5);
-    v7 = [(WFAccessResourcesSmartPromptsCustomModificationsStep *)self contentDestinationsByAccessResourceIdentifier];
-    [v7 getObjects:v6 andKeys:v6 count:v5];
+    contentDestinationsByAccessResourceIdentifier2 = [(WFAccessResourcesSmartPromptsCustomModificationsStep *)self contentDestinationsByAccessResourceIdentifier];
+    [contentDestinationsByAccessResourceIdentifier2 getObjects:v6 andKeys:v6 count:v5];
 
     v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjects:v6 forKeys:v6 count:v5];
     v9 = self->_accessResourceIdentifiersByContentDestination;
@@ -135,16 +135,16 @@ void __93__WFAccessResourcesSmartPromptsCustomModificationsStep_contentDestinati
   return contentDestinationsByAccessResourceIdentifier;
 }
 
-- (id)actionIdentifiersThatRequireMigrationForAccessResourceIdentifiers:(id)a3
+- (id)actionIdentifiersThatRequireMigrationForAccessResourceIdentifiers:(id)identifiers
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = [MEMORY[0x1E695DFA8] set];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v7)
   {
@@ -167,22 +167,22 @@ void __93__WFAccessResourcesSmartPromptsCustomModificationsStep_contentDestinati
           if ([v12 isEqualToString:@"WFRemoteServerAccessResource"])
           {
             v13 = [MEMORY[0x1E695DFD8] setWithArray:&unk_1F4A9B488];
-            v14 = [v13 allObjects];
+            allObjects = [v13 allObjects];
             goto LABEL_11;
           }
 
-          v15 = [(WFAccessResourcesSmartPromptsCustomModificationsStep *)self contentDestinationsByAccessResourceIdentifier];
-          v13 = [v15 objectForKeyedSubscript:v12];
+          contentDestinationsByAccessResourceIdentifier = [(WFAccessResourcesSmartPromptsCustomModificationsStep *)self contentDestinationsByAccessResourceIdentifier];
+          v13 = [contentDestinationsByAccessResourceIdentifier objectForKeyedSubscript:v12];
 
           if (v13)
           {
-            v16 = [(WFAccessResourcesSmartPromptsCustomModificationsStep *)self actionIdentifiersByContentDestination];
-            v14 = [v16 objectForKeyedSubscript:v13];
+            actionIdentifiersByContentDestination = [(WFAccessResourcesSmartPromptsCustomModificationsStep *)self actionIdentifiersByContentDestination];
+            allObjects = [actionIdentifiersByContentDestination objectForKeyedSubscript:v13];
 
-            if (v14)
+            if (allObjects)
             {
 LABEL_11:
-              [v5 addObjectsFromArray:v14];
+              [v5 addObjectsFromArray:allObjects];
             }
 
             else
@@ -190,28 +190,28 @@ LABEL_11:
               v17 = getWFWorkflowMigrationLogObject();
               if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
               {
-                v18 = [v13 identifier];
+                identifier = [v13 identifier];
                 *buf = v21;
                 v27 = "[WFAccessResourcesSmartPromptsCustomModificationsStep actionIdentifiersThatRequireMigrationForAccessResourceIdentifiers:]";
                 v28 = 2112;
-                v29 = v18;
+                v29 = identifier;
                 _os_log_impl(&dword_1CA256000, v17, OS_LOG_TYPE_ERROR, "%s Content destination %@ doesn't map to any action identifiers", buf, 0x16u);
               }
 
-              v14 = 0;
+              allObjects = 0;
             }
           }
 
           else
           {
-            v14 = getWFWorkflowMigrationLogObject();
-            if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+            allObjects = getWFWorkflowMigrationLogObject();
+            if (os_log_type_enabled(allObjects, OS_LOG_TYPE_ERROR))
             {
               *buf = v21;
               v27 = "[WFAccessResourcesSmartPromptsCustomModificationsStep actionIdentifiersThatRequireMigrationForAccessResourceIdentifiers:]";
               v28 = 2112;
               v29 = v12;
-              _os_log_impl(&dword_1CA256000, v14, OS_LOG_TYPE_ERROR, "%s Access resource %@ doesn't map to any content destination", buf, 0x16u);
+              _os_log_impl(&dword_1CA256000, allObjects, OS_LOG_TYPE_ERROR, "%s Access resource %@ doesn't map to any content destination", buf, 0x16u);
             }
 
             v13 = 0;
@@ -232,20 +232,20 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)shortcutHasSmartPromptsData:(id)a3 context:(id)a4
+- (BOOL)shortcutHasSmartPromptsData:(id)data context:(id)context
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  contextCopy = context;
+  dataCopy = data;
   v7 = +[WFCoreDataSmartPromptPermission fetchRequest];
   v8 = MEMORY[0x1E696AE18];
-  v9 = [v6 identifier];
+  identifier = [dataCopy identifier];
 
-  v10 = [v8 predicateWithFormat:@"%K = %@", @"shortcut.workflowID", v9];
+  v10 = [v8 predicateWithFormat:@"%K = %@", @"shortcut.workflowID", identifier];
   [v7 setPredicate:v10];
 
   v17 = 0;
-  v11 = [v5 countForFetchRequest:v7 error:&v17];
+  v11 = [contextCopy countForFetchRequest:v7 error:&v17];
 
   v12 = v17;
   if (v12)
@@ -272,11 +272,11 @@ LABEL_11:
   return v14;
 }
 
-- (id)extractBundleIdentifierFromIntentsAccessResourceIdentifier:(id)a3
+- (id)extractBundleIdentifierFromIntentsAccessResourceIdentifier:(id)identifier
 {
-  v3 = [a3 componentsSeparatedByString:@"."];
-  v4 = [v3 firstObject];
-  v5 = [v4 isEqualToString:@"WFIntentsAccessResource"];
+  v3 = [identifier componentsSeparatedByString:@"."];
+  firstObject = [v3 firstObject];
+  v5 = [firstObject isEqualToString:@"WFIntentsAccessResource"];
 
   if (v5)
   {
@@ -292,51 +292,51 @@ LABEL_11:
   return v7;
 }
 
-- (id)fetchMigrationEligibleActionUUIDsForWorkflow:(id)a3 context:(id)a4 workflowAccessResourceIdentifiers:(id)a5
+- (id)fetchMigrationEligibleActionUUIDsForWorkflow:(id)workflow context:(id)context workflowAccessResourceIdentifiers:(id)identifiers
 {
   v83 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v63 = a5;
+  workflowCopy = workflow;
+  contextCopy = context;
+  identifiersCopy = identifiers;
   v10 = +[WFCoreDataWorkflowActions fetchRequest];
   v11 = MEMORY[0x1E696AE18];
-  v12 = [v8 identifier];
-  v13 = [v11 predicateWithFormat:@"%K = %@", @"shortcut.workflowID", v12];
+  identifier = [workflowCopy identifier];
+  v13 = [v11 predicateWithFormat:@"%K = %@", @"shortcut.workflowID", identifier];
   [v10 setPredicate:v13];
 
   [v10 setFetchLimit:1];
   v76 = 0;
-  v14 = [v9 executeFetchRequest:v10 error:&v76];
+  v14 = [contextCopy executeFetchRequest:v10 error:&v76];
   v15 = v76;
-  v16 = [v14 firstObject];
-  v17 = v16;
-  if (v16)
+  firstObject = [v14 firstObject];
+  v17 = firstObject;
+  if (firstObject)
   {
-    v18 = [v16 data];
-    if (v18)
+    data = [firstObject data];
+    if (data)
     {
       v75 = 0;
-      v19 = [MEMORY[0x1E696AE40] propertyListWithData:v18 options:1 format:0 error:&v75];
+      v19 = [MEMORY[0x1E696AE40] propertyListWithData:data options:1 format:0 error:&v75];
       v20 = v75;
       if (v19 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v53 = v20;
-        v54 = v18;
+        v54 = data;
         v55 = v17;
         v56 = v15;
         v57 = v14;
         v58 = v10;
-        v59 = v9;
-        v60 = v8;
-        v21 = [MEMORY[0x1E695DF90] dictionary];
+        v59 = contextCopy;
+        v60 = workflowCopy;
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v71 = 0u;
         v72 = 0u;
         v73 = 0u;
         v74 = 0u;
         obj = v19;
         v22 = [obj countByEnumeratingWithState:&v71 objects:v78 count:16];
-        v23 = v63;
-        v62 = v21;
+        v23 = identifiersCopy;
+        v62 = dictionary;
         if (v22)
         {
           v24 = v22;
@@ -389,13 +389,13 @@ LABEL_11:
 
                 while (v33);
 
-                v21 = v62;
-                v23 = v63;
+                dictionary = v62;
+                v23 = identifiersCopy;
                 if (v34)
                 {
 LABEL_21:
-                  v39 = [v26 objectForKey:@"WFWorkflowActionParameters"];
-                  if (!v39)
+                  dictionary2 = [v26 objectForKey:@"WFWorkflowActionParameters"];
+                  if (!dictionary2)
                   {
                     v40 = getWFWorkflowMigrationLogObject();
                     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
@@ -407,12 +407,12 @@ LABEL_21:
                       _os_log_impl(&dword_1CA256000, v40, OS_LOG_TYPE_DEBUG, "%s Action %{public}@ does not have WFWorkflowActionParameters, creating dictionary", buf, 0x16u);
                     }
 
-                    v39 = [MEMORY[0x1E695DF90] dictionary];
-                    [v26 setObject:v39 forKey:@"WFWorkflowActionParameters"];
+                    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+                    [v26 setObject:dictionary2 forKey:@"WFWorkflowActionParameters"];
                   }
 
-                  v41 = [v39 objectForKey:@"UUID"];
-                  if (!v41)
+                  uUIDString = [dictionary2 objectForKey:@"UUID"];
+                  if (!uUIDString)
                   {
                     v42 = getWFWorkflowMigrationLogObject();
                     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
@@ -424,24 +424,24 @@ LABEL_21:
                       _os_log_impl(&dword_1CA256000, v42, OS_LOG_TYPE_DEBUG, "%s Creating UUID for action with identifier %@", buf, 0x16u);
                     }
 
-                    v43 = [MEMORY[0x1E696AFB0] UUID];
-                    v41 = [v43 UUIDString];
+                    uUID = [MEMORY[0x1E696AFB0] UUID];
+                    uUIDString = [uUID UUIDString];
 
-                    [v39 setObject:v41 forKey:@"UUID"];
+                    [dictionary2 setObject:uUIDString forKey:@"UUID"];
                   }
 
-                  v44 = [v21 objectForKey:v27];
+                  v44 = [dictionary objectForKey:v27];
 
                   if (v44)
                   {
-                    v45 = [v21 objectForKey:v27];
-                    [v45 addObject:v41];
+                    v45 = [dictionary objectForKey:v27];
+                    [v45 addObject:uUIDString];
                   }
 
                   else
                   {
-                    v45 = [MEMORY[0x1E695DF70] arrayWithObject:v41];
-                    [v21 setObject:v45 forKey:v27];
+                    v45 = [MEMORY[0x1E695DF70] arrayWithObject:uUIDString];
+                    [dictionary setObject:v45 forKey:v27];
                   }
 
                   goto LABEL_35;
@@ -460,14 +460,14 @@ LABEL_21:
                 goto LABEL_21;
               }
 
-              v39 = getWFWorkflowMigrationLogObject();
-              if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
+              dictionary2 = getWFWorkflowMigrationLogObject();
+              if (os_log_type_enabled(dictionary2, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 136315394;
                 v80 = "[WFAccessResourcesSmartPromptsCustomModificationsStep fetchMigrationEligibleActionUUIDsForWorkflow:context:workflowAccessResourceIdentifiers:]";
                 v81 = 2112;
                 v82 = v27;
-                _os_log_impl(&dword_1CA256000, v39, OS_LOG_TYPE_DEBUG, "%s Action with identifier %@ does not require migration.", buf, 0x16u);
+                _os_log_impl(&dword_1CA256000, dictionary2, OS_LOG_TYPE_DEBUG, "%s Action with identifier %@ does not require migration.", buf, 0x16u);
               }
 
 LABEL_35:
@@ -487,12 +487,12 @@ LABEL_35:
         if (v65 || !v47)
         {
           v50 = getWFWorkflowMigrationLogObject();
-          v9 = v59;
-          v8 = v60;
+          contextCopy = v59;
+          workflowCopy = v60;
           v14 = v57;
           v10 = v58;
           v15 = v56;
-          v18 = v54;
+          data = v54;
           if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
           {
             *buf = 136315138;
@@ -507,12 +507,12 @@ LABEL_35:
         {
           v17 = v55;
           [v55 setData:v47];
-          v9 = v59;
-          v8 = v60;
+          contextCopy = v59;
+          workflowCopy = v60;
           v14 = v57;
           v10 = v58;
           v15 = v56;
-          v18 = v54;
+          data = v54;
         }
 
         v20 = v53;
@@ -534,7 +534,7 @@ LABEL_35:
         v62 = MEMORY[0x1E695E0F8];
       }
 
-      v49 = v63;
+      v49 = identifiersCopy;
     }
 
     else
@@ -548,24 +548,24 @@ LABEL_35:
       }
 
       v62 = MEMORY[0x1E695E0F8];
-      v49 = v63;
+      v49 = identifiersCopy;
     }
   }
 
   else
   {
-    v18 = getWFWorkflowMigrationLogObject();
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    data = getWFWorkflowMigrationLogObject();
+    if (os_log_type_enabled(data, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315394;
       v80 = "[WFAccessResourcesSmartPromptsCustomModificationsStep fetchMigrationEligibleActionUUIDsForWorkflow:context:workflowAccessResourceIdentifiers:]";
       v81 = 2112;
-      v82 = v8;
-      _os_log_impl(&dword_1CA256000, v18, OS_LOG_TYPE_ERROR, "%s No WFCoreDataWorkflowActions object found for workflow: %@.", buf, 0x16u);
+      v82 = workflowCopy;
+      _os_log_impl(&dword_1CA256000, data, OS_LOG_TYPE_ERROR, "%s No WFCoreDataWorkflowActions object found for workflow: %@.", buf, 0x16u);
     }
 
     v62 = MEMORY[0x1E695E0F8];
-    v49 = v63;
+    v49 = identifiersCopy;
   }
 
   v51 = *MEMORY[0x1E69E9840];
@@ -573,20 +573,20 @@ LABEL_35:
   return v62;
 }
 
-- (id)fetchStatesByAccessResourceIdentifierForWorkflow:(id)a3 context:(id)a4
+- (id)fetchStatesByAccessResourceIdentifierForWorkflow:(id)workflow context:(id)context
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  contextCopy = context;
+  workflowCopy = workflow;
   v7 = +[WFCoreDataAccessResourcePermission fetchRequest];
   v8 = MEMORY[0x1E696AE18];
-  v9 = [v6 identifier];
+  identifier = [workflowCopy identifier];
 
-  v10 = [v8 predicateWithFormat:@"%K = %@", @"shortcut.workflowID", v9];
+  v10 = [v8 predicateWithFormat:@"%K = %@", @"shortcut.workflowID", identifier];
   [v7 setPredicate:v10];
 
   v20 = 0;
-  v11 = [v5 executeFetchRequest:v7 error:&v20];
+  v11 = [contextCopy executeFetchRequest:v7 error:&v20];
 
   v12 = v20;
   if (v12)
@@ -606,12 +606,12 @@ LABEL_35:
 
   else
   {
-    v15 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __113__WFAccessResourcesSmartPromptsCustomModificationsStep_fetchStatesByAccessResourceIdentifierForWorkflow_context___block_invoke;
     v18[3] = &unk_1E837EB58;
-    v14 = v15;
+    v14 = dictionary;
     v19 = v14;
     [v11 enumerateObjectsUsingBlock:v18];
     v13 = v19;
@@ -711,16 +711,16 @@ void __113__WFAccessResourcesSmartPromptsCustomModificationsStep_fetchStatesByAc
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)bundleIdentifierForIntentBasedActionIdentifier:(id)a3 accessResourceIdentifiers:(id)a4
+- (id)bundleIdentifierForIntentBasedActionIdentifier:(id)identifier accessResourceIdentifiers:(id)identifiers
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = a4;
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  identifiersCopy = identifiers;
+  v8 = [identifiersCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -731,13 +731,13 @@ LABEL_3:
     {
       if (*v16 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(identifiersCopy);
       }
 
       v12 = [(WFAccessResourcesSmartPromptsCustomModificationsStep *)self extractBundleIdentifierFromIntentsAccessResourceIdentifier:*(*(&v15 + 1) + 8 * v11), v15];
       if (v12)
       {
-        if ([v6 hasPrefix:v12])
+        if ([identifierCopy hasPrefix:v12])
         {
           break;
         }
@@ -745,7 +745,7 @@ LABEL_3:
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [identifiersCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -767,18 +767,18 @@ LABEL_10:
   return v12;
 }
 
-- (id)contentLocationForActionIdentifier:(id)a3 statesByAccessResourceIdentifier:(id)a4
+- (id)contentLocationForActionIdentifier:(id)identifier statesByAccessResourceIdentifier:(id)resourceIdentifier
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  resourceIdentifierCopy = resourceIdentifier;
   v8 = [MEMORY[0x1E6996C90] locationWithSystemAppBundleIdentifier:*MEMORY[0x1E69E0E88]];
   v9 = [MEMORY[0x1E695DFD8] setWithArray:&unk_1F4A9B488];
-  v10 = [v9 containsObject:v6];
+  v10 = [v9 containsObject:identifierCopy];
 
   if (v10)
   {
-    v11 = [v7 objectForKeyedSubscript:@"WFRemoteServerAccessResource"];
+    v11 = [resourceIdentifierCopy objectForKeyedSubscript:@"WFRemoteServerAccessResource"];
     if (v11)
     {
       objc_opt_class();
@@ -788,14 +788,14 @@ LABEL_10:
         *&buf[8] = buf;
         *&buf[16] = 0x2020000000;
         v44 = 1;
-        v12 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v13 = v11[1];
         v40[0] = MEMORY[0x1E69E9820];
         v40[1] = 3221225472;
         v40[2] = __124__WFAccessResourcesSmartPromptsCustomModificationsStep_contentLocationForActionIdentifier_statesByAccessResourceIdentifier___block_invoke;
         v40[3] = &unk_1E837EB08;
         v42 = buf;
-        v14 = v12;
+        v14 = array;
         v41 = v14;
         [v13 enumerateObjectsUsingBlock:v40];
         if (*(*&buf[8] + 24) == 1)
@@ -818,13 +818,13 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v18 = [(WFAccessResourcesSmartPromptsCustomModificationsStep *)self contentDestinationsByActionIdentifier];
-  v19 = [v18 objectForKey:v6];
+  contentDestinationsByActionIdentifier = [(WFAccessResourcesSmartPromptsCustomModificationsStep *)self contentDestinationsByActionIdentifier];
+  v19 = [contentDestinationsByActionIdentifier objectForKey:identifierCopy];
   v20 = [v19 isEqual:v8];
 
   if (v20)
   {
-    v11 = [v7 objectForKeyedSubscript:@"WFHealthKitAccessResource"];
+    v11 = [resourceIdentifierCopy objectForKeyedSubscript:@"WFHealthKitAccessResource"];
     if (v11)
     {
       objc_opt_class();
@@ -863,35 +863,35 @@ LABEL_11:
     goto LABEL_31;
   }
 
-  v22 = [v7 allKeys];
-  v23 = [(WFAccessResourcesSmartPromptsCustomModificationsStep *)self bundleIdentifierForIntentBasedActionIdentifier:v6 accessResourceIdentifiers:v22];
+  allKeys = [resourceIdentifierCopy allKeys];
+  v23 = [(WFAccessResourcesSmartPromptsCustomModificationsStep *)self bundleIdentifierForIntentBasedActionIdentifier:identifierCopy accessResourceIdentifiers:allKeys];
 
   if (v23)
   {
     v24 = objc_alloc(MEMORY[0x1E696E720]);
-    v25 = [v7 allKeys];
-    v26 = [(WFAccessResourcesSmartPromptsCustomModificationsStep *)self bundleIdentifierForIntentBasedActionIdentifier:v6 accessResourceIdentifiers:v25];
+    allKeys2 = [resourceIdentifierCopy allKeys];
+    v26 = [(WFAccessResourcesSmartPromptsCustomModificationsStep *)self bundleIdentifierForIntentBasedActionIdentifier:identifierCopy accessResourceIdentifiers:allKeys2];
     v27 = [v24 initWithBundleIdentifier:v26];
 
-    v28 = [MEMORY[0x1E696E748] sharedResolver];
-    v29 = [v28 resolvedAppMatchingDescriptor:v27];
+    mEMORY[0x1E696E748] = [MEMORY[0x1E696E748] sharedResolver];
+    v29 = [mEMORY[0x1E696E748] resolvedAppMatchingDescriptor:v27];
 
     v17 = [MEMORY[0x1E6996C90] locationWithAppDescriptor:v29];
 
     goto LABEL_31;
   }
 
-  v30 = [(WFAccessResourcesSmartPromptsCustomModificationsStep *)self contentDestinationsByActionIdentifier];
-  v31 = [v30 objectForKey:v6];
+  contentDestinationsByActionIdentifier2 = [(WFAccessResourcesSmartPromptsCustomModificationsStep *)self contentDestinationsByActionIdentifier];
+  v31 = [contentDestinationsByActionIdentifier2 objectForKey:identifierCopy];
 
   if (v31)
   {
-    v32 = [(WFAccessResourcesSmartPromptsCustomModificationsStep *)self accessResourceIdentifiersByContentDestination];
-    v33 = [v32 objectForKey:v31];
+    accessResourceIdentifiersByContentDestination = [(WFAccessResourcesSmartPromptsCustomModificationsStep *)self accessResourceIdentifiersByContentDestination];
+    v33 = [accessResourceIdentifiersByContentDestination objectForKey:v31];
 
     if (v33)
     {
-      v34 = [v7 objectForKeyedSubscript:v33];
+      v34 = [resourceIdentifierCopy objectForKeyedSubscript:v33];
       if (v34)
       {
         v17 = v31;
@@ -918,11 +918,11 @@ LABEL_29:
       v34 = getWFWorkflowMigrationLogObject();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
       {
-        v35 = [v31 identifier];
+        identifier = [v31 identifier];
         *buf = 136315394;
         *&buf[4] = "[WFAccessResourcesSmartPromptsCustomModificationsStep contentLocationForActionIdentifier:statesByAccessResourceIdentifier:]";
         *&buf[12] = 2114;
-        *&buf[14] = v35;
+        *&buf[14] = identifier;
         _os_log_impl(&dword_1CA256000, v34, OS_LOG_TYPE_ERROR, "%s Missing mapping for content destination: what access resource does %{public}@ map to?", buf, 0x16u);
       }
     }
@@ -967,29 +967,29 @@ uint64_t __124__WFAccessResourcesSmartPromptsCustomModificationsStep_contentLoca
   return result;
 }
 
-- (void)migrateAccessResourcesToSmartPromptsForWorkflow:(id)a3 context:(id)a4
+- (void)migrateAccessResourcesToSmartPromptsForWorkflow:(id)workflow context:(id)context
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([(WFAccessResourcesSmartPromptsCustomModificationsStep *)self shortcutHasSmartPromptsData:v6 context:v7])
+  workflowCopy = workflow;
+  contextCopy = context;
+  if ([(WFAccessResourcesSmartPromptsCustomModificationsStep *)self shortcutHasSmartPromptsData:workflowCopy context:contextCopy])
   {
-    v8 = getWFWorkflowMigrationLogObject();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    array = getWFWorkflowMigrationLogObject();
+    if (os_log_type_enabled(array, OS_LOG_TYPE_DEBUG))
     {
-      v9 = [v6 name];
+      name = [workflowCopy name];
       *buf = 136315394;
       v44 = "[WFAccessResourcesSmartPromptsCustomModificationsStep migrateAccessResourcesToSmartPromptsForWorkflow:context:]";
       v45 = 2112;
-      v46 = v9;
-      _os_log_impl(&dword_1CA256000, v8, OS_LOG_TYPE_DEBUG, "%s Skipping migration of shortcut '%@' as it already has smart prompts data.", buf, 0x16u);
+      v46 = name;
+      _os_log_impl(&dword_1CA256000, array, OS_LOG_TYPE_DEBUG, "%s Skipping migration of shortcut '%@' as it already has smart prompts data.", buf, 0x16u);
     }
   }
 
   else
   {
-    v8 = [MEMORY[0x1E695DF70] array];
-    v10 = [(WFAccessResourcesSmartPromptsCustomModificationsStep *)self fetchStatesByAccessResourceIdentifierForWorkflow:v6 context:v7];
+    array = [MEMORY[0x1E695DF70] array];
+    v10 = [(WFAccessResourcesSmartPromptsCustomModificationsStep *)self fetchStatesByAccessResourceIdentifierForWorkflow:workflowCopy context:contextCopy];
     v11 = [v10 count];
     v12 = getWFWorkflowMigrationLogObject();
     v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG);
@@ -1004,10 +1004,10 @@ uint64_t __124__WFAccessResourcesSmartPromptsCustomModificationsStep_contentLoca
         _os_log_impl(&dword_1CA256000, v12, OS_LOG_TYPE_DEBUG, "%s Found %lu access resources for migration.", buf, 0x16u);
       }
 
-      v14 = [v10 allKeys];
-      v15 = v6;
-      v16 = v7;
-      v17 = [(WFAccessResourcesSmartPromptsCustomModificationsStep *)self fetchMigrationEligibleActionUUIDsForWorkflow:v6 context:v7 workflowAccessResourceIdentifiers:v14];
+      allKeys = [v10 allKeys];
+      v15 = workflowCopy;
+      v16 = contextCopy;
+      v17 = [(WFAccessResourcesSmartPromptsCustomModificationsStep *)self fetchMigrationEligibleActionUUIDsForWorkflow:workflowCopy context:contextCopy workflowAccessResourceIdentifiers:allKeys];
 
       v39[0] = MEMORY[0x1E69E9820];
       v39[1] = 3221225472;
@@ -1016,8 +1016,8 @@ uint64_t __124__WFAccessResourcesSmartPromptsCustomModificationsStep_contentLoca
       v39[4] = self;
       v32 = v10;
       v40 = v10;
-      v33 = v8;
-      v18 = v8;
+      v33 = array;
+      v18 = array;
       v41 = v18;
       v31 = v17;
       [v17 enumerateKeysAndObjectsUsingBlock:v39];
@@ -1061,8 +1061,8 @@ uint64_t __124__WFAccessResourcesSmartPromptsCustomModificationsStep_contentLoca
             {
               v27 = [MEMORY[0x1E695D5B8] insertNewObjectForEntityForName:@"SmartPromptPermission" inManagedObjectContext:v16];
               [v27 setShortcut:v15];
-              v28 = [v24 actionUUID];
-              [v27 setActionUUID:v28];
+              actionUUID = [v24 actionUUID];
+              [v27 setActionUUID:actionUUID];
 
               [v27 setData:v25];
             }
@@ -1074,20 +1074,20 @@ uint64_t __124__WFAccessResourcesSmartPromptsCustomModificationsStep_contentLoca
         while (v21);
       }
 
-      v6 = v15;
-      v7 = v16;
+      workflowCopy = v15;
+      contextCopy = v16;
       v10 = v32;
-      v8 = v33;
+      array = v33;
       v12 = v31;
     }
 
     else if (v13)
     {
-      v29 = [v6 name];
+      name2 = [workflowCopy name];
       *buf = 136315394;
       v44 = "[WFAccessResourcesSmartPromptsCustomModificationsStep migrateAccessResourcesToSmartPromptsForWorkflow:context:]";
       v45 = 2112;
-      v46 = v29;
+      v46 = name2;
       _os_log_impl(&dword_1CA256000, v12, OS_LOG_TYPE_DEBUG, "%s Skipping migration of shortcut '%@' as it doesn't have access resources.", buf, 0x16u);
     }
   }
@@ -1186,10 +1186,10 @@ void __112__WFAccessResourcesSmartPromptsCustomModificationsStep_migrateAccessRe
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)performModificationsWithContext:(id)a3 error:(id *)a4
+- (BOOL)performModificationsWithContext:(id)context error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = getWFWorkflowMigrationLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -1198,13 +1198,13 @@ void __112__WFAccessResourcesSmartPromptsCustomModificationsStep_migrateAccessRe
     _os_log_impl(&dword_1CA256000, v7, OS_LOG_TYPE_DEBUG, "%s Starting migration of access resources into smart prompts.", buf, 0xCu);
   }
 
-  v23 = a4;
+  errorCopy = error;
 
   v22 = objc_autoreleasePoolPush();
   v8 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"Shortcut"];
   [v8 setFetchLimit:5];
   v31 = 0;
-  v9 = [v6 executeFetchRequest:v8 error:&v31];
+  v9 = [contextCopy executeFetchRequest:v8 error:&v31];
   v10 = v31;
   while ([v9 count])
   {
@@ -1230,7 +1230,7 @@ void __112__WFAccessResourcesSmartPromptsCustomModificationsStep_migrateAccessRe
 
           v16 = *(*(&v27 + 1) + 8 * i);
           v17 = objc_autoreleasePoolPush();
-          [(WFAccessResourcesSmartPromptsCustomModificationsStep *)self migrateAccessResourcesToSmartPromptsForWorkflow:v16 context:v6];
+          [(WFAccessResourcesSmartPromptsCustomModificationsStep *)self migrateAccessResourcesToSmartPromptsForWorkflow:v16 context:contextCopy];
           objc_autoreleasePoolPop(v17);
         }
 
@@ -1241,23 +1241,23 @@ void __112__WFAccessResourcesSmartPromptsCustomModificationsStep_migrateAccessRe
     }
 
     v26 = v10;
-    [v6 save:&v26];
+    [contextCopy save:&v26];
     v18 = v26;
 
-    [v6 reset];
+    [contextCopy reset];
     [v8 setFetchOffset:{objc_msgSend(v8, "fetchOffset") + objc_msgSend(v8, "fetchLimit")}];
     v25 = v18;
-    v9 = [v6 executeFetchRequest:v8 error:&v25];
+    v9 = [contextCopy executeFetchRequest:v8 error:&v25];
     v10 = v25;
 
     objc_autoreleasePoolPop(context);
   }
 
   objc_autoreleasePoolPop(v22);
-  if (v23)
+  if (errorCopy)
   {
     v19 = v10;
-    *v23 = v10;
+    *errorCopy = v10;
   }
 
   v20 = *MEMORY[0x1E69E9840];

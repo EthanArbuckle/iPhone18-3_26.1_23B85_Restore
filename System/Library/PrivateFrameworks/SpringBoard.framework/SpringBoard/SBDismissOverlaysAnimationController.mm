@@ -1,35 +1,35 @@
 @interface SBDismissOverlaysAnimationController
-+ (unint64_t)_overlaysToDismissForOptions:(unint64_t)a3 windowScene:(id)a4;
-- (SBDismissOverlaysAnimationController)initWithTransitionContextProvider:(id)a3;
-- (SBDismissOverlaysAnimationController)initWithTransitionContextProvider:(id)a3 options:(unint64_t)a4;
++ (unint64_t)_overlaysToDismissForOptions:(unint64_t)options windowScene:(id)scene;
+- (SBDismissOverlaysAnimationController)initWithTransitionContextProvider:(id)provider;
+- (SBDismissOverlaysAnimationController)initWithTransitionContextProvider:(id)provider options:(unint64_t)options;
 - (id)animationSettings;
 - (void)_startAnimation;
 @end
 
 @implementation SBDismissOverlaysAnimationController
 
-- (SBDismissOverlaysAnimationController)initWithTransitionContextProvider:(id)a3
+- (SBDismissOverlaysAnimationController)initWithTransitionContextProvider:(id)provider
 {
   v5 = MEMORY[0x277CCA890];
-  v6 = a3;
-  v7 = [v5 currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"SBDismissOverlaysAnimationController.m" lineNumber:40 description:@"Unsupported initializer"];
+  providerCopy = provider;
+  currentHandler = [v5 currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBDismissOverlaysAnimationController.m" lineNumber:40 description:@"Unsupported initializer"];
 
-  v8 = [(SBDismissOverlaysAnimationController *)self initWithTransitionContextProvider:v6 options:-1];
+  v8 = [(SBDismissOverlaysAnimationController *)self initWithTransitionContextProvider:providerCopy options:-1];
   return v8;
 }
 
-- (SBDismissOverlaysAnimationController)initWithTransitionContextProvider:(id)a3 options:(unint64_t)a4
+- (SBDismissOverlaysAnimationController)initWithTransitionContextProvider:(id)provider options:(unint64_t)options
 {
-  v7 = a3;
+  providerCopy = provider;
   v11.receiver = self;
   v11.super_class = SBDismissOverlaysAnimationController;
-  v8 = [(SBUIAnimationController *)&v11 initWithTransitionContextProvider:v7];
+  v8 = [(SBUIAnimationController *)&v11 initWithTransitionContextProvider:providerCopy];
   v9 = v8;
   if (v8)
   {
-    v8->_dismissOptions = a4;
-    objc_storeStrong(&v8->_transitionRequest, a3);
+    v8->_dismissOptions = options;
+    objc_storeStrong(&v8->_transitionRequest, provider);
   }
 
   return v9;
@@ -37,12 +37,12 @@
 
 - (void)_startAnimation
 {
-  v3 = [SBApp windowSceneManager];
-  v4 = [(SBWorkspaceTransitionRequest *)self->_transitionRequest displayIdentity];
-  v5 = [v3 windowSceneForDisplayIdentity:v4];
+  windowSceneManager = [SBApp windowSceneManager];
+  displayIdentity = [(SBWorkspaceTransitionRequest *)self->_transitionRequest displayIdentity];
+  v5 = [windowSceneManager windowSceneForDisplayIdentity:displayIdentity];
 
   v6 = [objc_opt_class() _overlaysToDismissForOptions:self->_dismissOptions windowScene:v5];
-  v7 = [v5 homeScreenController];
+  homeScreenController = [v5 homeScreenController];
   objc_initWeak(location, self);
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
@@ -52,8 +52,8 @@
   v8 = MEMORY[0x223D6F7F0](v31);
   if ((v6 & 0x10) != 0)
   {
-    v9 = [v5 commandTabController];
-    [v9 dismiss];
+    commandTabController = [v5 commandTabController];
+    [commandTabController dismiss];
   }
 
   if ((v6 & 0xFFFFFFFFFFFFFFEFLL) != 0)
@@ -80,14 +80,14 @@
     {
       v10[2](v10);
       [(SBDismissOverlaysAnimationController *)self addMilestone:@"Control Center Dismissal Milestone"];
-      v12 = [v5 controlCenterController];
+      controlCenterController = [v5 controlCenterController];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __55__SBDismissOverlaysAnimationController__startAnimation__block_invoke_4;
       v23[3] = &unk_2783AC308;
       objc_copyWeak(&v25, location);
       v24 = v11;
-      [v12 dismissAnimated:1 completion:v23];
+      [controlCenterController dismissAnimated:1 completion:v23];
 
       objc_destroyWeak(&v25);
     }
@@ -102,7 +102,7 @@
       v20[3] = &unk_2783AC308;
       objc_copyWeak(&v22, location);
       v21 = v11;
-      [v7 dismissAppIconForceTouchControllers:v20];
+      [homeScreenController dismissAppIconForceTouchControllers:v20];
 
       objc_destroyWeak(&v22);
     }
@@ -111,8 +111,8 @@
     {
       v10[2](v10);
       [(SBDismissOverlaysAnimationController *)self addMilestone:@"App Icon Share Sheet Dismissal Milestone"];
-      v13 = [v7 iconManager];
-      [v13 dismissIconShareSheets];
+      iconManager = [homeScreenController iconManager];
+      [iconManager dismissIconShareSheets];
       [(SBDismissOverlaysAnimationController *)self removeMilestone:@"App Icon Share Sheet Dismissal Milestone"];
       v11[2](v11);
     }
@@ -121,8 +121,8 @@
     {
       v10[2](v10);
       [(SBDismissOverlaysAnimationController *)self addMilestone:@"Assistant Dismissal Milestone"];
-      v14 = [v5 assistantController];
-      [v14 dismissAssistantViewIfNecessaryWithAnimation:1];
+      assistantController = [v5 assistantController];
+      [assistantController dismissAssistantViewIfNecessaryWithAnimation:1];
 
       [(SBDismissOverlaysAnimationController *)self removeMilestone:@"Assistant Dismissal Milestone"];
       v11[2](v11);
@@ -132,8 +132,8 @@
     {
       v10[2](v10);
       [(SBDismissOverlaysAnimationController *)self addMilestone:@"Banner Dismissal Milestone"];
-      v15 = [SBApp bannerManager];
-      [v15 dismissAllBannersInWindowScene:v5 animated:1 reason:@"dismissOverlays"];
+      bannerManager = [SBApp bannerManager];
+      [bannerManager dismissAllBannersInWindowScene:v5 animated:1 reason:@"dismissOverlays"];
 
       [(SBDismissOverlaysAnimationController *)self removeMilestone:@"Banner Dismissal Milestone"];
       v11[2](v11);
@@ -143,14 +143,14 @@
     {
       v10[2](v10);
       [(SBDismissOverlaysAnimationController *)self addMilestone:@"Presented View Controller Dismissal Milestone"];
-      v16 = [v7 homeScreenViewController];
+      homeScreenViewController = [homeScreenController homeScreenViewController];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __55__SBDismissOverlaysAnimationController__startAnimation__block_invoke_6;
       v17[3] = &unk_2783AC308;
       objc_copyWeak(&v19, location);
       v18 = v11;
-      [v16 dismissViewControllerAnimated:1 completion:v17];
+      [homeScreenViewController dismissViewControllerAnimated:1 completion:v17];
 
       objc_destroyWeak(&v19);
     }
@@ -217,9 +217,9 @@ uint64_t __55__SBDismissOverlaysAnimationController__startAnimation__block_invok
 
 - (id)animationSettings
 {
-  v3 = [SBApp windowSceneManager];
-  v4 = [(SBWorkspaceTransitionRequest *)self->_transitionRequest displayIdentity];
-  v5 = [v3 windowSceneForDisplayIdentity:v4];
+  windowSceneManager = [SBApp windowSceneManager];
+  displayIdentity = [(SBWorkspaceTransitionRequest *)self->_transitionRequest displayIdentity];
+  v5 = [windowSceneManager windowSceneForDisplayIdentity:displayIdentity];
 
   v6 = [objc_opt_class() _overlaysToDismissForOptions:self->_dismissOptions windowScene:v5];
   v7 = fmax(*&kSBAssistantDefaultAnimationDuration, 0.0);
@@ -257,20 +257,20 @@ uint64_t __55__SBDismissOverlaysAnimationController__startAnimation__block_invok
   return v10;
 }
 
-+ (unint64_t)_overlaysToDismissForOptions:(unint64_t)a3 windowScene:(id)a4
++ (unint64_t)_overlaysToDismissForOptions:(unint64_t)options windowScene:(id)scene
 {
-  v4 = a3;
-  v5 = a4;
-  v6 = [v5 homeScreenController];
-  v7 = [v6 homeScreenViewController];
-  v8 = [v6 iconManager];
-  v9 = [v6 areAnyIconViewContextMenusShowing];
-  if (v4)
+  optionsCopy = options;
+  sceneCopy = scene;
+  homeScreenController = [sceneCopy homeScreenController];
+  homeScreenViewController = [homeScreenController homeScreenViewController];
+  iconManager = [homeScreenController iconManager];
+  areAnyIconViewContextMenusShowing = [homeScreenController areAnyIconViewContextMenusShowing];
+  if (optionsCopy)
   {
     v11 = +[SBControlCenterCoordinator sharedInstanceIfExists];
-    v12 = [v11 isPresented];
+    isPresented = [v11 isPresented];
 
-    v10 = v12 & 1;
+    v10 = isPresented & 1;
   }
 
   else
@@ -279,12 +279,12 @@ uint64_t __55__SBDismissOverlaysAnimationController__startAnimation__block_invok
   }
 
   v13 = v10 | 2;
-  if (!v9)
+  if (!areAnyIconViewContextMenusShowing)
   {
     v13 = v10;
   }
 
-  if ((v4 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
     v14 = v13;
   }
@@ -294,17 +294,17 @@ uint64_t __55__SBDismissOverlaysAnimationController__startAnimation__block_invok
     v14 = v10;
   }
 
-  if ((v4 & 4) != 0)
+  if ((optionsCopy & 4) != 0)
   {
-    if ([v8 areAnyIconShareSheetsShowing])
+    if ([iconManager areAnyIconShareSheetsShowing])
     {
       v14 |= 4uLL;
     }
 
-    if ((v4 & 8) == 0)
+    if ((optionsCopy & 8) == 0)
     {
 LABEL_11:
-      if ((v4 & 0x10) == 0)
+      if ((optionsCopy & 0x10) == 0)
       {
         goto LABEL_12;
       }
@@ -313,7 +313,7 @@ LABEL_11:
     }
   }
 
-  else if ((v4 & 8) == 0)
+  else if ((optionsCopy & 8) == 0)
   {
     goto LABEL_11;
   }
@@ -323,10 +323,10 @@ LABEL_11:
     v14 |= 8uLL;
   }
 
-  if ((v4 & 0x10) == 0)
+  if ((optionsCopy & 0x10) == 0)
   {
 LABEL_12:
-    if ((v4 & 0x20) == 0)
+    if ((optionsCopy & 0x20) == 0)
     {
       goto LABEL_13;
     }
@@ -335,18 +335,18 @@ LABEL_12:
   }
 
 LABEL_23:
-  v17 = [v5 commandTabController];
-  v18 = [v17 isVisible];
+  commandTabController = [sceneCopy commandTabController];
+  isVisible = [commandTabController isVisible];
 
-  if (v18)
+  if (isVisible)
   {
     v14 |= 0x10uLL;
   }
 
-  if ((v4 & 0x20) == 0)
+  if ((optionsCopy & 0x20) == 0)
   {
 LABEL_13:
-    if ((v4 & 0x40) == 0)
+    if ((optionsCopy & 0x40) == 0)
     {
       goto LABEL_16;
     }
@@ -355,20 +355,20 @@ LABEL_13:
   }
 
 LABEL_26:
-  v19 = [SBApp bannerManager];
-  v20 = [v19 isDisplayingBannerInAnyWindowScene];
+  bannerManager = [SBApp bannerManager];
+  isDisplayingBannerInAnyWindowScene = [bannerManager isDisplayingBannerInAnyWindowScene];
 
-  if (v20)
+  if (isDisplayingBannerInAnyWindowScene)
   {
     v14 |= 0x20uLL;
   }
 
-  if ((v4 & 0x40) != 0)
+  if ((optionsCopy & 0x40) != 0)
   {
 LABEL_14:
-    v15 = [v7 presentedViewController];
+    presentedViewController = [homeScreenViewController presentedViewController];
 
-    if (v15)
+    if (presentedViewController)
     {
       v14 |= 0x40uLL;
     }

@@ -10,44 +10,44 @@
 
 - (FCSubscriptionController)subscriptionController
 {
-  v2 = [(FRFeldsparContext *)self cloudContext];
-  v3 = [v2 subscriptionController];
+  cloudContext = [(FRFeldsparContext *)self cloudContext];
+  subscriptionController = [cloudContext subscriptionController];
 
-  return v3;
+  return subscriptionController;
 }
 
 - (FCSubscriptionList)subscriptionList
 {
-  v2 = [(FRFeldsparContext *)self cloudContext];
-  v3 = [v2 subscriptionList];
+  cloudContext = [(FRFeldsparContext *)self cloudContext];
+  subscriptionList = [cloudContext subscriptionList];
 
-  return v3;
+  return subscriptionList;
 }
 
 - (FCPrivateChannelMembershipController)privateChannelMembershipController
 {
-  v2 = [(FRFeldsparContext *)self cloudContext];
-  v3 = [v2 privateChannelMembershipController];
+  cloudContext = [(FRFeldsparContext *)self cloudContext];
+  privateChannelMembershipController = [cloudContext privateChannelMembershipController];
 
-  return v3;
+  return privateChannelMembershipController;
 }
 
 - (FCNotificationsConfiguration)notificationsConfiguration
 {
-  v2 = [(FRFeldsparContext *)self cloudContext];
-  v3 = [v2 appConfigurationManager];
-  v4 = [v3 possiblyUnfetchedAppConfiguration];
-  v5 = [v4 notificationsConfig];
+  cloudContext = [(FRFeldsparContext *)self cloudContext];
+  appConfigurationManager = [cloudContext appConfigurationManager];
+  possiblyUnfetchedAppConfiguration = [appConfigurationManager possiblyUnfetchedAppConfiguration];
+  notificationsConfig = [possiblyUnfetchedAppConfiguration notificationsConfig];
 
-  return v5;
+  return notificationsConfig;
 }
 
 - (FCBundleSubscriptionManagerType)bundleSubscriptionManager
 {
-  v2 = [(FRFeldsparContext *)self cloudContext];
-  v3 = [v2 bundleSubscriptionManager];
+  cloudContext = [(FRFeldsparContext *)self cloudContext];
+  bundleSubscriptionManager = [cloudContext bundleSubscriptionManager];
 
-  return v3;
+  return bundleSubscriptionManager;
 }
 
 @end

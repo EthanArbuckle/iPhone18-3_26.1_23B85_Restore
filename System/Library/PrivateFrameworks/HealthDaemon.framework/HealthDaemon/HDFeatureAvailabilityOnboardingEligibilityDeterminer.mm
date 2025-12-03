@@ -1,50 +1,50 @@
 @interface HDFeatureAvailabilityOnboardingEligibilityDeterminer
 - (BOOL)_isActiveRemoteDevicePresent;
-- (HDFeatureAvailabilityOnboardingEligibilityDeterminer)initWithFeatureIdentifier:(id)a3 currentOnboardingVersion:(int64_t)a4 pairedDeviceCapability:(id)a5 pairedDeviceCapabilityProvider:(id)a6 regionAvailabilityProvider:(id)a7 disableAndExpiryProvider:(id)a8 loggingCategory:(id)a9;
-- (id)_onboardingEligibilitiesForOnboardingCompletions:(id)a3 onboardingEligibilityRetrievalBlock:(id)a4 error:(id *)a5;
-- (id)_onboardingEligibilityForRegionEligibility:(id)a3 rescindedStatus:(id)a4 isCapabilitySupported:(id)a5 isActiveRemoteDevicePresent:(id)a6;
-- (id)onboardingEligibilitiesForDevice:(id)a3 onboardingCompletions:(id)a4 error:(id *)a5;
-- (id)onboardingEligibilitiesForOnboardingCompletions:(id)a3 error:(id *)a4;
-- (id)onboardingEligibilityForCountryCode:(id)a3 error:(id *)a4;
-- (id)onboardingEligibilityForDevice:(id)a3 countryCode:(id)a4 error:(id *)a5;
+- (HDFeatureAvailabilityOnboardingEligibilityDeterminer)initWithFeatureIdentifier:(id)identifier currentOnboardingVersion:(int64_t)version pairedDeviceCapability:(id)capability pairedDeviceCapabilityProvider:(id)provider regionAvailabilityProvider:(id)availabilityProvider disableAndExpiryProvider:(id)expiryProvider loggingCategory:(id)category;
+- (id)_onboardingEligibilitiesForOnboardingCompletions:(id)completions onboardingEligibilityRetrievalBlock:(id)block error:(id *)error;
+- (id)_onboardingEligibilityForRegionEligibility:(id)eligibility rescindedStatus:(id)status isCapabilitySupported:(id)supported isActiveRemoteDevicePresent:(id)present;
+- (id)onboardingEligibilitiesForDevice:(id)device onboardingCompletions:(id)completions error:(id *)error;
+- (id)onboardingEligibilitiesForOnboardingCompletions:(id)completions error:(id *)error;
+- (id)onboardingEligibilityForCountryCode:(id)code error:(id *)error;
+- (id)onboardingEligibilityForDevice:(id)device countryCode:(id)code error:(id *)error;
 @end
 
 @implementation HDFeatureAvailabilityOnboardingEligibilityDeterminer
 
-- (HDFeatureAvailabilityOnboardingEligibilityDeterminer)initWithFeatureIdentifier:(id)a3 currentOnboardingVersion:(int64_t)a4 pairedDeviceCapability:(id)a5 pairedDeviceCapabilityProvider:(id)a6 regionAvailabilityProvider:(id)a7 disableAndExpiryProvider:(id)a8 loggingCategory:(id)a9
+- (HDFeatureAvailabilityOnboardingEligibilityDeterminer)initWithFeatureIdentifier:(id)identifier currentOnboardingVersion:(int64_t)version pairedDeviceCapability:(id)capability pairedDeviceCapabilityProvider:(id)provider regionAvailabilityProvider:(id)availabilityProvider disableAndExpiryProvider:(id)expiryProvider loggingCategory:(id)category
 {
-  v24 = a3;
-  v23 = a5;
-  v22 = a6;
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
+  identifierCopy = identifier;
+  capabilityCopy = capability;
+  providerCopy = provider;
+  availabilityProviderCopy = availabilityProvider;
+  expiryProviderCopy = expiryProvider;
+  categoryCopy = category;
   v25.receiver = self;
   v25.super_class = HDFeatureAvailabilityOnboardingEligibilityDeterminer;
   v18 = [(HDFeatureAvailabilityOnboardingEligibilityDeterminer *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_featureIdentifier, a3);
-    v19->_currentOnboardingVersion = a4;
-    objc_storeStrong(&v19->_pairedDeviceCapability, a5);
-    objc_storeStrong(&v19->_pairedDeviceCapabilityProvider, a6);
-    objc_storeStrong(&v19->_regionAvailabilityProvider, a7);
-    objc_storeStrong(&v19->_disableAndExpiryProvider, a8);
-    objc_storeStrong(&v19->_loggingCategory, a9);
+    objc_storeStrong(&v18->_featureIdentifier, identifier);
+    v19->_currentOnboardingVersion = version;
+    objc_storeStrong(&v19->_pairedDeviceCapability, capability);
+    objc_storeStrong(&v19->_pairedDeviceCapabilityProvider, provider);
+    objc_storeStrong(&v19->_regionAvailabilityProvider, availabilityProvider);
+    objc_storeStrong(&v19->_disableAndExpiryProvider, expiryProvider);
+    objc_storeStrong(&v19->_loggingCategory, category);
   }
 
   return v19;
 }
 
-- (id)onboardingEligibilityForCountryCode:(id)a3 error:(id *)a4
+- (id)onboardingEligibilityForCountryCode:(id)code error:(id *)error
 {
   regionAvailabilityProvider = self->_regionAvailabilityProvider;
-  v7 = a3;
-  v8 = [(HDRegionAvailabilityProviding *)regionAvailabilityProvider onboardingEligibilityForCountryCode:v7];
+  codeCopy = code;
+  v8 = [(HDRegionAvailabilityProviding *)regionAvailabilityProvider onboardingEligibilityForCountryCode:codeCopy];
   disableAndExpiryProvider = self->_disableAndExpiryProvider;
   v24 = 0;
-  v10 = [(HDFeatureDisableAndExpiryProviding *)disableAndExpiryProvider rescindedStatusOnActivePairedDeviceForCountryCode:v7 error:&v24];
+  v10 = [(HDFeatureDisableAndExpiryProviding *)disableAndExpiryProvider rescindedStatusOnActivePairedDeviceForCountryCode:codeCopy error:&v24];
 
   v11 = v24;
   v12 = v11;
@@ -64,10 +64,10 @@
       }
     }
 
-    if (a4)
+    if (error)
     {
       v18 = v17;
-      *a4 = v17;
+      *error = v17;
     }
 
     else
@@ -121,10 +121,10 @@
       if (v17)
       {
 LABEL_26:
-        if (a4)
+        if (error)
         {
           v22 = v17;
-          *a4 = v17;
+          *error = v17;
         }
 
         else
@@ -164,15 +164,15 @@ LABEL_22:
   return v20;
 }
 
-- (id)onboardingEligibilityForDevice:(id)a3 countryCode:(id)a4 error:(id *)a5
+- (id)onboardingEligibilityForDevice:(id)device countryCode:(id)code error:(id *)error
 {
-  v8 = a3;
+  deviceCopy = device;
   regionAvailabilityProvider = self->_regionAvailabilityProvider;
-  v10 = a4;
-  v11 = [(HDRegionAvailabilityProviding *)regionAvailabilityProvider onboardingEligibilityForCountryCode:v10 device:v8];
+  codeCopy = code;
+  v11 = [(HDRegionAvailabilityProviding *)regionAvailabilityProvider onboardingEligibilityForCountryCode:codeCopy device:deviceCopy];
   disableAndExpiryProvider = self->_disableAndExpiryProvider;
   v23 = 0;
-  v13 = [(HDFeatureDisableAndExpiryProviding *)disableAndExpiryProvider rescindedStatusForCountryCode:v10 device:v8 error:&v23];
+  v13 = [(HDFeatureDisableAndExpiryProviding *)disableAndExpiryProvider rescindedStatusForCountryCode:codeCopy device:deviceCopy error:&v23];
 
   v14 = v23;
   v15 = v14;
@@ -181,7 +181,7 @@ LABEL_22:
     pairedDeviceCapabilityProvider = self->_pairedDeviceCapabilityProvider;
     if (pairedDeviceCapabilityProvider && self->_pairedDeviceCapability)
     {
-      if (v8)
+      if (deviceCopy)
       {
         v17 = [MEMORY[0x277CCABB0] numberWithBool:{-[HDPairedDeviceCapabilityProviding isCapabilitySupported:onDevice:](pairedDeviceCapabilityProvider, "isCapabilitySupported:onDevice:")}];
         v18 = MEMORY[0x277CBEC38];
@@ -214,10 +214,10 @@ LABEL_22:
   if (v17)
   {
 LABEL_12:
-    if (a5)
+    if (error)
     {
       v21 = v17;
-      *a5 = v17;
+      *error = v17;
     }
 
     else
@@ -244,24 +244,24 @@ LABEL_16:
   return v20;
 }
 
-- (id)_onboardingEligibilityForRegionEligibility:(id)a3 rescindedStatus:(id)a4 isCapabilitySupported:(id)a5 isActiveRemoteDevicePresent:(id)a6
+- (id)_onboardingEligibilityForRegionEligibility:(id)eligibility rescindedStatus:(id)status isCapabilitySupported:(id)supported isActiveRemoteDevicePresent:(id)present
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v13 ineligibilityReasons];
-  v15 = [v12 integerValue];
+  supportedCopy = supported;
+  presentCopy = present;
+  statusCopy = status;
+  eligibilityCopy = eligibility;
+  ineligibilityReasons = [eligibilityCopy ineligibilityReasons];
+  integerValue = [statusCopy integerValue];
 
-  v16 = v14 | 0x80;
-  if (v15 != 2)
+  v16 = ineligibilityReasons | 0x80;
+  if (integerValue != 2)
   {
-    v16 = v14;
+    v16 = ineligibilityReasons;
   }
 
-  if (v15 == 1)
+  if (integerValue == 1)
   {
-    v17 = v14 | 0x40;
+    v17 = ineligibilityReasons | 0x40;
   }
 
   else
@@ -269,66 +269,66 @@ LABEL_16:
     v17 = v16;
   }
 
-  if (v11 && ![v11 BOOLValue])
+  if (presentCopy && ![presentCopy BOOLValue])
   {
     v17 |= 2uLL;
   }
 
-  if (v10 && ![v10 BOOLValue])
+  if (supportedCopy && ![supportedCopy BOOLValue])
   {
     v17 |= 4uLL;
   }
 
   v18 = objc_alloc(MEMORY[0x277CCD3F8]);
-  v19 = [v13 countryAvailabilityVersion];
+  countryAvailabilityVersion = [eligibilityCopy countryAvailabilityVersion];
 
-  v20 = [v18 initWithIneligibilityReasons:v17 countryAvailabilityVersion:v19];
+  v20 = [v18 initWithIneligibilityReasons:v17 countryAvailabilityVersion:countryAvailabilityVersion];
   v21 = [v20 eligibilityRespectingOverridesForFeatureIdentifier:self->_featureIdentifier];
 
   return v21;
 }
 
-- (id)onboardingEligibilitiesForOnboardingCompletions:(id)a3 error:(id *)a4
+- (id)onboardingEligibilitiesForOnboardingCompletions:(id)completions error:(id *)error
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __110__HDFeatureAvailabilityOnboardingEligibilityDeterminer_onboardingEligibilitiesForOnboardingCompletions_error___block_invoke;
   v6[3] = &unk_2786285C8;
   v6[4] = self;
-  v4 = [(HDFeatureAvailabilityOnboardingEligibilityDeterminer *)self _onboardingEligibilitiesForOnboardingCompletions:a3 onboardingEligibilityRetrievalBlock:v6 error:a4];
+  v4 = [(HDFeatureAvailabilityOnboardingEligibilityDeterminer *)self _onboardingEligibilitiesForOnboardingCompletions:completions onboardingEligibilityRetrievalBlock:v6 error:error];
 
   return v4;
 }
 
-- (id)onboardingEligibilitiesForDevice:(id)a3 onboardingCompletions:(id)a4 error:(id *)a5
+- (id)onboardingEligibilitiesForDevice:(id)device onboardingCompletions:(id)completions error:(id *)error
 {
-  v8 = a3;
+  deviceCopy = device;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __117__HDFeatureAvailabilityOnboardingEligibilityDeterminer_onboardingEligibilitiesForDevice_onboardingCompletions_error___block_invoke;
   v12[3] = &unk_2786285F0;
   v12[4] = self;
-  v13 = v8;
-  v9 = v8;
-  v10 = [(HDFeatureAvailabilityOnboardingEligibilityDeterminer *)self _onboardingEligibilitiesForOnboardingCompletions:a4 onboardingEligibilityRetrievalBlock:v12 error:a5];
+  v13 = deviceCopy;
+  v9 = deviceCopy;
+  v10 = [(HDFeatureAvailabilityOnboardingEligibilityDeterminer *)self _onboardingEligibilitiesForOnboardingCompletions:completions onboardingEligibilityRetrievalBlock:v12 error:error];
 
   return v10;
 }
 
-- (id)_onboardingEligibilitiesForOnboardingCompletions:(id)a3 onboardingEligibilityRetrievalBlock:(id)a4 error:(id *)a5
+- (id)_onboardingEligibilitiesForOnboardingCompletions:(id)completions onboardingEligibilityRetrievalBlock:(id)block error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v31 = a4;
-  if ([v8 count])
+  completionsCopy = completions;
+  blockCopy = block;
+  if ([completionsCopy count])
   {
-    v29 = a5;
+    errorCopy = error;
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    obj = v8;
+    obj = completionsCopy;
     v10 = [obj countByEnumeratingWithState:&v33 objects:v41 count:16];
     if (v10)
     {
@@ -343,13 +343,13 @@ LABEL_4:
           objc_enumerationMutation(obj);
         }
 
-        v14 = *(*(&v33 + 1) + 8 * v13);
-        if ([v14 version] >= self->_currentOnboardingVersion)
+        countryCode2 = *(*(&v33 + 1) + 8 * v13);
+        if ([countryCode2 version] >= self->_currentOnboardingVersion)
         {
           v16 = v9;
-          v17 = [v14 countryCode];
+          countryCode = [countryCode2 countryCode];
           v32 = 0;
-          v18 = v31[2](v31, v17, &v32);
+          v18 = blockCopy[2](blockCopy, countryCode, &v32);
           v19 = v32;
 
           if (!v18)
@@ -360,7 +360,7 @@ LABEL_4:
             if (os_log_type_enabled(loggingCategory, OS_LOG_TYPE_ERROR))
             {
               *buf = 138543618;
-              v38 = self;
+              selfCopy3 = self;
               v39 = 2114;
               v40 = v19;
               _os_log_error_impl(&dword_228986000, loggingCategory, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to determine onboarding eligibility: %{public}@", buf, 0x16u);
@@ -373,15 +373,15 @@ LABEL_4:
             }
 
             v25 = MEMORY[0x277CCA9B8];
-            v14 = [v14 countryCode];
-            v24 = [v25 hk_error:100 format:{@"Unexpected failure when evaluating eligibility for %@", v14}];
+            countryCode2 = [countryCode2 countryCode];
+            v24 = [v25 hk_error:100 format:{@"Unexpected failure when evaluating eligibility for %@", countryCode2}];
             if (v24)
             {
 LABEL_23:
-              if (v29)
+              if (errorCopy)
               {
                 v26 = v24;
-                *v29 = v24;
+                *errorCopy = v24;
               }
 
               else
@@ -404,7 +404,7 @@ LABEL_27:
             goto LABEL_29;
           }
 
-          v20 = [objc_alloc(MEMORY[0x277CCD3F0]) initWithOnboardingCompletion:v14 onboardingEligibility:v18];
+          v20 = [objc_alloc(MEMORY[0x277CCD3F0]) initWithOnboardingCompletion:countryCode2 onboardingEligibility:v18];
           v9 = v16;
           [v16 addObject:v20];
         }
@@ -416,7 +416,7 @@ LABEL_27:
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v38 = self;
+            selfCopy3 = self;
             _os_log_impl(&dword_228986000, v15, OS_LOG_TYPE_DEFAULT, "[%{public}@] Onboarding completion found with older version than current", buf, 0xCu);
           }
         }
@@ -445,7 +445,7 @@ LABEL_29:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v38 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_228986000, v22, OS_LOG_TYPE_DEFAULT, "[%{public}@] No onboarding completion found", buf, 0xCu);
     }
 
@@ -459,8 +459,8 @@ LABEL_29:
 
 - (BOOL)_isActiveRemoteDevicePresent
 {
-  v2 = [(HDPairedDeviceCapabilityProviding *)self->_pairedDeviceCapabilityProvider activePairedDevice];
-  v3 = v2 != 0;
+  activePairedDevice = [(HDPairedDeviceCapabilityProviding *)self->_pairedDeviceCapabilityProvider activePairedDevice];
+  v3 = activePairedDevice != 0;
 
   return v3;
 }

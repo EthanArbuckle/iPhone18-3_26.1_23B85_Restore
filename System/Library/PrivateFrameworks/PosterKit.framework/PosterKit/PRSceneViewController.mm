@@ -6,56 +6,56 @@
 - (CGSize)sceneSize;
 - (FBSDisplayConfiguration)displayConfiguration;
 - (PRPosterConfigurableOptions)configurableOptions;
-- (PRSceneViewController)initWithProvider:(id)a3 contents:(id)a4 configurableOptions:(id)a5 configuredProperties:(id)a6 additionalInfo:(id)a7;
+- (PRSceneViewController)initWithProvider:(id)provider contents:(id)contents configurableOptions:(id)options configuredProperties:(id)properties additionalInfo:(id)info;
 - (id)_acquireLocalKeyboardFocusAssertion;
-- (id)_defaultDisplayConfigurationForScreen:(id)a3;
-- (id)_initWithProvider:(id)a3 contents:(id)a4 configurableOptions:(id)a5 configuredProperties:(id)a6 previewing:(BOOL)a7;
+- (id)_defaultDisplayConfigurationForScreen:(id)screen;
+- (id)_initWithProvider:(id)provider contents:(id)contents configurableOptions:(id)options configuredProperties:(id)properties previewing:(BOOL)previewing;
 - (id)_presentationBackgroundColor;
-- (id)scene:(id)a3 handleActions:(id)a4;
+- (id)scene:(id)scene handleActions:(id)actions;
 - (unint64_t)significantEventsCounter;
 - (void)_acquireKeyboardFocusDeferringRuleIfNecessary;
-- (void)_addScenePresentationView:(id)a3;
+- (void)_addScenePresentationView:(id)view;
 - (void)_adjustParentScene;
-- (void)_configureInitialSceneClientSettings:(id)a3;
-- (void)_configureInitialSceneSettings:(id)a3;
+- (void)_configureInitialSceneClientSettings:(id)settings;
+- (void)_configureInitialSceneSettings:(id)settings;
 - (void)_teardown;
 - (void)_update;
 - (void)_updatePresentationBackgroundColor;
-- (void)_updateSceneToSize:(CGSize)a3 orientation:(int64_t)a4 withAnimationSettings:(id)a5 fence:(id)a6;
+- (void)_updateSceneToSize:(CGSize)size orientation:(int64_t)orientation withAnimationSettings:(id)settings fence:(id)fence;
 - (void)dealloc;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)invalidate;
-- (void)scene:(id)a3 clientDidConnect:(id)a4;
-- (void)scene:(id)a3 didUpdateClientSettingsWithDiff:(id)a4 oldClientSettings:(id)a5 transitionContext:(id)a6;
-- (void)sceneContentStateDidChange:(id)a3;
-- (void)sceneDidActivate:(id)a3;
-- (void)sceneDidDeactivate:(id)a3 withError:(id)a4;
-- (void)setConfiguredProperties:(id)a3;
-- (void)setDeviceMotionEventGenerationActive:(BOOL)a3;
-- (void)setDisplayConfiguration:(id)a3;
-- (void)setForcesSceneForeground:(BOOL)a3;
-- (void)setSceneUserInteractionEnabled:(BOOL)a3;
-- (void)updateMotionWithRotation:(_OWORD *)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)scene:(id)scene clientDidConnect:(id)connect;
+- (void)scene:(id)scene didUpdateClientSettingsWithDiff:(id)diff oldClientSettings:(id)settings transitionContext:(id)context;
+- (void)sceneContentStateDidChange:(id)change;
+- (void)sceneDidActivate:(id)activate;
+- (void)sceneDidDeactivate:(id)deactivate withError:(id)error;
+- (void)setConfiguredProperties:(id)properties;
+- (void)setDeviceMotionEventGenerationActive:(BOOL)active;
+- (void)setDisplayConfiguration:(id)configuration;
+- (void)setForcesSceneForeground:(BOOL)foreground;
+- (void)setSceneUserInteractionEnabled:(BOOL)enabled;
+- (void)updateMotionWithRotation:(_OWORD *)rotation;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PRSceneViewController
 
-- (id)_initWithProvider:(id)a3 contents:(id)a4 configurableOptions:(id)a5 configuredProperties:(id)a6 previewing:(BOOL)a7
+- (id)_initWithProvider:(id)provider contents:(id)contents configurableOptions:(id)options configuredProperties:(id)properties previewing:(BOOL)previewing
 {
-  v7 = a7;
+  previewingCopy = previewing;
   v20[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (v7)
+  providerCopy = provider;
+  contentsCopy = contents;
+  optionsCopy = options;
+  propertiesCopy = properties;
+  if (previewingCopy)
   {
     v19 = @"PRSceneViewControllerAdditionalInfoKeyPreviewing";
     v20[0] = MEMORY[0x1E695E118];
@@ -67,26 +67,26 @@
     v16 = 0;
   }
 
-  v17 = [(PRSceneViewController *)self initWithProvider:v12 contents:v13 configurableOptions:v14 configuredProperties:v15 additionalInfo:v16];
+  v17 = [(PRSceneViewController *)self initWithProvider:providerCopy contents:contentsCopy configurableOptions:optionsCopy configuredProperties:propertiesCopy additionalInfo:v16];
 
   return v17;
 }
 
-- (PRSceneViewController)initWithProvider:(id)a3 contents:(id)a4 configurableOptions:(id)a5 configuredProperties:(id)a6 additionalInfo:(id)a7
+- (PRSceneViewController)initWithProvider:(id)provider contents:(id)contents configurableOptions:(id)options configuredProperties:(id)properties additionalInfo:(id)info
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v90 = v13;
-  if (!v13)
+  providerCopy = provider;
+  contentsCopy = contents;
+  optionsCopy = options;
+  propertiesCopy = properties;
+  infoCopy = info;
+  v90 = providerCopy;
+  if (!providerCopy)
   {
     [PRSceneViewController initWithProvider:a2 contents:? configurableOptions:? configuredProperties:? additionalInfo:?];
   }
 
-  v18 = v17;
-  v19 = v14;
+  v18 = infoCopy;
+  v19 = contentsCopy;
   NSClassFromString(&cfstr_Pfposterpath.isa);
   if (!v19)
   {
@@ -100,7 +100,7 @@
 
   v20 = objc_opt_class();
   v21 = v19;
-  obj = a3;
+  obj = provider;
   if (v20)
   {
     if (objc_opt_isKindOfClass())
@@ -124,10 +124,10 @@
 
   if (v23)
   {
-    v24 = [v13 extension];
-    v25 = [v24 posterExtensionBundleIdentifier];
-    v26 = [v23 identity];
-    v27 = [v26 provider];
+    extension = [providerCopy extension];
+    posterExtensionBundleIdentifier = [extension posterExtensionBundleIdentifier];
+    identity = [v23 identity];
+    provider = [identity provider];
     v28 = BSEqualStrings();
 
     if ((v28 & 1) == 0)
@@ -145,7 +145,7 @@
     }
   }
 
-  v29 = v15;
+  v29 = optionsCopy;
   if (v29)
   {
     NSClassFromString(&cfstr_Prposterconfig_3.isa);
@@ -155,7 +155,7 @@
     }
   }
 
-  v30 = v16;
+  v30 = propertiesCopy;
   if (v30)
   {
     NSClassFromString(&cfstr_Prposterconfig_0.isa);
@@ -165,8 +165,8 @@
     }
   }
 
-  v88 = [objc_opt_class() role];
-  if (!v88)
+  role = [objc_opt_class() role];
+  if (!role)
   {
     [PRSceneViewController initWithProvider:a2 contents:? configurableOptions:? configuredProperties:? additionalInfo:?];
   }
@@ -176,11 +176,11 @@
   v33 = v89;
   if (!v30)
   {
-    v34 = [v31 configuredProperties];
-    v35 = v34;
-    if (v34)
+    configuredProperties = [v31 configuredProperties];
+    v35 = configuredProperties;
+    if (configuredProperties)
     {
-      v36 = v34;
+      v36 = configuredProperties;
     }
 
     else
@@ -192,14 +192,14 @@
   }
 
   v37 = [v30 mutableCopy];
-  v38 = [v30 complicationLayout];
-  if (!v38)
+  complicationLayout = [v30 complicationLayout];
+  if (!complicationLayout)
   {
-    v39 = [v32 complicationLayout];
-    v40 = v39;
-    if (v39)
+    complicationLayout2 = [v32 complicationLayout];
+    v40 = complicationLayout2;
+    if (complicationLayout2)
     {
-      v41 = v39;
+      v41 = complicationLayout2;
     }
 
     else
@@ -207,20 +207,20 @@
       v41 = [PRPosterPathUtilities loadComplicationLayoutForPath:v23 error:0];
     }
 
-    v38 = v41;
+    complicationLayout = v41;
 
-    [v37 setComplicationLayout:v38];
+    [v37 setComplicationLayout:complicationLayout];
   }
 
-  v79 = v38;
-  v42 = [v30 renderingConfiguration];
-  if (!v42)
+  v79 = complicationLayout;
+  renderingConfiguration = [v30 renderingConfiguration];
+  if (!renderingConfiguration)
   {
-    v43 = [v32 renderingConfiguration];
-    v44 = v43;
-    if (v43)
+    renderingConfiguration2 = [v32 renderingConfiguration];
+    v44 = renderingConfiguration2;
+    if (renderingConfiguration2)
     {
-      v45 = v43;
+      v45 = renderingConfiguration2;
     }
 
     else
@@ -228,17 +228,17 @@
       v45 = [PRPosterPathUtilities loadRenderingConfigurationForPath:v23 error:0];
     }
 
-    v42 = v45;
+    renderingConfiguration = v45;
 
-    [v37 setRenderingConfiguration:v42];
+    [v37 setRenderingConfiguration:renderingConfiguration];
   }
 
   v87 = [v37 copy];
   v46 = [v18 objectForKey:@"PRSceneViewControllerAdditionalInfoKeyPreviewing"];
-  v76 = [v46 BOOLValue];
+  bOOLValue = [v46 BOOLValue];
 
   v47 = [v18 objectForKey:@"PRSceneViewControllerAdditionalInfoKeySignificantEventsCounter"];
-  v77 = [v47 unsignedIntegerValue];
+  unsignedIntegerValue = [v47 unsignedIntegerValue];
 
   v86 = [v18 objectForKey:@"PRSceneViewControllerAdditionalInfoKeyShowHeaderElements"];
   v85 = [v18 objectForKey:@"PRSceneViewControllerAdditionalInfoKeyShowComplications"];
@@ -304,9 +304,9 @@
   if (v59)
   {
     objc_storeStrong(&v59->_extensionInstance, obj);
-    v61 = [v23 identity];
+    identity2 = [v23 identity];
     contentsIdentity = v60->_contentsIdentity;
-    v60->_contentsIdentity = v61;
+    v60->_contentsIdentity = identity2;
 
     v63 = [v87 copy];
     configuredProperties = v60->_configuredProperties;
@@ -317,12 +317,12 @@
     v74 = v23;
     if ([v83 BOOLValue])
     {
-      [MEMORY[0x1E699F7C8] pr_createPosterSceneWithinCurrentProcessForRole:v88 path:v89];
+      [MEMORY[0x1E699F7C8] pr_createPosterSceneWithinCurrentProcessForRole:role path:v89];
     }
 
     else
     {
-      [MEMORY[0x1E699F7C8] pr_createPosterSceneWithRole:v88 path:v89 instance:v90];
+      [MEMORY[0x1E699F7C8] pr_createPosterSceneWithRole:role path:v89 instance:v90];
     }
     v65 = ;
     scene = v60->_scene;
@@ -335,7 +335,7 @@
     v92[2] = __107__PRSceneViewController_initWithProvider_contents_configurableOptions_configuredProperties_additionalInfo___block_invoke;
     v92[3] = &unk_1E78448A8;
     v93 = v84;
-    v102 = v76;
+    v102 = bOOLValue;
     v94 = v86;
     v95 = v85;
     v100 = v75;
@@ -345,7 +345,7 @@
     v98 = v29;
     v69 = v60;
     v99 = v69;
-    v101 = v77;
+    v101 = unsignedIntegerValue;
     [(FBScene *)v67 configureParameters:v92];
     if ([v82 BOOLValue])
     {
@@ -469,24 +469,24 @@ void __107__PRSceneViewController_initWithProvider_contents_configurableOptions_
 
 - (PRPosterConfigurableOptions)configurableOptions
 {
-  v2 = [(FBScene *)self->_scene settings];
-  v3 = [v2 pr_posterConfigurableOptions];
+  settings = [(FBScene *)self->_scene settings];
+  pr_posterConfigurableOptions = [settings pr_posterConfigurableOptions];
 
-  return v3;
+  return pr_posterConfigurableOptions;
 }
 
-- (void)setConfiguredProperties:(id)a3
+- (void)setConfiguredProperties:(id)properties
 {
-  v5 = a3;
-  if (![(PRPosterConfiguredProperties *)self->_configuredProperties isEqualToConfiguredProperties:v5])
+  propertiesCopy = properties;
+  if (![(PRPosterConfiguredProperties *)self->_configuredProperties isEqualToConfiguredProperties:propertiesCopy])
   {
-    objc_storeStrong(&self->_configuredProperties, a3);
+    objc_storeStrong(&self->_configuredProperties, properties);
     scene = self->_scene;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __49__PRSceneViewController_setConfiguredProperties___block_invoke;
     v7[3] = &unk_1E78448D0;
-    v8 = v5;
+    v8 = propertiesCopy;
     [(FBScene *)scene updateSettingsWithBlock:v7];
   }
 }
@@ -502,12 +502,12 @@ void __49__PRSceneViewController_setConfiguredProperties___block_invoke(uint64_t
   [v4 pr_setPosterAmbientConfiguration:v6];
 }
 
-- (void)setSceneUserInteractionEnabled:(BOOL)a3
+- (void)setSceneUserInteractionEnabled:(BOOL)enabled
 {
-  if (self->_sceneUserInteractionEnabled != a3)
+  if (self->_sceneUserInteractionEnabled != enabled)
   {
-    self->_sceneUserInteractionEnabled = a3;
-    if (a3)
+    self->_sceneUserInteractionEnabled = enabled;
+    if (enabled)
     {
       [(UIView *)self->_touchBlockingView removeFromSuperview];
       touchBlockingView = self->_touchBlockingView;
@@ -516,53 +516,53 @@ void __49__PRSceneViewController_setConfiguredProperties___block_invoke(uint64_t
 
     else
     {
-      v10 = [(PRSceneViewController *)self view];
+      view = [(PRSceneViewController *)self view];
       v6 = objc_alloc(MEMORY[0x1E69DD250]);
-      [(UIView *)v10 bounds];
+      [(UIView *)view bounds];
       v7 = [v6 initWithFrame:?];
       [(UIView *)v7 setAutoresizingMask:18];
-      v8 = [(UIView *)v7 layer];
-      [v8 setHitTestsAsOpaque:1];
+      layer = [(UIView *)v7 layer];
+      [layer setHitTestsAsOpaque:1];
 
-      [(UIView *)v10 addSubview:v7];
+      [(UIView *)view addSubview:v7];
       v9 = self->_touchBlockingView;
       self->_touchBlockingView = v7;
 
-      touchBlockingView = v10;
+      touchBlockingView = view;
     }
   }
 }
 
-- (void)setForcesSceneForeground:(BOOL)a3
+- (void)setForcesSceneForeground:(BOOL)foreground
 {
-  if (self->_forcesSceneForeground != a3)
+  if (self->_forcesSceneForeground != foreground)
   {
-    self->_forcesSceneForeground = a3;
+    self->_forcesSceneForeground = foreground;
     [(PRSceneViewController *)self _update];
   }
 }
 
 - (BOOL)isSceneContentReady
 {
-  v3 = [(FBScene *)self->_scene clientSettings];
-  v4 = [v3 pui_didFinishInitialization];
+  clientSettings = [(FBScene *)self->_scene clientSettings];
+  pui_didFinishInitialization = [clientSettings pui_didFinishInitialization];
 
-  return v4 && [(FBScene *)self->_scene contentState]== 2;
+  return pui_didFinishInitialization && [(FBScene *)self->_scene contentState]== 2;
 }
 
 - (unint64_t)significantEventsCounter
 {
-  v2 = [(FBScene *)self->_scene settings];
-  v3 = [v2 pui_significantEventsCounter];
+  settings = [(FBScene *)self->_scene settings];
+  pui_significantEventsCounter = [settings pui_significantEventsCounter];
 
-  return v3;
+  return pui_significantEventsCounter;
 }
 
-- (id)_defaultDisplayConfigurationForScreen:(id)a3
+- (id)_defaultDisplayConfigurationForScreen:(id)screen
 {
-  if (a3)
+  if (screen)
   {
-    [a3 displayConfiguration];
+    [screen displayConfiguration];
   }
 
   else
@@ -574,12 +574,12 @@ void __49__PRSceneViewController_setConfiguredProperties___block_invoke(uint64_t
   return v3;
 }
 
-- (void)setDisplayConfiguration:(id)a3
+- (void)setDisplayConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   if (([(FBSDisplayConfiguration *)self->_displayConfiguration isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_displayConfiguration, a3);
+    objc_storeStrong(&self->_displayConfiguration, configuration);
     [(PRSceneViewController *)self _update];
   }
 }
@@ -594,18 +594,18 @@ void __49__PRSceneViewController_setConfiguredProperties___block_invoke(uint64_t
 
   else
   {
-    v5 = [(PRSceneViewController *)self _screen];
-    v3 = [(PRSceneViewController *)self _defaultDisplayConfigurationForScreen:v5];
+    _screen = [(PRSceneViewController *)self _screen];
+    v3 = [(PRSceneViewController *)self _defaultDisplayConfigurationForScreen:_screen];
   }
 
   return v3;
 }
 
-- (void)setDeviceMotionEventGenerationActive:(BOOL)a3
+- (void)setDeviceMotionEventGenerationActive:(BOOL)active
 {
-  if (self->_deviceMotionEventGenerationActive != a3)
+  if (self->_deviceMotionEventGenerationActive != active)
   {
-    self->_deviceMotionEventGenerationActive = a3;
+    self->_deviceMotionEventGenerationActive = active;
     renderingServiceSceneComponent = self->_renderingServiceSceneComponent;
     if (renderingServiceSceneComponent)
     {
@@ -614,13 +614,13 @@ void __49__PRSceneViewController_setConfiguredProperties___block_invoke(uint64_t
   }
 }
 
-- (void)updateMotionWithRotation:(_OWORD *)a3
+- (void)updateMotionWithRotation:(_OWORD *)rotation
 {
-  result = *(a1 + 1048);
+  result = *(self + 1048);
   if (result)
   {
-    v4 = a3[1];
-    v5[0] = *a3;
+    v4 = rotation[1];
+    v5[0] = *rotation;
     v5[1] = v4;
     return [result updateMotionWithRotation:v5];
   }
@@ -639,7 +639,7 @@ void __49__PRSceneViewController_setConfiguredProperties___block_invoke(uint64_t
     {
       invalidated = self->_invalidated;
       v4 = 134218240;
-      v5 = self;
+      selfCopy = self;
       v6 = 1024;
       v7 = invalidated;
       _os_log_impl(&dword_1A8AA7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "SceneViewController-%p: invalidated is now %{BOOL}i", &v4, 0x12u);
@@ -656,80 +656,80 @@ void __49__PRSceneViewController_setConfiguredProperties___block_invoke(uint64_t
   [(PRSceneViewController *)&v2 viewDidLoad];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PRSceneViewController;
-  [(PRSceneViewController *)&v4 viewWillAppear:a3];
+  [(PRSceneViewController *)&v4 viewWillAppear:appear];
   [(PRSceneViewController *)self _update];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PRSceneViewController;
-  [(PRSceneViewController *)&v4 viewDidAppear:a3];
+  [(PRSceneViewController *)&v4 viewDidAppear:appear];
   [(PRSceneViewController *)self _update];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PRSceneViewController;
-  [(PRSceneViewController *)&v4 viewWillDisappear:a3];
+  [(PRSceneViewController *)&v4 viewWillDisappear:disappear];
   if ([(FBScene *)self->_scene isActive])
   {
     [(PRSceneViewController *)self _update];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PRSceneViewController;
-  [(PRSceneViewController *)&v4 viewDidDisappear:a3];
+  [(PRSceneViewController *)&v4 viewDidDisappear:disappear];
   if ([(FBScene *)self->_scene isActive])
   {
     [(PRSceneViewController *)self _update];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v26.receiver = self;
   v26.super_class = PRSceneViewController;
-  [(PRSceneViewController *)&v26 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [v7 containerView];
+  [(PRSceneViewController *)&v26 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  containerView = [coordinatorCopy containerView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    window = containerView;
   }
 
   else
   {
-    v9 = [v8 window];
+    window = [containerView window];
   }
 
-  v10 = v9;
-  v11 = [(PRSceneViewController *)self interfaceOrientation];
-  if (v7)
+  v10 = window;
+  interfaceOrientation = [(PRSceneViewController *)self interfaceOrientation];
+  if (coordinatorCopy)
   {
-    v12 = [v10 _toWindowOrientation];
-    v13 = [(UIScene *)self->_uiParentScene _synchronizedDrawingFence];
+    _toWindowOrientation = [v10 _toWindowOrientation];
+    _synchronizedDrawingFence = [(UIScene *)self->_uiParentScene _synchronizedDrawingFence];
     v14 = MEMORY[0x1E698E608];
-    [v7 transitionDuration];
+    [coordinatorCopy transitionDuration];
     v15 = [v14 settingsWithDuration:?];
   }
 
   else
   {
-    v12 = v11;
+    _toWindowOrientation = interfaceOrientation;
     v15 = 0;
-    v13 = 0;
+    _synchronizedDrawingFence = 0;
   }
 
   v19[0] = MEMORY[0x1E69E9820];
@@ -737,15 +737,15 @@ void __49__PRSceneViewController_setConfiguredProperties___block_invoke(uint64_t
   v19[2] = __76__PRSceneViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v19[3] = &unk_1E78448F8;
   v19[4] = self;
-  v20 = v7;
+  v20 = coordinatorCopy;
   v23 = width;
   v24 = height;
-  v25 = v12;
+  v25 = _toWindowOrientation;
   v21 = v15;
-  v22 = v13;
-  v16 = v13;
+  v22 = _synchronizedDrawingFence;
+  v16 = _synchronizedDrawingFence;
   v17 = v15;
-  v18 = v7;
+  v18 = coordinatorCopy;
   [v18 animateAlongsideTransition:v19 completion:0];
 }
 
@@ -774,19 +774,19 @@ void __76__PRSceneViewController_viewWillTransitionToSize_withTransitionCoordina
   }
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PRSceneViewController;
-  [(PRSceneViewController *)&v5 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
+  [(PRSceneViewController *)&v5 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
   [(PRSceneViewController *)self _update];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = PRSceneViewController;
-  [(PRSceneViewController *)&v4 didMoveToParentViewController:a3];
+  [(PRSceneViewController *)&v4 didMoveToParentViewController:controller];
   [(PRSceneViewController *)self _update];
 }
 
@@ -804,15 +804,15 @@ void __76__PRSceneViewController_viewWillTransitionToSize_withTransitionCoordina
   scene = self->_scene;
   if (scene)
   {
-    v6 = [(FBScene *)scene identityToken];
-    v7 = [v6 stringRepresentation];
+    identityToken = [(FBScene *)scene identityToken];
+    stringRepresentation = [identityToken stringRepresentation];
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
       *&buf[4] = self;
       *&buf[12] = 2112;
-      *&buf[14] = v7;
+      *&buf[14] = stringRepresentation;
       _os_log_impl(&dword_1A8AA7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "SceneViewController-%p: invalidating scene %@", buf, 0x16u);
     }
 
@@ -828,7 +828,7 @@ void __76__PRSceneViewController_viewWillTransitionToSize_withTransitionCoordina
     v14 = 3221225472;
     v15 = __34__PRSceneViewController__teardown__block_invoke;
     v16 = &unk_1E7844920;
-    v9 = v7;
+    v9 = stringRepresentation;
     v17 = v9;
     v18 = buf;
     [v8 pui_invalidateWithCompletion:&v13];
@@ -871,16 +871,16 @@ void __34__PRSceneViewController__teardown__block_invoke(uint64_t a1)
     [(PRSceneViewController *)self _adjustParentScene];
     if ([(PRSceneViewController *)self scenePresenterIsValid])
     {
-      v3 = [(PRSceneViewController *)self interfaceOrientation];
-      v4 = [(PRSceneViewController *)self traitCollection];
-      v5 = [v4 userInterfaceIdiom];
+      interfaceOrientation = [(PRSceneViewController *)self interfaceOrientation];
+      traitCollection = [(PRSceneViewController *)self traitCollection];
+      userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-      v6 = [(PRSceneViewController *)self contentsIdentity];
-      v7 = [v6 role];
-      v8 = [v7 isEqual:@"PRPosterRoleLockScreen"];
-      if (v5 == 1)
+      contentsIdentity = [(PRSceneViewController *)self contentsIdentity];
+      role = [contentsIdentity role];
+      v8 = [role isEqual:@"PRPosterRoleLockScreen"];
+      if (userInterfaceIdiom == 1)
       {
-        v9 = v3;
+        v9 = interfaceOrientation;
       }
 
       else
@@ -890,32 +890,32 @@ void __34__PRSceneViewController__teardown__block_invoke(uint64_t a1)
 
       if (v8)
       {
-        v3 = v9;
+        interfaceOrientation = v9;
       }
 
       [(PRSceneViewController *)self sceneSize];
-      [(PRSceneViewController *)self _updateSceneToSize:v3 orientation:0 withAnimationSettings:0 fence:?];
+      [(PRSceneViewController *)self _updateSceneToSize:interfaceOrientation orientation:0 withAnimationSettings:0 fence:?];
       if (!self->_scenePresenter)
       {
-        v10 = [(FBScene *)self->_scene uiPresentationManager];
+        uiPresentationManager = [(FBScene *)self->_scene uiPresentationManager];
         v11 = objc_opt_class();
         v12 = NSStringFromClass(v11);
-        v13 = [v10 createPresenterWithIdentifier:v12];
+        v13 = [uiPresentationManager createPresenterWithIdentifier:v12];
         scenePresenter = self->_scenePresenter;
         self->_scenePresenter = v13;
 
-        v15 = [(PRSceneViewController *)self _presentationBackgroundColor];
+        _presentationBackgroundColor = [(PRSceneViewController *)self _presentationBackgroundColor];
         v16 = self->_scenePresenter;
         v20[0] = MEMORY[0x1E69E9820];
         v20[1] = 3221225472;
         v20[2] = __32__PRSceneViewController__update__block_invoke;
         v20[3] = &unk_1E7844948;
-        v21 = v15;
-        v17 = v15;
+        v21 = _presentationBackgroundColor;
+        v17 = _presentationBackgroundColor;
         [(UIScenePresenter *)v16 modifyPresentationContext:v20];
         [(UIScenePresenter *)self->_scenePresenter activate];
-        v18 = [(UIScenePresenter *)self->_scenePresenter presentationView];
-        [(PRSceneViewController *)self _addScenePresentationView:v18];
+        presentationView = [(UIScenePresenter *)self->_scenePresenter presentationView];
+        [(PRSceneViewController *)self _addScenePresentationView:presentationView];
       }
     }
 
@@ -938,18 +938,18 @@ void __32__PRSceneViewController__update__block_invoke(uint64_t a1, void *a2)
 
 - (BOOL)scenePresenterIsValid
 {
-  v2 = [(PRSceneViewController *)self view];
-  v3 = [v2 window];
-  v4 = v3 != 0;
+  view = [(PRSceneViewController *)self view];
+  window = [view window];
+  v4 = window != 0;
 
   return v4;
 }
 
 - (CGSize)sceneSize
 {
-  v2 = [(PRSceneViewController *)self view];
-  v3 = [v2 window];
-  [v3 bounds];
+  view = [(PRSceneViewController *)self view];
+  window = [view window];
+  [window bounds];
   v5 = v4;
   v7 = v6;
 
@@ -968,7 +968,7 @@ void __32__PRSceneViewController__update__block_invoke(uint64_t a1, void *a2)
     v3 = MEMORY[0x1E69DC888];
     if (has_internal_content)
     {
-      v4 = [MEMORY[0x1E69DC888] systemPinkColor];
+      systemPinkColor = [MEMORY[0x1E69DC888] systemPinkColor];
       goto LABEL_6;
     }
   }
@@ -978,27 +978,27 @@ void __32__PRSceneViewController__update__block_invoke(uint64_t a1, void *a2)
     v3 = MEMORY[0x1E69DC888];
   }
 
-  v4 = [v3 blackColor];
+  systemPinkColor = [v3 blackColor];
 LABEL_6:
 
-  return v4;
+  return systemPinkColor;
 }
 
-- (void)_addScenePresentationView:(id)a3
+- (void)_addScenePresentationView:(id)view
 {
-  v4 = a3;
-  v5 = [(PRSceneViewController *)self view];
-  [v5 addSubview:v4];
+  viewCopy = view;
+  view = [(PRSceneViewController *)self view];
+  [view addSubview:viewCopy];
 
-  v6 = [(PRSceneViewController *)self view];
-  [v6 sendSubviewToBack:v4];
+  view2 = [(PRSceneViewController *)self view];
+  [view2 sendSubviewToBack:viewCopy];
 }
 
 - (void)_adjustParentScene
 {
-  v3 = [(PRSceneViewController *)self view];
-  v4 = [v3 window];
-  obj = [v4 windowScene];
+  view = [(PRSceneViewController *)self view];
+  window = [view window];
+  obj = [window windowScene];
 
   v5 = obj;
   if (self->_uiParentScene != obj)
@@ -1008,18 +1008,18 @@ LABEL_6:
   }
 }
 
-- (void)_updateSceneToSize:(CGSize)a3 orientation:(int64_t)a4 withAnimationSettings:(id)a5 fence:(id)a6
+- (void)_updateSceneToSize:(CGSize)size orientation:(int64_t)orientation withAnimationSettings:(id)settings fence:(id)fence
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = [(PRSceneViewController *)self displayConfiguration];
-  [v11 bounds];
+  settingsCopy = settings;
+  fenceCopy = fence;
+  displayConfiguration = [(PRSceneViewController *)self displayConfiguration];
+  [displayConfiguration bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(PRSceneViewController *)self view];
-  [v20 bounds];
+  view = [(PRSceneViewController *)self view];
+  [view bounds];
 
   if ((BSSizeEqualToSize() & 1) == 0)
   {
@@ -1040,17 +1040,17 @@ LABEL_6:
   v29[2] = __84__PRSceneViewController__updateSceneToSize_orientation_withAnimationSettings_fence___block_invoke;
   v29[3] = &unk_1E7844970;
   v29[4] = self;
-  v30 = v11;
+  v30 = displayConfiguration;
   v33 = v13;
   v34 = v15;
   v35 = v17;
   v36 = v19;
-  v37 = a4;
-  v31 = v10;
-  v32 = v9;
-  v26 = v9;
-  v27 = v10;
-  v28 = v11;
+  orientationCopy = orientation;
+  v31 = fenceCopy;
+  v32 = settingsCopy;
+  v26 = settingsCopy;
+  v27 = fenceCopy;
+  v28 = displayConfiguration;
   [(FBScene *)scene performUpdate:v29];
 }
 
@@ -1071,63 +1071,63 @@ void __84__PRSceneViewController__updateSceneToSize_orientation_withAnimationSet
 
 - (BOOL)_depthEffectDisallowed
 {
-  v2 = self;
-  v3 = [(PRSceneViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 effectiveGeometry];
-  v7 = [v6 interfaceOrientation];
+  selfCopy = self;
+  view = [(PRSceneViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  effectiveGeometry = [windowScene effectiveGeometry];
+  interfaceOrientation = [effectiveGeometry interfaceOrientation];
 
-  LODWORD(v6) = (v7 - 1) < 2;
-  v8 = [(PRSceneViewController *)v2 configuredProperties];
-  v9 = [v8 complicationLayout];
-  v10 = [v9 complications];
-  v11 = [v10 count] != 0;
+  LODWORD(effectiveGeometry) = (interfaceOrientation - 1) < 2;
+  configuredProperties = [(PRSceneViewController *)selfCopy configuredProperties];
+  complicationLayout = [configuredProperties complicationLayout];
+  complications = [complicationLayout complications];
+  v11 = [complications count] != 0;
 
-  v12 = [v8 titleStyleConfiguration];
-  v13 = [v12 prefersVerticalTitleLayout];
+  titleStyleConfiguration = [configuredProperties titleStyleConfiguration];
+  prefersVerticalTitleLayout = [titleStyleConfiguration prefersVerticalTitleLayout];
 
-  LOBYTE(v2) = PRIsDepthEffectDisallowedWithRowMode(v6, v11, v13, [(PRSceneViewController *)v2 complicationRowMode]);
-  return v2;
+  LOBYTE(selfCopy) = PRIsDepthEffectDisallowedWithRowMode(effectiveGeometry, v11, prefersVerticalTitleLayout, [(PRSceneViewController *)selfCopy complicationRowMode]);
+  return selfCopy;
 }
 
-- (void)_configureInitialSceneSettings:(id)a3
+- (void)_configureInitialSceneSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(PRSceneViewController *)self configuredProperties];
-  v11 = [v5 complicationLayout];
+  settingsCopy = settings;
+  configuredProperties = [(PRSceneViewController *)self configuredProperties];
+  complicationLayout = [configuredProperties complicationLayout];
 
-  v6 = [v11 complications];
-  v7 = [v6 count] != 0;
+  complications = [complicationLayout complications];
+  v7 = [complications count] != 0;
 
-  v8 = [v11 sidebarComplications];
-  v9 = [v8 count] != 0;
+  sidebarComplications = [complicationLayout sidebarComplications];
+  v9 = [sidebarComplications count] != 0;
 
-  v10 = [v11 complicationsUseBottomLayout];
-  [v4 pui_setComplicationRowConfigured:v7];
-  [v4 pui_setComplicationSidebarConfigured:v9];
-  [v4 pui_setComplicationRowAtBottom:v10];
+  complicationsUseBottomLayout = [complicationLayout complicationsUseBottomLayout];
+  [settingsCopy pui_setComplicationRowConfigured:v7];
+  [settingsCopy pui_setComplicationSidebarConfigured:v9];
+  [settingsCopy pui_setComplicationRowAtBottom:complicationsUseBottomLayout];
 }
 
-- (void)_configureInitialSceneClientSettings:(id)a3
+- (void)_configureInitialSceneClientSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(PRSceneViewController *)self configuredProperties];
-  v6 = [v5 renderingConfiguration];
-  v7 = v6;
-  if (v6)
+  settingsCopy = settings;
+  configuredProperties = [(PRSceneViewController *)self configuredProperties];
+  renderingConfiguration = [configuredProperties renderingConfiguration];
+  v7 = renderingConfiguration;
+  if (renderingConfiguration)
   {
-    v12 = v6;
+    v12 = renderingConfiguration;
   }
 
   else
   {
-    v8 = [(PRSceneViewController *)self configurableOptions];
-    v9 = [v8 preferredRenderingConfiguration];
-    v10 = v9;
-    if (v9)
+    configurableOptions = [(PRSceneViewController *)self configurableOptions];
+    preferredRenderingConfiguration = [configurableOptions preferredRenderingConfiguration];
+    v10 = preferredRenderingConfiguration;
+    if (preferredRenderingConfiguration)
     {
-      v11 = v9;
+      v11 = preferredRenderingConfiguration;
     }
 
     else
@@ -1138,21 +1138,21 @@ void __84__PRSceneViewController__updateSceneToSize_orientation_withAnimationSet
     v12 = v11;
   }
 
-  [v4 pr_setDepthEffectDisabled:{-[PRPosterRenderingConfiguration isDepthEffectDisabled](v12, "isDepthEffectDisabled")}];
-  [v4 pr_setMotionEffectsDisabled:{-[PRPosterRenderingConfiguration areMotionEffectsDisabled](v12, "areMotionEffectsDisabled")}];
-  [v4 pr_setSupportedMotionEffectsMode:0];
+  [settingsCopy pr_setDepthEffectDisabled:{-[PRPosterRenderingConfiguration isDepthEffectDisabled](v12, "isDepthEffectDisabled")}];
+  [settingsCopy pr_setMotionEffectsDisabled:{-[PRPosterRenderingConfiguration areMotionEffectsDisabled](v12, "areMotionEffectsDisabled")}];
+  [settingsCopy pr_setSupportedMotionEffectsMode:0];
 }
 
 - (void)_updatePresentationBackgroundColor
 {
-  v3 = [(PRSceneViewController *)self _presentationBackgroundColor];
+  _presentationBackgroundColor = [(PRSceneViewController *)self _presentationBackgroundColor];
   scenePresenter = self->_scenePresenter;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__PRSceneViewController__updatePresentationBackgroundColor__block_invoke;
   v6[3] = &unk_1E7844948;
-  v7 = v3;
-  v5 = v3;
+  v7 = _presentationBackgroundColor;
+  v5 = _presentationBackgroundColor;
   [(UIScenePresenter *)scenePresenter modifyPresentationContext:v6];
 }
 
@@ -1175,7 +1175,7 @@ void __84__PRSceneViewController__updateSceneToSize_orientation_withAnimationSet
     *buf = 138412546;
     v15 = v5;
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A8AA7000, v3, OS_LOG_TYPE_DEFAULT, "%@-%p: acquiring local keyboard focus assertion and invalidating remote deferring rule", buf, 0x16u);
   }
 
@@ -1185,14 +1185,14 @@ void __84__PRSceneViewController__updateSceneToSize_orientation_withAnimationSet
 
   objc_initWeak(buf, self);
   v7 = objc_alloc(MEMORY[0x1E698E778]);
-  v8 = [MEMORY[0x1E696AFB0] UUID];
-  v9 = [v8 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __60__PRSceneViewController__acquireLocalKeyboardFocusAssertion__block_invoke;
   v12[3] = &unk_1E7844998;
   objc_copyWeak(&v13, buf);
-  v10 = [v7 initWithIdentifier:v9 forReason:@"localKeyboardFocus" invalidationBlock:v12];
+  v10 = [v7 initWithIdentifier:uUIDString forReason:@"localKeyboardFocus" invalidationBlock:v12];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(buf);
@@ -1230,42 +1230,42 @@ void __60__PRSceneViewController__acquireLocalKeyboardFocusAssertion__block_invo
   objc_destroyWeak(&to);
 }
 
-- (id)scene:(id)a3 handleActions:(id)a4
+- (id)scene:(id)scene handleActions:(id)actions
 {
   v17 = *MEMORY[0x1E69E9840];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
-    v7 = a4;
-    v8 = [a3 identityToken];
-    v9 = [v8 stringRepresentation];
+    actionsCopy = actions;
+    identityToken = [scene identityToken];
+    stringRepresentation = [identityToken stringRepresentation];
 
     v11 = 134218498;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    v14 = v9;
+    v14 = stringRepresentation;
     v15 = 2112;
-    v16 = v7;
+    v16 = actionsCopy;
     _os_log_impl(&dword_1A8AA7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "SceneViewController-%p: scene %@ handle actions %@", &v11, 0x20u);
   }
 
   return 0;
 }
 
-- (void)sceneContentStateDidChange:(id)a3
+- (void)sceneContentStateDidChange:(id)change
 {
   v15 = *MEMORY[0x1E69E9840];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
-    v5 = a3;
-    v6 = [v5 identityToken];
-    v7 = [v6 stringRepresentation];
-    [v5 contentState];
+    changeCopy = change;
+    identityToken = [changeCopy identityToken];
+    stringRepresentation = [identityToken stringRepresentation];
+    [changeCopy contentState];
 
     v8 = NSStringFromFBSceneContentState();
     v9 = 134218498;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v7;
+    v12 = stringRepresentation;
     v13 = 2112;
     v14 = v8;
     _os_log_impl(&dword_1A8AA7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "SceneViewController-%p: scene %@ did change content state to %@", &v9, 0x20u);
@@ -1274,93 +1274,93 @@ void __60__PRSceneViewController__acquireLocalKeyboardFocusAssertion__block_invo
   [(PRSceneViewController *)self _sceneContentReadinessDidChange];
 }
 
-- (void)sceneDidActivate:(id)a3
+- (void)sceneDidActivate:(id)activate
 {
   v11 = *MEMORY[0x1E69E9840];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [a3 identityToken];
-    v6 = [v5 stringRepresentation];
+    identityToken = [activate identityToken];
+    stringRepresentation = [identityToken stringRepresentation];
     v7 = 134218242;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v6;
+    v10 = stringRepresentation;
     _os_log_impl(&dword_1A8AA7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "SceneViewController-%p: scene %@ did activate", &v7, 0x16u);
   }
 }
 
-- (void)scene:(id)a3 clientDidConnect:(id)a4
+- (void)scene:(id)scene clientDidConnect:(id)connect
 {
-  v5 = a3;
-  v6 = [v5 clientSettings];
-  v7 = [v6 pr_areMotionEffectsDisabled];
+  sceneCopy = scene;
+  clientSettings = [sceneCopy clientSettings];
+  pr_areMotionEffectsDisabled = [clientSettings pr_areMotionEffectsDisabled];
 
   v8 = [PRPosterRenderingConfiguration alloc];
-  v9 = [v5 clientSettings];
-  v10 = -[PRPosterRenderingConfiguration initWithDepthEffectDisabled:motionEffectsDisabled:](v8, "initWithDepthEffectDisabled:motionEffectsDisabled:", [v9 pr_isDepthEffectDisabled], v7);
+  clientSettings2 = [sceneCopy clientSettings];
+  v10 = -[PRPosterRenderingConfiguration initWithDepthEffectDisabled:motionEffectsDisabled:](v8, "initWithDepthEffectDisabled:motionEffectsDisabled:", [clientSettings2 pr_isDepthEffectDisabled], pr_areMotionEffectsDisabled);
 
   v11 = [(PRPosterConfiguredProperties *)self->_configuredProperties mutableCopy];
   [v11 setRenderingConfiguration:v10];
   [(PRSceneViewController *)self setConfiguredProperties:v11];
   [(PRSceneViewController *)self _acquireKeyboardFocusDeferringRuleIfNecessary];
-  if (v7)
+  if (pr_areMotionEffectsDisabled)
   {
-    v12 = 0;
+    pr_supportedMotionEffectsMode = 0;
   }
 
   else
   {
-    v13 = [v5 clientSettings];
-    v12 = [v13 pr_supportedMotionEffectsMode];
+    clientSettings3 = [sceneCopy clientSettings];
+    pr_supportedMotionEffectsMode = [clientSettings3 pr_supportedMotionEffectsMode];
   }
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __48__PRSceneViewController_scene_clientDidConnect___block_invoke;
   v14[3] = &__block_descriptor_40_e33_v16__0__FBSMutableSceneSettings_8l;
-  v14[4] = v12;
-  [v5 updateSettings:v14];
+  v14[4] = pr_supportedMotionEffectsMode;
+  [sceneCopy updateSettings:v14];
 }
 
-- (void)sceneDidDeactivate:(id)a3 withError:(id)a4
+- (void)sceneDidDeactivate:(id)deactivate withError:(id)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  deactivateCopy = deactivate;
+  errorCopy = error;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 identityToken];
-    v9 = [v8 stringRepresentation];
+    identityToken = [deactivateCopy identityToken];
+    stringRepresentation = [identityToken stringRepresentation];
     v17 = 134218498;
-    v18 = self;
+    selfCopy3 = self;
     v19 = 2112;
-    v20 = v9;
+    v20 = stringRepresentation;
     v21 = 2112;
-    v22 = v7;
+    v22 = errorCopy;
     _os_log_impl(&dword_1A8AA7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "SceneViewController-%p: scene %@ did deactivate with error %@", &v17, 0x20u);
   }
 
-  v10 = [v7 domain];
-  if ([v10 isEqualToString:*MEMORY[0x1E699F798]])
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x1E699F798]])
   {
-    v11 = [v7 code];
+    code = [errorCopy code];
 
-    if (v11 == 1)
+    if (code == 1)
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v6 identityToken];
-        v13 = [v12 stringRepresentation];
+        identityToken2 = [deactivateCopy identityToken];
+        stringRepresentation2 = [identityToken2 stringRepresentation];
         v17 = 134218498;
-        v18 = self;
+        selfCopy3 = self;
         v19 = 2112;
-        v20 = v13;
+        v20 = stringRepresentation2;
         v21 = 2112;
-        v22 = v7;
+        v22 = errorCopy;
         _os_log_impl(&dword_1A8AA7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "SceneViewController-%p: scene %@ did deactivate with fatal error %@", &v17, 0x20u);
       }
 
-      [(PRSceneViewController *)self _failWithFatalError:v7];
+      [(PRSceneViewController *)self _failWithFatalError:errorCopy];
       goto LABEL_12;
     }
   }
@@ -1371,14 +1371,14 @@ void __60__PRSceneViewController__acquireLocalKeyboardFocusAssertion__block_invo
 
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v6 identityToken];
-    v15 = [v14 stringRepresentation];
+    identityToken3 = [deactivateCopy identityToken];
+    stringRepresentation3 = [identityToken3 stringRepresentation];
     v17 = 134218498;
-    v18 = self;
+    selfCopy3 = self;
     v19 = 2112;
-    v20 = v15;
+    v20 = stringRepresentation3;
     v21 = 2112;
-    v22 = v7;
+    v22 = errorCopy;
     _os_log_impl(&dword_1A8AA7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "SceneViewController-%p: scene %@ did deactivate with transient error %@", &v17, 0x20u);
   }
 
@@ -1389,31 +1389,31 @@ LABEL_12:
   self->_keyboardFocusDeferringRule = 0;
 }
 
-- (void)scene:(id)a3 didUpdateClientSettingsWithDiff:(id)a4 oldClientSettings:(id)a5 transitionContext:(id)a6
+- (void)scene:(id)scene didUpdateClientSettingsWithDiff:(id)diff oldClientSettings:(id)settings transitionContext:(id)context
 {
   v26 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  sceneCopy = scene;
+  diffCopy = diff;
+  settingsCopy = settings;
+  contextCopy = context;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v10 identityToken];
-    v15 = [v14 stringRepresentation];
+    identityToken = [sceneCopy identityToken];
+    stringRepresentation = [identityToken stringRepresentation];
     v18 = 134218754;
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
-    v21 = v15;
+    v21 = stringRepresentation;
     v22 = 2112;
-    v23 = v11;
+    v23 = diffCopy;
     v24 = 2112;
-    v25 = v13;
+    v25 = contextCopy;
     _os_log_impl(&dword_1A8AA7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "SceneViewController-%p: scene %@ did update client settings with diff %@, transition %@", &v18, 0x2Au);
   }
 
-  v16 = [v10 clientSettings];
-  v17 = [v16 pui_didFinishInitialization];
-  if (v17 != [v12 pui_didFinishInitialization])
+  clientSettings = [sceneCopy clientSettings];
+  pui_didFinishInitialization = [clientSettings pui_didFinishInitialization];
+  if (pui_didFinishInitialization != [settingsCopy pui_didFinishInitialization])
   {
     [(PRSceneViewController *)self _sceneContentReadinessDidChange];
   }

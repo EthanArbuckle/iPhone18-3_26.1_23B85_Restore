@@ -1,17 +1,17 @@
 @interface JSSubscriptionPurchaseLoadingViewController
-- (_TtC16MusicApplication43JSSubscriptionPurchaseLoadingViewController)initWithCoder:(id)a3;
-- (_TtC16MusicApplication43JSSubscriptionPurchaseLoadingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC16MusicApplication43JSSubscriptionPurchaseLoadingViewController)initWithCoder:(id)coder;
+- (_TtC16MusicApplication43JSSubscriptionPurchaseLoadingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation JSSubscriptionPurchaseLoadingViewController
 
-- (_TtC16MusicApplication43JSSubscriptionPurchaseLoadingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MusicApplication43JSSubscriptionPurchaseLoadingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_AB92A0();
     v7 = v6;
@@ -23,12 +23,12 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  JSSubscriptionPurchaseLoadingViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  JSSubscriptionPurchaseLoadingViewController.init(nibName:bundle:)(v5, v7, bundle);
   return result;
 }
 
-- (_TtC16MusicApplication43JSSubscriptionPurchaseLoadingViewController)initWithCoder:(id)a3
+- (_TtC16MusicApplication43JSSubscriptionPurchaseLoadingViewController)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC16MusicApplication43JSSubscriptionPurchaseLoadingViewController_loadingView;
   *(&self->super.super.super.isa + v3) = _s16MusicApplication43JSSubscriptionPurchaseLoadingViewControllerC07loadingF033_E9A8DE5BD8B377223C15E85C975C1B400A6CoreUI0eF0Cvpfi_0();
@@ -39,7 +39,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   JSSubscriptionPurchaseLoadingViewController.viewDidLoad()();
 }
 
@@ -50,11 +50,11 @@
   v2 = v6.receiver;
   [(JSSubscriptionPurchaseLoadingViewController *)&v6 viewDidLayoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC16MusicApplication43JSSubscriptionPurchaseLoadingViewController_loadingView];
-  v4 = [v2 view];
-  if (v4)
+  view = [v2 view];
+  if (view)
   {
-    v5 = v4;
-    [v4 center];
+    v5 = view;
+    [view center];
     [v3 setCenter:?];
   }
 
@@ -64,19 +64,19 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  JSSubscriptionPurchaseLoadingViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  JSSubscriptionPurchaseLoadingViewController.viewWillAppear(_:)(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(JSSubscriptionPurchaseLoadingViewController *)&v5 viewWillDisappear:v3];
+  [(JSSubscriptionPurchaseLoadingViewController *)&v5 viewWillDisappear:disappearCopy];
   JSSubscriptionPurchaseLoadingViewController.fadeOut(_:)(0, 0);
 }
 

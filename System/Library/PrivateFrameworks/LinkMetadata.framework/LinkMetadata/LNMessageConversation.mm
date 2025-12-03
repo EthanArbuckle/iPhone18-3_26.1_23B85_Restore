@@ -1,57 +1,57 @@
 @interface LNMessageConversation
-- (LNMessageConversation)initWithCoder:(id)a3;
-- (LNMessageConversation)initWithMessageConversationIdentifier:(id)a3 groupName:(id)a4 recipients:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (LNMessageConversation)initWithCoder:(id)coder;
+- (LNMessageConversation)initWithMessageConversationIdentifier:(id)identifier groupName:(id)name recipients:(id)recipients;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNMessageConversation
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNMessageConversation *)self messageConversationIdentifier];
-  [v4 encodeObject:v5 forKey:@"messageConversationIdentifier"];
+  coderCopy = coder;
+  messageConversationIdentifier = [(LNMessageConversation *)self messageConversationIdentifier];
+  [coderCopy encodeObject:messageConversationIdentifier forKey:@"messageConversationIdentifier"];
 
-  v6 = [(LNMessageConversation *)self groupName];
-  [v4 encodeObject:v6 forKey:@"groupName"];
+  groupName = [(LNMessageConversation *)self groupName];
+  [coderCopy encodeObject:groupName forKey:@"groupName"];
 
-  v7 = [(LNMessageConversation *)self recipients];
-  [v4 encodeObject:v7 forKey:@"recipients"];
+  recipients = [(LNMessageConversation *)self recipients];
+  [coderCopy encodeObject:recipients forKey:@"recipients"];
 }
 
-- (LNMessageConversation)initWithCoder:(id)a3
+- (LNMessageConversation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"messageConversationIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"messageConversationIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupName"];
   v7 = MEMORY[0x1E695DFD8];
   v8 = objc_opt_class();
   v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"recipients"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"recipients"];
 
   if (v5)
   {
     self = [(LNMessageConversation *)self initWithMessageConversationIdentifier:v5 groupName:v6 recipients:v10];
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (LNMessageConversation)initWithMessageConversationIdentifier:(id)a3 groupName:(id)a4 recipients:(id)a5
+- (LNMessageConversation)initWithMessageConversationIdentifier:(id)identifier groupName:(id)name recipients:(id)recipients
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  identifierCopy = identifier;
+  nameCopy = name;
+  recipientsCopy = recipients;
+  if (!identifierCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"LNMessageConversation.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"messageConversationIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNMessageConversation.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"messageConversationIdentifier"}];
   }
 
   v22.receiver = self;
@@ -59,15 +59,15 @@
   v12 = [(LNMessageConversation *)&v22 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [identifierCopy copy];
     messageConversationIdentifier = v12->_messageConversationIdentifier;
     v12->_messageConversationIdentifier = v13;
 
-    v15 = [v10 copy];
+    v15 = [nameCopy copy];
     groupName = v12->_groupName;
     v12->_groupName = v15;
 
-    v17 = [v11 copy];
+    v17 = [recipientsCopy copy];
     recipients = v12->_recipients;
     v12->_recipients = v17;
 

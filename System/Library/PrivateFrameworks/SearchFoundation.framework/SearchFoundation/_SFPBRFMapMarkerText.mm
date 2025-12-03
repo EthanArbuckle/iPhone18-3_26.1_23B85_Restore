@@ -1,48 +1,48 @@
 @interface _SFPBRFMapMarkerText
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFMapMarkerText)initWithDictionary:(id)a3;
-- (_SFPBRFMapMarkerText)initWithFacade:(id)a3;
-- (_SFPBRFMapMarkerText)initWithJSON:(id)a3;
+- (_SFPBRFMapMarkerText)initWithDictionary:(id)dictionary;
+- (_SFPBRFMapMarkerText)initWithFacade:(id)facade;
+- (_SFPBRFMapMarkerText)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setTitle:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setTitle:(id)title;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFMapMarkerText
 
-- (_SFPBRFMapMarkerText)initWithFacade:(id)a3
+- (_SFPBRFMapMarkerText)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFMapMarkerText *)self init];
   if (v5)
   {
-    v6 = [v4 coordinate];
+    coordinate = [facadeCopy coordinate];
 
-    if (v6)
+    if (coordinate)
     {
       v7 = [_SFPBLatLng alloc];
-      v8 = [v4 coordinate];
-      v9 = [(_SFPBLatLng *)v7 initWithFacade:v8];
+      coordinate2 = [facadeCopy coordinate];
+      v9 = [(_SFPBLatLng *)v7 initWithFacade:coordinate2];
       [(_SFPBRFMapMarkerText *)v5 setCoordinate:v9];
     }
 
-    v10 = [v4 title];
+    title = [facadeCopy title];
 
-    if (v10)
+    if (title)
     {
-      v11 = [v4 title];
-      [(_SFPBRFMapMarkerText *)v5 setTitle:v11];
+      title2 = [facadeCopy title];
+      [(_SFPBRFMapMarkerText *)v5 setTitle:title2];
     }
 
-    v12 = [v4 monogram];
+    monogram = [facadeCopy monogram];
 
-    if (v12)
+    if (monogram)
     {
       v13 = [_SFPBRFTextProperty alloc];
-      v14 = [v4 monogram];
-      v15 = [(_SFPBRFTextProperty *)v13 initWithFacade:v14];
+      monogram2 = [facadeCopy monogram];
+      v15 = [(_SFPBRFTextProperty *)v13 initWithFacade:monogram2];
       [(_SFPBRFMapMarkerText *)v5 setMonogram:v15];
     }
 
@@ -52,15 +52,15 @@
   return v5;
 }
 
-- (_SFPBRFMapMarkerText)initWithDictionary:(id)a3
+- (_SFPBRFMapMarkerText)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = _SFPBRFMapMarkerText;
   v5 = [(_SFPBRFMapMarkerText *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"coordinate"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"coordinate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -68,7 +68,7 @@
       [(_SFPBRFMapMarkerText *)v5 setCoordinate:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"title"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -76,7 +76,7 @@
       [(_SFPBRFMapMarkerText *)v5 setTitle:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"monogram"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"monogram"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,30 +90,30 @@
   return v5;
 }
 
-- (_SFPBRFMapMarkerText)initWithJSON:(id)a3
+- (_SFPBRFMapMarkerText)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFMapMarkerText *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFMapMarkerText *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFMapMarkerText *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -126,47 +126,47 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_coordinate)
   {
-    v4 = [(_SFPBRFMapMarkerText *)self coordinate];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    coordinate = [(_SFPBRFMapMarkerText *)self coordinate];
+    dictionaryRepresentation = [coordinate dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"coordinate"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"coordinate"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"coordinate"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"coordinate"];
     }
   }
 
   if (self->_monogram)
   {
-    v7 = [(_SFPBRFMapMarkerText *)self monogram];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    monogram = [(_SFPBRFMapMarkerText *)self monogram];
+    dictionaryRepresentation2 = [monogram dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"monogram"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"monogram"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"monogram"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"monogram"];
     }
   }
 
   if (self->_title)
   {
-    v10 = [(_SFPBRFMapMarkerText *)self title];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"title"];
+    title = [(_SFPBRFMapMarkerText *)self title];
+    v11 = [title copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"title"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -176,28 +176,28 @@
   return v4 ^ [(_SFPBRFTextProperty *)self->_monogram hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_SFPBRFMapMarkerText *)self coordinate];
-  v6 = [v4 coordinate];
-  if ((v5 != 0) == (v6 == 0))
+  coordinate = [(_SFPBRFMapMarkerText *)self coordinate];
+  coordinate2 = [equalCopy coordinate];
+  if ((coordinate != 0) == (coordinate2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_SFPBRFMapMarkerText *)self coordinate];
-  if (v7)
+  coordinate3 = [(_SFPBRFMapMarkerText *)self coordinate];
+  if (coordinate3)
   {
-    v8 = v7;
-    v9 = [(_SFPBRFMapMarkerText *)self coordinate];
-    v10 = [v4 coordinate];
-    v11 = [v9 isEqual:v10];
+    v8 = coordinate3;
+    coordinate4 = [(_SFPBRFMapMarkerText *)self coordinate];
+    coordinate5 = [equalCopy coordinate];
+    v11 = [coordinate4 isEqual:coordinate5];
 
     if (!v11)
     {
@@ -209,20 +209,20 @@
   {
   }
 
-  v5 = [(_SFPBRFMapMarkerText *)self title];
-  v6 = [v4 title];
-  if ((v5 != 0) == (v6 == 0))
+  coordinate = [(_SFPBRFMapMarkerText *)self title];
+  coordinate2 = [equalCopy title];
+  if ((coordinate != 0) == (coordinate2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_SFPBRFMapMarkerText *)self title];
-  if (v12)
+  title = [(_SFPBRFMapMarkerText *)self title];
+  if (title)
   {
-    v13 = v12;
-    v14 = [(_SFPBRFMapMarkerText *)self title];
-    v15 = [v4 title];
-    v16 = [v14 isEqual:v15];
+    v13 = title;
+    title2 = [(_SFPBRFMapMarkerText *)self title];
+    title3 = [equalCopy title];
+    v16 = [title2 isEqual:title3];
 
     if (!v16)
     {
@@ -234,12 +234,12 @@
   {
   }
 
-  v5 = [(_SFPBRFMapMarkerText *)self monogram];
-  v6 = [v4 monogram];
-  if ((v5 != 0) != (v6 == 0))
+  coordinate = [(_SFPBRFMapMarkerText *)self monogram];
+  coordinate2 = [equalCopy monogram];
+  if ((coordinate != 0) != (coordinate2 == 0))
   {
-    v17 = [(_SFPBRFMapMarkerText *)self monogram];
-    if (!v17)
+    monogram = [(_SFPBRFMapMarkerText *)self monogram];
+    if (!monogram)
     {
 
 LABEL_20:
@@ -247,10 +247,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_SFPBRFMapMarkerText *)self monogram];
-    v20 = [v4 monogram];
-    v21 = [v19 isEqual:v20];
+    v18 = monogram;
+    monogram2 = [(_SFPBRFMapMarkerText *)self monogram];
+    monogram3 = [equalCopy monogram];
+    v21 = [monogram2 isEqual:monogram3];
 
     if (v21)
     {
@@ -270,31 +270,31 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(_SFPBRFMapMarkerText *)self coordinate];
-  if (v4)
+  toCopy = to;
+  coordinate = [(_SFPBRFMapMarkerText *)self coordinate];
+  if (coordinate)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBRFMapMarkerText *)self title];
-  if (v5)
+  title = [(_SFPBRFMapMarkerText *)self title];
+  if (title)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBRFMapMarkerText *)self monogram];
-  if (v6)
+  monogram = [(_SFPBRFMapMarkerText *)self monogram];
+  if (monogram)
   {
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   title = self->_title;
   self->_title = v4;
 

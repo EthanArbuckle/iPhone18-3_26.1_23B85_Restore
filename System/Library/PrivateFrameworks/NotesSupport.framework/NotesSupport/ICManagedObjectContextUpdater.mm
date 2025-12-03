@@ -1,14 +1,14 @@
 @interface ICManagedObjectContextUpdater
-+ (id)contextSaveNotificationFromPersistentHistoryResult:(id)a3 ignoringContextName:(id)a4 fromTransactionAuthor:(id)a5 latestToken:(id *)a6 latestTimestamp:(id *)a7;
-- (BOOL)mergeWithDictionary:(id)a3;
++ (id)contextSaveNotificationFromPersistentHistoryResult:(id)result ignoringContextName:(id)name fromTransactionAuthor:(id)author latestToken:(id *)token latestTimestamp:(id *)timestamp;
+- (BOOL)mergeWithDictionary:(id)dictionary;
 - (ICManagedObjectContextUpdater)init;
-- (ICManagedObjectContextUpdater)initWithStore:(id)a3 context:(id)a4;
+- (ICManagedObjectContextUpdater)initWithStore:(id)store context:(id)context;
 - (NSManagedObjectContext)context;
 - (NSPersistentStore)store;
 - (id)persistentStoreCoordinator;
 - (void)dealloc;
 - (void)fetchChangeHistory;
-- (void)handlePersistentStoreRemoteChangeNotification:(id)a3;
+- (void)handlePersistentStoreRemoteChangeNotification:(id)notification;
 - (void)requestUpdate;
 - (void)startListeningForRemoteContextDidChangeNotifications;
 - (void)stopListeningForRemoteContextDidChangeNotifications;
@@ -34,16 +34,16 @@
 
 - (id)persistentStoreCoordinator
 {
-  v3 = [(ICManagedObjectContextUpdater *)self context];
-  v4 = [v3 persistentStoreCoordinator];
+  context = [(ICManagedObjectContextUpdater *)self context];
+  persistentStoreCoordinator = [context persistentStoreCoordinator];
 
-  if (!v4)
+  if (!persistentStoreCoordinator)
   {
-    v5 = [(ICManagedObjectContextUpdater *)self store];
-    v4 = [v5 persistentStoreCoordinator];
+    store = [(ICManagedObjectContextUpdater *)self store];
+    persistentStoreCoordinator = [store persistentStoreCoordinator];
   }
 
-  return v4;
+  return persistentStoreCoordinator;
 }
 
 - (void)dealloc
@@ -53,8 +53,8 @@
     [(ICManagedObjectContextUpdater *)self stopListeningForRemoteContextDidChangeNotifications];
   }
 
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICManagedObjectContextUpdater;
@@ -68,24 +68,24 @@
   return 0;
 }
 
-- (ICManagedObjectContextUpdater)initWithStore:(id)a3 context:(id)a4
+- (ICManagedObjectContextUpdater)initWithStore:(id)store context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = ICManagedObjectContextUpdater;
   v8 = [(ICManagedObjectContextUpdater *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    [(ICManagedObjectContextUpdater *)v8 setStore:v6];
-    [(ICManagedObjectContextUpdater *)v9 setContext:v7];
+    [(ICManagedObjectContextUpdater *)v8 setStore:storeCopy];
+    [(ICManagedObjectContextUpdater *)v9 setContext:contextCopy];
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = dispatch_queue_create("com.apple.notes.contextupdater", v10);
     [(ICManagedObjectContextUpdater *)v9 setQueue:v11];
 
-    v12 = [MEMORY[0x1E695DF00] date];
-    [(ICManagedObjectContextUpdater *)v9 setPreviousHistoryDate:v12];
+    date = [MEMORY[0x1E695DF00] date];
+    [(ICManagedObjectContextUpdater *)v9 setPreviousHistoryDate:date];
 
     v13 = [[ICSelectorDelayer alloc] initWithTarget:v9 selector:sel_fetchChangeHistory delay:0 waitToFireUntilRequestsStop:1 callOnMainThread:0.1];
     [(ICManagedObjectContextUpdater *)v9 setDelayer:v13];
@@ -96,29 +96,29 @@
 
 - (void)stopListeningForRemoteContextDidChangeNotifications
 {
-  v1 = [a1 context];
+  context = [self context];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0_2(&dword_1D4576000, v2, v3, "Stopping listening to store changes for %@", v4, v5, v6, v7, v8);
 }
 
 - (void)requestUpdate
 {
-  v2 = [(ICManagedObjectContextUpdater *)self delayer];
-  [v2 requestFire];
+  delayer = [(ICManagedObjectContextUpdater *)self delayer];
+  [delayer requestFire];
 }
 
-- (void)handlePersistentStoreRemoteChangeNotification:(id)a3
+- (void)handlePersistentStoreRemoteChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(ICManagedObjectContextUpdater *)self queue];
+  notificationCopy = notification;
+  queue = [(ICManagedObjectContextUpdater *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __79__ICManagedObjectContextUpdater_handlePersistentStoreRemoteChangeNotification___block_invoke;
   v7[3] = &unk_1E8484980;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
 void __79__ICManagedObjectContextUpdater_handlePersistentStoreRemoteChangeNotification___block_invoke(uint64_t a1)
@@ -150,13 +150,13 @@ void __79__ICManagedObjectContextUpdater_handlePersistentStoreRemoteChangeNotifi
 
 - (void)fetchChangeHistory
 {
-  v3 = [(ICManagedObjectContextUpdater *)self queue];
+  queue = [(ICManagedObjectContextUpdater *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__ICManagedObjectContextUpdater_fetchChangeHistory__block_invoke;
   block[3] = &unk_1E84848B8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __51__ICManagedObjectContextUpdater_fetchChangeHistory__block_invoke(uint64_t a1)
@@ -311,23 +311,23 @@ void __51__ICManagedObjectContextUpdater_fetchChangeHistory__block_invoke_22(voi
   *(v6 + 40) = v5;
 }
 
-- (BOOL)mergeWithDictionary:(id)a3
+- (BOOL)mergeWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(ICManagedObjectContextUpdater *)self context];
+  context = [(ICManagedObjectContextUpdater *)self context];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __53__ICManagedObjectContextUpdater_mergeWithDictionary___block_invoke;
   v8[3] = &unk_1E8484870;
-  v6 = v4;
+  v6 = dictionaryCopy;
   v9 = v6;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
-  [v5 performBlockAndWait:v8];
+  [context performBlockAndWait:v8];
 
   LOBYTE(self) = *(v13 + 24);
   _Block_object_dispose(&v12, 8);
@@ -368,40 +368,40 @@ void __53__ICManagedObjectContextUpdater_mergeWithDictionary___block_invoke(uint
   [v11 postNotificationName:@"ICManagedObjectContextUpdaterDidMergeNotification" object:v13 userInfo:v14];
 }
 
-+ (id)contextSaveNotificationFromPersistentHistoryResult:(id)a3 ignoringContextName:(id)a4 fromTransactionAuthor:(id)a5 latestToken:(id *)a6 latestTimestamp:(id *)a7
++ (id)contextSaveNotificationFromPersistentHistoryResult:(id)result ignoringContextName:(id)name fromTransactionAuthor:(id)author latestToken:(id *)token latestTimestamp:(id *)timestamp
 {
   v95 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v71 = a4;
-  v70 = a5;
-  v12 = [v11 result];
+  resultCopy = result;
+  nameCopy = name;
+  authorCopy = author;
+  result = [resultCopy result];
   objc_opt_class();
-  LOBYTE(a4) = objc_opt_isKindOfClass();
+  LOBYTE(name) = objc_opt_isKindOfClass();
 
-  if (a4)
+  if (name)
   {
     v13 = [MEMORY[0x1E695DFA8] set];
     v14 = [MEMORY[0x1E695DFA8] set];
     v15 = [MEMORY[0x1E695DFA8] set];
-    v69 = v11;
-    v16 = [v11 result];
+    v69 = resultCopy;
+    result2 = [resultCopy result];
     v17 = os_log_create("com.apple.notes", "PersistentHistory");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      [ICManagedObjectContextUpdater contextSaveNotificationFromPersistentHistoryResult:v16 ignoringContextName:? fromTransactionAuthor:? latestToken:? latestTimestamp:?];
+      [ICManagedObjectContextUpdater contextSaveNotificationFromPersistentHistoryResult:result2 ignoringContextName:? fromTransactionAuthor:? latestToken:? latestTimestamp:?];
     }
 
     v72 = v15;
     v73 = v13;
     v74 = v14;
-    v67 = a6;
-    v68 = a7;
+    tokenCopy = token;
+    timestampCopy = timestamp;
 
     v86 = 0u;
     v87 = 0u;
     v84 = 0u;
     v85 = 0u;
-    obj = v16;
+    obj = result2;
     v18 = [obj countByEnumeratingWithState:&v84 objects:v94 count:16];
     if (v18)
     {
@@ -409,9 +409,9 @@ void __53__ICManagedObjectContextUpdater_mergeWithDictionary___block_invoke(uint
       v20 = 0;
       v82 = 0;
       v21 = *v85;
-      if (v71)
+      if (nameCopy)
       {
-        v22 = v70 == 0;
+        v22 = authorCopy == 0;
       }
 
       else
@@ -446,19 +446,19 @@ void __53__ICManagedObjectContextUpdater_mergeWithDictionary___block_invoke(uint
             v29 = v28;
             if (!v20 || ([v28 timestamp], v30 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v30, "timeIntervalSinceReferenceDate"), v32 = v31, objc_msgSend(v20, "timeIntervalSinceReferenceDate"), v34 = v33, v30, v32 > v34))
             {
-              v35 = [v29 token];
+              token = [v29 token];
 
-              v36 = [v29 timestamp];
+              timestamp = [v29 timestamp];
               v37 = v20;
-              v20 = v36;
+              v20 = timestamp;
 
-              v82 = v35;
+              v82 = token;
             }
 
-            v38 = [v29 contextName];
-            v39 = [v29 author];
-            v40 = v39;
-            if (v38)
+            contextName = [v29 contextName];
+            author = [v29 author];
+            v40 = author;
+            if (contextName)
             {
               v41 = v80;
             }
@@ -468,28 +468,28 @@ void __53__ICManagedObjectContextUpdater_mergeWithDictionary___block_invoke(uint
               v41 = 0;
             }
 
-            v42 = v41 != 1 || v39 == 0;
-            if (v42 || ![v71 isEqualToString:v38] || (objc_msgSend(v70, "isEqualToString:", v40) & 1) == 0)
+            v42 = v41 != 1 || author == 0;
+            if (v42 || ![nameCopy isEqualToString:contextName] || (objc_msgSend(authorCopy, "isEqualToString:", v40) & 1) == 0)
             {
               v83 = v27;
               v43 = v20;
-              v44 = [v29 objectIDNotification];
-              v45 = [v44 userInfo];
+              objectIDNotification = [v29 objectIDNotification];
+              userInfo = [objectIDNotification userInfo];
 
-              v46 = [v45 objectForKeyedSubscript:v77];
+              v46 = [userInfo objectForKeyedSubscript:v77];
               if ([v46 count])
               {
                 [v73 unionSet:v46];
               }
 
               v47 = v24;
-              v48 = [v45 objectForKeyedSubscript:v76];
+              v48 = [userInfo objectForKeyedSubscript:v76];
               if ([v48 count])
               {
                 [v74 unionSet:v48];
               }
 
-              v49 = [v45 objectForKeyedSubscript:v75];
+              v49 = [userInfo objectForKeyedSubscript:v75];
               if (v49)
               {
                 [v72 unionSet:v49];
@@ -549,7 +549,7 @@ void __53__ICManagedObjectContextUpdater_mergeWithDictionary___block_invoke(uint
       v89[1] = v74;
       v88[2] = *MEMORY[0x1E695D4C8];
       v89[2] = v72;
-      v60 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v89 forKeys:v88 count:{3, v67, v68}];
+      v60 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v89 forKeys:v88 count:{3, tokenCopy, timestampCopy}];
     }
 
     else
@@ -557,9 +557,9 @@ void __53__ICManagedObjectContextUpdater_mergeWithDictionary___block_invoke(uint
       v60 = 0;
     }
 
-    a7 = v68;
-    v11 = v69;
-    a6 = v67;
+    timestamp = timestampCopy;
+    resultCopy = v69;
+    token = tokenCopy;
 
     v59 = v82;
   }
@@ -569,14 +569,14 @@ void __53__ICManagedObjectContextUpdater_mergeWithDictionary___block_invoke(uint
     v53 = os_log_create("com.apple.notes", "PersistentHistory");
     if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
     {
-      v54 = [v11 result];
+      result3 = [resultCopy result];
       v55 = objc_opt_class();
       v56 = v55;
-      v57 = [v11 result];
+      result4 = [resultCopy result];
       *buf = 138412546;
       v91 = v55;
       v92 = 2112;
-      v93 = v57;
+      v93 = result4;
       _os_log_impl(&dword_1D4576000, v53, OS_LOG_TYPE_DEFAULT, "Subresult in persistent history result was an unknown type %@: %@", buf, 0x16u);
     }
 
@@ -586,16 +586,16 @@ void __53__ICManagedObjectContextUpdater_mergeWithDictionary___block_invoke(uint
     v61 = v53;
   }
 
-  if (a6)
+  if (token)
   {
     v63 = v59;
-    *a6 = v59;
+    *token = v59;
   }
 
-  if (a7)
+  if (timestamp)
   {
     v64 = v58;
-    *a7 = v58;
+    *timestamp = v58;
   }
 
   v65 = v60;

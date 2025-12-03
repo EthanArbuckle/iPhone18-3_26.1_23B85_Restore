@@ -1,14 +1,14 @@
 @interface HMDRemoteSendMessageOperation
 + (id)logCategory;
 + (id)shortDescription;
-- (HMDRemoteSendMessageOperation)initWithMessage:(id)a3 transport:(id)a4;
+- (HMDRemoteSendMessageOperation)initWithMessage:(id)message transport:(id)transport;
 - (HMDSecureRemoteMessageTransport)transport;
 - (NSArray)attributeDescriptions;
 - (NSString)privateDescription;
 - (NSString)shortDescription;
 - (id)logIdentifier;
-- (void)_respondWithError:(id)a3 payload:(id)a4;
-- (void)cancelWithError:(id)a3;
+- (void)_respondWithError:(id)error payload:(id)payload;
+- (void)cancelWithError:(id)error;
 - (void)main;
 @end
 
@@ -23,48 +23,48 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMFMessage *)self->_message identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(HMFMessage *)self->_message identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v4 = a3;
-  [(HMDRemoteSendMessageOperation *)self _respondWithError:v4 payload:0];
+  errorCopy = error;
+  [(HMDRemoteSendMessageOperation *)self _respondWithError:errorCopy payload:0];
   v5.receiver = self;
   v5.super_class = HMDRemoteSendMessageOperation;
-  [(HMFOperation *)&v5 cancelWithError:v4];
+  [(HMFOperation *)&v5 cancelWithError:errorCopy];
 }
 
 - (void)main
 {
   v27 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    v7 = [(HMDRemoteSendMessageOperation *)v4 message];
-    v8 = [(HMDRemoteSendMessageOperation *)v4 message];
-    v9 = [v8 destination];
+    message = [(HMDRemoteSendMessageOperation *)selfCopy message];
+    message2 = [(HMDRemoteSendMessageOperation *)selfCopy message];
+    destination = [message2 destination];
     *buf = 138543874;
     v22 = v6;
     v23 = 2112;
-    v24 = v7;
+    v24 = message;
     v25 = 2112;
-    v26 = v9;
+    v26 = destination;
     _os_log_impl(&dword_2531F8000, v5, OS_LOG_TYPE_INFO, "%{public}@Starting sending message %@ to destination: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v3);
-  v10 = [(HMDRemoteSendMessageOperation *)v4 transport];
-  if (!v10)
+  transport = [(HMDRemoteSendMessageOperation *)selfCopy transport];
+  if (!transport)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = v4;
+    v12 = selfCopy;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -79,9 +79,9 @@
     [(HMDRemoteSendMessageOperation *)v12 cancelWithError:v15];
   }
 
-  objc_initWeak(buf, v4);
-  v16 = [(HMDRemoteSendMessageOperation *)v4 message];
-  v17 = [v16 mutableCopy];
+  objc_initWeak(buf, selfCopy);
+  message3 = [(HMDRemoteSendMessageOperation *)selfCopy message];
+  v17 = [message3 mutableCopy];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -89,7 +89,7 @@
   v19[3] = &unk_279733B98;
   objc_copyWeak(&v20, buf);
   [v17 setResponseHandler:v19];
-  [v10 sendMessage:v17 completionHandler:0];
+  [transport sendMessage:v17 completionHandler:0];
   objc_destroyWeak(&v20);
 
   objc_destroyWeak(buf);
@@ -158,24 +158,24 @@ void __37__HMDRemoteSendMessageOperation_main__block_invoke(uint64_t a1, void *a
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_respondWithError:(id)a3 payload:(id)a4
+- (void)_respondWithError:(id)error payload:(id)payload
 {
-  v8 = a3;
-  v6 = a4;
+  errorCopy = error;
+  payloadCopy = payload;
   os_unfair_lock_lock_with_options();
   if ([(HMDRemoteSendMessageOperation *)self isMessageResponseHandled])
   {
-    v7 = 0;
+    message = 0;
   }
 
   else
   {
     [(HMDRemoteSendMessageOperation *)self setMessageResponseHandled:1];
-    v7 = [(HMDRemoteSendMessageOperation *)self message];
+    message = [(HMDRemoteSendMessageOperation *)self message];
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  [v7 respondWithPayload:v6 error:v8];
+  [message respondWithPayload:payloadCopy error:errorCopy];
 }
 
 - (NSArray)attributeDescriptions
@@ -193,10 +193,10 @@ void __37__HMDRemoteSendMessageOperation_main__block_invoke(uint64_t a1, void *a
 - (NSString)privateDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMDRemoteSendMessageOperation *)self message];
-  v6 = [v5 privateDescription];
-  v7 = [v3 stringWithFormat:@"%@, Message = %@", v4, v6];
+  shortDescription = [objc_opt_class() shortDescription];
+  message = [(HMDRemoteSendMessageOperation *)self message];
+  privateDescription = [message privateDescription];
+  v7 = [v3 stringWithFormat:@"%@, Message = %@", shortDescription, privateDescription];
 
   return v7;
 }
@@ -204,36 +204,36 @@ void __37__HMDRemoteSendMessageOperation_main__block_invoke(uint64_t a1, void *a
 - (NSString)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMDRemoteSendMessageOperation *)self message];
-  v6 = [v5 identifier];
-  v7 = [v3 stringWithFormat:@"%@, Message = %@", v4, v6];
+  shortDescription = [objc_opt_class() shortDescription];
+  message = [(HMDRemoteSendMessageOperation *)self message];
+  identifier = [message identifier];
+  v7 = [v3 stringWithFormat:@"%@, Message = %@", shortDescription, identifier];
 
   return v7;
 }
 
-- (HMDRemoteSendMessageOperation)initWithMessage:(id)a3 transport:(id)a4
+- (HMDRemoteSendMessageOperation)initWithMessage:(id)message transport:(id)transport
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 destination];
+  messageCopy = message;
+  transportCopy = transport;
+  destination = [messageCopy destination];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy2 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       v19 = HMFGetLogIdentifier();
-      v20 = [v7 destination];
+      destination2 = [messageCopy destination];
       *buf = 138543618;
       v28 = v19;
       v29 = 2112;
-      v30 = v20;
+      v30 = destination2;
       _os_log_impl(&dword_2531F8000, v18, OS_LOG_TYPE_ERROR, "%{public}@Invalid message destination: %@", buf, 0x16u);
 
 LABEL_12:
@@ -246,10 +246,10 @@ LABEL_13:
     goto LABEL_18;
   }
 
-  if (!v8)
+  if (!transportCopy)
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy2 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -263,7 +263,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v11 = v7;
+  v11 = messageCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -294,13 +294,13 @@ LABEL_13:
   p_isa = &v22->super.super.super.isa;
   if (v22)
   {
-    objc_storeStrong(&v22->_message, a3);
-    objc_storeWeak(p_isa + 41, v8);
+    objc_storeStrong(&v22->_message, message);
+    objc_storeWeak(p_isa + 41, transportCopy);
   }
 
-  v17 = p_isa;
+  selfCopy2 = p_isa;
 
-  v21 = v17;
+  v21 = selfCopy2;
 LABEL_18:
 
   v24 = *MEMORY[0x277D85DE8];

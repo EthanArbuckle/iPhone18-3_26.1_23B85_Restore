@@ -1,39 +1,39 @@
 @interface BMLighthouseTaskStatusPullMetadata
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMLighthouseTaskStatusPullMetadata)initWithCreationDate:(id)a3;
-- (BMLighthouseTaskStatusPullMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMLighthouseTaskStatusPullMetadata)initWithCreationDate:(id)date;
+- (BMLighthouseTaskStatusPullMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)creationDate;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMLighthouseTaskStatusPullMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMLighthouseTaskStatusPullMetadata *)self creationDate];
-    v7 = [v5 creationDate];
-    if (v6 == v7)
+    v5 = equalCopy;
+    creationDate = [(BMLighthouseTaskStatusPullMetadata *)self creationDate];
+    creationDate2 = [v5 creationDate];
+    if (creationDate == creationDate2)
     {
       v10 = 1;
     }
 
     else
     {
-      v8 = [(BMLighthouseTaskStatusPullMetadata *)self creationDate];
-      v9 = [v5 creationDate];
-      v10 = [v8 isEqual:v9];
+      creationDate3 = [(BMLighthouseTaskStatusPullMetadata *)self creationDate];
+      creationDate4 = [v5 creationDate];
+      v10 = [creationDate3 isEqual:creationDate4];
     }
   }
 
@@ -65,20 +65,20 @@
 - (id)jsonDictionary
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = [(BMLighthouseTaskStatusPullMetadata *)self creationDate];
-  if (v3)
+  creationDate = [(BMLighthouseTaskStatusPullMetadata *)self creationDate];
+  if (creationDate)
   {
-    v4 = v3;
+    v4 = creationDate;
     v5 = MEMORY[0x1E696AD98];
-    v6 = [(BMLighthouseTaskStatusPullMetadata *)self creationDate];
-    [v6 timeIntervalSince1970];
+    creationDate2 = [(BMLighthouseTaskStatusPullMetadata *)self creationDate];
+    [creationDate2 timeIntervalSince1970];
     v7 = [v5 numberWithDouble:?];
 
     v13 = @"creationDate";
     if (v7)
     {
       v8 = 0;
-      v9 = v7;
+      null = v7;
       goto LABEL_6;
     }
   }
@@ -88,11 +88,11 @@
     v13 = @"creationDate";
   }
 
-  v9 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v7 = 0;
   v8 = 1;
 LABEL_6:
-  v14[0] = v9;
+  v14[0] = null;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
   if (v8)
   {
@@ -103,16 +103,16 @@ LABEL_6:
   return v10;
 }
 
-- (BMLighthouseTaskStatusPullMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMLighthouseTaskStatusPullMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = [a3 objectForKeyedSubscript:@"creationDate"];
+  v6 = [dictionary objectForKeyedSubscript:@"creationDate"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    a4 = 0;
+    error = 0;
 LABEL_9:
-    self = [(BMLighthouseTaskStatusPullMetadata *)self initWithCreationDate:a4];
-    v14 = self;
+    self = [(BMLighthouseTaskStatusPullMetadata *)self initWithCreationDate:error];
+    selfCopy = self;
     goto LABEL_10;
   }
 
@@ -127,7 +127,7 @@ LABEL_9:
 
     v12 = [v9 initWithTimeIntervalSince1970:v11];
 LABEL_6:
-    a4 = v12;
+    error = v12;
     goto LABEL_9;
   }
 
@@ -135,7 +135,7 @@ LABEL_6:
   if (objc_opt_isKindOfClass())
   {
     v13 = objc_alloc_init(MEMORY[0x1E696AC80]);
-    a4 = [v13 dateFromString:v6];
+    error = [v13 dateFromString:v6];
 
     goto LABEL_9;
   }
@@ -147,7 +147,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  if (a4)
+  if (error)
   {
     v17 = objc_alloc(MEMORY[0x1E696ABC0]);
     v18 = *MEMORY[0x1E698F240];
@@ -155,28 +155,28 @@ LABEL_6:
     v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (as time internal since 1970), NSString (ISO8601 format), or NSDate", objc_opt_class(), @"creationDate"];
     v22[0] = v19;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-    *a4 = [v17 initWithDomain:v18 code:2 userInfo:v20];
+    *error = [v17 initWithDomain:v18 code:2 userInfo:v20];
 
-    a4 = 0;
+    error = 0;
   }
 
-  v14 = 0;
+  selfCopy = 0;
 LABEL_10:
 
   v15 = *MEMORY[0x1E69E9840];
-  return v14;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMLighthouseTaskStatusPullMetadata *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_hasRaw_creationDate)
   {
@@ -185,9 +185,9 @@ LABEL_10:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v21.receiver = self;
   v21.super_class = BMLighthouseTaskStatusPullMetadata;
   v5 = [(BMEventBase *)&v21 init];
@@ -196,12 +196,12 @@ LABEL_10:
     goto LABEL_29;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -212,18 +212,18 @@ LABEL_10:
       while (1)
       {
         LOBYTE(v22) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v22 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v22 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v22) & 0x7F) << v7;
@@ -240,9 +240,9 @@ LABEL_10:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -251,18 +251,18 @@ LABEL_16:
       {
         v5->_hasRaw_creationDate = 1;
         v22 = 0.0;
-        v15 = [v4 position] + 8;
-        if (v15 >= [v4 position] && (v16 = objc_msgSend(v4, "position") + 8, v16 <= objc_msgSend(v4, "length")))
+        v15 = [fromCopy position] + 8;
+        if (v15 >= [fromCopy position] && (v16 = objc_msgSend(fromCopy, "position") + 8, v16 <= objc_msgSend(fromCopy, "length")))
         {
-          v17 = [v4 data];
-          [v17 getBytes:&v22 range:{objc_msgSend(v4, "position"), 8}];
+          data2 = [fromCopy data];
+          [data2 getBytes:&v22 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v5->_raw_creationDate = v22;
@@ -273,13 +273,13 @@ LABEL_16:
         goto LABEL_28;
       }
 
-      v18 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v18 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_28:
     v19 = 0;
@@ -297,25 +297,25 @@ LABEL_29:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMLighthouseTaskStatusPullMetadata *)self creationDate];
-  v5 = [v3 initWithFormat:@"BMLighthouseTaskStatusPullMetadata with creationDate: %@", v4];
+  creationDate = [(BMLighthouseTaskStatusPullMetadata *)self creationDate];
+  v5 = [v3 initWithFormat:@"BMLighthouseTaskStatusPullMetadata with creationDate: %@", creationDate];
 
   return v5;
 }
 
-- (BMLighthouseTaskStatusPullMetadata)initWithCreationDate:(id)a3
+- (BMLighthouseTaskStatusPullMetadata)initWithCreationDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v8.receiver = self;
   v8.super_class = BMLighthouseTaskStatusPullMetadata;
   v5 = [(BMEventBase *)&v8 init];
   if (v5)
   {
     v5->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v4)
+    if (dateCopy)
     {
       v5->_hasRaw_creationDate = 1;
-      [v4 timeIntervalSince1970];
+      [dateCopy timeIntervalSince1970];
     }
 
     else
@@ -354,9 +354,9 @@ LABEL_29:
   return v3;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -364,8 +364,8 @@ LABEL_29:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMLighthouseTaskStatusPullMetadata alloc] initByReadFrom:v7];
     v4 = v8;

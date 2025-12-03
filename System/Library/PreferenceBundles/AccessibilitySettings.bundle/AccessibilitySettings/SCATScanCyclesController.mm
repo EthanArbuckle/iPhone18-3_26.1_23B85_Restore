@@ -1,7 +1,7 @@
 @interface SCATScanCyclesController
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation SCATScanCyclesController
@@ -16,8 +16,8 @@
     v6 = +[PSSpecifier emptyGroupSpecifier];
     v7 = AXParameterizedLocalizedString();
     v8 = +[UIDevice currentDevice];
-    v9 = [v8 localizedModel];
-    v10 = [NSString stringWithFormat:v7, v9];
+    localizedModel = [v8 localizedModel];
+    v10 = [NSString stringWithFormat:v7, localizedModel];
     [v6 setProperty:v10 forKey:PSFooterTextGroupKey];
 
     [v5 addObject:v6];
@@ -49,36 +49,36 @@
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = SCATScanCyclesController;
-  v4 = [(SCATScanCyclesController *)&v10 tableView:a3 cellForRowAtIndexPath:a4];
-  v5 = [v4 specifier];
-  v6 = [v5 propertyForKey:@"ScanCyclesKey"];
-  v7 = [v6 integerValue];
+  v4 = [(SCATScanCyclesController *)&v10 tableView:view cellForRowAtIndexPath:path];
+  specifier = [v4 specifier];
+  v6 = [specifier propertyForKey:@"ScanCyclesKey"];
+  integerValue = [v6 integerValue];
 
   v8 = +[AXSettings sharedInstance];
-  [v4 setChecked:{objc_msgSend(v8, "assistiveTouchScanCycles") == v7}];
+  [v4 setChecked:{objc_msgSend(v8, "assistiveTouchScanCycles") == integerValue}];
 
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = SCATScanCyclesController;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SCATScanCyclesController *)&v13 tableView:v7 cellForRowAtIndexPath:v6];
-  v9 = [v8 specifier];
-  v10 = [v9 propertyForKey:@"ScanCyclesKey"];
-  v11 = [v10 integerValue];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(SCATScanCyclesController *)&v13 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+  specifier = [v8 specifier];
+  v10 = [specifier propertyForKey:@"ScanCyclesKey"];
+  integerValue = [v10 integerValue];
 
   v12 = +[AXSettings sharedInstance];
-  [v12 setAssistiveTouchScanCycles:v11];
-  [(SCATScanCyclesController *)self updateTableCheckedSelection:v6];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  [v12 setAssistiveTouchScanCycles:integerValue];
+  [(SCATScanCyclesController *)self updateTableCheckedSelection:pathCopy];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
 @end

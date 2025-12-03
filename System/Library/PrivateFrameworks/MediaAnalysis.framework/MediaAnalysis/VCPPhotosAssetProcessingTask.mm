@@ -1,27 +1,27 @@
 @interface VCPPhotosAssetProcessingTask
-+ (id)taskWithProcessingTypes:(unint64_t)a3 forAssetsWithLocalIdentifiers:(id)a4 fromPhotoLibraryWithURL:(id)a5 withProgressHandler:(id)a6 andCompletionHandler:(id)a7;
-+ (int)removeProcessingStatusForLocalIdentifiers:(id)a3 taskID:(unint64_t)a4 photoLibrary:(id)a5;
-- (BOOL)run:(id *)a3;
-- (VCPPhotosAssetProcessingTask)initWithProcessingTypes:(unint64_t)a3 forAssetsWithLocalIdentifiers:(id)a4 fromPhotoLibraryWithURL:(id)a5 withProgressHandler:(id)a6 andCompletionHandler:(id)a7;
++ (id)taskWithProcessingTypes:(unint64_t)types forAssetsWithLocalIdentifiers:(id)identifiers fromPhotoLibraryWithURL:(id)l withProgressHandler:(id)handler andCompletionHandler:(id)completionHandler;
++ (int)removeProcessingStatusForLocalIdentifiers:(id)identifiers taskID:(unint64_t)d photoLibrary:(id)library;
+- (BOOL)run:(id *)run;
+- (VCPPhotosAssetProcessingTask)initWithProcessingTypes:(unint64_t)types forAssetsWithLocalIdentifiers:(id)identifiers fromPhotoLibraryWithURL:(id)l withProgressHandler:(id)handler andCompletionHandler:(id)completionHandler;
 @end
 
 @implementation VCPPhotosAssetProcessingTask
 
-- (VCPPhotosAssetProcessingTask)initWithProcessingTypes:(unint64_t)a3 forAssetsWithLocalIdentifiers:(id)a4 fromPhotoLibraryWithURL:(id)a5 withProgressHandler:(id)a6 andCompletionHandler:(id)a7
+- (VCPPhotosAssetProcessingTask)initWithProcessingTypes:(unint64_t)types forAssetsWithLocalIdentifiers:(id)identifiers fromPhotoLibraryWithURL:(id)l withProgressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  identifiersCopy = identifiers;
+  lCopy = l;
+  handlerCopy = handler;
   v21.receiver = self;
   v21.super_class = VCPPhotosAssetProcessingTask;
-  v16 = [(VCPPhotosAssetProcessingTask *)&v21 initWithCompletionHandler:a7];
+  v16 = [(VCPPhotosAssetProcessingTask *)&v21 initWithCompletionHandler:completionHandler];
   v17 = v16;
   if (v16)
   {
-    v16->_processingTypes = a3;
-    objc_storeStrong(&v16->_localIdentifiers, a4);
-    objc_storeStrong(&v17->_photoLibraryURL, a5);
-    v18 = objc_retainBlock(v15);
+    v16->_processingTypes = types;
+    objc_storeStrong(&v16->_localIdentifiers, identifiers);
+    objc_storeStrong(&v17->_photoLibraryURL, l);
+    v18 = objc_retainBlock(handlerCopy);
     progressHandler = v17->_progressHandler;
     v17->_progressHandler = v18;
   }
@@ -29,21 +29,21 @@
   return v17;
 }
 
-+ (id)taskWithProcessingTypes:(unint64_t)a3 forAssetsWithLocalIdentifiers:(id)a4 fromPhotoLibraryWithURL:(id)a5 withProgressHandler:(id)a6 andCompletionHandler:(id)a7
++ (id)taskWithProcessingTypes:(unint64_t)types forAssetsWithLocalIdentifiers:(id)identifiers fromPhotoLibraryWithURL:(id)l withProgressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = [objc_alloc(objc_opt_class()) initWithProcessingTypes:a3 forAssetsWithLocalIdentifiers:v14 fromPhotoLibraryWithURL:v13 withProgressHandler:v12 andCompletionHandler:v11];
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
+  lCopy = l;
+  identifiersCopy = identifiers;
+  v15 = [objc_alloc(objc_opt_class()) initWithProcessingTypes:types forAssetsWithLocalIdentifiers:identifiersCopy fromPhotoLibraryWithURL:lCopy withProgressHandler:handlerCopy andCompletionHandler:completionHandlerCopy];
 
   return v15;
 }
 
-+ (int)removeProcessingStatusForLocalIdentifiers:(id)a3 taskID:(unint64_t)a4 photoLibrary:(id)a5
++ (int)removeProcessingStatusForLocalIdentifiers:(id)identifiers taskID:(unint64_t)d photoLibrary:(id)library
 {
-  v8 = a3;
-  v9 = a5;
+  identifiersCopy = identifiers;
+  libraryCopy = library;
   if (+[MADManagedProcessingStatus isMACDPersistEnabled])
   {
     if (MediaAnalysisLogLevel() >= 7)
@@ -54,7 +54,7 @@
         *buf = 138412546;
         v53 = objc_opt_class();
         v54 = 1024;
-        LODWORD(v55) = a4;
+        LODWORD(v55) = d;
         v11 = v53;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v10, "[%@][MACD] Removing processing status for taskID %d", buf, 0x12u);
       }
@@ -64,11 +64,11 @@
     v48[1] = 3221225472;
     v48[2] = sub_100123BB4;
     v48[3] = &unk_100286D08;
-    v49 = v8;
-    v50 = a1;
-    v51 = a4;
+    v49 = identifiersCopy;
+    selfCopy = self;
+    dCopy = d;
     v47 = 0;
-    v12 = [v9 mad_performAnalysisDataStoreChanges:v48 error:&v47];
+    v12 = [libraryCopy mad_performAnalysisDataStoreChanges:v48 error:&v47];
     v13 = v47;
     v14 = v13;
     if (v12)
@@ -76,11 +76,11 @@
 
       v15 = 0;
 LABEL_34:
-      v28 = v15;
+      code = v15;
       goto LABEL_35;
     }
 
-    v28 = [v13 code];
+    code = [v13 code];
     if (MediaAnalysisLogLevel() >= 3)
     {
       v29 = VCPLogToOSLogType[3];
@@ -90,7 +90,7 @@ LABEL_34:
         *buf = 138412546;
         v53 = v30;
         v54 = 1024;
-        LODWORD(v55) = a4;
+        LODWORD(v55) = d;
         v31 = v30;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v29, "[%@][MACD] Failed to remove processing status for taskID %d", buf, 0x12u);
       }
@@ -99,7 +99,7 @@ LABEL_34:
 
   else
   {
-    v16 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v9];
+    v16 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
     if (v16)
     {
       v17 = v16;
@@ -107,13 +107,13 @@ LABEL_34:
       v46 = 0u;
       v43 = 0u;
       v44 = 0u;
-      v18 = v8;
+      v18 = identifiersCopy;
       v19 = [v18 countByEnumeratingWithState:&v43 objects:v58 count:16];
       if (v19)
       {
         v20 = v19;
-        v41 = v9;
-        v42 = v8;
+        v41 = libraryCopy;
+        v42 = identifiersCopy;
         v21 = *v44;
         v22 = VCPLogToOSLogType[7];
 LABEL_10:
@@ -134,12 +134,12 @@ LABEL_10:
             v54 = 2112;
             v55 = v24;
             v56 = 1024;
-            v57 = a4;
+            dCopy3 = d;
             v26 = v25;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v22, "[%@][%@] Removing processing status for taskID %d", buf, 0x1Cu);
           }
 
-          v27 = [v17 removeProcessingStatusForLocalIdentifier:v24 andTaskID:{a4, v41, v42}];
+          v27 = [v17 removeProcessingStatusForLocalIdentifier:v24 andTaskID:{d, v41, v42}];
           if (v27)
           {
             break;
@@ -162,14 +162,14 @@ LABEL_10:
         if (MediaAnalysisLogLevel() < 3)
         {
 LABEL_32:
-          v9 = v41;
-          v8 = v42;
+          libraryCopy = v41;
+          identifiersCopy = v42;
           goto LABEL_33;
         }
 
         v32 = VCPLogToOSLogType[3];
-        v9 = v41;
-        v8 = v42;
+        libraryCopy = v41;
+        identifiersCopy = v42;
         if (os_log_type_enabled(&_os_log_default, v32))
         {
           v33 = objc_opt_class();
@@ -178,7 +178,7 @@ LABEL_32:
           v54 = 2112;
           v55 = v24;
           v56 = 1024;
-          v57 = a4;
+          dCopy3 = d;
           v34 = v33;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v32, "[%@][%@] Failed to remove processing status for taskID %d", buf, 0x1Cu);
         }
@@ -191,8 +191,8 @@ LABEL_32:
 
 LABEL_33:
 
-      v28 = [v17 commit];
-      if (!v28)
+      code = [v17 commit];
+      if (!code)
       {
         goto LABEL_34;
       }
@@ -207,26 +207,26 @@ LABEL_33:
         {
           v36 = objc_opt_class();
           v37 = v36;
-          v38 = [v9 photoLibraryURL];
-          v39 = [v38 path];
+          photoLibraryURL = [libraryCopy photoLibraryURL];
+          path = [photoLibraryURL path];
           *buf = 138412546;
           v53 = v36;
           v54 = 2112;
-          v55 = v39;
+          v55 = path;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v35, "[%@] Failed to open Media Analysis for Photo Library (%@)", buf, 0x16u);
         }
       }
 
-      v28 = -23;
+      code = -23;
     }
   }
 
 LABEL_35:
 
-  return v28;
+  return code;
 }
 
-- (BOOL)run:(id *)a3
+- (BOOL)run:(id *)run
 {
   if (MediaAnalysisLogLevel() >= 6)
   {
@@ -301,7 +301,7 @@ LABEL_35:
       v18 = [v17 removeProcessingStatusForLocalIdentifiers:self->_localIdentifiers taskID:objc_msgSend(objc_opt_class() photoLibrary:{"taskID"), v9}];
       if (v18)
       {
-        if (a3)
+        if (run)
         {
           v19 = v18;
           v182 = NSLocalizedDescriptionKey;
@@ -309,8 +309,8 @@ LABEL_35:
           v183 = v20;
           v21 = [NSDictionary dictionaryWithObjects:&v183 forKeys:&v182 count:1];
           v22 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v19 userInfo:v21];
-          v23 = *a3;
-          *a3 = v22;
+          v23 = *run;
+          *run = v22;
         }
 
         v24 = 0;
@@ -330,15 +330,15 @@ LABEL_35:
         v33 = [(VCPMADSceneAssetProcessingTask *)v32 run];
         if (v33 == -128)
         {
-          if (a3)
+          if (run)
           {
             v180 = NSLocalizedDescriptionKey;
             v34 = [NSString stringWithFormat:@"Scene asset processing cancelled"];
             v181 = v34;
             v35 = [NSDictionary dictionaryWithObjects:&v181 forKeys:&v180 count:1];
             v36 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v35];
-            v37 = *a3;
-            *a3 = v36;
+            v37 = *run;
+            *run = v36;
           }
 
           v24 = 0;
@@ -348,7 +348,7 @@ LABEL_35:
         {
           v38 = v33;
           v24 = v33 == 0;
-          if (a3 && v33)
+          if (run && v33)
           {
             v138 = v33;
             v178 = NSLocalizedDescriptionKey;
@@ -356,8 +356,8 @@ LABEL_35:
             v179 = v39;
             v40 = [NSDictionary dictionaryWithObjects:&v179 forKeys:&v178 count:1];
             v41 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v138 userInfo:v40];
-            v42 = *a3;
-            *a3 = v41;
+            v42 = *run;
+            *run = v41;
           }
 
           if (v38)
@@ -397,7 +397,7 @@ LABEL_35:
       v46 = [v45 removeProcessingStatusForLocalIdentifiers:self->_localIdentifiers taskID:objc_msgSend(objc_opt_class() photoLibrary:{"taskID"), v9}];
       if (v46)
       {
-        if (a3)
+        if (run)
         {
           v47 = v46;
           v176 = NSLocalizedDescriptionKey;
@@ -405,8 +405,8 @@ LABEL_35:
           v177 = v48;
           v49 = [NSDictionary dictionaryWithObjects:&v177 forKeys:&v176 count:1];
           v50 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v47 userInfo:v49];
-          v51 = *a3;
-          *a3 = v50;
+          v51 = *run;
+          *run = v50;
         }
 
         v52 = 0;
@@ -426,15 +426,15 @@ LABEL_35:
         v57 = [(VCPMADOCRAssetProcessingTask *)v56 run];
         if (v57 == -128)
         {
-          if (a3)
+          if (run)
           {
             v174 = NSLocalizedDescriptionKey;
             v58 = [NSString stringWithFormat:@"OCR asset processing cancelled"];
             v175 = v58;
             v59 = [NSDictionary dictionaryWithObjects:&v175 forKeys:&v174 count:1];
             v60 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v59];
-            v61 = *a3;
-            *a3 = v60;
+            v61 = *run;
+            *run = v60;
           }
 
           v52 = 0;
@@ -444,7 +444,7 @@ LABEL_35:
         {
           v62 = v57;
           v52 = v57 == 0;
-          if (a3 && v57)
+          if (run && v57)
           {
             v139 = v57;
             v172 = NSLocalizedDescriptionKey;
@@ -452,8 +452,8 @@ LABEL_35:
             v173 = v63;
             v64 = [NSDictionary dictionaryWithObjects:&v173 forKeys:&v172 count:1];
             v65 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v139 userInfo:v64];
-            v66 = *a3;
-            *a3 = v65;
+            v66 = *run;
+            *run = v65;
           }
 
           if (!v62)
@@ -487,7 +487,7 @@ LABEL_35:
       v70 = [v69 removeProcessingStatusForLocalIdentifiers:self->_localIdentifiers taskID:objc_msgSend(objc_opt_class() photoLibrary:{"taskID"), v9}];
       if (v70)
       {
-        if (a3)
+        if (run)
         {
           v71 = v70;
           v170 = NSLocalizedDescriptionKey;
@@ -495,8 +495,8 @@ LABEL_35:
           v171 = v72;
           v73 = [NSDictionary dictionaryWithObjects:&v171 forKeys:&v170 count:1];
           v74 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v71 userInfo:v73];
-          v75 = *a3;
-          *a3 = v74;
+          v75 = *run;
+          *run = v74;
         }
 
         v76 = 0;
@@ -516,15 +516,15 @@ LABEL_35:
         v81 = [(VCPMADQuickFaceIDAssetProcessingTask *)v80 run];
         if (v81 == -128)
         {
-          if (a3)
+          if (run)
           {
             v168 = NSLocalizedDescriptionKey;
             v82 = [NSString stringWithFormat:@"Face asset processing cancelled"];
             v169 = v82;
             v83 = [NSDictionary dictionaryWithObjects:&v169 forKeys:&v168 count:1];
             v84 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v83];
-            v85 = *a3;
-            *a3 = v84;
+            v85 = *run;
+            *run = v84;
           }
 
           v76 = 0;
@@ -534,7 +534,7 @@ LABEL_35:
         {
           v86 = v81;
           v76 = v81 == 0;
-          if (a3 && v81)
+          if (run && v81)
           {
             v140 = v81;
             v166 = NSLocalizedDescriptionKey;
@@ -542,8 +542,8 @@ LABEL_35:
             v167 = v87;
             v88 = [NSDictionary dictionaryWithObjects:&v167 forKeys:&v166 count:1];
             v89 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v140 userInfo:v88];
-            v90 = *a3;
-            *a3 = v89;
+            v90 = *run;
+            *run = v89;
           }
 
           if (!v86)
@@ -568,10 +568,10 @@ LABEL_84:
       if ((processingTypes & 0x10) == 0)
       {
 LABEL_85:
-        a3 = [(VCPPhotosAssetProcessingTask *)self completionHandler];
-        (a3[2])(a3, 0, 0);
+        run = [(VCPPhotosAssetProcessingTask *)self completionHandler];
+        (run[2])(run, 0, 0);
 
-        LOBYTE(a3) = 1;
+        LOBYTE(run) = 1;
         goto LABEL_95;
       }
 
@@ -588,7 +588,7 @@ LABEL_85:
       v107 = [v106 removeProcessingStatusForLocalIdentifiers:self->_localIdentifiers taskID:objc_msgSend(objc_opt_class() photoLibrary:{"taskID"), v9}];
       if (v107)
       {
-        if (a3)
+        if (run)
         {
           v108 = v107;
           v156 = NSLocalizedDescriptionKey;
@@ -596,8 +596,8 @@ LABEL_85:
           v157 = v109;
           v110 = [NSDictionary dictionaryWithObjects:&v157 forKeys:&v156 count:1];
           v111 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v108 userInfo:v110];
-          v112 = *a3;
-          *a3 = v111;
+          v112 = *run;
+          *run = v111;
         }
 
 LABEL_93:
@@ -618,30 +618,30 @@ LABEL_93:
       v117 = [(VCPMADVisualSearchAssetProcessingTask *)v116 run];
       if (v117 == -128)
       {
-        if (a3)
+        if (run)
         {
           v154 = NSLocalizedDescriptionKey;
           v118 = [NSString stringWithFormat:@"VisualSearch asset processing cancelled"];
           v155 = v118;
           v119 = [NSDictionary dictionaryWithObjects:&v155 forKeys:&v154 count:1];
           v120 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v119];
-          v121 = *a3;
-          *a3 = v120;
+          v121 = *run;
+          *run = v120;
         }
 
         goto LABEL_93;
       }
 
       v127 = v117;
-      if (a3 && v117)
+      if (run && v117)
       {
         v152 = NSLocalizedDescriptionKey;
         v128 = [NSString stringWithFormat:@"VisualSearch asset processing failed"];
         v153 = v128;
         v129 = [NSDictionary dictionaryWithObjects:&v153 forKeys:&v152 count:1];
         v130 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v127 userInfo:v129];
-        v131 = *a3;
-        *a3 = v130;
+        v131 = *run;
+        *run = v130;
       }
 
       objc_autoreleasePoolPop(v104);
@@ -651,7 +651,7 @@ LABEL_93:
       }
 
 LABEL_94:
-      LOBYTE(a3) = 0;
+      LOBYTE(run) = 0;
       goto LABEL_95;
     }
 
@@ -667,7 +667,7 @@ LABEL_94:
     v93 = [objc_opt_class() removeProcessingStatusForLocalIdentifiers:self->_localIdentifiers taskID:254 photoLibrary:v9];
     if (v93)
     {
-      if (a3)
+      if (run)
       {
         v94 = NSOSStatusErrorDomain;
         v95 = v93;
@@ -679,8 +679,8 @@ LABEL_94:
 LABEL_78:
         v100 = [NSDictionary dictionaryWithObjects:v97 forKeys:v98 count:1];
         v101 = [NSError errorWithDomain:v94 code:v95 userInfo:v100];
-        v102 = *a3;
-        *a3 = v101;
+        v102 = *run;
+        *run = v101;
 
         goto LABEL_79;
       }
@@ -702,19 +702,19 @@ LABEL_78:
         [v96 start];
         if ([v96 error] != -128)
         {
-          v132 = [v96 error];
-          v133 = v132;
-          v103 = v132 == 0;
-          if (a3 && v132)
+          error = [v96 error];
+          v133 = error;
+          v103 = error == 0;
+          if (run && error)
           {
-            v141 = v132;
+            v141 = error;
             v158 = NSLocalizedDescriptionKey;
             v134 = [NSString stringWithFormat:@"Full asset processing failed"];
             v159 = v134;
             v135 = [NSDictionary dictionaryWithObjects:&v159 forKeys:&v158 count:1];
             v136 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v141 userInfo:v135];
-            v137 = *a3;
-            *a3 = v136;
+            v137 = *run;
+            *run = v136;
           }
 
           if (!v133)
@@ -725,15 +725,15 @@ LABEL_78:
           goto LABEL_80;
         }
 
-        if (a3)
+        if (run)
         {
           v160 = NSLocalizedDescriptionKey;
           v123 = [NSString stringWithFormat:@"Full asset processing cancelled"];
           v161 = v123;
           v124 = [NSDictionary dictionaryWithObjects:&v161 forKeys:&v160 count:1];
           v125 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v124];
-          v126 = *a3;
-          *a3 = v125;
+          v126 = *run;
+          *run = v125;
         }
 
 LABEL_79:
@@ -751,7 +751,7 @@ LABEL_82:
         goto LABEL_84;
       }
 
-      if (a3)
+      if (run)
       {
         v94 = NSOSStatusErrorDomain;
         v95 = v99;
@@ -768,22 +768,22 @@ LABEL_82:
     goto LABEL_82;
   }
 
-  if (a3)
+  if (run)
   {
     v184 = NSLocalizedDescriptionKey;
     v25 = [NSString stringWithFormat:@"Failed to open specified Photo Library (%@)", self->_photoLibraryURL];
     v185 = v25;
     v26 = [NSDictionary dictionaryWithObjects:&v185 forKeys:&v184 count:1];
     v27 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-50 userInfo:v26];
-    v28 = *a3;
-    *a3 = v27;
+    v28 = *run;
+    *run = v27;
 
     goto LABEL_94;
   }
 
 LABEL_95:
 
-  return a3;
+  return run;
 }
 
 @end

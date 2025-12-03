@@ -1,7 +1,7 @@
 @interface HLPURLSessionACAuthContext
 + (id)defaultContext;
-- (HLPURLSessionACAuthContext)initWithAppIdentifier:(id)a3 enviromentIdentifier:(id)a4 interactivity:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HLPURLSessionACAuthContext)initWithAppIdentifier:(id)identifier enviromentIdentifier:(id)enviromentIdentifier interactivity:(id)interactivity;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HLPURLSessionACAuthContext
@@ -27,39 +27,39 @@ uint64_t __44__HLPURLSessionACAuthContext_defaultContext__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (HLPURLSessionACAuthContext)initWithAppIdentifier:(id)a3 enviromentIdentifier:(id)a4 interactivity:(id)a5
+- (HLPURLSessionACAuthContext)initWithAppIdentifier:(id)identifier enviromentIdentifier:(id)enviromentIdentifier interactivity:(id)interactivity
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  enviromentIdentifierCopy = enviromentIdentifier;
+  interactivityCopy = interactivity;
   v15.receiver = self;
   v15.super_class = HLPURLSessionACAuthContext;
   v12 = [(HLPURLSessionACAuthContext *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_appIdentifier, a3);
-    objc_storeStrong(&v13->_enviromentIdentifier, a4);
-    objc_storeStrong(&v13->_interactivityMode, a5);
+    objc_storeStrong(&v12->_appIdentifier, identifier);
+    objc_storeStrong(&v13->_enviromentIdentifier, enviromentIdentifier);
+    objc_storeStrong(&v13->_interactivityMode, interactivity);
   }
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(HLPURLSessionACAuthContext *)self appIdentifier];
-  [v4 setAppIdentifier:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  appIdentifier = [(HLPURLSessionACAuthContext *)self appIdentifier];
+  [v4 setAppIdentifier:appIdentifier];
 
-  v6 = [(HLPURLSessionACAuthContext *)self enviromentIdentifier];
-  [v4 setEnviromentIdentifier:v6];
+  enviromentIdentifier = [(HLPURLSessionACAuthContext *)self enviromentIdentifier];
+  [v4 setEnviromentIdentifier:enviromentIdentifier];
 
-  v7 = [(HLPURLSessionACAuthContext *)self interactivityMode];
-  [v4 setInteractivityMode:v7];
+  interactivityMode = [(HLPURLSessionACAuthContext *)self interactivityMode];
+  [v4 setInteractivityMode:interactivityMode];
 
-  v8 = [(HLPURLSessionACAuthContext *)self clientIdentifier];
-  [v4 setClientIdentifier:v8];
+  clientIdentifier = [(HLPURLSessionACAuthContext *)self clientIdentifier];
+  [v4 setClientIdentifier:clientIdentifier];
 
   return v4;
 }

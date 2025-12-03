@@ -3,18 +3,18 @@
 - (UICoordinateSpace)coordinateSpace;
 - (UISplitViewControllerPanelImpl)impl;
 - (UIView)parentView;
-- (_UISplitViewControllerPanelPrimaryViewControllerPromiseItem)initWithParentView:(id)a3 impl:(id)a4;
-- (id)focusItemsInRect:(CGRect)a3;
+- (_UISplitViewControllerPanelPrimaryViewControllerPromiseItem)initWithParentView:(id)view impl:(id)impl;
+- (id)focusItemsInRect:(CGRect)rect;
 - (void)setNeedsFocusUpdate;
 - (void)updateFocusIfNeeded;
 @end
 
 @implementation _UISplitViewControllerPanelPrimaryViewControllerPromiseItem
 
-- (_UISplitViewControllerPanelPrimaryViewControllerPromiseItem)initWithParentView:(id)a3 impl:(id)a4
+- (_UISplitViewControllerPanelPrimaryViewControllerPromiseItem)initWithParentView:(id)view impl:(id)impl
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  implCopy = impl;
   v27.receiver = self;
   v27.super_class = _UISplitViewControllerPanelPrimaryViewControllerPromiseItem;
   v8 = [(_UISplitViewControllerPanelPrimaryViewControllerPromiseItem *)&v27 init];
@@ -27,22 +27,22 @@ LABEL_8:
   }
 
   v10 = 0;
-  if (v6 && v7)
+  if (viewCopy && implCopy)
   {
-    objc_storeWeak(&v8->_parentView, v6);
-    objc_storeWeak(&v9->_impl, v7);
-    [v6 bounds];
+    objc_storeWeak(&v8->_parentView, viewCopy);
+    objc_storeWeak(&v9->_impl, implCopy);
+    [viewCopy bounds];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v19 = *(MEMORY[0x1E695EFF8] + 8);
-    v20 = [v7 _layoutPrimaryOnRight];
+    _layoutPrimaryOnRight = [implCopy _layoutPrimaryOnRight];
     v21 = v12;
     v22 = v14;
     v23 = v16;
     v24 = v18;
-    if (v20)
+    if (_layoutPrimaryOnRight)
     {
       MaxX = CGRectGetMaxX(*&v21);
     }
@@ -89,25 +89,25 @@ LABEL_9:
   [v2 updateFocusIfNeeded];
 }
 
-- (id)focusItemsInRect:(CGRect)a3
+- (id)focusItemsInRect:(CGRect)rect
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = [(_UISplitViewControllerPanelPrimaryViewControllerPromiseItem *)self impl:a3.origin.x];
+  v3 = [(_UISplitViewControllerPanelPrimaryViewControllerPromiseItem *)self impl:rect.origin.x];
   [v3 _triggerDisplayModeAction:v3];
-  v4 = [v3 panelController];
-  [v4 setNeedsUpdate];
+  panelController = [v3 panelController];
+  [panelController setNeedsUpdate];
 
-  v5 = [v3 panelController];
-  v6 = [v5 view];
-  [v6 layoutIfNeeded];
+  panelController2 = [v3 panelController];
+  view = [panelController2 view];
+  [view layoutIfNeeded];
 
-  v7 = [v3 splitViewController];
-  v8 = [v7 masterViewController];
-  v9 = [v8 view];
+  splitViewController = [v3 splitViewController];
+  masterViewController = [splitViewController masterViewController];
+  view2 = [masterViewController view];
 
-  if (v9)
+  if (view2)
   {
-    v12[0] = v9;
+    v12[0] = view2;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   }
 
@@ -121,10 +121,10 @@ LABEL_9:
 
 - (UICoordinateSpace)coordinateSpace
 {
-  v2 = [(_UISplitViewControllerPanelPrimaryViewControllerPromiseItem *)self parentView];
-  v3 = [v2 coordinateSpace];
+  parentView = [(_UISplitViewControllerPanelPrimaryViewControllerPromiseItem *)self parentView];
+  coordinateSpace = [parentView coordinateSpace];
 
-  return v3;
+  return coordinateSpace;
 }
 
 - (UIView)parentView

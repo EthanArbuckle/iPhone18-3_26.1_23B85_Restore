@@ -1,19 +1,19 @@
 @interface FAChecklistStore
-- (BOOL)screenTimeEnabledForChild:(id)a3;
+- (BOOL)screenTimeEnabledForChild:(id)child;
 - (FAChecklistStore)init;
 - (NSNumber)incompleteItems;
-- (id)_getLocationSharedService:(id)a3;
-- (int64_t)contactManagementEnabledForChild:(id)a3;
-- (unint64_t)_handleSubscriptionListResponse:(id)a3;
+- (id)_getLocationSharedService:(id)service;
+- (int64_t)contactManagementEnabledForChild:(id)child;
+- (unint64_t)_handleSubscriptionListResponse:(id)response;
 - (void)clearChecklistCounts;
-- (void)familyLocationSharingStatus:(id)a3;
-- (void)fetchIcloudPlusMembership:(id)a3;
-- (void)fetchMedicalIDData:(id)a3;
-- (void)fetchMyCustodians:(id)a3;
+- (void)familyLocationSharingStatus:(id)status;
+- (void)fetchIcloudPlusMembership:(id)membership;
+- (void)fetchMedicalIDData:(id)data;
+- (void)fetchMyCustodians:(id)custodians;
 - (void)finishSetup;
 - (void)incompleteItems;
 - (void)notifyObservable;
-- (void)refreshChecklistCount:(id)a3 account:(id)a4 iCloudService:(id)a5 completionHandler:(id)a6;
+- (void)refreshChecklistCount:(id)count account:(id)account iCloudService:(id)service completionHandler:(id)handler;
 @end
 
 @implementation FAChecklistStore
@@ -133,16 +133,16 @@
   v9.receiver = self;
   v9.super_class = FAChecklistStore;
   v2 = [(FAChecklistStore *)&v9 init];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v2->_deviceType = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v2->_deviceType = [currentDevice userInterfaceIdiom];
 
-  v4 = [MEMORY[0x277CF0130] sharedInstance];
+  mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
   accountManager = v2->_accountManager;
-  v2->_accountManager = v4;
+  v2->_accountManager = mEMORY[0x277CF0130];
 
-  v6 = [(AKAccountManager *)v2->_accountManager primaryAuthKitAccount];
+  primaryAuthKitAccount = [(AKAccountManager *)v2->_accountManager primaryAuthKitAccount];
   authKitAccount = v2->_authKitAccount;
-  v2->_authKitAccount = v6;
+  v2->_authKitAccount = primaryAuthKitAccount;
 
   return v2;
 }
@@ -174,8 +174,8 @@
         v29 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v8 = [(NSMutableDictionary *)v6 allKeys];
-        v9 = [v8 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        allKeys = [(NSMutableDictionary *)v6 allKeys];
+        v9 = [allKeys countByEnumeratingWithState:&v26 objects:v34 count:16];
         if (v9)
         {
           v11 = v9;
@@ -189,7 +189,7 @@
             {
               if (*v27 != v13)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(allKeys);
               }
 
               v15 = *(*(&v26 + 1) + 8 * i);
@@ -201,11 +201,11 @@
                 v18 = _FALogSystem();
                 if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
                 {
-                  v19 = [v17 intValue];
+                  intValue = [v17 intValue];
                   *buf = 138412546;
                   v31 = v15;
                   v32 = 1024;
-                  v33 = v19;
+                  v33 = intValue;
                   _os_log_debug_impl(&dword_21BB35000, v18, OS_LOG_TYPE_DEBUG, "FAChecklistStore value for key %@ is %d", buf, 0x12u);
                 }
               }
@@ -222,7 +222,7 @@
               }
             }
 
-            v11 = [v8 countByEnumeratingWithState:&v26 objects:v34 count:16];
+            v11 = [allKeys countByEnumeratingWithState:&v26 objects:v34 count:16];
           }
 
           while (v11);
@@ -279,18 +279,18 @@
   [(NSMutableDictionary *)incompleteCounts removeAllObjects];
 }
 
-- (void)refreshChecklistCount:(id)a3 account:(id)a4 iCloudService:(id)a5 completionHandler:(id)a6
+- (void)refreshChecklistCount:(id)count account:(id)account iCloudService:(id)service completionHandler:(id)handler
 {
   v47 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  countCopy = count;
+  accountCopy = account;
+  serviceCopy = service;
+  handlerCopy = handler;
   [(FAChecklistStore *)self clearChecklistCounts];
   [(FAChecklistStore *)self finishSetup];
-  [(FAChecklistStore *)self setFamilyCircle:v10];
-  [(FAChecklistStore *)self setIcloudService:v12];
-  [(FAChecklistStore *)self setAppleAccount:v11];
+  [(FAChecklistStore *)self setFamilyCircle:countCopy];
+  [(FAChecklistStore *)self setIcloudService:serviceCopy];
+  [(FAChecklistStore *)self setAppleAccount:accountCopy];
   v14 = dispatch_group_create();
   dispatch_group_enter(v14);
   v44[0] = MEMORY[0x277D85DD0];
@@ -320,9 +320,9 @@
   }
 
   dispatch_group_enter(v15);
-  v30 = v11;
-  v31 = v10;
-  v29 = v12;
+  v30 = accountCopy;
+  v31 = countCopy;
+  v29 = serviceCopy;
   if (([(AKAccountManager *)self->_accountManager canHaveCustodianForAccount:self->_authKitAccount]& 1) != 0)
   {
     v40[0] = MEMORY[0x277D85DD0];
@@ -344,8 +344,8 @@
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v16 = [(FAFamilyCircle *)self->_familyCircle members];
-  v17 = [v16 countByEnumeratingWithState:&v36 objects:v46 count:16];
+  members = [(FAFamilyCircle *)self->_familyCircle members];
+  v17 = [members countByEnumeratingWithState:&v36 objects:v46 count:16];
   if (v17)
   {
     v18 = v17;
@@ -357,7 +357,7 @@
       {
         if (*v37 != v20)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(members);
         }
 
         v22 = *(*(&v36 + 1) + 8 * i);
@@ -384,7 +384,7 @@
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v36 objects:v46 count:16];
+      v18 = [members countByEnumeratingWithState:&v36 objects:v46 count:16];
     }
 
     while (v18);
@@ -411,8 +411,8 @@ LABEL_22:
   block[2] = __82__FAChecklistStore_refreshChecklistCount_account_iCloudService_completionHandler___block_invoke_6;
   block[3] = &unk_2782F3088;
   block[4] = self;
-  v33 = v13;
-  v27 = v13;
+  v33 = handlerCopy;
+  v27 = handlerCopy;
   dispatch_group_notify(v26, MEMORY[0x277D85CD0], block);
 
   v28 = *MEMORY[0x277D85DE8];
@@ -555,17 +555,17 @@ uint64_t __82__FAChecklistStore_refreshChecklistCount_account_iCloudService_comp
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)familyLocationSharingStatus:(id)a3
+- (void)familyLocationSharingStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   session = self->_session;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__FAChecklistStore_familyLocationSharingStatus___block_invoke;
   v7[3] = &unk_2782F33F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = statusCopy;
+  v6 = statusCopy;
   [(FindMyLocateSession *)session handlesFollowingMyLocationWithCompletionHandler:v7];
 }
 
@@ -646,17 +646,17 @@ void __48__FAChecklistStore_familyLocationSharingStatus___block_invoke(uint64_t 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchMedicalIDData:(id)a3
+- (void)fetchMedicalIDData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   medicalIDStore = self->_medicalIDStore;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__FAChecklistStore_fetchMedicalIDData___block_invoke;
   v7[3] = &unk_2782F3448;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   [(HKMedicalIDStore *)medicalIDStore fetchMedicalIDDataWithCompletion:v7];
 }
 
@@ -815,16 +815,16 @@ LABEL_30:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchMyCustodians:(id)a3
+- (void)fetchMyCustodians:(id)custodians
 {
-  v4 = a3;
+  custodiansCopy = custodians;
   custodianController = self->_custodianController;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__FAChecklistStore_fetchMyCustodians___block_invoke;
   v7[3] = &unk_2782F2CE8;
-  v8 = v4;
-  v6 = v4;
+  v8 = custodiansCopy;
+  v6 = custodiansCopy;
   [(AACustodianController *)custodianController fetchTrustedContactsWithCompletion:v7];
 }
 
@@ -853,16 +853,16 @@ uint64_t __38__FAChecklistStore_fetchMyCustodians___block_invoke_2(uint64_t a1)
   return v3();
 }
 
-- (BOOL)screenTimeEnabledForChild:(id)a3
+- (BOOL)screenTimeEnabledForChild:(id)child
 {
-  v3 = a3;
-  v4 = [v3 dsid];
+  childCopy = child;
+  dsid = [childCopy dsid];
 
-  if (v4)
+  if (dsid)
   {
     v5 = objc_alloc(MEMORY[0x277D4BAE0]);
-    v6 = [v3 dsid];
-    v7 = [v5 initWithDSID:v6];
+    dsid2 = [childCopy dsid];
+    v7 = [v5 initWithDSID:dsid2];
 
     v8 = objc_opt_new();
     v14 = 0;
@@ -887,16 +887,16 @@ uint64_t __38__FAChecklistStore_fetchMyCustodians___block_invoke_2(uint64_t a1)
   return v11;
 }
 
-- (int64_t)contactManagementEnabledForChild:(id)a3
+- (int64_t)contactManagementEnabledForChild:(id)child
 {
-  v4 = a3;
-  v5 = [v4 dsid];
+  childCopy = child;
+  dsid = [childCopy dsid];
 
-  if (v5)
+  if (dsid)
   {
     v6 = objc_alloc(MEMORY[0x277D4BAE0]);
-    v7 = [v4 dsid];
-    v8 = [v6 initWithDSID:v7];
+    dsid2 = [childCopy dsid];
+    v8 = [v6 initWithDSID:dsid2];
 
     setupClient = self->_setupClient;
     v15 = 0;
@@ -910,34 +910,34 @@ uint64_t __38__FAChecklistStore_fetchMyCustodians___block_invoke_2(uint64_t a1)
         [FAChecklistStore contactManagementEnabledForChild:];
       }
 
-      v13 = 0;
+      contactManagementState = 0;
     }
 
     else
     {
-      v13 = [v10 contactManagementState];
+      contactManagementState = [v10 contactManagementState];
     }
   }
 
   else
   {
-    v13 = 0;
+    contactManagementState = 0;
   }
 
-  return v13;
+  return contactManagementState;
 }
 
-- (void)fetchIcloudPlusMembership:(id)a3
+- (void)fetchIcloudPlusMembership:(id)membership
 {
-  v4 = a3;
+  membershipCopy = membership;
   v5 = objc_opt_new();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__FAChecklistStore_fetchIcloudPlusMembership___block_invoke;
   v7[3] = &unk_2782F3498;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = membershipCopy;
+  v6 = membershipCopy;
   [v5 fetchAAURLConfigurationWithCompletion:v7];
 }
 
@@ -1000,16 +1000,16 @@ uint64_t __46__FAChecklistStore_fetchIcloudPlusMembership___block_invoke_3(uint6
   return (*(*(a1 + 56) + 16))();
 }
 
-- (unint64_t)_handleSubscriptionListResponse:(id)a3
+- (unint64_t)_handleSubscriptionListResponse:(id)response
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 statusCode] != 200)
+  responseCopy = response;
+  if ([responseCopy statusCode] != 200)
   {
     v4 = _FALogSystem();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      [FAChecklistStore _handleSubscriptionListResponse:v3];
+      [FAChecklistStore _handleSubscriptionListResponse:responseCopy];
     }
   }
 
@@ -1017,9 +1017,9 @@ uint64_t __46__FAChecklistStore_fetchIcloudPlusMembership___block_invoke_3(uint6
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v22 = v3;
-  v5 = [v3 responseDictionary];
-  v6 = [v5 objectForKeyedSubscript:@"familySharedServices"];
+  v22 = responseCopy;
+  responseDictionary = [responseCopy responseDictionary];
+  v6 = [responseDictionary objectForKeyedSubscript:@"familySharedServices"];
 
   v7 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v7)
@@ -1073,16 +1073,16 @@ uint64_t __46__FAChecklistStore_fetchIcloudPlusMembership___block_invoke_3(uint6
   return v23;
 }
 
-- (id)_getLocationSharedService:(id)a3
+- (id)_getLocationSharedService:(id)service
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 statusCode] != 200)
+  serviceCopy = service;
+  if ([serviceCopy statusCode] != 200)
   {
     v4 = _FALogSystem();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      [FAChecklistStore _handleSubscriptionListResponse:v3];
+      [FAChecklistStore _handleSubscriptionListResponse:serviceCopy];
     }
   }
 
@@ -1090,8 +1090,8 @@ uint64_t __46__FAChecklistStore_fetchIcloudPlusMembership___block_invoke_3(uint6
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v3 services];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  services = [serviceCopy services];
+  v6 = [services countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1102,12 +1102,12 @@ uint64_t __46__FAChecklistStore_fetchIcloudPlusMembership___block_invoke_3(uint6
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(services);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 name];
-        v12 = [v11 isEqual:@"SHARE_MY_LOCATION"];
+        name = [v10 name];
+        v12 = [name isEqual:@"SHARE_MY_LOCATION"];
 
         if (v12)
         {
@@ -1116,7 +1116,7 @@ uint64_t __46__FAChecklistStore_fetchIcloudPlusMembership___block_invoke_3(uint6
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [services countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -1136,7 +1136,7 @@ LABEL_15:
 
 - (void)notifyObservable
 {
-  v2 = self;
+  selfCopy = self;
   FAChecklistStore.notifyObservable()();
 }
 
@@ -1144,7 +1144,7 @@ LABEL_15:
 {
   v4 = *MEMORY[0x277D85DE8];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_debug_impl(&dword_21BB35000, a2, OS_LOG_TYPE_DEBUG, "FAChecklistStore computed count %d", v3, 8u);
   v2 = *MEMORY[0x277D85DE8];
 }

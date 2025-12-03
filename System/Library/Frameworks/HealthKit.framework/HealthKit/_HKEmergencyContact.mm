@@ -1,13 +1,13 @@
 @interface _HKEmergencyContact
-+ (id)emergencyContactUsingSimCardNumberWithContact:(id)a3 property:(id)a4;
-+ (id)emergencyContactWithContact:(id)a3 property:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSyncedContact:(id)a3;
++ (id)emergencyContactUsingSimCardNumberWithContact:(id)contact property:(id)property;
++ (id)emergencyContactWithContact:(id)contact property:(id)property;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSyncedContact:(id)contact;
 - (_HKEmergencyContact)init;
-- (_HKEmergencyContact)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_HKEmergencyContact)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HKEmergencyContact
@@ -33,59 +33,59 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(_HKEmergencyContact *)self name];
-  v5 = [(_HKEmergencyContact *)self phoneNumber];
-  v6 = [v3 stringWithFormat:@"[%@]:%@", v4, v5];
+  name = [(_HKEmergencyContact *)self name];
+  phoneNumber = [(_HKEmergencyContact *)self phoneNumber];
+  v6 = [v3 stringWithFormat:@"[%@]:%@", name, phoneNumber];
 
   return v6;
 }
 
-- (_HKEmergencyContact)initWithCoder:(id)a3
+- (_HKEmergencyContact)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_HKEmergencyContact *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HKEmergencyContactNameKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HKEmergencyContactNameKey"];
     [(_HKEmergencyContact *)v5 setName:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HKEmergencyContactPhoneNumberKey"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HKEmergencyContactPhoneNumberKey"];
     [(_HKEmergencyContact *)v5 setPhoneNumber:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HKEmergencyContactRelationshipKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HKEmergencyContactRelationshipKey"];
     [(_HKEmergencyContact *)v5 setRelationship:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HKEmergencyContactNameRecordIDKey"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HKEmergencyContactNameRecordIDKey"];
     [(_HKEmergencyContact *)v5 setNameRecordID:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HKEmergencyContactPhoneNumberPropertyIDKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HKEmergencyContactPhoneNumberPropertyIDKey"];
     [(_HKEmergencyContact *)v5 setPhoneNumberPropertyID:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HKEmergencyContactNameContactIdentifierKey"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HKEmergencyContactNameContactIdentifierKey"];
     [(_HKEmergencyContact *)v5 setNameContactIdentifier:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HKEmergencyContactPhoneNumberContactIdentifierKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HKEmergencyContactPhoneNumberContactIdentifierKey"];
     [(_HKEmergencyContact *)v5 setPhoneNumberContactIdentifier:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HKEmergencyContactPhoneNumberLabelKey"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HKEmergencyContactPhoneNumberLabelKey"];
     [(_HKEmergencyContact *)v5 setPhoneNumberLabel:v13];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(_HKEmergencyContact *)self name];
-    v8 = [v6 name];
-    if (v7 != v8)
+    name = [(_HKEmergencyContact *)self name];
+    name2 = [equalCopy name];
+    if (name != name2)
     {
-      v3 = [v6 name];
-      if (!v3)
+      name3 = [equalCopy name];
+      if (!name3)
       {
         v11 = 0;
 LABEL_99:
@@ -93,9 +93,9 @@ LABEL_99:
         goto LABEL_100;
       }
 
-      v9 = [(_HKEmergencyContact *)self name];
-      v10 = [v6 name];
-      if (![v9 isEqualToString:v10])
+      name4 = [(_HKEmergencyContact *)self name];
+      name5 = [equalCopy name];
+      if (![name4 isEqualToString:name5])
       {
         v11 = 0;
 LABEL_45:
@@ -103,31 +103,31 @@ LABEL_45:
         goto LABEL_99;
       }
 
-      v88 = v10;
-      v89 = v9;
+      v88 = name5;
+      v89 = name4;
     }
 
-    v12 = [(_HKEmergencyContact *)self phoneNumber];
-    v13 = [v6 phoneNumber];
-    if (v12 == v13)
+    phoneNumber = [(_HKEmergencyContact *)self phoneNumber];
+    phoneNumber2 = [equalCopy phoneNumber];
+    if (phoneNumber == phoneNumber2)
     {
       v84 = 0;
     }
 
     else
     {
-      v14 = [v6 phoneNumber];
-      if (!v14)
+      phoneNumber3 = [equalCopy phoneNumber];
+      if (!phoneNumber3)
       {
 
         v11 = 0;
         goto LABEL_97;
       }
 
-      v15 = v14;
-      v4 = [(_HKEmergencyContact *)self phoneNumber];
-      v87 = [v6 phoneNumber];
-      if (![v4 isEqualToString:?])
+      v15 = phoneNumber3;
+      phoneNumber4 = [(_HKEmergencyContact *)self phoneNumber];
+      phoneNumber5 = [equalCopy phoneNumber];
+      if (![phoneNumber4 isEqualToString:?])
       {
         v11 = 0;
 LABEL_43:
@@ -135,22 +135,22 @@ LABEL_43:
         goto LABEL_44;
       }
 
-      v84 = v12 != v13;
+      v84 = phoneNumber != phoneNumber2;
       v82 = v15;
     }
 
-    v16 = [(_HKEmergencyContact *)self relationship];
-    [v6 relationship];
-    v91 = v90 = v16;
-    v17 = v16 != v91;
-    if (v16 != v91)
+    relationship = [(_HKEmergencyContact *)self relationship];
+    [equalCopy relationship];
+    v91 = v90 = relationship;
+    v17 = relationship != v91;
+    if (relationship != v91)
     {
-      v18 = [v6 relationship];
-      if (!v18)
+      relationship2 = [equalCopy relationship];
+      if (!relationship2)
       {
 
         v11 = 0;
-        if (v12 != v13)
+        if (phoneNumber != phoneNumber2)
         {
           LOBYTE(v26) = 1;
           v27 = v82;
@@ -168,13 +168,13 @@ LABEL_102:
         goto LABEL_95;
       }
 
-      v78 = v18;
-      v19 = [(_HKEmergencyContact *)self relationship];
-      [v6 relationship];
-      v79 = v80 = v19;
-      if (![v19 isEqualToString:?])
+      v78 = relationship2;
+      relationship3 = [(_HKEmergencyContact *)self relationship];
+      [equalCopy relationship];
+      v79 = v80 = relationship3;
+      if (![relationship3 isEqualToString:?])
       {
-        v86 = v12;
+        v86 = phoneNumber;
         v11 = 0;
         v21 = v90;
         v20 = v91;
@@ -182,19 +182,19 @@ LABEL_102:
       }
     }
 
-    v22 = [(_HKEmergencyContact *)self nameRecordID];
-    v83 = [v6 nameRecordID];
-    v75 = v22 != v83;
-    v86 = v12;
-    if (v22 == v83)
+    nameRecordID = [(_HKEmergencyContact *)self nameRecordID];
+    nameRecordID2 = [equalCopy nameRecordID];
+    v75 = nameRecordID != nameRecordID2;
+    v86 = phoneNumber;
+    if (nameRecordID == nameRecordID2)
     {
-      v74 = v4;
+      v74 = phoneNumber4;
     }
 
     else
     {
-      v23 = [v6 nameRecordID];
-      if (!v23)
+      nameRecordID3 = [equalCopy nameRecordID];
+      if (!nameRecordID3)
       {
 
         v11 = 0;
@@ -211,30 +211,30 @@ LABEL_102:
       }
 
       v24 = v17;
-      v70 = v23;
-      v25 = [(_HKEmergencyContact *)self nameRecordID];
-      v72 = [v6 nameRecordID];
-      v73 = v25;
-      if (![v25 isEqual:?])
+      v70 = nameRecordID3;
+      nameRecordID4 = [(_HKEmergencyContact *)self nameRecordID];
+      nameRecordID5 = [equalCopy nameRecordID];
+      v73 = nameRecordID4;
+      if (![nameRecordID4 isEqual:?])
       {
-        v81 = v22;
+        v81 = nameRecordID;
         v11 = 0;
         v21 = v90;
         v20 = v91;
         goto LABEL_41;
       }
 
-      v74 = v4;
+      v74 = phoneNumber4;
       v17 = v24;
-      v12 = v86;
+      phoneNumber = v86;
     }
 
-    v28 = [(_HKEmergencyContact *)self phoneNumberPropertyID];
-    [v6 phoneNumberPropertyID];
-    v77 = v76 = v28;
-    v29 = v28 == v77;
-    v30 = v28 != v77;
-    v81 = v22;
+    phoneNumberPropertyID = [(_HKEmergencyContact *)self phoneNumberPropertyID];
+    [equalCopy phoneNumberPropertyID];
+    v77 = v76 = phoneNumberPropertyID;
+    v29 = phoneNumberPropertyID == v77;
+    v30 = phoneNumberPropertyID != v77;
+    v81 = nameRecordID;
     if (v29)
     {
       v66 = v30;
@@ -242,17 +242,17 @@ LABEL_102:
 
     else
     {
-      v31 = [v6 phoneNumberPropertyID];
-      if (!v31)
+      phoneNumberPropertyID2 = [equalCopy phoneNumberPropertyID];
+      if (!phoneNumberPropertyID2)
       {
         v71 = v17;
 
-        v40 = v22;
+        v40 = nameRecordID;
         v11 = 0;
-        v4 = v74;
+        phoneNumber4 = v74;
         v21 = v90;
         v20 = v91;
-        if (v40 != v83)
+        if (v40 != nameRecordID2)
         {
           LOBYTE(v41) = 1;
           goto LABEL_88;
@@ -285,10 +285,10 @@ LABEL_92:
 
 LABEL_93:
 
-          v12 = v86;
+          phoneNumber = v86;
           v27 = v82;
           v26 = v84;
-          if (v86 != v13)
+          if (v86 != phoneNumber2)
           {
 LABEL_94:
 
@@ -297,7 +297,7 @@ LABEL_94:
 LABEL_96:
 
 LABEL_97:
-              if (v7 != v8)
+              if (name != name2)
               {
 
                 goto LABEL_99;
@@ -320,11 +320,11 @@ LABEL_89:
       }
 
       v66 = v30;
-      v63 = v31;
-      v32 = [(_HKEmergencyContact *)self phoneNumberPropertyID];
-      v64 = [v6 phoneNumberPropertyID];
-      v65 = v32;
-      if (![v32 isEqual:?])
+      v63 = phoneNumberPropertyID2;
+      phoneNumberPropertyID3 = [(_HKEmergencyContact *)self phoneNumberPropertyID];
+      phoneNumberPropertyID4 = [equalCopy phoneNumberPropertyID];
+      v65 = phoneNumberPropertyID3;
+      if (![phoneNumberPropertyID3 isEqual:?])
       {
         v71 = v17;
         v11 = 0;
@@ -335,14 +335,14 @@ LABEL_89:
       }
     }
 
-    v35 = [(_HKEmergencyContact *)self nameContactIdentifier];
-    v68 = [v6 nameContactIdentifier];
-    v69 = v35;
-    if (v35 != v68)
+    nameContactIdentifier = [(_HKEmergencyContact *)self nameContactIdentifier];
+    nameContactIdentifier2 = [equalCopy nameContactIdentifier];
+    v69 = nameContactIdentifier;
+    if (nameContactIdentifier != nameContactIdentifier2)
     {
-      v36 = [v6 nameContactIdentifier];
+      nameContactIdentifier3 = [equalCopy nameContactIdentifier];
       v37 = v66;
-      if (!v36)
+      if (!nameContactIdentifier3)
       {
         v71 = v17;
 
@@ -358,17 +358,17 @@ LABEL_89:
         goto LABEL_85;
       }
 
-      v61 = v36;
-      v38 = [(_HKEmergencyContact *)self nameContactIdentifier];
-      v59 = [v6 nameContactIdentifier];
-      v60 = v38;
-      if (![v38 isEqualToString:?])
+      v61 = nameContactIdentifier3;
+      nameContactIdentifier4 = [(_HKEmergencyContact *)self nameContactIdentifier];
+      nameContactIdentifier5 = [equalCopy nameContactIdentifier];
+      v60 = nameContactIdentifier4;
+      if (![nameContactIdentifier4 isEqualToString:?])
       {
         v71 = v17;
         v11 = 0;
         v21 = v90;
         v20 = v91;
-        v39 = v68;
+        v39 = nameContactIdentifier2;
 LABEL_80:
 
         if (v76 != v77)
@@ -399,36 +399,36 @@ LABEL_85:
       }
     }
 
-    v42 = [(_HKEmergencyContact *)self phoneNumberContactIdentifier];
-    v67 = [v6 phoneNumberContactIdentifier];
-    v62 = v42;
-    if (v42 == v67)
+    phoneNumberContactIdentifier = [(_HKEmergencyContact *)self phoneNumberContactIdentifier];
+    phoneNumberContactIdentifier2 = [equalCopy phoneNumberContactIdentifier];
+    v62 = phoneNumberContactIdentifier;
+    if (phoneNumberContactIdentifier == phoneNumberContactIdentifier2)
     {
       [(_HKEmergencyContact *)self phoneNumberLabel];
     }
 
     else
     {
-      v43 = [v6 phoneNumberContactIdentifier];
-      if (!v43)
+      phoneNumberContactIdentifier3 = [equalCopy phoneNumberContactIdentifier];
+      if (!phoneNumberContactIdentifier3)
       {
         v71 = v17;
         v11 = 0;
         goto LABEL_79;
       }
 
-      v58 = v43;
-      v44 = [(_HKEmergencyContact *)self phoneNumberContactIdentifier];
-      v45 = [v6 phoneNumberContactIdentifier];
-      v57 = v44;
-      v46 = v44;
-      v47 = v45;
-      if (([v46 isEqualToString:v45] & 1) == 0)
+      v58 = phoneNumberContactIdentifier3;
+      phoneNumberContactIdentifier4 = [(_HKEmergencyContact *)self phoneNumberContactIdentifier];
+      phoneNumberContactIdentifier5 = [equalCopy phoneNumberContactIdentifier];
+      v57 = phoneNumberContactIdentifier4;
+      v46 = phoneNumberContactIdentifier4;
+      v47 = phoneNumberContactIdentifier5;
+      if (([v46 isEqualToString:phoneNumberContactIdentifier5] & 1) == 0)
       {
 
         v11 = 0;
 LABEL_66:
-        if (v69 != v68)
+        if (v69 != nameContactIdentifier2)
         {
         }
 
@@ -436,7 +436,7 @@ LABEL_66:
         {
         }
 
-        if (v81 != v83)
+        if (v81 != nameRecordID2)
         {
         }
 
@@ -444,15 +444,15 @@ LABEL_66:
         {
         }
 
-        if (v12 != v13)
+        if (phoneNumber != phoneNumber2)
         {
         }
 
 LABEL_44:
 
-        v10 = v88;
-        v9 = v89;
-        if (v7 != v8)
+        name5 = v88;
+        name4 = v89;
+        if (name != name2)
         {
           goto LABEL_45;
         }
@@ -465,25 +465,25 @@ LABEL_100:
       [(_HKEmergencyContact *)self phoneNumberLabel];
     }
     v48 = ;
-    v49 = [v6 phoneNumberLabel];
-    v11 = v48 == v49;
-    if (v48 == v49)
+    phoneNumberLabel = [equalCopy phoneNumberLabel];
+    v11 = v48 == phoneNumberLabel;
+    if (v48 == phoneNumberLabel)
     {
       v71 = v17;
     }
 
     else
     {
-      v56 = v49;
-      v50 = [v6 phoneNumberLabel];
-      if (v50)
+      v56 = phoneNumberLabel;
+      phoneNumberLabel2 = [equalCopy phoneNumberLabel];
+      if (phoneNumberLabel2)
       {
-        v85 = v50;
-        v51 = [(_HKEmergencyContact *)self phoneNumberLabel];
-        v52 = [v6 phoneNumberLabel];
-        v11 = [v51 isEqualToString:v52];
+        v85 = phoneNumberLabel2;
+        phoneNumberLabel3 = [(_HKEmergencyContact *)self phoneNumberLabel];
+        phoneNumberLabel4 = [equalCopy phoneNumberLabel];
+        v11 = [phoneNumberLabel3 isEqualToString:phoneNumberLabel4];
 
-        if (v62 != v67)
+        if (v62 != phoneNumberContactIdentifier2)
         {
         }
 
@@ -493,13 +493,13 @@ LABEL_100:
       v71 = v17;
     }
 
-    if (v62 == v67)
+    if (v62 == phoneNumberContactIdentifier2)
     {
 
-      v39 = v68;
+      v39 = nameContactIdentifier2;
       v21 = v90;
       v20 = v91;
-      if (v69 != v68)
+      if (v69 != nameContactIdentifier2)
       {
         goto LABEL_80;
       }
@@ -511,8 +511,8 @@ LABEL_79:
     v21 = v90;
     v20 = v91;
 
-    v39 = v68;
-    if (v69 != v68)
+    v39 = nameContactIdentifier2;
+    if (v69 != nameContactIdentifier2)
     {
       goto LABEL_80;
     }
@@ -524,8 +524,8 @@ LABEL_109:
     {
 LABEL_31:
 
-      v4 = v74;
-      if (v81 == v83)
+      phoneNumber4 = v74;
+      if (v81 == nameRecordID2)
       {
         goto LABEL_90;
       }
@@ -536,9 +536,9 @@ LABEL_41:
       {
 LABEL_42:
 
-        v12 = v86;
+        phoneNumber = v86;
         v15 = v82;
-        if (v86 != v13)
+        if (v86 != phoneNumber2)
         {
           goto LABEL_43;
         }
@@ -551,9 +551,9 @@ LABEL_42:
 
 LABEL_87:
 
-    v4 = v74;
+    phoneNumber4 = v74;
     v41 = v75;
-    if (v81 != v83)
+    if (v81 != nameRecordID2)
     {
 LABEL_88:
 
@@ -574,24 +574,24 @@ LABEL_101:
   return v11;
 }
 
-- (BOOL)isEqualToSyncedContact:(id)a3
+- (BOOL)isEqualToSyncedContact:(id)contact
 {
-  v8 = a3;
-  v9 = [(_HKEmergencyContact *)self name];
-  v10 = [v8 name];
-  if (v9 != v10)
+  contactCopy = contact;
+  name = [(_HKEmergencyContact *)self name];
+  name2 = [contactCopy name];
+  if (name != name2)
   {
-    v11 = [v8 name];
-    if (!v11)
+    name3 = [contactCopy name];
+    if (!name3)
     {
       v12 = 0;
       goto LABEL_39;
     }
 
-    v5 = v11;
-    v3 = [(_HKEmergencyContact *)self name];
-    v4 = [v8 name];
-    if (![v3 isEqualToString:v4])
+    v5 = name3;
+    name4 = [(_HKEmergencyContact *)self name];
+    name5 = [contactCopy name];
+    if (![name4 isEqualToString:name5])
     {
       v12 = 0;
 LABEL_38:
@@ -600,17 +600,17 @@ LABEL_38:
     }
   }
 
-  v13 = [(_HKEmergencyContact *)self phoneNumber];
-  v14 = [v8 phoneNumber];
-  if (v13 == v14)
+  phoneNumber = [(_HKEmergencyContact *)self phoneNumber];
+  phoneNumber2 = [contactCopy phoneNumber];
+  if (phoneNumber == phoneNumber2)
   {
-    v43 = v13;
+    v43 = phoneNumber;
   }
 
   else
   {
-    v15 = [v8 phoneNumber];
-    if (!v15)
+    phoneNumber3 = [contactCopy phoneNumber];
+    if (!phoneNumber3)
     {
       v12 = 0;
 LABEL_31:
@@ -618,20 +618,20 @@ LABEL_31:
       goto LABEL_37;
     }
 
-    v44 = v4;
-    v16 = v3;
+    v44 = name5;
+    v16 = name4;
     v17 = v5;
-    v41 = v15;
-    v6 = [(_HKEmergencyContact *)self phoneNumber];
-    v18 = [v8 phoneNumber];
-    if (([v6 isEqualToString:v18] & 1) == 0)
+    v41 = phoneNumber3;
+    phoneNumber4 = [(_HKEmergencyContact *)self phoneNumber];
+    phoneNumber5 = [contactCopy phoneNumber];
+    if (([phoneNumber4 isEqualToString:phoneNumber5] & 1) == 0)
     {
 
       v12 = 0;
       v5 = v17;
-      v3 = v16;
-      v4 = v44;
-      if (v9 == v10)
+      name4 = v16;
+      name5 = v44;
+      if (name == name2)
       {
         goto LABEL_39;
       }
@@ -639,45 +639,45 @@ LABEL_31:
       goto LABEL_38;
     }
 
-    v37 = v18;
-    v43 = v13;
+    v37 = phoneNumber5;
+    v43 = phoneNumber;
     v5 = v17;
-    v3 = v16;
-    v4 = v44;
+    name4 = v16;
+    name5 = v44;
   }
 
-  v19 = [(_HKEmergencyContact *)self phoneNumberLabel];
-  v46 = [v8 phoneNumberLabel];
-  v42 = v19;
-  v40 = v6;
-  if (v19 == v46)
+  phoneNumberLabel = [(_HKEmergencyContact *)self phoneNumberLabel];
+  phoneNumberLabel2 = [contactCopy phoneNumberLabel];
+  v42 = phoneNumberLabel;
+  v40 = phoneNumber4;
+  if (phoneNumberLabel == phoneNumberLabel2)
   {
-    v38 = v3;
-    v39 = v14;
-    v45 = v4;
+    v38 = name4;
+    v39 = phoneNumber2;
+    v45 = name5;
     [(_HKEmergencyContact *)self relationship];
   }
 
   else
   {
-    v20 = [v8 phoneNumberLabel];
-    if (!v20)
+    phoneNumberLabel3 = [contactCopy phoneNumberLabel];
+    if (!phoneNumberLabel3)
     {
       v12 = 0;
-      v30 = v19;
+      v30 = phoneNumberLabel;
       goto LABEL_27;
     }
 
-    v39 = v14;
-    v36 = v20;
-    v21 = [(_HKEmergencyContact *)self phoneNumberLabel];
-    v14 = [v8 phoneNumberLabel];
-    if (([v21 isEqualToString:v14] & 1) == 0)
+    v39 = phoneNumber2;
+    v36 = phoneNumberLabel3;
+    phoneNumberLabel4 = [(_HKEmergencyContact *)self phoneNumberLabel];
+    phoneNumber2 = [contactCopy phoneNumberLabel];
+    if (([phoneNumberLabel4 isEqualToString:phoneNumber2] & 1) == 0)
     {
 
       v12 = 0;
-      v13 = v43;
-      v14 = v39;
+      phoneNumber = v43;
+      phoneNumber2 = v39;
       v29 = v43 == v39;
 LABEL_29:
       if (!v29)
@@ -687,26 +687,26 @@ LABEL_29:
       goto LABEL_31;
     }
 
-    v45 = v4;
-    v38 = v3;
+    v45 = name5;
+    v38 = name4;
     [(_HKEmergencyContact *)self relationship];
   }
   v22 = ;
-  v23 = [v8 relationship];
-  v24 = v23;
-  v12 = v22 == v23;
-  if (v22 == v23)
+  relationship = [contactCopy relationship];
+  v24 = relationship;
+  v12 = v22 == relationship;
+  if (v22 == relationship)
   {
 
     v30 = v42;
-    if (v42 == v46)
+    if (v42 == phoneNumberLabel2)
     {
 LABEL_33:
 
       v31 = v43;
-      v4 = v45;
-      v3 = v38;
-      v14 = v39;
+      name5 = v45;
+      name4 = v38;
+      phoneNumber2 = v39;
       goto LABEL_34;
     }
   }
@@ -714,47 +714,47 @@ LABEL_33:
   else
   {
     v35 = v5;
-    v25 = [v8 relationship];
-    if (v25)
+    relationship2 = [contactCopy relationship];
+    if (relationship2)
     {
-      v26 = v25;
-      v27 = [(_HKEmergencyContact *)self relationship];
-      v28 = [v8 relationship];
-      v12 = [v27 isEqualToString:v28];
+      v26 = relationship2;
+      relationship3 = [(_HKEmergencyContact *)self relationship];
+      relationship4 = [contactCopy relationship];
+      v12 = [relationship3 isEqualToString:relationship4];
 
-      if (v42 != v46)
+      if (v42 != phoneNumberLabel2)
       {
       }
 
-      v13 = v43;
-      v4 = v45;
-      v3 = v38;
-      v14 = v39;
+      phoneNumber = v43;
+      name5 = v45;
+      name4 = v38;
+      phoneNumber2 = v39;
       v29 = v43 == v39;
       v5 = v35;
       goto LABEL_29;
     }
 
     v30 = v42;
-    if (v42 == v46)
+    if (v42 == phoneNumberLabel2)
     {
       goto LABEL_33;
     }
   }
 
-  v3 = v38;
-  v14 = v39;
-  v4 = v45;
+  name4 = v38;
+  phoneNumber2 = v39;
+  name5 = v45;
 LABEL_27:
 
   v31 = v43;
 LABEL_34:
-  if (v31 != v14)
+  if (v31 != phoneNumber2)
   {
   }
 
 LABEL_37:
-  if (v9 != v10)
+  if (name != name2)
   {
     goto LABEL_38;
   }
@@ -764,90 +764,90 @@ LABEL_39:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_HKEmergencyContact *)self name];
-  [v4 encodeObject:v5 forKey:@"HKEmergencyContactNameKey"];
+  coderCopy = coder;
+  name = [(_HKEmergencyContact *)self name];
+  [coderCopy encodeObject:name forKey:@"HKEmergencyContactNameKey"];
 
-  v6 = [(_HKEmergencyContact *)self phoneNumber];
-  [v4 encodeObject:v6 forKey:@"HKEmergencyContactPhoneNumberKey"];
+  phoneNumber = [(_HKEmergencyContact *)self phoneNumber];
+  [coderCopy encodeObject:phoneNumber forKey:@"HKEmergencyContactPhoneNumberKey"];
 
-  v7 = [(_HKEmergencyContact *)self relationship];
-  [v4 encodeObject:v7 forKey:@"HKEmergencyContactRelationshipKey"];
+  relationship = [(_HKEmergencyContact *)self relationship];
+  [coderCopy encodeObject:relationship forKey:@"HKEmergencyContactRelationshipKey"];
 
-  v8 = [(_HKEmergencyContact *)self nameRecordID];
-  [v4 encodeObject:v8 forKey:@"HKEmergencyContactNameRecordIDKey"];
+  nameRecordID = [(_HKEmergencyContact *)self nameRecordID];
+  [coderCopy encodeObject:nameRecordID forKey:@"HKEmergencyContactNameRecordIDKey"];
 
-  v9 = [(_HKEmergencyContact *)self phoneNumberPropertyID];
-  [v4 encodeObject:v9 forKey:@"HKEmergencyContactPhoneNumberPropertyIDKey"];
+  phoneNumberPropertyID = [(_HKEmergencyContact *)self phoneNumberPropertyID];
+  [coderCopy encodeObject:phoneNumberPropertyID forKey:@"HKEmergencyContactPhoneNumberPropertyIDKey"];
 
-  v10 = [(_HKEmergencyContact *)self nameContactIdentifier];
-  [v4 encodeObject:v10 forKey:@"HKEmergencyContactNameContactIdentifierKey"];
+  nameContactIdentifier = [(_HKEmergencyContact *)self nameContactIdentifier];
+  [coderCopy encodeObject:nameContactIdentifier forKey:@"HKEmergencyContactNameContactIdentifierKey"];
 
-  v11 = [(_HKEmergencyContact *)self phoneNumberContactIdentifier];
-  [v4 encodeObject:v11 forKey:@"HKEmergencyContactPhoneNumberContactIdentifierKey"];
+  phoneNumberContactIdentifier = [(_HKEmergencyContact *)self phoneNumberContactIdentifier];
+  [coderCopy encodeObject:phoneNumberContactIdentifier forKey:@"HKEmergencyContactPhoneNumberContactIdentifierKey"];
 
-  v12 = [(_HKEmergencyContact *)self phoneNumberLabel];
-  [v4 encodeObject:v12 forKey:@"HKEmergencyContactPhoneNumberLabelKey"];
+  phoneNumberLabel = [(_HKEmergencyContact *)self phoneNumberLabel];
+  [coderCopy encodeObject:phoneNumberLabel forKey:@"HKEmergencyContactPhoneNumberLabelKey"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_HKEmergencyContact allocWithZone:?]];
-  v5 = [(_HKEmergencyContact *)self name];
-  v6 = [v5 copy];
+  name = [(_HKEmergencyContact *)self name];
+  v6 = [name copy];
   [(_HKEmergencyContact *)v4 setName:v6];
 
-  v7 = [(_HKEmergencyContact *)self phoneNumber];
-  v8 = [v7 copy];
+  phoneNumber = [(_HKEmergencyContact *)self phoneNumber];
+  v8 = [phoneNumber copy];
   [(_HKEmergencyContact *)v4 setPhoneNumber:v8];
 
-  v9 = [(_HKEmergencyContact *)self relationship];
-  v10 = [v9 copy];
+  relationship = [(_HKEmergencyContact *)self relationship];
+  v10 = [relationship copy];
   [(_HKEmergencyContact *)v4 setRelationship:v10];
 
-  v11 = [(_HKEmergencyContact *)self nameRecordID];
-  v12 = [v11 copy];
+  nameRecordID = [(_HKEmergencyContact *)self nameRecordID];
+  v12 = [nameRecordID copy];
   [(_HKEmergencyContact *)v4 setNameRecordID:v12];
 
-  v13 = [(_HKEmergencyContact *)self phoneNumberPropertyID];
-  v14 = [v13 copy];
+  phoneNumberPropertyID = [(_HKEmergencyContact *)self phoneNumberPropertyID];
+  v14 = [phoneNumberPropertyID copy];
   [(_HKEmergencyContact *)v4 setPhoneNumberPropertyID:v14];
 
-  v15 = [(_HKEmergencyContact *)self nameContactIdentifier];
-  v16 = [v15 copy];
+  nameContactIdentifier = [(_HKEmergencyContact *)self nameContactIdentifier];
+  v16 = [nameContactIdentifier copy];
   [(_HKEmergencyContact *)v4 setNameContactIdentifier:v16];
 
-  v17 = [(_HKEmergencyContact *)self phoneNumberContactIdentifier];
-  v18 = [v17 copy];
+  phoneNumberContactIdentifier = [(_HKEmergencyContact *)self phoneNumberContactIdentifier];
+  v18 = [phoneNumberContactIdentifier copy];
   [(_HKEmergencyContact *)v4 setPhoneNumberContactIdentifier:v18];
 
-  v19 = [(_HKEmergencyContact *)self phoneNumberLabel];
-  v20 = [v19 copy];
+  phoneNumberLabel = [(_HKEmergencyContact *)self phoneNumberLabel];
+  v20 = [phoneNumberLabel copy];
   [(_HKEmergencyContact *)v4 setPhoneNumberLabel:v20];
 
   return v4;
 }
 
-+ (id)emergencyContactWithContact:(id)a3 property:(id)a4
++ (id)emergencyContactWithContact:(id)contact property:(id)property
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  contactCopy = contact;
+  propertyCopy = property;
+  v7 = propertyCopy;
+  if (propertyCopy)
   {
-    v8 = [v6 contact];
+    contact = [propertyCopy contact];
 
-    v5 = v8;
+    contactCopy = contact;
   }
 
   v9 = objc_alloc_init(_HKEmergencyContact);
-  v10 = _HKFormattedMedicalIDNameForContact(v5);
+  v10 = _HKFormattedMedicalIDNameForContact(contactCopy);
   [(_HKEmergencyContact *)v9 setName:v10];
 
-  v11 = [v5 identifier];
-  [(_HKEmergencyContact *)v9 setNameContactIdentifier:v11];
+  identifier = [contactCopy identifier];
+  [(_HKEmergencyContact *)v9 setNameContactIdentifier:identifier];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -855,16 +855,16 @@ LABEL_39:
   v14[3] = &unk_1E73818D0;
   v12 = v9;
   v15 = v12;
-  _HKMedicalIDPhoneNumberForContact(v5, v7, v14);
+  _HKMedicalIDPhoneNumberForContact(contactCopy, v7, v14);
 
   return v12;
 }
 
-+ (id)emergencyContactUsingSimCardNumberWithContact:(id)a3 property:(id)a4
++ (id)emergencyContactUsingSimCardNumberWithContact:(id)contact property:(id)property
 {
-  v5 = a3;
-  v6 = [_HKEmergencyContact emergencyContactWithContact:v5 property:a4];
-  v7 = _HKMedicalIDSimNumberForContact(v5);
+  contactCopy = contact;
+  v6 = [_HKEmergencyContact emergencyContactWithContact:contactCopy property:property];
+  v7 = _HKMedicalIDSimNumberForContact(contactCopy);
 
   if (v7)
   {

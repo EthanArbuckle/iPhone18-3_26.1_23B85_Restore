@@ -1,5 +1,5 @@
 @interface MFContentErrorDocument
-- (MFContentErrorDocument)initWithMimePart:(id)a3;
+- (MFContentErrorDocument)initWithMimePart:(id)part;
 - (NSString)content;
 - (void)dealloc;
 @end
@@ -13,10 +13,10 @@
   [(MFContentErrorDocument *)&v3 dealloc];
 }
 
-- (MFContentErrorDocument)initWithMimePart:(id)a3
+- (MFContentErrorDocument)initWithMimePart:(id)part
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!part)
   {
     [(MFContentErrorDocument *)a2 initWithMimePart:?];
   }
@@ -26,7 +26,7 @@
   v5 = [(MFContentErrorDocument *)&v10 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:MFLookupLocalizedString(@"CANNOT_DECODE_MULTIPART_MESSAGE", @"This message cannot be displayed because of the way it is formatted. Ask the sender to send it again using a different format or email program.\n\n%@/%@", @"Delayed", objc_msgSend(a3, "type"), objc_msgSend(a3, "subtype")];
+    v6 = [MEMORY[0x277CCACA8] stringWithFormat:MFLookupLocalizedString(@"CANNOT_DECODE_MULTIPART_MESSAGE", @"This message cannot be displayed because of the way it is formatted. Ask the sender to send it again using a different format or email program.\n\n%@/%@", @"Delayed", objc_msgSend(part, "type"), objc_msgSend(part, "subtype")];
     v11 = *MEMORY[0x277CCA450];
     v12[0] = v6;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
@@ -39,9 +39,9 @@
 
 - (NSString)content
 {
-  v2 = [(MFContentErrorDocument *)self error];
+  error = [(MFContentErrorDocument *)self error];
 
-  return [(NSError *)v2 localizedDescription];
+  return [(NSError *)error localizedDescription];
 }
 
 @end

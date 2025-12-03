@@ -1,29 +1,29 @@
 @interface SCATRecipeSwitchesController
 - (BOOL)_isForExistingMappingWithMissingSwitch;
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation SCATRecipeSwitchesController
 
 - (BOOL)_isForExistingMappingWithMissingSwitch
 {
-  v3 = [(SCATRecipeSwitchesController *)self recipe];
-  v4 = [v3 mappings];
-  v5 = [(SCATRecipeSwitchesController *)self mapping];
-  v6 = [v4 containsObject:v5];
+  recipe = [(SCATRecipeSwitchesController *)self recipe];
+  mappings = [recipe mappings];
+  mapping = [(SCATRecipeSwitchesController *)self mapping];
+  v6 = [mappings containsObject:mapping];
 
   return v6;
 }
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = *&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v3)
   {
     v32 = OBJC_IVAR___PSListController__specifiers;
-    v4 = [(SCATRecipeSwitchesController *)v2 recipe];
+    recipe = [(SCATRecipeSwitchesController *)selfCopy recipe];
     v36 = AXSwitchRecipeMappingSwitchUUIDs();
 
     v5 = objc_alloc_init(NSMutableArray);
@@ -31,7 +31,7 @@
     v7 = [PSSpecifier groupSpecifierWithName:v6];
 
     [v5 addObject:v7];
-    v8 = [SCATSwitchesController switchSpecifiersForSwitchesWithTarget:v2 get:0];
+    v8 = [SCATSwitchesController switchSpecifiersForSwitchesWithTarget:selfCopy get:0];
     v29 = v8;
     if ([v8 count])
     {
@@ -44,7 +44,7 @@
       [v7 setProperty:v9 forKey:{PSFooterTextGroupKey, v29, v7}];
     }
 
-    v10 = [(SCATRecipeSwitchesController *)v2 _isForExistingMappingWithMissingSwitch];
+    _isForExistingMappingWithMissingSwitch = [(SCATRecipeSwitchesController *)selfCopy _isForExistingMappingWithMissingSwitch];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
@@ -72,34 +72,34 @@
           v17 = v16;
           if (v16)
           {
-            v18 = [v16 uuid];
-            if ([v36 containsObject:v18])
+            uuid = [v16 uuid];
+            if ([v36 containsObject:uuid])
             {
 
               goto LABEL_15;
             }
 
             v19 = v13;
-            v20 = v10;
-            v21 = v2;
-            v22 = [(SCATRecipeSwitchesController *)v2 mapping];
-            v23 = [v22 longPressAction];
-            if (v23)
+            v20 = _isForExistingMappingWithMissingSwitch;
+            v21 = selfCopy;
+            mapping = [(SCATRecipeSwitchesController *)selfCopy mapping];
+            longPressAction = [mapping longPressAction];
+            if (longPressAction)
             {
-              v24 = v23;
-              v25 = [v17 supportsLongPress];
+              v24 = longPressAction;
+              supportsLongPress = [v17 supportsLongPress];
 
-              v2 = v21;
-              v10 = v20;
+              selfCopy = v21;
+              _isForExistingMappingWithMissingSwitch = v20;
               v13 = v19;
               v12 = v33;
-              if ((v25 & 1) == 0)
+              if ((supportsLongPress & 1) == 0)
               {
 LABEL_15:
                 [v15 setProperty:&__kCFBooleanFalse forKey:v34];
               }
 
-              if (!v10)
+              if (!_isForExistingMappingWithMissingSwitch)
               {
                 goto LABEL_18;
               }
@@ -109,10 +109,10 @@ LABEL_17:
               goto LABEL_18;
             }
 
-            v2 = v21;
+            selfCopy = v21;
             v13 = v19;
             v12 = v33;
-            if (v10)
+            if (_isForExistingMappingWithMissingSwitch)
             {
               goto LABEL_17;
             }
@@ -131,39 +131,39 @@ LABEL_18:
       while (v26);
     }
 
-    v27 = *&v2->AXUISettingsBaseListController_opaque[v32];
-    *&v2->AXUISettingsBaseListController_opaque[v32] = obj;
+    v27 = *&selfCopy->AXUISettingsBaseListController_opaque[v32];
+    *&selfCopy->AXUISettingsBaseListController_opaque[v32] = obj;
 
-    v3 = *&v2->AXUISettingsBaseListController_opaque[v32];
+    v3 = *&selfCopy->AXUISettingsBaseListController_opaque[v32];
   }
 
   return v3;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SCATRecipeSwitchesController *)self specifierForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(SCATRecipeSwitchesController *)self specifierForIndexPath:pathCopy];
   v9 = [v8 propertyForKey:PSEnabledKey];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10)
+  if (bOOLValue)
   {
     v11 = [v8 propertyForKey:@"SwitchKey"];
-    v12 = [v11 uuid];
-    v13 = [(SCATRecipeSwitchesController *)self mapping];
-    [v13 setSwitchUUID:v12];
+    uuid = [v11 uuid];
+    mapping = [(SCATRecipeSwitchesController *)self mapping];
+    [mapping setSwitchUUID:uuid];
 
-    v14 = [v11 action];
-    v15 = [(SCATRecipeSwitchesController *)self mapping];
-    [v15 setSwitchOriginalAction:v14];
+    action = [v11 action];
+    mapping2 = [(SCATRecipeSwitchesController *)self mapping];
+    [mapping2 setSwitchOriginalAction:action];
 
     if ([(SCATRecipeSwitchesController *)self _isForExistingMappingWithMissingSwitch])
     {
       v16 = +[AXSettings sharedInstance];
-      v17 = [(SCATRecipeSwitchesController *)self recipe];
-      v18 = [v16 isNewRecipe:v17];
+      recipe = [(SCATRecipeSwitchesController *)self recipe];
+      v18 = [v16 isNewRecipe:recipe];
 
       if (v18)
       {
@@ -171,11 +171,11 @@ LABEL_18:
       }
 
       v19 = +[AXSettings sharedInstance];
-      v20 = [(SCATRecipeSwitchesController *)self recipe];
-      [v19 updateRecipe:v20];
+      recipe2 = [(SCATRecipeSwitchesController *)self recipe];
+      [v19 updateRecipe:recipe2];
 
-      v21 = [(SCATRecipeSwitchesController *)self rootController];
-      v22 = [v21 popViewControllerAnimated:1];
+      rootController = [(SCATRecipeSwitchesController *)self rootController];
+      v22 = [rootController popViewControllerAnimated:1];
 
       completion = self->completion;
       if (completion)
@@ -187,11 +187,11 @@ LABEL_18:
     else
     {
       v24 = objc_alloc_init(SCATRecipeActionsController);
-      v25 = [(SCATRecipeSwitchesController *)self recipe];
-      [(SCATRecipeActionsController *)v24 setRecipe:v25];
+      recipe3 = [(SCATRecipeSwitchesController *)self recipe];
+      [(SCATRecipeActionsController *)v24 setRecipe:recipe3];
 
-      v26 = [(SCATRecipeSwitchesController *)self mapping];
-      [(SCATRecipeActionsController *)v24 setMapping:v26];
+      mapping3 = [(SCATRecipeSwitchesController *)self mapping];
+      [(SCATRecipeActionsController *)v24 setMapping:mapping3];
 
       if (self->completion)
       {
@@ -211,7 +211,7 @@ LABEL_18:
   {
     v27.receiver = self;
     v27.super_class = SCATRecipeSwitchesController;
-    [(SCATRecipeSwitchesController *)&v27 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(SCATRecipeSwitchesController *)&v27 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 }
 

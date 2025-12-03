@@ -1,5 +1,5 @@
 @interface FBSSceneSettingsCore
-+ (id)descriptionOfValue:(id)a3 forSetting:(id)a4;
++ (id)descriptionOfValue:(id)value forSetting:(id)setting;
 - (BOOL)isClientFuture;
 - (BOOL)isForeground;
 - (BOOL)isOccluded;
@@ -13,17 +13,17 @@
 - (int64_t)interfaceOrientation;
 - (int64_t)interruptionPolicy;
 - (unsigned)jetsamPriority;
-- (void)frame:(CGRect)a3;
-- (void)setActivityMode:(char)a3;
-- (void)setClientFuture:(BOOL)a3;
-- (void)setDisplayConfiguration:(id)a3;
-- (void)setForeground:(BOOL)a3;
-- (void)setInterfaceOrientation:(int64_t)a3;
-- (void)setInterruptionPolicy:(int64_t)a3;
-- (void)setJetsamPriority:(unsigned __int16)a3;
-- (void)setOccluded:(BOOL)a3;
-- (void)setPrefersProcessTaskSuspensionWhileSceneForeground:(BOOL)a3;
-- (void)setPropagatedSettings:(id)a3;
+- (void)frame:(CGRect)frame;
+- (void)setActivityMode:(char)mode;
+- (void)setClientFuture:(BOOL)future;
+- (void)setDisplayConfiguration:(id)configuration;
+- (void)setForeground:(BOOL)foreground;
+- (void)setInterfaceOrientation:(int64_t)orientation;
+- (void)setInterruptionPolicy:(int64_t)policy;
+- (void)setJetsamPriority:(unsigned __int16)priority;
+- (void)setOccluded:(BOOL)occluded;
+- (void)setPrefersProcessTaskSuspensionWhileSceneForeground:(BOOL)foreground;
+- (void)setPropagatedSettings:(id)settings;
 @end
 
 @implementation FBSSceneSettingsCore
@@ -38,9 +38,9 @@
 - (BOOL)isForeground
 {
   v2 = [(FBSSceneSettingsCore *)self valueForProperty:a2 expectedClass:objc_opt_class()];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (CGRect)frame
@@ -68,26 +68,26 @@
 - (int64_t)interfaceOrientation
 {
   v2 = [(FBSSceneSettingsCore *)self valueForProperty:a2 expectedClass:objc_opt_class()];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (char)activityMode
 {
   v2 = [(FBSSceneSettingsCore *)self valueForProperty:a2 expectedClass:objc_opt_class()];
-  v3 = [v2 unsignedCharValue];
+  unsignedCharValue = [v2 unsignedCharValue];
 
-  IsValid = FBSSceneActivityModeIsValid(v3);
-  v5 = 0xF6ECCEu >> (8 * (v3 + 3));
-  if (v3 < 0xFD)
+  IsValid = FBSSceneActivityModeIsValid(unsignedCharValue);
+  v5 = 0xF6ECCEu >> (8 * (unsignedCharValue + 3));
+  if (unsignedCharValue < 0xFD)
   {
     LOBYTE(v5) = 0;
   }
 
   if (IsValid)
   {
-    LOBYTE(v5) = v3;
+    LOBYTE(v5) = unsignedCharValue;
   }
 
   return v5;
@@ -119,41 +119,41 @@
 - (unsigned)jetsamPriority
 {
   v2 = [(FBSSceneSettingsCore *)self valueForProperty:a2 expectedClass:objc_opt_class()];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)prefersProcessTaskSuspensionWhileSceneForeground
 {
   v2 = [(FBSSceneSettingsCore *)self valueForProperty:a2 expectedClass:objc_opt_class()];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isClientFuture
 {
   v2 = [(FBSSceneSettingsCore *)self valueForProperty:a2 expectedClass:objc_opt_class()];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isOccluded
 {
   v2 = [(FBSSceneSettingsCore *)self valueForProperty:a2 expectedClass:objc_opt_class()];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (int64_t)interruptionPolicy
 {
   v2 = [(FBSSceneSettingsCore *)self valueForProperty:a2 expectedClass:objc_opt_class()];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (double)level
@@ -165,48 +165,48 @@
   return v4;
 }
 
-+ (id)descriptionOfValue:(id)a3 forSetting:(id)a4
++ (id)descriptionOfValue:(id)value forSetting:(id)setting
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 matchesProperty:sel_activityMode])
+  valueCopy = value;
+  settingCopy = setting;
+  if ([settingCopy matchesProperty:sel_activityMode])
   {
-    v8 = [v6 integerValue];
+    integerValue = [valueCopy integerValue];
     v9 = MEMORY[0x1E696AEC0];
-    v10 = NSStringFromFBSSceneActivityMode(v8);
-    [v9 stringWithFormat:@"%@ (%d)", v10, v8];
+    allKeys = NSStringFromFBSSceneActivityMode(integerValue);
+    [v9 stringWithFormat:@"%@ (%d)", allKeys, integerValue];
     v11 = LABEL_3:;
 LABEL_4:
 
     goto LABEL_10;
   }
 
-  if ([v7 matchesProperty:sel_jetsamPriority])
+  if ([settingCopy matchesProperty:sel_jetsamPriority])
   {
-    v12 = NSStringFromFBSSceneJetsamPriority([v6 integerValue]);
+    v12 = NSStringFromFBSSceneJetsamPriority([valueCopy integerValue]);
   }
 
   else
   {
-    if ([v7 matchesProperty:sel_interfaceOrientation])
+    if ([settingCopy matchesProperty:sel_interfaceOrientation])
     {
-      [v6 integerValue];
+      [valueCopy integerValue];
       BSInterfaceOrientationDescription();
     }
 
-    if ([v7 matchesProperty:sel_interruptionPolicy])
+    if ([settingCopy matchesProperty:sel_interruptionPolicy])
     {
-      v14 = [v6 integerValue];
+      integerValue2 = [valueCopy integerValue];
       v15 = MEMORY[0x1E696AEC0];
-      v10 = NSStringFromFBSSceneInterruptionPolicy(v14);
-      [v15 stringWithFormat:@"%@ (%ld)", v10, v14];
+      allKeys = NSStringFromFBSSceneInterruptionPolicy(integerValue2);
+      [v15 stringWithFormat:@"%@ (%ld)", allKeys, integerValue2];
       goto LABEL_3;
     }
 
-    if ([v7 matchesProperty:sel_propagatedSettings])
+    if ([settingCopy matchesProperty:sel_propagatedSettings])
     {
       v16 = objc_opt_class();
-      v17 = v6;
+      v17 = valueCopy;
       if (v16)
       {
         if (objc_opt_isKindOfClass())
@@ -227,17 +227,17 @@ LABEL_4:
 
       v19 = v18;
 
-      v10 = [v19 allKeys];
+      allKeys = [v19 allKeys];
 
-      v20 = [v10 allObjects];
-      v11 = [v20 componentsJoinedByString:{@", "}];
+      allObjects = [allKeys allObjects];
+      v11 = [allObjects componentsJoinedByString:{@", "}];
 
       goto LABEL_4;
     }
 
-    v21.receiver = a1;
+    v21.receiver = self;
     v21.super_class = &OBJC_METACLASS___FBSSceneSettingsCore;
-    v12 = objc_msgSendSuper2(&v21, sel_descriptionOfValue_forSetting_, v6, v7);
+    v12 = objc_msgSendSuper2(&v21, sel_descriptionOfValue_forSetting_, valueCopy, settingCopy);
   }
 
   v11 = v12;
@@ -246,46 +246,46 @@ LABEL_10:
   return v11;
 }
 
-- (void)setDisplayConfiguration:(id)a3
+- (void)setDisplayConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (!v5)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     [FBSSceneSettingsCore setDisplayConfiguration:a2];
   }
 
-  v6 = v5;
-  [(FBSSceneSettingsCore *)self setValue:v5 forProperty:a2];
+  v6 = configurationCopy;
+  [(FBSSceneSettingsCore *)self setValue:configurationCopy forProperty:a2];
 }
 
-- (void)setPropagatedSettings:(id)a3
+- (void)setPropagatedSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   [(FBSSceneSettingsCore *)self setValue:0 forProperty:a2];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__FBSSceneSettingsCore_setPropagatedSettings___block_invoke;
   v6[3] = &unk_1E76BDF80;
   v6[4] = self;
-  [v5 enumerateKeyedObjectsWithBlock:v6];
+  [settingsCopy enumerateKeyedObjectsWithBlock:v6];
 }
 
-- (void)setActivityMode:(char)a3
+- (void)setActivityMode:(char)mode
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithChar:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithChar:mode];
   [(FBSSceneSettingsCore *)self setValue:v5 forProperty:a2];
 }
 
-- (void)frame:(CGRect)a3
+- (void)frame:(CGRect)frame
 {
-  v6 = a3;
-  v5 = [MEMORY[0x1E696B098] valueWithBytes:&v6 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
+  frameCopy = frame;
+  v5 = [MEMORY[0x1E696B098] valueWithBytes:&frameCopy objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
   [(FBSSceneSettingsCore *)self setValue:v5 forProperty:a2];
 }
 
-- (void)setInterfaceOrientation:(int64_t)a3
+- (void)setInterfaceOrientation:(int64_t)orientation
 {
-  if (a3)
+  if (orientation)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithInteger:?];
     [(FBSSceneSettingsCore *)self setValue:v5 forProperty:a2];
@@ -298,9 +298,9 @@ LABEL_10:
   }
 }
 
-- (void)setForeground:(BOOL)a3
+- (void)setForeground:(BOOL)foreground
 {
-  if (a3)
+  if (foreground)
   {
     v3 = *MEMORY[0x1E695E4D0];
   }
@@ -313,9 +313,9 @@ LABEL_10:
   [(FBSSceneSettingsCore *)self setValue:v3 forProperty:a2];
 }
 
-- (void)setInterruptionPolicy:(int64_t)a3
+- (void)setInterruptionPolicy:(int64_t)policy
 {
-  if (a3)
+  if (policy)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithInteger:?];
     [(FBSSceneSettingsCore *)self setValue:v5 forProperty:a2];
@@ -328,9 +328,9 @@ LABEL_10:
   }
 }
 
-- (void)setOccluded:(BOOL)a3
+- (void)setOccluded:(BOOL)occluded
 {
-  if (a3)
+  if (occluded)
   {
     v3 = *MEMORY[0x1E695E4D0];
   }
@@ -343,9 +343,9 @@ LABEL_10:
   [(FBSSceneSettingsCore *)self setValue:v3 forProperty:a2];
 }
 
-- (void)setClientFuture:(BOOL)a3
+- (void)setClientFuture:(BOOL)future
 {
-  if (a3)
+  if (future)
   {
     v3 = *MEMORY[0x1E695E4D0];
   }
@@ -358,9 +358,9 @@ LABEL_10:
   [(FBSSceneSettingsCore *)self setValue:v3 forProperty:a2];
 }
 
-- (void)setJetsamPriority:(unsigned __int16)a3
+- (void)setJetsamPriority:(unsigned __int16)priority
 {
-  if (a3)
+  if (priority)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:?];
     [(FBSSceneSettingsCore *)self setValue:v5 forProperty:a2];
@@ -373,9 +373,9 @@ LABEL_10:
   }
 }
 
-- (void)setPrefersProcessTaskSuspensionWhileSceneForeground:(BOOL)a3
+- (void)setPrefersProcessTaskSuspensionWhileSceneForeground:(BOOL)foreground
 {
-  if (a3)
+  if (foreground)
   {
     v3 = *MEMORY[0x1E695E4D0];
   }

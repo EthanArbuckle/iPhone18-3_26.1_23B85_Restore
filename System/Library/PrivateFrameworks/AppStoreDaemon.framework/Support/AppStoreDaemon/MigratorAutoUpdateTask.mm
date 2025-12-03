@@ -1,16 +1,16 @@
 @interface MigratorAutoUpdateTask
-- (MigratorAutoUpdateTask)initWithConfiguration:(id)a3;
+- (MigratorAutoUpdateTask)initWithConfiguration:(id)configuration;
 - (id)copyConfiguration;
 - (void)main;
 @end
 
 @implementation MigratorAutoUpdateTask
 
-- (MigratorAutoUpdateTask)initWithConfiguration:(id)a3
+- (MigratorAutoUpdateTask)initWithConfiguration:(id)configuration
 {
   v4.receiver = self;
   v4.super_class = MigratorAutoUpdateTask;
-  return [(MigratorTask *)&v4 initWithConfiguration:a3];
+  return [(MigratorTask *)&v4 initWithConfiguration:configuration];
 }
 
 - (id)copyConfiguration

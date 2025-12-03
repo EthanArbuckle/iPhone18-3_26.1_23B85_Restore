@@ -1,19 +1,19 @@
 @interface DSP_HAL_Mock_Factory
 - (DSP_HAL_Mock_Factory)init;
 - (double)createProcessor:withHost:;
-- (id)createProcessor:(id)a3 withHost:(id)a4;
+- (id)createProcessor:(id)processor withHost:(id)host;
 - (uint64_t)createProcessor:withHost:;
 - (void)dealloc;
 @end
 
 @implementation DSP_HAL_Mock_Factory
 
-- (id)createProcessor:(id)a3 withHost:(id)a4
+- (id)createProcessor:(id)processor withHost:(id)host
 {
   v9[4] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  hostCopy = host;
   v6 = objc_alloc_init(DSP_HAL_Mock_IOProcessor);
-  [(DSP_HAL_Mock_IOProcessor *)v6 setHostCallbacks:v5];
+  [(DSP_HAL_Mock_IOProcessor *)v6 setHostCallbacks:hostCopy];
   [(DSP_HAL_Mock_IOProcessor *)v6 setFeatureFlag:[(DSP_HAL_Mock_Factory *)self featureFlag]];
   v9[0] = &unk_1F59722A0;
   v9[3] = v9;
@@ -29,7 +29,7 @@
 {
   if (std::type_info::operator==[abi:ne200100](*(a2 + 8), "Z49-[DSP_HAL_Mock_Factory createProcessor:withHost:]E3$_4"))
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -43,26 +43,26 @@
   v2 = gMockTestHooks;
   if (gMockTestHooks)
   {
-    std::__function::__value_func<BOOL ()(applesauce::CF::DictionaryRef const&)>::__value_func[abi:ne200100](a1, gMockTestHooks);
-    std::__function::__value_func<BOOL ()(applesauce::CF::DictionaryRef const&)>::__value_func[abi:ne200100]((a1 + 2), v2 + 32);
-    std::__function::__value_func<void ()(BOOL)>::__value_func[abi:ne200100]((a1 + 4), v2 + 64);
-    std::__function::__value_func<void ()(DSP_HAL_Bypass_Utils::AMCP_IOData_Helper<(DSP_HAL_Bypass_Utils::InterleavePolicy)0> &,applesauce::CF::DictionaryRef const&)>::__value_func[abi:ne200100]((a1 + 6), v2 + 96);
-    std::__function::__value_func<unsigned int ()(AudioObjectPropertyAddress const&,unsigned int)>::__value_func[abi:ne200100]((a1 + 8), v2 + 128);
+    std::__function::__value_func<BOOL ()(applesauce::CF::DictionaryRef const&)>::__value_func[abi:ne200100](self, gMockTestHooks);
+    std::__function::__value_func<BOOL ()(applesauce::CF::DictionaryRef const&)>::__value_func[abi:ne200100]((self + 2), v2 + 32);
+    std::__function::__value_func<void ()(BOOL)>::__value_func[abi:ne200100]((self + 4), v2 + 64);
+    std::__function::__value_func<void ()(DSP_HAL_Bypass_Utils::AMCP_IOData_Helper<(DSP_HAL_Bypass_Utils::InterleavePolicy)0> &,applesauce::CF::DictionaryRef const&)>::__value_func[abi:ne200100]((self + 6), v2 + 96);
+    std::__function::__value_func<unsigned int ()(AudioObjectPropertyAddress const&,unsigned int)>::__value_func[abi:ne200100]((self + 8), v2 + 128);
   }
 
   else
   {
     result = 0.0;
-    a1[8] = 0u;
-    a1[9] = 0u;
-    a1[6] = 0u;
-    a1[7] = 0u;
-    a1[4] = 0u;
-    a1[5] = 0u;
-    a1[2] = 0u;
-    a1[3] = 0u;
-    *a1 = 0u;
-    a1[1] = 0u;
+    self[8] = 0u;
+    self[9] = 0u;
+    self[6] = 0u;
+    self[7] = 0u;
+    self[4] = 0u;
+    self[5] = 0u;
+    self[2] = 0u;
+    self[3] = 0u;
+    *self = 0u;
+    self[1] = 0u;
   }
 
   return result;

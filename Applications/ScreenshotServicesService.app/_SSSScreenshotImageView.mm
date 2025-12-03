@@ -1,57 +1,57 @@
 @interface _SSSScreenshotImageView
 + (id)_createDirectoryForSysdiagnoseIfNecessary;
-+ (void)_saveImageForSysdiagnose:(id)a3;
-- (CGRect)contentsRectForImageAnalysisInteraction:(id)a3;
++ (void)_saveImageForSysdiagnose:(id)sysdiagnose;
+- (CGRect)contentsRectForImageAnalysisInteraction:(id)interaction;
 - (CGSize)intrinsicContentSize;
 - (SSSScreenshotImageViewDelegate)delegate;
 - (UIActivity)visionKitFeedbackActivity;
 - (UIGestureRecognizer)drawingGestureRecognizer;
 - (VKCImageAnalysisInteraction)imageInteraction;
-- (_SSSScreenshotImageView)initWithFrame:(CGRect)a3;
+- (_SSSScreenshotImageView)initWithFrame:(CGRect)frame;
 - (_SSSScreenshotPaperKitImageView)paperKitImageView;
-- (id)_paperKitImageViewOverlayViewController:(id)a3;
-- (void)_paperKitImageDidChangeInView:(id)a3 changeCounter:(unint64_t)a4;
-- (void)_paperKitImageView:(id)a3 didFinishUpdatingImage:(id)a4;
-- (void)_paperKitImageView:(id)a3 startEditingOpacityInAccessoryView:(id)a4;
-- (void)_paperKitImageView:(id)a3 willBeginUpdatingImage:(id)a4;
+- (id)_paperKitImageViewOverlayViewController:(id)controller;
+- (void)_paperKitImageDidChangeInView:(id)view changeCounter:(unint64_t)counter;
+- (void)_paperKitImageView:(id)view didFinishUpdatingImage:(id)image;
+- (void)_paperKitImageView:(id)view startEditingOpacityInAccessoryView:(id)accessoryView;
+- (void)_paperKitImageView:(id)view willBeginUpdatingImage:(id)image;
 - (void)_updateInteractionModeFromAnalysisButtonPress;
 - (void)_updateUI;
 - (void)analyzeCurrentImageIfNecessary;
 - (void)clearImageAnalysisTextSelection;
-- (void)cropControllerDidUpdateScrollView:(id)a3;
-- (void)cropControllerDidZoomInScrollView:(id)a3;
+- (void)cropControllerDidUpdateScrollView:(id)view;
+- (void)cropControllerDidZoomInScrollView:(id)view;
 - (void)deselectAllAnnotations;
 - (void)endedEditing;
 - (void)enterEditing;
-- (void)generateSnapshotImageIfNecessary:(BOOL)a3 withCompletion:(id)a4;
-- (void)imageAnalysisInteraction:(id)a3 highlightSelectedItemsValueDidChange:(BOOL)a4;
-- (void)imageAnalysisInteraction:(id)a3 isDraggingVisualIntelligenceSheetDidChange:(BOOL)a4;
-- (void)isVisualIntelligenceSheetPresentedDidChangeForImageAnalysisInteraction:(id)a3;
+- (void)generateSnapshotImageIfNecessary:(BOOL)necessary withCompletion:(id)completion;
+- (void)imageAnalysisInteraction:(id)interaction highlightSelectedItemsValueDidChange:(BOOL)change;
+- (void)imageAnalysisInteraction:(id)interaction isDraggingVisualIntelligenceSheetDidChange:(BOOL)change;
+- (void)isVisualIntelligenceSheetPresentedDidChangeForImageAnalysisInteraction:(id)interaction;
 - (void)layoutSubviews;
 - (void)reanalyzeImage;
-- (void)setAnnotationsEnabled:(BOOL)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setCachedViewsHidden:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setInhibitImageAnalysis:(BOOL)a3;
-- (void)setInteractionMode:(unint64_t)a3;
-- (void)setRulerHostView:(id)a3;
-- (void)setScreenshot:(id)a3;
-- (void)setState:(unint64_t)a3;
-- (void)setVellumOpacity:(double)a3;
+- (void)setAnnotationsEnabled:(BOOL)enabled;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCachedViewsHidden:(BOOL)hidden;
+- (void)setFrame:(CGRect)frame;
+- (void)setInhibitImageAnalysis:(BOOL)analysis;
+- (void)setInteractionMode:(unint64_t)mode;
+- (void)setRulerHostView:(id)view;
+- (void)setScreenshot:(id)screenshot;
+- (void)setState:(unint64_t)state;
+- (void)setVellumOpacity:(double)opacity;
 - (void)updateCachedImageViewLocation;
 - (void)updateInteractionHighlightStatusIfNecessary;
-- (void)updatePaletteVisibilityIfNecessary:(BOOL)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)updatePaletteVisibilityIfNecessary:(BOOL)necessary;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation _SSSScreenshotImageView
 
-- (_SSSScreenshotImageView)initWithFrame:(CGRect)a3
+- (_SSSScreenshotImageView)initWithFrame:(CGRect)frame
 {
   v18.receiver = self;
   v18.super_class = _SSSScreenshotImageView;
-  v3 = [(_SSSScreenshotAnnotationView *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_SSSScreenshotAnnotationView *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (_os_feature_enabled_impl())
   {
     v4 = objc_alloc_init(_SSSScreenshotPaperKitImageView);
@@ -73,12 +73,12 @@
     v6 = objc_alloc_init(UIView);
     [(_SSSScreenshotAnnotationView *)v3 setVellumView:v6];
 
-    v7 = [(_SSSScreenshotAnnotationView *)v3 vellumView];
+    vellumView = [(_SSSScreenshotAnnotationView *)v3 vellumView];
     v8 = +[UIColor whiteColor];
-    [v7 setBackgroundColor:v8];
+    [vellumView setBackgroundColor:v8];
 
-    v9 = [(_SSSScreenshotAnnotationView *)v3 vellumView];
-    [(_SSSScreenshotImageView *)v3 addSubview:v9];
+    vellumView2 = [(_SSSScreenshotAnnotationView *)v3 vellumView];
+    [(_SSSScreenshotImageView *)v3 addSubview:vellumView2];
   }
 
   [(_SSSScreenshotAnnotationView *)v3 setScreenshotEditsSnapshotted:1];
@@ -136,12 +136,12 @@
   return v5;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v7.receiver = self;
   v7.super_class = _SSSScreenshotImageView;
   [(_SSSScreenshotImageView *)&v7 willMoveToWindow:?];
-  if (!a3)
+  if (!window)
   {
     imageInteraction = self->_imageInteraction;
     if (imageInteraction)
@@ -154,11 +154,11 @@
   }
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     [(_SSSScreenshotImageView *)self _updateUI];
   }
 }
@@ -179,21 +179,21 @@
   }
 }
 
-- (void)setAnnotationsEnabled:(BOOL)a3
+- (void)setAnnotationsEnabled:(BOOL)enabled
 {
-  if (self->_annotationsEnabled != a3)
+  if (self->_annotationsEnabled != enabled)
   {
-    v4 = a3;
-    self->_annotationsEnabled = a3;
-    v5 = [(_SSSScreenshotImageView *)self paperKitImageView];
-    [v5 setAnnotationsEnabled:v4];
+    enabledCopy = enabled;
+    self->_annotationsEnabled = enabled;
+    paperKitImageView = [(_SSSScreenshotImageView *)self paperKitImageView];
+    [paperKitImageView setAnnotationsEnabled:enabledCopy];
   }
 }
 
-- (void)setInteractionMode:(unint64_t)a3
+- (void)setInteractionMode:(unint64_t)mode
 {
   v5 = 0;
-  if (a3 != 1 && self->_interactionMode == 1)
+  if (mode != 1 && self->_interactionMode == 1)
   {
     if (self->_hasOutstandingEdits)
     {
@@ -207,9 +207,9 @@
     }
   }
 
-  self->_interactionMode = a3;
-  v6 = [(_SSSScreenshotImageView *)self _ss_vi2Enabled];
-  v7 = v6;
+  self->_interactionMode = mode;
+  _ss_vi2Enabled = [(_SSSScreenshotImageView *)self _ss_vi2Enabled];
+  v7 = _ss_vi2Enabled;
   interactionMode = self->_interactionMode;
   if (interactionMode <= 1)
   {
@@ -251,14 +251,14 @@
 
     else
     {
-      v17 = v6;
+      v17 = _ss_vi2Enabled;
     }
   }
 
   else
   {
     v9 = 9;
-    if (v6)
+    if (_ss_vi2Enabled)
     {
       v9 = 16;
     }
@@ -309,7 +309,7 @@
 
   v18 = v7 | v14;
   v19 = v7 ^ 1;
-  if (a3 == 4)
+  if (mode == 4)
   {
     v20 = v19;
   }
@@ -319,41 +319,41 @@
     v20 = 0;
   }
 
-  v24 = [(_SSSScreenshotImageView *)self imageInteraction];
-  [v24 setActiveInteractionTypes:v16];
-  [v24 setHighlightSelectableItems:v20];
-  [v24 setForceAnalysisBarButtonItemEnabled:v15 & v19];
+  imageInteraction = [(_SSSScreenshotImageView *)self imageInteraction];
+  [imageInteraction setActiveInteractionTypes:v16];
+  [imageInteraction setHighlightSelectableItems:v20];
+  [imageInteraction setForceAnalysisBarButtonItemEnabled:v15 & v19];
   if (v17)
   {
-    [v24 dismissVisualIntelligenceSheetIfNecessary];
+    [imageInteraction dismissVisualIntelligenceSheetIfNecessary];
   }
 
   if ((v18 & 1) == 0)
   {
-    [v24 resetSelection];
+    [imageInteraction resetSelection];
   }
 
-  v21 = [(_SSSScreenshotAnnotationView *)self annotationOverlayView];
-  [v21 setUserInteractionEnabled:v13];
+  annotationOverlayView = [(_SSSScreenshotAnnotationView *)self annotationOverlayView];
+  [annotationOverlayView setUserInteractionEnabled:v13];
 
-  v22 = [(_SSSScreenshotAnnotationView *)self overlayController];
-  v23 = [v22 annotationKitController];
-  [v23 setAllEditingDisabled:v13 ^ 1];
+  overlayController = [(_SSSScreenshotAnnotationView *)self overlayController];
+  annotationKitController = [overlayController annotationKitController];
+  [annotationKitController setAllEditingDisabled:v13 ^ 1];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = _SSSScreenshotImageView;
-  [(_SSSScreenshotImageView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(_SSSScreenshotImageView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(_SSSScreenshotImageView *)self layoutIfNeeded];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = _SSSScreenshotImageView;
-  [(_SSSScreenshotImageView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(_SSSScreenshotImageView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(_SSSScreenshotImageView *)self layoutIfNeeded];
 }
 
@@ -365,24 +365,24 @@
   v8 = v7;
   v10 = v9;
   [(_SSSScreenshotCropableView *)self->_imageView setFrame:?];
-  v11 = [(_SSSScreenshotImageView *)self cachedOutputImageView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  cachedOutputImageView = [(_SSSScreenshotImageView *)self cachedOutputImageView];
+  [cachedOutputImageView setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(_SSSScreenshotAnnotationView *)self annotationOverlayView];
-  [v12 setFrame:{v4, v6, v8, v10}];
+  annotationOverlayView = [(_SSSScreenshotAnnotationView *)self annotationOverlayView];
+  [annotationOverlayView setFrame:{v4, v6, v8, v10}];
 
-  v13 = [(_SSSScreenshotAnnotationView *)self vellumView];
-  [v13 setFrame:{v4, v6, v8, v10}];
+  vellumView = [(_SSSScreenshotAnnotationView *)self vellumView];
+  [vellumView setFrame:{v4, v6, v8, v10}];
 
   v33 = 0u;
   v34 = 0u;
   v32 = 0u;
-  v14 = [(_SSSScreenshotAnnotationView *)self screenshot];
-  v15 = [v14 modelModificationInfo];
-  v16 = v15;
-  if (v15)
+  screenshot = [(_SSSScreenshotAnnotationView *)self screenshot];
+  modelModificationInfo = [screenshot modelModificationInfo];
+  v16 = modelModificationInfo;
+  if (modelModificationInfo)
   {
-    [v15 cropInfo];
+    [modelModificationInfo cropInfo];
   }
 
   else
@@ -401,41 +401,41 @@
   v27 = v30;
   v28 = v31;
   [(_SSSScreenshotCropableView *)imageView setCropInfo:&v26];
-  v18 = [(_SSSScreenshotImageView *)self cachedOutputImageView];
+  cachedOutputImageView2 = [(_SSSScreenshotImageView *)self cachedOutputImageView];
   v26 = v32;
   v27 = v33;
   v28 = v34;
-  [v18 setCropInfo:&v26];
+  [cachedOutputImageView2 setCropInfo:&v26];
 
   v19 = v8 / *&v29;
   v20 = v10 / *(&v29 + 1);
   [(_SSSScreenshotCropableView *)self->_imageView setSizeMultiplier:v19, v20];
-  v21 = [(_SSSScreenshotImageView *)self cachedOutputImageView];
-  [v21 setSizeMultiplier:{v19, v20}];
+  cachedOutputImageView3 = [(_SSSScreenshotImageView *)self cachedOutputImageView];
+  [cachedOutputImageView3 setSizeMultiplier:{v19, v20}];
 
-  v22 = [(_SSSScreenshotAnnotationView *)self vellumView];
+  vellumView2 = [(_SSSScreenshotAnnotationView *)self vellumView];
   [(_SSSScreenshotAnnotationView *)self vellumOpacity];
-  [v22 setAlpha:?];
+  [vellumView2 setAlpha:?];
 
   [(_SSSScreenshotCropableView *)self->_imageView setUseTrilinearMinificationFilter:[(_SSSScreenshotImageView *)self useTrilinearMinificationFilter]];
-  v23 = [(_SSSScreenshotImageView *)self cachedOutputImageView];
-  [v23 setUseTrilinearMinificationFilter:{-[_SSSScreenshotImageView useTrilinearMinificationFilter](self, "useTrilinearMinificationFilter")}];
+  cachedOutputImageView4 = [(_SSSScreenshotImageView *)self cachedOutputImageView];
+  [cachedOutputImageView4 setUseTrilinearMinificationFilter:{-[_SSSScreenshotImageView useTrilinearMinificationFilter](self, "useTrilinearMinificationFilter")}];
 
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v24 = [(_SSSScreenshotImageView *)self cachedOutputImageView];
-    [(_SSSScreenshotImageView *)self bringSubviewToFront:v24];
+    cachedOutputImageView5 = [(_SSSScreenshotImageView *)self cachedOutputImageView];
+    [(_SSSScreenshotImageView *)self bringSubviewToFront:cachedOutputImageView5];
   }
 
-  v25 = [(_SSSScreenshotAnnotationView *)self overlayController];
-  [v25 setViewState:{0, 0}];
+  overlayController = [(_SSSScreenshotAnnotationView *)self overlayController];
+  [overlayController setViewState:{0, 0}];
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(_SSSScreenshotAnnotationView *)self screenshot];
-  v3 = [v2 environmentDescription];
-  [v3 imagePointSize];
+  screenshot = [(_SSSScreenshotAnnotationView *)self screenshot];
+  environmentDescription = [screenshot environmentDescription];
+  [environmentDescription imagePointSize];
   v5 = v4;
   v7 = v6;
 
@@ -461,53 +461,53 @@
   return v3;
 }
 
-- (void)setVellumOpacity:(double)a3
+- (void)setVellumOpacity:(double)opacity
 {
   v6.receiver = self;
   v6.super_class = _SSSScreenshotImageView;
   [(_SSSScreenshotAnnotationView *)&v6 setVellumOpacity:?];
-  v5 = [(_SSSScreenshotImageView *)self paperKitImageView];
-  [v5 setVellumOpacity:a3];
+  paperKitImageView = [(_SSSScreenshotImageView *)self paperKitImageView];
+  [paperKitImageView setVellumOpacity:opacity];
 }
 
 - (UIGestureRecognizer)drawingGestureRecognizer
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = [(_SSSScreenshotCropableView *)self->_imageView drawingGestureRecognizer];
+    drawingGestureRecognizer = [(_SSSScreenshotCropableView *)self->_imageView drawingGestureRecognizer];
   }
 
   else
   {
-    v3 = 0;
+    drawingGestureRecognizer = 0;
   }
 
-  return v3;
+  return drawingGestureRecognizer;
 }
 
-- (void)setScreenshot:(id)a3
+- (void)setScreenshot:(id)screenshot
 {
-  v4 = a3;
-  v5 = [(_SSSScreenshotAnnotationView *)self screenshot];
+  screenshotCopy = screenshot;
+  screenshot = [(_SSSScreenshotAnnotationView *)self screenshot];
 
-  if (v5 != v4)
+  if (screenshot != screenshotCopy)
   {
     v13.receiver = self;
     v13.super_class = _SSSScreenshotImageView;
-    [(_SSSScreenshotAnnotationView *)&v13 setScreenshot:v4];
+    [(_SSSScreenshotAnnotationView *)&v13 setScreenshot:screenshotCopy];
     if (_os_feature_enabled_impl())
     {
-      [v4 setImageGenerator:self->_imageView];
+      [screenshotCopy setImageGenerator:self->_imageView];
     }
 
     objc_initWeak(&location, self);
-    v6 = [v4 imageProvider];
+    imageProvider = [screenshotCopy imageProvider];
     v7 = _NSConcreteStackBlock;
     v8 = 3221225472;
     v9 = sub_100010DC8;
     v10 = &unk_1000BA230;
     objc_copyWeak(&v11, &location);
-    [v6 requestUneditedImageForUI:&v7];
+    [imageProvider requestUneditedImageForUI:&v7];
 
     [(_SSSScreenshotImageView *)self setNeedsLayout:v7];
     objc_destroyWeak(&v11);
@@ -533,19 +533,19 @@
   }
 }
 
-- (void)setInhibitImageAnalysis:(BOOL)a3
+- (void)setInhibitImageAnalysis:(BOOL)analysis
 {
-  if (self->_inhibitImageAnalysis != a3)
+  if (self->_inhibitImageAnalysis != analysis)
   {
-    self->_inhibitImageAnalysis = a3;
+    self->_inhibitImageAnalysis = analysis;
     [(_SSSScreenshotImageView *)self analyzeCurrentImageIfNecessary];
   }
 }
 
 - (void)reanalyzeImage
 {
-  v3 = [(_SSSScreenshotImageView *)self imageInteraction];
-  [v3 setAnalysis:0];
+  imageInteraction = [(_SSSScreenshotImageView *)self imageInteraction];
+  [imageInteraction setAnalysis:0];
 
   [(_SSSScreenshotImageView *)self analyzeCurrentImageIfNecessary];
 }
@@ -554,9 +554,9 @@
 {
   if (![(_SSSScreenshotImageView *)self inhibitImageAnalysis])
   {
-    v27 = [(_SSSScreenshotImageView *)self imageInteraction];
-    v3 = [v27 analysis];
-    if (v3)
+    imageInteraction = [(_SSSScreenshotImageView *)self imageInteraction];
+    analysis = [imageInteraction analysis];
+    if (analysis)
     {
     }
 
@@ -566,12 +566,12 @@
 
       if (v4)
       {
-        v5 = [(_SSSScreenshotAnnotationView *)self screenshot];
-        v6 = [v5 hasEverBeenEditedForMode:0];
-        v7 = [v5 environmentDescription];
-        v8 = [v7 earlyVIAnalysis];
+        screenshot = [(_SSSScreenshotAnnotationView *)self screenshot];
+        v6 = [screenshot hasEverBeenEditedForMode:0];
+        environmentDescription = [screenshot environmentDescription];
+        earlyVIAnalysis = [environmentDescription earlyVIAnalysis];
 
-        if (!v8)
+        if (!earlyVIAnalysis)
         {
           goto LABEL_16;
         }
@@ -590,12 +590,12 @@
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Removing environment VI Analysis from the environment object", buf, 2u);
         }
 
-        v11 = [v5 environmentDescription];
-        [v11 setEarlyVIAnalysis:0];
+        environmentDescription2 = [screenshot environmentDescription];
+        [environmentDescription2 setEarlyVIAnalysis:0];
 
-        if ((v6 & 1) == 0 && [v5 isInitialScreenshot])
+        if ((v6 & 1) == 0 && [screenshot isInitialScreenshot])
         {
-          v12 = v8;
+          v12 = earlyVIAnalysis;
         }
 
         else
@@ -605,7 +605,7 @@ LABEL_16:
         }
 
         objc_initWeak(buf, self);
-        objc_initWeak(&location, v5);
+        objc_initWeak(&location, screenshot);
         v41[0] = _NSConcreteStackBlock;
         v41[1] = 3221225472;
         v41[2] = sub_10001167C;
@@ -650,46 +650,46 @@ LABEL_16:
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "BEGIN AnalyzeScreenshot", v40, 2u);
           }
 
-          v18 = [(_SSSScreenshotImageView *)self imageAnalyzer];
+          imageAnalyzer = [(_SSSScreenshotImageView *)self imageAnalyzer];
           v33[0] = _NSConcreteStackBlock;
           v33[1] = 3221225472;
           v33[2] = sub_1000118B0;
           v33[3] = &unk_1000BA2A8;
           v33[4] = self;
           objc_copyWeak(&v36, buf);
-          v15 = v18;
+          v15 = imageAnalyzer;
           v34 = v15;
           v35 = v13;
           v19 = objc_retainBlock(v33);
-          v20 = [(_SSSScreenshotAnnotationView *)self screenshot];
-          v21 = [v20 hasEverBeenEditedForMode:0];
+          screenshot2 = [(_SSSScreenshotAnnotationView *)self screenshot];
+          v21 = [screenshot2 hasEverBeenEditedForMode:0];
 
           if (v21)
           {
-            v22 = [(_SSSScreenshotAnnotationView *)self screenshot];
-            v23 = [v22 imageProvider];
+            screenshot3 = [(_SSSScreenshotAnnotationView *)self screenshot];
+            imageProvider = [screenshot3 imageProvider];
             v28[0] = _NSConcreteStackBlock;
             v28[1] = 3221225472;
             v28[2] = sub_100011A6C;
             v28[3] = &unk_1000BA2D0;
             v29 = v19;
-            [v23 requestOutputImageForSaving:v28];
+            [imageProvider requestOutputImageForSaving:v28];
 
             v24 = v29;
           }
 
           else
           {
-            v25 = [(_SSSScreenshotCropableView *)self->_imageView image];
-            v26 = [(_SSSScreenshotImageView *)self analysisHelperQueue];
+            image = [(_SSSScreenshotCropableView *)self->_imageView image];
+            analysisHelperQueue = [(_SSSScreenshotImageView *)self analysisHelperQueue];
             v30[0] = _NSConcreteStackBlock;
             v30[1] = 3221225472;
             v30[2] = sub_100011A58;
             v30[3] = &unk_1000BA280;
-            v31 = v25;
+            v31 = image;
             v32 = v19;
-            v24 = v25;
-            dispatch_async(v26, v30);
+            v24 = image;
+            dispatch_async(analysisHelperQueue, v30);
           }
 
           objc_destroyWeak(&v36);
@@ -704,14 +704,14 @@ LABEL_16:
   }
 }
 
-- (CGRect)contentsRectForImageAnalysisInteraction:(id)a3
+- (CGRect)contentsRectForImageAnalysisInteraction:(id)interaction
 {
-  v3 = [(_SSSScreenshotAnnotationView *)self screenshot];
-  v4 = [v3 modelModificationInfo];
-  v5 = v4;
-  if (v4)
+  screenshot = [(_SSSScreenshotAnnotationView *)self screenshot];
+  modelModificationInfo = [screenshot modelModificationInfo];
+  v5 = modelModificationInfo;
+  if (modelModificationInfo)
   {
-    [v4 cropInfo];
+    [modelModificationInfo cropInfo];
   }
 
   else
@@ -735,49 +735,49 @@ LABEL_16:
   return result;
 }
 
-- (void)isVisualIntelligenceSheetPresentedDidChangeForImageAnalysisInteraction:(id)a3
+- (void)isVisualIntelligenceSheetPresentedDidChangeForImageAnalysisInteraction:(id)interaction
 {
-  v5 = [(_SSSScreenshotImageView *)self delegate];
-  v4 = [(_SSSScreenshotImageView *)self imageInteraction];
-  [v5 imageView:self viCardIsPresentedDidChange:{objc_msgSend(v4, "isVisualIntelligenceSheetVisible")}];
+  delegate = [(_SSSScreenshotImageView *)self delegate];
+  imageInteraction = [(_SSSScreenshotImageView *)self imageInteraction];
+  [delegate imageView:self viCardIsPresentedDidChange:{objc_msgSend(imageInteraction, "isVisualIntelligenceSheetVisible")}];
 }
 
-- (void)imageAnalysisInteraction:(id)a3 isDraggingVisualIntelligenceSheetDidChange:(BOOL)a4
+- (void)imageAnalysisInteraction:(id)interaction isDraggingVisualIntelligenceSheetDidChange:(BOOL)change
 {
-  v4 = a4;
-  v6 = [(_SSSScreenshotImageView *)self delegate];
-  [v6 imageView:self isDraggingVISheetDidChange:v4];
+  changeCopy = change;
+  delegate = [(_SSSScreenshotImageView *)self delegate];
+  [delegate imageView:self isDraggingVISheetDidChange:changeCopy];
 }
 
 - (UIActivity)visionKitFeedbackActivity
 {
-  v2 = [(_SSSScreenshotImageView *)self imageInteraction];
-  v3 = [v2 feedbackActivity];
+  imageInteraction = [(_SSSScreenshotImageView *)self imageInteraction];
+  feedbackActivity = [imageInteraction feedbackActivity];
 
-  return v3;
+  return feedbackActivity;
 }
 
-- (void)setRulerHostView:(id)a3
+- (void)setRulerHostView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (_os_feature_enabled_impl())
   {
-    v5 = [(_SSSScreenshotImageView *)self paperKitImageView];
-    [v5 setRulerHostView:v4];
+    paperKitImageView = [(_SSSScreenshotImageView *)self paperKitImageView];
+    [paperKitImageView setRulerHostView:viewCopy];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = _SSSScreenshotImageView;
-    [(_SSSScreenshotAnnotationView *)&v6 setRulerHostView:v4];
+    [(_SSSScreenshotAnnotationView *)&v6 setRulerHostView:viewCopy];
   }
 }
 
 - (void)clearImageAnalysisTextSelection
 {
-  v2 = [(_SSSScreenshotImageView *)self imageInteraction];
-  [v2 resetSelection];
+  imageInteraction = [(_SSSScreenshotImageView *)self imageInteraction];
+  [imageInteraction resetSelection];
 }
 
 - (void)_updateInteractionModeFromAnalysisButtonPress
@@ -797,11 +797,11 @@ LABEL_16:
     v3 = 2;
   }
 
-  v4 = [(_SSSScreenshotImageView *)self delegate];
-  [v4 imageView:self requestsUpdateToInteractionMode:v3];
+  delegate = [(_SSSScreenshotImageView *)self delegate];
+  [delegate imageView:self requestsUpdateToInteractionMode:v3];
 }
 
-- (void)imageAnalysisInteraction:(id)a3 highlightSelectedItemsValueDidChange:(BOOL)a4
+- (void)imageAnalysisInteraction:(id)interaction highlightSelectedItemsValueDidChange:(BOOL)change
 {
   objc_initWeak(&location, self);
   v4[0] = _NSConcreteStackBlock;
@@ -816,37 +816,37 @@ LABEL_16:
 
 - (void)updateInteractionHighlightStatusIfNecessary
 {
-  v7 = [(_SSSScreenshotImageView *)self imageInteraction];
-  v3 = [v7 highlightSelectableItems];
-  v4 = [(_SSSScreenshotImageView *)self interactionMode];
-  if (v4 == 4 || v4 == 2)
+  imageInteraction = [(_SSSScreenshotImageView *)self imageInteraction];
+  highlightSelectableItems = [imageInteraction highlightSelectableItems];
+  interactionMode = [(_SSSScreenshotImageView *)self interactionMode];
+  if (interactionMode == 4 || interactionMode == 2)
   {
-    v5 = v3 ? 4 : 2;
-    if (v4 != v5)
+    v5 = highlightSelectableItems ? 4 : 2;
+    if (interactionMode != v5)
     {
-      v6 = [(_SSSScreenshotImageView *)self delegate];
-      [v6 imageView:self requestsUpdateToInteractionMode:v5];
+      delegate = [(_SSSScreenshotImageView *)self delegate];
+      [delegate imageView:self requestsUpdateToInteractionMode:v5];
     }
   }
 }
 
-- (void)cropControllerDidZoomInScrollView:(id)a3
+- (void)cropControllerDidZoomInScrollView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if (_os_feature_enabled_impl())
   {
-    v4 = [(_SSSScreenshotImageView *)self paperKitImageView];
-    [v4 cropControllerDidZoomInScrollView:v5];
+    paperKitImageView = [(_SSSScreenshotImageView *)self paperKitImageView];
+    [paperKitImageView cropControllerDidZoomInScrollView:viewCopy];
   }
 }
 
-- (void)cropControllerDidUpdateScrollView:(id)a3
+- (void)cropControllerDidUpdateScrollView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if (_os_feature_enabled_impl())
   {
-    v4 = [(_SSSScreenshotImageView *)self paperKitImageView];
-    [v4 cropControllerDidUpdateScrollView:v5];
+    paperKitImageView = [(_SSSScreenshotImageView *)self paperKitImageView];
+    [paperKitImageView cropControllerDidUpdateScrollView:viewCopy];
   }
 }
 
@@ -854,8 +854,8 @@ LABEL_16:
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = [(_SSSScreenshotImageView *)self paperKitImageView];
-    [v3 deselectAllAnnotations];
+    paperKitImageView = [(_SSSScreenshotImageView *)self paperKitImageView];
+    [paperKitImageView deselectAllAnnotations];
   }
 }
 
@@ -869,21 +869,21 @@ LABEL_16:
 
   else
   {
-    v3 = [(_SSSScreenshotAnnotationView *)self annotationOverlayView];
-    v4 = [(_SSSScreenshotAnnotationView *)self overlayController];
-    v5 = [v4 overlayView];
+    annotationOverlayView = [(_SSSScreenshotAnnotationView *)self annotationOverlayView];
+    overlayController = [(_SSSScreenshotAnnotationView *)self overlayController];
+    overlayView = [overlayController overlayView];
 
-    if (v3 != v5)
+    if (annotationOverlayView != overlayView)
     {
-      v6 = [(_SSSScreenshotAnnotationView *)self annotationOverlayView];
-      [v6 removeFromSuperview];
+      annotationOverlayView2 = [(_SSSScreenshotAnnotationView *)self annotationOverlayView];
+      [annotationOverlayView2 removeFromSuperview];
 
-      v7 = [(_SSSScreenshotAnnotationView *)self overlayController];
-      v8 = [v7 overlayView];
-      [(_SSSScreenshotAnnotationView *)self setAnnotationOverlayView:v8];
+      overlayController2 = [(_SSSScreenshotAnnotationView *)self overlayController];
+      overlayView2 = [overlayController2 overlayView];
+      [(_SSSScreenshotAnnotationView *)self setAnnotationOverlayView:overlayView2];
 
-      v9 = [(_SSSScreenshotAnnotationView *)self annotationOverlayView];
-      [(_SSSScreenshotImageView *)self addSubview:v9];
+      annotationOverlayView3 = [(_SSSScreenshotAnnotationView *)self annotationOverlayView];
+      [(_SSSScreenshotImageView *)self addSubview:annotationOverlayView3];
     }
   }
 
@@ -904,52 +904,52 @@ LABEL_16:
   [(_SSSScreenshotAnnotationView *)&v3 endedEditing];
 }
 
-- (void)updatePaletteVisibilityIfNecessary:(BOOL)a3
+- (void)updatePaletteVisibilityIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   if (_os_feature_enabled_impl())
   {
     imageView = self->_imageView;
 
-    [(_SSSScreenshotCropableView *)imageView updatePaletteVisibilityIfNecessary:v3];
+    [(_SSSScreenshotCropableView *)imageView updatePaletteVisibilityIfNecessary:necessaryCopy];
   }
 }
 
-- (void)generateSnapshotImageIfNecessary:(BOOL)a3 withCompletion:(id)a4
+- (void)generateSnapshotImageIfNecessary:(BOOL)necessary withCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  if (v4 && (-[_SSSScreenshotAnnotationView screenshot](self, "screenshot"), v7 = objc_claimAutoreleasedReturnValue(), [v7 imageProvider], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
+  necessaryCopy = necessary;
+  completionCopy = completion;
+  if (necessaryCopy && (-[_SSSScreenshotAnnotationView screenshot](self, "screenshot"), v7 = objc_claimAutoreleasedReturnValue(), [v7 imageProvider], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
   {
     objc_initWeak(&location, self);
-    v9 = [(_SSSScreenshotAnnotationView *)self screenshot];
-    v10 = [v9 imageProvider];
+    screenshot = [(_SSSScreenshotAnnotationView *)self screenshot];
+    imageProvider = [screenshot imageProvider];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1000123E0;
     v11[3] = &unk_1000BA348;
     objc_copyWeak(&v13, &location);
-    v12 = v6;
-    [v10 requestOutputImageForUI:v11];
+    v12 = completionCopy;
+    [imageProvider requestOutputImageForUI:v11];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)setCachedViewsHidden:(BOOL)a3
+- (void)setCachedViewsHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     cachedOutputImageView = self->_cachedOutputImageView;
 
-    [(_SSSScreenshotCropableView *)cachedOutputImageView setHidden:v3];
+    [(_SSSScreenshotCropableView *)cachedOutputImageView setHidden:hiddenCopy];
   }
 }
 
@@ -972,9 +972,9 @@ LABEL_16:
   return v4;
 }
 
-+ (void)_saveImageForSysdiagnose:(id)a3
++ (void)_saveImageForSysdiagnose:(id)sysdiagnose
 {
-  v3 = a3;
+  sysdiagnoseCopy = sysdiagnose;
   if (MGGetBoolAnswer())
   {
     v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -986,22 +986,22 @@ LABEL_16:
     v7[2] = sub_100012750;
     v7[3] = &unk_1000BA370;
     v9 = objc_opt_class();
-    v8 = v3;
+    v8 = sysdiagnoseCopy;
     dispatch_async(v6, v7);
   }
 }
 
-- (void)_paperKitImageDidChangeInView:(id)a3 changeCounter:(unint64_t)a4
+- (void)_paperKitImageDidChangeInView:(id)view changeCounter:(unint64_t)counter
 {
-  v6 = a3;
-  v16 = [(_SSSScreenshotAnnotationView *)self screenshot];
-  v7 = [v6 imageDescription];
+  viewCopy = view;
+  screenshot = [(_SSSScreenshotAnnotationView *)self screenshot];
+  imageDescription = [viewCopy imageDescription];
 
-  v8 = [v16 viewModificationInfo];
-  v9 = [v8 imageDescription];
+  viewModificationInfo = [screenshot viewModificationInfo];
+  imageDescription2 = [viewModificationInfo imageDescription];
 
-  v10 = v7;
-  v11 = v9;
+  v10 = imageDescription;
+  v11 = imageDescription2;
   v12 = v11;
   if (v10 == v11)
   {
@@ -1019,53 +1019,53 @@ LABEL_16:
     }
 
 LABEL_7:
-    v14 = [v16 viewModificationInfo];
-    [v14 setPaperKitChangeCounter:a4];
+    viewModificationInfo2 = [screenshot viewModificationInfo];
+    [viewModificationInfo2 setPaperKitChangeCounter:counter];
     v15 = 2;
     goto LABEL_10;
   }
 
 LABEL_9:
-  v14 = [v16 viewModificationInfo];
-  [v14 setImageDescription:v10];
+  viewModificationInfo2 = [screenshot viewModificationInfo];
+  [viewModificationInfo2 setImageDescription:v10];
   v15 = 4;
 LABEL_10:
 
-  [v16 promoteViewValueToModelValueForKey:v15 forState:0 createUndoCommand:{0, 0}];
+  [screenshot promoteViewValueToModelValueForKey:v15 forState:0 createUndoCommand:{0, 0}];
   [(_SSSScreenshotImageView *)self setHasOutstandingEdits:1];
 }
 
-- (void)_paperKitImageView:(id)a3 startEditingOpacityInAccessoryView:(id)a4
+- (void)_paperKitImageView:(id)view startEditingOpacityInAccessoryView:(id)accessoryView
 {
-  v5 = a4;
-  v6 = [(_SSSScreenshotImageView *)self delegate];
-  [v6 imageView:self startEditingOpacityInAccessoryView:v5];
+  accessoryViewCopy = accessoryView;
+  delegate = [(_SSSScreenshotImageView *)self delegate];
+  [delegate imageView:self startEditingOpacityInAccessoryView:accessoryViewCopy];
 }
 
-- (void)_paperKitImageView:(id)a3 willBeginUpdatingImage:(id)a4
+- (void)_paperKitImageView:(id)view willBeginUpdatingImage:(id)image
 {
-  v5 = a4;
-  v6 = [(_SSSScreenshotImageView *)self cachedOutputImageView];
-  [v6 setImage:v5];
+  imageCopy = image;
+  cachedOutputImageView = [(_SSSScreenshotImageView *)self cachedOutputImageView];
+  [cachedOutputImageView setImage:imageCopy];
 
-  v7 = [(_SSSScreenshotImageView *)self cachedOutputImageView];
-  [v7 setHidden:0];
+  cachedOutputImageView2 = [(_SSSScreenshotImageView *)self cachedOutputImageView];
+  [cachedOutputImageView2 setHidden:0];
 }
 
-- (void)_paperKitImageView:(id)a3 didFinishUpdatingImage:(id)a4
+- (void)_paperKitImageView:(id)view didFinishUpdatingImage:(id)image
 {
-  v5 = a3;
-  v6 = [(_SSSScreenshotImageView *)self delegate];
-  [v6 imageViewDidLoadImage:self];
+  viewCopy = view;
+  delegate = [(_SSSScreenshotImageView *)self delegate];
+  [delegate imageViewDidLoadImage:self];
 
-  v7 = [(_SSSScreenshotAnnotationView *)self screenshot];
-  [v5 imageGeneratorImageMarkedAsBeingEdited:v7];
+  screenshot = [(_SSSScreenshotAnnotationView *)self screenshot];
+  [viewCopy imageGeneratorImageMarkedAsBeingEdited:screenshot];
 }
 
-- (id)_paperKitImageViewOverlayViewController:(id)a3
+- (id)_paperKitImageViewOverlayViewController:(id)controller
 {
-  v4 = [(_SSSScreenshotImageView *)self delegate];
-  v5 = [v4 imageViewOverlayViewController:self];
+  delegate = [(_SSSScreenshotImageView *)self delegate];
+  v5 = [delegate imageViewOverlayViewController:self];
 
   return v5;
 }

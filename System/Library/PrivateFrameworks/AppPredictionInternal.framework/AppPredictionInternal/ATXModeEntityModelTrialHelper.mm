@@ -1,6 +1,6 @@
 @interface ATXModeEntityModelTrialHelper
 - (ATXModeEntityModelTrialHelper)init;
-- (id)loadCoreMLModelFromTrialWithName:(id)a3;
+- (id)loadCoreMLModelFromTrialWithName:(id)name;
 @end
 
 @implementation ATXModeEntityModelTrialHelper
@@ -12,21 +12,21 @@
   v2 = [(ATXModeEntityModelTrialHelper *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CEB6A8] sharedInstance];
+    mEMORY[0x277CEB6A8] = [MEMORY[0x277CEB6A8] sharedInstance];
     modeEntityTrialClientWrapper = v2->_modeEntityTrialClientWrapper;
-    v2->_modeEntityTrialClientWrapper = v3;
+    v2->_modeEntityTrialClientWrapper = mEMORY[0x277CEB6A8];
   }
 
   return v2;
 }
 
-- (id)loadCoreMLModelFromTrialWithName:(id)a3
+- (id)loadCoreMLModelFromTrialWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(ATXModeEntityTrialClientWrapper *)self->_modeEntityTrialClientWrapper directoryPathForTrialResource:v4];
+  nameCopy = name;
+  v5 = [(ATXModeEntityTrialClientWrapper *)self->_modeEntityTrialClientWrapper directoryPathForTrialResource:nameCopy];
   v17 = 0;
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v6 fileExistsAtPath:v5 isDirectory:&v17];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = [defaultManager fileExistsAtPath:v5 isDirectory:&v17];
 
   if (v7)
   {
@@ -59,7 +59,7 @@
       v14 = __atxlog_handle_default();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        [(ATXModeEntityModelTrialHelper *)v4 loadCoreMLModelFromTrialWithName:v13, v14];
+        [(ATXModeEntityModelTrialHelper *)nameCopy loadCoreMLModelFromTrialWithName:v13, v14];
       }
     }
   }

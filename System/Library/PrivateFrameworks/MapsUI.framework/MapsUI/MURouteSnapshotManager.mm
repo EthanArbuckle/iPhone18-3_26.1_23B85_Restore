@@ -2,17 +2,17 @@
 + (id)cacheDirectory;
 + (id)sharedInstance;
 - (MURouteSnapshotManager)init;
-- (id)_optionsFromKey:(id)a3 route:(id)a4;
-- (void)_generateSnapshotForRoute:(id)a3 key:(id)a4 completion:(id)a5;
-- (void)getSnapshotForKey:(id)a3 route:(id)a4 completion:(id)a5;
-- (void)purgeSnapshotsWithCompletionBlock:(id)a3;
+- (id)_optionsFromKey:(id)key route:(id)route;
+- (void)_generateSnapshotForRoute:(id)route key:(id)key completion:(id)completion;
+- (void)getSnapshotForKey:(id)key route:(id)route completion:(id)completion;
+- (void)purgeSnapshotsWithCompletionBlock:(id)block;
 @end
 
 @implementation MURouteSnapshotManager
 
-- (void)purgeSnapshotsWithCompletionBlock:(id)a3
+- (void)purgeSnapshotsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = MUGetMURouteSnapshotManagerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -28,8 +28,8 @@
   v8[2] = __60__MURouteSnapshotManager_purgeSnapshotsWithCompletionBlock___block_invoke;
   v8[3] = &unk_1E821A618;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = blockCopy;
+  v7 = blockCopy;
   dispatch_barrier_async(workQueue, v8);
 }
 
@@ -90,22 +90,22 @@ void __60__MURouteSnapshotManager_purgeSnapshotsWithCompletionBlock___block_invo
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_generateSnapshotForRoute:(id)a3 key:(id)a4 completion:(id)a5
+- (void)_generateSnapshotForRoute:(id)route key:(id)key completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  routeCopy = route;
+  keyCopy = key;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __67__MURouteSnapshotManager__generateSnapshotForRoute_key_completion___block_invoke;
   v14[3] = &unk_1E8218FA8;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
-  v11 = v10;
-  v12 = v8;
-  v13 = v9;
+  v15 = keyCopy;
+  v16 = routeCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = routeCopy;
+  v13 = keyCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v14);
 }
 
@@ -178,15 +178,15 @@ void __67__MURouteSnapshotManager__generateSnapshotForRoute_key_completion___blo
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
-- (id)_optionsFromKey:(id)a3 route:(id)a4
+- (id)_optionsFromKey:(id)key route:(id)route
 {
   v38[2] = *MEMORY[0x1E69E9840];
   v37 = 0;
   v35 = 0u;
   v36 = 0u;
   v34 = 0u;
-  v5 = a4;
-  v6 = a3;
+  routeCopy = route;
+  keyCopy = key;
   _MKCartographicConfigurationForMapType();
   memset(v32, 0, sizeof(v32));
   v33 = 0;
@@ -195,16 +195,16 @@ void __67__MURouteSnapshotManager__generateSnapshotForRoute_key_completion___blo
   [v7 setShowsTopographicFeatures:1];
   v8 = objc_opt_new();
   [v8 setPreferredConfiguration:v7];
-  [v6 width];
+  [keyCopy width];
   v10 = v9;
-  [v6 height];
+  [keyCopy height];
   [v8 setSize:{v10, v11}];
-  [v8 _setComposedRouteForRouteLine:v5];
-  v12 = [v5 boundingMapRegion];
+  [v8 _setComposedRouteForRouteLine:routeCopy];
+  boundingMapRegion = [routeCopy boundingMapRegion];
 
   GEOMapRectForMapRegion();
   [v8 size];
-  [v6 padding];
+  [keyCopy padding];
   v30 = v13;
   v31 = v14;
   v28 = v15;
@@ -212,12 +212,12 @@ void __67__MURouteSnapshotManager__generateSnapshotForRoute_key_completion___blo
   _MKMapRectThatFits();
   [v8 setMapRect:{v28, v29, v30, v31}];
 
-  v17 = [MEMORY[0x1E696F350] filterExcludingAllCategories];
-  [v8 setPointOfInterestFilter:v17];
+  filterExcludingAllCategories = [MEMORY[0x1E696F350] filterExcludingAllCategories];
+  [v8 setPointOfInterestFilter:filterExcludingAllCategories];
 
   [v8 _setShowsPointLabels:0];
   [v8 _setShowsAppleLogo:0];
-  if ([v6 darkMode])
+  if ([keyCopy darkMode])
   {
     v18 = 2;
   }
@@ -230,7 +230,7 @@ void __67__MURouteSnapshotManager__generateSnapshotForRoute_key_completion___blo
   v19 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:v18];
   v38[0] = v19;
   v20 = MEMORY[0x1E69DD1B8];
-  [v6 scale];
+  [keyCopy scale];
   v22 = v21;
 
   v23 = [v20 traitCollectionWithDisplayScale:v22];
@@ -245,20 +245,20 @@ void __67__MURouteSnapshotManager__generateSnapshotForRoute_key_completion___blo
   return v8;
 }
 
-- (void)getSnapshotForKey:(id)a3 route:(id)a4 completion:(id)a5
+- (void)getSnapshotForKey:(id)key route:(id)route completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  routeCopy = route;
+  completionCopy = completion;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__5692;
   v22 = __Block_byref_object_dispose__5693;
-  v23 = [(NSCache *)self->_cache objectForKey:v8];
+  v23 = [(NSCache *)self->_cache objectForKey:keyCopy];
   if (v19[5])
   {
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -269,10 +269,10 @@ void __67__MURouteSnapshotManager__generateSnapshotForRoute_key_completion___blo
     block[2] = __61__MURouteSnapshotManager_getSnapshotForKey_route_completion___block_invoke;
     block[3] = &unk_1E8218F58;
     v17 = &v18;
-    v13 = v8;
-    v14 = self;
-    v16 = v10;
-    v15 = v9;
+    v13 = keyCopy;
+    selfCopy = self;
+    v16 = completionCopy;
+    v15 = routeCopy;
     dispatch_async(workQueue, block);
   }
 

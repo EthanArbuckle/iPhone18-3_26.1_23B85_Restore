@@ -1,43 +1,43 @@
 @interface SBKStoreClampsController
 + (id)sharedClampsController;
-- (BOOL)_canScheduleTransactionBasedOfNetworkingBlocked:(id)a3 error:(id *)a4;
-- (BOOL)_canScheduleTransactionBasedOnAccountIdentifierCheck:(id)a3 error:(id *)a4;
-- (BOOL)_canScheduleTransactionBasedOnBackOff:(id)a3 error:(id *)a4;
-- (BOOL)_canScheduleTransactionBasedOnType:(id)a3 error:(id *)a4;
-- (BOOL)_canScheduleTransactionBasedOnUserCancelledSignIn:(id)a3 error:(id *)a4;
-- (BOOL)canScheduleTransaction:(id)a3 error:(id *)a4;
-- (BOOL)hasAuthenticatedTooRecentlyForTransaction:(id)a3 error:(id *)a4;
+- (BOOL)_canScheduleTransactionBasedOfNetworkingBlocked:(id)blocked error:(id *)error;
+- (BOOL)_canScheduleTransactionBasedOnAccountIdentifierCheck:(id)check error:(id *)error;
+- (BOOL)_canScheduleTransactionBasedOnBackOff:(id)off error:(id *)error;
+- (BOOL)_canScheduleTransactionBasedOnType:(id)type error:(id *)error;
+- (BOOL)_canScheduleTransactionBasedOnUserCancelledSignIn:(id)in error:(id *)error;
+- (BOOL)canScheduleTransaction:(id)transaction error:(id *)error;
+- (BOOL)hasAuthenticatedTooRecentlyForTransaction:(id)transaction error:(id *)error;
 - (BOOL)hasUserRecentlyAcceptedSync;
 - (BOOL)isNetworkingBlocked;
 - (SBKStoreClampsController)init;
-- (SBKStoreClampsController)initWithCoder:(id)a3;
+- (SBKStoreClampsController)initWithCoder:(id)coder;
 - (double)_rightNow;
 - (id)description;
-- (void)accessTransactionClampsWithBlock:(id)a3;
-- (void)backOffForTimeInterval:(double)a3;
+- (void)accessTransactionClampsWithBlock:(id)block;
+- (void)backOffForTimeInterval:(double)interval;
 - (void)clearAccountIdentifierCheckTimestamp;
 - (void)clearAuthenticationRequest;
 - (void)clearBackOff;
-- (void)clearTimestampForTransaction:(id)a3;
+- (void)clearTimestampForTransaction:(id)transaction;
 - (void)clearUserAcceptedSyncTimestamp;
 - (void)clearUserCancelledSignIn;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)reset;
 - (void)saveToUserDefaults;
 - (void)setAccountIdentifierCheckTimestamp;
 - (void)setAuthenticationRequest;
 - (void)setNetworkingBlocked;
-- (void)setTimestampForTransaction:(id)a3;
+- (void)setTimestampForTransaction:(id)transaction;
 - (void)setUserAcceptedSyncTimestamp;
 - (void)setUserCancelledSignIn;
 @end
 
 @implementation SBKStoreClampsController
 
-- (BOOL)_canScheduleTransactionBasedOnUserCancelledSignIn:(id)a3 error:(id *)a4
+- (BOOL)_canScheduleTransactionBasedOnUserCancelledSignIn:(id)in error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  inCopy = in;
   [(SBKStoreClampsController *)self userCancelledSignInBackOffUntil];
   if (fabs(v7) <= 0.00000011920929)
   {
@@ -64,7 +64,7 @@ LABEL_4:
     [(SBKStoreClampsController *)self userCancelledSignInBackOffUntil];
     v18 = [v17 dateWithTimeIntervalSinceReferenceDate:?];
     v19 = 134218498;
-    v20 = v6;
+    v20 = inCopy;
     v21 = 2112;
     v22 = v18;
     v23 = 2048;
@@ -72,10 +72,10 @@ LABEL_4:
     _os_log_impl(&dword_26BC19000, v16, OS_LOG_TYPE_DEFAULT, "Drop transaction: <%p> -- userCancelledBackOff until: %@ [%fs]", &v19, 0x20u);
   }
 
-  if (a4)
+  if (error)
   {
-    [SBKStoreError userClampErrorWithTransaction:v6 retrySeconds:0 underlyingError:v15];
-    *a4 = v11 = 0;
+    [SBKStoreError userClampErrorWithTransaction:inCopy retrySeconds:0 underlyingError:v15];
+    *error = v11 = 0;
   }
 
   else
@@ -89,10 +89,10 @@ LABEL_5:
   return v11;
 }
 
-- (BOOL)_canScheduleTransactionBasedOnBackOff:(id)a3 error:(id *)a4
+- (BOOL)_canScheduleTransactionBasedOnBackOff:(id)off error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  offCopy = off;
   [(SBKStoreClampsController *)self backOffUntil];
   if (fabs(v7) <= 0.00000011920929)
   {
@@ -119,7 +119,7 @@ LABEL_4:
     [(SBKStoreClampsController *)self backOffUntil];
     v18 = [v17 dateWithTimeIntervalSinceReferenceDate:?];
     v19 = 134218498;
-    v20 = v6;
+    v20 = offCopy;
     v21 = 2112;
     v22 = v18;
     v23 = 2048;
@@ -127,10 +127,10 @@ LABEL_4:
     _os_log_impl(&dword_26BC19000, v16, OS_LOG_TYPE_DEFAULT, "Drop transaction: <%p> -- BackOff until: %@ [%fs]", &v19, 0x20u);
   }
 
-  if (a4)
+  if (error)
   {
-    [SBKStoreError serverClampErrorWithTransaction:v6 retrySeconds:0 underlyingError:v15];
-    *a4 = v11 = 0;
+    [SBKStoreError serverClampErrorWithTransaction:offCopy retrySeconds:0 underlyingError:v15];
+    *error = v11 = 0;
   }
 
   else
@@ -144,10 +144,10 @@ LABEL_5:
   return v11;
 }
 
-- (BOOL)_canScheduleTransactionBasedOnAccountIdentifierCheck:(id)a3 error:(id *)a4
+- (BOOL)_canScheduleTransactionBasedOnAccountIdentifierCheck:(id)check error:(id *)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  checkCopy = check;
   [(SBKStoreClampsController *)self accountIdentifierCheckTimestamp];
   v8 = v7;
   if (v7 != 0.0)
@@ -156,13 +156,13 @@ LABEL_5:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 134217984;
-      v13 = v6;
+      v13 = checkCopy;
       _os_log_impl(&dword_26BC19000, v9, OS_LOG_TYPE_DEFAULT, "Drop transaction: <%p> -- AccountIdentifierCheck != 0", &v12, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [SBKStoreError userClampErrorWithTransaction:v6 retrySeconds:0 underlyingError:0.0];
+      *error = [SBKStoreError userClampErrorWithTransaction:checkCopy retrySeconds:0 underlyingError:0.0];
     }
   }
 
@@ -170,12 +170,12 @@ LABEL_5:
   return v8 == 0.0;
 }
 
-- (BOOL)_canScheduleTransactionBasedOfNetworkingBlocked:(id)a3 error:(id *)a4
+- (BOOL)_canScheduleTransactionBasedOfNetworkingBlocked:(id)blocked error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(SBKStoreClampsController *)self isNetworkingBlocked];
-  if (v7)
+  blockedCopy = blocked;
+  isNetworkingBlocked = [(SBKStoreClampsController *)self isNetworkingBlocked];
+  if (isNetworkingBlocked)
   {
     v8 = os_log_create("com.apple.amp.StoreBookkeeper", "KVS");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -184,23 +184,23 @@ LABEL_5:
       [(SBKStoreClampsController *)self networkingBlockedUntil];
       v10 = [v9 dateWithTimeIntervalSinceReferenceDate:?];
       v13 = 134218242;
-      v14 = v6;
+      v14 = blockedCopy;
       v15 = 2112;
       v16 = v10;
       _os_log_impl(&dword_26BC19000, v8, OS_LOG_TYPE_DEFAULT, "Drop transaction: <%p> -- Networking BlockedUntil: %@", &v13, 0x16u);
     }
 
-    *a4 = [SBKStoreError networkingBlockedErrorWithTransaction:v6 underlyingError:0];
+    *error = [SBKStoreError networkingBlockedErrorWithTransaction:blockedCopy underlyingError:0];
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return !v7;
+  return !isNetworkingBlocked;
 }
 
-- (BOOL)_canScheduleTransactionBasedOnType:(id)a3 error:(id *)a4
+- (BOOL)_canScheduleTransactionBasedOnType:(id)type error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  typeCopy = type;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -213,7 +213,7 @@ LABEL_5:
   v15[3] = &unk_279D22858;
   v17 = &v18;
   v15[4] = self;
-  v7 = v6;
+  v7 = typeCopy;
   v16 = v7;
   [(SBKStoreClampsController *)self accessTransactionClampsWithBlock:v15];
   v8 = v19[5];
@@ -253,10 +253,10 @@ LABEL_7:
     _os_log_impl(&dword_26BC19000, v12, OS_LOG_TYPE_DEFAULT, "Drop transaction: %@ -- Interval since last request: %f [%fs]", buf, 0x20u);
   }
 
-  if (a4)
+  if (error)
   {
     [SBKStoreError serverClampErrorWithTransaction:v7 retrySeconds:0 underlyingError:5.0 - v10];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -286,8 +286,8 @@ void __69__SBKStoreClampsController__canScheduleTransactionBasedOnType_error___b
 
 - (double)_rightNow
 {
-  v2 = [MEMORY[0x277CBEAA8] date];
-  [v2 timeIntervalSinceReferenceDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceReferenceDate];
   v4 = v3;
 
   return v4;
@@ -326,10 +326,10 @@ void __69__SBKStoreClampsController__canScheduleTransactionBasedOnType_error___b
   [(SBKStoreClampsController *)self saveToUserDefaults];
 }
 
-- (void)backOffForTimeInterval:(double)a3
+- (void)backOffForTimeInterval:(double)interval
 {
   [(SBKStoreClampsController *)self _rightNow];
-  [(SBKStoreClampsController *)self setBackOffUntil:v5 + a3];
+  [(SBKStoreClampsController *)self setBackOffUntil:v5 + interval];
 
   [(SBKStoreClampsController *)self saveToUserDefaults];
 }
@@ -349,8 +349,8 @@ void __69__SBKStoreClampsController__canScheduleTransactionBasedOnType_error___b
   [(SBKStoreClampsController *)self setUserCancelledSignInBackOffUntil:v3 + self->_nextUserCancelBackOffInterval];
   userCancelledSignInBackOffUntil = self->_userCancelledSignInBackOffUntil;
   self->_nextUserCancelBackOffInterval = fmin(self->_nextUserCancelBackOffInterval * 12.0, 18000.0);
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [v5 timeIntervalSinceReferenceDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceReferenceDate];
   v7 = v6;
 
   v8 = os_log_create("com.apple.amp.StoreBookkeeper", "Default");
@@ -403,10 +403,10 @@ void __69__SBKStoreClampsController__canScheduleTransactionBasedOnType_error___b
   [(SBKStoreClampsController *)self saveToUserDefaults];
 }
 
-- (BOOL)hasAuthenticatedTooRecentlyForTransaction:(id)a3 error:(id *)a4
+- (BOOL)hasAuthenticatedTooRecentlyForTransaction:(id)transaction error:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  transactionCopy = transaction;
   [(SBKStoreClampsController *)self _rightNow];
   v8 = v7;
   [(SBKStoreClampsController *)self authenticationNeededTimestamp];
@@ -417,7 +417,7 @@ void __69__SBKStoreClampsController__canScheduleTransactionBasedOnType_error___b
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412802;
-      v15 = v6;
+      v15 = transactionCopy;
       v16 = 2048;
       v17 = v10;
       v18 = 2048;
@@ -425,9 +425,9 @@ void __69__SBKStoreClampsController__canScheduleTransactionBasedOnType_error___b
       _os_log_impl(&dword_26BC19000, v11, OS_LOG_TYPE_DEFAULT, "Drop transaction: %@ -- Too soon since last authentication: %f [%fs]", &v14, 0x20u);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [SBKStoreError userClampErrorWithTransaction:v6 retrySeconds:0 underlyingError:1.0 - v10];
+      *error = [SBKStoreError userClampErrorWithTransaction:transactionCopy retrySeconds:0 underlyingError:1.0 - v10];
     }
   }
 
@@ -465,16 +465,16 @@ void __69__SBKStoreClampsController__canScheduleTransactionBasedOnType_error___b
   [(SBKStoreClampsController *)self saveToUserDefaults];
 }
 
-- (void)clearTimestampForTransaction:(id)a3
+- (void)clearTimestampForTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v6 = MEMORY[0x277D85DD0];
   v7 = 3221225472;
   v8 = __57__SBKStoreClampsController_clearTimestampForTransaction___block_invoke;
   v9 = &unk_279D22830;
-  v10 = self;
-  v11 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v11 = transactionCopy;
+  v5 = transactionCopy;
   [(SBKStoreClampsController *)self accessTransactionClampsWithBlock:&v6];
   [(SBKStoreClampsController *)self saveToUserDefaults:v6];
 }
@@ -488,16 +488,16 @@ void __57__SBKStoreClampsController_clearTimestampForTransaction___block_invoke(
   [v4 setValue:0 forKey:v5];
 }
 
-- (void)setTimestampForTransaction:(id)a3
+- (void)setTimestampForTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__SBKStoreClampsController_setTimestampForTransaction___block_invoke;
   v6[3] = &unk_279D22830;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = transactionCopy;
+  v5 = transactionCopy;
   [(SBKStoreClampsController *)self accessTransactionClampsWithBlock:v6];
 }
 
@@ -529,25 +529,25 @@ void __55__SBKStoreClampsController_setTimestampForTransaction___block_invoke(ui
   [(SBKStoreClampsController *)self saveToUserDefaults];
 }
 
-- (BOOL)canScheduleTransaction:(id)a3 error:(id *)a4
+- (BOOL)canScheduleTransaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
-  v7 = [(SBKStoreClampsController *)self _canScheduleTransactionBasedOfNetworkingBlocked:v6 error:a4]&& [(SBKStoreClampsController *)self _canScheduleTransactionBasedOnBackOff:v6 error:a4]&& [(SBKStoreClampsController *)self _canScheduleTransactionBasedOnUserCancelledSignIn:v6 error:a4]&& [(SBKStoreClampsController *)self _canScheduleTransactionBasedOnAccountIdentifierCheck:v6 error:a4]&& [(SBKStoreClampsController *)self _canScheduleTransactionBasedOnType:v6 error:a4];
+  transactionCopy = transaction;
+  v7 = [(SBKStoreClampsController *)self _canScheduleTransactionBasedOfNetworkingBlocked:transactionCopy error:error]&& [(SBKStoreClampsController *)self _canScheduleTransactionBasedOnBackOff:transactionCopy error:error]&& [(SBKStoreClampsController *)self _canScheduleTransactionBasedOnUserCancelledSignIn:transactionCopy error:error]&& [(SBKStoreClampsController *)self _canScheduleTransactionBasedOnAccountIdentifierCheck:transactionCopy error:error]&& [(SBKStoreClampsController *)self _canScheduleTransactionBasedOnType:transactionCopy error:error];
 
   return v7;
 }
 
-- (void)accessTransactionClampsWithBlock:(id)a3
+- (void)accessTransactionClampsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__SBKStoreClampsController_accessTransactionClampsWithBlock___block_invoke;
   v7[3] = &unk_279D23100;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -671,9 +671,9 @@ uint64_t __46__SBKStoreClampsController_saveToUserDefaults__block_invoke_50(uint
   return [v5 setPendingUserDefaultArchivedData:0];
 }
 
-- (SBKStoreClampsController)initWithCoder:(id)a3
+- (SBKStoreClampsController)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SBKStoreClampsController *)self init];
   if (!v5)
   {
@@ -682,9 +682,9 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (![v4 decodeIntegerForKey:@"SBKVersion"])
+  if (![coderCopy decodeIntegerForKey:@"SBKVersion"])
   {
-    v7 = [v4 decodePropertyListForKey:@"SBKTransactionClamps"];
+    v7 = [coderCopy decodePropertyListForKey:@"SBKTransactionClamps"];
     v8 = [v7 mutableCopy];
 
     if (v8)
@@ -697,15 +697,15 @@ LABEL_7:
       [(SBKStoreClampsController *)v5 accessTransactionClampsWithBlock:v15];
     }
 
-    [v4 decodeDoubleForKey:@"SBAccountIdentifierCheckTimestamp"];
+    [coderCopy decodeDoubleForKey:@"SBAccountIdentifierCheckTimestamp"];
     v5->_accountIdentifierCheckTimestamp = v9;
-    [v4 decodeDoubleForKey:@"SBKAuthenticationNeededTimestamp"];
+    [coderCopy decodeDoubleForKey:@"SBKAuthenticationNeededTimestamp"];
     v5->_authenticationNeededTimestamp = v10;
-    [v4 decodeDoubleForKey:@"SBKUserAcceptedSyncTimestamp"];
+    [coderCopy decodeDoubleForKey:@"SBKUserAcceptedSyncTimestamp"];
     v5->_userAcceptedSyncTimestamp = v11;
-    [v4 decodeDoubleForKey:@"SBKNetworkingBlockedUntil"];
+    [coderCopy decodeDoubleForKey:@"SBKNetworkingBlockedUntil"];
     v5->_networkingBlockedUntil = v12;
-    [v4 decodeDoubleForKey:@"SBKUserCancelledSignInBackOffUntil"];
+    [coderCopy decodeDoubleForKey:@"SBKUserCancelledSignInBackOffUntil"];
     v5->_userCancelledSignInBackOffUntil = v13;
 
     goto LABEL_7;
@@ -724,48 +724,48 @@ void __42__SBKStoreClampsController_initWithCoder___block_invoke(uint64_t a1, vo
   [v3 setValuesForKeysWithDictionary:*(a1 + 32)];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   transactionClamps = self->_transactionClamps;
-  v6 = v4;
+  v6 = coderCopy;
   if (transactionClamps)
   {
-    [v4 encodeObject:transactionClamps forKey:@"SBKTransactionClamps"];
-    v4 = v6;
+    [coderCopy encodeObject:transactionClamps forKey:@"SBKTransactionClamps"];
+    coderCopy = v6;
   }
 
   if (fabs(self->_accountIdentifierCheckTimestamp) > 0.00000011920929)
   {
     [v6 encodeDouble:@"SBAccountIdentifierCheckTimestamp" forKey:?];
-    v4 = v6;
+    coderCopy = v6;
   }
 
   if (fabs(self->_authenticationNeededTimestamp) > 0.00000011920929)
   {
     [v6 encodeDouble:@"SBKAuthenticationNeededTimestamp" forKey:?];
-    v4 = v6;
+    coderCopy = v6;
   }
 
   if (fabs(self->_userAcceptedSyncTimestamp) > 0.00000011920929)
   {
     [v6 encodeDouble:@"SBKUserAcceptedSyncTimestamp" forKey:?];
-    v4 = v6;
+    coderCopy = v6;
   }
 
   if (fabs(self->_networkingBlockedUntil) > 0.00000011920929)
   {
     [v6 encodeDouble:@"SBKNetworkingBlockedUntil" forKey:?];
-    v4 = v6;
+    coderCopy = v6;
   }
 
   if (fabs(self->_userCancelledSignInBackOffUntil) > 0.00000011920929)
   {
     [v6 encodeDouble:@"SBKUserCancelledSignInBackOffUntil" forKey:?];
-    v4 = v6;
+    coderCopy = v6;
   }
 
-  [v4 encodeInteger:2 forKey:@"Version"];
+  [coderCopy encodeInteger:2 forKey:@"Version"];
 }
 
 - (id)description
@@ -774,14 +774,14 @@ void __42__SBKStoreClampsController_initWithCoder___block_invoke(uint64_t a1, vo
   v14.receiver = self;
   v14.super_class = SBKStoreClampsController;
   v4 = [(SBKStoreClampsController *)&v14 description];
-  v5 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:self->_accountIdentifierCheckTimestamp];
   v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:self->_authenticationNeededTimestamp];
   v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:self->_userAcceptedSyncTimestamp];
   v9 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:self->_networkingBlockedUntil];
   v10 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:self->_backOffUntil];
   v11 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:self->_userCancelledSignInBackOffUntil];
-  v12 = [v3 stringWithFormat:@"%@\n\tCurrent Date = %@, \n\taccountIdentifierCheckTimestamp = %@, \n\tauthenticationNeededTimestamp = %@, \n\tuserAcceptedSyncTimestamp = %@, \n\tnetworkingBlockedUntil = %@, \n\tbackOffUntil= %@, \n\tuserCancelledSignInBackOffUntil = %@", v4, v5, v6, v7, v8, v9, v10, v11];
+  v12 = [v3 stringWithFormat:@"%@\n\tCurrent Date = %@, \n\taccountIdentifierCheckTimestamp = %@, \n\tauthenticationNeededTimestamp = %@, \n\tuserAcceptedSyncTimestamp = %@, \n\tnetworkingBlockedUntil = %@, \n\tbackOffUntil= %@, \n\tuserCancelledSignInBackOffUntil = %@", v4, date, v6, v7, v8, v9, v10, v11];
 
   return v12;
 }

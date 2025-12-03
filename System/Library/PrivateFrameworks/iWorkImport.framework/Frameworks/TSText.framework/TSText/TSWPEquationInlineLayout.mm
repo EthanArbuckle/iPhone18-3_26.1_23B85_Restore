@@ -1,17 +1,17 @@
 @interface TSWPEquationInlineLayout
-+ (double)fontSizeThatMatchesXHeightForFontName:(id)a3 fontSize:(double)a4;
++ (double)fontSizeThatMatchesXHeightForFontName:(id)name fontSize:(double)size;
 - (BOOL)p_textIsVertical;
 - (CGSize)invalidEquationSize;
 - (CGSize)unconstrainedSize;
 - (double)descentForInlineLayout;
 - (double)p_textScale;
-- (id)computeInfoGeometryFromPureLayoutGeometry:(id)a3;
+- (id)computeInfoGeometryFromPureLayoutGeometry:(id)geometry;
 - (id)computeLayoutGeometry;
 - (id)layoutGeometryFromInfo;
 - (id)p_layoutTarget;
-- (id)p_newLayoutContextWithMaximumSize:(CGSize)a3 textScale:(double)a4 returnFontSizeAdjustedForXHeight:(double *)a5;
+- (id)p_newLayoutContextWithMaximumSize:(CGSize)size textScale:(double)scale returnFontSizeAdjustedForXHeight:(double *)height;
 - (id)p_textPropertiesForLayout;
-- (void)willLayoutInlineWithMaximumSize:(CGSize)a3 textScale:(double)a4;
+- (void)willLayoutInlineWithMaximumSize:(CGSize)size textScale:(double)scale;
 @end
 
 @implementation TSWPEquationInlineLayout
@@ -190,11 +190,11 @@
 
   v131.receiver = self;
   v131.super_class = TSWPEquationInlineLayout;
-  v82 = [(TSWPEquationInlineLayout *)&v131 computeLayoutGeometry];
+  computeLayoutGeometry = [(TSWPEquationInlineLayout *)&v131 computeLayoutGeometry];
   v85 = objc_alloc(MEMORY[0x277D80300]);
-  if (v82)
+  if (computeLayoutGeometry)
   {
-    objc_msgSend_transform(v82, v83, v84);
+    objc_msgSend_transform(computeLayoutGeometry, v83, v84);
   }
 
   else
@@ -208,9 +208,9 @@
   if (objc_msgSend_equationIsValid(self, v88, v89))
   {
     v93 = objc_alloc(MEMORY[0x277D80300]);
-    if (v82)
+    if (computeLayoutGeometry)
     {
-      objc_msgSend_transform(v82, v91, v92);
+      objc_msgSend_transform(computeLayoutGeometry, v91, v92);
     }
 
     else
@@ -241,9 +241,9 @@
     v136 = CGRectOffset(v135, v110, v111);
     objc_msgSend_setBoundsForStandardKnobs_(self, v114, v115, v136.origin.x, v136.origin.y, v136.size.width, v136.size.height);
     memset(&v130, 0, sizeof(v130));
-    if (v82)
+    if (computeLayoutGeometry)
     {
-      objc_msgSend_transform(v82, v116, v117);
+      objc_msgSend_transform(computeLayoutGeometry, v116, v117);
     }
 
     else
@@ -314,14 +314,14 @@
   return v19;
 }
 
-- (id)p_newLayoutContextWithMaximumSize:(CGSize)a3 textScale:(double)a4 returnFontSizeAdjustedForXHeight:(double *)a5
+- (id)p_newLayoutContextWithMaximumSize:(CGSize)size textScale:(double)scale returnFontSizeAdjustedForXHeight:(double *)height
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = objc_msgSend_p_textPropertiesForLayout(self, a2, a5);
+  height = size.height;
+  width = size.width;
+  v10 = objc_msgSend_p_textPropertiesForLayout(self, a2, height);
   v12 = objc_msgSend_objectForProperty_(v10, v11, 16);
   objc_msgSend_floatValueForProperty_(v10, v13, 17);
-  v15 = v14 * a4;
+  v15 = v14 * scale;
   v18 = v15;
   if ((objc_msgSend_disableXHeightMatching(self, v16, v17) & 1) == 0)
   {
@@ -332,9 +332,9 @@
 
   v22 = [TSWPEquationLayoutContext alloc];
   v24 = objc_msgSend_initWithTextProperties_fontSize_containerSize_textMacroFontSize_(v22, v23, v10, v18, width, height, v15);
-  if (a5)
+  if (height)
   {
-    *a5 = v18;
+    *height = v18;
   }
 
   return v24;
@@ -364,11 +364,11 @@
   return result;
 }
 
-- (void)willLayoutInlineWithMaximumSize:(CGSize)a3 textScale:(double)a4
+- (void)willLayoutInlineWithMaximumSize:(CGSize)size textScale:(double)scale
 {
-  if (a4 <= 0.0 || a3.width <= 0.0 || a3.height <= 0.0)
+  if (scale <= 0.0 || size.width <= 0.0 || size.height <= 0.0)
   {
-    v14 = objc_msgSend_equationLayoutContext(self, a2, v4, a3.width, a3.height);
+    v14 = objc_msgSend_equationLayoutContext(self, a2, v4, size.width, size.height);
 
     if (!v14)
     {
@@ -400,18 +400,18 @@
   }
 }
 
-- (id)computeInfoGeometryFromPureLayoutGeometry:(id)a3
+- (id)computeInfoGeometryFromPureLayoutGeometry:(id)geometry
 {
-  v4 = a3;
+  geometryCopy = geometry;
   v5 = objc_alloc(MEMORY[0x277D80300]);
   v8 = objc_msgSend_info(self, v6, v7);
   v11 = objc_msgSend_geometry(v8, v9, v10);
   objc_msgSend_size(v11, v12, v13);
   v17 = v16;
   v19 = v18;
-  if (v4)
+  if (geometryCopy)
   {
-    objc_msgSend_transform(v4, v14, v15);
+    objc_msgSend_transform(geometryCopy, v14, v15);
   }
 
   else
@@ -428,16 +428,16 @@
   return v21;
 }
 
-+ (double)fontSizeThatMatchesXHeightForFontName:(id)a3 fontSize:(double)a4
++ (double)fontSizeThatMatchesXHeightForFontName:(id)name fontSize:(double)size
 {
-  v5 = a3;
+  nameCopy = name;
   v8 = objc_msgSend_sharedInstance(TSWPFontList, v6, v7);
-  v10 = objc_msgSend_fontForPostscriptName_(v8, v9, v5);
+  v10 = objc_msgSend_fontForPostscriptName_(v8, v9, nameCopy);
 
-  v13 = objc_msgSend_ctFontForSize_(v10, v11, v12, a4);
+  v13 = objc_msgSend_ctFontForSize_(v10, v11, v12, size);
   v16 = objc_msgSend_sharedInstance(TSWPFontList, v14, v15);
   v18 = objc_msgSend_fontForPostscriptName_(v16, v17, @"STIXGeneral-Italic");
-  v21 = objc_msgSend_ctFontForSize_(v18, v19, v20, a4);
+  v21 = objc_msgSend_ctFontForSize_(v18, v19, v20, size);
 
   XHeight = CTFontGetXHeight(v13);
   v23 = CTFontGetXHeight(v21);
@@ -452,7 +452,7 @@
     v24 = 1.0;
   }
 
-  return v24 * a4;
+  return v24 * size;
 }
 
 - (id)p_layoutTarget

@@ -1,25 +1,25 @@
 @interface CertInfoCertificateDetailsController
-- (CertInfoCertificateDetailsController)initWithCertificateProperties:(id)a3;
-- (CertInfoCertificateDetailsController)initWithTrust:(__SecTrust *)a3 certificateIndex:(int64_t)a4;
+- (CertInfoCertificateDetailsController)initWithCertificateProperties:(id)properties;
+- (CertInfoCertificateDetailsController)initWithTrust:(__SecTrust *)trust certificateIndex:(int64_t)index;
 - (CertInfoCertificateDetailsControllerDelegate)delegate;
-- (id)_propertiesForIndexPath:(id)a3;
-- (id)_sectionsForProperties:(id)a3 currentSectionDictionary:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_doneButtonPressed:(id)a3;
-- (void)setShowsDoneButton:(BOOL)a3;
-- (void)tableView:(id)a3 performAction:(SEL)a4 forRowAtIndexPath:(id)a5 withSender:(id)a6;
+- (id)_propertiesForIndexPath:(id)path;
+- (id)_sectionsForProperties:(id)properties currentSectionDictionary:(id)dictionary;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_doneButtonPressed:(id)pressed;
+- (void)setShowsDoneButton:(BOOL)button;
+- (void)tableView:(id)view performAction:(SEL)action forRowAtIndexPath:(id)path withSender:(id)sender;
 @end
 
 @implementation CertInfoCertificateDetailsController
 
-- (CertInfoCertificateDetailsController)initWithTrust:(__SecTrust *)a3 certificateIndex:(int64_t)a4
+- (CertInfoCertificateDetailsController)initWithTrust:(__SecTrust *)trust certificateIndex:(int64_t)index
 {
-  v7 = self;
-  if (a3)
+  selfCopy = self;
+  if (trust)
   {
-    if ((a4 & 0x8000000000000000) == 0)
+    if ((index & 0x8000000000000000) == 0)
     {
       goto LABEL_3;
     }
@@ -28,15 +28,15 @@
   else
   {
     [CertInfoCertificateDetailsController initWithTrust:a2 certificateIndex:self];
-    if ((a4 & 0x8000000000000000) == 0)
+    if ((index & 0x8000000000000000) == 0)
     {
       goto LABEL_3;
     }
   }
 
-  [CertInfoCertificateDetailsController initWithTrust:a2 certificateIndex:v7];
+  [CertInfoCertificateDetailsController initWithTrust:a2 certificateIndex:selfCopy];
 LABEL_3:
-  if (SecTrustGetCertificateCount(a3) <= a4)
+  if (SecTrustGetCertificateCount(trust) <= index)
   {
     v9 = 0;
   }
@@ -44,23 +44,23 @@ LABEL_3:
   else
   {
     v8 = SecTrustCopyDetailedPropertiesAtIndex();
-    v9 = [(CertInfoCertificateDetailsController *)v7 initWithCertificateProperties:v8];
-    v7 = v8;
+    v9 = [(CertInfoCertificateDetailsController *)selfCopy initWithCertificateProperties:v8];
+    selfCopy = v8;
   }
 
   return v9;
 }
 
-- (CertInfoCertificateDetailsController)initWithCertificateProperties:(id)a3
+- (CertInfoCertificateDetailsController)initWithCertificateProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v14.receiver = self;
   v14.super_class = CertInfoCertificateDetailsController;
   v5 = [(CertInfoCertificateDetailsController *)&v14 initWithStyle:1];
   v6 = v5;
   if (v5)
   {
-    v7 = [(CertInfoCertificateDetailsController *)v5 _sectionsForProperties:v4];
+    v7 = [(CertInfoCertificateDetailsController *)v5 _sectionsForProperties:propertiesCopy];
     sectionDictionaries = v6->_sectionDictionaries;
     v6->_sectionDictionaries = v7;
 
@@ -76,18 +76,18 @@ LABEL_3:
   return v6;
 }
 
-- (id)_sectionsForProperties:(id)a3 currentSectionDictionary:(id)a4
+- (id)_sectionsForProperties:(id)properties currentSectionDictionary:(id)dictionary
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v31 = [MEMORY[0x277CBEB18] array];
-  v7 = [v6 objectForKey:@"CertInfoCertificateDetailsSectionPropertiesKey"];
+  propertiesCopy = properties;
+  dictionaryCopy = dictionary;
+  array = [MEMORY[0x277CBEB18] array];
+  v7 = [dictionaryCopy objectForKey:@"CertInfoCertificateDetailsSectionPropertiesKey"];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v5;
+  obj = propertiesCopy;
   v8 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v8)
   {
@@ -121,23 +121,23 @@ LABEL_3:
             v18 = v11;
             v19 = v10;
             v20 = v7;
-            v21 = [MEMORY[0x277CBEB18] array];
-            v22 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{v14, @"CertInfoCertificateDetailsSectionLabelKey", v21, @"CertInfoCertificateDetailsSectionPropertiesKey", 0}];
+            array2 = [MEMORY[0x277CBEB18] array];
+            v22 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{v14, @"CertInfoCertificateDetailsSectionLabelKey", array2, @"CertInfoCertificateDetailsSectionPropertiesKey", 0}];
             v23 = [(CertInfoCertificateDetailsController *)self _sectionsForProperties:v17 currentSectionDictionary:v22];
-            if ([v21 count])
+            if ([array2 count])
             {
-              [v31 addObject:v22];
+              [array addObject:v22];
             }
 
             if ([v23 count])
             {
-              [v31 addObjectsFromArray:v23];
+              [array addObjectsFromArray:v23];
             }
 
-            if ([v21 count] || objc_msgSend(v23, "count"))
+            if ([array2 count] || objc_msgSend(v23, "count"))
             {
 
-              v6 = 0;
+              dictionaryCopy = 0;
             }
 
             v7 = v20;
@@ -149,13 +149,13 @@ LABEL_3:
 
         else
         {
-          if (!v6)
+          if (!dictionaryCopy)
           {
-            v24 = [MEMORY[0x277CBEB18] array];
+            array3 = [MEMORY[0x277CBEB18] array];
 
-            v6 = [MEMORY[0x277CBEB38] dictionaryWithObject:v24 forKey:@"CertInfoCertificateDetailsSectionPropertiesKey"];
-            [v31 addObject:v6];
-            v7 = v24;
+            dictionaryCopy = [MEMORY[0x277CBEB38] dictionaryWithObject:array3 forKey:@"CertInfoCertificateDetailsSectionPropertiesKey"];
+            [array addObject:dictionaryCopy];
+            v7 = array3;
           }
 
           [v7 addObject:v13];
@@ -173,19 +173,19 @@ LABEL_3:
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return v31;
+  return array;
 }
 
-- (void)setShowsDoneButton:(BOOL)a3
+- (void)setShowsDoneButton:(BOOL)button
 {
-  *(self + 1064) = *(self + 1064) & 0xFE | a3;
-  v4 = [(CertInfoCertificateDetailsController *)self navigationItem];
-  v5 = [v4 rightBarButtonItem];
+  *(self + 1064) = *(self + 1064) & 0xFE | button;
+  navigationItem = [(CertInfoCertificateDetailsController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
   doneButton = self->_doneButton;
 
-  if ((*(self + 1064) & 1) == 0 || v5 == doneButton)
+  if ((*(self + 1064) & 1) == 0 || rightBarButtonItem == doneButton)
   {
-    if ((*(self + 1064) & 1) != 0 || v5 != doneButton)
+    if ((*(self + 1064) & 1) != 0 || rightBarButtonItem != doneButton)
     {
       return;
     }
@@ -198,87 +198,87 @@ LABEL_3:
     v7 = self->_doneButton;
   }
 
-  v8 = [(CertInfoCertificateDetailsController *)self navigationItem];
-  [v8 setRightBarButtonItem:v7];
+  navigationItem2 = [(CertInfoCertificateDetailsController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v7];
 }
 
-- (void)_doneButtonPressed:(id)a3
+- (void)_doneButtonPressed:(id)pressed
 {
-  v4 = [(CertInfoCertificateDetailsController *)self delegate];
+  delegate = [(CertInfoCertificateDetailsController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CertInfoCertificateDetailsController *)self delegate];
-    [v6 certificateDetailsControllerDidFinish:self];
+    delegate2 = [(CertInfoCertificateDetailsController *)self delegate];
+    [delegate2 certificateDetailsControllerDidFinish:self];
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_sectionDictionaries objectAtIndex:a4];
+  v4 = [(NSArray *)self->_sectionDictionaries objectAtIndex:section];
   v5 = [v4 objectForKey:@"CertInfoCertificateDetailsSectionPropertiesKey"];
   v6 = [v5 count];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_sectionDictionaries objectAtIndex:a4];
+  v4 = [(NSArray *)self->_sectionDictionaries objectAtIndex:section];
   v5 = [v4 objectForKey:@"CertInfoCertificateDetailsSectionLabelKey"];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"CertInfoCertificateDetailsControllerTableCell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"CertInfoCertificateDetailsControllerTableCell"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:1 reuseIdentifier:@"CertInfoCertificateDetailsControllerTableCell"];
   }
 
-  v8 = [(CertInfoCertificateDetailsController *)self _propertiesForIndexPath:v6];
+  v8 = [(CertInfoCertificateDetailsController *)self _propertiesForIndexPath:pathCopy];
   v9 = [v8 objectForKey:*MEMORY[0x277CDC500]];
-  v10 = [v7 textLabel];
-  [v10 setText:v9];
+  textLabel = [v7 textLabel];
+  [textLabel setText:v9];
 
   v11 = _stringValueForPropertyDictionary(v8);
-  v12 = [v7 detailTextLabel];
-  [v12 setText:v11];
+  detailTextLabel = [v7 detailTextLabel];
+  [detailTextLabel setText:v11];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 performAction:(SEL)a4 forRowAtIndexPath:(id)a5 withSender:(id)a6
+- (void)tableView:(id)view performAction:(SEL)action forRowAtIndexPath:(id)path withSender:(id)sender
 {
-  v16 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (sel_copy_ != a4)
+  viewCopy = view;
+  pathCopy = path;
+  senderCopy = sender;
+  if (sel_copy_ != action)
   {
     [CertInfoCertificateDetailsController tableView:a2 performAction:self forRowAtIndexPath:? withSender:?];
   }
 
-  v13 = [(CertInfoCertificateDetailsController *)self _propertiesForIndexPath:v11];
+  v13 = [(CertInfoCertificateDetailsController *)self _propertiesForIndexPath:pathCopy];
   v14 = _stringValueForPropertyDictionary(v13);
 
   if (v14)
   {
-    v15 = [MEMORY[0x277D75810] generalPasteboard];
-    [v15 setString:v14];
+    generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+    [generalPasteboard setString:v14];
   }
 }
 
-- (id)_propertiesForIndexPath:(id)a3
+- (id)_propertiesForIndexPath:(id)path
 {
   sectionDictionaries = self->_sectionDictionaries;
-  v4 = a3;
-  v5 = -[NSArray objectAtIndex:](sectionDictionaries, "objectAtIndex:", [v4 section]);
+  pathCopy = path;
+  v5 = -[NSArray objectAtIndex:](sectionDictionaries, "objectAtIndex:", [pathCopy section]);
   v6 = [v5 objectForKey:@"CertInfoCertificateDetailsSectionPropertiesKey"];
-  v7 = [v4 row];
+  v7 = [pathCopy row];
 
   v8 = [v6 objectAtIndex:v7];
 

@@ -1,10 +1,10 @@
 @interface CACLanguageViewBridge
 - (_TtP19CommandAndControlUI23CACLanguageViewDelegate_)delegate;
 - (id)makeLanguageUI;
-- (id)makeLanguageUIWithLocales:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)updateDownloadStatusWith:(id)a3;
-- (void)updateInstallationStatusWith:(id)a3;
+- (id)makeLanguageUIWithLocales:(id)locales;
+- (void)setDelegate:(id)delegate;
+- (void)updateDownloadStatusWith:(id)with;
+- (void)updateInstallationStatusWith:(id)with;
 @end
 
 @implementation CACLanguageViewBridge
@@ -19,12 +19,12 @@
   return v5;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5 = OBJC_IVAR____TtC19CommandAndControlUI21CACLanguageViewBridge_delegate;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = delegate;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
@@ -32,7 +32,7 @@
 - (id)makeLanguageUI
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC19CommandAndControlUI21CACLanguageViewBridge_model);
-  v3 = self;
+  selfCopy = self;
 
   sub_243BC7B88(0, v15);
   v12 = v15[4];
@@ -51,9 +51,9 @@
   return v5;
 }
 
-- (id)makeLanguageUIWithLocales:(id)a3
+- (id)makeLanguageUIWithLocales:(id)locales
 {
-  if (a3)
+  if (locales)
   {
     v4 = sub_243BD0E48();
   }
@@ -63,31 +63,31 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   v6 = sub_243BC911C(v4);
 
   return v6;
 }
 
-- (void)updateInstallationStatusWith:(id)a3
+- (void)updateInstallationStatusWith:(id)with
 {
-  v4 = a3;
-  v5 = self;
-  sub_243BC9460(v4);
+  withCopy = with;
+  selfCopy = self;
+  sub_243BC9460(withCopy);
 }
 
-- (void)updateDownloadStatusWith:(id)a3
+- (void)updateDownloadStatusWith:(id)with
 {
-  v4 = a3;
-  v15 = self;
-  v5 = sub_243BCB2B0(v4);
+  withCopy = with;
+  selfCopy = self;
+  v5 = sub_243BCB2B0(withCopy);
   if (v6)
   {
     v9 = v5;
     v10 = v6;
     v11 = v7;
     v12 = v8;
-    v13 = *(&v15->super.isa + OBJC_IVAR____TtC19CommandAndControlUI21CACLanguageViewBridge_model);
+    v13 = *(&selfCopy->super.isa + OBJC_IVAR____TtC19CommandAndControlUI21CACLanguageViewBridge_model);
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EDA6648, &qword_243BD2240);
     inited = swift_initStackObject();
     *(inited + 16) = xmmword_243BD1690;

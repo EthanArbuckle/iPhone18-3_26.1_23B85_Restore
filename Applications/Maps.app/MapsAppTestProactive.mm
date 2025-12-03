@@ -8,8 +8,8 @@
 
 - (void)_performScrollTest
 {
-  v3 = [(MapsAppTest *)self testCoordinator];
-  v4 = [v3 pptTestScrollViewForProactive];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  pptTestScrollViewForProactive = [testCoordinator pptTestScrollViewForProactive];
 
   RPTContentSizeInDirection();
   v6 = v5;
@@ -19,11 +19,11 @@
   v12 = v11;
   v14 = v13;
   v15 = [RPTScrollViewTestParameters alloc];
-  v16 = [(MapsAppTest *)self testName];
-  v17 = [v15 initWithTestName:v16 scrollBounds:1 scrollContentLength:&stru_1016304D0 direction:v8 completionHandler:{v10, v12, v14, v6}];
+  testName = [(MapsAppTest *)self testName];
+  v17 = [v15 initWithTestName:testName scrollBounds:1 scrollContentLength:&stru_1016304D0 direction:v8 completionHandler:{v10, v12, v14, v6}];
 
   objc_initWeak(&location, self);
-  v18 = [(MapsAppTest *)self testName];
+  testName2 = [(MapsAppTest *)self testName];
   v27 = v17;
   v19 = [NSArray arrayWithObjects:&v27 count:1];
   v21 = _NSConcreteStackBlock;
@@ -31,7 +31,7 @@
   v23 = sub_100984FFC;
   v24 = &unk_101661B98;
   objc_copyWeak(&v25, &location);
-  v20 = [RPTGroupScrollTestParameters newWithTestName:v18 parameters:v19 completionHandler:&v21];
+  v20 = [RPTGroupScrollTestParameters newWithTestName:testName2 parameters:v19 completionHandler:&v21];
 
   [RPTTestRunner runTestWithParameters:v20, v21, v22, v23, v24];
   objc_destroyWeak(&v25);
@@ -59,10 +59,10 @@
 
 - (BOOL)runTest
 {
-  v3 = [(MapsAppTest *)self options];
-  v4 = [v3 _mapstest_isUsingSampleProactiveData];
+  options = [(MapsAppTest *)self options];
+  _mapstest_isUsingSampleProactiveData = [options _mapstest_isUsingSampleProactiveData];
 
-  if (v4)
+  if (_mapstest_isUsingSampleProactiveData)
   {
     v5 = dispatch_time(0, 6000000000);
     block[0] = _NSConcreteStackBlock;

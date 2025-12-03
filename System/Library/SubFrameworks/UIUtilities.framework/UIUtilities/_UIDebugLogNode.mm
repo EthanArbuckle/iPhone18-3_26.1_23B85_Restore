@@ -1,17 +1,17 @@
 @interface _UIDebugLogNode
 + (id)rootNode;
-- (_UIDebugLogNode)initWithString:(id)a3;
+- (_UIDebugLogNode)initWithString:(id)string;
 - (id)description;
-- (void)__genericAppendChildDescription:(id)a3 withPrefix:(id)a4 inheritedTreeStyle:(id)a5 recursionSelector:(SEL)a6 appendHandler:(id)a7;
+- (void)__genericAppendChildDescription:(id)description withPrefix:(id)prefix inheritedTreeStyle:(id)style recursionSelector:(SEL)selector appendHandler:(id)handler;
 @end
 
 @implementation _UIDebugLogNode
 
-- (_UIDebugLogNode)initWithString:(id)a3
+- (_UIDebugLogNode)initWithString:(id)string
 {
   v7.receiver = self;
   v7.super_class = _UIDebugLogNode;
-  v3 = [(_UIDebugLogMessage *)&v7 initWithString:a3];
+  v3 = [(_UIDebugLogMessage *)&v7 initWithString:string];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -29,19 +29,19 @@
   return v2;
 }
 
-- (void)__genericAppendChildDescription:(id)a3 withPrefix:(id)a4 inheritedTreeStyle:(id)a5 recursionSelector:(SEL)a6 appendHandler:(id)a7
+- (void)__genericAppendChildDescription:(id)description withPrefix:(id)prefix inheritedTreeStyle:(id)style recursionSelector:(SEL)selector appendHandler:(id)handler
 {
-  v32 = a3;
-  v31 = a4;
-  v11 = a5;
-  v30 = a7;
+  descriptionCopy = description;
+  prefixCopy = prefix;
+  styleCopy = style;
+  handlerCopy = handler;
   if ([(NSMutableArray *)self->_childMessages count])
   {
     v12 = [(NSMutableArray *)self->_childMessages indexOfObjectWithOptions:2 passingTest:&__block_literal_global_100];
-    v13 = [(_UIDebugLogNode *)self treeStyle];
-    v14 = v13;
-    v28 = v11;
-    if (v13 || (v14 = v11) != 0)
+    treeStyle = [(_UIDebugLogNode *)self treeStyle];
+    v14 = treeStyle;
+    v28 = styleCopy;
+    if (treeStyle || (v14 = styleCopy) != 0)
     {
       v15 = v14;
     }
@@ -59,32 +59,32 @@
       do
       {
         v18 = [(NSMutableArray *)self->_childMessages objectAtIndexedSubscript:v17];
-        v19 = [v18 _isNode];
+        _isNode = [v18 _isNode];
         v21 = v12 != 0x7FFFFFFFFFFFFFFFLL && v12 > v17;
         if (([v18 _isTransparent] & 1) == 0)
         {
           v22 = MEMORY[0x277CCACA8];
-          v23 = _prefixForItem(v19, v21, v16);
-          v24 = [v22 stringWithFormat:@"\n%@%@", v31, v23];
+          v23 = _prefixForItem(_isNode, v21, v16);
+          v24 = [v22 stringWithFormat:@"\n%@%@", prefixCopy, v23];
 
-          v30[2](v30, v18, v24, v32);
+          handlerCopy[2](handlerCopy, v18, v24, descriptionCopy);
         }
 
-        if (v19)
+        if (_isNode)
         {
           v25 = v18;
           if ([v25 _isTransparent])
           {
-            v26 = v31;
+            v26 = prefixCopy;
           }
 
           else
           {
             v27 = _prefixForItem(0, v21, v16);
-            v26 = [v31 stringByAppendingString:v27];
+            v26 = [prefixCopy stringByAppendingString:v27];
           }
 
-          [v25 a6];
+          [v25 selector];
         }
 
         ++v17;
@@ -93,14 +93,14 @@
       while (v17 < [(NSMutableArray *)self->_childMessages count]);
     }
 
-    v11 = v28;
+    styleCopy = v28;
   }
 }
 
 - (id)description
 {
-  v3 = [(_UIDebugLogMessage *)self _stringRepresentation];
-  v4 = [v3 mutableCopy];
+  _stringRepresentation = [(_UIDebugLogMessage *)self _stringRepresentation];
+  v4 = [_stringRepresentation mutableCopy];
 
   [(_UIDebugLogNode *)self _appendChildDescription:v4 withPrefix:&stru_28865BF70 inheritedTreeStyle:0];
 

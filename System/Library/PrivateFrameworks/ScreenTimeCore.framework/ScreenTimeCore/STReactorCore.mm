@@ -1,41 +1,41 @@
 @interface STReactorCore
-+ (id)_intervalForSchedulingNextBackgroundActivityForDowntimeBiomeDonation:(id)a3 configurations:(id)a4;
-+ (id)reactorDirectiveForAskForTimeRequestEvent:(id)a3;
-+ (id)reactorDirectiveForAskForTimeResponseEvent:(id)a3;
-+ (id)reactorDirectiveForBackgroundActivityOfType:(int64_t)a3;
-+ (id)reactorDirectiveForBackgroundActivityResult:(id)a3 activityType:(int64_t)a4 downtimeConfigurationsByUserID:(id)a5;
-+ (id)reactorDirectiveForInitialSetupWithTargetableFamilyMembers:(id)a3;
-+ (id)reactorDirectiveForMessageTransportMessage:(id)a3 targetableFamilyMembers:(id)a4 communicationConfigurationByUserID:(id)a5 screenTimeCapabilities:(id)a6;
-+ (id)reactorDirectiveForReconcilingWithTargetableFamilyMembers:(id)a3 familyMemberGenesisStateItems:(id)a4 localDeviceID:(id)a5 signedInUserHasMultipleDevices:(BOOL)a6;
-+ (id)reactorDirectiveForSchedulingNextBackgroundActivityForDowntimeBiomeDonation:(id)a3 configurations:(id)a4;
-+ (id)reactorDirectiveForSendingResponseForResult:(id)a3 downtimeConfigurationsByUserID:(id)a4;
-+ (id)reactorDirectiveForSentMessageResult:(id)a3;
-+ (id)reactorDirectiveForSuccessfulConfigurationWriteResult:(id)a3 configurations:(id)a4;
-+ (id)reactorDirectiveForWritingEyeReliefStateChange:(id)a3 targetableFamilyMembers:(id)a4;
-+ (id)reactorDirectiveForWritingUserSafetyPolicyChange:(id)a3 targetableFamilyMembers:(id)a4;
-+ (id)userToRespondForGivenCheckingInUser:(id)a3 targetableFamilyMembers:(id)a4;
++ (id)_intervalForSchedulingNextBackgroundActivityForDowntimeBiomeDonation:(id)donation configurations:(id)configurations;
++ (id)reactorDirectiveForAskForTimeRequestEvent:(id)event;
++ (id)reactorDirectiveForAskForTimeResponseEvent:(id)event;
++ (id)reactorDirectiveForBackgroundActivityOfType:(int64_t)type;
++ (id)reactorDirectiveForBackgroundActivityResult:(id)result activityType:(int64_t)type downtimeConfigurationsByUserID:(id)d;
++ (id)reactorDirectiveForInitialSetupWithTargetableFamilyMembers:(id)members;
++ (id)reactorDirectiveForMessageTransportMessage:(id)message targetableFamilyMembers:(id)members communicationConfigurationByUserID:(id)d screenTimeCapabilities:(id)capabilities;
++ (id)reactorDirectiveForReconcilingWithTargetableFamilyMembers:(id)members familyMemberGenesisStateItems:(id)items localDeviceID:(id)d signedInUserHasMultipleDevices:(BOOL)devices;
++ (id)reactorDirectiveForSchedulingNextBackgroundActivityForDowntimeBiomeDonation:(id)donation configurations:(id)configurations;
++ (id)reactorDirectiveForSendingResponseForResult:(id)result downtimeConfigurationsByUserID:(id)d;
++ (id)reactorDirectiveForSentMessageResult:(id)result;
++ (id)reactorDirectiveForSuccessfulConfigurationWriteResult:(id)result configurations:(id)configurations;
++ (id)reactorDirectiveForWritingEyeReliefStateChange:(id)change targetableFamilyMembers:(id)members;
++ (id)reactorDirectiveForWritingUserSafetyPolicyChange:(id)change targetableFamilyMembers:(id)members;
++ (id)userToRespondForGivenCheckingInUser:(id)user targetableFamilyMembers:(id)members;
 @end
 
 @implementation STReactorCore
 
-+ (id)reactorDirectiveForSendingResponseForResult:(id)a3 downtimeConfigurationsByUserID:(id)a4
++ (id)reactorDirectiveForSendingResponseForResult:(id)result downtimeConfigurationsByUserID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 processedDirective];
+  resultCopy = result;
+  dCopy = d;
+  processedDirective = [resultCopy processedDirective];
   p_info = &OBJC_METACLASS___STReactorCore.info;
   v9 = [[STReactorDirective alloc] initWithType:0 data:0];
-  v10 = [v7 type];
-  if (v10 <= 0x11)
+  type = [processedDirective type];
+  if (type <= 0x11)
   {
-    if (((1 << v10) & 0x3E3EC) != 0)
+    if (((1 << type) & 0x3E3EC) != 0)
     {
 LABEL_3:
       v11 = +[STLog reactorCore];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v42 = v5;
+        v42 = resultCopy;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "No response needed for result: %{public}@", buf, 0xCu);
       }
 
@@ -43,29 +43,29 @@ LABEL_3:
       goto LABEL_6;
     }
 
-    if (v10 == 4)
+    if (type == 4)
     {
-      v13 = [v5 output];
-      v15 = [v13 integerValue];
-      if (v15 == 1)
+      output = [resultCopy output];
+      integerValue = [output integerValue];
+      if (integerValue == 1)
       {
         v23 = +[STLog reactorCore];
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v42 = v5;
+          v42 = resultCopy;
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Repair configuration response needed for result: %{public}@", buf, 0xCu);
         }
 
         v24 = [STReactorDirective alloc];
-        v21 = [v5 processedDirective];
-        v25 = [v21 data];
-        p_info = [(STReactorDirective *)v24 initWithType:5 data:v25];
+        processedDirective2 = [resultCopy processedDirective];
+        data = [processedDirective2 data];
+        p_info = [(STReactorDirective *)v24 initWithType:5 data:data];
       }
 
       else
       {
-        if (v15)
+        if (integerValue)
         {
 
           goto LABEL_33;
@@ -75,36 +75,36 @@ LABEL_3:
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v42 = v5;
+          v42 = resultCopy;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Check if additional directive is needed for successful configuration write result: %{public}@", buf, 0xCu);
         }
 
-        v17 = [v5 processedDirective];
-        v18 = [v17 data];
+        processedDirective3 = [resultCopy processedDirective];
+        data2 = [processedDirective3 data];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if ((isKindOfClass & 1) == 0)
         {
-          sub_10011B41C(v5);
+          sub_10011B41C(resultCopy);
         }
 
-        v20 = [v5 processedDirective];
-        v21 = [v20 data];
+        processedDirective4 = [resultCopy processedDirective];
+        processedDirective2 = [processedDirective4 data];
 
-        p_info = [STReactorCore reactorDirectiveForSuccessfulConfigurationWriteResult:v21 configurations:v6];
+        p_info = [STReactorCore reactorDirectiveForSuccessfulConfigurationWriteResult:processedDirective2 configurations:dCopy];
       }
 
 LABEL_31:
       goto LABEL_6;
     }
 
-    if (v10 == 10)
+    if (type == 10)
     {
-      v13 = [v5 output];
-      if (v13)
+      output = [resultCopy output];
+      if (output)
       {
-        v14 = [[STReactorDirective alloc] initWithType:2 data:v13];
+        v14 = [[STReactorDirective alloc] initWithType:2 data:output];
       }
 
       else
@@ -113,7 +113,7 @@ LABEL_31:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v42 = v5;
+          v42 = resultCopy;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "No response needed for result: %{public}@", buf, 0xCu);
         }
 
@@ -125,9 +125,9 @@ LABEL_31:
     }
   }
 
-  if (v10 != 1)
+  if (type != 1)
   {
-    if (v10)
+    if (type)
     {
       goto LABEL_6;
     }
@@ -136,13 +136,13 @@ LABEL_31:
   }
 
 LABEL_33:
-  v26 = [v5 output];
+  output2 = [resultCopy output];
   v27 = objc_opt_new();
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v28 = v26;
+  v28 = output2;
   v29 = [v28 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v29)
   {
@@ -176,17 +176,17 @@ LABEL_6:
   return p_info;
 }
 
-+ (id)reactorDirectiveForWritingEyeReliefStateChange:(id)a3 targetableFamilyMembers:(id)a4
++ (id)reactorDirectiveForWritingEyeReliefStateChange:(id)change targetableFamilyMembers:(id)members
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 targetUser];
-  v8 = [STConfigurationReactorCoreComponent targetableFamilyMemberForUser:v7 inTargetableFamilyMembers:v6];
+  changeCopy = change;
+  membersCopy = members;
+  targetUser = [changeCopy targetUser];
+  v8 = [STConfigurationReactorCoreComponent targetableFamilyMemberForUser:targetUser inTargetableFamilyMembers:membersCopy];
 
-  if ([v5 configurationType] == 1 && objc_msgSend(v8, "isSignedInMember"))
+  if ([changeCopy configurationType] == 1 && objc_msgSend(v8, "isSignedInMember"))
   {
-    v9 = [v5 configuration];
-    v10 = [v9 objectForKeyedSubscript:@"isEyeReliefEnabled"];
+    configuration = [changeCopy configuration];
+    v10 = [configuration objectForKeyedSubscript:@"isEyeReliefEnabled"];
     if (v10)
     {
       v11 = v10;
@@ -202,17 +202,17 @@ LABEL_7:
   return v12;
 }
 
-+ (id)reactorDirectiveForWritingUserSafetyPolicyChange:(id)a3 targetableFamilyMembers:(id)a4
++ (id)reactorDirectiveForWritingUserSafetyPolicyChange:(id)change targetableFamilyMembers:(id)members
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 targetUser];
-  v8 = [STConfigurationReactorCoreComponent targetableFamilyMemberForUser:v7 inTargetableFamilyMembers:v6];
+  changeCopy = change;
+  membersCopy = members;
+  targetUser = [changeCopy targetUser];
+  v8 = [STConfigurationReactorCoreComponent targetableFamilyMemberForUser:targetUser inTargetableFamilyMembers:membersCopy];
 
-  if ([v5 configurationType] == 1 && objc_msgSend(v8, "isSignedInMember"))
+  if ([changeCopy configurationType] == 1 && objc_msgSend(v8, "isSignedInMember"))
   {
-    v9 = [v5 configuration];
-    v10 = [v9 objectForKeyedSubscript:@"isCommunicationSafetySendingRestricted"];
+    configuration = [changeCopy configuration];
+    v10 = [configuration objectForKeyedSubscript:@"isCommunicationSafetySendingRestricted"];
     v11 = v10;
     if (v10)
     {
@@ -221,7 +221,7 @@ LABEL_7:
 
     else
     {
-      v12 = [v9 objectForKeyedSubscript:@"isCommunicationSafetyReceivingRestricted"];
+      v12 = [configuration objectForKeyedSubscript:@"isCommunicationSafetyReceivingRestricted"];
     }
 
     v13 = v12;
@@ -266,44 +266,44 @@ LABEL_15:
   return v18;
 }
 
-+ (id)reactorDirectiveForMessageTransportMessage:(id)a3 targetableFamilyMembers:(id)a4 communicationConfigurationByUserID:(id)a5 screenTimeCapabilities:(id)a6
++ (id)reactorDirectiveForMessageTransportMessage:(id)message targetableFamilyMembers:(id)members communicationConfigurationByUserID:(id)d screenTimeCapabilities:(id)capabilities
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v12 contentType];
-  v14 = [v12 content];
+  capabilitiesCopy = capabilities;
+  dCopy = d;
+  membersCopy = members;
+  messageCopy = message;
+  contentType = [messageCopy contentType];
+  content = [messageCopy content];
 
-  v15 = [STMessageReactorCoreComponent reactorDirectiveForMessageContentType:v13 messageContent:v14 targetableFamilyMembers:v11 communicationConfigurationByUserID:v10 screenTimeCapabilities:v9];
+  v15 = [STMessageReactorCoreComponent reactorDirectiveForMessageContentType:contentType messageContent:content targetableFamilyMembers:membersCopy communicationConfigurationByUserID:dCopy screenTimeCapabilities:capabilitiesCopy];
 
   return v15;
 }
 
-+ (id)reactorDirectiveForSentMessageResult:(id)a3
++ (id)reactorDirectiveForSentMessageResult:(id)result
 {
-  v3 = [a3 type];
-  if (v3 <= 1)
+  type = [result type];
+  if (type <= 1)
   {
-    v3 = [[STReactorDirective alloc] initWithType:0 data:0];
+    type = [[STReactorDirective alloc] initWithType:0 data:0];
   }
 
-  return v3;
+  return type;
 }
 
-+ (id)reactorDirectiveForBackgroundActivityOfType:(int64_t)a3
++ (id)reactorDirectiveForBackgroundActivityOfType:(int64_t)type
 {
   v4 = +[STLog reactorCore];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3 > 3)
+    if (type > 3)
     {
       v5 = &stru_1001AC900;
     }
 
     else
     {
-      v5 = off_1001A52E0[a3];
+      v5 = off_1001A52E0[type];
     }
 
     v10 = 138543362;
@@ -312,27 +312,27 @@ LABEL_15:
   }
 
   v6 = [STReactorDirective alloc];
-  v7 = [NSNumber numberWithInteger:a3];
+  v7 = [NSNumber numberWithInteger:type];
   v8 = [(STReactorDirective *)v6 initWithType:8 data:v7];
 
   return v8;
 }
 
-+ (id)reactorDirectiveForBackgroundActivityResult:(id)a3 activityType:(int64_t)a4 downtimeConfigurationsByUserID:(id)a5
++ (id)reactorDirectiveForBackgroundActivityResult:(id)result activityType:(int64_t)type downtimeConfigurationsByUserID:(id)d
 {
-  v7 = a3;
-  v8 = a5;
+  resultCopy = result;
+  dCopy = d;
   v9 = +[STLog reactorCore];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    if (a4 > 3)
+    if (type > 3)
     {
       v10 = &stru_1001AC900;
     }
 
     else
     {
-      v10 = off_1001A52E0[a4];
+      v10 = off_1001A52E0[type];
     }
 
     v17 = 138543362;
@@ -340,23 +340,23 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "creating directive for background activity result from activity of type: %{public}@", &v17, 0xCu);
   }
 
-  if (a4 == 3)
+  if (type == 3)
   {
-    v14 = [STReactorCore reactorDirectiveForSchedulingNextBackgroundActivityForDowntimeBiomeDonation:0 configurations:v8];
+    v14 = [STReactorCore reactorDirectiveForSchedulingNextBackgroundActivityForDowntimeBiomeDonation:0 configurations:dCopy];
   }
 
   else
   {
-    if (a4 == 2)
+    if (type == 2)
     {
-      v11 = [v7 output];
+      output = [resultCopy output];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v13 = [v7 output];
-        [v13 integerValue];
+        output2 = [resultCopy output];
+        [output2 integerValue];
       }
     }
 
@@ -368,15 +368,15 @@ LABEL_15:
   return v15;
 }
 
-+ (id)userToRespondForGivenCheckingInUser:(id)a3 targetableFamilyMembers:(id)a4
++ (id)userToRespondForGivenCheckingInUser:(id)user targetableFamilyMembers:(id)members
 {
-  v5 = a3;
+  userCopy = user;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  membersCopy = members;
+  v7 = [membersCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -387,21 +387,21 @@ LABEL_15:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(membersCopy);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
         if ([v11 isSignedInMember] && !objc_msgSend(v11, "isParent"))
         {
           v13 = [STUserID alloc];
-          v14 = [v11 dsid];
-          v12 = [v13 initWithDSID:v14];
+          dsid = [v11 dsid];
+          v12 = [v13 initWithDSID:dsid];
 
           goto LABEL_12;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [membersCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         continue;
@@ -411,15 +411,15 @@ LABEL_15:
     }
   }
 
-  v12 = v5;
+  v12 = userCopy;
 LABEL_12:
 
   return v12;
 }
 
-+ (id)reactorDirectiveForInitialSetupWithTargetableFamilyMembers:(id)a3
++ (id)reactorDirectiveForInitialSetupWithTargetableFamilyMembers:(id)members
 {
-  v3 = a3;
+  membersCopy = members;
   v4 = [STMessageTransportMessage alloc];
   v5 = objc_opt_new();
   v6 = objc_opt_new();
@@ -430,7 +430,7 @@ LABEL_12:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = v3;
+  v9 = membersCopy;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
@@ -449,8 +449,8 @@ LABEL_12:
         if (([v14 isSignedInMember] & 1) == 0)
         {
           v15 = [STMessageTransportMessageAddress alloc];
-          v16 = [v14 dsid];
-          v17 = [(STMessageTransportMessageAddress *)v15 initWithUserDSID:v16];
+          dsid = [v14 dsid];
+          v17 = [(STMessageTransportMessageAddress *)v15 initWithUserDSID:dsid];
           [v8 addObject:v17];
         }
       }
@@ -470,24 +470,24 @@ LABEL_12:
   return v21;
 }
 
-+ (id)reactorDirectiveForReconcilingWithTargetableFamilyMembers:(id)a3 familyMemberGenesisStateItems:(id)a4 localDeviceID:(id)a5 signedInUserHasMultipleDevices:(BOOL)a6
++ (id)reactorDirectiveForReconcilingWithTargetableFamilyMembers:(id)members familyMemberGenesisStateItems:(id)items localDeviceID:(id)d signedInUserHasMultipleDevices:(BOOL)devices
 {
-  v37 = a6;
-  v8 = a3;
-  v39 = a4;
-  v9 = a5;
+  devicesCopy = devices;
+  membersCopy = members;
+  itemsCopy = items;
+  dCopy = d;
   v10 = objc_opt_new();
-  if ([v8 count])
+  if ([membersCopy count])
   {
     v50 = 0u;
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v11 = v8;
+    v11 = membersCopy;
     v42 = [v11 countByEnumeratingWithState:&v48 objects:v54 count:16];
     if (v42)
     {
-      v36 = v9;
+      v36 = dCopy;
       v40 = *v49;
       v41 = 0;
       v38 = v11;
@@ -502,17 +502,17 @@ LABEL_12:
 
           v13 = *(*(&v48 + 1) + 8 * i);
           v14 = [STUserID alloc];
-          v15 = [v13 dsid];
-          v16 = [v14 initWithDSID:v15];
+          dsid = [v13 dsid];
+          v16 = [v14 initWithDSID:dsid];
 
-          if (![v13 isSignedInMember] || (v17 = v16, v41, v41 = v17, v37))
+          if (![v13 isSignedInMember] || (v17 = v16, v41, v41 = v17, devicesCopy))
           {
             v43 = i;
             v46 = 0u;
             v47 = 0u;
             v44 = 0u;
             v45 = 0u;
-            v18 = v39;
+            v18 = itemsCopy;
             v19 = [v18 countByEnumeratingWithState:&v44 objects:v53 count:16];
             if (v19)
             {
@@ -530,14 +530,14 @@ LABEL_12:
                   v23 = *(*(&v44 + 1) + 8 * j);
                   if (![v23 genesisState])
                   {
-                    v24 = [v23 userID];
-                    v25 = [v24 isEqualToUserID:v16];
+                    userID = [v23 userID];
+                    v25 = [userID isEqualToUserID:v16];
 
                     if (v25)
                     {
                       v26 = [STMessageTransportMessageAddress alloc];
-                      v27 = [v13 dsid];
-                      v28 = [(STMessageTransportMessageAddress *)v26 initWithUserDSID:v27];
+                      dsid2 = [v13 dsid];
+                      v28 = [(STMessageTransportMessageAddress *)v26 initWithUserDSID:dsid2];
 
                       [v10 addObject:v28];
                     }
@@ -560,7 +560,7 @@ LABEL_12:
 
       while (v42);
 
-      v9 = v36;
+      dCopy = v36;
       if (v41)
       {
         if ([v10 count])
@@ -608,25 +608,25 @@ LABEL_33:
   return v33;
 }
 
-+ (id)reactorDirectiveForAskForTimeRequestEvent:(id)a3
++ (id)reactorDirectiveForAskForTimeRequestEvent:(id)event
 {
-  v3 = a3;
-  v4 = [[STReactorDirective alloc] initWithType:13 data:v3];
+  eventCopy = event;
+  v4 = [[STReactorDirective alloc] initWithType:13 data:eventCopy];
 
   return v4;
 }
 
-+ (id)reactorDirectiveForAskForTimeResponseEvent:(id)a3
++ (id)reactorDirectiveForAskForTimeResponseEvent:(id)event
 {
-  v3 = a3;
-  v4 = [[STReactorDirective alloc] initWithType:14 data:v3];
+  eventCopy = event;
+  v4 = [[STReactorDirective alloc] initWithType:14 data:eventCopy];
 
   return v4;
 }
 
-+ (id)reactorDirectiveForSuccessfulConfigurationWriteResult:(id)a3 configurations:(id)a4
++ (id)reactorDirectiveForSuccessfulConfigurationWriteResult:(id)result configurations:(id)configurations
 {
-  v4 = [STReactorCore reactorDirectiveForSchedulingNextBackgroundActivityForDowntimeBiomeDonation:a3 configurations:a4];
+  v4 = [STReactorCore reactorDirectiveForSchedulingNextBackgroundActivityForDowntimeBiomeDonation:result configurations:configurations];
   v5 = +[STLog reactorCore];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -638,14 +638,14 @@ LABEL_33:
   return v4;
 }
 
-+ (id)reactorDirectiveForSchedulingNextBackgroundActivityForDowntimeBiomeDonation:(id)a3 configurations:(id)a4
++ (id)reactorDirectiveForSchedulingNextBackgroundActivityForDowntimeBiomeDonation:(id)donation configurations:(id)configurations
 {
-  v6 = a3;
-  v7 = a4;
+  donationCopy = donation;
+  configurationsCopy = configurations;
   v8 = [[STReactorDirective alloc] initWithType:0 data:0];
-  if ((!v6 || [v6 configurationType] == 2) && v7)
+  if ((!donationCopy || [donationCopy configurationType] == 2) && configurationsCopy)
   {
-    v9 = [a1 _intervalForSchedulingNextBackgroundActivityForDowntimeBiomeDonation:v6 configurations:v7];
+    v9 = [self _intervalForSchedulingNextBackgroundActivityForDowntimeBiomeDonation:donationCopy configurations:configurationsCopy];
     if (v9)
     {
       v10 = +[STLog reactorCore];
@@ -674,11 +674,11 @@ LABEL_33:
   return v12;
 }
 
-+ (id)_intervalForSchedulingNextBackgroundActivityForDowntimeBiomeDonation:(id)a3 configurations:(id)a4
++ (id)_intervalForSchedulingNextBackgroundActivityForDowntimeBiomeDonation:(id)donation configurations:(id)configurations
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  donationCopy = donation;
+  configurationsCopy = configurations;
+  if (donationCopy)
   {
     v7 = &off_1001B2480;
   }
@@ -693,12 +693,12 @@ LABEL_33:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v10 = v6;
+    v10 = configurationsCopy;
     v11 = [v10 countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v11)
     {
       v12 = v11;
-      v28 = v6;
+      v28 = configurationsCopy;
       v29 = 0;
       v13 = 0;
       v14 = *v31;
@@ -712,10 +712,10 @@ LABEL_33:
           }
 
           v16 = [v10 objectForKeyedSubscript:{*(*(&v30 + 1) + 8 * i), v28, v29, v30}];
-          v17 = [v16 nextStateChangeDate];
-          if (v17)
+          nextStateChangeDate = [v16 nextStateChangeDate];
+          if (nextStateChangeDate)
           {
-            v18 = v17;
+            v18 = nextStateChangeDate;
             v19 = +[NSCalendar autoupdatingCurrentCalendar];
             v20 = STLocalDateFromUTCErasedDate();
 
@@ -754,8 +754,8 @@ LABEL_33:
         v26 = 0;
       }
 
-      v6 = v28;
-      v5 = v29;
+      configurationsCopy = v28;
+      donationCopy = v29;
     }
 
     else

@@ -1,12 +1,12 @@
 @interface EDReferenceCollection
 + (id)coalesceCollection;
 + (id)noCoalesceCollection;
-- (BOOL)coalesceReferenceAtIndex1:(unint64_t)a3 index2:(unint64_t)a4;
+- (BOOL)coalesceReferenceAtIndex1:(unint64_t)index1 index2:(unint64_t)index2;
 - (EDReferenceCollection)init;
 - (id)initWihNoCoalesce;
-- (id)referenceToCellWithIndex:(unint64_t)a3 byRow:(BOOL)a4;
-- (id)reverseReferencesByRow:(BOOL)a3;
-- (unint64_t)addObject:(id)a3;
+- (id)referenceToCellWithIndex:(unint64_t)index byRow:(BOOL)row;
+- (id)reverseReferencesByRow:(BOOL)row;
+- (unint64_t)addObject:(id)object;
 - (unint64_t)countOfCellsBeingReferenced;
 - (void)coalesce;
 - (void)coalesceProgressiveCellReferencesCollection;
@@ -79,9 +79,9 @@
 
 + (id)noCoalesceCollection
 {
-  v2 = [objc_alloc(objc_opt_class()) initWihNoCoalesce];
+  initWihNoCoalesce = [objc_alloc(objc_opt_class()) initWihNoCoalesce];
 
-  return v2;
+  return initWihNoCoalesce;
 }
 
 - (id)initWihNoCoalesce
@@ -104,12 +104,12 @@
   return v2;
 }
 
-- (unint64_t)addObject:(id)a3
+- (unint64_t)addObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v6.receiver = self;
   v6.super_class = EDReferenceCollection;
-  [(EDCollection *)&v6 addObject:v4];
+  [(EDCollection *)&v6 addObject:objectCopy];
   if (self->mCoalesce)
   {
     [(EDReferenceCollection *)self coalesce];
@@ -118,9 +118,9 @@
   return -1;
 }
 
-- (id)referenceToCellWithIndex:(unint64_t)a3 byRow:(BOOL)a4
+- (id)referenceToCellWithIndex:(unint64_t)index byRow:(BOOL)row
 {
-  v4 = a4;
+  rowCopy = row;
   v7 = [(EDCollection *)self count];
   if (v7)
   {
@@ -131,47 +131,47 @@
       v11 = v10;
       if (v10)
       {
-        v12 = [v10 countOfCellsBeingReferenced];
-        if (a3 < v12)
+        countOfCellsBeingReferenced = [v10 countOfCellsBeingReferenced];
+        if (index < countOfCellsBeingReferenced)
         {
-          if (v4)
+          if (rowCopy)
           {
-            v14 = [v11 lastColumn];
-            v15 = [v11 firstColumn];
-            v16 = [v11 firstRow];
-            v17 = [v11 firstColumn];
-            v18 = v14 - v15 + 1;
-            v19 = v16 + (a3 / v18);
-            v20 = a3 % v18;
+            lastColumn = [v11 lastColumn];
+            firstColumn = [v11 firstColumn];
+            firstRow = [v11 firstRow];
+            firstColumn2 = [v11 firstColumn];
+            v18 = lastColumn - firstColumn + 1;
+            v19 = firstRow + (index / v18);
+            v20 = index % v18;
           }
 
           else
           {
-            v21 = [v11 lastRow];
-            v22 = [v11 firstRow];
-            v23 = [v11 firstRow];
-            v17 = [v11 firstColumn];
-            v24 = v21 - v22 + 1;
-            v20 = a3 / v24;
-            v19 = v23 + (a3 % v24);
+            lastRow = [v11 lastRow];
+            firstRow2 = [v11 firstRow];
+            firstRow3 = [v11 firstRow];
+            firstColumn2 = [v11 firstColumn];
+            v24 = lastRow - firstRow2 + 1;
+            v20 = index / v24;
+            v19 = firstRow3 + (index % v24);
           }
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            +[EDSheetReference referenceWithSheetIndex:firstRow:lastRow:firstColumn:lastColumn:](EDSheetReference, "referenceWithSheetIndex:firstRow:lastRow:firstColumn:lastColumn:", [v11 sheetIndex], v19, v19, (v17 + v20), (v17 + v20));
+            +[EDSheetReference referenceWithSheetIndex:firstRow:lastRow:firstColumn:lastColumn:](EDSheetReference, "referenceWithSheetIndex:firstRow:lastRow:firstColumn:lastColumn:", [v11 sheetIndex], v19, v19, (firstColumn2 + v20), (firstColumn2 + v20));
           }
 
           else
           {
-            [EDReference referenceWithFirstRow:v19 lastRow:v19 firstColumn:(v17 + v20) lastColumn:(v17 + v20)];
+            [EDReference referenceWithFirstRow:v19 lastRow:v19 firstColumn:(firstColumn2 + v20) lastColumn:(firstColumn2 + v20)];
           }
           v13 = ;
 
           goto LABEL_15;
         }
 
-        a3 -= v12;
+        index -= countOfCellsBeingReferenced;
       }
     }
   }
@@ -182,23 +182,23 @@ LABEL_15:
   return v13;
 }
 
-- (id)reverseReferencesByRow:(BOOL)a3
+- (id)reverseReferencesByRow:(BOOL)row
 {
-  v3 = a3;
+  rowCopy = row;
   if ([(EDCollection *)self count])
   {
-    v5 = [objc_opt_class() collection];
-    v6 = v5;
-    if (v5)
+    collection = [objc_opt_class() collection];
+    v6 = collection;
+    if (collection)
     {
-      *(v5 + 16) = 0;
-      v7 = [(EDReferenceCollection *)self countOfCellsBeingReferenced];
-      if (v7)
+      *(collection + 16) = 0;
+      countOfCellsBeingReferenced = [(EDReferenceCollection *)self countOfCellsBeingReferenced];
+      if (countOfCellsBeingReferenced)
       {
-        v8 = v7 - 1;
+        v8 = countOfCellsBeingReferenced - 1;
         do
         {
-          v9 = [(EDReferenceCollection *)self referenceToCellWithIndex:v8 byRow:v3];
+          v9 = [(EDReferenceCollection *)self referenceToCellWithIndex:v8 byRow:rowCopy];
           if (v9)
           {
             [v6 addObject:v9];
@@ -228,10 +228,10 @@ LABEL_15:
   if (v3 >= 2)
   {
     v4 = v3;
-    v5 = 0;
+    sheetIndex = 0;
     v6 = 0;
     v7 = 0xFFFFFFFFLL;
-    v8 = 0xFFFFFFFFLL;
+    areaReference2 = 0xFFFFFFFFLL;
     v9 = 0xFFFFFFFFLL;
     v10 = 0xFFFFFFFFLL;
     while (1)
@@ -256,17 +256,17 @@ LABEL_15:
 
       if (v6)
       {
-        if (v5 != [v17 sheetIndex])
+        if (sheetIndex != [v17 sheetIndex])
         {
           goto LABEL_19;
         }
 
-        v12 = [v17 areaReference];
+        areaReference = [v17 areaReference];
         v13 = [v17 areaReference] >> 32;
-        if (v7 == v12)
+        if (v7 == areaReference)
         {
           v11 = v17;
-          if (v7 < v8)
+          if (v7 < areaReference2)
           {
             break;
           }
@@ -291,9 +291,9 @@ LABEL_15:
             break;
           }
 
-          v16 = v8 + 1;
-          v8 = v12;
-          if (v16 != v12)
+          v16 = areaReference2 + 1;
+          areaReference2 = areaReference;
+          if (v16 != areaReference)
           {
             break;
           }
@@ -302,18 +302,18 @@ LABEL_15:
 
       else
       {
-        v8 = [v17 areaReference];
-        v15 = [v17 areaReference];
-        v5 = [v17 sheetIndex];
-        v10 = HIDWORD(v15);
+        areaReference2 = [v17 areaReference];
+        areaReference3 = [v17 areaReference];
+        sheetIndex = [v17 sheetIndex];
+        v10 = HIDWORD(areaReference3);
         v9 = v10;
-        v7 = v8;
+        v7 = areaReference2;
         v11 = v17;
       }
 
       if (v4 == ++v6)
       {
-        v17 = [EDSheetReference referenceWithSheetIndex:v5 firstRow:v7 lastRow:v8 firstColumn:v9 lastColumn:v10];
+        v17 = [EDSheetReference referenceWithSheetIndex:sheetIndex firstRow:v7 lastRow:areaReference2 firstColumn:v9 lastColumn:v10];
         [(EDCollection *)self removeAllObjects];
         [(EDReferenceCollection *)self addObject:v17];
 LABEL_19:
@@ -324,10 +324,10 @@ LABEL_19:
   }
 }
 
-- (BOOL)coalesceReferenceAtIndex1:(unint64_t)a3 index2:(unint64_t)a4
+- (BOOL)coalesceReferenceAtIndex1:(unint64_t)index1 index2:(unint64_t)index2
 {
-  v6 = [(EDCollection *)self objectAtIndex:a3];
-  v7 = [(EDCollection *)self objectAtIndex:a4];
+  v6 = [(EDCollection *)self objectAtIndex:index1];
+  v7 = [(EDCollection *)self objectAtIndex:index2];
   v8 = v7;
   v9 = 0;
   if (v6 && v7)
@@ -335,7 +335,7 @@ LABEL_19:
     if ([v6 fullyAdjacentToReference:v7] & 1) != 0 || (objc_msgSend(v6, "isEqualToReference:", v8))
     {
       [v6 unionWithReference:v8];
-      [(EDCollection *)self removeObjectAtIndex:a4];
+      [(EDCollection *)self removeObjectAtIndex:index2];
       v9 = 1;
     }
 

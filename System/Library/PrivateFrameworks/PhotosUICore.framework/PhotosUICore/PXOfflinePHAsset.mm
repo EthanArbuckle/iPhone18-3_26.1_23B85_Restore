@@ -1,21 +1,21 @@
 @interface PXOfflinePHAsset
-+ (id)createOfflinePHAssetUsingOfflineAssets:(id)a3;
++ (id)createOfflinePHAssetUsingOfflineAssets:(id)assets;
 - ($E59C7DEBCD57E98EE3F0104B12BEB13C)px_storyResourceFetchBestPlaybackRange;
 - (CGRect)acceptableCropRect;
-- (CGRect)bestCropRectForAspectRatio:(double)a3;
+- (CGRect)bestCropRectForAspectRatio:(double)ratio;
 - (CGRect)faceAreaRect;
 - (CGRect)preferredCropRect;
 - (CGRect)px_storyResourceFetchBestPlaybackRect;
-- (CGRect)suggestedCropForTargetSize:(CGSize)a3;
-- (CGRect)suggestedCropForTargetSize:(CGSize)a3 withFocusRegion:(CGRect)a4;
-- (CGRect)suggestedCropForTargetSize:(CGSize)a3 withFocusRegion:(CGRect)a4 andOutputCropScore:(double *)a5;
-- (CGRect)suggestedCropForTargetSize:(CGSize)a3 withOcclusionRegion:(CGRect)a4 andOutputCropScore:(double *)a5;
+- (CGRect)suggestedCropForTargetSize:(CGSize)size;
+- (CGRect)suggestedCropForTargetSize:(CGSize)size withFocusRegion:(CGRect)region;
+- (CGRect)suggestedCropForTargetSize:(CGSize)size withFocusRegion:(CGRect)region andOutputCropScore:(double *)score;
+- (CGRect)suggestedCropForTargetSize:(CGSize)size withOcclusionRegion:(CGRect)region andOutputCropScore:(double *)score;
 - (NSData)px_storyResourceFetchNormalizationData;
 - (NSSet)px_storyResourceFetchSceneClassifications;
 - (PFVideoAdjustments)px_storyResourceFetchVideoAdjustments;
 - (PHPhotoLibrary)photoLibrary;
-- (PXOfflinePHAsset)initWithURL:(id)a3 matchingPHAsset:(id)a4;
-- (PXOfflinePHAsset)initWithURL:(id)a3 matchingPHAssetUUID:(id)a4;
+- (PXOfflinePHAsset)initWithURL:(id)l matchingPHAsset:(id)asset;
+- (PXOfflinePHAsset)initWithURL:(id)l matchingPHAssetUUID:(id)d;
 - (double)px_storyResourceFetchCurationScore;
 - (id)localizedGeoDescription;
 - (id)uuid;
@@ -28,16 +28,16 @@
 
 - (int64_t)px_storyResourceFetchFaceCount
 {
-  v2 = [(PXOfflinePHAsset *)self asset];
-  v3 = [v2 px_storyResourceFetchFaceCount];
+  asset = [(PXOfflinePHAsset *)self asset];
+  px_storyResourceFetchFaceCount = [asset px_storyResourceFetchFaceCount];
 
-  return v3;
+  return px_storyResourceFetchFaceCount;
 }
 
 - (double)px_storyResourceFetchCurationScore
 {
-  v2 = [(PXOfflinePHAsset *)self asset];
-  [v2 px_storyResourceFetchCurationScore];
+  asset = [(PXOfflinePHAsset *)self asset];
+  [asset px_storyResourceFetchCurationScore];
   v4 = v3;
 
   return v4;
@@ -45,24 +45,24 @@
 
 - (NSSet)px_storyResourceFetchSceneClassifications
 {
-  v2 = [(PXOfflinePHAsset *)self asset];
-  v3 = [v2 px_storyResourceFetchSceneClassifications];
+  asset = [(PXOfflinePHAsset *)self asset];
+  px_storyResourceFetchSceneClassifications = [asset px_storyResourceFetchSceneClassifications];
 
-  return v3;
+  return px_storyResourceFetchSceneClassifications;
 }
 
 - (NSData)px_storyResourceFetchNormalizationData
 {
-  v2 = [(PXOfflinePHAsset *)self asset];
-  v3 = [v2 px_storyResourceFetchNormalizationData];
+  asset = [(PXOfflinePHAsset *)self asset];
+  px_storyResourceFetchNormalizationData = [asset px_storyResourceFetchNormalizationData];
 
-  return v3;
+  return px_storyResourceFetchNormalizationData;
 }
 
 - (CGRect)px_storyResourceFetchBestPlaybackRect
 {
-  v2 = [(PXOfflinePHAsset *)self asset];
-  [v2 px_storyResourceFetchBestPlaybackRect];
+  asset = [(PXOfflinePHAsset *)self asset];
+  [asset px_storyResourceFetchBestPlaybackRect];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -81,12 +81,12 @@
 
 - ($E59C7DEBCD57E98EE3F0104B12BEB13C)px_storyResourceFetchBestPlaybackRange
 {
-  v4 = [(PXOfflinePHAsset *)self asset];
-  if (v4)
+  asset = [(PXOfflinePHAsset *)self asset];
+  if (asset)
   {
-    v6 = v4;
-    [v4 px_storyResourceFetchBestPlaybackRange];
-    v4 = v6;
+    v6 = asset;
+    [asset px_storyResourceFetchBestPlaybackRange];
+    asset = v6;
   }
 
   else
@@ -101,46 +101,46 @@
 
 - (PFVideoAdjustments)px_storyResourceFetchVideoAdjustments
 {
-  v2 = [(PXOfflinePHAsset *)self asset];
-  v3 = [v2 px_storyResourceFetchVideoAdjustments];
+  asset = [(PXOfflinePHAsset *)self asset];
+  px_storyResourceFetchVideoAdjustments = [asset px_storyResourceFetchVideoAdjustments];
 
-  return v3;
+  return px_storyResourceFetchVideoAdjustments;
 }
 
 - (id)localizedGeoDescription
 {
-  v3 = [(PXOfflinePHAsset *)self asset];
+  asset = [(PXOfflinePHAsset *)self asset];
 
-  if (v3)
+  if (asset)
   {
-    v4 = [(PXOfflinePHAsset *)self asset];
-    v5 = [v4 localizedGeoDescription];
+    asset2 = [(PXOfflinePHAsset *)self asset];
+    localizedGeoDescription = [asset2 localizedGeoDescription];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = PXOfflinePHAsset;
-    v5 = [(PXOfflinePHAsset *)&v7 localizedGeoDescription];
+    localizedGeoDescription = [(PXOfflinePHAsset *)&v7 localizedGeoDescription];
   }
 
-  return v5;
+  return localizedGeoDescription;
 }
 
-- (CGRect)suggestedCropForTargetSize:(CGSize)a3 withFocusRegion:(CGRect)a4 andOutputCropScore:(double *)a5
+- (CGRect)suggestedCropForTargetSize:(CGSize)size withFocusRegion:(CGRect)region andOutputCropScore:(double *)score
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.height;
-  v11 = a3.width;
-  v13 = [(PXOfflinePHAsset *)self asset];
+  height = region.size.height;
+  width = region.size.width;
+  y = region.origin.y;
+  x = region.origin.x;
+  v10 = size.height;
+  v11 = size.width;
+  asset = [(PXOfflinePHAsset *)self asset];
 
-  if (v13)
+  if (asset)
   {
-    v14 = [(PXOfflinePHAsset *)self asset];
-    [v14 suggestedCropForTargetSize:a5 withFocusRegion:v11 andOutputCropScore:{v10, x, y, width, height}];
+    asset2 = [(PXOfflinePHAsset *)self asset];
+    [asset2 suggestedCropForTargetSize:score withFocusRegion:v11 andOutputCropScore:{v10, x, y, width, height}];
     v16 = v15;
     v18 = v17;
     v20 = v19;
@@ -166,20 +166,20 @@
   return result;
 }
 
-- (CGRect)suggestedCropForTargetSize:(CGSize)a3 withOcclusionRegion:(CGRect)a4 andOutputCropScore:(double *)a5
+- (CGRect)suggestedCropForTargetSize:(CGSize)size withOcclusionRegion:(CGRect)region andOutputCropScore:(double *)score
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.height;
-  v11 = a3.width;
-  v13 = [(PXOfflinePHAsset *)self asset];
+  height = region.size.height;
+  width = region.size.width;
+  y = region.origin.y;
+  x = region.origin.x;
+  v10 = size.height;
+  v11 = size.width;
+  asset = [(PXOfflinePHAsset *)self asset];
 
-  if (v13)
+  if (asset)
   {
-    v14 = [(PXOfflinePHAsset *)self asset];
-    [v14 suggestedCropForTargetSize:a5 withOcclusionRegion:v11 andOutputCropScore:{v10, x, y, width, height}];
+    asset2 = [(PXOfflinePHAsset *)self asset];
+    [asset2 suggestedCropForTargetSize:score withOcclusionRegion:v11 andOutputCropScore:{v10, x, y, width, height}];
     v16 = v15;
     v18 = v17;
     v20 = v19;
@@ -190,7 +190,7 @@
   {
     v31.receiver = self;
     v31.super_class = PXOfflinePHAsset;
-    [(PXOfflinePHAsset *)&v31 suggestedCropForTargetSize:a5 withOcclusionRegion:v11 andOutputCropScore:v10, x, y, width, height];
+    [(PXOfflinePHAsset *)&v31 suggestedCropForTargetSize:score withOcclusionRegion:v11 andOutputCropScore:v10, x, y, width, height];
     v16 = v23;
     v18 = v24;
     v20 = v25;
@@ -208,20 +208,20 @@
   return result;
 }
 
-- (CGRect)suggestedCropForTargetSize:(CGSize)a3 withFocusRegion:(CGRect)a4
+- (CGRect)suggestedCropForTargetSize:(CGSize)size withFocusRegion:(CGRect)region
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.height;
-  v9 = a3.width;
-  v11 = [(PXOfflinePHAsset *)self asset];
+  height = region.size.height;
+  width = region.size.width;
+  y = region.origin.y;
+  x = region.origin.x;
+  v8 = size.height;
+  v9 = size.width;
+  asset = [(PXOfflinePHAsset *)self asset];
 
-  if (v11)
+  if (asset)
   {
-    v12 = [(PXOfflinePHAsset *)self asset];
-    [v12 suggestedCropForTargetSize:v9 withFocusRegion:{v8, x, y, width, height}];
+    asset2 = [(PXOfflinePHAsset *)self asset];
+    [asset2 suggestedCropForTargetSize:v9 withFocusRegion:{v8, x, y, width, height}];
     v14 = v13;
     v16 = v15;
     v18 = v17;
@@ -250,16 +250,16 @@
   return result;
 }
 
-- (CGRect)suggestedCropForTargetSize:(CGSize)a3
+- (CGRect)suggestedCropForTargetSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(PXOfflinePHAsset *)self asset];
+  height = size.height;
+  width = size.width;
+  asset = [(PXOfflinePHAsset *)self asset];
 
-  if (v6)
+  if (asset)
   {
-    v7 = [(PXOfflinePHAsset *)self asset];
-    [v7 suggestedCropForTargetSize:{width, height}];
+    asset2 = [(PXOfflinePHAsset *)self asset];
+    [asset2 suggestedCropForTargetSize:{width, height}];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -285,14 +285,14 @@
   return result;
 }
 
-- (CGRect)bestCropRectForAspectRatio:(double)a3
+- (CGRect)bestCropRectForAspectRatio:(double)ratio
 {
-  v5 = [(PXOfflinePHAsset *)self asset];
+  asset = [(PXOfflinePHAsset *)self asset];
 
-  if (v5)
+  if (asset)
   {
-    v6 = [(PXOfflinePHAsset *)self asset];
-    [v6 bestCropRectForAspectRatio:a3];
+    asset2 = [(PXOfflinePHAsset *)self asset];
+    [asset2 bestCropRectForAspectRatio:ratio];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -303,7 +303,7 @@
   {
     v23.receiver = self;
     v23.super_class = PXOfflinePHAsset;
-    [(PXOfflinePHAsset *)&v23 bestCropRectForAspectRatio:a3];
+    [(PXOfflinePHAsset *)&v23 bestCropRectForAspectRatio:ratio];
     v8 = v15;
     v10 = v16;
     v12 = v17;
@@ -323,11 +323,11 @@
 
 - (CGRect)faceAreaRect
 {
-  v3 = [(PXOfflinePHAsset *)self asset];
-  if (v3)
+  asset = [(PXOfflinePHAsset *)self asset];
+  if (asset)
   {
-    v4 = [(PXOfflinePHAsset *)self asset];
-    [v4 faceAreaRect];
+    asset2 = [(PXOfflinePHAsset *)self asset];
+    [asset2 faceAreaRect];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -358,12 +358,12 @@
 
 - (CGRect)acceptableCropRect
 {
-  v3 = [(PXOfflinePHAsset *)self asset];
+  asset = [(PXOfflinePHAsset *)self asset];
 
-  if (v3)
+  if (asset)
   {
-    v4 = [(PXOfflinePHAsset *)self asset];
-    [v4 acceptableCropRect];
+    asset2 = [(PXOfflinePHAsset *)self asset];
+    [asset2 acceptableCropRect];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -394,12 +394,12 @@
 
 - (CGRect)preferredCropRect
 {
-  v3 = [(PXOfflinePHAsset *)self asset];
+  asset = [(PXOfflinePHAsset *)self asset];
 
-  if (v3)
+  if (asset)
   {
-    v4 = [(PXOfflinePHAsset *)self asset];
-    [v4 preferredCropRect];
+    asset2 = [(PXOfflinePHAsset *)self asset];
+    [asset2 preferredCropRect];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -430,108 +430,108 @@
 
 - (id)uuid
 {
-  v3 = [(PXOfflinePHAsset *)self asset];
+  asset = [(PXOfflinePHAsset *)self asset];
 
-  if (v3)
+  if (asset)
   {
-    v4 = [(PXOfflinePHAsset *)self asset];
-    v5 = [v4 uuid];
+    asset2 = [(PXOfflinePHAsset *)self asset];
+    uuid = [asset2 uuid];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = PXOfflinePHAsset;
-    v5 = [(PXOfflinePHAsset *)&v7 uuid];
+    uuid = [(PXOfflinePHAsset *)&v7 uuid];
   }
 
-  return v5;
+  return uuid;
 }
 
 - (unint64_t)pixelHeight
 {
-  v3 = [(PXOfflinePHAsset *)self asset];
-  if (v3)
+  asset = [(PXOfflinePHAsset *)self asset];
+  if (asset)
   {
-    v4 = [(PXOfflinePHAsset *)self asset];
-    v5 = [v4 pixelHeight];
+    asset2 = [(PXOfflinePHAsset *)self asset];
+    pixelHeight = [asset2 pixelHeight];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = PXOfflinePHAsset;
-    v5 = [(PXOfflinePHAsset *)&v7 pixelHeight];
+    pixelHeight = [(PXOfflinePHAsset *)&v7 pixelHeight];
   }
 
-  return v5;
+  return pixelHeight;
 }
 
 - (unint64_t)pixelWidth
 {
-  v3 = [(PXOfflinePHAsset *)self asset];
-  if (v3)
+  asset = [(PXOfflinePHAsset *)self asset];
+  if (asset)
   {
-    v4 = [(PXOfflinePHAsset *)self asset];
-    v5 = [v4 pixelWidth];
+    asset2 = [(PXOfflinePHAsset *)self asset];
+    pixelWidth = [asset2 pixelWidth];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = PXOfflinePHAsset;
-    v5 = [(PXOfflinePHAsset *)&v7 pixelWidth];
+    pixelWidth = [(PXOfflinePHAsset *)&v7 pixelWidth];
   }
 
-  return v5;
+  return pixelWidth;
 }
 
 - (PHPhotoLibrary)photoLibrary
 {
-  v2 = [(PXOfflinePHAsset *)self asset];
-  v3 = [v2 photoLibrary];
+  asset = [(PXOfflinePHAsset *)self asset];
+  photoLibrary = [asset photoLibrary];
 
-  return v3;
+  return photoLibrary;
 }
 
-- (PXOfflinePHAsset)initWithURL:(id)a3 matchingPHAsset:(id)a4
+- (PXOfflinePHAsset)initWithURL:(id)l matchingPHAsset:(id)asset
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  lCopy = l;
+  assetCopy = asset;
+  if (!assetCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXOfflinePHAsset.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXOfflinePHAsset.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
-  v9 = [off_1E7721570 simpleImageDescriptionWithURL:v7];
+  v9 = [off_1E7721570 simpleImageDescriptionWithURL:lCopy];
   v10 = [(PXOfflinePHAsset *)self initWithDescription:v9];
 
   if (v10)
   {
-    objc_storeStrong(&v10->_asset, a4);
+    objc_storeStrong(&v10->_asset, asset);
   }
 
   return v10;
 }
 
-- (PXOfflinePHAsset)initWithURL:(id)a3 matchingPHAssetUUID:(id)a4
+- (PXOfflinePHAsset)initWithURL:(id)l matchingPHAssetUUID:(id)d
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  lCopy = l;
+  dCopy = d;
+  if (!dCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PXOfflinePHAsset.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"uuid"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXOfflinePHAsset.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"uuid"}];
   }
 
-  v9 = [off_1E7721570 simpleImageDescriptionWithURL:v7];
+  v9 = [off_1E7721570 simpleImageDescriptionWithURL:lCopy];
   v19.receiver = self;
   v19.super_class = PXOfflinePHAsset;
   v10 = [(PXOfflinePHAsset *)&v19 initWithDescription:v9];
 
-  if (v10 && (v11 = MEMORY[0x1E6978630], v20[0] = v8, [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "fetchAssetsWithUUIDs:options:", v12, 0), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "firstObject"), v14 = objc_claimAutoreleasedReturnValue(), asset = v10->_asset, v10->_asset = v14, asset, v13, v12, !v10->_asset))
+  if (v10 && (v11 = MEMORY[0x1E6978630], v20[0] = dCopy, [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "fetchAssetsWithUUIDs:options:", v12, 0), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "firstObject"), v14 = objc_claimAutoreleasedReturnValue(), asset = v10->_asset, v10->_asset = v14, asset, v13, v12, !v10->_asset))
   {
     v16 = 0;
   }
@@ -544,10 +544,10 @@
   return v16;
 }
 
-+ (id)createOfflinePHAssetUsingOfflineAssets:(id)a3
++ (id)createOfflinePHAssetUsingOfflineAssets:(id)assets
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = a3;
+  assetsCopy = assets;
   v5 = objc_alloc_init(v3);
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v21[0] = MEMORY[0x1E69E9820];
@@ -558,7 +558,7 @@
   v7 = v6;
   v23 = v7;
   v8 = v5;
-  [v4 enumerateObjectsUsingBlock:v21];
+  [assetsCopy enumerateObjectsUsingBlock:v21];
 
   v9 = [MEMORY[0x1E6978630] fetchAssetsWithUUIDs:v8 options:0];
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);

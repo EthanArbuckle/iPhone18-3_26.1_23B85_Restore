@@ -1,20 +1,20 @@
 @interface SSPlayInfoRequest
 - (BOOL)start;
-- (SSPlayInfoRequest)initWithPlayInfoContext:(id)a3;
-- (SSPlayInfoRequest)initWithXPCEncoding:(id)a3;
+- (SSPlayInfoRequest)initWithPlayInfoContext:(id)context;
+- (SSPlayInfoRequest)initWithXPCEncoding:(id)encoding;
 - (SSPlayInfoRequestContext)playInfoContext;
 - (SSPlayInfoResponse)playInfoResponse;
 - (id)copyXPCEncoding;
 - (void)dealloc;
-- (void)startWithCompletionBlock:(id)a3;
-- (void)startWithPlayInfoResponseBlock:(id)a3;
+- (void)startWithCompletionBlock:(id)block;
+- (void)startWithPlayInfoResponseBlock:(id)block;
 @end
 
 @implementation SSPlayInfoRequest
 
-- (SSPlayInfoRequest)initWithPlayInfoContext:(id)a3
+- (SSPlayInfoRequest)initWithPlayInfoContext:(id)context
 {
-  if (![a3 SICData])
+  if (![context SICData])
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Context must have SIC data"];
   }
@@ -24,7 +24,7 @@
   v5 = [(SSRequest *)&v7 init];
   if (v5)
   {
-    v5->_context = [a3 copy];
+    v5->_context = [context copy];
   }
 
   return v5;
@@ -72,7 +72,7 @@ uint64_t __37__SSPlayInfoRequest_playInfoResponse__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)startWithPlayInfoResponseBlock:(id)a3
+- (void)startWithPlayInfoResponseBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -83,15 +83,15 @@ uint64_t __37__SSPlayInfoRequest_playInfoResponse__block_invoke(uint64_t a1)
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
     if (os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -126,7 +126,7 @@ uint64_t __37__SSPlayInfoRequest_playInfoResponse__block_invoke(uint64_t a1)
   v20[2] = __52__SSPlayInfoRequest_startWithPlayInfoResponseBlock___block_invoke;
   v20[3] = &unk_1E84AFB40;
   v20[4] = self;
-  v20[5] = a3;
+  v20[5] = block;
   [(SSRequest *)self _startWithMessageID:58 messageBlock:v20, v18];
 }
 
@@ -249,13 +249,13 @@ uint64_t __26__SSPlayInfoRequest_start__block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)startWithCompletionBlock:(id)a3
+- (void)startWithCompletionBlock:(id)block
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __46__SSPlayInfoRequest_startWithCompletionBlock___block_invoke;
   v3[3] = &unk_1E84AFB90;
-  v3[4] = a3;
+  v3[4] = block;
   [(SSPlayInfoRequest *)self startWithPlayInfoResponseBlock:v3];
 }
 
@@ -293,17 +293,17 @@ void __36__SSPlayInfoRequest_copyXPCEncoding__block_invoke(uint64_t a1)
   SSXPCDictionarySetCFObject(v2, "51", v3);
 }
 
-- (SSPlayInfoRequest)initWithXPCEncoding:(id)a3
+- (SSPlayInfoRequest)initWithXPCEncoding:(id)encoding
 {
-  if (a3 && MEMORY[0x1DA6E0380](a3, a2) == MEMORY[0x1E69E9E80])
+  if (encoding && MEMORY[0x1DA6E0380](encoding, a2) == MEMORY[0x1E69E9E80])
   {
     v7.receiver = self;
     v7.super_class = SSPlayInfoRequest;
     v5 = [(SSRequest *)&v7 init];
     if (v5)
     {
-      v5->_context = [[SSPlayInfoRequestContext alloc] initWithXPCEncoding:xpc_dictionary_get_value(a3, "50")];
-      v5->_response = [[SSPlayInfoResponse alloc] initWithXPCEncoding:xpc_dictionary_get_value(a3, "51")];
+      v5->_context = [[SSPlayInfoRequestContext alloc] initWithXPCEncoding:xpc_dictionary_get_value(encoding, "50")];
+      v5->_response = [[SSPlayInfoResponse alloc] initWithXPCEncoding:xpc_dictionary_get_value(encoding, "51")];
     }
   }
 

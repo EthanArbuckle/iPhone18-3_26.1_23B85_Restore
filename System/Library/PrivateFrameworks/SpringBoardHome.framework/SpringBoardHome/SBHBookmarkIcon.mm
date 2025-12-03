@@ -4,36 +4,36 @@
 - (BOOL)displaysAppStoreURLShortcutItem;
 - (BOOL)displaysShareBookmarkShortcutItem;
 - (BOOL)isWebAppIcon;
-- (SBHBookmarkIcon)initWithBookmark:(id)a3;
+- (SBHBookmarkIcon)initWithBookmark:(id)bookmark;
 - (id)_sbhIconLibraryOverrideCollationSectionTitle;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)draggingUserActivity;
 - (id)uninstallAlertBody;
 - (id)uninstallAlertTitle;
 - (uint64_t)_isSaneURL;
-- (void)setBookmark:(id)a3;
+- (void)setBookmark:(id)bookmark;
 @end
 
 @implementation SBHBookmarkIcon
 
-- (SBHBookmarkIcon)initWithBookmark:(id)a3
+- (SBHBookmarkIcon)initWithBookmark:(id)bookmark
 {
-  v5 = a3;
-  v6 = [v5 identifier];
+  bookmarkCopy = bookmark;
+  identifier = [bookmarkCopy identifier];
   v9.receiver = self;
   v9.super_class = SBHBookmarkIcon;
-  v7 = [(SBLeafIcon *)&v9 initWithLeafIdentifier:v6 applicationBundleID:0];
+  v7 = [(SBLeafIcon *)&v9 initWithLeafIdentifier:identifier applicationBundleID:0];
 
   if (v7)
   {
-    objc_storeStrong(&v7->_bookmark, a3);
-    [(SBLeafIcon *)v7 addIconDataSource:v5];
+    objc_storeStrong(&v7->_bookmark, bookmark);
+    [(SBLeafIcon *)v7 addIconDataSource:bookmarkCopy];
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   bookmark = self->_bookmark;
@@ -41,18 +41,18 @@
   return [v4 initWithBookmark:bookmark];
 }
 
-- (void)setBookmark:(id)a3
+- (void)setBookmark:(id)bookmark
 {
-  v5 = a3;
-  if (self->_bookmark != v5)
+  bookmarkCopy = bookmark;
+  if (self->_bookmark != bookmarkCopy)
   {
-    v6 = v5;
+    v6 = bookmarkCopy;
     [(SBLeafIcon *)self removeIconDataSource:?];
-    objc_storeStrong(&self->_bookmark, a3);
+    objc_storeStrong(&self->_bookmark, bookmark);
     [(SBLeafIcon *)self addIconDataSource:self->_bookmark];
     [(SBIcon *)self _notifyImageDidUpdate];
     [(SBIcon *)self _notifyAccessoriesDidUpdate];
-    v5 = v6;
+    bookmarkCopy = v6;
   }
 }
 
@@ -68,12 +68,12 @@
     return 1;
   }
 
-  v4 = [(SBHBookmarkIcon *)self webClip];
-  v5 = [v4 applicationBundleIdentifier];
+  webClip = [(SBHBookmarkIcon *)self webClip];
+  applicationBundleIdentifier = [webClip applicationBundleIdentifier];
 
-  if (v5)
+  if (applicationBundleIdentifier)
   {
-    v3 = [v5 isEqualToString:@"com.apple.mobilesafari"];
+    v3 = [applicationBundleIdentifier isEqualToString:@"com.apple.mobilesafari"];
   }
 
   else
@@ -91,10 +91,10 @@
     return 0;
   }
 
-  v3 = [(SBHBookmarkIcon *)self appClip];
-  v4 = [v3 fullAppStoreURL];
+  appClip = [(SBHBookmarkIcon *)self appClip];
+  fullAppStoreURL = [appClip fullAppStoreURL];
 
-  v5 = v4 != 0;
+  v5 = fullAppStoreURL != 0;
   return v5;
 }
 
@@ -138,8 +138,8 @@
       v6 = MEMORY[0x1E696AEC0];
       v4 = SBHBundle();
       v7 = [v4 localizedStringForKey:@"UNINSTALL_WEBAPP_TITLE" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
-      v8 = [(SBIcon *)self displayName];
-      v9 = [v6 stringWithFormat:v7, v8];
+      displayName = [(SBIcon *)self displayName];
+      v9 = [v6 stringWithFormat:v7, displayName];
 
       goto LABEL_7;
     }
@@ -181,8 +181,8 @@ LABEL_7:
   }
 
   v8 = [v4 localizedStringForKey:v6 value:&stru_1F3D472A8 table:@"SpringBoardHome"];
-  v9 = [(SBIcon *)self displayName];
-  v7 = [v3 stringWithFormat:v8, v9];
+  displayName = [(SBIcon *)self displayName];
+  v7 = [v3 stringWithFormat:v8, displayName];
 
 LABEL_7:
 
@@ -193,67 +193,67 @@ LABEL_7:
 {
   if ([(SBHBookmarkIcon *)self isAppClipIcon])
   {
-    v3 = [(SBHBookmarkIcon *)self bookmark];
-    v4 = [v3 webClip];
-    v5 = [v4 appClipUserActivity];
+    bookmark = [(SBHBookmarkIcon *)self bookmark];
+    webClip = [bookmark webClip];
+    appClipUserActivity = [webClip appClipUserActivity];
   }
 
   else
   {
-    v5 = 0;
+    appClipUserActivity = 0;
   }
 
-  return v5;
+  return appClipUserActivity;
 }
 
 - (BOOL)isWebAppIcon
 {
-  v3 = [(SBHBookmarkIcon *)self webClip];
+  webClip = [(SBHBookmarkIcon *)self webClip];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(SBHBookmarkIcon *)self webClip];
-    v5 = [v4 needsWebAppDeletionStrings];
+    webClip2 = [(SBHBookmarkIcon *)self webClip];
+    needsWebAppDeletionStrings = [webClip2 needsWebAppDeletionStrings];
   }
 
   else
   {
-    v5 = 0;
+    needsWebAppDeletionStrings = 0;
   }
 
-  return v5;
+  return needsWebAppDeletionStrings;
 }
 
 - (id)_sbhIconLibraryOverrideCollationSectionTitle
 {
-  v3 = [(SBHBookmarkIcon *)self webClip];
-  v4 = [v3 isAppClip];
+  webClip = [(SBHBookmarkIcon *)self webClip];
+  isAppClip = [webClip isAppClip];
 
-  if (v4)
+  if (isAppClip)
   {
-    v5 = *MEMORY[0x1E69DE3E0];
+    _sbhIconLibraryOverrideCollationSectionTitle = *MEMORY[0x1E69DE3E0];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = SBHBookmarkIcon;
-    v5 = [(SBIcon *)&v7 _sbhIconLibraryOverrideCollationSectionTitle];
+    _sbhIconLibraryOverrideCollationSectionTitle = [(SBIcon *)&v7 _sbhIconLibraryOverrideCollationSectionTitle];
   }
 
-  return v5;
+  return _sbhIconLibraryOverrideCollationSectionTitle;
 }
 
 - (uint64_t)_isSaneURL
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [a1 webClip];
-  v2 = [v1 pageURL];
+  webClip = [self webClip];
+  pageURL = [webClip pageURL];
 
-  v3 = [v2 isFileURL] ^ 1;
+  v3 = [pageURL isFileURL] ^ 1;
   return v3;
 }
 

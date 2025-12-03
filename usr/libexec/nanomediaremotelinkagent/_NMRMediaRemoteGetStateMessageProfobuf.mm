@@ -1,21 +1,21 @@
 @interface _NMRMediaRemoteGetStateMessageProfobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasOriginIdentifier:(BOOL)a3;
-- (void)setHasState:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasOriginIdentifier:(BOOL)identifier;
+- (void)setHasState:(BOOL)state;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _NMRMediaRemoteGetStateMessageProfobuf
 
-- (void)setHasState:(BOOL)a3
+- (void)setHasState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 4;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasOriginIdentifier:(BOOL)a3
+- (void)setHasOriginIdentifier:(BOOL)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = 2;
   }
@@ -48,8 +48,8 @@
   v7.receiver = self;
   v7.super_class = _NMRMediaRemoteGetStateMessageProfobuf;
   v3 = [(_NMRMediaRemoteGetStateMessageProfobuf *)&v7 description];
-  v4 = [(_NMRMediaRemoteGetStateMessageProfobuf *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(_NMRMediaRemoteGetStateMessageProfobuf *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -108,9 +108,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
     state = self->_state;
@@ -155,62 +155,62 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
-    v4[14] = self->_state;
-    *(v4 + 72) |= 4u;
+    toCopy[14] = self->_state;
+    *(toCopy + 72) |= 4u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_knownDigest)
   {
-    [v4 setKnownDigest:?];
-    v4 = v5;
+    [toCopy setKnownDigest:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_timestamp;
-    *(v4 + 72) |= 1u;
+    *(toCopy + 1) = *&self->_timestamp;
+    *(toCopy + 72) |= 1u;
   }
 
   if (self->_nowPlayingInfoDigest)
   {
     [v5 setNowPlayingInfoDigest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_applicationInfoDigest)
   {
     [v5 setApplicationInfoDigest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_supportedCommandsDigest)
   {
     [v5 setSupportedCommandsDigest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_playbackQueueDigest)
   {
     [v5 setPlaybackQueueDigest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    v4[10] = self->_originIdentifier;
-    *(v4 + 72) |= 2u;
+    toCopy[10] = self->_originIdentifier;
+    *(toCopy + 72) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -218,7 +218,7 @@
     *(v5 + 72) |= 4u;
   }
 
-  v7 = [(NSData *)self->_knownDigest copyWithZone:a3];
+  v7 = [(NSData *)self->_knownDigest copyWithZone:zone];
   v8 = v6[3];
   v6[3] = v7;
 
@@ -228,19 +228,19 @@
     *(v6 + 72) |= 1u;
   }
 
-  v9 = [(NSData *)self->_nowPlayingInfoDigest copyWithZone:a3];
+  v9 = [(NSData *)self->_nowPlayingInfoDigest copyWithZone:zone];
   v10 = v6[4];
   v6[4] = v9;
 
-  v11 = [(NSData *)self->_applicationInfoDigest copyWithZone:a3];
+  v11 = [(NSData *)self->_applicationInfoDigest copyWithZone:zone];
   v12 = v6[2];
   v6[2] = v11;
 
-  v13 = [(NSData *)self->_supportedCommandsDigest copyWithZone:a3];
+  v13 = [(NSData *)self->_supportedCommandsDigest copyWithZone:zone];
   v14 = v6[8];
   v6[8] = v13;
 
-  v15 = [(NSData *)self->_playbackQueueDigest copyWithZone:a3];
+  v15 = [(NSData *)self->_playbackQueueDigest copyWithZone:zone];
   v16 = v6[6];
   v6[6] = v15;
 
@@ -253,31 +253,31 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
   has = self->_has;
-  v6 = *(v4 + 72);
+  v6 = *(equalCopy + 72);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 72) & 4) == 0 || self->_state != *(v4 + 14))
+    if ((*(equalCopy + 72) & 4) == 0 || self->_state != *(equalCopy + 14))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 72) & 4) != 0)
+  else if ((*(equalCopy + 72) & 4) != 0)
   {
     goto LABEL_27;
   }
 
   knownDigest = self->_knownDigest;
-  if (knownDigest | *(v4 + 3))
+  if (knownDigest | *(equalCopy + 3))
   {
     if (![(NSData *)knownDigest isEqual:?])
     {
@@ -289,28 +289,28 @@ LABEL_27:
     has = self->_has;
   }
 
-  v8 = *(v4 + 72);
+  v8 = *(equalCopy + 72);
   if (has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_27;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_27;
   }
 
   nowPlayingInfoDigest = self->_nowPlayingInfoDigest;
-  if (nowPlayingInfoDigest | *(v4 + 4) && ![(NSData *)nowPlayingInfoDigest isEqual:?])
+  if (nowPlayingInfoDigest | *(equalCopy + 4) && ![(NSData *)nowPlayingInfoDigest isEqual:?])
   {
     goto LABEL_27;
   }
 
   applicationInfoDigest = self->_applicationInfoDigest;
-  if (applicationInfoDigest | *(v4 + 2))
+  if (applicationInfoDigest | *(equalCopy + 2))
   {
     if (![(NSData *)applicationInfoDigest isEqual:?])
     {
@@ -319,7 +319,7 @@ LABEL_27:
   }
 
   supportedCommandsDigest = self->_supportedCommandsDigest;
-  if (supportedCommandsDigest | *(v4 + 8))
+  if (supportedCommandsDigest | *(equalCopy + 8))
   {
     if (![(NSData *)supportedCommandsDigest isEqual:?])
     {
@@ -328,7 +328,7 @@ LABEL_27:
   }
 
   playbackQueueDigest = self->_playbackQueueDigest;
-  if (playbackQueueDigest | *(v4 + 6))
+  if (playbackQueueDigest | *(equalCopy + 6))
   {
     if (![(NSData *)playbackQueueDigest isEqual:?])
     {
@@ -336,10 +336,10 @@ LABEL_27:
     }
   }
 
-  v13 = (*(v4 + 72) & 2) == 0;
+  v13 = (*(equalCopy + 72) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 72) & 2) == 0 || self->_originIdentifier != *(v4 + 10))
+    if ((*(equalCopy + 72) & 2) == 0 || self->_originIdentifier != *(equalCopy + 10))
     {
       goto LABEL_27;
     }
@@ -415,55 +415,55 @@ LABEL_28:
   return v4 ^ v3 ^ v7 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((*(v4 + 72) & 4) != 0)
+  fromCopy = from;
+  if ((*(fromCopy + 72) & 4) != 0)
   {
-    self->_state = *(v4 + 14);
+    self->_state = *(fromCopy + 14);
     *&self->_has |= 4u;
   }
 
-  v5 = v4;
-  if (*(v4 + 3))
+  v5 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(_NMRMediaRemoteGetStateMessageProfobuf *)self setKnownDigest:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 72))
+  if (*(fromCopy + 72))
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(_NMRMediaRemoteGetStateMessageProfobuf *)self setNowPlayingInfoDigest:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(_NMRMediaRemoteGetStateMessageProfobuf *)self setApplicationInfoDigest:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(_NMRMediaRemoteGetStateMessageProfobuf *)self setSupportedCommandsDigest:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(_NMRMediaRemoteGetStateMessageProfobuf *)self setPlaybackQueueDigest:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 72) & 2) != 0)
+  if ((*(fromCopy + 72) & 2) != 0)
   {
-    self->_originIdentifier = *(v4 + 10);
+    self->_originIdentifier = *(fromCopy + 10);
     *&self->_has |= 2u;
   }
 }

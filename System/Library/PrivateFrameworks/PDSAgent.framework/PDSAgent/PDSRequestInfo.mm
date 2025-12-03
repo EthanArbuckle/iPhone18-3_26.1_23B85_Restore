@@ -1,20 +1,20 @@
 @interface PDSRequestInfo
-- (PDSRequestInfo)initWithRegistrationReason:(unint64_t)a3 nextHeartbeatDate:(id)a4;
+- (PDSRequestInfo)initWithRegistrationReason:(unint64_t)reason nextHeartbeatDate:(id)date;
 @end
 
 @implementation PDSRequestInfo
 
-- (PDSRequestInfo)initWithRegistrationReason:(unint64_t)a3 nextHeartbeatDate:(id)a4
+- (PDSRequestInfo)initWithRegistrationReason:(unint64_t)reason nextHeartbeatDate:(id)date
 {
-  v7 = a4;
+  dateCopy = date;
   v11.receiver = self;
   v11.super_class = PDSRequestInfo;
   v8 = [(PDSRequestInfo *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_regReason = a3;
-    objc_storeStrong(&v8->_heartbeatDate, a4);
+    v8->_regReason = reason;
+    objc_storeStrong(&v8->_heartbeatDate, date);
   }
 
   return v9;

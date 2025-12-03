@@ -1,20 +1,20 @@
 @interface HMRestrictedGuestHomeAccessSchedule
-+ (BOOL)doDaysOfTheWeek:(unint64_t)a3 containWeekday:(id)a4;
-+ (BOOL)isDate:(id)a3 inTimeZone:(id)a4 withinAllowedWeekDayScheduleRules:(id)a5;
-+ (BOOL)isDate:(id)a3 withinAllowedTimeForSchedule:(id)a4 forHomeInTimeZone:(id)a5;
-+ (BOOL)isDate:(id)a3 withinAllowedYearDayScheduleRules:(id)a4;
++ (BOOL)doDaysOfTheWeek:(unint64_t)week containWeekday:(id)weekday;
++ (BOOL)isDate:(id)date inTimeZone:(id)zone withinAllowedWeekDayScheduleRules:(id)rules;
++ (BOOL)isDate:(id)date withinAllowedTimeForSchedule:(id)schedule forHomeInTimeZone:(id)zone;
++ (BOOL)isDate:(id)date withinAllowedYearDayScheduleRules:(id)rules;
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValidSchedule;
-- (HMRestrictedGuestHomeAccessSchedule)initWithCoder:(id)a3;
-- (HMRestrictedGuestHomeAccessSchedule)initWithDictionary:(id)a3;
-- (HMRestrictedGuestHomeAccessSchedule)initWithWeekDayRules:(id)a3 yearDayRules:(id)a4;
+- (HMRestrictedGuestHomeAccessSchedule)initWithCoder:(id)coder;
+- (HMRestrictedGuestHomeAccessSchedule)initWithDictionary:(id)dictionary;
+- (HMRestrictedGuestHomeAccessSchedule)initWithWeekDayRules:(id)rules yearDayRules:(id)dayRules;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (id)dictionaryRepresentation;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMRestrictedGuestHomeAccessSchedule
@@ -23,12 +23,12 @@
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v4 = [(HMRestrictedGuestHomeAccessSchedule *)self weekDayRules];
-  v5 = [v3 initWithName:@"weekDayRules" value:v4];
+  weekDayRules = [(HMRestrictedGuestHomeAccessSchedule *)self weekDayRules];
+  v5 = [v3 initWithName:@"weekDayRules" value:weekDayRules];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v7 = [(HMRestrictedGuestHomeAccessSchedule *)self yearDayRules];
-  v8 = [v6 initWithName:@"yearDayRules" value:v7];
+  yearDayRules = [(HMRestrictedGuestHomeAccessSchedule *)self yearDayRules];
+  v8 = [v6 initWithName:@"yearDayRules" value:yearDayRules];
   v12[1] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
 
@@ -44,10 +44,10 @@
   return [v2 shortDescription];
 }
 
-- (HMRestrictedGuestHomeAccessSchedule)initWithCoder:(id)a3
+- (HMRestrictedGuestHomeAccessSchedule)initWithCoder:(id)coder
 {
   v17[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(objc_opt_class());
   v6 = MEMORY[0x1E695DFD8];
   v17[0] = objc_opt_class();
@@ -55,7 +55,7 @@
   v17[2] = objc_opt_class();
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:3];
   v8 = [v6 setWithArray:v7];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"HMWeekDayScheduleRules"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"HMWeekDayScheduleRules"];
   [(HMRestrictedGuestHomeAccessSchedule *)v5 setWeekDayRules:v9];
 
   v10 = MEMORY[0x1E695DFD8];
@@ -64,41 +64,41 @@
   v16[2] = objc_opt_class();
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:3];
   v12 = [v10 setWithArray:v11];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"HMYearDayScheduleRules"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"HMYearDayScheduleRules"];
 
   [(HMRestrictedGuestHomeAccessSchedule *)v5 setYearDayRules:v13];
   v14 = *MEMORY[0x1E69E9840];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(HMRestrictedGuestHomeAccessSchedule *)self weekDayRules];
+  coderCopy = coder;
+  weekDayRules = [(HMRestrictedGuestHomeAccessSchedule *)self weekDayRules];
 
-  if (v4)
+  if (weekDayRules)
   {
-    v5 = [(HMRestrictedGuestHomeAccessSchedule *)self weekDayRules];
-    [v8 encodeObject:v5 forKey:@"HMWeekDayScheduleRules"];
+    weekDayRules2 = [(HMRestrictedGuestHomeAccessSchedule *)self weekDayRules];
+    [coderCopy encodeObject:weekDayRules2 forKey:@"HMWeekDayScheduleRules"];
   }
 
-  v6 = [(HMRestrictedGuestHomeAccessSchedule *)self yearDayRules];
+  yearDayRules = [(HMRestrictedGuestHomeAccessSchedule *)self yearDayRules];
 
-  if (v6)
+  if (yearDayRules)
   {
-    v7 = [(HMRestrictedGuestHomeAccessSchedule *)self yearDayRules];
-    [v8 encodeObject:v7 forKey:@"HMYearDayScheduleRules"];
+    yearDayRules2 = [(HMRestrictedGuestHomeAccessSchedule *)self yearDayRules];
+    [coderCopy encodeObject:yearDayRules2 forKey:@"HMYearDayScheduleRules"];
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [[HMMutableRestrictedGuestSchedule allocWithZone:?]];
-  v5 = [(HMRestrictedGuestHomeAccessSchedule *)self weekDayRules];
-  [(HMRestrictedGuestHomeAccessSchedule *)v4 setWeekDayRules:v5];
+  weekDayRules = [(HMRestrictedGuestHomeAccessSchedule *)self weekDayRules];
+  [(HMRestrictedGuestHomeAccessSchedule *)v4 setWeekDayRules:weekDayRules];
 
-  v6 = [(HMRestrictedGuestHomeAccessSchedule *)self yearDayRules];
-  [(HMRestrictedGuestHomeAccessSchedule *)v4 setYearDayRules:v6];
+  yearDayRules = [(HMRestrictedGuestHomeAccessSchedule *)self yearDayRules];
+  [(HMRestrictedGuestHomeAccessSchedule *)v4 setYearDayRules:yearDayRules];
 
   return v4;
 }
@@ -110,20 +110,20 @@
   return NSStringFromClass(v2);
 }
 
-+ (BOOL)doDaysOfTheWeek:(unint64_t)a3 containWeekday:(id)a4
++ (BOOL)doDaysOfTheWeek:(unint64_t)week containWeekday:(id)weekday
 {
-  v5 = [a4 weekday];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:(1 << (v5 - 1)) & a3];
-  v7 = [v6 BOOLValue];
+  weekday = [weekday weekday];
+  week = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:(1 << (weekday - 1)) & week];
+  bOOLValue = [week BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
-+ (BOOL)isDate:(id)a3 withinAllowedYearDayScheduleRules:(id)a4
++ (BOOL)isDate:(id)date withinAllowedYearDayScheduleRules:(id)rules
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 hmf_isEmpty])
+  dateCopy = date;
+  rulesCopy = rules;
+  if ([rulesCopy hmf_isEmpty])
   {
     v7 = 1;
   }
@@ -134,8 +134,8 @@
     v9[1] = 3221225472;
     v9[2] = __80__HMRestrictedGuestHomeAccessSchedule_isDate_withinAllowedYearDayScheduleRules___block_invoke;
     v9[3] = &unk_1E754D160;
-    v10 = v5;
-    v7 = [v6 na_any:v9];
+    v10 = dateCopy;
+    v7 = [rulesCopy na_any:v9];
   }
 
   return v7;
@@ -149,12 +149,12 @@ uint64_t __80__HMRestrictedGuestHomeAccessSchedule_isDate_withinAllowedYearDaySc
   return v4;
 }
 
-+ (BOOL)isDate:(id)a3 inTimeZone:(id)a4 withinAllowedWeekDayScheduleRules:(id)a5
++ (BOOL)isDate:(id)date inTimeZone:(id)zone withinAllowedWeekDayScheduleRules:(id)rules
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 hmf_isEmpty])
+  dateCopy = date;
+  zoneCopy = zone;
+  rulesCopy = rules;
+  if ([rulesCopy hmf_isEmpty])
   {
     v11 = 1;
   }
@@ -162,16 +162,16 @@ uint64_t __80__HMRestrictedGuestHomeAccessSchedule_isDate_withinAllowedYearDaySc
   else
   {
     v12 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
-    v13 = [v12 componentsInTimeZone:v9 fromDate:v8];
+    v13 = [v12 componentsInTimeZone:zoneCopy fromDate:dateCopy];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __91__HMRestrictedGuestHomeAccessSchedule_isDate_inTimeZone_withinAllowedWeekDayScheduleRules___block_invoke;
     v16[3] = &unk_1E754D138;
     v18 = v13;
-    v19 = a1;
-    v17 = v8;
+    selfCopy = self;
+    v17 = dateCopy;
     v14 = v13;
-    v11 = [v10 na_any:v16];
+    v11 = [rulesCopy na_any:v16];
   }
 
   return v11;
@@ -228,18 +228,18 @@ uint64_t __91__HMRestrictedGuestHomeAccessSchedule_isDate_inTimeZone_withinAllow
   return v15;
 }
 
-+ (BOOL)isDate:(id)a3 withinAllowedTimeForSchedule:(id)a4 forHomeInTimeZone:(id)a5
++ (BOOL)isDate:(id)date withinAllowedTimeForSchedule:(id)schedule forHomeInTimeZone:(id)zone
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 weekDayRules];
-  v12 = [a1 isDate:v8 inTimeZone:v10 withinAllowedWeekDayScheduleRules:v11];
+  dateCopy = date;
+  scheduleCopy = schedule;
+  zoneCopy = zone;
+  weekDayRules = [scheduleCopy weekDayRules];
+  v12 = [self isDate:dateCopy inTimeZone:zoneCopy withinAllowedWeekDayScheduleRules:weekDayRules];
 
   if (v12)
   {
-    v13 = [v9 yearDayRules];
-    v14 = [a1 isDate:v8 withinAllowedYearDayScheduleRules:v13];
+    yearDayRules = [scheduleCopy yearDayRules];
+    v14 = [self isDate:dateCopy withinAllowedYearDayScheduleRules:yearDayRules];
   }
 
   else
@@ -252,19 +252,19 @@ uint64_t __91__HMRestrictedGuestHomeAccessSchedule_isDate_inTimeZone_withinAllow
 
 - (unint64_t)hash
 {
-  v3 = [(HMRestrictedGuestHomeAccessSchedule *)self yearDayRules];
-  v4 = [v3 hash];
-  v5 = [(HMRestrictedGuestHomeAccessSchedule *)self weekDayRules];
-  v6 = [v5 hash];
+  yearDayRules = [(HMRestrictedGuestHomeAccessSchedule *)self yearDayRules];
+  v4 = [yearDayRules hash];
+  weekDayRules = [(HMRestrictedGuestHomeAccessSchedule *)self weekDayRules];
+  v6 = [weekDayRules hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_autoreleasePoolPush();
-  v6 = v4;
+  v6 = equalCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -279,21 +279,21 @@ uint64_t __91__HMRestrictedGuestHomeAccessSchedule_isDate_inTimeZone_withinAllow
   v8 = v7;
 
   v9 = MEMORY[0x1E695DFD8];
-  v10 = [(HMRestrictedGuestHomeAccessSchedule *)self weekDayRules];
-  v11 = [v9 setWithArray:v10];
+  weekDayRules = [(HMRestrictedGuestHomeAccessSchedule *)self weekDayRules];
+  v11 = [v9 setWithArray:weekDayRules];
 
   v12 = MEMORY[0x1E695DFD8];
-  v13 = [v8 weekDayRules];
-  v14 = [v12 setWithArray:v13];
+  weekDayRules2 = [v8 weekDayRules];
+  v14 = [v12 setWithArray:weekDayRules2];
 
   v15 = MEMORY[0x1E695DFD8];
-  v16 = [(HMRestrictedGuestHomeAccessSchedule *)self yearDayRules];
-  v17 = [v15 setWithArray:v16];
+  yearDayRules = [(HMRestrictedGuestHomeAccessSchedule *)self yearDayRules];
+  v17 = [v15 setWithArray:yearDayRules];
 
   v18 = MEMORY[0x1E695DFD8];
-  v19 = [v8 yearDayRules];
+  yearDayRules2 = [v8 yearDayRules];
 
-  v20 = [v18 setWithArray:v19];
+  v20 = [v18 setWithArray:yearDayRules2];
 
   if (v8)
   {
@@ -312,14 +312,14 @@ uint64_t __91__HMRestrictedGuestHomeAccessSchedule_isDate_inTimeZone_withinAllow
   return v8;
 }
 
-- (HMRestrictedGuestHomeAccessSchedule)initWithDictionary:(id)a3
+- (HMRestrictedGuestHomeAccessSchedule)initWithDictionary:(id)dictionary
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 hmf_arrayForKey:@"HMWeekDayScheduleRules"];
-  v5 = [v3 hmf_arrayForKey:@"HMYearDayScheduleRules"];
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [MEMORY[0x1E695DF70] array];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy hmf_arrayForKey:@"HMWeekDayScheduleRules"];
+  v5 = [dictionaryCopy hmf_arrayForKey:@"HMYearDayScheduleRules"];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v27 = v4;
   if (v4)
   {
@@ -346,7 +346,7 @@ uint64_t __91__HMRestrictedGuestHomeAccessSchedule_isDate_inTimeZone_withinAllow
           v13 = [[HMWeekDayScheduleRule alloc] initWithDictionary:*(*(&v32 + 1) + 8 * v12)];
           if (v13)
           {
-            [v6 addObject:v13];
+            [array addObject:v13];
           }
 
           ++v12;
@@ -387,7 +387,7 @@ uint64_t __91__HMRestrictedGuestHomeAccessSchedule_isDate_inTimeZone_withinAllow
           v19 = [[HMYearDayScheduleRule alloc] initWithDictionary:*(*(&v28 + 1) + 8 * v18)];
           if (v19)
           {
-            [v7 addObject:v19];
+            [array2 addObject:v19];
           }
 
           ++v18;
@@ -403,8 +403,8 @@ uint64_t __91__HMRestrictedGuestHomeAccessSchedule_isDate_inTimeZone_withinAllow
     v4 = v27;
   }
 
-  v20 = [v6 copy];
-  v21 = [v7 copy];
+  v20 = [array copy];
+  v21 = [array2 copy];
   v22 = [v26 initWithWeekDayRules:v20 yearDayRules:v21];
 
   v23 = *MEMORY[0x1E69E9840];
@@ -414,19 +414,19 @@ uint64_t __91__HMRestrictedGuestHomeAccessSchedule_isDate_inTimeZone_withinAllow
 - (id)dictionaryRepresentation
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(HMRestrictedGuestHomeAccessSchedule *)self weekDayRules];
-  v5 = [v4 count];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  weekDayRules = [(HMRestrictedGuestHomeAccessSchedule *)self weekDayRules];
+  v5 = [weekDayRules count];
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v7 = [(HMRestrictedGuestHomeAccessSchedule *)self weekDayRules];
-    v8 = [v7 countByEnumeratingWithState:&v31 objects:v36 count:16];
+    weekDayRules2 = [(HMRestrictedGuestHomeAccessSchedule *)self weekDayRules];
+    v8 = [weekDayRules2 countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v8)
     {
       v9 = v8;
@@ -437,35 +437,35 @@ uint64_t __91__HMRestrictedGuestHomeAccessSchedule_isDate_inTimeZone_withinAllow
         {
           if (*v32 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(weekDayRules2);
           }
 
-          v12 = [*(*(&v31 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v31 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v31 objects:v36 count:16];
+        v9 = [weekDayRules2 countByEnumeratingWithState:&v31 objects:v36 count:16];
       }
 
       while (v9);
     }
 
-    v13 = [v6 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"HMWeekDayScheduleRules"];
+    v13 = [array copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"HMWeekDayScheduleRules"];
   }
 
-  v14 = [(HMRestrictedGuestHomeAccessSchedule *)self yearDayRules];
-  v15 = [v14 count];
+  yearDayRules = [(HMRestrictedGuestHomeAccessSchedule *)self yearDayRules];
+  v15 = [yearDayRules count];
 
   if (v15)
   {
-    v16 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v17 = [(HMRestrictedGuestHomeAccessSchedule *)self yearDayRules];
-    v18 = [v17 countByEnumeratingWithState:&v27 objects:v35 count:16];
+    yearDayRules2 = [(HMRestrictedGuestHomeAccessSchedule *)self yearDayRules];
+    v18 = [yearDayRules2 countByEnumeratingWithState:&v27 objects:v35 count:16];
     if (v18)
     {
       v19 = v18;
@@ -476,24 +476,24 @@ uint64_t __91__HMRestrictedGuestHomeAccessSchedule_isDate_inTimeZone_withinAllow
         {
           if (*v28 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(yearDayRules2);
           }
 
-          v22 = [*(*(&v27 + 1) + 8 * j) dictionaryRepresentation];
-          [v16 addObject:v22];
+          dictionaryRepresentation2 = [*(*(&v27 + 1) + 8 * j) dictionaryRepresentation];
+          [array2 addObject:dictionaryRepresentation2];
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v27 objects:v35 count:16];
+        v19 = [yearDayRules2 countByEnumeratingWithState:&v27 objects:v35 count:16];
       }
 
       while (v19);
     }
 
-    v23 = [v16 copy];
-    [v3 setObject:v23 forKeyedSubscript:@"HMYearDayScheduleRules"];
+    v23 = [array2 copy];
+    [dictionary setObject:v23 forKeyedSubscript:@"HMYearDayScheduleRules"];
   }
 
-  v24 = [v3 copy];
+  v24 = [dictionary copy];
 
   v25 = *MEMORY[0x1E69E9840];
 
@@ -507,8 +507,8 @@ uint64_t __91__HMRestrictedGuestHomeAccessSchedule_isDate_inTimeZone_withinAllow
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(HMRestrictedGuestHomeAccessSchedule *)self weekDayRules];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  weekDayRules = [(HMRestrictedGuestHomeAccessSchedule *)self weekDayRules];
+  v3 = [weekDayRules countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -519,7 +519,7 @@ uint64_t __91__HMRestrictedGuestHomeAccessSchedule_isDate_inTimeZone_withinAllow
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(weekDayRules);
         }
 
         if (![*(*(&v10 + 1) + 8 * i) isValidSchedule])
@@ -529,7 +529,7 @@ uint64_t __91__HMRestrictedGuestHomeAccessSchedule_isDate_inTimeZone_withinAllow
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [weekDayRules countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -546,23 +546,23 @@ LABEL_11:
   return v7;
 }
 
-- (HMRestrictedGuestHomeAccessSchedule)initWithWeekDayRules:(id)a3 yearDayRules:(id)a4
+- (HMRestrictedGuestHomeAccessSchedule)initWithWeekDayRules:(id)rules yearDayRules:(id)dayRules
 {
-  v6 = a3;
-  v7 = a4;
+  rulesCopy = rules;
+  dayRulesCopy = dayRules;
   v11.receiver = self;
   v11.super_class = HMRestrictedGuestHomeAccessSchedule;
   v8 = [(HMRestrictedGuestHomeAccessSchedule *)&v11 init];
   if (v8)
   {
-    if (![v6 count] && !objc_msgSend(v7, "count"))
+    if (![rulesCopy count] && !objc_msgSend(dayRulesCopy, "count"))
     {
       v9 = 0;
       goto LABEL_6;
     }
 
-    [(HMRestrictedGuestHomeAccessSchedule *)v8 setWeekDayRules:v6];
-    [(HMRestrictedGuestHomeAccessSchedule *)v8 setYearDayRules:v7];
+    [(HMRestrictedGuestHomeAccessSchedule *)v8 setWeekDayRules:rulesCopy];
+    [(HMRestrictedGuestHomeAccessSchedule *)v8 setYearDayRules:dayRulesCopy];
   }
 
   v9 = v8;

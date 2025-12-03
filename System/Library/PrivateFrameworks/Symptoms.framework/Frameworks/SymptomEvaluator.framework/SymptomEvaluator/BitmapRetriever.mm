@@ -1,8 +1,8 @@
 @interface BitmapRetriever
 + (id)sharedInstance;
 - (void)dumpActivityBitmap;
-- (void)getActivityBitmapsWithNames:(id)a3 currMachAbsTime:(unint64_t)a4 startTime:(unint64_t)a5 endTime:(unint64_t)a6 options:(id)a7 reply:(id)a8;
-- (void)tallyUpActivityBitmapsForInterface:(unsigned __int8)a3 queue:(id)a4 replyQueue:(id)a5 reply:(id)a6;
+- (void)getActivityBitmapsWithNames:(id)names currMachAbsTime:(unint64_t)time startTime:(unint64_t)startTime endTime:(unint64_t)endTime options:(id)options reply:(id)reply;
+- (void)tallyUpActivityBitmapsForInterface:(unsigned __int8)interface queue:(id)queue replyQueue:(id)replyQueue reply:(id)reply;
 @end
 
 @implementation BitmapRetriever
@@ -134,28 +134,28 @@ LABEL_10:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getActivityBitmapsWithNames:(id)a3 currMachAbsTime:(unint64_t)a4 startTime:(unint64_t)a5 endTime:(unint64_t)a6 options:(id)a7 reply:(id)a8
+- (void)getActivityBitmapsWithNames:(id)names currMachAbsTime:(unint64_t)time startTime:(unint64_t)startTime endTime:(unint64_t)endTime options:(id)options reply:(id)reply
 {
   v27[7] = *MEMORY[0x277D85DE8];
-  v24 = a6;
-  v25 = a5;
-  v12 = a8;
-  v13 = a7;
-  v14 = a3;
-  [SFActivityBitmaps adjustStartTime:&v25 endTime:&v24 currMachAbsTime:a4];
-  v15 = [(BitmapRetriever *)self _getActivityBitmapsWithNames:v14 startTime:v25 endTime:v24 options:v13 interface:3];
-  v16 = [(BitmapRetriever *)self _getActivityBitmapsWithNames:v14 startTime:v25 endTime:v24 options:v13 interface:4];
-  v17 = [(BitmapRetriever *)self _getActivityBitmapsWithNames:v14 startTime:v25 endTime:v24 options:v13 interface:5];
-  v18 = [(BitmapRetriever *)self _getActivityBitmapsWithNames:v14 startTime:v25 endTime:v24 options:v13 interface:7];
+  endTimeCopy = endTime;
+  startTimeCopy = startTime;
+  replyCopy = reply;
+  optionsCopy = options;
+  namesCopy = names;
+  [SFActivityBitmaps adjustStartTime:&startTimeCopy endTime:&endTimeCopy currMachAbsTime:time];
+  v15 = [(BitmapRetriever *)self _getActivityBitmapsWithNames:namesCopy startTime:startTimeCopy endTime:endTimeCopy options:optionsCopy interface:3];
+  v16 = [(BitmapRetriever *)self _getActivityBitmapsWithNames:namesCopy startTime:startTimeCopy endTime:endTimeCopy options:optionsCopy interface:4];
+  v17 = [(BitmapRetriever *)self _getActivityBitmapsWithNames:namesCopy startTime:startTimeCopy endTime:endTimeCopy options:optionsCopy interface:5];
+  v18 = [(BitmapRetriever *)self _getActivityBitmapsWithNames:namesCopy startTime:startTimeCopy endTime:endTimeCopy options:optionsCopy interface:7];
 
   v26[0] = @"StartTime";
-  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v25];
+  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:startTimeCopy];
   v27[0] = v19;
   v26[1] = @"EndTime";
-  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v24];
+  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:endTimeCopy];
   v27[1] = v20;
   v26[2] = @"CurrentMachAbsTime";
-  v21 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
+  v21 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:time];
   v27[2] = v21;
   v27[3] = v15;
   v26[3] = @"WiFi";
@@ -167,26 +167,26 @@ LABEL_10:
   v27[6] = v18;
   v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:7];
 
-  v12[2](v12, v22);
+  replyCopy[2](replyCopy, v22);
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tallyUpActivityBitmapsForInterface:(unsigned __int8)a3 queue:(id)a4 replyQueue:(id)a5 reply:(id)a6
+- (void)tallyUpActivityBitmapsForInterface:(unsigned __int8)interface queue:(id)queue replyQueue:(id)replyQueue reply:(id)reply
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = v11;
-  if (a4 && v10 && v11)
+  replyQueueCopy = replyQueue;
+  replyCopy = reply;
+  v12 = replyCopy;
+  if (queue && replyQueueCopy && replyCopy)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __77__BitmapRetriever_tallyUpActivityBitmapsForInterface_queue_replyQueue_reply___block_invoke;
     v13[3] = &unk_27898B6A0;
     v13[4] = self;
-    v16 = a3;
-    v14 = v10;
+    interfaceCopy = interface;
+    v14 = replyQueueCopy;
     v15 = v12;
-    dispatch_async(a4, v13);
+    dispatch_async(queue, v13);
   }
 }
 
@@ -324,7 +324,7 @@ void __37__BitmapRetriever_dumpActivityBitmap__block_invoke_10(uint64_t a1, void
   block[1] = 3221225472;
   block[2] = __33__BitmapRetriever_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_8 != -1)
   {
     dispatch_once(&sharedInstance_pred_8, block);

@@ -35,7 +35,7 @@
         if ([objc_opt_class() isSubclassOfClass:*(*(&v16 + 1) + 8 * v12)])
         {
 
-          v13 = 1;
+          liveUpdatesPossibleStatesInEditor = 1;
           goto LABEL_13;
         }
 
@@ -56,18 +56,18 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [v3 liveUpdatesPossibleStatesInEditor];
+    liveUpdatesPossibleStatesInEditor = [v3 liveUpdatesPossibleStatesInEditor];
   }
 
   else
   {
-    v13 = 0;
+    liveUpdatesPossibleStatesInEditor = 0;
   }
 
 LABEL_13:
 
   v14 = *MEMORY[0x1E69E9840];
-  return v13;
+  return liveUpdatesPossibleStatesInEditor;
 }
 
 @end

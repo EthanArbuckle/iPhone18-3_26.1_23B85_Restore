@@ -3,32 +3,32 @@
 + (uint64_t)_usesCoreHapticsForAudioOnly;
 - (BOOL)_isRingerSwitchOn;
 - (_UIKBFeedbackGenerator)init;
-- (double)eventParameter:(void *)a1 setting:(double)a2 previousValue:(double)a3 timeSinceLastAction:(double)a4;
+- (double)eventParameter:(void *)parameter setting:(double)setting previousValue:(double)value timeSinceLastAction:(double)action;
 - (uint64_t)_areKeyClicksEnabled;
 - (uint64_t)_updateMode;
-- (void)_deactivateWithCompletionBlock:(uint64_t)a1;
-- (void)_dictationDidBeginNotification:(id)a3;
-- (void)_dictationDidEndNotification:(id)a3;
-- (void)_effectiveVolumeDidChangeNotification:(id)a3;
-- (void)_performOnMain:(void *)a1;
-- (void)_performOnQueue:(void *)a1;
-- (void)_recreateEngineAndPlayersIfNecessaryOnQueueWithMode:(void *)a3 reason:;
-- (void)_recreateEngineAndPlayersOnQueueWithMode:(void *)a3 reason:;
+- (void)_deactivateWithCompletionBlock:(uint64_t)block;
+- (void)_dictationDidBeginNotification:(id)notification;
+- (void)_dictationDidEndNotification:(id)notification;
+- (void)_effectiveVolumeDidChangeNotification:(id)notification;
+- (void)_performOnMain:(void *)main;
+- (void)_performOnQueue:(void *)queue;
+- (void)_recreateEngineAndPlayersIfNecessaryOnQueueWithMode:(void *)mode reason:;
+- (void)_recreateEngineAndPlayersOnQueueWithMode:(void *)mode reason:;
 - (void)_releaseEngineAndPlayersOnQueue;
 - (void)_resetIdleTimer;
-- (void)_resetWithReason:(void *)a1;
+- (void)_resetWithReason:(void *)reason;
 - (void)_sendAnalyticsEvent;
-- (void)_serverConnectionDiedNotification:(id)a3;
-- (void)_setIsEngineRunning:(uint64_t)a1;
-- (void)_startEngineIfNecessaryOnQueueWithReason:(void *)a3 completionBlock:;
+- (void)_serverConnectionDiedNotification:(id)notification;
+- (void)_setIsEngineRunning:(uint64_t)running;
+- (void)_startEngineIfNecessaryOnQueueWithReason:(void *)reason completionBlock:;
 - (void)_stopEngineDueToIdle;
-- (void)_stopEngineForApplicationNotification:(id)a3;
-- (void)_stopEngineIfNecessaryOnQueueAndReleaseResources:(void *)a3 completionBlock:;
-- (void)actionOccurred:(int64_t)a3 textLength:(int64_t)a4 atLocation:(CGPoint)a5;
-- (void)activateWithCompletionBlock:(id)a3;
+- (void)_stopEngineForApplicationNotification:(id)notification;
+- (void)_stopEngineIfNecessaryOnQueueAndReleaseResources:(void *)resources completionBlock:;
+- (void)actionOccurred:(int64_t)occurred textLength:(int64_t)length atLocation:(CGPoint)location;
+- (void)activateWithCompletionBlock:(id)block;
 - (void)deactivate;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation _UIKBFeedbackGenerator
@@ -77,27 +77,27 @@
     objc_copyWeak(&v16, &location);
     notify_register_dispatch("com.apple.springboard.ringerstate", &v2->_ringerStateNotifyToken, MEMORY[0x1E69E96A0], handler);
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v2 selector:sel__keyboardPreferencesDidUpdateNotification_ name:@"UIKeyboardPreferencesDidUpdateNotification" object:0];
-    [v9 addObserver:v2 selector:sel__dictationDidBeginNotification_ name:@"UIKeyboardDidBeginDictationNotification" object:0];
-    [v9 addObserver:v2 selector:sel__dictationDidEndNotification_ name:@"UIDictationControllerDictationDidFinish" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__keyboardPreferencesDidUpdateNotification_ name:@"UIKeyboardPreferencesDidUpdateNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel__dictationDidBeginNotification_ name:@"UIKeyboardDidBeginDictationNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel__dictationDidEndNotification_ name:@"UIDictationControllerDictationDidFinish" object:0];
     if (_UIApplicationIsExtension())
     {
-      [v9 addObserver:v2 selector:sel__stopEngineForApplicationNotification_ name:0x1EFBB47B0 object:0];
-      [v9 addObserver:v2 selector:sel__stopEngineForApplicationNotification_ name:0x1EFBB47D0 object:0];
+      [defaultCenter addObserver:v2 selector:sel__stopEngineForApplicationNotification_ name:0x1EFBB47B0 object:0];
+      [defaultCenter addObserver:v2 selector:sel__stopEngineForApplicationNotification_ name:0x1EFBB47D0 object:0];
       v10 = 0;
       v11 = &_UIViewServiceRemoteViewControllerWillDisconnectNotificationName;
     }
 
     else
     {
-      [v9 addObserver:v2 selector:sel__stopEngineForApplicationNotification_ name:@"UIApplicationWillResignActiveNotification" object:UIApp];
-      [v9 addObserver:v2 selector:sel__stopEngineForApplicationNotification_ name:@"UIApplicationSuspendedNotification" object:UIApp];
+      [defaultCenter addObserver:v2 selector:sel__stopEngineForApplicationNotification_ name:@"UIApplicationWillResignActiveNotification" object:UIApp];
+      [defaultCenter addObserver:v2 selector:sel__stopEngineForApplicationNotification_ name:@"UIApplicationSuspendedNotification" object:UIApp];
       v10 = UIApp;
       v11 = UIApplicationSuspendedEventsOnlyNotification;
     }
 
-    [v9 addObserver:v2 selector:sel__stopEngineForApplicationNotification_ name:*v11 object:v10];
+    [defaultCenter addObserver:v2 selector:sel__stopEngineForApplicationNotification_ name:*v11 object:v10];
     [(_UIKBFeedbackGenerator *)v2 _updateMode];
     v19[0] = &unk_1EFE32260;
     v19[1] = &unk_1EFE32290;
@@ -129,26 +129,26 @@
 - (uint64_t)_updateMode
 {
   v35 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 _feedbackSupportLevel];
+  _feedbackSupportLevel = [v2 _feedbackSupportLevel];
 
   v4 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v5 = [v4 preferencesActions];
-  v6 = [v5 visceral];
+  preferencesActions = [v4 preferencesActions];
+  visceral = [preferencesActions visceral];
 
-  v7 = v3 != 2 || v6 == 0;
+  v7 = _feedbackSupportLevel != 2 || visceral == 0;
   v8 = !v7;
-  isRingerSwitch = [(_UIKBFeedbackGenerator *)a1 _isRingerSwitchOn];
-  v10 = [(_UIKBFeedbackGenerator *)*(a1 + 16) _areKeyClicksEnabled];
+  isRingerSwitch = [(_UIKBFeedbackGenerator *)self _isRingerSwitchOn];
+  _areKeyClicksEnabled = [(_UIKBFeedbackGenerator *)*(self + 16) _areKeyClicksEnabled];
   v11 = v8 ^ 1;
-  if ((v10 & isRingerSwitch & 1) != 0 || v11)
+  if ((_areKeyClicksEnabled & isRingerSwitch & 1) != 0 || v11)
   {
-    v13 = v10 & isRingerSwitch ^ 1;
+    v13 = _areKeyClicksEnabled & isRingerSwitch ^ 1;
     v7 = (v11 | v13) == 0;
     v14 = 3;
     if (!v7)
@@ -177,20 +177,20 @@
   v22[2] = __37___UIKBFeedbackGenerator__updateMode__block_invoke;
   v22[3] = &__block_descriptor_40_e32_v16__0___UIKBFeedbackGenerator_8l;
   v22[4] = v12;
-  [(_UIKBFeedbackGenerator *)a1 _performOnQueue:v22];
+  [(_UIKBFeedbackGenerator *)self _performOnQueue:v22];
   v15 = _UIKBFeedbackLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = "unsupported";
     v17 = *(&off_1E711B610 + v12);
-    if (v3 == 2)
+    if (_feedbackSupportLevel == 2)
     {
       v16 = "supported";
     }
 
     *buf = 138413570;
-    v24 = a1;
-    if (v6)
+    selfCopy = self;
+    if (visceral)
     {
       v18 = "enabled";
     }
@@ -212,7 +212,7 @@
 
     v29 = 2080;
     v30 = v19;
-    if (v10)
+    if (_areKeyClicksEnabled)
     {
       v20 = "enabled";
     }
@@ -229,21 +229,21 @@
     _os_log_impl(&dword_188A29000, v15, OS_LOG_TYPE_DEFAULT, "%@: Updating mode. Haptics: %s. Haptics: %s. Ringer: %s. Sound: %s. Mode: %@", buf, 0x3Eu);
   }
 
-  *(a1 + 168) = v12;
+  *(self + 168) = v12;
   return v12;
 }
 
 - (BOOL)_isRingerSwitchOn
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = *(a1 + 24);
+  v2 = *(self + 24);
   if (v2 == -1)
   {
     v4 = _UIKBFeedbackLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
       *v5 = 138412290;
-      *&v5[4] = a1;
+      *&v5[4] = self;
       _os_log_error_impl(&dword_188A29000, v4, OS_LOG_TYPE_ERROR, "%@: Error, attempting to read ringer state with an invalid token.", v5, 0xCu);
     }
 
@@ -260,19 +260,19 @@
 
 - (uint64_t)_areKeyClicksEnabled
 {
-  v1 = [a1 objectForKey:@"keyboard-audio"];
+  v1 = [self objectForKey:@"keyboard-audio"];
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
   }
 
   else
   {
-    v3 = 1;
+    bOOLValue = 1;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 + (uint64_t)_usesCoreHapticsForAudioOnly
@@ -295,23 +295,23 @@
 - (void)_releaseEngineAndPlayersOnQueue
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
+    dispatch_assert_queue_V2(*(self + 8));
     v2 = _UIKBFeedbackLog();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 138412290;
-      v6 = a1;
+      selfCopy = self;
       _os_log_impl(&dword_188A29000, v2, OS_LOG_TYPE_DEFAULT, "%@: Releasing engine and players.", &v5, 0xCu);
     }
 
-    [(_UIKBFeedbackGenerator *)a1 _setIsEngineRunning:?];
-    v3 = *(a1 + 80);
-    *(a1 + 80) = 0;
+    [(_UIKBFeedbackGenerator *)self _setIsEngineRunning:?];
+    v3 = *(self + 80);
+    *(self + 80) = 0;
 
-    v4 = *(a1 + 88);
-    *(a1 + 88) = 0;
+    v4 = *(self + 88);
+    *(self + 88) = 0;
   }
 }
 
@@ -346,7 +346,7 @@
       v7 = *(*(&v31 + 1) + 40);
       v8 = v19[5];
       *buf = 138412802;
-      v26 = self;
+      selfCopy = self;
       v27 = 2048;
       v28 = v7;
       v29 = 2048;
@@ -378,7 +378,7 @@
 
   notify_cancel(self->_ringerStateNotifyToken);
   [(NSUserDefaults *)self->_soundsDefaults removeObserver:self forKeyPath:@"keyboard-audio" context:kKVOContext];
-  v12 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v24[0] = @"UIKeyboardPreferencesDidUpdateNotification";
   v24[1] = 0x1EFBB47B0;
   v24[2] = 0x1EFBB47D0;
@@ -393,7 +393,7 @@
   v14 = getAVSystemController_ServerConnectionDiedNotification();
   v24[10] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:11];
-  [(NSNotificationCenter *)v12 _uiRemoveObserver:v15 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v15 names:?];
 
   v16.receiver = self;
   v16.super_class = _UIKBFeedbackGenerator;
@@ -402,25 +402,25 @@
 
 - (void)_sendAnalyticsEvent
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 32))
+    if (*(self + 32))
     {
       v2 = [MEMORY[0x1E695DF00] now];
-      [v2 timeIntervalSinceDate:*(a1 + 32)];
-      *(a1 + 40) = v3 + *(a1 + 40);
+      [v2 timeIntervalSinceDate:*(self + 32)];
+      *(self + 40) = v3 + *(self + 40);
 
-      v4 = *(a1 + 32);
-      *(a1 + 32) = 0;
+      v4 = *(self + 32);
+      *(self + 32) = 0;
     }
 
-    v5 = *(a1 + 48);
+    v5 = *(self + 48);
     if (v5)
     {
-      [UIKBAnalyticsDispatcher hapticEventEngineDuration:v5 startCount:*(a1 + 56) actionCount:*(a1 + 40)];
-      *(a1 + 40) = 0;
-      *(a1 + 48) = 0;
-      *(a1 + 56) = 0;
+      [UIKBAnalyticsDispatcher hapticEventEngineDuration:v5 startCount:*(self + 56) actionCount:*(self + 40)];
+      *(self + 40) = 0;
+      *(self + 48) = 0;
+      *(self + 56) = 0;
     }
   }
 }
@@ -438,11 +438,11 @@
   objc_destroyWeak(&location);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (kKVOContext == a6)
+  if (kKVOContext == context)
   {
-    if ([a3 isEqualToString:{@"keyboard-audio", a4, a5}])
+    if ([path isEqualToString:{@"keyboard-audio", object, change}])
     {
 
       [(_UIKBFeedbackGenerator *)self _resetWithReason:?];
@@ -453,24 +453,24 @@
   {
     v7.receiver = self;
     v7.super_class = _UIKBFeedbackGenerator;
-    [(_UIKBFeedbackGenerator *)&v7 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(_UIKBFeedbackGenerator *)&v7 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (void)_resetWithReason:(void *)a1
+- (void)_resetWithReason:(void *)reason
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (reason)
   {
-    v4 = [a1 isActive];
+    isActive = [reason isActive];
     v5 = _UIKBFeedbackLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = "no";
       *buf = 138412802;
-      v12 = a1;
-      if (v4)
+      reasonCopy = reason;
+      if (isActive)
       {
         v6 = "yes";
       }
@@ -482,28 +482,28 @@
       _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "%@: Calling deactivate (was active: %s) for reason: %@", buf, 0x20u);
     }
 
-    objc_initWeak(buf, a1);
+    objc_initWeak(buf, reason);
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __43___UIKBFeedbackGenerator__resetWithReason___block_invoke;
     v7[3] = &unk_1E7108F18;
     objc_copyWeak(&v9, buf);
-    v10 = v4;
+    v10 = isActive;
     v8 = v3;
-    [(_UIKBFeedbackGenerator *)a1 _deactivateWithCompletionBlock:v7];
+    [(_UIKBFeedbackGenerator *)reason _deactivateWithCompletionBlock:v7];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(buf);
   }
 }
 
-- (void)_performOnQueue:(void *)a1
+- (void)_performOnQueue:(void *)queue
 {
   v3 = a2;
-  if (a1)
+  if (queue)
   {
-    objc_initWeak(&location, a1);
-    v4 = a1[1];
+    objc_initWeak(&location, queue);
+    v4 = queue[1];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __42___UIKBFeedbackGenerator__performOnQueue___block_invoke;
@@ -517,19 +517,19 @@
   }
 }
 
-- (void)_performOnMain:(void *)a1
+- (void)_performOnMain:(void *)main
 {
   v3 = a2;
-  if (a1)
+  if (main)
   {
     if (pthread_main_np() == 1)
     {
-      v3[2](v3, a1);
+      v3[2](v3, main);
     }
 
     else
     {
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, main);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __41___UIKBFeedbackGenerator__performOnMain___block_invoke;
@@ -544,31 +544,31 @@
   }
 }
 
-- (void)_setIsEngineRunning:(uint64_t)a1
+- (void)_setIsEngineRunning:(uint64_t)running
 {
-  if (a1)
+  if (running)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
-    if (*(a1 + 160) != a2)
+    dispatch_assert_queue_V2(*(running + 8));
+    if (*(running + 160) != a2)
     {
-      *(a1 + 160) = a2;
+      *(running + 160) = a2;
       v4[0] = MEMORY[0x1E69E9820];
       v4[1] = 3221225472;
       v4[2] = __46___UIKBFeedbackGenerator__setIsEngineRunning___block_invoke;
       v4[3] = &unk_1E711B450;
       v5 = a2;
-      v4[4] = a1;
-      [(_UIKBFeedbackGenerator *)a1 _performOnMain:v4];
+      v4[4] = running;
+      [(_UIKBFeedbackGenerator *)running _performOnMain:v4];
     }
   }
 }
 
-- (void)_deactivateWithCompletionBlock:(uint64_t)a1
+- (void)_deactivateWithCompletionBlock:(uint64_t)block
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (block)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -577,7 +577,7 @@
     v5 = v3;
     v17 = v5;
     v6 = _Block_copy(aBlock);
-    v7 = *(a1 + 168);
+    v7 = *(block + 168);
     if (v7 == 1)
     {
       if (+[_UIKBFeedbackGenerator _usesCoreHapticsForAudioOnly])
@@ -587,7 +587,7 @@
         v14[2] = __57___UIKBFeedbackGenerator__deactivateWithCompletionBlock___block_invoke_2;
         v14[3] = &unk_1E711B508;
         v15 = v6;
-        [(_UIKBFeedbackGenerator *)a1 _performOnQueue:v14];
+        [(_UIKBFeedbackGenerator *)block _performOnQueue:v14];
         v8 = v15;
 LABEL_9:
 
@@ -599,14 +599,14 @@ LABEL_14:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v19 = a1;
+        blockCopy2 = block;
         _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_DEFAULT, "%@: Cooling System Sounds.", buf, 0xCu);
       }
 
       v11 = +[UIDevice currentDevice];
-      [v11 _unregisterForSystemSounds:a1];
+      [v11 _unregisterForSystemSounds:block];
 
-      *(a1 + 28) = 0;
+      *(block + 28) = 0;
     }
 
     else if ((v7 & 0xFFFFFFFFFFFFFFFELL) == 2)
@@ -615,7 +615,7 @@ LABEL_14:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v19 = a1;
+        blockCopy2 = block;
         v20 = 2080;
         v21 = "[_UIKBFeedbackGenerator _deactivateWithCompletionBlock:]";
         _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_DEFAULT, "%@: Request engine to stop for: %s", buf, 0x16u);
@@ -626,8 +626,8 @@ LABEL_14:
       v12[2] = __57___UIKBFeedbackGenerator__deactivateWithCompletionBlock___block_invoke_406;
       v12[3] = &unk_1E711B508;
       v13 = v5;
-      [(_UIKBFeedbackGenerator *)a1 _performOnQueue:v12];
-      [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:a1 selector:sel__stopEngineDueToIdle object:0];
+      [(_UIKBFeedbackGenerator *)block _performOnQueue:v12];
+      [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:block selector:sel__stopEngineDueToIdle object:0];
       v8 = v13;
       goto LABEL_9;
     }
@@ -639,25 +639,25 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)_recreateEngineAndPlayersOnQueueWithMode:(void *)a3 reason:
+- (void)_recreateEngineAndPlayersOnQueueWithMode:(void *)mode reason:
 {
   v76 = *MEMORY[0x1E69E9840];
-  v51 = a3;
-  dispatch_assert_queue_V2(*(a1 + 8));
-  v50 = *(a1 + 160);
-  [(_UIKBFeedbackGenerator *)a1 _releaseEngineAndPlayersOnQueue];
+  modeCopy = mode;
+  dispatch_assert_queue_V2(*(self + 8));
+  v50 = *(self + 160);
+  [(_UIKBFeedbackGenerator *)self _releaseEngineAndPlayersOnQueue];
   v5 = _UIKBFeedbackLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *&buf[4] = a1;
+    *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v51;
+    *&buf[14] = modeCopy;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "%@: Recreating engine with reason %@.", buf, 0x16u);
   }
 
-  dispatch_assert_queue_V2(*(a1 + 8));
-  if (*(a1 + 76) == 1)
+  dispatch_assert_queue_V2(*(self + 8));
+  if (*(self + 76) == 1)
   {
     v6 = _UIKBFeedbackLog();
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -666,12 +666,12 @@ LABEL_15:
     }
 
     *buf = 138412290;
-    *&buf[4] = a1;
+    *&buf[4] = self;
     v7 = "%@: Feedback is disabled; skipping CoreHaptics engine and player creation.";
     goto LABEL_6;
   }
 
-  if (*(a1 + 77) != 1 || (*(a1 + 78) & 1) != 0)
+  if (*(self + 77) != 1 || (*(self + 78) & 1) != 0)
   {
     v69[0] = &unk_1EFE32260;
     v49 = getCHHapticPatternLibraryKeyKeyboardInputText();
@@ -694,10 +694,10 @@ LABEL_15:
       v53 = 3221225472;
       v54 = __getCHHapticPatternLibraryKeyKeyboardDeletionRepeatSymbolLoc_block_invoke;
       v55 = &unk_1E70F2F20;
-      v56 = &v59;
+      selfCopy = &v59;
       v11 = CoreHapticsLibrary_1();
       *(v60 + 24) = dlsym(v11, "CHHapticPatternLibraryKeyKeyboardDeletionRepeat");
-      qword_1ED49FDE0 = *(v56[1] + 24);
+      qword_1ED49FDE0 = *(selfCopy[1] + 24);
       v10 = *(v60 + 24);
     }
 
@@ -718,10 +718,10 @@ LABEL_15:
         v53 = 3221225472;
         v54 = __getCHHapticPatternLibraryKeyKeyboardDeletionRapidSymbolLoc_block_invoke;
         v55 = &unk_1E70F2F20;
-        v56 = &v59;
+        selfCopy = &v59;
         v14 = CoreHapticsLibrary_1();
         *(v60 + 24) = dlsym(v14, "CHHapticPatternLibraryKeyKeyboardDeletionRapid");
-        qword_1ED49FDE8 = *(v56[1] + 24);
+        qword_1ED49FDE8 = *(selfCopy[1] + 24);
         v13 = *(v60 + 24);
       }
 
@@ -745,10 +745,10 @@ LABEL_15:
           v53 = 3221225472;
           v54 = __getCHHapticPatternLibraryKeyKeyboardInputCandidateSymbolLoc_block_invoke;
           v55 = &unk_1E70F2F20;
-          v56 = &v59;
+          selfCopy = &v59;
           v18 = CoreHapticsLibrary_1();
           *(v60 + 24) = dlsym(v18, "CHHapticPatternLibraryKeyKeyboardInputCandidate");
-          qword_1ED49FDF0 = *(v56[1] + 24);
+          qword_1ED49FDF0 = *(selfCopy[1] + 24);
           v17 = *(v60 + 24);
         }
 
@@ -782,14 +782,14 @@ LABEL_15:
           v53 = 3221225472;
           v54 = __65___UIKBFeedbackGenerator__createEngineAndPlayersOnQueueWithMode___block_invoke;
           v55 = &unk_1E711B3D8;
-          v56 = a1;
+          selfCopy = self;
           v58 = a2;
           v25 = v24;
           v57 = v25;
           [v6 enumerateKeysAndObjectsUsingBlock:&v52];
-          objc_storeStrong((a1 + 88), v24);
-          v26 = *(a1 + 64);
-          *(a1 + 64) = 0;
+          objc_storeStrong((self + 88), v24);
+          v26 = *(self + 64);
+          *(self + 64) = 0;
 
           if (a2 != 3)
           {
@@ -823,15 +823,15 @@ LABEL_15:
 
           v29 = v28;
           _Block_object_dispose(&v64, 8);
-          v30 = [v28 sharedAVSystemController];
-          v31 = *(a1 + 64);
-          *(a1 + 64) = v30;
+          sharedAVSystemController = [v28 sharedAVSystemController];
+          v31 = *(self + 64);
+          *(self + 64) = sharedAVSystemController;
 
           v32 = getAVSystemController_EffectiveVolumeDidChangeNotification();
           v68 = v32;
           v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v68 count:1];
 
-          v34 = *(a1 + 64);
+          v34 = *(self + 64);
           v64 = 0;
           v65 = &v64;
           v66 = 0x2020000000;
@@ -855,45 +855,45 @@ LABEL_15:
           if (v35)
           {
             [v34 setAttribute:v33 forKey:*v35 error:0];
-            v38 = [MEMORY[0x1E696AD88] defaultCenter];
+            defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
             v39 = getAVSystemController_EffectiveVolumeDidChangeNotification();
-            [v38 addObserver:a1 selector:sel__effectiveVolumeDidChangeNotification_ name:v39 object:*(a1 + 64)];
+            [defaultCenter addObserver:self selector:sel__effectiveVolumeDidChangeNotification_ name:v39 object:*(self + 64)];
 
             v40 = getAVSystemController_ServerConnectionDiedNotification();
-            [v38 addObserver:a1 selector:sel__serverConnectionDiedNotification_ name:v40 object:0];
+            [defaultCenter addObserver:self selector:sel__serverConnectionDiedNotification_ name:v40 object:0];
 
-            [*(a1 + 64) getVolume:a1 + 72 forCategory:@"Ringtone"];
+            [*(self + 64) getVolume:self + 72 forCategory:@"Ringtone"];
 LABEL_31:
 
             goto LABEL_33;
           }
 
-          v47 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v48 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getAVSystemController_SubscribeToNotificationsAttribute(void)"];
-          [v47 handleFailureInFunction:v48 file:@"_UIKBFeedbackGenerator.m" lineNumber:54 description:{@"%s", dlerror()}];
+          [currentHandler handleFailureInFunction:v48 file:@"_UIKBFeedbackGenerator.m" lineNumber:54 description:{@"%s", dlerror()}];
         }
 
         else
         {
-          v45 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
           v46 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CHHapticPatternLibraryKey getCHHapticPatternLibraryKeyKeyboardInputCandidate(void)"];
-          [v45 handleFailureInFunction:v46 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:90 description:{@"%s", dlerror()}];
+          [currentHandler2 handleFailureInFunction:v46 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:90 description:{@"%s", dlerror()}];
         }
       }
 
       else
       {
-        v43 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
         v44 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CHHapticPatternLibraryKey getCHHapticPatternLibraryKeyKeyboardDeletionRapid(void)"];
-        [v43 handleFailureInFunction:v44 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:88 description:{@"%s", dlerror()}];
+        [currentHandler3 handleFailureInFunction:v44 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:88 description:{@"%s", dlerror()}];
       }
     }
 
     else
     {
-      v41 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v42 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CHHapticPatternLibraryKey getCHHapticPatternLibraryKeyKeyboardDeletionRepeat(void)"];
-      [v41 handleFailureInFunction:v42 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:87 description:{@"%s", dlerror()}];
+      [currentHandler4 handleFailureInFunction:v42 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:87 description:{@"%s", dlerror()}];
     }
 
     __break(1u);
@@ -903,7 +903,7 @@ LABEL_31:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    *&buf[4] = a1;
+    *&buf[4] = self;
     v7 = "%@: Audio-only mode; skipping CoreHaptics engine and player creation.";
 LABEL_6:
     _os_log_error_impl(&dword_188A29000, v6, OS_LOG_TYPE_ERROR, v7, buf, 0xCu);
@@ -913,39 +913,39 @@ LABEL_33:
 
   if (v50)
   {
-    [(_UIKBFeedbackGenerator *)a1 _startEngineIfNecessaryOnQueueWithReason:v51 completionBlock:0];
+    [(_UIKBFeedbackGenerator *)self _startEngineIfNecessaryOnQueueWithReason:modeCopy completionBlock:0];
   }
 
   else
   {
-    [(_UIKBFeedbackGenerator *)a1 _performOnMain:?];
+    [(_UIKBFeedbackGenerator *)self _performOnMain:?];
   }
 }
 
-- (void)_recreateEngineAndPlayersIfNecessaryOnQueueWithMode:(void *)a3 reason:
+- (void)_recreateEngineAndPlayersIfNecessaryOnQueueWithMode:(void *)mode reason:
 {
-  v5 = a3;
-  if (a1 && !*(a1 + 80))
+  modeCopy = mode;
+  if (self && !*(self + 80))
   {
-    v6 = v5;
-    [(_UIKBFeedbackGenerator *)a1 _recreateEngineAndPlayersOnQueueWithMode:a2 reason:v5];
-    v5 = v6;
+    v6 = modeCopy;
+    [(_UIKBFeedbackGenerator *)self _recreateEngineAndPlayersOnQueueWithMode:a2 reason:modeCopy];
+    modeCopy = v6;
   }
 }
 
-- (void)_startEngineIfNecessaryOnQueueWithReason:(void *)a3 completionBlock:
+- (void)_startEngineIfNecessaryOnQueueWithReason:(void *)reason completionBlock:
 {
   v20 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  reasonCopy = reason;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
-    if (*(a1 + 160) == 1)
+    dispatch_assert_queue_V2(*(self + 8));
+    if (*(self + 160) == 1)
     {
-      if (v6)
+      if (reasonCopy)
       {
-        v6[2](v6, 1);
+        reasonCopy[2](reasonCopy, 1);
       }
     }
 
@@ -955,15 +955,15 @@ LABEL_33:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        *&buf[4] = a1;
+        *&buf[4] = self;
         *&buf[12] = 2112;
         *&buf[14] = v5;
         _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEFAULT, "%@: Requesting engine start for reason: %@", buf, 0x16u);
       }
 
-      v8 = v6;
-      dispatch_assert_queue_V2(*(a1 + 8));
-      v9 = *(a1 + 80);
+      v8 = reasonCopy;
+      dispatch_assert_queue_V2(*(self + 8));
+      v9 = *(self + 80);
       if (v9)
       {
         v15 = 0;
@@ -976,7 +976,7 @@ LABEL_33:
           if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412546;
-            *&buf[4] = a1;
+            *&buf[4] = self;
             *&buf[12] = 2112;
             *&buf[14] = v10;
             _os_log_error_impl(&dword_188A29000, v12, OS_LOG_TYPE_ERROR, "%@: Error starting CHHapticEngine: %@", buf, 0x16u);
@@ -988,21 +988,21 @@ LABEL_33:
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            *&buf[4] = a1;
+            *&buf[4] = self;
             _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_DEFAULT, "%@: Engine started (or it was already running).", buf, 0xCu);
           }
 
-          [(_UIKBFeedbackGenerator *)a1 _setIsEngineRunning:?];
+          [(_UIKBFeedbackGenerator *)self _setIsEngineRunning:?];
         }
 
-        v14 = *(a1 + 160);
+        v14 = *(self + 160);
         *buf = MEMORY[0x1E69E9820];
         *&buf[8] = 3221225472;
         *&buf[16] = __65___UIKBFeedbackGenerator__startEngineOnQueueWithCompletionBlock___block_invoke;
         v17 = &unk_1E711B4E0;
         v19 = v14;
         v18 = v8;
-        [(_UIKBFeedbackGenerator *)a1 _performOnMain:buf];
+        [(_UIKBFeedbackGenerator *)self _performOnMain:buf];
       }
 
       else
@@ -1011,7 +1011,7 @@ LABEL_33:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          *&buf[4] = a1;
+          *&buf[4] = self;
           _os_log_error_impl(&dword_188A29000, v13, OS_LOG_TYPE_ERROR, "%@: Error: Cannot start engine because it does not exist.", buf, 0xCu);
         }
 
@@ -1024,23 +1024,23 @@ LABEL_33:
   }
 }
 
-- (void)_stopEngineIfNecessaryOnQueueAndReleaseResources:(void *)a3 completionBlock:
+- (void)_stopEngineIfNecessaryOnQueueAndReleaseResources:(void *)resources completionBlock:
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (a1)
+  resourcesCopy = resources;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
-    if (*(a1 + 160))
+    dispatch_assert_queue_V2(*(self + 8));
+    if (*(self + 160))
     {
-      objc_initWeak(location, a1);
-      v6 = *(a1 + 80);
+      objc_initWeak(location, self);
+      v6 = *(self + 80);
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __91___UIKBFeedbackGenerator__stopEngineIfNecessaryOnQueueAndReleaseResources_completionBlock___block_invoke;
       v8[3] = &unk_1E711B530;
       objc_copyWeak(&v10, location);
-      v9 = v5;
+      v9 = resourcesCopy;
       v11 = a2;
       [v6 stopWithCompletionHandler:v8];
 
@@ -1054,18 +1054,18 @@ LABEL_33:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(location[0]) = 138412290;
-        *(location + 4) = a1;
+        *(location + 4) = self;
         _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEFAULT, "%@: Engine is not running.", location, 0xCu);
       }
 
       if (a2)
       {
-        [(_UIKBFeedbackGenerator *)a1 _releaseEngineAndPlayersOnQueue];
+        [(_UIKBFeedbackGenerator *)self _releaseEngineAndPlayersOnQueue];
       }
 
-      if (v5)
+      if (resourcesCopy)
       {
-        v5[2](v5);
+        resourcesCopy[2](resourcesCopy);
       }
     }
   }
@@ -1073,13 +1073,13 @@ LABEL_33:
 
 - (void)_resetIdleTimer
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:a1 selector:sel__stopEngineDueToIdle object:0];
-  if (*(a1 + 168) == 1 && *(a1 + 78) != 1)
+  [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__stopEngineDueToIdle object:0];
+  if (*(self + 168) == 1 && *(self + 78) != 1)
   {
     return;
   }
@@ -1101,7 +1101,7 @@ LABEL_33:
     v3 = 5.0;
   }
 
-  [a1 performSelector:sel__stopEngineDueToIdle withObject:0 afterDelay:v3];
+  [self performSelector:sel__stopEngineDueToIdle withObject:0 afterDelay:v3];
 LABEL_9:
 }
 
@@ -1112,7 +1112,7 @@ LABEL_9:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_188A29000, v3, OS_LOG_TYPE_DEFAULT, "%@: Requesting engine stop for idle.", &v4, 0xCu);
   }
 
@@ -1123,48 +1123,48 @@ LABEL_9:
   }
 }
 
-- (void)_dictationDidBeginNotification:(id)a3
+- (void)_dictationDidBeginNotification:(id)notification
 {
   v7 = *MEMORY[0x1E69E9840];
   v4 = _UIKBFeedbackLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_DEFAULT, "%@: Dictation did begin.", &v5, 0xCu);
   }
 
   [(_UIKBFeedbackGenerator *)self _performOnQueue:?];
 }
 
-- (void)_dictationDidEndNotification:(id)a3
+- (void)_dictationDidEndNotification:(id)notification
 {
   v7 = *MEMORY[0x1E69E9840];
   v4 = _UIKBFeedbackLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_DEFAULT, "%@: Dictation did end.", &v5, 0xCu);
   }
 
   [(_UIKBFeedbackGenerator *)self _performOnQueue:?];
 }
 
-- (void)_stopEngineForApplicationNotification:(id)a3
+- (void)_stopEngineForApplicationNotification:(id)notification
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   if (self && (self->__mode & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     v5 = _UIKBFeedbackLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 name];
+      name = [notificationCopy name];
       v7 = 138412546;
-      v8 = self;
+      selfCopy = self;
       v9 = 2112;
-      v10 = v6;
+      v10 = name;
       _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "%@: Request engine stop for application notification: %@", &v7, 0x16u);
     }
 
@@ -1173,10 +1173,10 @@ LABEL_9:
   }
 }
 
-- (void)_effectiveVolumeDidChangeNotification:(id)a3
+- (void)_effectiveVolumeDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -1199,7 +1199,7 @@ LABEL_9:
   if (v6)
   {
     v8 = *v6;
-    v9 = [v5 objectForKeyedSubscript:v8];
+    v9 = [userInfo objectForKeyedSubscript:v8];
 
     if ([v9 isEqualToString:@"Ringtone"])
     {
@@ -1214,38 +1214,38 @@ LABEL_9:
 
   else
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getAVSystemController_EffectiveVolumeNotificationParameter_Category(void)"];
-    [v10 handleFailureInFunction:v11 file:@"_UIKBFeedbackGenerator.m" lineNumber:57 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v11 file:@"_UIKBFeedbackGenerator.m" lineNumber:57 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
 }
 
-- (void)_serverConnectionDiedNotification:(id)a3
+- (void)_serverConnectionDiedNotification:(id)notification
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = _UIKBFeedbackLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v6 = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = notificationCopy;
     _os_log_error_impl(&dword_188A29000, v5, OS_LOG_TYPE_ERROR, "%@: AVSystemController error notification: %@", &v6, 0x16u);
   }
 }
 
-- (void)activateWithCompletionBlock:(id)a3
+- (void)activateWithCompletionBlock:(id)block
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __54___UIKBFeedbackGenerator_activateWithCompletionBlock___block_invoke;
   aBlock[3] = &unk_1E70F3608;
-  v5 = v4;
+  v5 = blockCopy;
   v23 = v5;
   v6 = _Block_copy(aBlock);
   v7 = _UIKBFeedbackLog();
@@ -1253,7 +1253,7 @@ LABEL_9:
   {
     v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_UIKBFeedbackGenerator activateWithCompletionBlock:]"];
     *buf = 138412546;
-    v25 = self;
+    selfCopy5 = self;
     v26 = 2112;
     v27 = v8;
     _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEFAULT, "%@: %@", buf, 0x16u);
@@ -1274,7 +1274,7 @@ LABEL_9:
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v25 = self;
+              selfCopy5 = self;
               _os_log_impl(&dword_188A29000, v14, OS_LOG_TYPE_DEFAULT, "%@: Preheating System Sounds.", buf, 0xCu);
             }
 
@@ -1315,7 +1315,7 @@ LABEL_9:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v25 = self;
+        selfCopy5 = self;
         v12 = "%@: Cannot activate engine while suspended.";
 LABEL_19:
         _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_DEFAULT, v12, buf, 0xCu);
@@ -1328,7 +1328,7 @@ LABEL_19:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v25 = self;
+        selfCopy5 = self;
         v12 = "%@: Nothing to activate. Keyboard feedback is disabled.";
         goto LABEL_19;
       }
@@ -1342,7 +1342,7 @@ LABEL_19:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v25 = self;
+    selfCopy5 = self;
     _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_DEFAULT, "%@: Skipping activation. Already activated.", buf, 0xCu);
   }
 
@@ -1351,19 +1351,19 @@ LABEL_7:
 LABEL_24:
 }
 
-- (void)actionOccurred:(int64_t)a3 textLength:(int64_t)a4 atLocation:(CGPoint)a5
+- (void)actionOccurred:(int64_t)occurred textLength:(int64_t)length atLocation:(CGPoint)location
 {
   v13 = *MEMORY[0x1E69E9840];
   if (self && self->__mode)
   {
-    self->_textLength = a4;
-    if (![(_UIKBFeedbackGenerator *)self isActive:a5.x])
+    self->_textLength = length;
+    if (![(_UIKBFeedbackGenerator *)self isActive:location.x])
     {
       v7 = _UIKBFeedbackLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v10 = self;
+        selfCopy = self;
         v11 = 2080;
         v12 = "[_UIKBFeedbackGenerator actionOccurred:textLength:atLocation:]";
         _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEFAULT, "%@: Activating for %s", buf, 0x16u);
@@ -1376,37 +1376,37 @@ LABEL_24:
     v8[1] = 3221225472;
     v8[2] = __63___UIKBFeedbackGenerator_actionOccurred_textLength_atLocation___block_invoke;
     v8[3] = &__block_descriptor_40_e32_v16__0___UIKBFeedbackGenerator_8l;
-    v8[4] = a3;
+    v8[4] = occurred;
     [(_UIKBFeedbackGenerator *)self _performOnQueue:v8];
     [(_UIKBFeedbackGenerator *)self _resetIdleTimer];
   }
 }
 
-- (double)eventParameter:(void *)a1 setting:(double)a2 previousValue:(double)a3 timeSinceLastAction:(double)a4
+- (double)eventParameter:(void *)parameter setting:(double)setting previousValue:(double)value timeSinceLastAction:(double)action
 {
-  v6 = a1;
-  [v6 min];
+  parameterCopy = parameter;
+  [parameterCopy min];
   v8 = v7;
-  [v6 intervalWeight];
+  [parameterCopy intervalWeight];
   v10 = v9;
-  [v6 max];
+  [parameterCopy max];
   v12 = v11;
-  [v6 min];
+  [parameterCopy min];
   v14 = v13;
-  [v6 decayInterval];
+  [parameterCopy decayInterval];
   v15 = 0.0;
-  if (v16 >= a4)
+  if (v16 >= action)
   {
-    [v6 decayInterval];
-    v15 = v17 - a4;
+    [parameterCopy decayInterval];
+    v15 = v17 - action;
   }
 
-  [v6 randomInPercentage];
+  [parameterCopy randomInPercentage];
   v19 = v18;
-  [v6 randomInPercentage];
+  [parameterCopy randomInPercentage];
   v21 = v20;
   v22 = arc4random();
-  v23 = (v8 + 0.0 + v10 * a2 * (v12 - v14) + v15 * a3) * ((v21 * (v22 / 4294967300.0) - v19 * (1.0 - v22 / 4294967300.0)) / 100.0 + 1.0);
+  v23 = (v8 + 0.0 + v10 * setting * (v12 - v14) + v15 * value) * ((v21 * (v22 / 4294967300.0) - v19 * (1.0 - v22 / 4294967300.0)) / 100.0 + 1.0);
 
   return v23;
 }

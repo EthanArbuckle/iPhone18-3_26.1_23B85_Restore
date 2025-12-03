@@ -1,22 +1,22 @@
 @interface PREditor
 - (WKWallpaperPosterEditingLook)wk_currentLook;
-- (void)wk_setAdaptiveTimeMode:(unint64_t)a3;
-- (void)wk_setMaximumAdaptiveTimeHeight:(double)a3;
+- (void)wk_setAdaptiveTimeMode:(unint64_t)mode;
+- (void)wk_setMaximumAdaptiveTimeHeight:(double)height;
 @end
 
 @implementation PREditor
 
 - (WKWallpaperPosterEditingLook)wk_currentLook
 {
-  v2 = [(PREditor *)self currentLook];
+  currentLook = [(PREditor *)self currentLook];
 
-  return v2;
+  return currentLook;
 }
 
-- (void)wk_setAdaptiveTimeMode:(unint64_t)a3
+- (void)wk_setAdaptiveTimeMode:(unint64_t)mode
 {
   v5 = swift_allocObject();
-  *(v5 + 16) = a3;
+  *(v5 + 16) = mode;
   v6 = swift_allocObject();
   *(v6 + 16) = sub_100010344;
   *(v6 + 24) = v5;
@@ -27,9 +27,9 @@
   v9[2] = sub_10001033C;
   v9[3] = &unk_100018F30;
   v7 = _Block_copy(v9);
-  v8 = self;
+  selfCopy = self;
 
-  [(PREditor *)v8 updatePreferences:v7];
+  [(PREditor *)selfCopy updatePreferences:v7];
   _Block_release(v7);
   LOBYTE(v7) = swift_isEscapingClosureAtFileLocation();
 
@@ -39,10 +39,10 @@
   }
 }
 
-- (void)wk_setMaximumAdaptiveTimeHeight:(double)a3
+- (void)wk_setMaximumAdaptiveTimeHeight:(double)height
 {
   v5 = swift_allocObject();
-  *(v5 + 16) = a3;
+  *(v5 + 16) = height;
   v6 = swift_allocObject();
   *(v6 + 16) = sub_100010340;
   *(v6 + 24) = v5;
@@ -53,9 +53,9 @@
   v9[2] = sub_10001033C;
   v9[3] = &unk_100018EB8;
   v7 = _Block_copy(v9);
-  v8 = self;
+  selfCopy = self;
 
-  [(PREditor *)v8 updatePreferences:v7];
+  [(PREditor *)selfCopy updatePreferences:v7];
   _Block_release(v7);
   LOBYTE(v7) = swift_isEscapingClosureAtFileLocation();
 

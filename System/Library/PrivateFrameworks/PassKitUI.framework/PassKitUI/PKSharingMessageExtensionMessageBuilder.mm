@@ -1,27 +1,27 @@
 @interface PKSharingMessageExtensionMessageBuilder
-+ (void)messageFromConfiguration:(id)a3 completionHandler:(id)a4;
-+ (void)messageFromFlightShareInvitation:(id)a3 completionHandler:(id)a4;
-+ (void)messageFromInvitation:(id)a3 analyticsSessionToken:(id)a4 completionHandler:(id)a5;
-+ (void)messageFromSharingRequest:(id)a3 completionHandler:(id)a4;
-+ (void)messageURLFromSharingRequest:(id)a3 completionHandler:(id)a4;
++ (void)messageFromConfiguration:(id)configuration completionHandler:(id)handler;
++ (void)messageFromFlightShareInvitation:(id)invitation completionHandler:(id)handler;
++ (void)messageFromInvitation:(id)invitation analyticsSessionToken:(id)token completionHandler:(id)handler;
++ (void)messageFromSharingRequest:(id)request completionHandler:(id)handler;
++ (void)messageURLFromSharingRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation PKSharingMessageExtensionMessageBuilder
 
-+ (void)messageFromConfiguration:(id)a3 completionHandler:(id)a4
++ (void)messageFromConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  configurationCopy = configuration;
   v7 = objc_alloc_init(PKShareableCredentialMessage);
-  v8 = [v6 credentialsMetadata];
+  credentialsMetadata = [configurationCopy credentialsMetadata];
 
-  v9 = [v8 count];
+  v9 = [credentialsMetadata count];
   if (v9 < 2)
   {
-    v11 = [v8 objectAtIndexedSubscript:0];
-    v12 = [v11 preview];
-    v13 = [v12 ownerDisplayName];
-    v10 = PKLocalizedShareableCredentialString(&cfstr_ShareOneSharea.isa, &stru_1F3BD5BF0.isa, v13);
+    v11 = [credentialsMetadata objectAtIndexedSubscript:0];
+    preview = [v11 preview];
+    ownerDisplayName = [preview ownerDisplayName];
+    v10 = PKLocalizedShareableCredentialString(&cfstr_ShareOneSharea.isa, &stru_1F3BD5BF0.isa, ownerDisplayName);
   }
 
   else
@@ -44,13 +44,13 @@
   else
   {
     v15 = MEMORY[0x1E69DCAB8];
-    v16 = [v8 firstObject];
-    v17 = [v16 preview];
-    v18 = [v15 imageWithCGImage:{objc_msgSend(v17, "passThumbnailImage")}];
+    firstObject = [credentialsMetadata firstObject];
+    preview2 = [firstObject preview];
+    v18 = [v15 imageWithCGImage:{objc_msgSend(preview2, "passThumbnailImage")}];
     [(PKShareableCredentialMessage *)v7 setPassThumbnailImage:v18];
   }
 
-  v19 = [v8 pk_arrayByApplyingBlock:&__block_literal_global_64];
+  v19 = [credentialsMetadata pk_arrayByApplyingBlock:&__block_literal_global_64];
   [(PKShareableCredentialMessage *)v7 setShareableCredentials:v19];
   v20 = objc_alloc_init(MEMORY[0x1E6973F30]);
   v21 = [objc_alloc(MEMORY[0x1E6973F28]) initWithAlternateLayout:v20];
@@ -58,8 +58,8 @@
   v23 = objc_alloc_init(MEMORY[0x1E6973F38]);
   v24 = [v22 initWithSession:v23];
 
-  v25 = [(PKShareableCredentialMessage *)v7 urlRepresentation];
-  [v24 setURL:v25];
+  urlRepresentation = [(PKShareableCredentialMessage *)v7 urlRepresentation];
+  [v24 setURL:urlRepresentation];
 
   [v24 setRequiresValidation:1];
   [v24 setLayout:v21];
@@ -68,9 +68,9 @@
   block[2] = __86__PKSharingMessageExtensionMessageBuilder_messageFromConfiguration_completionHandler___block_invoke_2;
   block[3] = &unk_1E8010E20;
   v29 = v24;
-  v30 = v5;
+  v30 = handlerCopy;
   v26 = v24;
-  v27 = v5;
+  v27 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -107,30 +107,30 @@ id __86__PKSharingMessageExtensionMessageBuilder_messageFromConfiguration_comple
   return v4;
 }
 
-+ (void)messageFromInvitation:(id)a3 analyticsSessionToken:(id)a4 completionHandler:(id)a5
++ (void)messageFromInvitation:(id)invitation analyticsSessionToken:(id)token completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 share];
-  v11 = [v7 pass];
-  v12 = [v7 displayInformation];
-  if (!v12)
+  invitationCopy = invitation;
+  handlerCopy = handler;
+  tokenCopy = token;
+  share = [invitationCopy share];
+  pass = [invitationCopy pass];
+  displayInformation = [invitationCopy displayInformation];
+  if (!displayInformation)
   {
-    v12 = [MEMORY[0x1E69B9280] displayInformationForAccessPass:v11 webService:0];
+    displayInformation = [MEMORY[0x1E69B9280] displayInformationForAccessPass:pass webService:0];
   }
 
   v13 = objc_alloc_init(PKSharingMessageExtensionRelayServerMessage);
-  v14 = [v12 title];
-  [(PKSharingMessageExtensionCommonMessage *)v13 setTitle:v14];
+  title = [displayInformation title];
+  [(PKSharingMessageExtensionCommonMessage *)v13 setTitle:title];
 
-  v15 = [v12 subtitle];
-  [(PKSharingMessageExtensionCommonMessage *)v13 setSubtitle:v15];
+  subtitle = [displayInformation subtitle];
+  [(PKSharingMessageExtensionCommonMessage *)v13 setSubtitle:subtitle];
 
-  v16 = [v10 status];
-  if (v16)
+  status = [share status];
+  if (status)
   {
-    v17 = v16;
+    v17 = status;
   }
 
   else
@@ -140,8 +140,8 @@ id __86__PKSharingMessageExtensionMessageBuilder_messageFromConfiguration_comple
 
   [(PKSharingMessageExtensionRelayServerMessage *)v13 setStatus:v17];
   v18 = objc_alloc_init(PKSharingMessageExtensionRelayServerLocalProperties);
-  [(PKSharingMessageExtensionRelayServerLocalProperties *)v18 setPartialInvite:v7];
-  [(PKSharingMessageExtensionRelayServerLocalProperties *)v18 setAnalyticsSessionToken:v9];
+  [(PKSharingMessageExtensionRelayServerLocalProperties *)v18 setPartialInvite:invitationCopy];
+  [(PKSharingMessageExtensionRelayServerLocalProperties *)v18 setAnalyticsSessionToken:tokenCopy];
 
   [(PKSharingMessageExtensionRelayServerMessage *)v13 setLocalProperties:v18];
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -150,7 +150,7 @@ id __86__PKSharingMessageExtensionMessageBuilder_messageFromConfiguration_comple
   aBlock[3] = &unk_1E8010DD0;
   v19 = v13;
   v33 = v19;
-  v20 = v8;
+  v20 = handlerCopy;
   v34 = v20;
   v21 = _Block_copy(aBlock);
   if (PKHidePlaceholderImageIniMessage())
@@ -167,8 +167,8 @@ id __86__PKSharingMessageExtensionMessageBuilder_messageFromConfiguration_comple
 
   else
   {
-    v23 = [v12 imageURL];
-    if (v23)
+    imageURL = [displayInformation imageURL];
+    if (imageURL)
     {
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
@@ -176,18 +176,18 @@ id __86__PKSharingMessageExtensionMessageBuilder_messageFromConfiguration_comple
       v29[3] = &unk_1E8012AF0;
       v30 = v19;
       v31 = v21;
-      PKCommonCachedImageFromURL(v23, v29);
+      PKCommonCachedImageFromURL(imageURL, v29);
     }
 
     else
     {
       v24 = MEMORY[0x1E69DCAB8];
       PKPassKitUIBundle();
-      v25 = v27 = v11;
+      v25 = v27 = pass;
       v26 = [v24 imageNamed:@"Generic-Shared-Key" inBundle:v25];
       [(PKSharingMessageExtensionCommonMessage *)v19 setThumbnail:v26];
 
-      v11 = v27;
+      pass = v27;
       v21[2](v21);
     }
   }
@@ -248,36 +248,36 @@ uint64_t __105__PKSharingMessageExtensionMessageBuilder_messageFromInvitation_an
   return v15();
 }
 
-+ (void)messageFromSharingRequest:(id)a3 completionHandler:(id)a4
++ (void)messageFromSharingRequest:(id)request completionHandler:(id)handler
 {
   v50 = *MEMORY[0x1E69E9840];
-  v36 = a4;
-  v5 = a3;
+  handlerCopy = handler;
+  requestCopy = request;
   v6 = objc_alloc_init(PKSubcredentialInvitationMessage);
-  v38 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:0];
-  v37 = [v38 hexEncoding];
+  v38 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:requestCopy requiringSecureCoding:1 error:0];
+  hexEncoding = [v38 hexEncoding];
   [(PKSubcredentialInvitationMessage *)v6 setDataString:?];
-  v7 = [MEMORY[0x1E69B8A58] sharedInstance];
-  v8 = [v5 passIdentifier];
+  mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+  passIdentifier = [requestCopy passIdentifier];
 
-  v9 = [v7 passWithUniqueID:v8];
-  v10 = [v9 paymentPass];
+  v9 = [mEMORY[0x1E69B8A58] passWithUniqueID:passIdentifier];
+  paymentPass = [v9 paymentPass];
 
-  v11 = [v10 organizationName];
-  v12 = [v10 localizedDescription];
-  v13 = v12;
-  if (v12)
+  organizationName = [paymentPass organizationName];
+  localizedDescription = [paymentPass localizedDescription];
+  v13 = localizedDescription;
+  if (localizedDescription)
   {
-    v14 = [v12 length];
-    v15 = [v11 length];
+    v14 = [localizedDescription length];
+    v15 = [organizationName length];
     v16 = v15 + 1;
     if (v14 > v15 + 1)
     {
       v17 = v15;
-      if ([v13 hasPrefix:v11])
+      if ([v13 hasPrefix:organizationName])
       {
-        v18 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-        v19 = [v18 characterIsMember:{objc_msgSend(v13, "characterAtIndex:", v17)}];
+        whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+        v19 = [whitespaceCharacterSet characterIsMember:{objc_msgSend(v13, "characterAtIndex:", v17)}];
 
         if (v19)
         {
@@ -290,7 +290,7 @@ uint64_t __105__PKSharingMessageExtensionMessageBuilder_messageFromInvitation_an
   }
 
   v21 = objc_alloc_init(MEMORY[0x1E69B85A8]);
-  [v21 setIssuer:v11];
+  [v21 setIssuer:organizationName];
   [v21 setDeviceModel:v13];
   [v21 setForWatch:0];
   [(PKSubcredentialInvitationMessage *)v6 setPhoneInvitation:v21];
@@ -303,7 +303,7 @@ uint64_t __105__PKSharingMessageExtensionMessageBuilder_messageFromInvitation_an
   }
 
   v23 = objc_alloc_init(MEMORY[0x1E69B85A8]);
-  [v23 setIssuer:v11];
+  [v23 setIssuer:organizationName];
   [v23 setDeviceModel:v13];
   [v21 setForWatch:1];
   [(PKSubcredentialInvitationMessage *)v6 setWatchInvitation:v23];
@@ -314,9 +314,9 @@ uint64_t __105__PKSharingMessageExtensionMessageBuilder_messageFromInvitation_an
     _os_log_impl(&dword_1BD026000, v22, OS_LOG_TYPE_DEFAULT, "Compose message with invitation for watch: %@", buf, 0xCu);
   }
 
-  v24 = [MEMORY[0x1E696AFB0] UUID];
-  v25 = [v24 UUIDString];
-  [(PKSubcredentialInvitationMessage *)v6 setUniqueIdentifier:v25];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  [(PKSubcredentialInvitationMessage *)v6 setUniqueIdentifier:uUIDString];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -324,11 +324,11 @@ uint64_t __105__PKSharingMessageExtensionMessageBuilder_messageFromInvitation_an
   aBlock[3] = &unk_1E8011D78;
   v26 = v6;
   v44 = v26;
-  v27 = v11;
+  v27 = organizationName;
   v45 = v27;
   v28 = v13;
   v46 = v28;
-  v29 = v36;
+  v29 = handlerCopy;
   v47 = v29;
   v30 = _Block_copy(aBlock);
   if (PKHidePlaceholderImageIniMessage())
@@ -352,7 +352,7 @@ uint64_t __105__PKSharingMessageExtensionMessageBuilder_messageFromInvitation_an
     v39[1] = 3221225472;
     v39[2] = __87__PKSharingMessageExtensionMessageBuilder_messageFromSharingRequest_completionHandler___block_invoke_3;
     v39[3] = &unk_1E8015C78;
-    v40 = v10;
+    v40 = paymentPass;
     v41 = v26;
     v42 = v30;
     [v35 snapshotWithPass:v40 size:v39 completion:{v32, v34}];
@@ -415,16 +415,16 @@ void __87__PKSharingMessageExtensionMessageBuilder_messageFromSharingRequest_com
   (*(*(a1 + 48) + 16))();
 }
 
-+ (void)messageURLFromSharingRequest:(id)a3 completionHandler:(id)a4
++ (void)messageURLFromSharingRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __90__PKSharingMessageExtensionMessageBuilder_messageURLFromSharingRequest_completionHandler___block_invoke;
   v8[3] = &unk_1E8015CA0;
-  v9 = v6;
-  v7 = v6;
-  [a1 messageFromSharingRequest:a3 completionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [self messageFromSharingRequest:request completionHandler:v8];
 }
 
 void __90__PKSharingMessageExtensionMessageBuilder_messageURLFromSharingRequest_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -434,46 +434,46 @@ void __90__PKSharingMessageExtensionMessageBuilder_messageURLFromSharingRequest_
   (*(v2 + 16))(v2, v3);
 }
 
-+ (void)messageFromFlightShareInvitation:(id)a3 completionHandler:(id)a4
++ (void)messageFromFlightShareInvitation:(id)invitation completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
-  v39 = [v6 flight];
+  handlerCopy = handler;
+  invitationCopy = invitation;
+  flight = [invitationCopy flight];
   v7 = objc_alloc_init(MEMORY[0x1E6973F30]);
   v8 = PKPassKitCoreBundle();
   v9 = [v8 URLForResource:@"FlightShareMessageFallbackMedia" withExtension:@"png"];
   [v7 setMediaFileURL:v9];
 
-  v10 = [v39 airlineName];
-  v11 = PKLocalizedFlightString(v10);
+  airlineName = [flight airlineName];
+  v11 = PKLocalizedFlightString(airlineName);
   [v7 setCaption:v11];
 
-  v12 = [v39 airlineCode];
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v39, "flightNumber")}];
-  v14 = [v13 stringValue];
-  v15 = PKLocalizedFlightString(&cfstr_FlightShareBub_0.isa, &stru_1F3BD6370.isa, v12, v14);
+  airlineCode = [flight airlineCode];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(flight, "flightNumber")}];
+  stringValue = [v13 stringValue];
+  v15 = PKLocalizedFlightString(&cfstr_FlightShareBub_0.isa, &stru_1F3BD6370.isa, airlineCode, stringValue);
   [v7 setSubcaption:v15];
 
   v16 = [objc_alloc(MEMORY[0x1E6973F28]) initWithAlternateLayout:v7];
   v17 = objc_alloc_init(PKFlightShareMessage);
-  [(PKFlightShareMessage *)v17 setFlight:v39];
-  v18 = [v7 caption];
-  [(PKSharingMessageExtensionCommonMessage *)v17 setTitle:v18];
+  [(PKFlightShareMessage *)v17 setFlight:flight];
+  caption = [v7 caption];
+  [(PKSharingMessageExtensionCommonMessage *)v17 setTitle:caption];
 
-  v19 = [v7 subcaption];
-  [(PKSharingMessageExtensionCommonMessage *)v17 setSubtitle:v19];
+  subcaption = [v7 subcaption];
+  [(PKSharingMessageExtensionCommonMessage *)v17 setSubtitle:subcaption];
 
-  v20 = [MEMORY[0x1E69B8A58] sharedInstance];
-  v21 = [v6 passUniqueIdentifier];
+  mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+  passUniqueIdentifier = [invitationCopy passUniqueIdentifier];
 
-  v22 = [v20 passWithUniqueID:v21];
+  v22 = [mEMORY[0x1E69B8A58] passWithUniqueID:passUniqueIdentifier];
 
-  v23 = [v22 displayProfile];
-  v24 = [v22 logoImage];
-  v25 = v24;
-  if (v24)
+  displayProfile = [v22 displayProfile];
+  logoImage = [v22 logoImage];
+  v25 = logoImage;
+  if (logoImage)
   {
-    [v24 scale];
+    [logoImage scale];
     v27 = v26;
     [v25 size];
     PKSizeAspectFit();
@@ -484,26 +484,26 @@ void __90__PKSharingMessageExtensionMessageBuilder_messageURLFromSharingRequest_
     [(PKFlightShareMessage *)v17 setLogoImage:v30];
   }
 
-  v31 = [v23 foregroundColor];
-  [(PKFlightShareMessage *)v17 setForegroundColor:v31];
+  foregroundColor = [displayProfile foregroundColor];
+  [(PKFlightShareMessage *)v17 setForegroundColor:foregroundColor];
 
-  v32 = [v23 backgroundColor];
-  [(PKFlightShareMessage *)v17 setBackgroundColor:v32];
+  backgroundColor = [displayProfile backgroundColor];
+  [(PKFlightShareMessage *)v17 setBackgroundColor:backgroundColor];
 
   v33 = objc_alloc(MEMORY[0x1E6973F20]);
   v34 = objc_alloc_init(MEMORY[0x1E6973F38]);
   v35 = [v33 initWithSession:v34];
 
-  v36 = [(PKFlightShareMessage *)v17 urlRepresentation];
-  [v35 setURL:v36];
+  urlRepresentation = [(PKFlightShareMessage *)v17 urlRepresentation];
+  [v35 setURL:urlRepresentation];
 
   [v35 setRequiresValidation:1];
   [v35 setLayout:v16];
-  v37 = [v39 airlineName];
-  v38 = PKLocalizedFlightString(&cfstr_FlightShareAcc.isa, &cfstr_Lu_2.isa, v37, [v39 flightNumber]);
+  airlineName2 = [flight airlineName];
+  v38 = PKLocalizedFlightString(&cfstr_FlightShareAcc.isa, &cfstr_Lu_2.isa, airlineName2, [flight flightNumber]);
   [v35 setAccessibilityLabel:v38];
 
-  v5[2](v5, v35);
+  handlerCopy[2](handlerCopy, v35);
 }
 
 @end

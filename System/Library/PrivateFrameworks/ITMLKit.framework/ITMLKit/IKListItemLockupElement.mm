@@ -9,10 +9,10 @@
 
 - (NSString)itemHeight
 {
-  v2 = [(IKViewElement *)self style];
-  v3 = [v2 itemHeight];
+  style = [(IKViewElement *)self style];
+  itemHeight = [style itemHeight];
 
-  return v3;
+  return itemHeight;
 }
 
 - (NSArray)images
@@ -60,10 +60,10 @@
 - (IKViewElement)relatedContent
 {
   v2 = [(IKViewElement *)self childElementWithType:100];
-  v3 = [v2 children];
-  v4 = [v3 firstObject];
+  children = [v2 children];
+  firstObject = [children firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 @end

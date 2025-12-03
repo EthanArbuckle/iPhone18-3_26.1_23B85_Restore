@@ -1,21 +1,21 @@
 @interface IEValidator
-- (id)validate:(id)a3;
-- (id)validate:(id)a3 srcFilename:(id)a4;
+- (id)validate:(id)validate;
+- (id)validate:(id)validate srcFilename:(id)filename;
 @end
 
 @implementation IEValidator
 
-- (id)validate:(id)a3
+- (id)validate:(id)validate
 {
-  v3 = [(IEValidator *)self validate:a3 srcFilename:&stru_28671CC40];
+  v3 = [(IEValidator *)self validate:validate srcFilename:&stru_28671CC40];
 
   return v3;
 }
 
-- (id)validate:(id)a3 srcFilename:(id)a4
+- (id)validate:(id)validate srcFilename:(id)filename
 {
-  a3;
-  v5 = a4;
+  validate;
+  filenameCopy = filename;
   if ((atomic_load_explicit(&qword_280AF4848, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_280AF4848))
   {
     _MergedGlobals_19 = os_log_create("com.apple.siri.AuthoredFlow", "FlowEngine");

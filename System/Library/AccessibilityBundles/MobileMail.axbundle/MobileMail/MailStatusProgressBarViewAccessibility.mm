@@ -1,18 +1,18 @@
 @interface MailStatusProgressBarViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation MailStatusProgressBarViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MailStatusLabelView" hasInstanceMethod:@"primaryLabelText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MailStatusProgressBarView" isKindOfClass:@"MailStatusLabelView"];
-  [v3 validateClass:@"MailStatusProgressBarView" hasInstanceMethod:@"toolbarView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFProgressToolbar" hasInstanceMethod:@"progressView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIProgressView" hasInstanceMethod:@"progress" withFullSignature:{"f", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MailStatusLabelView" hasInstanceMethod:@"primaryLabelText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MailStatusProgressBarView" isKindOfClass:@"MailStatusLabelView"];
+  [validationsCopy validateClass:@"MailStatusProgressBarView" hasInstanceMethod:@"toolbarView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFProgressToolbar" hasInstanceMethod:@"progressView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIProgressView" hasInstanceMethod:@"progress" withFullSignature:{"f", 0}];
 }
 
 - (id)accessibilityLabel

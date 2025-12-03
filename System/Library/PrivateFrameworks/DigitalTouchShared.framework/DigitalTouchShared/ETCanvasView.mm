@@ -2,87 +2,87 @@
 - (BOOL)_areRecognizersTrackingMultipleFingers;
 - (BOOL)_sendMessageTimerFired;
 - (BOOL)_sketchesPaused;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGPoint)_normalizedGesturePoint:(id)a3;
-- (CGPoint)_viewPointNormalizedInSceneSpace:(CGPoint)a3;
-- (ETCanvasView)initWithFrame:(CGRect)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGPoint)_normalizedGesturePoint:(id)point;
+- (CGPoint)_viewPointNormalizedInSceneSpace:(CGPoint)space;
+- (ETCanvasView)initWithFrame:(CGRect)frame;
 - (ETCanvasViewDelegate)canvasDelegate;
 - (ETMessageTimeSource)timeSource;
-- (double)_angleOfRotationBetweenTwoFingers:(id)a3;
-- (void)_angerRecognized:(id)a3;
-- (void)_animateOutSketchView:(id)a3 withCompletion:(id)a4;
+- (double)_angleOfRotationBetweenTwoFingers:(id)fingers;
+- (void)_angerRecognized:(id)recognized;
+- (void)_animateOutSketchView:(id)view withCompletion:(id)completion;
 - (void)_checkForIdle;
-- (void)_clearDoodleViewForMessage:(id)a3;
+- (void)_clearDoodleViewForMessage:(id)message;
 - (void)_clearSendMessageTimer;
 - (void)_configureAngerRecognizer;
-- (void)_createSketchViewWithColor:(id)a3 time:(double)a4 message:(id)a5;
-- (void)_doodleEndedWithTouches:(id)a3 cancelled:(BOOL)a4;
-- (void)_endMessage:(id)a3 withSend:(BOOL)a4;
+- (void)_createSketchViewWithColor:(id)color time:(double)time message:(id)message;
+- (void)_doodleEndedWithTouches:(id)touches cancelled:(BOOL)cancelled;
+- (void)_endMessage:(id)message withSend:(BOOL)send;
 - (void)_fastTapAllowableMovementTimerFired;
-- (void)_heartbeatRecognized:(id)a3;
+- (void)_heartbeatRecognized:(id)recognized;
 - (void)_hideAnger;
 - (void)_hideHeartbeat;
 - (void)_hideHeartbeatTimerFired;
-- (void)_kissRecognized:(id)a3;
+- (void)_kissRecognized:(id)recognized;
 - (void)_sendAnger;
 - (void)_sendHeartbeat;
 - (void)_sendKiss;
 - (void)_sendSketch;
 - (void)_sendTaps;
-- (void)_setIsComposingMessageOfType:(unsigned __int16)a3;
-- (void)_setSketchesPaused:(BOOL)a3;
-- (void)_showAngerAtPoint:(CGPoint)a3;
-- (void)_showHeartbeatAtNormalizedPoint:(CGPoint)a3 rotation:(double)a4;
+- (void)_setIsComposingMessageOfType:(unsigned __int16)type;
+- (void)_setSketchesPaused:(BOOL)paused;
+- (void)_showAngerAtPoint:(CGPoint)point;
+- (void)_showHeartbeatAtNormalizedPoint:(CGPoint)point rotation:(double)rotation;
 - (void)_startCheckForIdleTimer;
-- (void)_startDoodleMessageCompositionAtTime:(double)a3;
+- (void)_startDoodleMessageCompositionAtTime:(double)time;
 - (void)_startFastTapAllowableMovementTimer;
 - (void)_startSendMessageTimer;
 - (void)_stopCheckForIdleTimer;
-- (void)_tapRecognized:(id)a3;
+- (void)_tapRecognized:(id)recognized;
 - (void)_updatePhotoViewFrame;
 - (void)_updateRecognizersAtEndOfComposition;
 - (void)_updateVideoViewFrame;
-- (void)clearCanvasAnimated:(BOOL)a3;
+- (void)clearCanvasAnimated:(BOOL)animated;
 - (void)dealloc;
-- (void)handleDotAtX:(float)a3 Y:(float)a4 color:(id)a5 time:(double)a6 isRemote:(BOOL)a7;
-- (void)handlePanAtX:(float)a3 Y:(float)a4 color:(id)a5 time:(double)a6 state:(int64_t)a7 isRemote:(BOOL)a8;
-- (void)handleTapAtX:(float)a3 Y:(float)a4 color:(id)a5 time:(double)a6 isRemote:(BOOL)a7;
+- (void)handleDotAtX:(float)x Y:(float)y color:(id)color time:(double)time isRemote:(BOOL)remote;
+- (void)handlePanAtX:(float)x Y:(float)y color:(id)color time:(double)time state:(int64_t)state isRemote:(BOOL)remote;
+- (void)handleTapAtX:(float)x Y:(float)y color:(id)color time:(double)time isRemote:(BOOL)remote;
 - (void)hidePhoto;
 - (void)hideVideo;
 - (void)layoutSubviews;
-- (void)messageDidStopPlaying:(id)a3;
-- (void)messageWillReachSizeLimit:(id)a3;
-- (void)messageWillStopPlaying:(id)a3;
-- (void)playMessage:(id)a3;
-- (void)playTestStrokeWithColor:(id)a3 duration:(double)a4;
+- (void)messageDidStopPlaying:(id)playing;
+- (void)messageWillReachSizeLimit:(id)limit;
+- (void)messageWillStopPlaying:(id)playing;
+- (void)playMessage:(id)message;
+- (void)playTestStrokeWithColor:(id)color duration:(double)duration;
 - (void)sendCurrentMessage;
-- (void)setAlwaysPaused:(BOOL)a3;
-- (void)setCanComposeHeartbeat:(BOOL)a3;
-- (void)setDrawingColor:(id)a3;
-- (void)setForceTouchEnabled:(BOOL)a3;
-- (void)setPaused:(BOOL)a3;
-- (void)setUsesMediaAppearance:(BOOL)a3;
-- (void)showPhotoForImage:(id)a3;
-- (void)showVideoForPlayer:(id)a3;
+- (void)setAlwaysPaused:(BOOL)paused;
+- (void)setCanComposeHeartbeat:(BOOL)heartbeat;
+- (void)setDrawingColor:(id)color;
+- (void)setForceTouchEnabled:(BOOL)enabled;
+- (void)setPaused:(BOOL)paused;
+- (void)setUsesMediaAppearance:(BOOL)appearance;
+- (void)showPhotoForImage:(id)image;
+- (void)showVideoForPlayer:(id)player;
 - (void)startDoodleMessageComposition;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateIgnoredTouchesRectForStatusBarSize:(CGSize)a3;
-- (void)willMoveToWindow:(id)a3;
-- (void)wispVisibleSketchViewsWithCompletion:(id)a3;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateIgnoredTouchesRectForStatusBarSize:(CGSize)size;
+- (void)willMoveToWindow:(id)window;
+- (void)wispVisibleSketchViewsWithCompletion:(id)completion;
 @end
 
 @implementation ETCanvasView
 
-- (ETCanvasView)initWithFrame:(CGRect)a3
+- (ETCanvasView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v39.receiver = self;
   v39.super_class = ETCanvasView;
-  v5 = [(ETCanvasView *)&v39 initWithFrame:a3.origin.x, a3.origin.y];
+  v5 = [(ETCanvasView *)&v39 initWithFrame:frame.origin.x, frame.origin.y];
   if (v5)
   {
     v41 = 0;
@@ -108,13 +108,13 @@
     v5->_scene = v8;
 
     v10 = v5->_scene;
-    v11 = [MEMORY[0x277D75348] blackColor];
-    [(SKScene *)v10 setBackgroundColor:v11];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(SKScene *)v10 setBackgroundColor:blackColor];
 
     [(SKScene *)v5->_scene setAnchorPoint:0.5, 0.5];
-    v12 = [[DTSSceneView alloc] initWithSize:width, height];
+    height = [[DTSSceneView alloc] initWithSize:width, height];
     sceneView = v5->_sceneView;
-    v5->_sceneView = v12;
+    v5->_sceneView = height;
 
     [(DTSSceneView *)v5->_sceneView setShouldCullNonVisibleNodes:0];
     [(DTSSceneView *)v5->_sceneView setIgnoresSiblingOrder:1];
@@ -122,20 +122,20 @@
     [(DTSSceneView *)v5->_sceneView presentScene:v5->_scene];
     [(DTSSceneView *)v5->_sceneView setPaused:1];
     [(DTSSceneView *)v5->_sceneView setPreferredFramesPerSecond:60];
-    v14 = [(DTSSceneView *)v5->_sceneView options];
-    [v14 setObject:MEMORY[0x277CBEC38] forKey:@"ignoreBackgroundNotifications"];
+    options = [(DTSSceneView *)v5->_sceneView options];
+    [options setObject:MEMORY[0x277CBEC38] forKey:@"ignoreBackgroundNotifications"];
 
     [(DTSSceneView *)v5->_sceneView setUserInteractionEnabled:0];
     [(ETCanvasView *)v5 addSubview:v5->_sceneView];
-    v15 = [MEMORY[0x277D75348] blackColor];
-    [(ETCanvasView *)v5 setBackgroundColor:v15];
+    blackColor2 = [MEMORY[0x277D75348] blackColor];
+    [(ETCanvasView *)v5 setBackgroundColor:blackColor2];
 
-    v16 = [(ETCanvasView *)v5 layer];
-    [v16 setMasksToBounds:1];
+    layer = [(ETCanvasView *)v5 layer];
+    [layer setMasksToBounds:1];
 
-    v17 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     messageIdentifierToDoodleView = v5->_messageIdentifierToDoodleView;
-    v5->_messageIdentifierToDoodleView = v17;
+    v5->_messageIdentifierToDoodleView = dictionary;
 
     v19 = [MEMORY[0x277CBEB58] set];
     playingMessages = v5->_playingMessages;
@@ -167,9 +167,9 @@
     [(UITapGestureRecognizer *)v5->_kissRecognizer setDelegate:v5];
     [(ETCanvasView *)v5 addGestureRecognizer:v5->_kissRecognizer];
     v5->_canComposeAnger = 1;
-    v27 = [MEMORY[0x277D759A0] mainScreen];
-    v28 = [v27 traitCollection];
-    -[ETCanvasView setForceTouchEnabled:](v5, "setForceTouchEnabled:", [v28 forceTouchCapability] == 2);
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    traitCollection = [mainScreen traitCollection];
+    -[ETCanvasView setForceTouchEnabled:](v5, "setForceTouchEnabled:", [traitCollection forceTouchCapability] == 2);
 
     [(ETCanvasView *)v5 _configureAngerRecognizer];
     [(ETCanvasView *)v5 setMultipleTouchEnabled:1];
@@ -177,12 +177,12 @@
     touchesDown = v5->_touchesDown;
     v5->_touchesDown = v29;
 
-    v31 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
     drawingColor = v5->_drawingColor;
-    v5->_drawingColor = v31;
+    v5->_drawingColor = whiteColor;
 
-    v33 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v34 = [v33 persistentDomainForName:@"com.apple.ET"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v34 = [standardUserDefaults persistentDomainForName:@"com.apple.ET"];
     v35 = [v34 objectForKey:@"ETWispDelay"];
     [v35 doubleValue];
     v5->_wispDelay = v36;
@@ -195,11 +195,11 @@
   return v5;
 }
 
-- (void)showPhotoForImage:(id)a3
+- (void)showPhotoForImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   photoView = self->_photoView;
-  v9 = v4;
+  v9 = imageCopy;
   if (!photoView)
   {
     v6 = objc_alloc_init(MEMORY[0x277D755E8]);
@@ -207,15 +207,15 @@
     self->_photoView = v6;
 
     [(UIImageView *)self->_photoView setContentMode:2];
-    v8 = [(UIImageView *)self->_photoView layer];
-    [v8 setMasksToBounds:1];
+    layer = [(UIImageView *)self->_photoView layer];
+    [layer setMasksToBounds:1];
 
     [(ETCanvasView *)self insertSubview:self->_photoView atIndex:0];
-    v4 = v9;
+    imageCopy = v9;
     photoView = self->_photoView;
   }
 
-  [(UIImageView *)photoView setImage:v4];
+  [(UIImageView *)photoView setImage:imageCopy];
   [(ETCanvasView *)self _updatePhotoViewFrame];
 }
 
@@ -226,11 +226,11 @@
   self->_photoView = 0;
 }
 
-- (void)showVideoForPlayer:(id)a3
+- (void)showVideoForPlayer:(id)player
 {
   if (!self->_videoView)
   {
-    v4 = [MEMORY[0x277CE65D8] playerLayerWithPlayer:a3];
+    v4 = [MEMORY[0x277CE65D8] playerLayerWithPlayer:player];
     videoLayer = self->_videoLayer;
     self->_videoLayer = v4;
 
@@ -238,9 +238,9 @@
     videoView = self->_videoView;
     self->_videoView = v6;
 
-    v8 = [(UIView *)self->_videoView layer];
-    [v8 addSublayer:self->_videoLayer];
-    [v8 setMasksToBounds:1];
+    layer = [(UIView *)self->_videoView layer];
+    [layer addSublayer:self->_videoLayer];
+    [layer setMasksToBounds:1];
     [(ETCanvasView *)self insertSubview:self->_videoView atIndex:0];
     [(ETCanvasView *)self _updateVideoViewFrame];
   }
@@ -303,16 +303,16 @@
   [(ETCanvasView *)self _updatePhotoViewFrame];
 }
 
-- (void)_startDoodleMessageCompositionAtTime:(double)a3
+- (void)_startDoodleMessageCompositionAtTime:(double)time
 {
   v7 = objc_alloc_init(ETSketchMessage);
   [(ETSketchMessage *)v7 setHasMultipleColors:1];
-  v5 = [(ETCanvasView *)self timeSource];
-  [(ETMessage *)v7 setTimeSource:v5];
+  timeSource = [(ETCanvasView *)self timeSource];
+  [(ETMessage *)v7 setTimeSource:timeSource];
 
   [(ETSketchMessage *)v7 setParentMessage:self->_parentMessage];
-  v6 = [(ETCanvasView *)self drawingColor];
-  [(ETCanvasView *)self _createSketchViewWithColor:v6 time:v7 message:a3];
+  drawingColor = [(ETCanvasView *)self drawingColor];
+  [(ETCanvasView *)self _createSketchViewWithColor:drawingColor time:v7 message:time];
 
   [(ETCanvasView *)self _setIsComposingMessageOfType:1];
 }
@@ -325,12 +325,12 @@
   [(ETCanvasView *)self _startDoodleMessageCompositionAtTime:Current];
 }
 
-- (void)_setIsComposingMessageOfType:(unsigned __int16)a3
+- (void)_setIsComposingMessageOfType:(unsigned __int16)type
 {
-  v3 = a3;
+  typeCopy = type;
   self->_isComposing = 1;
-  self->_messageType = a3;
-  if (a3 == 1)
+  self->_messageType = type;
+  if (type == 1)
   {
     [(UITapGestureRecognizer *)self->_tapRecognizer setEnabled:0];
     if (!self->_parentMessage)
@@ -350,7 +350,7 @@
 
   [*(&self->super.super.super.isa + *v5) setPaused:0];
   WeakRetained = objc_loadWeakRetained(&self->_canvasDelegate);
-  [WeakRetained canvasView:self didBeginComposingMessageType:v3];
+  [WeakRetained canvasView:self didBeginComposingMessageType:typeCopy];
 
   [(ETCanvasView *)self _startCheckForIdleTimer];
 }
@@ -369,30 +369,30 @@
   }
 }
 
-- (void)_endMessage:(id)a3 withSend:(BOOL)a4
+- (void)_endMessage:(id)message withSend:(BOOL)send
 {
-  v4 = a4;
+  sendCopy = send;
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  messageCopy = message;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v16 = 138412546;
-      v17 = v6;
+      v17 = messageCopy;
       v18 = 1024;
-      v19 = v4;
+      v19 = sendCopy;
       _os_log_impl(&dword_248D00000, v7, OS_LOG_TYPE_INFO, "Ending message: %@. Will send: %d", &v16, 0x12u);
     }
   }
 
   currentSketchView = self->_currentSketchView;
   messageIdentifierToDoodleView = self->_messageIdentifierToDoodleView;
-  v10 = [v6 identifier];
-  v11 = [(NSMutableDictionary *)messageIdentifierToDoodleView objectForKey:v10];
+  identifier = [messageCopy identifier];
+  v11 = [(NSMutableDictionary *)messageIdentifierToDoodleView objectForKey:identifier];
 
-  if (!v6 || (messageType = self->_messageType, messageType == [v6 messageType]))
+  if (!messageCopy || (messageType = self->_messageType, messageType == [messageCopy messageType]))
   {
     if (self->_messageType != 1 || currentSketchView == v11)
     {
@@ -404,36 +404,36 @@
 
   [(ETCanvasView *)self _updateRecognizersAtEndOfComposition];
   WeakRetained = objc_loadWeakRetained(&self->_canvasDelegate);
-  [WeakRetained canvasView:self didEndComposingMessageType:{objc_msgSend(v6, "messageType")}];
+  [WeakRetained canvasView:self didEndComposingMessageType:{objc_msgSend(messageCopy, "messageType")}];
 
-  if (v4)
+  if (sendCopy)
   {
     v15 = objc_loadWeakRetained(&self->_canvasDelegate);
-    [v15 canvasView:self sendMessage:v6];
+    [v15 canvasView:self sendMessage:messageCopy];
   }
 }
 
 - (void)dealloc
 {
   [(ETCanvasView *)self _stopCheckForIdleTimer];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ETCanvasView;
   [(ETCanvasView *)&v4 dealloc];
 }
 
-- (void)_setSketchesPaused:(BOOL)a3
+- (void)_setSketchesPaused:(BOOL)paused
 {
-  v3 = a3;
+  pausedCopy = paused;
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(NSMutableDictionary *)self->_messageIdentifierToDoodleView allValues];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allValues = [(NSMutableDictionary *)self->_messageIdentifierToDoodleView allValues];
+  v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -445,14 +445,14 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) setPaused:v3];
+        [*(*(&v9 + 1) + 8 * v8++) setPaused:pausedCopy];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -466,8 +466,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMutableDictionary *)self->_messageIdentifierToDoodleView allValues];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  allValues = [(NSMutableDictionary *)self->_messageIdentifierToDoodleView allValues];
+  v3 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -477,7 +477,7 @@
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) isPaused])
@@ -487,7 +487,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -502,12 +502,12 @@ LABEL_11:
   return v3;
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
+  pausedCopy = paused;
   v19 = *MEMORY[0x277D85DE8];
-  self->_paused = a3;
-  if (a3)
+  self->_paused = paused;
+  if (paused)
   {
     [(ETCanvasView *)self _clearSendMessageTimer];
   }
@@ -521,8 +521,8 @@ LABEL_11:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(NSMutableSet *)self->_playingMessages allObjects];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allObjects = [(NSMutableSet *)self->_playingMessages allObjects];
+  v6 = [allObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -533,22 +533,22 @@ LABEL_11:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
-        [*(*(&v14 + 1) + 8 * i) setMute:v3];
+        [*(*(&v14 + 1) + 8 * i) setMute:pausedCopy];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 
-  [(DTSSceneView *)self->_sceneView setPaused:v3];
-  [(ETCanvasView *)self _setSketchesPaused:v3];
+  [(DTSSceneView *)self->_sceneView setPaused:pausedCopy];
+  [(ETCanvasView *)self _setSketchesPaused:pausedCopy];
   WeakRetained = objc_loadWeakRetained(&self->_canvasDelegate);
-  if (v3)
+  if (pausedCopy)
   {
     v11 = objc_opt_respondsToSelector();
 
@@ -575,10 +575,10 @@ LABEL_11:
   }
 }
 
-- (void)setAlwaysPaused:(BOOL)a3
+- (void)setAlwaysPaused:(BOOL)paused
 {
-  self->_setAlwaysPaused = a3;
-  if (a3)
+  self->_setAlwaysPaused = paused;
+  if (paused)
   {
     [(ETCanvasView *)self clearCanvasAnimated:0];
     [(ETCanvasView *)self setPaused:1];
@@ -588,10 +588,10 @@ LABEL_11:
 
   else
   {
-    v4 = [MEMORY[0x277D75128] sharedApplication];
-    v5 = [v4 applicationState];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    applicationState = [mEMORY[0x277D75128] applicationState];
 
-    if (!v5)
+    if (!applicationState)
     {
       [(ETCanvasView *)self setPaused:0];
 
@@ -600,16 +600,16 @@ LABEL_11:
   }
 }
 
-- (void)wispVisibleSketchViewsWithCompletion:(id)a3
+- (void)wispVisibleSketchViewsWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __53__ETCanvasView_wispVisibleSketchViewsWithCompletion___block_invoke;
   v16[3] = &unk_278F79F38;
   v16[4] = self;
-  v5 = v4;
+  v5 = completionCopy;
   v17 = v5;
   v6 = MEMORY[0x24C1E9BB0](v16);
   if ([(NSMutableDictionary *)self->_messageIdentifierToDoodleView count])
@@ -618,8 +618,8 @@ LABEL_11:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = [(NSMutableDictionary *)self->_messageIdentifierToDoodleView allValues];
-    v8 = [v7 countByEnumeratingWithState:&v12 objects:v18 count:16];
+    allValues = [(NSMutableDictionary *)self->_messageIdentifierToDoodleView allValues];
+    v8 = [allValues countByEnumeratingWithState:&v12 objects:v18 count:16];
     if (v8)
     {
       v9 = v8;
@@ -631,14 +631,14 @@ LABEL_11:
         {
           if (*v13 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
           [(ETCanvasView *)self _animateOutSketchView:*(*(&v12 + 1) + 8 * v11++) withCompletion:v6];
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v12 objects:v18 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v12 objects:v18 count:16];
       }
 
       while (v9);
@@ -669,25 +669,25 @@ uint64_t __53__ETCanvasView_wispVisibleSketchViewsWithCompletion___block_invoke(
   return result;
 }
 
-- (void)_animateOutSketchView:(id)a3 withCompletion:(id)a4
+- (void)_animateOutSketchView:(id)view withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 messageData];
-  v9 = [v8 delayWisp];
-  [v8 setDelayWisp:0];
+  viewCopy = view;
+  completionCopy = completion;
+  messageData = [viewCopy messageData];
+  delayWisp = [messageData delayWisp];
+  [messageData setDelayWisp:0];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke;
   v13[3] = &unk_278F7A270;
   v13[4] = self;
-  v14 = v6;
-  v15 = v8;
-  v16 = v7;
-  v17 = v9;
-  v10 = v8;
-  v11 = v7;
-  v12 = v6;
+  v14 = viewCopy;
+  v15 = messageData;
+  v16 = completionCopy;
+  v17 = delayWisp;
+  v10 = messageData;
+  v11 = completionCopy;
+  v12 = viewCopy;
   [v12 animateOutWithCompletion:v13];
 }
 
@@ -709,15 +709,15 @@ uint64_t __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke(
   return [v5 setDelayWisp:v6];
 }
 
-- (void)_clearDoodleViewForMessage:(id)a3
+- (void)_clearDoodleViewForMessage:(id)message
 {
-  v6 = [a3 identifier];
-  v4 = [(NSMutableDictionary *)self->_messageIdentifierToDoodleView objectForKey:v6];
+  identifier = [message identifier];
+  v4 = [(NSMutableDictionary *)self->_messageIdentifierToDoodleView objectForKey:identifier];
   [(ETGLSketchView *)v4 clear];
   [(ETGLSketchView *)v4 removeFromSuperview];
-  if (v6)
+  if (identifier)
   {
-    [(NSMutableDictionary *)self->_messageIdentifierToDoodleView removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_messageIdentifierToDoodleView removeObjectForKey:identifier];
   }
 
   currentSketchView = self->_currentSketchView;
@@ -727,11 +727,11 @@ uint64_t __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke(
   }
 }
 
-- (void)clearCanvasAnimated:(BOOL)a3
+- (void)clearCanvasAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v55 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (animated)
   {
     v5 = objc_alloc(MEMORY[0x277D75D18]);
     [(ETCanvasView *)self bounds];
@@ -740,8 +740,8 @@ uint64_t __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke(
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v7 = [(NSMutableDictionary *)self->_messageIdentifierToDoodleView allValues];
-    v8 = [v7 countByEnumeratingWithState:&v48 objects:v54 count:16];
+    allValues = [(NSMutableDictionary *)self->_messageIdentifierToDoodleView allValues];
+    v8 = [allValues countByEnumeratingWithState:&v48 objects:v54 count:16];
     if (v8)
     {
       v9 = v8;
@@ -752,14 +752,14 @@ uint64_t __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke(
         {
           if (*v49 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
           v12 = [*(*(&v48 + 1) + 8 * i) snapshotViewAfterScreenUpdates:0];
           [v6 addSubview:v12];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v48 objects:v54 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v48 objects:v54 count:16];
       }
 
       while (v9);
@@ -784,8 +784,8 @@ uint64_t __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke(
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v15 = [(NSMutableDictionary *)self->_messageIdentifierToDoodleView allValues];
-  v16 = [v15 countByEnumeratingWithState:&v44 objects:v53 count:16];
+  allValues2 = [(NSMutableDictionary *)self->_messageIdentifierToDoodleView allValues];
+  v16 = [allValues2 countByEnumeratingWithState:&v44 objects:v53 count:16];
   if (v16)
   {
     v17 = v16;
@@ -796,7 +796,7 @@ uint64_t __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke(
       {
         if (*v45 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(allValues2);
         }
 
         v20 = *(*(&v44 + 1) + 8 * j);
@@ -804,7 +804,7 @@ uint64_t __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke(
         [v20 removeFromSuperview];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v44 objects:v53 count:16];
+      v17 = [allValues2 countByEnumeratingWithState:&v44 objects:v53 count:16];
     }
 
     while (v17);
@@ -815,8 +815,8 @@ uint64_t __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke(
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v21 = [(NSMutableSet *)self->_playingMessages allObjects];
-  v22 = [v21 countByEnumeratingWithState:&v40 objects:v52 count:16];
+  allObjects = [(NSMutableSet *)self->_playingMessages allObjects];
+  v22 = [allObjects countByEnumeratingWithState:&v40 objects:v52 count:16];
   if (v22)
   {
     v23 = v22;
@@ -827,13 +827,13 @@ uint64_t __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke(
       {
         if (*v41 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(allObjects);
         }
 
         [*(*(&v40 + 1) + 8 * k) setMute:1];
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v40 objects:v52 count:16];
+      v23 = [allObjects countByEnumeratingWithState:&v40 objects:v52 count:16];
     }
 
     while (v23);
@@ -867,7 +867,7 @@ uint64_t __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke(
   [(SKScene *)self->_scene removeAllActions];
   [(SKScene *)self->_scene removeAllChildren];
   [(ETCanvasView *)self _startCheckForIdleTimer];
-  if (v3)
+  if (animatedCopy)
   {
     v32 = MEMORY[0x277D75D18];
     v38[0] = MEMORY[0x277D85DD0];
@@ -911,8 +911,8 @@ uint64_t __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke(
 {
   if (!self->_parentMessage && ([(SKScene *)self->_scene hasActions]& 1) == 0)
   {
-    v4 = [(SKScene *)self->_scene children];
-    if ([v4 count] || -[NSMutableDictionary count](self->_messageIdentifierToDoodleView, "count"))
+    children = [(SKScene *)self->_scene children];
+    if ([children count] || -[NSMutableDictionary count](self->_messageIdentifierToDoodleView, "count"))
     {
     }
 
@@ -930,9 +930,9 @@ uint64_t __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke(
   }
 }
 
-- (void)setDrawingColor:(id)a3
+- (void)setDrawingColor:(id)color
 {
-  objc_storeStrong(&self->_drawingColor, a3);
+  objc_storeStrong(&self->_drawingColor, color);
   [(ETCanvasView *)self _clearSendMessageTimer];
   if ([(ETCanvasView *)self isComposing])
   {
@@ -941,13 +941,13 @@ uint64_t __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke(
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_tapRecognizer == v4)
+  beginCopy = begin;
+  v5 = beginCopy;
+  if (self->_tapRecognizer == beginCopy)
   {
-    [(UILongPressGestureRecognizer *)v4 locationOfTouch:0 inView:self];
+    [(UILongPressGestureRecognizer *)beginCopy locationOfTouch:0 inView:self];
     v8 = v7;
     v10 = v9;
     v18 = CGRectInset(self->_ignoredTouchesRect, -15.0, -15.0);
@@ -970,36 +970,36 @@ uint64_t __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke(
 
     if ([(ETCanvasView *)self _isTapTooRecentAfterKissGesture])
     {
-      v6 = 0;
+      _canComposeExclusiveMessage = 0;
     }
 
     else
     {
-      v6 = (self->_messageType != 1) & v15 & !v11;
+      _canComposeExclusiveMessage = (self->_messageType != 1) & v15 & !v11;
     }
   }
 
-  else if (self->_angerRecognizer == v4 || self->_heartbeatRecognizer == v4)
+  else if (self->_angerRecognizer == beginCopy || self->_heartbeatRecognizer == beginCopy)
   {
-    v6 = [(ETCanvasView *)self _canComposeExclusiveMessage];
+    _canComposeExclusiveMessage = [(ETCanvasView *)self _canComposeExclusiveMessage];
   }
 
   else
   {
     objc_opt_class();
-    v6 = objc_opt_isKindOfClass() ^ 1;
+    _canComposeExclusiveMessage = objc_opt_isKindOfClass() ^ 1;
   }
 
-  return v6 & 1;
+  return _canComposeExclusiveMessage & 1;
 }
 
-- (void)updateIgnoredTouchesRectForStatusBarSize:(CGSize)a3
+- (void)updateIgnoredTouchesRectForStatusBarSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(ETCanvasView *)self _shouldReverseLayoutDirection];
+  height = size.height;
+  width = size.width;
+  _shouldReverseLayoutDirection = [(ETCanvasView *)self _shouldReverseLayoutDirection];
   v7 = 0.0;
-  if (v6)
+  if (_shouldReverseLayoutDirection)
   {
     [(ETCanvasView *)self bounds];
     v7 = CGRectGetWidth(v8) - width;
@@ -1042,16 +1042,16 @@ uint64_t __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke(
   }
 }
 
-- (CGPoint)_normalizedGesturePoint:(id)a3
+- (CGPoint)_normalizedGesturePoint:(id)point
 {
-  v4 = a3;
+  pointCopy = point;
   [(ETCanvasView *)self bounds];
   MidX = CGRectGetMidX(v16);
   [(ETCanvasView *)self bounds];
   MidY = CGRectGetMidY(v17);
   if ([(ETMessage *)self->_parentMessage messageType]== 8 || self->_messageType == 10)
   {
-    [v4 locationInView:self];
+    [pointCopy locationInView:self];
     MidX = v7;
     MidY = v8;
   }
@@ -1067,13 +1067,13 @@ uint64_t __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke(
   return result;
 }
 
-- (void)_angerRecognized:(id)a3
+- (void)_angerRecognized:(id)recognized
 {
-  v13 = a3;
-  v4 = [v13 state];
-  if (v4 > 3)
+  recognizedCopy = recognized;
+  state = [recognizedCopy state];
+  if (state > 3)
   {
-    if ((v4 - 4) < 2)
+    if ((state - 4) < 2)
     {
       v5 = self->_currentAnger;
       [(ETCanvasView *)self _hideAnger];
@@ -1083,13 +1083,13 @@ uint64_t __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke(
 
   else
   {
-    switch(v4)
+    switch(state)
     {
       case 1:
         if (!self->_parentMessage && [(ETCanvasView *)self _sketchInProgress]&& self->_drawingTouchMovedDistance < 20.0)
         {
-          v6 = [(ETGLSketchView *)self->_currentSketchView messageData];
-          [(ETCanvasView *)self _endMessage:v6 withSend:0];
+          messageData = [(ETGLSketchView *)self->_currentSketchView messageData];
+          [(ETCanvasView *)self _endMessage:messageData withSend:0];
         }
 
         if ([(ETCanvasView *)self _canComposeExclusiveMessage])
@@ -1100,7 +1100,7 @@ uint64_t __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke(
           }
 
           [(ETCanvasView *)self _setIsComposingMessageOfType:10];
-          [(ETCanvasView *)self _normalizedGesturePoint:v13];
+          [(ETCanvasView *)self _normalizedGesturePoint:recognizedCopy];
           [(ETCanvasView *)self _showAngerAtPoint:?];
           self->_lastActivityTimestamp = CFAbsoluteTimeGetCurrent();
         }
@@ -1110,7 +1110,7 @@ uint64_t __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke(
         WeakRetained = objc_loadWeakRetained(&self->_canvasDelegate);
         [WeakRetained canvasView:self didUpdateComposingMessageType:self->_messageType];
 
-        [(ETCanvasView *)self _normalizedGesturePoint:v13];
+        [(ETCanvasView *)self _normalizedGesturePoint:recognizedCopy];
         v9 = v8;
         v11 = v10;
         Current = CFAbsoluteTimeGetCurrent();
@@ -1137,10 +1137,10 @@ uint64_t __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke(
   }
 }
 
-- (void)_showAngerAtPoint:(CGPoint)a3
+- (void)_showAngerAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = objc_opt_new();
   currentAnger = self->_currentAnger;
   self->_currentAnger = v6;
@@ -1148,8 +1148,8 @@ uint64_t __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke(
   [(ETAngerMessage *)self->_currentAnger setNormalizedCenter:x, y];
   [(ETMessage *)self->_currentAnger setParentMessage:self->_parentMessage];
   v8 = self->_currentAnger;
-  v9 = [(ETCanvasView *)self timeSource];
-  [v9 elapsedTimeSinceStartOfMessage:self->_currentAnger];
+  timeSource = [(ETCanvasView *)self timeSource];
+  [timeSource elapsedTimeSinceStartOfMessage:self->_currentAnger];
   [(ETMessage *)v8 setStartDelay:?];
 
   [(ETAngerMessage *)self->_currentAnger displayInScene:self->_scene];
@@ -1169,23 +1169,23 @@ uint64_t __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke(
   self->_currentAnger = 0;
 }
 
-- (void)_kissRecognized:(id)a3
+- (void)_kissRecognized:(id)recognized
 {
-  v4 = a3;
+  recognizedCopy = recognized;
   currentKissMessage = self->_currentKissMessage;
-  v18 = v4;
+  v18 = recognizedCopy;
   if (currentKissMessage)
   {
-    v6 = [(ETKissMessage *)currentKissMessage reachedSizeLimit];
-    v4 = v18;
-    if (v6)
+    reachedSizeLimit = [(ETKissMessage *)currentKissMessage reachedSizeLimit];
+    recognizedCopy = v18;
+    if (reachedSizeLimit)
     {
       [(ETCanvasView *)self _sendKiss];
-      v4 = v18;
+      recognizedCopy = v18;
     }
   }
 
-  [v4 locationInView:self];
+  [recognizedCopy locationInView:self];
   [(ETCanvasView *)self _viewPointNormalizedInSceneSpace:?];
   v8 = v7;
   v10 = v9;
@@ -1197,12 +1197,12 @@ uint64_t __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke(
     self->_currentKissMessage = v11;
 
     v13 = self->_currentKissMessage;
-    v14 = [(ETCanvasView *)self timeSource];
-    [(ETMessage *)v13 setTimeSource:v14];
+    timeSource = [(ETCanvasView *)self timeSource];
+    [(ETMessage *)v13 setTimeSource:timeSource];
 
     v15 = self->_currentKissMessage;
-    v16 = [(ETCanvasView *)self timeSource];
-    [v16 elapsedTimeSinceStartOfMessage:self->_currentTaps];
+    timeSource2 = [(ETCanvasView *)self timeSource];
+    [timeSource2 elapsedTimeSinceStartOfMessage:self->_currentTaps];
     [(ETMessage *)v15 setStartDelay:?];
 
     [(ETMessage *)self->_currentKissMessage setDelayWisp:self->_parentMessage != 0];
@@ -1215,12 +1215,12 @@ uint64_t __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke(
   [(ETCanvasView *)self _startSendMessageTimer];
 }
 
-- (void)_tapRecognized:(id)a3
+- (void)_tapRecognized:(id)recognized
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 touches];
-  v6 = [v5 objectAtIndex:0];
+  recognizedCopy = recognized;
+  touches = [recognizedCopy touches];
+  v6 = [touches objectAtIndex:0];
   [v6 locationInNode:self->_scene];
   v8 = v7;
   v10 = v9;
@@ -1242,20 +1242,20 @@ uint64_t __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke(
     v12 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [MEMORY[0x277CBEAA8] date];
-      v14 = [ETUtility dateFormatWithMilliseconds:v13];
+      date = [MEMORY[0x277CBEAA8] date];
+      v14 = [ETUtility dateFormatWithMilliseconds:date];
       v19 = 138412290;
       v20 = v14;
       _os_log_impl(&dword_248D00000, v12, OS_LOG_TYPE_INFO, "(%@) Got tap!", &v19, 0xCu);
     }
   }
 
-  v15 = [(ETCanvasView *)self drawingColor];
+  drawingColor = [(ETCanvasView *)self drawingColor];
   Current = CFAbsoluteTimeGetCurrent();
   v17 = Current;
   *&Current = v8;
   *&v18 = v10;
-  [(ETCanvasView *)self handleTapAtX:v15 Y:0 color:Current time:v18 isRemote:v17];
+  [(ETCanvasView *)self handleTapAtX:drawingColor Y:0 color:Current time:v18 isRemote:v17];
 
   self->_lastFastTapTimestamp = CFAbsoluteTimeGetCurrent();
   if (!self->_fastTapAllowableMovementTimer)
@@ -1273,8 +1273,8 @@ uint64_t __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke(
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(ETCanvasView *)self gestureRecognizers];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  gestureRecognizers = [(ETCanvasView *)self gestureRecognizers];
+  v3 = [gestureRecognizers countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -1284,7 +1284,7 @@ uint64_t __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke(
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(gestureRecognizers);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) numberOfTouches] > 1)
@@ -1294,7 +1294,7 @@ uint64_t __53__ETCanvasView__animateOutSketchView_withCompletion___block_invoke(
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [gestureRecognizers countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -1309,18 +1309,18 @@ LABEL_11:
   return v3;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [(NSMutableSet *)self->_touchesDown unionSet:v6];
+  beganCopy = began;
+  eventCopy = event;
+  [(NSMutableSet *)self->_touchesDown unionSet:beganCopy];
   v8 = !self->_isComposing && [(NSMutableSet *)self->_touchesDown count]> 1;
   self->_ignoreTouchesUntilAllTouchesEnded = v8;
   if (self->_drawingTouch || [(ETCanvasView *)self _areRecognizersTrackingMultipleFingers]|| self->_ignoreTouchesUntilAllTouchesEnded)
   {
-    v9 = [(UILongPressGestureRecognizer *)self->_heartbeatRecognizer touches];
-    v10 = [v9 count];
+    touches = [(UILongPressGestureRecognizer *)self->_heartbeatRecognizer touches];
+    v10 = [touches count];
 
     if (v10 == 2)
     {
@@ -1331,9 +1331,9 @@ LABEL_11:
 
   else
   {
-    v12 = [v6 anyObject];
+    anyObject = [beganCopy anyObject];
     drawingTouch = self->_drawingTouch;
-    self->_drawingTouch = v12;
+    self->_drawingTouch = anyObject;
 
     self->_drawingTouchStartedStroke = 0;
     self->_drawingTouchMovedDistance = 0.0;
@@ -1343,8 +1343,8 @@ LABEL_11:
       v14 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
-        v15 = [MEMORY[0x277CBEAA8] date];
-        v16 = [ETUtility dateFormatWithMilliseconds:v15];
+        date = [MEMORY[0x277CBEAA8] date];
+        v16 = [ETUtility dateFormatWithMilliseconds:date];
         v21 = 138412290;
         v22 = v16;
         _os_log_impl(&dword_248D00000, v14, OS_LOG_TYPE_INFO, "(%@) UITouchPhaseBegan", &v21, 0xCu);
@@ -1362,9 +1362,9 @@ LABEL_11:
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  if ([a3 containsObject:{self->_drawingTouch, a4}] && !self->_ignoreTouchesUntilAllTouchesEnded)
+  if ([moved containsObject:{self->_drawingTouch, event}] && !self->_ignoreTouchesUntilAllTouchesEnded)
   {
     if ([(ETCanvasView *)self _sketchInProgress])
     {
@@ -1426,36 +1426,36 @@ LABEL_11:
 
       x = p_lastPt->x;
       y = self->_lastPt.y;
-      v16 = [(ETCanvasView *)self drawingColor];
+      drawingColor = [(ETCanvasView *)self drawingColor];
       *&v17 = x;
       *&v18 = y;
-      [(ETCanvasView *)self handlePanAtX:v16 Y:1 color:0 time:v17 state:v18 isRemote:self->_touchesBeganTimestamp];
+      [(ETCanvasView *)self handlePanAtX:drawingColor Y:1 color:0 time:v17 state:v18 isRemote:self->_touchesBeganTimestamp];
 
       self->_drawingTouchStartedStroke = 1;
       v19 = objc_loadWeakRetained(&self->_canvasDelegate);
       [v19 canvasViewDidBeginStroke:self];
     }
 
-    v22 = [(ETCanvasView *)self drawingColor];
+    drawingColor2 = [(ETCanvasView *)self drawingColor];
     Current = CFAbsoluteTimeGetCurrent();
     v24 = Current;
     v20 = v7;
     *&Current = v20;
     v21 = v9;
     *&v25 = v21;
-    [(ETCanvasView *)self handlePanAtX:v22 Y:2 color:0 time:Current state:v25 isRemote:v24];
+    [(ETCanvasView *)self handlePanAtX:drawingColor2 Y:2 color:0 time:Current state:v25 isRemote:v24];
 
     p_lastPt->x = v7;
     self->_lastPt.y = v9;
   }
 }
 
-- (void)_doodleEndedWithTouches:(id)a3 cancelled:(BOOL)a4
+- (void)_doodleEndedWithTouches:(id)touches cancelled:(BOOL)cancelled
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  [(NSMutableSet *)self->_touchesDown minusSet:v6];
-  if (![v6 containsObject:self->_drawingTouch] || self->_sketchDidReachSizeLimit)
+  touchesCopy = touches;
+  [(NSMutableSet *)self->_touchesDown minusSet:touchesCopy];
+  if (![touchesCopy containsObject:self->_drawingTouch] || self->_sketchDidReachSizeLimit)
   {
     v7 = [(NSMutableSet *)self->_touchesDown count];
     ignoreTouchesUntilAllTouchesEnded = self->_ignoreTouchesUntilAllTouchesEnded;
@@ -1484,8 +1484,8 @@ LABEL_11:
     v13 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [MEMORY[0x277CBEAA8] date];
-      v15 = [ETUtility dateFormatWithMilliseconds:v14];
+      date = [MEMORY[0x277CBEAA8] date];
+      v15 = [ETUtility dateFormatWithMilliseconds:date];
       v27 = 138412290;
       v28 = v15;
       _os_log_impl(&dword_248D00000, v13, OS_LOG_TYPE_INFO, "(%@) UITouchPhaseEnded", &v27, 0xCu);
@@ -1498,21 +1498,21 @@ LABEL_11:
   v20 = v19;
   if (self->_drawingTouchStartedStroke)
   {
-    v21 = [(ETCanvasView *)self drawingColor];
+    drawingColor = [(ETCanvasView *)self drawingColor];
     *&v22 = v18;
     *&v23 = v20;
-    [(ETCanvasView *)self handlePanAtX:v21 Y:3 color:0 time:v22 state:v23 isRemote:Current];
+    [(ETCanvasView *)self handlePanAtX:drawingColor Y:3 color:0 time:v22 state:v23 isRemote:Current];
 LABEL_26:
 
     goto LABEL_27;
   }
 
-  if (!a4)
+  if (!cancelled)
   {
-    v21 = [(ETCanvasView *)self drawingColor];
+    drawingColor = [(ETCanvasView *)self drawingColor];
     *&v24 = v18;
     *&v25 = v20;
-    [(ETCanvasView *)self handleDotAtX:v21 Y:0 color:v24 time:v25 isRemote:Current];
+    [(ETCanvasView *)self handleDotAtX:drawingColor Y:0 color:v24 time:v25 isRemote:Current];
     goto LABEL_26;
   }
 
@@ -1536,22 +1536,22 @@ LABEL_14:
 LABEL_17:
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v5 = a3;
+  cancelledCopy = cancelled;
   if (!self->_isComposing)
   {
     [(ETCanvasView *)self clearCanvasAnimated:0];
   }
 
-  [(ETCanvasView *)self _doodleEndedWithTouches:v5 cancelled:1];
+  [(ETCanvasView *)self _doodleEndedWithTouches:cancelledCopy cancelled:1];
 }
 
-- (void)_createSketchViewWithColor:(id)a3 time:(double)a4 message:(id)a5
+- (void)_createSketchViewWithColor:(id)color time:(double)time message:(id)message
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  colorCopy = color;
+  messageCopy = message;
   v9 = [ETGLSketchView alloc];
   [(ETCanvasView *)self bounds];
   v10 = [(ETGLSketchView *)v9 initWithFrame:?];
@@ -1571,13 +1571,13 @@ LABEL_17:
     }
 
     [(ETGLSketchView *)self->_currentSketchView setWispDelay:self->_wispDelay];
-    [(ETGLSketchView *)self->_currentSketchView setMessageData:v8];
-    [v8 setDelegate:self];
-    [v8 setColor:v7];
+    [(ETGLSketchView *)self->_currentSketchView setMessageData:messageCopy];
+    [messageCopy setDelegate:self];
+    [messageCopy setColor:colorCopy];
     messageIdentifierToDoodleView = self->_messageIdentifierToDoodleView;
     v17 = self->_currentSketchView;
-    v18 = [v8 identifier];
-    [(NSMutableDictionary *)messageIdentifierToDoodleView setObject:v17 forKey:v18];
+    identifier = [messageCopy identifier];
+    [(NSMutableDictionary *)messageIdentifierToDoodleView setObject:v17 forKey:identifier];
 
     v19 = self->_currentSketchView;
     if (self->_usesMediaAppearance)
@@ -1599,18 +1599,18 @@ LABEL_17:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       v21 = 138412290;
-      v22 = v8;
+      v22 = messageCopy;
       _os_log_impl(&dword_248D00000, v20, OS_LOG_TYPE_INFO, "ERROR: Failed to allocate ETGLSketchView for message: %@", &v21, 0xCu);
     }
   }
 }
 
-- (void)handleTapAtX:(float)a3 Y:(float)a4 color:(id)a5 time:(double)a6 isRemote:(BOOL)a7
+- (void)handleTapAtX:(float)x Y:(float)y color:(id)color time:(double)time isRemote:(BOOL)remote
 {
-  v12 = a5;
-  if (!a7)
+  colorCopy = color;
+  if (!remote)
   {
-    v21 = v12;
+    v21 = colorCopy;
     currentTaps = self->_currentTaps;
     if (!currentTaps)
     {
@@ -1634,36 +1634,36 @@ LABEL_6:
       [(ETMessage *)self->_currentTaps setParentMessage:self->_parentMessage];
       [(ETTapMessage *)self->_currentTaps preVisualizeInScene:self->_scene];
       v16 = self->_currentTaps;
-      v17 = [(ETCanvasView *)self timeSource];
-      [v17 elapsedTimeSinceStartOfMessage:self->_currentTaps];
+      timeSource = [(ETCanvasView *)self timeSource];
+      [timeSource elapsedTimeSinceStartOfMessage:self->_currentTaps];
       [(ETMessage *)v16 setStartDelay:?];
     }
 
-    self->_lastActivityTimestamp = a6;
+    self->_lastActivityTimestamp = time;
     [(SKScene *)self->_scene size];
-    v19 = a3 / v18 + a3 / v18;
+    v19 = x / v18 + x / v18;
     [(SKScene *)self->_scene size];
-    [(ETTapMessage *)self->_currentTaps addTapAtPoint:v21 time:v19 color:a4 / v20 + a4 / v20, a6];
-    v12 = v21;
+    [(ETTapMessage *)self->_currentTaps addTapAtPoint:v21 time:v19 color:y / v20 + y / v20, time];
+    colorCopy = v21;
   }
 }
 
-- (void)handlePanAtX:(float)a3 Y:(float)a4 color:(id)a5 time:(double)a6 state:(int64_t)a7 isRemote:(BOOL)a8
+- (void)handlePanAtX:(float)x Y:(float)y color:(id)color time:(double)time state:(int64_t)state isRemote:(BOOL)remote
 {
-  v41 = a5;
-  if (a7 == 1)
+  colorCopy = color;
+  if (state == 1)
   {
-    [(ETGLSketchView *)self->_currentSketchView beginStrokeWithColor:v41];
+    [(ETGLSketchView *)self->_currentSketchView beginStrokeWithColor:colorCopy];
   }
 
-  self->_lastActivityTimestamp = a6;
+  self->_lastActivityTimestamp = time;
   [(SKScene *)self->_scene size];
   v35 = v13;
   v36 = v12;
   UIRoundToViewScale();
   v15 = v14;
-  v16 = a7 - 5;
-  if ((a7 - 5) > 0xFFFFFFFFFFFFFFFDLL)
+  v16 = state - 5;
+  if ((state - 5) > 0xFFFFFFFFFFFFFFFDLL)
   {
     [(UITouch *)self->_drawingTouch locationInNode:self->_scene];
     *&v17 = self->_lastPt.x - v17;
@@ -1678,7 +1678,7 @@ LABEL_9:
   }
 
   v19.f64[0] = v36;
-  v20 = vcvtq_f64_f32(__PAIR64__(LODWORD(a4), LODWORD(a3)));
+  v20 = vcvtq_f64_f32(__PAIR64__(LODWORD(y), LODWORD(x)));
   *&v19.f64[1] = v35;
   __asm { FMOV            V2.2D, #0.5 }
 
@@ -1695,7 +1695,7 @@ LABEL_9:
   v32.f64[1] = v33;
   v34 = vdivq_f64(v40, v32);
   [(ETGLSketchView *)currentSketchView handleSketchAtPosition:vaddq_f64(v34, v34)];
-  if (v16 >= 0xFFFFFFFFFFFFFFFELL && !a8)
+  if (v16 >= 0xFFFFFFFFFFFFFFFELL && !remote)
   {
     goto LABEL_9;
   }
@@ -1703,17 +1703,17 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)handleDotAtX:(float)a3 Y:(float)a4 color:(id)a5 time:(double)a6 isRemote:(BOOL)a7
+- (void)handleDotAtX:(float)x Y:(float)y color:(id)color time:(double)time isRemote:(BOOL)remote
 {
-  if (!a7)
+  if (!remote)
   {
-    self->_lastActivityTimestamp = a6;
-    [(ETGLSketchView *)self->_currentSketchView beginStrokeWithColor:a5];
+    self->_lastActivityTimestamp = time;
+    [(ETGLSketchView *)self->_currentSketchView beginStrokeWithColor:color];
     currentSketchView = self->_currentSketchView;
     [(SKScene *)self->_scene size];
-    v13 = a3 / v12 + a3 / v12;
+    v13 = x / v12 + x / v12;
     [(SKScene *)self->_scene size];
-    v15 = a4 / v14 + a4 / v14;
+    v15 = y / v14 + y / v14;
 
     [(ETGLSketchView *)currentSketchView handleTapAtPosition:v13, v15];
   }
@@ -1721,8 +1721,8 @@ LABEL_10:
 
 - (void)_startSendMessageTimer
 {
-  v3 = [(ETCanvasView *)self canvasDelegate];
-  v4 = [v3 canvasViewShouldSendWithTimer:self];
+  canvasDelegate = [(ETCanvasView *)self canvasDelegate];
+  v4 = [canvasDelegate canvasViewShouldSendWithTimer:self];
 
   if (v4)
   {
@@ -1756,13 +1756,13 @@ LABEL_10:
 
 - (void)_sendSketch
 {
-  v3 = [(ETGLSketchView *)self->_currentSketchView messageData];
-  [(ETCanvasView *)self _endMessage:v3 withSend:1];
+  messageData = [(ETGLSketchView *)self->_currentSketchView messageData];
+  [(ETCanvasView *)self _endMessage:messageData withSend:1];
 
   if ([(ETGLSketchView *)self->_currentSketchView isPaused])
   {
-    v4 = [(ETGLSketchView *)self->_currentSketchView messageData];
-    [(ETCanvasView *)self _clearDoodleViewForMessage:v4];
+    messageData2 = [(ETGLSketchView *)self->_currentSketchView messageData];
+    [(ETCanvasView *)self _clearDoodleViewForMessage:messageData2];
   }
 
   else if (!self->_usesMediaAppearance)
@@ -1821,22 +1821,22 @@ LABEL_10:
   self->_lastActivityTimestamp = 0.0;
 }
 
-- (void)setCanComposeHeartbeat:(BOOL)a3
+- (void)setCanComposeHeartbeat:(BOOL)heartbeat
 {
-  if (self->_canComposeHeartbeat != a3)
+  if (self->_canComposeHeartbeat != heartbeat)
   {
-    self->_canComposeHeartbeat = a3;
+    self->_canComposeHeartbeat = heartbeat;
     [(UILongPressGestureRecognizer *)self->_heartbeatRecognizer setEnabled:?];
   }
 }
 
-- (double)_angleOfRotationBetweenTwoFingers:(id)a3
+- (double)_angleOfRotationBetweenTwoFingers:(id)fingers
 {
-  v4 = a3;
-  [v4 locationOfTouch:0 inView:self];
+  fingersCopy = fingers;
+  [fingersCopy locationOfTouch:0 inView:self];
   v6 = v5;
   v8 = v7;
-  [v4 locationOfTouch:1 inView:self];
+  [fingersCopy locationOfTouch:1 inView:self];
   v10 = v9;
   v12 = v11;
 
@@ -1873,10 +1873,10 @@ LABEL_10:
   return result + v17;
 }
 
-- (CGPoint)_viewPointNormalizedInSceneSpace:(CGPoint)a3
+- (CGPoint)_viewPointNormalizedInSceneSpace:(CGPoint)space
 {
-  y = a3.y;
-  x = a3.x;
+  y = space.y;
+  x = space.x;
   [(SKScene *)self->_scene size];
   v7 = v6;
   v9 = v8;
@@ -1888,17 +1888,17 @@ LABEL_10:
   return result;
 }
 
-- (void)_heartbeatRecognized:(id)a3
+- (void)_heartbeatRecognized:(id)recognized
 {
-  v14 = a3;
-  if ([v14 state] == 1)
+  recognizedCopy = recognized;
+  if ([recognizedCopy state] == 1)
   {
     if (!self->_parentMessage)
     {
       if ([(ETCanvasView *)self _sketchInProgress]&& self->_drawingTouchMovedDistance < 20.0)
       {
-        v4 = [(ETGLSketchView *)self->_currentSketchView messageData];
-        [(ETCanvasView *)self _endMessage:v4 withSend:0];
+        messageData = [(ETGLSketchView *)self->_currentSketchView messageData];
+        [(ETCanvasView *)self _endMessage:messageData withSend:0];
       }
 
       if (!self->_parentMessage && self->_currentKissMessage)
@@ -1915,18 +1915,18 @@ LABEL_10:
       }
 
       [(ETCanvasView *)self _setIsComposingMessageOfType:2];
-      [(ETCanvasView *)self _normalizedGesturePoint:v14];
+      [(ETCanvasView *)self _normalizedGesturePoint:recognizedCopy];
       v6 = v5;
       v8 = v7;
-      [(ETCanvasView *)self _angleOfRotationBetweenTwoFingers:v14];
+      [(ETCanvasView *)self _angleOfRotationBetweenTwoFingers:recognizedCopy];
       [(ETCanvasView *)self _showHeartbeatAtNormalizedPoint:v6 rotation:v8, v9];
-      [v14 locationInView:self];
+      [recognizedCopy locationInView:self];
       self->_heartbeatStartCenter.x = v10;
       self->_heartbeatStartCenter.y = v11;
     }
   }
 
-  else if ([v14 state] == 2)
+  else if ([recognizedCopy state] == 2)
   {
     if ([(ETCanvasView *)self isComposingHeartbeat])
     {
@@ -1935,7 +1935,7 @@ LABEL_10:
 
       if (![(ETHeartbeatMessage *)self->_currentHeartbeat isBroken])
       {
-        [v14 locationInView:self];
+        [recognizedCopy locationInView:self];
         if (v13 - self->_heartbeatStartCenter.y > 20.0)
         {
           [(ETHeartbeatMessage *)self->_currentHeartbeat breakHeart];
@@ -1944,7 +1944,7 @@ LABEL_10:
     }
   }
 
-  else if (([v14 state] == 3 || objc_msgSend(v14, "state") == 4) && -[ETCanvasView isComposingHeartbeat](self, "isComposingHeartbeat"))
+  else if (([recognizedCopy state] == 3 || objc_msgSend(recognizedCopy, "state") == 4) && -[ETCanvasView isComposingHeartbeat](self, "isComposingHeartbeat"))
   {
     [(ETCanvasView *)self _sendHeartbeat];
   }
@@ -2006,10 +2006,10 @@ LABEL_10:
   }
 }
 
-- (void)_showHeartbeatAtNormalizedPoint:(CGPoint)a3 rotation:(double)a4
+- (void)_showHeartbeatAtNormalizedPoint:(CGPoint)point rotation:(double)rotation
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v7 = objc_opt_new();
   currentHeartbeat = self->_currentHeartbeat;
   self->_currentHeartbeat = v7;
@@ -2027,8 +2027,8 @@ LABEL_10:
   [(ETMessage *)self->_currentHeartbeat setParentMessage:self->_parentMessage, v14, v15, v16, v17];
   [(ETHeartbeatMessage *)self->_currentHeartbeat startHeartbeat:self->_scene];
   v10 = self->_currentHeartbeat;
-  v11 = [(ETCanvasView *)self timeSource];
-  [v11 elapsedTimeSinceStartOfMessage:self->_currentHeartbeat];
+  timeSource = [(ETCanvasView *)self timeSource];
+  [timeSource elapsedTimeSinceStartOfMessage:self->_currentHeartbeat];
   [(ETMessage *)v10 setStartDelay:?];
 
   v12 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__hideHeartbeatTimerFired selector:0 userInfo:0 repeats:10];
@@ -2066,21 +2066,21 @@ void __57__ETCanvasView__showHeartbeatAtNormalizedPoint_rotation___block_invoke(
   }
 }
 
-- (void)playTestStrokeWithColor:(id)a3 duration:(double)a4
+- (void)playTestStrokeWithColor:(id)color duration:(double)duration
 {
-  v6 = a3;
-  v7 = dispatch_time(0, (a4 * 0.3 * 1000000000.0));
+  colorCopy = color;
+  v7 = dispatch_time(0, (duration * 0.3 * 1000000000.0));
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__ETCanvasView_playTestStrokeWithColor_duration___block_invoke;
   block[3] = &unk_278F7A2C0;
   block[4] = self;
-  v8 = v6;
+  v8 = colorCopy;
   v23 = v8;
-  v24 = a4;
+  durationCopy = duration;
   v9 = MEMORY[0x277D85CD0];
   dispatch_after(v7, MEMORY[0x277D85CD0], block);
-  v10 = dispatch_time(0, (a4 * 0.6 * 1000000000.0));
+  v10 = dispatch_time(0, (duration * 0.6 * 1000000000.0));
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __49__ETCanvasView_playTestStrokeWithColor_duration___block_invoke_2;
@@ -2090,7 +2090,7 @@ void __57__ETCanvasView__showHeartbeatAtNormalizedPoint_rotation___block_invoke(
   v21 = v11;
   dispatch_after(v10, v9, v20);
 
-  v12 = dispatch_time(0, (a4 * 0.88 * 1000000000.0));
+  v12 = dispatch_time(0, (duration * 0.88 * 1000000000.0));
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __49__ETCanvasView_playTestStrokeWithColor_duration___block_invoke_3;
@@ -2100,7 +2100,7 @@ void __57__ETCanvasView__showHeartbeatAtNormalizedPoint_rotation___block_invoke(
   v19 = v13;
   dispatch_after(v12, v9, v18);
 
-  v14 = dispatch_time(0, (a4 * 1000000000.0));
+  v14 = dispatch_time(0, (duration * 1000000000.0));
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __49__ETCanvasView_playTestStrokeWithColor_duration___block_invoke_4;
@@ -2161,10 +2161,10 @@ uint64_t __49__ETCanvasView_playTestStrokeWithColor_duration___block_invoke_4(ui
   return [v1 handleDotAtX:v2 Y:0 color:Current time:v4 isRemote:v3];
 }
 
-- (void)playMessage:(id)a3
+- (void)playMessage:(id)message
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -2172,35 +2172,35 @@ uint64_t __49__ETCanvasView_playTestStrokeWithColor_duration___block_invoke_4(ui
     {
       scene = self->_scene;
       v9 = 138412546;
-      v10 = v4;
+      v10 = messageCopy;
       v11 = 2112;
       v12 = scene;
       _os_log_impl(&dword_248D00000, v5, OS_LOG_TYPE_INFO, "Displaying message %@ in scene %@", &v9, 0x16u);
     }
   }
 
-  if ([v4 messageType] == 1)
+  if ([messageCopy messageType] == 1)
   {
-    v7 = [v4 color];
-    [(ETCanvasView *)self _createSketchViewWithColor:v7 time:v4 message:0.0];
+    color = [messageCopy color];
+    [(ETCanvasView *)self _createSketchViewWithColor:color time:messageCopy message:0.0];
 
     [(ETGLSketchView *)self->_currentSketchView setPlaying:1];
   }
 
-  else if ([v4 messageType] != 8)
+  else if ([messageCopy messageType] != 8)
   {
-    [v4 displayInScene:self->_scene];
+    [messageCopy displayInScene:self->_scene];
   }
 
-  [v4 setDelegate:self];
+  [messageCopy setDelegate:self];
   [(ETCanvasView *)self setPaused:self->_setAlwaysPaused];
   [(ETCanvasView *)self _startCheckForIdleTimer];
-  [(NSMutableSet *)self->_playingMessages addObject:v4];
+  [(NSMutableSet *)self->_playingMessages addObject:messageCopy];
   WeakRetained = objc_loadWeakRetained(&self->_canvasDelegate);
-  [WeakRetained canvasView:self didBeginPlayingMessage:v4];
+  [WeakRetained canvasView:self didBeginPlayingMessage:messageCopy];
 }
 
-- (void)messageWillReachSizeLimit:(id)a3
+- (void)messageWillReachSizeLimit:(id)limit
 {
   WeakRetained = objc_loadWeakRetained(&self->_canvasDelegate);
   [WeakRetained canvasViewWillReachComposingSizeLimit:self];
@@ -2208,27 +2208,27 @@ uint64_t __49__ETCanvasView_playTestStrokeWithColor_duration___block_invoke_4(ui
   self->_sketchDidReachSizeLimit = 1;
 }
 
-- (void)messageWillStopPlaying:(id)a3
+- (void)messageWillStopPlaying:(id)playing
 {
-  v4 = a3;
+  playingCopy = playing;
   WeakRetained = objc_loadWeakRetained(&self->_canvasDelegate);
-  [WeakRetained canvasView:self willEndPlayingMessage:v4];
+  [WeakRetained canvasView:self willEndPlayingMessage:playingCopy];
 }
 
-- (void)messageDidStopPlaying:(id)a3
+- (void)messageDidStopPlaying:(id)playing
 {
-  v4 = a3;
-  [(ETCanvasView *)self _clearDoodleViewForMessage:v4];
-  [(NSMutableSet *)self->_playingMessages removeObject:v4];
+  playingCopy = playing;
+  [(ETCanvasView *)self _clearDoodleViewForMessage:playingCopy];
+  [(NSMutableSet *)self->_playingMessages removeObject:playingCopy];
   WeakRetained = objc_loadWeakRetained(&self->_canvasDelegate);
-  [WeakRetained canvasView:self didEndPlayingMessage:v4];
+  [WeakRetained canvasView:self didEndPlayingMessage:playingCopy];
 }
 
-- (void)setUsesMediaAppearance:(BOOL)a3
+- (void)setUsesMediaAppearance:(BOOL)appearance
 {
-  if (self->_usesMediaAppearance != a3)
+  if (self->_usesMediaAppearance != appearance)
   {
-    self->_usesMediaAppearance = a3;
+    self->_usesMediaAppearance = appearance;
     [(ETCanvasView *)self setPaused:0];
     sceneView = self->_sceneView;
     if (self->_usesMediaAppearance)
@@ -2290,7 +2290,7 @@ uint64_t __49__ETCanvasView_playTestStrokeWithColor_duration___block_invoke_4(ui
   }
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   drawingTouch = self->_drawingTouch;
   self->_drawingTouch = 0;
@@ -2300,11 +2300,11 @@ uint64_t __49__ETCanvasView_playTestStrokeWithColor_duration___block_invoke_4(ui
   self->_sketchDidReachSizeLimit = 0;
 }
 
-- (void)setForceTouchEnabled:(BOOL)a3
+- (void)setForceTouchEnabled:(BOOL)enabled
 {
-  if (self->_angerUsesForceTouch != a3)
+  if (self->_angerUsesForceTouch != enabled)
   {
-    self->_angerUsesForceTouch = a3;
+    self->_angerUsesForceTouch = enabled;
     [(ETCanvasView *)self _configureAngerRecognizer];
   }
 }
@@ -2344,11 +2344,11 @@ uint64_t __49__ETCanvasView_playTestStrokeWithColor_duration___block_invoke_4(ui
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  v4 = [v5 traitCollection];
-  -[ETCanvasView setForceTouchEnabled:](self, "setForceTouchEnabled:", [v4 forceTouchCapability] == 2);
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  -[ETCanvasView setForceTouchEnabled:](self, "setForceTouchEnabled:", [traitCollection forceTouchCapability] == 2);
 }
 
 - (ETCanvasViewDelegate)canvasDelegate

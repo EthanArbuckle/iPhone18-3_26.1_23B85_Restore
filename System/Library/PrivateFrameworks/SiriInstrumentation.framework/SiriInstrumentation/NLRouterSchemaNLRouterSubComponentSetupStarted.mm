@@ -1,33 +1,33 @@
 @interface NLRouterSchemaNLRouterSubComponentSetupStarted
-- (BOOL)isEqual:(id)a3;
-- (NLRouterSchemaNLRouterSubComponentSetupStarted)initWithDictionary:(id)a3;
-- (NLRouterSchemaNLRouterSubComponentSetupStarted)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLRouterSchemaNLRouterSubComponentSetupStarted)initWithDictionary:(id)dictionary;
+- (NLRouterSchemaNLRouterSubComponentSetupStarted)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLRouterSchemaNLRouterSubComponentSetupStarted
 
-- (NLRouterSchemaNLRouterSubComponentSetupStarted)initWithDictionary:(id)a3
+- (NLRouterSchemaNLRouterSubComponentSetupStarted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = NLRouterSchemaNLRouterSubComponentSetupStarted;
   v5 = [(NLRouterSchemaNLRouterSubComponentSetupStarted *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"nlRouterSubComponent"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"nlRouterSubComponent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLRouterSchemaNLRouterSubComponentSetupStarted setNlRouterSubComponent:](v5, "setNlRouterSubComponent:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"assetVersion"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"assetVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (NLRouterSchemaNLRouterSubComponentSetupStarted)initWithJSON:(id)a3
+- (NLRouterSchemaNLRouterSubComponentSetupStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLRouterSchemaNLRouterSubComponentSetupStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLRouterSchemaNLRouterSubComponentSetupStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLRouterSchemaNLRouterSubComponentSetupStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,20 +77,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_assetVersion)
   {
-    v4 = [(NLRouterSchemaNLRouterSubComponentSetupStarted *)self assetVersion];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    assetVersion = [(NLRouterSchemaNLRouterSubComponentSetupStarted *)self assetVersion];
+    dictionaryRepresentation = [assetVersion dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"assetVersion"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"assetVersion"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"assetVersion"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"assetVersion"];
     }
   }
 
@@ -107,12 +107,12 @@
       v8 = off_1E78DB750[v7];
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"nlRouterSubComponent"];
+    [dictionary setObject:v8 forKeyedSubscript:@"nlRouterSubComponent"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -130,22 +130,22 @@
   return [(SISchemaVersion *)self->_assetVersion hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[24] & 1))
+    if ((*&self->_has & 1) == (equalCopy[24] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (nlRouterSubComponent = self->_nlRouterSubComponent, nlRouterSubComponent == [v4 nlRouterSubComponent]))
+      if ((*&self->_has & 1) == 0 || (nlRouterSubComponent = self->_nlRouterSubComponent, nlRouterSubComponent == [equalCopy nlRouterSubComponent]))
       {
-        v6 = [(NLRouterSchemaNLRouterSubComponentSetupStarted *)self assetVersion];
-        v7 = [v4 assetVersion];
-        v8 = v7;
-        if ((v6 != 0) != (v7 == 0))
+        assetVersion = [(NLRouterSchemaNLRouterSubComponentSetupStarted *)self assetVersion];
+        assetVersion2 = [equalCopy assetVersion];
+        v8 = assetVersion2;
+        if ((assetVersion != 0) != (assetVersion2 == 0))
         {
-          v9 = [(NLRouterSchemaNLRouterSubComponentSetupStarted *)self assetVersion];
-          if (!v9)
+          assetVersion3 = [(NLRouterSchemaNLRouterSubComponentSetupStarted *)self assetVersion];
+          if (!assetVersion3)
           {
 
 LABEL_13:
@@ -153,10 +153,10 @@ LABEL_13:
             goto LABEL_11;
           }
 
-          v10 = v9;
-          v11 = [(NLRouterSchemaNLRouterSubComponentSetupStarted *)self assetVersion];
-          v12 = [v4 assetVersion];
-          v13 = [v11 isEqual:v12];
+          v10 = assetVersion3;
+          assetVersion4 = [(NLRouterSchemaNLRouterSubComponentSetupStarted *)self assetVersion];
+          assetVersion5 = [equalCopy assetVersion];
+          v13 = [assetVersion4 isEqual:assetVersion5];
 
           if (v13)
           {
@@ -177,37 +177,37 @@ LABEL_11:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = [(NLRouterSchemaNLRouterSubComponentSetupStarted *)self assetVersion];
+  assetVersion = [(NLRouterSchemaNLRouterSubComponentSetupStarted *)self assetVersion];
 
-  v5 = v7;
-  if (v4)
+  v5 = toCopy;
+  if (assetVersion)
   {
-    v6 = [(NLRouterSchemaNLRouterSubComponentSetupStarted *)self assetVersion];
+    assetVersion2 = [(NLRouterSchemaNLRouterSubComponentSetupStarted *)self assetVersion];
     PBDataWriterWriteSubmessage();
 
-    v5 = v7;
+    v5 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = NLRouterSchemaNLRouterSubComponentSetupStarted;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(NLRouterSchemaNLRouterSubComponentSetupStarted *)self assetVersion:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(NLRouterSchemaNLRouterSubComponentSetupStarted *)self deleteAssetVersion];
   }

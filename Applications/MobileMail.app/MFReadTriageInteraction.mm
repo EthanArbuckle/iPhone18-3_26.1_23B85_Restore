@@ -1,6 +1,6 @@
 @interface MFReadTriageInteraction
-- (BOOL)overrideFlagStateForTriageAction:(id)a3;
-- (BOOL)shouldOverrideFlageStateForTriageAction:(id)a3;
+- (BOOL)overrideFlagStateForTriageAction:(id)action;
+- (BOOL)shouldOverrideFlageStateForTriageAction:(id)action;
 - (id)_iconImageName;
 - (id)_previewImageName;
 - (id)shortTitle;
@@ -15,19 +15,19 @@
 {
   if (!self->_triageAction)
   {
-    v3 = [(MFTriageInteraction *)self query];
+    query = [(MFTriageInteraction *)self query];
 
     v4 = [MSReadTriageAction alloc];
-    if (v3)
+    if (query)
     {
-      v5 = [(MFTriageInteraction *)self query];
-      v6 = [v4 initWithQuery:v5 origin:-[MFTriageInteraction origin](self actor:"origin") delegate:-[MFTriageInteraction actor](self reason:{"actor"), self, -[MFFlagChangeTriageInteraction reason](self, "reason")}];
+      query2 = [(MFTriageInteraction *)self query];
+      v6 = [v4 initWithQuery:query2 origin:-[MFTriageInteraction origin](self actor:"origin") delegate:-[MFTriageInteraction actor](self reason:{"actor"), self, -[MFFlagChangeTriageInteraction reason](self, "reason")}];
     }
 
     else
     {
-      v5 = [(MFTriageInteraction *)self messageListItemSelection];
-      v6 = [v4 initWithMessageListSelection:v5 origin:-[MFTriageInteraction origin](self actor:"origin") delegate:-[MFTriageInteraction actor](self reason:{"actor"), self, -[MFFlagChangeTriageInteraction reason](self, "reason")}];
+      query2 = [(MFTriageInteraction *)self messageListItemSelection];
+      v6 = [v4 initWithMessageListSelection:query2 origin:-[MFTriageInteraction origin](self actor:"origin") delegate:-[MFTriageInteraction actor](self reason:{"actor"), self, -[MFFlagChangeTriageInteraction reason](self, "reason")}];
     }
 
     triageAction = self->_triageAction;
@@ -41,18 +41,18 @@
 
 - (id)title
 {
-  v3 = [(MFFlagChangeTriageInteraction *)self flagState];
-  v4 = [(MFTriageInteraction *)self messageCount];
-  if (v4 >= 2 && [(MFTriageInteraction *)self titleIncludesAllMessages])
+  flagState = [(MFFlagChangeTriageInteraction *)self flagState];
+  messageCount = [(MFTriageInteraction *)self messageCount];
+  if (messageCount >= 2 && [(MFTriageInteraction *)self titleIncludesAllMessages])
   {
     v9 = _EFLocalizedString();
   }
 
-  else if ([(MFTriageInteraction *)self isSelectAll]|| ![(MFTriageInteraction *)self titleIncludesCount]|| v4 == 1)
+  else if ([(MFTriageInteraction *)self isSelectAll]|| ![(MFTriageInteraction *)self titleIncludesCount]|| messageCount == 1)
   {
     v5 = +[NSBundle mainBundle];
     v6 = v5;
-    if (v3)
+    if (flagState)
     {
       [v5 localizedStringForKey:@"MARK_EMAIL_UNREAD" value:&stru_100662A88 table:@"Main"];
     }
@@ -68,7 +68,7 @@
   {
     v7 = +[NSBundle mainBundle];
     v8 = v7;
-    if (v3)
+    if (flagState)
     {
       [v7 localizedStringForKey:@"MARK_EMAIL_UNREAD%1$lu" value:&stru_100662A88 table:@"Main"];
     }
@@ -79,7 +79,7 @@
     }
     v10 = ;
 
-    v9 = [NSString localizedStringWithFormat:v10, v4];
+    v9 = [NSString localizedStringWithFormat:v10, messageCount];
   }
 
   return v9;
@@ -87,10 +87,10 @@
 
 - (id)shortTitle
 {
-  v2 = [(MFFlagChangeTriageInteraction *)self flagState];
+  flagState = [(MFFlagChangeTriageInteraction *)self flagState];
   v3 = +[NSBundle mainBundle];
   v4 = v3;
-  if (v2)
+  if (flagState)
   {
     [v3 localizedStringForKey:@"SWIPE_MARK_AS_UNREAD" value:&stru_100662A88 table:@"Main"];
   }
@@ -106,10 +106,10 @@
 
 - (id)undoTitle
 {
-  v2 = [(MFFlagChangeTriageInteraction *)self flagState];
+  flagState = [(MFFlagChangeTriageInteraction *)self flagState];
   v3 = +[NSBundle mainBundle];
   v4 = v3;
-  if (v2)
+  if (flagState)
   {
     [v3 localizedStringForKey:@"OPERATION_UNREAD_DESC" value:&stru_100662A88 table:@"Main"];
   }
@@ -125,9 +125,9 @@
 
 - (id)_iconImageName
 {
-  v2 = [(MFFlagChangeTriageInteraction *)self flagState];
+  flagState = [(MFFlagChangeTriageInteraction *)self flagState];
   v3 = &MFImageGlyphUnread;
-  if (!v2)
+  if (!flagState)
   {
     v3 = &MFImageGlyphRead;
   }
@@ -139,9 +139,9 @@
 
 - (id)_previewImageName
 {
-  v2 = [(MFFlagChangeTriageInteraction *)self flagState];
+  flagState = [(MFFlagChangeTriageInteraction *)self flagState];
   v3 = &MFImageGlyphUnread;
-  if (!v2)
+  if (!flagState)
   {
     v3 = &MFImageGlyphRead;
   }
@@ -151,11 +151,11 @@
   return v4;
 }
 
-- (BOOL)shouldOverrideFlageStateForTriageAction:(id)a3
+- (BOOL)shouldOverrideFlageStateForTriageAction:(id)action
 {
   if ([(MFTriageInteraction *)self shouldOverrideFlagState])
   {
-    v4 = [(MFTriageInteraction *)self delegate];
+    delegate = [(MFTriageInteraction *)self delegate];
     v5 = objc_opt_respondsToSelector();
   }
 
@@ -167,17 +167,17 @@
   return v5 & 1;
 }
 
-- (BOOL)overrideFlagStateForTriageAction:(id)a3
+- (BOOL)overrideFlagStateForTriageAction:(id)action
 {
   if (![(MFTriageInteraction *)self shouldOverrideFlagState])
   {
     return 0;
   }
 
-  v4 = [(MFTriageInteraction *)self delegate];
+  delegate = [(MFTriageInteraction *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 flagStateForFlagChangeTriageInteraction:self];
+    v5 = [delegate flagStateForFlagChangeTriageInteraction:self];
   }
 
   else

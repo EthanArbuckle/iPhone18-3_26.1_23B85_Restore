@@ -1,6 +1,6 @@
 @interface ICNoteEditorTextFindingController
 + (OS_dispatch_queue)textFindingQueue;
-+ (id)textFindingResultsForPattern:(id)a3 textView:(id)a4 textStorage:(id)a5 ignoreCase:(BOOL)a6 wholeWords:(BOOL)a7;
++ (id)textFindingResultsForPattern:(id)pattern textView:(id)view textStorage:(id)storage ignoreCase:(BOOL)case wholeWords:(BOOL)words;
 @end
 
 @implementation ICNoteEditorTextFindingController
@@ -25,19 +25,19 @@ void __53__ICNoteEditorTextFindingController_textFindingQueue__block_invoke()
   textFindingQueue_sTextFindingQueue = v0;
 }
 
-+ (id)textFindingResultsForPattern:(id)a3 textView:(id)a4 textStorage:(id)a5 ignoreCase:(BOOL)a6 wholeWords:(BOOL)a7
++ (id)textFindingResultsForPattern:(id)pattern textView:(id)view textStorage:(id)storage ignoreCase:(BOOL)case wholeWords:(BOOL)words
 {
-  v7 = a7;
-  v43 = a6;
+  wordsCopy = words;
+  caseCopy = case;
   v68 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v44 = a4;
-  v11 = a5;
-  v45 = v10;
-  if ([v10 length])
+  patternCopy = pattern;
+  viewCopy = view;
+  storageCopy = storage;
+  v45 = patternCopy;
+  if ([patternCopy length])
   {
-    v12 = [v11 string];
-    v13 = [v12 length];
+    string = [storageCopy string];
+    v13 = [string length];
 
     if (v13)
     {
@@ -46,16 +46,16 @@ void __53__ICNoteEditorTextFindingController_textFindingQueue__block_invoke()
       v62 = 0x3032000000;
       v63 = __Block_byref_object_copy__11;
       v64 = __Block_byref_object_dispose__11;
-      v65 = [MEMORY[0x277CBEB18] array];
-      v42 = [MEMORY[0x277CCAC68] escapedPatternForString:v10];
+      array = [MEMORY[0x277CBEB18] array];
+      v42 = [MEMORY[0x277CCAC68] escapedPatternForString:patternCopy];
       v59 = 0;
-      v14 = [objc_alloc(MEMORY[0x277CCAC68]) initWithPattern:v42 options:v43 error:&v59];
+      v14 = [objc_alloc(MEMORY[0x277CCAC68]) initWithPattern:v42 options:caseCopy error:&v59];
       v38 = v59;
       v40 = v14;
       if (v14)
       {
-        v15 = [v11 string];
-        v16 = [v14 matchesInString:v15 options:0 range:{0, objc_msgSend(v11, "length")}];
+        string2 = [storageCopy string];
+        v16 = [v14 matchesInString:string2 options:0 range:{0, objc_msgSend(storageCopy, "length")}];
 
         v57 = 0u;
         v58 = 0u;
@@ -76,11 +76,11 @@ void __53__ICNoteEditorTextFindingController_textFindingQueue__block_invoke()
               }
 
               v21 = *(*(&v55 + 1) + 8 * i);
-              if (v7)
+              if (wordsCopy)
               {
-                v22 = [v11 string];
-                v23 = [v21 range];
-                v25 = [v22 ic_rangeEncapsulatesWord:{v23, v24}];
+                string3 = [storageCopy string];
+                range = [v21 range];
+                v25 = [string3 ic_rangeEncapsulatesWord:{range, v24}];
 
                 if ((v25 & 1) == 0)
                 {
@@ -89,8 +89,8 @@ void __53__ICNoteEditorTextFindingController_textFindingQueue__block_invoke()
               }
 
               v26 = objc_alloc_init(ICTextFindingResult);
-              v27 = [v21 range];
-              [(ICTextFindingResult *)v26 setRange:v27, v28];
+              range2 = [v21 range];
+              [(ICTextFindingResult *)v26 setRange:range2, v28];
               [v61[5] addObject:v26];
             }
 
@@ -110,24 +110,24 @@ void __53__ICNoteEditorTextFindingController_textFindingQueue__block_invoke()
         }
       }
 
-      v29 = [MEMORY[0x277D35F30] sharedContext];
-      v30 = [v29 managedObjectContext];
+      mEMORY[0x277D35F30] = [MEMORY[0x277D35F30] sharedContext];
+      managedObjectContext = [mEMORY[0x277D35F30] managedObjectContext];
 
       v31 = dispatch_group_create();
       v46[0] = MEMORY[0x277D85DD0];
       v46[1] = 3221225472;
       v46[2] = __109__ICNoteEditorTextFindingController_textFindingResultsForPattern_textView_textStorage_ignoreCase_wholeWords___block_invoke;
       v46[3] = &unk_2781AE438;
-      v47 = v11;
-      v32 = v30;
+      v47 = storageCopy;
+      v32 = managedObjectContext;
       v48 = v32;
       v33 = v31;
       v49 = v33;
       v52 = &v60;
       v50 = v45;
-      v51 = v44;
-      v53 = v43;
-      v54 = v7;
+      v51 = viewCopy;
+      v53 = caseCopy;
+      v54 = wordsCopy;
       [v32 performBlockAndWait:v46];
       v34 = dispatch_time(0, 10000000000);
       if (dispatch_group_wait(v33, v34))

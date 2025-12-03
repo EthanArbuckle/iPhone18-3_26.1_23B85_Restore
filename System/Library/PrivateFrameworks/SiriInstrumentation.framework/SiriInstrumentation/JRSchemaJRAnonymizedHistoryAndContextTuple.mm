@@ -1,29 +1,29 @@
 @interface JRSchemaJRAnonymizedHistoryAndContextTuple
-- (BOOL)isEqual:(id)a3;
-- (JRSchemaJRAnonymizedHistoryAndContextTuple)initWithDictionary:(id)a3;
-- (JRSchemaJRAnonymizedHistoryAndContextTuple)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (JRSchemaJRAnonymizedHistoryAndContextTuple)initWithDictionary:(id)dictionary;
+- (JRSchemaJRAnonymizedHistoryAndContextTuple)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addCandidateIds:(id)a3;
-- (void)setHasUflScore:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addCandidateIds:(id)ids;
+- (void)setHasUflScore:(BOOL)score;
+- (void)writeTo:(id)to;
 @end
 
 @implementation JRSchemaJRAnonymizedHistoryAndContextTuple
 
-- (JRSchemaJRAnonymizedHistoryAndContextTuple)initWithDictionary:(id)a3
+- (JRSchemaJRAnonymizedHistoryAndContextTuple)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = JRSchemaJRAnonymizedHistoryAndContextTuple;
   v5 = [(JRSchemaJRAnonymizedHistoryAndContextTuple *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"candidateIds"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"candidateIds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,7 +67,7 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"contextSimilarityScore", v19}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"contextSimilarityScore", v19}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,7 +75,7 @@
       [(JRSchemaJRAnonymizedHistoryAndContextTuple *)v5 setContextSimilarityScore:?];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"uflScore"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"uflScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,30 +89,30 @@
   return v5;
 }
 
-- (JRSchemaJRAnonymizedHistoryAndContextTuple)initWithJSON:(id)a3
+- (JRSchemaJRAnonymizedHistoryAndContextTuple)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(JRSchemaJRAnonymizedHistoryAndContextTuple *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(JRSchemaJRAnonymizedHistoryAndContextTuple *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(JRSchemaJRAnonymizedHistoryAndContextTuple *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -126,10 +126,10 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_candidateIds count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -149,16 +149,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -168,7 +168,7 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"candidateIds"];
+    [dictionary setObject:array forKeyedSubscript:@"candidateIds"];
   }
 
   has = self->_has;
@@ -177,7 +177,7 @@
     v13 = MEMORY[0x1E696AD98];
     [(JRSchemaJRAnonymizedHistoryAndContextTuple *)self contextSimilarityScore];
     v14 = [v13 numberWithFloat:?];
-    [v3 setObject:v14 forKeyedSubscript:@"contextSimilarityScore"];
+    [dictionary setObject:v14 forKeyedSubscript:@"contextSimilarityScore"];
 
     has = self->_has;
   }
@@ -187,12 +187,12 @@
     v15 = MEMORY[0x1E696AD98];
     [(JRSchemaJRAnonymizedHistoryAndContextTuple *)self uflScore];
     v16 = [v15 numberWithFloat:?];
-    [v3 setObject:v16 forKeyedSubscript:@"uflScore"];
+    [dictionary setObject:v16 forKeyedSubscript:@"uflScore"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v18];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v18];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -278,26 +278,26 @@
   return v6 ^ v3 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = [(JRSchemaJRAnonymizedHistoryAndContextTuple *)self candidateIds];
-  v6 = [v4 candidateIds];
-  v7 = v6;
-  if ((v5 != 0) != (v6 == 0))
+  candidateIds = [(JRSchemaJRAnonymizedHistoryAndContextTuple *)self candidateIds];
+  candidateIds2 = [equalCopy candidateIds];
+  v7 = candidateIds2;
+  if ((candidateIds != 0) != (candidateIds2 == 0))
   {
-    v8 = [(JRSchemaJRAnonymizedHistoryAndContextTuple *)self candidateIds];
-    if (v8)
+    candidateIds3 = [(JRSchemaJRAnonymizedHistoryAndContextTuple *)self candidateIds];
+    if (candidateIds3)
     {
-      v9 = v8;
-      v10 = [(JRSchemaJRAnonymizedHistoryAndContextTuple *)self candidateIds];
-      v11 = [v4 candidateIds];
-      v12 = [v10 isEqual:v11];
+      v9 = candidateIds3;
+      candidateIds4 = [(JRSchemaJRAnonymizedHistoryAndContextTuple *)self candidateIds];
+      candidateIds5 = [equalCopy candidateIds];
+      v12 = [candidateIds4 isEqual:candidateIds5];
 
       if (!v12)
       {
@@ -310,26 +310,26 @@
     }
 
     has = self->_has;
-    v14 = v4[24];
+    v14 = equalCopy[24];
     if ((*&has & 1) == (v14 & 1))
     {
       if (*&has)
       {
         contextSimilarityScore = self->_contextSimilarityScore;
-        [v4 contextSimilarityScore];
+        [equalCopy contextSimilarityScore];
         if (contextSimilarityScore != v16)
         {
           goto LABEL_15;
         }
 
         has = self->_has;
-        v14 = v4[24];
+        v14 = equalCopy[24];
       }
 
       v17 = (*&has >> 1) & 1;
       if (v17 == ((v14 >> 1) & 1))
       {
-        if (!v17 || (uflScore = self->_uflScore, [v4 uflScore], uflScore == v19))
+        if (!v17 || (uflScore = self->_uflScore, [equalCopy uflScore], uflScore == v19))
         {
           v20 = 1;
           goto LABEL_16;
@@ -349,10 +349,10 @@ LABEL_16:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -394,9 +394,9 @@ LABEL_16:
   }
 }
 
-- (void)setHasUflScore:(BOOL)a3
+- (void)setHasUflScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2;
   }
@@ -409,32 +409,32 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addCandidateIds:(id)a3
+- (void)addCandidateIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   candidateIds = self->_candidateIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!candidateIds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_candidateIds;
-    self->_candidateIds = v6;
+    self->_candidateIds = array;
 
-    v4 = v8;
+    idsCopy = v8;
     candidateIds = self->_candidateIds;
   }
 
-  [(NSArray *)candidateIds addObject:v4];
+  [(NSArray *)candidateIds addObject:idsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = JRSchemaJRAnonymizedHistoryAndContextTuple;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(JRSchemaJRAnonymizedHistoryAndContextTuple *)self candidateIds:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(JRSchemaJRAnonymizedHistoryAndContextTuple *)self setCandidateIds:v7];
 

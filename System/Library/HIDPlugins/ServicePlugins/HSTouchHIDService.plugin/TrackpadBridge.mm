@@ -1,21 +1,21 @@
 @interface TrackpadBridge
-- (BOOL)decodeFromMap:(void *)a3;
-- (BOOL)handleHSDecode:(void *)a3;
-- (BOOL)handleHSEncode:(void *)a3;
-- (TrackpadBridge)initWithService:(unsigned int)a3;
+- (BOOL)decodeFromMap:(void *)map;
+- (BOOL)handleHSDecode:(void *)decode;
+- (BOOL)handleHSEncode:(void *)encode;
+- (TrackpadBridge)initWithService:(unsigned int)service;
 - (id)debug;
-- (id)generateHostStateEvent:(id)a3;
-- (void)encodeToMap:(void *)a3;
-- (void)handleGetPropertyEvent:(id)a3;
-- (void)handleSetPropertyEvent:(id)a3;
+- (id)generateHostStateEvent:(id)event;
+- (void)encodeToMap:(void *)map;
+- (void)handleGetPropertyEvent:(id)event;
+- (void)handleSetPropertyEvent:(id)event;
 @end
 
 @implementation TrackpadBridge
 
-- (TrackpadBridge)initWithService:(unsigned int)a3
+- (TrackpadBridge)initWithService:(unsigned int)service
 {
-  v3 = *&a3;
-  v5 = [(PointerSettings *)[TrackpadSettings alloc] initWithService:*&a3];
+  v3 = *&service;
+  v5 = [(PointerSettings *)[TrackpadSettings alloc] initWithService:*&service];
   v8.receiver = self;
   v8.super_class = TrackpadBridge;
   v6 = [(PointerBridge *)&v8 initWithService:v3 settings:v5];
@@ -23,13 +23,13 @@
   return v6;
 }
 
-- (void)handleSetPropertyEvent:(id)a3
+- (void)handleSetPropertyEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = [NSString stringWithUTF8String:?];
   if ([v5 isEqualToString:@"HostStateNotification"])
   {
-    v6 = [(TrackpadBridge *)self generateHostStateEvent:v4[5]];
+    v6 = [(TrackpadBridge *)self generateHostStateEvent:eventCopy[5]];
     if (v6)
     {
       v8.receiver = self;
@@ -40,12 +40,12 @@
 
   v7.receiver = self;
   v7.super_class = TrackpadBridge;
-  [(PointerBridge *)&v7 handleSetPropertyEvent:v4];
+  [(PointerBridge *)&v7 handleSetPropertyEvent:eventCopy];
 }
 
-- (void)handleGetPropertyEvent:(id)a3
+- (void)handleGetPropertyEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = [NSString stringWithUTF8String:?];
   if ([v5 isEqualToString:@"DeviceTypeHint"])
   {
@@ -60,45 +60,45 @@
     }
 
     v6 = [&off_112BC8 mutableCopy];
-    v8 = [(PointerBridge *)self settings];
+    settings = [(PointerBridge *)self settings];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v10 = [(PointerBridge *)self settings];
-      if ([v10 gestureScrollingEnabled])
+      settings2 = [(PointerBridge *)self settings];
+      if ([settings2 gestureScrollingEnabled])
       {
         [(__CFString *)v6 addObject:@"Scroll"];
       }
 
-      if ([v10 zoom])
+      if ([settings2 zoom])
       {
         [(__CFString *)v6 addObject:@"Scale"];
       }
 
-      if ([v10 rotate])
+      if ([settings2 rotate])
       {
         [(__CFString *)v6 addObject:@"Rotate"];
       }
     }
   }
 
-  v7 = v4[5];
-  v4[5] = v6;
+  v7 = eventCopy[5];
+  eventCopy[5] = v6;
 
 LABEL_13:
   v11.receiver = self;
   v11.super_class = TrackpadBridge;
-  [(PointerBridge *)&v11 handleGetPropertyEvent:v4];
+  [(PointerBridge *)&v11 handleGetPropertyEvent:eventCopy];
 }
 
 - (id)debug
 {
   v11.receiver = self;
   v11.super_class = TrackpadBridge;
-  v3 = [(PointerBridge *)&v11 debug];
-  v4 = [v3 mutableCopy];
+  debug = [(PointerBridge *)&v11 debug];
+  v4 = [debug mutableCopy];
 
   v5 = [NSNumber numberWithBool:[(TrackpadBridge *)self coverClosed]];
   [v4 setObject:v5 forKeyedSubscript:@"CoverClosed"];
@@ -117,13 +117,13 @@ LABEL_13:
   return v9;
 }
 
-- (id)generateHostStateEvent:(id)a3
+- (id)generateHostStateEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"DigitizerSurfaceCovered"];
-  v6 = [v5 BOOLValue];
+  eventCopy = event;
+  v5 = [eventCopy objectForKey:@"DigitizerSurfaceCovered"];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [v4 objectForKey:@"ScreenOn"];
+  v7 = [eventCopy objectForKey:@"ScreenOn"];
   v8 = v7;
   if (v7)
   {
@@ -135,13 +135,13 @@ LABEL_13:
     v9 = 0;
   }
 
-  v10 = [v4 objectForKey:@"GraphicsOrientation"];
-  v11 = [v10 intValue];
+  v10 = [eventCopy objectForKey:@"GraphicsOrientation"];
+  intValue = [v10 intValue];
 
-  v12 = [v4 objectForKey:@"DeviceOrientation"];
-  v13 = [v12 intValue];
+  v12 = [eventCopy objectForKey:@"DeviceOrientation"];
+  intValue2 = [v12 intValue];
 
-  if (v6 == [(TrackpadBridge *)self coverClosed]&& v9 == [(TrackpadBridge *)self displayOff]&& [(TrackpadBridge *)self screenOrientation]== v11 && [(TrackpadBridge *)self deviceOrientation]== v13)
+  if (bOOLValue == [(TrackpadBridge *)self coverClosed]&& v9 == [(TrackpadBridge *)self displayOff]&& [(TrackpadBridge *)self screenOrientation]== intValue && [(TrackpadBridge *)self deviceOrientation]== intValue2)
   {
     v14 = MTLoggingPlugin();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -170,62 +170,62 @@ LABEL_13:
       v22 = 2080;
       v23 = "[TrackpadBridge generateHostStateEvent:]";
       v24 = 1024;
-      v25 = v6;
+      v25 = bOOLValue;
       v26 = 1024;
       v27 = v9;
       v28 = 1024;
-      v29 = v11;
+      v29 = intValue;
       v30 = 1024;
-      v31 = v13;
+      v31 = intValue2;
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEBUG, "[HID] [MT] %s%s%s Received host state notification coverClosed(%d) displayOff(%d) screenOrientation(%d) deviceOrientation(%d)", &v18, 0x38u);
     }
 
-    [(TrackpadBridge *)self setCoverClosed:v6];
+    [(TrackpadBridge *)self setCoverClosed:bOOLValue];
     [(TrackpadBridge *)self setDisplayOff:v9];
-    [(TrackpadBridge *)self setScreenOrientation:v11];
-    [(TrackpadBridge *)self setDeviceOrientation:v13];
-    v15 = [[HSTHostStateEvent alloc] initWithDeviceOrientation:v13 screenOrientation:v11 coverClosed:v6 displayOff:v9];
+    [(TrackpadBridge *)self setScreenOrientation:intValue];
+    [(TrackpadBridge *)self setDeviceOrientation:intValue2];
+    v15 = [[HSTHostStateEvent alloc] initWithDeviceOrientation:intValue2 screenOrientation:intValue coverClosed:bOOLValue displayOff:v9];
   }
 
   return v15;
 }
 
-- (void)encodeToMap:(void *)a3
+- (void)encodeToMap:(void *)map
 {
   v4 = HSUtil::CoderKey::Literal<(char)115,(char)101,(char)116,(char)116,(char)105,(char)110,(char)103,(char)115>::Key;
-  v5 = [(PointerBridge *)self settings];
-  HSUtil::Encoder::encodeHSCodable(a3, v4, v5);
+  settings = [(PointerBridge *)self settings];
+  HSUtil::Encoder::encodeHSCodable(map, v4, settings);
 }
 
-- (BOOL)decodeFromMap:(void *)a3
+- (BOOL)decodeFromMap:(void *)map
 {
   v4 = HSUtil::CoderKey::Literal<(char)115,(char)101,(char)116,(char)116,(char)105,(char)110,(char)103,(char)115>::Key;
-  v5 = [(PointerBridge *)self settings];
-  HSUtil::Decoder::decodeHSCodable(a3, v4, v5);
+  settings = [(PointerBridge *)self settings];
+  HSUtil::Decoder::decodeHSCodable(map, v4, settings);
 
   return 1;
 }
 
-- (BOOL)handleHSEncode:(void *)a3
+- (BOOL)handleHSEncode:(void *)encode
 {
-  if (!*a3)
+  if (!*encode)
   {
-    *&v6 = *(a3 + 17);
+    *&v6 = *(encode + 17);
     DWORD2(v6) = 4;
-    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](a3 + 56, &v6);
-    HSUtil::Encoder::_writeTokenValue32(a3, 0xEBu, 0);
+    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](encode + 56, &v6);
+    HSUtil::Encoder::_writeTokenValue32(encode, 0xEBu, 0);
   }
 
-  [(TrackpadBridge *)self encodeToMap:a3];
-  if (!*a3)
+  [(TrackpadBridge *)self encodeToMap:encode];
+  if (!*encode)
   {
-    HSUtil::Encoder::_encodeContainerStop(a3);
+    HSUtil::Encoder::_encodeContainerStop(encode);
   }
 
   return 1;
 }
 
-- (BOOL)handleHSDecode:(void *)a3
+- (BOOL)handleHSDecode:(void *)decode
 {
   *&v5 = 0xAAAAAAAAAAAAAAAALL;
   *(&v5 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -234,8 +234,8 @@ LABEL_13:
   v11 = v5;
   v12 = v5;
   v10 = v5;
-  HSUtil::Decoder::decodeMap(a3, &v10);
-  if (*a3)
+  HSUtil::Decoder::decodeMap(decode, &v10);
+  if (*decode)
   {
     memset(__b, 170, sizeof(__b));
     v6 = basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/PreAlg/Bridges/TrackpadBridge.mm", __b);

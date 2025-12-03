@@ -1,73 +1,73 @@
 @interface AMSHTTPArchive
 + (NSString)directory;
-+ (double)_timeIntervalFromFilename:(id)a3;
-+ (id)_createJSONObjectForEntries:(id)a3;
-+ (id)_createJSONObjectForTaskMetrics:(id)a3 requestData:(id)a4 responseData:(id)a5;
-+ (id)ams_dateFormatterForTimeZone:(id)a3;
-+ (id)ams_generateCommentsStringForMetrics:(id)a3;
-+ (id)ams_generateContentDictionaryForResponse:(id)a3 responseData:(id)a4;
-+ (id)ams_generateRequestDictionaryForMetrics:(id)a3 requestData:(id)a4;
-+ (id)ams_generateResponseDictionaryForMetrics:(id)a3 responseData:(id)a4;
-+ (id)merge:(id)a3;
-+ (id)merge:(id)a3 withEstimatedFileSizeLimit:(unint64_t)a4;
-+ (void)removeHTTPArchiveFilesOlderThanDate:(id)a3;
-- (AMSHTTPArchive)initWithCoder:(id)a3;
-- (AMSHTTPArchive)initWithHTTPArchiveTaskInfo:(id)a3;
-- (AMSHTTPArchive)initWithJSONObject:(id)a3;
-- (AMSHTTPArchive)initWithMetrics:(id)a3 requestData:(id)a4 responseData:(id)a5;
-- (BOOL)writeToDiskWithError:(id *)a3 compressed:(BOOL)a4 appendCombined:(BOOL)a5;
-- (void)encodeWithCoder:(id)a3;
++ (double)_timeIntervalFromFilename:(id)filename;
++ (id)_createJSONObjectForEntries:(id)entries;
++ (id)_createJSONObjectForTaskMetrics:(id)metrics requestData:(id)data responseData:(id)responseData;
++ (id)ams_dateFormatterForTimeZone:(id)zone;
++ (id)ams_generateCommentsStringForMetrics:(id)metrics;
++ (id)ams_generateContentDictionaryForResponse:(id)response responseData:(id)data;
++ (id)ams_generateRequestDictionaryForMetrics:(id)metrics requestData:(id)data;
++ (id)ams_generateResponseDictionaryForMetrics:(id)metrics responseData:(id)data;
++ (id)merge:(id)merge;
++ (id)merge:(id)merge withEstimatedFileSizeLimit:(unint64_t)limit;
++ (void)removeHTTPArchiveFilesOlderThanDate:(id)date;
+- (AMSHTTPArchive)initWithCoder:(id)coder;
+- (AMSHTTPArchive)initWithHTTPArchiveTaskInfo:(id)info;
+- (AMSHTTPArchive)initWithJSONObject:(id)object;
+- (AMSHTTPArchive)initWithMetrics:(id)metrics requestData:(id)data responseData:(id)responseData;
+- (BOOL)writeToDiskWithError:(id *)error compressed:(BOOL)compressed appendCombined:(BOOL)combined;
+- (void)encodeWithCoder:(id)coder;
 - (void)logHARData;
 @end
 
 @implementation AMSHTTPArchive
 
-- (AMSHTTPArchive)initWithHTTPArchiveTaskInfo:(id)a3
+- (AMSHTTPArchive)initWithHTTPArchiveTaskInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 taskMetrics];
-  v6 = [v4 HTTPBody];
-  v7 = [v4 responseData];
-  v8 = [AMSHTTPArchive _createJSONObjectForTaskMetrics:v5 requestData:v6 responseData:v7];
+  infoCopy = info;
+  taskMetrics = [infoCopy taskMetrics];
+  hTTPBody = [infoCopy HTTPBody];
+  responseData = [infoCopy responseData];
+  v8 = [AMSHTTPArchive _createJSONObjectForTaskMetrics:taskMetrics requestData:hTTPBody responseData:responseData];
 
-  v9 = [v4 taskMetrics];
+  taskMetrics2 = [infoCopy taskMetrics];
 
-  v10 = [v9 transactionMetrics];
-  v11 = [v10 firstObject];
-  v12 = [v11 request];
-  v13 = [v12 URL];
-  v14 = [v13 absoluteString];
+  transactionMetrics = [taskMetrics2 transactionMetrics];
+  firstObject = [transactionMetrics firstObject];
+  request = [firstObject request];
+  v13 = [request URL];
+  absoluteString = [v13 absoluteString];
   urlString = self->_urlString;
-  self->_urlString = v14;
+  self->_urlString = absoluteString;
 
   v16 = [(AMSHTTPArchive *)self initWithJSONObject:v8];
   return v16;
 }
 
-- (AMSHTTPArchive)initWithMetrics:(id)a3 requestData:(id)a4 responseData:(id)a5
+- (AMSHTTPArchive)initWithMetrics:(id)metrics requestData:(id)data responseData:(id)responseData
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[AMSHTTPArchiveMetrics alloc] initWithURLSessionTaskMetrics:v10];
+  responseDataCopy = responseData;
+  dataCopy = data;
+  metricsCopy = metrics;
+  v11 = [[AMSHTTPArchiveMetrics alloc] initWithURLSessionTaskMetrics:metricsCopy];
 
-  v12 = [AMSHTTPArchive _createJSONObjectForTaskMetrics:v11 requestData:v9 responseData:v8];
+  v12 = [AMSHTTPArchive _createJSONObjectForTaskMetrics:v11 requestData:dataCopy responseData:responseDataCopy];
 
   v13 = [(AMSHTTPArchive *)self initWithJSONObject:v12];
   return v13;
 }
 
-- (AMSHTTPArchive)initWithJSONObject:(id)a3
+- (AMSHTTPArchive)initWithJSONObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v12.receiver = self;
   v12.super_class = AMSHTTPArchive;
   v5 = [(AMSHTTPArchive *)&v12 init];
   if (v5)
   {
-    if ([MEMORY[0x1E696ACB0] isValidJSONObject:v4])
+    if ([MEMORY[0x1E696ACB0] isValidJSONObject:objectCopy])
     {
-      v6 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v4 options:0 error:0];
+      v6 = [MEMORY[0x1E696ACB0] dataWithJSONObject:objectCopy options:0 error:0];
     }
 
     else
@@ -75,12 +75,12 @@
       v6 = 0;
     }
 
-    v7 = [v6 ams_compressedData];
-    v8 = v7;
-    v9 = v7 != 0;
-    if (v7)
+    ams_compressedData = [v6 ams_compressedData];
+    v8 = ams_compressedData;
+    v9 = ams_compressedData != 0;
+    if (ams_compressedData)
     {
-      v10 = v7;
+      v10 = ams_compressedData;
     }
 
     else
@@ -95,36 +95,36 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AMSHTTPArchive *)self urlString];
-  [v4 encodeObject:v5 forKey:@"kCodingKeyUrlString"];
+  coderCopy = coder;
+  urlString = [(AMSHTTPArchive *)self urlString];
+  [coderCopy encodeObject:urlString forKey:@"kCodingKeyUrlString"];
 
-  v6 = [(AMSHTTPArchive *)self backingJSONData];
-  [v4 encodeObject:v6 forKey:@"kCodingKeyBackingJSONData"];
+  backingJSONData = [(AMSHTTPArchive *)self backingJSONData];
+  [coderCopy encodeObject:backingJSONData forKey:@"kCodingKeyBackingJSONData"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[AMSHTTPArchive isCompressed](self, "isCompressed")}];
-  [v4 encodeObject:v7 forKey:@"kCodingKeyCompressed"];
+  [coderCopy encodeObject:v7 forKey:@"kCodingKeyCompressed"];
 }
 
-- (AMSHTTPArchive)initWithCoder:(id)a3
+- (AMSHTTPArchive)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = AMSHTTPArchive;
   v5 = [(AMSHTTPArchive *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyUrlString"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyUrlString"];
     urlString = v5->_urlString;
     v5->_urlString = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyBackingJSONData"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyBackingJSONData"];
     backingJSONData = v5->_backingJSONData;
     v5->_backingJSONData = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyCompressed"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyCompressed"];
     v5->_compressed = [v10 BOOLValue];
   }
 
@@ -159,15 +159,15 @@
 - (void)logHARData
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSHTTPArchive *)self backingJSONData];
+  backingJSONData = [(AMSHTTPArchive *)self backingJSONData];
   if ([(AMSHTTPArchive *)self isCompressed])
   {
-    v4 = [v3 ams_decompressedData];
+    ams_decompressedData = [backingJSONData ams_decompressedData];
 
-    v3 = v4;
+    backingJSONData = ams_decompressedData;
   }
 
-  v5 = [v3 ams_compressWithAlgorithm:0];
+  v5 = [backingJSONData ams_compressWithAlgorithm:0];
 
   v6 = [v5 base64EncodedStringWithOptions:0];
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -203,9 +203,9 @@
         v13 = +[AMSLogConfig sharedConfig];
       }
 
-      v14 = [v13 OSLogObject];
+      oSLogObject = [v13 OSLogObject];
       ++v11;
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v15 = [v7 count];
         *buf = 138413058;
@@ -216,7 +216,7 @@
         v21 = v15;
         v22 = 2112;
         v23 = v12;
-        _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_DEFAULT, "HARData: %@ %d/%d %@", buf, 0x22u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "HARData: %@ %d/%d %@", buf, 0x22u);
       }
     }
 
@@ -224,31 +224,31 @@
   }
 }
 
-+ (id)merge:(id)a3
++ (id)merge:(id)merge
 {
-  v3 = [a1 merge:a3 withEstimatedFileSizeLimit:0x7FFFFFFFFFFFFFFFLL];
-  v4 = [v3 firstObject];
+  v3 = [self merge:merge withEstimatedFileSizeLimit:0x7FFFFFFFFFFFFFFFLL];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-+ (id)merge:(id)a3 withEstimatedFileSizeLimit:(unint64_t)a4
++ (id)merge:(id)merge withEstimatedFileSizeLimit:(unint64_t)limit
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  mergeCopy = merge;
   v31 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v5;
+  obj = mergeCopy;
   v7 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = 0;
-    v10 = 1000 * a4;
+    v10 = 1000 * limit;
     v11 = *v36;
     do
     {
@@ -261,14 +261,14 @@
 
         v13 = *(*(&v35 + 1) + 8 * i);
         v14 = objc_autoreleasePoolPush();
-        v15 = [v13 isCompressed];
-        v16 = [v13 backingJSONData];
-        v17 = v16;
-        if (v15)
+        isCompressed = [v13 isCompressed];
+        backingJSONData = [v13 backingJSONData];
+        v17 = backingJSONData;
+        if (isCompressed)
         {
-          v18 = [v16 ams_decompressedData];
+          ams_decompressedData = [backingJSONData ams_decompressedData];
 
-          v17 = v18;
+          v17 = ams_decompressedData;
         }
 
         if (v17)
@@ -325,17 +325,17 @@
   return v31;
 }
 
-+ (void)removeHTTPArchiveFilesOlderThanDate:(id)a3
++ (void)removeHTTPArchiveFilesOlderThanDate:(id)date
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 directory];
-  v22 = v4;
-  [v4 timeIntervalSinceReferenceDate];
+  dateCopy = date;
+  directory = [self directory];
+  v22 = dateCopy;
+  [dateCopy timeIntervalSinceReferenceDate];
   v7 = v6;
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  v9 = [a1 directory];
-  v10 = [v8 enumeratorAtPath:v9];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  directory2 = [self directory];
+  v10 = [defaultManager enumeratorAtPath:directory2];
 
   v25 = 0u;
   v26 = 0u;
@@ -358,12 +358,12 @@
 
         v16 = *(*(&v23 + 1) + 8 * i);
         v17 = objc_autoreleasePoolPush();
-        [a1 _timeIntervalFromFilename:v16];
+        [self _timeIntervalFromFilename:v16];
         if (v18 != 1.79769313e308 && v18 <= v7)
         {
-          v20 = [v5 stringByAppendingPathComponent:v16];
-          v21 = [MEMORY[0x1E696AC08] defaultManager];
-          [v21 removeItemAtPath:v20 error:0];
+          v20 = [directory stringByAppendingPathComponent:v16];
+          defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+          [defaultManager2 removeItemAtPath:v20 error:0];
         }
 
         objc_autoreleasePoolPop(v17);
@@ -376,30 +376,30 @@
   }
 }
 
-- (BOOL)writeToDiskWithError:(id *)a3 compressed:(BOOL)a4 appendCombined:(BOOL)a5
+- (BOOL)writeToDiskWithError:(id *)error compressed:(BOOL)compressed appendCombined:(BOOL)combined
 {
-  v5 = a5;
-  v6 = a4;
+  combinedCopy = combined;
+  compressedCopy = compressed;
   v63 = *MEMORY[0x1E69E9840];
-  v8 = [objc_opt_class() directory];
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  v10 = [v9 fileExistsAtPath:v8];
+  directory = [objc_opt_class() directory];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v10 = [defaultManager fileExistsAtPath:directory];
 
   if (v10)
   {
     v11 = 0;
 LABEL_5:
-    v15 = [(AMSHTTPArchive *)self isCompressed];
+    isCompressed = [(AMSHTTPArchive *)self isCompressed];
     v16 = &stru_1F071BA78;
-    if (v5)
+    if (combinedCopy)
     {
       v16 = @"_combined_ams";
     }
 
     v17 = v16;
     v18 = @".har";
-    v51 = v15 && v6;
-    if (v15 && v6)
+    v51 = isCompressed && compressedCopy;
+    if (isCompressed && compressedCopy)
     {
       v18 = @".har.compressed";
     }
@@ -407,13 +407,13 @@ LABEL_5:
     v19 = MEMORY[0x1E696AEC0];
     v20 = v18;
     v21 = +[AMSProcessInfo currentProcess];
-    v22 = [v21 bundleIdentifier];
-    v23 = [MEMORY[0x1E695DF00] date];
-    [v23 timeIntervalSinceReferenceDate];
+    bundleIdentifier = [v21 bundleIdentifier];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceReferenceDate];
     v53 = v17;
-    v25 = [v19 stringWithFormat:@"%@_%f%@%@", v22, v24, v17, v20];
+    v25 = [v19 stringWithFormat:@"%@_%f%@%@", bundleIdentifier, v24, v17, v20];
 
-    v26 = [MEMORY[0x1E695DFF8] fileURLWithPath:v8];
+    v26 = [MEMORY[0x1E695DFF8] fileURLWithPath:directory];
     v27 = [v26 URLByAppendingPathComponent:v25];
 
     v28 = +[AMSLogConfig sharedConfig];
@@ -422,31 +422,31 @@ LABEL_5:
       v28 = +[AMSLogConfig sharedConfig];
     }
 
-    v29 = [v28 OSLogObject];
-    if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v28 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v30 = objc_opt_class();
       v31 = AMSLogKey();
       AMSLogableURL(v27);
-      v33 = v32 = v8;
+      v33 = v32 = directory;
       *buf = 138543874;
       v58 = v30;
       v59 = 2114;
       v60 = v31;
       v61 = 2114;
       v62 = v33;
-      _os_log_impl(&dword_192869000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Writing HAR to fileURL: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Writing HAR to fileURL: %{public}@", buf, 0x20u);
 
-      v8 = v32;
+      directory = v32;
     }
 
-    v34 = [(AMSHTTPArchive *)self backingJSONData];
-    v35 = v34;
+    backingJSONData = [(AMSHTTPArchive *)self backingJSONData];
+    v35 = backingJSONData;
     if (!v51)
     {
-      v36 = [v34 ams_decompressedData];
+      ams_decompressedData = [backingJSONData ams_decompressedData];
 
-      v35 = v36;
+      v35 = ams_decompressedData;
     }
 
     v55 = v11;
@@ -455,15 +455,15 @@ LABEL_5:
 
     if ((v37 & 1) == 0)
     {
-      v38 = v8;
+      v38 = directory;
       v39 = +[AMSLogConfig sharedConfig];
       if (!v39)
       {
         v39 = +[AMSLogConfig sharedConfig];
       }
 
-      v40 = [v39 OSLogObject];
-      if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v39 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v41 = objc_opt_class();
         v52 = v41;
@@ -475,26 +475,26 @@ LABEL_5:
         v60 = v43;
         v61 = 2114;
         v62 = v14;
-        _os_log_impl(&dword_192869000, v40, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to write a HAR object to disk. error = %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to write a HAR object to disk. error = %{public}@", buf, 0x20u);
 
         v25 = v42;
       }
 
-      v8 = v38;
+      directory = v38;
     }
 
-    if (a3)
+    if (error)
     {
       v44 = v14;
-      *a3 = v14;
+      *error = v14;
     }
 
     goto LABEL_24;
   }
 
-  v12 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
   v56 = 0;
-  v13 = [v12 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:&v56];
+  v13 = [defaultManager2 createDirectoryAtPath:directory withIntermediateDirectories:1 attributes:0 error:&v56];
   v14 = v56;
 
   if (v13)
@@ -509,8 +509,8 @@ LABEL_5:
     v46 = +[AMSLogConfig sharedConfig];
   }
 
-  v47 = [v46 OSLogObject];
-  if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
+  oSLogObject3 = [v46 OSLogObject];
+  if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
   {
     v48 = objc_opt_class();
     *buf = 138543618;
@@ -518,14 +518,14 @@ LABEL_5:
     v59 = 2114;
     v60 = v14;
     v49 = v48;
-    _os_log_impl(&dword_192869000, v47, OS_LOG_TYPE_ERROR, "%{public}@: Failed to create the directory to write HAR files into. error = %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: Failed to create the directory to write HAR files into. error = %{public}@", buf, 0x16u);
   }
 
-  if (a3)
+  if (error)
   {
     v50 = v14;
     v37 = 0;
-    *a3 = v14;
+    *error = v14;
   }
 
   else
@@ -538,9 +538,9 @@ LABEL_24:
   return v37;
 }
 
-+ (id)ams_dateFormatterForTimeZone:(id)a3
++ (id)ams_dateFormatterForTimeZone:(id)zone
 {
-  v3 = a3;
+  zoneCopy = zone;
   if (_MergedGlobals_116 != -1)
   {
     dispatch_once(&_MergedGlobals_116, &__block_literal_global_69);
@@ -551,8 +551,8 @@ LABEL_24:
   v9[1] = 3221225472;
   v9[2] = __47__AMSHTTPArchive_ams_dateFormatterForTimeZone___block_invoke_2;
   v9[3] = &unk_1E73B8688;
-  v10 = v3;
-  v5 = v3;
+  v10 = zoneCopy;
+  v5 = zoneCopy;
   v6 = v4;
   v7 = [v6 objectForKey:v5 withCreationBlock:v9];
 
@@ -578,18 +578,18 @@ id __47__AMSHTTPArchive_ams_dateFormatterForTimeZone___block_invoke_2(uint64_t a
   return v2;
 }
 
-+ (id)ams_generateCommentsStringForMetrics:(id)a3
++ (id)ams_generateCommentsStringForMetrics:(id)metrics
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
+  metricsCopy = metrics;
   v5 = objc_alloc_init(v3);
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "apsRelayAttempted")}];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(metricsCopy, "apsRelayAttempted")}];
   [v5 setObject:v6 forKeyedSubscript:@"APS-Attempted"];
 
   v7 = MEMORY[0x1E696AD98];
-  v8 = [v4 apsRelaySucceeded];
+  apsRelaySucceeded = [metricsCopy apsRelaySucceeded];
 
-  v9 = [v7 numberWithBool:v8];
+  v9 = [v7 numberWithBool:apsRelaySucceeded];
   [v5 setObject:v9 forKeyedSubscript:@"APS-Succeeded"];
 
   v10 = +[AMSDevice localIPAddress];
@@ -609,21 +609,21 @@ id __47__AMSHTTPArchive_ams_dateFormatterForTimeZone___block_invoke_2(uint64_t a
   return v12;
 }
 
-+ (id)ams_generateContentDictionaryForResponse:(id)a3 responseData:(id)a4
++ (id)ams_generateContentDictionaryForResponse:(id)response responseData:(id)data
 {
-  v5 = a4;
-  if (v5)
+  dataCopy = data;
+  if (dataCopy)
   {
     v6 = MEMORY[0x1E695DF90];
-    v7 = a3;
+    responseCopy = response;
     v8 = objc_alloc_init(v6);
-    v9 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v7, "expectedContentLength")}];
+    v9 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(responseCopy, "expectedContentLength")}];
     [v8 setObject:v9 forKeyedSubscript:@"bodySize"];
 
-    v10 = [v7 MIMEType];
+    mIMEType = [responseCopy MIMEType];
 
-    [v8 ams_setNullableObject:v10 forKey:@"mimeType"];
-    v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v5 encoding:4];
+    [v8 ams_setNullableObject:mIMEType forKey:@"mimeType"];
+    v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:dataCopy encoding:4];
     if (+[AMSDefaults includeFullResponseInHARLogging](AMSDefaults, "includeFullResponseInHARLogging") || +[AMSDefaults QAMode])
     {
       v12 = -1;
@@ -639,10 +639,10 @@ id __47__AMSHTTPArchive_ams_dateFormatterForTimeZone___block_invoke_2(uint64_t a
       v12 = 40000;
     }
 
-    if ([v11 length] && objc_msgSend(v5, "length") > v12)
+    if ([v11 length] && objc_msgSend(dataCopy, "length") > v12)
     {
       v13 = [v11 length];
-      v14 = (v13 / [v5 length] * 40000.0);
+      v14 = (v13 / [dataCopy length] * 40000.0);
       if ([v11 length] <= v14)
       {
         v15 = 0;
@@ -685,60 +685,60 @@ id __57__AMSHTTPArchive_ams_generateHeadersArrayForHTTPHeaders___block_invoke(ui
   return v7;
 }
 
-+ (id)ams_generateRequestDictionaryForMetrics:(id)a3 requestData:(id)a4
++ (id)ams_generateRequestDictionaryForMetrics:(id)metrics requestData:(id)data
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 request];
+  dataCopy = data;
+  request = [metrics request];
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v6, "length")}];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(dataCopy, "length")}];
   [v8 setObject:v9 forKeyedSubscript:@"bodySize"];
 
   [v8 setObject:&unk_1F07795F8 forKeyedSubscript:@"headersSize"];
   [v8 setObject:@"HTTP/1.1" forKeyedSubscript:@"httpVersion"];
-  v10 = [v7 allHTTPHeaderFields];
-  v11 = [a1 ams_generateHeadersArrayForHTTPHeaders:v10];
+  allHTTPHeaderFields = [request allHTTPHeaderFields];
+  v11 = [self ams_generateHeadersArrayForHTTPHeaders:allHTTPHeaderFields];
   [v8 ams_setNullableObject:v11 forKey:@"headers"];
 
-  v12 = [v7 HTTPMethod];
-  [v8 ams_setNullableObject:v12 forKey:@"method"];
+  hTTPMethod = [request HTTPMethod];
+  [v8 ams_setNullableObject:hTTPMethod forKey:@"method"];
 
-  v13 = [v7 URL];
-  v14 = [v13 absoluteString];
-  [v8 ams_setNullableObject:v14 forKey:@"url"];
+  v13 = [request URL];
+  absoluteString = [v13 absoluteString];
+  [v8 ams_setNullableObject:absoluteString forKey:@"url"];
 
   if (+[AMSDefaults includeFullRequestInHARLogging](AMSDefaults, "includeFullRequestInHARLogging") || +[AMSDefaults QAMode])
   {
-    [v6 length];
+    [dataCopy length];
   }
 
   else
   {
     v34 = +[AMSDefaults logHARData];
-    v35 = [v6 length];
+    v35 = [dataCopy length];
     if (!v34 && v35 >= 0x9C41)
     {
 
-      v6 = 0;
+      dataCopy = 0;
     }
   }
 
-  v15 = [v6 ams_decompressedData];
-  v16 = v15;
-  if (v15)
+  ams_decompressedData = [dataCopy ams_decompressedData];
+  v16 = ams_decompressedData;
+  if (ams_decompressedData)
   {
-    v17 = v15;
+    v17 = ams_decompressedData;
 
-    v6 = v17;
+    dataCopy = v17;
   }
 
-  v18 = [v7 URL];
-  v19 = [v18 absoluteString];
-  v20 = [v19 containsString:@"/WebObjects/MZFinance.woa/wa/authenticate"];
+  v18 = [request URL];
+  absoluteString2 = [v18 absoluteString];
+  v20 = [absoluteString2 containsString:@"/WebObjects/MZFinance.woa/wa/authenticate"];
 
   if (v20)
   {
-    v21 = [MEMORY[0x1E696AE40] propertyListWithData:v6 options:1 format:0 error:0];
+    v21 = [MEMORY[0x1E696AE40] propertyListWithData:dataCopy options:1 format:0 error:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -749,16 +749,16 @@ id __57__AMSHTTPArchive_ams_generateHeadersArrayForHTTPHeaders___block_invoke(ui
         [v21 setObject:@"******" forKeyedSubscript:@"password"];
         v23 = [MEMORY[0x1E696AE40] dataWithPropertyList:v21 format:100 options:0 error:0];
 
-        v6 = v23;
+        dataCopy = v23;
       }
     }
 
 LABEL_18:
 
-    if (v6)
+    if (dataCopy)
     {
 LABEL_19:
-      v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v6 encoding:4];
+      v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:dataCopy encoding:4];
       v30 = v29;
       if (v29)
       {
@@ -781,16 +781,16 @@ LABEL_19:
     goto LABEL_23;
   }
 
-  v21 = [v7 valueForHTTPHeaderField:@"Content-Type"];
+  v21 = [request valueForHTTPHeaderField:@"Content-Type"];
   v24 = [v21 isEqualToString:@"application/x-apple-plist"];
   if (!v16 || !v24)
   {
     goto LABEL_18;
   }
 
-  if (v6)
+  if (dataCopy)
   {
-    v25 = [v6 base64EncodedStringWithOptions:0];
+    v25 = [dataCopy base64EncodedStringWithOptions:0];
     if ([(__CFString *)v25 hasPrefix:@"YnBsaX"])
     {
       if (v25)
@@ -822,12 +822,12 @@ LABEL_24:
   return v28;
 }
 
-+ (id)ams_generateResponseDictionaryForMetrics:(id)a3 responseData:(id)a4
++ (id)ams_generateResponseDictionaryForMetrics:(id)metrics responseData:(id)data
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 response];
+  metricsCopy = metrics;
+  dataCopy = data;
+  response = [metricsCopy response];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -836,7 +836,7 @@ LABEL_24:
     goto LABEL_10;
   }
 
-  v9 = v8;
+  v9 = response;
 
   if (!v9)
   {
@@ -846,8 +846,8 @@ LABEL_10:
   }
 
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v11 = [v9 allHeaderFields];
-  v26 = [v11 objectForKeyedSubscript:@"Content-Length"];
+  allHeaderFields = [v9 allHeaderFields];
+  v26 = [allHeaderFields objectForKeyedSubscript:@"Content-Length"];
 
   v12 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v26, "integerValue")}];
   v13 = v12;
@@ -863,19 +863,19 @@ LABEL_10:
 
   [v10 setObject:v14 forKeyedSubscript:{@"bodySize", v26}];
 
-  v15 = [a1 ams_generateContentDictionaryForResponse:v9 responseData:v7];
+  v15 = [self ams_generateContentDictionaryForResponse:v9 responseData:dataCopy];
   [v10 setObject:v15 forKeyedSubscript:@"content"];
 
-  v16 = [v9 allHeaderFields];
-  v17 = [a1 ams_generateHeadersArrayForHTTPHeaders:v16];
+  allHeaderFields2 = [v9 allHeaderFields];
+  v17 = [self ams_generateHeadersArrayForHTTPHeaders:allHeaderFields2];
   v18 = [v17 mutableCopy];
 
   v28[0] = @"name";
   v28[1] = @"value";
   v29[0] = @"X-Apple-Connection-Reused";
-  v19 = [v6 resourceFetchType];
+  resourceFetchType = [metricsCopy resourceFetchType];
   v20 = @"false";
-  if (v19 == 3)
+  if (resourceFetchType == 3)
   {
     v20 = @"true";
   }
@@ -899,28 +899,28 @@ LABEL_11:
   return v24;
 }
 
-+ (id)_createJSONObjectForEntries:(id)a3
++ (id)_createJSONObjectForEntries:(id)entries
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  entriesCopy = entries;
   v4 = +[AMSMappedBundleInfo currentBundleInfo];
   v20[0] = @"name";
-  v5 = [v4 clientName];
-  v6 = v5;
+  clientName = [v4 clientName];
+  v6 = clientName;
   v7 = @"AppleMediaServices";
-  if (v5)
+  if (clientName)
   {
-    v7 = v5;
+    v7 = clientName;
   }
 
   v20[1] = @"version";
   v21[0] = v7;
-  v8 = [v4 clientVersion];
-  v9 = v8;
+  clientVersion = [v4 clientVersion];
+  v9 = clientVersion;
   v10 = @"1.0";
-  if (v8)
+  if (clientVersion)
   {
-    v10 = v8;
+    v10 = clientVersion;
   }
 
   v21[1] = v10;
@@ -930,9 +930,9 @@ LABEL_11:
   v16[0] = @"creator";
   v16[1] = @"entries";
   v12 = MEMORY[0x1E695E0F0];
-  if (v3)
+  if (entriesCopy)
   {
-    v12 = v3;
+    v12 = entriesCopy;
   }
 
   v17[0] = v11;
@@ -946,23 +946,23 @@ LABEL_11:
   return v14;
 }
 
-+ (id)_createJSONObjectForTaskMetrics:(id)a3 requestData:(id)a4 responseData:(id)a5
++ (id)_createJSONObjectForTaskMetrics:(id)metrics requestData:(id)data responseData:(id)responseData
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 transactionMetrics];
+  dataCopy = data;
+  responseDataCopy = responseData;
+  transactionMetrics = [metrics transactionMetrics];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __75__AMSHTTPArchive__createJSONObjectForTaskMetrics_requestData_responseData___block_invoke;
   v16[3] = &unk_1E73B86D0;
-  v18 = v9;
-  v19 = a1;
-  v17 = v8;
-  v11 = v9;
-  v12 = v8;
-  v13 = [v10 ams_mapWithTransform:v16];
+  v18 = responseDataCopy;
+  selfCopy = self;
+  v17 = dataCopy;
+  v11 = responseDataCopy;
+  v12 = dataCopy;
+  v13 = [transactionMetrics ams_mapWithTransform:v16];
 
-  v14 = [a1 _createJSONObjectForEntries:v13];
+  v14 = [self _createJSONObjectForEntries:v13];
 
   return v14;
 }
@@ -1001,18 +1001,18 @@ id __75__AMSHTTPArchive__createJSONObjectForTaskMetrics_requestData_responseData
   return v19;
 }
 
-+ (double)_timeIntervalFromFilename:(id)a3
++ (double)_timeIntervalFromFilename:(id)filename
 {
-  v3 = a3;
-  if ([v3 containsString:@".har"])
+  filenameCopy = filename;
+  if ([filenameCopy containsString:@".har"])
   {
-    v4 = [v3 stringByReplacingOccurrencesOfString:@"_streamwrite.har" withString:&stru_1F071BA78];
+    v4 = [filenameCopy stringByReplacingOccurrencesOfString:@"_streamwrite.har" withString:&stru_1F071BA78];
 
     v5 = [v4 stringByReplacingOccurrencesOfString:@".har.compressed" withString:&stru_1F071BA78];
 
-    v3 = [v5 stringByReplacingOccurrencesOfString:@".har" withString:&stru_1F071BA78];
+    filenameCopy = [v5 stringByReplacingOccurrencesOfString:@".har" withString:&stru_1F071BA78];
 
-    v6 = [v3 componentsSeparatedByString:@"_"];
+    v6 = [filenameCopy componentsSeparatedByString:@"_"];
     if ([v6 count] == 2)
     {
       v7 = [v6 objectAtIndexedSubscript:1];

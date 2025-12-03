@@ -1,21 +1,21 @@
 @interface BFFFinishSetupTouchIDViewController
 - (BFFFinishSetupTouchIDViewController)init;
 - (id)_cancelLeftNavigationItem;
-- (void)_didCompleteMesaControllerWithResult:(unint64_t)a3;
-- (void)_userDidTapCancelButton:(id)a3;
+- (void)_didCompleteMesaControllerWithResult:(unint64_t)result;
+- (void)_userDidTapCancelButton:(id)button;
 - (void)beginEnrollment;
 - (void)dealloc;
 - (void)deleteIdentity;
-- (void)didBecomeActive:(id)a3;
-- (void)didResignActive:(id)a3;
+- (void)didBecomeActive:(id)active;
+- (void)didResignActive:(id)active;
 - (void)endEnrollment;
-- (void)enrollResult:(int)a3 bkIdentity:(id)a4;
+- (void)enrollResult:(int)result bkIdentity:(id)identity;
 - (void)loadView;
 - (void)resetLeftNavigationItem;
 - (void)restartEnrollment;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BFFFinishSetupTouchIDViewController
@@ -27,11 +27,11 @@
   v2 = [(BFFFinishSetupTouchIDViewController *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_didBecomeActive_ name:*MEMORY[0x277D76648] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_didBecomeActive_ name:*MEMORY[0x277D76648] object:0];
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v2 selector:sel_didResignActive_ name:*MEMORY[0x277D76768] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_didResignActive_ name:*MEMORY[0x277D76768] object:0];
   }
 
   return v2;
@@ -45,7 +45,7 @@
   [(BFFFinishSetupTouchIDViewController *)&v3 dealloc];
 }
 
-- (void)didBecomeActive:(id)a3
+- (void)didBecomeActive:(id)active
 {
   if (!self->_enrollController)
   {
@@ -53,7 +53,7 @@
   }
 }
 
-- (void)didResignActive:(id)a3
+- (void)didResignActive:(id)active
 {
   if (!self->_enrollComplete)
   {
@@ -68,10 +68,10 @@
   v6.receiver = self;
   v6.super_class = BFFFinishSetupTouchIDViewController;
   [(BFFFinishSetupTouchIDViewController *)&v6 loadView];
-  v3 = [(BFFFinishSetupTouchIDViewController *)self view];
+  view = [(BFFFinishSetupTouchIDViewController *)self view];
   v4 = +[BFFStyle sharedStyle];
-  v5 = [v4 backgroundColor];
-  [v3 setBackgroundColor:v5];
+  backgroundColor = [v4 backgroundColor];
+  [view setBackgroundColor:backgroundColor];
 }
 
 - (void)viewDidLoad
@@ -79,26 +79,26 @@
   v4.receiver = self;
   v4.super_class = BFFFinishSetupTouchIDViewController;
   [(BFFFinishSetupTouchIDViewController *)&v4 viewDidLoad];
-  v3 = [(BFFFinishSetupTouchIDViewController *)self navigationItem];
-  [v3 setLeftItemsSupplementBackButton:0];
+  navigationItem = [(BFFFinishSetupTouchIDViewController *)self navigationItem];
+  [navigationItem setLeftItemsSupplementBackButton:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = BFFFinishSetupTouchIDViewController;
-  [(BFFFinishSetupTouchIDViewController *)&v4 viewWillAppear:a3];
+  [(BFFFinishSetupTouchIDViewController *)&v4 viewWillAppear:appear];
   if (![*MEMORY[0x277D76620] applicationState])
   {
     [(BFFFinishSetupTouchIDViewController *)self beginEnrollment];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = BFFFinishSetupTouchIDViewController;
-  [(BFFFinishSetupTouchIDViewController *)&v4 viewDidDisappear:a3];
+  [(BFFFinishSetupTouchIDViewController *)&v4 viewDidDisappear:disappear];
   [(BFFFinishSetupTouchIDViewController *)self endEnrollment];
 }
 
@@ -123,8 +123,8 @@
 
   v4 = v3;
   _Block_object_dispose(&v22, 8);
-  v5 = [v3 sharedInstance];
-  v6 = [v5 getEnrollUIViewController:1 bundleName:0];
+  sharedInstance = [v3 sharedInstance];
+  v6 = [sharedInstance getEnrollUIViewController:1 bundleName:0];
   v7 = v6;
   if (v6)
   {
@@ -134,10 +134,10 @@
     aBlock[3] = &unk_279BB4A70;
     v8 = v6;
     v19 = v8;
-    v20 = self;
+    selfCopy = self;
     v9 = _Block_copy(aBlock);
-    v10 = [(BFFFinishSetupTouchIDViewController *)self passcode];
-    v11 = [v10 length] == 0;
+    passcode = [(BFFFinishSetupTouchIDViewController *)self passcode];
+    v11 = [passcode length] == 0;
 
     if (v11)
     {
@@ -147,7 +147,7 @@
     else
     {
       v12 = MEMORY[0x277D4DA10];
-      v13 = [(BFFFinishSetupTouchIDViewController *)self passcode];
+      passcode2 = [(BFFFinishSetupTouchIDViewController *)self passcode];
       v26 = &unk_287767D28;
       v27[0] = &unk_287767D40;
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:&v26 count:1];
@@ -158,7 +158,7 @@
       v15[4] = self;
       v16 = v8;
       v17 = v9;
-      [v12 createContextWithSecret:v13 policy:1007 options:v14 completion:v15];
+      [v12 createContextWithSecret:passcode2 policy:1007 options:v14 completion:v15];
     }
   }
 }
@@ -228,8 +228,8 @@ void __54__BFFFinishSetupTouchIDViewController_beginEnrollment__block_invoke_23(
 {
   v5 = self->_enrollController;
   [(BiometricKitUIEnrollViewController *)v5 willMoveToParentViewController:0];
-  v3 = [(BiometricKitUIEnrollViewController *)v5 view];
-  [v3 removeFromSuperview];
+  view = [(BiometricKitUIEnrollViewController *)v5 view];
+  [view removeFromSuperview];
 
   [(BiometricKitUIEnrollViewController *)v5 removeFromParentViewController];
   [(BiometricKitUIEnrollViewController *)v5 setDelegate:0];
@@ -249,8 +249,8 @@ void __54__BFFFinishSetupTouchIDViewController_beginEnrollment__block_invoke_23(
 {
   if (self->_identity)
   {
-    v3 = [MEMORY[0x277D3F928] sharedInstance];
-    [v3 removeIdentity:self->_identity];
+    mEMORY[0x277D3F928] = [MEMORY[0x277D3F928] sharedInstance];
+    [mEMORY[0x277D3F928] removeIdentity:self->_identity];
 
     identity = self->_identity;
     self->_identity = 0;
@@ -272,7 +272,7 @@ void __54__BFFFinishSetupTouchIDViewController_beginEnrollment__block_invoke_23(
   return cancelLeftNavigationItem;
 }
 
-- (void)_userDidTapCancelButton:(id)a3
+- (void)_userDidTapCancelButton:(id)button
 {
   v4 = _BYLoggingFacility();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -287,57 +287,57 @@ void __54__BFFFinishSetupTouchIDViewController_beginEnrollment__block_invoke_23(
 
 - (void)resetLeftNavigationItem
 {
-  v3 = [(BFFFinishSetupTouchIDViewController *)self navigationItem];
-  v4 = [v3 leftBarButtonItem];
-  v5 = [(BFFFinishSetupTouchIDViewController *)self _cancelLeftNavigationItem];
-  v6 = [v4 isEqual:v5];
+  navigationItem = [(BFFFinishSetupTouchIDViewController *)self navigationItem];
+  leftBarButtonItem = [navigationItem leftBarButtonItem];
+  _cancelLeftNavigationItem = [(BFFFinishSetupTouchIDViewController *)self _cancelLeftNavigationItem];
+  v6 = [leftBarButtonItem isEqual:_cancelLeftNavigationItem];
 
   if (v6)
   {
-    v7 = [(BFFFinishSetupTouchIDViewController *)self navigationItem];
-    [v7 performSelector:sel_setLeftBarButtonItem_animated_ withObject:0 withObject:MEMORY[0x277CBEC38]];
+    navigationItem2 = [(BFFFinishSetupTouchIDViewController *)self navigationItem];
+    [navigationItem2 performSelector:sel_setLeftBarButtonItem_animated_ withObject:0 withObject:MEMORY[0x277CBEC38]];
 
-    v8 = [(BFFFinishSetupTouchIDViewController *)self navigationItem];
-    [v8 setHidesBackButton:0];
+    navigationItem3 = [(BFFFinishSetupTouchIDViewController *)self navigationItem];
+    [navigationItem3 setHidesBackButton:0];
   }
 }
 
-- (void)_didCompleteMesaControllerWithResult:(unint64_t)a3
+- (void)_didCompleteMesaControllerWithResult:(unint64_t)result
 {
   self->_enrollComplete = 1;
   completion = self->_completion;
   if (completion)
   {
-    completion[2](completion, self, a3);
+    completion[2](completion, self, result);
     v5 = self->_completion;
     self->_completion = 0;
   }
 }
 
-- (void)enrollResult:(int)a3 bkIdentity:(id)a4
+- (void)enrollResult:(int)result bkIdentity:(id)identity
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  identityCopy = identity;
   v8 = _BYLoggingFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    *&buf[4] = a3;
+    *&buf[4] = result;
     _os_log_impl(&dword_265AC5000, v8, OS_LOG_TYPE_DEFAULT, "Enroll result: %d", buf, 8u);
   }
 
-  if (a3 > 3)
+  if (result > 3)
   {
-    switch(a3)
+    switch(result)
     {
       case 4:
         [(BFFFinishSetupTouchIDViewController *)self _didCompleteMesaControllerWithResult:0];
         break;
       case 9:
-        if (v7)
+        if (identityCopy)
         {
-          v20 = [MEMORY[0x277D3F928] sharedInstance];
-          [v20 removeIdentity:v7];
+          mEMORY[0x277D3F928] = [MEMORY[0x277D3F928] sharedInstance];
+          [mEMORY[0x277D3F928] removeIdentity:identityCopy];
 
           identity = self->_identity;
           self->_identity = 0;
@@ -350,27 +350,27 @@ void __54__BFFFinishSetupTouchIDViewController_beginEnrollment__block_invoke_23(
         self->_identity = 0;
 
         v12 = MEMORY[0x277D82BB8];
-        v13 = [(BFFFinishSetupTouchIDViewController *)self navigationItem];
-        [v12 cancelPreviousPerformRequestsWithTarget:v13 selector:sel_setLeftBarButtonItem_ object:0];
+        navigationItem = [(BFFFinishSetupTouchIDViewController *)self navigationItem];
+        [v12 cancelPreviousPerformRequestsWithTarget:navigationItem selector:sel_setLeftBarButtonItem_ object:0];
 
-        v14 = [(BFFFinishSetupTouchIDViewController *)self navigationItem];
-        [v14 setHidesBackButton:1];
+        navigationItem2 = [(BFFFinishSetupTouchIDViewController *)self navigationItem];
+        [navigationItem2 setHidesBackButton:1];
 
-        v15 = [(BFFFinishSetupTouchIDViewController *)self navigationItem];
-        v16 = [(BFFFinishSetupTouchIDViewController *)self _cancelLeftNavigationItem];
-        [v15 setLeftBarButtonItem:v16 animated:1];
+        navigationItem3 = [(BFFFinishSetupTouchIDViewController *)self navigationItem];
+        _cancelLeftNavigationItem = [(BFFFinishSetupTouchIDViewController *)self _cancelLeftNavigationItem];
+        [navigationItem3 setLeftBarButtonItem:_cancelLeftNavigationItem animated:1];
 
         break;
     }
   }
 
-  else if (a3)
+  else if (result)
   {
-    if (a3 == 1)
+    if (result == 1)
     {
-      if (v7)
+      if (identityCopy)
       {
-        objc_storeStrong(&self->_identity, a4);
+        objc_storeStrong(&self->_identity, identity);
         v22 = 0;
         v23 = &v22;
         v24 = 0x2050000000;
@@ -390,16 +390,16 @@ void __54__BFFFinishSetupTouchIDViewController_beginEnrollment__block_invoke_23(
         v18 = v17;
         _Block_object_dispose(&v22, 8);
         v19 = objc_opt_new();
-        [v19 enrollmentCompletedForIdentity:{v7, v22}];
+        [v19 enrollmentCompletedForIdentity:{identityCopy, v22}];
       }
     }
 
-    else if (a3 == 3)
+    else if (result == 3)
     {
-      if (v7)
+      if (identityCopy)
       {
-        v9 = [MEMORY[0x277D3F928] sharedInstance];
-        [v9 removeIdentity:v7];
+        mEMORY[0x277D3F928]2 = [MEMORY[0x277D3F928] sharedInstance];
+        [mEMORY[0x277D3F928]2 removeIdentity:identityCopy];
 
         v10 = self->_identity;
         self->_identity = 0;

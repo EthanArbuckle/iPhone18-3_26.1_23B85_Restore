@@ -13,9 +13,9 @@
   if (v2)
   {
     v3 = BMRootLibraryBridge();
-    v4 = [v3 Mindfulness];
-    v5 = [v4 Session];
-    v6 = [v5 storeStreamWithLegacyClass:objc_opt_class()];
+    mindfulness = [v3 Mindfulness];
+    session = [mindfulness Session];
+    v6 = [session storeStreamWithLegacyClass:objc_opt_class()];
     storeStream = v2->_storeStream;
     v2->_storeStream = v6;
 
@@ -35,8 +35,8 @@
 - (id)publisher
 {
   v3 = [BMDSLStreamPublisher alloc];
-  v4 = [(BMMindfulnessSessionStream *)self identifier];
-  v5 = [(BMDSLStreamPublisher *)v3 initWithIdentifier:v4 streamType:1 eventDataClass:objc_opt_class()];
+  identifier = [(BMMindfulnessSessionStream *)self identifier];
+  v5 = [(BMDSLStreamPublisher *)v3 initWithIdentifier:identifier streamType:1 eventDataClass:objc_opt_class()];
 
   return v5;
 }

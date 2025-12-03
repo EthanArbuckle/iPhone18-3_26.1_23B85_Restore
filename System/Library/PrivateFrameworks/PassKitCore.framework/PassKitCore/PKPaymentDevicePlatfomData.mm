@@ -1,24 +1,24 @@
 @interface PKPaymentDevicePlatfomData
-- (PKPaymentDevicePlatfomData)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKPaymentDevicePlatfomData)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentDevicePlatfomData
 
-- (PKPaymentDevicePlatfomData)initWithCoder:(id)a3
+- (PKPaymentDevicePlatfomData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKPaymentDevicePlatfomData;
   v5 = [(PKPaymentDevicePlatfomData *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"platformData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"platformData"];
     platformData = v5->_platformData;
     v5->_platformData = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"platformDataSignature"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"platformDataSignature"];
     platformDataSignature = v5->_platformDataSignature;
     v5->_platformDataSignature = v8;
   }
@@ -26,22 +26,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   platformData = self->_platformData;
-  v5 = a3;
-  [v5 encodeObject:platformData forKey:@"platformData"];
-  [v5 encodeObject:self->_platformDataSignature forKey:@"platformDataSignature"];
+  coderCopy = coder;
+  [coderCopy encodeObject:platformData forKey:@"platformData"];
+  [coderCopy encodeObject:self->_platformDataSignature forKey:@"platformDataSignature"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPaymentDevicePlatfomData allocWithZone:](PKPaymentDevicePlatfomData init];
-  v6 = [(NSData *)self->_platformData copyWithZone:a3];
+  v6 = [(NSData *)self->_platformData copyWithZone:zone];
   platformData = v5->_platformData;
   v5->_platformData = v6;
 
-  v8 = [(NSData *)self->_platformDataSignature copyWithZone:a3];
+  v8 = [(NSData *)self->_platformDataSignature copyWithZone:zone];
   platformDataSignature = v5->_platformDataSignature;
   v5->_platformDataSignature = v8;
 

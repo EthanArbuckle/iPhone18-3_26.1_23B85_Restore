@@ -10,12 +10,12 @@
   v5 = NSStringFromClass(aClass);
   v6 = [v4 stringWithFormat:@"@%@", v5];
 
-  if ([a1 numberOfArguments])
+  if ([self numberOfArguments])
   {
     v7 = 0;
-    while (strcmp([a1 getArgumentTypeAtIndex:v7], objc_msgSend(v6, "UTF8String")))
+    while (strcmp([self getArgumentTypeAtIndex:v7], objc_msgSend(v6, "UTF8String")))
     {
-      if (++v7 >= [a1 numberOfArguments])
+      if (++v7 >= [self numberOfArguments])
       {
         goto LABEL_5;
       }

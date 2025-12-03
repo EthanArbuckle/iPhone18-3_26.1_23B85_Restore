@@ -1,27 +1,27 @@
 @interface ADServiceCommandType
-+ (id)_serviceCommandTypeWithDomainName:(id)a3 className:(id)a4;
-- (ADServiceCommandType)initWithDomainName:(id)a3 className:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToServiceCommandType:(id)a3;
++ (id)_serviceCommandTypeWithDomainName:(id)name className:(id)className;
+- (ADServiceCommandType)initWithDomainName:(id)name className:(id)className;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToServiceCommandType:(id)type;
 - (id)description;
 - (id)qualifiedCommandName;
 @end
 
 @implementation ADServiceCommandType
 
-- (BOOL)isEqualToServiceCommandType:(id)a3
+- (BOOL)isEqualToServiceCommandType:(id)type
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  typeCopy = type;
+  v5 = typeCopy;
+  if (typeCopy)
   {
     domainName = self->_domainName;
-    v7 = [v4 domainName];
-    if ([(NSString *)domainName isEqualToString:v7])
+    domainName = [typeCopy domainName];
+    if ([(NSString *)domainName isEqualToString:domainName])
     {
       className = self->_className;
-      v9 = [v5 className];
-      v10 = [(NSString *)className isEqualToString:v9];
+      className = [v5 className];
+      v10 = [(NSString *)className isEqualToString:className];
     }
 
     else
@@ -38,13 +38,13 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(ADServiceCommandType *)self isEqualToServiceCommandType:v4];
+    v5 = [(ADServiceCommandType *)self isEqualToServiceCommandType:equalCopy];
   }
 
   else
@@ -58,8 +58,8 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(ADServiceCommandType *)self qualifiedCommandName];
-  v5 = [NSString stringWithFormat:@"<%@: %p %@>", v3, self, v4];
+  qualifiedCommandName = [(ADServiceCommandType *)self qualifiedCommandName];
+  v5 = [NSString stringWithFormat:@"<%@: %p %@>", v3, self, qualifiedCommandName];
 
   return v5;
 }
@@ -72,20 +72,20 @@
   return v4;
 }
 
-- (ADServiceCommandType)initWithDomainName:(id)a3 className:(id)a4
+- (ADServiceCommandType)initWithDomainName:(id)name className:(id)className
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  classNameCopy = className;
   v14.receiver = self;
   v14.super_class = ADServiceCommandType;
   v8 = [(ADServiceCommandType *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     domainName = v8->_domainName;
     v8->_domainName = v9;
 
-    v11 = [v7 copy];
+    v11 = [classNameCopy copy];
     className = v8->_className;
     v8->_className = v11;
   }
@@ -93,11 +93,11 @@
   return v8;
 }
 
-+ (id)_serviceCommandTypeWithDomainName:(id)a3 className:(id)a4
++ (id)_serviceCommandTypeWithDomainName:(id)name className:(id)className
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithDomainName:v7 className:v6];
+  classNameCopy = className;
+  nameCopy = name;
+  v8 = [[self alloc] initWithDomainName:nameCopy className:classNameCopy];
 
   return v8;
 }

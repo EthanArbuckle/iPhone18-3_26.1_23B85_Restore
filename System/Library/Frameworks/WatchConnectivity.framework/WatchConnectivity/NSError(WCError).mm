@@ -12,7 +12,7 @@
 + (id)wcErrorWithCode:()WCError userInfo:
 {
   v6 = a4;
-  v7 = [a1 userInfoDictionaryWithErrorStringsForErrorCode:a3];
+  v7 = [self userInfoDictionaryWithErrorStringsForErrorCode:a3];
   [v7 addEntriesFromDictionary:v6];
 
   v8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"WCErrorDomain" code:a3 userInfo:v7];
@@ -55,7 +55,7 @@ LABEL_7:
   v7 = a4;
   v8 = [v6 dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
-  v9 = [a1 wcErrorWithCode:a3 userInfo:v8];
+  v9 = [self wcErrorWithCode:a3 userInfo:v8];
 
   v10 = *MEMORY[0x277D85DE8];
 
@@ -64,8 +64,8 @@ LABEL_7:
 
 + (id)wcErrorWithCode:()WCError underlyingWCErrorWithCode:
 {
-  v6 = [a1 wcErrorWithCode:a4];
-  v7 = [a1 wcErrorWithCode:a3 underlyingError:v6];
+  v6 = [self wcErrorWithCode:a4];
+  v7 = [self wcErrorWithCode:a3 underlyingError:v6];
 
   return v7;
 }
@@ -73,8 +73,8 @@ LABEL_7:
 + (id)wcErrorFromInternalError:()WCError
 {
   v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqual:@"WCInternalErrorDomain"];
+  domain = [v3 domain];
+  v5 = [domain isEqual:@"WCInternalErrorDomain"];
 
   v6 = v3;
   if ((v5 & 1) == 0)

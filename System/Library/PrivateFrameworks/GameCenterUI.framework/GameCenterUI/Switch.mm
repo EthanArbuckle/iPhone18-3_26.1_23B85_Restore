@@ -6,7 +6,7 @@
 
 - (void)didToggle
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E0129CC();
 }
 

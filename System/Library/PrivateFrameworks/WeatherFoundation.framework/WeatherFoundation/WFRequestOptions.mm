@@ -1,13 +1,13 @@
 @interface WFRequestOptions
-- (void)addHttpHeaderField:(id)a3 withValue:(id)a4;
+- (void)addHttpHeaderField:(id)field withValue:(id)value;
 @end
 
 @implementation WFRequestOptions
 
-- (void)addHttpHeaderField:(id)a3 withValue:(id)a4
+- (void)addHttpHeaderField:(id)field withValue:(id)value
 {
-  v10 = a3;
-  v6 = a4;
+  fieldCopy = field;
+  valueCopy = value;
   httpHeaderDictionary = self->_httpHeaderDictionary;
   if (!httpHeaderDictionary)
   {
@@ -18,7 +18,7 @@
     httpHeaderDictionary = self->_httpHeaderDictionary;
   }
 
-  [(NSMutableDictionary *)httpHeaderDictionary setValue:v6 forKey:v10];
+  [(NSMutableDictionary *)httpHeaderDictionary setValue:valueCopy forKey:fieldCopy];
 }
 
 @end

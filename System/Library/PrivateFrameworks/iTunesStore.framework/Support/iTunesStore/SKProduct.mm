@@ -1,25 +1,25 @@
 @interface SKProduct
-+ (id)productsFromDictionaries:(id)a3;
-+ (id)productsFromXPCEncodingsArray:(id)a3;
++ (id)productsFromDictionaries:(id)dictionaries;
++ (id)productsFromXPCEncodingsArray:(id)array;
 - (SKProduct)init;
-- (SKProduct)initWithDictionary:(id)a3;
-- (SKProduct)initWithXPCEncoding:(id)a3;
+- (SKProduct)initWithDictionary:(id)dictionary;
+- (SKProduct)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
-- (id)initMinusLocaleWithDictionary:(id)a3;
-- (id)initMinusLocaleWithXPCEncoding:(id)a3;
-- (void)_setContentVersion:(id)a3;
-- (void)_setDiscounts:(id)a3;
-- (void)_setDownloadContentLengths:(id)a3;
-- (void)_setIntroductoryPrice:(id)a3;
-- (void)_setLocale:(id)a3;
-- (void)_setLocaleIdentifier:(id)a3;
-- (void)_setLocalizedDescription:(id)a3;
-- (void)_setLocalizedTitle:(id)a3;
-- (void)_setPrice:(id)a3;
-- (void)_setPriceLocale:(id)a3;
-- (void)_setProductIdentifier:(id)a3;
-- (void)_setSubscriptionGroupIdentifier:(id)a3;
-- (void)_setSubscriptionPeriod:(id)a3;
+- (id)initMinusLocaleWithDictionary:(id)dictionary;
+- (id)initMinusLocaleWithXPCEncoding:(id)encoding;
+- (void)_setContentVersion:(id)version;
+- (void)_setDiscounts:(id)discounts;
+- (void)_setDownloadContentLengths:(id)lengths;
+- (void)_setIntroductoryPrice:(id)price;
+- (void)_setLocale:(id)locale;
+- (void)_setLocaleIdentifier:(id)identifier;
+- (void)_setLocalizedDescription:(id)description;
+- (void)_setLocalizedTitle:(id)title;
+- (void)_setPrice:(id)price;
+- (void)_setPriceLocale:(id)locale;
+- (void)_setProductIdentifier:(id)identifier;
+- (void)_setSubscriptionGroupIdentifier:(id)identifier;
+- (void)_setSubscriptionPeriod:(id)period;
 @end
 
 @implementation SKProduct
@@ -39,16 +39,16 @@
   return v2;
 }
 
-+ (id)productsFromDictionaries:(id)a3
++ (id)productsFromDictionaries:(id)dictionaries
 {
-  v3 = a3;
+  dictionariesCopy = dictionaries;
   v4 = objc_alloc_init(NSMutableDictionary);
   v5 = objc_alloc_init(NSMutableArray);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v3;
+  obj = dictionariesCopy;
   v6 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {
@@ -77,8 +77,8 @@
         }
 
         [v11 _setLocale:v13];
-        v16 = [v11 introductoryPrice];
-        [v16 _setPriceLocale:v13];
+        introductoryPrice = [v11 introductoryPrice];
+        [introductoryPrice _setPriceLocale:v13];
 
         [v5 addObject:v11];
       }
@@ -94,23 +94,23 @@
   return v17;
 }
 
-- (id)initMinusLocaleWithDictionary:(id)a3
+- (id)initMinusLocaleWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(SKProduct *)self init];
   if (!v5)
   {
     goto LABEL_35;
   }
 
-  v6 = [v4 objectForKey:@"desc"];
+  v6 = [dictionaryCopy objectForKey:@"desc"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_storeStrong(v5->_internal + 6, v6);
   }
 
-  v7 = [v4 objectForKey:@"name"];
+  v7 = [dictionaryCopy objectForKey:@"name"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -118,7 +118,7 @@
     objc_storeStrong(v5->_internal + 7, v7);
   }
 
-  v8 = [v4 objectForKey:@"id"];
+  v8 = [dictionaryCopy objectForKey:@"id"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -126,7 +126,7 @@
     objc_storeStrong(v5->_internal + 10, v8);
   }
 
-  v9 = [v4 objectForKey:@"pri"];
+  v9 = [dictionaryCopy objectForKey:@"pri"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -139,8 +139,8 @@
     }
 
     v11 = [NSDecimalNumber alloc];
-    v12 = [v9 stringValue];
-    v10 = [v11 initWithString:v12];
+    stringValue = [v9 stringValue];
+    v10 = [v11 initWithString:stringValue];
 
     if (!v10)
     {
@@ -173,13 +173,13 @@ LABEL_13:
   }
 
 LABEL_18:
-  v17 = [v4 objectForKey:@"is-hosted"];
+  v17 = [dictionaryCopy objectForKey:@"is-hosted"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v17 BOOLValue])
   {
     *(v5->_internal + 16) = 1;
-    v18 = [v4 objectForKey:@"hosted-version"];
+    v18 = [dictionaryCopy objectForKey:@"hosted-version"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -187,7 +187,7 @@ LABEL_18:
       objc_storeStrong(v5->_internal + 1, v18);
     }
 
-    v17 = [v4 objectForKey:@"hosted-content-length"];
+    v17 = [dictionaryCopy objectForKey:@"hosted-content-length"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -205,21 +205,21 @@ LABEL_18:
     *(v5->_internal + 16) = 0;
   }
 
-  v22 = [v4 objectForKeyedSubscript:@"disc"];
+  firstObject = [dictionaryCopy objectForKeyedSubscript:@"disc"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v23 = v22;
-    v22 = v23;
+    v23 = firstObject;
+    firstObject = v23;
     if ([v23 count])
     {
-      v22 = [v23 firstObject];
+      firstObject = [v23 firstObject];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v24 = [[SKProductDiscount alloc] initWithDictionary:v22];
+        v24 = [[SKProductDiscount alloc] initWithDictionary:firstObject];
         v25 = v5->_internal;
         v26 = v25[4];
         v25[4] = v24;
@@ -228,7 +228,7 @@ LABEL_18:
     }
   }
 
-  v28 = [v4 objectForKey:@"subscriptionFamilyId"];
+  v28 = [dictionaryCopy objectForKey:@"subscriptionFamilyId"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -236,7 +236,7 @@ LABEL_18:
     objc_storeStrong(v5->_internal + 11, v28);
   }
 
-  v29 = [v4 objectForKeyedSubscript:@"per"];
+  v29 = [dictionaryCopy objectForKeyedSubscript:@"per"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -251,181 +251,181 @@ LABEL_35:
   return v5;
 }
 
-- (SKProduct)initWithDictionary:(id)a3
+- (SKProduct)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(SKProduct *)self initMinusLocaleWithDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = [(SKProduct *)self initMinusLocaleWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"loc"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"loc"];
     v7 = [[NSLocale alloc] initWithLocaleIdentifier:v6];
     [(SKProduct *)v5 _setLocale:v7];
-    v8 = [(SKProduct *)v5 introductoryPrice];
-    [v8 _setPriceLocale:v7];
+    introductoryPrice = [(SKProduct *)v5 introductoryPrice];
+    [introductoryPrice _setPriceLocale:v7];
   }
 
   return v5;
 }
 
-- (void)_setContentVersion:(id)a3
+- (void)_setContentVersion:(id)version
 {
   internal = self->_internal;
-  if (internal[1] != a3)
+  if (internal[1] != version)
   {
     v7 = internal;
-    v5 = [a3 copy];
+    v5 = [version copy];
     v6 = internal[1];
     internal[1] = v5;
   }
 }
 
-- (void)_setDownloadContentLengths:(id)a3
+- (void)_setDownloadContentLengths:(id)lengths
 {
   internal = self->_internal;
-  if (internal[3] != a3)
+  if (internal[3] != lengths)
   {
     v7 = internal;
-    v5 = [a3 copy];
+    v5 = [lengths copy];
     v6 = internal[3];
     internal[3] = v5;
   }
 }
 
-- (void)_setIntroductoryPrice:(id)a3
+- (void)_setIntroductoryPrice:(id)price
 {
-  v5 = a3;
+  priceCopy = price;
   internal = self->_internal;
   v8 = *(internal + 4);
   v7 = (internal + 32);
-  if (v8 != v5)
+  if (v8 != priceCopy)
   {
-    v9 = v5;
-    objc_storeStrong(v7, a3);
-    v5 = v9;
+    v9 = priceCopy;
+    objc_storeStrong(v7, price);
+    priceCopy = v9;
   }
 
-  _objc_release_x1(v7, v5);
+  _objc_release_x1(v7, priceCopy);
 }
 
-- (void)_setLocale:(id)a3
+- (void)_setLocale:(id)locale
 {
   internal = self->_internal;
-  if (internal[9] != a3)
+  if (internal[9] != locale)
   {
     v7 = internal;
-    v5 = [a3 copy];
+    v5 = [locale copy];
     v6 = internal[9];
     internal[9] = v5;
   }
 }
 
-- (void)_setLocaleIdentifier:(id)a3
+- (void)_setLocaleIdentifier:(id)identifier
 {
   internal = self->_internal;
-  if (internal[5] != a3)
+  if (internal[5] != identifier)
   {
     v7 = internal;
-    v5 = [a3 copy];
+    v5 = [identifier copy];
     v6 = internal[5];
     internal[5] = v5;
   }
 }
 
-- (void)_setLocalizedDescription:(id)a3
+- (void)_setLocalizedDescription:(id)description
 {
   internal = self->_internal;
-  if (internal[6] != a3)
+  if (internal[6] != description)
   {
     v7 = internal;
-    v5 = [a3 copy];
+    v5 = [description copy];
     v6 = internal[6];
     internal[6] = v5;
   }
 }
 
-- (void)_setLocalizedTitle:(id)a3
+- (void)_setLocalizedTitle:(id)title
 {
   internal = self->_internal;
-  if (internal[7] != a3)
+  if (internal[7] != title)
   {
     v7 = internal;
-    v5 = [a3 copy];
+    v5 = [title copy];
     v6 = internal[7];
     internal[7] = v5;
   }
 }
 
-- (void)_setPrice:(id)a3
+- (void)_setPrice:(id)price
 {
-  v5 = a3;
+  priceCopy = price;
   internal = self->_internal;
   v8 = *(internal + 8);
   v7 = (internal + 64);
-  if (v8 != v5)
+  if (v8 != priceCopy)
   {
-    v9 = v5;
-    objc_storeStrong(v7, a3);
-    v5 = v9;
+    v9 = priceCopy;
+    objc_storeStrong(v7, price);
+    priceCopy = v9;
   }
 
-  _objc_release_x1(v7, v5);
+  _objc_release_x1(v7, priceCopy);
 }
 
-- (void)_setPriceLocale:(id)a3
+- (void)_setPriceLocale:(id)locale
 {
-  v6 = a3;
+  localeCopy = locale;
   v5 = self->_internal;
-  if (v5[9] != v6)
+  if (v5[9] != localeCopy)
   {
-    objc_storeStrong(v5 + 9, a3);
+    objc_storeStrong(v5 + 9, locale);
   }
 
-  [v5[4] _setPriceLocale:v6];
+  [v5[4] _setPriceLocale:localeCopy];
 }
 
-- (void)_setProductIdentifier:(id)a3
+- (void)_setProductIdentifier:(id)identifier
 {
   internal = self->_internal;
-  if (internal[10] != a3)
+  if (internal[10] != identifier)
   {
     v7 = internal;
-    v5 = [a3 copy];
+    v5 = [identifier copy];
     v6 = internal[10];
     internal[10] = v5;
   }
 }
 
-- (void)_setSubscriptionGroupIdentifier:(id)a3
+- (void)_setSubscriptionGroupIdentifier:(id)identifier
 {
   internal = self->_internal;
-  if (internal[11] != a3)
+  if (internal[11] != identifier)
   {
     v7 = internal;
-    v5 = [a3 copy];
+    v5 = [identifier copy];
     v6 = internal[11];
     internal[11] = v5;
   }
 }
 
-- (void)_setSubscriptionPeriod:(id)a3
+- (void)_setSubscriptionPeriod:(id)period
 {
-  v5 = a3;
+  periodCopy = period;
   internal = self->_internal;
   v8 = *(internal + 12);
   v7 = (internal + 96);
-  if (v8 != v5)
+  if (v8 != periodCopy)
   {
-    v9 = v5;
-    objc_storeStrong(v7, a3);
-    v5 = v9;
+    v9 = periodCopy;
+    objc_storeStrong(v7, period);
+    periodCopy = v9;
   }
 
-  _objc_release_x1(v7, v5);
+  _objc_release_x1(v7, periodCopy);
 }
 
-- (void)_setDiscounts:(id)a3
+- (void)_setDiscounts:(id)discounts
 {
-  v4 = [a3 copy];
+  v4 = [discounts copy];
   internal = self->_internal;
   v6 = internal[13];
   internal[13] = v4;
@@ -433,11 +433,11 @@ LABEL_35:
   _objc_release_x1(v4, v6);
 }
 
-+ (id)productsFromXPCEncodingsArray:(id)a3
++ (id)productsFromXPCEncodingsArray:(id)array
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && xpc_get_type(v3) == &_xpc_type_array)
+  arrayCopy = array;
+  v4 = arrayCopy;
+  if (arrayCopy && xpc_get_type(arrayCopy) == &_xpc_type_array)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v10 = _NSConcreteStackBlock;
@@ -460,11 +460,11 @@ LABEL_35:
   return v5;
 }
 
-- (id)initMinusLocaleWithXPCEncoding:(id)a3
+- (id)initMinusLocaleWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && xpc_get_type(v4) == &_xpc_type_dictionary)
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && xpc_get_type(encodingCopy) == &_xpc_type_dictionary)
   {
     v8 = [(SKProduct *)self init];
     v6 = v8;
@@ -564,8 +564,8 @@ LABEL_11:
     if (objc_opt_isKindOfClass())
     {
       v37 = [NSDecimalNumber alloc];
-      v38 = [(__CFDictionary *)v35 stringValue];
-      v36 = [v37 initWithString:v38];
+      stringValue = [(__CFDictionary *)v35 stringValue];
+      v36 = [v37 initWithString:stringValue];
 
       if (v36)
       {
@@ -589,14 +589,14 @@ LABEL_4:
   return v6;
 }
 
-- (SKProduct)initWithXPCEncoding:(id)a3
+- (SKProduct)initWithXPCEncoding:(id)encoding
 {
-  v3 = [(SKProduct *)self initMinusLocaleWithXPCEncoding:a3];
+  v3 = [(SKProduct *)self initMinusLocaleWithXPCEncoding:encoding];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SKProduct *)v3 _localeIdentifier];
-    v6 = [[NSLocale alloc] initWithLocaleIdentifier:v5];
+    _localeIdentifier = [(SKProduct *)v3 _localeIdentifier];
+    v6 = [[NSLocale alloc] initWithLocaleIdentifier:_localeIdentifier];
     [(SKProduct *)v4 _setPriceLocale:v6];
     [(SKProduct *)v4 _setLocaleIdentifier:0];
   }
@@ -617,16 +617,16 @@ LABEL_4:
   sub_10018E448(v3, "6", *(v4 + 8));
   sub_10018E448(v3, "7", *(v4 + 7));
   sub_10018E448(v3, "10", *(v4 + 11));
-  v5 = [*(v4 + 12) copyXPCEncoding];
-  if (v5)
+  copyXPCEncoding = [*(v4 + 12) copyXPCEncoding];
+  if (copyXPCEncoding)
   {
-    xpc_dictionary_set_value(v3, "8", v5);
+    xpc_dictionary_set_value(v3, "8", copyXPCEncoding);
   }
 
-  v6 = [*(v4 + 4) copyXPCEncoding];
-  if (v6)
+  copyXPCEncoding2 = [*(v4 + 4) copyXPCEncoding];
+  if (copyXPCEncoding2)
   {
-    xpc_dictionary_set_value(v3, "9", v6);
+    xpc_dictionary_set_value(v3, "9", copyXPCEncoding2);
   }
 
   v7 = xpc_array_create(0, 0);
@@ -652,10 +652,10 @@ LABEL_4:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v15 + 1) + 8 * v12) copyXPCEncoding];
-          if (v13)
+          copyXPCEncoding3 = [*(*(&v15 + 1) + 8 * v12) copyXPCEncoding];
+          if (copyXPCEncoding3)
           {
-            xpc_array_append_value(v7, v13);
+            xpc_array_append_value(v7, copyXPCEncoding3);
           }
 
           v12 = v12 + 1;

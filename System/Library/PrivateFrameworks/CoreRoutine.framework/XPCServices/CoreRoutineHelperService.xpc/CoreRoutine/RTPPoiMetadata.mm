@@ -1,17 +1,17 @@
 @interface RTPPoiMetadata
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unint64_t)parentAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unint64_t)parentAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFullyCoversTile:(BOOL)a3;
-- (void)setHasIsApplePaySupported:(BOOL)a3;
-- (void)setHasIsCategoryFiltered:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasFullyCoversTile:(BOOL)tile;
+- (void)setHasIsApplePaySupported:(BOOL)supported;
+- (void)setHasIsCategoryFiltered:(BOOL)filtered;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RTPPoiMetadata
@@ -24,9 +24,9 @@
   [(RTPPoiMetadata *)&v3 dealloc];
 }
 
-- (void)setHasFullyCoversTile:(BOOL)a3
+- (void)setHasFullyCoversTile:(BOOL)tile
 {
-  if (a3)
+  if (tile)
   {
     v3 = 2;
   }
@@ -39,9 +39,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIsCategoryFiltered:(BOOL)a3
+- (void)setHasIsCategoryFiltered:(BOOL)filtered
 {
-  if (a3)
+  if (filtered)
   {
     v3 = 8;
   }
@@ -54,23 +54,23 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (unint64_t)parentAtIndex:(unint64_t)a3
+- (unint64_t)parentAtIndex:(unint64_t)index
 {
   p_parents = &self->_parents;
   count = self->_parents.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_parents->list[a3];
+  return p_parents->list[index];
 }
 
-- (void)setHasIsApplePaySupported:(BOOL)a3
+- (void)setHasIsApplePaySupported:(BOOL)supported
 {
-  if (a3)
+  if (supported)
   {
     v3 = 4;
   }
@@ -88,8 +88,8 @@
   v7.receiver = self;
   v7.super_class = RTPPoiMetadata;
   v3 = [(RTPPoiMetadata *)&v7 description];
-  v4 = [(RTPPoiMetadata *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(RTPPoiMetadata *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -121,8 +121,8 @@
   location = self->_location;
   if (location)
   {
-    v9 = [(RTPLatLng *)location dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"location"];
+    dictionaryRepresentation = [(RTPLatLng *)location dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"location"];
   }
 
   if ((*&self->_has & 8) != 0)
@@ -143,16 +143,16 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v12 = v4;
+  v12 = toCopy;
   if (has)
   {
     muid = self->_muid;
     PBDataWriterWriteUint64Field();
-    v4 = v12;
+    toCopy = v12;
     has = self->_has;
   }
 
@@ -160,26 +160,26 @@
   {
     fullyCoversTile = self->_fullyCoversTile;
     PBDataWriterWriteBOOLField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_poiGeometry)
   {
     PBDataWriterWriteDataField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_location)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if ((*&self->_has & 8) != 0)
   {
     isCategoryFiltered = self->_isCategoryFiltered;
     PBDataWriterWriteBOOLField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_parents.count)
@@ -189,7 +189,7 @@
     {
       v10 = self->_parents.list[v9];
       PBDataWriterWriteUint64Field();
-      v4 = v12;
+      toCopy = v12;
       ++v9;
     }
 
@@ -200,53 +200,53 @@
   {
     isApplePaySupported = self->_isApplePaySupported;
     PBDataWriterWriteBOOLField();
-    v4 = v12;
+    toCopy = v12;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[4] = self->_muid;
-    *(v4 + 60) |= 1u;
+    toCopy[4] = self->_muid;
+    *(toCopy + 60) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 56) = self->_fullyCoversTile;
-    *(v4 + 60) |= 2u;
+    *(toCopy + 56) = self->_fullyCoversTile;
+    *(toCopy + 60) |= 2u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if (self->_poiGeometry)
   {
-    [v4 setPoiGeometry:?];
-    v4 = v9;
+    [toCopy setPoiGeometry:?];
+    toCopy = v9;
   }
 
   if (self->_location)
   {
     [v9 setLocation:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(v4 + 58) = self->_isCategoryFiltered;
-    *(v4 + 60) |= 8u;
+    *(toCopy + 58) = self->_isCategoryFiltered;
+    *(toCopy + 60) |= 8u;
   }
 
   if ([(RTPPoiMetadata *)self parentsCount])
   {
     [v9 clearParents];
-    v6 = [(RTPPoiMetadata *)self parentsCount];
-    if (v6)
+    parentsCount = [(RTPPoiMetadata *)self parentsCount];
+    if (parentsCount)
     {
-      v7 = v6;
+      v7 = parentsCount;
       for (i = 0; i != v7; ++i)
       {
         [v9 addParent:{-[RTPPoiMetadata parentAtIndex:](self, "parentAtIndex:", i)}];
@@ -261,9 +261,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -279,11 +279,11 @@
     *(v5 + 60) |= 2u;
   }
 
-  v8 = [(NSData *)self->_poiGeometry copyWithZone:a3];
+  v8 = [(NSData *)self->_poiGeometry copyWithZone:zone];
   v9 = v6[6];
   v6[6] = v8;
 
-  v10 = [(RTPLatLng *)self->_location copyWithZone:a3];
+  v10 = [(RTPLatLng *)self->_location copyWithZone:zone];
   v11 = v6[5];
   v6[5] = v10;
 
@@ -303,63 +303,63 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = *(v4 + 60);
+  v5 = *(equalCopy + 60);
   if (*&self->_has)
   {
-    if ((*(v4 + 60) & 1) == 0 || self->_muid != *(v4 + 4))
+    if ((*(equalCopy + 60) & 1) == 0 || self->_muid != *(equalCopy + 4))
     {
       goto LABEL_22;
     }
   }
 
-  else if (*(v4 + 60))
+  else if (*(equalCopy + 60))
   {
     goto LABEL_22;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 60) & 2) == 0)
+    if ((*(equalCopy + 60) & 2) == 0)
     {
       goto LABEL_22;
     }
 
-    v11 = *(v4 + 56);
+    v11 = *(equalCopy + 56);
     if (self->_fullyCoversTile)
     {
-      if ((*(v4 + 56) & 1) == 0)
+      if ((*(equalCopy + 56) & 1) == 0)
       {
         goto LABEL_22;
       }
     }
 
-    else if (*(v4 + 56))
+    else if (*(equalCopy + 56))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(v4 + 60) & 2) != 0)
+  else if ((*(equalCopy + 60) & 2) != 0)
   {
     goto LABEL_22;
   }
 
   poiGeometry = self->_poiGeometry;
-  if (poiGeometry | *(v4 + 6) && ![(NSData *)poiGeometry isEqual:?])
+  if (poiGeometry | *(equalCopy + 6) && ![(NSData *)poiGeometry isEqual:?])
   {
     goto LABEL_22;
   }
 
   location = self->_location;
-  if (location | *(v4 + 5))
+  if (location | *(equalCopy + 5))
   {
     if (![(RTPLatLng *)location isEqual:?])
     {
@@ -367,30 +367,30 @@
     }
   }
 
-  v8 = *(v4 + 60);
+  v8 = *(equalCopy + 60);
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 60) & 8) == 0)
+    if ((*(equalCopy + 60) & 8) == 0)
     {
       goto LABEL_22;
     }
 
-    v12 = *(v4 + 58);
+    v12 = *(equalCopy + 58);
     if (self->_isCategoryFiltered)
     {
-      if ((*(v4 + 58) & 1) == 0)
+      if ((*(equalCopy + 58) & 1) == 0)
       {
         goto LABEL_22;
       }
     }
 
-    else if (*(v4 + 58))
+    else if (*(equalCopy + 58))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(v4 + 60) & 8) != 0)
+  else if ((*(equalCopy + 60) & 8) != 0)
   {
     goto LABEL_22;
   }
@@ -400,20 +400,20 @@
     goto LABEL_22;
   }
 
-  v9 = (*(v4 + 60) & 4) == 0;
+  v9 = (*(equalCopy + 60) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 60) & 4) != 0)
+    if ((*(equalCopy + 60) & 4) != 0)
     {
       if (self->_isApplePaySupported)
       {
-        if (*(v4 + 57))
+        if (*(equalCopy + 57))
         {
           goto LABEL_36;
         }
       }
 
-      else if (!*(v4 + 57))
+      else if (!*(equalCopy + 57))
       {
 LABEL_36:
         v9 = 1;
@@ -480,26 +480,26 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 60);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 60);
   if (v6)
   {
-    self->_muid = *(v4 + 4);
+    self->_muid = *(fromCopy + 4);
     *&self->_has |= 1u;
-    v6 = *(v4 + 60);
+    v6 = *(fromCopy + 60);
   }
 
   if ((v6 & 2) != 0)
   {
-    self->_fullyCoversTile = *(v4 + 56);
+    self->_fullyCoversTile = *(fromCopy + 56);
     *&self->_has |= 2u;
   }
 
-  v12 = v4;
-  if (*(v4 + 6))
+  v12 = fromCopy;
+  if (*(fromCopy + 6))
   {
     [(RTPPoiMetadata *)self setPoiGeometry:?];
     v5 = v12;
@@ -535,10 +535,10 @@ LABEL_13:
     *&self->_has |= 8u;
   }
 
-  v9 = [v5 parentsCount];
-  if (v9)
+  parentsCount = [v5 parentsCount];
+  if (parentsCount)
   {
-    v10 = v9;
+    v10 = parentsCount;
     for (i = 0; i != v10; ++i)
     {
       -[RTPPoiMetadata addParent:](self, "addParent:", [v12 parentAtIndex:i]);

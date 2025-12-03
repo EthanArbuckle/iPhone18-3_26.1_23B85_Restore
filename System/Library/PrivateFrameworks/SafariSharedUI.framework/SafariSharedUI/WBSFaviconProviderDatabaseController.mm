@@ -1,50 +1,50 @@
 @interface WBSFaviconProviderDatabaseController
-- (BOOL)_deleteRejectedResourceForPageURLString:(id)a3 iconURLString:(id)a4;
-- (BOOL)_hasPageURLsForIconUUID:(id)a3;
-- (BOOL)_setRejectedResourceForPageURL:(id)a3 iconURLString:(id)a4;
+- (BOOL)_deleteRejectedResourceForPageURLString:(id)string iconURLString:(id)lString;
+- (BOOL)_hasPageURLsForIconUUID:(id)d;
+- (BOOL)_setRejectedResourceForPageURL:(id)l iconURLString:(id)string;
 - (id)_fetchAllPageURLStrings;
-- (id)_fetchIconInfoForIconURLString:(id)a3;
-- (id)_fetchIconInfoForIconUUID:(id)a3;
-- (id)_fetchIconInfosForRejectedResourcesWithPageURLString:(id)a3 iconURLString:(id)a4;
-- (id)_fetchIconUUIDForPageURLString:(id)a3;
-- (id)_fetchIconUUIDsForPageURLStrings:(id)a3;
-- (id)_fetchPageURLStringsWithPredicate:(id)a3;
-- (id)_findOrphansFromIconUUIDs:(id)a3;
-- (id)_setIconUUID:(id)a3 forIconURLString:(id)a4 size:(CGSize)a5 hasGeneratedResolutions:(BOOL)a6;
-- (id)_setTimestampToNowForIconUUID:(id)a3;
+- (id)_fetchIconInfoForIconURLString:(id)string;
+- (id)_fetchIconInfoForIconUUID:(id)d;
+- (id)_fetchIconInfosForRejectedResourcesWithPageURLString:(id)string iconURLString:(id)lString;
+- (id)_fetchIconUUIDForPageURLString:(id)string;
+- (id)_fetchIconUUIDsForPageURLStrings:(id)strings;
+- (id)_fetchPageURLStringsWithPredicate:(id)predicate;
+- (id)_findOrphansFromIconUUIDs:(id)ds;
+- (id)_setIconUUID:(id)d forIconURLString:(id)string size:(CGSize)size hasGeneratedResolutions:(BOOL)resolutions;
+- (id)_setTimestampToNowForIconUUID:(id)d;
 - (int)_createFreshDatabaseSchema;
-- (int)_migrateToSchemaVersion:(int)a3;
+- (int)_migrateToSchemaVersion:(int)version;
 - (int)_migrateToSchemaVersion_2;
 - (int)_migrateToSchemaVersion_3;
 - (int)_migrateToSchemaVersion_4;
 - (void)_deleteAllPageAndIconEntries;
-- (void)_deleteIconWithUUIDFromIconInfo:(id)a3;
-- (void)_deleteIconsWithUUIDsFromIconInfo:(id)a3;
-- (void)_deletePageURL:(id)a3;
-- (void)_deletePageURLs:(id)a3;
-- (void)_deletePageURLsWithUUIDFromPageInfo:(id)a3;
-- (void)_deleteRejectedResourceForPageURLString:(id)a3;
-- (void)_deleteRejectedResourceForPageURLStrings:(id)a3;
-- (void)_firstIconUUIDForPageURLStrings:(id)a3 completionHandler:(id)a4;
-- (void)_generateStatementsForQuery:(id)a3 arguments:(id)a4 statementCallback:(id)a5;
-- (void)_setPageURL:(id)a3 toIconUUID:(id)a4;
-- (void)fetchAllIconUUIDsWithCompletionHandler:(id)a3;
-- (void)fetchAllKnownPageURLStringsWithCompletionHandler:(id)a3;
-- (void)fetchPageURLStringsWithPrefixesIn:(id)a3 completionHandler:(id)a4;
-- (void)firstIconInfoMatchingIconURLStringIn:(id)a3 completionHandler:(id)a4;
-- (void)firstIconInfoMatchingPageURLStringIn:(id)a3 completionHandler:(id)a4;
-- (void)firstIconUUIDMatchingPageURLStringIn:(id)a3 completionHandler:(id)a4;
-- (void)iconInfoForIconURLString:(id)a3 completionHandler:(id)a4;
-- (void)iconInfoForPageURLString:(id)a3 completionHandler:(id)a4;
-- (void)linkAndUpdateTimestampForIconWithPageURLString:(id)a3 iconURLString:(id)a4 iconSize:(CGSize)a5 iconHasGeneratedResolutions:(BOOL)a6 completionHandler:(id)a7;
-- (void)linkPageURLString:(id)a3 toExistingIconURLString:(id)a4 completionHandler:(id)a5;
-- (void)markRejectedIconAtPageURLString:(id)a3 iconURLString:(id)a4 completionHandler:(id)a5;
-- (void)markValidIconAtPageURLString:(id)a3 iconURLString:(id)a4 completionHandler:(id)a5;
-- (void)rejectedResourceIconInfosForPageURLString:(id)a3 iconURLString:(id)a4 completionHandler:(id)a5;
-- (void)removeAllDataForIconUUID:(id)a3 completionHandler:(id)a4;
-- (void)removeAllPageURLStringsWithCompletionHandler:(id)a3;
-- (void)removePageURLString:(id)a3 completionHandler:(id)a4;
-- (void)removePageURLStrings:(id)a3 completionHandler:(id)a4;
+- (void)_deleteIconWithUUIDFromIconInfo:(id)info;
+- (void)_deleteIconsWithUUIDsFromIconInfo:(id)info;
+- (void)_deletePageURL:(id)l;
+- (void)_deletePageURLs:(id)ls;
+- (void)_deletePageURLsWithUUIDFromPageInfo:(id)info;
+- (void)_deleteRejectedResourceForPageURLString:(id)string;
+- (void)_deleteRejectedResourceForPageURLStrings:(id)strings;
+- (void)_firstIconUUIDForPageURLStrings:(id)strings completionHandler:(id)handler;
+- (void)_generateStatementsForQuery:(id)query arguments:(id)arguments statementCallback:(id)callback;
+- (void)_setPageURL:(id)l toIconUUID:(id)d;
+- (void)fetchAllIconUUIDsWithCompletionHandler:(id)handler;
+- (void)fetchAllKnownPageURLStringsWithCompletionHandler:(id)handler;
+- (void)fetchPageURLStringsWithPrefixesIn:(id)in completionHandler:(id)handler;
+- (void)firstIconInfoMatchingIconURLStringIn:(id)in completionHandler:(id)handler;
+- (void)firstIconInfoMatchingPageURLStringIn:(id)in completionHandler:(id)handler;
+- (void)firstIconUUIDMatchingPageURLStringIn:(id)in completionHandler:(id)handler;
+- (void)iconInfoForIconURLString:(id)string completionHandler:(id)handler;
+- (void)iconInfoForPageURLString:(id)string completionHandler:(id)handler;
+- (void)linkAndUpdateTimestampForIconWithPageURLString:(id)string iconURLString:(id)lString iconSize:(CGSize)size iconHasGeneratedResolutions:(BOOL)resolutions completionHandler:(id)handler;
+- (void)linkPageURLString:(id)string toExistingIconURLString:(id)lString completionHandler:(id)handler;
+- (void)markRejectedIconAtPageURLString:(id)string iconURLString:(id)lString completionHandler:(id)handler;
+- (void)markValidIconAtPageURLString:(id)string iconURLString:(id)lString completionHandler:(id)handler;
+- (void)rejectedResourceIconInfosForPageURLString:(id)string iconURLString:(id)lString completionHandler:(id)handler;
+- (void)removeAllDataForIconUUID:(id)d completionHandler:(id)handler;
+- (void)removeAllPageURLStringsWithCompletionHandler:(id)handler;
+- (void)removePageURLString:(id)string completionHandler:(id)handler;
+- (void)removePageURLStrings:(id)strings completionHandler:(id)handler;
 @end
 
 @implementation WBSFaviconProviderDatabaseController
@@ -55,18 +55,18 @@
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(WBSSQLiteStore *)self database];
+  database = [(WBSSQLiteStore *)self database];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __66__WBSFaviconProviderDatabaseController__createFreshDatabaseSchema__block_invoke;
   v5[3] = &unk_1E8283618;
   v5[4] = self;
   v5[5] = &v6;
-  [v3 tryToPerformTransactionInBlock:v5];
+  [database tryToPerformTransactionInBlock:v5];
 
-  LODWORD(v3) = *(v7 + 6);
+  LODWORD(database) = *(v7 + 6);
   _Block_object_dispose(&v6, 8);
-  return v3;
+  return database;
 }
 
 BOOL __66__WBSFaviconProviderDatabaseController__createFreshDatabaseSchema__block_invoke(uint64_t a1)
@@ -101,25 +101,25 @@ BOOL __66__WBSFaviconProviderDatabaseController__createFreshDatabaseSchema__bloc
   return *(*(*(a1 + 40) + 8) + 24) == 101;
 }
 
-- (int)_migrateToSchemaVersion:(int)a3
+- (int)_migrateToSchemaVersion:(int)version
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [(WBSSQLiteStore *)self database];
+  database = [(WBSSQLiteStore *)self database];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__WBSFaviconProviderDatabaseController__migrateToSchemaVersion___block_invoke;
   v7[3] = &unk_1E8283640;
-  v8 = a3;
+  versionCopy = version;
   v7[4] = self;
   v7[5] = &v9;
-  [v5 tryToPerformTransactionInBlock:v7];
+  [database tryToPerformTransactionInBlock:v7];
 
-  LODWORD(v5) = *(v10 + 6);
+  LODWORD(database) = *(v10 + 6);
   _Block_object_dispose(&v9, 8);
-  return v5;
+  return database;
 }
 
 BOOL __64__WBSFaviconProviderDatabaseController__migrateToSchemaVersion___block_invoke(uint64_t a1)
@@ -141,13 +141,13 @@ BOOL __64__WBSFaviconProviderDatabaseController__migrateToSchemaVersion___block_
 
 - (int)_migrateToSchemaVersion_2
 {
-  v3 = [(WBSSQLiteStore *)self database];
-  v4 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(v3, 0, @"ALTER TABLE icon_info ADD width INTEGER DEFAULT 0");
+  database = [(WBSSQLiteStore *)self database];
+  v4 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(database, 0, @"ALTER TABLE icon_info ADD width INTEGER DEFAULT 0");
 
   if (v4 == 101)
   {
-    v5 = [(WBSSQLiteStore *)self database];
-    v4 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(v5, 0, @"ALTER TABLE icon_info ADD height INTEGER DEFAULT 0");
+    database2 = [(WBSSQLiteStore *)self database];
+    v4 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(database2, 0, @"ALTER TABLE icon_info ADD height INTEGER DEFAULT 0");
   }
 
   return v4;
@@ -155,43 +155,43 @@ BOOL __64__WBSFaviconProviderDatabaseController__migrateToSchemaVersion___block_
 
 - (int)_migrateToSchemaVersion_3
 {
-  v2 = [(WBSSQLiteStore *)self database];
-  v3 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(v2, 0, @"ALTER TABLE icon_info ADD has_generated_representations INTEGER DEFAULT 0");
+  database = [(WBSSQLiteStore *)self database];
+  v3 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(database, 0, @"ALTER TABLE icon_info ADD has_generated_representations INTEGER DEFAULT 0");
 
   return v3;
 }
 
 - (int)_migrateToSchemaVersion_4
 {
-  v2 = [(WBSSQLiteStore *)self database];
-  v3 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(v2, 0, @"CREATE TABLE rejected_resources (page_url TEXT NOT NULL ON CONFLICT FAIL,icon_url TEXT NOT NULL ON CONFLICT FAIL,timestamp INTEGER,UNIQUE(page_url, icon_url))");
+  database = [(WBSSQLiteStore *)self database];
+  v3 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(database, 0, @"CREATE TABLE rejected_resources (page_url TEXT NOT NULL ON CONFLICT FAIL,icon_url TEXT NOT NULL ON CONFLICT FAIL,timestamp INTEGER,UNIQUE(page_url, icon_url))");
 
   return v3;
 }
 
-- (void)linkAndUpdateTimestampForIconWithPageURLString:(id)a3 iconURLString:(id)a4 iconSize:(CGSize)a5 iconHasGeneratedResolutions:(BOOL)a6 completionHandler:(id)a7
+- (void)linkAndUpdateTimestampForIconWithPageURLString:(id)string iconURLString:(id)lString iconSize:(CGSize)size iconHasGeneratedResolutions:(BOOL)resolutions completionHandler:(id)handler
 {
-  height = a5.height;
-  width = a5.width;
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
-  v16 = [(WBSSQLiteStore *)self databaseQueue];
+  height = size.height;
+  width = size.width;
+  stringCopy = string;
+  lStringCopy = lString;
+  handlerCopy = handler;
+  databaseQueue = [(WBSSQLiteStore *)self databaseQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __156__WBSFaviconProviderDatabaseController_linkAndUpdateTimestampForIconWithPageURLString_iconURLString_iconSize_iconHasGeneratedResolutions_completionHandler___block_invoke;
   block[3] = &unk_1E8284658;
   block[4] = self;
-  v21 = v13;
+  v21 = stringCopy;
   v24 = width;
   v25 = height;
-  v26 = a6;
-  v22 = v14;
-  v23 = v15;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
-  dispatch_async(v16, block);
+  resolutionsCopy = resolutions;
+  v22 = lStringCopy;
+  v23 = handlerCopy;
+  v17 = handlerCopy;
+  v18 = lStringCopy;
+  v19 = stringCopy;
+  dispatch_async(databaseQueue, block);
 }
 
 void __156__WBSFaviconProviderDatabaseController_linkAndUpdateTimestampForIconWithPageURLString_iconURLString_iconSize_iconHasGeneratedResolutions_completionHandler___block_invoke(uint64_t a1)
@@ -294,24 +294,24 @@ uint64_t __156__WBSFaviconProviderDatabaseController_linkAndUpdateTimestampForIc
   return 1;
 }
 
-- (void)linkPageURLString:(id)a3 toExistingIconURLString:(id)a4 completionHandler:(id)a5
+- (void)linkPageURLString:(id)string toExistingIconURLString:(id)lString completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WBSSQLiteStore *)self databaseQueue];
+  stringCopy = string;
+  lStringCopy = lString;
+  handlerCopy = handler;
+  databaseQueue = [(WBSSQLiteStore *)self databaseQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __100__WBSFaviconProviderDatabaseController_linkPageURLString_toExistingIconURLString_completionHandler___block_invoke;
   v15[3] = &unk_1E82836E0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = stringCopy;
+  v17 = lStringCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = lStringCopy;
+  v14 = stringCopy;
+  dispatch_async(databaseQueue, v15);
 }
 
 void __100__WBSFaviconProviderDatabaseController_linkPageURLString_toExistingIconURLString_completionHandler___block_invoke(uint64_t a1)
@@ -405,21 +405,21 @@ uint64_t __100__WBSFaviconProviderDatabaseController_linkPageURLString_toExistin
   return 1;
 }
 
-- (void)removePageURLString:(id)a3 completionHandler:(id)a4
+- (void)removePageURLString:(id)string completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBSSQLiteStore *)self databaseQueue];
+  stringCopy = string;
+  handlerCopy = handler;
+  databaseQueue = [(WBSSQLiteStore *)self databaseQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__WBSFaviconProviderDatabaseController_removePageURLString_completionHandler___block_invoke;
   block[3] = &unk_1E8283450;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = stringCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = stringCopy;
+  dispatch_async(databaseQueue, block);
 }
 
 void __78__WBSFaviconProviderDatabaseController_removePageURLString_completionHandler___block_invoke(uint64_t a1)
@@ -472,21 +472,21 @@ uint64_t __78__WBSFaviconProviderDatabaseController_removePageURLString_completi
   return 1;
 }
 
-- (void)removePageURLStrings:(id)a3 completionHandler:(id)a4
+- (void)removePageURLStrings:(id)strings completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBSSQLiteStore *)self databaseQueue];
+  stringsCopy = strings;
+  handlerCopy = handler;
+  databaseQueue = [(WBSSQLiteStore *)self databaseQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __79__WBSFaviconProviderDatabaseController_removePageURLStrings_completionHandler___block_invoke;
   block[3] = &unk_1E8283450;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = stringsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = stringsCopy;
+  dispatch_async(databaseQueue, block);
 }
 
 void __79__WBSFaviconProviderDatabaseController_removePageURLStrings_completionHandler___block_invoke(uint64_t a1)
@@ -557,21 +557,21 @@ uint64_t __79__WBSFaviconProviderDatabaseController_removePageURLStrings_complet
   return 1;
 }
 
-- (void)removeAllDataForIconUUID:(id)a3 completionHandler:(id)a4
+- (void)removeAllDataForIconUUID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBSSQLiteStore *)self databaseQueue];
+  dCopy = d;
+  handlerCopy = handler;
+  databaseQueue = [(WBSSQLiteStore *)self databaseQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __83__WBSFaviconProviderDatabaseController_removeAllDataForIconUUID_completionHandler___block_invoke;
   block[3] = &unk_1E8283450;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
+  dispatch_async(databaseQueue, block);
 }
 
 uint64_t __83__WBSFaviconProviderDatabaseController_removeAllDataForIconUUID_completionHandler___block_invoke(uint64_t a1)
@@ -583,18 +583,18 @@ uint64_t __83__WBSFaviconProviderDatabaseController_removeAllDataForIconUUID_com
   return v2();
 }
 
-- (void)removeAllPageURLStringsWithCompletionHandler:(id)a3
+- (void)removeAllPageURLStringsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WBSSQLiteStore *)self databaseQueue];
+  handlerCopy = handler;
+  databaseQueue = [(WBSSQLiteStore *)self databaseQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __85__WBSFaviconProviderDatabaseController_removeAllPageURLStringsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E8283758;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(databaseQueue, v7);
 }
 
 uint64_t __85__WBSFaviconProviderDatabaseController_removeAllPageURLStringsWithCompletionHandler___block_invoke(uint64_t a1)
@@ -605,18 +605,18 @@ uint64_t __85__WBSFaviconProviderDatabaseController_removeAllPageURLStringsWithC
   return v2();
 }
 
-- (void)fetchAllKnownPageURLStringsWithCompletionHandler:(id)a3
+- (void)fetchAllKnownPageURLStringsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WBSSQLiteStore *)self databaseQueue];
+  handlerCopy = handler;
+  databaseQueue = [(WBSSQLiteStore *)self databaseQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __89__WBSFaviconProviderDatabaseController_fetchAllKnownPageURLStringsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E82837D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(databaseQueue, v7);
 }
 
 void __89__WBSFaviconProviderDatabaseController_fetchAllKnownPageURLStringsWithCompletionHandler___block_invoke(uint64_t a1)
@@ -626,21 +626,21 @@ void __89__WBSFaviconProviderDatabaseController_fetchAllKnownPageURLStringsWithC
   (*(v1 + 16))(v1);
 }
 
-- (void)iconInfoForPageURLString:(id)a3 completionHandler:(id)a4
+- (void)iconInfoForPageURLString:(id)string completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBSSQLiteStore *)self databaseQueue];
+  stringCopy = string;
+  handlerCopy = handler;
+  databaseQueue = [(WBSSQLiteStore *)self databaseQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __83__WBSFaviconProviderDatabaseController_iconInfoForPageURLString_completionHandler___block_invoke;
   block[3] = &unk_1E8283450;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = stringCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = stringCopy;
+  dispatch_async(databaseQueue, block);
 }
 
 void __83__WBSFaviconProviderDatabaseController_iconInfoForPageURLString_completionHandler___block_invoke(uint64_t a1)
@@ -680,21 +680,21 @@ void __83__WBSFaviconProviderDatabaseController_iconInfoForPageURLString_complet
   }
 }
 
-- (void)iconInfoForIconURLString:(id)a3 completionHandler:(id)a4
+- (void)iconInfoForIconURLString:(id)string completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBSSQLiteStore *)self databaseQueue];
+  stringCopy = string;
+  handlerCopy = handler;
+  databaseQueue = [(WBSSQLiteStore *)self databaseQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __83__WBSFaviconProviderDatabaseController_iconInfoForIconURLString_completionHandler___block_invoke;
   block[3] = &unk_1E8283708;
-  v12 = v6;
-  v13 = v7;
+  v12 = stringCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = stringCopy;
+  v10 = handlerCopy;
+  dispatch_async(databaseQueue, block);
 }
 
 void __83__WBSFaviconProviderDatabaseController_iconInfoForIconURLString_completionHandler___block_invoke(uint64_t a1)
@@ -704,24 +704,24 @@ void __83__WBSFaviconProviderDatabaseController_iconInfoForIconURLString_complet
   (*(v1 + 16))(v1);
 }
 
-- (void)markRejectedIconAtPageURLString:(id)a3 iconURLString:(id)a4 completionHandler:(id)a5
+- (void)markRejectedIconAtPageURLString:(id)string iconURLString:(id)lString completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WBSSQLiteStore *)self databaseQueue];
+  stringCopy = string;
+  lStringCopy = lString;
+  handlerCopy = handler;
+  databaseQueue = [(WBSSQLiteStore *)self databaseQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __104__WBSFaviconProviderDatabaseController_markRejectedIconAtPageURLString_iconURLString_completionHandler___block_invoke;
   v15[3] = &unk_1E82836E0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = stringCopy;
+  v17 = lStringCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = lStringCopy;
+  v14 = stringCopy;
+  dispatch_async(databaseQueue, v15);
 }
 
 uint64_t __104__WBSFaviconProviderDatabaseController_markRejectedIconAtPageURLString_iconURLString_completionHandler___block_invoke(uint64_t a1)
@@ -734,24 +734,24 @@ uint64_t __104__WBSFaviconProviderDatabaseController_markRejectedIconAtPageURLSt
   return v4(v2, v3);
 }
 
-- (void)markValidIconAtPageURLString:(id)a3 iconURLString:(id)a4 completionHandler:(id)a5
+- (void)markValidIconAtPageURLString:(id)string iconURLString:(id)lString completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WBSSQLiteStore *)self databaseQueue];
+  stringCopy = string;
+  lStringCopy = lString;
+  handlerCopy = handler;
+  databaseQueue = [(WBSSQLiteStore *)self databaseQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __101__WBSFaviconProviderDatabaseController_markValidIconAtPageURLString_iconURLString_completionHandler___block_invoke;
   v15[3] = &unk_1E82846D0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
-  dispatch_async(v11, v15);
+  v16 = stringCopy;
+  v17 = lStringCopy;
+  v18 = handlerCopy;
+  v12 = lStringCopy;
+  v13 = stringCopy;
+  v14 = handlerCopy;
+  dispatch_async(databaseQueue, v15);
 }
 
 uint64_t __101__WBSFaviconProviderDatabaseController_markValidIconAtPageURLString_iconURLString_completionHandler___block_invoke(uint64_t a1)
@@ -763,24 +763,24 @@ uint64_t __101__WBSFaviconProviderDatabaseController_markValidIconAtPageURLStrin
   return v3(v1, v2);
 }
 
-- (void)rejectedResourceIconInfosForPageURLString:(id)a3 iconURLString:(id)a4 completionHandler:(id)a5
+- (void)rejectedResourceIconInfosForPageURLString:(id)string iconURLString:(id)lString completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WBSSQLiteStore *)self databaseQueue];
+  stringCopy = string;
+  lStringCopy = lString;
+  handlerCopy = handler;
+  databaseQueue = [(WBSSQLiteStore *)self databaseQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __114__WBSFaviconProviderDatabaseController_rejectedResourceIconInfosForPageURLString_iconURLString_completionHandler___block_invoke;
   v15[3] = &unk_1E82846D0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
-  dispatch_async(v11, v15);
+  v16 = stringCopy;
+  v17 = lStringCopy;
+  v18 = handlerCopy;
+  v12 = lStringCopy;
+  v13 = stringCopy;
+  v14 = handlerCopy;
+  dispatch_async(databaseQueue, v15);
 }
 
 void __114__WBSFaviconProviderDatabaseController_rejectedResourceIconInfosForPageURLString_iconURLString_completionHandler___block_invoke(uint64_t a1)
@@ -790,38 +790,38 @@ void __114__WBSFaviconProviderDatabaseController_rejectedResourceIconInfosForPag
   (*(v1 + 16))(v1);
 }
 
-- (void)firstIconUUIDMatchingPageURLStringIn:(id)a3 completionHandler:(id)a4
+- (void)firstIconUUIDMatchingPageURLStringIn:(id)in completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBSSQLiteStore *)self databaseQueue];
+  inCopy = in;
+  handlerCopy = handler;
+  databaseQueue = [(WBSSQLiteStore *)self databaseQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __95__WBSFaviconProviderDatabaseController_firstIconUUIDMatchingPageURLStringIn_completionHandler___block_invoke;
   block[3] = &unk_1E8283450;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = inCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = inCopy;
+  dispatch_async(databaseQueue, block);
 }
 
-- (void)firstIconInfoMatchingPageURLStringIn:(id)a3 completionHandler:(id)a4
+- (void)firstIconInfoMatchingPageURLStringIn:(id)in completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBSSQLiteStore *)self databaseQueue];
+  inCopy = in;
+  handlerCopy = handler;
+  databaseQueue = [(WBSSQLiteStore *)self databaseQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __95__WBSFaviconProviderDatabaseController_firstIconInfoMatchingPageURLStringIn_completionHandler___block_invoke;
   block[3] = &unk_1E8283450;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = inCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = inCopy;
+  dispatch_async(databaseQueue, block);
 }
 
 void __95__WBSFaviconProviderDatabaseController_firstIconInfoMatchingPageURLStringIn_completionHandler___block_invoke(uint64_t a1)
@@ -873,16 +873,16 @@ void __95__WBSFaviconProviderDatabaseController_firstIconInfoMatchingPageURLStri
   }
 }
 
-- (void)_firstIconUUIDForPageURLStrings:(id)a3 completionHandler:(id)a4
+- (void)_firstIconUUIDForPageURLStrings:(id)strings completionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  stringsCopy = strings;
+  handlerCopy = handler;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = v6;
+  v8 = stringsCopy;
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
@@ -900,7 +900,7 @@ void __95__WBSFaviconProviderDatabaseController_firstIconInfoMatchingPageURLStri
         v13 = [(WBSFaviconProviderDatabaseController *)self _fetchIconUUIDForPageURLString:v12, v14];
         if (v13)
         {
-          v7[2](v7, v12, v13);
+          handlerCopy[2](handlerCopy, v12, v13);
 
           goto LABEL_11;
         }
@@ -916,25 +916,25 @@ void __95__WBSFaviconProviderDatabaseController_firstIconInfoMatchingPageURLStri
     }
   }
 
-  v7[2](v7, 0, 0);
+  handlerCopy[2](handlerCopy, 0, 0);
 LABEL_11:
 }
 
-- (void)firstIconInfoMatchingIconURLStringIn:(id)a3 completionHandler:(id)a4
+- (void)firstIconInfoMatchingIconURLStringIn:(id)in completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBSSQLiteStore *)self databaseQueue];
+  inCopy = in;
+  handlerCopy = handler;
+  databaseQueue = [(WBSSQLiteStore *)self databaseQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __95__WBSFaviconProviderDatabaseController_firstIconInfoMatchingIconURLStringIn_completionHandler___block_invoke;
   block[3] = &unk_1E8283450;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = inCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = inCopy;
+  dispatch_async(databaseQueue, block);
 }
 
 void __95__WBSFaviconProviderDatabaseController_firstIconInfoMatchingIconURLStringIn_completionHandler___block_invoke(uint64_t a1)
@@ -980,18 +980,18 @@ void __95__WBSFaviconProviderDatabaseController_firstIconInfoMatchingIconURLStri
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)fetchAllIconUUIDsWithCompletionHandler:(id)a3
+- (void)fetchAllIconUUIDsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WBSSQLiteStore *)self databaseQueue];
+  handlerCopy = handler;
+  databaseQueue = [(WBSSQLiteStore *)self databaseQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __79__WBSFaviconProviderDatabaseController_fetchAllIconUUIDsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E8283758;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(databaseQueue, v7);
 }
 
 void __79__WBSFaviconProviderDatabaseController_fetchAllIconUUIDsWithCompletionHandler___block_invoke(uint64_t a1)
@@ -1051,21 +1051,21 @@ void __79__WBSFaviconProviderDatabaseController_fetchAllIconUUIDsWithCompletionH
   (*(v14 + 16))(v14, v15);
 }
 
-- (void)fetchPageURLStringsWithPrefixesIn:(id)a3 completionHandler:(id)a4
+- (void)fetchPageURLStringsWithPrefixesIn:(id)in completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBSSQLiteStore *)self databaseQueue];
+  inCopy = in;
+  handlerCopy = handler;
+  databaseQueue = [(WBSSQLiteStore *)self databaseQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __92__WBSFaviconProviderDatabaseController_fetchPageURLStringsWithPrefixesIn_completionHandler___block_invoke;
   block[3] = &unk_1E8284740;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = inCopy;
+  v9 = handlerCopy;
+  v10 = inCopy;
+  dispatch_async(databaseQueue, block);
 }
 
 void __92__WBSFaviconProviderDatabaseController_fetchPageURLStringsWithPrefixesIn_completionHandler___block_invoke(uint64_t a1)
@@ -1086,24 +1086,24 @@ id __92__WBSFaviconProviderDatabaseController_fetchPageURLStringsWithPrefixesIn_
   return v2;
 }
 
-- (id)_fetchIconUUIDForPageURLString:(id)a3
+- (id)_fetchIconUUIDForPageURLString:(id)string
 {
-  v10 = a3;
-  v4 = [(WBSSQLiteStore *)self database];
-  v5 = SafariShared::WBSSQLiteDatabaseFetch<NSString * {__strong}&>(v4, @"SELECT uuid FROM page_url WHERE url = ?", &v10);
+  stringCopy = string;
+  database = [(WBSSQLiteStore *)self database];
+  v5 = SafariShared::WBSSQLiteDatabaseFetch<NSString * {__strong}&>(database, @"SELECT uuid FROM page_url WHERE url = ?", &stringCopy);
 
-  v6 = [v5 nextObject];
-  v7 = [v6 stringAtIndex:0];
+  nextObject = [v5 nextObject];
+  v7 = [nextObject stringAtIndex:0];
 
-  v8 = [v5 statement];
-  [v8 invalidate];
+  statement = [v5 statement];
+  [statement invalidate];
 
   return v7;
 }
 
-- (id)_fetchIconUUIDsForPageURLStrings:(id)a3
+- (id)_fetchIconUUIDsForPageURLStrings:(id)strings
 {
-  v4 = a3;
+  stringsCopy = strings;
   v5 = [MEMORY[0x1E695DFA8] set];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -1111,7 +1111,7 @@ id __92__WBSFaviconProviderDatabaseController_fetchPageURLStringsWithPrefixesIn_
   v8[3] = &unk_1E8284768;
   v6 = v5;
   v9 = v6;
-  [(WBSFaviconProviderDatabaseController *)self _generateStatementsForQuery:@"SELECT uuid FROM page_url WHERE url IN" arguments:v4 statementCallback:v8];
+  [(WBSFaviconProviderDatabaseController *)self _generateStatementsForQuery:@"SELECT uuid FROM page_url WHERE url IN" arguments:stringsCopy statementCallback:v8];
 
   return v6;
 }
@@ -1137,27 +1137,27 @@ void __73__WBSFaviconProviderDatabaseController__fetchIconUUIDsForPageURLStrings
   [v8 invalidate];
 }
 
-- (id)_fetchIconInfoForIconURLString:(id)a3
+- (id)_fetchIconInfoForIconURLString:(id)string
 {
-  v17 = a3;
-  v4 = [(WBSSQLiteStore *)self database];
-  v5 = SafariShared::WBSSQLiteDatabaseFetch<NSString * {__strong}&>(v4, @"SELECT uuid, timestamp, width, height, has_generated_representations FROM icon_info WHERE url = ?", &v17);
+  stringCopy = string;
+  database = [(WBSSQLiteStore *)self database];
+  v5 = SafariShared::WBSSQLiteDatabaseFetch<NSString * {__strong}&>(database, @"SELECT uuid, timestamp, width, height, has_generated_representations FROM icon_info WHERE url = ?", &stringCopy);
 
-  v6 = [v5 nextObject];
-  v7 = [v6 stringAtIndex:0];
+  nextObject = [v5 nextObject];
+  v7 = [nextObject stringAtIndex:0];
   v8 = MEMORY[0x1E695DF00];
-  [v6 doubleAtIndex:1];
+  [nextObject doubleAtIndex:1];
   v9 = [v8 dateWithTimeIntervalSinceReferenceDate:?];
-  v10 = [v6 intAtIndex:2];
-  v11 = [v6 intAtIndex:3];
-  v12 = [v6 BOOLAtIndex:4];
-  v13 = [v5 statement];
-  [v13 invalidate];
+  v10 = [nextObject intAtIndex:2];
+  v11 = [nextObject intAtIndex:3];
+  v12 = [nextObject BOOLAtIndex:4];
+  statement = [v5 statement];
+  [statement invalidate];
 
   if (v7)
   {
     v14 = [WBSFaviconProviderIconInfo alloc];
-    v15 = [(WBSFaviconProviderIconInfo *)v14 initWithPageURLString:0 iconURLString:v17 UUIDString:v7 dateAdded:v9 size:v12 hasGeneratedResolutions:0 isRejectedResource:v10, v11];
+    v15 = [(WBSFaviconProviderIconInfo *)v14 initWithPageURLString:0 iconURLString:stringCopy UUIDString:v7 dateAdded:v9 size:v12 hasGeneratedResolutions:0 isRejectedResource:v10, v11];
   }
 
   else
@@ -1168,27 +1168,27 @@ void __73__WBSFaviconProviderDatabaseController__fetchIconUUIDsForPageURLStrings
   return v15;
 }
 
-- (id)_fetchIconInfoForIconUUID:(id)a3
+- (id)_fetchIconInfoForIconUUID:(id)d
 {
-  v17 = a3;
-  v4 = [(WBSSQLiteStore *)self database];
-  v5 = SafariShared::WBSSQLiteDatabaseFetch<NSString * {__strong}&>(v4, @"SELECT url, timestamp, width, height, has_generated_representations FROM icon_info WHERE uuid = ?", &v17);
+  dCopy = d;
+  database = [(WBSSQLiteStore *)self database];
+  v5 = SafariShared::WBSSQLiteDatabaseFetch<NSString * {__strong}&>(database, @"SELECT url, timestamp, width, height, has_generated_representations FROM icon_info WHERE uuid = ?", &dCopy);
 
-  v6 = [v5 nextObject];
-  v7 = [v6 stringAtIndex:0];
+  nextObject = [v5 nextObject];
+  v7 = [nextObject stringAtIndex:0];
   v8 = MEMORY[0x1E695DF00];
-  [v6 doubleAtIndex:1];
+  [nextObject doubleAtIndex:1];
   v9 = [v8 dateWithTimeIntervalSinceReferenceDate:?];
-  v10 = [v6 intAtIndex:2];
-  v11 = [v6 intAtIndex:3];
-  v12 = [v6 BOOLAtIndex:4];
-  v13 = [v5 statement];
-  [v13 invalidate];
+  v10 = [nextObject intAtIndex:2];
+  v11 = [nextObject intAtIndex:3];
+  v12 = [nextObject BOOLAtIndex:4];
+  statement = [v5 statement];
+  [statement invalidate];
 
   if (v7)
   {
     v14 = [WBSFaviconProviderIconInfo alloc];
-    v15 = [(WBSFaviconProviderIconInfo *)v14 initWithPageURLString:0 iconURLString:v7 UUIDString:v17 dateAdded:v9 size:v12 hasGeneratedResolutions:0 isRejectedResource:v10, v11];
+    v15 = [(WBSFaviconProviderIconInfo *)v14 initWithPageURLString:0 iconURLString:v7 UUIDString:dCopy dateAdded:v9 size:v12 hasGeneratedResolutions:0 isRejectedResource:v10, v11];
   }
 
   else
@@ -1199,42 +1199,42 @@ void __73__WBSFaviconProviderDatabaseController__fetchIconUUIDsForPageURLStrings
   return v15;
 }
 
-- (id)_fetchIconInfosForRejectedResourcesWithPageURLString:(id)a3 iconURLString:(id)a4
+- (id)_fetchIconInfosForRejectedResourcesWithPageURLString:(id)string iconURLString:(id)lString
 {
-  v18 = a3;
-  v17 = a4;
-  v6 = [(WBSSQLiteStore *)self database];
-  v7 = SafariShared::WBSSQLiteDatabaseFetch<NSString * {__strong}&,NSString * {__strong}&>(v6, @"SELECT timestamp FROM rejected_resources WHERE icon_url = ? OR page_url = ?", &v17, &v18);
+  stringCopy = string;
+  lStringCopy = lString;
+  database = [(WBSSQLiteStore *)self database];
+  v7 = SafariShared::WBSSQLiteDatabaseFetch<NSString * {__strong}&,NSString * {__strong}&>(database, @"SELECT timestamp FROM rejected_resources WHERE icon_url = ? OR page_url = ?", &lStringCopy, &stringCopy);
 
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v9 = MEMORY[0x1E695F060];
   while (1)
   {
-    v10 = [v7 nextObject];
-    v11 = v10;
-    if (!v10)
+    nextObject = [v7 nextObject];
+    v11 = nextObject;
+    if (!nextObject)
     {
       break;
     }
 
-    [v10 doubleAtIndex:0];
+    [nextObject doubleAtIndex:0];
     v12 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:?];
     v13 = [WBSFaviconProviderIconInfo alloc];
-    v14 = [(WBSFaviconProviderIconInfo *)v13 initWithPageURLString:v18 iconURLString:v17 UUIDString:0 dateAdded:v12 size:0 hasGeneratedResolutions:1 isRejectedResource:*v9, v9[1]];
-    [v8 addObject:v14];
+    v14 = [(WBSFaviconProviderIconInfo *)v13 initWithPageURLString:stringCopy iconURLString:lStringCopy UUIDString:0 dateAdded:v12 size:0 hasGeneratedResolutions:1 isRejectedResource:*v9, v9[1]];
+    [array addObject:v14];
   }
 
-  v15 = [v7 statement];
-  [v15 invalidate];
+  statement = [v7 statement];
+  [statement invalidate];
 
-  return v8;
+  return array;
 }
 
 - (id)_fetchAllPageURLStrings
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [(WBSSQLiteStore *)self database];
-  v3 = SafariShared::WBSSQLiteDatabaseFetch<>(v2, @"SELECT url FROM page_url");
+  database = [(WBSSQLiteStore *)self database];
+  v3 = SafariShared::WBSSQLiteDatabaseFetch<>(database, @"SELECT url FROM page_url");
 
   v4 = objc_opt_new();
   v14 = 0u;
@@ -1268,20 +1268,20 @@ void __73__WBSFaviconProviderDatabaseController__fetchIconUUIDsForPageURLStrings
     while (v6);
   }
 
-  v10 = [v5 statement];
-  [v10 invalidate];
+  statement = [v5 statement];
+  [statement invalidate];
 
   return v4;
 }
 
-- (id)_fetchPageURLStringsWithPredicate:(id)a3
+- (id)_fetchPageURLStringsWithPredicate:(id)predicate
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [(WBSSQLiteStore *)self database];
-  v7 = [@"SELECT url FROM page_url WHERE " stringByAppendingString:v4];
-  v8 = SafariShared::WBSSQLiteDatabaseFetch<>(v6, v7);
+  predicateCopy = predicate;
+  array = [MEMORY[0x1E695DF70] array];
+  database = [(WBSSQLiteStore *)self database];
+  v7 = [@"SELECT url FROM page_url WHERE " stringByAppendingString:predicateCopy];
+  v8 = SafariShared::WBSSQLiteDatabaseFetch<>(database, v7);
 
   v18 = 0u;
   v19 = 0u;
@@ -1302,7 +1302,7 @@ void __73__WBSFaviconProviderDatabaseController__fetchIconUUIDsForPageURLStrings
         }
 
         v13 = [*(*(&v16 + 1) + 8 * i) stringAtIndex:{0, v16}];
-        [v5 addObject:v13];
+        [array addObject:v13];
       }
 
       v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -1311,15 +1311,15 @@ void __73__WBSFaviconProviderDatabaseController__fetchIconUUIDsForPageURLStrings
     while (v10);
   }
 
-  v14 = [v9 statement];
-  [v14 invalidate];
+  statement = [v9 statement];
+  [statement invalidate];
 
-  return v5;
+  return array;
 }
 
-- (id)_findOrphansFromIconUUIDs:(id)a3
+- (id)_findOrphansFromIconUUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = [MEMORY[0x1E695DFA8] set];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -1327,12 +1327,12 @@ void __73__WBSFaviconProviderDatabaseController__fetchIconUUIDsForPageURLStrings
   v10[3] = &unk_1E8284768;
   v6 = v5;
   v11 = v6;
-  [(WBSFaviconProviderDatabaseController *)self _generateStatementsForQuery:@"SELECT uuid FROM page_url WHERE uuid IN" arguments:v4 statementCallback:v10];
-  v7 = [MEMORY[0x1E695DFA8] setWithArray:v4];
+  [(WBSFaviconProviderDatabaseController *)self _generateStatementsForQuery:@"SELECT uuid FROM page_url WHERE uuid IN" arguments:dsCopy statementCallback:v10];
+  v7 = [MEMORY[0x1E695DFA8] setWithArray:dsCopy];
   [v7 minusSet:v6];
-  v8 = [v7 allObjects];
+  allObjects = [v7 allObjects];
 
-  return v8;
+  return allObjects;
 }
 
 void __66__WBSFaviconProviderDatabaseController__findOrphansFromIconUUIDs___block_invoke(uint64_t a1, void *a2)
@@ -1356,13 +1356,13 @@ void __66__WBSFaviconProviderDatabaseController__findOrphansFromIconUUIDs___bloc
   [v8 invalidate];
 }
 
-- (void)_setPageURL:(id)a3 toIconUUID:(id)a4
+- (void)_setPageURL:(id)l toIconUUID:(id)d
 {
   v18 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v10 = a4;
-  v6 = [(WBSSQLiteStore *)self database];
-  v7 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&,NSString * {__strong}&>(v6, 0, @"INSERT INTO page_url (url, uuid) VALUES (?, ?)", &v11, &v10);
+  lCopy = l;
+  dCopy = d;
+  database = [(WBSSQLiteStore *)self database];
+  v7 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&,NSString * {__strong}&>(database, 0, @"INSERT INTO page_url (url, uuid) VALUES (?, ?)", &lCopy, &dCopy);
 
   if (v7 != 101)
   {
@@ -1376,9 +1376,9 @@ void __66__WBSFaviconProviderDatabaseController__findOrphansFromIconUUIDs___bloc
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138478339;
-      v13 = v11;
+      v13 = lCopy;
       v14 = 2113;
-      v15 = v10;
+      v15 = dCopy;
       v16 = 1024;
       v17 = v7;
       _os_log_debug_impl(&dword_1C6968000, v9, OS_LOG_TYPE_DEBUG, "Failed to set page url: %{private}@ to icon UUID: %{private}@. Error code: %d", buf, 0x1Cu);
@@ -1386,18 +1386,18 @@ void __66__WBSFaviconProviderDatabaseController__findOrphansFromIconUUIDs___bloc
   }
 }
 
-- (id)_setIconUUID:(id)a3 forIconURLString:(id)a4 size:(CGSize)a5 hasGeneratedResolutions:(BOOL)a6
+- (id)_setIconUUID:(id)d forIconURLString:(id)string size:(CGSize)size hasGeneratedResolutions:(BOOL)resolutions
 {
   v25 = *MEMORY[0x1E69E9840];
-  v19 = a5;
-  v18 = a3;
-  v17 = a4;
-  v16 = a6;
-  v9 = [MEMORY[0x1E695DF00] date];
-  v10 = [(WBSSQLiteStore *)self database];
-  [v9 timeIntervalSinceReferenceDate];
+  sizeCopy = size;
+  dCopy = d;
+  stringCopy = string;
+  resolutionsCopy = resolutions;
+  date = [MEMORY[0x1E695DF00] date];
+  database = [(WBSSQLiteStore *)self database];
+  [date timeIntervalSinceReferenceDate];
   *buf = v11;
-  v12 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&,NSString * {__strong}&,double,double &,double &,BOOL &>(v10, 0, @"REPLACE INTO icon_info (uuid, url, timestamp, width, height, has_generated_representations) VALUES (?, ?, ?, ?, ?, ?)", &v18, &v17, buf, &v19.width, &v19.height, &v16);
+  v12 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&,NSString * {__strong}&,double,double &,double &,BOOL &>(database, 0, @"REPLACE INTO icon_info (uuid, url, timestamp, width, height, has_generated_representations) VALUES (?, ?, ?, ?, ?, ?)", &dCopy, &stringCopy, buf, &sizeCopy.width, &sizeCopy.height, &resolutionsCopy);
 
   if (v12 != 101)
   {
@@ -1411,26 +1411,26 @@ void __66__WBSFaviconProviderDatabaseController__findOrphansFromIconUUIDs___bloc
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138478339;
-      *&buf[4] = v18;
+      *&buf[4] = dCopy;
       v21 = 2113;
-      v22 = v17;
+      v22 = stringCopy;
       v23 = 1024;
       v24 = v12;
       _os_log_debug_impl(&dword_1C6968000, v14, OS_LOG_TYPE_DEBUG, "Failed to set icon UUID: %{private}@ for icon url: %{private}@. Error code: %d", buf, 0x1Cu);
     }
   }
 
-  return v9;
+  return date;
 }
 
-- (id)_setTimestampToNowForIconUUID:(id)a3
+- (id)_setTimestampToNowForIconUUID:(id)d
 {
-  v10 = a3;
-  v4 = [MEMORY[0x1E695DF00] date];
-  v5 = [(WBSSQLiteStore *)self database];
-  [v4 timeIntervalSinceReferenceDate];
+  dCopy = d;
+  date = [MEMORY[0x1E695DF00] date];
+  database = [(WBSSQLiteStore *)self database];
+  [date timeIntervalSinceReferenceDate];
   v9 = v6;
-  LODWORD(self) = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<double,NSString * {__strong}&>(v5, 0, @"UPDATE icon_info SET timestamp=? WHERE uuid=?", &v9, &v10);
+  LODWORD(self) = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<double,NSString * {__strong}&>(database, 0, @"UPDATE icon_info SET timestamp=? WHERE uuid=?", &v9, &dCopy);
 
   if (self != 101)
   {
@@ -1441,19 +1441,19 @@ void __66__WBSFaviconProviderDatabaseController__findOrphansFromIconUUIDs___bloc
     }
   }
 
-  return v4;
+  return date;
 }
 
-- (BOOL)_setRejectedResourceForPageURL:(id)a3 iconURLString:(id)a4
+- (BOOL)_setRejectedResourceForPageURL:(id)l iconURLString:(id)string
 {
   v20 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v13 = a4;
-  v6 = [MEMORY[0x1E695DF00] date];
-  v7 = [(WBSSQLiteStore *)self database];
-  [v6 timeIntervalSinceReferenceDate];
+  lCopy = l;
+  stringCopy = string;
+  date = [MEMORY[0x1E695DF00] date];
+  database = [(WBSSQLiteStore *)self database];
+  [date timeIntervalSinceReferenceDate];
   *buf = v8;
-  v9 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&,NSString * {__strong}&,double>(v7, 0, @"REPLACE INTO rejected_resources (page_url, icon_url, timestamp) VALUES (?, ?, ?)", &v14, &v13, buf);
+  v9 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&,NSString * {__strong}&,double>(database, 0, @"REPLACE INTO rejected_resources (page_url, icon_url, timestamp) VALUES (?, ?, ?)", &lCopy, &stringCopy, buf);
 
   if (v9 != 101)
   {
@@ -1467,9 +1467,9 @@ void __66__WBSFaviconProviderDatabaseController__findOrphansFromIconUUIDs___bloc
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138478339;
-      *&buf[4] = v14;
+      *&buf[4] = lCopy;
       v16 = 2113;
-      v17 = v13;
+      v17 = stringCopy;
       v18 = 1024;
       v19 = v9;
       _os_log_debug_impl(&dword_1C6968000, v11, OS_LOG_TYPE_DEBUG, "Failed to set rejected resource for page url %{private}@ and icon url %{private}@. Error code: %d", buf, 0x1Cu);
@@ -1479,11 +1479,11 @@ void __66__WBSFaviconProviderDatabaseController__findOrphansFromIconUUIDs___bloc
   return v9 == 101;
 }
 
-- (void)_deletePageURL:(id)a3
+- (void)_deletePageURL:(id)l
 {
-  v7 = a3;
-  v4 = [(WBSSQLiteStore *)self database];
-  LODWORD(self) = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&>(v4, 0, @"DELETE FROM page_url WHERE url = ?", &v7);
+  lCopy = l;
+  database = [(WBSSQLiteStore *)self database];
+  LODWORD(self) = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&>(database, 0, @"DELETE FROM page_url WHERE url = ?", &lCopy);
 
   if (self != 101)
   {
@@ -1501,15 +1501,15 @@ void __66__WBSFaviconProviderDatabaseController__findOrphansFromIconUUIDs___bloc
   }
 }
 
-- (void)_deletePageURLs:(id)a3
+- (void)_deletePageURLs:(id)ls
 {
-  v4 = a3;
+  lsCopy = ls;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __56__WBSFaviconProviderDatabaseController__deletePageURLs___block_invoke;
   v6[3] = &unk_1E8284768;
-  v7 = v4;
-  v5 = v4;
+  v7 = lsCopy;
+  v5 = lsCopy;
   [(WBSFaviconProviderDatabaseController *)self _generateStatementsForQuery:@"DELETE FROM page_url WHERE url IN" arguments:v5 statementCallback:v6];
 }
 
@@ -1534,13 +1534,13 @@ void __56__WBSFaviconProviderDatabaseController__deletePageURLs___block_invoke(u
   [v2 invalidate];
 }
 
-- (BOOL)_deleteRejectedResourceForPageURLString:(id)a3 iconURLString:(id)a4
+- (BOOL)_deleteRejectedResourceForPageURLString:(id)string iconURLString:(id)lString
 {
   v19 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v11 = a4;
-  v6 = [(WBSSQLiteStore *)self database];
-  v7 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&,NSString * {__strong}&>(v6, 0, @"DELETE FROM rejected_resources WHERE page_url = ? AND icon_url = ?", &v12, &v11);
+  stringCopy = string;
+  lStringCopy = lString;
+  database = [(WBSSQLiteStore *)self database];
+  v7 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&,NSString * {__strong}&>(database, 0, @"DELETE FROM rejected_resources WHERE page_url = ? AND icon_url = ?", &stringCopy, &lStringCopy);
 
   if (v7 != 101)
   {
@@ -1554,9 +1554,9 @@ void __56__WBSFaviconProviderDatabaseController__deletePageURLs___block_invoke(u
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138478339;
-      v14 = v12;
+      v14 = stringCopy;
       v15 = 2113;
-      v16 = v11;
+      v16 = lStringCopy;
       v17 = 1024;
       v18 = v7;
       _os_log_debug_impl(&dword_1C6968000, v9, OS_LOG_TYPE_DEBUG, "Failed to reset rejected resource for page url %{private}@, icon url %{private}@. Error code: %d", buf, 0x1Cu);
@@ -1566,11 +1566,11 @@ void __56__WBSFaviconProviderDatabaseController__deletePageURLs___block_invoke(u
   return v7 == 101;
 }
 
-- (void)_deleteRejectedResourceForPageURLString:(id)a3
+- (void)_deleteRejectedResourceForPageURLString:(id)string
 {
-  v7 = a3;
-  v4 = [(WBSSQLiteStore *)self database];
-  LODWORD(self) = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&>(v4, 0, @"DELETE FROM rejected_resources WHERE page_url = ?", &v7);
+  stringCopy = string;
+  database = [(WBSSQLiteStore *)self database];
+  LODWORD(self) = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&>(database, 0, @"DELETE FROM rejected_resources WHERE page_url = ?", &stringCopy);
 
   if (self != 101)
   {
@@ -1588,15 +1588,15 @@ void __56__WBSFaviconProviderDatabaseController__deletePageURLs___block_invoke(u
   }
 }
 
-- (void)_deleteRejectedResourceForPageURLStrings:(id)a3
+- (void)_deleteRejectedResourceForPageURLStrings:(id)strings
 {
-  v4 = a3;
+  stringsCopy = strings;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __81__WBSFaviconProviderDatabaseController__deleteRejectedResourceForPageURLStrings___block_invoke;
   v6[3] = &unk_1E8284768;
-  v7 = v4;
-  v5 = v4;
+  v7 = stringsCopy;
+  v5 = stringsCopy;
   [(WBSFaviconProviderDatabaseController *)self _generateStatementsForQuery:@"DELETE FROM rejected_resources WHERE page_url IN" arguments:v5 statementCallback:v6];
 }
 
@@ -1621,22 +1621,22 @@ void __81__WBSFaviconProviderDatabaseController__deleteRejectedResourceForPageUR
   [v2 invalidate];
 }
 
-- (BOOL)_hasPageURLsForIconUUID:(id)a3
+- (BOOL)_hasPageURLsForIconUUID:(id)d
 {
-  v8 = a3;
-  v4 = [(WBSSQLiteStore *)self database];
-  v5 = SafariShared::WBSSQLiteDatabaseFetch<NSString * {__strong}&>(v4, @"SELECT EXISTS(SELECT 1 FROM page_url WHERE uuid = ?)", &v8);
-  v6 = [v5 nextObject];
+  dCopy = d;
+  database = [(WBSSQLiteStore *)self database];
+  v5 = SafariShared::WBSSQLiteDatabaseFetch<NSString * {__strong}&>(database, @"SELECT EXISTS(SELECT 1 FROM page_url WHERE uuid = ?)", &dCopy);
+  nextObject = [v5 nextObject];
 
-  LOBYTE(v4) = [v6 int64AtIndex:0] == 1;
-  return v4;
+  LOBYTE(database) = [nextObject int64AtIndex:0] == 1;
+  return database;
 }
 
-- (void)_deletePageURLsWithUUIDFromPageInfo:(id)a3
+- (void)_deletePageURLsWithUUIDFromPageInfo:(id)info
 {
-  v6 = a3;
-  v4 = [(WBSSQLiteStore *)self database];
-  LODWORD(self) = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&>(v4, 0, @"DELETE FROM page_url WHERE uuid = ?", &v6);
+  infoCopy = info;
+  database = [(WBSSQLiteStore *)self database];
+  LODWORD(self) = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&>(database, 0, @"DELETE FROM page_url WHERE uuid = ?", &infoCopy);
 
   if (self != 101)
   {
@@ -1648,11 +1648,11 @@ void __81__WBSFaviconProviderDatabaseController__deleteRejectedResourceForPageUR
   }
 }
 
-- (void)_deleteIconWithUUIDFromIconInfo:(id)a3
+- (void)_deleteIconWithUUIDFromIconInfo:(id)info
 {
-  v6 = a3;
-  v4 = [(WBSSQLiteStore *)self database];
-  LODWORD(self) = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&>(v4, 0, @"DELETE FROM icon_info WHERE uuid = ?", &v6);
+  infoCopy = info;
+  database = [(WBSSQLiteStore *)self database];
+  LODWORD(self) = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&>(database, 0, @"DELETE FROM icon_info WHERE uuid = ?", &infoCopy);
 
   if (self != 101)
   {
@@ -1664,15 +1664,15 @@ void __81__WBSFaviconProviderDatabaseController__deleteRejectedResourceForPageUR
   }
 }
 
-- (void)_deleteIconsWithUUIDsFromIconInfo:(id)a3
+- (void)_deleteIconsWithUUIDsFromIconInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __74__WBSFaviconProviderDatabaseController__deleteIconsWithUUIDsFromIconInfo___block_invoke;
   v6[3] = &unk_1E8284768;
-  v7 = v4;
-  v5 = v4;
+  v7 = infoCopy;
+  v5 = infoCopy;
   [(WBSFaviconProviderDatabaseController *)self _generateStatementsForQuery:@"DELETE FROM icon_info WHERE uuid IN" arguments:v5 statementCallback:v6];
 }
 
@@ -1693,8 +1693,8 @@ void __74__WBSFaviconProviderDatabaseController__deleteIconsWithUUIDsFromIconInf
 
 - (void)_deleteAllPageAndIconEntries
 {
-  v3 = [(WBSSQLiteStore *)self database];
-  v4 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(v3, 0, @"DELETE FROM page_url");
+  database = [(WBSSQLiteStore *)self database];
+  v4 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(database, 0, @"DELETE FROM page_url");
 
   if (v4 != 101)
   {
@@ -1705,8 +1705,8 @@ void __74__WBSFaviconProviderDatabaseController__deleteIconsWithUUIDsFromIconInf
     }
   }
 
-  v6 = [(WBSSQLiteStore *)self database];
-  v7 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(v6, 0, @"DELETE FROM icon_info");
+  database2 = [(WBSSQLiteStore *)self database];
+  v7 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(database2, 0, @"DELETE FROM icon_info");
 
   if (v7 != 101)
   {
@@ -1717,8 +1717,8 @@ void __74__WBSFaviconProviderDatabaseController__deleteIconsWithUUIDsFromIconInf
     }
   }
 
-  v9 = [(WBSSQLiteStore *)self database];
-  v10 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(v9, 0, @"DELETE FROM rejected_resources");
+  database3 = [(WBSSQLiteStore *)self database];
+  v10 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(database3, 0, @"DELETE FROM rejected_resources");
 
   if (v10 != 101)
   {
@@ -1730,26 +1730,26 @@ void __74__WBSFaviconProviderDatabaseController__deleteIconsWithUUIDsFromIconInf
   }
 }
 
-- (void)_generateStatementsForQuery:(id)a3 arguments:(id)a4 statementCallback:(id)a5
+- (void)_generateStatementsForQuery:(id)query arguments:(id)arguments statementCallback:(id)callback
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E695DF70] array];
-  v12 = [v9 count];
+  queryCopy = query;
+  argumentsCopy = arguments;
+  callbackCopy = callback;
+  array = [MEMORY[0x1E695DF70] array];
+  v12 = [argumentsCopy count];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __96__WBSFaviconProviderDatabaseController__generateStatementsForQuery_arguments_statementCallback___block_invoke;
   v16[3] = &unk_1E82847B8;
-  v13 = v11;
+  v13 = array;
   v17 = v13;
   v21 = v12;
-  v14 = v8;
+  v14 = queryCopy;
   v18 = v14;
-  v19 = self;
-  v15 = v10;
+  selfCopy = self;
+  v15 = callbackCopy;
   v20 = v15;
-  [v9 enumerateObjectsUsingBlock:v16];
+  [argumentsCopy enumerateObjectsUsingBlock:v16];
 }
 
 void __96__WBSFaviconProviderDatabaseController__generateStatementsForQuery_arguments_statementCallback___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)

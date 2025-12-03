@@ -6,9 +6,9 @@
 
 - (id)nextObject
 {
-  v3 = [(NSEnumerator *)self->_enumerator nextObject];
+  nextObject = [(NSEnumerator *)self->_enumerator nextObject];
   v4 = 0;
-  if (v3)
+  if (nextObject)
   {
     while (1)
     {
@@ -25,10 +25,10 @@
       objc_autoreleasePoolPop(v6);
       if ((v7 & 1) == 0)
       {
-        v9 = [(NSEnumerator *)self->_enumerator nextObject];
+        nextObject2 = [(NSEnumerator *)self->_enumerator nextObject];
 
-        v3 = v9;
-        if (v9)
+        nextObject = nextObject2;
+        if (nextObject2)
         {
           continue;
         }

@@ -1,7 +1,7 @@
 @interface OffloadDecodingError
 - (NSDictionary)dictionaryRepresentation;
 - (NSString)name;
-- (void)setName:(id)a3;
+- (void)setName:(id)name;
 @end
 
 @implementation OffloadDecodingError
@@ -17,7 +17,7 @@
   return v5;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;

@@ -1,10 +1,10 @@
 @interface FullScreenRouteCollectionViewCell
-- (_TtC7Journal33FullScreenRouteCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC7Journal33FullScreenRouteCollectionViewCell)initWithCoder:(id)coder;
 @end
 
 @implementation FullScreenRouteCollectionViewCell
 
-- (_TtC7Journal33FullScreenRouteCollectionViewCell)initWithCoder:(id)a3
+- (_TtC7Journal33FullScreenRouteCollectionViewCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC7Journal33FullScreenRouteCollectionViewCell_routeAsset) = 0;
   v4 = OBJC_IVAR____TtC7Journal33FullScreenRouteCollectionViewCell_routeView;

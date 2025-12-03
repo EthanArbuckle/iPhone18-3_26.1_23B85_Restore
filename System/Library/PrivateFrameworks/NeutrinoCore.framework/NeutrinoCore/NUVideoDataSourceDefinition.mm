@@ -1,30 +1,30 @@
 @interface NUVideoDataSourceDefinition
 - (NUVideoDataSourceDefinition)init;
-- (NUVideoDataSourceDefinition)initWithVideoData:(id)a3 orientation:(int64_t)a4;
-- (id)generateSourceNodeWithIdentifier:(id)a3 error:(id *)a4;
+- (NUVideoDataSourceDefinition)initWithVideoData:(id)data orientation:(int64_t)orientation;
+- (id)generateSourceNodeWithIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation NUVideoDataSourceDefinition
 
-- (id)generateSourceNodeWithIdentifier:(id)a3 error:(id *)a4
+- (id)generateSourceNodeWithIdentifier:(id)identifier error:(id *)error
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [NUVideoSourceNode alloc];
-  v7 = [(NUVideoDataSourceDefinition *)self videoData];
-  v8 = [(NUSourceDefinition *)self sourceOptions];
-  v9 = [(NUVideoSourceNode *)v6 initWithVideoData:v7 identifier:v5 options:v8];
+  videoData = [(NUVideoDataSourceDefinition *)self videoData];
+  sourceOptions = [(NUSourceDefinition *)self sourceOptions];
+  v9 = [(NUVideoSourceNode *)v6 initWithVideoData:videoData identifier:identifierCopy options:sourceOptions];
 
-  v10 = [(NUSingleSourceDefinition *)self sourceDerivation];
-  [(NUSourceNode *)v9 setSourceDerivation:v10];
+  sourceDerivation = [(NUSingleSourceDefinition *)self sourceDerivation];
+  [(NUSourceNode *)v9 setSourceDerivation:sourceDerivation];
 
   return v9;
 }
 
-- (NUVideoDataSourceDefinition)initWithVideoData:(id)a3 orientation:(int64_t)a4
+- (NUVideoDataSourceDefinition)initWithVideoData:(id)data orientation:(int64_t)orientation
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  dataCopy = data;
+  if (!dataCopy)
   {
     v11 = NUAssertLogger_9314();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -45,8 +45,8 @@
         v18 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v19 = MEMORY[0x1E696AF00];
         v20 = v18;
-        v21 = [v19 callStackSymbols];
-        v22 = [v21 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v19 callStackSymbols];
+        v22 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v18;
         v30 = 2114;
@@ -57,8 +57,8 @@
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -67,14 +67,14 @@
     _NUAssertFailHandler("[NUVideoDataSourceDefinition initWithVideoData:orientation:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Adjustments/NUSource.m", 245, @"Invalid parameter not satisfying: %s", v23, v24, v25, v26, "videoData != nil");
   }
 
-  v7 = v6;
+  v7 = dataCopy;
   v27.receiver = self;
   v27.super_class = NUVideoDataSourceDefinition;
   v8 = [(NUSingleSourceDefinition *)&v27 init];
   videoData = v8->_videoData;
   v8->_videoData = v7;
 
-  v8->_orientation = a4;
+  v8->_orientation = orientation;
   return v8;
 }
 
@@ -124,8 +124,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -141,8 +141,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

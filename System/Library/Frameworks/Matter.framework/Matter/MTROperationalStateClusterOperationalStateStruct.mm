@@ -1,6 +1,6 @@
 @interface MTROperationalStateClusterOperationalStateStruct
 - (MTROperationalStateClusterOperationalStateStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTROperationalStateClusterOperationalStateStruct);
-  v5 = [(MTROperationalStateClusterOperationalStateStruct *)self operationalStateID];
-  [(MTROperationalStateClusterOperationalStateStruct *)v4 setOperationalStateID:v5];
+  operationalStateID = [(MTROperationalStateClusterOperationalStateStruct *)self operationalStateID];
+  [(MTROperationalStateClusterOperationalStateStruct *)v4 setOperationalStateID:operationalStateID];
 
-  v6 = [(MTROperationalStateClusterOperationalStateStruct *)self operationalStateLabel];
-  [(MTROperationalStateClusterOperationalStateStruct *)v4 setOperationalStateLabel:v6];
+  operationalStateLabel = [(MTROperationalStateClusterOperationalStateStruct *)self operationalStateLabel];
+  [(MTROperationalStateClusterOperationalStateStruct *)v4 setOperationalStateLabel:operationalStateLabel];
 
   return v4;
 }

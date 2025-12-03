@@ -1,10 +1,10 @@
 @interface CRLiOSFolderGridViewController.Item.ViewController.ThumbnailImageView
 - (CGSize)intrinsicContentSize;
 - (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController18ThumbnailImageView)init;
-- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController18ThumbnailImageView)initWithCoder:(id)a3;
-- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController18ThumbnailImageView)initWithFrame:(CGRect)a3;
-- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController18ThumbnailImageView)initWithImage:(id)a3;
-- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController18ThumbnailImageView)initWithImage:(id)a3 highlightedImage:(id)a4;
+- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController18ThumbnailImageView)initWithCoder:(id)coder;
+- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController18ThumbnailImageView)initWithFrame:(CGRect)frame;
+- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController18ThumbnailImageView)initWithImage:(id)image;
+- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController18ThumbnailImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage;
 @end
 
 @implementation CRLiOSFolderGridViewController.Item.ViewController.ThumbnailImageView
@@ -18,7 +18,7 @@
   return v2;
 }
 
-- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController18ThumbnailImageView)initWithCoder:(id)a3
+- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController18ThumbnailImageView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -34,21 +34,21 @@
   return result;
 }
 
-- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController18ThumbnailImageView)initWithImage:(id)a3
+- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController18ThumbnailImageView)initWithImage:(id)image
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController18ThumbnailImageView)initWithImage:(id)a3 highlightedImage:(id)a4
+- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController18ThumbnailImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController18ThumbnailImageView)initWithFrame:(CGRect)a3
+- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController18ThumbnailImageView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

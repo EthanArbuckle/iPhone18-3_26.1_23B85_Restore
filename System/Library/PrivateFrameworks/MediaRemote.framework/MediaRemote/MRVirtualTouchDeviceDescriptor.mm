@@ -1,7 +1,7 @@
 @interface MRVirtualTouchDeviceDescriptor
 - (_MRHIDSize)screenSize;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MRVirtualTouchDeviceDescriptor
@@ -15,12 +15,12 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
   if (self)
   {
-    return OUTLINED_FUNCTION_0_27([objc_msgSend(v5 allocWithZone:{a3), "init"}]);
+    return OUTLINED_FUNCTION_0_27([objc_msgSend(v5 allocWithZone:{zone), "init"}]);
   }
 
   else
@@ -29,12 +29,12 @@
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
   if (self)
   {
-    return OUTLINED_FUNCTION_0_27([objc_msgSend(v5 allocWithZone:{a3), "init"}]);
+    return OUTLINED_FUNCTION_0_27([objc_msgSend(v5 allocWithZone:{zone), "init"}]);
   }
 
   else

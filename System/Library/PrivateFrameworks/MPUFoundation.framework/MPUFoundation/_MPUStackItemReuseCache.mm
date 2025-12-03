@@ -1,25 +1,25 @@
 @interface _MPUStackItemReuseCache
-+ (id)dequeueReusableStackItemWithIdentifier:(id)a3;
-+ (void)enqueueReusableStackItem:(id)a3 forReuseIdentifier:(id)a4;
-+ (void)registerStackViewForReuseIdentifier:(id)a3;
-+ (void)unregisterStackViewForReuseIdentifier:(id)a3;
++ (id)dequeueReusableStackItemWithIdentifier:(id)identifier;
++ (void)enqueueReusableStackItem:(id)item forReuseIdentifier:(id)identifier;
++ (void)registerStackViewForReuseIdentifier:(id)identifier;
++ (void)unregisterStackViewForReuseIdentifier:(id)identifier;
 @end
 
 @implementation _MPUStackItemReuseCache
 
-+ (id)dequeueReusableStackItemWithIdentifier:(id)a3
++ (id)dequeueReusableStackItemWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (v3)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v4 = [__reuseIdentifierToReusableStackItems objectForKey:v3];
+    v4 = [__reuseIdentifierToReusableStackItems objectForKey:identifierCopy];
     if ([v4 count])
     {
       v5 = [v4 objectAtIndex:0];
       [v4 removeObjectAtIndex:0];
       if (![v4 count])
       {
-        [__reuseIdentifierToReusableStackItems removeObjectForKey:v3];
+        [__reuseIdentifierToReusableStackItems removeObjectForKey:identifierCopy];
         if (![__reuseIdentifierToReusableStackItems count])
         {
           v6 = __reuseIdentifierToReusableStackItems;
@@ -44,21 +44,21 @@
   return v5;
 }
 
-+ (void)enqueueReusableStackItem:(id)a3 forReuseIdentifier:(id)a4
++ (void)enqueueReusableStackItem:(id)item forReuseIdentifier:(id)identifier
 {
-  v12 = a3;
-  v5 = a4;
-  if (v12)
+  itemCopy = item;
+  identifierCopy = identifier;
+  if (itemCopy)
   {
-    if (v5)
+    if (identifierCopy)
     {
-      v6 = [__reuseIdentifierToRegisteredCount objectForKey:v5];
-      v7 = [v6 integerValue];
+      v6 = [__reuseIdentifierToRegisteredCount objectForKey:identifierCopy];
+      integerValue = [v6 integerValue];
 
-      if (v7)
+      if (integerValue)
       {
-        [v12 prepareForReuse];
-        [v12 setHidden:1];
+        [itemCopy prepareForReuse];
+        [itemCopy setHidden:1];
         v8 = __reuseIdentifierToReusableStackItems;
         if (!__reuseIdentifierToReusableStackItems)
         {
@@ -69,29 +69,29 @@
           v8 = __reuseIdentifierToReusableStackItems;
         }
 
-        v11 = [v8 objectForKey:v5];
+        v11 = [v8 objectForKey:identifierCopy];
         if (!v11)
         {
           v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:1];
-          [__reuseIdentifierToReusableStackItems setObject:v11 forKey:v5];
+          [__reuseIdentifierToReusableStackItems setObject:v11 forKey:identifierCopy];
         }
 
         if ([v11 count] <= 2)
         {
-          [v11 addObject:v12];
+          [v11 addObject:itemCopy];
         }
       }
     }
   }
 }
 
-+ (void)registerStackViewForReuseIdentifier:(id)a3
++ (void)registerStackViewForReuseIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (v3)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v4 = __reuseIdentifierToRegisteredCount;
-    v11 = v3;
+    v11 = identifierCopy;
     if (!__reuseIdentifierToRegisteredCount)
     {
       v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:0];
@@ -102,26 +102,26 @@
     }
 
     v7 = [v4 objectForKey:v11];
-    v8 = [v7 integerValue];
+    integerValue = [v7 integerValue];
 
     v9 = __reuseIdentifierToRegisteredCount;
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:v8 + 1];
+    v10 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue + 1];
     [v9 setObject:v10 forKey:v11];
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-+ (void)unregisterStackViewForReuseIdentifier:(id)a3
++ (void)unregisterStackViewForReuseIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (v3)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v7 = v3;
-    v4 = [__reuseIdentifierToRegisteredCount objectForKey:v3];
-    v5 = [v4 integerValue];
+    v7 = identifierCopy;
+    v4 = [__reuseIdentifierToRegisteredCount objectForKey:identifierCopy];
+    integerValue = [v4 integerValue];
 
-    if (v5 == 1)
+    if (integerValue == 1)
     {
       [__reuseIdentifierToRegisteredCount removeObjectForKey:v7];
       if (![__reuseIdentifierToRegisteredCount count])

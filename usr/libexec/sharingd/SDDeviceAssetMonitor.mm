@@ -2,15 +2,15 @@
 + (SDDeviceAssetMonitor)sharedAssetMonitor;
 - (NSString)state;
 - (SDDeviceAssetMonitor)init;
-- (id)queryForBluetoothDevice:(id)a3;
+- (id)queryForBluetoothDevice:(id)device;
 - (os_state_data_s)stateDump;
 - (void)activateIfReady;
 - (void)addObservers;
-- (void)bluetoothDevicePaired:(id)a3;
-- (void)bluetoothDeviceUnpaired:(id)a3;
-- (void)downloadAssetsForQuery:(id)a3;
+- (void)bluetoothDevicePaired:(id)paired;
+- (void)bluetoothDeviceUnpaired:(id)unpaired;
+- (void)downloadAssetsForQuery:(id)query;
 - (void)setUpBluetoothDeviceMonitor;
-- (void)triggerAssetCleanupWithBluetoothDeviceRemoved:(id)a3;
+- (void)triggerAssetCleanupWithBluetoothDeviceRemoved:(id)removed;
 @end
 
 @implementation SDDeviceAssetMonitor
@@ -26,8 +26,8 @@
 
   NSAppendPrintF();
   v4 = 0;
-  v5 = [(SDDeviceAssetMonitor *)self state];
-  if (v5)
+  state = [(SDDeviceAssetMonitor *)self state];
+  if (state)
   {
     NSAppendPrintF();
     v6 = v4;
@@ -72,12 +72,12 @@
   NSAppendPrintF();
   v6 = v5;
 
-  v7 = [(SFDeviceAssetManager *)self->_deviceAssetManager networkStatus];
+  networkStatus = [(SFDeviceAssetManager *)self->_deviceAssetManager networkStatus];
 
-  if (v7)
+  if (networkStatus)
   {
     v26 = v6;
-    v19 = [(SFDeviceAssetManager *)self->_deviceAssetManager networkStatus];
+    networkStatus2 = [(SFDeviceAssetManager *)self->_deviceAssetManager networkStatus];
     NSAppendPrintF();
     v8 = v6;
 
@@ -258,35 +258,35 @@
   objc_destroyWeak(&location);
 }
 
-- (id)queryForBluetoothDevice:(id)a3
+- (id)queryForBluetoothDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = [SFDeviceAssetQuery alloc];
-  v5 = [v3 productIdentifier];
-  v6 = [v3 colorCode];
+  productIdentifier = [deviceCopy productIdentifier];
+  colorCode = [deviceCopy colorCode];
 
-  v7 = [v4 initWithBluetoothProductIdentifier:v5 color:v6];
+  v7 = [v4 initWithBluetoothProductIdentifier:productIdentifier color:colorCode];
 
   return v7;
 }
 
-- (void)bluetoothDevicePaired:(id)a3
+- (void)bluetoothDevicePaired:(id)paired
 {
-  v4 = a3;
+  pairedCopy = paired;
   v5 = asset_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[SDDeviceAssetMonitor bluetoothDevicePaired:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = pairedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s %@", &v7, 0x16u);
   }
 
-  if ([v4 supportsAACPService])
+  if ([pairedCopy supportsAACPService])
   {
-    [(NSMutableSet *)self->_bluetoothDevices addObject:v4];
-    v6 = [(SDDeviceAssetMonitor *)self queryForBluetoothDevice:v4];
+    [(NSMutableSet *)self->_bluetoothDevices addObject:pairedCopy];
+    v6 = [(SDDeviceAssetMonitor *)self queryForBluetoothDevice:pairedCopy];
     [(SDDeviceAssetMonitor *)self downloadAssetsForQuery:v6];
   }
 
@@ -298,29 +298,29 @@
       v7 = 136315394;
       v8 = "[SDDeviceAssetMonitor bluetoothDevicePaired:]";
       v9 = 2112;
-      v10 = v4;
+      v10 = pairedCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s ignoring %@", &v7, 0x16u);
     }
   }
 }
 
-- (void)bluetoothDeviceUnpaired:(id)a3
+- (void)bluetoothDeviceUnpaired:(id)unpaired
 {
-  v4 = a3;
+  unpairedCopy = unpaired;
   v5 = asset_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[SDDeviceAssetMonitor bluetoothDeviceUnpaired:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = unpairedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s %@", &v7, 0x16u);
   }
 
-  if ([(NSMutableSet *)self->_bluetoothDevices containsObject:v4])
+  if ([(NSMutableSet *)self->_bluetoothDevices containsObject:unpairedCopy])
   {
-    [(NSMutableSet *)self->_bluetoothDevices removeObject:v4];
-    [(SDDeviceAssetMonitor *)self triggerAssetCleanupWithBluetoothDeviceRemoved:v4];
+    [(NSMutableSet *)self->_bluetoothDevices removeObject:unpairedCopy];
+    [(SDDeviceAssetMonitor *)self triggerAssetCleanupWithBluetoothDeviceRemoved:unpairedCopy];
   }
 
   else
@@ -331,16 +331,16 @@
       v7 = 136315394;
       v8 = "[SDDeviceAssetMonitor bluetoothDeviceUnpaired:]";
       v9 = 2112;
-      v10 = v4;
+      v10 = unpairedCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s ignoring %@", &v7, 0x16u);
     }
   }
 }
 
-- (void)triggerAssetCleanupWithBluetoothDeviceRemoved:(id)a3
+- (void)triggerAssetCleanupWithBluetoothDeviceRemoved:(id)removed
 {
-  v4 = a3;
-  v5 = [(SDDeviceAssetMonitor *)self queryForBluetoothDevice:v4];
+  removedCopy = removed;
+  v5 = [(SDDeviceAssetMonitor *)self queryForBluetoothDevice:removedCopy];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -368,7 +368,7 @@
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v20 = v4;
+            v20 = removedCopy;
             v21 = 2112;
             v22 = v11;
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "assets for removed device %@ is still needed by %@", buf, 0x16u);
@@ -392,7 +392,7 @@
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v4;
+    v20 = removedCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "cleaning up assets for removed device %@", buf, 0xCu);
   }
 
@@ -400,31 +400,31 @@
 LABEL_15:
 }
 
-- (void)downloadAssetsForQuery:(id)a3
+- (void)downloadAssetsForQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   [v5 setDate:v6];
 
-  [v5 setQuery:v4];
-  v7 = self;
-  objc_sync_enter(v7);
-  [(NSMutableSet *)v7->_tasks addObject:v5];
-  objc_sync_exit(v7);
+  [v5 setQuery:queryCopy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_tasks addObject:v5];
+  objc_sync_exit(selfCopy);
 
   v8 = [SFDeviceAssetRequestConfiguration alloc];
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_10008CEA4;
   v15 = &unk_1008CE4D8;
-  v16 = v4;
+  v16 = queryCopy;
   v17 = v5;
   v9 = v5;
-  v10 = v4;
+  v10 = queryCopy;
   v11 = [v8 initWithQueryResultHandler:&v12];
   [v11 setTimeout:{9999.0, v12, v13, v14, v15}];
-  [(SFDeviceAssetManager *)v7->_deviceAssetManager getAssetBundleForDeviceQuery:v10 withRequestConfiguration:v11];
+  [(SFDeviceAssetManager *)selfCopy->_deviceAssetManager getAssetBundleForDeviceQuery:v10 withRequestConfiguration:v11];
 }
 
 @end

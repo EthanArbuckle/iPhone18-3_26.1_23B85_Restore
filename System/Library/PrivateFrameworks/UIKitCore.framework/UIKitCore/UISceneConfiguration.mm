@@ -1,22 +1,22 @@
 @interface UISceneConfiguration
 + (UISceneConfiguration)configurationWithName:(NSString *)name sessionRole:(UISceneSessionRole)sessionRole;
-+ (id)_internalConfigurationWithRole:(id)a3 sceneClass:(Class)a4 delegateClass:(Class)a5 bridgingID:(id)a6 sceneDelegateWrapper:(Class)a7;
-+ (id)_internalConfigurationWithRole:(id)a3 sceneClass:(Class)a4 delegateClass:(Class)a5 storyboard:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (UISceneConfiguration)initWithCoder:(id)a3;
-- (id)_initWithConfiguration:(id)a3;
-- (id)_initWithConfiguration:(id)a3 sceneDelegateWrapper:(Class)a4;
-- (id)_initWithLoadErrorForSessionRole:(id)a3;
-- (id)_initWithName:(id)a3 sessionRole:(id)a4 includingPlist:(BOOL)a5;
-- (id)_initWithRole:(id)a3 bridgingID:(id)a4 sceneDelegateWrapper:(Class)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
++ (id)_internalConfigurationWithRole:(id)role sceneClass:(Class)class delegateClass:(Class)delegateClass bridgingID:(id)d sceneDelegateWrapper:(Class)wrapper;
++ (id)_internalConfigurationWithRole:(id)role sceneClass:(Class)class delegateClass:(Class)delegateClass storyboard:(id)storyboard;
+- (BOOL)isEqual:(id)equal;
+- (UISceneConfiguration)initWithCoder:(id)coder;
+- (id)_initWithConfiguration:(id)configuration;
+- (id)_initWithConfiguration:(id)configuration sceneDelegateWrapper:(Class)wrapper;
+- (id)_initWithLoadErrorForSessionRole:(id)role;
+- (id)_initWithName:(id)name sessionRole:(id)role includingPlist:(BOOL)plist;
+- (id)_initWithRole:(id)role bridgingID:(id)d sceneDelegateWrapper:(Class)wrapper;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setDelegateClass:(Class)delegateClass;
 - (void)setSceneClass:(Class)sceneClass;
 - (void)setStoryboard:(UIStoryboard *)storyboard;
@@ -28,30 +28,30 @@
 {
   v6 = sessionRole;
   v7 = name;
-  v8 = [[a1 alloc] initWithName:v7 sessionRole:v6];
+  v8 = [[self alloc] initWithName:v7 sessionRole:v6];
 
   return v8;
 }
 
-- (id)_initWithName:(id)a3 sessionRole:(id)a4 includingPlist:(BOOL)a5
+- (id)_initWithName:(id)name sessionRole:(id)role includingPlist:(BOOL)plist
 {
-  v5 = a5;
+  plistCopy = plist;
   v65 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  roleCopy = role;
   v58.receiver = self;
   v58.super_class = UISceneConfiguration;
   v10 = [(UISceneConfiguration *)&v58 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_role, a4);
+    objc_storeStrong(&v10->_role, role);
     *&v11->_isDefault = 0;
     v11->_canBeAppliedToInternalScenes = 0;
-    v12 = [UIApp _infoPlistSceneConfigurations];
-    if (v12)
+    _infoPlistSceneConfigurations = [UIApp _infoPlistSceneConfigurations];
+    if (_infoPlistSceneConfigurations)
     {
-      v13 = !v5;
+      v13 = !plistCopy;
     }
 
     else
@@ -61,14 +61,14 @@
 
     if (v13)
     {
-      if (v8)
+      if (nameCopy)
       {
         v11->_hadResolutionErrorsOnLoad = 1;
         v14 = *(__UILogGetCategoryCachedImpl("SceneConfiguration", &qword_1ED4A2458) + 8);
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v60 = v8;
+          v60 = nameCopy;
           _os_log_impl(&dword_188A29000, v14, OS_LOG_TYPE_ERROR, "Info.plist contained no UIScene configuration dictionary (looking for configuration named %@)", buf, 0xCu);
         }
       }
@@ -76,28 +76,28 @@
       goto LABEL_59;
     }
 
-    v15 = [v9 isEqualToString:@"UIWindowSceneSessionRoleExternalDisplayNonInteractive"];
-    v16 = [v12 objectForKey:v9];
+    v15 = [roleCopy isEqualToString:@"UIWindowSceneSessionRoleExternalDisplayNonInteractive"];
+    v16 = [_infoPlistSceneConfigurations objectForKey:roleCopy];
     v17 = v16;
     if (v15 && (!v16 || ![v16 count]))
     {
-      v18 = [v12 objectForKey:@"UIWindowSceneSessionRoleExternalDisplay"];
+      v18 = [_infoPlistSceneConfigurations objectForKey:@"UIWindowSceneSessionRoleExternalDisplay"];
 
       v17 = v18;
     }
 
-    if (v8)
+    if (nameCopy)
     {
       v53 = MEMORY[0x1E69E9820];
       v54 = 3221225472;
       v55 = __65__UISceneConfiguration__initWithName_sessionRole_includingPlist___block_invoke;
       v56 = &unk_1E7127B48;
-      v19 = v8;
+      v19 = nameCopy;
       v57 = v19;
       v20 = [v17 indexOfObjectPassingTest:&v53];
       if (v20 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v21 = [v17 firstObject];
+        firstObject = [v17 firstObject];
         v11->_hadResolutionErrorsOnLoad = 1;
         v22 = *(__UILogGetCategoryCachedImpl("SceneConfiguration", &_MergedGlobals_1339) + 8);
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -105,22 +105,22 @@
           *buf = 138412802;
           v60 = v19;
           v61 = 2112;
-          v62 = v9;
+          v62 = roleCopy;
           v63 = 2112;
-          v64 = v9;
+          v64 = roleCopy;
           _os_log_impl(&dword_188A29000, v22, OS_LOG_TYPE_ERROR, "Info.plist contained no configuration named %@ for %@. Falling back to first defined description for %@", buf, 0x20u);
         }
       }
 
       else
       {
-        v21 = [v17 objectAtIndex:v20];
+        firstObject = [v17 objectAtIndex:v20];
       }
 
-      v24 = [v17 firstObject];
-      v23 = [v21 isEqualToDictionary:v24];
+      firstObject2 = [v17 firstObject];
+      v23 = [firstObject isEqualToDictionary:firstObject2];
 
-      if (!v21)
+      if (!firstObject)
       {
         goto LABEL_58;
       }
@@ -128,9 +128,9 @@
 
     else
     {
-      v21 = [v17 firstObject];
+      firstObject = [v17 firstObject];
       v23 = 1;
-      if (!v21)
+      if (!firstObject)
       {
 LABEL_58:
 
@@ -141,12 +141,12 @@ LABEL_59:
 
     v11->_isDefault = v23;
     v11->_fromPlist = 1;
-    v25 = [v21 objectForKeyedSubscript:@"UISceneConfigurationName"];
+    v25 = [firstObject objectForKeyedSubscript:@"UISceneConfigurationName"];
     name = v11->_name;
     v11->_name = v25;
 
     v11->_hadResolutionErrorsOnLoad = 0;
-    v27 = [v21 objectForKeyedSubscript:@"UISceneClassName"];
+    v27 = [firstObject objectForKeyedSubscript:@"UISceneClassName"];
     v28 = NSClassFromString(v27);
     v11->_sceneClass = v28;
     if (v27)
@@ -167,14 +167,14 @@ LABEL_59:
       {
         v35 = @"(no name)";
         *buf = 138412802;
-        if (v8)
+        if (nameCopy)
         {
-          v35 = v8;
+          v35 = nameCopy;
         }
 
         v60 = v35;
         v61 = 2112;
-        v62 = v9;
+        v62 = roleCopy;
         v63 = 2112;
         v64 = v27;
         v34 = "Info.plist configuration %@ for %@ contained UISceneClassName key, but could not load class with name %@.";
@@ -196,14 +196,14 @@ LABEL_59:
         {
           v33 = @"(no name)";
           *buf = 138412802;
-          if (v8)
+          if (nameCopy)
           {
-            v33 = v8;
+            v33 = nameCopy;
           }
 
           v60 = v33;
           v61 = 2112;
-          v62 = v9;
+          v62 = roleCopy;
           v63 = 2112;
           v64 = v27;
           v34 = "Info.plist configuration %@ for %@ contained UISceneClassName, %@, but it is not a subclass of UIScene.";
@@ -213,7 +213,7 @@ LABEL_36:
       }
     }
 
-    v36 = [v21 objectForKeyedSubscript:@"UISceneDelegateClassName"];
+    v36 = [firstObject objectForKeyedSubscript:@"UISceneDelegateClassName"];
     v37 = NSClassFromString(v36);
     v11->_delegateClass = v37;
     v51 = v17;
@@ -238,14 +238,14 @@ LABEL_36:
 
       v41 = @"(no name)";
       *buf = 138412802;
-      if (v8)
+      if (nameCopy)
       {
-        v41 = v8;
+        v41 = nameCopy;
       }
 
       v60 = v41;
       v61 = 2112;
-      v62 = v9;
+      v62 = roleCopy;
       v63 = 2112;
       v64 = v36;
       v40 = "Info.plist configuration %@ for %@ contained UISceneDelegateClassName, %@, but it does not conform to the UISceneDelegate protocol.";
@@ -259,11 +259,11 @@ LABEL_36:
       {
 LABEL_50:
         v42 = v27;
-        v43 = [v21 objectForKeyedSubscript:{@"UISceneStoryboardFile", v51, v53, v54, v55, v56}];
+        v43 = [firstObject objectForKeyedSubscript:{@"UISceneStoryboardFile", v51, v53, v54, v55, v56}];
         if (v43)
         {
-          v44 = [MEMORY[0x1E696AAE8] mainBundle];
-          v45 = [UIStoryboard storyboardWithName:v43 bundle:v44];
+          mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+          v45 = [UIStoryboard storyboardWithName:v43 bundle:mainBundle];
           storyboard = v11->_storyboard;
           v11->_storyboard = v45;
 
@@ -275,14 +275,14 @@ LABEL_50:
             {
               v48 = @"(no name)";
               *buf = 138412802;
-              if (v8)
+              if (nameCopy)
               {
-                v48 = v8;
+                v48 = nameCopy;
               }
 
               v60 = v48;
               v61 = 2112;
-              v62 = v9;
+              v62 = roleCopy;
               v63 = 2112;
               v64 = v36;
               _os_log_impl(&dword_188A29000, v47, OS_LOG_TYPE_ERROR, "Info.plist configuration %@ for %@ contained UIMainStoryboardFile key, but could not find storyboard with name %@.", buf, 0x20u);
@@ -302,14 +302,14 @@ LABEL_50:
 
       v39 = @"(no name)";
       *buf = 138412802;
-      if (v8)
+      if (nameCopy)
       {
-        v39 = v8;
+        v39 = nameCopy;
       }
 
       v60 = v39;
       v61 = 2112;
-      v62 = v9;
+      v62 = roleCopy;
       v63 = 2112;
       v64 = v36;
       v40 = "Info.plist configuration %@ for %@ contained UISceneDelegateClassName key, but could not load class with name %@.";
@@ -341,9 +341,9 @@ uint64_t __65__UISceneConfiguration__initWithName_sessionRole_includingPlist___b
   return v5;
 }
 
-- (id)_initWithLoadErrorForSessionRole:(id)a3
+- (id)_initWithLoadErrorForSessionRole:(id)role
 {
-  result = [(UISceneConfiguration *)self initWithName:0 sessionRole:a3];
+  result = [(UISceneConfiguration *)self initWithName:0 sessionRole:role];
   if (result)
   {
     *(result + 8) = 1;
@@ -352,39 +352,39 @@ uint64_t __65__UISceneConfiguration__initWithName_sessionRole_includingPlist___b
   return result;
 }
 
-- (id)_initWithConfiguration:(id)a3
+- (id)_initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v8.receiver = self;
   v8.super_class = UISceneConfiguration;
   v5 = [(UISceneConfiguration *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_name, v4[2]);
+    objc_storeStrong(&v5->_name, configurationCopy[2]);
     v6->_hadResolutionErrorsOnLoad = 0;
-    objc_storeStrong(&v6->_role, v4[3]);
-    v6->_sceneClass = v4[4];
-    v6->_delegateClass = v4[5];
-    objc_storeStrong(&v6->_storyboard, v4[6]);
-    v6->_isDefault = *(v4 + 9);
-    v6->_fromPlist = *(v4 + 10);
-    objc_storeStrong(&v6->_bridgingID, v4[8]);
-    objc_storeStrong(&v6->_sceneDelegateWrapper, v4[9]);
-    v6->_canBeAppliedToInternalScenes = *(v4 + 56);
+    objc_storeStrong(&v6->_role, configurationCopy[3]);
+    v6->_sceneClass = configurationCopy[4];
+    v6->_delegateClass = configurationCopy[5];
+    objc_storeStrong(&v6->_storyboard, configurationCopy[6]);
+    v6->_isDefault = *(configurationCopy + 9);
+    v6->_fromPlist = *(configurationCopy + 10);
+    objc_storeStrong(&v6->_bridgingID, configurationCopy[8]);
+    objc_storeStrong(&v6->_sceneDelegateWrapper, configurationCopy[9]);
+    v6->_canBeAppliedToInternalScenes = *(configurationCopy + 56);
   }
 
   return v6;
 }
 
-- (id)_initWithRole:(id)a3 bridgingID:(id)a4 sceneDelegateWrapper:(Class)a5
+- (id)_initWithRole:(id)role bridgingID:(id)d sceneDelegateWrapper:(Class)wrapper
 {
-  v10 = a3;
-  v11 = a4;
-  if (!a5 || ([(objc_class *)a5 conformsToProtocol:&unk_1F0089778]& 1) == 0)
+  roleCopy = role;
+  dCopy = d;
+  if (!wrapper || ([(objc_class *)wrapper conformsToProtocol:&unk_1F0089778]& 1) == 0)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"UISceneConfiguration.m" lineNumber:270 description:@"Delegate wrapper does not conform to UISceneDelegate"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISceneConfiguration.m" lineNumber:270 description:@"Delegate wrapper does not conform to UISceneDelegate"];
   }
 
   v20.receiver = self;
@@ -397,53 +397,53 @@ uint64_t __65__UISceneConfiguration__initWithName_sessionRole_includingPlist___b
     v12->_name = 0;
 
     v13->_hadResolutionErrorsOnLoad = 0;
-    objc_storeStrong(&v13->_role, a3);
+    objc_storeStrong(&v13->_role, role);
     *&v13->_isDefault = 0;
     v13->_sceneClass = 0;
     v13->_delegateClass = 0;
     storyboard = v13->_storyboard;
     v13->_storyboard = 0;
 
-    v16 = [v11 copy];
+    v16 = [dCopy copy];
     bridgingID = v13->_bridgingID;
     v13->_bridgingID = v16;
 
-    objc_storeStrong(&v13->_sceneDelegateWrapper, a5);
+    objc_storeStrong(&v13->_sceneDelegateWrapper, wrapper);
     v13->_canBeAppliedToInternalScenes = 0;
   }
 
   return v13;
 }
 
-- (id)_initWithConfiguration:(id)a3 sceneDelegateWrapper:(Class)a4
+- (id)_initWithConfiguration:(id)configuration sceneDelegateWrapper:(Class)wrapper
 {
-  v7 = a3;
-  if (!a4 || ([(objc_class *)a4 conformsToProtocol:&unk_1F0089778]& 1) == 0)
+  configurationCopy = configuration;
+  if (!wrapper || ([(objc_class *)wrapper conformsToProtocol:&unk_1F0089778]& 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"UISceneConfiguration.m" lineNumber:289 description:@"Delegate wrapper does not conform to UISceneDelegate"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISceneConfiguration.m" lineNumber:289 description:@"Delegate wrapper does not conform to UISceneDelegate"];
   }
 
-  v8 = [(UISceneConfiguration *)self _initWithConfiguration:v7];
+  v8 = [(UISceneConfiguration *)self _initWithConfiguration:configurationCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(v8 + 9, a4);
+    objc_storeStrong(v8 + 9, wrapper);
     *(v9 + 56) = 0;
   }
 
   return v9;
 }
 
-+ (id)_internalConfigurationWithRole:(id)a3 sceneClass:(Class)a4 delegateClass:(Class)a5 storyboard:(id)a6
++ (id)_internalConfigurationWithRole:(id)role sceneClass:(Class)class delegateClass:(Class)delegateClass storyboard:(id)storyboard
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [[a1 alloc] initWithName:0 sessionRole:v11];
+  storyboardCopy = storyboard;
+  roleCopy = role;
+  v12 = [[self alloc] initWithName:0 sessionRole:roleCopy];
 
-  [v12 setSceneClass:a4];
-  [v12 setDelegateClass:a5];
-  [v12 setStoryboard:v10];
+  [v12 setSceneClass:class];
+  [v12 setDelegateClass:delegateClass];
+  [v12 setStoryboard:storyboardCopy];
 
   *(v12 + 56) = 1;
   v13 = *(v12 + 16);
@@ -454,14 +454,14 @@ uint64_t __65__UISceneConfiguration__initWithName_sessionRole_includingPlist___b
   return v12;
 }
 
-+ (id)_internalConfigurationWithRole:(id)a3 sceneClass:(Class)a4 delegateClass:(Class)a5 bridgingID:(id)a6 sceneDelegateWrapper:(Class)a7
++ (id)_internalConfigurationWithRole:(id)role sceneClass:(Class)class delegateClass:(Class)delegateClass bridgingID:(id)d sceneDelegateWrapper:(Class)wrapper
 {
-  v12 = a6;
-  v13 = a3;
-  v14 = [[a1 alloc] _initWithRole:v13 bridgingID:v12 sceneDelegateWrapper:a7];
+  dCopy = d;
+  roleCopy = role;
+  v14 = [[self alloc] _initWithRole:roleCopy bridgingID:dCopy sceneDelegateWrapper:wrapper];
 
-  [v14 setSceneClass:a4];
-  [v14 setDelegateClass:a5];
+  [v14 setSceneClass:class];
+  [v14 setDelegateClass:delegateClass];
   *(v14 + 56) = 1;
   v15 = *(v14 + 16);
   *(v14 + 16) = 0;
@@ -477,10 +477,10 @@ uint64_t __65__UISceneConfiguration__initWithName_sessionRole_includingPlist___b
   {
     name = self->_name;
     self->_name = 0;
-    v6 = self;
+    selfCopy = self;
 
-    *&v6->_isDefault = 0;
-    v6->_canBeAppliedToInternalScenes = 0;
+    *&selfCopy->_isDefault = 0;
+    selfCopy->_canBeAppliedToInternalScenes = 0;
 
     self->_sceneClass = sceneClass;
   }
@@ -492,10 +492,10 @@ uint64_t __65__UISceneConfiguration__initWithName_sessionRole_includingPlist___b
   {
     name = self->_name;
     self->_name = 0;
-    v6 = self;
+    selfCopy = self;
 
-    *&v6->_isDefault = 0;
-    v6->_canBeAppliedToInternalScenes = 0;
+    *&selfCopy->_isDefault = 0;
+    selfCopy->_canBeAppliedToInternalScenes = 0;
 
     self->_delegateClass = delegateClass;
   }
@@ -509,10 +509,10 @@ uint64_t __65__UISceneConfiguration__initWithName_sessionRole_includingPlist___b
   {
     name = self->_name;
     self->_name = 0;
-    v7 = self;
+    selfCopy = self;
 
-    *&v7->_isDefault = 0;
-    v7->_canBeAppliedToInternalScenes = 0;
+    *&selfCopy->_isDefault = 0;
+    selfCopy->_canBeAppliedToInternalScenes = 0;
 
     objc_storeStrong(p_storyboard, storyboard);
   }
@@ -520,38 +520,38 @@ uint64_t __65__UISceneConfiguration__initWithName_sessionRole_includingPlist___b
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendString:self->_role];
-  v5 = [v3 appendString:self->_name];
-  v6 = [v3 appendClass:self->_sceneClass];
-  v7 = [v3 appendClass:self->_delegateClass];
-  v8 = [v3 appendObject:self->_storyboard];
-  v9 = [v3 appendClass:self->_sceneDelegateWrapper];
-  v10 = [v3 appendString:self->_bridgingID];
-  v11 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendString:self->_role];
+  v5 = [builder appendString:self->_name];
+  v6 = [builder appendClass:self->_sceneClass];
+  v7 = [builder appendClass:self->_delegateClass];
+  v8 = [builder appendObject:self->_storyboard];
+  v9 = [builder appendClass:self->_sceneDelegateWrapper];
+  v10 = [builder appendString:self->_bridgingID];
+  v11 = [builder hash];
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v29 = 1;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E698E6A0] builder];
+    builder = [MEMORY[0x1E698E6A0] builder];
     v6 = objc_opt_class();
     v48[0] = MEMORY[0x1E69E9820];
     v48[1] = 3221225472;
     v48[2] = __32__UISceneConfiguration_isEqual___block_invoke;
     v48[3] = &unk_1E7127B70;
-    v7 = v4;
+    v7 = equalCopy;
     v49 = v7;
-    v8 = [v5 appendClass:v6 counterpart:v48];
+    v8 = [builder appendClass:v6 counterpart:v48];
     role = self->_role;
     v46[0] = MEMORY[0x1E69E9820];
     v46[1] = 3221225472;
@@ -559,7 +559,7 @@ uint64_t __65__UISceneConfiguration__initWithName_sessionRole_includingPlist___b
     v46[3] = &unk_1E70F7FE0;
     v10 = v7;
     v47 = v10;
-    v11 = [v5 appendString:role counterpart:v46];
+    v11 = [builder appendString:role counterpart:v46];
     name = self->_name;
     v44[0] = MEMORY[0x1E69E9820];
     v44[1] = 3221225472;
@@ -567,7 +567,7 @@ uint64_t __65__UISceneConfiguration__initWithName_sessionRole_includingPlist___b
     v44[3] = &unk_1E70F7FE0;
     v13 = v10;
     v45 = v13;
-    v14 = [v5 appendString:name counterpart:v44];
+    v14 = [builder appendString:name counterpart:v44];
     sceneClass = self->_sceneClass;
     v42[0] = MEMORY[0x1E69E9820];
     v42[1] = 3221225472;
@@ -575,7 +575,7 @@ uint64_t __65__UISceneConfiguration__initWithName_sessionRole_includingPlist___b
     v42[3] = &unk_1E7127B70;
     v16 = v13;
     v43 = v16;
-    v17 = [v5 appendClass:sceneClass counterpart:v42];
+    v17 = [builder appendClass:sceneClass counterpart:v42];
     delegateClass = self->_delegateClass;
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
@@ -583,7 +583,7 @@ uint64_t __65__UISceneConfiguration__initWithName_sessionRole_includingPlist___b
     v40[3] = &unk_1E7127B70;
     v19 = v16;
     v41 = v19;
-    v20 = [v5 appendClass:delegateClass counterpart:v40];
+    v20 = [builder appendClass:delegateClass counterpart:v40];
     storyboard = self->_storyboard;
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
@@ -591,7 +591,7 @@ uint64_t __65__UISceneConfiguration__initWithName_sessionRole_includingPlist___b
     v38[3] = &unk_1E70F66F0;
     v22 = v19;
     v39 = v22;
-    v23 = [v5 appendObject:storyboard counterpart:v38];
+    v23 = [builder appendObject:storyboard counterpart:v38];
     bridgingID = self->_bridgingID;
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
@@ -599,15 +599,15 @@ uint64_t __65__UISceneConfiguration__initWithName_sessionRole_includingPlist___b
     v36[3] = &unk_1E70F7FE0;
     v25 = v22;
     v37 = v25;
-    v26 = [v5 appendString:bridgingID counterpart:v36];
+    v26 = [builder appendString:bridgingID counterpart:v36];
     sceneDelegateWrapper = self->_sceneDelegateWrapper;
     v31 = MEMORY[0x1E69E9820];
     v32 = 3221225472;
     v33 = __32__UISceneConfiguration_isEqual___block_invoke_8;
     v34 = &unk_1E7127B70;
     v35 = v25;
-    v28 = [v5 appendClass:sceneDelegateWrapper counterpart:&v31];
-    v29 = [v5 isEqual];
+    v28 = [builder appendClass:sceneDelegateWrapper counterpart:&v31];
+    v29 = [builder isEqual];
   }
 
   return v29;
@@ -615,10 +615,10 @@ uint64_t __65__UISceneConfiguration__initWithName_sessionRole_includingPlist___b
 
 - (id)succinctDescription
 {
-  v2 = [(UISceneConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(UISceneConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -629,28 +629,28 @@ uint64_t __65__UISceneConfiguration__initWithName_sessionRole_includingPlist___b
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UISceneConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UISceneConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UISceneConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UISceneConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   v6 = [MEMORY[0x1E698E680] builderWithObject:self];
-  [v6 setActiveMultilinePrefix:v4];
+  [v6 setActiveMultilinePrefix:prefixCopy];
 
   [v6 appendString:self->_name withName:@"name"];
   [v6 appendString:self->_role withName:@"role"];
@@ -661,7 +661,7 @@ uint64_t __65__UISceneConfiguration__initWithName_sessionRole_includingPlist___b
   v7 = v6;
   v14 = has_internal_diagnostics;
   v12 = v7;
-  v13 = self;
+  selfCopy = self;
   v8 = [v7 modifyBody:v11];
   v9 = v7;
 
@@ -725,32 +725,32 @@ id __62__UISceneConfiguration_descriptionBuilderWithMultilinePrefix___block_invo
   return [*(a1 + 32) appendBool:*(*(a1 + 40) + 56) withName:@"internal"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [UISceneConfiguration allocWithZone:a3];
+  v4 = [UISceneConfiguration allocWithZone:zone];
 
   return [(UISceneConfiguration *)v4 _initWithConfiguration:self];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v17 = v4;
+  coderCopy = coder;
+  v17 = coderCopy;
   if (self->_name && self->_fromPlist)
   {
-    [v4 encodeObject:? forKey:?];
+    [coderCopy encodeObject:? forKey:?];
     [v17 encodeObject:self->_role forKey:@"_UISceneConfigurationSessionRole"];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E696AAE8] mainBundle];
-    v6 = [v5 infoDictionary];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    infoDictionary = [mainBundle infoDictionary];
 
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E695E500]];
+    v7 = [infoDictionary objectForKeyedSubscript:*MEMORY[0x1E695E500]];
     [v17 encodeObject:v7 forKey:@"_UISceneConfigurationEncodingBundleVersion"];
 
-    v8 = [v6 objectForKeyedSubscript:@"CFBundleShortVersionString"];
+    v8 = [infoDictionary objectForKeyedSubscript:@"CFBundleShortVersionString"];
     [v17 encodeObject:v8 forKey:@"_UISceneConfigurationEncodingBundleShortVersionString"];
 
     [v17 encodeBool:self->_fromPlist forKey:@"_UISceneConfigurationFromPlist"];
@@ -761,23 +761,23 @@ id __62__UISceneConfiguration_descriptionBuilderWithMultilinePrefix___block_invo
     v10 = NSStringFromClass(self->_delegateClass);
     [v17 encodeObject:v10 forKey:@"_UISceneConfigurationDelegateClassName"];
 
-    v11 = [(UIStoryboard *)self->_storyboard name];
-    [v17 encodeObject:v11 forKey:@"_UISceneConfigurationStoryboardName"];
+    name = [(UIStoryboard *)self->_storyboard name];
+    [v17 encodeObject:name forKey:@"_UISceneConfigurationStoryboardName"];
 
-    v12 = [(UIStoryboard *)self->_storyboard bundle];
-    v13 = [MEMORY[0x1E696AAE8] mainBundle];
-    if ([v12 isEqual:v13])
+    bundle = [(UIStoryboard *)self->_storyboard bundle];
+    mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+    if ([bundle isEqual:mainBundle2])
     {
-      v14 = 0;
+      bundleIdentifier = 0;
     }
 
     else
     {
-      v15 = [(UIStoryboard *)self->_storyboard bundle];
-      v14 = [v15 bundleIdentifier];
+      bundle2 = [(UIStoryboard *)self->_storyboard bundle];
+      bundleIdentifier = [bundle2 bundleIdentifier];
     }
 
-    [v17 encodeObject:v14 forKey:@"_UISceneConfigurationStoryboardBundleID"];
+    [v17 encodeObject:bundleIdentifier forKey:@"_UISceneConfigurationStoryboardBundleID"];
     v16 = NSStringFromClass(self->_sceneDelegateWrapper);
     [v17 encodeObject:v16 forKey:@"_UISceneConfigurationSceneDelegateWrapperKey"];
 
@@ -786,15 +786,15 @@ id __62__UISceneConfiguration_descriptionBuilderWithMultilinePrefix___block_invo
   }
 }
 
-- (UISceneConfiguration)initWithCoder:(id)a3
+- (UISceneConfiguration)initWithCoder:(id)coder
 {
   v59 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"_UISceneConfigurationName"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"_UISceneConfigurationName"];
 
   v7 = objc_opt_self();
-  v8 = [v4 decodeObjectOfClass:v7 forKey:@"_UISceneConfigurationSessionRole"];
+  v8 = [coderCopy decodeObjectOfClass:v7 forKey:@"_UISceneConfigurationSessionRole"];
   v9 = v8;
   if (v8)
   {
@@ -814,7 +814,7 @@ id __62__UISceneConfiguration_descriptionBuilderWithMultilinePrefix___block_invo
     goto LABEL_40;
   }
 
-  v13 = -[UISceneConfiguration _initWithName:sessionRole:includingPlist:](self, "_initWithName:sessionRole:includingPlist:", 0, v11, [v4 decodeBoolForKey:@"_UISceneConfigurationFromPlist"]);
+  v13 = -[UISceneConfiguration _initWithName:sessionRole:includingPlist:](self, "_initWithName:sessionRole:includingPlist:", 0, v11, [coderCopy decodeBoolForKey:@"_UISceneConfigurationFromPlist"]);
   v12 = v13;
   if (!v13)
   {
@@ -827,7 +827,7 @@ id __62__UISceneConfiguration_descriptionBuilderWithMultilinePrefix___block_invo
   }
 
   v14 = objc_opt_self();
-  v15 = [v4 decodeObjectOfClass:v14 forKey:@"_UISceneConfigurationSceneClassName"];
+  v15 = [coderCopy decodeObjectOfClass:v14 forKey:@"_UISceneConfigurationSceneClassName"];
 
   v16 = NSClassFromString(v15);
   v17 = v16;
@@ -872,7 +872,7 @@ LABEL_17:
   }
 
   v22 = objc_opt_self();
-  v23 = [v4 decodeObjectOfClass:v22 forKey:@"_UISceneConfigurationDelegateClassName"];
+  v23 = [coderCopy decodeObjectOfClass:v22 forKey:@"_UISceneConfigurationDelegateClassName"];
 
   v24 = NSClassFromString(v23);
   v25 = v24;
@@ -919,10 +919,10 @@ LABEL_26:
 
 LABEL_27:
   v28 = objc_opt_self();
-  v29 = [v4 decodeObjectOfClass:v28 forKey:@"_UISceneConfigurationStoryboardName"];
+  v29 = [coderCopy decodeObjectOfClass:v28 forKey:@"_UISceneConfigurationStoryboardName"];
 
   v30 = objc_opt_self();
-  v31 = [v4 decodeObjectOfClass:v30 forKey:@"_UISceneConfigurationStoryboardBundleID"];
+  v31 = [coderCopy decodeObjectOfClass:v30 forKey:@"_UISceneConfigurationStoryboardBundleID"];
 
   v51 = v31;
   v52 = v29;
@@ -969,7 +969,7 @@ LABEL_27:
   }
 
   v48 = v25;
-  v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_UISceneConfigurationSceneDelegateWrapperKey"];
+  v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_UISceneConfigurationSceneDelegateWrapperKey"];
   v37 = NSClassFromString(v36);
   v38 = v37;
   if (v36)
@@ -992,8 +992,8 @@ LABEL_27:
     }
   }
 
-  v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_UISceneConfigurationBridgingIDKey"];
-  v40 = [v4 decodeBoolForKey:@"_UISceneConfigurationCanBeAppliedToInternalScenesKey"];
+  v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_UISceneConfigurationBridgingIDKey"];
+  v40 = [coderCopy decodeBoolForKey:@"_UISceneConfigurationCanBeAppliedToInternalScenesKey"];
   v12->_sceneClass = v33;
   v12->_delegateClass = v48;
   storyboard = v12->_storyboard;

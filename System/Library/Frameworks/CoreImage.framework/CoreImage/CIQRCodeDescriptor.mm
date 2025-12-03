@@ -1,11 +1,11 @@
 @interface CIQRCodeDescriptor
 + (CIQRCodeDescriptor)descriptorWithPayload:(NSData *)errorCorrectedPayload symbolVersion:(NSInteger)symbolVersion maskPattern:(uint8_t)maskPattern errorCorrectionLevel:(CIQRCodeErrorCorrectionLevel)errorCorrectionLevel;
 - (BOOL)isValid;
-- (CIQRCodeDescriptor)initWithCoder:(id)a3;
+- (CIQRCodeDescriptor)initWithCoder:(id)coder;
 - (CIQRCodeDescriptor)initWithPayload:(NSData *)errorCorrectedPayload symbolVersion:(NSInteger)symbolVersion maskPattern:(uint8_t)maskPattern errorCorrectionLevel:(CIQRCodeErrorCorrectionLevel)errorCorrectionLevel;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)isValid;
 @end
 
@@ -87,17 +87,17 @@ LABEL_10:
   [(CIQRCodeDescriptor *)&v4 dealloc];
 }
 
-- (CIQRCodeDescriptor)initWithCoder:(id)a3
+- (CIQRCodeDescriptor)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CIQRCodeDescriptor;
   v4 = [(CIBarcodeDescriptor *)&v6 initWithCoder:?];
   if (v4)
   {
-    v4->errorCorrectedPayload = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"errorCorrectedPayload"];
-    v4->symbolVersion = [a3 decodeIntegerForKey:@"symbolVersion"];
-    v4->maskPattern = [a3 decodeIntegerForKey:@"maskPattern"];
-    v4->errorCorrectionLevel = [a3 decodeIntegerForKey:@"errorCorrectionLevel"];
+    v4->errorCorrectedPayload = [coder decodeObjectOfClass:objc_opt_class() forKey:@"errorCorrectedPayload"];
+    v4->symbolVersion = [coder decodeIntegerForKey:@"symbolVersion"];
+    v4->maskPattern = [coder decodeIntegerForKey:@"maskPattern"];
+    v4->errorCorrectionLevel = [coder decodeIntegerForKey:@"errorCorrectionLevel"];
   }
 
   if (![(CIQRCodeDescriptor *)v4 isValid])
@@ -109,21 +109,21 @@ LABEL_10:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CIQRCodeDescriptor;
   [(CIBarcodeDescriptor *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:self->errorCorrectedPayload forKey:@"errorCorrectedPayload"];
-  [a3 encodeInteger:self->symbolVersion forKey:@"symbolVersion"];
-  [a3 encodeInteger:self->maskPattern forKey:@"maskPattern"];
-  [a3 encodeInteger:self->errorCorrectionLevel forKey:@"errorCorrectionLevel"];
+  [coder encodeObject:self->errorCorrectedPayload forKey:@"errorCorrectedPayload"];
+  [coder encodeInteger:self->symbolVersion forKey:@"symbolVersion"];
+  [coder encodeInteger:self->maskPattern forKey:@"maskPattern"];
+  [coder encodeInteger:self->errorCorrectionLevel forKey:@"errorCorrectionLevel"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [CIQRCodeDescriptor allocWithZone:?];
-  v6 = [(NSData *)self->errorCorrectedPayload copyWithZone:a3];
+  v6 = [(NSData *)self->errorCorrectedPayload copyWithZone:zone];
   v7 = [(CIQRCodeDescriptor *)v5 initWithPayload:v6 symbolVersion:self->symbolVersion maskPattern:self->maskPattern errorCorrectionLevel:self->errorCorrectionLevel];
 
   return v7;
